@@ -34,352 +34,352 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+using نطاق std;
 
-__vpiDarrayVar::__vpiDarrayVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
+__vpiDarrayVar::__vpiDarrayVar(__vpiScope*sc, ثابت حرف*na, vvp_net_t*ne)
 : __vpiBaseVar(sc, na, ne)
 {
 }
 
-unsigned __vpiDarrayVar::get_size() const
+unsigned __vpiDarrayVar::get_size() ثابت
 {
-      const vvp_fun_signal_object*fun = dynamic_cast<vvp_fun_signal_object*> (get_net()->fun);
-      if(!fun)
-        return 0;
+      ثابت vvp_fun_signal_object*fun = dynamic_cast<vvp_fun_signal_object*> (get_net()->fun);
+      אם(!fun)
+        החזר 0;
 
       vvp_object_t val = fun->get_object();
-      const vvp_darray*aval = val.peek<vvp_darray>();
+      ثابت vvp_darray*aval = val.peek<vvp_darray>();
 
-      if(!aval)
-        return 0;
+      אם(!aval)
+        החזר 0;
 
-      return aval->get_size();
+      החזר aval->get_size();
 }
 
 vpiHandle __vpiDarrayVar::get_left_range()
 {
       left_range_.set_value(0);
-      return &left_range_;
+      החזר &left_range_;
 }
 
 vpiHandle __vpiDarrayVar::get_right_range()
 {
       right_range_.set_value(get_size() - 1);
-      return &right_range_;
+      החזר &right_range_;
 }
 
-int __vpiDarrayVar::get_word_size() const
+صحيح __vpiDarrayVar::get_word_size() ثابت
 {
       vvp_vector4_t new_vec;
       vvp_darray*aobj = get_vvp_darray();
       aobj->get_word(0, new_vec);
-      return new_vec.size();
+      החזר new_vec.size();
 }
 
-char*__vpiDarrayVar::get_word_str(struct __vpiArrayWord*word, int code)
+حرف*__vpiDarrayVar::get_word_str(بنية __vpiArrayWord*word, صحيح code)
 {
       unsigned index = word->get_index();
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      אם (code == vpiFile) {  // Not implemented for now!
+	    החזר simple_set_rbuf_str(file_names[0]);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%d", (int)index);
-      return generic_get_str(code, scope_, name_, sidx);
+      حرف sidx [64];
+      snprintf(sidx, 63, "%d", (صحيح)index);
+      החזר generic_get_str(code, scope_, name_, sidx);
 }
 
-void __vpiDarrayVar::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
+فراغ __vpiDarrayVar::get_word_value(بنية __vpiArrayWord*word, p_vpi_value vp)
 {
       unsigned index = word->get_index();
       vvp_darray*aobj = get_vvp_darray();
 
-      if(vp->format == vpiObjTypeVal) {
-          if(dynamic_cast<vvp_darray_real*>(aobj))
+      אם(vp->format == vpiObjTypeVal) {
+          אם(dynamic_cast<vvp_darray_real*>(aobj))
               vp->format = vpiRealVal;
-          else if(dynamic_cast<vvp_darray_string*>(aobj))
+          אחרת אם(dynamic_cast<vvp_darray_string*>(aobj))
               vp->format = vpiStringVal;
-          else
+          אחרת
               vp->format = vpiVectorVal;
       }
 
-      switch(vp->format) {
-      case vpiBinStrVal:
-      case vpiOctStrVal:
-      case vpiDecStrVal:
-      case vpiHexStrVal:
-      case vpiScalarVal:
-      case vpiIntVal:
-      case vpiVectorVal:
+      بدل(vp->format) {
+      حالة vpiBinStrVal:
+      حالة vpiOctStrVal:
+      حالة vpiDecStrVal:
+      حالة vpiHexStrVal:
+      حالة vpiScalarVal:
+      حالة vpiIntVal:
+      حالة vpiVectorVal:
       {
           vvp_vector4_t v;
           aobj->get_word(index, v);
-          vpip_vec4_get_value(v, v.size(), false, vp);  // TODO sign?
+          vpip_vec4_get_value(v, v.size(), שקר, vp);  // TODO sign?
       }
-      break;
+      اكسر;
 
-      case vpiRealVal:
+      حالة vpiRealVal:
       {
-          double d;
+          مزدوج d;
           aobj->get_word(index, d);
           vpip_real_get_value(d, vp);
       }
-      break;
+      اكسر;
 
-      case vpiStringVal:
+      حالة vpiStringVal:
       {
           string s;
           aobj->get_word(index, s);
           vpip_string_get_value(s, vp);
       }
-      break;
+      اكسر;
 
-      default:
+      افتراضي:
           fprintf(stderr, "vpi sorry: format is not implemented\n");
-          assert(false);
+          أكد(שקר);
       }
 }
 
-void __vpiDarrayVar::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int)
+فراغ __vpiDarrayVar::put_word_value(بنية __vpiArrayWord*word, p_vpi_value vp, صحيح)
 {
       unsigned index = word->get_index();
       vvp_darray*aobj = get_vvp_darray();
 
-      switch(vp->format) {
-      case vpiScalarVal:
-      case vpiIntVal:
-      case vpiVectorVal: {
+      بدل(vp->format) {
+      حالة vpiScalarVal:
+      حالة vpiIntVal:
+      حالة vpiVectorVal: {
 	    vvp_vector4_t vec = vec4_from_vpi_value(vp, get_word_size());
 	    aobj->set_word(index, vec);
       }
-      break;
+      اكسر;
 
-      case vpiRealVal:
+      حالة vpiRealVal:
         aobj->set_word(index, vp->value.real);
-        break;
+        اكسر;
 
-      case vpiStringVal:
+      حالة vpiStringVal:
         aobj->set_word(index, std::string(vp->value.str));
-        break;
+        اكسر;
 
-      default:
+      افتراضي:
           fprintf(stderr, "vpi sorry: format is not implemented");
-          assert(false);
+          أكد(שקר);
       }
 }
 
-vpiHandle __vpiDarrayVar::get_iter_index(struct __vpiArrayIterator*, int idx)
+vpiHandle __vpiDarrayVar::get_iter_index(بنية __vpiArrayIterator*, صحيح idx)
 {
-      if (vals_words == 0) make_vals_words();
+      אם (vals_words == 0) make_vals_words();
 
-      return &(vals_words[idx].as_word);
+      החזר &(vals_words[idx].as_word);
 }
 
-int __vpiDarrayVar::vpi_get(int code)
+صحيح __vpiDarrayVar::vpi_get(صحيح code)
 {
-      switch (code) {
-	  case vpiArrayType:
-	    return vpiDynamicArray;
-	  case vpiLeftRange:
-	    return 0;
-	  case vpiRightRange:
-	    return get_size() - 1;
-	  case vpiSize:
-            return get_size();
+      بدل (code) {
+	  حالة vpiArrayType:
+	    החזר vpiDynamicArray;
+	  حالة vpiLeftRange:
+	    החזר 0;
+	  حالة vpiRightRange:
+	    החזר get_size() - 1;
+	  حالة vpiSize:
+            החזר get_size();
 
-	  default:
+	  افتراضي:
 	    fprintf(stderr, "vpi sorry: property is not implemented");
-	    assert(false);
-	    return 0;
+	    أكد(שקר);
+	    החזר 0;
       }
 }
 
-char* __vpiDarrayVar::vpi_get_str(int code)
+حرف* __vpiDarrayVar::vpi_get_str(صحيح code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      אם (code == vpiFile) {  // Not implemented for now!
+            החזר simple_set_rbuf_str(file_names[0]);
       }
 
-      return generic_get_str(code, scope_, name_, NULL);
+      החזר generic_get_str(code, scope_, name_, عدم);
 }
 
-vpiHandle __vpiDarrayVar::vpi_handle(int code)
+vpiHandle __vpiDarrayVar::vpi_handle(صحيح code)
 {
-      switch (code) {
-          case vpiLeftRange:
-            return get_left_range();
+      بدل (code) {
+          حالة vpiLeftRange:
+            החזר get_left_range();
 
-          case vpiRightRange:
-            return get_right_range();
+          حالة vpiRightRange:
+            החזר get_right_range();
 
-          case vpiScope:
-            return scope_;
+          حالة vpiScope:
+            החזר scope_;
 
-          case vpiModule:
-            return vpip_module(scope_);
+          حالة vpiModule:
+            החזר vpip_module(scope_);
       }
 
-      return 0;
+      החזר 0;
 }
 
-vpiHandle __vpiDarrayVar::vpi_index(int index)
+vpiHandle __vpiDarrayVar::vpi_index(صحيح index)
 {
-      if (index >= (long) get_size())
-	    return 0;
-      if (index < 0)
-	    return 0;
+      אם (index >= (long) get_size())
+	    החזר 0;
+      אם (index < 0)
+	    החזר 0;
 
-      if (vals_words == 0)
+      אם (vals_words == 0)
 	    make_vals_words();
 
-      return &(vals_words[index].as_word);
+      החזר &(vals_words[index].as_word);
 }
 
-void __vpiDarrayVar::vpi_get_value(p_vpi_value val)
+فراغ __vpiDarrayVar::vpi_get_value(p_vpi_value val)
 {
       val->format = vpiSuppressVal;
 }
 
-vvp_darray*__vpiDarrayVar::get_vvp_darray() const
+vvp_darray*__vpiDarrayVar::get_vvp_darray() ثابت
 {
       vvp_fun_signal_object*fun = dynamic_cast<vvp_fun_signal_object*> (get_net()->fun);
-      assert(fun);
+      أكد(fun);
       vvp_object_t obj = fun->get_object();
 
-      return obj.peek<vvp_darray>();
+      החזר obj.peek<vvp_darray>();
 }
 
-vpiHandle vpip_make_darray_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_darray_var(ثابت حرف*name, vvp_net_t*net)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      const char*use_name = name ? vpip_name_string(name) : NULL;
+      ثابت حرف*use_name = name ? vpip_name_string(name) : عدم;
 
-      __vpiDarrayVar*obj = new __vpiDarrayVar(scope, use_name, net);
+      __vpiDarrayVar*obj = جديد __vpiDarrayVar(scope, use_name, net);
 
-      return obj;
+      החזר obj;
 }
 
-__vpiQueueVar::__vpiQueueVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
+__vpiQueueVar::__vpiQueueVar(__vpiScope*sc, ثابت حرف*na, vvp_net_t*ne)
 : __vpiDarrayVar(sc, na, ne)
 {
 }
 
-int __vpiQueueVar::vpi_get(int code)
+صحيح __vpiQueueVar::vpi_get(صحيح code)
 {
-      switch (code) {
-	  case vpiArrayType:
-	    return vpiQueueArray;
-	  default:
-	    return __vpiDarrayVar::vpi_get(code);
+      بدل (code) {
+	  حالة vpiArrayType:
+	    החזר vpiQueueArray;
+	  افتراضي:
+	    החזר __vpiDarrayVar::vpi_get(code);
       }
 }
 
-vpiHandle vpip_make_queue_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_queue_var(ثابت حرف*name, vvp_net_t*net)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      const char*use_name = name ? vpip_name_string(name) : NULL;
+      ثابت حرف*use_name = name ? vpip_name_string(name) : عدم;
 
-      __vpiQueueVar*obj = new __vpiQueueVar(scope, use_name, net);
+      __vpiQueueVar*obj = جديد __vpiQueueVar(scope, use_name, net);
 
-      return obj;
+      החזר obj;
 }
 
 __vpiPropQueueRef::__vpiPropQueueRef(__vpiScope*scope, unsigned pidx,
-				     bool is_queue)
+				     منطقي is_queue)
 : class_net_(0), prop_idx_(pidx), is_queue_(is_queue), scope_(scope)
 {
 }
 
-int __vpiPropQueueRef::get_type_code(void) const
-{ return vpiArrayVar; }
+صحيح __vpiPropQueueRef::get_type_code(فراغ) ثابت
+{ החזר vpiArrayVar; }
 
-static vvp_darray* get_live_darray_from_prop(vvp_net_t* class_net, unsigned pid)
+ساكن vvp_darray* get_live_darray_from_prop(vvp_net_t* class_net, unsigned pid)
 {
-      if (!class_net) return 0;
-      const vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(class_net->fun);
-      if (!fun) return 0;
+      אם (!class_net) החזר 0;
+      ثابت vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(class_net->fun);
+      אם (!fun) החזר 0;
       vvp_object_t obj = fun->get_object();
       vvp_cobject* cobj = obj.peek<vvp_cobject>();
-      if (!cobj) return 0;
+      אם (!cobj) החזר 0;
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      return qobj.peek<vvp_darray>();
+      החזר qobj.peek<vvp_darray>();
 }
 
-int __vpiPropQueueRef::vpi_get(int code)
+صحيح __vpiPropQueueRef::vpi_get(صحيح code)
 {
-      const vvp_darray* aobj = get_live_darray_from_prop(class_net_, prop_idx_);
-      switch (code) {
-	  case vpiArrayType:
-	    return is_queue_ ? vpiQueueArray : vpiDynamicArray;
-	  case vpiLeftRange:
-	    return 0;
-	  case vpiRightRange:
-	    return aobj ? (int) (aobj->get_size() - 1) : 0;
-	  case vpiSize:
-	    return aobj ? (int) aobj->get_size() : 0;
-	  default:
-	    return 0;
+      ثابت vvp_darray* aobj = get_live_darray_from_prop(class_net_, prop_idx_);
+      بدل (code) {
+	  حالة vpiArrayType:
+	    החזר is_queue_ ? vpiQueueArray : vpiDynamicArray;
+	  حالة vpiLeftRange:
+	    החזר 0;
+	  حالة vpiRightRange:
+	    החזר aobj ? (صحيح) (aobj->get_size() - 1) : 0;
+	  حالة vpiSize:
+	    החזר aobj ? (صحيح) aobj->get_size() : 0;
+	  افتراضي:
+	    החזר 0;
       }
 }
 
-char* __vpiPropQueueRef::vpi_get_str(int code)
+حرف* __vpiPropQueueRef::vpi_get_str(صحيح code)
 {
-      if (code == vpiFile) {
-	    return simple_set_rbuf_str(file_names[0]);
+      אם (code == vpiFile) {
+	    החזר simple_set_rbuf_str(file_names[0]);
       }
-      return generic_get_str(code, scope_, "prop_darray", NULL);
+      החזר generic_get_str(code, scope_, "prop_darray", عدم);
 }
 
-void __vpiPropQueueRef::vpi_get_value(p_vpi_value val)
+فراغ __vpiPropQueueRef::vpi_get_value(p_vpi_value val)
 {
       val->format = vpiSuppressVal;
 }
 
-vpiHandle vpip_make_prop_queue_ref(char* class_label, unsigned prop_idx,
+vpiHandle vpip_make_prop_queue_ref(حرف* class_label, unsigned prop_idx,
 				   unsigned is_queue_flag)
 {
-      __vpiPropQueueRef* obj = new __vpiPropQueueRef(vpip_peek_current_scope(),
+      __vpiPropQueueRef* obj = جديد __vpiPropQueueRef(vpip_peek_current_scope(),
 						     prop_idx,
 						     is_queue_flag != 0);
       functor_ref_lookup(&obj->class_net_, class_label);
-      return obj;
+      החזר obj;
 }
 
 vvp_darray* vpip_vpi_darray_from_handle(vpiHandle ref)
 {
-      if (!ref) return 0;
+      אם (!ref) החזר 0;
 
-      if (__vpiPropQueueRef* pr = dynamic_cast<__vpiPropQueueRef*>(ref)) {
-	    return get_live_darray_from_prop(pr->class_net_, pr->prop_idx_);
+      אם (__vpiPropQueueRef* pr = dynamic_cast<__vpiPropQueueRef*>(ref)) {
+	    החזר get_live_darray_from_prop(pr->class_net_, pr->prop_idx_);
       }
 
-      if (const __vpiDarrayVar* dv = dynamic_cast<__vpiDarrayVar*>(ref)) {
-	    const vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(dv->get_net()->fun);
-	    if (!fun) return 0;
+      אם (ثابت __vpiDarrayVar* dv = dynamic_cast<__vpiDarrayVar*>(ref)) {
+	    ثابت vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(dv->get_net()->fun);
+	    אם (!fun) החזר 0;
 	    vvp_object_t obj = fun->get_object();
-	    return obj.peek<vvp_darray>();
+	    החזר obj.peek<vvp_darray>();
       }
 
-      return 0;
+      החזר 0;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void array_delete(vpiHandle item)
+فراغ array_delete(vpiHandle item)
 {
-      if (__vpiPropQueueRef* pq = dynamic_cast<__vpiPropQueueRef*>(item)) {
+      אם (__vpiPropQueueRef* pq = dynamic_cast<__vpiPropQueueRef*>(item)) {
 	    delete pq;
-	    return;
+	    החזר;
       }
 
       __vpiDarrayVar*dobj = dynamic_cast<__vpiDarrayVar*>(item);
-      if (dobj) {
-	    if (dobj->vals_words) delete [] (dobj->vals_words-1);
+      אם (dobj) {
+	    אם (dobj->vals_words) delete [] (dobj->vals_words-1);
 	    delete dobj;
-	    return;
+	    החזר;
       }
 
       fprintf(stderr, "Need support for deleting array type: %d\n", item->vpi_get(vpiArrayType));
-      assert(0);
+      أكد(0);
 }
 #endif

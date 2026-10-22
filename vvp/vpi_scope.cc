@@ -31,122 +31,122 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+using نطاق std;
 
-static vector<vpiHandle> vpip_root_table;
+ساكن vector<vpiHandle> vpip_root_table;
 
-static vpiHandle make_subset_iterator_(int type_code, const vector<vpiHandle>&table);
+ساكن vpiHandle make_subset_iterator_(صحيح type_code, ثابت vector<vpiHandle>&table);
 
-vpiHandle vpip_make_root_iterator(int type_code)
+vpiHandle vpip_make_root_iterator(صحيح type_code)
 {
-      return make_subset_iterator_(type_code, vpip_root_table);
+      החזר make_subset_iterator_(type_code, vpip_root_table);
 }
 
-void vpip_make_root_iterator(__vpiHandle**&table, unsigned&ntable)
+فراغ vpip_make_root_iterator(__vpiHandle**&table, unsigned&ntable)
 {
       table = &vpip_root_table[0];
       ntable = vpip_root_table.size();
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void port_delete(__vpiHandle*handle);
-void port_bit_delete(__vpiHandle*handle);
+فراغ port_delete(__vpiHandle*handle);
+فراغ port_bit_delete(__vpiHandle*handle);
 
 /* Class definitions need to be cleaned up at the end. */
-static class_type **class_list = 0;
-static unsigned class_list_count = 0;
+ساكن class_type **class_list = 0;
+ساكن unsigned class_list_count = 0;
 
-static void delete_sub_scopes(__vpiScope *scope)
+ساكن فراغ delete_sub_scopes(__vpiScope *scope)
 {
-      for (unsigned idx = 0; idx < scope->intern.size(); idx += 1) {
+      עבור (unsigned idx = 0; idx < scope->intern.size(); idx += 1) {
 	    vpiHandle item = (scope->intern)[idx];
 	    __vpiScope*lscope = static_cast<__vpiScope*>(item);
-	    switch(item->get_type_code()) {
-		case vpiFunction:
-		case vpiTask:
+	    بدل(item->get_type_code()) {
+		حالة vpiFunction:
+		حالة vpiTask:
 		  contexts_delete(lscope);
 		  // fallthrough
-		case vpiModule:
-		case vpiGenScope:
-		case vpiNamedBegin:
-		case vpiNamedFork:
-		case vpiClassTypespec:
+		حالة vpiModule:
+		حالة vpiGenScope:
+		حالة vpiNamedBegin:
+		حالة vpiNamedFork:
+		حالة vpiClassTypespec:
 		  delete_sub_scopes(lscope);
 		  vthreads_delete(lscope);
 		  delete item;
-		  break;
-		case vpiMemory:
-		case vpiNetArray:
+		  اكسر;
+		حالة vpiMemory:
+		حالة vpiNetArray:
 		  memory_delete(item);
-		  break;
-		case vpiModPath:
+		  اكسر;
+		حالة vpiModPath:
 		    /* The destination ModPath is cleaned up later. */
 		  delete item;
-		  break;
-		case vpiInterModPath:
+		  اكسر;
+		حالة vpiInterModPath:
 		  delete item;
-		  break;
-		case vpiNamedEvent:
+		  اكسر;
+		حالة vpiNamedEvent:
 		  named_event_delete(item);
-		  break;
-		case vpiNet:
-		case vpiReg:
-		case vpiIntegerVar:
-		case vpiLongIntVar:
-		case vpiShortIntVar:
-		case vpiIntVar:
-		case vpiByteVar:
-		case vpiBitVar:
+		  اكسر;
+		حالة vpiNet:
+		حالة vpiReg:
+		حالة vpiIntegerVar:
+		حالة vpiLongIntVar:
+		حالة vpiShortIntVar:
+		حالة vpiIntVar:
+		حالة vpiByteVar:
+		حالة vpiBitVar:
 		  signal_delete(item);
-		  break;
-		case vpiParameter:
+		  اكسر;
+		حالة vpiParameter:
 		  parameter_delete(item);
-		  break;
-		case vpiRealVar:
+		  اكسر;
+		حالة vpiRealVar:
 		  real_delete(item);
-		  break;
-		case vpiEnumTypespec:
+		  اكسر;
+		حالة vpiEnumTypespec:
 		  enum_delete(item);
-		  break;
-		case vpiPort:
+		  اكسر;
+		حالة vpiPort:
 		  port_delete(item);
-		  break;
-		case vpiPortBit:
+		  اكسر;
+		حالة vpiPortBit:
 		  port_bit_delete(item);
-		  break;
-		case vpiStringVar:
+		  اكسر;
+		حالة vpiStringVar:
 		  string_delete(item);
-		  break;
-		case vpiClassVar:
+		  اكسر;
+		حالة vpiClassVar:
 		  class_delete(item);
-		  break;
-		case vpiArrayVar:
+		  اكسر;
+		حالة vpiArrayVar:
 		  array_delete(item);
-		  break;
-		default:
+		  اكسر;
+		افتراضي:
 		  fprintf(stderr, "Need support for type: %d\n",
 		          item->get_type_code());
-		  assert(0);
-		  break;
+		  أكد(0);
+		  اكسر;
 	    }
       }
       scope->intern.clear();
 
 	/* Save any class definitions to clean up later. */
       map<std::string, class_type*>::iterator citer;
-      for (citer = scope->classes.begin();
+      עבור (citer = scope->classes.begin();
            citer != scope->classes.end(); ++ citer ) {
 	    class_list_count += 1;
 	    class_list = static_cast<class_type **>
 	                 (realloc(class_list,
-	                  class_list_count*sizeof(class_type **)));
+	                  class_list_count*حجم(class_type **)));
 	    class_list[class_list_count-1] = citer->second;
       }
 }
 
-void root_table_delete(void)
+فراغ root_table_delete(فراغ)
 {
-      for (unsigned idx = 0; idx < vpip_root_table.size(); idx += 1) {
+      עבור (unsigned idx = 0; idx < vpip_root_table.size(); idx += 1) {
 	    __vpiScope *scope = static_cast<__vpiScope *>
 	          (vpip_root_table[idx]);
 	    vthreads_delete(scope);
@@ -156,138 +156,138 @@ void root_table_delete(void)
       vpip_root_table.clear();
 
 	/* Clean up all the class definitions. */
-      for (unsigned idx = 0; idx < class_list_count; idx += 1) {
+      עבור (unsigned idx = 0; idx < class_list_count; idx += 1) {
             class_def_delete(class_list[idx]);
       }
-      free(class_list);
+      حرر(class_list);
       class_list = 0;
       class_list_count = 0;
 }
 #endif
 
-static void construct_scope_fullname(__vpiScope*ref, char*buf)
+ساكن فراغ construct_scope_fullname(__vpiScope*ref, حرف*buf)
 {
-      if (ref->scope) {
+      אם (ref->scope) {
 	    construct_scope_fullname(ref->scope, buf);
 	      // Add a "." separator, unless this is for a package
-	    if (ref->scope->get_type_code() != vpiPackage) {
+	    אם (ref->scope->get_type_code() != vpiPackage) {
 		  strcat(buf, ".");
 	    }
       }
 
       strcat(buf, ref->scope_name());
 	// For a package, add a "::" to the end
-      if (ref->get_type_code() == vpiPackage) strcat(buf, "::");
+      אם (ref->get_type_code() == vpiPackage) strcat(buf, "::");
 }
 
-static const char* scope_get_type(int code)
+ساكن ثابت حرف* scope_get_type(صحيح code)
 {
-      switch (code) {
-          case vpiModule:
-            return "vpiModule";
-          case vpiGenScope:
-            return "vpiGenScope";
-          case vpiFunction:
-            return "vpiFunction";
-          case vpiTask:
-            return "vpiTask";
-          case vpiNamedBegin:
-            return "vpiNamedBegin";
-          case vpiNamedFork:
-            return "vpiNamedFork";
-          default:
+      بدل (code) {
+          حالة vpiModule:
+            החזר "vpiModule";
+          حالة vpiGenScope:
+            החזר "vpiGenScope";
+          حالة vpiFunction:
+            החזר "vpiFunction";
+          حالة vpiTask:
+            החזר "vpiTask";
+          حالة vpiNamedBegin:
+            החזר "vpiNamedBegin";
+          حالة vpiNamedFork:
+            החזר "vpiNamedFork";
+          افتراضي:
             fprintf(stderr, "VPI error: invalid scope type code %d.\n", code);
-            return NULL;
+            החזר عدم;
       }
 }
 
-static char* scope_get_str(int code, vpiHandle obj)
+ساكن حرف* scope_get_str(صحيح code, vpiHandle obj)
 {
       __vpiScope*ref = dynamic_cast<__vpiScope*>(obj);
-      assert(ref);
+      أكد(ref);
 
-      char buf[4096];  // XXX is a fixed buffer size really reliable?
-      const char *p=0;
-      switch (code) {
-	  case vpiDefFile:
+      حرف buf[4096];  // XXX is a fixed buffer size really reliable?
+      ثابت حرف *p=0;
+      بدل (code) {
+	  حالة vpiDefFile:
 	    p = file_names[ref->def_file_idx];
-	    break;
+	    اكسر;
 
-	  case vpiFile:
+	  حالة vpiFile:
 	    p = file_names[ref->file_idx];
-	    break;
+	    اكسر;
 
-	  case vpiFullName:
+	  حالة vpiFullName:
 	    buf[0] = 0;
 	    construct_scope_fullname(ref, buf);
 	    p = buf;
-	    break;
+	    اكسر;
 
-	  case vpiName:
+	  حالة vpiName:
 	    p = ref->scope_name();
-	    break;
+	    اكسر;
 
-	  case vpiDefName:
+	  حالة vpiDefName:
 	    p = ref->scope_def_name();
-	    break;
+	    اكسر;
 
-	  case vpiType:
+	  حالة vpiType:
 	    p = scope_get_type(code);
-	    break;
+	    اكسر;
 
-	  default:
+	  افتراضي:
 	    fprintf(stderr, "VPI error: invalid scope string code %d.\n", code);
-	    return NULL;
+	    החזר عدم;
       }
-      return simple_set_rbuf_str(p);
+      החזר simple_set_rbuf_str(p);
 }
 
-static vpiHandle scope_get_handle(int code, vpiHandle obj)
+ساكن vpiHandle scope_get_handle(صحيح code, vpiHandle obj)
 {
       __vpiScope*rfp = dynamic_cast<__vpiScope*>(obj);
-      assert(rfp);
+      أكد(rfp);
 
-      switch (code) {
+      بدل (code) {
 
-	  case vpiScope:
-	    return rfp->scope;
+	  حالة vpiScope:
+	    החזר rfp->scope;
 
-	  case vpiModule:
-	    return rfp->scope;
+	  حالة vpiModule:
+	    החזר rfp->scope;
       }
 
-      return 0;
+      החזר 0;
 }
 
 /* compares vpiType's considering object classes */
-static int compare_types(int code, int type)
+ساكن صحيح compare_types(صحيح code, صحيح type)
 {
 	/* NOTE: The Verilog VPI does not for any object support
 	   vpiScope as an iterator parameter, so it is used here as a
 	   means to scan everything in the *current* scope. */
-      if (code == vpiScope)
-	    return 1;
+      אם (code == vpiScope)
+	    החזר 1;
 
-      if (code == type)
-	    return 1;
+      אם (code == type)
+	    החזר 1;
 
-      if ( code == vpiInternalScope &&
+      אם ( code == vpiInternalScope &&
 	     (type == vpiModule ||
 	     type == vpiGenScope ||
 	     type == vpiFunction ||
 	     type == vpiTask ||
 	     type == vpiNamedBegin ||
 	     type == vpiNamedFork) )
-	    return 1;
+	    החזר 1;
 
-      if ( code == vpiInstance &&
+      אם ( code == vpiInstance &&
 	    (type == vpiModule ||
 	     type == vpiProgram ||
 	     type == vpiInterface ||
 	     type == vpiPackage) )
-	    return 1;
+	    החזר 1;
 
-      if ( code == vpiVariables &&
+      אם ( code == vpiVariables &&
 	     (type == vpiIntegerVar  ||
 	      type == vpiBitVar      ||
 	      type == vpiByteVar     ||
@@ -296,31 +296,31 @@ static int compare_types(int code, int type)
 	      type == vpiLongIntVar  ||
 	      type == vpiTimeVar     ||
 	      type == vpiRealVar))
-	    return 1;
+	    החזר 1;
 
-      return 0;
+      החזר 0;
 }
 
-static vpiHandle make_subset_iterator_(int type_code, const vector<vpiHandle>&table)
+ساكن vpiHandle make_subset_iterator_(صحيح type_code, ثابت vector<vpiHandle>&table)
 {
       unsigned mcnt = 0, ncnt = 0;
       vpiHandle*args;
 
-      for (unsigned idx = 0; idx < table.size(); idx += 1)
-	    if (compare_types(type_code, table[idx]->get_type_code()))
+      עבור (unsigned idx = 0; idx < table.size(); idx += 1)
+	    אם (compare_types(type_code, table[idx]->get_type_code()))
 		  mcnt += 1;
 
-      if (mcnt == 0)
-	    return 0;
+      אם (mcnt == 0)
+	    החזר 0;
 
-      args = static_cast<vpiHandle*>(calloc(mcnt, sizeof(vpiHandle)));
-      for (unsigned idx = 0; idx < table.size(); idx += 1)
-	    if (compare_types(type_code, table[idx]->get_type_code()))
+      args = static_cast<vpiHandle*>(calloc(mcnt, حجم(vpiHandle)));
+      עבור (unsigned idx = 0; idx < table.size(); idx += 1)
+	    אם (compare_types(type_code, table[idx]->get_type_code()))
 		  args[ncnt++] = table[idx];
 
-      assert(ncnt == mcnt);
+      أكد(ncnt == mcnt);
 
-      return vpip_make_iterator(mcnt, args, true);
+      החזר vpip_make_iterator(mcnt, args, אמת);
 }
 
 /*
@@ -329,122 +329,122 @@ static vpiHandle make_subset_iterator_(int type_code, const vector<vpiHandle>&ta
  * things that are contained in the scope object, by generating an
  * iterator for the requested set of items.
  */
-static vpiHandle module_iter(int code, vpiHandle obj)
+ساكن vpiHandle module_iter(صحيح code, vpiHandle obj)
 {
       __vpiScope*ref = dynamic_cast<__vpiScope*>(obj);
-      assert(ref);
+      أكد(ref);
 
-      return make_subset_iterator_(code, ref->intern);
+      החזר make_subset_iterator_(code, ref->intern);
 }
 
 
-__vpiScope::__vpiScope(const char*nam, const char*tnam, bool auto_flag)
+__vpiScope::__vpiScope(ثابت حرف*nam, ثابت حرف*tnam, منطقي auto_flag)
 : is_automatic_(auto_flag)
 {
       name_ = vpip_name_string(nam);
       tname_ = vpip_name_string(tnam? tnam : "");
 }
 
-int __vpiScope::vpi_get(int code)
+صحيح __vpiScope::vpi_get(صحيح code)
 {
-      switch (code) {
-	  case vpiCellInstance:
-	    return is_cell? 1 : 0;
+      بدل (code) {
+	  حالة vpiCellInstance:
+	    החזר is_cell? 1 : 0;
 
-	  case vpiDefLineNo:
-	    return def_lineno;
+	  حالة vpiDefLineNo:
+	    החזר def_lineno;
 
-	  case vpiLineNo:
-	    return lineno;
+	  حالة vpiLineNo:
+	    החזר lineno;
 
-	  case vpiTimeUnit:
-	    return time_units;
+	  حالة vpiTimeUnit:
+	    החזר time_units;
 
-	  case vpiTimePrecision:
-	    return time_precision;
+	  حالة vpiTimePrecision:
+	    החזר time_precision;
 
-	  case vpiTopModule:
-	    return 0x0 == scope;
+	  حالة vpiTopModule:
+	    החזר 0x0 == scope;
 
-          case vpiAutomatic:
-	    return is_automatic_? 1 : 0;
+          حالة vpiAutomatic:
+	    החזר is_automatic_? 1 : 0;
       }
 
-      return vpiUndefined;
+      החזר vpiUndefined;
 }
 
 
-char*__vpiScope::vpi_get_str(int code)
-{ return scope_get_str(code, this); }
+حرف*__vpiScope::vpi_get_str(صحيح code)
+{ החזר scope_get_str(code, هذا); }
 
-vpiHandle __vpiScope::vpi_handle(int code)
-{ return scope_get_handle(code, this); }
+vpiHandle __vpiScope::vpi_handle(صحيح code)
+{ החזר scope_get_handle(code, هذا); }
 
-vpiHandle __vpiScope::vpi_iterate(int code)
-{ return module_iter(code, this); }
+vpiHandle __vpiScope::vpi_iterate(صحيح code)
+{ החזר module_iter(code, هذا); }
 
 
-class vpiScopeModule  : public __vpiScope {
-    public:
-      inline vpiScopeModule(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,false) { }
-      int get_type_code(void) const override { return vpiModule; }
+מחלקה vpiScopeModule  : عام __vpiScope {
+    عام:
+      مضمن vpiScopeModule(ثابت حرف*nam, ثابت حرف*tnam)
+      : __vpiScope(nam,tnam,שקר) { }
+      صحيح get_type_code(فراغ) ثابت override { החזר vpiModule; }
 };
 
-struct vpiScopePackage  : public __vpiScope {
-      inline vpiScopePackage(const char*nam, const char*tnam)
+بنية vpiScopePackage  : عام __vpiScope {
+      مضمن vpiScopePackage(ثابت حرف*nam, ثابت حرف*tnam)
       : __vpiScope(nam,tnam) { }
-      int get_type_code(void) const override { return vpiPackage; }
+      صحيح get_type_code(فراغ) ثابت override { החזר vpiPackage; }
 };
 
-struct vpiScopeTask  : public __vpiScope {
-      inline vpiScopeTask(const char*nam, const char*tnam)
+بنية vpiScopeTask  : عام __vpiScope {
+      مضمن vpiScopeTask(ثابت حرف*nam, ثابت حرف*tnam)
       : __vpiScope(nam,tnam) { }
-      int get_type_code(void) const override { return vpiTask; }
+      صحيح get_type_code(فراغ) ثابت override { החזר vpiTask; }
 };
 
-struct vpiScopeTaskAuto  : public __vpiScope {
-      inline vpiScopeTaskAuto(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,true) {  }
-      int get_type_code(void) const override { return vpiTask; }
+بنية vpiScopeTaskAuto  : عام __vpiScope {
+      مضمن vpiScopeTaskAuto(ثابت حرف*nam, ثابت حرف*tnam)
+      : __vpiScope(nam,tnam,אמת) {  }
+      صحيح get_type_code(فراغ) ثابت override { החזר vpiTask; }
 };
 
-struct vpiScopeBegin  : public __vpiScope {
-      inline vpiScopeBegin(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,false) { }
-      int get_type_code(void) const override { return vpiNamedBegin; }
+بنية vpiScopeBegin  : عام __vpiScope {
+      مضمن vpiScopeBegin(ثابت حرف*nam, ثابت حرف*tnam)
+      : __vpiScope(nam,tnam,שקר) { }
+      صحيح get_type_code(فراغ) ثابت override { החזר vpiNamedBegin; }
 };
 
-class vpiScopeBeginAuto  : public __vpiScope {
-    public:
-      inline vpiScopeBeginAuto(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,true) {  }
-      int get_type_code(void) const override { return vpiNamedBegin; }
+מחלקה vpiScopeBeginAuto  : عام __vpiScope {
+    عام:
+      مضمن vpiScopeBeginAuto(ثابت حرف*nam, ثابت حرف*tnam)
+      : __vpiScope(nam,tnam,אמת) {  }
+      صحيح get_type_code(فراغ) ثابت override { החזר vpiNamedBegin; }
 };
 
-struct vpiScopeGenerate  : public __vpiScope {
-      inline vpiScopeGenerate(const char*nam, const char*tnam)
+بنية vpiScopeGenerate  : عام __vpiScope {
+      مضمن vpiScopeGenerate(ثابت حرف*nam, ثابت حرف*tnam)
       : __vpiScope(nam,tnam) { }
-      int get_type_code(void) const override { return vpiGenScope; }
+      صحيح get_type_code(فراغ) ثابت override { החזר vpiGenScope; }
 };
 
-struct vpiScopeFork  : public __vpiScope {
-      inline vpiScopeFork(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,false) { }
-      int get_type_code(void) const override { return vpiNamedFork; }
+بنية vpiScopeFork  : عام __vpiScope {
+      مضمن vpiScopeFork(ثابت حرف*nam, ثابت حرف*tnam)
+      : __vpiScope(nam,tnam,שקר) { }
+      صحيح get_type_code(فراغ) ثابت override { החזר vpiNamedFork; }
 };
 
-class vpiScopeForkAuto  : public __vpiScope {
-    public:
-      inline vpiScopeForkAuto(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,true) {  }
-      int get_type_code(void) const override { return vpiNamedFork; }
+מחלקה vpiScopeForkAuto  : عام __vpiScope {
+    عام:
+      مضمن vpiScopeForkAuto(ثابت حرف*nam, ثابت حرف*tnam)
+      : __vpiScope(nam,tnam,אמת) {  }
+      صحيح get_type_code(فراغ) ثابت override { החזר vpiNamedFork; }
 };
 
-struct vpiScopeClass  : public __vpiScope {
-      inline vpiScopeClass(const char*nam, const char*tnam)
+بنية vpiScopeClass  : عام __vpiScope {
+      مضمن vpiScopeClass(ثابت حرف*nam, ثابت حرف*tnam)
       : __vpiScope(nam,tnam) { }
-      int get_type_code(void) const override { return vpiClassTypespec; }
+      صحيح get_type_code(فراغ) ثابت override { החזר vpiClassTypespec; }
 };
 
 /*
@@ -452,11 +452,11 @@ struct vpiScopeClass  : public __vpiScope {
  * compiled, items that have scope are placed in the current
  * scope. The ".scope" directives select the scope that is current.
  */
-static __vpiScope*current_scope = 0;
+ساكن __vpiScope*current_scope = 0;
 
-void vpip_attach_to_scope(__vpiScope*scope, vpiHandle obj)
+فراغ vpip_attach_to_scope(__vpiScope*scope, vpiHandle obj)
 {
-      assert(scope);
+      أكد(scope);
       scope->intern.push_back(obj);
 }
 
@@ -466,88 +466,88 @@ void vpip_attach_to_scope(__vpiScope*scope, vpiHandle obj)
  * and within the addressed parent. The label is used as a key in the
  * symbol table and the name is used to construct the actual object.
  */
-void
-compile_scope_decl(char*label, char*type, char*name, char*tname,
-                   char*parent, long file_idx, long lineno,
+فراغ
+compile_scope_decl(حرف*label, حرف*type, حرف*name, حرف*tname,
+                   حرف*parent, long file_idx, long lineno,
                    long def_file_idx, long def_lineno, long is_cell)
 {
       count_vpi_scopes += 1;
-      char vec_type;
-      char sign_flag;
+      حرف vec_type;
+      حرف sign_flag;
       unsigned wid;
 
       __vpiScope*scope;
-      if (strcmp(type,"module") == 0) {
-	    scope = new vpiScopeModule(name, tname);
-      } else if ( sscanf(type, "function.vec%c.%c%u", &vec_type, &sign_flag, &wid) == 3 ) {
-	    int type_code;
-	    if (sign_flag=='s') {
+      אם (strcmp(type,"module") == 0) {
+	    scope = جديد vpiScopeModule(name, tname);
+      } אחרת אם ( sscanf(type, "function.vec%c.%c%u", &vec_type, &sign_flag, &wid) == 3 ) {
+	    صحيح type_code;
+	    אם (sign_flag=='s') {
 		  type_code = vpiSizedSignedFunc;
-	    } else if (sign_flag=='u') {
+	    } אחרת אם (sign_flag=='u') {
 		  type_code = vpiSizedFunc;
-	    } else if (sign_flag=='i') {
+	    } אחרת אם (sign_flag=='i') {
 		  type_code = vpiIntFunc;
-	    } else {
-		  assert(0);
+	    } אחרת {
+		  أكد(0);
 		  type_code = vpiSizedFunc;
 	    }
 	    vvp_bit4_t init_val = vec_type == '4' ? BIT4_X : BIT4_0;
-	    scope = new vpiScopeFunction(name, tname, false, type_code, wid, init_val);
+	    scope = جديد vpiScopeFunction(name, tname, שקר, type_code, wid, init_val);
 
-      } else if ( sscanf(type, "autofunction.vec%c.%c%u", &vec_type, &sign_flag, &wid) == 3 ) {
-	    int type_code;
-	    switch (sign_flag) {
-		case 's':
+      } אחרת אם ( sscanf(type, "autofunction.vec%c.%c%u", &vec_type, &sign_flag, &wid) == 3 ) {
+	    صحيح type_code;
+	    بدل (sign_flag) {
+		حالة 's':
 		  type_code = vpiSizedSignedFunc;
-		  break;
-		case 'u':
+		  اكسر;
+		حالة 'u':
 		  type_code = vpiSizedFunc;
-		  break;
-		default:
-		  assert(0);
+		  اكسر;
+		افتراضي:
+		  أكد(0);
 		  type_code = vpiSizedFunc;
-		  break;
+		  اكسر;
 	    }
 	    vvp_bit4_t init_val = vec_type == '4' ? BIT4_X : BIT4_0;
-	    scope = new vpiScopeFunction(name, tname, true, type_code, wid, init_val);
+	    scope = جديد vpiScopeFunction(name, tname, אמת, type_code, wid, init_val);
 
-      } else if (strcmp(type,"function.obj") == 0) {
-	    scope = new vpiScopeFunction(name, tname, false, vpiSizedFunc, 0, BIT4_0);
-      } else if (strcmp(type,"autofunction.obj") == 0) {
-	    scope = new vpiScopeFunction(name, tname, true, vpiSizedFunc, 0, BIT4_0);
-      } else if (strcmp(type,"function.real") == 0) {
-	    scope = new vpiScopeFunction(name, tname, false, vpiRealFunc, 0, BIT4_0);
-      } else if (strcmp(type,"autofunction.real") == 0) {
-	    scope = new vpiScopeFunction(name, tname, true, vpiRealFunc, 0, BIT4_0);
-      } else if (strcmp(type,"function.str") == 0) {
-	    scope = new vpiScopeFunction(name, tname, false, vpiOtherFunc, 0, BIT4_0);
-      } else if (strcmp(type,"autofunction.str") == 0) {
-	    scope = new vpiScopeFunction(name, tname, true, vpiOtherFunc, 0, BIT4_0);
-      } else if (strcmp(type,"function.void") == 0) {
-	    scope = new vpiScopeFunction(name, tname, false, vpiOtherFunc, 0, BIT4_0);
-      } else if (strcmp(type,"autofunction.void") == 0) {
-	    scope = new vpiScopeFunction(name, tname, true, vpiOtherFunc, 0, BIT4_0);
-      } else if (strcmp(type,"task") == 0) {
-	    scope = new vpiScopeTask(name, tname);
-      } else if (strcmp(type,"autotask") == 0) {
-	    scope = new vpiScopeTaskAuto(name, tname);
-      } else if (strcmp(type,"fork") == 0) {
-	    scope = new vpiScopeFork(name, tname);
-      } else if (strcmp(type,"autofork") == 0) {
-	    scope = new vpiScopeForkAuto(name, tname);
-      } else if (strcmp(type,"begin") == 0) {
-	    scope = new vpiScopeBegin(name, tname);
-      } else if (strcmp(type,"autobegin") == 0) {
-	    scope = new vpiScopeBeginAuto(name, tname);
-      } else if (strcmp(type,"generate") == 0) {
-	    scope = new vpiScopeGenerate(name, tname);
-      } else if (strcmp(type,"package") == 0) {
-	    scope = new vpiScopePackage(name, tname);
-      } else if (strcmp(type,"class") == 0) {
-	    scope = new vpiScopeClass(name, tname);
-      } else {
-	    scope = new vpiScopeModule(name, tname);
-	    assert(0);
+      } אחרת אם (strcmp(type,"function.obj") == 0) {
+	    scope = جديد vpiScopeFunction(name, tname, שקר, vpiSizedFunc, 0, BIT4_0);
+      } אחרת אם (strcmp(type,"autofunction.obj") == 0) {
+	    scope = جديد vpiScopeFunction(name, tname, אמת, vpiSizedFunc, 0, BIT4_0);
+      } אחרת אם (strcmp(type,"function.real") == 0) {
+	    scope = جديد vpiScopeFunction(name, tname, שקר, vpiRealFunc, 0, BIT4_0);
+      } אחרת אם (strcmp(type,"autofunction.real") == 0) {
+	    scope = جديد vpiScopeFunction(name, tname, אמת, vpiRealFunc, 0, BIT4_0);
+      } אחרת אם (strcmp(type,"function.str") == 0) {
+	    scope = جديد vpiScopeFunction(name, tname, שקר, vpiOtherFunc, 0, BIT4_0);
+      } אחרת אם (strcmp(type,"autofunction.str") == 0) {
+	    scope = جديد vpiScopeFunction(name, tname, אמת, vpiOtherFunc, 0, BIT4_0);
+      } אחרת אם (strcmp(type,"function.void") == 0) {
+	    scope = جديد vpiScopeFunction(name, tname, שקר, vpiOtherFunc, 0, BIT4_0);
+      } אחרת אם (strcmp(type,"autofunction.void") == 0) {
+	    scope = جديد vpiScopeFunction(name, tname, אמת, vpiOtherFunc, 0, BIT4_0);
+      } אחרת אם (strcmp(type,"task") == 0) {
+	    scope = جديد vpiScopeTask(name, tname);
+      } אחרת אם (strcmp(type,"autotask") == 0) {
+	    scope = جديد vpiScopeTaskAuto(name, tname);
+      } אחרת אם (strcmp(type,"fork") == 0) {
+	    scope = جديد vpiScopeFork(name, tname);
+      } אחרת אם (strcmp(type,"autofork") == 0) {
+	    scope = جديد vpiScopeForkAuto(name, tname);
+      } אחרת אם (strcmp(type,"begin") == 0) {
+	    scope = جديد vpiScopeBegin(name, tname);
+      } אחרת אם (strcmp(type,"autobegin") == 0) {
+	    scope = جديد vpiScopeBeginAuto(name, tname);
+      } אחרת אם (strcmp(type,"generate") == 0) {
+	    scope = جديد vpiScopeGenerate(name, tname);
+      } אחרת אם (strcmp(type,"package") == 0) {
+	    scope = جديد vpiScopePackage(name, tname);
+      } אחרת אם (strcmp(type,"class") == 0) {
+	    scope = جديد vpiScopeClass(name, tname);
+      } אחרת {
+	    scope = جديد vpiScopeModule(name, tname);
+	    أكد(0);
       }
 
       scope->file_idx = (unsigned) file_idx;
@@ -559,22 +559,22 @@ compile_scope_decl(char*label, char*type, char*name, char*tname,
       scope->live_contexts = 0;
       scope->free_contexts = 0;
 
-      if (is_cell) scope->is_cell = true;
-      else scope->is_cell = false;
+      אם (is_cell) scope->is_cell = אמת;
+      אחרת scope->is_cell = שקר;
 
       current_scope = scope;
 
       compile_vpi_symbol(label, scope);
 
-      free(label);
-      free(type);
+      حرر(label);
+      حرر(type);
       delete[] name;
       delete[] tname;
 
-      if (parent) {
-	    static vpiHandle obj;
+      אם (parent) {
+	    ساكن vpiHandle obj;
 	    compile_vpi_lookup(&obj, parent);
-	    assert(obj);
+	    أكد(obj);
 	    __vpiScope*sp = dynamic_cast<__vpiScope*>(obj);
 	    vpip_attach_to_scope(sp, scope);
 	    scope->scope = dynamic_cast<__vpiScope*>(obj);
@@ -583,7 +583,7 @@ compile_scope_decl(char*label, char*type, char*name, char*tname,
 	    scope->time_units = sp->time_units;
 	    scope->time_precision = sp->time_precision;
 
-      } else {
+      } אחרת {
 	    scope->scope = 0x0;
 
 	    vpip_root_table.push_back(scope);
@@ -595,86 +595,86 @@ compile_scope_decl(char*label, char*type, char*name, char*tname,
       }
 }
 
-void compile_scope_recall(char*symbol)
+فراغ compile_scope_recall(حرف*symbol)
 {
 	/* A __vpiScope starts with a __vpiHandle structure so this is
 	   a safe cast. We need the (void*) to avoid a dereferenced
 	   type punned pointer warning from some gcc compilers. */
-      compile_vpi_lookup((vpiHandle*)(void*)&current_scope, symbol);
-      assert(current_scope);
+      compile_vpi_lookup((vpiHandle*)(فراغ*)&current_scope, symbol);
+      أكد(current_scope);
 }
 
 /*
  * This function handles the ".timescale" directive in the vvp
  * source. It sets in the current scope the specified units value.
  */
-void compile_timescale(long units, long precision)
+فراغ compile_timescale(long units, long precision)
 {
-      assert(current_scope);
+      أكد(current_scope);
       current_scope->time_units = units;
       current_scope->time_precision = precision;
 }
 
-__vpiScope* vpip_peek_current_scope(void)
+__vpiScope* vpip_peek_current_scope(فراغ)
 {
-      return current_scope;
+      החזר current_scope;
 }
 
-void vpip_attach_to_current_scope(vpiHandle obj)
+فراغ vpip_attach_to_current_scope(vpiHandle obj)
 {
       vpip_attach_to_scope(current_scope, obj);
 }
 
-__vpiScope* vpip_peek_context_scope(void)
+__vpiScope* vpip_peek_context_scope(فراغ)
 {
       __vpiScope*scope = current_scope;
 
         /* A context is allocated for each automatic task or function.
            Storage for nested scopes (named blocks) is allocated in
            the parent context. */
-      while (scope->scope && scope->scope->is_automatic())
+      כלעוד (scope->scope && scope->scope->is_automatic())
             scope = scope->scope;
 
-      return scope;
+      החזר scope;
 }
 
 unsigned vpip_add_item_to_context(automatic_hooks_s*item,
                                   __vpiScope*scope)
 {
-      assert(scope);
-      assert(scope->is_automatic());
+      أكد(scope);
+      أكد(scope->is_automatic());
 
       unsigned idx = scope->nitem++;
 
-      if (scope->item == 0)
+      אם (scope->item == 0)
 	    scope->item = static_cast<automatic_hooks_s**>
-	                  (malloc(sizeof(automatic_hooks_s*)));
-      else
+	                  (malloc(حجم(automatic_hooks_s*)));
+      אחרת
 	    scope->item = static_cast<automatic_hooks_s**>
 	                  (realloc(scope->item,
-	                   sizeof(automatic_hooks_s*)*scope->nitem));
+	                   حجم(automatic_hooks_s*)*scope->nitem));
 
       scope->item[idx] = item;
 
         /* Offset the context index by 2 to leave space for the list links. */
-      return 2 + idx;
+      החזר 2 + idx;
 }
 
 
 vpiPortInfo::vpiPortInfo( __vpiScope *parent,
               unsigned index,
-              int vpi_direction,
+              صحيح vpi_direction,
               unsigned width,
-              const char *name,
-              char* buffer) :
+              ثابت حرف *name,
+              حرف* buffer) :
       parent_(parent),
       index_(index),
       direction_(vpi_direction),
       width_(width),
       name_(name)
 {
-      if (buffer != nullptr) functor_ref_lookup(&ref_, buffer);
-      else ref_ = nullptr;
+      אם (buffer != nullptr) functor_ref_lookup(&ref_, buffer);
+      אחרת ref_ = nullptr;
 }
 
 vpiPortInfo::~vpiPortInfo()
@@ -683,80 +683,80 @@ vpiPortInfo::~vpiPortInfo()
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void port_delete(__vpiHandle *handle)
+فراغ port_delete(__vpiHandle *handle)
 {
       delete dynamic_cast<vpiPortInfo *>(handle);
 }
 #endif
 
-int vpiPortInfo::vpi_get(int code)
+صحيح vpiPortInfo::vpi_get(صحيح code)
 {
-      switch( code ) {
+      بدل( code ) {
 
-        case vpiDirection :
-          return direction_;
-        case vpiPortIndex :
-          return index_;
-        case vpiSize :
-          return width_;
-        default :
-          return vpiUndefined;
+        حالة vpiDirection :
+          החזר direction_;
+        حالة vpiPortIndex :
+          החזר index_;
+        حالة vpiSize :
+          החזר width_;
+        افتراضي :
+          החזר vpiUndefined;
       }
 
 }
 
 
-char *vpiPortInfo::vpi_get_str(int code)
+حرف *vpiPortInfo::vpi_get_str(صحيح code)
 {
-      switch( code ) {
-        case vpiName :
-          return simple_set_rbuf_str(name_);
-        default :
-          return NULL;
+      بدل( code ) {
+        حالة vpiName :
+          החזר simple_set_rbuf_str(name_);
+        افتراضي :
+          החזר عدم;
       }
 
 }
 
 
-vpiHandle vpiPortInfo::vpi_handle(int code)
+vpiHandle vpiPortInfo::vpi_handle(صحيح code)
 {
 
-      switch (code) {
+      بدل (code) {
 
-          case vpiParent:
-          case vpiScope:
-          case vpiModule:
-            return parent_;
-          default :
-            break;
+          حالة vpiParent:
+          حالة vpiScope:
+          حالة vpiModule:
+            החזר parent_;
+          افتراضي :
+            اكسر;
       }
 
-      return 0;
+      החזר 0;
 }
 
-static vpiHandle portinfo_iterate(int code, vpiHandle ref)
+ساكن vpiHandle portinfo_iterate(صحيح code, vpiHandle ref)
 {
       vpiPortInfo*rfp = dynamic_cast<vpiPortInfo*>(ref);
-      assert(rfp);
+      أكد(rfp);
       unsigned width = rfp->get_width();
 
-      switch (code) {
-	  case vpiBit: {
-	    vpiHandle*args = static_cast<vpiHandle*>(calloc(width, sizeof(vpiHandle*)));
+      بدل (code) {
+	  حالة vpiBit: {
+	    vpiHandle*args = static_cast<vpiHandle*>(calloc(width, حجم(vpiHandle*)));
 
-	    for (unsigned i = 0; i<rfp->port_bits_.size(); i++) {
+	    עבור (unsigned i = 0; i<rfp->port_bits_.size(); i++) {
 		  args[i] = rfp->port_bits_[i];
 	    }
 
-	    return vpip_make_iterator(width, args, true);
+	    החזר vpip_make_iterator(width, args, אמת);
 	  }
       }
-      return 0;
+      החזר 0;
 }
 
-vpiHandle vpiPortInfo::vpi_iterate(int code)
+vpiHandle vpiPortInfo::vpi_iterate(صحيح code)
 {
-      return portinfo_iterate(code, this);
+      החזר portinfo_iterate(code, هذا);
 }
 
 
@@ -772,50 +772,50 @@ vpiPortBitInfo::~vpiPortBitInfo()
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void port_bit_delete(__vpiHandle *handle)
+فراغ port_bit_delete(__vpiHandle *handle)
 {
       delete dynamic_cast<vpiPortBitInfo *>(handle);
 }
 #endif
 
-vpiHandle vpiPortBitInfo::vpi_handle(int code)
+vpiHandle vpiPortBitInfo::vpi_handle(صحيح code)
 {
 
-      switch (code) {
-          case vpiParent:
-            return parent_;
-          default :
-            break;
+      بدل (code) {
+          حالة vpiParent:
+            החזר parent_;
+          افتراضي :
+            اكسر;
       }
 
-      return 0;
+      החזר 0;
 }
 
-int vpiPortBitInfo::vpi_get(int code)
+صحيح vpiPortBitInfo::vpi_get(صحيح code)
 {
-      switch( code ) {
-        case vpiBit :
-          return bit_;
-        default :
-          break;
+      بدل( code ) {
+        حالة vpiBit :
+          החזר bit_;
+        افتراضي :
+          اكسر;
       }
 
-      return 0;
+      החזר 0;
 }
 
 /* Port info is meta-data to allow vpi queries of the port signature of modules for
  * code-generators etc.  There are no actual nets corresponding to instances of module ports
  * as elaboration directly connects nets connected through module ports.
  */
-void compile_port_info( unsigned index, int vpi_direction, unsigned width, const char *name, char* buffer )
+فراغ compile_port_info( unsigned index, صحيح vpi_direction, unsigned width, ثابت حرف *name, حرف* buffer )
 {
-      vpiPortInfo* obj = new vpiPortInfo( vpip_peek_current_scope(),
+      vpiPortInfo* obj = جديد vpiPortInfo( vpip_peek_current_scope(),
                                           index, vpi_direction, width, name, buffer );
       vpip_attach_to_current_scope(obj);
 
 	// Create vpiPortBit objects
-      for (unsigned i=0; i<width; i++) {
-	    vpiPortBitInfo* obj_bit = new vpiPortBitInfo(obj, i);
+      עבור (unsigned i=0; i<width; i++) {
+	    vpiPortBitInfo* obj_bit = جديد vpiPortBitInfo(obj, i);
 	    obj->add_port_bit(obj_bit);
 	    vpip_attach_to_current_scope(obj_bit);
       }
