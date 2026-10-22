@@ -32,17 +32,17 @@
 # include  <cstring>
 # include "ivl_alloc.h"
 
-using namespace std;
+using نطاق std;
 
 #ifdef CHECK_WITH_VALGRIND
-static bool at_EOS = false;
+ساكن منطقي at_EOS = خطأ;
 #endif
 
-void island_send_value(vvp_net_t*net, const vvp_vector8_t&val)
+فراغ island_send_قدر(vvp_net_t*net, ثابت vvp_vector8_t&val)
 {
       vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
-      if (fun->outvalue .eeq(val))
-	    return;
+      إذا (fun->outvalue .eeq(val))
+	    أرجع;
 
       fun->outvalue = val;
       net->send_vec8(fun->outvalue);
@@ -53,7 +53,7 @@ void island_send_value(vvp_net_t*net, const vvp_vector8_t&val)
  */
 vvp_island::vvp_island()
 {
-      flagged_ = false;
+      flagged_ = خطأ;
       branches_ = 0;
       ports_ = 0;
       anodes_ = 0;
@@ -64,22 +64,22 @@ vvp_island::~vvp_island()
 {
 	// We can only delete islands at the end of simulation.
 #ifdef CHECK_WITH_VALGRIND
-      if (!at_EOS) assert(0);
+      إذا (!at_EOS) أكد(0);
 #endif
 
-      while (branches_) {
+      طالما (branches_) {
 	    vvp_island_branch *next_br = branches_->next_branch;
 	    delete branches_;
 	    branches_ = next_br;
       }
 }
 
-void vvp_island::flag_island()
+فراغ vvp_island::flag_island()
 {
-      if (flagged_ == true)
-	    return;
+      إذا (flagged_ == true)
+	    أرجع;
 
-      schedule_generic(this, 0, false, false);
+      schedule_generic(هذا, 0, خطأ, خطأ);
       flagged_ = true;
 }
 
@@ -88,74 +88,74 @@ void vvp_island::flag_island()
 * housecleaning and calls the run_island() method implemented by the
 * derived class.
 */
-void vvp_island::run_run()
+فراغ vvp_island::run_run()
 {
-      flagged_ = false;
+      flagged_ = خطأ;
       run_island();
 }
 
 
-void vvp_island::add_port(const char*key, vvp_net_t*net)
+فراغ vvp_island::add_port(ثابت حرف*کلید, vvp_net_t*net)
 {
-      if (ports_ == 0)
-	    ports_ = new symbol_map_s<vvp_net_t>;
+      إذا (ports_ == 0)
+	    ports_ = جديد علامت_map_s<vvp_net_t>;
 
 	// each port should have a unique label
-      assert(ports_->sym_get_value(key) == 0);
+      أكد(ports_->sym_get_قدر(کلید) == 0);
 
-      ports_->sym_set_value(key, net);
+      ports_->sym_set_قدر(کلید, net);
 }
 
-void vvp_island::add_branch(vvp_island_branch*branch, const char*pa, const char*pb)
+فراغ vvp_island::add_branch(vvp_island_branch*branch, ثابت حرف*pa, ثابت حرف*pb)
 {
       vvp_island_branch*cur;
-      assert(ports_);
-      branch->a = ports_->sym_get_value(pa);
-      branch->b = ports_->sym_get_value(pb);
-      assert(branch->a && branch->b);
+      أكد(ports_);
+      branch->a = ports_->sym_get_قدر(pa);
+      branch->b = ports_->sym_get_قدر(pb);
+      أكد(branch->a && branch->b);
 
       vvp_branch_ptr_t ptra (branch, 0);
       vvp_branch_ptr_t ptrb (branch, 1);
-      if (anodes_ == 0)
-	    anodes_ = new symbol_map_s<vvp_island_branch>;
-      if (bnodes_ == 0)
-	    bnodes_ = new symbol_map_s<vvp_island_branch>;
+      إذا (anodes_ == 0)
+	    anodes_ = جديد علامت_map_s<vvp_island_branch>;
+      إذا (bnodes_ == 0)
+	    bnodes_ = جديد علامت_map_s<vvp_island_branch>;
 
-      if ((cur = anodes_->sym_get_value(pa))) {
+      إذا ((cur = anodes_->sym_get_قدر(pa))) {
 	    branch->link[0] = cur->link[0];
 	    cur->link[0] = ptra;
-      } else if ((cur = bnodes_->sym_get_value(pa))) {
+      } وإلا إذا ((cur = bnodes_->sym_get_قدر(pa))) {
 	    branch->link[0] = cur->link[1];
 	    cur->link[1] = ptra;
-      } else {
+      } وإلا {
 	    branch->link[0] = ptra;
-	    anodes_->sym_set_value(pa, branch);
+	    anodes_->sym_set_قدر(pa, branch);
       }
 
-      if ((cur = anodes_->sym_get_value(pb))) {
+      إذا ((cur = anodes_->sym_get_قدر(pb))) {
 	    branch->link[1] = cur->link[0];
 	    cur->link[0] = ptrb;
-      } else if ((cur = bnodes_->sym_get_value(pb))) {
+      } وإلا إذا ((cur = bnodes_->sym_get_قدر(pb))) {
 	    branch->link[1] = cur->link[1];
 	    cur->link[1] = ptrb;
-      } else {
+      } وإلا {
 	    branch->link[1] = ptrb;
-	    bnodes_->sym_set_value(pb, branch);
+	    bnodes_->sym_set_قدر(pb, branch);
       }
 
       branch->next_branch = branches_;
       branches_ = branch;
 }
 
-vvp_net_t* vvp_island::find_port(const char*key)
+vvp_net_t* vvp_island::find_port(ثابت حرف*کلید)
 {
-      if (ports_ == 0)
-	    return 0;
-      else
-	    return ports_->sym_get_value(key);
+      إذا (ports_ == 0)
+	    أرجع 0;
+      وإلا
+	    أرجع ports_->sym_get_قدر(کلید);
 }
 
-void vvp_island::compile_cleanup()
+فراغ vvp_island::compile_cleanup()
 {
       delete ports_;
       ports_ = 0;
@@ -176,18 +176,18 @@ vvp_island_port::~vvp_island_port()
 {
 }
 
-void vvp_island_port::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&bit,
+فراغ vvp_island_port::recv_vec4(vvp_net_ptr_t, ثابت vvp_vector4_t&bit,
                                 vvp_context_t)
 {
       vvp_vector8_t tmp (bit, 6, 6);
-      if (invalue .eeq(tmp))
-	    return;
+      إذا (invalue .eeq(tmp))
+	    أرجع;
 
       invalue = tmp;
       island_->flag_island();
 }
 
-void vvp_island_port::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+فراغ vvp_island_port::recv_vec4_pv(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
 				   unsigned base, unsigned vwid, vvp_context_t)
 {
       vvp_vector8_t tmp(bit, 6, 6);
@@ -195,26 +195,26 @@ void vvp_island_port::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 }
 
 
-void vvp_island_port::recv_vec8(vvp_net_ptr_t, const vvp_vector8_t&bit)
+فراغ vvp_island_port::recv_vec8(vvp_net_ptr_t, ثابت vvp_vector8_t&bit)
 {
-      if (invalue .eeq(bit))
-	    return;
+      إذا (invalue .eeq(bit))
+	    أرجع;
 
       invalue = bit;
       island_->flag_island();
 }
 
-void vvp_island_port::recv_vec8_pv(vvp_net_ptr_t, const vvp_vector8_t&bit,
+فراغ vvp_island_port::recv_vec8_pv(vvp_net_ptr_t, ثابت vvp_vector8_t&bit,
                                    unsigned base, unsigned vwid)
 {
-      if (invalue.size() == 0) {
+      إذا (invalue.size() == 0) {
 	    invalue = part_expand(bit, vwid, base);
-      } else {
+      } وإلا {
 	    unsigned wid = bit.size();
-	    assert(invalue.size() == vwid);
-	    for (unsigned idx = 0; idx < wid ; idx += 1) {
-		  if ((base+idx) >= vwid)
-			break;
+	    أكد(invalue.size() == vwid);
+	    لكل (unsigned idx = 0; idx < wid ; idx += 1) {
+		  إذا ((base+idx) >= vwid)
+			اكسر;
 		  invalue.set_bit(base+idx, bit.value(idx));
 	    }
       }
@@ -222,11 +222,11 @@ void vvp_island_port::recv_vec8_pv(vvp_net_ptr_t, const vvp_vector8_t&bit,
       island_->flag_island();
 }
 
-void vvp_island_port::force_flag(bool run_now)
+فراغ vvp_island_port::force_flag(منطقي run_now)
 {
-      if (run_now)
+      إذا (run_now)
 	    island_->run_island();
-      else
+      وإلا
 	    island_->flag_island();
 }
 
@@ -234,10 +234,10 @@ vvp_island_branch::~vvp_island_branch()
 {
 }
 
-void island_collect_node(list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur)
+فراغ island_collect_گرہ(list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur)
 {
       conn .push_back(cur);
-      for (vvp_branch_ptr_t idx = next(cur) ; idx != cur ; idx = next(idx))
+      لكل (vvp_branch_ptr_t idx = next(cur) ; idx != cur ; idx = next(idx))
 	    conn.push_back(idx);
 }
 
@@ -250,42 +250,42 @@ void island_collect_node(list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur)
 * called to erase the symbol table, we still need the list to cleanup the
 * island memory at EOS.
 */
-static symbol_map_s<vvp_island>* island_table = 0;
-static vvp_island** island_list = 0;
-static unsigned island_count = 0;
+ساكن علامت_map_s<vvp_island>* island_table = 0;
+ساكن vvp_island** island_list = 0;
+ساكن unsigned island_گنتی = 0;
 
 #ifdef CHECK_WITH_VALGRIND
-void island_delete()
+فراغ island_delete()
 {
       at_EOS = true;
-      for (unsigned idx = 0; idx < island_count; idx += 1) {
+      لكل (unsigned idx = 0; idx < island_گنتی; idx += 1) {
 	    delete island_list[idx];
       }
-      free(island_list);
+      حرر(island_list);
       island_list = 0;
-      island_count = 0;
+      island_گنتی = 0;
 }
 #endif
 
-void compile_island_base(char*label, vvp_island*use_island)
+فراغ compile_island_base(حرف*label, vvp_island*use_island)
 {
-      if (island_table == 0)
-	    island_table = new symbol_map_s<vvp_island>;
+      إذا (island_table == 0)
+	    island_table = جديد علامت_map_s<vvp_island>;
 
-      island_table->sym_set_value(label, use_island);
-      island_count += 1;
+      island_table->sym_set_قدر(label, use_island);
+      island_گنتی += 1;
       island_list = static_cast<vvp_island **>(realloc(island_list,
-                                               island_count*sizeof(vvp_island **)));
-      island_list[island_count-1] = use_island;
-      free(label);
+                                               island_گنتی*حجم(vvp_island **)));
+      island_list[island_گنتی-1] = use_island;
+      حرر(label);
 }
 
-vvp_island* compile_find_island(const char*island)
+vvp_island* compile_find_island(ثابت حرف*island)
 {
-      assert(island_table);
-      vvp_island*use_island = island_table->sym_get_value(island);
-      assert(use_island);
-      return use_island;
+      أكد(island_table);
+      vvp_island*use_island = island_table->sym_get_قدر(island);
+      أكد(use_island);
+      أرجع use_island;
 }
 
 /*
@@ -302,34 +302,34 @@ vvp_island* compile_find_island(const char*island)
  * drivers with the external driver and make the output available on
  * <label>.
  */
-void compile_island_port(char*label, char*island, char*src)
+فراغ compile_island_port(حرف*label, حرف*island, حرف*src)
 {
-      assert(island_table);
-      vvp_island*use_island = island_table->sym_get_value(island);
-      assert(use_island);
-      free(island);
+      أكد(island_table);
+      vvp_island*use_island = island_table->sym_get_قدر(island);
+      أكد(use_island);
+      حرر(island);
 
-      vvp_net_t*net = new vvp_net_t;
-      vvp_island_port*fun = new vvp_island_port(use_island);
+      vvp_net_t*net = جديد vvp_net_t;
+      vvp_island_port*fun = جديد vvp_island_port(use_island);
       net->fun = fun;
 
 	// Get the source from outside the island
-      input_connect(net, 0, src);
+      داخلہ_connect(net, 0, src);
 
 	// Define the functor outside the island.
-      define_functor_symbol(label, net);
+      define_functor_علامت(label, net);
 
 	// Also define it inside the island.
       use_island->add_port(label, net);
 
-      free(label);
+      حرر(label);
 }
 
-void compile_island_export(char*label, char*island)
+فراغ compile_island_export(حرف*label, حرف*island)
 {
       fprintf(stderr, "XXXX %s .export %s;\n", label, island);
-      free(label);
-      free(island);
+      حرر(label);
+      حرر(island);
 }
 
 /*
@@ -342,38 +342,38 @@ void compile_island_export(char*label, char*island)
  * <label> is in the domain inside the island. Branches within the
  * island use the <label>.
  */
-void compile_island_import(char*label, char*island, char*src)
+فراغ compile_island_import(حرف*label, حرف*island, حرف*src)
 {
-      assert(island_table);
-      vvp_island*use_island = island_table->sym_get_value(island);
-      assert(use_island);
-      free(island);
+      أكد(island_table);
+      vvp_island*use_island = island_table->sym_get_قدر(island);
+      أكد(use_island);
+      حرر(island);
 
-      vvp_net_t*net = new vvp_net_t;
-      vvp_island_port*fun = new vvp_island_port(use_island);
+      vvp_net_t*net = جديد vvp_net_t;
+      vvp_island_port*fun = جديد vvp_island_port(use_island);
       net->fun = fun;
 
 	// Get the source from outside the island
-      input_connect(net, 0, src);
+      داخلہ_connect(net, 0, src);
 
 	// Define the functor only inside the island.
       use_island->add_port(label, net);
 
-      free(label);
+      حرر(label);
 }
 
-void compile_island_cleanup(void)
+فراغ compile_island_cleanup(فراغ)
 {
 	// Call the per-island cleanup to get rid of local symbol tables.
-      for (unsigned idx = 0; idx < island_count; idx += 1) {
+      لكل (unsigned idx = 0; idx < island_گنتی; idx += 1) {
 	    island_list[idx]->compile_cleanup();
       }
 
 	// If we are not doing valgrind checking then free the list.
 #ifndef CHECK_WITH_VALGRIND
-      free(island_list);
+      حرر(island_list);
       island_list = 0;
-      island_count = 0;
+      island_گنتی = 0;
 #endif
 
 	// Remove the island symbol table itself.
