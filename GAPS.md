@@ -1,0 +1,631 @@
+# What is still missing
+
+76 languages. Each line says in how many languages it is missing.
+
+## Files in languages BURP cannot read yet
+
+
+## Keywords with no word in a language's table
+
+- shraeni:cerr: 75
+- shraeni:put: 75
+- shraeni:ostream: 75
+- shraeni:clear: 75
+- shraeni:get: 75
+- shraeni:hex: 75
+- shraeni:ofstream: 75
+- shraeni:ios: 75
+- wyaaka:yyparse: 75
+- shraeni:flush: 75
+- shraeni:__FILE__: 75
+- shraeni:size_t: 71
+- shraeni:fprintf: 71
+- shraeni:stderr: 71
+- guru:size_t: 71
+- shraeni:time: 71
+- shraeni:realloc: 71
+- shraeni:strchr: 71
+- shraeni:fflush: 71
+- shraeni:strspn: 71
+- shraeni:fopen: 71
+- shraeni:FILE: 71
+- shraeni:stdout: 71
+- shraeni:va_list: 71
+- shraeni:strtoul: 71
+- shraeni:va_end: 71
+- shraeni:ULONG_MAX: 71
+- shraeni:INFINITY: 71
+- shraeni:getenv: 71
+- shraeni:va_start: 71
+- shraeni:memcmp: 71
+- shraeni:perror: 71
+- shraeni:fclose: 71
+- shraeni:setvbuf: 71
+- shraeni:EOF: 71
+- shraeni:SIGINT: 71
+- shraeni:SIG_DFL: 71
+- shraeni:fputs: 71
+- shraeni:strrchr: 71
+- shraeni:fabs: 71
+- shraeni:fmod: 71
+- shraeni:UINT_MAX: 71
+- shraeni:labs: 71
+- shraeni:SIGTERM: 71
+- guru:realloc: 71
+- shraeni:stdin: 71
+- shraeni:fwrite: 71
+- shraeni:va_arg: 71
+- shraeni:CHAR_BIT: 71
+- shraeni:bsearch: 71
+- shraeni:floor: 71
+- shraeni:fscanf: 71
+- wyaaka:FILE: 71
+- wyaaka:fopen: 71
+- wyaaka:fprintf: 71
+- wyaaka:stderr: 71
+- wyaaka:fclose: 71
+- shraeni:fgets: 71
+- shraeni:strtol: 71
+- shraeni:strcspn: 71
+- shraeni:vprintf: 71
+- guru:time: 71
+- shraeni:ptrdiff_t: 71
+- shraeni:INT_MIN: 71
+- shraeni:LONG_MIN: 71
+- guru:memcmp: 71
+- shraeni:strcmp: 70
+- shraeni:strcpy: 70
+- shraeni:strcat: 70
+- shraeni:memset: 70
+- guru:memset: 70
+- shraeni:open: 70
+- shraeni:explicit: 67
+- shraeni:nullptr: 67
+- shraeni:using: 67
+- shraeni:typename: 67
+- shraeni:exp: 67
+- shraeni:log: 67
+- shraeni:delete: 66
+- shraeni:#endif: 66
+- shraeni:endl: 66
+- shraeni:#ifdef: 66
+- guru:#endif: 66
+- guru:#define: 66
+- guru:#ifndef: 66
+- guru:#ifdef: 66
+- shraeni:#define: 66
+- shraeni:#ifndef: 66
+- shraeni:right: 66
+- guru:#undef: 66
+- shraeni:left: 66
+- shraeni:#error: 66
+- guru:#error: 66
+- shraeni:unsigned: 62
+- guru:unsigned: 62
+- shraeni:long: 62
+- guru:long: 62
+- guru:operator: 62
+- shraeni:operator: 62
+- shraeni:template: 62
+- shraeni:strlen: 62
+- shraeni:printf: 62
+- guru:friend: 62
+- shraeni:signed: 62
+- guru:template: 62
+- shraeni:pow: 62
+- guru:printf: 62
+- shraeni:calloc: 62
+- shraeni:sscanf: 62
+- shraeni:exit: 62
+- shraeni:memcpy: 62
+- shraeni:malloc: 62
+- shraeni:INT_MAX: 62
+- wyaaka:calloc: 62
+- shraeni:friend: 62
+- wyaaka:unsigned: 62
+- shraeni:isspace: 62
+- shraeni:auto: 62
+- guru:signed: 62
+- guru:malloc: 62
+- guru:short: 62
+- shraeni:abs: 62
+- shraeni:isdigit: 62
+- shraeni:short: 62
+- guru:pow: 62
+- guru:calloc: 62
+- guru:main: 54
+- shraeni:main: 54
+- guru:virtual: 40
+- shraeni:virtual: 40
+- shraeni:true: 38
+- shraeni:bool: 26
+- shraeni:false: 26
+- shraeni:namespace: 26
+- shraeni:void: 25
+- shraeni:const: 25
+- guru:void: 25
+- shraeni:assert: 25
+- guru:const: 25
+- guru:extern: 25
+- shraeni:new: 25
+- shraeni:static: 25
+- guru:public: 25
+- shraeni:switch: 25
+- shraeni:this: 25
+- shraeni:default: 25
+- shraeni:free: 25
+- guru:private: 25
+- shraeni:public: 25
+- shraeni:class: 25
+- shraeni:continue: 25
+- shraeni:NULL: 25
+- guru:static: 25
+- shraeni:extern: 25
+- shraeni:private: 25
+- guru:typedef: 25
+- shraeni:goto: 25
+- guru:switch: 25
+- shraeni:typedef: 25
+- guru:assert: 25
+- guru:NULL: 25
+- guru:default: 25
+- shraeni:do: 25
+- wyaaka:assert: 25
+- wyaaka:const: 25
+- wyaaka:free: 25
+- wyaaka:extern: 25
+- wyaaka:static: 25
+- wyaaka:NULL: 25
+- guru:free: 25
+- guru:#elif: 25
+- shraeni:sleep: 10
+- shraeni:for: 9
+- guru:for: 9
+- shraeni:case: 9
+- shraeni:char: 9
+- shraeni:break: 9
+- shraeni:struct: 9
+- guru:char: 9
+- shraeni:double: 9
+- guru:struct: 9
+- shraeni:sizeof: 9
+- shraeni:inline: 9
+- guru:inline: 9
+- guru:double: 9
+- wyaaka:struct: 9
+- guru:protected: 9
+- guru:case: 9
+- guru:break: 9
+- guru:enum: 9
+- guru:union: 9
+- guru:sizeof: 9
+- shraeni:signal: 9
+- shraeni:enum: 9
+- shraeni:protected: 9
+- wyaaka:char: 9
+- wyaaka:sizeof: 9
+- shraeni:union: 9
+- shraeni:if: 1
+- shraeni:return: 1
+
+## Names with no dictionary entry (the most common first)
+
+- `idx`: 76
+- `thr`: 76
+- `val`: 76
+- `vvp_vector4_t`: 76
+- `obj`: 76
+- `ptr`: 76
+- `cur`: 76
+- `override`: 76
+- `wid`: 76
+- `vthread_t`: 76
+- `cp`: 76
+- `tmp`: 76
+- `net`: 76
+- `vpiHandle`: 76
+- `label`: 76
+- `OA_NONE`: 76
+- `vvp_net_ptr_t`: 76
+- `vp`: 76
+- `vvp_net_t`: 76
+- `that`: 76
+- `vvp_context_t`: 76
+- `name`: 76
+- `res`: 76
+- `context`: 76
+- `scope`: 76
+- `vvp_vector2_t`: 76
+- `argv`: 76
+- `BIT4_0`: 76
+- `rfp`: 76
+- `vvp_bit4_t`: 76
+- `argc`: 76
+- `fun`: 76
+- `BIT4_1`: 76
+- `BIT4_X`: 76
+- `vvp_object_t`: 76
+- `a`: 76
+- `type`: 76
+- `vwid`: 76
+- `buf`: 76
+- `adr`: 76
+- `i`: 76
+- `vvp_vector8_t`: 76
+- `src`: 76
+- `cnt`: 76
+- `str`: 76
+- `b`: 76
+- `flags`: 76
+- `symb_s`: 76
+- `qsrc`: 76
+- `sig`: 76
+- `dst`: 76
+- `signed_flag`: 76
+- `recv_vec4`: 76
+- `array_`: 76
+- `abits_ptr_`: 76
+- `dsrc`: 76
+- `wid_`: 76
+- `rbuf`: 76
+- `vvp_time64_t`: 76
+- `bbits_ptr_`: 76
+- `T_LABEL`: 76
+- `OA_BIT1`: 76
+- `pid`: 76
+- `CHECK_WITH_VALGRIND`: 76
+- `format`: 76
+- `fil`: 76
+- `vpi_get`: 76
+- `vvp_darray`: 76
+- `lsb`: 76
+- `send_vec4`: 76
+- `cobj`: 76
+- `msb`: 76
+- `BIT4_Z`: 76
+- `bbits_val_`: 76
+- `off`: 76
+- `vvp_scalar_t`: 76
+- `delay`: 76
+- `abits_val_`: 76
+- `std`: 76
+- `T`: 76
+- `net_`: 76
+- `context_idx_`: 76
+- `OA_FUNC_PTR`: 76
+- `op`: 76
+- `vvp_cobject`: 76
+- `arr`: 76
+- `vec`: 76
+- `addr`: 76
+- `rval`: 76
+- `vpi_get_str`: 76
+- `handle`: 76
+- `lineno`: 76
+- `val_`: 76
+- `vect`: 76
+- `vals`: 76
+- `recv_vec4_pv`: 76
+- `vvp_net_fun_t`: 76
+- `file_idx`: 76
+- `local_flag`: 76
+- `vec_`: 76
+- `T_STRING`: 76
+- `op_a_`: 76
+- `ctim`: 76
+- `dptr`: 76
+- `eeq`: 76
+- `real`: 76
+- `arith`: 76
+- `recv_real`: 76
+- `flag`: 76
+- `r`: 76
+- `vala`: 76
+- `peek_vec4`: 76
+- `rc`: 76
+- `mask0`: 76
+- `lval`: 76
+- `properties_`: 76
+- `vvp_net_fil_t`: 76
+- `symbols`: 76
+- `op_b_`: 76
+- `cmp`: 76
+- `maskx`: 76
+- `vpi_handle`: 76
+- `mask1`: 76
+- `w_int`: 76
+- `ap`: 76
+- `bits4_`: 76
+- `vvp_arith_`: 76
+- `trans`: 76
+- `get_fileline`: 76
+- `ELEM`: 76
+- `get_object`: 76
+- `n`: 76
+- `qobj`: 76
+- `ctx`: 76
+- `bval`: 76
+- `vvp_array_t`: 76
+- `mem`: 76
+- `symbv_s`: 76
+- `vpi_trace`: 76
+- `use_delay`: 76
+- `bdx`: 76
+- `defined`: 76
+- `vvp_darray_atom`: 76
+- `vsig`: 76
+- `class_type`: 76
+- `is_signed`: 76
+- `v`: 76
+- `vpip_peek_current_scope`: 76
+- `PLI_INT32`: 76
+- `string`: 76
+- `arg`: 76
+- `ecount`: 76
+- `vpi_mcd_printf`: 76
+- `len`: 76
+- `aval`: 76
+- `nets`: 76
+- `opa`: 76
+- `OA_BIT2`: 76
+- `vvp_object`: 76
+- `pad`: 76
+- `nam`: 76
+- `fun_thr`: 76
+- `RBUF_VAL`: 76
+- `rtn`: 76
+- `l`: 76
+- `nports`: 76
+- `vec4`: 76
+- `vi`: 76
+- `vpiIntVal`: 76
+- `delays`: 76
+- `vvp_fun_signal_object`: 76
+- `vthread_s`: 76
+- `vvp_fun_modpath_src`: 76
+- `rv`: 76
+- `darray`: 76
+- `lv`: 76
+- `QTYPE`: 76
+- `branch`: 76
+- `rep`: 76
+- `vpiModule`: 76
+- `compile_errors`: 76
+- `needs_init_`: 76
+- `fp`: 76
+- `ep`: 76
+- `ptr_`: 76
+- `vvp_island`: 76
+- `scope_`: 76
+- `tval`: 76
+- `peek_object`: 76
+- `src_q`: 76
+- `is_automatic`: 76
+- `del`: 76
+- `list_`: 76
+- `vpiName`: 76
+- `event_s`: 76
+- `wt_context`: 76
+- `cell`: 76
+- `vpiRealVal`: 76
+- `vvp_fun_delay`: 76
+- `counts`: 76
+- `net_flag`: 76
+- `slen`: 76
+- `vpiStringVal`: 76
+- `src_obj`: 76
+- `bp`: 76
+- `valb`: 76
+- `TYPE`: 76
+- `prop_t`: 76
+- `info`: 76
+- `p`: 76
+- `cur_vec4_`: 76
+- `resolv_list_s`: 76
+- `defn`: 76
+- `ref_`: 76
+- `pp`: 76
+- `lmask`: 76
+- `send_real`: 76
+- `vals4`: 76
+- `vpiScope`: 76
+- `vpi_iterate`: 76
+- `strdup`: 76
+- `hwid`: 76
+- `jdx`: 76
+- `context_scope_`: 76
+- `resolve`: 76
+- `make_arith`: 76
+- `delay_`: 76
+- `aobj`: 76
+- `reset_instance`: 76
+- `vvp_delay_t`: 76
+- `negedge`: 76
+- `recv_vec8`: 76
+- `ascending`: 76
+- `doff`: 76
+- `subvalue`: 76
+- `inst_t`: 76
+- `dest`: 76
+- `tnam`: 76
+- `ports_`: 76
+- `alloc_instance`: 76
+- `free_instance`: 76
+- `vvp_wide_fun_core`: 76
+- `cb`: 76
+- `mcd`: 76
+- `bits8_`: 76
+- `signed_flag_`: 76
+- `b2`: 76
+- `vvp_arith_real_`: 76
+- `vvp_fun_arrayport`: 76
+- `vpiBinStrVal`: 76
+- `vpiDecStrVal`: 76
+- `pdx`: 76
+- `val4`: 76
+- `thread`: 76
+- `vvp_island_branch_tran`: 76
+- `vvp_island_branch`: 76
+- `nm`: 76
+- `vvp_wire_vec8`: 76
+- `filename`: 76
+- `wdx`: 76
+- `w_uint`: 76
+- `children`: 76
+- `sptr`: 76
+- `str0`: 76
+- `str1`: 76
+- `class_property_t`: 76
+- `opcode`: 76
+- `array_addr`: 76
+- `vvp_branch_ptr_t`: 76
+- `use_island`: 76
+- `invert`: 76
+- `select_`: 76
+- `ports`: 76
+- `sync_callback`: 76
+- `simulator_callback`: 76
+- `s1`: 76
+- `vpi_call_error_lst`: 76
+- `shuffle_elems`: 76
+- `vvp_fun_signal_object_aa`: 76
+- `vvp_darray_real`: 76
+- `lab`: 76
+- `ufunc_core`: 76
+- `vpip_cur_task`: 76
+- `resolv_core`: 76
+- `event_`: 76
+- `x`: 76
+- `ip`: 76
+- `vvp_udp_s`: 76
+- `scalar`: 76
+- `vvp_wire_vec4`: 76
+- `strength`: 76
+- `tname`: 76
+- `remain`: 76
+- `vvp_darray_string`: 76
+- `vpiAutomatic`: 76
+- `_vpiFromThr`: 76
+- `vvp_vpi_callback`: 76
+- `automatic_hooks_s`: 76
+- `mes`: 76
+- `link`: 76
+
+## Comments with no translation
+
+- Not implemented for now!: 76
+- fallthrough: 76
+- not implemented: 76
+- I expect that most of the bits of an immediate value are: 76
+- going to be zero, so start the result vector with all zero: 76
+- bits. Then we only need to replace the bits that are different.: 76
+- Get information about the vector value.: 76
+- The other port is selected.: 76
+- These objects are only permallocated.: 76
+- Make the words.: 76
+- We are going to pop these and push nothing in their: 76
+- place, but for now it is more efficient to use a constant: 76
+- reference. When we finish, pop the stack without copies.: 76
+- Normally, this returns true so that the processor just
+	   keeps going to the next instruction. Howe: 76
+- Pop the value to store.: 76
+- If the above loop finishes, then the vectors are equal.: 76
+- Wires revert to their unforced value after release.: 76
+- Get the functor we are going to wait on.: 76
+- Now add this call to the end of the event list.: 76
+- Fill in X or Z if they are the only thing in the value.: 76
+- Return "x" if there are invalid digits in the string.: 76
+- Abort if flags[4] is set. This can happen if the calculation: 76
+- into an index register failed.: 76
+- thr: 76
+- Variables keep the current value.: 76
+- Abstract methods from vvp_vpi_callback: 76
+- Implementation of vvp_signal_value methods: 76
+- * Compare Vector a and Vector b. If in any bit position the a and b
+ * bits are known and different,: 76
+- In this context, address out of bounds returns 0.0: 76
+- instead of an error.: 76
+- Get a reference value that can be used to compare with an: 76
+- Delete the individual words?: 76
+- The operand is a functor. Resolve the label to
+		       a functor pointer, or postpone the resolutio: 76
+- Create an instruction in the code space.: 76
+- Done with the lexor-allocated name string.: 76
+- If the most recent event and the new event have the same
+	 * value then we need to skip the new even: 76
+- The default constructor.: 76
+- vvp_net_t::force_vec4 propagates all the bits of the: 76
+- forced vector value, regardless of the mask. This: 76
+- ensures the unforced bits retain their current value.: 76
+- If this function has a trigger event, connect the functor to
+           that event.: 76
+- user supplied callback data: 76
+- Use the following case to actually set the value!: 76
+- Next net in linked list: 76
+- If this is a release, then we are not really putting a
+	   value. Instead, issue a release "command": 76
+- BIT4_X: 76
+- Find the number of non-numeric characters.: 76
+- Skip any "_" characters in the string.: 76
+- If we find a "-" it must be at the head of the string.: 76
+- Make a negative value when needed.: 76
+- Find the correct padding value.: 76
+- Remove any previous continuous assign to this net.: 76
+- eeq: 76
+- set the value into port 0 of the destination.: 76
+- Inserting past the end of the queue: 76
+- Inserting at the end: 76
+- Support for $countdrivers.: 76
+- The truth table is:: 76
+- Cleanup the tail bits.: 76
+- Part select variants of above: 76
+- Continuous assign value: 76
+- Keep track of the value being driven from this net, even if: 76
+- it is not ultimately what survives the force filter.: 76
+- * Automatically allocated vvp_fun_signal_real.: 76
+- Support for $countdrivers: 76
+- Abstract methods from vvp_net_fit_t: 76
+- If we are doing signed divide, then take the sign out of
+	   the operands for now, and remember to p: 76
+- If we have an X or Z in the arguments return X.: 76
+- Is the exponent negative? If so, table 5-6 in IEEE1364-2005: 76
+- defines what value is returned.: 76
+- Pad input vectors with this value to widen to the desired
+	   output width.: 76
+- Check to see if the value is defined.: 76
+- The value is defined so get and return it.: 76
+- Check to see if this is a variable/register array.: 76
+- A bit based variable/register array.: 76
+- Arrays of string nets not implemented!: 76
+- Now we know the data type, update the array signed_flag.: 76
+- Address input: 76
+- updated value.: 76
+- constant_delete(handle)?: 76
+- Make word[-1] point to the parent.: 76
+- *  Add a functor to the symbol table: 76
+- Create a vpiHandle that bundles the call information, and
+	   store that handle in the instruction.: 76
+- * FIXME: this implementation currently only uses the maximum delay
+ * from all the bit changes in th: 76
+- This is an initial value so it needs to be compared to all the
+	   bits (the order the bits are chan: 76
+- Use as a reference for calculating the delay the: 76
+- current value of the output. Detect and handle the: 76
+- special case that the event list contains the current: 76
+- value as a zero-delay-remaining event.: 76
+- How many bits to compare?: 76
+- Scan the vectors looking for delays. Select the maximum
+	         delay encountered.: 76
+- what *should* happen here is we check to see if there is a
+         transaction in the queue. This w: 76
+- And propagate it.: 76
+- Only the first port is used.: 76
+- Skip this entry.: 76
+- Given the scheduled output time, create an output event.: 76
+- FIXME: This bases the edge delay on only the least
+	   bit. This is WRONG! I need to find all the po: 76
+- If the current and new bit values match then no delay
+	       * is needed for this bit.: 76
+- * This routine will put specific dimension of delay[] values
+ * into a vpiHandle. In this case, we w: 76
+- Only the first six entries are used for the less than twelve maps.: 76
