@@ -1,5 +1,5 @@
-#ifndef IVL_dff_H
-#define IVL_dff_H
+#جے_بنا_تعریف IVL_dff_H
+#تعریف_کرو IVL_dff_H
 /*
  * Copyright (c) 2005-2025 Stephen Williams (steve@icarus.com)
  *
@@ -35,67 +35,67 @@
  *
  * The base vvp_dff does not implement an asynchronous set/clear.
  */
-class vvp_dff : public vvp_net_fun_t {
+class vvp_dff : عام vvp_net_fun_t {
 
-    public:
-      explicit vvp_dff(unsigned width, bool negedge);
+    عام:
+      explicit vvp_dff(بنانشانی چوڑائی, bool negedge);
       ~vvp_dff() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      فراغ recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+			بنانشانی ادھار, بنانشانی vwid, vvp_context_t ctx) override;
 
-    private:
-      virtual void recv_async(vvp_net_ptr_t port);
+    خاص:
+      مجازی فراغ recv_async(vvp_net_ptr_t پورٹ);
 
-      vvp_bit4_t clk_active_ : 8;
+      vvp_bit4_t clk_سرگرم : 8;
       vvp_bit4_t clk_        : 8;
       vvp_bit4_t ena_        : 8;
       vvp_bit4_t asc_        : 8;
 
-    protected:
+    محمي:
       vvp_vector4_t d_;
 };
 
 /*
  * This variant implements an asynchronous clear to all zeros.
  */
-class vvp_dff_aclr : public vvp_dff {
+class vvp_dff_aclr : عام vvp_dff {
 
-    public:
-      explicit vvp_dff_aclr(unsigned width, bool negedge);
+    عام:
+      explicit vvp_dff_aclr(بنانشانی چوڑائی, bool negedge);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    خاص:
+      فراغ recv_async(vvp_net_ptr_t پورٹ) override;
 };
 
 /*
  * This variant implements an asynchronous set to all ones.
  */
-class vvp_dff_aset : public vvp_dff {
+class vvp_dff_aset : عام vvp_dff {
 
-    public:
-      explicit vvp_dff_aset(unsigned width, bool negedge);
+    عام:
+      explicit vvp_dff_aset(بنانشانی چوڑائی, bool negedge);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    خاص:
+      فراغ recv_async(vvp_net_ptr_t پورٹ) override;
 };
 
 /*
  * This variant implements an asynchronous set to a specified constant
  * vector value.
  */
-class vvp_dff_asc : public vvp_dff {
+class vvp_dff_asc : عام vvp_dff {
 
-    public:
-      explicit vvp_dff_asc(unsigned width, bool negedge, const char*asc_value);
+    عام:
+      explicit vvp_dff_asc(بنانشانی چوڑائی, bool negedge, ثابت حرف*asc_قدر);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    خاص:
+      فراغ recv_async(vvp_net_ptr_t پورٹ) override;
 
-      vvp_vector4_t asc_value_;
+      vvp_vector4_t asc_قدر_2;
 };
 
-#endif /* IVL_dff_H */
+#جے_انت /* IVL_dff_H */

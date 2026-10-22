@@ -26,60 +26,60 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-static int iterator_free_object(vpiHandle ref)
+ساكن صحيح iterator_free_object(vpiHandle ref)
 {
-      struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
-      assert(hp);
+      بنية __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
+      أكد(hp);
 
-      if (hp->free_args_flag)
-	    free(hp->args);
+      إذا (hp->free_دلیلاں_flag)
+	    حرر(hp->دلیلاں);
 
-      delete hp;
-      return 1;
+      مٹاؤ hp;
+      أرجع 1;
 }
 
-inline __vpiIterator::__vpiIterator()
+مضمن __vpiIterator::__vpiIterator()
 { }
 
-int __vpiIterator::get_type_code(void) const
-{ return vpiIterator; }
+صحيح __vpiIterator::get_type_کوڈ(فراغ) ثابت
+{ أرجع vpiIterator; }
 
-__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(void)
-{ return &iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(فراغ)
+{ أرجع &iterator_free_object; }
 
-vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
-			     bool free_args_flag)
+vpiHandle vpip_make_iterator(بنانشانی nargs, vpiHandle*دلیلاں,
+			     منطقي free_دلیلاں_flag)
 {
-      struct __vpiIterator*res = new __vpiIterator;
-      res->args = args;
+      بنية __vpiIterator*res = جديد __vpiIterator;
+      res->دلیلاں = دلیلاں;
       res->nargs = nargs;
-      res->next  = 0;
+      res->اگلا_2  = 0;
 
-      res->free_args_flag = free_args_flag;
+      res->free_دلیلاں_flag = free_دلیلاں_flag;
 
-      return res;
+      أرجع res;
 }
 
 /*
  * The vpi_scan function only applies to iterators. It returns the
  * next vpiHandle in the iterated list.
  */
-vpiHandle vpi_scan(vpiHandle ref)
+vpiHandle vpi_جانچ(vpiHandle ref)
 {
-      if (ref == 0) {
+      إذا (ref == 0) {
 	    fprintf(stderr, "ERROR: NULL handle passed to vpi_scan.\n");
-	    assert(0);
-	    return 0;
+	    أكد(0);
+	    أرجع 0;
       }
 
-      if (struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
-	    if (hp->next == hp->nargs) {
+      إذا (بنية __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
+	    إذا (hp->اگلا_2 == hp->nargs) {
 		  vpi_free_object(ref);
-		  return 0;
+		  أرجع 0;
 	    }
 
-	    return hp->args[hp->next++];
+	    أرجع hp->دلیلاں[hp->اگلا_2++];
       }
 
-      return ref->vpi_index(0);
+      أرجع ref->vpi_اشاریہ(0);
 }

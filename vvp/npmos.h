@@ -1,5 +1,5 @@
-#ifndef IVL_npmos_H
-#define IVL_npmos_H
+#جے_بنا_تعریف IVL_npmos_H
+#تعریف_کرو IVL_npmos_H
 /*
  * Copyright (c) 2005-2025 Stephen Williams (steve@icarus.com)
  *
@@ -43,34 +43,34 @@
  * flag to the constructor activates this inversion.
  */
 
-class vvp_fun_pmos_ : public vvp_net_fun_t {
+class vvp_fun_pmos_ : عام vvp_net_fun_t {
 
-    public:
+    عام:
       explicit vvp_fun_pmos_(bool enable_invert, bool resistive);
 
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      مجازی فراغ recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                              vvp_context_t) override;
-      virtual void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-		                unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      virtual void recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-		                unsigned base, unsigned vwid) override;
-      virtual void recv_real(vvp_net_ptr_t port, double real,
+      مجازی فراغ recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+		                بنانشانی ادھار, بنانشانی vwid, vvp_context_t ctx) override;
+      مجازی فراغ recv_vec8_pv(vvp_net_ptr_t ptr, ثابت vvp_vector8_t&ثنائی_ہندسہ,
+		                بنانشانی ادھار, بنانشانی vwid) override;
+      مجازی فراغ recv_real(vvp_net_ptr_t پورٹ, مزدوج real,
                              vvp_context_t ctx) override;
 
-    protected:
-      void generate_output_(vvp_net_ptr_t port);
+    محمي:
+      فراغ generate_output_(vvp_net_ptr_t پورٹ);
 
-      vvp_vector8_t bit_;
+      vvp_vector8_t ثنائی_ہندسہ_2;
       vvp_vector4_t en_;
       bool inv_en_, resistive_;
 };
 
-class vvp_fun_pmos  : public vvp_fun_pmos_ {
+class vvp_fun_pmos  : عام vvp_fun_pmos_ {
 
-    public:
+    عام:
       explicit vvp_fun_pmos(bool enable_invert);
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      مجازی فراغ recv_vec8(vvp_net_ptr_t پورٹ, ثابت vvp_vector8_t&ثنائی_ہندسہ) override;
 };
 
 /*
@@ -78,12 +78,12 @@ class vvp_fun_pmos  : public vvp_fun_pmos_ {
  * only difference is that the input strength is reduced as it passes
  * through the device.
  */
-class vvp_fun_rpmos  : public vvp_fun_pmos_ {
+class vvp_fun_rpmos  : عام vvp_fun_pmos_ {
 
-    public:
+    عام:
       explicit vvp_fun_rpmos(bool enable_invert);
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      مجازی فراغ recv_vec8(vvp_net_ptr_t پورٹ, ثابت vvp_vector8_t&ثنائی_ہندسہ) override;
 };
 
 /*
@@ -107,40 +107,40 @@ class vvp_fun_rpmos  : public vvp_fun_pmos_ {
  *    H | 1 x x
  */
 
-class vvp_fun_cmos_ : public vvp_net_fun_t {
-    public:
+class vvp_fun_cmos_ : عام vvp_net_fun_t {
+    عام:
       explicit vvp_fun_cmos_(bool resistive);
 
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      مجازی فراغ recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                              vvp_context_t) override;
-      virtual void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-                                unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      virtual void recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-                              unsigned base, unsigned vwid) override;
-      virtual void recv_real(vvp_net_ptr_t port, double real,
+      مجازی فراغ recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+                                بنانشانی ادھار, بنانشانی vwid, vvp_context_t ctx) override;
+      مجازی فراغ recv_vec8_pv(vvp_net_ptr_t ptr, ثابت vvp_vector8_t&ثنائی_ہندسہ,
+                              بنانشانی ادھار, بنانشانی vwid) override;
+      مجازی فراغ recv_real(vvp_net_ptr_t پورٹ, مزدوج real,
                              vvp_context_t) override;
 
-    protected:
-      void generate_output_(vvp_net_ptr_t port);
+    محمي:
+      فراغ generate_output_(vvp_net_ptr_t پورٹ);
 
-      vvp_vector8_t bit_;
+      vvp_vector8_t ثنائی_ہندسہ_2;
       vvp_vector4_t n_en_;
       vvp_vector4_t p_en_;
       bool resistive_;
 };
 
-class vvp_fun_cmos : public vvp_fun_cmos_ {
-    public:
+class vvp_fun_cmos : عام vvp_fun_cmos_ {
+    عام:
       explicit vvp_fun_cmos();
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      مجازی فراغ recv_vec8(vvp_net_ptr_t پورٹ, ثابت vvp_vector8_t&ثنائی_ہندسہ) override;
 };
 
-class vvp_fun_rcmos : public vvp_fun_cmos_ {
-    public:
+class vvp_fun_rcmos : عام vvp_fun_cmos_ {
+    عام:
       explicit vvp_fun_rcmos();
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      مجازی فراغ recv_vec8(vvp_net_ptr_t پورٹ, ثابت vvp_vector8_t&ثنائی_ہندسہ) override;
 };
 
-#endif /* IVL_npmos_H */
+#جے_انت /* IVL_npmos_H */

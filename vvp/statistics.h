@@ -1,5 +1,5 @@
-#ifndef IVL_statistics_H
-#define IVL_statistics_H
+#جے_بنا_تعریف IVL_statistics_H
+#تعریف_کرو IVL_statistics_H
 /*
  * Copyright (c) 2002-2014 Stephen Williams (steve@icarus.com)
  *
@@ -20,46 +20,46 @@
  */
 
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
-#ifdef __SUNPRO_CC
+#جے_تعریف_شدہ __SUNPRO_CC
 # include  <stddef.h>
-#else
+#وإلا
 # include  <cstddef>
-#endif
+#جے_انت
 
-extern unsigned long count_opcodes;
-extern unsigned long count_functors;
-extern unsigned long count_functors_logic;
-extern unsigned long count_functors_bufif;
-extern unsigned long count_functors_resolv;
-extern unsigned long count_functors_sig;
-extern unsigned long count_filters;
-extern unsigned long count_vvp_nets;
-extern unsigned long count_vpi_nets;
-extern unsigned long count_vpi_scopes;
+خارجي بنانشانی لما گنتی_opcodes;
+خارجي بنانشانی لما گنتی_functors;
+خارجي بنانشانی لما گنتی_functors_logic;
+خارجي بنانشانی لما گنتی_functors_bufif;
+خارجي بنانشانی لما گنتی_functors_resolv;
+خارجي بنانشانی لما گنتی_functors_sig;
+خارجي بنانشانی لما گنتی_filters;
+خارجي بنانشانی لما گنتی_vvp_nets;
+خارجي بنانشانی لما گنتی_vpi_nets;
+خارجي بنانشانی لما گنتی_vpi_scopes;
 
-extern unsigned long count_net_arrays;
-extern unsigned long count_net_array_words;
-extern unsigned long count_var_arrays;
-extern unsigned long count_var_array_words;
-extern unsigned long count_real_arrays;
-extern unsigned long count_real_array_words;
+خارجي بنانشانی لما گنتی_net_arrays;
+خارجي بنانشانی لما گنتی_net_array_الفاظ;
+خارجي بنانشانی لما گنتی_var_arrays;
+خارجي بنانشانی لما گنتی_var_array_الفاظ;
+خارجي بنانشانی لما گنتی_real_arrays;
+خارجي بنانشانی لما گنتی_real_array_الفاظ;
 
 
-extern unsigned long count_time_events;
-extern unsigned long count_time_pool(void);
+خارجي بنانشانی لما گنتی_ویلا_events;
+خارجي بنانشانی لما گنتی_ویلا_pool(فراغ);
 
-extern unsigned long count_assign_events;
-extern unsigned long count_assign4_pool(void);
-extern unsigned long count_assign8_pool(void);
-extern unsigned long count_assign_real_pool(void);
-extern unsigned long count_assign_aword_pool(void);
-extern unsigned long count_assign_arword_pool(void);
+خارجي بنانشانی لما گنتی_سونپو_events;
+خارجي بنانشانی لما گنتی_assign4_pool(فراغ);
+خارجي بنانشانی لما گنتی_assign8_pool(فراغ);
+خارجي بنانشانی لما گنتی_سونپو_real_pool(فراغ);
+خارجي بنانشانی لما گنتی_سونپو_aword_pool(فراغ);
+خارجي بنانشانی لما گنتی_سونپو_arword_pool(فراغ);
 
-extern unsigned long count_gen_events;
-extern unsigned long count_gen_pool(void);
+خارجي بنانشانی لما گنتی_gen_events;
+خارجي بنانشانی لما گنتی_gen_pool(فراغ);
 
-extern size_t size_opcodes;
-extern size_t size_vvp_nets;
-extern size_t size_vvp_net_funs;
+خارجي size_t ناپ_opcodes;
+خارجي size_t ناپ_vvp_nets;
+خارجي size_t ناپ_vvp_net_funs;
 
-#endif /* IVL_statistics_H */
+#جے_انت /* IVL_statistics_H */

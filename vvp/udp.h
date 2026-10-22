@@ -1,5 +1,5 @@
-#ifndef IVL_udp_H
-#define IVL_udp_H
+#جے_بنا_تعریف IVL_udp_H
+#تعریف_کرو IVL_udp_H
 /*
  * Copyright (c) 2005-2025 Stephen Williams (steve@icarus.com)
  *
@@ -25,32 +25,32 @@
 # include  "vvp_net.h"
 # include  "schedule.h"
 
-struct udp_levels_table;
+بنية udp_پدھراں_جدول;
 
-struct vvp_udp_s {
+بنية vvp_udp_s {
 
-    public:
-      explicit vvp_udp_s(const char*label, char*name, unsigned ports,
+    عام:
+      explicit vvp_udp_s(ثابت حرف*label, حرف*name, بنانشانی ports,
                          vvp_bit4_t init, bool type);
-      virtual ~vvp_udp_s();
+      مجازی ~vvp_udp_s();
 
 	// Return the number of input ports for the defined UDP. This
 	// does *not* include the current output value for a
 	// sequential UDP.
-      unsigned port_count() const;
-      bool is_sequential() const { return seq_; };
-      char *name() { return name_; }
+      بنانشانی پورٹ_گنتی() ثابت;
+      bool is_sequential() ثابت { أرجع seq_; };
+      حرف *name() { أرجع name_; }
 
 	// Return the initial output value.
-      vvp_bit4_t get_init() const;
+      vvp_bit4_t get_init() ثابت;
 
-      virtual vvp_bit4_t calculate_output(const udp_levels_table&cur,
-					  const udp_levels_table&prev,
-					  vvp_bit4_t cur_out) =0;
+      مجازی vvp_bit4_t calculate_output(ثابت udp_پدھراں_جدول&cur,
+					  ثابت udp_پدھراں_جدول&prev,
+					  vvp_bit4_t cur_باہرلا) =0;
 
-    private:
-      char *name_;
-      unsigned ports_;
+    خاص:
+      حرف *name_;
+      بنانشانی ports_;
       vvp_bit4_t init_;
       bool seq_;
 };
@@ -104,33 +104,33 @@ struct vvp_udp_s {
  * Only 0, 1 and x characters are allowed in the output position.
  */
 
-struct udp_levels_table {
-      unsigned long mask0;
-      unsigned long mask1;
-      unsigned long maskx;
+بنية udp_پدھراں_جدول {
+      بنانشانی لما mask0;
+      بنانشانی لما mask1;
+      بنانشانی لما maskx;
 };
-extern std::ostream& operator<< (std::ostream&o, const struct udp_levels_table&t);
+خارجي std::ostream& عامل<< (std::ostream&o, ثابت بنية udp_پدھراں_جدول&t);
 
-class vvp_udp_comb_s : public vvp_udp_s {
+class vvp_udp_comb_s : عام vvp_udp_s {
 
-    public:
-      vvp_udp_comb_s(const char*label, char*name__, unsigned ports);
+    عام:
+      vvp_udp_comb_s(ثابت حرف*label, حرف*name__, بنانشانی ports);
       ~vvp_udp_comb_s() override;
-      void compile_table(char**tab);
+      فراغ compile_جدول(حرف**tab);
 
 	// Test the cur table with the compiled rows, and return the
 	// bit value that matches.
-      vvp_bit4_t test_levels(const udp_levels_table&cur);
+      vvp_bit4_t test_پدھراں(ثابت udp_پدھراں_جدول&cur);
 
-      vvp_bit4_t calculate_output(const udp_levels_table&cur,
-				  const udp_levels_table&prev,
-				  vvp_bit4_t cur_out) override;
+      vvp_bit4_t calculate_output(ثابت udp_پدھراں_جدول&cur,
+				  ثابت udp_پدھراں_جدول&prev,
+				  vvp_bit4_t cur_باہرلا) override;
 
-    private:
+    خاص:
 	// Level sensitive rows of the device.
-      struct udp_levels_table*levels0_;
-      struct udp_levels_table*levels1_;
-      unsigned nlevels0_, nlevels1_;
+      بنية udp_پدھراں_جدول*levels0_;
+      بنية udp_پدھراں_جدول*levels1_;
+      بنانشانی nlevels0_, nlevels1_;
 };
 
 /*
@@ -167,53 +167,53 @@ class vvp_udp_comb_s : public vvp_udp_s {
  * edge case, the mask* members give the final position and the
  * edge_mask* bits the initial position of the bit.
  */
-struct udp_edges_table {
-      unsigned long edge_position : 8;
-      unsigned long edge_mask0 : 1;
-      unsigned long edge_mask1 : 1;
-      unsigned long edge_maskx : 1;
-      unsigned long mask0;
-      unsigned long mask1;
-      unsigned long maskx;
+بنية udp_کنارے_جدول {
+      بنانشانی لما کنارا_position : 8;
+      بنانشانی لما کنارا_mask0 : 1;
+      بنانشانی لما کنارا_mask1 : 1;
+      بنانشانی لما کنارا_maskx : 1;
+      بنانشانی لما mask0;
+      بنانشانی لما mask1;
+      بنانشانی لما maskx;
 };
 
-class vvp_udp_seq_s : public vvp_udp_s {
+class vvp_udp_seq_s : عام vvp_udp_s {
 
-    public:
-      vvp_udp_seq_s(const char*label, char*name__, unsigned ports, vvp_bit4_t init);
+    عام:
+      vvp_udp_seq_s(ثابت حرف*label, حرف*name__, بنانشانی ports, vvp_bit4_t init);
       ~vvp_udp_seq_s() override;
 
-      void compile_table(char**tab);
+      فراغ compile_جدول(حرف**tab);
 
-      vvp_bit4_t calculate_output(const udp_levels_table&cur,
-				  const udp_levels_table&prev,
-				  vvp_bit4_t cur_out) override;
+      vvp_bit4_t calculate_output(ثابت udp_پدھراں_جدول&cur,
+				  ثابت udp_پدھراں_جدول&prev,
+				  vvp_bit4_t cur_باہرلا) override;
 
-    private:
-      vvp_bit4_t test_levels_(const udp_levels_table&cur);
+    خاص:
+      vvp_bit4_t test_پدھراں_2(ثابت udp_پدھراں_جدول&cur);
 
 	// Level sensitive rows of the device.
-      struct udp_levels_table*levels0_;
-      struct udp_levels_table*levels1_;
-      struct udp_levels_table*levelsx_;
-      struct udp_levels_table*levelsL_;
-      unsigned nlevels0_, nlevels1_, nlevelsx_, nlevelsL_;
+      بنية udp_پدھراں_جدول*levels0_;
+      بنية udp_پدھراں_جدول*levels1_;
+      بنية udp_پدھراں_جدول*levelsx_;
+      بنية udp_پدھراں_جدول*پدھراں_L;
+      بنانشانی nlevels0_, nlevels1_, nlevelsx_, nlevelsL_;
 
-      vvp_bit4_t test_edges_(const udp_levels_table&cur,
-			     const udp_levels_table&prev);
+      vvp_bit4_t test_کنارے(ثابت udp_پدھراں_جدول&cur,
+			     ثابت udp_پدھراں_جدول&prev);
 
 	// Edge sensitive rows of the device
-      struct udp_edges_table*edges0_;
-      struct udp_edges_table*edges1_;
-      struct udp_edges_table*edgesL_;
-      unsigned nedges0_, nedges1_, nedgesL_;
+      بنية udp_کنارے_جدول*edges0_;
+      بنية udp_کنارے_جدول*edges1_;
+      بنية udp_کنارے_جدول*کنارے_L;
+      بنانشانی nedges0_, nedges1_, nedgesL_;
 
 };
 
 /*
  * This looks up a UDP definition from its LABEL.
  */
-struct vvp_udp_s *udp_find(const char *label);
+بنية vvp_udp_s *udp_لبھو(ثابت حرف *label);
 
 /*
  * The udp_fun_core is the core of the udp instance in the
@@ -222,20 +222,20 @@ struct vvp_udp_s *udp_find(const char *label);
  * the vvp_wide_fun_t objects and processes them to generate the
  * output to be sent.
  */
-class vvp_udp_fun_core  : public vvp_wide_fun_core, private vvp_gen_event_s {
+class vvp_udp_fun_core  : عام vvp_wide_fun_core, خاص vvp_gen_event_s {
 
-    public:
+    عام:
       vvp_udp_fun_core(vvp_net_t*net, vvp_udp_s*def);
       ~vvp_udp_fun_core() override;
 
-      void recv_vec4_from_inputs(unsigned) override;
+      فراغ recv_vec4_from_inputs(بنانشانی) override;
 
-    private:
-      void run_run() override;
+    خاص:
+      فراغ لگاتار_لگاتار() override;
 
       vvp_udp_s*def_;
-      vvp_bit4_t cur_out_;
-      udp_levels_table current_;
+      vvp_bit4_t cur_باہرلا_2;
+      udp_پدھراں_جدول current_;
 };
 
-#endif /* IVL_udp_H */
+#جے_انت /* IVL_udp_H */

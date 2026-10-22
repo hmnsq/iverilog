@@ -22,593 +22,593 @@
 # include  "vpi_priv.h"
 # include  "config.h"
 # include  <map>
-#ifdef CHECK_WITH_VALGRIND
+#جے_تعریف_شدہ CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#جے_انت
 # include  <cassert>
 
-using namespace std;
+ورتوں نطاق std;
 
 /*
  * This class_property_t class is an abstract base class for
  * representing a property of an instance. The definition keeps and
  * array (of pointers) of these in order to define the the class.
  */
-class class_property_t {
-    public:
-      inline class_property_t() { offset_ = 0; }
-      virtual ~class_property_t() =0;
+صنف class_property_t {
+    عام:
+      مضمن class_property_t() { وتھ = 0; }
+      مجازی ~class_property_t() =0;
 	// How much space does an instance of this property require?
-      virtual size_t instance_size() const =0;
+      مجازی size_t instance_ناپ() ثابت =0;
 
-      void set_offset(size_t off) { offset_ = off; }
+      فراغ سیٹ_وتھ(size_t off) { وتھ = off; }
 
-    public:
-      virtual void construct(char*buf) const;
-      virtual void destruct(char*buf) const;
+    عام:
+      مجازی فراغ construct(حرف*buf) ثابت;
+      مجازی فراغ destruct(حرف*buf) ثابت;
 
-      virtual void set_vec4(char*buf, const vvp_vector4_t&val);
-      virtual void get_vec4(char*buf, vvp_vector4_t&val);
+      مجازی فراغ سیٹ_vec4(حرف*buf, ثابت vvp_vector4_t&val);
+      مجازی فراغ get_vec4(حرف*buf, vvp_vector4_t&val);
 
-      virtual void set_real(char*buf, double val);
-      virtual double get_real(char*buf);
+      مجازی فراغ سیٹ_real(حرف*buf, مزدوج val);
+      مجازی مزدوج get_real(حرف*buf);
 
-      virtual void set_string(char*buf, const std::string&val);
-      virtual string get_string(char*buf);
+      مجازی فراغ سیٹ_string(حرف*buf, ثابت std::string&val);
+      مجازی string get_string(حرف*buf);
 
-      virtual void set_object(char*buf, const vvp_object_t&val, uint64_t element);
-      virtual void get_object(char*buf, vvp_object_t&val, uint64_t element);
+      مجازی فراغ سیٹ_object(حرف*buf, ثابت vvp_object_t&val, uint64_t element);
+      مجازی فراغ get_object(حرف*buf, vvp_object_t&val, uint64_t element);
 
 	// Implement polymorphic shallow copy.
-      virtual void copy(char*buf, char*src) = 0;
+      مجازی فراغ copy(حرف*buf, حرف*src) = 0;
 
-    protected:
-      size_t offset_;
+    محمي:
+      size_t وتھ;
 };
 
 class_property_t::~class_property_t()
 {
 }
 
-void class_property_t::construct(char*) const
+فراغ class_property_t::construct(حرف*) ثابت
 {
 }
 
-void class_property_t::destruct(char*) const
+فراغ class_property_t::destruct(حرف*) ثابت
 {
 }
 
-void class_property_t::set_vec4(char*, const vvp_vector4_t&)
+فراغ class_property_t::سیٹ_vec4(حرف*, ثابت vvp_vector4_t&)
 {
-      assert(0);
+      أكد(0);
 }
 
-void class_property_t::get_vec4(char*, vvp_vector4_t&)
+فراغ class_property_t::get_vec4(حرف*, vvp_vector4_t&)
 {
-      assert(0);
+      أكد(0);
 }
 
-void class_property_t::set_real(char*, double)
+فراغ class_property_t::سیٹ_real(حرف*, مزدوج)
 {
-      assert(0);
+      أكد(0);
 }
 
-double class_property_t::get_real(char*)
+مزدوج class_property_t::get_real(حرف*)
 {
-      assert(0);
-      return 0.0;
+      أكد(0);
+      أرجع 0.0;
 }
 
-void class_property_t::set_string(char*, const string&)
+فراغ class_property_t::سیٹ_string(حرف*, ثابت string&)
 {
-      assert(0);
+      أكد(0);
 }
 
-string class_property_t::get_string(char*)
+string class_property_t::get_string(حرف*)
 {
-      assert(0);
-      return "";
+      أكد(0);
+      أرجع "";
 }
 
-void class_property_t::set_object(char*, const vvp_object_t&, uint64_t)
+فراغ class_property_t::سیٹ_object(حرف*, ثابت vvp_object_t&, uint64_t)
 {
-      assert(0);
+      أكد(0);
 }
 
-void class_property_t::get_object(char*, vvp_object_t&, uint64_t)
+فراغ class_property_t::get_object(حرف*, vvp_object_t&, uint64_t)
 {
-      assert(0);
+      أكد(0);
 }
 
 /*
  */
-template <class T> class property_atom : public class_property_t {
-    public:
-      inline explicit property_atom(void) { }
+سانچا <صنف T> صنف property_atom : عام class_property_t {
+    عام:
+      مضمن واضح property_atom(فراغ) { }
       ~property_atom() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_ناپ() ثابت override { أرجع حجم(T); }
 
-    public:
-      void construct(char*buf) const override
-      { T*tmp = reinterpret_cast<T*> (buf+offset_);
+    عام:
+      فراغ construct(حرف*buf) ثابت override
+      { T*tmp = reinterpret_cast<T*> (buf+وتھ);
 	*tmp = 0;
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      فراغ سیٹ_vec4(حرف*buf, ثابت vvp_vector4_t&val) override;
+      فراغ get_vec4(حرف*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      فراغ copy(حرف*dst, حرف*src) override;
 };
 
-class property_bit : public class_property_t {
-    public:
-      explicit inline property_bit(size_t wid): wid_(wid) { }
-      ~property_bit() override { }
+صنف property_ثنائی_ہندسہ : عام class_property_t {
+    عام:
+      واضح مضمن property_ثنائی_ہندسہ(size_t wid): wid_(wid) { }
+      ~property_ثنائی_ہندسہ() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector2_t); }
+      size_t instance_ناپ() ثابت override { أرجع حجم(vvp_vector2_t); }
 
-    public:
-      void construct(char*buf) const override
-      { new (buf+offset_) vvp_vector2_t (0, wid_); }
+    عام:
+      فراغ construct(حرف*buf) ثابت override
+      { جديد (buf+وتھ) vvp_vector2_t (0, wid_); }
 
-      void destruct(char*buf) const override
-      { vvp_vector2_t*tmp = reinterpret_cast<vvp_vector2_t*>(buf+offset_);
+      فراغ destruct(حرف*buf) ثابت override
+      { vvp_vector2_t*tmp = reinterpret_cast<vvp_vector2_t*>(buf+وتھ);
 	tmp->~vvp_vector2_t();
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      فراغ سیٹ_vec4(حرف*buf, ثابت vvp_vector4_t&val) override;
+      فراغ get_vec4(حرف*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      فراغ copy(حرف*dst, حرف*src) override;
 
-    private:
+    خاص:
       size_t wid_;
 };
 
-class property_logic : public class_property_t {
-    public:
-      explicit inline property_logic(size_t wid): wid_(wid) { }
+صنف property_logic : عام class_property_t {
+    عام:
+      واضح مضمن property_logic(size_t wid): wid_(wid) { }
       ~property_logic() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector4_t); }
+      size_t instance_ناپ() ثابت override { أرجع حجم(vvp_vector4_t); }
 
-    public:
-      void construct(char*buf) const override
-      { new (buf+offset_) vvp_vector4_t (wid_); }
+    عام:
+      فراغ construct(حرف*buf) ثابت override
+      { جديد (buf+وتھ) vvp_vector4_t (wid_); }
 
-      void destruct(char*buf) const override
-      { vvp_vector4_t*tmp = reinterpret_cast<vvp_vector4_t*>(buf+offset_);
+      فراغ destruct(حرف*buf) ثابت override
+      { vvp_vector4_t*tmp = reinterpret_cast<vvp_vector4_t*>(buf+وتھ);
 	tmp->~vvp_vector4_t();
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      فراغ سیٹ_vec4(حرف*buf, ثابت vvp_vector4_t&val) override;
+      فراغ get_vec4(حرف*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      فراغ copy(حرف*dst, حرف*src) override;
 
-    private:
+    خاص:
       size_t wid_;
 };
 
-template <class T> class property_real : public class_property_t {
-    public:
-      inline explicit property_real(void) { }
+سانچا <صنف T> صنف property_real : عام class_property_t {
+    عام:
+      مضمن واضح property_real(فراغ) { }
       ~property_real() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_ناپ() ثابت override { أرجع حجم(T); }
 
-    public:
-      void construct(char*buf) const override
-      { T*tmp = reinterpret_cast<T*> (buf+offset_);
+    عام:
+      فراغ construct(حرف*buf) ثابت override
+      { T*tmp = reinterpret_cast<T*> (buf+وتھ);
 	*tmp = 0.0;
       }
 
-      void set_real(char*buf, double val) override;
-      double get_real(char*buf) override;
+      فراغ سیٹ_real(حرف*buf, مزدوج val) override;
+      مزدوج get_real(حرف*buf) override;
 
-      void copy(char*dst, char*src) override;
+      فراغ copy(حرف*dst, حرف*src) override;
 };
 
-class property_string : public class_property_t {
-    public:
-      inline explicit property_string(void) { }
+صنف property_string : عام class_property_t {
+    عام:
+      مضمن واضح property_string(فراغ) { }
       ~property_string() override { }
 
-      size_t instance_size() const override { return sizeof(std::string); }
+      size_t instance_ناپ() ثابت override { أرجع حجم(std::string); }
 
-    public:
-      void construct(char*buf) const override
-      { /* string*tmp = */ new (buf+offset_) string; }
+    عام:
+      فراغ construct(حرف*buf) ثابت override
+      { /* string*tmp = */ جديد (buf+وتھ) string; }
 
-      void destruct(char*buf) const override
-      { string*tmp = reinterpret_cast<string*> (buf+offset_);
+      فراغ destruct(حرف*buf) ثابت override
+      { string*tmp = reinterpret_cast<string*> (buf+وتھ);
 	tmp->~string();
       }
 
-      void set_string(char*buf, const string&) override;
-      string get_string(char*buf) override;
+      فراغ سیٹ_string(حرف*buf, ثابت string&) override;
+      string get_string(حرف*buf) override;
 
-      void copy(char*dst, char*src) override;
+      فراغ copy(حرف*dst, حرف*src) override;
 };
 
-class property_object : public class_property_t {
-    public:
-      inline explicit property_object(uint64_t as): array_size_(as==0? 1 : as) { }
+صنف property_object : عام class_property_t {
+    عام:
+      مضمن واضح property_object(uint64_t as): array_ناپ(as==0? 1 : as) { }
       ~property_object() override { }
 
-      size_t instance_size() const override { return array_size_ * sizeof(vvp_object_t); }
+      size_t instance_ناپ() ثابت override { أرجع array_ناپ * حجم(vvp_object_t); }
 
-    public:
-      void construct(char*buf) const override;
+    عام:
+      فراغ construct(حرف*buf) ثابت override;
 
-      void destruct(char*buf) const override;
+      فراغ destruct(حرف*buf) ثابت override;
 
-      void set_object(char*buf, const vvp_object_t&, uint64_t) override;
-      void get_object(char*buf, vvp_object_t&, uint64_t) override;
+      فراغ سیٹ_object(حرف*buf, ثابت vvp_object_t&, uint64_t) override;
+      فراغ get_object(حرف*buf, vvp_object_t&, uint64_t) override;
 
-      void copy(char*dst, char*src) override;
+      فراغ copy(حرف*dst, حرف*src) override;
 
-    private:
-      size_t array_size_;
+    خاص:
+      size_t array_ناپ;
 };
 
-template <class T> void property_atom<T>::set_vec4(char*buf, const vvp_vector4_t&val)
+سانچا <صنف T> فراغ property_atom<T>::سیٹ_vec4(حرف*buf, ثابت vvp_vector4_t&val)
 {
-      T*tmp = reinterpret_cast<T*> (buf+offset_);
-      bool flag = vector4_to_value(val, *tmp, true, false);
-      assert(flag);
+      T*tmp = reinterpret_cast<T*> (buf+وتھ);
+      منطقي flag = vector4_منزل_قدر(val, *tmp, سچ, خطأ);
+      أكد(flag);
 }
 
-template <class T> void property_atom<T>::get_vec4(char*buf, vvp_vector4_t&val)
+سانچا <صنف T> فراغ property_atom<T>::get_vec4(حرف*buf, vvp_vector4_t&val)
 {
-      T*src = reinterpret_cast<T*> (buf+offset_);
-      const size_t tmp_cnt = sizeof(T)<sizeof(unsigned long)
+      T*src = reinterpret_cast<T*> (buf+وتھ);
+      ثابت size_t tmp_cnt = حجم(T)<حجم(بنانشانی لما)
 				       ? 1
-				       : sizeof(T) / sizeof(unsigned long);
-      unsigned long tmp[tmp_cnt];
+				       : حجم(T) / حجم(بنانشانی لما);
+      بنانشانی لما tmp[tmp_cnt];
       tmp[0] = src[0];
 
-      for (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
-	    tmp[idx] = src[0] >> idx * 8 * sizeof(tmp[0]);
+      لكل (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
+	    tmp[idx] = src[0] >> idx * 8 * حجم(tmp[0]);
 
-      val.resize(8*sizeof(T));
+      val.resize(8*حجم(T));
       val.setarray(0, val.size(), tmp);
 }
 
-template <class T> void property_atom<T>::copy(char*dst, char*src)
+سانچا <صنف T> فراغ property_atom<T>::copy(حرف*dst, حرف*src)
 {
-      T*dst_obj = reinterpret_cast<T*> (dst+offset_);
-      T*src_obj = reinterpret_cast<T*> (src+offset_);
+      T*dst_obj = reinterpret_cast<T*> (dst+وتھ);
+      T*src_obj = reinterpret_cast<T*> (src+وتھ);
       *dst_obj = *src_obj;
 }
 
-void property_bit::set_vec4(char*buf, const vvp_vector4_t&val)
+فراغ property_ثنائی_ہندسہ::سیٹ_vec4(حرف*buf, ثابت vvp_vector4_t&val)
 {
-      vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
+      vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+وتھ);
       *obj = val;
 }
 
-void property_bit::get_vec4(char*buf, vvp_vector4_t&val)
+فراغ property_ثنائی_ہندسہ::get_vec4(حرف*buf, vvp_vector4_t&val)
 {
-      const vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
-      val = vector2_to_vector4(*obj, obj->size());
+      ثابت vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+وتھ);
+      val = vector2_منزل_vector4(*obj, obj->size());
 }
 
-void property_bit::copy(char*dst, char*src)
+فراغ property_ثنائی_ہندسہ::copy(حرف*dst, حرف*src)
 {
-      vvp_vector2_t*dst_obj = reinterpret_cast<vvp_vector2_t*> (dst+offset_);
-      const vvp_vector2_t*src_obj = reinterpret_cast<vvp_vector2_t*> (src+offset_);
+      vvp_vector2_t*dst_obj = reinterpret_cast<vvp_vector2_t*> (dst+وتھ);
+      ثابت vvp_vector2_t*src_obj = reinterpret_cast<vvp_vector2_t*> (src+وتھ);
       *dst_obj = *src_obj;
 }
 
-void property_logic::set_vec4(char*buf, const vvp_vector4_t&val)
+فراغ property_logic::سیٹ_vec4(حرف*buf, ثابت vvp_vector4_t&val)
 {
-      vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
+      vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+وتھ);
       *obj = val;
 }
 
-void property_logic::get_vec4(char*buf, vvp_vector4_t&val)
+فراغ property_logic::get_vec4(حرف*buf, vvp_vector4_t&val)
 {
-      const vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
+      ثابت vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+وتھ);
       val = *obj;
 }
 
-void property_logic::copy(char*dst, char*src)
+فراغ property_logic::copy(حرف*dst, حرف*src)
 {
-      vvp_vector4_t*dst_obj = reinterpret_cast<vvp_vector4_t*> (dst+offset_);
-      const vvp_vector4_t*src_obj = reinterpret_cast<vvp_vector4_t*> (src+offset_);
+      vvp_vector4_t*dst_obj = reinterpret_cast<vvp_vector4_t*> (dst+وتھ);
+      ثابت vvp_vector4_t*src_obj = reinterpret_cast<vvp_vector4_t*> (src+وتھ);
       *dst_obj = *src_obj;
 }
 
-template <class T> void property_real<T>::set_real(char*buf, double val)
+سانچا <صنف T> فراغ property_real<T>::سیٹ_real(حرف*buf, مزدوج val)
 {
-      T*tmp = reinterpret_cast<T*>(buf+offset_);
+      T*tmp = reinterpret_cast<T*>(buf+وتھ);
       *tmp = val;
 }
 
-template <class T> double property_real<T>::get_real(char*buf)
+سانچا <صنف T> مزدوج property_real<T>::get_real(حرف*buf)
 {
-      T*tmp = reinterpret_cast<T*>(buf+offset_);
-      return *tmp;
+      T*tmp = reinterpret_cast<T*>(buf+وتھ);
+      أرجع *tmp;
 }
 
-template <class T> void property_real<T>::copy(char*dst, char*src)
+سانچا <صنف T> فراغ property_real<T>::copy(حرف*dst, حرف*src)
 {
-      T*dst_obj = reinterpret_cast<T*> (dst+offset_);
-      T*src_obj = reinterpret_cast<T*> (src+offset_);
+      T*dst_obj = reinterpret_cast<T*> (dst+وتھ);
+      T*src_obj = reinterpret_cast<T*> (src+وتھ);
       *dst_obj = *src_obj;
 }
 
-void property_string::set_string(char*buf, const string&val)
+فراغ property_string::سیٹ_string(حرف*buf, ثابت string&val)
 {
-      string*tmp = reinterpret_cast<string*>(buf+offset_);
+      string*tmp = reinterpret_cast<string*>(buf+وتھ);
       *tmp = val;
 }
 
-string property_string::get_string(char*buf)
+string property_string::get_string(حرف*buf)
 {
-      const string*tmp = reinterpret_cast<string*>(buf+offset_);
-      return *tmp;
+      ثابت string*tmp = reinterpret_cast<string*>(buf+وتھ);
+      أرجع *tmp;
 }
 
-void property_string::copy(char*dst, char*src)
+فراغ property_string::copy(حرف*dst, حرف*src)
 {
-      string*dst_obj = reinterpret_cast<string*> (dst+offset_);
-      const string*src_obj = reinterpret_cast<string*> (src+offset_);
+      string*dst_obj = reinterpret_cast<string*> (dst+وتھ);
+      ثابت string*src_obj = reinterpret_cast<string*> (src+وتھ);
       *dst_obj = *src_obj;
 }
 
-void property_object::construct(char*buf) const
+فراغ property_object::construct(حرف*buf) ثابت
 {
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
-	    new (buf+offset_ + idx*sizeof(vvp_object_t)) vvp_object_t;
+      لكل (size_t idx = 0 ; idx < array_ناپ ; idx += 1)
+	    جديد (buf+وتھ + idx*حجم(vvp_object_t)) vvp_object_t;
 }
 
-void property_object::destruct(char*buf) const
+فراغ property_object::destruct(حرف*buf) ثابت
 {
-      vvp_object_t*tmp = reinterpret_cast<vvp_object_t*> (buf+offset_);
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      vvp_object_t*tmp = reinterpret_cast<vvp_object_t*> (buf+وتھ);
+      لكل (size_t idx = 0 ; idx < array_ناپ ; idx += 1)
 	    (tmp+idx)->~vvp_object_t();
 }
 
-void property_object::set_object(char*buf, const vvp_object_t&val, uint64_t idx)
+فراغ property_object::سیٹ_object(حرف*buf, ثابت vvp_object_t&val, uint64_t idx)
 {
-      assert(idx < array_size_);
-      vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
+      أكد(idx < array_ناپ);
+      vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+وتھ);
       tmp[idx] = val;
 }
 
-void property_object::get_object(char*buf, vvp_object_t&val, uint64_t idx)
+فراغ property_object::get_object(حرف*buf, vvp_object_t&val, uint64_t idx)
 {
-      assert(idx < array_size_);
-      const vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
+      أكد(idx < array_ناپ);
+      ثابت vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+وتھ);
       val = tmp[idx];
 }
 
-void property_object::copy(char*dst, char*src)
+فراغ property_object::copy(حرف*dst, حرف*src)
 {
-      vvp_object_t*dst_obj = reinterpret_cast<vvp_object_t*>(dst+offset_);
-      const vvp_object_t*src_obj = reinterpret_cast<vvp_object_t*>(src+offset_);
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      vvp_object_t*dst_obj = reinterpret_cast<vvp_object_t*>(dst+وتھ);
+      ثابت vvp_object_t*src_obj = reinterpret_cast<vvp_object_t*>(src+وتھ);
+      لكل (size_t idx = 0 ; idx < array_ناپ ; idx += 1)
 	    dst_obj[idx] = src_obj[idx];
 }
 
 /* **** */
 
-class_type::class_type(const string&nam, size_t nprop)
+class_type::class_type(ثابت string&nam, size_t nprop)
 : class_name_(nam), properties_(nprop)
 {
-      instance_size_ = 0;
+      instance_ناپ_2 = 0;
 }
 
 class_type::~class_type()
 {
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
-	    delete properties_[idx].type;
+      لكل (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+	    مٹاؤ properties_[idx].type;
 }
 
-void class_type::set_property(size_t idx, const string&name, const string&type, uint64_t array_size)
+فراغ class_type::سیٹ_property(size_t idx, ثابت string&name, ثابت string&type, uint64_t array_ناپ_2)
 {
-      assert(idx < properties_.size());
+      أكد(idx < properties_.size());
       properties_[idx].name = name;
 
-      if (type == "b8")
-	    properties_[idx].type = new property_atom<uint8_t>;
-      else if (type == "b16")
-	    properties_[idx].type = new property_atom<uint16_t>;
-      else if (type == "b32")
-	    properties_[idx].type = new property_atom<uint32_t>;
-      else if (type == "b64")
-	    properties_[idx].type = new property_atom<uint64_t>;
-      else if (type == "sb8")
-	    properties_[idx].type = new property_atom<int8_t>;
-      else if (type == "sb16")
-	    properties_[idx].type = new property_atom<int16_t>;
-      else if (type == "sb32")
-	    properties_[idx].type = new property_atom<int32_t>;
-      else if (type == "sb64")
-	    properties_[idx].type = new property_atom<int64_t>;
-      else if (type == "r")
-	    properties_[idx].type = new property_real<double>;
-      else if (type == "S")
-	    properties_[idx].type = new property_string;
-      else if (type == "o")
-	    properties_[idx].type = new property_object(array_size);
-      else if (type[0] == 'b') {
+      إذا (type == "b8")
+	    properties_[idx].type = جديد property_atom<uint8_t>;
+      وإلا إذا (type == "b16")
+	    properties_[idx].type = جديد property_atom<uint16_t>;
+      وإلا إذا (type == "b32")
+	    properties_[idx].type = جديد property_atom<uint32_t>;
+      وإلا إذا (type == "b64")
+	    properties_[idx].type = جديد property_atom<uint64_t>;
+      وإلا إذا (type == "sb8")
+	    properties_[idx].type = جديد property_atom<int8_t>;
+      وإلا إذا (type == "sb16")
+	    properties_[idx].type = جديد property_atom<int16_t>;
+      وإلا إذا (type == "sb32")
+	    properties_[idx].type = جديد property_atom<int32_t>;
+      وإلا إذا (type == "sb64")
+	    properties_[idx].type = جديد property_atom<int64_t>;
+      وإلا إذا (type == "r")
+	    properties_[idx].type = جديد property_real<مزدوج>;
+      وإلا إذا (type == "S")
+	    properties_[idx].type = جديد property_string;
+      وإلا إذا (type == "o")
+	    properties_[idx].type = جديد property_object(array_ناپ_2);
+      وإلا إذا (type[0] == 'b') {
 	    size_t wid = strtoul(type.c_str()+1, 0, 0);
-	    properties_[idx].type = new property_bit(wid);
-      } else if (type[0] == 'L') {
+	    properties_[idx].type = جديد property_ثنائی_ہندسہ(wid);
+      } وإلا إذا (type[0] == 'L') {
 	    size_t wid = strtoul(type.c_str()+1,0,0);
-	    properties_[idx].type = new property_logic(wid);
-      } else if (type[0] == 's' && type[1] == 'L') {
+	    properties_[idx].type = جديد property_logic(wid);
+      } وإلا إذا (type[0] == 's' && type[1] == 'L') {
 	    size_t wid = strtoul(type.c_str()+2,0,0);
-	    properties_[idx].type = new property_logic(wid);
-      } else {
+	    properties_[idx].type = جديد property_logic(wid);
+      } وإلا {
 	    properties_[idx].type = 0;
       }
 }
 
-void class_type::finish_setup(void)
+فراغ class_type::انت_تیاری(فراغ)
 {
-      map<size_t, vector<size_t> > size_map;
+      map<size_t, vector<size_t> > ناپ_map;
 	// Add up all the sizes to get a total instance size. This
 	// figures out how much memory a complete instance will need.
       size_t accum = 0;
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1) {
-	    assert(properties_[idx].type);
-	    size_t instance_size = properties_[idx].type->instance_size();
-	    accum += instance_size;
-	    size_map[instance_size].push_back(idx);
+      لكل (size_t idx = 0 ; idx < properties_.size() ; idx += 1) {
+	    أكد(properties_[idx].type);
+	    size_t instance_ناپ = properties_[idx].type->instance_ناپ();
+	    accum += instance_ناپ;
+	    ناپ_map[instance_ناپ].push_back(idx);
       }
 
-      instance_size_ = accum;
+      instance_ناپ_2 = accum;
 
 	// Now allocate the properties to offsets within an instance
 	// space. Allocate the properties largest objects first so
 	// that they are assured better alignment.
       accum = 0;
-      for (map<size_t, vector<size_t> >::reverse_iterator cur = size_map.rbegin()
-		 ; cur != size_map.rend() ; ++ cur) {
-	    for (size_t idx = 0 ; idx < cur->second.size() ; idx += 1) {
+      لكل (map<size_t, vector<size_t> >::reverse_iterator cur = ناپ_map.rbegin()
+		 ; cur != ناپ_map.rend() ; ++ cur) {
+	    لكل (size_t idx = 0 ; idx < cur->second.size() ; idx += 1) {
 		  size_t pid = cur->second[idx];
 		  class_property_t*ptype = properties_[pid].type;
-		  assert(ptype->instance_size() == cur->first);
-		  ptype->set_offset(accum);
-		  accum += cur->first;
+		  أكد(ptype->instance_ناپ() == cur->پہلا);
+		  ptype->سیٹ_وتھ(accum);
+		  accum += cur->پہلا;
 	    }
       }
 }
 
-class_type::inst_t class_type::instance_new() const
+class_type::inst_t class_type::instance_new() ثابت
 {
-      char*buf = new char [instance_size_];
+      حرف*buf = جديد حرف [instance_ناپ_2];
 
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      لكل (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->construct(buf);
 
-      return reinterpret_cast<inst_t> (buf);
+      أرجع reinterpret_cast<inst_t> (buf);
 }
 
-void class_type::instance_delete(class_type::inst_t obj) const
+فراغ class_type::instance_delete(class_type::inst_t obj) ثابت
 {
-      char*buf = reinterpret_cast<char*> (obj);
+      حرف*buf = reinterpret_cast<حرف*> (obj);
 
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      لكل (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->destruct(buf);
 
-      delete[]buf;
+      مٹاؤ[]buf;
 }
 
-void class_type::set_vec4(class_type::inst_t obj, size_t pid,
-			  const vvp_vector4_t&val) const
+فراغ class_type::سیٹ_vec4(class_type::inst_t obj, size_t pid,
+			  ثابت vvp_vector4_t&val) ثابت
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      properties_[pid].type->set_vec4(buf, val);
+      حرف*buf = reinterpret_cast<حرف*> (obj);
+      أكد(pid < properties_.size());
+      properties_[pid].type->سیٹ_vec4(buf, val);
 }
 
-void class_type::get_vec4(class_type::inst_t obj, size_t pid,
-			  vvp_vector4_t&val) const
+فراغ class_type::get_vec4(class_type::inst_t obj, size_t pid,
+			  vvp_vector4_t&val) ثابت
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      حرف*buf = reinterpret_cast<حرف*> (obj);
+      أكد(pid < properties_.size());
       properties_[pid].type->get_vec4(buf, val);
 }
 
-void class_type::set_real(class_type::inst_t obj, size_t pid,
-			  double val) const
+فراغ class_type::سیٹ_real(class_type::inst_t obj, size_t pid,
+			  مزدوج val) ثابت
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      properties_[pid].type->set_real(buf, val);
+      حرف*buf = reinterpret_cast<حرف*> (obj);
+      أكد(pid < properties_.size());
+      properties_[pid].type->سیٹ_real(buf, val);
 }
 
-double class_type::get_real(class_type::inst_t obj, size_t pid) const
+مزدوج class_type::get_real(class_type::inst_t obj, size_t pid) ثابت
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      return properties_[pid].type->get_real(buf);
+      حرف*buf = reinterpret_cast<حرف*> (obj);
+      أكد(pid < properties_.size());
+      أرجع properties_[pid].type->get_real(buf);
 }
 
-void class_type::set_string(class_type::inst_t obj, size_t pid,
-			    const string&val) const
+فراغ class_type::سیٹ_string(class_type::inst_t obj, size_t pid,
+			    ثابت string&val) ثابت
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      properties_[pid].type->set_string(buf, val);
+      حرف*buf = reinterpret_cast<حرف*> (obj);
+      أكد(pid < properties_.size());
+      properties_[pid].type->سیٹ_string(buf, val);
 }
 
-string class_type::get_string(class_type::inst_t obj, size_t pid) const
+string class_type::get_string(class_type::inst_t obj, size_t pid) ثابت
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      return properties_[pid].type->get_string(buf);
+      حرف*buf = reinterpret_cast<حرف*> (obj);
+      أكد(pid < properties_.size());
+      أرجع properties_[pid].type->get_string(buf);
 }
 
-void class_type::set_object(class_type::inst_t obj, size_t pid,
-			    const vvp_object_t&val, size_t idx) const
+فراغ class_type::سیٹ_object(class_type::inst_t obj, size_t pid,
+			    ثابت vvp_object_t&val, size_t idx) ثابت
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      properties_[pid].type->set_object(buf, val, idx);
+      حرف*buf = reinterpret_cast<حرف*> (obj);
+      أكد(pid < properties_.size());
+      properties_[pid].type->سیٹ_object(buf, val, idx);
 }
 
-void class_type::get_object(class_type::inst_t obj, size_t pid,
-			    vvp_object_t&val, size_t idx) const
+فراغ class_type::get_object(class_type::inst_t obj, size_t pid,
+			    vvp_object_t&val, size_t idx) ثابت
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      حرف*buf = reinterpret_cast<حرف*> (obj);
+      أكد(pid < properties_.size());
       properties_[pid].type->get_object(buf, val, idx);
 }
 
-void class_type::copy_property(class_type::inst_t dst, size_t pid, class_type::inst_t src) const
+فراغ class_type::copy_property(class_type::inst_t dst, size_t pid, class_type::inst_t src) ثابت
 {
-      char*dst_buf = reinterpret_cast<char*> (dst);
-      char*src_buf = reinterpret_cast<char*> (src);
+      حرف*dst_buf = reinterpret_cast<حرف*> (dst);
+      حرف*src_buf = reinterpret_cast<حرف*> (src);
 
-      assert(pid < properties_.size());
+      أكد(pid < properties_.size());
 
       properties_[pid].type->copy(dst_buf, src_buf);
 }
 
-int class_type::get_type_code(void) const
+صحيح class_type::get_type_کوڈ(فراغ) ثابت
 {
-      return vpiClassDefn;
+      أرجع vpiClassDefn;
 }
 
-static class_type*compile_class = 0;
+ساكن class_type*compile_class = 0;
 
-void compile_class_start(char*lab, char*nam, unsigned ntype)
+فراغ compile_class_شروع(حرف*lab, حرف*nam, بنانشانی ntype)
 {
-      assert(compile_class == 0);
-      compile_class = new class_type(nam, ntype);
-      compile_vpi_symbol(lab, compile_class);
-      free(lab);
-      delete[]nam;
+      أكد(compile_class == 0);
+      compile_class = جديد class_type(nam, ntype);
+      compile_vpi_علامت(lab, compile_class);
+      حرر(lab);
+      مٹاؤ[]nam;
 }
 
-void compile_class_property(unsigned idx, char*nam, char*typ, uint64_t array_size)
+فراغ compile_class_property(بنانشانی idx, حرف*nam, حرف*typ, uint64_t array_ناپ_2)
 {
-      assert(compile_class);
-      compile_class->set_property(idx, nam, typ, array_size);
-      delete[]nam;
-      delete[]typ;
+      أكد(compile_class);
+      compile_class->سیٹ_property(idx, nam, typ, array_ناپ_2);
+      مٹاؤ[]nam;
+      مٹاؤ[]typ;
 }
 
-void compile_class_done(void)
+فراغ compile_class_پورا(فراغ)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      assert(scope);
-      assert(compile_class);
-      compile_class->finish_setup();
+      أكد(scope);
+      أكد(compile_class);
+      compile_class->انت_تیاری();
       scope->classes[compile_class->class_name()] = compile_class;
       compile_class = 0;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void class_def_delete(class_type *item)
+#جے_تعریف_شدہ CHECK_WITH_VALGRIND
+فراغ class_def_delete(class_type *شے)
 {
-      delete item;
+      مٹاؤ شے;
 }
-#endif
+#جے_انت

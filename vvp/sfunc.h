@@ -1,5 +1,5 @@
-#ifndef IVL_sfunc_H
-#define IVL_sfunc_H
+#جے_بنا_تعریف IVL_sfunc_H
+#تعریف_کرو IVL_sfunc_H
 /*
  * Copyright (c) 2006-2025 Stephen Williams (steve@icarus.com)
  *
@@ -21,26 +21,26 @@
 
 # include  "config.h"
 
-class sfunc_core : public vvp_wide_fun_core, protected vvp_gen_event_s {
+class sfunc_core : عام vvp_wide_fun_core, محمي vvp_gen_event_s {
 
-    public:
-      sfunc_core(vvp_net_t*ptr, vpiHandle sys, unsigned argc, vpiHandle*argv);
+    عام:
+      sfunc_core(vvp_net_t*ptr, vpiHandle sys, بنانشانی argc, vpiHandle*argv);
       ~sfunc_core() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t context) override;
 
-    private:
-      void recv_vec4_from_inputs(unsigned port) override;
-      void recv_real_from_inputs(unsigned port) override;
+    خاص:
+      فراغ recv_vec4_from_inputs(بنانشانی پورٹ) override;
+      فراغ recv_real_from_inputs(بنانشانی پورٹ) override;
 
-      void run_run() override;
+      فراغ لگاتار_لگاتار() override;
 
 
-    private:
+    خاص:
       vpiHandle sys_;
-      unsigned  argc_;
+      بنانشانی  argc_;
       vpiHandle*argv_;
 };
 
-#endif /* IVL_sfunc_H */
+#جے_انت /* IVL_sfunc_H */

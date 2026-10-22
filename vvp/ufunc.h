@@ -1,5 +1,5 @@
-#ifndef IVL_ufunc_H
-#define IVL_ufunc_H
+#جے_بنا_تعریف IVL_ufunc_H
+#تعریف_کرو IVL_ufunc_H
 /*
  * Copyright (c) 2002-2025 Stephen Williams (steve@icarus.com)
  *
@@ -49,39 +49,39 @@ class __vpiScope;
  * This class relies to the vvp_wide_fun_* classes in vvp_net.h.
  */
 
-class ufunc_core : public vvp_wide_fun_core {
+class ufunc_core : عام vvp_wide_fun_core {
 
-    public:
-      ufunc_core(unsigned ow, vvp_net_t*ptr,
-		 unsigned nports, vvp_net_t**ports,
-		 vvp_code_t start_address,
+    عام:
+      ufunc_core(بنانشانی ow, vvp_net_t*ptr,
+		 بنانشانی nports, vvp_net_t**ports,
+		 vvp_کوڈ_t شروع_پتہ,
 		 __vpiScope*call_scope,
-		 char*scope_label);
-      virtual ~ufunc_core() override =0;
+		 حرف*scope_label);
+      مجازی ~ufunc_core() override =0;
 
-      __vpiScope*call_scope() { return call_scope_; }
-      __vpiScope*func_scope() { return func_scope_; }
+      __vpiScope*call_scope() { أرجع call_scope_; }
+      __vpiScope*func_scope() { أرجع func_scope_; }
 
-      void assign_bits_to_ports(vvp_context_t context);
-      virtual void finish_thread() =0;
+      فراغ سونپو_بٹ_منزل_ports(vvp_context_t context);
+      مجازی فراغ انت_thread() =0;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t context) override;
 
-    protected:
-      void finish_thread_real_();
-      void finish_thread_vec4_();
+    محمي:
+      فراغ انت_thread_real();
+      فراغ انت_thread_vec4();
 
-    private:
-      void recv_vec4_from_inputs(unsigned port) override;
-      void recv_real_from_inputs(unsigned port) override;
+    خاص:
+      فراغ recv_vec4_from_inputs(بنانشانی پورٹ) override;
+      فراغ recv_real_from_inputs(بنانشانی پورٹ) override;
 
-      void invoke_thread_(void);
+      فراغ invoke_thread_(فراغ);
 
 
-    private:
+    خاص:
 	// output width of the function node.
-      unsigned owid_;
+      بنانشانی owid_;
 	// The vvp_net_t* objects for the function input ports. We use
 	// these to write the input values to the reg input variable
 	// functors for the thread.
@@ -92,7 +92,7 @@ class ufunc_core : public vvp_wide_fun_core {
       vthread_t thread_;
       __vpiScope*call_scope_;
       __vpiScope*func_scope_;
-      vvp_code_t code_;
+      vvp_کوڈ_t کوڈ_2;
 };
 
-#endif /* IVL_ufunc_H */
+#جے_انت /* IVL_ufunc_H */
