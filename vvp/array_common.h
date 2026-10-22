@@ -19,32 +19,32 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef ARRAY_COMMON_H
-#define ARRAY_COMMON_H
+#నిర్వచితం_కాకపోతే ARRAY_COMMON_H
+#నిర్వచించు ARRAY_COMMON_H
 
-#include "vpi_priv.h"
+#అన్తర్భావ "vpi_priv.h"
 
-struct __vpiArrayIterator : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+నిర్మాణం __vpiArrayIterator : బహిరంగ __vpiHandle {
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override
+      { తిరిగి vpiIterator; }
 
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+      vpiHandle vpi_సూచీ(పూర్ణాంకం idx) override;
+      free_object_fun_t free_object_fun(శూన్య) override;
 
-      struct __vpiArrayBase*array;
-      unsigned next;
+      నిర్మాణం __vpiArrayBase*array;
+      గుర్తులేని తదుపరి_2;
 };
 
-struct __vpiArrayIndex : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+నిర్మాణం __vpiArrayIndex : బహిరంగ __vpiHandle {
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override
+      { తిరిగి vpiIterator; }
 
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+      vpiHandle vpi_iterate(పూర్ణాంకం సంకేతం_2) override;
+      vpiHandle vpi_సూచీ(పూర్ణాంకం idx) override;
+      free_object_fun_t free_object_fun(శూన్య) override;
 
-      __vpiDecConst *index;
-      unsigned done;
+      __vpiDecConst *సూచీ;
+      గుర్తులేని పూర్తి;
 };
 
 /*
@@ -68,31 +68,31 @@ struct __vpiArrayIndex : public __vpiHandle {
  * of vpi functions is bound to the same structure. All the details
  * for the word also apply when treating this as an index.
  */
-struct __vpiArrayWord {
-      struct as_word_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiMemoryWord; }
-	    int vpi_get(int code) override;
-	    char*vpi_get_str(int code) override;
-	    void vpi_get_value(p_vpi_value vp) override;
-	    vpiHandle vpi_put_value(p_vpi_value vp, int flags) override;
-	    vpiHandle vpi_handle(int code) override;
-      } as_word;
+నిర్మాణం __vpiArrayWord {
+      నిర్మాణం as_మాట_t : బహిరంగ __vpiHandle {
+	    పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpi_జ్ఞాపకం_మాట; }
+	    పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+	    అక్షరం*vpi_get_str(పూర్ణాంకం సంకేతం_2) override;
+	    శూన్య vpi_get_విలువ(p_vpi_విలువ vp) override;
+	    vpiHandle vpi_put_విలువ(p_vpi_విలువ vp, పూర్ణాంకం flags) override;
+	    vpiHandle vpi_handle(పూర్ణాంకం సంకేతం_2) override;
+      } as_మాట;
 
-      struct as_index_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiIndex; }
-	    void vpi_get_value(p_vpi_value val) override;
-      } as_index;
+      నిర్మాణం as_సూచీ_t : బహిరంగ __vpiHandle {
+	    పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpi_సూచీ_2; }
+	    శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
+      } as_సూచీ;
 
-      union {
-	    struct __vpiArrayBase*parent;
-	    struct __vpiArrayWord*word0;
+      సంఘం {
+	    నిర్మాణం __vpiArrayBase*మాతృ;
+	    నిర్మాణం __vpiArrayWord*word0;
       };
 
-      inline unsigned get_index() const { return this - word0; }
-      inline struct __vpiArrayBase*get_parent() const { return (word0 - 1)->parent; }
+      అంతఃవరుస గుర్తులేని get_సూచీ() స్థిరరాశి { తిరిగి this - word0; }
+      అంతఃవరుస నిర్మాణం __vpiArrayBase*get_మాతృ() స్థిరరాశి { తిరిగి (word0 - 1)->మాతృ; }
 };
 
-struct __vpiArrayWord*array_var_word_from_handle(vpiHandle ref);
-struct __vpiArrayWord*array_var_index_from_handle(vpiHandle ref);
+నిర్మాణం __vpiArrayWord*array_var_మాట_from_handle(vpiHandle ref);
+నిర్మాణం __vpiArrayWord*array_var_సూచీ_from_handle(vpiHandle ref);
 
-#endif /* ARRAY_COMMON_H */
+#అయితే_ముగింపు /* ARRAY_COMMON_H */

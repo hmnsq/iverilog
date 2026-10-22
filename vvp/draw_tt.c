@@ -25,101 +25,101 @@
  * map of a 4-vbit value to a hex digit. The table handles the display
  * of x, X, z, Z, etc.
  */
-static void draw_hex_table(void)
+స్థిర శూన్య draw_hex_పట్టిక(శూన్య)
 {
-      unsigned idx;
+      గుర్తులేని idx;
 
-      printf("extern const char hex_digits[256] = {\n");
-      for (idx = 0 ;  idx < 256 ;  idx += 1) {
-	    unsigned cnt_z = 0, cnt_x = 0;
-	    unsigned bv = 0, bdx;
+      రాయి("extern const char hex_digits[256] = {\n");
+      కొరకు (idx = 0 ;  idx < 256 ;  idx += 1) {
+	    గుర్తులేని cnt_z = 0, cnt_x = 0;
+	    గుర్తులేని bv = 0, bdx;
 
-	    for (bdx = 0 ;  bdx < 4 ;  bdx += 1) {
-		  switch ((idx >> (bdx * 2)) & 3) {
-		      case 0:
-			break;
-		      case 1:
+	    కొరకు (bdx = 0 ;  bdx < 4 ;  bdx += 1) {
+		  ఎంపిక ((idx >> (bdx * 2)) & 3) {
+		      స్థితి 0:
+			ఆపు;
+		      స్థితి 1:
 			bv |= 1<<bdx;
-			break;
-		      case 2:
+			ఆపు;
+		      స్థితి 2:
 			cnt_x += 1;
-			break;
-		      case 3:
+			ఆపు;
+		      స్థితి 3:
 			cnt_z += 1;
-			break;
+			ఆపు;
 		  }
 	    }
 
-	    if (cnt_z == 4)
-		  printf(" 'z',");
+	    ఒకవేళ (cnt_z == 4)
+		  రాయి(" 'z',");
 
-	    else if (cnt_x == 4)
-		  printf(" 'x',");
+	    లేకపోతే ఒకవేళ (cnt_x == 4)
+		  రాయి(" 'x',");
 
-	    else if ((cnt_z > 0) && (cnt_x == 0))
-		  printf(" 'Z',");
+	    లేకపోతే ఒకవేళ ((cnt_z > 0) && (cnt_x == 0))
+		  రాయి(" 'Z',");
 
-	    else if (cnt_x > 0)
-		  printf(" 'X',");
+	    లేకపోతే ఒకవేళ (cnt_x > 0)
+		  రాయి(" 'X',");
 
-	    else
-		  printf(" '%c',", (unsigned)"0123456789abcdef"[bv]);
+	    లేకపోతే
+		  రాయి(" '%c',", (గుర్తులేని)"0123456789abcdef"[bv]);
 
-	    if (((idx+1) % 8) == 0)
-		  printf("\n");
+	    ఒకవేళ (((idx+1) % 8) == 0)
+		  రాయి("\n");
       }
-      printf("};\n");
+      రాయి("};\n");
 }
 
-static void draw_oct_table(void)
+స్థిర శూన్య draw_oct_పట్టిక(శూన్య)
 {
-      unsigned idx;
+      గుర్తులేని idx;
 
-      printf("extern const char oct_digits[64] = {\n");
-      for (idx = 0 ;  idx < 64 ;  idx += 1) {
-	    unsigned cnt_z = 0, cnt_x = 0;
-	    unsigned bv = 0, bdx;
+      రాయి("extern const char oct_digits[64] = {\n");
+      కొరకు (idx = 0 ;  idx < 64 ;  idx += 1) {
+	    గుర్తులేని cnt_z = 0, cnt_x = 0;
+	    గుర్తులేని bv = 0, bdx;
 
-	    for (bdx = 0 ;  bdx < 3 ;  bdx += 1) {
-		  switch ((idx >> (bdx * 2)) & 3) {
-		      case 0:
-			break;
-		      case 1:
+	    కొరకు (bdx = 0 ;  bdx < 3 ;  bdx += 1) {
+		  ఎంపిక ((idx >> (bdx * 2)) & 3) {
+		      స్థితి 0:
+			ఆపు;
+		      స్థితి 1:
 			bv |= 1<<bdx;
-			break;
-		      case 2:
+			ఆపు;
+		      స్థితి 2:
 			cnt_x += 1;
-			break;
-		      case 3:
+			ఆపు;
+		      స్థితి 3:
 			cnt_z += 1;
-			break;
+			ఆపు;
 		  }
 	    }
 
-	    if (cnt_z == 3)
-		  printf(" 'z',");
+	    ఒకవేళ (cnt_z == 3)
+		  రాయి(" 'z',");
 
-	    else if (cnt_x == 3)
-		  printf(" 'x',");
+	    లేకపోతే ఒకవేళ (cnt_x == 3)
+		  రాయి(" 'x',");
 
-	    else if ((cnt_z > 0) && (cnt_x == 0))
-		  printf(" 'Z',");
+	    లేకపోతే ఒకవేళ ((cnt_z > 0) && (cnt_x == 0))
+		  రాయి(" 'Z',");
 
-	    else if (cnt_x > 0)
-		  printf(" 'X',");
+	    లేకపోతే ఒకవేళ (cnt_x > 0)
+		  రాయి(" 'X',");
 
-	    else
-		  printf(" '%c',", (unsigned)"01234567"[bv]);
+	    లేకపోతే
+		  రాయి(" '%c',", (గుర్తులేని)"01234567"[bv]);
 
-	    if (((idx+1) % 8) == 0)
-		  printf("\n");
+	    ఒకవేళ (((idx+1) % 8) == 0)
+		  రాయి("\n");
       }
-      printf("};\n");
+      రాయి("};\n");
 }
 
-int main(void)
+పూర్ణాంకం ప్రధాన(శూన్య)
 {
-      draw_hex_table();
-      draw_oct_table();
-      return 0;
+      draw_hex_పట్టిక();
+      draw_oct_పట్టిక();
+      తిరిగి 0;
 }

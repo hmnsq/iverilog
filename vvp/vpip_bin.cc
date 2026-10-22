@@ -25,89 +25,89 @@
 # include  <cstdlib>
 # include  <cassert>
 
-void vpip_bin_str_to_vec4(vvp_vector4_t&vec4, const char*buf)
+శూన్య vpip_bin_str_గమ్యం_vec4(vvp_vector4_t&vec4, స్థిరరాశి అక్షరం*buf)
 {
-      const char*ebuf = buf + strlen(buf);
-      unsigned idx = 0;
-      unsigned skip_chars = 0;
-      const char*tbuf = buf;
+      స్థిరరాశి అక్షరం*ebuf = buf + అక్షరశ్రేణి_పొడవు(buf);
+      గుర్తులేని idx = 0;
+      గుర్తులేని skip_chars = 0;
+      స్థిరరాశి అక్షరం*tbuf = buf;
 	/* Find the number of non-numeric characters. */
-      while ((tbuf = strpbrk(tbuf, "-_"))) {
+      అయితే ((tbuf = strpbrk(tbuf, "-_"))) {
 	    skip_chars += 1;
 	    tbuf += 1;
       }
-      vvp_vector4_t tval(strlen(buf)-skip_chars);
-      while (ebuf > buf) {
+      vvp_vector4_t tval(అక్షరశ్రేణి_పొడవు(buf)-skip_chars);
+      అయితే (ebuf > buf) {
 	    ebuf -= 1;
 	      /* Skip any "_" characters in the string. */
-	    while (*ebuf == '_') {
+	    అయితే (*ebuf == '_') {
 		  ebuf -= 1;
-		  assert(ebuf > buf);
+		  ప్రతిజ్ఞా(ebuf > buf);
 	    }
 
 	      /*  If we find a "-" it must be at the head of the string. */
-	    if (*ebuf == '-') {
-		  if (ebuf != buf) assert(0);
-		  break;
+	    ఒకవేళ (*ebuf == '-') {
+		  ఒకవేళ (ebuf != buf) ప్రతిజ్ఞా(0);
+		  ఆపు;
 	    }
 
-	    assert(idx < tval.size());
-	    switch (*ebuf) {
-		case '0':
-		  tval.set_bit(idx, BIT4_0);
-		  break;
-		case '1':
-		  tval.set_bit(idx, BIT4_1);
-		  break;
-		case 'x':
-		case 'X':
-		  tval.set_bit(idx, BIT4_X);
-		  break;
-		case 'z':
-		case 'Z':
-		  tval.set_bit(idx, BIT4_Z);
-		  break;
-		default:
+	    ప్రతిజ్ఞా(idx < tval.size());
+	    ఎంపిక (*ebuf) {
+		స్థితి '0':
+		  tval.సమితి_బిట్టు(idx, BIT4_0);
+		  ఆపు;
+		స్థితి '1':
+		  tval.సమితి_బిట్టు(idx, BIT4_1);
+		  ఆపు;
+		స్థితి 'x':
+		స్థితి 'X':
+		  tval.సమితి_బిట్టు(idx, BIT4_X);
+		  ఆపు;
+		స్థితి 'z':
+		స్థితి 'Z':
+		  tval.సమితి_బిట్టు(idx, BIT4_Z);
+		  ఆపు;
+		అప్రమేయ:
 		    /* Return "x" if there are invalid digits in the string. */
 		  fprintf(stderr, "Warning: Invalid binary digit %c(%d) in "
 		          "\"%s\".\n", *ebuf, *ebuf, buf);
-		  for (unsigned jdx = 0 ;  jdx < vec4.size() ;  jdx += 1) {
-			vec4.set_bit(jdx, BIT4_X);
+		  కొరకు (గుర్తులేని jdx = 0 ;  jdx < vec4.size() ;  jdx += 1) {
+			vec4.సమితి_బిట్టు(jdx, BIT4_X);
 		  }
-		  return;
+		  తిరిగి;
 	    }
 
 	    idx += 1;
       }
 
 	/* Make a negative value when needed. */
-      if (buf[0] == '-') {
+      ఒకవేళ (buf[0] == '-') {
 	    tval.invert();
 	    tval += (int64_t) 1;
       }
 
 	/* Find the correct padding value. */
       vvp_bit4_t pad;
-      switch (tval.value(tval.size()-1)) {
-	  case BIT4_X:  // Pad MSB 'x' with 'x'
+      ఎంపిక (tval.value(tval.size()-1)) {
+	  స్థితి BIT4_X:  // Pad MSB 'x' with 'x'
 	    pad = BIT4_X;
-	    break;
-	  case BIT4_Z:  // Pad MSB 'z' with 'z'
+	    ఆపు;
+	  స్థితి BIT4_Z:  // Pad MSB 'z' with 'z'
 	    pad = BIT4_Z;
-	    break;
-	  case BIT4_1:  // If negative pad MSB '1' with '1'
-	    if (buf[0] == '-') {
+	    ఆపు;
+	  స్థితి BIT4_1:  // If negative pad MSB '1' with '1'
+	    ఒకవేళ (buf[0] == '-') {
 		  pad = BIT4_1;
-		  break;
+		  ఆపు;
 	    }
 	    // fallthrough
-	  default:  // Everything else gets '0' padded/
+	  అప్రమేయ:  // Everything else gets '0' padded/
 	    pad = BIT4_0;
-	    break;
+	    ఆపు;
       }
 
-      for (unsigned jdx = 0 ;  jdx < vec4.size() ; jdx += 1) {
-	    if (jdx < tval.size()) vec4.set_bit(jdx, tval.value(jdx));
-	    else vec4.set_bit(jdx, pad);
+      కొరకు (గుర్తులేని jdx = 0 ;  jdx < vec4.size() ; jdx += 1) {
+	    ఒకవేళ (jdx < tval.size()) vec4.సమితి_బిట్టు(jdx, tval.value(jdx));
+	    లేకపోతే vec4.సమితి_బిట్టు(jdx, pad);
       }
 }

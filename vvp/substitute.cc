@@ -24,80 +24,80 @@
 # include  <cassert>
 
 
-class vvp_fun_substitute : public vvp_net_fun_t {
+తరగతి vvp_fun_substitute : బహిరంగ vvp_net_fun_t {
 
-    public:
-      vvp_fun_substitute(unsigned wid, unsigned soff, unsigned swid);
+    బహిరంగ:
+      vvp_fun_substitute(గుర్తులేని wid, గుర్తులేని soff, గుర్తులేని swid);
       ~vvp_fun_substitute() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit, vvp_context_t) override;
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు, vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      శూన్య recv_vec4_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t ctx) override;
 
-    private:
-      unsigned wid_;
-      unsigned soff_;
-      unsigned swid_;
+    అంతరంగ:
+      గుర్తులేని wid_;
+      గుర్తులేని soff_;
+      గుర్తులేని swid_;
 
       vvp_vector4_t val_;
 };
 
-vvp_fun_substitute::vvp_fun_substitute(unsigned wid, unsigned soff, unsigned swid)
+vvp_fun_substitute::vvp_fun_substitute(గుర్తులేని wid, గుర్తులేని soff, గుర్తులేని swid)
 : wid_(wid), soff_(soff), swid_(swid), val_(wid)
 {
-      for (unsigned idx = 0 ; idx < val_.size() ; idx += 1)
-	    val_.set_bit(idx, BIT4_Z);
+      కొరకు (గుర్తులేని idx = 0 ; idx < val_.size() ; idx += 1)
+	    val_.సమితి_బిట్టు(idx, BIT4_Z);
 }
 
 vvp_fun_substitute::~vvp_fun_substitute()
 {
 }
 
-void vvp_fun_substitute::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_fun_substitute::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
 				   vvp_context_t)
 {
-      unsigned pdx = port.port();
-      assert(pdx <= 1);
+      గుర్తులేని pdx = పోర్టు.పోర్టు();
+      ప్రతిజ్ఞా(pdx <= 1);
 
-      if (pdx == 0) {
-	    assert(bit.size() == wid_);
+      ఒకవేళ (pdx == 0) {
+	    ప్రతిజ్ఞా(బిట్టు.size() == wid_);
 
-	    for (unsigned idx = 0 ; idx < wid_ ; idx += 1) {
-		  if (idx >= soff_ && idx < (soff_+swid_))
-			continue;
+	    కొరకు (గుర్తులేని idx = 0 ; idx < wid_ ; idx += 1) {
+		  ఒకవేళ (idx >= soff_ && idx < (soff_+swid_))
+			కొనసాగు;
 
-		  val_.set_bit(idx, bit.value(idx));
+		  val_.సమితి_బిట్టు(idx, బిట్టు.value(idx));
 	    }
 
-      } else {
-	    assert(bit.size() == swid_);
+      } లేకపోతే {
+	    ప్రతిజ్ఞా(బిట్టు.size() == swid_);
 
-	    for (unsigned idx = 0 ; idx < swid_ ; idx += 1)
-		  val_.set_bit(idx+soff_, bit.value(idx));
+	    కొరకు (గుర్తులేని idx = 0 ; idx < swid_ ; idx += 1)
+		  val_.సమితి_బిట్టు(idx+soff_, బిట్టు.value(idx));
       }
 
-      port.ptr()->send_vec4(val_, 0);
+      పోర్టు.ptr()->send_vec4(val_, 0);
 }
 
-void vvp_fun_substitute::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				      unsigned base, unsigned vwid, vvp_context_t ctx)
+శూన్య vvp_fun_substitute::recv_vec4_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
+				      గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, బిట్టు, పునాది, vwid, ctx);
 }
 
-void compile_substitute(char*label, unsigned width,
-			unsigned soff, unsigned swidth,
-			unsigned argc, struct symb_s*argv)
+శూన్య compile_substitute(అక్షరం*label, గుర్తులేని width,
+			గుర్తులేని soff, గుర్తులేని swidth,
+			గుర్తులేని argc, నిర్మాణం symb_s*argv)
 {
-      vvp_fun_substitute*fun = new vvp_fun_substitute(width, soff, swidth);
+      vvp_fun_substitute*fun = కొత్త vvp_fun_substitute(width, soff, swidth);
 
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = కొత్త vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_చిహ్నం(label, net);
+      విడుదల(label);
 
       inputs_connect(net, argc, argv);
-      free(argv);
+      విడుదల(argv);
 }

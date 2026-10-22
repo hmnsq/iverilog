@@ -25,125 +25,125 @@
 # include  <cstdlib>
 # include  <cassert>
 
-extern const char oct_digits[64];
+బాహ్య స్థిరరాశి అక్షరం oct_digits[64];
 
-void vpip_oct_str_to_vec4(vvp_vector4_t&val, const char*str)
+శూన్య vpip_oct_str_గమ్యం_vec4(vvp_vector4_t&val, స్థిరరాశి అక్షరం*str)
 {
-      unsigned str_len = strlen(str);
-      unsigned skip_chars = 0;
-      const char*tstr = str;
+      గుర్తులేని str_len = అక్షరశ్రేణి_పొడవు(str);
+      గుర్తులేని skip_chars = 0;
+      స్థిరరాశి అక్షరం*tstr = str;
 	/* Find the number of non-numeric characters. */
-      while ((tstr = strpbrk(tstr, "-_"))) {
+      అయితే ((tstr = strpbrk(tstr, "-_"))) {
 	    skip_chars += 1;
 	    tstr += 1;
       }
       vvp_vector4_t tval(3*(str_len-skip_chars));
       skip_chars = 0;
-      for (unsigned idx = 0 ;  idx < tval.size() ;  idx += 1) {
-	    unsigned tmp;
-	    unsigned bit_off = idx%3;
-	    unsigned str_off = idx/3;
-	    char ch;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < tval.size() ;  idx += 1) {
+	    గుర్తులేని tmp;
+	    గుర్తులేని బిట్టు_off = idx%3;
+	    గుర్తులేని str_off = idx/3;
+	    అక్షరం ch;
 
-	    assert(str_off+skip_chars < str_len);
+	    ప్రతిజ్ఞా(str_off+skip_chars < str_len);
 	      /* Skip any "_" characters in the string. */
-	    while ((ch = str[str_len-str_off-1-skip_chars]) == '_') {
+	    అయితే ((ch = str[str_len-str_off-1-skip_chars]) == '_') {
 		  skip_chars += 1;
-		  assert(str_off+skip_chars < str_len);
+		  ప్రతిజ్ఞా(str_off+skip_chars < str_len);
 	    }
 
 	      /* If we find a "-" it must be at the head of the string. */
-	    if (ch == '-') assert(0);
+	    ఒకవేళ (ch == '-') ప్రతిజ్ఞా(0);
 
-	    switch (ch) {
-		case '0':
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-		case '6':
-		case '7':
+	    ఎంపిక (ch) {
+		స్థితి '0':
+		స్థితి '1':
+		స్థితి '2':
+		స్థితి '3':
+		స్థితి '4':
+		స్థితి '5':
+		స్థితి '6':
+		స్థితి '7':
 		  tmp = ch - '0';
-		  tval.set_bit(idx, ((tmp>>bit_off)&1)? BIT4_1 : BIT4_0);
-		  break;
-		case 'x':
-		case 'X':
-		  tval.set_bit(idx, BIT4_X);
-		  break;
-		case 'z':
-		case 'Z':
-		  tval.set_bit(idx, BIT4_Z);
-		  break;
-		default:
+		  tval.సమితి_బిట్టు(idx, ((tmp>>బిట్టు_off)&1)? BIT4_1 : BIT4_0);
+		  ఆపు;
+		స్థితి 'x':
+		స్థితి 'X':
+		  tval.సమితి_బిట్టు(idx, BIT4_X);
+		  ఆపు;
+		స్థితి 'z':
+		స్థితి 'Z':
+		  tval.సమితి_బిట్టు(idx, BIT4_Z);
+		  ఆపు;
+		అప్రమేయ:
 		    /* Return "x" if there are invalid digits in the string. */
 		  fprintf(stderr, "Warning: Invalid octal digit %c(%d) in "
 		          "\"%s\".\n", ch, ch, str);
-		  for (unsigned jdx = 0 ;  jdx < val.size() ;  jdx += 1) {
-			val.set_bit(jdx, BIT4_X);
+		  కొరకు (గుర్తులేని jdx = 0 ;  jdx < val.size() ;  jdx += 1) {
+			val.సమితి_బిట్టు(jdx, BIT4_X);
 		  }
-		  return;
+		  తిరిగి;
 	    }
       }
 
 	/* Make a negative value when needed. */
-      if (str[0] == '-') {
+      ఒకవేళ (str[0] == '-') {
 	    tval.invert();
 	    tval += (int64_t) 1;
       }
 
 	/* Find the correct padding value. */
       vvp_bit4_t pad;
-      switch (tval.value(tval.size()-1)) {
-	  case BIT4_X:  // Pad MSB 'x' with 'x'
+      ఎంపిక (tval.value(tval.size()-1)) {
+	  స్థితి BIT4_X:  // Pad MSB 'x' with 'x'
 	    pad = BIT4_X;
-	    break;
-	  case BIT4_Z:  // Pad MSB 'z' with 'z'
+	    ఆపు;
+	  స్థితి BIT4_Z:  // Pad MSB 'z' with 'z'
 	    pad = BIT4_Z;
-	    break;
-	  case BIT4_1:  // If negative pad MSB '1' with '1'
-	    if (str[0] == '-') {
+	    ఆపు;
+	  స్థితి BIT4_1:  // If negative pad MSB '1' with '1'
+	    ఒకవేళ (str[0] == '-') {
 		  pad = BIT4_1;
-		  break;
+		  ఆపు;
 	    }
 	    // fallthrough
-	  default:  // Everything else gets '0' padded.
+	  అప్రమేయ:  // Everything else gets '0' padded.
 	    pad = BIT4_0;
-	    break;
+	    ఆపు;
       }
 
 	/* Copy the temporary value to the real value, padding if needed. */
-      for (unsigned idx = 0 ;  idx < val.size() ;  idx += 1) {
-	    if (idx < tval.size()) val.set_bit(idx, tval.value(idx));
-	    else val.set_bit(idx, pad);
+      కొరకు (గుర్తులేని idx = 0 ;  idx < val.size() ;  idx += 1) {
+	    ఒకవేళ (idx < tval.size()) val.సమితి_బిట్టు(idx, tval.value(idx));
+	    లేకపోతే val.సమితి_బిట్టు(idx, pad);
       }
 }
 
-void vpip_vec4_to_oct_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
+శూన్య vpip_vec4_గమ్యం_oct_str(స్థిరరాశి vvp_vector4_t&బిట్లు, అక్షరం*buf, గుర్తులేని nbuf)
 {
-      unsigned slen = (bits.size() + 2) / 3;
-      assert(slen < nbuf);
+      గుర్తులేని slen = (బిట్లు.size() + 2) / 3;
+      ప్రతిజ్ఞా(slen < nbuf);
 
       buf[slen] = 0;
 
-      unsigned val = 0;
-      for (unsigned idx = 0 ;  idx < bits.size() ;  idx += 1) {
-	    unsigned vs = (idx%3) * 2;
+      గుర్తులేని val = 0;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < బిట్లు.size() ;  idx += 1) {
+	    గుర్తులేని vs = (idx%3) * 2;
 
-	    switch (bits.value(idx)) {
-		case BIT4_0:
-		  break;
-		case BIT4_1:
+	    ఎంపిక (బిట్లు.value(idx)) {
+		స్థితి BIT4_0:
+		  ఆపు;
+		స్థితి BIT4_1:
 		  val |= 1 << vs;
-		  break;
-		case BIT4_X:
+		  ఆపు;
+		స్థితి BIT4_X:
 		  val |= 2 << vs;
-		  break;
-		case BIT4_Z:
+		  ఆపు;
+		స్థితి BIT4_Z:
 		  val |= 3 << vs;
 	    }
 
-	    if (vs == 4) {
+	    ఒకవేళ (vs == 4) {
 		  slen -= 1;
 		  buf[slen] = oct_digits[val];
 		  val = 0;
@@ -151,18 +151,18 @@ void vpip_vec4_to_oct_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
       }
 
 	/* Fill in X or Z if they are the only thing in the value. */
-      switch (bits.size() % 3) {
-	  case 1:
-	    if (val == 2) val = 42;
-	    else if (val == 3) val = 63;
-	    break;
-	  case 2:
-	    if (val == 10) val = 42;
-	    else if (val == 15) val = 63;
-	    break;
+      ఎంపిక (బిట్లు.size() % 3) {
+	  స్థితి 1:
+	    ఒకవేళ (val == 2) val = 42;
+	    లేకపోతే ఒకవేళ (val == 3) val = 63;
+	    ఆపు;
+	  స్థితి 2:
+	    ఒకవేళ (val == 10) val = 42;
+	    లేకపోతే ఒకవేళ (val == 15) val = 63;
+	    ఆపు;
       }
 
-      if (slen > 0) {
+      ఒకవేళ (slen > 0) {
 	    slen -= 1;
 	    buf[slen] = oct_digits[val];
       }

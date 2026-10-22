@@ -25,361 +25,361 @@
 # include  "vvp_cobject.h"
 # include  "array_common.h"
 # include  "schedule.h"
-#ifdef CHECK_WITH_VALGRIND
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#అయితే_ముగింపు
 # include  <cstdio>
 # include  <cstdlib>
 # include  <cstring>
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
-__vpiDarrayVar::__vpiDarrayVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
+__vpiDarrayVar::__vpiDarrayVar(__vpiScope*sc, స్థిరరాశి అక్షరం*na, vvp_net_t*ne)
 : __vpiBaseVar(sc, na, ne)
 {
 }
 
-unsigned __vpiDarrayVar::get_size() const
+గుర్తులేని __vpiDarrayVar::get_కొలత() స్థిరరాశి
 {
-      const vvp_fun_signal_object*fun = dynamic_cast<vvp_fun_signal_object*> (get_net()->fun);
-      if(!fun)
-        return 0;
+      స్థిరరాశి vvp_fun_signal_object*fun = dynamic_cast<vvp_fun_signal_object*> (get_net()->fun);
+      ఒకవేళ(!fun)
+        తిరిగి 0;
 
       vvp_object_t val = fun->get_object();
-      const vvp_darray*aval = val.peek<vvp_darray>();
+      స్థిరరాశి vvp_darray*aval = val.peek<vvp_darray>();
 
-      if(!aval)
-        return 0;
+      ఒకవేళ(!aval)
+        తిరిగి 0;
 
-      return aval->get_size();
+      తిరిగి aval->get_కొలత();
 }
 
-vpiHandle __vpiDarrayVar::get_left_range()
+vpiHandle __vpiDarrayVar::get_ఎడమ_range()
 {
-      left_range_.set_value(0);
-      return &left_range_;
+      ఎడమ_range.సమితి_విలువ(0);
+      తిరిగి &ఎడమ_range;
 }
 
-vpiHandle __vpiDarrayVar::get_right_range()
+vpiHandle __vpiDarrayVar::get_కుడి_range()
 {
-      right_range_.set_value(get_size() - 1);
-      return &right_range_;
+      కుడి_range.సమితి_విలువ(get_కొలత() - 1);
+      తిరిగి &కుడి_range;
 }
 
-int __vpiDarrayVar::get_word_size() const
+పూర్ణాంకం __vpiDarrayVar::get_మాట_కొలత() స్థిరరాశి
 {
       vvp_vector4_t new_vec;
       vvp_darray*aobj = get_vvp_darray();
-      aobj->get_word(0, new_vec);
-      return new_vec.size();
+      aobj->get_మాట(0, new_vec);
+      తిరిగి new_vec.size();
 }
 
-char*__vpiDarrayVar::get_word_str(struct __vpiArrayWord*word, int code)
+అక్షరం*__vpiDarrayVar::get_మాట_str(నిర్మాణం __vpiArrayWord*మాట, పూర్ణాంకం code)
 {
-      unsigned index = word->get_index();
+      గుర్తులేని సూచీ = మాట->get_సూచీ();
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      ఒకవేళ (code == vpiFile) {  // Not implemented for now!
+	    తిరిగి simple_సమితి_rbuf_str(file_పేర్లు[0]);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%d", (int)index);
-      return generic_get_str(code, scope_, name_, sidx);
+      అక్షరం sidx [64];
+      snprintf(sidx, 63, "%d", (పూర్ణాంకం)సూచీ);
+      తిరిగి generic_get_str(code, scope_, name_, sidx);
 }
 
-void __vpiDarrayVar::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
+శూన్య __vpiDarrayVar::get_మాట_విలువ(నిర్మాణం __vpiArrayWord*మాట, p_vpi_విలువ vp)
 {
-      unsigned index = word->get_index();
+      గుర్తులేని సూచీ = మాట->get_సూచీ();
       vvp_darray*aobj = get_vvp_darray();
 
-      if(vp->format == vpiObjTypeVal) {
-          if(dynamic_cast<vvp_darray_real*>(aobj))
+      ఒకవేళ(vp->format == vpiObjTypeVal) {
+          ఒకవేళ(dynamic_cast<vvp_darray_real*>(aobj))
               vp->format = vpiRealVal;
-          else if(dynamic_cast<vvp_darray_string*>(aobj))
+          లేకపోతే ఒకవేళ(dynamic_cast<vvp_darray_string*>(aobj))
               vp->format = vpiStringVal;
-          else
-              vp->format = vpiVectorVal;
+          లేకపోతే
+              vp->format = vpi_సదిశ_Val;
       }
 
-      switch(vp->format) {
-      case vpiBinStrVal:
-      case vpiOctStrVal:
-      case vpiDecStrVal:
-      case vpiHexStrVal:
-      case vpiScalarVal:
-      case vpiIntVal:
-      case vpiVectorVal:
+      ఎంపిక(vp->format) {
+      స్థితి vpiBinStrVal:
+      స్థితి vpiOctStrVal:
+      స్థితి vpiDecStrVal:
+      స్థితి vpiHexStrVal:
+      స్థితి vpiScalarVal:
+      స్థితి vpiIntVal:
+      స్థితి vpi_సదిశ_Val:
       {
           vvp_vector4_t v;
-          aobj->get_word(index, v);
-          vpip_vec4_get_value(v, v.size(), false, vp);  // TODO sign?
+          aobj->get_మాట(సూచీ, v);
+          vpip_vec4_get_విలువ(v, v.size(), అబద్ధం, vp);  // TODO sign?
       }
-      break;
+      ఆపు;
 
-      case vpiRealVal:
+      స్థితి vpiRealVal:
       {
-          double d;
-          aobj->get_word(index, d);
-          vpip_real_get_value(d, vp);
+          ద్విగుణ d;
+          aobj->get_మాట(సూచీ, d);
+          vpip_real_get_విలువ(d, vp);
       }
-      break;
+      ఆపు;
 
-      case vpiStringVal:
+      స్థితి vpiStringVal:
       {
           string s;
-          aobj->get_word(index, s);
-          vpip_string_get_value(s, vp);
+          aobj->get_మాట(సూచీ, s);
+          vpip_string_get_విలువ(s, vp);
       }
-      break;
+      ఆపు;
 
-      default:
+      అప్రమేయ:
           fprintf(stderr, "vpi sorry: format is not implemented\n");
-          assert(false);
+          ప్రతిజ్ఞా(అబద్ధం);
       }
 }
 
-void __vpiDarrayVar::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int)
+శూన్య __vpiDarrayVar::put_మాట_విలువ(నిర్మాణం __vpiArrayWord*మాట, p_vpi_విలువ vp, పూర్ణాంకం)
 {
-      unsigned index = word->get_index();
+      గుర్తులేని సూచీ = మాట->get_సూచీ();
       vvp_darray*aobj = get_vvp_darray();
 
-      switch(vp->format) {
-      case vpiScalarVal:
-      case vpiIntVal:
-      case vpiVectorVal: {
-	    vvp_vector4_t vec = vec4_from_vpi_value(vp, get_word_size());
-	    aobj->set_word(index, vec);
+      ఎంపిక(vp->format) {
+      స్థితి vpiScalarVal:
+      స్థితి vpiIntVal:
+      స్థితి vpi_సదిశ_Val: {
+	    vvp_vector4_t vec = vec4_from_vpi_విలువ(vp, get_మాట_కొలత());
+	    aobj->సమితి_మాట(సూచీ, vec);
       }
-      break;
+      ఆపు;
 
-      case vpiRealVal:
-        aobj->set_word(index, vp->value.real);
-        break;
+      స్థితి vpiRealVal:
+        aobj->సమితి_మాట(సూచీ, vp->value.real);
+        ఆపు;
 
-      case vpiStringVal:
-        aobj->set_word(index, std::string(vp->value.str));
-        break;
+      స్థితి vpiStringVal:
+        aobj->సమితి_మాట(సూచీ, std::string(vp->value.str));
+        ఆపు;
 
-      default:
+      అప్రమేయ:
           fprintf(stderr, "vpi sorry: format is not implemented");
-          assert(false);
+          ప్రతిజ్ఞా(అబద్ధం);
       }
 }
 
-vpiHandle __vpiDarrayVar::get_iter_index(struct __vpiArrayIterator*, int idx)
+vpiHandle __vpiDarrayVar::get_iter_సూచీ(నిర్మాణం __vpiArrayIterator*, పూర్ణాంకం idx)
 {
-      if (vals_words == 0) make_vals_words();
+      ఒకవేళ (vals_పదాలు == 0) make_vals_పదాలు();
 
-      return &(vals_words[idx].as_word);
+      తిరిగి &(vals_పదాలు[idx].as_మాట);
 }
 
-int __vpiDarrayVar::vpi_get(int code)
+పూర్ణాంకం __vpiDarrayVar::vpi_get(పూర్ణాంకం code)
 {
-      switch (code) {
-	  case vpiArrayType:
-	    return vpiDynamicArray;
-	  case vpiLeftRange:
-	    return 0;
-	  case vpiRightRange:
-	    return get_size() - 1;
-	  case vpiSize:
-            return get_size();
+      ఎంపిక (code) {
+	  స్థితి vpiArrayType:
+	    తిరిగి vpiDynamicArray;
+	  స్థితి vpi_ఎడమ_Range:
+	    తిరిగి 0;
+	  స్థితి vpi_కుడి_Range:
+	    తిరిగి get_కొలత() - 1;
+	  స్థితి vpi_కొలత:
+            తిరిగి get_కొలత();
 
-	  default:
+	  అప్రమేయ:
 	    fprintf(stderr, "vpi sorry: property is not implemented");
-	    assert(false);
-	    return 0;
+	    ప్రతిజ్ఞా(అబద్ధం);
+	    తిరిగి 0;
       }
 }
 
-char* __vpiDarrayVar::vpi_get_str(int code)
+అక్షరం* __vpiDarrayVar::vpi_get_str(పూర్ణాంకం code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      ఒకవేళ (code == vpiFile) {  // Not implemented for now!
+            తిరిగి simple_సమితి_rbuf_str(file_పేర్లు[0]);
       }
 
-      return generic_get_str(code, scope_, name_, NULL);
+      తిరిగి generic_get_str(code, scope_, name_, ఖాళీ);
 }
 
-vpiHandle __vpiDarrayVar::vpi_handle(int code)
+vpiHandle __vpiDarrayVar::vpi_handle(పూర్ణాంకం code)
 {
-      switch (code) {
-          case vpiLeftRange:
-            return get_left_range();
+      ఎంపిక (code) {
+          స్థితి vpi_ఎడమ_Range:
+            తిరిగి get_ఎడమ_range();
 
-          case vpiRightRange:
-            return get_right_range();
+          స్థితి vpi_కుడి_Range:
+            తిరిగి get_కుడి_range();
 
-          case vpiScope:
-            return scope_;
+          స్థితి vpiScope:
+            తిరిగి scope_;
 
-          case vpiModule:
-            return vpip_module(scope_);
+          స్థితి vpiModule:
+            తిరిగి vpip_module(scope_);
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
-vpiHandle __vpiDarrayVar::vpi_index(int index)
+vpiHandle __vpiDarrayVar::vpi_సూచీ(పూర్ణాంకం సూచీ)
 {
-      if (index >= (long) get_size())
-	    return 0;
-      if (index < 0)
-	    return 0;
+      ఒకవేళ (సూచీ >= (దీర్ఘ) get_కొలత())
+	    తిరిగి 0;
+      ఒకవేళ (సూచీ < 0)
+	    తిరిగి 0;
 
-      if (vals_words == 0)
-	    make_vals_words();
+      ఒకవేళ (vals_పదాలు == 0)
+	    make_vals_పదాలు();
 
-      return &(vals_words[index].as_word);
+      తిరిగి &(vals_పదాలు[సూచీ].as_మాట);
 }
 
-void __vpiDarrayVar::vpi_get_value(p_vpi_value val)
+శూన్య __vpiDarrayVar::vpi_get_విలువ(p_vpi_విలువ val)
 {
       val->format = vpiSuppressVal;
 }
 
-vvp_darray*__vpiDarrayVar::get_vvp_darray() const
+vvp_darray*__vpiDarrayVar::get_vvp_darray() స్థిరరాశి
 {
       vvp_fun_signal_object*fun = dynamic_cast<vvp_fun_signal_object*> (get_net()->fun);
-      assert(fun);
+      ప్రతిజ్ఞా(fun);
       vvp_object_t obj = fun->get_object();
 
-      return obj.peek<vvp_darray>();
+      తిరిగి obj.peek<vvp_darray>();
 }
 
-vpiHandle vpip_make_darray_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_darray_var(స్థిరరాశి అక్షరం*name, vvp_net_t*net)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      const char*use_name = name ? vpip_name_string(name) : NULL;
+      స్థిరరాశి అక్షరం*use_name = name ? vpip_name_string(name) : ఖాళీ;
 
-      __vpiDarrayVar*obj = new __vpiDarrayVar(scope, use_name, net);
+      __vpiDarrayVar*obj = కొత్త __vpiDarrayVar(scope, use_name, net);
 
-      return obj;
+      తిరిగి obj;
 }
 
-__vpiQueueVar::__vpiQueueVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
+__vpiQueueVar::__vpiQueueVar(__vpiScope*sc, స్థిరరాశి అక్షరం*na, vvp_net_t*ne)
 : __vpiDarrayVar(sc, na, ne)
 {
 }
 
-int __vpiQueueVar::vpi_get(int code)
+పూర్ణాంకం __vpiQueueVar::vpi_get(పూర్ణాంకం code)
 {
-      switch (code) {
-	  case vpiArrayType:
-	    return vpiQueueArray;
-	  default:
-	    return __vpiDarrayVar::vpi_get(code);
+      ఎంపిక (code) {
+	  స్థితి vpiArrayType:
+	    తిరిగి vpi_వరుస_Array;
+	  అప్రమేయ:
+	    తిరిగి __vpiDarrayVar::vpi_get(code);
       }
 }
 
-vpiHandle vpip_make_queue_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_వరుస_var(స్థిరరాశి అక్షరం*name, vvp_net_t*net)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      const char*use_name = name ? vpip_name_string(name) : NULL;
+      స్థిరరాశి అక్షరం*use_name = name ? vpip_name_string(name) : ఖాళీ;
 
-      __vpiQueueVar*obj = new __vpiQueueVar(scope, use_name, net);
+      __vpiQueueVar*obj = కొత్త __vpiQueueVar(scope, use_name, net);
 
-      return obj;
+      తిరిగి obj;
 }
 
-__vpiPropQueueRef::__vpiPropQueueRef(__vpiScope*scope, unsigned pidx,
-				     bool is_queue)
-: class_net_(0), prop_idx_(pidx), is_queue_(is_queue), scope_(scope)
+__vpiPropQueueRef::__vpiPropQueueRef(__vpiScope*scope, గుర్తులేని pidx,
+				     తార్కిక is_వరుస)
+: class_net_(0), prop_idx_(pidx), is_వరుస_2(is_వరుస), scope_(scope)
 {
 }
 
-int __vpiPropQueueRef::get_type_code(void) const
-{ return vpiArrayVar; }
+పూర్ణాంకం __vpiPropQueueRef::get_type_సంకేతం(శూన్య) స్థిరరాశి
+{ తిరిగి vpiArrayVar; }
 
-static vvp_darray* get_live_darray_from_prop(vvp_net_t* class_net, unsigned pid)
+స్థిర vvp_darray* get_సజీవ_darray_from_prop(vvp_net_t* class_net, గుర్తులేని pid)
 {
-      if (!class_net) return 0;
-      const vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(class_net->fun);
-      if (!fun) return 0;
+      ఒకవేళ (!class_net) తిరిగి 0;
+      స్థిరరాశి vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(class_net->fun);
+      ఒకవేళ (!fun) తిరిగి 0;
       vvp_object_t obj = fun->get_object();
       vvp_cobject* cobj = obj.peek<vvp_cobject>();
-      if (!cobj) return 0;
+      ఒకవేళ (!cobj) తిరిగి 0;
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      return qobj.peek<vvp_darray>();
+      తిరిగి qobj.peek<vvp_darray>();
 }
 
-int __vpiPropQueueRef::vpi_get(int code)
+పూర్ణాంకం __vpiPropQueueRef::vpi_get(పూర్ణాంకం code)
 {
-      const vvp_darray* aobj = get_live_darray_from_prop(class_net_, prop_idx_);
-      switch (code) {
-	  case vpiArrayType:
-	    return is_queue_ ? vpiQueueArray : vpiDynamicArray;
-	  case vpiLeftRange:
-	    return 0;
-	  case vpiRightRange:
-	    return aobj ? (int) (aobj->get_size() - 1) : 0;
-	  case vpiSize:
-	    return aobj ? (int) aobj->get_size() : 0;
-	  default:
-	    return 0;
+      స్థిరరాశి vvp_darray* aobj = get_సజీవ_darray_from_prop(class_net_, prop_idx_);
+      ఎంపిక (code) {
+	  స్థితి vpiArrayType:
+	    తిరిగి is_వరుస_2 ? vpi_వరుస_Array : vpiDynamicArray;
+	  స్థితి vpi_ఎడమ_Range:
+	    తిరిగి 0;
+	  స్థితి vpi_కుడి_Range:
+	    తిరిగి aobj ? (పూర్ణాంకం) (aobj->get_కొలత() - 1) : 0;
+	  స్థితి vpi_కొలత:
+	    తిరిగి aobj ? (పూర్ణాంకం) aobj->get_కొలత() : 0;
+	  అప్రమేయ:
+	    తిరిగి 0;
       }
 }
 
-char* __vpiPropQueueRef::vpi_get_str(int code)
+అక్షరం* __vpiPropQueueRef::vpi_get_str(పూర్ణాంకం code)
 {
-      if (code == vpiFile) {
-	    return simple_set_rbuf_str(file_names[0]);
+      ఒకవేళ (code == vpiFile) {
+	    తిరిగి simple_సమితి_rbuf_str(file_పేర్లు[0]);
       }
-      return generic_get_str(code, scope_, "prop_darray", NULL);
+      తిరిగి generic_get_str(code, scope_, "prop_darray", ఖాళీ);
 }
 
-void __vpiPropQueueRef::vpi_get_value(p_vpi_value val)
+శూన్య __vpiPropQueueRef::vpi_get_విలువ(p_vpi_విలువ val)
 {
       val->format = vpiSuppressVal;
 }
 
-vpiHandle vpip_make_prop_queue_ref(char* class_label, unsigned prop_idx,
-				   unsigned is_queue_flag)
+vpiHandle vpip_make_prop_వరుస_ref(అక్షరం* class_label, గుర్తులేని prop_idx,
+				   గుర్తులేని is_వరుస_flag)
 {
-      __vpiPropQueueRef* obj = new __vpiPropQueueRef(vpip_peek_current_scope(),
+      __vpiPropQueueRef* obj = కొత్త __vpiPropQueueRef(vpip_peek_current_scope(),
 						     prop_idx,
-						     is_queue_flag != 0);
+						     is_వరుస_flag != 0);
       functor_ref_lookup(&obj->class_net_, class_label);
-      return obj;
+      తిరిగి obj;
 }
 
 vvp_darray* vpip_vpi_darray_from_handle(vpiHandle ref)
 {
-      if (!ref) return 0;
+      ఒకవేళ (!ref) తిరిగి 0;
 
-      if (__vpiPropQueueRef* pr = dynamic_cast<__vpiPropQueueRef*>(ref)) {
-	    return get_live_darray_from_prop(pr->class_net_, pr->prop_idx_);
+      ఒకవేళ (__vpiPropQueueRef* pr = dynamic_cast<__vpiPropQueueRef*>(ref)) {
+	    తిరిగి get_సజీవ_darray_from_prop(pr->class_net_, pr->prop_idx_);
       }
 
-      if (const __vpiDarrayVar* dv = dynamic_cast<__vpiDarrayVar*>(ref)) {
-	    const vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(dv->get_net()->fun);
-	    if (!fun) return 0;
+      ఒకవేళ (స్థిరరాశి __vpiDarrayVar* dv = dynamic_cast<__vpiDarrayVar*>(ref)) {
+	    స్థిరరాశి vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(dv->get_net()->fun);
+	    ఒకవేళ (!fun) తిరిగి 0;
 	    vvp_object_t obj = fun->get_object();
-	    return obj.peek<vvp_darray>();
+	    తిరిగి obj.peek<vvp_darray>();
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void array_delete(vpiHandle item)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య array_delete(vpiHandle అంశం)
 {
-      if (__vpiPropQueueRef* pq = dynamic_cast<__vpiPropQueueRef*>(item)) {
-	    delete pq;
-	    return;
+      ఒకవేళ (__vpiPropQueueRef* pq = dynamic_cast<__vpiPropQueueRef*>(అంశం)) {
+	    తొలగించు pq;
+	    తిరిగి;
       }
 
-      __vpiDarrayVar*dobj = dynamic_cast<__vpiDarrayVar*>(item);
-      if (dobj) {
-	    if (dobj->vals_words) delete [] (dobj->vals_words-1);
-	    delete dobj;
-	    return;
+      __vpiDarrayVar*dobj = dynamic_cast<__vpiDarrayVar*>(అంశం);
+      ఒకవేళ (dobj) {
+	    ఒకవేళ (dobj->vals_పదాలు) తొలగించు [] (dobj->vals_పదాలు-1);
+	    తొలగించు dobj;
+	    తిరిగి;
       }
 
-      fprintf(stderr, "Need support for deleting array type: %d\n", item->vpi_get(vpiArrayType));
-      assert(0);
+      fprintf(stderr, "Need support for deleting array type: %d\n", అంశం->vpi_get(vpiArrayType));
+      ప్రతిజ్ఞా(0);
 }
-#endif
+#అయితే_ముగింపు

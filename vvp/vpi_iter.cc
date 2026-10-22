@@ -26,60 +26,60 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-static int iterator_free_object(vpiHandle ref)
+స్థిర పూర్ణాంకం iterator_free_object(vpiHandle ref)
 {
-      struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
-      assert(hp);
+      నిర్మాణం __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
+      ప్రతిజ్ఞా(hp);
 
-      if (hp->free_args_flag)
-	    free(hp->args);
+      ఒకవేళ (hp->free_వాదనలు_flag)
+	    విడుదల(hp->వాదనలు);
 
-      delete hp;
-      return 1;
+      తొలగించు hp;
+      తిరిగి 1;
 }
 
-inline __vpiIterator::__vpiIterator()
+అంతఃవరుస __vpiIterator::__vpiIterator()
 { }
 
-int __vpiIterator::get_type_code(void) const
-{ return vpiIterator; }
+పూర్ణాంకం __vpiIterator::get_type_సంకేతం(శూన్య) స్థిరరాశి
+{ తిరిగి vpiIterator; }
 
-__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(void)
-{ return &iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(శూన్య)
+{ తిరిగి &iterator_free_object; }
 
-vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
-			     bool free_args_flag)
+vpiHandle vpip_make_iterator(గుర్తులేని nargs, vpiHandle*వాదనలు,
+			     తార్కిక free_వాదనలు_flag)
 {
-      struct __vpiIterator*res = new __vpiIterator;
-      res->args = args;
+      నిర్మాణం __vpiIterator*res = కొత్త __vpiIterator;
+      res->వాదనలు = వాదనలు;
       res->nargs = nargs;
-      res->next  = 0;
+      res->తదుపరి_2  = 0;
 
-      res->free_args_flag = free_args_flag;
+      res->free_వాదనలు_flag = free_వాదనలు_flag;
 
-      return res;
+      తిరిగి res;
 }
 
 /*
  * The vpi_scan function only applies to iterators. It returns the
  * next vpiHandle in the iterated list.
  */
-vpiHandle vpi_scan(vpiHandle ref)
+vpiHandle vpi_పరిశీలన(vpiHandle ref)
 {
-      if (ref == 0) {
+      ఒకవేళ (ref == 0) {
 	    fprintf(stderr, "ERROR: NULL handle passed to vpi_scan.\n");
-	    assert(0);
-	    return 0;
+	    ప్రతిజ్ఞా(0);
+	    తిరిగి 0;
       }
 
-      if (struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
-	    if (hp->next == hp->nargs) {
+      ఒకవేళ (నిర్మాణం __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
+	    ఒకవేళ (hp->తదుపరి_2 == hp->nargs) {
 		  vpi_free_object(ref);
-		  return 0;
+		  తిరిగి 0;
 	    }
 
-	    return hp->args[hp->next++];
+	    తిరిగి hp->వాదనలు[hp->తదుపరి_2++];
       }
 
-      return ref->vpi_index(0);
+      తిరిగి ref->vpi_సూచీ(0);
 }

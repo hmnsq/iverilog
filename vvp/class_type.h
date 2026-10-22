@@ -1,5 +1,5 @@
-#ifndef IVL_class_type_H
-#define IVL_class_type_H
+#నిర్వచితం_కాకపోతే IVL_class_type_H
+#నిర్వచించు IVL_class_type_H
 /*
  * Copyright (c) 2012-2025 Stephen Williams (steve@icarus.com)
  *
@@ -31,58 +31,58 @@ class vvp_vector4_t;
  * uses this information to figure out how to construct an actual
  * instance.
  */
-class class_type : public __vpiHandle {
+class class_type : బహిరంగ __vpiHandle {
 
-    public:
-      struct inst_x;
-      typedef inst_x*inst_t;
+    బహిరంగ:
+      నిర్మాణం inst_x;
+      రకనిర్వచనం inst_x*inst_t;
 
-    public:
-      explicit class_type(const std::string&nam, size_t nprop);
+    బహిరంగ:
+      explicit class_type(స్థిరరాశి std::string&nam, size_t nprop);
       ~class_type() override;
 
 	// This is the name of the class type.
-      inline const std::string&class_name(void) const { return class_name_; }
+      అంతఃవరుస స్థిరరాశి std::string&class_name(శూన్య) స్థిరరాశి { తిరిగి class_name_; }
 	// Number of properties in the class definition.
-      inline size_t property_count(void) const { return properties_.size(); }
+      అంతఃవరుస size_t property_లెక్క(శూన్య) స్థిరరాశి { తిరిగి properties_.కొలత(); }
 
 	// Set the details about the property. This is used during
 	// parse of the .vvp file to fill in the details of the
 	// property for the class definition.
-      void set_property(size_t idx, const std::string&name, const std::string&type, uint64_t array_size);
+      శూన్య సమితి_property(size_t idx, స్థిరరాశి std::string&name, స్థిరరాశి std::string&type, uint64_t array_కొలత_2);
 
 	// This method is called after all the properties are
 	// defined. This calculates information about the definition.
-      void finish_setup(void);
+      శూన్య ముగింపు_అమరిక(శూన్య);
 
-    public:
+    బహిరంగ:
 	// Constructors and destructors for making instances.
-      inst_t instance_new() const;
-      void instance_delete(inst_t) const;
+      inst_t instance_new() స్థిరరాశి;
+      శూన్య instance_delete(inst_t) స్థిరరాశి;
 
-      void set_vec4(inst_t inst, size_t pid, const vvp_vector4_t&val) const;
-      void get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) const;
-      void set_real(inst_t inst, size_t pid, double val) const;
-      double get_real(inst_t inst, size_t pid) const;
-      void set_string(inst_t inst, size_t pid, const std::string&val) const;
-      std::string get_string(inst_t inst, size_t pid) const;
-      void set_object(inst_t inst, size_t pid, const vvp_object_t&val, size_t idx) const;
-      void get_object(inst_t inst, size_t pid, vvp_object_t&val, size_t idx) const;
+      శూన్య సమితి_vec4(inst_t inst, size_t pid, స్థిరరాశి vvp_vector4_t&val) స్థిరరాశి;
+      శూన్య get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) స్థిరరాశి;
+      శూన్య సమితి_real(inst_t inst, size_t pid, ద్విగుణ val) స్థిరరాశి;
+      ద్విగుణ get_real(inst_t inst, size_t pid) స్థిరరాశి;
+      శూన్య సమితి_string(inst_t inst, size_t pid, స్థిరరాశి std::string&val) స్థిరరాశి;
+      std::string get_string(inst_t inst, size_t pid) స్థిరరాశి;
+      శూన్య సమితి_object(inst_t inst, size_t pid, స్థిరరాశి vvp_object_t&val, size_t idx) స్థిరరాశి;
+      శూన్య get_object(inst_t inst, size_t pid, vvp_object_t&val, size_t idx) స్థిరరాశి;
 
-      void copy_property(inst_t dst, size_t idx, inst_t src) const;
+      శూన్య copy_property(inst_t dst, size_t idx, inst_t src) స్థిరరాశి;
 
-    public: // VPI related methods
-      int get_type_code(void) const override;
+    బహిరంగ: // VPI related methods
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
 
-    private:
+    అంతరంగ:
       std::string class_name_;
 
-      struct prop_t {
+      నిర్మాణం prop_t {
 	    std::string name;
 	    class_property_t*type;
       };
-      std::vector<prop_t> properties_;
-      size_t instance_size_;
+      std::సదిశ<prop_t> properties_;
+      size_t instance_కొలత_2;
 };
 
-#endif /* IVL_class_type_H */
+#అయితే_ముగింపు /* IVL_class_type_H */

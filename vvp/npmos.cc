@@ -19,126 +19,126 @@
 
 # include  "npmos.h"
 
-vvp_fun_pmos_::vvp_fun_pmos_(bool enable_invert, bool resistive)
+vvp_fun_pmos_::vvp_fun_pmos_(తార్కిక enable_invert, తార్కిక resistive)
 {
       inv_en_ = enable_invert;
       resistive_ = resistive;
 }
 
 
-void vvp_fun_pmos_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+శూన్య vvp_fun_pmos_::recv_vec4(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
                               vvp_context_t)
 {
 	/* Data input is processed through eh recv_vec8 method,
 	   because the strength must be preserved. */
-      if (ptr.port() == 0) {
-	    vvp_vector8_t tmp = vvp_vector8_t(bit,6,6);
+      ఒకవేళ (ptr.పోర్టు() == 0) {
+	    vvp_vector8_t tmp = vvp_vector8_t(బిట్టు,6,6);
 	    recv_vec8(ptr, tmp);
-	    return;
+	    తిరిగి;
       }
 
-      if (ptr.port() != 1)
-	    return;
+      ఒకవేళ (ptr.పోర్టు() != 1)
+	    తిరిగి;
 
-      en_ = inv_en_? ~bit : bit;
+      en_ = inv_en_? ~బిట్టు : బిట్టు;
       generate_output_(ptr);
 }
 
-void vvp_fun_pmos_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			         unsigned base, unsigned vwid, vvp_context_t ctx)
+శూన్య vvp_fun_pmos_::recv_vec4_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			         గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, బిట్టు, పునాది, vwid, ctx);
 }
 
-void vvp_fun_pmos_::recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-			         unsigned base, unsigned vwid)
+శూన్య vvp_fun_pmos_::recv_vec8_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector8_t&బిట్టు,
+			         గుర్తులేని పునాది, గుర్తులేని vwid)
 {
-      recv_vec8_pv_(ptr, bit, base, vwid);
+      recv_vec8_pv_(ptr, బిట్టు, పునాది, vwid);
 }
 
-void vvp_fun_pmos_::recv_real(vvp_net_ptr_t ptr, double real,
+శూన్య vvp_fun_pmos_::recv_real(vvp_net_ptr_t ptr, ద్విగుణ real,
                               vvp_context_t ctx)
 {
-      recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
+      recv_vec4(ptr, double_గమ్యం_vector4_LSB(real), ctx);
 }
 
-void vvp_fun_pmos_::generate_output_(vvp_net_ptr_t ptr)
+శూన్య vvp_fun_pmos_::generate_output_(vvp_net_ptr_t ptr)
 {
-      const unsigned*strength_map = vvp_switch_strength_map[resistive_];
+      స్థిరరాశి గుర్తులేని*strength_map = vvp_switch_strength_map[resistive_];
 
-      vvp_vector8_t out (bit_.size());
+      vvp_vector8_t out (బిట్టు_2.size());
 
-      for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
+      కొరకు (గుర్తులేని idx = 0 ;  idx < out.size() ;  idx += 1) {
 	    vvp_bit4_t   b_en  = en_.value(idx);
-	    vvp_scalar_t b_bit = bit_.value(idx);
+	    vvp_scalar_t b_బిట్టు = బిట్టు_2.value(idx);
 
-            b_bit = vvp_scalar_t(b_bit.value(),
-                                 strength_map[b_bit.strength0()],
-                                 strength_map[b_bit.strength1()]);
+            b_బిట్టు = vvp_scalar_t(b_బిట్టు.value(),
+                                 strength_map[b_బిట్టు.strength0()],
+                                 strength_map[b_బిట్టు.strength1()]);
 
-	    switch (b_en) {
-		case BIT4_0:
-		  out.set_bit(idx, b_bit);
-		  break;
-		case BIT4_1:
-		  out.set_bit(idx, vvp_scalar_t(BIT4_Z,0,0));
-		  break;
-		default:
-		  switch (b_bit.value()) {
-		      case BIT4_0:
-			b_bit = vvp_scalar_t(BIT4_X,b_bit.strength0(),0);
-			break;
-		      case BIT4_1:
-			b_bit = vvp_scalar_t(BIT4_X,0,b_bit.strength1());
-			break;
-		      default:
-			break;
+	    ఎంపిక (b_en) {
+		స్థితి BIT4_0:
+		  out.సమితి_బిట్టు(idx, b_బిట్టు);
+		  ఆపు;
+		స్థితి BIT4_1:
+		  out.సమితి_బిట్టు(idx, vvp_scalar_t(BIT4_Z,0,0));
+		  ఆపు;
+		అప్రమేయ:
+		  ఎంపిక (b_బిట్టు.value()) {
+		      స్థితి BIT4_0:
+			b_బిట్టు = vvp_scalar_t(BIT4_X,b_బిట్టు.strength0(),0);
+			ఆపు;
+		      స్థితి BIT4_1:
+			b_బిట్టు = vvp_scalar_t(BIT4_X,0,b_బిట్టు.strength1());
+			ఆపు;
+		      అప్రమేయ:
+			ఆపు;
 		  }
-		  out.set_bit(idx, b_bit);
-		  break;
+		  out.సమితి_బిట్టు(idx, b_బిట్టు);
+		  ఆపు;
 	    }
       }
 
-      if (out.size() > 0)
+      ఒకవేళ (out.size() > 0)
 	    ptr.ptr()->send_vec8(out);
 }
 
 
-vvp_fun_pmos::vvp_fun_pmos(bool enable_invert)
-: vvp_fun_pmos_(enable_invert, false)
+vvp_fun_pmos::vvp_fun_pmos(తార్కిక enable_invert)
+: vvp_fun_pmos_(enable_invert, అబద్ధం)
 {
 }
 
-void vvp_fun_pmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+శూన్య vvp_fun_pmos::recv_vec8(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector8_t&బిట్టు)
 {
-      if (ptr.port() == 1) {
-	    recv_vec4(ptr, reduce4(bit), 0);
-	    return;
+      ఒకవేళ (ptr.పోర్టు() == 1) {
+	    recv_vec4(ptr, reduce4(బిట్టు), 0);
+	    తిరిగి;
       }
 
-      if (ptr.port() != 0)
-	    return;
+      ఒకవేళ (ptr.పోర్టు() != 0)
+	    తిరిగి;
 
-      bit_ = bit;
+      బిట్టు_2 = బిట్టు;
       generate_output_(ptr);
 }
 
-vvp_fun_rpmos::vvp_fun_rpmos(bool enable_invert)
-: vvp_fun_pmos_(enable_invert, true)
+vvp_fun_rpmos::vvp_fun_rpmos(తార్కిక enable_invert)
+: vvp_fun_pmos_(enable_invert, నిజం)
 {
 }
 
-void vvp_fun_rpmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+శూన్య vvp_fun_rpmos::recv_vec8(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector8_t&బిట్టు)
 {
-      if (ptr.port() == 1) {
-	    recv_vec4(ptr, reduce4(bit), 0);
-	    return;
+      ఒకవేళ (ptr.పోర్టు() == 1) {
+	    recv_vec4(ptr, reduce4(బిట్టు), 0);
+	    తిరిగి;
       }
 
-      if (ptr.port() != 0)
-	    return;
+      ఒకవేళ (ptr.పోర్టు() != 0)
+	    తిరిగి;
 
-      bit_ = bit;
+      బిట్టు_2 = బిట్టు;
       generate_output_(ptr);
 }
 
@@ -147,122 +147,122 @@ void vvp_fun_rpmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
  * CMOS primitive.
  */
 
-vvp_fun_cmos_::vvp_fun_cmos_(bool resistive)
+vvp_fun_cmos_::vvp_fun_cmos_(తార్కిక resistive)
 {
       resistive_ = resistive;
 }
 
-void vvp_fun_cmos_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t &bit,
+శూన్య vvp_fun_cmos_::recv_vec4(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t &బిట్టు,
                               vvp_context_t)
 {
 	/* Data input is processed through the recv_vec8 method,
 	   because the strength must be preserved. */
-      if (ptr.port() == 0) {
-	    vvp_vector8_t tmp = vvp_vector8_t(bit,6,6);
+      ఒకవేళ (ptr.పోర్టు() == 0) {
+	    vvp_vector8_t tmp = vvp_vector8_t(బిట్టు,6,6);
 	    recv_vec8(ptr, tmp);
-	    return;
+	    తిరిగి;
       }
 
-      if (ptr.port() != 1 && ptr.port() != 2)
-	    return;
+      ఒకవేళ (ptr.పోర్టు() != 1 && ptr.పోర్టు() != 2)
+	    తిరిగి;
 
-      if (ptr.port() == 1)
-	    n_en_ = bit;
-      else
-	    p_en_ = bit;
+      ఒకవేళ (ptr.పోర్టు() == 1)
+	    n_en_ = బిట్టు;
+      లేకపోతే
+	    p_en_ = బిట్టు;
       generate_output_(ptr);
 }
 
-void vvp_fun_cmos_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			         unsigned base, unsigned vwid, vvp_context_t ctx)
+శూన్య vvp_fun_cmos_::recv_vec4_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			         గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, బిట్టు, పునాది, vwid, ctx);
 }
 
-void vvp_fun_cmos_::recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-			         unsigned base, unsigned vwid)
+శూన్య vvp_fun_cmos_::recv_vec8_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector8_t&బిట్టు,
+			         గుర్తులేని పునాది, గుర్తులేని vwid)
 {
-      recv_vec8_pv_(ptr, bit, base, vwid);
+      recv_vec8_pv_(ptr, బిట్టు, పునాది, vwid);
 }
 
-void vvp_fun_cmos_::recv_real(vvp_net_ptr_t ptr, double real,
+శూన్య vvp_fun_cmos_::recv_real(vvp_net_ptr_t ptr, ద్విగుణ real,
                               vvp_context_t ctx)
 {
-      recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
+      recv_vec4(ptr, double_గమ్యం_vector4_LSB(real), ctx);
 }
 
-void vvp_fun_cmos_::generate_output_(vvp_net_ptr_t ptr)
+శూన్య vvp_fun_cmos_::generate_output_(vvp_net_ptr_t ptr)
 {
-      const unsigned*strength_map = vvp_switch_strength_map[resistive_];
+      స్థిరరాశి గుర్తులేని*strength_map = vvp_switch_strength_map[resistive_];
 
-      vvp_vector8_t out (bit_.size());
+      vvp_vector8_t out (బిట్టు_2.size());
 
-      for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
+      కొరకు (గుర్తులేని idx = 0 ;  idx < out.size() ;  idx += 1) {
 	    vvp_bit4_t   b_n_en  = n_en_.value(idx);
 	    vvp_bit4_t   b_p_en  = p_en_.value(idx);
-	    vvp_scalar_t b_bit = bit_.value(idx);
+	    vvp_scalar_t b_బిట్టు = బిట్టు_2.value(idx);
 
-            b_bit = vvp_scalar_t(b_bit.value(),
-                                 strength_map[b_bit.strength0()],
-                                 strength_map[b_bit.strength1()]);
+            b_బిట్టు = vvp_scalar_t(b_బిట్టు.value(),
+                                 strength_map[b_బిట్టు.strength0()],
+                                 strength_map[b_బిట్టు.strength1()]);
 
-	    if (b_n_en == BIT4_1 || b_p_en == BIT4_0) {
-		  out.set_bit(idx, b_bit);
-	    } else if (b_n_en == BIT4_0 && b_p_en == BIT4_1) {
-		  out.set_bit(idx, vvp_scalar_t(BIT4_Z,0,0));
-	    } else {
-		  switch (b_bit.value()) {
-		      case BIT4_0:
-			b_bit = vvp_scalar_t(BIT4_X,b_bit.strength0(),0);
-			break;
-		      case BIT4_1:
-			b_bit = vvp_scalar_t(BIT4_X,0,b_bit.strength1());
-			break;
-		      default:
-			break;
+	    ఒకవేళ (b_n_en == BIT4_1 || b_p_en == BIT4_0) {
+		  out.సమితి_బిట్టు(idx, b_బిట్టు);
+	    } లేకపోతే ఒకవేళ (b_n_en == BIT4_0 && b_p_en == BIT4_1) {
+		  out.సమితి_బిట్టు(idx, vvp_scalar_t(BIT4_Z,0,0));
+	    } లేకపోతే {
+		  ఎంపిక (b_బిట్టు.value()) {
+		      స్థితి BIT4_0:
+			b_బిట్టు = vvp_scalar_t(BIT4_X,b_బిట్టు.strength0(),0);
+			ఆపు;
+		      స్థితి BIT4_1:
+			b_బిట్టు = vvp_scalar_t(BIT4_X,0,b_బిట్టు.strength1());
+			ఆపు;
+		      అప్రమేయ:
+			ఆపు;
 		  }
-		  out.set_bit(idx, b_bit);
+		  out.సమితి_బిట్టు(idx, b_బిట్టు);
 	    }
       }
 
-      if (out.size() > 0)
+      ఒకవేళ (out.size() > 0)
 	    ptr.ptr()->send_vec8(out);
 }
 
 vvp_fun_cmos::vvp_fun_cmos()
-: vvp_fun_cmos_(false)
+: vvp_fun_cmos_(అబద్ధం)
 {
 }
 
-void vvp_fun_cmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+శూన్య vvp_fun_cmos::recv_vec8(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector8_t&బిట్టు)
 {
-      if (ptr.port() == 1 || ptr.port() == 2) {
-	    recv_vec4(ptr, reduce4(bit), 0);
-	    return;
+      ఒకవేళ (ptr.పోర్టు() == 1 || ptr.పోర్టు() == 2) {
+	    recv_vec4(ptr, reduce4(బిట్టు), 0);
+	    తిరిగి;
       }
 
-      if (ptr.port() != 0)
-	    return;
+      ఒకవేళ (ptr.పోర్టు() != 0)
+	    తిరిగి;
 
-      bit_ = bit;
+      బిట్టు_2 = బిట్టు;
       generate_output_(ptr);
 }
 
 vvp_fun_rcmos::vvp_fun_rcmos()
-: vvp_fun_cmos_(true)
+: vvp_fun_cmos_(నిజం)
 {
 }
 
-void vvp_fun_rcmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+శూన్య vvp_fun_rcmos::recv_vec8(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector8_t&బిట్టు)
 {
-      if (ptr.port() == 1) {
-	    recv_vec4(ptr, reduce4(bit), 0);
-	    return;
+      ఒకవేళ (ptr.పోర్టు() == 1) {
+	    recv_vec4(ptr, reduce4(బిట్టు), 0);
+	    తిరిగి;
       }
 
-      if (ptr.port() != 0)
-	    return;
+      ఒకవేళ (ptr.పోర్టు() != 0)
+	    తిరిగి;
 
-      bit_ = bit;
+      బిట్టు_2 = బిట్టు;
       generate_output_(ptr);
 }

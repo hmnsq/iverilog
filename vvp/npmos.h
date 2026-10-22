@@ -1,5 +1,5 @@
-#ifndef IVL_npmos_H
-#define IVL_npmos_H
+#నిర్వచితం_కాకపోతే IVL_npmos_H
+#నిర్వచించు IVL_npmos_H
 /*
  * Copyright (c) 2005-2025 Stephen Williams (steve@icarus.com)
  *
@@ -43,34 +43,34 @@
  * flag to the constructor activates this inversion.
  */
 
-class vvp_fun_pmos_ : public vvp_net_fun_t {
+class vvp_fun_pmos_ : బహిరంగ vvp_net_fun_t {
 
-    public:
+    బహిరంగ:
       explicit vvp_fun_pmos_(bool enable_invert, bool resistive);
 
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      మాయా శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                              vvp_context_t) override;
-      virtual void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-		                unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      virtual void recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-		                unsigned base, unsigned vwid) override;
-      virtual void recv_real(vvp_net_ptr_t port, double real,
+      మాయా శూన్య recv_vec4_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
+		                గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t ctx) override;
+      మాయా శూన్య recv_vec8_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector8_t&బిట్టు,
+		                గుర్తులేని పునాది, గుర్తులేని vwid) override;
+      మాయా శూన్య recv_real(vvp_net_ptr_t పోర్టు, ద్విగుణ real,
                              vvp_context_t ctx) override;
 
-    protected:
-      void generate_output_(vvp_net_ptr_t port);
+    రక్షిత:
+      శూన్య generate_output_(vvp_net_ptr_t పోర్టు);
 
-      vvp_vector8_t bit_;
+      vvp_vector8_t బిట్టు_2;
       vvp_vector4_t en_;
       bool inv_en_, resistive_;
 };
 
-class vvp_fun_pmos  : public vvp_fun_pmos_ {
+class vvp_fun_pmos  : బహిరంగ vvp_fun_pmos_ {
 
-    public:
+    బహిరంగ:
       explicit vvp_fun_pmos(bool enable_invert);
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      మాయా శూన్య recv_vec8(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు) override;
 };
 
 /*
@@ -78,12 +78,12 @@ class vvp_fun_pmos  : public vvp_fun_pmos_ {
  * only difference is that the input strength is reduced as it passes
  * through the device.
  */
-class vvp_fun_rpmos  : public vvp_fun_pmos_ {
+class vvp_fun_rpmos  : బహిరంగ vvp_fun_pmos_ {
 
-    public:
+    బహిరంగ:
       explicit vvp_fun_rpmos(bool enable_invert);
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      మాయా శూన్య recv_vec8(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు) override;
 };
 
 /*
@@ -107,40 +107,40 @@ class vvp_fun_rpmos  : public vvp_fun_pmos_ {
  *    H | 1 x x
  */
 
-class vvp_fun_cmos_ : public vvp_net_fun_t {
-    public:
+class vvp_fun_cmos_ : బహిరంగ vvp_net_fun_t {
+    బహిరంగ:
       explicit vvp_fun_cmos_(bool resistive);
 
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      మాయా శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                              vvp_context_t) override;
-      virtual void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-                                unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      virtual void recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-                              unsigned base, unsigned vwid) override;
-      virtual void recv_real(vvp_net_ptr_t port, double real,
+      మాయా శూన్య recv_vec4_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
+                                గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t ctx) override;
+      మాయా శూన్య recv_vec8_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector8_t&బిట్టు,
+                              గుర్తులేని పునాది, గుర్తులేని vwid) override;
+      మాయా శూన్య recv_real(vvp_net_ptr_t పోర్టు, ద్విగుణ real,
                              vvp_context_t) override;
 
-    protected:
-      void generate_output_(vvp_net_ptr_t port);
+    రక్షిత:
+      శూన్య generate_output_(vvp_net_ptr_t పోర్టు);
 
-      vvp_vector8_t bit_;
+      vvp_vector8_t బిట్టు_2;
       vvp_vector4_t n_en_;
       vvp_vector4_t p_en_;
       bool resistive_;
 };
 
-class vvp_fun_cmos : public vvp_fun_cmos_ {
-    public:
+class vvp_fun_cmos : బహిరంగ vvp_fun_cmos_ {
+    బహిరంగ:
       explicit vvp_fun_cmos();
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      మాయా శూన్య recv_vec8(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు) override;
 };
 
-class vvp_fun_rcmos : public vvp_fun_cmos_ {
-    public:
+class vvp_fun_rcmos : బహిరంగ vvp_fun_cmos_ {
+    బహిరంగ:
       explicit vvp_fun_rcmos();
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      మాయా శూన్య recv_vec8(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు) override;
 };
 
-#endif /* IVL_npmos_H */
+#అయితే_ముగింపు /* IVL_npmos_H */

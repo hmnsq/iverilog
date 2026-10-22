@@ -1,5 +1,5 @@
-#ifndef IVL_vvp_cleanup_H
-#define IVL_vvp_cleanup_H
+#నిర్వచితం_కాకపోతే IVL_vvp_cleanup_H
+#నిర్వచించు IVL_vvp_cleanup_H
 /*
  * Copyright (c) 2009-2026 Cary R. (cygcary@yahoo.com)
  *
@@ -25,47 +25,47 @@
 
 /* Routines used to cleanup the runtime memory when it is all finished. */
 
-extern void codespace_delete(void);
-extern void dec_str_delete(void);
-extern void def_table_delete(void);
-extern void island_delete(void);
-extern void vpi_mcd_delete(void);
-extern void load_module_delete(void);
-extern void modpath_delete(void);
-extern void root_table_delete(void);
-extern void schedule_delete(void);
-extern void signal_pool_delete(void);
-extern void simulator_cb_delete(void);
-extern void udp_defns_delete(void);
-extern void vpi_handle_delete(void);
-extern void vpi_stack_delete(void);
-extern void vvp_net_pool_delete(void);
-extern void ufunc_pool_delete(void);
+బాహ్య శూన్య codespace_delete(శూన్య);
+బాహ్య శూన్య dec_str_delete(శూన్య);
+బాహ్య శూన్య def_పట్టిక_delete(శూన్య);
+బాహ్య శూన్య island_delete(శూన్య);
+బాహ్య శూన్య vpi_mcd_delete(శూన్య);
+బాహ్య శూన్య ఎక్కించు_module_delete(శూన్య);
+బాహ్య శూన్య modpath_delete(శూన్య);
+బాహ్య శూన్య మూలం_పట్టిక_delete(శూన్య);
+బాహ్య శూన్య కాలపట్టిక_delete(శూన్య);
+బాహ్య శూన్య signal_pool_delete(శూన్య);
+బాహ్య శూన్య simulator_cb_delete(శూన్య);
+బాహ్య శూన్య udp_defns_delete(శూన్య);
+బాహ్య శూన్య vpi_handle_delete(శూన్య);
+బాహ్య శూన్య vpi_దొంతర_delete(శూన్య);
+బాహ్య శూన్య vvp_net_pool_delete(శూన్య);
+బాహ్య శూన్య ufunc_pool_delete(శూన్య);
 
-extern void A_delete(class __vpiHandle *item);
-extern void APV_delete(class __vpiHandle *item);
-extern void PV_delete(class __vpiHandle *item);
-extern void class_delete(class __vpiHandle *item);
-extern void class_def_delete(class_type *item);
-extern void constant_delete(class __vpiHandle *item);
-extern void contexts_delete(__vpiScope *scope);
-extern void array_delete(class __vpiHandle *item);
-extern void enum_delete(class __vpiHandle *item);
-extern void memory_delete(class __vpiHandle *item);
-extern void named_event_delete(class __vpiHandle *item);
-extern void parameter_delete(class __vpiHandle *item);
-extern void signal_delete(class __vpiHandle *item);
-extern void real_delete(class __vpiHandle *item);
-extern void string_delete(class __vpiHandle *item);
-extern void thread_string_delete(class __vpiHandle *item);
-extern void thread_vthr_delete(class __vpiHandle *item);
-extern void thread_word_delete(class __vpiHandle *item);
-extern void vpi_call_delete(class __vpiHandle *item);
-extern void exec_ufunc_delete(vvp_code_t euf_code);
-extern void vthreads_delete(__vpiScope*scope);
-extern void vvp_net_delete(vvp_net_t *item);
+బాహ్య శూన్య A_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య APV_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య PV_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య class_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య class_def_delete(class_type *అంశం);
+బాహ్య శూన్య constant_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య contexts_delete(__vpiScope *scope);
+బాహ్య శూన్య array_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య enum_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య జ్ఞాపకం_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య named_event_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య parameter_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య signal_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య real_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య string_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య thread_string_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య thread_vthr_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య thread_మాట_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య vpi_call_delete(class __vpiHandle *అంశం);
+బాహ్య శూన్య exec_ufunc_delete(vvp_సంకేతం_t euf_సంకేతం);
+బాహ్య శూన్య vthreads_delete(__vpiScope*scope);
+బాహ్య శూన్య vvp_net_delete(vvp_net_t *అంశం);
 
 
-extern void pool_local_net(vvp_net_t *net);
+బాహ్య శూన్య pool_local_net(vvp_net_t *net);
 
-#endif /* IVL_vvp_cleanup_H */
+#అయితే_ముగింపు /* IVL_vvp_cleanup_H */

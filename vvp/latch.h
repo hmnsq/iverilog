@@ -1,5 +1,5 @@
-#ifndef IVL_latch_H
-#define IVL_latch_H
+#నిర్వచితం_కాకపోతే IVL_latch_H
+#నిర్వచించు IVL_latch_H
 /*
  * Copyright (c) 2016-2025 Martin Whitaker (icarus@martin-whitaker.me.uk)
  *
@@ -28,21 +28,21 @@
  *   port-0:  D input
  *   port-1:  EN input
  */
-class vvp_latch : public vvp_net_fun_t {
+class vvp_latch : బహిరంగ vvp_net_fun_t {
 
-    public:
-      explicit vvp_latch(unsigned width);
+    బహిరంగ:
+      explicit vvp_latch(గుర్తులేని వెడల్పు);
       ~vvp_latch() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      శూన్య recv_vec4_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t ctx) override;
 
-    private:
+    అంతరంగ:
       vvp_bit4_t en_;
       vvp_vector4_t d_;
 };
 
-#endif /* IVL_latch_H */
+#అయితే_ముగింపు /* IVL_latch_H */

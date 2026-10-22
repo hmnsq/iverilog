@@ -1,4 +1,4 @@
-const char COPYRIGHT[] =
+స్థిరరాశి అక్షరం COPYRIGHT[] =
   "Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)";
 /*
  *    This source code is free software; you can redistribute it
@@ -24,37 +24,37 @@ const char COPYRIGHT[] =
 # include  <cstdio>
 # include  <cstdlib>
 
-#if defined(HAVE_GETOPT_H)
+#ఒకవేళ defined(HAVE_GETOPT_H)
 # include  <getopt.h>
-#endif
+#అయితే_ముగింపు
 
-#if defined(__MINGW32__)
+#ఒకవేళ defined(__MINGW32__)
 # include  <windows.h>
-#endif
+#అయితే_ముగింపు
 
-#include "libvvp.h"
+#అన్తర్భావ "libvvp.h"
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
-#if defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
-extern "C" int getopt(int argc, char*argv[], const char*fmt);
-extern "C" int optind;
-extern "C" const char*optarg;
-#endif
+#ఒకవేళ defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
+బాహ్య "C" పూర్ణాంకం getopt(పూర్ణాంకం argc, అక్షరం*argv[], స్థిరరాశి అక్షరం*fmt);
+బాహ్య "C" పూర్ణాంకం optind;
+బాహ్య "C" స్థిరరాశి అక్షరం*optarg;
+#అయితే_ముగింపు
 
-bool version_flag = false;
+తార్కిక సంస్కరణ_flag = అబద్ధం;
 
-unsigned module_cnt = 0;
-const char*module_tab[64];
+గుర్తులేని module_cnt = 0;
+స్థిరరాశి అక్షరం*module_tab[64];
 
-int main(int argc, char*argv[])
+పూర్ణాంకం ప్రధాన(పూర్ణాంకం argc, అక్షరం*argv[])
 {
-      int opt;
-      unsigned flag_errors = 0;
-      const char *logfile_name = 0x0;
+      పూర్ణాంకం opt;
+      గుర్తులేని flag_errors = 0;
+      స్థిరరాశి అక్షరం *logfile_name = 0x0;
 
-      while ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) switch (opt) {
-         case 'h':
+      అయితే ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) ఎంపిక (opt) {
+         స్థితి 'h':
            fprintf(stderr,
                    "Usage: vvp [options] input-file [+plusargs...]\n"
                    "Options:\n"
@@ -70,51 +70,51 @@ int main(int argc, char*argv[])
 		   " -s             $stop right away.\n"
                    " -v             Verbose progress messages.\n"
                    " -V             Print the version information.\n" );
-           exit(0);
-	  case 'i':
+           నిష్క్రమించు(0);
+	  స్థితి 'i':
 	    setvbuf(stdout, 0, _IONBF, 0);
-	    break;
-	  case 'l':
+	    ఆపు;
+	  స్థితి 'l':
 	    logfile_name = optarg;
-	    break;
-	  case 'M':
-	    if (strcmp(optarg,"-") == 0) {
+	    ఆపు;
+	  స్థితి 'M':
+	    ఒకవేళ (strcmp(optarg,"-") == 0) {
 		  vpip_clear_module_paths();
-	    } else {
-		  vpip_add_module_path(optarg);
+	    } లేకపోతే {
+		  vpip_కూడు_module_మార్గం(optarg);
 	    }
-	    break;
-	  case 'm':
+	    ఆపు;
+	  స్థితి 'm':
 	    module_tab[module_cnt++] = optarg;
-	    break;
-	  case 'n':
-	    vvp_set_stop_is_finish(true, 0);
-	    break;
-          case 'N':
-            vvp_set_stop_is_finish(true, 1);
-            break;
-	  case 'q':
-	    vvp_set_quiet_flag(true);
-	    break;
-	  case 's':
-	    schedule_stop(0);
-	    break;
-	  case 'v':
-	    vvp_set_verbose_flag(true);
-	    break;
-	  case 'V':
-	    version_flag = true;
-	    break;
-	  default:
+	    ఆపు;
+	  స్థితి 'n':
+	    vvp_సమితి_stop_is_ముగింపు(నిజం, 0);
+	    ఆపు;
+          స్థితి 'N':
+            vvp_సమితి_stop_is_ముగింపు(నిజం, 1);
+            ఆపు;
+	  స్థితి 'q':
+	    vvp_సమితి_quiet_flag(నిజం);
+	    ఆపు;
+	  స్థితి 's':
+	    కాలపట్టిక_stop(0);
+	    ఆపు;
+	  స్థితి 'v':
+	    vvp_సమితి_verbose_flag(నిజం);
+	    ఆపు;
+	  స్థితి 'V':
+	    సంస్కరణ_flag = నిజం;
+	    ఆపు;
+	  అప్రమేయ:
 	    flag_errors += 1;
       }
 
-      if (flag_errors)
-	    return flag_errors;
+      ఒకవేళ (flag_errors)
+	    తిరిగి flag_errors;
 
-      if (version_flag) {
-	    fprintf(stderr, "Icarus Verilog runtime version " VERSION " ("
-	                    VERSION_TAG ")\n\n");
+      ఒకవేళ (సంస్కరణ_flag) {
+	    fprintf(stderr, "Icarus Verilog runtime version " సంస్కరణ " ("
+	                    సంస్కరణ_ట్యాగ్ ")\n\n");
 	    fprintf(stderr, "%s\n\n", COPYRIGHT);
 	    fprintf(stderr,
 "  This program is free software; you can redistribute it and/or modify\n"
@@ -131,18 +131,18 @@ int main(int argc, char*argv[])
 "  with this program; if not, write to the Free Software Foundation, Inc.,\n"
 "  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n"
 );
-	    return 0;
+	    తిరిగి 0;
       }
 
-      if (optind == argc) {
+      ఒకవేళ (optind == argc) {
 	    fprintf(stderr, "%s: no input file.\n", argv[0]);
-	    return -1;
+	    తిరిగి -1;
       }
 
       vvp_init(logfile_name, argc - optind, argv + optind);
 
-      for (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
-	    vpip_load_module(module_tab[idx]);
+      కొరకు (గుర్తులేని idx = 0 ;  idx < module_cnt ;  idx += 1)
+	    vpip_ఎక్కించు_module(module_tab[idx]);
 
-      return vvp_run(argv[optind]);
+      తిరిగి vvp_నిరంతరం(argv[optind]);
 }

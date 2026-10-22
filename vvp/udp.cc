@@ -20,108 +20,108 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "udp.h"
-#include "schedule.h"
-#include "symbols.h"
-#include "compile.h"
-#include "config.h"
-#include <cassert>
-#include <cstdlib>
-#include <cstring>
-#include <cstdio>
-#include <iostream>
-#ifdef CHECK_WITH_VALGRIND
-#include "vvp_cleanup.h"
-#include "ivl_alloc.h"
-#endif
+#అన్తర్భావ "udp.h"
+#అన్తర్భావ "schedule.h"
+#అన్తర్భావ "symbols.h"
+#అన్తర్భావ "compile.h"
+#అన్తర్భావ "config.h"
+#అన్తర్భావ <cassert>
+#అన్తర్భావ <cstdlib>
+#అన్తర్భావ <cstring>
+#అన్తర్భావ <cstdio>
+#అన్తర్భావ <iostream>
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+#అన్తర్భావ "vvp_cleanup.h"
+#అన్తర్భావ "ivl_alloc.h"
+#అయితే_ముగింపు
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
 // We may need these later when we build the VPI interface to
 // UDP definitions.
-#ifdef CHECK_WITH_VALGRIND
-static vvp_udp_s **udp_defns = 0;
-static unsigned udp_defns_count = 0;
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+స్థిర vvp_udp_s **udp_defns = 0;
+స్థిర గుర్తులేని udp_defns_లెక్క = 0;
 
-void udp_defns_delete()
+శూన్య udp_defns_delete()
 {
-      for (unsigned idx = 0; idx < udp_defns_count; idx += 1) {
-	    if (udp_defns[idx]->is_sequential()) {
+      కొరకు (గుర్తులేని idx = 0; idx < udp_defns_లెక్క; idx += 1) {
+	    ఒకవేళ (udp_defns[idx]->is_sequential()) {
 		  vvp_udp_seq_s *obj = static_cast<vvp_udp_seq_s *>
 		                       (udp_defns[idx]);
-		  delete obj;
-	    } else {
+		  తొలగించు obj;
+	    } లేకపోతే {
 		  vvp_udp_comb_s *obj = static_cast<vvp_udp_comb_s *>
 		                        (udp_defns[idx]);
-		  delete obj;
+		  తొలగించు obj;
 	    }
       }
-      free(udp_defns);
+      విడుదల(udp_defns);
       udp_defns = 0;
-      udp_defns_count = 0;
+      udp_defns_లెక్క = 0;
 }
-#endif
+#అయితే_ముగింపు
 
-static symbol_table_t udp_table;
+స్థిర చిహ్నం_పట్టిక_t udp_పట్టిక;
 
-void delete_udp_symbols()
+శూన్య delete_udp_symbols()
 {
-      delete_symbol_table(udp_table);
-      udp_table = 0;
+      delete_చిహ్నం_పట్టిక(udp_పట్టిక);
+      udp_పట్టిక = 0;
 }
 
-struct vvp_udp_s *udp_find(const char *label)
+నిర్మాణం vvp_udp_s *udp_కనుగొను(స్థిరరాశి అక్షరం *label)
 {
-      symbol_value_t v = sym_get_value(udp_table, label);
-      return (struct vvp_udp_s *)v.ptr;
+      చిహ్నం_విలువ_t v = sym_get_విలువ(udp_పట్టిక, label);
+      తిరిగి (నిర్మాణం vvp_udp_s *)v.ptr;
 }
 
-ostream& operator <<(ostream&o, const struct udp_levels_table&table)
+ostream& క్రియాకారకం <<(ostream&o, స్థిరరాశి నిర్మాణం udp_స్థాయిలు_పట్టిక&పట్టిక)
 {
-      o << "[" << hex << table.mask0
-	<< "/" << hex << table.mask1
-	<< "/" << hex << table.maskx << "]";
-      return o;
+      o << "[" << hex << పట్టిక.mask0
+	<< "/" << hex << పట్టిక.mask1
+	<< "/" << hex << పట్టిక.maskx << "]";
+      తిరిగి o;
 }
 
-vvp_udp_s::vvp_udp_s(const char*label, char*name__, unsigned ports,
-                     vvp_bit4_t init, bool type)
+vvp_udp_s::vvp_udp_s(స్థిరరాశి అక్షరం*label, అక్షరం*name__, గుర్తులేని ports,
+                     vvp_bit4_t init, తార్కిక type)
 : name_(name__), ports_(ports), init_(init), seq_(type)
 {
-      if (!udp_table)
-	    udp_table = new_symbol_table();
+      ఒకవేళ (!udp_పట్టిక)
+	    udp_పట్టిక = new_చిహ్నం_పట్టిక();
 
-      assert( !udp_find(label) );
+      ప్రతిజ్ఞా( !udp_కనుగొను(label) );
 
-      symbol_value_t v;
-      v.ptr = this;
-      sym_set_value(udp_table, label, v);
+      చిహ్నం_విలువ_t v;
+      v.ptr = ఇది;
+      sym_సమితి_విలువ(udp_పట్టిక, label, v);
 
-#ifdef CHECK_WITH_VALGRIND
-      udp_defns_count += 1;
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+      udp_defns_లెక్క += 1;
       udp_defns = static_cast<vvp_udp_s **>(realloc(udp_defns,
-                  udp_defns_count*sizeof(vvp_udp_s **)));
-      udp_defns[udp_defns_count-1] = this;
-#endif
+                  udp_defns_లెక్క*పరిమాణం(vvp_udp_s **)));
+      udp_defns[udp_defns_లెక్క-1] = ఇది;
+#అయితే_ముగింపు
 }
 
 vvp_udp_s::~vvp_udp_s()
 {
-      delete[] name_;
+      తొలగించు[] name_;
 }
 
-unsigned vvp_udp_s::port_count() const
+గుర్తులేని vvp_udp_s::పోర్టు_లెక్క() స్థిరరాశి
 {
-      return ports_;
+      తిరిగి ports_;
 }
 
-vvp_bit4_t vvp_udp_s::get_init() const
+vvp_bit4_t vvp_udp_s::get_init() స్థిరరాశి
 {
-      return init_;
+      తిరిగి init_;
 }
 
-vvp_udp_comb_s::vvp_udp_comb_s(const char*label, char*name__, unsigned ports)
-: vvp_udp_s(label, name__, ports, BIT4_X, false)
+vvp_udp_comb_s::vvp_udp_comb_s(స్థిరరాశి అక్షరం*label, అక్షరం*name__, గుర్తులేని ports)
+: vvp_udp_s(label, name__, ports, BIT4_X, అబద్ధం)
 {
       levels0_ = 0;
       levels1_ = 0;
@@ -131,8 +131,8 @@ vvp_udp_comb_s::vvp_udp_comb_s(const char*label, char*name__, unsigned ports)
 
 vvp_udp_comb_s::~vvp_udp_comb_s()
 {
-      delete[] levels0_;
-      delete[] levels1_;
+      తొలగించు[] levels0_;
+      తొలగించు[] levels1_;
 }
 
 /*
@@ -153,7 +153,7 @@ vvp_udp_comb_s::~vvp_udp_comb_s()
  * the three bit positions is set in the cur input table, the bit
  * position will generate a match.
  */
-vvp_bit4_t vvp_udp_comb_s::test_levels(const udp_levels_table&cur)
+vvp_bit4_t vvp_udp_comb_s::test_స్థాయిలు(స్థిరరాశి udp_స్థాయిలు_పట్టిక&cur)
 {
 	/* To test for a row match, test that the mask0, mask1 and
 	   maskx vectors all have bits set where the matching
@@ -161,147 +161,147 @@ vvp_bit4_t vvp_udp_comb_s::test_levels(const udp_levels_table&cur)
 	   levels0_[idx] vector has more bits set then the cur mask,
 	   but this is OK and these bits are to be ignored. */
 
-      for (unsigned idx = 0 ;  idx < nlevels0_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levels0_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levels0_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levels0_[idx].maskx))
-		  continue;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < nlevels0_ ;  idx += 1) {
+	    ఒకవేళ (cur.mask0 != (cur.mask0 & levels0_[idx].mask0))
+		  కొనసాగు;
+	    ఒకవేళ (cur.mask1 != (cur.mask1 & levels0_[idx].mask1))
+		  కొనసాగు;
+	    ఒకవేళ (cur.maskx != (cur.maskx & levels0_[idx].maskx))
+		  కొనసాగు;
 
-	    return BIT4_0;
+	    తిరిగి BIT4_0;
       }
 
-      for (unsigned idx = 0 ;  idx < nlevels1_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levels1_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levels1_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levels1_[idx].maskx))
-		  continue;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < nlevels1_ ;  idx += 1) {
+	    ఒకవేళ (cur.mask0 != (cur.mask0 & levels1_[idx].mask0))
+		  కొనసాగు;
+	    ఒకవేళ (cur.mask1 != (cur.mask1 & levels1_[idx].mask1))
+		  కొనసాగు;
+	    ఒకవేళ (cur.maskx != (cur.maskx & levels1_[idx].maskx))
+		  కొనసాగు;
 
-	    return BIT4_1;
+	    తిరిగి BIT4_1;
       }
 
-      return BIT4_X;
+      తిరిగి BIT4_X;
 }
 
-vvp_bit4_t vvp_udp_comb_s::calculate_output(const udp_levels_table&cur,
-					    const udp_levels_table&,
+vvp_bit4_t vvp_udp_comb_s::calculate_output(స్థిరరాశి udp_స్థాయిలు_పట్టిక&cur,
+					    స్థిరరాశి udp_స్థాయిలు_పట్టిక&,
 					    vvp_bit4_t)
 {
-      return test_levels(cur);
+      తిరిగి test_స్థాయిలు(cur);
 }
 
-static void or_based_on_char(udp_levels_table&cur, char flag,
-			     unsigned long mask_bit)
+స్థిర శూన్య or_based_on_char(udp_స్థాయిలు_పట్టిక&cur, అక్షరం flag,
+			     గుర్తులేని దీర్ఘ ముసుగు_బిట్టు)
 {
-      switch (flag) {
-	  case '0':
-	    cur.mask0 |= mask_bit;
-	    break;
-	  case '1':
-	    cur.mask1 |= mask_bit;
-	    break;
-	  case 'x':
-	    cur.maskx |= mask_bit;
-	    break;
-	  case 'b':
-	    cur.mask0 |= mask_bit;
-	    cur.mask1 |= mask_bit;
-	    break;
-	  case 'l':
-	    cur.mask0 |= mask_bit;
-	    cur.maskx |= mask_bit;
-	    break;
-	  case 'h':
-	    cur.maskx |= mask_bit;
-	    cur.mask1 |= mask_bit;
-	    break;
-	  case '?':
-	    cur.mask0 |= mask_bit;
-	    cur.maskx |= mask_bit;
-	    cur.mask1 |= mask_bit;
-	    break;
-	  default:
+      ఎంపిక (flag) {
+	  స్థితి '0':
+	    cur.mask0 |= ముసుగు_బిట్టు;
+	    ఆపు;
+	  స్థితి '1':
+	    cur.mask1 |= ముసుగు_బిట్టు;
+	    ఆపు;
+	  స్థితి 'x':
+	    cur.maskx |= ముసుగు_బిట్టు;
+	    ఆపు;
+	  స్థితి 'b':
+	    cur.mask0 |= ముసుగు_బిట్టు;
+	    cur.mask1 |= ముసుగు_బిట్టు;
+	    ఆపు;
+	  స్థితి 'l':
+	    cur.mask0 |= ముసుగు_బిట్టు;
+	    cur.maskx |= ముసుగు_బిట్టు;
+	    ఆపు;
+	  స్థితి 'h':
+	    cur.maskx |= ముసుగు_బిట్టు;
+	    cur.mask1 |= ముసుగు_బిట్టు;
+	    ఆపు;
+	  స్థితి '?':
+	    cur.mask0 |= ముసుగు_బిట్టు;
+	    cur.maskx |= ముసుగు_బిట్టు;
+	    cur.mask1 |= ముసుగు_బిట్టు;
+	    ఆపు;
+	  అప్రమేయ:
 	    fprintf(stderr, "Unsupported flag %c(%d).\n", flag, flag);
-	    assert(0);
+	    ప్రతిజ్ఞా(0);
       }
 }
 
-void vvp_udp_comb_s::compile_table(char**tab)
+శూన్య vvp_udp_comb_s::compile_పట్టిక(అక్షరం**tab)
 {
-      unsigned nrows0 = 0, nrows1 = 0;
+      గుర్తులేని nrows0 = 0, nrows1 = 0;
 
 	/* First run through the table to figure out the number of
 	   rows I need for each kind of table. */
-      for (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
-	    assert(strlen(tab[idx]) == port_count() + 1);
-	    switch (tab[idx][port_count()]) {
-		case '0':
+      కొరకు (గుర్తులేని idx = 0 ;  tab[idx] ;  idx += 1) {
+	    ప్రతిజ్ఞా(అక్షరశ్రేణి_పొడవు(tab[idx]) == పోర్టు_లెక్క() + 1);
+	    ఎంపిక (tab[idx][పోర్టు_లెక్క()]) {
+		స్థితి '0':
 		  nrows0 += 1;
-		  break;
-		case '1':
+		  ఆపు;
+		స్థితి '1':
 		  nrows1 += 1;
-		  break;
-		case 'x':
-		  break;
-		default:
+		  ఆపు;
+		స్థితి 'x':
+		  ఆపు;
+		అప్రమేయ:
 		  fprintf(stderr, "Unsupported entry %c(%d).\n",
-		          tab[idx][port_count()], tab[idx][port_count()]);
-		  assert(0);
+		          tab[idx][పోర్టు_లెక్క()], tab[idx][పోర్టు_లెక్క()]);
+		  ప్రతిజ్ఞా(0);
 	    }
       }
 
       nlevels0_ = nrows0;
-      levels0_ = new udp_levels_table[nlevels0_];
+      levels0_ = కొత్త udp_స్థాయిలు_పట్టిక[nlevels0_];
 
       nlevels1_ = nrows1;
-      levels1_ = new udp_levels_table[nlevels1_];
+      levels1_ = కొత్త udp_స్థాయిలు_పట్టిక[nlevels1_];
 
       nrows0 = 0;
       nrows1 = 0;
-      for (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
-	    struct udp_levels_table cur;
+      కొరకు (గుర్తులేని idx = 0 ;  tab[idx] ;  idx += 1) {
+	    నిర్మాణం udp_స్థాయిలు_పట్టిక cur;
 	    cur.mask0 = 0;
 	    cur.mask1 = 0;
 	    cur.maskx = 0;
-	    if (port_count() > 8*sizeof(cur.mask0)) {
+	    ఒకవేళ (పోర్టు_లెక్క() > 8*పరిమాణం(cur.mask0)) {
 		  fprintf(stderr, "internal error: primitive port count=%u "
-			  " > %zu\n", port_count(), sizeof(cur.mask0));
-		  assert(port_count() <= 8*sizeof(cur.mask0));
+			  " > %zu\n", పోర్టు_లెక్క(), పరిమాణం(cur.mask0));
+		  ప్రతిజ్ఞా(పోర్టు_లెక్క() <= 8*పరిమాణం(cur.mask0));
 	    }
-	    for (unsigned pp = 0 ;  pp < port_count() ;  pp += 1) {
-		  unsigned long mask_bit = 1UL << pp;
-		  or_based_on_char(cur, tab[idx][pp], mask_bit);
+	    కొరకు (గుర్తులేని pp = 0 ;  pp < పోర్టు_లెక్క() ;  pp += 1) {
+		  గుర్తులేని దీర్ఘ ముసుగు_బిట్టు = 1UL << pp;
+		  or_based_on_char(cur, tab[idx][pp], ముసుగు_బిట్టు);
 	    }
 
-	    switch (tab[idx][port_count()]) {
-		case '0':
+	    ఎంపిక (tab[idx][పోర్టు_లెక్క()]) {
+		స్థితి '0':
 		  levels0_[nrows0++] = cur;
-		  break;
-		case '1':
+		  ఆపు;
+		స్థితి '1':
 		  levels1_[nrows1++] = cur;
-		  break;
-		default:
-		  break;
+		  ఆపు;
+		అప్రమేయ:
+		  ఆపు;
 	    }
-	    delete[] tab[idx];
+	    తొలగించు[] tab[idx];
       }
-      free(tab);
+      విడుదల(tab);
 
-      assert(nrows0 == nlevels0_);
-      assert(nrows1 == nlevels1_);
+      ప్రతిజ్ఞా(nrows0 == nlevels0_);
+      ప్రతిజ్ఞా(nrows1 == nlevels1_);
 }
 
-vvp_udp_seq_s::vvp_udp_seq_s(const char*label, char*name__,
-			     unsigned ports, vvp_bit4_t init)
-: vvp_udp_s(label, name__, ports, init, true)
+vvp_udp_seq_s::vvp_udp_seq_s(స్థిరరాశి అక్షరం*label, అక్షరం*name__,
+			     గుర్తులేని ports, vvp_bit4_t init)
+: vvp_udp_s(label, name__, ports, init, నిజం)
 {
       levels0_ = 0;
       levels1_ = 0;
       levelsx_ = 0;
-      levelsL_ = 0;
+      స్థాయిలు_L = 0;
 
       nlevels0_ = 0;
       nlevels1_ = 0;
@@ -310,7 +310,7 @@ vvp_udp_seq_s::vvp_udp_seq_s(const char*label, char*name__,
 
       edges0_ = 0;
       edges1_ = 0;
-      edgesL_ = 0;
+      అంచులు_L = 0;
 
       nedges0_ = 0;
       nedges1_ = 0;
@@ -319,400 +319,400 @@ vvp_udp_seq_s::vvp_udp_seq_s(const char*label, char*name__,
 
 vvp_udp_seq_s::~vvp_udp_seq_s()
 {
-      delete[] levels0_;
-      delete[] levels1_;
-      delete[] levelsx_;
-      delete[] levelsL_;
-      delete[] edges0_;
-      delete[] edges1_;
-      delete[] edgesL_;
+      తొలగించు[] levels0_;
+      తొలగించు[] levels1_;
+      తొలగించు[] levelsx_;
+      తొలగించు[] స్థాయిలు_L;
+      తొలగించు[] edges0_;
+      తొలగించు[] edges1_;
+      తొలగించు[] అంచులు_L;
 }
 
-void edge_based_on_char(struct udp_edges_table&cur, char chr, unsigned pos)
+శూన్య అంచు_based_on_char(నిర్మాణం udp_అంచులు_పట్టిక&cur, అక్షరం chr, గుర్తులేని pos)
 {
-      unsigned long mask_bit = 1UL << pos;
+      గుర్తులేని దీర్ఘ ముసుగు_బిట్టు = 1UL << pos;
 
-      switch (chr) {
-	  case '0':
-	    cur.mask0 |= mask_bit;
-	    break;
-	  case '1':
-	    cur.mask1 |= mask_bit;
-	    break;
-	  case 'x':
-	    cur.maskx |= mask_bit;
-	    break;
-	  case 'b':
-	    cur.mask0 |= mask_bit;
-	    cur.mask1 |= mask_bit;
-	    break;
-	  case 'l':
-	    cur.mask0 |= mask_bit;
-	    cur.maskx |= mask_bit;
-	    break;
-	  case 'h':
-	    cur.maskx |= mask_bit;
-	    cur.mask1 |= mask_bit;
-	    break;
-	  case '?':
-	    cur.mask0 |= mask_bit;
-	    cur.maskx |= mask_bit;
-	    cur.mask1 |= mask_bit;
-	    break;
+      ఎంపిక (chr) {
+	  స్థితి '0':
+	    cur.mask0 |= ముసుగు_బిట్టు;
+	    ఆపు;
+	  స్థితి '1':
+	    cur.mask1 |= ముసుగు_బిట్టు;
+	    ఆపు;
+	  స్థితి 'x':
+	    cur.maskx |= ముసుగు_బిట్టు;
+	    ఆపు;
+	  స్థితి 'b':
+	    cur.mask0 |= ముసుగు_బిట్టు;
+	    cur.mask1 |= ముసుగు_బిట్టు;
+	    ఆపు;
+	  స్థితి 'l':
+	    cur.mask0 |= ముసుగు_బిట్టు;
+	    cur.maskx |= ముసుగు_బిట్టు;
+	    ఆపు;
+	  స్థితి 'h':
+	    cur.maskx |= ముసుగు_బిట్టు;
+	    cur.mask1 |= ముసుగు_బిట్టు;
+	    ఆపు;
+	  స్థితి '?':
+	    cur.mask0 |= ముసుగు_బిట్టు;
+	    cur.maskx |= ముసుగు_బిట్టు;
+	    cur.mask1 |= ముసుగు_బిట్టు;
+	    ఆపు;
 
-	  case 'B': // (x?) edge
-	    cur.mask0 |= mask_bit;
-	    cur.mask1 |= mask_bit;
-	    cur.edge_position = pos;
-	    cur.edge_mask0 = 0;
-	    cur.edge_maskx = 1;
-	    cur.edge_mask1 = 0;
-	    break;
-	  case 'f': // (10) edge
-	    cur.mask0 |= mask_bit;
-	    cur.edge_position = pos;
-	    cur.edge_mask0 = 0;
-	    cur.edge_maskx = 0;
-	    cur.edge_mask1 = 1;
-	    break;
-	  case 'F': // (x0) edge
-	    cur.mask0 |= mask_bit;
-	    cur.edge_position = pos;
-	    cur.edge_mask0 = 0;
-	    cur.edge_maskx = 1;
-	    cur.edge_mask1 = 0;
-	    break;
-	  case 'M': // (1x) edge
-	    cur.maskx |= mask_bit;
-	    cur.edge_position = pos;
-	    cur.edge_mask0 = 0;
-	    cur.edge_maskx = 0;
-	    cur.edge_mask1 = 1;
-	    break;
-	  case 'N': // (1x) and (10) edge
-	    cur.mask0 |= mask_bit;
-	    cur.maskx |= mask_bit;
-	    cur.edge_position = pos;
-	    cur.edge_mask0 = 0;
-	    cur.edge_maskx = 0;
-	    cur.edge_mask1 = 1;
-	    break;
-	  case 'P': // (0x) and (01) edge
-	    cur.maskx |= mask_bit;
-	    cur.mask1 |= mask_bit;
-	    cur.edge_position = pos;
-	    cur.edge_mask0 = 1;
-	    cur.edge_maskx = 0;
-	    cur.edge_mask1 = 0;
-	    break;
-	  case 'q': // (bx) edge
-	    cur.maskx |= mask_bit;
-	    cur.edge_position = pos;
-	    cur.edge_mask0 = 1;
-	    cur.edge_maskx = 0;
-	    cur.edge_mask1 = 1;
-	    break;
-	  case 'Q': // (0x) edge
-	    cur.maskx |= mask_bit;
-	    cur.edge_position = pos;
-	    cur.edge_mask0 = 1;
-	    cur.edge_maskx = 0;
-	    cur.edge_mask1 = 0;
-	    break;
-	  case 'r': // (01) edge
-	    cur.mask1 |= mask_bit;
-	    cur.edge_position = pos;
-	    cur.edge_mask0 = 1;
-	    cur.edge_maskx = 0;
-	    cur.edge_mask1 = 0;
-	    break;
-	  case 'R': // (x1) edge
-	    cur.mask1 |= mask_bit;
-	    cur.edge_position = pos;
-	    cur.edge_mask0 = 0;
-	    cur.edge_maskx = 1;
-	    cur.edge_mask1 = 0;
-	    break;
-	  case '%': // (?x) edge
-	    cur.maskx |= mask_bit;
-	    cur.edge_position = pos;
-	    cur.edge_mask0 = 1;
-	    cur.edge_maskx = 0;
-	    cur.edge_mask1 = 1;
-	    break;
-	  case '+': // (?1) edge
-	    cur.mask1 |= mask_bit;
-	    cur.edge_position = pos;
-	    cur.edge_mask0 = 1;
-	    cur.edge_maskx = 1;
-	    cur.edge_mask1 = 0;
-	    break;
-	  case '_': // (?0) edge
-	    cur.mask0 |= mask_bit;
-	    cur.edge_position = pos;
-	    cur.edge_mask0 = 0;
-	    cur.edge_maskx = 1;
-	    cur.edge_mask1 = 1;
-	    break;
-	  default:
+	  స్థితి 'B': // (x?) edge
+	    cur.mask0 |= ముసుగు_బిట్టు;
+	    cur.mask1 |= ముసుగు_బిట్టు;
+	    cur.అంచు_position = pos;
+	    cur.అంచు_mask0 = 0;
+	    cur.అంచు_maskx = 1;
+	    cur.అంచు_mask1 = 0;
+	    ఆపు;
+	  స్థితి 'f': // (10) edge
+	    cur.mask0 |= ముసుగు_బిట్టు;
+	    cur.అంచు_position = pos;
+	    cur.అంచు_mask0 = 0;
+	    cur.అంచు_maskx = 0;
+	    cur.అంచు_mask1 = 1;
+	    ఆపు;
+	  స్థితి 'F': // (x0) edge
+	    cur.mask0 |= ముసుగు_బిట్టు;
+	    cur.అంచు_position = pos;
+	    cur.అంచు_mask0 = 0;
+	    cur.అంచు_maskx = 1;
+	    cur.అంచు_mask1 = 0;
+	    ఆపు;
+	  స్థితి 'M': // (1x) edge
+	    cur.maskx |= ముసుగు_బిట్టు;
+	    cur.అంచు_position = pos;
+	    cur.అంచు_mask0 = 0;
+	    cur.అంచు_maskx = 0;
+	    cur.అంచు_mask1 = 1;
+	    ఆపు;
+	  స్థితి 'N': // (1x) and (10) edge
+	    cur.mask0 |= ముసుగు_బిట్టు;
+	    cur.maskx |= ముసుగు_బిట్టు;
+	    cur.అంచు_position = pos;
+	    cur.అంచు_mask0 = 0;
+	    cur.అంచు_maskx = 0;
+	    cur.అంచు_mask1 = 1;
+	    ఆపు;
+	  స్థితి 'P': // (0x) and (01) edge
+	    cur.maskx |= ముసుగు_బిట్టు;
+	    cur.mask1 |= ముసుగు_బిట్టు;
+	    cur.అంచు_position = pos;
+	    cur.అంచు_mask0 = 1;
+	    cur.అంచు_maskx = 0;
+	    cur.అంచు_mask1 = 0;
+	    ఆపు;
+	  స్థితి 'q': // (bx) edge
+	    cur.maskx |= ముసుగు_బిట్టు;
+	    cur.అంచు_position = pos;
+	    cur.అంచు_mask0 = 1;
+	    cur.అంచు_maskx = 0;
+	    cur.అంచు_mask1 = 1;
+	    ఆపు;
+	  స్థితి 'Q': // (0x) edge
+	    cur.maskx |= ముసుగు_బిట్టు;
+	    cur.అంచు_position = pos;
+	    cur.అంచు_mask0 = 1;
+	    cur.అంచు_maskx = 0;
+	    cur.అంచు_mask1 = 0;
+	    ఆపు;
+	  స్థితి 'r': // (01) edge
+	    cur.mask1 |= ముసుగు_బిట్టు;
+	    cur.అంచు_position = pos;
+	    cur.అంచు_mask0 = 1;
+	    cur.అంచు_maskx = 0;
+	    cur.అంచు_mask1 = 0;
+	    ఆపు;
+	  స్థితి 'R': // (x1) edge
+	    cur.mask1 |= ముసుగు_బిట్టు;
+	    cur.అంచు_position = pos;
+	    cur.అంచు_mask0 = 0;
+	    cur.అంచు_maskx = 1;
+	    cur.అంచు_mask1 = 0;
+	    ఆపు;
+	  స్థితి '%': // (?x) edge
+	    cur.maskx |= ముసుగు_బిట్టు;
+	    cur.అంచు_position = pos;
+	    cur.అంచు_mask0 = 1;
+	    cur.అంచు_maskx = 0;
+	    cur.అంచు_mask1 = 1;
+	    ఆపు;
+	  స్థితి '+': // (?1) edge
+	    cur.mask1 |= ముసుగు_బిట్టు;
+	    cur.అంచు_position = pos;
+	    cur.అంచు_mask0 = 1;
+	    cur.అంచు_maskx = 1;
+	    cur.అంచు_mask1 = 0;
+	    ఆపు;
+	  స్థితి '_': // (?0) edge
+	    cur.mask0 |= ముసుగు_బిట్టు;
+	    cur.అంచు_position = pos;
+	    cur.అంచు_mask0 = 0;
+	    cur.అంచు_maskx = 1;
+	    cur.అంచు_mask1 = 1;
+	    ఆపు;
+	  అప్రమేయ:
 	    fprintf(stderr, "internal error: unknown edge code: %c\n", chr);
-	    assert(0);
+	    ప్రతిజ్ఞా(0);
       }
 }
 
-void vvp_udp_seq_s::compile_table(char**tab)
+శూన్య vvp_udp_seq_s::compile_పట్టిక(అక్షరం**tab)
 {
 
-      for (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
-	    const char*row = tab[idx];
-	    assert(strlen(row) == port_count() + 2);
+      కొరకు (గుర్తులేని idx = 0 ;  tab[idx] ;  idx += 1) {
+	    స్థిరరాశి అక్షరం*అడ్డువరుస = tab[idx];
+	    ప్రతిజ్ఞా(అక్షరశ్రేణి_పొడవు(అడ్డువరుస) == పోర్టు_లెక్క() + 2);
 
-	    if (strspn(row, "01xblh?") >= port_count()+1) {
+	    ఒకవేళ (strspn(అడ్డువరుస, "01xblh?") >= పోర్టు_లెక్క()+1) {
 
-		  switch (row[port_count()+1]) {
-		      case '0':
+		  ఎంపిక (అడ్డువరుస[పోర్టు_లెక్క()+1]) {
+		      స్థితి '0':
 			nlevels0_ += 1;
-			break;
-		      case '1':
+			ఆపు;
+		      స్థితి '1':
 			nlevels1_ += 1;
-			break;
-		      case 'x':
+			ఆపు;
+		      స్థితి 'x':
 			nlevelsx_ += 1;
-			break;
-		      case '-':
+			ఆపు;
+		      స్థితి '-':
 			nlevelsL_ += 1;
-			break;
-		      default:
+			ఆపు;
+		      అప్రమేయ:
 			fprintf(stderr, "Unsupported entry %c(%d).\n",
-			        row[port_count()+1], row[port_count()+1]);
-			assert(0);
-			break;
+			        అడ్డువరుస[పోర్టు_లెక్క()+1], అడ్డువరుస[పోర్టు_లెక్క()+1]);
+			ప్రతిజ్ఞా(0);
+			ఆపు;
 		  }
 
-	    } else {
+	    } లేకపోతే {
 		    /* Rows that have n or p edges will need to be
 		       expanded into 2 rows. */
-		  unsigned extra = 0;
-		  if (strchr(row,'n'))
+		  గుర్తులేని extra = 0;
+		  ఒకవేళ (strchr(అడ్డువరుస,'n'))
 			extra = 1;
-		  if (strchr(row,'p'))
+		  ఒకవేళ (strchr(అడ్డువరుస,'p'))
 			extra = 1;
-		  if (strchr(row,'*'))
+		  ఒకవేళ (strchr(అడ్డువరుస,'*'))
 			extra = 2;
 
-		  switch (row[port_count()+1]) {
-		      case '0':
+		  ఎంపిక (అడ్డువరుస[పోర్టు_లెక్క()+1]) {
+		      స్థితి '0':
 			nedges0_ += 1 + extra;
-			break;
-		      case '1':
+			ఆపు;
+		      స్థితి '1':
 			nedges1_ += 1 + extra;
-			break;
-		      case 'x':
-			break;
-		      case '-':
+			ఆపు;
+		      స్థితి 'x':
+			ఆపు;
+		      స్థితి '-':
 			nedgesL_ += 1 + extra;
-			break;
-		      default:
+			ఆపు;
+		      అప్రమేయ:
 			fprintf(stderr, "Unsupported entry %c(%d).\n",
-			        row[port_count()+1], row[port_count()+1]);
-			assert(0);
-			break;
+			        అడ్డువరుస[పోర్టు_లెక్క()+1], అడ్డువరుస[పోర్టు_లెక్క()+1]);
+			ప్రతిజ్ఞా(0);
+			ఆపు;
 		  }
 	    }
       }
 
-      levels0_ = new udp_levels_table[nlevels0_];
-      levels1_ = new udp_levels_table[nlevels1_];
-      levelsx_ = new udp_levels_table[nlevelsx_];
-      levelsL_ = new udp_levels_table[nlevelsL_];
-      edges0_ = new udp_edges_table[nedges0_];
-      edges1_ = new udp_edges_table[nedges1_];
-      edgesL_ = new udp_edges_table[nedgesL_];
+      levels0_ = కొత్త udp_స్థాయిలు_పట్టిక[nlevels0_];
+      levels1_ = కొత్త udp_స్థాయిలు_పట్టిక[nlevels1_];
+      levelsx_ = కొత్త udp_స్థాయిలు_పట్టిక[nlevelsx_];
+      స్థాయిలు_L = కొత్త udp_స్థాయిలు_పట్టిక[nlevelsL_];
+      edges0_ = కొత్త udp_అంచులు_పట్టిక[nedges0_];
+      edges1_ = కొత్త udp_అంచులు_పట్టిక[nedges1_];
+      అంచులు_L = కొత్త udp_అంచులు_పట్టిక[nedgesL_];
 
-      unsigned idx_lev0 = 0;
-      unsigned idx_lev1 = 0;
-      unsigned idx_levx = 0;
-      unsigned idx_levL = 0;
-      unsigned idx_edg0 = 0;
-      unsigned idx_edg1 = 0;
-      unsigned idx_edgL = 0;
+      గుర్తులేని idx_lev0 = 0;
+      గుర్తులేని idx_lev1 = 0;
+      గుర్తులేని idx_levx = 0;
+      గుర్తులేని idx_levL = 0;
+      గుర్తులేని idx_edg0 = 0;
+      గుర్తులేని idx_edg1 = 0;
+      గుర్తులేని idx_edgL = 0;
 
-      for (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
-	    const char*row = tab[idx];
+      కొరకు (గుర్తులేని idx = 0 ;  tab[idx] ;  idx += 1) {
+	    స్థిరరాశి అక్షరం*అడ్డువరుస = tab[idx];
 
-	    if (strspn(row, "01xblh?") >= port_count()+1) {
-		  struct udp_levels_table cur;
+	    ఒకవేళ (strspn(అడ్డువరుస, "01xblh?") >= పోర్టు_లెక్క()+1) {
+		  నిర్మాణం udp_స్థాయిలు_పట్టిక cur;
 		  cur.mask0 = 0;
 		  cur.mask1 = 0;
 		  cur.maskx = 0;
-		  for (unsigned pp = 0 ;  pp < port_count() ;  pp += 1) {
-			unsigned long mask_bit = 1UL << pp;
-			or_based_on_char(cur, row[pp+1], mask_bit);
+		  కొరకు (గుర్తులేని pp = 0 ;  pp < పోర్టు_లెక్క() ;  pp += 1) {
+			గుర్తులేని దీర్ఘ ముసుగు_బిట్టు = 1UL << pp;
+			or_based_on_char(cur, అడ్డువరుస[pp+1], ముసుగు_బిట్టు);
 		  }
 
-		  or_based_on_char(cur, row[0], 1UL << port_count());
+		  or_based_on_char(cur, అడ్డువరుస[0], 1UL << పోర్టు_లెక్క());
 
-		  switch (row[port_count()+1]) {
-		      case '0':
+		  ఎంపిక (అడ్డువరుస[పోర్టు_లెక్క()+1]) {
+		      స్థితి '0':
 			levels0_[idx_lev0++] = cur;
-			break;
-		      case '1':
+			ఆపు;
+		      స్థితి '1':
 			levels1_[idx_lev1++] = cur;
-			break;
-		      case 'x':
+			ఆపు;
+		      స్థితి 'x':
 			levelsx_[idx_levx++] = cur;
-			break;
-		      case '-':
-			levelsL_[idx_levL++] = cur;
-			break;
-		      default:
+			ఆపు;
+		      స్థితి '-':
+			స్థాయిలు_L[idx_levL++] = cur;
+			ఆపు;
+		      అప్రమేయ:
 			fprintf(stderr, "Unsupported entry %c(%d).\n",
-			        row[port_count()+1], row[port_count()+1]);
-			assert(0);
-			break;
+			        అడ్డువరుస[పోర్టు_లెక్క()+1], అడ్డువరుస[పోర్టు_లెక్క()+1]);
+			ప్రతిజ్ఞా(0);
+			ఆపు;
 		  }
 
-	    } else {
-		  struct udp_edges_table cur;
+	    } లేకపోతే {
+		  నిర్మాణం udp_అంచులు_పట్టిక cur;
 		  cur.mask0 = 0;
 		  cur.mask1 = 0;
 		  cur.maskx = 0;
-		  cur.edge_position = 0;
-		  cur.edge_mask0 = 0;
-		  cur.edge_mask1 = 0;
-		  cur.edge_maskx = 0;
+		  cur.అంచు_position = 0;
+		  cur.అంచు_mask0 = 0;
+		  cur.అంచు_mask1 = 0;
+		  cur.అంచు_maskx = 0;
 
-		  bool need_ext0_table = false;
-		  struct udp_edges_table ext0;
+		  తార్కిక need_ext0_పట్టిక = అబద్ధం;
+		  నిర్మాణం udp_అంచులు_పట్టిక ext0;
 		  ext0.mask0 = 0;
 		  ext0.mask1 = 0;
 		  ext0.maskx = 0;
-		  ext0.edge_position = 0;
-		  ext0.edge_mask0 = 0;
-		  ext0.edge_mask1 = 0;
-		  ext0.edge_maskx = 0;
+		  ext0.అంచు_position = 0;
+		  ext0.అంచు_mask0 = 0;
+		  ext0.అంచు_mask1 = 0;
+		  ext0.అంచు_maskx = 0;
 
-		  bool need_ext1_table = false;
-		  struct udp_edges_table ext1;
+		  తార్కిక need_ext1_పట్టిక = అబద్ధం;
+		  నిర్మాణం udp_అంచులు_పట్టిక ext1;
 		  ext1.mask0 = 0;
 		  ext1.mask1 = 0;
 		  ext1.maskx = 0;
-		  ext1.edge_position = 0;
-		  ext1.edge_mask0 = 0;
-		  ext1.edge_mask1 = 0;
-		  ext1.edge_maskx = 0;
+		  ext1.అంచు_position = 0;
+		  ext1.అంచు_mask0 = 0;
+		  ext1.అంచు_mask1 = 0;
+		  ext1.అంచు_maskx = 0;
 
-		  for (unsigned pp = 0 ;  pp < port_count() ; pp += 1) {
-			switch (row[pp+1]) {
-			    case 'n':
-			      edge_based_on_char(cur, 'N', pp);
-			      edge_based_on_char(ext0, '_', pp);
-			      need_ext0_table = true;
-			      break;
-			    case 'p':
-			      edge_based_on_char(cur, 'P', pp);
-			      edge_based_on_char(ext0, '+', pp);
-			      need_ext0_table = true;
-			      break;
-			    case '*':
-			      edge_based_on_char(cur, 'P', pp);
-			      edge_based_on_char(ext0, 'N', pp);
-			      edge_based_on_char(ext1, 'B', pp);
-			      need_ext0_table = true;
-			      need_ext1_table = true;
-			      break;
-			    default:
-			      edge_based_on_char(cur, row[pp+1], pp);
-			      edge_based_on_char(ext0, row[pp+1], pp);
-			      edge_based_on_char(ext1, row[pp+1], pp);
-			      break;
+		  కొరకు (గుర్తులేని pp = 0 ;  pp < పోర్టు_లెక్క() ; pp += 1) {
+			ఎంపిక (అడ్డువరుస[pp+1]) {
+			    స్థితి 'n':
+			      అంచు_based_on_char(cur, 'N', pp);
+			      అంచు_based_on_char(ext0, '_', pp);
+			      need_ext0_పట్టిక = నిజం;
+			      ఆపు;
+			    స్థితి 'p':
+			      అంచు_based_on_char(cur, 'P', pp);
+			      అంచు_based_on_char(ext0, '+', pp);
+			      need_ext0_పట్టిక = నిజం;
+			      ఆపు;
+			    స్థితి '*':
+			      అంచు_based_on_char(cur, 'P', pp);
+			      అంచు_based_on_char(ext0, 'N', pp);
+			      అంచు_based_on_char(ext1, 'B', pp);
+			      need_ext0_పట్టిక = నిజం;
+			      need_ext1_పట్టిక = నిజం;
+			      ఆపు;
+			    అప్రమేయ:
+			      అంచు_based_on_char(cur, అడ్డువరుస[pp+1], pp);
+			      అంచు_based_on_char(ext0, అడ్డువరుస[pp+1], pp);
+			      అంచు_based_on_char(ext1, అడ్డువరుస[pp+1], pp);
+			      ఆపు;
 			}
 		  }
-		  edge_based_on_char(cur, row[0], port_count());
-		  edge_based_on_char(ext0, row[0], port_count());
-		  edge_based_on_char(ext1, row[0], port_count());
+		  అంచు_based_on_char(cur, అడ్డువరుస[0], పోర్టు_లెక్క());
+		  అంచు_based_on_char(ext0, అడ్డువరుస[0], పోర్టు_లెక్క());
+		  అంచు_based_on_char(ext1, అడ్డువరుస[0], పోర్టు_లెక్క());
 
-		  switch (row[port_count()+1]) {
-		      case '0':
+		  ఎంపిక (అడ్డువరుస[పోర్టు_లెక్క()+1]) {
+		      స్థితి '0':
 			edges0_[idx_edg0++] = cur;
-			if (need_ext0_table)
+			ఒకవేళ (need_ext0_పట్టిక)
 			      edges0_[idx_edg0++] = ext0;
-			if (need_ext1_table)
+			ఒకవేళ (need_ext1_పట్టిక)
 			      edges0_[idx_edg0++] = ext1;
-			break;
-		      case '1':
+			ఆపు;
+		      స్థితి '1':
 			edges1_[idx_edg1++] = cur;
-			if (need_ext0_table)
+			ఒకవేళ (need_ext0_పట్టిక)
 			      edges1_[idx_edg1++] = ext0;
-			if (need_ext1_table)
+			ఒకవేళ (need_ext1_పట్టిక)
 			      edges1_[idx_edg1++] = ext1;
-			break;
-		      case 'x':
-			break;
-		      case '-':
-			edgesL_[idx_edgL++] = cur;
-			if (need_ext0_table)
-			      edgesL_[idx_edgL++] = ext0;
-			if (need_ext1_table)
-			      edgesL_[idx_edgL++] = ext1;
-			break;
-		      default:
+			ఆపు;
+		      స్థితి 'x':
+			ఆపు;
+		      స్థితి '-':
+			అంచులు_L[idx_edgL++] = cur;
+			ఒకవేళ (need_ext0_పట్టిక)
+			      అంచులు_L[idx_edgL++] = ext0;
+			ఒకవేళ (need_ext1_పట్టిక)
+			      అంచులు_L[idx_edgL++] = ext1;
+			ఆపు;
+		      అప్రమేయ:
 			fprintf(stderr, "Unsupported entry %c(%d).\n",
-			        row[port_count()+1], row[port_count()+1]);
-			assert(0);
-			break;
+			        అడ్డువరుస[పోర్టు_లెక్క()+1], అడ్డువరుస[పోర్టు_లెక్క()+1]);
+			ప్రతిజ్ఞా(0);
+			ఆపు;
 		  }
 
 	    }
-	    delete[] tab[idx];
+	    తొలగించు[] tab[idx];
       }
-      free(tab);
+      విడుదల(tab);
 
-      assert(idx_edg0 == nedges0_);
-      assert(idx_edg1 == nedges1_);
-      assert(idx_edgL == nedgesL_);
+      ప్రతిజ్ఞా(idx_edg0 == nedges0_);
+      ప్రతిజ్ఞా(idx_edg1 == nedges1_);
+      ప్రతిజ్ఞా(idx_edgL == nedgesL_);
 
 }
 
-bool operator == (const udp_levels_table&a, const udp_levels_table&b)
+తార్కిక క్రియాకారకం == (స్థిరరాశి udp_స్థాయిలు_పట్టిక&a, స్థిరరాశి udp_స్థాయిలు_పట్టిక&b)
 {
-      if (a.mask0 != b.mask0)
-	    return false;
-      if (a.mask1 != b.mask1)
-	    return false;
-      if (a.maskx != b.maskx)
-	    return false;
-      return true;
+      ఒకవేళ (a.mask0 != b.mask0)
+	    తిరిగి అబద్ధం;
+      ఒకవేళ (a.mask1 != b.mask1)
+	    తిరిగి అబద్ధం;
+      ఒకవేళ (a.maskx != b.maskx)
+	    తిరిగి అబద్ధం;
+      తిరిగి నిజం;
 }
 
-vvp_bit4_t vvp_udp_seq_s::calculate_output(const udp_levels_table&cur,
-					   const udp_levels_table&prev,
-					   vvp_bit4_t cur_out)
+vvp_bit4_t vvp_udp_seq_s::calculate_output(స్థిరరాశి udp_స్థాయిలు_పట్టిక&cur,
+					   స్థిరరాశి udp_స్థాయిలు_పట్టిక&prev,
+					   vvp_bit4_t cur_బహిర్గతం)
 {
-      if (cur == prev)
-	    return cur_out;
+      ఒకవేళ (cur == prev)
+	    తిరిగి cur_బహిర్గతం;
 
-      udp_levels_table cur_tmp = cur;
+      udp_స్థాయిలు_పట్టిక cur_tmp = cur;
 
-      unsigned long mask_out = 1UL << port_count();
-      switch (cur_out) {
-	  case BIT4_0:
-	    cur_tmp.mask0 |= mask_out;
-	    break;
-	  case BIT4_1:
-	    cur_tmp.mask1 |= mask_out;
-	    break;
-	  default:
-	    cur_tmp.maskx |= mask_out;
-	    break;
+      గుర్తులేని దీర్ఘ ముసుగు_బహిర్గతం = 1UL << పోర్టు_లెక్క();
+      ఎంపిక (cur_బహిర్గతం) {
+	  స్థితి BIT4_0:
+	    cur_tmp.mask0 |= ముసుగు_బహిర్గతం;
+	    ఆపు;
+	  స్థితి BIT4_1:
+	    cur_tmp.mask1 |= ముసుగు_బహిర్గతం;
+	    ఆపు;
+	  అప్రమేయ:
+	    cur_tmp.maskx |= ముసుగు_బహిర్గతం;
+	    ఆపు;
       }
 
-      vvp_bit4_t lev = test_levels_(cur_tmp);
-      if (lev == BIT4_Z) {
-	    lev = test_edges_(cur_tmp, prev);
+      vvp_bit4_t lev = test_స్థాయిలు_2(cur_tmp);
+      ఒకవేళ (lev == BIT4_Z) {
+	    lev = test_అంచులు(cur_tmp, prev);
       }
 
-      return lev;
+      తిరిగి lev;
 }
 
 /*
@@ -724,198 +724,198 @@ vvp_bit4_t vvp_udp_seq_s::calculate_output(const udp_levels_table&cur,
  * set the mask bit in bit position [port_count()] to reflect the
  * current output.
  */
-vvp_bit4_t vvp_udp_seq_s::test_levels_(const udp_levels_table&cur)
+vvp_bit4_t vvp_udp_seq_s::test_స్థాయిలు_2(స్థిరరాశి udp_స్థాయిలు_పట్టిక&cur)
 {
-      for (unsigned idx = 0 ;  idx < nlevels0_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levels0_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levels0_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levels0_[idx].maskx))
-		  continue;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < nlevels0_ ;  idx += 1) {
+	    ఒకవేళ (cur.mask0 != (cur.mask0 & levels0_[idx].mask0))
+		  కొనసాగు;
+	    ఒకవేళ (cur.mask1 != (cur.mask1 & levels0_[idx].mask1))
+		  కొనసాగు;
+	    ఒకవేళ (cur.maskx != (cur.maskx & levels0_[idx].maskx))
+		  కొనసాగు;
 
-	    return BIT4_0;
+	    తిరిగి BIT4_0;
       }
 
-      for (unsigned idx = 0 ;  idx < nlevels1_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levels1_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levels1_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levels1_[idx].maskx))
-		  continue;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < nlevels1_ ;  idx += 1) {
+	    ఒకవేళ (cur.mask0 != (cur.mask0 & levels1_[idx].mask0))
+		  కొనసాగు;
+	    ఒకవేళ (cur.mask1 != (cur.mask1 & levels1_[idx].mask1))
+		  కొనసాగు;
+	    ఒకవేళ (cur.maskx != (cur.maskx & levels1_[idx].maskx))
+		  కొనసాగు;
 
-	    return BIT4_1;
+	    తిరిగి BIT4_1;
       }
 
 	/* We need to test against an explicit X-output table, since
 	   we need to distinguish from an X output and no match. */
-      for (unsigned idx = 0 ;  idx < nlevelsx_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levelsx_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levelsx_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levelsx_[idx].maskx))
-		  continue;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < nlevelsx_ ;  idx += 1) {
+	    ఒకవేళ (cur.mask0 != (cur.mask0 & levelsx_[idx].mask0))
+		  కొనసాగు;
+	    ఒకవేళ (cur.mask1 != (cur.mask1 & levelsx_[idx].mask1))
+		  కొనసాగు;
+	    ఒకవేళ (cur.maskx != (cur.maskx & levelsx_[idx].maskx))
+		  కొనసాగు;
 
-	    return BIT4_X;
+	    తిరిగి BIT4_X;
       }
 
 	/* Test the table that requests the next output be the same as
 	   the current output. This gets the current output from the
 	   levels table that was passed in. */
-      for (unsigned idx = 0 ;  idx < nlevelsL_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levelsL_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levelsL_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levelsL_[idx].maskx))
-		  continue;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < nlevelsL_ ;  idx += 1) {
+	    ఒకవేళ (cur.mask0 != (cur.mask0 & స్థాయిలు_L[idx].mask0))
+		  కొనసాగు;
+	    ఒకవేళ (cur.mask1 != (cur.mask1 & స్థాయిలు_L[idx].mask1))
+		  కొనసాగు;
+	    ఒకవేళ (cur.maskx != (cur.maskx & స్థాయిలు_L[idx].maskx))
+		  కొనసాగు;
 
-	    if (cur.mask0 & (1 << port_count()))
-		  return BIT4_0;
-	    if (cur.mask1 & (1 << port_count()))
-		  return BIT4_1;
-	    if (cur.maskx & (1 << port_count()))
-		  return BIT4_X;
+	    ఒకవేళ (cur.mask0 & (1 << పోర్టు_లెక్క()))
+		  తిరిగి BIT4_0;
+	    ఒకవేళ (cur.mask1 & (1 << పోర్టు_లెక్క()))
+		  తిరిగి BIT4_1;
+	    ఒకవేళ (cur.maskx & (1 << పోర్టు_లెక్క()))
+		  తిరిగి BIT4_X;
 
-	    assert(0);
-	    return BIT4_X;
+	    ప్రతిజ్ఞా(0);
+	    తిరిగి BIT4_X;
       }
 
 	/* No explicit levels entry match. Return a Z to signal that
 	   further testing is needed. */
-      return BIT4_Z;
+      తిరిగి BIT4_Z;
 }
 
-vvp_bit4_t vvp_udp_seq_s::test_edges_(const udp_levels_table&cur,
-				      const udp_levels_table&prev)
+vvp_bit4_t vvp_udp_seq_s::test_అంచులు(స్థిరరాశి udp_స్థాయిలు_పట్టిక&cur,
+				      స్థిరరాశి udp_స్థాయిలు_పట్టిక&prev)
 {
 	/* The edge_mask is true for all bits that are different in
 	   the cur and prev tables. */
-      unsigned long edge0_mask = cur.mask0 ^ prev.mask0;
-      unsigned long edgex_mask = cur.maskx ^ prev.maskx;
-      unsigned long edge1_mask = cur.mask1 ^ prev.mask1;
+      గుర్తులేని దీర్ఘ edge0_ముసుగు = cur.mask0 ^ prev.mask0;
+      గుర్తులేని దీర్ఘ edgex_ముసుగు = cur.maskx ^ prev.maskx;
+      గుర్తులేని దీర్ఘ edge1_ముసుగు = cur.mask1 ^ prev.mask1;
 
-      unsigned long edge_mask = edge0_mask|edgex_mask|edge1_mask;
-      edge_mask &= ~ (-1UL << port_count());
+      గుర్తులేని దీర్ఘ అంచు_ముసుగు = edge0_ముసుగు|edgex_ముసుగు|edge1_ముసుగు;
+      అంచు_ముసుగు &= ~ (-1UL << పోర్టు_లెక్క());
 
 	/* If there are no differences, then there are no edges. Give
 	   up now. */
-      if (edge_mask == 0)
-	    return BIT4_X;
+      ఒకవేళ (అంచు_ముసుగు == 0)
+	    తిరిగి BIT4_X;
 
-      unsigned edge_position = 0;
-      while ((edge_mask&1) == 0) {
-	    edge_mask >>= 1;
-	    edge_position += 1;
+      గుర్తులేని అంచు_position = 0;
+      అయితే ((అంచు_ముసుగు&1) == 0) {
+	    అంచు_ముసుగు >>= 1;
+	    అంచు_position += 1;
       }
 
 	/* We expect that there is exactly one edge in here. */
-      assert(edge_mask == 1);
+      ప్రతిజ్ఞా(అంచు_ముసుగు == 1);
 
-      edge_mask = 1UL << edge_position;
+      అంచు_ముసుగు = 1UL << అంచు_position;
 
-      unsigned edge_mask0 = (prev.mask0&edge_mask)? 1 : 0;
-      unsigned edge_maskx = (prev.maskx&edge_mask)? 1 : 0;
-      unsigned edge_mask1 = (prev.mask1&edge_mask)? 1 : 0;
+      గుర్తులేని అంచు_mask0 = (prev.mask0&అంచు_ముసుగు)? 1 : 0;
+      గుర్తులేని అంచు_maskx = (prev.maskx&అంచు_ముసుగు)? 1 : 0;
+      గుర్తులేని అంచు_mask1 = (prev.mask1&అంచు_ముసుగు)? 1 : 0;
 
 
 	/* Now the edge_position and edge_mask* variables have the
 	   values we use to test the applicability of the edge_table
 	   entries. */
 
-      for (unsigned idx = 0 ;  idx < nedges0_ ;  idx += 1) {
-	    const struct udp_edges_table*row = edges0_ + idx;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < nedges0_ ;  idx += 1) {
+	    స్థిరరాశి నిర్మాణం udp_అంచులు_పట్టిక*అడ్డువరుస = edges0_ + idx;
 
-	    if (row->edge_position != edge_position)
-		  continue;
-	    if (edge_mask0 && !row->edge_mask0)
-		  continue;
-	    if (edge_maskx && !row->edge_maskx)
-		  continue;
-	    if (edge_mask1 && !row->edge_mask1)
-		  continue;
-	    if (cur.mask0 != (cur.mask0 & row->mask0))
-		  continue;
-	    if (cur.maskx != (cur.maskx & row->maskx))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & row->mask1))
-		  continue;
+	    ఒకవేళ (అడ్డువరుస->అంచు_position != అంచు_position)
+		  కొనసాగు;
+	    ఒకవేళ (అంచు_mask0 && !అడ్డువరుస->అంచు_mask0)
+		  కొనసాగు;
+	    ఒకవేళ (అంచు_maskx && !అడ్డువరుస->అంచు_maskx)
+		  కొనసాగు;
+	    ఒకవేళ (అంచు_mask1 && !అడ్డువరుస->అంచు_mask1)
+		  కొనసాగు;
+	    ఒకవేళ (cur.mask0 != (cur.mask0 & అడ్డువరుస->mask0))
+		  కొనసాగు;
+	    ఒకవేళ (cur.maskx != (cur.maskx & అడ్డువరుస->maskx))
+		  కొనసాగు;
+	    ఒకవేళ (cur.mask1 != (cur.mask1 & అడ్డువరుస->mask1))
+		  కొనసాగు;
 
-	    return BIT4_0;
+	    తిరిగి BIT4_0;
       }
 
-      for (unsigned idx = 0 ;  idx < nedges1_ ;  idx += 1) {
-	    const struct udp_edges_table*row = edges1_ + idx;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < nedges1_ ;  idx += 1) {
+	    స్థిరరాశి నిర్మాణం udp_అంచులు_పట్టిక*అడ్డువరుస = edges1_ + idx;
 
-	    if (row->edge_position != edge_position)
-		  continue;
-	    if (edge_mask0 && !row->edge_mask0)
-		  continue;
-	    if (edge_maskx && !row->edge_maskx)
-		  continue;
-	    if (edge_mask1 && !row->edge_mask1)
-		  continue;
-	    if (cur.mask0 != (cur.mask0 & row->mask0))
-		  continue;
-	    if (cur.maskx != (cur.maskx & row->maskx))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & row->mask1))
-		  continue;
+	    ఒకవేళ (అడ్డువరుస->అంచు_position != అంచు_position)
+		  కొనసాగు;
+	    ఒకవేళ (అంచు_mask0 && !అడ్డువరుస->అంచు_mask0)
+		  కొనసాగు;
+	    ఒకవేళ (అంచు_maskx && !అడ్డువరుస->అంచు_maskx)
+		  కొనసాగు;
+	    ఒకవేళ (అంచు_mask1 && !అడ్డువరుస->అంచు_mask1)
+		  కొనసాగు;
+	    ఒకవేళ (cur.mask0 != (cur.mask0 & అడ్డువరుస->mask0))
+		  కొనసాగు;
+	    ఒకవేళ (cur.maskx != (cur.maskx & అడ్డువరుస->maskx))
+		  కొనసాగు;
+	    ఒకవేళ (cur.mask1 != (cur.mask1 & అడ్డువరుస->mask1))
+		  కొనసాగు;
 
-	    return BIT4_1;
+	    తిరిగి BIT4_1;
       }
 
-      for (unsigned idx = 0 ;  idx < nedgesL_ ;  idx += 1) {
-	    const struct udp_edges_table*row = edgesL_ + idx;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < nedgesL_ ;  idx += 1) {
+	    స్థిరరాశి నిర్మాణం udp_అంచులు_పట్టిక*అడ్డువరుస = అంచులు_L + idx;
 
-	    if (row->edge_position != edge_position)
-		  continue;
-	    if (edge_mask0 && !row->edge_mask0)
-		  continue;
-	    if (edge_maskx && !row->edge_maskx)
-		  continue;
-	    if (edge_mask1 && !row->edge_mask1)
-		  continue;
-	    if (cur.mask0 != (cur.mask0 & row->mask0))
-		  continue;
-	    if (cur.maskx != (cur.maskx & row->maskx))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & row->mask1))
-		  continue;
+	    ఒకవేళ (అడ్డువరుస->అంచు_position != అంచు_position)
+		  కొనసాగు;
+	    ఒకవేళ (అంచు_mask0 && !అడ్డువరుస->అంచు_mask0)
+		  కొనసాగు;
+	    ఒకవేళ (అంచు_maskx && !అడ్డువరుస->అంచు_maskx)
+		  కొనసాగు;
+	    ఒకవేళ (అంచు_mask1 && !అడ్డువరుస->అంచు_mask1)
+		  కొనసాగు;
+	    ఒకవేళ (cur.mask0 != (cur.mask0 & అడ్డువరుస->mask0))
+		  కొనసాగు;
+	    ఒకవేళ (cur.maskx != (cur.maskx & అడ్డువరుస->maskx))
+		  కొనసాగు;
+	    ఒకవేళ (cur.mask1 != (cur.mask1 & అడ్డువరుస->mask1))
+		  కొనసాగు;
 
-	    if (cur.mask0 & (1 << port_count()))
-		  return BIT4_0;
-	    if (cur.mask1 & (1 << port_count()))
-		  return BIT4_1;
-	    if (cur.maskx & (1 << port_count()))
-		  return BIT4_X;
+	    ఒకవేళ (cur.mask0 & (1 << పోర్టు_లెక్క()))
+		  తిరిగి BIT4_0;
+	    ఒకవేళ (cur.mask1 & (1 << పోర్టు_లెక్క()))
+		  తిరిగి BIT4_1;
+	    ఒకవేళ (cur.maskx & (1 << పోర్టు_లెక్క()))
+		  తిరిగి BIT4_X;
 
-	    assert(0);
-	    return BIT4_X;
+	    ప్రతిజ్ఞా(0);
+	    తిరిగి BIT4_X;
       }
 
-      return BIT4_X;
+      తిరిగి BIT4_X;
 }
 
 vvp_udp_fun_core::vvp_udp_fun_core(vvp_net_t*net, vvp_udp_s*def)
-: vvp_wide_fun_core(net, def->port_count())
+: vvp_wide_fun_core(net, def->పోర్టు_లెక్క())
 {
       def_ = def;
-      cur_out_ = def_->get_init();
+      cur_బహిర్గతం_2 = def_->get_init();
 	// Assume initially that all the inputs are 1'bx
       current_.mask0 = 0;
       current_.mask1 = 0;
-      current_.maskx = ~ ((-1UL) << port_count());
+      current_.maskx = ~ ((-1UL) << పోర్టు_లెక్క());
 
         // If the initial value is 0 or 1, schedule the initial assignment
         // normally, so that any sensitive always processes can be started
         // first.
-      if (cur_out_ != BIT4_X)
-	    schedule_generic(this, 0, false);
-      else
-	    schedule_functor(this);
+      ఒకవేళ (cur_బహిర్గతం_2 != BIT4_X)
+	    కాలపట్టిక_generic(ఇది, 0, అబద్ధం);
+      లేకపోతే
+	    కాలపట్టిక_functor(ఇది);
 }
 
 vvp_udp_fun_core::~vvp_udp_fun_core()
@@ -925,49 +925,49 @@ vvp_udp_fun_core::~vvp_udp_fun_core()
 /*
  * This method is used to propagate the initial value on startup.
  */
-void vvp_udp_fun_core::run_run()
+శూన్య vvp_udp_fun_core::నిరంతరం_నిరంతరం()
 {
       vvp_vector4_t tmp (1);
-      tmp.set_bit(0, cur_out_);
+      tmp.సమితి_బిట్టు(0, cur_బహిర్గతం_2);
       propagate_vec4(tmp);
 }
 
-void vvp_udp_fun_core::recv_vec4_from_inputs(unsigned port)
+శూన్య vvp_udp_fun_core::recv_vec4_from_inputs(గుర్తులేని పోర్టు)
 {
 	/* For now, assume udps are 1-bit wide. */
-      unsigned port_width = value(port).size();
-      assert(port_width == 1);
+      గుర్తులేని పోర్టు_వెడల్పు = value(పోర్టు).size();
+      ప్రతిజ్ఞా(పోర్టు_వెడల్పు == 1);
 
-      unsigned long mask = 1UL << port;
+      గుర్తులేని దీర్ఘ ముసుగు = 1UL << పోర్టు;
 
-      udp_levels_table prev = current_;
+      udp_స్థాయిలు_పట్టిక prev = current_;
 
-      switch (value(port).value(0)) {
+      ఎంపిక (value(పోర్టు).value(0)) {
 
-	  case BIT4_0:
-	    current_.mask0 |= mask;
-	    current_.mask1 &= ~mask;
-	    current_.maskx &= ~mask;
-	    break;
-	  case BIT4_1:
-	    current_.mask0 &= ~mask;
-	    current_.mask1 |= mask;
-	    current_.maskx &= ~mask;
-	    break;
-	  default:
-	    current_.mask0 &= ~mask;
-	    current_.mask1 &= ~mask;
-	    current_.maskx |= mask;
-	    break;
+	  స్థితి BIT4_0:
+	    current_.mask0 |= ముసుగు;
+	    current_.mask1 &= ~ముసుగు;
+	    current_.maskx &= ~ముసుగు;
+	    ఆపు;
+	  స్థితి BIT4_1:
+	    current_.mask0 &= ~ముసుగు;
+	    current_.mask1 |= ముసుగు;
+	    current_.maskx &= ~ముసుగు;
+	    ఆపు;
+	  అప్రమేయ:
+	    current_.mask0 &= ~ముసుగు;
+	    current_.mask1 &= ~ముసుగు;
+	    current_.maskx |= ముసుగు;
+	    ఆపు;
       }
 
-      vvp_bit4_t out_bit = def_->calculate_output(current_, prev, cur_out_);
+      vvp_bit4_t బహిర్గతం_బిట్టు = def_->calculate_output(current_, prev, cur_బహిర్గతం_2);
 
-      if (out_bit == cur_out_)
-	    return;
+      ఒకవేళ (బహిర్గతం_బిట్టు == cur_బహిర్గతం_2)
+	    తిరిగి;
 
-      cur_out_ = out_bit;
-      schedule_functor(this);
+      cur_బహిర్గతం_2 = బహిర్గతం_బిట్టు;
+      కాలపట్టిక_functor(ఇది);
 }
 
 
@@ -976,20 +976,20 @@ void vvp_udp_fun_core::recv_vec4_from_inputs(unsigned port)
  * node. We create the nodes needed to integrate the UDP into the
  * netlist. The definition should be parsed already.
  */
-void compile_udp_functor(char*label, char*type,
-			 unsigned argc, struct symb_s*argv)
+శూన్య compile_udp_functor(అక్షరం*label, అక్షరం*type,
+			 గుర్తులేని argc, నిర్మాణం symb_s*argv)
 {
-      struct vvp_udp_s *def = udp_find(type);
-      assert(def);
-      free(type);
+      నిర్మాణం vvp_udp_s *def = udp_కనుగొను(type);
+      ప్రతిజ్ఞా(def);
+      విడుదల(type);
 
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_udp_fun_core*core = new vvp_udp_fun_core(ptr, def);
+      vvp_net_t*ptr = కొత్త vvp_net_t;
+      vvp_udp_fun_core*core = కొత్త vvp_udp_fun_core(ptr, def);
       ptr->fun = core;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_చిహ్నం(label, ptr);
+      విడుదల(label);
 
       wide_inputs_connect(core, argc, argv);
-      free(argv);
+      విడుదల(argv);
 }

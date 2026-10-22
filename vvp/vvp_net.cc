@@ -33,204 +33,204 @@
 # include  <climits>
 # include  <cmath>
 # include  <cassert>
-#ifdef CHECK_WITH_VALGRIND
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
 # include  <valgrind/memcheck.h>
 # include  <map>
 # include  "sfunc.h"
 # include  "udp.h"
 # include  "ivl_alloc.h"
-#endif
+#అయితే_ముగింపు
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
 /* This is the size of an unsigned long in bits. This is just a
    convenience macro. */
-# define CPU_WORD_BITS (8*sizeof(unsigned long))
-# define TOP_BIT (1UL << (CPU_WORD_BITS-1))
+# define CPU_మాట_బిట్లు (8*పరిమాణం(గుర్తులేని దీర్ఘ))
+# define శిఖరం_బిట్టు (1UL << (CPU_మాట_బిట్లు-1))
 
-permaheap vvp_net_fun_t::heap_;
-permaheap vvp_net_fil_t::heap_;
+permaheap vvp_net_fun_t::కుప్ప;
+permaheap vvp_net_fil_t::కుప్ప;
 
 // Allocate around 1Megabyte/chunk.
-static const size_t VVP_NET_CHUNK = 1024*1024/sizeof(vvp_net_t);
-static vvp_net_t*vvp_net_alloc_table = NULL;
-#ifdef CHECK_WITH_VALGRIND
-static vvp_net_t **vvp_net_pool = NULL;
-static unsigned vvp_net_pool_count = 0;
-#endif
-static size_t vvp_net_alloc_remaining = 0;
+స్థిర స్థిరరాశి size_t VVP_NET_CHUNK = 1024*1024/పరిమాణం(vvp_net_t);
+స్థిర vvp_net_t*vvp_net_alloc_పట్టిక = ఖాళీ;
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+స్థిర vvp_net_t **vvp_net_pool = ఖాళీ;
+స్థిర గుర్తులేని vvp_net_pool_లెక్క = 0;
+#అయితే_ముగింపు
+స్థిర size_t vvp_net_alloc_మిగిలిన = 0;
 // For statistics, count the vvp_nets allocated and the bytes of alloc
 // chunks allocated.
-unsigned long count_vvp_nets = 0;
-size_t size_vvp_nets = 0;
+గుర్తులేని దీర్ఘ లెక్క_vvp_nets = 0;
+size_t కొలత_vvp_nets = 0;
 
-void* vvp_net_t::operator new (size_t size)
+శూన్య* vvp_net_t::క్రియాకారకం కొత్త (size_t size)
 {
-      assert(size == sizeof(vvp_net_t));
-      if (vvp_net_alloc_remaining == 0) {
-	    vvp_net_alloc_table = ::new vvp_net_t[VVP_NET_CHUNK];
-	    vvp_net_alloc_remaining = VVP_NET_CHUNK;
-	    size_vvp_nets += size*VVP_NET_CHUNK;
-#ifdef CHECK_WITH_VALGRIND
-	    VALGRIND_MAKE_MEM_NOACCESS(vvp_net_alloc_table, size*VVP_NET_CHUNK);
-	    VALGRIND_CREATE_MEMPOOL(vvp_net_alloc_table, 0, 0);
-	    vvp_net_pool_count += 1;
+      ప్రతిజ్ఞా(size == పరిమాణం(vvp_net_t));
+      ఒకవేళ (vvp_net_alloc_మిగిలిన == 0) {
+	    vvp_net_alloc_పట్టిక = ::కొత్త vvp_net_t[VVP_NET_CHUNK];
+	    vvp_net_alloc_మిగిలిన = VVP_NET_CHUNK;
+	    కొలత_vvp_nets += size*VVP_NET_CHUNK;
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+	    VALGRIND_MAKE_MEM_NOACCESS(vvp_net_alloc_పట్టిక, size*VVP_NET_CHUNK);
+	    VALGRIND_CREATE_MEMPOOL(vvp_net_alloc_పట్టిక, 0, 0);
+	    vvp_net_pool_లెక్క += 1;
 	    vvp_net_pool = static_cast<vvp_net_t **>(realloc(vvp_net_pool,
-	                   vvp_net_pool_count*sizeof(vvp_net_t **)));
-	    vvp_net_pool[vvp_net_pool_count-1] = vvp_net_alloc_table;
-#endif
+	                   vvp_net_pool_లెక్క*పరిమాణం(vvp_net_t **)));
+	    vvp_net_pool[vvp_net_pool_లెక్క-1] = vvp_net_alloc_పట్టిక;
+#అయితే_ముగింపు
       }
 
-      vvp_net_t*return_this = vvp_net_alloc_table;
-#ifdef CHECK_WITH_VALGRIND
-      VALGRIND_MEMPOOL_ALLOC(vvp_net_pool[vvp_net_pool_count-1],
+      vvp_net_t*return_this = vvp_net_alloc_పట్టిక;
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+      VALGRIND_MEMPOOL_ALLOC(vvp_net_pool[vvp_net_pool_లెక్క-1],
                              return_this, size);
-      return_this->pool = vvp_net_pool[vvp_net_pool_count-1];
-#endif
-      vvp_net_alloc_table += 1;
-      vvp_net_alloc_remaining -= 1;
-      count_vvp_nets += 1;
-      return return_this;
+      return_this->pool = vvp_net_pool[vvp_net_pool_లెక్క-1];
+#అయితే_ముగింపు
+      vvp_net_alloc_పట్టిక += 1;
+      vvp_net_alloc_మిగిలిన -= 1;
+      లెక్క_vvp_nets += 1;
+      తిరిగి return_this;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-static map<vvp_net_t*, bool> vvp_net_map;
-static map<sfunc_core*, bool> sfunc_map;
-static map<vvp_udp_fun_core*, bool> udp_map;
-static map<resolv_core*, bool> resolv_map;
-static vvp_net_t **local_net_pool = 0;
-static unsigned local_net_pool_count = 0;
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+స్థిర map<vvp_net_t*, తార్కిక> vvp_net_map;
+స్థిర map<sfunc_core*, తార్కిక> sfunc_map;
+స్థిర map<vvp_udp_fun_core*, తార్కిక> udp_map;
+స్థిర map<resolv_core*, తార్కిక> resolv_map;
+స్థిర vvp_net_t **local_net_pool = 0;
+స్థిర గుర్తులేని local_net_pool_లెక్క = 0;
 
-void pool_local_net(vvp_net_t*net)
+శూన్య pool_local_net(vvp_net_t*net)
 {
-      local_net_pool_count += 1;
+      local_net_pool_లెక్క += 1;
       local_net_pool = static_cast<vvp_net_t **>(realloc(local_net_pool,
-                       local_net_pool_count*sizeof(vvp_net_t **)));
-      local_net_pool[local_net_pool_count-1] = net;
+                       local_net_pool_లెక్క*పరిమాణం(vvp_net_t **)));
+      local_net_pool[local_net_pool_లెక్క-1] = net;
 }
 
-void vvp_net_delete(vvp_net_t *item)
+శూన్య vvp_net_delete(vvp_net_t *అంశం)
 {
-      vvp_net_map[item] = true;
-      if (sfunc_core*tmp = dynamic_cast<sfunc_core*> (item->fun)) {
-	    sfunc_map[tmp] = true;
+      vvp_net_map[అంశం] = నిజం;
+      ఒకవేళ (sfunc_core*tmp = dynamic_cast<sfunc_core*> (అంశం->fun)) {
+	    sfunc_map[tmp] = నిజం;
       }
-      if (vvp_udp_fun_core*tmp = dynamic_cast<vvp_udp_fun_core*> (item->fun)) {
-	    udp_map[tmp] = true;
+      ఒకవేళ (vvp_udp_fun_core*tmp = dynamic_cast<vvp_udp_fun_core*> (అంశం->fun)) {
+	    udp_map[tmp] = నిజం;
       }
-      if (resolv_core*tmp = dynamic_cast<resolv_core*> (item->fun)) {
-	    resolv_map[tmp] = true;
+      ఒకవేళ (resolv_core*tmp = dynamic_cast<resolv_core*> (అంశం->fun)) {
+	    resolv_map[tmp] = నిజం;
       }
 	/* Only delete static object variables. */
-      if (vvp_fun_signal_object_sa*tmp = dynamic_cast<vvp_fun_signal_object_sa*> (item->fun)) {
-	    delete tmp;
+      ఒకవేళ (vvp_fun_signal_object_sa*tmp = dynamic_cast<vvp_fun_signal_object_sa*> (అంశం->fun)) {
+	    తొలగించు tmp;
       }
 	/* Only delete static string variables. */
-      if (vvp_fun_signal_string_sa*tmp = dynamic_cast<vvp_fun_signal_string_sa*> (item->fun)) {
-	    delete tmp;
+      ఒకవేళ (vvp_fun_signal_string_sa*tmp = dynamic_cast<vvp_fun_signal_string_sa*> (అంశం->fun)) {
+	    తొలగించు tmp;
       }
 }
 
-void vvp_net_pool_delete()
+శూన్య vvp_net_pool_delete()
 {
-      unsigned long vvp_nets_del = 0;
+      గుర్తులేని దీర్ఘ vvp_nets_del = 0;
 
-      for (unsigned idx = 0; idx < local_net_pool_count; idx += 1) {
+      కొరకు (గుర్తులేని idx = 0; idx < local_net_pool_లెక్క; idx += 1) {
 	    vvp_net_delete(local_net_pool[idx]);
       }
-      free(local_net_pool);
+      విడుదల(local_net_pool);
       local_net_pool = 0;
-      local_net_pool_count = 0;
+      local_net_pool_లెక్క = 0;
 
-      map<vvp_net_t*, bool>::iterator iter;
-      for (iter = vvp_net_map.begin(); iter != vvp_net_map.end(); ++ iter ) {
+      map<vvp_net_t*, తార్కిక>::iterator iter;
+      కొరకు (iter = vvp_net_map.begin(); iter != vvp_net_map.చివర(); ++ iter ) {
 	    vvp_nets_del += 1;
-	    VALGRIND_MEMPOOL_FREE(iter->first->pool, iter->first);
+	    VALGRIND_MEMPOOL_FREE(iter->మొదటి->pool, iter->మొదటి);
       }
       vvp_net_map.clear();
 
-      map<sfunc_core*, bool>::iterator siter;
-      for (siter = sfunc_map.begin(); siter != sfunc_map.end(); ++ siter ) {
-	    delete siter->first;
+      map<sfunc_core*, తార్కిక>::iterator siter;
+      కొరకు (siter = sfunc_map.begin(); siter != sfunc_map.చివర(); ++ siter ) {
+	    తొలగించు siter->మొదటి;
       }
       sfunc_map.clear();
 
-      map<vvp_udp_fun_core*, bool>::iterator uiter;
-      for (uiter = udp_map.begin(); uiter != udp_map.end(); ++ uiter ) {
-	    delete uiter->first;
+      map<vvp_udp_fun_core*, తార్కిక>::iterator uiter;
+      కొరకు (uiter = udp_map.begin(); uiter != udp_map.చివర(); ++ uiter ) {
+	    తొలగించు uiter->మొదటి;
       }
       udp_map.clear();
 
-      map<resolv_core*, bool>::iterator riter;
-      for (riter = resolv_map.begin(); riter != resolv_map.end(); ++ riter ) {
-	    delete riter->first;
+      map<resolv_core*, తార్కిక>::iterator riter;
+      కొరకు (riter = resolv_map.begin(); riter != resolv_map.చివర(); ++ riter ) {
+	    తొలగించు riter->మొదటి;
       }
       resolv_map.clear();
 
-      if (RUNNING_ON_VALGRIND && (vvp_nets_del != count_vvp_nets)) {
-	    fflush(NULL);
+      ఒకవేళ (RUNNING_ON_VALGRIND && (vvp_nets_del != లెక్క_vvp_nets)) {
+	    fflush(ఖాళీ);
 	    VALGRIND_PRINTF("Error: vvp missed deleting %ld of %lu net(s).",
-	                    (long) count_vvp_nets - vvp_nets_del,
-	                    count_vvp_nets);
+	                    (దీర్ఘ) లెక్క_vvp_nets - vvp_nets_del,
+	                    లెక్క_vvp_nets);
       }
 
-      for (unsigned idx = 0; idx < vvp_net_pool_count; idx += 1) {
+      కొరకు (గుర్తులేని idx = 0; idx < vvp_net_pool_లెక్క; idx += 1) {
 	    VALGRIND_DESTROY_MEMPOOL(vvp_net_pool[idx]);
-	    ::delete [] vvp_net_pool[idx];
+	    ::తొలగించు [] vvp_net_pool[idx];
       }
-      free(vvp_net_pool);
-      vvp_net_pool = NULL;
-      vvp_net_pool_count = 0;
+      విడుదల(vvp_net_pool);
+      vvp_net_pool = ఖాళీ;
+      vvp_net_pool_లెక్క = 0;
 }
-#endif
+#అయితే_ముగింపు
 
-void vvp_net_t::operator delete(void*)
+శూన్య vvp_net_t::క్రియాకారకం తొలగించు(శూన్య*)
 {
-      assert(0);
+      ప్రతిజ్ఞా(0);
 }
 
 vvp_net_t::vvp_net_t()
-: out_(vvp_net_ptr_t(0,0))
+: బహిర్గతం_2(vvp_net_ptr_t(0,0))
 {
       fun = 0;
       fil = 0;
 }
 
-void vvp_net_t::link(vvp_net_ptr_t port_to_link)
+శూన్య vvp_net_t::link(vvp_net_ptr_t పోర్టు_గమ్యం_link)
 {
-      vvp_net_t*net = port_to_link.ptr();
+      vvp_net_t*net = పోర్టు_గమ్యం_link.ptr();
 
 	// Connect nodes with vvp_fun_modpath_src to the head of the
 	// linked list, so that vvp_fun_modpath_src are always evaluated
 	// before their respective vvp_fun_modpath
-      if (dynamic_cast<vvp_fun_modpath_src*>(net->fun)) {
-	    net->port[port_to_link.port()] = out_;
-	    out_ = port_to_link;
+      ఒకవేళ (dynamic_cast<vvp_fun_modpath_src*>(net->fun)) {
+	    net->పోర్టు[పోర్టు_గమ్యం_link.పోర్టు()] = బహిర్గతం_2;
+	    బహిర్గతం_2 = పోర్టు_గమ్యం_link;
 	// All other nodes connect after the last vvp_fun_modpath_src
-      } else {
+      } లేకపోతే {
 	      // List is empty or first node has no vvp_fun_modpath_src
 	      // then just insert the node into the head of linked list
-	    if (out_.ptr() == nullptr || ! dynamic_cast<vvp_fun_modpath_src*>(out_.ptr()->fun)) {
-		  net->port[port_to_link.port()] = out_;
-		  out_ = port_to_link;
-		  return;
+	    ఒకవేళ (బహిర్గతం_2.ptr() == శూన్యసూచిక || ! dynamic_cast<vvp_fun_modpath_src*>(బహిర్గతం_2.ptr()->fun)) {
+		  net->పోర్టు[పోర్టు_గమ్యం_link.పోర్టు()] = బహిర్గతం_2;
+		  బహిర్గతం_2 = పోర్టు_గమ్యం_link;
+		  తిరిగి;
 	    }
 
-	    vvp_net_ptr_t cur = out_;
-	    vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr,0);
+	    vvp_net_ptr_t cur = బహిర్గతం_2;
+	    vvp_net_ptr_t prev = vvp_net_ptr_t(శూన్యసూచిక,0);
 
 	      // Traverse through linked list
-	    while (dynamic_cast<vvp_fun_modpath_src*>(cur.ptr()->fun)) {
+	    అయితే (dynamic_cast<vvp_fun_modpath_src*>(cur.ptr()->fun)) {
 		  prev = cur;
-		  cur = cur.ptr()->port[cur.port()];
-		  if (! cur.ptr()) break; // End of list
+		  cur = cur.ptr()->పోర్టు[cur.పోర్టు()];
+		  ఒకవేళ (! cur.ptr()) ఆపు; // End of list
 	    }
 
-	    assert(prev.ptr());
+	    ప్రతిజ్ఞా(prev.ptr());
 
 	      // Insert after last vvp_fun_modpath_src (or end of list)
-	    net->port[port_to_link.port()] = cur;
-	    prev.ptr()->port[prev.port()] = port_to_link;
+	    net->పోర్టు[పోర్టు_గమ్యం_link.పోర్టు()] = cur;
+	    prev.ptr()->పోర్టు[prev.పోర్టు()] = పోర్టు_గమ్యం_link;
       }
 }
 
@@ -240,35 +240,35 @@ void vvp_net_t::link(vvp_net_ptr_t port_to_link)
  * driver. The dst_ptr argument is the receiver pin to be located and
  * removed from the fan-out list.
  */
-void vvp_net_t::unlink(vvp_net_ptr_t dst_ptr)
+శూన్య vvp_net_t::unlink(vvp_net_ptr_t dst_ptr)
 {
       vvp_net_t*net = dst_ptr.ptr();
-      unsigned net_port = dst_ptr.port();
+      గుర్తులేని net_పోర్టు = dst_ptr.పోర్టు();
 
-      if (out_ == dst_ptr) {
+      ఒకవేళ (బహిర్గతం_2 == dst_ptr) {
 	      /* If the drive fan-out list starts with this pointer,
 		 then the unlink is easy. Pull the list forward. */
-	    out_ = net->port[net_port];
-      } else if (! out_.nil()) {
+	    బహిర్గతం_2 = net->పోర్టు[net_పోర్టు];
+      } లేకపోతే ఒకవేళ (! బహిర్గతం_2.nil()) {
 	      /* Scan the linked list, looking for the net_ptr_t
 		 pointer *before* the one we wish to remove. */
-	    vvp_net_ptr_t cur = out_;
-	    assert(!cur.nil());
+	    vvp_net_ptr_t cur = బహిర్గతం_2;
+	    ప్రతిజ్ఞా(!cur.nil());
 	    vvp_net_t*cur_net = cur.ptr();
-	    unsigned cur_port = cur.port();
-	    while (cur_net && cur_net->port[cur_port] != dst_ptr) {
-		  cur = cur_net->port[cur_port];
+	    గుర్తులేని cur_పోర్టు = cur.పోర్టు();
+	    అయితే (cur_net && cur_net->పోర్టు[cur_పోర్టు] != dst_ptr) {
+		  cur = cur_net->పోర్టు[cur_పోర్టు];
 		  cur_net = cur.ptr();
-		  cur_port = cur.port();
+		  cur_పోర్టు = cur.పోర్టు();
 	    }
 	      /* Unlink. */
-	    if (cur_net) cur_net->port[cur_port] = net->port[net_port];
+	    ఒకవేళ (cur_net) cur_net->పోర్టు[cur_పోర్టు] = net->పోర్టు[net_పోర్టు];
       }
 
-      net->port[net_port] = vvp_net_ptr_t(0,0);
+      net->పోర్టు[net_పోర్టు] = vvp_net_ptr_t(0,0);
 }
 
-void vvp_net_t::count_drivers(unsigned idx, unsigned counts[4])
+శూన్య vvp_net_t::లెక్క_drivers(గుర్తులేని idx, గుర్తులేని counts[4])
 {
       counts[0] = 0;
       counts[1] = 0;
@@ -276,105 +276,105 @@ void vvp_net_t::count_drivers(unsigned idx, unsigned counts[4])
       counts[3] = 0;
 
         /* $countdrivers can only be used on wires. */
-      vvp_wire_base*wire=dynamic_cast<vvp_wire_base*>(fil);
-      assert(wire);
+      vvp_wire_పునాది*wire=dynamic_cast<vvp_wire_పునాది*>(fil);
+      ప్రతిజ్ఞా(wire);
 
-      if (wire->is_forced(idx))
+      ఒకవేళ (wire->is_forced(idx))
             counts[3] = 1;
 
         /* If the net has multiple drivers, we need to interrogate the
            resolver network to get the driven values. */
-      if (resolv_core*resolver = dynamic_cast<resolv_core*>(fun)) {
-            resolver->count_drivers(idx, counts);
-            return;
+      ఒకవేళ (resolv_core*resolver = dynamic_cast<resolv_core*>(fun)) {
+            resolver->లెక్క_drivers(idx, counts);
+            తిరిగి;
       }
-      if (vvp_island_port*resolver = dynamic_cast<vvp_island_port*>(fun)) {
-            resolver->count_drivers(idx, counts);
-            return;
+      ఒకవేళ (vvp_island_పోర్టు*resolver = dynamic_cast<vvp_island_పోర్టు*>(fun)) {
+            resolver->లెక్క_drivers(idx, counts);
+            తిరిగి;
       }
 
         /* If the functor is not a resolver, there is only one driver, so
            we can just interrogate the filter to get the driven value. */
-      update_driver_counts(wire->driven_value(idx), counts);
+      update_driver_counts(wire->driven_విలువ(idx), counts);
 }
 
-void vvp_net_fun_t::operator delete(void*)
+శూన్య vvp_net_fun_t::క్రియాకారకం తొలగించు(శూన్య*)
 {
-#ifndef CHECK_WITH_VALGRIND
-      assert(0);
-#endif
+#నిర్వచితం_కాకపోతే CHECK_WITH_VALGRIND
+      ప్రతిజ్ఞా(0);
+#అయితే_ముగింపు
 }
 
 
 vvp_net_fil_t::vvp_net_fil_t()
 {
       force_link_ = 0;
-      force_propagate_ = false;
-      count_filters += 1;
+      force_propagate_ = అబద్ధం;
+      లెక్క_filters += 1;
 }
 
 vvp_net_fil_t::~vvp_net_fil_t()
 {
-      assert(force_link_ == 0);
+      ప్రతిజ్ఞా(force_link_ == 0);
 }
 
-vvp_net_fil_t::prop_t vvp_net_fil_t::filter_vec4(const vvp_vector4_t&,
+vvp_net_fil_t::prop_t vvp_net_fil_t::filter_vec4(స్థిరరాశి vvp_vector4_t&,
                                                  vvp_vector4_t&,
-                                                 unsigned, unsigned)
+                                                 గుర్తులేని, గుర్తులేని)
 {
-      return PROP;
+      తిరిగి PROP;
 }
 
-vvp_net_fil_t::prop_t vvp_net_fil_t::filter_vec8(const vvp_vector8_t&,
+vvp_net_fil_t::prop_t vvp_net_fil_t::filter_vec8(స్థిరరాశి vvp_vector8_t&,
                                                  vvp_vector8_t&,
-                                                 unsigned, unsigned)
+                                                 గుర్తులేని, గుర్తులేని)
 {
-      return PROP;
+      తిరిగి PROP;
 }
 
-vvp_net_fil_t::prop_t vvp_net_fil_t::filter_real(double&)
+vvp_net_fil_t::prop_t vvp_net_fil_t::filter_real(ద్విగుణ&)
 {
-      return PROP;
+      తిరిగి PROP;
 }
 
-vvp_net_fil_t::prop_t vvp_net_fil_t::filter_string(const string&)
+vvp_net_fil_t::prop_t vvp_net_fil_t::filter_string(స్థిరరాశి string&)
 {
-      return PROP;
+      తిరిగి PROP;
 }
 
 vvp_net_fil_t::prop_t vvp_net_fil_t::filter_object(vvp_object_t&)
 {
-      return PROP;
+      తిరిగి PROP;
 }
 
-void vvp_net_fil_t::force_mask(const vvp_vector2_t&mask)
+శూన్య vvp_net_fil_t::force_ముసుగు(స్థిరరాశి vvp_vector2_t&ముసుగు)
 {
-      if (force_mask_.size() == 0)
-	    force_mask_ = vvp_vector2_t(vvp_vector2_t::FILL0, mask.size());
+      ఒకవేళ (force_ముసుగు_2.size() == 0)
+	    force_ముసుగు_2 = vvp_vector2_t(vvp_vector2_t::FILL0, ముసుగు.size());
 
-      assert(force_mask_.size() == mask.size());
-      for (unsigned idx = 0 ; idx < mask.size() ; idx += 1) {
-	    if (mask.value(idx) == 0)
-		  continue;
+      ప్రతిజ్ఞా(force_ముసుగు_2.size() == ముసుగు.size());
+      కొరకు (గుర్తులేని idx = 0 ; idx < ముసుగు.size() ; idx += 1) {
+	    ఒకవేళ (ముసుగు.value(idx) == 0)
+		  కొనసాగు;
 
-	    force_mask_.set_bit(idx, 1);
-	    force_propagate_ = true;
+	    force_ముసుగు_2.సమితి_బిట్టు(idx, 1);
+	    force_propagate_ = నిజం;
       }
 }
 
-void vvp_net_fil_t::release_mask(const vvp_vector2_t&mask)
+శూన్య vvp_net_fil_t::release_ముసుగు(స్థిరరాశి vvp_vector2_t&ముసుగు)
 {
-      if (force_mask_.size() == 0)
-	    return;
+      ఒకవేళ (force_ముసుగు_2.size() == 0)
+	    తిరిగి;
 
-      assert(force_mask_.size() == mask.size());
-      for (unsigned idx = 0 ; idx < mask.size() ; idx += 1) {
-	    if (mask.value(idx))
-		  force_mask_.set_bit(idx, 0);
+      ప్రతిజ్ఞా(force_ముసుగు_2.size() == ముసుగు.size());
+      కొరకు (గుర్తులేని idx = 0 ; idx < ముసుగు.size() ; idx += 1) {
+	    ఒకవేళ (ముసుగు.value(idx))
+		  force_ముసుగు_2.సమితి_బిట్టు(idx, 0);
       }
 
-      if (force_mask_.is_zero())
-	    force_mask_ = vvp_vector2_t();
+      ఒకవేళ (force_ముసుగు_2.is_zero())
+	    force_ముసుగు_2 = vvp_vector2_t();
 }
 
 /*
@@ -390,243 +390,243 @@ void vvp_net_fil_t::release_mask(const vvp_vector2_t&mask)
  *
  *     port[0]  - This is the normal input.
  */
-void vvp_net_fil_t::force_link(vvp_net_t*dst, vvp_net_t*src)
+శూన్య vvp_net_fil_t::force_link(vvp_net_t*dst, vvp_net_t*src)
 {
-      assert(dst->fil == this);
+      ప్రతిజ్ఞా(dst->fil == ఇది);
 
-      if (force_link_ == 0) {
-	    force_link_ = new vvp_net_t;
+      ఒకవేళ (force_link_ == 0) {
+	    force_link_ = కొత్త vvp_net_t;
 	      // Use port[3] to hold the force destination.
-	    force_link_->port[3] = vvp_net_ptr_t(dst, 0);
-	    force_link_->port[2] = vvp_net_ptr_t(0,0);
-	    force_link_->fun = new vvp_fun_force;
+	    force_link_->పోర్టు[3] = vvp_net_ptr_t(dst, 0);
+	    force_link_->పోర్టు[2] = vvp_net_ptr_t(0,0);
+	    force_link_->fun = కొత్త vvp_fun_force;
       }
 
       force_unlink();
-      assert(force_link_->port[2] == vvp_net_ptr_t(0,0));
+      ప్రతిజ్ఞా(force_link_->పోర్టు[2] == vvp_net_ptr_t(0,0));
 
 	// Use port[2] to hold the force source.
-      force_link_->port[2] = vvp_net_ptr_t(src,0);
+      force_link_->పోర్టు[2] = vvp_net_ptr_t(src,0);
 
       vvp_net_ptr_t dst_ptr(force_link_, 0);
       src->link(dst_ptr);
 }
 
-void vvp_net_fil_t::operator delete(void*)
+శూన్య vvp_net_fil_t::క్రియాకారకం తొలగించు(శూన్య*)
 {
-      assert(0);
+      ప్రతిజ్ఞా(0);
 }
 
-void vvp_net_fil_t::force_unlink(void)
+శూన్య vvp_net_fil_t::force_unlink(శూన్య)
 {
-      if (force_link_ == 0) return;
-      vvp_net_t*src = force_link_->port[2].ptr();
-      if (src == 0) return;
+      ఒకవేళ (force_link_ == 0) తిరిగి;
+      vvp_net_t*src = force_link_->పోర్టు[2].ptr();
+      ఒకవేళ (src == 0) తిరిగి;
 
       src->unlink(vvp_net_ptr_t(force_link_,0));
-      force_link_->port[2] = vvp_net_ptr_t(0,0);
+      force_link_->పోర్టు[2] = vvp_net_ptr_t(0,0);
 }
 
 /* *** BIT operations *** */
-vvp_bit4_t add_with_carry(vvp_bit4_t a, vvp_bit4_t b, vvp_bit4_t&c)
+vvp_bit4_t కూడు_with_వాహకం(vvp_bit4_t a, vvp_bit4_t b, vvp_bit4_t&c)
 {
-      if (bit4_is_xz(a) || bit4_is_xz(b) || bit4_is_xz(c)) {
+      ఒకవేళ (bit4_is_xz(a) || bit4_is_xz(b) || bit4_is_xz(c)) {
 	    c = BIT4_X;
-	    return BIT4_X;
+	    తిరిగి BIT4_X;
       }
 
 	// NOTE: This relies on the facts that XZ values have been
 	// weeded out, and that BIT4_1 is 1 and BIT4_0 is 0.
-      int sum = (int)a + (int)b + (int)c;
+      పూర్ణాంకం కూడిక = (పూర్ణాంకం)a + (పూర్ణాంకం)b + (పూర్ణాంకం)c;
 
-      switch (sum) {
-	  case 0:
+      ఎంపిక (కూడిక) {
+	  స్థితి 0:
 	      // c must already be 0.
-	    return BIT4_0;
-	  case 1:
+	    తిరిగి BIT4_0;
+	  స్థితి 1:
 	    c = BIT4_0;
-	    return BIT4_1;
-	  case 2:
+	    తిరిగి BIT4_1;
+	  స్థితి 2:
 	    c = BIT4_1;
-	    return BIT4_0;
-	  case 3:
+	    తిరిగి BIT4_0;
+	  స్థితి 3:
 	    c = BIT4_1;
-	    return BIT4_1;
+	    తిరిగి BIT4_1;
       }
-      fprintf(stderr, "Incorrect result %d.\n", sum);
-      assert(0);
-      return BIT4_X;
+      fprintf(stderr, "Incorrect result %d.\n", కూడిక);
+      ప్రతిజ్ఞా(0);
+      తిరిగి BIT4_X;
 }
 
-vvp_bit4_t scalar_to_bit4(PLI_INT32 scalar)
+vvp_bit4_t scalar_గమ్యం_bit4(PLI_INT32 scalar)
 {
-      switch(scalar) {
-	  case vpi0:
-	    return BIT4_0;
-	  case vpi1:
-	    return BIT4_1;
-	  case vpiX:
-	    return BIT4_X;
-	  case vpiZ:
-	    return BIT4_Z;
+      ఎంపిక(scalar) {
+	  స్థితి vpi0:
+	    తిరిగి BIT4_0;
+	  స్థితి vpi1:
+	    తిరిగి BIT4_1;
+	  స్థితి vpiX:
+	    తిరిగి BIT4_X;
+	  స్థితి vpiZ:
+	    తిరిగి BIT4_Z;
       }
-      fprintf(stderr, "Unsupported scalar value %d.\n", (int)scalar);
-      assert(0);
-      return BIT4_X;
+      fprintf(stderr, "Unsupported scalar value %d.\n", (పూర్ణాంకం)scalar);
+      ప్రతిజ్ఞా(0);
+      తిరిగి BIT4_X;
 }
 
-vvp_bit4_t operator ^ (vvp_bit4_t a, vvp_bit4_t b)
+vvp_bit4_t క్రియాకారకం ^ (vvp_bit4_t a, vvp_bit4_t b)
 {
-      if (bit4_is_xz(a))
-	    return BIT4_X;
-      if (bit4_is_xz(b))
-	    return BIT4_X;
-      if (a == BIT4_0)
-	    return b;
-      if (b == BIT4_0)
-	    return a;
-      return BIT4_0;
+      ఒకవేళ (bit4_is_xz(a))
+	    తిరిగి BIT4_X;
+      ఒకవేళ (bit4_is_xz(b))
+	    తిరిగి BIT4_X;
+      ఒకవేళ (a == BIT4_0)
+	    తిరిగి b;
+      ఒకవేళ (b == BIT4_0)
+	    తిరిగి a;
+      తిరిగి BIT4_0;
 }
 
-ostream& operator<<(ostream&out, vvp_bit4_t bit)
+ostream& క్రియాకారకం<<(ostream&out, vvp_bit4_t బిట్టు)
 {
-      switch (bit) {
-	  case BIT4_0:
+      ఎంపిక (బిట్టు) {
+	  స్థితి BIT4_0:
 	    out << "0";
-	    break;
-	  case BIT4_1:
+	    ఆపు;
+	  స్థితి BIT4_1:
 	    out << "1";
-	    break;
-	  case BIT4_X:
+	    ఆపు;
+	  స్థితి BIT4_X:
 	    out << "X";
-	    break;
-	  case BIT4_Z:
+	    ఆపు;
+	  స్థితి BIT4_Z:
 	    out << "Z";
-	    break;
-	  default:
+	    ఆపు;
+	  అప్రమేయ:
 	    out << "?";
-	    break;
+	    ఆపు;
       }
-      return out;
+      తిరిగి out;
 }
 
-typedef unsigned short edge_t;
+రకనిర్వచనం గుర్తులేని పొట్టి అంచు_t;
 
-inline edge_t VVP_EDGE(vvp_bit4_t from, vvp_bit4_t to)
+అంతఃవరుస అంచు_t VVP_అంచు(vvp_bit4_t from, vvp_bit4_t to)
 {
-      return 1 << ((from << 2) | to);
+      తిరిగి 1 << ((from << 2) | to);
 }
 
-const edge_t vvp_edge_posedge
-      = VVP_EDGE(BIT4_0,BIT4_1)
-      | VVP_EDGE(BIT4_0,BIT4_X)
-      | VVP_EDGE(BIT4_0,BIT4_Z)
-      | VVP_EDGE(BIT4_X,BIT4_1)
-      | VVP_EDGE(BIT4_Z,BIT4_1)
+స్థిరరాశి అంచు_t vvp_అంచు_posedge
+      = VVP_అంచు(BIT4_0,BIT4_1)
+      | VVP_అంచు(BIT4_0,BIT4_X)
+      | VVP_అంచు(BIT4_0,BIT4_Z)
+      | VVP_అంచు(BIT4_X,BIT4_1)
+      | VVP_అంచు(BIT4_Z,BIT4_1)
       ;
 
-const edge_t vvp_edge_negedge
-      = VVP_EDGE(BIT4_1,BIT4_0)
-      | VVP_EDGE(BIT4_1,BIT4_X)
-      | VVP_EDGE(BIT4_1,BIT4_Z)
-      | VVP_EDGE(BIT4_X,BIT4_0)
-      | VVP_EDGE(BIT4_Z,BIT4_0)
+స్థిరరాశి అంచు_t vvp_అంచు_negedge
+      = VVP_అంచు(BIT4_1,BIT4_0)
+      | VVP_అంచు(BIT4_1,BIT4_X)
+      | VVP_అంచు(BIT4_1,BIT4_Z)
+      | VVP_అంచు(BIT4_X,BIT4_0)
+      | VVP_అంచు(BIT4_Z,BIT4_0)
       ;
 
-int edge(vvp_bit4_t from, vvp_bit4_t to)
+పూర్ణాంకం అంచు(vvp_bit4_t from, vvp_bit4_t to)
 {
-      edge_t mask = VVP_EDGE(from, to);
-      if (mask & vvp_edge_posedge)
-	    return 1;
-      if (mask & vvp_edge_negedge)
-	    return -1;
-      return 0;
+      అంచు_t ముసుగు = VVP_అంచు(from, to);
+      ఒకవేళ (ముసుగు & vvp_అంచు_posedge)
+	    తిరిగి 1;
+      ఒకవేళ (ముసుగు & vvp_అంచు_negedge)
+	    తిరిగి -1;
+      తిరిగి 0;
 }
 
-unsigned long multiply_with_carry(unsigned long a, unsigned long b,
-				  unsigned long&carry)
+గుర్తులేని దీర్ఘ multiply_with_వాహకం(గుర్తులేని దీర్ఘ a, గుర్తులేని దీర్ఘ b,
+				  గుర్తులేని దీర్ఘ&వాహకం)
 {
-      const unsigned long mask = (1UL << (CPU_WORD_BITS/2)) - 1;
-      unsigned long a0 = a & mask;
-      unsigned long a1 = (a >> (CPU_WORD_BITS/2)) & mask;
-      unsigned long b0 = b & mask;
-      unsigned long b1 = (b >> (CPU_WORD_BITS/2)) & mask;
+      స్థిరరాశి గుర్తులేని దీర్ఘ ముసుగు = (1UL << (CPU_మాట_బిట్లు/2)) - 1;
+      గుర్తులేని దీర్ఘ a0 = a & ముసుగు;
+      గుర్తులేని దీర్ఘ a1 = (a >> (CPU_మాట_బిట్లు/2)) & ముసుగు;
+      గుర్తులేని దీర్ఘ b0 = b & ముసుగు;
+      గుర్తులేని దీర్ఘ b1 = (b >> (CPU_మాట_బిట్లు/2)) & ముసుగు;
 
-      unsigned long tmp = a0 * b0;
+      గుర్తులేని దీర్ఘ tmp = a0 * b0;
 
-      unsigned long r00 = tmp & mask;
-      unsigned long c00 = (tmp >> (CPU_WORD_BITS/2)) & mask;
+      గుర్తులేని దీర్ఘ r00 = tmp & ముసుగు;
+      గుర్తులేని దీర్ఘ c00 = (tmp >> (CPU_మాట_బిట్లు/2)) & ముసుగు;
 
       tmp = a0 * b1;
 
-      unsigned long r01 = tmp & mask;
-      unsigned long c01 = (tmp >> (CPU_WORD_BITS/2)) & mask;
+      గుర్తులేని దీర్ఘ r01 = tmp & ముసుగు;
+      గుర్తులేని దీర్ఘ c01 = (tmp >> (CPU_మాట_బిట్లు/2)) & ముసుగు;
 
       tmp = a1 * b0;
 
-      unsigned long r10 = tmp & mask;
-      unsigned long c10 = (tmp >> (CPU_WORD_BITS/2)) & mask;
+      గుర్తులేని దీర్ఘ r10 = tmp & ముసుగు;
+      గుర్తులేని దీర్ఘ c10 = (tmp >> (CPU_మాట_బిట్లు/2)) & ముసుగు;
 
       tmp = a1 * b1;
 
-      unsigned long r11 = tmp & mask;
-      unsigned long c11 = (tmp >> (CPU_WORD_BITS/2)) & mask;
+      గుర్తులేని దీర్ఘ r11 = tmp & ముసుగు;
+      గుర్తులేని దీర్ఘ c11 = (tmp >> (CPU_మాట_బిట్లు/2)) & ముసుగు;
 
-      unsigned long r1 = c00 + r01 + r10;
-      unsigned long r2 = (r1 >> (CPU_WORD_BITS/2)) & mask;
-      r1 &= mask;
+      గుర్తులేని దీర్ఘ r1 = c00 + r01 + r10;
+      గుర్తులేని దీర్ఘ r2 = (r1 >> (CPU_మాట_బిట్లు/2)) & ముసుగు;
+      r1 &= ముసుగు;
       r2 += c01 + c10 + r11;
-      unsigned long r3 = (r2 >> (CPU_WORD_BITS/2)) & mask;
-      r2 &= mask;
+      గుర్తులేని దీర్ఘ r3 = (r2 >> (CPU_మాట_బిట్లు/2)) & ముసుగు;
+      r2 &= ముసుగు;
       r3 += c11;
-      r3 &= mask;
+      r3 &= ముసుగు;
 
-      carry = (r3 << (CPU_WORD_BITS/2)) + r2;
-      return (r1 << (CPU_WORD_BITS/2)) + r00;
+      వాహకం = (r3 << (CPU_మాట_బిట్లు/2)) + r2;
+      తిరిగి (r1 << (CPU_మాట_బిట్లు/2)) + r00;
 }
 
 
-void vvp_send_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&val)
+శూన్య vvp_send_vec8(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector8_t&val)
 {
-      while (vvp_net_t*cur = ptr.ptr()) {
-	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
+      అయితే (vvp_net_t*cur = ptr.ptr()) {
+	    vvp_net_ptr_t తదుపరి_val = cur->పోర్టు[ptr.పోర్టు()];
 
-	    if (cur->fun)
+	    ఒకవేళ (cur->fun)
 		  cur->fun->recv_vec8(ptr, val);
 
-	    ptr = next_val;
+	    ptr = తదుపరి_val;
       }
 }
 
-void vvp_send_real(vvp_net_ptr_t ptr, double val, vvp_context_t context)
+శూన్య vvp_send_real(vvp_net_ptr_t ptr, ద్విగుణ val, vvp_context_t context)
 {
-      while (vvp_net_t*cur = ptr.ptr()) {
-	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
+      అయితే (vvp_net_t*cur = ptr.ptr()) {
+	    vvp_net_ptr_t తదుపరి_val = cur->పోర్టు[ptr.పోర్టు()];
 
-	    if (cur->fun)
+	    ఒకవేళ (cur->fun)
 		  cur->fun->recv_real(ptr, val, context);
 
-	    ptr = next_val;
+	    ptr = తదుపరి_val;
       }
 }
 
-const vvp_vector4_t vvp_vector4_t::nil;
+స్థిరరాశి vvp_vector4_t vvp_vector4_t::nil;
 
-void vvp_vector4_t::copy_bits(const vvp_vector4_t&that)
+శూన్య vvp_vector4_t::copy_బిట్లు(స్థిరరాశి vvp_vector4_t&that)
 {
 
-      if (size_ == that.size_) {
-	    if (size_ > BITS_PER_WORD) {
-		  unsigned words = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
-		  for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      ఒకవేళ (కొలత_2 == that.కొలత_2) {
+	    ఒకవేళ (కొలత_2 > బిట్లు_చొప్పున_మాట) {
+		  గుర్తులేని పదాలు = (కొలత_2+బిట్లు_చొప్పున_మాట-1) / బిట్లు_చొప్పున_మాట;
+		  కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు ;  idx += 1)
 			abits_ptr_[idx] = that.abits_ptr_[idx];
-		  for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+		  కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు ;  idx += 1)
 			bbits_ptr_[idx] = that.bbits_ptr_[idx];
-	    } else {
+	    } లేకపోతే {
 		  abits_val_ = that.abits_val_;
 		  bbits_val_ = that.bbits_val_;
 	    }
-	    return;
+	    తిరిగి;
       }
 
 	/* Now we know that the sizes of this and that are definitely
@@ -635,63 +635,63 @@ void vvp_vector4_t::copy_bits(const vvp_vector4_t&that)
 
 	/* If source and destination are both short, then mask/copy
 	   the bit values. */
-      if (size_ <= BITS_PER_WORD && that.size_ <= BITS_PER_WORD) {
-	    unsigned bits_to_copy = (that.size_ < size_) ? that.size_ : size_;
-	    unsigned long mask = ((bits_to_copy < BITS_PER_WORD) ? (1UL << bits_to_copy) :
+      ఒకవేళ (కొలత_2 <= బిట్లు_చొప్పున_మాట && that.కొలత_2 <= బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని బిట్లు_గమ్యం_copy = (that.కొలత_2 < కొలత_2) ? that.కొలత_2 : కొలత_2;
+	    గుర్తులేని దీర్ఘ ముసుగు = ((బిట్లు_గమ్యం_copy < బిట్లు_చొప్పున_మాట) ? (1UL << బిట్లు_గమ్యం_copy) :
 	                                                           (0UL)) - 1UL;
-	    abits_val_ &= ~mask;
-	    bbits_val_ &= ~mask;
-	    abits_val_ |= that.abits_val_&mask;
-	    bbits_val_ |= that.bbits_val_&mask;
-	    return;
+	    abits_val_ &= ~ముసుగు;
+	    bbits_val_ &= ~ముసుగు;
+	    abits_val_ |= that.abits_val_&ముసుగు;
+	    bbits_val_ |= that.bbits_val_&ముసుగు;
+	    తిరిగి;
       }
 
 	/* Now we know that either source or destination are long. If
 	   the destination is short, then mask/copy from the low word
 	   of the long source. */
-      if (size_ <= BITS_PER_WORD) {
+      ఒకవేళ (కొలత_2 <= బిట్లు_చొప్పున_మాట) {
 	    abits_val_ = that.abits_ptr_[0];
 	    bbits_val_ = that.bbits_ptr_[0];
-	    if (size_ < BITS_PER_WORD) {
-		  unsigned long mask = (1UL << size_) - 1UL;
-		  abits_val_ &= mask;
-		  bbits_val_ &= mask;
+	    ఒకవేళ (కొలత_2 < బిట్లు_చొప్పున_మాట) {
+		  గుర్తులేని దీర్ఘ ముసుగు = (1UL << కొలత_2) - 1UL;
+		  abits_val_ &= ముసుగు;
+		  bbits_val_ &= ముసుగు;
 	    }
-	    return;
+	    తిరిగి;
       }
 
 	/* Now we know that the destination must be long. If the
 	   source is short, then mask/copy from its value. */
-      if (that.size_ <= BITS_PER_WORD) {
-	    unsigned long mask;
-	    if (that.size_ < BITS_PER_WORD) {
-		  mask = (1UL << that.size_) - 1UL;
-		  abits_ptr_[0] &= ~mask;
-		  bbits_ptr_[0] &= ~mask;
-	    } else {
-		  mask = -1UL;
+      ఒకవేళ (that.కొలత_2 <= బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని దీర్ఘ ముసుగు;
+	    ఒకవేళ (that.కొలత_2 < బిట్లు_చొప్పున_మాట) {
+		  ముసుగు = (1UL << that.కొలత_2) - 1UL;
+		  abits_ptr_[0] &= ~ముసుగు;
+		  bbits_ptr_[0] &= ~ముసుగు;
+	    } లేకపోతే {
+		  ముసుగు = -1UL;
 	    }
-	    abits_ptr_[0] |= that.abits_val_&mask;
-	    bbits_ptr_[0] |= that.bbits_val_&mask;
-	    return;
+	    abits_ptr_[0] |= that.abits_val_&ముసుగు;
+	    bbits_ptr_[0] |= that.bbits_val_&ముసుగు;
+	    తిరిగి;
       }
 
 	/* Finally, we know that source and destination are long. copy
 	   words until we get to the last. */
-      unsigned bits_to_copy = (that.size_ < size_) ? that.size_ : size_;
-      unsigned word = 0;
-      while (bits_to_copy >= BITS_PER_WORD) {
-	    abits_ptr_[word] = that.abits_ptr_[word];
-	    bbits_ptr_[word] = that.bbits_ptr_[word];
-	    bits_to_copy -= BITS_PER_WORD;
-	    word += 1;
+      గుర్తులేని బిట్లు_గమ్యం_copy = (that.కొలత_2 < కొలత_2) ? that.కొలత_2 : కొలత_2;
+      గుర్తులేని మాట = 0;
+      అయితే (బిట్లు_గమ్యం_copy >= బిట్లు_చొప్పున_మాట) {
+	    abits_ptr_[మాట] = that.abits_ptr_[మాట];
+	    bbits_ptr_[మాట] = that.bbits_ptr_[మాట];
+	    బిట్లు_గమ్యం_copy -= బిట్లు_చొప్పున_మాట;
+	    మాట += 1;
       }
-      if (bits_to_copy > 0) {
-	    unsigned long mask = (1UL << bits_to_copy) - 1UL;
-	    abits_ptr_[word] &= ~mask;
-	    bbits_ptr_[word] &= ~mask;
-	    abits_ptr_[word] |= that.abits_ptr_[word] & mask;
-	    bbits_ptr_[word] |= that.bbits_ptr_[word] & mask;
+      ఒకవేళ (బిట్లు_గమ్యం_copy > 0) {
+	    గుర్తులేని దీర్ఘ ముసుగు = (1UL << బిట్లు_గమ్యం_copy) - 1UL;
+	    abits_ptr_[మాట] &= ~ముసుగు;
+	    bbits_ptr_[మాట] &= ~ముసుగు;
+	    abits_ptr_[మాట] |= that.abits_ptr_[మాట] & ముసుగు;
+	    bbits_ptr_[మాట] |= that.bbits_ptr_[మాట] & ముసుగు;
       }
 }
 
@@ -699,15 +699,15 @@ void vvp_vector4_t::copy_bits(const vvp_vector4_t&that)
  * This function should ONLY BE CALLED FROM vvp_vector4_t::copy_from_,
  * as it performs part of that functions tasks.
  */
-void vvp_vector4_t::copy_from_big_(const vvp_vector4_t&that)
+శూన్య vvp_vector4_t::copy_from_big_(స్థిరరాశి vvp_vector4_t&that)
 {
-      unsigned words = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
-      abits_ptr_ = new unsigned long[2*words];
-      bbits_ptr_ = abits_ptr_ + words;
+      గుర్తులేని పదాలు = (కొలత_2+బిట్లు_చొప్పున_మాట-1) / బిట్లు_చొప్పున_మాట;
+      abits_ptr_ = కొత్త గుర్తులేని దీర్ఘ[2*పదాలు];
+      bbits_ptr_ = abits_ptr_ + పదాలు;
 
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు ;  idx += 1)
 	    abits_ptr_[idx] = that.abits_ptr_[idx];
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు ;  idx += 1)
 	    bbits_ptr_[idx] = that.bbits_ptr_[idx];
 }
 
@@ -716,179 +716,179 @@ void vvp_vector4_t::copy_from_big_(const vvp_vector4_t&that)
  * except that we combine that with an invert. This allows the ~ and
  * the assignment to be blended in many common cases.
  */
-void vvp_vector4_t::copy_inverted_from_(const vvp_vector4_t&that)
+శూన్య vvp_vector4_t::copy_inverted_from_(స్థిరరాశి vvp_vector4_t&that)
 {
-      size_ = that.size_;
-      if (size_ > BITS_PER_WORD) {
-	    unsigned words = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
-	    abits_ptr_ = new unsigned long[2*words];
-	    bbits_ptr_ = abits_ptr_ + words;
+      కొలత_2 = that.కొలత_2;
+      ఒకవేళ (కొలత_2 > బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని పదాలు = (కొలత_2+బిట్లు_చొప్పున_మాట-1) / బిట్లు_చొప్పున_మాట;
+	    abits_ptr_ = కొత్త గుర్తులేని దీర్ఘ[2*పదాలు];
+	    bbits_ptr_ = abits_ptr_ + పదాలు;
 
-	    unsigned remaining = size_;
-	    unsigned idx = 0;
-	    while (remaining >= BITS_PER_WORD) {
+	    గుర్తులేని మిగిలిన = కొలత_2;
+	    గుర్తులేని idx = 0;
+	    అయితే (మిగిలిన >= బిట్లు_చొప్పున_మాట) {
 		  abits_ptr_[idx] = that.bbits_ptr_[idx] | ~that.abits_ptr_[idx];
 		  idx += 1;
-		  remaining -= BITS_PER_WORD;
+		  మిగిలిన -= బిట్లు_చొప్పున_మాట;
 	    }
-	    if (remaining > 0) {
-		  unsigned long mask = (1UL<<remaining) - 1UL;
-		  abits_ptr_[idx] = mask & (that.bbits_ptr_[idx] | ~that.abits_ptr_[idx]);
+	    ఒకవేళ (మిగిలిన > 0) {
+		  గుర్తులేని దీర్ఘ ముసుగు = (1UL<<మిగిలిన) - 1UL;
+		  abits_ptr_[idx] = ముసుగు & (that.bbits_ptr_[idx] | ~that.abits_ptr_[idx]);
 	    }
 
-	    for (idx = 0 ;  idx < words ;  idx += 1)
+	    కొరకు (idx = 0 ;  idx < పదాలు ;  idx += 1)
 		  bbits_ptr_[idx] = that.bbits_ptr_[idx];
 
-      } else {
-	    unsigned long mask = (size_<BITS_PER_WORD)? (1UL<<size_)-1UL : -1UL;
-	    abits_val_ = mask & (that.bbits_val_ | ~that.abits_val_);
+      } లేకపోతే {
+	    గుర్తులేని దీర్ఘ ముసుగు = (కొలత_2<బిట్లు_చొప్పున_మాట)? (1UL<<కొలత_2)-1UL : -1UL;
+	    abits_val_ = ముసుగు & (that.bbits_val_ | ~that.abits_val_);
 	    bbits_val_ = that.bbits_val_;
       }
 }
 
 /* Make sure to set size_ before calling this routine. */
-void vvp_vector4_t::allocate_words_(unsigned long inita, unsigned long initb)
+శూన్య vvp_vector4_t::allocate_పదాలు(గుర్తులేని దీర్ఘ inita, గుర్తులేని దీర్ఘ initb)
 {
-      if (size_ > BITS_PER_WORD) {
-	    unsigned cnt = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    abits_ptr_ = new unsigned long[2*cnt];
+      ఒకవేళ (కొలత_2 > బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని cnt = (కొలత_2 + బిట్లు_చొప్పున_మాట - 1) / బిట్లు_చొప్పున_మాట;
+	    abits_ptr_ = కొత్త గుర్తులేని దీర్ఘ[2*cnt];
 	    bbits_ptr_ = abits_ptr_ + cnt;
-	    for (unsigned idx = 0 ;  idx < cnt ;  idx += 1)
+	    కొరకు (గుర్తులేని idx = 0 ;  idx < cnt ;  idx += 1)
 		  abits_ptr_[idx] = inita;
-	    for (unsigned idx = 0 ;  idx < cnt ;  idx += 1)
+	    కొరకు (గుర్తులేని idx = 0 ;  idx < cnt ;  idx += 1)
 		  bbits_ptr_[idx] = initb;
 
-      } else {
+      } లేకపోతే {
 	    abits_val_ = inita;
 	    bbits_val_ = initb;
       }
 }
 
-vvp_vector4_t::vvp_vector4_t(unsigned size__, double val)
-: size_(size__)
+vvp_vector4_t::vvp_vector4_t(గుర్తులేని కొలత_3, ద్విగుణ val)
+: కొలత_2(కొలత_3)
 {
-      bool is_neg = false;
-      double fraction;
-      int exponent;
+      తార్కిక is_neg = అబద్ధం;
+      ద్విగుణ fraction;
+      పూర్ణాంకం exponent;
 
 	/* We return 'bx for a NaN or +/- infinity. */
-      if (val != val || (val && (val == 0.5*val)))  {
-	    allocate_words_(WORD_X_ABITS, WORD_X_BBITS);
-	    return;
+      ఒకవేళ (val != val || (val && (val == 0.5*val)))  {
+	    allocate_పదాలు(మాట_X_ABITS, మాట_X_BBITS);
+	    తిరిగి;
       }
 
 	/* Convert to a positive result. */
-      if (val < 0.0) {
-	    is_neg = true;
+      ఒకవేళ (val < 0.0) {
+	    is_neg = నిజం;
 	    val = -val;
       }
-      allocate_words_(WORD_0_ABITS, WORD_0_BBITS);
+      allocate_పదాలు(మాట_0_ABITS, మాట_0_BBITS);
 
 	/* Get the exponent and fractional part of the number. */
       fraction = frexp(val, &exponent);
 
 	/* If the value is small enough just use lround(). */
-      if (exponent < BITS_PER_WORD-2) {
-	    if (is_neg) this->invert();  // Invert the bits if negative.
-	    long sval = lround(val);
-	    if (is_neg) sval = -sval;
+      ఒకవేళ (exponent < బిట్లు_చొప్పున_మాట-2) {
+	    ఒకవేళ (is_neg) ఇది->invert();  // Invert the bits if negative.
+	    దీర్ఘ sval = lround(val);
+	    ఒకవేళ (is_neg) sval = -sval;
 	      /* This requires that 0 and 1 have the same bbit value. */
-	    if (size_ > BITS_PER_WORD) {
+	    ఒకవేళ (కొలత_2 > బిట్లు_చొప్పున_మాట) {
 		  abits_ptr_[0] = sval;
-	    } else {
+	    } లేకపోతే {
 		  abits_val_ = sval;
 	    }
-	    return;
+	    తిరిగి;
       }
 
-      unsigned nwords = (exponent-1) / BITS_PER_WORD;
-      unsigned my_words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD - 1;
+      గుర్తులేని nwords = (exponent-1) / బిట్లు_చొప్పున_మాట;
+      గుర్తులేని my_పదాలు = (కొలత_2 + బిట్లు_చొప్పున_మాట - 1) / బిట్లు_చొప్పున_మాట - 1;
 
-      fraction = ldexp(fraction, (exponent-1) % BITS_PER_WORD + 1);
+      fraction = ldexp(fraction, (exponent-1) % బిట్లు_చొప్పున_మాట + 1);
 
 	/* Skip any leading bits. */
-      for (int idx = (signed) nwords; idx > (signed) my_words; idx -=1) {
-	    unsigned long bits = (unsigned long) fraction;
-	    fraction = fraction - (double) bits;
-	    fraction = ldexp(fraction, BITS_PER_WORD);
+      కొరకు (పూర్ణాంకం idx = (గుర్తుగల) nwords; idx > (గుర్తుగల) my_పదాలు; idx -=1) {
+	    గుర్తులేని దీర్ఘ బిట్లు = (గుర్తులేని దీర్ఘ) fraction;
+	    fraction = fraction - (ద్విగుణ) బిట్లు;
+	    fraction = ldexp(fraction, బిట్లు_చొప్పున_మాట);
       }
 
 	/* Convert the remaining bits as appropriate. */
-      if (my_words == 0) {
-		  unsigned long bits = (unsigned long) fraction;
-		  abits_val_ = bits;
-		  fraction = fraction - (double) bits;
+      ఒకవేళ (my_పదాలు == 0) {
+		  గుర్తులేని దీర్ఘ బిట్లు = (గుర్తులేని దీర్ఘ) fraction;
+		  abits_val_ = బిట్లు;
+		  fraction = fraction - (ద్విగుణ) బిట్లు;
 		    /* Round any fractional part up. */
-		  if (fraction >= 0.5) *this += (int64_t) 1;
-      } else {
-	    if (nwords < my_words) my_words = nwords;
-	    for (int idx = (signed)my_words; idx >= 0; idx -= 1) {
-		  unsigned long bits = (unsigned long) fraction;
-		  abits_ptr_[idx] = bits;
-		  fraction = fraction - (double) bits;
-		  fraction = ldexp(fraction, BITS_PER_WORD);
+		  ఒకవేళ (fraction >= 0.5) *ఇది += (int64_t) 1;
+      } లేకపోతే {
+	    ఒకవేళ (nwords < my_పదాలు) my_పదాలు = nwords;
+	    కొరకు (పూర్ణాంకం idx = (గుర్తుగల)my_పదాలు; idx >= 0; idx -= 1) {
+		  గుర్తులేని దీర్ఘ బిట్లు = (గుర్తులేని దీర్ఘ) fraction;
+		  abits_ptr_[idx] = బిట్లు;
+		  fraction = fraction - (ద్విగుణ) బిట్లు;
+		  fraction = ldexp(fraction, బిట్లు_చొప్పున_మాట);
 	    }
 	      /* Round any fractional part up. */
-	    if (fraction >= ldexp(0.5, BITS_PER_WORD)) *this += (int64_t) 1;
+	    ఒకవేళ (fraction >= ldexp(0.5, బిట్లు_చొప్పున_మాట)) *ఇది += (int64_t) 1;
        }
 
 	/* Convert to a negative number if needed. */
-      if (is_neg) {
-	    this->invert();
-	    *this += (int64_t) 1;
+      ఒకవేళ (is_neg) {
+	    ఇది->invert();
+	    *ఇది += (int64_t) 1;
       }
 }
 
-vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that,
-			    unsigned adr, unsigned wid)
+vvp_vector4_t::vvp_vector4_t(స్థిరరాశి vvp_vector4_t&that,
+			    గుర్తులేని adr, గుర్తులేని wid)
 {
 	// Set up and initialize the destination.
-      size_ = wid;
-      allocate_words_(WORD_X_ABITS, WORD_X_BBITS);
+      కొలత_2 = wid;
+      allocate_పదాలు(మాట_X_ABITS, మాట_X_BBITS);
 
 	// Special case: selecting from far beyond the source vector,
 	// to the result is all X bits. We're done.
-      if (adr >= that.size_)
-	    return;
+      ఒకవేళ (adr >= that.కొలత_2)
+	    తిరిగి;
 
 	// Special case: The source is not quite big enough to supply
 	// all bits, so get the bits that we can. The remainder will
 	// be left at BIT4_X.
-      if ((adr + wid) > that.size_) {
-	    unsigned use_wid = that.size_ - adr;
-	    for (unsigned idx = 0 ; idx < use_wid ; idx += 1)
-		  set_bit(idx, that.value(adr+idx));
+      ఒకవేళ ((adr + wid) > that.కొలత_2) {
+	    గుర్తులేని use_wid = that.కొలత_2 - adr;
+	    కొరకు (గుర్తులేని idx = 0 ; idx < use_wid ; idx += 1)
+		  సమితి_బిట్టు(idx, that.value(adr+idx));
 
-	    return;
+	    తిరిగి;
       }
 
 	// At the point, we know that the source part is entirely
 	// contained in the source vector.
 	// assert((adr + wid) <= that.size_);
 
-      if (wid > BITS_PER_WORD) {
+      ఒకవేళ (wid > బిట్లు_చొప్పున_మాట) {
 	      /* In this case, the subvector and the source vector are
 		 long. Do the transfer reasonably efficiently. */
-	    unsigned ptr = adr / BITS_PER_WORD;
-	    unsigned long off = adr % BITS_PER_WORD;
-	    unsigned long noff = BITS_PER_WORD - off;
-	    unsigned long lmask = (1UL << off) - 1UL;
-	    unsigned trans = 0;
-	    unsigned dst = 0;
-	    while (trans < wid) {
+	    గుర్తులేని ptr = adr / బిట్లు_చొప్పున_మాట;
+	    గుర్తులేని దీర్ఘ off = adr % బిట్లు_చొప్పున_మాట;
+	    గుర్తులేని దీర్ఘ noff = బిట్లు_చొప్పున_మాట - off;
+	    గుర్తులేని దీర్ఘ lmask = (1UL << off) - 1UL;
+	    గుర్తులేని trans = 0;
+	    గుర్తులేని dst = 0;
+	    అయితే (trans < wid) {
 		    // The low bits of the result.
 		  abits_ptr_[dst] = (that.abits_ptr_[ptr] & ~lmask) >> off;
 		  bbits_ptr_[dst] = (that.bbits_ptr_[ptr] & ~lmask) >> off;
 		  trans += noff;
 
-		  if (trans >= wid)
-			break;
+		  ఒకవేళ (trans >= wid)
+			ఆపు;
 
 		  ptr += 1;
 
 		    // The high bits of the result. Skip this if the
 		    // source and destination are perfectly aligned.
-		  if (noff != BITS_PER_WORD) {
+		  ఒకవేళ (noff != బిట్లు_చొప్పున_మాట) {
 			abits_ptr_[dst] |= (that.abits_ptr_[ptr]&lmask) << noff;
 			bbits_ptr_[dst] |= (that.bbits_ptr_[ptr]&lmask) << noff;
 			trans += off;
@@ -897,36 +897,36 @@ vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that,
 		  dst += 1;
 	    }
 
-      } else if (that.size_ > BITS_PER_WORD) {
+      } లేకపోతే ఒకవేళ (that.కొలత_2 > బిట్లు_చొప్పున_మాట) {
 	      /* In this case, the subvector fits in a single word,
 		 but the source is large. */
-	    unsigned ptr = adr / BITS_PER_WORD;
-	    unsigned long off = adr % BITS_PER_WORD;
-	    unsigned trans = BITS_PER_WORD - off;
-	    if (trans > wid)
+	    గుర్తులేని ptr = adr / బిట్లు_చొప్పున_మాట;
+	    గుర్తులేని దీర్ఘ off = adr % బిట్లు_చొప్పున_మాట;
+	    గుర్తులేని trans = బిట్లు_చొప్పున_మాట - off;
+	    ఒకవేళ (trans > wid)
 		  trans = wid;
 
-	    if (trans == BITS_PER_WORD) {
+	    ఒకవేళ (trans == బిట్లు_చొప్పున_మాట) {
 		    // Very special case: Copy exactly 1 perfectly
 		    // aligned word.
 		  abits_val_ = that.abits_ptr_[ptr];
 		  bbits_val_ = that.bbits_ptr_[ptr];
 
-	    } else {
+	    } లేకపోతే {
 		    // lmask is the low bits of the destination,
 		    // masked into the source.
-		  unsigned long lmask = (1UL<<trans) - 1UL;
+		  గుర్తులేని దీర్ఘ lmask = (1UL<<trans) - 1UL;
 		  lmask <<= off;
 
 		    // The low bits of the result.
 		  abits_val_ = (that.abits_ptr_[ptr] & lmask) >> off;
 		  bbits_val_ = (that.bbits_ptr_[ptr] & lmask) >> off;
 
-		  if (trans < wid) {
+		  ఒకవేళ (trans < wid) {
 			  // If there are more bits, then get them
 			  // from the bottom of the next word of the
 			  // source.
-			unsigned long hmask = (1UL << (wid-trans)) - 1UL;
+			గుర్తులేని దీర్ఘ hmask = (1UL << (wid-trans)) - 1UL;
 
 			  // The high bits of the result.
 			abits_val_ |= (that.abits_ptr_[ptr+1]&hmask) << trans;
@@ -934,21 +934,21 @@ vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that,
 		  }
 	    }
 
-      } else if (size_ == BITS_PER_WORD) {
+      } లేకపోతే ఒకవేళ (కొలత_2 == బిట్లు_చొప్పున_మాట) {
 	      /* We know that source and destination are short. If the
 		 destination is a full word, then we know the copy is
 		 aligned and complete. */
 	    abits_val_ = that.abits_val_;
 	    bbits_val_ = that.bbits_val_;
 
-      } else {
+      } లేకపోతే {
 	      /* Finally, the source and destination vectors are both
 		 short, so there is a single mask/shift/copy. */
-	    unsigned long mask = (1UL << size_) - 1UL;
-	    mask <<= adr;
+	    గుర్తులేని దీర్ఘ ముసుగు = (1UL << కొలత_2) - 1UL;
+	    ముసుగు <<= adr;
 
-	    abits_val_ = (that.abits_val_ & mask) >> adr;
-	    bbits_val_ = (that.bbits_val_ & mask) >> adr;
+	    abits_val_ = (that.abits_val_ & ముసుగు) >> adr;
+	    bbits_val_ = (that.bbits_val_ & ముసుగు) >> adr;
       }
 
 }
@@ -957,244 +957,244 @@ vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that,
  * Change the size of the vvp_vector4_t vector to the new size. Copy
  * the old values, as many as well fit, into the new vector.
  */
-void vvp_vector4_t::resize(unsigned newsize, vvp_bit4_t pad_bit)
+శూన్య vvp_vector4_t::resize(గుర్తులేని newsize, vvp_bit4_t pad_బిట్టు)
 {
-      if (size_ == newsize)
-	    return;
+      ఒకవేళ (కొలత_2 == newsize)
+	    తిరిగి;
 
-      unsigned cnt = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-      unsigned long word_pad_abits = 0;
-      unsigned long word_pad_bbits = 0;
-      switch (pad_bit) {
-	  case BIT4_0:
-	    word_pad_abits = WORD_0_ABITS;
-	    word_pad_bbits = WORD_0_BBITS;
-	    break;
-	  case BIT4_1:
-	    word_pad_abits = WORD_1_ABITS;
-	    word_pad_bbits = WORD_1_BBITS;
-	    break;
-	  case BIT4_X:
-	    word_pad_abits = WORD_X_ABITS;
-	    word_pad_bbits = WORD_X_BBITS;
-	    break;
-	  case BIT4_Z:
-	    word_pad_abits = WORD_Z_ABITS;
-	    word_pad_bbits = WORD_Z_BBITS;
-	    break;
+      గుర్తులేని cnt = (కొలత_2 + బిట్లు_చొప్పున_మాట - 1) / బిట్లు_చొప్పున_మాట;
+      గుర్తులేని దీర్ఘ మాట_pad_abits = 0;
+      గుర్తులేని దీర్ఘ మాట_pad_bbits = 0;
+      ఎంపిక (pad_బిట్టు) {
+	  స్థితి BIT4_0:
+	    మాట_pad_abits = మాట_0_ABITS;
+	    మాట_pad_bbits = మాట_0_BBITS;
+	    ఆపు;
+	  స్థితి BIT4_1:
+	    మాట_pad_abits = మాట_1_ABITS;
+	    మాట_pad_bbits = మాట_1_BBITS;
+	    ఆపు;
+	  స్థితి BIT4_X:
+	    మాట_pad_abits = మాట_X_ABITS;
+	    మాట_pad_bbits = మాట_X_BBITS;
+	    ఆపు;
+	  స్థితి BIT4_Z:
+	    మాట_pad_abits = మాట_Z_ABITS;
+	    మాట_pad_bbits = మాట_Z_BBITS;
+	    ఆపు;
       }
 
-      if (newsize > BITS_PER_WORD) {
-	    unsigned newcnt = (newsize + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    if (newcnt == cnt) {
+      ఒకవేళ (newsize > బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని newcnt = (newsize + బిట్లు_చొప్పున_మాట - 1) / బిట్లు_చొప్పున_మాట;
+	    ఒకవేళ (newcnt == cnt) {
 		    // If the word count doesn't change, then there is
 		    // no need for re-allocation so we are done now.
-		  if (newsize > size_) {
-			if (unsigned fill = size_ % BITS_PER_WORD) {
+		  ఒకవేళ (newsize > కొలత_2) {
+			ఒకవేళ (గుర్తులేని fill = కొలత_2 % బిట్లు_చొప్పున_మాట) {
 			      abits_ptr_[cnt-1] &= ~((-1UL) << fill);
 			      bbits_ptr_[cnt-1] &= ~((-1UL) << fill);
-			      abits_ptr_[cnt-1] |= word_pad_abits << fill;
-			      bbits_ptr_[cnt-1] |= word_pad_bbits << fill;
+			      abits_ptr_[cnt-1] |= మాట_pad_abits << fill;
+			      bbits_ptr_[cnt-1] |= మాట_pad_bbits << fill;
 			}
 		  }
-		  size_ = newsize;
-		  return;
+		  కొలత_2 = newsize;
+		  తిరిగి;
 	    }
 
-	    unsigned long*newbits = new unsigned long[2*newcnt];
+	    గుర్తులేని దీర్ఘ*newbits = కొత్త గుర్తులేని దీర్ఘ[2*newcnt];
 
-	    if (cnt > 1) {
-		  unsigned trans = cnt;
-		  if (trans > newcnt)
+	    ఒకవేళ (cnt > 1) {
+		  గుర్తులేని trans = cnt;
+		  ఒకవేళ (trans > newcnt)
 			trans = newcnt;
 
-		  for (unsigned idx = 0 ;  idx < trans ;  idx += 1)
+		  కొరకు (గుర్తులేని idx = 0 ;  idx < trans ;  idx += 1)
 			newbits[idx] = abits_ptr_[idx];
-		  for (unsigned idx = 0 ;  idx < trans ;  idx += 1)
+		  కొరకు (గుర్తులేని idx = 0 ;  idx < trans ;  idx += 1)
 			newbits[newcnt+idx] = bbits_ptr_[idx];
 
-		  delete[]abits_ptr_;
+		  తొలగించు[]abits_ptr_;
 
-	    } else {
+	    } లేకపోతే {
 		  newbits[0] = abits_val_;
 		  newbits[newcnt] = bbits_val_;
 	    }
 
-	    if (newsize > size_) {
-		  if (unsigned fill = size_ % BITS_PER_WORD) {
+	    ఒకవేళ (newsize > కొలత_2) {
+		  ఒకవేళ (గుర్తులేని fill = కొలత_2 % బిట్లు_చొప్పున_మాట) {
 			newbits[cnt-1] &= ~((-1UL) << fill);
-			newbits[cnt-1] |= word_pad_abits << fill;
+			newbits[cnt-1] |= మాట_pad_abits << fill;
 			newbits[newcnt+cnt-1] &= ~((-1UL) << fill);
-			newbits[newcnt+cnt-1] |= word_pad_bbits << fill;
+			newbits[newcnt+cnt-1] |= మాట_pad_bbits << fill;
 		  }
-		  for (unsigned idx = cnt ;  idx < newcnt ;  idx += 1)
-			newbits[idx] = word_pad_abits;
-		  for (unsigned idx = cnt ;  idx < newcnt ;  idx += 1)
-			newbits[newcnt+idx] = word_pad_bbits;
+		  కొరకు (గుర్తులేని idx = cnt ;  idx < newcnt ;  idx += 1)
+			newbits[idx] = మాట_pad_abits;
+		  కొరకు (గుర్తులేని idx = cnt ;  idx < newcnt ;  idx += 1)
+			newbits[newcnt+idx] = మాట_pad_bbits;
 	    }
 
-	    size_ = newsize;
+	    కొలత_2 = newsize;
 	    abits_ptr_ = newbits;
 	    bbits_ptr_ = newbits + newcnt;
 
-      } else {
-	    if (cnt > 1) {
-		  unsigned long newvala = abits_ptr_[0];
-		  unsigned long newvalb = bbits_ptr_[0];
-		  delete[]abits_ptr_;
+      } లేకపోతే {
+	    ఒకవేళ (cnt > 1) {
+		  గుర్తులేని దీర్ఘ newvala = abits_ptr_[0];
+		  గుర్తులేని దీర్ఘ newvalb = bbits_ptr_[0];
+		  తొలగించు[]abits_ptr_;
 		  abits_val_ = newvala;
 		  bbits_val_ = newvalb;
 	    }
 
-	    if (newsize > size_) {
-		  abits_val_ &= ~((-1UL) << size_);
-		  bbits_val_ &= ~((-1UL) << size_);
-		  abits_val_ |= word_pad_abits << size_;
-		  bbits_val_ |= word_pad_bbits << size_;
+	    ఒకవేళ (newsize > కొలత_2) {
+		  abits_val_ &= ~((-1UL) << కొలత_2);
+		  bbits_val_ &= ~((-1UL) << కొలత_2);
+		  abits_val_ |= మాట_pad_abits << కొలత_2;
+		  bbits_val_ |= మాట_pad_bbits << కొలత_2;
 	    }
 
-	    size_ = newsize;
+	    కొలత_2 = newsize;
       }
 }
 
 
-unsigned long* vvp_vector4_t::subarray(unsigned adr, unsigned wid, bool xz_to_0) const
+గుర్తులేని దీర్ఘ* vvp_vector4_t::subarray(గుర్తులేని adr, గుర్తులేని wid, తార్కిక xz_గమ్యం_0) స్థిరరాశి
 {
-      const unsigned BIT2_PER_WORD = 8*sizeof(unsigned long);
-      unsigned awid = (wid + BIT2_PER_WORD - 1) / (BIT2_PER_WORD);
-      unsigned long*val = new unsigned long[awid];
+      స్థిరరాశి గుర్తులేని BIT2_చొప్పున_మాట = 8*పరిమాణం(గుర్తులేని దీర్ఘ);
+      గుర్తులేని awid = (wid + BIT2_చొప్పున_మాట - 1) / (BIT2_చొప్పున_మాట);
+      గుర్తులేని దీర్ఘ*val = కొత్త గుర్తులేని దీర్ఘ[awid];
 
-      for (unsigned idx = 0 ;  idx < awid ;  idx += 1)
+      కొరకు (గుర్తులేని idx = 0 ;  idx < awid ;  idx += 1)
 	    val[idx] = 0;
 
-      if (size_ <= BITS_PER_WORD) {
+      ఒకవేళ (కొలత_2 <= బిట్లు_చొప్పున_మాట) {
 	      /* Handle the special case that the array is small. The
 		 entire value of the vector4 is within the xbits_val_
 		 so we know that the result is a single word, the
 		 source is a single word, and we just have to loop
 		 through that word. */
-	    unsigned long atmp = abits_val_ >> adr;
-	    unsigned long btmp = bbits_val_ >> adr;
-	    if (wid < BIT2_PER_WORD) {
+	    గుర్తులేని దీర్ఘ atmp = abits_val_ >> adr;
+	    గుర్తులేని దీర్ఘ btmp = bbits_val_ >> adr;
+	    ఒకవేళ (wid < BIT2_చొప్పున_మాట) {
 		  atmp &= (1UL << wid) - 1;
 		  btmp &= (1UL << wid) - 1;
 	    }
-	    if (btmp) {
-		  if (xz_to_0)
+	    ఒకవేళ (btmp) {
+		  ఒకవేళ (xz_గమ్యం_0)
 			atmp &= ~btmp;
-		  else
-			goto x_out;
+		  లేకపోతే
+			వెళ్ళు x_బహిర్గతం;
 	    }
 
 	    val[0] = atmp;
 
-      } else {
+      } లేకపోతే {
 
-	    unsigned val_ptr = 0;
-	    unsigned val_off = 0;
+	    గుర్తులేని val_ptr = 0;
+	    గుర్తులేని val_off = 0;
 
 	      /* Get the first word we are scanning. We may in fact be
 		 somewhere in the middle of that word. */
-	    while (wid > 0) {
-		  unsigned long atmp = abits_ptr_[adr/BITS_PER_WORD];
-		  unsigned long btmp = bbits_ptr_[adr/BITS_PER_WORD];
-		  unsigned long off = adr%BITS_PER_WORD;
+	    అయితే (wid > 0) {
+		  గుర్తులేని దీర్ఘ atmp = abits_ptr_[adr/బిట్లు_చొప్పున_మాట];
+		  గుర్తులేని దీర్ఘ btmp = bbits_ptr_[adr/బిట్లు_చొప్పున_మాట];
+		  గుర్తులేని దీర్ఘ off = adr%బిట్లు_చొప్పున_మాట;
 		  atmp >>= off;
 		  btmp >>= off;
 
-		  unsigned long trans = BITS_PER_WORD - off;
-		  if (trans > (BIT2_PER_WORD - val_off))
-			trans = BIT2_PER_WORD - val_off;
-		  if (wid < trans)
+		  గుర్తులేని దీర్ఘ trans = బిట్లు_చొప్పున_మాట - off;
+		  ఒకవేళ (trans > (BIT2_చొప్పున_మాట - val_off))
+			trans = BIT2_చొప్పున_మాట - val_off;
+		  ఒకవేళ (wid < trans)
 			trans = wid;
-		  if (trans < BIT2_PER_WORD) {
+		  ఒకవేళ (trans < BIT2_చొప్పున_మాట) {
 			atmp &= (1UL << trans) - 1;
 			btmp &= (1UL << trans) - 1;
 		  }
-		  if (btmp) {
-			if (xz_to_0)
+		  ఒకవేళ (btmp) {
+			ఒకవేళ (xz_గమ్యం_0)
 			      atmp &= ~btmp;
-			else
-			      goto x_out;
+			లేకపోతే
+			      వెళ్ళు x_బహిర్గతం;
 		  }
 
 		  val[val_ptr] |= atmp << val_off;
 		  adr += trans;
 		  wid -= trans;
 		  val_off += trans;
-		  if (val_off == BIT2_PER_WORD) {
+		  ఒకవేళ (val_off == BIT2_చొప్పున_మాట) {
 			val_ptr += 1;
 			val_off = 0;
 		  }
 	    }
       }
 
-      return val;
+      తిరిగి val;
 
- x_out:
-      delete[]val;
-      return 0;
+ x_బహిర్గతం:
+      తొలగించు[]val;
+      తిరిగి 0;
 }
 
-void vvp_vector4_t::setarray(unsigned adr, unsigned wid, const unsigned long*val)
+శూన్య vvp_vector4_t::setarray(గుర్తులేని adr, గుర్తులేని wid, స్థిరరాశి గుర్తులేని దీర్ఘ*val)
 {
-      assert(adr+wid <= size_);
+      ప్రతిజ్ఞా(adr+wid <= కొలత_2);
 
-      const unsigned BIT2_PER_WORD = 8*sizeof(unsigned long);
+      స్థిరరాశి గుర్తులేని BIT2_చొప్పున_మాట = 8*పరిమాణం(గుర్తులేని దీర్ఘ);
 
-      if (size_ <= BITS_PER_WORD) {
+      ఒకవేళ (కొలత_2 <= బిట్లు_చొప్పున_మాట) {
 	      // We know here that both the source and the target are
 	      // within a single word. Write the bits into the
 	      // abits_val_ directly.
 
-	    assert(BIT2_PER_WORD <= BITS_PER_WORD);
-	    unsigned long lmask = (1UL << adr) - 1UL;
-	    unsigned long hmask = ((adr+wid) < BITS_PER_WORD)
+	    ప్రతిజ్ఞా(BIT2_చొప్పున_మాట <= బిట్లు_చొప్పున_మాట);
+	    గుర్తులేని దీర్ఘ lmask = (1UL << adr) - 1UL;
+	    గుర్తులేని దీర్ఘ hmask = ((adr+wid) < బిట్లు_చొప్పున_మాట)
 		  ? -1UL << (adr+wid)
 		  : 0;
-	    unsigned long mask = ~(hmask | lmask);
+	    గుర్తులేని దీర్ఘ ముసుగు = ~(hmask | lmask);
 
-	    abits_val_ &= ~mask;
-	    bbits_val_ &= ~mask;
+	    abits_val_ &= ~ముసుగు;
+	    bbits_val_ &= ~ముసుగు;
 
-	    abits_val_ |= mask & (val[0] << adr);
+	    abits_val_ |= ముసుగు & (val[0] << adr);
 
-      } else {
+      } లేకపోతే {
 	      // The general case, there are multiple words of
 	      // destination, and possibly multiple words of source
 	      // data. Shift and mask as we go.
-	    unsigned off = adr % BITS_PER_WORD;
-	    unsigned ptr = adr / BITS_PER_WORD;
-	    unsigned val_off = 0;
-	    unsigned val_ptr = 0;
-	    while (wid > 0) {
-		  unsigned trans = wid;
-		  if (trans > (BIT2_PER_WORD-val_off))
-			trans = BIT2_PER_WORD-val_off;
-		  if (trans > (BITS_PER_WORD-off))
-			trans = BITS_PER_WORD-off;
+	    గుర్తులేని off = adr % బిట్లు_చొప్పున_మాట;
+	    గుర్తులేని ptr = adr / బిట్లు_చొప్పున_మాట;
+	    గుర్తులేని val_off = 0;
+	    గుర్తులేని val_ptr = 0;
+	    అయితే (wid > 0) {
+		  గుర్తులేని trans = wid;
+		  ఒకవేళ (trans > (BIT2_చొప్పున_మాట-val_off))
+			trans = BIT2_చొప్పున_మాట-val_off;
+		  ఒకవేళ (trans > (బిట్లు_చొప్పున_మాట-off))
+			trans = బిట్లు_చొప్పున_మాట-off;
 
-		  unsigned long lmask = (1UL << off) - 1UL;
-		  unsigned long hmask = ((off+trans) < BITS_PER_WORD)
+		  గుర్తులేని దీర్ఘ lmask = (1UL << off) - 1UL;
+		  గుర్తులేని దీర్ఘ hmask = ((off+trans) < బిట్లు_చొప్పున_మాట)
 			? -1UL << (off+trans)
 			: 0;
-		  unsigned long mask = ~(hmask | lmask);
+		  గుర్తులేని దీర్ఘ ముసుగు = ~(hmask | lmask);
 
-		  abits_ptr_[ptr] &= ~mask;
-		  bbits_ptr_[ptr] &= ~mask;
-		  if (val_off >= off)
-			abits_ptr_[ptr] |= mask & (val[val_ptr] >> (val_off-off));
-		  else
-			abits_ptr_[ptr] |= mask & (val[val_ptr] << (off-val_off));
+		  abits_ptr_[ptr] &= ~ముసుగు;
+		  bbits_ptr_[ptr] &= ~ముసుగు;
+		  ఒకవేళ (val_off >= off)
+			abits_ptr_[ptr] |= ముసుగు & (val[val_ptr] >> (val_off-off));
+		  లేకపోతే
+			abits_ptr_[ptr] |= ముసుగు & (val[val_ptr] << (off-val_off));
 
 		  wid -= trans;
 		  val_off += trans;
-		  if (val_off == BIT2_PER_WORD) {
+		  ఒకవేళ (val_off == BIT2_చొప్పున_మాట) {
 			val_off = 0;
 			val_ptr += 1;
 		  }
 		  off += trans;
-		  if (off == BITS_PER_WORD) {
+		  ఒకవేళ (off == బిట్లు_చొప్పున_మాట) {
 			off = 0;
 			ptr += 1;
 		  }
@@ -1207,12 +1207,12 @@ void vvp_vector4_t::setarray(unsigned adr, unsigned wid, const unsigned long*val
  * into the addressed part of this vector. Use bit masking and word
  * copies to go as fast as reasonably possible.
  */
-bool vvp_vector4_t::set_vec(unsigned adr, const vvp_vector4_t&that)
+తార్కిక vvp_vector4_t::సమితి_vec(గుర్తులేని adr, స్థిరరాశి vvp_vector4_t&that)
 {
-      assert(adr+that.size_  <= size_);
-      bool diff_flag = false;
+      ప్రతిజ్ఞా(adr+that.కొలత_2  <= కొలత_2);
+      తార్కిక diff_flag = అబద్ధం;
 
-      if (size_ <= BITS_PER_WORD) {
+      ఒకవేళ (కొలత_2 <= బిట్లు_చొప్పున_మాట) {
 
 	      /* The destination vector (me!) is within a bits_val_
 		 word, so the subvector is certainly within a
@@ -1222,200 +1222,200 @@ bool vvp_vector4_t::set_vec(unsigned adr, const vvp_vector4_t&that)
 		 for all the bits that are to come from that. Do the
 		 job by some shifting, masking and OR. */
 
-	    unsigned long lmask = (1UL << adr) - 1;
-	    unsigned long hmask;
-	    unsigned long hshift = adr+that.size_;
-	    if (hshift >= BITS_PER_WORD)
+	    గుర్తులేని దీర్ఘ lmask = (1UL << adr) - 1;
+	    గుర్తులేని దీర్ఘ hmask;
+	    గుర్తులేని దీర్ఘ hshift = adr+that.కొలత_2;
+	    ఒకవేళ (hshift >= బిట్లు_చొప్పున_మాట)
 		  hmask = -1UL;
-	    else
-		  hmask = (1UL << (adr+that.size_)) - 1;
-	    unsigned long mask = hmask & ~lmask;
+	    లేకపోతే
+		  hmask = (1UL << (adr+that.కొలత_2)) - 1;
+	    గుర్తులేని దీర్ఘ ముసుగు = hmask & ~lmask;
 
-	    unsigned long tmp = (that.abits_val_<<adr)&mask;
-	    if ((abits_val_&mask) != tmp) {
-		  diff_flag = true;
-		  abits_val_ = (abits_val_ & ~mask) | tmp;
+	    గుర్తులేని దీర్ఘ tmp = (that.abits_val_<<adr)&ముసుగు;
+	    ఒకవేళ ((abits_val_&ముసుగు) != tmp) {
+		  diff_flag = నిజం;
+		  abits_val_ = (abits_val_ & ~ముసుగు) | tmp;
 	    }
-	    tmp = (that.bbits_val_<<adr) & mask;
-	    if ((bbits_val_&mask) != tmp) {
-		  diff_flag = true;
-		  bbits_val_ = (bbits_val_ & ~mask) | tmp;
+	    tmp = (that.bbits_val_<<adr) & ముసుగు;
+	    ఒకవేళ ((bbits_val_&ముసుగు) != tmp) {
+		  diff_flag = నిజం;
+		  bbits_val_ = (bbits_val_ & ~ముసుగు) | tmp;
 	    }
 
-      } else if (that.size_ <= BITS_PER_WORD) {
+      } లేకపోతే ఒకవేళ (that.కొలత_2 <= బిట్లు_చొప్పున_మాట) {
 
 	      /* This vector is more than a word, but that vector is
 		 still small. Write into the destination, possibly
 		 spanning two destination words, depending on whether
 		 the source vector spans a word transition. */
-	    unsigned long dptr = adr / BITS_PER_WORD;
-	    unsigned long doff = adr % BITS_PER_WORD;
+	    గుర్తులేని దీర్ఘ dptr = adr / బిట్లు_చొప్పున_మాట;
+	    గుర్తులేని దీర్ఘ doff = adr % బిట్లు_చొప్పున_మాట;
 
-	    unsigned long lmask = (1UL << doff) - 1;
-	    unsigned long hshift = doff+that.size_;
-	    unsigned long hmask;
-	    if (hshift >= BITS_PER_WORD)
+	    గుర్తులేని దీర్ఘ lmask = (1UL << doff) - 1;
+	    గుర్తులేని దీర్ఘ hshift = doff+that.కొలత_2;
+	    గుర్తులేని దీర్ఘ hmask;
+	    ఒకవేళ (hshift >= బిట్లు_చొప్పున_మాట)
 		  hmask = -1UL;
-	    else
+	    లేకపోతే
 		  hmask = (1UL << hshift) - 1UL;
 
-	    unsigned long mask = hmask & ~lmask;
-	    unsigned long tmp;
+	    గుర్తులేని దీర్ఘ ముసుగు = hmask & ~lmask;
+	    గుర్తులేని దీర్ఘ tmp;
 
-	    tmp = (that.abits_val_ << doff) & mask;
-	    if ((abits_ptr_[dptr] & mask) != tmp) {
-		  diff_flag = true;
-		  abits_ptr_[dptr] = (abits_ptr_[dptr] & ~mask) | tmp;
+	    tmp = (that.abits_val_ << doff) & ముసుగు;
+	    ఒకవేళ ((abits_ptr_[dptr] & ముసుగు) != tmp) {
+		  diff_flag = నిజం;
+		  abits_ptr_[dptr] = (abits_ptr_[dptr] & ~ముసుగు) | tmp;
 	    }
-	    tmp = (that.bbits_val_ << doff) & mask;
-	    if ((bbits_ptr_[dptr] & mask) != tmp) {
-		  diff_flag = true;
-		  bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~mask) | tmp;
+	    tmp = (that.bbits_val_ << doff) & ముసుగు;
+	    ఒకవేళ ((bbits_ptr_[dptr] & ముసుగు) != tmp) {
+		  diff_flag = నిజం;
+		  bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~ముసుగు) | tmp;
 	    }
 
-	    if ((doff + that.size_) > BITS_PER_WORD) {
-		  unsigned tail = doff + that.size_ - BITS_PER_WORD;
-		  mask = (1UL << tail) - 1;
+	    ఒకవేళ ((doff + that.కొలత_2) > బిట్లు_చొప్పున_మాట) {
+		  గుర్తులేని తోక = doff + that.కొలత_2 - బిట్లు_చొప్పున_మాట;
+		  ముసుగు = (1UL << తోక) - 1;
 
 		  dptr += 1;
-		  tmp = (that.abits_val_ >> (that.size_-tail)) & mask;
-		  if ((abits_ptr_[dptr] & mask) != tmp) {
-			diff_flag = true;
-			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~mask) | tmp;
+		  tmp = (that.abits_val_ >> (that.కొలత_2-తోక)) & ముసుగు;
+		  ఒకవేళ ((abits_ptr_[dptr] & ముసుగు) != tmp) {
+			diff_flag = నిజం;
+			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~ముసుగు) | tmp;
 		  }
-		  tmp = (that.bbits_val_ >> (that.size_-tail)) & mask;
-		  if ((bbits_ptr_[dptr] & mask) != tmp) {
-			diff_flag = true;
-			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~mask) | tmp;
+		  tmp = (that.bbits_val_ >> (that.కొలత_2-తోక)) & ముసుగు;
+		  ఒకవేళ ((bbits_ptr_[dptr] & ముసుగు) != tmp) {
+			diff_flag = నిజం;
+			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~ముసుగు) | tmp;
 		  }
 	    }
 
-      } else if (adr%BITS_PER_WORD == 0) {
+      } లేకపోతే ఒకవేళ (adr%బిట్లు_చొప్పున_మాట == 0) {
 
 	      /* In this case, both vectors are long, but the
 		 destination is neatly aligned. That means all but the
 		 last word can be simply copied with no masking. */
 
-	    unsigned remain = that.size_;
-	    unsigned sptr = 0;
-	    unsigned dptr = adr / BITS_PER_WORD;
-	    while (remain >= BITS_PER_WORD) {
-		  if (abits_ptr_[dptr] != that.abits_ptr_[sptr]) {
-			diff_flag = true;
+	    గుర్తులేని remain = that.కొలత_2;
+	    గుర్తులేని sptr = 0;
+	    గుర్తులేని dptr = adr / బిట్లు_చొప్పున_మాట;
+	    అయితే (remain >= బిట్లు_చొప్పున_మాట) {
+		  ఒకవేళ (abits_ptr_[dptr] != that.abits_ptr_[sptr]) {
+			diff_flag = నిజం;
 			abits_ptr_[dptr] = that.abits_ptr_[sptr];
 		  }
-		  if (bbits_ptr_[dptr] != that.bbits_ptr_[sptr]) {
-			diff_flag = true;
+		  ఒకవేళ (bbits_ptr_[dptr] != that.bbits_ptr_[sptr]) {
+			diff_flag = నిజం;
 			bbits_ptr_[dptr] = that.bbits_ptr_[sptr];
 		  }
 		  dptr += 1;
 		  sptr += 1;
-		  remain -= BITS_PER_WORD;
+		  remain -= బిట్లు_చొప్పున_మాట;
 	    }
 
-	    if (remain > 0) {
-		  unsigned long mask = (1UL << remain) - 1;
-		  unsigned long tmp;
+	    ఒకవేళ (remain > 0) {
+		  గుర్తులేని దీర్ఘ ముసుగు = (1UL << remain) - 1;
+		  గుర్తులేని దీర్ఘ tmp;
 
-		  tmp = that.abits_ptr_[sptr] & mask;
-		  if ((abits_ptr_[dptr] & mask) != tmp) {
-			diff_flag = true;
-			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~mask) | tmp;
+		  tmp = that.abits_ptr_[sptr] & ముసుగు;
+		  ఒకవేళ ((abits_ptr_[dptr] & ముసుగు) != tmp) {
+			diff_flag = నిజం;
+			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~ముసుగు) | tmp;
 		  }
-		  tmp = that.bbits_ptr_[sptr] & mask;
-		  if ((bbits_ptr_[dptr] & mask) != tmp) {
-			diff_flag = true;
-			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~mask) | tmp;
+		  tmp = that.bbits_ptr_[sptr] & ముసుగు;
+		  ఒకవేళ ((bbits_ptr_[dptr] & ముసుగు) != tmp) {
+			diff_flag = నిజం;
+			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~ముసుగు) | tmp;
 		  }
 	    }
 
-      } else {
+      } లేకపోతే {
 
 	      /* We know that there are two long vectors, and we know
 		 that the destination is definitely NOT aligned. */
 
-	    unsigned remain = that.size_;
-	    unsigned sptr = 0;
-	    unsigned dptr = adr / BITS_PER_WORD;
-	    unsigned doff = adr % BITS_PER_WORD;
-	    unsigned long lmask = (1UL << doff) - 1;
-	    unsigned ndoff = BITS_PER_WORD - doff;
-	    while (remain >= BITS_PER_WORD) {
-		  unsigned long tmp;
+	    గుర్తులేని remain = that.కొలత_2;
+	    గుర్తులేని sptr = 0;
+	    గుర్తులేని dptr = adr / బిట్లు_చొప్పున_మాట;
+	    గుర్తులేని doff = adr % బిట్లు_చొప్పున_మాట;
+	    గుర్తులేని దీర్ఘ lmask = (1UL << doff) - 1;
+	    గుర్తులేని ndoff = బిట్లు_చొప్పున_మాట - doff;
+	    అయితే (remain >= బిట్లు_చొప్పున_మాట) {
+		  గుర్తులేని దీర్ఘ tmp;
 
 		  tmp = (that.abits_ptr_[sptr] << doff) & ~lmask;
-		  if ((abits_ptr_[dptr] & ~lmask) != tmp) {
-			diff_flag = true;
+		  ఒకవేళ ((abits_ptr_[dptr] & ~lmask) != tmp) {
+			diff_flag = నిజం;
 			abits_ptr_[dptr] = (abits_ptr_[dptr] & lmask) | tmp;
 		  }
 		  tmp = (that.bbits_ptr_[sptr] << doff) & ~lmask;
-		  if ((bbits_ptr_[dptr] & ~lmask) != tmp) {
-			diff_flag = true;
+		  ఒకవేళ ((bbits_ptr_[dptr] & ~lmask) != tmp) {
+			diff_flag = నిజం;
 			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & lmask) | tmp;
 		  }
 		  dptr += 1;
 
 		  tmp = (that.abits_ptr_[sptr] >> ndoff) & lmask;
-		  if ((abits_ptr_[dptr] & lmask) != tmp) {
-			diff_flag = true;
+		  ఒకవేళ ((abits_ptr_[dptr] & lmask) != tmp) {
+			diff_flag = నిజం;
 			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~lmask) | tmp;
 		  }
 		  tmp = (that.bbits_ptr_[sptr] >> ndoff) & lmask;
-		  if ((bbits_ptr_[dptr] & lmask) != tmp) {
-			diff_flag = true;
+		  ఒకవేళ ((bbits_ptr_[dptr] & lmask) != tmp) {
+			diff_flag = నిజం;
 			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~lmask) | tmp;
 		  }
 
-		  remain -= BITS_PER_WORD;
+		  remain -= బిట్లు_చొప్పున_మాట;
 		  sptr += 1;
 	    }
 
-	    if (remain > 0) {
-		  unsigned long hshift = doff+remain;
-		  unsigned long hmask;
-		  if (hshift >= BITS_PER_WORD)
+	    ఒకవేళ (remain > 0) {
+		  గుర్తులేని దీర్ఘ hshift = doff+remain;
+		  గుర్తులేని దీర్ఘ hmask;
+		  ఒకవేళ (hshift >= బిట్లు_చొప్పున_మాట)
 			hmask = -1UL;
-		  else
+		  లేకపోతే
 			hmask = (1UL << (doff+remain)) - 1;
 
-		  unsigned long mask = hmask & ~lmask;
-		  unsigned long tmp;
+		  గుర్తులేని దీర్ఘ ముసుగు = hmask & ~lmask;
+		  గుర్తులేని దీర్ఘ tmp;
 
-		  tmp = (that.abits_ptr_[sptr] << doff) & mask;
-		  if ((abits_ptr_[dptr] & mask) != tmp) {
-			diff_flag = true;
-			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~mask) | tmp;
+		  tmp = (that.abits_ptr_[sptr] << doff) & ముసుగు;
+		  ఒకవేళ ((abits_ptr_[dptr] & ముసుగు) != tmp) {
+			diff_flag = నిజం;
+			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~ముసుగు) | tmp;
 		  }
-		  tmp = (that.bbits_ptr_[sptr] << doff) & mask;
-		  if ((bbits_ptr_[dptr] & mask) != tmp) {
-			diff_flag = true;
-			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~mask) | tmp;
+		  tmp = (that.bbits_ptr_[sptr] << doff) & ముసుగు;
+		  ఒకవేళ ((bbits_ptr_[dptr] & ముసుగు) != tmp) {
+			diff_flag = నిజం;
+			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~ముసుగు) | tmp;
 		  }
 
-		  if ((doff + remain) > BITS_PER_WORD) {
-			unsigned tail = doff + remain - BITS_PER_WORD;
-			if (tail >= BITS_PER_WORD)
-			      mask = -1UL;
-			else
-			      mask = (1UL << tail) - 1;
+		  ఒకవేళ ((doff + remain) > బిట్లు_చొప్పున_మాట) {
+			గుర్తులేని తోక = doff + remain - బిట్లు_చొప్పున_మాట;
+			ఒకవేళ (తోక >= బిట్లు_చొప్పున_మాట)
+			      ముసుగు = -1UL;
+			లేకపోతే
+			      ముసుగు = (1UL << తోక) - 1;
 
 			dptr += 1;
 
-			tmp = (that.abits_ptr_[sptr] >> (remain-tail))&mask;
-			if ((abits_ptr_[dptr] & mask) != tmp) {
-			      diff_flag = true;
-			      abits_ptr_[dptr] = (abits_ptr_[dptr] & ~mask) | tmp;
+			tmp = (that.abits_ptr_[sptr] >> (remain-తోక))&ముసుగు;
+			ఒకవేళ ((abits_ptr_[dptr] & ముసుగు) != tmp) {
+			      diff_flag = నిజం;
+			      abits_ptr_[dptr] = (abits_ptr_[dptr] & ~ముసుగు) | tmp;
 			}
-			tmp = (that.bbits_ptr_[sptr] >> (remain-tail))&mask;
-			if ((bbits_ptr_[dptr] & mask) != tmp) {
-			      diff_flag = true;
-			      bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~mask) | tmp;
+			tmp = (that.bbits_ptr_[sptr] >> (remain-తోక))&ముసుగు;
+			ఒకవేళ ((bbits_ptr_[dptr] & ముసుగు) != tmp) {
+			      diff_flag = నిజం;
+			      bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~ముసుగు) | tmp;
 			}
 		  }
 	    }
       }
 
-      return diff_flag;
+      తిరిగి diff_flag;
 }
 
 /*
@@ -1425,133 +1425,133 @@ bool vvp_vector4_t::set_vec(unsigned adr, const vvp_vector4_t&that)
  *
  * Assume both vectors are the same size.
  */
-void vvp_vector4_t::add(const vvp_vector4_t&that)
+శూన్య vvp_vector4_t::కూడు(స్థిరరాశి vvp_vector4_t&that)
 {
-      assert(size_ == that.size_);
+      ప్రతిజ్ఞా(కొలత_2 == that.కొలత_2);
 
-      if (size_ < BITS_PER_WORD) {
-	    unsigned long mask = ~(-1UL << size_);
-	    if ((bbits_val_|that.bbits_val_) & mask) {
-		  abits_val_ |= mask;
-		  bbits_val_ |= mask;
-		  return;
+      ఒకవేళ (కొలత_2 < బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని దీర్ఘ ముసుగు = ~(-1UL << కొలత_2);
+	    ఒకవేళ ((bbits_val_|that.bbits_val_) & ముసుగు) {
+		  abits_val_ |= ముసుగు;
+		  bbits_val_ |= ముసుగు;
+		  తిరిగి;
 	    }
 
 	    abits_val_ += that.abits_val_;
-	    abits_val_ &= mask;
-	    return;
+	    abits_val_ &= ముసుగు;
+	    తిరిగి;
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    if (bbits_val_ | that.bbits_val_) {
-		  abits_val_ = WORD_X_ABITS;
-		  bbits_val_ = WORD_X_BBITS;
-	    } else {
+      ఒకవేళ (కొలత_2 == బిట్లు_చొప్పున_మాట) {
+	    ఒకవేళ (bbits_val_ | that.bbits_val_) {
+		  abits_val_ = మాట_X_ABITS;
+		  bbits_val_ = మాట_X_BBITS;
+	    } లేకపోతే {
 		  abits_val_ += that.abits_val_;
 	    }
-	    return;
+	    తిరిగి;
       }
 
-      int cnt = size_ / BITS_PER_WORD;
-      unsigned long carry = 0;
-      for (int idx = 0 ; idx < cnt ; idx += 1) {
-	    if (bbits_ptr_[idx] | that.bbits_ptr_[idx])
-		  goto x_out;
+      పూర్ణాంకం cnt = కొలత_2 / బిట్లు_చొప్పున_మాట;
+      గుర్తులేని దీర్ఘ వాహకం = 0;
+      కొరకు (పూర్ణాంకం idx = 0 ; idx < cnt ; idx += 1) {
+	    ఒకవేళ (bbits_ptr_[idx] | that.bbits_ptr_[idx])
+		  వెళ్ళు x_బహిర్గతం;
 
-	    abits_ptr_[idx] = add_with_carry(abits_ptr_[idx], that.abits_ptr_[idx], carry);
+	    abits_ptr_[idx] = కూడు_with_వాహకం(abits_ptr_[idx], that.abits_ptr_[idx], వాహకం);
       }
 
-      if (unsigned tail = size_ % BITS_PER_WORD) {
-	    unsigned long mask = ~( -1UL << tail );
-	    if ((bbits_ptr_[cnt] | that.bbits_ptr_[cnt])&mask)
-		  goto x_out;
+      ఒకవేళ (గుర్తులేని తోక = కొలత_2 % బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని దీర్ఘ ముసుగు = ~( -1UL << తోక );
+	    ఒకవేళ ((bbits_ptr_[cnt] | that.bbits_ptr_[cnt])&ముసుగు)
+		  వెళ్ళు x_బహిర్గతం;
 
-	    abits_ptr_[cnt] = add_with_carry(abits_ptr_[cnt], that.abits_ptr_[cnt], carry);
-	    abits_ptr_[cnt] &= mask;
+	    abits_ptr_[cnt] = కూడు_with_వాహకం(abits_ptr_[cnt], that.abits_ptr_[cnt], వాహకం);
+	    abits_ptr_[cnt] &= ముసుగు;
       }
 
-      return;
+      తిరిగి;
 
- x_out:
-      for (int idx = 0 ; idx < cnt ; idx += 1) {
-	    abits_ptr_[idx] = WORD_X_ABITS;
-	    bbits_ptr_[idx] = WORD_X_BBITS;
+ x_బహిర్గతం:
+      కొరకు (పూర్ణాంకం idx = 0 ; idx < cnt ; idx += 1) {
+	    abits_ptr_[idx] = మాట_X_ABITS;
+	    bbits_ptr_[idx] = మాట_X_BBITS;
       }
-      if (unsigned tail = size_%BITS_PER_WORD) {
-	    unsigned long mask = ~( -1UL << tail );
-	    abits_ptr_[cnt] = WORD_X_ABITS&mask;
-	    bbits_ptr_[cnt] = WORD_X_BBITS&mask;
+      ఒకవేళ (గుర్తులేని తోక = కొలత_2%బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని దీర్ఘ ముసుగు = ~( -1UL << తోక );
+	    abits_ptr_[cnt] = మాట_X_ABITS&ముసుగు;
+	    bbits_ptr_[cnt] = మాట_X_BBITS&ముసుగు;
       }
 }
 
-void vvp_vector4_t::sub(const vvp_vector4_t&that)
+శూన్య vvp_vector4_t::sub(స్థిరరాశి vvp_vector4_t&that)
 {
-      assert(size_ == that.size_);
+      ప్రతిజ్ఞా(కొలత_2 == that.కొలత_2);
 
-      if (size_ < BITS_PER_WORD) {
-	    unsigned long mask = ~(-1UL << size_);
-	    if ((bbits_val_|that.bbits_val_) & mask) {
-		  abits_val_ |= mask;
-		  bbits_val_ |= mask;
-		  return;
+      ఒకవేళ (కొలత_2 < బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని దీర్ఘ ముసుగు = ~(-1UL << కొలత_2);
+	    ఒకవేళ ((bbits_val_|that.bbits_val_) & ముసుగు) {
+		  abits_val_ |= ముసుగు;
+		  bbits_val_ |= ముసుగు;
+		  తిరిగి;
 	    }
 
 	    abits_val_ -= that.abits_val_;
-	    abits_val_ &= mask;
-	    return;
+	    abits_val_ &= ముసుగు;
+	    తిరిగి;
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    if (bbits_val_ | that.bbits_val_) {
-		  abits_val_ = WORD_X_ABITS;
-		  bbits_val_ = WORD_X_BBITS;
-	    } else {
+      ఒకవేళ (కొలత_2 == బిట్లు_చొప్పున_మాట) {
+	    ఒకవేళ (bbits_val_ | that.bbits_val_) {
+		  abits_val_ = మాట_X_ABITS;
+		  bbits_val_ = మాట_X_BBITS;
+	    } లేకపోతే {
 		  abits_val_ -= that.abits_val_;
 	    }
-	    return;
+	    తిరిగి;
       }
 
-      int cnt = size_ / BITS_PER_WORD;
-      unsigned long carry = 1;
-      for (int idx = 0 ; idx < cnt ; idx += 1) {
-	    if (bbits_ptr_[idx] | that.bbits_ptr_[idx])
-		  goto x_out;
+      పూర్ణాంకం cnt = కొలత_2 / బిట్లు_చొప్పున_మాట;
+      గుర్తులేని దీర్ఘ వాహకం = 1;
+      కొరకు (పూర్ణాంకం idx = 0 ; idx < cnt ; idx += 1) {
+	    ఒకవేళ (bbits_ptr_[idx] | that.bbits_ptr_[idx])
+		  వెళ్ళు x_బహిర్గతం;
 
-	    abits_ptr_[idx] = add_with_carry(abits_ptr_[idx], ~that.abits_ptr_[idx], carry);
+	    abits_ptr_[idx] = కూడు_with_వాహకం(abits_ptr_[idx], ~that.abits_ptr_[idx], వాహకం);
       }
 
-      if (unsigned tail = size_ % BITS_PER_WORD) {
-	    unsigned long mask = ~( -1UL << tail );
-	    if ((bbits_ptr_[cnt] | that.bbits_ptr_[cnt])&mask)
-		  goto x_out;
+      ఒకవేళ (గుర్తులేని తోక = కొలత_2 % బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని దీర్ఘ ముసుగు = ~( -1UL << తోక );
+	    ఒకవేళ ((bbits_ptr_[cnt] | that.bbits_ptr_[cnt])&ముసుగు)
+		  వెళ్ళు x_బహిర్గతం;
 
-	    abits_ptr_[cnt] = add_with_carry(abits_ptr_[cnt], ~that.abits_ptr_[cnt], carry);
-	    abits_ptr_[cnt] &= mask;
+	    abits_ptr_[cnt] = కూడు_with_వాహకం(abits_ptr_[cnt], ~that.abits_ptr_[cnt], వాహకం);
+	    abits_ptr_[cnt] &= ముసుగు;
       }
 
-      return;
+      తిరిగి;
 
- x_out:
-      for (int idx = 0 ; idx < cnt ; idx += 1) {
-	    abits_ptr_[idx] = WORD_X_ABITS;
-	    bbits_ptr_[idx] = WORD_X_BBITS;
+ x_బహిర్గతం:
+      కొరకు (పూర్ణాంకం idx = 0 ; idx < cnt ; idx += 1) {
+	    abits_ptr_[idx] = మాట_X_ABITS;
+	    bbits_ptr_[idx] = మాట_X_BBITS;
       }
-      if (unsigned tail = size_%BITS_PER_WORD) {
-	    unsigned long mask = ~( -1UL << tail );
-	    abits_ptr_[cnt] = WORD_X_ABITS&mask;
-	    bbits_ptr_[cnt] = WORD_X_BBITS&mask;
+      ఒకవేళ (గుర్తులేని తోక = కొలత_2%బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని దీర్ఘ ముసుగు = ~( -1UL << తోక );
+	    abits_ptr_[cnt] = మాట_X_ABITS&ముసుగు;
+	    bbits_ptr_[cnt] = మాట_X_BBITS&ముసుగు;
       }
 
 }
 
-void vvp_vector4_t::mov(unsigned dst, unsigned src, unsigned cnt)
+శూన్య vvp_vector4_t::mov(గుర్తులేని dst, గుర్తులేని src, గుర్తులేని cnt)
 {
-      assert(dst+cnt <= size_);
-      assert(src+cnt <= size_);
+      ప్రతిజ్ఞా(dst+cnt <= కొలత_2);
+      ప్రతిజ్ఞా(src+cnt <= కొలత_2);
 
-      if (size_ <= BITS_PER_WORD) {
-	    unsigned long vmask = (1UL << cnt) - 1;
-	    unsigned long tmp;
+      ఒకవేళ (కొలత_2 <= బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని దీర్ఘ vmask = (1UL << cnt) - 1;
+	    గుర్తులేని దీర్ఘ tmp;
 
 	    tmp = (abits_val_ >> src) & vmask;
 	    abits_val_ &= ~ (vmask << dst);
@@ -1561,21 +1561,21 @@ void vvp_vector4_t::mov(unsigned dst, unsigned src, unsigned cnt)
 	    bbits_val_ &= ~ (vmask << dst);
 	    bbits_val_ |= tmp << dst;
 
-      } else {
-	    unsigned sptr = src / BITS_PER_WORD;
-	    unsigned dptr = dst / BITS_PER_WORD;
-	    unsigned soff = src % BITS_PER_WORD;
-	    unsigned doff = dst % BITS_PER_WORD;
+      } లేకపోతే {
+	    గుర్తులేని sptr = src / బిట్లు_చొప్పున_మాట;
+	    గుర్తులేని dptr = dst / బిట్లు_చొప్పున_మాట;
+	    గుర్తులేని soff = src % బిట్లు_చొప్పున_మాట;
+	    గుర్తులేని doff = dst % బిట్లు_చొప్పున_మాట;
 
-	    while (cnt > 0) {
-		  unsigned trans = cnt;
-		  if ((soff+trans) > BITS_PER_WORD)
-			trans = BITS_PER_WORD - soff;
+	    అయితే (cnt > 0) {
+		  గుర్తులేని trans = cnt;
+		  ఒకవేళ ((soff+trans) > బిట్లు_చొప్పున_మాట)
+			trans = బిట్లు_చొప్పున_మాట - soff;
 
-		  if ((doff+trans) > BITS_PER_WORD)
-			trans = BITS_PER_WORD - doff;
+		  ఒకవేళ ((doff+trans) > బిట్లు_చొప్పున_మాట)
+			trans = బిట్లు_చొప్పున_మాట - doff;
 
-		  if (trans == BITS_PER_WORD) {
+		  ఒకవేళ (trans == బిట్లు_చొప్పున_మాట) {
 			  // Special case: the transfer count is
 			  // exactly an entire word. For this to be
 			  // true, it must also be true that the
@@ -1584,15 +1584,15 @@ void vvp_vector4_t::mov(unsigned dst, unsigned src, unsigned cnt)
 			bbits_ptr_[dptr] = bbits_ptr_[sptr];
 			dptr += 1;
 			sptr += 1;
-			cnt -= BITS_PER_WORD;
-			continue;
+			cnt -= బిట్లు_చొప్పున_మాట;
+			కొనసాగు;
 		  }
 
 		    // Here we know that either the source or
 		    // destination is unaligned, and also we know that
 		    // the count is less than a full word.
-		  unsigned long vmask = (1UL << trans) - 1;
-		  unsigned long tmp;
+		  గుర్తులేని దీర్ఘ vmask = (1UL << trans) - 1;
+		  గుర్తులేని దీర్ఘ tmp;
 
 		  tmp = (abits_ptr_[sptr] >> soff) & vmask;
 		  abits_ptr_[dptr] &= ~ (vmask << doff);
@@ -1604,12 +1604,12 @@ void vvp_vector4_t::mov(unsigned dst, unsigned src, unsigned cnt)
 
 		  cnt -= trans;
 		  soff += trans;
-		  if (soff >= BITS_PER_WORD) {
+		  ఒకవేళ (soff >= బిట్లు_చొప్పున_మాట) {
 			soff = 0;
 			sptr += 1;
 		  }
 		  doff += trans;
-		  if (doff >= BITS_PER_WORD) {
+		  ఒకవేళ (doff >= బిట్లు_చొప్పున_మాట) {
 			doff = 0;
 			dptr += 1;
 		  }
@@ -1617,199 +1617,199 @@ void vvp_vector4_t::mov(unsigned dst, unsigned src, unsigned cnt)
       }
 }
 
-void vvp_vector4_t::mul(const vvp_vector4_t&that)
+శూన్య vvp_vector4_t::mul(స్థిరరాశి vvp_vector4_t&that)
 {
-      assert(size_ == that.size_);
+      ప్రతిజ్ఞా(కొలత_2 == that.కొలత_2);
 
-      if (size_ < BITS_PER_WORD) {
-	    unsigned long mask = ~(-1UL << size_);
-	    if ((bbits_val_|that.bbits_val_) & mask) {
-		  abits_val_ |= mask;
-		  bbits_val_ |= mask;
-		  return;
+      ఒకవేళ (కొలత_2 < బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని దీర్ఘ ముసుగు = ~(-1UL << కొలత_2);
+	    ఒకవేళ ((bbits_val_|that.bbits_val_) & ముసుగు) {
+		  abits_val_ |= ముసుగు;
+		  bbits_val_ |= ముసుగు;
+		  తిరిగి;
 	    }
 
 	    abits_val_ *= that.abits_val_;
-	    abits_val_ &= mask;
-	    return;
+	    abits_val_ &= ముసుగు;
+	    తిరిగి;
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    if (bbits_val_ || that.bbits_val_) {
-		  abits_val_ = WORD_X_ABITS;
-		  bbits_val_ = WORD_X_BBITS;
-	    } else {
+      ఒకవేళ (కొలత_2 == బిట్లు_చొప్పున_మాట) {
+	    ఒకవేళ (bbits_val_ || that.bbits_val_) {
+		  abits_val_ = మాట_X_ABITS;
+		  bbits_val_ = మాట_X_BBITS;
+	    } లేకపోతే {
 		  abits_val_ *= that.abits_val_;
 	    }
-	    return;
+	    తిరిగి;
       }
 
-      const int cnt = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
+      స్థిరరాశి పూర్ణాంకం cnt = (కొలత_2+బిట్లు_చొప్పున_మాట-1) / బిట్లు_చొప్పున_మాట;
 
-      unsigned long mask;
-      if (unsigned tail = size_%BITS_PER_WORD) {
-	    mask = ~( -1UL << tail );
-      } else {
-	    mask = ~0UL;
+      గుర్తులేని దీర్ఘ ముసుగు;
+      ఒకవేళ (గుర్తులేని తోక = కొలత_2%బిట్లు_చొప్పున_మాట) {
+	    ముసుగు = ~( -1UL << తోక );
+      } లేకపోతే {
+	    ముసుగు = ~0UL;
       }
 
 	// Check for any XZ values ahead of time in a first pass. If
 	// we find any, then force the entire result to be X and be
 	// done.
-      for (int idx = 0 ; idx < cnt ; idx += 1) {
-	    unsigned long lval = bbits_ptr_[idx];
-	    unsigned long rval = that.bbits_ptr_[idx];
-	    if (idx == (cnt-1)) {
-		  lval &= mask;
-		  rval &= mask;
+      కొరకు (పూర్ణాంకం idx = 0 ; idx < cnt ; idx += 1) {
+	    గుర్తులేని దీర్ఘ lval = bbits_ptr_[idx];
+	    గుర్తులేని దీర్ఘ rval = that.bbits_ptr_[idx];
+	    ఒకవేళ (idx == (cnt-1)) {
+		  lval &= ముసుగు;
+		  rval &= ముసుగు;
 	    }
-	    if (lval || rval) {
-		  for (int xdx = 0 ; xdx < cnt-1 ; xdx += 1) {
-			abits_ptr_[xdx] = WORD_X_ABITS;
-			bbits_ptr_[xdx] = WORD_X_BBITS;
+	    ఒకవేళ (lval || rval) {
+		  కొరకు (పూర్ణాంకం xdx = 0 ; xdx < cnt-1 ; xdx += 1) {
+			abits_ptr_[xdx] = మాట_X_ABITS;
+			bbits_ptr_[xdx] = మాట_X_BBITS;
 		  }
-		  abits_ptr_[cnt-1] = WORD_X_ABITS & mask;
-		  bbits_ptr_[cnt-1] = WORD_X_BBITS & mask;
-		  return;
+		  abits_ptr_[cnt-1] = మాట_X_ABITS & ముసుగు;
+		  bbits_ptr_[cnt-1] = మాట_X_BBITS & ముసుగు;
+		  తిరిగి;
 	    }
       }
 
 	// Calculate the result into a res array. We need to keep is
 	// separate from the "this" array because we are making
 	// multiple passes.
-      unsigned long*res = new unsigned long[cnt];
-      for (int idx = 0 ; idx < cnt ; idx += 1)
+      గుర్తులేని దీర్ఘ*res = కొత్త గుర్తులేని దీర్ఘ[cnt];
+      కొరకు (పూర్ణాంకం idx = 0 ; idx < cnt ; idx += 1)
 	    res[idx] = 0;
 
-      for (int mul_a = 0 ; mul_a < cnt ; mul_a += 1) {
-	    unsigned long lval = abits_ptr_[mul_a];
-	    if (mul_a == (cnt-1))
-		  lval &= mask;
+      కొరకు (పూర్ణాంకం mul_a = 0 ; mul_a < cnt ; mul_a += 1) {
+	    గుర్తులేని దీర్ఘ lval = abits_ptr_[mul_a];
+	    ఒకవేళ (mul_a == (cnt-1))
+		  lval &= ముసుగు;
 
-	    for (int mul_b = 0 ; mul_b < (cnt-mul_a) ; mul_b += 1) {
-		  unsigned long rval = that.abits_ptr_[mul_b];
-		  if (mul_b == (cnt-1))
-			rval &= mask;
+	    కొరకు (పూర్ణాంకం mul_b = 0 ; mul_b < (cnt-mul_a) ; mul_b += 1) {
+		  గుర్తులేని దీర్ఘ rval = that.abits_ptr_[mul_b];
+		  ఒకవేళ (mul_b == (cnt-1))
+			rval &= ముసుగు;
 
-		  unsigned long sum;
-		  unsigned long tmp = multiply_with_carry(lval, rval, sum);
-		  int base = mul_a + mul_b;
-		  unsigned long carry = 0;
-		  res[base] = add_with_carry(res[base], tmp, carry);
-		  for (int add_idx = base+1 ; add_idx < cnt ; add_idx += 1) {
-			res[add_idx] = add_with_carry(res[add_idx], sum, carry);
-			sum = 0;
+		  గుర్తులేని దీర్ఘ కూడిక;
+		  గుర్తులేని దీర్ఘ tmp = multiply_with_వాహకం(lval, rval, కూడిక);
+		  పూర్ణాంకం పునాది = mul_a + mul_b;
+		  గుర్తులేని దీర్ఘ వాహకం = 0;
+		  res[పునాది] = కూడు_with_వాహకం(res[పునాది], tmp, వాహకం);
+		  కొరకు (పూర్ణాంకం కూడు_idx = పునాది+1 ; కూడు_idx < cnt ; కూడు_idx += 1) {
+			res[కూడు_idx] = కూడు_with_వాహకం(res[కూడు_idx], కూడిక, వాహకం);
+			కూడిక = 0;
 		  }
 	    }
       }
 
 	// Replace the "this" value with the calculated result. We
 	// know a-priori that the bbits are zero and unchanged.
-      res[cnt-1] &= mask;
-      for (int idx = 0 ; idx < cnt ; idx += 1)
+      res[cnt-1] &= ముసుగు;
+      కొరకు (పూర్ణాంకం idx = 0 ; idx < cnt ; idx += 1)
 	    abits_ptr_[idx] = res[idx];
 
-      delete[]res;
-      return;
+      తొలగించు[]res;
+      తిరిగి;
 
 
 }
 
-bool vvp_vector4_t::eeq(const vvp_vector4_t&that) const
+తార్కిక vvp_vector4_t::eeq(స్థిరరాశి vvp_vector4_t&that) స్థిరరాశి
 {
-      if (size_ != that.size_)
-	    return false;
+      ఒకవేళ (కొలత_2 != that.కొలత_2)
+	    తిరిగి అబద్ధం;
 
-      if (size_ < BITS_PER_WORD) {
-	    unsigned long mask = (1UL << size_) - 1;
-	    return (abits_val_&mask) == (that.abits_val_&mask)
-		  && (bbits_val_&mask) == (that.bbits_val_&mask);
+      ఒకవేళ (కొలత_2 < బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని దీర్ఘ ముసుగు = (1UL << కొలత_2) - 1;
+	    తిరిగి (abits_val_&ముసుగు) == (that.abits_val_&ముసుగు)
+		  && (bbits_val_&ముసుగు) == (that.bbits_val_&ముసుగు);
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    return (abits_val_ == that.abits_val_)
+      ఒకవేళ (కొలత_2 == బిట్లు_చొప్పున_మాట) {
+	    తిరిగి (abits_val_ == that.abits_val_)
 		  && (bbits_val_ == that.bbits_val_);
       }
 
-      unsigned words = size_ / BITS_PER_WORD;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
-	    if (abits_ptr_[idx] != that.abits_ptr_[idx])
-		  return false;
-	    if (bbits_ptr_[idx] != that.bbits_ptr_[idx])
-		  return false;
+      గుర్తులేని పదాలు = కొలత_2 / బిట్లు_చొప్పున_మాట;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు ;  idx += 1) {
+	    ఒకవేళ (abits_ptr_[idx] != that.abits_ptr_[idx])
+		  తిరిగి అబద్ధం;
+	    ఒకవేళ (bbits_ptr_[idx] != that.bbits_ptr_[idx])
+		  తిరిగి అబద్ధం;
       }
 
-      unsigned long mask = size_%BITS_PER_WORD;
-      if (mask > 0) {
-	    mask = (1UL << mask) - 1;
-	    return (abits_ptr_[words]&mask) == (that.abits_ptr_[words]&mask)
-		  && (bbits_ptr_[words]&mask) == (that.bbits_ptr_[words]&mask);
+      గుర్తులేని దీర్ఘ ముసుగు = కొలత_2%బిట్లు_చొప్పున_మాట;
+      ఒకవేళ (ముసుగు > 0) {
+	    ముసుగు = (1UL << ముసుగు) - 1;
+	    తిరిగి (abits_ptr_[పదాలు]&ముసుగు) == (that.abits_ptr_[పదాలు]&ముసుగు)
+		  && (bbits_ptr_[పదాలు]&ముసుగు) == (that.bbits_ptr_[పదాలు]&ముసుగు);
       }
 
-      return true;
+      తిరిగి నిజం;
 }
 
-bool vvp_vector4_t::eq_xz(const vvp_vector4_t&that) const
+తార్కిక vvp_vector4_t::eq_xz(స్థిరరాశి vvp_vector4_t&that) స్థిరరాశి
 {
-      if (size_ != that.size_)
-	    return false;
+      ఒకవేళ (కొలత_2 != that.కొలత_2)
+	    తిరిగి అబద్ధం;
 
-      if (size_ < BITS_PER_WORD) {
-	    unsigned long mask = (1UL << size_) - 1;
-	    return ((abits_val_|bbits_val_)&mask) == ((that.abits_val_|that.bbits_val_)&mask)
-		  && (bbits_val_&mask) == (that.bbits_val_&mask);
+      ఒకవేళ (కొలత_2 < బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని దీర్ఘ ముసుగు = (1UL << కొలత_2) - 1;
+	    తిరిగి ((abits_val_|bbits_val_)&ముసుగు) == ((that.abits_val_|that.bbits_val_)&ముసుగు)
+		  && (bbits_val_&ముసుగు) == (that.bbits_val_&ముసుగు);
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    return ((abits_val_|bbits_val_) == (that.abits_val_|that.bbits_val_))
+      ఒకవేళ (కొలత_2 == బిట్లు_చొప్పున_మాట) {
+	    తిరిగి ((abits_val_|bbits_val_) == (that.abits_val_|that.bbits_val_))
 		  && (bbits_val_ == that.bbits_val_);
       }
 
-      unsigned words = size_ / BITS_PER_WORD;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
-	    if ((abits_ptr_[idx]|bbits_ptr_[idx]) != (that.abits_ptr_[idx]|that.bbits_ptr_[idx]))
-		  return false;
-	    if (bbits_ptr_[idx] != that.bbits_ptr_[idx])
-		  return false;
+      గుర్తులేని పదాలు = కొలత_2 / బిట్లు_చొప్పున_మాట;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు ;  idx += 1) {
+	    ఒకవేళ ((abits_ptr_[idx]|bbits_ptr_[idx]) != (that.abits_ptr_[idx]|that.bbits_ptr_[idx]))
+		  తిరిగి అబద్ధం;
+	    ఒకవేళ (bbits_ptr_[idx] != that.bbits_ptr_[idx])
+		  తిరిగి అబద్ధం;
       }
 
-      unsigned long mask = size_%BITS_PER_WORD;
-      if (mask > 0) {
-	    mask = (1UL << mask) - 1;
-	    return ((abits_ptr_[words]|bbits_ptr_[words])&mask) == ((that.abits_ptr_[words]|that.bbits_ptr_[words])&mask)
-		  && (bbits_ptr_[words]&mask) == (that.bbits_ptr_[words]&mask);
+      గుర్తులేని దీర్ఘ ముసుగు = కొలత_2%బిట్లు_చొప్పున_మాట;
+      ఒకవేళ (ముసుగు > 0) {
+	    ముసుగు = (1UL << ముసుగు) - 1;
+	    తిరిగి ((abits_ptr_[పదాలు]|bbits_ptr_[పదాలు])&ముసుగు) == ((that.abits_ptr_[పదాలు]|that.bbits_ptr_[పదాలు])&ముసుగు)
+		  && (bbits_ptr_[పదాలు]&ముసుగు) == (that.bbits_ptr_[పదాలు]&ముసుగు);
       }
 
-      return true;
+      తిరిగి నిజం;
 }
 
-bool vvp_vector4_t::has_xz() const
+తార్కిక vvp_vector4_t::has_xz() స్థిరరాశి
 {
-      if (size_ < BITS_PER_WORD) {
-	    unsigned long mask = -1UL >> (BITS_PER_WORD - size_);
-	    return bbits_val_&mask;
+      ఒకవేళ (కొలత_2 < బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని దీర్ఘ ముసుగు = -1UL >> (బిట్లు_చొప్పున_మాట - కొలత_2);
+	    తిరిగి bbits_val_&ముసుగు;
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    return bbits_val_;
+      ఒకవేళ (కొలత_2 == బిట్లు_చొప్పున_మాట) {
+	    తిరిగి bbits_val_;
       }
 
-      unsigned words = size_ / BITS_PER_WORD;
-      for (unsigned idx = 0 ; idx < words ; idx += 1) {
-	    if (bbits_ptr_[idx])
-		  return true;
+      గుర్తులేని పదాలు = కొలత_2 / బిట్లు_చొప్పున_మాట;
+      కొరకు (గుర్తులేని idx = 0 ; idx < పదాలు ; idx += 1) {
+	    ఒకవేళ (bbits_ptr_[idx])
+		  తిరిగి నిజం;
       }
 
-      unsigned long mask = size_%BITS_PER_WORD;
-      if (mask > 0) {
-	    mask = -1UL >> (BITS_PER_WORD - mask);
-	    return bbits_ptr_[words]&mask;
+      గుర్తులేని దీర్ఘ ముసుగు = కొలత_2%బిట్లు_చొప్పున_మాట;
+      ఒకవేళ (ముసుగు > 0) {
+	    ముసుగు = -1UL >> (బిట్లు_చొప్పున_మాట - ముసుగు);
+	    తిరిగి bbits_ptr_[పదాలు]&ముసుగు;
       }
 
-      return false;
+      తిరిగి అబద్ధం;
 }
 
-void vvp_vector4_t::change_z2x()
+శూన్య vvp_vector4_t::change_z2x()
 {
 	// This method relies on the fact that both BIT4_X and BIT4_Z
 	// have the bbit set in the vector4 encoding, and also that
@@ -1817,61 +1817,61 @@ void vvp_vector4_t::change_z2x()
 	// or-ing the bbit into the abit, BIT4_X and BIT4_Z both
 	// become BIT4_X.
 
-      if (size_ <= BITS_PER_WORD) {
+      ఒకవేళ (కొలత_2 <= బిట్లు_చొప్పున_మాట) {
 	    abits_val_ |= bbits_val_;
-      } else {
-	    unsigned words = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
-	    for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      } లేకపోతే {
+	    గుర్తులేని పదాలు = (కొలత_2+బిట్లు_చొప్పున_మాట-1) / బిట్లు_చొప్పున_మాట;
+	    కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు ;  idx += 1)
 		  abits_ptr_[idx] |= bbits_ptr_[idx];
       }
 }
 
-void vvp_vector4_t::fill_bits(vvp_bit4_t bit)
+శూన్య vvp_vector4_t::fill_బిట్లు(vvp_bit4_t బిట్టు)
 {
 	/* note: this relies on the bit encoding for the vvp_bit4_t. */
-      static const unsigned long init_atable[4] = {
-	    WORD_0_ABITS,
-	    WORD_1_ABITS,
-	    WORD_Z_ABITS,
-	    WORD_X_ABITS };
-      static const unsigned long init_btable[4] = {
-	    WORD_0_BBITS,
-	    WORD_1_BBITS,
-	    WORD_Z_BBITS,
-	    WORD_X_BBITS };
+      స్థిర స్థిరరాశి గుర్తులేని దీర్ఘ init_atable[4] = {
+	    మాట_0_ABITS,
+	    మాట_1_ABITS,
+	    మాట_Z_ABITS,
+	    మాట_X_ABITS };
+      స్థిర స్థిరరాశి గుర్తులేని దీర్ఘ init_btable[4] = {
+	    మాట_0_BBITS,
+	    మాట_1_BBITS,
+	    మాట_Z_BBITS,
+	    మాట_X_BBITS };
 
-      if (size_ <= BITS_PER_WORD) {
-	    abits_val_ = init_atable[bit];
-	    bbits_val_ = init_btable[bit];
-      } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    for (unsigned idx = 0; idx < words; idx += 1) {
-		  abits_ptr_[idx] = init_atable[bit];
-		  bbits_ptr_[idx] = init_btable[bit];
+      ఒకవేళ (కొలత_2 <= బిట్లు_చొప్పున_మాట) {
+	    abits_val_ = init_atable[బిట్టు];
+	    bbits_val_ = init_btable[బిట్టు];
+      } లేకపోతే {
+	    గుర్తులేని పదాలు = (కొలత_2 + బిట్లు_చొప్పున_మాట - 1) / బిట్లు_చొప్పున_మాట;
+	    కొరకు (గుర్తులేని idx = 0; idx < పదాలు; idx += 1) {
+		  abits_ptr_[idx] = init_atable[బిట్టు];
+		  bbits_ptr_[idx] = init_btable[బిట్టు];
 	    }
       }
 }
 
-char* vvp_vector4_t::as_string(char*buf, size_t buf_len) const
+అక్షరం* vvp_vector4_t::as_string(అక్షరం*buf, size_t buf_len) స్థిరరాశి
 {
-      char*res = buf;
+      అక్షరం*res = buf;
       *buf++ = 'C';
       *buf++ = '4';
       *buf++ = '<';
       buf_len -= 3;
 
-      for (unsigned idx = 0 ;  idx < size() && buf_len >= 2 ;  idx += 1) {
-	    switch (value(size()-idx-1)) {
-		case BIT4_0:
+      కొరకు (గుర్తులేని idx = 0 ;  idx < size() && buf_len >= 2 ;  idx += 1) {
+	    ఎంపిక (value(size()-idx-1)) {
+		స్థితి BIT4_0:
 		  *buf++ = '0';
-		  break;
-		case BIT4_1:
+		  ఆపు;
+		స్థితి BIT4_1:
 		  *buf++ = '1';
-		  break;
-		case BIT4_X:
+		  ఆపు;
+		స్థితి BIT4_X:
 		  *buf++ = 'x';
-		  break;
-		case BIT4_Z:
+		  ఆపు;
+		స్థితి BIT4_Z:
 		  *buf++ = 'z';
 	    }
 	    buf_len -= 1;
@@ -1879,132 +1879,132 @@ char* vvp_vector4_t::as_string(char*buf, size_t buf_len) const
 
       *buf++ = '>';
       *buf++ = 0;
-      return res;
+      తిరిగి res;
 }
 
-void vvp_vector4_t::invert()
+శూన్య vvp_vector4_t::invert()
 {
-      if (size_ <= BITS_PER_WORD) {
-	    unsigned long mask = (size_<BITS_PER_WORD)? (1UL<<size_)-1UL : -1UL;
-	    abits_val_ = mask & ~abits_val_;
+      ఒకవేళ (కొలత_2 <= బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని దీర్ఘ ముసుగు = (కొలత_2<బిట్లు_చొప్పున_మాట)? (1UL<<కొలత_2)-1UL : -1UL;
+	    abits_val_ = ముసుగు & ~abits_val_;
 	    abits_val_ |= bbits_val_;
-      } else {
-	    unsigned remaining = size_;
-	    unsigned idx = 0;
-	    while (remaining >= BITS_PER_WORD) {
+      } లేకపోతే {
+	    గుర్తులేని మిగిలిన = కొలత_2;
+	    గుర్తులేని idx = 0;
+	    అయితే (మిగిలిన >= బిట్లు_చొప్పున_మాట) {
 		  abits_ptr_[idx] = ~abits_ptr_[idx];
 		  abits_ptr_[idx] |= bbits_ptr_[idx];
 		  idx += 1;
-		  remaining -= BITS_PER_WORD;
+		  మిగిలిన -= బిట్లు_చొప్పున_మాట;
 	    }
-	    if (remaining > 0) {
-		  unsigned long mask = (1UL<<remaining) - 1UL;
-		  abits_ptr_[idx] = mask & ~abits_ptr_[idx];
+	    ఒకవేళ (మిగిలిన > 0) {
+		  గుర్తులేని దీర్ఘ ముసుగు = (1UL<<మిగిలిన) - 1UL;
+		  abits_ptr_[idx] = ముసుగు & ~abits_ptr_[idx];
 		  abits_ptr_[idx] |= bbits_ptr_[idx];
 	    }
       }
 }
 
-#define BIT_MASK(n) ((n) ? ((~0UL) >> (BITS_PER_WORD - (n))) : ~0UL)
+#నిర్వచించు బిట్టు_ముసుగు(n) ((n) ? ((~0UL) >> (బిట్లు_చొప్పున_మాట - (n))) : ~0UL)
 
-vvp_bit4_t vvp_vector4_t::reduce_or() const
+vvp_bit4_t vvp_vector4_t::reduce_or() స్థిరరాశి
 {
-      unsigned long mask = BIT_MASK(size_ % BITS_PER_WORD);
+      గుర్తులేని దీర్ఘ ముసుగు = బిట్టు_ముసుగు(కొలత_2 % బిట్లు_చొప్పున_మాట);
       vvp_bit4_t res = BIT4_0;
 
-      if (size_ <= BITS_PER_WORD) {
-	    if ((abits_val_ & ~bbits_val_ & mask) != 0UL)
-		  return BIT4_1;
-	    if ((bbits_val_ & mask) != 0UL)
-		  return BIT4_X;
-      } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    unsigned idx;
-	    for (idx = 0; idx < words - 1; idx += 1) {
-		  if ((abits_ptr_[idx] & ~bbits_ptr_[idx]) != 0UL)
-			return BIT4_1;
-		  if (bbits_ptr_[idx] != 0UL)
+      ఒకవేళ (కొలత_2 <= బిట్లు_చొప్పున_మాట) {
+	    ఒకవేళ ((abits_val_ & ~bbits_val_ & ముసుగు) != 0UL)
+		  తిరిగి BIT4_1;
+	    ఒకవేళ ((bbits_val_ & ముసుగు) != 0UL)
+		  తిరిగి BIT4_X;
+      } లేకపోతే {
+	    గుర్తులేని పదాలు = (కొలత_2 + బిట్లు_చొప్పున_మాట - 1) / బిట్లు_చొప్పున_మాట;
+	    గుర్తులేని idx;
+	    కొరకు (idx = 0; idx < పదాలు - 1; idx += 1) {
+		  ఒకవేళ ((abits_ptr_[idx] & ~bbits_ptr_[idx]) != 0UL)
+			తిరిగి BIT4_1;
+		  ఒకవేళ (bbits_ptr_[idx] != 0UL)
 			res = BIT4_X;
 	    }
-	    if ((abits_ptr_[idx] & ~bbits_ptr_[idx] & mask) != 0UL)
-		  return BIT4_1;
-	    if ((bbits_ptr_[idx] & mask) != 0UL)
+	    ఒకవేళ ((abits_ptr_[idx] & ~bbits_ptr_[idx] & ముసుగు) != 0UL)
+		  తిరిగి BIT4_1;
+	    ఒకవేళ ((bbits_ptr_[idx] & ముసుగు) != 0UL)
 		  res = BIT4_X;
       }
 
-      return res;
+      తిరిగి res;
 }
 
-vvp_bit4_t vvp_vector4_t::reduce_and() const
+vvp_bit4_t vvp_vector4_t::reduce_and() స్థిరరాశి
 {
-      unsigned long mask = BIT_MASK(size_ % BITS_PER_WORD);
+      గుర్తులేని దీర్ఘ ముసుగు = బిట్టు_ముసుగు(కొలత_2 % బిట్లు_చొప్పున_మాట);
       vvp_bit4_t res = BIT4_1;
 
-      if (size_ <= BITS_PER_WORD) {
-	    if ((abits_val_ | bbits_val_ | ~mask) != ~0UL)
-		  return BIT4_0;
-	    if ((bbits_val_ & mask) != 0UL)
-		  return BIT4_X;
-	} else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    unsigned idx;
-	    for (idx = 0; idx < words - 1; idx += 1) {
-		  if ((abits_ptr_[idx] | bbits_ptr_[idx]) != ~0UL)
-			return BIT4_0;
-		  if (bbits_ptr_[idx] != 0UL)
+      ఒకవేళ (కొలత_2 <= బిట్లు_చొప్పున_మాట) {
+	    ఒకవేళ ((abits_val_ | bbits_val_ | ~ముసుగు) != ~0UL)
+		  తిరిగి BIT4_0;
+	    ఒకవేళ ((bbits_val_ & ముసుగు) != 0UL)
+		  తిరిగి BIT4_X;
+	} లేకపోతే {
+	    గుర్తులేని పదాలు = (కొలత_2 + బిట్లు_చొప్పున_మాట - 1) / బిట్లు_చొప్పున_మాట;
+	    గుర్తులేని idx;
+	    కొరకు (idx = 0; idx < పదాలు - 1; idx += 1) {
+		  ఒకవేళ ((abits_ptr_[idx] | bbits_ptr_[idx]) != ~0UL)
+			తిరిగి BIT4_0;
+		  ఒకవేళ (bbits_ptr_[idx] != 0UL)
 			res = BIT4_X;
 	    }
-	    if ((abits_ptr_[idx] | bbits_ptr_[idx] | ~mask) != ~0UL)
-		  return BIT4_0;
-	    if ((bbits_ptr_[idx] & mask) != 0UL)
+	    ఒకవేళ ((abits_ptr_[idx] | bbits_ptr_[idx] | ~ముసుగు) != ~0UL)
+		  తిరిగి BIT4_0;
+	    ఒకవేళ ((bbits_ptr_[idx] & ముసుగు) != 0UL)
 		  res = BIT4_X;
       }
 
-      return res;
+      తిరిగి res;
 }
 
-static unsigned long parity(unsigned long val)
+స్థిర గుర్తులేని దీర్ఘ parity(గుర్తులేని దీర్ఘ val)
 {
-#if defined(__GNUC__)
+#ఒకవేళ defined(__GNUC__)
       // The compiler builtin can use target-specific CPU instructions.
-      return __builtin_parityl(val);
-#else
-#if ULONG_MAX > 0xffffffffUL
+      తిరిగి __builtin_parityl(val);
+#లేకపోతే
+#ఒకవేళ ULONG_MAX > 0xffffffffUL
 	val ^= val >> 32;
-#endif
+#అయితే_ముగింపు
 	val ^= val >> 16;
 	val ^= val >> 8;
 	val ^= val >> 4;
 
-      return (0x6996 >> (val & 0xf)) & 1;
-#endif
+      తిరిగి (0x6996 >> (val & 0xf)) & 1;
+#అయితే_ముగింపు
 }
 
-vvp_bit4_t vvp_vector4_t::reduce_xor() const
+vvp_bit4_t vvp_vector4_t::reduce_xor() స్థిరరాశి
 {
-      unsigned long mask = BIT_MASK(size_ % BITS_PER_WORD);
+      గుర్తులేని దీర్ఘ ముసుగు = బిట్టు_ముసుగు(కొలత_2 % బిట్లు_చొప్పున_మాట);
 
-      if (size_ <= BITS_PER_WORD) {
-	    if ((bbits_val_ & mask) != 0UL)
-		  return BIT4_X;
-	    return parity(abits_val_ & mask) ? BIT4_1 : BIT4_0;
-      } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    unsigned long val_a = 0UL;
-	    unsigned idx;
-	    for (idx = 0; idx < words - 1; idx += 1) {
-		  if (bbits_ptr_[idx] != 0UL)
-			return BIT4_X;
+      ఒకవేళ (కొలత_2 <= బిట్లు_చొప్పున_మాట) {
+	    ఒకవేళ ((bbits_val_ & ముసుగు) != 0UL)
+		  తిరిగి BIT4_X;
+	    తిరిగి parity(abits_val_ & ముసుగు) ? BIT4_1 : BIT4_0;
+      } లేకపోతే {
+	    గుర్తులేని పదాలు = (కొలత_2 + బిట్లు_చొప్పున_మాట - 1) / బిట్లు_చొప్పున_మాట;
+	    గుర్తులేని దీర్ఘ val_a = 0UL;
+	    గుర్తులేని idx;
+	    కొరకు (idx = 0; idx < పదాలు - 1; idx += 1) {
+		  ఒకవేళ (bbits_ptr_[idx] != 0UL)
+			తిరిగి BIT4_X;
 		  val_a ^= abits_ptr_[idx];
 	    }
-	    if ((bbits_ptr_[idx] & mask) != 0UL)
-		  return BIT4_X;
-	    val_a ^= abits_ptr_[idx] & mask;
-	    return parity(val_a) ? BIT4_1 : BIT4_0;
+	    ఒకవేళ ((bbits_ptr_[idx] & ముసుగు) != 0UL)
+		  తిరిగి BIT4_X;
+	    val_a ^= abits_ptr_[idx] & ముసుగు;
+	    తిరిగి parity(val_a) ? BIT4_1 : BIT4_0;
       }
 }
 
-vvp_vector4_t& vvp_vector4_t::operator &= (const vvp_vector4_t&that)
+vvp_vector4_t& vvp_vector4_t::క్రియాకారకం &= (స్థిరరాశి vvp_vector4_t&that)
 {
 	// The truth table is:
 	//     00 01 11 10
@@ -2012,16 +2012,16 @@ vvp_vector4_t& vvp_vector4_t::operator &= (const vvp_vector4_t&that)
 	//  01 00 01 11 11
 	//  11 00 11 11 11
 	//  10 00 11 11 11
-      if (size_ <= BITS_PER_WORD) {
-	    unsigned long tmp1 = abits_val_ | bbits_val_;
-	    unsigned long tmp2 = that.abits_val_ | that.bbits_val_;
+      ఒకవేళ (కొలత_2 <= బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని దీర్ఘ tmp1 = abits_val_ | bbits_val_;
+	    గుర్తులేని దీర్ఘ tmp2 = that.abits_val_ | that.bbits_val_;
 	    abits_val_ = tmp1 & tmp2;
 	    bbits_val_ = (tmp1 & that.bbits_val_) | (tmp2 & bbits_val_);
-      } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    for (unsigned idx = 0; idx < words ; idx += 1) {
-		  unsigned long tmp1 = abits_ptr_[idx] | bbits_ptr_[idx];
-		  unsigned long tmp2 = that.abits_ptr_[idx] |
+      } లేకపోతే {
+	    గుర్తులేని పదాలు = (కొలత_2 + బిట్లు_చొప్పున_మాట - 1) / బిట్లు_చొప్పున_మాట;
+	    కొరకు (గుర్తులేని idx = 0; idx < పదాలు ; idx += 1) {
+		  గుర్తులేని దీర్ఘ tmp1 = abits_ptr_[idx] | bbits_ptr_[idx];
+		  గుర్తులేని దీర్ఘ tmp2 = that.abits_ptr_[idx] |
 		                       that.bbits_ptr_[idx];
 		  abits_ptr_[idx] = tmp1 & tmp2;
 		  bbits_ptr_[idx] = (tmp1 & that.bbits_ptr_[idx]) |
@@ -2029,10 +2029,10 @@ vvp_vector4_t& vvp_vector4_t::operator &= (const vvp_vector4_t&that)
 	    }
       }
 
-      return *this;
+      తిరిగి *ఇది;
 }
 
-vvp_vector4_t& vvp_vector4_t::operator |= (const vvp_vector4_t&that)
+vvp_vector4_t& vvp_vector4_t::క్రియాకారకం |= (స్థిరరాశి vvp_vector4_t&that)
 {
 	// The truth table is:
 	//     00 01 11 10
@@ -2040,17 +2040,17 @@ vvp_vector4_t& vvp_vector4_t::operator |= (const vvp_vector4_t&that)
 	//  01 01 01 01 01
 	//  11 11 01 11 11
 	//  10 11 01 11 11
-      if (size_ <= BITS_PER_WORD) {
-	    unsigned long tmp = abits_val_ | bbits_val_ |
+      ఒకవేళ (కొలత_2 <= బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని దీర్ఘ tmp = abits_val_ | bbits_val_ |
 	                        that.abits_val_ | that.bbits_val_;
 	    bbits_val_ = ((~abits_val_ | bbits_val_) & that.bbits_val_) |
 	                 ((~that.abits_val_ | that.bbits_val_) & bbits_val_);
 	    abits_val_ = tmp;
 
-      } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    for (unsigned idx = 0; idx < words ; idx += 1) {
-		  unsigned long tmp = abits_ptr_[idx] | bbits_ptr_[idx] |
+      } లేకపోతే {
+	    గుర్తులేని పదాలు = (కొలత_2 + బిట్లు_చొప్పున_మాట - 1) / బిట్లు_చొప్పున_మాట;
+	    కొరకు (గుర్తులేని idx = 0; idx < పదాలు ; idx += 1) {
+		  గుర్తులేని దీర్ఘ tmp = abits_ptr_[idx] | bbits_ptr_[idx] |
 	                        that.abits_ptr_[idx] | that.bbits_ptr_[idx];
 		  bbits_ptr_[idx] = ((~abits_ptr_[idx] | bbits_ptr_[idx]) &
 		                     that.bbits_ptr_[idx]) |
@@ -2060,10 +2060,10 @@ vvp_vector4_t& vvp_vector4_t::operator |= (const vvp_vector4_t&that)
 	    }
       }
 
-      return *this;
+      తిరిగి *ఇది;
 }
 
-vvp_vector4_t& vvp_vector4_t::operator ^= (const vvp_vector4_t&that)
+vvp_vector4_t& vvp_vector4_t::క్రియాకారకం ^= (స్థిరరాశి vvp_vector4_t&that)
 {
 	// The truth table is:
 	//     00 01 11 10
@@ -2071,220 +2071,220 @@ vvp_vector4_t& vvp_vector4_t::operator ^= (const vvp_vector4_t&that)
 	//  01 01 00 11 11
 	//  11 11 11 11 11
 	//  10 11 11 11 11
-      if (size_ <= BITS_PER_WORD) {
-	    unsigned long bval = bbits_val_ | that.bbits_val_;
+      ఒకవేళ (కొలత_2 <= బిట్లు_చొప్పున_మాట) {
+	    గుర్తులేని దీర్ఘ bval = bbits_val_ | that.bbits_val_;
 	    bbits_val_ = bval;
 	    abits_val_ = (abits_val_ ^ that.abits_val_) | bval;
-      } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    for (unsigned idx = 0; idx < words ; idx += 1) {
-		  unsigned long bval = bbits_ptr_[idx] | that.bbits_ptr_[idx];
+      } లేకపోతే {
+	    గుర్తులేని పదాలు = (కొలత_2 + బిట్లు_చొప్పున_మాట - 1) / బిట్లు_చొప్పున_మాట;
+	    కొరకు (గుర్తులేని idx = 0; idx < పదాలు ; idx += 1) {
+		  గుర్తులేని దీర్ఘ bval = bbits_ptr_[idx] | that.bbits_ptr_[idx];
 		  bbits_ptr_[idx] = bval;
 		  abits_ptr_[idx] = (abits_ptr_[idx] ^ that.abits_ptr_[idx]) | bval;
 	    }
       }
 
-      return *this;
+      తిరిగి *ఇది;
 }
 
 /*
 * Add an integer to the vvp_vector4_t in place, bit by bit so that
 * there is no size limitations.
 */
-vvp_vector4_t& vvp_vector4_t::operator += (int64_t that)
+vvp_vector4_t& vvp_vector4_t::క్రియాకారకం += (int64_t that)
 {
-      vvp_bit4_t carry = BIT4_0;
-      unsigned idx;
+      vvp_bit4_t వాహకం = BIT4_0;
+      గుర్తులేని idx;
 
-      if (has_xz()) {
+      ఒకవేళ (has_xz()) {
 	    vvp_vector4_t xxx (size(), BIT4_X);
-	    *this = xxx;
-	    return *this;
+	    *ఇది = xxx;
+	    తిరిగి *ఇది;
       }
 
-      for (idx = 0 ; idx < size() ; idx += 1) {
-	    if (that == 0 && carry==BIT4_0)
-		  break;
+      కొరకు (idx = 0 ; idx < size() ; idx += 1) {
+	    ఒకవేళ (that == 0 && వాహకం==BIT4_0)
+		  ఆపు;
 
-	    vvp_bit4_t that_bit = (that&1)? BIT4_1 : BIT4_0;
+	    vvp_bit4_t that_బిట్టు = (that&1)? BIT4_1 : BIT4_0;
 	    that >>= 1;
 
-	    if (that_bit==BIT4_0 && carry==BIT4_0)
-		  continue;
+	    ఒకవేళ (that_బిట్టు==BIT4_0 && వాహకం==BIT4_0)
+		  కొనసాగు;
 
-	    vvp_bit4_t bit = value(idx);
-	    bit = add_with_carry(bit, that_bit, carry);
+	    vvp_bit4_t బిట్టు = value(idx);
+	    బిట్టు = కూడు_with_వాహకం(బిట్టు, that_బిట్టు, వాహకం);
 
-	    set_bit(idx, bit);
+	    సమితి_బిట్టు(idx, బిట్టు);
       }
 
-      return *this;
+      తిరిగి *ఇది;
 }
 
-ostream& operator<< (ostream&out, const vvp_vector4_t&that)
+ostream& క్రియాకారకం<< (ostream&out, స్థిరరాశి vvp_vector4_t&that)
 {
       out << that.size() << "'b";
-      for (unsigned idx = 0 ;  idx < that.size() ;  idx += 1)
+      కొరకు (గుర్తులేని idx = 0 ;  idx < that.size() ;  idx += 1)
 	    out << that.value(that.size()-idx-1);
-      return out;
+      తిరిగి out;
 }
 
-template <class INT>bool vector4_to_value(const vvp_vector4_t&vec, INT&val,
-					  bool is_signed, bool is_arithmetic)
+మూస <తరగతి INT>తార్కిక vector4_గమ్యం_విలువ(స్థిరరాశి vvp_vector4_t&vec, INT&val,
+					  తార్కిక is_signed, తార్కిక is_arithmetic)
 {
       INT res = 0;
       INT msk = 1;
-      bool rc_flag = true;
+      తార్కిక rc_flag = నిజం;
 
-      unsigned size = vec.size();
-      if (size > 8*sizeof(val)) size = 8*sizeof(val);
-      for (unsigned idx = 0 ;  idx < size ;  idx += 1) {
-	    switch (vec.value(idx)) {
-		case BIT4_0:
-		  break;
-		case BIT4_1:
+      గుర్తులేని size = vec.size();
+      ఒకవేళ (size > 8*పరిమాణం(val)) size = 8*పరిమాణం(val);
+      కొరకు (గుర్తులేని idx = 0 ;  idx < size ;  idx += 1) {
+	    ఎంపిక (vec.value(idx)) {
+		స్థితి BIT4_0:
+		  ఆపు;
+		స్థితి BIT4_1:
 		  res |= msk;
-		  break;
-		default:
-		  if (is_arithmetic)
-			return false;
-		  else
-			rc_flag = false;
+		  ఆపు;
+		అప్రమేయ:
+		  ఒకవేళ (is_arithmetic)
+			తిరిగి అబద్ధం;
+		  లేకపోతే
+			rc_flag = అబద్ధం;
 	    }
 
 	    msk <<= 1;
       }
 
-      if (is_signed && vec.value(vec.size()-1) == BIT4_1) {
-	    if (vec.size() < 8*sizeof(val))
+      ఒకవేళ (is_signed && vec.value(vec.size()-1) == BIT4_1) {
+	    ఒకవేళ (vec.size() < 8*పరిమాణం(val))
 		  res |= static_cast<INT>(-1ULL << vec.size());
       }
 
       val = res;
-      return rc_flag;
+      తిరిగి rc_flag;
 }
 
-template bool vector4_to_value(const vvp_vector4_t&vec, int8_t&val,
-			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, int16_t&val,
-			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, int32_t&val,
-			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, int64_t&val,
-			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, uint8_t&val,
-			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, uint16_t&val,
-			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, uint32_t&val,
-			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, uint64_t&val,
-			       bool is_signed, bool is_arithmetic);
+మూస తార్కిక vector4_గమ్యం_విలువ(స్థిరరాశి vvp_vector4_t&vec, int8_t&val,
+			       తార్కిక is_signed, తార్కిక is_arithmetic);
+మూస తార్కిక vector4_గమ్యం_విలువ(స్థిరరాశి vvp_vector4_t&vec, int16_t&val,
+			       తార్కిక is_signed, తార్కిక is_arithmetic);
+మూస తార్కిక vector4_గమ్యం_విలువ(స్థిరరాశి vvp_vector4_t&vec, int32_t&val,
+			       తార్కిక is_signed, తార్కిక is_arithmetic);
+మూస తార్కిక vector4_గమ్యం_విలువ(స్థిరరాశి vvp_vector4_t&vec, int64_t&val,
+			       తార్కిక is_signed, తార్కిక is_arithmetic);
+మూస తార్కిక vector4_గమ్యం_విలువ(స్థిరరాశి vvp_vector4_t&vec, uint8_t&val,
+			       తార్కిక is_signed, తార్కిక is_arithmetic);
+మూస తార్కిక vector4_గమ్యం_విలువ(స్థిరరాశి vvp_vector4_t&vec, uint16_t&val,
+			       తార్కిక is_signed, తార్కిక is_arithmetic);
+మూస తార్కిక vector4_గమ్యం_విలువ(స్థిరరాశి vvp_vector4_t&vec, uint32_t&val,
+			       తార్కిక is_signed, తార్కిక is_arithmetic);
+మూస తార్కిక vector4_గమ్యం_విలువ(స్థిరరాశి vvp_vector4_t&vec, uint64_t&val,
+			       తార్కిక is_signed, తార్కిక is_arithmetic);
 
-template <class T> bool vector4_to_value(const vvp_vector4_t&vec,
-                                         bool&overflow_flag, T&val)
+మూస <తరగతి T> తార్కిక vector4_గమ్యం_విలువ(స్థిరరాశి vvp_vector4_t&vec,
+                                         తార్కిక&అధికప్రవాహం_flag, T&val)
 {
       T res = 0;
       T msk = 1;
 
-      overflow_flag = false;
-      unsigned size = vec.size();
-      for (unsigned idx = 0 ;  idx < size ;  idx += 1) {
-	    switch (vec.value(idx)) {
-		case BIT4_0:
-		  break;
-		case BIT4_1:
-		  if (msk == 0)
-			overflow_flag = true;
-		  else
+      అధికప్రవాహం_flag = అబద్ధం;
+      గుర్తులేని size = vec.size();
+      కొరకు (గుర్తులేని idx = 0 ;  idx < size ;  idx += 1) {
+	    ఎంపిక (vec.value(idx)) {
+		స్థితి BIT4_0:
+		  ఆపు;
+		స్థితి BIT4_1:
+		  ఒకవేళ (msk == 0)
+			అధికప్రవాహం_flag = నిజం;
+		  లేకపోతే
 			res |= msk;
-		  break;
-		default:
-		  return false;
+		  ఆపు;
+		అప్రమేయ:
+		  తిరిగి అబద్ధం;
 	    }
 
 	    msk <<= static_cast<T>(1);
       }
 
       val = res;
-      return true;
+      తిరిగి నిజం;
 }
 
-template bool vector4_to_value(const vvp_vector4_t&vec, bool&overflow_flag,
-                               unsigned long&val);
-#ifndef UL_AND_TIME64_SAME
-template bool vector4_to_value(const vvp_vector4_t&vec, bool&overflow_flag,
+మూస తార్కిక vector4_గమ్యం_విలువ(స్థిరరాశి vvp_vector4_t&vec, తార్కిక&అధికప్రవాహం_flag,
+                               గుర్తులేని దీర్ఘ&val);
+#నిర్వచితం_కాకపోతే UL_AND_TIME64_SAME
+మూస తార్కిక vector4_గమ్యం_విలువ(స్థిరరాశి vvp_vector4_t&vec, తార్కిక&అధికప్రవాహం_flag,
                                vvp_time64_t&val);
-#endif
+#అయితే_ముగింపు
 
-bool vector4_to_value(const vvp_vector4_t&vec, double&val, bool signed_flag)
+తార్కిక vector4_గమ్యం_విలువ(స్థిరరాశి vvp_vector4_t&vec, ద్విగుణ&val, తార్కిక signed_flag)
 {
 
-      if (vec.size() == 0) {
+      ఒకవేళ (vec.size() == 0) {
 	    val = 0.0;
-	    return true;
+	    తిరిగి నిజం;
       }
 
-      bool flag = true;
+      తార్కిక flag = నిజం;
 
-      if (vec.value(vec.size()-1) != BIT4_1) {
-	    signed_flag = false;
+      ఒకవేళ (vec.value(vec.size()-1) != BIT4_1) {
+	    signed_flag = అబద్ధం;
       }
 
-      double res = 0.0;
-      if (signed_flag) {
-	    vvp_bit4_t carry = BIT4_1;
-	    for (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
+      ద్విగుణ res = 0.0;
+      ఒకవేళ (signed_flag) {
+	    vvp_bit4_t వాహకం = BIT4_1;
+	    కొరకు (గుర్తులేని idx = 0 ;  idx < vec.size() ;  idx += 1) {
 		  vvp_bit4_t a = ~vec.value(idx);
-		  vvp_bit4_t x = add_with_carry(a, BIT4_0, carry);
-		  switch (x) {
-		      case BIT4_0:
-			break;
-		      case BIT4_1:
-			res += pow(2.0, (int)idx);
-			break;
-		      default:
-			flag = false;
+		  vvp_bit4_t x = కూడు_with_వాహకం(a, BIT4_0, వాహకం);
+		  ఎంపిక (x) {
+		      స్థితి BIT4_0:
+			ఆపు;
+		      స్థితి BIT4_1:
+			res += ఘాతం(2.0, (పూర్ణాంకం)idx);
+			ఆపు;
+		      అప్రమేయ:
+			flag = అబద్ధం;
 		  }
 	    }
 	    res *= -1.0;
-      } else {
-	    for (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
-		  switch (vec.value(idx)) {
-		      case BIT4_0:
-			break;
-		      case BIT4_1:
-			res += pow(2.0, (int)idx);
-			break;
-		      default:
-			flag = false;
+      } లేకపోతే {
+	    కొరకు (గుర్తులేని idx = 0 ;  idx < vec.size() ;  idx += 1) {
+		  ఎంపిక (vec.value(idx)) {
+		      స్థితి BIT4_0:
+			ఆపు;
+		      స్థితి BIT4_1:
+			res += ఘాతం(2.0, (పూర్ణాంకం)idx);
+			ఆపు;
+		      అప్రమేయ:
+			flag = అబద్ధం;
 		  }
 	    }
       }
       val = res;
-      return flag;
+      తిరిగి flag;
 }
 
-bool vector2_to_value(const vvp_vector2_t&a, int32_t&val, bool is_signed)
+తార్కిక vector2_గమ్యం_విలువ(స్థిరరాశి vvp_vector2_t&a, int32_t&val, తార్కిక is_signed)
 {
       val = 0;
-      unsigned idx;
-      uint32_t mask;
-      for (idx = 0, mask = 1 ; idx < a.size() && idx < 32 ; idx += 1, mask <<= 1) {
-	    if (a.value(idx)) val |= mask;
+      గుర్తులేని idx;
+      uint32_t ముసుగు;
+      కొరకు (idx = 0, ముసుగు = 1 ; idx < a.size() && idx < 32 ; idx += 1, ముసుగు <<= 1) {
+	    ఒకవేళ (a.value(idx)) val |= ముసుగు;
       }
 
-      if (is_signed && a.size() < 32 && a.value(a.size()-1)) {
-	    mask = -1;
-	    mask <<= a.size();
-	    val |= mask;
+      ఒకవేళ (is_signed && a.size() < 32 && a.value(a.size()-1)) {
+	    ముసుగు = -1;
+	    ముసుగు <<= a.size();
+	    val |= ముసుగు;
       }
 
-      return a.size() <= 32;
+      తిరిగి a.size() <= 32;
 }
 
-vvp_vector4array_t::vvp_vector4array_t(unsigned width__, unsigned words__)
-: width_(width__), words_(words__)
+vvp_vector4array_t::vvp_vector4array_t(గుర్తులేని వెడల్పు_3, గుర్తులేని పదాలు_2)
+: వెడల్పు_2(వెడల్పు_3), పదాలు_3(పదాలు_2)
 {
 }
 
@@ -2292,65 +2292,65 @@ vvp_vector4array_t::~vvp_vector4array_t()
 {
 }
 
-void vvp_vector4array_t::set_word_(v4cell*cell, const vvp_vector4_t&that)
+శూన్య vvp_vector4array_t::సమితి_మాట_2(v4cell*cell, స్థిరరాశి vvp_vector4_t&that)
 {
-      assert(that.size_ == width_);
+      ప్రతిజ్ఞా(that.కొలత_2 == వెడల్పు_2);
 
-      if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
+      ఒకవేళ (వెడల్పు_2 <= vvp_vector4_t::బిట్లు_చొప్పున_మాట) {
 	    cell->abits_val_ = that.abits_val_;
 	    cell->bbits_val_ = that.bbits_val_;
-	    return;
+	    తిరిగి;
       }
 
-      unsigned cnt = (width_ + vvp_vector4_t::BITS_PER_WORD-1)/vvp_vector4_t::BITS_PER_WORD;
+      గుర్తులేని cnt = (వెడల్పు_2 + vvp_vector4_t::బిట్లు_చొప్పున_మాట-1)/vvp_vector4_t::బిట్లు_చొప్పున_మాట;
 
-      if (cell->abits_ptr_ == 0) {
-	    cell->abits_ptr_ = new unsigned long[2*cnt];
+      ఒకవేళ (cell->abits_ptr_ == 0) {
+	    cell->abits_ptr_ = కొత్త గుర్తులేని దీర్ఘ[2*cnt];
 	    cell->bbits_ptr_ = cell->abits_ptr_ + cnt;
       }
 
-      for (unsigned idx = 0 ; idx < cnt ; idx += 1)
+      కొరకు (గుర్తులేని idx = 0 ; idx < cnt ; idx += 1)
 	    cell->abits_ptr_[idx] = that.abits_ptr_[idx];
-      for (unsigned idx = 0 ; idx < cnt ; idx += 1)
+      కొరకు (గుర్తులేని idx = 0 ; idx < cnt ; idx += 1)
 	    cell->bbits_ptr_[idx] = that.bbits_ptr_[idx];
 }
 
-vvp_vector4_t vvp_vector4array_t::get_word_(v4cell*cell) const
+vvp_vector4_t vvp_vector4array_t::get_మాట_2(v4cell*cell) స్థిరరాశి
 {
-      if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
+      ఒకవేళ (వెడల్పు_2 <= vvp_vector4_t::బిట్లు_చొప్పున_మాట) {
 	    vvp_vector4_t res;
-	    res.size_ = width_;
+	    res.కొలత_2 = వెడల్పు_2;
 	    res.abits_val_ = cell->abits_val_;
 	    res.bbits_val_ = cell->bbits_val_;
-	    return res;
+	    తిరిగి res;
       }
 
-      vvp_vector4_t res (width_, BIT4_X);
-      if (cell->abits_ptr_ == 0)
-	    return res;
+      vvp_vector4_t res (వెడల్పు_2, BIT4_X);
+      ఒకవేళ (cell->abits_ptr_ == 0)
+	    తిరిగి res;
 
-      unsigned cnt = (width_ + vvp_vector4_t::BITS_PER_WORD-1)/vvp_vector4_t::BITS_PER_WORD;
+      గుర్తులేని cnt = (వెడల్పు_2 + vvp_vector4_t::బిట్లు_చొప్పున_మాట-1)/vvp_vector4_t::బిట్లు_చొప్పున_మాట;
 
-      for (unsigned idx = 0 ; idx < cnt ; idx += 1)
+      కొరకు (గుర్తులేని idx = 0 ; idx < cnt ; idx += 1)
 	    res.abits_ptr_[idx] = cell->abits_ptr_[idx];
-      for (unsigned idx = 0 ; idx < cnt ; idx += 1)
+      కొరకు (గుర్తులేని idx = 0 ; idx < cnt ; idx += 1)
 	    res.bbits_ptr_[idx] = cell->bbits_ptr_[idx];
 
-      return res;
+      తిరిగి res;
 }
 
-vvp_vector4array_sa::vvp_vector4array_sa(unsigned width__, unsigned words__)
-: vvp_vector4array_t(width__, words__)
+vvp_vector4array_sa::vvp_vector4array_sa(గుర్తులేని వెడల్పు_3, గుర్తులేని పదాలు_2)
+: vvp_vector4array_t(వెడల్పు_3, పదాలు_2)
 {
-      array_ = new v4cell[words_];
+      array_ = కొత్త v4cell[పదాలు_3];
 
-      if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
-		  array_[idx].abits_val_ = vvp_vector4_t::WORD_X_ABITS;
-		  array_[idx].bbits_val_ = vvp_vector4_t::WORD_X_BBITS;
+      ఒకవేళ (వెడల్పు_2 <= vvp_vector4_t::బిట్లు_చొప్పున_మాట) {
+	    కొరకు (గుర్తులేని idx = 0 ; idx < పదాలు_3 ; idx += 1) {
+		  array_[idx].abits_val_ = vvp_vector4_t::మాట_X_ABITS;
+		  array_[idx].bbits_val_ = vvp_vector4_t::మాట_X_BBITS;
 	    }
-      } else {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
+      } లేకపోతే {
+	    కొరకు (గుర్తులేని idx = 0 ; idx < పదాలు_3 ; idx += 1) {
 		  array_[idx].abits_ptr_ = 0;
 		  array_[idx].bbits_ptr_ = 0;
 	    }
@@ -2359,84 +2359,84 @@ vvp_vector4array_sa::vvp_vector4array_sa(unsigned width__, unsigned words__)
 
 vvp_vector4array_sa::~vvp_vector4array_sa()
 {
-      if (array_) {
-	    if (width_ > vvp_vector4_t::BITS_PER_WORD) {
-		  for (unsigned idx = 0 ; idx < words_ ; idx += 1)
-			if (array_[idx].abits_ptr_)
-			      delete[]array_[idx].abits_ptr_;
+      ఒకవేళ (array_) {
+	    ఒకవేళ (వెడల్పు_2 > vvp_vector4_t::బిట్లు_చొప్పున_మాట) {
+		  కొరకు (గుర్తులేని idx = 0 ; idx < పదాలు_3 ; idx += 1)
+			ఒకవేళ (array_[idx].abits_ptr_)
+			      తొలగించు[]array_[idx].abits_ptr_;
 	    }
-	    delete[]array_;
+	    తొలగించు[]array_;
       }
 }
 
-void vvp_vector4array_sa::set_word(unsigned index, const vvp_vector4_t&that)
+శూన్య vvp_vector4array_sa::సమితి_మాట(గుర్తులేని సూచీ, స్థిరరాశి vvp_vector4_t&that)
 {
-      assert(index < words_);
+      ప్రతిజ్ఞా(సూచీ < పదాలు_3);
 
-      v4cell*cell = &array_[index];
+      v4cell*cell = &array_[సూచీ];
 
-      set_word_(cell, that);
+      సమితి_మాట_2(cell, that);
 }
 
-vvp_vector4_t vvp_vector4array_sa::get_word(unsigned index) const
+vvp_vector4_t vvp_vector4array_sa::get_మాట(గుర్తులేని సూచీ) స్థిరరాశి
 {
-      if (index >= words_)
-	    return vvp_vector4_t(width_, BIT4_X);
+      ఒకవేళ (సూచీ >= పదాలు_3)
+	    తిరిగి vvp_vector4_t(వెడల్పు_2, BIT4_X);
 
-      assert(index < words_);
+      ప్రతిజ్ఞా(సూచీ < పదాలు_3);
 
-      v4cell*cell = &array_[index];
+      v4cell*cell = &array_[సూచీ];
 
-      return get_word_(cell);
+      తిరిగి get_మాట_2(cell);
 }
 
-vvp_vector4array_aa::vvp_vector4array_aa(unsigned width__, unsigned words__)
-: vvp_vector4array_t(width__, words__)
+vvp_vector4array_aa::vvp_vector4array_aa(గుర్తులేని వెడల్పు_3, గుర్తులేని పదాలు_2)
+: vvp_vector4array_t(వెడల్పు_3, పదాలు_2)
 {
-      context_idx_ = vpip_add_item_to_context(this, vpip_peek_context_scope());
+      context_idx_ = vpip_కూడు_అంశం_గమ్యం_context(ఇది, vpip_peek_context_scope());
 }
 
 vvp_vector4array_aa::~vvp_vector4array_aa()
 {
 }
 
-void vvp_vector4array_aa::alloc_instance(vvp_context_t context)
+శూన్య vvp_vector4array_aa::alloc_instance(vvp_context_t context)
 {
-      v4cell*array = new v4cell[words_];
+      v4cell*array = కొత్త v4cell[పదాలు_3];
 
-      if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
-		  array[idx].abits_val_ = vvp_vector4_t::WORD_X_ABITS;
-		  array[idx].bbits_val_ = vvp_vector4_t::WORD_X_BBITS;
+      ఒకవేళ (వెడల్పు_2 <= vvp_vector4_t::బిట్లు_చొప్పున_మాట) {
+	    కొరకు (గుర్తులేని idx = 0 ; idx < పదాలు_3 ; idx += 1) {
+		  array[idx].abits_val_ = vvp_vector4_t::మాట_X_ABITS;
+		  array[idx].bbits_val_ = vvp_vector4_t::మాట_X_BBITS;
 	    }
-      } else {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
+      } లేకపోతే {
+	    కొరకు (గుర్తులేని idx = 0 ; idx < పదాలు_3 ; idx += 1) {
 		  array[idx].abits_ptr_ = 0;
 		  array[idx].bbits_ptr_ = 0;
 	    }
       }
 
-      vvp_set_context_item(context, context_idx_, array);
+      vvp_సమితి_context_అంశం(context, context_idx_, array);
 }
 
-void vvp_vector4array_aa::reset_instance(vvp_context_t context)
+శూన్య vvp_vector4array_aa::reset_instance(vvp_context_t context)
 {
       v4cell*cell = static_cast<v4cell*>
-            (vvp_get_context_item(context, context_idx_));
+            (vvp_get_context_అంశం(context, context_idx_));
 
-      if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
-		  cell->abits_val_ = vvp_vector4_t::WORD_X_ABITS;
-		  cell->bbits_val_ = vvp_vector4_t::WORD_X_BBITS;
+      ఒకవేళ (వెడల్పు_2 <= vvp_vector4_t::బిట్లు_చొప్పున_మాట) {
+	    కొరకు (గుర్తులేని idx = 0 ; idx < పదాలు_3 ; idx += 1) {
+		  cell->abits_val_ = vvp_vector4_t::మాట_X_ABITS;
+		  cell->bbits_val_ = vvp_vector4_t::మాట_X_BBITS;
                   cell++;
 	    }
-      } else {
-            unsigned cnt = (width_ + vvp_vector4_t::BITS_PER_WORD-1)/vvp_vector4_t::BITS_PER_WORD;
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
-		  if (cell->abits_ptr_) {
-                        for (unsigned n = 0 ; n < cnt ; n += 1) {
-			      cell->abits_ptr_[n] = vvp_vector4_t::WORD_X_ABITS;
-			      cell->bbits_ptr_[n] = vvp_vector4_t::WORD_X_BBITS;
+      } లేకపోతే {
+            గుర్తులేని cnt = (వెడల్పు_2 + vvp_vector4_t::బిట్లు_చొప్పున_మాట-1)/vvp_vector4_t::బిట్లు_చొప్పున_మాట;
+	    కొరకు (గుర్తులేని idx = 0 ; idx < పదాలు_3 ; idx += 1) {
+		  ఒకవేళ (cell->abits_ptr_) {
+                        కొరకు (గుర్తులేని n = 0 ; n < cnt ; n += 1) {
+			      cell->abits_ptr_[n] = vvp_vector4_t::మాట_X_ABITS;
+			      cell->bbits_ptr_[n] = vvp_vector4_t::మాట_X_BBITS;
                         }
                   }
                   cell++;
@@ -2444,36 +2444,36 @@ void vvp_vector4array_aa::reset_instance(vvp_context_t context)
       }
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_vector4array_aa::free_instance(vvp_context_t context)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య vvp_vector4array_aa::free_instance(vvp_context_t context)
 {
       v4cell*cell = static_cast<v4cell*>
-            (vvp_get_context_item(context, context_idx_));
-      delete [] cell;
+            (vvp_get_context_అంశం(context, context_idx_));
+      తొలగించు [] cell;
 }
-#endif
+#అయితే_ముగింపు
 
-void vvp_vector4array_aa::set_word(unsigned index, const vvp_vector4_t&that)
+శూన్య vvp_vector4array_aa::సమితి_మాట(గుర్తులేని సూచీ, స్థిరరాశి vvp_vector4_t&that)
 {
-      assert(index < words_);
+      ప్రతిజ్ఞా(సూచీ < పదాలు_3);
 
       v4cell*cell = static_cast<v4cell*>
-            (vthread_get_wt_context_item(context_idx_)) + index;
+            (vthread_get_wt_context_అంశం(context_idx_)) + సూచీ;
 
-      set_word_(cell, that);
+      సమితి_మాట_2(cell, that);
 }
 
-vvp_vector4_t vvp_vector4array_aa::get_word(unsigned index) const
+vvp_vector4_t vvp_vector4array_aa::get_మాట(గుర్తులేని సూచీ) స్థిరరాశి
 {
-      if (index >= words_)
-	    return vvp_vector4_t(width_, BIT4_X);
+      ఒకవేళ (సూచీ >= పదాలు_3)
+	    తిరిగి vvp_vector4_t(వెడల్పు_2, BIT4_X);
 
-      assert(index < words_);
+      ప్రతిజ్ఞా(సూచీ < పదాలు_3);
 
       v4cell*cell = static_cast<v4cell*>
-            (vthread_get_rd_context_item(context_idx_)) + index;
+            (vthread_get_rd_context_అంశం(context_idx_)) + సూచీ;
 
-      return get_word_(cell);
+      తిరిగి get_మాట_2(cell);
 }
 
 vvp_vector2_t::vvp_vector2_t()
@@ -2482,349 +2482,349 @@ vvp_vector2_t::vvp_vector2_t()
       wid_ = 0;
 }
 
-vvp_vector2_t::vvp_vector2_t(uint64_t v, unsigned wid)
+vvp_vector2_t::vvp_vector2_t(uint64_t v, గుర్తులేని wid)
 {
       wid_ = wid;
-      const unsigned bits_per_word = 8 * sizeof(vec_[0]);
-      const unsigned words = (wid_ + bits_per_word-1) / bits_per_word;
+      స్థిరరాశి గుర్తులేని బిట్లు_చొప్పున_మాట_2 = 8 * పరిమాణం(vec_[0]);
+      స్థిరరాశి గుర్తులేని పదాలు = (wid_ + బిట్లు_చొప్పున_మాట_2-1) / బిట్లు_చొప్పున_మాట_2;
 
-      vec_ = new unsigned long[words];
-      for (unsigned idx = 0 ; idx < words ; idx += 1) {
-	    const unsigned shift = idx * bits_per_word;
-	    vec_[idx] = shift < 64 ? v >> shift : 0;
+      vec_ = కొత్త గుర్తులేని దీర్ఘ[పదాలు];
+      కొరకు (గుర్తులేని idx = 0 ; idx < పదాలు ; idx += 1) {
+	    స్థిరరాశి గుర్తులేని జరుపు = idx * బిట్లు_చొప్పున_మాట_2;
+	    vec_[idx] = జరుపు < 64 ? v >> జరుపు : 0;
       }
 }
 
-vvp_vector2_t::vvp_vector2_t(vvp_vector2_t::fill_t fill, unsigned wid)
+vvp_vector2_t::vvp_vector2_t(vvp_vector2_t::fill_t fill, గుర్తులేని wid)
 {
       wid_ = wid;
-      const unsigned bits_per_word = 8 * sizeof(vec_[0]);
-      const unsigned words = (wid_ + bits_per_word-1) / bits_per_word;
+      స్థిరరాశి గుర్తులేని బిట్లు_చొప్పున_మాట_2 = 8 * పరిమాణం(vec_[0]);
+      స్థిరరాశి గుర్తులేని పదాలు = (wid_ + బిట్లు_చొప్పున_మాట_2-1) / బిట్లు_చొప్పున_మాట_2;
 
-      vec_ = new unsigned long[words];
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      vec_ = కొత్త గుర్తులేని దీర్ఘ[పదాలు];
+      కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు ;  idx += 1)
 	    vec_[idx] = fill? -1 : 0;
 }
 
-vvp_vector2_t::vvp_vector2_t(const vvp_vector2_t&that, unsigned base, unsigned wid)
+vvp_vector2_t::vvp_vector2_t(స్థిరరాశి vvp_vector2_t&that, గుర్తులేని పునాది, గుర్తులేని wid)
 {
       wid_ = wid;
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని పదాలు = (wid_ + బిట్లు_చొప్పున_మాట-1) / బిట్లు_చొప్పున_మాట;
 
-      vec_ = new unsigned long[words];
+      vec_ = కొత్త గుర్తులేని దీర్ఘ[పదాలు];
 
-      for (unsigned idx = 0 ; idx < wid ; idx += 1) {
-	    int bit = that.value(base+idx);
-	    if (bit == 0)
-		  continue;
-	    unsigned word = idx / BITS_PER_WORD;
-	    unsigned long mask = 1UL << (idx % BITS_PER_WORD);
-	    vec_[word] |= mask;
+      కొరకు (గుర్తులేని idx = 0 ; idx < wid ; idx += 1) {
+	    పూర్ణాంకం బిట్టు = that.value(పునాది+idx);
+	    ఒకవేళ (బిట్టు == 0)
+		  కొనసాగు;
+	    గుర్తులేని మాట = idx / బిట్లు_చొప్పున_మాట;
+	    గుర్తులేని దీర్ఘ ముసుగు = 1UL << (idx % బిట్లు_చొప్పున_మాట);
+	    vec_[మాట] |= ముసుగు;
       }
 }
 
-void vvp_vector2_t::copy_from_that_(const vvp_vector4_t&that)
+శూన్య vvp_vector2_t::copy_from_that_(స్థిరరాశి vvp_vector4_t&that)
 {
       wid_ = that.size();
-      const unsigned words = (that.size() + BITS_PER_WORD-1) / BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని పదాలు = (that.size() + బిట్లు_చొప్పున_మాట-1) / బిట్లు_చొప్పున_మాట;
 
-      if (words == 0) {
+      ఒకవేళ (పదాలు == 0) {
 	    vec_ = 0;
 	    wid_ = 0;
-	    return;
+	    తిరిగి;
       }
 
 	// Use the subarray method with the xz_to_0 flag set so that
 	// we get values even when there are xz bits.
-      vec_ = that.subarray(0, wid_, true);
+      vec_ = that.subarray(0, wid_, నిజం);
 }
 
-void vvp_vector2_t::copy_from_that_(const vvp_vector2_t&that)
+శూన్య vvp_vector2_t::copy_from_that_(స్థిరరాశి vvp_vector2_t&that)
 {
       wid_ = that.wid_;
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని పదాలు = (wid_ + బిట్లు_చొప్పున_మాట-1) / బిట్లు_చొప్పున_మాట;
 
-      if (words == 0) {
+      ఒకవేళ (పదాలు == 0) {
 	    vec_ = 0;
 	    wid_ = 0;
-	    return;
+	    తిరిగి;
       }
 
-      vec_ = new unsigned long[words];
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      vec_ = కొత్త గుర్తులేని దీర్ఘ[పదాలు];
+      కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు ;  idx += 1)
 	    vec_[idx] = that.vec_[idx];
 }
 
-vvp_vector2_t::vvp_vector2_t(const vvp_vector2_t&that, unsigned newsize)
+vvp_vector2_t::vvp_vector2_t(స్థిరరాశి vvp_vector2_t&that, గుర్తులేని newsize)
 {
       wid_ = newsize;
-      if (newsize == 0) {
+      ఒకవేళ (newsize == 0) {
 	    vec_ = 0;
-	    return;
+	    తిరిగి;
       }
 
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
-      const unsigned twords = (that.wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని పదాలు = (wid_ + బిట్లు_చొప్పున_మాట-1) / బిట్లు_చొప్పున_మాట;
+      స్థిరరాశి గుర్తులేని twords = (that.wid_ + బిట్లు_చొప్పున_మాట-1) / బిట్లు_చొప్పున_మాట;
 
-      vec_ = new unsigned long[words];
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
-	    if (idx < twords)
+      vec_ = కొత్త గుర్తులేని దీర్ఘ[పదాలు];
+      కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు ;  idx += 1) {
+	    ఒకవేళ (idx < twords)
 		  vec_[idx] = that.vec_[idx];
-	    else
+	    లేకపోతే
 		  vec_[idx] = 0;
       }
 }
 
-vvp_vector2_t& vvp_vector2_t::operator= (const vvp_vector2_t&that)
+vvp_vector2_t& vvp_vector2_t::క్రియాకారకం= (స్థిరరాశి vvp_vector2_t&that)
 {
-      if (this == &that)
-	    return *this;
+      ఒకవేళ (ఇది == &that)
+	    తిరిగి *ఇది;
 
-      delete[] vec_;
+      తొలగించు[] vec_;
       vec_ = 0;
 
       copy_from_that_(that);
-      return *this;
+      తిరిగి *ఇది;
 }
 
-vvp_vector2_t& vvp_vector2_t::operator= (const vvp_vector4_t&that)
+vvp_vector2_t& vvp_vector2_t::క్రియాకారకం= (స్థిరరాశి vvp_vector4_t&that)
 {
-      delete[]vec_;
+      తొలగించు[]vec_;
       vec_ = 0;
       copy_from_that_(that);
-      return *this;
+      తిరిగి *ఇది;
 }
 
-vvp_vector2_t& vvp_vector2_t::operator <<= (unsigned int shift)
+vvp_vector2_t& vvp_vector2_t::క్రియాకారకం <<= (గుర్తులేని పూర్ణాంకం జరుపు)
 {
-      if (wid_ == 0)
-	    return *this;
+      ఒకవేళ (wid_ == 0)
+	    తిరిగి *ఇది;
 
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని పదాలు = (wid_ + బిట్లు_చొప్పున_మాట-1) / బిట్లు_చొప్పున_మాట;
 
 	// Number of words to shift
-      const unsigned wshift = shift / BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని wshift = జరుపు / బిట్లు_చొప్పున_మాట;
 	// bits to shift within each word.
-      const unsigned long oshift = shift % BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని దీర్ఘ oshift = జరుపు % బిట్లు_చొప్పున_మాట;
 
 	// If shifting the entire value away, then return zeros.
-      if (wshift >= words) {
-	    for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      ఒకవేళ (wshift >= పదాలు) {
+	    కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు ;  idx += 1)
 		  vec_[idx] = 0;
 
-	    return *this;
+	    తిరిగి *ఇది;
       }
 
 	// Do the word shift first.
-      if (wshift > 0) {
-	    for (unsigned idx = 0 ;  idx < words-wshift ;  idx += 1) {
-		  unsigned sel = words - idx - 1;
+      ఒకవేళ (wshift > 0) {
+	    కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు-wshift ;  idx += 1) {
+		  గుర్తులేని sel = పదాలు - idx - 1;
 		  vec_[sel] = vec_[sel-wshift];
 	    }
 
-	    for (unsigned idx = 0 ;  idx < wshift ;  idx += 1)
+	    కొరకు (గుర్తులేని idx = 0 ;  idx < wshift ;  idx += 1)
 		  vec_[idx] = 0;
       }
 
 	// Do the fine shift.
-      if (oshift != 0) {
-	    unsigned long pad = 0;
-	    for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
-		  unsigned long next_pad = vec_[idx] >> (BITS_PER_WORD-oshift);
+      ఒకవేళ (oshift != 0) {
+	    గుర్తులేని దీర్ఘ pad = 0;
+	    కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు ;  idx += 1) {
+		  గుర్తులేని దీర్ఘ తదుపరి_pad = vec_[idx] >> (బిట్లు_చొప్పున_మాట-oshift);
 		  vec_[idx] = (vec_[idx] << oshift) | pad;
-		  pad = next_pad;
+		  pad = తదుపరి_pad;
 	    }
 
 	      // Cleanup the tail bits.
-	    unsigned long mask = -1UL >> (BITS_PER_WORD - wid_%BITS_PER_WORD);
-	    vec_[words-1] &= mask;
+	    గుర్తులేని దీర్ఘ ముసుగు = -1UL >> (బిట్లు_చొప్పున_మాట - wid_%బిట్లు_చొప్పున_మాట);
+	    vec_[పదాలు-1] &= ముసుగు;
       }
 
-      return *this;
+      తిరిగి *ఇది;
 }
 
-vvp_vector2_t& vvp_vector2_t::operator >>= (unsigned shift)
+vvp_vector2_t& vvp_vector2_t::క్రియాకారకం >>= (గుర్తులేని జరుపు)
 {
-      if (wid_ == 0)
-	    return *this;
+      ఒకవేళ (wid_ == 0)
+	    తిరిగి *ఇది;
 
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని పదాలు = (wid_ + బిట్లు_చొప్పున_మాట-1) / బిట్లు_చొప్పున_మాట;
 
 	// Number of words to shift
-      const unsigned wshift = shift / BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని wshift = జరుపు / బిట్లు_చొప్పున_మాట;
 	// bits to shift within each word.
-      const unsigned long oshift = shift % BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని దీర్ఘ oshift = జరుపు % బిట్లు_చొప్పున_మాట;
 
 	// If shifting the entire value away, then return zeros.
-      if (wshift >= words) {
-	    for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      ఒకవేళ (wshift >= పదాలు) {
+	    కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు ;  idx += 1)
 		  vec_[idx] = 0;
 
-	    return *this;
+	    తిరిగి *ఇది;
       }
 
-      if (wshift > 0) {
-	    for (unsigned idx = 0 ;  idx < words-wshift ;  idx += 1)
+      ఒకవేళ (wshift > 0) {
+	    కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు-wshift ;  idx += 1)
 		  vec_[idx] = vec_[idx+wshift];
 
-	    for (unsigned idx = words-wshift ;  idx < words ;  idx += 1)
+	    కొరకు (గుర్తులేని idx = పదాలు-wshift ;  idx < పదాలు ;  idx += 1)
 		  vec_[idx] = 0;
       }
 
-      if (oshift > 0) {
-	    unsigned long pad = 0;
-	    for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
-		  unsigned long new_pad = vec_[idx-1] <<(BITS_PER_WORD-oshift);
+      ఒకవేళ (oshift > 0) {
+	    గుర్తులేని దీర్ఘ pad = 0;
+	    కొరకు (గుర్తులేని idx = పదాలు ;  idx > 0 ;  idx -= 1) {
+		  గుర్తులేని దీర్ఘ new_pad = vec_[idx-1] <<(బిట్లు_చొప్పున_మాట-oshift);
 		  vec_[idx-1] = pad | (vec_[idx-1] >> oshift);
 		  pad = new_pad;
 	    }
 
 	      // Cleanup the tail bits.
 
-	    unsigned use_words = words;
+	    గుర్తులేని use_పదాలు = పదాలు;
 	      // Mask_shift is the number of high bits of the top word
 	      // that are to be masked off. We start with the number
 	      // of bits that are not included even in the original,
 	      // then we include the bits of the shift, that are to be
 	      // masked to zero.
-	    unsigned long mask_shift = BITS_PER_WORD - wid_%BITS_PER_WORD;
-	    mask_shift %= BITS_PER_WORD;
-	    mask_shift += oshift;
-	    while (mask_shift >= BITS_PER_WORD) {
-		  vec_[use_words-1] = 0;
-		  use_words -= 1;
-		  mask_shift -= BITS_PER_WORD;
+	    గుర్తులేని దీర్ఘ ముసుగు_జరుపు = బిట్లు_చొప్పున_మాట - wid_%బిట్లు_చొప్పున_మాట;
+	    ముసుగు_జరుపు %= బిట్లు_చొప్పున_మాట;
+	    ముసుగు_జరుపు += oshift;
+	    అయితే (ముసుగు_జరుపు >= బిట్లు_చొప్పున_మాట) {
+		  vec_[use_పదాలు-1] = 0;
+		  use_పదాలు -= 1;
+		  ముసుగు_జరుపు -= బిట్లు_చొప్పున_మాట;
 	    }
-	    if (mask_shift > 0) {
-		  assert(use_words > 0);
-		  unsigned long mask = -1UL >> mask_shift;
-		  vec_[use_words-1] &= mask;
+	    ఒకవేళ (ముసుగు_జరుపు > 0) {
+		  ప్రతిజ్ఞా(use_పదాలు > 0);
+		  గుర్తులేని దీర్ఘ ముసుగు = -1UL >> ముసుగు_జరుపు;
+		  vec_[use_పదాలు-1] &= ముసుగు;
 	    }
       }
 
-      return *this;
+      తిరిగి *ఇది;
 }
 
-static unsigned long add_carry(unsigned long a, unsigned long b,
-			       unsigned long&carry)
+స్థిర గుర్తులేని దీర్ఘ కూడు_వాహకం(గుర్తులేని దీర్ఘ a, గుర్తులేని దీర్ఘ b,
+			       గుర్తులేని దీర్ఘ&వాహకం)
 {
-      unsigned long out = carry;
-      carry = 0;
+      గుర్తులేని దీర్ఘ out = వాహకం;
+      వాహకం = 0;
 
-      if ((ULONG_MAX - out) < a)
-	    carry += 1;
+      ఒకవేళ ((ULONG_MAX - out) < a)
+	    వాహకం += 1;
       out += a;
 
-      if ((ULONG_MAX - out) < b)
-	    carry += 1;
+      ఒకవేళ ((ULONG_MAX - out) < b)
+	    వాహకం += 1;
       out += b;
 
-      return out;
+      తిరిగి out;
 }
 
-vvp_vector2_t& vvp_vector2_t::operator += (const vvp_vector2_t&that)
+vvp_vector2_t& vvp_vector2_t::క్రియాకారకం += (స్థిరరాశి vvp_vector2_t&that)
 {
-      assert(wid_ == that.wid_);
-      if (wid_ == 0)
-	    return *this;
+      ప్రతిజ్ఞా(wid_ == that.wid_);
+      ఒకవేళ (wid_ == 0)
+	    తిరిగి *ఇది;
 
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని పదాలు = (wid_ + బిట్లు_చొప్పున_మాట-1) / బిట్లు_చొప్పున_మాట;
 
-      unsigned long carry = 0;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
-	    vec_[idx] = add_carry(vec_[idx], that.vec_[idx], carry);
+      గుర్తులేని దీర్ఘ వాహకం = 0;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు ;  idx += 1) {
+	    vec_[idx] = కూడు_వాహకం(vec_[idx], that.vec_[idx], వాహకం);
       }
 
 
 	// Cleanup the tail bits.
-      unsigned long mask = -1UL >> (BITS_PER_WORD - wid_%BITS_PER_WORD);
-      vec_[words-1] &= mask;
+      గుర్తులేని దీర్ఘ ముసుగు = -1UL >> (బిట్లు_చొప్పున_మాట - wid_%బిట్లు_చొప్పున_మాట);
+      vec_[పదాలు-1] &= ముసుగు;
 
-      return *this;
+      తిరిగి *ఇది;
 }
 
-vvp_vector2_t& vvp_vector2_t::operator -= (const vvp_vector2_t&that)
+vvp_vector2_t& vvp_vector2_t::క్రియాకారకం -= (స్థిరరాశి vvp_vector2_t&that)
 {
-      assert(wid_ == that.wid_);
-      if (wid_ == 0)
-	    return *this;
+      ప్రతిజ్ఞా(wid_ == that.wid_);
+      ఒకవేళ (wid_ == 0)
+	    తిరిగి *ఇది;
 
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని పదాలు = (wid_ + బిట్లు_చొప్పున_మాట-1) / బిట్లు_చొప్పున_మాట;
 
-      unsigned long carry = 1;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
-	    vec_[idx] = add_carry(vec_[idx], ~that.vec_[idx], carry);
+      గుర్తులేని దీర్ఘ వాహకం = 1;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు ;  idx += 1) {
+	    vec_[idx] = కూడు_వాహకం(vec_[idx], ~that.vec_[idx], వాహకం);
       }
 
-      return *this;
+      తిరిగి *ఇది;
 }
 
-void vvp_vector2_t::trim()
+శూన్య vvp_vector2_t::trim()
 {
-      while (value(wid_-1) == 0 && wid_ > 1) wid_ -= 1;
+      అయితే (value(wid_-1) == 0 && wid_ > 1) wid_ -= 1;
 }
 
 /* This is a special trim that is used on numbers we know represent a
  * negative signed value (they came from a negative real value). */
-void vvp_vector2_t::trim_neg()
+శూన్య vvp_vector2_t::trim_neg()
 {
-      if (value(wid_-1) == 1 && wid_ > 32) {
-	    while (value(wid_-2) == 1 && wid_ > 32) wid_ -= 1;
+      ఒకవేళ (value(wid_-1) == 1 && wid_ > 32) {
+	    అయితే (value(wid_-2) == 1 && wid_ > 32) wid_ -= 1;
       }
 }
 
-int vvp_vector2_t::value(unsigned idx) const
+పూర్ణాంకం vvp_vector2_t::value(గుర్తులేని idx) స్థిరరాశి
 {
-      if (idx >= wid_)
-	    return 0;
+      ఒకవేళ (idx >= wid_)
+	    తిరిగి 0;
 
-      const unsigned bits_per_word = 8 * sizeof(vec_[0]);
-      unsigned addr = idx/bits_per_word;
-      unsigned mask = idx%bits_per_word;
+      స్థిరరాశి గుర్తులేని బిట్లు_చొప్పున_మాట_2 = 8 * పరిమాణం(vec_[0]);
+      గుర్తులేని addr = idx/బిట్లు_చొప్పున_మాట_2;
+      గుర్తులేని ముసుగు = idx%బిట్లు_చొప్పున_మాట_2;
 
-      if (vec_[addr] & (1UL<<mask))
-	    return 1;
-      else
-	    return 0;
+      ఒకవేళ (vec_[addr] & (1UL<<ముసుగు))
+	    తిరిగి 1;
+      లేకపోతే
+	    తిరిగి 0;
 }
 
-void vvp_vector2_t::set_bit(unsigned idx, int bit)
+శూన్య vvp_vector2_t::సమితి_బిట్టు(గుర్తులేని idx, పూర్ణాంకం బిట్టు)
 {
-      assert(idx < wid_);
+      ప్రతిజ్ఞా(idx < wid_);
 
-      const unsigned bits_per_word = 8 * sizeof(vec_[0]);
-      unsigned addr = idx/bits_per_word;
-      unsigned long mask = idx%bits_per_word;
+      స్థిరరాశి గుర్తులేని బిట్లు_చొప్పున_మాట_2 = 8 * పరిమాణం(vec_[0]);
+      గుర్తులేని addr = idx/బిట్లు_చొప్పున_మాట_2;
+      గుర్తులేని దీర్ఘ ముసుగు = idx%బిట్లు_చొప్పున_మాట_2;
 
-      if (bit)
-	    vec_[addr] |= 1UL << mask;
-      else
-	    vec_[addr] &= ~(1UL << mask);
+      ఒకవేళ (బిట్టు)
+	    vec_[addr] |= 1UL << ముసుగు;
+      లేకపోతే
+	    vec_[addr] &= ~(1UL << ముసుగు);
 }
 
-void vvp_vector2_t::set_vec(unsigned adr, const vvp_vector2_t&that)
+శూన్య vvp_vector2_t::సమితి_vec(గుర్తులేని adr, స్థిరరాశి vvp_vector2_t&that)
 {
-      assert((adr + that.wid_) <= wid_);
+      ప్రతిజ్ఞా((adr + that.wid_) <= wid_);
 
-      for (unsigned idx = 0 ; idx < that.wid_ ; idx += 1)
-	    set_bit(adr+idx, that.value(idx));
+      కొరకు (గుర్తులేని idx = 0 ; idx < that.wid_ ; idx += 1)
+	    సమితి_బిట్టు(adr+idx, that.value(idx));
 }
 
-bool vvp_vector2_t::is_NaN() const
+తార్కిక vvp_vector2_t::is_NaN() స్థిరరాశి
 {
-      return wid_ == 0;
+      తిరిగి wid_ == 0;
 }
 
-bool vvp_vector2_t::is_zero() const
+తార్కిక vvp_vector2_t::is_zero() స్థిరరాశి
 {
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని పదాలు = (wid_ + బిట్లు_చొప్పున_మాట-1) / బిట్లు_చొప్పున_మాట;
 
-      for (unsigned idx = 0; idx < words; idx += 1) {
-	    if (vec_[idx] == 0) continue;
-	    return false;
+      కొరకు (గుర్తులేని idx = 0; idx < పదాలు; idx += 1) {
+	    ఒకవేళ (vec_[idx] == 0) కొనసాగు;
+	    తిరిగి అబద్ధం;
       }
 
-      return true;
+      తిరిగి నిజం;
 }
 
 /*
@@ -2832,584 +2832,584 @@ bool vvp_vector2_t::is_zero() const
  * Michael R. Hansen and Hans Rischel page 261 and "Seminumerical
  * Algorithms, Third Edition" by Donald E. Knuth section 4.6.3.
  */
-vvp_vector2_t pow(const vvp_vector2_t&x, vvp_vector2_t&y)
+vvp_vector2_t ఘాతం(స్థిరరాశి vvp_vector2_t&x, vvp_vector2_t&y)
 {
         /* If we have a zero exponent just return 1. */
-      if (y == vvp_vector2_t(0L, 1)) {
-	    return vvp_vector2_t(1L, x.size());
+      ఒకవేళ (y == vvp_vector2_t(0L, 1)) {
+	    తిరిగి vvp_vector2_t(1L, x.size());
       }
 
         /* Is the value odd? */
-      if (y.value(0) == 1) {
-	    y.set_bit(0, 0);  // A quick subtract by 1.
-	    vvp_vector2_t res = x * pow(x, y);
-	    return res;
+      ఒకవేళ (y.value(0) == 1) {
+	    y.సమితి_బిట్టు(0, 0);  // A quick subtract by 1.
+	    vvp_vector2_t res = x * ఘాతం(x, y);
+	    తిరిగి res;
       }
 
       y >>= 1;  // A fast divide by two. We know the LSB is zero.
-      vvp_vector2_t z = pow(x, y);
+      vvp_vector2_t z = ఘాతం(x, y);
       vvp_vector2_t res = z * z;
-      return res;
+      తిరిగి res;
 }
 
-static void multiply_long(unsigned long a, unsigned long b,
-			  unsigned long&low, unsigned long&high)
+స్థిర శూన్య multiply_long(గుర్తులేని దీర్ఘ a, గుర్తులేని దీర్ఘ b,
+			  గుర్తులేని దీర్ఘ&దిగువ, గుర్తులేని దీర్ఘ&ఎగువ)
 {
-      assert(sizeof(unsigned long) %2 == 0);
+      ప్రతిజ్ఞా(పరిమాణం(గుర్తులేని దీర్ఘ) %2 == 0);
 
-      const unsigned long word_mask = (1UL << 4UL*sizeof(a)) - 1UL;
-      unsigned long tmpa;
-      unsigned long tmpb;
-      unsigned long res[4];
+      స్థిరరాశి గుర్తులేని దీర్ఘ మాట_ముసుగు = (1UL << 4UL*పరిమాణం(a)) - 1UL;
+      గుర్తులేని దీర్ఘ tmpa;
+      గుర్తులేని దీర్ఘ tmpb;
+      గుర్తులేని దీర్ఘ res[4];
 
-      tmpa = a & word_mask;
-      tmpb = b & word_mask;
+      tmpa = a & మాట_ముసుగు;
+      tmpb = b & మాట_ముసుగు;
       res[0] = tmpa * tmpb;
-      res[1] = res[0] >> 4UL*sizeof(unsigned long);
-      res[0] &= word_mask;
+      res[1] = res[0] >> 4UL*పరిమాణం(గుర్తులేని దీర్ఘ);
+      res[0] &= మాట_ముసుగు;
 
-      tmpa = (a >> 4UL*sizeof(unsigned long)) & word_mask;
+      tmpa = (a >> 4UL*పరిమాణం(గుర్తులేని దీర్ఘ)) & మాట_ముసుగు;
       res[1] += tmpa * tmpb;
-      res[2] = res[1] >> 4UL*sizeof(unsigned long);
-      res[1] &= word_mask;
+      res[2] = res[1] >> 4UL*పరిమాణం(గుర్తులేని దీర్ఘ);
+      res[1] &= మాట_ముసుగు;
 
-      tmpa = a & word_mask;
-      tmpb = (b >> 4UL*sizeof(unsigned long)) & word_mask;
+      tmpa = a & మాట_ముసుగు;
+      tmpb = (b >> 4UL*పరిమాణం(గుర్తులేని దీర్ఘ)) & మాట_ముసుగు;
       res[1] += tmpa * tmpb;
-      res[2] += res[1] >> 4UL*sizeof(unsigned long);
-      res[3]  = res[2] >> 4UL*sizeof(unsigned long);
-      res[1] &= word_mask;
-      res[2] &= word_mask;
+      res[2] += res[1] >> 4UL*పరిమాణం(గుర్తులేని దీర్ఘ);
+      res[3]  = res[2] >> 4UL*పరిమాణం(గుర్తులేని దీర్ఘ);
+      res[1] &= మాట_ముసుగు;
+      res[2] &= మాట_ముసుగు;
 
-      tmpa = (a >> 4UL*sizeof(unsigned long)) & word_mask;
+      tmpa = (a >> 4UL*పరిమాణం(గుర్తులేని దీర్ఘ)) & మాట_ముసుగు;
       res[2] += tmpa * tmpb;
-      res[3] += res[2] >> 4UL*sizeof(unsigned long);
-      res[2] &= word_mask;
+      res[3] += res[2] >> 4UL*పరిమాణం(గుర్తులేని దీర్ఘ);
+      res[2] &= మాట_ముసుగు;
 
-      high = (res[3] << 4UL*sizeof(unsigned long)) | res[2];
-      low  = (res[1] << 4UL*sizeof(unsigned long)) | res[0];
+      ఎగువ = (res[3] << 4UL*పరిమాణం(గుర్తులేని దీర్ఘ)) | res[2];
+      దిగువ  = (res[1] << 4UL*పరిమాణం(గుర్తులేని దీర్ఘ)) | res[0];
 }
 
-vvp_vector2_t operator * (const vvp_vector2_t&a, const vvp_vector2_t&b)
+vvp_vector2_t క్రియాకారకం * (స్థిరరాశి vvp_vector2_t&a, స్థిరరాశి vvp_vector2_t&b)
 {
-      const unsigned bits_per_word = 8 * sizeof(a.vec_[0]);
+      స్థిరరాశి గుర్తులేని బిట్లు_చొప్పున_మాట_2 = 8 * పరిమాణం(a.vec_[0]);
 
 	// The compiler ensures that the two operands are of equal size.
-      assert(a.size() == b.size());
+      ప్రతిజ్ఞా(a.size() == b.size());
       vvp_vector2_t r (0, a.size());
 
-      unsigned words = (r.wid_ + bits_per_word - 1) / bits_per_word;
+      గుర్తులేని పదాలు = (r.wid_ + బిట్లు_చొప్పున_మాట_2 - 1) / బిట్లు_చొప్పున_మాట_2;
 
-      for (unsigned bdx = 0 ;  bdx < words ;  bdx += 1) {
-	    unsigned long tmpb = b.vec_[bdx];
-	    if (tmpb == 0)
-		  continue;
+      కొరకు (గుర్తులేని bdx = 0 ;  bdx < పదాలు ;  bdx += 1) {
+	    గుర్తులేని దీర్ఘ tmpb = b.vec_[bdx];
+	    ఒకవేళ (tmpb == 0)
+		  కొనసాగు;
 
-	    for (unsigned adx = 0 ;  adx < words ;  adx += 1) {
-		  unsigned long tmpa = a.vec_[adx];
-		  if (tmpa == 0)
-			continue;
+	    కొరకు (గుర్తులేని adx = 0 ;  adx < పదాలు ;  adx += 1) {
+		  గుర్తులేని దీర్ఘ tmpa = a.vec_[adx];
+		  ఒకవేళ (tmpa == 0)
+			కొనసాగు;
 
-		  unsigned long low, hig;
-		  multiply_long(tmpa, tmpb, low, hig);
+		  గుర్తులేని దీర్ఘ దిగువ, hig;
+		  multiply_long(tmpa, tmpb, దిగువ, hig);
 
-		  unsigned long carry = 0;
-		  for (unsigned sdx = 0
-			     ; (adx+bdx+sdx) < words
+		  గుర్తులేని దీర్ఘ వాహకం = 0;
+		  కొరకు (గుర్తులేని sdx = 0
+			     ; (adx+bdx+sdx) < పదాలు
 			     ;  sdx += 1) {
 
-			r.vec_[adx+bdx+sdx] = add_carry(r.vec_[adx+bdx+sdx],
-							low, carry);
-			low = hig;
+			r.vec_[adx+bdx+sdx] = కూడు_వాహకం(r.vec_[adx+bdx+sdx],
+							దిగువ, వాహకం);
+			దిగువ = hig;
 			hig = 0;
 		  }
 	    }
       }
 
-      return r;
+      తిరిగి r;
 }
 
-static void div_mod (vvp_vector2_t dividend, vvp_vector2_t divisor,
+స్థిర శూన్య div_mod (vvp_vector2_t dividend, vvp_vector2_t భాజకం,
 		     vvp_vector2_t&quotient, vvp_vector2_t&remainder)
 {
 
       quotient = vvp_vector2_t(0, dividend.size());
 
-      if (divisor == quotient) {
-	    cerr << "ERROR: division by zero, exiting." << endl;
-	    exit(255);
+      ఒకవేళ (భాజకం == quotient) {
+	    cerr << "ERROR: division by zero, exiting." << పంక్తి_ముగింపు;
+	    నిష్క్రమించు(255);
       }
 
-      if (dividend < divisor) {
+      ఒకవేళ (dividend < భాజకం) {
 	    remainder = dividend;
-	    return;
+	    తిరిగి;
       }
 
-      vvp_vector2_t mask (1, dividend.size());
+      vvp_vector2_t ముసుగు (1, dividend.size());
 
 	// Make the dividend 1 bit larger to prevent overflow of
 	// divtmp in startup.
       dividend = vvp_vector2_t(dividend, dividend.size()+1);
-      vvp_vector2_t divtmp (divisor, dividend.size());
+      vvp_vector2_t divtmp (భాజకం, dividend.size());
 
-      while (divtmp < dividend) {
+      అయితే (divtmp < dividend) {
 	    divtmp <<= 1;
-	    mask <<= 1;
+	    ముసుగు <<= 1;
       }
 
-      while (dividend >= divisor) {
-	    if (divtmp <= dividend) {
+      అయితే (dividend >= భాజకం) {
+	    ఒకవేళ (divtmp <= dividend) {
 		  dividend -= divtmp;
-		  quotient += mask;
+		  quotient += ముసుగు;
 	    }
 
 	    divtmp >>= 1;
-	    mask >>= 1;
+	    ముసుగు >>= 1;
       }
 
-      remainder = vvp_vector2_t(dividend, mask.size());
+      remainder = vvp_vector2_t(dividend, ముసుగు.size());
 }
 
-vvp_vector2_t operator - (const vvp_vector2_t&that)
+vvp_vector2_t క్రియాకారకం - (స్థిరరాశి vvp_vector2_t&that)
 {
       vvp_vector2_t neg(that);
-      if (neg.wid_ == 0) return neg;
+      ఒకవేళ (neg.wid_ == 0) తిరిగి neg;
 
-      const unsigned words = (neg.wid_ + neg.BITS_PER_WORD-1) /
-                                         neg.BITS_PER_WORD;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
+      స్థిరరాశి గుర్తులేని పదాలు = (neg.wid_ + neg.బిట్లు_చొప్పున_మాట-1) /
+                                         neg.బిట్లు_చొప్పున_మాట;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < పదాలు ;  idx += 1) {
 	    neg.vec_[idx] = ~neg.vec_[idx];
       }
       neg += vvp_vector2_t(1, neg.wid_);
 
-      return neg;
+      తిరిగి neg;
 }
 
-vvp_vector2_t operator / (const vvp_vector2_t&dividend,
-			  const vvp_vector2_t&divisor)
+vvp_vector2_t క్రియాకారకం / (స్థిరరాశి vvp_vector2_t&dividend,
+			  స్థిరరాశి vvp_vector2_t&భాజకం)
 {
       vvp_vector2_t quot, rem;
-      div_mod(dividend, divisor, quot, rem);
-      return quot;
+      div_mod(dividend, భాజకం, quot, rem);
+      తిరిగి quot;
 }
 
-vvp_vector2_t operator % (const vvp_vector2_t&dividend,
-			  const vvp_vector2_t&divisor)
+vvp_vector2_t క్రియాకారకం % (స్థిరరాశి vvp_vector2_t&dividend,
+			  స్థిరరాశి vvp_vector2_t&భాజకం)
 {
       vvp_vector2_t quot, rem;
-      div_mod(dividend, divisor, quot, rem);
-      return rem;
+      div_mod(dividend, భాజకం, quot, rem);
+      తిరిగి rem;
 }
 
-bool operator > (const vvp_vector2_t&a, const vvp_vector2_t&b)
+తార్కిక క్రియాకారకం > (స్థిరరాశి vvp_vector2_t&a, స్థిరరాశి vvp_vector2_t&b)
 {
-      const unsigned awords = (a.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
-      const unsigned bwords = (b.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని awords = (a.wid_ + vvp_vector2_t::బిట్లు_చొప్పున_మాట-1) / vvp_vector2_t::బిట్లు_చొప్పున_మాట;
+      స్థిరరాశి గుర్తులేని bwords = (b.wid_ + vvp_vector2_t::బిట్లు_చొప్పున_మాట-1) / vvp_vector2_t::బిట్లు_చొప్పున_మాట;
 
-      const unsigned words = awords > bwords? awords : bwords;
+      స్థిరరాశి గుర్తులేని పదాలు = awords > bwords? awords : bwords;
 
-      for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
-	    unsigned long aw = (idx <= awords)? a.vec_[idx-1] : 0;
-	    unsigned long bw = (idx <= bwords)? b.vec_[idx-1] : 0;
+      కొరకు (గుర్తులేని idx = పదాలు ;  idx > 0 ;  idx -= 1) {
+	    గుర్తులేని దీర్ఘ aw = (idx <= awords)? a.vec_[idx-1] : 0;
+	    గుర్తులేని దీర్ఘ bw = (idx <= bwords)? b.vec_[idx-1] : 0;
 
-	    if (aw > bw)
-		  return true;
-	    if (aw < bw)
-		  return false;
+	    ఒకవేళ (aw > bw)
+		  తిరిగి నిజం;
+	    ఒకవేళ (aw < bw)
+		  తిరిగి అబద్ధం;
       }
 
 	// If the above loop finishes, then the vectors are equal.
-      return false;
+      తిరిగి అబద్ధం;
 }
 
-bool operator >= (const vvp_vector2_t&a, const vvp_vector2_t&b)
+తార్కిక క్రియాకారకం >= (స్థిరరాశి vvp_vector2_t&a, స్థిరరాశి vvp_vector2_t&b)
 {
-      const unsigned awords = (a.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
-      const unsigned bwords = (b.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని awords = (a.wid_ + vvp_vector2_t::బిట్లు_చొప్పున_మాట-1) / vvp_vector2_t::బిట్లు_చొప్పున_మాట;
+      స్థిరరాశి గుర్తులేని bwords = (b.wid_ + vvp_vector2_t::బిట్లు_చొప్పున_మాట-1) / vvp_vector2_t::బిట్లు_చొప్పున_మాట;
 
-      const unsigned words = awords > bwords? awords : bwords;
+      స్థిరరాశి గుర్తులేని పదాలు = awords > bwords? awords : bwords;
 
-      for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
-	    unsigned long aw = (idx <= awords)? a.vec_[idx-1] : 0;
-	    unsigned long bw = (idx <= bwords)? b.vec_[idx-1] : 0;
+      కొరకు (గుర్తులేని idx = పదాలు ;  idx > 0 ;  idx -= 1) {
+	    గుర్తులేని దీర్ఘ aw = (idx <= awords)? a.vec_[idx-1] : 0;
+	    గుర్తులేని దీర్ఘ bw = (idx <= bwords)? b.vec_[idx-1] : 0;
 
-	    if (aw > bw)
-		  return true;
-	    if (aw < bw)
-		  return false;
+	    ఒకవేళ (aw > bw)
+		  తిరిగి నిజం;
+	    ఒకవేళ (aw < bw)
+		  తిరిగి అబద్ధం;
       }
 
 	// If the above loop finishes, then the vectors are equal.
-      return true;
+      తిరిగి నిజం;
 }
 
-bool operator < (const vvp_vector2_t&a, const vvp_vector2_t&b)
+తార్కిక క్రియాకారకం < (స్థిరరాశి vvp_vector2_t&a, స్థిరరాశి vvp_vector2_t&b)
 {
-      const unsigned awords = (a.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
-      const unsigned bwords = (b.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని awords = (a.wid_ + vvp_vector2_t::బిట్లు_చొప్పున_మాట-1) / vvp_vector2_t::బిట్లు_చొప్పున_మాట;
+      స్థిరరాశి గుర్తులేని bwords = (b.wid_ + vvp_vector2_t::బిట్లు_చొప్పున_మాట-1) / vvp_vector2_t::బిట్లు_చొప్పున_మాట;
 
-      unsigned words = awords;
-      if (bwords > words)
-	    words = bwords;
+      గుర్తులేని పదాలు = awords;
+      ఒకవేళ (bwords > పదాలు)
+	    పదాలు = bwords;
 
-      for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
-	    unsigned long aw = (idx <= awords)? a.vec_[idx-1] : 0;
-	    unsigned long bw = (idx <= bwords)? b.vec_[idx-1] : 0;
+      కొరకు (గుర్తులేని idx = పదాలు ;  idx > 0 ;  idx -= 1) {
+	    గుర్తులేని దీర్ఘ aw = (idx <= awords)? a.vec_[idx-1] : 0;
+	    గుర్తులేని దీర్ఘ bw = (idx <= bwords)? b.vec_[idx-1] : 0;
 
-	    if (aw < bw)
-		  return true;
-	    if (aw > bw)
-		  return false;
+	    ఒకవేళ (aw < bw)
+		  తిరిగి నిజం;
+	    ఒకవేళ (aw > bw)
+		  తిరిగి అబద్ధం;
       }
 
 	// If the above loop finishes, then the vectors are equal.
-      return false;
+      తిరిగి అబద్ధం;
 }
 
-bool operator <= (const vvp_vector2_t&a, const vvp_vector2_t&b)
+తార్కిక క్రియాకారకం <= (స్థిరరాశి vvp_vector2_t&a, స్థిరరాశి vvp_vector2_t&b)
 {
 	// XXXX For now, only support equal width vectors.
-      assert(a.wid_ == b.wid_);
+      ప్రతిజ్ఞా(a.wid_ == b.wid_);
 
-      const unsigned awords = (a.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని awords = (a.wid_ + vvp_vector2_t::బిట్లు_చొప్పున_మాట-1) / vvp_vector2_t::బిట్లు_చొప్పున_మాట;
 
-      for (unsigned idx = awords ;  idx > 0 ;  idx -= 1) {
-	    if (a.vec_[idx-1] < b.vec_[idx-1])
-		  return true;
-	    if (a.vec_[idx-1] > b.vec_[idx-1])
-		  return false;
+      కొరకు (గుర్తులేని idx = awords ;  idx > 0 ;  idx -= 1) {
+	    ఒకవేళ (a.vec_[idx-1] < b.vec_[idx-1])
+		  తిరిగి నిజం;
+	    ఒకవేళ (a.vec_[idx-1] > b.vec_[idx-1])
+		  తిరిగి అబద్ధం;
       }
 
 	// If the above loop finishes, then the vectors are equal.
-      return true;
+      తిరిగి నిజం;
 }
 
-bool operator == (const vvp_vector2_t&a, const vvp_vector2_t&b)
+తార్కిక క్రియాకారకం == (స్థిరరాశి vvp_vector2_t&a, స్థిరరాశి vvp_vector2_t&b)
 {
-      const unsigned awords = (a.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
-      const unsigned bwords = (b.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
+      స్థిరరాశి గుర్తులేని awords = (a.wid_ + vvp_vector2_t::బిట్లు_చొప్పున_మాట-1) / vvp_vector2_t::బిట్లు_చొప్పున_మాట;
+      స్థిరరాశి గుర్తులేని bwords = (b.wid_ + vvp_vector2_t::బిట్లు_చొప్పున_మాట-1) / vvp_vector2_t::బిట్లు_చొప్పున_మాట;
 
-      const unsigned words = awords > bwords? awords : bwords;
+      స్థిరరాశి గుర్తులేని పదాలు = awords > bwords? awords : bwords;
 
-      for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
-	    unsigned long aw = (idx <= awords)? a.vec_[idx-1] : 0;
-	    unsigned long bw = (idx <= bwords)? b.vec_[idx-1] : 0;
+      కొరకు (గుర్తులేని idx = పదాలు ;  idx > 0 ;  idx -= 1) {
+	    గుర్తులేని దీర్ఘ aw = (idx <= awords)? a.vec_[idx-1] : 0;
+	    గుర్తులేని దీర్ఘ bw = (idx <= bwords)? b.vec_[idx-1] : 0;
 
-	    if (aw > bw)
-		  return false;
-	    if (aw < bw)
-		  return false;
+	    ఒకవేళ (aw > bw)
+		  తిరిగి అబద్ధం;
+	    ఒకవేళ (aw < bw)
+		  తిరిగి అబద్ధం;
       }
 
 	// If the above loop finishes, then the vectors are equal.
-      return true;
+      తిరిగి నిజం;
 }
 
 
-vvp_vector4_t vector2_to_vector4(const vvp_vector2_t&that, unsigned wid)
+vvp_vector4_t vector2_గమ్యం_vector4(స్థిరరాశి vvp_vector2_t&that, గుర్తులేని wid)
 {
       vvp_vector4_t res (wid);
 
-      for (unsigned idx = 0 ;  idx < res.size() ;  idx += 1) {
-	    vvp_bit4_t bit = BIT4_0;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < res.size() ;  idx += 1) {
+	    vvp_bit4_t బిట్టు = BIT4_0;
 
-	    if (that.value(idx))
-		  bit = BIT4_1;
+	    ఒకవేళ (that.value(idx))
+		  బిట్టు = BIT4_1;
 
-	    res.set_bit(idx, bit);
+	    res.సమితి_బిట్టు(idx, బిట్టు);
       }
 
-      return res;
+      తిరిగి res;
 }
 
-static bool c4string_header_test(const char*str)
+స్థిర తార్కిక c4string_శీర్షిక_test(స్థిరరాశి అక్షరం*str)
 {
-      if ((str[0] != 'C') && (str[0] != 'c'))
-	    return false;
-      if ((str[1] != '4') || (str[2] != '<'))
-	    return false;
-      return true;
+      ఒకవేళ ((str[0] != 'C') && (str[0] != 'c'))
+	    తిరిగి అబద్ధం;
+      ఒకవేళ ((str[1] != '4') || (str[2] != '<'))
+	    తిరిగి అబద్ధం;
+      తిరిగి నిజం;
 }
 
-bool c4string_test(const char*str)
+తార్కిక c4string_test(స్థిరరాశి అక్షరం*str)
 {
-      if (!c4string_header_test(str))
-	    return false;
-      size_t value_size = strspn(str+3, "01xz");
-      if (str[3+value_size] != '>')
-	    return false;
-      if (str[3+value_size+1] != 0)
-	    return false;
+      ఒకవేళ (!c4string_శీర్షిక_test(str))
+	    తిరిగి అబద్ధం;
+      size_t విలువ_కొలత = strspn(str+3, "01xz");
+      ఒకవేళ (str[3+విలువ_కొలత] != '>')
+	    తిరిగి అబద్ధం;
+      ఒకవేళ (str[3+విలువ_కొలత+1] != 0)
+	    తిరిగి అబద్ధం;
 
-      return true;
+      తిరిగి నిజం;
 }
 
-vvp_vector4_t c4string_to_vector4(const char*str)
+vvp_vector4_t c4string_గమ్యం_vector4(స్థిరరాశి అక్షరం*str)
 {
-      assert(c4string_header_test(str));
+      ప్రతిజ్ఞా(c4string_శీర్షిక_test(str));
 
       str += 3;
-      const char*tp = str + strspn(str,"01xz");
-      assert(tp[0] == '>');
+      స్థిరరాశి అక్షరం*tp = str + strspn(str,"01xz");
+      ప్రతిజ్ఞా(tp[0] == '>');
 
       vvp_vector4_t tmp (tp-str);
 
-      for (unsigned idx = 0 ;  idx < tmp.size() ;  idx += 1) {
-	    vvp_bit4_t bit;
-	    switch (str[idx]) {
-		case '0':
-		  bit = BIT4_0;
-		  break;
-		case '1':
-		  bit = BIT4_1;
-		  break;
-		case 'x':
-		  bit = BIT4_X;
-		  break;
-		case 'z':
-		  bit = BIT4_Z;
-		  break;
-		default:
+      కొరకు (గుర్తులేని idx = 0 ;  idx < tmp.size() ;  idx += 1) {
+	    vvp_bit4_t బిట్టు;
+	    ఎంపిక (str[idx]) {
+		స్థితి '0':
+		  బిట్టు = BIT4_0;
+		  ఆపు;
+		స్థితి '1':
+		  బిట్టు = BIT4_1;
+		  ఆపు;
+		స్థితి 'x':
+		  బిట్టు = BIT4_X;
+		  ఆపు;
+		స్థితి 'z':
+		  బిట్టు = BIT4_Z;
+		  ఆపు;
+		అప్రమేయ:
 		  fprintf(stderr, "Unsupported bit value %c(%d).\n", str[idx],
 		          str[idx]);
-		  assert(0);
-		  bit = BIT4_0;
-		  break;
+		  ప్రతిజ్ఞా(0);
+		  బిట్టు = BIT4_0;
+		  ఆపు;
 	    }
-	    tmp.set_bit(tmp.size()-idx-1, bit);
+	    tmp.సమితి_బిట్టు(tmp.size()-idx-1, బిట్టు);
       }
 
-      return tmp;
+      తిరిగి tmp;
 }
 
-ostream& operator<< (ostream&out, const vvp_vector2_t&that)
+ostream& క్రియాకారకం<< (ostream&out, స్థిరరాశి vvp_vector2_t&that)
 {
-      if (that.is_NaN()) {
+      ఒకవేళ (that.is_NaN()) {
 	    out << "NaN";
 
-      } else {
-	    out << vector2_to_vector4(that, that.size());
+      } లేకపోతే {
+	    out << vector2_గమ్యం_vector4(that, that.size());
       }
-      return out;
+      తిరిగి out;
 }
 
-vvp_vector8_t::vvp_vector8_t(const vvp_vector8_t&that)
+vvp_vector8_t::vvp_vector8_t(స్థిరరాశి vvp_vector8_t&that)
 {
-      size_ = that.size_;
-      if (size_ <= sizeof(val_)) {
-	    memcpy(val_, that.val_, sizeof val_);
-      } else {
-	    ptr_ = new unsigned char[size_];
-	    memcpy(ptr_, that.ptr_, size_);
+      కొలత_2 = that.కొలత_2;
+      ఒకవేళ (కొలత_2 <= పరిమాణం(val_)) {
+	    జ్ఞాపకం_నకలు(val_, that.val_, పరిమాణం val_);
+      } లేకపోతే {
+	    ptr_ = కొత్త గుర్తులేని అక్షరం[కొలత_2];
+	    జ్ఞాపకం_నకలు(ptr_, that.ptr_, కొలత_2);
       }
 }
 
-vvp_vector8_t::vvp_vector8_t(const vvp_vector4_t&that,
-			     unsigned str0, unsigned str1)
-: size_(that.size())
+vvp_vector8_t::vvp_vector8_t(స్థిరరాశి vvp_vector4_t&that,
+			     గుర్తులేని str0, గుర్తులేని str1)
+: కొలత_2(that.size())
 {
-      if (size_ == 0)
-	    return;
+      ఒకవేళ (కొలత_2 == 0)
+	    తిరిగి;
 
-      if (size_ <= sizeof(val_)) {
+      ఒకవేళ (కొలత_2 <= పరిమాణం(val_)) {
 	    ptr_ = 0; // Prefill all val_ bytes
-	    for (unsigned idx = 0 ; idx < size_ ; idx += 1)
+	    కొరకు (గుర్తులేని idx = 0 ; idx < కొలత_2 ; idx += 1)
 		  val_[idx] = vvp_scalar_t(that.value(idx),str0, str1).raw();
-      } else {
-	    ptr_ = new unsigned char[size_];
-	    for (unsigned idx = 0 ;  idx < size_ ;  idx += 1)
+      } లేకపోతే {
+	    ptr_ = కొత్త గుర్తులేని అక్షరం[కొలత_2];
+	    కొరకు (గుర్తులేని idx = 0 ;  idx < కొలత_2 ;  idx += 1)
 		  ptr_[idx] = vvp_scalar_t(that.value(idx), str0, str1).raw();
       }
 }
 
-vvp_vector8_t::vvp_vector8_t(const vvp_vector2_t&that,
-			     unsigned str0, unsigned str1)
-: size_(that.size())
+vvp_vector8_t::vvp_vector8_t(స్థిరరాశి vvp_vector2_t&that,
+			     గుర్తులేని str0, గుర్తులేని str1)
+: కొలత_2(that.size())
 {
-      if (size_ == 0)
-	    return;
+      ఒకవేళ (కొలత_2 == 0)
+	    తిరిగి;
 
-      if (size_ <= sizeof(val_)) {
+      ఒకవేళ (కొలత_2 <= పరిమాణం(val_)) {
 	    ptr_ = 0;
-	    for (unsigned idx = 0 ; idx < size_ ; idx += 1)
+	    కొరకు (గుర్తులేని idx = 0 ; idx < కొలత_2 ; idx += 1)
 		  val_[idx] = vvp_scalar_t(that.value(idx)? BIT4_1:BIT4_0, str0, str1).raw();
-      } else {
-	    ptr_ = new unsigned char[size_];
-	    for (unsigned idx = 0 ; idx < size_ ; idx += 1)
+      } లేకపోతే {
+	    ptr_ = కొత్త గుర్తులేని అక్షరం[కొలత_2];
+	    కొరకు (గుర్తులేని idx = 0 ; idx < కొలత_2 ; idx += 1)
 		  ptr_[idx] = vvp_scalar_t(that.value(idx)? BIT4_1:BIT4_0, str0, str1).raw();
       }
 }
 
-const vvp_vector8_t vvp_vector8_t::nil;
+స్థిరరాశి vvp_vector8_t vvp_vector8_t::nil;
 
-vvp_vector8_t& vvp_vector8_t::operator= (const vvp_vector8_t&that)
+vvp_vector8_t& vvp_vector8_t::క్రియాకారకం= (స్థిరరాశి vvp_vector8_t&that)
 {
 	// Assign to self.
-      if (this == &that)
-	    return *this;
+      ఒకవేళ (ఇది == &that)
+	    తిరిగి *ఇది;
 
-      if (size_ != that.size_) {
-	    if (size_ > sizeof(val_))
-		  delete[]ptr_;
-	    size_ = 0;
+      ఒకవేళ (కొలత_2 != that.కొలత_2) {
+	    ఒకవేళ (కొలత_2 > పరిమాణం(val_))
+		  తొలగించు[]ptr_;
+	    కొలత_2 = 0;
       }
 
-      if (that.size_ == 0) {
-	    assert(size_ == 0);
-	    return *this;
+      ఒకవేళ (that.కొలత_2 == 0) {
+	    ప్రతిజ్ఞా(కొలత_2 == 0);
+	    తిరిగి *ఇది;
       }
 
-      if (that.size_ <= sizeof(val_)) {
-	    size_ = that.size_;
-	    memcpy(val_, that.val_, sizeof(val_));
-	    return *this;
+      ఒకవేళ (that.కొలత_2 <= పరిమాణం(val_)) {
+	    కొలత_2 = that.కొలత_2;
+	    జ్ఞాపకం_నకలు(val_, that.val_, పరిమాణం(val_));
+	    తిరిగి *ఇది;
       }
 
-      if (size_ == 0) {
-	    size_ = that.size_;
-	    ptr_ = new unsigned char[size_];
+      ఒకవేళ (కొలత_2 == 0) {
+	    కొలత_2 = that.కొలత_2;
+	    ptr_ = కొత్త గుర్తులేని అక్షరం[కొలత_2];
       }
 
-      memcpy(ptr_, that.ptr_, size_);
+      జ్ఞాపకం_నకలు(ptr_, that.ptr_, కొలత_2);
 
-      return *this;
+      తిరిగి *ఇది;
 }
 
-vvp_vector8_t vvp_vector8_t::subvalue(unsigned base, unsigned wid) const
+vvp_vector8_t vvp_vector8_t::subvalue(గుర్తులేని పునాది, గుర్తులేని wid) స్థిరరాశి
 {
       vvp_vector8_t tmp (wid);
 
-      unsigned char*tmp_ptr = tmp.size_ <= sizeof(val_) ? tmp.val_ : tmp.ptr_;
-      const unsigned char*use_ptr = size_ <= sizeof(val_) ? val_ : ptr_;
+      గుర్తులేని అక్షరం*tmp_ptr = tmp.కొలత_2 <= పరిమాణం(val_) ? tmp.val_ : tmp.ptr_;
+      స్థిరరాశి గుర్తులేని అక్షరం*use_ptr = కొలత_2 <= పరిమాణం(val_) ? val_ : ptr_;
 
-      unsigned idx = 0;
-      while ((idx < wid) && (base+idx < size_)) {
-	    tmp_ptr[idx] = use_ptr[base+idx];
+      గుర్తులేని idx = 0;
+      అయితే ((idx < wid) && (పునాది+idx < కొలత_2)) {
+	    tmp_ptr[idx] = use_ptr[పునాది+idx];
 	    idx += 1;
       }
 
-      return tmp;
+      తిరిగి tmp;
 }
 
-void vvp_vector8_t::set_vec(unsigned base, const vvp_vector8_t&that)
+శూన్య vvp_vector8_t::సమితి_vec(గుర్తులేని పునాది, స్థిరరాశి vvp_vector8_t&that)
 {
-      assert((base+that.size()) <= size());
-      for (unsigned idx = 0 ; idx < that.size() ; idx += 1)
-	    set_bit(base+idx, that.value(idx));
+      ప్రతిజ్ఞా((పునాది+that.size()) <= size());
+      కొరకు (గుర్తులేని idx = 0 ; idx < that.size() ; idx += 1)
+	    సమితి_బిట్టు(పునాది+idx, that.value(idx));
 }
 
-vvp_vector8_t part_expand(const vvp_vector8_t&that, unsigned wid, unsigned off)
+vvp_vector8_t part_expand(స్థిరరాశి vvp_vector8_t&that, గుర్తులేని wid, గుర్తులేని off)
 {
-      assert(off < wid);
+      ప్రతిజ్ఞా(off < wid);
       vvp_vector8_t tmp (wid);
 
-      unsigned char* tmp_ptr = tmp.size_<= sizeof(tmp.val_) ?
+      గుర్తులేని అక్షరం* tmp_ptr = tmp.కొలత_2<= పరిమాణం(tmp.val_) ?
                                tmp.val_ : tmp.ptr_;
-      const unsigned char* that_ptr = that.size_<= sizeof(that.val_) ?
+      స్థిరరాశి గుర్తులేని అక్షరం* that_ptr = that.కొలత_2<= పరిమాణం(that.val_) ?
                                       that.val_ : that.ptr_;
 
-      unsigned idx = off;
+      గుర్తులేని idx = off;
 
-      while (idx < wid && that.size_ > (idx-off)) {
+      అయితే (idx < wid && that.కొలత_2 > (idx-off)) {
 	    tmp_ptr[idx] = that_ptr[idx-off];
 	    idx += 1;
       }
 
-      return tmp;
+      తిరిగి tmp;
 }
 
-static bool c8string_header_test(const char*str)
+స్థిర తార్కిక c8string_శీర్షిక_test(స్థిరరాశి అక్షరం*str)
 {
-      if ((str[0] != 'C') && (str[0] != 'c'))
-	    return false;
-      if ((str[1] != '8') || (str[2] != '<'))
-	    return false;
-      return true;
+      ఒకవేళ ((str[0] != 'C') && (str[0] != 'c'))
+	    తిరిగి అబద్ధం;
+      ఒకవేళ ((str[1] != '8') || (str[2] != '<'))
+	    తిరిగి అబద్ధం;
+      తిరిగి నిజం;
 }
 
-bool c8string_test(const char*str)
+తార్కిక c8string_test(స్థిరరాశి అక్షరం*str)
 {
-      if (!c8string_header_test(str))
-	    return false;
+      ఒకవేళ (!c8string_శీర్షిక_test(str))
+	    తిరిగి అబద్ధం;
 
-      const char*cp = str+3;
-      for (;; cp += 1) {
-	    if (cp[0] == '>' && cp[1] == 0) return true;
-	    if (cp[0] >= '0' && cp[0] <= '9') continue;
-	    if (cp[0] == 'x') continue;
-	    if (cp[0] == 'z') continue;
-	    return false;
+      స్థిరరాశి అక్షరం*cp = str+3;
+      కొరకు (;; cp += 1) {
+	    ఒకవేళ (cp[0] == '>' && cp[1] == 0) తిరిగి నిజం;
+	    ఒకవేళ (cp[0] >= '0' && cp[0] <= '9') కొనసాగు;
+	    ఒకవేళ (cp[0] == 'x') కొనసాగు;
+	    ఒకవేళ (cp[0] == 'z') కొనసాగు;
+	    తిరిగి అబద్ధం;
       }
-      return false;
+      తిరిగి అబద్ధం;
 }
 /*
  * The format of a C8<> string is:
  *   C8<aaabbbccc...>
  * where aaa... is a 3 character bit descriptor.
  */
-vvp_vector8_t c8string_to_vector8(const char*str)
+vvp_vector8_t c8string_గమ్యం_vector8(స్థిరరాశి అక్షరం*str)
 {
-      assert(c8string_header_test(str));
+      ప్రతిజ్ఞా(c8string_శీర్షిక_test(str));
 
-      size_t vsize = strlen(str)-4;
-      assert(vsize%3 == 0);
+      size_t vsize = అక్షరశ్రేణి_పొడవు(str)-4;
+      ప్రతిజ్ఞా(vsize%3 == 0);
       vsize /= 3;
       vvp_vector8_t tmp (vsize);
 
-      for (size_t idx = 0 ; idx < vsize ; idx += 1) {
-	    const char*cp = str+3+3*idx;
-	    vvp_bit4_t bit = BIT4_X;
-	    unsigned dr0 = cp[0]-'0';
-	    unsigned dr1 = cp[1]-'0';
-	    switch (cp[2]) {
-		case '0':
-		  bit = BIT4_0;
-		  break;
-		case '1':
-		  bit = BIT4_1;
-		  break;
-		case 'x':
-		  bit = BIT4_X;
-		  break;
-		case 'z':
-		  bit = BIT4_Z;
-		  break;
+      కొరకు (size_t idx = 0 ; idx < vsize ; idx += 1) {
+	    స్థిరరాశి అక్షరం*cp = str+3+3*idx;
+	    vvp_bit4_t బిట్టు = BIT4_X;
+	    గుర్తులేని dr0 = cp[0]-'0';
+	    గుర్తులేని dr1 = cp[1]-'0';
+	    ఎంపిక (cp[2]) {
+		స్థితి '0':
+		  బిట్టు = BIT4_0;
+		  ఆపు;
+		స్థితి '1':
+		  బిట్టు = BIT4_1;
+		  ఆపు;
+		స్థితి 'x':
+		  బిట్టు = BIT4_X;
+		  ఆపు;
+		స్థితి 'z':
+		  బిట్టు = BIT4_Z;
+		  ఆపు;
 	    }
-	    tmp.set_bit(vsize-idx-1, vvp_scalar_t(bit, dr0, dr1));
+	    tmp.సమితి_బిట్టు(vsize-idx-1, vvp_scalar_t(బిట్టు, dr0, dr1));
       }
 
-      return tmp;
+      తిరిగి tmp;
 }
 
-ostream& operator<<(ostream&out, const vvp_vector8_t&that)
+ostream& క్రియాకారకం<<(ostream&out, స్థిరరాశి vvp_vector8_t&that)
 {
       out << "C8<";
-      for (unsigned idx = 0 ;  idx < that.size() ; idx += 1)
+      కొరకు (గుర్తులేని idx = 0 ;  idx < that.size() ; idx += 1)
 	    out << that.value(that.size()-idx-1);
 
       out << ">";
-      return out;
+      తిరిగి out;
 }
 
 vvp_net_fun_t::vvp_net_fun_t()
 {
-      count_functors += 1;
+      లెక్క_functors += 1;
 }
 
 vvp_net_fun_t::~vvp_net_fun_t()
 {
 }
 
-void vvp_net_fun_t::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&,
+శూన్య vvp_net_fun_t::recv_vec4(vvp_net_ptr_t, స్థిరరాశి vvp_vector4_t&,
                               vvp_context_t)
 {
       fprintf(stderr, "internal error: %s: recv_vec4 not implemented\n",
-	      typeid(*this).name());
-      assert(0);
+	      typeid(*ఇది).name());
+      ప్రతిజ్ఞా(0);
 }
 
-void vvp_net_fun_t::recv_vec4_pv_(vvp_net_ptr_t p, const vvp_vector4_t&bit,
-                                  unsigned base, unsigned vwid, vvp_context_t)
+శూన్య vvp_net_fun_t::recv_vec4_pv_(vvp_net_ptr_t p, స్థిరరాశి vvp_vector4_t&బిట్టు,
+                                  గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t)
 {
 	// The majority of functors don't normally expect to receive part
 	// values, because the primary operands of an expression will be
@@ -3424,76 +3424,76 @@ void vvp_net_fun_t::recv_vec4_pv_(vvp_net_ptr_t p, const vvp_vector4_t&bit,
 	// code, but we still need to handle it correctly. See GitHub
 	// issue #99 and br_gh99*.v in the test suite for examples.
 
-      assert(base + bit.size() <= vwid);
+      ప్రతిజ్ఞా(పునాది + బిట్టు.size() <= vwid);
 
       vvp_vector4_t tmp(vwid, BIT4_Z);
-      tmp.set_vec(base, bit);
+      tmp.సమితి_vec(పునాది, బిట్టు);
       recv_vec4(p, tmp, 0);
 }
 
-void vvp_net_fun_t::recv_vec4_pv(vvp_net_ptr_t, const vvp_vector4_t&bit,
-                                 unsigned base, unsigned vwid, vvp_context_t)
+శూన్య vvp_net_fun_t::recv_vec4_pv(vvp_net_ptr_t, స్థిరరాశి vvp_vector4_t&బిట్టు,
+                                 గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t)
 {
-      cerr << "internal error: " << typeid(*this).name() << ": "
-	   << "recv_vec4_pv(" << bit << ", " << base
-	   << ", " << vwid << ") not implemented" << endl;
-      assert(0);
+      cerr << "internal error: " << typeid(*ఇది).name() << ": "
+	   << "recv_vec4_pv(" << బిట్టు << ", " << పునాది
+	   << ", " << vwid << ") not implemented" << పంక్తి_ముగింపు;
+      ప్రతిజ్ఞా(0);
 }
 
-void vvp_net_fun_t::recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit)
+శూన్య vvp_net_fun_t::recv_vec8(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు)
 {
-      recv_vec4(port, reduce4(bit), 0);
+      recv_vec4(పోర్టు, reduce4(బిట్టు), 0);
 }
 
-void vvp_net_fun_t::recv_vec8_pv_(vvp_net_ptr_t p, const vvp_vector8_t&bit,
-				  unsigned base, unsigned vwid)
+శూన్య vvp_net_fun_t::recv_vec8_pv_(vvp_net_ptr_t p, స్థిరరాశి vvp_vector8_t&బిట్టు,
+				  గుర్తులేని పునాది, గుర్తులేని vwid)
 {
 	// This is the strength-aware version of recv_vec4_pv_.
 
-      assert(base + bit.size() <= vwid);
+      ప్రతిజ్ఞా(పునాది + బిట్టు.size() <= vwid);
 
       vvp_vector8_t tmp(vwid);
-      tmp.set_vec(base, bit);
+      tmp.సమితి_vec(పునాది, బిట్టు);
       recv_vec8(p, tmp);
 }
 
-void vvp_net_fun_t::recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
-				 unsigned base, unsigned vwid)
+శూన్య vvp_net_fun_t::recv_vec8_pv(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు,
+				 గుర్తులేని పునాది, గుర్తులేని vwid)
 {
-      recv_vec4_pv(port, reduce4(bit), base, vwid, 0);
+      recv_vec4_pv(పోర్టు, reduce4(బిట్టు), పునాది, vwid, 0);
 }
 
-void vvp_net_fun_t::recv_real(vvp_net_ptr_t, double bit, vvp_context_t)
+శూన్య vvp_net_fun_t::recv_real(vvp_net_ptr_t, ద్విగుణ బిట్టు, vvp_context_t)
 {
       fprintf(stderr, "internal error: %s: recv_real(%f) not implemented\n",
-	      typeid(*this).name(), bit);
-      assert(0);
+	      typeid(*ఇది).name(), బిట్టు);
+      ప్రతిజ్ఞా(0);
 }
 
-void vvp_net_fun_t::recv_string(vvp_net_ptr_t, const std::string&bit, vvp_context_t)
+శూన్య vvp_net_fun_t::recv_string(vvp_net_ptr_t, స్థిరరాశి std::string&బిట్టు, vvp_context_t)
 {
       fprintf(stderr, "internal error: %s: recv_string(%s) not implemented\n",
-	      typeid(*this).name(), bit.c_str());
-      assert(0);
+	      typeid(*ఇది).name(), బిట్టు.c_str());
+      ప్రతిజ్ఞా(0);
 }
 
-void vvp_net_fun_t::recv_object(vvp_net_ptr_t, vvp_object_t, vvp_context_t)
+శూన్య vvp_net_fun_t::recv_object(vvp_net_ptr_t, vvp_object_t, vvp_context_t)
 {
       fprintf(stderr, "internal error: %s: recv_object(...) not implemented\n",
-	      typeid(*this).name());
-      assert(0);
+	      typeid(*ఇది).name());
+      ప్రతిజ్ఞా(0);
 }
 
-void vvp_net_fun_t::force_flag(bool)
+శూన్య vvp_net_fun_t::force_flag(తార్కిక)
 {
 }
 
 /* **** vvp_fun_drive methods **** */
 
-vvp_fun_drive::vvp_fun_drive(unsigned str0, unsigned str1)
+vvp_fun_drive::vvp_fun_drive(గుర్తులేని str0, గుర్తులేని str1)
 {
-      assert(str0 < 8);
-      assert(str1 < 8);
+      ప్రతిజ్ఞా(str0 < 8);
+      ప్రతిజ్ఞా(str1 < 8);
 
       drive0_ = str0;
       drive1_ = str1;
@@ -3503,100 +3503,100 @@ vvp_fun_drive::~vvp_fun_drive()
 {
 }
 
-void vvp_fun_drive::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_fun_drive::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                               vvp_context_t)
 {
-      assert(port.port() == 0);
-      port.ptr()->send_vec8(vvp_vector8_t(bit, drive0_, drive1_));
+      ప్రతిజ్ఞా(పోర్టు.పోర్టు() == 0);
+      పోర్టు.ptr()->send_vec8(vvp_vector8_t(బిట్టు, drive0_, drive1_));
 }
 
-void vvp_fun_drive::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				 unsigned base, unsigned vwid, vvp_context_t ctx)
+శూన్య vvp_fun_drive::recv_vec4_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
+				 గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, బిట్టు, పునాది, vwid, ctx);
 }
 
 /* **** vvp_wide_fun_* methods **** */
 
-vvp_wide_fun_core::vvp_wide_fun_core(vvp_net_t*net, unsigned nports)
+vvp_wide_fun_core::vvp_wide_fun_core(vvp_net_t*net, గుర్తులేని nports)
 {
       ptr_ = net;
       nports_ = nports;
-      port_values_ = 0;
-      port_rvalues_ = 0;
+      పోర్టు_విలువలు = 0;
+      పోర్టు_rvalues = 0;
 }
 
 vvp_wide_fun_core::~vvp_wide_fun_core()
 {
-      delete[] port_values_;
-      delete[] port_rvalues_;
+      తొలగించు[] పోర్టు_విలువలు;
+      తొలగించు[] పోర్టు_rvalues;
 }
 
-void vvp_wide_fun_core::propagate_vec4(const vvp_vector4_t&bit,
+శూన్య vvp_wide_fun_core::propagate_vec4(స్థిరరాశి vvp_vector4_t&బిట్టు,
 				       vvp_time64_t delay)
 {
-      if (delay)
-	    schedule_propagate_vector(ptr_, delay, bit);
-      else
-	    ptr_->send_vec4(bit, 0);
+      ఒకవేళ (delay)
+	    కాలపట్టిక_propagate_సదిశ(ptr_, delay, బిట్టు);
+      లేకపోతే
+	    ptr_->send_vec4(బిట్టు, 0);
 }
 
-void vvp_wide_fun_core::propagate_real(double bit,
+శూన్య vvp_wide_fun_core::propagate_real(ద్విగుణ బిట్టు,
 				       vvp_time64_t delay)
 {
-      if (delay) {
+      ఒకవేళ (delay) {
 	      // schedule_assign_vector(ptr_->out, bit, delay);
-	    assert(0); // Need a real-value version of assign_vector.
-      } else {
-	    ptr_->send_real(bit, 0);
+	    ప్రతిజ్ఞా(0); // Need a real-value version of assign_vector.
+      } లేకపోతే {
+	    ptr_->send_real(బిట్టు, 0);
       }
 }
 
 
-unsigned vvp_wide_fun_core::port_count() const
+గుర్తులేని vvp_wide_fun_core::పోర్టు_లెక్క() స్థిరరాశి
 {
-      return nports_;
+      తిరిగి nports_;
 }
 
-vvp_vector4_t& vvp_wide_fun_core::value(unsigned idx)
+vvp_vector4_t& vvp_wide_fun_core::value(గుర్తులేని idx)
 {
-      assert(idx < nports_);
-      if (port_values_ == 0)
-	    port_values_ = new vvp_vector4_t [nports_];
-      return port_values_[idx];
+      ప్రతిజ్ఞా(idx < nports_);
+      ఒకవేళ (పోర్టు_విలువలు == 0)
+	    పోర్టు_విలువలు = కొత్త vvp_vector4_t [nports_];
+      తిరిగి పోర్టు_విలువలు[idx];
 }
 
-double vvp_wide_fun_core::value_r(unsigned idx)
+ద్విగుణ vvp_wide_fun_core::విలువ_r(గుర్తులేని idx)
 {
-      assert(idx < nports_);
-      return port_rvalues_? port_rvalues_[idx] : 0.0;
+      ప్రతిజ్ఞా(idx < nports_);
+      తిరిగి పోర్టు_rvalues? పోర్టు_rvalues[idx] : 0.0;
 }
 
-void vvp_wide_fun_core::recv_real_from_inputs(unsigned)
+శూన్య vvp_wide_fun_core::recv_real_from_inputs(గుర్తులేని)
 {
-      assert(0);
+      ప్రతిజ్ఞా(0);
 }
 
-void vvp_wide_fun_core::dispatch_vec4_from_input_(unsigned port,
-						  const vvp_vector4_t&bit)
+శూన్య vvp_wide_fun_core::dispatch_vec4_from_ఆదానం(గుర్తులేని పోర్టు,
+						  స్థిరరాశి vvp_vector4_t&బిట్టు)
 {
-      assert(port < nports_);
-      if (port_values_ == 0) port_values_ = new vvp_vector4_t [nports_];
-      port_values_[port] = bit;
-      recv_vec4_from_inputs(port);
+      ప్రతిజ్ఞా(పోర్టు < nports_);
+      ఒకవేళ (పోర్టు_విలువలు == 0) పోర్టు_విలువలు = కొత్త vvp_vector4_t [nports_];
+      పోర్టు_విలువలు[పోర్టు] = బిట్టు;
+      recv_vec4_from_inputs(పోర్టు);
 }
 
-void vvp_wide_fun_core::dispatch_real_from_input_(unsigned port,
-						  double bit)
+శూన్య vvp_wide_fun_core::dispatch_real_from_ఆదానం(గుర్తులేని పోర్టు,
+						  ద్విగుణ బిట్టు)
 {
-      assert(port < nports_);
-      if (port_rvalues_ == 0) port_rvalues_ = new double[nports_];
-      port_rvalues_[port] = bit;
-      recv_real_from_inputs(port);
+      ప్రతిజ్ఞా(పోర్టు < nports_);
+      ఒకవేళ (పోర్టు_rvalues == 0) పోర్టు_rvalues = కొత్త ద్విగుణ[nports_];
+      పోర్టు_rvalues[పోర్టు] = బిట్టు;
+      recv_real_from_inputs(పోర్టు);
 }
 
-vvp_wide_fun_t::vvp_wide_fun_t(vvp_wide_fun_core*c, unsigned base)
-: core_(c), port_base_(base)
+vvp_wide_fun_t::vvp_wide_fun_t(vvp_wide_fun_core*c, గుర్తులేని పునాది)
+: core_(c), పోర్టు_పునాది_2(పునాది)
 {
 }
 
@@ -3604,24 +3604,24 @@ vvp_wide_fun_t::~vvp_wide_fun_t()
 {
 }
 
-void vvp_wide_fun_t::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_wide_fun_t::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                                vvp_context_t)
 {
-      unsigned pidx = port_base_ + port.port();
-      core_->dispatch_vec4_from_input_(pidx, bit);
+      గుర్తులేని pidx = పోర్టు_పునాది_2 + పోర్టు.పోర్టు();
+      core_->dispatch_vec4_from_ఆదానం(pidx, బిట్టు);
 }
 
-void vvp_wide_fun_t::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				  unsigned base, unsigned vwid, vvp_context_t ctx)
+శూన్య vvp_wide_fun_t::recv_vec4_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
+				  గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, బిట్టు, పునాది, vwid, ctx);
 }
 
-void vvp_wide_fun_t::recv_real(vvp_net_ptr_t port, double bit,
+శూన్య vvp_wide_fun_t::recv_real(vvp_net_ptr_t పోర్టు, ద్విగుణ బిట్టు,
                                vvp_context_t)
 {
-      unsigned pidx = port_base_ + port.port();
-      core_->dispatch_real_from_input_(pidx, bit);
+      గుర్తులేని pidx = పోర్టు_పునాది_2 + పోర్టు.పోర్టు();
+      core_->dispatch_real_from_ఆదానం(pidx, బిట్టు);
 }
 
 /* **** vvp_scalar_t methods **** */
@@ -3667,34 +3667,34 @@ void vvp_wide_fun_t::recv_real(vvp_net_ptr_t port, double bit,
 # define STREN1(v) (((v)&0x70) >> 4)
 # define STREN0(v) ((v)&0x07)
 
-unsigned vvp_scalar_t::strength0() const
+గుర్తులేని vvp_scalar_t::strength0() స్థిరరాశి
 {
-      return STREN0(value_);
+      తిరిగి STREN0(విలువ_2);
 }
 
-unsigned vvp_scalar_t::strength1() const
+గుర్తులేని vvp_scalar_t::strength1() స్థిరరాశి
 {
-      return STREN1(value_);
+      తిరిగి STREN1(విలువ_2);
 }
 
-ostream& operator <<(ostream&out, vvp_scalar_t a)
+ostream& క్రియాకారకం <<(ostream&out, vvp_scalar_t a)
 {
       out << a.strength0() << a.strength1();
-      switch (a.value()) {
-	  case BIT4_0:
+      ఎంపిక (a.value()) {
+	  స్థితి BIT4_0:
 	    out << "0";
-	    break;
-	  case BIT4_1:
+	    ఆపు;
+	  స్థితి BIT4_1:
 	    out << "1";
-	    break;
-	  case BIT4_X:
+	    ఆపు;
+	  స్థితి BIT4_X:
 	    out << "X";
-	    break;
-	  case BIT4_Z:
+	    ఆపు;
+	  స్థితి BIT4_Z:
 	    out << "Z";
-	    break;
+	    ఆపు;
       }
-      return out;
+      తిరిగి out;
 }
 
 /*
@@ -3705,31 +3705,31 @@ ostream& operator <<(ostream&out, vvp_scalar_t a)
 vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b)
 {
 
-      if (UNAMBIG(a.value_) && UNAMBIG(b.value_)) {
+      ఒకవేళ (UNAMBIG(a.విలువ_2) && UNAMBIG(b.విలువ_2)) {
 
 	      /* If both signals are unambiguous, simply choose
 		 the stronger. If they have the same strength
 		 but different values, then this becomes
 		 ambiguous. */
 
-	    if ((b.value_&0x07) > (a.value_&0x07)) {
+	    ఒకవేళ ((b.విలువ_2&0x07) > (a.విలువ_2&0x07)) {
 
 		    /* b value is stronger. Take it. */
-		  return b;
+		  తిరిగి b;
 
-	    } else if ((b.value_&0x77) == (a.value_&0x77)) {
+	    } లేకపోతే ఒకవేళ ((b.విలువ_2&0x77) == (a.విలువ_2&0x77)) {
 
 		    // Strengths are the same. Since we know already
 		    // that the values are not the same, Make value
 		    // into "x".
 		  vvp_scalar_t tmp (a);
-		  tmp.value_ = (tmp.value_&0x77) | 0x80;
-		  return tmp;
+		  tmp.విలువ_2 = (tmp.విలువ_2&0x77) | 0x80;
+		  తిరిగి tmp;
 
-	    } else {
+	    } లేకపోతే {
 
 		    /* Must be "a" is the stronger one. */
-		  return a;
+		  తిరిగి a;
 	    }
 
       }
@@ -3738,36 +3738,36 @@ vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b)
 	   will sweep up the weaker parts of the ambiguous
 	   signal. The result may be ambiguous, or maybe not. */
 
-      if (UNAMBIG(a.value_)) {
+      ఒకవేళ (UNAMBIG(a.విలువ_2)) {
 	    vvp_scalar_t res;
 
-	    if ((a.value_&0x70) > (b.value_&0x70))
-		  res.value_ |= a.value_&0xf0;
-	    else
-		  res.value_ |= b.value_&0xf0;
+	    ఒకవేళ ((a.విలువ_2&0x70) > (b.విలువ_2&0x70))
+		  res.విలువ_2 |= a.విలువ_2&0xf0;
+	    లేకపోతే
+		  res.విలువ_2 |= b.విలువ_2&0xf0;
 
-	    if ((a.value_&0x07) > (b.value_&0x07))
-		  res.value_ |= a.value_&0x0f;
-	    else
-		  res.value_ |= b.value_&0x0f;
+	    ఒకవేళ ((a.విలువ_2&0x07) > (b.విలువ_2&0x07))
+		  res.విలువ_2 |= a.విలువ_2&0x0f;
+	    లేకపోతే
+		  res.విలువ_2 |= b.విలువ_2&0x0f;
 
-	    return res;
+	    తిరిగి res;
 
-      } else if (UNAMBIG(b.value_)) {
+      } లేకపోతే ఒకవేళ (UNAMBIG(b.విలువ_2)) {
 
 	    vvp_scalar_t res;
 
-	    if ((b.value_&0x70) > (a.value_&0x70))
-		  res.value_ |= b.value_&0xf0;
-	    else
-		  res.value_ |= a.value_&0xf0;
+	    ఒకవేళ ((b.విలువ_2&0x70) > (a.విలువ_2&0x70))
+		  res.విలువ_2 |= b.విలువ_2&0xf0;
+	    లేకపోతే
+		  res.విలువ_2 |= a.విలువ_2&0xf0;
 
-	    if ((b.value_&0x07) > (a.value_&0x07))
-		  res.value_ |= b.value_&0x0f;
-	    else
-		  res.value_ |= a.value_&0x0f;
+	    ఒకవేళ ((b.విలువ_2&0x07) > (a.విలువ_2&0x07))
+		  res.విలువ_2 |= b.విలువ_2&0x0f;
+	    లేకపోతే
+		  res.విలువ_2 |= a.విలువ_2&0x0f;
 
-	    return res;
+	    తిరిగి res;
 
       }
 
@@ -3775,57 +3775,57 @@ vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b)
 	/* If both signals are ambiguous, then the result
 	   has an even wider ambiguity. */
 
-      unsigned tmp = 0;
-      int sv1a = (a.value_ & 0x80) ? STREN1(a.value_) : - STREN1(a.value_);
-      int sv0a = (a.value_ & 0x08) ? STREN0(a.value_) : - STREN0(a.value_);
-      int sv1b = (b.value_ & 0x80) ? STREN1(b.value_) : - STREN1(b.value_);
-      int sv0b = (b.value_ & 0x08) ? STREN0(b.value_) : - STREN0(b.value_);
+      గుర్తులేని tmp = 0;
+      పూర్ణాంకం sv1a = (a.విలువ_2 & 0x80) ? STREN1(a.విలువ_2) : - STREN1(a.విలువ_2);
+      పూర్ణాంకం sv0a = (a.విలువ_2 & 0x08) ? STREN0(a.విలువ_2) : - STREN0(a.విలువ_2);
+      పూర్ణాంకం sv1b = (b.విలువ_2 & 0x80) ? STREN1(b.విలువ_2) : - STREN1(b.విలువ_2);
+      పూర్ణాంకం sv0b = (b.విలువ_2 & 0x08) ? STREN0(b.విలువ_2) : - STREN0(b.విలువ_2);
 
-      int sv1 = sv1a;
-      int sv0 = sv0a;
+      పూర్ణాంకం sv1 = sv1a;
+      పూర్ణాంకం sv0 = sv0a;
 
-      if (sv0a > sv1)
+      ఒకవేళ (sv0a > sv1)
 	    sv1 = sv0a;
-      if (sv1b > sv1)
+      ఒకవేళ (sv1b > sv1)
 	    sv1 = sv1b;
-      if (sv0b > sv1)
+      ఒకవేళ (sv0b > sv1)
 	    sv1 = sv0b;
 
-      if (sv1a < sv0)
+      ఒకవేళ (sv1a < sv0)
 	    sv0 = sv1a;
-      if (sv1b < sv0)
+      ఒకవేళ (sv1b < sv0)
 	    sv0 = sv1b;
-      if (sv0b < sv0)
+      ఒకవేళ (sv0b < sv0)
 	    sv0 = sv0b;
 
-      if (sv1 > 0) {
+      ఒకవేళ (sv1 > 0) {
 	    tmp |= 0x80;
 	    tmp |= sv1 << 4;
-      } else {
+      } లేకపోతే {
 	      /* Set the MSB when both arguments MSBs are set. This
 		 can only happen if both one strengths are zero. */
-	    tmp |= (a.value_&b.value_)&0x80;
+	    tmp |= (a.విలువ_2&b.విలువ_2)&0x80;
 	    tmp |= (-sv1) << 4;
       }
 
-      if (sv0 > 0) {
+      ఒకవేళ (sv0 > 0) {
 	    tmp |= 0x08;
 	    tmp |= sv0;
-      } else {
+      } లేకపోతే {
 	    tmp |= (-sv0);
       }
 
       vvp_scalar_t res;
-      res.value_ = tmp;
+      res.విలువ_2 = tmp;
 
 	/* Canonicalize the HiZ value. */
-      if ((res.value_&0x77) == 0)
-	    res.value_ = 0;
+      ఒకవేళ ((res.విలువ_2&0x77) == 0)
+	    res.విలువ_2 = 0;
 
-      return res;
+      తిరిగి res;
 }
 
-unsigned vvp_switch_strength_map[2][8] = {
+గుర్తులేని vvp_switch_strength_map[2][8] = {
       {  // non-resistive
 	    0, /* High impedance   --> High impedance   */
 	    1, /* Small capacitor  --> Small capacitor  */
@@ -3848,91 +3848,91 @@ unsigned vvp_switch_strength_map[2][8] = {
       }
 };
 
-vvp_vector4_t reduce4(const vvp_vector8_t&that)
+vvp_vector4_t reduce4(స్థిరరాశి vvp_vector8_t&that)
 {
       vvp_vector4_t out (that.size());
-      for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1)
-	    out.set_bit(idx, that.value(idx).value());
+      కొరకు (గుర్తులేని idx = 0 ;  idx < out.size() ;  idx += 1)
+	    out.సమితి_బిట్టు(idx, that.value(idx).value());
 
-      return out;
+      తిరిగి out;
 }
 
-vvp_bit4_t compare_gtge(const vvp_vector4_t&lef, const vvp_vector4_t&rig,
-			vvp_bit4_t out_if_equal)
+vvp_bit4_t compare_gtge(స్థిరరాశి vvp_vector4_t&lef, స్థిరరాశి vvp_vector4_t&rig,
+			vvp_bit4_t బహిర్గతం_if_equal)
 {
-      unsigned min_size = lef.size();
-      if (rig.size() < min_size)
-	    min_size = rig.size();
+      గుర్తులేని min_కొలత = lef.size();
+      ఒకవేళ (rig.size() < min_కొలత)
+	    min_కొలత = rig.size();
 
 	// If one of the inputs is nil, treat is as all X values, and
 	// that makes the result BIT4_X.
-      if (min_size == 0)
-	    return BIT4_X;
+      ఒకవేళ (min_కొలత == 0)
+	    తిరిగి BIT4_X;
 
 	// As per the IEEE1364 definition of >, >=, < and <=, if there
 	// are any X or Z values in either of the operand vectors,
 	// then the result of the compare is BIT4_X.
 
 	// Check for X/Z in the left operand
-      if (lef.has_xz())
-	    return BIT4_X;
+      ఒకవేళ (lef.has_xz())
+	    తిరిగి BIT4_X;
 
 	// Check for X/Z in the right operand
-      if (rig.has_xz())
-	    return BIT4_X;
+      ఒకవేళ (rig.has_xz())
+	    తిరిగి BIT4_X;
 
-      for (unsigned idx = lef.size() ; idx > rig.size() ;  idx -= 1) {
-	    if (lef.value(idx-1) == BIT4_1)
-		  return BIT4_1;
+      కొరకు (గుర్తులేని idx = lef.size() ; idx > rig.size() ;  idx -= 1) {
+	    ఒకవేళ (lef.value(idx-1) == BIT4_1)
+		  తిరిగి BIT4_1;
       }
 
-      for (unsigned idx = rig.size() ; idx > lef.size() ;  idx -= 1) {
-	    if (rig.value(idx-1) == BIT4_1)
-		  return BIT4_0;
+      కొరకు (గుర్తులేని idx = rig.size() ; idx > lef.size() ;  idx -= 1) {
+	    ఒకవేళ (rig.value(idx-1) == BIT4_1)
+		  తిరిగి BIT4_0;
       }
 
-      for (unsigned idx = min_size ; idx > 0 ;  idx -= 1) {
+      కొరకు (గుర్తులేని idx = min_కొలత ; idx > 0 ;  idx -= 1) {
 	    vvp_bit4_t lv = lef.value(idx-1);
 	    vvp_bit4_t rv = rig.value(idx-1);
 
-	    if (lv == rv)
-		  continue;
+	    ఒకవేళ (lv == rv)
+		  కొనసాగు;
 
-	    if (lv == BIT4_1)
-		  return BIT4_1;
-	    else
-		  return BIT4_0;
+	    ఒకవేళ (lv == BIT4_1)
+		  తిరిగి BIT4_1;
+	    లేకపోతే
+		  తిరిగి BIT4_0;
       }
 
-      return out_if_equal;
+      తిరిగి బహిర్గతం_if_equal;
 }
 
-vvp_bit4_t compare_gtge_signed(const vvp_vector4_t&a,
-			       const vvp_vector4_t&b,
-			       vvp_bit4_t out_if_equal)
+vvp_bit4_t compare_gtge_signed(స్థిరరాశి vvp_vector4_t&a,
+			       స్థిరరాశి vvp_vector4_t&b,
+			       vvp_bit4_t బహిర్గతం_if_equal)
 {
-      assert(a.size() == b.size());
+      ప్రతిజ్ఞా(a.size() == b.size());
 
-      unsigned sign_idx = a.size()-1;
+      గుర్తులేని sign_idx = a.size()-1;
       vvp_bit4_t a_sign = a.value(sign_idx);
       vvp_bit4_t b_sign = b.value(sign_idx);
 
-      if (bit4_is_xz(a_sign))
-	    return BIT4_X;
-      if (bit4_is_xz(b_sign))
-	    return BIT4_X;
+      ఒకవేళ (bit4_is_xz(a_sign))
+	    తిరిగి BIT4_X;
+      ఒకవేళ (bit4_is_xz(b_sign))
+	    తిరిగి BIT4_X;
 
-      if (a_sign == b_sign)
-	    return compare_gtge(a, b, out_if_equal);
+      ఒకవేళ (a_sign == b_sign)
+	    తిరిగి compare_gtge(a, b, బహిర్గతం_if_equal);
 
-      if (a.has_xz())
-	    return BIT4_X;
+      ఒకవేళ (a.has_xz())
+	    తిరిగి BIT4_X;
 
-      if (b.has_xz())
-	    return BIT4_X;
+      ఒకవేళ (b.has_xz())
+	    తిరిగి BIT4_X;
 
-      if(a_sign == BIT4_0)
-	    return BIT4_1;
-      else
-	    return BIT4_0;
+      ఒకవేళ(a_sign == BIT4_0)
+	    తిరిగి BIT4_1;
+      లేకపోతే
+	    తిరిగి BIT4_0;
 }

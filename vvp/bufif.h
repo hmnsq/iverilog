@@ -1,5 +1,5 @@
-#ifndef IVL_bufif_H
-#define IVL_bufif_H
+#నిర్వచితం_కాకపోతే IVL_bufif_H
+#నిర్వచించు IVL_bufif_H
 /*
  * Copyright (c) 2001-2025 Stephen Williams (steve@icarus.com)
  *
@@ -31,26 +31,26 @@
  * strengths to the buffered value, and sends H/L in response to
  * unknown enable bits.
  */
-class vvp_fun_bufif  : public vvp_net_fun_t {
+class vvp_fun_bufif  : బహిరంగ vvp_net_fun_t {
 
-    public:
-      vvp_fun_bufif(bool en_invert, bool out_invert,
-		    unsigned str0, unsigned str1);
+    బహిరంగ:
+      vvp_fun_bufif(bool en_invert, bool బహిర్గతం_invert,
+		    గుర్తులేని str0, గుర్తులేని str1);
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override;
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      void recv_real(vvp_net_ptr_t port, double real,
+      శూన్య recv_vec4_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t ctx) override;
+      శూన్య recv_real(vvp_net_ptr_t పోర్టు, ద్విగుణ real,
                      vvp_context_t ctx) override;
 
-    private:
-      vvp_vector4_t bit_;
+    అంతరంగ:
+      vvp_vector4_t బిట్టు_2;
       vvp_vector4_t en_;
-      unsigned pol_ : 1;
-      unsigned inv_ : 1;
-      unsigned drive0_ : 8;
-      unsigned drive1_ : 8;
+      గుర్తులేని pol_ : 1;
+      గుర్తులేని inv_ : 1;
+      గుర్తులేని drive0_ : 8;
+      గుర్తులేని drive1_ : 8;
 };
 
-#endif /* IVL_bufif_H */
+#అయితే_ముగింపు /* IVL_bufif_H */

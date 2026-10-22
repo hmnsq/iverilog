@@ -22,593 +22,593 @@
 # include  "vpi_priv.h"
 # include  "config.h"
 # include  <map>
-#ifdef CHECK_WITH_VALGRIND
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#అయితే_ముగింపు
 # include  <cassert>
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
 /*
  * This class_property_t class is an abstract base class for
  * representing a property of an instance. The definition keeps and
  * array (of pointers) of these in order to define the the class.
  */
-class class_property_t {
-    public:
-      inline class_property_t() { offset_ = 0; }
-      virtual ~class_property_t() =0;
+తరగతి class_property_t {
+    బహిరంగ:
+      అంతఃవరుస class_property_t() { స్థానభ్రంశం = 0; }
+      మాయా ~class_property_t() =0;
 	// How much space does an instance of this property require?
-      virtual size_t instance_size() const =0;
+      మాయా size_t instance_కొలత() స్థిరరాశి =0;
 
-      void set_offset(size_t off) { offset_ = off; }
+      శూన్య సమితి_స్థానభ్రంశం(size_t off) { స్థానభ్రంశం = off; }
 
-    public:
-      virtual void construct(char*buf) const;
-      virtual void destruct(char*buf) const;
+    బహిరంగ:
+      మాయా శూన్య construct(అక్షరం*buf) స్థిరరాశి;
+      మాయా శూన్య destruct(అక్షరం*buf) స్థిరరాశి;
 
-      virtual void set_vec4(char*buf, const vvp_vector4_t&val);
-      virtual void get_vec4(char*buf, vvp_vector4_t&val);
+      మాయా శూన్య సమితి_vec4(అక్షరం*buf, స్థిరరాశి vvp_vector4_t&val);
+      మాయా శూన్య get_vec4(అక్షరం*buf, vvp_vector4_t&val);
 
-      virtual void set_real(char*buf, double val);
-      virtual double get_real(char*buf);
+      మాయా శూన్య సమితి_real(అక్షరం*buf, ద్విగుణ val);
+      మాయా ద్విగుణ get_real(అక్షరం*buf);
 
-      virtual void set_string(char*buf, const std::string&val);
-      virtual string get_string(char*buf);
+      మాయా శూన్య సమితి_string(అక్షరం*buf, స్థిరరాశి std::string&val);
+      మాయా string get_string(అక్షరం*buf);
 
-      virtual void set_object(char*buf, const vvp_object_t&val, uint64_t element);
-      virtual void get_object(char*buf, vvp_object_t&val, uint64_t element);
+      మాయా శూన్య సమితి_object(అక్షరం*buf, స్థిరరాశి vvp_object_t&val, uint64_t element);
+      మాయా శూన్య get_object(అక్షరం*buf, vvp_object_t&val, uint64_t element);
 
 	// Implement polymorphic shallow copy.
-      virtual void copy(char*buf, char*src) = 0;
+      మాయా శూన్య copy(అక్షరం*buf, అక్షరం*src) = 0;
 
-    protected:
-      size_t offset_;
+    రక్షిత:
+      size_t స్థానభ్రంశం;
 };
 
 class_property_t::~class_property_t()
 {
 }
 
-void class_property_t::construct(char*) const
+శూన్య class_property_t::construct(అక్షరం*) స్థిరరాశి
 {
 }
 
-void class_property_t::destruct(char*) const
+శూన్య class_property_t::destruct(అక్షరం*) స్థిరరాశి
 {
 }
 
-void class_property_t::set_vec4(char*, const vvp_vector4_t&)
+శూన్య class_property_t::సమితి_vec4(అక్షరం*, స్థిరరాశి vvp_vector4_t&)
 {
-      assert(0);
+      ప్రతిజ్ఞా(0);
 }
 
-void class_property_t::get_vec4(char*, vvp_vector4_t&)
+శూన్య class_property_t::get_vec4(అక్షరం*, vvp_vector4_t&)
 {
-      assert(0);
+      ప్రతిజ్ఞా(0);
 }
 
-void class_property_t::set_real(char*, double)
+శూన్య class_property_t::సమితి_real(అక్షరం*, ద్విగుణ)
 {
-      assert(0);
+      ప్రతిజ్ఞా(0);
 }
 
-double class_property_t::get_real(char*)
+ద్విగుణ class_property_t::get_real(అక్షరం*)
 {
-      assert(0);
-      return 0.0;
+      ప్రతిజ్ఞా(0);
+      తిరిగి 0.0;
 }
 
-void class_property_t::set_string(char*, const string&)
+శూన్య class_property_t::సమితి_string(అక్షరం*, స్థిరరాశి string&)
 {
-      assert(0);
+      ప్రతిజ్ఞా(0);
 }
 
-string class_property_t::get_string(char*)
+string class_property_t::get_string(అక్షరం*)
 {
-      assert(0);
-      return "";
+      ప్రతిజ్ఞా(0);
+      తిరిగి "";
 }
 
-void class_property_t::set_object(char*, const vvp_object_t&, uint64_t)
+శూన్య class_property_t::సమితి_object(అక్షరం*, స్థిరరాశి vvp_object_t&, uint64_t)
 {
-      assert(0);
+      ప్రతిజ్ఞా(0);
 }
 
-void class_property_t::get_object(char*, vvp_object_t&, uint64_t)
+శూన్య class_property_t::get_object(అక్షరం*, vvp_object_t&, uint64_t)
 {
-      assert(0);
+      ప్రతిజ్ఞా(0);
 }
 
 /*
  */
-template <class T> class property_atom : public class_property_t {
-    public:
-      inline explicit property_atom(void) { }
+మూస <తరగతి T> తరగతి property_atom : బహిరంగ class_property_t {
+    బహిరంగ:
+      అంతఃవరుస స్పష్టమైన property_atom(శూన్య) { }
       ~property_atom() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_కొలత() స్థిరరాశి override { తిరిగి పరిమాణం(T); }
 
-    public:
-      void construct(char*buf) const override
-      { T*tmp = reinterpret_cast<T*> (buf+offset_);
+    బహిరంగ:
+      శూన్య construct(అక్షరం*buf) స్థిరరాశి override
+      { T*tmp = reinterpret_cast<T*> (buf+స్థానభ్రంశం);
 	*tmp = 0;
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      శూన్య సమితి_vec4(అక్షరం*buf, స్థిరరాశి vvp_vector4_t&val) override;
+      శూన్య get_vec4(అక్షరం*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      శూన్య copy(అక్షరం*dst, అక్షరం*src) override;
 };
 
-class property_bit : public class_property_t {
-    public:
-      explicit inline property_bit(size_t wid): wid_(wid) { }
-      ~property_bit() override { }
+తరగతి property_బిట్టు : బహిరంగ class_property_t {
+    బహిరంగ:
+      స్పష్టమైన అంతఃవరుస property_బిట్టు(size_t wid): wid_(wid) { }
+      ~property_బిట్టు() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector2_t); }
+      size_t instance_కొలత() స్థిరరాశి override { తిరిగి పరిమాణం(vvp_vector2_t); }
 
-    public:
-      void construct(char*buf) const override
-      { new (buf+offset_) vvp_vector2_t (0, wid_); }
+    బహిరంగ:
+      శూన్య construct(అక్షరం*buf) స్థిరరాశి override
+      { కొత్త (buf+స్థానభ్రంశం) vvp_vector2_t (0, wid_); }
 
-      void destruct(char*buf) const override
-      { vvp_vector2_t*tmp = reinterpret_cast<vvp_vector2_t*>(buf+offset_);
+      శూన్య destruct(అక్షరం*buf) స్థిరరాశి override
+      { vvp_vector2_t*tmp = reinterpret_cast<vvp_vector2_t*>(buf+స్థానభ్రంశం);
 	tmp->~vvp_vector2_t();
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      శూన్య సమితి_vec4(అక్షరం*buf, స్థిరరాశి vvp_vector4_t&val) override;
+      శూన్య get_vec4(అక్షరం*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      శూన్య copy(అక్షరం*dst, అక్షరం*src) override;
 
-    private:
+    అంతరంగ:
       size_t wid_;
 };
 
-class property_logic : public class_property_t {
-    public:
-      explicit inline property_logic(size_t wid): wid_(wid) { }
+తరగతి property_logic : బహిరంగ class_property_t {
+    బహిరంగ:
+      స్పష్టమైన అంతఃవరుస property_logic(size_t wid): wid_(wid) { }
       ~property_logic() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector4_t); }
+      size_t instance_కొలత() స్థిరరాశి override { తిరిగి పరిమాణం(vvp_vector4_t); }
 
-    public:
-      void construct(char*buf) const override
-      { new (buf+offset_) vvp_vector4_t (wid_); }
+    బహిరంగ:
+      శూన్య construct(అక్షరం*buf) స్థిరరాశి override
+      { కొత్త (buf+స్థానభ్రంశం) vvp_vector4_t (wid_); }
 
-      void destruct(char*buf) const override
-      { vvp_vector4_t*tmp = reinterpret_cast<vvp_vector4_t*>(buf+offset_);
+      శూన్య destruct(అక్షరం*buf) స్థిరరాశి override
+      { vvp_vector4_t*tmp = reinterpret_cast<vvp_vector4_t*>(buf+స్థానభ్రంశం);
 	tmp->~vvp_vector4_t();
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      శూన్య సమితి_vec4(అక్షరం*buf, స్థిరరాశి vvp_vector4_t&val) override;
+      శూన్య get_vec4(అక్షరం*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      శూన్య copy(అక్షరం*dst, అక్షరం*src) override;
 
-    private:
+    అంతరంగ:
       size_t wid_;
 };
 
-template <class T> class property_real : public class_property_t {
-    public:
-      inline explicit property_real(void) { }
+మూస <తరగతి T> తరగతి property_real : బహిరంగ class_property_t {
+    బహిరంగ:
+      అంతఃవరుస స్పష్టమైన property_real(శూన్య) { }
       ~property_real() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_కొలత() స్థిరరాశి override { తిరిగి పరిమాణం(T); }
 
-    public:
-      void construct(char*buf) const override
-      { T*tmp = reinterpret_cast<T*> (buf+offset_);
+    బహిరంగ:
+      శూన్య construct(అక్షరం*buf) స్థిరరాశి override
+      { T*tmp = reinterpret_cast<T*> (buf+స్థానభ్రంశం);
 	*tmp = 0.0;
       }
 
-      void set_real(char*buf, double val) override;
-      double get_real(char*buf) override;
+      శూన్య సమితి_real(అక్షరం*buf, ద్విగుణ val) override;
+      ద్విగుణ get_real(అక్షరం*buf) override;
 
-      void copy(char*dst, char*src) override;
+      శూన్య copy(అక్షరం*dst, అక్షరం*src) override;
 };
 
-class property_string : public class_property_t {
-    public:
-      inline explicit property_string(void) { }
+తరగతి property_string : బహిరంగ class_property_t {
+    బహిరంగ:
+      అంతఃవరుస స్పష్టమైన property_string(శూన్య) { }
       ~property_string() override { }
 
-      size_t instance_size() const override { return sizeof(std::string); }
+      size_t instance_కొలత() స్థిరరాశి override { తిరిగి పరిమాణం(std::string); }
 
-    public:
-      void construct(char*buf) const override
-      { /* string*tmp = */ new (buf+offset_) string; }
+    బహిరంగ:
+      శూన్య construct(అక్షరం*buf) స్థిరరాశి override
+      { /* string*tmp = */ కొత్త (buf+స్థానభ్రంశం) string; }
 
-      void destruct(char*buf) const override
-      { string*tmp = reinterpret_cast<string*> (buf+offset_);
+      శూన్య destruct(అక్షరం*buf) స్థిరరాశి override
+      { string*tmp = reinterpret_cast<string*> (buf+స్థానభ్రంశం);
 	tmp->~string();
       }
 
-      void set_string(char*buf, const string&) override;
-      string get_string(char*buf) override;
+      శూన్య సమితి_string(అక్షరం*buf, స్థిరరాశి string&) override;
+      string get_string(అక్షరం*buf) override;
 
-      void copy(char*dst, char*src) override;
+      శూన్య copy(అక్షరం*dst, అక్షరం*src) override;
 };
 
-class property_object : public class_property_t {
-    public:
-      inline explicit property_object(uint64_t as): array_size_(as==0? 1 : as) { }
+తరగతి property_object : బహిరంగ class_property_t {
+    బహిరంగ:
+      అంతఃవరుస స్పష్టమైన property_object(uint64_t as): array_కొలత(as==0? 1 : as) { }
       ~property_object() override { }
 
-      size_t instance_size() const override { return array_size_ * sizeof(vvp_object_t); }
+      size_t instance_కొలత() స్థిరరాశి override { తిరిగి array_కొలత * పరిమాణం(vvp_object_t); }
 
-    public:
-      void construct(char*buf) const override;
+    బహిరంగ:
+      శూన్య construct(అక్షరం*buf) స్థిరరాశి override;
 
-      void destruct(char*buf) const override;
+      శూన్య destruct(అక్షరం*buf) స్థిరరాశి override;
 
-      void set_object(char*buf, const vvp_object_t&, uint64_t) override;
-      void get_object(char*buf, vvp_object_t&, uint64_t) override;
+      శూన్య సమితి_object(అక్షరం*buf, స్థిరరాశి vvp_object_t&, uint64_t) override;
+      శూన్య get_object(అక్షరం*buf, vvp_object_t&, uint64_t) override;
 
-      void copy(char*dst, char*src) override;
+      శూన్య copy(అక్షరం*dst, అక్షరం*src) override;
 
-    private:
-      size_t array_size_;
+    అంతరంగ:
+      size_t array_కొలత;
 };
 
-template <class T> void property_atom<T>::set_vec4(char*buf, const vvp_vector4_t&val)
+మూస <తరగతి T> శూన్య property_atom<T>::సమితి_vec4(అక్షరం*buf, స్థిరరాశి vvp_vector4_t&val)
 {
-      T*tmp = reinterpret_cast<T*> (buf+offset_);
-      bool flag = vector4_to_value(val, *tmp, true, false);
-      assert(flag);
+      T*tmp = reinterpret_cast<T*> (buf+స్థానభ్రంశం);
+      తార్కిక flag = vector4_గమ్యం_విలువ(val, *tmp, నిజం, అబద్ధం);
+      ప్రతిజ్ఞా(flag);
 }
 
-template <class T> void property_atom<T>::get_vec4(char*buf, vvp_vector4_t&val)
+మూస <తరగతి T> శూన్య property_atom<T>::get_vec4(అక్షరం*buf, vvp_vector4_t&val)
 {
-      T*src = reinterpret_cast<T*> (buf+offset_);
-      const size_t tmp_cnt = sizeof(T)<sizeof(unsigned long)
+      T*src = reinterpret_cast<T*> (buf+స్థానభ్రంశం);
+      స్థిరరాశి size_t tmp_cnt = పరిమాణం(T)<పరిమాణం(గుర్తులేని దీర్ఘ)
 				       ? 1
-				       : sizeof(T) / sizeof(unsigned long);
-      unsigned long tmp[tmp_cnt];
+				       : పరిమాణం(T) / పరిమాణం(గుర్తులేని దీర్ఘ);
+      గుర్తులేని దీర్ఘ tmp[tmp_cnt];
       tmp[0] = src[0];
 
-      for (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
-	    tmp[idx] = src[0] >> idx * 8 * sizeof(tmp[0]);
+      కొరకు (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
+	    tmp[idx] = src[0] >> idx * 8 * పరిమాణం(tmp[0]);
 
-      val.resize(8*sizeof(T));
+      val.resize(8*పరిమాణం(T));
       val.setarray(0, val.size(), tmp);
 }
 
-template <class T> void property_atom<T>::copy(char*dst, char*src)
+మూస <తరగతి T> శూన్య property_atom<T>::copy(అక్షరం*dst, అక్షరం*src)
 {
-      T*dst_obj = reinterpret_cast<T*> (dst+offset_);
-      T*src_obj = reinterpret_cast<T*> (src+offset_);
+      T*dst_obj = reinterpret_cast<T*> (dst+స్థానభ్రంశం);
+      T*src_obj = reinterpret_cast<T*> (src+స్థానభ్రంశం);
       *dst_obj = *src_obj;
 }
 
-void property_bit::set_vec4(char*buf, const vvp_vector4_t&val)
+శూన్య property_బిట్టు::సమితి_vec4(అక్షరం*buf, స్థిరరాశి vvp_vector4_t&val)
 {
-      vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
+      vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+స్థానభ్రంశం);
       *obj = val;
 }
 
-void property_bit::get_vec4(char*buf, vvp_vector4_t&val)
+శూన్య property_బిట్టు::get_vec4(అక్షరం*buf, vvp_vector4_t&val)
 {
-      const vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
-      val = vector2_to_vector4(*obj, obj->size());
+      స్థిరరాశి vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+స్థానభ్రంశం);
+      val = vector2_గమ్యం_vector4(*obj, obj->size());
 }
 
-void property_bit::copy(char*dst, char*src)
+శూన్య property_బిట్టు::copy(అక్షరం*dst, అక్షరం*src)
 {
-      vvp_vector2_t*dst_obj = reinterpret_cast<vvp_vector2_t*> (dst+offset_);
-      const vvp_vector2_t*src_obj = reinterpret_cast<vvp_vector2_t*> (src+offset_);
+      vvp_vector2_t*dst_obj = reinterpret_cast<vvp_vector2_t*> (dst+స్థానభ్రంశం);
+      స్థిరరాశి vvp_vector2_t*src_obj = reinterpret_cast<vvp_vector2_t*> (src+స్థానభ్రంశం);
       *dst_obj = *src_obj;
 }
 
-void property_logic::set_vec4(char*buf, const vvp_vector4_t&val)
+శూన్య property_logic::సమితి_vec4(అక్షరం*buf, స్థిరరాశి vvp_vector4_t&val)
 {
-      vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
+      vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+స్థానభ్రంశం);
       *obj = val;
 }
 
-void property_logic::get_vec4(char*buf, vvp_vector4_t&val)
+శూన్య property_logic::get_vec4(అక్షరం*buf, vvp_vector4_t&val)
 {
-      const vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
+      స్థిరరాశి vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+స్థానభ్రంశం);
       val = *obj;
 }
 
-void property_logic::copy(char*dst, char*src)
+శూన్య property_logic::copy(అక్షరం*dst, అక్షరం*src)
 {
-      vvp_vector4_t*dst_obj = reinterpret_cast<vvp_vector4_t*> (dst+offset_);
-      const vvp_vector4_t*src_obj = reinterpret_cast<vvp_vector4_t*> (src+offset_);
+      vvp_vector4_t*dst_obj = reinterpret_cast<vvp_vector4_t*> (dst+స్థానభ్రంశం);
+      స్థిరరాశి vvp_vector4_t*src_obj = reinterpret_cast<vvp_vector4_t*> (src+స్థానభ్రంశం);
       *dst_obj = *src_obj;
 }
 
-template <class T> void property_real<T>::set_real(char*buf, double val)
+మూస <తరగతి T> శూన్య property_real<T>::సమితి_real(అక్షరం*buf, ద్విగుణ val)
 {
-      T*tmp = reinterpret_cast<T*>(buf+offset_);
+      T*tmp = reinterpret_cast<T*>(buf+స్థానభ్రంశం);
       *tmp = val;
 }
 
-template <class T> double property_real<T>::get_real(char*buf)
+మూస <తరగతి T> ద్విగుణ property_real<T>::get_real(అక్షరం*buf)
 {
-      T*tmp = reinterpret_cast<T*>(buf+offset_);
-      return *tmp;
+      T*tmp = reinterpret_cast<T*>(buf+స్థానభ్రంశం);
+      తిరిగి *tmp;
 }
 
-template <class T> void property_real<T>::copy(char*dst, char*src)
+మూస <తరగతి T> శూన్య property_real<T>::copy(అక్షరం*dst, అక్షరం*src)
 {
-      T*dst_obj = reinterpret_cast<T*> (dst+offset_);
-      T*src_obj = reinterpret_cast<T*> (src+offset_);
+      T*dst_obj = reinterpret_cast<T*> (dst+స్థానభ్రంశం);
+      T*src_obj = reinterpret_cast<T*> (src+స్థానభ్రంశం);
       *dst_obj = *src_obj;
 }
 
-void property_string::set_string(char*buf, const string&val)
+శూన్య property_string::సమితి_string(అక్షరం*buf, స్థిరరాశి string&val)
 {
-      string*tmp = reinterpret_cast<string*>(buf+offset_);
+      string*tmp = reinterpret_cast<string*>(buf+స్థానభ్రంశం);
       *tmp = val;
 }
 
-string property_string::get_string(char*buf)
+string property_string::get_string(అక్షరం*buf)
 {
-      const string*tmp = reinterpret_cast<string*>(buf+offset_);
-      return *tmp;
+      స్థిరరాశి string*tmp = reinterpret_cast<string*>(buf+స్థానభ్రంశం);
+      తిరిగి *tmp;
 }
 
-void property_string::copy(char*dst, char*src)
+శూన్య property_string::copy(అక్షరం*dst, అక్షరం*src)
 {
-      string*dst_obj = reinterpret_cast<string*> (dst+offset_);
-      const string*src_obj = reinterpret_cast<string*> (src+offset_);
+      string*dst_obj = reinterpret_cast<string*> (dst+స్థానభ్రంశం);
+      స్థిరరాశి string*src_obj = reinterpret_cast<string*> (src+స్థానభ్రంశం);
       *dst_obj = *src_obj;
 }
 
-void property_object::construct(char*buf) const
+శూన్య property_object::construct(అక్షరం*buf) స్థిరరాశి
 {
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
-	    new (buf+offset_ + idx*sizeof(vvp_object_t)) vvp_object_t;
+      కొరకు (size_t idx = 0 ; idx < array_కొలత ; idx += 1)
+	    కొత్త (buf+స్థానభ్రంశం + idx*పరిమాణం(vvp_object_t)) vvp_object_t;
 }
 
-void property_object::destruct(char*buf) const
+శూన్య property_object::destruct(అక్షరం*buf) స్థిరరాశి
 {
-      vvp_object_t*tmp = reinterpret_cast<vvp_object_t*> (buf+offset_);
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      vvp_object_t*tmp = reinterpret_cast<vvp_object_t*> (buf+స్థానభ్రంశం);
+      కొరకు (size_t idx = 0 ; idx < array_కొలత ; idx += 1)
 	    (tmp+idx)->~vvp_object_t();
 }
 
-void property_object::set_object(char*buf, const vvp_object_t&val, uint64_t idx)
+శూన్య property_object::సమితి_object(అక్షరం*buf, స్థిరరాశి vvp_object_t&val, uint64_t idx)
 {
-      assert(idx < array_size_);
-      vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
+      ప్రతిజ్ఞా(idx < array_కొలత);
+      vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+స్థానభ్రంశం);
       tmp[idx] = val;
 }
 
-void property_object::get_object(char*buf, vvp_object_t&val, uint64_t idx)
+శూన్య property_object::get_object(అక్షరం*buf, vvp_object_t&val, uint64_t idx)
 {
-      assert(idx < array_size_);
-      const vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
+      ప్రతిజ్ఞా(idx < array_కొలత);
+      స్థిరరాశి vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+స్థానభ్రంశం);
       val = tmp[idx];
 }
 
-void property_object::copy(char*dst, char*src)
+శూన్య property_object::copy(అక్షరం*dst, అక్షరం*src)
 {
-      vvp_object_t*dst_obj = reinterpret_cast<vvp_object_t*>(dst+offset_);
-      const vvp_object_t*src_obj = reinterpret_cast<vvp_object_t*>(src+offset_);
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      vvp_object_t*dst_obj = reinterpret_cast<vvp_object_t*>(dst+స్థానభ్రంశం);
+      స్థిరరాశి vvp_object_t*src_obj = reinterpret_cast<vvp_object_t*>(src+స్థానభ్రంశం);
+      కొరకు (size_t idx = 0 ; idx < array_కొలత ; idx += 1)
 	    dst_obj[idx] = src_obj[idx];
 }
 
 /* **** */
 
-class_type::class_type(const string&nam, size_t nprop)
+class_type::class_type(స్థిరరాశి string&nam, size_t nprop)
 : class_name_(nam), properties_(nprop)
 {
-      instance_size_ = 0;
+      instance_కొలత_2 = 0;
 }
 
 class_type::~class_type()
 {
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
-	    delete properties_[idx].type;
+      కొరకు (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+	    తొలగించు properties_[idx].type;
 }
 
-void class_type::set_property(size_t idx, const string&name, const string&type, uint64_t array_size)
+శూన్య class_type::సమితి_property(size_t idx, స్థిరరాశి string&name, స్థిరరాశి string&type, uint64_t array_కొలత_2)
 {
-      assert(idx < properties_.size());
+      ప్రతిజ్ఞా(idx < properties_.size());
       properties_[idx].name = name;
 
-      if (type == "b8")
-	    properties_[idx].type = new property_atom<uint8_t>;
-      else if (type == "b16")
-	    properties_[idx].type = new property_atom<uint16_t>;
-      else if (type == "b32")
-	    properties_[idx].type = new property_atom<uint32_t>;
-      else if (type == "b64")
-	    properties_[idx].type = new property_atom<uint64_t>;
-      else if (type == "sb8")
-	    properties_[idx].type = new property_atom<int8_t>;
-      else if (type == "sb16")
-	    properties_[idx].type = new property_atom<int16_t>;
-      else if (type == "sb32")
-	    properties_[idx].type = new property_atom<int32_t>;
-      else if (type == "sb64")
-	    properties_[idx].type = new property_atom<int64_t>;
-      else if (type == "r")
-	    properties_[idx].type = new property_real<double>;
-      else if (type == "S")
-	    properties_[idx].type = new property_string;
-      else if (type == "o")
-	    properties_[idx].type = new property_object(array_size);
-      else if (type[0] == 'b') {
+      ఒకవేళ (type == "b8")
+	    properties_[idx].type = కొత్త property_atom<uint8_t>;
+      లేకపోతే ఒకవేళ (type == "b16")
+	    properties_[idx].type = కొత్త property_atom<uint16_t>;
+      లేకపోతే ఒకవేళ (type == "b32")
+	    properties_[idx].type = కొత్త property_atom<uint32_t>;
+      లేకపోతే ఒకవేళ (type == "b64")
+	    properties_[idx].type = కొత్త property_atom<uint64_t>;
+      లేకపోతే ఒకవేళ (type == "sb8")
+	    properties_[idx].type = కొత్త property_atom<int8_t>;
+      లేకపోతే ఒకవేళ (type == "sb16")
+	    properties_[idx].type = కొత్త property_atom<int16_t>;
+      లేకపోతే ఒకవేళ (type == "sb32")
+	    properties_[idx].type = కొత్త property_atom<int32_t>;
+      లేకపోతే ఒకవేళ (type == "sb64")
+	    properties_[idx].type = కొత్త property_atom<int64_t>;
+      లేకపోతే ఒకవేళ (type == "r")
+	    properties_[idx].type = కొత్త property_real<ద్విగుణ>;
+      లేకపోతే ఒకవేళ (type == "S")
+	    properties_[idx].type = కొత్త property_string;
+      లేకపోతే ఒకవేళ (type == "o")
+	    properties_[idx].type = కొత్త property_object(array_కొలత_2);
+      లేకపోతే ఒకవేళ (type[0] == 'b') {
 	    size_t wid = strtoul(type.c_str()+1, 0, 0);
-	    properties_[idx].type = new property_bit(wid);
-      } else if (type[0] == 'L') {
+	    properties_[idx].type = కొత్త property_బిట్టు(wid);
+      } లేకపోతే ఒకవేళ (type[0] == 'L') {
 	    size_t wid = strtoul(type.c_str()+1,0,0);
-	    properties_[idx].type = new property_logic(wid);
-      } else if (type[0] == 's' && type[1] == 'L') {
+	    properties_[idx].type = కొత్త property_logic(wid);
+      } లేకపోతే ఒకవేళ (type[0] == 's' && type[1] == 'L') {
 	    size_t wid = strtoul(type.c_str()+2,0,0);
-	    properties_[idx].type = new property_logic(wid);
-      } else {
+	    properties_[idx].type = కొత్త property_logic(wid);
+      } లేకపోతే {
 	    properties_[idx].type = 0;
       }
 }
 
-void class_type::finish_setup(void)
+శూన్య class_type::ముగింపు_అమరిక(శూన్య)
 {
-      map<size_t, vector<size_t> > size_map;
+      map<size_t, vector<size_t> > కొలత_map;
 	// Add up all the sizes to get a total instance size. This
 	// figures out how much memory a complete instance will need.
       size_t accum = 0;
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1) {
-	    assert(properties_[idx].type);
-	    size_t instance_size = properties_[idx].type->instance_size();
-	    accum += instance_size;
-	    size_map[instance_size].push_back(idx);
+      కొరకు (size_t idx = 0 ; idx < properties_.size() ; idx += 1) {
+	    ప్రతిజ్ఞా(properties_[idx].type);
+	    size_t instance_కొలత = properties_[idx].type->instance_కొలత();
+	    accum += instance_కొలత;
+	    కొలత_map[instance_కొలత].push_back(idx);
       }
 
-      instance_size_ = accum;
+      instance_కొలత_2 = accum;
 
 	// Now allocate the properties to offsets within an instance
 	// space. Allocate the properties largest objects first so
 	// that they are assured better alignment.
       accum = 0;
-      for (map<size_t, vector<size_t> >::reverse_iterator cur = size_map.rbegin()
-		 ; cur != size_map.rend() ; ++ cur) {
-	    for (size_t idx = 0 ; idx < cur->second.size() ; idx += 1) {
+      కొరకు (map<size_t, vector<size_t> >::reverse_iterator cur = కొలత_map.rbegin()
+		 ; cur != కొలత_map.rend() ; ++ cur) {
+	    కొరకు (size_t idx = 0 ; idx < cur->second.size() ; idx += 1) {
 		  size_t pid = cur->second[idx];
 		  class_property_t*ptype = properties_[pid].type;
-		  assert(ptype->instance_size() == cur->first);
-		  ptype->set_offset(accum);
-		  accum += cur->first;
+		  ప్రతిజ్ఞా(ptype->instance_కొలత() == cur->మొదటి);
+		  ptype->సమితి_స్థానభ్రంశం(accum);
+		  accum += cur->మొదటి;
 	    }
       }
 }
 
-class_type::inst_t class_type::instance_new() const
+class_type::inst_t class_type::instance_new() స్థిరరాశి
 {
-      char*buf = new char [instance_size_];
+      అక్షరం*buf = కొత్త అక్షరం [instance_కొలత_2];
 
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      కొరకు (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->construct(buf);
 
-      return reinterpret_cast<inst_t> (buf);
+      తిరిగి reinterpret_cast<inst_t> (buf);
 }
 
-void class_type::instance_delete(class_type::inst_t obj) const
+శూన్య class_type::instance_delete(class_type::inst_t obj) స్థిరరాశి
 {
-      char*buf = reinterpret_cast<char*> (obj);
+      అక్షరం*buf = reinterpret_cast<అక్షరం*> (obj);
 
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      కొరకు (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->destruct(buf);
 
-      delete[]buf;
+      తొలగించు[]buf;
 }
 
-void class_type::set_vec4(class_type::inst_t obj, size_t pid,
-			  const vvp_vector4_t&val) const
+శూన్య class_type::సమితి_vec4(class_type::inst_t obj, size_t pid,
+			  స్థిరరాశి vvp_vector4_t&val) స్థిరరాశి
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      properties_[pid].type->set_vec4(buf, val);
+      అక్షరం*buf = reinterpret_cast<అక్షరం*> (obj);
+      ప్రతిజ్ఞా(pid < properties_.size());
+      properties_[pid].type->సమితి_vec4(buf, val);
 }
 
-void class_type::get_vec4(class_type::inst_t obj, size_t pid,
-			  vvp_vector4_t&val) const
+శూన్య class_type::get_vec4(class_type::inst_t obj, size_t pid,
+			  vvp_vector4_t&val) స్థిరరాశి
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      అక్షరం*buf = reinterpret_cast<అక్షరం*> (obj);
+      ప్రతిజ్ఞా(pid < properties_.size());
       properties_[pid].type->get_vec4(buf, val);
 }
 
-void class_type::set_real(class_type::inst_t obj, size_t pid,
-			  double val) const
+శూన్య class_type::సమితి_real(class_type::inst_t obj, size_t pid,
+			  ద్విగుణ val) స్థిరరాశి
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      properties_[pid].type->set_real(buf, val);
+      అక్షరం*buf = reinterpret_cast<అక్షరం*> (obj);
+      ప్రతిజ్ఞా(pid < properties_.size());
+      properties_[pid].type->సమితి_real(buf, val);
 }
 
-double class_type::get_real(class_type::inst_t obj, size_t pid) const
+ద్విగుణ class_type::get_real(class_type::inst_t obj, size_t pid) స్థిరరాశి
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      return properties_[pid].type->get_real(buf);
+      అక్షరం*buf = reinterpret_cast<అక్షరం*> (obj);
+      ప్రతిజ్ఞా(pid < properties_.size());
+      తిరిగి properties_[pid].type->get_real(buf);
 }
 
-void class_type::set_string(class_type::inst_t obj, size_t pid,
-			    const string&val) const
+శూన్య class_type::సమితి_string(class_type::inst_t obj, size_t pid,
+			    స్థిరరాశి string&val) స్థిరరాశి
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      properties_[pid].type->set_string(buf, val);
+      అక్షరం*buf = reinterpret_cast<అక్షరం*> (obj);
+      ప్రతిజ్ఞా(pid < properties_.size());
+      properties_[pid].type->సమితి_string(buf, val);
 }
 
-string class_type::get_string(class_type::inst_t obj, size_t pid) const
+string class_type::get_string(class_type::inst_t obj, size_t pid) స్థిరరాశి
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      return properties_[pid].type->get_string(buf);
+      అక్షరం*buf = reinterpret_cast<అక్షరం*> (obj);
+      ప్రతిజ్ఞా(pid < properties_.size());
+      తిరిగి properties_[pid].type->get_string(buf);
 }
 
-void class_type::set_object(class_type::inst_t obj, size_t pid,
-			    const vvp_object_t&val, size_t idx) const
+శూన్య class_type::సమితి_object(class_type::inst_t obj, size_t pid,
+			    స్థిరరాశి vvp_object_t&val, size_t idx) స్థిరరాశి
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      properties_[pid].type->set_object(buf, val, idx);
+      అక్షరం*buf = reinterpret_cast<అక్షరం*> (obj);
+      ప్రతిజ్ఞా(pid < properties_.size());
+      properties_[pid].type->సమితి_object(buf, val, idx);
 }
 
-void class_type::get_object(class_type::inst_t obj, size_t pid,
-			    vvp_object_t&val, size_t idx) const
+శూన్య class_type::get_object(class_type::inst_t obj, size_t pid,
+			    vvp_object_t&val, size_t idx) స్థిరరాశి
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      అక్షరం*buf = reinterpret_cast<అక్షరం*> (obj);
+      ప్రతిజ్ఞా(pid < properties_.size());
       properties_[pid].type->get_object(buf, val, idx);
 }
 
-void class_type::copy_property(class_type::inst_t dst, size_t pid, class_type::inst_t src) const
+శూన్య class_type::copy_property(class_type::inst_t dst, size_t pid, class_type::inst_t src) స్థిరరాశి
 {
-      char*dst_buf = reinterpret_cast<char*> (dst);
-      char*src_buf = reinterpret_cast<char*> (src);
+      అక్షరం*dst_buf = reinterpret_cast<అక్షరం*> (dst);
+      అక్షరం*src_buf = reinterpret_cast<అక్షరం*> (src);
 
-      assert(pid < properties_.size());
+      ప్రతిజ్ఞా(pid < properties_.size());
 
       properties_[pid].type->copy(dst_buf, src_buf);
 }
 
-int class_type::get_type_code(void) const
+పూర్ణాంకం class_type::get_type_సంకేతం(శూన్య) స్థిరరాశి
 {
-      return vpiClassDefn;
+      తిరిగి vpiClassDefn;
 }
 
-static class_type*compile_class = 0;
+స్థిర class_type*compile_class = 0;
 
-void compile_class_start(char*lab, char*nam, unsigned ntype)
+శూన్య compile_class_ప్రారంభం(అక్షరం*lab, అక్షరం*nam, గుర్తులేని ntype)
 {
-      assert(compile_class == 0);
-      compile_class = new class_type(nam, ntype);
-      compile_vpi_symbol(lab, compile_class);
-      free(lab);
-      delete[]nam;
+      ప్రతిజ్ఞా(compile_class == 0);
+      compile_class = కొత్త class_type(nam, ntype);
+      compile_vpi_చిహ్నం(lab, compile_class);
+      విడుదల(lab);
+      తొలగించు[]nam;
 }
 
-void compile_class_property(unsigned idx, char*nam, char*typ, uint64_t array_size)
+శూన్య compile_class_property(గుర్తులేని idx, అక్షరం*nam, అక్షరం*typ, uint64_t array_కొలత_2)
 {
-      assert(compile_class);
-      compile_class->set_property(idx, nam, typ, array_size);
-      delete[]nam;
-      delete[]typ;
+      ప్రతిజ్ఞా(compile_class);
+      compile_class->సమితి_property(idx, nam, typ, array_కొలత_2);
+      తొలగించు[]nam;
+      తొలగించు[]typ;
 }
 
-void compile_class_done(void)
+శూన్య compile_class_పూర్తి(శూన్య)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      assert(scope);
-      assert(compile_class);
-      compile_class->finish_setup();
+      ప్రతిజ్ఞా(scope);
+      ప్రతిజ్ఞా(compile_class);
+      compile_class->ముగింపు_అమరిక();
       scope->classes[compile_class->class_name()] = compile_class;
       compile_class = 0;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void class_def_delete(class_type *item)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య class_def_delete(class_type *అంశం)
 {
-      delete item;
+      తొలగించు అంశం;
 }
-#endif
+#అయితే_ముగింపు

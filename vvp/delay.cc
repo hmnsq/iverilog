@@ -17,29 +17,29 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "delay.h"
-#include "schedule.h"
-#include "vpi_priv.h"
-#include "config.h"
-#ifdef CHECK_WITH_VALGRIND
-#include "vvp_cleanup.h"
-#endif
-#include <iostream>
-#include <cstdlib>
-#include <list>
-#include <cassert>
-#include <cmath>
-#include "ivl_alloc.h"
+#అన్తర్భావ "delay.h"
+#అన్తర్భావ "schedule.h"
+#అన్తర్భావ "vpi_priv.h"
+#అన్తర్భావ "config.h"
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+#అన్తర్భావ "vvp_cleanup.h"
+#అయితే_ముగింపు
+#అన్తర్భావ <iostream>
+#అన్తర్భావ <cstdlib>
+#అన్తర్భావ <list>
+#అన్తర్భావ <cassert>
+#అన్తర్భావ <cmath>
+#అన్తర్భావ "ivl_alloc.h"
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
-void vvp_delay_t::calculate_min_delay_()
+శూన్య vvp_delay_t::calculate_min_delay_()
 {
       min_delay_ = rise_;
-      if (fall_ < min_delay_)
+      ఒకవేళ (fall_ < min_delay_)
 	    min_delay_ = fall_;
-      if (ignore_decay_) decay_ = min_delay_;
-      else if (decay_ < min_delay_)
+      ఒకవేళ (ignore_decay_) decay_ = min_delay_;
+      లేకపోతే ఒకవేళ (decay_ < min_delay_)
 	    min_delay_ = decay_;
 }
 
@@ -49,7 +49,7 @@ vvp_delay_t::vvp_delay_t(vvp_time64_t rise, vvp_time64_t fall)
       fall_ = fall;
       decay_= fall < rise? fall : rise;
       min_delay_ = decay_;
-      ignore_decay_ = false;
+      ignore_decay_ = అబద్ధం;
 }
 
 vvp_delay_t::vvp_delay_t(vvp_time64_t rise, vvp_time64_t fall, vvp_time64_t decay)
@@ -57,14 +57,14 @@ vvp_delay_t::vvp_delay_t(vvp_time64_t rise, vvp_time64_t fall, vvp_time64_t deca
       rise_ = rise;
       fall_ = fall;
       decay_= decay;
-      ignore_decay_ = false;
+      ignore_decay_ = అబద్ధం;
 
       calculate_min_delay_();
 }
 
-void vvp_delay_t::set_ignore_decay()
+శూన్య vvp_delay_t::సమితి_ignore_decay()
 {
-      ignore_decay_ = true;
+      ignore_decay_ = నిజం;
 
       calculate_min_delay_();
 }
@@ -75,171 +75,171 @@ vvp_delay_t::~vvp_delay_t()
 
 vvp_time64_t vvp_delay_t::get_delay(vvp_bit4_t from, vvp_bit4_t to)
 {
-      switch (from) {
-	  case BIT4_0:
-	    switch (to) {
-		case BIT4_0: return 0;
-		case BIT4_1: return rise_;
-		case BIT4_X: return min_delay_;
-		case BIT4_Z: return decay_;
+      ఎంపిక (from) {
+	  స్థితి BIT4_0:
+	    ఎంపిక (to) {
+		స్థితి BIT4_0: తిరిగి 0;
+		స్థితి BIT4_1: తిరిగి rise_;
+		స్థితి BIT4_X: తిరిగి min_delay_;
+		స్థితి BIT4_Z: తిరిగి decay_;
 	    }
-	    break;
-	  case BIT4_1:
-	    switch (to) {
-		case BIT4_0: return fall_;
-		case BIT4_1: return 0;
-		case BIT4_X: return min_delay_;
-		case BIT4_Z: return decay_;
+	    ఆపు;
+	  స్థితి BIT4_1:
+	    ఎంపిక (to) {
+		స్థితి BIT4_0: తిరిగి fall_;
+		స్థితి BIT4_1: తిరిగి 0;
+		స్థితి BIT4_X: తిరిగి min_delay_;
+		స్థితి BIT4_Z: తిరిగి decay_;
 	    }
-	    break;
-	  case BIT4_X:
-	    switch (to) {
-		case BIT4_0: return fall_;
-		case BIT4_1: return rise_;
-		case BIT4_X: return 0;
-		case BIT4_Z: return decay_;
+	    ఆపు;
+	  స్థితి BIT4_X:
+	    ఎంపిక (to) {
+		స్థితి BIT4_0: తిరిగి fall_;
+		స్థితి BIT4_1: తిరిగి rise_;
+		స్థితి BIT4_X: తిరిగి 0;
+		స్థితి BIT4_Z: తిరిగి decay_;
 	    }
-	    break;
-	  case BIT4_Z:
-	    switch (to) {
-		case BIT4_0: return fall_;
-		case BIT4_1: return rise_;
-		case BIT4_X: return min_delay_;
-		case BIT4_Z: return 0;
+	    ఆపు;
+	  స్థితి BIT4_Z:
+	    ఎంపిక (to) {
+		స్థితి BIT4_0: తిరిగి fall_;
+		స్థితి BIT4_1: తిరిగి rise_;
+		స్థితి BIT4_X: తిరిగి min_delay_;
+		స్థితి BIT4_Z: తిరిగి 0;
 	    }
-	    break;
+	    ఆపు;
       }
 
-      assert(0);
-      return 0;
+      ప్రతిజ్ఞా(0);
+      తిరిగి 0;
 }
 
-vvp_time64_t vvp_delay_t::get_min_delay() const
+vvp_time64_t vvp_delay_t::get_min_delay() స్థిరరాశి
 {
-      return min_delay_;
+      తిరిగి min_delay_;
 }
 
-void vvp_delay_t::set_rise(vvp_time64_t val)
+శూన్య vvp_delay_t::సమితి_rise(vvp_time64_t val)
 {
       rise_ = val;
-      if (val < min_delay_) {
+      ఒకవేళ (val < min_delay_) {
 	    min_delay_ = val;
-	    if (ignore_decay_) decay_ = val;
-      } else
+	    ఒకవేళ (ignore_decay_) decay_ = val;
+      } లేకపోతే
 	    calculate_min_delay_();
 }
 
-void vvp_delay_t::set_fall(vvp_time64_t val)
+శూన్య vvp_delay_t::సమితి_fall(vvp_time64_t val)
 {
       fall_ = val;
-      if (val < min_delay_) {
+      ఒకవేళ (val < min_delay_) {
 	    min_delay_ = val;
-	    if (ignore_decay_) decay_ = val;
-      } else
+	    ఒకవేళ (ignore_decay_) decay_ = val;
+      } లేకపోతే
 	    calculate_min_delay_();
 }
 
-void vvp_delay_t::set_decay(vvp_time64_t val)
+శూన్య vvp_delay_t::సమితి_decay(vvp_time64_t val)
 {
-      assert(!ignore_decay_);
+      ప్రతిజ్ఞా(!ignore_decay_);
 
       decay_ = val;
-      if (val < min_delay_)
+      ఒకవేళ (val < min_delay_)
 	    min_delay_ = val;
-      else
+      లేకపోతే
 	    calculate_min_delay_();
 }
 
-vvp_fun_delay::vvp_fun_delay(vvp_net_t*n, unsigned width, const vvp_delay_t&d)
+vvp_fun_delay::vvp_fun_delay(vvp_net_t*n, గుర్తులేని width, స్థిరరాశి vvp_delay_t&d)
 : net_(n), delay_(d)
 {
       cur_real_ = 0.0;
-      if (width > 0) {
+      ఒకవేళ (width > 0) {
             cur_vec4_ = vvp_vector4_t(width, BIT4_X);
             cur_vec8_ = vvp_vector8_t(cur_vec4_, 6, 6);
-            schedule_init_propagate(net_, cur_vec4_);
-      } else {
-            schedule_init_propagate(net_, cur_real_);
+            కాలపట్టిక_init_propagate(net_, cur_vec4_);
+      } లేకపోతే {
+            కాలపట్టిక_init_propagate(net_, cur_real_);
       }
       list_ = 0;
       type_ = UNKNOWN_DELAY;
-      initial_ = true;
+      initial_ = నిజం;
 	// Calculate the values used when converting variable delays
 	// to simulation time units.
-      const __vpiScope*scope = vpip_peek_current_scope();
+      స్థిరరాశి __vpiScope*scope = vpip_peek_current_scope();
 
-      int powr = scope->time_units - scope->time_precision;
-      round_ = 1;
-      for (int lp = 0; lp < powr; lp += 1) round_ *= 10;
+      పూర్ణాంకం powr = scope->సమయం_units - scope->సమయం_precision;
+      విడత = 1;
+      కొరకు (పూర్ణాంకం lp = 0; lp < powr; lp += 1) విడత *= 10;
 
-      powr = scope->time_precision - vpip_get_time_precision();
+      powr = scope->సమయం_precision - vpip_get_సమయం_precision();
       scale_ = 1;
-      for (int lp = 0; lp < powr; lp += 1) scale_ *= 10;
+      కొరకు (పూర్ణాంకం lp = 0; lp < powr; lp += 1) scale_ *= 10;
 }
 
 vvp_fun_delay::~vvp_fun_delay()
 {
-      while (struct event_*cur = dequeue_())
-	    delete cur;
+      అయితే (నిర్మాణం event_*cur = వరుస_నుండి_తీయి())
+	    తొలగించు cur;
 }
 
-bool vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay,
-                                        const vvp_vector4_t&bit)
+తార్కిక vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay,
+                                        స్థిరరాశి vvp_vector4_t&బిట్టు)
 {
-      if (list_ == 0) return false;
+      ఒకవేళ (list_ == 0) తిరిగి అబద్ధం;
 
 	/* If the most recent event and the new event have the same
 	 * value then we need to skip the new event. */
-      if (list_->next->ptr_vec4.eeq(bit)) return true;
+      ఒకవేళ (list_->తదుపరి_2->ptr_vec4.eeq(బిట్టు)) తిరిగి నిజం;
 
       clean_pulse_events_(use_delay);
-      return false;
+      తిరిగి అబద్ధం;
 }
 
-bool vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay,
-                                        const vvp_vector8_t&bit)
+తార్కిక vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay,
+                                        స్థిరరాశి vvp_vector8_t&బిట్టు)
 {
-      if (list_ == 0) return false;
+      ఒకవేళ (list_ == 0) తిరిగి అబద్ధం;
 
 	/* If the most recent event and the new event have the same
 	 * value then we need to skip the new event. */
-      if (list_->next->ptr_vec8.eeq(bit)) return true;
+      ఒకవేళ (list_->తదుపరి_2->ptr_vec8.eeq(బిట్టు)) తిరిగి నిజం;
 
       clean_pulse_events_(use_delay);
-      return false;
+      తిరిగి అబద్ధం;
 }
 
-bool vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay,
-                                        double bit)
+తార్కిక vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay,
+                                        ద్విగుణ బిట్టు)
 {
-      if (list_ == 0) return false;
+      ఒకవేళ (list_ == 0) తిరిగి అబద్ధం;
 
 	/* If the most recent event and the new event have the same
 	 * value then we need to skip the new event. */
-      if (list_->next->ptr_real == bit) return true;
+      ఒకవేళ (list_->తదుపరి_2->ptr_real == బిట్టు) తిరిగి నిజం;
 
       clean_pulse_events_(use_delay);
-      return false;
+      తిరిగి అబద్ధం;
 }
 
-void vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay)
+శూన్య vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay)
 {
-      assert(list_ != 0);
+      ప్రతిజ్ఞా(list_ != 0);
 
-      do {
-	    struct event_*cur = list_->next;
+      చేయి {
+	    నిర్మాణం event_*cur = list_->తదుపరి_2;
 	      /* If this event is far enough from the event I'm about
 	         to create, then that scheduled event is not a pulse
 	         to be eliminated, so we're done. */
-	    if (cur->sim_time+use_delay <= use_delay+schedule_simtime())
-		  break;
+	    ఒకవేళ (cur->sim_సమయం+use_delay <= use_delay+కాలపట్టిక_simtime())
+		  ఆపు;
 
-	    if (list_ == cur)
+	    ఒకవేళ (list_ == cur)
 		  list_ = 0;
-	    else
-		  list_->next = cur->next;
-	    delete cur;
-      } while (list_);
+	    లేకపోతే
+		  list_->తదుపరి_2 = cur->తదుపరి_2;
+	    తొలగించు cur;
+      } అయితే (list_);
 }
 
 /*
@@ -249,360 +249,360 @@ void vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay)
  * wrong. What should happen is that if there are multiple changes,
  * multiple vectors approaching the result should be scheduled.
  */
-void vvp_fun_delay::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_fun_delay::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                               vvp_context_t)
 {
-      if (port.port() > 0) {
+      ఒకవేళ (పోర్టు.పోర్టు() > 0) {
 	      // Get the integer value of the bit vector, or 0 if
 	      // there are X or Z bits.
 	    vvp_time64_t bval = 0;
 	      // The following does not work correctly for negative values.
 	      // They should be sign extended to 64 bits (1364-2001 9.7.1).
-	    vector4_to_value(bit, bval);
+	    vector4_గమ్యం_విలువ(బిట్టు, bval);
 	      // Integer values do not need to be rounded so just scale them.
-	    vvp_time64_t val = bval * round_ * scale_;
+	    vvp_time64_t val = bval * విడత * scale_;
 
-	    switch (port.port()) {
-		case 1:
-		  delay_.set_rise(val);
-		  return;
-		case 2:
-		  delay_.set_fall(val);
-		  return;
-		case 3:
-		  delay_.set_decay(val);
-		  return;
+	    ఎంపిక (పోర్టు.పోర్టు()) {
+		స్థితి 1:
+		  delay_.సమితి_rise(val);
+		  తిరిగి;
+		స్థితి 2:
+		  delay_.సమితి_fall(val);
+		  తిరిగి;
+		స్థితి 3:
+		  delay_.సమితి_decay(val);
+		  తిరిగి;
 	    }
-	    return;
+	    తిరిగి;
       }
 
       vvp_time64_t use_delay;
 	/* This is an initial value so it needs to be compared to all the
 	   bits (the order the bits are changed is not deterministic). */
-      if (initial_) {
+      ఒకవేళ (initial_) {
 	    type_ = VEC4_DELAY;
             cur_vec8_ = vvp_vector8_t(vvp_vector4_t(0, BIT4_X), 6, 6);
 	    vvp_bit4_t cur_val = cur_vec4_.value(0);
-	    use_delay = delay_.get_delay(cur_val, bit.value(0));
-	    for (unsigned idx = 1 ;  idx < bit.size() ;  idx += 1) {
+	    use_delay = delay_.get_delay(cur_val, బిట్టు.value(0));
+	    కొరకు (గుర్తులేని idx = 1 ;  idx < బిట్టు.size() ;  idx += 1) {
 		  vvp_time64_t tmp;
-		  tmp = delay_.get_delay(cur_val, bit.value(idx));
-		  if (tmp > use_delay) use_delay = tmp;
+		  tmp = delay_.get_delay(cur_val, బిట్టు.value(idx));
+		  ఒకవేళ (tmp > use_delay) use_delay = tmp;
 	    }
-      } else {
-	    assert(type_ == VEC4_DELAY);
+      } లేకపోతే {
+	    ప్రతిజ్ఞా(type_ == VEC4_DELAY);
 
 	      // Use as a reference for calculating the delay the
 	      // current value of the output. Detect and handle the
 	      // special case that the event list contains the current
 	      // value as a zero-delay-remaining event.
-	    const vvp_vector4_t&use_vec4 = (list_ && list_->next->sim_time == schedule_simtime())? list_->next->ptr_vec4 : cur_vec4_;
+	    స్థిరరాశి vvp_vector4_t&use_vec4 = (list_ && list_->తదుపరి_2->sim_సమయం == కాలపట్టిక_simtime())? list_->తదుపరి_2->ptr_vec4 : cur_vec4_;
 
 	      /* How many bits to compare? */
-	    unsigned use_wid = use_vec4.size();
-	    if (bit.size() < use_wid) use_wid = bit.size();
+	    గుర్తులేని use_wid = use_vec4.size();
+	    ఒకవేళ (బిట్టు.size() < use_wid) use_wid = బిట్టు.size();
 
 	      /* Scan the vectors looking for delays. Select the maximum
 	         delay encountered. */
-	    use_delay = delay_.get_delay(use_vec4.value(0), bit.value(0));
+	    use_delay = delay_.get_delay(use_vec4.value(0), బిట్టు.value(0));
 
-	    for (unsigned idx = 1 ;  idx < use_wid ;  idx += 1) {
+	    కొరకు (గుర్తులేని idx = 1 ;  idx < use_wid ;  idx += 1) {
 		  vvp_time64_t tmp;
-		  tmp = delay_.get_delay(use_vec4.value(idx), bit.value(idx));
-		  if (tmp > use_delay) use_delay = tmp;
+		  tmp = delay_.get_delay(use_vec4.value(idx), బిట్టు.value(idx));
+		  ఒకవేళ (tmp > use_delay) use_delay = tmp;
 	    }
       }
 
       /* what *should* happen here is we check to see if there is a
          transaction in the queue. This would be a pulse that needs to be
          eliminated. */
-      if (clean_pulse_events_(use_delay, bit)) return;
+      ఒకవేళ (clean_pulse_events_(use_delay, బిట్టు)) తిరిగి;
 
-      vvp_time64_t use_simtime = schedule_simtime() + use_delay;
+      vvp_time64_t use_simtime = కాలపట్టిక_simtime() + use_delay;
 
 	/* And propagate it. */
-      if (use_delay == 0 && list_ == 0) {
-	    cur_vec4_ = bit;
-	    initial_ = false;
+      ఒకవేళ (use_delay == 0 && list_ == 0) {
+	    cur_vec4_ = బిట్టు;
+	    initial_ = అబద్ధం;
 	    net_->send_vec4(cur_vec4_, 0);
-      } else {
-	    struct event_*cur = new struct event_(use_simtime);
-	    cur->run_run_ptr = &vvp_fun_delay::run_run_vec4_;
-	    cur->ptr_vec4 = bit;
-	    enqueue_(cur);
-	    schedule_generic(this, use_delay, false);
+      } లేకపోతే {
+	    నిర్మాణం event_*cur = కొత్త నిర్మాణం event_(use_simtime);
+	    cur->నిరంతరం_నిరంతరం_ptr = &vvp_fun_delay::నిరంతరం_నిరంతరం_vec4;
+	    cur->ptr_vec4 = బిట్టు;
+	    వరుసలో_చేర్చు(cur);
+	    కాలపట్టిక_generic(ఇది, use_delay, అబద్ధం);
       }
 }
 
-void vvp_fun_delay::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			         unsigned base, unsigned vwid, vvp_context_t ctx)
+శూన్య vvp_fun_delay::recv_vec4_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			         గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, బిట్టు, పునాది, vwid, ctx);
 }
 
 /* See the recv_vec4 comment above. */
-void vvp_fun_delay::recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit)
+శూన్య vvp_fun_delay::recv_vec8(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు)
 {
-      assert(port.port() == 0);
+      ప్రతిజ్ఞా(పోర్టు.పోర్టు() == 0);
 
       vvp_time64_t use_delay;
 	/* This is an initial value so it needs to be compared to all the
 	   bits (the order the bits are changed is not deterministic). */
-      if (initial_) {
+      ఒకవేళ (initial_) {
 	    type_ = VEC8_DELAY;
             cur_vec4_ = vvp_vector4_t(0, BIT4_X);
 	    vvp_bit4_t cur_val = cur_vec8_.value(0).value();
-	    use_delay = delay_.get_delay(cur_val, bit.value(0).value());
-	    for (unsigned idx = 1 ;  idx < bit.size() ;  idx += 1) {
+	    use_delay = delay_.get_delay(cur_val, బిట్టు.value(0).value());
+	    కొరకు (గుర్తులేని idx = 1 ;  idx < బిట్టు.size() ;  idx += 1) {
 		  vvp_time64_t tmp;
-		  tmp = delay_.get_delay(cur_val, bit.value(idx).value());
-		  if (tmp > use_delay) use_delay = tmp;
+		  tmp = delay_.get_delay(cur_val, బిట్టు.value(idx).value());
+		  ఒకవేళ (tmp > use_delay) use_delay = tmp;
 	    }
-      } else {
-	    assert(type_ == VEC8_DELAY);
+      } లేకపోతే {
+	    ప్రతిజ్ఞా(type_ == VEC8_DELAY);
 
 	      // Use as a reference for calculating the delay the
 	      // current value of the output. Detect and handle the
 	      // special case that the event list contains the current
 	      // value as a zero-delay-remaining event.
-	    const vvp_vector8_t&use_vec8 = (list_ && list_->next->sim_time == schedule_simtime())? list_->next->ptr_vec8 : cur_vec8_;
+	    స్థిరరాశి vvp_vector8_t&use_vec8 = (list_ && list_->తదుపరి_2->sim_సమయం == కాలపట్టిక_simtime())? list_->తదుపరి_2->ptr_vec8 : cur_vec8_;
 
 	      /* How many bits to compare? */
-	    unsigned use_wid = use_vec8.size();
-	    if (bit.size() < use_wid) use_wid = bit.size();
+	    గుర్తులేని use_wid = use_vec8.size();
+	    ఒకవేళ (బిట్టు.size() < use_wid) use_wid = బిట్టు.size();
 
 	      /* Scan the vectors looking for delays. Select the maximum
 	         delay encountered. */
 	    use_delay = delay_.get_delay(use_vec8.value(0).value(),
-	                                 bit.value(0).value());
+	                                 బిట్టు.value(0).value());
 
-	    for (unsigned idx = 1 ;  idx < use_wid ;  idx += 1) {
+	    కొరకు (గుర్తులేని idx = 1 ;  idx < use_wid ;  idx += 1) {
 		  vvp_time64_t tmp;
 		  tmp = delay_.get_delay(use_vec8.value(idx).value(),
-		                         bit.value(idx).value());
-		  if (tmp > use_delay) use_delay = tmp;
+		                         బిట్టు.value(idx).value());
+		  ఒకవేళ (tmp > use_delay) use_delay = tmp;
 	    }
       }
 
       /* what *should* happen here is we check to see if there is a
          transaction in the queue. This would be a pulse that needs to be
          eliminated. */
-      if (clean_pulse_events_(use_delay, bit)) return;
+      ఒకవేళ (clean_pulse_events_(use_delay, బిట్టు)) తిరిగి;
 
-      vvp_time64_t use_simtime = schedule_simtime() + use_delay;
+      vvp_time64_t use_simtime = కాలపట్టిక_simtime() + use_delay;
 
 	/* And propagate it. */
-      if (use_delay == 0 && list_ == 0) {
-	    cur_vec8_ = bit;
-	    initial_ = false;
+      ఒకవేళ (use_delay == 0 && list_ == 0) {
+	    cur_vec8_ = బిట్టు;
+	    initial_ = అబద్ధం;
 	    net_->send_vec8(cur_vec8_);
-      } else {
-	    struct event_*cur = new struct event_(use_simtime);
-	    cur->ptr_vec8 = bit;
-	    cur->run_run_ptr = &vvp_fun_delay::run_run_vec8_;
-	    enqueue_(cur);
-	    schedule_generic(this, use_delay, false);
+      } లేకపోతే {
+	    నిర్మాణం event_*cur = కొత్త నిర్మాణం event_(use_simtime);
+	    cur->ptr_vec8 = బిట్టు;
+	    cur->నిరంతరం_నిరంతరం_ptr = &vvp_fun_delay::నిరంతరం_నిరంతరం_vec8;
+	    వరుసలో_చేర్చు(cur);
+	    కాలపట్టిక_generic(ఇది, use_delay, అబద్ధం);
       }
 }
 
-void vvp_fun_delay::recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-			         unsigned base, unsigned vwid)
+శూన్య vvp_fun_delay::recv_vec8_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector8_t&బిట్టు,
+			         గుర్తులేని పునాది, గుర్తులేని vwid)
 {
-      recv_vec8_pv_(ptr, bit, base, vwid);
+      recv_vec8_pv_(ptr, బిట్టు, పునాది, vwid);
 }
 
-void vvp_fun_delay::recv_real(vvp_net_ptr_t port, double bit,
+శూన్య vvp_fun_delay::recv_real(vvp_net_ptr_t పోర్టు, ద్విగుణ బిట్టు,
                               vvp_context_t)
 {
-      if (port.port() > 0) {
+      ఒకవేళ (పోర్టు.పోర్టు() > 0) {
 	    /* If the port is not 0, then this is a delay value that
 	    should be rounded and converted to an integer delay. */
 	    vvp_time64_t val = 0;
-	    if (bit > -0.5) {
-		  val = (vvp_time64_t) (bit * round_ + 0.5) * scale_;
-	    } else if (bit != bit) {
+	    ఒకవేళ (బిట్టు > -0.5) {
+		  val = (vvp_time64_t) (బిట్టు * విడత + 0.5) * scale_;
+	    } లేకపోతే ఒకవేళ (బిట్టు != బిట్టు) {
 		    // For a NaN we use the default (0).
-	    } else {
-		  vvp_vector4_t vec4(8*sizeof(vvp_time64_t),
-		                     floor(-bit * round_ + 0.5) * -1 * scale_);
-		  vector4_to_value(vec4, val);
+	    } లేకపోతే {
+		  vvp_vector4_t vec4(8*పరిమాణం(vvp_time64_t),
+		                     floor(-బిట్టు * విడత + 0.5) * -1 * scale_);
+		  vector4_గమ్యం_విలువ(vec4, val);
 	    }
 
-	    switch (port.port()) {
-		case 1:
-		  delay_.set_rise(val);
-		  return;
-		case 2:
-		  delay_.set_fall(val);
-		  return;
-		case 3:
-		  delay_.set_decay(val);
-		  return;
+	    ఎంపిక (పోర్టు.పోర్టు()) {
+		స్థితి 1:
+		  delay_.సమితి_rise(val);
+		  తిరిగి;
+		స్థితి 2:
+		  delay_.సమితి_fall(val);
+		  తిరిగి;
+		స్థితి 3:
+		  delay_.సమితి_decay(val);
+		  తిరిగి;
 	    }
-	    return;
+	    తిరిగి;
       }
 
-      if (initial_) {
+      ఒకవేళ (initial_) {
 	    type_ = REAL_DELAY;
             cur_vec4_ = vvp_vector4_t(0, BIT4_X);
             cur_vec8_ = vvp_vector8_t(cur_vec4_, 6, 6);
-      } else assert(type_ == REAL_DELAY);
+      } లేకపోతే ప్రతిజ్ఞా(type_ == REAL_DELAY);
 
       vvp_time64_t use_delay;
       use_delay = delay_.get_min_delay();
 
       /* Eliminate glitches. */
-      if (clean_pulse_events_(use_delay, bit)) return;
+      ఒకవేళ (clean_pulse_events_(use_delay, బిట్టు)) తిరిగి;
 
       /* This must be done after cleaning pulses to avoid propagating
        * an incorrect value. */
-      if (cur_real_ == bit) return;
+      ఒకవేళ (cur_real_ == బిట్టు) తిరిగి;
 
-      vvp_time64_t use_simtime = schedule_simtime() + use_delay;
+      vvp_time64_t use_simtime = కాలపట్టిక_simtime() + use_delay;
 
-      if (use_delay == 0 && list_ == 0) {
-	    cur_real_ = bit;
-	    initial_ = false;
+      ఒకవేళ (use_delay == 0 && list_ == 0) {
+	    cur_real_ = బిట్టు;
+	    initial_ = అబద్ధం;
 	    net_->send_real(cur_real_, 0);
-      } else {
-	    struct event_*cur = new struct event_(use_simtime);
-	    cur->run_run_ptr = &vvp_fun_delay::run_run_real_;
-	    cur->ptr_real = bit;
-	    enqueue_(cur);
+      } లేకపోతే {
+	    నిర్మాణం event_*cur = కొత్త నిర్మాణం event_(use_simtime);
+	    cur->నిరంతరం_నిరంతరం_ptr = &vvp_fun_delay::నిరంతరం_నిరంతరం_real;
+	    cur->ptr_real = బిట్టు;
+	    వరుసలో_చేర్చు(cur);
 
-	    schedule_generic(this, use_delay, false);
+	    కాలపట్టిక_generic(ఇది, use_delay, అబద్ధం);
       }
 }
 
-void vvp_fun_delay::run_run()
+శూన్య vvp_fun_delay::నిరంతరం_నిరంతరం()
 {
-      vvp_time64_t sim_time = schedule_simtime();
-      if (list_ == 0 || list_->next->sim_time > sim_time)
-	    return;
+      vvp_time64_t sim_సమయం = కాలపట్టిక_simtime();
+      ఒకవేళ (list_ == 0 || list_->తదుపరి_2->sim_సమయం > sim_సమయం)
+	    తిరిగి;
 
-      struct event_*cur = dequeue_();
-      if (cur == 0)
-	    return;
+      నిర్మాణం event_*cur = వరుస_నుండి_తీయి();
+      ఒకవేళ (cur == 0)
+	    తిరిగి;
 
-      (this->*(cur->run_run_ptr))(cur);
-      initial_ = false;
-      delete cur;
+      (ఇది->*(cur->నిరంతరం_నిరంతరం_ptr))(cur);
+      initial_ = అబద్ధం;
+      తొలగించు cur;
 }
 
-void vvp_fun_delay::run_run_vec4_(const struct event_*cur)
+శూన్య vvp_fun_delay::నిరంతరం_నిరంతరం_vec4(స్థిరరాశి నిర్మాణం event_*cur)
 {
       cur_vec4_ = cur->ptr_vec4;
       net_->send_vec4(cur_vec4_, 0);
 }
 
-void vvp_fun_delay::run_run_vec8_(const struct vvp_fun_delay::event_*cur)
+శూన్య vvp_fun_delay::నిరంతరం_నిరంతరం_vec8(స్థిరరాశి నిర్మాణం vvp_fun_delay::event_*cur)
 {
       cur_vec8_ = cur->ptr_vec8;
       net_->send_vec8(cur_vec8_);
 }
 
-void vvp_fun_delay::run_run_real_(const struct vvp_fun_delay::event_*cur)
+శూన్య vvp_fun_delay::నిరంతరం_నిరంతరం_real(స్థిరరాశి నిర్మాణం vvp_fun_delay::event_*cur)
 {
       cur_real_ = cur->ptr_real;
       net_->send_real(cur_real_, 0);
 }
 
-vvp_fun_modpath::vvp_fun_modpath(vvp_net_t*net, unsigned width)
+vvp_fun_modpath::vvp_fun_modpath(vvp_net_t*net, గుర్తులేని width)
 : net_(net), src_list_(0), ifnone_list_(0)
 {
       cur_vec4_ = vvp_vector4_t(width, BIT4_X);
-      schedule_init_propagate(net_, cur_vec4_);
+      కాలపట్టిక_init_propagate(net_, cur_vec4_);
 }
 
 vvp_fun_modpath::~vvp_fun_modpath()
 {
 	// Delete the source probes.
-      while (src_list_) {
+      అయితే (src_list_) {
 	    vvp_fun_modpath_src*tmp = src_list_;
-	    src_list_ = tmp->next_;
-	    delete tmp;
+	    src_list_ = tmp->తదుపరి;
+	    తొలగించు tmp;
       }
-      while (ifnone_list_) {
+      అయితే (ifnone_list_) {
 	    vvp_fun_modpath_src*tmp = ifnone_list_;
-	    ifnone_list_ = tmp->next_;
-	    delete tmp;
+	    ifnone_list_ = tmp->తదుపరి;
+	    తొలగించు tmp;
       }
 }
 
-void vvp_fun_modpath::add_modpath_src(vvp_fun_modpath_src*that, bool ifnone)
+శూన్య vvp_fun_modpath::కూడు_modpath_src(vvp_fun_modpath_src*that, తార్కిక ifnone)
 {
-      assert(that->next_ == 0);
-      if (ifnone) {
-	    that->next_ = ifnone_list_;
+      ప్రతిజ్ఞా(that->తదుపరి == 0);
+      ఒకవేళ (ifnone) {
+	    that->తదుపరి = ifnone_list_;
 	    ifnone_list_ = that;
-      } else {
-	    that->next_ = src_list_;
+      } లేకపోతే {
+	    that->తదుపరి = src_list_;
 	    src_list_ = that;
       }
 }
 
-static vvp_time64_t delay_from_edge(vvp_bit4_t a, vvp_bit4_t b,
-                                           vvp_time64_t const array[12])
+స్థిర vvp_time64_t delay_from_అంచు(vvp_bit4_t a, vvp_bit4_t b,
+                                           vvp_time64_t స్థిరరాశి array[12])
 {
-      typedef delay_edge_t bit4_table4[4];
-      static const bit4_table4 edge_table[4] = {
-	    { DELAY_EDGE_01, DELAY_EDGE_01, DELAY_EDGE_0z, DELAY_EDGE_0x },
-	    { DELAY_EDGE_10, DELAY_EDGE_10, DELAY_EDGE_1z, DELAY_EDGE_1x },
-	    { DELAY_EDGE_z0, DELAY_EDGE_z1, DELAY_EDGE_z0, DELAY_EDGE_zx },
-	    { DELAY_EDGE_x0, DELAY_EDGE_x1, DELAY_EDGE_xz, DELAY_EDGE_x0 }
+      రకనిర్వచనం delay_అంచు_t bit4_table4[4];
+      స్థిర స్థిరరాశి bit4_table4 అంచు_పట్టిక[4] = {
+	    { DELAY_అంచు_01, DELAY_అంచు_01, DELAY_అంచు_0z, DELAY_అంచు_0x },
+	    { DELAY_అంచు_10, DELAY_అంచు_10, DELAY_అంచు_1z, DELAY_అంచు_1x },
+	    { DELAY_అంచు_z0, DELAY_అంచు_z1, DELAY_అంచు_z0, DELAY_అంచు_zx },
+	    { DELAY_అంచు_x0, DELAY_అంచు_x1, DELAY_అంచు_xz, DELAY_అంచు_x0 }
       };
 
-      return array[ edge_table[a][b] ];
+      తిరిగి array[ అంచు_పట్టిక[a][b] ];
 }
 
-void vvp_fun_modpath::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_fun_modpath::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                                 vvp_context_t)
 {
 	/* Only the first port is used. */
-      if (port.port() > 0)
-	    return;
+      ఒకవేళ (పోర్టు.పోర్టు() > 0)
+	    తిరిగి;
 
-      if (cur_vec4_.eeq(bit))
-	    return;
+      ఒకవేళ (cur_vec4_.eeq(బిట్టు))
+	    తిరిగి;
 
 	/* Select a time delay source that applies. Notice that there
 	   may be multiple delay sources that apply, so collect all
 	   the candidates into a list first. */
       list<vvp_fun_modpath_src*>candidate_list;
-      vvp_time64_t candidate_wake_time = 0;
-      for (vvp_fun_modpath_src*cur = src_list_ ;  cur ;  cur=cur->next_) {
+      vvp_time64_t candidate_wake_సమయం = 0;
+      కొరకు (vvp_fun_modpath_src*cur = src_list_ ;  cur ;  cur=cur->తదుపరి) {
 	      /* Skip paths that are disabled by conditions. */
-	    if (cur->condition_flag_ == false)
-		  continue;
+	    ఒకవేళ (cur->condition_flag_ == అబద్ధం)
+		  కొనసాగు;
 
-	    if (candidate_list.empty()) {
+	    ఒకవేళ (candidate_list.empty()) {
 		  candidate_list.push_back(cur);
-		  candidate_wake_time = cur->wake_time_;
-	    } else if (cur->wake_time_ == candidate_wake_time) {
+		  candidate_wake_సమయం = cur->wake_సమయం;
+	    } లేకపోతే ఒకవేళ (cur->wake_సమయం == candidate_wake_సమయం) {
 		  candidate_list.push_back(cur);
-	    } else if (cur->wake_time_ > candidate_wake_time) {
+	    } లేకపోతే ఒకవేళ (cur->wake_సమయం > candidate_wake_సమయం) {
 		  candidate_list.assign(1, cur);
-		  candidate_wake_time = cur->wake_time_;
-	    } else {
-		  continue; /* Skip this entry. */
+		  candidate_wake_సమయం = cur->wake_సమయం;
+	    } లేకపోతే {
+		  కొనసాగు; /* Skip this entry. */
 	    }
       }
 
 	/* Only add the ifnone delay if it has a later wake_time_ or
 	 * if there are no normal delays. */
-      vvp_time64_t ifnone_wake_time = candidate_wake_time;
-      for (vvp_fun_modpath_src*cur = ifnone_list_ ;  cur ;  cur=cur->next_) {
-	    if (candidate_list.empty()) {
+      vvp_time64_t ifnone_wake_సమయం = candidate_wake_సమయం;
+      కొరకు (vvp_fun_modpath_src*cur = ifnone_list_ ;  cur ;  cur=cur->తదుపరి) {
+	    ఒకవేళ (candidate_list.empty()) {
 		  candidate_list.push_back(cur);
-		  ifnone_wake_time = cur->wake_time_;
-	    } else if (cur->wake_time_ == ifnone_wake_time &&
-	               ifnone_wake_time > candidate_wake_time) {
+		  ifnone_wake_సమయం = cur->wake_సమయం;
+	    } లేకపోతే ఒకవేళ (cur->wake_సమయం == ifnone_wake_సమయం &&
+	               ifnone_wake_సమయం > candidate_wake_సమయం) {
 		  candidate_list.push_back(cur);
-	    } else if (cur->wake_time_ > ifnone_wake_time) {
+	    } లేకపోతే ఒకవేళ (cur->wake_సమయం > ifnone_wake_సమయం) {
 		  candidate_list.assign(1, cur);
-		  ifnone_wake_time = cur->wake_time_;
-	    } else {
-		  continue; /* Skip this entry. */
+		  ifnone_wake_సమయం = cur->wake_సమయం;
+	    } లేకపోతే {
+		  కొనసాగు; /* Skip this entry. */
 	    }
       }
 
@@ -610,143 +610,143 @@ void vvp_fun_modpath::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 	   match. This may happen, for example, if the set of
 	   conditional delays is incomplete, leaving some cases
 	   uncovered. In that case, just pass the data without delay */
-      if (candidate_list.empty()) {
-	    cur_vec4_ = bit;
-	    schedule_generic(this, 0, false);
-	    return;
+      ఒకవేళ (candidate_list.empty()) {
+	    cur_vec4_ = బిట్టు;
+	    కాలపట్టిక_generic(ఇది, 0, అబద్ధం);
+	    తిరిగి;
       }
 
 	/* Now given that we have a list of candidate delays, find for
 	   each if the 12 numbers the minimum from all the
 	   candidates. This minimum set becomes the chosen delay to
 	   use. */
-      vvp_time64_t out_at[12];
-      vvp_time64_t now = schedule_simtime();
+      vvp_time64_t బహిర్గతం_at[12];
+      vvp_time64_t now = కాలపట్టిక_simtime();
 
-      typedef list<vvp_fun_modpath_src*>::const_iterator iter_t;
+      రకనిర్వచనం list<vvp_fun_modpath_src*>::const_iterator iter_t;
 
       iter_t cur = candidate_list.begin();
-      const vvp_fun_modpath_src*src = *cur;
+      స్థిరరాశి vvp_fun_modpath_src*src = *cur;
 
-      for (unsigned idx = 0 ;  idx < 12 ;  idx += 1) {
-	    out_at[idx] = src->wake_time_ + src->delay_[idx];
-	    if (out_at[idx] <= now)
-		  out_at[idx] = 0;
-	    else
-		  out_at[idx] -= now;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < 12 ;  idx += 1) {
+	    బహిర్గతం_at[idx] = src->wake_సమయం + src->delay_[idx];
+	    ఒకవేళ (బహిర్గతం_at[idx] <= now)
+		  బహిర్గతం_at[idx] = 0;
+	    లేకపోతే
+		  బహిర్గతం_at[idx] -= now;
       }
 
-      for (++ cur ; cur != candidate_list.end() ; ++ cur ) {
+      కొరకు (++ cur ; cur != candidate_list.చివర() ; ++ cur ) {
 	    src = *cur;
-	    for (unsigned idx = 0 ;  idx < 12 ;  idx += 1) {
-		  vvp_time64_t tmp = src->wake_time_ + src->delay_[idx];
-		  if (tmp <= now)
+	    కొరకు (గుర్తులేని idx = 0 ;  idx < 12 ;  idx += 1) {
+		  vvp_time64_t tmp = src->wake_సమయం + src->delay_[idx];
+		  ఒకవేళ (tmp <= now)
 			tmp = 0;
-		  else
+		  లేకపోతే
 			tmp -= now;
-		  if (tmp < out_at[idx])
-			out_at[idx] = tmp;
+		  ఒకవేళ (tmp < బహిర్గతం_at[idx])
+			బహిర్గతం_at[idx] = tmp;
 	    }
       }
 
 	/* Given the scheduled output time, create an output event. */
-      vvp_time64_t use_delay = delay_from_edge(cur_vec4_.value(0),
-					       bit.value(0),
-					       out_at);
+      vvp_time64_t use_delay = delay_from_అంచు(cur_vec4_.value(0),
+					       బిట్టు.value(0),
+					       బహిర్గతం_at);
 
 	/* FIXME: This bases the edge delay on only the least
 	   bit. This is WRONG! I need to find all the possible delays,
 	   and schedule an event for each partial change. Hard! */
-      for (unsigned idx = 1 ;  idx < bit.size() ;  idx += 1) {
-	    vvp_time64_t tmp = delay_from_edge(cur_vec4_.value(idx),
-					       bit.value(idx),
-					       out_at);
+      కొరకు (గుర్తులేని idx = 1 ;  idx < బిట్టు.size() ;  idx += 1) {
+	    vvp_time64_t tmp = delay_from_అంచు(cur_vec4_.value(idx),
+					       బిట్టు.value(idx),
+					       బహిర్గతం_at);
 	      /* If the current and new bit values match then no delay
 	       * is needed for this bit. */
-	    if (cur_vec4_.value(idx) == bit.value(idx)) continue;
-	    if (tmp != use_delay) {
+	    ఒకవేళ (cur_vec4_.value(idx) == బిట్టు.value(idx)) కొనసాగు;
+	    ఒకవేళ (tmp != use_delay) {
 		  fprintf(stderr, "sorry: multi-bit module path delays are "
 		                  "currently not fully supported.\n");
 		  fprintf(stderr, "     : using the LSB delay for all bits.\n");
-		  continue;
+		  కొనసాగు;
             }
       }
 
-      cur_vec4_ = bit;
-      schedule_generic(this, use_delay, false);
+      cur_vec4_ = బిట్టు;
+      కాలపట్టిక_generic(ఇది, use_delay, అబద్ధం);
 }
 
-void vvp_fun_modpath::run_run()
+శూన్య vvp_fun_modpath::నిరంతరం_నిరంతరం()
 {
       net_->send_vec4(cur_vec4_, 0);
 }
 
-vvp_fun_modpath_src::vvp_fun_modpath_src(vvp_time64_t const del[12])
+vvp_fun_modpath_src::vvp_fun_modpath_src(vvp_time64_t స్థిరరాశి del[12])
 {
-      for (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
+      కొరకు (గుర్తులేని idx = 0 ;  idx < 12 ;  idx += 1)
 	    delay_[idx] = del[idx];
 
-      next_ = 0;
-      wake_time_ = 0;
-      condition_flag_ = true;
+      తదుపరి = 0;
+      wake_సమయం = 0;
+      condition_flag_ = నిజం;
 }
 
 vvp_fun_modpath_src::~vvp_fun_modpath_src()
 {
 }
 
-void vvp_fun_modpath_src::get_delay12(vvp_time64_t val[12]) const
+శూన్య vvp_fun_modpath_src::get_delay12(vvp_time64_t val[12]) స్థిరరాశి
 {
-      for (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
+      కొరకు (గుర్తులేని idx = 0 ;  idx < 12 ;  idx += 1)
 	    val[idx] = delay_[idx];
 }
 
-void vvp_fun_modpath_src::put_delay12(const vvp_time64_t val[12])
+శూన్య vvp_fun_modpath_src::put_delay12(స్థిరరాశి vvp_time64_t val[12])
 {
-      for (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
+      కొరకు (గుర్తులేని idx = 0 ;  idx < 12 ;  idx += 1)
 	    delay_[idx] = val[idx];
 }
 
-void vvp_fun_modpath_src::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_fun_modpath_src::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                                     vvp_context_t)
 {
-      if (port.port() == 0) {
+      ఒకవేళ (పోర్టు.పోర్టు() == 0) {
 	      // The modpath input...
-	    if (test_vec4(bit))
-		  wake_time_ = schedule_simtime();
+	    ఒకవేళ (test_vec4(బిట్టు))
+		  wake_సమయం = కాలపట్టిక_simtime();
 
-      } else if (port.port() == 1) {
+      } లేకపోతే ఒకవేళ (పోర్టు.పోర్టు() == 1) {
 	      // The modpath condition input...
-	    if (bit.value(0) != BIT4_0)
-		  condition_flag_ = true;
-	    else
-		  condition_flag_ = false;
+	    ఒకవేళ (బిట్టు.value(0) != BIT4_0)
+		  condition_flag_ = నిజం;
+	    లేకపోతే
+		  condition_flag_ = అబద్ధం;
       }
 }
 
-bool vvp_fun_modpath_src::test_vec4(const vvp_vector4_t&)
+తార్కిక vvp_fun_modpath_src::test_vec4(స్థిరరాశి vvp_vector4_t&)
 {
-      return true;
+      తిరిగి నిజం;
 }
 
-vvp_fun_modpath_edge::vvp_fun_modpath_edge(vvp_time64_t del[12],
-					   bool pos, bool neg)
+vvp_fun_modpath_అంచు::vvp_fun_modpath_అంచు(vvp_time64_t del[12],
+					   తార్కిక pos, తార్కిక neg)
 : vvp_fun_modpath_src(del)
 {
-      old_value_ = BIT4_X;
+      old_విలువ = BIT4_X;
       posedge_ = pos;
       negedge_ = neg;
 }
 
-bool vvp_fun_modpath_edge::test_vec4(const vvp_vector4_t&bit)
+తార్కిక vvp_fun_modpath_అంచు::test_vec4(స్థిరరాశి vvp_vector4_t&బిట్టు)
 {
-      vvp_bit4_t tmp = old_value_;
-      old_value_ = bit.value(0);
+      vvp_bit4_t tmp = old_విలువ;
+      old_విలువ = బిట్టు.value(0);
 
-      int edge_flag = edge(tmp, old_value_);
-      if (edge_flag > 0) return posedge_;
-      if (edge_flag < 0) return negedge_;
-      return false;
+      పూర్ణాంకం అంచు_flag = అంచు(tmp, old_విలువ);
+      ఒకవేళ (అంచు_flag > 0) తిరిగి posedge_;
+      ఒకవేళ (అంచు_flag < 0) తిరిగి negedge_;
+      తిరిగి అబద్ధం;
 }
 
 
@@ -757,43 +757,43 @@ bool vvp_fun_modpath_edge::test_vec4(const vvp_vector4_t&bit)
  * make some specific delays path operations
  *
  */
-static int modpath_src_get(int, vpiHandle ref)
+స్థిర పూర్ణాంకం modpath_src_get(పూర్ణాంకం, vpiHandle ref)
 {
-      struct __vpiModPathSrc*obj =dynamic_cast<__vpiModPathSrc*>(ref);
-      assert(obj);
-      return 0;
+      నిర్మాణం __vpiModPathSrc*obj =dynamic_cast<__vpiModPathSrc*>(ref);
+      ప్రతిజ్ఞా(obj);
+      తిరిగి 0;
 }
 
-static void modpath_src_get_value(vpiHandle ref, p_vpi_value)
+స్థిర శూన్య modpath_src_get_విలువ(vpiHandle ref, p_vpi_విలువ)
 {
-      struct __vpiModPathSrc* modpathsrc = dynamic_cast<__vpiModPathSrc*>(ref);
-      assert(modpathsrc);
-      return;
+      నిర్మాణం __vpiModPathSrc* modpathsrc = dynamic_cast<__vpiModPathSrc*>(ref);
+      ప్రతిజ్ఞా(modpathsrc);
+      తిరిగి;
 }
 
-static vpiHandle modpath_src_put_value(vpiHandle ref, s_vpi_value *, int )
+స్థిర vpiHandle modpath_src_put_విలువ(vpiHandle ref, s_vpi_విలువ *, పూర్ణాంకం )
 {
-      struct __vpiModPathSrc* modpathsrc = dynamic_cast<__vpiModPathSrc*>(ref);
-      assert(modpathsrc);
-      return 0;
+      నిర్మాణం __vpiModPathSrc* modpathsrc = dynamic_cast<__vpiModPathSrc*>(ref);
+      ప్రతిజ్ఞా(modpathsrc);
+      తిరిగి 0;
 }
 
-static vpiHandle modpath_src_get_handle(int code, vpiHandle ref)
+స్థిర vpiHandle modpath_src_get_handle(పూర్ణాంకం code, vpiHandle ref)
 {
-      struct __vpiModPathSrc*rfp = dynamic_cast<__vpiModPathSrc*>(ref);
-      assert(rfp);
+      నిర్మాణం __vpiModPathSrc*rfp = dynamic_cast<__vpiModPathSrc*>(ref);
+      ప్రతిజ్ఞా(rfp);
 
-      switch (code) {
+      ఎంపిక (code) {
 
-	case vpiScope:
-	  return rfp->dest->scope;
+	స్థితి vpiScope:
+	  తిరిగి rfp->dest->scope;
 
-	  case vpiModule:
+	  స్థితి vpiModule:
 	      { __vpiScope*scope = rfp->dest->scope;
-		while (scope && scope->get_type_code() != vpiModule)
+		అయితే (scope && scope->get_type_సంకేతం() != vpiModule)
 		      scope = scope->scope;
-		assert(scope);
-		return scope;
+		ప్రతిజ్ఞా(scope);
+		తిరిగి scope;
 	      }
 
 	    // Handles to path term objects should really be obtained via
@@ -801,43 +801,43 @@ static vpiHandle modpath_src_get_handle(int code, vpiHandle ref)
 	    // them to be obtained here for backwards compatibility with
 	    // older versions of Icarus Verilog.
 
-	  case vpiModPathIn:
-	    return &rfp->path_term_in;
+	  స్థితి vpi_Mod_మార్గం_లోపల:
+	    తిరిగి &rfp->మార్గం_పదం_లోపల;
 
-	  case vpiModPathOut:
-	    return &rfp->dest->path_term_out;
+	  స్థితి vpi_Mod_మార్గం_బహిర్గతం:
+	    తిరిగి &rfp->dest->మార్గం_పదం_బహిర్గతం;
       }
-      return 0;
+      తిరిగి 0;
 }
 
-static vpiHandle modpath_src_iterate(int code, vpiHandle ref)
+స్థిర vpiHandle modpath_src_iterate(పూర్ణాంకం code, vpiHandle ref)
 {
-      struct __vpiModPathSrc*rfp = dynamic_cast<__vpiModPathSrc*>(ref);
-      assert(rfp);
+      నిర్మాణం __vpiModPathSrc*rfp = dynamic_cast<__vpiModPathSrc*>(ref);
+      ప్రతిజ్ఞా(rfp);
 
 	// Module paths with multiple sources or destinations are
 	// currently represented by a separate modpath object for
 	// each source/destination combination, so there is only
 	// ever one input path term and one output path term.
-      switch (code) {
-	  case vpiModPathIn: {
-	    vpiHandle*args = static_cast<vpiHandle*>(calloc(1, sizeof(vpiHandle*)));
-	    args[0] = &rfp->path_term_in;
-	    return vpip_make_iterator(1, args, true);
+      ఎంపిక (code) {
+	  స్థితి vpi_Mod_మార్గం_లోపల: {
+	    vpiHandle*వాదనలు = static_cast<vpiHandle*>(సున్నా_జ్ఞాపకం_ఇవ్వు(1, పరిమాణం(vpiHandle*)));
+	    వాదనలు[0] = &rfp->మార్గం_పదం_లోపల;
+	    తిరిగి vpip_make_iterator(1, వాదనలు, నిజం);
 	  }
-	  case vpiModPathOut: {
-	    vpiHandle*args = static_cast<vpiHandle*>(calloc(1, sizeof(vpiHandle*)));
-	    args[0] = &rfp->dest->path_term_out;
-	    return vpip_make_iterator(1, args, true);
+	  స్థితి vpi_Mod_మార్గం_బహిర్గతం: {
+	    vpiHandle*వాదనలు = static_cast<vpiHandle*>(సున్నా_జ్ఞాపకం_ఇవ్వు(1, పరిమాణం(vpiHandle*)));
+	    వాదనలు[0] = &rfp->dest->మార్గం_పదం_బహిర్గతం;
+	    తిరిగి vpip_make_iterator(1, వాదనలు, నిజం);
 	  }
       }
-      return 0;
+      తిరిగి 0;
 }
 
-static vpiHandle modpath_src_index ( vpiHandle ref, int)
+స్థిర vpiHandle modpath_src_సూచీ ( vpiHandle ref, పూర్ణాంకం)
 {
-      assert(ref->get_type_code() == vpiModPathIn);
-      return 0;
+      ప్రతిజ్ఞా(ref->get_type_సంకేతం() == vpi_Mod_మార్గం_లోపల);
+      తిరిగి 0;
 }
 
 
@@ -847,82 +847,82 @@ static vpiHandle modpath_src_index ( vpiHandle ref, int)
  * specific delays values in a vpiModPathIn object
  *
  */
-static void modpath_src_put_delays (vpiHandle ref, p_vpi_delay delays)
+స్థిర శూన్య modpath_src_put_delays (vpiHandle ref, p_vpi_delay delays)
 {
       vvp_time64_t tmp[12];
-      int idx;
-      struct __vpiModPathSrc * src = dynamic_cast<__vpiModPathSrc*>(ref) ;
-      assert(src) ;
+      పూర్ణాంకం idx;
+      నిర్మాణం __vpiModPathSrc * src = dynamic_cast<__vpiModPathSrc*>(ref) ;
+      ప్రతిజ్ఞా(src) ;
 
       vvp_fun_modpath_src *fun = dynamic_cast<vvp_fun_modpath_src*>(src->net->fun);
-      assert( fun );
+      ప్రతిజ్ఞా( fun );
 
-      typedef unsigned char map_array_t[12];
+      రకనిర్వచనం గుర్తులేని అక్షరం map_array_t[12];
 	// Only the first six entries are used for the less than twelve maps.
-      static const map_array_t map_1 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-      static const map_array_t map_2 = {0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0};
-      static const map_array_t map_3 = {0, 1, 2, 0, 2, 1, 0, 0, 0, 0, 0, 0};
-      static const map_array_t map_6 = {0, 1, 2, 3, 4, 5, 0, 0, 0, 0, 0, 0};
-      static const map_array_t map12 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+      స్థిర స్థిరరాశి map_array_t map_1 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+      స్థిర స్థిరరాశి map_array_t map_2 = {0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0};
+      స్థిర స్థిరరాశి map_array_t map_3 = {0, 1, 2, 0, 2, 1, 0, 0, 0, 0, 0, 0};
+      స్థిర స్థిరరాశి map_array_t map_6 = {0, 1, 2, 3, 4, 5, 0, 0, 0, 0, 0, 0};
+      స్థిర స్థిరరాశి map_array_t map12 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
-      const map_array_t*use_map = 0;
-      switch (delays->no_of_delays) {
-	  case 1:
+      స్థిరరాశి map_array_t*use_map = 0;
+      ఎంపిక (delays->no_యొక్క_delays) {
+	  స్థితి 1:
 	    use_map = &map_1;
-	    break;
-	  case 2:
+	    ఆపు;
+	  స్థితి 2:
 	    use_map = &map_2;
-	    break;
-	  case 3:
+	    ఆపు;
+	  స్థితి 3:
 	    use_map = &map_3;
-	    break;
-	  case 6:
+	    ఆపు;
+	  స్థితి 6:
 	    use_map = &map_6;
-	    break;
-	  case 12:
+	    ఆపు;
+	  స్థితి 12:
 	    use_map = &map12;
-	    break;
-	  default:
-	    assert(0);
-	    break;
+	    ఆపు;
+	  అప్రమేయ:
+	    ప్రతిజ్ఞా(0);
+	    ఆపు;
       }
 
-      if (delays->time_type == vpiSimTime) {
-	    for (idx = 0 ; idx < 12 ; idx += 1) {
-		  tmp[idx] = vpip_timestruct_to_time(delays->da+use_map[0][idx]);
+      ఒకవేళ (delays->సమయం_type == vpi_Sim_సమయం) {
+	    కొరకు (idx = 0 ; idx < 12 ; idx += 1) {
+		  tmp[idx] = vpip_timestruct_గమ్యం_సమయం(delays->da+use_map[0][idx]);
 	    }
-      } else {
+      } లేకపోతే {
 	      // You cannot create a modpath with a negative delay so set it
 	      // to zero per 1364-2005 section 14.3.1.
-	    for (idx = 0 ; idx < delays->no_of_delays ; idx += 1) {
-		  if (delays->da[idx].real < 0.0) delays->da[idx].real = 0.0;
+	    కొరకు (idx = 0 ; idx < delays->no_యొక్క_delays ; idx += 1) {
+		  ఒకవేళ (delays->da[idx].real < 0.0) delays->da[idx].real = 0.0;
 	    }
-	    for (idx = 0 ; idx < 12 ; idx += 1) {
-		  tmp[idx] = vpip_scaled_real_to_time64(delays->da[use_map[0][idx]].real,
+	    కొరకు (idx = 0 ; idx < 12 ; idx += 1) {
+		  tmp[idx] = vpip_scaled_real_గమ్యం_time64(delays->da[use_map[0][idx]].real,
 							src->dest->scope);
 	    }
       }
 
       /* Now define the to-from-x delays if needed. */
-      if (delays->no_of_delays <= 6) {
+      ఒకవేళ (delays->no_యొక్క_delays <= 6) {
 	      /* 0->x is the minimum of 0->z and 0->1. */
-	    tmp[DELAY_EDGE_0x] = tmp[DELAY_EDGE_0z] < tmp[DELAY_EDGE_01] ?
-	                           tmp[DELAY_EDGE_0z] : tmp[DELAY_EDGE_01];
+	    tmp[DELAY_అంచు_0x] = tmp[DELAY_అంచు_0z] < tmp[DELAY_అంచు_01] ?
+	                           tmp[DELAY_అంచు_0z] : tmp[DELAY_అంచు_01];
 	      /* x->1 is the maximum of z->1 and 0->1. */
-	    tmp[DELAY_EDGE_x1] = tmp[DELAY_EDGE_z1] > tmp[DELAY_EDGE_01] ?
-	                           tmp[DELAY_EDGE_z1] : tmp[DELAY_EDGE_01];
+	    tmp[DELAY_అంచు_x1] = tmp[DELAY_అంచు_z1] > tmp[DELAY_అంచు_01] ?
+	                           tmp[DELAY_అంచు_z1] : tmp[DELAY_అంచు_01];
 	      /* 1->x is the minimum of 1->z and 1->0. */
-	    tmp[DELAY_EDGE_1x] = tmp[DELAY_EDGE_1z] < tmp[DELAY_EDGE_10] ?
-	                           tmp[DELAY_EDGE_1z] : tmp[DELAY_EDGE_10];
+	    tmp[DELAY_అంచు_1x] = tmp[DELAY_అంచు_1z] < tmp[DELAY_అంచు_10] ?
+	                           tmp[DELAY_అంచు_1z] : tmp[DELAY_అంచు_10];
 	      /* x->0 is the maximum of z->0 and 1->0. */
-	    tmp[DELAY_EDGE_x0] = tmp[DELAY_EDGE_z0] > tmp[DELAY_EDGE_10] ?
-	                           tmp[DELAY_EDGE_z0] : tmp[DELAY_EDGE_10];
+	    tmp[DELAY_అంచు_x0] = tmp[DELAY_అంచు_z0] > tmp[DELAY_అంచు_10] ?
+	                           tmp[DELAY_అంచు_z0] : tmp[DELAY_అంచు_10];
 	      /* x->z is the maximum of 1->z and 0->z. */
-	    tmp[DELAY_EDGE_xz] = tmp[DELAY_EDGE_1z] > tmp[DELAY_EDGE_0z] ?
-	                           tmp[DELAY_EDGE_1z] : tmp[DELAY_EDGE_0z];
+	    tmp[DELAY_అంచు_xz] = tmp[DELAY_అంచు_1z] > tmp[DELAY_అంచు_0z] ?
+	                           tmp[DELAY_అంచు_1z] : tmp[DELAY_అంచు_0z];
 	      /* z->x is the minimum of z->1 and z->0. */
-	    tmp[DELAY_EDGE_zx] = tmp[DELAY_EDGE_z1] < tmp[DELAY_EDGE_z0] ?
-	                           tmp[DELAY_EDGE_z1] : tmp[DELAY_EDGE_z0];
+	    tmp[DELAY_అంచు_zx] = tmp[DELAY_అంచు_z1] < tmp[DELAY_అంచు_z0] ?
+	                           tmp[DELAY_అంచు_z1] : tmp[DELAY_అంచు_z0];
       }
 
       fun->put_delay12(tmp);
@@ -936,65 +936,65 @@ static void modpath_src_put_delays (vpiHandle ref, p_vpi_delay delays)
  *
  */
 
-static void modpath_src_get_delays ( vpiHandle ref, p_vpi_delay delays )
+స్థిర శూన్య modpath_src_get_delays ( vpiHandle ref, p_vpi_delay delays )
 {
-      struct __vpiModPathSrc*src = dynamic_cast<__vpiModPathSrc*>(ref) ;
-      assert(src);
+      నిర్మాణం __vpiModPathSrc*src = dynamic_cast<__vpiModPathSrc*>(ref) ;
+      ప్రతిజ్ఞా(src);
 
       vvp_fun_modpath_src *fun = dynamic_cast<vvp_fun_modpath_src*>(src->net->fun);
-      assert(fun);
+      ప్రతిజ్ఞా(fun);
 
-      int idx;
+      పూర్ణాంకం idx;
       vvp_time64_t tmp[12];
       fun->get_delay12(tmp);
 
-      switch (delays->no_of_delays) {
-	  case 1:
-	  case 2:
-	  case 3:
-	  case 6:
-	  case 12:
-	    break;
+      ఎంపిక (delays->no_యొక్క_delays) {
+	  స్థితి 1:
+	  స్థితి 2:
+	  స్థితి 3:
+	  స్థితి 6:
+	  స్థితి 12:
+	    ఆపు;
 
-	  default:
-	    assert(0);
-	    break;
+	  అప్రమేయ:
+	    ప్రతిజ్ఞా(0);
+	    ఆపు;
       }
 
-      if (delays->time_type == vpiSimTime) {
-	    for (idx = 0; idx < delays->no_of_delays; idx += 1) {
-		  vpip_time_to_timestruct(delays->da+idx, tmp[idx]);
+      ఒకవేళ (delays->సమయం_type == vpi_Sim_సమయం) {
+	    కొరకు (idx = 0; idx < delays->no_యొక్క_delays; idx += 1) {
+		  vpip_సమయం_గమ్యం_timestruct(delays->da+idx, tmp[idx]);
 	    }
-      } else {
-	    for (idx = 0; idx < delays->no_of_delays; idx += 1) {
-		  delays->da[idx].real = vpip_time_to_scaled_real(tmp[idx], src->dest->scope);
+      } లేకపోతే {
+	    కొరకు (idx = 0; idx < delays->no_యొక్క_delays; idx += 1) {
+		  delays->da[idx].real = vpip_సమయం_గమ్యం_scaled_real(tmp[idx], src->dest->scope);
 	    }
       }
 }
 
-static int pathterm_get(int code, vpiHandle ref)
+స్థిర పూర్ణాంకం pathterm_get(పూర్ణాంకం code, vpiHandle ref)
 {
-      struct __vpiModPathTerm*obj = dynamic_cast<__vpiModPathTerm*>(ref);
-      assert(obj);
+      నిర్మాణం __vpiModPathTerm*obj = dynamic_cast<__vpiModPathTerm*>(ref);
+      ప్రతిజ్ఞా(obj);
 
-      switch (code) {
-	  case vpiEdge:
-	    return obj->edge;
-	  default:
-	    return 0;
+      ఎంపిక (code) {
+	  స్థితి vpi_అంచు_2:
+	    తిరిగి obj->అంచు;
+	  అప్రమేయ:
+	    తిరిగి 0;
       }
 }
 
-static vpiHandle pathterm_get_handle(int code, vpiHandle ref)
+స్థిర vpiHandle pathterm_get_handle(పూర్ణాంకం code, vpiHandle ref)
 {
-      struct __vpiModPathTerm*obj = dynamic_cast<__vpiModPathTerm*>(ref);
-      assert(obj);
+      నిర్మాణం __vpiModPathTerm*obj = dynamic_cast<__vpiModPathTerm*>(ref);
+      ప్రతిజ్ఞా(obj);
 
-      switch (code) {
-	  case vpiExpr:
-	    return obj->expr;
-	  default:
-	    return 0;
+      ఎంపిక (code) {
+	  స్థితి vpi_సమాసం:
+	    తిరిగి obj->సమాసం;
+	  అప్రమేయ:
+	    తిరిగి 0;
       }
 }
 
@@ -1003,62 +1003,62 @@ static vpiHandle pathterm_get_handle(int code, vpiHandle ref)
 * vpiModPath object. The __vpiModPath structure contains items that
 * are common to a bunch of modpaths, including the destination term.
 */
-inline __vpiModPathSrc::__vpiModPathSrc()
+అంతఃవరుస __vpiModPathSrc::__vpiModPathSrc()
 { }
 
-int __vpiModPathSrc::get_type_code(void) const
-{ return vpiModPath; }
+పూర్ణాంకం __vpiModPathSrc::get_type_సంకేతం(శూన్య) స్థిరరాశి
+{ తిరిగి vpi_Mod_మార్గం; }
 
-int __vpiModPathSrc::vpi_get(int code)
-{ return modpath_src_get(code, this); }
+పూర్ణాంకం __vpiModPathSrc::vpi_get(పూర్ణాంకం code)
+{ తిరిగి modpath_src_get(code, ఇది); }
 
-void __vpiModPathSrc::vpi_get_value(p_vpi_value val)
-{ modpath_src_get_value(this, val); }
+శూన్య __vpiModPathSrc::vpi_get_విలువ(p_vpi_విలువ val)
+{ modpath_src_get_విలువ(ఇది, val); }
 
-vpiHandle __vpiModPathSrc::vpi_put_value(p_vpi_value val, int flags)
-{ return modpath_src_put_value(this, val, flags); }
+vpiHandle __vpiModPathSrc::vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags)
+{ తిరిగి modpath_src_put_విలువ(ఇది, val, flags); }
 
-vpiHandle __vpiModPathSrc::vpi_handle(int code)
-{ return modpath_src_get_handle(code, this); }
+vpiHandle __vpiModPathSrc::vpi_handle(పూర్ణాంకం code)
+{ తిరిగి modpath_src_get_handle(code, ఇది); }
 
-vpiHandle __vpiModPathSrc::vpi_iterate(int code)
-{ return modpath_src_iterate(code, this); }
+vpiHandle __vpiModPathSrc::vpi_iterate(పూర్ణాంకం code)
+{ తిరిగి modpath_src_iterate(code, ఇది); }
 
-vpiHandle __vpiModPathSrc:: vpi_index(int idx)
-{ return modpath_src_index(this, idx); }
+vpiHandle __vpiModPathSrc:: vpi_సూచీ(పూర్ణాంకం idx)
+{ తిరిగి modpath_src_సూచీ(ఇది, idx); }
 
-void __vpiModPathSrc::vpi_get_delays(p_vpi_delay del)
-{ modpath_src_get_delays(this, del); }
+శూన్య __vpiModPathSrc::vpi_get_delays(p_vpi_delay del)
+{ modpath_src_get_delays(ఇది, del); }
 
-void __vpiModPathSrc::vpi_put_delays(p_vpi_delay del)
-{ modpath_src_put_delays(this, del); }
+శూన్య __vpiModPathSrc::vpi_put_delays(p_vpi_delay del)
+{ modpath_src_put_delays(ఇది, del); }
 
-static int modpath_src_free_object( vpiHandle ref )
+స్థిర పూర్ణాంకం modpath_src_free_object( vpiHandle ref )
 {
-      delete ref;
-      return 1 ;
+      తొలగించు ref;
+      తిరిగి 1 ;
 }
 
-__vpiHandle::free_object_fun_t __vpiModPathSrc::free_object_fun(void)
-{ return &modpath_src_free_object; }
+__vpiHandle::free_object_fun_t __vpiModPathSrc::free_object_fun(శూన్య)
+{ తిరిగి &modpath_src_free_object; }
 
 
-inline __vpiModPathTerm::__vpiModPathTerm()
+అంతఃవరుస __vpiModPathTerm::__vpiModPathTerm()
 { }
 
-int __vpiModPathTerm::get_type_code(void) const
-{ return vpiPathTerm; }
+పూర్ణాంకం __vpiModPathTerm::get_type_సంకేతం(శూన్య) స్థిరరాశి
+{ తిరిగి vpi_మార్గం_పదం; }
 
-int __vpiModPathTerm::vpi_get(int code)
-{ return pathterm_get(code, this); }
+పూర్ణాంకం __vpiModPathTerm::vpi_get(పూర్ణాంకం code)
+{ తిరిగి pathterm_get(code, ఇది); }
 
-vpiHandle __vpiModPathTerm::vpi_handle(int code)
-{ return pathterm_get_handle(code, this); }
+vpiHandle __vpiModPathTerm::vpi_handle(పూర్ణాంకం code)
+{ తిరిగి pathterm_get_handle(code, ఇది); }
 
-static void initialize_path_term(struct __vpiModPathTerm&obj)
+స్థిర శూన్య initialize_మార్గం_పదం(నిర్మాణం __vpiModPathTerm&obj)
 {
-      obj.expr = 0;
-      obj.edge = vpiNoEdge;
+      obj.సమాసం = 0;
+      obj.అంచు = vpi_No_అంచు;
 }
 
 /*
@@ -1067,40 +1067,40 @@ static void initialize_path_term(struct __vpiModPathTerm&obj)
  * respective functor
  */
 
-#ifdef CHECK_WITH_VALGRIND
-static struct __vpiModPath**mp_list = 0;
-static unsigned mp_count = 0;
-#endif
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+స్థిర నిర్మాణం __vpiModPath**mp_list = 0;
+స్థిర గుర్తులేని mp_లెక్క = 0;
+#అయితే_ముగింపు
 
-struct __vpiModPath* vpip_make_modpath(vvp_net_t *net)
+నిర్మాణం __vpiModPath* vpip_make_modpath(vvp_net_t *net)
 {
-      struct __vpiModPath*obj = new __vpiModPath;
+      నిర్మాణం __vpiModPath*obj = కొత్త __vpiModPath;
       obj->scope = vpip_peek_current_scope ( );
 
-      initialize_path_term(obj->path_term_out);
-      obj->input_net = net ;
+      initialize_మార్గం_పదం(obj->మార్గం_పదం_బహిర్గతం);
+      obj->ఆదానం_net = net ;
 
-#ifdef CHECK_WITH_VALGRIND
-      mp_count += 1;
-      mp_list = static_cast<struct __vpiModPath **>
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+      mp_లెక్క += 1;
+      mp_list = static_cast<నిర్మాణం __vpiModPath **>
                 (realloc(mp_list,
-                 mp_count*sizeof(struct __vpiModPath **)));
-      mp_list[mp_count-1] = obj;
-#endif
-      return obj;
+                 mp_లెక్క*పరిమాణం(నిర్మాణం __vpiModPath **)));
+      mp_list[mp_లెక్క-1] = obj;
+#అయితే_ముగింపు
+      తిరిగి obj;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void modpath_delete()
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య modpath_delete()
 {
-      for (unsigned idx = 0; idx < mp_count; idx += 1) {
-	    delete mp_list[idx];
+      కొరకు (గుర్తులేని idx = 0; idx < mp_లెక్క; idx += 1) {
+	    తొలగించు mp_list[idx];
       }
-      free(mp_list);
+      విడుదల(mp_list);
       mp_list = 0;
-      mp_count = 0;
+      mp_లెక్క = 0;
 }
-#endif
+#అయితే_ముగింపు
 
 /*
  * This function will construct a vpiModPathIn
@@ -1109,42 +1109,42 @@ void modpath_delete()
  *
  */
 
-struct __vpiModPathSrc* vpip_make_modpath_src(struct __vpiModPath*path,
+నిర్మాణం __vpiModPathSrc* vpip_make_modpath_src(నిర్మాణం __vpiModPath*మార్గం,
                                               vvp_net_t *net)
 {
-      struct __vpiModPathSrc *obj = new __vpiModPathSrc;
+      నిర్మాణం __vpiModPathSrc *obj = కొత్త __vpiModPathSrc;
 
-      obj->dest = path;
+      obj->dest = మార్గం;
       obj->type = 0;
       obj->net = net;
-      initialize_path_term(obj->path_term_in);
+      initialize_మార్గం_పదం(obj->మార్గం_పదం_లోపల);
 
-      return obj;
+      తిరిగి obj;
 }
 
-vvp_fun_intermodpath::vvp_fun_intermodpath(vvp_net_t*net, unsigned width)
+vvp_fun_intermodpath::vvp_fun_intermodpath(vvp_net_t*net, గుర్తులేని width)
 : net_(net)
 {
-      for (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
+      కొరకు (గుర్తులేని idx = 0 ;  idx < 12 ;  idx += 1)
 	    delay_[idx] = 0;
 
       cur_vec4_ = vvp_vector4_t(width, BIT4_X);
-      schedule_init_propagate(net_, cur_vec4_);
+      కాలపట్టిక_init_propagate(net_, cur_vec4_);
 }
 
 vvp_fun_intermodpath::~vvp_fun_intermodpath()
 {
 }
 
-void vvp_fun_intermodpath::get_delay12(vvp_time64_t val[12]) const
+శూన్య vvp_fun_intermodpath::get_delay12(vvp_time64_t val[12]) స్థిరరాశి
 {
-      for (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
+      కొరకు (గుర్తులేని idx = 0 ;  idx < 12 ;  idx += 1)
 	    val[idx] = delay_[idx];
 }
 
-void vvp_fun_intermodpath::put_delay12(const vvp_time64_t val[12])
+శూన్య vvp_fun_intermodpath::put_delay12(స్థిరరాశి vvp_time64_t val[12])
 {
-      for (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
+      కొరకు (గుర్తులేని idx = 0 ;  idx < 12 ;  idx += 1)
 	    delay_[idx] = val[idx];
 }
 
@@ -1155,39 +1155,39 @@ void vvp_fun_intermodpath::put_delay12(const vvp_time64_t val[12])
  * wrong. What should happen is that if there are multiple changes,
  * multiple vectors approaching the result should be scheduled.
  */
-void vvp_fun_intermodpath::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_fun_intermodpath::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                               vvp_context_t)
 {
 	/* Only the first port is used. */
-      if (port.port() > 0)
-	    return;
+      ఒకవేళ (పోర్టు.పోర్టు() > 0)
+	    తిరిగి;
 
-      if (cur_vec4_.eeq(bit))
-	    return;
+      ఒకవేళ (cur_vec4_.eeq(బిట్టు))
+	    తిరిగి;
 
 	/* Given the scheduled output time, create an output event. */
-      vvp_time64_t use_delay = delay_from_edge(cur_vec4_.value(0),
-					       bit.value(0),
+      vvp_time64_t use_delay = delay_from_అంచు(cur_vec4_.value(0),
+					       బిట్టు.value(0),
 					       delay_);
 
 	/* FIXME: This bases the edge delay on only the least
 	   bit. This is WRONG! I need to find all the possible delays,
 	   and schedule an event for each partial change. Hard! */
-      for (unsigned idx = 1 ;  idx < bit.size() ;  idx += 1) {
-	    vvp_time64_t tmp = delay_from_edge(cur_vec4_.value(idx),
-					       bit.value(idx),
+      కొరకు (గుర్తులేని idx = 1 ;  idx < బిట్టు.size() ;  idx += 1) {
+	    vvp_time64_t tmp = delay_from_అంచు(cur_vec4_.value(idx),
+					       బిట్టు.value(idx),
 					       delay_);
 	      /* If the current and new bit values match then no delay
 	       * is needed for this bit. */
-	    if (cur_vec4_.value(idx) == bit.value(idx)) continue;
-	    assert(tmp == use_delay);
+	    ఒకవేళ (cur_vec4_.value(idx) == బిట్టు.value(idx)) కొనసాగు;
+	    ప్రతిజ్ఞా(tmp == use_delay);
       }
 
-      cur_vec4_ = bit;
-      schedule_generic(this, use_delay, false);
+      cur_vec4_ = బిట్టు;
+      కాలపట్టిక_generic(ఇది, use_delay, అబద్ధం);
 }
 
-void vvp_fun_intermodpath::run_run()
+శూన్య vvp_fun_intermodpath::నిరంతరం_నిరంతరం()
 {
       net_->send_vec4(cur_vec4_, 0);
 }
@@ -1199,63 +1199,63 @@ void vvp_fun_intermodpath::run_run()
  * make some specific delays path operations
  *
  */
-static int intermodpath_get(int, vpiHandle ref)
+స్థిర పూర్ణాంకం intermodpath_get(పూర్ణాంకం, vpiHandle ref)
 {
-      struct __vpiInterModPath*obj =dynamic_cast<__vpiInterModPath*>(ref);
-      assert(obj);
-      return 0;
+      నిర్మాణం __vpiInterModPath*obj =dynamic_cast<__vpiInterModPath*>(ref);
+      ప్రతిజ్ఞా(obj);
+      తిరిగి 0;
 }
 
-static void intermodpath_get_value(vpiHandle ref, p_vpi_value)
+స్థిర శూన్య intermodpath_get_విలువ(vpiHandle ref, p_vpi_విలువ)
 {
-      struct __vpiInterModPath* intermodpath = dynamic_cast<__vpiInterModPath*>(ref);
-      assert(intermodpath);
-      return;
+      నిర్మాణం __vpiInterModPath* intermodpath = dynamic_cast<__vpiInterModPath*>(ref);
+      ప్రతిజ్ఞా(intermodpath);
+      తిరిగి;
 }
 
-static vpiHandle intermodpath_put_value(vpiHandle ref, s_vpi_value *, int )
+స్థిర vpiHandle intermodpath_put_విలువ(vpiHandle ref, s_vpi_విలువ *, పూర్ణాంకం )
 {
-      struct __vpiInterModPath* intermodpath = dynamic_cast<__vpiInterModPath*>(ref);
-      assert(intermodpath);
-      return 0;
+      నిర్మాణం __vpiInterModPath* intermodpath = dynamic_cast<__vpiInterModPath*>(ref);
+      ప్రతిజ్ఞా(intermodpath);
+      తిరిగి 0;
 }
 
-static vpiHandle intermodpath_get_handle(int code, vpiHandle ref)
+స్థిర vpiHandle intermodpath_get_handle(పూర్ణాంకం code, vpiHandle ref)
 {
-      struct __vpiInterModPath*rfp = dynamic_cast<__vpiInterModPath*>(ref);
-      assert(rfp);
+      నిర్మాణం __vpiInterModPath*rfp = dynamic_cast<__vpiInterModPath*>(ref);
+      ప్రతిజ్ఞా(rfp);
 
-      switch (code) {
+      ఎంపిక (code) {
 
-	case vpiScope:
-	  return rfp->scope;
+	స్థితి vpiScope:
+	  తిరిగి rfp->scope;
 
-	  case vpiModule:
+	  స్థితి vpiModule:
 	      { __vpiScope*scope = rfp->scope;
-		while (scope && scope->get_type_code() != vpiModule)
+		అయితే (scope && scope->get_type_సంకేతం() != vpiModule)
 		      scope = scope->scope;
-		assert(scope);
-		return scope;
+		ప్రతిజ్ఞా(scope);
+		తిరిగి scope;
 	      }
       }
-      return 0;
+      తిరిగి 0;
 }
 
-static vpiHandle intermodpath_iterate(int code, vpiHandle ref)
+స్థిర vpiHandle intermodpath_iterate(పూర్ణాంకం code, vpiHandle ref)
 {
-      struct __vpiInterModPath*rfp = dynamic_cast<__vpiInterModPath*>(ref);
-      assert(rfp);
+      నిర్మాణం __vpiInterModPath*rfp = dynamic_cast<__vpiInterModPath*>(ref);
+      ప్రతిజ్ఞా(rfp);
 
 	// For now intermodpaths only support exactly two ports
-      switch (code) {
-	  case vpiPort: {
-	    vpiHandle*args = static_cast<vpiHandle*>(calloc(2, sizeof(vpiHandle*)));
-	    args[0] = rfp->port1;
-	    args[1] = rfp->port2;
-	    return vpip_make_iterator(2, args, true);
+      ఎంపిక (code) {
+	  స్థితి vpi_పోర్టు: {
+	    vpiHandle*వాదనలు = static_cast<vpiHandle*>(సున్నా_జ్ఞాపకం_ఇవ్వు(2, పరిమాణం(vpiHandle*)));
+	    వాదనలు[0] = rfp->port1;
+	    వాదనలు[1] = rfp->port2;
+	    తిరిగి vpip_make_iterator(2, వాదనలు, నిజం);
 	  }
       }
-      return 0;
+      తిరిగి 0;
 }
 
 /*
@@ -1264,82 +1264,82 @@ static vpiHandle intermodpath_iterate(int code, vpiHandle ref)
  * specific delays values in a vpiInterModPath object
  *
  */
-static void intermodpath_put_delays (vpiHandle ref, p_vpi_delay delays)
+స్థిర శూన్య intermodpath_put_delays (vpiHandle ref, p_vpi_delay delays)
 {
       vvp_time64_t tmp[12];
-      int idx;
-      struct __vpiInterModPath * src = dynamic_cast<__vpiInterModPath*>(ref) ;
-      assert(src) ;
+      పూర్ణాంకం idx;
+      నిర్మాణం __vpiInterModPath * src = dynamic_cast<__vpiInterModPath*>(ref) ;
+      ప్రతిజ్ఞా(src) ;
 
       vvp_fun_intermodpath *fun = dynamic_cast<vvp_fun_intermodpath*>(src->net->fun);
-      assert( fun );
+      ప్రతిజ్ఞా( fun );
 
-      typedef unsigned char map_array_t[12];
+      రకనిర్వచనం గుర్తులేని అక్షరం map_array_t[12];
 	// Only the first six entries are used for the less than twelve maps.
-      static const map_array_t map_1 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-      static const map_array_t map_2 = {0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0};
-      static const map_array_t map_3 = {0, 1, 2, 0, 2, 1, 0, 0, 0, 0, 0, 0};
-      static const map_array_t map_6 = {0, 1, 2, 3, 4, 5, 0, 0, 0, 0, 0, 0};
-      static const map_array_t map12 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+      స్థిర స్థిరరాశి map_array_t map_1 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+      స్థిర స్థిరరాశి map_array_t map_2 = {0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0};
+      స్థిర స్థిరరాశి map_array_t map_3 = {0, 1, 2, 0, 2, 1, 0, 0, 0, 0, 0, 0};
+      స్థిర స్థిరరాశి map_array_t map_6 = {0, 1, 2, 3, 4, 5, 0, 0, 0, 0, 0, 0};
+      స్థిర స్థిరరాశి map_array_t map12 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
-      const map_array_t*use_map = 0;
-      switch (delays->no_of_delays) {
-	  case 1:
+      స్థిరరాశి map_array_t*use_map = 0;
+      ఎంపిక (delays->no_యొక్క_delays) {
+	  స్థితి 1:
 	    use_map = &map_1;
-	    break;
-	  case 2:
+	    ఆపు;
+	  స్థితి 2:
 	    use_map = &map_2;
-	    break;
-	  case 3:
+	    ఆపు;
+	  స్థితి 3:
 	    use_map = &map_3;
-	    break;
-	  case 6:
+	    ఆపు;
+	  స్థితి 6:
 	    use_map = &map_6;
-	    break;
-	  case 12:
+	    ఆపు;
+	  స్థితి 12:
 	    use_map = &map12;
-	    break;
-	  default:
-	    assert(0);
-	    break;
+	    ఆపు;
+	  అప్రమేయ:
+	    ప్రతిజ్ఞా(0);
+	    ఆపు;
       }
 
-      if (delays->time_type == vpiSimTime) {
-	    for (idx = 0 ; idx < 12 ; idx += 1) {
-		  tmp[idx] = vpip_timestruct_to_time(delays->da+use_map[0][idx]);
+      ఒకవేళ (delays->సమయం_type == vpi_Sim_సమయం) {
+	    కొరకు (idx = 0 ; idx < 12 ; idx += 1) {
+		  tmp[idx] = vpip_timestruct_గమ్యం_సమయం(delays->da+use_map[0][idx]);
 	    }
-      } else {
+      } లేకపోతే {
 	      // You cannot create a modpath with a negative delay so set it
 	      // to zero per 1364-2005 section 14.3.1.
-	    for (idx = 0 ; idx < delays->no_of_delays ; idx += 1) {
-		  if (delays->da[idx].real < 0.0) delays->da[idx].real = 0.0;
+	    కొరకు (idx = 0 ; idx < delays->no_యొక్క_delays ; idx += 1) {
+		  ఒకవేళ (delays->da[idx].real < 0.0) delays->da[idx].real = 0.0;
 	    }
-	    for (idx = 0 ; idx < 12 ; idx += 1) {
-		  tmp[idx] = vpip_scaled_real_to_time64(delays->da[use_map[0][idx]].real,
+	    కొరకు (idx = 0 ; idx < 12 ; idx += 1) {
+		  tmp[idx] = vpip_scaled_real_గమ్యం_time64(delays->da[use_map[0][idx]].real,
 							src->scope);
 	    }
       }
 
       /* Now define the to-from-x delays if needed. */
-      if (delays->no_of_delays <= 6) {
+      ఒకవేళ (delays->no_యొక్క_delays <= 6) {
 	      /* 0->x is the minimum of 0->z and 0->1. */
-	    tmp[DELAY_EDGE_0x] = tmp[DELAY_EDGE_0z] < tmp[DELAY_EDGE_01] ?
-	                           tmp[DELAY_EDGE_0z] : tmp[DELAY_EDGE_01];
+	    tmp[DELAY_అంచు_0x] = tmp[DELAY_అంచు_0z] < tmp[DELAY_అంచు_01] ?
+	                           tmp[DELAY_అంచు_0z] : tmp[DELAY_అంచు_01];
 	      /* x->1 is the maximum of z->1 and 0->1. */
-	    tmp[DELAY_EDGE_x1] = tmp[DELAY_EDGE_z1] > tmp[DELAY_EDGE_01] ?
-	                           tmp[DELAY_EDGE_z1] : tmp[DELAY_EDGE_01];
+	    tmp[DELAY_అంచు_x1] = tmp[DELAY_అంచు_z1] > tmp[DELAY_అంచు_01] ?
+	                           tmp[DELAY_అంచు_z1] : tmp[DELAY_అంచు_01];
 	      /* 1->x is the minimum of 1->z and 1->0. */
-	    tmp[DELAY_EDGE_1x] = tmp[DELAY_EDGE_1z] < tmp[DELAY_EDGE_10] ?
-	                           tmp[DELAY_EDGE_1z] : tmp[DELAY_EDGE_10];
+	    tmp[DELAY_అంచు_1x] = tmp[DELAY_అంచు_1z] < tmp[DELAY_అంచు_10] ?
+	                           tmp[DELAY_అంచు_1z] : tmp[DELAY_అంచు_10];
 	      /* x->0 is the maximum of z->0 and 1->0. */
-	    tmp[DELAY_EDGE_x0] = tmp[DELAY_EDGE_z0] > tmp[DELAY_EDGE_10] ?
-	                           tmp[DELAY_EDGE_z0] : tmp[DELAY_EDGE_10];
+	    tmp[DELAY_అంచు_x0] = tmp[DELAY_అంచు_z0] > tmp[DELAY_అంచు_10] ?
+	                           tmp[DELAY_అంచు_z0] : tmp[DELAY_అంచు_10];
 	      /* x->z is the maximum of 1->z and 0->z. */
-	    tmp[DELAY_EDGE_xz] = tmp[DELAY_EDGE_1z] > tmp[DELAY_EDGE_0z] ?
-	                           tmp[DELAY_EDGE_1z] : tmp[DELAY_EDGE_0z];
+	    tmp[DELAY_అంచు_xz] = tmp[DELAY_అంచు_1z] > tmp[DELAY_అంచు_0z] ?
+	                           tmp[DELAY_అంచు_1z] : tmp[DELAY_అంచు_0z];
 	      /* z->x is the minimum of z->1 and z->0. */
-	    tmp[DELAY_EDGE_zx] = tmp[DELAY_EDGE_z1] < tmp[DELAY_EDGE_z0] ?
-	                           tmp[DELAY_EDGE_z1] : tmp[DELAY_EDGE_z0];
+	    tmp[DELAY_అంచు_zx] = tmp[DELAY_అంచు_z1] < tmp[DELAY_అంచు_z0] ?
+	                           tmp[DELAY_అంచు_z1] : tmp[DELAY_అంచు_z0];
       }
 
       fun->put_delay12(tmp);
@@ -1353,38 +1353,38 @@ static void intermodpath_put_delays (vpiHandle ref, p_vpi_delay delays)
  *
  */
 
-static void intermodpath_get_delays ( vpiHandle ref, p_vpi_delay delays )
+స్థిర శూన్య intermodpath_get_delays ( vpiHandle ref, p_vpi_delay delays )
 {
-      struct __vpiInterModPath*src = dynamic_cast<__vpiInterModPath*>(ref) ;
-      assert(src);
+      నిర్మాణం __vpiInterModPath*src = dynamic_cast<__vpiInterModPath*>(ref) ;
+      ప్రతిజ్ఞా(src);
 
       vvp_fun_intermodpath *fun = dynamic_cast<vvp_fun_intermodpath*>(src->net->fun);
-      assert(fun);
+      ప్రతిజ్ఞా(fun);
 
-      int idx;
+      పూర్ణాంకం idx;
       vvp_time64_t tmp[12];
       fun->get_delay12(tmp);
 
-      switch (delays->no_of_delays) {
-	  case 1:
-	  case 2:
-	  case 3:
-	  case 6:
-	  case 12:
-	    break;
+      ఎంపిక (delays->no_యొక్క_delays) {
+	  స్థితి 1:
+	  స్థితి 2:
+	  స్థితి 3:
+	  స్థితి 6:
+	  స్థితి 12:
+	    ఆపు;
 
-	  default:
-	    assert(0);
-	    break;
+	  అప్రమేయ:
+	    ప్రతిజ్ఞా(0);
+	    ఆపు;
       }
 
-      if (delays->time_type == vpiSimTime) {
-	    for (idx = 0; idx < delays->no_of_delays; idx += 1) {
-		  vpip_time_to_timestruct(delays->da+idx, tmp[idx]);
+      ఒకవేళ (delays->సమయం_type == vpi_Sim_సమయం) {
+	    కొరకు (idx = 0; idx < delays->no_యొక్క_delays; idx += 1) {
+		  vpip_సమయం_గమ్యం_timestruct(delays->da+idx, tmp[idx]);
 	    }
-      } else {
-	    for (idx = 0; idx < delays->no_of_delays; idx += 1) {
-		  delays->da[idx].real = vpip_time_to_scaled_real(tmp[idx], src->scope);
+      } లేకపోతే {
+	    కొరకు (idx = 0; idx < delays->no_యొక్క_delays; idx += 1) {
+		  delays->da[idx].real = vpip_సమయం_గమ్యం_scaled_real(tmp[idx], src->scope);
 	    }
       }
 }
@@ -1393,41 +1393,41 @@ static void intermodpath_get_delays ( vpiHandle ref, p_vpi_delay delays )
 * The __vpiInterModPath class is what the VPI client sees as a
 * vpiInterModPath object.
 */
-inline __vpiInterModPath::__vpiInterModPath()
+అంతఃవరుస __vpiInterModPath::__vpiInterModPath()
 { }
 
-int __vpiInterModPath::get_type_code(void) const
-{ return vpiInterModPath; }
+పూర్ణాంకం __vpiInterModPath::get_type_సంకేతం(శూన్య) స్థిరరాశి
+{ తిరిగి vpi_Inter_Mod_మార్గం; }
 
-int __vpiInterModPath::vpi_get(int code)
-{ return intermodpath_get(code, this); }
+పూర్ణాంకం __vpiInterModPath::vpi_get(పూర్ణాంకం code)
+{ తిరిగి intermodpath_get(code, ఇది); }
 
-void __vpiInterModPath::vpi_get_value(p_vpi_value val)
-{ intermodpath_get_value(this, val); }
+శూన్య __vpiInterModPath::vpi_get_విలువ(p_vpi_విలువ val)
+{ intermodpath_get_విలువ(ఇది, val); }
 
-vpiHandle __vpiInterModPath::vpi_put_value(p_vpi_value val, int flags)
-{ return intermodpath_put_value(this, val, flags); }
+vpiHandle __vpiInterModPath::vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags)
+{ తిరిగి intermodpath_put_విలువ(ఇది, val, flags); }
 
-vpiHandle __vpiInterModPath::vpi_handle(int code)
-{ return intermodpath_get_handle(code, this); }
+vpiHandle __vpiInterModPath::vpi_handle(పూర్ణాంకం code)
+{ తిరిగి intermodpath_get_handle(code, ఇది); }
 
-vpiHandle __vpiInterModPath::vpi_iterate(int code)
-{ return intermodpath_iterate(code, this); }
+vpiHandle __vpiInterModPath::vpi_iterate(పూర్ణాంకం code)
+{ తిరిగి intermodpath_iterate(code, ఇది); }
 
-void __vpiInterModPath::vpi_get_delays(p_vpi_delay del)
-{ intermodpath_get_delays(this, del); }
+శూన్య __vpiInterModPath::vpi_get_delays(p_vpi_delay del)
+{ intermodpath_get_delays(ఇది, del); }
 
-void __vpiInterModPath::vpi_put_delays(p_vpi_delay del)
-{ intermodpath_put_delays(this, del); }
+శూన్య __vpiInterModPath::vpi_put_delays(p_vpi_delay del)
+{ intermodpath_put_delays(ఇది, del); }
 
-static int intermodpath_free_object( vpiHandle ref )
+స్థిర పూర్ణాంకం intermodpath_free_object( vpiHandle ref )
 {
-      delete ref;
-      return 1 ;
+      తొలగించు ref;
+      తిరిగి 1 ;
 }
 
-__vpiHandle::free_object_fun_t __vpiInterModPath::free_object_fun(void)
-{ return &intermodpath_free_object; }
+__vpiHandle::free_object_fun_t __vpiInterModPath::free_object_fun(శూన్య)
+{ తిరిగి &intermodpath_free_object; }
 
 /*
  * This function will construct a vpiInterModPath Object.
@@ -1435,38 +1435,38 @@ __vpiHandle::free_object_fun_t __vpiInterModPath::free_object_fun(void)
  * respective functor
  */
 
-#ifdef CHECK_WITH_VALGRIND
-static struct __vpiInterModPath**imp_list = 0;
-static unsigned imp_count = 0;
-#endif
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+స్థిర నిర్మాణం __vpiInterModPath**imp_list = 0;
+స్థిర గుర్తులేని imp_లెక్క = 0;
+#అయితే_ముగింపు
 
-struct __vpiInterModPath* vpip_make_intermodpath(vvp_net_t *net, vpiPortInfo* port1, vpiPortInfo* port2)
+నిర్మాణం __vpiInterModPath* vpip_make_intermodpath(vvp_net_t *net, vpi_పోర్టు_Info* port1, vpi_పోర్టు_Info* port2)
 {
-      struct __vpiInterModPath*obj = new __vpiInterModPath;
+      నిర్మాణం __vpiInterModPath*obj = కొత్త __vpiInterModPath;
       obj->scope = vpip_peek_current_scope ( );
 
       obj->net = net;
       obj->port1 = port1;
       obj->port2 = port2;
 
-#ifdef CHECK_WITH_VALGRIND
-      imp_count += 1;
-      imp_list = static_cast<struct __vpiInterModPath **>
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+      imp_లెక్క += 1;
+      imp_list = static_cast<నిర్మాణం __vpiInterModPath **>
                  (realloc(imp_list,
-                  imp_count*sizeof(struct __vpiInterModPath **)));
-      imp_list[imp_count-1] = obj;
-#endif
-      return obj;
+                  imp_లెక్క*పరిమాణం(నిర్మాణం __vpiInterModPath **)));
+      imp_list[imp_లెక్క-1] = obj;
+#అయితే_ముగింపు
+      తిరిగి obj;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void intermodpath_delete()
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య intermodpath_delete()
 {
-      for (unsigned idx = 0; idx < mp_count; idx += 1) {
-	    delete imp_list[idx];
+      కొరకు (గుర్తులేని idx = 0; idx < mp_లెక్క; idx += 1) {
+	    తొలగించు imp_list[idx];
       }
-      free(imp_list);
+      విడుదల(imp_list);
       imp_list = 0;
-      imp_count = 0;
+      imp_లెక్క = 0;
 }
-#endif
+#అయితే_ముగింపు

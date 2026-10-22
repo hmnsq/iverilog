@@ -1,5 +1,5 @@
-#ifndef IVL_concat_H
-#define IVL_concat_H
+#నిర్వచితం_కాకపోతే IVL_concat_H
+#నిర్వచించు IVL_concat_H
 /*
  * Copyright (c) 2004-2025 Stephen Williams (steve@icarus.com)
  *
@@ -32,46 +32,46 @@
  * output vector) can be worked out. The input vectors must match the
  * expected width.
  */
-class vvp_fun_concat  : public vvp_net_fun_t, protected vvp_gen_event_s  {
+class vvp_fun_concat  : బహిరంగ vvp_net_fun_t, రక్షిత vvp_gen_event_s  {
 
-    public:
-      vvp_fun_concat(unsigned w0, unsigned w1,
-		     unsigned w2, unsigned w3);
+    బహిరంగ:
+      vvp_fun_concat(గుర్తులేని w0, గుర్తులేని w1,
+		     గుర్తులేని w2, గుర్తులేని w3);
       ~vvp_fun_concat() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t context) final;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) final;
-    private:
-      void run_run() final;
+      శూన్య recv_vec4_pv(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t) final;
+    అంతరంగ:
+      శూన్య నిరంతరం_నిరంతరం() final;
 
-      unsigned wid_[4];
+      గుర్తులేని wid_[4];
       vvp_vector4_t val_;
       vvp_net_t *net_ = nullptr;
 };
 
-class vvp_fun_concat8  : public vvp_net_fun_t, protected vvp_gen_event_s {
+class vvp_fun_concat8  : బహిరంగ vvp_net_fun_t, రక్షిత vvp_gen_event_s {
 
-    public:
-      vvp_fun_concat8(unsigned w0, unsigned w1,
-		     unsigned w2, unsigned w3);
+    బహిరంగ:
+      vvp_fun_concat8(గుర్తులేని w0, గుర్తులేని w1,
+		     గుర్తులేని w2, గుర్తులేని w3);
       ~vvp_fun_concat8() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t context) final;
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) final;
+      శూన్య recv_vec8(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు) final;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) final;
-      void recv_vec8_pv(vvp_net_ptr_t p, const vvp_vector8_t&bit,
-			unsigned base, unsigned vwid) final;
+      శూన్య recv_vec4_pv(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t) final;
+      శూన్య recv_vec8_pv(vvp_net_ptr_t p, స్థిరరాశి vvp_vector8_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid) final;
 
-    private:
-      void run_run() final;
+    అంతరంగ:
+      శూన్య నిరంతరం_నిరంతరం() final;
 
-      unsigned wid_[4];
+      గుర్తులేని wid_[4];
       vvp_vector8_t val_;
       vvp_net_t *net_ = nullptr;
 };
@@ -82,21 +82,21 @@ class vvp_fun_concat8  : public vvp_net_fun_t, protected vvp_gen_event_s {
  * times to repeat the input. The width of the input vector is
  * implicit from these values.
  */
-class vvp_fun_repeat  : public vvp_net_fun_t {
+class vvp_fun_repeat  : బహిరంగ vvp_net_fun_t {
 
-    public:
-      vvp_fun_repeat(unsigned width, unsigned repeat);
+    బహిరంగ:
+      vvp_fun_repeat(గుర్తులేని వెడల్పు, గుర్తులేని repeat);
       ~vvp_fun_repeat() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t context) override;
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned int base, unsigned int vwid,
+      శూన్య recv_vec4_pv(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పూర్ణాంకం పునాది, గుర్తులేని పూర్ణాంకం vwid,
 			vvp_context_t context) final;
 
-    private:
-      unsigned wid_;
-      unsigned rep_;
+    అంతరంగ:
+      గుర్తులేని wid_;
+      గుర్తులేని rep_;
 };
 
-#endif
+#అయితే_ముగింపు

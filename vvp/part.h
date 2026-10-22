@@ -1,5 +1,5 @@
-#ifndef IVL_part_H
-#define IVL_part_H
+#నిర్వచితం_కాకపోతే IVL_part_H
+#నిర్వచించు IVL_part_H
 /*
  * Copyright (c) 2005-2025 Stephen Williams (steve@icarus.com)
  *
@@ -28,40 +28,40 @@
  * select starts. Input 2, which is typically constant, is the width
  * of the result.
  */
-class vvp_fun_part  : public vvp_net_fun_t {
+class vvp_fun_part  : బహిరంగ vvp_net_fun_t {
 
-    public:
-      vvp_fun_part(unsigned base, unsigned wid);
+    బహిరంగ:
+      vvp_fun_part(గుర్తులేని పునాది, గుర్తులేని wid);
       ~vvp_fun_part() override;
 
-      unsigned get_base() const { return base_; }
-      unsigned get_wid() const { return wid_; }
+      గుర్తులేని get_పునాది() స్థిరరాశి { తిరిగి పునాది_2; }
+      గుర్తులేని get_wid() స్థిరరాశి { తిరిగి wid_; }
 
-    protected:
-      unsigned base_;
-      unsigned wid_;
+    రక్షిత:
+      గుర్తులేని పునాది_2;
+      గుర్తులేని wid_;
 };
 
 /*
  * Statically allocated vvp_fun_part.
  */
-class vvp_fun_part_sa  : public vvp_fun_part, public vvp_gen_event_s {
+class vvp_fun_part_sa  : బహిరంగ vvp_fun_part, బహిరంగ vvp_gen_event_s {
 
-    public:
-      vvp_fun_part_sa(unsigned base, unsigned wid);
+    బహిరంగ:
+      vvp_fun_part_sa(గుర్తులేని పునాది, గుర్తులేని wid);
       ~vvp_fun_part_sa() override;
 
-    public:
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    బహిరంగ:
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override;
+      శూన్య recv_vec4_pv(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t) override;
 
-    private:
-      void run_run() override;
+    అంతరంగ:
+      శూన్య నిరంతరం_నిరంతరం() override;
 
-    private:
+    అంతరంగ:
       vvp_vector4_t val_;
       vvp_net_t*net_;
 };
@@ -69,28 +69,28 @@ class vvp_fun_part_sa  : public vvp_fun_part, public vvp_gen_event_s {
 /*
  * Automatically allocated vvp_fun_part.
  */
-class vvp_fun_part_aa  : public vvp_fun_part, public automatic_hooks_s {
+class vvp_fun_part_aa  : బహిరంగ vvp_fun_part, బహిరంగ automatic_hooks_s {
 
-    public:
-      vvp_fun_part_aa(unsigned base, unsigned wid);
+    బహిరంగ:
+      vvp_fun_part_aa(గుర్తులేని పునాది, గుర్తులేని wid);
       ~vvp_fun_part_aa() override;
 
-    public:
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+    బహిరంగ:
+      శూన్య alloc_instance(vvp_context_t context) override;
+      శూన్య reset_instance(vvp_context_t context) override;
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+      శూన్య free_instance(vvp_context_t context) override;
+#అయితే_ముగింపు
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t context) override;
+      శూన్య recv_vec4_pv(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t context) override;
 
-    private:
+    అంతరంగ:
       __vpiScope*context_scope_;
-      unsigned context_idx_;
+      గుర్తులేని context_idx_;
 };
 
 /* vvp_fun_part_pv
@@ -100,25 +100,25 @@ class vvp_fun_part_aa  : public vvp_fun_part, public automatic_hooks_s {
  * both statically and automatically allocated scopes, as it has no
  * dynamic state.
  */
-class vvp_fun_part_pv  : public vvp_net_fun_t {
+class vvp_fun_part_pv  : బహిరంగ vvp_net_fun_t {
 
-    public:
-      vvp_fun_part_pv(unsigned base, unsigned wid, unsigned vec_wid);
+    బహిరంగ:
+      vvp_fun_part_pv(గుర్తులేని పునాది, గుర్తులేని wid, గుర్తులేని vec_wid);
       ~vvp_fun_part_pv() override;
 
-    public:
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    బహిరంగ:
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-                        unsigned base, unsigned vwid, vvp_context_t) override;
+      శూన్య recv_vec4_pv(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
+                        గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t) override;
 
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      శూన్య recv_vec8(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు) override;
 
-    private:
-      unsigned base_;
-      unsigned wid_;
-      unsigned vwid_;
+    అంతరంగ:
+      గుర్తులేని పునాది_2;
+      గుర్తులేని wid_;
+      గుర్తులేని vwid_;
 };
 
 /*
@@ -126,40 +126,40 @@ class vvp_fun_part_pv  : public vvp_net_fun_t {
  * part in port 0, and the base of the part in port 1. The width of
  * the part to take out is fixed.
  */
-class vvp_fun_part_var  : public vvp_net_fun_t {
+class vvp_fun_part_var  : బహిరంగ vvp_net_fun_t {
 
-    public:
-      explicit vvp_fun_part_var(unsigned wid, bool is_signed);
+    బహిరంగ:
+      explicit vvp_fun_part_var(గుర్తులేని wid, bool is_signed);
       ~vvp_fun_part_var() override;
 
-    protected:
-      bool recv_vec4_(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-                      int&base, vvp_vector4_t&source,
+    రక్షిత:
+      bool recv_vec4_(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
+                      పూర్ణాంకం&పునాది, vvp_vector4_t&ఆధారం,
                       vvp_vector4_t&ref);
 
-      unsigned wid_;
+      గుర్తులేని wid_;
       bool is_signed_;
 };
 
 /*
  * Statically allocated vvp_fun_part_var.
  */
-class vvp_fun_part_var_sa  : public vvp_fun_part_var {
+class vvp_fun_part_var_sa  : బహిరంగ vvp_fun_part_var {
 
-    public:
-      explicit vvp_fun_part_var_sa(unsigned wid, bool is_signed);
+    బహిరంగ:
+      explicit vvp_fun_part_var_sa(గుర్తులేని wid, bool is_signed);
       ~vvp_fun_part_var_sa() override;
 
-    public:
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    బహిరంగ:
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override;
+      శూన్య recv_vec4_pv(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t) override;
 
-    private:
-      int base_;
-      vvp_vector4_t source_;
+    అంతరంగ:
+      పూర్ణాంకం పునాది_2;
+      vvp_vector4_t ఆధారం_2;
 	// Save the last output, for detecting change.
       vvp_vector4_t ref_;
 };
@@ -167,28 +167,28 @@ class vvp_fun_part_var_sa  : public vvp_fun_part_var {
 /*
  * Automatically allocated vvp_fun_part_var.
  */
-class vvp_fun_part_var_aa  : public vvp_fun_part_var, public automatic_hooks_s {
+class vvp_fun_part_var_aa  : బహిరంగ vvp_fun_part_var, బహిరంగ automatic_hooks_s {
 
-    public:
-      explicit vvp_fun_part_var_aa(unsigned wid, bool is_signed);
+    బహిరంగ:
+      explicit vvp_fun_part_var_aa(గుర్తులేని wid, bool is_signed);
       ~vvp_fun_part_var_aa() override;
 
-    public:
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+    బహిరంగ:
+      శూన్య alloc_instance(vvp_context_t context) override;
+      శూన్య reset_instance(vvp_context_t context) override;
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+      శూన్య free_instance(vvp_context_t context) override;
+#అయితే_ముగింపు
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t context) override;
+      శూన్య recv_vec4_pv(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t context) override;
 
-    private:
+    అంతరంగ:
       __vpiScope*context_scope_;
-      unsigned context_idx_;
+      గుర్తులేని context_idx_;
 };
 
-#endif /* IVL_part_H */
+#అయితే_ముగింపు /* IVL_part_H */

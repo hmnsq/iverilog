@@ -1,4 +1,4 @@
-const char COPYRIGHT[] =
+స్థిరరాశి అక్షరం COPYRIGHT[] =
   "Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)";
 /*
  *    This source code is free software; you can redistribute it
@@ -31,89 +31,89 @@ const char COPYRIGHT[] =
 # include  <unistd.h>
 # include  <cassert>
 
-#if defined(HAVE_SYS_RESOURCE_H)
+#ఒకవేళ defined(HAVE_SYS_RESOURCE_H)
 # include  <sys/time.h>
 # include  <sys/resource.h>
-#endif // defined(HAVE_SYS_RESOURCE_H)
+#అయితే_ముగింపు // defined(HAVE_SYS_RESOURCE_H)
 
-#if defined(__MINGW32__)
+#ఒకవేళ defined(__MINGW32__)
 # include  <windows.h>
-#endif
+#అయితే_ముగింపు
 
-#include "libvvp.h"
+#అన్తర్భావ "libvvp.h"
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
 ofstream debug_file;
 
-#if defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
-extern "C" int getopt(int argc, char*argv[], const char*fmt);
-extern "C" int optind;
-extern "C" const char*optarg;
-#endif
+#ఒకవేళ defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
+బాహ్య "C" పూర్ణాంకం getopt(పూర్ణాంకం argc, అక్షరం*argv[], స్థిరరాశి అక్షరం*fmt);
+బాహ్య "C" పూర్ణాంకం optind;
+బాహ్య "C" స్థిరరాశి అక్షరం*optarg;
+#అయితే_ముగింపు
 
-bool verbose_flag = false;
-static int vvp_return_value = 0;
-static int vvp_used = 0;
+తార్కిక verbose_flag = అబద్ధం;
+స్థిర పూర్ణాంకం vvp_return_విలువ = 0;
+స్థిర పూర్ణాంకం vvp_వాడిన = 0;
 
-void vvp_set_stop_is_finish(bool flag, int exit_code)
+శూన్య vvp_సమితి_stop_is_ముగింపు(తార్కిక flag, పూర్ణాంకం exit_సంకేతం)
 {
-      extern bool stop_is_finish;
-      extern int  stop_is_finish_exit_code;
+      బాహ్య తార్కిక stop_is_ముగింపు;
+      బాహ్య పూర్ణాంకం  stop_is_ముగింపు_exit_సంకేతం;
 
-      stop_is_finish = flag;
-      stop_is_finish_exit_code = exit_code;
+      stop_is_ముగింపు = flag;
+      stop_is_ముగింపు_exit_సంకేతం = exit_సంకేతం;
 }
 
-void vvp_set_quiet_flag(bool flag)
+శూన్య vvp_సమితి_quiet_flag(తార్కిక flag)
 {
       vpip_mcd0_disable = flag;
 }
 
-void vvp_set_verbose_flag(bool flag)
+శూన్య vvp_సమితి_verbose_flag(తార్కిక flag)
 {
       verbose_flag = flag;
 }
 
-void vpip_set_return_value(int value)
+శూన్య vpip_సమితి_return_విలువ(పూర్ణాంకం value)
 {
-      vvp_return_value = value;
+      vvp_return_విలువ = value;
 }
 
-static char log_buffer[4096];
+స్థిర అక్షరం log_బఫరు[4096];
 
-#if defined(HAVE_SYS_RESOURCE_H)
-static void my_getrusage(struct rusage *a)
+#ఒకవేళ defined(HAVE_SYS_RESOURCE_H)
+స్థిర శూన్య my_getrusage(నిర్మాణం rusage *a)
 {
       getrusage(RUSAGE_SELF, a);
 
-#     if defined(LINUX)
+#     ఒకవేళ defined(LINUX)
       {
 	    FILE *statm;
-	    unsigned siz, rss, shd;
-	    long page_size = sysconf(_SC_PAGESIZE);
-	    if (page_size==-1) page_size=0;
+	    గుర్తులేని siz, rss, shd;
+	    దీర్ఘ పుట_కొలత = sysconf(_SC_PAGESIZE);
+	    ఒకవేళ (పుట_కొలత==-1) పుట_కొలత=0;
 	    statm = fopen("/proc/self/statm", "r");
-	    if (!statm) {
+	    ఒకవేళ (!statm) {
 		  perror("/proc/self/statm");
-		  return;
+		  తిరిగి;
 	    }
 	      /* Given that these are in pages we'll limit the value to
 	       * what will fit in a 32 bit integer to prevent undefined
 	       * behavior in fscanf(). */
-	    if (3 == fscanf(statm, "%9u %9u %9u", &siz, &rss, &shd)) {
-		  a->ru_maxrss = page_size * siz;
-		  a->ru_idrss  = page_size * rss;
-		  a->ru_ixrss  = page_size * shd;
+	    ఒకవేళ (3 == fscanf(statm, "%9u %9u %9u", &siz, &rss, &shd)) {
+		  a->ru_maxrss = పుట_కొలత * siz;
+		  a->ru_idrss  = పుట_కొలత * rss;
+		  a->ru_ixrss  = పుట_కొలత * shd;
 	    }
 	    fclose(statm);
       }
 #     endif
 }
 
-static void print_rusage(struct rusage *a, struct rusage *b)
+స్థిర శూన్య print_rusage(నిర్మాణం rusage *a, నిర్మాణం rusage *b)
 {
-      double delta = a->ru_utime.tv_sec
+      ద్విగుణ delta = a->ru_utime.tv_sec
 	    +        a->ru_utime.tv_usec/1E6
 	    +        a->ru_stime.tv_sec
 	    +        a->ru_stime.tv_usec/1E6
@@ -132,302 +132,302 @@ static void print_rusage(struct rusage *a, struct rusage *b)
 	      a->ru_ixrss/1024.0 );
 }
 
-#else // ! defined(HAVE_SYS_RESOURCE_H)
+#లేకపోతే // ! defined(HAVE_SYS_RESOURCE_H)
 
 // Provide dummies
-struct rusage { int x; };
-inline static void my_getrusage(struct rusage *) { }
-inline static void print_rusage(struct rusage *, struct rusage *){};
+నిర్మాణం rusage { పూర్ణాంకం x; };
+అంతఃవరుస స్థిర శూన్య my_getrusage(నిర్మాణం rusage *) { }
+అంతఃవరుస స్థిర శూన్య print_rusage(నిర్మాణం rusage *, నిర్మాణం rusage *){};
 
-#endif // ! defined(HAVE_SYS_RESOURCE_H)
+#అయితే_ముగింపు // ! defined(HAVE_SYS_RESOURCE_H)
 
-static bool have_ivl_version = false;
+స్థిర తార్కిక have_ivl_సంస్కరణ = అబద్ధం;
 /*
  * Verify that the input file has a compatible version.
  */
-void verify_version(char*ivl_ver, char*commit)
+శూన్య verify_సంస్కరణ(అక్షరం*ivl_ver, అక్షరం*commit)
 {
-      have_ivl_version = true;
+      have_ivl_సంస్కరణ = నిజం;
 
-      if (verbose_flag) {
+      ఒకవేళ (verbose_flag) {
 	    vpi_mcd_printf(1, " ... VVP file version %s", ivl_ver);
-	    if (commit) vpi_mcd_printf(1, " %s", commit);
+	    ఒకవేళ (commit) vpi_mcd_printf(1, " %s", commit);
 	    vpi_mcd_printf(1, "\n");
       }
-      delete[] commit;
+      తొలగించు[] commit;
 
-      int file_major, file_minor, file_minor2;
-      char file_extra[128];
+      పూర్ణాంకం file_major, file_minor, file_minor2;
+      అక్షరం file_extra[128];
 
 	// Old style format: 0.<major>.<minor> <extra>
 	// This also catches a potential new-new format that has
 	// another sub-minor number.
       file_extra[0] = 0;
-      int rc = sscanf(ivl_ver, "%d.%d.%d %127s", &file_major, &file_minor, &file_minor2, file_extra);
+      పూర్ణాంకం rc = అక్షరశ్రేణి_చదువు(ivl_ver, "%d.%d.%d %127s", &file_major, &file_minor, &file_minor2, file_extra);
 
 	// If it wasn't the old style format, try the new format:
 	// <major>.<minor> <extra>
-      if (rc == 2) {
+      ఒకవేళ (rc == 2) {
 	    file_extra[0] = 0;
-	    rc = sscanf(ivl_ver, "%d.%d %127s", &file_major, &file_minor, file_extra);
-	    assert((rc == 2) || (rc == 3));
+	    rc = అక్షరశ్రేణి_చదువు(ivl_ver, "%d.%d %127s", &file_major, &file_minor, file_extra);
+	    ప్రతిజ్ఞా((rc == 2) || (rc == 3));
 	    file_minor2 = 0;
       }
-      delete[] ivl_ver;
+      తొలగించు[] ivl_ver;
 
 	// If this was the old format, the file_major will be 0. In
 	// this case it is not really what we meant, so convert to the
 	// new format.
-      if (file_major == 0) {
+      ఒకవేళ (file_major == 0) {
 	    file_major = file_minor;
 	    file_minor = file_minor2;
 	    file_minor2 = 0;
       }
 
-      if (VERSION_MAJOR != file_major) {
+      ఒకవేళ (సంస్కరణ_MAJOR != file_major) {
 	    vpi_mcd_printf(1, "Error: VVP input file %d.%d can not "
 			   "be run with run time version %s\n",
-			   file_major, file_minor, VERSION);
-	    exit(1);
+			   file_major, file_minor, సంస్కరణ);
+	    నిష్క్రమించు(1);
       }
 
-      if (VERSION_MINOR < file_minor) {
+      ఒకవేళ (సంస్కరణ_MINOR < file_minor) {
 	    vpi_mcd_printf(1, "Warning: VVP input file sub version %d.%d"
 			   " is greater than the run time version %s.\n",
-			   file_major, file_minor, VERSION);
+			   file_major, file_minor, సంస్కరణ);
       }
 }
 
-int vpip_delay_selection = _vpiDelaySelTypical;
-void set_delay_selection(const char* sel)
+పూర్ణాంకం vpip_delay_selection = _vpiDelaySelTypical;
+శూన్య సమితి_delay_selection(స్థిరరాశి అక్షరం* sel)
 {
-      if (strcmp("TYPICAL", sel) == 0) {
+      ఒకవేళ (strcmp("TYPICAL", sel) == 0) {
 	    vpip_delay_selection = _vpiDelaySelTypical;
-      } else if (strcmp("MINIMUM", sel) == 0) {
+      } లేకపోతే ఒకవేళ (strcmp("MINIMUM", sel) == 0) {
 	    vpip_delay_selection = _vpiDelaySelMinimum;
-      } else if (strcmp("MAXIMUM", sel) == 0) {
-	    vpip_delay_selection = _vpiDelaySelMaximum;
-      } else {
+      } లేకపోతే ఒకవేళ (strcmp("MAXIMUM", sel) == 0) {
+	    vpip_delay_selection = vpi_Delay_Sel_గరిష్ఠ;
+      } లేకపోతే {
 	    vpi_mcd_printf(1, "Error: Unknown delay selection \"%s\"!", sel);
-	    exit(1);
+	    నిష్క్రమించు(1);
       }
-      delete[] sel;
+      తొలగించు[] sel;
 }
 
-static void final_cleanup()
+స్థిర శూన్య final_cleanup()
 {
       vvp_object::cleanup();
 
 	/*
 	 * We only need to cleanup the memory if we are checking with valgrind.
 	 */
-#ifdef CHECK_WITH_VALGRIND
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
 	/* Clean up the file name table. */
-      for (vector<const char*>::iterator cur = file_names.begin();
-           cur != file_names.end() ; ++ cur ) {
-	    delete[] *cur;
+      కొరకు (vector<స్థిరరాశి అక్షరం*>::iterator cur = file_పేర్లు.begin();
+           cur != file_పేర్లు.చివర() ; ++ cur ) {
+	    తొలగించు[] *cur;
       }
 	/* Clear the static result buffer. */
-      (void)need_result_buf(0, RBUF_DEL);
+      (శూన్య)need_ఫలితం_buf(0, RBUF_DEL);
       codespace_delete();
-      root_table_delete();
-      def_table_delete();
+      మూలం_పట్టిక_delete();
+      def_పట్టిక_delete();
       vpi_mcd_delete();
       dec_str_delete();
       modpath_delete();
       vpi_handle_delete();
-      vpi_stack_delete();
+      vpi_దొంతర_delete();
       udp_defns_delete();
       island_delete();
       signal_pool_delete();
       vvp_net_pool_delete();
       ufunc_pool_delete();
-#endif
+#అయితే_ముగింపు
 	/*
 	 * Unload the VPI modules. This is essential for MinGW, to ensure
 	 * dump files are flushed before the main process terminates, as
 	 * the DLL termination code is called after all remaining open
 	 * files are automatically closed.
 	 */
-      load_module_delete();
+      ఎక్కించు_module_delete();
 
-#ifdef CHECK_WITH_VALGRIND
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
       simulator_cb_delete();
-#endif
+#అయితే_ముగింపు
 }
 
-extern void vpip_mcd_init(FILE *log);
-extern void vvp_vpi_init(void);
+బాహ్య శూన్య vpip_mcd_init(FILE *సంవర్గమానం);
+బాహ్య శూన్య vvp_vpi_init(శూన్య);
 
-static void report_used(void)
+స్థిర శూన్య report_వాడిన(శూన్య)
 {
   fprintf(stderr,
 	  "This VVP simulation has already run and can not be reused\n");
 }
 
-void vvp_init(const char *logfile_name, int argc, char*argv[])
+శూన్య vvp_init(స్థిరరాశి అక్షరం *logfile_name, పూర్ణాంకం argc, అక్షరం*argv[])
 {
-      struct rusage cycle;
+      నిర్మాణం rusage చక్రం;
       FILE *logfile = 0x0;
-      extern void vpi_set_vlog_info(int, char**);
+      బాహ్య శూన్య vpi_సమితి_vlog_info(పూర్ణాంకం, అక్షరం**);
 
-      if (vvp_used++) {
-          report_used();
-          return;
+      ఒకవేళ (vvp_వాడిన++) {
+          report_వాడిన();
+          తిరిగి;
       }
 
-      if( ::getenv("VVP_WAIT_FOR_DEBUGGER") != 0 ) {
+      ఒకవేళ( ::getenv("VVP_WAIT_FOR_DEBUGGER") != 0 ) {
           fprintf( stderr, "Waiting for debugger...\n");
-          bool debugger_release = false;
-          while( !debugger_release )  {
-#if defined(__MINGW32__)
+          తార్కిక debugger_release = అబద్ధం;
+          అయితే( !debugger_release )  {
+#ఒకవేళ defined(__MINGW32__)
               Sleep(1000);
-#else
-              sleep(1);
-#endif
+#లేకపోతే
+              సుషుప్తి(1);
+#అయితే_ముగింపు
         }
       }
 
-      vpip_add_env_and_default_module_paths();
+      vpip_కూడు_env_and_default_module_paths();
 
 	/* If the VVP_DEBUG variable is set, then it contains the path
 	   to the vvp debug file. Open it for output. */
 
-      if (const char*path = getenv("VVP_DEBUG")) {
-	    debug_file.open(path, ios::out);
+      ఒకవేళ (స్థిరరాశి అక్షరం*మార్గం = getenv("VVP_DEBUG")) {
+	    debug_file.open(మార్గం, ios::out);
       }
 
 	/* This is needed to get the MCD I/O routines ready for
 	   anything. It is done early because it is plausible that the
 	   compile might affect it, and it is cheap to do. */
 
-      if (logfile_name) {
-	    if (!strcmp(logfile_name, "-"))
+      ఒకవేళ (logfile_name) {
+	    ఒకవేళ (!strcmp(logfile_name, "-"))
 		  logfile = stderr;
-	    else {
+	    లేకపోతే {
 		  logfile = fopen(logfile_name, "w");
-		  if (!logfile) {
+		  ఒకవేళ (!logfile) {
 		        perror(logfile_name);
-		        exit(1);
+		        నిష్క్రమించు(1);
 		  }
-		  setvbuf(logfile, log_buffer, _IOLBF, sizeof(log_buffer));
+		  setvbuf(logfile, log_బఫరు, _IOLBF, పరిమాణం(log_బఫరు));
 	    }
       }
 
       vpip_mcd_init(logfile);
 
-      if (verbose_flag) {
-	    my_getrusage(&cycle);
+      ఒకవేళ (verbose_flag) {
+	    my_getrusage(&చక్రం);
 	    vpi_mcd_printf(1, "Compiling VVP ...\n");
       }
 
       vvp_vpi_init();
 
 	/* Make the extended arguments available to the simulation. */
-      vpi_set_vlog_info(argc, argv);
+      vpi_సమితి_vlog_info(argc, argv);
 
       compile_init();
 }
 
-int vvp_run(const char *design_path)
+పూర్ణాంకం vvp_నిరంతరం(స్థిరరాశి అక్షరం *design_మార్గం)
 {
-      struct rusage cycles[3];
-      int ret_cd;
+      నిర్మాణం rusage చక్రాలు[3];
+      పూర్ణాంకం ret_cd;
 
-      (void) COPYRIGHT;
-      if (vvp_used++ != 1) {
-          if (vvp_used == 1)
+      (శూన్య) COPYRIGHT;
+      ఒకవేళ (vvp_వాడిన++ != 1) {
+          ఒకవేళ (vvp_వాడిన == 1)
               fprintf(stderr, "vvp_init() has not been called\n");
-          else
-              report_used();
-          return 1;
+          లేకపోతే
+              report_వాడిన();
+          తిరిగి 1;
       }
-      ++vvp_used;
+      ++vvp_వాడిన;
 
-      ret_cd = compile_design(design_path);
+      ret_cd = compile_design(design_మార్గం);
       destroy_lexor();
       print_vpi_call_errors();
-      if (ret_cd) return ret_cd;
+      ఒకవేళ (ret_cd) తిరిగి ret_cd;
 
-      if (!have_ivl_version) {
-	    if (verbose_flag) vpi_mcd_printf(1, "... ");
+      ఒకవేళ (!have_ivl_సంస్కరణ) {
+	    ఒకవేళ (verbose_flag) vpi_mcd_printf(1, "... ");
 	    vpi_mcd_printf(1, "Warning: vvp input file may not be correct "
 	                      "version!\n");
       }
 
-      if (verbose_flag) {
+      ఒకవేళ (verbose_flag) {
 	    vpi_mcd_printf(1, "Compile cleanup...\n");
       }
 
       compile_cleanup();
 
-      if (compile_errors > 0) {
+      ఒకవేళ (compile_errors > 0) {
 	    vpi_mcd_printf(1, "%s: Program not runnable, %u errors.\n",
-		    design_path, compile_errors);
+		    design_మార్గం, compile_errors);
 	    final_cleanup();
-	    return compile_errors;
+	    తిరిగి compile_errors;
       }
 
-      if (verbose_flag) {
+      ఒకవేళ (verbose_flag) {
 	    vpi_mcd_printf(1, " ... %8lu functors (net_fun pool=%zu bytes)\n",
-			   count_functors, vvp_net_fun_t::heap_total());
-	    vpi_mcd_printf(1, "           %8lu logic\n",  count_functors_logic);
-	    vpi_mcd_printf(1, "           %8lu bufif\n",  count_functors_bufif);
-	    vpi_mcd_printf(1, "           %8lu resolv\n",count_functors_resolv);
-	    vpi_mcd_printf(1, "           %8lu signals\n", count_functors_sig);
+			   లెక్క_functors, vvp_net_fun_t::కుప్ప_మొత్తం());
+	    vpi_mcd_printf(1, "           %8lu logic\n",  లెక్క_functors_logic);
+	    vpi_mcd_printf(1, "           %8lu bufif\n",  లెక్క_functors_bufif);
+	    vpi_mcd_printf(1, "           %8lu resolv\n",లెక్క_functors_resolv);
+	    vpi_mcd_printf(1, "           %8lu signals\n", లెక్క_functors_sig);
 	    vpi_mcd_printf(1, " ... %8lu filters (net_fil pool=%zu bytes)\n",
-			   count_filters, vvp_net_fil_t::heap_total());
+			   లెక్క_filters, vvp_net_fil_t::కుప్ప_మొత్తం());
 	    vpi_mcd_printf(1, " ... %8lu opcodes (%zu bytes)\n",
-	                   count_opcodes, size_opcodes);
-	    vpi_mcd_printf(1, " ... %8lu nets\n",     count_vpi_nets);
+	                   లెక్క_opcodes, కొలత_opcodes);
+	    vpi_mcd_printf(1, " ... %8lu nets\n",     లెక్క_vpi_nets);
 	    vpi_mcd_printf(1, " ... %8lu vvp_nets (%zu bytes)\n",
-			   count_vvp_nets, size_vvp_nets);
+			   లెక్క_vvp_nets, కొలత_vvp_nets);
 	    vpi_mcd_printf(1, " ... %8lu arrays (%lu words)\n",
-			   count_net_arrays, count_net_array_words);
+			   లెక్క_net_arrays, లెక్క_net_array_పదాలు);
 	    vpi_mcd_printf(1, " ... %8lu memories\n",
-			   count_var_arrays+count_real_arrays);
+			   లెక్క_var_arrays+లెక్క_real_arrays);
 	    vpi_mcd_printf(1, "           %8lu logic (%lu words)\n",
-			   count_var_arrays, count_var_array_words);
+			   లెక్క_var_arrays, లెక్క_var_array_పదాలు);
 	    vpi_mcd_printf(1, "           %8lu real (%lu words)\n",
-			   count_real_arrays, count_real_array_words);
-	    vpi_mcd_printf(1, " ... %8lu scopes\n",   count_vpi_scopes);
+			   లెక్క_real_arrays, లెక్క_real_array_పదాలు);
+	    vpi_mcd_printf(1, " ... %8lu scopes\n",   లెక్క_vpi_scopes);
       }
 
-      if (verbose_flag) {
-	    my_getrusage(cycles+1);
-	    print_rusage(cycles+1, cycles+0);
+      ఒకవేళ (verbose_flag) {
+	    my_getrusage(చక్రాలు+1);
+	    print_rusage(చక్రాలు+1, చక్రాలు+0);
 	    vpi_mcd_printf(1, "Running ...\n");
       }
 
 
-      schedule_simulate();
+      కాలపట్టిక_simulate();
 
-      if (verbose_flag) {
-	    my_getrusage(cycles+2);
-	    print_rusage(cycles+2, cycles+1);
+      ఒకవేళ (verbose_flag) {
+	    my_getrusage(చక్రాలు+2);
+	    print_rusage(చక్రాలు+2, చక్రాలు+1);
 
 	    vpi_mcd_printf(1, "Event counts:\n");
 	    vpi_mcd_printf(1, "    %8lu time steps (pool=%lu)\n",
-			   count_time_events, count_time_pool());
+			   లెక్క_సమయం_events, లెక్క_సమయం_pool());
 	    vpi_mcd_printf(1, "    %8lu thread schedule events\n",
-		    count_thread_events);
+		    లెక్క_thread_events);
 	    vpi_mcd_printf(1, "    %8lu assign events\n",
-		    count_assign_events);
+		    లెక్క_కేటాయించు_events);
 	    vpi_mcd_printf(1, "             ...assign(vec4) pool=%lu\n",
-			   count_assign4_pool());
+			   లెక్క_assign4_pool());
 	    vpi_mcd_printf(1, "             ...assign(vec8) pool=%lu\n",
-			   count_assign8_pool());
+			   లెక్క_assign8_pool());
 	    vpi_mcd_printf(1, "             ...assign(real) pool=%lu\n",
-			   count_assign_real_pool());
+			   లెక్క_కేటాయించు_real_pool());
 	    vpi_mcd_printf(1, "             ...assign(word) pool=%lu\n",
-			   count_assign_aword_pool());
+			   లెక్క_కేటాయించు_aword_pool());
 	    vpi_mcd_printf(1, "             ...assign(word/r) pool=%lu\n",
-			   count_assign_arword_pool());
+			   లెక్క_కేటాయించు_arword_pool());
 	    vpi_mcd_printf(1, "    %8lu other events (pool=%lu)\n",
-			   count_gen_events, count_gen_pool());
+			   లెక్క_gen_events, లెక్క_gen_pool());
       }
 
       final_cleanup();
 
-      return vvp_return_value;
+      తిరిగి vvp_return_విలువ;
 }

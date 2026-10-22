@@ -1,5 +1,5 @@
-#ifndef IVL_vvp_object_H
-#define IVL_vvp_object_H
+#నిర్వచితం_కాకపోతే IVL_vvp_object_H
+#నిర్వచించు IVL_vvp_object_H
 /*
  * Copyright (c) 2012-2020 Stephen Williams (steve@icarus.com)
  *
@@ -29,70 +29,70 @@
  * smart pointer. This makes garbage collection automatic.
  */
 class vvp_object {
-    public:
-      inline vvp_object() { ref_cnt_ = 0; total_active_cnt_ += 1; }
-      virtual ~vvp_object() =0;
+    బహిరంగ:
+      అంతఃవరుస vvp_object() { ref_cnt_ = 0; మొత్తం_చురుకైన_cnt += 1; }
+      మాయా ~vvp_object() =0;
 
-      virtual void shallow_copy(const vvp_object*that);
-      virtual vvp_object* duplicate(void) const;
+      మాయా శూన్య shallow_copy(స్థిరరాశి vvp_object*that);
+      మాయా vvp_object* duplicate(శూన్య) స్థిరరాశి;
 
-      static void cleanup(void);
+      స్థిర శూన్య cleanup(శూన్య);
 
-    private:
-      friend class vvp_object_t;
-      int ref_cnt_;
+    అంతరంగ:
+      మిత్ర class vvp_object_t;
+      పూర్ణాంకం ref_cnt_;
 
-      static int total_active_cnt_;
+      స్థిర పూర్ణాంకం మొత్తం_చురుకైన_cnt;
 };
 
 class vvp_object_t {
-    public:
-      inline vvp_object_t() : ref_(0) { }
-      vvp_object_t(const vvp_object_t&that);
+    బహిరంగ:
+      అంతఃవరుస vvp_object_t() : ref_(0) { }
+      vvp_object_t(స్థిరరాశి vvp_object_t&that);
       explicit vvp_object_t(class vvp_object*that);
       ~vvp_object_t();
 
-      vvp_object_t& operator = (const vvp_object_t&that);
-      vvp_object_t& operator = (class vvp_object*that);
+      vvp_object_t& క్రియాకారకం = (స్థిరరాశి vvp_object_t&that);
+      vvp_object_t& క్రియాకారకం = (class vvp_object*that);
 
-      void reset(vvp_object*tgt = 0);
+      శూన్య reset(vvp_object*tgt = 0);
 
-      bool test_nil() const { return ref_ == 0; }
-      inline bool operator == (const vvp_object_t&that) const
-          { return ref_ == that.ref_; }
-      inline bool operator != (const vvp_object_t&that) const
-          { return ref_ != that.ref_; }
+      bool test_nil() స్థిరరాశి { తిరిగి ref_ == 0; }
+      అంతఃవరుస bool క్రియాకారకం == (స్థిరరాశి vvp_object_t&that) స్థిరరాశి
+          { తిరిగి ref_ == that.ref_; }
+      అంతఃవరుస bool క్రియాకారకం != (స్థిరరాశి vvp_object_t&that) స్థిరరాశి
+          { తిరిగి ref_ != that.ref_; }
 
-      inline void shallow_copy(const vvp_object_t&that)
+      అంతఃవరుస శూన్య shallow_copy(స్థిరరాశి vvp_object_t&that)
           { ref_->shallow_copy(that.ref_); }
-      inline vvp_object_t duplicate(void) const
-          { return vvp_object_t(ref_->duplicate()); }
+      అంతఃవరుస vvp_object_t duplicate(శూన్య) స్థిరరాశి
+          { తిరిగి vvp_object_t(ref_->duplicate()); }
 
-      template <class T> T*peek(void) const;
+      మూస <class T> T*peek(శూన్య) స్థిరరాశి;
 
 	/* Stable ordering for array-of-handle sort (object identity). */
-      uintptr_t sort_order_key(void) const
+      uintptr_t క్రమీకరించు_క్రమం_కీలకం(శూన్య) స్థిరరాశి
       {
-	    return reinterpret_cast<uintptr_t>(ref_);
+	    తిరిగి reinterpret_cast<uintptr_t>(ref_);
       }
 
-    private:
+    అంతరంగ:
       class vvp_object*ref_;
 };
 
-inline vvp_object_t::vvp_object_t(const vvp_object_t&that)
+అంతఃవరుస vvp_object_t::vvp_object_t(స్థిరరాశి vvp_object_t&that)
 {
       ref_ = that.ref_;
-      if (ref_) ref_->ref_cnt_ += 1;
+      ఒకవేళ (ref_) ref_->ref_cnt_ += 1;
 }
 
-inline vvp_object_t::vvp_object_t(class vvp_object*tgt)
+అంతఃవరుస vvp_object_t::vvp_object_t(class vvp_object*tgt)
 {
-      if (tgt) tgt->ref_cnt_ += 1;
+      ఒకవేళ (tgt) tgt->ref_cnt_ += 1;
       ref_ = tgt;
 }
 
-inline vvp_object_t::~vvp_object_t()
+అంతఃవరుస vvp_object_t::~vvp_object_t()
 {
       reset(0);
 }
@@ -101,28 +101,28 @@ inline vvp_object_t::~vvp_object_t()
  * This is the workhorse of the vvp_object_t class. It manages the
  * pointer to the referenced object.
  */
-inline void vvp_object_t::reset(class vvp_object*tgt)
+అంతఃవరుస శూన్య vvp_object_t::reset(class vvp_object*tgt)
 {
-      if (tgt) tgt->ref_cnt_ += 1;
-      if (ref_) {
+      ఒకవేళ (tgt) tgt->ref_cnt_ += 1;
+      ఒకవేళ (ref_) {
 	    ref_->ref_cnt_ -= 1;
-	    if (ref_->ref_cnt_ <= 0) delete ref_;
+	    ఒకవేళ (ref_->ref_cnt_ <= 0) delete ref_;
 	    ref_ = 0;
       }
       ref_ = tgt;
 }
 
-inline vvp_object_t& vvp_object_t::operator = (const vvp_object_t&that)
+అంతఃవరుస vvp_object_t& vvp_object_t::క్రియాకారకం = (స్థిరరాశి vvp_object_t&that)
 {
-      if (this == &that) return *this;
+      ఒకవేళ (this == &that) తిరిగి *this;
       reset(that.ref_);
-      return *this;
+      తిరిగి *this;
 }
 
-inline vvp_object_t& vvp_object_t::operator = (class vvp_object*that)
+అంతఃవరుస vvp_object_t& vvp_object_t::క్రియాకారకం = (class vvp_object*that)
 {
       reset(that);
-      return *this;
+      తిరిగి *this;
 }
 
 /*
@@ -132,9 +132,9 @@ inline vvp_object_t& vvp_object_t::operator = (class vvp_object*that)
  *
  * NOTE: The vvp_object_t object retains ownership of the pointer!
  */
-template <class T> inline T*vvp_object_t::peek(void) const
+మూస <class T> అంతఃవరుస T*vvp_object_t::peek(శూన్య) స్థిరరాశి
 {
-      return dynamic_cast<T*> (ref_);
+      తిరిగి dynamic_cast<T*> (ref_);
 }
 
-#endif /* IVL_vvp_object_H */
+#అయితే_ముగింపు /* IVL_vvp_object_H */

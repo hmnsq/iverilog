@@ -21,198 +21,198 @@
 # include  "vpi_priv.h"
 # include  "vvp_net_sig.h"
 # include  "schedule.h"
-#ifdef CHECK_WITH_VALGRIND
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#అయితే_ముగింపు
 # include  <cstdio>
 # include  <cstdlib>
 # include  <cstring>
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-static int real_var_get(int code, vpiHandle ref)
+స్థిర పూర్ణాంకం real_var_get(పూర్ణాంకం code, vpiHandle ref)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
-      assert(rfp);
+      నిర్మాణం __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      ప్రతిజ్ఞా(rfp);
 
-      switch (code) {
-	case vpiArray:
-	    return rfp->is_netarray != 0;
+      ఎంపిక (code) {
+	స్థితి vpiArray:
+	    తిరిగి rfp->is_netarray != 0;
 
-	case vpiSize:
-	    return 1;
+	స్థితి vpi_కొలత:
+	    తిరిగి 1;
 
-	case vpiLineNo:
-	    return 0; // Not implemented for now!
+	స్థితి vpi_పంక్తి_No:
+	    తిరిగి 0; // Not implemented for now!
 
-	case vpiAutomatic:
-	  return vpip_scope(rfp)->is_automatic()? 1 : 0;
+	స్థితి vpiAutomatic:
+	  తిరిగి vpip_scope(rfp)->is_automatic()? 1 : 0;
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
-static char* real_var_get_str(int code, vpiHandle ref)
+స్థిర అక్షరం* real_var_get_str(పూర్ణాంకం code, vpiHandle ref)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
-      assert(rfp);
+      నిర్మాణం __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      ప్రతిజ్ఞా(rfp);
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      ఒకవేళ (code == vpiFile) {  // Not implemented for now!
+	    తిరిగి simple_సమితి_rbuf_str(file_పేర్లు[0]);
       }
 
-      char *nm;
-      const char *ixs;
-      if (rfp->is_netarray) {
-	    nm = strdup(vpi_get_str(vpiName, rfp->within.parent));
-	    s_vpi_value vp;
+      అక్షరం *nm;
+      స్థిరరాశి అక్షరం *ixs;
+      ఒకవేళ (rfp->is_netarray) {
+	    nm = strdup(vpi_get_str(vpiName, rfp->within.మాతృ));
+	    s_vpi_విలువ vp;
 	    vp.format = vpiDecStrVal;
-	    vpi_get_value(rfp->id.index, &vp);
+	    vpi_get_విలువ(rfp->id.సూచీ, &vp);
 	    ixs = vp.value.str;  /* do I need to strdup() this? */
-      } else {
+      } లేకపోతే {
 	    nm = strdup(rfp->id.name);
-	    ixs = NULL;
+	    ixs = ఖాళీ;
       }
 
-      char *rbuf = generic_get_str(code, vpip_scope(rfp), nm, ixs);
-      free(nm);
-      return rbuf;
+      అక్షరం *rbuf = generic_get_str(code, vpip_scope(rfp), nm, ixs);
+      విడుదల(nm);
+      తిరిగి rbuf;
 }
 
-static vpiHandle real_var_get_handle(int code, vpiHandle ref)
+స్థిర vpiHandle real_var_get_handle(పూర్ణాంకం code, vpiHandle ref)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
-      assert(rfp);
+      నిర్మాణం __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      ప్రతిజ్ఞా(rfp);
 
-      switch (code) {
+      ఎంపిక (code) {
 
-	  case vpiParent:
-	    return rfp->is_netarray ? rfp->within.parent : NULL;
+	  స్థితి vpi_మాతృ:
+	    తిరిగి rfp->is_netarray ? rfp->within.మాతృ : ఖాళీ;
 
-	  case vpiIndex:
-	    return rfp->is_netarray ? rfp->id.index : NULL;
+	  స్థితి vpi_సూచీ_2:
+	    తిరిగి rfp->is_netarray ? rfp->id.సూచీ : ఖాళీ;
 
-	  case vpiScope:
-	    return vpip_scope(rfp);
+	  స్థితి vpiScope:
+	    తిరిగి vpip_scope(rfp);
 
-	  case vpiModule:
-	    return vpip_module(vpip_scope(rfp));
+	  స్థితి vpiModule:
+	    తిరిగి vpip_module(vpip_scope(rfp));
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
-static vpiHandle real_var_iterate(int code, vpiHandle ref)
+స్థిర vpiHandle real_var_iterate(పూర్ణాంకం code, vpiHandle ref)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
-      assert(rfp);
+      నిర్మాణం __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      ప్రతిజ్ఞా(rfp);
 
-      if (code == vpiIndex) {
-	    return rfp->is_netarray ? rfp->id.index->vpi_iterate(code) : NULL;
+      ఒకవేళ (code == vpi_సూచీ_2) {
+	    తిరిగి rfp->is_netarray ? rfp->id.సూచీ->vpi_iterate(code) : ఖాళీ;
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
-static void real_var_get_value(vpiHandle ref, s_vpi_value*vp)
+స్థిర శూన్య real_var_get_విలువ(vpiHandle ref, s_vpi_విలువ*vp)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
-      assert(rfp);
+      నిర్మాణం __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      ప్రతిజ్ఞా(rfp);
 
-      vvp_signal_value*fil
-	    = dynamic_cast<vvp_signal_value*>(rfp->net->fil);
+      vvp_signal_విలువ*fil
+	    = dynamic_cast<vvp_signal_విలువ*>(rfp->net->fil);
 
-      fil->get_signal_value(vp);
+      fil->get_signal_విలువ(vp);
 }
 
-static vpiHandle real_var_put_value(vpiHandle ref, p_vpi_value vp, int flags)
+స్థిర vpiHandle real_var_put_విలువ(vpiHandle ref, p_vpi_విలువ vp, పూర్ణాంకం flags)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
-      assert(rfp);
+      నిర్మాణం __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      ప్రతిజ్ఞా(rfp);
       vvp_net_ptr_t destination (rfp->net, 0);
 
 	/* If this is a release, then we are not really putting a
 	   value. Instead, issue a release "command" to the signal
 	   node to cause it to release a forced value. */
-      if (flags == vpiReleaseFlag) {
-	    assert(rfp->net->fil);
+      ఒకవేళ (flags == vpiReleaseFlag) {
+	    ప్రతిజ్ఞా(rfp->net->fil);
 	    rfp->net->fil->force_unlink();
 	    rfp->net->fil->release(destination, rfp->is_wire);
-	    real_var_get_value(ref, vp);
-	    return ref;
+	    real_var_get_విలువ(ref, vp);
+	    తిరిగి ref;
       }
 
-      double result = real_from_vpi_value(vp);
+      ద్విగుణ ఫలితం = real_from_vpi_విలువ(vp);
 
-      if (flags == vpiForceFlag) {
-	    vvp_vector2_t mask (vvp_vector2_t::FILL1, 1);
-	    rfp->net->force_real(result, mask);
-      } else if (rfp->is_wire) {
-	    rfp->net->send_real(result, vthread_get_wt_context());
-      } else {
-	    vvp_send_real(destination, result, vthread_get_wt_context());
+      ఒకవేళ (flags == vpiForceFlag) {
+	    vvp_vector2_t ముసుగు (vvp_vector2_t::FILL1, 1);
+	    rfp->net->force_real(ఫలితం, ముసుగు);
+      } లేకపోతే ఒకవేళ (rfp->is_wire) {
+	    rfp->net->send_real(ఫలితం, vthread_get_wt_context());
+      } లేకపోతే {
+	    vvp_send_real(destination, ఫలితం, vthread_get_wt_context());
       }
-      return 0;
+      తిరిగి 0;
 }
 
-inline __vpiRealVar::__vpiRealVar()
+అంతఃవరుస __vpiRealVar::__vpiRealVar()
 { }
 
-int __vpiRealVar::get_type_code(void) const
-{ return vpiRealVar; }
+పూర్ణాంకం __vpiRealVar::get_type_సంకేతం(శూన్య) స్థిరరాశి
+{ తిరిగి vpiRealVar; }
 
-int __vpiRealVar::vpi_get(int code)
-{ return real_var_get(code, this); }
+పూర్ణాంకం __vpiRealVar::vpi_get(పూర్ణాంకం code)
+{ తిరిగి real_var_get(code, ఇది); }
 
-char* __vpiRealVar::vpi_get_str(int code)
-{ return real_var_get_str(code, this); }
+అక్షరం* __vpiRealVar::vpi_get_str(పూర్ణాంకం code)
+{ తిరిగి real_var_get_str(code, ఇది); }
 
-void __vpiRealVar::vpi_get_value(p_vpi_value val)
-{ real_var_get_value(this, val); }
+శూన్య __vpiRealVar::vpi_get_విలువ(p_vpi_విలువ val)
+{ real_var_get_విలువ(ఇది, val); }
 
-vpiHandle __vpiRealVar::vpi_put_value(p_vpi_value val, int flags)
-{ return real_var_put_value(this, val, flags); }
+vpiHandle __vpiRealVar::vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags)
+{ తిరిగి real_var_put_విలువ(ఇది, val, flags); }
 
-vpiHandle __vpiRealVar::vpi_handle(int code)
-{ return real_var_get_handle(code, this); }
+vpiHandle __vpiRealVar::vpi_handle(పూర్ణాంకం code)
+{ తిరిగి real_var_get_handle(code, ఇది); }
 
-vpiHandle __vpiRealVar::vpi_iterate(int code)
-{ return real_var_iterate(code, this); }
+vpiHandle __vpiRealVar::vpi_iterate(పూర్ణాంకం code)
+{ తిరిగి real_var_iterate(code, ఇది); }
 
-static vpiHandle vpip_make_real_(__vpiScope*scope, const char*name,
-				 vvp_net_t*net, bool is_wire)
+స్థిర vpiHandle vpip_make_real_(__vpiScope*scope, స్థిరరాశి అక్షరం*name,
+				 vvp_net_t*net, తార్కిక is_wire)
 {
-      struct __vpiRealVar*obj = new __vpiRealVar;
+      నిర్మాణం __vpiRealVar*obj = కొత్త __vpiRealVar;
 
-      obj->id.name = name ? vpip_name_string(name) : NULL;
+      obj->id.name = name ? vpip_name_string(name) : ఖాళీ;
       obj->is_netarray = 0;
       obj->is_wire = is_wire;
       obj->net = net;
 
       obj->within.scope = scope;
 
-      return obj;
+      తిరిగి obj;
 }
 
-vpiHandle vpip_make_real_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_real_var(స్థిరరాశి అక్షరం*name, vvp_net_t*net)
 {
-      return vpip_make_real_(vpip_peek_current_scope(), name, net, false);
+      తిరిగి vpip_make_real_(vpip_peek_current_scope(), name, net, అబద్ధం);
 }
 
 vpiHandle vpip_make_real_net(__vpiScope*scope,
-			     const char*name, vvp_net_t*net)
+			     స్థిరరాశి అక్షరం*name, vvp_net_t*net)
 {
-      return vpip_make_real_(scope, name, net, true);
+      తిరిగి vpip_make_real_(scope, name, net, నిజం);
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void real_delete(vpiHandle item)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య real_delete(vpiHandle అంశం)
 {
-      struct __vpiRealVar*obj = dynamic_cast<__vpiRealVar*>(item);
-      assert(obj->net->fil);
+      నిర్మాణం __vpiRealVar*obj = dynamic_cast<__vpiRealVar*>(అంశం);
+      ప్రతిజ్ఞా(obj->net->fil);
       obj->net->fil->clear_all_callbacks();
       vvp_net_delete(obj->net);
 
-      delete obj;
+      తొలగించు obj;
 }
-#endif
+#అయితే_ముగింపు

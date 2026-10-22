@@ -31,27 +31,27 @@
  * The key_strdup() function below allocates the strings from this
  * buffer, possibly making a new buffer if needed.
  */
-struct key_strings {
-      struct key_strings*next;
-      char data[64*1024 - sizeof(struct key_strings*)];
+నిర్మాణం కీలకం_అక్షరశ్రేణులు {
+      నిర్మాణం కీలకం_అక్షరశ్రేణులు*తదుపరి_2;
+      అక్షరం దత్తాంశం[64*1024 - పరిమాణం(నిర్మాణం కీలకం_అక్షరశ్రేణులు*)];
 };
 
-char*symbol_table_s::key_strdup_(const char*str)
+అక్షరం*చిహ్నం_పట్టిక_s::కీలకం_strdup(స్థిరరాశి అక్షరం*str)
 {
-      unsigned len = strlen(str);
-      assert( (len+1) <= sizeof str_chunk->data );
+      గుర్తులేని len = అక్షరశ్రేణి_పొడవు(str);
+      ప్రతిజ్ఞా( (len+1) <= పరిమాణం str_chunk->దత్తాంశం );
 
-      if ( (len+1) > (sizeof str_chunk->data - str_used) ) {
-	    key_strings*tmp = new key_strings;
-	    tmp->next = str_chunk;
+      ఒకవేళ ( (len+1) > (పరిమాణం str_chunk->దత్తాంశం - str_వాడిన) ) {
+	    కీలకం_అక్షరశ్రేణులు*tmp = కొత్త కీలకం_అక్షరశ్రేణులు;
+	    tmp->తదుపరి_2 = str_chunk;
 	    str_chunk = tmp;
-	    str_used = 0;
+	    str_వాడిన = 0;
       }
 
-      char*res = str_chunk->data + str_used;
-      str_used += len + 1;
+      అక్షరం*res = str_chunk->దత్తాంశం + str_వాడిన;
+      str_వాడిన += len + 1;
       strcpy(res, str);
-      return res;
+      తిరిగి res;
 }
 
 /*
@@ -67,32 +67,32 @@ char*symbol_table_s::key_strdup_(const char*str)
  * simple binary search to find an item. Each key represents an item.
  */
 
-const unsigned leaf_width = 254;
-const unsigned node_width = 508;
+స్థిరరాశి గుర్తులేని ఆకు_వెడల్పు = 254;
+స్థిరరాశి గుర్తులేని కణుపు_వెడల్పు = 508;
 
-struct tree_data_ {
-      char*key;
-      symbol_value_t val;
+నిర్మాణం వృక్షం_దత్తాంశం {
+      అక్షరం*కీలకం;
+      చిహ్నం_విలువ_t val;
 };
 
-struct tree_node_ {
-      bool leaf_flag;
-      unsigned count;
-      struct tree_node_*parent;
+నిర్మాణం వృక్ష_కణుపు {
+      తార్కిక ఆకు_flag;
+      గుర్తులేని లెక్క;
+      నిర్మాణం వృక్ష_కణుపు*మాతృ;
 
-      union {
-	    struct tree_data_ leaf[leaf_width];
-	    struct tree_node_ *child[node_width];
+      సంఘం {
+	    నిర్మాణం వృక్షం_దత్తాంశం ఆకు[ఆకు_వెడల్పు];
+	    నిర్మాణం వృక్ష_కణుపు *బిడ్డ[కణుపు_వెడల్పు];
       };
 
 };
 
-static inline char* node_last_key(struct tree_node_*node)
+స్థిర అంతఃవరుస అక్షరం* కణుపు_చివరి_కీలకం(నిర్మాణం వృక్ష_కణుపు*కణుపు)
 {
-      while (node->leaf_flag == false)
-	    node = node->child[node->count-1];
+      అయితే (కణుపు->ఆకు_flag == అబద్ధం)
+	    కణుపు = కణుపు->బిడ్డ[కణుపు->లెక్క-1];
 
-      return node->leaf[node->count-1].key;
+      తిరిగి కణుపు->ఆకు[కణుపు->లెక్క-1].కీలకం;
 }
 
 /*
@@ -100,97 +100,97 @@ static inline char* node_last_key(struct tree_node_*node)
  * a root node, and initializing the pointers and members of the root
  * node.
  */
-symbol_table_s::symbol_table_s()
+చిహ్నం_పట్టిక_s::చిహ్నం_పట్టిక_s()
 {
-      root = new struct tree_node_;
-      root->leaf_flag = false;
-      root->count = 0;
-      root->parent = 0;
+      మూలం = కొత్త నిర్మాణం వృక్ష_కణుపు;
+      మూలం->ఆకు_flag = అబద్ధం;
+      మూలం->లెక్క = 0;
+      మూలం->మాతృ = 0;
 
-      str_chunk = new key_strings;
-      str_chunk->next = 0;
-      str_used = 0;
+      str_chunk = కొత్త కీలకం_అక్షరశ్రేణులు;
+      str_chunk->తదుపరి_2 = 0;
+      str_వాడిన = 0;
 }
 
-static void delete_symbol_node(struct tree_node_*cur)
+స్థిర శూన్య delete_చిహ్నం_కణుపు(నిర్మాణం వృక్ష_కణుపు*cur)
 {
-      if (! cur->leaf_flag) {
-	    for (unsigned idx = 0 ;  idx < cur->count ;  idx += 1)
-		  delete_symbol_node(cur->child[idx]);
+      ఒకవేళ (! cur->ఆకు_flag) {
+	    కొరకు (గుర్తులేని idx = 0 ;  idx < cur->లెక్క ;  idx += 1)
+		  delete_చిహ్నం_కణుపు(cur->బిడ్డ[idx]);
       }
 
-      delete cur;
+      తొలగించు cur;
 }
 
 /* Do as split_leaf_ does, but for nodes. */
-static void split_node_(struct tree_node_*cur)
+స్థిర శూన్య విభజించు_కణుపు(నిర్మాణం వృక్ష_కణుపు*cur)
 {
-      assert(!cur->leaf_flag);
-      if (cur->parent) assert(! cur->parent->leaf_flag);
+      ప్రతిజ్ఞా(!cur->ఆకు_flag);
+      ఒకవేళ (cur->మాతృ) ప్రతిజ్ఞా(! cur->మాతృ->ఆకు_flag);
 
-      while (cur->count == node_width) {
+      అయితే (cur->లెక్క == కణుపు_వెడల్పు) {
 	      /* Create a new node to hold half the data from cur. */
-	    struct tree_node_ *new_node = new struct tree_node_;
-	    new_node->leaf_flag = false;
-	    new_node->count = cur->count / 2;
+	    నిర్మాణం వృక్ష_కణుపు *new_కణుపు = కొత్త నిర్మాణం వృక్ష_కణుపు;
+	    new_కణుపు->ఆకు_flag = అబద్ధం;
+	    new_కణుపు->లెక్క = cur->లెక్క / 2;
 	      /* cur is not root; new_node becomes sibling. */
-	    if (cur->parent) new_node->parent = cur->parent;
+	    ఒకవేళ (cur->మాతృ) new_కణుపు->మాతృ = cur->మాతృ;
 
 	      /* Move the last half of the data from the end of the old node
 	       * to the beginning of the new node. At the same time, reduce
 	       * the size of the old node. */
-	    unsigned idx1 = new_node->count;
-	    unsigned idx2 = cur->count;
-	    while (idx1 > 0) {
+	    గుర్తులేని idx1 = new_కణుపు->లెక్క;
+	    గుర్తులేని idx2 = cur->లెక్క;
+	    అయితే (idx1 > 0) {
 		  idx1 -= 1;
 		  idx2 -= 1;
-		  new_node->child[idx1] = cur->child[idx2];
-		  new_node->child[idx1]->parent = new_node;
-		  cur->count -= 1;
+		  new_కణుపు->బిడ్డ[idx1] = cur->బిడ్డ[idx2];
+		  new_కణుపు->బిడ్డ[idx1]->మాతృ = new_కణుపు;
+		  cur->లెక్క -= 1;
 	    }
 
-	    assert(new_node->count > 0);
-	    assert(cur->count > 0);
+	    ప్రతిజ్ఞా(new_కణుపు->లెక్క > 0);
+	    ప్రతిజ్ఞా(cur->లెక్క > 0);
 
-	    if (cur->parent == 0) {
+	    ఒకవేళ (cur->మాతృ == 0) {
 		    /* cur is root. Move first half of children to another
 		     * new node, and put the two new nodes in cur. The plan
 		     * here is to make cur into the new root and split its
 		     * contents into 2 children. */
 
-		  new_node->parent = cur;
-		  struct tree_node_*new2_node = new struct tree_node_;
-		  new2_node->leaf_flag = false;
-		  new2_node->count = cur->count;
-		  new2_node->parent = cur;
-		  for (unsigned idx = 0; idx < cur->count; idx += 1) {
-			new2_node->child[idx] = cur->child[idx];
-			new2_node->child[idx]->parent = new2_node;
+		  new_కణుపు->మాతృ = cur;
+		  నిర్మాణం వృక్ష_కణుపు*new2_కణుపు = కొత్త నిర్మాణం వృక్ష_కణుపు;
+		  new2_కణుపు->ఆకు_flag = అబద్ధం;
+		  new2_కణుపు->లెక్క = cur->లెక్క;
+		  new2_కణుపు->మాతృ = cur;
+		  కొరకు (గుర్తులేని idx = 0; idx < cur->లెక్క; idx += 1) {
+			new2_కణుపు->బిడ్డ[idx] = cur->బిడ్డ[idx];
+			new2_కణుపు->బిడ్డ[idx]->మాతృ = new2_కణుపు;
 		  }
-		  cur->child[0] = new2_node;
-		  cur->child[1] = new_node;
-		  cur->count = 2;
+		  cur->బిడ్డ[0] = new2_కణుపు;
+		  cur->బిడ్డ[1] = new_కణుపు;
+		  cur->లెక్క = 2;
 		    /* no more ancestors, stop the while loop */
-		  break;
+		  ఆపు;
 	    }
 
 	      /* cur is not root. hook new_node to cur->parent. */
-	    unsigned idx = 0;
-	    while (cur->parent->child[idx] != cur) {
-		  assert(idx < cur->parent->count);
+	    గుర్తులేని idx = 0;
+	    అయితే (cur->మాతృ->బిడ్డ[idx] != cur) {
+		  ప్రతిజ్ఞా(idx < cur->మాతృ->లెక్క);
 		  idx += 1;
 	    }
 	    idx += 1;
 
-	    for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1) {
-		  cur->parent->child[tmp] = cur->parent->child[tmp-1];
+	    కొరకు (గుర్తులేని tmp = cur->మాతృ->లెక్క ;  tmp > idx ;  tmp -= 1) {
+		  cur->మాతృ->బిడ్డ[tmp] = cur->మాతృ->బిడ్డ[tmp-1];
 	    }
 
-	    cur->parent->child[idx] = new_node;
-	    cur->parent->count += 1;
+	    cur->మాతృ->బిడ్డ[idx] = new_కణుపు;
+	    cur->మాతృ->లెక్క += 1;
 
 	      /* check the ancestor */
-	    cur = cur->parent;
+	    cur = cur->మాతృ;
       }
 }
 
@@ -199,51 +199,51 @@ static void split_node_(struct tree_node_*cur)
  * the leaf keys into the new node, and add the new leaf into the
  * parent node.
  */
-static struct tree_node_* split_leaf_(struct tree_node_*cur)
+స్థిర నిర్మాణం వృక్ష_కణుపు* విభజించు_ఆకు(నిర్మాణం వృక్ష_కణుపు*cur)
 {
-      assert(cur->leaf_flag);
-      assert(cur->parent);
-      assert(! cur->parent->leaf_flag);
+      ప్రతిజ్ఞా(cur->ఆకు_flag);
+      ప్రతిజ్ఞా(cur->మాతృ);
+      ప్రతిజ్ఞా(! cur->మాతృ->ఆకు_flag);
 
 	/* Create a new leaf to hold half the data from the old leaf. */
-      struct tree_node_*new_leaf = new struct tree_node_;
-      new_leaf->leaf_flag = true;
-      new_leaf->count = cur->count / 2;
-      new_leaf->parent = cur->parent;
+      నిర్మాణం వృక్ష_కణుపు*new_ఆకు = కొత్త నిర్మాణం వృక్ష_కణుపు;
+      new_ఆకు->ఆకు_flag = నిజం;
+      new_ఆకు->లెక్క = cur->లెక్క / 2;
+      new_ఆకు->మాతృ = cur->మాతృ;
 
 	/* Move the last half of the data from the end of the old leaf
 	   to the beginning of the new leaf. At the same time, reduce
 	   the size of the old leaf. */
-      unsigned idx1 = new_leaf->count;
-      unsigned idx2 = cur->count;
-      while (idx1 > 0) {
+      గుర్తులేని idx1 = new_ఆకు->లెక్క;
+      గుర్తులేని idx2 = cur->లెక్క;
+      అయితే (idx1 > 0) {
 	    idx1 -= 1;
 	    idx2 -= 1;
-	    new_leaf->leaf[idx1] = cur->leaf[idx2];
-	    cur->count -= 1;
+	    new_ఆకు->ఆకు[idx1] = cur->ఆకు[idx2];
+	    cur->లెక్క -= 1;
       }
 
-      assert(new_leaf->count > 0);
-      assert(cur->count > 0);
+      ప్రతిజ్ఞా(new_ఆకు->లెక్క > 0);
+      ప్రతిజ్ఞా(cur->లెక్క > 0);
 
-      unsigned idx = 0;
-      while (cur->parent->child[idx] != cur) {
-	    assert(idx < cur->parent->count);
+      గుర్తులేని idx = 0;
+      అయితే (cur->మాతృ->బిడ్డ[idx] != cur) {
+	    ప్రతిజ్ఞా(idx < cur->మాతృ->లెక్క);
 	    idx += 1;
       }
 
       idx += 1;
 
-      for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1)
-	    cur->parent->child[tmp] = cur->parent->child[tmp-1];
+      కొరకు (గుర్తులేని tmp = cur->మాతృ->లెక్క ;  tmp > idx ;  tmp -= 1)
+	    cur->మాతృ->బిడ్డ[tmp] = cur->మాతృ->బిడ్డ[tmp-1];
 
-      cur->parent->child[idx] = new_leaf;
-      cur->parent->count += 1;
+      cur->మాతృ->బిడ్డ[idx] = new_ఆకు;
+      cur->మాతృ->లెక్క += 1;
 
-      if (cur->parent->count == node_width)
-	    split_node_(cur->parent);
+      ఒకవేళ (cur->మాతృ->లెక్క == కణుపు_వెడల్పు)
+	    విభజించు_కణుపు(cur->మాతృ);
 
-      return new_leaf;
+      తిరిగి new_ఆకు;
 }
 
 
@@ -254,145 +254,145 @@ static struct tree_node_* split_leaf_(struct tree_node_*cur)
  * true.
  */
 
-symbol_value_t symbol_table_s::find_value_(struct tree_node_*cur,
-					   const char*key, symbol_value_t val,
-					   bool force_flag)
+చిహ్నం_విలువ_t చిహ్నం_పట్టిక_s::కనుగొను_విలువ(నిర్మాణం వృక్ష_కణుపు*cur,
+					   స్థిరరాశి అక్షరం*కీలకం, చిహ్నం_విలువ_t val,
+					   తార్కిక force_flag)
 {
-      if (cur->leaf_flag) {
+      ఒకవేళ (cur->ఆకు_flag) {
 
-	    unsigned idx = 0;
-	    for (;;) {
+	    గుర్తులేని idx = 0;
+	    కొరకు (;;) {
 		    /* If we run out of keys in the leaf, then add
 		       this at the end of the leaf. */
-		  if (idx == cur->count) {
-			cur->leaf[idx].key = key_strdup_(key);
-			cur->leaf[idx].val = val;
-			cur->count += 1;
-			if (cur->count == leaf_width)
-			      split_leaf_(cur);
+		  ఒకవేళ (idx == cur->లెక్క) {
+			cur->ఆకు[idx].కీలకం = కీలకం_strdup(కీలకం);
+			cur->ఆకు[idx].val = val;
+			cur->లెక్క += 1;
+			ఒకవేళ (cur->లెక్క == ఆకు_వెడల్పు)
+			      విభజించు_ఆకు(cur);
 
-			return val;
+			తిరిగి val;
 		  }
 
-		  int rc = strcmp(key, cur->leaf[idx].key);
+		  పూర్ణాంకం rc = strcmp(కీలకం, cur->ఆకు[idx].కీలకం);
 
 		    /* If we found the key already in the table, then
 		       set the new value and break. */
-		  if (rc == 0) {
-			if (force_flag)
-			      cur->leaf[idx].val = val;
-			return cur->leaf[idx].val;
+		  ఒకవేళ (rc == 0) {
+			ఒకవేళ (force_flag)
+			      cur->ఆకు[idx].val = val;
+			తిరిగి cur->ఆకు[idx].val;
 		  }
 
 		    /* If this key goes before the current key, then
 		       push all the following entries back and add
 		       this key here. */
-		  if (rc < 0) {
-			for (unsigned tmp = cur->count; tmp > idx; tmp -= 1)
-			      cur->leaf[tmp] = cur->leaf[tmp-1];
+		  ఒకవేళ (rc < 0) {
+			కొరకు (గుర్తులేని tmp = cur->లెక్క; tmp > idx; tmp -= 1)
+			      cur->ఆకు[tmp] = cur->ఆకు[tmp-1];
 
-			cur->leaf[idx].key = key_strdup_(key);
-			cur->leaf[idx].val = val;
-			cur->count += 1;
-			if (cur->count == leaf_width)
-			      split_leaf_(cur);
+			cur->ఆకు[idx].కీలకం = కీలకం_strdup(కీలకం);
+			cur->ఆకు[idx].val = val;
+			cur->లెక్క += 1;
+			ఒకవేళ (cur->లెక్క == ఆకు_వెడల్పు)
+			      విభజించు_ఆకు(cur);
 
-			return val;
+			తిరిగి val;
 		  }
 
 		  idx += 1;
 	    }
 
-      } else {
+      } లేకపోతే {
 	      /* Do a binary search within the inner node. */
-	    unsigned min = 0;
-	    unsigned max = cur->count;
-	    unsigned idx = max/2;
-	    for (;;) {
-		  int rc = strcmp(key, node_last_key(cur->child[idx]));
-		  if (rc == 0) {
-			return find_value_(cur->child[idx],
-					   key, val, force_flag);
+	    గుర్తులేని min = 0;
+	    గుర్తులేని max = cur->లెక్క;
+	    గుర్తులేని idx = max/2;
+	    కొరకు (;;) {
+		  పూర్ణాంకం rc = strcmp(కీలకం, కణుపు_చివరి_కీలకం(cur->బిడ్డ[idx]));
+		  ఒకవేళ (rc == 0) {
+			తిరిగి కనుగొను_విలువ(cur->బిడ్డ[idx],
+					   కీలకం, val, force_flag);
 		  }
 
-		  if (rc > 0) {
+		  ఒకవేళ (rc > 0) {
 			min = idx + 1;
-			if (min == cur->count)
-			      return find_value_(cur->child[idx],
-						 key, val, force_flag);
-			if (min == max)
-			      return find_value_(cur->child[max],
-						 key, val, force_flag);
+			ఒకవేళ (min == cur->లెక్క)
+			      తిరిగి కనుగొను_విలువ(cur->బిడ్డ[idx],
+						 కీలకం, val, force_flag);
+			ఒకవేళ (min == max)
+			      తిరిగి కనుగొను_విలువ(cur->బిడ్డ[max],
+						 కీలకం, val, force_flag);
 
 			idx = min + (max-min)/2;
 
-		  } else  {
+		  } లేకపోతే  {
 			max = idx;
-			if (idx == min)
-			      return find_value_(cur->child[idx],
-						 key, val, force_flag);
+			ఒకవేళ (idx == min)
+			      తిరిగి కనుగొను_విలువ(cur->బిడ్డ[idx],
+						 కీలకం, val, force_flag);
 			idx = min + (max-min)/2;
 		  }
 	    }
       }
 
-      assert(0);
-      { symbol_value_t tmp;
+      ప్రతిజ్ఞా(0);
+      { చిహ్నం_విలువ_t tmp;
         tmp.ptr = 0;
-        return tmp;
+        తిరిగి tmp;
       }
 }
 
-void symbol_table_s::sym_set_value(const char*key, symbol_value_t val)
+శూన్య చిహ్నం_పట్టిక_s::sym_సమితి_విలువ(స్థిరరాశి అక్షరం*కీలకం, చిహ్నం_విలువ_t val)
 {
-      if (root->count == 0) {
+      ఒకవేళ (మూలం->లెక్క == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
-	    cur->leaf_flag = true;
-	    cur->parent = root;
-	    cur->count = 1;
-	    cur->leaf[0].key = key_strdup_(key);
-	    cur->leaf[0].val = val;
+	    నిర్మాణం వృక్ష_కణుపు*cur = కొత్త నిర్మాణం వృక్ష_కణుపు;
+	    cur->ఆకు_flag = నిజం;
+	    cur->మాతృ = మూలం;
+	    cur->లెక్క = 1;
+	    cur->ఆకు[0].కీలకం = కీలకం_strdup(కీలకం);
+	    cur->ఆకు[0].val = val;
 
-	    root->count = 1;
-	    root->child[0] = cur;
-      } else {
-	    find_value_(root, key, val, true);
+	    మూలం->లెక్క = 1;
+	    మూలం->బిడ్డ[0] = cur;
+      } లేకపోతే {
+	    కనుగొను_విలువ(మూలం, కీలకం, val, నిజం);
       }
 }
 
-symbol_value_t symbol_table_s::sym_get_value(const char*key)
+చిహ్నం_విలువ_t చిహ్నం_పట్టిక_s::sym_get_విలువ(స్థిరరాశి అక్షరం*కీలకం)
 {
-      symbol_value_t def;
+      చిహ్నం_విలువ_t def;
       def.ptr = 0;
 
-      if (root->count == 0) {
+      ఒకవేళ (మూలం->లెక్క == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
-	    cur->leaf_flag = true;
-	    cur->parent = root;
-	    cur->count = 1;
-	    cur->leaf[0].key = key_strdup_(key);
-	    cur->leaf[0].val = def;
+	    నిర్మాణం వృక్ష_కణుపు*cur = కొత్త నిర్మాణం వృక్ష_కణుపు;
+	    cur->ఆకు_flag = నిజం;
+	    cur->మాతృ = మూలం;
+	    cur->లెక్క = 1;
+	    cur->ఆకు[0].కీలకం = కీలకం_strdup(కీలకం);
+	    cur->ఆకు[0].val = def;
 
-	    root->count = 1;
-	    root->child[0] = cur;
-	    return cur->leaf[0].val;
-      } else {
-	    return find_value_(root, key, def, false);
+	    మూలం->లెక్క = 1;
+	    మూలం->బిడ్డ[0] = cur;
+	    తిరిగి cur->ఆకు[0].val;
+      } లేకపోతే {
+	    తిరిగి కనుగొను_విలువ(మూలం, కీలకం, def, అబద్ధం);
       }
 }
 
-symbol_table_s::~symbol_table_s()
+చిహ్నం_పట్టిక_s::~చిహ్నం_పట్టిక_s()
 {
-      delete_symbol_node(root);
-      while (str_chunk) {
-	    key_strings*tmp = str_chunk;
-	    str_chunk = tmp->next;
-	    delete tmp;
+      delete_చిహ్నం_కణుపు(మూలం);
+      అయితే (str_chunk) {
+	    కీలకం_అక్షరశ్రేణులు*tmp = str_chunk;
+	    str_chunk = tmp->తదుపరి_2;
+	    తొలగించు tmp;
       }
 }

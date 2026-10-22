@@ -1,9 +1,9 @@
 
-#include <cstdarg>
-#include "vpi_user.h"
+#అన్తర్భావ <cstdarg>
+#అన్తర్భావ "vpi_user.h"
 
 
-void vvp_vpi_init()
+శూన్య vvp_vpi_init()
 {
 }
 

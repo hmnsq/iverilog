@@ -23,247 +23,247 @@
 # include  "vvp_net_sig.h"
 # include  "logic.h"
 # include  "schedule.h"
-#ifdef CHECK_WITH_VALGRIND
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#అయితే_ముగింపు
 # include  <cstdio>
 # include  <cstdlib>
 # include  <cstring>
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
-static void __compile_var_real(char*label, char*name,
-			       vvp_array_t array, unsigned long array_addr,
-			       bool local_flag)
+స్థిర శూన్య __compile_var_real(అక్షరం*label, అక్షరం*name,
+			       vvp_array_t array, గుర్తులేని దీర్ఘ array_addr,
+			       తార్కిక local_flag)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = కొత్త vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal_real_aa*tmp = new vvp_fun_signal_real_aa;
+      ఒకవేళ (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal_real_aa*tmp = కొత్త vvp_fun_signal_real_aa;
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
-	    net->fil = new vvp_wire_real;
-	    net->fun = new vvp_fun_signal_real_sa;
+      } లేకపోతే {
+	    net->fil = కొత్త vvp_wire_real;
+	    net->fun = కొత్త vvp_fun_signal_real_sa;
       }
 
-      define_functor_symbol(label, net);
+      define_functor_చిహ్నం(label, net);
 
       vpiHandle obj = vpip_make_real_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_చిహ్నం(label, obj);
 
-      if (name) {
-	    assert(!array);
-	    if (!local_flag)
-		  vpip_attach_to_current_scope(obj);
-            if (!vpip_peek_current_scope()->is_automatic())
-                  schedule_init_vector(vvp_net_ptr_t(net,0), 0.0);
+      ఒకవేళ (name) {
+	    ప్రతిజ్ఞా(!array);
+	    ఒకవేళ (!local_flag)
+		  vpip_attach_గమ్యం_current_scope(obj);
+            ఒకవేళ (!vpip_peek_current_scope()->is_automatic())
+                  కాలపట్టిక_init_సదిశ(vvp_net_ptr_t(net,0), 0.0);
       }
-      if (array) {
-	    assert(!name);
-	    array->attach_word(array_addr, obj);
+      ఒకవేళ (array) {
+	    ప్రతిజ్ఞా(!name);
+	    array->attach_మాట(array_addr, obj);
       }
-      free(label);
-      delete[] name;
+      విడుదల(label);
+      తొలగించు[] name;
 }
 
-void compile_var_real(char*label, char*name, bool local_flag)
+శూన్య compile_var_real(అక్షరం*label, అక్షరం*name, తార్కిక local_flag)
 {
       __compile_var_real(label, name, 0, 0, local_flag);
 }
 
-void compile_var_string(char*label, char*name)
+శూన్య compile_var_string(అక్షరం*label, అక్షరం*name)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = కొత్త vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal_string_aa*tmp = new vvp_fun_signal_string_aa;
+      ఒకవేళ (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal_string_aa*tmp = కొత్త vvp_fun_signal_string_aa;
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } లేకపోతే {
 	    net->fil = 0;
-	    net->fun = new vvp_fun_signal_string_sa;
+	    net->fun = కొత్త vvp_fun_signal_string_sa;
       }
 
-      define_functor_symbol(label, net);
+      define_functor_చిహ్నం(label, net);
 
       vpiHandle obj = vpip_make_string_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_చిహ్నం(label, obj);
 
-      vpip_attach_to_current_scope(obj);
-      free(label);
-      delete[] name;
+      vpip_attach_గమ్యం_current_scope(obj);
+      విడుదల(label);
+      తొలగించు[] name;
 }
 
-void compile_var_darray(char*label, char*name, unsigned size)
+శూన్య compile_var_darray(అక్షరం*label, అక్షరం*name, గుర్తులేని size)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = కొత్త vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal_object_aa*tmp = new vvp_fun_signal_object_aa(size);
+      ఒకవేళ (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal_object_aa*tmp = కొత్త vvp_fun_signal_object_aa(size);
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } లేకపోతే {
 	    net->fil = 0;
-	    net->fun = new vvp_fun_signal_object_sa(size);
+	    net->fun = కొత్త vvp_fun_signal_object_sa(size);
       }
 
-      define_functor_symbol(label, net);
+      define_functor_చిహ్నం(label, net);
 
       vpiHandle obj = vpip_make_darray_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_చిహ్నం(label, obj);
 
-      vpip_attach_to_current_scope(obj);
-      free(label);
-      delete[] name;
+      vpip_attach_గమ్యం_current_scope(obj);
+      విడుదల(label);
+      తొలగించు[] name;
 }
 
-void compile_var_queue(char*label, char*name, unsigned size)
+శూన్య compile_var_వరుస(అక్షరం*label, అక్షరం*name, గుర్తులేని size)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = కొత్త vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal_object_aa*tmp = new vvp_fun_signal_object_aa(size);
+      ఒకవేళ (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal_object_aa*tmp = కొత్త vvp_fun_signal_object_aa(size);
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } లేకపోతే {
 	    net->fil = 0;
-	    net->fun = new vvp_fun_signal_object_sa(size);
+	    net->fun = కొత్త vvp_fun_signal_object_sa(size);
       }
 
-      define_functor_symbol(label, net);
+      define_functor_చిహ్నం(label, net);
 
-      vpiHandle obj = vpip_make_queue_var(name, net);
-      compile_vpi_symbol(label, obj);
+      vpiHandle obj = vpip_make_వరుస_var(name, net);
+      compile_vpi_చిహ్నం(label, obj);
 
-      vpip_attach_to_current_scope(obj);
-      free(label);
-      delete[] name;
+      vpip_attach_గమ్యం_current_scope(obj);
+      విడుదల(label);
+      తొలగించు[] name;
 }
 
-void compile_var_cobject(char*label, char*name)
+శూన్య compile_var_cobject(అక్షరం*label, అక్షరం*name)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = కొత్త vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal_object_aa*tmp = new vvp_fun_signal_object_aa(1);
+      ఒకవేళ (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal_object_aa*tmp = కొత్త vvp_fun_signal_object_aa(1);
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } లేకపోతే {
 	    net->fil = 0;
-	    net->fun = new vvp_fun_signal_object_sa(1);
+	    net->fun = కొత్త vvp_fun_signal_object_sa(1);
       }
 
-      define_functor_symbol(label, net);
+      define_functor_చిహ్నం(label, net);
 
       vpiHandle obj = vpip_make_cobject_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_చిహ్నం(label, obj);
 
-      vpip_attach_to_current_scope(obj);
-      free(label);
-      delete[] name;
+      vpip_attach_గమ్యం_current_scope(obj);
+      విడుదల(label);
+      తొలగించు[] name;
 }
 
 /*
  * A variable is a special functor, so we allocate that functor and
  * write the label into the symbol table.
  */
-void compile_variable(char*label, char*name,
-		      int msb, int lsb, int vpi_type_code,
-		      bool signed_flag, bool local_flag)
+శూన్య compile_variable(అక్షరం*label, అక్షరం*name,
+		      పూర్ణాంకం msb, పూర్ణాంకం lsb, పూర్ణాంకం vpi_type_సంకేతం,
+		      తార్కిక signed_flag, తార్కిక local_flag)
 {
-      unsigned wid = ((msb > lsb)? msb-lsb : lsb-msb) + 1;
+      గుర్తులేని wid = ((msb > lsb)? msb-lsb : lsb-msb) + 1;
 
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = కొత్త vvp_net_t;
 
       vvp_bit4_t init;
-      if (vpi_type_code == vpiIntVar)
+      ఒకవేళ (vpi_type_సంకేతం == vpiIntVar)
 	    init = BIT4_0;
-      else
+      లేకపోతే
 	    init = BIT4_X;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal4_aa*tmp = new vvp_fun_signal4_aa(wid, init);
+      ఒకవేళ (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal4_aa*tmp = కొత్త vvp_fun_signal4_aa(wid, init);
 	    net->fil = tmp;
             net->fun = tmp;
-      } else {
-	    net->fil = new vvp_wire_vec4(wid, init);
-            net->fun = new vvp_fun_signal4_sa(wid);
+      } లేకపోతే {
+	    net->fil = కొత్త vvp_wire_vec4(wid, init);
+            net->fun = కొత్త vvp_fun_signal4_sa(wid);
       }
-      const vvp_signal_value*vfil = dynamic_cast<vvp_signal_value*>(net->fil);
+      స్థిరరాశి vvp_signal_విలువ*vfil = dynamic_cast<vvp_signal_విలువ*>(net->fil);
 
-      define_functor_symbol(label, net);
+      define_functor_చిహ్నం(label, net);
 
       vpiHandle obj = 0;
-      if (! local_flag) {
+      ఒకవేళ (! local_flag) {
 	      /* Make the vpiHandle for the reg. */
-	    switch (vpi_type_code) {
-		case vpiLogicVar:
+	    ఎంపిక (vpi_type_సంకేతం) {
+		స్థితి vpiLogicVar:
 		  obj = vpip_make_var4(name, msb, lsb, signed_flag, net);
-		  break;
-		case vpiIntegerVar:
+		  ఆపు;
+		స్థితి vpiIntegerVar:
 		  obj = vpip_make_int4(name, msb, lsb, net);
-		  break;
-		case vpiIntVar: // This handles all the atom2 int types
+		  ఆపు;
+		స్థితి vpiIntVar: // This handles all the atom2 int types
 		  obj = vpip_make_int2(name, msb, lsb, signed_flag, net);
-		  break;
-		default:
-		  fprintf(stderr, "internal error: %s: vpi_type_code=%d\n", name, vpi_type_code);
-		  break;
+		  ఆపు;
+		అప్రమేయ:
+		  fprintf(stderr, "internal error: %s: vpi_type_code=%d\n", name, vpi_type_సంకేతం);
+		  ఆపు;
 	    }
-	    assert(obj);
-	    compile_vpi_symbol(label, obj);
+	    ప్రతిజ్ఞా(obj);
+	    compile_vpi_చిహ్నం(label, obj);
       }
 	// If the signal has a name, then it goes into the current
 	// scope as a signal.
-      if (name) {
-	    if (obj) vpip_attach_to_current_scope(obj);
-            if (!vpip_peek_current_scope()->is_automatic()) {
+      ఒకవేళ (name) {
+	    ఒకవేళ (obj) vpip_attach_గమ్యం_current_scope(obj);
+            ఒకవేళ (!vpip_peek_current_scope()->is_automatic()) {
 		  vvp_vector4_t tmp;
-		  vfil->vec4_value(tmp);
-	          schedule_init_vector(vvp_net_ptr_t(net,0), tmp);
+		  vfil->vec4_విలువ(tmp);
+	          కాలపట్టిక_init_సదిశ(vvp_net_ptr_t(net,0), tmp);
 	    }
       }
 
-      free(label);
-      delete[] name;
+      విడుదల(label);
+      తొలగించు[] name;
 }
 
 
-vvp_net_t* create_constant_node(const char*val_str)
+vvp_net_t* create_constant_కణుపు(స్థిరరాశి అక్షరం*val_str)
 {
-      if (c4string_test(val_str)) {
-	    vvp_net_t*net = new vvp_net_t;
-	    net->fun = new vvp_fun_bufz;
-	    schedule_init_vector(vvp_net_ptr_t(net,0), c4string_to_vector4(val_str));
-	    return net;
+      ఒకవేళ (c4string_test(val_str)) {
+	    vvp_net_t*net = కొత్త vvp_net_t;
+	    net->fun = కొత్త vvp_fun_bufz;
+	    కాలపట్టిక_init_సదిశ(vvp_net_ptr_t(net,0), c4string_గమ్యం_vector4(val_str));
+	    తిరిగి net;
       }
 
-      if (c8string_test(val_str)) {
-	    vvp_net_t*net = new vvp_net_t;
-	    net->fun = new vvp_fun_bufz;
-	    schedule_init_vector(vvp_net_ptr_t(net,0), c8string_to_vector8(val_str));
-	    return net;
+      ఒకవేళ (c8string_test(val_str)) {
+	    vvp_net_t*net = కొత్త vvp_net_t;
+	    net->fun = కొత్త vvp_fun_bufz;
+	    కాలపట్టిక_init_సదిశ(vvp_net_ptr_t(net,0), c8string_గమ్యం_vector8(val_str));
+	    తిరిగి net;
       }
 
-      if (crstring_test(val_str)) {
-	    vvp_net_t*net = new vvp_net_t;
-	    net->fun = new vvp_fun_bufz;
-	    schedule_init_vector(vvp_net_ptr_t(net,0), crstring_to_double(val_str));
-	    return net;
+      ఒకవేళ (crstring_test(val_str)) {
+	    vvp_net_t*net = కొత్త vvp_net_t;
+	    net->fun = కొత్త vvp_fun_bufz;
+	    కాలపట్టిక_init_సదిశ(vvp_net_ptr_t(net,0), crstring_గమ్యం_double(val_str));
+	    తిరిగి net;
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
-class base_net_resolv : public resolv_list_s {
-    public:
-      explicit base_net_resolv(char*ref_label, vvp_array_t array,
+తరగతి పునాది_net_resolv : బహిరంగ resolv_list_s {
+    బహిరంగ:
+      స్పష్టమైన పునాది_net_resolv(అక్షరం*ref_label, vvp_array_t array,
 			       __vpiScope*scope,
-			       char*my_label, char*name,
-			       unsigned array_addr, bool local_flag)
+			       అక్షరం*my_label, అక్షరం*name,
+			       గుర్తులేని array_addr, తార్కిక local_flag)
       : resolv_list_s(ref_label)
       { my_label_ = my_label;
 	array_ = array;
@@ -273,38 +273,38 @@ class base_net_resolv : public resolv_list_s {
 	local_flag_ = local_flag;
       }
 
-    protected:
-      char*my_label_;
+    రక్షిత:
+      అక్షరం*my_label_;
       vvp_array_t array_;
-      char*name_;
+      అక్షరం*name_;
       __vpiScope*scope_;
-      unsigned array_addr_;
-      bool local_flag_;
+      గుర్తులేని array_addr_;
+      తార్కిక local_flag_;
 };
 
-class __compile_net_resolv : public base_net_resolv {
+తరగతి __compile_net_resolv : బహిరంగ పునాది_net_resolv {
 
-    public:
-      explicit __compile_net_resolv(char*ref_label, vvp_array_t array,
+    బహిరంగ:
+      స్పష్టమైన __compile_net_resolv(అక్షరం*ref_label, vvp_array_t array,
 				    __vpiScope*scope,
-				    char*my_label, char*name,
-				    int msb, int lsb, unsigned array_addr,
-				    int vpi_type_code, bool signed_flag, bool local_flag)
-      : base_net_resolv(ref_label, array, scope, my_label, name, array_addr, local_flag)
+				    అక్షరం*my_label, అక్షరం*name,
+				    పూర్ణాంకం msb, పూర్ణాంకం lsb, గుర్తులేని array_addr,
+				    పూర్ణాంకం vpi_type_సంకేతం, తార్కిక signed_flag, తార్కిక local_flag)
+      : పునాది_net_resolv(ref_label, array, scope, my_label, name, array_addr, local_flag)
       { msb_ = msb;
 	lsb_ = lsb;
-	vpi_type_code_ = vpi_type_code;
+	vpi_type_సంకేతం_2 = vpi_type_సంకేతం;
 	signed_flag_ = signed_flag;
       }
 
       ~__compile_net_resolv() override { }
 
-      bool resolve(bool message_flag) override;
+      తార్కిక resolve(తార్కిక సందేశం_flag) override;
 
-    private:
-      int msb_, lsb_;
-      int vpi_type_code_;
-      bool signed_flag_;
+    అంతరంగ:
+      పూర్ణాంకం msb_, lsb_;
+      పూర్ణాంకం vpi_type_సంకేతం_2;
+      తార్కిక signed_flag_;
 };
 
 /*
@@ -319,250 +319,250 @@ class __compile_net_resolv : public base_net_resolv {
  * references into the net.
  */
 
-static void do_compile_net(vvp_net_t*node, vvp_array_t array,
+స్థిర శూన్య do_compile_net(vvp_net_t*కణుపు, vvp_array_t array,
 			   __vpiScope*scope,
-			   char*my_label, char*name,
-			   int msb, int lsb, unsigned array_addr,
-			   int vpi_type_code, bool signed_flag, bool local_flag)
+			   అక్షరం*my_label, అక్షరం*name,
+			   పూర్ణాంకం msb, పూర్ణాంకం lsb, గుర్తులేని array_addr,
+			   పూర్ణాంకం vpi_type_సంకేతం, తార్కిక signed_flag, తార్కిక local_flag)
 {
-      unsigned wid = ((msb > lsb)? msb-lsb : lsb-msb) + 1;
-      assert(node);
+      గుర్తులేని wid = ((msb > lsb)? msb-lsb : lsb-msb) + 1;
+      ప్రతిజ్ఞా(కణుపు);
 
-      vvp_wire_base*vsig = dynamic_cast<vvp_wire_base*>(node->fil);
+      vvp_wire_పునాది*vsig = dynamic_cast<vvp_wire_పునాది*>(కణుపు->fil);
 
-      if (vsig == 0) {
-	    switch (vpi_type_code) {
-		case vpiIntVar:
-		  vsig = new vvp_wire_vec4(wid,BIT4_0);
-		  break;
-		case vpiLogicVar:
-		  vsig = new vvp_wire_vec4(wid,BIT4_Z);
-		  break;
-		case -vpiLogicVar:
-		  vsig = new vvp_wire_vec8(wid);
-		  break;
+      ఒకవేళ (vsig == 0) {
+	    ఎంపిక (vpi_type_సంకేతం) {
+		స్థితి vpiIntVar:
+		  vsig = కొత్త vvp_wire_vec4(wid,BIT4_0);
+		  ఆపు;
+		స్థితి vpiLogicVar:
+		  vsig = కొత్త vvp_wire_vec4(wid,BIT4_Z);
+		  ఆపు;
+		స్థితి -vpiLogicVar:
+		  vsig = కొత్త vvp_wire_vec8(wid);
+		  ఆపు;
 	    }
-	    assert(vsig);
-	    node->fil = vsig;
+	    ప్రతిజ్ఞా(vsig);
+	    కణుపు->fil = vsig;
       }
 
       vpiHandle obj = 0;
-      if (! local_flag) {
+      ఒకవేళ (! local_flag) {
 	      /* Make the vpiHandle for the reg. */
-	    obj = vpip_make_net4(scope, name, msb, lsb, signed_flag, node);
+	    obj = vpip_make_net4(scope, name, msb, lsb, signed_flag, కణుపు);
 	      /* This attaches the label to the vpiHandle */
-	    compile_vpi_symbol(my_label, obj);
+	    compile_vpi_చిహ్నం(my_label, obj);
       }
-#ifdef CHECK_WITH_VALGRIND
-      else pool_local_net(node);
-#endif
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+      లేకపోతే pool_local_net(కణుపు);
+#అయితే_ముగింపు
 
 	// REMOVE ME! Giving the net a label is a legacy of the times
 	// when the .net was a functor of its own. In the long run, we
 	// must fix the code generator to not rely on the label of the
 	// .net, then we will remove that label.
-      define_functor_symbol(my_label, node);
+      define_functor_చిహ్నం(my_label, కణుపు);
 
-      if (array)
-	    array->attach_word(array_addr, obj);
-      else if (obj)
-	    vpip_attach_to_scope(scope,obj);
+      ఒకవేళ (array)
+	    array->attach_మాట(array_addr, obj);
+      లేకపోతే ఒకవేళ (obj)
+	    vpip_attach_గమ్యం_scope(scope,obj);
 
-      free(my_label);
-      delete[] name;
+      విడుదల(my_label);
+      తొలగించు[] name;
 }
 
-static void __compile_net(char*label,
-			  char*name, char*array_label, unsigned long array_addr,
-			  int msb, int lsb,
-			  int vpi_type_code, bool signed_flag, bool local_flag,
-			  unsigned argc, struct symb_s*argv)
+స్థిర శూన్య __compile_net(అక్షరం*label,
+			  అక్షరం*name, అక్షరం*array_label, గుర్తులేని దీర్ఘ array_addr,
+			  పూర్ణాంకం msb, పూర్ణాంకం lsb,
+			  పూర్ణాంకం vpi_type_సంకేతం, తార్కిక signed_flag, తార్కిక local_flag,
+			  గుర్తులేని argc, నిర్మాణం symb_s*argv)
 {
-      vvp_array_t array = array_label? array_find(array_label) : NULL;
-      assert(array_label ? array!=0 : true);
+      vvp_array_t array = array_label? array_కనుగొను(array_label) : ఖాళీ;
+      ప్రతిజ్ఞా(array_label ? array!=0 : నిజం);
 
-      free(array_label);
+      విడుదల(array_label);
 
-      assert(argc == 1);
-      vvp_net_t*node = vvp_net_lookup(argv[0].text);
-#if 1
-      if (node == 0) {
+      ప్రతిజ్ఞా(argc == 1);
+      vvp_net_t*కణుపు = vvp_net_lookup(argv[0].పాఠ్యం);
+#ఒకవేళ 1
+      ఒకవేళ (కణుపు == 0) {
 	      /* No existing net, but the string value may be a
 		 constant. In that case, we will wind up generating a
 		 bufz node that can carry the constant value.
 
 	         NOTE: This is a hack! The code generator should be
 	         fixed so that this is no longer needed. */
-	    node = create_constant_node(argv[0].text);
+	    కణుపు = create_constant_కణుపు(argv[0].పాఠ్యం);
       }
-#endif
-      if (node == 0) {
+#అయితే_ముగింపు
+      ఒకవేళ (కణుపు == 0) {
 	    __vpiScope*scope = vpip_peek_current_scope();
 	    __compile_net_resolv*res
-		  = new __compile_net_resolv(argv[0].text,
+		  = కొత్త __compile_net_resolv(argv[0].పాఠ్యం,
 					     array, scope, label, name,
 					     msb, lsb, array_addr,
-					     vpi_type_code, signed_flag, local_flag);
+					     vpi_type_సంకేతం, signed_flag, local_flag);
 	    resolv_submit(res);
-	    free(argv);
-	    return;
+	    విడుదల(argv);
+	    తిరిగి;
       }
-      assert(node);
+      ప్రతిజ్ఞా(కణుపు);
 
       __vpiScope*scope = vpip_peek_current_scope();
-      do_compile_net(node, array, scope, label, name, msb, lsb, array_addr,
-		     vpi_type_code, signed_flag, local_flag);
+      do_compile_net(కణుపు, array, scope, label, name, msb, lsb, array_addr,
+		     vpi_type_సంకేతం, signed_flag, local_flag);
 
-      free(argv[0].text);
-      free(argv);
+      విడుదల(argv[0].పాఠ్యం);
+      విడుదల(argv);
 }
 
-bool __compile_net_resolv::resolve(bool msg_flag)
+తార్కిక __compile_net_resolv::resolve(తార్కిక సందేశం_flag_2)
 {
-      vvp_net_t*node = vvp_net_lookup(label());
-      if (node == 0) {
-	    if (msg_flag)
-		  cerr << "Unable to resolve label " << label() << endl;
-	    return false;
+      vvp_net_t*కణుపు = vvp_net_lookup(label());
+      ఒకవేళ (కణుపు == 0) {
+	    ఒకవేళ (సందేశం_flag_2)
+		  cerr << "Unable to resolve label " << label() << పంక్తి_ముగింపు;
+	    తిరిగి అబద్ధం;
       }
 
-      do_compile_net(node, array_, scope_, my_label_, name_, msb_, lsb_, array_addr_, vpi_type_code_, signed_flag_, local_flag_);
-      return true;
+      do_compile_net(కణుపు, array_, scope_, my_label_, name_, msb_, lsb_, array_addr_, vpi_type_సంకేతం_2, signed_flag_, local_flag_);
+      తిరిగి నిజం;
 }
 
-void compile_net(char*label, char*name, int msb, int lsb,
-		 int vpi_type_code, bool signed_flag, bool local_flag,
-		 unsigned argc, struct symb_s*argv)
+శూన్య compile_net(అక్షరం*label, అక్షరం*name, పూర్ణాంకం msb, పూర్ణాంకం lsb,
+		 పూర్ణాంకం vpi_type_సంకేతం, తార్కిక signed_flag, తార్కిక local_flag,
+		 గుర్తులేని argc, నిర్మాణం symb_s*argv)
 {
       __compile_net(label, name, 0, 0, msb, lsb,
-		    vpi_type_code, signed_flag, local_flag,
+		    vpi_type_సంకేతం, signed_flag, local_flag,
 		    argc, argv);
 }
 
-void compile_netw(char*label, char*array_label, unsigned long array_addr,
-		  int msb, int lsb, int vpi_type_code, bool signed_flag,
-		  unsigned argc, struct symb_s*argv)
+శూన్య compile_netw(అక్షరం*label, అక్షరం*array_label, గుర్తులేని దీర్ఘ array_addr,
+		  పూర్ణాంకం msb, పూర్ణాంకం lsb, పూర్ణాంకం vpi_type_సంకేతం, తార్కిక signed_flag,
+		  గుర్తులేని argc, నిర్మాణం symb_s*argv)
 {
       __compile_net(label, 0, array_label, array_addr,
-		    msb, lsb, vpi_type_code, signed_flag, false,
+		    msb, lsb, vpi_type_సంకేతం, signed_flag, అబద్ధం,
 		    argc, argv);
 }
 
-class __compile_real_net_resolv : public base_net_resolv {
+తరగతి __compile_real_net_resolv : బహిరంగ పునాది_net_resolv {
 
-    public:
-      explicit __compile_real_net_resolv(char*ref_label, vvp_array_t array,
+    బహిరంగ:
+      స్పష్టమైన __compile_real_net_resolv(అక్షరం*ref_label, vvp_array_t array,
 					 __vpiScope*scope,
-					 char*my_label, char*name,
-					 unsigned array_addr, bool local_flag)
-      : base_net_resolv(ref_label, array, scope, my_label, name, array_addr, local_flag)
+					 అక్షరం*my_label, అక్షరం*name,
+					 గుర్తులేని array_addr, తార్కిక local_flag)
+      : పునాది_net_resolv(ref_label, array, scope, my_label, name, array_addr, local_flag)
       {
       }
 
       ~__compile_real_net_resolv() override { }
 
-      bool resolve(bool message_flag) override;
+      తార్కిక resolve(తార్కిక సందేశం_flag) override;
 
-    private:
+    అంతరంగ:
 };
 
-static void __compile_real_net2(vvp_net_t*node, vvp_array_t array,
+స్థిర శూన్య __compile_real_net2(vvp_net_t*కణుపు, vvp_array_t array,
 				__vpiScope*scope,
-				char*my_label, char*name,
-				unsigned array_addr, bool local_flag)
+				అక్షరం*my_label, అక్షరం*name,
+				గుర్తులేని array_addr, తార్కిక local_flag)
 {
-      vvp_wire_base*fil = dynamic_cast<vvp_wire_base*> (node->fil);
+      vvp_wire_పునాది*fil = dynamic_cast<vvp_wire_పునాది*> (కణుపు->fil);
 
-      if (fil == 0) {
-	    fil = new vvp_wire_real;
-	    node->fil = fil;
+      ఒకవేళ (fil == 0) {
+	    fil = కొత్త vvp_wire_real;
+	    కణుపు->fil = fil;
       }
 
       vpiHandle obj = 0;
-      if (!local_flag) {
-	    obj = vpip_make_real_net(scope, name, node);
-	    compile_vpi_symbol(my_label, obj);
+      ఒకవేళ (!local_flag) {
+	    obj = vpip_make_real_net(scope, name, కణుపు);
+	    compile_vpi_చిహ్నం(my_label, obj);
       }
-#ifdef CHECK_WITH_VALGRIND
-      else pool_local_net(node);
-#endif
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+      లేకపోతే pool_local_net(కణుపు);
+#అయితే_ముగింపు
 
 	// REMOVE ME! Giving the net a label is a legacy of the times
 	// when the .net was a functor of its own. In the long run, we
 	// must fix the code generator to not rely on the label of the
 	// .net, then we will remove that label.
-      define_functor_symbol(my_label, node);
+      define_functor_చిహ్నం(my_label, కణుపు);
 
-     if (array)
-	    array->attach_word(array_addr, obj);
-      else if (obj)
-	    vpip_attach_to_scope(scope, obj);
+     ఒకవేళ (array)
+	    array->attach_మాట(array_addr, obj);
+      లేకపోతే ఒకవేళ (obj)
+	    vpip_attach_గమ్యం_scope(scope, obj);
 
-      free(my_label);
-      delete[] name;
+      విడుదల(my_label);
+      తొలగించు[] name;
 }
 
-static void __compile_real(char*label, char*name,
-                           char*array_label, unsigned long array_addr,
-                           int msb, int lsb, bool local_flag,
-                           unsigned argc, struct symb_s*argv)
+స్థిర శూన్య __compile_real(అక్షరం*label, అక్షరం*name,
+                           అక్షరం*array_label, గుర్తులేని దీర్ఘ array_addr,
+                           పూర్ణాంకం msb, పూర్ణాంకం lsb, తార్కిక local_flag,
+                           గుర్తులేని argc, నిర్మాణం symb_s*argv)
 {
-      assert(msb == 0 && lsb == 0);
-      vvp_array_t array = array_label ? array_find(array_label) : NULL;
-      assert(array_label ? array!=0 : true);
+      ప్రతిజ్ఞా(msb == 0 && lsb == 0);
+      vvp_array_t array = array_label ? array_కనుగొను(array_label) : ఖాళీ;
+      ప్రతిజ్ఞా(array_label ? array!=0 : నిజం);
 
-      free(array_label);
+      విడుదల(array_label);
 
-      assert(argc == 1);
-      vvp_net_t*node = vvp_net_lookup(argv[0].text);
-      if (node == 0) {
+      ప్రతిజ్ఞా(argc == 1);
+      vvp_net_t*కణుపు = vvp_net_lookup(argv[0].పాఠ్యం);
+      ఒకవేళ (కణుపు == 0) {
 	      /* No existing net, but the string value may be a
 		 constant. In that case, we will wind up generating a
 		 bufz node that can carry the constant value. */
-	    node = create_constant_node(argv[0].text);
+	    కణుపు = create_constant_కణుపు(argv[0].పాఠ్యం);
       }
       __vpiScope*scope = vpip_peek_current_scope();
-      if (node == 0) {
+      ఒకవేళ (కణుపు == 0) {
 	    __compile_real_net_resolv*res
-		  = new __compile_real_net_resolv(argv[0].text, array,
+		  = కొత్త __compile_real_net_resolv(argv[0].పాఠ్యం, array,
 						  scope, label, name,
 						  array_addr, local_flag);
 	    resolv_submit(res);
-	    free(argv);
-	    return;
+	    విడుదల(argv);
+	    తిరిగి;
       }
 
-      assert(node);
-      __compile_real_net2(node, array, scope, label, name, array_addr,
+      ప్రతిజ్ఞా(కణుపు);
+      __compile_real_net2(కణుపు, array, scope, label, name, array_addr,
                           local_flag);
-      free(argv[0].text);
-      free(argv);
+      విడుదల(argv[0].పాఠ్యం);
+      విడుదల(argv);
 }
 
-bool __compile_real_net_resolv::resolve(bool msg_flag)
+తార్కిక __compile_real_net_resolv::resolve(తార్కిక సందేశం_flag_2)
 {
-      vvp_net_t*node = vvp_net_lookup(label());
-      if (node == 0) {
-	    if (msg_flag)
-		  cerr << "Unable to resolve label " << label() << endl;
-	    return false;
+      vvp_net_t*కణుపు = vvp_net_lookup(label());
+      ఒకవేళ (కణుపు == 0) {
+	    ఒకవేళ (సందేశం_flag_2)
+		  cerr << "Unable to resolve label " << label() << పంక్తి_ముగింపు;
+	    తిరిగి అబద్ధం;
       }
 
-      __compile_real_net2(node, array_, scope_, my_label_, name_, array_addr_, local_flag_);
-      return true;
+      __compile_real_net2(కణుపు, array_, scope_, my_label_, name_, array_addr_, local_flag_);
+      తిరిగి నిజం;
 }
 
-void compile_net_real(char*label, char*name, int msb, int lsb, bool local_flag,
-		      unsigned argc, struct symb_s*argv)
+శూన్య compile_net_real(అక్షరం*label, అక్షరం*name, పూర్ణాంకం msb, పూర్ణాంకం lsb, తార్కిక local_flag,
+		      గుర్తులేని argc, నిర్మాణం symb_s*argv)
 {
       __compile_real(label, name, 0, 0,
                      msb, lsb, local_flag, argc, argv);
 }
 
-void compile_netw_real(char*label, char*array_label, unsigned long array_addr,
-                       int msb, int lsb,
-                       unsigned argc, struct symb_s*argv)
+శూన్య compile_netw_real(అక్షరం*label, అక్షరం*array_label, గుర్తులేని దీర్ఘ array_addr,
+                       పూర్ణాంకం msb, పూర్ణాంకం lsb,
+                       గుర్తులేని argc, నిర్మాణం symb_s*argv)
 {
       __compile_real(label, 0, array_label, array_addr,
-                     msb, lsb, false, argc, argv);
+                     msb, lsb, అబద్ధం, argc, argv);
 }

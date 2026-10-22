@@ -1,5 +1,5 @@
-#ifndef IVL_symbols_H
-#define IVL_symbols_H
+#నిర్వచితం_కాకపోతే IVL_symbols_H
+#నిర్వచించు IVL_symbols_H
 /*
  * Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)
  *
@@ -43,41 +43,41 @@
  * try to look inside. The actual implementation is given in the
  * symbols.cc source file.
  */
-typedef class symbol_table_s *symbol_table_t;
+రకనిర్వచనం class చిహ్నం_పట్టిక_s *చిహ్నం_పట్టిక_t;
 
-typedef struct symbol_value_s {
-      union {
+రకనిర్వచనం నిర్మాణం చిహ్నం_విలువ_s {
+      సంఘం {
 	    vvp_net_t*net;
-	    void*ptr;
+	    శూన్య*ptr;
       };
-} symbol_value_t;
+} చిహ్నం_విలువ_t;
 
 
-class symbol_table_s {
-    public:
-      explicit symbol_table_s();
-      virtual ~symbol_table_s();
-      symbol_table_s(const symbol_table_s&) = delete;
-      symbol_table_s& operator=(const symbol_table_s&) = delete;
+class చిహ్నం_పట్టిక_s {
+    బహిరంగ:
+      explicit చిహ్నం_పట్టిక_s();
+      మాయా ~చిహ్నం_పట్టిక_s();
+      చిహ్నం_పట్టిక_s(స్థిరరాశి చిహ్నం_పట్టిక_s&) = delete;
+      చిహ్నం_పట్టిక_s& క్రియాకారకం=(స్థిరరాశి చిహ్నం_పట్టిక_s&) = delete;
 
 	// This method locates the value in the symbol table and sets its
 	// value. If the key doesn't yet exist, create it.
-      void sym_set_value(const char*key, symbol_value_t val);
+      శూన్య sym_సమితి_విలువ(స్థిరరాశి అక్షరం*కీలకం, చిహ్నం_విలువ_t val);
 
 	// This method locates the value in the symbol table and returns
 	// it. If the value does not exist, create it, initialize it with
 	// zero and return the zero value.
-      symbol_value_t sym_get_value(const char*key);
+      చిహ్నం_విలువ_t sym_get_విలువ(స్థిరరాశి అక్షరం*కీలకం);
 
-    private:
-      struct tree_node_*root;
-      struct key_strings*str_chunk;
-      unsigned str_used;
+    అంతరంగ:
+      నిర్మాణం వృక్ష_కణుపు*మూలం;
+      నిర్మాణం కీలకం_అక్షరశ్రేణులు*str_chunk;
+      గుర్తులేని str_వాడిన;
 
-      symbol_value_t find_value_(struct tree_node_*cur,
-				 const char*key, symbol_value_t val,
+      చిహ్నం_విలువ_t కనుగొను_విలువ(నిర్మాణం వృక్ష_కణుపు*cur,
+				 స్థిరరాశి అక్షరం*కీలకం, చిహ్నం_విలువ_t val,
 				 bool force_flag);
-      char*key_strdup_(const char*str);
+      అక్షరం*కీలకం_strdup(స్థిరరాశి అక్షరం*str);
 };
 
 /*
@@ -87,32 +87,32 @@ class symbol_table_s {
  * the delete_symbol_table method will delete the table, including all
  * the space for the keys.
  */
-inline symbol_table_t new_symbol_table(void) { return new symbol_table_s; }
-inline void delete_symbol_table(symbol_table_t tbl) { delete tbl; }
+అంతఃవరుస చిహ్నం_పట్టిక_t new_చిహ్నం_పట్టిక(శూన్య) { తిరిగి new చిహ్నం_పట్టిక_s; }
+అంతఃవరుస శూన్య delete_చిహ్నం_పట్టిక(చిహ్నం_పట్టిక_t tbl) { delete tbl; }
 
 // These are obsolete, and here only to support older code.
-inline void sym_set_value(symbol_table_t tbl, const char*key, symbol_value_t val)
-{ tbl->sym_set_value(key, val); }
+అంతఃవరుస శూన్య sym_సమితి_విలువ(చిహ్నం_పట్టిక_t tbl, స్థిరరాశి అక్షరం*కీలకం, చిహ్నం_విలువ_t val)
+{ tbl->sym_సమితి_విలువ(కీలకం, val); }
 
-inline symbol_value_t sym_get_value(symbol_table_t tbl, const char*key)
-{ return tbl->sym_get_value(key); }
+అంతఃవరుస చిహ్నం_విలువ_t sym_get_విలువ(చిహ్నం_పట్టిక_t tbl, స్థిరరాశి అక్షరం*కీలకం)
+{ తిరిగి tbl->sym_get_విలువ(కీలకం); }
 
 /*
  * This template is a type-safe interface to the symbol table.
  */
-template <class T> class symbol_map_s : private symbol_table_s {
+మూస <class T> class చిహ్నం_map_s : అంతరంగ చిహ్నం_పట్టిక_s {
 
-    public:
-      void sym_set_value(const char*key, T*val)
-      { symbol_value_t tmp;
+    బహిరంగ:
+      శూన్య sym_సమితి_విలువ(స్థిరరాశి అక్షరం*కీలకం, T*val)
+      { చిహ్నం_విలువ_t tmp;
 	tmp.ptr = val;
-	symbol_table_s::sym_set_value(key, tmp);
+	చిహ్నం_పట్టిక_s::sym_సమితి_విలువ(కీలకం, tmp);
       }
 
-      T* sym_get_value(const char*key)
-      { symbol_value_t val = symbol_table_s::sym_get_value(key);
-	return reinterpret_cast<T*>(val.ptr);
+      T* sym_get_విలువ(స్థిరరాశి అక్షరం*కీలకం)
+      { చిహ్నం_విలువ_t val = చిహ్నం_పట్టిక_s::sym_get_విలువ(కీలకం);
+	తిరిగి reinterpret_cast<T*>(val.ptr);
       }
 };
 
-#endif /* IVL_symbols_H */
+#అయితే_ముగింపు /* IVL_symbols_H */

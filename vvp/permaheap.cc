@@ -22,30 +22,30 @@
 
 permaheap::permaheap()
 {
-      chunk_ptr_ = initial_chunk_.bytes;
-      chunk_remaining_ = sizeof(initial_chunk_);
-      heap_total_ = chunk_remaining_;
+      chunk_ptr_ = initial_chunk_.బైట్లు;
+      chunk_మిగిలిన = పరిమాణం(initial_chunk_);
+      కుప్ప_మొత్తం_2 = chunk_మిగిలిన;
 }
 
 permaheap::~permaheap()
 {
 }
 
-void* permaheap::alloc(size_t size)
+శూన్య* permaheap::alloc(size_t size)
 {
-      assert(size <= CHUNK_SIZE);
+      ప్రతిజ్ఞా(size <= CHUNK_కొలత);
 
-      if (size > chunk_remaining_) {
-	    chunk_ptr_ = ::new char[CHUNK_SIZE];
-	    chunk_remaining_ = CHUNK_SIZE;
-	    heap_total_ += CHUNK_SIZE;
+      ఒకవేళ (size > chunk_మిగిలిన) {
+	    chunk_ptr_ = ::కొత్త అక్షరం[CHUNK_కొలత];
+	    chunk_మిగిలిన = CHUNK_కొలత;
+	    కుప్ప_మొత్తం_2 += CHUNK_కొలత;
       }
 
-      assert( (size%sizeof(void*)) == 0 );
+      ప్రతిజ్ఞా( (size%పరిమాణం(శూన్య*)) == 0 );
 
-      void*res = chunk_ptr_;
+      శూన్య*res = chunk_ptr_;
       chunk_ptr_ += size;
-      chunk_remaining_ -= size;
+      chunk_మిగిలిన -= size;
 
-      return res;
+      తిరిగి res;
 }

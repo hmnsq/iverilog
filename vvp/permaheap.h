@@ -1,5 +1,5 @@
-#ifndef IVL_permaheap_H
-#define IVL_permaheap_H
+#నిర్వచితం_కాకపోతే IVL_permaheap_H
+#నిర్వచించు IVL_permaheap_H
 /*
  * Copyright (c) 2009-2014 Stephen Williams (steve@icarus.com)
  *
@@ -20,33 +20,33 @@
  */
 
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
-#ifdef __SUNPRO_CC
+#నిర్వచితమైతే __SUNPRO_CC
 # include  <stddef.h>
-#else
+#లేకపోతే
 # include  <cstddef>
-#endif
+#అయితే_ముగింపు
 
 class permaheap {
 
-    public:
+    బహిరంగ:
       explicit permaheap();
       ~permaheap();
 
-      void* alloc(size_t size);
+      శూన్య* alloc(size_t కొలత);
 
-      size_t heap_total() const { return heap_total_; }
+      size_t కుప్ప_మొత్తం() స్థిరరాశి { తిరిగి కుప్ప_మొత్తం_2; }
 
-    private:
-      enum { INITIAL_CHUNK_SIZE = 512*1024, CHUNK_SIZE=256*1024 };
+    అంతరంగ:
+      గణన { INITIAL_CHUNK_కొలత = 512*1024, CHUNK_కొలత=256*1024 };
 
-      union {
-	    void*align;
-	    char bytes[INITIAL_CHUNK_SIZE];
+      సంఘం {
+	    శూన్య*align;
+	    అక్షరం బైట్లు[INITIAL_CHUNK_కొలత];
       } initial_chunk_;
 
-      char*chunk_ptr_;
-      size_t chunk_remaining_;
-      size_t heap_total_;
+      అక్షరం*chunk_ptr_;
+      size_t chunk_మిగిలిన;
+      size_t కుప్ప_మొత్తం_2;
 };
 
-#endif /* IVL_permaheap_H */
+#అయితే_ముగింపు /* IVL_permaheap_H */

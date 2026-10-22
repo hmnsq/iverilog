@@ -1,5 +1,5 @@
-#ifndef IVL_vvp_island_H
-#define IVL_vvp_island_H
+#నిర్వచితం_కాకపోతే IVL_vvp_island_H
+#నిర్వచించు IVL_vvp_island_H
 /*
  * Copyright (c) 2008-2026 Stephen Williams (steve@icarus.com)
  *
@@ -54,63 +54,63 @@
 * branches of analog within the island.
 */
 
-struct vvp_island_branch;
-class vvp_island_port;
+నిర్మాణం vvp_island_branch;
+class vvp_island_పోర్టు;
 
-class vvp_island  : private vvp_gen_event_s {
+class vvp_island  : అంతరంగ vvp_gen_event_s {
 
-    public:
+    బహిరంగ:
       vvp_island();
-      virtual ~vvp_island() override;
+      మాయా ~vvp_island() override;
 
-      vvp_island(const vvp_island&) = delete;
-      vvp_island& operator=(const vvp_island&) = delete;
+      vvp_island(స్థిరరాశి vvp_island&) = delete;
+      vvp_island& క్రియాకారకం=(స్థిరరాశి vvp_island&) = delete;
 
 	// Ports call this method to flag that something happened at
 	// the input. The island will use this to create an active
 	// event. The run_run() method will then be called by the
 	// scheduler to process whatever happened.
-      void flag_island();
+      శూన్య flag_island();
 
 	// This is the method that is called, eventually, to process
 	// whatever happened. The derived island class implements this
 	// method to give the island its character.
-      virtual void run_island() =0;
+      మాయా శూన్య నిరంతరం_island() =0;
 
         // Support for $countdrivers.
-      virtual void count_drivers(vvp_island_port*port, unsigned bit_idx,
-                                 unsigned counts[3]) =0;
+      మాయా శూన్య లెక్క_drivers(vvp_island_పోర్టు*పోర్టు, గుర్తులేని బిట్టు_idx,
+                                 గుర్తులేని counts[3]) =0;
 
-    protected:
+    రక్షిత:
 	// The base class collects a list of all the branches in the
 	// island. The derived island class can access this list for
 	// scanning the mesh.
       vvp_island_branch*branches_;
 
-    public: /* These methods are used during linking. */
+    బహిరంగ: /* These methods are used during linking. */
 
 	// Add a port to the island. The key is added to the island
 	// ports symbol table.
-      void add_port(const char*key, vvp_net_t*net);
+      శూన్య కూడు_పోర్టు(స్థిరరాశి అక్షరం*కీలకం, vvp_net_t*net);
 	// Add a branch to the island.
-      void add_branch(vvp_island_branch*branch, const char*pa, const char*pb);
+      శూన్య కూడు_branch(vvp_island_branch*branch, స్థిరరాశి అక్షరం*pa, స్థిరరాశి అక్షరం*pb);
 
-      vvp_net_t* find_port(const char*key);
+      vvp_net_t* కనుగొను_పోర్టు(స్థిరరాశి అక్షరం*కీలకం);
 
 	// Call this method when linking is done.
-      void compile_cleanup(void);
+      శూన్య compile_cleanup(శూన్య);
 
-    private:
-      void run_run() override;
+    అంతరంగ:
+      శూన్య నిరంతరం_నిరంతరం() override;
       bool flagged_;
 
-    private:
+    అంతరంగ:
 	// During link, the vvp_island keeps these symbol tables for
 	// mapping labels local to the island. When linking is done,
 	// the compile_cleanup() method removes these tables.
-      symbol_map_s<vvp_net_t>*ports_;
-      symbol_map_s<vvp_island_branch>*anodes_;
-      symbol_map_s<vvp_island_branch>*bnodes_;
+      చిహ్నం_map_s<vvp_net_t>*ports_;
+      చిహ్నం_map_s<vvp_island_branch>*anodes_;
+      చిహ్నం_map_s<vvp_island_branch>*bnodes_;
 };
 
 /*
@@ -122,77 +122,77 @@ class vvp_island  : private vvp_gen_event_s {
 * pointer from the vvp_net_t that refers to this object.
 */
 
-class vvp_island_port  : public vvp_net_fun_t {
+class vvp_island_పోర్టు  : బహిరంగ vvp_net_fun_t {
 
-    public:
-      explicit vvp_island_port(vvp_island*ip);
-      ~vvp_island_port() override;
+    బహిరంగ:
+      explicit vvp_island_పోర్టు(vvp_island*ip);
+      ~vvp_island_పోర్టు() override;
 
-    public: // Implement vvp_net_fun_t methods
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    బహిరంగ: // Implement vvp_net_fun_t methods
+      మాయా శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                              vvp_context_t) override;
-      virtual void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-				unsigned base, unsigned vwid, vvp_context_t) override;
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
-      virtual void recv_vec8_pv(vvp_net_ptr_t p, const vvp_vector8_t&bit,
-				unsigned base, unsigned vwid) override;
+      మాయా శూన్య recv_vec4_pv(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
+				గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t) override;
+      మాయా శూన్య recv_vec8(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు) override;
+      మాయా శూన్య recv_vec8_pv(vvp_net_ptr_t p, స్థిరరాశి vvp_vector8_t&బిట్టు,
+				గుర్తులేని పునాది, గుర్తులేని vwid) override;
 
 	// This is painful, but necessary. If the island is connected
 	// to a forced net, we need to rerun the calculations whenever
 	// a force/release happens to the net. If run_now is true, we
 	// rerun immediately, otherwise we schedule it for the end of
 	// the current time slot.
-      virtual void force_flag(bool run_now) override;
+      మాయా శూన్య force_flag(bool నిరంతరం_now) override;
 
-    public:
+    బహిరంగ:
       vvp_vector8_t invalue;
       vvp_vector8_t outvalue;
-      vvp_vector8_t value;
+      vvp_vector8_t విలువ;
 
-    private:
+    అంతరంగ:
       vvp_island*island_;
 
-    public: // Support for $countdrivers.
-      inline void count_drivers(unsigned bit_idx, unsigned counts[3])
+    బహిరంగ: // Support for $countdrivers.
+      అంతఃవరుస శూన్య లెక్క_drivers(గుర్తులేని బిట్టు_idx, గుర్తులేని counts[3])
       {
-            island_->count_drivers(this, bit_idx, counts);
+            island_->లెక్క_drivers(this, బిట్టు_idx, counts);
       }
 
-    private: // not implemented
-      vvp_island_port(const vvp_island_port&);
-      vvp_island_port& operator = (const vvp_island_port&);
+    అంతరంగ: // not implemented
+      vvp_island_పోర్టు(స్థిరరాశి vvp_island_పోర్టు&);
+      vvp_island_పోర్టు& క్రియాకారకం = (స్థిరరాశి vvp_island_పోర్టు&);
 };
 
-inline vvp_vector8_t island_get_value(vvp_net_t*net)
+అంతఃవరుస vvp_vector8_t island_get_విలువ(vvp_net_t*net)
 {
-      const vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
-      const vvp_wire_vec8*fil = dynamic_cast<vvp_wire_vec8*>(net->fil);
+      స్థిరరాశి vvp_island_పోర్టు*fun = dynamic_cast<vvp_island_పోర్టు*>(net->fun);
+      స్థిరరాశి vvp_wire_vec8*fil = dynamic_cast<vvp_wire_vec8*>(net->fil);
 
-      if (fil == 0) {
-	    return fun->invalue;
-      } else {
+      ఒకవేళ (fil == 0) {
+	    తిరిగి fun->invalue;
+      } లేకపోతే {
 	      // This is painful, but necessary. If the island is
 	      // connected to a forced net, then run the input through
 	      // the force filter first. The island must used the
 	      // forced value for its deliberations.
 	    vvp_vector8_t rep;
-	    switch (fil->filter_input_vec8(fun->invalue, rep)) {
-		default:
-		case vvp_net_fil_t::PROP:
-		  return fun->invalue;
-		case vvp_net_fil_t::REPL:
-		  return rep;
+	    ఎంపిక (fil->filter_ఆదానం_vec8(fun->invalue, rep)) {
+		అప్రమేయ:
+		స్థితి vvp_net_fil_t::PROP:
+		  తిరిగి fun->invalue;
+		స్థితి vvp_net_fil_t::REPL:
+		  తిరిగి rep;
 	    }
       }
 }
 
-inline vvp_vector8_t island_get_sent_value(vvp_net_t*net)
+అంతఃవరుస vvp_vector8_t island_get_పంపిన_విలువ(vvp_net_t*net)
 {
-      const vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
-      return fun->outvalue;
+      స్థిరరాశి vvp_island_పోర్టు*fun = dynamic_cast<vvp_island_పోర్టు*>(net->fun);
+      తిరిగి fun->outvalue;
 }
 
-extern void island_send_value(vvp_net_t*net, const vvp_vector8_t&val);
+బాహ్య శూన్య island_send_విలువ(vvp_net_t*net, స్థిరరాశి vvp_vector8_t&val);
 
 /*
 * Branches are connected together to form a mesh of branches. Each
@@ -202,25 +202,25 @@ extern void island_send_value(vvp_net_t*net, const vvp_vector8_t&val);
 * of the island.
 */
 
-typedef vvp_sub_pointer_t<vvp_island_branch> vvp_branch_ptr_t;
+రకనిర్వచనం vvp_sub_సూచిక_t<vvp_island_branch> vvp_branch_ptr_t;
 
-struct vvp_island_branch {
-      virtual ~vvp_island_branch();
+నిర్మాణం vvp_island_branch {
+      మాయా ~vvp_island_branch();
 	// Keep a list of branches in the island.
-      vvp_island_branch*next_branch;
+      vvp_island_branch*తదుపరి_branch;
 	// branch mesh connectivity. There is a pointer for each end
 	// that participates in a circular list.
-      vvp_sub_pointer_t<vvp_island_branch> link[2];
+      vvp_sub_సూచిక_t<vvp_island_branch> link[2];
 	// Port connections
       vvp_net_t*a;
       vvp_net_t*b;
 };
 
-static inline vvp_branch_ptr_t next(vvp_branch_ptr_t cur)
+స్థిర అంతఃవరుస vvp_branch_ptr_t తదుపరి_2(vvp_branch_ptr_t cur)
 {
-      const vvp_island_branch*ptr = cur.ptr();
-      unsigned ab = cur.port();
-      return ptr->link[ab];
+      స్థిరరాశి vvp_island_branch*ptr = cur.ptr();
+      గుర్తులేని ab = cur.పోర్టు();
+      తిరిగి ptr->link[ab];
 }
 
 /*
@@ -229,12 +229,12 @@ static inline vvp_branch_ptr_t next(vvp_branch_ptr_t cur)
  * cur. All these branch ends together form a "node" of the branch
  * network. (In other words, this does *not* follow the branches.)
  */
-extern void island_collect_node(std::list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur);
+బాహ్య శూన్య island_collect_కణుపు(std::list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur);
 
 /*
  * These functions support compile/linking.
  */
-extern void compile_island_base(char*label, vvp_island*use_island);
-extern vvp_island* compile_find_island(const char*island_name);
+బాహ్య శూన్య compile_island_పునాది(అక్షరం*label, vvp_island*use_island);
+బాహ్య vvp_island* compile_కనుగొను_island(స్థిరరాశి అక్షరం*island_name);
 
-#endif /* IVL_vvp_island_H */
+#అయితే_ముగింపు /* IVL_vvp_island_H */

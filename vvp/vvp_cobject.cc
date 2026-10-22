@@ -22,9 +22,9 @@
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
-vvp_cobject::vvp_cobject(const class_type*defn)
+vvp_cobject::vvp_cobject(స్థిరరాశి class_type*defn)
 : defn_(defn), properties_(defn->instance_new())
 {
 }
@@ -35,54 +35,54 @@ vvp_cobject::~vvp_cobject()
       properties_ = 0;
 }
 
-void vvp_cobject::set_vec4(size_t pid, const vvp_vector4_t&val)
+శూన్య vvp_cobject::సమితి_vec4(size_t pid, స్థిరరాశి vvp_vector4_t&val)
 {
-      defn_->set_vec4(properties_, pid, val);
+      defn_->సమితి_vec4(properties_, pid, val);
 }
 
-void vvp_cobject::get_vec4(size_t pid, vvp_vector4_t&val)
+శూన్య vvp_cobject::get_vec4(size_t pid, vvp_vector4_t&val)
 {
       defn_->get_vec4(properties_, pid, val);
 }
 
-void vvp_cobject::set_real(size_t pid, double val)
+శూన్య vvp_cobject::సమితి_real(size_t pid, ద్విగుణ val)
 {
-      defn_->set_real(properties_, pid, val);
+      defn_->సమితి_real(properties_, pid, val);
 }
 
-double vvp_cobject::get_real(size_t pid)
+ద్విగుణ vvp_cobject::get_real(size_t pid)
 {
-      return defn_->get_real(properties_, pid);
+      తిరిగి defn_->get_real(properties_, pid);
 }
 
-void vvp_cobject::set_string(size_t pid, const string&val)
+శూన్య vvp_cobject::సమితి_string(size_t pid, స్థిరరాశి string&val)
 {
-      defn_->set_string(properties_, pid, val);
+      defn_->సమితి_string(properties_, pid, val);
 }
 
 string vvp_cobject::get_string(size_t pid)
 {
-      return defn_->get_string(properties_, pid);
+      తిరిగి defn_->get_string(properties_, pid);
 }
 
-void vvp_cobject::set_object(size_t pid, const vvp_object_t&val, size_t idx)
+శూన్య vvp_cobject::సమితి_object(size_t pid, స్థిరరాశి vvp_object_t&val, size_t idx)
 {
-      defn_->set_object(properties_, pid, val, idx);
+      defn_->సమితి_object(properties_, pid, val, idx);
 }
 
-void vvp_cobject::get_object(size_t pid, vvp_object_t&val, size_t idx)
+శూన్య vvp_cobject::get_object(size_t pid, vvp_object_t&val, size_t idx)
 {
-      return defn_->get_object(properties_, pid, val, idx);
+      తిరిగి defn_->get_object(properties_, pid, val, idx);
 }
 
-void vvp_cobject::shallow_copy(const vvp_object*obj)
+శూన్య vvp_cobject::shallow_copy(స్థిరరాశి vvp_object*obj)
 {
-      const vvp_cobject*that = dynamic_cast<const vvp_cobject*>(obj);
-      assert(that);
+      స్థిరరాశి vvp_cobject*that = dynamic_cast<స్థిరరాశి vvp_cobject*>(obj);
+      ప్రతిజ్ఞా(that);
 
-      assert(defn_ == that->defn_);
+      ప్రతిజ్ఞా(defn_ == that->defn_);
 
-      for (size_t idx = 0 ; idx < defn_->property_count() ; idx += 1)
+      కొరకు (size_t idx = 0 ; idx < defn_->property_లెక్క() ; idx += 1)
 	    defn_->copy_property(properties_, idx, that->properties_);
 
 }

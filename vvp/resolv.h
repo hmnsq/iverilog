@@ -1,5 +1,5 @@
-#ifndef IVL_resolv_H
-#define IVL_resolv_H
+#నిర్వచితం_కాకపోతే IVL_resolv_H
+#నిర్వచించు IVL_resolv_H
 /*
  * Copyright (c) 2001-2025 Stephen Williams (steve@icarus.com)
  *
@@ -30,70 +30,70 @@
  * actual functors.
  */
 
-class resolv_core : public vvp_net_fun_t {
+class resolv_core : బహిరంగ vvp_net_fun_t {
 
-    public:
-      explicit resolv_core(unsigned nports, vvp_net_t*net);
-      virtual ~resolv_core() override;
+    బహిరంగ:
+      explicit resolv_core(గుర్తులేని nports, vvp_net_t*net);
+      మాయా ~resolv_core() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override
-            { recv_vec4_(port.port(), bit); }
+            { recv_vec4_(పోర్టు.పోర్టు(), బిట్టు); }
 
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override
-            { recv_vec8_(port.port(), bit); }
+      శూన్య recv_vec8(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు) override
+            { recv_vec8_(పోర్టు.పోర్టు(), బిట్టు); }
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override
-            { recv_vec4_pv_(port.port(), bit, base, vwid); }
+      శూన్య recv_vec4_pv(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t) override
+            { recv_vec4_pv_(పోర్టు.పోర్టు(), బిట్టు, పునాది, vwid); }
 
-      void recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
-			unsigned base, unsigned vwid) override
-            { recv_vec8_pv_(port.port(), bit, base, vwid); }
+      శూన్య recv_vec8_pv(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid) override
+            { recv_vec8_pv_(పోర్టు.పోర్టు(), బిట్టు, పునాది, vwid); }
 
-      virtual void count_drivers(unsigned bit_idx, unsigned counts[3]) =0;
+      మాయా శూన్య లెక్క_drivers(గుర్తులేని బిట్టు_idx, గుర్తులేని counts[3]) =0;
 
-    private:
-      friend class resolv_extend;
-      virtual void recv_vec4_(unsigned port, const vvp_vector4_t&bit) =0;
-      virtual void recv_vec8_(unsigned port, const vvp_vector8_t&bit) =0;
+    అంతరంగ:
+      మిత్ర class resolv_extend;
+      మాయా శూన్య recv_vec4_(గుర్తులేని పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు) =0;
+      మాయా శూన్య recv_vec8_(గుర్తులేని పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు) =0;
 
-      void recv_vec4_pv_(unsigned port, const vvp_vector4_t&bit,
-			 unsigned base, unsigned vwid);
-      void recv_vec8_pv_(unsigned port, const vvp_vector8_t&bit,
-			 unsigned base, unsigned vwid);
+      శూన్య recv_vec4_pv_(గుర్తులేని పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			 గుర్తులేని పునాది, గుర్తులేని vwid);
+      శూన్య recv_vec8_pv_(గుర్తులేని పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు,
+			 గుర్తులేని పునాది, గుర్తులేని vwid);
 
-    protected:
-      unsigned nports_;
+    రక్షిత:
+      గుర్తులేని nports_;
       vvp_net_t*net_;
 };
 
-class resolv_extend : public vvp_net_fun_t {
+class resolv_extend : బహిరంగ vvp_net_fun_t {
 
-    public:
-      resolv_extend(resolv_core*core, unsigned port_base);
+    బహిరంగ:
+      resolv_extend(resolv_core*core, గుర్తులేని పోర్టు_పునాది);
       ~resolv_extend() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override
-            { core_->recv_vec4_(port_base_ + port.port(), bit); }
+            { core_->recv_vec4_(పోర్టు_పునాది_2 + పోర్టు.పోర్టు(), బిట్టు); }
 
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override
-            { core_->recv_vec8_(port_base_ + port.port(), bit); }
+      శూన్య recv_vec8(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు) override
+            { core_->recv_vec8_(పోర్టు_పునాది_2 + పోర్టు.పోర్టు(), బిట్టు); }
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override
-            { core_->recv_vec4_pv_(port_base_ + port.port(), bit,
-                                   base, vwid); }
+      శూన్య recv_vec4_pv(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t) override
+            { core_->recv_vec4_pv_(పోర్టు_పునాది_2 + పోర్టు.పోర్టు(), బిట్టు,
+                                   పునాది, vwid); }
 
-      void recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
-			unsigned base, unsigned vwid) override
-            { core_->recv_vec8_pv_(port_base_ + port.port(), bit,
-                                   base, vwid); }
+      శూన్య recv_vec8_pv(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid) override
+            { core_->recv_vec8_pv_(పోర్టు_పునాది_2 + పోర్టు.పోర్టు(), బిట్టు,
+                                   పునాది, vwid); }
 
-    private:
+    అంతరంగ:
       resolv_core*core_;
-      unsigned port_base_;
+      గుర్తులేని పోర్టు_పునాది_2;
 };
 
 /*
@@ -108,22 +108,22 @@ class resolv_extend : public vvp_net_fun_t {
  * strong values (or HiZ) for the sake of resolution. In any case, the
  * propagated value is a vvp_vector8_t value.
  */
-class resolv_tri : public resolv_core {
+class resolv_tri : బహిరంగ resolv_core {
 
-    public:
-      explicit resolv_tri(unsigned nports, vvp_net_t*net,
-                          vvp_scalar_t hiz_value);
+    బహిరంగ:
+      explicit resolv_tri(గుర్తులేని nports, vvp_net_t*net,
+                          vvp_scalar_t hiz_విలువ);
       ~resolv_tri() override;
 
-      void count_drivers(unsigned bit_idx, unsigned counts[3]) override;
+      శూన్య లెక్క_drivers(గుర్తులేని బిట్టు_idx, గుర్తులేని counts[3]) override;
 
-    private:
-      void recv_vec4_(unsigned port, const vvp_vector4_t&bit) override;
-      void recv_vec8_(unsigned port, const vvp_vector8_t&bit) override;
+    అంతరంగ:
+      శూన్య recv_vec4_(గుర్తులేని పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు) override;
+      శూన్య recv_vec8_(గుర్తులేని పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు) override;
 
-    private:
+    అంతరంగ:
         // The puller value to be used when a bit is not driven.
-      vvp_scalar_t hiz_value_;
+      vvp_scalar_t hiz_విలువ_2;
         // The array of input values.
       vvp_vector8_t*val_;
 };
@@ -137,44 +137,44 @@ class resolv_tri : public resolv_core {
  * value. It also takes in vvp_vector8_t values, which it reduces to
  * 4-state values for the sake of resolution.
  */
-class resolv_wired_logic : public resolv_core {
+class resolv_wired_logic : బహిరంగ resolv_core {
 
-    public:
-      explicit resolv_wired_logic(unsigned nports, vvp_net_t*net);
-      virtual ~resolv_wired_logic() override;
+    బహిరంగ:
+      explicit resolv_wired_logic(గుర్తులేని nports, vvp_net_t*net);
+      మాయా ~resolv_wired_logic() override;
 
-      void count_drivers(unsigned bit_idx, unsigned counts[3]) override;
+      శూన్య లెక్క_drivers(గుర్తులేని బిట్టు_idx, గుర్తులేని counts[3]) override;
 
-    protected:
-      virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) =0;
+    రక్షిత:
+      మాయా vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) =0;
 
-    private:
-      void recv_vec4_(unsigned port, const vvp_vector4_t&bit) override;
-      void recv_vec8_(unsigned port, const vvp_vector8_t&bit) override;
+    అంతరంగ:
+      శూన్య recv_vec4_(గుర్తులేని పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు) override;
+      శూన్య recv_vec8_(గుర్తులేని పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు) override;
 
-    private:
+    అంతరంగ:
         // The array of input values.
       vvp_vector4_t*val_;
 };
 
-class resolv_triand : public resolv_wired_logic {
+class resolv_triand : బహిరంగ resolv_wired_logic {
 
-    public:
-      explicit resolv_triand(unsigned nports, vvp_net_t*net);
+    బహిరంగ:
+      explicit resolv_triand(గుర్తులేని nports, vvp_net_t*net);
       ~resolv_triand() override;
 
-    private:
-      virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
+    అంతరంగ:
+      మాయా vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
 };
 
-class resolv_trior : public resolv_wired_logic {
+class resolv_trior : బహిరంగ resolv_wired_logic {
 
-    public:
-      explicit resolv_trior(unsigned nports, vvp_net_t*net);
+    బహిరంగ:
+      explicit resolv_trior(గుర్తులేని nports, vvp_net_t*net);
       ~resolv_trior() override;
 
-    private:
-      virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
+    అంతరంగ:
+      మాయా vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
 };
 
-#endif /* IVL_resolv_H */
+#అయితే_ముగింపు /* IVL_resolv_H */

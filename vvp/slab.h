@@ -1,5 +1,5 @@
-#ifndef IVL_slab_H
-#define IVL_slab_H
+#నిర్వచితం_కాకపోతే IVL_slab_H
+#నిర్వచించు IVL_slab_H
 /*
  * Copyright (c) 2008-2015 Picture Elements, Inc.
  *    Stephen Williams (steve@icarus.com)
@@ -23,95 +23,95 @@
 
 # include  "config.h"
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT> class slab_t {
+మూస <size_t SLAB_కొలత, size_t CHUNK_లెక్క> class slab_t {
 
-      union item_cell_u {
-	    item_cell_u*next;
-	    char space[SLAB_SIZE];
+      సంఘం అంశం_cell_u {
+	    అంశం_cell_u*తదుపరి_2;
+	    అక్షరం space[SLAB_కొలత];
       };
 
-    public:
+    బహిరంగ:
       slab_t();
 
-      void* alloc_slab();
-      void  free_slab(void*);
-#ifdef CHECK_WITH_VALGRIND
+      శూన్య* alloc_slab();
+      శూన్య  free_slab(శూన్య*);
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
 	// If we have allocated memory then we need to delete it to make
 	// valgrind happy.
-      void delete_pool(void);
-#endif
+      శూన్య delete_pool(శూన్య);
+#అయితే_ముగింపు
 
-      unsigned long pool;
+      గుర్తులేని దీర్ఘ pool;
 
-    private:
-      item_cell_u*heap_;
-      item_cell_u initial_chunk_[CHUNK_COUNT];
-#ifdef CHECK_WITH_VALGRIND
+    అంతరంగ:
+      అంశం_cell_u*కుప్ప;
+      అంశం_cell_u initial_chunk_[CHUNK_లెక్క];
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
 	// Each slab needs a pointer to the allocated space.
-      item_cell_u**slab_pool;
-      unsigned slab_pool_count;
-#endif
+      అంశం_cell_u**slab_pool;
+      గుర్తులేని slab_pool_లెక్క;
+#అయితే_ముగింపు
 };
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-slab_t<SLAB_SIZE,CHUNK_COUNT>::slab_t()
+మూస <size_t SLAB_కొలత, size_t CHUNK_లెక్క>
+slab_t<SLAB_కొలత,CHUNK_లెక్క>::slab_t()
 {
-      pool = CHUNK_COUNT;
-      heap_ = initial_chunk_;
-      for (unsigned idx = 0 ; idx < CHUNK_COUNT-1 ; idx += 1)
-	    initial_chunk_[idx].next = initial_chunk_+idx+1;
+      pool = CHUNK_లెక్క;
+      కుప్ప = initial_chunk_;
+      కొరకు (గుర్తులేని idx = 0 ; idx < CHUNK_లెక్క-1 ; idx += 1)
+	    initial_chunk_[idx].తదుపరి_2 = initial_chunk_+idx+1;
 
-      initial_chunk_[CHUNK_COUNT-1].next = 0;
-#ifdef CHECK_WITH_VALGRIND
+      initial_chunk_[CHUNK_లెక్క-1].తదుపరి_2 = 0;
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
 	// Initially we have no allocated space.
-      slab_pool = NULL;
-      slab_pool_count = 0;
-#endif
+      slab_pool = ఖాళీ;
+      slab_pool_లెక్క = 0;
+#అయితే_ముగింపు
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void* slab_t<SLAB_SIZE,CHUNK_COUNT>::alloc_slab()
+మూస <size_t SLAB_కొలత, size_t CHUNK_లెక్క>
+అంతఃవరుస శూన్య* slab_t<SLAB_కొలత,CHUNK_లెక్క>::alloc_slab()
 {
-      if (heap_ == 0) {
-	    item_cell_u*chunk = new item_cell_u[CHUNK_COUNT];
-#ifdef CHECK_WITH_VALGRIND
-	    slab_pool_count += 1;
-	    slab_pool = static_cast<item_cell_u **>(realloc(slab_pool,
-	                slab_pool_count*sizeof(item_cell_u **)));
-	    slab_pool[slab_pool_count-1] = chunk;
-#endif
-	    for (unsigned idx = 0 ; idx < CHUNK_COUNT ; idx += 1) {
-		  chunk[idx].next = heap_;
-		  heap_ = chunk+idx;
+      ఒకవేళ (కుప్ప == 0) {
+	    అంశం_cell_u*chunk = new అంశం_cell_u[CHUNK_లెక్క];
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+	    slab_pool_లెక్క += 1;
+	    slab_pool = static_cast<అంశం_cell_u **>(realloc(slab_pool,
+	                slab_pool_లెక్క*పరిమాణం(అంశం_cell_u **)));
+	    slab_pool[slab_pool_లెక్క-1] = chunk;
+#అయితే_ముగింపు
+	    కొరకు (గుర్తులేని idx = 0 ; idx < CHUNK_లెక్క ; idx += 1) {
+		  chunk[idx].తదుపరి_2 = కుప్ప;
+		  కుప్ప = chunk+idx;
 	    }
-	    pool += CHUNK_COUNT;
+	    pool += CHUNK_లెక్క;
       }
 
-      item_cell_u*cur = heap_;
-      heap_ = heap_->next;
-      return cur;
+      అంశం_cell_u*cur = కుప్ప;
+      కుప్ప = కుప్ప->తదుపరి_2;
+      తిరిగి cur;
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::free_slab(void*ptr)
+మూస <size_t SLAB_కొలత, size_t CHUNK_లెక్క>
+అంతఃవరుస శూన్య slab_t<SLAB_కొలత,CHUNK_లెక్క>::free_slab(శూన్య*ptr)
 {
-      item_cell_u*cur = reinterpret_cast<item_cell_u*> (ptr);
-      cur->next = heap_;
-      heap_ = cur;
+      అంశం_cell_u*cur = reinterpret_cast<అంశం_cell_u*> (ptr);
+      cur->తదుపరి_2 = కుప్ప;
+      కుప్ప = cur;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::delete_pool(void)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+మూస <size_t SLAB_కొలత, size_t CHUNK_లెక్క>
+అంతఃవరుస శూన్య slab_t<SLAB_కొలత,CHUNK_లెక్క>::delete_pool(శూన్య)
 {
-      for (unsigned idx = 0; idx < slab_pool_count; idx += 1) {
+      కొరకు (గుర్తులేని idx = 0; idx < slab_pool_లెక్క; idx += 1) {
 	    delete [] slab_pool[idx];
       }
-      free(slab_pool);
-      slab_pool = NULL;
-      slab_pool_count = 0;
+      విడుదల(slab_pool);
+      slab_pool = ఖాళీ;
+      slab_pool_లెక్క = 0;
 }
-#endif
+#అయితే_ముగింపు
 
 
-#endif /* IVL_slab_H */
+#అయితే_ముగింపు /* IVL_slab_H */

@@ -24,22 +24,22 @@
 # include  <random>
 # include  <typeinfo>
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
-namespace {
+నామాకాశ {
 
-static std::mt19937& shuffle_rng(void)
+స్థిర std::mt19937& shuffle_rng(శూన్య)
 {
-      static std::mt19937 rng(std::random_device{}());
-      return rng;
+      స్థిర std::mt19937 rng(std::random_device{}());
+      తిరిగి rng;
 }
 
-static bool vec4_lt_unsigned(const vvp_vector4_t&a, const vvp_vector4_t&b)
+స్థిర తార్కిక vec4_lt_unsigned(స్థిరరాశి vvp_vector4_t&a, స్థిరరాశి vvp_vector4_t&b)
 {
-      if (a.eeq(b)) return false;
+      ఒకవేళ (a.eeq(b)) తిరిగి అబద్ధం;
       vvp_bit4_t gt = compare_gtge(b, a, BIT4_1);
-      if (gt == BIT4_X) return false;
-      return gt == BIT4_1;
+      ఒకవేళ (gt == BIT4_X) తిరిగి అబద్ధం;
+      తిరిగి gt == BIT4_1;
 }
 
 } // namespace
@@ -48,1059 +48,1059 @@ vvp_darray::~vvp_darray()
 {
 }
 
-void vvp_darray::reverse_elems(void)
+శూన్య vvp_darray::తిరగేయి_elems(శూన్య)
 {
       cerr << "XXXX reverse_elems() not implemented for "
-           << typeid(*this).name() << endl;
+           << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_darray::sort_elems(bool /*ascending*/)
+శూన్య vvp_darray::క్రమీకరించు_elems(తార్కిక /*ascending*/)
 {
       cerr << "XXXX sort_elems() not implemented for "
-           << typeid(*this).name() << endl;
+           << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_darray::shuffle_elems(void)
+శూన్య vvp_darray::shuffle_elems(శూన్య)
 {
       cerr << "XXXX shuffle_elems() not implemented for "
-           << typeid(*this).name() << endl;
+           << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_darray::set_word(unsigned, const vvp_vector4_t&)
+శూన్య vvp_darray::సమితి_మాట(గుర్తులేని, స్థిరరాశి vvp_vector4_t&)
 {
-      cerr << "XXXX set_word(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word(vvp_vector4_t) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_darray::set_word(unsigned, double)
+శూన్య vvp_darray::సమితి_మాట(గుర్తులేని, ద్విగుణ)
 {
-      cerr << "XXXX set_word(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word(double) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_darray::set_word(unsigned, const string&)
+శూన్య vvp_darray::సమితి_మాట(గుర్తులేని, స్థిరరాశి string&)
 {
-      cerr << "XXXX set_word(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word(string) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_darray::set_word(unsigned, const vvp_object_t&)
+శూన్య vvp_darray::సమితి_మాట(గుర్తులేని, స్థిరరాశి vvp_object_t&)
 {
-      cerr << "XXXX set_word(vvp_object_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word(vvp_object_t) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_darray::get_word(unsigned, vvp_vector4_t&)
+శూన్య vvp_darray::get_మాట(గుర్తులేని, vvp_vector4_t&)
 {
-      cerr << "XXXX get_word(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX get_word(vvp_vector4_t) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_darray::get_word(unsigned, double&)
+శూన్య vvp_darray::get_మాట(గుర్తులేని, ద్విగుణ&)
 {
-      cerr << "XXXX get_word(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX get_word(double) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_darray::get_word(unsigned, string&)
+శూన్య vvp_darray::get_మాట(గుర్తులేని, string&)
 {
-      cerr << "XXXX get_word(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX get_word(string) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_darray::get_word(unsigned, vvp_object_t&)
+శూన్య vvp_darray::get_మాట(గుర్తులేని, vvp_object_t&)
 {
-      cerr << "XXXX get_word(vvp_object_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX get_word(vvp_object_t) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-vvp_vector4_t vvp_darray::get_bitstream(bool)
+vvp_vector4_t vvp_darray::get_bitstream(తార్కిక)
 {
-      cerr << "XXXX get_bitstream() not implemented for " << typeid(*this).name() << endl;
-      return vvp_vector4_t();
+      cerr << "XXXX get_bitstream() not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
+      తిరిగి vvp_vector4_t();
 }
 
-template <class TYPE> vvp_darray_atom<TYPE>::~vvp_darray_atom()
+మూస <తరగతి TYPE> vvp_darray_atom<TYPE>::~vvp_darray_atom()
 {
 }
 
-template <class TYPE> size_t vvp_darray_atom<TYPE>::get_size() const
+మూస <తరగతి TYPE> size_t vvp_darray_atom<TYPE>::get_కొలత() స్థిరరాశి
 {
-      return array_.size();
+      తిరిగి array_.size();
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::reverse_elems(void)
+మూస <తరగతి TYPE> శూన్య vvp_darray_atom<TYPE>::తిరగేయి_elems(శూన్య)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      కొరకు (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::sort_elems(bool ascending)
+మూస <తరగతి TYPE> శూన్య vvp_darray_atom<TYPE>::క్రమీకరించు_elems(తార్కిక ascending)
 {
-      if (ascending) std::sort(array_.begin(), array_.end());
-      else std::sort(array_.begin(), array_.end(), std::greater<TYPE>());
+      ఒకవేళ (ascending) std::sort(array_.begin(), array_.చివర());
+      లేకపోతే std::sort(array_.begin(), array_.చివర(), std::greater<TYPE>());
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::shuffle_elems(void)
+మూస <తరగతి TYPE> శూన్య vvp_darray_atom<TYPE>::shuffle_elems(శూన్య)
 {
-      std::shuffle(array_.begin(), array_.end(), shuffle_rng());
+      std::shuffle(array_.begin(), array_.చివర(), shuffle_rng());
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::set_word(unsigned adr, const vvp_vector4_t&value)
+మూస <తరగతి TYPE> శూన్య vvp_darray_atom<TYPE>::సమితి_మాట(గుర్తులేని adr, స్థిరరాశి vvp_vector4_t&value)
 {
-      if (adr >= array_.size())
-	    return;
+      ఒకవేళ (adr >= array_.size())
+	    తిరిగి;
       TYPE tmp;
-      vector4_to_value(value, tmp, true, false);
+      vector4_గమ్యం_విలువ(value, tmp, నిజం, అబద్ధం);
       array_[adr] = tmp;
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::get_word(unsigned adr, vvp_vector4_t&value)
+మూస <తరగతి TYPE> శూన్య vvp_darray_atom<TYPE>::get_మాట(గుర్తులేని adr, vvp_vector4_t&value)
 {
-      if (adr >= array_.size()) {
-	    value = vvp_vector4_t(8*sizeof(TYPE), BIT4_X);
-	    return;
+      ఒకవేళ (adr >= array_.size()) {
+	    value = vvp_vector4_t(8*పరిమాణం(TYPE), BIT4_X);
+	    తిరిగి;
       }
 
-      TYPE word = array_[adr];
-      vvp_vector4_t tmp (8*sizeof(TYPE), BIT4_0);
-      for (unsigned idx = 0 ; idx < tmp.size() ; idx += 1) {
-	    if (word&1) tmp.set_bit(idx, BIT4_1);
-	    word >>= 1;
+      TYPE మాట = array_[adr];
+      vvp_vector4_t tmp (8*పరిమాణం(TYPE), BIT4_0);
+      కొరకు (గుర్తులేని idx = 0 ; idx < tmp.size() ; idx += 1) {
+	    ఒకవేళ (మాట&1) tmp.సమితి_బిట్టు(idx, BIT4_1);
+	    మాట >>= 1;
       }
       value = tmp;
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::shallow_copy(const vvp_object*obj)
+మూస <తరగతి TYPE> శూన్య vvp_darray_atom<TYPE>::shallow_copy(స్థిరరాశి vvp_object*obj)
 {
-      const vvp_darray_atom<TYPE>*that = dynamic_cast<const vvp_darray_atom<TYPE>*>(obj);
-      assert(that);
+      స్థిరరాశి vvp_darray_atom<TYPE>*that = dynamic_cast<స్థిరరాశి vvp_darray_atom<TYPE>*>(obj);
+      ప్రతిజ్ఞా(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      గుర్తులేని అంకె_వస్తువులు = min(array_.size(), that->array_.size());
+      కొరకు (గుర్తులేని idx = 0 ; idx < అంకె_వస్తువులు ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-template <class TYPE> vvp_object* vvp_darray_atom<TYPE>::duplicate(void) const
+మూస <తరగతి TYPE> vvp_object* vvp_darray_atom<TYPE>::duplicate(శూన్య) స్థిరరాశి
 {
-      vvp_darray_atom<TYPE>*that = new vvp_darray_atom<TYPE>(array_.size());
-      for (size_t idx = 0 ; idx < array_.size() ; idx += 1)
+      vvp_darray_atom<TYPE>*that = కొత్త vvp_darray_atom<TYPE>(array_.size());
+      కొరకు (size_t idx = 0 ; idx < array_.size() ; idx += 1)
 	    that->array_[idx] = array_[idx];
 
-      return that;
+      తిరిగి that;
 }
 
-template <class TYPE> vvp_vector4_t vvp_darray_atom<TYPE>::get_bitstream(bool)
+మూస <తరగతి TYPE> vvp_vector4_t vvp_darray_atom<TYPE>::get_bitstream(తార్కిక)
 {
-      const unsigned word_wid = sizeof(TYPE) * 8;
+      స్థిరరాశి గుర్తులేని మాట_wid = పరిమాణం(TYPE) * 8;
 
-      vvp_vector4_t vec(array_.size() * word_wid, BIT4_0);
+      vvp_vector4_t vec(array_.size() * మాట_wid, BIT4_0);
 
-      unsigned adx = 0;
-      unsigned vdx = vec.size();
-      while (vdx > 0) {
-            TYPE word = array_[adx++];
-            vdx -= word_wid;
-            for (unsigned bdx = 0; bdx < word_wid; bdx += 1) {
-                  if (word & 1)
-                        vec.set_bit(vdx+bdx, BIT4_1);
-                  word >>= 1;
+      గుర్తులేని adx = 0;
+      గుర్తులేని vdx = vec.size();
+      అయితే (vdx > 0) {
+            TYPE మాట = array_[adx++];
+            vdx -= మాట_wid;
+            కొరకు (గుర్తులేని bdx = 0; bdx < మాట_wid; bdx += 1) {
+                  ఒకవేళ (మాట & 1)
+                        vec.సమితి_బిట్టు(vdx+bdx, BIT4_1);
+                  మాట >>= 1;
             }
       }
 
-      return vec;
+      తిరిగి vec;
 }
 
-template class vvp_darray_atom<uint8_t>;
-template class vvp_darray_atom<uint16_t>;
-template class vvp_darray_atom<uint32_t>;
-template class vvp_darray_atom<uint64_t>;
-template class vvp_darray_atom<int8_t>;
-template class vvp_darray_atom<int16_t>;
-template class vvp_darray_atom<int32_t>;
-template class vvp_darray_atom<int64_t>;
+మూస తరగతి vvp_darray_atom<uint8_t>;
+మూస తరగతి vvp_darray_atom<uint16_t>;
+మూస తరగతి vvp_darray_atom<uint32_t>;
+మూస తరగతి vvp_darray_atom<uint64_t>;
+మూస తరగతి vvp_darray_atom<int8_t>;
+మూస తరగతి vvp_darray_atom<int16_t>;
+మూస తరగతి vvp_darray_atom<int32_t>;
+మూస తరగతి vvp_darray_atom<int64_t>;
 
 vvp_darray_vec4::~vvp_darray_vec4()
 {
 }
 
-size_t vvp_darray_vec4::get_size(void) const
+size_t vvp_darray_vec4::get_కొలత(శూన్య) స్థిరరాశి
 {
-      return array_.size();
+      తిరిగి array_.size();
 }
 
-void vvp_darray_vec4::set_word(unsigned adr, const vvp_vector4_t&value)
+శూన్య vvp_darray_vec4::సమితి_మాట(గుర్తులేని adr, స్థిరరాశి vvp_vector4_t&value)
 {
-      if (adr >= array_.size()) return;
-      assert(value.size() == word_wid_);
+      ఒకవేళ (adr >= array_.size()) తిరిగి;
+      ప్రతిజ్ఞా(value.size() == మాట_wid_2);
       array_[adr] = value;
 }
 
-void vvp_darray_vec4::get_word(unsigned adr, vvp_vector4_t&value)
+శూన్య vvp_darray_vec4::get_మాట(గుర్తులేని adr, vvp_vector4_t&value)
 {
 	/*
 	 * Return an undefined value for an out of range address or if the
 	 * value has not been written yet (has a size of zero).
 	 */
-      if ((adr >= array_.size()) || (array_[adr].size() == 0)) {
-	    value = vvp_vector4_t(word_wid_, BIT4_X);
-	    return;
+      ఒకవేళ ((adr >= array_.size()) || (array_[adr].size() == 0)) {
+	    value = vvp_vector4_t(మాట_wid_2, BIT4_X);
+	    తిరిగి;
       }
       value = array_[adr];
-      assert(value.size() == word_wid_);
+      ప్రతిజ్ఞా(value.size() == మాట_wid_2);
 }
 
-void vvp_darray_vec4::shallow_copy(const vvp_object*obj)
+శూన్య vvp_darray_vec4::shallow_copy(స్థిరరాశి vvp_object*obj)
 {
-      const vvp_darray_vec4*that = dynamic_cast<const vvp_darray_vec4*>(obj);
-      assert(that);
+      స్థిరరాశి vvp_darray_vec4*that = dynamic_cast<స్థిరరాశి vvp_darray_vec4*>(obj);
+      ప్రతిజ్ఞా(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      గుర్తులేని అంకె_వస్తువులు = min(array_.size(), that->array_.size());
+      కొరకు (గుర్తులేని idx = 0 ; idx < అంకె_వస్తువులు ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-vvp_object* vvp_darray_vec4::duplicate(void) const
+vvp_object* vvp_darray_vec4::duplicate(శూన్య) స్థిరరాశి
 {
-      vvp_darray_vec4*that = new vvp_darray_vec4(array_.size(), word_wid_);
+      vvp_darray_vec4*that = కొత్త vvp_darray_vec4(array_.size(), మాట_wid_2);
 
-      for (size_t idx = 0 ; idx < array_.size() ; idx += 1)
+      కొరకు (size_t idx = 0 ; idx < array_.size() ; idx += 1)
 	    that->array_[idx] = array_[idx];
 
-      return that;
+      తిరిగి that;
 }
 
-vvp_vector4_t vvp_darray_vec4::get_bitstream(bool as_vec4)
+vvp_vector4_t vvp_darray_vec4::get_bitstream(తార్కిక as_vec4)
 {
-      vvp_vector4_t vec(array_.size() * word_wid_, BIT4_0);
+      vvp_vector4_t vec(array_.size() * మాట_wid_2, BIT4_0);
 
-      unsigned adx = 0;
-      unsigned vdx = vec.size();
-      while (vdx > 0) {
-            vdx -= word_wid_;
-            for (unsigned bdx = 0; bdx < word_wid_; bdx += 1) {
-                  vvp_bit4_t bit = array_[adx].value(bdx);
-                  if (as_vec4 || (bit == BIT4_1))
-                        vec.set_bit(vdx+bdx, bit);
+      గుర్తులేని adx = 0;
+      గుర్తులేని vdx = vec.size();
+      అయితే (vdx > 0) {
+            vdx -= మాట_wid_2;
+            కొరకు (గుర్తులేని bdx = 0; bdx < మాట_wid_2; bdx += 1) {
+                  vvp_bit4_t బిట్టు = array_[adx].value(bdx);
+                  ఒకవేళ (as_vec4 || (బిట్టు == BIT4_1))
+                        vec.సమితి_బిట్టు(vdx+bdx, బిట్టు);
             }
             adx++;
       }
 
-      return vec;
+      తిరిగి vec;
 }
 
-void vvp_darray_vec4::reverse_elems(void)
+శూన్య vvp_darray_vec4::తిరగేయి_elems(శూన్య)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      కొరకు (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-void vvp_darray_vec4::sort_elems(bool ascending)
+శూన్య vvp_darray_vec4::క్రమీకరించు_elems(తార్కిక ascending)
 {
-      if (ascending) {
-	    std::sort(array_.begin(), array_.end(), vec4_lt_unsigned);
-      } else {
-	    std::sort(array_.begin(), array_.end(),
-		      [](const vvp_vector4_t&a, const vvp_vector4_t&b) {
-			    return vec4_lt_unsigned(b, a);
+      ఒకవేళ (ascending) {
+	    std::sort(array_.begin(), array_.చివర(), vec4_lt_unsigned);
+      } లేకపోతే {
+	    std::sort(array_.begin(), array_.చివర(),
+		      [](స్థిరరాశి vvp_vector4_t&a, స్థిరరాశి vvp_vector4_t&b) {
+			    తిరిగి vec4_lt_unsigned(b, a);
 		      });
       }
 }
 
-void vvp_darray_vec4::shuffle_elems(void)
+శూన్య vvp_darray_vec4::shuffle_elems(శూన్య)
 {
-      std::shuffle(array_.begin(), array_.end(), shuffle_rng());
+      std::shuffle(array_.begin(), array_.చివర(), shuffle_rng());
 }
 
-void vvp_darray_vec2::reverse_elems(void)
+శూన్య vvp_darray_vec2::తిరగేయి_elems(శూన్య)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      కొరకు (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-void vvp_darray_vec2::sort_elems(bool ascending)
+శూన్య vvp_darray_vec2::క్రమీకరించు_elems(తార్కిక ascending)
 {
-      if (ascending) {
-	    std::sort(array_.begin(), array_.end());
-      } else {
-	    std::sort(array_.begin(), array_.end(),
-		      [](const vvp_vector2_t&a, const vvp_vector2_t&b) {
-			    return b < a;
+      ఒకవేళ (ascending) {
+	    std::sort(array_.begin(), array_.చివర());
+      } లేకపోతే {
+	    std::sort(array_.begin(), array_.చివర(),
+		      [](స్థిరరాశి vvp_vector2_t&a, స్థిరరాశి vvp_vector2_t&b) {
+			    తిరిగి b < a;
 		      });
       }
 }
 
-void vvp_darray_vec2::shuffle_elems(void)
+శూన్య vvp_darray_vec2::shuffle_elems(శూన్య)
 {
-      std::shuffle(array_.begin(), array_.end(), shuffle_rng());
+      std::shuffle(array_.begin(), array_.చివర(), shuffle_rng());
 }
 
 vvp_darray_vec2::~vvp_darray_vec2()
 {
 }
 
-size_t vvp_darray_vec2::get_size(void) const
+size_t vvp_darray_vec2::get_కొలత(శూన్య) స్థిరరాశి
 {
-      return array_.size();
+      తిరిగి array_.size();
 }
 
-void vvp_darray_vec2::set_word(unsigned adr, const vvp_vector4_t&value)
+శూన్య vvp_darray_vec2::సమితి_మాట(గుర్తులేని adr, స్థిరరాశి vvp_vector4_t&value)
 {
-      if (adr >= array_.size()) return;
-      assert(value.size() == word_wid_);
+      ఒకవేళ (adr >= array_.size()) తిరిగి;
+      ప్రతిజ్ఞా(value.size() == మాట_wid_2);
       array_[adr] = value;
 }
 
-void vvp_darray_vec2::get_word(unsigned adr, vvp_vector4_t&value)
+శూన్య vvp_darray_vec2::get_మాట(గుర్తులేని adr, vvp_vector4_t&value)
 {
 	/*
 	 * Return a zero value for an out of range address or if the
 	 * value has not been written yet (has a size of zero).
 	 */
-      if ((adr >= array_.size()) || (array_[adr].size() == 0)) {
-	    value = vvp_vector4_t(word_wid_, BIT4_0);
-	    return;
+      ఒకవేళ ((adr >= array_.size()) || (array_[adr].size() == 0)) {
+	    value = vvp_vector4_t(మాట_wid_2, BIT4_0);
+	    తిరిగి;
       }
-      assert(array_[adr].size() == word_wid_);
-      value.resize(word_wid_);
-      for (unsigned idx = 0; idx < word_wid_; idx += 1) {
-	    value.set_bit(idx, array_[adr].value4(idx));
+      ప్రతిజ్ఞా(array_[adr].size() == మాట_wid_2);
+      value.resize(మాట_wid_2);
+      కొరకు (గుర్తులేని idx = 0; idx < మాట_wid_2; idx += 1) {
+	    value.సమితి_బిట్టు(idx, array_[adr].value4(idx));
       }
 }
 
-void vvp_darray_vec2::shallow_copy(const vvp_object*obj)
+శూన్య vvp_darray_vec2::shallow_copy(స్థిరరాశి vvp_object*obj)
 {
-      const vvp_darray_vec2*that = dynamic_cast<const vvp_darray_vec2*>(obj);
-      assert(that);
+      స్థిరరాశి vvp_darray_vec2*that = dynamic_cast<స్థిరరాశి vvp_darray_vec2*>(obj);
+      ప్రతిజ్ఞా(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      గుర్తులేని అంకె_వస్తువులు = min(array_.size(), that->array_.size());
+      కొరకు (గుర్తులేని idx = 0 ; idx < అంకె_వస్తువులు ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-vvp_vector4_t vvp_darray_vec2::get_bitstream(bool)
+vvp_vector4_t vvp_darray_vec2::get_bitstream(తార్కిక)
 {
-      vvp_vector4_t vec(array_.size() * word_wid_, BIT4_0);
+      vvp_vector4_t vec(array_.size() * మాట_wid_2, BIT4_0);
 
-      unsigned adx = 0;
-      unsigned vdx = vec.size();
-      while (vdx > 0) {
-            vdx -= word_wid_;
-            for (unsigned bdx = 0; bdx < word_wid_; bdx += 1) {
-                  if (array_[adx].value(bdx))
-                        vec.set_bit(vdx+bdx, BIT4_1);
+      గుర్తులేని adx = 0;
+      గుర్తులేని vdx = vec.size();
+      అయితే (vdx > 0) {
+            vdx -= మాట_wid_2;
+            కొరకు (గుర్తులేని bdx = 0; bdx < మాట_wid_2; bdx += 1) {
+                  ఒకవేళ (array_[adx].value(bdx))
+                        vec.సమితి_బిట్టు(vdx+bdx, BIT4_1);
             }
             adx++;
       }
 
-      return vec;
+      తిరిగి vec;
 }
 
 vvp_darray_object::~vvp_darray_object()
 {
 }
 
-size_t vvp_darray_object::get_size() const
+size_t vvp_darray_object::get_కొలత() స్థిరరాశి
 {
-      return array_.size();
+      తిరిగి array_.size();
 }
 
-void vvp_darray_object::set_word(unsigned adr, const vvp_object_t&value)
+శూన్య vvp_darray_object::సమితి_మాట(గుర్తులేని adr, స్థిరరాశి vvp_object_t&value)
 {
-      if (adr >= array_.size())
-	    return;
+      ఒకవేళ (adr >= array_.size())
+	    తిరిగి;
       array_[adr] = value;
 }
 
-void vvp_darray_object::get_word(unsigned adr, vvp_object_t&value)
+శూన్య vvp_darray_object::get_మాట(గుర్తులేని adr, vvp_object_t&value)
 {
-      if (adr >= array_.size()) {
+      ఒకవేళ (adr >= array_.size()) {
 	    value = vvp_object_t();
-	    return;
+	    తిరిగి;
       }
 
       value = array_[adr];
 }
 
-void vvp_darray_object::shallow_copy(const vvp_object*obj)
+శూన్య vvp_darray_object::shallow_copy(స్థిరరాశి vvp_object*obj)
 {
-      const vvp_darray_object*that = dynamic_cast<const vvp_darray_object*>(obj);
-      assert(that);
+      స్థిరరాశి vvp_darray_object*that = dynamic_cast<స్థిరరాశి vvp_darray_object*>(obj);
+      ప్రతిజ్ఞా(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      గుర్తులేని అంకె_వస్తువులు = min(array_.size(), that->array_.size());
+      కొరకు (గుర్తులేని idx = 0 ; idx < అంకె_వస్తువులు ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-void vvp_darray_object::reverse_elems(void)
+శూన్య vvp_darray_object::తిరగేయి_elems(శూన్య)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      కొరకు (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-void vvp_darray_object::sort_elems(bool ascending)
+శూన్య vvp_darray_object::క్రమీకరించు_elems(తార్కిక ascending)
 {
-      if (ascending) {
-	    std::sort(array_.begin(), array_.end(),
-		      [](const vvp_object_t&a, const vvp_object_t&b) {
-			    return a.sort_order_key() < b.sort_order_key();
+      ఒకవేళ (ascending) {
+	    std::sort(array_.begin(), array_.చివర(),
+		      [](స్థిరరాశి vvp_object_t&a, స్థిరరాశి vvp_object_t&b) {
+			    తిరిగి a.క్రమీకరించు_క్రమం_కీలకం() < b.క్రమీకరించు_క్రమం_కీలకం();
 		      });
-      } else {
-	    std::sort(array_.begin(), array_.end(),
-		      [](const vvp_object_t&a, const vvp_object_t&b) {
-			    return a.sort_order_key() > b.sort_order_key();
+      } లేకపోతే {
+	    std::sort(array_.begin(), array_.చివర(),
+		      [](స్థిరరాశి vvp_object_t&a, స్థిరరాశి vvp_object_t&b) {
+			    తిరిగి a.క్రమీకరించు_క్రమం_కీలకం() > b.క్రమీకరించు_క్రమం_కీలకం();
 		      });
       }
 }
 
-void vvp_darray_object::shuffle_elems(void)
+శూన్య vvp_darray_object::shuffle_elems(శూన్య)
 {
-      std::shuffle(array_.begin(), array_.end(), shuffle_rng());
+      std::shuffle(array_.begin(), array_.చివర(), shuffle_rng());
 }
 
 vvp_darray_real::~vvp_darray_real()
 {
 }
 
-size_t vvp_darray_real::get_size() const
+size_t vvp_darray_real::get_కొలత() స్థిరరాశి
 {
-      return array_.size();
+      తిరిగి array_.size();
 }
 
-void vvp_darray_real::set_word(unsigned adr, double value)
+శూన్య vvp_darray_real::సమితి_మాట(గుర్తులేని adr, ద్విగుణ value)
 {
-      if (adr >= array_.size())
-	    return;
+      ఒకవేళ (adr >= array_.size())
+	    తిరిగి;
       array_[adr] = value;
 }
 
-void vvp_darray_real::get_word(unsigned adr, double&value)
+శూన్య vvp_darray_real::get_మాట(గుర్తులేని adr, ద్విగుణ&value)
 {
-      if (adr >= array_.size()) {
+      ఒకవేళ (adr >= array_.size()) {
 	    value = 0.0;
-	    return;
+	    తిరిగి;
       }
 
       value = array_[adr];
 }
 
-void vvp_darray_real::shallow_copy(const vvp_object*obj)
+శూన్య vvp_darray_real::shallow_copy(స్థిరరాశి vvp_object*obj)
 {
-      const vvp_darray_real*that = dynamic_cast<const vvp_darray_real*>(obj);
-      assert(that);
+      స్థిరరాశి vvp_darray_real*that = dynamic_cast<స్థిరరాశి vvp_darray_real*>(obj);
+      ప్రతిజ్ఞా(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      గుర్తులేని అంకె_వస్తువులు = min(array_.size(), that->array_.size());
+      కొరకు (గుర్తులేని idx = 0 ; idx < అంకె_వస్తువులు ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-void vvp_darray_real::reverse_elems(void)
+శూన్య vvp_darray_real::తిరగేయి_elems(శూన్య)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      కొరకు (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-void vvp_darray_real::sort_elems(bool ascending)
+శూన్య vvp_darray_real::క్రమీకరించు_elems(తార్కిక ascending)
 {
-      if (ascending) std::sort(array_.begin(), array_.end());
-      else std::sort(array_.begin(), array_.end(), std::greater<double>());
+      ఒకవేళ (ascending) std::sort(array_.begin(), array_.చివర());
+      లేకపోతే std::sort(array_.begin(), array_.చివర(), std::greater<ద్విగుణ>());
 }
 
-void vvp_darray_real::shuffle_elems(void)
+శూన్య vvp_darray_real::shuffle_elems(శూన్య)
 {
-      std::shuffle(array_.begin(), array_.end(), shuffle_rng());
+      std::shuffle(array_.begin(), array_.చివర(), shuffle_rng());
 }
 
-vvp_object* vvp_darray_real::duplicate(void) const
+vvp_object* vvp_darray_real::duplicate(శూన్య) స్థిరరాశి
 {
-      vvp_darray_real*that = new vvp_darray_real(array_.size());
+      vvp_darray_real*that = కొత్త vvp_darray_real(array_.size());
 
-      for (size_t idx = 0 ; idx < array_.size() ; idx += 1)
+      కొరకు (size_t idx = 0 ; idx < array_.size() ; idx += 1)
 	    that->array_[idx] = array_[idx];
 
-      return that;
+      తిరిగి that;
 }
 
-vvp_vector4_t vvp_darray_real::get_bitstream(bool)
+vvp_vector4_t vvp_darray_real::get_bitstream(తార్కిక)
 {
-      const unsigned word_wid = sizeof(double) * 8;
-      assert(word_wid == 64);
+      స్థిరరాశి గుర్తులేని మాట_wid = పరిమాణం(ద్విగుణ) * 8;
+      ప్రతిజ్ఞా(మాట_wid == 64);
 
-      vvp_vector4_t vec(array_.size() * word_wid, BIT4_0);
+      vvp_vector4_t vec(array_.size() * మాట_wid, BIT4_0);
 
-      unsigned adx = 0;
-      unsigned vdx = vec.size();
-      while (vdx > 0) {
-            union {
-                double   value;
-                uint64_t bits;
-            } word;
-            word.value = array_[adx++];
-            vdx -= word_wid;
-            for (unsigned bdx = 0; bdx < word_wid; bdx += 1) {
-                  if (word.bits & 1)
-                        vec.set_bit(vdx+bdx, BIT4_1);
-                  word.bits >>= 1;
+      గుర్తులేని adx = 0;
+      గుర్తులేని vdx = vec.size();
+      అయితే (vdx > 0) {
+            సంఘం {
+                ద్విగుణ   value;
+                uint64_t బిట్లు;
+            } మాట;
+            మాట.value = array_[adx++];
+            vdx -= మాట_wid;
+            కొరకు (గుర్తులేని bdx = 0; bdx < మాట_wid; bdx += 1) {
+                  ఒకవేళ (మాట.బిట్లు & 1)
+                        vec.సమితి_బిట్టు(vdx+bdx, BIT4_1);
+                  మాట.బిట్లు >>= 1;
             }
       }
 
-      return vec;
+      తిరిగి vec;
 }
 
 vvp_darray_string::~vvp_darray_string()
 {
 }
 
-size_t vvp_darray_string::get_size() const
+size_t vvp_darray_string::get_కొలత() స్థిరరాశి
 {
-      return array_.size();
+      తిరిగి array_.size();
 }
 
-void vvp_darray_string::set_word(unsigned adr, const string&value)
+శూన్య vvp_darray_string::సమితి_మాట(గుర్తులేని adr, స్థిరరాశి string&value)
 {
-      if (adr >= array_.size())
-	    return;
+      ఒకవేళ (adr >= array_.size())
+	    తిరిగి;
       array_[adr] = value;
 }
 
-void vvp_darray_string::get_word(unsigned adr, string&value)
+శూన్య vvp_darray_string::get_మాట(గుర్తులేని adr, string&value)
 {
-      if (adr >= array_.size()) {
+      ఒకవేళ (adr >= array_.size()) {
 	    value = "";
-	    return;
+	    తిరిగి;
       }
 
       value = array_[adr];
 }
 
-void vvp_darray_string::shallow_copy(const vvp_object*obj)
+శూన్య vvp_darray_string::shallow_copy(స్థిరరాశి vvp_object*obj)
 {
-      const vvp_darray_string*that = dynamic_cast<const vvp_darray_string*>(obj);
-      assert(that);
+      స్థిరరాశి vvp_darray_string*that = dynamic_cast<స్థిరరాశి vvp_darray_string*>(obj);
+      ప్రతిజ్ఞా(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      గుర్తులేని అంకె_వస్తువులు = min(array_.size(), that->array_.size());
+      కొరకు (గుర్తులేని idx = 0 ; idx < అంకె_వస్తువులు ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-void vvp_darray_string::reverse_elems(void)
+శూన్య vvp_darray_string::తిరగేయి_elems(శూన్య)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      కొరకు (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-void vvp_darray_string::sort_elems(bool ascending)
+శూన్య vvp_darray_string::క్రమీకరించు_elems(తార్కిక ascending)
 {
-      if (ascending) std::sort(array_.begin(), array_.end());
-      else std::sort(array_.begin(), array_.end(), std::greater<string>());
+      ఒకవేళ (ascending) std::sort(array_.begin(), array_.చివర());
+      లేకపోతే std::sort(array_.begin(), array_.చివర(), std::greater<string>());
 }
 
-void vvp_darray_string::shuffle_elems(void)
+శూన్య vvp_darray_string::shuffle_elems(శూన్య)
 {
-      std::shuffle(array_.begin(), array_.end(), shuffle_rng());
+      std::shuffle(array_.begin(), array_.చివర(), shuffle_rng());
 }
 
-vvp_object* vvp_darray_string::duplicate(void) const
+vvp_object* vvp_darray_string::duplicate(శూన్య) స్థిరరాశి
 {
-      vvp_darray_string*that = new vvp_darray_string(array_.size());
+      vvp_darray_string*that = కొత్త vvp_darray_string(array_.size());
 
-      for (size_t idx = 0 ; idx < array_.size() ; idx += 1)
+      కొరకు (size_t idx = 0 ; idx < array_.size() ; idx += 1)
 	    that->array_[idx] = array_[idx];
 
-      return that;
+      తిరిగి that;
 }
 
-vvp_queue::~vvp_queue()
+vvp_వరుస::~vvp_వరుస()
 {
 }
 
-void vvp_queue::copy_elems(vvp_object_t, unsigned)
+శూన్య vvp_వరుస::copy_elems(vvp_object_t, గుర్తులేని)
 {
-      cerr << "Sorry: copy_elems() not implemented for " << typeid(*this).name() << endl;
+      cerr << "Sorry: copy_elems() not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_queue::set_word_max(unsigned, const vvp_vector4_t&, unsigned)
+శూన్య vvp_వరుస::సమితి_మాట_max(గుర్తులేని, స్థిరరాశి vvp_vector4_t&, గుర్తులేని)
 {
-      cerr << "XXXX set_word_max(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word_max(vvp_vector4_t) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_queue::insert(unsigned, const vvp_vector4_t&, unsigned)
+శూన్య vvp_వరుస::insert(గుర్తులేని, స్థిరరాశి vvp_vector4_t&, గుర్తులేని)
 {
-      cerr << "XXXX insert(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX insert(vvp_vector4_t) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_queue::push_back(const vvp_vector4_t&, unsigned)
+శూన్య vvp_వరుస::push_back(స్థిరరాశి vvp_vector4_t&, గుర్తులేని)
 {
-      cerr << "XXXX push_back(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_back(vvp_vector4_t) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_queue::push_front(const vvp_vector4_t&, unsigned)
+శూన్య vvp_వరుస::push_front(స్థిరరాశి vvp_vector4_t&, గుర్తులేని)
 {
-      cerr << "XXXX push_front(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_front(vvp_vector4_t) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_queue::set_word_max(unsigned, double, unsigned)
+శూన్య vvp_వరుస::సమితి_మాట_max(గుర్తులేని, ద్విగుణ, గుర్తులేని)
 {
-      cerr << "XXXX set_word_max(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word_max(double) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_queue::insert(unsigned, double, unsigned)
+శూన్య vvp_వరుస::insert(గుర్తులేని, ద్విగుణ, గుర్తులేని)
 {
-      cerr << "XXXX set_word_max(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word_max(double) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_queue::push_back(double, unsigned)
+శూన్య vvp_వరుస::push_back(ద్విగుణ, గుర్తులేని)
 {
-      cerr << "XXXX push_back(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_back(double) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_queue::push_front(double, unsigned)
+శూన్య vvp_వరుస::push_front(ద్విగుణ, గుర్తులేని)
 {
-      cerr << "XXXX push_front(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_front(double) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_queue::set_word_max(unsigned, const string&, unsigned)
+శూన్య vvp_వరుస::సమితి_మాట_max(గుర్తులేని, స్థిరరాశి string&, గుర్తులేని)
 {
-      cerr << "XXXX set_word_max(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word_max(string) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_queue::insert(unsigned, const string&, unsigned)
+శూన్య vvp_వరుస::insert(గుర్తులేని, స్థిరరాశి string&, గుర్తులేని)
 {
-      cerr << "XXXX set_word_max(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word_max(string) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_queue::push_back(const string&, unsigned)
+శూన్య vvp_వరుస::push_back(స్థిరరాశి string&, గుర్తులేని)
 {
-      cerr << "XXXX push_back(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_back(string) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
-void vvp_queue::push_front(const string&, unsigned)
+శూన్య vvp_వరుస::push_front(స్థిరరాశి string&, గుర్తులేని)
 {
-      cerr << "XXXX push_front(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_front(string) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
 }
 
 /*
  * Helper functions used while copying multiple elements into a queue.
  */
-static void print_copy_is_too_big(size_t src_size, unsigned max_size, const string&qtype)
+స్థిర శూన్య print_copy_is_too_big(size_t src_కొలత, గుర్తులేని max_కొలత, స్థిరరాశి string&qtype)
 {
       cerr << get_fileline()
            << "Warning: queue<" << qtype << "> is bounded to have at most "
-           << max_size << " elements, source has " << src_size << " elements." << endl;
+           << max_కొలత << " elements, source has " << src_కొలత << " elements." << పంక్తి_ముగింపు;
 }
 
-static void print_copy_is_too_big(double&, size_t src_size, unsigned max_size)
+స్థిర శూన్య print_copy_is_too_big(ద్విగుణ&, size_t src_కొలత, గుర్తులేని max_కొలత)
 {
-      print_copy_is_too_big(src_size, max_size, "real");
+      print_copy_is_too_big(src_కొలత, max_కొలత, "real");
 }
 
-static void print_copy_is_too_big(string&, size_t src_size, unsigned max_size)
+స్థిర శూన్య print_copy_is_too_big(string&, size_t src_కొలత, గుర్తులేని max_కొలత)
 {
-      print_copy_is_too_big(src_size, max_size, "string");
+      print_copy_is_too_big(src_కొలత, max_కొలత, "string");
 }
 
-static void print_copy_is_too_big(vvp_vector4_t&, size_t src_size, unsigned max_size)
+స్థిర శూన్య print_copy_is_too_big(vvp_vector4_t&, size_t src_కొలత, గుర్తులేని max_కొలత)
 {
-      print_copy_is_too_big(src_size, max_size, "vector");
+      print_copy_is_too_big(src_కొలత, max_కొలత, "vector");
 }
 
-template <typename ELEM, class QTYPE, class SRC_TYPE>
-static void copy_elements(QTYPE*queue, SRC_TYPE*src, unsigned max_size)
+మూస <రకం_పేరు ELEM, తరగతి QTYPE, తరగతి SRC_TYPE>
+స్థిర శూన్య copy_elements(QTYPE*వరుస, SRC_TYPE*src, గుర్తులేని max_కొలత)
 {
-      size_t src_size = src->get_size();
-      if ((max_size != 0) && (src_size > max_size)) {
+      size_t src_కొలత = src->get_కొలత();
+      ఒకవేళ ((max_కొలత != 0) && (src_కొలత > max_కొలత)) {
 	    ELEM tmp;
-	    print_copy_is_too_big(tmp, src_size, max_size);
+	    print_copy_is_too_big(tmp, src_కొలత, max_కొలత);
       }
-      unsigned copy_size = ((src_size < max_size) ||
-                            (max_size == 0)) ? src_size : max_size;
-      if (copy_size < queue->get_size())
-	    queue->erase_tail(copy_size);
-      for (unsigned idx=0; idx < copy_size; ++idx) {
+      గుర్తులేని copy_కొలత = ((src_కొలత < max_కొలత) ||
+                            (max_కొలత == 0)) ? src_కొలత : max_కొలత;
+      ఒకవేళ (copy_కొలత < వరుస->get_కొలత())
+	    వరుస->erase_తోక(copy_కొలత);
+      కొరకు (గుర్తులేని idx=0; idx < copy_కొలత; ++idx) {
 	    ELEM value;
-	    src->get_word(idx, value);
-	    queue->set_word_max(idx, value, max_size);
+	    src->get_మాట(idx, value);
+	    వరుస->సమితి_మాట_max(idx, value, max_కొలత);
       }
 }
 
-void vvp_queue_real::copy_elems(vvp_object_t src, unsigned max_size)
+శూన్య vvp_వరుస_real::copy_elems(vvp_object_t src, గుర్తులేని max_కొలత)
 {
-      if (vvp_queue*src_queue = src.peek<vvp_queue>())
-	    copy_elements<double, vvp_queue_real, vvp_queue>(this, src_queue, max_size);
-      else if (vvp_darray*src_darray = src.peek<vvp_darray>())
-	    copy_elements<double, vvp_queue_real, vvp_darray>(this, src_darray, max_size);
-      else
-	    cerr << get_fileline() << "Sorry: cannot copy object to real queue." << endl;
+      ఒకవేళ (vvp_వరుస*src_వరుస = src.peek<vvp_వరుస>())
+	    copy_elements<ద్విగుణ, vvp_వరుస_real, vvp_వరుస>(ఇది, src_వరుస, max_కొలత);
+      లేకపోతే ఒకవేళ (vvp_darray*src_darray = src.peek<vvp_darray>())
+	    copy_elements<ద్విగుణ, vvp_వరుస_real, vvp_darray>(ఇది, src_darray, max_కొలత);
+      లేకపోతే
+	    cerr << get_fileline() << "Sorry: cannot copy object to real queue." << పంక్తి_ముగింపు;
 }
 
-void vvp_queue_real::set_word_max(unsigned adr, double value, unsigned max_size)
+శూన్య vvp_వరుస_real::సమితి_మాట_max(గుర్తులేని adr, ద్విగుణ value, గుర్తులేని max_కొలత)
 {
-      if (adr == queue.size())
-	    if (!max_size || (queue.size() < max_size))
-		  queue.push_back(value);
-	    else
+      ఒకవేళ (adr == వరుస.size())
+	    ఒకవేళ (!max_కొలత || (వరుస.size() < max_కొలత))
+		  వరుస.push_back(value);
+	    లేకపోతే
 		  cerr << get_fileline()
 		       << "Warning: assigning to queue<real>[" << adr << "] is"
-		          " outside bound (" << max_size << "). " << value
-		       << " was not added." << endl;
-      else
-	    set_word(adr, value);
+		          " outside bound (" << max_కొలత << "). " << value
+		       << " was not added." << పంక్తి_ముగింపు;
+      లేకపోతే
+	    సమితి_మాట(adr, value);
 }
 
-void vvp_queue_real::set_word(unsigned adr, double value)
+శూన్య vvp_వరుస_real::సమితి_మాట(గుర్తులేని adr, ద్విగుణ value)
 {
-      if (adr < queue.size())
-	    queue[adr] = value;
-      else
+      ఒకవేళ (adr < వరుస.size())
+	    వరుస[adr] = value;
+      లేకపోతే
 	    cerr << get_fileline()
 	         << "Warning: assigning to queue<real>[" << adr << "] is outside "
-	            "of size (" << queue.size() << "). " << value
-	         << " was not added." << endl;
+	            "of size (" << వరుస.size() << "). " << value
+	         << " was not added." << పంక్తి_ముగింపు;
 }
 
-void vvp_queue_real::get_word(unsigned adr, double&value)
+శూన్య vvp_వరుస_real::get_మాట(గుర్తులేని adr, ద్విగుణ&value)
 {
-      if (adr >= queue.size())
+      ఒకవేళ (adr >= వరుస.size())
 	    value = 0.0;
-      else
-	    value = queue[adr];
+      లేకపోతే
+	    value = వరుస[adr];
 }
 
-void vvp_queue_real::insert(unsigned idx, double value, unsigned max_size)
+శూన్య vvp_వరుస_real::insert(గుర్తులేని idx, ద్విగుణ value, గుర్తులేని max_కొలత)
 {
 	// Inserting past the end of the queue
-      if (idx > queue.size())
+      ఒకవేళ (idx > వరుస.size())
 	    cerr << get_fileline()
 	         << "Warning: inserting to queue<real>[" << idx << "] is "
-	            "outside of size (" << queue.size() << "). " << value
-	         << " was not added." << endl;
+	            "outside of size (" << వరుస.size() << "). " << value
+	         << " was not added." << పంక్తి_ముగింపు;
 	// Inserting at the end
-      else if (idx == queue.size())
-	    if (!max_size || (queue.size() < max_size))
-		  queue.push_back(value);
-	    else
+      లేకపోతే ఒకవేళ (idx == వరుస.size())
+	    ఒకవేళ (!max_కొలత || (వరుస.size() < max_కొలత))
+		  వరుస.push_back(value);
+	    లేకపోతే
 		  cerr << get_fileline()
 		       << "Warning: inserting to queue<real>[" << idx << "] is"
-		          " outside bound (" << max_size << "). " << value
-		       << " was not added." << endl;
-      else  {
-	    if (max_size && (queue.size() == max_size)) {
+		          " outside bound (" << max_కొలత << "). " << value
+		       << " was not added." << పంక్తి_ముగింపు;
+      లేకపోతే  {
+	    ఒకవేళ (max_కొలత && (వరుస.size() == max_కొలత)) {
 		  cerr << get_fileline()
 		       << "Warning: insert("<< idx << ", " << value << ") removed "
-		       << queue.back() << " from already full bounded queue<real> ["
-		       << max_size << "]." << endl;
-		  queue.pop_back();
+		       << వరుస.back() << " from already full bounded queue<real> ["
+		       << max_కొలత << "]." << పంక్తి_ముగింపు;
+		  వరుస.pop_back();
 	    }
-	    queue.insert(queue.begin()+idx, value);
+	    వరుస.insert(వరుస.begin()+idx, value);
       }
 }
 
-void vvp_queue_real::push_back(double value, unsigned max_size)
+శూన్య vvp_వరుస_real::push_back(ద్విగుణ value, గుర్తులేని max_కొలత)
 {
-      if (!max_size || (queue.size() < max_size))
-	    queue.push_back(value);
-      else
+      ఒకవేళ (!max_కొలత || (వరుస.size() < max_కొలత))
+	    వరుస.push_back(value);
+      లేకపోతే
 	    cerr << get_fileline()
 	         << "Warning: push_back(" << value
 	         << ") skipped for already full bounded queue<real> ["
-	         << max_size << "]." << endl;
+	         << max_కొలత << "]." << పంక్తి_ముగింపు;
 }
 
-void vvp_queue_real::push_front(double value, unsigned max_size)
+శూన్య vvp_వరుస_real::push_front(ద్విగుణ value, గుర్తులేని max_కొలత)
 {
-      if (max_size && (queue.size() == max_size)) {
+      ఒకవేళ (max_కొలత && (వరుస.size() == max_కొలత)) {
 	    cerr << get_fileline()
 	         << "Warning: push_front(" << value << ") removed "
-	         << queue.back() << " from already full bounded queue<real> ["
-	         << max_size << "]." << endl;
-	    queue.pop_back();
+	         << వరుస.back() << " from already full bounded queue<real> ["
+	         << max_కొలత << "]." << పంక్తి_ముగింపు;
+	    వరుస.pop_back();
       }
-      queue.push_front(value);
+      వరుస.push_front(value);
 }
 
-void vvp_queue_real::erase(unsigned idx)
+శూన్య vvp_వరుస_real::erase(గుర్తులేని idx)
 {
-      assert(queue.size() > idx);
-      queue.erase(queue.begin()+idx);
+      ప్రతిజ్ఞా(వరుస.size() > idx);
+      వరుస.erase(వరుస.begin()+idx);
 }
 
-void vvp_queue_real::erase_tail(unsigned idx)
+శూన్య vvp_వరుస_real::erase_తోక(గుర్తులేని idx)
 {
-      assert(queue.size() >= idx);
-      if (queue.size() > idx)
-	    queue.resize(idx);
+      ప్రతిజ్ఞా(వరుస.size() >= idx);
+      ఒకవేళ (వరుస.size() > idx)
+	    వరుస.resize(idx);
 }
 
-void vvp_queue_string::copy_elems(vvp_object_t src, unsigned max_size)
+శూన్య vvp_వరుస_string::copy_elems(vvp_object_t src, గుర్తులేని max_కొలత)
 {
-      if (vvp_queue*src_queue = src.peek<vvp_queue>())
-	    copy_elements<string, vvp_queue_string, vvp_queue>(this, src_queue, max_size);
-      else if (vvp_darray*src_darray = src.peek<vvp_darray>())
-	    copy_elements<string, vvp_queue_string, vvp_darray>(this, src_darray, max_size);
-      else
-	    cerr << get_fileline() << "Sorry: cannot copy object to string queue." << endl;
+      ఒకవేళ (vvp_వరుస*src_వరుస = src.peek<vvp_వరుస>())
+	    copy_elements<string, vvp_వరుస_string, vvp_వరుస>(ఇది, src_వరుస, max_కొలత);
+      లేకపోతే ఒకవేళ (vvp_darray*src_darray = src.peek<vvp_darray>())
+	    copy_elements<string, vvp_వరుస_string, vvp_darray>(ఇది, src_darray, max_కొలత);
+      లేకపోతే
+	    cerr << get_fileline() << "Sorry: cannot copy object to string queue." << పంక్తి_ముగింపు;
 }
 
-void vvp_queue_string::set_word_max(unsigned adr, const string&value, unsigned max_size)
+శూన్య vvp_వరుస_string::సమితి_మాట_max(గుర్తులేని adr, స్థిరరాశి string&value, గుర్తులేని max_కొలత)
 {
-      if (adr == queue.size())
-	    if (!max_size || (queue.size() < max_size))
-		  queue.push_back(value);
-	    else
+      ఒకవేళ (adr == వరుస.size())
+	    ఒకవేళ (!max_కొలత || (వరుస.size() < max_కొలత))
+		  వరుస.push_back(value);
+	    లేకపోతే
 		  cerr << get_fileline()
 		       << "Warning: assigning to queue<string>[" << adr << "] is"
-		          " outside bound (" << max_size << "). \"" << value
-		       << "\" was not added." << endl;
-      else
-	    set_word(adr, value);
+		          " outside bound (" << max_కొలత << "). \"" << value
+		       << "\" was not added." << పంక్తి_ముగింపు;
+      లేకపోతే
+	    సమితి_మాట(adr, value);
 }
 
-void vvp_queue_string::set_word(unsigned adr, const string&value)
+శూన్య vvp_వరుస_string::సమితి_మాట(గుర్తులేని adr, స్థిరరాశి string&value)
 {
-      if (adr < queue.size())
-	    queue[adr] = value;
-      else
+      ఒకవేళ (adr < వరుస.size())
+	    వరుస[adr] = value;
+      లేకపోతే
 	    cerr << get_fileline()
 	         << "Warning: assigning to queue<string>[" << adr << "] is outside "
-	            "of size (" << queue.size() << "). \"" << value
-	         << "\" was not added." << endl;
+	            "of size (" << వరుస.size() << "). \"" << value
+	         << "\" was not added." << పంక్తి_ముగింపు;
 }
 
-void vvp_queue_string::get_word(unsigned adr, string&value)
+శూన్య vvp_వరుస_string::get_మాట(గుర్తులేని adr, string&value)
 {
-      if (adr >= queue.size())
+      ఒకవేళ (adr >= వరుస.size())
 	    value = "";
-      else
-	    value = queue[adr];
+      లేకపోతే
+	    value = వరుస[adr];
 }
 
-void vvp_queue_string::insert(unsigned idx, const string&value, unsigned max_size)
+శూన్య vvp_వరుస_string::insert(గుర్తులేని idx, స్థిరరాశి string&value, గుర్తులేని max_కొలత)
 {
 	// Inserting past the end of the queue
-      if (idx > queue.size())
+      ఒకవేళ (idx > వరుస.size())
 	    cerr << get_fileline()
 	         << "Warning: inserting to queue<string>[" << idx << "] is "
-	            "outside of size (" << queue.size() << "). \"" << value
-	         << "\" was not added." << endl;
+	            "outside of size (" << వరుస.size() << "). \"" << value
+	         << "\" was not added." << పంక్తి_ముగింపు;
 	// Inserting at the end
-      else if (idx == queue.size())
-	    if (!max_size || (queue.size() < max_size))
-		  queue.push_back(value);
-	    else
+      లేకపోతే ఒకవేళ (idx == వరుస.size())
+	    ఒకవేళ (!max_కొలత || (వరుస.size() < max_కొలత))
+		  వరుస.push_back(value);
+	    లేకపోతే
 		  cerr << get_fileline()
 		       << "Warning: inserting to queue<string>[" << idx << "] is"
-		          " outside bound (" << max_size << "). \"" << value
-		       << "\" was not added." << endl;
-      else  {
-	    if (max_size && (queue.size() == max_size)) {
+		          " outside bound (" << max_కొలత << "). \"" << value
+		       << "\" was not added." << పంక్తి_ముగింపు;
+      లేకపోతే  {
+	    ఒకవేళ (max_కొలత && (వరుస.size() == max_కొలత)) {
 		  cerr << get_fileline()
 		       << "Warning: insert("<< idx << ", \"" << value << "\") removed \""
-		       << queue.back() << "\" from already full bounded queue<string> ["
-		       << max_size << "]." << endl;
-		  queue.pop_back();
+		       << వరుస.back() << "\" from already full bounded queue<string> ["
+		       << max_కొలత << "]." << పంక్తి_ముగింపు;
+		  వరుస.pop_back();
 	    }
-	    queue.insert(queue.begin()+idx, value);
+	    వరుస.insert(వరుస.begin()+idx, value);
       }
 }
 
-void vvp_queue_string::push_back(const string&value, unsigned max_size)
+శూన్య vvp_వరుస_string::push_back(స్థిరరాశి string&value, గుర్తులేని max_కొలత)
 {
-      if (!max_size || (queue.size() < max_size))
-	    queue.push_back(value);
-      else
+      ఒకవేళ (!max_కొలత || (వరుస.size() < max_కొలత))
+	    వరుస.push_back(value);
+      లేకపోతే
 	    cerr << get_fileline()
 	         << "Warning: push_back(\"" << value
 	         << "\") skipped for already full bounded queue<string> ["
-	         << max_size << "]." << endl;
+	         << max_కొలత << "]." << పంక్తి_ముగింపు;
 }
 
-void vvp_queue_string::push_front(const string&value, unsigned max_size)
+శూన్య vvp_వరుస_string::push_front(స్థిరరాశి string&value, గుర్తులేని max_కొలత)
 {
-      if (max_size && (queue.size() == max_size)) {
+      ఒకవేళ (max_కొలత && (వరుస.size() == max_కొలత)) {
 	    cerr << get_fileline()
 	         << "Warning: push_front(\"" << value << "\") removed \""
-	         << queue.back() << "\" from already full bounded queue<string> ["
-	         << max_size << "]." << endl;
-	    queue.pop_back();
+	         << వరుస.back() << "\" from already full bounded queue<string> ["
+	         << max_కొలత << "]." << పంక్తి_ముగింపు;
+	    వరుస.pop_back();
       }
-      queue.push_front(value);
+      వరుస.push_front(value);
 }
 
-void vvp_queue_string::erase(unsigned idx)
+శూన్య vvp_వరుస_string::erase(గుర్తులేని idx)
 {
-      assert(queue.size() > idx);
-      queue.erase(queue.begin()+idx);
+      ప్రతిజ్ఞా(వరుస.size() > idx);
+      వరుస.erase(వరుస.begin()+idx);
 }
 
-void vvp_queue_string::erase_tail(unsigned idx)
+శూన్య vvp_వరుస_string::erase_తోక(గుర్తులేని idx)
 {
-      assert(queue.size() >= idx);
-      if (queue.size() > idx)
-	    queue.resize(idx);
+      ప్రతిజ్ఞా(వరుస.size() >= idx);
+      ఒకవేళ (వరుస.size() > idx)
+	    వరుస.resize(idx);
 }
 
-void vvp_queue_real::reverse_elems(void)
+శూన్య vvp_వరుస_real::తిరగేయి_elems(శూన్య)
 {
-      std::reverse(queue.begin(), queue.end());
+      std::reverse(వరుస.begin(), వరుస.చివర());
 }
 
-void vvp_queue_string::reverse_elems(void)
+శూన్య vvp_వరుస_string::తిరగేయి_elems(శూన్య)
 {
-      std::reverse(queue.begin(), queue.end());
+      std::reverse(వరుస.begin(), వరుస.చివర());
 }
 
-void vvp_queue_real::sort_elems(bool ascending)
+శూన్య vvp_వరుస_real::క్రమీకరించు_elems(తార్కిక ascending)
 {
-      if (ascending) std::sort(queue.begin(), queue.end());
-      else std::sort(queue.begin(), queue.end(), std::greater<double>());
+      ఒకవేళ (ascending) std::sort(వరుస.begin(), వరుస.చివర());
+      లేకపోతే std::sort(వరుస.begin(), వరుస.చివర(), std::greater<ద్విగుణ>());
 }
 
-void vvp_queue_real::shuffle_elems(void)
+శూన్య vvp_వరుస_real::shuffle_elems(శూన్య)
 {
-      std::shuffle(queue.begin(), queue.end(), shuffle_rng());
+      std::shuffle(వరుస.begin(), వరుస.చివర(), shuffle_rng());
 }
 
-void vvp_queue_string::sort_elems(bool ascending)
+శూన్య vvp_వరుస_string::క్రమీకరించు_elems(తార్కిక ascending)
 {
-      if (ascending) std::sort(queue.begin(), queue.end());
-      else std::sort(queue.begin(), queue.end(), std::greater<string>());
+      ఒకవేళ (ascending) std::sort(వరుస.begin(), వరుస.చివర());
+      లేకపోతే std::sort(వరుస.begin(), వరుస.చివర(), std::greater<string>());
 }
 
-void vvp_queue_string::shuffle_elems(void)
+శూన్య vvp_వరుస_string::shuffle_elems(శూన్య)
 {
-      std::shuffle(queue.begin(), queue.end(), shuffle_rng());
+      std::shuffle(వరుస.begin(), వరుస.చివర(), shuffle_rng());
 }
 
-void vvp_queue_vec4::copy_elems(vvp_object_t src, unsigned max_size)
+శూన్య vvp_వరుస_vec4::copy_elems(vvp_object_t src, గుర్తులేని max_కొలత)
 {
-      if (vvp_queue*src_queue = src.peek<vvp_queue>())
-	    copy_elements<vvp_vector4_t, vvp_queue_vec4, vvp_queue>(this, src_queue, max_size);
-      else if (vvp_darray*src_darray = src.peek<vvp_darray>())
-	    copy_elements<vvp_vector4_t, vvp_queue_vec4, vvp_darray>(this, src_darray, max_size);
-      else
-	    cerr << get_fileline() << "Sorry: cannot copy object to vector queue." << endl;
+      ఒకవేళ (vvp_వరుస*src_వరుస = src.peek<vvp_వరుస>())
+	    copy_elements<vvp_vector4_t, vvp_వరుస_vec4, vvp_వరుస>(ఇది, src_వరుస, max_కొలత);
+      లేకపోతే ఒకవేళ (vvp_darray*src_darray = src.peek<vvp_darray>())
+	    copy_elements<vvp_vector4_t, vvp_వరుస_vec4, vvp_darray>(ఇది, src_darray, max_కొలత);
+      లేకపోతే
+	    cerr << get_fileline() << "Sorry: cannot copy object to vector queue." << పంక్తి_ముగింపు;
 }
 
-void vvp_queue_vec4::set_word_max(unsigned adr, const vvp_vector4_t&value, unsigned max_size)
+శూన్య vvp_వరుస_vec4::సమితి_మాట_max(గుర్తులేని adr, స్థిరరాశి vvp_vector4_t&value, గుర్తులేని max_కొలత)
 {
-      if (adr == queue.size())
-	    if (!max_size || (queue.size() < max_size))
-		  queue.push_back(value);
-	    else
+      ఒకవేళ (adr == వరుస.size())
+	    ఒకవేళ (!max_కొలత || (వరుస.size() < max_కొలత))
+		  వరుస.push_back(value);
+	    లేకపోతే
 		  cerr << get_fileline()
 		       << "Warning: assigning to queue<vector>[" << adr << "] is"
-		          " outside bound (" << max_size << "). " << value
-		       << " was not added." << endl;
-      else
-	    set_word(adr, value);
+		          " outside bound (" << max_కొలత << "). " << value
+		       << " was not added." << పంక్తి_ముగింపు;
+      లేకపోతే
+	    సమితి_మాట(adr, value);
 }
 
-void vvp_queue_vec4::set_word(unsigned adr, const vvp_vector4_t&value)
+శూన్య vvp_వరుస_vec4::సమితి_మాట(గుర్తులేని adr, స్థిరరాశి vvp_vector4_t&value)
 {
-      if (adr < queue.size())
-	    queue[adr] = value;
-      else
+      ఒకవేళ (adr < వరుస.size())
+	    వరుస[adr] = value;
+      లేకపోతే
 	    cerr << get_fileline()
 	         << "Warning: assigning to queue<vector>[" << adr << "] is outside "
-	            "of size (" << queue.size() << "). " << value
-	         << " was not added." << endl;
+	            "of size (" << వరుస.size() << "). " << value
+	         << " was not added." << పంక్తి_ముగింపు;
 }
 
-void vvp_queue_vec4::get_word(unsigned adr, vvp_vector4_t&value)
+శూన్య vvp_వరుస_vec4::get_మాట(గుర్తులేని adr, vvp_vector4_t&value)
 {
-      if (adr >= queue.size())
-	    value = vvp_vector4_t(queue[0].size());
-      else
-	    value = queue[adr];
+      ఒకవేళ (adr >= వరుస.size())
+	    value = vvp_vector4_t(వరుస[0].size());
+      లేకపోతే
+	    value = వరుస[adr];
 }
 
-void vvp_queue_vec4::insert(unsigned idx, const vvp_vector4_t&value, unsigned max_size)
+శూన్య vvp_వరుస_vec4::insert(గుర్తులేని idx, స్థిరరాశి vvp_vector4_t&value, గుర్తులేని max_కొలత)
 {
 	// Inserting past the end of the queue
-      if (idx > queue.size())
+      ఒకవేళ (idx > వరుస.size())
 	    cerr << get_fileline()
 	         << "Warning: inserting to queue<vector[" << value.size()
-	         << "]>[" << idx << "] is outside of size (" << queue.size()
-	         << "). " << value << " was not added." << endl;
+	         << "]>[" << idx << "] is outside of size (" << వరుస.size()
+	         << "). " << value << " was not added." << పంక్తి_ముగింపు;
 	// Inserting at the end
-      else if (idx == queue.size())
-	    if (!max_size || (queue.size() < max_size))
-		  queue.push_back(value);
-	    else
+      లేకపోతే ఒకవేళ (idx == వరుస.size())
+	    ఒకవేళ (!max_కొలత || (వరుస.size() < max_కొలత))
+		  వరుస.push_back(value);
+	    లేకపోతే
 		  cerr << get_fileline()
 		       << "Warning: inserting to queue<vector[" << value.size()
-		       << "]>[" << idx << "] is outside bound (" << max_size
-		       << "). " << value << " was not added." << endl;
-      else  {
-	    if (max_size && (queue.size() == max_size)) {
+		       << "]>[" << idx << "] is outside bound (" << max_కొలత
+		       << "). " << value << " was not added." << పంక్తి_ముగింపు;
+      లేకపోతే  {
+	    ఒకవేళ (max_కొలత && (వరుస.size() == max_కొలత)) {
 		  cerr << get_fileline()
 		       << "Warning: insert("<< idx << ", " << value << ") removed "
-		       << queue.back() << " from already full bounded queue<vector["
-		       << value.size() << "]> [" << max_size << "]." << endl;
-		  queue.pop_back();
+		       << వరుస.back() << " from already full bounded queue<vector["
+		       << value.size() << "]> [" << max_కొలత << "]." << పంక్తి_ముగింపు;
+		  వరుస.pop_back();
 	    }
-	    queue.insert(queue.begin()+idx, value);
+	    వరుస.insert(వరుస.begin()+idx, value);
       }
 }
 
-void vvp_queue_vec4::push_back(const vvp_vector4_t&value, unsigned max_size)
+శూన్య vvp_వరుస_vec4::push_back(స్థిరరాశి vvp_vector4_t&value, గుర్తులేని max_కొలత)
 {
-      if (!max_size || (queue.size() < max_size))
-	    queue.push_back(value);
-      else
+      ఒకవేళ (!max_కొలత || (వరుస.size() < max_కొలత))
+	    వరుస.push_back(value);
+      లేకపోతే
 	    cerr << get_fileline()
 	         << "Warning: push_back(" << value
 	         << ") skipped for already full bounded queue<vector["
-	         << value.size() << "]> [" << max_size << "]." << endl;
+	         << value.size() << "]> [" << max_కొలత << "]." << పంక్తి_ముగింపు;
 }
 
-void vvp_queue_vec4::push_front(const vvp_vector4_t&value, unsigned max_size)
+శూన్య vvp_వరుస_vec4::push_front(స్థిరరాశి vvp_vector4_t&value, గుర్తులేని max_కొలత)
 {
-      if (max_size && (queue.size() == max_size)) {
+      ఒకవేళ (max_కొలత && (వరుస.size() == max_కొలత)) {
 	    cerr << get_fileline()
 	         << "Warning: push_front(" << value << ") removed "
-	         << queue.back() << " from already full bounded queue<vector["
-	         << value.size() << "]> [" << max_size << "]." << endl;
-	    queue.pop_back();
+	         << వరుస.back() << " from already full bounded queue<vector["
+	         << value.size() << "]> [" << max_కొలత << "]." << పంక్తి_ముగింపు;
+	    వరుస.pop_back();
       }
-      queue.push_front(value);
+      వరుస.push_front(value);
 }
 
-void vvp_queue_vec4::erase(unsigned idx)
+శూన్య vvp_వరుస_vec4::erase(గుర్తులేని idx)
 {
-      assert(queue.size() > idx);
-      queue.erase(queue.begin()+idx);
+      ప్రతిజ్ఞా(వరుస.size() > idx);
+      వరుస.erase(వరుస.begin()+idx);
 }
 
-void vvp_queue_vec4::erase_tail(unsigned idx)
+శూన్య vvp_వరుస_vec4::erase_తోక(గుర్తులేని idx)
 {
-      assert(queue.size() >= idx);
-      if (queue.size() > idx)
-	    queue.resize(idx);
+      ప్రతిజ్ఞా(వరుస.size() >= idx);
+      ఒకవేళ (వరుస.size() > idx)
+	    వరుస.resize(idx);
 }
 
-void vvp_queue_vec4::reverse_elems(void)
+శూన్య vvp_వరుస_vec4::తిరగేయి_elems(శూన్య)
 {
-      std::reverse(queue.begin(), queue.end());
+      std::reverse(వరుస.begin(), వరుస.చివర());
 }
 
-void vvp_queue_vec4::sort_elems(bool ascending)
+శూన్య vvp_వరుస_vec4::క్రమీకరించు_elems(తార్కిక ascending)
 {
-      if (ascending) {
-	    std::sort(queue.begin(), queue.end(), vec4_lt_unsigned);
-      } else {
-	    std::sort(queue.begin(), queue.end(),
-		      [](const vvp_vector4_t&a, const vvp_vector4_t&b) {
-			    return vec4_lt_unsigned(b, a);
+      ఒకవేళ (ascending) {
+	    std::sort(వరుస.begin(), వరుస.చివర(), vec4_lt_unsigned);
+      } లేకపోతే {
+	    std::sort(వరుస.begin(), వరుస.చివర(),
+		      [](స్థిరరాశి vvp_vector4_t&a, స్థిరరాశి vvp_vector4_t&b) {
+			    తిరిగి vec4_lt_unsigned(b, a);
 		      });
       }
 }
 
-void vvp_queue_vec4::shuffle_elems(void)
+శూన్య vvp_వరుస_vec4::shuffle_elems(శూన్య)
 {
-      std::shuffle(queue.begin(), queue.end(), shuffle_rng());
+      std::shuffle(వరుస.begin(), వరుస.చివర(), shuffle_rng());
 }

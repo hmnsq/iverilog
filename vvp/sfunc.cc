@@ -19,9 +19,9 @@
 
 # include  "compile.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
 # include "vvp_cleanup.h"
-#endif
+#అయితే_ముగింపు
 # include  "sfunc.h"
 # include  <cstdlib>
 # include  <cstring>
@@ -30,7 +30,7 @@
 
 
 sfunc_core::sfunc_core(vvp_net_t*net, vpiHandle sys,
-		       unsigned argc, vpiHandle*argv)
+		       గుర్తులేని argc, vpiHandle*argv)
 : vvp_wide_fun_core(net, argc)
 {
       sys_  = sys;
@@ -40,150 +40,150 @@ sfunc_core::sfunc_core(vvp_net_t*net, vpiHandle sys,
 
 sfunc_core::~sfunc_core()
 {
-      delete sys_;
-#ifdef CHECK_WITH_VALGRIND
-      for (unsigned i = 0; i < argc_; i += 1) {
+      తొలగించు sys_;
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+      కొరకు (గుర్తులేని i = 0; i < argc_; i += 1) {
 	    constant_delete(argv_[i]);
       }
-#endif
-      delete [] argv_;
+#అయితే_ముగింపు
+      తొలగించు [] argv_;
 }
 
 /*
  * This method is only called when a trigger event occurs. Just arrange for
  * the function to be called.
  */
-void sfunc_core::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&/*bit*/,
+శూన్య sfunc_core::recv_vec4(vvp_net_ptr_t, స్థిరరాశి vvp_vector4_t&/*బిట్టు*/,
                            vvp_context_t)
 {
-      schedule_functor(this);
+      కాలపట్టిక_functor(ఇది);
 }
 
-void sfunc_core::recv_vec4_from_inputs(unsigned port)
+శూన్య sfunc_core::recv_vec4_from_inputs(గుర్తులేని పోర్టు)
 {
-      vpiHandle vpi = argv_[port];
-      struct __vpiBinaryConst*obj = dynamic_cast<__vpiBinaryConst*>(vpi);
-      assert(obj);
+      vpiHandle vpi = argv_[పోర్టు];
+      నిర్మాణం __vpiBinaryConst*obj = dynamic_cast<__vpiBinaryConst*>(vpi);
+      ప్రతిజ్ఞా(obj);
 
-      obj->bits = value(port);
+      obj->బిట్లు = value(పోర్టు);
 
         /* Schedule the actual call after this finishes. */
-      schedule_functor(this);
+      కాలపట్టిక_functor(ఇది);
 }
 
-void sfunc_core::recv_real_from_inputs(unsigned port)
+శూన్య sfunc_core::recv_real_from_inputs(గుర్తులేని పోర్టు)
 {
-      vpiHandle vpi = argv_[port];
+      vpiHandle vpi = argv_[పోర్టు];
       __vpiRealConst*obj = dynamic_cast<__vpiRealConst*>(vpi);
-      assert(obj);
+      ప్రతిజ్ఞా(obj);
 
-      obj->value = value_r(port);
+      obj->value = విలువ_r(పోర్టు);
 
         /* Schedule the actual call after this finishes. */
-      schedule_functor(this);
+      కాలపట్టిక_functor(ఇది);
 }
 
-void sfunc_core::run_run()
+శూన్య sfunc_core::నిరంతరం_నిరంతరం()
 {
       vpip_execute_vpi_call(0, sys_);
 }
 
-static int make_vpi_argv(unsigned argc, vpiHandle*vpi_argv,
-			const char*arg_string)
+స్థిర పూర్ణాంకం make_vpi_argv(గుర్తులేని argc, vpiHandle*vpi_argv,
+			స్థిరరాశి అక్షరం*arg_string)
 {
-      unsigned idx = 0;
-      const char*cp = arg_string;
-      int return_type = 0;
+      గుర్తులేని idx = 0;
+      స్థిరరాశి అక్షరం*cp = arg_string;
+      పూర్ణాంకం return_type = 0;
 
-      switch (*cp) {
-	  case 'r': // real result
+      ఎంపిక (*cp) {
+	  స్థితి 'r': // real result
 	    cp += 1;
 	    return_type = -vpiRealVal;
-	    break;
+	    ఆపు;
 
-	  case 'v': // vector4_t
+	  స్థితి 'v': // vector4_t
 	    cp += 1;
 	    return_type = strtoul(cp, 0, 10);
 	    cp += strspn(cp, "0123456789");
-	    break;
+	    ఆపు;
 
-	  default:
+	  అప్రమేయ:
 	    fprintf(stderr, "Unsupported type %c(%d).\n", *cp, *cp);
-	    assert(0);
-	    break;
+	    ప్రతిజ్ఞా(0);
+	    ఆపు;
       }
 
-      while (*cp) {
-	    assert(idx < argc);
+      అయితే (*cp) {
+	    ప్రతిజ్ఞా(idx < argc);
 
-	    switch (*cp) {
-		case 'r': // real
+	    ఎంపిక (*cp) {
+		స్థితి 'r': // real
 		  cp += 1;
 		  vpi_argv[idx] = vpip_make_real_const(0.0);
-		  break;
+		  ఆపు;
 
-		case 'v': { // vector4_t (v<n>)
+		స్థితి 'v': { // vector4_t (v<n>)
 		      cp += 1;
-		      unsigned wid = strtoul(cp, 0, 10);
+		      గుర్తులేని wid = strtoul(cp, 0, 10);
 		      cp += strspn(cp, "0123456789");
-		      vpi_argv[idx] = vpip_make_binary_const(wid, "x");
-		      break;
+		      vpi_argv[idx] = vpip_make_ద్విమాన_const(wid, "x");
+		      ఆపు;
 		}
 
-		default:
+		అప్రమేయ:
 		  fprintf(stderr, "Unsupported type %c(%d).\n", *cp, *cp);
-		  assert(0);
+		  ప్రతిజ్ఞా(0);
 	    }
 	    idx += 1;
       }
 
-      assert(idx == argc);
-      return return_type;
+      ప్రతిజ్ఞా(idx == argc);
+      తిరిగి return_type;
 }
 
 
-void compile_sfunc(char*label, char*name,  char*format_string,
-		   long file_idx, long lineno,
-		   unsigned argc, struct symb_s*argv,
-                   char*trigger_label)
+శూన్య compile_sfunc(అక్షరం*label, అక్షరం*name,  అక్షరం*format_string,
+		   దీర్ఘ file_idx, దీర్ఘ lineno,
+		   గుర్తులేని argc, నిర్మాణం symb_s*argv,
+                   అక్షరం*trigger_label)
 {
-      unsigned vec4_stack = 0;
-      unsigned real_stack = 0;
-      unsigned string_stack = 0;
-      vpiHandle*vpi_argv = new vpiHandle[argc];
-      int val_code = make_vpi_argv(argc, vpi_argv, format_string);
-      unsigned val_width = 0;
-      delete[] format_string;
+      గుర్తులేని vec4_దొంతర = 0;
+      గుర్తులేని real_దొంతర = 0;
+      గుర్తులేని string_దొంతర = 0;
+      vpiHandle*vpi_argv = కొత్త vpiHandle[argc];
+      పూర్ణాంకం val_సంకేతం = make_vpi_argv(argc, vpi_argv, format_string);
+      గుర్తులేని val_వెడల్పు = 0;
+      తొలగించు[] format_string;
 
 	// The make_vpi_argv returns for the function return value a
 	// >0 value for the vector width if this is a vector. Convert
 	// it to the form that the vpip_build_vpi_call uses.
-      if (val_code > 0) {
-	    val_width = val_code;
-	    val_code = -vpiVectorVal;
+      ఒకవేళ (val_సంకేతం > 0) {
+	    val_వెడల్పు = val_సంకేతం;
+	    val_సంకేతం = -vpi_సదిశ_Val;
       }
 
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_net_t*ptr = కొత్త vvp_net_t;
 
-      vpiHandle sys = vpip_build_vpi_call(name, val_code, val_width, ptr,
-                                          true, false, argc, vpi_argv,
-					  vec4_stack, real_stack, string_stack,
+      vpiHandle sys = vpip_build_vpi_call(name, val_సంకేతం, val_వెడల్పు, ptr,
+                                          నిజం, అబద్ధం, argc, vpi_argv,
+					  vec4_దొంతర, real_దొంతర, string_దొంతర,
                                           file_idx, lineno);
-      assert(sys);
+      ప్రతిజ్ఞా(sys);
 
 	/* Create and connect the functor to the label. */
-      sfunc_core*score = new sfunc_core(ptr, sys, argc, vpi_argv);
+      sfunc_core*score = కొత్త sfunc_core(ptr, sys, argc, vpi_argv);
       ptr->fun = score;
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_చిహ్నం(label, ptr);
+      విడుదల(label);
 
 	/* Link the inputs to the functor. */
       wide_inputs_connect(score, argc, argv);
-      free(argv);
+      విడుదల(argv);
 
         /* If this function has a trigger event, connect the functor to
            that event. */
-      if (trigger_label)
-            input_connect(ptr, 0, trigger_label);
-      delete[] name;
+      ఒకవేళ (trigger_label)
+            ఆదానం_connect(ptr, 0, trigger_label);
+      తొలగించు[] name;
 }

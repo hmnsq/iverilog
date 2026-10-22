@@ -1,5 +1,5 @@
-#ifndef IVL_sfunc_H
-#define IVL_sfunc_H
+#నిర్వచితం_కాకపోతే IVL_sfunc_H
+#నిర్వచించు IVL_sfunc_H
 /*
  * Copyright (c) 2006-2025 Stephen Williams (steve@icarus.com)
  *
@@ -21,26 +21,26 @@
 
 # include  "config.h"
 
-class sfunc_core : public vvp_wide_fun_core, protected vvp_gen_event_s {
+class sfunc_core : బహిరంగ vvp_wide_fun_core, రక్షిత vvp_gen_event_s {
 
-    public:
-      sfunc_core(vvp_net_t*ptr, vpiHandle sys, unsigned argc, vpiHandle*argv);
+    బహిరంగ:
+      sfunc_core(vvp_net_t*ptr, vpiHandle sys, గుర్తులేని argc, vpiHandle*argv);
       ~sfunc_core() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t context) override;
 
-    private:
-      void recv_vec4_from_inputs(unsigned port) override;
-      void recv_real_from_inputs(unsigned port) override;
+    అంతరంగ:
+      శూన్య recv_vec4_from_inputs(గుర్తులేని పోర్టు) override;
+      శూన్య recv_real_from_inputs(గుర్తులేని పోర్టు) override;
 
-      void run_run() override;
+      శూన్య నిరంతరం_నిరంతరం() override;
 
 
-    private:
+    అంతరంగ:
       vpiHandle sys_;
-      unsigned  argc_;
+      గుర్తులేని  argc_;
       vpiHandle*argv_;
 };
 
-#endif /* IVL_sfunc_H */
+#అయితే_ముగింపు /* IVL_sfunc_H */

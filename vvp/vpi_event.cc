@@ -25,7 +25,7 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-inline __vpiNamedEvent::__vpiNamedEvent(__vpiScope*sc, const char*nam)
+అంతఃవరుస __vpiNamedEvent::__vpiNamedEvent(__vpiScope*sc, స్థిరరాశి అక్షరం*nam)
 {
       scope_ = sc;
       name_ = vpip_name_string(nam);
@@ -34,36 +34,36 @@ inline __vpiNamedEvent::__vpiNamedEvent(__vpiScope*sc, const char*nam)
 
 __vpiNamedEvent::~__vpiNamedEvent()
 {
-      while (callbacks_) {
-	    struct __vpiCallback *tmp = callbacks_->next;
-	    delete callbacks_;
+      అయితే (callbacks_) {
+	    నిర్మాణం __vpiCallback *tmp = callbacks_->తదుపరి_2;
+	    తొలగించు callbacks_;
 	    callbacks_ = tmp;
       }
 }
 
-int __vpiNamedEvent::get_type_code(void) const
-{ return vpiNamedEvent; }
+పూర్ణాంకం __vpiNamedEvent::get_type_సంకేతం(శూన్య) స్థిరరాశి
+{ తిరిగి vpiNamedEvent; }
 
-int __vpiNamedEvent::vpi_get(int code)
+పూర్ణాంకం __vpiNamedEvent::vpi_get(పూర్ణాంకం code)
 {
-      switch (code) {
+      ఎంపిక (code) {
 
-	  case vpiAutomatic:
-	    return scope_->is_automatic()? 1 : 0;
+	  స్థితి vpiAutomatic:
+	    తిరిగి scope_->is_automatic()? 1 : 0;
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
-char* __vpiNamedEvent::vpi_get_str(int code)
+అక్షరం* __vpiNamedEvent::vpi_get_str(పూర్ణాంకం code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      ఒకవేళ (code == vpiFile) {  // Not implemented for now!
+	    తిరిగి simple_సమితి_rbuf_str(file_పేర్లు[0]);
       }
-      return generic_get_str(code, scope_, name_, NULL);
+      తిరిగి generic_get_str(code, scope_, name_, ఖాళీ);
 }
 
-vpiHandle __vpiNamedEvent::vpi_put_value(p_vpi_value, int)
+vpiHandle __vpiNamedEvent::vpi_put_విలువ(p_vpi_విలువ, పూర్ణాంకం)
 {
 	// p_vpi_value may be NULL, and an event doesn't care
 	// what the value is
@@ -71,30 +71,30 @@ vpiHandle __vpiNamedEvent::vpi_put_value(p_vpi_value, int)
       vvp_net_ptr_t dest(funct, 0);
       vvp_send_vec4(dest, val, vthread_get_wt_context());
 
-      return this;
+      తిరిగి ఇది;
 }
 
-vpiHandle __vpiNamedEvent::vpi_handle(int code)
+vpiHandle __vpiNamedEvent::vpi_handle(పూర్ణాంకం code)
 {
-      switch (code) {
-	  case vpiScope:
-	    return scope_;
+      ఎంపిక (code) {
+	  స్థితి vpiScope:
+	    తిరిగి scope_;
 
-	  case vpiModule:
-	    return vpip_module(scope_);
+	  స్థితి vpiModule:
+	    తిరిగి vpip_module(scope_);
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
 
-vpiHandle vpip_make_named_event(const char*name, vvp_net_t*funct)
+vpiHandle vpip_make_named_event(స్థిరరాశి అక్షరం*name, vvp_net_t*funct)
 {
-      __vpiNamedEvent*obj = new __vpiNamedEvent(vpip_peek_current_scope(), name);
+      __vpiNamedEvent*obj = కొత్త __vpiNamedEvent(vpip_peek_current_scope(), name);
 
       obj->funct = funct;
 
-      return obj;
+      తిరిగి obj;
 }
 
 /*
@@ -110,28 +110,28 @@ vpiHandle vpip_make_named_event(const char*name, vvp_net_t*funct)
  * We can not use vpi_free_object() here since it does not really
  * delete the callback.
  */
-void __vpiNamedEvent::run_vpi_callbacks()
+శూన్య __vpiNamedEvent::నిరంతరం_vpi_callbacks()
 {
-      struct __vpiCallback*next = callbacks_;
-      struct __vpiCallback*prev = 0;
-      while (next) {
-	    struct __vpiCallback*cur = next;
-	    next = cur->next;
+      నిర్మాణం __vpiCallback*తదుపరి_2 = callbacks_;
+      నిర్మాణం __vpiCallback*prev = 0;
+      అయితే (తదుపరి_2) {
+	    నిర్మాణం __vpiCallback*cur = తదుపరి_2;
+	    తదుపరి_2 = cur->తదుపరి_2;
 
-	    if (cur->cb_data.cb_rtn != 0) {
+	    ఒకవేళ (cur->cb_దత్తాంశం.cb_rtn != 0) {
 		  callback_execute(cur);
 		  prev = cur;
 
-	    } else if (prev == 0) {
-		  callbacks_ = next;
-		  cur->next = 0;
-		  delete cur;
+	    } లేకపోతే ఒకవేళ (prev == 0) {
+		  callbacks_ = తదుపరి_2;
+		  cur->తదుపరి_2 = 0;
+		  తొలగించు cur;
 
-	    } else {
-		  assert(prev->next == cur);
-		  prev->next = next;
-		  cur->next = 0;
-		  delete cur;
+	    } లేకపోతే {
+		  ప్రతిజ్ఞా(prev->తదుపరి_2 == cur);
+		  prev->తదుపరి_2 = తదుపరి_2;
+		  cur->తదుపరి_2 = 0;
+		  తొలగించు cur;
 	    }
       }
 }

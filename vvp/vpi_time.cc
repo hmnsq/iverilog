@@ -35,34 +35,34 @@
  * vpi_time_precision is the precision of the simulation clock. It is
  * set by the :vpi_time_precision directive in the vvp source file.
  */
-static int vpi_time_precision = 0;
+స్థిర పూర్ణాంకం vpi_సమయం_precision = 0;
 
-static struct __vpiSystemTime global_simtime;
+స్థిర నిర్మాణం __vpiSystemTime global_simtime;
 
-void vpip_time_to_timestruct(struct t_vpi_time*ts, vvp_time64_t ti)
+శూన్య vpip_సమయం_గమ్యం_timestruct(నిర్మాణం t_vpi_సమయం*ts, vvp_time64_t ti)
 {
-      ts->low  = ti & 0xFFFFFFFF;
-      ts->high = (ti >> 32) & 0xFFFFFFFF;
+      ts->దిగువ  = ti & 0xFFFFFFFF;
+      ts->ఎగువ = (ti >> 32) & 0xFFFFFFFF;
 }
 
-vvp_time64_t vpip_timestruct_to_time(const struct t_vpi_time*ts)
+vvp_time64_t vpip_timestruct_గమ్యం_సమయం(స్థిరరాశి నిర్మాణం t_vpi_సమయం*ts)
 {
-      vvp_time64_t ti = ts->high;
+      vvp_time64_t ti = ts->ఎగువ;
       ti <<= 32;
-      ti += ts->low & 0xffffffff;
-      return ti;
+      ti += ts->దిగువ & 0xffffffff;
+      తిరిగి ti;
 }
 
-double vpip_time_to_scaled_real(vvp_time64_t ti, const __vpiScope*scope)
+ద్విగుణ vpip_సమయం_గమ్యం_scaled_real(vvp_time64_t ti, స్థిరరాశి __vpiScope*scope)
 {
-      double val;
-      int scale = 0;
-      if (scope) scale = vpi_time_precision - scope->time_units;
+      ద్విగుణ val;
+      పూర్ణాంకం scale = 0;
+      ఒకవేళ (scope) scale = vpi_సమయం_precision - scope->సమయం_units;
 
-      if (scale >= 0) val = (double)ti * pow(10.0, scale);
-      else val = (double)ti / pow(10.0, -scale);
+      ఒకవేళ (scale >= 0) val = (ద్విగుణ)ti * ఘాతం(10.0, scale);
+      లేకపోతే val = (ద్విగుణ)ti / ఘాతం(10.0, -scale);
 
-      return val;
+      తిరిగి val;
 }
 
 /*
@@ -70,239 +70,239 @@ double vpip_time_to_scaled_real(vvp_time64_t ti, const __vpiScope*scope)
  * does not check for overflow. It is only used for modpath delays and
  * they are required to be non-negative.
  */
-vvp_time64_t vpip_scaled_real_to_time64(double val, const __vpiScope*scope)
+vvp_time64_t vpip_scaled_real_గమ్యం_time64(ద్విగుణ val, స్థిరరాశి __vpiScope*scope)
 {
-      int shift = 0;
-      if (scope) shift = scope->time_units - scope->time_precision;
-      assert(shift >= 0);
+      పూర్ణాంకం జరుపు = 0;
+      ఒకవేళ (scope) జరుపు = scope->సమయం_units - scope->సమయం_precision;
+      ప్రతిజ్ఞా(జరుపు >= 0);
 
-      assert(val >= 0);
+      ప్రతిజ్ఞా(val >= 0);
 
 	// Scale to the local precision and then round away from zero.
-      double scale = pow(10.0L, shift);
+      ద్విగుణ scale = ఘాతం(10.0L, జరుపు);
       val *= scale;
 
       vvp_time64_t delay = (vvp_time64_t) (val + 0.5);
 
 	// If needed now scale the value to the simulator precision.
-      if (scope) {
-	    shift = scope->time_precision - vpi_time_precision;
-	    assert(shift >= 0);
-	    for (int lp = 0; lp <  shift; lp += 1) delay *= 10;
+      ఒకవేళ (scope) {
+	    జరుపు = scope->సమయం_precision - vpi_సమయం_precision;
+	    ప్రతిజ్ఞా(జరుపు >= 0);
+	    కొరకు (పూర్ణాంకం lp = 0; lp <  జరుపు; lp += 1) delay *= 10;
       }
 
-      return delay;
+      తిరిగి delay;
 }
 
-static void timevar_get_value(vpiHandle ref, s_vpi_value*vp, bool is_int_func,
-                              bool is_stime)
+స్థిర శూన్య timevar_get_విలువ(vpiHandle ref, s_vpi_విలువ*vp, తార్కిక is_int_func,
+                              తార్కిక is_stime)
 {
 	/* Keep a persistent structure for passing time values back to
 	   the caller. */
-      static struct t_vpi_time time_value;
+      స్థిర నిర్మాణం t_vpi_సమయం సమయం_విలువ;
 
-      struct __vpiSystemTime*rfp = dynamic_cast<__vpiSystemTime*>(ref);
-      unsigned long num_bits;
-      vvp_time64_t x, simtime = schedule_simtime();
-      int units = rfp->scope? rfp->scope->time_units : vpi_time_precision;
+      నిర్మాణం __vpiSystemTime*rfp = dynamic_cast<__vpiSystemTime*>(ref);
+      గుర్తులేని దీర్ఘ అంకె_బిట్లు;
+      vvp_time64_t x, simtime = కాలపట్టిక_simtime();
+      పూర్ణాంకం units = rfp->scope? rfp->scope->సమయం_units : vpi_సమయం_precision;
 
-      static const size_t RBUF_USE_SIZE = 128;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      స్థిర స్థిరరాశి size_t RBUF_USE_కొలత = 128;
+      అక్షరం*rbuf = static_cast<అక్షరం *>(need_ఫలితం_buf(RBUF_USE_కొలత, RBUF_VAL));
 
 	/* Calculate the divisor needed to scale the simulation time
 	   (in time_precision units) to time units of the scope. */
-      vvp_time64_t divisor = 1;
-      while (units > vpi_time_precision) {
-	    divisor *= 10;
+      vvp_time64_t భాజకం = 1;
+      అయితే (units > vpi_సమయం_precision) {
+	    భాజకం *= 10;
 	    units -= 1;
       }
 
 	/* Scale the simtime, and use the modulus to round up if
 	   appropriate. */
-      vvp_time64_t simtime_fraction = simtime % divisor;
-      simtime /= divisor;
+      vvp_time64_t simtime_fraction = simtime % భాజకం;
+      simtime /= భాజకం;
 
-      if ((divisor >= 10) && (simtime_fraction >= (divisor/2)))
+      ఒకవేళ ((భాజకం >= 10) && (simtime_fraction >= (భాజకం/2)))
 	    simtime += 1;
 
 	/* If this is a call to $stime only return the lower 32 bits. */
-      if (is_stime) simtime &= 0xffffffff;
+      ఒకవేళ (is_stime) simtime &= 0xffffffff;
 
-      switch (vp->format) {
-	  case vpiObjTypeVal:
+      ఎంపిక (vp->format) {
+	  స్థితి vpiObjTypeVal:
 	      /* The default format is vpiTimeVal. */
-	    vp->format = vpiTimeVal;
+	    vp->format = vpi_సమయం_Val;
 	    // fallthrough
-	  case vpiTimeVal:
-	    vp->value.time = &time_value;
-	    vp->value.time->type = vpiSimTime;
-	    vpip_time_to_timestruct(vp->value.time, simtime);
-	    break;
+	  స్థితి vpi_సమయం_Val:
+	    vp->value.time = &సమయం_విలువ;
+	    vp->value.time->type = vpi_Sim_సమయం;
+	    vpip_సమయం_గమ్యం_timestruct(vp->value.time, simtime);
+	    ఆపు;
 
-	  case vpiRealVal:
+	  స్థితి vpiRealVal:
 	      /* If this is an integer based call (anything but $realtime)
 	       * just return the value as a double. */
-	    if (is_int_func)  vp->value.real = double (simtime);
+	    ఒకవేళ (is_int_func)  vp->value.real = ద్విగుణ (simtime);
 	      /* This is a call to $realtime to return a real value so
 	       * scale this using the scaled real rules. */
-	    else vp->value.real = vpip_time_to_scaled_real(schedule_simtime(),
+	    లేకపోతే vp->value.real = vpip_సమయం_గమ్యం_scaled_real(కాలపట్టిక_simtime(),
 						           rfp->scope);
-	    break;
+	    ఆపు;
 
-	  case vpiBinStrVal:
+	  స్థితి vpiBinStrVal:
 	    x = simtime;
-	    num_bits = 8 * sizeof(vvp_time64_t);
+	    అంకె_బిట్లు = 8 * పరిమాణం(vvp_time64_t);
 
-	    rbuf[num_bits] = 0;
-	    for (unsigned i = 1; i <= num_bits; i++) {
-	      rbuf[num_bits-i] = (x  & 1) ? '1' : '0';
+	    rbuf[అంకె_బిట్లు] = 0;
+	    కొరకు (గుర్తులేని i = 1; i <= అంకె_బిట్లు; i++) {
+	      rbuf[అంకె_బిట్లు-i] = (x  & 1) ? '1' : '0';
 	      x = x >> 1;
 	    }
 
 	    vp->value.str = rbuf;
-	    break;
+	    ఆపు;
 
-	  case vpiDecStrVal:
-	    snprintf(rbuf, RBUF_USE_SIZE, "%" TIME_FMT_U, simtime);
+	  స్థితి vpiDecStrVal:
+	    snprintf(rbuf, RBUF_USE_కొలత, "%" సమయం_FMT_U, simtime);
 	    vp->value.str = rbuf;
-	    break;
+	    ఆపు;
 
-	  case vpiOctStrVal:
-	    snprintf(rbuf, RBUF_USE_SIZE, "%" TIME_FMT_O, simtime);
+	  స్థితి vpiOctStrVal:
+	    snprintf(rbuf, RBUF_USE_కొలత, "%" సమయం_FMT_O, simtime);
 	    vp->value.str = rbuf;
-	    break;
+	    ఆపు;
 
-	  case vpiHexStrVal:
-	    snprintf(rbuf, RBUF_USE_SIZE, "%" TIME_FMT_X, simtime);
+	  స్థితి vpiHexStrVal:
+	    snprintf(rbuf, RBUF_USE_కొలత, "%" సమయం_FMT_X, simtime);
 	    vp->value.str = rbuf;
-	    break;
+	    ఆపు;
 
-	  default:
-	    fprintf(stderr, "vpi_time: unknown format: %d\n", (int)vp->format);
-	    assert(0);
+	  అప్రమేయ:
+	    fprintf(stderr, "vpi_time: unknown format: %d\n", (పూర్ణాంకం)vp->format);
+	    ప్రతిజ్ఞా(0);
       }
 }
 
-static void timevar_get_ivalue(vpiHandle ref, s_vpi_value*vp)
+స్థిర శూన్య timevar_get_ivalue(vpiHandle ref, s_vpi_విలువ*vp)
 {
-      timevar_get_value(ref, vp, true, false);
+      timevar_get_విలువ(ref, vp, నిజం, అబద్ధం);
 }
 
-static void timevar_get_svalue(vpiHandle ref, s_vpi_value*vp)
+స్థిర శూన్య timevar_get_svalue(vpiHandle ref, s_vpi_విలువ*vp)
 {
-      timevar_get_value(ref, vp, true, true);
+      timevar_get_విలువ(ref, vp, నిజం, నిజం);
 }
 
-static void timevar_get_rvalue(vpiHandle ref, s_vpi_value*vp)
+స్థిర శూన్య timevar_get_rvalue(vpiHandle ref, s_vpi_విలువ*vp)
 {
-      timevar_get_value(ref, vp, false, false);
+      timevar_get_విలువ(ref, vp, అబద్ధం, అబద్ధం);
 }
 
 __vpiScopedTime::__vpiScopedTime()
 { }
 
-char* __vpiScopedTime::vpi_get_str(int code)
+అక్షరం* __vpiScopedTime::vpi_get_str(పూర్ణాంకం code)
 {
-      switch (code) {
-	  case vpiName:
-	    return simple_set_rbuf_str("$time");
-	  default:
+      ఎంపిక (code) {
+	  స్థితి vpiName:
+	    తిరిగి simple_సమితి_rbuf_str("$time");
+	  అప్రమేయ:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    ప్రతిజ్ఞా(0);
+	    తిరిగి 0;
       }
 }
 
 
-void __vpiScopedTime::vpi_get_value(p_vpi_value val)
-{ timevar_get_ivalue(this, val); }
+శూన్య __vpiScopedTime::vpi_get_విలువ(p_vpi_విలువ val)
+{ timevar_get_ivalue(ఇది, val); }
 
 
 __vpiScopedSTime::__vpiScopedSTime()
 { }
 
-int __vpiScopedSTime::vpi_get(int code)
+పూర్ణాంకం __vpiScopedSTime::vpi_get(పూర్ణాంకం code)
 {
-      switch (code) {
-          case vpiSize:
-	    return 32;
+      ఎంపిక (code) {
+          స్థితి vpi_కొలత:
+	    తిరిగి 32;
 
-	  default:
-	    return __vpiSystemTime::vpi_get(code);
+	  అప్రమేయ:
+	    తిరిగి __vpiSystemTime::vpi_get(code);
       }
 }
 
 
-char* __vpiScopedSTime::vpi_get_str(int code)
+అక్షరం* __vpiScopedSTime::vpi_get_str(పూర్ణాంకం code)
 {
-      switch (code) {
-	  case vpiName:
-	    return simple_set_rbuf_str("$stime");
-	  default:
+      ఎంపిక (code) {
+	  స్థితి vpiName:
+	    తిరిగి simple_సమితి_rbuf_str("$stime");
+	  అప్రమేయ:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    ప్రతిజ్ఞా(0);
+	    తిరిగి 0;
       }
 }
 
 
-void __vpiScopedSTime::vpi_get_value(p_vpi_value val)
-{ timevar_get_svalue(this, val); }
+శూన్య __vpiScopedSTime::vpi_get_విలువ(p_vpi_విలువ val)
+{ timevar_get_svalue(ఇది, val); }
 
 __vpiSystemTime::__vpiSystemTime()
 {
       scope = 0;
 }
 
-int __vpiSystemTime::get_type_code(void) const
-{ return vpiSysFuncCall; }
+పూర్ణాంకం __vpiSystemTime::get_type_సంకేతం(శూన్య) స్థిరరాశి
+{ తిరిగి vpiSysFuncCall; }
 
-int __vpiSystemTime::vpi_get(int code)
+పూర్ణాంకం __vpiSystemTime::vpi_get(పూర్ణాంకం code)
 {
-      switch (code) {
-          case vpiSize:
-	    return 64;
+      ఎంపిక (code) {
+          స్థితి vpi_కొలత:
+	    తిరిగి 64;
 
-          case vpiSigned:
-	    return 0;
+          స్థితి vpiSigned:
+	    తిరిగి 0;
 
-	  case vpiFuncType:
-	    return vpiTimeFunc;
+	  స్థితి vpiFuncType:
+	    తిరిగి vpi_సమయం_Func;
 
-          case vpiAutomatic:
-	    return 0;
+          స్థితి vpiAutomatic:
+	    తిరిగి 0;
 
-	  default:
+	  అప్రమేయ:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    ప్రతిజ్ఞా(0);
+	    తిరిగి 0;
       }
 }
 
 
-char* __vpiSystemTime::vpi_get_str(int code)
+అక్షరం* __vpiSystemTime::vpi_get_str(పూర్ణాంకం code)
 {
-      switch (code) {
-	  case vpiName:
-	    return simple_set_rbuf_str("$simtime");
-	  default:
+      ఎంపిక (code) {
+	  స్థితి vpiName:
+	    తిరిగి simple_సమితి_rbuf_str("$simtime");
+	  అప్రమేయ:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    ప్రతిజ్ఞా(0);
+	    తిరిగి 0;
       }
 }
 
 
-void __vpiSystemTime::vpi_get_value(p_vpi_value val)
-{ timevar_get_ivalue(this, val); }
+శూన్య __vpiSystemTime::vpi_get_విలువ(p_vpi_విలువ val)
+{ timevar_get_ivalue(ఇది, val); }
 
-vpiHandle __vpiSystemTime::vpi_handle(int code)
+vpiHandle __vpiSystemTime::vpi_handle(పూర్ణాంకం code)
 {
-      switch (code) {
-	  case vpiScope:
-	    return scope;
-	  default:
-	    return 0;
+      ఎంపిక (code) {
+	  స్థితి vpiScope:
+	    తిరిగి scope;
+	  అప్రమేయ:
+	    తిరిగి 0;
       }
 }
 
@@ -310,77 +310,77 @@ vpiHandle __vpiSystemTime::vpi_handle(int code)
 __vpiScopedRealtime::__vpiScopedRealtime()
 { }
 
-int __vpiScopedRealtime::vpi_get(int code)
+పూర్ణాంకం __vpiScopedRealtime::vpi_get(పూర్ణాంకం code)
 {
-      switch (code) {
-          case vpiSize:
-	    return 1;
+      ఎంపిక (code) {
+          స్థితి vpi_కొలత:
+	    తిరిగి 1;
 
-          case vpiSigned:
-	    return 0;
+          స్థితి vpiSigned:
+	    తిరిగి 0;
 
-	  case vpiFuncType:
-	    return vpiRealFunc;
+	  స్థితి vpiFuncType:
+	    తిరిగి vpiRealFunc;
 
-          case vpiAutomatic:
-	    return 0;
+          స్థితి vpiAutomatic:
+	    తిరిగి 0;
 
-	  default:
+	  అప్రమేయ:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    ప్రతిజ్ఞా(0);
+	    తిరిగి 0;
       }
 }
 
 
-char* __vpiScopedRealtime::vpi_get_str(int code)
+అక్షరం* __vpiScopedRealtime::vpi_get_str(పూర్ణాంకం code)
 {
-      switch (code) {
-	  case vpiName:
-	    return simple_set_rbuf_str("$realtime");
-	  default:
+      ఎంపిక (code) {
+	  స్థితి vpiName:
+	    తిరిగి simple_సమితి_rbuf_str("$realtime");
+	  అప్రమేయ:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    ప్రతిజ్ఞా(0);
+	    తిరిగి 0;
       }
 }
 
 
-void __vpiScopedRealtime::vpi_get_value(p_vpi_value val)
-{ timevar_get_rvalue(this, val); }
+శూన్య __vpiScopedRealtime::vpi_get_విలువ(p_vpi_విలువ val)
+{ timevar_get_rvalue(ఇది, val); }
 
 /*
  * Create a handle to represent a call to $time/$stime/$simtime. The
  * $time and $stime system functions return a value scaled to a scope,
  * and the $simtime returns the unscaled time.
  */
-vpiHandle vpip_sim_time(__vpiScope*scope, bool is_stime)
+vpiHandle vpip_sim_సమయం(__vpiScope*scope, తార్కిక is_stime)
 {
-      if (scope) {
-	    if (is_stime) {
+      ఒకవేళ (scope) {
+	    ఒకవేళ (is_stime) {
 		  scope->scoped_stime.scope = scope;
-		  return &scope->scoped_stime;
-	    } else {
-		  scope->scoped_time.scope = scope;
-		  return &scope->scoped_time;
+		  తిరిగి &scope->scoped_stime;
+	    } లేకపోతే {
+		  scope->scoped_సమయం.scope = scope;
+		  తిరిగి &scope->scoped_సమయం;
 	    }
-      } else {
-	    return &global_simtime;
+      } లేకపోతే {
+	    తిరిగి &global_simtime;
       }
 }
 
 vpiHandle vpip_sim_realtime(__vpiScope*scope)
 {
       scope->scoped_realtime.scope = scope;
-      return &scope->scoped_realtime;
+      తిరిగి &scope->scoped_realtime;
 }
 
-int vpip_get_time_precision(void)
+పూర్ణాంకం vpip_get_సమయం_precision(శూన్య)
 {
-      return vpi_time_precision;
+      తిరిగి vpi_సమయం_precision;
 }
 
-void vpip_set_time_precision(int pre)
+శూన్య vpip_సమితి_సమయం_precision(పూర్ణాంకం pre)
 {
-      vpi_time_precision = pre;
+      vpi_సమయం_precision = pre;
 }

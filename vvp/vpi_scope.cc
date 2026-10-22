@@ -22,305 +22,305 @@
 # include  "symbols.h"
 # include  "statistics.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#అయితే_ముగింపు
 # include  <vector>
 # include  <cstring>
 # include  <cstdlib>
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
-static vector<vpiHandle> vpip_root_table;
+స్థిర vector<vpiHandle> vpip_మూలం_పట్టిక;
 
-static vpiHandle make_subset_iterator_(int type_code, const vector<vpiHandle>&table);
+స్థిర vpiHandle make_subset_iterator_(పూర్ణాంకం type_సంకేతం, స్థిరరాశి vector<vpiHandle>&పట్టిక);
 
-vpiHandle vpip_make_root_iterator(int type_code)
+vpiHandle vpip_make_మూలం_iterator(పూర్ణాంకం type_సంకేతం)
 {
-      return make_subset_iterator_(type_code, vpip_root_table);
+      తిరిగి make_subset_iterator_(type_సంకేతం, vpip_మూలం_పట్టిక);
 }
 
-void vpip_make_root_iterator(__vpiHandle**&table, unsigned&ntable)
+శూన్య vpip_make_మూలం_iterator(__vpiHandle**&పట్టిక, గుర్తులేని&ntable)
 {
-      table = &vpip_root_table[0];
-      ntable = vpip_root_table.size();
+      పట్టిక = &vpip_మూలం_పట్టిక[0];
+      ntable = vpip_మూలం_పట్టిక.size();
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void port_delete(__vpiHandle*handle);
-void port_bit_delete(__vpiHandle*handle);
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య పోర్టు_delete(__vpiHandle*handle);
+శూన్య పోర్టు_బిట్టు_delete(__vpiHandle*handle);
 
 /* Class definitions need to be cleaned up at the end. */
-static class_type **class_list = 0;
-static unsigned class_list_count = 0;
+స్థిర class_type **class_list = 0;
+స్థిర గుర్తులేని class_list_లెక్క = 0;
 
-static void delete_sub_scopes(__vpiScope *scope)
+స్థిర శూన్య delete_sub_scopes(__vpiScope *scope)
 {
-      for (unsigned idx = 0; idx < scope->intern.size(); idx += 1) {
-	    vpiHandle item = (scope->intern)[idx];
-	    __vpiScope*lscope = static_cast<__vpiScope*>(item);
-	    switch(item->get_type_code()) {
-		case vpiFunction:
-		case vpiTask:
+      కొరకు (గుర్తులేని idx = 0; idx < scope->intern.size(); idx += 1) {
+	    vpiHandle అంశం = (scope->intern)[idx];
+	    __vpiScope*lscope = static_cast<__vpiScope*>(అంశం);
+	    ఎంపిక(అంశం->get_type_సంకేతం()) {
+		స్థితి vpiFunction:
+		స్థితి vpiTask:
 		  contexts_delete(lscope);
 		  // fallthrough
-		case vpiModule:
-		case vpiGenScope:
-		case vpiNamedBegin:
-		case vpiNamedFork:
-		case vpiClassTypespec:
+		స్థితి vpiModule:
+		స్థితి vpiGenScope:
+		స్థితి vpiNamedBegin:
+		స్థితి vpiNamedFork:
+		స్థితి vpiClassTypespec:
 		  delete_sub_scopes(lscope);
 		  vthreads_delete(lscope);
-		  delete item;
-		  break;
-		case vpiMemory:
-		case vpiNetArray:
-		  memory_delete(item);
-		  break;
-		case vpiModPath:
+		  తొలగించు అంశం;
+		  ఆపు;
+		స్థితి vpi_జ్ఞాపకం:
+		స్థితి vpiNetArray:
+		  జ్ఞాపకం_delete(అంశం);
+		  ఆపు;
+		స్థితి vpi_Mod_మార్గం:
 		    /* The destination ModPath is cleaned up later. */
-		  delete item;
-		  break;
-		case vpiInterModPath:
-		  delete item;
-		  break;
-		case vpiNamedEvent:
-		  named_event_delete(item);
-		  break;
-		case vpiNet:
-		case vpiReg:
-		case vpiIntegerVar:
-		case vpiLongIntVar:
-		case vpiShortIntVar:
-		case vpiIntVar:
-		case vpiByteVar:
-		case vpiBitVar:
-		  signal_delete(item);
-		  break;
-		case vpiParameter:
-		  parameter_delete(item);
-		  break;
-		case vpiRealVar:
-		  real_delete(item);
-		  break;
-		case vpiEnumTypespec:
-		  enum_delete(item);
-		  break;
-		case vpiPort:
-		  port_delete(item);
-		  break;
-		case vpiPortBit:
-		  port_bit_delete(item);
-		  break;
-		case vpiStringVar:
-		  string_delete(item);
-		  break;
-		case vpiClassVar:
-		  class_delete(item);
-		  break;
-		case vpiArrayVar:
-		  array_delete(item);
-		  break;
-		default:
+		  తొలగించు అంశం;
+		  ఆపు;
+		స్థితి vpi_Inter_Mod_మార్గం:
+		  తొలగించు అంశం;
+		  ఆపు;
+		స్థితి vpiNamedEvent:
+		  named_event_delete(అంశం);
+		  ఆపు;
+		స్థితి vpiNet:
+		స్థితి vpiReg:
+		స్థితి vpiIntegerVar:
+		స్థితి vpiLongIntVar:
+		స్థితి vpiShortIntVar:
+		స్థితి vpiIntVar:
+		స్థితి vpiByteVar:
+		స్థితి vpi_బిట్టు_Var:
+		  signal_delete(అంశం);
+		  ఆపు;
+		స్థితి vpiParameter:
+		  parameter_delete(అంశం);
+		  ఆపు;
+		స్థితి vpiRealVar:
+		  real_delete(అంశం);
+		  ఆపు;
+		స్థితి vpiEnumTypespec:
+		  enum_delete(అంశం);
+		  ఆపు;
+		స్థితి vpi_పోర్టు:
+		  పోర్టు_delete(అంశం);
+		  ఆపు;
+		స్థితి vpi_పోర్టు_బిట్టు:
+		  పోర్టు_బిట్టు_delete(అంశం);
+		  ఆపు;
+		స్థితి vpiStringVar:
+		  string_delete(అంశం);
+		  ఆపు;
+		స్థితి vpiClassVar:
+		  class_delete(అంశం);
+		  ఆపు;
+		స్థితి vpiArrayVar:
+		  array_delete(అంశం);
+		  ఆపు;
+		అప్రమేయ:
 		  fprintf(stderr, "Need support for type: %d\n",
-		          item->get_type_code());
-		  assert(0);
-		  break;
+		          అంశం->get_type_సంకేతం());
+		  ప్రతిజ్ఞా(0);
+		  ఆపు;
 	    }
       }
       scope->intern.clear();
 
 	/* Save any class definitions to clean up later. */
       map<std::string, class_type*>::iterator citer;
-      for (citer = scope->classes.begin();
-           citer != scope->classes.end(); ++ citer ) {
-	    class_list_count += 1;
+      కొరకు (citer = scope->classes.begin();
+           citer != scope->classes.చివర(); ++ citer ) {
+	    class_list_లెక్క += 1;
 	    class_list = static_cast<class_type **>
 	                 (realloc(class_list,
-	                  class_list_count*sizeof(class_type **)));
-	    class_list[class_list_count-1] = citer->second;
+	                  class_list_లెక్క*పరిమాణం(class_type **)));
+	    class_list[class_list_లెక్క-1] = citer->second;
       }
 }
 
-void root_table_delete(void)
+శూన్య మూలం_పట్టిక_delete(శూన్య)
 {
-      for (unsigned idx = 0; idx < vpip_root_table.size(); idx += 1) {
+      కొరకు (గుర్తులేని idx = 0; idx < vpip_మూలం_పట్టిక.size(); idx += 1) {
 	    __vpiScope *scope = static_cast<__vpiScope *>
-	          (vpip_root_table[idx]);
+	          (vpip_మూలం_పట్టిక[idx]);
 	    vthreads_delete(scope);
 	    delete_sub_scopes(scope);
-	    delete scope;
+	    తొలగించు scope;
       }
-      vpip_root_table.clear();
+      vpip_మూలం_పట్టిక.clear();
 
 	/* Clean up all the class definitions. */
-      for (unsigned idx = 0; idx < class_list_count; idx += 1) {
+      కొరకు (గుర్తులేని idx = 0; idx < class_list_లెక్క; idx += 1) {
             class_def_delete(class_list[idx]);
       }
-      free(class_list);
+      విడుదల(class_list);
       class_list = 0;
-      class_list_count = 0;
+      class_list_లెక్క = 0;
 }
-#endif
+#అయితే_ముగింపు
 
-static void construct_scope_fullname(__vpiScope*ref, char*buf)
+స్థిర శూన్య construct_scope_fullname(__vpiScope*ref, అక్షరం*buf)
 {
-      if (ref->scope) {
+      ఒకవేళ (ref->scope) {
 	    construct_scope_fullname(ref->scope, buf);
 	      // Add a "." separator, unless this is for a package
-	    if (ref->scope->get_type_code() != vpiPackage) {
+	    ఒకవేళ (ref->scope->get_type_సంకేతం() != vpiPackage) {
 		  strcat(buf, ".");
 	    }
       }
 
       strcat(buf, ref->scope_name());
 	// For a package, add a "::" to the end
-      if (ref->get_type_code() == vpiPackage) strcat(buf, "::");
+      ఒకవేళ (ref->get_type_సంకేతం() == vpiPackage) strcat(buf, "::");
 }
 
-static const char* scope_get_type(int code)
+స్థిర స్థిరరాశి అక్షరం* scope_get_type(పూర్ణాంకం code)
 {
-      switch (code) {
-          case vpiModule:
-            return "vpiModule";
-          case vpiGenScope:
-            return "vpiGenScope";
-          case vpiFunction:
-            return "vpiFunction";
-          case vpiTask:
-            return "vpiTask";
-          case vpiNamedBegin:
-            return "vpiNamedBegin";
-          case vpiNamedFork:
-            return "vpiNamedFork";
-          default:
+      ఎంపిక (code) {
+          స్థితి vpiModule:
+            తిరిగి "vpiModule";
+          స్థితి vpiGenScope:
+            తిరిగి "vpiGenScope";
+          స్థితి vpiFunction:
+            తిరిగి "vpiFunction";
+          స్థితి vpiTask:
+            తిరిగి "vpiTask";
+          స్థితి vpiNamedBegin:
+            తిరిగి "vpiNamedBegin";
+          స్థితి vpiNamedFork:
+            తిరిగి "vpiNamedFork";
+          అప్రమేయ:
             fprintf(stderr, "VPI error: invalid scope type code %d.\n", code);
-            return NULL;
+            తిరిగి ఖాళీ;
       }
 }
 
-static char* scope_get_str(int code, vpiHandle obj)
+స్థిర అక్షరం* scope_get_str(పూర్ణాంకం code, vpiHandle obj)
 {
       __vpiScope*ref = dynamic_cast<__vpiScope*>(obj);
-      assert(ref);
+      ప్రతిజ్ఞా(ref);
 
-      char buf[4096];  // XXX is a fixed buffer size really reliable?
-      const char *p=0;
-      switch (code) {
-	  case vpiDefFile:
-	    p = file_names[ref->def_file_idx];
-	    break;
+      అక్షరం buf[4096];  // XXX is a fixed buffer size really reliable?
+      స్థిరరాశి అక్షరం *p=0;
+      ఎంపిక (code) {
+	  స్థితి vpiDefFile:
+	    p = file_పేర్లు[ref->def_file_idx];
+	    ఆపు;
 
-	  case vpiFile:
-	    p = file_names[ref->file_idx];
-	    break;
+	  స్థితి vpiFile:
+	    p = file_పేర్లు[ref->file_idx];
+	    ఆపు;
 
-	  case vpiFullName:
+	  స్థితి vpi_నిండిన_Name:
 	    buf[0] = 0;
 	    construct_scope_fullname(ref, buf);
 	    p = buf;
-	    break;
+	    ఆపు;
 
-	  case vpiName:
+	  స్థితి vpiName:
 	    p = ref->scope_name();
-	    break;
+	    ఆపు;
 
-	  case vpiDefName:
+	  స్థితి vpiDefName:
 	    p = ref->scope_def_name();
-	    break;
+	    ఆపు;
 
-	  case vpiType:
+	  స్థితి vpiType:
 	    p = scope_get_type(code);
-	    break;
+	    ఆపు;
 
-	  default:
+	  అప్రమేయ:
 	    fprintf(stderr, "VPI error: invalid scope string code %d.\n", code);
-	    return NULL;
+	    తిరిగి ఖాళీ;
       }
-      return simple_set_rbuf_str(p);
+      తిరిగి simple_సమితి_rbuf_str(p);
 }
 
-static vpiHandle scope_get_handle(int code, vpiHandle obj)
+స్థిర vpiHandle scope_get_handle(పూర్ణాంకం code, vpiHandle obj)
 {
       __vpiScope*rfp = dynamic_cast<__vpiScope*>(obj);
-      assert(rfp);
+      ప్రతిజ్ఞా(rfp);
 
-      switch (code) {
+      ఎంపిక (code) {
 
-	  case vpiScope:
-	    return rfp->scope;
+	  స్థితి vpiScope:
+	    తిరిగి rfp->scope;
 
-	  case vpiModule:
-	    return rfp->scope;
+	  స్థితి vpiModule:
+	    తిరిగి rfp->scope;
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
 /* compares vpiType's considering object classes */
-static int compare_types(int code, int type)
+స్థిర పూర్ణాంకం compare_types(పూర్ణాంకం code, పూర్ణాంకం type)
 {
 	/* NOTE: The Verilog VPI does not for any object support
 	   vpiScope as an iterator parameter, so it is used here as a
 	   means to scan everything in the *current* scope. */
-      if (code == vpiScope)
-	    return 1;
+      ఒకవేళ (code == vpiScope)
+	    తిరిగి 1;
 
-      if (code == type)
-	    return 1;
+      ఒకవేళ (code == type)
+	    తిరిగి 1;
 
-      if ( code == vpiInternalScope &&
+      ఒకవేళ ( code == vpi_అంతర్గత_Scope &&
 	     (type == vpiModule ||
 	     type == vpiGenScope ||
 	     type == vpiFunction ||
 	     type == vpiTask ||
 	     type == vpiNamedBegin ||
 	     type == vpiNamedFork) )
-	    return 1;
+	    తిరిగి 1;
 
-      if ( code == vpiInstance &&
+      ఒకవేళ ( code == vpiInstance &&
 	    (type == vpiModule ||
-	     type == vpiProgram ||
+	     type == vpi_కార్యక్రమం ||
 	     type == vpiInterface ||
 	     type == vpiPackage) )
-	    return 1;
+	    తిరిగి 1;
 
-      if ( code == vpiVariables &&
+      ఒకవేళ ( code == vpiVariables &&
 	     (type == vpiIntegerVar  ||
-	      type == vpiBitVar      ||
+	      type == vpi_బిట్టు_Var      ||
 	      type == vpiByteVar     ||
 	      type == vpiShortIntVar ||
 	      type == vpiIntVar      ||
 	      type == vpiLongIntVar  ||
-	      type == vpiTimeVar     ||
+	      type == vpi_సమయం_Var     ||
 	      type == vpiRealVar))
-	    return 1;
+	    తిరిగి 1;
 
-      return 0;
+      తిరిగి 0;
 }
 
-static vpiHandle make_subset_iterator_(int type_code, const vector<vpiHandle>&table)
+స్థిర vpiHandle make_subset_iterator_(పూర్ణాంకం type_సంకేతం, స్థిరరాశి vector<vpiHandle>&పట్టిక)
 {
-      unsigned mcnt = 0, ncnt = 0;
-      vpiHandle*args;
+      గుర్తులేని mcnt = 0, ncnt = 0;
+      vpiHandle*వాదనలు;
 
-      for (unsigned idx = 0; idx < table.size(); idx += 1)
-	    if (compare_types(type_code, table[idx]->get_type_code()))
+      కొరకు (గుర్తులేని idx = 0; idx < పట్టిక.size(); idx += 1)
+	    ఒకవేళ (compare_types(type_సంకేతం, పట్టిక[idx]->get_type_సంకేతం()))
 		  mcnt += 1;
 
-      if (mcnt == 0)
-	    return 0;
+      ఒకవేళ (mcnt == 0)
+	    తిరిగి 0;
 
-      args = static_cast<vpiHandle*>(calloc(mcnt, sizeof(vpiHandle)));
-      for (unsigned idx = 0; idx < table.size(); idx += 1)
-	    if (compare_types(type_code, table[idx]->get_type_code()))
-		  args[ncnt++] = table[idx];
+      వాదనలు = static_cast<vpiHandle*>(సున్నా_జ్ఞాపకం_ఇవ్వు(mcnt, పరిమాణం(vpiHandle)));
+      కొరకు (గుర్తులేని idx = 0; idx < పట్టిక.size(); idx += 1)
+	    ఒకవేళ (compare_types(type_సంకేతం, పట్టిక[idx]->get_type_సంకేతం()))
+		  వాదనలు[ncnt++] = పట్టిక[idx];
 
-      assert(ncnt == mcnt);
+      ప్రతిజ్ఞా(ncnt == mcnt);
 
-      return vpip_make_iterator(mcnt, args, true);
+      తిరిగి vpip_make_iterator(mcnt, వాదనలు, నిజం);
 }
 
 /*
@@ -329,122 +329,122 @@ static vpiHandle make_subset_iterator_(int type_code, const vector<vpiHandle>&ta
  * things that are contained in the scope object, by generating an
  * iterator for the requested set of items.
  */
-static vpiHandle module_iter(int code, vpiHandle obj)
+స్థిర vpiHandle module_iter(పూర్ణాంకం code, vpiHandle obj)
 {
       __vpiScope*ref = dynamic_cast<__vpiScope*>(obj);
-      assert(ref);
+      ప్రతిజ్ఞా(ref);
 
-      return make_subset_iterator_(code, ref->intern);
+      తిరిగి make_subset_iterator_(code, ref->intern);
 }
 
 
-__vpiScope::__vpiScope(const char*nam, const char*tnam, bool auto_flag)
+__vpiScope::__vpiScope(స్థిరరాశి అక్షరం*nam, స్థిరరాశి అక్షరం*tnam, తార్కిక auto_flag)
 : is_automatic_(auto_flag)
 {
       name_ = vpip_name_string(nam);
       tname_ = vpip_name_string(tnam? tnam : "");
 }
 
-int __vpiScope::vpi_get(int code)
+పూర్ణాంకం __vpiScope::vpi_get(పూర్ణాంకం code)
 {
-      switch (code) {
-	  case vpiCellInstance:
-	    return is_cell? 1 : 0;
+      ఎంపిక (code) {
+	  స్థితి vpiCellInstance:
+	    తిరిగి is_cell? 1 : 0;
 
-	  case vpiDefLineNo:
-	    return def_lineno;
+	  స్థితి vpi_Def_పంక్తి_No:
+	    తిరిగి def_lineno;
 
-	  case vpiLineNo:
-	    return lineno;
+	  స్థితి vpi_పంక్తి_No:
+	    తిరిగి lineno;
 
-	  case vpiTimeUnit:
-	    return time_units;
+	  స్థితి vpi_సమయం_Unit:
+	    తిరిగి సమయం_units;
 
-	  case vpiTimePrecision:
-	    return time_precision;
+	  స్థితి vpi_సమయం_Precision:
+	    తిరిగి సమయం_precision;
 
-	  case vpiTopModule:
-	    return 0x0 == scope;
+	  స్థితి vpi_శిఖరం_Module:
+	    తిరిగి 0x0 == scope;
 
-          case vpiAutomatic:
-	    return is_automatic_? 1 : 0;
+          స్థితి vpiAutomatic:
+	    తిరిగి is_automatic_? 1 : 0;
       }
 
-      return vpiUndefined;
+      తిరిగి vpiUndefined;
 }
 
 
-char*__vpiScope::vpi_get_str(int code)
-{ return scope_get_str(code, this); }
+అక్షరం*__vpiScope::vpi_get_str(పూర్ణాంకం code)
+{ తిరిగి scope_get_str(code, ఇది); }
 
-vpiHandle __vpiScope::vpi_handle(int code)
-{ return scope_get_handle(code, this); }
+vpiHandle __vpiScope::vpi_handle(పూర్ణాంకం code)
+{ తిరిగి scope_get_handle(code, ఇది); }
 
-vpiHandle __vpiScope::vpi_iterate(int code)
-{ return module_iter(code, this); }
+vpiHandle __vpiScope::vpi_iterate(పూర్ణాంకం code)
+{ తిరిగి module_iter(code, ఇది); }
 
 
-class vpiScopeModule  : public __vpiScope {
-    public:
-      inline vpiScopeModule(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,false) { }
-      int get_type_code(void) const override { return vpiModule; }
+తరగతి vpiScopeModule  : బహిరంగ __vpiScope {
+    బహిరంగ:
+      అంతఃవరుస vpiScopeModule(స్థిరరాశి అక్షరం*nam, స్థిరరాశి అక్షరం*tnam)
+      : __vpiScope(nam,tnam,అబద్ధం) { }
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpiModule; }
 };
 
-struct vpiScopePackage  : public __vpiScope {
-      inline vpiScopePackage(const char*nam, const char*tnam)
+నిర్మాణం vpiScopePackage  : బహిరంగ __vpiScope {
+      అంతఃవరుస vpiScopePackage(స్థిరరాశి అక్షరం*nam, స్థిరరాశి అక్షరం*tnam)
       : __vpiScope(nam,tnam) { }
-      int get_type_code(void) const override { return vpiPackage; }
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpiPackage; }
 };
 
-struct vpiScopeTask  : public __vpiScope {
-      inline vpiScopeTask(const char*nam, const char*tnam)
+నిర్మాణం vpiScopeTask  : బహిరంగ __vpiScope {
+      అంతఃవరుస vpiScopeTask(స్థిరరాశి అక్షరం*nam, స్థిరరాశి అక్షరం*tnam)
       : __vpiScope(nam,tnam) { }
-      int get_type_code(void) const override { return vpiTask; }
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpiTask; }
 };
 
-struct vpiScopeTaskAuto  : public __vpiScope {
-      inline vpiScopeTaskAuto(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,true) {  }
-      int get_type_code(void) const override { return vpiTask; }
+నిర్మాణం vpiScopeTaskAuto  : బహిరంగ __vpiScope {
+      అంతఃవరుస vpiScopeTaskAuto(స్థిరరాశి అక్షరం*nam, స్థిరరాశి అక్షరం*tnam)
+      : __vpiScope(nam,tnam,నిజం) {  }
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpiTask; }
 };
 
-struct vpiScopeBegin  : public __vpiScope {
-      inline vpiScopeBegin(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,false) { }
-      int get_type_code(void) const override { return vpiNamedBegin; }
+నిర్మాణం vpiScopeBegin  : బహిరంగ __vpiScope {
+      అంతఃవరుస vpiScopeBegin(స్థిరరాశి అక్షరం*nam, స్థిరరాశి అక్షరం*tnam)
+      : __vpiScope(nam,tnam,అబద్ధం) { }
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpiNamedBegin; }
 };
 
-class vpiScopeBeginAuto  : public __vpiScope {
-    public:
-      inline vpiScopeBeginAuto(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,true) {  }
-      int get_type_code(void) const override { return vpiNamedBegin; }
+తరగతి vpiScopeBeginAuto  : బహిరంగ __vpiScope {
+    బహిరంగ:
+      అంతఃవరుస vpiScopeBeginAuto(స్థిరరాశి అక్షరం*nam, స్థిరరాశి అక్షరం*tnam)
+      : __vpiScope(nam,tnam,నిజం) {  }
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpiNamedBegin; }
 };
 
-struct vpiScopeGenerate  : public __vpiScope {
-      inline vpiScopeGenerate(const char*nam, const char*tnam)
+నిర్మాణం vpiScopeGenerate  : బహిరంగ __vpiScope {
+      అంతఃవరుస vpiScopeGenerate(స్థిరరాశి అక్షరం*nam, స్థిరరాశి అక్షరం*tnam)
       : __vpiScope(nam,tnam) { }
-      int get_type_code(void) const override { return vpiGenScope; }
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpiGenScope; }
 };
 
-struct vpiScopeFork  : public __vpiScope {
-      inline vpiScopeFork(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,false) { }
-      int get_type_code(void) const override { return vpiNamedFork; }
+నిర్మాణం vpiScopeFork  : బహిరంగ __vpiScope {
+      అంతఃవరుస vpiScopeFork(స్థిరరాశి అక్షరం*nam, స్థిరరాశి అక్షరం*tnam)
+      : __vpiScope(nam,tnam,అబద్ధం) { }
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpiNamedFork; }
 };
 
-class vpiScopeForkAuto  : public __vpiScope {
-    public:
-      inline vpiScopeForkAuto(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,true) {  }
-      int get_type_code(void) const override { return vpiNamedFork; }
+తరగతి vpiScopeForkAuto  : బహిరంగ __vpiScope {
+    బహిరంగ:
+      అంతఃవరుస vpiScopeForkAuto(స్థిరరాశి అక్షరం*nam, స్థిరరాశి అక్షరం*tnam)
+      : __vpiScope(nam,tnam,నిజం) {  }
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpiNamedFork; }
 };
 
-struct vpiScopeClass  : public __vpiScope {
-      inline vpiScopeClass(const char*nam, const char*tnam)
+నిర్మాణం vpiScopeClass  : బహిరంగ __vpiScope {
+      అంతఃవరుస vpiScopeClass(స్థిరరాశి అక్షరం*nam, స్థిరరాశి అక్షరం*tnam)
       : __vpiScope(nam,tnam) { }
-      int get_type_code(void) const override { return vpiClassTypespec; }
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpiClassTypespec; }
 };
 
 /*
@@ -452,11 +452,11 @@ struct vpiScopeClass  : public __vpiScope {
  * compiled, items that have scope are placed in the current
  * scope. The ".scope" directives select the scope that is current.
  */
-static __vpiScope*current_scope = 0;
+స్థిర __vpiScope*current_scope = 0;
 
-void vpip_attach_to_scope(__vpiScope*scope, vpiHandle obj)
+శూన్య vpip_attach_గమ్యం_scope(__vpiScope*scope, vpiHandle obj)
 {
-      assert(scope);
+      ప్రతిజ్ఞా(scope);
       scope->intern.push_back(obj);
 }
 
@@ -466,357 +466,357 @@ void vpip_attach_to_scope(__vpiScope*scope, vpiHandle obj)
  * and within the addressed parent. The label is used as a key in the
  * symbol table and the name is used to construct the actual object.
  */
-void
-compile_scope_decl(char*label, char*type, char*name, char*tname,
-                   char*parent, long file_idx, long lineno,
-                   long def_file_idx, long def_lineno, long is_cell)
+శూన్య
+compile_scope_decl(అక్షరం*label, అక్షరం*type, అక్షరం*name, అక్షరం*tname,
+                   అక్షరం*మాతృ, దీర్ఘ file_idx, దీర్ఘ lineno,
+                   దీర్ఘ def_file_idx, దీర్ఘ def_lineno, దీర్ఘ is_cell)
 {
-      count_vpi_scopes += 1;
-      char vec_type;
-      char sign_flag;
-      unsigned wid;
+      లెక్క_vpi_scopes += 1;
+      అక్షరం vec_type;
+      అక్షరం sign_flag;
+      గుర్తులేని wid;
 
       __vpiScope*scope;
-      if (strcmp(type,"module") == 0) {
-	    scope = new vpiScopeModule(name, tname);
-      } else if ( sscanf(type, "function.vec%c.%c%u", &vec_type, &sign_flag, &wid) == 3 ) {
-	    int type_code;
-	    if (sign_flag=='s') {
-		  type_code = vpiSizedSignedFunc;
-	    } else if (sign_flag=='u') {
-		  type_code = vpiSizedFunc;
-	    } else if (sign_flag=='i') {
-		  type_code = vpiIntFunc;
-	    } else {
-		  assert(0);
-		  type_code = vpiSizedFunc;
+      ఒకవేళ (strcmp(type,"module") == 0) {
+	    scope = కొత్త vpiScopeModule(name, tname);
+      } లేకపోతే ఒకవేళ ( అక్షరశ్రేణి_చదువు(type, "function.vec%c.%c%u", &vec_type, &sign_flag, &wid) == 3 ) {
+	    పూర్ణాంకం type_సంకేతం;
+	    ఒకవేళ (sign_flag=='s') {
+		  type_సంకేతం = vpiSizedSignedFunc;
+	    } లేకపోతే ఒకవేళ (sign_flag=='u') {
+		  type_సంకేతం = vpiSizedFunc;
+	    } లేకపోతే ఒకవేళ (sign_flag=='i') {
+		  type_సంకేతం = vpiIntFunc;
+	    } లేకపోతే {
+		  ప్రతిజ్ఞా(0);
+		  type_సంకేతం = vpiSizedFunc;
 	    }
 	    vvp_bit4_t init_val = vec_type == '4' ? BIT4_X : BIT4_0;
-	    scope = new vpiScopeFunction(name, tname, false, type_code, wid, init_val);
+	    scope = కొత్త vpiScopeFunction(name, tname, అబద్ధం, type_సంకేతం, wid, init_val);
 
-      } else if ( sscanf(type, "autofunction.vec%c.%c%u", &vec_type, &sign_flag, &wid) == 3 ) {
-	    int type_code;
-	    switch (sign_flag) {
-		case 's':
-		  type_code = vpiSizedSignedFunc;
-		  break;
-		case 'u':
-		  type_code = vpiSizedFunc;
-		  break;
-		default:
-		  assert(0);
-		  type_code = vpiSizedFunc;
-		  break;
+      } లేకపోతే ఒకవేళ ( అక్షరశ్రేణి_చదువు(type, "autofunction.vec%c.%c%u", &vec_type, &sign_flag, &wid) == 3 ) {
+	    పూర్ణాంకం type_సంకేతం;
+	    ఎంపిక (sign_flag) {
+		స్థితి 's':
+		  type_సంకేతం = vpiSizedSignedFunc;
+		  ఆపు;
+		స్థితి 'u':
+		  type_సంకేతం = vpiSizedFunc;
+		  ఆపు;
+		అప్రమేయ:
+		  ప్రతిజ్ఞా(0);
+		  type_సంకేతం = vpiSizedFunc;
+		  ఆపు;
 	    }
 	    vvp_bit4_t init_val = vec_type == '4' ? BIT4_X : BIT4_0;
-	    scope = new vpiScopeFunction(name, tname, true, type_code, wid, init_val);
+	    scope = కొత్త vpiScopeFunction(name, tname, నిజం, type_సంకేతం, wid, init_val);
 
-      } else if (strcmp(type,"function.obj") == 0) {
-	    scope = new vpiScopeFunction(name, tname, false, vpiSizedFunc, 0, BIT4_0);
-      } else if (strcmp(type,"autofunction.obj") == 0) {
-	    scope = new vpiScopeFunction(name, tname, true, vpiSizedFunc, 0, BIT4_0);
-      } else if (strcmp(type,"function.real") == 0) {
-	    scope = new vpiScopeFunction(name, tname, false, vpiRealFunc, 0, BIT4_0);
-      } else if (strcmp(type,"autofunction.real") == 0) {
-	    scope = new vpiScopeFunction(name, tname, true, vpiRealFunc, 0, BIT4_0);
-      } else if (strcmp(type,"function.str") == 0) {
-	    scope = new vpiScopeFunction(name, tname, false, vpiOtherFunc, 0, BIT4_0);
-      } else if (strcmp(type,"autofunction.str") == 0) {
-	    scope = new vpiScopeFunction(name, tname, true, vpiOtherFunc, 0, BIT4_0);
-      } else if (strcmp(type,"function.void") == 0) {
-	    scope = new vpiScopeFunction(name, tname, false, vpiOtherFunc, 0, BIT4_0);
-      } else if (strcmp(type,"autofunction.void") == 0) {
-	    scope = new vpiScopeFunction(name, tname, true, vpiOtherFunc, 0, BIT4_0);
-      } else if (strcmp(type,"task") == 0) {
-	    scope = new vpiScopeTask(name, tname);
-      } else if (strcmp(type,"autotask") == 0) {
-	    scope = new vpiScopeTaskAuto(name, tname);
-      } else if (strcmp(type,"fork") == 0) {
-	    scope = new vpiScopeFork(name, tname);
-      } else if (strcmp(type,"autofork") == 0) {
-	    scope = new vpiScopeForkAuto(name, tname);
-      } else if (strcmp(type,"begin") == 0) {
-	    scope = new vpiScopeBegin(name, tname);
-      } else if (strcmp(type,"autobegin") == 0) {
-	    scope = new vpiScopeBeginAuto(name, tname);
-      } else if (strcmp(type,"generate") == 0) {
-	    scope = new vpiScopeGenerate(name, tname);
-      } else if (strcmp(type,"package") == 0) {
-	    scope = new vpiScopePackage(name, tname);
-      } else if (strcmp(type,"class") == 0) {
-	    scope = new vpiScopeClass(name, tname);
-      } else {
-	    scope = new vpiScopeModule(name, tname);
-	    assert(0);
+      } లేకపోతే ఒకవేళ (strcmp(type,"function.obj") == 0) {
+	    scope = కొత్త vpiScopeFunction(name, tname, అబద్ధం, vpiSizedFunc, 0, BIT4_0);
+      } లేకపోతే ఒకవేళ (strcmp(type,"autofunction.obj") == 0) {
+	    scope = కొత్త vpiScopeFunction(name, tname, నిజం, vpiSizedFunc, 0, BIT4_0);
+      } లేకపోతే ఒకవేళ (strcmp(type,"function.real") == 0) {
+	    scope = కొత్త vpiScopeFunction(name, tname, అబద్ధం, vpiRealFunc, 0, BIT4_0);
+      } లేకపోతే ఒకవేళ (strcmp(type,"autofunction.real") == 0) {
+	    scope = కొత్త vpiScopeFunction(name, tname, నిజం, vpiRealFunc, 0, BIT4_0);
+      } లేకపోతే ఒకవేళ (strcmp(type,"function.str") == 0) {
+	    scope = కొత్త vpiScopeFunction(name, tname, అబద్ధం, vpiOtherFunc, 0, BIT4_0);
+      } లేకపోతే ఒకవేళ (strcmp(type,"autofunction.str") == 0) {
+	    scope = కొత్త vpiScopeFunction(name, tname, నిజం, vpiOtherFunc, 0, BIT4_0);
+      } లేకపోతే ఒకవేళ (strcmp(type,"function.void") == 0) {
+	    scope = కొత్త vpiScopeFunction(name, tname, అబద్ధం, vpiOtherFunc, 0, BIT4_0);
+      } లేకపోతే ఒకవేళ (strcmp(type,"autofunction.void") == 0) {
+	    scope = కొత్త vpiScopeFunction(name, tname, నిజం, vpiOtherFunc, 0, BIT4_0);
+      } లేకపోతే ఒకవేళ (strcmp(type,"task") == 0) {
+	    scope = కొత్త vpiScopeTask(name, tname);
+      } లేకపోతే ఒకవేళ (strcmp(type,"autotask") == 0) {
+	    scope = కొత్త vpiScopeTaskAuto(name, tname);
+      } లేకపోతే ఒకవేళ (strcmp(type,"fork") == 0) {
+	    scope = కొత్త vpiScopeFork(name, tname);
+      } లేకపోతే ఒకవేళ (strcmp(type,"autofork") == 0) {
+	    scope = కొత్త vpiScopeForkAuto(name, tname);
+      } లేకపోతే ఒకవేళ (strcmp(type,"begin") == 0) {
+	    scope = కొత్త vpiScopeBegin(name, tname);
+      } లేకపోతే ఒకవేళ (strcmp(type,"autobegin") == 0) {
+	    scope = కొత్త vpiScopeBeginAuto(name, tname);
+      } లేకపోతే ఒకవేళ (strcmp(type,"generate") == 0) {
+	    scope = కొత్త vpiScopeGenerate(name, tname);
+      } లేకపోతే ఒకవేళ (strcmp(type,"package") == 0) {
+	    scope = కొత్త vpiScopePackage(name, tname);
+      } లేకపోతే ఒకవేళ (strcmp(type,"class") == 0) {
+	    scope = కొత్త vpiScopeClass(name, tname);
+      } లేకపోతే {
+	    scope = కొత్త vpiScopeModule(name, tname);
+	    ప్రతిజ్ఞా(0);
       }
 
-      scope->file_idx = (unsigned) file_idx;
-      scope->lineno  = (unsigned) lineno;
-      scope->def_file_idx = (unsigned) def_file_idx;
-      scope->def_lineno  = (unsigned) def_lineno;
-      scope->item = 0;
+      scope->file_idx = (గుర్తులేని) file_idx;
+      scope->lineno  = (గుర్తులేని) lineno;
+      scope->def_file_idx = (గుర్తులేని) def_file_idx;
+      scope->def_lineno  = (గుర్తులేని) def_lineno;
+      scope->అంశం = 0;
       scope->nitem = 0;
-      scope->live_contexts = 0;
+      scope->సజీవ_contexts = 0;
       scope->free_contexts = 0;
 
-      if (is_cell) scope->is_cell = true;
-      else scope->is_cell = false;
+      ఒకవేళ (is_cell) scope->is_cell = నిజం;
+      లేకపోతే scope->is_cell = అబద్ధం;
 
       current_scope = scope;
 
-      compile_vpi_symbol(label, scope);
+      compile_vpi_చిహ్నం(label, scope);
 
-      free(label);
-      free(type);
-      delete[] name;
-      delete[] tname;
+      విడుదల(label);
+      విడుదల(type);
+      తొలగించు[] name;
+      తొలగించు[] tname;
 
-      if (parent) {
-	    static vpiHandle obj;
-	    compile_vpi_lookup(&obj, parent);
-	    assert(obj);
+      ఒకవేళ (మాతృ) {
+	    స్థిర vpiHandle obj;
+	    compile_vpi_lookup(&obj, మాతృ);
+	    ప్రతిజ్ఞా(obj);
 	    __vpiScope*sp = dynamic_cast<__vpiScope*>(obj);
-	    vpip_attach_to_scope(sp, scope);
+	    vpip_attach_గమ్యం_scope(sp, scope);
 	    scope->scope = dynamic_cast<__vpiScope*>(obj);
 
 	      /* Inherit time units and precision from the parent scope. */
-	    scope->time_units = sp->time_units;
-	    scope->time_precision = sp->time_precision;
+	    scope->సమయం_units = sp->సమయం_units;
+	    scope->సమయం_precision = sp->సమయం_precision;
 
-      } else {
+      } లేకపోతే {
 	    scope->scope = 0x0;
 
-	    vpip_root_table.push_back(scope);
+	    vpip_మూలం_పట్టిక.push_back(scope);
 
 	      /* Root scopes inherit time_units and precision from the
 	         system precision. */
-	    scope->time_units = vpip_get_time_precision();
-	    scope->time_precision = vpip_get_time_precision();
+	    scope->సమయం_units = vpip_get_సమయం_precision();
+	    scope->సమయం_precision = vpip_get_సమయం_precision();
       }
 }
 
-void compile_scope_recall(char*symbol)
+శూన్య compile_scope_recall(అక్షరం*చిహ్నం)
 {
 	/* A __vpiScope starts with a __vpiHandle structure so this is
 	   a safe cast. We need the (void*) to avoid a dereferenced
 	   type punned pointer warning from some gcc compilers. */
-      compile_vpi_lookup((vpiHandle*)(void*)&current_scope, symbol);
-      assert(current_scope);
+      compile_vpi_lookup((vpiHandle*)(శూన్య*)&current_scope, చిహ్నం);
+      ప్రతిజ్ఞా(current_scope);
 }
 
 /*
  * This function handles the ".timescale" directive in the vvp
  * source. It sets in the current scope the specified units value.
  */
-void compile_timescale(long units, long precision)
+శూన్య compile_timescale(దీర్ఘ units, దీర్ఘ precision)
 {
-      assert(current_scope);
-      current_scope->time_units = units;
-      current_scope->time_precision = precision;
+      ప్రతిజ్ఞా(current_scope);
+      current_scope->సమయం_units = units;
+      current_scope->సమయం_precision = precision;
 }
 
-__vpiScope* vpip_peek_current_scope(void)
+__vpiScope* vpip_peek_current_scope(శూన్య)
 {
-      return current_scope;
+      తిరిగి current_scope;
 }
 
-void vpip_attach_to_current_scope(vpiHandle obj)
+శూన్య vpip_attach_గమ్యం_current_scope(vpiHandle obj)
 {
-      vpip_attach_to_scope(current_scope, obj);
+      vpip_attach_గమ్యం_scope(current_scope, obj);
 }
 
-__vpiScope* vpip_peek_context_scope(void)
+__vpiScope* vpip_peek_context_scope(శూన్య)
 {
       __vpiScope*scope = current_scope;
 
         /* A context is allocated for each automatic task or function.
            Storage for nested scopes (named blocks) is allocated in
            the parent context. */
-      while (scope->scope && scope->scope->is_automatic())
+      అయితే (scope->scope && scope->scope->is_automatic())
             scope = scope->scope;
 
-      return scope;
+      తిరిగి scope;
 }
 
-unsigned vpip_add_item_to_context(automatic_hooks_s*item,
+గుర్తులేని vpip_కూడు_అంశం_గమ్యం_context(automatic_hooks_s*అంశం,
                                   __vpiScope*scope)
 {
-      assert(scope);
-      assert(scope->is_automatic());
+      ప్రతిజ్ఞా(scope);
+      ప్రతిజ్ఞా(scope->is_automatic());
 
-      unsigned idx = scope->nitem++;
+      గుర్తులేని idx = scope->nitem++;
 
-      if (scope->item == 0)
-	    scope->item = static_cast<automatic_hooks_s**>
-	                  (malloc(sizeof(automatic_hooks_s*)));
-      else
-	    scope->item = static_cast<automatic_hooks_s**>
-	                  (realloc(scope->item,
-	                   sizeof(automatic_hooks_s*)*scope->nitem));
+      ఒకవేళ (scope->అంశం == 0)
+	    scope->అంశం = static_cast<automatic_hooks_s**>
+	                  (జ్ఞాపకం_ఇవ్వు(పరిమాణం(automatic_hooks_s*)));
+      లేకపోతే
+	    scope->అంశం = static_cast<automatic_hooks_s**>
+	                  (realloc(scope->అంశం,
+	                   పరిమాణం(automatic_hooks_s*)*scope->nitem));
 
-      scope->item[idx] = item;
+      scope->అంశం[idx] = అంశం;
 
         /* Offset the context index by 2 to leave space for the list links. */
-      return 2 + idx;
+      తిరిగి 2 + idx;
 }
 
 
-vpiPortInfo::vpiPortInfo( __vpiScope *parent,
-              unsigned index,
-              int vpi_direction,
-              unsigned width,
-              const char *name,
-              char* buffer) :
-      parent_(parent),
-      index_(index),
+vpi_పోర్టు_Info::vpi_పోర్టు_Info( __vpiScope *మాతృ,
+              గుర్తులేని సూచీ,
+              పూర్ణాంకం vpi_direction,
+              గుర్తులేని width,
+              స్థిరరాశి అక్షరం *name,
+              అక్షరం* బఫరు) :
+      మాతృ_2(మాతృ),
+      సూచీ_2(సూచీ),
       direction_(vpi_direction),
-      width_(width),
+      వెడల్పు_2(width),
       name_(name)
 {
-      if (buffer != nullptr) functor_ref_lookup(&ref_, buffer);
-      else ref_ = nullptr;
+      ఒకవేళ (బఫరు != శూన్యసూచిక) functor_ref_lookup(&ref_, బఫరు);
+      లేకపోతే ref_ = శూన్యసూచిక;
 }
 
-vpiPortInfo::~vpiPortInfo()
+vpi_పోర్టు_Info::~vpi_పోర్టు_Info()
 {
-      delete[] name_;
+      తొలగించు[] name_;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void port_delete(__vpiHandle *handle)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య పోర్టు_delete(__vpiHandle *handle)
 {
-      delete dynamic_cast<vpiPortInfo *>(handle);
+      తొలగించు dynamic_cast<vpi_పోర్టు_Info *>(handle);
 }
-#endif
+#అయితే_ముగింపు
 
-int vpiPortInfo::vpi_get(int code)
+పూర్ణాంకం vpi_పోర్టు_Info::vpi_get(పూర్ణాంకం code)
 {
-      switch( code ) {
+      ఎంపిక( code ) {
 
-        case vpiDirection :
-          return direction_;
-        case vpiPortIndex :
-          return index_;
-        case vpiSize :
-          return width_;
-        default :
-          return vpiUndefined;
+        స్థితి vpiDirection :
+          తిరిగి direction_;
+        స్థితి vpi_పోర్టు_సూచీ :
+          తిరిగి సూచీ_2;
+        స్థితి vpi_కొలత :
+          తిరిగి వెడల్పు_2;
+        అప్రమేయ :
+          తిరిగి vpiUndefined;
       }
 
 }
 
 
-char *vpiPortInfo::vpi_get_str(int code)
+అక్షరం *vpi_పోర్టు_Info::vpi_get_str(పూర్ణాంకం code)
 {
-      switch( code ) {
-        case vpiName :
-          return simple_set_rbuf_str(name_);
-        default :
-          return NULL;
+      ఎంపిక( code ) {
+        స్థితి vpiName :
+          తిరిగి simple_సమితి_rbuf_str(name_);
+        అప్రమేయ :
+          తిరిగి ఖాళీ;
       }
 
 }
 
 
-vpiHandle vpiPortInfo::vpi_handle(int code)
+vpiHandle vpi_పోర్టు_Info::vpi_handle(పూర్ణాంకం code)
 {
 
-      switch (code) {
+      ఎంపిక (code) {
 
-          case vpiParent:
-          case vpiScope:
-          case vpiModule:
-            return parent_;
-          default :
-            break;
+          స్థితి vpi_మాతృ:
+          స్థితి vpiScope:
+          స్థితి vpiModule:
+            తిరిగి మాతృ_2;
+          అప్రమేయ :
+            ఆపు;
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
-static vpiHandle portinfo_iterate(int code, vpiHandle ref)
+స్థిర vpiHandle portinfo_iterate(పూర్ణాంకం code, vpiHandle ref)
 {
-      vpiPortInfo*rfp = dynamic_cast<vpiPortInfo*>(ref);
-      assert(rfp);
-      unsigned width = rfp->get_width();
+      vpi_పోర్టు_Info*rfp = dynamic_cast<vpi_పోర్టు_Info*>(ref);
+      ప్రతిజ్ఞా(rfp);
+      గుర్తులేని width = rfp->get_వెడల్పు();
 
-      switch (code) {
-	  case vpiBit: {
-	    vpiHandle*args = static_cast<vpiHandle*>(calloc(width, sizeof(vpiHandle*)));
+      ఎంపిక (code) {
+	  స్థితి vpi_బిట్టు: {
+	    vpiHandle*వాదనలు = static_cast<vpiHandle*>(సున్నా_జ్ఞాపకం_ఇవ్వు(width, పరిమాణం(vpiHandle*)));
 
-	    for (unsigned i = 0; i<rfp->port_bits_.size(); i++) {
-		  args[i] = rfp->port_bits_[i];
+	    కొరకు (గుర్తులేని i = 0; i<rfp->పోర్టు_బిట్లు.size(); i++) {
+		  వాదనలు[i] = rfp->పోర్టు_బిట్లు[i];
 	    }
 
-	    return vpip_make_iterator(width, args, true);
+	    తిరిగి vpip_make_iterator(width, వాదనలు, నిజం);
 	  }
       }
-      return 0;
+      తిరిగి 0;
 }
 
-vpiHandle vpiPortInfo::vpi_iterate(int code)
+vpiHandle vpi_పోర్టు_Info::vpi_iterate(పూర్ణాంకం code)
 {
-      return portinfo_iterate(code, this);
+      తిరిగి portinfo_iterate(code, ఇది);
 }
 
 
-vpiPortBitInfo::vpiPortBitInfo(vpiPortInfo *parent,
-                               unsigned bit) :
-      parent_(parent),
-      bit_(bit)
-{
-}
-
-vpiPortBitInfo::~vpiPortBitInfo()
+vpi_పోర్టు_బిట్టు_Info::vpi_పోర్టు_బిట్టు_Info(vpi_పోర్టు_Info *మాతృ,
+                               గుర్తులేని బిట్టు) :
+      మాతృ_2(మాతృ),
+      బిట్టు_2(బిట్టు)
 {
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void port_bit_delete(__vpiHandle *handle)
+vpi_పోర్టు_బిట్టు_Info::~vpi_పోర్టు_బిట్టు_Info()
 {
-      delete dynamic_cast<vpiPortBitInfo *>(handle);
 }
-#endif
 
-vpiHandle vpiPortBitInfo::vpi_handle(int code)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య పోర్టు_బిట్టు_delete(__vpiHandle *handle)
+{
+      తొలగించు dynamic_cast<vpi_పోర్టు_బిట్టు_Info *>(handle);
+}
+#అయితే_ముగింపు
+
+vpiHandle vpi_పోర్టు_బిట్టు_Info::vpi_handle(పూర్ణాంకం code)
 {
 
-      switch (code) {
-          case vpiParent:
-            return parent_;
-          default :
-            break;
+      ఎంపిక (code) {
+          స్థితి vpi_మాతృ:
+            తిరిగి మాతృ_2;
+          అప్రమేయ :
+            ఆపు;
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
-int vpiPortBitInfo::vpi_get(int code)
+పూర్ణాంకం vpi_పోర్టు_బిట్టు_Info::vpi_get(పూర్ణాంకం code)
 {
-      switch( code ) {
-        case vpiBit :
-          return bit_;
-        default :
-          break;
+      ఎంపిక( code ) {
+        స్థితి vpi_బిట్టు :
+          తిరిగి బిట్టు_2;
+        అప్రమేయ :
+          ఆపు;
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
 /* Port info is meta-data to allow vpi queries of the port signature of modules for
  * code-generators etc.  There are no actual nets corresponding to instances of module ports
  * as elaboration directly connects nets connected through module ports.
  */
-void compile_port_info( unsigned index, int vpi_direction, unsigned width, const char *name, char* buffer )
+శూన్య compile_పోర్టు_info( గుర్తులేని సూచీ, పూర్ణాంకం vpi_direction, గుర్తులేని width, స్థిరరాశి అక్షరం *name, అక్షరం* బఫరు )
 {
-      vpiPortInfo* obj = new vpiPortInfo( vpip_peek_current_scope(),
-                                          index, vpi_direction, width, name, buffer );
-      vpip_attach_to_current_scope(obj);
+      vpi_పోర్టు_Info* obj = కొత్త vpi_పోర్టు_Info( vpip_peek_current_scope(),
+                                          సూచీ, vpi_direction, width, name, బఫరు );
+      vpip_attach_గమ్యం_current_scope(obj);
 
 	// Create vpiPortBit objects
-      for (unsigned i=0; i<width; i++) {
-	    vpiPortBitInfo* obj_bit = new vpiPortBitInfo(obj, i);
-	    obj->add_port_bit(obj_bit);
-	    vpip_attach_to_current_scope(obj_bit);
+      కొరకు (గుర్తులేని i=0; i<width; i++) {
+	    vpi_పోర్టు_బిట్టు_Info* obj_బిట్టు = కొత్త vpi_పోర్టు_బిట్టు_Info(obj, i);
+	    obj->కూడు_పోర్టు_బిట్టు(obj_బిట్టు);
+	    vpip_attach_గమ్యం_current_scope(obj_బిట్టు);
       }
 }

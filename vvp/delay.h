@@ -1,5 +1,5 @@
-#ifndef IVL_delay_H
-#define IVL_delay_H
+#నిర్వచితం_కాకపోతే IVL_delay_H
+#నిర్వచించు IVL_delay_H
 /*
  * Copyright 2005-2026 Stephen Williams
  *
@@ -23,12 +23,12 @@
 # include  "vvp_net.h"
 # include  "schedule.h"
 
-enum delay_edge_t {
-      DELAY_EDGE_01 = 0, DELAY_EDGE_10, DELAY_EDGE_0z,
-      DELAY_EDGE_z1,     DELAY_EDGE_1z, DELAY_EDGE_z0,
-      DELAY_EDGE_0x,     DELAY_EDGE_x1, DELAY_EDGE_1x,
-      DELAY_EDGE_x0,     DELAY_EDGE_xz, DELAY_EDGE_zx,
-      DELAY_EDGE_COUNT
+గణన delay_అంచు_t {
+      DELAY_అంచు_01 = 0, DELAY_అంచు_10, DELAY_అంచు_0z,
+      DELAY_అంచు_z1,     DELAY_అంచు_1z, DELAY_అంచు_z0,
+      DELAY_అంచు_0x,     DELAY_అంచు_x1, DELAY_అంచు_1x,
+      DELAY_అంచు_x0,     DELAY_అంచు_xz, DELAY_అంచు_zx,
+      DELAY_అంచు_లెక్క
 };
 
 /*
@@ -38,25 +38,25 @@ enum delay_edge_t {
  */
 class vvp_delay_t {
 
-    public:
+    బహిరంగ:
       vvp_delay_t(vvp_time64_t rise, vvp_time64_t fall);
       vvp_delay_t(vvp_time64_t rise, vvp_time64_t fall, vvp_time64_t decay);
       ~vvp_delay_t();
 
-      vvp_time64_t get_delay(vvp_bit4_t from, vvp_bit4_t to);
-      vvp_time64_t get_min_delay() const;
+      vvp_time64_t get_delay(vvp_bit4_t from, vvp_bit4_t గమ్యం);
+      vvp_time64_t get_min_delay() స్థిరరాశి;
 
-      void set_rise(vvp_time64_t val);
-      void set_fall(vvp_time64_t val);
-      void set_decay(vvp_time64_t val);
-      void set_ignore_decay();
+      శూన్య సమితి_rise(vvp_time64_t val);
+      శూన్య సమితి_fall(vvp_time64_t val);
+      శూన్య సమితి_decay(vvp_time64_t val);
+      శూన్య సమితి_ignore_decay();
 
-    private:
+    అంతరంగ:
       vvp_time64_t rise_, fall_, decay_;
       vvp_time64_t min_delay_;
       bool ignore_decay_;
 
-      void calculate_min_delay_();
+      శూన్య calculate_min_delay_();
 };
 
 /* vvp_fun_delay
@@ -72,46 +72,46 @@ class vvp_delay_t {
  * input. This is a bit of a hack, as it may be more efficient to
  * create the right type of vvp_fun_delay_real.
  */
-class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
+class vvp_fun_delay  : బహిరంగ vvp_net_fun_t, అంతరంగ vvp_gen_event_s {
 
-      enum delay_type_t {UNKNOWN_DELAY, VEC4_DELAY, VEC8_DELAY, REAL_DELAY};
-      struct event_ {
-	    explicit event_(vvp_time64_t s) : sim_time(s) {
+      గణన delay_type_t {UNKNOWN_DELAY, VEC4_DELAY, VEC8_DELAY, REAL_DELAY};
+      నిర్మాణం event_ {
+	    explicit event_(vvp_time64_t s) : sim_సమయం(s) {
 		  ptr_real = 0.0;
-		  next = NULL;
+		  తదుపరి_2 = ఖాళీ;
 	    }
-	    void (vvp_fun_delay::*run_run_ptr)(const struct vvp_fun_delay::event_*cur);
-	    const vvp_time64_t sim_time;
+	    శూన్య (vvp_fun_delay::*నిరంతరం_నిరంతరం_ptr)(స్థిరరాశి నిర్మాణం vvp_fun_delay::event_*cur);
+	    స్థిరరాశి vvp_time64_t sim_సమయం;
 	    vvp_vector4_t ptr_vec4;
 	    vvp_vector8_t ptr_vec8;
-	    double ptr_real;
-	    struct event_*next;
+	    ద్విగుణ ptr_real;
+	    నిర్మాణం event_*తదుపరి_2;
       };
 
-    public:
-      vvp_fun_delay(vvp_net_t*net, unsigned width, const vvp_delay_t&d);
+    బహిరంగ:
+      vvp_fun_delay(vvp_net_t*net, గుర్తులేని వెడల్పు, స్థిరరాశి vvp_delay_t&d);
       ~vvp_fun_delay() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override;
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
-      void recv_real(vvp_net_ptr_t port, double bit,
+      శూన్య recv_vec8(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు) override;
+      శూన్య recv_real(vvp_net_ptr_t పోర్టు, ద్విగుణ బిట్టు,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      void recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-			unsigned base, unsigned vwid) override;
+      శూన్య recv_vec4_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t ctx) override;
+      శూన్య recv_vec8_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector8_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid) override;
 
-    private:
-      virtual void run_run() override;
+    అంతరంగ:
+      మాయా శూన్య నిరంతరం_నిరంతరం() override;
 
 
-      void run_run_vec4_(const struct vvp_fun_delay::event_*cur);
-      void run_run_vec8_(const struct vvp_fun_delay::event_*cur);
-      void run_run_real_(const struct vvp_fun_delay::event_*cur);
+      శూన్య నిరంతరం_నిరంతరం_vec4(స్థిరరాశి నిర్మాణం vvp_fun_delay::event_*cur);
+      శూన్య నిరంతరం_నిరంతరం_vec8(స్థిరరాశి నిర్మాణం vvp_fun_delay::event_*cur);
+      శూన్య నిరంతరం_నిరంతరం_real(స్థిరరాశి నిర్మాణం vvp_fun_delay::event_*cur);
 
-    private:
+    అంతరంగ:
       vvp_net_t*net_;
       vvp_delay_t delay_;
       delay_type_t type_;
@@ -119,37 +119,37 @@ class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
 
       vvp_vector4_t cur_vec4_;
       vvp_vector8_t cur_vec8_;
-      double cur_real_;
-      vvp_time64_t round_, scale_; // Needed to scale variable time values.
+      ద్విగుణ cur_real_;
+      vvp_time64_t విడత, scale_; // Needed to scale variable time values.
 
-      struct event_ *list_;
-      void enqueue_(struct event_*cur)
+      నిర్మాణం event_ *list_;
+      శూన్య వరుసలో_చేర్చు(నిర్మాణం event_*cur)
       {
-	    if (list_) {
-		  cur->next = list_->next;
-		  list_->next = cur;
+	    ఒకవేళ (list_) {
+		  cur->తదుపరి_2 = list_->తదుపరి_2;
+		  list_->తదుపరి_2 = cur;
 		  list_ = cur;
-	    } else {
-		  cur->next = cur;
+	    } లేకపోతే {
+		  cur->తదుపరి_2 = cur;
 		  list_ = cur;
 	    }
       }
-      struct event_* dequeue_(void)
+      నిర్మాణం event_* వరుస_నుండి_తీయి(శూన్య)
       {
-	    if (list_ == 0)
-		  return 0;
-	    struct event_*cur = list_->next;
-	    if (list_ == cur)
+	    ఒకవేళ (list_ == 0)
+		  తిరిగి 0;
+	    నిర్మాణం event_*cur = list_->తదుపరి_2;
+	    ఒకవేళ (list_ == cur)
 		  list_ = 0;
-	    else
-		  list_->next = cur->next;
-	    return cur;
+	    లేకపోతే
+		  list_->తదుపరి_2 = cur->తదుపరి_2;
+	    తిరిగి cur;
       }
-      bool clean_pulse_events_(vvp_time64_t use_delay, const vvp_vector4_t&bit);
-      bool clean_pulse_events_(vvp_time64_t use_delay, const vvp_vector8_t&bit);
-      bool clean_pulse_events_(vvp_time64_t use_delay, double bit);
+      bool clean_pulse_events_(vvp_time64_t use_delay, స్థిరరాశి vvp_vector4_t&బిట్టు);
+      bool clean_pulse_events_(vvp_time64_t use_delay, స్థిరరాశి vvp_vector8_t&బిట్టు);
+      bool clean_pulse_events_(vvp_time64_t use_delay, ద్విగుణ బిట్టు);
 // Delete this when done!
-      void clean_pulse_events_(vvp_time64_t use_delay);
+      శూన్య clean_pulse_events_(vvp_time64_t use_delay);
 };
 
 /*
@@ -163,21 +163,21 @@ class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
 class vvp_fun_modpath;
 class vvp_fun_modpath_src;
 
-class vvp_fun_modpath  : public vvp_net_fun_t, private vvp_gen_event_s {
+class vvp_fun_modpath  : బహిరంగ vvp_net_fun_t, అంతరంగ vvp_gen_event_s {
 
-    public:
-      vvp_fun_modpath(vvp_net_t*net, unsigned width);
+    బహిరంగ:
+      vvp_fun_modpath(vvp_net_t*net, గుర్తులేని వెడల్పు);
       ~vvp_fun_modpath() override;
 
-      void add_modpath_src(vvp_fun_modpath_src*that, bool ifnone);
+      శూన్య కూడు_modpath_src(vvp_fun_modpath_src*that, bool ifnone);
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override;
 
-    private:
-      virtual void run_run() override;
+    అంతరంగ:
+      మాయా శూన్య నిరంతరం_నిరంతరం() override;
 
-    private:
+    అంతరంగ:
       vvp_net_t*net_;
 
       vvp_vector4_t cur_vec4_;
@@ -185,51 +185,51 @@ class vvp_fun_modpath  : public vvp_net_fun_t, private vvp_gen_event_s {
       vvp_fun_modpath_src*src_list_;
       vvp_fun_modpath_src*ifnone_list_;
 
-    private: // not implemented
-      vvp_fun_modpath(const vvp_fun_modpath&);
-      vvp_fun_modpath& operator= (const vvp_fun_modpath&);
+    అంతరంగ: // not implemented
+      vvp_fun_modpath(స్థిరరాశి vvp_fun_modpath&);
+      vvp_fun_modpath& క్రియాకారకం= (స్థిరరాశి vvp_fun_modpath&);
 };
 
-class vvp_fun_modpath_src  : public vvp_net_fun_t {
+class vvp_fun_modpath_src  : బహిరంగ vvp_net_fun_t {
 
-      friend class vvp_fun_modpath;
+      మిత్ర class vvp_fun_modpath;
 
-    public:
-      explicit vvp_fun_modpath_src(vvp_time64_t const del[12]);
-    protected:
+    బహిరంగ:
+      explicit vvp_fun_modpath_src(vvp_time64_t స్థిరరాశి del[12]);
+    రక్షిత:
       ~vvp_fun_modpath_src() override;
 
-    public:
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    బహిరంగ:
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override;
-      virtual bool test_vec4(const vvp_vector4_t&bit);
+      మాయా bool test_vec4(స్థిరరాశి vvp_vector4_t&బిట్టు);
 
-      void get_delay12(vvp_time64_t out[12]) const;
-      void put_delay12(const vvp_time64_t in[12]);
+      శూన్య get_delay12(vvp_time64_t బహిర్గతం[12]) స్థిరరాశి;
+      శూన్య put_delay12(స్థిరరాశి vvp_time64_t లోపల[12]);
 
-    private:
+    అంతరంగ:
 	// FIXME: Needs to be a 12-value array
       vvp_time64_t delay_[12];
 	// Used by vvp_fun_modpath to keep a list of modpath_src objects.
-      vvp_fun_modpath_src*next_;
+      vvp_fun_modpath_src*తదుపరి;
 
-      vvp_time64_t wake_time_;
+      vvp_time64_t wake_సమయం;
       bool condition_flag_;
 
-    private:
-      vvp_fun_modpath_src(const vvp_fun_modpath_src&);
-      vvp_fun_modpath_src& operator = (const vvp_fun_modpath_src&);
+    అంతరంగ:
+      vvp_fun_modpath_src(స్థిరరాశి vvp_fun_modpath_src&);
+      vvp_fun_modpath_src& క్రియాకారకం = (స్థిరరాశి vvp_fun_modpath_src&);
 };
 
-class vvp_fun_modpath_edge  : public vvp_fun_modpath_src {
+class vvp_fun_modpath_అంచు  : బహిరంగ vvp_fun_modpath_src {
 
-    public:
-      vvp_fun_modpath_edge(vvp_time64_t del[12], bool pos, bool neg);
+    బహిరంగ:
+      vvp_fun_modpath_అంచు(vvp_time64_t del[12], bool pos, bool neg);
 
-      bool test_vec4(const vvp_vector4_t&bit) override;
+      bool test_vec4(స్థిరరాశి vvp_vector4_t&బిట్టు) override;
 
-    private:
-      vvp_bit4_t old_value_;
+    అంతరంగ:
+      vvp_bit4_t old_విలువ;
       bool posedge_;
       bool negedge_;
 };
@@ -239,31 +239,31 @@ class vvp_fun_modpath_edge  : public vvp_fun_modpath_src {
 * Upon a (INTERCONNECT ...) statement an intermodpath will be inserted
 * between port1 and port2 and its delay can be annotated
 */
-class vvp_fun_intermodpath  : public vvp_net_fun_t, private vvp_gen_event_s {
+class vvp_fun_intermodpath  : బహిరంగ vvp_net_fun_t, అంతరంగ vvp_gen_event_s {
 
-    public:
-      vvp_fun_intermodpath(vvp_net_t*net, unsigned width);
+    బహిరంగ:
+      vvp_fun_intermodpath(vvp_net_t*net, గుర్తులేని వెడల్పు);
       ~vvp_fun_intermodpath() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override;
 
-      void get_delay12(vvp_time64_t out[12]) const;
-      void put_delay12(const vvp_time64_t in[12]);
+      శూన్య get_delay12(vvp_time64_t బహిర్గతం[12]) స్థిరరాశి;
+      శూన్య put_delay12(స్థిరరాశి vvp_time64_t లోపల[12]);
 
-    private:
-      void run_run() override;
+    అంతరంగ:
+      శూన్య నిరంతరం_నిరంతరం() override;
 
-    private:
+    అంతరంగ:
       vvp_net_t*net_;
 
       vvp_vector4_t cur_vec4_;
 
       vvp_time64_t delay_[12];
 
-    private: // not implemented
-      vvp_fun_intermodpath(const vvp_fun_intermodpath&);
-      vvp_fun_intermodpath& operator= (const vvp_fun_intermodpath&);
+    అంతరంగ: // not implemented
+      vvp_fun_intermodpath(స్థిరరాశి vvp_fun_intermodpath&);
+      vvp_fun_intermodpath& క్రియాకారకం= (స్థిరరాశి vvp_fun_intermodpath&);
 };
 
-#endif /* IVL_delay_H */
+#అయితే_ముగింపు /* IVL_delay_H */

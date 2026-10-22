@@ -1,5 +1,5 @@
-#ifndef IVL_array_H
-#define IVL_array_H
+#నిర్వచితం_కాకపోతే IVL_array_H
+#నిర్వచించు IVL_array_H
 /*
  * Copyright (c) 2007-2014 Stephen Williams (steve@icarus.com)
  *
@@ -19,20 +19,20 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "vvp_net.h"
-#include "vpi_user.h"
+#అన్తర్భావ "vvp_net.h"
+#అన్తర్భావ "vpi_user.h"
 
-typedef struct __vpiArray* vvp_array_t;
-class value_callback;
+రకనిర్వచనం నిర్మాణం __vpiArray* vvp_array_t;
+class విలువ_callback;
 
 /*
  * This function tries to find the array (by label) in the global
  * table of all the arrays in the design.
  */
-extern vvp_array_t array_find(const char*label);
+బాహ్య vvp_array_t array_కనుగొను(స్థిరరాశి అక్షరం*label);
 
 /* VPI hooks */
-extern value_callback* vpip_array_word_change(p_cb_data data);
-extern value_callback* vpip_array_change(p_cb_data data);
+బాహ్య విలువ_callback* vpip_array_మాట_change(p_cb_దత్తాంశం దత్తాంశం);
+బాహ్య విలువ_callback* vpip_array_change(p_cb_దత్తాంశం దత్తాంశం);
 
-#endif /* IVL_array_H */
+#అయితే_ముగింపు /* IVL_array_H */

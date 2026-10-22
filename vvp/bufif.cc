@@ -23,73 +23,73 @@
 # include  <iostream>
 # include  <cassert>
 
-vvp_fun_bufif::vvp_fun_bufif(bool en_invert, bool out_invert,
-			     unsigned str0, unsigned str1)
-: pol_(en_invert? 1 : 0), inv_(out_invert? 1 : 0)
+vvp_fun_bufif::vvp_fun_bufif(తార్కిక en_invert, తార్కిక బహిర్గతం_invert,
+			     గుర్తులేని str0, గుర్తులేని str1)
+: pol_(en_invert? 1 : 0), inv_(బహిర్గతం_invert? 1 : 0)
 {
       drive0_ = str0;
       drive1_ = str1;
-      count_functors_bufif += 1;
+      లెక్క_functors_bufif += 1;
 }
 
-void vvp_fun_bufif::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+శూన్య vvp_fun_bufif::recv_vec4(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
                               vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0:
-	    bit_ = inv_? ~bit : bit;
-	    break;
-	  case 1:
-	    en_ = pol_? ~bit : bit;
-	    break;
-	  default:
-	    return;
+      ఎంపిక (ptr.పోర్టు()) {
+	  స్థితి 0:
+	    బిట్టు_2 = inv_? ~బిట్టు : బిట్టు;
+	    ఆపు;
+	  స్థితి 1:
+	    en_ = pol_? ~బిట్టు : బిట్టు;
+	    ఆపు;
+	  అప్రమేయ:
+	    తిరిగి;
       }
 
-      vvp_vector8_t out (bit.size());
+      vvp_vector8_t out (బిట్టు.size());
 
-      for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
+      కొరకు (గుర్తులేని idx = 0 ;  idx < బిట్టు.size() ;  idx += 1) {
 	    vvp_bit4_t b_en  = en_.value(idx);
-	    vvp_bit4_t b_bit = bit_.value(idx);
+	    vvp_bit4_t b_బిట్టు = బిట్టు_2.value(idx);
 
-	    switch (b_en) {
-		case BIT4_0:
-		  out.set_bit(idx, vvp_scalar_t(BIT4_Z,drive0_,drive1_));
-		  break;
-		case BIT4_1:
-		  if (bit4_is_xz(b_bit))
-			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
-		  else
-			out.set_bit(idx, vvp_scalar_t(b_bit,drive0_,drive1_));
-		  break;
+	    ఎంపిక (b_en) {
+		స్థితి BIT4_0:
+		  out.సమితి_బిట్టు(idx, vvp_scalar_t(BIT4_Z,drive0_,drive1_));
+		  ఆపు;
+		స్థితి BIT4_1:
+		  ఒకవేళ (bit4_is_xz(b_బిట్టు))
+			out.సమితి_బిట్టు(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
+		  లేకపోతే
+			out.సమితి_బిట్టు(idx, vvp_scalar_t(b_బిట్టు,drive0_,drive1_));
+		  ఆపు;
 
-		default:
-		  switch (b_bit) {
-		      case BIT4_0:
-			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,0));
-			break;
-		      case BIT4_1:
-			out.set_bit(idx, vvp_scalar_t(BIT4_X,0,drive1_));
-			break;
-		      default:
-			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
-			break;
+		అప్రమేయ:
+		  ఎంపిక (b_బిట్టు) {
+		      స్థితి BIT4_0:
+			out.సమితి_బిట్టు(idx, vvp_scalar_t(BIT4_X,drive0_,0));
+			ఆపు;
+		      స్థితి BIT4_1:
+			out.సమితి_బిట్టు(idx, vvp_scalar_t(BIT4_X,0,drive1_));
+			ఆపు;
+		      అప్రమేయ:
+			out.సమితి_బిట్టు(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
+			ఆపు;
 		  }
-		  break;
+		  ఆపు;
 	    }
       }
 
       ptr.ptr()->send_vec8(out);
 }
 
-void vvp_fun_bufif::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			         unsigned base, unsigned vwid, vvp_context_t ctx)
+శూన్య vvp_fun_bufif::recv_vec4_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			         గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, బిట్టు, పునాది, vwid, ctx);
 }
 
-void vvp_fun_bufif::recv_real(vvp_net_ptr_t ptr, double real,
+శూన్య vvp_fun_bufif::recv_real(vvp_net_ptr_t ptr, ద్విగుణ real,
                               vvp_context_t ctx)
 {
-      recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
+      recv_vec4(ptr, double_గమ్యం_vector4_LSB(real), ctx);
 }

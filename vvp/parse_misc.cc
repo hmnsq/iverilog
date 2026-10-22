@@ -23,77 +23,77 @@
 # include  <cstdlib>
 # include  "ivl_alloc.h"
 
-const char*yypath;
-unsigned yyline;
+స్థిరరాశి అక్షరం*yypath;
+గుర్తులేని yyline;
 
-void yyerror(const char*msg)
+శూన్య yyerror(స్థిరరాశి అక్షరం*సందేశం)
 {
-      fprintf(stderr, "%s:%u: %s\n", yypath, yyline, msg);
+      fprintf(stderr, "%s:%u: %s\n", yypath, yyline, సందేశం);
 }
 
-void symbv_init(struct symbv_s*obj)
+శూన్య symbv_init(నిర్మాణం symbv_s*obj)
 {
       obj->cnt = 0;
       obj->vect = 0;
 }
 
-void symbv_add(struct symbv_s*obj, struct symb_s item)
+శూన్య symbv_కూడు(నిర్మాణం symbv_s*obj, నిర్మాణం symb_s అంశం)
 {
-      obj->vect = static_cast<struct symb_s*>
-                             (realloc(obj->vect, (obj->cnt+1) * sizeof(struct symb_s)));
-      obj->vect[obj->cnt] = item;
+      obj->vect = static_cast<నిర్మాణం symb_s*>
+                             (realloc(obj->vect, (obj->cnt+1) * పరిమాణం(నిర్మాణం symb_s)));
+      obj->vect[obj->cnt] = అంశం;
       obj->cnt += 1;
 }
 
-void numbv_init(struct numbv_s*obj)
+శూన్య numbv_init(నిర్మాణం numbv_s*obj)
 {
       obj->cnt = 0;
       obj->nvec = 0;
 }
 
-void numbv_add(struct numbv_s*obj, long item)
+శూన్య numbv_కూడు(నిర్మాణం numbv_s*obj, దీర్ఘ అంశం)
 {
-      obj->nvec = static_cast<long*>(realloc(obj->nvec, (obj->cnt+1) * sizeof(long)));
-      obj->nvec[obj->cnt] = item;
+      obj->nvec = static_cast<దీర్ఘ*>(realloc(obj->nvec, (obj->cnt+1) * పరిమాణం(దీర్ఘ)));
+      obj->nvec[obj->cnt] = అంశం;
       obj->cnt += 1;
 }
 
-void numbv_clear(struct numbv_s*obj)
+శూన్య numbv_clear(నిర్మాణం numbv_s*obj)
 {
-      free(obj->nvec);
+      విడుదల(obj->nvec);
       obj->nvec = 0;
       obj->cnt = 0;
 }
 
-void argv_init(struct argv_s*obj)
+శూన్య argv_init(నిర్మాణం argv_s*obj)
 {
       obj->argc = 0;
       obj->argv = 0;
       obj->syms = 0;
 }
 
-void argv_add(struct argv_s*obj, vpiHandle item)
+శూన్య argv_కూడు(నిర్మాణం argv_s*obj, vpiHandle అంశం)
 {
       obj->argv = static_cast<vpiHandle*>
-                             (realloc(obj->argv, (obj->argc+1)*sizeof(vpiHandle)));
-      obj->argv[obj->argc] = item;
+                             (realloc(obj->argv, (obj->argc+1)*పరిమాణం(vpiHandle)));
+      obj->argv[obj->argc] = అంశం;
       obj->argc += 1;
 }
 
-void argv_sym_add(struct argv_s*obj, char *item)
+శూన్య argv_sym_కూడు(నిర్మాణం argv_s*obj, అక్షరం *అంశం)
 {
-      argv_add(obj, 0x0);
-      obj->syms = static_cast<char**>
-                             (realloc(obj->syms, (obj->argc)*sizeof(char*)));
-      obj->syms[obj->argc-1] = item;
+      argv_కూడు(obj, 0x0);
+      obj->syms = static_cast<అక్షరం**>
+                             (realloc(obj->syms, (obj->argc)*పరిమాణం(అక్షరం*)));
+      obj->syms[obj->argc-1] = అంశం;
 }
 
-void argv_sym_lookup(struct argv_s*obj)
+శూన్య argv_sym_lookup(నిర్మాణం argv_s*obj)
 {
-      if (!obj->syms)
-	    return;
-      for (unsigned i=0; i < obj->argc; i++)
-	    if (!obj->argv[i])
+      ఒకవేళ (!obj->syms)
+	    తిరిగి;
+      కొరకు (గుర్తులేని i=0; i < obj->argc; i++)
+	    ఒకవేళ (!obj->argv[i])
 		  compile_vpi_lookup(&obj->argv[i], obj->syms[i]);
-      free(obj->syms);
+      విడుదల(obj->syms);
 }

@@ -1,5 +1,5 @@
-#ifndef IVL_dff_H
-#define IVL_dff_H
+#నిర్వచితం_కాకపోతే IVL_dff_H
+#నిర్వచించు IVL_dff_H
 /*
  * Copyright (c) 2005-2025 Stephen Williams (steve@icarus.com)
  *
@@ -35,67 +35,67 @@
  *
  * The base vvp_dff does not implement an asynchronous set/clear.
  */
-class vvp_dff : public vvp_net_fun_t {
+class vvp_dff : బహిరంగ vvp_net_fun_t {
 
-    public:
-      explicit vvp_dff(unsigned width, bool negedge);
+    బహిరంగ:
+      explicit vvp_dff(గుర్తులేని వెడల్పు, bool negedge);
       ~vvp_dff() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      శూన్య recv_vec4_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t ctx) override;
 
-    private:
-      virtual void recv_async(vvp_net_ptr_t port);
+    అంతరంగ:
+      మాయా శూన్య recv_async(vvp_net_ptr_t పోర్టు);
 
-      vvp_bit4_t clk_active_ : 8;
+      vvp_bit4_t clk_చురుకైన : 8;
       vvp_bit4_t clk_        : 8;
       vvp_bit4_t ena_        : 8;
       vvp_bit4_t asc_        : 8;
 
-    protected:
+    రక్షిత:
       vvp_vector4_t d_;
 };
 
 /*
  * This variant implements an asynchronous clear to all zeros.
  */
-class vvp_dff_aclr : public vvp_dff {
+class vvp_dff_aclr : బహిరంగ vvp_dff {
 
-    public:
-      explicit vvp_dff_aclr(unsigned width, bool negedge);
+    బహిరంగ:
+      explicit vvp_dff_aclr(గుర్తులేని వెడల్పు, bool negedge);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    అంతరంగ:
+      శూన్య recv_async(vvp_net_ptr_t పోర్టు) override;
 };
 
 /*
  * This variant implements an asynchronous set to all ones.
  */
-class vvp_dff_aset : public vvp_dff {
+class vvp_dff_aset : బహిరంగ vvp_dff {
 
-    public:
-      explicit vvp_dff_aset(unsigned width, bool negedge);
+    బహిరంగ:
+      explicit vvp_dff_aset(గుర్తులేని వెడల్పు, bool negedge);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    అంతరంగ:
+      శూన్య recv_async(vvp_net_ptr_t పోర్టు) override;
 };
 
 /*
  * This variant implements an asynchronous set to a specified constant
  * vector value.
  */
-class vvp_dff_asc : public vvp_dff {
+class vvp_dff_asc : బహిరంగ vvp_dff {
 
-    public:
-      explicit vvp_dff_asc(unsigned width, bool negedge, const char*asc_value);
+    బహిరంగ:
+      explicit vvp_dff_asc(గుర్తులేని వెడల్పు, bool negedge, స్థిరరాశి అక్షరం*asc_విలువ);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    అంతరంగ:
+      శూన్య recv_async(vvp_net_ptr_t పోర్టు) override;
 
-      vvp_vector4_t asc_value_;
+      vvp_vector4_t asc_విలువ_2;
 };
 
-#endif /* IVL_dff_H */
+#అయితే_ముగింపు /* IVL_dff_H */

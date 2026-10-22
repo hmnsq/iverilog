@@ -1,5 +1,5 @@
-#ifndef IVL_logic_H
-#define IVL_logic_H
+#నిర్వచితం_కాకపోతే IVL_logic_H
+#నిర్వచించు IVL_logic_H
 /*
  * Copyright (c) 2000-2025 Stephen Williams (steve@icarus.com)
  *
@@ -26,73 +26,73 @@
 /*
  * vvp_fun_boolean_ is just a common hook for holding operands.
  */
-class vvp_fun_boolean_ : public vvp_net_fun_t, protected vvp_gen_event_s {
+class vvp_fun_boolean_ : బహిరంగ vvp_net_fun_t, రక్షిత vvp_gen_event_s {
 
-    public:
-      explicit vvp_fun_boolean_(unsigned wid);
+    బహిరంగ:
+      explicit vvp_fun_boolean_(గుర్తులేని wid);
       ~vvp_fun_boolean_() override;
 
-      void recv_vec4(vvp_net_ptr_t p, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t p, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override;
-      void recv_vec4_pv(vvp_net_ptr_t p, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override;
-      void recv_real(vvp_net_ptr_t p, double real,
+      శూన్య recv_vec4_pv(vvp_net_ptr_t p, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t) override;
+      శూన్య recv_real(vvp_net_ptr_t p, ద్విగుణ real,
                      vvp_context_t) override;
 
-    protected:
-      vvp_vector4_t input_[4];
+    రక్షిత:
+      vvp_vector4_t ఆదానం_2[4];
       vvp_net_t*net_;
 };
 
-class vvp_fun_and  : public vvp_fun_boolean_ {
+class vvp_fun_and  : బహిరంగ vvp_fun_boolean_ {
 
-    public:
-      explicit vvp_fun_and(unsigned wid, bool invert);
+    బహిరంగ:
+      explicit vvp_fun_and(గుర్తులేని wid, bool invert);
       ~vvp_fun_and() override;
 
-    private:
-      void run_run() override;
+    అంతరంగ:
+      శూన్య నిరంతరం_నిరంతరం() override;
       bool invert_;
 };
 
-class vvp_fun_equiv : public vvp_fun_boolean_ {
+class vvp_fun_equiv : బహిరంగ vvp_fun_boolean_ {
 
-    public:
+    బహిరంగ:
       explicit vvp_fun_equiv();
       ~vvp_fun_equiv() override;
 
-    private:
-      void run_run() override;
+    అంతరంగ:
+      శూన్య నిరంతరం_నిరంతరం() override;
 };
 
-class vvp_fun_impl : public vvp_fun_boolean_ {
+class vvp_fun_impl : బహిరంగ vvp_fun_boolean_ {
 
-    public:
+    బహిరంగ:
       explicit vvp_fun_impl();
       ~vvp_fun_impl() override;
 
-    private:
-      void run_run() override;
+    అంతరంగ:
+      శూన్య నిరంతరం_నిరంతరం() override;
 };
 
 /*
  * vvp_fun_buf_not_ is just a common hook for holding operands.
  */
-class vvp_fun_buf_not_ : public vvp_net_fun_t, protected vvp_gen_event_s {
+class vvp_fun_buf_not_ : బహిరంగ vvp_net_fun_t, రక్షిత vvp_gen_event_s {
 
-    public:
-      explicit vvp_fun_buf_not_(unsigned wid);
+    బహిరంగ:
+      explicit vvp_fun_buf_not_(గుర్తులేని wid);
       ~vvp_fun_buf_not_() override;
 
-      void recv_vec4(vvp_net_ptr_t p, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t p, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override;
-      void recv_vec4_pv(vvp_net_ptr_t p, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override;
-      void recv_real(vvp_net_ptr_t p, double real,
+      శూన్య recv_vec4_pv(vvp_net_ptr_t p, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t) override;
+      శూన్య recv_real(vvp_net_ptr_t p, ద్విగుణ real,
                      vvp_context_t ctx) override;
 
-    protected:
-      vvp_vector4_t input_;
+    రక్షిత:
+      vvp_vector4_t ఆదానం_2;
       vvp_net_t*net_;
 };
 
@@ -102,49 +102,49 @@ class vvp_fun_buf_not_ : public vvp_net_fun_t, protected vvp_gen_event_s {
  * The retransmitted vector has all Z values changed to X, just like
  * the buf(Q,D) gate in Verilog.
  */
-class vvp_fun_buf: public vvp_fun_buf_not_ {
+class vvp_fun_buf: బహిరంగ vvp_fun_buf_not_ {
 
-    public:
-      explicit vvp_fun_buf(unsigned wid);
-      virtual ~vvp_fun_buf() override;
+    బహిరంగ:
+      explicit vvp_fun_buf(గుర్తులేని wid);
+      మాయా ~vvp_fun_buf() override;
 
-    private:
-      void run_run() override;
+    అంతరంగ:
+      శూన్య నిరంతరం_నిరంతరం() override;
 };
 
 /*
  * The vvp_fun_bufz is like the vvp_fun_buf, but it does not change
  * Z values to X -- it passes Z values unchanged.
  */
-class vvp_fun_bufz: public vvp_net_fun_t {
+class vvp_fun_bufz: బహిరంగ vvp_net_fun_t {
 
-    public:
+    బహిరంగ:
       explicit vvp_fun_bufz();
-      virtual ~vvp_fun_bufz() override;
+      మాయా ~vvp_fun_bufz() override;
 
-      void recv_vec4(vvp_net_ptr_t p, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t p, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override;
-      void recv_vec4_pv(vvp_net_ptr_t p, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override;
+      శూన్య recv_vec4_pv(vvp_net_ptr_t p, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t) override;
 	//void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit);
-      void recv_real(vvp_net_ptr_t p, double bit,
+      శూన్య recv_real(vvp_net_ptr_t p, ద్విగుణ బిట్టు,
                      vvp_context_t) override;
 
-    private:
+    అంతరంగ:
 };
 
 /*
  * The vp_fun_buft is like the vvp_fun_bufz, but is completely
  * transparent to strengths.
  */
-class vvp_fun_buft: public vvp_fun_bufz {
+class vvp_fun_buft: బహిరంగ vvp_fun_bufz {
 
-    public:
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
-    private:
+    బహిరంగ:
+      శూన్య recv_vec8(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector8_t&బిట్టు) override;
+    అంతరంగ:
 };
 
-enum sel_type {SEL_PORT0, SEL_PORT1, SEL_BOTH};
+గణన sel_type {SEL_PORT0, SEL_PORT1, SEL_BOTH};
 
 /*
  * The muxz functor is an A-B mux device, with the data inputs on
@@ -157,79 +157,79 @@ enum sel_type {SEL_PORT0, SEL_PORT1, SEL_BOTH};
  * input (port-0 or port-1) to enter the device. The narrow vector is
  * padded with X values.
  */
-class vvp_fun_muxz : public vvp_net_fun_t, private vvp_gen_event_s {
+class vvp_fun_muxz : బహిరంగ vvp_net_fun_t, అంతరంగ vvp_gen_event_s {
 
-    public:
-      explicit vvp_fun_muxz(unsigned width);
-      virtual ~vvp_fun_muxz() override;
+    బహిరంగ:
+      explicit vvp_fun_muxz(గుర్తులేని వెడల్పు);
+      మాయా ~vvp_fun_muxz() override;
 
-      void recv_vec4(vvp_net_ptr_t p, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t p, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override;
-      void recv_vec4_pv(vvp_net_ptr_t p, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override;
+      శూన్య recv_vec4_pv(vvp_net_ptr_t p, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t) override;
 
-    private:
-      void run_run() override;
+    అంతరంగ:
+      శూన్య నిరంతరం_నిరంతరం() override;
 
-    private:
+    అంతరంగ:
       vvp_vector4_t a_;
       vvp_vector4_t b_;
       vvp_net_t*net_;
       sel_type select_;
-      bool has_run_;
+      bool has_నిరంతరం;
 };
 
-class vvp_fun_muxr : public vvp_net_fun_t, private vvp_gen_event_s {
+class vvp_fun_muxr : బహిరంగ vvp_net_fun_t, అంతరంగ vvp_gen_event_s {
 
-    public:
+    బహిరంగ:
       explicit vvp_fun_muxr();
-      virtual ~vvp_fun_muxr() override;
+      మాయా ~vvp_fun_muxr() override;
 
-      void recv_vec4(vvp_net_ptr_t p, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t p, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override;
-      void recv_real(vvp_net_ptr_t p, double bit,
+      శూన్య recv_real(vvp_net_ptr_t p, ద్విగుణ బిట్టు,
                      vvp_context_t) override;
 
-    private:
-      void run_run() override;
+    అంతరంగ:
+      శూన్య నిరంతరం_నిరంతరం() override;
 
-    private:
-      double a_;
-      double b_;
+    అంతరంగ:
+      ద్విగుణ a_;
+      ద్విగుణ b_;
       vvp_net_t*net_;
       sel_type select_;
 };
 
-class vvp_fun_not: public vvp_fun_buf_not_ {
+class vvp_fun_not: బహిరంగ vvp_fun_buf_not_ {
 
-    public:
-      explicit vvp_fun_not(unsigned wid);
-      virtual ~vvp_fun_not() override;
+    బహిరంగ:
+      explicit vvp_fun_not(గుర్తులేని wid);
+      మాయా ~vvp_fun_not() override;
 
-    private:
-      void run_run() override;
+    అంతరంగ:
+      శూన్య నిరంతరం_నిరంతరం() override;
 };
 
-class vvp_fun_or  : public vvp_fun_boolean_ {
+class vvp_fun_or  : బహిరంగ vvp_fun_boolean_ {
 
-    public:
-      explicit vvp_fun_or(unsigned wid, bool invert);
+    బహిరంగ:
+      explicit vvp_fun_or(గుర్తులేని wid, bool invert);
       ~vvp_fun_or() override;
 
-    private:
-      void run_run() override;
+    అంతరంగ:
+      శూన్య నిరంతరం_నిరంతరం() override;
       bool invert_;
 };
 
-class vvp_fun_xor  : public vvp_fun_boolean_ {
+class vvp_fun_xor  : బహిరంగ vvp_fun_boolean_ {
 
-    public:
-      explicit vvp_fun_xor(unsigned wid, bool invert);
+    బహిరంగ:
+      explicit vvp_fun_xor(గుర్తులేని wid, bool invert);
       ~vvp_fun_xor() override;
 
-    private:
-      void run_run() override;
+    అంతరంగ:
+      శూన్య నిరంతరం_నిరంతరం() override;
       bool invert_;
 };
 
-#endif /* IVL_logic_H */
+#అయితే_ముగింపు /* IVL_logic_H */

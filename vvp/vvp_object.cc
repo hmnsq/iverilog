@@ -22,28 +22,28 @@
 # include  <iostream>
 # include  <typeinfo>
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
-int vvp_object::total_active_cnt_ = 0;
+పూర్ణాంకం vvp_object::మొత్తం_చురుకైన_cnt = 0;
 
-void vvp_object::cleanup(void)
+శూన్య vvp_object::cleanup(శూన్య)
 {
 }
 
 vvp_object::~vvp_object()
 {
-      total_active_cnt_ -= 1;
+      మొత్తం_చురుకైన_cnt -= 1;
 }
 
-void vvp_object::shallow_copy(const vvp_object*)
+శూన్య vvp_object::shallow_copy(స్థిరరాశి vvp_object*)
 {
-      cerr << "XXXX shallow_copy(vvp_object_t) not implemented for " << typeid(*this).name() << endl;
-      assert(0);
+      cerr << "XXXX shallow_copy(vvp_object_t) not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
+      ప్రతిజ్ఞా(0);
 }
 
-vvp_object* vvp_object::duplicate(void) const
+vvp_object* vvp_object::duplicate(శూన్య) స్థిరరాశి
 {
-      cerr << "XXXX duplicate() not implemented for " << typeid(*this).name() << endl;
-      assert(0);
-      return 0;
+      cerr << "XXXX duplicate() not implemented for " << typeid(*ఇది).name() << పంక్తి_ముగింపు;
+      ప్రతిజ్ఞా(0);
+      తిరిగి 0;
 }

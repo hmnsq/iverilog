@@ -34,9 +34,9 @@ using namespace std;
 /*
  * These are bits in the lexor.
  */
-extern FILE*yyin;
+బాహ్య FILE*yyin;
 
-vector <const char*> file_names;
+సదిశ <స్థిరరాశి అక్షరం*> file_పేర్లు;
 
 /*
  * Local variables.
@@ -46,41 +46,41 @@ vector <const char*> file_names;
  * When parsing a modpath list, this is the processed destination that
  * the source items will attach themselves to.
  */
-static struct __vpiModPath*modpath_dst = 0;
+స్థిర నిర్మాణం __vpiModPath*modpath_dst = 0;
 %}
 
-%union {
-      char*text;
-      char **table;
+%సంఘం {
+      అక్షరం*పాఠ్యం;
+      అక్షరం **పట్టిక;
       uint64_t numb;
       bool flag;
 
       comp_operands_t opa;
 
-      struct symb_s  symb;
-      struct symbv_s symbv;
+      నిర్మాణం symb_s  symb;
+      నిర్మాణం symbv_s symbv;
 
-      struct numbv_s numbv;
+      నిర్మాణం numbv_s numbv;
 
-      struct enum_name_s enum_name;
-      std::list<struct enum_name_s>*enum_namev;
+      నిర్మాణం enum_name_s enum_name;
+      std::list<నిర్మాణం enum_name_s>*enum_namev;
 
-      struct symb_s vect;
+      నిర్మాణం symb_s vect;
 
-      struct argv_s argv;
+      నిర్మాణం argv_s argv;
       vpiHandle vpi;
 
       vvp_delay_t*cdelay;
 
-      int      vpi_enum;
+      పూర్ణాంకం      vpi_enum;
 };
 
 %token K_A K_APV
 %token K_ARITH_ABS K_ARITH_DIV K_ARITH_DIV_R K_ARITH_DIV_S K_ARITH_MOD
 %token K_ARITH_MOD_R K_ARITH_MOD_S
 %token K_ARITH_MULT K_ARITH_MULT_R K_ARITH_SUB K_ARITH_SUB_R
-%token K_ARITH_SUM K_ARITH_SUM_R K_ARITH_POW K_ARITH_POW_R K_ARITH_POW_S
-%token K_ARRAY K_ARRAY_2U K_ARRAY_2S K_ARRAY_I K_ARRAY_OBJ K_ARRAY_R K_ARRAY_S K_ARRAY_STR K_ARRAY_PORT
+%token K_ARITH_కూడిక K_ARITH_కూడిక_R K_ARITH_POW K_ARITH_POW_R K_ARITH_POW_S
+%token K_ARRAY K_ARRAY_2U K_ARRAY_2S K_ARRAY_I K_ARRAY_OBJ K_ARRAY_R K_ARRAY_S K_ARRAY_STR K_ARRAY_పోర్టు
 %token K_CAST_INT K_CAST_REAL K_CAST_REAL_S K_CAST_2
 %token K_CLASS
 %token K_CMP_EEQ K_CMP_EQ K_CMP_EQX K_CMP_EQZ K_CMP_WEQ K_CMP_WNE
@@ -93,7 +93,7 @@ static struct __vpiModPath*modpath_dst = 0;
 %token K_NET K_NET_S K_NET_R K_NET_2S K_NET_2U
 %token K_NET8 K_NET8_2S K_NET8_2U K_NET8_S
 %token K_PARAM_STR K_PARAM_L K_PARAM_REAL K_PART K_PART_PV
-%token K_PART_V K_PART_V_S K_PORT K_PORT_INFO K_PQ K_PV K_REDUCE_AND K_REDUCE_OR K_REDUCE_XOR
+%token K_PART_V K_PART_V_S K_పోర్టు K_పోర్టు_INFO K_PQ K_PV K_REDUCE_AND K_REDUCE_OR K_REDUCE_XOR
 %token K_REDUCE_NAND K_REDUCE_NOR K_REDUCE_XNOR K_REPEAT
 %token K_RESOLV K_RTRAN K_RTRANIF0 K_RTRANIF1
 %token K_SCOPE K_SFUNC K_SFUNC_E K_SHIFTL K_SHIFTR K_SHIFTRS
@@ -101,82 +101,82 @@ static struct __vpiModPath*modpath_dst = 0;
 %token K_THREAD K_TIMESCALE K_TRAN K_TRANIF0 K_TRANIF1 K_TRANVP
 %token K_UFUNC_REAL K_UFUNC_VEC4 K_UFUNC_E K_UDP K_UDP_C K_UDP_S
 %token K_VAR K_VAR_COBJECT K_VAR_DARRAY
-%token K_VAR_QUEUE
+%token K_VAR_వరుస
 %token K_VAR_S K_VAR_STR K_VAR_I K_VAR_R K_VAR_2S K_VAR_2U
 %token K_vpi_call K_vpi_call_w K_vpi_call_i
 %token K_vpi_func K_vpi_func_r K_vpi_func_s
-%token K_ivl_version K_ivl_delay_selection
-%token K_vpi_module K_vpi_time_precision K_file_names K_file_line
-%token K_PORT_INPUT K_PORT_OUTPUT K_PORT_INOUT K_PORT_MIXED K_PORT_NODIR
+%token K_ivl_సంస్కరణ K_ivl_delay_selection
+%token K_vpi_module K_vpi_సమయం_precision K_file_పేర్లు K_file_పంక్తి
+%token K_పోర్టు_ఆదానం K_పోర్టు_OUTPUT K_పోర్టు_INOUT K_పోర్టు_MIXED K_పోర్టు_NODIR
 
-%token <text> T_INSTR
-%token <text> T_LABEL
-%token <numb> T_NUMBER
-%token <text> T_STRING
-%token <text> T_SYMBOL
-%token <vect> T_VECTOR
+%token <పాఠ్యం> T_INSTR
+%token <పాఠ్యం> T_LABEL
+%token <numb> T_సంఖ్య
+%token <పాఠ్యం> T_STRING
+%token <పాఠ్యం> T_చిహ్నం
+%token <vect> T_సదిశ
 
-%type <flag>  local_flag
-%type <vpi_enum> port_type
-%type <numb>  signed_t_number
-%type <numb>  dimension dimensions dimensions_opt
-%type <symb>  symbol symbol_opt
-%type <symbv> symbols symbols_net
-%type <numbv> numbers
-%type <text> label_opt
-%type <opa>  operand operands operands_opt
-%type <table> udp_table
+%రకం <flag>  local_flag
+%రకం <vpi_enum> పోర్టు_type
+%రకం <numb>  signed_t_సంఖ్య
+%రకం <numb>  dimension dimensions dimensions_opt
+%రకం <symb>  చిహ్నం చిహ్నం_opt
+%రకం <symbv> symbols symbols_net
+%రకం <numbv> numbers
+%రకం <పాఠ్యం> label_opt
+%రకం <opa>  నిర్వాహ్యం operands operands_opt
+%రకం <పట్టిక> udp_పట్టిక
 
-%type <argv> argument_opt argument_list
-%type <vpi>  argument symbol_access
-%type <cdelay> delay
+%రకం <argv> వాదం_opt వాదం_list
+%రకం <vpi>  వాదం చిహ్నం_access
+%రకం <cdelay> delay
 
-%type <enum_name> enum_type_name
-%type <enum_namev> enum_type_names
+%రకం <enum_name> enum_type_name
+%రకం <enum_namev> enum_type_పేర్లు
 
 %%
 
-source_file : header_lines_opt program footer_lines;
+ఆధారం_file : శీర్షిక_పంక్తులు_opt కార్యక్రమం footer_పంక్తులు;
 
-header_lines_opt : header_lines | ;
+శీర్షిక_పంక్తులు_opt : శీర్షిక_పంక్తులు | ;
 
 
-header_lines
-	: header_line
-	| header_lines header_line
+శీర్షిక_పంక్తులు
+	: శీర్షిక_పంక్తి
+	| శీర్షిక_పంక్తులు శీర్షిక_పంక్తి
 	;
 
-header_line
-	: K_ivl_version T_STRING ';'
-		{ verify_version($2, NULL); }
-	| K_ivl_version T_STRING T_STRING ';'
-		{ verify_version($2, $3); }
+శీర్షిక_పంక్తి
+	: K_ivl_సంస్కరణ T_STRING ';'
+		{ verify_సంస్కరణ($2, ఖాళీ); }
+	| K_ivl_సంస్కరణ T_STRING T_STRING ';'
+		{ verify_సంస్కరణ($2, $3); }
 	| K_ivl_delay_selection T_STRING ';'
-		{ set_delay_selection($2); }
+		{ సమితి_delay_selection($2); }
 	| K_vpi_module T_STRING ';'
-		{ compile_load_vpi_module($2); }
-	| K_vpi_time_precision '+' T_NUMBER ';'
-		{ compile_vpi_time_precision($3); }
-	| K_vpi_time_precision '-' T_NUMBER ';'
-		{ compile_vpi_time_precision(-$3); }
+		{ compile_ఎక్కించు_vpi_module($2); }
+	| K_vpi_సమయం_precision '+' T_సంఖ్య ';'
+		{ compile_vpi_సమయం_precision($3); }
+	| K_vpi_సమయం_precision '-' T_సంఖ్య ';'
+		{ compile_vpi_సమయం_precision(-$3); }
 	;
 
-footer_lines
-	: K_file_names T_NUMBER ';' { file_names.reserve($2); }
-	  name_strings
+footer_పంక్తులు
+	: K_file_పేర్లు T_సంఖ్య ';' { file_పేర్లు.reserve($2); }
+	  name_అక్షరశ్రేణులు
 	;
 
-name_strings
+name_అక్షరశ్రేణులు
 	: T_STRING ';'
-		{ file_names.push_back($1); }
-	| name_strings T_STRING ';'
-		{ file_names.push_back($2); }
+		{ file_పేర్లు.నెట్టు_వెనుక($1); }
+	| name_అక్షరశ్రేణులు T_STRING ';'
+		{ file_పేర్లు.నెట్టు_వెనుక($2); }
 	;
 
   /* A program is simply a list of statements. No other structure. */
-program
+కార్యక్రమం
 	: statement
-	| program statement
+	| కార్యక్రమం statement
 	;
 
 
@@ -191,13 +191,13 @@ statement
      label and a type name, and may have operands. The functor may
      also have a delay specification and output strengths. */
 
-	: T_LABEL K_FUNCTOR T_SYMBOL T_NUMBER ',' symbols ';'
+	: T_LABEL K_FUNCTOR T_చిహ్నం T_సంఖ్య ',' symbols ';'
 		{ compile_functor($1, $3, $4, 6, 6, $6.cnt, $6.vect); }
 
-	| T_LABEL K_FUNCTOR T_SYMBOL T_NUMBER
-	          '[' T_NUMBER T_NUMBER ']' ',' symbols ';'
-		{ unsigned str0 = $6;
-		  unsigned str1 = $7;
+	| T_LABEL K_FUNCTOR T_చిహ్నం T_సంఖ్య
+	          '[' T_సంఖ్య T_సంఖ్య ']' ',' symbols ';'
+		{ గుర్తులేని str0 = $6;
+		  గుర్తులేని str1 = $7;
 		  compile_functor($1, $3, $4, str0, str1,
 				  $10.cnt, $10.vect);
 		}
@@ -207,289 +207,289 @@ statement
      label (UDP type id) a name (string), the number of inputs, and
      for sequential UDPs the initial value. */
 
-	| T_LABEL K_UDP_S T_STRING ',' T_NUMBER ',' T_NUMBER ',' udp_table ';'
+	| T_LABEL K_UDP_S T_STRING ',' T_సంఖ్య ',' T_సంఖ్య ',' udp_పట్టిక ';'
 		{ compile_udp_def(1, $1, $3, $5, $7, $9); }
 
-	| T_LABEL K_UDP_C T_STRING ',' T_NUMBER ',' udp_table ';'
+	| T_LABEL K_UDP_C T_STRING ',' T_సంఖ్య ',' udp_పట్టిక ';'
 		{ compile_udp_def(0, $1, $3, $5, 0, $7); }
 
-	| T_LABEL K_UDP T_SYMBOL ',' symbols ';'
+	| T_LABEL K_UDP T_చిహ్నం ',' symbols ';'
 		{ compile_udp_functor($1, $3, $5.cnt, $5.vect); }
 
 
   /* Memory.  Definition, port, initialization */
 
-        | T_LABEL K_ARRAY T_STRING ',' signed_t_number signed_t_number ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య ',' signed_t_సంఖ్య signed_t_సంఖ్య ';'
                 { compile_var_array($1, $3, $5, $6, $8, $9, 0); }
 
-        | T_LABEL K_ARRAY_2U T_STRING ',' signed_t_number signed_t_number ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY_2U T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య ',' signed_t_సంఖ్య signed_t_సంఖ్య ';'
                 { compile_var2_array($1, $3, $5, $6, $8, $9, false); }
-        | T_LABEL K_ARRAY_2S T_STRING ',' signed_t_number signed_t_number ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY_2S T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య ',' signed_t_సంఖ్య signed_t_సంఖ్య ';'
                 { compile_var2_array($1, $3, $5, $6, $8, $9, true); }
 
-        | T_LABEL K_ARRAY_I T_STRING ',' signed_t_number signed_t_number ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY_I T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య ',' signed_t_సంఖ్య signed_t_సంఖ్య ';'
                 { compile_var_array($1, $3, $5, $6, $8, $9, 2); }
 
-        | T_LABEL K_ARRAY_R T_STRING ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY_R T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య ';'
                 { compile_real_array($1, $3, $5, $6); }
 
-        | T_LABEL K_ARRAY_S T_STRING ',' signed_t_number signed_t_number ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY_S T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య ',' signed_t_సంఖ్య signed_t_సంఖ్య ';'
                 { compile_var_array($1, $3, $5, $6, $8, $9, 1); }
 
-        | T_LABEL K_ARRAY_STR T_STRING ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY_STR T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య ';'
                 { compile_string_array($1, $3, $5, $6); }
 
-        | T_LABEL K_ARRAY_OBJ T_STRING ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY_OBJ T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య ';'
                 { compile_object_array($1, $3, $5, $6); }
 
-        | T_LABEL K_ARRAY T_STRING ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య ';'
                 { compile_net_array($1, $3, $5, $6); }
 
-        | T_LABEL K_ARRAY_PORT T_SYMBOL ',' T_SYMBOL ';'
-		{ compile_array_port($1, $3, $5); }
+        | T_LABEL K_ARRAY_పోర్టు T_చిహ్నం ',' T_చిహ్నం ';'
+		{ compile_array_పోర్టు($1, $3, $5); }
 
-        | T_LABEL K_ARRAY_PORT T_SYMBOL ',' T_NUMBER ';'
-		{ compile_array_port($1, $3, $5); }
+        | T_LABEL K_ARRAY_పోర్టు T_చిహ్నం ',' T_సంఖ్య ';'
+		{ compile_array_పోర్టు($1, $3, $5); }
 
-        | T_LABEL K_ARRAY T_STRING ',' T_SYMBOL ';'
+        | T_LABEL K_ARRAY T_STRING ',' T_చిహ్నం ';'
                 { compile_array_alias($1, $3, $5); }
 
  /* The .ufunc functors are for implementing user defined functions, or
      other thread code that is automatically invoked if any of the
      bits in the symbols list change. */
 
-  | T_LABEL K_UFUNC_REAL T_SYMBOL ',' T_NUMBER ',' T_SYMBOL ';'
+  | T_LABEL K_UFUNC_REAL T_చిహ్నం ',' T_సంఖ్య ',' T_చిహ్నం ';'
       { compile_ufunc_real($1, $3, $5, 0, 0, 0, 0, $7, strdup("E_0x0")); }
-  | T_LABEL K_UFUNC_REAL T_SYMBOL ',' T_NUMBER ',' symbols '(' symbols ')' T_SYMBOL ';'
+  | T_LABEL K_UFUNC_REAL T_చిహ్నం ',' T_సంఖ్య ',' symbols '(' symbols ')' T_చిహ్నం ';'
       { compile_ufunc_real($1, $3, $5, $7.cnt, $7.vect, $9.cnt, $9.vect, $11, 0); }
 
-  | T_LABEL K_UFUNC_VEC4 T_SYMBOL ',' T_NUMBER ',' T_SYMBOL ';'
+  | T_LABEL K_UFUNC_VEC4 T_చిహ్నం ',' T_సంఖ్య ',' T_చిహ్నం ';'
       { compile_ufunc_vec4($1, $3, $5, 0, 0, 0, 0, $7, strdup("E_0x0")); }
-  | T_LABEL K_UFUNC_VEC4 T_SYMBOL ',' T_NUMBER ',' symbols '(' symbols ')' T_SYMBOL ';'
+  | T_LABEL K_UFUNC_VEC4 T_చిహ్నం ',' T_సంఖ్య ',' symbols '(' symbols ')' T_చిహ్నం ';'
       { compile_ufunc_vec4($1, $3, $5, $7.cnt, $7.vect, $9.cnt, $9.vect, $11, 0); }
 
-  | T_LABEL K_UFUNC_E T_SYMBOL ',' T_NUMBER ',' T_SYMBOL ',' symbols '(' symbols ')' T_SYMBOL ';'
+  | T_LABEL K_UFUNC_E T_చిహ్నం ',' T_సంఖ్య ',' T_చిహ్నం ',' symbols '(' symbols ')' T_చిహ్నం ';'
       { compile_ufunc_vec4($1, $3, $5, $9.cnt, $9.vect, $11.cnt, $11.vect, $13, $7); }
 
   /* Resolver statements are very much like functors. They are
      compiled to functors of a different mode. */
 
-	| T_LABEL K_RESOLV T_SYMBOL ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_RESOLV T_చిహ్నం ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_resolver($1, $3, obj.cnt, obj.vect);
 		}
 
   /* Part select statements take a single netlist input, and numbers
      that define the part to be selected out of the input. */
 
-	| T_LABEL K_PART T_SYMBOL ',' T_NUMBER ',' T_NUMBER ';'
+	| T_LABEL K_PART T_చిహ్నం ',' T_సంఖ్య ',' T_సంఖ్య ';'
 		{ compile_part_select($1, $3, $5, $7); }
 
-	| T_LABEL K_PART_PV T_SYMBOL ',' T_NUMBER ',' T_NUMBER ',' T_NUMBER ';'
+	| T_LABEL K_PART_PV T_చిహ్నం ',' T_సంఖ్య ',' T_సంఖ్య ',' T_సంఖ్య ';'
 		{ compile_part_select_pv($1, $3, $5, $7, $9); }
 
-	| T_LABEL K_PART_V T_SYMBOL ',' T_SYMBOL ',' T_NUMBER ';'
+	| T_LABEL K_PART_V T_చిహ్నం ',' T_చిహ్నం ',' T_సంఖ్య ';'
 		{ compile_part_select_var($1, $3, $5, $7, false); }
-	| T_LABEL K_PART_V_S T_SYMBOL ',' T_SYMBOL ',' T_NUMBER ';'
+	| T_LABEL K_PART_V_S T_చిహ్నం ',' T_చిహ్నం ',' T_సంఖ్య ';'
 		{ compile_part_select_var($1, $3, $5, $7, true); }
 
   /* Concatenations */
 
-  | T_LABEL K_CONCAT '[' T_NUMBER T_NUMBER T_NUMBER T_NUMBER ']' ','
+  | T_LABEL K_CONCAT '[' T_సంఖ్య T_సంఖ్య T_సంఖ్య T_సంఖ్య ']' ','
     symbols ';'
       { compile_concat($1, $4, $5, $6, $7, $10.cnt, $10.vect); }
 
-  | T_LABEL K_CONCAT8 '[' T_NUMBER T_NUMBER T_NUMBER T_NUMBER ']' ','
+  | T_LABEL K_CONCAT8 '[' T_సంఖ్య T_సంఖ్య T_సంఖ్య T_సంఖ్య ']' ','
     symbols ';'
       { compile_concat8($1, $4, $5, $6, $7, $10.cnt, $10.vect); }
 
   /* Substitutions (similar to concatenations) */
-  | T_LABEL K_SUBSTITUTE T_NUMBER ',' T_NUMBER T_NUMBER ',' symbols ';'
+  | T_LABEL K_SUBSTITUTE T_సంఖ్య ',' T_సంఖ్య T_సంఖ్య ',' symbols ';'
       { compile_substitute($1, $3, $5, $6, $8.cnt, $8.vect); }
 
   /* The ABS statement is a special arithmetic node that takes 1
      input. Re-use the symbols rule. */
 
         | T_LABEL K_ARITH_ABS symbols ';'
-		{ struct symbv_s obj = $3;
+		{ నిర్మాణం symbv_s obj = $3;
 		  compile_arith_abs($1, obj.cnt, obj.vect);
 		}
 
-  | T_LABEL K_CAST_INT T_NUMBER ',' symbols ';'
-      { struct symbv_s obj = $5;
+  | T_LABEL K_CAST_INT T_సంఖ్య ',' symbols ';'
+      { నిర్మాణం symbv_s obj = $5;
 	compile_arith_cast_int($1, $3, obj.cnt, obj.vect);
       }
 
   | T_LABEL K_CAST_REAL symbols ';'
-      { struct symbv_s obj = $3;
+      { నిర్మాణం symbv_s obj = $3;
 	compile_arith_cast_real($1, false, obj.cnt, obj.vect);
       }
 
   | T_LABEL K_CAST_REAL_S symbols ';'
-      { struct symbv_s obj = $3;
+      { నిర్మాణం symbv_s obj = $3;
 	compile_arith_cast_real($1, true, obj.cnt, obj.vect);
       }
 
-  | T_LABEL K_CAST_2 T_NUMBER ',' symbols ';'
-      { struct symbv_s obj = $5;
+  | T_LABEL K_CAST_2 T_సంఖ్య ',' symbols ';'
+      { నిర్మాణం symbv_s obj = $5;
 	compile_arith_cast_vec2($1, $3, obj.cnt, obj.vect);
       }
 
   /* Arithmetic statements generate functor arrays of a given width
      that take like size input vectors. */
 
-	| T_LABEL K_ARITH_DIV T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_DIV T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_arith_div($1, $3, false, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_DIV_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_DIV_R T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_arith_div_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_DIV_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_DIV_S T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_arith_div($1, $3, true, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_MOD T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_MOD T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_arith_mod($1, $3, false, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_MOD_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_MOD_R T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_arith_mod_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_MOD_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_MOD_S T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_arith_mod($1, $3, true, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_MULT T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_MULT T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_arith_mult($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_MULT_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_MULT_R T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_arith_mult_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_POW T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_POW T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_arith_pow($1, $3, false, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_POW_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_POW_R T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_arith_pow_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_POW_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_POW_S T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_arith_pow($1, $3, true, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_SUB T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_SUB T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_arith_sub($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_SUB_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_SUB_R T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_arith_sub_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_SUM T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
-		  compile_arith_sum($1, $3, obj.cnt, obj.vect);
+	| T_LABEL K_ARITH_కూడిక T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
+		  compile_arith_కూడిక($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_SUM_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
-		  compile_arith_sum_r($1, obj.cnt, obj.vect);
+	| T_LABEL K_ARITH_కూడిక_R T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
+		  compile_arith_కూడిక_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_EEQ T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_EEQ T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_cmp_eeq($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_NEE T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_NEE T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_cmp_nee($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_EQ T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_EQ T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_cmp_eq($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_EQX T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_EQX T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_cmp_eqx($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_EQZ T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_EQZ T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_cmp_eqz($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_EQ_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_EQ_R T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_cmp_eq_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_NE T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_NE T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_cmp_ne($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_NE_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_NE_R T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_cmp_ne_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_GE T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_GE T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_cmp_ge($1, $3, false, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_GE_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_GE_R T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_cmp_ge_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_GE_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_GE_S T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_cmp_ge($1, $3, true, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_GT T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_GT T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_cmp_gt($1, $3, false, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_GT_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_GT_R T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_cmp_gt_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_GT_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_GT_S T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_cmp_gt($1, $3, true, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_WEQ T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_WEQ T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_cmp_weq($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_WNE T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_WNE T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_cmp_wne($1, $3, obj.cnt, obj.vect);
 		}
 
@@ -497,115 +497,115 @@ statement
      node takes two form, one with an array of constants and a single
      input, and another with an array of inputs. */
 
- | T_LABEL K_DELAY T_NUMBER delay symbol ';'
+ | T_LABEL K_DELAY T_సంఖ్య delay చిహ్నం ';'
     { compile_delay($1, $3, $4, $5); }
- | T_LABEL K_DELAY T_NUMBER symbols ';'
-    { struct symbv_s obj = $4;
+ | T_LABEL K_DELAY T_సంఖ్య symbols ';'
+    { నిర్మాణం symbv_s obj = $4;
       compile_delay($1, $3, obj.cnt, obj.vect, false);
     }
- | T_LABEL K_DELAY T_NUMBER symbols ',' T_NUMBER ';'
-    { struct symbv_s obj = $4;
-      if ($6 != 0) assert(0);
+ | T_LABEL K_DELAY T_సంఖ్య symbols ',' T_సంఖ్య ';'
+    { నిర్మాణం symbv_s obj = $4;
+      ఒకవేళ ($6 != 0) ప్రతిజ్ఞా(0);
       compile_delay($1, $3, obj.cnt, obj.vect, true);
     }
 
- | T_LABEL K_MODPATH T_NUMBER symbol symbol ','
+ | T_LABEL K_MODPATH T_సంఖ్య చిహ్నం చిహ్నం ','
     { modpath_dst = compile_modpath($1, $3, $4, $5); }
    modpath_src_list ';'
     { modpath_dst = 0; }
 
   /* DFF nodes have an output and take up to 4 inputs. */
 
-  | T_LABEL K_DFF_N T_NUMBER symbol ',' symbol ',' symbol ';'
+  | T_LABEL K_DFF_N T_సంఖ్య చిహ్నం ',' చిహ్నం ',' చిహ్నం ';'
       { compile_dff($1, $3, true, $4, $6, $8); }
 
-  | T_LABEL K_DFF_P T_NUMBER symbol ',' symbol ',' symbol ';'
+  | T_LABEL K_DFF_P T_సంఖ్య చిహ్నం ',' చిహ్నం ',' చిహ్నం ';'
       { compile_dff($1, $3, false, $4, $6, $8); }
 
-  | T_LABEL K_DFF_N_ACLR T_NUMBER symbol ',' symbol ',' symbol ',' symbol ';'
+  | T_LABEL K_DFF_N_ACLR T_సంఖ్య చిహ్నం ',' చిహ్నం ',' చిహ్నం ',' చిహ్నం ';'
       { compile_dff_aclr($1, $3, true, $4, $6, $8, $10); }
 
-  | T_LABEL K_DFF_P_ACLR T_NUMBER symbol ',' symbol ',' symbol ',' symbol ';'
+  | T_LABEL K_DFF_P_ACLR T_సంఖ్య చిహ్నం ',' చిహ్నం ',' చిహ్నం ',' చిహ్నం ';'
       { compile_dff_aclr($1, $3, false, $4, $6, $8, $10); }
 
-  | T_LABEL K_DFF_N_ASET T_NUMBER symbol ',' symbol ',' symbol ',' symbol ';'
+  | T_LABEL K_DFF_N_ASET T_సంఖ్య చిహ్నం ',' చిహ్నం ',' చిహ్నం ',' చిహ్నం ';'
       { compile_dff_aset($1, $3, true, $4, $6, $8, $10, 0); }
 
-  | T_LABEL K_DFF_P_ASET T_NUMBER symbol ',' symbol ',' symbol ',' symbol ';'
+  | T_LABEL K_DFF_P_ASET T_సంఖ్య చిహ్నం ',' చిహ్నం ',' చిహ్నం ',' చిహ్నం ';'
       { compile_dff_aset($1, $3, false, $4, $6, $8, $10, 0); }
 
-  | T_LABEL K_DFF_N_ASET T_NUMBER symbol ',' symbol ',' symbol ',' symbol ',' T_SYMBOL ';'
+  | T_LABEL K_DFF_N_ASET T_సంఖ్య చిహ్నం ',' చిహ్నం ',' చిహ్నం ',' చిహ్నం ',' T_చిహ్నం ';'
       { compile_dff_aset($1, $3, true, $4, $6, $8, $10, $12); }
 
-  | T_LABEL K_DFF_P_ASET T_NUMBER symbol ',' symbol ',' symbol ',' symbol ',' T_SYMBOL ';'
+  | T_LABEL K_DFF_P_ASET T_సంఖ్య చిహ్నం ',' చిహ్నం ',' చిహ్నం ',' చిహ్నం ',' T_చిహ్నం ';'
       { compile_dff_aset($1, $3, false, $4, $6, $8, $10, $12); }
 
   /* LATCH nodes have an output and take 2 inputs. */
 
-  | T_LABEL K_LATCH T_NUMBER symbol ',' symbol ';'
+  | T_LABEL K_LATCH T_సంఖ్య చిహ్నం ',' చిహ్నం ';'
       { compile_latch($1, $3, $4, $6); }
 
   /* The various reduction operator nodes take a single input. */
 
-        | T_LABEL K_REDUCE_AND symbol ';'
+        | T_LABEL K_REDUCE_AND చిహ్నం ';'
                 { compile_reduce_and($1, $3); }
 
-        | T_LABEL K_REDUCE_OR symbol ';'
+        | T_LABEL K_REDUCE_OR చిహ్నం ';'
                 { compile_reduce_or($1, $3); }
 
-        | T_LABEL K_REDUCE_XOR symbol ';'
+        | T_LABEL K_REDUCE_XOR చిహ్నం ';'
                 { compile_reduce_xor($1, $3); }
 
-        | T_LABEL K_REDUCE_NAND symbol ';'
+        | T_LABEL K_REDUCE_NAND చిహ్నం ';'
                 { compile_reduce_nand($1, $3); }
 
-        | T_LABEL K_REDUCE_NOR symbol ';'
+        | T_LABEL K_REDUCE_NOR చిహ్నం ';'
                 { compile_reduce_nor($1, $3); }
 
-        | T_LABEL K_REDUCE_XNOR symbol ';'
+        | T_LABEL K_REDUCE_XNOR చిహ్నం ';'
                 { compile_reduce_xnor($1, $3); }
 
-        | T_LABEL K_REPEAT T_NUMBER ',' T_NUMBER ',' symbol ';'
+        | T_LABEL K_REPEAT T_సంఖ్య ',' T_సంఖ్య ',' చిహ్నం ';'
                 { compile_repeat($1, $3, $5, $7); }
 
   /* The extend nodes take a width and a symbol. */
 
-        | T_LABEL K_EXTEND_S T_NUMBER ',' symbol ';'
+        | T_LABEL K_EXTEND_S T_సంఖ్య ',' చిహ్నం ';'
                 { compile_extend_signed($1, $3, $5); }
 
   /* System function call */
-        | T_LABEL K_SFUNC T_NUMBER T_NUMBER T_STRING ','
+        | T_LABEL K_SFUNC T_సంఖ్య T_సంఖ్య T_STRING ','
           T_STRING ',' symbols ';'
                 { compile_sfunc($1, $5, $7, $3, $4, $9.cnt, $9.vect, 0); }
 
-        | T_LABEL K_SFUNC_E T_NUMBER T_NUMBER T_STRING ',' T_SYMBOL ','
+        | T_LABEL K_SFUNC_E T_సంఖ్య T_సంఖ్య T_STRING ',' T_చిహ్నం ','
           T_STRING ',' symbols ';'
                 { compile_sfunc($1, $5, $9, $3, $4, $11.cnt, $11.vect, $7); }
 
   /* System function call - no arguments */
-        | T_LABEL K_SFUNC T_NUMBER T_NUMBER T_STRING ','
+        | T_LABEL K_SFUNC T_సంఖ్య T_సంఖ్య T_STRING ','
           T_STRING ';'
                 { compile_sfunc($1, $5, $7, $3, $4, 0, 0, 0); }
 
-        | T_LABEL K_SFUNC_E T_NUMBER T_NUMBER T_STRING ',' T_SYMBOL ','
+        | T_LABEL K_SFUNC_E T_సంఖ్య T_సంఖ్య T_STRING ',' T_చిహ్నం ','
           T_STRING ';'
                 { compile_sfunc($1, $5, $9, $3, $4, 0, 0, $7); }
 
   /* Shift nodes. */
 
-	| T_LABEL K_SHIFTL T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_SHIFTL T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		  compile_shiftl($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_SHIFTR T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_SHIFTR T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		      compile_shiftr($1, $3, false, obj.cnt, obj.vect);
 		}
 
 
-	| T_LABEL K_SHIFTRS T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_SHIFTRS T_సంఖ్య ',' symbols ';'
+		{ నిర్మాణం symbv_s obj = $5;
 		      compile_shiftr($1, $3, true, obj.cnt, obj.vect);
 		}
 
@@ -614,10 +614,10 @@ statement
      list of inputs. If the type is instead a string, then we have a
      named event instead. */
 
-	| T_LABEL K_EVENT T_SYMBOL ',' symbols ';'
+	| T_LABEL K_EVENT T_చిహ్నం ',' symbols ';'
                 { compile_event($1, $3, $5.cnt, $5.vect); }
 
-	| T_LABEL K_EVENT K_DEBUG T_SYMBOL ',' symbols ';'
+	| T_LABEL K_EVENT K_DEBUG T_చిహ్నం ',' symbols ';'
                 { compile_event($1, $4, $6.cnt, $6.vect); }
 
 	| T_LABEL K_EVENT T_STRING ';'
@@ -632,19 +632,19 @@ statement
      on the specific instruction. */
 
 	| label_opt T_INSTR operands_opt ';'
-		{ compile_code($1, $2, $3); }
+		{ compile_సంకేతం($1, $2, $3); }
 
 	| T_LABEL ';'
 		{ compile_codelabel($1); }
 
   /* %file_line statements are instructions that have unusual operand
      requirements so are handled by their own rules. */
-	| label_opt K_file_line T_NUMBER T_NUMBER T_STRING ';'
-		{ compile_file_line($1, $3, $4, $5); }
+	| label_opt K_file_పంక్తి T_సంఖ్య T_సంఖ్య T_STRING ';'
+		{ compile_file_పంక్తి($1, $3, $4, $5); }
 
-	| label_opt K_file_line T_NUMBER T_NUMBER T_NUMBER ';'
-		{ assert($5 == 0);
-		  compile_file_line($1, $3, $4, 0); }
+	| label_opt K_file_పంక్తి T_సంఖ్య T_సంఖ్య T_సంఖ్య ';'
+		{ ప్రతిజ్ఞా($5 == 0);
+		  compile_file_పంక్తి($1, $3, $4, 0); }
 
   /* %vpi_call statements are instructions that have unusual operand
      requirements so are handled by their own rules. The %vpi_func
@@ -652,37 +652,37 @@ statement
      after the name, and is used for function calls. */
 
   /* This version does not allow a function to be called as a task. */
-  | label_opt K_vpi_call T_NUMBER T_NUMBER T_STRING
-    argument_opt '{' T_NUMBER T_NUMBER T_NUMBER '}' ';'
+  | label_opt K_vpi_call T_సంఖ్య T_సంఖ్య T_STRING
+    వాదం_opt '{' T_సంఖ్య T_సంఖ్య T_సంఖ్య '}' ';'
       { compile_vpi_call($1, $5, true, false, $3, $4,
 			 $6.argc, $6.argv, $8, $9, $10); }
 
   /* This version allows a function to be called as a task, but prints a
    * warning message. */
-  | label_opt K_vpi_call_w T_NUMBER T_NUMBER T_STRING
-    argument_opt '{' T_NUMBER T_NUMBER T_NUMBER '}' ';'
+  | label_opt K_vpi_call_w T_సంఖ్య T_సంఖ్య T_STRING
+    వాదం_opt '{' T_సంఖ్య T_సంఖ్య T_సంఖ్య '}' ';'
       { compile_vpi_call($1, $5, false, true, $3, $4,
 			 $6.argc, $6.argv, $8, $9, $10); }
 
   /* This version allows a function to be called as a task and does not
    * print a message. */
-  | label_opt K_vpi_call_i T_NUMBER T_NUMBER T_STRING
-    argument_opt '{' T_NUMBER T_NUMBER T_NUMBER '}' ';'
+  | label_opt K_vpi_call_i T_సంఖ్య T_సంఖ్య T_STRING
+    వాదం_opt '{' T_సంఖ్య T_సంఖ్య T_సంఖ్య '}' ';'
       { compile_vpi_call($1, $5, false, false, $3, $4,
 			 $6.argc, $6.argv, $8, $9, $10); }
 
-  | label_opt K_vpi_func T_NUMBER T_NUMBER T_STRING T_NUMBER
-    argument_opt  '{' T_NUMBER T_NUMBER T_NUMBER '}' ';'
+  | label_opt K_vpi_func T_సంఖ్య T_సంఖ్య T_STRING T_సంఖ్య
+    వాదం_opt  '{' T_సంఖ్య T_సంఖ్య T_సంఖ్య '}' ';'
       { compile_vpi_func_call($1, $5, -vpiVectorVal, $6, $3, $4,
 			      $7.argc, $7.argv, $9, $10, $11); }
 
-  | label_opt K_vpi_func_r T_NUMBER T_NUMBER T_STRING
-    argument_opt '{' T_NUMBER T_NUMBER T_NUMBER '}' ';'
+  | label_opt K_vpi_func_r T_సంఖ్య T_సంఖ్య T_STRING
+    వాదం_opt '{' T_సంఖ్య T_సంఖ్య T_సంఖ్య '}' ';'
       { compile_vpi_func_call($1, $5, -vpiRealVal, 0, $3, $4,
 			      $6.argc, $6.argv, $8, $9, $10); }
 
-  | label_opt K_vpi_func_s T_NUMBER T_NUMBER T_STRING
-    argument_opt '{' T_NUMBER T_NUMBER T_NUMBER '}' ';'
+  | label_opt K_vpi_func_s T_సంఖ్య T_సంఖ్య T_STRING
+    వాదం_opt '{' T_సంఖ్య T_సంఖ్య T_సంఖ్య '}' ';'
       { compile_vpi_func_call($1, $5, -vpiStringVal, 0, $3, $4,
 			      $6.argc, $6.argv, $8, $9, $10); }
 
@@ -701,79 +701,79 @@ statement
      The final symbol is the label of the parent scope. If there is no
      parent scope, then this is a root scope. */
 
-	| T_LABEL K_SCOPE T_SYMBOL ',' T_STRING T_STRING T_NUMBER T_NUMBER ';'
+	| T_LABEL K_SCOPE T_చిహ్నం ',' T_STRING T_STRING T_సంఖ్య T_సంఖ్య ';'
 		{ compile_scope_decl($1, $3, $5, $6, 0, $7, $8, $7, $8, 0); }
 
-	| T_LABEL K_SCOPE T_SYMBOL ',' T_STRING T_STRING T_NUMBER T_NUMBER ','
-	  T_NUMBER T_NUMBER T_NUMBER ',' T_SYMBOL ';'
+	| T_LABEL K_SCOPE T_చిహ్నం ',' T_STRING T_STRING T_సంఖ్య T_సంఖ్య ','
+	  T_సంఖ్య T_సంఖ్య T_సంఖ్య ',' T_చిహ్నం ';'
 		{ compile_scope_decl($1, $3, $5, $6, $14, $7, $8, $10, $11, $12); }
 
   /* Scope recall has no label of its own, but refers by label to a
      declared scope. */
 
-	|         K_SCOPE T_SYMBOL ';'
+	|         K_SCOPE T_చిహ్నం ';'
 		{ compile_scope_recall($2); }
 
 
   /* Port information for scopes... currently this is just meta-data for VPI queries */
 
-	| K_PORT_INFO T_NUMBER port_type T_NUMBER T_STRING T_SYMBOL ';'
-		{ compile_port_info( $2 /* port_index */, $3, $4 /* width */,
-		                     $5 /*&name */, $6 /* buffer */ ); }
+	| K_పోర్టు_INFO T_సంఖ్య పోర్టు_type T_సంఖ్య T_STRING T_చిహ్నం ';'
+		{ compile_పోర్టు_info( $2 /* port_index */, $3, $4 /*వెడల్పు*/,
+		                     $5 /*&name */, $6 /*బఫరు*/ ); }
 
-	| K_PORT_INFO T_NUMBER port_type T_NUMBER T_STRING ';'
-		{ compile_port_info( $2 /* port_index */, $3, $4 /* width */,
-		                     $5 /*&name */, nullptr /* buffer */ ); }
+	| K_పోర్టు_INFO T_సంఖ్య పోర్టు_type T_సంఖ్య T_STRING ';'
+		{ compile_పోర్టు_info( $2 /* port_index */, $3, $4 /*వెడల్పు*/,
+		                     $5 /*&name */, nullptr /*బఫరు*/ ); }
 
-	|         K_TIMESCALE T_NUMBER T_NUMBER';'
+	|         K_TIMESCALE T_సంఖ్య T_సంఖ్య';'
 		{ compile_timescale($2, $3); }
-	|         K_TIMESCALE '-' T_NUMBER T_NUMBER';'
+	|         K_TIMESCALE '-' T_సంఖ్య T_సంఖ్య';'
 		{ compile_timescale(-$3, $4); }
-	|         K_TIMESCALE T_NUMBER '-' T_NUMBER';'
+	|         K_TIMESCALE T_సంఖ్య '-' T_సంఖ్య';'
 		{ compile_timescale($2, -$4); }
-	|         K_TIMESCALE '-' T_NUMBER '-' T_NUMBER';'
+	|         K_TIMESCALE '-' T_సంఖ్య '-' T_సంఖ్య';'
 		{ compile_timescale(-$3, -$5); }
 
   /* Thread statements declare a thread with its starting address. The
      starting address must already be defined. The .thread statement
      may also take an optional flag word. */
 
-	|         K_THREAD T_SYMBOL ';'
+	|         K_THREAD T_చిహ్నం ';'
 		{ compile_thread($2, 0); }
 
-	|         K_THREAD T_SYMBOL ',' T_SYMBOL ';'
+	|         K_THREAD T_చిహ్నం ',' T_చిహ్నం ';'
 		{ compile_thread($2, $4); }
 
   /* Var statements declare a bit of a variable. This also implicitly
      creates a functor with the same name that acts as the output of
      the variable in the netlist. */
 
-  | T_LABEL K_VAR local_flag T_STRING ',' signed_t_number signed_t_number ';'
+  | T_LABEL K_VAR local_flag T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య ';'
       { compile_variable($1, $4, $6, $7, vpiLogicVar, false, $3); }
 
-  | T_LABEL K_VAR_S local_flag T_STRING ',' signed_t_number signed_t_number ';'
+  | T_LABEL K_VAR_S local_flag T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య ';'
       { compile_variable($1, $4, $6, $7, vpiLogicVar, true, $3); }
 
-  | T_LABEL K_VAR_I local_flag T_STRING ',' T_NUMBER T_NUMBER ';'
+  | T_LABEL K_VAR_I local_flag T_STRING ',' T_సంఖ్య T_సంఖ్య ';'
       { compile_variable($1, $4, $6, $7, vpiIntegerVar, true, $3); }
 
-  | T_LABEL K_VAR_2S local_flag T_STRING ',' signed_t_number signed_t_number ';'
+  | T_LABEL K_VAR_2S local_flag T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య ';'
       { compile_variable($1, $4, $6, $7, vpiIntVar, true, $3); }
 
-  | T_LABEL K_VAR_2U local_flag T_STRING ',' signed_t_number signed_t_number ';'
+  | T_LABEL K_VAR_2U local_flag T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య ';'
       { compile_variable($1, $4, $6, $7, vpiIntVar, false, $3); }
 
-  | T_LABEL K_VAR_R local_flag T_STRING ',' signed_t_number signed_t_number ';'
+  | T_LABEL K_VAR_R local_flag T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య ';'
       { compile_var_real($1, $4, $3); }
 
   | T_LABEL K_VAR_STR T_STRING ';'
       { compile_var_string($1, $3); }
 
-  | T_LABEL K_VAR_DARRAY T_STRING ',' T_NUMBER ';'
+  | T_LABEL K_VAR_DARRAY T_STRING ',' T_సంఖ్య ';'
       { compile_var_darray($1, $3, $5); }
 
-  | T_LABEL K_VAR_QUEUE T_STRING  ',' T_NUMBER';'
-      { compile_var_queue($1, $3, $5); }
+  | T_LABEL K_VAR_వరుస T_STRING  ',' T_సంఖ్య';'
+      { compile_var_వరుస($1, $3, $5); }
 
   | T_LABEL K_VAR_COBJECT T_STRING ';'
       { compile_var_cobject($1, $3); }
@@ -781,128 +781,128 @@ statement
   /* Net statements are similar to .var statements, except that they
      declare nets, and they have an input list. */
 
-  | T_LABEL K_NET local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET local_flag T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య
     ',' symbols_net ';'
       { compile_net($1, $4, $6, $7, vpiLogicVar, false, $3, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET_S local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET_S local_flag T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య
     ',' symbols_net ';'
       { compile_net($1, $4, $6, $7, vpiLogicVar, true, $3, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET_2U local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET_2U local_flag T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య
     ',' symbols_net ';'
       { compile_net($1, $4, $6, $7, vpiIntVar, false, $3, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET_2S local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET_2S local_flag T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య
     ',' symbols_net ';'
       { compile_net($1, $4, $6, $7, vpiIntVar, true, $3, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET8 local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET8 local_flag T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య
     ',' symbols_net ';'
       { compile_net($1, $4, $6, $7, -vpiLogicVar, false, $3, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET8_2U local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET8_2U local_flag T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య
     ',' symbols_net ';'
       { compile_net($1, $4, $6, $7, -vpiLogicVar, false, $3, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET8_S local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET8_S local_flag T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య
     ',' symbols_net ';'
       { compile_net($1, $4, $6, $7, -vpiLogicVar, true, $3, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET8_2S local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET8_2S local_flag T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య
     ',' symbols_net ';'
       { compile_net($1, $4, $6, $7, -vpiLogicVar, true, $3, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET_R local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET_R local_flag T_STRING ',' signed_t_సంఖ్య signed_t_సంఖ్య
     ',' symbols_net ';'
       { compile_net_real($1, $4, $6, $7, $3, $9.cnt, $9.vect); }
 
   /* Arrayed versions of net directives. */
 
-  | T_LABEL K_NET T_SYMBOL T_NUMBER ',' signed_t_number signed_t_number ','
+  | T_LABEL K_NET T_చిహ్నం T_సంఖ్య ',' signed_t_సంఖ్య signed_t_సంఖ్య ','
     symbols_net ';'
       { compile_netw($1, $3, $4, $6, $7, vpiLogicVar, false, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET_S T_SYMBOL T_NUMBER ',' signed_t_number signed_t_number ','
+  | T_LABEL K_NET_S T_చిహ్నం T_సంఖ్య ',' signed_t_సంఖ్య signed_t_సంఖ్య ','
     symbols_net ';'
       { compile_netw($1, $3, $4, $6, $7, vpiLogicVar, true, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET_2U T_SYMBOL T_NUMBER ',' signed_t_number signed_t_number ','
+  | T_LABEL K_NET_2U T_చిహ్నం T_సంఖ్య ',' signed_t_సంఖ్య signed_t_సంఖ్య ','
     symbols_net ';'
       { compile_netw($1, $3, $4, $6, $7, vpiIntVar, false, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET_2S T_SYMBOL T_NUMBER ',' signed_t_number signed_t_number ','
+  | T_LABEL K_NET_2S T_చిహ్నం T_సంఖ్య ',' signed_t_సంఖ్య signed_t_సంఖ్య ','
     symbols_net ';'
       { compile_netw($1, $3, $4, $6, $7, vpiIntVar, true, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET8 T_SYMBOL T_NUMBER ',' signed_t_number signed_t_number ','
+  | T_LABEL K_NET8 T_చిహ్నం T_సంఖ్య ',' signed_t_సంఖ్య signed_t_సంఖ్య ','
     symbols_net ';'
       { compile_netw($1, $3, $4, $6, $7, -vpiLogicVar, false, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET8_S T_SYMBOL T_NUMBER ',' signed_t_number signed_t_number ','
+  | T_LABEL K_NET8_S T_చిహ్నం T_సంఖ్య ',' signed_t_సంఖ్య signed_t_సంఖ్య ','
     symbols_net ';'
       { compile_netw($1, $3, $4, $6, $7, -vpiLogicVar, true, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET_R T_SYMBOL T_NUMBER ',' signed_t_number signed_t_number ','
+  | T_LABEL K_NET_R T_చిహ్నం T_సంఖ్య ',' signed_t_సంఖ్య signed_t_సంఖ్య ','
     symbols_net ';'
       { compile_netw_real($1, $3, $4, $6, $7, $9.cnt, $9.vect); }
 
   /* Parameter statements come in a few simple forms. The most basic
      is the string parameter. */
 
-	| T_LABEL K_PARAM_STR T_STRING T_NUMBER T_NUMBER T_NUMBER',' T_STRING ';'
+	| T_LABEL K_PARAM_STR T_STRING T_సంఖ్య T_సంఖ్య T_సంఖ్య',' T_STRING ';'
 		{ compile_param_string($1, $3, $8, $4, $5, $6); }
 
-	| T_LABEL K_PARAM_L T_STRING T_NUMBER T_NUMBER T_NUMBER',' T_SYMBOL ';'
+	| T_LABEL K_PARAM_L T_STRING T_సంఖ్య T_సంఖ్య T_సంఖ్య',' T_చిహ్నం ';'
 		{ compile_param_logic($1, $3, $8, false, $4, $5, $6); }
 
-	| T_LABEL K_PARAM_L T_STRING T_NUMBER T_NUMBER T_NUMBER',' '+' T_SYMBOL ';'
+	| T_LABEL K_PARAM_L T_STRING T_సంఖ్య T_సంఖ్య T_సంఖ్య',' '+' T_చిహ్నం ';'
 		{ compile_param_logic($1, $3, $9, true, $4, $5, $6 ); }
 
-	| T_LABEL K_PARAM_REAL T_STRING T_NUMBER T_NUMBER T_NUMBER',' T_SYMBOL ';'
+	| T_LABEL K_PARAM_REAL T_STRING T_సంఖ్య T_సంఖ్య T_సంఖ్య',' T_చిహ్నం ';'
 		{ compile_param_real($1, $3, $8, $4, $5, $6); }
 
   /* Islands */
 
-  | T_LABEL K_ISLAND T_SYMBOL ';'
+  | T_LABEL K_ISLAND T_చిహ్నం ';'
       { compile_island($1, $3); }
 
-  | T_LABEL K_PORT T_SYMBOL ',' T_SYMBOL ';'
-      { compile_island_port($1, $3, $5); }
+  | T_LABEL K_పోర్టు T_చిహ్నం ',' T_చిహ్నం ';'
+      { compile_island_పోర్టు($1, $3, $5); }
 
-  | T_LABEL K_IMPORT T_SYMBOL ',' T_SYMBOL ';'
+  | T_LABEL K_IMPORT T_చిహ్నం ',' T_చిహ్నం ';'
       { compile_island_import($1, $3, $5); }
 
-  | T_LABEL K_EXPORT T_SYMBOL ';'
+  | T_LABEL K_EXPORT T_చిహ్నం ';'
       { compile_island_export($1, $3); }
 
-  | K_RTRAN T_SYMBOL ',' T_SYMBOL T_SYMBOL ';'
+  | K_RTRAN T_చిహ్నం ',' T_చిహ్నం T_చిహ్నం ';'
       { compile_island_tranif(0, $2, $4, $5, 0, 1); }
 
-  | K_RTRANIF0 T_SYMBOL ',' T_SYMBOL T_SYMBOL ',' T_SYMBOL ';'
+  | K_RTRANIF0 T_చిహ్నం ',' T_చిహ్నం T_చిహ్నం ',' T_చిహ్నం ';'
       { compile_island_tranif(0, $2, $4, $5, $7, 1); }
 
-  | K_RTRANIF1 T_SYMBOL ',' T_SYMBOL T_SYMBOL ',' T_SYMBOL ';'
+  | K_RTRANIF1 T_చిహ్నం ',' T_చిహ్నం T_చిహ్నం ',' T_చిహ్నం ';'
       { compile_island_tranif(1, $2, $4, $5, $7, 1); }
 
-  | K_TRAN T_SYMBOL ',' T_SYMBOL T_SYMBOL ';'
+  | K_TRAN T_చిహ్నం ',' T_చిహ్నం T_చిహ్నం ';'
       { compile_island_tranif(0, $2, $4, $5, 0, 0); }
 
-  | K_TRANIF0 T_SYMBOL ',' T_SYMBOL T_SYMBOL ',' T_SYMBOL ';'
+  | K_TRANIF0 T_చిహ్నం ',' T_చిహ్నం T_చిహ్నం ',' T_చిహ్నం ';'
       { compile_island_tranif(0, $2, $4, $5, $7, 0); }
 
-  | K_TRANIF1 T_SYMBOL ',' T_SYMBOL T_SYMBOL ',' T_SYMBOL ';'
+  | K_TRANIF1 T_చిహ్నం ',' T_చిహ్నం T_చిహ్నం ',' T_చిహ్నం ';'
       { compile_island_tranif(1, $2, $4, $5, $7, 0); }
 
-  | K_TRANVP T_NUMBER T_NUMBER T_NUMBER ',' T_SYMBOL ',' T_SYMBOL T_SYMBOL ';'
+  | K_TRANVP T_సంఖ్య T_సంఖ్య T_సంఖ్య ',' T_చిహ్నం ',' T_చిహ్నం T_చిహ్నం ';'
       { compile_island_tranvp($6, $8, $9, $2, $3, $4); }
 
   /* Other statements */
 
-  | T_LABEL K_CLASS T_STRING '[' T_NUMBER ']'
-      { compile_class_start($1, $3, $5); }
+  | T_LABEL K_CLASS T_STRING '[' T_సంఖ్య ']'
+      { compile_class_ప్రారంభం($1, $3, $5); }
     class_properties_opt ';'
-      { compile_class_done(); }
+      { compile_class_పూర్తి(); }
 
   | enum_type
       { ; }
@@ -923,7 +923,7 @@ class_properties
   ;
 
 class_property
-  : T_NUMBER ':' T_STRING ',' T_STRING dimensions_opt
+  : T_సంఖ్య ':' T_STRING ',' T_STRING dimensions_opt
       { compile_class_property($1, $3, $5, $6); }
   ;
 
@@ -947,40 +947,40 @@ dimensions
   ;
 
 dimension
-  : '[' T_NUMBER ':' T_NUMBER ']'
+  : '[' T_సంఖ్య ':' T_సంఖ్య ']'
       { $$ = ($2 > $4? $2 - $4 : $4 - $2) + 1; }
   ;
 
   /* Enumeration types */
 enum_type
-  : T_LABEL K_ENUM2 '(' T_NUMBER ')' enum_type_names ';'
+  : T_LABEL K_ENUM2 '(' T_సంఖ్య ')' enum_type_పేర్లు ';'
       { compile_enum2_type($1, $4, false, $6); }
-  | T_LABEL K_ENUM2_S '(' T_NUMBER ')' enum_type_names ';'
+  | T_LABEL K_ENUM2_S '(' T_సంఖ్య ')' enum_type_పేర్లు ';'
       { compile_enum2_type($1, $4, true, $6); }
-  | T_LABEL K_ENUM4 '(' T_NUMBER ')' enum_type_names ';'
+  | T_LABEL K_ENUM4 '(' T_సంఖ్య ')' enum_type_పేర్లు ';'
       { compile_enum4_type($1, $4, false, $6); }
-  | T_LABEL K_ENUM4_S '(' T_NUMBER ')' enum_type_names ';'
+  | T_LABEL K_ENUM4_S '(' T_సంఖ్య ')' enum_type_పేర్లు ';'
       { compile_enum4_type($1, $4, true, $6); }
   ;
 
-enum_type_names
+enum_type_పేర్లు
   : enum_type_name
-      { list<struct enum_name_s>*tmp = new list<struct enum_name_s>;
-	tmp->push_back($1);
+      { list<నిర్మాణం enum_name_s>*tmp = new list<నిర్మాణం enum_name_s>;
+	tmp->నెట్టు_వెనుక($1);
 	$$ = tmp;
       }
-  | enum_type_names ',' enum_type_name
-      { list<struct enum_name_s>*tmp = $1;
-	tmp->push_back($3);
+  | enum_type_పేర్లు ',' enum_type_name
+      { list<నిర్మాణం enum_name_s>*tmp = $1;
+	tmp->నెట్టు_వెనుక($3);
 	$$ = tmp;
       }
   ;
 
 enum_type_name
-  : T_STRING T_NUMBER
-      { $$.text = $1; $$.val2 = $2; $$.val4 = 0; }
-  | T_STRING T_VECTOR
-      { $$.text = $1; $$.val2 = 0; $$.val4 = $2.text; }
+  : T_STRING T_సంఖ్య
+      { $$.పాఠ్యం = $1; $$.val2 = $2; $$.val4 = 0; }
+  | T_STRING T_సదిశ
+      { $$.పాఠ్యం = $1; $$.val2 = 0; $$.val4 = $2.పాఠ్యం; }
   ;
 
 local_flag
@@ -1002,31 +1002,31 @@ operands_opt
 	;
 
 operands
-	: operands ',' operand
+	: operands ',' నిర్వాహ్యం
 		{ comp_operands_t opa = $1;
-		  assert(opa->argc < 3);
-		  assert($3->argc == 1);
+		  ప్రతిజ్ఞా(opa->argc < 3);
+		  ప్రతిజ్ఞా($3->argc == 1);
 		  opa->argv[opa->argc] = $3->argv[0];
 		  opa->argc += 1;
-		  free($3);
+		  విడుదల($3);
 		  $$ =  opa;
 		}
-	| operand
+	| నిర్వాహ్యం
 		{ $$ = $1; }
 	;
 
-operand
-  : symbol
+నిర్వాహ్యం
+  : చిహ్నం
       { comp_operands_t opa = static_cast<comp_operands_t>
-                                         (calloc(1, sizeof(struct comp_operands_s)));
+                                         (సున్నా_జ్ఞాపకం_ఇవ్వు(1, పరిమాణం(నిర్మాణం comp_operands_s)));
 	opa->argc = 1;
 	opa->argv[0].ltype = L_SYMB;
 	opa->argv[0].symb = $1;
 	$$ = opa;
       }
-  | T_NUMBER
+  | T_సంఖ్య
       { comp_operands_t opa = static_cast<comp_operands_t>
-                                         (calloc(1, sizeof(struct comp_operands_s)));
+                                         (సున్నా_జ్ఞాపకం_ఇవ్వు(1, పరిమాణం(నిర్మాణం comp_operands_s)));
 	opa->argc = 1;
 	opa->argv[0].ltype = L_NUMB;
 	opa->argv[0].numb = $1;
@@ -1034,10 +1034,10 @@ operand
       }
   | T_STRING
       { comp_operands_t opa = static_cast<comp_operands_t>
-                                         (calloc(1, sizeof(struct comp_operands_s)));
+                                         (సున్నా_జ్ఞాపకం_ఇవ్వు(1, పరిమాణం(నిర్మాణం comp_operands_s)));
 	opa->argc = 1;
 	opa->argv[0].ltype = L_STRING;
-	opa->argv[0].text = $1;
+	opa->argv[0].పాఠ్యం = $1;
 	$$ = opa;
       }
   ;
@@ -1056,117 +1056,117 @@ operand
      If it is some other supported object, the necessary
      vpiHandle object is created to support it. */
 
-argument_opt
-	: ',' argument_list
+వాదం_opt
+	: ',' వాదం_list
 		{
 		  argv_sym_lookup(&$2);
 		  $$ = $2;
 		}
-	| /* empty */
-		{ struct argv_s tmp;
+	| /*ఖాళీలు*/
+		{ నిర్మాణం argv_s tmp;
 		  argv_init(&tmp);
 		  $$ = tmp;
 		}
 	;
 
-argument_list
-  : argument
-      { struct argv_s tmp;
+వాదం_list
+  : వాదం
+      { నిర్మాణం argv_s tmp;
 	argv_init(&tmp);
-	argv_add(&tmp, $1);
+	argv_కూడు(&tmp, $1);
 	$$ = tmp;
       }
-  | argument_list ',' argument
-      { struct argv_s tmp = $1;
-	argv_add(&tmp, $3);
+  | వాదం_list ',' వాదం
+      { నిర్మాణం argv_s tmp = $1;
+	argv_కూడు(&tmp, $3);
 	$$ = tmp;
       }
-  | T_SYMBOL
-      { struct argv_s tmp;
+  | T_చిహ్నం
+      { నిర్మాణం argv_s tmp;
 	argv_init(&tmp);
-	argv_sym_add(&tmp, $1);
+	argv_sym_కూడు(&tmp, $1);
 	$$ = tmp;
       }
-  | argument_list ',' T_SYMBOL
-      { struct argv_s tmp = $1;
-	argv_sym_add(&tmp, $3);
+  | వాదం_list ',' T_చిహ్నం
+      { నిర్మాణం argv_s tmp = $1;
+	argv_sym_కూడు(&tmp, $3);
 	$$ = tmp;
       }
   ;
 
-argument
+వాదం
   : T_STRING
       { $$ = vpip_make_string_const($1); }
-  | T_VECTOR
-      { $$ = vpip_make_binary_const($1.idx, $1.text);
-	free($1.text);
+  | T_సదిశ
+      { $$ = vpip_make_ద్విమాన_const($1.idx, $1.పాఠ్యం);
+	విడుదల($1.పాఠ్యం);
       }
-  | symbol_access
+  | చిహ్నం_access
       { $$ = $1; }
   ;
 
-symbol_access
-  : K_A '<' T_SYMBOL ',' T_NUMBER '>'
+చిహ్నం_access
+  : K_A '<' T_చిహ్నం ',' T_సంఖ్య '>'
       { $$ = vpip_make_vthr_A($3, $5); }
-  | K_A '<' T_SYMBOL ',' T_SYMBOL '>'
+  | K_A '<' T_చిహ్నం ',' T_చిహ్నం '>'
       { $$ = vpip_make_vthr_A($3, $5); }
-  | K_A '<' T_SYMBOL ',' symbol_access '>'
+  | K_A '<' T_చిహ్నం ',' చిహ్నం_access '>'
       { $$ = vpip_make_vthr_A($3, $5); }
-  | K_PV '<' T_SYMBOL ',' T_NUMBER ',' T_NUMBER '>'
+  | K_PV '<' T_చిహ్నం ',' T_సంఖ్య ',' T_సంఖ్య '>'
       { $$ = vpip_make_PV($3, $5, $7); }
-  | K_PV '<' T_SYMBOL ',' '-' T_NUMBER ',' T_NUMBER '>'
+  | K_PV '<' T_చిహ్నం ',' '-' T_సంఖ్య ',' T_సంఖ్య '>'
       { $$ = vpip_make_PV($3, -$6, $8); }
-  | K_PV '<' T_SYMBOL ',' T_SYMBOL ',' T_NUMBER '>'
+  | K_PV '<' T_చిహ్నం ',' T_చిహ్నం ',' T_సంఖ్య '>'
       { $$ = vpip_make_PV($3, $5, $7); }
-  | K_PV '<' T_SYMBOL ',' symbol_access ',' T_NUMBER '>'
+  | K_PV '<' T_చిహ్నం ',' చిహ్నం_access ',' T_సంఖ్య '>'
       { $$ = vpip_make_PV($3, $5, $7); }
-  | K_APV '<' T_SYMBOL ',' T_NUMBER ',' T_NUMBER ',' T_NUMBER '>'
+  | K_APV '<' T_చిహ్నం ',' T_సంఖ్య ',' T_సంఖ్య ',' T_సంఖ్య '>'
       { $$ = vpip_make_vthr_APV($3, $5, $7, $9); }
-  | K_PQ '<' T_SYMBOL ',' T_NUMBER ',' T_NUMBER '>'
-      { $$ = vpip_make_prop_queue_ref($3, $5, $7); }
+  | K_PQ '<' T_చిహ్నం ',' T_సంఖ్య ',' T_సంఖ్య '>'
+      { $$ = vpip_make_prop_వరుస_ref($3, $5, $7); }
   ;
 
   /* functor operands can only be a list of symbols. */
 symbols
-	: symbol
-		{ struct symbv_s obj;
+	: చిహ్నం
+		{ నిర్మాణం symbv_s obj;
 		  symbv_init(&obj);
-		  symbv_add(&obj, $1);
+		  symbv_కూడు(&obj, $1);
 		  $$ = obj;
 		}
-	| symbols ',' symbol
-		{ struct symbv_s obj = $1;
-		  symbv_add(&obj, $3);
+	| symbols ',' చిహ్నం
+		{ నిర్మాణం symbv_s obj = $1;
+		  symbv_కూడు(&obj, $3);
 		  $$ = obj;
 		}
 	;
 
 
 numbers
-	: T_NUMBER
-		{ struct numbv_s obj;
+	: T_సంఖ్య
+		{ నిర్మాణం numbv_s obj;
 		  numbv_init(&obj);
-		  numbv_add(&obj, $1);
+		  numbv_కూడు(&obj, $1);
 		  $$ = obj;
 		}
-	| numbers ',' T_NUMBER
-		{ struct numbv_s obj = $1;
-		  numbv_add(&obj, $3);
+	| numbers ',' T_సంఖ్య
+		{ నిర్మాణం numbv_s obj = $1;
+		  numbv_కూడు(&obj, $3);
 		  $$ = obj;
 		}
 	;
 
 
 symbols_net
-	: symbol_opt
-		{ struct symbv_s obj;
+	: చిహ్నం_opt
+		{ నిర్మాణం symbv_s obj;
 		  symbv_init(&obj);
-		  symbv_add(&obj, $1);
+		  symbv_కూడు(&obj, $1);
 		  $$ = obj;
 		}
-	| symbols_net ',' symbol_opt
-		{ struct symbv_s obj = $1;
-		  symbv_add(&obj, $3);
+	| symbols_net ',' చిహ్నం_opt
+		{ నిర్మాణం symbv_s obj = $1;
+		  symbv_కూడు(&obj, $3);
 		  $$ = obj;
 		}
 	;
@@ -1175,18 +1175,18 @@ symbols_net
      particular, functor vectors can be indexed with the [] syntax,
      with values from 0 up. */
 
-symbol
-	: T_SYMBOL
-		{ $$.text = $1;
+చిహ్నం
+	: T_చిహ్నం
+		{ $$.పాఠ్యం = $1;
 		  $$.idx = 0;
 		}
 	;
 
-symbol_opt
-	: symbol
+చిహ్నం_opt
+	: చిహ్నం
 		{ $$ = $1; }
 	|
-		{ $$.text = 0;
+		{ $$.పాఠ్యం = 0;
 		  $$.idx = 0;
 		}
 	;
@@ -1200,69 +1200,69 @@ modpath_src_list
         | modpath_src_list ',' modpath_src
         ;
 
-port_type
-        : K_PORT_INPUT { $$ = vpiInput; }
-        | K_PORT_OUTPUT { $$ = vpiOutput; }
-        | K_PORT_INOUT  { $$ = vpiInout; }
-        | K_PORT_MIXED  { $$ = vpiMixedIO; }
-        | K_PORT_NODIR  { $$ = vpiNoDirection; }
+పోర్టు_type
+        : K_పోర్టు_ఆదానం { $$ = vpi_ఆదానం; }
+        | K_పోర్టు_OUTPUT { $$ = vpiOutput; }
+        | K_పోర్టు_INOUT  { $$ = vpiInout; }
+        | K_పోర్టు_MIXED  { $$ = vpiMixedIO; }
+        | K_పోర్టు_NODIR  { $$ = vpiNoDirection; }
         ;
 
 modpath_src
-  : symbol '(' numbers ')' symbol
+  : చిహ్నం '(' numbers ')' చిహ్నం
       { compile_modpath_src(modpath_dst, 0, $1, $3, 0, $5, false); }
-  | symbol '(' numbers '?' ')' symbol
+  | చిహ్నం '(' numbers '?' ')' చిహ్నం
       { compile_modpath_src(modpath_dst, 0, $1, $3, 0, $6, true); }
-  | symbol '(' numbers '?' symbol ')' symbol
+  | చిహ్నం '(' numbers '?' చిహ్నం ')' చిహ్నం
       { compile_modpath_src(modpath_dst, 0, $1, $3, $5, $7); }
-  | symbol '+' '(' numbers ')' symbol
+  | చిహ్నం '+' '(' numbers ')' చిహ్నం
       { compile_modpath_src(modpath_dst, '+', $1, $4, 0, $6, false); }
-  | symbol '+' '(' numbers '?' ')' symbol
+  | చిహ్నం '+' '(' numbers '?' ')' చిహ్నం
       { compile_modpath_src(modpath_dst, '+', $1, $4, 0, $7, true); }
-  | symbol '+' '(' numbers '?' symbol ')' symbol
+  | చిహ్నం '+' '(' numbers '?' చిహ్నం ')' చిహ్నం
       { compile_modpath_src(modpath_dst, '+', $1, $4, $6, $8); }
-  | symbol '-' '(' numbers ')' symbol
+  | చిహ్నం '-' '(' numbers ')' చిహ్నం
       { compile_modpath_src(modpath_dst, '-', $1, $4, 0, $6, false); }
-  | symbol '-' '(' numbers '?' ')' symbol
+  | చిహ్నం '-' '(' numbers '?' ')' చిహ్నం
       { compile_modpath_src(modpath_dst, '-', $1, $4, 0, $7, true); }
-  | symbol '-' '(' numbers '?' symbol ')' symbol
+  | చిహ్నం '-' '(' numbers '?' చిహ్నం ')' చిహ్నం
       { compile_modpath_src(modpath_dst, '-', $1, $4, $6, $8); }
   ;
 
-udp_table
+udp_పట్టిక
 	: T_STRING
-		{ $$ = compile_udp_table(0x0, $1); }
-	| udp_table ',' T_STRING
-		{ $$ = compile_udp_table($1,  $3); }
+		{ $$ = compile_udp_పట్టిక(0x0, $1); }
+	| udp_పట్టిక ',' T_STRING
+		{ $$ = compile_udp_పట్టిక($1,  $3); }
 	;
 
-signed_t_number
-	: T_NUMBER     { $$ = $1; }
-	| '-' T_NUMBER { $$ = -$2; }
+signed_t_సంఖ్య
+	: T_సంఖ్య     { $$ = $1; }
+	| '-' T_సంఖ్య { $$ = -$2; }
 	;
 
 delay
-	: '(' T_NUMBER ')'
+	: '(' T_సంఖ్య ')'
 		{ $$ = new vvp_delay_t($2, $2); }
-	| '(' T_NUMBER ',' T_NUMBER ')'
+	| '(' T_సంఖ్య ',' T_సంఖ్య ')'
 		{ $$ = new vvp_delay_t($2, $4); }
-	| '(' T_NUMBER ',' T_NUMBER ',' T_NUMBER ')'
+	| '(' T_సంఖ్య ',' T_సంఖ్య ',' T_సంఖ్య ')'
 		{ $$ = new vvp_delay_t($2, $4, $6); }
 	;
 
 %%
 
-int compile_design(const char*path)
+పూర్ణాంకం compile_design(స్థిరరాశి అక్షరం*మార్గం)
 {
-      yypath = path;
+      yypath = మార్గం;
       yyline = 1;
-      yyin = fopen(path, "r");
-      if (yyin == 0) {
-	    fprintf(stderr, "%s: Unable to open input file.\n", path);
-	    return -1;
+      yyin = fopen(మార్గం, "r");
+      ఒకవేళ (yyin == 0) {
+	    fprintf(stderr, "%s: Unable to open input file.\n", మార్గం);
+	    తిరిగి -1;
       }
 
-      int rc = yyparse();
+      పూర్ణాంకం rc = yyparse();
       fclose(yyin);
-      return rc;
+      తిరిగి rc;
 }

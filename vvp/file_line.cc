@@ -19,82 +19,82 @@
 # include "compile.h"
 # include "vpi_priv.h"
 
-class __vpiFileLine : public __vpiHandle {
-    public:
-      explicit __vpiFileLine(const char*desc_, long file_idx_, long lineno_);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+తరగతి __vpiFileLine : బహిరంగ __vpiHandle {
+    బహిరంగ:
+      స్పష్టమైన __vpiFileLine(స్థిరరాశి అక్షరం*desc_, దీర్ఘ file_idx_, దీర్ఘ lineno_);
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం code) override;
+      అక్షరం* vpi_get_str(పూర్ణాంకం code) override;
 
-      const char* get_description() const { return description; };
-      unsigned get_file_idx() const { return file_idx; };
-      unsigned get_lineno() const { return lineno; };
+      స్థిరరాశి అక్షరం* get_description() స్థిరరాశి { తిరిగి description; };
+      గుర్తులేని get_file_idx() స్థిరరాశి { తిరిగి file_idx; };
+      గుర్తులేని get_lineno() స్థిరరాశి { తిరిగి lineno; };
 
-    private:
-      const char *description;
-      unsigned file_idx;
-      unsigned lineno;
+    అంతరంగ:
+      స్థిరరాశి అక్షరం *description;
+      గుర్తులేని file_idx;
+      గుర్తులేని lineno;
 };
 
-bool show_file_line = false;
-bool code_is_instrumented = false;
+తార్కిక show_file_పంక్తి = అబద్ధం;
+తార్కిక సంకేతం_is_instrumented = అబద్ధం;
 
-static int file_line_get(int type, vpiHandle ref)
+స్థిర పూర్ణాంకం file_పంక్తి_get(పూర్ణాంకం type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      ప్రతిజ్ఞా(rfp);
 
-      switch (type) {
-	case vpiLineNo:
-	    return rfp->get_lineno();
-	default:
-	    return vpiUndefined;
+      ఎంపిక (type) {
+	స్థితి vpi_పంక్తి_No:
+	    తిరిగి rfp->get_lineno();
+	అప్రమేయ:
+	    తిరిగి vpiUndefined;
       }
 }
 
-static char *file_line_get_str(int type, vpiHandle ref)
+స్థిర అక్షరం *file_పంక్తి_get_str(పూర్ణాంకం type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      ప్రతిజ్ఞా(rfp);
 
-      switch (type) {
-	case vpiFile:
-	    assert(rfp->get_file_idx() < file_names.size());
-	    return simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
-	case _vpiDescription:
-	    if (rfp->get_description()) {
-		  return simple_set_rbuf_str(rfp->get_description());
-	    } else return simple_set_rbuf_str("Procedural tracing.");
-	default:
-	    return 0;
+      ఎంపిక (type) {
+	స్థితి vpiFile:
+	    ప్రతిజ్ఞా(rfp->get_file_idx() < file_పేర్లు.size());
+	    తిరిగి simple_సమితి_rbuf_str(file_పేర్లు[rfp->get_file_idx()]);
+	స్థితి _vpiDescription:
+	    ఒకవేళ (rfp->get_description()) {
+		  తిరిగి simple_సమితి_rbuf_str(rfp->get_description());
+	    } లేకపోతే తిరిగి simple_సమితి_rbuf_str("Procedural tracing.");
+	అప్రమేయ:
+	    తిరిగి 0;
       }
 }
 
-inline __vpiFileLine::__vpiFileLine(const char*desc_, long file_idx_,
-                                    long lineno_)
+అంతఃవరుస __vpiFileLine::__vpiFileLine(స్థిరరాశి అక్షరం*desc_, దీర్ఘ file_idx_,
+                                    దీర్ఘ lineno_)
 {
-      if (desc_) description = vpip_name_string(desc_);
-      else description = 0;
-      file_idx = (unsigned) file_idx_;
-      lineno = (unsigned) lineno_;
+      ఒకవేళ (desc_) description = vpip_name_string(desc_);
+      లేకపోతే description = 0;
+      file_idx = (గుర్తులేని) file_idx_;
+      lineno = (గుర్తులేని) lineno_;
 }
 
-int __vpiFileLine::get_type_code(void) const
-{ return _vpiFileLine; }
+పూర్ణాంకం __vpiFileLine::get_type_సంకేతం(శూన్య) స్థిరరాశి
+{ తిరిగి vpi_File_పంక్తి; }
 
-int __vpiFileLine::vpi_get(int code)
-{ return file_line_get(code, this); }
+పూర్ణాంకం __vpiFileLine::vpi_get(పూర్ణాంకం code)
+{ తిరిగి file_పంక్తి_get(code, ఇది); }
 
-char* __vpiFileLine::vpi_get_str(int code)
-{ return file_line_get_str(code, this); }
+అక్షరం* __vpiFileLine::vpi_get_str(పూర్ణాంకం code)
+{ తిరిగి file_పంక్తి_get_str(code, ఇది); }
 
 
-vpiHandle vpip_build_file_line(const char*description, long file_idx, long lineno)
+vpiHandle vpip_build_file_పంక్తి(స్థిరరాశి అక్షరం*description, దీర్ఘ file_idx, దీర్ఘ lineno)
 {
-      __vpiFileLine*obj = new __vpiFileLine(description, file_idx, lineno);
+      __vpiFileLine*obj = కొత్త __vpiFileLine(description, file_idx, lineno);
 
 	/* You can turn on the diagnostic output if we find a %file_line. */
-      code_is_instrumented = true;
+      సంకేతం_is_instrumented = నిజం;
 
-      return obj;
+      తిరిగి obj;
 }

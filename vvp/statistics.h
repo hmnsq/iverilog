@@ -1,5 +1,5 @@
-#ifndef IVL_statistics_H
-#define IVL_statistics_H
+#నిర్వచితం_కాకపోతే IVL_statistics_H
+#నిర్వచించు IVL_statistics_H
 /*
  * Copyright (c) 2002-2014 Stephen Williams (steve@icarus.com)
  *
@@ -20,46 +20,46 @@
  */
 
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
-#ifdef __SUNPRO_CC
+#నిర్వచితమైతే __SUNPRO_CC
 # include  <stddef.h>
-#else
+#లేకపోతే
 # include  <cstddef>
-#endif
+#అయితే_ముగింపు
 
-extern unsigned long count_opcodes;
-extern unsigned long count_functors;
-extern unsigned long count_functors_logic;
-extern unsigned long count_functors_bufif;
-extern unsigned long count_functors_resolv;
-extern unsigned long count_functors_sig;
-extern unsigned long count_filters;
-extern unsigned long count_vvp_nets;
-extern unsigned long count_vpi_nets;
-extern unsigned long count_vpi_scopes;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_opcodes;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_functors;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_functors_logic;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_functors_bufif;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_functors_resolv;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_functors_sig;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_filters;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_vvp_nets;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_vpi_nets;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_vpi_scopes;
 
-extern unsigned long count_net_arrays;
-extern unsigned long count_net_array_words;
-extern unsigned long count_var_arrays;
-extern unsigned long count_var_array_words;
-extern unsigned long count_real_arrays;
-extern unsigned long count_real_array_words;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_net_arrays;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_net_array_పదాలు;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_var_arrays;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_var_array_పదాలు;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_real_arrays;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_real_array_పదాలు;
 
 
-extern unsigned long count_time_events;
-extern unsigned long count_time_pool(void);
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_సమయం_events;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_సమయం_pool(శూన్య);
 
-extern unsigned long count_assign_events;
-extern unsigned long count_assign4_pool(void);
-extern unsigned long count_assign8_pool(void);
-extern unsigned long count_assign_real_pool(void);
-extern unsigned long count_assign_aword_pool(void);
-extern unsigned long count_assign_arword_pool(void);
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_కేటాయించు_events;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_assign4_pool(శూన్య);
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_assign8_pool(శూన్య);
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_కేటాయించు_real_pool(శూన్య);
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_కేటాయించు_aword_pool(శూన్య);
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_కేటాయించు_arword_pool(శూన్య);
 
-extern unsigned long count_gen_events;
-extern unsigned long count_gen_pool(void);
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_gen_events;
+బాహ్య గుర్తులేని దీర్ఘ లెక్క_gen_pool(శూన్య);
 
-extern size_t size_opcodes;
-extern size_t size_vvp_nets;
-extern size_t size_vvp_net_funs;
+బాహ్య size_t కొలత_opcodes;
+బాహ్య size_t కొలత_vvp_nets;
+బాహ్య size_t కొలత_vvp_net_funs;
 
-#endif /* IVL_statistics_H */
+#అయితే_ముగింపు /* IVL_statistics_H */

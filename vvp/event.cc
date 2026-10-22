@@ -29,553 +29,553 @@
 
 # include <iostream>
 
-void waitable_hooks_s::run_waiting_threads_(vthread_t&threads)
+శూన్య waitable_hooks_s::నిరంతరం_నిరీక్షణ_దారాలు(vthread_t&దారాలు)
 {
 	// Run the non-blocking event controls.
-      last = &event_ctls;
-      for (evctl*cur = event_ctls; cur != 0;) {
-	    if (cur->dec_and_run()) {
-		  evctl*nxt = cur->next;
-		  delete cur;
+      చివరి = &event_ctls;
+      కొరకు (evctl*cur = event_ctls; cur != 0;) {
+	    ఒకవేళ (cur->dec_and_నిరంతరం()) {
+		  evctl*nxt = cur->తదుపరి_2;
+		  తొలగించు cur;
 		  cur = nxt;
-		  *last = cur;
-	    } else {
-		  last = &(cur->next);
-		  cur = cur->next;
+		  *చివరి = cur;
+	    } లేకపోతే {
+		  చివరి = &(cur->తదుపరి_2);
+		  cur = cur->తదుపరి_2;
 	    }
       }
 
-      vthread_t tmp = threads;
-      if (tmp == 0) return;
-      threads = 0;
+      vthread_t tmp = దారాలు;
+      ఒకవేళ (tmp == 0) తిరిగి;
+      దారాలు = 0;
 
-      vthread_schedule_list(tmp);
+      vthread_కాలపట్టిక_list(tmp);
 }
 
 evctl::evctl(uint64_t ecount)
 {
       ecount_ = ecount;
-      next = 0;
+      తదుపరి_2 = 0;
 }
 
-bool evctl::dec_and_run()
+తార్కిక evctl::dec_and_నిరంతరం()
 {
-      assert(ecount_ != 0);
+      ప్రతిజ్ఞా(ecount_ != 0);
 
       ecount_ -= 1;
-      if (ecount_ == 0) run_run();
+      ఒకవేళ (ecount_ == 0) నిరంతరం_నిరంతరం();
 
-      return ecount_ == 0;
+      తిరిగి ecount_ == 0;
 }
 
-evctl_real::evctl_real(__vpiHandle*handle, double value,
+evctl_real::evctl_real(__vpiHandle*handle, ద్విగుణ value,
                        uint64_t ecount)
 :evctl(ecount)
 {
       handle_ = handle;
-      value_ = value;
+      విలువ_2 = value;
 }
 
-void evctl_real::run_run()
+శూన్య evctl_real::నిరంతరం_నిరంతరం()
 {
-      t_vpi_value val;
+      t_vpi_విలువ val;
 
       val.format = vpiRealVal;
-      val.value.real = value_;
-      vpi_put_value(handle_, &val, 0, vpiNoDelay);
+      val.value.real = విలువ_2;
+      vpi_put_విలువ(handle_, &val, 0, vpiNoDelay);
 }
 
-void schedule_evctl(__vpiHandle*handle, double value,
+శూన్య కాలపట్టిక_evctl(__vpiHandle*handle, ద్విగుణ value,
                     vvp_net_t*event, uint64_t ecount)
 {
 	// Get the functor we are going to wait on.
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (event->fun);
-      assert(ep);
+      ప్రతిజ్ఞా(ep);
 	// Now add this call to the end of the event list.
-      *(ep->last) = new evctl_real(handle, value, ecount);
-      ep->last = &((*(ep->last))->next);
+      *(ep->చివరి) = కొత్త evctl_real(handle, value, ecount);
+      ep->చివరి = &((*(ep->చివరి))->తదుపరి_2);
 }
 
-evctl_vector::evctl_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
-                           unsigned off, unsigned wid, uint64_t ecount)
-:evctl(ecount), ptr_(ptr), value_(value)
+evctl_సదిశ::evctl_సదిశ(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&value,
+                           గుర్తులేని off, గుర్తులేని wid, uint64_t ecount)
+:evctl(ecount), ptr_(ptr), విలువ_2(value)
 {
       off_ = off;
       wid_ = wid;
 }
 
-void evctl_vector::run_run()
+శూన్య evctl_సదిశ::నిరంతరం_నిరంతరం()
 {
-      if (wid_ != 0) {
-	    vvp_send_vec4_pv(ptr_, value_, off_, wid_, 0);
-      } else {
-	    vvp_send_vec4(ptr_, value_, 0);
+      ఒకవేళ (wid_ != 0) {
+	    vvp_send_vec4_pv(ptr_, విలువ_2, off_, wid_, 0);
+      } లేకపోతే {
+	    vvp_send_vec4(ptr_, విలువ_2, 0);
       }
 }
 
-void schedule_evctl(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
-                    unsigned offset, unsigned wid,
+శూన్య కాలపట్టిక_evctl(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&value,
+                    గుర్తులేని స్థానభ్రంశం_2, గుర్తులేని wid,
                     vvp_net_t*event, uint64_t ecount)
 {
 	// Get the functor we are going to wait on.
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (event->fun);
-      assert(ep);
+      ప్రతిజ్ఞా(ep);
 	// Now add this call to the end of the event list.
-      *(ep->last) = new evctl_vector(ptr, value, offset, wid, ecount);
-      ep->last = &((*(ep->last))->next);
+      *(ep->చివరి) = కొత్త evctl_సదిశ(ptr, value, స్థానభ్రంశం_2, wid, ecount);
+      ep->చివరి = &((*(ep->చివరి))->తదుపరి_2);
 }
 
-evctl_array::evctl_array(vvp_array_t memory, unsigned index,
-                         const vvp_vector4_t&value, unsigned off,
+evctl_array::evctl_array(vvp_array_t జ్ఞాపకం, గుర్తులేని సూచీ,
+                         స్థిరరాశి vvp_vector4_t&value, గుర్తులేని off,
                          uint64_t ecount)
-:evctl(ecount), value_(value)
+:evctl(ecount), విలువ_2(value)
 {
-      mem_ = memory;
-      idx_ = index;
+      mem_ = జ్ఞాపకం;
+      idx_ = సూచీ;
       off_ = off;
 }
 
-void evctl_array::run_run()
+శూన్య evctl_array::నిరంతరం_నిరంతరం()
 {
-      mem_->set_word(idx_, off_, value_);
+      mem_->సమితి_మాట(idx_, off_, విలువ_2);
 }
 
-void schedule_evctl(vvp_array_t memory, unsigned index,
-                    const vvp_vector4_t&value, unsigned offset,
+శూన్య కాలపట్టిక_evctl(vvp_array_t జ్ఞాపకం, గుర్తులేని సూచీ,
+                    స్థిరరాశి vvp_vector4_t&value, గుర్తులేని స్థానభ్రంశం_2,
                     vvp_net_t*event, uint64_t ecount)
 {
 	// Get the functor we are going to wait on.
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (event->fun);
-      assert(ep);
+      ప్రతిజ్ఞా(ep);
 	// Now add this call to the end of the event list.
-      *(ep->last) = new evctl_array(memory, index, value, offset, ecount);
-      ep->last = &((*(ep->last))->next);
+      *(ep->చివరి) = కొత్త evctl_array(జ్ఞాపకం, సూచీ, value, స్థానభ్రంశం_2, ecount);
+      ep->చివరి = &((*(ep->చివరి))->తదుపరి_2);
 }
 
-evctl_array_r::evctl_array_r(vvp_array_t memory, unsigned index,
-                             double value, uint64_t ecount)
+evctl_array_r::evctl_array_r(vvp_array_t జ్ఞాపకం, గుర్తులేని సూచీ,
+                             ద్విగుణ value, uint64_t ecount)
 :evctl(ecount)
 {
-      mem_ = memory;
-      idx_ = index;
-      value_ = value;
+      mem_ = జ్ఞాపకం;
+      idx_ = సూచీ;
+      విలువ_2 = value;
 }
 
-void evctl_array_r::run_run()
+శూన్య evctl_array_r::నిరంతరం_నిరంతరం()
 {
-      mem_->set_word(idx_, value_);
+      mem_->సమితి_మాట(idx_, విలువ_2);
 }
 
-void schedule_evctl(vvp_array_t memory, unsigned index,
-                    double value,
+శూన్య కాలపట్టిక_evctl(vvp_array_t జ్ఞాపకం, గుర్తులేని సూచీ,
+                    ద్విగుణ value,
                     vvp_net_t*event, uint64_t ecount)
 {
 	// Get the functor we are going to wait on.
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (event->fun);
-      assert(ep);
+      ప్రతిజ్ఞా(ep);
 	// Now add this call to the end of the event list.
-      *(ep->last) = new evctl_array_r(memory, index, value, ecount);
-      ep->last = &((*(ep->last))->next);
+      *(ep->చివరి) = కొత్త evctl_array_r(జ్ఞాపకం, సూచీ, value, ecount);
+      ep->చివరి = &((*(ep->చివరి))->తదుపరి_2);
 }
 
-inline vvp_fun_edge::edge_t VVP_EDGE(vvp_bit4_t from, vvp_bit4_t to)
+అంతఃవరుస vvp_fun_అంచు::అంచు_t VVP_అంచు(vvp_bit4_t from, vvp_bit4_t to)
 {
-      return 1 << ((from << 2) | to);
+      తిరిగి 1 << ((from << 2) | to);
 }
 
-const vvp_fun_edge::edge_t vvp_edge_posedge
-      = VVP_EDGE(BIT4_0,BIT4_1)
-      | VVP_EDGE(BIT4_0,BIT4_X)
-      | VVP_EDGE(BIT4_0,BIT4_Z)
-      | VVP_EDGE(BIT4_X,BIT4_1)
-      | VVP_EDGE(BIT4_Z,BIT4_1)
+స్థిరరాశి vvp_fun_అంచు::అంచు_t vvp_అంచు_posedge
+      = VVP_అంచు(BIT4_0,BIT4_1)
+      | VVP_అంచు(BIT4_0,BIT4_X)
+      | VVP_అంచు(BIT4_0,BIT4_Z)
+      | VVP_అంచు(BIT4_X,BIT4_1)
+      | VVP_అంచు(BIT4_Z,BIT4_1)
       ;
 
-const vvp_fun_edge::edge_t vvp_edge_negedge
-      = VVP_EDGE(BIT4_1,BIT4_0)
-      | VVP_EDGE(BIT4_1,BIT4_X)
-      | VVP_EDGE(BIT4_1,BIT4_Z)
-      | VVP_EDGE(BIT4_X,BIT4_0)
-      | VVP_EDGE(BIT4_Z,BIT4_0)
+స్థిరరాశి vvp_fun_అంచు::అంచు_t vvp_అంచు_negedge
+      = VVP_అంచు(BIT4_1,BIT4_0)
+      | VVP_అంచు(BIT4_1,BIT4_X)
+      | VVP_అంచు(BIT4_1,BIT4_Z)
+      | VVP_అంచు(BIT4_X,BIT4_0)
+      | VVP_అంచు(BIT4_Z,BIT4_0)
       ;
 
-const vvp_fun_edge::edge_t vvp_edge_edge
-      = VVP_EDGE(BIT4_0,BIT4_1)
-      | VVP_EDGE(BIT4_1,BIT4_0)
-      | VVP_EDGE(BIT4_0,BIT4_X)
-      | VVP_EDGE(BIT4_X,BIT4_0)
-      | VVP_EDGE(BIT4_0,BIT4_Z)
-      | VVP_EDGE(BIT4_Z,BIT4_0)
-      | VVP_EDGE(BIT4_X,BIT4_1)
-      | VVP_EDGE(BIT4_1,BIT4_X)
-      | VVP_EDGE(BIT4_Z,BIT4_1)
-      | VVP_EDGE(BIT4_1,BIT4_Z)
+స్థిరరాశి vvp_fun_అంచు::అంచు_t vvp_అంచు_అంచు
+      = VVP_అంచు(BIT4_0,BIT4_1)
+      | VVP_అంచు(BIT4_1,BIT4_0)
+      | VVP_అంచు(BIT4_0,BIT4_X)
+      | VVP_అంచు(BIT4_X,BIT4_0)
+      | VVP_అంచు(BIT4_0,BIT4_Z)
+      | VVP_అంచు(BIT4_Z,BIT4_0)
+      | VVP_అంచు(BIT4_X,BIT4_1)
+      | VVP_అంచు(BIT4_1,BIT4_X)
+      | VVP_అంచు(BIT4_Z,BIT4_1)
+      | VVP_అంచు(BIT4_1,BIT4_Z)
       ;
 
-const vvp_fun_edge::edge_t vvp_edge_none    = 0;
+స్థిరరాశి vvp_fun_అంచు::అంచు_t vvp_అంచు_none    = 0;
 
-struct vvp_fun_edge_state_s : public waitable_state_s {
-      vvp_fun_edge_state_s()
+నిర్మాణం vvp_fun_అంచు_state_s : బహిరంగ waitable_state_s {
+      vvp_fun_అంచు_state_s()
       {
-            for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-                  bits[idx] = BIT4_X;
+            కొరకు (గుర్తులేని idx = 0 ;  idx < 4 ;  idx += 1)
+                  బిట్లు[idx] = BIT4_X;
       }
 
-      vvp_bit4_t bits[4];
+      vvp_bit4_t బిట్లు[4];
 };
 
-vvp_fun_edge::vvp_fun_edge(edge_t e)
-: edge_(e)
+vvp_fun_అంచు::vvp_fun_అంచు(అంచు_t e)
+: అంచు_2(e)
 {
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-            bits_[idx] = BIT4_X;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < 4 ;  idx += 1)
+            బిట్లు_2[idx] = BIT4_X;
 }
 
-vvp_fun_edge::~vvp_fun_edge()
+vvp_fun_అంచు::~vvp_fun_అంచు()
 {
 }
 
-bool vvp_fun_edge::recv_vec4_(const vvp_vector4_t&bit,
-                              vvp_bit4_t&old_bit, vthread_t&threads)
+తార్కిక vvp_fun_అంచు::recv_vec4_(స్థిరరాశి vvp_vector4_t&బిట్టు,
+                              vvp_bit4_t&old_బిట్టు, vthread_t&దారాలు)
 {
 	/* See what kind of edge this represents. */
-      edge_t mask = VVP_EDGE(old_bit, bit.value(0));
+      అంచు_t ముసుగు = VVP_అంచు(old_బిట్టు, బిట్టు.value(0));
 
 	/* Save the current input for the next time around. */
-      old_bit = bit.value(0);
+      old_బిట్టు = బిట్టు.value(0);
 
-      if ((edge_ == vvp_edge_none) || (edge_ & mask)) {
-	    run_waiting_threads_(threads);
-            return true;
+      ఒకవేళ ((అంచు_2 == vvp_అంచు_none) || (అంచు_2 & ముసుగు)) {
+	    నిరంతరం_నిరీక్షణ_దారాలు(దారాలు);
+            తిరిగి నిజం;
       }
-      return false;
+      తిరిగి అబద్ధం;
 }
 
-vvp_fun_edge_sa::vvp_fun_edge_sa(edge_t e)
-: vvp_fun_edge(e), threads_(0)
+vvp_fun_అంచు_sa::vvp_fun_అంచు_sa(అంచు_t e)
+: vvp_fun_అంచు(e), దారాలు_2(0)
 {
 }
 
-vvp_fun_edge_sa::~vvp_fun_edge_sa()
+vvp_fun_అంచు_sa::~vvp_fun_అంచు_sa()
 {
 }
 
-vthread_t vvp_fun_edge_sa::add_waiting_thread(vthread_t thread)
+vthread_t vvp_fun_అంచు_sa::కూడు_నిరీక్షణ_thread(vthread_t thread)
 {
-      vthread_t tmp = threads_;
-      threads_ = thread;
+      vthread_t tmp = దారాలు_2;
+      దారాలు_2 = thread;
 
-      return tmp;
+      తిరిగి tmp;
 }
 
-void vvp_fun_edge_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_fun_అంచు_sa::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                                 vvp_context_t)
 {
-      if (recv_vec4_(bit, bits_[port.port()], threads_)) {
-	    vvp_net_t*net = port.ptr();
-	    net->send_vec4(bit, 0);
+      ఒకవేళ (recv_vec4_(బిట్టు, బిట్లు_2[పోర్టు.పోర్టు()], దారాలు_2)) {
+	    vvp_net_t*net = పోర్టు.ptr();
+	    net->send_vec4(బిట్టు, 0);
       }
 }
 
-void vvp_fun_edge_sa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-				   unsigned base, unsigned vwid, vvp_context_t)
+శూన్య vvp_fun_అంచు_sa::recv_vec4_pv(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
+				   గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t)
 {
-      assert(base == 0);
-      if (recv_vec4_(bit, bits_[port.port()], threads_)) {
-	    vvp_net_t*net = port.ptr();
-	    net->send_vec4_pv(bit, base, vwid, 0);
+      ప్రతిజ్ఞా(పునాది == 0);
+      ఒకవేళ (recv_vec4_(బిట్టు, బిట్లు_2[పోర్టు.పోర్టు()], దారాలు_2)) {
+	    vvp_net_t*net = పోర్టు.ptr();
+	    net->send_vec4_pv(బిట్టు, పునాది, vwid, 0);
       }
 }
 
-vvp_fun_edge_aa::vvp_fun_edge_aa(edge_t e)
-: vvp_fun_edge(e)
+vvp_fun_అంచు_aa::vvp_fun_అంచు_aa(అంచు_t e)
+: vvp_fun_అంచు(e)
 {
       context_scope_ = vpip_peek_context_scope();
-      context_idx_ = vpip_add_item_to_context(this, context_scope_);
+      context_idx_ = vpip_కూడు_అంశం_గమ్యం_context(ఇది, context_scope_);
 }
 
-vvp_fun_edge_aa::~vvp_fun_edge_aa()
+vvp_fun_అంచు_aa::~vvp_fun_అంచు_aa()
 {
 }
 
-void vvp_fun_edge_aa::alloc_instance(vvp_context_t context)
+శూన్య vvp_fun_అంచు_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new vvp_fun_edge_state_s);
+      vvp_సమితి_context_అంశం(context, context_idx_, కొత్త vvp_fun_అంచు_state_s);
       reset_instance(context);
 }
 
-void vvp_fun_edge_aa::reset_instance(vvp_context_t context)
+శూన్య vvp_fun_అంచు_aa::reset_instance(vvp_context_t context)
 {
-      vvp_fun_edge_state_s*state = static_cast<vvp_fun_edge_state_s*>
-            (vvp_get_context_item(context, context_idx_));
+      vvp_fun_అంచు_state_s*state = static_cast<vvp_fun_అంచు_state_s*>
+            (vvp_get_context_అంశం(context, context_idx_));
 
-      state->threads = 0;
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-            state->bits[idx] = bits_[idx];
+      state->దారాలు = 0;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < 4 ;  idx += 1)
+            state->బిట్లు[idx] = బిట్లు_2[idx];
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_fun_edge_aa::free_instance(vvp_context_t context)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య vvp_fun_అంచు_aa::free_instance(vvp_context_t context)
 {
-      vvp_fun_edge_state_s*state = static_cast<vvp_fun_edge_state_s*>
-            (vvp_get_context_item(context, context_idx_));
-      delete state;
+      vvp_fun_అంచు_state_s*state = static_cast<vvp_fun_అంచు_state_s*>
+            (vvp_get_context_అంశం(context, context_idx_));
+      తొలగించు state;
 }
-#endif
+#అయితే_ముగింపు
 
-vthread_t vvp_fun_edge_aa::add_waiting_thread(vthread_t thread)
+vthread_t vvp_fun_అంచు_aa::కూడు_నిరీక్షణ_thread(vthread_t thread)
 {
-      vvp_fun_edge_state_s*state = static_cast<vvp_fun_edge_state_s*>
-            (vthread_get_wt_context_item(context_idx_));
+      vvp_fun_అంచు_state_s*state = static_cast<vvp_fun_అంచు_state_s*>
+            (vthread_get_wt_context_అంశం(context_idx_));
 
-      vthread_t tmp = state->threads;
-      state->threads = thread;
+      vthread_t tmp = state->దారాలు;
+      state->దారాలు = thread;
 
-      return tmp;
+      తిరిగి tmp;
 }
 
-void vvp_fun_edge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_fun_అంచు_aa::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                                 vvp_context_t context)
 {
-      if (context) {
-            vvp_fun_edge_state_s*state = static_cast<vvp_fun_edge_state_s*>
-                  (vvp_get_context_item(context, context_idx_));
+      ఒకవేళ (context) {
+            vvp_fun_అంచు_state_s*state = static_cast<vvp_fun_అంచు_state_s*>
+                  (vvp_get_context_అంశం(context, context_idx_));
 
-            if (recv_vec4_(bit, state->bits[port.port()], state->threads)) {
-                  vvp_net_t*net = port.ptr();
-                  net->send_vec4(bit, context);
+            ఒకవేళ (recv_vec4_(బిట్టు, state->బిట్లు[పోర్టు.పోర్టు()], state->దారాలు)) {
+                  vvp_net_t*net = పోర్టు.ptr();
+                  net->send_vec4(బిట్టు, context);
             }
-      } else {
-            context = context_scope_->live_contexts;
-            while (context) {
-                  recv_vec4(port, bit, context);
-                  context = vvp_get_next_context(context);
+      } లేకపోతే {
+            context = context_scope_->సజీవ_contexts;
+            అయితే (context) {
+                  recv_vec4(పోర్టు, బిట్టు, context);
+                  context = vvp_get_తదుపరి_context(context);
             }
-            bits_[port.port()] = bit.value(0);
+            బిట్లు_2[పోర్టు.పోర్టు()] = బిట్టు.value(0);
       }
 }
 
-class anyedge_value {
+తరగతి anyedge_విలువ {
 
-    public:
-      anyedge_value() {};
-      virtual ~anyedge_value() {};
+    బహిరంగ:
+      anyedge_విలువ() {};
+      మాయా ~anyedge_విలువ() {};
 
-      virtual void reset() = 0;
+      మాయా శూన్య reset() = 0;
 
-      virtual void duplicate(anyedge_value*&dup) = 0;
+      మాయా శూన్య duplicate(anyedge_విలువ*&dup) = 0;
 };
 
-class anyedge_vec4_value : public anyedge_value {
+తరగతి anyedge_vec4_విలువ : బహిరంగ anyedge_విలువ {
 
-    public:
-      anyedge_vec4_value() {};
-      virtual ~anyedge_vec4_value() override {};
+    బహిరంగ:
+      anyedge_vec4_విలువ() {};
+      మాయా ~anyedge_vec4_విలువ() override {};
 
-      void reset() override { old_bits.set_to_x(); }
+      శూన్య reset() override { old_బిట్లు.సమితి_గమ్యం_x(); }
 
-      void set(const vvp_vector4_t&bit) { old_bits = bit; };
+      శూన్య సమితి(స్థిరరాశి vvp_vector4_t&బిట్టు) { old_బిట్లు = బిట్టు; };
 
-      void duplicate(anyedge_value*&dup) override;
+      శూన్య duplicate(anyedge_విలువ*&dup) override;
 
-      bool recv_vec4(const vvp_vector4_t&bit);
+      తార్కిక recv_vec4(స్థిరరాశి vvp_vector4_t&బిట్టు);
 
-      bool recv_vec4_pv(const vvp_vector4_t&bit, unsigned base,
-			unsigned vwid);
+      తార్కిక recv_vec4_pv(స్థిరరాశి vvp_vector4_t&బిట్టు, గుర్తులేని పునాది,
+			గుర్తులేని vwid);
 
-    private:
-      vvp_vector4_t old_bits;
+    అంతరంగ:
+      vvp_vector4_t old_బిట్లు;
 };
 
-static anyedge_vec4_value*get_vec4_value(anyedge_value*&value)
+స్థిర anyedge_vec4_విలువ*get_vec4_విలువ(anyedge_విలువ*&value)
 {
-      anyedge_vec4_value*vec4_value = dynamic_cast<anyedge_vec4_value*>(value);
-      if (!value) {
-	    vec4_value = new anyedge_vec4_value();
-	    delete value;
-	    value = vec4_value;
+      anyedge_vec4_విలువ*vec4_విలువ = dynamic_cast<anyedge_vec4_విలువ*>(value);
+      ఒకవేళ (!value) {
+	    vec4_విలువ = కొత్త anyedge_vec4_విలువ();
+	    తొలగించు value;
+	    value = vec4_విలువ;
       }
-      return vec4_value;
+      తిరిగి vec4_విలువ;
 }
 
-class anyedge_real_value : public anyedge_value {
+తరగతి anyedge_real_విలువ : బహిరంగ anyedge_విలువ {
 
-    public:
-      anyedge_real_value() : old_bits(0.0) {};
-      virtual ~anyedge_real_value() override {};
+    బహిరంగ:
+      anyedge_real_విలువ() : old_బిట్లు(0.0) {};
+      మాయా ~anyedge_real_విలువ() override {};
 
-      void reset() override { old_bits = 0.0; }
+      శూన్య reset() override { old_బిట్లు = 0.0; }
 
-      void set(double bit) { old_bits = bit; };
+      శూన్య సమితి(ద్విగుణ బిట్టు) { old_బిట్లు = బిట్టు; };
 
-      void duplicate(anyedge_value*&dup) override;
+      శూన్య duplicate(anyedge_విలువ*&dup) override;
 
-      bool recv_real(double bit);
+      తార్కిక recv_real(ద్విగుణ బిట్టు);
 
-    private:
-      double old_bits;
+    అంతరంగ:
+      ద్విగుణ old_బిట్లు;
 };
 
-static anyedge_real_value*get_real_value(anyedge_value*&value)
+స్థిర anyedge_real_విలువ*get_real_విలువ(anyedge_విలువ*&value)
 {
-      anyedge_real_value*real_value = dynamic_cast<anyedge_real_value*>(value);
-      if (!value) {
-	    real_value = new anyedge_real_value();
-	    delete value;
-	    value = real_value;
+      anyedge_real_విలువ*real_విలువ = dynamic_cast<anyedge_real_విలువ*>(value);
+      ఒకవేళ (!value) {
+	    real_విలువ = కొత్త anyedge_real_విలువ();
+	    తొలగించు value;
+	    value = real_విలువ;
       }
-      return real_value;
+      తిరిగి real_విలువ;
 }
 
-class anyedge_string_value : public anyedge_value {
+తరగతి anyedge_string_విలువ : బహిరంగ anyedge_విలువ {
 
-    public:
-      anyedge_string_value() {};
-      virtual ~anyedge_string_value() override {};
+    బహిరంగ:
+      anyedge_string_విలువ() {};
+      మాయా ~anyedge_string_విలువ() override {};
 
-      void reset() override { old_bits.clear(); }
+      శూన్య reset() override { old_బిట్లు.clear(); }
 
-      void set(const std::string&bit) { old_bits = bit; };
+      శూన్య సమితి(స్థిరరాశి std::string&బిట్టు) { old_బిట్లు = బిట్టు; };
 
-      void duplicate(anyedge_value*&dup) override;
+      శూన్య duplicate(anyedge_విలువ*&dup) override;
 
-      bool recv_string(const std::string&bit);
+      తార్కిక recv_string(స్థిరరాశి std::string&బిట్టు);
 
-    private:
-      std::string old_bits;
+    అంతరంగ:
+      std::string old_బిట్లు;
 };
 
-static anyedge_string_value*get_string_value(anyedge_value*&value)
+స్థిర anyedge_string_విలువ*get_string_విలువ(anyedge_విలువ*&value)
 {
-      anyedge_string_value*string_value = dynamic_cast<anyedge_string_value*>(value);
-      if (!value) {
-	    string_value = new anyedge_string_value();
-	    delete value;
-	    value = string_value;
+      anyedge_string_విలువ*string_విలువ = dynamic_cast<anyedge_string_విలువ*>(value);
+      ఒకవేళ (!value) {
+	    string_విలువ = కొత్త anyedge_string_విలువ();
+	    తొలగించు value;
+	    value = string_విలువ;
       }
-      return string_value;
+      తిరిగి string_విలువ;
 }
 
-struct vvp_fun_anyedge_state_s : public waitable_state_s {
+నిర్మాణం vvp_fun_anyedge_state_s : బహిరంగ waitable_state_s {
       vvp_fun_anyedge_state_s()
       {
-            for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-                  last_value_[idx] = 0;
+            కొరకు (గుర్తులేని idx = 0 ;  idx < 4 ;  idx += 1)
+                  చివరి_విలువ[idx] = 0;
       }
 
       ~vvp_fun_anyedge_state_s()
       {
-            for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-                  delete last_value_[idx];
+            కొరకు (గుర్తులేని idx = 0 ;  idx < 4 ;  idx += 1)
+                  తొలగించు చివరి_విలువ[idx];
       }
 
-      anyedge_value *last_value_[4];
-      vvp_fun_anyedge_state_s(const vvp_fun_anyedge_state_s&) = delete;
-      vvp_fun_anyedge_state_s& operator=(const vvp_fun_anyedge_state_s&) = delete;
+      anyedge_విలువ *చివరి_విలువ[4];
+      vvp_fun_anyedge_state_s(స్థిరరాశి vvp_fun_anyedge_state_s&) = తొలగించు;
+      vvp_fun_anyedge_state_s& క్రియాకారకం=(స్థిరరాశి vvp_fun_anyedge_state_s&) = తొలగించు;
 };
 
 vvp_fun_anyedge::vvp_fun_anyedge()
 {
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-	    last_value_[idx] = 0;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < 4 ;  idx += 1)
+	    చివరి_విలువ[idx] = 0;
 }
 
 vvp_fun_anyedge::~vvp_fun_anyedge()
 {
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-	    delete last_value_[idx];
+      కొరకు (గుర్తులేని idx = 0 ;  idx < 4 ;  idx += 1)
+	    తొలగించు చివరి_విలువ[idx];
 }
 
-void anyedge_vec4_value::duplicate(anyedge_value*&dup)
+శూన్య anyedge_vec4_విలువ::duplicate(anyedge_విలువ*&dup)
 {
-      anyedge_vec4_value*dup_vec4 = get_vec4_value(dup);
-      assert(dup_vec4);
-      dup_vec4->set(old_bits);
+      anyedge_vec4_విలువ*dup_vec4 = get_vec4_విలువ(dup);
+      ప్రతిజ్ఞా(dup_vec4);
+      dup_vec4->సమితి(old_బిట్లు);
 }
 
-bool anyedge_vec4_value::recv_vec4(const vvp_vector4_t&bit)
+తార్కిక anyedge_vec4_విలువ::recv_vec4(స్థిరరాశి vvp_vector4_t&బిట్టు)
 {
-      bool flag = false;
+      తార్కిక flag = అబద్ధం;
 
-      if (old_bits.size() != bit.size()) {
-	    if (old_bits.size() == 0) {
+      ఒకవేళ (old_బిట్లు.size() != బిట్టు.size()) {
+	    ఒకవేళ (old_బిట్లు.size() == 0) {
 		    // Special case: If we've not seen any input yet
 		    // (old_bits.size()==0) then replace it will a reference
 		    // vector that is 'bx. Then compare that with the input
 		    // to see if we are processing a change from 'bx.
-		  old_bits = vvp_vector4_t(bit.size(), BIT4_X);
-		  if (old_bits.eeq(bit))
-			flag = false;
-		  else
-			flag = true;
+		  old_బిట్లు = vvp_vector4_t(బిట్టు.size(), BIT4_X);
+		  ఒకవేళ (old_బిట్లు.eeq(బిట్టు))
+			flag = అబద్ధం;
+		  లేకపోతే
+			flag = నిజం;
 
-	    } else {
-		  flag = true;
+	    } లేకపోతే {
+		  flag = నిజం;
 	    }
 
-      } else {
-	    for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
-		  if (old_bits.value(idx) != bit.value(idx)) {
-			flag = true;
-			break;
+      } లేకపోతే {
+	    కొరకు (గుర్తులేని idx = 0 ;  idx < బిట్టు.size() ;  idx += 1) {
+		  ఒకవేళ (old_బిట్లు.value(idx) != బిట్టు.value(idx)) {
+			flag = నిజం;
+			ఆపు;
 		  }
 	    }
       }
 
-      if (flag) {
-	    old_bits = bit;
+      ఒకవేళ (flag) {
+	    old_బిట్లు = బిట్టు;
       }
 
-      return flag;
+      తిరిగి flag;
 }
 
-bool anyedge_vec4_value::recv_vec4_pv(const vvp_vector4_t&bit, unsigned base,
-				      unsigned vwid)
+తార్కిక anyedge_vec4_విలువ::recv_vec4_pv(స్థిరరాశి vvp_vector4_t&బిట్టు, గుర్తులేని పునాది,
+				      గుర్తులేని vwid)
 {
-      vvp_vector4_t tmp = old_bits;
-      if (tmp.size() == 0)
+      vvp_vector4_t tmp = old_బిట్లు;
+      ఒకవేళ (tmp.size() == 0)
 	    tmp = vvp_vector4_t(vwid, BIT4_Z);
-      assert(base + bit.size()<= vwid);
-      assert(tmp.size() == vwid);
-      tmp.set_vec(base, bit);
+      ప్రతిజ్ఞా(పునాది + బిట్టు.size()<= vwid);
+      ప్రతిజ్ఞా(tmp.size() == vwid);
+      tmp.సమితి_vec(పునాది, బిట్టు);
 
-      return recv_vec4(tmp);
+      తిరిగి recv_vec4(tmp);
 }
 
-void anyedge_real_value::duplicate(anyedge_value*&dup)
+శూన్య anyedge_real_విలువ::duplicate(anyedge_విలువ*&dup)
 {
-      anyedge_real_value*dup_real = get_real_value(dup);
-      assert(dup_real);
-      dup_real->set(old_bits);
+      anyedge_real_విలువ*dup_real = get_real_విలువ(dup);
+      ప్రతిజ్ఞా(dup_real);
+      dup_real->సమితి(old_బిట్లు);
 }
 
-bool anyedge_real_value::recv_real(double bit)
+తార్కిక anyedge_real_విలువ::recv_real(ద్విగుణ బిట్టు)
 {
-      if (old_bits != bit) {
-	    old_bits = bit;
-            return true;
+      ఒకవేళ (old_బిట్లు != బిట్టు) {
+	    old_బిట్లు = బిట్టు;
+            తిరిగి నిజం;
       }
-      return false;
+      తిరిగి అబద్ధం;
 }
 
-void anyedge_string_value::duplicate(anyedge_value*&dup)
+శూన్య anyedge_string_విలువ::duplicate(anyedge_విలువ*&dup)
 {
-      anyedge_string_value*dup_string = get_string_value(dup);
-      assert(dup_string);
-      dup_string->set(old_bits);
+      anyedge_string_విలువ*dup_string = get_string_విలువ(dup);
+      ప్రతిజ్ఞా(dup_string);
+      dup_string->సమితి(old_బిట్లు);
 }
 
-bool anyedge_string_value::recv_string(const std::string&bit)
+తార్కిక anyedge_string_విలువ::recv_string(స్థిరరాశి std::string&బిట్టు)
 {
-      if (old_bits != bit) {
-	    old_bits = bit;
-            return true;
+      ఒకవేళ (old_బిట్లు != బిట్టు) {
+	    old_బిట్లు = బిట్టు;
+            తిరిగి నిజం;
       }
-      return false;
+      తిరిగి అబద్ధం;
 }
 
 vvp_fun_anyedge_sa::vvp_fun_anyedge_sa()
-: threads_(0)
+: దారాలు_2(0)
 {
 }
 
@@ -583,58 +583,58 @@ vvp_fun_anyedge_sa::~vvp_fun_anyedge_sa()
 {
 }
 
-vthread_t vvp_fun_anyedge_sa::add_waiting_thread(vthread_t thread)
+vthread_t vvp_fun_anyedge_sa::కూడు_నిరీక్షణ_thread(vthread_t thread)
 {
-      vthread_t tmp = threads_;
-      threads_ = thread;
+      vthread_t tmp = దారాలు_2;
+      దారాలు_2 = thread;
 
-      return tmp;
+      తిరిగి tmp;
 }
 
-void vvp_fun_anyedge_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_fun_anyedge_sa::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                                    vvp_context_t)
 {
-      anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
-      assert(value);
-      if (value->recv_vec4(bit)) {
-	    run_waiting_threads_(threads_);
-	    vvp_net_t*net = port.ptr();
-	    net->send_vec4(bit, 0);
+      anyedge_vec4_విలువ*value = get_vec4_విలువ(చివరి_విలువ[పోర్టు.పోర్టు()]);
+      ప్రతిజ్ఞా(value);
+      ఒకవేళ (value->recv_vec4(బిట్టు)) {
+	    నిరంతరం_నిరీక్షణ_దారాలు(దారాలు_2);
+	    vvp_net_t*net = పోర్టు.ptr();
+	    net->send_vec4(బిట్టు, 0);
       }
 }
 
-void vvp_fun_anyedge_sa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-				      unsigned base, unsigned vwid, vvp_context_t)
+శూన్య vvp_fun_anyedge_sa::recv_vec4_pv(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
+				      గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t)
 {
-      anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
-      assert(value);
-      if (value->recv_vec4_pv(bit, base, vwid)) {
-	    run_waiting_threads_(threads_);
-	    vvp_net_t*net = port.ptr();
-	    net->send_vec4(bit, 0);
+      anyedge_vec4_విలువ*value = get_vec4_విలువ(చివరి_విలువ[పోర్టు.పోర్టు()]);
+      ప్రతిజ్ఞా(value);
+      ఒకవేళ (value->recv_vec4_pv(బిట్టు, పునాది, vwid)) {
+	    నిరంతరం_నిరీక్షణ_దారాలు(దారాలు_2);
+	    vvp_net_t*net = పోర్టు.ptr();
+	    net->send_vec4(బిట్టు, 0);
       }
 }
 
-void vvp_fun_anyedge_sa::recv_real(vvp_net_ptr_t port, double bit,
+శూన్య vvp_fun_anyedge_sa::recv_real(vvp_net_ptr_t పోర్టు, ద్విగుణ బిట్టు,
                                    vvp_context_t)
 {
-      anyedge_real_value*value = get_real_value(last_value_[port.port()]);
-      assert(value);
-      if (value->recv_real(bit)) {
-	    run_waiting_threads_(threads_);
-	    vvp_net_t*net = port.ptr();
+      anyedge_real_విలువ*value = get_real_విలువ(చివరి_విలువ[పోర్టు.పోర్టు()]);
+      ప్రతిజ్ఞా(value);
+      ఒకవేళ (value->recv_real(బిట్టు)) {
+	    నిరంతరం_నిరీక్షణ_దారాలు(దారాలు_2);
+	    vvp_net_t*net = పోర్టు.ptr();
 	    net->send_vec4(vvp_vector4_t(), 0);
       }
 }
 
-void vvp_fun_anyedge_sa::recv_string(vvp_net_ptr_t port, const std::string&bit,
+శూన్య vvp_fun_anyedge_sa::recv_string(vvp_net_ptr_t పోర్టు, స్థిరరాశి std::string&బిట్టు,
 				     vvp_context_t)
 {
-      anyedge_string_value*value = get_string_value(last_value_[port.port()]);
-      assert(value);
-      if (value->recv_string(bit)) {
-	    run_waiting_threads_(threads_);
-	    vvp_net_t*net = port.ptr();
+      anyedge_string_విలువ*value = get_string_విలువ(చివరి_విలువ[పోర్టు.పోర్టు()]);
+      ప్రతిజ్ఞా(value);
+      ఒకవేళ (value->recv_string(బిట్టు)) {
+	    నిరంతరం_నిరీక్షణ_దారాలు(దారాలు_2);
+	    vvp_net_t*net = పోర్టు.ptr();
 	    net->send_vec4(vvp_vector4_t(), 0);
       }
 }
@@ -643,144 +643,144 @@ void vvp_fun_anyedge_sa::recv_string(vvp_net_ptr_t port, const std::string&bit,
  * An anyedge receiving an object should do nothing with it, but should
  * trigger waiting threads.
  */
-void vvp_fun_anyedge_sa::recv_object(vvp_net_ptr_t port, vvp_object_t,
+శూన్య vvp_fun_anyedge_sa::recv_object(vvp_net_ptr_t పోర్టు, vvp_object_t,
 				     vvp_context_t)
 {
-      run_waiting_threads_(threads_);
-      vvp_net_t*net = port.ptr();
+      నిరంతరం_నిరీక్షణ_దారాలు(దారాలు_2);
+      vvp_net_t*net = పోర్టు.ptr();
       net->send_vec4(vvp_vector4_t(), 0);
 }
 
 vvp_fun_anyedge_aa::vvp_fun_anyedge_aa()
 {
       context_scope_ = vpip_peek_context_scope();
-      context_idx_ = vpip_add_item_to_context(this, context_scope_);
+      context_idx_ = vpip_కూడు_అంశం_గమ్యం_context(ఇది, context_scope_);
 }
 
 vvp_fun_anyedge_aa::~vvp_fun_anyedge_aa()
 {
 }
 
-void vvp_fun_anyedge_aa::alloc_instance(vvp_context_t context)
+శూన్య vvp_fun_anyedge_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new vvp_fun_anyedge_state_s);
+      vvp_సమితి_context_అంశం(context, context_idx_, కొత్త vvp_fun_anyedge_state_s);
       reset_instance(context);
 }
 
-void vvp_fun_anyedge_aa::reset_instance(vvp_context_t context)
+శూన్య vvp_fun_anyedge_aa::reset_instance(vvp_context_t context)
 {
       vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
-            (vvp_get_context_item(context, context_idx_));
+            (vvp_get_context_అంశం(context, context_idx_));
 
-      state->threads = 0;
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1) {
-	    if (last_value_[idx])
-	          last_value_[idx]->duplicate(state->last_value_[idx]);
-	    else if (state->last_value_[idx])
-		  state->last_value_[idx]->reset();
+      state->దారాలు = 0;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < 4 ;  idx += 1) {
+	    ఒకవేళ (చివరి_విలువ[idx])
+	          చివరి_విలువ[idx]->duplicate(state->చివరి_విలువ[idx]);
+	    లేకపోతే ఒకవేళ (state->చివరి_విలువ[idx])
+		  state->చివరి_విలువ[idx]->reset();
       }
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_fun_anyedge_aa::free_instance(vvp_context_t context)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య vvp_fun_anyedge_aa::free_instance(vvp_context_t context)
 {
       vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
-            (vvp_get_context_item(context, context_idx_));
-      delete state;
+            (vvp_get_context_అంశం(context, context_idx_));
+      తొలగించు state;
 }
-#endif
+#అయితే_ముగింపు
 
-vthread_t vvp_fun_anyedge_aa::add_waiting_thread(vthread_t thread)
+vthread_t vvp_fun_anyedge_aa::కూడు_నిరీక్షణ_thread(vthread_t thread)
 {
       vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
-            (vthread_get_wt_context_item(context_idx_));
+            (vthread_get_wt_context_అంశం(context_idx_));
 
-      vthread_t tmp = state->threads;
-      state->threads = thread;
+      vthread_t tmp = state->దారాలు;
+      state->దారాలు = thread;
 
-      return tmp;
+      తిరిగి tmp;
 }
 
-void vvp_fun_anyedge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_fun_anyedge_aa::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                                    vvp_context_t context)
 {
-      if (context) {
+      ఒకవేళ (context) {
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
-                  (vvp_get_context_item(context, context_idx_));
+                  (vvp_get_context_అంశం(context, context_idx_));
 
-            anyedge_vec4_value*value = get_vec4_value(state->last_value_[port.port()]);
-            assert(value);
-            if (value->recv_vec4(bit)) {
-                  run_waiting_threads_(state->threads);
-                  vvp_net_t*net = port.ptr();
-                  net->send_vec4(bit, context);
+            anyedge_vec4_విలువ*value = get_vec4_విలువ(state->చివరి_విలువ[పోర్టు.పోర్టు()]);
+            ప్రతిజ్ఞా(value);
+            ఒకవేళ (value->recv_vec4(బిట్టు)) {
+                  నిరంతరం_నిరీక్షణ_దారాలు(state->దారాలు);
+                  vvp_net_t*net = పోర్టు.ptr();
+                  net->send_vec4(బిట్టు, context);
             }
-      } else {
-            context = context_scope_->live_contexts;
-            while (context) {
-                  recv_vec4(port, bit, context);
-                  context = vvp_get_next_context(context);
+      } లేకపోతే {
+            context = context_scope_->సజీవ_contexts;
+            అయితే (context) {
+                  recv_vec4(పోర్టు, బిట్టు, context);
+                  context = vvp_get_తదుపరి_context(context);
             }
-            anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
-            assert(value);
-            value->set(bit);
+            anyedge_vec4_విలువ*value = get_vec4_విలువ(చివరి_విలువ[పోర్టు.పోర్టు()]);
+            ప్రతిజ్ఞా(value);
+            value->సమితి(బిట్టు);
       }
 }
 
-void vvp_fun_anyedge_aa::recv_real(vvp_net_ptr_t port, double bit,
+శూన్య vvp_fun_anyedge_aa::recv_real(vvp_net_ptr_t పోర్టు, ద్విగుణ బిట్టు,
                                    vvp_context_t context)
 {
-      if (context) {
+      ఒకవేళ (context) {
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
-                  (vvp_get_context_item(context, context_idx_));
+                  (vvp_get_context_అంశం(context, context_idx_));
 
-            anyedge_real_value*value = get_real_value(state->last_value_[port.port()]);
-            assert(value);
-            if (value->recv_real(bit)) {
-                  run_waiting_threads_(state->threads);
-                  vvp_net_t*net = port.ptr();
+            anyedge_real_విలువ*value = get_real_విలువ(state->చివరి_విలువ[పోర్టు.పోర్టు()]);
+            ప్రతిజ్ఞా(value);
+            ఒకవేళ (value->recv_real(బిట్టు)) {
+                  నిరంతరం_నిరీక్షణ_దారాలు(state->దారాలు);
+                  vvp_net_t*net = పోర్టు.ptr();
                   net->send_vec4(vvp_vector4_t(), context);
             }
-      } else {
-            context = context_scope_->live_contexts;
-            while (context) {
-                  recv_real(port, bit, context);
-                  context = vvp_get_next_context(context);
+      } లేకపోతే {
+            context = context_scope_->సజీవ_contexts;
+            అయితే (context) {
+                  recv_real(పోర్టు, బిట్టు, context);
+                  context = vvp_get_తదుపరి_context(context);
             }
-            anyedge_real_value*value = get_real_value(last_value_[port.port()]);
-            assert(value);
-            value->set(bit);
+            anyedge_real_విలువ*value = get_real_విలువ(చివరి_విలువ[పోర్టు.పోర్టు()]);
+            ప్రతిజ్ఞా(value);
+            value->సమితి(బిట్టు);
       }
 }
 
-void vvp_fun_anyedge_aa::recv_string(vvp_net_ptr_t port, const std::string&bit,
+శూన్య vvp_fun_anyedge_aa::recv_string(vvp_net_ptr_t పోర్టు, స్థిరరాశి std::string&బిట్టు,
 				     vvp_context_t context)
 {
-      if (context) {
+      ఒకవేళ (context) {
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
-                  (vvp_get_context_item(context, context_idx_));
+                  (vvp_get_context_అంశం(context, context_idx_));
 
-            anyedge_string_value*value = get_string_value(state->last_value_[port.port()]);
-            assert(value);
-            if (value->recv_string(bit)) {
-                  run_waiting_threads_(state->threads);
-                  vvp_net_t*net = port.ptr();
+            anyedge_string_విలువ*value = get_string_విలువ(state->చివరి_విలువ[పోర్టు.పోర్టు()]);
+            ప్రతిజ్ఞా(value);
+            ఒకవేళ (value->recv_string(బిట్టు)) {
+                  నిరంతరం_నిరీక్షణ_దారాలు(state->దారాలు);
+                  vvp_net_t*net = పోర్టు.ptr();
                   net->send_vec4(vvp_vector4_t(), context);
             }
-      } else {
-            context = context_scope_->live_contexts;
-            while (context) {
-                  recv_string(port, bit, context);
-                  context = vvp_get_next_context(context);
+      } లేకపోతే {
+            context = context_scope_->సజీవ_contexts;
+            అయితే (context) {
+                  recv_string(పోర్టు, బిట్టు, context);
+                  context = vvp_get_తదుపరి_context(context);
             }
-            anyedge_string_value*value = get_string_value(last_value_[port.port()]);
-            assert(value);
-            value->set(bit);
+            anyedge_string_విలువ*value = get_string_విలువ(చివరి_విలువ[పోర్టు.పోర్టు()]);
+            ప్రతిజ్ఞా(value);
+            value->సమితి(బిట్టు);
       }
 }
 
-vvp_fun_event_or::vvp_fun_event_or(vvp_net_t*base_net)
-: base_net_(base_net)
+vvp_fun_event_or::vvp_fun_event_or(vvp_net_t*పునాది_net)
+: పునాది_net_2(పునాది_net)
 {
 }
 
@@ -788,8 +788,8 @@ vvp_fun_event_or::~vvp_fun_event_or()
 {
 }
 
-vvp_fun_event_or_sa::vvp_fun_event_or_sa(vvp_net_t*base_net)
-: vvp_fun_event_or(base_net), threads_(0)
+vvp_fun_event_or_sa::vvp_fun_event_or_sa(vvp_net_t*పునాది_net)
+: vvp_fun_event_or(పునాది_net), దారాలు_2(0)
 {
 }
 
@@ -797,79 +797,79 @@ vvp_fun_event_or_sa::~vvp_fun_event_or_sa()
 {
 }
 
-vthread_t vvp_fun_event_or_sa::add_waiting_thread(vthread_t thread)
+vthread_t vvp_fun_event_or_sa::కూడు_నిరీక్షణ_thread(vthread_t thread)
 {
-      vthread_t tmp = threads_;
-      threads_ = thread;
+      vthread_t tmp = దారాలు_2;
+      దారాలు_2 = thread;
 
-      return tmp;
+      తిరిగి tmp;
 }
 
-void vvp_fun_event_or_sa::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&bit,
+శూన్య vvp_fun_event_or_sa::recv_vec4(vvp_net_ptr_t, స్థిరరాశి vvp_vector4_t&బిట్టు,
                                     vvp_context_t)
 {
-      run_waiting_threads_(threads_);
-      base_net_->send_vec4(bit, 0);
+      నిరంతరం_నిరీక్షణ_దారాలు(దారాలు_2);
+      పునాది_net_2->send_vec4(బిట్టు, 0);
 }
 
-vvp_fun_event_or_aa::vvp_fun_event_or_aa(vvp_net_t*base_net)
-: vvp_fun_event_or(base_net)
+vvp_fun_event_or_aa::vvp_fun_event_or_aa(vvp_net_t*పునాది_net)
+: vvp_fun_event_or(పునాది_net)
 {
       context_scope_ = vpip_peek_context_scope();
-      context_idx_ = vpip_add_item_to_context(this, context_scope_);
+      context_idx_ = vpip_కూడు_అంశం_గమ్యం_context(ఇది, context_scope_);
 }
 
 vvp_fun_event_or_aa::~vvp_fun_event_or_aa()
 {
 }
 
-void vvp_fun_event_or_aa::alloc_instance(vvp_context_t context)
+శూన్య vvp_fun_event_or_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new waitable_state_s);
+      vvp_సమితి_context_అంశం(context, context_idx_, కొత్త waitable_state_s);
 }
 
-void vvp_fun_event_or_aa::reset_instance(vvp_context_t context)
-{
-      waitable_state_s*state = static_cast<waitable_state_s*>
-            (vvp_get_context_item(context, context_idx_));
-
-      state->threads = 0;
-}
-
-#ifdef CHECK_WITH_VALGRIND
-void vvp_fun_event_or_aa::free_instance(vvp_context_t context)
+శూన్య vvp_fun_event_or_aa::reset_instance(vvp_context_t context)
 {
       waitable_state_s*state = static_cast<waitable_state_s*>
-            (vvp_get_context_item(context, context_idx_));
-      delete state;
-}
-#endif
+            (vvp_get_context_అంశం(context, context_idx_));
 
-vthread_t vvp_fun_event_or_aa::add_waiting_thread(vthread_t thread)
+      state->దారాలు = 0;
+}
+
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య vvp_fun_event_or_aa::free_instance(vvp_context_t context)
 {
       waitable_state_s*state = static_cast<waitable_state_s*>
-            (vthread_get_wt_context_item(context_idx_));
+            (vvp_get_context_అంశం(context, context_idx_));
+      తొలగించు state;
+}
+#అయితే_ముగింపు
 
-      vthread_t tmp = state->threads;
-      state->threads = thread;
+vthread_t vvp_fun_event_or_aa::కూడు_నిరీక్షణ_thread(vthread_t thread)
+{
+      waitable_state_s*state = static_cast<waitable_state_s*>
+            (vthread_get_wt_context_అంశం(context_idx_));
 
-      return tmp;
+      vthread_t tmp = state->దారాలు;
+      state->దారాలు = thread;
+
+      తిరిగి tmp;
 }
 
-void vvp_fun_event_or_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_fun_event_or_aa::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                                     vvp_context_t context)
 {
-      if (context) {
+      ఒకవేళ (context) {
             waitable_state_s*state = static_cast<waitable_state_s*>
-                  (vvp_get_context_item(context, context_idx_));
+                  (vvp_get_context_అంశం(context, context_idx_));
 
-            run_waiting_threads_(state->threads);
-            base_net_->send_vec4(bit, context);
-      } else {
-            context = context_scope_->live_contexts;
-            while (context) {
-                  recv_vec4(port, bit, context);
-                  context = vvp_get_next_context(context);
+            నిరంతరం_నిరీక్షణ_దారాలు(state->దారాలు);
+            పునాది_net_2->send_vec4(బిట్టు, context);
+      } లేకపోతే {
+            context = context_scope_->సజీవ_contexts;
+            అయితే (context) {
+                  recv_vec4(పోర్టు, బిట్టు, context);
+                  context = vvp_get_తదుపరి_context(context);
             }
       }
 }
@@ -884,7 +884,7 @@ vvp_named_event::~vvp_named_event()
 }
 
 vvp_named_event_sa::vvp_named_event_sa(__vpiHandle*h)
-: vvp_named_event(h), threads_(0)
+: vvp_named_event(h), దారాలు_2(0)
 {
 }
 
@@ -892,80 +892,80 @@ vvp_named_event_sa::~vvp_named_event_sa()
 {
 }
 
-vthread_t vvp_named_event_sa::add_waiting_thread(vthread_t thread)
+vthread_t vvp_named_event_sa::కూడు_నిరీక్షణ_thread(vthread_t thread)
 {
-      vthread_t tmp = threads_;
-      threads_ = thread;
+      vthread_t tmp = దారాలు_2;
+      దారాలు_2 = thread;
 
-      return tmp;
+      తిరిగి tmp;
 }
 
-void vvp_named_event_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_named_event_sa::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                                    vvp_context_t)
 {
-      run_waiting_threads_(threads_);
-      vvp_net_t*net = port.ptr();
-      net->send_vec4(bit, 0);
+      నిరంతరం_నిరీక్షణ_దారాలు(దారాలు_2);
+      vvp_net_t*net = పోర్టు.ptr();
+      net->send_vec4(బిట్టు, 0);
 
       __vpiNamedEvent*obj = dynamic_cast<__vpiNamedEvent*>(handle_);
-      assert(obj);
-      obj->run_vpi_callbacks();
+      ప్రతిజ్ఞా(obj);
+      obj->నిరంతరం_vpi_callbacks();
 }
 
 vvp_named_event_aa::vvp_named_event_aa(__vpiHandle*h)
 : vvp_named_event(h)
 {
-      context_idx_ = vpip_add_item_to_context(this, vpip_peek_context_scope());
+      context_idx_ = vpip_కూడు_అంశం_గమ్యం_context(ఇది, vpip_peek_context_scope());
 }
 
 vvp_named_event_aa::~vvp_named_event_aa()
 {
 }
 
-void vvp_named_event_aa::alloc_instance(vvp_context_t context)
+శూన్య vvp_named_event_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new waitable_state_s);
+      vvp_సమితి_context_అంశం(context, context_idx_, కొత్త waitable_state_s);
 }
 
-void vvp_named_event_aa::reset_instance(vvp_context_t context)
-{
-      waitable_state_s*state = static_cast<waitable_state_s*>
-            (vvp_get_context_item(context, context_idx_));
-
-      state->threads = 0;
-}
-
-#ifdef CHECK_WITH_VALGRIND
-void vvp_named_event_aa::free_instance(vvp_context_t context)
+శూన్య vvp_named_event_aa::reset_instance(vvp_context_t context)
 {
       waitable_state_s*state = static_cast<waitable_state_s*>
-            (vvp_get_context_item(context, context_idx_));
-      delete state;
-}
-#endif
+            (vvp_get_context_అంశం(context, context_idx_));
 
-vthread_t vvp_named_event_aa::add_waiting_thread(vthread_t thread)
+      state->దారాలు = 0;
+}
+
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య vvp_named_event_aa::free_instance(vvp_context_t context)
 {
       waitable_state_s*state = static_cast<waitable_state_s*>
-            (vthread_get_wt_context_item(context_idx_));
+            (vvp_get_context_అంశం(context, context_idx_));
+      తొలగించు state;
+}
+#అయితే_ముగింపు
 
-      vthread_t tmp = state->threads;
-      state->threads = thread;
+vthread_t vvp_named_event_aa::కూడు_నిరీక్షణ_thread(vthread_t thread)
+{
+      waitable_state_s*state = static_cast<waitable_state_s*>
+            (vthread_get_wt_context_అంశం(context_idx_));
 
-      return tmp;
+      vthread_t tmp = state->దారాలు;
+      state->దారాలు = thread;
+
+      తిరిగి tmp;
 }
 
-void vvp_named_event_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_named_event_aa::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                                    vvp_context_t context)
 {
-      assert(context);
+      ప్రతిజ్ఞా(context);
 
       waitable_state_s*state = static_cast<waitable_state_s*>
-            (vvp_get_context_item(context, context_idx_));
+            (vvp_get_context_అంశం(context, context_idx_));
 
-      run_waiting_threads_(state->threads);
-      vvp_net_t*net = port.ptr();
-      net->send_vec4(bit, context);
+      నిరంతరం_నిరీక్షణ_దారాలు(state->దారాలు);
+      vvp_net_t*net = పోర్టు.ptr();
+      net->send_vec4(బిట్టు, context);
 }
 
 /*
@@ -976,82 +976,82 @@ void vvp_named_event_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 **  Named events are handled elsewhere.
 */
 
-static void compile_event_or(char*label, unsigned argc, struct symb_s*argv);
+స్థిర శూన్య compile_event_or(అక్షరం*label, గుర్తులేని argc, నిర్మాణం symb_s*argv);
 
-void compile_event(char*label, char*type, unsigned argc, struct symb_s*argv)
+శూన్య compile_event(అక్షరం*label, అక్షరం*type, గుర్తులేని argc, నిర్మాణం symb_s*argv)
 {
       vvp_net_fun_t*fun = 0;
 
-      if (type == 0) {
+      ఒకవేళ (type == 0) {
 	    compile_event_or(label, argc, argv);
-	    return;
+	    తిరిగి;
       }
 
-      if (strcmp(type,"anyedge") == 0) {
+      ఒకవేళ (strcmp(type,"anyedge") == 0) {
 
-	    free(type);
+	    విడుదల(type);
 
-            if (vpip_peek_current_scope()->is_automatic()) {
-                  fun = new vvp_fun_anyedge_aa;
-            } else {
-                  fun = new vvp_fun_anyedge_sa;
+            ఒకవేళ (vpip_peek_current_scope()->is_automatic()) {
+                  fun = కొత్త vvp_fun_anyedge_aa;
+            } లేకపోతే {
+                  fun = కొత్త vvp_fun_anyedge_sa;
             }
 
-      } else {
+      } లేకపోతే {
 
-	    vvp_fun_edge::edge_t edge_type = vvp_edge_none;
+	    vvp_fun_అంచు::అంచు_t అంచు_type = vvp_అంచు_none;
 
-	    if (strcmp(type,"posedge") == 0)
-		  edge_type = vvp_edge_posedge;
-	    else if (strcmp(type,"negedge") == 0)
-		  edge_type = vvp_edge_negedge;
-	    else if (strcmp(type,"edge") == 0)
-		  edge_type = vvp_edge_edge;
+	    ఒకవేళ (strcmp(type,"posedge") == 0)
+		  అంచు_type = vvp_అంచు_posedge;
+	    లేకపోతే ఒకవేళ (strcmp(type,"negedge") == 0)
+		  అంచు_type = vvp_అంచు_negedge;
+	    లేకపోతే ఒకవేళ (strcmp(type,"edge") == 0)
+		  అంచు_type = vvp_అంచు_అంచు;
 
-	    assert(argc <= 4);
-	    free(type);
+	    ప్రతిజ్ఞా(argc <= 4);
+	    విడుదల(type);
 
-            if (vpip_peek_current_scope()->is_automatic()) {
-                  fun = new vvp_fun_edge_aa(edge_type);
-            } else {
-                  fun = new vvp_fun_edge_sa(edge_type);
+            ఒకవేళ (vpip_peek_current_scope()->is_automatic()) {
+                  fun = కొత్త vvp_fun_అంచు_aa(అంచు_type);
+            } లేకపోతే {
+                  fun = కొత్త vvp_fun_అంచు_sa(అంచు_type);
             }
 
       }
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = కొత్త vvp_net_t;
       ptr->fun = fun;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_చిహ్నం(label, ptr);
+      విడుదల(label);
 
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      విడుదల(argv);
 }
 
-static void compile_event_or(char*label, unsigned argc, struct symb_s*argv)
+స్థిర శూన్య compile_event_or(అక్షరం*label, గుర్తులేని argc, నిర్మాణం symb_s*argv)
 {
-      vvp_net_t*base_net = new vvp_net_t;
-      if (vpip_peek_current_scope()->is_automatic()) {
-            base_net->fun = new vvp_fun_event_or_aa(base_net);
-      } else {
-            base_net->fun = new vvp_fun_event_or_sa(base_net);
+      vvp_net_t*పునాది_net = కొత్త vvp_net_t;
+      ఒకవేళ (vpip_peek_current_scope()->is_automatic()) {
+            పునాది_net->fun = కొత్త vvp_fun_event_or_aa(పునాది_net);
+      } లేకపోతే {
+            పునాది_net->fun = కొత్త vvp_fun_event_or_sa(పునాది_net);
       }
-      define_functor_symbol(label, base_net);
-      free(label);
+      define_functor_చిహ్నం(label, పునాది_net);
+      విడుదల(label);
 
 	/* This is a simplified version of a wide functor. We don't
 	   care about the data values or what port they arrived on,
 	   so we can use a single shared functor. */
-      vvp_net_t*curr_net = base_net;
-      for (unsigned idx = 0 ;  idx < argc ;  idx += 1) {
-	    if (idx > 0 && (idx % 4) == 0) {
-		  curr_net = new vvp_net_t;
-		  curr_net->fun = base_net->fun;
+      vvp_net_t*curr_net = పునాది_net;
+      కొరకు (గుర్తులేని idx = 0 ;  idx < argc ;  idx += 1) {
+	    ఒకవేళ (idx > 0 && (idx % 4) == 0) {
+		  curr_net = కొత్త vvp_net_t;
+		  curr_net->fun = పునాది_net->fun;
 	    }
-	    input_connect(curr_net, idx % 4, argv[idx].text);
+	    ఆదానం_connect(curr_net, idx % 4, argv[idx].పాఠ్యం);
       }
-      free(argv);
+      విడుదల(argv);
 }
 
 /*
@@ -1059,28 +1059,28 @@ static void compile_event_or(char*label, unsigned argc, struct symb_s*argv)
  * inputs, it is only accessed by behavioral trigger statements, which
  * in vvp are %set instructions.
  */
-void compile_named_event(char*label, char*name, bool local_flag)
+శూన్య compile_named_event(అక్షరం*label, అక్షరం*name, తార్కిక local_flag)
 {
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_net_t*ptr = కొత్త vvp_net_t;
 
       vpiHandle obj = vpip_make_named_event(name, ptr);
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-            ptr->fun = new vvp_named_event_aa(obj);
-      } else {
-            ptr->fun = new vvp_named_event_sa(obj);
+      ఒకవేళ (vpip_peek_current_scope()->is_automatic()) {
+            ptr->fun = కొత్త vvp_named_event_aa(obj);
+      } లేకపోతే {
+            ptr->fun = కొత్త vvp_named_event_sa(obj);
       }
-      define_functor_symbol(label, ptr);
-      compile_vpi_symbol(label, obj);
-      if (! local_flag) vpip_attach_to_current_scope(obj);
+      define_functor_చిహ్నం(label, ptr);
+      compile_vpi_చిహ్నం(label, obj);
+      ఒకవేళ (! local_flag) vpip_attach_గమ్యం_current_scope(obj);
 
-      free(label);
-      delete[] name;
+      విడుదల(label);
+      తొలగించు[] name;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void named_event_delete(__vpiHandle*handle)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య named_event_delete(__vpiHandle*handle)
 {
-      delete dynamic_cast<__vpiNamedEvent *>(handle);
+      తొలగించు dynamic_cast<__vpiNamedEvent *>(handle);
 }
-#endif
+#అయితే_ముగింపు

@@ -20,9 +20,9 @@
 # include  "codes.h"
 # include  "statistics.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#అయితే_ముగింపు
 # include  <cstring>
 # include  <cassert>
 
@@ -33,102 +33,102 @@
  * instruction to branch to the next chunk. This handles the case
  * where the program counter steps off the end of a chunk.
  */
-const unsigned code_chunk_size = 1024;
+స్థిరరాశి గుర్తులేని సంకేతం_chunk_కొలత = 1024;
 
-static struct vvp_code_s *first_chunk = 0;
-static struct vvp_code_s *current_chunk = 0;
-static unsigned current_within_chunk = 0;
+స్థిర నిర్మాణం vvp_సంకేతం_s *మొదటి_chunk = 0;
+స్థిర నిర్మాణం vvp_సంకేతం_s *current_chunk = 0;
+స్థిర గుర్తులేని current_within_chunk = 0;
 
 /*
  * This initializes the code space. It sets up the first code chunk,
  * and places at address 0 a ZOMBIE instruction.
  */
-void codespace_init(void)
+శూన్య codespace_init(శూన్య)
 {
-      assert(current_chunk == 0);
-      first_chunk = new struct vvp_code_s [code_chunk_size];
-      current_chunk = first_chunk;
+      ప్రతిజ్ఞా(current_chunk == 0);
+      మొదటి_chunk = కొత్త నిర్మాణం vvp_సంకేతం_s [సంకేతం_chunk_కొలత];
+      current_chunk = మొదటి_chunk;
 
-      current_chunk[0].opcode = &of_ZOMBIE;
+      current_chunk[0].opcode = &యొక్క_ZOMBIE;
 
-      current_chunk[code_chunk_size-1].opcode = &of_CHUNK_LINK;
-      current_chunk[code_chunk_size-1].cptr = 0;
+      current_chunk[సంకేతం_chunk_కొలత-1].opcode = &యొక్క_CHUNK_LINK;
+      current_chunk[సంకేతం_chunk_కొలత-1].cptr = 0;
 
       current_within_chunk = 1;
 
-      count_opcodes = 0;
-      size_opcodes += code_chunk_size * sizeof (struct vvp_code_s);
+      లెక్క_opcodes = 0;
+      కొలత_opcodes += సంకేతం_chunk_కొలత * పరిమాణం (నిర్మాణం vvp_సంకేతం_s);
 }
 
-vvp_code_t codespace_next(void)
+vvp_సంకేతం_t codespace_తదుపరి(శూన్య)
 {
-      if (current_within_chunk == (code_chunk_size-1)) {
-	    current_chunk[code_chunk_size-1].cptr
-		  = new struct vvp_code_s [code_chunk_size];
-	    current_chunk = current_chunk[code_chunk_size-1].cptr;
+      ఒకవేళ (current_within_chunk == (సంకేతం_chunk_కొలత-1)) {
+	    current_chunk[సంకేతం_chunk_కొలత-1].cptr
+		  = కొత్త నిర్మాణం vvp_సంకేతం_s [సంకేతం_chunk_కొలత];
+	    current_chunk = current_chunk[సంకేతం_chunk_కొలత-1].cptr;
 
 	      /* Put a link opcode on the end of the chunk. */
-	    current_chunk[code_chunk_size-1].opcode = &of_CHUNK_LINK;
-	    current_chunk[code_chunk_size-1].cptr   = 0;
+	    current_chunk[సంకేతం_chunk_కొలత-1].opcode = &యొక్క_CHUNK_LINK;
+	    current_chunk[సంకేతం_chunk_కొలత-1].cptr   = 0;
 
 	    current_within_chunk = 0;
 
-	    size_opcodes += code_chunk_size * sizeof (struct vvp_code_s);
+	    కొలత_opcodes += సంకేతం_chunk_కొలత * పరిమాణం (నిర్మాణం vvp_సంకేతం_s);
       }
 
-      vvp_code_t res = current_chunk + current_within_chunk;
-      return res;
+      vvp_సంకేతం_t res = current_chunk + current_within_chunk;
+      తిరిగి res;
 }
 
-vvp_code_t codespace_allocate(void)
+vvp_సంకేతం_t codespace_allocate(శూన్య)
 {
-      vvp_code_t res = codespace_next();
+      vvp_సంకేతం_t res = codespace_తదుపరి();
       current_within_chunk += 1;
-      count_opcodes += 1;
+      లెక్క_opcodes += 1;
 
-      memset(res, 0, sizeof(*res));
+      memset(res, 0, పరిమాణం(*res));
 
-      return res;
+      తిరిగి res;
 }
 
-vvp_code_t codespace_null(void)
+vvp_సంకేతం_t codespace_null(శూన్య)
 {
-      return first_chunk + 0;
+      తిరిగి మొదటి_chunk + 0;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void codespace_delete(void)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య codespace_delete(శూన్య)
 {
-      vvp_code_t cur = first_chunk;
+      vvp_సంకేతం_t cur = మొదటి_chunk;
 
 	/* If there are no opcodes then just delete the code space. */
-      if (count_opcodes == 0) {
-	    delete [] cur;
-	    return;
+      ఒకవేళ (లెక్క_opcodes == 0) {
+	    తొలగించు [] cur;
+	    తిరిగి;
       }
 
-      do {
-	    vvp_code_t next = cur[code_chunk_size-1].cptr;
-	    for (unsigned idx = 0 ; idx < code_chunk_size; idx += 1) {
-		  count_opcodes -= 1;
-		  if ((cur+idx)->opcode == &of_VPI_CALL) {
+      చేయి {
+	    vvp_సంకేతం_t తదుపరి_2 = cur[సంకేతం_chunk_కొలత-1].cptr;
+	    కొరకు (గుర్తులేని idx = 0 ; idx < సంకేతం_chunk_కొలత; idx += 1) {
+		  లెక్క_opcodes -= 1;
+		  ఒకవేళ ((cur+idx)->opcode == &యొక్క_VPI_CALL) {
 			vpi_call_delete((cur+idx)->handle);
-		  } else if (((cur+idx)->opcode == &of_EXEC_UFUNC_REAL) ||
-		             ((cur+idx)->opcode == &of_EXEC_UFUNC_VEC4)) {
+		  } లేకపోతే ఒకవేళ (((cur+idx)->opcode == &యొక్క_EXEC_UFUNC_REAL) ||
+		             ((cur+idx)->opcode == &యొక్క_EXEC_UFUNC_VEC4)) {
 			exec_ufunc_delete((cur+idx));
-		  } else if ((cur+idx)->opcode == &of_FILE_LINE) {
-			delete((cur+idx)->handle);
-		  } else if (((cur+idx)->opcode == &of_CONCATI_STR) ||
-		             ((cur+idx)->opcode == &of_NEW_DARRAY) ||
-		             ((cur+idx)->opcode == &of_PUSHI_STR)) {
-			delete [] ((cur+idx)->text);
+		  } లేకపోతే ఒకవేళ ((cur+idx)->opcode == &యొక్క_FILE_పంక్తి) {
+			తొలగించు((cur+idx)->handle);
+		  } లేకపోతే ఒకవేళ (((cur+idx)->opcode == &యొక్క_CONCATI_STR) ||
+		             ((cur+idx)->opcode == &యొక్క_NEW_DARRAY) ||
+		             ((cur+idx)->opcode == &యొక్క_PUSHI_STR)) {
+			తొలగించు [] ((cur+idx)->పాఠ్యం);
 		  }
-		  if (count_opcodes == 0) break;
+		  ఒకవేళ (లెక్క_opcodes == 0) ఆపు;
 	    }
 	      /* Don't count the &of_CHUNK_LINK opcode. */
-	    if (count_opcodes != 0) count_opcodes += 1;
-	    delete [] cur;
-	    cur = next;
-      } while (cur != 0);
+	    ఒకవేళ (లెక్క_opcodes != 0) లెక్క_opcodes += 1;
+	    తొలగించు [] cur;
+	    cur = తదుపరి_2;
+      } అయితే (cur != 0);
 }
-#endif
+#అయితే_ముగింపు

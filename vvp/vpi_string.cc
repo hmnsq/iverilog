@@ -21,88 +21,88 @@
 # include  "vpi_priv.h"
 # include  "vvp_net_sig.h"
 # include  "schedule.h"
-#ifdef CHECK_WITH_VALGRIND
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#అయితే_ముగింపు
 # include  <cstdio>
 # include  <cstdlib>
 # include  <cstring>
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
-__vpiStringVar::__vpiStringVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
+__vpiStringVar::__vpiStringVar(__vpiScope*sc, స్థిరరాశి అక్షరం*na, vvp_net_t*ne)
 : __vpiBaseVar(sc, na, ne)
 {
 }
 
-int __vpiStringVar::get_type_code(void) const
-{ return vpiStringVar; }
+పూర్ణాంకం __vpiStringVar::get_type_సంకేతం(శూన్య) స్థిరరాశి
+{ తిరిగి vpiStringVar; }
 
-int __vpiStringVar::vpi_get(int code)
+పూర్ణాంకం __vpiStringVar::vpi_get(పూర్ణాంకం code)
 {
       vvp_fun_signal_string*fun = dynamic_cast<vvp_fun_signal_string*> (get_net()->fun);
-      assert(fun);
+      ప్రతిజ్ఞా(fun);
       string str = fun->get_string();
 
-      switch (code) {
-	  case vpiSize:
+      ఎంపిక (code) {
+	  స్థితి vpi_కొలత:
 	      // The vpiSize of a string variable is the number of
 	      // bytes (characters) in that string.
-	    return str.size();
-	  case vpiLeftRange:
-	    return 0;
-	  case vpiRightRange:
-            return str.size() - 1;
-	  default:
+	    తిరిగి str.size();
+	  స్థితి vpi_ఎడమ_Range:
+	    తిరిగి 0;
+	  స్థితి vpi_కుడి_Range:
+            తిరిగి str.size() - 1;
+	  అప్రమేయ:
 	    fprintf(stderr, "vpi sorry: property is not implemented");
-	    assert(false);
-	    return 0;
+	    ప్రతిజ్ఞా(అబద్ధం);
+	    తిరిగి 0;
       }
 }
 
-void __vpiStringVar::vpi_get_value(p_vpi_value val)
+శూన్య __vpiStringVar::vpi_get_విలువ(p_vpi_విలువ val)
 {
       vvp_fun_signal_string*fun = dynamic_cast<vvp_fun_signal_string*> (get_net()->fun);
-      assert(fun);
+      ప్రతిజ్ఞా(fun);
       string str = fun->get_string();
 
-      if (val->format == vpiStringVal || val->format == vpiObjTypeVal) {
-	    char*rbuf = static_cast<char *>(need_result_buf(str.size()+1, RBUF_VAL));
+      ఒకవేళ (val->format == vpiStringVal || val->format == vpiObjTypeVal) {
+	    అక్షరం*rbuf = static_cast<అక్షరం *>(need_ఫలితం_buf(str.size()+1, RBUF_VAL));
 	    strcpy(rbuf, str.c_str());
 	    val->format = vpiStringVal;
 	    val->value.str = rbuf;
-	    return;
+	    తిరిగి;
       }
 
       val->format = vpiSuppressVal;
 }
 
-vpiHandle __vpiStringVar::vpi_put_value(p_vpi_value val, int)
+vpiHandle __vpiStringVar::vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం)
 {
       vvp_fun_signal_string*fun = dynamic_cast<vvp_fun_signal_string*> (get_net()->fun);
-      assert(fun);
-      assert(val->format == vpiStringVal);
+      ప్రతిజ్ఞా(fun);
+      ప్రతిజ్ఞా(val->format == vpiStringVal);
       vvp_net_ptr_t dest (get_net(), 0);
       vvp_send_string(dest, val->value.str, vthread_get_wt_context());
-      return 0;
+      తిరిగి 0;
 }
 
-vpiHandle vpip_make_string_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_string_var(స్థిరరాశి అక్షరం*name, vvp_net_t*net)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      const char*use_name = name ? vpip_name_string(name) : NULL;
+      స్థిరరాశి అక్షరం*use_name = name ? vpip_name_string(name) : ఖాళీ;
 
-      __vpiStringVar*obj = new __vpiStringVar(scope, use_name, net);
+      __vpiStringVar*obj = కొత్త __vpiStringVar(scope, use_name, net);
 
-      return obj;
+      తిరిగి obj;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void string_delete(vpiHandle item)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య string_delete(vpiHandle అంశం)
 {
-      __vpiStringVar*obj = dynamic_cast<__vpiStringVar*>(item);
-      delete obj;
+      __vpiStringVar*obj = dynamic_cast<__vpiStringVar*>(అంశం);
+      తొలగించు obj;
 }
-#endif
+#అయితే_ముగింపు

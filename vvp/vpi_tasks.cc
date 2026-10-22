@@ -26,9 +26,9 @@
 # include  "vthread.h"
 # include  "compile.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#అయితే_ముగింపు
 # include  <iostream>
 # include  <cstdio>
 # include  <cstdlib>
@@ -36,75 +36,75 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
-inline __vpiUserSystf::__vpiUserSystf()
+అంతఃవరుస __vpiUserSystf::__vpiUserSystf()
 { }
 
-int __vpiUserSystf::get_type_code(void) const
-{ return vpiUserSystf; }
+పూర్ణాంకం __vpiUserSystf::get_type_సంకేతం(శూన్య) స్థిరరాశి
+{ తిరిగి vpiUserSystf; }
 
 
-static vpiHandle systask_handle(int type, vpiHandle ref)
+స్థిర vpiHandle systask_handle(పూర్ణాంకం type, vpiHandle ref)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      నిర్మాణం __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      switch (type) {
-	  case vpiScope:
-	    return rfp->scope;
+      ఎంపిక (type) {
+	  స్థితి vpiScope:
+	    తిరిగి rfp->scope;
 
-	  case vpiUserSystf:
+	  స్థితి vpiUserSystf:
 	      /* Assert that vpiUserDefn is true! */
-	    assert(rfp->defn->is_user_defn);
-	    return rfp->defn;
+	    ప్రతిజ్ఞా(rfp->defn->is_user_defn);
+	    తిరిగి rfp->defn;
 
-	  default:
-	    return 0;
+	  అప్రమేయ:
+	    తిరిగి 0;
       };
 }
 
-static int systask_get(int type, vpiHandle ref)
+స్థిర పూర్ణాంకం systask_get(పూర్ణాంకం type, vpiHandle ref)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      నిర్మాణం __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      switch (type) {
+      ఎంపిక (type) {
 	    /* This is not the correct way to get this information, but
 	     * some of the code that implements the acc and tf routines
 	     * use this method so we will keep it in for now. */
-	  case vpiTimeUnit:
-	    return rfp->scope->time_units;
-	  case vpiTimePrecision:
-	    return rfp->scope->time_precision;
+	  స్థితి vpi_సమయం_Unit:
+	    తిరిగి rfp->scope->సమయం_units;
+	  స్థితి vpi_సమయం_Precision:
+	    తిరిగి rfp->scope->సమయం_precision;
 
-	  case vpiLineNo:
-	    return rfp->lineno;
+	  స్థితి vpi_పంక్తి_No:
+	    తిరిగి rfp->lineno;
 
-	  case vpiUserDefn:
-	    return rfp->defn->is_user_defn;
+	  స్థితి vpiUserDefn:
+	    తిరిగి rfp->defn->is_user_defn;
 
-	  default:
-	    return vpiUndefined;
+	  అప్రమేయ:
+	    తిరిగి vpiUndefined;
       }
 }
 
 // support getting vpiSize for a system function call
-static int sysfunc_get(int type, vpiHandle ref)
+స్థిర పూర్ణాంకం sysfunc_get(పూర్ణాంకం type, vpiHandle ref)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      నిర్మాణం __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      switch (type) {
-	  case vpiSize:
-	    assert(0); // This should be handled by derived classes
-	    return 0;
+      ఎంపిక (type) {
+	  స్థితి vpi_కొలత:
+	    ప్రతిజ్ఞా(0); // This should be handled by derived classes
+	    తిరిగి 0;
 
-	  case vpiLineNo:
-	    return rfp->lineno;
+	  స్థితి vpi_పంక్తి_No:
+	    తిరిగి rfp->lineno;
 
-	  case vpiUserDefn:
-	    return rfp->defn->is_user_defn;
+	  స్థితి vpiUserDefn:
+	    తిరిగి rfp->defn->is_user_defn;
 
-	  default:
-	    return vpiUndefined;
+	  అప్రమేయ:
+	    తిరిగి vpiUndefined;
       }
 }
 
@@ -112,445 +112,445 @@ static int sysfunc_get(int type, vpiHandle ref)
  * the get_str function only needs to support vpiName
  */
 
-static char *systask_get_str(int type, vpiHandle ref)
+స్థిర అక్షరం *systask_get_str(పూర్ణాంకం type, vpiHandle ref)
 {
-      const struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      స్థిరరాశి నిర్మాణం __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      switch (type) {
-          case vpiFile:
-            assert(rfp->file_idx < file_names.size());
-            return simple_set_rbuf_str(file_names[rfp->file_idx]);
+      ఎంపిక (type) {
+          స్థితి vpiFile:
+            ప్రతిజ్ఞా(rfp->file_idx < file_పేర్లు.size());
+            తిరిగి simple_సమితి_rbuf_str(file_పేర్లు[rfp->file_idx]);
 
-          case vpiName:
-            return simple_set_rbuf_str(rfp->defn->info.tfname);
+          స్థితి vpiName:
+            తిరిగి simple_సమితి_rbuf_str(rfp->defn->info.tfname);
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
 /*
  * the iter function only supports getting an iterator of the
  * arguments. This works equally well for tasks and functions.
  */
-static vpiHandle systask_iter(int, vpiHandle ref)
+స్థిర vpiHandle systask_iter(పూర్ణాంకం, vpiHandle ref)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      నిర్మాణం __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      if (rfp->nargs == 0)
-	    return 0;
+      ఒకవేళ (rfp->nargs == 0)
+	    తిరిగి 0;
 
-      return vpip_make_iterator(rfp->nargs, rfp->args, false);
+      తిరిగి vpip_make_iterator(rfp->nargs, rfp->వాదనలు, అబద్ధం);
 }
 
-struct systask_def : public __vpiSysTaskCall {
-      virtual int get_type_code(void) const   override { return vpiSysTaskCall; }
-      virtual int vpi_get(int code)           override { return systask_get(code, this); }
-      virtual char*vpi_get_str(int code)      override { return systask_get_str(code, this); }
-      virtual vpiHandle vpi_handle(int code)  override { return systask_handle(code, this); }
-      virtual vpiHandle vpi_iterate(int code) override { return systask_iter(code, this); }
+నిర్మాణం systask_def : బహిరంగ __vpiSysTaskCall {
+      మాయా పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి   override { తిరిగి vpiSysTaskCall; }
+      మాయా పూర్ణాంకం vpi_get(పూర్ణాంకం code)           override { తిరిగి systask_get(code, ఇది); }
+      మాయా అక్షరం*vpi_get_str(పూర్ణాంకం code)      override { తిరిగి systask_get_str(code, ఇది); }
+      మాయా vpiHandle vpi_handle(పూర్ణాంకం code)  override { తిరిగి systask_handle(code, ఇది); }
+      మాయా vpiHandle vpi_iterate(పూర్ణాంకం code) override { తిరిగి systask_iter(code, ఇది); }
 };
 
-struct sysfunc_def : public systask_def {
-      virtual int get_type_code(void) const override { return vpiSysFuncCall; }
-      virtual int vpi_get(int code) override { return sysfunc_get(code, this); }
+నిర్మాణం sysfunc_def : బహిరంగ systask_def {
+      మాయా పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpiSysFuncCall; }
+      మాయా పూర్ణాంకం vpi_get(పూర్ణాంకం code) override { తిరిగి sysfunc_get(code, ఇది); }
 };
 
-struct sysfunc_real : public sysfunc_def {
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      inline double return_value() const { return return_value_; }
+నిర్మాణం sysfunc_real : బహిరంగ sysfunc_def {
+      vpiHandle vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags) override;
+      అంతఃవరుస ద్విగుణ return_విలువ() స్థిరరాశి { తిరిగి return_విలువ_2; }
 
-    private:
-      double return_value_;
+    అంతరంగ:
+      ద్విగుణ return_విలువ_2;
 };
 
-vpiHandle sysfunc_real::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_real::vpi_put_విలువ(p_vpi_విలువ vp, పూర్ణాంకం)
 {
-      put_value = true;
+      put_విలువ = నిజం;
 
-      return_value_ = 0.0;
-      switch (vp->format) {
-	  case vpiRealVal:
-	    return_value_ = vp->value.real;
-	    break;
-	  default:
-	    fprintf(stderr, "Unsupported format %d.\n", (int)vp->format);
-	    assert(0);
+      return_విలువ_2 = 0.0;
+      ఎంపిక (vp->format) {
+	  స్థితి vpiRealVal:
+	    return_విలువ_2 = vp->value.real;
+	    ఆపు;
+	  అప్రమేయ:
+	    fprintf(stderr, "Unsupported format %d.\n", (పూర్ణాంకం)vp->format);
+	    ప్రతిజ్ఞా(0);
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
-struct sysfunc_str : public sysfunc_def {
-      int vpi_get(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      inline const std::string& return_value() const { return return_value_; };
+నిర్మాణం sysfunc_str : బహిరంగ sysfunc_def {
+      పూర్ణాంకం vpi_get(పూర్ణాంకం code) override;
+      vpiHandle vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags) override;
+      అంతఃవరుస స్థిరరాశి std::string& return_విలువ() స్థిరరాశి { తిరిగి return_విలువ_2; };
 
-    private:
-      std::string return_value_;
+    అంతరంగ:
+      std::string return_విలువ_2;
 };
 
-int sysfunc_str::vpi_get(int code)
+పూర్ణాంకం sysfunc_str::vpi_get(పూర్ణాంకం code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return return_value_.size();
+      ఎంపిక (code) {
+	  స్థితి vpi_కొలత:
+	    తిరిగి return_విలువ_2.size();
 
-	  case vpiLineNo:
-	    return lineno;
+	  స్థితి vpi_పంక్తి_No:
+	    తిరిగి lineno;
 
-	  case vpiUserDefn:
-	    return defn->is_user_defn;
+	  స్థితి vpiUserDefn:
+	    తిరిగి defn->is_user_defn;
 
-	  default:
-	    return vpiUndefined;
-      }
-}
-
-vpiHandle sysfunc_str::vpi_put_value(p_vpi_value vp, int)
-{
-      put_value = true;
-
-      switch (vp->format) {
-	  case vpiStringVal:
-	    return_value_ = std::string(vp->value.str);
-	    break;
-	  default:
-	    fprintf(stderr, "Unsupported format %d.\n", (int)vp->format);
-	    assert(0);
-      }
-
-      return 0;
-}
-
-class sysfunc_vec4 : public sysfunc_def {
-    public:
-      explicit inline sysfunc_vec4(unsigned wid): return_value_(wid, BIT4_X) { }
-      int vpi_get(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      inline const vvp_vector4_t& return_value() const { return return_value_; }
-
-    private:
-      vpiHandle put_value_scalar_(p_vpi_value vp);
-      vpiHandle put_value_int_(p_vpi_value vp);
-      vpiHandle put_value_string_(p_vpi_value vp);
-      vpiHandle put_value_vector_(p_vpi_value vp);
-      vpiHandle put_value_time_(p_vpi_value vp);
-
-      vvp_vector4_t return_value_;
-};
-
-int sysfunc_vec4::vpi_get(int code)
-{
-      switch (code) {
-	  case vpiSize:
-	    return return_value_.size();
-
-	  case vpiLineNo:
-	    return lineno;
-
-	  case vpiUserDefn:
-	    return defn->is_user_defn;
-
-	  default:
-	    return vpiUndefined;
+	  అప్రమేయ:
+	    తిరిగి vpiUndefined;
       }
 }
 
-vpiHandle sysfunc_vec4::put_value_scalar_(const p_vpi_value vp)
+vpiHandle sysfunc_str::vpi_put_విలువ(p_vpi_విలువ vp, పూర్ణాంకం)
 {
-      switch (vp->value.scalar) {
-	  case vpi0:
-	    return_value_.set_bit(0, BIT4_0);
-	    break;
-	  case vpi1:
-	    return_value_.set_bit(0, BIT4_1);
-	    break;
-	  case vpiX:
-	    return_value_.set_bit(0, BIT4_X);
-	    break;
-	  case vpiZ:
-	    return_value_.set_bit(0, BIT4_Z);
-	    break;
-	  default:
-	    fprintf(stderr, "Unsupported value %d.\n", (int)vp->value.scalar);
-	    assert(0);
+      put_విలువ = నిజం;
+
+      ఎంపిక (vp->format) {
+	  స్థితి vpiStringVal:
+	    return_విలువ_2 = std::string(vp->value.str);
+	    ఆపు;
+	  అప్రమేయ:
+	    fprintf(stderr, "Unsupported format %d.\n", (పూర్ణాంకం)vp->format);
+	    ప్రతిజ్ఞా(0);
       }
-      return 0;
+
+      తిరిగి 0;
 }
 
-vpiHandle sysfunc_vec4::put_value_int_(p_vpi_value vp)
+తరగతి sysfunc_vec4 : బహిరంగ sysfunc_def {
+    బహిరంగ:
+      స్పష్టమైన అంతఃవరుస sysfunc_vec4(గుర్తులేని wid): return_విలువ_2(wid, BIT4_X) { }
+      పూర్ణాంకం vpi_get(పూర్ణాంకం code) override;
+      vpiHandle vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags) override;
+      అంతఃవరుస స్థిరరాశి vvp_vector4_t& return_విలువ() స్థిరరాశి { తిరిగి return_విలువ_2; }
+
+    అంతరంగ:
+      vpiHandle put_విలువ_scalar(p_vpi_విలువ vp);
+      vpiHandle put_విలువ_int(p_vpi_విలువ vp);
+      vpiHandle put_విలువ_string(p_vpi_విలువ vp);
+      vpiHandle put_విలువ_సదిశ(p_vpi_విలువ vp);
+      vpiHandle put_విలువ_సమయం(p_vpi_విలువ vp);
+
+      vvp_vector4_t return_విలువ_2;
+};
+
+పూర్ణాంకం sysfunc_vec4::vpi_get(పూర్ణాంకం code)
 {
-      long tmp = vp->value.integer;
-      unsigned width = return_value_.size();
-      for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
-	    return_value_.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
+      ఎంపిక (code) {
+	  స్థితి vpi_కొలత:
+	    తిరిగి return_విలువ_2.size();
+
+	  స్థితి vpi_పంక్తి_No:
+	    తిరిగి lineno;
+
+	  స్థితి vpiUserDefn:
+	    తిరిగి defn->is_user_defn;
+
+	  అప్రమేయ:
+	    తిరిగి vpiUndefined;
+      }
+}
+
+vpiHandle sysfunc_vec4::put_విలువ_scalar(స్థిరరాశి p_vpi_విలువ vp)
+{
+      ఎంపిక (vp->value.scalar) {
+	  స్థితి vpi0:
+	    return_విలువ_2.సమితి_బిట్టు(0, BIT4_0);
+	    ఆపు;
+	  స్థితి vpi1:
+	    return_విలువ_2.సమితి_బిట్టు(0, BIT4_1);
+	    ఆపు;
+	  స్థితి vpiX:
+	    return_విలువ_2.సమితి_బిట్టు(0, BIT4_X);
+	    ఆపు;
+	  స్థితి vpiZ:
+	    return_విలువ_2.సమితి_బిట్టు(0, BIT4_Z);
+	    ఆపు;
+	  అప్రమేయ:
+	    fprintf(stderr, "Unsupported value %d.\n", (పూర్ణాంకం)vp->value.scalar);
+	    ప్రతిజ్ఞా(0);
+      }
+      తిరిగి 0;
+}
+
+vpiHandle sysfunc_vec4::put_విలువ_int(p_vpi_విలువ vp)
+{
+      దీర్ఘ tmp = vp->value.integer;
+      గుర్తులేని width = return_విలువ_2.size();
+      కొరకు (గుర్తులేని idx = 0 ;  idx < width ;  idx += 1) {
+	    return_విలువ_2.సమితి_బిట్టు(idx, (tmp&1)? BIT4_1 : BIT4_0);
 	    tmp >>= 1;
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
-vpiHandle sysfunc_vec4::put_value_string_(p_vpi_value vp)
+vpiHandle sysfunc_vec4::put_విలువ_string(p_vpi_విలువ vp)
 {
-      size_t slen = strlen(vp->value.str);
-      unsigned wid = return_value_.size();
+      size_t slen = అక్షరశ్రేణి_పొడవు(vp->value.str);
+      గుర్తులేని wid = return_విలువ_2.size();
 
-      for (unsigned idx = 0 ; idx < wid ; idx += 1) {
-	    unsigned cidx = idx / 8;
+      కొరకు (గుర్తులేని idx = 0 ; idx < wid ; idx += 1) {
+	    గుర్తులేని cidx = idx / 8;
 	      // If wider then the string, then pad with zero.
-	    if (cidx >= slen) {
-		  return_value_.set_bit(idx, BIT4_0);
-		  continue;
+	    ఒకవేళ (cidx >= slen) {
+		  return_విలువ_2.సమితి_బిట్టు(idx, BIT4_0);
+		  కొనసాగు;
 	    }
 
 	      // Put the end of the string in the LSB of the vector
-	    char use_char = vp->value.str[slen - 1 - cidx];
+	    అక్షరం use_char = vp->value.str[slen - 1 - cidx];
 
-	    if ((use_char >> (idx % 8)) & 1)
-		  return_value_.set_bit(idx, BIT4_1);
-	    else
-		  return_value_.set_bit(idx, BIT4_0);
+	    ఒకవేళ ((use_char >> (idx % 8)) & 1)
+		  return_విలువ_2.సమితి_బిట్టు(idx, BIT4_1);
+	    లేకపోతే
+		  return_విలువ_2.సమితి_బిట్టు(idx, BIT4_0);
       }
-      return 0;
+      తిరిగి 0;
 }
 
-vpiHandle sysfunc_vec4::put_value_vector_(p_vpi_value vp)
+vpiHandle sysfunc_vec4::put_విలువ_సదిశ(p_vpi_విలువ vp)
 {
-      unsigned width = return_value_.size();
-      for (unsigned idx = 0 ; idx < width ; idx += 1) {
-	    unsigned word = idx / 32;
-	    unsigned bidx = idx % 32;
+      గుర్తులేని width = return_విలువ_2.size();
+      కొరకు (గుర్తులేని idx = 0 ; idx < width ; idx += 1) {
+	    గుర్తులేని మాట = idx / 32;
+	    గుర్తులేని bidx = idx % 32;
 
-	    unsigned long aval = vp->value.vector[word].aval >> bidx;
-	    unsigned long bval = vp->value.vector[word].bval >> bidx;
+	    గుర్తులేని దీర్ఘ aval = vp->value.vector[మాట].aval >> bidx;
+	    గుర్తులేని దీర్ఘ bval = vp->value.vector[మాట].bval >> bidx;
 
-	    int bit = (aval&1) | ((bval<<1)&2);
+	    పూర్ణాంకం బిట్టు = (aval&1) | ((bval<<1)&2);
 	    vvp_bit4_t bit4;
 
-	    switch (bit) {
-		case 0:
+	    ఎంపిక (బిట్టు) {
+		స్థితి 0:
 		  bit4 = BIT4_0;
-		  break;
-		case 1:
+		  ఆపు;
+		స్థితి 1:
 		  bit4 = BIT4_1;
-		  break;
-		case 2:
+		  ఆపు;
+		స్థితి 2:
 		  bit4 = BIT4_Z;
-		  break;
-		case 3:
+		  ఆపు;
+		స్థితి 3:
 		  bit4 = BIT4_X;
-		  break;
-		default:
-		  assert(0);
+		  ఆపు;
+		అప్రమేయ:
+		  ప్రతిజ్ఞా(0);
 		  bit4 = BIT4_X;
-		  break;
+		  ఆపు;
 	    }
-	    return_value_.set_bit(idx, bit4);
+	    return_విలువ_2.సమితి_బిట్టు(idx, bit4);
       }
-      return 0;
+      తిరిగి 0;
 }
 
-vpiHandle sysfunc_vec4::put_value_time_(p_vpi_value vp)
+vpiHandle sysfunc_vec4::put_విలువ_సమయం(p_vpi_విలువ vp)
 {
-      unsigned width = return_value_.size();
-      long tmp = 0;
-      for (unsigned idx = 0 ; idx < width ; idx += 1) {
-	    if (idx == 0)
-		  tmp = vp->value.time->low;
-	    else if (idx == 32)
-		  tmp = vp->value.time->high;
-	    else if (idx == 64)
+      గుర్తులేని width = return_విలువ_2.size();
+      దీర్ఘ tmp = 0;
+      కొరకు (గుర్తులేని idx = 0 ; idx < width ; idx += 1) {
+	    ఒకవేళ (idx == 0)
+		  tmp = vp->value.time->దిగువ;
+	    లేకపోతే ఒకవేళ (idx == 32)
+		  tmp = vp->value.time->ఎగువ;
+	    లేకపోతే ఒకవేళ (idx == 64)
 		  tmp = 0;
 
-	    return_value_.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
+	    return_విలువ_2.సమితి_బిట్టు(idx, (tmp&1)? BIT4_1 : BIT4_0);
 	    tmp >>= 1;
       }
-      return 0;
+      తిరిగి 0;
 }
 
-vpiHandle sysfunc_vec4::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_vec4::vpi_put_విలువ(p_vpi_విలువ vp, పూర్ణాంకం)
 {
-      put_value = true;
+      put_విలువ = నిజం;
 
-      switch (vp->format) {
-	  case vpiScalarVal:
-	    return put_value_scalar_(vp);
-	  case vpiIntVal:
-	    return put_value_int_(vp);
-	  case vpiStringVal:
-	    return put_value_string_(vp);
-	  case vpiVectorVal:
-	    return put_value_vector_(vp);
-	  case vpiTimeVal:
-	    return put_value_time_(vp);
-	  default:
-	    fprintf(stderr, "Unsupported format %d setting sysfunc vec4 value.\n", (int)vp->format);
-	    assert(0);
+      ఎంపిక (vp->format) {
+	  స్థితి vpiScalarVal:
+	    తిరిగి put_విలువ_scalar(vp);
+	  స్థితి vpiIntVal:
+	    తిరిగి put_విలువ_int(vp);
+	  స్థితి vpiStringVal:
+	    తిరిగి put_విలువ_string(vp);
+	  స్థితి vpi_సదిశ_Val:
+	    తిరిగి put_విలువ_సదిశ(vp);
+	  స్థితి vpi_సమయం_Val:
+	    తిరిగి put_విలువ_సమయం(vp);
+	  అప్రమేయ:
+	    fprintf(stderr, "Unsupported format %d setting sysfunc vec4 value.\n", (పూర్ణాంకం)vp->format);
+	    ప్రతిజ్ఞా(0);
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
-struct sysfunc_4net : public sysfunc_def {
-      explicit inline sysfunc_4net(unsigned wid) : vwid_(wid) { }
-      int vpi_get(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+నిర్మాణం sysfunc_4net : బహిరంగ sysfunc_def {
+      స్పష్టమైన అంతఃవరుస sysfunc_4net(గుర్తులేని wid) : vwid_(wid) { }
+      పూర్ణాంకం vpi_get(పూర్ణాంకం code) override;
+      vpiHandle vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags) override;
 
-    private:
-      unsigned vwid_;
+    అంతరంగ:
+      గుర్తులేని vwid_;
 };
 
 // support getting vpiSize for a system function call
-int sysfunc_4net::vpi_get(int code)
+పూర్ణాంకం sysfunc_4net::vpi_get(పూర్ణాంకం code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return vwid_;
+      ఎంపిక (code) {
+	  స్థితి vpi_కొలత:
+	    తిరిగి vwid_;
 
-	  case vpiLineNo:
-	    return lineno;
+	  స్థితి vpi_పంక్తి_No:
+	    తిరిగి lineno;
 
-	  case vpiUserDefn:
-	    return defn->is_user_defn;
+	  స్థితి vpiUserDefn:
+	    తిరిగి defn->is_user_defn;
 
-	  default:
-	    return vpiUndefined;
+	  అప్రమేయ:
+	    తిరిగి vpiUndefined;
       }
 }
 
-vpiHandle sysfunc_4net::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_4net::vpi_put_విలువ(p_vpi_విలువ vp, పూర్ణాంకం)
 {
-      put_value = true;
+      put_విలువ = నిజం;
 
       vvp_vector4_t val (vwid_);
 
-      switch (vp->format) {
+      ఎంపిక (vp->format) {
 
-          case vpiScalarVal: {
-	        switch(vp->value.scalar) {
-		      case vpi0:
-			val.set_bit(0, BIT4_0);
-                        break;
-		      case vpi1:
-                        val.set_bit(0, BIT4_1);
-                        break;
-		      case vpiX:
-                        val.set_bit(0, BIT4_X);
-                        break;
-		      case vpiZ:
-                        val.set_bit(0, BIT4_Z);
-                        break;
-		      default:
+          స్థితి vpiScalarVal: {
+	        ఎంపిక(vp->value.scalar) {
+		      స్థితి vpi0:
+			val.సమితి_బిట్టు(0, BIT4_0);
+                        ఆపు;
+		      స్థితి vpi1:
+                        val.సమితి_బిట్టు(0, BIT4_1);
+                        ఆపు;
+		      స్థితి vpiX:
+                        val.సమితి_బిట్టు(0, BIT4_X);
+                        ఆపు;
+		      స్థితి vpiZ:
+                        val.సమితి_బిట్టు(0, BIT4_Z);
+                        ఆపు;
+		      అప్రమేయ:
                         fprintf(stderr, "Unsupported bit value %d.\n",
-                                (int)vp->value.scalar);
-                        assert(0);
+                                (పూర్ణాంకం)vp->value.scalar);
+                        ప్రతిజ్ఞా(0);
                 }
-		break;
+		ఆపు;
           }
 
-	  case vpiIntVal: {
-		long tmp = vp->value.integer;
-		for (unsigned idx = 0 ;  idx < vwid_ ;  idx += 1) {
-		      val.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
+	  స్థితి vpiIntVal: {
+		దీర్ఘ tmp = vp->value.integer;
+		కొరకు (గుర్తులేని idx = 0 ;  idx < vwid_ ;  idx += 1) {
+		      val.సమితి_బిట్టు(idx, (tmp&1)? BIT4_1 : BIT4_0);
 		      tmp >>= 1;
 		}
-		break;
+		ఆపు;
 	  }
 
-          case vpiTimeVal: {
-                unsigned long tmp = vp->value.time->low;
-                for (unsigned idx = 0 ;  idx < vwid_ ;  idx += 1) {
-                      val.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
+          స్థితి vpi_సమయం_Val: {
+                గుర్తులేని దీర్ఘ tmp = vp->value.time->దిగువ;
+                కొరకు (గుర్తులేని idx = 0 ;  idx < vwid_ ;  idx += 1) {
+                      val.సమితి_బిట్టు(idx, (tmp&1)? BIT4_1 : BIT4_0);
 
-                      if (idx == 31)
-                            tmp = vp->value.time->high;
-                      else
+                      ఒకవేళ (idx == 31)
+                            tmp = vp->value.time->ఎగువ;
+                      లేకపోతే
                             tmp >>= 1;
                 }
-                break;
+                ఆపు;
           }
 
-	  case vpiVectorVal:
+	  స్థితి vpi_సదిశ_Val:
 
-	    for (unsigned wdx = 0 ;  wdx < vwid_ ;  wdx += 32) {
-		  unsigned word = wdx / 32;
-		  unsigned long aval = vp->value.vector[word].aval;
-		  unsigned long bval = vp->value.vector[word].bval;
+	    కొరకు (గుర్తులేని wdx = 0 ;  wdx < vwid_ ;  wdx += 32) {
+		  గుర్తులేని మాట = wdx / 32;
+		  గుర్తులేని దీర్ఘ aval = vp->value.vector[మాట].aval;
+		  గుర్తులేని దీర్ఘ bval = vp->value.vector[మాట].bval;
 
-		  for (unsigned idx = 0 ;  (wdx+idx) < vwid_ && idx < 32;
+		  కొరకు (గుర్తులేని idx = 0 ;  (wdx+idx) < vwid_ && idx < 32;
 		       idx += 1) {
-			int bit = (aval&1) | ((bval<<1)&2);
+			పూర్ణాంకం బిట్టు = (aval&1) | ((bval<<1)&2);
 			vvp_bit4_t bit4;
 
-			switch (bit) {
-			    case 0:
+			ఎంపిక (బిట్టు) {
+			    స్థితి 0:
 			      bit4 = BIT4_0;
-			      break;
-			    case 1:
+			      ఆపు;
+			    స్థితి 1:
 			      bit4 = BIT4_1;
-			      break;
-			    case 2:
+			      ఆపు;
+			    స్థితి 2:
 			      bit4 = BIT4_Z;
-			      break;
-			    case 3:
+			      ఆపు;
+			    స్థితి 3:
 			      bit4 = BIT4_X;
-			      break;
-			    default:
+			      ఆపు;
+			    అప్రమేయ:
 			      bit4 = BIT4_X;
 			      fprintf(stderr, "Unsupported bit value %d.\n",
-			              bit);
-			      assert(0);
+			              బిట్టు);
+			      ప్రతిజ్ఞా(0);
 			}
-			val.set_bit(wdx+idx, bit4);
+			val.సమితి_బిట్టు(wdx+idx, bit4);
 
 			aval >>= 1;
 			bval >>= 1;
 		  }
 	    }
-	    break;
+	    ఆపు;
 
-	  default:
-	    fprintf(stderr, "XXXX format=%d, vwid_=%u\n", (int)vp->format, vwid_);
-	    assert(0);
+	  అప్రమేయ:
+	    fprintf(stderr, "XXXX format=%d, vwid_=%u\n", (పూర్ణాంకం)vp->format, vwid_);
+	    ప్రతిజ్ఞా(0);
       }
 
       fnet->send_vec4(val, vthread_get_wt_context());
-      return 0;
+      తిరిగి 0;
 }
 
-struct sysfunc_rnet : public sysfunc_def {
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+నిర్మాణం sysfunc_rnet : బహిరంగ sysfunc_def {
+      vpiHandle vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags) override;
 };
 
-vpiHandle sysfunc_rnet::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_rnet::vpi_put_విలువ(p_vpi_విలువ vp, పూర్ణాంకం)
 {
-      put_value = true;
+      put_విలువ = నిజం;
 
-      double value;
-      switch (vp->format) {
+      ద్విగుణ value;
+      ఎంపిక (vp->format) {
 
-	  case vpiRealVal:
+	  స్థితి vpiRealVal:
 	    value = vp->value.real;
-	    break;
+	    ఆపు;
 
-	  default:
+	  అప్రమేయ:
 	    value = 0.0;
-	    fprintf(stderr, "Unsupported format %d.\n", (int)vp->format);
-	    assert(0);
+	    fprintf(stderr, "Unsupported format %d.\n", (పూర్ణాంకం)vp->format);
+	    ప్రతిజ్ఞా(0);
       }
 
       fnet->send_real(value, vthread_get_wt_context());
 
-      return 0;
+      తిరిగి 0;
 }
 
-struct sysfunc_no : public sysfunc_def {
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+నిర్మాణం sysfunc_no : బహిరంగ sysfunc_def {
+      vpiHandle vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags) override;
 };
 
-vpiHandle sysfunc_no::vpi_put_value(p_vpi_value, int)
+vpiHandle sysfunc_no::vpi_put_విలువ(p_vpi_విలువ, పూర్ణాంకం)
 {
-      return 0;
+      తిరిగి 0;
 }
 
 
@@ -563,215 +563,215 @@ vpiHandle sysfunc_no::vpi_put_value(p_vpi_value, int)
  * by name using the vpi_find_systf function, and they can be
  * collected into an iterator using the vpip_make_systf_iterator function.
  */
-static struct __vpiUserSystf**def_table = 0;
-static unsigned def_count = 0;
+స్థిర నిర్మాణం __vpiUserSystf**def_పట్టిక = 0;
+స్థిర గుర్తులేని def_లెక్క = 0;
 
-static struct __vpiUserSystf* allocate_def(void)
+స్థిర నిర్మాణం __vpiUserSystf* allocate_def(శూన్య)
 {
-      if (def_table == 0) {
-	    def_table = static_cast<struct __vpiUserSystf**>
-	                (malloc(sizeof(struct __vpiUserSystf*)));
+      ఒకవేళ (def_పట్టిక == 0) {
+	    def_పట్టిక = static_cast<నిర్మాణం __vpiUserSystf**>
+	                (జ్ఞాపకం_ఇవ్వు(పరిమాణం(నిర్మాణం __vpiUserSystf*)));
 
-	    def_table[0] = new __vpiUserSystf;
+	    def_పట్టిక[0] = కొత్త __vpiUserSystf;
 
-	    def_count = 1;
-	    return def_table[0];
+	    def_లెక్క = 1;
+	    తిరిగి def_పట్టిక[0];
       }
 
-      def_table = static_cast<struct __vpiUserSystf**>
-                  (realloc(def_table,
-                   (def_count+1)*sizeof(struct __vpiUserSystf*)));
+      def_పట్టిక = static_cast<నిర్మాణం __vpiUserSystf**>
+                  (realloc(def_పట్టిక,
+                   (def_లెక్క+1)*పరిమాణం(నిర్మాణం __vpiUserSystf*)));
 
-      def_table[def_count] = new __vpiUserSystf;
+      def_పట్టిక[def_లెక్క] = కొత్త __vpiUserSystf;
 
-      return def_table[def_count++];
+      తిరిగి def_పట్టిక[def_లెక్క++];
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void def_table_delete(void)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య def_పట్టిక_delete(శూన్య)
 {
-      for (unsigned idx = 0; idx < def_count; idx += 1) {
-	    free(const_cast<char *>(def_table[idx]->info.tfname));
-	    delete def_table[idx];
+      కొరకు (గుర్తులేని idx = 0; idx < def_లెక్క; idx += 1) {
+	    విడుదల(const_cast<అక్షరం *>(def_పట్టిక[idx]->info.tfname));
+	    తొలగించు def_పట్టిక[idx];
       }
-      free(def_table);
-      def_table = 0;
-      def_count = 0;
+      విడుదల(def_పట్టిక);
+      def_పట్టిక = 0;
+      def_లెక్క = 0;
 }
-#endif
+#అయితే_ముగింపు
 
-class __vpiSystfIterator : public __vpiHandle {
-    public:
-      explicit __vpiSystfIterator(unsigned idx);
-      int get_type_code(void) const override;
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+తరగతి __vpiSystfIterator : బహిరంగ __vpiHandle {
+    బహిరంగ:
+      స్పష్టమైన __vpiSystfIterator(గుర్తులేని idx);
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      vpiHandle vpi_సూచీ(పూర్ణాంకం idx) override;
+      free_object_fun_t free_object_fun(శూన్య) override;
 
-      unsigned next;
+      గుర్తులేని తదుపరి_2;
 };
 
-static vpiHandle systf_iterator_scan(vpiHandle ref, int)
+స్థిర vpiHandle systf_iterator_పరిశీలన(vpiHandle ref, పూర్ణాంకం)
 {
       __vpiSystfIterator*obj = dynamic_cast<__vpiSystfIterator*>(ref);
 
-      if (obj->next >= def_count) {
+      ఒకవేళ (obj->తదుపరి_2 >= def_లెక్క) {
 	    vpi_free_object(ref);
-	    return 0;
+	    తిరిగి 0;
       }
 
-      unsigned use_index = obj->next;
-      while (!def_table[use_index]->is_user_defn) {
-	    obj->next += 1;
-	    use_index = obj->next;
-	    if (obj->next >= def_count) {
+      గుర్తులేని use_సూచీ = obj->తదుపరి_2;
+      అయితే (!def_పట్టిక[use_సూచీ]->is_user_defn) {
+	    obj->తదుపరి_2 += 1;
+	    use_సూచీ = obj->తదుపరి_2;
+	    ఒకవేళ (obj->తదుపరి_2 >= def_లెక్క) {
 		  vpi_free_object(ref);
-		  return 0;
+		  తిరిగి 0;
 	    }
       }
-      obj->next += 1;
-      return def_table[use_index];
+      obj->తదుపరి_2 += 1;
+      తిరిగి def_పట్టిక[use_సూచీ];
 }
 
-static int systf_iterator_free_object(vpiHandle ref)
+స్థిర పూర్ణాంకం systf_iterator_free_object(vpiHandle ref)
 {
       __vpiSystfIterator*obj = dynamic_cast<__vpiSystfIterator*>(ref);
-      delete obj;
-      return 1;
+      తొలగించు obj;
+      తిరిగి 1;
 }
 
-inline __vpiSystfIterator::__vpiSystfIterator(unsigned idx)
-{ next = idx; }
+అంతఃవరుస __vpiSystfIterator::__vpiSystfIterator(గుర్తులేని idx)
+{ తదుపరి_2 = idx; }
 
-int __vpiSystfIterator::get_type_code(void) const
-{ return vpiIterator; }
+పూర్ణాంకం __vpiSystfIterator::get_type_సంకేతం(శూన్య) స్థిరరాశి
+{ తిరిగి vpiIterator; }
 
-vpiHandle __vpiSystfIterator::vpi_index(int idx)
-{ return systf_iterator_scan(this, idx); }
+vpiHandle __vpiSystfIterator::vpi_సూచీ(పూర్ణాంకం idx)
+{ తిరిగి systf_iterator_పరిశీలన(ఇది, idx); }
 
-__vpiHandle::free_object_fun_t __vpiSystfIterator::free_object_fun(void)
-{ return &systf_iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiSystfIterator::free_object_fun(శూన్య)
+{ తిరిగి &systf_iterator_free_object; }
 
-vpiHandle vpip_make_systf_iterator(void)
+vpiHandle vpip_make_systf_iterator(శూన్య)
 {
 	/* Check to see if there are any user defined functions. */
-      bool have_user_defn = false;
-      unsigned idx;
-      for (idx = 0; idx < def_count; idx += 1) {
-	    if (def_table[idx]->is_user_defn) {
-		  have_user_defn = true;
-		  break;
+      తార్కిక have_user_defn = అబద్ధం;
+      గుర్తులేని idx;
+      కొరకు (idx = 0; idx < def_లెక్క; idx += 1) {
+	    ఒకవేళ (def_పట్టిక[idx]->is_user_defn) {
+		  have_user_defn = నిజం;
+		  ఆపు;
 	    }
       }
-      if (!have_user_defn) return 0;
+      ఒకవేళ (!have_user_defn) తిరిగి 0;
 
-      __vpiSystfIterator*res = new __vpiSystfIterator(idx);
-      res->next = idx;
-      return res;
+      __vpiSystfIterator*res = కొత్త __vpiSystfIterator(idx);
+      res->తదుపరి_2 = idx;
+      తిరిగి res;
 }
 
-struct __vpiUserSystf* vpip_find_systf(const char*name)
+నిర్మాణం __vpiUserSystf* vpip_కనుగొను_systf(స్థిరరాశి అక్షరం*name)
 {
-      for (unsigned idx = 0 ;  idx < def_count ;  idx += 1)
-	    if (strcmp(def_table[idx]->info.tfname, name) == 0)
-		  return def_table[idx];
+      కొరకు (గుర్తులేని idx = 0 ;  idx < def_లెక్క ;  idx += 1)
+	    ఒకవేళ (strcmp(def_పట్టిక[idx]->info.tfname, name) == 0)
+		  తిరిగి def_పట్టిక[idx];
 
-      return 0;
+      తిరిగి 0;
 }
 
-void vpip_make_systf_system_defined(vpiHandle ref)
+శూన్య vpip_make_systf_system_defined(vpiHandle ref)
 {
-      assert(ref);
-      struct __vpiUserSystf*obj = dynamic_cast<__vpiUserSystf*>(ref);
-      assert(obj);
-      obj->is_user_defn = false;
+      ప్రతిజ్ఞా(ref);
+      నిర్మాణం __vpiUserSystf*obj = dynamic_cast<__vpiUserSystf*>(ref);
+      ప్రతిజ్ఞా(obj);
+      obj->is_user_defn = అబద్ధం;
 }
 
 /*
  * To get better error message we need to cache the vpi_call fail
  * information so that we can print the file name.
  */
-enum vpi_call_error_type {VPI_CALL_NO_DEF, VPI_CALL_TASK_AS_FUNC,
+గణన vpi_call_error_type {VPI_CALL_NO_DEF, VPI_CALL_TASK_AS_FUNC,
                           VPI_CALL_FUNC_AS_TASK, VPI_CALL_FUNC_AS_TASK_WARN};
-typedef struct vpi_call_error {
+రకనిర్వచనం నిర్మాణం vpi_call_error {
       vpi_call_error_type type;
-      char *name;
-      long file_idx;
-      long lineno;
+      అక్షరం *name;
+      దీర్ఘ file_idx;
+      దీర్ఘ lineno;
 } vpi_call_error_s, *vpi_call_error_p;
 
-static vpi_call_error_p vpi_call_error_lst = NULL;
-static unsigned vpi_call_error_num = 0;
+స్థిర vpi_call_error_p vpi_call_error_lst = ఖాళీ;
+స్థిర గుర్తులేని vpi_call_error_అంకె = 0;
 
-static void add_vpi_call_error(vpi_call_error_type type, const char *name,
-                               long file_idx, long lineno)
+స్థిర శూన్య కూడు_vpi_call_error(vpi_call_error_type type, స్థిరరాశి అక్షరం *name,
+                               దీర్ఘ file_idx, దీర్ఘ lineno)
 {
       vpi_call_error_lst = static_cast<vpi_call_error_p>
                            (realloc(vpi_call_error_lst,
-                                    (vpi_call_error_num + 1) *
-                                    sizeof(vpi_call_error_s)));
-      vpi_call_error_lst[vpi_call_error_num].type = type;
-      vpi_call_error_lst[vpi_call_error_num].name = strdup(name);
-      vpi_call_error_lst[vpi_call_error_num].file_idx = file_idx;
-      vpi_call_error_lst[vpi_call_error_num].lineno = lineno;
-      vpi_call_error_num += 1;
+                                    (vpi_call_error_అంకె + 1) *
+                                    పరిమాణం(vpi_call_error_s)));
+      vpi_call_error_lst[vpi_call_error_అంకె].type = type;
+      vpi_call_error_lst[vpi_call_error_అంకె].name = strdup(name);
+      vpi_call_error_lst[vpi_call_error_అంకె].file_idx = file_idx;
+      vpi_call_error_lst[vpi_call_error_అంకె].lineno = lineno;
+      vpi_call_error_అంకె += 1;
 }
 
-void print_vpi_call_errors()
+శూన్య print_vpi_call_errors()
 {
-      for (unsigned idx = 0; idx < vpi_call_error_num; idx += 1) {
-	    switch (vpi_call_error_lst[idx].type) {
-		case VPI_CALL_NO_DEF:
+      కొరకు (గుర్తులేని idx = 0; idx < vpi_call_error_అంకె; idx += 1) {
+	    ఎంపిక (vpi_call_error_lst[idx].type) {
+		స్థితి VPI_CALL_NO_DEF:
 		  fprintf(stderr, "%s:%d: Error: System task/function %s() is "
 		                  "not defined by any module.\n",
-		                  file_names[vpi_call_error_lst[idx].file_idx],
-		                  (int)vpi_call_error_lst[idx].lineno,
+		                  file_పేర్లు[vpi_call_error_lst[idx].file_idx],
+		                  (పూర్ణాంకం)vpi_call_error_lst[idx].lineno,
 		                  vpi_call_error_lst[idx].name);
-		  break;
-		case VPI_CALL_TASK_AS_FUNC:
+		  ఆపు;
+		స్థితి VPI_CALL_TASK_AS_FUNC:
 		  fprintf(stderr, "%s:%d: Error: %s() is a system task, it "
 			          "cannot be called as a function.\n",
-		                  file_names[vpi_call_error_lst[idx].file_idx],
-		                  (int)vpi_call_error_lst[idx].lineno,
+		                  file_పేర్లు[vpi_call_error_lst[idx].file_idx],
+		                  (పూర్ణాంకం)vpi_call_error_lst[idx].lineno,
 		                  vpi_call_error_lst[idx].name);
-		  break;
-		case VPI_CALL_FUNC_AS_TASK:
+		  ఆపు;
+		స్థితి VPI_CALL_FUNC_AS_TASK:
 		  fprintf(stderr, "%s:%d: Error: %s() is a system function, it "
 			          "cannot be called as a task.\n",
-		                  file_names[vpi_call_error_lst[idx].file_idx],
-		                  (int)vpi_call_error_lst[idx].lineno,
+		                  file_పేర్లు[vpi_call_error_lst[idx].file_idx],
+		                  (పూర్ణాంకం)vpi_call_error_lst[idx].lineno,
 		                  vpi_call_error_lst[idx].name);
-		  break;
-		case VPI_CALL_FUNC_AS_TASK_WARN:
+		  ఆపు;
+		స్థితి VPI_CALL_FUNC_AS_TASK_WARN:
                  fprintf(stderr, "%s:%d: Warning: Calling system function "
                                  "%s() as a task.\n",
-		                  file_names[vpi_call_error_lst[idx].file_idx],
-		                  (int)vpi_call_error_lst[idx].lineno,
+		                  file_పేర్లు[vpi_call_error_lst[idx].file_idx],
+		                  (పూర్ణాంకం)vpi_call_error_lst[idx].lineno,
 		                  vpi_call_error_lst[idx].name);
                  fprintf(stderr, "%s:%d:          The functions return "
                                  "value will be ignored.\n",
-                                 file_names[vpi_call_error_lst[idx].file_idx],
-                                 (int)vpi_call_error_lst[idx].lineno);
-		  break;
+                                 file_పేర్లు[vpi_call_error_lst[idx].file_idx],
+                                 (పూర్ణాంకం)vpi_call_error_lst[idx].lineno);
+		  ఆపు;
 	    }
-	    free(vpi_call_error_lst[idx].name);
+	    విడుదల(vpi_call_error_lst[idx].name);
       }
-      free(vpi_call_error_lst);
+      విడుదల(vpi_call_error_lst);
       fflush(stderr);
 }
 
-#ifdef CHECK_WITH_VALGRIND
-static void cleanup_vpi_call_args(unsigned argc, vpiHandle*argv)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+స్థిర శూన్య cleanup_vpi_call_వాదనలు(గుర్తులేని argc, vpiHandle*argv)
 {
-      if (argc) {
+      ఒకవేళ (argc) {
 	      /* Since this is just being used to cleanup the arguments a
 	       * system task definition can be used. */
-	    struct __vpiSysTaskCall*obj = new systask_def;
+	    నిర్మాణం __vpiSysTaskCall*obj = కొత్త systask_def;
 	    obj->nargs = argc;
-	    obj->args  = argv;
+	    obj->వాదనలు  = argv;
 	    vpi_call_delete(obj);
       }
 }
-#endif
+#అయితే_ముగింపు
 
 /*
  * A vpi_call is actually built up into a vpiSysTaskCall VPI object
@@ -781,158 +781,158 @@ static void cleanup_vpi_call_args(unsigned argc, vpiHandle*argv)
  * describes the call, and return it. The %vpi_call instruction will
  * store this handle for when it is executed.
  */
-vpiHandle vpip_build_vpi_call(const char*name, int val_code, unsigned return_width,
+vpiHandle vpip_build_vpi_call(స్థిరరాశి అక్షరం*name, పూర్ణాంకం val_సంకేతం, గుర్తులేని return_వెడల్పు,
 			      vvp_net_t*fnet,
-			      bool func_as_task_err, bool func_as_task_warn,
-			      unsigned argc, vpiHandle*argv,
-			      unsigned vec4_stack, unsigned real_stack, unsigned string_stack,
-			      long file_idx, long lineno)
+			      తార్కిక func_as_task_err, తార్కిక func_as_task_warn,
+			      గుర్తులేని argc, vpiHandle*argv,
+			      గుర్తులేని vec4_దొంతర, గుర్తులేని real_దొంతర, గుర్తులేని string_దొంతర,
+			      దీర్ఘ file_idx, దీర్ఘ lineno)
 {
-      assert(!(func_as_task_err && func_as_task_warn));
+      ప్రతిజ్ఞా(!(func_as_task_err && func_as_task_warn));
 
-      struct __vpiUserSystf*defn = vpip_find_systf(name);
-      if (defn == 0) {
-	    add_vpi_call_error(VPI_CALL_NO_DEF, name, file_idx, lineno);
-#ifdef CHECK_WITH_VALGRIND
-	    cleanup_vpi_call_args(argc, argv);
-#endif
-	    return 0;
+      నిర్మాణం __vpiUserSystf*defn = vpip_కనుగొను_systf(name);
+      ఒకవేళ (defn == 0) {
+	    కూడు_vpi_call_error(VPI_CALL_NO_DEF, name, file_idx, lineno);
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+	    cleanup_vpi_call_వాదనలు(argc, argv);
+#అయితే_ముగింపు
+	    తిరిగి 0;
       }
 
-      switch (defn->info.type) {
-	  case vpiSysTask:
-	    if (val_code != 0 || fnet != 0) {
-		  add_vpi_call_error(VPI_CALL_TASK_AS_FUNC, name, file_idx,
+      ఎంపిక (defn->info.type) {
+	  స్థితి vpiSysTask:
+	    ఒకవేళ (val_సంకేతం != 0 || fnet != 0) {
+		  కూడు_vpi_call_error(VPI_CALL_TASK_AS_FUNC, name, file_idx,
 		                     lineno);
-#ifdef CHECK_WITH_VALGRIND
-		  cleanup_vpi_call_args(argc, argv);
-#endif
-		  return 0;
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+		  cleanup_vpi_call_వాదనలు(argc, argv);
+#అయితే_ముగింపు
+		  తిరిగి 0;
 	    }
-	    break;
+	    ఆపు;
 
-	  case vpiSysFunc:
-	    if (val_code == 0 && fnet == 0) {
-		  if (func_as_task_err) {
-			add_vpi_call_error(VPI_CALL_FUNC_AS_TASK,
+	  స్థితి vpiSysFunc:
+	    ఒకవేళ (val_సంకేతం == 0 && fnet == 0) {
+		  ఒకవేళ (func_as_task_err) {
+			కూడు_vpi_call_error(VPI_CALL_FUNC_AS_TASK,
 			                   name, file_idx, lineno);
-#ifdef CHECK_WITH_VALGRIND
-			cleanup_vpi_call_args(argc, argv);
-#endif
-			return 0;
-		  } else if (func_as_task_warn) {
-			add_vpi_call_error(VPI_CALL_FUNC_AS_TASK_WARN,
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+			cleanup_vpi_call_వాదనలు(argc, argv);
+#అయితే_ముగింపు
+			తిరిగి 0;
+		  } లేకపోతే ఒకవేళ (func_as_task_warn) {
+			కూడు_vpi_call_error(VPI_CALL_FUNC_AS_TASK_WARN,
 			                   name, file_idx, lineno);
 		  }
 	    }
-	    break;
+	    ఆపు;
 
-	  default:
+	  అప్రమేయ:
 	    fprintf(stderr, "Unsupported vpi_call type %d.\n",
-	                    (int)defn->info.type);
-	    assert(0);
+	                    (పూర్ణాంకం)defn->info.type);
+	    ప్రతిజ్ఞా(0);
       }
 
-      struct __vpiSysTaskCall*obj = 0;
+      నిర్మాణం __vpiSysTaskCall*obj = 0;
 
-      switch (defn->info.type) {
-	  case vpiSysTask:
-	    obj = new systask_def;
-	    break;
+      ఎంపిక (defn->info.type) {
+	  స్థితి vpiSysTask:
+	    obj = కొత్త systask_def;
+	    ఆపు;
 
-	  case vpiSysFunc:
-	    if (fnet && val_code == -vpiRealVal) {
-		  obj = new sysfunc_rnet;
+	  స్థితి vpiSysFunc:
+	    ఒకవేళ (fnet && val_సంకేతం == -vpiRealVal) {
+		  obj = కొత్త sysfunc_rnet;
 
-	    } else if (fnet && val_code == -vpiVectorVal) {
-		  obj = new sysfunc_4net(return_width);
+	    } లేకపోతే ఒకవేళ (fnet && val_సంకేతం == -vpi_సదిశ_Val) {
+		  obj = కొత్త sysfunc_4net(return_వెడల్పు);
 
-	    } else if (val_code == -vpiRealVal) {
-		  obj = new sysfunc_real;
+	    } లేకపోతే ఒకవేళ (val_సంకేతం == -vpiRealVal) {
+		  obj = కొత్త sysfunc_real;
 
-	    } else if (val_code == -vpiVectorVal) {
-		  obj = new sysfunc_vec4(return_width);
+	    } లేకపోతే ఒకవేళ (val_సంకేతం == -vpi_సదిశ_Val) {
+		  obj = కొత్త sysfunc_vec4(return_వెడల్పు);
 
-	    } else if (val_code == -vpiStringVal) {
-		  obj = new sysfunc_str;
+	    } లేకపోతే ఒకవేళ (val_సంకేతం == -vpiStringVal) {
+		  obj = కొత్త sysfunc_str;
 
-           } else if (val_code == 0 && fnet == 0) {
-		  obj = new sysfunc_no;
+           } లేకపోతే ఒకవేళ (val_సంకేతం == 0 && fnet == 0) {
+		  obj = కొత్త sysfunc_no;
 
-	    } else {
-		  fprintf(stderr, "XXXX fnet=%p, val_code=%d\n", fnet, val_code);
-		  assert(0);
+	    } లేకపోతే {
+		  fprintf(stderr, "XXXX fnet=%p, val_code=%d\n", fnet, val_సంకేతం);
+		  ప్రతిజ్ఞా(0);
 	    }
-	    break;
+	    ఆపు;
       }
 
       obj->scope = vpip_peek_current_scope();
       obj->defn  = defn;
       obj->nargs = argc;
-      obj->args  = argv;
-      obj->vec4_stack = vec4_stack;
-      obj->real_stack = real_stack;
-      obj->string_stack = string_stack;
+      obj->వాదనలు  = argv;
+      obj->vec4_దొంతర = vec4_దొంతర;
+      obj->real_దొంతర = real_దొంతర;
+      obj->string_దొంతర = string_దొంతర;
       obj->fnet  = fnet;
-      obj->file_idx  = (unsigned) file_idx;
-      obj->lineno   = (unsigned) lineno;
+      obj->file_idx  = (గుర్తులేని) file_idx;
+      obj->lineno   = (గుర్తులేని) lineno;
       obj->userdata  = 0;
-      obj->put_value = false;
+      obj->put_విలువ = అబద్ధం;
 
       compile_compiletf(obj);
 
-      return obj;
+      తిరిగి obj;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vpi_call_delete(vpiHandle item)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య vpi_call_delete(vpiHandle అంశం)
 {
-      struct __vpiSysTaskCall*obj = dynamic_cast<__vpiSysTaskCall*>(item);
+      నిర్మాణం __vpiSysTaskCall*obj = dynamic_cast<__vpiSysTaskCall*>(అంశం);
 	/* The object can be NULL if there was an error. */
-      if (!obj) return;
-      for (unsigned arg = 0; arg < obj->nargs; arg += 1) {
-	    switch (obj->args[arg]->get_type_code()) {
-		case vpiConstant:
-		  switch (vpi_get(_vpiFromThr, obj->args[arg])) {
-		      case _vpiNoThr:
-			constant_delete(obj->args[arg]);
-			break;
-		      case _vpiString:
-			thread_string_delete(obj->args[arg]);
-			break;
-		      case _vpiVThr:
-			thread_vthr_delete(obj->args[arg]);
-			break;
-		      case _vpiWord:
-			thread_word_delete(obj->args[arg]);
-			break;
-		      default:
-			assert(0);
+      ఒకవేళ (!obj) తిరిగి;
+      కొరకు (గుర్తులేని arg = 0; arg < obj->nargs; arg += 1) {
+	    ఎంపిక (obj->వాదనలు[arg]->get_type_సంకేతం()) {
+		స్థితి vpiConstant:
+		  ఎంపిక (vpi_get(_vpiFromThr, obj->వాదనలు[arg])) {
+		      స్థితి _vpiNoThr:
+			constant_delete(obj->వాదనలు[arg]);
+			ఆపు;
+		      స్థితి _vpiString:
+			thread_string_delete(obj->వాదనలు[arg]);
+			ఆపు;
+		      స్థితి _vpiVThr:
+			thread_vthr_delete(obj->వాదనలు[arg]);
+			ఆపు;
+		      స్థితి vpi_మాట:
+			thread_మాట_delete(obj->వాదనలు[arg]);
+			ఆపు;
+		      అప్రమేయ:
+			ప్రతిజ్ఞా(0);
 		  }
-		  break;
-		case vpiMemoryWord:
-		  switch (vpi_get(_vpiFromThr, obj->args[arg])) {
-		      case _vpi_at_A:
-			A_delete(obj->args[arg]);
-			break;
+		  ఆపు;
+		స్థితి vpi_జ్ఞాపకం_మాట:
+		  ఎంపిక (vpi_get(_vpiFromThr, obj->వాదనలు[arg])) {
+		      స్థితి _vpi_at_A:
+			A_delete(obj->వాదనలు[arg]);
+			ఆపు;
 		  }
-		  break;
-		case vpiPartSelect:
-		  switch (vpi_get(_vpiFromThr, obj->args[arg])) {
-		      case _vpi_at_PV:
-			PV_delete(obj->args[arg]);
-			break;
-		      case _vpi_at_APV:
-			APV_delete(obj->args[arg]);
-			break;
+		  ఆపు;
+		స్థితి vpiPartSelect:
+		  ఎంపిక (vpi_get(_vpiFromThr, obj->వాదనలు[arg])) {
+		      స్థితి _vpi_at_PV:
+			PV_delete(obj->వాదనలు[arg]);
+			ఆపు;
+		      స్థితి _vpi_at_APV:
+			APV_delete(obj->వాదనలు[arg]);
+			ఆపు;
 		  }
-		  break;
+		  ఆపు;
 	    }
       }
-      free(obj->args);
-      delete obj;
+      విడుదల(obj->వాదనలు);
+      తొలగించు obj;
 }
-#endif
+#అయితే_ముగింపు
 
 /*
  * This function is used by the %vpi_call instruction to actually
@@ -942,45 +942,45 @@ void vpi_call_delete(vpiHandle item)
 
 vthread_t vpip_current_vthread;
 
-void vpip_execute_vpi_call(vthread_t thr, vpiHandle ref)
+శూన్య vpip_execute_vpi_call(vthread_t thr, vpiHandle ref)
 {
       vpip_current_vthread = thr;
 
       vpip_cur_task = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      if (vpip_cur_task->defn->info.calltf) {
-	    assert(vpi_mode_flag == VPI_MODE_NONE);
-	    vpi_mode_flag = VPI_MODE_CALLTF;
-	    vpip_cur_task->put_value = false;
-	    vpip_cur_task->defn->info.calltf(vpip_cur_task->defn->info.user_data);
-	    vpi_mode_flag = VPI_MODE_NONE;
+      ఒకవేళ (vpip_cur_task->defn->info.calltf) {
+	    ప్రతిజ్ఞా(vpi_బహుళకం_flag == VPI_బహుళకం_NONE);
+	    vpi_బహుళకం_flag = VPI_బహుళకం_CALLTF;
+	    vpip_cur_task->put_విలువ = అబద్ధం;
+	    vpip_cur_task->defn->info.calltf(vpip_cur_task->defn->info.user_దత్తాంశం);
+	    vpi_బహుళకం_flag = VPI_బహుళకం_NONE;
 	      /* If the function call did not set a value then put a
 	       * default value (0). */
-	    if (ref->get_type_code() == vpiSysFuncCall &&
-	        !vpip_cur_task->put_value) {
-		  s_vpi_value val;
+	    ఒకవేళ (ref->get_type_సంకేతం() == vpiSysFuncCall &&
+	        !vpip_cur_task->put_విలువ) {
+		  s_vpi_విలువ val;
 		  val.format = vpiIntVal;
 		  val.value.integer = 0;
-		  vpi_put_value(ref, &val, 0, vpiNoDelay);
+		  vpi_put_విలువ(ref, &val, 0, vpiNoDelay);
 	    }
       }
-      if (vpip_cur_task->vec4_stack > 0)
-	    vthread_pop_vec4(thr, vpip_cur_task->vec4_stack);
-      if (vpip_cur_task->real_stack > 0)
-	    vthread_pop_real(thr, vpip_cur_task->real_stack);
-      if (vpip_cur_task->string_stack > 0)
-	    vthread_pop_str(thr, vpip_cur_task->string_stack);
+      ఒకవేళ (vpip_cur_task->vec4_దొంతర > 0)
+	    vthread_తీయి_vec4(thr, vpip_cur_task->vec4_దొంతర);
+      ఒకవేళ (vpip_cur_task->real_దొంతర > 0)
+	    vthread_తీయి_real(thr, vpip_cur_task->real_దొంతర);
+      ఒకవేళ (vpip_cur_task->string_దొంతర > 0)
+	    vthread_తీయి_str(thr, vpip_cur_task->string_దొంతర);
 
 	/* If the function returns a value, then push the value
 	   to the appropriate thread stack. */
-      if (const sysfunc_real*func_real = dynamic_cast<sysfunc_real*>(ref)) {
-	    vthread_push(thr, func_real->return_value());
+      ఒకవేళ (స్థిరరాశి sysfunc_real*func_real = dynamic_cast<sysfunc_real*>(ref)) {
+	    vthread_నెట్టు(thr, func_real->return_విలువ());
       }
-      else if (const sysfunc_str*func_string = dynamic_cast<sysfunc_str*>(ref)) {
-	    vthread_push(thr, func_string->return_value());
+      లేకపోతే ఒకవేళ (స్థిరరాశి sysfunc_str*func_string = dynamic_cast<sysfunc_str*>(ref)) {
+	    vthread_నెట్టు(thr, func_string->return_విలువ());
       }
-      else if (const sysfunc_vec4*func_vec4 = dynamic_cast<sysfunc_vec4*>(ref)) {
-	    vthread_push(thr, func_vec4->return_value());
+      లేకపోతే ఒకవేళ (స్థిరరాశి sysfunc_vec4*func_vec4 = dynamic_cast<sysfunc_vec4*>(ref)) {
+	    vthread_నెట్టు(thr, func_vec4->return_విలువ());
       }
       vpip_cur_task = 0;
 }
@@ -991,40 +991,40 @@ void vpip_execute_vpi_call(vthread_t thr, vpiHandle ref)
  * __vpi_userSystf to represent the definition for the calls that come
  * to pass later.
  */
-vpiHandle vpi_register_systf(const struct t_vpi_systf_data*ss)
+vpiHandle vpi_రిజిస్టరు_systf(స్థిరరాశి నిర్మాణం t_vpi_systf_దత్తాంశం*ss)
 {
-      struct __vpiUserSystf*cur = allocate_def();
-      assert(ss);
-      switch (ss->type) {
-	  case vpiSysTask:
-	  case vpiSysFunc:
-	    break;
-	  default:
-	    fprintf(stderr, "Unsupported type %d.\n", (int)ss->type);
-	    assert(0);
+      నిర్మాణం __vpiUserSystf*cur = allocate_def();
+      ప్రతిజ్ఞా(ss);
+      ఎంపిక (ss->type) {
+	  స్థితి vpiSysTask:
+	  స్థితి vpiSysFunc:
+	    ఆపు;
+	  అప్రమేయ:
+	    fprintf(stderr, "Unsupported type %d.\n", (పూర్ణాంకం)ss->type);
+	    ప్రతిజ్ఞా(0);
       }
 
       cur->info = *ss;
       cur->info.tfname = strdup(ss->tfname);
-      cur->is_user_defn = true;
+      cur->is_user_defn = నిజం;
 
-      return cur;
+      తిరిగి cur;
 }
 
-PLI_INT32 vpi_put_userdata(vpiHandle ref, void*data)
+PLI_INT32 vpi_put_userdata(vpiHandle ref, శూన్య*దత్తాంశం)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
-      if (rfp == 0)
-	    return 0;
+      నిర్మాణం __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      ఒకవేళ (rfp == 0)
+	    తిరిగి 0;
 
-      rfp->userdata = data;
-      return 1;
+      rfp->userdata = దత్తాంశం;
+      తిరిగి 1;
 }
 
-void* vpi_get_userdata(vpiHandle ref)
+శూన్య* vpi_get_userdata(vpiHandle ref)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
-      assert(rfp);
+      నిర్మాణం __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      ప్రతిజ్ఞా(rfp);
 
-      return rfp->userdata;
+      తిరిగి rfp->userdata;
 }

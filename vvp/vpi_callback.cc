@@ -31,125 +31,125 @@
 # include  "event.h"
 # include  "vvp_net_sig.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
-#include  "vvp_cleanup.h"
-#endif
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+#అన్తర్భావ  "vvp_cleanup.h"
+#అయితే_ముగింపు
 # include  <cstdio>
 # include  <cassert>
 # include  <cstdlib>
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
-static const char*cb_reason_name(PLI_INT32 reason)
+స్థిర స్థిరరాశి అక్షరం*cb_reason_name(PLI_INT32 reason)
 {
-      switch (reason) {
-	  case cbValueChange:
-	    return "cbValueChange";
-	  case cbStmt:
-	    return "cbStmt";
-	  case cbForce:
-	    return "cbForce";
-	  case cbRelease:
-	    return "cbRelease";
-	  case cbAtStartOfSimTime:
-	    return "cbAtStartOfSimTime";
-	  case cbReadWriteSynch:
-	    return "cbReadWriteSynch";
-	  case cbReadOnlySynch:
-	    return "cbReadOnlySynch";
-	  case cbNextSimTime:
-	    return "cbNextSimTime";
-	  case cbAfterDelay:
-	    return "cbAfterDelay";
-	  case cbEndOfCompile:
-	    return "cbEndOfCompile";
-	  case cbStartOfSimulation:
-	    return "cbStartOfSimulation";
-	  case cbEndOfSimulation:
-	    return "cbEndOfSimulation";
-	  case cbError:
-	    return "cbError";
-	  case cbTchkViolation:
-	    return "cbTchkViolation";
-	  case cbStartOfSave:
-	    return "cbStartOfSave";
-	  case cbEndOfSave:
-	    return "cbEndOfSave";
-	  case cbStartOfRestart:
-	    return "cbStartOfRestart";
-	  case cbEndOfRestart:
-	    return "cbEndOfRestart";
-	  case cbStartOfReset:
-	    return "cbStartOfReset";
-	  case cbEndOfReset:
-	    return "cbEndOfReset";
-	  case cbEnterInteractive:
-	    return "cbEnterInteractive";
-	  case cbExitInteractive:
-	    return "cbExitInteractive";
-	  case cbInteractiveScopeChange:
-	    return "cbInteractiveScopeChange";
-	  case cbUnresolvedSystf:
-	    return "cbUnresolvedSystf";
-	  case cbAtEndOfSimTime:
-	    return "cbAtEndOfSimTime";
-	  default:
-	    return "unrecognised";
+      ఎంపిక (reason) {
+	  స్థితి cb_విలువ_Change:
+	    తిరిగి "cbValueChange";
+	  స్థితి cbStmt:
+	    తిరిగి "cbStmt";
+	  స్థితి cbForce:
+	    తిరిగి "cbForce";
+	  స్థితి cbRelease:
+	    తిరిగి "cbRelease";
+	  స్థితి cb_At_ప్రారంభం_యొక్క_Sim_సమయం:
+	    తిరిగి "cbAtStartOfSimTime";
+	  స్థితి cbReadWriteSynch:
+	    తిరిగి "cbReadWriteSynch";
+	  స్థితి cbReadOnlySynch:
+	    తిరిగి "cbReadOnlySynch";
+	  స్థితి cb_తదుపరి_Sim_సమయం:
+	    తిరిగి "cbNextSimTime";
+	  స్థితి cbAfterDelay:
+	    తిరిగి "cbAfterDelay";
+	  స్థితి cb_చివర_యొక్క_Compile:
+	    తిరిగి "cbEndOfCompile";
+	  స్థితి cb_ప్రారంభం_యొక్క_Simulation:
+	    తిరిగి "cbStartOfSimulation";
+	  స్థితి cb_చివర_యొక్క_Simulation:
+	    తిరిగి "cbEndOfSimulation";
+	  స్థితి cbError:
+	    తిరిగి "cbError";
+	  స్థితి cbTchkViolation:
+	    తిరిగి "cbTchkViolation";
+	  స్థితి cb_ప్రారంభం_యొక్క_Save:
+	    తిరిగి "cbStartOfSave";
+	  స్థితి cb_చివర_యొక్క_Save:
+	    తిరిగి "cbEndOfSave";
+	  స్థితి cb_ప్రారంభం_యొక్క_Restart:
+	    తిరిగి "cbStartOfRestart";
+	  స్థితి cb_చివర_యొక్క_Restart:
+	    తిరిగి "cbEndOfRestart";
+	  స్థితి cb_ప్రారంభం_యొక్క_Reset:
+	    తిరిగి "cbStartOfReset";
+	  స్థితి cb_చివర_యొక్క_Reset:
+	    తిరిగి "cbEndOfReset";
+	  స్థితి cbEnterInteractive:
+	    తిరిగి "cbEnterInteractive";
+	  స్థితి cbExitInteractive:
+	    తిరిగి "cbExitInteractive";
+	  స్థితి cbInteractiveScopeChange:
+	    తిరిగి "cbInteractiveScopeChange";
+	  స్థితి cbUnresolvedSystf:
+	    తిరిగి "cbUnresolvedSystf";
+	  స్థితి cb_At_చివర_యొక్క_Sim_సమయం:
+	    తిరిగి "cbAtEndOfSimTime";
+	  అప్రమేయ:
+	    తిరిగి "unrecognised";
       }
 }
 
-static bool check_callback_time(p_cb_data data, bool allow_suppress)
+స్థిర తార్కిక check_callback_సమయం(p_cb_దత్తాంశం దత్తాంశం, తార్కిక allow_suppress)
 {
-      assert(data);
-      if (!data->time) {
-	    if (!allow_suppress) {
+      ప్రతిజ్ఞా(దత్తాంశం);
+      ఒకవేళ (!దత్తాంశం->time) {
+	    ఒకవేళ (!allow_suppress) {
 		  fprintf(stderr, "VPI error: null value passed in cb_data.time "
 				  "when registering %s callback\n.",
-				  cb_reason_name(data->reason));
-		  return false;
+				  cb_reason_name(దత్తాంశం->reason));
+		  తిరిగి అబద్ధం;
 	    }
-	    return true;
+	    తిరిగి నిజం;
       }
-      switch (data->time->type) {
-	  case vpiSimTime:
-	    break;
-	  case vpiScaledRealTime:
-	    break;
-	  case vpiSuppressTime:
-	    if (!allow_suppress) {
+      ఎంపిక (దత్తాంశం->time->type) {
+	  స్థితి vpi_Sim_సమయం:
+	    ఆపు;
+	  స్థితి vpi_Scaled_Real_సమయం:
+	    ఆపు;
+	  స్థితి vpi_Suppress_సమయం:
+	    ఒకవేళ (!allow_suppress) {
 		  fprintf(stderr, "VPI error: vpiSuppressTime is not valid "
 				  "when registering %s callback\n.",
-				  cb_reason_name(data->reason));
-		  return false;
+				  cb_reason_name(దత్తాంశం->reason));
+		  తిరిగి అబద్ధం;
 	    }
-	    break;
-	  default:
+	    ఆపు;
+	  అప్రమేయ:
 	    fprintf(stderr, "VPI error: invalid type passed in cb_data time "
 			    "structure when registering %s callback\n.",
-			    cb_reason_name(data->reason));
-	    return false;
+			    cb_reason_name(దత్తాంశం->reason));
+	    తిరిగి అబద్ధం;
       }
-      return true;
+      తిరిగి నిజం;
 }
 
-static void set_callback_time(p_cb_data data)
+స్థిర శూన్య సమితి_callback_సమయం(p_cb_దత్తాంశం దత్తాంశం)
 {
-      assert(data && data->time);
-      data->time->low  = 0;
-      data->time->high = 0;
-      data->time->real = 0.0;
-      switch (data->time->type) {
-	  case vpiSimTime:
-	    vpip_time_to_timestruct(data->time, schedule_simtime());
-	    break;
-	  case vpiScaledRealTime:
-	    data->time->real = vpip_scaled_time_from_handle(schedule_simtime(), data->obj);
-	    break;
-	  case vpiSuppressTime:
-	    break;
-	  default:
-	    assert(0);
-	    break;
+      ప్రతిజ్ఞా(దత్తాంశం && దత్తాంశం->time);
+      దత్తాంశం->time->దిగువ  = 0;
+      దత్తాంశం->time->ఎగువ = 0;
+      దత్తాంశం->time->real = 0.0;
+      ఎంపిక (దత్తాంశం->time->type) {
+	  స్థితి vpi_Sim_సమయం:
+	    vpip_సమయం_గమ్యం_timestruct(దత్తాంశం->time, కాలపట్టిక_simtime());
+	    ఆపు;
+	  స్థితి vpi_Scaled_Real_సమయం:
+	    దత్తాంశం->time->real = vpip_scaled_సమయం_from_handle(కాలపట్టిక_simtime(), దత్తాంశం->obj);
+	    ఆపు;
+	  స్థితి vpi_Suppress_సమయం:
+	    ఆపు;
+	  అప్రమేయ:
+	    ప్రతిజ్ఞా(0);
+	    ఆపు;
       }
 }
 
@@ -168,133 +168,133 @@ static void set_callback_time(p_cb_data data)
  * event. This member is only used for things like cbReadOnlySync.
  */
 
-class sync_callback;
+తరగతి sync_callback;
 
-struct sync_cb  : public vvp_gen_event_s {
+నిర్మాణం sync_cb  : బహిరంగ vvp_gen_event_s {
       sync_callback*handle;
-      bool sync_flag;
+      తార్కిక sync_flag;
 
       ~sync_cb () override { }
 
-      virtual void run_run() override;
+      మాయా శూన్య నిరంతరం_నిరంతరం() override;
 };
 
-inline __vpiCallback::__vpiCallback()
+అంతఃవరుస __vpiCallback::__vpiCallback()
 {
-      next = 0;
+      తదుపరి_2 = 0;
 }
 
 __vpiCallback::~__vpiCallback()
 {
 }
 
-int __vpiCallback::get_type_code(void) const
-{ return vpiCallback; }
+పూర్ణాంకం __vpiCallback::get_type_సంకేతం(శూన్య) స్థిరరాశి
+{ తిరిగి vpiCallback; }
 
 
-value_callback::value_callback(p_cb_data data)
+విలువ_callback::విలువ_callback(p_cb_దత్తాంశం దత్తాంశం)
 {
-      cb_data = *data;
-      if (data->time) {
-	    cb_time = *(data->time);
-      } else {
-	    cb_time.type = vpiSuppressTime;
+      cb_దత్తాంశం = *దత్తాంశం;
+      ఒకవేళ (దత్తాంశం->time) {
+	    cb_సమయం = *(దత్తాంశం->time);
+      } లేకపోతే {
+	    cb_సమయం.type = vpi_Suppress_సమయం;
       }
-      cb_data.time = &cb_time;
-      if (data->value) {
-	    cb_value = *(data->value);
-      } else {
-	    cb_value.format = vpiSuppressVal;
+      cb_దత్తాంశం.time = &cb_సమయం;
+      ఒకవేళ (దత్తాంశం->value) {
+	    cb_విలువ = *(దత్తాంశం->value);
+      } లేకపోతే {
+	    cb_విలువ.format = vpiSuppressVal;
       }
-      cb_data.value = &cb_value;
+      cb_దత్తాంశం.value = &cb_విలువ;
 }
 
 /*
  * Normally, any assign to a value triggers a value change callback,
  * so return a constant true here. This is a stub.
  */
-bool value_callback::test_value_callback_ready(void)
+తార్కిక విలువ_callback::test_విలువ_callback_ready(శూన్య)
 {
-      return true;
+      తిరిగి నిజం;
 }
 
-static void vpip_real_value_change(value_callback*cbh, vpiHandle ref)
+స్థిర శూన్య vpip_real_విలువ_change(విలువ_callback*cbh, vpiHandle ref)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
-      assert(rfp);
+      నిర్మాణం __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      ప్రతిజ్ఞా(rfp);
       vvp_vpi_callback*obj = dynamic_cast<vvp_vpi_callback*>(rfp->net->fil);
-      assert(obj);
+      ప్రతిజ్ఞా(obj);
 
-      obj->add_vpi_callback(cbh);
+      obj->కూడు_vpi_callback(cbh);
 }
 
-class value_part_callback : public value_callback {
-    public:
-      explicit value_part_callback(p_cb_data data);
-      ~value_part_callback() override;
+తరగతి విలువ_part_callback : బహిరంగ విలువ_callback {
+    బహిరంగ:
+      స్పష్టమైన విలువ_part_callback(p_cb_దత్తాంశం దత్తాంశం);
+      ~విలువ_part_callback() override;
 
-      value_part_callback(const value_part_callback&) = delete;
-      value_part_callback& operator=(const value_part_callback&) = delete;
+      విలువ_part_callback(స్థిరరాశి విలువ_part_callback&) = తొలగించు;
+      విలువ_part_callback& క్రియాకారకం=(స్థిరరాశి విలువ_part_callback&) = తొలగించు;
 
-      bool test_value_callback_ready(void) override;
+      తార్కిక test_విలువ_callback_ready(శూన్య) override;
 
-    private:
-      char*value_bits_;
-      size_t value_off_;
+    అంతరంగ:
+      అక్షరం*విలువ_బిట్లు;
+      size_t విలువ_off;
 };
 
-inline value_part_callback::value_part_callback(p_cb_data data)
-: value_callback(data)
+అంతఃవరుస విలువ_part_callback::విలువ_part_callback(p_cb_దత్తాంశం దత్తాంశం)
+: విలువ_callback(దత్తాంశం)
 {
-      struct __vpiPV*pobj = dynamic_cast<__vpiPV*>(data->obj);
-      assert(pobj);
+      నిర్మాణం __vpiPV*pobj = dynamic_cast<__vpiPV*>(దత్తాంశం->obj);
+      ప్రతిజ్ఞా(pobj);
 
       vvp_vpi_callback*sig_fil;
       sig_fil = dynamic_cast<vvp_vpi_callback*>(pobj->net->fil);
-      assert(sig_fil);
+      ప్రతిజ్ఞా(sig_fil);
 
-      sig_fil->add_vpi_callback(this);
+      sig_fil->కూడు_vpi_callback(ఇది);
 	// Get a reference value that can be used to compare with an
 	// updated value. Use the filter get_value to get the value,
 	// and get it in BinStr form so that compares are easy. Note
 	// that the vpiBinStr format has the MSB first, but the tbase
 	// is lsb first.
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      sig_fil->get_value(&tmp_value);
+      s_vpi_విలువ tmp_విలువ;
+      tmp_విలువ.format = vpiBinStrVal;
+      sig_fil->get_విలువ(&tmp_విలువ);
 
-      value_bits_ = new char[pobj->width+1];
-      value_off_ = pobj->parent->vpi_get(vpiSize) - pobj->width - pobj->tbase;
+      విలువ_బిట్లు = కొత్త అక్షరం[pobj->width+1];
+      విలువ_off = pobj->మాతృ->vpi_get(vpi_కొలత) - pobj->width - pobj->tbase;
 
-      memcpy(value_bits_, tmp_value.value.str + value_off_, pobj->width);
-      value_bits_[pobj->width] = 0;
+      జ్ఞాపకం_నకలు(విలువ_బిట్లు, tmp_విలువ.value.str + విలువ_off, pobj->width);
+      విలువ_బిట్లు[pobj->width] = 0;
 }
 
-value_part_callback::~value_part_callback()
+విలువ_part_callback::~విలువ_part_callback()
 {
-      delete[]value_bits_;
+      తొలగించు[]విలువ_బిట్లు;
 }
 
-bool value_part_callback::test_value_callback_ready(void)
+తార్కిక విలువ_part_callback::test_విలువ_callback_ready(శూన్య)
 {
-      struct __vpiPV*pobj = dynamic_cast<__vpiPV*>(cb_data.obj);
-      assert(pobj);
+      నిర్మాణం __vpiPV*pobj = dynamic_cast<__vpiPV*>(cb_దత్తాంశం.obj);
+      ప్రతిజ్ఞా(pobj);
 
       vvp_vpi_callback*sig_fil;
       sig_fil = dynamic_cast<vvp_vpi_callback*>(pobj->net->fil);
-      assert(sig_fil);
+      ప్రతిజ్ఞా(sig_fil);
 
 	// Get a reference value that can be used to compare with an
 	// updated value.
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      sig_fil->get_value(&tmp_value);
+      s_vpi_విలువ tmp_విలువ;
+      tmp_విలువ.format = vpiBinStrVal;
+      sig_fil->get_విలువ(&tmp_విలువ);
 
-      if (memcmp(value_bits_, tmp_value.value.str + value_off_, pobj->width) == 0)
-	    return false;
+      ఒకవేళ (memcmp(విలువ_బిట్లు, tmp_విలువ.value.str + విలువ_off, pobj->width) == 0)
+	    తిరిగి అబద్ధం;
 
-      memcpy(value_bits_, tmp_value.value.str + value_off_, pobj->width);
-      return true;
+      జ్ఞాపకం_నకలు(విలువ_బిట్లు, tmp_విలువ.value.str + విలువ_off, pobj->width);
+      తిరిగి నిజం;
 }
 
 /*
@@ -303,11 +303,11 @@ bool value_part_callback::test_value_callback_ready(void)
  * object, but it refers to a net that is a vvp_vpi_callback, so
  * add the callback to that object.
  */
-static value_callback*make_value_change_part(p_cb_data data)
+స్థిర విలువ_callback*make_విలువ_change_part(p_cb_దత్తాంశం దత్తాంశం)
 {
 	/* Attach the __vpiCallback object to the signal. */
-      value_callback*cbh = new value_part_callback(data);
-      return cbh;
+      విలువ_callback*cbh = కొత్త విలువ_part_callback(దత్తాంశం);
+      తిరిగి cbh;
 }
 
 /*
@@ -317,247 +317,247 @@ static value_callback*make_value_change_part(p_cb_data data)
  * does not already have them, create some callback functors to do the
  * actual value change detection.
  */
-static value_callback* make_value_change(p_cb_data data)
+స్థిర విలువ_callback* make_విలువ_change(p_cb_దత్తాంశం దత్తాంశం)
 {
-      if (!check_callback_time(data, true))
-	    return 0;
+      ఒకవేళ (!check_callback_సమయం(దత్తాంశం, నిజం))
+	    తిరిగి 0;
 
-      if (vpi_get(vpiAutomatic, data->obj)) {
+      ఒకవేళ (vpi_get(vpiAutomatic, దత్తాంశం->obj)) {
             fprintf(stderr, "vpi error: cannot place value change "
                             "callback on automatically allocated "
                             "variable '%s'\n",
-                            vpi_get_str(vpiName, data->obj));
-            return 0;
+                            vpi_get_str(vpiName, దత్తాంశం->obj));
+            తిరిగి 0;
       }
 
 	// Special case: the target object is a vpiPartSelect
-      if (data->obj->get_type_code() == vpiPartSelect) {
-            if (data->obj->vpi_handle(vpiArray))
-	        return vpip_array_word_change(data);
-            else
-	        return make_value_change_part(data);
+      ఒకవేళ (దత్తాంశం->obj->get_type_సంకేతం() == vpiPartSelect) {
+            ఒకవేళ (దత్తాంశం->obj->vpi_handle(vpiArray))
+	        తిరిగి vpip_array_మాట_change(దత్తాంశం);
+            లేకపోతే
+	        తిరిగి make_విలువ_change_part(దత్తాంశం);
       }
 
-      if (data->obj->get_type_code() == vpiMemoryWord)
-	    return vpip_array_word_change(data);
+      ఒకవేళ (దత్తాంశం->obj->get_type_సంకేతం() == vpi_జ్ఞాపకం_మాట)
+	    తిరిగి vpip_array_మాట_change(దత్తాంశం);
 
-      if (data->obj->get_type_code() == vpiMemory)
-	    return vpip_array_change(data);
+      ఒకవేళ (దత్తాంశం->obj->get_type_సంకేతం() == vpi_జ్ఞాపకం)
+	    తిరిగి vpip_array_change(దత్తాంశం);
 
-      value_callback*obj = new value_callback(data);
+      విలువ_callback*obj = కొత్త విలువ_callback(దత్తాంశం);
 
-      assert(data->obj);
-      switch (data->obj->get_type_code()) {
+      ప్రతిజ్ఞా(దత్తాంశం->obj);
+      ఎంపిక (దత్తాంశం->obj->get_type_సంకేతం()) {
 
-	  case vpiReg:
-	  case vpiNet:
-	  case vpiIntegerVar:
-	  case vpiBitVar:
-	  case vpiByteVar:
-	  case vpiShortIntVar:
-	  case vpiIntVar:
-	  case vpiLongIntVar:
+	  స్థితి vpiReg:
+	  స్థితి vpiNet:
+	  స్థితి vpiIntegerVar:
+	  స్థితి vpi_బిట్టు_Var:
+	  స్థితి vpiByteVar:
+	  స్థితి vpiShortIntVar:
+	  స్థితి vpiIntVar:
+	  స్థితి vpiLongIntVar:
 	      /* Attach the callback to the vvp_fun_signal node by
 		 putting it in the vpi_callbacks list. */
-	    struct __vpiSignal*sig;
-	    sig = dynamic_cast<__vpiSignal*>(data->obj);
+	    నిర్మాణం __vpiSignal*sig;
+	    sig = dynamic_cast<__vpiSignal*>(దత్తాంశం->obj);
 
 	    vvp_net_fil_t*sig_fil;
-	    sig_fil = dynamic_cast<vvp_net_fil_t*>(sig->node->fil);
-	    assert(sig_fil);
+	    sig_fil = dynamic_cast<vvp_net_fil_t*>(sig->కణుపు->fil);
+	    ప్రతిజ్ఞా(sig_fil);
 
 	      /* Attach the __vpiCallback object to the signal. */
-	    sig_fil->add_vpi_callback(obj);
-	    break;
+	    sig_fil->కూడు_vpi_callback(obj);
+	    ఆపు;
 
-	  case vpiRealVar:
-	    vpip_real_value_change(obj, data->obj);
-	    break;
+	  స్థితి vpiRealVar:
+	    vpip_real_విలువ_change(obj, దత్తాంశం->obj);
+	    ఆపు;
 
-	  case vpiNamedEvent:
+	  స్థితి vpiNamedEvent:
 	    __vpiNamedEvent*nev;
-	    nev = dynamic_cast<__vpiNamedEvent*>(data->obj);
-	    nev->add_vpi_callback(obj);
-	    break;
+	    nev = dynamic_cast<__vpiNamedEvent*>(దత్తాంశం->obj);
+	    nev->కూడు_vpi_callback(obj);
+	    ఆపు;
 
-	  case vpiModule:
-	  case vpiConstant:
-	  case vpiParameter:
+	  స్థితి vpiModule:
+	  స్థితి vpiConstant:
+	  స్థితి vpiParameter:
 	      /* These are constant, so there are no value change
 		 lists to put them in. */
-	    break;
+	    ఆపు;
 
-	  default:
+	  అప్రమేయ:
 	    fprintf(stderr, "make_value_change: sorry: I cannot callback "
 		    "values on type code=%d\n",
-		    data->obj->get_type_code());
-	    delete obj;
-	    return 0;
+		    దత్తాంశం->obj->get_type_సంకేతం());
+	    తొలగించు obj;
+	    తిరిగి 0;
       }
 
-      return obj;
+      తిరిగి obj;
 }
 
-class sync_callback : public __vpiCallback {
-    public:
-      explicit sync_callback(p_cb_data data);
+తరగతి sync_callback : బహిరంగ __vpiCallback {
+    బహిరంగ:
+      స్పష్టమైన sync_callback(p_cb_దత్తాంశం దత్తాంశం);
       ~sync_callback() override;
 
-      sync_callback(const sync_callback&) = delete;
-      sync_callback& operator=(const sync_callback&) = delete;
+      sync_callback(స్థిరరాశి sync_callback&) = తొలగించు;
+      sync_callback& క్రియాకారకం=(స్థిరరాశి sync_callback&) = తొలగించు;
 
-    public:
+    బహిరంగ:
 	// scheduled event
-      struct sync_cb* cb_sync;
+      నిర్మాణం sync_cb* cb_sync;
 	// user supplied callback data
-      struct t_vpi_time cb_time;
+      నిర్మాణం t_vpi_సమయం cb_సమయం;
 
-    private:
+    అంతరంగ:
 };
 
-inline sync_callback::sync_callback(p_cb_data data)
+అంతఃవరుస sync_callback::sync_callback(p_cb_దత్తాంశం దత్తాంశం)
 {
       cb_sync = 0;
 
-      cb_data = *data;
-      assert(data->time);
-      cb_time = *(data->time);
-      cb_data.time = &cb_time;
+      cb_దత్తాంశం = *దత్తాంశం;
+      ప్రతిజ్ఞా(దత్తాంశం->time);
+      cb_సమయం = *(దత్తాంశం->time);
+      cb_దత్తాంశం.time = &cb_సమయం;
 }
 
 sync_callback::~sync_callback()
 {
-      delete cb_sync;
+      తొలగించు cb_sync;
 }
 
-void sync_cb::run_run()
+శూన్య sync_cb::నిరంతరం_నిరంతరం()
 {
-      if (handle == 0)
-	    return;
+      ఒకవేళ (handle == 0)
+	    తిరిగి;
 
       sync_callback*cur = handle;
 
 	/* Run the callback. If the cb_rtn function pointer is set to
 	   null, then just skip the whole thing and free it. This is
 	   the usual way to cancel one-time callbacks of this sort. */
-      if (cur->cb_data.cb_rtn != 0) {
-	    set_callback_time(&cur->cb_data);
-	    assert(vpi_mode_flag == VPI_MODE_NONE);
-	    vpi_mode_flag = sync_flag? VPI_MODE_ROSYNC : VPI_MODE_RWSYNC;
-	    (cur->cb_data.cb_rtn)(&cur->cb_data);
-	    vpi_mode_flag = VPI_MODE_NONE;
+      ఒకవేళ (cur->cb_దత్తాంశం.cb_rtn != 0) {
+	    సమితి_callback_సమయం(&cur->cb_దత్తాంశం);
+	    ప్రతిజ్ఞా(vpi_బహుళకం_flag == VPI_బహుళకం_NONE);
+	    vpi_బహుళకం_flag = sync_flag? VPI_బహుళకం_ROSYNC : VPI_బహుళకం_RWSYNC;
+	    (cur->cb_దత్తాంశం.cb_rtn)(&cur->cb_దత్తాంశం);
+	    vpi_బహుళకం_flag = VPI_బహుళకం_NONE;
       }
 
-      delete cur;
+      తొలగించు cur;
 }
 
-static vvp_time64_t get_sync_cb_time(sync_callback*obj)
+స్థిర vvp_time64_t get_sync_cb_సమయం(sync_callback*obj)
 {
       vvp_time64_t tv = 0;
-      switch (obj->cb_time.type) {
-	  case vpiSimTime:
-	    tv = vpip_timestruct_to_time(&obj->cb_time);
-	    break;
+      ఎంపిక (obj->cb_సమయం.type) {
+	  స్థితి vpi_Sim_సమయం:
+	    tv = vpip_timestruct_గమ్యం_సమయం(&obj->cb_సమయం);
+	    ఆపు;
 
-	  case vpiScaledRealTime:
-	    tv = vpip_scaled_real_to_time64(obj->cb_time.real,
-		     vpip_timescale_scope_from_handle(obj->cb_data.obj));
-	    break;
+	  స్థితి vpi_Scaled_Real_సమయం:
+	    tv = vpip_scaled_real_గమ్యం_time64(obj->cb_సమయం.real,
+		     vpip_timescale_scope_from_handle(obj->cb_దత్తాంశం.obj));
+	    ఆపు;
 
-	  default:
+	  అప్రమేయ:
 	    fprintf(stderr, "get_sync_cb_time: Unsupported time type %d.\n",
-	            (int)obj->cb_time.type);
-	    assert(0);
-	    break;
+	            (పూర్ణాంకం)obj->cb_సమయం.type);
+	    ప్రతిజ్ఞా(0);
+	    ఆపు;
       }
-      return tv;
+      తిరిగి tv;
 }
 
-static sync_callback* make_sync(p_cb_data data, bool readonly_flag)
+స్థిర sync_callback* make_sync(p_cb_దత్తాంశం దత్తాంశం, తార్కిక readonly_flag)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      ఒకవేళ (!check_callback_సమయం(దత్తాంశం, అబద్ధం))
+	    తిరిగి 0;
 
-      sync_callback*obj = new sync_callback(data);
+      sync_callback*obj = కొత్త sync_callback(దత్తాంశం);
 
-      struct sync_cb*cb = new sync_cb;
-      cb->sync_flag = readonly_flag? true : false;
+      నిర్మాణం sync_cb*cb = కొత్త sync_cb;
+      cb->sync_flag = readonly_flag? నిజం : అబద్ధం;
       cb->handle = obj;
       obj->cb_sync = cb;
 
-      vvp_time64_t tv = get_sync_cb_time(obj);
-      schedule_generic(cb, tv, true, readonly_flag);
+      vvp_time64_t tv = get_sync_cb_సమయం(obj);
+      కాలపట్టిక_generic(cb, tv, నిజం, readonly_flag);
 
-      return obj;
+      తిరిగి obj;
 }
 
-static struct __vpiCallback* make_afterdelay(p_cb_data data)
+స్థిర నిర్మాణం __vpiCallback* make_afterdelay(p_cb_దత్తాంశం దత్తాంశం)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      ఒకవేళ (!check_callback_సమయం(దత్తాంశం, అబద్ధం))
+	    తిరిగి 0;
 
-      sync_callback*obj = new sync_callback(data);
-      struct sync_cb*cb = new sync_cb;
-      cb->sync_flag = false;
+      sync_callback*obj = కొత్త sync_callback(దత్తాంశం);
+      నిర్మాణం sync_cb*cb = కొత్త sync_cb;
+      cb->sync_flag = అబద్ధం;
       cb->handle = obj;
       obj->cb_sync = cb;
 
-      vvp_time64_t tv = get_sync_cb_time(obj);
-      schedule_generic(cb, tv, false);
+      vvp_time64_t tv = get_sync_cb_సమయం(obj);
+      కాలపట్టిక_generic(cb, tv, అబద్ధం);
 
-      return obj;
+      తిరిగి obj;
 }
 
-static struct __vpiCallback* make_at_start_of_sim_time(p_cb_data data)
+స్థిర నిర్మాణం __vpiCallback* make_at_ప్రారంభం_యొక్క_sim_సమయం(p_cb_దత్తాంశం దత్తాంశం)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      ఒకవేళ (!check_callback_సమయం(దత్తాంశం, అబద్ధం))
+	    తిరిగి 0;
 
-      sync_callback*obj = new sync_callback(data);
-      struct sync_cb*cb = new sync_cb;
-      cb->sync_flag = false;
+      sync_callback*obj = కొత్త sync_callback(దత్తాంశం);
+      నిర్మాణం sync_cb*cb = కొత్త sync_cb;
+      cb->sync_flag = అబద్ధం;
       cb->handle = obj;
       obj->cb_sync = cb;
 
-      vvp_time64_t tv = get_sync_cb_time(obj);
-      vvp_time64_t cur = schedule_simtime();
-      if (cur > tv) {
+      vvp_time64_t tv = get_sync_cb_సమయం(obj);
+      vvp_time64_t cur = కాలపట్టిక_simtime();
+      ఒకవేళ (cur > tv) {
 	    tv = 0;
-	    assert(0);
-      } else if (cur == tv) {
+	    ప్రతిజ్ఞా(0);
+      } లేకపోతే ఒకవేళ (cur == tv) {
 	    tv = 0;
-      } else {
+      } లేకపోతే {
 	    tv -= cur;
       }
-      schedule_at_start_of_simtime(cb, tv);
+      కాలపట్టిక_at_ప్రారంభం_యొక్క_simtime(cb, tv);
 
-      return obj;
+      తిరిగి obj;
 }
 
-static struct __vpiCallback* make_at_end_of_sim_time(p_cb_data data)
+స్థిర నిర్మాణం __vpiCallback* make_at_చివర_యొక్క_sim_సమయం(p_cb_దత్తాంశం దత్తాంశం)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      ఒకవేళ (!check_callback_సమయం(దత్తాంశం, అబద్ధం))
+	    తిరిగి 0;
 
-      sync_callback*obj = new sync_callback(data);
-      struct sync_cb*cb = new sync_cb;
-      cb->sync_flag = false;
+      sync_callback*obj = కొత్త sync_callback(దత్తాంశం);
+      నిర్మాణం sync_cb*cb = కొత్త sync_cb;
+      cb->sync_flag = అబద్ధం;
       cb->handle = obj;
       obj->cb_sync = cb;
 
-      vvp_time64_t tv = get_sync_cb_time(obj);
-      vvp_time64_t cur = schedule_simtime();
-      if (cur > tv) {
+      vvp_time64_t tv = get_sync_cb_సమయం(obj);
+      vvp_time64_t cur = కాలపట్టిక_simtime();
+      ఒకవేళ (cur > tv) {
 	    tv = 0;
-	    assert(0);
-      } else if (cur == tv) {
+	    ప్రతిజ్ఞా(0);
+      } లేకపోతే ఒకవేళ (cur == tv) {
 	    tv = 0;
-      } else {
+      } లేకపోతే {
 	    tv -= cur;
       }
-      schedule_at_end_of_simtime(cb, tv);
+      కాలపట్టిక_at_చివర_యొక్క_simtime(cb, tv);
 
-      return obj;
+      తిరిగి obj;
 }
 
 /*
@@ -565,230 +565,230 @@ static struct __vpiCallback* make_at_end_of_sim_time(p_cb_data data)
  * callbacks.
  */
 
-class simulator_callback : public __vpiCallback {
-    public:
-      explicit simulator_callback(const struct t_cb_data*data);
+తరగతి simulator_callback : బహిరంగ __vpiCallback {
+    బహిరంగ:
+      స్పష్టమైన simulator_callback(స్థిరరాశి నిర్మాణం t_cb_దత్తాంశం*దత్తాంశం);
 
-    public:
-      struct t_vpi_time cb_time;
+    బహిరంగ:
+      నిర్మాణం t_vpi_సమయం cb_సమయం;
 };
 
-inline simulator_callback::simulator_callback(const struct t_cb_data*data)
+అంతఃవరుస simulator_callback::simulator_callback(స్థిరరాశి నిర్మాణం t_cb_దత్తాంశం*దత్తాంశం)
 {
-      cb_data = *data;
-      if ((data->reason == cbNextSimTime) && data->time) {
-	    cb_time = *(data->time);
-      } else if (data->reason == cbEndOfSimulation) {
-	    cb_time.type = vpiSimTime;
-      } else {
-	    cb_time.type = vpiSuppressTime;
+      cb_దత్తాంశం = *దత్తాంశం;
+      ఒకవేళ ((దత్తాంశం->reason == cb_తదుపరి_Sim_సమయం) && దత్తాంశం->time) {
+	    cb_సమయం = *(దత్తాంశం->time);
+      } లేకపోతే ఒకవేళ (దత్తాంశం->reason == cb_చివర_యొక్క_Simulation) {
+	    cb_సమయం.type = vpi_Sim_సమయం;
+      } లేకపోతే {
+	    cb_సమయం.type = vpi_Suppress_సమయం;
       }
-      cb_data.time = &cb_time;
+      cb_దత్తాంశం.time = &cb_సమయం;
 }
 
-static simulator_callback*NextSimTime = 0;
-static simulator_callback*EndOfCompile = 0;
-static simulator_callback*StartOfSimulation = 0;
-static simulator_callback*EndOfSimulation = 0;
+స్థిర simulator_callback*తదుపరి_Sim_సమయం = 0;
+స్థిర simulator_callback*చివర_యొక్క_Compile = 0;
+స్థిర simulator_callback*ప్రారంభం_యొక్క_Simulation = 0;
+స్థిర simulator_callback*చివర_యొక్క_Simulation = 0;
 
-#ifdef CHECK_WITH_VALGRIND
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
 /* This is really only needed if the simulator aborts before starting the
  * main event loop. For that reason we can skip the next sim time queue. */
-void simulator_cb_delete(void)
+శూన్య simulator_cb_delete(శూన్య)
 {
       simulator_callback* cur;
 
 	/* Delete all the end of compile callbacks. */
-      while (EndOfCompile) {
-	    cur = EndOfCompile;
-	    EndOfCompile = dynamic_cast<simulator_callback*>(cur->next);
-	    delete cur;
+      అయితే (చివర_యొక్క_Compile) {
+	    cur = చివర_యొక్క_Compile;
+	    చివర_యొక్క_Compile = dynamic_cast<simulator_callback*>(cur->తదుపరి_2);
+	    తొలగించు cur;
       }
 
 	/* Delete all the start of simulation callbacks. */
-      while (StartOfSimulation) {
-	    cur = StartOfSimulation;
-	    StartOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    delete cur;
+      అయితే (ప్రారంభం_యొక్క_Simulation) {
+	    cur = ప్రారంభం_యొక్క_Simulation;
+	    ప్రారంభం_యొక్క_Simulation = dynamic_cast<simulator_callback*>(cur->తదుపరి_2);
+	    తొలగించు cur;
       }
 
 	/* Delete all the end of simulation callbacks. */
-      while (EndOfSimulation) {
-	    cur = EndOfSimulation;
-	    EndOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    delete cur;
+      అయితే (చివర_యొక్క_Simulation) {
+	    cur = చివర_యొక్క_Simulation;
+	    చివర_యొక్క_Simulation = dynamic_cast<simulator_callback*>(cur->తదుపరి_2);
+	    తొలగించు cur;
       }
 }
-#endif
+#అయితే_ముగింపు
 
-void vpiEndOfCompile(void) {
+శూన్య vpi_చివర_యొక్క_Compile(శూన్య) {
       simulator_callback* cur;
 
       /*
        * Walk the list of register callbacks, executing them and
        * freeing them when done.
        */
-      assert(vpi_mode_flag == VPI_MODE_NONE);
-      vpi_mode_flag = VPI_MODE_RWSYNC;
+      ప్రతిజ్ఞా(vpi_బహుళకం_flag == VPI_బహుళకం_NONE);
+      vpi_బహుళకం_flag = VPI_బహుళకం_RWSYNC;
 
-      while (EndOfCompile) {
-	    cur = EndOfCompile;
-	    EndOfCompile = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
-		  (cur->cb_data.cb_rtn)(&cur->cb_data);
+      అయితే (చివర_యొక్క_Compile) {
+	    cur = చివర_యొక్క_Compile;
+	    చివర_యొక్క_Compile = dynamic_cast<simulator_callback*>(cur->తదుపరి_2);
+	    ఒకవేళ (cur->cb_దత్తాంశం.cb_rtn != 0) {
+		  (cur->cb_దత్తాంశం.cb_rtn)(&cur->cb_దత్తాంశం);
 	    }
-	    delete cur;
+	    తొలగించు cur;
       }
 
-      vpi_mode_flag = VPI_MODE_NONE;
+      vpi_బహుళకం_flag = VPI_బహుళకం_NONE;
 }
 
-void vpiStartOfSim(void) {
+శూన్య vpi_ప్రారంభం_యొక్క_Sim(శూన్య) {
       simulator_callback* cur;
 
       /*
        * Walk the list of register callbacks, executing them and
        * freeing them when done.
        */
-      assert(vpi_mode_flag == VPI_MODE_NONE);
-      vpi_mode_flag = VPI_MODE_RWSYNC;
+      ప్రతిజ్ఞా(vpi_బహుళకం_flag == VPI_బహుళకం_NONE);
+      vpi_బహుళకం_flag = VPI_బహుళకం_RWSYNC;
 
-      while (StartOfSimulation) {
-	    cur = StartOfSimulation;
-	    StartOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
-		  (cur->cb_data.cb_rtn)(&cur->cb_data);
+      అయితే (ప్రారంభం_యొక్క_Simulation) {
+	    cur = ప్రారంభం_యొక్క_Simulation;
+	    ప్రారంభం_యొక్క_Simulation = dynamic_cast<simulator_callback*>(cur->తదుపరి_2);
+	    ఒకవేళ (cur->cb_దత్తాంశం.cb_rtn != 0) {
+		  (cur->cb_దత్తాంశం.cb_rtn)(&cur->cb_దత్తాంశం);
 	    }
-	    delete cur;
+	    తొలగించు cur;
       }
 
-      vpi_mode_flag = VPI_MODE_NONE;
+      vpi_బహుళకం_flag = VPI_బహుళకం_NONE;
 }
 
-void vpiPostsim(void) {
+శూన్య vpiPostsim(శూన్య) {
       simulator_callback* cur;
 
       /*
        * Walk the list of register callbacks
        */
-      assert(vpi_mode_flag == VPI_MODE_NONE);
-      vpi_mode_flag = VPI_MODE_ROSYNC;
+      ప్రతిజ్ఞా(vpi_బహుళకం_flag == VPI_బహుళకం_NONE);
+      vpi_బహుళకం_flag = VPI_బహుళకం_ROSYNC;
 
-      while (EndOfSimulation) {
-	    cur = EndOfSimulation;
-	    EndOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
-		  set_callback_time(&cur->cb_data);
-		  (cur->cb_data.cb_rtn)(&cur->cb_data);
+      అయితే (చివర_యొక్క_Simulation) {
+	    cur = చివర_యొక్క_Simulation;
+	    చివర_యొక్క_Simulation = dynamic_cast<simulator_callback*>(cur->తదుపరి_2);
+	    ఒకవేళ (cur->cb_దత్తాంశం.cb_rtn != 0) {
+		  సమితి_callback_సమయం(&cur->cb_దత్తాంశం);
+		  (cur->cb_దత్తాంశం.cb_rtn)(&cur->cb_దత్తాంశం);
 	    }
-	    delete cur;
+	    తొలగించు cur;
       }
 
-      vpi_mode_flag = VPI_MODE_NONE;
+      vpi_బహుళకం_flag = VPI_బహుళకం_NONE;
 }
 
 /*
  * The scheduler invokes this to clear out callbacks for the next
  * simulation time.
  */
-void vpiNextSimTime(void)
+శూన్య vpi_తదుపరి_Sim_సమయం(శూన్య)
 {
       simulator_callback* cur;
-      simulator_callback* next = NextSimTime;
-      NextSimTime = 0;
+      simulator_callback* తదుపరి_2 = తదుపరి_Sim_సమయం;
+      తదుపరి_Sim_సమయం = 0;
 
-      assert(vpi_mode_flag == VPI_MODE_NONE);
-      vpi_mode_flag = VPI_MODE_RWSYNC;
+      ప్రతిజ్ఞా(vpi_బహుళకం_flag == VPI_బహుళకం_NONE);
+      vpi_బహుళకం_flag = VPI_బహుళకం_RWSYNC;
 
-      while (next) {
-            cur = next;
-            next = dynamic_cast<simulator_callback*>(cur->next);
-            if (cur->cb_data.cb_rtn != 0) {
-                  set_callback_time(&cur->cb_data);
-                  (cur->cb_data.cb_rtn)(&cur->cb_data);
+      అయితే (తదుపరి_2) {
+            cur = తదుపరి_2;
+            తదుపరి_2 = dynamic_cast<simulator_callback*>(cur->తదుపరి_2);
+            ఒకవేళ (cur->cb_దత్తాంశం.cb_rtn != 0) {
+                  సమితి_callback_సమయం(&cur->cb_దత్తాంశం);
+                  (cur->cb_దత్తాంశం.cb_rtn)(&cur->cb_దత్తాంశం);
             }
-            delete cur;
+            తొలగించు cur;
       }
 
-      vpi_mode_flag = VPI_MODE_NONE;
+      vpi_బహుళకం_flag = VPI_బహుళకం_NONE;
 }
 
-static simulator_callback* make_prepost(p_cb_data data)
+స్థిర simulator_callback* make_prepost(p_cb_దత్తాంశం దత్తాంశం)
 {
-      if ((data->reason == cbNextSimTime) && !check_callback_time(data, true))
-	    return 0;
+      ఒకవేళ ((దత్తాంశం->reason == cb_తదుపరి_Sim_సమయం) && !check_callback_సమయం(దత్తాంశం, నిజం))
+	    తిరిగి 0;
 
-      simulator_callback*obj = new simulator_callback(data);
+      simulator_callback*obj = కొత్త simulator_callback(దత్తాంశం);
 
       /* Insert at head of list */
-      switch (data->reason) {
-	  case cbEndOfCompile:
-	    obj->next = EndOfCompile;
-	    EndOfCompile = obj;
-	    break;
-	  case cbStartOfSimulation:
-	    obj->next = StartOfSimulation;
-	    StartOfSimulation = obj;
-	    break;
-	  case cbEndOfSimulation:
-	    obj->next = EndOfSimulation;
-	    EndOfSimulation = obj;
-	    break;
-	  case cbNextSimTime:
-	    obj->next = NextSimTime;
-	    NextSimTime = obj;
-	    break;
+      ఎంపిక (దత్తాంశం->reason) {
+	  స్థితి cb_చివర_యొక్క_Compile:
+	    obj->తదుపరి_2 = చివర_యొక్క_Compile;
+	    చివర_యొక్క_Compile = obj;
+	    ఆపు;
+	  స్థితి cb_ప్రారంభం_యొక్క_Simulation:
+	    obj->తదుపరి_2 = ప్రారంభం_యొక్క_Simulation;
+	    ప్రారంభం_యొక్క_Simulation = obj;
+	    ఆపు;
+	  స్థితి cb_చివర_యొక్క_Simulation:
+	    obj->తదుపరి_2 = చివర_యొక్క_Simulation;
+	    చివర_యొక్క_Simulation = obj;
+	    ఆపు;
+	  స్థితి cb_తదుపరి_Sim_సమయం:
+	    obj->తదుపరి_2 = తదుపరి_Sim_సమయం;
+	    తదుపరి_Sim_సమయం = obj;
+	    ఆపు;
       }
 
-      return obj;
+      తిరిగి obj;
 }
 
-vpiHandle vpi_register_cb(p_cb_data data)
+vpiHandle vpi_రిజిస్టరు_cb(p_cb_దత్తాంశం దత్తాంశం)
 {
-      struct __vpiCallback*obj = 0;
+      నిర్మాణం __vpiCallback*obj = 0;
 
-      assert(data);
-      switch (data->reason) {
+      ప్రతిజ్ఞా(దత్తాంశం);
+      ఎంపిక (దత్తాంశం->reason) {
 
-	  case cbValueChange:
-	    obj = make_value_change(data);
-	    break;
+	  స్థితి cb_విలువ_Change:
+	    obj = make_విలువ_change(దత్తాంశం);
+	    ఆపు;
 
-	  case cbReadOnlySynch:
-	    obj = make_sync(data, true);
-	    break;
+	  స్థితి cbReadOnlySynch:
+	    obj = make_sync(దత్తాంశం, నిజం);
+	    ఆపు;
 
-	  case cbReadWriteSynch:
-	    obj = make_sync(data, false);
-	    break;
+	  స్థితి cbReadWriteSynch:
+	    obj = make_sync(దత్తాంశం, అబద్ధం);
+	    ఆపు;
 
-	  case cbAtStartOfSimTime:
-	    obj = make_at_start_of_sim_time(data);
-	    break;
+	  స్థితి cb_At_ప్రారంభం_యొక్క_Sim_సమయం:
+	    obj = make_at_ప్రారంభం_యొక్క_sim_సమయం(దత్తాంశం);
+	    ఆపు;
 
-	  case cbAtEndOfSimTime:
-	    obj = make_at_end_of_sim_time(data);
-	    break;
+	  స్థితి cb_At_చివర_యొక్క_Sim_సమయం:
+	    obj = make_at_చివర_యొక్క_sim_సమయం(దత్తాంశం);
+	    ఆపు;
 
-	  case cbAfterDelay:
-	    obj = make_afterdelay(data);
-	    break;
+	  స్థితి cbAfterDelay:
+	    obj = make_afterdelay(దత్తాంశం);
+	    ఆపు;
 
-	  case cbEndOfCompile:
-	  case cbStartOfSimulation:
-	  case cbEndOfSimulation:
-	  case cbNextSimTime:
-	    obj = make_prepost(data);
-	    break;
+	  స్థితి cb_చివర_యొక్క_Compile:
+	  స్థితి cb_ప్రారంభం_యొక్క_Simulation:
+	  స్థితి cb_చివర_యొక్క_Simulation:
+	  స్థితి cb_తదుపరి_Sim_సమయం:
+	    obj = make_prepost(దత్తాంశం);
+	    ఆపు;
 
-	  default:
+	  అప్రమేయ:
 	    fprintf(stderr, "vpi error: vpi_register_cb invalid or "
 		    "unsupported callback reason: %d\n",
-		    (int)data->reason);
-	    break;
+		    (పూర్ణాంకం)దత్తాంశం->reason);
+	    ఆపు;
       }
 
-      return obj;
+      తిరిగి obj;
 }
 
 /*
@@ -798,23 +798,23 @@ vpiHandle vpi_register_cb(p_cb_data data)
  */
 PLI_INT32 vpi_remove_cb(vpiHandle ref)
 {
-      struct __vpiCallback*obj = dynamic_cast<__vpiCallback*>(ref);
-      assert(obj);
-      obj->cb_data.cb_rtn = 0;
+      నిర్మాణం __vpiCallback*obj = dynamic_cast<__vpiCallback*>(ref);
+      ప్రతిజ్ఞా(obj);
+      obj->cb_దత్తాంశం.cb_rtn = 0;
 
-      return 1;
+      తిరిగి 1;
 }
 
-void callback_execute(struct __vpiCallback*cur)
+శూన్య callback_execute(నిర్మాణం __vpiCallback*cur)
 {
-      const vpi_mode_t save_mode = vpi_mode_flag;
-      vpi_mode_flag = VPI_MODE_RWSYNC;
+      స్థిరరాశి vpi_బహుళకం_t save_బహుళకం = vpi_బహుళకం_flag;
+      vpi_బహుళకం_flag = VPI_బహుళకం_RWSYNC;
 
-      assert(cur->cb_data.cb_rtn);
-      set_callback_time(&cur->cb_data);
-      (cur->cb_data.cb_rtn)(&cur->cb_data);
+      ప్రతిజ్ఞా(cur->cb_దత్తాంశం.cb_rtn);
+      సమితి_callback_సమయం(&cur->cb_దత్తాంశం);
+      (cur->cb_దత్తాంశం.cb_rtn)(&cur->cb_దత్తాంశం);
 
-      vpi_mode_flag = save_mode;
+      vpi_బహుళకం_flag = save_బహుళకం;
 }
 
 /*
@@ -823,55 +823,55 @@ void callback_execute(struct __vpiCallback*cur)
  * the array words minimises memory use for the most common case (no array
  * words) or next most common case (one array word).
  */
-struct __vpi_array_word {
-      struct __vpi_array_word* next;
-      struct __vpiArray* array;
-      unsigned long word;
+నిర్మాణం __vpi_array_word {
+      నిర్మాణం __vpi_array_word* తదుపరి_2;
+      నిర్మాణం __vpiArray* array;
+      గుర్తులేని దీర్ఘ మాట;
 };
 
 vvp_vpi_callback::vvp_vpi_callback()
 {
       vpi_callbacks_ = 0;
-      array_words_ = 0;
+      array_పదాలు = 0;
 }
 
 vvp_vpi_callback::~vvp_vpi_callback()
 {
-      assert(vpi_callbacks_ == 0);
-      assert(array_words_ == 0);
+      ప్రతిజ్ఞా(vpi_callbacks_ == 0);
+      ప్రతిజ్ఞా(array_పదాలు == 0);
 }
 
-void vvp_vpi_callback::attach_as_word(vvp_array_t arr, unsigned long addr)
+శూన్య vvp_vpi_callback::attach_as_మాట(vvp_array_t arr, గుర్తులేని దీర్ఘ addr)
 {
-      struct __vpi_array_word*tmp = new __vpi_array_word;
+      నిర్మాణం __vpi_array_word*tmp = కొత్త __vpi_array_word;
       tmp->array = arr;
-      tmp->word = addr;
-      tmp->next = array_words_;
-      array_words_ = tmp;
+      tmp->మాట = addr;
+      tmp->తదుపరి_2 = array_పదాలు;
+      array_పదాలు = tmp;
 }
 
-void vvp_vpi_callback::add_vpi_callback(value_callback*cb)
+శూన్య vvp_vpi_callback::కూడు_vpi_callback(విలువ_callback*cb)
 {
-      cb->next = vpi_callbacks_;
+      cb->తదుపరి_2 = vpi_callbacks_;
       vpi_callbacks_ = cb;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_vpi_callback::clear_all_callbacks()
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య vvp_vpi_callback::clear_all_callbacks()
 {
-      while (vpi_callbacks_) {
-	    value_callback *tmp = dynamic_cast<value_callback*>
-	                            (vpi_callbacks_->next);
-	    delete vpi_callbacks_;
+      అయితే (vpi_callbacks_) {
+	    విలువ_callback *tmp = dynamic_cast<విలువ_callback*>
+	                            (vpi_callbacks_->తదుపరి_2);
+	    తొలగించు vpi_callbacks_;
 	    vpi_callbacks_ = tmp;
       }
-      while (array_words_) {
-	    struct __vpi_array_word*tmp = array_words_->next;
-	    delete array_words_;
-	    array_words_ = tmp;
+      అయితే (array_పదాలు) {
+	    నిర్మాణం __vpi_array_word*tmp = array_పదాలు->తదుపరి_2;
+	    తొలగించు array_పదాలు;
+	    array_పదాలు = tmp;
       }
 }
-#endif
+#అయితే_ముగింపు
 
 /*
  * A vvp_fun_signal uses this method to run its callbacks whenever it
@@ -879,189 +879,189 @@ void vvp_vpi_callback::clear_all_callbacks()
  * callback function. If the cb_rtn pointer is nil, then the object
  * has been marked for deletion. Free it.
  */
-void vvp_vpi_callback::run_vpi_callbacks()
+శూన్య vvp_vpi_callback::నిరంతరం_vpi_callbacks()
 {
-      struct __vpi_array_word*array_word = array_words_;
-      while (array_word) {
-	    array_word->array->word_change(array_word->word);
-	    array_word = array_word->next;
+      నిర్మాణం __vpi_array_word*array_మాట = array_పదాలు;
+      అయితే (array_మాట) {
+	    array_మాట->array->మాట_change(array_మాట->మాట);
+	    array_మాట = array_మాట->తదుపరి_2;
       }
 
-      value_callback *next = vpi_callbacks_;
-      value_callback *prev = 0;
+      విలువ_callback *తదుపరి_2 = vpi_callbacks_;
+      విలువ_callback *prev = 0;
 
-      while (next) {
-	    value_callback*cur = next;
-	    next = dynamic_cast<value_callback*>(cur->next);
+      అయితే (తదుపరి_2) {
+	    విలువ_callback*cur = తదుపరి_2;
+	    తదుపరి_2 = dynamic_cast<విలువ_callback*>(cur->తదుపరి_2);
 
-	    if (cur->cb_data.cb_rtn != 0) {
-		  if (cur->test_value_callback_ready()) {
-			if (cur->cb_data.value)
-			      get_value(cur->cb_data.value);
+	    ఒకవేళ (cur->cb_దత్తాంశం.cb_rtn != 0) {
+		  ఒకవేళ (cur->test_విలువ_callback_ready()) {
+			ఒకవేళ (cur->cb_దత్తాంశం.value)
+			      get_విలువ(cur->cb_దత్తాంశం.value);
 
 			callback_execute(cur);
 		  }
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } లేకపోతే ఒకవేళ (prev == 0) {
 
-		  vpi_callbacks_ = next;
-		  cur->next = 0;
-		  delete cur;
+		  vpi_callbacks_ = తదుపరి_2;
+		  cur->తదుపరి_2 = 0;
+		  తొలగించు cur;
 
-	    } else {
-		  assert(prev->next == cur);
-		  prev->next = next;
-		  cur->next = 0;
-		  delete cur;
+	    } లేకపోతే {
+		  ప్రతిజ్ఞా(prev->తదుపరి_2 == cur);
+		  prev->తదుపరి_2 = తదుపరి_2;
+		  cur->తదుపరి_2 = 0;
+		  తొలగించు cur;
 	    }
       }
 }
 
-void vvp_signal_value::get_signal_value(struct t_vpi_value*vp)
+శూన్య vvp_signal_విలువ::get_signal_విలువ(నిర్మాణం t_vpi_విలువ*vp)
 {
-      switch (vp->format) {
-	  case vpiScalarVal:
+      ఎంపిక (vp->format) {
+	  స్థితి vpiScalarVal:
 	    // This works because vvp_bit4_t has the same encoding
 	    // as a scalar value! See vpip_vec4_get_value() for a
 	    // more robust method.
 	    vp->value.scalar = value(0);
-	    break;
+	    ఆపు;
 
-	  case vpiBinStrVal:
-	  case vpiOctStrVal:
-	  case vpiDecStrVal:
-	  case vpiHexStrVal:
-	  case vpiIntVal:
-	  case vpiVectorVal:
-	  case vpiStringVal:
-	  case vpiRealVal: {
-	    unsigned wid = value_size();
+	  స్థితి vpiBinStrVal:
+	  స్థితి vpiOctStrVal:
+	  స్థితి vpiDecStrVal:
+	  స్థితి vpiHexStrVal:
+	  స్థితి vpiIntVal:
+	  స్థితి vpi_సదిశ_Val:
+	  స్థితి vpiStringVal:
+	  స్థితి vpiRealVal: {
+	    గుర్తులేని wid = విలువ_కొలత();
 	    vvp_vector4_t vec4(wid);
-	    for (unsigned idx = 0; idx < wid; idx += 1) {
-		  vec4.set_bit(idx, value(idx));
+	    కొరకు (గుర్తులేని idx = 0; idx < wid; idx += 1) {
+		  vec4.సమితి_బిట్టు(idx, value(idx));
 	    }
-	    vpip_vec4_get_value(vec4, wid, false, vp);
-	    break;
+	    vpip_vec4_get_విలువ(vec4, wid, అబద్ధం, vp);
+	    ఆపు;
 	  }
 
-	  case vpiSuppressVal:
-	    break;
+	  స్థితి vpiSuppressVal:
+	    ఆపు;
 
-	  default:
+	  అప్రమేయ:
 	    fprintf(stderr, "vpi_callback: value "
 		    "format %d not supported (fun_signal)\n",
-		    (int)vp->format);
+		    (పూర్ణాంకం)vp->format);
       }
 }
 
-static void real_signal_value(struct t_vpi_value*vp, double rval)
+స్థిర శూన్య real_signal_విలువ(నిర్మాణం t_vpi_విలువ*vp, ద్విగుణ rval)
 {
-      static const size_t RBUF_SIZE = 64 + 1;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_SIZE, RBUF_VAL));
+      స్థిర స్థిరరాశి size_t RBUF_కొలత = 64 + 1;
+      అక్షరం*rbuf = static_cast<అక్షరం *>(need_ఫలితం_buf(RBUF_కొలత, RBUF_VAL));
 
-      switch (vp->format) {
-	  case vpiObjTypeVal:
+      ఎంపిక (vp->format) {
+	  స్థితి vpiObjTypeVal:
 	    vp->format = vpiRealVal;
 	    // fallthrough
-	  case vpiRealVal:
+	  స్థితి vpiRealVal:
 	    vp->value.real = rval;
-	    break;
+	    ఆపు;
 
-	  case vpiIntVal:
+	  స్థితి vpiIntVal:
 	      /* NaN or +/- infinity are translated as 0. */
-	    if (rval != rval || (rval && (rval == 0.5*rval))) {
+	    ఒకవేళ (rval != rval || (rval && (rval == 0.5*rval))) {
 		  rval = 0.0;
-	    } else {
-		  rval = std::round(rval);
+	    } లేకపోతే {
+		  rval = std::విడత_2(rval);
 	    }
 	    vp->value.integer = (PLI_INT32)rval;
-	    break;
+	    ఆపు;
 
-	  case vpiDecStrVal:
-	    if (std::isnan(rval))
-		  snprintf(rbuf, RBUF_SIZE, "%s", "nan");
-	    else
-		  snprintf(rbuf, RBUF_SIZE, "%0.0f", std::round(rval));
+	  స్థితి vpiDecStrVal:
+	    ఒకవేళ (std::isnan(rval))
+		  snprintf(rbuf, RBUF_కొలత, "%s", "nan");
+	    లేకపోతే
+		  snprintf(rbuf, RBUF_కొలత, "%0.0f", std::విడత_2(rval));
 	    vp->value.str = rbuf;
-	    break;
+	    ఆపు;
 
-	  case vpiHexStrVal:
-	    snprintf(rbuf, RBUF_SIZE, "%" PRIx64, vlg_round_to_u64(rval));
+	  స్థితి vpiHexStrVal:
+	    snprintf(rbuf, RBUF_కొలత, "%" PRIx64, vlg_విడత_గమ్యం_u64(rval));
 	    vp->value.str = rbuf;
-	    break;
+	    ఆపు;
 
-	  case vpiBinStrVal: {
-		uint64_t val = vlg_round_to_u64(rval);
-		unsigned len = 0;
+	  స్థితి vpiBinStrVal: {
+		uint64_t val = vlg_విడత_గమ్యం_u64(rval);
+		గుర్తులేని len = 0;
 
-		while (val > 0) {
+		అయితే (val > 0) {
 		      len += 1;
 		      val /= 2;
 		}
 
-		val = vlg_round_to_u64(rval);
-		for (unsigned idx = 0 ;  idx < len ;  idx += 1) {
+		val = vlg_విడత_గమ్యం_u64(rval);
+		కొరకు (గుర్తులేని idx = 0 ;  idx < len ;  idx += 1) {
 		      rbuf[len-idx-1] = (val & 1)? '1' : '0';
 		      val /= 2;
 		}
 
 		rbuf[len] = 0;
-		if (len == 0) {
+		ఒకవేళ (len == 0) {
 		      rbuf[0] = '0';
 		      rbuf[1] = 0;
 		}
 		vp->value.str = rbuf;
-		break;
+		ఆపు;
 	  }
 
-	  case vpiSuppressVal:
-	    break;
+	  స్థితి vpiSuppressVal:
+	    ఆపు;
 
-	  default:
+	  అప్రమేయ:
 	    fprintf(stderr, "vpi_callback: value "
 		    "format %d not supported (fun_signal_real)\n",
-		    (int)vp->format);
+		    (పూర్ణాంకం)vp->format);
       }
 }
 
-void vvp_fun_signal_real_aa::get_signal_value(struct t_vpi_value*vp)
+శూన్య vvp_fun_signal_real_aa::get_signal_విలువ(నిర్మాణం t_vpi_విలువ*vp)
 {
-      real_signal_value(vp, real_value());
+      real_signal_విలువ(vp, real_విలువ());
 }
 
-void vvp_wire_real::get_signal_value(struct t_vpi_value*vp)
+శూన్య vvp_wire_real::get_signal_విలువ(నిర్మాణం t_vpi_విలువ*vp)
 {
-      real_signal_value(vp, real_value());
+      real_signal_విలువ(vp, real_విలువ());
 }
 
-void vvp_fun_signal_string_aa::get_signal_value(struct t_vpi_value*)
+శూన్య vvp_fun_signal_string_aa::get_signal_విలువ(నిర్మాణం t_vpi_విలువ*)
 {
-      assert(0);
+      ప్రతిజ్ఞా(0);
 }
-#if 0
-void vvp_wire_string::get_signal_value(struct t_vpi_value*vp)
+#ఒకవేళ 0
+శూన్య vvp_wire_string::get_signal_విలువ(నిర్మాణం t_vpi_విలువ*vp)
 {
-      assert(0);
+      ప్రతిజ్ఞా(0);
 }
-#endif
-void vvp_wire_vec4::get_value(struct t_vpi_value*val)
+#అయితే_ముగింపు
+శూన్య vvp_wire_vec4::get_విలువ(నిర్మాణం t_vpi_విలువ*val)
 {
-      get_signal_value(val);
-}
-
-void vvp_wire_vec8::get_value(struct t_vpi_value*val)
-{
-      get_signal_value(val);
+      get_signal_విలువ(val);
 }
 
-void vvp_wire_real::get_value(struct t_vpi_value*val)
+శూన్య vvp_wire_vec8::get_విలువ(నిర్మాణం t_vpi_విలువ*val)
 {
-      get_signal_value(val);
+      get_signal_విలువ(val);
 }
-#if 0
-void vvp_wire_string::get_value(struct t_vpi_value*val)
+
+శూన్య vvp_wire_real::get_విలువ(నిర్మాణం t_vpi_విలువ*val)
 {
-      assert(0);
+      get_signal_విలువ(val);
 }
-#endif
+#ఒకవేళ 0
+శూన్య vvp_wire_string::get_విలువ(నిర్మాణం t_vpi_విలువ*val)
+{
+      ప్రతిజ్ఞా(0);
+}
+#అయితే_ముగింపు

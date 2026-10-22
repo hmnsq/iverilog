@@ -30,7 +30,7 @@
    achieved by scheduling an initial value to be sent to port 3. Any
    value received on port 3 will propagate an initial value of 'bx. */
 
-vvp_latch::vvp_latch(unsigned width)
+vvp_latch::vvp_latch(గుర్తులేని width)
 : en_(BIT4_X), d_(width, BIT4_X)
 {
 }
@@ -39,56 +39,56 @@ vvp_latch::~vvp_latch()
 {
 }
 
-void vvp_latch::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_latch::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                           vvp_context_t)
 {
       vvp_bit4_t tmp;
 
-      switch (port.port()) {
+      ఎంపిక (పోర్టు.పోర్టు()) {
 
-	  case 0: // D
-	    d_ = bit;
-	    if (en_ == BIT4_1)
-		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	  స్థితి 0: // D
+	    d_ = బిట్టు;
+	    ఒకవేళ (en_ == BIT4_1)
+		  కాలపట్టిక_propagate_సదిశ(పోర్టు.ptr(), 0, d_);
+	    ఆపు;
 
-	  case 1: // EN
-	    assert(bit.size() == 1);
+	  స్థితి 1: // EN
+	    ప్రతిజ్ఞా(బిట్టు.size() == 1);
 	    tmp = en_;
-	    en_ = bit.value(0);
-	    if (en_ == BIT4_1 && tmp != BIT4_1)
-		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	    en_ = బిట్టు.value(0);
+	    ఒకవేళ (en_ == BIT4_1 && tmp != BIT4_1)
+		  కాలపట్టిక_propagate_సదిశ(పోర్టు.ptr(), 0, d_);
+	    ఆపు;
 
-	  case 2:
-	    assert(0);
-	    break;
+	  స్థితి 2:
+	    ప్రతిజ్ఞా(0);
+	    ఆపు;
 
-	  case 3:
-	    port.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
-	    break;
+	  స్థితి 3:
+	    పోర్టు.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
+	    ఆపు;
       }
 }
 
-void vvp_latch::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			     unsigned base, unsigned vwid, vvp_context_t ctx)
+శూన్య vvp_latch::recv_vec4_pv(vvp_net_ptr_t ptr, స్థిరరాశి vvp_vector4_t&బిట్టు,
+			     గుర్తులేని పునాది, గుర్తులేని vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, బిట్టు, పునాది, vwid, ctx);
 }
 
-void compile_latch(char*label, unsigned width,
-		   struct symb_s arg_d,
-		   struct symb_s arg_e)
+శూన్య compile_latch(అక్షరం*label, గుర్తులేని width,
+		   నిర్మాణం symb_s arg_d,
+		   నిర్మాణం symb_s arg_e)
 {
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_latch*fun = new vvp_latch(width);
+      vvp_net_t*ptr = కొత్త vvp_net_t;
+      vvp_latch*fun = కొత్త vvp_latch(width);
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_e.text);
+      define_functor_చిహ్నం(label, ptr);
+      విడుదల(label);
+      ఆదానం_connect(ptr, 0, arg_d.పాఠ్యం);
+      ఆదానం_connect(ptr, 1, arg_e.పాఠ్యం);
 
       vvp_vector4_t init_val = vvp_vector4_t(1, BIT4_1);
-      schedule_init_vector(vvp_net_ptr_t(ptr,3), init_val);
+      కాలపట్టిక_init_సదిశ(vvp_net_ptr_t(ptr,3), init_val);
 }

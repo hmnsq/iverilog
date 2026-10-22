@@ -19,185 +19,185 @@
 
 # include  "compile.h"
 # include  "enum_type.h"
-#ifdef CHECK_WITH_VALGRIND
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#అయితే_ముగింపు
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
-struct enumconst_s : public __vpiHandle {
+నిర్మాణం enumconst_s : బహిరంగ __vpiHandle {
       enumconst_s();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం code) override;
+      అక్షరం* vpi_get_str(పూర్ణాంకం code) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
 
-      const char*name;
-      bool is_signed;
+      స్థిరరాశి అక్షరం*name;
+      తార్కిక is_signed;
       vvp_vector2_t val2;
       vvp_vector4_t val4;
 };
 
-struct __vpiEnumTypespec : public __vpiHandle {
+నిర్మాణం __vpiEnumTypespec : బహిరంగ __vpiHandle {
       __vpiEnumTypespec();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం code) override;
+      vpiHandle vpi_iterate(పూర్ణాంకం code) override;
 
-      std::vector<enumconst_s> names;
-      int base_type_code;
-      bool is_signed;
+      std::vector<enumconst_s> పేర్లు;
+      పూర్ణాంకం పునాది_type_సంకేతం;
+      తార్కిక is_signed;
 };
 
 
-inline __vpiEnumTypespec::__vpiEnumTypespec()
+అంతఃవరుస __vpiEnumTypespec::__vpiEnumTypespec()
 { }
 
-int __vpiEnumTypespec::get_type_code(void) const
-{ return vpiEnumTypespec; }
+పూర్ణాంకం __vpiEnumTypespec::get_type_సంకేతం(శూన్య) స్థిరరాశి
+{ తిరిగి vpiEnumTypespec; }
 
-int __vpiEnumTypespec::vpi_get(int code)
+పూర్ణాంకం __vpiEnumTypespec::vpi_get(పూర్ణాంకం code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return names.size();
+      ఎంపిక (code) {
+	  స్థితి vpi_కొలత:
+	    తిరిగి పేర్లు.size();
 
 	    /* This is not currently set correctly. We always use vpiReg for
 	     * four state variables and vpiBitVar for two state variables.
 	     * This minimal functionality is needed to get the next() and
 	     * prev() methods to work correctly with invalid values. */
-	  case vpiBaseTypespec:
-	    return base_type_code;
+	  స్థితి vpi_పునాది_Typespec:
+	    తిరిగి పునాది_type_సంకేతం;
 
-	  case vpiSigned:
-	    return is_signed;
+	  స్థితి vpiSigned:
+	    తిరిగి is_signed;
 
-	  default:
+	  అప్రమేయ:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by __vpiEnumTypespec\n", code);
-	    assert(0);
-	    return 0;
+	    ప్రతిజ్ఞా(0);
+	    తిరిగి 0;
       }
 }
 
 
-vpiHandle __vpiEnumTypespec::vpi_iterate(int code)
+vpiHandle __vpiEnumTypespec::vpi_iterate(పూర్ణాంకం code)
 {
-      if (code == vpiEnumConst) {
-	    vpiHandle*args = static_cast<vpiHandle*>
-	                                (calloc(names.size(), sizeof(vpiHandle*)));
-	    for (size_t idx = 0 ; idx < names.size() ; idx += 1)
-		  args[idx] = &names[idx];
+      ఒకవేళ (code == vpiEnumConst) {
+	    vpiHandle*వాదనలు = static_cast<vpiHandle*>
+	                                (సున్నా_జ్ఞాపకం_ఇవ్వు(పేర్లు.size(), పరిమాణం(vpiHandle*)));
+	    కొరకు (size_t idx = 0 ; idx < పేర్లు.size() ; idx += 1)
+		  వాదనలు[idx] = &పేర్లు[idx];
 
-	    return vpip_make_iterator(names.size(), args, true);
+	    తిరిగి vpip_make_iterator(పేర్లు.size(), వాదనలు, నిజం);
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
 
-inline enumconst_s::enumconst_s()
+అంతఃవరుస enumconst_s::enumconst_s()
 { }
 
-int enumconst_s::get_type_code(void) const
-{ return vpiEnumConst; }
+పూర్ణాంకం enumconst_s::get_type_సంకేతం(శూన్య) స్థిరరాశి
+{ తిరిగి vpiEnumConst; }
 
-int enumconst_s::vpi_get(int code)
+పూర్ణాంకం enumconst_s::vpi_get(పూర్ణాంకం code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return val4.size()? val4.size() : val2.size();
-	  default:
-	    return 0;
+      ఎంపిక (code) {
+	  స్థితి vpi_కొలత:
+	    తిరిగి val4.size()? val4.size() : val2.size();
+	  అప్రమేయ:
+	    తిరిగి 0;
       }
 }
 
 
-char* enumconst_s::vpi_get_str(int code)
+అక్షరం* enumconst_s::vpi_get_str(పూర్ణాంకం code)
 {
-      switch (code) {
-	  case vpiName:
-	    return const_cast<char*> (name);
-	  default:
-	    return 0;
+      ఎంపిక (code) {
+	  స్థితి vpiName:
+	    తిరిగి const_cast<అక్షరం*> (name);
+	  అప్రమేయ:
+	    తిరిగి 0;
       }
 }
 
 
-void enumconst_s::vpi_get_value(p_vpi_value val)
+శూన్య enumconst_s::vpi_get_విలువ(p_vpi_విలువ val)
 {
-      if (val4.size() > 0) {
-	    vpip_vec4_get_value(val4, val4.size(), is_signed, val);
-      } else {
-	    vpip_vec2_get_value(val2, val2.size(), is_signed, val);
+      ఒకవేళ (val4.size() > 0) {
+	    vpip_vec4_get_విలువ(val4, val4.size(), is_signed, val);
+      } లేకపోతే {
+	    vpip_vec2_get_విలువ(val2, val2.size(), is_signed, val);
       }
 }
 
 
-void compile_enum2_type(char*label, long width, bool signed_flag,
-                        std::list<struct enum_name_s>*names)
+శూన్య compile_enum2_type(అక్షరం*label, దీర్ఘ width, తార్కిక signed_flag,
+                        std::list<నిర్మాణం enum_name_s>*పేర్లు)
 {
-      struct __vpiEnumTypespec*spec = new struct __vpiEnumTypespec;
-      spec->names = std::vector<enumconst_s> (names->size());
+      నిర్మాణం __vpiEnumTypespec*spec = కొత్త నిర్మాణం __vpiEnumTypespec;
+      spec->పేర్లు = std::vector<enumconst_s> (పేర్లు->size());
       spec->is_signed = signed_flag;
-      spec->base_type_code = vpiBitVar;
+      spec->పునాది_type_సంకేతం = vpi_బిట్టు_Var;
 
       size_t idx = 0;
-      for (list<struct enum_name_s>::iterator cur = names->begin()
-		 ; cur != names->end() ;  ++cur, ++idx) {
-	    assert(cur->val4 == 0);
-	    spec->names[idx].name = cur->text;
-	    spec->names[idx].val2 = vvp_vector2_t(cur->val2, width);
-	    spec->names[idx].is_signed = signed_flag;
+      కొరకు (list<నిర్మాణం enum_name_s>::iterator cur = పేర్లు->begin()
+		 ; cur != పేర్లు->చివర() ;  ++cur, ++idx) {
+	    ప్రతిజ్ఞా(cur->val4 == 0);
+	    spec->పేర్లు[idx].name = cur->పాఠ్యం;
+	    spec->పేర్లు[idx].val2 = vvp_vector2_t(cur->val2, width);
+	    spec->పేర్లు[idx].is_signed = signed_flag;
       }
 
-      assert(idx == spec->names.size());
-      compile_vpi_symbol(label, spec);
-      vpip_attach_to_current_scope(spec);
+      ప్రతిజ్ఞా(idx == spec->పేర్లు.size());
+      compile_vpi_చిహ్నం(label, spec);
+      vpip_attach_గమ్యం_current_scope(spec);
 
-      free(label);
-      delete names;
+      విడుదల(label);
+      తొలగించు పేర్లు;
 }
 
-void compile_enum4_type(char*label, long width, bool signed_flag,
-                        std::list<struct enum_name_s>*names)
+శూన్య compile_enum4_type(అక్షరం*label, దీర్ఘ width, తార్కిక signed_flag,
+                        std::list<నిర్మాణం enum_name_s>*పేర్లు)
 {
-      struct __vpiEnumTypespec*spec = new struct __vpiEnumTypespec;
-      spec->names = std::vector<enumconst_s> (names->size());
+      నిర్మాణం __vpiEnumTypespec*spec = కొత్త నిర్మాణం __vpiEnumTypespec;
+      spec->పేర్లు = std::vector<enumconst_s> (పేర్లు->size());
       spec->is_signed = signed_flag;
-      spec->base_type_code = vpiReg;
+      spec->పునాది_type_సంకేతం = vpiReg;
 
       size_t idx = 0;
-      for (list<struct enum_name_s>::iterator cur = names->begin()
-		 ; cur != names->end() ;  ++cur, ++idx) {
-	    spec->names[idx].name = cur->text;
-	    assert(cur->val4);
-	    spec->names[idx].val4 = vector4_from_text(cur->val4, width);
-	    spec->names[idx].is_signed = signed_flag;
-	    free(cur->val4);
+      కొరకు (list<నిర్మాణం enum_name_s>::iterator cur = పేర్లు->begin()
+		 ; cur != పేర్లు->చివర() ;  ++cur, ++idx) {
+	    spec->పేర్లు[idx].name = cur->పాఠ్యం;
+	    ప్రతిజ్ఞా(cur->val4);
+	    spec->పేర్లు[idx].val4 = vector4_from_పాఠ్యం(cur->val4, width);
+	    spec->పేర్లు[idx].is_signed = signed_flag;
+	    విడుదల(cur->val4);
 	    cur->val4 = 0;
       }
 
-      assert(idx == spec->names.size());
-      compile_vpi_symbol(label, spec);
-      vpip_attach_to_current_scope(spec);
+      ప్రతిజ్ఞా(idx == spec->పేర్లు.size());
+      compile_vpi_చిహ్నం(label, spec);
+      vpip_attach_గమ్యం_current_scope(spec);
 
-      free(label);
-      delete names;
+      విడుదల(label);
+      తొలగించు పేర్లు;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void enum_delete(vpiHandle item)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య enum_delete(vpiHandle అంశం)
 {
-      struct __vpiEnumTypespec*obj = dynamic_cast<__vpiEnumTypespec*>(item);
+      నిర్మాణం __vpiEnumTypespec*obj = dynamic_cast<__vpiEnumTypespec*>(అంశం);
 
-      for (vector<enumconst_s>::iterator iter = obj->names.begin();
-           iter != obj->names.end(); ++ iter ) {
-	    delete [] iter->name;
+      కొరకు (vector<enumconst_s>::iterator iter = obj->పేర్లు.begin();
+           iter != obj->పేర్లు.చివర(); ++ iter ) {
+	    తొలగించు [] iter->name;
       }
 
-      delete obj;
+      తొలగించు obj;
 }
-#endif
+#అయితే_ముగింపు

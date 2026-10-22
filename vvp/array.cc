@@ -25,9 +25,9 @@
 # include  "vvp_net_sig.h"
 # include  "vvp_darray.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
-#include  "vvp_cleanup.h"
-#endif
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+#అన్తర్భావ  "vvp_cleanup.h"
+#అయితే_ముగింపు
 # include  <cstdlib>
 # include  <cstring>
 # include  <climits>
@@ -36,1041 +36,1041 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+ఉపయోగించి నామాకాశ std;
 
-unsigned long count_net_arrays = 0;
-unsigned long count_net_array_words = 0;
-unsigned long count_var_arrays = 0;
-unsigned long count_var_array_words = 0;
-unsigned long count_real_arrays = 0;
-unsigned long count_real_array_words = 0;
+గుర్తులేని దీర్ఘ లెక్క_net_arrays = 0;
+గుర్తులేని దీర్ఘ లెక్క_net_array_పదాలు = 0;
+గుర్తులేని దీర్ఘ లెక్క_var_arrays = 0;
+గుర్తులేని దీర్ఘ లెక్క_var_array_పదాలు = 0;
+గుర్తులేని దీర్ఘ లెక్క_real_arrays = 0;
+గుర్తులేని దీర్ఘ లెక్క_real_array_పదాలు = 0;
 
-static symbol_map_s<struct __vpiArray>* array_table =0;
+స్థిర చిహ్నం_map_s<నిర్మాణం __vpiArray>* array_పట్టిక =0;
 
-class vvp_fun_arrayport;
-static void array_attach_port(vvp_array_t, vvp_fun_arrayport*);
+తరగతి vvp_fun_arrayport;
+స్థిర శూన్య array_attach_పోర్టు(vvp_array_t, vvp_fun_arrayport*);
 
-vvp_array_t array_find(const char*label)
+vvp_array_t array_కనుగొను(స్థిరరాశి అక్షరం*label)
 {
-      if (array_table == 0)
-	    return 0;
+      ఒకవేళ (array_పట్టిక == 0)
+	    తిరిగి 0;
 
-      vvp_array_t v = array_table->sym_get_value(label);
-      return v;
+      vvp_array_t v = array_పట్టిక->sym_get_విలువ(label);
+      తిరిగి v;
 }
 
-struct __vpiArrayVthrA : public __vpiHandle {
-      int get_type_code(void) const override { return vpiMemoryWord; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
+నిర్మాణం __vpiArrayVthrA : బహిరంగ __vpiHandle {
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpi_జ్ఞాపకం_మాట; }
+      పూర్ణాంకం vpi_get(పూర్ణాంకం code) override;
+      అక్షరం* vpi_get_str(పూర్ణాంకం code) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
+      vpiHandle vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags) override;
+      vpiHandle vpi_handle(పూర్ణాంకం code) override;
 
-      struct __vpiArray*array;
+      నిర్మాణం __vpiArray*array;
 	// If this is set, then use it to get the index value.
-      vpiHandle address_handle;
+      vpiHandle చిరునామా_handle;
 	// If wid==0, then address is the address into the array.
-      unsigned address;
+      గుర్తులేని చిరునామా;
 
-      unsigned get_address() const
+      గుర్తులేని get_చిరునామా() స్థిరరాశి
       {
-	    if (address_handle) {
-		  s_vpi_value vp;
+	    ఒకవేళ (చిరునామా_handle) {
+		  s_vpi_విలువ vp;
 		    /* Check to see if the value is defined. */
-		  vp.format = vpiVectorVal;
-		  address_handle->vpi_get_value(&vp);
-		  int words = (address_handle->vpi_get(vpiSize)-1)/32 + 1;
-		  for(int idx = 0; idx < words; idx += 1) {
+		  vp.format = vpi_సదిశ_Val;
+		  చిరునామా_handle->vpi_get_విలువ(&vp);
+		  పూర్ణాంకం పదాలు = (చిరునామా_handle->vpi_get(vpi_కొలత)-1)/32 + 1;
+		  కొరకు(పూర్ణాంకం idx = 0; idx < పదాలు; idx += 1) {
 			  /* Return UINT_MAX to indicate an X base. */
-			if (vp.value.vector[idx].bval != 0) return UINT_MAX;
+			ఒకవేళ (vp.value.vector[idx].bval != 0) తిరిగి UINT_MAX;
 		  }
 		    /* The value is defined so get and return it. */
 		  vp.format = vpiIntVal;
-		  address_handle->vpi_get_value(&vp);
-		  return vp.value.integer;
+		  చిరునామా_handle->vpi_get_విలువ(&vp);
+		  తిరిగి vp.value.integer;
 	    }
 
-	    return address;
+	    తిరిగి చిరునామా;
       }
 };
 
 
-struct __vpiArrayVthrAPV : public __vpiHandle {
-      int get_type_code(void) const override { return vpiPartSelect; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_handle(int code) override;
+నిర్మాణం __vpiArrayVthrAPV : బహిరంగ __vpiHandle {
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpiPartSelect; }
+      పూర్ణాంకం vpi_get(పూర్ణాంకం code) override;
+      అక్షరం* vpi_get_str(పూర్ణాంకం code) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
+      vpiHandle vpi_handle(పూర్ణాంకం code) override;
 
-      struct __vpiArray*array;
-      unsigned word_sel;
-      unsigned part_bit;
-      unsigned part_wid;
+      నిర్మాణం __vpiArray*array;
+      గుర్తులేని మాట_sel;
+      గుర్తులేని part_బిట్టు;
+      గుర్తులేని part_wid;
 };
 
-bool is_net_array(vpiHandle obj)
+తార్కిక is_net_array(vpiHandle obj)
 {
-      struct __vpiArray*rfp = dynamic_cast<__vpiArray*> (obj);
-      assert(rfp);
+      నిర్మాణం __vpiArray*rfp = dynamic_cast<__vpiArray*> (obj);
+      ప్రతిజ్ఞా(rfp);
 
-      if (rfp->nets != 0) return true;
-      return false;
+      ఒకవేళ (rfp->nets != 0) తిరిగి నిజం;
+      తిరిగి అబద్ధం;
 }
 
 // This function return true if the underlying array words are real.
-static bool vpi_array_is_real(const vvp_array_t arr)
+స్థిర తార్కిక vpi_array_is_real(స్థిరరాశి vvp_array_t arr)
 {
 	// Check to see if this is a variable/register array.
-      if (arr->vals4 != 0)  // A bit based variable/register array.
-	    return false;
+      ఒకవేళ (arr->vals4 != 0)  // A bit based variable/register array.
+	    తిరిగి అబద్ధం;
 
-      if (dynamic_cast<vvp_darray_real*> (arr->vals))
-	    return true;
+      ఒకవేళ (dynamic_cast<vvp_darray_real*> (arr->vals))
+	    తిరిగి నిజం;
 
-      if (arr->vals != 0)
-	    return false;
+      ఒకవేళ (arr->vals != 0)
+	    తిరిగి అబద్ధం;
 
 	// This must be a net array so look at element 0 to find the type.
-      assert(arr->nets != 0);
-      assert(arr->get_size() > 0);
-      const struct __vpiRealVar*rsig = dynamic_cast<__vpiRealVar*>(arr->nets[0]);
-      if (rsig) {
-	    return true;
+      ప్రతిజ్ఞా(arr->nets != 0);
+      ప్రతిజ్ఞా(arr->get_కొలత() > 0);
+      స్థిరరాశి నిర్మాణం __vpiRealVar*rsig = dynamic_cast<__vpiRealVar*>(arr->nets[0]);
+      ఒకవేళ (rsig) {
+	    తిరిగి నిజం;
       }
 
-      return false;
+      తిరిగి అబద్ధం;
 }
 
-static bool vpi_array_is_string(const vvp_array_t arr)
+స్థిర తార్కిక vpi_array_is_string(స్థిరరాశి vvp_array_t arr)
 {
 	// Check to see if this is a variable/register array.
-      if (arr->vals4 != 0)  // A bit based variable/register array.
-	    return false;
+      ఒకవేళ (arr->vals4 != 0)  // A bit based variable/register array.
+	    తిరిగి అబద్ధం;
 
-      if (dynamic_cast<vvp_darray_string*> (arr->vals))
-	    return true;
+      ఒకవేళ (dynamic_cast<vvp_darray_string*> (arr->vals))
+	    తిరిగి నిజం;
 
-      return false;
+      తిరిగి అబద్ధం;
 }
 
-int __vpiArray::get_word_size() const
+పూర్ణాంకం __vpiArray::get_మాట_కొలత() స్థిరరాశి
 {
-      unsigned width;
+      గుర్తులేని width;
 
-      assert(get_size() > 0);
+      ప్రతిజ్ఞా(get_కొలత() > 0);
 	/* For a net array we need to get the width from the first element. */
-      if (nets) {
-	    assert(vals4 == 0 && vals == 0);
-	    const struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(nets[0]);
-	    assert(vsig);
-	    width = vpip_size(vsig);
+      ఒకవేళ (nets) {
+	    ప్రతిజ్ఞా(vals4 == 0 && vals == 0);
+	    స్థిరరాశి నిర్మాణం __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(nets[0]);
+	    ప్రతిజ్ఞా(vsig);
+	    width = vpip_కొలత(vsig);
 	/* For a variable array we can get the width from vals_width. */
-      } else {
-	    assert(vals4 || vals);
-	    width = vals_width;
+      } లేకపోతే {
+	    ప్రతిజ్ఞా(vals4 || vals);
+	    width = vals_వెడల్పు;
       }
 
-      return width;
+      తిరిగి width;
 }
 
-char*__vpiArray::get_word_str(struct __vpiArrayWord*word, int code)
+అక్షరం*__vpiArray::get_మాట_str(నిర్మాణం __vpiArrayWord*మాట, పూర్ణాంకం code)
 {
-      unsigned index = word->get_index();
+      గుర్తులేని సూచీ = మాట->get_సూచీ();
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      ఒకవేళ (code == vpiFile) {  // Not implemented for now!
+	    తిరిగి simple_సమితి_rbuf_str(file_పేర్లు[0]);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%d", (int)index + first_addr.get_value());
-      return generic_get_str(code, get_scope(), name, sidx);
+      అక్షరం sidx [64];
+      snprintf(sidx, 63, "%d", (పూర్ణాంకం)సూచీ + మొదటి_addr.get_విలువ());
+      తిరిగి generic_get_str(code, get_scope(), name, sidx);
 }
 
-void __vpiArray::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
+శూన్య __vpiArray::get_మాట_విలువ(నిర్మాణం __vpiArrayWord*మాట, p_vpi_విలువ vp)
 {
-      unsigned index = word->get_index();
+      గుర్తులేని సూచీ = మాట->get_సూచీ();
 
     // Determine the appropriate format (The Verilog PLI Handbook 5.2.10)
-      if(vp->format == vpiObjTypeVal) {
-          if(vpi_array_is_real(this))
+      ఒకవేళ(vp->format == vpiObjTypeVal) {
+          ఒకవేళ(vpi_array_is_real(ఇది))
               vp->format = vpiRealVal;
-          else if(vpi_array_is_string(this))
+          లేకపోతే ఒకవేళ(vpi_array_is_string(ఇది))
               vp->format = vpiStringVal;
-          else
+          లేకపోతే
               vp->format = vpiIntVal;
       }
 
-      if(vals4) {
-          vpip_vec4_get_value(vals4->get_word(index),
+      ఒకవేళ(vals4) {
+          vpip_vec4_get_విలువ(vals4->get_మాట(సూచీ),
                               vals4->width(), signed_flag, vp);
-      } else if(vals) {
-          switch(vp->format) {
-            case vpiBinStrVal:
-            case vpiOctStrVal:
-            case vpiDecStrVal:
-            case vpiHexStrVal:
-            case vpiScalarVal:
-            case vpiIntVal:
-            case vpiVectorVal:
+      } లేకపోతే ఒకవేళ(vals) {
+          ఎంపిక(vp->format) {
+            స్థితి vpiBinStrVal:
+            స్థితి vpiOctStrVal:
+            స్థితి vpiDecStrVal:
+            స్థితి vpiHexStrVal:
+            స్థితి vpiScalarVal:
+            స్థితి vpiIntVal:
+            స్థితి vpi_సదిశ_Val:
             {
                 vvp_vector4_t v;
-                vals->get_word(index, v);
-                vpip_vec4_get_value(v, vals_width, signed_flag, vp);
+                vals->get_మాట(సూచీ, v);
+                vpip_vec4_get_విలువ(v, vals_వెడల్పు, signed_flag, vp);
             }
-            break;
+            ఆపు;
 
-            case vpiRealVal:
+            స్థితి vpiRealVal:
             {
-                double d;
-                vals->get_word(index, d);
-                vpip_real_get_value(d, vp);
+                ద్విగుణ d;
+                vals->get_మాట(సూచీ, d);
+                vpip_real_get_విలువ(d, vp);
             }
-            break;
+            ఆపు;
 
-            case vpiStringVal:
+            స్థితి vpiStringVal:
             {
                 string s;
-                vals->get_word(index, s);
-                vpip_string_get_value(s, vp);
+                vals->get_మాట(సూచీ, s);
+                vpip_string_get_విలువ(s, vp);
             }
-            break;
+            ఆపు;
 
-            default:
+            అప్రమేయ:
                 fprintf(stderr, "vpi sorry: format is not implemented\n");
-                assert(false);
+                ప్రతిజ్ఞా(అబద్ధం);
           }
       }
 }
 
-void __vpiArray::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int)
+శూన్య __vpiArray::put_మాట_విలువ(నిర్మాణం __vpiArrayWord*మాట, p_vpi_విలువ vp, పూర్ణాంకం)
 {
-      unsigned index = word->get_index();
-      vvp_vector4_t val = vec4_from_vpi_value(vp, vals_width);
-      set_word(index, 0, val);
+      గుర్తులేని సూచీ = మాట->get_సూచీ();
+      vvp_vector4_t val = vec4_from_vpi_విలువ(vp, vals_వెడల్పు);
+      సమితి_మాట(సూచీ, 0, val);
 }
 
-vpiHandle __vpiArray::get_iter_index(struct __vpiArrayIterator*, int idx)
+vpiHandle __vpiArray::get_iter_సూచీ(నిర్మాణం __vpiArrayIterator*, పూర్ణాంకం idx)
 {
-      if (nets) return nets[idx];
+      ఒకవేళ (nets) తిరిగి nets[idx];
 
-      assert(vals4 || vals);
+      ప్రతిజ్ఞా(vals4 || vals);
 
-      if (vals_words == 0) make_vals_words();
+      ఒకవేళ (vals_పదాలు == 0) make_vals_పదాలు();
 
-      return &(vals_words[idx].as_word);
+      తిరిగి &(vals_పదాలు[idx].as_మాట);
 }
 
-int __vpiArray::vpi_get(int code)
+పూర్ణాంకం __vpiArray::vpi_get(పూర్ణాంకం code)
 {
-      switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+      ఎంపిక (code) {
+	  స్థితి vpi_పంక్తి_No:
+	    తిరిగి 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return get_size();
+	  స్థితి vpi_కొలత:
+	    తిరిగి get_కొలత();
 
-	  case vpiAutomatic:
-	    return scope->is_automatic()? 1 : 0;
+	  స్థితి vpiAutomatic:
+	    తిరిగి scope->is_automatic()? 1 : 0;
 
-	  default:
-	    return 0;
+	  అప్రమేయ:
+	    తిరిగి 0;
       }
 }
 
-char* __vpiArray::vpi_get_str(int code)
+అక్షరం* __vpiArray::vpi_get_str(పూర్ణాంకం code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      ఒకవేళ (code == vpiFile) {  // Not implemented for now!
+            తిరిగి simple_సమితి_rbuf_str(file_పేర్లు[0]);
       }
 
-      return generic_get_str(code, scope, name, NULL);
+      తిరిగి generic_get_str(code, scope, name, ఖాళీ);
 }
 
-vpiHandle __vpiArray::vpi_handle(int code)
+vpiHandle __vpiArray::vpi_handle(పూర్ణాంకం code)
 {
-      switch (code) {
-          case vpiLeftRange:
-            if (swap_addr) return &last_addr;
-            else return &first_addr;
+      ఎంపిక (code) {
+          స్థితి vpi_ఎడమ_Range:
+            ఒకవేళ (మార్పిడి_addr) తిరిగి &చివరి_addr;
+            లేకపోతే తిరిగి &మొదటి_addr;
 
-          case vpiRightRange:
-            if (swap_addr) return &first_addr;
-            else return &last_addr;
+          స్థితి vpi_కుడి_Range:
+            ఒకవేళ (మార్పిడి_addr) తిరిగి &మొదటి_addr;
+            లేకపోతే తిరిగి &చివరి_addr;
 
-	  case vpiScope:
-	    return scope;
+	  స్థితి vpiScope:
+	    తిరిగి scope;
 
-	  case vpiModule:
-	    return vpip_module(scope);
+	  స్థితి vpiModule:
+	    తిరిగి vpip_module(scope);
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
 /*
 * VPI code passes indices that are not yet converted to canonical
 * form, so this index function does it here.
 */
-vpiHandle __vpiArray::vpi_index(int index)
+vpiHandle __vpiArray::vpi_సూచీ(పూర్ణాంకం సూచీ)
 {
-      index -= first_addr.get_value();
-      if (index >= (long) get_size())
-	    return 0;
-      if (index < 0)
-	    return 0;
+      సూచీ -= మొదటి_addr.get_విలువ();
+      ఒకవేళ (సూచీ >= (దీర్ఘ) get_కొలత())
+	    తిరిగి 0;
+      ఒకవేళ (సూచీ < 0)
+	    తిరిగి 0;
 
-      if (nets != 0) {
-	    return nets[index];
+      ఒకవేళ (nets != 0) {
+	    తిరిగి nets[సూచీ];
       }
 
-      if (vals_words == 0)
-	    make_vals_words();
+      ఒకవేళ (vals_పదాలు == 0)
+	    make_vals_పదాలు();
 
-      return &(vals_words[index].as_word);
+      తిరిగి &(vals_పదాలు[సూచీ].as_మాట);
 }
 
-int __vpiArrayWord::as_word_t::vpi_get(int code)
+పూర్ణాంకం __vpiArrayWord::as_మాట_t::vpi_get(పూర్ణాంకం code)
 {
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
-      assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
-      t_vpi_value val;
+      నిర్మాణం __vpiArrayWord*obj = array_var_మాట_from_handle(ఇది);
+      ప్రతిజ్ఞా(obj);
+      నిర్మాణం __vpiArrayBase*my_మాతృ = obj->get_మాతృ();
+      t_vpi_విలువ val;
 
-      switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+      ఎంపిక (code) {
+	  స్థితి vpi_పంక్తి_No:
+	    తిరిగి 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return my_parent->get_word_size();
+	  స్థితి vpi_కొలత:
+	    తిరిగి my_మాతృ->get_మాట_కొలత();
 
-	  case vpiLeftRange:
+	  స్థితి vpi_ఎడమ_Range:
             val.format = vpiIntVal;
-	    my_parent->get_left_range()->vpi_get_value(&val);
-            assert(val.format == vpiIntVal);
-            return val.value.integer;
+	    my_మాతృ->get_ఎడమ_range()->vpi_get_విలువ(&val);
+            ప్రతిజ్ఞా(val.format == vpiIntVal);
+            తిరిగి val.value.integer;
 
-	  case vpiRightRange:
+	  స్థితి vpi_కుడి_Range:
             val.format = vpiIntVal;
-	    my_parent->get_right_range()->vpi_get_value(&val);
-            assert(val.format == vpiIntVal);
-            return val.value.integer;
+	    my_మాతృ->get_కుడి_range()->vpi_get_విలువ(&val);
+            ప్రతిజ్ఞా(val.format == vpiIntVal);
+            తిరిగి val.value.integer;
 
-	  case vpiIndex:
+	  స్థితి vpi_సూచీ_2:
 	    {
-		  int base_offset = 0;
-		  struct __vpiArray*base = dynamic_cast<__vpiArray*> (my_parent);
-		  if (base) {
+		  పూర్ణాంకం పునాది_స్థానభ్రంశం = 0;
+		  నిర్మాణం __vpiArray*పునాది = dynamic_cast<__vpiArray*> (my_మాతృ);
+		  ఒకవేళ (పునాది) {
 			val.format = vpiIntVal;
-			base->first_addr.vpi_get_value(&val);
-			base_offset += val.value.integer;
+			పునాది->మొదటి_addr.vpi_get_విలువ(&val);
+			పునాది_స్థానభ్రంశం += val.value.integer;
 		  }
 		  val.format = vpiIntVal;
-		  obj->as_index.vpi_get_value(&val);
-		  assert(val.format == vpiIntVal);
-		  return val.value.integer + base_offset;
+		  obj->as_సూచీ.vpi_get_విలువ(&val);
+		  ప్రతిజ్ఞా(val.format == vpiIntVal);
+		  తిరిగి val.value.integer + పునాది_స్థానభ్రంశం;
 	    }
 
-	  case vpiAutomatic:
-	    return my_parent->get_scope()->is_automatic()? 1 : 0;
+	  స్థితి vpiAutomatic:
+	    తిరిగి my_మాతృ->get_scope()->is_automatic()? 1 : 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiNoThr;
-#endif
+#ఒకవేళ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  స్థితి _vpiFromThr:
+	    తిరిగి _vpiNoThr;
+#అయితే_ముగింపు
 
-	  default:
-	    return 0;
+	  అప్రమేయ:
+	    తిరిగి 0;
       }
 }
 
 
-int __vpiArrayVthrA::vpi_get(int code)
+పూర్ణాంకం __vpiArrayVthrA::vpi_get(పూర్ణాంకం code)
 {
-      switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+      ఎంపిక (code) {
+	  స్థితి vpi_పంక్తి_No:
+	    తిరిగి 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return array->get_word_size();
+	  స్థితి vpi_కొలత:
+	    తిరిగి array->get_మాట_కొలత();
 
-	  case vpiLeftRange:
-	    return array->msb.get_value();
+	  స్థితి vpi_ఎడమ_Range:
+	    తిరిగి array->msb.get_విలువ();
 
-	  case vpiRightRange:
-	    return array->lsb.get_value();
+	  స్థితి vpi_కుడి_Range:
+	    తిరిగి array->lsb.get_విలువ();
 
-	  case vpiIndex:
-	    return (int)get_address() + array->first_addr.get_value();
+	  స్థితి vpi_సూచీ_2:
+	    తిరిగి (పూర్ణాంకం)get_చిరునామా() + array->మొదటి_addr.get_విలువ();
 
-	  case vpiAutomatic:
-	    return array->get_scope()->is_automatic() ? 1 : 0;
+	  స్థితి vpiAutomatic:
+	    తిరిగి array->get_scope()->is_automatic() ? 1 : 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpi_at_A;
-#endif
+#ఒకవేళ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  స్థితి _vpiFromThr:
+	    తిరిగి _vpi_at_A;
+#అయితే_ముగింపు
 
 	  // If address_handle is not zero we definitely have a
 	  // variable.
-	  case vpiConstantSelect:
-	    return address_handle == 0;
+	  స్థితి vpiConstantSelect:
+	    తిరిగి చిరునామా_handle == 0;
 
-	  default:
-	    return 0;
+	  అప్రమేయ:
+	    తిరిగి 0;
       }
 }
 
-char* __vpiArrayVthrA::vpi_get_str(int code)
+అక్షరం* __vpiArrayVthrA::vpi_get_str(పూర్ణాంకం code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      ఒకవేళ (code == vpiFile) {  // Not implemented for now!
+            తిరిగి simple_సమితి_rbuf_str(file_పేర్లు[0]);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%d", (int)get_address() + array->first_addr.get_value());
-      return generic_get_str(code, array->get_scope(), array->name, sidx);
+      అక్షరం sidx [64];
+      snprintf(sidx, 63, "%d", (పూర్ణాంకం)get_చిరునామా() + array->మొదటి_addr.get_విలువ());
+      తిరిగి generic_get_str(code, array->get_scope(), array->name, sidx);
 }
 
-void __vpiArrayVthrA::vpi_get_value(p_vpi_value vp)
+శూన్య __vpiArrayVthrA::vpi_get_విలువ(p_vpi_విలువ vp)
 {
-      assert(array);
+      ప్రతిజ్ఞా(array);
 
-      unsigned index = get_address();
-      if (vpi_array_is_real(array)) {
-	    double tmp = array->get_word_r(index);
-	    vpip_real_get_value(tmp, vp);
-      } else if (vpi_array_is_string(array)) {
-	    string tmp = array->get_word_str(index);
-	    vpip_string_get_value(tmp, vp);
-      } else {
-	    vvp_vector4_t tmp = array->get_word(index);
-	    unsigned width = array->get_word_size();
-	    vpip_vec4_get_value(tmp, width, array->signed_flag, vp);
-      }
-}
-
-vpiHandle __vpiArrayVthrA::vpi_put_value(p_vpi_value vp, int)
-{
-      unsigned index = get_address();
-
-      assert(array);
-      assert(index < array->get_size());
-
-      if (vpi_array_is_real(array)) {
-	    double val = real_from_vpi_value(vp);
-	    array->set_word(index, val);
-      } else {
-	    unsigned width = array->get_word_size();
-	    vvp_vector4_t val = vec4_from_vpi_value(vp, width);
-	    array->set_word(index, 0, val);
-      }
-
-      return this;
-}
-
-vpiHandle __vpiArrayVthrA::vpi_handle(int code)
-{
-      switch (code) {
-	  case vpiIndex:
-	    break;  // Not implemented!
-
-	  case vpiLeftRange:
-	    return &array->msb;
-
-	  case vpiRightRange:
-	    return &array->lsb;
-
-	  case vpiParent:
-	  case vpiArray:
-	    return array;
-
-	  case vpiScope:
-	    return array->get_scope();
-
-	  case vpiModule:
-	    return vpip_module(array->get_scope());
-      }
-
-      return 0;
-}
-
-
-int __vpiArrayVthrAPV::vpi_get(int code)
-{
-      switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
-
-	  case vpiSize:
-	    return part_wid;
-
-	  case vpiLeftRange:
-	    return part_bit + part_wid - 1;
-
-	  case vpiRightRange:
-	    return part_bit;
-
-	  case vpiAutomatic:
-	    return array->get_scope()->is_automatic() ? 1 : 0;
-
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpi_at_APV;
-#endif
-
-	  case vpiConstantSelect:
-	    return 1;
-
-	  default:
-	    return 0;
+      గుర్తులేని సూచీ = get_చిరునామా();
+      ఒకవేళ (vpi_array_is_real(array)) {
+	    ద్విగుణ tmp = array->get_మాట_r(సూచీ);
+	    vpip_real_get_విలువ(tmp, vp);
+      } లేకపోతే ఒకవేళ (vpi_array_is_string(array)) {
+	    string tmp = array->get_మాట_str(సూచీ);
+	    vpip_string_get_విలువ(tmp, vp);
+      } లేకపోతే {
+	    vvp_vector4_t tmp = array->get_మాట(సూచీ);
+	    గుర్తులేని width = array->get_మాట_కొలత();
+	    vpip_vec4_get_విలువ(tmp, width, array->signed_flag, vp);
       }
 }
 
-char* __vpiArrayVthrAPV::vpi_get_str(int code)
+vpiHandle __vpiArrayVthrA::vpi_put_విలువ(p_vpi_విలువ vp, పూర్ణాంకం)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      గుర్తులేని సూచీ = get_చిరునామా();
+
+      ప్రతిజ్ఞా(array);
+      ప్రతిజ్ఞా(సూచీ < array->get_కొలత());
+
+      ఒకవేళ (vpi_array_is_real(array)) {
+	    ద్విగుణ val = real_from_vpi_విలువ(vp);
+	    array->సమితి_మాట(సూచీ, val);
+      } లేకపోతే {
+	    గుర్తులేని width = array->get_మాట_కొలత();
+	    vvp_vector4_t val = vec4_from_vpi_విలువ(vp, width);
+	    array->సమితి_మాట(సూచీ, 0, val);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%u", word_sel + array->first_addr.get_value());
-      return generic_get_str(code, array->get_scope(), array->name, sidx);
+      తిరిగి ఇది;
 }
 
-void __vpiArrayVthrAPV::vpi_get_value(p_vpi_value vp)
+vpiHandle __vpiArrayVthrA::vpi_handle(పూర్ణాంకం code)
 {
-      assert(array);
+      ఎంపిక (code) {
+	  స్థితి vpi_సూచీ_2:
+	    ఆపు;  // Not implemented!
 
-      unsigned index = word_sel;
-      if (vpi_array_is_real(array)) {
-	    double tmp = array->get_word_r(index);
-	    vpip_real_get_value(tmp, vp);
-      } else {
-	    vvp_vector4_t tmp = array->get_word(index);
-	    tmp = tmp.subvalue(part_bit, part_wid);
-	    vpip_vec4_get_value(tmp, part_wid, false, vp);
+	  స్థితి vpi_ఎడమ_Range:
+	    తిరిగి &array->msb;
+
+	  స్థితి vpi_కుడి_Range:
+	    తిరిగి &array->lsb;
+
+	  స్థితి vpi_మాతృ:
+	  స్థితి vpiArray:
+	    తిరిగి array;
+
+	  స్థితి vpiScope:
+	    తిరిగి array->get_scope();
+
+	  స్థితి vpiModule:
+	    తిరిగి vpip_module(array->get_scope());
+      }
+
+      తిరిగి 0;
+}
+
+
+పూర్ణాంకం __vpiArrayVthrAPV::vpi_get(పూర్ణాంకం code)
+{
+      ఎంపిక (code) {
+	  స్థితి vpi_పంక్తి_No:
+	    తిరిగి 0; // Not implemented for now!
+
+	  స్థితి vpi_కొలత:
+	    తిరిగి part_wid;
+
+	  స్థితి vpi_ఎడమ_Range:
+	    తిరిగి part_బిట్టు + part_wid - 1;
+
+	  స్థితి vpi_కుడి_Range:
+	    తిరిగి part_బిట్టు;
+
+	  స్థితి vpiAutomatic:
+	    తిరిగి array->get_scope()->is_automatic() ? 1 : 0;
+
+#ఒకవేళ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  స్థితి _vpiFromThr:
+	    తిరిగి _vpi_at_APV;
+#అయితే_ముగింపు
+
+	  స్థితి vpiConstantSelect:
+	    తిరిగి 1;
+
+	  అప్రమేయ:
+	    తిరిగి 0;
       }
 }
 
-vpiHandle __vpiArrayVthrAPV::vpi_handle(int code)
+అక్షరం* __vpiArrayVthrAPV::vpi_get_str(పూర్ణాంకం code)
 {
-      switch (code) {
+      ఒకవేళ (code == vpiFile) {  // Not implemented for now!
+            తిరిగి simple_సమితి_rbuf_str(file_పేర్లు[0]);
+      }
+
+      అక్షరం sidx [64];
+      snprintf(sidx, 63, "%u", మాట_sel + array->మొదటి_addr.get_విలువ());
+      తిరిగి generic_get_str(code, array->get_scope(), array->name, sidx);
+}
+
+శూన్య __vpiArrayVthrAPV::vpi_get_విలువ(p_vpi_విలువ vp)
+{
+      ప్రతిజ్ఞా(array);
+
+      గుర్తులేని సూచీ = మాట_sel;
+      ఒకవేళ (vpi_array_is_real(array)) {
+	    ద్విగుణ tmp = array->get_మాట_r(సూచీ);
+	    vpip_real_get_విలువ(tmp, vp);
+      } లేకపోతే {
+	    vvp_vector4_t tmp = array->get_మాట(సూచీ);
+	    tmp = tmp.subvalue(part_బిట్టు, part_wid);
+	    vpip_vec4_get_విలువ(tmp, part_wid, అబద్ధం, vp);
+      }
+}
+
+vpiHandle __vpiArrayVthrAPV::vpi_handle(పూర్ణాంకం code)
+{
+      ఎంపిక (code) {
             // Not currently implemented. We would need to create a VPI
             // object for the memory word.
-	  case vpiParent:
-	    return 0;
+	  స్థితి vpi_మాతృ:
+	    తిరిగి 0;
 
             // Not part of the Verilog standard. We use this internally.
-	  case vpiArray:
-	    return array;
+	  స్థితి vpiArray:
+	    తిరిగి array;
 
-	  case vpiScope:
-	    return array->get_scope();
+	  స్థితి vpiScope:
+	    తిరిగి array->get_scope();
 
-	  case vpiModule:
-	    return vpip_module(array->get_scope());
+	  స్థితి vpiModule:
+	    తిరిగి vpip_module(array->get_scope());
       }
 
-      return 0;
+      తిరిగి 0;
 }
 
-void __vpiArray::set_word(unsigned address, unsigned part_off, const vvp_vector4_t&val)
+శూన్య __vpiArray::సమితి_మాట(గుర్తులేని చిరునామా, గుర్తులేని part_off, స్థిరరాశి vvp_vector4_t&val)
 {
-      if (address >= get_size())
-	    return;
+      ఒకవేళ (చిరునామా >= get_కొలత())
+	    తిరిగి;
 
-      if (vals4) {
-	    assert(nets == 0);
-	    if (part_off != 0 || val.size() != vals_width) {
-		  vvp_vector4_t tmp = vals4->get_word(address);
-		  if ((part_off + val.size()) > tmp.size()) {
+      ఒకవేళ (vals4) {
+	    ప్రతిజ్ఞా(nets == 0);
+	    ఒకవేళ (part_off != 0 || val.size() != vals_వెడల్పు) {
+		  vvp_vector4_t tmp = vals4->get_మాట(చిరునామా);
+		  ఒకవేళ ((part_off + val.size()) > tmp.size()) {
 			cerr << "part_off=" << part_off
 			     << " val.size()=" << val.size()
 			     << " vals[address].size()=" << tmp.size()
-			     << " vals_width=" << vals_width << endl;
-			assert(0);
+			     << " vals_width=" << vals_వెడల్పు << పంక్తి_ముగింపు;
+			ప్రతిజ్ఞా(0);
 		  }
-		  tmp.set_vec(part_off, val);
-		  vals4->set_word(address, tmp);
-	    } else {
-		  vals4->set_word(address, val);
+		  tmp.సమితి_vec(part_off, val);
+		  vals4->సమితి_మాట(చిరునామా, tmp);
+	    } లేకపోతే {
+		  vals4->సమితి_మాట(చిరునామా, val);
 	    }
-	    word_change(address);
-	    return;
+	    మాట_change(చిరునామా);
+	    తిరిగి;
       }
 
-      if (vals) {
-	    assert(nets == 0);
-	    if (part_off != 0 || val.size() != vals_width) {
+      ఒకవేళ (vals) {
+	    ప్రతిజ్ఞా(nets == 0);
+	    ఒకవేళ (part_off != 0 || val.size() != vals_వెడల్పు) {
 		  vvp_vector4_t tmp;
-		  vals->get_word(address, tmp);
-		  if ((part_off + val.size()) > tmp.size()) {
+		  vals->get_మాట(చిరునామా, tmp);
+		  ఒకవేళ ((part_off + val.size()) > tmp.size()) {
 			cerr << "part_off=" << part_off
 			     << " val.size()=" << val.size()
 			     << " vals[address].size()=" << tmp.size()
-			     << " vals_width=" << vals_width << endl;
-			assert(0);
+			     << " vals_width=" << vals_వెడల్పు << పంక్తి_ముగింపు;
+			ప్రతిజ్ఞా(0);
 		  }
-		  tmp.set_vec(part_off, val);
-		  vals->set_word(address, tmp);
-	    } else {
-		  vals->set_word(address, val);
+		  tmp.సమితి_vec(part_off, val);
+		  vals->సమితి_మాట(చిరునామా, tmp);
+	    } లేకపోతే {
+		  vals->సమితి_మాట(చిరునామా, val);
 	    }
-	    word_change(address);
-	    return;
+	    మాట_change(చిరునామా);
+	    తిరిగి;
       }
 
-      assert(nets != 0);
+      ప్రతిజ్ఞా(nets != 0);
 
 	// Select the word of the array that we affect.
-      vpiHandle word = nets[address];
-      const struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
-      assert(vsig);
+      vpiHandle మాట = nets[చిరునామా];
+      స్థిరరాశి నిర్మాణం __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(మాట);
+      ప్రతిజ్ఞా(vsig);
 
-      vsig->node->send_vec4_pv(val, part_off, vpip_size(vsig), 0);
-      word_change(address);
+      vsig->కణుపు->send_vec4_pv(val, part_off, vpip_కొలత(vsig), 0);
+      మాట_change(చిరునామా);
 }
 
-void __vpiArray::set_word(unsigned address, double val)
+శూన్య __vpiArray::సమితి_మాట(గుర్తులేని చిరునామా, ద్విగుణ val)
 {
-      assert(vals != 0);
-      assert(nets == 0);
+      ప్రతిజ్ఞా(vals != 0);
+      ప్రతిజ్ఞా(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      ఒకవేళ (చిరునామా >= vals->get_కొలత())
+	    తిరిగి;
 
-      vals->set_word(address, val);
-      word_change(address);
+      vals->సమితి_మాట(చిరునామా, val);
+      మాట_change(చిరునామా);
 }
 
-void __vpiArray::set_word(unsigned address, const string&val)
+శూన్య __vpiArray::సమితి_మాట(గుర్తులేని చిరునామా, స్థిరరాశి string&val)
 {
-      assert(vals != 0);
-      assert(nets == 0);
+      ప్రతిజ్ఞా(vals != 0);
+      ప్రతిజ్ఞా(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      ఒకవేళ (చిరునామా >= vals->get_కొలత())
+	    తిరిగి;
 
-      vals->set_word(address, val);
-      word_change(address);
+      vals->సమితి_మాట(చిరునామా, val);
+      మాట_change(చిరునామా);
 }
 
-void __vpiArray::set_word(unsigned address, const vvp_object_t&val)
+శూన్య __vpiArray::సమితి_మాట(గుర్తులేని చిరునామా, స్థిరరాశి vvp_object_t&val)
 {
-      assert(vals != 0);
-      assert(nets == 0);
+      ప్రతిజ్ఞా(vals != 0);
+      ప్రతిజ్ఞా(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      ఒకవేళ (చిరునామా >= vals->get_కొలత())
+	    తిరిగి;
 
-      vals->set_word(address, val);
-      word_change(address);
+      vals->సమితి_మాట(చిరునామా, val);
+      మాట_change(చిరునామా);
 }
 
-vvp_vector4_t __vpiArray::get_word(unsigned address)
+vvp_vector4_t __vpiArray::get_మాట(గుర్తులేని చిరునామా)
 {
-      if (vals4) {
-	    assert(nets == 0);
-	    assert(vals == 0);
-	    return vals4->get_word(address);
+      ఒకవేళ (vals4) {
+	    ప్రతిజ్ఞా(nets == 0);
+	    ప్రతిజ్ఞా(vals == 0);
+	    తిరిగి vals4->get_మాట(చిరునామా);
       }
 
-      if (vals) {
-	    assert(nets == 0);
-	    assert(vals4== 0);
-	    if (address >= vals->get_size())
-		  return vvp_vector4_t(vals_width, BIT4_X);
+      ఒకవేళ (vals) {
+	    ప్రతిజ్ఞా(nets == 0);
+	    ప్రతిజ్ఞా(vals4== 0);
+	    ఒకవేళ (చిరునామా >= vals->get_కొలత())
+		  తిరిగి vvp_vector4_t(vals_వెడల్పు, BIT4_X);
 
 	    vvp_vector4_t val;
-	    vals->get_word(address, val);
-	    return val;
+	    vals->get_మాట(చిరునామా, val);
+	    తిరిగి val;
       }
 
-      assert(vals4 == 0);
-      assert(vals == 0);
-      assert(nets != 0);
+      ప్రతిజ్ఞా(vals4 == 0);
+      ప్రతిజ్ఞా(vals == 0);
+      ప్రతిజ్ఞా(nets != 0);
 
-      if (address >= get_size()) {
+      ఒకవేళ (చిరునామా >= get_కొలత()) {
 	      // Reading outside the array. Return X's but get the
 	      // width by looking at a word that we know is present.
-	    assert(get_size() > 0);
-	    vpiHandle word = nets[0];
-	    assert(word);
-	    struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
-	    assert(vsig);
-	    vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->node->fil);
-	    assert(sig);
-	    return vvp_vector4_t(sig->value_size(), BIT4_X);
+	    ప్రతిజ్ఞా(get_కొలత() > 0);
+	    vpiHandle మాట = nets[0];
+	    ప్రతిజ్ఞా(మాట);
+	    నిర్మాణం __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(మాట);
+	    ప్రతిజ్ఞా(vsig);
+	    vvp_signal_విలువ*sig = dynamic_cast<vvp_signal_విలువ*> (vsig->కణుపు->fil);
+	    ప్రతిజ్ఞా(sig);
+	    తిరిగి vvp_vector4_t(sig->విలువ_కొలత(), BIT4_X);
       }
 
-      vpiHandle word = nets[address];
-      struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
-      assert(vsig);
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->node->fil);
-      assert(sig);
+      vpiHandle మాట = nets[చిరునామా];
+      నిర్మాణం __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(మాట);
+      ప్రతిజ్ఞా(vsig);
+      vvp_signal_విలువ*sig = dynamic_cast<vvp_signal_విలువ*> (vsig->కణుపు->fil);
+      ప్రతిజ్ఞా(sig);
 
       vvp_vector4_t val;
-      sig->vec4_value(val);
-      return val;
+      sig->vec4_విలువ(val);
+      తిరిగి val;
 }
 
-double __vpiArray::get_word_r(unsigned address)
+ద్విగుణ __vpiArray::get_మాట_r(గుర్తులేని చిరునామా)
 {
-      if (vals) {
-	    assert(vals4 == 0);
-	    assert(nets  == 0);
+      ఒకవేళ (vals) {
+	    ప్రతిజ్ఞా(vals4 == 0);
+	    ప్రతిజ్ఞా(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size())
-		  return 0.0;
+	    ఒకవేళ (చిరునామా >= vals->get_కొలత())
+		  తిరిగి 0.0;
 
-	    double val;
-	    vals->get_word(address, val);
-	    return val;
+	    ద్విగుణ val;
+	    vals->get_మాట(చిరునామా, val);
+	    తిరిగి val;
       }
 
-      if (address >= get_size())
-	    return 0.0;
+      ఒకవేళ (చిరునామా >= get_కొలత())
+	    తిరిగి 0.0;
 
-      assert(nets);
-      vpiHandle word = nets[address];
-      struct __vpiRealVar*vsig = dynamic_cast<__vpiRealVar*>(word);
-      assert(vsig);
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->net->fil);
-      assert(sig);
+      ప్రతిజ్ఞా(nets);
+      vpiHandle మాట = nets[చిరునామా];
+      నిర్మాణం __vpiRealVar*vsig = dynamic_cast<__vpiRealVar*>(మాట);
+      ప్రతిజ్ఞా(vsig);
+      vvp_signal_విలువ*sig = dynamic_cast<vvp_signal_విలువ*> (vsig->net->fil);
+      ప్రతిజ్ఞా(sig);
 
-      double val = sig->real_value();
-      return val;
+      ద్విగుణ val = sig->real_విలువ();
+      తిరిగి val;
 }
 
-void __vpiArray::get_word_obj(unsigned address, vvp_object_t&val)
+శూన్య __vpiArray::get_మాట_obj(గుర్తులేని చిరునామా, vvp_object_t&val)
 {
-      if (vals) {
-	    assert(vals4 == 0);
-	    assert(nets  == 0);
+      ఒకవేళ (vals) {
+	    ప్రతిజ్ఞా(vals4 == 0);
+	    ప్రతిజ్ఞా(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size()) {
+	    ఒకవేళ (చిరునామా >= vals->get_కొలత()) {
 		  val = vvp_object_t();
-		  return;
+		  తిరిగి;
 	    }
 
-	    vals->get_word(address, val);
-	    return;
+	    vals->get_మాట(చిరునామా, val);
+	    తిరిగి;
       }
 
-      assert(nets);
+      ప్రతిజ్ఞా(nets);
 	// Arrays of string nets not implemented!
-      assert(0);
-      return;
+      ప్రతిజ్ఞా(0);
+      తిరిగి;
 }
 
-string __vpiArray::get_word_str(unsigned address)
+string __vpiArray::get_మాట_str(గుర్తులేని చిరునామా)
 {
-      if (vals) {
-	    assert(vals4 == 0);
-	    assert(nets  == 0);
+      ఒకవేళ (vals) {
+	    ప్రతిజ్ఞా(vals4 == 0);
+	    ప్రతిజ్ఞా(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size())
-		  return "";
+	    ఒకవేళ (చిరునామా >= vals->get_కొలత())
+		  తిరిగి "";
 
 	    string val;
-	    vals->get_word(address, val);
-	    return val;
+	    vals->get_మాట(చిరునామా, val);
+	    తిరిగి val;
       }
 
-      assert(nets);
+      ప్రతిజ్ఞా(nets);
 	// Arrays of string nets not implemented!
-      assert(0);
-      return "";
+      ప్రతిజ్ఞా(0);
+      తిరిగి "";
 }
 
-vpiHandle vpip_make_array(const char*label, const char*name,
-                          int first_addr, int last_addr,
-                          bool signed_flag)
+vpiHandle vpip_make_array(స్థిరరాశి అక్షరం*label, స్థిరరాశి అక్షరం*name,
+                          పూర్ణాంకం మొదటి_addr, పూర్ణాంకం చివరి_addr,
+                          తార్కిక signed_flag)
 {
-      struct __vpiArray*obj = new __vpiArray;
+      నిర్మాణం __vpiArray*obj = కొత్త __vpiArray;
 
       obj->signed_flag = signed_flag;
 
 	// Assume increasing addresses.
-      if (last_addr >= first_addr) {
-	    obj->swap_addr = false;
-      } else {
-	    obj->swap_addr = true;
-	    int tmp = last_addr;
-	    last_addr = first_addr;
-	    first_addr = tmp;
+      ఒకవేళ (చివరి_addr >= మొదటి_addr) {
+	    obj->మార్పిడి_addr = అబద్ధం;
+      } లేకపోతే {
+	    obj->మార్పిడి_addr = నిజం;
+	    పూర్ణాంకం tmp = చివరి_addr;
+	    చివరి_addr = మొదటి_addr;
+	    మొదటి_addr = tmp;
       }
-      assert(last_addr >= first_addr);
-      unsigned array_count = last_addr+1-first_addr;
+      ప్రతిజ్ఞా(చివరి_addr >= మొదటి_addr);
+      గుర్తులేని array_లెక్క = చివరి_addr+1-మొదటి_addr;
 
 	// For now, treat all arrays as memories. This is not quite
 	// correct, as arrays are arrays with memories a special case.
       obj->scope = vpip_peek_current_scope();
       obj->name  = vpip_name_string(name);
-      obj->array_count = array_count;
+      obj->array_లెక్క = array_లెక్క;
 
-      obj->first_addr.set_value(first_addr);
-      obj->last_addr .set_value(last_addr);
+      obj->మొదటి_addr.సమితి_విలువ(మొదటి_addr);
+      obj->చివరి_addr .సమితి_విలువ(చివరి_addr);
 
 	// Start off now knowing if we are nets or variables.
       obj->nets = 0;
       obj->vals4 = 0;
       obj->vals  = 0;
-      obj->vals_width = 0;
-      obj->vals_words = 0;
+      obj->vals_వెడల్పు = 0;
+      obj->vals_పదాలు = 0;
 
 	// Initialize (clear) the read-ports list.
       obj->ports_ = 0;
       obj->vpi_callbacks = 0;
 
 	/* Add this symbol to the array_symbols table for later lookup. */
-      if (!array_table)
-	    array_table = new symbol_map_s<struct __vpiArray>;
+      ఒకవేళ (!array_పట్టిక)
+	    array_పట్టిక = కొత్త చిహ్నం_map_s<నిర్మాణం __vpiArray>;
 
-      assert(!array_find(label));
-      array_table->sym_set_value(label, obj);
+      ప్రతిజ్ఞా(!array_కనుగొను(label));
+      array_పట్టిక->sym_సమితి_విలువ(label, obj);
 
 	/* Add this into the table of VPI objects. This is used for
 	   contexts that try to look up VPI objects in
 	   general. (i.e. arguments to vpi_task calls.) */
-      compile_vpi_symbol(label, obj);
+      compile_vpi_చిహ్నం(label, obj);
 
 	/* Blindly attach to the scope as an object. */
-      vpip_attach_to_current_scope(obj);
+      vpip_attach_గమ్యం_current_scope(obj);
 
-      return obj;
+      తిరిగి obj;
 }
 
-void __vpiArray::alias_word(unsigned long addr, vpiHandle word, int msb_, int lsb_)
+శూన్య __vpiArray::alias_మాట(గుర్తులేని దీర్ఘ addr, vpiHandle మాట, పూర్ణాంకం msb_, పూర్ణాంకం lsb_)
 {
-      assert(msb.get_value() == msb_);
-      assert(lsb.get_value() == lsb_);
-      assert(addr < get_size());
-      assert(nets);
-      nets[addr] = word;
+      ప్రతిజ్ఞా(msb.get_విలువ() == msb_);
+      ప్రతిజ్ఞా(lsb.get_విలువ() == lsb_);
+      ప్రతిజ్ఞా(addr < get_కొలత());
+      ప్రతిజ్ఞా(nets);
+      nets[addr] = మాట;
 }
 
-void __vpiArray::attach_word(unsigned addr, vpiHandle word)
+శూన్య __vpiArray::attach_మాట(గుర్తులేని addr, vpiHandle మాట)
 {
-      assert(addr < get_size());
-      assert(nets);
-      nets[addr] = word;
+      ప్రతిజ్ఞా(addr < get_కొలత());
+      ప్రతిజ్ఞా(nets);
+      nets[addr] = మాట;
 
-      if (struct __vpiSignal*sig = dynamic_cast<__vpiSignal*>(word)) {
-	    vvp_net_t*net = sig->node;
-	    assert(net);
+      ఒకవేళ (నిర్మాణం __vpiSignal*sig = dynamic_cast<__vpiSignal*>(మాట)) {
+	    vvp_net_t*net = sig->కణుపు;
+	    ప్రతిజ్ఞా(net);
 	    vvp_vpi_callback*fun = dynamic_cast<vvp_vpi_callback*>(net->fil);
-	    assert(fun);
-	    fun->attach_as_word(this, addr);
+	    ప్రతిజ్ఞా(fun);
+	    fun->attach_as_మాట(ఇది, addr);
 	    sig->is_netarray = 1;
-	    sig->within.parent = this;
-	    sig->id.index = new __vpiDecConst(addr + first_addr.get_value());
+	    sig->within.మాతృ = ఇది;
+	    sig->id.సూచీ = కొత్త __vpiDecConst(addr + మొదటి_addr.get_విలువ());
 	      // Now we know the data type, update the array signed_flag.
 	    signed_flag = sig->signed_flag;
-	    return;
+	    తిరిగి;
       }
 
-      if (struct __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(word)) {
+      ఒకవేళ (నిర్మాణం __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(మాట)) {
 	    vvp_net_t*net = sig->net;
-	    assert(net);
+	    ప్రతిజ్ఞా(net);
 	    vvp_vpi_callback*fun = dynamic_cast<vvp_vpi_callback*>(net->fil);
-	    assert(fun);
-	    fun->attach_as_word(this, addr);
+	    ప్రతిజ్ఞా(fun);
+	    fun->attach_as_మాట(ఇది, addr);
 	    sig->is_netarray = 1;
-	    sig->within.parent = this;
-	    sig->id.index = new __vpiDecConst(addr + first_addr.get_value());
+	    sig->within.మాతృ = ఇది;
+	    sig->id.సూచీ = కొత్త __vpiDecConst(addr + మొదటి_addr.get_విలువ());
 	      // Now we know the data type, update the array signed_flag.
-	    signed_flag = true;
-	    return;
+	    signed_flag = నిజం;
+	    తిరిగి;
       }
 }
 
-void compile_var_array(char*label, char*name, int last, int first,
-		   int msb, int lsb, char signed_flag)
+శూన్య compile_var_array(అక్షరం*label, అక్షరం*name, పూర్ణాంకం చివరి, పూర్ణాంకం మొదటి,
+		   పూర్ణాంకం msb, పూర్ణాంకం lsb, అక్షరం signed_flag)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last,
+      vpiHandle obj = vpip_make_array(label, name, మొదటి, చివరి,
                                       signed_flag != 0);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      నిర్మాణం __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->vals_width = labs(msb-lsb) + 1;
-      if (vpip_peek_current_scope()->is_automatic()) {
-            arr->vals4 = new vvp_vector4array_aa(arr->vals_width,
-						 arr->get_size());
-      } else {
-            arr->vals4 = new vvp_vector4array_sa(arr->vals_width,
-						 arr->get_size());
+      arr->vals_వెడల్పు = labs(msb-lsb) + 1;
+      ఒకవేళ (vpip_peek_current_scope()->is_automatic()) {
+            arr->vals4 = కొత్త vvp_vector4array_aa(arr->vals_వెడల్పు,
+						 arr->get_కొలత());
+      } లేకపోతే {
+            arr->vals4 = కొత్త vvp_vector4array_sa(arr->vals_వెడల్పు,
+						 arr->get_కొలత());
       }
-      arr->msb.set_value(msb);
-      arr->lsb.set_value(lsb);
+      arr->msb.సమితి_విలువ(msb);
+      arr->lsb.సమితి_విలువ(lsb);
 
-      count_var_arrays += 1;
-      count_var_array_words += arr->get_size();
+      లెక్క_var_arrays += 1;
+      లెక్క_var_array_పదాలు += arr->get_కొలత();
 
-      free(label);
-      delete[] name;
+      విడుదల(label);
+      తొలగించు[] name;
 }
 
-void compile_var2_array(char*label, char*name, int last, int first,
-		   int msb, int lsb, bool signed_flag)
+శూన్య compile_var2_array(అక్షరం*label, అక్షరం*name, పూర్ణాంకం చివరి, పూర్ణాంకం మొదటి,
+		   పూర్ణాంకం msb, పూర్ణాంకం lsb, తార్కిక signed_flag)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last, signed_flag);
+      vpiHandle obj = vpip_make_array(label, name, మొదటి, చివరి, signed_flag);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      నిర్మాణం __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->msb.set_value(msb);
-      arr->lsb.set_value(lsb);
-      arr->vals_width = labs(msb-lsb) + 1;
+      arr->msb.సమితి_విలువ(msb);
+      arr->lsb.సమితి_విలువ(lsb);
+      arr->vals_వెడల్పు = labs(msb-lsb) + 1;
 
-      assert(! arr->nets);
-      if (lsb == 0 && msb == 7 && signed_flag) {
-	    arr->vals = new vvp_darray_atom<int8_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 7 && !signed_flag) {
-	    arr->vals = new vvp_darray_atom<uint8_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 15 && signed_flag) {
-	    arr->vals = new vvp_darray_atom<int16_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 15 && !signed_flag) {
-	    arr->vals = new vvp_darray_atom<uint16_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 31 && signed_flag) {
-	    arr->vals = new vvp_darray_atom<int32_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 31 && !signed_flag) {
-	    arr->vals = new vvp_darray_atom<uint32_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 63 && signed_flag) {
-	    arr->vals = new vvp_darray_atom<int64_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 63 && !signed_flag) {
-	    arr->vals = new vvp_darray_atom<uint64_t>(arr->get_size());
-      } else {
-	    arr->vals = new vvp_darray_vec2(arr->get_size(), arr->vals_width);
+      ప్రతిజ్ఞా(! arr->nets);
+      ఒకవేళ (lsb == 0 && msb == 7 && signed_flag) {
+	    arr->vals = కొత్త vvp_darray_atom<int8_t>(arr->get_కొలత());
+      } లేకపోతే ఒకవేళ (lsb == 0 && msb == 7 && !signed_flag) {
+	    arr->vals = కొత్త vvp_darray_atom<uint8_t>(arr->get_కొలత());
+      } లేకపోతే ఒకవేళ (lsb == 0 && msb == 15 && signed_flag) {
+	    arr->vals = కొత్త vvp_darray_atom<int16_t>(arr->get_కొలత());
+      } లేకపోతే ఒకవేళ (lsb == 0 && msb == 15 && !signed_flag) {
+	    arr->vals = కొత్త vvp_darray_atom<uint16_t>(arr->get_కొలత());
+      } లేకపోతే ఒకవేళ (lsb == 0 && msb == 31 && signed_flag) {
+	    arr->vals = కొత్త vvp_darray_atom<int32_t>(arr->get_కొలత());
+      } లేకపోతే ఒకవేళ (lsb == 0 && msb == 31 && !signed_flag) {
+	    arr->vals = కొత్త vvp_darray_atom<uint32_t>(arr->get_కొలత());
+      } లేకపోతే ఒకవేళ (lsb == 0 && msb == 63 && signed_flag) {
+	    arr->vals = కొత్త vvp_darray_atom<int64_t>(arr->get_కొలత());
+      } లేకపోతే ఒకవేళ (lsb == 0 && msb == 63 && !signed_flag) {
+	    arr->vals = కొత్త vvp_darray_atom<uint64_t>(arr->get_కొలత());
+      } లేకపోతే {
+	    arr->vals = కొత్త vvp_darray_vec2(arr->get_కొలత(), arr->vals_వెడల్పు);
       }
-      count_var_arrays += 1;
-      count_var_array_words += arr->get_size();
+      లెక్క_var_arrays += 1;
+      లెక్క_var_array_పదాలు += arr->get_కొలత();
 
-      free(label);
-      delete[] name;
+      విడుదల(label);
+      తొలగించు[] name;
 }
 
-void compile_real_array(char*label, char*name, int last, int first)
+శూన్య compile_real_array(అక్షరం*label, అక్షరం*name, పూర్ణాంకం చివరి, పూర్ణాంకం మొదటి)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last, true);
+      vpiHandle obj = vpip_make_array(label, name, మొదటి, చివరి, నిజం);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      నిర్మాణం __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->vals = new vvp_darray_real(arr->get_size());
-      arr->vals_width = 1;
+      arr->vals = కొత్త vvp_darray_real(arr->get_కొలత());
+      arr->vals_వెడల్పు = 1;
 
-      count_real_arrays += 1;
-      count_real_array_words += arr->get_size();
+      లెక్క_real_arrays += 1;
+      లెక్క_real_array_పదాలు += arr->get_కొలత();
 
-      free(label);
-      delete[] name;
+      విడుదల(label);
+      తొలగించు[] name;
 }
 
-void compile_string_array(char*label, char*name, int last, int first)
+శూన్య compile_string_array(అక్షరం*label, అక్షరం*name, పూర్ణాంకం చివరి, పూర్ణాంకం మొదటి)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last, true);
+      vpiHandle obj = vpip_make_array(label, name, మొదటి, చివరి, నిజం);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      నిర్మాణం __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->vals = new vvp_darray_string(arr->get_size());
-      arr->vals_width = 1;
+      arr->vals = కొత్త vvp_darray_string(arr->get_కొలత());
+      arr->vals_వెడల్పు = 1;
 
-      count_real_arrays += 1;
-      count_real_array_words += arr->get_size();
+      లెక్క_real_arrays += 1;
+      లెక్క_real_array_పదాలు += arr->get_కొలత();
 
-      free(label);
-      delete[] name;
+      విడుదల(label);
+      తొలగించు[] name;
 }
 
-void compile_object_array(char*label, char*name, int last, int first)
+శూన్య compile_object_array(అక్షరం*label, అక్షరం*name, పూర్ణాంకం చివరి, పూర్ణాంకం మొదటి)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last, true);
+      vpiHandle obj = vpip_make_array(label, name, మొదటి, చివరి, నిజం);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      నిర్మాణం __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->vals = new vvp_darray_object(arr->get_size());
-      arr->vals_width = 1;
+      arr->vals = కొత్త vvp_darray_object(arr->get_కొలత());
+      arr->vals_వెడల్పు = 1;
 
-      count_real_arrays += 1;
-      count_real_array_words += arr->get_size();
+      లెక్క_real_arrays += 1;
+      లెక్క_real_array_పదాలు += arr->get_కొలత();
 
-      free(label);
-      delete[] name;
+      విడుదల(label);
+      తొలగించు[] name;
 }
 
-void compile_net_array(char*label, char*name, int last, int first)
+శూన్య compile_net_array(అక్షరం*label, అక్షరం*name, పూర్ణాంకం చివరి, పూర్ణాంకం మొదటి)
 {
 	// At this point we don't know the array data type, so we
 	// initialise signed_flag to false. This will be corrected
 	// (if necessary) when we attach words to the array.
-      vpiHandle obj = vpip_make_array(label, name, first, last, false);
+      vpiHandle obj = vpip_make_array(label, name, మొదటి, చివరి, అబద్ధం);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
-      arr->nets = static_cast<vpiHandle*>(calloc(arr->get_size(), sizeof(vpiHandle)));
+      నిర్మాణం __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      arr->nets = static_cast<vpiHandle*>(సున్నా_జ్ఞాపకం_ఇవ్వు(arr->get_కొలత(), పరిమాణం(vpiHandle)));
 
-      count_net_arrays += 1;
-      count_net_array_words += arr->get_size();
+      లెక్క_net_arrays += 1;
+      లెక్క_net_array_పదాలు += arr->get_కొలత();
 
-      free(label);
-      delete[] name;
+      విడుదల(label);
+      తొలగించు[] name;
 }
 
-class vvp_fun_arrayport  : public vvp_net_fun_t {
+తరగతి vvp_fun_arrayport  : బహిరంగ vvp_net_fun_t {
 
-    public:
-      explicit vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net);
-      explicit vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net, long addr);
+    బహిరంగ:
+      స్పష్టమైన vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net);
+      స్పష్టమైన vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net, దీర్ఘ addr);
       ~vvp_fun_arrayport() override;
 
-      virtual void check_word_change(unsigned long addr) = 0;
+      మాయా శూన్య check_మాట_change(గుర్తులేని దీర్ఘ addr) = 0;
 
-    protected:
+    రక్షిత:
       vvp_array_t arr_;
       vvp_net_t  *net_;
-      unsigned long addr_;
+      గుర్తులేని దీర్ఘ addr_;
 
-      friend void array_attach_port(vvp_array_t, vvp_fun_arrayport*);
-      friend void __vpiArray::word_change(unsigned long);
-      vvp_fun_arrayport*next_;
+      మిత్ర శూన్య array_attach_పోర్టు(vvp_array_t, vvp_fun_arrayport*);
+      మిత్ర శూన్య __vpiArray::మాట_change(గుర్తులేని దీర్ఘ);
+      vvp_fun_arrayport*తదుపరి;
 };
 
 vvp_fun_arrayport::vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net)
 : arr_(mem), net_(net), addr_(0)
 {
-      next_ = 0;
+      తదుపరి = 0;
 }
 
-vvp_fun_arrayport::vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net, long addr)
+vvp_fun_arrayport::vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net, దీర్ఘ addr)
 : arr_(mem), net_(net), addr_(addr)
 {
-      next_ = 0;
+      తదుపరి = 0;
 }
 
 vvp_fun_arrayport::~vvp_fun_arrayport()
 {
 }
 
-class vvp_fun_arrayport_sa  : public vvp_fun_arrayport {
+తరగతి vvp_fun_arrayport_sa  : బహిరంగ vvp_fun_arrayport {
 
-    public:
-      explicit vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net);
-      explicit vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net, long addr);
+    బహిరంగ:
+      స్పష్టమైన vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net);
+      స్పష్టమైన vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net, దీర్ఘ addr);
       ~vvp_fun_arrayport_sa() override;
 
-      void check_word_change(unsigned long addr) override;
+      శూన్య check_మాట_change(గుర్తులేని దీర్ఘ addr) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t) override;
 
-    private:
+    అంతరంగ:
 };
 
 vvp_fun_arrayport_sa::vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net)
@@ -1078,7 +1078,7 @@ vvp_fun_arrayport_sa::vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net)
 {
 }
 
-vvp_fun_arrayport_sa::vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net, long addr)
+vvp_fun_arrayport_sa::vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net, దీర్ఘ addr)
 : vvp_fun_arrayport(mem, net, addr)
 {
 }
@@ -1087,244 +1087,244 @@ vvp_fun_arrayport_sa::~vvp_fun_arrayport_sa()
 {
 }
 
-void vvp_fun_arrayport_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_fun_arrayport_sa::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                                      vvp_context_t)
 {
-      bool addr_valid_flag;
+      తార్కిక addr_valid_flag;
 
-      switch (port.port()) {
+      ఎంపిక (పోర్టు.పోర్టు()) {
 
-	  case 0: // Address input
-	    addr_valid_flag = vector4_to_value(bit, addr_);
-	    if (! addr_valid_flag)
-		  addr_ = arr_->get_size();
-	    if (vpi_array_is_real(arr_))
-		  port.ptr()->send_real(arr_->get_word_r(addr_), 0);
-	    else
-		  port.ptr()->send_vec4(arr_->get_word(addr_), 0);
+	  స్థితి 0: // Address input
+	    addr_valid_flag = vector4_గమ్యం_విలువ(బిట్టు, addr_);
+	    ఒకవేళ (! addr_valid_flag)
+		  addr_ = arr_->get_కొలత();
+	    ఒకవేళ (vpi_array_is_real(arr_))
+		  పోర్టు.ptr()->send_real(arr_->get_మాట_r(addr_), 0);
+	    లేకపోతే
+		  పోర్టు.ptr()->send_vec4(arr_->get_మాట(addr_), 0);
 
-	    break;
+	    ఆపు;
 
-	  default:
+	  అప్రమేయ:
 	    fprintf(stdout, "XXXX write ports not implemented.\n");
-	    assert(0);
+	    ప్రతిజ్ఞా(0);
       }
 }
 
-void vvp_fun_arrayport_sa::check_word_change(unsigned long addr)
+శూన్య vvp_fun_arrayport_sa::check_మాట_change(గుర్తులేని దీర్ఘ addr)
 {
-      if (addr != addr_) return;
+      ఒకవేళ (addr != addr_) తిరిగి;
 
-      if (vpi_array_is_real(arr_)) {
-	    net_->send_real(arr_->get_word_r(addr_), 0);
-      } else {
-	    net_->send_vec4(arr_->get_word(addr_), 0);
+      ఒకవేళ (vpi_array_is_real(arr_)) {
+	    net_->send_real(arr_->get_మాట_r(addr_), 0);
+      } లేకపోతే {
+	    net_->send_vec4(arr_->get_మాట(addr_), 0);
       }
 }
 
-class vvp_fun_arrayport_aa  : public vvp_fun_arrayport, public automatic_hooks_s {
+తరగతి vvp_fun_arrayport_aa  : బహిరంగ vvp_fun_arrayport, బహిరంగ automatic_hooks_s {
 
-    public:
-      explicit vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net);
-      explicit vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net, long addr);
+    బహిరంగ:
+      స్పష్టమైన vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net);
+      స్పష్టమైన vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net, దీర్ఘ addr);
       ~vvp_fun_arrayport_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+      శూన్య alloc_instance(vvp_context_t context) override;
+      శూన్య reset_instance(vvp_context_t context) override;
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+      శూన్య free_instance(vvp_context_t context) override;
+#అయితే_ముగింపు
 
-      void check_word_change(unsigned long addr) override;
+      శూన్య check_మాట_change(గుర్తులేని దీర్ఘ addr) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t context) override;
 
-    private:
-      void check_word_change_(unsigned long addr, vvp_context_t context);
+    అంతరంగ:
+      శూన్య check_మాట_change_2(గుర్తులేని దీర్ఘ addr, vvp_context_t context);
 
       __vpiScope*context_scope_;
-      unsigned context_idx_;
+      గుర్తులేని context_idx_;
 };
 
 vvp_fun_arrayport_aa::vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net)
 : vvp_fun_arrayport(mem, net), context_scope_(context_scope)
 {
-      context_idx_ = vpip_add_item_to_context(this, context_scope);
+      context_idx_ = vpip_కూడు_అంశం_గమ్యం_context(ఇది, context_scope);
 }
 
-vvp_fun_arrayport_aa::vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net, long addr)
+vvp_fun_arrayport_aa::vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net, దీర్ఘ addr)
 : vvp_fun_arrayport(mem, net, addr), context_scope_(context_scope)
 {
-      context_idx_ = vpip_add_item_to_context(this, context_scope);
+      context_idx_ = vpip_కూడు_అంశం_గమ్యం_context(ఇది, context_scope);
 }
 
 vvp_fun_arrayport_aa::~vvp_fun_arrayport_aa()
 {
 }
 
-void vvp_fun_arrayport_aa::alloc_instance(vvp_context_t context)
+శూన్య vvp_fun_arrayport_aa::alloc_instance(vvp_context_t context)
 {
-      unsigned long*addr = new unsigned long;
-      vvp_set_context_item(context, context_idx_, addr);
+      గుర్తులేని దీర్ఘ*addr = కొత్త గుర్తులేని దీర్ఘ;
+      vvp_సమితి_context_అంశం(context, context_idx_, addr);
 
       *addr = addr_;
 }
 
-void vvp_fun_arrayport_aa::reset_instance(vvp_context_t context)
+శూన్య vvp_fun_arrayport_aa::reset_instance(vvp_context_t context)
 {
-      unsigned long*addr = static_cast<unsigned long*>
-            (vvp_get_context_item(context, context_idx_));
+      గుర్తులేని దీర్ఘ*addr = static_cast<గుర్తులేని దీర్ఘ*>
+            (vvp_get_context_అంశం(context, context_idx_));
 
       *addr = addr_;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_fun_arrayport_aa::free_instance(vvp_context_t context)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య vvp_fun_arrayport_aa::free_instance(vvp_context_t context)
 {
-      unsigned long*addr = static_cast<unsigned long*>
-            (vvp_get_context_item(context, context_idx_));
-      delete addr;
+      గుర్తులేని దీర్ఘ*addr = static_cast<గుర్తులేని దీర్ఘ*>
+            (vvp_get_context_అంశం(context, context_idx_));
+      తొలగించు addr;
 }
-#endif
+#అయితే_ముగింపు
 
-void vvp_fun_arrayport_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+శూన్య vvp_fun_arrayport_aa::recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                                      vvp_context_t context)
 {
-      if (context) {
-            unsigned long*addr = static_cast<unsigned long*>
-                  (vvp_get_context_item(context, context_idx_));
+      ఒకవేళ (context) {
+            గుర్తులేని దీర్ఘ*addr = static_cast<గుర్తులేని దీర్ఘ*>
+                  (vvp_get_context_అంశం(context, context_idx_));
 
-            bool addr_valid_flag;
+            తార్కిక addr_valid_flag;
 
-            switch (port.port()) {
+            ఎంపిక (పోర్టు.పోర్టు()) {
 
-                case 0: // Address input
-                  addr_valid_flag = vector4_to_value(bit, *addr);
-                  if (! addr_valid_flag) *addr = arr_->get_size();
-                  if (vpi_array_is_real(arr_)) {
-			port.ptr()->send_real(arr_->get_word_r(*addr),
+                స్థితి 0: // Address input
+                  addr_valid_flag = vector4_గమ్యం_విలువ(బిట్టు, *addr);
+                  ఒకవేళ (! addr_valid_flag) *addr = arr_->get_కొలత();
+                  ఒకవేళ (vpi_array_is_real(arr_)) {
+			పోర్టు.ptr()->send_real(arr_->get_మాట_r(*addr),
 					      context);
-                  } else {
-			port.ptr()->send_vec4(arr_->get_word(*addr),
+                  } లేకపోతే {
+			పోర్టు.ptr()->send_vec4(arr_->get_మాట(*addr),
 					      context);
                   }
-                  break;
+                  ఆపు;
 
-                default:
+                అప్రమేయ:
                   fprintf(stdout, "XXXX write ports not implemented.\n");
-                  assert(0);
+                  ప్రతిజ్ఞా(0);
             }
-      } else {
-            context = context_scope_->live_contexts;
-            while (context) {
-                  recv_vec4(port, bit, context);
-                  context = vvp_get_next_context(context);
+      } లేకపోతే {
+            context = context_scope_->సజీవ_contexts;
+            అయితే (context) {
+                  recv_vec4(పోర్టు, బిట్టు, context);
+                  context = vvp_get_తదుపరి_context(context);
             }
       }
 }
 
-void vvp_fun_arrayport_aa::check_word_change_(unsigned long addr,
+శూన్య vvp_fun_arrayport_aa::check_మాట_change_2(గుర్తులేని దీర్ఘ addr,
                                               vvp_context_t context)
 {
-      const unsigned long*port_addr = static_cast<unsigned long*>
-            (vvp_get_context_item(context, context_idx_));
+      స్థిరరాశి గుర్తులేని దీర్ఘ*పోర్టు_addr = static_cast<గుర్తులేని దీర్ఘ*>
+            (vvp_get_context_అంశం(context, context_idx_));
 
-      if (addr != *port_addr)
-	    return;
+      ఒకవేళ (addr != *పోర్టు_addr)
+	    తిరిగి;
 
-      if (vpi_array_is_real(arr_)) {
-	    net_->send_real(arr_->get_word_r(addr), context);
-      } else {
-	    net_->send_vec4(arr_->get_word(addr), context);
+      ఒకవేళ (vpi_array_is_real(arr_)) {
+	    net_->send_real(arr_->get_మాట_r(addr), context);
+      } లేకపోతే {
+	    net_->send_vec4(arr_->get_మాట(addr), context);
       }
 }
 
-void vvp_fun_arrayport_aa::check_word_change(unsigned long addr)
+శూన్య vvp_fun_arrayport_aa::check_మాట_change(గుర్తులేని దీర్ఘ addr)
 {
-      if (arr_->get_scope()->is_automatic()) {
-            assert(vthread_get_wt_context());
-            check_word_change_(addr, vthread_get_wt_context());
-      } else {
-            vvp_context_t context = context_scope_->live_contexts;
-            while (context) {
-                  check_word_change_(addr, context);
-                  context = vvp_get_next_context(context);
+      ఒకవేళ (arr_->get_scope()->is_automatic()) {
+            ప్రతిజ్ఞా(vthread_get_wt_context());
+            check_మాట_change_2(addr, vthread_get_wt_context());
+      } లేకపోతే {
+            vvp_context_t context = context_scope_->సజీవ_contexts;
+            అయితే (context) {
+                  check_మాట_change_2(addr, context);
+                  context = vvp_get_తదుపరి_context(context);
             }
       }
 }
 
-static void array_attach_port(vvp_array_t array, vvp_fun_arrayport*fun)
+స్థిర శూన్య array_attach_పోర్టు(vvp_array_t array, vvp_fun_arrayport*fun)
 {
-      assert(fun->next_ == 0);
-      fun->next_ = array->ports_;
+      ప్రతిజ్ఞా(fun->తదుపరి == 0);
+      fun->తదుపరి = array->ports_;
       array->ports_ = fun;
-      if (!array->get_scope()->is_automatic() &&
+      ఒకవేళ (!array->get_scope()->is_automatic() &&
           (array->vals4 || array->vals)) {
               /* propagate initial values for variable arrays */
-            if (!vpi_array_is_real(array)) {
+            ఒకవేళ (!vpi_array_is_real(array)) {
                   vvp_bit4_t init;
-                  if (array->vals4)
+                  ఒకవేళ (array->vals4)
                       init = BIT4_X;
-                  else
+                  లేకపోతే
                       init = BIT4_0;
-                  vvp_vector4_t tmp(array->vals_width, init);
-                  schedule_init_propagate(fun->net_, tmp);
-            } else {
-                  schedule_init_propagate(fun->net_, 0.0);
+                  vvp_vector4_t tmp(array->vals_వెడల్పు, init);
+                  కాలపట్టిక_init_propagate(fun->net_, tmp);
+            } లేకపోతే {
+                  కాలపట్టిక_init_propagate(fun->net_, 0.0);
             }
       }
 }
 
-class array_word_value_callback : public value_callback {
-    public:
-      inline explicit array_word_value_callback(p_cb_data data, long addr)
-      : value_callback(data), word_addr(addr)
+తరగతి array_మాట_విలువ_callback : బహిరంగ విలువ_callback {
+    బహిరంగ:
+      అంతఃవరుస స్పష్టమైన array_మాట_విలువ_callback(p_cb_దత్తాంశం దత్తాంశం, దీర్ఘ addr)
+      : విలువ_callback(దత్తాంశం), మాట_addr(addr)
       { }
 
-    public:
-      long word_addr;
+    బహిరంగ:
+      దీర్ఘ మాట_addr;
 };
 
-void __vpiArray::word_change(unsigned long addr)
+శూన్య __vpiArray::మాట_change(గుర్తులేని దీర్ఘ addr)
 {
-      for (vvp_fun_arrayport*cur = ports_; cur; cur = cur->next_)
-	    cur->check_word_change(addr);
+      కొరకు (vvp_fun_arrayport*cur = ports_; cur; cur = cur->తదుపరి)
+	    cur->check_మాట_change(addr);
 
 	// Run callbacks attached to the array itself.
-      struct __vpiCallback *next = vpi_callbacks;
-      struct __vpiCallback *prev = 0;
+      నిర్మాణం __vpiCallback *తదుపరి_2 = vpi_callbacks;
+      నిర్మాణం __vpiCallback *prev = 0;
 
-      while (next) {
-	    array_word_value_callback*cur = dynamic_cast<array_word_value_callback*>(next);
-	    next = cur->next;
+      అయితే (తదుపరి_2) {
+	    array_మాట_విలువ_callback*cur = dynamic_cast<array_మాట_విలువ_callback*>(తదుపరి_2);
+	    తదుపరి_2 = cur->తదుపరి_2;
 
 	      // Skip callbacks that are not for me. -1 is for every element.
-	    if (cur->word_addr != (long)addr && cur->word_addr != -1) {
+	    ఒకవేళ (cur->మాట_addr != (దీర్ఘ)addr && cur->మాట_addr != -1) {
 		  prev = cur;
-		  continue;
+		  కొనసాగు;
 	    }
 
 	      // For whole array callbacks we need to set the index.
-	    if (cur->word_addr == -1) {
-		  cur->cb_data.index = (PLI_INT32) ((int)addr +
-						    first_addr.get_value());
+	    ఒకవేళ (cur->మాట_addr == -1) {
+		  cur->cb_దత్తాంశం.సూచీ = (PLI_INT32) ((పూర్ణాంకం)addr +
+						    మొదటి_addr.get_విలువ());
 	    }
 
-	    if (cur->cb_data.cb_rtn != 0) {
-		  if (cur->test_value_callback_ready()) {
-			if (cur->cb_data.value) {
-			      if (vpi_array_is_real(this)) {
-				    double val = 0.0;
-				    if (addr < vals->get_size())
-					  vals->get_word(addr, val);
-				    vpip_real_get_value(val, cur->cb_data.value);
-			      } else if (vals4) {
-				    vpip_vec4_get_value(vals4->get_word(addr),
-							vals_width,
+	    ఒకవేళ (cur->cb_దత్తాంశం.cb_rtn != 0) {
+		  ఒకవేళ (cur->test_విలువ_callback_ready()) {
+			ఒకవేళ (cur->cb_దత్తాంశం.value) {
+			      ఒకవేళ (vpi_array_is_real(ఇది)) {
+				    ద్విగుణ val = 0.0;
+				    ఒకవేళ (addr < vals->get_కొలత())
+					  vals->get_మాట(addr, val);
+				    vpip_real_get_విలువ(val, cur->cb_దత్తాంశం.value);
+			      } లేకపోతే ఒకవేళ (vals4) {
+				    vpip_vec4_get_విలువ(vals4->get_మాట(addr),
+							vals_వెడల్పు,
 							signed_flag,
-							cur->cb_data.value);
-			      } else if (dynamic_cast<vvp_darray_atom<int8_t>*>(vals)
+							cur->cb_దత్తాంశం.value);
+			      } లేకపోతే ఒకవేళ (dynamic_cast<vvp_darray_atom<int8_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int16_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int32_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int64_t>*>(vals)
@@ -1334,14 +1334,14 @@ void __vpiArray::word_change(unsigned long addr)
 				      || dynamic_cast<vvp_darray_atom<uint64_t>*>(vals)
 				      || dynamic_cast<vvp_darray_vec2*>(vals)) {
 				    vvp_vector4_t val;
-				    if (addr < vals->get_size())
-					  vals->get_word(addr, val);
-				    vpip_vec4_get_value(val,
-							vals_width,
+				    ఒకవేళ (addr < vals->get_కొలత())
+					  vals->get_మాట(addr, val);
+				    vpip_vec4_get_విలువ(val,
+							vals_వెడల్పు,
 							signed_flag,
-							cur->cb_data.value);
-			      } else {
-			            assert(0);
+							cur->cb_దత్తాంశం.value);
+			      } లేకపోతే {
+			            ప్రతిజ్ఞా(0);
 			      }
 			}
 
@@ -1350,226 +1350,226 @@ void __vpiArray::word_change(unsigned long addr)
 
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } లేకపోతే ఒకవేళ (prev == 0) {
 
-		  vpi_callbacks = next;
-		  cur->next = 0;
-		  delete cur;
+		  vpi_callbacks = తదుపరి_2;
+		  cur->తదుపరి_2 = 0;
+		  తొలగించు cur;
 
-	    } else {
-		  assert(prev->next == cur);
-		  prev->next = next;
-		  cur->next = 0;
-		  delete cur;
+	    } లేకపోతే {
+		  ప్రతిజ్ఞా(prev->తదుపరి_2 == cur);
+		  prev->తదుపరి_2 = తదుపరి_2;
+		  cur->తదుపరి_2 = 0;
+		  తొలగించు cur;
 	    }
       }
 }
 
-class array_resolv_list_t : public resolv_list_s {
+తరగతి array_resolv_list_t : బహిరంగ resolv_list_s {
 
-    public:
-      explicit array_resolv_list_t(char*lab) : resolv_list_s(lab) {
+    బహిరంగ:
+      స్పష్టమైన array_resolv_list_t(అక్షరం*lab) : resolv_list_s(lab) {
 	    array = 0;
       }
 
       vvp_array_t*array;
-      bool resolve(bool mes) override;
+      తార్కిక resolve(తార్కిక mes) override;
 
-    private:
+    అంతరంగ:
 };
 
-bool array_resolv_list_t::resolve(bool mes)
+తార్కిక array_resolv_list_t::resolve(తార్కిక mes)
 {
-      *array = array_find(label());
-      if (*array == 0) {
-	    assert(!mes);
-	    return false;
+      *array = array_కనుగొను(label());
+      ఒకవేళ (*array == 0) {
+	    ప్రతిజ్ఞా(!mes);
+	    తిరిగి అబద్ధం;
       }
-      return true;
+      తిరిగి నిజం;
 }
 
-class array_port_resolv_list_t : public resolv_list_s {
+తరగతి array_పోర్టు_resolv_list_t : బహిరంగ resolv_list_s {
 
-    public:
-      explicit array_port_resolv_list_t(char* lab, bool use_addr__,
-                                        long addr__);
+    బహిరంగ:
+      స్పష్టమైన array_పోర్టు_resolv_list_t(అక్షరం* lab, తార్కిక use_addr__,
+                                        దీర్ఘ addr__);
 
       __vpiScope*context_scope;
       vvp_net_t*ptr;
-      bool use_addr;
-      long addr;
-      bool resolve(bool mes) override;
+      తార్కిక use_addr;
+      దీర్ఘ addr;
+      తార్కిక resolve(తార్కిక mes) override;
 
-    private:
+    అంతరంగ:
 };
 
-array_port_resolv_list_t::array_port_resolv_list_t(char *lab, bool use_addr__,
-                                                   long addr__)
+array_పోర్టు_resolv_list_t::array_పోర్టు_resolv_list_t(అక్షరం *lab, తార్కిక use_addr__,
+                                                   దీర్ఘ addr__)
 : resolv_list_s(lab), use_addr(use_addr__), addr(addr__)
 {
-      if (vpip_peek_current_scope()->is_automatic())
+      ఒకవేళ (vpip_peek_current_scope()->is_automatic())
             context_scope = vpip_peek_context_scope();
-      else
+      లేకపోతే
             context_scope = 0;
-      ptr = new vvp_net_t;
+      ptr = కొత్త vvp_net_t;
 }
 
-bool array_port_resolv_list_t::resolve(bool mes)
+తార్కిక array_పోర్టు_resolv_list_t::resolve(తార్కిక mes)
 {
-      vvp_array_t mem = array_find(label());
-      if (mem == 0) {
-	    assert(mem || !mes);
-	    return false;
+      vvp_array_t mem = array_కనుగొను(label());
+      ఒకవేళ (mem == 0) {
+	    ప్రతిజ్ఞా(mem || !mes);
+	    తిరిగి అబద్ధం;
       }
 
       vvp_fun_arrayport*fun;
-      if (use_addr)
-            if (context_scope)
-                  fun = new vvp_fun_arrayport_aa(context_scope, mem, ptr, addr);
-            else
-                  fun = new vvp_fun_arrayport_sa(mem, ptr, addr);
-      else
-            if (context_scope)
-                  fun = new vvp_fun_arrayport_aa(context_scope, mem, ptr);
-            else
-                  fun = new vvp_fun_arrayport_sa(mem, ptr);
+      ఒకవేళ (use_addr)
+            ఒకవేళ (context_scope)
+                  fun = కొత్త vvp_fun_arrayport_aa(context_scope, mem, ptr, addr);
+            లేకపోతే
+                  fun = కొత్త vvp_fun_arrayport_sa(mem, ptr, addr);
+      లేకపోతే
+            ఒకవేళ (context_scope)
+                  fun = కొత్త vvp_fun_arrayport_aa(context_scope, mem, ptr);
+            లేకపోతే
+                  fun = కొత్త vvp_fun_arrayport_sa(mem, ptr);
       ptr->fun = fun;
 
-      array_attach_port(mem, fun);
+      array_attach_పోర్టు(mem, fun);
 
-      return true;
+      తిరిగి నిజం;
 }
 
-class array_word_part_callback : public array_word_value_callback {
-    public:
-      explicit array_word_part_callback(p_cb_data data, long addr);
-      ~array_word_part_callback() override;
+తరగతి array_మాట_part_callback : బహిరంగ array_మాట_విలువ_callback {
+    బహిరంగ:
+      స్పష్టమైన array_మాట_part_callback(p_cb_దత్తాంశం దత్తాంశం, దీర్ఘ addr);
+      ~array_మాట_part_callback() override;
 
-      array_word_part_callback(const array_word_part_callback&) = delete;
-      array_word_part_callback& operator=(const array_word_part_callback&) = delete;
+      array_మాట_part_callback(స్థిరరాశి array_మాట_part_callback&) = తొలగించు;
+      array_మాట_part_callback& క్రియాకారకం=(స్థిరరాశి array_మాట_part_callback&) = తొలగించు;
 
-      bool test_value_callback_ready(void) override;
+      తార్కిక test_విలువ_callback_ready(శూన్య) override;
 
-    private:
-      char*value_bits_;
+    అంతరంగ:
+      అక్షరం*విలువ_బిట్లు;
 };
 
-array_word_part_callback::array_word_part_callback(p_cb_data data, long addr)
-: array_word_value_callback(data, addr)
+array_మాట_part_callback::array_మాట_part_callback(p_cb_దత్తాంశం దత్తాంశం, దీర్ఘ addr)
+: array_మాట_విలువ_callback(దత్తాంశం, addr)
 {
 	// Get the initial value of the part, to use as a reference.
-      struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj);
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      apvword->vpi_get_value(&tmp_value);
+      నిర్మాణం __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(దత్తాంశం->obj);
+      s_vpi_విలువ tmp_విలువ;
+      tmp_విలువ.format = vpiBinStrVal;
+      apvword->vpi_get_విలువ(&tmp_విలువ);
 
-      value_bits_ = new char[apvword->part_wid+1];
+      విలువ_బిట్లు = కొత్త అక్షరం[apvword->part_wid+1];
 
-      memcpy(value_bits_, tmp_value.value.str, apvword->part_wid);
-      value_bits_[apvword->part_wid] = 0;
+      జ్ఞాపకం_నకలు(విలువ_బిట్లు, tmp_విలువ.value.str, apvword->part_wid);
+      విలువ_బిట్లు[apvword->part_wid] = 0;
 }
 
-array_word_part_callback::~array_word_part_callback()
+array_మాట_part_callback::~array_మాట_part_callback()
 {
-      delete[]value_bits_;
+      తొలగించు[]విలువ_బిట్లు;
 }
 
-bool array_word_part_callback::test_value_callback_ready(void)
+తార్కిక array_మాట_part_callback::test_విలువ_callback_ready(శూన్య)
 {
-      struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(cb_data.obj);
-      assert(apvword);
+      నిర్మాణం __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(cb_దత్తాంశం.obj);
+      ప్రతిజ్ఞా(apvword);
 
 	// Get a reference value that can be used to compare with an
 	// updated value.
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      apvword->vpi_get_value(&tmp_value);
+      s_vpi_విలువ tmp_విలువ;
+      tmp_విలువ.format = vpiBinStrVal;
+      apvword->vpi_get_విలువ(&tmp_విలువ);
 
-      if (memcmp(value_bits_, tmp_value.value.str, apvword->part_wid) == 0)
-	    return false;
+      ఒకవేళ (memcmp(విలువ_బిట్లు, tmp_విలువ.value.str, apvword->part_wid) == 0)
+	    తిరిగి అబద్ధం;
 
-      memcpy(value_bits_, tmp_value.value.str, apvword->part_wid);
-      return true;
+      జ్ఞాపకం_నకలు(విలువ_బిట్లు, tmp_విలువ.value.str, apvword->part_wid);
+      తిరిగి నిజం;
 
 }
 
-value_callback*vpip_array_word_change(p_cb_data data)
+విలువ_callback*vpip_array_మాట_change(p_cb_దత్తాంశం దత్తాంశం)
 {
-      struct __vpiArray*parent = 0;
-      array_word_value_callback*cbh = 0;
-      if (const struct __vpiArrayWord*word = array_var_word_from_handle(data->obj)) {
-	    parent = static_cast<__vpiArray*>(word->get_parent());
-	    unsigned addr = word->get_index();
-	    cbh = new array_word_value_callback(data, addr);
+      నిర్మాణం __vpiArray*మాతృ = 0;
+      array_మాట_విలువ_callback*cbh = 0;
+      ఒకవేళ (స్థిరరాశి నిర్మాణం __vpiArrayWord*మాట = array_var_మాట_from_handle(దత్తాంశం->obj)) {
+	    మాతృ = static_cast<__vpiArray*>(మాట->get_మాతృ());
+	    గుర్తులేని addr = మాట->get_సూచీ();
+	    cbh = కొత్త array_మాట_విలువ_callback(దత్తాంశం, addr);
 
-      } else if (struct __vpiArrayVthrA*tword = dynamic_cast<__vpiArrayVthrA*>(data->obj)) {
-	    parent = tword->array;
-	    cbh = new array_word_value_callback(data, tword->address);
+      } లేకపోతే ఒకవేళ (నిర్మాణం __vpiArrayVthrA*tword = dynamic_cast<__vpiArrayVthrA*>(దత్తాంశం->obj)) {
+	    మాతృ = tword->array;
+	    cbh = కొత్త array_మాట_విలువ_callback(దత్తాంశం, tword->చిరునామా);
 
-      } else if (struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj)) {
-	    parent = apvword->array;
-	    cbh = new array_word_part_callback(data, apvword->word_sel);
+      } లేకపోతే ఒకవేళ (నిర్మాణం __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(దత్తాంశం->obj)) {
+	    మాతృ = apvword->array;
+	    cbh = కొత్త array_మాట_part_callback(దత్తాంశం, apvword->మాట_sel);
       }
 
-      assert(cbh);
-      assert(parent);
-      cbh->next = parent->vpi_callbacks;
-      parent->vpi_callbacks = cbh;
+      ప్రతిజ్ఞా(cbh);
+      ప్రతిజ్ఞా(మాతృ);
+      cbh->తదుపరి_2 = మాతృ->vpi_callbacks;
+      మాతృ->vpi_callbacks = cbh;
 
-      return cbh;
+      తిరిగి cbh;
 }
 
-value_callback* vpip_array_change(p_cb_data data)
+విలువ_callback* vpip_array_change(p_cb_దత్తాంశం దత్తాంశం)
 {
-      array_word_value_callback*cbh = new array_word_value_callback(data, -1);
-      assert(data->obj);
+      array_మాట_విలువ_callback*cbh = కొత్త array_మాట_విలువ_callback(దత్తాంశం, -1);
+      ప్రతిజ్ఞా(దత్తాంశం->obj);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(data->obj);
-      cbh->next = arr->vpi_callbacks;
+      నిర్మాణం __vpiArray*arr = dynamic_cast<__vpiArray*>(దత్తాంశం->obj);
+      cbh->తదుపరి_2 = arr->vpi_callbacks;
       arr->vpi_callbacks = cbh;
-      return cbh;
+      తిరిగి cbh;
 }
 
-void compile_array_port(char*label, char*array, char*addr)
+శూన్య compile_array_పోర్టు(అక్షరం*label, అక్షరం*array, అక్షరం*addr)
 {
-      array_port_resolv_list_t*resolv_mem
-	    = new array_port_resolv_list_t(array, false, 0);
+      array_పోర్టు_resolv_list_t*resolv_mem
+	    = కొత్త array_పోర్టు_resolv_list_t(array, అబద్ధం, 0);
 
-      define_functor_symbol(label, resolv_mem->ptr);
-      free(label);
+      define_functor_చిహ్నం(label, resolv_mem->ptr);
+      విడుదల(label);
 	// Connect the port-0 input as the address.
-      input_connect(resolv_mem->ptr, 0, addr);
+      ఆదానం_connect(resolv_mem->ptr, 0, addr);
 
       resolv_submit(resolv_mem);
 }
 
-void compile_array_port(char*label, char*array, long addr)
+శూన్య compile_array_పోర్టు(అక్షరం*label, అక్షరం*array, దీర్ఘ addr)
 {
-      array_port_resolv_list_t*resolv_mem
-	    = new array_port_resolv_list_t(array, true, addr);
+      array_పోర్టు_resolv_list_t*resolv_mem
+	    = కొత్త array_పోర్టు_resolv_list_t(array, నిజం, addr);
 
-      define_functor_symbol(label, resolv_mem->ptr);
-      free(label);
+      define_functor_చిహ్నం(label, resolv_mem->ptr);
+      విడుదల(label);
 
       resolv_submit(resolv_mem);
 }
 
-void compile_array_alias(char*label, char*name, char*src)
+శూన్య compile_array_alias(అక్షరం*label, అక్షరం*name, అక్షరం*src)
 {
-      vvp_array_t mem = array_find(src);
-      assert(mem);
+      vvp_array_t mem = array_కనుగొను(src);
+      ప్రతిజ్ఞా(mem);
 
-      struct __vpiArray*obj = new __vpiArray;
+      నిర్మాణం __vpiArray*obj = కొత్త __vpiArray;
 
       obj->scope = vpip_peek_current_scope();
       obj->name  = vpip_name_string(name);
-      obj->array_count = mem->array_count;
+      obj->array_లెక్క = mem->array_లెక్క;
       obj->signed_flag = mem->signed_flag;
 
 	// Need to set an accurate range of addresses.
-      obj->first_addr = mem->first_addr;
-      obj->last_addr  = mem->last_addr;
-      obj->swap_addr = mem->swap_addr;
+      obj->మొదటి_addr = mem->మొదటి_addr;
+      obj->చివరి_addr  = mem->చివరి_addr;
+      obj->మార్పిడి_addr = mem->మార్పిడి_addr;
 
       obj->msb = mem->msb;
       obj->lsb = mem->lsb;
@@ -1578,22 +1578,22 @@ void compile_array_alias(char*label, char*name, char*src)
       obj->nets = mem->nets;
       obj->vals4 = mem->vals4;
       obj->vals  = mem->vals;
-      obj->vals_width = mem->vals_width;
-      obj->vals_words = mem->vals_words;
+      obj->vals_వెడల్పు = mem->vals_వెడల్పు;
+      obj->vals_పదాలు = mem->vals_పదాలు;
 
       obj->ports_ = 0;
       obj->vpi_callbacks = 0;
 
-      assert(array_table);
-      assert(!array_find(label));
-      array_table->sym_set_value(label, obj);
+      ప్రతిజ్ఞా(array_పట్టిక);
+      ప్రతిజ్ఞా(!array_కనుగొను(label));
+      array_పట్టిక->sym_సమితి_విలువ(label, obj);
 
-      compile_vpi_symbol(label, obj);
-      vpip_attach_to_current_scope(obj);
+      compile_vpi_చిహ్నం(label, obj);
+      vpip_attach_గమ్యం_current_scope(obj);
 
-      free(label);
-      free(name);
-      free(src);
+      విడుదల(label);
+      విడుదల(name);
+      విడుదల(src);
 }
 
 /*
@@ -1602,20 +1602,20 @@ void compile_array_alias(char*label, char*name, char*src)
  * from expressions like "label[addr]" where "label" is the array and
  * "addr" is the canonical address of the desired word.
  */
-vpiHandle vpip_make_vthr_A(char*label, unsigned addr)
+vpiHandle vpip_make_vthr_A(అక్షరం*label, గుర్తులేని addr)
 {
-      struct __vpiArrayVthrA*obj = new __vpiArrayVthrA;
+      నిర్మాణం __vpiArrayVthrA*obj = కొత్త __vpiArrayVthrA;
 
       array_resolv_list_t*resolv_mem
-	    = new array_resolv_list_t(label);
+	    = కొత్త array_resolv_list_t(label);
 
       resolv_mem->array = &obj->array;
       resolv_submit(resolv_mem);
 
-      obj->address_handle = 0;
-      obj->address = addr;
+      obj->చిరునామా_handle = 0;
+      obj->చిరునామా = addr;
 
-      return obj;
+      తిరిగి obj;
 }
 
 /*
@@ -1624,131 +1624,131 @@ vpiHandle vpip_make_vthr_A(char*label, unsigned addr)
  * word address is calculated from the VPI object that symbol
  * represents. The expression that leads to this looks like label[symbol].
  */
-vpiHandle vpip_make_vthr_A(char*label, char*symbol)
+vpiHandle vpip_make_vthr_A(అక్షరం*label, అక్షరం*చిహ్నం)
 {
-      struct __vpiArrayVthrA*obj = new __vpiArrayVthrA;
+      నిర్మాణం __vpiArrayVthrA*obj = కొత్త __vpiArrayVthrA;
 
       array_resolv_list_t*resolv_mem
-	    = new array_resolv_list_t(label);
+	    = కొత్త array_resolv_list_t(label);
 
       resolv_mem->array = &obj->array;
       resolv_submit(resolv_mem);
 
-      obj->address_handle = 0;
-      compile_vpi_lookup(&obj->address_handle, symbol);
-      obj->address = 0;
+      obj->చిరునామా_handle = 0;
+      compile_vpi_lookup(&obj->చిరునామా_handle, చిహ్నం);
+      obj->చిరునామా = 0;
 
-      return obj;
+      తిరిగి obj;
 }
 
-vpiHandle vpip_make_vthr_A(char*label, vpiHandle handle)
+vpiHandle vpip_make_vthr_A(అక్షరం*label, vpiHandle handle)
 {
-      struct __vpiArrayVthrA*obj = new __vpiArrayVthrA;
+      నిర్మాణం __vpiArrayVthrA*obj = కొత్త __vpiArrayVthrA;
 
       array_resolv_list_t*resolv_mem
-	    = new array_resolv_list_t(label);
+	    = కొత్త array_resolv_list_t(label);
 
       resolv_mem->array = &obj->array;
       resolv_submit(resolv_mem);
 
-      obj->address_handle = handle;
-      obj->address = 0;
+      obj->చిరునామా_handle = handle;
+      obj->చిరునామా = 0;
 
-      return obj;
+      తిరిగి obj;
 }
 
-vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned wid)
+vpiHandle vpip_make_vthr_APV(అక్షరం*label, గుర్తులేని సూచీ, గుర్తులేని బిట్టు, గుర్తులేని wid)
 {
-      struct __vpiArrayVthrAPV*obj = new __vpiArrayVthrAPV;
+      నిర్మాణం __vpiArrayVthrAPV*obj = కొత్త __vpiArrayVthrAPV;
 
       array_resolv_list_t*resolv_mem
-	    = new array_resolv_list_t(label);
+	    = కొత్త array_resolv_list_t(label);
 
       resolv_mem->array = &obj->array;
       resolv_submit(resolv_mem);
 
-      obj->word_sel = index;
-      obj->part_bit = bit;
+      obj->మాట_sel = సూచీ;
+      obj->part_బిట్టు = బిట్టు;
       obj->part_wid = wid;
 
-      return obj;
+      తిరిగి obj;
 }
 
-void compile_array_cleanup(void)
+శూన్య compile_array_cleanup(శూన్య)
 {
-      delete array_table;
-      array_table = 0;
+      తొలగించు array_పట్టిక;
+      array_పట్టిక = 0;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void memory_delete(vpiHandle item)
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
+శూన్య జ్ఞాపకం_delete(vpiHandle అంశం)
 {
-      struct __vpiArray*arr = static_cast<struct __vpiArray*>(item);
-      if (arr->vals_words) delete [] (arr->vals_words-1);
+      నిర్మాణం __vpiArray*arr = static_cast<నిర్మాణం __vpiArray*>(అంశం);
+      ఒకవేళ (arr->vals_పదాలు) తొలగించు [] (arr->vals_పదాలు-1);
 
 //      if (arr->vals4) {}
 // Delete the individual words?
 // constant_delete(handle)?
-      delete arr->vals4;
+      తొలగించు arr->vals4;
 
 //      if (arr->vals) {}
 // Delete the individual words?
 // constant_delete(handle)?
-      delete arr->vals;
+      తొలగించు arr->vals;
 
-      if (arr->nets) {
-	    for (unsigned idx = 0; idx < arr->get_size(); idx += 1) {
-		  if (struct __vpiSignal*sig =
+      ఒకవేళ (arr->nets) {
+	    కొరకు (గుర్తులేని idx = 0; idx < arr->get_కొలత(); idx += 1) {
+		  ఒకవేళ (నిర్మాణం __vpiSignal*sig =
 		      dynamic_cast<__vpiSignal*>(arr->nets[idx])) {
 // Delete the individual words?
-			constant_delete(sig->id.index);
+			constant_delete(sig->id.సూచీ);
 		    /* These should only be the real words. */
-		  } else {
-			assert(arr->nets[idx]->get_type_code() ==
+		  } లేకపోతే {
+			ప్రతిజ్ఞా(arr->nets[idx]->get_type_సంకేతం() ==
 			       vpiRealVar);
-			struct __vpiRealVar *sigr = static_cast<struct __vpiRealVar *>
+			నిర్మాణం __vpiRealVar *sigr = static_cast<నిర్మాణం __vpiRealVar *>
 			                            (arr->nets[idx]);
-			constant_delete(sigr->id.index);
+			constant_delete(sigr->id.సూచీ);
 // Why are only the real words still here?
-			delete arr->nets[idx];
+			తొలగించు arr->nets[idx];
 		  }
 	    }
-	    free(arr->nets);
+	    విడుదల(arr->nets);
       }
 
-      while (arr->vpi_callbacks) {
-	    struct __vpiCallback*tmp = arr->vpi_callbacks->next;
-	    delete arr->vpi_callbacks;
+      అయితే (arr->vpi_callbacks) {
+	    నిర్మాణం __vpiCallback*tmp = arr->vpi_callbacks->తదుపరి_2;
+	    తొలగించు arr->vpi_callbacks;
 	    arr->vpi_callbacks = tmp;
       }
 
-      delete arr;
+      తొలగించు arr;
 }
 
-void A_delete(vpiHandle item)
+శూన్య A_delete(vpiHandle అంశం)
 {
-      struct __vpiArrayVthrA*obj = static_cast<struct __vpiArrayVthrA*>(item);
-      if (obj->address_handle) {
-	    switch (obj->address_handle->get_type_code()) {
-		case vpiMemoryWord:
-		  if (vpi_get(_vpiFromThr, obj->address_handle) == _vpi_at_A) {
-			A_delete(obj->address_handle);
+      నిర్మాణం __vpiArrayVthrA*obj = static_cast<నిర్మాణం __vpiArrayVthrA*>(అంశం);
+      ఒకవేళ (obj->చిరునామా_handle) {
+	    ఎంపిక (obj->చిరునామా_handle->get_type_సంకేతం()) {
+		స్థితి vpi_జ్ఞాపకం_మాట:
+		  ఒకవేళ (vpi_get(_vpiFromThr, obj->చిరునామా_handle) == _vpi_at_A) {
+			A_delete(obj->చిరునామా_handle);
 		  }
-		  break;
-		case vpiPartSelect:
-		  assert(vpi_get(_vpiFromThr, obj->address_handle) ==
+		  ఆపు;
+		స్థితి vpiPartSelect:
+		  ప్రతిజ్ఞా(vpi_get(_vpiFromThr, obj->చిరునామా_handle) ==
 		         _vpi_at_PV);
-		  PV_delete(obj->address_handle);
-		  break;
+		  PV_delete(obj->చిరునామా_handle);
+		  ఆపు;
 	    }
       }
 
-      delete obj;
+      తొలగించు obj;
 }
 
-void APV_delete(vpiHandle item)
+శూన్య APV_delete(vpiHandle అంశం)
 {
-      struct __vpiArrayVthrAPV*obj = static_cast<struct __vpiArrayVthrAPV*>(item);
-      delete obj;
+      నిర్మాణం __vpiArrayVthrAPV*obj = static_cast<నిర్మాణం __vpiArrayVthrAPV*>(అంశం);
+      తొలగించు obj;
 }
-#endif
+#అయితే_ముగింపు

@@ -1,5 +1,5 @@
-#ifndef IVL_vpi_priv_H
-#define IVL_vpi_priv_H
+#నిర్వచితం_కాకపోతే IVL_vpi_priv_H
+#నిర్వచించు IVL_vpi_priv_H
 /*
  * Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)
  * Copyright (c) 2016 CERN Michele Castellana (michele.castellana@cern.ch)
@@ -33,14 +33,14 @@
  * Added to use some "vvp_fun_modpath_src"
  * and "vvp_fun_modpath" classes definitions
  */
-#include  "delay.h"
+#అన్తర్భావ  "delay.h"
 
 
 class class_type;
 class vvp_darray;
 class vvp_fun_arrayport;
 
-typedef struct __vpiArray* vvp_array_t;
+రకనిర్వచనం నిర్మాణం __vpiArray* vvp_array_t;
 
 /*
  * This header file contains the internal definitions that the vvp
@@ -48,47 +48,47 @@ typedef struct __vpiArray* vvp_array_t;
  * header file elsewhere.
  */
 
-#if defined(__MINGW32__) || defined (__CYGWIN__)
-extern vpip_routines_s vpi_routines;
-#endif
+#ఒకవేళ defined(__MINGW32__) || defined (__CYGWIN__)
+బాహ్య vpip_routines_s vpi_routines;
+#అయితే_ముగింపు
 
 /*
  * Routines/definitions used to build the file/line number tracing object.
  */
-#define _vpiFileLine    0x1000003
-#define _vpiDescription 0x1000004
+#నిర్వచించు vpi_File_పంక్తి    0x1000003
+#నిర్వచించు _vpiDescription 0x1000004
 
-extern bool show_file_line;
-extern bool code_is_instrumented;
+బాహ్య bool show_file_పంక్తి;
+బాహ్య bool సంకేతం_is_instrumented;
 
-extern vpiHandle vpip_build_file_line(const char*description,
-                                      long file_idx, long lineno);
+బాహ్య vpiHandle vpip_build_file_పంక్తి(స్థిరరాశి అక్షరం*description,
+                                      దీర్ఘ file_idx, దీర్ఘ lineno);
 
 /*
  * vpi_type_values returns the text form of the vpi type. If the type name
  * is unknown, then return the number stringified. Note that the return
  * value may return to a static buffer.
  */
-extern const char* vpi_type_as_string(PLI_INT32 code);
+బాహ్య స్థిరరాశి అక్షరం* vpi_type_as_string(PLI_INT32 సంకేతం_2);
 
 /*
  * Return the port direction as a string.
  */
-extern const char* direction_as_string(int dir);
+బాహ్య స్థిరరాశి అక్షరం* direction_as_string(పూర్ణాంకం dir);
 
 /*
  * Private VPI properties that are only used in the cleanup code.
  */
-#if defined(CHECK_WITH_VALGRIND) && !defined(BR916_STOPGAP_FIX)
-#define _vpiFromThr 0x1000001
+#ఒకవేళ defined(CHECK_WITH_VALGRIND) && !defined(BR916_STOPGAP_FIX)
+#నిర్వచించు _vpiFromThr 0x1000001
 #   define _vpiNoThr   0
 #   define _vpiString  1
 #   define _vpiVThr    2
-#   define _vpiWord    3
+#   define vpi_మాట    3
 #   define _vpi_at_PV  4
 #   define _vpi_at_A   5
 #   define _vpi_at_APV 6
-#endif
+#అయితే_ముగింపు
 
 
 /*
@@ -96,20 +96,20 @@ extern const char* direction_as_string(int dir);
  * to generate error messages when vpi functions are called
  * incorrectly.
  */
-enum vpi_mode_t {
-      VPI_MODE_NONE =0,
+గణన vpi_బహుళకం_t {
+      VPI_బహుళకం_NONE =0,
 	/* The compiler is calling a register function. */
-      VPI_MODE_REGISTER,
+      VPI_బహుళకం_రిజిస్టరు,
 	/* The compiler is calling a compiletf function. */
-      VPI_MODE_COMPILETF,
+      VPI_బహుళకం_COMPILETF,
 	/* The compiler is calling a calltf function. */
-      VPI_MODE_CALLTF,
+      VPI_బహుళకం_CALLTF,
 	/* We are in the midst of a RWSync callback. */
-      VPI_MODE_RWSYNC,
+      VPI_బహుళకం_RWSYNC,
 	/* We are in a ROSync callback. */
-      VPI_MODE_ROSYNC
+      VPI_బహుళకం_ROSYNC
 };
-extern vpi_mode_t vpi_mode_flag;
+బాహ్య vpi_బహుళకం_t vpi_బహుళకం_flag;
 
 /*
  * This structure is the very base of a vpiHandle. Every handle
@@ -117,30 +117,30 @@ extern vpi_mode_t vpi_mode_flag;
  * internally pass the derived types as pointers to one of these.
  */
 class __vpiHandle {
-    public:
-      inline __vpiHandle() { }
+    బహిరంగ:
+      అంతఃవరుస __vpiHandle() { }
 	// The destructor is virtual so that dynamic types will work.
-      virtual ~__vpiHandle();
+      మాయా ~__vpiHandle();
 
-      virtual int get_type_code(void) const =0;
-      virtual int vpi_get(int code);
-      virtual int64_t vpi_get64(int code);
-      virtual char* vpi_get_str(int code);
+      మాయా పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి =0;
+      మాయా పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2);
+      మాయా int64_t vpi_get64(పూర్ణాంకం సంకేతం_2);
+      మాయా అక్షరం* vpi_get_str(పూర్ణాంకం సంకేతం_2);
 
-      virtual void vpi_get_value(p_vpi_value val);
-      virtual vpiHandle vpi_put_value(p_vpi_value val, int flags);
-      virtual vpiHandle vpi_handle(int code);
-      virtual vpiHandle vpi_iterate(int code);
-      virtual vpiHandle vpi_index(int idx);
-      virtual void vpi_get_delays(p_vpi_delay del);
-      virtual void vpi_put_delays(p_vpi_delay del);
+      మాయా శూన్య vpi_get_విలువ(p_vpi_విలువ val);
+      మాయా vpiHandle vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags);
+      మాయా vpiHandle vpi_handle(పూర్ణాంకం సంకేతం_2);
+      మాయా vpiHandle vpi_iterate(పూర్ణాంకం సంకేతం_2);
+      మాయా vpiHandle vpi_సూచీ(పూర్ణాంకం idx);
+      మాయా శూన్య vpi_get_delays(p_vpi_delay del);
+      మాయా శూన్య vpi_put_delays(p_vpi_delay del);
 
 	// Objects may have destroyer functions of their own. If so,
 	// then this virtual method will return a POINTER to that
 	// function. The pointer is used to "delete" the object, which
 	// is why the function itself cannot be a method.
-      typedef int (*free_object_fun_t)(vpiHandle);
-      virtual free_object_fun_t free_object_fun(void);
+      రకనిర్వచనం పూర్ణాంకం (*free_object_fun_t)(vpiHandle);
+      మాయా free_object_fun_t free_object_fun(శూన్య);
 };
 
 
@@ -155,37 +155,37 @@ class __vpiHandle {
  * The free_args_flag member is true if when this iterator object is
  * released it must also free the args array.
  */
-struct __vpiIterator : public __vpiHandle {
+నిర్మాణం __vpiIterator : బహిరంగ __vpiHandle {
       __vpiIterator();
-      int get_type_code(void) const override;
-      free_object_fun_t free_object_fun(void) override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      free_object_fun_t free_object_fun(శూన్య) override;
 
-      vpiHandle *args;
-      unsigned  nargs;
-      unsigned  next;
-      bool free_args_flag;
+      vpiHandle *వాదనలు;
+      గుర్తులేని  nargs;
+      గుర్తులేని  తదుపరి_2;
+      bool free_వాదనలు_flag;
 };
 
-extern vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
-				    bool free_args_flag);
+బాహ్య vpiHandle vpip_make_iterator(గుర్తులేని nargs, vpiHandle*వాదనలు,
+				    bool free_వాదనలు_flag);
 
-class __vpiDecConst : public __vpiHandle {
-    public:
-      explicit __vpiDecConst(int val =0);
-      __vpiDecConst(const __vpiDecConst&that);
-# if __cplusplus >= 201103L
-      __vpiDecConst& operator = (const __vpiDecConst&that) = default;
+class __vpiDecConst : బహిరంగ __vpiHandle {
+    బహిరంగ:
+      explicit __vpiDecConst(పూర్ణాంకం val =0);
+      __vpiDecConst(స్థిరరాశి __vpiDecConst&that);
+# ఒకవేళ __cplusplus >= 201103L
+      __vpiDecConst& క్రియాకారకం = (స్థిరరాశి __vpiDecConst&that) = అప్రమేయ;
 # endif
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
 
-    public:
-      inline int get_value() const { return value; }
-      inline void set_value(int val) { value = val; }
+    బహిరంగ:
+      అంతఃవరుస పూర్ణాంకం get_విలువ() స్థిరరాశి { తిరిగి విలువ; }
+      అంతఃవరుస శూన్య సమితి_విలువ(పూర్ణాంకం val) { విలువ = val; }
 
-    private:
-      int value;
+    అంతరంగ:
+      పూర్ణాంకం విలువ;
 };
 
 /*
@@ -193,59 +193,59 @@ class __vpiDecConst : public __vpiHandle {
  * are defined and used in vpi_callback.cc. The __vpiCallback are
  * always used in association with vvp_vpi_callback objects.
  */
-struct __vpiCallback : public __vpiHandle {
+నిర్మాణం __vpiCallback : బహిరంగ __vpiHandle {
       __vpiCallback();
       ~__vpiCallback() override;
-      int get_type_code(void) const override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
 
 	// Used for listing callbacks.
-      struct __vpiCallback*next;
+      నిర్మాణం __vpiCallback*తదుపరి_2;
 
 	// user supplied callback data
-      struct t_cb_data cb_data;
+      నిర్మాణం t_cb_దత్తాంశం cb_దత్తాంశం;
 };
 
-class value_callback : public __vpiCallback {
-    public:
-      explicit value_callback(p_cb_data data);
+class విలువ_callback : బహిరంగ __vpiCallback {
+    బహిరంగ:
+      explicit విలువ_callback(p_cb_దత్తాంశం దత్తాంశం);
 	// Return true if the callback really is ready to be called
-      virtual bool test_value_callback_ready(void);
+      మాయా bool test_విలువ_callback_ready(శూన్య);
 
-    public:
+    బహిరంగ:
 	// user supplied callback data
-      struct t_vpi_time cb_time;
-      struct t_vpi_value cb_value;
+      నిర్మాణం t_vpi_సమయం cb_సమయం;
+      నిర్మాణం t_vpi_విలువ cb_విలువ;
 };
 
-extern void callback_execute(struct __vpiCallback*cur);
+బాహ్య శూన్య callback_execute(నిర్మాణం __vpiCallback*cur);
 
-struct __vpiSystemTime : public __vpiHandle {
+నిర్మాణం __vpiSystemTime : బహిరంగ __vpiHandle {
       __vpiSystemTime();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_handle(int code) override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      అక్షరం*vpi_get_str(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
+      vpiHandle vpi_handle(పూర్ణాంకం సంకేతం_2) override;
 
       __vpiScope*scope;
 };
 
-struct __vpiScopedTime : public __vpiSystemTime {
+నిర్మాణం __vpiScopedTime : బహిరంగ __vpiSystemTime {
       __vpiScopedTime();
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      అక్షరం*vpi_get_str(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
 };
-struct __vpiScopedSTime : public __vpiSystemTime {
+నిర్మాణం __vpiScopedSTime : బహిరంగ __vpiSystemTime {
       __vpiScopedSTime();
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      అక్షరం*vpi_get_str(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
 };
-struct __vpiScopedRealtime : public __vpiSystemTime {
+నిర్మాణం __vpiScopedRealtime : బహిరంగ __vpiSystemTime {
       __vpiScopedRealtime();
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      అక్షరం*vpi_get_str(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
 };
 
 /*
@@ -253,291 +253,291 @@ struct __vpiScopedRealtime : public __vpiSystemTime {
  * objects hold the items and properties that are knowingly bound to a
  * scope.
  */
-class __vpiScope : public __vpiHandle {
+class __vpiScope : బహిరంగ __vpiHandle {
 
-    public:
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+    బహిరంగ:
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      అక్షరం* vpi_get_str(పూర్ణాంకం సంకేతం_2) override;
+      vpiHandle vpi_handle(పూర్ణాంకం సంకేతం_2) override;
+      vpiHandle vpi_iterate(పూర్ణాంకం సంకేతం_2) override;
 
-    public:
+    బహిరంగ:
 	// Return the BASE name of the scope. This does not include
 	// any of the parent hierarchy.
-      inline const char*scope_name() const { return name_; }
+      అంతఃవరుస స్థిరరాశి అక్షరం*scope_name() స్థిరరాశి { తిరిగి name_; }
 
-      inline const char*scope_def_name() const { return tname_; }
+      అంతఃవరుస స్థిరరాశి అక్షరం*scope_def_name() స్థిరరాశి { తిరిగి tname_; }
 	// TRUE if this is an automatic func/task/block
-      inline bool is_automatic() const { return is_automatic_; }
+      అంతఃవరుస bool is_automatic() స్థిరరాశి { తిరిగి is_automatic_; }
 
-    public:
+    బహిరంగ:
       __vpiScope *scope;
-      unsigned file_idx;
-      unsigned lineno;
-      unsigned def_file_idx;
-      unsigned def_lineno;
+      గుర్తులేని file_idx;
+      గుర్తులేని lineno;
+      గుర్తులేని def_file_idx;
+      గుర్తులేని def_lineno;
       bool is_cell;
 	/* The scope has a system time of its own. */
-      __vpiScopedTime scoped_time;
-      struct __vpiScopedSTime scoped_stime;
-      struct __vpiScopedRealtime scoped_realtime;
+      __vpiScopedTime scoped_సమయం;
+      నిర్మాణం __vpiScopedSTime scoped_stime;
+      నిర్మాణం __vpiScopedRealtime scoped_realtime;
 	/* Keep an array of internal scope items. */
-      std::vector<class __vpiHandle*> intern;
+      std::సదిశ<class __vpiHandle*> intern;
 	/* Set of types */
       std::map<std::string,class_type*> classes;
         /* Keep an array of items to be automatically allocated */
-      struct automatic_hooks_s**item;
-      unsigned nitem;
+      నిర్మాణం automatic_hooks_s**అంశం;
+      గుర్తులేని nitem;
         /* Keep a list of live contexts. */
-      vvp_context_t live_contexts;
+      vvp_context_t సజీవ_contexts;
         /* Keep a list of freed contexts. */
       vvp_context_t free_contexts;
 	/* Keep a list of threads in the scope. */
-      std::set<vthread_t> threads;
-      signed int time_units :8;
-      signed int time_precision :8;
+      std::సమితి<vthread_t> దారాలు;
+      గుర్తుగల పూర్ణాంకం సమయం_units :8;
+      గుర్తుగల పూర్ణాంకం సమయం_precision :8;
 
-    protected:
-      __vpiScope(const char*nam, const char*tnam, bool is_auto_flag =false);
+    రక్షిత:
+      __vpiScope(స్థిరరాశి అక్షరం*nam, స్థిరరాశి అక్షరం*tnam, bool is_auto_flag =false);
 
-    private:
+    అంతరంగ:
 	/* The scope has a name. */
-      const char*name_;
-      const char*tname_;
+      స్థిరరాశి అక్షరం*name_;
+      స్థిరరాశి అక్షరం*tname_;
 	/* the scope may be "automatic" */
       bool is_automatic_;
 };
 
-class vpiScopeFunction  : public __vpiScope {
-    public:
-      inline vpiScopeFunction(const char*nam, const char*tnam,
-			      bool auto_flag, int func_type, unsigned func_wid, vvp_bit4_t func_init_val)
+class vpiScopeFunction  : బహిరంగ __vpiScope {
+    బహిరంగ:
+      అంతఃవరుస vpiScopeFunction(స్థిరరాశి అక్షరం*nam, స్థిరరాశి అక్షరం*tnam,
+			      bool auto_flag, పూర్ణాంకం func_type, గుర్తులేని func_wid, vvp_bit4_t func_init_val)
       : __vpiScope(nam,tnam, auto_flag), func_type_(func_type), func_wid_(func_wid), func_init_val_(func_init_val)
       { }
 
-      int get_type_code(void) const override { return vpiFunction; }
-      int vpi_get(int code) override
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpiFunction; }
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override
       {
-	    switch (code) {
-		case vpiFuncType:
-		  return func_type_;
-		default:
-		  return __vpiScope::vpi_get(code);
+	    ఎంపిక (సంకేతం_2) {
+		స్థితి vpiFuncType:
+		  తిరిగి func_type_;
+		అప్రమేయ:
+		  తిరిగి __vpiScope::vpi_get(సంకేతం_2);
 	    }
       }
 
-    public:
-      inline unsigned get_func_width(void) const { return func_wid_; }
-      inline vvp_bit4_t get_func_init_val(void) const { return func_init_val_; }
+    బహిరంగ:
+      అంతఃవరుస గుర్తులేని get_func_వెడల్పు(శూన్య) స్థిరరాశి { తిరిగి func_wid_; }
+      అంతఃవరుస vvp_bit4_t get_func_init_val(శూన్య) స్థిరరాశి { తిరిగి func_init_val_; }
 
-    private:
-      int func_type_;
-      unsigned func_wid_;
+    అంతరంగ:
+      పూర్ణాంకం func_type_;
+      గుర్తులేని func_wid_;
       vvp_bit4_t func_init_val_;
 };
 
-extern __vpiScope* vpip_peek_current_scope(void);
-extern void vpip_attach_to_scope(__vpiScope*scope, vpiHandle obj);
-extern void vpip_attach_to_current_scope(vpiHandle obj);
-extern __vpiScope* vpip_peek_context_scope(void);
-extern unsigned vpip_add_item_to_context(automatic_hooks_s*item,
+బాహ్య __vpiScope* vpip_peek_current_scope(శూన్య);
+బాహ్య శూన్య vpip_attach_గమ్యం_scope(__vpiScope*scope, vpiHandle obj);
+బాహ్య శూన్య vpip_attach_గమ్యం_current_scope(vpiHandle obj);
+బాహ్య __vpiScope* vpip_peek_context_scope(శూన్య);
+బాహ్య గుర్తులేని vpip_కూడు_అంశం_గమ్యం_context(automatic_hooks_s*అంశం,
                                          __vpiScope*scope);
-extern vpiHandle vpip_make_root_iterator(int type_code);
-extern void vpip_make_root_iterator(class __vpiHandle**&table,
-				    unsigned&ntable);
+బాహ్య vpiHandle vpip_make_మూలం_iterator(పూర్ణాంకం type_సంకేతం);
+బాహ్య శూన్య vpip_make_మూలం_iterator(class __vpiHandle**&పట్టిక,
+				    గుర్తులేని&ntable);
 
 /*
  * Signals include the variable types (reg, integer, time) and are
  * distinguished by the vpiType code. They also have a parent scope,
  * a declared name and declaration indices.
  */
-struct __vpiSignal : public __vpiHandle {
-      int vpi_get(int code) override;
-      int64_t vpi_get64(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
+నిర్మాణం __vpiSignal : బహిరంగ __vpiHandle {
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      int64_t vpi_get64(పూర్ణాంకం సంకేతం_2) override;
+      అక్షరం* vpi_get_str(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
+      vpiHandle vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags) override;
+      vpiHandle vpi_handle(పూర్ణాంకం సంకేతం_2) override;
+      vpiHandle vpi_iterate(పూర్ణాంకం సంకేతం_2) override;
+      vpiHandle vpi_సూచీ(పూర్ణాంకం idx) override;
 
-    public:
-      unsigned width() const;
-      vpiHandle get_index(int index);
-      void get_bit_value(const struct __vpiBit*bit, p_vpi_value vp);
-      vpiHandle put_bit_value(struct __vpiBit*bit, p_vpi_value vp, int flags);
-      void make_bits();
+    బహిరంగ:
+      గుర్తులేని వెడల్పు() స్థిరరాశి;
+      vpiHandle get_సూచీ(పూర్ణాంకం సూచీ);
+      శూన్య get_బిట్టు_విలువ(స్థిరరాశి నిర్మాణం __vpiBit*బిట్టు, p_vpi_విలువ vp);
+      vpiHandle put_బిట్టు_విలువ(నిర్మాణం __vpiBit*బిట్టు, p_vpi_విలువ vp, పూర్ణాంకం flags);
+      శూన్య make_బిట్లు();
 
-      struct __vpiBit*bits;
+      నిర్మాణం __vpiBit*బిట్లు;
 
-    public:
-      union { // The scope or parent array that contains me.
-	    vpiHandle parent;
+    బహిరంగ:
+      సంఘం { // The scope or parent array that contains me.
+	    vpiHandle మాతృ;
 	    __vpiScope* scope;
       } within;
-      union { // The name of this reg/net, or the index for array words.
-            const char*name;
-            vpiHandle index;
+      సంఘం { // The name of this reg/net, or the index for array words.
+            స్థిరరాశి అక్షరం*name;
+            vpiHandle సూచీ;
       } id;
 	/* The indices that define the width and access offset. */
       __vpiDecConst msb, lsb;
 	/* Flags */
-      unsigned signed_flag  : 1;
-      unsigned is_netarray  : 1; // This is word of a net array
+      గుర్తులేని signed_flag  : 1;
+      గుర్తులేని is_netarray  : 1; // This is word of a net array
 	/* The represented value is here. */
-      vvp_net_t*node;
+      vvp_net_t*కణుపు;
 
-    public:
-      static void*operator new(std::size_t size);
-      static void operator delete(void*); // not implemented
-    protected:
-      inline __vpiSignal() : bits(NULL) { }
-    private: // Not implemented
-      static void*operator new[] (std::size_t size);
-      static void operator delete[](void*);
+    బహిరంగ:
+      స్థిర శూన్య*క్రియాకారకం new(std::size_t కొలత);
+      స్థిర శూన్య క్రియాకారకం delete(శూన్య*); // not implemented
+    రక్షిత:
+      అంతఃవరుస __vpiSignal() : బిట్లు(ఖాళీ) { }
+    అంతరంగ: // Not implemented
+      స్థిర శూన్య*క్రియాకారకం new[] (std::size_t కొలత);
+      స్థిర శూన్య క్రియాకారకం delete[](శూన్య*);
 };
-extern unsigned vpip_size(const __vpiSignal *sig);
-extern __vpiScope* vpip_scope(__vpiSignal*sig);
+బాహ్య గుర్తులేని vpip_కొలత(స్థిరరాశి __vpiSignal *sig);
+బాహ్య __vpiScope* vpip_scope(__vpiSignal*sig);
 
-extern vpiHandle vpip_make_int2(const char*name, int msb, int lsb,
+బాహ్య vpiHandle vpip_make_int2(స్థిరరాశి అక్షరం*name, పూర్ణాంకం msb, పూర్ణాంకం lsb,
 			       bool signed_flag, vvp_net_t*vec);
-extern vpiHandle vpip_make_int4(const char*name, int msb, int lsb,
+బాహ్య vpiHandle vpip_make_int4(స్థిరరాశి అక్షరం*name, పూర్ణాంకం msb, పూర్ణాంకం lsb,
 			       vvp_net_t*vec);
-extern vpiHandle vpip_make_var4(const char*name, int msb, int lsb,
+బాహ్య vpiHandle vpip_make_var4(స్థిరరాశి అక్షరం*name, పూర్ణాంకం msb, పూర్ణాంకం lsb,
 			       bool signed_flag, vvp_net_t*net);
-extern vpiHandle vpip_make_net4(__vpiScope*scope,
-				const char*name, int msb, int lsb,
-				bool signed_flag, vvp_net_t*node);
+బాహ్య vpiHandle vpip_make_net4(__vpiScope*scope,
+				స్థిరరాశి అక్షరం*name, పూర్ణాంకం msb, పూర్ణాంకం lsb,
+				bool signed_flag, vvp_net_t*కణుపు);
 
 /*
  * This is used to represent a bit in a net/reg.
  */
-struct __vpiBit {
-      struct as_bit_t : public __vpiHandle {
-	    int get_type_code(void) const;
-	    int vpi_get(int code);
-	    char* vpi_get_str(int code);
-	    void vpi_get_value(p_vpi_value val);
-	    vpiHandle vpi_put_value(p_vpi_value val, int flags);
-	    vpiHandle vpi_handle(int code);
-      } as_bit;
+నిర్మాణం __vpiBit {
+      నిర్మాణం as_బిట్టు_t : బహిరంగ __vpiHandle {
+	    పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి;
+	    పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2);
+	    అక్షరం* vpi_get_str(పూర్ణాంకం సంకేతం_2);
+	    శూన్య vpi_get_విలువ(p_vpi_విలువ val);
+	    vpiHandle vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags);
+	    vpiHandle vpi_handle(పూర్ణాంకం సంకేతం_2);
+      } as_బిట్టు;
 
-      vpiHandle index;
+      vpiHandle సూచీ;
 
-      union {
-	    struct __vpiSignal*parent;
-	    struct __vpiBit*bit0;
+      సంఘం {
+	    నిర్మాణం __vpiSignal*మాతృ;
+	    నిర్మాణం __vpiBit*bit0;
       };
 
-      inline unsigned get_norm_index() const { return this - bit0; }
-      inline struct __vpiSignal*get_parent() const {return (bit0 - 1)->parent; }
-      int get_index(void) const;
+      అంతఃవరుస గుర్తులేని get_norm_సూచీ() స్థిరరాశి { తిరిగి this - bit0; }
+      అంతఃవరుస నిర్మాణం __vpiSignal*get_మాతృ() స్థిరరాశి {తిరిగి (bit0 - 1)->మాతృ; }
+      పూర్ణాంకం get_సూచీ(శూన్య) స్థిరరాశి;
 };
 
-class vpiPortBitInfo;
+class vpi_పోర్టు_బిట్టు_Info;
 
-class vpiPortInfo  : public __vpiHandle {
-    public:
-      vpiPortInfo( __vpiScope *parent,
-                    unsigned index,
-                    int vpi_direction,
-                    unsigned width,
-                    const char *name,
-                    char* buffer );
-      ~vpiPortInfo() override;
+class vpi_పోర్టు_Info  : బహిరంగ __vpiHandle {
+    బహిరంగ:
+      vpi_పోర్టు_Info( __vpiScope *మాతృ,
+                    గుర్తులేని సూచీ,
+                    పూర్ణాంకం vpi_direction,
+                    గుర్తులేని వెడల్పు,
+                    స్థిరరాశి అక్షరం *name,
+                    అక్షరం* బఫరు );
+      ~vpi_పోర్టు_Info() override;
 
-      int get_type_code(void) const override { return vpiPort; }
-      int get_direction(void) { return direction_; }
-      unsigned get_index(void) { return index_; }
-      int get_width(void) { return width_; }
-      void add_port_bit(vpiPortBitInfo* port_bit) { port_bits_.push_back(port_bit); }
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpi_పోర్టు; }
+      పూర్ణాంకం get_direction(శూన్య) { తిరిగి direction_; }
+      గుర్తులేని get_సూచీ(శూన్య) { తిరిగి సూచీ_2; }
+      పూర్ణాంకం get_వెడల్పు(శూన్య) { తిరిగి వెడల్పు_2; }
+      శూన్య కూడు_పోర్టు_బిట్టు(vpi_పోర్టు_బిట్టు_Info* పోర్టు_బిట్టు) { పోర్టు_బిట్లు.నెట్టు_వెనుక(పోర్టు_బిట్టు); }
 
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      vvp_net_t* get_port(void) const { return ref_; }
-      vpiHandle vpi_iterate(int code) override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      అక్షరం* vpi_get_str(పూర్ణాంకం సంకేతం_2) override;
+      vpiHandle vpi_handle(పూర్ణాంకం సంకేతం_2) override;
+      vvp_net_t* get_పోర్టు(శూన్య) స్థిరరాశి { తిరిగి ref_; }
+      vpiHandle vpi_iterate(పూర్ణాంకం సంకేతం_2) override;
 
-      std::vector<vpiPortBitInfo*> port_bits_;
+      std::సదిశ<vpi_పోర్టు_బిట్టు_Info*> పోర్టు_బిట్లు;
 
-    private:
-      __vpiScope *parent_;
-      unsigned  index_;
-      int       direction_;
-      unsigned  width_;
-      const char *name_;
+    అంతరంగ:
+      __vpiScope *మాతృ_2;
+      గుర్తులేని  సూచీ_2;
+      పూర్ణాంకం       direction_;
+      గుర్తులేని  వెడల్పు_2;
+      స్థిరరాశి అక్షరం *name_;
       vvp_net_t *ref_;
 };
 
-class vpiPortBitInfo  : public __vpiHandle {
-    public:
-      vpiPortBitInfo(vpiPortInfo *parent,
-                     unsigned bit);
-      ~vpiPortBitInfo() override;
+class vpi_పోర్టు_బిట్టు_Info  : బహిరంగ __vpiHandle {
+    బహిరంగ:
+      vpi_పోర్టు_బిట్టు_Info(vpi_పోర్టు_Info *మాతృ,
+                     గుర్తులేని బిట్టు);
+      ~vpi_పోర్టు_బిట్టు_Info() override;
 
-      int get_type_code(void) const override { return vpiPortBit; }
-      unsigned get_bit(void) const { return bit_; }
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpi_పోర్టు_బిట్టు; }
+      గుర్తులేని get_బిట్టు(శూన్య) స్థిరరాశి { తిరిగి బిట్టు_2; }
 
-      int vpi_get(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      vpiHandle vpi_handle(పూర్ణాంకం సంకేతం_2) override;
 
-    private:
-      vpiPortInfo *parent_;
-      unsigned bit_;
+    అంతరంగ:
+      vpi_పోర్టు_Info *మాతృ_2;
+      గుర్తులేని బిట్టు_2;
 };
 
 /*
  * This is used by system calls to represent a bit/part select of
  * a simple variable or constant array word.
  */
-struct __vpiPV : public __vpiHandle {
+నిర్మాణం __vpiPV : బహిరంగ __vpiHandle {
       __vpiPV();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      అక్షరం* vpi_get_str(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
+      vpiHandle vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags) override;
+      vpiHandle vpi_handle(పూర్ణాంకం సంకేతం_2) override;
 
-      vpiHandle parent;
+      vpiHandle మాతృ;
       vvp_net_t*net;
       vpiHandle sbase;
-      int tbase;
-      unsigned width;
+      పూర్ణాంకం tbase;
+      గుర్తులేని వెడల్పు;
 };
-extern vpiHandle vpip_make_PV(char*name, int base, int width);
-extern vpiHandle vpip_make_PV(char*name, char*symbol, int width);
-extern vpiHandle vpip_make_PV(char*name, vpiHandle handle, int width);
+బాహ్య vpiHandle vpip_make_PV(అక్షరం*name, పూర్ణాంకం పునాది, పూర్ణాంకం వెడల్పు);
+బాహ్య vpiHandle vpip_make_PV(అక్షరం*name, అక్షరం*చిహ్నం, పూర్ణాంకం వెడల్పు);
+బాహ్య vpiHandle vpip_make_PV(అక్షరం*name, vpiHandle handle, పూర్ణాంకం వెడల్పు);
 
-struct __vpiModPathTerm : public __vpiHandle {
+నిర్మాణం __vpiModPathTerm : బహిరంగ __vpiHandle {
       __vpiModPathTerm();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      vpiHandle vpi_handle(పూర్ణాంకం సంకేతం_2) override;
 
-      vpiHandle expr;
+      vpiHandle సమాసం;
 	/* The value returned by vpi_get(vpiEdge, ...); */
-      int edge;
+      పూర్ణాంకం అంచు;
 };
 
-struct __vpiModPathSrc : public __vpiHandle {
+నిర్మాణం __vpiModPathSrc : బహిరంగ __vpiHandle {
       __vpiModPathSrc();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
-      void vpi_get_delays(p_vpi_delay del) override;
-      void vpi_put_delays(p_vpi_delay del) override;
-      free_object_fun_t free_object_fun(void) override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
+      vpiHandle vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags) override;
+      vpiHandle vpi_handle(పూర్ణాంకం సంకేతం_2) override;
+      vpiHandle vpi_iterate(పూర్ణాంకం సంకేతం_2) override;
+      vpiHandle vpi_సూచీ(పూర్ణాంకం idx) override;
+      శూన్య vpi_get_delays(p_vpi_delay del) override;
+      శూన్య vpi_put_delays(p_vpi_delay del) override;
+      free_object_fun_t free_object_fun(శూన్య) override;
 
-      struct __vpiModPath *dest;
-      int   type;
+      నిర్మాణం __vpiModPath *dest;
+      పూర్ణాంకం   type;
 
 	/* This is the input expression for this modpath. */
-      struct __vpiModPathTerm path_term_in;
+      నిర్మాణం __vpiModPathTerm మార్గం_పదం_లోపల;
 
 	/* This is the input net for the modpath. signals on this net
 	   are used to determine the modpath. They are *not* propagated
@@ -554,13 +554,13 @@ struct __vpiModPathSrc : public __vpiHandle {
  *
  */
 
-struct __vpiModPath {
+నిర్మాణం __vpiModPath {
       __vpiScope   *scope ;
 
       class vvp_fun_modpath*modpath;
 
-      struct __vpiModPathTerm path_term_out;
-      vvp_net_t *input_net  ;
+      నిర్మాణం __vpiModPathTerm మార్గం_పదం_బహిర్గతం;
+      vvp_net_t *ఆదానం_net  ;
 };
 
 
@@ -569,10 +569,10 @@ struct __vpiModPath {
  * for vpiModPath && vpiModPathIn objects
  */
 
-extern struct __vpiModPathSrc* vpip_make_modpath_src(struct __vpiModPath*path,
+బాహ్య నిర్మాణం __vpiModPathSrc* vpip_make_modpath_src(నిర్మాణం __vpiModPath*మార్గం,
                                                      vvp_net_t *net) ;
 
-extern struct __vpiModPath* vpip_make_modpath(vvp_net_t *net) ;
+బాహ్య నిర్మాణం __vpiModPath* vpip_make_modpath(vvp_net_t *net) ;
 
 /*
  *
@@ -582,17 +582,17 @@ extern struct __vpiModPath* vpip_make_modpath(vvp_net_t *net) ;
  *
  */
 
-struct __vpiInterModPath : public __vpiHandle {
+నిర్మాణం __vpiInterModPath : బహిరంగ __vpiHandle {
       __vpiInterModPath();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
-      void vpi_get_delays(p_vpi_delay del) override;
-      void vpi_put_delays(p_vpi_delay del) override;
-      free_object_fun_t free_object_fun(void) override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
+      vpiHandle vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags) override;
+      vpiHandle vpi_handle(పూర్ణాంకం సంకేతం_2) override;
+      vpiHandle vpi_iterate(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_delays(p_vpi_delay del) override;
+      శూన్య vpi_put_delays(p_vpi_delay del) override;
+      free_object_fun_t free_object_fun(శూన్య) override;
 
       __vpiScope   *scope ;
 
@@ -600,8 +600,8 @@ struct __vpiInterModPath : public __vpiHandle {
 
       vvp_net_t *net;
 
-      vpiPortInfo* port1;
-      vpiPortInfo* port2;
+      vpi_పోర్టు_Info* port1;
+      vpi_పోర్టు_Info* port2;
 };
 
 
@@ -610,49 +610,49 @@ struct __vpiInterModPath : public __vpiHandle {
  * for vpiInterModPath
  */
 
-extern struct __vpiInterModPath* vpip_make_intermodpath(vvp_net_t *net, vpiPortInfo* port1, vpiPortInfo* port2);
+బాహ్య నిర్మాణం __vpiInterModPath* vpip_make_intermodpath(vvp_net_t *net, vpi_పోర్టు_Info* port1, vpi_పోర్టు_Info* port2);
 
 /*
  * These methods support the vpi creation of events. The name string
  * passed in will be saved, so the caller must allocate it (or not
  * free it) after it is handed to this function.
  */
-class __vpiNamedEvent : public __vpiHandle {
+class __vpiNamedEvent : బహిరంగ __vpiHandle {
 
-    public:
-      __vpiNamedEvent(__vpiScope*scope, const char*name);
+    బహిరంగ:
+      __vpiNamedEvent(__vpiScope*scope, స్థిరరాశి అక్షరం*name);
       ~__vpiNamedEvent() override;
 
-      __vpiNamedEvent(const __vpiNamedEvent&) = delete;
-      __vpiNamedEvent& operator=(const __vpiNamedEvent&) = delete;
+      __vpiNamedEvent(స్థిరరాశి __vpiNamedEvent&) = delete;
+      __vpiNamedEvent& క్రియాకారకం=(స్థిరరాశి __vpiNamedEvent&) = delete;
 
-      int get_type_code(void) const override;
-      __vpiScope*get_scope(void) const { return scope_; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      __vpiScope*get_scope(శూన్య) స్థిరరాశి { తిరిగి scope_; }
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      అక్షరం* vpi_get_str(పూర్ణాంకం సంకేతం_2) override;
+      vpiHandle vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags) override;
+      vpiHandle vpi_handle(పూర్ణాంకం సంకేతం_2) override;
 
-      inline void add_vpi_callback(__vpiCallback*cb)
-      { cb->next = callbacks_;
+      అంతఃవరుస శూన్య కూడు_vpi_callback(__vpiCallback*cb)
+      { cb->తదుపరి_2 = callbacks_;
 	callbacks_ = cb;
       }
 
-      void run_vpi_callbacks(void);
+      శూన్య నిరంతరం_vpi_callbacks(శూన్య);
 
 	/* The functor, used for %set operations. */
       vvp_net_t*funct;
 
-    private:
+    అంతరంగ:
 	/* base name of the event object */
-      const char*name_;
+      స్థిరరాశి అక్షరం*name_;
 	/* Parent scope of this object. */
       __vpiScope*scope_;
 	/* List of callbacks interested in this event. */
       __vpiCallback*callbacks_;
 };
 
-extern vpiHandle vpip_make_named_event(const char*name, vvp_net_t*f);
+బాహ్య vpiHandle vpip_make_named_event(స్థిరరాశి అక్షరం*name, vvp_net_t*f);
 
 /*
  * Memory is an array of bits that is accessible in N-bit chunks, with
@@ -661,95 +661,95 @@ extern vpiHandle vpip_make_named_event(const char*name, vvp_net_t*f);
  * the memory.
  */
 
-extern bool is_net_array(vpiHandle obj);
+బాహ్య bool is_net_array(vpiHandle obj);
 
 /*
  * These are the various variable types.
  */
-struct __vpiRealVar : public __vpiHandle {
+నిర్మాణం __vpiRealVar : బహిరంగ __vpiHandle {
       __vpiRealVar();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      అక్షరం* vpi_get_str(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
+      vpiHandle vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags) override;
+      vpiHandle vpi_handle(పూర్ణాంకం సంకేతం_2) override;
+      vpiHandle vpi_iterate(పూర్ణాంకం సంకేతం_2) override;
 
-      union { // The scope or parent array that contains me.
-	    vpiHandle parent;
+      సంఘం { // The scope or parent array that contains me.
+	    vpiHandle మాతృ;
 	    __vpiScope* scope;
       } within;
 	/* The name of this variable, or the index for array words. */
-      union {
-            const char*name;
-            vpiHandle index;
+      సంఘం {
+            స్థిరరాశి అక్షరం*name;
+            vpiHandle సూచీ;
       } id;
-      unsigned is_netarray  : 1; // This is word of a net array
-      unsigned is_wire      : 1; // This is a wire, not a variable
+      గుర్తులేని is_netarray  : 1; // This is word of a net array
+      గుర్తులేని is_wire      : 1; // This is a wire, not a variable
       vvp_net_t*net;
 };
 
-extern __vpiScope* vpip_scope(__vpiRealVar*sig);
-extern vpiHandle vpip_make_real_var(const char*name, vvp_net_t*net);
-extern vpiHandle vpip_make_real_net(__vpiScope*scope,
-				    const char*name, vvp_net_t*net);
+బాహ్య __vpiScope* vpip_scope(__vpiRealVar*sig);
+బాహ్య vpiHandle vpip_make_real_var(స్థిరరాశి అక్షరం*name, vvp_net_t*net);
+బాహ్య vpiHandle vpip_make_real_net(__vpiScope*scope,
+				    స్థిరరాశి అక్షరం*name, vvp_net_t*net);
 
-class __vpiBaseVar : public __vpiHandle {
+class __vpiBaseVar : బహిరంగ __vpiHandle {
 
-    public:
-      __vpiBaseVar(__vpiScope*scope, const char*name, vvp_net_t*net);
-#ifdef CHECK_WITH_VALGRIND
+    బహిరంగ:
+      __vpiBaseVar(__vpiScope*scope, స్థిరరాశి అక్షరం*name, vvp_net_t*net);
+#నిర్వచితమైతే CHECK_WITH_VALGRIND
       ~__vpiBaseVar() override;
-#endif
+#అయితే_ముగింపు
 
-      inline vvp_net_t* get_net() const { return net_; }
+      అంతఃవరుస vvp_net_t* get_net() స్థిరరాశి { తిరిగి net_; }
 
-    protected:
+    రక్షిత:
       __vpiScope* scope_;
-      const char*name_;
+      స్థిరరాశి అక్షరం*name_;
 
-    private:
+    అంతరంగ:
       vvp_net_t*net_;
 };
 
-class __vpiStringVar : public __vpiBaseVar {
+class __vpiStringVar : బహిరంగ __vpiBaseVar {
 
-    public:
-      __vpiStringVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+    బహిరంగ:
+      __vpiStringVar(__vpiScope*scope, స్థిరరాశి అక్షరం*name, vvp_net_t*net);
 
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
+      vpiHandle vpi_put_విలువ(p_vpi_విలువ val, పూర్ణాంకం flags) override;
 };
 
-extern vpiHandle vpip_make_string_var(const char*name, vvp_net_t*net);
+బాహ్య vpiHandle vpip_make_string_var(స్థిరరాశి అక్షరం*name, vvp_net_t*net);
 
-struct __vpiArrayBase {
-      __vpiArrayBase() : vals_words(NULL) {}
-      virtual ~__vpiArrayBase() {}
+నిర్మాణం __vpiArrayBase {
+      __vpiArrayBase() : vals_పదాలు(ఖాళీ) {}
+      మాయా ~__vpiArrayBase() {}
 
-      virtual unsigned get_size(void) const = 0;
-      virtual vpiHandle get_left_range() = 0;
-      virtual vpiHandle get_right_range() = 0;
-      virtual __vpiScope*get_scope() const = 0;
+      మాయా గుర్తులేని get_కొలత(శూన్య) స్థిరరాశి = 0;
+      మాయా vpiHandle get_ఎడమ_range() = 0;
+      మాయా vpiHandle get_కుడి_range() = 0;
+      మాయా __vpiScope*get_scope() స్థిరరాశి = 0;
 
-      virtual int get_word_size() const = 0;
-      virtual char*get_word_str(struct __vpiArrayWord*word, int code) = 0;
-      virtual void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) = 0;
-      virtual void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp,
-                                    int flags) = 0;
-      virtual vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) = 0;
+      మాయా పూర్ణాంకం get_మాట_కొలత() స్థిరరాశి = 0;
+      మాయా అక్షరం*get_మాట_str(నిర్మాణం __vpiArrayWord*మాట, పూర్ణాంకం సంకేతం_2) = 0;
+      మాయా శూన్య get_మాట_విలువ(నిర్మాణం __vpiArrayWord*మాట, p_vpi_విలువ vp) = 0;
+      మాయా శూన్య put_మాట_విలువ(నిర్మాణం __vpiArrayWord*మాట, p_vpi_విలువ vp,
+                                    పూర్ణాంకం flags) = 0;
+      మాయా vpiHandle get_iter_సూచీ(నిర్మాణం __vpiArrayIterator*iter, పూర్ణాంకం idx) = 0;
 
     // vpi_iterate is already defined by vpiHandle, so to avoid problems with
     // classes inheriting from vpiHandle and vpiArrayBase just share the common
     // code in the following function
-      vpiHandle vpi_array_base_iterate(int code);
+      vpiHandle vpi_array_పునాది_iterate(పూర్ణాంకం సంకేతం_2);
 
-      virtual void make_vals_words();
+      మాయా శూన్య make_vals_పదాలు();
 
-      struct __vpiArrayWord*vals_words;
+      నిర్మాణం __vpiArrayWord*vals_పదాలు;
 };
 
 /*
@@ -777,46 +777,46 @@ struct __vpiArrayBase {
 * array of double variables. This is very much like the way the
 * vector4 array works.
 */
-struct __vpiArray : public __vpiArrayBase, public __vpiHandle {
-      int get_type_code(void) const override { return vpiMemory; }
-      unsigned get_size() const override { return array_count; }
-      vpiHandle get_left_range() override { assert(nets == 0); return &msb; }
-      vpiHandle get_right_range() override { assert(nets == 0); return &lsb; }
-      __vpiScope*get_scope() const override { return scope; }
+నిర్మాణం __vpiArray : బహిరంగ __vpiArrayBase, బహిరంగ __vpiHandle {
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override { తిరిగి vpi_జ్ఞాపకం; }
+      గుర్తులేని get_కొలత() స్థిరరాశి override { తిరిగి array_లెక్క; }
+      vpiHandle get_ఎడమ_range() override { ప్రతిజ్ఞా(nets == 0); తిరిగి &msb; }
+      vpiHandle get_కుడి_range() override { ప్రతిజ్ఞా(nets == 0); తిరిగి &lsb; }
+      __vpiScope*get_scope() స్థిరరాశి override { తిరిగి scope; }
 
-      int get_word_size() const override;
-      char*get_word_str(struct __vpiArrayWord*word, int code) override;
-      void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) override;
-      void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int flags) override;
+      పూర్ణాంకం get_మాట_కొలత() స్థిరరాశి override;
+      అక్షరం*get_మాట_str(నిర్మాణం __vpiArrayWord*మాట, పూర్ణాంకం సంకేతం_2) override;
+      శూన్య get_మాట_విలువ(నిర్మాణం __vpiArrayWord*మాట, p_vpi_విలువ vp) override;
+      శూన్య put_మాట_విలువ(నిర్మాణం __vpiArrayWord*మాట, p_vpi_విలువ vp, పూర్ణాంకం flags) override;
 
-      vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) override;
+      vpiHandle get_iter_సూచీ(నిర్మాణం __vpiArrayIterator*iter, పూర్ణాంకం idx) override;
 
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      inline vpiHandle vpi_iterate(int code) override { return vpi_array_base_iterate(code); }
-      vpiHandle vpi_index(int idx) override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      అక్షరం* vpi_get_str(పూర్ణాంకం సంకేతం_2) override;
+      vpiHandle vpi_handle(పూర్ణాంకం సంకేతం_2) override;
+      అంతఃవరుస vpiHandle vpi_iterate(పూర్ణాంకం సంకేతం_2) override { తిరిగి vpi_array_పునాది_iterate(సంకేతం_2); }
+      vpiHandle vpi_సూచీ(పూర్ణాంకం idx) override;
 
-      void set_word(unsigned idx, unsigned off, const vvp_vector4_t&val);
-      void set_word(unsigned idx, double val);
-      void set_word(unsigned idx, const std::string&val);
-      void set_word(unsigned idx, const vvp_object_t&val);
+      శూన్య సమితి_మాట(గుర్తులేని idx, గుర్తులేని off, స్థిరరాశి vvp_vector4_t&val);
+      శూన్య సమితి_మాట(గుర్తులేని idx, ద్విగుణ val);
+      శూన్య సమితి_మాట(గుర్తులేని idx, స్థిరరాశి std::string&val);
+      శూన్య సమితి_మాట(గుర్తులేని idx, స్థిరరాశి vvp_object_t&val);
 
-      vvp_vector4_t get_word(unsigned address);
-      double get_word_r(unsigned address);
-      void get_word_obj(unsigned address, vvp_object_t&val);
-      std::string get_word_str(unsigned address);
+      vvp_vector4_t get_మాట(గుర్తులేని చిరునామా);
+      ద్విగుణ get_మాట_r(గుర్తులేని చిరునామా);
+      శూన్య get_మాట_obj(గుర్తులేని చిరునామా, vvp_object_t&val);
+      std::string get_మాట_str(గుర్తులేని చిరునామా);
 
-      void alias_word(unsigned long addr, vpiHandle word, int msb, int lsb);
-      void attach_word(unsigned addr, vpiHandle word);
-      void word_change(unsigned long addr);
+      శూన్య alias_మాట(గుర్తులేని దీర్ఘ addr, vpiHandle మాట, పూర్ణాంకం msb, పూర్ణాంకం lsb);
+      శూన్య attach_మాట(గుర్తులేని addr, vpiHandle మాట);
+      శూన్య మాట_change(గుర్తులేని దీర్ఘ addr);
 
-      const char*name; /* Permanently allocated string */
-      __vpiDecConst first_addr;
-      __vpiDecConst last_addr;
+      స్థిరరాశి అక్షరం*name; /* Permanently allocated string */
+      __vpiDecConst మొదటి_addr;
+      __vpiDecConst చివరి_addr;
       __vpiDecConst msb;
       __vpiDecConst lsb;
-      unsigned vals_width;
+      గుర్తులేని vals_వెడల్పు;
 	// If this is a net array, nets lists the handles.
       vpiHandle*nets;
 	// If this is a var array, then these are used instead of nets.
@@ -824,96 +824,96 @@ struct __vpiArray : public __vpiArrayBase, public __vpiHandle {
       vvp_darray        *vals;
 
       vvp_fun_arrayport*ports_;
-      struct __vpiCallback *vpi_callbacks;
+      నిర్మాణం __vpiCallback *vpi_callbacks;
       bool signed_flag;
-      bool swap_addr;
+      bool మార్పిడి_addr;
 
-private:
-      unsigned array_count;
+అంతరంగ:
+      గుర్తులేని array_లెక్క;
       __vpiScope*scope;
 
-friend vpiHandle vpip_make_array(const char*label, const char*name,
-                                 int first_addr, int last_addr,
+మిత్ర vpiHandle vpip_make_array(స్థిరరాశి అక్షరం*label, స్థిరరాశి అక్షరం*name,
+                                 పూర్ణాంకం మొదటి_addr, పూర్ణాంకం చివరి_addr,
                                  bool signed_flag);
-friend void compile_array_alias(char*label, char*name, char*src);
+మిత్ర శూన్య compile_array_alias(అక్షరం*label, అక్షరం*name, అక్షరం*src);
 };
 
-class __vpiDarrayVar : public __vpiBaseVar, public __vpiArrayBase {
-    public:
-      __vpiDarrayVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+class __vpiDarrayVar : బహిరంగ __vpiBaseVar, బహిరంగ __vpiArrayBase {
+    బహిరంగ:
+      __vpiDarrayVar(__vpiScope*scope, స్థిరరాశి అక్షరం*name, vvp_net_t*net);
 
-      int get_type_code() const override { return vpiArrayVar; }
-      unsigned get_size() const override;
-      vpiHandle get_left_range() override;
-      vpiHandle get_right_range() override;
-      __vpiScope*get_scope() const override { return scope_; }
+      పూర్ణాంకం get_type_సంకేతం() స్థిరరాశి override { తిరిగి vpiArrayVar; }
+      గుర్తులేని get_కొలత() స్థిరరాశి override;
+      vpiHandle get_ఎడమ_range() override;
+      vpiHandle get_కుడి_range() override;
+      __vpiScope*get_scope() స్థిరరాశి override { తిరిగి scope_; }
 
-      int get_word_size() const override;
-      char*get_word_str(struct __vpiArrayWord*word, int code) override;
-      void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) override;
-      void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int flags) override;
+      పూర్ణాంకం get_మాట_కొలత() స్థిరరాశి override;
+      అక్షరం*get_మాట_str(నిర్మాణం __vpiArrayWord*మాట, పూర్ణాంకం సంకేతం_2) override;
+      శూన్య get_మాట_విలువ(నిర్మాణం __vpiArrayWord*మాట, p_vpi_విలువ vp) override;
+      శూన్య put_మాట_విలువ(నిర్మాణం __vpiArrayWord*మాట, p_vpi_విలువ vp, పూర్ణాంకం flags) override;
 
-      vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) override;
-      inline vpiHandle vpi_iterate(int code) override { return vpi_array_base_iterate(code); }
+      vpiHandle get_iter_సూచీ(నిర్మాణం __vpiArrayIterator*iter, పూర్ణాంకం idx) override;
+      అంతఃవరుస vpiHandle vpi_iterate(పూర్ణాంకం సంకేతం_2) override { తిరిగి vpi_array_పునాది_iterate(సంకేతం_2); }
 
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_index(int index) override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      అక్షరం* vpi_get_str(పూర్ణాంకం సంకేతం_2) override;
+      vpiHandle vpi_handle(పూర్ణాంకం సంకేతం_2) override;
+      vpiHandle vpi_సూచీ(పూర్ణాంకం సూచీ) override;
 
-      void vpi_get_value(p_vpi_value val) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
 
-    protected:
-      vvp_darray*get_vvp_darray() const;
-      __vpiDecConst left_range_, right_range_;
+    రక్షిత:
+      vvp_darray*get_vvp_darray() స్థిరరాశి;
+      __vpiDecConst ఎడమ_range, కుడి_range;
 };
 
-extern vpiHandle vpip_make_darray_var(const char*name, vvp_net_t*net);
+బాహ్య vpiHandle vpip_make_darray_var(స్థిరరాశి అక్షరం*name, vvp_net_t*net);
 
-class __vpiQueueVar : public __vpiDarrayVar {
+class __vpiQueueVar : బహిరంగ __vpiDarrayVar {
 
-    public:
-      __vpiQueueVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+    బహిరంగ:
+      __vpiQueueVar(__vpiScope*scope, స్థిరరాశి అక్షరం*name, vvp_net_t*net);
 
-      int vpi_get(int code) override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
 };
 
-extern vpiHandle vpip_make_queue_var(const char*name, vvp_net_t*net);
+బాహ్య vpiHandle vpip_make_వరుస_var(స్థిరరాశి అక్షరం*name, vvp_net_t*net);
 
-class __vpiPropQueueRef : public __vpiHandle {
+class __vpiPropQueueRef : బహిరంగ __vpiHandle {
 
-    public:
-      explicit __vpiPropQueueRef(__vpiScope*scope, unsigned pidx, bool is_queue);
+    బహిరంగ:
+      explicit __vpiPropQueueRef(__vpiScope*scope, గుర్తులేని pidx, bool is_వరుస);
 
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      అక్షరం* vpi_get_str(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
 
       vvp_net_t* class_net_;
-      unsigned prop_idx_;
-      bool is_queue_;
+      గుర్తులేని prop_idx_;
+      bool is_వరుస_2;
 
-    private:
+    అంతరంగ:
       __vpiScope* scope_;
 };
 
-extern vpiHandle vpip_make_prop_queue_ref(char* class_label,
-                                          unsigned prop_idx,
-                                          unsigned is_queue_flag);
-extern vvp_darray* vpip_vpi_darray_from_handle(vpiHandle ref);
+బాహ్య vpiHandle vpip_make_prop_వరుస_ref(అక్షరం* class_label,
+                                          గుర్తులేని prop_idx,
+                                          గుర్తులేని is_వరుస_flag);
+బాహ్య vvp_darray* vpip_vpi_darray_from_handle(vpiHandle ref);
 
-class __vpiCobjectVar : public __vpiBaseVar {
+class __vpiCobjectVar : బహిరంగ __vpiBaseVar {
 
-    public:
-      __vpiCobjectVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+    బహిరంగ:
+      __vpiCobjectVar(__vpiScope*scope, స్థిరరాశి అక్షరం*name, vvp_net_t*net);
 
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
 };
 
-extern vpiHandle vpip_make_cobject_var(const char*name, vvp_net_t*net);
+బాహ్య vpiHandle vpip_make_cobject_var(స్థిరరాశి అక్షరం*name, vvp_net_t*net);
 
 /*
  * When a loaded VPI module announces a system task/function, one
@@ -933,46 +933,46 @@ extern vpiHandle vpip_make_cobject_var(const char*name, vvp_net_t*net);
  * additional part is the vbit/vwid that is used by the put of the
  * system function call to place the values in the vthread bit space.
  */
-struct __vpiUserSystf : public __vpiHandle {
+నిర్మాణం __vpiUserSystf : బహిరంగ __vpiHandle {
       __vpiUserSystf();
-      int get_type_code(void) const override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
 
-      s_vpi_systf_data info;
+      s_vpi_systf_దత్తాంశం info;
       bool is_user_defn;
 };
 
-extern vpiHandle vpip_make_systf_iterator(void);
+బాహ్య vpiHandle vpip_make_systf_iterator(శూన్య);
 
-extern struct __vpiUserSystf* vpip_find_systf(const char*name);
+బాహ్య నిర్మాణం __vpiUserSystf* vpip_కనుగొను_systf(స్థిరరాశి అక్షరం*name);
 
 
-struct __vpiSysTaskCall : public __vpiHandle {
+నిర్మాణం __vpiSysTaskCall : బహిరంగ __vpiHandle {
 
       __vpiScope* scope;
-      struct __vpiUserSystf*defn;
-      unsigned nargs;
-      vpiHandle*args;
+      నిర్మాణం __vpiUserSystf*defn;
+      గుర్తులేని nargs;
+      vpiHandle*వాదనలు;
 	/* Stack consumed by this call */
-      unsigned vec4_stack;
-      unsigned real_stack;
-      unsigned string_stack;
+      గుర్తులేని vec4_దొంతర;
+      గుర్తులేని real_దొంతర;
+      గుర్తులేని string_దొంతర;
 	/* Support for vpi_get_userdata. */
-      void*userdata;
+      శూన్య*userdata;
 	// This is set if this is a structural call to a function
       class    vvp_net_t*fnet;
-      unsigned file_idx;
-      unsigned lineno;
-      bool put_value;
-    protected:
-      inline __vpiSysTaskCall()
+      గుర్తులేని file_idx;
+      గుర్తులేని lineno;
+      bool put_విలువ;
+    రక్షిత:
+      అంతఃవరుస __vpiSysTaskCall()
       {
-	    vec4_stack = 0;
-	    real_stack = 0;
-	    string_stack = 0;
+	    vec4_దొంతర = 0;
+	    real_దొంతర = 0;
+	    string_దొంతర = 0;
       }
 };
 
-extern struct __vpiSysTaskCall*vpip_cur_task;
+బాహ్య నిర్మాణం __vpiSysTaskCall*vpip_cur_task;
 
 /*
  * The persistent flag to vpip_make_string_const causes the created
@@ -983,48 +983,48 @@ extern struct __vpiSysTaskCall*vpip_cur_task;
  * text value string, and will delete it in the constructor.
  */
 
-vpiHandle vpip_make_string_const(char*text, bool persistent =true);
-vpiHandle vpip_make_string_param(const char*name, char*value, bool local_flag,
-                                 long file_idx, long lineno);
+vpiHandle vpip_make_string_const(అక్షరం*పాఠ్యం, bool persistent =true);
+vpiHandle vpip_make_string_param(స్థిరరాశి అక్షరం*name, అక్షరం*విలువ, bool local_flag,
+                                 దీర్ఘ file_idx, దీర్ఘ lineno);
 
-struct __vpiBinaryConst : public __vpiHandle {
+నిర్మాణం __vpiBinaryConst : బహిరంగ __vpiHandle {
       __vpiBinaryConst();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
 
-      vvp_vector4_t bits;
+      vvp_vector4_t బిట్లు;
 	/* TRUE if this constant is signed. */
-      unsigned signed_flag :1;
+      గుర్తులేని signed_flag :1;
 	/* TRUE if this constant has an explicit size (i.e. 19'h0 vs. 'h0) */
-      unsigned sized_flag  :1;
+      గుర్తులేని sized_flag  :1;
 };
 
-vpiHandle vpip_make_binary_const(unsigned wid, const char*bits);
-vpiHandle vpip_make_binary_param(const char*name, const vvp_vector4_t&bits,
+vpiHandle vpip_make_ద్విమాన_const(గుర్తులేని wid, స్థిరరాశి అక్షరం*బిట్లు);
+vpiHandle vpip_make_ద్విమాన_param(స్థిరరాశి అక్షరం*name, స్థిరరాశి vvp_vector4_t&బిట్లు,
 				 bool signed_flag, bool local_flag,
-				 long file_idx, long lineno);
+				 దీర్ఘ file_idx, దీర్ఘ lineno);
 
-class __vpiRealConst : public __vpiHandle {
-    public:
-      explicit __vpiRealConst(double);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+class __vpiRealConst : బహిరంగ __vpiHandle {
+    బహిరంగ:
+      explicit __vpiRealConst(ద్విగుణ);
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
 
-      double value;
+      ద్విగుణ విలువ;
 };
 
-vpiHandle vpip_make_real_const(double value);
-vpiHandle vpip_make_real_param(const char*name, double value, bool local_flag,
-                               long file_idx, long lineno);
+vpiHandle vpip_make_real_const(ద్విగుణ విలువ);
+vpiHandle vpip_make_real_param(స్థిరరాశి అక్షరం*name, ద్విగుణ విలువ, bool local_flag,
+                               దీర్ఘ file_idx, దీర్ఘ lineno);
 
-class __vpiNullConst : public __vpiHandle {
-    public:
+class __vpiNullConst : బహిరంగ __vpiHandle {
+    బహిరంగ:
       explicit __vpiNullConst();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      పూర్ణాంకం get_type_సంకేతం(శూన్య) స్థిరరాశి override;
+      పూర్ణాంకం vpi_get(పూర్ణాంకం సంకేతం_2) override;
+      శూన్య vpi_get_విలువ(p_vpi_విలువ val) override;
 };
 
 vpiHandle vpip_make_null_const();
@@ -1034,14 +1034,14 @@ vpiHandle vpip_make_null_const();
  *  thread.
  */
 
-vpiHandle vpip_make_vthr_word(unsigned base, const char*type);
-vpiHandle vpip_make_vthr_str_stack(unsigned depth);
-vpiHandle vpip_make_vthr_vec4_stack(unsigned depth, bool signed_flag, unsigned wid);
+vpiHandle vpip_make_vthr_మాట(గుర్తులేని పునాది, స్థిరరాశి అక్షరం*type);
+vpiHandle vpip_make_vthr_str_దొంతర(గుర్తులేని లోతు);
+vpiHandle vpip_make_vthr_vec4_దొంతర(గుర్తులేని లోతు, bool signed_flag, గుర్తులేని wid);
 
-vpiHandle vpip_make_vthr_A(char*label, unsigned index);
-vpiHandle vpip_make_vthr_A(char*label, char*symbol);
-vpiHandle vpip_make_vthr_A(char*label, vpiHandle handle);
-vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned wid);
+vpiHandle vpip_make_vthr_A(అక్షరం*label, గుర్తులేని సూచీ);
+vpiHandle vpip_make_vthr_A(అక్షరం*label, అక్షరం*చిహ్నం);
+vpiHandle vpip_make_vthr_A(అక్షరం*label, vpiHandle handle);
+vpiHandle vpip_make_vthr_APV(అక్షరం*label, గుర్తులేని సూచీ, గుర్తులేని బిట్టు, గుర్తులేని wid);
 
 /*
  * This function is called before any compilation to load VPI
@@ -1049,11 +1049,11 @@ vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned 
  * contained functions before compilation commences. It is called only
  * once per module.
  */
-extern "C" void vpip_load_module(const char*name);
+బాహ్య "C" శూన్య vpip_ఎక్కించు_module(స్థిరరాశి అక్షరం*name);
 
-extern "C" void vpip_clear_module_paths();
-extern "C" void vpip_add_module_path(const char *path);
-extern "C" void vpip_add_env_and_default_module_paths();
+బాహ్య "C" శూన్య vpip_clear_module_paths();
+బాహ్య "C" శూన్య vpip_కూడు_module_మార్గం(స్థిరరాశి అక్షరం *మార్గం);
+బాహ్య "C" శూన్య vpip_కూడు_env_and_default_module_paths();
 
 /*
  * The vpip_build_vpi_call function creates a __vpiSysTaskCall object
@@ -1074,22 +1074,22 @@ extern "C" void vpip_add_env_and_default_module_paths();
  * Note that the argv array is saved in the handle, and should should
  * not be released by the caller.
  */
-extern vpiHandle vpip_build_vpi_call(const char*name,
-				     int val_type, unsigned return_width,
+బాహ్య vpiHandle vpip_build_vpi_call(స్థిరరాశి అక్షరం*name,
+				     పూర్ణాంకం val_type, గుర్తులేని return_వెడల్పు,
 				     class vvp_net_t*fnet,
 				     bool func_as_task_err,
 				     bool func_as_task_warn,
-				     unsigned argc,
+				     గుర్తులేని argc,
 				     vpiHandle*argv,
-				     unsigned vec4_stack,
-				     unsigned real_stack,
-				     unsigned string_stack,
-				     long file_idx,
-				     long lineno);
+				     గుర్తులేని vec4_దొంతర,
+				     గుర్తులేని real_దొంతర,
+				     గుర్తులేని string_దొంతర,
+				     దీర్ఘ file_idx,
+				     దీర్ఘ lineno);
 
-extern vthread_t vpip_current_vthread;
+బాహ్య vthread_t vpip_current_vthread;
 
-extern void vpip_execute_vpi_call(vthread_t thr, vpiHandle obj);
+బాహ్య శూన్య vpip_execute_vpi_call(vthread_t thr, vpiHandle obj);
 
 
 /*
@@ -1097,24 +1097,24 @@ extern void vpip_execute_vpi_call(vthread_t thr, vpiHandle obj);
  * and to finish compilation in preparation for execution.
  */
 
-vpiHandle vpip_sim_time(__vpiScope*scope, bool is_stime);
+vpiHandle vpip_sim_సమయం(__vpiScope*scope, bool is_stime);
 vpiHandle vpip_sim_realtime(__vpiScope*scope);
 
-extern int vpip_get_time_precision(void);
-extern void vpip_set_time_precision(int pres);
+బాహ్య పూర్ణాంకం vpip_get_సమయం_precision(శూన్య);
+బాహ్య శూన్య vpip_సమితి_సమయం_precision(పూర్ణాంకం pres);
 
-extern __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj);
+బాహ్య __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj);
 
-extern int vpip_time_units_from_handle(vpiHandle obj);
-extern int vpip_time_precision_from_handle(vpiHandle obj);
+బాహ్య పూర్ణాంకం vpip_సమయం_units_from_handle(vpiHandle obj);
+బాహ్య పూర్ణాంకం vpip_సమయం_precision_from_handle(vpiHandle obj);
 
-extern double vpip_scaled_time_from_handle(vvp_time64_t time, vpiHandle obj);
+బాహ్య ద్విగుణ vpip_scaled_సమయం_from_handle(vvp_time64_t సమయం, vpiHandle obj);
 
-extern void vpip_time_to_timestruct(struct t_vpi_time*ts, vvp_time64_t ti);
-extern vvp_time64_t vpip_timestruct_to_time(const struct t_vpi_time*ts);
+బాహ్య శూన్య vpip_సమయం_గమ్యం_timestruct(నిర్మాణం t_vpi_సమయం*ts, vvp_time64_t ti);
+బాహ్య vvp_time64_t vpip_timestruct_గమ్యం_సమయం(స్థిరరాశి నిర్మాణం t_vpi_సమయం*ts);
 
-extern double vpip_time_to_scaled_real(vvp_time64_t ti, const __vpiScope*sc);
-extern vvp_time64_t vpip_scaled_real_to_time64(double val, const __vpiScope*sc);
+బాహ్య ద్విగుణ vpip_సమయం_గమ్యం_scaled_real(vvp_time64_t ti, స్థిరరాశి __vpiScope*sc);
+బాహ్య vvp_time64_t vpip_scaled_real_గమ్యం_time64(ద్విగుణ val, స్థిరరాశి __vpiScope*sc);
 
 /*
  * These functions are used mostly as compile time to strings into
@@ -1124,8 +1124,8 @@ extern vvp_time64_t vpip_scaled_real_to_time64(double val, const __vpiScope*sc);
  * reuse it if it can. This us useful for handle names, which may be
  * reused in different scopes.
  */
-extern const char* vpip_string(const char*str);
-extern const char* vpip_name_string(const char*str);
+బాహ్య స్థిరరాశి అక్షరం* vpip_string(స్థిరరాశి అక్షరం*str);
+బాహ్య స్థిరరాశి అక్షరం* vpip_name_string(స్థిరరాశి అక్షరం*str);
 
 
 /*
@@ -1133,37 +1133,37 @@ extern const char* vpip_name_string(const char*str);
  * vectors. The input format is a vvp_vector4_t, and the result is
  * written into buf, without overflowing nbuf.
  */
-extern unsigned vpip_vec4_to_dec_str(const vvp_vector4_t&vec4,
-				     char *buf, unsigned int nbuf,
-				     int signed_flag);
+బాహ్య గుర్తులేని vpip_vec4_గమ్యం_dec_str(స్థిరరాశి vvp_vector4_t&vec4,
+				     అక్షరం *buf, గుర్తులేని పూర్ణాంకం nbuf,
+				     పూర్ణాంకం signed_flag);
 
 
-extern void vpip_vec4_to_hex_str(const vvp_vector4_t&bits, char*buf,
-				 unsigned nbuf);
+బాహ్య శూన్య vpip_vec4_గమ్యం_hex_str(స్థిరరాశి vvp_vector4_t&బిట్లు, అక్షరం*buf,
+				 గుర్తులేని nbuf);
 
-extern void vpip_vec4_to_oct_str(const vvp_vector4_t&bits, char*buf,
-				 unsigned nbuf);
+బాహ్య శూన్య vpip_vec4_గమ్యం_oct_str(స్థిరరాశి vvp_vector4_t&బిట్లు, అక్షరం*buf,
+				 గుర్తులేని nbuf);
 
-extern void vpip_bin_str_to_vec4(vvp_vector4_t&val, const char*buf);
-extern void vpip_oct_str_to_vec4(vvp_vector4_t&val, const char*str);
-extern void vpip_dec_str_to_vec4(vvp_vector4_t&val, const char*str);
-extern void vpip_hex_str_to_vec4(vvp_vector4_t&val, const char*str);
+బాహ్య శూన్య vpip_bin_str_గమ్యం_vec4(vvp_vector4_t&val, స్థిరరాశి అక్షరం*buf);
+బాహ్య శూన్య vpip_oct_str_గమ్యం_vec4(vvp_vector4_t&val, స్థిరరాశి అక్షరం*str);
+బాహ్య శూన్య vpip_dec_str_గమ్యం_vec4(vvp_vector4_t&val, స్థిరరాశి అక్షరం*str);
+బాహ్య శూన్య vpip_hex_str_గమ్యం_vec4(vvp_vector4_t&val, స్థిరరాశి అక్షరం*str);
 
-extern vvp_vector4_t vec4_from_vpi_value(s_vpi_value*vp, unsigned wid);
-extern double real_from_vpi_value(s_vpi_value*vp);
+బాహ్య vvp_vector4_t vec4_from_vpi_విలువ(s_vpi_విలువ*vp, గుర్తులేని wid);
+బాహ్య ద్విగుణ real_from_vpi_విలువ(s_vpi_విలువ*vp);
 
-extern void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
-				bool signed_flag, s_vpi_value*vp);
-extern void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
-				bool signed_flag, s_vpi_value*vp);
-extern void vpip_real_get_value(double real, s_vpi_value*vp);
-extern void vpip_string_get_value(const std::string&val, s_vpi_value*vp);
+బాహ్య శూన్య vpip_vec4_get_విలువ(స్థిరరాశి vvp_vector4_t&మాట_val, గుర్తులేని వెడల్పు,
+				bool signed_flag, s_vpi_విలువ*vp);
+బాహ్య శూన్య vpip_vec2_get_విలువ(స్థిరరాశి vvp_vector2_t&మాట_val, గుర్తులేని వెడల్పు,
+				bool signed_flag, s_vpi_విలువ*vp);
+బాహ్య శూన్య vpip_real_get_విలువ(ద్విగుణ real, s_vpi_విలువ*vp);
+బాహ్య శూన్య vpip_string_get_విలువ(స్థిరరాశి std::string&val, s_vpi_విలువ*vp);
 
 /*
  * Function defined in vpi_signal.cc to manage vpi_get_* persistent
  * storage.
  */
-enum vpi_rbuf_t {
+గణన vpi_rbuf_t {
       RBUF_VAL =0,
 	/* Storage for *_get_value() */
       RBUF_STR,
@@ -1171,25 +1171,25 @@ enum vpi_rbuf_t {
       RBUF_DEL
 	/* Delete the storage for both buffers. */
 };
-extern void *need_result_buf(unsigned cnt, vpi_rbuf_t type);
+బాహ్య శూన్య *need_ఫలితం_buf(గుర్తులేని cnt, vpi_rbuf_t type);
 /* following two routines use need_result_buf(, RBUF_STR) */
-extern char *simple_set_rbuf_str(const char *s1);
-extern char *generic_get_str(int code, vpiHandle ref, const char *name, const char *index);
+బాహ్య అక్షరం *simple_సమితి_rbuf_str(స్థిరరాశి అక్షరం *s1);
+బాహ్య అక్షరం *generic_get_str(పూర్ణాంకం సంకేతం_2, vpiHandle ref, స్థిరరాశి అక్షరం *name, స్థిరరాశి అక్షరం *సూచీ);
 
 /* A routine to find the enclosing module. */
-extern vpiHandle vpip_module(__vpiScope*scope);
+బాహ్య vpiHandle vpip_module(__vpiScope*scope);
 
-extern int vpip_delay_selection;
+బాహ్య పూర్ణాంకం vpip_delay_selection;
 
 /* A flag to disable output to MCD bit 0. */
-extern bool vpip_mcd0_disable;
+బాహ్య bool vpip_mcd0_disable;
 
-inline uint64_t vlg_round_to_u64(double rval)
+అంతఃవరుస uint64_t vlg_విడత_గమ్యం_u64(ద్విగుణ rval)
 {
       // Directly casting a negative double to an unsigned integer types is
       // undefined behavior and behaves differently on different architectures.
       // Cast to signed integer first to get the behavior we want.
-      return static_cast<uint64_t>(static_cast<int64_t>(std::round(rval)));
+      తిరిగి static_cast<uint64_t>(static_cast<int64_t>(std::విడత_2(rval)));
 }
 
-#endif /* IVL_vpi_priv_H */
+#అయితే_ముగింపు /* IVL_vpi_priv_H */

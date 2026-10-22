@@ -1,5 +1,5 @@
-#ifndef IVL_ufunc_H
-#define IVL_ufunc_H
+#నిర్వచితం_కాకపోతే IVL_ufunc_H
+#నిర్వచించు IVL_ufunc_H
 /*
  * Copyright (c) 2002-2025 Stephen Williams (steve@icarus.com)
  *
@@ -49,39 +49,39 @@ class __vpiScope;
  * This class relies to the vvp_wide_fun_* classes in vvp_net.h.
  */
 
-class ufunc_core : public vvp_wide_fun_core {
+class ufunc_core : బహిరంగ vvp_wide_fun_core {
 
-    public:
-      ufunc_core(unsigned ow, vvp_net_t*ptr,
-		 unsigned nports, vvp_net_t**ports,
-		 vvp_code_t start_address,
+    బహిరంగ:
+      ufunc_core(గుర్తులేని ow, vvp_net_t*ptr,
+		 గుర్తులేని nports, vvp_net_t**ports,
+		 vvp_సంకేతం_t ప్రారంభం_చిరునామా,
 		 __vpiScope*call_scope,
-		 char*scope_label);
-      virtual ~ufunc_core() override =0;
+		 అక్షరం*scope_label);
+      మాయా ~ufunc_core() override =0;
 
-      __vpiScope*call_scope() { return call_scope_; }
-      __vpiScope*func_scope() { return func_scope_; }
+      __vpiScope*call_scope() { తిరిగి call_scope_; }
+      __vpiScope*func_scope() { తిరిగి func_scope_; }
 
-      void assign_bits_to_ports(vvp_context_t context);
-      virtual void finish_thread() =0;
+      శూన్య కేటాయించు_బిట్లు_గమ్యం_ports(vvp_context_t context);
+      మాయా శూన్య ముగింపు_thread() =0;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      శూన్య recv_vec4(vvp_net_ptr_t పోర్టు, స్థిరరాశి vvp_vector4_t&బిట్టు,
                      vvp_context_t context) override;
 
-    protected:
-      void finish_thread_real_();
-      void finish_thread_vec4_();
+    రక్షిత:
+      శూన్య ముగింపు_thread_real();
+      శూన్య ముగింపు_thread_vec4();
 
-    private:
-      void recv_vec4_from_inputs(unsigned port) override;
-      void recv_real_from_inputs(unsigned port) override;
+    అంతరంగ:
+      శూన్య recv_vec4_from_inputs(గుర్తులేని పోర్టు) override;
+      శూన్య recv_real_from_inputs(గుర్తులేని పోర్టు) override;
 
-      void invoke_thread_(void);
+      శూన్య invoke_thread_(శూన్య);
 
 
-    private:
+    అంతరంగ:
 	// output width of the function node.
-      unsigned owid_;
+      గుర్తులేని owid_;
 	// The vvp_net_t* objects for the function input ports. We use
 	// these to write the input values to the reg input variable
 	// functors for the thread.
@@ -92,7 +92,7 @@ class ufunc_core : public vvp_wide_fun_core {
       vthread_t thread_;
       __vpiScope*call_scope_;
       __vpiScope*func_scope_;
-      vvp_code_t code_;
+      vvp_సంకేతం_t సంకేతం_3;
 };
 
-#endif /* IVL_ufunc_H */
+#అయితే_ముగింపు /* IVL_ufunc_H */
