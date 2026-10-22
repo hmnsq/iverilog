@@ -48,7 +48,7 @@ using namespace std;
 
 /* This is the size of an unsigned long in bits. This is just a
    convenience macro. */
-# define CPU_WORD_BITS (8*sizeof(unsigned long))
+# define CPU_WORD_BITS (8*parimaa_na(unsigned long))
 # define TOP_BIT (1UL << (CPU_WORD_BITS-1))
 
 /*
@@ -88,19 +88,19 @@ using namespace std;
  * to reap the child immediately.
  */
 
-struct vthread_s {
+sa_nracanaa vthread_s {
       vthread_s();
 
-      void debug_dump(ostream&fd, const char*label_text);
+      void debug_dump(ostream&fd, const var_na*label_text);
 
 	/* This is the program counter. */
       vvp_code_t pc;
 	/* These hold the private thread bits. */
-      enum { FLAGS_COUNT = 512, WORDS_COUNT = 16 };
+      ga_nanaa { FLAGS_COUNT = 512, WORDS_COUNT = 16 };
       vvp_bit4_t flags[FLAGS_COUNT];
 
 	/* These are the word registers. */
-      union {
+      sa_ngha {
 	    int64_t  w_int;
 	    uint64_t w_uint;
       } words[WORDS_COUNT];
@@ -115,39 +115,39 @@ struct vthread_s {
     private:
       vector<vvp_vector4_t>stack_vec4_;
     public:
-      inline vvp_vector4_t pop_vec4(void)
+      anta_hstha vvp_vector4_t pop_vec4(void)
       {
 	    assert(! stack_vec4_.empty());
 	    vvp_vector4_t val = stack_vec4_.back();
 	    stack_vec4_.pop_back();
-	    return val;
+	    ལོག val;
       }
-      inline void push_vec4(const vvp_vector4_t&val)
+      anta_hstha void push_vec4(const vvp_vector4_t&val)
       {
 	    stack_vec4_.push_back(val);
       }
-      inline const vvp_vector4_t& peek_vec4(unsigned depth)
+      anta_hstha const vvp_vector4_t& peek_vec4(unsigned depth)
       {
 	    unsigned size = stack_vec4_.size();
 	    assert(depth < size);
 	    unsigned use_index = size-1-depth;
-	    return stack_vec4_[use_index];
+	    ལོག stack_vec4_[use_index];
       }
-      inline vvp_vector4_t& peek_vec4(void)
+      anta_hstha vvp_vector4_t& peek_vec4(void)
       {
 	    unsigned use_index = stack_vec4_.size();
 	    assert(use_index >= 1);
-	    return stack_vec4_[use_index-1];
+	    ལོག stack_vec4_[use_index-1];
       }
-      inline void poke_vec4(unsigned depth, const vvp_vector4_t&val)
+      anta_hstha void poke_vec4(unsigned depth, const vvp_vector4_t&val)
       {
 	    assert(depth < stack_vec4_.size());
 	    unsigned use_index = stack_vec4_.size()-1-depth;
 	    stack_vec4_[use_index] = val;
       }
-      inline void pop_vec4(unsigned cnt)
+      anta_hstha void pop_vec4(unsigned cnt)
       {
-	    while (cnt > 0) {
+	    སྐབས (cnt > 0) {
 		  stack_vec4_.pop_back();
 		  cnt -= 1;
 	    }
@@ -155,34 +155,34 @@ struct vthread_s {
 
 
     private:
-      vector<double> stack_real_;
+      vector<dviguu_na> stack_real_;
     public:
-      inline double pop_real(void)
+      anta_hstha dviguu_na pop_real(void)
       {
 	    assert(! stack_real_.empty());
-	    double val = stack_real_.back();
+	    dviguu_na val = stack_real_.back();
 	    stack_real_.pop_back();
-	    return val;
+	    ལོག val;
       }
-      inline void push_real(double val)
+      anta_hstha void push_real(dviguu_na val)
       {
 	    stack_real_.push_back(val);
       }
-      inline double peek_real(unsigned depth)
+      anta_hstha dviguu_na peek_real(unsigned depth)
       {
 	    assert(depth < stack_real_.size());
 	    unsigned use_index = stack_real_.size()-1-depth;
-	    return stack_real_[use_index];
+	    ལོག stack_real_[use_index];
       }
-      inline void poke_real(unsigned depth, double val)
+      anta_hstha void poke_real(unsigned depth, dviguu_na val)
       {
 	    assert(depth < stack_real_.size());
 	    unsigned use_index = stack_real_.size()-1-depth;
 	    stack_real_[use_index] = val;
       }
-      inline void pop_real(unsigned cnt)
+      anta_hstha void pop_real(unsigned cnt)
       {
-	    while (cnt > 0) {
+	    སྐབས (cnt > 0) {
 		  stack_real_.pop_back();
 		  cnt -= 1;
 	    }
@@ -196,32 +196,32 @@ struct vthread_s {
     private:
       vector<string> stack_str_;
     public:
-      inline string pop_str(void)
+      anta_hstha string pop_str(void)
       {
 	    assert(! stack_str_.empty());
 	    string val = stack_str_.back();
 	    stack_str_.pop_back();
-	    return val;
+	    ལོག val;
       }
-      inline void push_str(const string&val)
+      anta_hstha void push_str(const string&val)
       {
 	    stack_str_.push_back(val);
       }
-      inline string&peek_str(unsigned depth)
+      anta_hstha string&peek_str(unsigned depth)
       {
 	    assert(depth<stack_str_.size());
 	    unsigned use_index = stack_str_.size()-1-depth;
-	    return stack_str_[use_index];
+	    ལོག stack_str_[use_index];
       }
-      inline void poke_str(unsigned depth, const string&val)
+      anta_hstha void poke_str(unsigned depth, const string&val)
       {
 	    assert(depth < stack_str_.size());
 	    unsigned use_index = stack_str_.size()-1-depth;
 	    stack_str_[use_index] = val;
       }
-      inline void pop_str(unsigned cnt)
+      anta_hstha void pop_str(unsigned cnt)
       {
-	    while (cnt > 0) {
+	    སྐབས (cnt > 0) {
 		  stack_str_.pop_back();
 		  cnt -= 1;
 	    }
@@ -229,34 +229,34 @@ struct vthread_s {
 
 	/* Objects are also operated on in a stack. */
     private:
-      enum { STACK_OBJ_MAX_SIZE = 32 };
+      ga_nanaa { STACK_OBJ_MAX_SIZE = 32 };
       vvp_object_t stack_obj_[STACK_OBJ_MAX_SIZE];
       unsigned stack_obj_size_;
     public:
-      inline vvp_object_t& peek_object(void)
+      anta_hstha vvp_object_t& peek_object(void)
       {
 	    assert(stack_obj_size_ > 0);
-	    return stack_obj_[stack_obj_size_-1];
+	    ལོག stack_obj_[stack_obj_size_-1];
       }
-      inline void pop_object(vvp_object_t&obj)
+      anta_hstha void pop_object(vvp_object_t&obj)
       {
 	    assert(stack_obj_size_ > 0);
 	    stack_obj_size_ -= 1;
 	    obj = stack_obj_[stack_obj_size_];
 	    stack_obj_[stack_obj_size_].reset(0);
       }
-      inline void pop_object(unsigned cnt, unsigned skip =0)
+      anta_hstha void pop_object(unsigned cnt, unsigned skip =0)
       {
 	    assert((cnt+skip) <= stack_obj_size_);
-	    for (size_t idx = stack_obj_size_-skip-cnt ; idx < stack_obj_size_-skip ; idx += 1)
+	    དོན་ལུ (size_t idx = stack_obj_size_-skip-cnt ; idx < stack_obj_size_-skip ; idx += 1)
 		  stack_obj_[idx].reset(0);
 	    stack_obj_size_ -= cnt;
-	    for (size_t idx = stack_obj_size_-skip ; idx < stack_obj_size_ ; idx += 1)
+	    དོན་ལུ (size_t idx = stack_obj_size_-skip ; idx < stack_obj_size_ ; idx += 1)
 		  stack_obj_[idx] = stack_obj_[idx+skip];
-	    for (size_t idx = stack_obj_size_ ; idx < stack_obj_size_+skip ; idx += 1)
+	    དོན་ལུ (size_t idx = stack_obj_size_ ; idx < stack_obj_size_+skip ; idx += 1)
 		  stack_obj_[idx].reset(0);
       }
-      inline void push_object(const vvp_object_t&obj)
+      anta_hstha void push_object(const vvp_object_t&obj)
       {
 	    assert(stack_obj_size_ < STACK_OBJ_MAX_SIZE);
 	    stack_obj_[stack_obj_size_] = obj;
@@ -274,15 +274,15 @@ struct vthread_s {
       unsigned is_scheduled      :1;
       unsigned delay_delete      :1;
 	/* This points to the children of the thread. */
-      set<struct vthread_s*>children;
+      set<sa_nracanaa vthread_s*>children;
 	/* This points to the detached children of the thread. */
-      set<struct vthread_s*>detached_children;
+      set<sa_nracanaa vthread_s*>detached_children;
 	/* This points to my parent, if I have one. */
-      struct vthread_s*parent;
+      sa_nracanaa vthread_s*parent;
 	/* This points to the containing scope. */
       __vpiScope*parent_scope;
 	/* This is used for keeping wait queues. */
-      struct vthread_s*wait_next;
+      sa_nracanaa vthread_s*wait_next;
 	/* These are used to access automatically allocated items. */
       vvp_context_t wt_context, rd_context;
 	/* These are used to pass non-blocking event control information. */
@@ -290,15 +290,15 @@ struct vthread_s {
       uint64_t ecount;
 	/* Save the file/line information when available. */
     private:
-      char *filenm_;
+      var_na *filenm_;
       unsigned lineno_;
     public:
-      void set_fileline(char *filenm, unsigned lineno);
+      void set_fileline(var_na *filenm, unsigned lineno);
       string get_fileline();
 
-      inline void cleanup()
+      anta_hstha void cleanup()
       {
-	    if (i_was_disabled) {
+	    གལ་སྲིད (i_was_disabled) {
 		  stack_vec4_.clear();
 		  stack_real_.clear();
 		  stack_str_.clear();
@@ -313,53 +313,53 @@ struct vthread_s {
       }
 };
 
-inline vthread_s::vthread_s()
+anta_hstha vthread_s::vthread_s()
 {
       stack_obj_size_ = 0;
       filenm_ = 0;
       lineno_ = 0;
 }
 
-void vthread_s::set_fileline(char *filenm, unsigned lineno)
+void vthread_s::set_fileline(var_na *filenm, unsigned lineno)
 {
       assert(filenm);
-      if (!filenm_ || (strcmp(filenm_, filenm) != 0)) {
+      གལ་སྲིད (!filenm_ || (strcmp(filenm_, filenm) != 0)) {
 	    free(filenm_);
 	    filenm_ = strdup(filenm);
       }
       lineno_ = lineno;
 }
 
-inline string vthread_s::get_fileline()
+anta_hstha string vthread_s::get_fileline()
 {
       ostringstream buf;
-      if (filenm_) {
+      གལ་སྲིད (filenm_) {
 	    buf << filenm_ << ":" << lineno_ << ": ";
       }
       string res = buf.str();
-      return res;
+      ལོག res;
 }
 
-void vthread_s::debug_dump(ostream&fd, const char*label)
+void vthread_s::debug_dump(ostream&fd, const var_na*label)
 {
       fd << "**** " << label << endl;
       fd << "**** ThreadId: " << this << ", parent id: " << parent << endl;
 
       fd << "**** Flags: ";
-      for (int idx = 0 ; idx < FLAGS_COUNT ; idx += 1)
+      དོན་ལུ (ཧྲིལ idx = 0 ; idx < FLAGS_COUNT ; idx += 1)
 	    fd << flags[idx];
       fd << endl;
       fd << "**** vec4 stack..." << endl;
-      for (size_t idx = stack_vec4_.size() ; idx > 0 ; idx -= 1)
+      དོན་ལུ (size_t idx = stack_vec4_.size() ; idx > 0 ; idx -= 1)
 	    fd << "    " << (stack_vec4_.size()-idx) << ": " << stack_vec4_[idx-1] << endl;
       fd << "**** str stack (" << stack_str_.size() << ")..." << endl;
       fd << "**** obj stack (" << stack_obj_size_ << ")..." << endl;
       fd << "**** args_vec4 array (" << args_vec4.size() << ")..." << endl;
-      for (size_t idx = 0 ; idx < args_vec4.size() ; idx += 1)
+      དོན་ལུ (size_t idx = 0 ; idx < args_vec4.size() ; idx += 1)
 	    fd << "    " << idx << ": " << args_vec4[idx] << endl;
       fd << "**** file/line (";
-      if (filenm_) fd << filenm_;
-      else fd << "<no file name>";
+      གལ་སྲིད (filenm_) fd << filenm_;
+      དེ་མིན fd << "<no file name>";
       fd << ":" << lineno_ << ")" << endl;
       fd << "**** Done ****" << endl;
 }
@@ -373,13 +373,13 @@ void vthread_s::debug_dump(ostream&fd, const char*label)
  * the other string special characters and normalizes the strings to use
  * only this format.
  */
-static string filter_string(const char*text)
+static string filter_string(const var_na*text)
 {
-      vector<char> tmp (strlen(text)+1);
+      vector<var_na> tmp (strlen(text)+1);
       size_t dst = 0;
-      for (const char*ptr = text ; *ptr ; ptr += 1) {
+      དོན་ལུ (const var_na*ptr = text ; *ptr ; ptr += 1) {
 	    // Not an escape? Move on.
-	    if (*ptr != '\\') {
+	    གལ་སྲིད (*ptr != '\\') {
 		  tmp[dst++] = *ptr;
 		  continue;
 	    }
@@ -388,12 +388,12 @@ static string filter_string(const char*text)
 	    // have an octal sequence coming up. Advance the ptr and start
 	    // processing octal digits.
 	    ptr += 1;
-	    if (*ptr == 0)
-		  break;
+	    གལ་སྲིད (*ptr == 0)
+		  bha_nga;
 
-	    char byte = 0;
-	    int cnt = 3;
-	    while (*ptr && cnt > 0 && *ptr >= '0' && *ptr <= '7') {
+	    var_na byte = 0;
+	    ཧྲིལ cnt = 3;
+	    སྐབས (*ptr && cnt > 0 && *ptr >= '0' && *ptr <= '7') {
 		  byte *= 8;
 		  byte += *ptr - '0';
 		  cnt -= 1;
@@ -402,7 +402,7 @@ static string filter_string(const char*text)
 
 	    // null-bytes are supposed to be removed when assigning a string
 	    // literal to a string.
-	    if (byte != '\0')
+	    གལ་སྲིད (byte != '\0')
 		  tmp[dst++] = byte;
 
 	    // After the while loop above, the ptr points to the next character,
@@ -415,66 +415,66 @@ static string filter_string(const char*text)
       // using the known length in the string constructor.
       tmp[dst] = 0;
       string res (&tmp[0], dst);
-      return res;
+      ལོག res;
 }
 
 static void do_join(vthread_t thr, vthread_t child);
 
-__vpiScope* vthread_scope(struct vthread_s*thr)
+__vpiScope* vthread_scope(sa_nracanaa vthread_s*thr)
 {
-      return thr->parent_scope;
+      ལོག thr->parent_scope;
 }
 
-struct vthread_s*running_thread = 0;
+sa_nracanaa vthread_s*running_thread = 0;
 
 string get_fileline()
 {
-      return running_thread->get_fileline();
+      ལོག running_thread->get_fileline();
 }
 
-void vthread_push(struct vthread_s*thr, double val)
+void vthread_push(sa_nracanaa vthread_s*thr, dviguu_na val)
 {
       thr->push_real(val);
 }
 
-void vthread_push(struct vthread_s*thr, const string&val)
+void vthread_push(sa_nracanaa vthread_s*thr, const string&val)
 {
       thr->push_str(val);
 }
 
-void vthread_push(struct vthread_s*thr, const vvp_vector4_t&val)
+void vthread_push(sa_nracanaa vthread_s*thr, const vvp_vector4_t&val)
 {
       thr->push_vec4(val);
 }
 
-void vthread_pop_real(struct vthread_s*thr, unsigned depth)
+void vthread_pop_real(sa_nracanaa vthread_s*thr, unsigned depth)
 {
       thr->pop_real(depth);
 }
 
-void vthread_pop_str(struct vthread_s*thr, unsigned depth)
+void vthread_pop_str(sa_nracanaa vthread_s*thr, unsigned depth)
 {
       thr->pop_str(depth);
 }
 
-void vthread_pop_vec4(struct vthread_s*thr, unsigned depth)
+void vthread_pop_vec4(sa_nracanaa vthread_s*thr, unsigned depth)
 {
       thr->pop_vec4(depth);
 }
 
-double vthread_get_real_stack(struct vthread_s*thr, unsigned depth)
+dviguu_na vthread_get_real_stack(sa_nracanaa vthread_s*thr, unsigned depth)
 {
-      return thr->peek_real(depth);
+      ལོག thr->peek_real(depth);
 }
 
-const string&vthread_get_str_stack(struct vthread_s*thr, unsigned depth)
+const string&vthread_get_str_stack(sa_nracanaa vthread_s*thr, unsigned depth)
 {
-      return thr->peek_str(depth);
+      ལོག thr->peek_str(depth);
 }
 
-const vvp_vector4_t& vthread_get_vec4_stack(struct vthread_s*thr, unsigned depth)
+const vvp_vector4_t& vthread_get_vec4_stack(sa_nracanaa vthread_s*thr, unsigned depth)
 {
-      return thr->peek_vec4(depth);
+      ལོག thr->peek_vec4(depth);
 }
 
 /*
@@ -493,7 +493,7 @@ template <class VVP_QUEUE> static vvp_queue*get_queue_object(vthread_t thr, vvp_
       assert(obj);
 
       vvp_queue*queue = obj->get_object().peek<vvp_queue>();
-      if (queue == 0) {
+      གལ་སྲིད (queue == 0) {
 	    assert(obj->get_object().test_nil());
 	    queue = new VVP_QUEUE;
 	    vvp_object_t val (queue);
@@ -501,7 +501,7 @@ template <class VVP_QUEUE> static vvp_queue*get_queue_object(vthread_t thr, vvp_
 	    vvp_send_object(ptr, val, thr->wt_context);
       }
 
-      return queue;
+      ལོག queue;
 }
 
 /*
@@ -518,22 +518,22 @@ static void get_queue_or_darray_vec4_from_net(vthread_t thr, vvp_net_t* net,
       assert(obj);
       vvp_object_t top = obj->get_object();
       qsrc = top.peek<vvp_queue_vec4>();
-      if (qsrc) {
+      གལ་སྲིད (qsrc) {
 	    dsrc = 0;
-	    return;
+	    ལོག;
       }
       vvp_darray* dany = top.peek<vvp_darray>();
-      if (dany && dynamic_cast<vvp_queue*>(dany) == 0) {
+      གལ་སྲིད (dany && dynamic_cast<vvp_queue*>(dany) == 0) {
 	    dsrc = dany;
-	    return;
+	    ལོག;
       }
-      if (top.test_nil()) {
+      གལ་སྲིད (top.test_nil()) {
 	    qsrc = new vvp_queue_vec4();
 	    vvp_object_t val(qsrc);
 	    vvp_net_ptr_t ptr(net, 0);
 	    vvp_send_object(ptr, val, thr->wt_context);
 	    dsrc = 0;
-	    return;
+	    ལོག;
       }
       /* e.g. real/string queue — not vec4 queue or plain darray */
       qsrc = 0;
@@ -548,22 +548,22 @@ static void get_queue_or_darray_real_from_net(vthread_t thr, vvp_net_t* net,
       assert(obj);
       vvp_object_t top = obj->get_object();
       qsrc = top.peek<vvp_queue_real>();
-      if (qsrc) {
+      གལ་སྲིད (qsrc) {
 	    dsrc = 0;
-	    return;
+	    ལོག;
       }
       vvp_darray* dany = top.peek<vvp_darray>();
-      if (dany && dynamic_cast<vvp_queue*>(dany) == 0) {
+      གལ་སྲིད (dany && dynamic_cast<vvp_queue*>(dany) == 0) {
 	    dsrc = dany;
-	    return;
+	    ལོག;
       }
-      if (top.test_nil()) {
+      གལ་སྲིད (top.test_nil()) {
 	    qsrc = new vvp_queue_real();
 	    vvp_object_t val(qsrc);
 	    vvp_net_ptr_t ptr(net, 0);
 	    vvp_send_object(ptr, val, thr->wt_context);
 	    dsrc = 0;
-	    return;
+	    ལོག;
       }
       /* e.g. real/string queue — not vec4 queue or plain darray */
       qsrc = 0;
@@ -575,14 +575,14 @@ static void get_queue_or_darray_vec4_from_object(vvp_object_t src_obj,
 						 vvp_darray*& dsrc)
 {
       qsrc = src_obj.peek<vvp_queue_vec4>();
-      if (qsrc) {
+      གལ་སྲིད (qsrc) {
 	    dsrc = 0;
-	    return;
+	    ལོག;
       }
       vvp_darray* dany = src_obj.peek<vvp_darray>();
-      if (dany && dynamic_cast<vvp_queue*>(dany) == 0) {
+      གལ་སྲིད (dany && dynamic_cast<vvp_queue*>(dany) == 0) {
 	    dsrc = dany;
-	    return;
+	    ལོག;
       }
       qsrc = 0;
       dsrc = 0;
@@ -592,17 +592,17 @@ static void get_queue_or_darray_vec4_from_object(vvp_object_t src_obj,
  * The following are used to allow a common template to be written for
  * queue real/string/vec4 operations
  */
-inline static void pop_value(vthread_t thr, double&value, unsigned)
+anta_hstha static void pop_value(vthread_t thr, dviguu_na&value, unsigned)
 {
       value = thr->pop_real();
 }
 
-inline static void pop_value(vthread_t thr, string&value, unsigned)
+anta_hstha static void pop_value(vthread_t thr, string&value, unsigned)
 {
       value = thr->pop_str();
 }
 
-inline static void pop_value(vthread_t thr, vvp_vector4_t&value, unsigned wid)
+anta_hstha static void pop_value(vthread_t thr, vvp_vector4_t&value, unsigned wid)
 {
       value = thr->pop_vec4();
       assert(value.size() == wid);
@@ -611,35 +611,35 @@ inline static void pop_value(vthread_t thr, vvp_vector4_t&value, unsigned wid)
 /*
  * The following are used to allow the queue templates to print correctly.
  */
-inline static string get_queue_type(double&)
+anta_hstha static string get_queue_type(dviguu_na&)
 {
-      return "queue<real>";
+      ལོག "queue<real>";
 }
 
-inline static string get_queue_type(string&)
+anta_hstha static string get_queue_type(string&)
 {
-      return "queue<string>";
+      ལོག "queue<string>";
 }
 
-inline static string get_queue_type(const vvp_vector4_t&value)
+anta_hstha static string get_queue_type(const vvp_vector4_t&value)
 {
       ostringstream buf;
       buf << "queue<vector[" << value.size() << "]>";
       string res = buf.str();
-      return res;
+      ལོག res;
 }
 
-inline static void print_queue_value(double value)
+anta_hstha static void print_queue_value(dviguu_na value)
 {
       cerr << value;
 }
 
-inline static void print_queue_value(const string&value)
+anta_hstha static void print_queue_value(const string&value)
 {
       cerr << "\"" << value << "\"";
 }
 
-inline static void print_queue_value(const vvp_vector4_t&value)
+anta_hstha static void print_queue_value(const vvp_vector4_t&value)
 {
       cerr << value;
 }
@@ -647,17 +647,17 @@ inline static void print_queue_value(const vvp_vector4_t&value)
 /*
  * The following are used to get a darray/queue default value.
  */
-inline static void dq_default(double&value, unsigned)
+anta_hstha static void dq_default(dviguu_na&value, unsigned)
 {
       value = 0.0;
 }
 
-inline static void dq_default(string&value, unsigned)
+anta_hstha static void dq_default(string&value, unsigned)
 {
       value = "";
 }
 
-inline static void dq_default(vvp_vector4_t&value, unsigned wid)
+anta_hstha static void dq_default(vvp_vector4_t&value, unsigned wid)
 {
       value = vvp_vector4_t(wid);
 }
@@ -665,15 +665,15 @@ inline static void dq_default(vvp_vector4_t&value, unsigned wid)
 
 template <class T> T coerce_to_width(const T&that, unsigned width)
 {
-      if (that.size() == width)
-	    return that;
+      གལ་སྲིད (that.size() == width)
+	    ལོག that;
 
       assert(that.size() > width);
       T res (width);
-      for (unsigned idx = 0 ;  idx < width ;  idx += 1)
+      དོན་ལུ (unsigned idx = 0 ;  idx < width ;  idx += 1)
 	    res.set_bit(idx, that.value(idx));
 
-      return res;
+      ལོག res;
 }
 
 /* Explicitly define the vvp_vector4_t version of coerce_to_width(). */
@@ -684,16 +684,16 @@ template vvp_vector4_t coerce_to_width(const vvp_vector4_t&that,
 static void multiply_array_imm(unsigned long*res, const unsigned long*val,
 			       unsigned words, unsigned long imm)
 {
-      for (unsigned idx = 0 ; idx < words ; idx += 1)
+      དོན་ལུ (unsigned idx = 0 ; idx < words ; idx += 1)
 	    res[idx] = 0;
 
-      for (unsigned mul_idx = 0 ; mul_idx < words ; mul_idx += 1) {
+      དོན་ལུ (unsigned mul_idx = 0 ; mul_idx < words ; mul_idx += 1) {
 	    unsigned long sum;
 	    unsigned long tmp = multiply_with_carry(val[mul_idx], imm, sum);
 
 	    unsigned long carry = 0;
 	    res[mul_idx] = add_with_carry(res[mul_idx], tmp, carry);
-	    for (unsigned add_idx = mul_idx+1 ; add_idx < words ; add_idx += 1) {
+	    དོན་ལུ (unsigned add_idx = mul_idx+1 ; add_idx < words ; add_idx += 1) {
 		  res[add_idx] = add_with_carry(res[add_idx], sum, carry);
 		  sum = 0;
 	    }
@@ -710,14 +710,14 @@ static vvp_context_t vthread_alloc_context(__vpiScope*scope)
       assert(scope->is_automatic());
 
       vvp_context_t context = scope->free_contexts;
-      if (context) {
+      གལ་སྲིད (context) {
             scope->free_contexts = vvp_get_next_context(context);
-            for (unsigned idx = 0 ; idx < scope->nitem ; idx += 1) {
+            དོན་ལུ (unsigned idx = 0 ; idx < scope->nitem ; idx += 1) {
                   scope->item[idx]->reset_instance(context);
             }
-      } else {
+      } དེ་མིན {
             context = vvp_allocate_context(scope->nitem);
-            for (unsigned idx = 0 ; idx < scope->nitem ; idx += 1) {
+            དོན་ལུ (unsigned idx = 0 ; idx < scope->nitem ; idx += 1) {
                   scope->item[idx]->alloc_instance(context);
             }
       }
@@ -725,7 +725,7 @@ static vvp_context_t vthread_alloc_context(__vpiScope*scope)
       vvp_set_next_context(context, scope->live_contexts);
       scope->live_contexts = context;
 
-      return context;
+      ལོག context;
 }
 
 /*
@@ -738,11 +738,11 @@ static void vthread_free_context(vvp_context_t context, __vpiScope*scope)
       assert(scope->is_automatic());
       assert(context);
 
-      if (context == scope->live_contexts) {
+      གལ་སྲིད (context == scope->live_contexts) {
             scope->live_contexts = vvp_get_next_context(context);
-      } else {
+      } དེ་མིན {
             vvp_context_t tmp = scope->live_contexts;
-            while (context != vvp_get_next_context(tmp)) {
+            སྐབས (context != vvp_get_next_context(tmp)) {
                   assert(tmp);
                   tmp = vvp_get_next_context(tmp);
             }
@@ -758,9 +758,9 @@ void contexts_delete(class __vpiScope*scope)
 {
       vvp_context_t context = scope->free_contexts;
 
-      while (context) {
+      སྐབས (context) {
 	    scope->free_contexts = vvp_get_next_context(context);
-	    for (unsigned idx = 0; idx < scope->nitem; idx += 1) {
+	    དོན་ལུ (unsigned idx = 0; idx < scope->nitem; idx += 1) {
 		  scope->item[idx]->free_instance(context);
 	    }
 	    free(context);
@@ -775,7 +775,7 @@ void contexts_delete(class __vpiScope*scope)
  */
 vthread_t vthread_new(vvp_code_t pc, __vpiScope*scope)
 {
-      vthread_t thr = new struct vthread_s;
+      vthread_t thr = new sa_nracanaa vthread_s;
       thr->pc     = pc;
 	//thr->bits4  = vvp_vector4_t(32);
       thr->parent = 0;
@@ -800,15 +800,15 @@ vthread_t vthread_new(vvp_code_t pc, __vpiScope*scope)
       thr->flags[1] = BIT4_1;
       thr->flags[2] = BIT4_X;
       thr->flags[3] = BIT4_Z;
-      for (int idx = 4 ; idx < 8 ; idx += 1)
+      དོན་ལུ (ཧྲིལ idx = 4 ; idx < 8 ; idx += 1)
 	    thr->flags[idx] = BIT4_X;
 
       scope->threads .insert(thr);
-      return thr;
+      ལོག thr;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-#if 0
+#གལ་སྲིད 0
 /*
  * These are not currently correct. If you use them you will get
  * double delete messages. There is still a leak related to a
@@ -817,17 +817,17 @@ vthread_t vthread_new(vvp_code_t pc, __vpiScope*scope)
 
 static void wait_next_delete(vthread_t base)
 {
-      while (base) {
+      སྐབས (base) {
 	    vthread_t tmp = base->wait_next;
 	    delete base;
 	    base = tmp;
-	    if (base->waiting_for_event == 0) break;
+	    གལ་སྲིད (base->waiting_for_event == 0) bha_nga;
       }
 }
 
 static void child_delete(vthread_t base)
 {
-      while (base) {
+      སྐབས (base) {
 	    vthread_t tmp = base->child;
 	    delete base;
 	    base = tmp;
@@ -837,7 +837,7 @@ static void child_delete(vthread_t base)
 
 void vthreads_delete(class __vpiScope*scope)
 {
-      for (std::set<vthread_t>::iterator cur = scope->threads.begin()
+      དོན་ལུ (std::set<vthread_t>::iterator cur = scope->threads.begin()
 		 ; cur != scope->threads.end() ; ++ cur ) {
 	    delete *cur;
       }
@@ -851,8 +851,8 @@ void vthreads_delete(class __vpiScope*scope)
  */
 static void vthread_reap(vthread_t thr)
 {
-      if (! thr->children.empty()) {
-	    for (set<vthread_t>::iterator cur = thr->children.begin()
+      གལ་སྲིད (! thr->children.empty()) {
+	    དོན་ལུ (set<vthread_t>::iterator cur = thr->children.begin()
 		       ; cur != thr->children.end() ; ++cur) {
 		  vthread_t child = *cur;
 		  assert(child);
@@ -860,8 +860,8 @@ static void vthread_reap(vthread_t thr)
 		  child->parent = thr->parent;
 	    }
       }
-      if (! thr->detached_children.empty()) {
-	    for (set<vthread_t>::iterator cur = thr->detached_children.begin()
+      གལ་སྲིད (! thr->detached_children.empty()) {
+	    དོན་ལུ (set<vthread_t>::iterator cur = thr->detached_children.begin()
 		       ; cur != thr->detached_children.end() ; ++cur) {
 		  vthread_t child = *cur;
 		  assert(child);
@@ -871,12 +871,12 @@ static void vthread_reap(vthread_t thr)
 		  child->i_am_detached = 0;
 	    }
       }
-      if (thr->parent) {
+      གལ་སྲིད (thr->parent) {
 	      /* assert that the given element was removed. */
-	    if (thr->i_am_detached) {
+	    གལ་སྲིད (thr->i_am_detached) {
 		  size_t res = thr->parent->detached_children.erase(thr);
 		  assert(res == 1);
-	    } else {
+	    } དེ་མིན {
 		  size_t res = thr->parent->children.erase(thr);
 		  assert(res == 1);
 	    }
@@ -892,12 +892,12 @@ static void vthread_reap(vthread_t thr)
 	/* If this thread is not scheduled, then is it safe to delete
 	   it now. Otherwise, let the schedule event (which will
 	   execute the thread at of_ZOMBIE) delete the object. */
-      if ((thr->is_scheduled == 0) && (thr->waiting_for_event == 0)) {
+      གལ་སྲིད ((thr->is_scheduled == 0) && (thr->waiting_for_event == 0)) {
 	    assert(thr->children.empty());
 	    assert(thr->wait_next == 0);
-	    if (thr->delay_delete)
+	    གལ་སྲིད (thr->delay_delete)
 		  schedule_del_thr(thr);
-	    else
+	    དེ་མིན
 		  vthread_delete(thr);
       }
 }
@@ -910,7 +910,7 @@ void vthread_delete(vthread_t thr)
 
 void vthread_mark_scheduled(vthread_t thr)
 {
-      while (thr != 0) {
+      སྐབས (thr != 0) {
 	    assert(thr->is_scheduled == 0);
 	    thr->is_scheduled = 1;
 	    thr = thr->wait_next;
@@ -924,7 +924,7 @@ void vthread_mark_final(vthread_t thr)
        * child thread will be executed immediately rather than being
        * scheduled.
        */
-      while (thr != 0) {
+      སྐབས (thr != 0) {
 	    thr->i_am_in_function = 1;
 	    thr = thr->wait_next;
       }
@@ -932,7 +932,7 @@ void vthread_mark_final(vthread_t thr)
 
 void vthread_delay_delete()
 {
-      if (running_thread)
+      གལ་སྲིད (running_thread)
 	    running_thread->delay_delete = 1;
 }
 
@@ -943,7 +943,7 @@ void vthread_delay_delete()
  */
 void vthread_run(vthread_t thr)
 {
-      while (thr != 0) {
+      སྐབས (thr != 0) {
 	    vthread_t tmp = thr->wait_next;
 	    thr->wait_next = 0;
 
@@ -952,7 +952,7 @@ void vthread_run(vthread_t thr)
 
             running_thread = thr;
 
-	    for (;;) {
+	    དོན་ལུ (;;) {
 		  vvp_code_t cp = thr->pc;
 		  thr->pc += 1;
 
@@ -960,8 +960,8 @@ void vthread_run(vthread_t thr)
 		       the opcode returns false, then the thread is meant to
 		       be paused, so break out of the loop. */
 		  bool rc = (cp->opcode)(thr, cp);
-		  if (rc == false)
-			break;
+		  གལ་སྲིད (rc == false)
+			bha_nga;
 	    }
 
 	    thr = tmp;
@@ -977,7 +977,7 @@ bool of_CHUNK_LINK(vthread_t thr, vvp_code_t code)
 {
       assert(code->cptr);
       thr->pc = code->cptr;
-      return true;
+      ལོག true;
 }
 
 /*
@@ -987,7 +987,7 @@ bool of_CHUNK_LINK(vthread_t thr, vvp_code_t code)
  */
 void vthread_schedule_list(vthread_t thr)
 {
-      for (vthread_t cur = thr ;  cur ;  cur = cur->wait_next) {
+      དོན་ལུ (vthread_t cur = thr ;  cur ;  cur = cur->wait_next) {
 	    assert(cur->waiting_for_event);
 	    cur->waiting_for_event = 0;
       }
@@ -997,30 +997,30 @@ void vthread_schedule_list(vthread_t thr)
 
 vvp_context_t vthread_get_wt_context()
 {
-      if (running_thread)
-            return running_thread->wt_context;
-      else
-            return 0;
+      གལ་སྲིད (running_thread)
+            ལོག running_thread->wt_context;
+      དེ་མིན
+            ལོག 0;
 }
 
 vvp_context_t vthread_get_rd_context()
 {
-      if (running_thread)
-            return running_thread->rd_context;
-      else
-            return 0;
+      གལ་སྲིད (running_thread)
+            ལོག running_thread->rd_context;
+      དེ་མིན
+            ལོག 0;
 }
 
 vvp_context_item_t vthread_get_wt_context_item(unsigned context_idx)
 {
       assert(running_thread && running_thread->wt_context);
-      return vvp_get_context_item(running_thread->wt_context, context_idx);
+      ལོག vvp_get_context_item(running_thread->wt_context, context_idx);
 }
 
 vvp_context_item_t vthread_get_rd_context_item(unsigned context_idx)
 {
       assert(running_thread && running_thread->rd_context);
-      return vvp_get_context_item(running_thread->rd_context, context_idx);
+      ལོག vvp_get_context_item(running_thread->rd_context, context_idx);
 }
 
 /*
@@ -1029,7 +1029,7 @@ vvp_context_item_t vthread_get_rd_context_item(unsigned context_idx)
 bool of_ABS_WR(vthread_t thr, vvp_code_t)
 {
       thr->push_real( fabs(thr->pop_real()) );
-      return true;
+      ལོག true;
 }
 
 bool of_ALLOC(vthread_t thr, vvp_code_t cp)
@@ -1041,7 +1041,7 @@ bool of_ALLOC(vthread_t thr, vvp_code_t cp)
       vvp_set_stacked_context(child_context, thr->wt_context);
       thr->wt_context = child_context;
 
-      return true;
+      ལོག true;
 }
 
 bool of_AND(vthread_t thr, vvp_code_t)
@@ -1050,7 +1050,7 @@ bool of_AND(vthread_t thr, vvp_code_t)
       vvp_vector4_t&vala = thr->peek_vec4();
       assert(vala.size() == valb.size());
       vala &= valb;
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1064,20 +1064,20 @@ static void get_immediate_rval(vvp_code_t cp, vvp_vector4_t&val)
       uint32_t valb = cp->bit_idx[1];
       unsigned wid  = cp->number;
 
-      if (valb == 0) {
+      གལ་སྲིད (valb == 0) {
 	      // Special case: if the value is zero, we are done
 	      // before we start.
-	    if (vala == 0) return;
+	    གལ་སྲིད (vala == 0) ལོག;
 
 	      // Special case: The value has no X/Z bits, so we can
 	      // use the setarray method to write the value all at once.
-	    unsigned use_wid = 8*sizeof(unsigned long);
-	    if (wid < use_wid)
+	    unsigned use_wid = 8*parimaa_na(unsigned long);
+	    གལ་སྲིད (wid < use_wid)
 		  use_wid = wid;
 	    unsigned long tmp[1];
 	    tmp[0] = vala;
 	    val.setarray(0, use_wid, tmp);
-	    return;
+	    ལོག;
       }
 
 	// The immediate value can be values bigger then 32 bits, but
@@ -1087,7 +1087,7 @@ static void get_immediate_rval(vvp_code_t cp, vvp_vector4_t&val)
 	// because vala/valb bits will shift away so (vala|valb) will
 	// turn to zero at or before 32 shifts.
 
-      for (unsigned idx = 0 ; idx < wid && (vala|valb) ; idx += 1) {
+      དོན་ལུ (unsigned idx = 0 ; idx < wid && (vala|valb) ; idx += 1) {
 	    uint32_t ba = 0;
 	      // Convert the vala/valb bits to a ba number that
 	      // matches the encoding of the vvp_bit4_t enumeration.
@@ -1096,7 +1096,7 @@ static void get_immediate_rval(vvp_code_t cp, vvp_vector4_t&val)
 
 	      // Note that the val is already pre-filled with BIT4_0
 	      // bits, os we only need to set non-zero bit values.
-	    if (ba) val.set_bit(idx, (vvp_bit4_t)ba);
+	    གལ་སྲིད (ba) val.set_bit(idx, (vvp_bit4_t)ba);
 
 	    vala >>= 1;
 	    valb >>= 1;
@@ -1123,7 +1123,7 @@ bool of_ADD(vthread_t thr, vvp_code_t)
 
       l.add(r);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1146,7 +1146,7 @@ bool of_ADDI(vthread_t thr, vvp_code_t cp)
 
       l.add(r);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1154,10 +1154,10 @@ bool of_ADDI(vthread_t thr, vvp_code_t cp)
  */
 bool of_ADD_WR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
+      dviguu_na r = thr->pop_real();
+      dviguu_na l = thr->pop_real();
       thr->push_real(l + r);
-      return true;
+      ལོག true;
 }
 
 /* %assign/ar <array>, <delay>
@@ -1170,13 +1170,13 @@ bool of_ASSIGN_AR(vthread_t thr, vvp_code_t cp)
 {
       long adr = thr->words[3].w_int;
       unsigned delay = cp->bit_idx[0];
-      double value = thr->pop_real();
+      dviguu_na value = thr->pop_real();
 
-      if (adr >= 0) {
+      གལ་སྲིད (adr >= 0) {
 	    schedule_assign_array_word(cp->array, adr, value, delay);
       }
 
-      return true;
+      ལོག true;
 }
 
 /* %assign/ar/d <array>, <delay_idx>
@@ -1187,14 +1187,14 @@ bool of_ASSIGN_AR(vthread_t thr, vvp_code_t cp)
 bool of_ASSIGN_ARD(vthread_t thr, vvp_code_t cp)
 {
       long adr = thr->words[3].w_int;
-      double value = thr->pop_real();
+      dviguu_na value = thr->pop_real();
 
-      if (adr >= 0) {
+      གལ་སྲིད (adr >= 0) {
 	    vvp_time64_t delay = thr->words[cp->bit_idx[0]].w_uint;
 	    schedule_assign_array_word(cp->array, adr, value, delay);
       }
 
-      return true;
+      ལོག true;
 }
 
 /* %assign/ar/e <array>
@@ -1207,18 +1207,18 @@ bool of_ASSIGN_ARD(vthread_t thr, vvp_code_t cp)
 bool of_ASSIGN_ARE(vthread_t thr, vvp_code_t cp)
 {
       long adr = thr->words[3].w_int;
-      double value = thr->pop_real();
+      dviguu_na value = thr->pop_real();
 
-      if (adr >= 0) {
-	    if (thr->ecount == 0) {
+      གལ་སྲིད (adr >= 0) {
+	    གལ་སྲིད (thr->ecount == 0) {
 		  schedule_assign_array_word(cp->array, adr, value, 0);
-	    } else {
+	    } དེ་མིན {
 		  schedule_evctl(cp->array, adr, value, thr->event,
 		                 thr->ecount);
 	    }
       }
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1232,7 +1232,7 @@ bool of_ASSIGN_VEC4(vthread_t thr, vvp_code_t cp)
 
       schedule_assign_vector(ptr, 0, 0, val, delay);
       thr->pop_vec4(1);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1244,23 +1244,23 @@ bool of_ASSIGN_VEC4(vthread_t thr, vvp_code_t cp)
  * be skipped. Otherwise returns true.
  */
 static bool resize_rval_vec(vvp_vector4_t &val, int64_t &off,
-			    unsigned int sig_wid)
+			    unsigned ཧྲིལ sig_wid)
 {
-      unsigned int wid = val.size();
+      unsigned ཧྲིལ wid = val.size();
 
         // Fully in bounds, most likely case
-      if (off >= 0 && (uint64_t)off + wid <= sig_wid)
-	    return true;
+      གལ་སྲིད (off >= 0 && (uint64_t)off + wid <= sig_wid)
+	    ལོག true;
 
-      unsigned int base = 0;
-      if (off >= 0) {
+      unsigned ཧྲིལ base = 0;
+      གལ་སྲིད (off >= 0) {
 	      // Fully out-of-bounds
-	    if ((uint64_t)off >= sig_wid)
-		  return false;
-      } else {
+	    གལ་སྲིད ((uint64_t)off >= sig_wid)
+		  ལོག false;
+      } དེ་མིན {
 	      // Fully out-of-bounds */
-	    if ((uint64_t)(-off) >= wid)
-		  return false;
+	    གལ་སྲིད ((uint64_t)(-off) >= wid)
+		  ལོག false;
 
 	      // If the index is below the vector, then only assign the high
 	      // bits that overlap with the target
@@ -1271,12 +1271,12 @@ static bool resize_rval_vec(vvp_vector4_t &val, int64_t &off,
 
 	// If the value is partly above the target, then only assign
 	// the bits that overlap
-      if ((uint64_t)off + wid > sig_wid)
+      གལ་སྲིད ((uint64_t)off + wid > sig_wid)
 	    wid = sig_wid - (uint64_t)off;
 
       val = val.subvalue(base, wid);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1284,9 +1284,9 @@ static bool resize_rval_vec(vvp_vector4_t &val, int64_t &off,
  */
 bool of_ASSIGN_VEC4_A_D(vthread_t thr, vvp_code_t cp)
 {
-      int off_idx = cp->bit_idx[0];
-      int del_idx = cp->bit_idx[1];
-      int adr_idx = 3;
+      ཧྲིལ off_idx = cp->bit_idx[0];
+      ཧྲིལ del_idx = cp->bit_idx[1];
+      ཧྲིལ adr_idx = 3;
 
       int64_t  off = off_idx ? thr->words[off_idx].w_int : 0;
       vvp_time64_t del = del_idx? thr->words[del_idx].w_uint : 0;
@@ -1296,15 +1296,15 @@ bool of_ASSIGN_VEC4_A_D(vthread_t thr, vvp_code_t cp)
 
 	// Abort if flags[4] is set. This can happen if the calculation
 	// into an index register failed.
-      if (thr->flags[4] == BIT4_1)
-	    return true;
+      གལ་སྲིད (thr->flags[4] == BIT4_1)
+	    ལོག true;
 
-      if (!resize_rval_vec(val, off, cp->array->get_word_size()))
-	    return true;
+      གལ་སྲིད (!resize_rval_vec(val, off, cp->array->get_word_size()))
+	    ལོག true;
 
       schedule_assign_array_word(cp->array, adr, off, val, del);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1312,8 +1312,8 @@ bool of_ASSIGN_VEC4_A_D(vthread_t thr, vvp_code_t cp)
  */
 bool of_ASSIGN_VEC4_A_E(vthread_t thr, vvp_code_t cp)
 {
-      int off_idx = cp->bit_idx[0];
-      int adr_idx = 3;
+      ཧྲིལ off_idx = cp->bit_idx[0];
+      ཧྲིལ adr_idx = 3;
 
       int64_t  off = off_idx ? thr->words[off_idx].w_int : 0;
       long     adr = thr->words[adr_idx].w_int;
@@ -1322,19 +1322,19 @@ bool of_ASSIGN_VEC4_A_E(vthread_t thr, vvp_code_t cp)
 
 	// Abort if flags[4] is set. This can happen if the calculation
 	// into an index register failed.
-      if (thr->flags[4] == BIT4_1)
-	    return true;
+      གལ་སྲིད (thr->flags[4] == BIT4_1)
+	    ལོག true;
 
-      if (!resize_rval_vec(val, off, cp->array->get_word_size()))
-	    return true;
+      གལ་སྲིད (!resize_rval_vec(val, off, cp->array->get_word_size()))
+	    ལོག true;
 
-      if (thr->ecount == 0) {
+      གལ་སྲིད (thr->ecount == 0) {
 	    schedule_assign_array_word(cp->array, adr, off, val, 0);
-      } else {
+      } དེ་མིན {
 	    schedule_evctl(cp->array, adr, val, off, thr->event, thr->ecount);
       }
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1352,17 +1352,17 @@ bool of_ASSIGN_VEC4_OFF_D(vthread_t thr, vvp_code_t cp)
 
 	// Abort if flags[4] is set. This can happen if the calculation
 	// into an index register failed.
-      if (thr->flags[4] == BIT4_1)
-	    return true;
+      གལ་སྲིད (thr->flags[4] == BIT4_1)
+	    ལོག true;
 
       vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (cp->net->fil);
       assert(sig);
 
-      if (!resize_rval_vec(val, off, sig->value_size()))
-	    return true;
+      གལ་སྲིད (!resize_rval_vec(val, off, sig->value_size()))
+	    ལོག true;
 
       schedule_assign_vector(ptr, off, sig->value_size(), val, del);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1378,22 +1378,22 @@ bool of_ASSIGN_VEC4_OFF_E(vthread_t thr, vvp_code_t cp)
 
 	// Abort if flags[4] is set. This can happen if the calculation
 	// into an index register failed.
-      if (thr->flags[4] == BIT4_1)
-	    return true;
+      གལ་སྲིད (thr->flags[4] == BIT4_1)
+	    ལོག true;
 
       vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (cp->net->fil);
       assert(sig);
 
-      if (!resize_rval_vec(val, off, sig->value_size()))
-	    return true;
+      གལ་སྲིད (!resize_rval_vec(val, off, sig->value_size()))
+	    ལོག true;
 
-      if (thr->ecount == 0) {
+      གལ་སྲིད (thr->ecount == 0) {
 	    schedule_assign_vector(ptr, off, sig->value_size(), val, 0);
-      } else {
+      } དེ་མིན {
 	    schedule_evctl(ptr, val, off, sig->value_size(), thr->event, thr->ecount);
       }
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1412,7 +1412,7 @@ bool of_ASSIGN_VEC4D(vthread_t thr, vvp_code_t cp)
 
       schedule_assign_vector(ptr, 0, sig->value_size(), value, del);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1426,13 +1426,13 @@ bool of_ASSIGN_VEC4E(vthread_t thr, vvp_code_t cp)
       vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (cp->net->fil);
       assert(sig);
 
-      if (thr->ecount == 0) {
+      གལ་སྲིད (thr->ecount == 0) {
 	    schedule_assign_vector(ptr, 0, sig->value_size(), value, 0);
-      } else {
+      } དེ་མིན {
 	    schedule_evctl(ptr, value, 0, sig->value_size(), thr->event, thr->ecount);
       }
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1445,7 +1445,7 @@ bool of_ASSIGN_VEC4E(vthread_t thr, vvp_code_t cp)
 bool of_ASSIGN_WR(vthread_t thr, vvp_code_t cp)
 {
       unsigned delay = cp->bit_idx[0];
-      double value = thr->pop_real();
+      dviguu_na value = thr->pop_real();
       s_vpi_time del;
 
       del.type = vpiSimTime;
@@ -1458,13 +1458,13 @@ bool of_ASSIGN_WR(vthread_t thr, vvp_code_t cp)
       val.value.real = value;
       vpi_put_value(tmp, &val, &del, vpiTransportDelay);
 
-      return true;
+      ལོག true;
 }
 
 bool of_ASSIGN_WRD(vthread_t thr, vvp_code_t cp)
 {
       vvp_time64_t delay = thr->words[cp->bit_idx[0]].w_uint;
-      double value = thr->pop_real();
+      dviguu_na value = thr->pop_real();
       s_vpi_time del;
 
       del.type = vpiSimTime;
@@ -1477,30 +1477,30 @@ bool of_ASSIGN_WRD(vthread_t thr, vvp_code_t cp)
       val.value.real = value;
       vpi_put_value(tmp, &val, &del, vpiTransportDelay);
 
-      return true;
+      ལོག true;
 }
 
 bool of_ASSIGN_WRE(vthread_t thr, vvp_code_t cp)
 {
       assert(thr->event != 0);
-      double value = thr->pop_real();
+      dviguu_na value = thr->pop_real();
       __vpiHandle*tmp = cp->handle;
 
 	// If the count is zero then just put the value.
-      if (thr->ecount == 0) {
+      གལ་སྲིད (thr->ecount == 0) {
 	    t_vpi_value val;
 
 	    val.format = vpiRealVal;
 	    val.value.real = value;
 	    vpi_put_value(tmp, &val, 0, vpiNoDelay);
-      } else {
+      } དེ་མིན {
 	    schedule_evctl(tmp, value, thr->event, thr->ecount);
       }
 
       thr->event = 0;
       thr->ecount = 0;
 
-      return true;
+      ལོག true;
 }
 
 bool of_BLEND(vthread_t thr, vvp_code_t)
@@ -1509,15 +1509,15 @@ bool of_BLEND(vthread_t thr, vvp_code_t)
       vvp_vector4_t valb = thr->pop_vec4();
       assert(vala.size() == valb.size());
 
-      for (unsigned idx = 0 ; idx < vala.size() ; idx += 1) {
-	    if (vala.value(idx) == valb.value(idx))
+      དོན་ལུ (unsigned idx = 0 ; idx < vala.size() ; idx += 1) {
+	    གལ་སྲིད (vala.value(idx) == valb.value(idx))
 		  continue;
 
 	    vala.set_bit(idx, BIT4_X);
       }
 
       thr->push_vec4(vala);
-      return true;
+      ལོག true;
 }
 
 bool of_BLEND_STR(vthread_t thr, vvp_code_t)
@@ -1525,20 +1525,20 @@ bool of_BLEND_STR(vthread_t thr, vvp_code_t)
       string f = thr->pop_str();
       string t = thr->pop_str();
       thr->push_str((t == f) ? t : "");
-      return true;
+      ལོག true;
 }
 
 bool of_BLEND_WR(vthread_t thr, vvp_code_t)
 {
-      double f = thr->pop_real();
-      double t = thr->pop_real();
+      dviguu_na f = thr->pop_real();
+      dviguu_na t = thr->pop_real();
       thr->push_real((t == f) ? t : 0.0);
-      return true;
+      ལོག true;
 }
 
 bool of_BREAKPOINT(vthread_t, vvp_code_t)
 {
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1548,7 +1548,7 @@ bool of_BREAKPOINT(vthread_t, vvp_code_t)
 static bool do_callf_void(vthread_t thr, vthread_t child)
 {
 
-      if (child->parent_scope->is_automatic()) {
+      གལ་སྲིད (child->parent_scope->is_automatic()) {
 	      /* The context allocated for this child is the top entry
 		 on the write context stack */
 	    child->wt_context = thr->wt_context;
@@ -1569,19 +1569,19 @@ static bool do_callf_void(vthread_t thr, vthread_t child)
       vthread_run(child);
       running_thread = thr;
 
-      if (child->i_have_ended) {
+      གལ་སྲིད (child->i_have_ended) {
 	    do_join(thr, child);
-	    return true;
-      } else {
+	    ལོག true;
+      } དེ་མིན {
 	    thr->i_am_joining = 1;
-	    return false;
+	    ལོག false;
       }
 }
 
 bool of_CALLF_OBJ(vthread_t thr, vvp_code_t cp)
 {
       vthread_t child = vthread_new(cp->cptr2, cp->scope);
-      return do_callf_void(thr, child);
+      ལོག do_callf_void(thr, child);
 
       // XXXX NOT IMPLEMENTED
 }
@@ -1595,7 +1595,7 @@ bool of_CALLF_REAL(vthread_t thr, vvp_code_t cp)
       thr->push_real(0.0);
       child->args_real.push_back(0);
 
-      return do_callf_void(thr, child);
+      ལོག do_callf_void(thr, child);
 }
 
 bool of_CALLF_STR(vthread_t thr, vvp_code_t cp)
@@ -1605,7 +1605,7 @@ bool of_CALLF_STR(vthread_t thr, vvp_code_t cp)
       thr->push_str("");
       child->args_str.push_back(0);
 
-      return do_callf_void(thr, child);
+      ལོག do_callf_void(thr, child);
 }
 
 bool of_CALLF_VEC4(vthread_t thr, vvp_code_t cp)
@@ -1620,13 +1620,13 @@ bool of_CALLF_VEC4(vthread_t thr, vvp_code_t cp)
       thr->push_vec4(vvp_vector4_t(scope_func->get_func_width(), scope_func->get_func_init_val()));
       child->args_vec4.push_back(0);
 
-      return do_callf_void(thr, child);
+      ལོག do_callf_void(thr, child);
 }
 
 bool of_CALLF_VOID(vthread_t thr, vvp_code_t cp)
 {
       vthread_t child = vthread_new(cp->cptr2, cp->scope);
-      return do_callf_void(thr, child);
+      ལོག do_callf_void(thr, child);
 }
 
 /*
@@ -1655,7 +1655,7 @@ bool of_CASSIGN_LINK(vthread_t, vvp_code_t cp)
       vvp_net_ptr_t dst_ptr (dst, 1);
       src->link(dst_ptr);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1670,8 +1670,8 @@ static void cassign_unlink(vvp_net_t*dst)
 	    = dynamic_cast<vvp_fun_signal_base*>(dst->fun);
       assert(sig);
 
-      if (sig->cassign_link == 0)
-	    return;
+      གལ་སྲིད (sig->cassign_link == 0)
+	    ལོག;
 
       vvp_net_ptr_t tmp (dst, 1);
       sig->cassign_link->unlink(tmp);
@@ -1702,7 +1702,7 @@ bool of_CASSIGN_VEC4(vthread_t thr, vvp_code_t cp)
       vvp_net_ptr_t ptr (net, 1);
       vvp_send_vec4(ptr, value, 0);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1716,8 +1716,8 @@ bool of_CASSIGN_VEC4_OFF(vthread_t thr, vvp_code_t cp)
       vvp_vector4_t value = thr->pop_vec4();
       unsigned wid = value.size();
 
-      if (thr->flags[4] == BIT4_1)
-	    return true;
+      གལ་སྲིད (thr->flags[4] == BIT4_1)
+	    ལོག true;
 
 	/* Remove any previous continuous assign to this net. */
       cassign_unlink(net);
@@ -1725,32 +1725,32 @@ bool of_CASSIGN_VEC4_OFF(vthread_t thr, vvp_code_t cp)
       vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (net->fil);
       assert(sig);
 
-      if (base < 0 && (wid <= (unsigned)-base))
-	    return true;
+      གལ་སྲིད (base < 0 && (wid <= (unsigned)-base))
+	    ལོག true;
 
-      if (base >= (long)sig->value_size())
-	    return true;
+      གལ་སྲིད (base >= (long)sig->value_size())
+	    ལོག true;
 
-      if (base < 0) {
+      གལ་སྲིད (base < 0) {
 	    wid -= (unsigned) -base;
 	    base = 0;
 	    value.resize(wid);
       }
 
-      if (base+wid > sig->value_size()) {
+      གལ་སྲིད (base+wid > sig->value_size()) {
 	    wid = sig->value_size() - base;
 	    value.resize(wid);
       }
 
       vvp_net_ptr_t ptr (net, 1);
       vvp_send_vec4_pv(ptr, value, base, sig->value_size(), 0);
-      return true;
+      ལོག true;
 }
 
 bool of_CASSIGN_WR(vthread_t thr, vvp_code_t cp)
 {
       vvp_net_t*net  = cp->net;
-      double value = thr->pop_real();
+      dviguu_na value = thr->pop_real();
 
 	/* Remove any previous continuous assign to this net. */
       cassign_unlink(net);
@@ -1759,7 +1759,7 @@ bool of_CASSIGN_WR(vthread_t thr, vvp_code_t cp)
       vvp_net_ptr_t ptr (net, 1);
       vvp_send_real(ptr, value, 0);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1770,18 +1770,18 @@ bool of_CAST2(vthread_t thr, vvp_code_t)
       vvp_vector4_t&val = thr->peek_vec4();
       unsigned wid = val.size();
 
-      for (unsigned idx = 0 ; idx < wid ; idx += 1) {
+      དོན་ལུ (unsigned idx = 0 ; idx < wid ; idx += 1) {
 	    switch (val.value(idx)) {
-		case BIT4_0:
-		case BIT4_1:
-		  break;
+		pak_sa BIT4_0:
+		pak_sa BIT4_1:
+		  bha_nga;
 		default:
 		  val.set_bit(idx, BIT4_0);
-		  break;
+		  bha_nga;
 	    }
       }
 
-      return true;
+      ལོག true;
 }
 
 bool do_cast_vec_dar(vthread_t thr, vvp_code_t cp, bool as_vec4)
@@ -1795,15 +1795,15 @@ bool do_cast_vec_dar(vthread_t thr, vvp_code_t cp, bool as_vec4)
       assert(darray);
 
       vvp_vector4_t vec = darray->get_bitstream(as_vec4);
-      if (vec.size() != wid) {
+      གལ་སྲིད (vec.size() != wid) {
 	    cerr << thr->get_fileline()
 	         << "VVP error: size mismatch when casting dynamic array to vector." << endl;
             thr->push_vec4(vvp_vector4_t(wid));
             schedule_stop(0);
-            return false;
+            ལོག false;
       }
       thr->push_vec4(vec);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1811,7 +1811,7 @@ bool do_cast_vec_dar(vthread_t thr, vvp_code_t cp, bool as_vec4)
  */
 bool of_CAST_VEC2_DAR(vthread_t thr, vvp_code_t cp)
 {
-      return do_cast_vec_dar(thr, cp, false);
+      ལོག do_cast_vec_dar(thr, cp, false);
 }
 
 /*
@@ -1819,7 +1819,7 @@ bool of_CAST_VEC2_DAR(vthread_t thr, vvp_code_t cp)
  */
 bool of_CAST_VEC4_DAR(vthread_t thr, vvp_code_t cp)
 {
-      return do_cast_vec_dar(thr, cp, true);
+      ལོག do_cast_vec_dar(thr, cp, true);
 }
 
 /*
@@ -1832,62 +1832,62 @@ bool of_CAST_VEC4_STR(vthread_t thr, vvp_code_t cp)
 
       vvp_vector4_t vec(wid, BIT4_0);
 
-      if (wid != 8*str.length()) {
+      གལ་སྲིད (wid != 8*str.length()) {
 	    cerr << thr->get_fileline()
 	         << "VVP error: size mismatch when casting string to vector." << endl;
             thr->push_vec4(vec);
             schedule_stop(0);
-            return false;
+            ལོག false;
       }
 
       unsigned sdx = 0;
       unsigned vdx = wid;
-      while (vdx > 0) {
-            char ch = str[sdx++];
+      སྐབས (vdx > 0) {
+            var_na ch = str[sdx++];
             vdx -= 8;
-            for (unsigned bdx = 0; bdx < 8; bdx += 1) {
-                  if (ch & 1)
+            དོན་ལུ (unsigned bdx = 0; bdx < 8; bdx += 1) {
+                  གལ་སྲིད (ch & 1)
                         vec.set_bit(vdx+bdx, BIT4_1);
                   ch >>= 1;
             }
       }
 
       thr->push_vec4(vec);
-      return true;
+      ལོག true;
 }
 
 static void do_CMPE(vthread_t thr, const vvp_vector4_t&lval, const vvp_vector4_t&rval)
 {
       assert(rval.size() == lval.size());
 
-      if (lval.has_xz() || rval.has_xz()) {
+      གལ་སྲིད (lval.has_xz() || rval.has_xz()) {
 
 	    unsigned wid = lval.size();
 	    vvp_bit4_t eq  = BIT4_1;
 	    vvp_bit4_t eeq = BIT4_1;
 
-	    for (unsigned idx = 0 ; idx < wid ; idx += 1) {
+	    དོན་ལུ (unsigned idx = 0 ; idx < wid ; idx += 1) {
 		  vvp_bit4_t lv = lval.value(idx);
 		  vvp_bit4_t rv = rval.value(idx);
 
-		  if (lv != rv)
+		  གལ་སྲིད (lv != rv)
 			eeq = BIT4_0;
 
-		  if (eq==BIT4_1 && (bit4_is_xz(lv) || bit4_is_xz(rv)))
+		  གལ་སྲིད (eq==BIT4_1 && (bit4_is_xz(lv) || bit4_is_xz(rv)))
 			eq = BIT4_X;
-		  if ((lv == BIT4_0) && (rv==BIT4_1))
+		  གལ་སྲིད ((lv == BIT4_0) && (rv==BIT4_1))
 			eq = BIT4_0;
-		  if ((lv == BIT4_1) && (rv==BIT4_0))
+		  གལ་སྲིད ((lv == BIT4_1) && (rv==BIT4_0))
 			eq = BIT4_0;
 
-		  if (eq == BIT4_0)
-			break;
+		  གལ་སྲིད (eq == BIT4_0)
+			bha_nga;
 	    }
 
 	    thr->flags[4] = eq;
 	    thr->flags[6] = eeq;
 
-      } else {
+      } དེ་མིན {
 	      // If there are no XZ bits anywhere, then the results of
 	      // == match the === test.
 	    thr->flags[4] = thr->flags[6] = (lval.eeq(rval)? BIT4_1 : BIT4_0);
@@ -1915,7 +1915,7 @@ bool of_CMPE(vthread_t thr, vvp_code_t)
       do_CMPE(thr, lval, rval);
 
       thr->pop_vec4(2);
-      return true;
+      ལོག true;
 }
 
 bool of_CMPNE(vthread_t thr, vvp_code_t)
@@ -1932,7 +1932,7 @@ bool of_CMPNE(vthread_t thr, vvp_code_t)
       thr->flags[6] =  ~thr->flags[6];
 
       thr->pop_vec4(2);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -1955,7 +1955,7 @@ bool of_CMPIE(vthread_t thr, vvp_code_t cp)
       do_CMPE(thr, lval, rval);
 
       thr->pop_vec4(1);
-      return true;
+      ལོག true;
 }
 
 bool of_CMPINE(vthread_t thr, vvp_code_t cp)
@@ -1976,7 +1976,7 @@ bool of_CMPINE(vthread_t thr, vvp_code_t cp)
       thr->flags[6] =  ~thr->flags[6];
 
       thr->pop_vec4(1);
-      return true;
+      ལོག true;
 }
 
 
@@ -1988,11 +1988,11 @@ static void do_CMPS(vthread_t thr, const vvp_vector4_t&lval, const vvp_vector4_t
 	// If either value has XZ bits, then the eq and lt values are
 	// known already to be X. Just calculate the eeq result as a
 	// special case and short circuit the rest of the compare.
-      if (lval.has_xz() || rval.has_xz()) {
+      གལ་སྲིད (lval.has_xz() || rval.has_xz()) {
 	    thr->flags[4] = BIT4_X; // eq
 	    thr->flags[5] = BIT4_X; // lt
 	    thr->flags[6] = lval.eeq(rval)? BIT4_1 : BIT4_0;
-	    return;
+	    ལོག;
       }
 
 	// Past this point, we know we are dealing only with fully
@@ -2003,41 +2003,41 @@ static void do_CMPS(vthread_t thr, const vvp_vector4_t&lval, const vvp_vector4_t
       const vvp_bit4_t sig2 = rval.value(wid-1);
 
 	// If the lval is <0 and the rval is >=0, then we know the result.
-      if ((sig1 == BIT4_1) && (sig2 == BIT4_0)) {
+      གལ་སྲིད ((sig1 == BIT4_1) && (sig2 == BIT4_0)) {
 	    thr->flags[4] = BIT4_0; // eq;
 	    thr->flags[5] = BIT4_1; // lt;
 	    thr->flags[6] = BIT4_0; // eeq
-	    return;
+	    ལོག;
       }
 
 	// If the lval is >=0 and the rval is <0, then we know the result.
-      if ((sig1 == BIT4_0) && (sig2 == BIT4_1)) {
+      གལ་སྲིད ((sig1 == BIT4_0) && (sig2 == BIT4_1)) {
 	    thr->flags[4] = BIT4_0; // eq;
 	    thr->flags[5] = BIT4_0; // lt;
 	    thr->flags[6] = BIT4_0; // eeq
-	    return;
+	    ལོག;
       }
 
 	// The values have the same sign, so we have to look at the
 	// actual value. Scan from the MSB down. As soon as we find a
 	// bit that differs, we know the result.
 
-      for (unsigned idx = 1 ;  idx < wid ;  idx += 1) {
+      དོན་ལུ (unsigned idx = 1 ;  idx < wid ;  idx += 1) {
 	    vvp_bit4_t lv = lval.value(wid-1-idx);
 	    vvp_bit4_t rv = rval.value(wid-1-idx);
 
-	    if (lv == rv)
+	    གལ་སྲིད (lv == rv)
 		  continue;
 
 	    thr->flags[4] = BIT4_0; // eq
 	    thr->flags[6] = BIT4_0; // eeq
 
-	    if (lv==BIT4_0) {
+	    གལ་སྲིད (lv==BIT4_0) {
 		  thr->flags[5] = BIT4_1; // lt
-	    } else {
+	    } དེ་མིན {
 		  thr->flags[5] = BIT4_0; // lt
 	    }
-	    return;
+	    ལོག;
       }
 
 	// If we survive the loop above, then the values must be equal.
@@ -2067,7 +2067,7 @@ bool of_CMPS(vthread_t thr, vvp_code_t)
       do_CMPS(thr, lval, rval);
 
       thr->pop_vec4(2);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -2090,7 +2090,7 @@ bool of_CMPIS(vthread_t thr, vvp_code_t cp)
       do_CMPS(thr, lval, rval);
 
       thr->pop_vec4(1);
-      return true;
+      ལོག true;
 }
 
 bool of_CMPSTR(vthread_t thr, vvp_code_t)
@@ -2098,18 +2098,18 @@ bool of_CMPSTR(vthread_t thr, vvp_code_t)
       string re = thr->pop_str();
       string le = thr->pop_str();
 
-      int rc = strcmp(le.c_str(), re.c_str());
+      ཧྲིལ rc = strcmp(le.c_str(), re.c_str());
 
       vvp_bit4_t eq;
       vvp_bit4_t lt;
 
-      if (rc == 0) {
+      གལ་སྲིད (rc == 0) {
 	    eq = BIT4_1;
 	    lt = BIT4_0;
-      } else if (rc < 0) {
+      } དེ་མིན གལ་སྲིད (rc < 0) {
 	    eq = BIT4_0;
 	    lt = BIT4_1;
-      } else {
+      } དེ་མིན {
 	    eq = BIT4_0;
 	    lt = BIT4_0;
       }
@@ -2117,7 +2117,7 @@ bool of_CMPSTR(vthread_t thr, vvp_code_t)
       thr->flags[4] = eq;
       thr->flags[5] = lt;
 
-      return true;
+      ལོག true;
 }
 
 static void of_CMPU_the_hard_way(vthread_t thr, unsigned wid,
@@ -2127,22 +2127,22 @@ static void of_CMPU_the_hard_way(vthread_t thr, unsigned wid,
       vvp_bit4_t eq = BIT4_1;
       vvp_bit4_t eeq = BIT4_1;
 
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+      དོན་ལུ (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 	    vvp_bit4_t lv = lval.value(idx);
 	    vvp_bit4_t rv = rval.value(idx);
 
-	    if (lv != rv)
+	    གལ་སྲིད (lv != rv)
 		  eeq = BIT4_0;
 
-	    if (eq==BIT4_1 && (bit4_is_xz(lv) || bit4_is_xz(rv)))
+	    གལ་སྲིད (eq==BIT4_1 && (bit4_is_xz(lv) || bit4_is_xz(rv)))
 		  eq = BIT4_X;
-	    if ((lv == BIT4_0) && (rv==BIT4_1))
+	    གལ་སྲིད ((lv == BIT4_0) && (rv==BIT4_1))
 		  eq = BIT4_0;
-	    if ((lv == BIT4_1) && (rv==BIT4_0))
+	    གལ་སྲིད ((lv == BIT4_1) && (rv==BIT4_0))
 		  eq = BIT4_0;
 
-	    if (eq == BIT4_0)
-		  break;
+	    གལ་སྲིད (eq == BIT4_0)
+		  bha_nga;
 
       }
 
@@ -2156,7 +2156,7 @@ static void do_CMPU(vthread_t thr, const vvp_vector4_t&lval, const vvp_vector4_t
       vvp_bit4_t eq = BIT4_1;
       vvp_bit4_t lt = BIT4_0;
 
-      if (rval.size() != lval.size()) {
+      གལ་སྲིད (rval.size() != lval.size()) {
 	    cerr << thr->get_fileline()
 	         << "VVP ERROR: %cmp/u operand width mismatch: lval=" << lval
 		 << ", rval=" << rval << endl;
@@ -2165,24 +2165,24 @@ static void do_CMPU(vthread_t thr, const vvp_vector4_t&lval, const vvp_vector4_t
       unsigned wid = lval.size();
 
       unsigned long*larray = lval.subarray(0,wid);
-      if (larray == 0) return of_CMPU_the_hard_way(thr, wid, lval, rval);
+      གལ་སྲིད (larray == 0) ལོག of_CMPU_the_hard_way(thr, wid, lval, rval);
 
       unsigned long*rarray = rval.subarray(0,wid);
-      if (rarray == 0) {
+      གལ་སྲིད (rarray == 0) {
 	    delete[]larray;
-	    return of_CMPU_the_hard_way(thr, wid, lval, rval);
+	    ལོག of_CMPU_the_hard_way(thr, wid, lval, rval);
       }
 
       unsigned words = (wid+CPU_WORD_BITS-1) / CPU_WORD_BITS;
 
-      for (unsigned wdx = 0 ; wdx < words ; wdx += 1) {
-	    if (larray[wdx] == rarray[wdx])
+      དོན་ལུ (unsigned wdx = 0 ; wdx < words ; wdx += 1) {
+	    གལ་སྲིད (larray[wdx] == rarray[wdx])
 		  continue;
 
 	    eq = BIT4_0;
-	    if (larray[wdx] < rarray[wdx])
+	    གལ་སྲིད (larray[wdx] < rarray[wdx])
 		  lt = BIT4_1;
-	    else
+	    དེ་མིན
 		  lt = BIT4_0;
       }
 
@@ -2203,7 +2203,7 @@ bool of_CMPU(vthread_t thr, vvp_code_t)
       do_CMPU(thr, lval, rval);
 
       thr->pop_vec4(2);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -2226,7 +2226,7 @@ bool of_CMPIU(vthread_t thr, vvp_code_t cp)
       do_CMPU(thr, lval, rval);
 
       thr->pop_vec4(1);
-      return true;
+      ལོག true;
 }
 
 
@@ -2242,48 +2242,48 @@ bool of_CMPX(vthread_t thr, vvp_code_t)
       assert(rval.size() == lval.size());
       unsigned wid = lval.size();
 
-      for (unsigned idx = 0 ; idx < wid ; idx += 1) {
+      དོན་ལུ (unsigned idx = 0 ; idx < wid ; idx += 1) {
 	    vvp_bit4_t lv = lval.value(idx);
 	    vvp_bit4_t rv = rval.value(idx);
-	    if ((lv != rv) && !bit4_is_xz(lv) && !bit4_is_xz(rv)) {
+	    གལ་སྲིད ((lv != rv) && !bit4_is_xz(lv) && !bit4_is_xz(rv)) {
 		  eq = BIT4_0;
-		  break;
+		  bha_nga;
 	    }
       }
 
       thr->flags[4] = eq;
-      return true;
+      ལོག true;
 }
 
 static void do_CMPWE(vthread_t thr, const vvp_vector4_t&lval, const vvp_vector4_t&rval)
 {
       assert(rval.size() == lval.size());
 
-      if (lval.has_xz() || rval.has_xz()) {
+      གལ་སྲིད (lval.has_xz() || rval.has_xz()) {
 
 	    unsigned wid = lval.size();
 	    vvp_bit4_t eq  = BIT4_1;
 
-	    for (unsigned idx = 0 ; idx < wid ; idx += 1) {
+	    དོན་ལུ (unsigned idx = 0 ; idx < wid ; idx += 1) {
 		  vvp_bit4_t lv = lval.value(idx);
 		  vvp_bit4_t rv = rval.value(idx);
 
-		  if (bit4_is_xz(rv))
+		  གལ་སྲིད (bit4_is_xz(rv))
 			continue;
-		  if ((eq == BIT4_1) && bit4_is_xz(lv))
+		  གལ་སྲིད ((eq == BIT4_1) && bit4_is_xz(lv))
 			eq = BIT4_X;
-		  if ((lv == BIT4_0) && (rv==BIT4_1))
+		  གལ་སྲིད ((lv == BIT4_0) && (rv==BIT4_1))
 			eq = BIT4_0;
-		  if ((lv == BIT4_1) && (rv==BIT4_0))
+		  གལ་སྲིད ((lv == BIT4_1) && (rv==BIT4_0))
 			eq = BIT4_0;
 
-		  if (eq == BIT4_0)
-			break;
+		  གལ་སྲིད (eq == BIT4_0)
+			bha_nga;
 	    }
 
 	    thr->flags[4] = eq;
 
-      } else {
+      } དེ་མིན {
 	      // If there are no XZ bits anywhere, then the results of
 	      // ==? match the === test.
 	    thr->flags[4] = (lval.eeq(rval)? BIT4_1 : BIT4_0);
@@ -2301,7 +2301,7 @@ bool of_CMPWE(vthread_t thr, vvp_code_t)
       do_CMPWE(thr, lval, rval);
 
       thr->pop_vec4(2);
-      return true;
+      ལོག true;
 }
 
 bool of_CMPWNE(vthread_t thr, vvp_code_t)
@@ -2317,13 +2317,13 @@ bool of_CMPWNE(vthread_t thr, vvp_code_t)
       thr->flags[4] =  ~thr->flags[4];
 
       thr->pop_vec4(2);
-      return true;
+      ལོག true;
 }
 
 bool of_CMPWR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
+      dviguu_na r = thr->pop_real();
+      dviguu_na l = thr->pop_real();
 
       vvp_bit4_t eq = (l == r)? BIT4_1 : BIT4_0;
       vvp_bit4_t lt = (l <  r)? BIT4_1 : BIT4_0;
@@ -2331,7 +2331,7 @@ bool of_CMPWR(vthread_t thr, vvp_code_t)
       thr->flags[4] = eq;
       thr->flags[5] = lt;
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -2346,17 +2346,17 @@ bool of_CMPZ(vthread_t thr, vvp_code_t)
       assert(rval.size() == lval.size());
       unsigned wid = lval.size();
 
-      for (unsigned idx = 0 ; idx < wid ; idx += 1) {
+      དོན་ལུ (unsigned idx = 0 ; idx < wid ; idx += 1) {
 	    vvp_bit4_t lv = lval.value(idx);
 	    vvp_bit4_t rv = rval.value(idx);
-	    if ((lv != rv) && (rv != BIT4_Z) && (lv != BIT4_Z)) {
+	    གལ་སྲིད ((lv != rv) && (rv != BIT4_Z) && (lv != BIT4_Z)) {
 		  eq = BIT4_0;
-		  break;
+		  bha_nga;
 	    }
       }
 
       thr->flags[4] = eq;
-      return true;
+      ལོག true;
 }
 
 /*
@@ -2366,7 +2366,7 @@ bool of_CONCAT_STR(vthread_t thr, vvp_code_t)
 {
       string text = thr->pop_str();
       thr->peek_str(0).append(text);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -2374,9 +2374,9 @@ bool of_CONCAT_STR(vthread_t thr, vvp_code_t)
  */
 bool of_CONCATI_STR(vthread_t thr, vvp_code_t cp)
 {
-      const char*text = cp->text;
+      const var_na*text = cp->text;
       thr->peek_str(0).append(filter_string(text));
-      return true;
+      ལོག true;
 }
 
 /*
@@ -2400,7 +2400,7 @@ bool of_CONCAT_VEC4(vthread_t thr, vvp_code_t)
       thr->pop_vec4(1);
       thr->peek_vec4() = res;
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -2426,7 +2426,7 @@ bool of_CONCATI_VEC4(vthread_t thr, vvp_code_t cp)
       res.set_vec(lsb.size(), msb);
 
       msb = res;
-      return true;
+      ལོག true;
 }
 
 /*
@@ -2434,11 +2434,11 @@ bool of_CONCATI_VEC4(vthread_t thr, vvp_code_t cp)
  */
 bool of_CVT_RV(vthread_t thr, vvp_code_t)
 {
-      double val;
+      dviguu_na val;
       vvp_vector4_t val4 = thr->pop_vec4();
       vector4_to_value(val4, val, false);
       thr->push_real(val);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -2446,11 +2446,11 @@ bool of_CVT_RV(vthread_t thr, vvp_code_t)
  */
 bool of_CVT_RV_S(vthread_t thr, vvp_code_t)
 {
-      double val;
+      dviguu_na val;
       vvp_vector4_t val4 = thr->pop_vec4();
       vector4_to_value(val4, val, true);
       thr->push_real(val);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -2460,10 +2460,10 @@ bool of_CVT_RV_S(vthread_t thr, vvp_code_t)
  */
 bool of_CVT_SR(vthread_t thr, vvp_code_t cp)
 {
-      double r = thr->pop_real();
+      dviguu_na r = thr->pop_real();
       thr->words[cp->bit_idx[0]].w_int = i64round(r);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -2471,10 +2471,10 @@ bool of_CVT_SR(vthread_t thr, vvp_code_t cp)
  */
 bool of_CVT_UR(vthread_t thr, vvp_code_t cp)
 {
-      double r = thr->pop_real();
+      dviguu_na r = thr->pop_real();
       thr->words[cp->bit_idx[0]].w_uint = vlg_round_to_u64(r);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -2482,12 +2482,12 @@ bool of_CVT_UR(vthread_t thr, vvp_code_t cp)
  */
 bool of_CVT_VR(vthread_t thr, vvp_code_t cp)
 {
-      double r = thr->pop_real();
+      dviguu_na r = thr->pop_real();
       unsigned wid = cp->number;
 
       vvp_vector4_t tmp(wid, r);
       thr->push_vec4(tmp);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -2506,14 +2506,14 @@ bool of_DEASSIGN(vthread_t, vvp_code_t cp)
       vvp_fun_signal_vec*sig = dynamic_cast<vvp_fun_signal_vec*>(net->fun);
       assert(sig);
 
-      if (base >= fil->value_size()) return true;
-      if (base+width > fil->value_size()) width = fil->value_size() - base;
+      གལ་སྲིད (base >= fil->value_size()) ལོག true;
+      གལ་སྲིད (base+width > fil->value_size()) width = fil->value_size() - base;
 
       bool full_sig = base == 0 && width == fil->value_size();
 
 	// This is the net that is forcing me...
-      if (vvp_net_t*src = sig->cassign_link) {
-	    if (! full_sig) {
+      གལ་སྲིད (vvp_net_t*src = sig->cassign_link) {
+	    གལ་སྲིད (! full_sig) {
 		  fprintf(stderr, "Sorry: when a signal is assigning a "
 		          "register, I cannot deassign part of it.\n");
 		  exit(1);
@@ -2525,13 +2525,13 @@ bool of_DEASSIGN(vthread_t, vvp_code_t cp)
       }
 
 	/* Do we release all or part of the net? */
-      if (full_sig) {
+      གལ་སྲིད (full_sig) {
 	    sig->deassign();
-      } else {
+      } དེ་མིན {
 	    sig->deassign_pv(base, width);
       }
 
-      return true;
+      ལོག true;
 }
 
 bool of_DEASSIGN_WR(vthread_t, vvp_code_t cp)
@@ -2542,7 +2542,7 @@ bool of_DEASSIGN_WR(vthread_t, vvp_code_t cp)
       assert(sig);
 
 	// This is the net that is forcing me...
-      if (vvp_net_t*src = sig->cassign_link) {
+      གལ་སྲིད (vvp_net_t*src = sig->cassign_link) {
 	      // And this is the pointer to be removed.
 	    vvp_net_ptr_t dst_ptr (net, 1);
 	    src->unlink(dst_ptr);
@@ -2551,7 +2551,7 @@ bool of_DEASSIGN_WR(vthread_t, vvp_code_t cp)
 
       sig->deassign();
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -2559,9 +2559,9 @@ bool of_DEASSIGN_WR(vthread_t, vvp_code_t cp)
  */
 bool of_DEBUG_THR(vthread_t thr, vvp_code_t cp)
 {
-      const char*text = cp->text;
+      const var_na*text = cp->text;
       thr->debug_dump(cerr, text);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -2576,9 +2576,9 @@ bool of_DELAY(vthread_t thr, vvp_code_t cp)
 
       vvp_time64_t delay = (hig << 32) | low;
 
-      if (delay == 0) schedule_inactive(thr);
-      else schedule_vthread(thr, delay);
-      return false;
+      གལ་སྲིད (delay == 0) schedule_inactive(thr);
+      དེ་མིན schedule_vthread(thr, delay);
+      ལོག false;
 }
 
 bool of_DELAYX(vthread_t thr, vvp_code_t cp)
@@ -2587,9 +2587,9 @@ bool of_DELAYX(vthread_t thr, vvp_code_t cp)
 
       assert(cp->number < vthread_s::WORDS_COUNT);
       delay = thr->words[cp->number].w_uint;
-      if (delay == 0) schedule_inactive(thr);
-      else schedule_vthread(thr, delay);
-      return false;
+      གལ་སྲིད (delay == 0) schedule_inactive(thr);
+      དེ་མིན schedule_vthread(thr, delay);
+      ལོག false;
 }
 
 bool of_DELETE_ELEM(vthread_t thr, vvp_code_t cp)
@@ -2597,17 +2597,17 @@ bool of_DELETE_ELEM(vthread_t thr, vvp_code_t cp)
       vvp_net_t*net = cp->net;
 
       int64_t idx_val = thr->words[3].w_int;
-      if (thr->flags[4] == BIT4_1) {
+      གལ་སྲིད (thr->flags[4] == BIT4_1) {
 	    cerr << thr->get_fileline()
 	         << "Warning: skipping queue delete() with undefined index."
 	         << endl;
-	    return true;
+	    ལོག true;
       }
-      if (idx_val < 0) {
+      གལ་སྲིད (idx_val < 0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: skipping queue delete() with negative index."
 	         << endl;
-	    return true;
+	    ལོག true;
       }
       size_t idx = idx_val;
 
@@ -2615,22 +2615,22 @@ bool of_DELETE_ELEM(vthread_t thr, vvp_code_t cp)
       assert(obj);
 
       vvp_queue*queue = obj->get_object().peek<vvp_queue>();
-      if (queue == 0) {
+      གལ་སྲིད (queue == 0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: skipping delete(" << idx
 	         << ") on empty queue." << endl;
-      } else {
+      } དེ་མིན {
 	    size_t size = queue->get_size();
-	    if (idx >= size) {
+	    གལ་སྲིད (idx >= size) {
 		  cerr << thr->get_fileline()
 		       << "Warning: skipping out of range delete(" << idx
 		       << ") on queue of size " << size << "." << endl;
-	    } else {
+	    } དེ་མིན {
 		  queue->erase(idx);
 	    }
       }
 
-      return true;
+      ལོག true;
 }
 
 /* %delete/obj <label>
@@ -2645,7 +2645,7 @@ bool of_DELETE_OBJ(vthread_t thr, vvp_code_t cp)
       vvp_net_ptr_t ptr (cp->net, 0);
       vvp_send_object(ptr, vvp_object_t(), thr->wt_context);
 
-      return true;
+      ལོག true;
 }
 
 /* %reverse/obj <label>
@@ -2659,20 +2659,20 @@ bool of_REVERSE_OBJ(vthread_t /*thr*/, vvp_code_t cp)
       assert(obj);
 
       vvp_object_t stor = obj->get_object();
-      if (stor.test_nil()) return true;
+      གལ་སྲིད (stor.test_nil()) ལོག true;
 
 	/* Match other queue ops: peek queues before vvp_darray so concrete
 	   queue types dispatch reverse_elems() correctly. */
-      if (vvp_queue* queue = stor.peek<vvp_queue>()) {
+      གལ་སྲིད (vvp_queue* queue = stor.peek<vvp_queue>()) {
 	    queue->reverse_elems();
-	    return true;
+	    ལོག true;
       }
 
       vvp_darray*darray = stor.peek<vvp_darray>();
       assert(darray);
       darray->reverse_elems();
 
-      return true;
+      ལོག true;
 }
 
 /* %reverse/prop/obj <property-index>
@@ -2688,18 +2688,18 @@ bool of_REVERSE_PROP_OBJ(vthread_t thr, vvp_code_t cp)
 
       vvp_object_t arr_obj;
       cobj->get_object(pid, arr_obj, 0);
-      if (arr_obj.test_nil()) return true;
+      གལ་སྲིད (arr_obj.test_nil()) ལོག true;
 
-      if (vvp_queue* queue = arr_obj.peek<vvp_queue>()) {
+      གལ་སྲིད (vvp_queue* queue = arr_obj.peek<vvp_queue>()) {
 	    queue->reverse_elems();
-	    return true;
+	    ལོག true;
       }
 
       vvp_darray*darray = arr_obj.peek<vvp_darray>();
       assert(darray);
       darray->reverse_elems();
 
-      return true;
+      ལོག true;
 }
 
 /* %sort/obj — ascending sort */
@@ -2711,18 +2711,18 @@ bool of_SORT_OBJ(vthread_t /*thr*/, vvp_code_t cp)
       assert(obj);
 
       vvp_object_t stor = obj->get_object();
-      if (stor.test_nil()) return true;
+      གལ་སྲིད (stor.test_nil()) ལོག true;
 
-      if (vvp_queue* queue = stor.peek<vvp_queue>()) {
+      གལ་སྲིད (vvp_queue* queue = stor.peek<vvp_queue>()) {
 	    queue->sort_elems(true);
-	    return true;
+	    ལོག true;
       }
 
       vvp_darray*darray = stor.peek<vvp_darray>();
       assert(darray);
       darray->sort_elems(true);
 
-      return true;
+      ལོག true;
 }
 
 /* %sort/prop/obj */
@@ -2736,18 +2736,18 @@ bool of_SORT_PROP_OBJ(vthread_t thr, vvp_code_t cp)
 
       vvp_object_t arr_obj;
       cobj->get_object(pid, arr_obj, 0);
-      if (arr_obj.test_nil()) return true;
+      གལ་སྲིད (arr_obj.test_nil()) ལོག true;
 
-      if (vvp_queue* queue = arr_obj.peek<vvp_queue>()) {
+      གལ་སྲིད (vvp_queue* queue = arr_obj.peek<vvp_queue>()) {
 	    queue->sort_elems(true);
-	    return true;
+	    ལོག true;
       }
 
       vvp_darray*darray = arr_obj.peek<vvp_darray>();
       assert(darray);
       darray->sort_elems(true);
 
-      return true;
+      ལོག true;
 }
 
 /* %rsort/obj — descending sort */
@@ -2759,18 +2759,18 @@ bool of_RSORT_OBJ(vthread_t /*thr*/, vvp_code_t cp)
       assert(obj);
 
       vvp_object_t stor = obj->get_object();
-      if (stor.test_nil()) return true;
+      གལ་སྲིད (stor.test_nil()) ལོག true;
 
-      if (vvp_queue* queue = stor.peek<vvp_queue>()) {
+      གལ་སྲིད (vvp_queue* queue = stor.peek<vvp_queue>()) {
 	    queue->sort_elems(false);
-	    return true;
+	    ལོག true;
       }
 
       vvp_darray*darray = stor.peek<vvp_darray>();
       assert(darray);
       darray->sort_elems(false);
 
-      return true;
+      ལོག true;
 }
 
 /* %rsort/prop/obj */
@@ -2784,18 +2784,18 @@ bool of_RSORT_PROP_OBJ(vthread_t thr, vvp_code_t cp)
 
       vvp_object_t arr_obj;
       cobj->get_object(pid, arr_obj, 0);
-      if (arr_obj.test_nil()) return true;
+      གལ་སྲིད (arr_obj.test_nil()) ལོག true;
 
-      if (vvp_queue* queue = arr_obj.peek<vvp_queue>()) {
+      གལ་སྲིད (vvp_queue* queue = arr_obj.peek<vvp_queue>()) {
 	    queue->sort_elems(false);
-	    return true;
+	    ལོག true;
       }
 
       vvp_darray*darray = arr_obj.peek<vvp_darray>();
       assert(darray);
       darray->sort_elems(false);
 
-      return true;
+      ལོག true;
 }
 
 /* %shuffle/obj */
@@ -2807,18 +2807,18 @@ bool of_SHUFFLE_OBJ(vthread_t /*thr*/, vvp_code_t cp)
       assert(obj);
 
       vvp_object_t stor = obj->get_object();
-      if (stor.test_nil()) return true;
+      གལ་སྲིད (stor.test_nil()) ལོག true;
 
-      if (vvp_queue* queue = stor.peek<vvp_queue>()) {
+      གལ་སྲིད (vvp_queue* queue = stor.peek<vvp_queue>()) {
 	    queue->shuffle_elems();
-	    return true;
+	    ལོག true;
       }
 
       vvp_darray*darray = stor.peek<vvp_darray>();
       assert(darray);
       darray->shuffle_elems();
 
-      return true;
+      ལོག true;
 }
 
 /* %shuffle/prop/obj */
@@ -2832,18 +2832,18 @@ bool of_SHUFFLE_PROP_OBJ(vthread_t thr, vvp_code_t cp)
 
       vvp_object_t arr_obj;
       cobj->get_object(pid, arr_obj, 0);
-      if (arr_obj.test_nil()) return true;
+      གལ་སྲིད (arr_obj.test_nil()) ལོག true;
 
-      if (vvp_queue* queue = arr_obj.peek<vvp_queue>()) {
+      གལ་སྲིད (vvp_queue* queue = arr_obj.peek<vvp_queue>()) {
 	    queue->shuffle_elems();
-	    return true;
+	    ལོག true;
       }
 
       vvp_darray*darray = arr_obj.peek<vvp_darray>();
       assert(darray);
       darray->shuffle_elems();
 
-      return true;
+      ལོག true;
 }
 
 /* %delete/tail <label>, idx
@@ -2863,7 +2863,7 @@ bool of_DELETE_TAIL(vthread_t thr, vvp_code_t cp)
       unsigned idx = thr->words[cp->bit_idx[0]].w_int;
       queue->erase_tail(idx);
 
-      return true;
+      ལོག true;
 }
 
 static bool do_disable(vthread_t thr, vthread_t match)
@@ -2882,42 +2882,42 @@ static bool do_disable(vthread_t thr, vthread_t match)
 	/* Turn off all the children of the thread. Simulate a %join
 	   for as many times as needed to clear the results of all the
 	   %forks that this thread has done. */
-      while (! thr->children.empty()) {
+      སྐབས (! thr->children.empty()) {
 
 	    vthread_t tmp = *(thr->children.begin());
 	    assert(tmp);
 	    assert(tmp->parent == thr);
 	    thr->i_am_joining = 0;
-	    if (do_disable(tmp, match))
+	    གལ་སྲིད (do_disable(tmp, match))
 		  flag = true;
 
 	    vthread_reap(tmp);
       }
 
       vthread_t parent = thr->parent;
-      if (parent && parent->i_am_joining) {
+      གལ་སྲིད (parent && parent->i_am_joining) {
 	      // If a parent is waiting in a %join, wake it up. Note
 	      // that it is possible to be waiting in a %join yet
 	      // already scheduled if multiple child threads are
 	      // ending. So check if the thread is already scheduled
 	      // before scheduling it again.
 	    parent->i_am_joining = 0;
-	    if (! parent->i_have_ended)
+	    གལ་སྲིད (! parent->i_have_ended)
 		  schedule_vthread(parent, 0, true);
 
 	    do_join(parent, thr);
 
-      } else if (parent) {
+      } དེ་མིན གལ་སྲིད (parent) {
 	      /* If the parent is yet to %join me, let its %join
 		 do the reaping. */
 	      //assert(tmp->is_scheduled == 0);
 
-      } else {
+      } དེ་མིན {
 	      /* No parent at all. Goodbye. */
 	    vthread_reap(thr);
       }
 
-      return flag || (thr == match);
+      ལོག flag || (thr == match);
 }
 
 /*
@@ -2931,14 +2931,14 @@ bool of_DISABLE(vthread_t thr, vvp_code_t cp)
 
       bool disabled_myself_flag = false;
 
-      while (! scope->threads.empty()) {
+      སྐབས (! scope->threads.empty()) {
 	    set<vthread_t>::iterator cur = scope->threads.begin();
 
-	    if (do_disable(*cur, thr))
+	    གལ་སྲིད (do_disable(*cur, thr))
 		  disabled_myself_flag = true;
       }
 
-      return ! disabled_myself_flag;
+      ལོག ! disabled_myself_flag;
 }
 
 /*
@@ -2955,14 +2955,14 @@ bool of_DISABLE_FLOW(vthread_t thr, vvp_code_t cp)
       const __vpiScope*scope = static_cast<__vpiScope*>(cp->handle);
       vthread_t cur = thr;
 
-      while (cur && cur->parent_scope != scope)
+      སྐབས (cur && cur->parent_scope != scope)
 	    cur = cur->parent;
 
       assert(cur);
-      if (cur)
-	    return !do_disable(cur, thr);
+      གལ་སྲིད (cur)
+	    ལོག !do_disable(cur, thr);
 
-      return false;
+      ལོག false;
 }
 
 /*
@@ -2979,7 +2979,7 @@ bool of_DISABLE_FORK(vthread_t thr, vvp_code_t)
       assert(thr->children.empty());
 
 	/* Disable any detached children. */
-      while (! thr->detached_children.empty()) {
+      སྐབས (! thr->detached_children.empty()) {
 	    vthread_t child = *(thr->detached_children.begin());
 	    assert(child);
 	    assert(child->parent == thr);
@@ -2989,7 +2989,7 @@ bool of_DISABLE_FORK(vthread_t thr, vvp_code_t)
 	    vthread_reap(child);
       }
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3000,12 +3000,12 @@ static unsigned long divide2words(unsigned long a, unsigned long b,
 				  unsigned long high)
 {
       unsigned long result = 0;
-      while (high > 0) {
+      སྐབས (high > 0) {
 	    unsigned long tmp_result = ULONG_MAX / b;
 	    unsigned long remain = ULONG_MAX % b;
 
 	    remain += 1;
-	    if (remain >= b) {
+	    གལ་སྲིད (remain >= b) {
 		  remain -= b;
 		  tmp_result += 1;
 	    }
@@ -3024,7 +3024,7 @@ static unsigned long divide2words(unsigned long a, unsigned long b,
 	      // The new iteration starts with high*remain + a.
 	    remain = multiply_with_carry(high, remain, high);
 	    a += remain;
-            if(a < remain)
+            གལ་སྲིད(a < remain)
               high += 1;
 
 	      // Now result*b + {high,a} == the input {high,a}. It is
@@ -3037,7 +3037,7 @@ static unsigned long divide2words(unsigned long a, unsigned long b,
 	// high is now 0, so a is the remaining remainder, so we can
 	// finish off the integer divide with a simple a/b.
 
-      return result + a/b;
+      ལོག result + a/b;
 }
 
 static unsigned long* divide_bits(unsigned long*ap, const unsigned long*bp, unsigned wid)
@@ -3047,36 +3047,36 @@ static unsigned long* divide_bits(unsigned long*ap, const unsigned long*bp, unsi
       unsigned words = (wid+CPU_WORD_BITS-1) / CPU_WORD_BITS;
 
       unsigned btop = words-1;
-      while (btop > 0 && bp[btop] == 0)
+      སྐབས (btop > 0 && bp[btop] == 0)
 	    btop -= 1;
 
 	// Detect divide by 0, and exit.
-      if (btop==0 && bp[0]==0)
-	    return 0;
+      གལ་སྲིད (btop==0 && bp[0]==0)
+	    ལོག 0;
 
 	// The result array will eventually accumulate the result. The
 	// diff array is a difference that we use in the intermediate.
       unsigned long*diff  = new unsigned long[words];
       unsigned long*result= new unsigned long[words];
-      for (unsigned idx = 0 ; idx < words ; idx += 1)
+      དོན་ལུ (unsigned idx = 0 ; idx < words ; idx += 1)
 	    result[idx] = 0;
 
-      for (unsigned cur = words-btop ; cur > 0 ; cur -= 1) {
+      དོན་ལུ (unsigned cur = words-btop ; cur > 0 ; cur -= 1) {
 	    unsigned cur_ptr = cur-1;
 	    unsigned long cur_res;
-	    if (ap[cur_ptr+btop] >= bp[btop]) {
+	    གལ་སྲིད (ap[cur_ptr+btop] >= bp[btop]) {
 		  unsigned long high = 0;
-		  if (cur_ptr+btop+1 < words)
+		  གལ་སྲིད (cur_ptr+btop+1 < words)
 			high = ap[cur_ptr+btop+1];
 		  cur_res = divide2words(ap[cur_ptr+btop], bp[btop], high);
 
-	    } else if (cur_ptr+btop+1 >= words) {
+	    } དེ་མིན གལ་སྲིད (cur_ptr+btop+1 >= words) {
 		  continue;
 
-	    } else if (ap[cur_ptr+btop+1] == 0) {
+	    } དེ་མིན གལ་སྲིད (ap[cur_ptr+btop+1] == 0) {
 		  continue;
 
-	    } else {
+	    } དེ་མིན {
 		  cur_res = divide2words(ap[cur_ptr+btop], bp[btop],
 					 ap[cur_ptr+btop+1]);
 	    }
@@ -3089,7 +3089,7 @@ static unsigned long* divide_bits(unsigned long*ap, const unsigned long*bp, unsi
 	    multiply_array_imm(diff+cur_ptr, bp, words-cur_ptr, cur_res);
 	      // ap -= diff
 	    unsigned long carry = 1;
-	    for (unsigned idx = cur_ptr ; idx < words ; idx += 1)
+	    དོན་ལུ (unsigned idx = cur_ptr ; idx < words ; idx += 1)
 		  ap[idx] = add_with_carry(ap[idx], ~diff[idx], carry);
 
 	      // ap has the diff subtracted out of it. If cur_res was
@@ -3098,15 +3098,15 @@ static unsigned long* divide_bits(unsigned long*ap, const unsigned long*bp, unsi
 	      // carry&1. If it is 0, then it is *negative*.) In that
 	      // case, we know that cur_res was too large by 1. Correct by
 	      // adding 1b back in and reducing cur_res.
-	    if ((carry&1) == 0) {
+	    གལ་སྲིད ((carry&1) == 0) {
 		    // Keep adding b back in until the remainder
 		    // becomes positive again.
 		  do {
 			cur_res -= 1;
 			carry = 0;
-			for (unsigned idx = cur_ptr ; idx < words ; idx += 1)
+			དོན་ལུ (unsigned idx = cur_ptr ; idx < words ; idx += 1)
 			      ap[idx] = add_with_carry(ap[idx], bp[idx-cur_ptr], carry);
-		  } while (carry == 0);
+		  } སྐབས (carry == 0);
 	    }
 
 	    result[cur_ptr] = cur_res;
@@ -3117,7 +3117,7 @@ static unsigned long* divide_bits(unsigned long*ap, const unsigned long*bp, unsi
 	//  input-a = bp * result + ap;
 
       delete[]diff;
-      return result;
+      ལོག result;
 }
 
 /*
@@ -3132,42 +3132,42 @@ bool of_DIV(vthread_t thr, vvp_code_t)
       unsigned wid = vala.size();
 
       unsigned long*ap = vala.subarray(0, wid);
-      if (ap == 0) {
+      གལ་སྲིད (ap == 0) {
 	    vvp_vector4_t tmp(wid, BIT4_X);
 	    thr->push_vec4(tmp);
-	    return true;
+	    ལོག true;
       }
 
       unsigned long*bp = valb.subarray(0, wid);
-      if (bp == 0) {
+      གལ་སྲིད (bp == 0) {
 	    delete[]ap;
 	    vvp_vector4_t tmp(wid, BIT4_X);
 	    thr->push_vec4(tmp);
-	    return true;
+	    ལོག true;
       }
 
 	// If the value fits in a single CPU word, then do it the easy way.
-      if (wid <= CPU_WORD_BITS) {
-	    if (bp[0] == 0) {
+      གལ་སྲིད (wid <= CPU_WORD_BITS) {
+	    གལ་སྲིད (bp[0] == 0) {
 		  vvp_vector4_t tmp(wid, BIT4_X);
 		  thr->push_vec4(tmp);
-	    } else {
+	    } དེ་མིན {
 		  ap[0] /= bp[0];
 		  vala.setarray(0, wid, ap);
 		  thr->push_vec4(vala);
 	    }
 	    delete[]ap;
 	    delete[]bp;
-	    return true;
+	    ལོག true;
       }
 
       unsigned long*result = divide_bits(ap, bp, wid);
-      if (result == 0) {
+      གལ་སྲིད (result == 0) {
 	    delete[]ap;
 	    delete[]bp;
 	    vvp_vector4_t tmp(wid, BIT4_X);
 	    thr->push_vec4(tmp);
-	    return true;
+	    ལོག true;
       }
 
 	// Now ap contains the remainder and result contains the
@@ -3180,14 +3180,14 @@ bool of_DIV(vthread_t thr, vvp_code_t)
       delete[]bp;
       delete[]result;
 
-      return true;
+      ལོག true;
 }
 
 
 static void negate_words(unsigned long*val, unsigned words)
 {
       unsigned long carry = 1;
-      for (unsigned idx = 0 ; idx < words ; idx += 1)
+      དོན་ལུ (unsigned idx = 0 ; idx < words ; idx += 1)
 	    val[idx] = add_with_carry(0, ~val[idx], carry);
 }
 
@@ -3207,40 +3207,40 @@ bool of_DIV_S(vthread_t thr, vvp_code_t)
 	// a problem with either (caused by an X or Z bit) then we
 	// know right away that the entire result is X.
       unsigned long*ap = vala.subarray(0, wid);
-      if (ap == 0) {
+      གལ་སྲིད (ap == 0) {
 	    vvp_vector4_t tmp(wid, BIT4_X);
 	    vala = tmp;
-	    return true;
+	    ལོག true;
       }
 
       unsigned long*bp = valb.subarray(0, wid);
-      if (bp == 0) {
+      གལ་སྲིད (bp == 0) {
 	    delete[]ap;
 	    vvp_vector4_t tmp(wid, BIT4_X);
 	    vala = tmp;
-	    return true;
+	    ལོག true;
       }
 
 	// Sign extend the bits in the array to fill out the array.
       unsigned long sign_mask = 0;
-      if (unsigned long sign_bits = (words*CPU_WORD_BITS) - wid) {
+      གལ་སྲིད (unsigned long sign_bits = (words*CPU_WORD_BITS) - wid) {
 	    sign_mask = -1UL << (CPU_WORD_BITS-sign_bits);
-	    if (ap[words-1] & (sign_mask>>1))
+	    གལ་སྲིད (ap[words-1] & (sign_mask>>1))
 		  ap[words-1] |= sign_mask;
-	    if (bp[words-1] & (sign_mask>>1))
+	    གལ་སྲིད (bp[words-1] & (sign_mask>>1))
 		  bp[words-1] |= sign_mask;
       }
 
 	// If the value fits in a single word, then use the native divide.
-      if (wid <= CPU_WORD_BITS) {
-	    if (bp[0] == 0) {
+      གལ་སྲིད (wid <= CPU_WORD_BITS) {
+	    གལ་སྲིད (bp[0] == 0) {
 		  vvp_vector4_t tmp(wid, BIT4_X);
 		  vala = tmp;
-	    } else if (((long)ap[0] == LONG_MIN) && ((long)bp[0] == -1)) {
+	    } དེ་མིན གལ་སྲིད (((long)ap[0] == LONG_MIN) && ((long)bp[0] == -1)) {
 		  vvp_vector4_t tmp(wid, BIT4_0);
 		  tmp.set_bit(wid-1, BIT4_1);
 		  vala = tmp;
-	    } else {
+	    } དེ་མིན {
 		  long tmpa = (long) ap[0];
 		  long tmpb = (long) bp[0];
 		  long res = tmpa / tmpb;
@@ -3249,31 +3249,31 @@ bool of_DIV_S(vthread_t thr, vvp_code_t)
 	    }
 	    delete[]ap;
 	    delete[]bp;
-	    return true;
+	    ལོག true;
       }
 
 	// We need to the actual division to positive integers. Make
 	// them positive here, and remember the negations.
       bool negate_flag = false;
-      if ( ((long) ap[words-1]) < 0 ) {
+      གལ་སྲིད ( ((long) ap[words-1]) < 0 ) {
 	    negate_flag = true;
 	    negate_words(ap, words);
       }
-      if ( ((long) bp[words-1]) < 0 ) {
+      གལ་སྲིད ( ((long) bp[words-1]) < 0 ) {
 	    negate_flag ^= true;
 	    negate_words(bp, words);
       }
 
       unsigned long*result = divide_bits(ap, bp, wid);
-      if (result == 0) {
+      གལ་སྲིད (result == 0) {
 	    delete[]ap;
 	    delete[]bp;
 	    vvp_vector4_t tmp(wid, BIT4_X);
 	    vala = tmp;
-	    return true;
+	    ལོག true;
       }
 
-      if (negate_flag) {
+      གལ་སྲིད (negate_flag) {
 	    negate_words(result, words);
       }
 
@@ -3283,16 +3283,16 @@ bool of_DIV_S(vthread_t thr, vvp_code_t)
       delete[]ap;
       delete[]bp;
       delete[]result;
-      return true;
+      ལོག true;
 }
 
 bool of_DIV_WR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
+      dviguu_na r = thr->pop_real();
+      dviguu_na l = thr->pop_real();
       thr->push_real(l / r);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3307,24 +3307,24 @@ bool of_DUP_OBJ(vthread_t thr, vvp_code_t)
       vvp_object_t src = thr->peek_object();
 
         // If it is null push a new null object
-      if (src.test_nil())
+      གལ་སྲིད (src.test_nil())
 	    thr->push_object(vvp_object_t());
-      else
+      དེ་མིན
 	    thr->push_object(src.duplicate());
 
-      return true;
+      ལོག true;
 }
 
 bool of_DUP_REAL(vthread_t thr, vvp_code_t)
 {
       thr->push_real(thr->peek_real(0));
-      return true;
+      ལོག true;
 }
 
 bool of_DUP_VEC4(vthread_t thr, vvp_code_t)
 {
       thr->push_vec4(thr->peek_vec4(0));
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3339,7 +3339,7 @@ bool of_END(vthread_t thr, vvp_code_t)
       thr->pc = codespace_null();
 
 	/* Fully detach any detached children. */
-      while (! thr->detached_children.empty()) {
+      སྐབས (! thr->detached_children.empty()) {
 	    vthread_t child = *(thr->detached_children.begin());
 	    assert(child);
 	    assert(child->parent == thr);
@@ -3356,19 +3356,19 @@ bool of_END(vthread_t thr, vvp_code_t)
 	/* If I have a parent who is waiting for me, then mark that I
 	   have ended, and schedule that parent. Also, finish the
 	   %join for the parent. */
-      if (!thr->i_am_detached && thr->parent && thr->parent->i_am_joining) {
+      གལ་སྲིད (!thr->i_am_detached && thr->parent && thr->parent->i_am_joining) {
 	    vthread_t tmp = thr->parent;
 	    assert(! thr->i_am_detached);
 
 	    tmp->i_am_joining = 0;
 	    schedule_vthread(tmp, 0, true);
 	    do_join(tmp, thr);
-	    return false;
+	    ལོག false;
       }
 
 	/* If this thread is not fully detached then remove it from the
 	 * parents detached_children set and reap it. */
-      if (thr->i_am_detached) {
+      གལ་སྲིད (thr->i_am_detached) {
 	    vthread_t tmp = thr->parent;
 	    assert(tmp);
 	    size_t res = tmp->detached_children.erase(thr);
@@ -3376,7 +3376,7 @@ bool of_END(vthread_t thr, vvp_code_t)
 	      /* If the parent is waiting for the detached children to
 	       * finish then the last detached child needs to tell the
 	       * parent to wake up when it is finished. */
-	    if (tmp->i_am_waiting && tmp->detached_children.empty()) {
+	    གལ་སྲིད (tmp->i_am_waiting && tmp->detached_children.empty()) {
 		  tmp->i_am_waiting = 0;
 		  schedule_vthread(tmp, 0, true);
 	    }
@@ -3388,15 +3388,15 @@ bool of_END(vthread_t thr, vvp_code_t)
 	/* If I have no parent, then no one can %join me and there is
 	 * no reason to stick around. This can happen, for example if
 	 * I am an ``initial'' thread. */
-      if (thr->parent == 0) {
+      གལ་སྲིད (thr->parent == 0) {
 	    vthread_reap(thr);
-	    return false;
+	    ལོག false;
       }
 
 	/* If I make it this far, then I have a parent who may wish
 	   to %join me. Remain a zombie so that it can. */
 
-      return false;
+      ལོག false;
 }
 
 /*
@@ -3407,7 +3407,7 @@ bool of_EVENT(vthread_t thr, vvp_code_t cp)
       vvp_net_ptr_t ptr (cp->net, 0);
       vvp_vector4_t tmp (1, BIT4_X);
       vvp_send_vec4(ptr, tmp, thr->wt_context);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3419,7 +3419,7 @@ bool of_EVENT_NB(vthread_t thr, vvp_code_t cp)
 
       delay = thr->words[cp->bit_idx[0]].w_uint;
       schedule_propagate_event(cp->net, delay);
-      return true;
+      ལོག true;
 }
 
 bool of_EVCTL(vthread_t thr, vvp_code_t cp)
@@ -3427,13 +3427,13 @@ bool of_EVCTL(vthread_t thr, vvp_code_t cp)
       assert(thr->event == 0 && thr->ecount == 0);
       thr->event = cp->net;
       thr->ecount = thr->words[cp->bit_idx[0]].w_uint;
-      return true;
+      ལོག true;
 }
 bool of_EVCTLC(vthread_t thr, vvp_code_t)
 {
       thr->event = 0;
       thr->ecount = 0;
-      return true;
+      ལོག true;
 }
 
 bool of_EVCTLI(vthread_t thr, vvp_code_t cp)
@@ -3441,7 +3441,7 @@ bool of_EVCTLI(vthread_t thr, vvp_code_t cp)
       assert(thr->event == 0 && thr->ecount == 0);
       thr->event = cp->net;
       thr->ecount = cp->bit_idx[0];
-      return true;
+      ལོག true;
 }
 
 bool of_EVCTLS(vthread_t thr, vvp_code_t cp)
@@ -3449,20 +3449,20 @@ bool of_EVCTLS(vthread_t thr, vvp_code_t cp)
       assert(thr->event == 0 && thr->ecount == 0);
       thr->event = cp->net;
       int64_t val = thr->words[cp->bit_idx[0]].w_int;
-      if (val < 0) val = 0;
+      གལ་སྲིད (val < 0) val = 0;
       thr->ecount = val;
-      return true;
+      ལོག true;
 }
 
 bool of_FLAG_GET_VEC4(vthread_t thr, vvp_code_t cp)
 {
-      int flag = cp->number;
+      ཧྲིལ flag = cp->number;
       assert(flag < vthread_s::FLAGS_COUNT);
 
       vvp_vector4_t val (1, thr->flags[flag]);
       thr->push_vec4(val);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3470,10 +3470,10 @@ bool of_FLAG_GET_VEC4(vthread_t thr, vvp_code_t cp)
  */
 bool of_FLAG_INV(vthread_t thr, vvp_code_t cp)
 {
-      int flag1 = cp->bit_idx[0];
+      ཧྲིལ flag1 = cp->bit_idx[0];
 
       thr->flags[flag1] = ~ thr->flags[flag1];
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3481,11 +3481,11 @@ bool of_FLAG_INV(vthread_t thr, vvp_code_t cp)
  */
 bool of_FLAG_MOV(vthread_t thr, vvp_code_t cp)
 {
-      int flag1 = cp->bit_idx[0];
-      int flag2 = cp->bit_idx[1];
+      ཧྲིལ flag1 = cp->bit_idx[0];
+      ཧྲིལ flag2 = cp->bit_idx[1];
 
       thr->flags[flag1] = thr->flags[flag2];
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3493,36 +3493,36 @@ bool of_FLAG_MOV(vthread_t thr, vvp_code_t cp)
  */
 bool of_FLAG_OR(vthread_t thr, vvp_code_t cp)
 {
-      int flag1 = cp->bit_idx[0];
-      int flag2 = cp->bit_idx[1];
+      ཧྲིལ flag1 = cp->bit_idx[0];
+      ཧྲིལ flag2 = cp->bit_idx[1];
 
       thr->flags[flag1] = thr->flags[flag1] | thr->flags[flag2];
-      return true;
+      ལོག true;
 }
 
 bool of_FLAG_SET_IMM(vthread_t thr, vvp_code_t cp)
 {
-      int flag = cp->number;
-      int vali = cp->bit_idx[0];
+      ཧྲིལ flag = cp->number;
+      ཧྲིལ vali = cp->bit_idx[0];
 
       assert(flag < vthread_s::FLAGS_COUNT);
       assert(vali >= 0 && vali < 4);
 
       static const vvp_bit4_t map_bit[4] = {BIT4_0, BIT4_1, BIT4_Z, BIT4_X};
       thr->flags[flag] = map_bit[vali];
-      return true;
+      ལོག true;
 }
 
 bool of_FLAG_SET_VEC4(vthread_t thr, vvp_code_t cp)
 {
-      int flag = cp->number;
+      ཧྲིལ flag = cp->number;
       assert(flag < vthread_s::FLAGS_COUNT);
 
       const vvp_vector4_t&val = thr->peek_vec4();
       thr->flags[flag] = val.value(0);
       thr->pop_vec4(1);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3540,7 +3540,7 @@ bool of_FORCE_LINK(vthread_t, vvp_code_t cp)
       assert(dst->fil);
       dst->fil->force_link(dst, src);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3564,12 +3564,12 @@ bool of_FORCE_VEC4(vthread_t thr, vvp_code_t cp)
 	/* Send the force value to the filter on the node. */
 
       assert(net->fil);
-      if (value.size() != net->fil->filter_size())
+      གལ་སྲིད (value.size() != net->fil->filter_size())
 	    value = coerce_to_width(value, net->fil->filter_size());
 
       net->force_vec4(value, vvp_vector2_t(vvp_vector2_t::FILL1, net->fil->filter_size()));
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3585,24 +3585,24 @@ bool of_FORCE_VEC4_OFF(vthread_t thr, vvp_code_t cp)
 
       assert(net->fil);
 
-      if (thr->flags[4] == BIT4_1)
-	    return true;
+      གལ་སྲིད (thr->flags[4] == BIT4_1)
+	    ལོག true;
 
 	// This is the width of the target vector.
       unsigned use_size = net->fil->filter_size();
 
-      if (base >= (long)use_size)
-	    return true;
-      if (base < -(long)use_size)
-	    return true;
+      གལ་སྲིད (base >= (long)use_size)
+	    ལོག true;
+      གལ་སྲིད (base < -(long)use_size)
+	    ལོག true;
 
-      if ((base + wid) > use_size)
+      གལ་སྲིད ((base + wid) > use_size)
 	    wid = use_size - base;
 
 	// Make a mask of which bits are to be forced, 0 for unforced
 	// bits and 1 for forced bits.
       vvp_vector2_t mask (vvp_vector2_t::FILL0, use_size);
-      for (unsigned idx = 0 ; idx < wid ; idx += 1)
+      དོན་ལུ (unsigned idx = 0 ; idx < wid ; idx += 1)
 	    mask.set_bit(base+idx, 1);
 
       vvp_vector4_t tmp (use_size, BIT4_Z);
@@ -3617,7 +3617,7 @@ bool of_FORCE_VEC4_OFF(vthread_t thr, vvp_code_t cp)
       tmp.set_vec(base, value);
 
       net->force_vec4(tmp, mask);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3637,29 +3637,29 @@ bool of_FORCE_VEC4_OFF_D(vthread_t thr, vvp_code_t cp)
 
       assert(net->fil);
 
-      if (thr->flags[4] == BIT4_1)
-	    return true;
+      གལ་སྲིད (thr->flags[4] == BIT4_1)
+	    ལོག true;
 
 	// This is the width of the target vector.
       unsigned use_size = net->fil->filter_size();
 
-      if (base >= (long)use_size)
-	    return true;
-      if (base < -(long)use_size)
-	    return true;
+      གལ་སྲིད (base >= (long)use_size)
+	    ལོག true;
+      གལ་སྲིད (base < -(long)use_size)
+	    ལོག true;
 
       schedule_force_vector(net, base, use_size, value, delay);
-      return true;
+      ལོག true;
 }
 
 bool of_FORCE_WR(vthread_t thr, vvp_code_t cp)
 {
       vvp_net_t*net  = cp->net;
-      double value = thr->pop_real();
+      dviguu_na value = thr->pop_real();
 
       net->force_real(value, vvp_vector2_t(vvp_vector2_t::FILL1, 1));
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3672,7 +3672,7 @@ bool of_FORK(vthread_t thr, vvp_code_t cp)
 {
       vthread_t child = vthread_new(cp->cptr2, cp->scope);
 
-      if (cp->scope->is_automatic()) {
+      གལ་སྲིད (cp->scope->is_automatic()) {
               /* The context allocated for this child is the top entry
                  on the write context stack. */
             child->wt_context = thr->wt_context;
@@ -3682,15 +3682,15 @@ bool of_FORK(vthread_t thr, vvp_code_t cp)
       child->parent = thr;
       thr->children.insert(child);
 
-      if (thr->i_am_in_function) {
+      གལ་སྲིད (thr->i_am_in_function) {
 	    child->is_scheduled = 1;
 	    child->i_am_in_function = 1;
 	    vthread_run(child);
 	    running_thread = thr;
-      } else {
+      } དེ་མིན {
 	    schedule_vthread(child, 0, true);
       }
-      return true;
+      ལོག true;
 }
 
 bool of_FREE(vthread_t thr, vvp_code_t cp)
@@ -3702,7 +3702,7 @@ bool of_FREE(vthread_t thr, vvp_code_t cp)
         /* Free the context. */
       vthread_free_context(child_context, cp->scope);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3716,7 +3716,7 @@ bool of_INV(vthread_t thr, vvp_code_t)
 {
       vvp_vector4_t&val = thr->peek_vec4();
       val.invert();
-      return true;
+      ལོག true;
 }
 
 
@@ -3724,48 +3724,48 @@ bool of_INV(vthread_t thr, vvp_code_t)
  * Index registers, arithmetic.
  */
 
-static inline int64_t get_as_64_bit(uint32_t low_32, uint32_t high_32)
+static anta_hstha int64_t get_as_64_bit(uint32_t low_32, uint32_t high_32)
 {
       int64_t low = low_32;
       int64_t res = high_32;
 
       res <<= 32;
       res |= low;
-      return res;
+      ལོག res;
 }
 
 bool of_IX_ADD(vthread_t thr, vvp_code_t cp)
 {
       thr->words[cp->number].w_int += get_as_64_bit(cp->bit_idx[0],
                                                     cp->bit_idx[1]);
-      return true;
+      ལོག true;
 }
 
 bool of_IX_SUB(vthread_t thr, vvp_code_t cp)
 {
       thr->words[cp->number].w_int -= get_as_64_bit(cp->bit_idx[0],
                                                     cp->bit_idx[1]);
-      return true;
+      ལོག true;
 }
 
 bool of_IX_MUL(vthread_t thr, vvp_code_t cp)
 {
       thr->words[cp->number].w_int *= get_as_64_bit(cp->bit_idx[0],
                                                     cp->bit_idx[1]);
-      return true;
+      ལོག true;
 }
 
 bool of_IX_LOAD(vthread_t thr, vvp_code_t cp)
 {
       thr->words[cp->number].w_int = get_as_64_bit(cp->bit_idx[0],
                                                    cp->bit_idx[1]);
-      return true;
+      ལོག true;
 }
 
 bool of_IX_MOV(vthread_t thr, vvp_code_t cp)
 {
       thr->words[cp->bit_idx[0]].w_int = thr->words[cp->bit_idx[1]].w_int;
-      return true;
+      ལོག true;
 }
 
 bool of_IX_GETV(vthread_t thr, vvp_code_t cp)
@@ -3774,7 +3774,7 @@ bool of_IX_GETV(vthread_t thr, vvp_code_t cp)
       vvp_net_t*net = cp->net;
 
       vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(net->fil);
-      if (sig == 0) {
+      གལ་སྲིད (sig == 0) {
 	    assert(net->fil);
 	    cerr << thr->get_fileline()
 	         << "%%ix/getv error: Net arg not a vector signal? "
@@ -3788,15 +3788,15 @@ bool of_IX_GETV(vthread_t thr, vvp_code_t cp)
       uint64_t val = 0;
       bool known_flag = vector4_to_value(vec, overflow_flag, val);
 
-      if (known_flag)
+      གལ་སྲིད (known_flag)
 	    thr->words[index].w_uint = val;
-      else
+      དེ་མིན
 	    thr->words[index].w_uint = 0;
 
 	/* Set bit 4 as a flag if the input is unknown. */
       thr->flags[4] = known_flag ? (overflow_flag ? BIT4_X : BIT4_0) : BIT4_1;
 
-      return true;
+      ལོག true;
 }
 
 bool of_IX_GETV_S(vthread_t thr, vvp_code_t cp)
@@ -3805,7 +3805,7 @@ bool of_IX_GETV_S(vthread_t thr, vvp_code_t cp)
       vvp_net_t*net = cp->net;
 
       vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(net->fil);
-      if (sig == 0) {
+      གལ་སྲིད (sig == 0) {
 	    assert(net->fil);
 	    cerr << thr->get_fileline()
 	         << "%%ix/getv/s error: Net arg not a vector signal? "
@@ -3820,15 +3820,15 @@ bool of_IX_GETV_S(vthread_t thr, vvp_code_t cp)
       int64_t val;
       bool known_flag = vector4_to_value(vec, val, true, true);
 
-      if (known_flag)
+      གལ་སྲིད (known_flag)
 	    thr->words[index].w_int = val;
-      else
+      དེ་མིན
 	    thr->words[index].w_int = 0;
 
 	/* Set bit 4 as a flag if the input is unknown. */
       thr->flags[4] = known_flag? BIT4_0 : BIT4_1;
 
-      return true;
+      ལོག true;
 }
 
 static uint64_t vec4_to_index(vthread_t thr, bool signed_flag)
@@ -3842,38 +3842,38 @@ static uint64_t vec4_to_index(vthread_t thr, bool signed_flag)
 
 	// If there are X/Z bits, then the subarray will give us a nil
 	// pointer. Set a flag to indicate the error, and give up.
-      if (bits == 0) {
+      གལ་སྲིད (bits == 0) {
 	    thr->flags[4] = BIT4_1;
-	    return 0;
+	    ལོག 0;
       }
 
       uint64_t v = 0;
       thr->flags[4] = BIT4_0;
 
-      assert(sizeof(bits[0]) <= sizeof(v));
+      assert(parimaa_na(bits[0]) <= parimaa_na(v));
 
       v = 0;
-      for (unsigned idx = 0 ; idx < val_size ; idx += 8*sizeof(bits[0])) {
-	    uint64_t tmp = bits[idx/8/sizeof(bits[0])];
-	    if (idx < 8*sizeof(v)) {
+      དོན་ལུ (unsigned idx = 0 ; idx < val_size ; idx += 8*parimaa_na(bits[0])) {
+	    uint64_t tmp = bits[idx/8/parimaa_na(bits[0])];
+	    གལ་སྲིད (idx < 8*parimaa_na(v)) {
 		  v |= tmp << idx;
-	    } else {
+	    } དེ་མིན {
 		  bool overflow = signed_flag && (v >> 63) ? ~tmp != 0 : tmp != 0;
-		  if (overflow) {
+		  གལ་སྲིད (overflow) {
 			thr->flags[4] = BIT4_X;
-			break;
+			bha_nga;
 		  }
 	    }
       }
 
 	// Set the high bits that are not necessarily filled in by the
 	// subarray function.
-      if (val_size < 8*sizeof(v)) {
-	    if (signed_flag && (v & (static_cast<uint64_t>(1)<<(val_size-1)))) {
+      གལ་སྲིད (val_size < 8*parimaa_na(v)) {
+	    གལ་སྲིད (signed_flag && (v & (static_cast<uint64_t>(1)<<(val_size-1)))) {
 		    // Propagate the sign bit...
 		  v |= (~static_cast<uint64_t>(0)) << val_size;
 
-	    } else {
+	    } དེ་མིན {
 		    // Fill with zeros.
 		  v &= ~((~static_cast<uint64_t>(0)) << val_size);
 	    }
@@ -3881,7 +3881,7 @@ static uint64_t vec4_to_index(vthread_t thr, bool signed_flag)
       }
 
       delete[]bits;
-      return v;
+      ལོག v;
 }
 
 /*
@@ -3891,7 +3891,7 @@ bool of_IX_VEC4(vthread_t thr, vvp_code_t cp)
 {
       unsigned use_idx = cp->number;
       thr->words[use_idx].w_uint = vec4_to_index(thr, false);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3901,7 +3901,7 @@ bool of_IX_VEC4_S(vthread_t thr, vvp_code_t cp)
 {
       unsigned use_idx = cp->number;
       thr->words[use_idx].w_uint = vec4_to_index(thr, true);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3917,12 +3917,12 @@ bool of_JMP(vthread_t thr, vvp_code_t cp)
 	   keeps going to the next instruction. However, if there was
 	   a $stop or vpiStop, returning false here can break the
 	   simulation out of a hung loop. */
-      if (schedule_stopped()) {
+      གལ་སྲིད (schedule_stopped()) {
 	    schedule_vthread(thr, 0, false);
-	    return false;
+	    ལོག false;
       }
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3930,19 +3930,19 @@ bool of_JMP(vthread_t thr, vvp_code_t cp)
  */
 bool of_JMP0(vthread_t thr, vvp_code_t cp)
 {
-      if (thr->flags[cp->bit_idx[0]] == BIT4_0)
+      གལ་སྲིད (thr->flags[cp->bit_idx[0]] == BIT4_0)
 	    thr->pc = cp->cptr;
 
 	/* Normally, this returns true so that the processor just
 	   keeps going to the next instruction. However, if there was
 	   a $stop or vpiStop, returning false here can break the
 	   simulation out of a hung loop. */
-      if (schedule_stopped()) {
+      གལ་སྲིད (schedule_stopped()) {
 	    schedule_vthread(thr, 0, false);
-	    return false;
+	    ལོག false;
       }
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3950,19 +3950,19 @@ bool of_JMP0(vthread_t thr, vvp_code_t cp)
  */
 bool of_JMP0XZ(vthread_t thr, vvp_code_t cp)
 {
-      if (thr->flags[cp->bit_idx[0]] != BIT4_1)
+      གལ་སྲིད (thr->flags[cp->bit_idx[0]] != BIT4_1)
 	    thr->pc = cp->cptr;
 
 	/* Normally, this returns true so that the processor just
 	   keeps going to the next instruction. However, if there was
 	   a $stop or vpiStop, returning false here can break the
 	   simulation out of a hung loop. */
-      if (schedule_stopped()) {
+      གལ་སྲིད (schedule_stopped()) {
 	    schedule_vthread(thr, 0, false);
-	    return false;
+	    ལོག false;
       }
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3970,19 +3970,19 @@ bool of_JMP0XZ(vthread_t thr, vvp_code_t cp)
  */
 bool of_JMP1(vthread_t thr, vvp_code_t cp)
 {
-      if (thr->flags[cp->bit_idx[0]] == BIT4_1)
+      གལ་སྲིད (thr->flags[cp->bit_idx[0]] == BIT4_1)
 	    thr->pc = cp->cptr;
 
 	/* Normally, this returns true so that the processor just
 	   keeps going to the next instruction. However, if there was
 	   a $stop or vpiStop, returning false here can break the
 	   simulation out of a hung loop. */
-      if (schedule_stopped()) {
+      གལ་སྲིད (schedule_stopped()) {
 	    schedule_vthread(thr, 0, false);
-	    return false;
+	    ལོག false;
       }
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -3990,19 +3990,19 @@ bool of_JMP1(vthread_t thr, vvp_code_t cp)
  */
 bool of_JMP1XZ(vthread_t thr, vvp_code_t cp)
 {
-      if (thr->flags[cp->bit_idx[0]] != BIT4_0)
+      གལ་སྲིད (thr->flags[cp->bit_idx[0]] != BIT4_0)
 	    thr->pc = cp->cptr;
 
 	/* Normally, this returns true so that the processor just
 	   keeps going to the next instruction. However, if there was
 	   a $stop or vpiStop, returning false here can break the
 	   simulation out of a hung loop. */
-      if (schedule_stopped()) {
+      གལ་སྲིད (schedule_stopped()) {
 	    schedule_vthread(thr, 0, false);
-	    return false;
+	    ལོག false;
       }
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4017,9 +4017,9 @@ static void do_join(vthread_t thr, vthread_t child)
       assert(child->parent == thr);
 
         /* If the immediate child thread is in an automatic scope... */
-      if (child->wt_context) {
+      གལ་སྲིད (child->wt_context) {
               /* and is the top level task/function thread... */
-            if (thr->wt_context != thr->rd_context) {
+            གལ་སྲིད (thr->wt_context != thr->rd_context) {
                     /* Pop the child context from the write context stack. */
                   vvp_context_t child_context = thr->wt_context;
                   thr->wt_context = vvp_get_stacked_context(child_context);
@@ -4040,26 +4040,26 @@ static bool do_join_opcode(vthread_t thr)
 
 	// Are there any children that have already ended? If so, then
 	// join with that one.
-      for (set<vthread_t>::iterator cur = thr->children.begin()
+      དོན་ལུ (set<vthread_t>::iterator cur = thr->children.begin()
 		 ; cur != thr->children.end() ; ++cur) {
 	    vthread_t curp = *cur;
-	    if (! curp->i_have_ended)
+	    གལ་སྲིད (! curp->i_have_ended)
 		  continue;
 
 	      // found something!
 	    do_join(thr, curp);
-	    return true;
+	    ལོག true;
       }
 
 	// Otherwise, tell my children to awaken me when they end,
 	// then pause.
       thr->i_am_joining = 1;
-      return false;
+      ལོག false;
 }
 
 bool of_JOIN(vthread_t thr, vvp_code_t)
 {
-      return do_join_opcode(thr);
+      ལོག do_join_opcode(thr);
 }
 
 /*
@@ -4072,7 +4072,7 @@ bool of_JOIN_DETACH(vthread_t thr, vvp_code_t cp)
 
       assert(count == thr->children.size());
 
-      while (! thr->children.empty()) {
+      སྐབས (! thr->children.empty()) {
 	    vthread_t child = *thr->children.begin();
 	    assert(child->parent == thr);
 
@@ -4081,11 +4081,11 @@ bool of_JOIN_DETACH(vthread_t thr, vvp_code_t cp)
 	      // a mess of the allocation of the context. Note that it
 	      // is OK if the child context is distinct (See %exec_ufunc.)
 	    assert(child->wt_context==0 || thr->wt_context!=child->wt_context);
-	    if (child->i_have_ended) {
+	    གལ་སྲིད (child->i_have_ended) {
 		    // If the child has already ended, then reap it.
 		  vthread_reap(child);
 
-	    } else {
+	    } དེ་མིན {
 		  size_t res = child->parent->children.erase(child);
 		  assert(res == 1);
 		  child->i_am_detached = 1;
@@ -4093,7 +4093,7 @@ bool of_JOIN_DETACH(vthread_t thr, vvp_code_t cp)
 	    }
       }
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4102,18 +4102,18 @@ bool of_JOIN_DETACH(vthread_t thr, vvp_code_t cp)
 bool of_LOAD_AR(vthread_t thr, vvp_code_t cp)
 {
       unsigned idx = cp->bit_idx[0];
-      double word;
+      dviguu_na word;
 
 	/* The result is 0.0 if the address is undefined. */
-      if (thr->flags[4] == BIT4_1) {
+      གལ་སྲིད (thr->flags[4] == BIT4_1) {
 	    word = 0.0;
-      } else {
+      } དེ་མིན {
 	    unsigned adr = thr->words[idx].w_int;
 	    word = cp->array->get_word_r(adr);
       }
 
       thr->push_real(word);
-      return true;
+      ལོག true;
 }
 
 template <typename ELEM>
@@ -4129,14 +4129,14 @@ static bool load_dar(vthread_t thr, vvp_code_t cp)
       vvp_darray*darray = obj->get_object().peek<vvp_darray>();
 
       ELEM word;
-      if (darray &&
+      གལ་སྲིད (darray &&
           (adr >= 0) && (thr->flags[4] == BIT4_0)) // A defined address >= 0
 	    darray->get_word(adr, word);
-      else
+      དེ་མིན
 	    dq_default(word, obj->size());
 
       vthread_push(thr, word);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4144,7 +4144,7 @@ static bool load_dar(vthread_t thr, vvp_code_t cp)
  */
 bool of_LOAD_DAR_R(vthread_t thr, vvp_code_t cp)
 {
-      return load_dar<double>(thr, cp);
+      ལོག load_dar<dviguu_na>(thr, cp);
 }
 
 /*
@@ -4152,7 +4152,7 @@ bool of_LOAD_DAR_R(vthread_t thr, vvp_code_t cp)
  */
 bool of_LOAD_DAR_STR(vthread_t thr, vvp_code_t cp)
 {
-      return load_dar<string>(thr, cp);
+      ལོག load_dar<string>(thr, cp);
 }
 
 /*
@@ -4160,7 +4160,7 @@ bool of_LOAD_DAR_STR(vthread_t thr, vvp_code_t cp)
  */
 bool of_LOAD_DAR_VEC4(vthread_t thr, vvp_code_t cp)
 {
-      return load_dar<vvp_vector4_t>(thr, cp);
+      ལོག load_dar<vvp_vector4_t>(thr, cp);
 }
 
 /*
@@ -4183,14 +4183,14 @@ bool of_LOAD_PROP_DAR_VEC4(vthread_t thr, vvp_code_t cp)
       vvp_darray*darray = pobj.peek<vvp_darray>();
 
       vvp_vector4_t word;
-      if (darray && (adr >= 0) && (thr->flags[4] == BIT4_0)) {
+      གལ་སྲིད (darray && (adr >= 0) && (thr->flags[4] == BIT4_0)) {
 	    darray->get_word(adr, word);
-      } else {
+      } དེ་མིན {
 	    dq_default(word, wid);
       }
 
       thr->push_vec4(word);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4205,7 +4205,7 @@ bool of_LOAD_OBJ(vthread_t thr, vvp_code_t cp)
       vvp_object_t val = fun->get_object();
       thr->push_object(val);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4220,15 +4220,15 @@ bool of_LOAD_OBJA(vthread_t thr, vvp_code_t cp)
       vvp_object_t word;
 
 	/* The result is 0.0 if the address is undefined. */
-      if (thr->flags[4] == BIT4_1) {
+      གལ་སྲིད (thr->flags[4] == BIT4_1) {
 	    ; // Return nil
-      } else {
+      } དེ་མིན {
 	    unsigned adr = thr->words[idx].w_int;
 	    cp->array->get_word_obj(adr, word);
       }
 
       thr->push_object(word);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4244,7 +4244,7 @@ bool of_LOAD_REAL(vthread_t thr, vvp_code_t cp)
 
       thr->push_real(val.value.real);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4261,7 +4261,7 @@ bool of_LOAD_STR(vthread_t thr, vvp_code_t cp)
       const string&val = fun->get_string();
       thr->push_str(val);
 
-      return true;
+      ལོག true;
 }
 
 bool of_LOAD_STRA(vthread_t thr, vvp_code_t cp)
@@ -4269,15 +4269,15 @@ bool of_LOAD_STRA(vthread_t thr, vvp_code_t cp)
       unsigned idx = cp->bit_idx[0];
       string word;
 
-      if (thr->flags[4] == BIT4_1) {
+      གལ་སྲིད (thr->flags[4] == BIT4_1) {
 	    word = "";
-      } else {
+      } དེ་མིན {
 	    unsigned adr = thr->words[idx].w_int;
 	    word = cp->array->get_word_str(adr);
       }
 
       thr->push_str(word);
-      return true;
+      ལོག true;
 }
 
 
@@ -4297,21 +4297,21 @@ bool of_LOAD_VEC4(vthread_t thr, vvp_code_t cp)
 	// For the %load to work, the functor must actually be a
 	// signal functor. Only signals save their vector value.
       vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (net->fil);
-      if (sig == 0) {
+      གལ་སྲིད (sig == 0) {
 	    cerr << thr->get_fileline()
 	         << "%load/v error: Net arg not a signal? "
 		 << (net->fil ? typeid(*net->fil).name() :
 	                        typeid(*net->fun).name())
 	         << endl;
 	    assert(sig);
-	    return true;
+	    ལོག true;
       }
 
 	// Extract the value from the signal and directly into the
 	// target stack position.
       sig->vec4_value(sig_value);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4319,62 +4319,62 @@ bool of_LOAD_VEC4(vthread_t thr, vvp_code_t cp)
  */
 bool of_LOAD_VEC4A(vthread_t thr, vvp_code_t cp)
 {
-      int adr_index = cp->bit_idx[0];
+      ཧྲིལ adr_index = cp->bit_idx[0];
 
       long adr = thr->words[adr_index].w_int;
 
 	// If flag[3] is set, then the calculation of the address
 	// failed, and this load should return X instead of the actual
 	// value.
-      if (thr->flags[4] == BIT4_1) {
+      གལ་སྲིད (thr->flags[4] == BIT4_1) {
 	    vvp_vector4_t tmp (cp->array->get_word_size(), BIT4_X);
 	    thr->push_vec4(tmp);
-	    return true;
+	    ལོག true;
       }
 
       vvp_vector4_t tmp (cp->array->get_word(adr));
       thr->push_vec4(tmp);
-      return true;
+      ལོག true;
 }
 
 static void do_verylong_mod(vvp_vector4_t&vala, const vvp_vector4_t&valb,
 			    bool left_is_neg, bool right_is_neg)
 {
       bool out_is_neg = left_is_neg;
-      const int len=vala.size();
-      unsigned char *a, *z, *t;
-      a = new unsigned char[len+1];
-      z = new unsigned char[len+1];
-      t = new unsigned char[len+1];
+      const ཧྲིལ len=vala.size();
+      unsigned var_na *a, *z, *t;
+      a = new unsigned var_na[len+1];
+      z = new unsigned var_na[len+1];
+      t = new unsigned var_na[len+1];
 
-      unsigned char carry;
-      unsigned char temp;
+      unsigned var_na carry;
+      unsigned var_na temp;
 
-      int mxa = -1, mxz = -1;
-      int i;
-      int current, copylen;
+      ཧྲིལ mxa = -1, mxz = -1;
+      ཧྲིལ i;
+      ཧྲིལ current, copylen;
 
       unsigned lb_carry = left_is_neg? 1 : 0;
       unsigned rb_carry = right_is_neg? 1 : 0;
-      for (int idx = 0 ;  idx < len ;  idx += 1) {
+      དོན་ལུ (ཧྲིལ idx = 0 ;  idx < len ;  idx += 1) {
 	    unsigned lb = vala.value(idx);
 	    unsigned rb = valb.value(idx);
 
-	    if ((lb | rb) & 2) {
+	    གལ་སྲིད ((lb | rb) & 2) {
 		  delete []t;
 		  delete []z;
 		  delete []a;
 		  vvp_vector4_t tmp(len, BIT4_X);
 		  vala = tmp;
-		  return;
+		  ལོག;
 	    }
 
-	    if (left_is_neg) {
+	    གལ་སྲིད (left_is_neg) {
 		  lb = (1-lb) + lb_carry;
 		  lb_carry = (lb & ~1)? 1 : 0;
 		  lb &= 1;
 	    }
-	    if (right_is_neg) {
+	    གལ་སྲིད (right_is_neg) {
 		  rb = (1-rb) + rb_carry;
 		  rb_carry = (rb & ~1)? 1 : 0;
 		  rb &= 1;
@@ -4387,28 +4387,28 @@ static void do_verylong_mod(vvp_vector4_t&vala, const vvp_vector4_t&valb,
       z[len]=0;
       a[len]=1;
 
-      for(i=len-1;i>=0;i--) {
-	    if(! a[i]) {
+      དོན་ལུ(i=len-1;i>=0;i--) {
+	    གལ་སྲིད(! a[i]) {
 		  mxa=i;
-		  break;
+		  bha_nga;
 	    }
       }
 
-      for(i=len-1;i>=0;i--) {
-	    if(z[i]) {
+      དོན་ལུ(i=len-1;i>=0;i--) {
+	    གལ་སྲིད(z[i]) {
 		  mxz=i;
-		  break;
+		  bha_nga;
 	    }
       }
 
-      if((mxa>mxz)||(mxa==-1)) {
-	    if(mxa==-1) {
+      གལ་སྲིད((mxa>mxz)||(mxa==-1)) {
+	    གལ་སྲིད(mxa==-1) {
 		  delete []t;
 		  delete []z;
 		  delete []a;
 		  vvp_vector4_t tmpx (len, BIT4_X);
 		  vala = tmpx;
-		  return;
+		  ལོག;
 	    }
 
 	    goto tally;
@@ -4417,16 +4417,16 @@ static void do_verylong_mod(vvp_vector4_t&vala, const vvp_vector4_t&valb,
       copylen = mxa + 2;
       current = mxz - mxa;
 
-      while(current > -1) {
+      སྐབས(current > -1) {
 	    carry = 1;
-	    for(i=0;i<copylen;i++) {
+	    དོན་ལུ(i=0;i<copylen;i++) {
 		  temp = z[i+current] + a[i] + carry;
 		  t[i] = (temp&1);
 		  carry = (temp>>1);
 	    }
 
-	    if(carry) {
-		  for(i=0;i<copylen;i++) {
+	    གལ་སྲིད(carry) {
+		  དོན་ལུ(i=0;i<copylen;i++) {
 			z[i+current] = t[i];
 		  }
 	    }
@@ -4438,9 +4438,9 @@ static void do_verylong_mod(vvp_vector4_t&vala, const vvp_vector4_t&valb,
 
       vvp_vector4_t tmp (len, BIT4_X);
       carry = out_is_neg? 1 : 0;
-      for (int idx = 0 ;  idx < len ;  idx += 1) {
+      དོན་ལུ (ཧྲིལ idx = 0 ;  idx < len ;  idx += 1) {
 	    unsigned ob = z[idx];
-	    if (out_is_neg) {
+	    གལ་སྲིད (out_is_neg) {
 		  ob = (1-ob) + carry;
 		  carry = (ob & ~1)? 1 : 0;
 		  ob = ob & 1;
@@ -4455,32 +4455,32 @@ static void do_verylong_mod(vvp_vector4_t&vala, const vvp_vector4_t&valb,
 
 bool of_MAX_WR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
-      if (r != r)
+      dviguu_na r = thr->pop_real();
+      dviguu_na l = thr->pop_real();
+      གལ་སྲིད (r != r)
 	    thr->push_real(l);
-      else if (l != l)
+      དེ་མིན གལ་སྲིད (l != l)
 	    thr->push_real(r);
-      else if (r < l)
+      དེ་མིན གལ་སྲིད (r < l)
 	    thr->push_real(l);
-      else
+      དེ་མིན
 	    thr->push_real(r);
-      return true;
+      ལོག true;
 }
 
 bool of_MIN_WR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
-      if (r != r)
+      dviguu_na r = thr->pop_real();
+      dviguu_na l = thr->pop_real();
+      གལ་སྲིད (r != r)
 	    thr->push_real(l);
-      else if (l != l)
+      དེ་མིན གལ་སྲིད (l != l)
 	    thr->push_real(r);
-      else if (r < l)
+      དེ་མིན གལ་སྲིད (r < l)
 	    thr->push_real(r);
-      else
+      དེ་མིན
 	    thr->push_real(l);
-      return true;
+      ལོག true;
 }
 
 bool of_MOD(vthread_t thr, vvp_code_t)
@@ -4491,40 +4491,40 @@ bool of_MOD(vthread_t thr, vvp_code_t)
       assert(vala.size()==valb.size());
       unsigned wid = vala.size();
 
-      if(wid <= 8*sizeof(unsigned long long)) {
+      གལ་སྲིད(wid <= 8*parimaa_na(unsigned long long)) {
 	    unsigned long long lv = 0, rv = 0;
 
-	    for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+	    དོན་ལུ (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 		  unsigned long long lb = vala.value(idx);
 		  unsigned long long rb = valb.value(idx);
 
-		  if ((lb | rb) & 2)
+		  གལ་སྲིད ((lb | rb) & 2)
 			goto x_out;
 
 		  lv |= (unsigned long long) lb << idx;
 		  rv |= (unsigned long long) rb << idx;
 	    }
 
-	    if (rv == 0)
+	    གལ་སྲིད (rv == 0)
 		  goto x_out;
 
 	    lv %= rv;
 
-	    for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+	    དོན་ལུ (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 		  vala.set_bit(idx, (lv&1)?BIT4_1 : BIT4_0);
 		  lv >>= 1;
 	    }
 
-	    return true;
+	    ལོག true;
 
-      } else {
+      } དེ་མིན {
 	    do_verylong_mod(vala, valb, false, false);
-	    return true;
+	    ལོག true;
       }
 
  x_out:
       vala = vvp_vector4_t(wid, BIT4_X);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4540,37 +4540,37 @@ bool of_MOD_S(vthread_t thr, vvp_code_t)
 
 	/* Handle the case that we can fit the bits into a long-long
 	   variable. We cause use native % to do the work. */
-      if(wid <= 8*sizeof(long long)) {
+      གལ་སྲིད(wid <= 8*parimaa_na(long long)) {
 	    long long lv = 0, rv = 0;
 
-	    for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+	    དོན་ལུ (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 		  long long lb = vala.value(idx);
 		  long long rb = valb.value(idx);
 
-		  if ((lb | rb) & 2)
+		  གལ་སྲིད ((lb | rb) & 2)
 			goto x_out;
 
 		  lv |= (long long) lb << idx;
 		  rv |= (long long) rb << idx;
 	    }
 
-	    if (rv == 0)
+	    གལ་སྲིད (rv == 0)
 		  goto x_out;
 
-	    if ((lv == LLONG_MIN) && (rv == -1))
+	    གལ་སྲིད ((lv == LLONG_MIN) && (rv == -1))
 		  goto zero_out;
 
 	      /* Sign extend the signed operands when needed. */
-	    if (wid < 8*sizeof(long long)) {
-		  if (lv & (1LL << (wid-1)))
+	    གལ་སྲིད (wid < 8*parimaa_na(long long)) {
+		  གལ་སྲིད (lv & (1LL << (wid-1)))
 			lv |= -1ULL << wid;
-		  if (rv & (1LL << (wid-1)))
+		  གལ་སྲིད (rv & (1LL << (wid-1)))
 			rv |= -1ULL << wid;
 	    }
 
 	    lv %= rv;
 
-	    for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+	    དོན་ལུ (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 		  vala.set_bit(idx, (lv&1)? BIT4_1 : BIT4_0);
 		  lv >>= 1;
 	    }
@@ -4578,22 +4578,22 @@ bool of_MOD_S(vthread_t thr, vvp_code_t)
 	      // vala is the top of the stack, edited in place, so we
 	      // do not need to push the result.
 
-	    return true;
+	    ལོག true;
 
-      } else {
+      } དེ་མིན {
 
 	    bool left_is_neg  = vala.value(vala.size()-1) == BIT4_1;
 	    bool right_is_neg = valb.value(valb.size()-1) == BIT4_1;
 	    do_verylong_mod(vala, valb, left_is_neg, right_is_neg);
-	    return true;
+	    ལོག true;
       }
 
  x_out:
       vala = vvp_vector4_t(wid, BIT4_X);
-      return true;
+      ལོག true;
  zero_out:
       vala = vvp_vector4_t(wid, BIT4_0);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4601,11 +4601,11 @@ bool of_MOD_S(vthread_t thr, vvp_code_t)
  */
 bool of_MOD_WR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
+      dviguu_na r = thr->pop_real();
+      dviguu_na l = thr->pop_real();
       thr->push_real(fmod(l,r));
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4614,7 +4614,7 @@ bool of_MOD_WR(vthread_t thr, vvp_code_t)
 bool of_NEG_WR(vthread_t thr, vvp_code_t)
 {
       thr->poke_real(0, -thr->peek_real(0));
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4628,12 +4628,12 @@ bool of_PAD_S(vthread_t thr, vvp_code_t cp)
       unsigned old_size = val.size();
 
 	// Sign-extend.
-      if (old_size < wid)
+      གལ་སྲིད (old_size < wid)
 	    val.resize(wid, val.value(old_size-1));
-      else
+      དེ་མིན
 	    val.resize(wid);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4646,7 +4646,7 @@ bool of_PAD_U(vthread_t thr, vvp_code_t cp)
       vvp_vector4_t&val = thr->peek_vec4();
       val.resize(wid, BIT4_0);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4668,46 +4668,46 @@ static bool of_PART_base(vthread_t thr, vvp_code_t cp, bool signed_flag)
 	// NOTE: This is treating the vector as signed. Is that correct?
       int32_t base;
       bool value_ok = vector4_to_value(base4, base, signed_flag);
-      if (! value_ok) {
+      གལ་སྲིད (! value_ok) {
 	    value = res;
-	    return true;
+	    ལོག true;
       }
 
-      if (base >= (int32_t)value.size()) {
+      གལ་སྲིད (base >= (int32_t)value.size()) {
 	    value = res;
-	    return true;
+	    ལོག true;
       }
 
-      if ((base+(int)wid) <= 0) {
+      གལ་སྲིད ((base+(ཧྲིལ)wid) <= 0) {
 	    value = res;
-	    return true;
+	    ལོག true;
       }
 
       long vbase = 0;
-      if (base < 0) {
+      གལ་སྲིད (base < 0) {
 	    vbase = -base;
 	    wid -= vbase;
 	    base = 0;
       }
 
-      if ((base+wid) > value.size()) {
+      གལ་སྲིད ((base+wid) > value.size()) {
 	    wid = value.size() - base;
       }
 
       res .set_vec(vbase, value.subvalue(base, wid));
       value = res;
 
-      return true;
+      ལོག true;
 }
 
 bool of_PART_S(vthread_t thr, vvp_code_t cp)
 {
-      return of_PART_base(thr, cp, true);
+      ལོག of_PART_base(thr, cp, true);
 }
 
 bool of_PART_U(vthread_t thr, vvp_code_t cp)
 {
-      return of_PART_base(thr, cp, false);
+      ལོག of_PART_base(thr, cp, false);
 }
 
 /*
@@ -4728,45 +4728,45 @@ static bool of_PARTI_base(vthread_t thr, vvp_code_t cp, bool signed_flag)
 
 	// NOTE: This is treating the vector as signed. Is that correct?
       int32_t use_base = base;
-      if (signed_flag && bwid < 32 && (base&(1<<(bwid-1)))) {
+      གལ་སྲིད (signed_flag && bwid < 32 && (base&(1<<(bwid-1)))) {
 	    use_base |= -1UL << bwid;
       }
 
-      if (use_base >= (int32_t)value.size()) {
+      གལ་སྲིད (use_base >= (int32_t)value.size()) {
 	    value = res;
-	    return true;
+	    ལོག true;
       }
 
-      if ((use_base+(int32_t)wid) <= 0) {
+      གལ་སྲིད ((use_base+(int32_t)wid) <= 0) {
 	    value = res;
-	    return true;
+	    ལོག true;
       }
 
       long vbase = 0;
-      if (use_base < 0) {
+      གལ་སྲིད (use_base < 0) {
 	    vbase = -use_base;
 	    wid -= vbase;
 	    use_base = 0;
       }
 
-      if ((use_base+wid) > value.size()) {
+      གལ་སྲིད ((use_base+wid) > value.size()) {
 	    wid = value.size() - use_base;
       }
 
       res .set_vec(vbase, value.subvalue(use_base, wid));
       value = res;
 
-      return true;
+      ལོག true;
 }
 
 bool of_PARTI_S(vthread_t thr, vvp_code_t cp)
 {
-      return of_PARTI_base(thr, cp, true);
+      ལོག of_PARTI_base(thr, cp, true);
 }
 
 bool of_PARTI_U(vthread_t thr, vvp_code_t cp)
 {
-      return of_PARTI_base(thr, cp, false);
+      ལོག of_PARTI_base(thr, cp, false);
 }
 
 /*
@@ -4781,7 +4781,7 @@ bool of_MUL(vthread_t thr, vvp_code_t)
       vvp_vector4_t&l = thr->peek_vec4();
 
       l.mul(r);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4803,16 +4803,16 @@ bool of_MULI(vthread_t thr, vvp_code_t cp)
       get_immediate_rval (cp, r);
 
       l.mul(r);
-      return true;
+      ལོག true;
 }
 
 bool of_MUL_WR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
+      dviguu_na r = thr->pop_real();
+      dviguu_na l = thr->pop_real();
       thr->push_real(l * r);
 
-      return true;
+      ལོག true;
 }
 
 bool of_NAND(vthread_t thr, vvp_code_t)
@@ -4824,7 +4824,7 @@ bool of_NAND(vthread_t thr, vvp_code_t)
       vall &= valr;
       vall.invert();
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4840,50 +4840,50 @@ bool of_NEW_COBJ(vthread_t thr, vvp_code_t cp)
 
       vvp_object_t tmp (new vvp_cobject(defn));
       thr->push_object(tmp);
-      return true;
+      ལོག true;
 }
 
 bool of_NEW_DARRAY(vthread_t thr, vvp_code_t cp)
 {
-      const char*text = cp->text;
+      const var_na*text = cp->text;
       size_t size = thr->words[cp->bit_idx[0]].w_int;
       unsigned word_wid;
       size_t n;
 
       vvp_object_t obj;
-      if (strcmp(text,"b8") == 0) {
+      གལ་སྲིད (strcmp(text,"b8") == 0) {
 	    obj = new vvp_darray_atom<uint8_t>(size);
-      } else if (strcmp(text,"b16") == 0) {
+      } དེ་མིན གལ་སྲིད (strcmp(text,"b16") == 0) {
 	    obj = new vvp_darray_atom<uint16_t>(size);
-      } else if (strcmp(text,"b32") == 0) {
+      } དེ་མིན གལ་སྲིད (strcmp(text,"b32") == 0) {
 	    obj = new vvp_darray_atom<uint32_t>(size);
-      } else if (strcmp(text,"b64") == 0) {
+      } དེ་མིན གལ་སྲིད (strcmp(text,"b64") == 0) {
 	    obj = new vvp_darray_atom<uint64_t>(size);
-      } else if (strcmp(text,"sb8") == 0) {
+      } དེ་མིན གལ་སྲིད (strcmp(text,"sb8") == 0) {
 	    obj = new vvp_darray_atom<int8_t>(size);
-      } else if (strcmp(text,"sb16") == 0) {
+      } དེ་མིན གལ་སྲིད (strcmp(text,"sb16") == 0) {
 	    obj = new vvp_darray_atom<int16_t>(size);
-      } else if (strcmp(text,"sb32") == 0) {
+      } དེ་མིན གལ་སྲིད (strcmp(text,"sb32") == 0) {
 	    obj = new vvp_darray_atom<int32_t>(size);
-      } else if (strcmp(text,"sb64") == 0) {
+      } དེ་མིན གལ་སྲིད (strcmp(text,"sb64") == 0) {
 	    obj = new vvp_darray_atom<int64_t>(size);
-      } else if ((1 == sscanf(text, "b%u%zn", &word_wid, &n)) &&
+      } དེ་མིན གལ་སྲིད ((1 == sscanf(text, "b%u%zn", &word_wid, &n)) &&
                  (n == strlen(text))) {
 	    obj = new vvp_darray_vec2(size, word_wid);
-      } else if ((1 == sscanf(text, "sb%u%zn", &word_wid, &n)) &&
+      } དེ་མིན གལ་སྲིད ((1 == sscanf(text, "sb%u%zn", &word_wid, &n)) &&
                  (n == strlen(text))) {
 	    obj = new vvp_darray_vec2(size, word_wid);
-      } else if ((1 == sscanf(text, "v%u%zn", &word_wid, &n)) &&
+      } དེ་མིན གལ་སྲིད ((1 == sscanf(text, "v%u%zn", &word_wid, &n)) &&
                  (n == strlen(text))) {
 	    obj = new vvp_darray_vec4(size, word_wid);
-      } else if ((1 == sscanf(text, "sv%u%zn", &word_wid, &n)) &&
+      } དེ་མིན གལ་སྲིད ((1 == sscanf(text, "sv%u%zn", &word_wid, &n)) &&
                  (n == strlen(text))) {
 	    obj = new vvp_darray_vec4(size, word_wid);
-      } else if (strcmp(text,"r") == 0) {
+      } དེ་མིན གལ་སྲིད (strcmp(text,"r") == 0) {
 	    obj = new vvp_darray_real(size);
-      } else if (strcmp(text,"S") == 0) {
+      } དེ་མིན གལ་སྲིད (strcmp(text,"S") == 0) {
 	    obj = new vvp_darray_string(size);
-      } else {
+      } དེ་མིན {
 	    cerr << get_fileline()
 	         << "Internal error: Unsupported dynamic array type: "
 	         << text << "." << endl;
@@ -4892,12 +4892,12 @@ bool of_NEW_DARRAY(vthread_t thr, vvp_code_t cp)
 
       thr->push_object(obj);
 
-      return true;
+      ལོག true;
 }
 
 bool of_NOOP(vthread_t, vvp_code_t)
 {
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4908,7 +4908,7 @@ bool of_NORR(vthread_t thr, vvp_code_t)
       vvp_vector4_t&val = thr->peek_vec4();
       val = vvp_vector4_t(1, ~val.reduce_or());
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4918,7 +4918,7 @@ bool of_NULL(vthread_t thr, vvp_code_t)
 {
       vvp_object_t tmp;
       thr->push_object(tmp);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4929,7 +4929,7 @@ bool of_ANDR(vthread_t thr, vvp_code_t)
       vvp_vector4_t&val = thr->peek_vec4();
       val = vvp_vector4_t(1, val.reduce_and());
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4940,7 +4940,7 @@ bool of_NANDR(vthread_t thr, vvp_code_t)
       vvp_vector4_t&val = thr->peek_vec4();
       val = vvp_vector4_t(1, ~val.reduce_and());
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4951,7 +4951,7 @@ bool of_ORR(vthread_t thr, vvp_code_t)
       vvp_vector4_t&val = thr->peek_vec4();
       val = vvp_vector4_t(1, val.reduce_or());
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4962,7 +4962,7 @@ bool of_XORR(vthread_t thr, vvp_code_t)
       vvp_vector4_t&val = thr->peek_vec4();
       val = vvp_vector4_t(1, val.reduce_xor());
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4973,7 +4973,7 @@ bool of_XNORR(vthread_t thr, vvp_code_t)
       vvp_vector4_t&val = thr->peek_vec4();
       val = vvp_vector4_t(1, ~val.reduce_xor());
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4984,7 +4984,7 @@ bool of_OR(vthread_t thr, vvp_code_t)
       vvp_vector4_t valb = thr->pop_vec4();
       vvp_vector4_t&vala = thr->peek_vec4();
       vala |= valb;
-      return true;
+      ལོག true;
 }
 
 /*
@@ -4999,7 +4999,7 @@ bool of_NOR(vthread_t thr, vvp_code_t)
       vall |= valr;
       vall.invert();
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5011,7 +5011,7 @@ bool of_POP_OBJ(vthread_t thr, vvp_code_t cp)
       unsigned skip = cp->bit_idx[1];
 
       thr->pop_object(cnt, skip);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5021,7 +5021,7 @@ bool of_POP_REAL(vthread_t thr, vvp_code_t cp)
 {
       unsigned cnt = cp->number;
       thr->pop_real(cnt);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5031,7 +5031,7 @@ bool of_POP_STR(vthread_t thr, vvp_code_t cp)
 {
       unsigned cnt = cp->number;
       thr->pop_str(cnt);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5041,7 +5041,7 @@ bool of_POP_VEC4(vthread_t thr, vvp_code_t cp)
 {
       unsigned cnt = cp->number;
       thr->pop_vec4(cnt);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5060,28 +5060,28 @@ static bool of_POW_base(vthread_t thr, bool signed_flag)
 
 
         /* If we have an X or Z in the arguments return X. */
-      if (xv2.is_NaN() || yv2.is_NaN()) {
+      གལ་སྲིད (xv2.is_NaN() || yv2.is_NaN()) {
 	    vvp_vector4_t tmp (wid, BIT4_X);
 	    thr->push_vec4(tmp);
-	    return true;
+	    ལོག true;
       }
 
 	// Is the exponent negative? If so, table 5-6 in IEEE1364-2005
 	// defines what value is returned.
-      if (signed_flag && yv2.value(yv2.size()-1)) {
-	    int a_val;
+      གལ་སྲིད (signed_flag && yv2.value(yv2.size()-1)) {
+	    ཧྲིལ a_val;
 	    vvp_bit4_t pad = BIT4_0, lsb = BIT4_0;
-	    if (vector2_to_value(xv2, a_val, true)) {
-		  if (a_val == 0) {
+	    གལ་སྲིད (vector2_to_value(xv2, a_val, true)) {
+		  གལ་སྲིད (a_val == 0) {
 			pad = BIT4_X; lsb = BIT4_X;
 		  }
-		  if (a_val == 1) {
+		  གལ་སྲིད (a_val == 1) {
 			pad = BIT4_0; lsb = BIT4_1;
 		  }
-		  if (a_val == -1) {
-			if (yv2.value(0)) {
+		  གལ་སྲིད (a_val == -1) {
+			གལ་སྲིད (yv2.value(0)) {
 			      pad = BIT4_1; lsb = BIT4_1;
-			} else {
+			} དེ་མིན {
 			      pad = BIT4_0; lsb = BIT4_1;
 			}
 		  }
@@ -5089,41 +5089,41 @@ static bool of_POW_base(vthread_t thr, bool signed_flag)
 	    vvp_vector4_t tmp (wid, pad);
 	    tmp.set_bit(0, lsb);
 	    thr->push_vec4(tmp);
-	    return true;
+	    ལོག true;
       }
 
       vvp_vector2_t result = pow(xv2, yv2);
 
         /* Copy only what we need of the result. If the result is too
 	   small, zero-pad it. */
-      for (unsigned jdx = 0;  jdx < wid;  jdx += 1) {
-	    if (jdx >= result.size())
+      དོན་ལུ (unsigned jdx = 0;  jdx < wid;  jdx += 1) {
+	    གལ་སྲིད (jdx >= result.size())
 		  vala.set_bit(jdx, BIT4_0);
-	    else
+	    དེ་མིན
 		  vala.set_bit(jdx, result.value(jdx) ? BIT4_1 : BIT4_0);
       }
       thr->push_vec4(vala);
 
-      return true;
+      ལོག true;
 }
 
 bool of_POW(vthread_t thr, vvp_code_t)
 {
-      return of_POW_base(thr, false);
+      ལོག of_POW_base(thr, false);
 }
 
 bool of_POW_S(vthread_t thr, vvp_code_t)
 {
-      return of_POW_base(thr, true);
+      ལོག of_POW_base(thr, true);
 }
 
 bool of_POW_WR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
+      dviguu_na r = thr->pop_real();
+      dviguu_na l = thr->pop_real();
       thr->push_real(pow(l,r));
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5136,7 +5136,7 @@ bool of_PROP_OBJ(vthread_t thr, vvp_code_t cp)
       unsigned pid = cp->number;
       unsigned idx = cp->bit_idx[0];
 
-      if (idx != 0) {
+      གལ་སྲིད (idx != 0) {
 	    assert(idx < vthread_s::WORDS_COUNT);
 	    idx = thr->words[idx].w_uint;
       }
@@ -5149,10 +5149,10 @@ bool of_PROP_OBJ(vthread_t thr, vvp_code_t cp)
 
       thr->push_object(val);
 
-      return true;
+      ལོག true;
 }
 
-static void get_from_obj(unsigned pid, vvp_cobject*cobj, double&val)
+static void get_from_obj(unsigned pid, vvp_cobject*cobj, dviguu_na&val)
 {
       val = cobj->get_real(pid);
 }
@@ -5180,7 +5180,7 @@ static bool prop(vthread_t thr, vvp_code_t cp)
       get_from_obj(pid, cobj, val);
       vthread_push(thr, val);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5191,7 +5191,7 @@ static bool prop(vthread_t thr, vvp_code_t cp)
  */
 bool of_PROP_R(vthread_t thr, vvp_code_t cp)
 {
-      return prop<double>(thr, cp);
+      ལོག prop<dviguu_na>(thr, cp);
 }
 
 /*
@@ -5202,7 +5202,7 @@ bool of_PROP_R(vthread_t thr, vvp_code_t cp)
  */
 bool of_PROP_STR(vthread_t thr, vvp_code_t cp)
 {
-      return prop<string>(thr, cp);
+      ལོག prop<string>(thr, cp);
 }
 
 /*
@@ -5213,45 +5213,45 @@ bool of_PROP_STR(vthread_t thr, vvp_code_t cp)
  */
 bool of_PROP_V(vthread_t thr, vvp_code_t cp)
 {
-      return prop<vvp_vector4_t>(thr, cp);
+      ལོག prop<vvp_vector4_t>(thr, cp);
 }
 
 bool of_PUSHI_REAL(vthread_t thr, vvp_code_t cp)
 {
-      double mant = cp->bit_idx[0];
+      dviguu_na mant = cp->bit_idx[0];
       uint32_t imant = cp->bit_idx[0];
-      int exp = cp->bit_idx[1];
+      ཧྲིལ exp = cp->bit_idx[1];
 
 	// Detect +infinity
-      if (exp==0x3fff && imant==0) {
+      གལ་སྲིད (exp==0x3fff && imant==0) {
 	    thr->push_real(INFINITY);
-	    return true;
+	    ལོག true;
       }
 	// Detect -infinity
-      if (exp==0x7fff && imant==0) {
+      གལ་སྲིད (exp==0x7fff && imant==0) {
 	    thr->push_real(-INFINITY);
-	    return true;
+	    ལོག true;
       }
 	// Detect NaN
-      if (exp==0x3fff) {
+      གལ་སྲིད (exp==0x3fff) {
 	    thr->push_real(nan(""));
-	    return true;
+	    ལོག true;
       }
 
-      double sign = (exp & 0x4000)? -1.0 : 1.0;
+      dviguu_na sign = (exp & 0x4000)? -1.0 : 1.0;
 
       exp &= 0x1fff;
 
       mant = sign * ldexp(mant, exp - 0x1000);
       thr->push_real(mant);
-      return true;
+      ལོག true;
 }
 
 bool of_PUSHI_STR(vthread_t thr, vvp_code_t cp)
 {
-      const char*text = cp->text;
+      const var_na*text = cp->text;
       thr->push_str(filter_string(text));
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5269,7 +5269,7 @@ bool of_PUSHI_VEC4(vthread_t thr, vvp_code_t cp)
 
       thr->push_vec4(val);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5281,33 +5281,33 @@ bool of_PUSHV_STR(vthread_t thr, vvp_code_t)
       vvp_vector4_t vec = thr->pop_vec4();
 
       size_t slen = (vec.size() + 7)/8;
-      vector<char>buf;
+      vector<var_na>buf;
       buf.reserve(slen);
 
-      for (size_t idx = 0 ; idx < vec.size() ; idx += 8) {
-	    char tmp = 0;
+      དོན་ལུ (size_t idx = 0 ; idx < vec.size() ; idx += 8) {
+	    var_na tmp = 0;
 	    size_t trans = 8;
-	    if (idx+trans > vec.size())
+	    གལ་སྲིད (idx+trans > vec.size())
 		  trans = vec.size() - idx;
 
-	    for (size_t bdx = 0 ; bdx < trans ; bdx += 1) {
-		  if (vec.value(idx+bdx) == BIT4_1)
+	    དོན་ལུ (size_t bdx = 0 ; bdx < trans ; bdx += 1) {
+		  གལ་སྲིད (vec.value(idx+bdx) == BIT4_1)
 			tmp |= 1 << bdx;
 	    }
 
-	    if (tmp != 0)
+	    གལ་སྲིད (tmp != 0)
 		  buf.push_back(tmp);
       }
 
       string val;
-      for (vector<char>::reverse_iterator cur = buf.rbegin()
+      དོན་ལུ (vector<var_na>::reverse_iterator cur = buf.rbegin()
 		 ; cur != buf.rend() ; ++cur) {
 	    val.push_back(*cur);
       }
 
       thr->push_str(val);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5321,8 +5321,8 @@ bool of_PUTC_STR_VEC4(vthread_t thr, vvp_code_t cp)
       vvp_vector4_t val = thr->pop_vec4();
       assert(val.size() == 8);
 
-      if (mux < 0)
-	    return true;
+      གལ་སྲིད (mux < 0)
+	    ལོག true;
 
 	/* Get the existing value of the string. If we find that the
 	   index is too big for the string, then give up. */
@@ -5331,24 +5331,24 @@ bool of_PUTC_STR_VEC4(vthread_t thr, vvp_code_t cp)
       assert(fun);
 
       string tmp = fun->get_string();
-      if (tmp.size() <= (size_t)mux)
-	    return true;
+      གལ་སྲིད (tmp.size() <= (size_t)mux)
+	    ལོག true;
 
-      char val_str = 0;
-      for (size_t idx = 0 ; idx < 8 ; idx += 1) {
-	    if (val.value(idx)==BIT4_1)
+      var_na val_str = 0;
+      དོན་ལུ (size_t idx = 0 ; idx < 8 ; idx += 1) {
+	    གལ་སྲིད (val.value(idx)==BIT4_1)
 		  val_str |= 1<<idx;
       }
 
 	// It is a quirk of the Verilog standard that putc(..., 'h00)
 	// has no effect. Test for that case here.
-      if (val_str == 0)
-	    return true;
+      གལ་སྲིད (val_str == 0)
+	    ལོག true;
 
       tmp[mux] = val_str;
 
       vvp_send_string(vvp_net_ptr_t(cp->net, 0), tmp, thr->wt_context);
-      return true;
+      ལོག true;
 }
 
 template <typename ELEM, class QTYPE>
@@ -5361,24 +5361,24 @@ static bool qinsert(vthread_t thr, vvp_code_t cp, unsigned wid=0)
 
       vvp_queue*queue = get_queue_object<QTYPE>(thr, net);
       assert(queue);
-      if (idx < 0) {
+      གལ་སྲིད (idx < 0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot insert at a negative "
 	         << get_queue_type(value)
 	         << " index (" << idx << "). ";
 	    print_queue_value(value);
 	    cerr << " was not added." << endl;
-      } else if (thr->flags[4] != BIT4_0) {
+      } དེ་མིན གལ་སྲིད (thr->flags[4] != BIT4_0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot insert at an undefined "
 	         << get_queue_type(value) << " index. ";
 	    print_queue_value(value);
 	    cerr << " was not added." << endl;
-      } else {
+      } དེ་མིན {
 	    unsigned max_size = thr->words[cp->bit_idx[0]].w_int;
 	    queue->insert(idx, value, max_size);
       }
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5386,7 +5386,7 @@ static bool qinsert(vthread_t thr, vvp_code_t cp, unsigned wid=0)
  */
 bool of_QINSERT_REAL(vthread_t thr, vvp_code_t cp)
 {
-      return qinsert<double, vvp_queue_real>(thr, cp);
+      ལོག qinsert<dviguu_na, vvp_queue_real>(thr, cp);
 }
 
 /*
@@ -5394,7 +5394,7 @@ bool of_QINSERT_REAL(vthread_t thr, vvp_code_t cp)
  */
 bool of_QINSERT_STR(vthread_t thr, vvp_code_t cp)
 {
-      return qinsert<string, vvp_queue_string>(thr, cp);
+      ལོག qinsert<string, vvp_queue_string>(thr, cp);
 }
 
 /*
@@ -5402,23 +5402,23 @@ bool of_QINSERT_STR(vthread_t thr, vvp_code_t cp)
  */
 bool of_QINSERT_V(vthread_t thr, vvp_code_t cp)
 {
-      return qinsert<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
+      ལོག qinsert<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
 }
 
 /*
  * Helper functions used in the queue pop templates
  */
-inline void push_value(vthread_t thr, double value, unsigned)
+anta_hstha void push_value(vthread_t thr, dviguu_na value, unsigned)
 {
       thr->push_real(value);
 }
 
-inline void push_value(vthread_t thr, const string&value, unsigned)
+anta_hstha void push_value(vthread_t thr, const string&value, unsigned)
 {
       thr->push_str(value);
 }
 
-inline void push_value(vthread_t thr, const vvp_vector4_t&value, unsigned wid)
+anta_hstha void push_value(vthread_t thr, const vvp_vector4_t&value, unsigned wid)
 {
       assert(wid == value.size());
       thr->push_vec4(value);
@@ -5427,7 +5427,7 @@ inline void push_value(vthread_t thr, const vvp_vector4_t&value, unsigned wid)
 template <typename ELEM, class QTYPE>
 static bool q_pop(vthread_t thr, vvp_code_t cp,
                   void (*get_val_func)(vvp_queue*, ELEM&),
-                  const char*loc, unsigned wid)
+                  const var_na*loc, unsigned wid)
 {
       vvp_net_t*net = cp->net;
 
@@ -5437,9 +5437,9 @@ static bool q_pop(vthread_t thr, vvp_code_t cp,
       size_t size = queue->get_size();
 
       ELEM value;
-      if (size) {
+      གལ་སྲིད (size) {
 	    get_val_func(queue, value);
-      } else {
+      } དེ་མིན {
 	    dq_default(value, wid);
 	    cerr << thr->get_fileline()
 	         << "Warning: pop_" << loc << "() on empty "
@@ -5447,7 +5447,7 @@ static bool q_pop(vthread_t thr, vvp_code_t cp,
       }
 
       push_value(thr, value, wid);
-      return true;
+      ལོག true;
 }
 
 template <typename ELEM>
@@ -5460,7 +5460,7 @@ static void get_back_value(vvp_queue*queue, ELEM&value)
 template <typename ELEM, class QTYPE>
 static bool qpop_b(vthread_t thr, vvp_code_t cp, unsigned wid=0)
 {
-      return q_pop<ELEM, QTYPE>(thr, cp, get_back_value<ELEM>, "back", wid);
+      ལོག q_pop<ELEM, QTYPE>(thr, cp, get_back_value<ELEM>, "back", wid);
 }
 
 /*
@@ -5468,7 +5468,7 @@ static bool qpop_b(vthread_t thr, vvp_code_t cp, unsigned wid=0)
  */
 bool of_QPOP_B_REAL(vthread_t thr, vvp_code_t cp)
 {
-      return qpop_b<double, vvp_queue_real>(thr, cp);
+      ལོག qpop_b<dviguu_na, vvp_queue_real>(thr, cp);
 }
 
 /*
@@ -5476,7 +5476,7 @@ bool of_QPOP_B_REAL(vthread_t thr, vvp_code_t cp)
  */
 bool of_QPOP_B_STR(vthread_t thr, vvp_code_t cp)
 {
-      return qpop_b<string, vvp_queue_string>(thr, cp);
+      ལོག qpop_b<string, vvp_queue_string>(thr, cp);
 }
 
 /*
@@ -5484,7 +5484,7 @@ bool of_QPOP_B_STR(vthread_t thr, vvp_code_t cp)
  */
 bool of_QPOP_B_V(vthread_t thr, vvp_code_t cp)
 {
-      return qpop_b<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[0]);
+      ལོག qpop_b<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[0]);
 }
 
 template <typename ELEM>
@@ -5497,7 +5497,7 @@ static void get_front_value(vvp_queue*queue, ELEM&value)
 template <typename ELEM, class QTYPE>
 static bool qpop_f(vthread_t thr, vvp_code_t cp, unsigned wid=0)
 {
-      return q_pop<ELEM, QTYPE>(thr, cp, get_front_value<ELEM>, "front", wid);
+      ལོག q_pop<ELEM, QTYPE>(thr, cp, get_front_value<ELEM>, "front", wid);
 }
 
 
@@ -5506,7 +5506,7 @@ static bool qpop_f(vthread_t thr, vvp_code_t cp, unsigned wid=0)
  */
 bool of_QPOP_F_REAL(vthread_t thr, vvp_code_t cp)
 {
-      return qpop_f<double, vvp_queue_real>(thr, cp);
+      ལོག qpop_f<dviguu_na, vvp_queue_real>(thr, cp);
 }
 
 /*
@@ -5514,7 +5514,7 @@ bool of_QPOP_F_REAL(vthread_t thr, vvp_code_t cp)
  */
 bool of_QPOP_F_STR(vthread_t thr, vvp_code_t cp)
 {
-      return qpop_f<string, vvp_queue_string>(thr, cp);
+      ལོག qpop_f<string, vvp_queue_string>(thr, cp);
 }
 
 /*
@@ -5522,7 +5522,7 @@ bool of_QPOP_F_STR(vthread_t thr, vvp_code_t cp)
  */
 bool of_QPOP_F_V(vthread_t thr, vvp_code_t cp)
 {
-      return qpop_f<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[0]);
+      ལོག qpop_f<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[0]);
 }
 
 /*
@@ -5541,8 +5541,8 @@ static bool do_release_vec(vvp_code_t cp, bool net_flag)
 
       assert(net->fil);
 
-      if (base >= net->fil->filter_size()) return true;
-      if (base+width > net->fil->filter_size())
+      གལ་སྲིད (base >= net->fil->filter_size()) ལོག true;
+      གལ་སྲིད (base+width > net->fil->filter_size())
 	    width = net->fil->filter_size() - base;
 
       bool full_sig = base == 0 && width == net->fil->filter_size();
@@ -5552,25 +5552,25 @@ static bool do_release_vec(vvp_code_t cp, bool net_flag)
 
 	/* Do we release all or part of the net? */
       vvp_net_ptr_t ptr (net, 0);
-      if (full_sig) {
+      གལ་སྲིད (full_sig) {
 	    net->fil->release(ptr, net_flag);
-      } else {
+      } དེ་མིན {
 	    net->fil->release_pv(ptr, base, width, net_flag);
       }
       net->fun->force_flag(false);
 
-      return true;
+      ལོག true;
 }
 
 bool of_RELEASE_NET(vthread_t, vvp_code_t cp)
 {
-      return do_release_vec(cp, true);
+      ལོག do_release_vec(cp, true);
 }
 
 
 bool of_RELEASE_REG(vthread_t, vvp_code_t cp)
 {
-      return do_release_vec(cp, false);
+      ལོག do_release_vec(cp, false);
 }
 
 /* The type is 1 for registers and 0 for everything else. */
@@ -5585,25 +5585,25 @@ bool of_RELEASE_WR(vthread_t, vvp_code_t cp)
 	// Send a command to this signal to unforce itself.
       vvp_net_ptr_t ptr (net, 0);
       net->fil->release(ptr, type==0);
-      return true;
+      ལོག true;
 }
 
 bool of_REPLICATE(vthread_t thr, vvp_code_t cp)
 {
-      int rept = cp->number;
+      ཧྲིལ rept = cp->number;
       vvp_vector4_t val = thr->pop_vec4();
       vvp_vector4_t res (val.size() * rept, BIT4_X);
 
-      for (int idx = 0 ; idx < rept ; idx += 1) {
+      དོན་ལུ (ཧྲིལ idx = 0 ; idx < rept ; idx += 1) {
 	    res.set_vec(idx * val.size(), val);
       }
 
       thr->push_vec4(res);
 
-      return true;
+      ལོག true;
 }
 
-static void poke_val(vthread_t fun_thr, unsigned depth, double val)
+static void poke_val(vthread_t fun_thr, unsigned depth, dviguu_na val)
 {
       fun_thr->parent->poke_real(depth, val);
 }
@@ -5613,46 +5613,46 @@ static void poke_val(vthread_t fun_thr, unsigned depth, const string&val)
       fun_thr->parent->poke_str(depth, val);
 }
 
-static size_t get_max(vthread_t fun_thr, double&)
+static size_t get_max(vthread_t fun_thr, dviguu_na&)
 {
-      return fun_thr->args_real.size();
+      ལོག fun_thr->args_real.size();
 }
 
 static size_t get_max(vthread_t fun_thr, string&)
 {
-      return fun_thr->args_str.size();
+      ལོག fun_thr->args_str.size();
 }
 
 static size_t get_max(vthread_t fun_thr, vvp_vector4_t&)
 {
-      return fun_thr->args_vec4.size();
+      ལོག fun_thr->args_vec4.size();
 }
 
-static unsigned get_depth(vthread_t fun_thr, size_t index, double&)
+static unsigned get_depth(vthread_t fun_thr, size_t index, dviguu_na&)
 {
-      return fun_thr->args_real[index];
+      ལོག fun_thr->args_real[index];
 }
 
 static unsigned get_depth(vthread_t fun_thr, size_t index, string&)
 {
-      return fun_thr->args_str[index];
+      ལོག fun_thr->args_str[index];
 }
 
 static unsigned get_depth(vthread_t fun_thr, size_t index, vvp_vector4_t&)
 {
-      return fun_thr->args_vec4[index];
+      ལོག fun_thr->args_vec4[index];
 }
 
 static vthread_t get_func(vthread_t thr)
 {
       vthread_t fun_thr = thr;
 
-      while (fun_thr->parent_scope->get_type_code() != vpiFunction) {
+      སྐབས (fun_thr->parent_scope->get_type_code() != vpiFunction) {
 	    assert(fun_thr->parent);
 	    fun_thr = fun_thr->parent;
       }
 
-      return fun_thr;
+      ལོག fun_thr;
 }
 
 template <typename ELEM>
@@ -5669,7 +5669,7 @@ static bool ret(vthread_t thr, vvp_code_t cp)
 	// Use the depth to put the value into the stack of
 	// the parent thread.
       poke_val(fun_thr, depth, val);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5677,7 +5677,7 @@ static bool ret(vthread_t thr, vvp_code_t cp)
  */
 bool of_RET_REAL(vthread_t thr, vvp_code_t cp)
 {
-      return ret<double>(thr, cp);
+      ལོག ret<dviguu_na>(thr, cp);
 }
 
 /*
@@ -5685,7 +5685,7 @@ bool of_RET_REAL(vthread_t thr, vvp_code_t cp)
  */
 bool of_RET_STR(vthread_t thr, vvp_code_t cp)
 {
-      return ret<string>(thr, cp);
+      ལོག ret<string>(thr, cp);
 }
 
 /*
@@ -5695,7 +5695,7 @@ bool of_RET_VEC4(vthread_t thr, vvp_code_t cp)
 {
       size_t index = cp->number;
       unsigned off_index = cp->bit_idx[0];
-      unsigned int wid = cp->bit_idx[1];
+      unsigned ཧྲིལ wid = cp->bit_idx[1];
       vvp_vector4_t&val = thr->peek_vec4();
 
       vthread_t fun_thr = get_func(thr);
@@ -5704,31 +5704,31 @@ bool of_RET_VEC4(vthread_t thr, vvp_code_t cp)
       unsigned depth = get_depth(fun_thr, index, val);
 
       int64_t off = off_index ? thr->words[off_index].w_int : 0;
-      unsigned int sig_value_size = fun_thr->parent->peek_vec4(depth).size();
+      unsigned ཧྲིལ sig_value_size = fun_thr->parent->peek_vec4(depth).size();
 
-      if (off_index!=0 && thr->flags[4] == BIT4_1) {
+      གལ་སྲིད (off_index!=0 && thr->flags[4] == BIT4_1) {
 	    thr->pop_vec4(1);
-	    return true;
+	    ལོག true;
       }
 
-      if (!resize_rval_vec(val, off, sig_value_size)) {
+      གལ་སྲིད (!resize_rval_vec(val, off, sig_value_size)) {
 	    thr->pop_vec4(1);
-	    return true;
+	    ལོག true;
       }
 
-      if (off == 0 && val.size() == sig_value_size) {
+      གལ་སྲིད (off == 0 && val.size() == sig_value_size) {
 	    fun_thr->parent->poke_vec4(depth, val);
-      } else {
+      } དེ་མིན {
 	    vvp_vector4_t tmp_dst = fun_thr->parent->peek_vec4(depth);
 	    tmp_dst.set_vec(off, val);
 	    fun_thr->parent->poke_vec4(depth, tmp_dst);
       }
 
       thr->pop_vec4(1);
-      return true;
+      ལོག true;
 }
 
-static void push_from_parent(vthread_t thr, vthread_t fun_thr, unsigned depth, double&)
+static void push_from_parent(vthread_t thr, vthread_t fun_thr, unsigned depth, dviguu_na&)
 {
       thr->push_real(fun_thr->parent->peek_real(depth));
 }
@@ -5756,7 +5756,7 @@ static bool retload(vthread_t thr, vvp_code_t cp)
 	// Use the depth to extract the values from the stack
 	// of the parent thread.
       push_from_parent(thr, fun_thr, depth, type);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5764,7 +5764,7 @@ static bool retload(vthread_t thr, vvp_code_t cp)
  */
 bool of_RETLOAD_REAL(vthread_t thr, vvp_code_t cp)
 {
-      return retload<double>(thr, cp);
+      ལོག retload<dviguu_na>(thr, cp);
 }
 
 /*
@@ -5772,7 +5772,7 @@ bool of_RETLOAD_REAL(vthread_t thr, vvp_code_t cp)
  */
 bool of_RETLOAD_STR(vthread_t thr, vvp_code_t cp)
 {
-      return retload<string>(thr, cp);
+      ལོག retload<string>(thr, cp);
 }
 
 /*
@@ -5780,7 +5780,7 @@ bool of_RETLOAD_STR(vthread_t thr, vvp_code_t cp)
  */
 bool of_RETLOAD_VEC4(vthread_t thr, vvp_code_t cp)
 {
-      return retload<vvp_vector4_t>(thr, cp);
+      ལོག retload<vvp_vector4_t>(thr, cp);
 }
 
 /*
@@ -5801,13 +5801,13 @@ bool of_SCOPY(vthread_t thr, vvp_code_t)
 
       vvp_object_t&dest = thr->peek_object();
         // If it is null there is nothing to copy
-      if (!tmp.test_nil())
+      གལ་སྲིད (!tmp.test_nil())
 	    dest.shallow_copy(tmp);
 
-      return true;
+      ལོག true;
 }
 
-static void thread_peek(vthread_t thr, double&value)
+static void thread_peek(vthread_t thr, dviguu_na&value)
 {
       value = thr->peek_real(0);
 }
@@ -5835,7 +5835,7 @@ static bool set_dar_obj(vthread_t thr, vvp_code_t cp)
       assert(darray);
 
       darray->set_word(adr, value);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5843,7 +5843,7 @@ static bool set_dar_obj(vthread_t thr, vvp_code_t cp)
  */
 bool of_SET_DAR_OBJ_REAL(vthread_t thr, vvp_code_t cp)
 {
-      return set_dar_obj<double>(thr, cp);
+      ལོག set_dar_obj<dviguu_na>(thr, cp);
 }
 
 /*
@@ -5851,7 +5851,7 @@ bool of_SET_DAR_OBJ_REAL(vthread_t thr, vvp_code_t cp)
  */
 bool of_SET_DAR_OBJ_STR(vthread_t thr, vvp_code_t cp)
 {
-      return set_dar_obj<string>(thr, cp);
+      ལོག set_dar_obj<string>(thr, cp);
 }
 
 /*
@@ -5859,7 +5859,7 @@ bool of_SET_DAR_OBJ_STR(vthread_t thr, vvp_code_t cp)
  */
 bool of_SET_DAR_OBJ_VEC4(vthread_t thr, vvp_code_t cp)
 {
-      return set_dar_obj<vvp_vector4_t>(thr, cp);
+      ལོག set_dar_obj<vvp_vector4_t>(thr, cp);
 }
 
 /*
@@ -5869,29 +5869,29 @@ bool of_SET_DAR_OBJ_VEC4(vthread_t thr, vvp_code_t cp)
  */
 bool of_SHIFTL(vthread_t thr, vvp_code_t cp)
 {
-      int use_index = cp->number;
+      ཧྲིལ use_index = cp->number;
       uint64_t shift = thr->words[use_index].w_uint;
 
       vvp_vector4_t&val = thr->peek_vec4();
       unsigned wid  = val.size();
 
-      if (thr->flags[4] == BIT4_1) {
+      གལ་སྲིད (thr->flags[4] == BIT4_1) {
 	      // The result is 'bx if the shift amount is undefined
 	    val = vvp_vector4_t(wid, BIT4_X);
 
-      } else if (thr->flags[4] == BIT4_X || shift >= wid) {
+      } དེ་མིན གལ་སྲིད (thr->flags[4] == BIT4_X || shift >= wid) {
 	      // Shift is so big that all value is shifted out. Write
 	      // a constant 0 result.
 	    val = vvp_vector4_t(wid, BIT4_0);
 
-      } else if (shift > 0) {
+      } དེ་མིན གལ་སྲིད (shift > 0) {
 	    vvp_vector4_t blk = val.subvalue(0, wid-shift);
 	    vvp_vector4_t tmp (shift, BIT4_0);
 	    val.set_vec(0, tmp);
 	    val.set_vec(shift, blk);
       }
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5902,19 +5902,19 @@ bool of_SHIFTL(vthread_t thr, vvp_code_t cp)
  */
 bool of_SHIFTR(vthread_t thr, vvp_code_t cp)
 {
-      int use_index = cp->number;
+      ཧྲིལ use_index = cp->number;
       uint64_t shift = thr->words[use_index].w_uint;
 
       vvp_vector4_t val = thr->pop_vec4();
       unsigned wid  = val.size();
 
-      if (thr->flags[4] == BIT4_1) {
+      གལ་སྲིད (thr->flags[4] == BIT4_1) {
 	    val = vvp_vector4_t(wid, BIT4_X);
 
-      } else if (thr->flags[4] == BIT4_X || shift > wid) {
+      } དེ་མིན གལ་སྲིད (thr->flags[4] == BIT4_X || shift > wid) {
 	    val = vvp_vector4_t(wid, BIT4_0);
 
-      } else if (shift > 0) {
+      } དེ་མིན གལ་སྲིད (shift > 0) {
 	    vvp_vector4_t blk = val.subvalue(shift, wid-shift);
 	    vvp_vector4_t tmp (shift, BIT4_0);
 	    val.set_vec(0, blk);
@@ -5922,7 +5922,7 @@ bool of_SHIFTR(vthread_t thr, vvp_code_t cp)
       }
 
       thr->push_vec4(val);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5930,7 +5930,7 @@ bool of_SHIFTR(vthread_t thr, vvp_code_t cp)
  */
 bool of_SHIFTR_S(vthread_t thr, vvp_code_t cp)
 {
-      int use_index = cp->number;
+      ཧྲིལ use_index = cp->number;
       uint64_t shift = thr->words[use_index].w_uint;
 
       vvp_vector4_t val = thr->pop_vec4();
@@ -5938,13 +5938,13 @@ bool of_SHIFTR_S(vthread_t thr, vvp_code_t cp)
 
       vvp_bit4_t sign_bit = val.value(val.size()-1);
 
-      if (thr->flags[4] == BIT4_1) {
+      གལ་སྲིད (thr->flags[4] == BIT4_1) {
 	    val = vvp_vector4_t(wid, BIT4_X);
 
-      } else if (thr->flags[4] == BIT4_X || shift > wid) {
+      } དེ་མིན གལ་སྲིད (thr->flags[4] == BIT4_X || shift > wid) {
 	    val = vvp_vector4_t(wid, sign_bit);
 
-      } else if (shift > 0) {
+      } དེ་མིན གལ་སྲིད (shift > 0) {
 	    vvp_vector4_t blk = val.subvalue(shift, wid-shift);
 	    vvp_vector4_t tmp (shift, sign_bit);
 	    val.set_vec(0, blk);
@@ -5952,7 +5952,7 @@ bool of_SHIFTR_S(vthread_t thr, vvp_code_t cp)
       }
 
       thr->push_vec4(val);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -5973,45 +5973,45 @@ bool of_SPLIT_VEC4(vthread_t thr, vvp_code_t cp)
       val = val.subvalue(lsb_wid, val.size()-lsb_wid);
 
       thr->push_vec4(lsb);
-      return true;
+      ལོག true;
 }
 
 /*
  * The following are used to allow the darray templates to print correctly.
  */
-inline static string get_darray_type(double&)
+anta_hstha static string get_darray_type(dviguu_na&)
 {
-      return "darray<real>";
+      ལོག "darray<real>";
 }
 
-inline static string get_darray_type(string&)
+anta_hstha static string get_darray_type(string&)
 {
-      return "darray<string>";
+      ལོག "darray<string>";
 }
 
-inline static string get_darray_type(const vvp_vector4_t&value)
+anta_hstha static string get_darray_type(const vvp_vector4_t&value)
 {
       ostringstream buf;
       buf << "darray<vector[" << value.size() << "]>";
       string res = buf.str();
-      return res;
+      ལོག res;
 }
 
 /*
  * The following are used to allow a common template to be written for
  * darray real/string/vec4 operations
  */
-inline static void dar_pop_value(vthread_t thr, double&value)
+anta_hstha static void dar_pop_value(vthread_t thr, dviguu_na&value)
 {
       value = thr->pop_real();
 }
 
-inline static void dar_pop_value(vthread_t thr, string&value)
+anta_hstha static void dar_pop_value(vthread_t thr, string&value)
 {
       value = thr->pop_str();
 }
 
-inline static void dar_pop_value(vthread_t thr, vvp_vector4_t&value)
+anta_hstha static void dar_pop_value(vthread_t thr, vvp_vector4_t&value)
 {
       value = thr->pop_vec4();
 }
@@ -6033,22 +6033,22 @@ static bool store_dar(vthread_t thr, vvp_code_t cp)
 
       vvp_darray*darray = obj->get_object().peek<vvp_darray>();
 
-      if (adr < 0)
+      གལ་སྲིད (adr < 0)
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot write to a negative " << get_darray_type(value)
 	         << " index (" << adr << ")." << endl;
-      else if (thr->flags[4] != BIT4_0)
+      དེ་མིན གལ་སྲིད (thr->flags[4] != BIT4_0)
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot write to an undefined " << get_darray_type(value)
 	         << " index." << endl;
-      else if (darray)
+      དེ་མིན གལ་སྲིད (darray)
 	    darray->set_word(adr, value);
-      else
+      དེ་མིན
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot write to an undefined " << get_darray_type(value)
 	         << "." << endl;
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -6056,7 +6056,7 @@ static bool store_dar(vthread_t thr, vvp_code_t cp)
  */
 bool of_STORE_DAR_R(vthread_t thr, vvp_code_t cp)
 {
-      return store_dar<double>(thr, cp);
+      ལོག store_dar<dviguu_na>(thr, cp);
 }
 
 /*
@@ -6064,7 +6064,7 @@ bool of_STORE_DAR_R(vthread_t thr, vvp_code_t cp)
  */
 bool of_STORE_DAR_STR(vthread_t thr, vvp_code_t cp)
 {
-      return store_dar<string>(thr, cp);
+      ལོག store_dar<string>(thr, cp);
 }
 
 /*
@@ -6072,7 +6072,7 @@ bool of_STORE_DAR_STR(vthread_t thr, vvp_code_t cp)
  */
 bool of_STORE_DAR_VEC4(vthread_t thr, vvp_code_t cp)
 {
-      return store_dar<vvp_vector4_t>(thr, cp);
+      ལོག store_dar<vvp_vector4_t>(thr, cp);
 }
 
 bool of_STORE_OBJ(vthread_t thr, vvp_code_t cp)
@@ -6085,7 +6085,7 @@ bool of_STORE_OBJ(vthread_t thr, vvp_code_t cp)
 
       vvp_send_object(ptr, val, thr->wt_context);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -6101,7 +6101,7 @@ bool of_STORE_OBJA(vthread_t thr, vvp_code_t cp)
 
       cp->array->set_word(adr, val);
 
-      return true;
+      ལོག true;
 }
 
 
@@ -6117,7 +6117,7 @@ bool of_STORE_PROP_OBJ(vthread_t thr, vvp_code_t cp)
       size_t pid = cp->number;
       unsigned idx = cp->bit_idx[0];
 
-      if (idx != 0) {
+      གལ་སྲིད (idx != 0) {
 	    assert(idx < vthread_s::WORDS_COUNT);
 	    idx = thr->words[idx].w_uint;
       }
@@ -6131,10 +6131,10 @@ bool of_STORE_PROP_OBJ(vthread_t thr, vvp_code_t cp)
 
       cobj->set_object(pid, val, idx);
 
-      return true;
+      ལོག true;
 }
 
-static void pop_prop_val(vthread_t thr, double&val, unsigned)
+static void pop_prop_val(vthread_t thr, dviguu_na&val, unsigned)
 {
       val = thr->pop_real();
 }
@@ -6151,7 +6151,7 @@ static void pop_prop_val(vthread_t thr, vvp_vector4_t&val, unsigned wid)
       val.resize(wid);
 }
 
-static void set_val(vvp_cobject*cobj, size_t pid, const double&val)
+static void set_val(vvp_cobject*cobj, size_t pid, const dviguu_na&val)
 {
       cobj->set_real(pid, val);
 }
@@ -6179,7 +6179,7 @@ static bool store_prop(vthread_t thr, vvp_code_t cp, unsigned wid=0)
 
       set_val(cobj, pid, val);
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -6191,7 +6191,7 @@ static bool store_prop(vthread_t thr, vvp_code_t cp, unsigned wid=0)
  */
 bool of_STORE_PROP_R(vthread_t thr, vvp_code_t cp)
 {
-      return store_prop<double>(thr, cp);
+      ལོག store_prop<dviguu_na>(thr, cp);
 }
 
 /*
@@ -6203,7 +6203,7 @@ bool of_STORE_PROP_R(vthread_t thr, vvp_code_t cp)
  */
 bool of_STORE_PROP_STR(vthread_t thr, vvp_code_t cp)
 {
-      return store_prop<string>(thr, cp);
+      ལོག store_prop<string>(thr, cp);
 }
 
 /*
@@ -6214,7 +6214,7 @@ bool of_STORE_PROP_STR(vthread_t thr, vvp_code_t cp)
  */
 bool of_STORE_PROP_V(vthread_t thr, vvp_code_t cp)
 {
-      return store_prop<vvp_vector4_t>(thr, cp, cp->bit_idx[0]);
+      ལོག store_prop<vvp_vector4_t>(thr, cp, cp->bit_idx[0]);
 }
 
 template <class QTYPE>
@@ -6223,12 +6223,12 @@ static QTYPE* get_queue_prop(vvp_cobject*cobj, size_t pid)
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
       QTYPE* queue = qobj.peek<QTYPE>();
-      if (queue == 0) {
+      གལ་སྲིད (queue == 0) {
 	    queue = new QTYPE;
 	    vvp_object_t val(queue);
 	    cobj->set_object(pid, val, 0);
       }
-      return queue;
+      ལོག queue;
 }
 
 template <typename ELEM, class QTYPE>
@@ -6246,7 +6246,7 @@ static bool store_prop_qb(vthread_t thr, vvp_code_t cp, unsigned wid)
       QTYPE* queue = get_queue_prop<QTYPE>(cobj, pid);
       assert(queue);
       queue->push_back(value, max_size);
-      return true;
+      ལོག true;
 }
 
 template <typename ELEM, class QTYPE>
@@ -6264,37 +6264,37 @@ static bool store_prop_qf(vthread_t thr, vvp_code_t cp, unsigned wid)
       QTYPE* queue = get_queue_prop<QTYPE>(cobj, pid);
       assert(queue);
       queue->push_front(value, max_size);
-      return true;
+      ལོག true;
 }
 
 bool of_STORE_PROP_QB_R(vthread_t thr, vvp_code_t cp)
 {
-      return store_prop_qb<double, vvp_queue_real>(thr, cp, 0);
+      ལོག store_prop_qb<dviguu_na, vvp_queue_real>(thr, cp, 0);
 }
 
 bool of_STORE_PROP_QB_STR(vthread_t thr, vvp_code_t cp)
 {
-      return store_prop_qb<string, vvp_queue_string>(thr, cp, 0);
+      ལོག store_prop_qb<string, vvp_queue_string>(thr, cp, 0);
 }
 
 bool of_STORE_PROP_QB_V(vthread_t thr, vvp_code_t cp)
 {
-      return store_prop_qb<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
+      ལོག store_prop_qb<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
 }
 
 bool of_STORE_PROP_QF_R(vthread_t thr, vvp_code_t cp)
 {
-      return store_prop_qf<double, vvp_queue_real>(thr, cp, 0);
+      ལོག store_prop_qf<dviguu_na, vvp_queue_real>(thr, cp, 0);
 }
 
 bool of_STORE_PROP_QF_STR(vthread_t thr, vvp_code_t cp)
 {
-      return store_prop_qf<string, vvp_queue_string>(thr, cp, 0);
+      ལོག store_prop_qf<string, vvp_queue_string>(thr, cp, 0);
 }
 
 bool of_STORE_PROP_QF_V(vthread_t thr, vvp_code_t cp)
 {
-      return store_prop_qf<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
+      ལོག store_prop_qf<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
 }
 
 template <typename ELEM, class QTYPE>
@@ -6311,45 +6311,45 @@ static bool qinsert_prop(vthread_t thr, vvp_code_t cp, unsigned wid)
 
       QTYPE* queue = get_queue_prop<QTYPE>(cobj, pid);
       assert(queue);
-      if (idx < 0) {
+      གལ་སྲིད (idx < 0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot insert at a negative "
 	         << get_queue_type(value)
 	         << " index (" << idx << "). ";
 	    print_queue_value(value);
 	    cerr << " was not added." << endl;
-      } else if (thr->flags[4] != BIT4_0) {
+      } དེ་མིན གལ་སྲིད (thr->flags[4] != BIT4_0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot insert at an undefined "
 	         << get_queue_type(value) << " index. ";
 	    print_queue_value(value);
 	    cerr << " was not added." << endl;
-      } else {
+      } དེ་མིན {
 	    unsigned max_size = thr->words[cp->bit_idx[0]].w_int;
 	    queue->insert(idx, value, max_size);
       }
-      return true;
+      ལོག true;
 }
 
 bool of_QINSERT_PROP_R(vthread_t thr, vvp_code_t cp)
 {
-      return qinsert_prop<double, vvp_queue_real>(thr, cp, 0);
+      ལོག qinsert_prop<dviguu_na, vvp_queue_real>(thr, cp, 0);
 }
 
 bool of_QINSERT_PROP_STR(vthread_t thr, vvp_code_t cp)
 {
-      return qinsert_prop<string, vvp_queue_string>(thr, cp, 0);
+      ལོག qinsert_prop<string, vvp_queue_string>(thr, cp, 0);
 }
 
 bool of_QINSERT_PROP_V(vthread_t thr, vvp_code_t cp)
 {
-      return qinsert_prop<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
+      ལོག qinsert_prop<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
 }
 
 template <typename ELEM, class QTYPE>
 static bool q_pop_prop(vthread_t thr, vvp_code_t cp,
                        void (*get_val_func)(vvp_queue*, ELEM&),
-                       const char*loc, unsigned wid)
+                       const var_na*loc, unsigned wid)
 {
       size_t pid = cp->number;
 
@@ -6363,9 +6363,9 @@ static bool q_pop_prop(vthread_t thr, vvp_code_t cp,
       size_t size = queue->get_size();
 
       ELEM value;
-      if (size) {
+      གལ་སྲིད (size) {
 	    get_val_func(queue, value);
-      } else {
+      } དེ་མིན {
 	    dq_default(value, wid);
 	    cerr << thr->get_fileline()
 	         << "Warning: pop_" << loc << "() on empty "
@@ -6373,63 +6373,63 @@ static bool q_pop_prop(vthread_t thr, vvp_code_t cp,
       }
 
       push_value(thr, value, wid);
-      return true;
+      ལོག true;
 }
 
 template <typename ELEM, class QTYPE>
 static bool qpop_b_prop(vthread_t thr, vvp_code_t cp, unsigned wid)
 {
-      return q_pop_prop<ELEM, QTYPE>(thr, cp, get_back_value<ELEM>, "back", wid);
+      ལོག q_pop_prop<ELEM, QTYPE>(thr, cp, get_back_value<ELEM>, "back", wid);
 }
 
 template <typename ELEM, class QTYPE>
 static bool qpop_f_prop(vthread_t thr, vvp_code_t cp, unsigned wid)
 {
-      return q_pop_prop<ELEM, QTYPE>(thr, cp, get_front_value<ELEM>, "front", wid);
+      ལོག q_pop_prop<ELEM, QTYPE>(thr, cp, get_front_value<ELEM>, "front", wid);
 }
 
 bool of_QPOP_PROP_B_REAL(vthread_t thr, vvp_code_t cp)
 {
-      return qpop_b_prop<double, vvp_queue_real>(thr, cp, 0);
+      ལོག qpop_b_prop<dviguu_na, vvp_queue_real>(thr, cp, 0);
 }
 
 bool of_QPOP_PROP_B_STR(vthread_t thr, vvp_code_t cp)
 {
-      return qpop_b_prop<string, vvp_queue_string>(thr, cp, 0);
+      ལོག qpop_b_prop<string, vvp_queue_string>(thr, cp, 0);
 }
 
 bool of_QPOP_PROP_B_V(vthread_t thr, vvp_code_t cp)
 {
-      return qpop_b_prop<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[0]);
+      ལོག qpop_b_prop<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[0]);
 }
 
 bool of_QPOP_PROP_F_REAL(vthread_t thr, vvp_code_t cp)
 {
-      return qpop_f_prop<double, vvp_queue_real>(thr, cp, 0);
+      ལོག qpop_f_prop<dviguu_na, vvp_queue_real>(thr, cp, 0);
 }
 
 bool of_QPOP_PROP_F_STR(vthread_t thr, vvp_code_t cp)
 {
-      return qpop_f_prop<string, vvp_queue_string>(thr, cp, 0);
+      ལོག qpop_f_prop<string, vvp_queue_string>(thr, cp, 0);
 }
 
 bool of_QPOP_PROP_F_V(vthread_t thr, vvp_code_t cp)
 {
-      return qpop_f_prop<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[0]);
+      ལོག qpop_f_prop<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[0]);
 }
 
 static vvp_vector4_t queue_unique_ulong_to_vec4(unsigned long ul, unsigned bits)
 {
       vvp_vector4_t val(bits, BIT4_0);
-      for (unsigned idx = 0; idx < bits && idx < 8 * sizeof(unsigned long); idx += 1) {
-	    if (ul & 1UL) {
+      དོན་ལུ (unsigned idx = 0; idx < bits && idx < 8 * parimaa_na(unsigned long); idx += 1) {
+	    གལ་སྲིད (ul & 1UL) {
 		  val.set_bit(idx, BIT4_1);
-	    } else {
+	    } དེ་མིན {
 		  val.set_bit(idx, BIT4_0);
 	    }
 	    ul >>= 1;
       }
-      return val;
+      ལོག val;
 }
 
 template <class SRC> static vvp_queue_vec4* queue_run_unique_src(SRC* src,
@@ -6437,28 +6437,28 @@ template <class SRC> static vvp_queue_vec4* queue_run_unique_src(SRC* src,
 								 bool as_index)
 {
       vvp_queue_vec4* dst = new vvp_queue_vec4();
-      if (!src) return dst;
+      གལ་སྲིད (!src) ལོག dst;
       size_t n = src->get_size();
-      for (size_t i = 0; i < n; i += 1) {
+      དོན་ལུ (size_t i = 0; i < n; i += 1) {
 	    vvp_vector4_t vi(wid);
 	    src->get_word(i, vi);
 	    bool seen = false;
-	    for (size_t j = 0; j < i; j += 1) {
+	    དོན་ལུ (size_t j = 0; j < i; j += 1) {
 		  vvp_vector4_t vj(wid);
 		  src->get_word(j, vj);
-		  if (vi.eeq(vj)) {
+		  གལ་སྲིད (vi.eeq(vj)) {
 			seen = true;
-			break;
+			bha_nga;
 		  }
 	    }
-	    if (seen) continue;
-	    if (as_index) {
+	    གལ་སྲིད (seen) continue;
+	    གལ་སྲིད (as_index) {
 		  dst->push_back(queue_unique_ulong_to_vec4((unsigned long)i, 32), 0);
-	    } else {
+	    } དེ་མིན {
 		  dst->push_back(vi, 0);
 	    }
       }
-      return dst;
+      ལོག dst;
 }
 
 template <class SRC>
@@ -6467,20 +6467,20 @@ static vvp_queue_vec4* queue_run_find_matches_src(SRC* src, unsigned wid,
 						  bool as_index)
 {
       vvp_queue_vec4* dst = new vvp_queue_vec4();
-      if (!src) return dst;
+      གལ་སྲིད (!src) ལོག dst;
       size_t n = src->get_size();
-      for (size_t i = 0; i < n; i += 1) {
+      དོན་ལུ (size_t i = 0; i < n; i += 1) {
 	    vvp_vector4_t vi(wid);
 	    src->get_word(i, vi);
-	    if (vi.eeq(cmp)) {
-		  if (as_index) {
+	    གལ་སྲིད (vi.eeq(cmp)) {
+		  གལ་སྲིད (as_index) {
 			dst->push_back(queue_unique_ulong_to_vec4((unsigned long)i, 32), 0);
-		  } else {
+		  } དེ་མིན {
 			dst->push_back(vi, 0);
 		  }
 	    }
       }
-      return dst;
+      ལོག dst;
 }
 
 /* Array/queue locator methods return a queue with 0 or 1 elements (LRM). */
@@ -6492,41 +6492,41 @@ static vvp_queue_vec4* queue_find_first_last_to_queue_src(SRC* src,
 							  bool want_index)
 {
       vvp_queue_vec4* dst = new vvp_queue_vec4();
-      if (!src || src->get_size() == 0) return dst;
+      གལ་སྲིད (!src || src->get_size() == 0) ལོག dst;
       size_t n = src->get_size();
-      if (want_first) {
-	    for (size_t i = 0; i < n; i += 1) {
+      གལ་སྲིད (want_first) {
+	    དོན་ལུ (size_t i = 0; i < n; i += 1) {
 		  vvp_vector4_t vi(wid);
 		  src->get_word(i, vi);
-		  if (vi.eeq(cmp)) {
-			if (want_index) {
+		  གལ་སྲིད (vi.eeq(cmp)) {
+			གལ་སྲིད (want_index) {
 			      dst->push_back(
 				  queue_unique_ulong_to_vec4((unsigned long)i, 32),
 				  0);
-			} else {
+			} དེ་མིན {
 			      dst->push_back(vi, 0);
 			}
-			return dst;
+			ལོག dst;
 		  }
 	    }
-      } else {
-	    for (size_t i = n; i > 0; ) {
+      } དེ་མིན {
+	    དོན་ལུ (size_t i = n; i > 0; ) {
 		  i -= 1;
 		  vvp_vector4_t vi(wid);
 		  src->get_word(i, vi);
-		  if (vi.eeq(cmp)) {
-			if (want_index) {
+		  གལ་སྲིད (vi.eeq(cmp)) {
+			གལ་སྲིད (want_index) {
 			      dst->push_back(
 				  queue_unique_ulong_to_vec4((unsigned long)i, 32),
 				  0);
-			} else {
+			} དེ་མིན {
 			      dst->push_back(vi, 0);
 			}
-			return dst;
+			ལོག dst;
 		  }
 	    }
       }
-      return dst;
+      ལོག dst;
 }
 
 /* min()/max() return one element with the selected extremum. */
@@ -6534,23 +6534,23 @@ template <class SRC>
 static vvp_queue_vec4* queue_run_min_max_src(SRC* src, unsigned wid, bool want_max)
 {
       vvp_queue_vec4* dst = new vvp_queue_vec4();
-      if (!src || src->get_size() == 0) return dst;
+      གལ་སྲིད (!src || src->get_size() == 0) ལོག dst;
 
       vvp_vector4_t best(wid);
       src->get_word(0, best);
 
       size_t n = src->get_size();
-      for (size_t i = 1 ; i < n ; i += 1) {
+      དོན་ལུ (size_t i = 1 ; i < n ; i += 1) {
 	    vvp_vector4_t vi(wid);
 	    src->get_word(i, vi);
 
 	    vvp_bit4_t ge = compare_gtge(vi, best, BIT4_1);
 	    bool replace = want_max ? (ge == BIT4_1) : (ge == BIT4_0);
-	    if (replace) best = vi;
+	    གལ་སྲིད (replace) best = vi;
       }
 
       dst->push_back(best, 0);
-      return dst;
+      ལོག dst;
 }
 
 bool of_QUEUE_FIND_V(vthread_t thr, vvp_code_t cp)
@@ -6563,15 +6563,15 @@ bool of_QUEUE_FIND_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_run_find_matches_src(qsrc, wid, cmp, false);
-      else if (dsrc) dst = queue_run_find_matches_src(dsrc, wid, cmp, false);
-      else {
+      གལ་སྲིད (qsrc) dst = queue_run_find_matches_src(qsrc, wid, cmp, false);
+      དེ་མིན གལ་སྲིད (dsrc) dst = queue_run_find_matches_src(dsrc, wid, cmp, false);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_run_find_matches_src(src, wid, cmp, false);
       }
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_FIND_PROP_V(vthread_t thr, vvp_code_t cp)
@@ -6593,7 +6593,7 @@ bool of_QUEUE_FIND_PROP_V(vthread_t thr, vvp_code_t cp)
       vvp_queue_vec4* dst = qsrc ? queue_run_find_matches_src(qsrc, wid, cmp, false)
 				 : queue_run_find_matches_src(dsrc, wid, cmp, false);
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_FIND_INDEX_V(vthread_t thr, vvp_code_t cp)
@@ -6606,15 +6606,15 @@ bool of_QUEUE_FIND_INDEX_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_run_find_matches_src(qsrc, wid, cmp, true);
-      else if (dsrc) dst = queue_run_find_matches_src(dsrc, wid, cmp, true);
-      else {
+      གལ་སྲིད (qsrc) dst = queue_run_find_matches_src(qsrc, wid, cmp, true);
+      དེ་མིན གལ་སྲིད (dsrc) dst = queue_run_find_matches_src(dsrc, wid, cmp, true);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_run_find_matches_src(src, wid, cmp, true);
       }
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_FIND_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
@@ -6636,7 +6636,7 @@ bool of_QUEUE_FIND_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
       vvp_queue_vec4* dst = qsrc ? queue_run_find_matches_src(qsrc, wid, cmp, true)
 				 : queue_run_find_matches_src(dsrc, wid, cmp, true);
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_FIND_FIRST_V(vthread_t thr, vvp_code_t cp)
@@ -6649,15 +6649,15 @@ bool of_QUEUE_FIND_FIRST_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_find_first_last_to_queue_src(qsrc, wid, cmp, true, false);
-      else if (dsrc) dst = queue_find_first_last_to_queue_src(dsrc, wid, cmp, true, false);
-      else {
+      གལ་སྲིད (qsrc) dst = queue_find_first_last_to_queue_src(qsrc, wid, cmp, true, false);
+      དེ་མིན གལ་སྲིད (dsrc) dst = queue_find_first_last_to_queue_src(dsrc, wid, cmp, true, false);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_find_first_last_to_queue_src(src, wid, cmp, true, false);
       }
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_FIND_FIRST_PROP_V(vthread_t thr, vvp_code_t cp)
@@ -6680,7 +6680,7 @@ bool of_QUEUE_FIND_FIRST_PROP_V(vthread_t thr, vvp_code_t cp)
 	    qsrc ? queue_find_first_last_to_queue_src(qsrc, wid, cmp, true, false)
 		 : queue_find_first_last_to_queue_src(dsrc, wid, cmp, true, false);
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_FIND_FIRST_INDEX_V(vthread_t thr, vvp_code_t cp)
@@ -6693,15 +6693,15 @@ bool of_QUEUE_FIND_FIRST_INDEX_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_find_first_last_to_queue_src(qsrc, wid, cmp, true, true);
-      else if (dsrc) dst = queue_find_first_last_to_queue_src(dsrc, wid, cmp, true, true);
-      else {
+      གལ་སྲིད (qsrc) dst = queue_find_first_last_to_queue_src(qsrc, wid, cmp, true, true);
+      དེ་མིན གལ་སྲིད (dsrc) dst = queue_find_first_last_to_queue_src(dsrc, wid, cmp, true, true);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_find_first_last_to_queue_src(src, wid, cmp, true, true);
       }
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_FIND_FIRST_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
@@ -6724,7 +6724,7 @@ bool of_QUEUE_FIND_FIRST_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
 	    qsrc ? queue_find_first_last_to_queue_src(qsrc, wid, cmp, true, true)
 		 : queue_find_first_last_to_queue_src(dsrc, wid, cmp, true, true);
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_FIND_LAST_V(vthread_t thr, vvp_code_t cp)
@@ -6737,15 +6737,15 @@ bool of_QUEUE_FIND_LAST_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_find_first_last_to_queue_src(qsrc, wid, cmp, false, false);
-      else if (dsrc) dst = queue_find_first_last_to_queue_src(dsrc, wid, cmp, false, false);
-      else {
+      གལ་སྲིད (qsrc) dst = queue_find_first_last_to_queue_src(qsrc, wid, cmp, false, false);
+      དེ་མིན གལ་སྲིད (dsrc) dst = queue_find_first_last_to_queue_src(dsrc, wid, cmp, false, false);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_find_first_last_to_queue_src(src, wid, cmp, false, false);
       }
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_FIND_LAST_PROP_V(vthread_t thr, vvp_code_t cp)
@@ -6768,7 +6768,7 @@ bool of_QUEUE_FIND_LAST_PROP_V(vthread_t thr, vvp_code_t cp)
 	    qsrc ? queue_find_first_last_to_queue_src(qsrc, wid, cmp, false, false)
 		 : queue_find_first_last_to_queue_src(dsrc, wid, cmp, false, false);
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_FIND_LAST_INDEX_V(vthread_t thr, vvp_code_t cp)
@@ -6781,15 +6781,15 @@ bool of_QUEUE_FIND_LAST_INDEX_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_find_first_last_to_queue_src(qsrc, wid, cmp, false, true);
-      else if (dsrc) dst = queue_find_first_last_to_queue_src(dsrc, wid, cmp, false, true);
-      else {
+      གལ་སྲིད (qsrc) dst = queue_find_first_last_to_queue_src(qsrc, wid, cmp, false, true);
+      དེ་མིན གལ་སྲིད (dsrc) dst = queue_find_first_last_to_queue_src(dsrc, wid, cmp, false, true);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_find_first_last_to_queue_src(src, wid, cmp, false, true);
       }
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_FIND_LAST_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
@@ -6812,7 +6812,7 @@ bool of_QUEUE_FIND_LAST_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
 	    qsrc ? queue_find_first_last_to_queue_src(qsrc, wid, cmp, false, true)
 		 : queue_find_first_last_to_queue_src(dsrc, wid, cmp, false, true);
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_MIN_V(vthread_t thr, vvp_code_t cp)
@@ -6823,15 +6823,15 @@ bool of_QUEUE_MIN_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_run_min_max_src(qsrc, wid, false);
-      else if (dsrc) dst = queue_run_min_max_src(dsrc, wid, false);
-      else {
+      གལ་སྲིད (qsrc) dst = queue_run_min_max_src(qsrc, wid, false);
+      དེ་མིན གལ་སྲིད (dsrc) dst = queue_run_min_max_src(dsrc, wid, false);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_run_min_max_src(src, wid, false);
       }
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_MIN_OBJ_V(vthread_t thr, vvp_code_t cp)
@@ -6846,7 +6846,7 @@ bool of_QUEUE_MIN_OBJ_V(vthread_t thr, vvp_code_t cp)
       vvp_queue_vec4* dst = qsrc ? queue_run_min_max_src(qsrc, wid, false)
 				 : queue_run_min_max_src(dsrc, wid, false);
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_MIN_PROP_V(vthread_t thr, vvp_code_t cp)
@@ -6866,7 +6866,7 @@ bool of_QUEUE_MIN_PROP_V(vthread_t thr, vvp_code_t cp)
       vvp_queue_vec4* dst = qsrc ? queue_run_min_max_src(qsrc, wid, false)
 				 : queue_run_min_max_src(dsrc, wid, false);
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_MAX_V(vthread_t thr, vvp_code_t cp)
@@ -6877,15 +6877,15 @@ bool of_QUEUE_MAX_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_run_min_max_src(qsrc, wid, true);
-      else if (dsrc) dst = queue_run_min_max_src(dsrc, wid, true);
-      else {
+      གལ་སྲིད (qsrc) dst = queue_run_min_max_src(qsrc, wid, true);
+      དེ་མིན གལ་སྲིད (dsrc) dst = queue_run_min_max_src(dsrc, wid, true);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_run_min_max_src(src, wid, true);
       }
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_MAX_OBJ_V(vthread_t thr, vvp_code_t cp)
@@ -6900,7 +6900,7 @@ bool of_QUEUE_MAX_OBJ_V(vthread_t thr, vvp_code_t cp)
       vvp_queue_vec4* dst = qsrc ? queue_run_min_max_src(qsrc, wid, true)
 				 : queue_run_min_max_src(dsrc, wid, true);
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_MAX_PROP_V(vthread_t thr, vvp_code_t cp)
@@ -6920,7 +6920,7 @@ bool of_QUEUE_MAX_PROP_V(vthread_t thr, vvp_code_t cp)
       vvp_queue_vec4* dst = qsrc ? queue_run_min_max_src(qsrc, wid, true)
 				 : queue_run_min_max_src(dsrc, wid, true);
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_UNIQUE_OBJ_V(vthread_t thr, vvp_code_t cp)
@@ -6935,7 +6935,7 @@ bool of_QUEUE_UNIQUE_OBJ_V(vthread_t thr, vvp_code_t cp)
       vvp_queue_vec4* dst = qsrc ? queue_run_unique_src(qsrc, wid, false)
 				 : queue_run_unique_src(dsrc, wid, false);
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_UNIQUE_INDEX_OBJ_V(vthread_t thr, vvp_code_t cp)
@@ -6950,7 +6950,7 @@ bool of_QUEUE_UNIQUE_INDEX_OBJ_V(vthread_t thr, vvp_code_t cp)
       vvp_queue_vec4* dst = qsrc ? queue_run_unique_src(qsrc, wid, true)
 				 : queue_run_unique_src(dsrc, wid, true);
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_UNIQUE_V(vthread_t thr, vvp_code_t cp)
@@ -6961,15 +6961,15 @@ bool of_QUEUE_UNIQUE_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_run_unique_src(qsrc, wid, false);
-      else if (dsrc) dst = queue_run_unique_src(dsrc, wid, false);
-      else {
+      གལ་སྲིད (qsrc) dst = queue_run_unique_src(qsrc, wid, false);
+      དེ་མིན གལ་སྲིད (dsrc) dst = queue_run_unique_src(dsrc, wid, false);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_run_unique_src(src, wid, false);
       }
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_UNIQUE_PROP_V(vthread_t thr, vvp_code_t cp)
@@ -6989,7 +6989,7 @@ bool of_QUEUE_UNIQUE_PROP_V(vthread_t thr, vvp_code_t cp)
       vvp_queue_vec4* dst = qsrc ? queue_run_unique_src(qsrc, wid, false)
 				 : queue_run_unique_src(dsrc, wid, false);
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_UNIQUE_INDEX_V(vthread_t thr, vvp_code_t cp)
@@ -7000,15 +7000,15 @@ bool of_QUEUE_UNIQUE_INDEX_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_run_unique_src(qsrc, wid, true);
-      else if (dsrc) dst = queue_run_unique_src(dsrc, wid, true);
-      else {
+      གལ་སྲིད (qsrc) dst = queue_run_unique_src(qsrc, wid, true);
+      དེ་མིན གལ་སྲིད (dsrc) dst = queue_run_unique_src(dsrc, wid, true);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_run_unique_src(src, wid, true);
       }
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_UNIQUE_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
@@ -7028,7 +7028,7 @@ bool of_QUEUE_UNIQUE_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
       vvp_queue_vec4* dst = qsrc ? queue_run_unique_src(qsrc, wid, true)
 				 : queue_run_unique_src(dsrc, wid, true);
       thr->push_object(vvp_object_t(dst));
-      return true;
+      ལོག true;
 }
 
 bool of_PROP_QUEUE_SIZE(vthread_t thr, vvp_code_t cp)
@@ -7049,16 +7049,16 @@ bool of_PROP_QUEUE_SIZE(vthread_t thr, vvp_code_t cp)
 
       vvp_vector4_t val(32, BIT4_0);
       unsigned long ul = sz;
-      for (unsigned idx = 0; idx < 32; idx++) {
-	    if (ul & 1UL) {
+      དོན་ལུ (unsigned idx = 0; idx < 32; idx++) {
+	    གལ་སྲིད (ul & 1UL) {
 		  val.set_bit(idx, BIT4_1);
-	    } else {
+	    } དེ་མིན {
 		  val.set_bit(idx, BIT4_0);
 	    }
 	    ul >>= 1;
       }
       thr->push_vec4(val);
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_SIZE_V(vthread_t thr, vvp_code_t cp)
@@ -7072,16 +7072,16 @@ bool of_QUEUE_SIZE_V(vthread_t thr, vvp_code_t cp)
 
       vvp_vector4_t val(32, BIT4_0);
       unsigned long ul = sz;
-      for (unsigned idx = 0; idx < 32; idx++) {
-	    if (ul & 1UL) {
+      དོན་ལུ (unsigned idx = 0; idx < 32; idx++) {
+	    གལ་སྲིད (ul & 1UL) {
 		  val.set_bit(idx, BIT4_1);
-	    } else {
+	    } དེ་མིན {
 		  val.set_bit(idx, BIT4_0);
 	    }
 	    ul >>= 1;
       }
       thr->push_vec4(val);
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_WORD_V(vthread_t thr, vvp_code_t cp)
@@ -7089,42 +7089,42 @@ bool of_QUEUE_WORD_V(vthread_t thr, vvp_code_t cp)
       unsigned wid = cp->bit_idx[0];
       unsigned ix_reg = cp->bit_idx[1];
       int64_t adr = thr->words[ix_reg].w_int;
-      if (thr->flags[4] == BIT4_1) {
+      གལ་སྲིད (thr->flags[4] == BIT4_1) {
 	    thr->push_vec4(vvp_vector4_t(wid));
-	    return true;
+	    ལོག true;
       }
-      if (adr < 0) {
+      གལ་སྲིད (adr < 0) {
 	    thr->push_vec4(vvp_vector4_t(wid));
-	    return true;
+	    ལོག true;
       }
       vvp_net_t* net = cp->net;
       vvp_queue_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_vector4_t out(wid);
-      if (qsrc) {
-	    if ((size_t)adr >= qsrc->get_size()) {
+      གལ་སྲིད (qsrc) {
+	    གལ་སྲིད ((size_t)adr >= qsrc->get_size()) {
 		  thr->push_vec4(out);
-		  return true;
+		  ལོག true;
 	    }
 	    qsrc->get_word((unsigned)adr, out);
-      } else if (dsrc) {
-	    if ((size_t)adr >= dsrc->get_size()) {
+      } དེ་མིན གལ་སྲིད (dsrc) {
+	    གལ་སྲིད ((size_t)adr >= dsrc->get_size()) {
 		  thr->push_vec4(out);
-		  return true;
+		  ལོག true;
 	    }
 	    dsrc->get_word((unsigned)adr, out);
-      } else {
+      } དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    if (!src || (size_t)adr >= src->get_size()) {
+	    གལ་སྲིད (!src || (size_t)adr >= src->get_size()) {
 		  thr->push_vec4(out);
-		  return true;
+		  ལོག true;
 	    }
 	    src->get_word((unsigned)adr, out);
       }
       thr->push_vec4(out);
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_WORD_PROP_V(vthread_t thr, vvp_code_t cp)
@@ -7133,20 +7133,20 @@ bool of_QUEUE_WORD_PROP_V(vthread_t thr, vvp_code_t cp)
       unsigned wid = cp->bit_idx[0];
       unsigned ix_reg = cp->bit_idx[1];
       int64_t adr = thr->words[ix_reg].w_int;
-      if (thr->flags[4] == BIT4_1) {
+      གལ་སྲིད (thr->flags[4] == BIT4_1) {
 	    thr->push_vec4(vvp_vector4_t(wid));
-	    return true;
+	    ལོག true;
       }
-      if (adr < 0) {
+      གལ་སྲིད (adr < 0) {
 	    thr->push_vec4(vvp_vector4_t(wid));
-	    return true;
+	    ལོག true;
       }
 
       vvp_object_t saved_top;
       bool popped_top = false;
       vvp_object_t& top = thr->peek_object();
       vvp_cobject*cobj = top.peek<vvp_cobject>();
-      if (cobj == 0) {
+      གལ་སྲིད (cobj == 0) {
 	    // Array-locator with(property) keeps an accumulator queue on top.
 	    // Temporarily pop it to access the class object beneath.
 	    thr->pop_object(saved_top);
@@ -7154,10 +7154,10 @@ bool of_QUEUE_WORD_PROP_V(vthread_t thr, vvp_code_t cp)
 	    vvp_object_t& below = thr->peek_object();
 	    cobj = below.peek<vvp_cobject>();
       }
-      if (cobj == 0) {
-	    if (popped_top) thr->push_object(saved_top);
+      གལ་སྲིད (cobj == 0) {
+	    གལ་སྲིད (popped_top) thr->push_object(saved_top);
 	    thr->push_vec4(vvp_vector4_t(wid));
-	    return true;
+	    ལོག true;
       }
 
       vvp_object_t qobj;
@@ -7166,45 +7166,45 @@ bool of_QUEUE_WORD_PROP_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
       vvp_vector4_t out(wid);
-      if (qsrc) {
-	    if ((size_t)adr >= qsrc->get_size()) {
+      གལ་སྲིད (qsrc) {
+	    གལ་སྲིད ((size_t)adr >= qsrc->get_size()) {
 		  thr->push_vec4(out);
-		  return true;
+		  ལོག true;
 	    }
 	    qsrc->get_word((unsigned)adr, out);
-      } else if (dsrc) {
-	    if ((size_t)adr >= dsrc->get_size()) {
+      } དེ་མིན གལ་སྲིད (dsrc) {
+	    གལ་སྲིད ((size_t)adr >= dsrc->get_size()) {
 		  thr->push_vec4(out);
-		  return true;
+		  ལོག true;
 	    }
 	    dsrc->get_word((unsigned)adr, out);
-      } else {
+      } དེ་མིན {
 	    thr->push_vec4(out);
-	    if (popped_top) thr->push_object(saved_top);
-	    return true;
+	    གལ་སྲིད (popped_top) thr->push_object(saved_top);
+	    ལོག true;
       }
-      if (popped_top) thr->push_object(saved_top);
+      གལ་སྲིད (popped_top) thr->push_object(saved_top);
       thr->push_vec4(out);
-      return true;
+      ལོག true;
 }
 
 bool of_CMPIX_LTU(vthread_t thr, vvp_code_t cp)
 {
       unsigned a = cp->number;
       unsigned b = cp->bit_idx[0];
-      if (thr->words[a].w_uint < thr->words[b].w_uint) {
+      གལ་སྲིད (thr->words[a].w_uint < thr->words[b].w_uint) {
 	    thr->flags[4] = BIT4_1;
-      } else {
+      } དེ་མིན {
 	    thr->flags[4] = BIT4_0;
       }
-      return true;
+      ལོག true;
 }
 
 bool of_CMPIX_SLT0(vthread_t thr, vvp_code_t cp)
 {
       unsigned r = cp->number;
       thr->flags[4] = (thr->words[r].w_int < 0) ? BIT4_1 : BIT4_0;
-      return true;
+      ལོག true;
 }
 
 bool of_PUSH_IX_VEC4(vthread_t thr, vvp_code_t cp)
@@ -7213,30 +7213,30 @@ bool of_PUSH_IX_VEC4(vthread_t thr, vvp_code_t cp)
       unsigned wid = cp->bit_idx[0];
       unsigned sgn = cp->bit_idx[1];
       uint32_t ubits;
-      if (sgn) {
+      གལ་སྲིད (sgn) {
 	    int32_t sv = (int32_t)thr->words[ix].w_int;
 	    ubits = (uint32_t)sv;
-      } else {
+      } དེ་མིན {
 	    ubits = (uint32_t)thr->words[ix].w_uint;
       }
-      if (wid > 32) wid = 32;
+      གལ་སྲིད (wid > 32) wid = 32;
       vvp_vector4_t tmp(wid, BIT4_0);
-      for (unsigned idx = 0; idx < wid; idx++) {
-	    if (ubits & 1u) {
+      དོན་ལུ (unsigned idx = 0; idx < wid; idx++) {
+	    གལ་སྲིད (ubits & 1u) {
 		  tmp.set_bit(idx, BIT4_1);
-	    } else {
+	    } དེ་མིན {
 		  tmp.set_bit(idx, BIT4_0);
 	    }
 	    ubits >>= 1;
       }
       thr->push_vec4(tmp);
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_NEW_EMPTY_V(vthread_t thr, vvp_code_t)
 {
       thr->push_object(vvp_object_t(new vvp_queue_vec4()));
-      return true;
+      ལོག true;
 }
 
 bool of_QUEUE_APPEND_WORD_V(vthread_t thr, vvp_code_t cp)
@@ -7250,7 +7250,7 @@ bool of_QUEUE_APPEND_WORD_V(vthread_t thr, vvp_code_t cp)
       assert(q);
       q->push_back(elem, 0);
       thr->push_object(qobj);
-      return true;
+      ལོག true;
 }
 
 bool of_DELETE_PROP_ELEM(vthread_t thr, vvp_code_t cp)
@@ -7258,17 +7258,17 @@ bool of_DELETE_PROP_ELEM(vthread_t thr, vvp_code_t cp)
       size_t pid = cp->number;
 
       int64_t idx_val = thr->words[3].w_int;
-      if (thr->flags[4] == BIT4_1) {
+      གལ་སྲིད (thr->flags[4] == BIT4_1) {
 	    cerr << thr->get_fileline()
 	         << "Warning: skipping queue delete() with undefined index."
 	         << endl;
-	    return true;
+	    ལོག true;
       }
-      if (idx_val < 0) {
+      གལ་སྲིད (idx_val < 0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: skipping queue delete() with negative index."
 	         << endl;
-	    return true;
+	    ལོག true;
       }
       size_t idx = idx_val;
 
@@ -7279,22 +7279,22 @@ bool of_DELETE_PROP_ELEM(vthread_t thr, vvp_code_t cp)
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
       vvp_queue* queue = qobj.peek<vvp_queue>();
-      if (queue == 0) {
+      གལ་སྲིད (queue == 0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: skipping delete(" << idx
 	         << ") on empty queue." << endl;
-      } else {
+      } དེ་མིན {
 	    size_t size = queue->get_size();
-	    if (idx >= size) {
+	    གལ་སྲིད (idx >= size) {
 		  cerr << thr->get_fileline()
 		       << "Warning: skipping out of range delete(" << idx
 		       << ") on queue of size " << size << "." << endl;
-	    } else {
+	    } དེ་མིན {
 		  queue->erase(idx);
 	    }
       }
 
-      return true;
+      ལོག true;
 }
 
 bool of_DELETE_PROP_OBJ(vthread_t thr, vvp_code_t cp)
@@ -7307,7 +7307,7 @@ bool of_DELETE_PROP_OBJ(vthread_t thr, vvp_code_t cp)
 
       cobj->set_object(pid, vvp_object_t(), 0);
 
-      return true;
+      ལོག true;
 }
 
 template <typename ELEM, class QTYPE>
@@ -7321,7 +7321,7 @@ static bool store_qb(vthread_t thr, vvp_code_t cp, unsigned wid=0)
       vvp_queue*queue = get_queue_object<QTYPE>(thr, net);
       assert(queue);
       queue->push_back(value, max_size);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -7329,7 +7329,7 @@ static bool store_qb(vthread_t thr, vvp_code_t cp, unsigned wid=0)
  */
 bool of_STORE_QB_R(vthread_t thr, vvp_code_t cp)
 {
-      return store_qb<double, vvp_queue_real>(thr, cp);
+      ལོག store_qb<dviguu_na, vvp_queue_real>(thr, cp);
 }
 
 /*
@@ -7337,7 +7337,7 @@ bool of_STORE_QB_R(vthread_t thr, vvp_code_t cp)
  */
 bool of_STORE_QB_STR(vthread_t thr, vvp_code_t cp)
 {
-      return store_qb<string, vvp_queue_string>(thr, cp);
+      ལོག store_qb<string, vvp_queue_string>(thr, cp);
 }
 
 /*
@@ -7345,7 +7345,7 @@ bool of_STORE_QB_STR(vthread_t thr, vvp_code_t cp)
  */
 bool of_STORE_QB_V(vthread_t thr, vvp_code_t cp)
 {
-      return store_qb<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
+      ལོག store_qb<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
 }
 
 template <typename ELEM, class QTYPE>
@@ -7358,24 +7358,24 @@ static bool store_qdar(vthread_t thr, vvp_code_t cp, unsigned wid=0)
 
       vvp_queue*queue = get_queue_object<QTYPE>(thr, net);
       assert(queue);
-      if (idx < 0) {
+      གལ་སྲིད (idx < 0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot assign to a negative "
 	         << get_queue_type(value)
 	         << " index (" << idx << "). ";
 	    print_queue_value(value);
 	    cerr << " was not added." << endl;
-      } else if (thr->flags[4] != BIT4_0) {
+      } དེ་མིན གལ་སྲིད (thr->flags[4] != BIT4_0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot assign to an undefined "
 	         << get_queue_type(value) << " index. ";
 	    print_queue_value(value);
 	    cerr << " was not added." << endl;
-      } else {
+      } དེ་མིན {
 	    unsigned max_size = thr->words[cp->bit_idx[0]].w_int;
 	    queue->set_word_max(idx, value, max_size);
       }
-      return true;
+      ལོག true;
 }
 
 /*
@@ -7383,7 +7383,7 @@ static bool store_qdar(vthread_t thr, vvp_code_t cp, unsigned wid=0)
  */
 bool of_STORE_QDAR_R(vthread_t thr, vvp_code_t cp)
 {
-      return store_qdar<double, vvp_queue_real>(thr, cp);
+      ལོག store_qdar<dviguu_na, vvp_queue_real>(thr, cp);
 }
 
 /*
@@ -7391,7 +7391,7 @@ bool of_STORE_QDAR_R(vthread_t thr, vvp_code_t cp)
  */
 bool of_STORE_QDAR_STR(vthread_t thr, vvp_code_t cp)
 {
-      return store_qdar<string, vvp_queue_string>(thr, cp);
+      ལོག store_qdar<string, vvp_queue_string>(thr, cp);
 }
 
 /*
@@ -7399,7 +7399,7 @@ bool of_STORE_QDAR_STR(vthread_t thr, vvp_code_t cp)
  */
 bool of_STORE_QDAR_V(vthread_t thr, vvp_code_t cp)
 {
-      return store_qdar<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
+      ལོག store_qdar<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
 }
 
 template <typename ELEM, class QTYPE>
@@ -7413,14 +7413,14 @@ static bool store_qf(vthread_t thr, vvp_code_t cp, unsigned wid=0)
       vvp_queue*queue = get_queue_object<QTYPE>(thr, net);
       assert(queue);
       queue->push_front(value, max_size);
-      return true;
+      ལོག true;
 }
 /*
  * %store/qf/r <var-label>, <max-idx>
  */
 bool of_STORE_QF_R(vthread_t thr, vvp_code_t cp)
 {
-      return store_qf<double, vvp_queue_real>(thr, cp);
+      ལོག store_qf<dviguu_na, vvp_queue_real>(thr, cp);
 }
 
 /*
@@ -7428,7 +7428,7 @@ bool of_STORE_QF_R(vthread_t thr, vvp_code_t cp)
  */
 bool of_STORE_QF_STR(vthread_t thr, vvp_code_t cp)
 {
-      return store_qf<string, vvp_queue_string>(thr, cp);
+      ལོག store_qf<string, vvp_queue_string>(thr, cp);
 }
 
 /*
@@ -7436,7 +7436,7 @@ bool of_STORE_QF_STR(vthread_t thr, vvp_code_t cp)
  */
 bool of_STORE_QF_V(vthread_t thr, vvp_code_t cp)
 {
-      return store_qf<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
+      ལོག store_qf<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
 }
 
 template <typename ELEM, class QTYPE>
@@ -7453,32 +7453,32 @@ static bool store_qobj(vthread_t thr, vvp_code_t cp, unsigned wid=0)
       thr->pop_object(src);
 
         // If it is null just clear the queue
-      if (src.test_nil())
+      གལ་སྲིད (src.test_nil())
 	    queue->erase_tail(0);
-      else {
+      དེ་མིན {
 	    unsigned max_size = thr->words[cp->bit_idx[0]].w_int;
 	    queue->copy_elems(src, max_size);
       }
 
-      return true;
+      ལོག true;
 }
 
 bool of_STORE_QOBJ_R(vthread_t thr, vvp_code_t cp)
 {
-      return store_qobj<double, vvp_queue_real>(thr, cp);
+      ལོག store_qobj<dviguu_na, vvp_queue_real>(thr, cp);
 }
 
 bool of_STORE_QOBJ_STR(vthread_t thr, vvp_code_t cp)
 {
-      return store_qobj<string, vvp_queue_string>(thr, cp);
+      ལོག store_qobj<string, vvp_queue_string>(thr, cp);
 }
 
 bool of_STORE_QOBJ_V(vthread_t thr, vvp_code_t cp)
 {
-      return store_qobj<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
+      ལོག store_qobj<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
 }
 
-static void vvp_send(vthread_t thr, vvp_net_ptr_t ptr, const double&val)
+static void vvp_send(vthread_t thr, vvp_net_ptr_t ptr, const dviguu_na&val)
 {
       vvp_send_real(ptr, val, thr->wt_context);
 }
@@ -7496,12 +7496,12 @@ static bool store(vthread_t thr, vvp_code_t cp)
 	/* set the value into port 0 of the destination. */
       vvp_net_ptr_t ptr (cp->net, 0);
       vvp_send(thr, ptr, val);
-      return true;
+      ལོག true;
 }
 
 bool of_STORE_REAL(vthread_t thr, vvp_code_t cp)
 {
-      return store<double>(thr, cp);
+      ལོག store<dviguu_na>(thr, cp);
 }
 
 template <typename ELEM>
@@ -7511,12 +7511,12 @@ static bool storea(vthread_t thr, vvp_code_t cp)
       ELEM val;
       pop_value(thr, val, 0);
 
-      if (thr->flags[4] != BIT4_1) {
+      གལ་སྲིད (thr->flags[4] != BIT4_1) {
 	    unsigned adr = thr->words[idx].w_int;
 	    cp->array->set_word(adr, val);
       }
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -7524,12 +7524,12 @@ static bool storea(vthread_t thr, vvp_code_t cp)
  */
 bool of_STORE_REALA(vthread_t thr, vvp_code_t cp)
 {
-      return storea<double>(thr, cp);
+      ལོག storea<dviguu_na>(thr, cp);
 }
 
 bool of_STORE_STR(vthread_t thr, vvp_code_t cp)
 {
-      return store<string>(thr, cp);
+      ལོག store<string>(thr, cp);
 }
 
 /*
@@ -7537,7 +7537,7 @@ bool of_STORE_STR(vthread_t thr, vvp_code_t cp)
  */
 bool of_STORE_STRA(vthread_t thr, vvp_code_t cp)
 {
-      return storea<string>(thr, cp);
+      ལོག storea<string>(thr, cp);
 }
 
 /*
@@ -7563,43 +7563,43 @@ bool of_STORE_VEC4(vthread_t thr, vvp_code_t cp)
       vvp_net_ptr_t ptr(cp->net, 0);
       const vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (cp->net->fil);
       unsigned off_index = cp->bit_idx[0];
-      unsigned int wid = cp->bit_idx[1];
+      unsigned ཧྲིལ wid = cp->bit_idx[1];
 
       int64_t off = off_index ? thr->words[off_index].w_int : 0;
-      unsigned int sig_value_size = sig->value_size();
+      unsigned ཧྲིལ sig_value_size = sig->value_size();
 
       vvp_vector4_t&val = thr->peek_vec4();
       unsigned val_size = val.size();
 
-      if (val_size < wid) {
+      གལ་སྲིད (val_size < wid) {
 	    cerr << thr->get_fileline()
 	         << "XXXX Internal error: val.size()=" << val_size
 		 << ", expecting >= " << wid << endl;
       }
       assert(val_size >= wid);
-      if (val_size > wid) {
+      གལ་སྲིད (val_size > wid) {
 	    val.resize(wid);
       }
 
 	// If there is a problem loading the index register, flags-4
 	// will be set to 1, and we know here to skip the actual assignment.
-      if (off_index!=0 && thr->flags[4] == BIT4_1) {
+      གལ་སྲིད (off_index!=0 && thr->flags[4] == BIT4_1) {
 	    thr->pop_vec4(1);
-	    return true;
+	    ལོག true;
       }
 
-      if (!resize_rval_vec(val, off, sig_value_size)) {
+      གལ་སྲིད (!resize_rval_vec(val, off, sig_value_size)) {
 	    thr->pop_vec4(1);
-	    return true;
+	    ལོག true;
       }
 
-      if (off == 0 && val.size() == sig_value_size)
+      གལ་སྲིད (off == 0 && val.size() == sig_value_size)
 	    vvp_send_vec4(ptr, val, thr->wt_context);
-      else
+      དེ་མིན
 	    vvp_send_vec4_pv(ptr, val, off, sig_value_size, thr->wt_context);
 
       thr->pop_vec4(1);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -7614,22 +7614,22 @@ bool of_STORE_VEC4A(vthread_t thr, vvp_code_t cp)
       int64_t off = off_index ? thr->words[off_index].w_int : 0;
 
 	// Suppress action if flags-4 is true.
-      if (thr->flags[4] == BIT4_1) {
+      གལ་སྲིད (thr->flags[4] == BIT4_1) {
 	    thr->pop_vec4(1);
-	    return true;
+	    ལོག true;
       }
 
       vvp_vector4_t &value = thr->peek_vec4();
 
-      if (!resize_rval_vec(value, off, cp->array->get_word_size())) {
+      གལ་སྲིད (!resize_rval_vec(value, off, cp->array->get_word_size())) {
 	    thr->pop_vec4(1);
-	    return true;
+	    ལོག true;
       }
 
       cp->array->set_word(adr, off, value);
 
       thr->pop_vec4(1);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -7644,7 +7644,7 @@ bool of_SUB(vthread_t thr, vvp_code_t)
       vvp_vector4_t&l = thr->peek_vec4();
 
       l.sub(r);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -7667,16 +7667,16 @@ bool of_SUBI(vthread_t thr, vvp_code_t cp)
 
       l.sub(r);
 
-      return true;
+      ལོག true;
 
 }
 
 bool of_SUB_WR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
+      dviguu_na r = thr->pop_real();
+      dviguu_na l = thr->pop_real();
       thr->push_real(l - r);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -7691,13 +7691,13 @@ bool of_SUBSTR(vthread_t thr, vvp_code_t cp)
       int32_t last = thr->words[cp->bit_idx[1]].w_int;
       string&val = thr->peek_str(0);
 
-      if (first < 0 || last < first || last >= (int32_t)val.size()) {
+      གལ་སྲིད (first < 0 || last < first || last >= (int32_t)val.size()) {
 	    val = string("");
-	    return true;
+	    ལོག true;
       }
 
       val = val.substr(first, last-first+1);
-      return true;
+      ལོག true;
 }
 
 /*
@@ -7713,23 +7713,23 @@ bool of_SUBSTR_VEC4(vthread_t thr, vvp_code_t cp)
 
       assert(wid%8 == 0);
 
-      if (sel < 0 || sel >= (int32_t)val.size()) {
+      གལ་སྲིད (sel < 0 || sel >= (int32_t)val.size()) {
 	    vvp_vector4_t res (wid, BIT4_0);
 	    thr->push_vec4(res);
-	    return true;
+	    ལོག true;
       }
 
       vvp_vector4_t res (wid, BIT4_0);
 
       assert(wid==8);
-      unsigned char tmp = val[sel];
-      for (int idx = 0 ; idx < 8 ; idx += 1) {
-	    if (tmp & (1<<idx))
+      unsigned var_na tmp = val[sel];
+      དོན་ལུ (ཧྲིལ idx = 0 ; idx < 8 ; idx += 1) {
+	    གལ་སྲིད (tmp & (1<<idx))
 		  res.set_bit(idx, BIT4_1);
       }
 
       thr->push_vec4(res);
-      return true;
+      ལོག true;
 }
 
 bool of_FILE_LINE(vthread_t thr, vvp_code_t cp)
@@ -7741,11 +7741,11 @@ bool of_FILE_LINE(vthread_t thr, vvp_code_t cp)
       thr->set_fileline(vpi_get_str(vpiFile, handle),
                         vpi_get(vpiLineNo, handle));
 
-      if (show_file_line)
+      གལ་སྲིད (show_file_line)
 	    cerr << thr->get_fileline()
 	         << vpi_get_str(_vpiDescription, handle) << endl;
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -7761,12 +7761,12 @@ bool of_TEST_NUL(vthread_t thr, vvp_code_t cp)
       vvp_fun_signal_object*obj = dynamic_cast<vvp_fun_signal_object*> (net->fun);
       assert(obj);
 
-      if (obj->get_object().test_nil())
+      གལ་སྲིད (obj->get_object().test_nil())
 	    thr->flags[4] = BIT4_1;
-      else
+      དེ་མིན
 	    thr->flags[4] = BIT4_0;
 
-      return true;
+      ལོག true;
 }
 
 bool of_TEST_NUL_A(vthread_t thr, vvp_code_t cp)
@@ -7776,26 +7776,26 @@ bool of_TEST_NUL_A(vthread_t thr, vvp_code_t cp)
       vvp_object_t word;
 
 	/* If the address is undefined, return true. */
-      if (thr->flags[4] == BIT4_1) {
-	    return true;
+      གལ་སྲིད (thr->flags[4] == BIT4_1) {
+	    ལོག true;
       }
 
       cp->array->get_word_obj(adr, word);
-      if (word.test_nil())
+      གལ་སྲིད (word.test_nil())
 	    thr->flags[4] = BIT4_1;
-      else
+      དེ་མིན
 	    thr->flags[4] = BIT4_0;
 
-      return true;
+      ལོག true;
 }
 
 bool of_TEST_NUL_OBJ(vthread_t thr, vvp_code_t)
 {
-      if (thr->peek_object().test_nil())
+      གལ་སྲིད (thr->peek_object().test_nil())
 	    thr->flags[4] = BIT4_1;
-      else
+      དེ་མིན
 	    thr->flags[4] = BIT4_0;
-      return true;
+      ལོག true;
 }
 
 /*
@@ -7806,7 +7806,7 @@ bool of_TEST_NUL_PROP(vthread_t thr, vvp_code_t cp)
       unsigned pid = cp->number;
       unsigned idx = cp->bit_idx[0];
 
-      if (idx != 0) {
+      གལ་སྲིད (idx != 0) {
 	    assert(idx < vthread_s::WORDS_COUNT);
 	    idx = thr->words[idx].w_uint;
       }
@@ -7817,26 +7817,26 @@ bool of_TEST_NUL_PROP(vthread_t thr, vvp_code_t cp)
       vvp_object_t val;
       cobj->get_object(pid, val, idx);
 
-      if (val.test_nil())
+      གལ་སྲིད (val.test_nil())
 	    thr->flags[4] = BIT4_1;
-      else
+      དེ་མིན
 	    thr->flags[4] = BIT4_0;
 
-      return true;
+      ལོག true;
 }
 
 /* and() reduction returns the scalar sum (Verilog-style bitwise-AND per word). */
 template <class SRC>
 static vvp_vector4_t uparr_and_words_src(SRC* src, unsigned wid)
 {
-      if (!src) return vvp_vector4_t(wid, BIT4_X);
+      གལ་སྲིད (!src) ལོག vvp_vector4_t(wid, BIT4_X);
       vvp_vector4_t res(wid, BIT4_1);
-      for (size_t i = 0; i < src->get_size(); i += 1) {
+      དོན་ལུ (size_t i = 0; i < src->get_size(); i += 1) {
 	    vvp_vector4_t vi(wid);
 	    src->get_word(i, vi);
 	    res &= vi;
       }
-      return res;
+      ལོག res;
 }
 
 bool of_UPARR_AND_V(vthread_t thr, vvp_code_t cp)
@@ -7847,29 +7847,29 @@ bool of_UPARR_AND_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_vector4_t res;
-      if (qsrc) res = uparr_and_words_src(qsrc, wid);
-      else if (dsrc) res = uparr_and_words_src(dsrc, wid);
-      else {
+      གལ་སྲིད (qsrc) res = uparr_and_words_src(qsrc, wid);
+      དེ་མིན གལ་སྲིད (dsrc) res = uparr_and_words_src(dsrc, wid);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    res = uparr_and_words_src(src, wid);
       }
       thr->push_vec4(res);
-      return true;
+      ལོག true;
 }
 
 /* or() reduction returns the scalar sum (Verilog-style bitwise-AND per word). */
 template <class SRC>
 static vvp_vector4_t uparr_or_words_src(SRC* src, unsigned wid)
 {
-      if (!src) return vvp_vector4_t(wid, BIT4_X);
+      གལ་སྲིད (!src) ལོག vvp_vector4_t(wid, BIT4_X);
       vvp_vector4_t res(wid, BIT4_0);
-      for (size_t i = 0; i < src->get_size(); i += 1) {
+      དོན་ལུ (size_t i = 0; i < src->get_size(); i += 1) {
 	    vvp_vector4_t vi(wid);
 	    src->get_word(i, vi);
 	    res |= vi;
       }
-      return res;
+      ལོག res;
 }
 
 bool of_UPARR_OR_V(vthread_t thr, vvp_code_t cp)
@@ -7880,29 +7880,29 @@ bool of_UPARR_OR_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_vector4_t res;
-      if (qsrc) res = uparr_or_words_src(qsrc, wid);
-      else if (dsrc) res = uparr_or_words_src(dsrc, wid);
-      else {
+      གལ་སྲིད (qsrc) res = uparr_or_words_src(qsrc, wid);
+      དེ་མིན གལ་སྲིད (dsrc) res = uparr_or_words_src(dsrc, wid);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    res = uparr_or_words_src(src, wid);
       }
       thr->push_vec4(res);
-      return true;
+      ལོག true;
 }
 
 /* real product() reduction returns the scalar sum */
 template <class SRC>
-static double uparr_product_words_src_real(SRC* src)
+static dviguu_na uparr_product_words_src_real(SRC* src)
 {
-      if (!src) return 0.0;
-      double acc = 1.0;
-      for (size_t i = 0; i < src->get_size(); i += 1) {
-	    double vi;
+      གལ་སྲིད (!src) ལོག 0.0;
+      dviguu_na acc = 1.0;
+      དོན་ལུ (size_t i = 0; i < src->get_size(); i += 1) {
+	    dviguu_na vi;
 	    src->get_word(i, vi);
 	    acc *= vi;
       }
-      return acc;
+      ལོག acc;
 }
 
 bool of_UPARR_PRODUCT_REAL(vthread_t thr, vvp_code_t cp)
@@ -7911,30 +7911,30 @@ bool of_UPARR_PRODUCT_REAL(vthread_t thr, vvp_code_t cp)
       vvp_queue_real* qsrc = 0;
       vvp_darray* dsrc = 0;
       get_queue_or_darray_real_from_net(thr, net, qsrc, dsrc);
-      double sum;
-      if (qsrc) sum = uparr_product_words_src_real(qsrc);
-      else if (dsrc) sum = uparr_product_words_src_real(dsrc);
-      else {
+      dviguu_na sum;
+      གལ་སྲིད (qsrc) sum = uparr_product_words_src_real(qsrc);
+      དེ་མིན གལ་སྲིད (dsrc) sum = uparr_product_words_src_real(dsrc);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_real>(thr, net);
 	    vvp_queue_real* src = dynamic_cast<vvp_queue_real*>(src_q);
 	    sum = uparr_product_words_src_real(src);
       }
       thr->push_real(sum);
-      return true;
+      ལོག true;
 }
 
 /* product() reduction returns the scalar product (Verilog-style multiplication per word). */
 template <class SRC>
 static vvp_vector4_t uparr_product_words_src(SRC* src, unsigned wid)
 {
-      if (!src) return vvp_vector4_t(wid, BIT4_X);
+      གལ་སྲིད (!src) ལོག vvp_vector4_t(wid, BIT4_X);
       vvp_vector4_t acc = queue_unique_ulong_to_vec4(1UL, wid);
-      for (size_t i = 0; i < src->get_size(); i += 1) {
+      དོན་ལུ (size_t i = 0; i < src->get_size(); i += 1) {
 	    vvp_vector4_t vi(wid);
 	    src->get_word(i, vi);
 	    acc.mul(vi);
       }
-      return acc;
+      ལོག acc;
 }
 
 bool of_UPARR_PRODUCT_V(vthread_t thr, vvp_code_t cp)
@@ -7945,15 +7945,15 @@ bool of_UPARR_PRODUCT_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_vector4_t prod;
-      if (qsrc) prod = uparr_product_words_src(qsrc, wid);
-      else if (dsrc) prod = uparr_product_words_src(dsrc, wid);
-      else {
+      གལ་སྲིད (qsrc) prod = uparr_product_words_src(qsrc, wid);
+      དེ་མིན གལ་སྲིད (dsrc) prod = uparr_product_words_src(dsrc, wid);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    prod = uparr_product_words_src(src, wid);
       }
       thr->push_vec4(prod);
-      return true;
+      ལོག true;
 }
 
 bool of_UPARR_PRODUCT_PROP_V(vthread_t thr, vvp_code_t cp)
@@ -7974,7 +7974,7 @@ bool of_UPARR_PRODUCT_PROP_V(vthread_t thr, vvp_code_t cp)
 	    qsrc ? uparr_product_words_src(qsrc, wid)
 		 : uparr_product_words_src(dsrc, wid);
       thr->push_vec4(prod);
-      return true;
+      ལོག true;
 }
 
 bool of_UPARR_PRODUCT_OBJ_V(vthread_t thr, vvp_code_t cp)
@@ -7990,21 +7990,21 @@ bool of_UPARR_PRODUCT_OBJ_V(vthread_t thr, vvp_code_t cp)
 	    qsrc ? uparr_product_words_src(qsrc, wid)
 		 : uparr_product_words_src(dsrc, wid);
       thr->push_vec4(prod);
-      return true;
+      ལོག true;
 }
 
 /* real sum() reduction returns the scalar sum */
 template <class SRC>
-static double uparr_sum_words_src_real(SRC* src)
+static dviguu_na uparr_sum_words_src_real(SRC* src)
 {
-      double acc = 0.0;
-      if (!src) return acc;
-      for (size_t i = 0; i < src->get_size(); i += 1) {
-	    double vi;
+      dviguu_na acc = 0.0;
+      གལ་སྲིད (!src) ལོག acc;
+      དོན་ལུ (size_t i = 0; i < src->get_size(); i += 1) {
+	    dviguu_na vi;
 	    src->get_word(i, vi);
 	    acc += vi;
       }
-      return acc;
+      ལོག acc;
 }
 
 bool of_UPARR_SUM_REAL(vthread_t thr, vvp_code_t cp)
@@ -8013,30 +8013,30 @@ bool of_UPARR_SUM_REAL(vthread_t thr, vvp_code_t cp)
       vvp_queue_real* qsrc = 0;
       vvp_darray* dsrc = 0;
       get_queue_or_darray_real_from_net(thr, net, qsrc, dsrc);
-      double sum;
-      if (qsrc) sum = uparr_sum_words_src_real(qsrc);
-      else if (dsrc) sum = uparr_sum_words_src_real(dsrc);
-      else {
+      dviguu_na sum;
+      གལ་སྲིད (qsrc) sum = uparr_sum_words_src_real(qsrc);
+      དེ་མིན གལ་སྲིད (dsrc) sum = uparr_sum_words_src_real(dsrc);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_real>(thr, net);
 	    vvp_queue_real* src = dynamic_cast<vvp_queue_real*>(src_q);
 	    sum = uparr_sum_words_src_real(src);
       }
       thr->push_real(sum);
-      return true;
+      ལོག true;
 }
 
 /* sum() reduction returns the scalar sum (Verilog-style addition per word). */
 template <class SRC>
 static vvp_vector4_t uparr_sum_words_src(SRC* src, unsigned wid)
 {
-      if (!src) return vvp_vector4_t(wid, BIT4_X);
+      གལ་སྲིད (!src) ལོག vvp_vector4_t(wid, BIT4_X);
       vvp_vector4_t acc(wid, BIT4_0);
-      for (size_t i = 0; i < src->get_size(); i += 1) {
+      དོན་ལུ (size_t i = 0; i < src->get_size(); i += 1) {
 	    vvp_vector4_t vi(wid);
 	    src->get_word(i, vi);
 	    acc.add(vi);
       }
-      return acc;
+      ལོག acc;
 }
 
 bool of_UPARR_SUM_V(vthread_t thr, vvp_code_t cp)
@@ -8047,15 +8047,15 @@ bool of_UPARR_SUM_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_vector4_t sum;
-      if (qsrc) sum = uparr_sum_words_src(qsrc, wid);
-      else if (dsrc) sum = uparr_sum_words_src(dsrc, wid);
-      else {
+      གལ་སྲིད (qsrc) sum = uparr_sum_words_src(qsrc, wid);
+      དེ་མིན གལ་སྲིད (dsrc) sum = uparr_sum_words_src(dsrc, wid);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    sum = uparr_sum_words_src(src, wid);
       }
       thr->push_vec4(sum);
-      return true;
+      ལོག true;
 }
 
 bool of_UPARR_SUM_PROP_V(vthread_t thr, vvp_code_t cp)
@@ -8076,7 +8076,7 @@ bool of_UPARR_SUM_PROP_V(vthread_t thr, vvp_code_t cp)
 	    qsrc ? uparr_sum_words_src(qsrc, wid)
 		 : uparr_sum_words_src(dsrc, wid);
       thr->push_vec4(sum);
-      return true;
+      ལོག true;
 }
 
 bool of_UPARR_SUM_OBJ_V(vthread_t thr, vvp_code_t cp)
@@ -8092,21 +8092,21 @@ bool of_UPARR_SUM_OBJ_V(vthread_t thr, vvp_code_t cp)
 	    qsrc ? uparr_sum_words_src(qsrc, wid)
 		 : uparr_sum_words_src(dsrc, wid);
       thr->push_vec4(sum);
-      return true;
+      ལོག true;
 }
 
 /* xor() reduction returns the scalar sum (Verilog-style bitwise-XOR per word). */
 template <class SRC>
 static vvp_vector4_t uparr_xor_words_src(SRC* src, unsigned wid)
 {
-      if (!src) return vvp_vector4_t(wid, BIT4_X);
+      གལ་སྲིད (!src) ལོག vvp_vector4_t(wid, BIT4_X);
       vvp_vector4_t res(wid, BIT4_0);
-      for (size_t i = 0; i < src->get_size(); i += 1) {
+      དོན་ལུ (size_t i = 0; i < src->get_size(); i += 1) {
 	    vvp_vector4_t vi(wid);
 	    src->get_word(i, vi);
 	    res ^= vi;
       }
-      return res;
+      ལོག res;
 }
 
 bool of_UPARR_XOR_V(vthread_t thr, vvp_code_t cp)
@@ -8117,29 +8117,29 @@ bool of_UPARR_XOR_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_vector4_t res;
-      if (qsrc) res = uparr_xor_words_src(qsrc, wid);
-      else if (dsrc) res = uparr_xor_words_src(dsrc, wid);
-      else {
+      གལ་སྲིད (qsrc) res = uparr_xor_words_src(qsrc, wid);
+      དེ་མིན གལ་སྲིད (dsrc) res = uparr_xor_words_src(dsrc, wid);
+      དེ་མིན {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    res = uparr_xor_words_src(src, wid);
       }
       thr->push_vec4(res);
-      return true;
+      ལོག true;
 }
 
 bool of_VPI_CALL(vthread_t thr, vvp_code_t cp)
 {
       vpip_execute_vpi_call(thr, cp->handle);
 
-      if (schedule_stopped()) {
-	    if (! schedule_finished())
+      གལ་སྲིད (schedule_stopped()) {
+	    གལ་སྲིད (! schedule_finished())
 		  schedule_vthread(thr, 0, false);
 
-	    return false;
+	    ལོག false;
       }
 
-      return schedule_finished()? false : true;
+      ལོག schedule_finished()? false : true;
 }
 
 /* %wait <label>;
@@ -8160,7 +8160,7 @@ bool of_WAIT(vthread_t thr, vvp_code_t cp)
       thr->wait_next = ep->add_waiting_thread(thr);
 
 	/* Return false to suspend this thread. */
-      return false;
+      ལོག false;
 }
 
 /*
@@ -8180,12 +8180,12 @@ bool of_WAIT_FORK(vthread_t thr, vvp_code_t)
 
 	/* If there are no detached children then there is nothing to
 	 * wait for. */
-      if (thr->detached_children.empty()) return true;
+      གལ་སྲིད (thr->detached_children.empty()) ལོག true;
 
 	/* Flag that this process is waiting for the detached children
 	 * to finish and suspend it. */
       thr->i_am_waiting = 1;
-      return false;
+      ལོག false;
 }
 
 /*
@@ -8200,7 +8200,7 @@ bool of_XNOR(vthread_t thr, vvp_code_t)
       vall ^= valr;
       vall.invert();
 
-      return true;
+      ལོག true;
 }
 
 /*
@@ -8214,20 +8214,20 @@ bool of_XOR(vthread_t thr, vvp_code_t)
 
       vall ^= valr;
 
-      return true;
+      ལོག true;
 }
 
 
 bool of_ZOMBIE(vthread_t thr, vvp_code_t)
 {
       thr->pc = codespace_null();
-      if ((thr->parent == 0) && (thr->children.empty())) {
-	    if (thr->delay_delete)
+      གལ་སྲིད ((thr->parent == 0) && (thr->children.empty())) {
+	    གལ་སྲིད (thr->delay_delete)
 		  schedule_del_thr(thr);
-	    else
+	    དེ་མིན
 		  vthread_delete(thr);
       }
-      return false;
+      ལོག false;
 }
 
 /*
@@ -8253,7 +8253,7 @@ static bool do_exec_ufunc(vthread_t thr, vvp_code_t cp, vthread_t child)
 
         /* If an automatic function, allocate a context for this call. */
       vvp_context_t child_context = 0;
-      if (child_scope->is_automatic()) {
+      གལ་སྲིད (child_scope->is_automatic()) {
             child_context = vthread_alloc_context(child_scope);
             thr->wt_context = child_context;
             thr->rd_context = child_context;
@@ -8278,12 +8278,12 @@ static bool do_exec_ufunc(vthread_t thr, vvp_code_t cp, vthread_t child)
       vthread_run(child);
       running_thread = thr;
 
-      if (child->i_have_ended) {
+      གལ་སྲིད (child->i_have_ended) {
 	    do_join(thr, child);
-            return true;
-      } else {
+            ལོག true;
+      } དེ་མིན {
 	    thr->i_am_joining = 1;
-	    return false;
+	    ལོག false;
       }
 }
 
@@ -8297,7 +8297,7 @@ bool of_EXEC_UFUNC_REAL(vthread_t thr, vvp_code_t cp)
       thr->push_real(0.0);
       child->args_real.push_back(0);
 
-      return do_exec_ufunc(thr, cp, child);
+      ལོག do_exec_ufunc(thr, cp, child);
 }
 
 bool of_EXEC_UFUNC_VEC4(vthread_t thr, vvp_code_t cp)
@@ -8313,7 +8313,7 @@ bool of_EXEC_UFUNC_VEC4(vthread_t thr, vvp_code_t cp)
       thr->push_vec4(vvp_vector4_t(scope_func->get_func_width(), scope_func->get_func_init_val()));
       child->args_vec4.push_back(0);
 
-      return do_exec_ufunc(thr, cp, child);
+      ལོག do_exec_ufunc(thr, cp, child);
 }
 
 /*
@@ -8330,11 +8330,11 @@ bool of_REAP_UFUNC(vthread_t thr, vvp_code_t cp)
       cp->ufunc_core_ptr->finish_thread();
 
         /* If an automatic function, free the context for this call. */
-      if (child_scope->is_automatic()) {
+      གལ་སྲིད (child_scope->is_automatic()) {
             vthread_free_context(thr->rd_context, child_scope);
             thr->wt_context = 0;
             thr->rd_context = 0;
       }
 
-      return true;
+      ལོག true;
 }

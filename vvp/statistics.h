@@ -22,7 +22,7 @@
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
 #ifdef __SUNPRO_CC
 # include  <stddef.h>
-#else
+#དེ་མིན
 # include  <cstddef>
 #endif
 

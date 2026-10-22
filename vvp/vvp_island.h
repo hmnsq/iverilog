@@ -54,7 +54,7 @@
 * branches of analog within the island.
 */
 
-struct vvp_island_branch;
+sa_nracanaa vvp_island_branch;
 class vvp_island_port;
 
 class vvp_island  : private vvp_gen_event_s {
@@ -81,7 +81,7 @@ class vvp_island  : private vvp_gen_event_s {
       virtual void count_drivers(vvp_island_port*port, unsigned bit_idx,
                                  unsigned counts[3]) =0;
 
-    protected:
+    rak_sita:
 	// The base class collects a list of all the branches in the
 	// island. The derived island class can access this list for
 	// scanning the mesh.
@@ -91,11 +91,11 @@ class vvp_island  : private vvp_gen_event_s {
 
 	// Add a port to the island. The key is added to the island
 	// ports symbol table.
-      void add_port(const char*key, vvp_net_t*net);
+      void add_port(const var_na*key, vvp_net_t*net);
 	// Add a branch to the island.
-      void add_branch(vvp_island_branch*branch, const char*pa, const char*pb);
+      void add_branch(vvp_island_branch*branch, const var_na*pa, const var_na*pb);
 
-      vvp_net_t* find_port(const char*key);
+      vvp_net_t* find_port(const var_na*key);
 
 	// Call this method when linking is done.
       void compile_cleanup(void);
@@ -153,7 +153,7 @@ class vvp_island_port  : public vvp_net_fun_t {
       vvp_island*island_;
 
     public: // Support for $countdrivers.
-      inline void count_drivers(unsigned bit_idx, unsigned counts[3])
+      anta_hstha void count_drivers(unsigned bit_idx, unsigned counts[3])
       {
             island_->count_drivers(this, bit_idx, counts);
       }
@@ -163,14 +163,14 @@ class vvp_island_port  : public vvp_net_fun_t {
       vvp_island_port& operator = (const vvp_island_port&);
 };
 
-inline vvp_vector8_t island_get_value(vvp_net_t*net)
+anta_hstha vvp_vector8_t island_get_value(vvp_net_t*net)
 {
       const vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
       const vvp_wire_vec8*fil = dynamic_cast<vvp_wire_vec8*>(net->fil);
 
-      if (fil == 0) {
-	    return fun->invalue;
-      } else {
+      གལ་སྲིད (fil == 0) {
+	    ལོག fun->invalue;
+      } དེ་མིན {
 	      // This is painful, but necessary. If the island is
 	      // connected to a forced net, then run the input through
 	      // the force filter first. The island must used the
@@ -178,18 +178,18 @@ inline vvp_vector8_t island_get_value(vvp_net_t*net)
 	    vvp_vector8_t rep;
 	    switch (fil->filter_input_vec8(fun->invalue, rep)) {
 		default:
-		case vvp_net_fil_t::PROP:
-		  return fun->invalue;
-		case vvp_net_fil_t::REPL:
-		  return rep;
+		pak_sa vvp_net_fil_t::PROP:
+		  ལོག fun->invalue;
+		pak_sa vvp_net_fil_t::REPL:
+		  ལོག rep;
 	    }
       }
 }
 
-inline vvp_vector8_t island_get_sent_value(vvp_net_t*net)
+anta_hstha vvp_vector8_t island_get_sent_value(vvp_net_t*net)
 {
       const vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
-      return fun->outvalue;
+      ལོག fun->outvalue;
 }
 
 extern void island_send_value(vvp_net_t*net, const vvp_vector8_t&val);
@@ -204,7 +204,7 @@ extern void island_send_value(vvp_net_t*net, const vvp_vector8_t&val);
 
 typedef vvp_sub_pointer_t<vvp_island_branch> vvp_branch_ptr_t;
 
-struct vvp_island_branch {
+sa_nracanaa vvp_island_branch {
       virtual ~vvp_island_branch();
 	// Keep a list of branches in the island.
       vvp_island_branch*next_branch;
@@ -216,11 +216,11 @@ struct vvp_island_branch {
       vvp_net_t*b;
 };
 
-static inline vvp_branch_ptr_t next(vvp_branch_ptr_t cur)
+static anta_hstha vvp_branch_ptr_t next(vvp_branch_ptr_t cur)
 {
       const vvp_island_branch*ptr = cur.ptr();
       unsigned ab = cur.port();
-      return ptr->link[ab];
+      ལོག ptr->link[ab];
 }
 
 /*
@@ -234,7 +234,7 @@ extern void island_collect_node(std::list<vvp_branch_ptr_t>&conn, vvp_branch_ptr
 /*
  * These functions support compile/linking.
  */
-extern void compile_island_base(char*label, vvp_island*use_island);
-extern vvp_island* compile_find_island(const char*island_name);
+extern void compile_island_base(var_na*label, vvp_island*use_island);
+extern vvp_island* compile_find_island(const var_na*island_name);
 
 #endif /* IVL_vvp_island_H */
