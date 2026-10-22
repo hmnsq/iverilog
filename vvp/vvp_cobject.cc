@@ -22,9 +22,9 @@
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+using نطاق std;
 
-vvp_cobject::vvp_cobject(const class_type*defn)
+vvp_cobject::vvp_cobject(ثابت class_type*defn)
 : defn_(defn), properties_(defn->instance_new())
 {
 }
@@ -35,54 +35,54 @@ vvp_cobject::~vvp_cobject()
       properties_ = 0;
 }
 
-void vvp_cobject::set_vec4(size_t pid, const vvp_vector4_t&val)
+فراغ vvp_cobject::set_vec4(size_t pid, ثابت vvp_vector4_t&val)
 {
       defn_->set_vec4(properties_, pid, val);
 }
 
-void vvp_cobject::get_vec4(size_t pid, vvp_vector4_t&val)
+فراغ vvp_cobject::get_vec4(size_t pid, vvp_vector4_t&val)
 {
       defn_->get_vec4(properties_, pid, val);
 }
 
-void vvp_cobject::set_real(size_t pid, double val)
+فراغ vvp_cobject::set_real(size_t pid, مزدوج val)
 {
       defn_->set_real(properties_, pid, val);
 }
 
-double vvp_cobject::get_real(size_t pid)
+مزدوج vvp_cobject::get_real(size_t pid)
 {
-      return defn_->get_real(properties_, pid);
+      أرجع defn_->get_real(properties_, pid);
 }
 
-void vvp_cobject::set_string(size_t pid, const string&val)
+فراغ vvp_cobject::set_string(size_t pid, ثابت string&val)
 {
       defn_->set_string(properties_, pid, val);
 }
 
 string vvp_cobject::get_string(size_t pid)
 {
-      return defn_->get_string(properties_, pid);
+      أرجع defn_->get_string(properties_, pid);
 }
 
-void vvp_cobject::set_object(size_t pid, const vvp_object_t&val, size_t idx)
+فراغ vvp_cobject::set_object(size_t pid, ثابت vvp_object_t&val, size_t idx)
 {
       defn_->set_object(properties_, pid, val, idx);
 }
 
-void vvp_cobject::get_object(size_t pid, vvp_object_t&val, size_t idx)
+فراغ vvp_cobject::get_object(size_t pid, vvp_object_t&val, size_t idx)
 {
-      return defn_->get_object(properties_, pid, val, idx);
+      أرجع defn_->get_object(properties_, pid, val, idx);
 }
 
-void vvp_cobject::shallow_copy(const vvp_object*obj)
+فراغ vvp_cobject::shallow_copy(ثابت vvp_object*obj)
 {
-      const vvp_cobject*that = dynamic_cast<const vvp_cobject*>(obj);
-      assert(that);
+      ثابت vvp_cobject*that = dynamic_cast<ثابت vvp_cobject*>(obj);
+      أكد(that);
 
-      assert(defn_ == that->defn_);
+      أكد(defn_ == that->defn_);
 
-      for (size_t idx = 0 ; idx < defn_->property_count() ; idx += 1)
+      لكل (size_t idx = 0 ; idx < defn_->property_ژماردن() ; idx += 1)
 	    defn_->copy_property(properties_, idx, that->properties_);
 
 }

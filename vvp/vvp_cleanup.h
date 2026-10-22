@@ -25,47 +25,47 @@
 
 /* Routines used to cleanup the runtime memory when it is all finished. */
 
-extern void codespace_delete(void);
-extern void dec_str_delete(void);
-extern void def_table_delete(void);
-extern void island_delete(void);
-extern void vpi_mcd_delete(void);
-extern void load_module_delete(void);
-extern void modpath_delete(void);
-extern void root_table_delete(void);
-extern void schedule_delete(void);
-extern void signal_pool_delete(void);
-extern void simulator_cb_delete(void);
-extern void udp_defns_delete(void);
-extern void vpi_handle_delete(void);
-extern void vpi_stack_delete(void);
-extern void vvp_net_pool_delete(void);
-extern void ufunc_pool_delete(void);
+خارجي فراغ codespace_delete(فراغ);
+خارجي فراغ dec_str_delete(فراغ);
+خارجي فراغ def_table_delete(فراغ);
+خارجي فراغ island_delete(فراغ);
+خارجي فراغ vpi_mcd_delete(فراغ);
+خارجي فراغ load_module_delete(فراغ);
+خارجي فراغ modpath_delete(فراغ);
+خارجي فراغ ڕەگ_table_delete(فراغ);
+خارجي فراغ schedule_delete(فراغ);
+خارجي فراغ signal_pool_delete(فراغ);
+خارجي فراغ simulator_cb_delete(فراغ);
+خارجي فراغ udp_defns_delete(فراغ);
+خارجي فراغ vpi_handle_delete(فراغ);
+خارجي فراغ vpi_کەڵەکە_delete(فراغ);
+خارجي فراغ vvp_net_pool_delete(فراغ);
+خارجي فراغ ufunc_pool_delete(فراغ);
 
-extern void A_delete(class __vpiHandle *item);
-extern void APV_delete(class __vpiHandle *item);
-extern void PV_delete(class __vpiHandle *item);
-extern void class_delete(class __vpiHandle *item);
-extern void class_def_delete(class_type *item);
-extern void constant_delete(class __vpiHandle *item);
-extern void contexts_delete(__vpiScope *scope);
-extern void array_delete(class __vpiHandle *item);
-extern void enum_delete(class __vpiHandle *item);
-extern void memory_delete(class __vpiHandle *item);
-extern void named_event_delete(class __vpiHandle *item);
-extern void parameter_delete(class __vpiHandle *item);
-extern void signal_delete(class __vpiHandle *item);
-extern void real_delete(class __vpiHandle *item);
-extern void string_delete(class __vpiHandle *item);
-extern void thread_string_delete(class __vpiHandle *item);
-extern void thread_vthr_delete(class __vpiHandle *item);
-extern void thread_word_delete(class __vpiHandle *item);
-extern void vpi_call_delete(class __vpiHandle *item);
-extern void exec_ufunc_delete(vvp_code_t euf_code);
-extern void vthreads_delete(__vpiScope*scope);
-extern void vvp_net_delete(vvp_net_t *item);
+خارجي فراغ A_delete(class __vpiHandle *item);
+خارجي فراغ APV_delete(class __vpiHandle *item);
+خارجي فراغ PV_delete(class __vpiHandle *item);
+خارجي فراغ class_delete(class __vpiHandle *item);
+خارجي فراغ class_def_delete(class_type *item);
+خارجي فراغ constant_delete(class __vpiHandle *item);
+خارجي فراغ contexts_delete(__vpiScope *scope);
+خارجي فراغ array_delete(class __vpiHandle *item);
+خارجي فراغ enum_delete(class __vpiHandle *item);
+خارجي فراغ memory_delete(class __vpiHandle *item);
+خارجي فراغ named_event_delete(class __vpiHandle *item);
+خارجي فراغ parameter_delete(class __vpiHandle *item);
+خارجي فراغ signal_delete(class __vpiHandle *item);
+خارجي فراغ real_delete(class __vpiHandle *item);
+خارجي فراغ string_delete(class __vpiHandle *item);
+خارجي فراغ thread_string_delete(class __vpiHandle *item);
+خارجي فراغ thread_vthr_delete(class __vpiHandle *item);
+خارجي فراغ thread_word_delete(class __vpiHandle *item);
+خارجي فراغ vpi_call_delete(class __vpiHandle *item);
+خارجي فراغ exec_ufunc_delete(vvp_code_t euf_code);
+خارجي فراغ vthreads_delete(__vpiScope*scope);
+خارجي فراغ vvp_net_delete(vvp_net_t *item);
 
 
-extern void pool_local_net(vvp_net_t *net);
+خارجي فراغ pool_local_net(vvp_net_t *net);
 
 #endif /* IVL_vvp_cleanup_H */

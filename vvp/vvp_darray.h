@@ -25,256 +25,256 @@
 # include  <string>
 # include  <vector>
 
-class vvp_darray : public vvp_object {
+class vvp_darray : عام vvp_object {
 
-    public:
-      inline vvp_darray() { }
+    عام:
+      مضمن vvp_darray() { }
       virtual ~vvp_darray() override;
 
-      virtual size_t get_size(void) const =0;
+      virtual size_t get_size(فراغ) ثابت =0;
 
-      virtual void set_word(unsigned adr, const vvp_vector4_t&value);
-      virtual void get_word(unsigned adr, vvp_vector4_t&value);
+      virtual فراغ set_word(unsigned adr, ثابت vvp_vector4_t&بەها);
+      virtual فراغ get_word(unsigned adr, vvp_vector4_t&بەها);
 
-      virtual void set_word(unsigned adr, double value);
-      virtual void get_word(unsigned adr, double&value);
+      virtual فراغ set_word(unsigned adr, مزدوج بەها);
+      virtual فراغ get_word(unsigned adr, مزدوج&بەها);
 
-      virtual void set_word(unsigned adr, const std::string&value);
-      virtual void get_word(unsigned adr, std::string&value);
+      virtual فراغ set_word(unsigned adr, ثابت std::string&بەها);
+      virtual فراغ get_word(unsigned adr, std::string&بەها);
 
-      virtual void set_word(unsigned adr, const vvp_object_t&value);
-      virtual void get_word(unsigned adr, vvp_object_t&value);
+      virtual فراغ set_word(unsigned adr, ثابت vvp_object_t&بەها);
+      virtual فراغ get_word(unsigned adr, vvp_object_t&بەها);
 
       virtual vvp_vector4_t get_bitstream(bool as_vec4);
 
 	/* In-place element order reversal (dynamic arrays and queues). */
-      virtual void reverse_elems(void);
+      virtual فراغ reverse_elems(فراغ);
 
 	/* sort: ascending if true, descending if false; shuffle randomizes. */
-      virtual void sort_elems(bool ascending);
-      virtual void shuffle_elems(void);
+      virtual فراغ sort_elems(bool ascending);
+      virtual فراغ shuffle_elems(فراغ);
 };
 
-template <class TYPE> class vvp_darray_atom : public vvp_darray {
+template <class TYPE> class vvp_darray_atom : عام vvp_darray {
 
-    public:
-      explicit inline vvp_darray_atom(size_t siz) : array_(siz) { }
+    عام:
+      explicit مضمن vvp_darray_atom(size_t siz) : array_(siz) { }
       ~vvp_darray_atom() override;
 
-      size_t get_size(void) const override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
-      void set_word(unsigned adr, const vvp_vector4_t&value) override;
-      void get_word(unsigned adr, vvp_vector4_t&value) override;
-      void shallow_copy(const vvp_object*obj) override;
-      vvp_object* duplicate(void) const override;
+      size_t get_size(فراغ) ثابت override;
+      فراغ reverse_elems(فراغ) override;
+      فراغ sort_elems(bool ascending) override;
+      فراغ shuffle_elems(فراغ) override;
+      فراغ set_word(unsigned adr, ثابت vvp_vector4_t&بەها) override;
+      فراغ get_word(unsigned adr, vvp_vector4_t&بەها) override;
+      فراغ shallow_copy(ثابت vvp_object*obj) override;
+      vvp_object* duplicate(فراغ) ثابت override;
       vvp_vector4_t get_bitstream(bool as_vec4) override;
 
-    private:
+    خاص:
       std::vector<TYPE> array_;
 };
 
-class vvp_darray_vec4 : public vvp_darray {
+class vvp_darray_vec4 : عام vvp_darray {
 
-    public:
-      inline vvp_darray_vec4(size_t siz, unsigned word_wid) :
+    عام:
+      مضمن vvp_darray_vec4(size_t siz, unsigned word_wid) :
                              array_(siz), word_wid_(word_wid) { }
       ~vvp_darray_vec4() override;
 
-      size_t get_size(void) const override;
-      void set_word(unsigned adr, const vvp_vector4_t&value) override;
-      void get_word(unsigned adr, vvp_vector4_t&value) override;
-      void shallow_copy(const vvp_object*obj) override;
-      vvp_object* duplicate(void) const override;
+      size_t get_size(فراغ) ثابت override;
+      فراغ set_word(unsigned adr, ثابت vvp_vector4_t&بەها) override;
+      فراغ get_word(unsigned adr, vvp_vector4_t&بەها) override;
+      فراغ shallow_copy(ثابت vvp_object*obj) override;
+      vvp_object* duplicate(فراغ) ثابت override;
       vvp_vector4_t get_bitstream(bool as_vec4) override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+      فراغ reverse_elems(فراغ) override;
+      فراغ sort_elems(bool ascending) override;
+      فراغ shuffle_elems(فراغ) override;
 
-    private:
+    خاص:
       std::vector<vvp_vector4_t> array_;
       unsigned word_wid_;
 };
 
-class vvp_darray_vec2 : public vvp_darray {
+class vvp_darray_vec2 : عام vvp_darray {
 
-    public:
-      inline vvp_darray_vec2(size_t siz, unsigned word_wid) :
+    عام:
+      مضمن vvp_darray_vec2(size_t siz, unsigned word_wid) :
                              array_(siz), word_wid_(word_wid) { }
       ~vvp_darray_vec2() override;
 
-      size_t get_size(void) const override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
-      void set_word(unsigned adr, const vvp_vector4_t&value) override;
-      void get_word(unsigned adr, vvp_vector4_t&value) override;
-      void shallow_copy(const vvp_object*obj) override;
+      size_t get_size(فراغ) ثابت override;
+      فراغ reverse_elems(فراغ) override;
+      فراغ sort_elems(bool ascending) override;
+      فراغ shuffle_elems(فراغ) override;
+      فراغ set_word(unsigned adr, ثابت vvp_vector4_t&بەها) override;
+      فراغ get_word(unsigned adr, vvp_vector4_t&بەها) override;
+      فراغ shallow_copy(ثابت vvp_object*obj) override;
       vvp_vector4_t get_bitstream(bool as_vec4) override;
 
-    private:
+    خاص:
       std::vector<vvp_vector2_t> array_;
       unsigned word_wid_;
 };
 
-class vvp_darray_real : public vvp_darray {
+class vvp_darray_real : عام vvp_darray {
 
-    public:
-      explicit inline vvp_darray_real(size_t siz) : array_(siz) { }
+    عام:
+      explicit مضمن vvp_darray_real(size_t siz) : array_(siz) { }
       ~vvp_darray_real() override;
 
-      size_t get_size(void) const override;
-      void set_word(unsigned adr, double value) override;
-      void get_word(unsigned adr, double&value) override;
-      void shallow_copy(const vvp_object*obj) override;
-      vvp_object* duplicate(void) const override;
+      size_t get_size(فراغ) ثابت override;
+      فراغ set_word(unsigned adr, مزدوج بەها) override;
+      فراغ get_word(unsigned adr, مزدوج&بەها) override;
+      فراغ shallow_copy(ثابت vvp_object*obj) override;
+      vvp_object* duplicate(فراغ) ثابت override;
       vvp_vector4_t get_bitstream(bool as_vec4) override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+      فراغ reverse_elems(فراغ) override;
+      فراغ sort_elems(bool ascending) override;
+      فراغ shuffle_elems(فراغ) override;
 
-    private:
-      std::vector<double> array_;
+    خاص:
+      std::vector<مزدوج> array_;
 };
 
-class vvp_darray_string : public vvp_darray {
+class vvp_darray_string : عام vvp_darray {
 
-    public:
-      explicit inline vvp_darray_string(size_t siz) : array_(siz) { }
+    عام:
+      explicit مضمن vvp_darray_string(size_t siz) : array_(siz) { }
       ~vvp_darray_string() override;
 
-      size_t get_size(void) const override;
-      void set_word(unsigned adr, const std::string&value) override;
-      void get_word(unsigned adr, std::string&value) override;
-      void shallow_copy(const vvp_object*obj) override;
-      vvp_object* duplicate(void) const override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+      size_t get_size(فراغ) ثابت override;
+      فراغ set_word(unsigned adr, ثابت std::string&بەها) override;
+      فراغ get_word(unsigned adr, std::string&بەها) override;
+      فراغ shallow_copy(ثابت vvp_object*obj) override;
+      vvp_object* duplicate(فراغ) ثابت override;
+      فراغ reverse_elems(فراغ) override;
+      فراغ sort_elems(bool ascending) override;
+      فراغ shuffle_elems(فراغ) override;
 
-    private:
+    خاص:
       std::vector<std::string> array_;
 };
 
-class vvp_darray_object : public vvp_darray {
+class vvp_darray_object : عام vvp_darray {
 
-    public:
-      explicit inline vvp_darray_object(size_t siz) : array_(siz) { }
+    عام:
+      explicit مضمن vvp_darray_object(size_t siz) : array_(siz) { }
       ~vvp_darray_object() override;
 
-      size_t get_size(void) const override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
-      void set_word(unsigned adr, const vvp_object_t&value) override;
-      void get_word(unsigned adr, vvp_object_t&value) override;
-      void shallow_copy(const vvp_object*obj) override;
+      size_t get_size(فراغ) ثابت override;
+      فراغ reverse_elems(فراغ) override;
+      فراغ sort_elems(bool ascending) override;
+      فراغ shuffle_elems(فراغ) override;
+      فراغ set_word(unsigned adr, ثابت vvp_object_t&بەها) override;
+      فراغ get_word(unsigned adr, vvp_object_t&بەها) override;
+      فراغ shallow_copy(ثابت vvp_object*obj) override;
       //virtual vvp_object* duplicate(void) const;
 
-    private:
+    خاص:
       std::vector<vvp_object_t> array_;
 };
 
-class vvp_queue : public vvp_darray {
+class vvp_queue : عام vvp_darray {
 
-    public:
-      inline vvp_queue(void) { }
+    عام:
+      مضمن vvp_queue(فراغ) { }
       ~vvp_queue() override;
 
-      virtual size_t get_size(void) const override =0;
-      virtual void copy_elems(vvp_object_t src, unsigned max_size);
+      virtual size_t get_size(فراغ) ثابت override =0;
+      virtual فراغ copy_elems(vvp_object_t src, unsigned max_size);
 
-      virtual void set_word_max(unsigned adr, const vvp_vector4_t&value, unsigned max_size);
-      virtual void insert(unsigned idx, const vvp_vector4_t&value, unsigned max_size);
-      virtual void push_back(const vvp_vector4_t&value, unsigned max_size);
-      virtual void push_front(const vvp_vector4_t&value, unsigned max_size);
+      virtual فراغ set_word_max(unsigned adr, ثابت vvp_vector4_t&بەها, unsigned max_size);
+      virtual فراغ زیادکردن(unsigned idx, ثابت vvp_vector4_t&بەها, unsigned max_size);
+      virtual فراغ پاڵنان_back(ثابت vvp_vector4_t&بەها, unsigned max_size);
+      virtual فراغ پاڵنان_front(ثابت vvp_vector4_t&بەها, unsigned max_size);
 
-      virtual void set_word_max(unsigned adr, double value, unsigned max_size);
-      virtual void insert(unsigned idx, double value, unsigned max_size);
-      virtual void push_back(double value, unsigned max_size);
-      virtual void push_front(double value, unsigned max_size);
+      virtual فراغ set_word_max(unsigned adr, مزدوج بەها, unsigned max_size);
+      virtual فراغ زیادکردن(unsigned idx, مزدوج بەها, unsigned max_size);
+      virtual فراغ پاڵنان_back(مزدوج بەها, unsigned max_size);
+      virtual فراغ پاڵنان_front(مزدوج بەها, unsigned max_size);
 
-      virtual void set_word_max(unsigned adr, const std::string&value, unsigned max_size);
-      virtual void insert(unsigned idx, const std::string&value, unsigned max_size);
-      virtual void push_back(const std::string&value, unsigned max_size);
-      virtual void push_front(const std::string&value, unsigned max_size);
+      virtual فراغ set_word_max(unsigned adr, ثابت std::string&بەها, unsigned max_size);
+      virtual فراغ زیادکردن(unsigned idx, ثابت std::string&بەها, unsigned max_size);
+      virtual فراغ پاڵنان_back(ثابت std::string&بەها, unsigned max_size);
+      virtual فراغ پاڵنان_front(ثابت std::string&بەها, unsigned max_size);
 
-      virtual void pop_back(void) =0;
-      virtual void pop_front(void)=0;
-      virtual void erase(unsigned idx)=0;
-      virtual void erase_tail(unsigned idx)=0;
+      virtual فراغ دەرهێنان_back(فراغ) =0;
+      virtual فراغ دەرهێنان_front(فراغ)=0;
+      virtual فراغ erase(unsigned idx)=0;
+      virtual فراغ erase_tail(unsigned idx)=0;
 };
 
-class vvp_queue_real : public vvp_queue {
+class vvp_queue_real : عام vvp_queue {
 
-    public:
-      size_t get_size(void) const override { return queue.size(); };
-      void copy_elems(vvp_object_t src, unsigned max_size) override;
-      void set_word_max(unsigned adr, double value, unsigned max_size) override;
-      void set_word(unsigned adr, double value) override;
-      void get_word(unsigned adr, double&value) override;
-      void insert(unsigned idx, double value, unsigned max_size) override;
-      void push_back(double value, unsigned max_size) override;
-      void push_front(double value, unsigned max_size) override;
-      void pop_back(void) override { queue.pop_back(); };
-      void pop_front(void) override { queue.pop_front(); };
-      void erase(unsigned idx) override;
-      void erase_tail(unsigned idx) override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+    عام:
+      size_t get_size(فراغ) ثابت override { أرجع queue.size(); };
+      فراغ copy_elems(vvp_object_t src, unsigned max_size) override;
+      فراغ set_word_max(unsigned adr, مزدوج بەها, unsigned max_size) override;
+      فراغ set_word(unsigned adr, مزدوج بەها) override;
+      فراغ get_word(unsigned adr, مزدوج&بەها) override;
+      فراغ زیادکردن(unsigned idx, مزدوج بەها, unsigned max_size) override;
+      فراغ پاڵنان_back(مزدوج بەها, unsigned max_size) override;
+      فراغ پاڵنان_front(مزدوج بەها, unsigned max_size) override;
+      فراغ دەرهێنان_back(فراغ) override { queue.دەرهێنان_back(); };
+      فراغ دەرهێنان_front(فراغ) override { queue.دەرهێنان_front(); };
+      فراغ erase(unsigned idx) override;
+      فراغ erase_tail(unsigned idx) override;
+      فراغ reverse_elems(فراغ) override;
+      فراغ sort_elems(bool ascending) override;
+      فراغ shuffle_elems(فراغ) override;
 
-    private:
-      std::deque<double> queue;
+    خاص:
+      std::deque<مزدوج> queue;
 };
 
-class vvp_queue_string : public vvp_queue {
+class vvp_queue_string : عام vvp_queue {
 
-    public:
-      size_t get_size(void) const override { return queue.size(); };
-      void copy_elems(vvp_object_t src, unsigned max_size) override;
-      void set_word_max(unsigned adr, const std::string&value, unsigned max_size) override;
-      void set_word(unsigned adr, const std::string&value) override;
-      void get_word(unsigned adr, std::string&value) override;
-      void insert(unsigned idx, const std::string&value, unsigned max_size) override;
-      void push_back(const std::string&value, unsigned max_size) override;
-      void push_front(const std::string&value, unsigned max_size) override;
-      void pop_back(void) override { queue.pop_back(); };
-      void pop_front(void) override { queue.pop_front(); };
-      void erase(unsigned idx) override;
-      void erase_tail(unsigned idx) override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+    عام:
+      size_t get_size(فراغ) ثابت override { أرجع queue.size(); };
+      فراغ copy_elems(vvp_object_t src, unsigned max_size) override;
+      فراغ set_word_max(unsigned adr, ثابت std::string&بەها, unsigned max_size) override;
+      فراغ set_word(unsigned adr, ثابت std::string&بەها) override;
+      فراغ get_word(unsigned adr, std::string&بەها) override;
+      فراغ زیادکردن(unsigned idx, ثابت std::string&بەها, unsigned max_size) override;
+      فراغ پاڵنان_back(ثابت std::string&بەها, unsigned max_size) override;
+      فراغ پاڵنان_front(ثابت std::string&بەها, unsigned max_size) override;
+      فراغ دەرهێنان_back(فراغ) override { queue.دەرهێنان_back(); };
+      فراغ دەرهێنان_front(فراغ) override { queue.دەرهێنان_front(); };
+      فراغ erase(unsigned idx) override;
+      فراغ erase_tail(unsigned idx) override;
+      فراغ reverse_elems(فراغ) override;
+      فراغ sort_elems(bool ascending) override;
+      فراغ shuffle_elems(فراغ) override;
 
-    private:
+    خاص:
       std::deque<std::string> queue;
 };
 
-class vvp_queue_vec4 : public vvp_queue {
+class vvp_queue_vec4 : عام vvp_queue {
 
-    public:
-      size_t get_size(void) const override { return queue.size(); };
-      void copy_elems(vvp_object_t src, unsigned max_size) override;
-      void set_word_max(unsigned adr, const vvp_vector4_t&value, unsigned max_size) override;
-      void set_word(unsigned adr, const vvp_vector4_t&value) override;
-      void get_word(unsigned adr, vvp_vector4_t&value) override;
-      void insert(unsigned idx, const vvp_vector4_t&value, unsigned max_size) override;
-      void push_back(const vvp_vector4_t&value, unsigned max_size) override;
-      void push_front(const vvp_vector4_t&value, unsigned max_size) override;
-      void pop_back(void) override { queue.pop_back(); };
-      void pop_front(void) override { queue.pop_front(); };
-      void erase(unsigned idx) override;
-      void erase_tail(unsigned idx) override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+    عام:
+      size_t get_size(فراغ) ثابت override { أرجع queue.size(); };
+      فراغ copy_elems(vvp_object_t src, unsigned max_size) override;
+      فراغ set_word_max(unsigned adr, ثابت vvp_vector4_t&بەها, unsigned max_size) override;
+      فراغ set_word(unsigned adr, ثابت vvp_vector4_t&بەها) override;
+      فراغ get_word(unsigned adr, vvp_vector4_t&بەها) override;
+      فراغ زیادکردن(unsigned idx, ثابت vvp_vector4_t&بەها, unsigned max_size) override;
+      فراغ پاڵنان_back(ثابت vvp_vector4_t&بەها, unsigned max_size) override;
+      فراغ پاڵنان_front(ثابت vvp_vector4_t&بەها, unsigned max_size) override;
+      فراغ دەرهێنان_back(فراغ) override { queue.دەرهێنان_back(); };
+      فراغ دەرهێنان_front(فراغ) override { queue.دەرهێنان_front(); };
+      فراغ erase(unsigned idx) override;
+      فراغ erase_tail(unsigned idx) override;
+      فراغ reverse_elems(فراغ) override;
+      فراغ sort_elems(bool ascending) override;
+      فراغ shuffle_elems(فراغ) override;
 
-    private:
+    خاص:
       std::deque<vvp_vector4_t> queue;
 };
 
-extern std::string get_fileline();
+خارجي std::string get_fileline();
 
 #endif /* IVL_vvp_darray_H */
