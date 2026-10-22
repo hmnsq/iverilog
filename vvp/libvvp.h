@@ -19,7 +19,7 @@ extern "C" {
  * This function may be called at any time.
  */
 
-extern void vvp_set_stop_is_finish(bool flag, int exit_code);
+extern void vvp_set_stop_is_finish(bool flag, ចំនួនគត់ exit_code);
 
 /* vvp_set_quiet_flag(true) is equivalent to vvp's "-q" option.
  *
@@ -52,14 +52,14 @@ extern void vvp_no_signals(void);
  * the library is first unloaded and reloaded.
  */
 
-extern void vvp_init(const char *logfile_name, int argc, char*argv[]);
+extern void vvp_init(const var_na *logfile_name, ចំនួនគត់ argc, var_na*argv[]);
 
 /* vvp_run() starts the simulation and returns the exit status
  * when it is complete. The argument is the path to a VVP file containing
  * compiled Verilog code.
  */
 
-extern int vvp_run(const char *design_path);
+extern ចំនួនគត់ vvp_run(const var_na *design_path);
 
 /* vpip_load_module(module_name) may be called after vvp_init() and before
  * vvp_run() to load and initialise a VPI module. It is equivalent to
@@ -68,7 +68,7 @@ extern int vvp_run(const char *design_path);
  * it is searched for in directories on the current search path.
  */
 
-extern void vpip_load_module(const char*name);
+extern void vpip_load_module(const var_na*name);
 
 /* vpip_add_module_path() and vpip_clear_module_paths() may be called
  * after vvp_init() and  before vpip_load_module() to manipulate
@@ -76,7 +76,7 @@ extern void vpip_load_module(const char*name);
  * Some default paths are set by vvp_init().
  */
 
-extern void vpip_add_module_path(const char*path);
+extern void vpip_add_module_path(const var_na*path);
 extern void vpip_clear_module_paths(void);
 
 #ifdef __cplusplus

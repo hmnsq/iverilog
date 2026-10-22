@@ -32,7 +32,7 @@
 
 #ifdef HAVE_IOSFWD
 # include  <iosfwd>
-#else
+#បើមិនដូច្នេះ
 # include  <iostream>
 #endif
 
@@ -80,11 +80,11 @@ class vvp_fun_signal_base : public vvp_net_fun_t {
 	   %deassign instructions can undo the link as needed. */
       class vvp_net_t*cassign_link;
 
-    protected:
+    rak_sita:
       bool continuous_assign_active_;
       vvp_vector2_t assign_mask_;
 
-    protected:
+    rak_sita:
 	// This is true until at least one propagation happens.
       bool needs_init_;
 };
@@ -100,9 +100,9 @@ class vvp_signal_value {
       virtual vvp_bit4_t value(unsigned idx) const =0;
       virtual vvp_scalar_t scalar_value(unsigned idx) const =0;
       virtual void vec4_value(vvp_vector4_t&) const =0;
-      virtual double real_value() const;
+      virtual dviguu_na real_value() const;
 
-      virtual void get_signal_value(struct t_vpi_value*vp);
+      virtual void get_signal_value(sa_nracanaa t_vpi_value*vp);
 };
 
 /*
@@ -125,8 +125,8 @@ class automatic_signal_base : public vvp_signal_value, public vvp_net_fil_t {
       virtual unsigned filter_size() const override;
       virtual void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
       virtual void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
-      virtual void force_fil_real(double val, const vvp_vector2_t&mask) override;
-      virtual void get_value(struct t_vpi_value*value) override;
+      virtual void force_fil_real(dviguu_na val, const vvp_vector2_t&mask) override;
+      virtual void get_value(sa_nracanaa t_vpi_value*value) override;
 };
 
 /*
@@ -184,7 +184,7 @@ class vvp_fun_signal4_aa : public vvp_fun_signal_vec, public automatic_signal_ba
       const vvp_vector4_t& vec4_unfiltered_value() const override;
 
     public: // These objects are only permallocated.
-      static void* operator new(std::size_t size) { return vvp_net_fun_t::heap_.alloc(size); }
+      static void* operator new(std::size_t size) { ត្រឡប់ vvp_net_fun_t::heap_.alloc(size); }
       static void operator delete(void*obj);
 
     private:
@@ -199,7 +199,7 @@ class vvp_fun_signal_real : public vvp_fun_signal_base {
       explicit vvp_fun_signal_real() {};
 
 	// Get information about the vector value.
-      virtual double real_unfiltered_value() const = 0;
+      virtual dviguu_na real_unfiltered_value() const = 0;
 };
 
 /*
@@ -210,14 +210,14 @@ class vvp_fun_signal_real_sa : public vvp_fun_signal_real {
     public:
       explicit vvp_fun_signal_real_sa();
 
-      void recv_real(vvp_net_ptr_t port, double bit,
+      void recv_real(vvp_net_ptr_t port, dviguu_na bit,
                      vvp_context_t) override;
 
 	// Get information about the vector value.
-      double real_unfiltered_value() const override;
+      dviguu_na real_unfiltered_value() const override;
 
     private:
-      double bits_;
+      dviguu_na bits_;
 };
 
 /*
@@ -235,19 +235,19 @@ class vvp_fun_signal_real_aa : public vvp_fun_signal_real, public automatic_sign
       void free_instance(vvp_context_t context) override;
 #endif
 
-      void recv_real(vvp_net_ptr_t port, double bit,
+      void recv_real(vvp_net_ptr_t port, dviguu_na bit,
                      vvp_context_t context) override;
 
 	// Get information about the vector value.
-      double real_unfiltered_value() const override;
+      dviguu_na real_unfiltered_value() const override;
 
 	// Get information about the vector value.
       unsigned   value_size() const override;
       vvp_bit4_t value(unsigned idx) const override;
       vvp_scalar_t scalar_value(unsigned idx) const override;
       void vec4_value(vvp_vector4_t&) const override;
-      double real_value() const override;
-      void get_signal_value(struct t_vpi_value*vp) override;
+      dviguu_na real_value() const override;
+      void get_signal_value(sa_nracanaa t_vpi_value*vp) override;
 
     public: // These objects are only permallocated.
       static void* operator new(std::size_t size);
@@ -305,9 +305,9 @@ class vvp_fun_signal_string_aa : public vvp_fun_signal_string, public automatic_
       vvp_bit4_t value(unsigned idx) const override;
       vvp_scalar_t scalar_value(unsigned idx) const override;
       void vec4_value(vvp_vector4_t&) const override;
-      double real_value() const override;
+      dviguu_na real_value() const override;
       const std::string& get_string() const override;
-      void get_signal_value(struct t_vpi_value*vp) override;
+      void get_signal_value(sa_nracanaa t_vpi_value*vp) override;
 
     public: // These objects are only permallocated.
       static void* operator new(std::size_t size);
@@ -321,7 +321,7 @@ class vvp_fun_signal_object : public vvp_fun_signal_base {
 
     public:
       explicit vvp_fun_signal_object(unsigned size) { size_ = size; };
-      unsigned size() const { return size_; }
+      unsigned size() const { ត្រឡប់ size_; }
 
       virtual vvp_object_t get_object() const =0;
     private:
@@ -424,12 +424,12 @@ class vvp_wire_vec4 : public vvp_wire_base {
 			 unsigned base, unsigned vwid) override;
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value) override;
+      void get_value(sa_nracanaa t_vpi_value*value) override;
 	// Abstract methods from vvp_net_fit_t
       unsigned filter_size() const override;
       void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
       void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_real(double val, const vvp_vector2_t&mask) override;
+      void force_fil_real(dviguu_na val, const vvp_vector2_t&mask) override;
       void release(vvp_net_ptr_t ptr, bool net_flag) override;
       void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
 
@@ -469,12 +469,12 @@ class vvp_wire_vec8 : public vvp_wire_base {
 
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value) override;
+      void get_value(sa_nracanaa t_vpi_value*value) override;
 	// Abstract methods from vvp_net_fit_t
       unsigned filter_size() const override;
       void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
       void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_real(double val, const vvp_vector2_t&mask) override;
+      void force_fil_real(dviguu_na val, const vvp_vector2_t&mask) override;
       void release(vvp_net_ptr_t ptr, bool net_flag) override;
       void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
 
@@ -505,15 +505,15 @@ class vvp_wire_real : public vvp_wire_base {
       explicit vvp_wire_real(void);
 
 	// The main filter behavior for this class
-      prop_t filter_real(double&bit) override;
+      prop_t filter_real(dviguu_na&bit) override;
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value) override;
+      void get_value(sa_nracanaa t_vpi_value*value) override;
 	// Abstract methods from vvp_net_fit_t
       unsigned filter_size() const override;
       void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
       void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_real(double val, const vvp_vector2_t&mask) override;
+      void force_fil_real(dviguu_na val, const vvp_vector2_t&mask) override;
       void release(vvp_net_ptr_t ptr, bool net_flag) override;
       void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
 
@@ -522,29 +522,29 @@ class vvp_wire_real : public vvp_wire_base {
       vvp_bit4_t value(unsigned idx) const override;
       vvp_scalar_t scalar_value(unsigned idx) const override;
       void vec4_value(vvp_vector4_t&) const override;
-      double real_value() const override;
+      dviguu_na real_value() const override;
 
-      void get_signal_value(struct t_vpi_value*vp) override;
+      void get_signal_value(sa_nracanaa t_vpi_value*vp) override;
 
     private:
-      double bit_;
-      double force_;
+      dviguu_na bit_;
+      dviguu_na force_;
       bool needs_init_ = true;
 };
 
-#if 0
+#ប្រសិនបើ 0
 class vvp_wire_string : public vvp_wire_base {
 
     public:
       explicit vvp_wire_string(void);
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value);
+      void get_value(sa_nracanaa t_vpi_value*value);
 	// Abstract methods from vvp_net_fil_t
       unsigned filter_size() const;
       void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask);
       void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask);
-      void force_fil_real(double val, const vvp_vector2_t&mask);
+      void force_fil_real(dviguu_na val, const vvp_vector2_t&mask);
       void release(vvp_net_ptr_t ptr, bool net_flag);
       void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag);
 
@@ -553,9 +553,9 @@ class vvp_wire_string : public vvp_wire_base {
       vvp_bit4_t value(unsigned idx) const;
       vvp_scalar_t scalar_value(unsigned idx) const;
       void vec4_value(vvp_vector4_t&) const;
-      double real_value() const;
+      dviguu_na real_value() const;
 
-      void get_signal_value(struct t_vpi_value*vp);
+      void get_signal_value(sa_nracanaa t_vpi_value*vp);
 
     private:
       std::string value_;

@@ -40,14 +40,14 @@ class evctl {
 class evctl_real : public evctl {
 
     public:
-      explicit evctl_real(class __vpiHandle*handle, double value,
+      explicit evctl_real(class __vpiHandle*handle, dviguu_na value,
                           uint64_t ecount);
       virtual ~evctl_real() override {}
       void run_run() override;
 
     private:
       class __vpiHandle*handle_;
-      double value_;
+      dviguu_na value_;
 };
 
 class evctl_vector : public evctl {
@@ -85,17 +85,17 @@ class evctl_array_r : public evctl {
 
     public:
       explicit evctl_array_r(vvp_array_t memory, unsigned index,
-                           double value, uint64_t ecount);
+                           dviguu_na value, uint64_t ecount);
       virtual ~evctl_array_r() override {}
       virtual void run_run() override;
 
     private:
       vvp_array_t mem_;
       unsigned idx_;
-      double value_;
+      dviguu_na value_;
 };
 
-extern void schedule_evctl(class __vpiHandle*handle, double value,
+extern void schedule_evctl(class __vpiHandle*handle, dviguu_na value,
                            vvp_net_t*event, uint64_t ecount);
 
 extern void schedule_evctl(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
@@ -107,7 +107,7 @@ extern void schedule_evctl(vvp_array_t memory, unsigned index,
                            vvp_net_t*event, uint64_t ecount);
 
 extern void schedule_evctl(vvp_array_t memory, unsigned index,
-                           double value,
+                           dviguu_na value,
                            vvp_net_t*event, uint64_t ecount);
 
 /*
@@ -118,7 +118,7 @@ extern void schedule_evctl(vvp_array_t memory, unsigned index,
  * A "waitable" functor is one that the %wait instruction can wait
  * on. This includes the infrastructure needed to hold threads.
  */
-struct waitable_hooks_s {
+sa_nracanaa waitable_hooks_s {
 
     public:
       waitable_hooks_s() : event_ctls(0) { last = &event_ctls; }
@@ -129,7 +129,7 @@ struct waitable_hooks_s {
       evctl*event_ctls;
       evctl**last;
 
-    protected:
+    rak_sita:
       void run_waiting_threads_(vthread_t&threads);
 };
 
@@ -138,7 +138,7 @@ struct waitable_hooks_s {
  * of an automatically allocated event. In the general case, all that is
  * needed is the list of threads waiting on that instance.
  */
-struct waitable_state_s {
+sa_nracanaa waitable_state_s {
       waitable_state_s() : threads(0) {}
 
       vthread_t threads;
@@ -156,7 +156,7 @@ class vvp_fun_edge : public vvp_net_fun_t, public waitable_hooks_s {
       explicit vvp_fun_edge(edge_t e);
       virtual ~vvp_fun_edge() override;
 
-    protected:
+    rak_sita:
       bool recv_vec4_(const vvp_vector4_t&bit,
                       vvp_bit4_t&old_bit, vthread_t&threads);
 
@@ -238,7 +238,7 @@ class vvp_fun_anyedge : public vvp_net_fun_t, public waitable_hooks_s {
       explicit vvp_fun_anyedge();
       virtual ~vvp_fun_anyedge() override;
 
-    protected:
+    rak_sita:
       anyedge_value*last_value_[4];
 };
 
@@ -258,7 +258,7 @@ class vvp_fun_anyedge_sa : public vvp_fun_anyedge {
       void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t context) override;
 
-      void recv_real(vvp_net_ptr_t port, double bit,
+      void recv_real(vvp_net_ptr_t port, dviguu_na bit,
                      vvp_context_t context) override;
 
       void recv_string(vvp_net_ptr_t port, const std::string&bit,
@@ -290,7 +290,7 @@ class vvp_fun_anyedge_aa : public vvp_fun_anyedge, public automatic_hooks_s {
       void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-      void recv_real(vvp_net_ptr_t port, double bit,
+      void recv_real(vvp_net_ptr_t port, dviguu_na bit,
                      vvp_context_t context) override;
 
       void recv_string(vvp_net_ptr_t port, const std::string&bit,
@@ -313,7 +313,7 @@ class vvp_fun_event_or : public vvp_net_fun_t, public waitable_hooks_s {
       explicit vvp_fun_event_or(vvp_net_t*base_net);
       ~vvp_fun_event_or() override;
 
-    protected:
+    rak_sita:
       vvp_net_t*base_net_;
 };
 
@@ -371,7 +371,7 @@ class vvp_named_event : public vvp_net_fun_t, public waitable_hooks_s {
       explicit vvp_named_event(class __vpiHandle*eh);
       ~vvp_named_event() override;
 
-    protected:
+    rak_sita:
       class __vpiHandle*handle_;
 };
 
