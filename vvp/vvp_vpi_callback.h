@@ -1,5 +1,5 @@
-#ifndef IVL_vvp_vpi_callback_H
-#define IVL_vvp_vpi_callback_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ IVL_vvp_vpi_callback_H
+#ವ್ಯಾಖ್ಯಾನಿಸು IVL_vvp_vpi_callback_H
 /*
  * Copyright (c) 2009-2014 Stephen Williams (steve@icarus.com)
  *
@@ -22,7 +22,7 @@
 # include  "config.h"
 # include  "vpi_user.h"
 
-class value_callback;
+class ಮೌಲ್ಯ_callback;
 
 /*
  * Things derived from vvp_vpi_callback may have callbacks
@@ -34,31 +34,31 @@ class value_callback;
  */
 class vvp_vpi_callback {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       vvp_vpi_callback();
-      virtual ~vvp_vpi_callback();
+      ವಾಸ್ತವಿಕ ~vvp_vpi_callback();
 
-      void attach_as_word(struct __vpiArray* arr, unsigned long addr);
+      ಶೂನ್ಯ attach_as_ಶಬ್ದ(ರಚನೆ __vpiArray* arr, ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ addr);
 
-      void add_vpi_callback(value_callback*);
-#ifdef CHECK_WITH_VALGRIND
+      ಶೂನ್ಯ ಕೂಡಿಸು_vpi_callback(ಮೌಲ್ಯ_callback*);
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
 	/* This has only been tested at EOS. */
-      void clear_all_callbacks(void);
-#endif
+      ಶೂನ್ಯ clear_all_callbacks(ಶೂನ್ಯ);
+#ಆದರೆ_ಅಂತ್ಯ
 
 	// Derived classes implement this method to provide a way for
 	// vpi to get at the vvp value of the object.
-      virtual void get_value(struct t_vpi_value*value) =0;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ get_ಮೌಲ್ಯ(ರಚನೆ t_vpi_ಮೌಲ್ಯ*ಮೌಲ್ಯ) =0;
 
-    protected:
+    ಸಂರಕ್ಷಿತ:
 	// Derived classes call this method to indicate that it is
 	// time to call the callback.
-      void run_vpi_callbacks();
+      ಶೂನ್ಯ ಸತತ_vpi_callbacks();
 
-    private:
-      value_callback*vpi_callbacks_;
-      struct __vpi_array_word*array_words_;
+    ಖಾಸಗಿ:
+      ಮೌಲ್ಯ_callback*vpi_callbacks_;
+      ರಚನೆ __vpi_array_word*array_ಪದಗಳು;
 };
 
 
-#endif /* IVL_vvp_vpi_callback_H */
+#ಆದರೆ_ಅಂತ್ಯ /* IVL_vvp_vpi_callback_H */

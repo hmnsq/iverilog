@@ -30,18 +30,18 @@
 # include  <cstdlib>
 # include  <cassert>
 # include  <iostream>
-#ifdef CHECK_WITH_VALGRIND
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
 # include  "ivl_alloc.h"
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-using namespace std;
+ಬಳಸಿ ನಾಮಾಕಾಶ std;
 
-unsigned long count_assign_events = 0;
-unsigned long count_gen_events = 0;
-unsigned long count_thread_events = 0;
+ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_ನಿಯೋಜಿಸು_events = 0;
+ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_gen_events = 0;
+ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_thread_events = 0;
   // Count the time events (A time cell created)
-unsigned long count_time_events = 0;
+ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_ಸಮಯ_events = 0;
 
 
 
@@ -55,126 +55,126 @@ unsigned long count_time_events = 0;
  * The event_s objects are base classes for the more specific sort of
  * event.
  */
-struct event_s {
-      struct event_s*next;
-      virtual ~event_s() { }
-      virtual void run_run(void) =0;
+ರಚನೆ event_s {
+      ರಚನೆ event_s*ಮುಂದಿನ_2;
+      ವಾಸ್ತವಿಕ ~event_s() { }
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ ಸತತ_ಸತತ(ಶೂನ್ಯ) =0;
 
 	// Write something about the event to stderr
-      virtual void single_step_display(void);
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ);
 
 	// Fallback new/delete
-      static void*operator new (size_t size) { return ::new char[size]; }
-      static void operator delete(void*ptr)  { ::delete[]( static_cast<char*>(ptr) ); }
+      ಸ್ಥಿರ ಶೂನ್ಯ*ಕ್ರಿಯಾಕಾರಕ ಹೊಸ (size_t size) { ಹಿಂತಿರುಗಿ ::ಹೊಸ ಅಕ್ಷರ[size]; }
+      ಸ್ಥಿರ ಶೂನ್ಯ ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*ptr)  { ::ಅಳಿಸು[]( static_cast<ಅಕ್ಷರ*>(ptr) ); }
 };
 
-void event_s::single_step_display(void)
+ಶೂನ್ಯ event_s::single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ)
 {
-      std::cerr << "event_s: Step into event " << typeid(*this).name() << std::endl;
+      std::cerr << "event_s: Step into event " << typeid(*ಇದು).name() << std::ಸಾಲು_ಅಂತ್ಯ;
 }
 
-struct event_time_s {
-      event_time_s() {
-	    count_time_events += 1;
+ರಚನೆ event_ಸಮಯ_s {
+      event_ಸಮಯ_s() {
+	    ಎಣಿಕೆ_ಸಮಯ_events += 1;
 	    delay = 0;
-	    start = 0;
-	    active = 0;
+	    ಆರಂಭ = 0;
+	    ಸಕ್ರಿಯ = 0;
 	    inactive = 0;
 	    nbassign = 0;
 	    rwsync = 0;
 	    rosync = 0;
 	    del_thr = 0;
-	    next = NULL;
+	    ಮುಂದಿನ_2 = ಖಾಲಿ;
       }
       vvp_time64_t delay;
 
-      struct event_s*start;
-      struct event_s*active;
-      struct event_s*inactive;
-      struct event_s*nbassign;
-      struct event_s*rwsync;
-      struct event_s*rosync;
-      struct event_s*del_thr;
+      ರಚನೆ event_s*ಆರಂಭ;
+      ರಚನೆ event_s*ಸಕ್ರಿಯ;
+      ರಚನೆ event_s*inactive;
+      ರಚನೆ event_s*nbassign;
+      ರಚನೆ event_s*rwsync;
+      ರಚನೆ event_s*rosync;
+      ರಚನೆ event_s*del_thr;
 
-      struct event_time_s*next;
+      ರಚನೆ event_ಸಮಯ_s*ಮುಂದಿನ_2;
 
-      static void* operator new (size_t);
-      static void operator delete(void*obj, size_t s);
+      ಸ್ಥಿರ ಶೂನ್ಯ* ಕ್ರಿಯಾಕಾರಕ ಹೊಸ (size_t);
+      ಸ್ಥಿರ ಶೂನ್ಯ ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*obj, size_t s);
 };
 
 vvp_gen_event_s::~vvp_gen_event_s()
 {
 }
 
-void vvp_gen_event_s::single_step_display(void)
+ಶೂನ್ಯ vvp_gen_event_s::single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ)
 {
-      cerr << "vvp_gen_event_s: Step into event " << typeid(*this).name() << endl;
+      cerr << "vvp_gen_event_s: Step into event " << typeid(*ಇದು).name() << ಸಾಲು_ಅಂತ್ಯ;
 }
 
 /*
  * Derived event types
  */
-struct vthread_event_s : public event_s {
+ರಚನೆ vthread_event_s : ಸಾರ್ವಜನಿಕ event_s {
       vthread_t thr;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      ಶೂನ್ಯ ಸತತ_ಸತತ(ಶೂನ್ಯ) override;
+      ಶೂನ್ಯ single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      ಸ್ಥಿರ ಶೂನ್ಯ* ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(size_t);
+      ಸ್ಥಿರ ಶೂನ್ಯ ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*);
 };
 
-void vthread_event_s::run_run(void)
+ಶೂನ್ಯ vthread_event_s::ಸತತ_ಸತತ(ಶೂನ್ಯ)
 {
-      count_thread_events += 1;
-      vthread_run(thr);
+      ಎಣಿಕೆ_thread_events += 1;
+      vthread_ಸತತ(thr);
 }
 
-void vthread_event_s::single_step_display(void)
+ಶೂನ್ಯ vthread_event_s::single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ)
 {
       __vpiScope*scope = vthread_scope(thr);
       cerr << "vthread_event: Resume thread"
-	   << " scope=" << scope->vpi_get_str(vpiFullName)
-	   << endl;
+	   << " scope=" << scope->vpi_get_str(vpi_ತುಂಬಿದ_Name)
+	   << ಸಾಲು_ಅಂತ್ಯ;
 }
 
-static const size_t VTHR_CHUNK_COUNT = 8192 / sizeof(struct vthread_event_s);
-static slab_t<sizeof(vthread_event_s),VTHR_CHUNK_COUNT> vthread_event_heap;
+ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ size_t VTHR_CHUNK_ಎಣಿಕೆ = 8192 / ಗಾತ್ರ(ರಚನೆ vthread_event_s);
+ಸ್ಥಿರ slab_t<ಗಾತ್ರ(vthread_event_s),VTHR_CHUNK_ಎಣಿಕೆ> vthread_event_ರಾಶಿ;
 
-inline void* vthread_event_s::operator new(size_t size)
+ಸಾಲೊಳಗೆ ಶೂನ್ಯ* vthread_event_s::ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(size_t size)
 {
-      assert(size == sizeof(vthread_event_s));
-      return vthread_event_heap.alloc_slab();
+      ಪ್ರತಿಜ್ಞಾ(size == ಗಾತ್ರ(vthread_event_s));
+      ಹಿಂತಿರುಗಿ vthread_event_ರಾಶಿ.alloc_slab();
 }
 
-void vthread_event_s::operator delete(void*dptr)
+ಶೂನ್ಯ vthread_event_s::ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*dptr)
 {
-      vthread_event_heap.free_slab(dptr);
+      vthread_event_ರಾಶಿ.free_slab(dptr);
 }
 
-struct del_thr_event_s : public event_s {
+ರಚನೆ del_thr_event_s : ಸಾರ್ವಜನಿಕ event_s {
       vthread_t thr;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      ಶೂನ್ಯ ಸತತ_ಸತತ(ಶೂನ್ಯ) override;
+      ಶೂನ್ಯ single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ) override;
 };
 
-void del_thr_event_s::run_run(void)
+ಶೂನ್ಯ del_thr_event_s::ಸತತ_ಸತತ(ಶೂನ್ಯ)
 {
       vthread_delete(thr);
 }
 
-void del_thr_event_s::single_step_display(void)
+ಶೂನ್ಯ del_thr_event_s::single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ)
 {
       __vpiScope*scope = vthread_scope(thr);
       cerr << "del_thr_event: Reap completed thread"
-	   << " scope=" << scope->vpi_get_str(vpiFullName) << endl;
+	   << " scope=" << scope->vpi_get_str(vpi_ತುಂಬಿದ_Name) << ಸಾಲು_ಅಂತ್ಯ;
 }
 
-struct assign_vector4_event_s  : public event_s {
+ರಚನೆ ನಿಯೋಜಿಸು_vector4_event_s  : ಸಾರ್ವಜನಿಕ event_s {
 	/* The default constructor. */
-      explicit assign_vector4_event_s(const vvp_vector4_t&that) : val(that) {
-	    base = 0;
+      ಸ್ಪಷ್ಟ ನಿಯೋಜಿಸು_vector4_event_s(ಸ್ಥಿರಾಂಕ vvp_vector4_t&that) : val(that) {
+	    ತಳ = 0;
 	    vwid = 0;
-	    next = NULL;
+	    ಮುಂದಿನ_2 = ಖಾಲಿ;
       }
 
 	/* Where to do the assign. */
@@ -182,242 +182,242 @@ struct assign_vector4_event_s  : public event_s {
 	/* Value to assign. */
       vvp_vector4_t val;
 	/* Offset of the part into the destination. */
-      unsigned base;
+      ಚಿಹ್ನೆರಹಿತ ತಳ;
 	/* Width of the destination vector. */
-      unsigned vwid;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      ಚಿಹ್ನೆರಹಿತ vwid;
+      ಶೂನ್ಯ ಸತತ_ಸತತ(ಶೂನ್ಯ) override;
+      ಶೂನ್ಯ single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      ಸ್ಥಿರ ಶೂನ್ಯ* ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(size_t);
+      ಸ್ಥಿರ ಶೂನ್ಯ ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*);
 };
 
-void assign_vector4_event_s::run_run(void)
+ಶೂನ್ಯ ನಿಯೋಜಿಸು_vector4_event_s::ಸತತ_ಸತತ(ಶೂನ್ಯ)
 {
-      count_assign_events += 1;
-      if (vwid > 0)
-	    vvp_send_vec4_pv(ptr, val, base, vwid, 0);
-      else
+      ಎಣಿಕೆ_ನಿಯೋಜಿಸು_events += 1;
+      ಆದರೆ (vwid > 0)
+	    vvp_send_vec4_pv(ptr, val, ತಳ, vwid, 0);
+      ಇಲ್ಲದಿದ್ದರೆ
 	    vvp_send_vec4(ptr, val, 0);
 }
 
-void assign_vector4_event_s::single_step_display(void)
+ಶೂನ್ಯ ನಿಯೋಜಿಸು_vector4_event_s::single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ)
 {
       cerr << "assign_vector4_event: Propagate val=" << val
-	   << ", vwid=" << vwid << ", base=" << base << endl;
+	   << ", vwid=" << vwid << ", base=" << ತಳ << ಸಾಲು_ಅಂತ್ಯ;
 }
 
-static const size_t ASSIGN4_CHUNK_COUNT = 524288 / sizeof(struct assign_vector4_event_s);
-static slab_t<sizeof(assign_vector4_event_s),ASSIGN4_CHUNK_COUNT> assign4_heap;
+ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ size_t ASSIGN4_CHUNK_ಎಣಿಕೆ = 524288 / ಗಾತ್ರ(ರಚನೆ ನಿಯೋಜಿಸು_vector4_event_s);
+ಸ್ಥಿರ slab_t<ಗಾತ್ರ(ನಿಯೋಜಿಸು_vector4_event_s),ASSIGN4_CHUNK_ಎಣಿಕೆ> assign4_ರಾಶಿ;
 
-inline void* assign_vector4_event_s::operator new(size_t size)
+ಸಾಲೊಳಗೆ ಶೂನ್ಯ* ನಿಯೋಜಿಸು_vector4_event_s::ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(size_t size)
 {
-      assert(size == sizeof(assign_vector4_event_s));
-      return assign4_heap.alloc_slab();
+      ಪ್ರತಿಜ್ಞಾ(size == ಗಾತ್ರ(ನಿಯೋಜಿಸು_vector4_event_s));
+      ಹಿಂತಿರುಗಿ assign4_ರಾಶಿ.alloc_slab();
 }
 
-void assign_vector4_event_s::operator delete(void*dptr)
+ಶೂನ್ಯ ನಿಯೋಜಿಸು_vector4_event_s::ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*dptr)
 {
-      assign4_heap.free_slab(dptr);
+      assign4_ರಾಶಿ.free_slab(dptr);
 }
 
-unsigned long count_assign4_pool(void) { return assign4_heap.pool; }
+ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_assign4_pool(ಶೂನ್ಯ) { ಹಿಂತಿರುಗಿ assign4_ರಾಶಿ.pool; }
 
-struct assign_vector8_event_s  : public event_s {
+ರಚನೆ ನಿಯೋಜಿಸು_vector8_event_s  : ಸಾರ್ವಜನಿಕ event_s {
       vvp_net_ptr_t ptr;
       vvp_vector8_t val;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      ಶೂನ್ಯ ಸತತ_ಸತತ(ಶೂನ್ಯ) override;
+      ಶೂನ್ಯ single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      ಸ್ಥಿರ ಶೂನ್ಯ* ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(size_t);
+      ಸ್ಥಿರ ಶೂನ್ಯ ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*);
 };
 
-void assign_vector8_event_s::run_run(void)
+ಶೂನ್ಯ ನಿಯೋಜಿಸು_vector8_event_s::ಸತತ_ಸತತ(ಶೂನ್ಯ)
 {
-      count_assign_events += 1;
+      ಎಣಿಕೆ_ನಿಯೋಜಿಸು_events += 1;
       vvp_send_vec8(ptr, val);
 }
 
-void assign_vector8_event_s::single_step_display(void)
+ಶೂನ್ಯ ನಿಯೋಜಿಸು_vector8_event_s::single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ)
 {
-      cerr << "assign_vector8_event: Propagate val=" << val << endl;
+      cerr << "assign_vector8_event: Propagate val=" << val << ಸಾಲು_ಅಂತ್ಯ;
 }
 
-static const size_t ASSIGN8_CHUNK_COUNT = 8192 / sizeof(struct assign_vector8_event_s);
-static slab_t<sizeof(assign_vector8_event_s),ASSIGN8_CHUNK_COUNT> assign8_heap;
+ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ size_t ASSIGN8_CHUNK_ಎಣಿಕೆ = 8192 / ಗಾತ್ರ(ರಚನೆ ನಿಯೋಜಿಸು_vector8_event_s);
+ಸ್ಥಿರ slab_t<ಗಾತ್ರ(ನಿಯೋಜಿಸು_vector8_event_s),ASSIGN8_CHUNK_ಎಣಿಕೆ> assign8_ರಾಶಿ;
 
-inline void* assign_vector8_event_s::operator new(size_t size)
+ಸಾಲೊಳಗೆ ಶೂನ್ಯ* ನಿಯೋಜಿಸು_vector8_event_s::ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(size_t size)
 {
-      assert(size == sizeof(assign_vector8_event_s));
-      return assign8_heap.alloc_slab();
+      ಪ್ರತಿಜ್ಞಾ(size == ಗಾತ್ರ(ನಿಯೋಜಿಸು_vector8_event_s));
+      ಹಿಂತಿರುಗಿ assign8_ರಾಶಿ.alloc_slab();
 }
 
-void assign_vector8_event_s::operator delete(void*dptr)
+ಶೂನ್ಯ ನಿಯೋಜಿಸು_vector8_event_s::ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*dptr)
 {
-      assign8_heap.free_slab(dptr);
+      assign8_ರಾಶಿ.free_slab(dptr);
 }
 
-unsigned long count_assign8_pool() { return assign8_heap.pool; }
+ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_assign8_pool() { ಹಿಂತಿರುಗಿ assign8_ರಾಶಿ.pool; }
 
-struct assign_real_event_s  : public event_s {
+ರಚನೆ ನಿಯೋಜಿಸು_real_event_s  : ಸಾರ್ವಜನಿಕ event_s {
       vvp_net_ptr_t ptr;
-      double val;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      ದ್ವಿಗುಣ val;
+      ಶೂನ್ಯ ಸತತ_ಸತತ(ಶೂನ್ಯ) override;
+      ಶೂನ್ಯ single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      ಸ್ಥಿರ ಶೂನ್ಯ* ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(size_t);
+      ಸ್ಥಿರ ಶೂನ್ಯ ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*);
 };
 
-void assign_real_event_s::run_run(void)
+ಶೂನ್ಯ ನಿಯೋಜಿಸು_real_event_s::ಸತತ_ಸತತ(ಶೂನ್ಯ)
 {
-      count_assign_events += 1;
+      ಎಣಿಕೆ_ನಿಯೋಜಿಸು_events += 1;
       vvp_send_real(ptr, val, 0);
 }
 
-void assign_real_event_s::single_step_display(void)
+ಶೂನ್ಯ ನಿಯೋಜಿಸು_real_event_s::single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ)
 {
-      cerr << "assign_real_event: Propagate val=" << val << endl;
+      cerr << "assign_real_event: Propagate val=" << val << ಸಾಲು_ಅಂತ್ಯ;
 }
 
-static const size_t ASSIGNR_CHUNK_COUNT = 8192 / sizeof(struct assign_real_event_s);
-static slab_t<sizeof(assign_real_event_s),ASSIGNR_CHUNK_COUNT> assignr_heap;
+ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ size_t ASSIGNR_CHUNK_ಎಣಿಕೆ = 8192 / ಗಾತ್ರ(ರಚನೆ ನಿಯೋಜಿಸು_real_event_s);
+ಸ್ಥಿರ slab_t<ಗಾತ್ರ(ನಿಯೋಜಿಸು_real_event_s),ASSIGNR_CHUNK_ಎಣಿಕೆ> assignr_ರಾಶಿ;
 
-inline void* assign_real_event_s::operator new (size_t size)
+ಸಾಲೊಳಗೆ ಶೂನ್ಯ* ನಿಯೋಜಿಸು_real_event_s::ಕ್ರಿಯಾಕಾರಕ ಹೊಸ (size_t size)
 {
-      assert(size == sizeof(assign_real_event_s));
-      return assignr_heap.alloc_slab();
+      ಪ್ರತಿಜ್ಞಾ(size == ಗಾತ್ರ(ನಿಯೋಜಿಸು_real_event_s));
+      ಹಿಂತಿರುಗಿ assignr_ರಾಶಿ.alloc_slab();
 }
 
-void assign_real_event_s::operator delete(void*dptr)
+ಶೂನ್ಯ ನಿಯೋಜಿಸು_real_event_s::ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*dptr)
 {
-      assignr_heap.free_slab(dptr);
+      assignr_ರಾಶಿ.free_slab(dptr);
 }
 
-unsigned long count_assign_real_pool(void) { return assignr_heap.pool; }
+ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_ನಿಯೋಜಿಸು_real_pool(ಶೂನ್ಯ) { ಹಿಂತಿರುಗಿ assignr_ರಾಶಿ.pool; }
 
-struct assign_array_word_s  : public event_s {
+ರಚನೆ ನಿಯೋಜಿಸು_array_ಶಬ್ದ_s  : ಸಾರ್ವಜನಿಕ event_s {
       vvp_array_t mem;
-      unsigned adr;
+      ಚಿಹ್ನೆರಹಿತ adr;
       vvp_vector4_t val;
-      unsigned off;
-      void run_run(void) override;
+      ಚಿಹ್ನೆರಹಿತ off;
+      ಶೂನ್ಯ ಸತತ_ಸತತ(ಶೂನ್ಯ) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      ಸ್ಥಿರ ಶೂನ್ಯ* ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(size_t);
+      ಸ್ಥಿರ ಶೂನ್ಯ ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*);
 };
 
-void assign_array_word_s::run_run(void)
+ಶೂನ್ಯ ನಿಯೋಜಿಸು_array_ಶಬ್ದ_s::ಸತತ_ಸತತ(ಶೂನ್ಯ)
 {
-      count_assign_events += 1;
-      mem->set_word(adr, off, val);
+      ಎಣಿಕೆ_ನಿಯೋಜಿಸು_events += 1;
+      mem->ಗಣ_ಶಬ್ದ(adr, off, val);
 }
 
-static const size_t ARRAY_W_CHUNK_COUNT = 8192 / sizeof(struct assign_array_word_s);
-static slab_t<sizeof(assign_array_word_s),ARRAY_W_CHUNK_COUNT> array_w_heap;
+ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ size_t ARRAY_W_CHUNK_ಎಣಿಕೆ = 8192 / ಗಾತ್ರ(ರಚನೆ ನಿಯೋಜಿಸು_array_ಶಬ್ದ_s);
+ಸ್ಥಿರ slab_t<ಗಾತ್ರ(ನಿಯೋಜಿಸು_array_ಶಬ್ದ_s),ARRAY_W_CHUNK_ಎಣಿಕೆ> array_w_ರಾಶಿ;
 
-inline void* assign_array_word_s::operator new (size_t size)
+ಸಾಲೊಳಗೆ ಶೂನ್ಯ* ನಿಯೋಜಿಸು_array_ಶಬ್ದ_s::ಕ್ರಿಯಾಕಾರಕ ಹೊಸ (size_t size)
 {
-      assert(size == sizeof(assign_array_word_s));
-      return array_w_heap.alloc_slab();
+      ಪ್ರತಿಜ್ಞಾ(size == ಗಾತ್ರ(ನಿಯೋಜಿಸು_array_ಶಬ್ದ_s));
+      ಹಿಂತಿರುಗಿ array_w_ರಾಶಿ.alloc_slab();
 }
 
-void assign_array_word_s::operator delete(void*ptr)
+ಶೂನ್ಯ ನಿಯೋಜಿಸು_array_ಶಬ್ದ_s::ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*ptr)
 {
-      array_w_heap.free_slab(ptr);
+      array_w_ರಾಶಿ.free_slab(ptr);
 }
 
-unsigned long count_assign_aword_pool(void) { return array_w_heap.pool; }
+ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_ನಿಯೋಜಿಸು_aword_pool(ಶೂನ್ಯ) { ಹಿಂತಿರುಗಿ array_w_ರಾಶಿ.pool; }
 
-struct force_vector4_event_s  : public event_s {
+ರಚನೆ force_vector4_event_s  : ಸಾರ್ವಜನಿಕ event_s {
 	/* The default constructor. */
-      explicit force_vector4_event_s(const vvp_vector4_t&that): val(that) {
-	    net = NULL;
-	    base = 0;
+      ಸ್ಪಷ್ಟ force_vector4_event_s(ಸ್ಥಿರಾಂಕ vvp_vector4_t&that): val(that) {
+	    net = ಖಾಲಿ;
+	    ತಳ = 0;
 	    vwid = 0;
-	    next = NULL;
+	    ಮುಂದಿನ_2 = ಖಾಲಿ;
       }
 	/* Where to do the force. */
       vvp_net_t*net;
 	/* Value to force. */
       vvp_vector4_t val;
 	/* Offset of the part into the destination. */
-      unsigned base;
+      ಚಿಹ್ನೆರಹಿತ ತಳ;
 	/* Width of the destination vector. */
-      unsigned vwid;
+      ಚಿಹ್ನೆರಹಿತ vwid;
 
-      void run_run(void) override;
-      void single_step_display(void) override;
+      ಶೂನ್ಯ ಸತತ_ಸತತ(ಶೂನ್ಯ) override;
+      ಶೂನ್ಯ single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      ಸ್ಥಿರ ಶೂನ್ಯ* ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(size_t);
+      ಸ್ಥಿರ ಶೂನ್ಯ ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*);
 };
 
-void force_vector4_event_s::run_run(void)
+ಶೂನ್ಯ force_vector4_event_s::ಸತತ_ಸತತ(ಶೂನ್ಯ)
 {
-      count_assign_events += 1;
+      ಎಣಿಕೆ_ನಿಯೋಜಿಸು_events += 1;
 
-      unsigned wid = val.size();
-      if ((base + wid) > vwid)
-	    wid = vwid - base;
+      ಚಿಹ್ನೆರಹಿತ wid = val.size();
+      ಆದರೆ ((ತಳ + wid) > vwid)
+	    wid = vwid - ತಳ;
 
 	// Make a mask of which bits are to be forced, 0 for unforced
 	// bits and 1 for forced bits.
-      vvp_vector2_t mask (vvp_vector2_t::FILL0, vwid);
-      for (unsigned idx = 0 ; idx < wid ; idx += 1)
-	    mask.set_bit(base+idx, 1);
+      vvp_vector2_t ಮುಖವಾಡ (vvp_vector2_t::FILL0, vwid);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < wid ; idx += 1)
+	    ಮುಖವಾಡ.ಗಣ_ಬಿಟ್(ತಳ+idx, 1);
 
       vvp_vector4_t tmp (vwid, BIT4_Z);
 
 	// vvp_net_t::force_vec4 propagates all the bits of the
 	// forced vector value, regardless of the mask. This
 	// ensures the unforced bits retain their current value.
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(net->fil);
-      assert(sig);
-      sig->vec4_value(tmp);
+      vvp_signal_ಮೌಲ್ಯ*sig = dynamic_cast<vvp_signal_ಮೌಲ್ಯ*>(net->fil);
+      ಪ್ರತಿಜ್ಞಾ(sig);
+      sig->vec4_ಮೌಲ್ಯ(tmp);
 
-      tmp.set_vec(base, val);
-      net->force_vec4(tmp, mask);
+      tmp.ಗಣ_vec(ತಳ, val);
+      net->force_vec4(tmp, ಮುಖವಾಡ);
 }
 
-void force_vector4_event_s::single_step_display(void)
+ಶೂನ್ಯ force_vector4_event_s::single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ)
 {
       cerr << "force_vector4_event: Force val=" << val
-	   << ", vwid=" << vwid << ", base=" << base << endl;
+	   << ", vwid=" << vwid << ", base=" << ತಳ << ಸಾಲು_ಅಂತ್ಯ;
 }
 
-static const size_t FORCE4_CHUNK_COUNT = 8192 / sizeof(struct force_vector4_event_s);
-static slab_t<sizeof(force_vector4_event_s),FORCE4_CHUNK_COUNT> force4_heap;
+ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ size_t FORCE4_CHUNK_ಎಣಿಕೆ = 8192 / ಗಾತ್ರ(ರಚನೆ force_vector4_event_s);
+ಸ್ಥಿರ slab_t<ಗಾತ್ರ(force_vector4_event_s),FORCE4_CHUNK_ಎಣಿಕೆ> force4_ರಾಶಿ;
 
-inline void* force_vector4_event_s::operator new(size_t size)
+ಸಾಲೊಳಗೆ ಶೂನ್ಯ* force_vector4_event_s::ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(size_t size)
 {
-      assert(size == sizeof(force_vector4_event_s));
-      return force4_heap.alloc_slab();
+      ಪ್ರತಿಜ್ಞಾ(size == ಗಾತ್ರ(force_vector4_event_s));
+      ಹಿಂತಿರುಗಿ force4_ರಾಶಿ.alloc_slab();
 }
 
-void force_vector4_event_s::operator delete(void*dptr)
+ಶೂನ್ಯ force_vector4_event_s::ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*dptr)
 {
-      force4_heap.free_slab(dptr);
+      force4_ರಾಶಿ.free_slab(dptr);
 }
 
-unsigned long count_force4_pool(void) { return force4_heap.pool; }
+ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_force4_pool(ಶೂನ್ಯ) { ಹಿಂತಿರುಗಿ force4_ರಾಶಿ.pool; }
 
 /*
  * This class supports the propagation of vec4 outputs from a
  * vvp_net_t object.
  */
-struct propagate_vector4_event_s : public event_s {
+ರಚನೆ propagate_vector4_event_s : ಸಾರ್ವಜನಿಕ event_s {
 	/* The default constructor. */
-      explicit propagate_vector4_event_s(const vvp_vector4_t&that) : val(that) {
-	    net = NULL;
-	    next = NULL;
+      ಸ್ಪಷ್ಟ propagate_vector4_event_s(ಸ್ಥಿರಾಂಕ vvp_vector4_t&that) : val(that) {
+	    net = ಖಾಲಿ;
+	    ಮುಂದಿನ_2 = ಖಾಲಿ;
       }
 	/* A constructor that makes the val directly. */
-      propagate_vector4_event_s(const vvp_vector4_t&that, unsigned adr, unsigned wid)
+      propagate_vector4_event_s(ಸ್ಥಿರಾಂಕ vvp_vector4_t&that, ಚಿಹ್ನೆರಹಿತ adr, ಚಿಹ್ನೆರಹಿತ wid)
       : val(that,adr,wid) {
-	    net = NULL;
-	    next = NULL;
+	    net = ಖಾಲಿ;
+	    ಮುಂದಿನ_2 = ಖಾಲಿ;
       }
 
 	/* Propagate the output of this net. */
@@ -425,115 +425,115 @@ struct propagate_vector4_event_s : public event_s {
 	/* value to propagate */
       vvp_vector4_t val;
 	/* Action */
-      void run_run(void) override;
-      void single_step_display(void) override;
+      ಶೂನ್ಯ ಸತತ_ಸತತ(ಶೂನ್ಯ) override;
+      ಶೂನ್ಯ single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ) override;
 };
 
-void propagate_vector4_event_s::run_run(void)
+ಶೂನ್ಯ propagate_vector4_event_s::ಸತತ_ಸತತ(ಶೂನ್ಯ)
 {
       net->send_vec4(val, 0);
 }
 
-void propagate_vector4_event_s::single_step_display(void)
+ಶೂನ್ಯ propagate_vector4_event_s::single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ)
 {
-      cerr << "propagate_vector4_event: Propagate val=" << val << endl;
+      cerr << "propagate_vector4_event: Propagate val=" << val << ಸಾಲು_ಅಂತ್ಯ;
 }
 
 /*
  * This class supports the propagation of real outputs from a
  * vvp_net_t object.
  */
-struct propagate_real_event_s : public event_s {
+ರಚನೆ propagate_real_event_s : ಸಾರ್ವಜನಿಕ event_s {
 	/* Propagate the output of this net. */
       vvp_net_t*net;
 	/* value to propagate */
-      double val;
+      ದ್ವಿಗುಣ val;
 	/* Action */
-      void run_run(void) override;
-      void single_step_display(void) override;
+      ಶೂನ್ಯ ಸತತ_ಸತತ(ಶೂನ್ಯ) override;
+      ಶೂನ್ಯ single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ) override;
 };
 
-void propagate_real_event_s::run_run(void)
+ಶೂನ್ಯ propagate_real_event_s::ಸತತ_ಸತತ(ಶೂನ್ಯ)
 {
       net->send_real(val, 0);
 }
 
-void propagate_real_event_s::single_step_display(void)
+ಶೂನ್ಯ propagate_real_event_s::single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ)
 {
-      cerr << "propagate_real_event: Propagate val=" << val << endl;
+      cerr << "propagate_real_event: Propagate val=" << val << ಸಾಲು_ಅಂತ್ಯ;
 }
 
-struct assign_array_r_word_s  : public event_s {
+ರಚನೆ ನಿಯೋಜಿಸು_array_r_ಶಬ್ದ_s  : ಸಾರ್ವಜನಿಕ event_s {
       vvp_array_t mem;
-      unsigned adr;
-      double val;
-      void run_run(void) override;
+      ಚಿಹ್ನೆರಹಿತ adr;
+      ದ್ವಿಗುಣ val;
+      ಶೂನ್ಯ ಸತತ_ಸತತ(ಶೂನ್ಯ) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      ಸ್ಥಿರ ಶೂನ್ಯ* ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(size_t);
+      ಸ್ಥಿರ ಶೂನ್ಯ ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*);
 };
 
-void assign_array_r_word_s::run_run(void)
+ಶೂನ್ಯ ನಿಯೋಜಿಸು_array_r_ಶಬ್ದ_s::ಸತತ_ಸತತ(ಶೂನ್ಯ)
 {
-      count_assign_events += 1;
-      mem->set_word(adr, val);
+      ಎಣಿಕೆ_ನಿಯೋಜಿಸು_events += 1;
+      mem->ಗಣ_ಶಬ್ದ(adr, val);
 }
-static const size_t ARRAY_R_W_CHUNK_COUNT = 8192 / sizeof(struct assign_array_r_word_s);
-static slab_t<sizeof(assign_array_r_word_s),ARRAY_R_W_CHUNK_COUNT> array_r_w_heap;
+ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ size_t ARRAY_R_W_CHUNK_ಎಣಿಕೆ = 8192 / ಗಾತ್ರ(ರಚನೆ ನಿಯೋಜಿಸು_array_r_ಶಬ್ದ_s);
+ಸ್ಥಿರ slab_t<ಗಾತ್ರ(ನಿಯೋಜಿಸು_array_r_ಶಬ್ದ_s),ARRAY_R_W_CHUNK_ಎಣಿಕೆ> array_r_w_ರಾಶಿ;
 
-inline void* assign_array_r_word_s::operator new(size_t size)
+ಸಾಲೊಳಗೆ ಶೂನ್ಯ* ನಿಯೋಜಿಸು_array_r_ಶಬ್ದ_s::ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(size_t size)
 {
-      assert(size == sizeof(assign_array_r_word_s));
-      return array_r_w_heap.alloc_slab();
-}
-
-void assign_array_r_word_s::operator delete(void*ptr)
-{
-      array_r_w_heap.free_slab(ptr);
+      ಪ್ರತಿಜ್ಞಾ(size == ಗಾತ್ರ(ನಿಯೋಜಿಸು_array_r_ಶಬ್ದ_s));
+      ಹಿಂತಿರುಗಿ array_r_w_ರಾಶಿ.alloc_slab();
 }
 
-unsigned long count_assign_arword_pool(void) { return array_r_w_heap.pool; }
+ಶೂನ್ಯ ನಿಯೋಜಿಸು_array_r_ಶಬ್ದ_s::ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*ptr)
+{
+      array_r_w_ರಾಶಿ.free_slab(ptr);
+}
 
-struct generic_event_s : public event_s {
+ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_ನಿಯೋಜಿಸು_arword_pool(ಶೂನ್ಯ) { ಹಿಂತಿರುಗಿ array_r_w_ರಾಶಿ.pool; }
+
+ರಚನೆ generic_event_s : ಸಾರ್ವಜನಿಕ event_s {
       vvp_gen_event_t obj;
-      bool delete_obj_when_done;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      ತಾರ್ಕಿಕ delete_obj_when_ಮುಗಿದ;
+      ಶೂನ್ಯ ಸತತ_ಸತತ(ಶೂನ್ಯ) override;
+      ಶೂನ್ಯ single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      ಸ್ಥಿರ ಶೂನ್ಯ* ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(size_t);
+      ಸ್ಥಿರ ಶೂನ್ಯ ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*);
 };
 
-void generic_event_s::run_run(void)
+ಶೂನ್ಯ generic_event_s::ಸತತ_ಸತತ(ಶೂನ್ಯ)
 {
-      count_gen_events += 1;
-      if (obj) {
-	    obj->run_run();
-	    if (delete_obj_when_done)
-		  delete obj;
+      ಎಣಿಕೆ_gen_events += 1;
+      ಆದರೆ (obj) {
+	    obj->ಸತತ_ಸತತ();
+	    ಆದರೆ (delete_obj_when_ಮುಗಿದ)
+		  ಅಳಿಸು obj;
       }
 }
 
-void generic_event_s::single_step_display(void)
+ಶೂನ್ಯ generic_event_s::single_ಹೆಜ್ಜೆ_display(ಶೂನ್ಯ)
 {
-      obj->single_step_display();
+      obj->single_ಹೆಜ್ಜೆ_display();
 }
 
-static const size_t GENERIC_CHUNK_COUNT = 131072 / sizeof(struct generic_event_s);
-static slab_t<sizeof(generic_event_s),GENERIC_CHUNK_COUNT> generic_event_heap;
+ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ size_t GENERIC_CHUNK_ಎಣಿಕೆ = 131072 / ಗಾತ್ರ(ರಚನೆ generic_event_s);
+ಸ್ಥಿರ slab_t<ಗಾತ್ರ(generic_event_s),GENERIC_CHUNK_ಎಣಿಕೆ> generic_event_ರಾಶಿ;
 
-inline void* generic_event_s::operator new(size_t size)
+ಸಾಲೊಳಗೆ ಶೂನ್ಯ* generic_event_s::ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(size_t size)
 {
-      assert(size == sizeof(generic_event_s));
-      return generic_event_heap.alloc_slab();
+      ಪ್ರತಿಜ್ಞಾ(size == ಗಾತ್ರ(generic_event_s));
+      ಹಿಂತಿರುಗಿ generic_event_ರಾಶಿ.alloc_slab();
 }
 
-void generic_event_s::operator delete(void*ptr)
+ಶೂನ್ಯ generic_event_s::ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*ptr)
 {
-      generic_event_heap.free_slab(ptr);
+      generic_event_ರಾಶಿ.free_slab(ptr);
 }
 
-unsigned long count_gen_pool(void) { return generic_event_heap.pool; }
+ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_gen_pool(ಶೂನ್ಯ) { ಹಿಂತಿರುಗಿ generic_event_ರಾಶಿ.pool; }
 
 /*
 ** These event_time_s will be required a lot, at high frequency.
@@ -541,29 +541,29 @@ unsigned long count_gen_pool(void) { return generic_event_heap.pool; }
 */
 
 
-static const size_t TIME_CHUNK_COUNT = 8192 / sizeof(struct event_time_s);
-static slab_t<sizeof(event_time_s),TIME_CHUNK_COUNT> event_time_heap;
+ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ size_t ಸಮಯ_CHUNK_ಎಣಿಕೆ = 8192 / ಗಾತ್ರ(ರಚನೆ event_ಸಮಯ_s);
+ಸ್ಥಿರ slab_t<ಗಾತ್ರ(event_ಸಮಯ_s),ಸಮಯ_CHUNK_ಎಣಿಕೆ> event_ಸಮಯ_ರಾಶಿ;
 
-inline void* event_time_s::operator new (size_t size)
+ಸಾಲೊಳಗೆ ಶೂನ್ಯ* event_ಸಮಯ_s::ಕ್ರಿಯಾಕಾರಕ ಹೊಸ (size_t size)
 {
-      assert(size == sizeof(struct event_time_s));
-      void*ptr = event_time_heap.alloc_slab();
-      return ptr;
+      ಪ್ರತಿಜ್ಞಾ(size == ಗಾತ್ರ(ರಚನೆ event_ಸಮಯ_s));
+      ಶೂನ್ಯ*ptr = event_ಸಮಯ_ರಾಶಿ.alloc_slab();
+      ಹಿಂತಿರುಗಿ ptr;
 }
 
-inline void event_time_s::operator delete(void*ptr, size_t)
+ಸಾಲೊಳಗೆ ಶೂನ್ಯ event_ಸಮಯ_s::ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*ptr, size_t)
 {
-      event_time_heap.free_slab(ptr);
+      event_ಸಮಯ_ರಾಶಿ.free_slab(ptr);
 }
 
-unsigned long count_time_pool(void) { return event_time_heap.pool; }
+ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_ಸಮಯ_pool(ಶೂನ್ಯ) { ಹಿಂತಿರುಗಿ event_ಸಮಯ_ರಾಶಿ.pool; }
 
 /*
  * This is the head of the list of pending events. This includes all
  * the events that have not been executed yet, and reaches into the
  * future.
  */
-static struct event_time_s* sched_list = 0;
+ಸ್ಥಿರ ರಚನೆ event_ಸಮಯ_s* sched_list = 0;
 
 /*
  * This is a list of initialization events. The setup puts
@@ -571,50 +571,50 @@ static struct event_time_s* sched_list = 0;
  * simulation as a whole starts. This prevents time-0 triggers of
  * certain events.
  */
-static struct event_s* schedule_init_list = 0;
+ಸ್ಥಿರ ರಚನೆ event_s* ವೇಳಾಪಟ್ಟಿ_init_list = 0;
 
 /*
  * This is the head of the list of final events.
  */
-static struct event_s* schedule_final_list = 0;
+ಸ್ಥಿರ ರಚನೆ event_s* ವೇಳಾಪಟ್ಟಿ_final_list = 0;
 
 /*
  * This flag is true until a VPI task or function finishes the
  * simulation.
  */
-static bool schedule_runnable = true;
-static bool schedule_stopped_flag  = false;
-static bool schedule_single_step_flag = false;
-static bool no_signals_flag = false;
+ಸ್ಥಿರ ತಾರ್ಕಿಕ ವೇಳಾಪಟ್ಟಿ_runnable = ನಿಜ;
+ಸ್ಥಿರ ತಾರ್ಕಿಕ ವೇಳಾಪಟ್ಟಿ_stopped_flag  = ಸುಳ್ಳು;
+ಸ್ಥಿರ ತಾರ್ಕಿಕ ವೇಳಾಪಟ್ಟಿ_single_ಹೆಜ್ಜೆ_flag = ಸುಳ್ಳು;
+ಸ್ಥಿರ ತಾರ್ಕಿಕ no_ಸಂಕೇತಗಳು_flag = ಸುಳ್ಳು;
 
-void schedule_finish(int)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_ಮುಕ್ತಾಯ(ಪೂರ್ಣಾಂಕ)
 {
-      schedule_runnable = false;
+      ವೇಳಾಪಟ್ಟಿ_runnable = ಸುಳ್ಳು;
 }
 
-void schedule_stop(int)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_stop(ಪೂರ್ಣಾಂಕ)
 {
-      schedule_stopped_flag = true;
+      ವೇಳಾಪಟ್ಟಿ_stopped_flag = ನಿಜ;
 }
 
-void schedule_single_step(int)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_single_ಹೆಜ್ಜೆ(ಪೂರ್ಣಾಂಕ)
 {
-      schedule_single_step_flag = true;
+      ವೇಳಾಪಟ್ಟಿ_single_ಹೆಜ್ಜೆ_flag = ನಿಜ;
 }
 
-bool schedule_finished(void)
+ತಾರ್ಕಿಕ ವೇಳಾಪಟ್ಟಿ_ಪೂರ್ಣಗೊಂಡ(ಶೂನ್ಯ)
 {
-      return !schedule_runnable;
+      ಹಿಂತಿರುಗಿ !ವೇಳಾಪಟ್ಟಿ_runnable;
 }
 
-bool schedule_stopped(void)
+ತಾರ್ಕಿಕ ವೇಳಾಪಟ್ಟಿ_stopped(ಶೂನ್ಯ)
 {
-      return schedule_stopped_flag;
+      ಹಿಂತಿರುಗಿ ವೇಳಾಪಟ್ಟಿ_stopped_flag;
 }
 
-extern "C" void vvp_no_signals(void)
+ಬಾಹ್ಯ "C" ಶೂನ್ಯ vvp_no_ಸಂಕೇತಗಳು(ಶೂನ್ಯ)
 {
-      no_signals_flag = true;
+      no_ಸಂಕೇತಗಳು_flag = ನಿಜ;
 }
 
 /*
@@ -622,69 +622,69 @@ extern "C" void vvp_no_signals(void)
  * leads to an implicit $stop. The SIGHUP and SIGTERM signals lead
  * to an implicit $finish.
  */
-extern bool stop_is_finish;
+ಬಾಹ್ಯ ತಾರ್ಕಿಕ stop_is_ಮುಕ್ತಾಯ;
 
-extern "C" void signals_handler(int signum)
+ಬಾಹ್ಯ "C" ಶೂನ್ಯ ಸಂಕೇತಗಳು_handler(ಪೂರ್ಣಾಂಕ signum)
 {
-#ifdef __MINGW32__
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ __MINGW32__
 	// Windows implements the original UNIX semantics for signal,
 	// so we have to re-establish the signal handler each time a
 	// signal is caught.
-      signal(signum, &signals_handler);
-#endif
-      if (signum != SIGINT)
-	    stop_is_finish = true;
-      schedule_stopped_flag = true;
+      ಸಂಕೇತ(signum, &ಸಂಕೇತಗಳು_handler);
+#ಆದರೆ_ಅಂತ್ಯ
+      ಆದರೆ (signum != SIGINT)
+	    stop_is_ಮುಕ್ತಾಯ = ನಿಜ;
+      ವೇಳಾಪಟ್ಟಿ_stopped_flag = ನಿಜ;
 }
 
-static void signals_capture(void)
+ಸ್ಥಿರ ಶೂನ್ಯ ಸಂಕೇತಗಳು_capture(ಶೂನ್ಯ)
 {
-      if (no_signals_flag)
-	   return;
-#ifndef __MINGW32__
-      signal(SIGHUP,  &signals_handler);
-#endif
-      signal(SIGINT,  &signals_handler);
-      signal(SIGTERM, &signals_handler);
+      ಆದರೆ (no_ಸಂಕೇತಗಳು_flag)
+	   ಹಿಂತಿರುಗಿ;
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ __MINGW32__
+      ಸಂಕೇತ(SIGHUP,  &ಸಂಕೇತಗಳು_handler);
+#ಆದರೆ_ಅಂತ್ಯ
+      ಸಂಕೇತ(SIGINT,  &ಸಂಕೇತಗಳು_handler);
+      ಸಂಕೇತ(SIGTERM, &ಸಂಕೇತಗಳು_handler);
 }
 
-static void signals_revert(void)
+ಸ್ಥಿರ ಶೂನ್ಯ ಸಂಕೇತಗಳು_revert(ಶೂನ್ಯ)
 {
-      if (no_signals_flag)
-	   return;
-#ifndef __MINGW32__
-      signal(SIGHUP,  SIG_DFL);
-#endif
-      signal(SIGINT,  SIG_DFL);
-      signal(SIGTERM, SIG_DFL);
+      ಆದರೆ (no_ಸಂಕೇತಗಳು_flag)
+	   ಹಿಂತಿರುಗಿ;
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ __MINGW32__
+      ಸಂಕೇತ(SIGHUP,  SIG_DFL);
+#ಆದರೆ_ಅಂತ್ಯ
+      ಸಂಕೇತ(SIGINT,  SIG_DFL);
+      ಸಂಕೇತ(SIGTERM, SIG_DFL);
 }
 
 /*
  * This function puts an event on the end of the pre-simulation event queue.
  */
-static void schedule_init_event(struct event_s*cur)
+ಸ್ಥಿರ ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_init_event(ರಚನೆ event_s*cur)
 {
-      if (schedule_init_list == 0) {
-            cur->next = cur;
-      } else {
-            cur->next = schedule_init_list->next;
-            schedule_init_list->next = cur;
+      ಆದರೆ (ವೇಳಾಪಟ್ಟಿ_init_list == 0) {
+            cur->ಮುಂದಿನ_2 = cur;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+            cur->ಮುಂದಿನ_2 = ವೇಳಾಪಟ್ಟಿ_init_list->ಮುಂದಿನ_2;
+            ವೇಳಾಪಟ್ಟಿ_init_list->ಮುಂದಿನ_2 = cur;
       }
-      schedule_init_list = cur;
+      ವೇಳಾಪಟ್ಟಿ_init_list = cur;
 }
 
 /*
  * This function puts an event on the end of the post-simulation event queue.
  */
-static void schedule_final_event(struct event_s*cur)
+ಸ್ಥಿರ ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_final_event(ರಚನೆ event_s*cur)
 {
-      if (schedule_final_list == 0) {
-            cur->next = cur;
-      } else {
-            cur->next = schedule_final_list->next;
-            schedule_final_list->next = cur;
+      ಆದರೆ (ವೇಳಾಪಟ್ಟಿ_final_list == 0) {
+            cur->ಮುಂದಿನ_2 = cur;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+            cur->ಮುಂದಿನ_2 = ವೇಳಾಪಟ್ಟಿ_final_list->ಮುಂದಿನ_2;
+            ವೇಳಾಪಟ್ಟಿ_final_list->ಮುಂದಿನ_2 = cur;
       }
-      schedule_final_list = cur;
+      ವೇಳಾಪಟ್ಟಿ_final_list = cur;
 }
 
 /*
@@ -693,60 +693,60 @@ static void schedule_final_event(struct event_s*cur)
  * itself, and the structure is placed in the right place in the
  * queue.
  */
-typedef enum event_queue_e { SEQ_START, SEQ_ACTIVE, SEQ_INACTIVE, SEQ_NBASSIGN,
-			     SEQ_RWSYNC, SEQ_ROSYNC, DEL_THREAD } event_queue_t;
+ಪ್ರಕಾರವ್ಯಾಖ್ಯೆ ಎಣಿಕೆ event_ಸರತಿ_e { SEQ_ಆರಂಭ, SEQ_ಸಕ್ರಿಯ, SEQ_INACTIVE, SEQ_NBASSIGN,
+			     SEQ_RWSYNC, SEQ_ROSYNC, DEL_THREAD } event_ಸರತಿ_t;
 
-static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
-			    event_queue_t select_queue)
+ಸ್ಥಿರ ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_event(ರಚನೆ event_s*cur, vvp_time64_t delay,
+			    event_ಸರತಿ_t select_ಸರತಿ)
 {
-      cur->next = cur;
-      struct event_time_s*ctim = sched_list;
+      cur->ಮುಂದಿನ_2 = cur;
+      ರಚನೆ event_ಸಮಯ_s*ctim = sched_list;
 
-      if (sched_list == 0) {
+      ಆದರೆ (sched_list == 0) {
 	      /* Is the event_time list completely empty? Create the
 		 first event_time object. */
-	    ctim = new struct event_time_s;
+	    ctim = ಹೊಸ ರಚನೆ event_ಸಮಯ_s;
 	    ctim->delay = delay;
-	    ctim->next  = 0;
+	    ctim->ಮುಂದಿನ_2  = 0;
 	    sched_list = ctim;
 
-      } else if (sched_list->delay > delay) {
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (sched_list->delay > delay) {
 
 	      /* Am I looking for an event before the first event_time?
 		 If so, create a new event_time to go in front. */
-	    struct event_time_s*tmp = new struct event_time_s;
+	    ರಚನೆ event_ಸಮಯ_s*tmp = ಹೊಸ ರಚನೆ event_ಸಮಯ_s;
 	    tmp->delay = delay;
-	    tmp->next = ctim;
+	    tmp->ಮುಂದಿನ_2 = ctim;
 	    ctim->delay -= delay;
 	    ctim = tmp;
 	    sched_list = ctim;
 
-      } else {
-	    struct event_time_s*prev = 0;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ರಚನೆ event_ಸಮಯ_s*prev = 0;
 
-	    while (ctim->next && (ctim->delay < delay)) {
+	    ಆಗ (ctim->ಮುಂದಿನ_2 && (ctim->delay < delay)) {
 		  delay -= ctim->delay;
 		  prev = ctim;
-		  ctim = ctim->next;
+		  ctim = ctim->ಮುಂದಿನ_2;
 	    }
 
-	    if (ctim->delay > delay) {
-		  struct event_time_s*tmp = new struct event_time_s;
+	    ಆದರೆ (ctim->delay > delay) {
+		  ರಚನೆ event_ಸಮಯ_s*tmp = ಹೊಸ ರಚನೆ event_ಸಮಯ_s;
 		  tmp->delay = delay;
-		  tmp->next  = prev->next;
-		  prev->next = tmp;
+		  tmp->ಮುಂದಿನ_2  = prev->ಮುಂದಿನ_2;
+		  prev->ಮುಂದಿನ_2 = tmp;
 
-		  tmp->next->delay -= delay;
+		  tmp->ಮುಂದಿನ_2->delay -= delay;
 		  ctim = tmp;
 
-	    } else if (ctim->delay == delay) {
+	    } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (ctim->delay == delay) {
 
-	    } else {
-		  assert(ctim->next == 0);
-		  struct event_time_s*tmp = new struct event_time_s;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  ಪ್ರತಿಜ್ಞಾ(ctim->ಮುಂದಿನ_2 == 0);
+		  ರಚನೆ event_ಸಮಯ_s*tmp = ಹೊಸ ರಚನೆ event_ಸಮಯ_s;
 		  tmp->delay = delay - ctim->delay;
-		  tmp->next = 0;
-		  ctim->next = tmp;
+		  tmp->ಮುಂದಿನ_2 = 0;
+		  ctim->ಮುಂದಿನ_2 = tmp;
 
 		  ctim = tmp;
 	    }
@@ -756,308 +756,308 @@ static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
 	   receive the event at hand. Put the event in to the
 	   appropriate list for the kind of assign we have at hand. */
 
-      struct event_s** q = 0;
+      ರಚನೆ event_s** q = 0;
 
-      switch (select_queue) {
-	  case SEQ_START:
-	    q = &ctim->start;
-	    break;
+      ಆಯ್ಕೆ (select_ಸರತಿ) {
+	  ಸ್ಥಿತಿ SEQ_ಆರಂಭ:
+	    q = &ctim->ಆರಂಭ;
+	    ನಿಲ್ಲಿಸು;
 
-	  case SEQ_ACTIVE:
-	    q = &ctim->active;
-	    break;
+	  ಸ್ಥಿತಿ SEQ_ಸಕ್ರಿಯ:
+	    q = &ctim->ಸಕ್ರಿಯ;
+	    ನಿಲ್ಲಿಸು;
 
-	  case SEQ_INACTIVE:
-	    assert(delay == 0);
+	  ಸ್ಥಿತಿ SEQ_INACTIVE:
+	    ಪ್ರತಿಜ್ಞಾ(delay == 0);
 	    q = &ctim->inactive;
-	    break;
+	    ನಿಲ್ಲಿಸು;
 
-	  case SEQ_NBASSIGN:
+	  ಸ್ಥಿತಿ SEQ_NBASSIGN:
 	    q = &ctim->nbassign;
-	    break;
+	    ನಿಲ್ಲಿಸು;
 
-	  case SEQ_RWSYNC:
+	  ಸ್ಥಿತಿ SEQ_RWSYNC:
 	    q = &ctim->rwsync;
-	    break;
+	    ನಿಲ್ಲಿಸು;
 
-	  case SEQ_ROSYNC:
+	  ಸ್ಥಿತಿ SEQ_ROSYNC:
 	    q = &ctim->rosync;
-	    break;
+	    ನಿಲ್ಲಿಸು;
 
-	  case DEL_THREAD:
+	  ಸ್ಥಿತಿ DEL_THREAD:
 	    q = &ctim->del_thr;
-	    break;
+	    ನಿಲ್ಲಿಸು;
       }
 
-      if (q) {
-	    if (*q) {
+      ಆದರೆ (q) {
+	    ಆದರೆ (*q) {
 		  /* Put the cur event on the end of the queue. */
-		  cur->next = (*q)->next;
-		  (*q)->next = cur;
+		  cur->ಮುಂದಿನ_2 = (*q)->ಮುಂದಿನ_2;
+		  (*q)->ಮುಂದಿನ_2 = cur;
 	    }
 	    *q = cur;
       }
 }
 
-static void schedule_event_push_(struct event_s*cur)
+ಸ್ಥಿರ ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_event_ತಳ್ಳು(ರಚನೆ event_s*cur)
 {
-      if ((sched_list == 0) || (sched_list->delay > 0)) {
-	    schedule_event_(cur, 0, SEQ_ACTIVE);
-	    return;
+      ಆದರೆ ((sched_list == 0) || (sched_list->delay > 0)) {
+	    ವೇಳಾಪಟ್ಟಿ_event(cur, 0, SEQ_ಸಕ್ರಿಯ);
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      struct event_time_s*ctim = sched_list;
+      ರಚನೆ event_ಸಮಯ_s*ctim = sched_list;
 
-      if (ctim->active == 0) {
-	    cur->next = cur;
-	    ctim->active = cur;
-	    return;
+      ಆದರೆ (ctim->ಸಕ್ರಿಯ == 0) {
+	    cur->ಮುಂದಿನ_2 = cur;
+	    ctim->ಸಕ್ರಿಯ = cur;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      cur->next = ctim->active->next;
-      ctim->active->next = cur;
+      cur->ಮುಂದಿನ_2 = ctim->ಸಕ್ರಿಯ->ಮುಂದಿನ_2;
+      ctim->ಸಕ್ರಿಯ->ಮುಂದಿನ_2 = cur;
 }
 
-void schedule_vthread(vthread_t thr, vvp_time64_t delay, bool push_flag)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_vthread(vthread_t thr, vvp_time64_t delay, ತಾರ್ಕಿಕ ತಳ್ಳು_flag)
 {
-      struct vthread_event_s*cur = new vthread_event_s;
+      ರಚನೆ vthread_event_s*cur = ಹೊಸ vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_scheduled(thr);
 
-      if (push_flag && (delay == 0)) {
+      ಆದರೆ (ತಳ್ಳು_flag && (delay == 0)) {
 	      /* Special case: If the delay is 0, the push_flag means
 		 I can push this event in front of everything. This is
 		 used by the %fork statement, for example, to perform
 		 task calls. */
-	    schedule_event_push_(cur);
+	    ವೇಳಾಪಟ್ಟಿ_event_ತಳ್ಳು(cur);
 
-      } else {
-	    schedule_event_(cur, delay, SEQ_ACTIVE);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ವೇಳಾಪಟ್ಟಿ_event(cur, delay, SEQ_ಸಕ್ರಿಯ);
       }
 }
 
-void schedule_t0_trigger(vvp_net_ptr_t ptr)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_t0_trigger(vvp_net_ptr_t ptr)
 {
-      vvp_vector4_t bit (1, BIT4_X);
-      struct assign_vector4_event_s*cur = new struct assign_vector4_event_s(bit);
+      vvp_vector4_t ಬಿಟ್ (1, BIT4_X);
+      ರಚನೆ ನಿಯೋಜಿಸು_vector4_event_s*cur = ಹೊಸ ರಚನೆ ನಿಯೋಜಿಸು_vector4_event_s(ಬಿಟ್);
       cur->ptr = ptr;
-      schedule_event_(cur, 0, SEQ_INACTIVE);
+      ವೇಳಾಪಟ್ಟಿ_event(cur, 0, SEQ_INACTIVE);
 }
 
-void schedule_inactive(vthread_t thr)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_inactive(vthread_t thr)
 {
-      struct vthread_event_s*cur = new vthread_event_s;
+      ರಚನೆ vthread_event_s*cur = ಹೊಸ vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_scheduled(thr);
-      schedule_event_(cur, 0, SEQ_INACTIVE);
+      ವೇಳಾಪಟ್ಟಿ_event(cur, 0, SEQ_INACTIVE);
 }
 
-void schedule_init_vthread(vthread_t thr)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_init_vthread(vthread_t thr)
 {
-      struct vthread_event_s*cur = new vthread_event_s;
+      ರಚನೆ vthread_event_s*cur = ಹೊಸ vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_scheduled(thr);
 
-      schedule_init_event(cur);
+      ವೇಳಾಪಟ್ಟಿ_init_event(cur);
 }
 
-void schedule_final_vthread(vthread_t thr)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_final_vthread(vthread_t thr)
 {
-      struct vthread_event_s*cur = new vthread_event_s;
+      ರಚನೆ vthread_event_s*cur = ಹೊಸ vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_final(thr);
       vthread_mark_scheduled(thr);
 
-      schedule_final_event(cur);
+      ವೇಳಾಪಟ್ಟಿ_final_event(cur);
 }
 
-void schedule_assign_vector(vvp_net_ptr_t ptr,
-			    unsigned base, unsigned vwid,
-			    const vvp_vector4_t&bit,
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_ನಿಯೋಜಿಸು_ಸದಿಶ(vvp_net_ptr_t ptr,
+			    ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid,
+			    ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
 			    vvp_time64_t delay)
 {
-      struct assign_vector4_event_s*cur = new struct assign_vector4_event_s(bit);
+      ರಚನೆ ನಿಯೋಜಿಸು_vector4_event_s*cur = ಹೊಸ ರಚನೆ ನಿಯೋಜಿಸು_vector4_event_s(ಬಿಟ್);
       cur->ptr = ptr;
-      cur->base = base;
+      cur->ತಳ = ತಳ;
       cur->vwid = vwid;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      ವೇಳಾಪಟ್ಟಿ_event(cur, delay, SEQ_NBASSIGN);
 }
 
-void schedule_force_vector(vvp_net_t*net,
-			    unsigned base, unsigned vwid,
-			    const vvp_vector4_t&bit,
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_force_ಸದಿಶ(vvp_net_t*net,
+			    ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid,
+			    ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
 			    vvp_time64_t delay)
 {
-      struct force_vector4_event_s*cur = new struct force_vector4_event_s(bit);
+      ರಚನೆ force_vector4_event_s*cur = ಹೊಸ ರಚನೆ force_vector4_event_s(ಬಿಟ್);
       cur->net = net;
-      cur->base = base;
+      cur->ತಳ = ತಳ;
       cur->vwid = vwid;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      ವೇಳಾಪಟ್ಟಿ_event(cur, delay, SEQ_NBASSIGN);
 }
 
-void schedule_propagate_vector(vvp_net_t*net,
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_propagate_ಸದಿಶ(vvp_net_t*net,
 			       vvp_time64_t delay,
-			       const vvp_vector4_t&src)
+			       ಸ್ಥಿರಾಂಕ vvp_vector4_t&src)
 {
-      struct propagate_vector4_event_s*cur
-	    = new struct propagate_vector4_event_s(src);
+      ರಚನೆ propagate_vector4_event_s*cur
+	    = ಹೊಸ ರಚನೆ propagate_vector4_event_s(src);
       cur->net = net;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      ವೇಳಾಪಟ್ಟಿ_event(cur, delay, SEQ_NBASSIGN);
 }
 
 // FIXME: This needs to create a non-blocking event, but only one per time slot.
 //        Is schedule_event_ or execution actually filtering since the net is
 //        already X because this is not triggering?
-void schedule_propagate_event(vvp_net_t*net,
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_propagate_event(vvp_net_t*net,
                               vvp_time64_t delay)
 {
       vvp_vector4_t tmp (1, BIT4_X);
-      struct propagate_vector4_event_s*cur
-	    = new struct propagate_vector4_event_s(tmp);
+      ರಚನೆ propagate_vector4_event_s*cur
+	    = ಹೊಸ ರಚನೆ propagate_vector4_event_s(tmp);
       cur->net = net;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      ವೇಳಾಪಟ್ಟಿ_event(cur, delay, SEQ_NBASSIGN);
 }
 
-void schedule_assign_array_word(vvp_array_t mem,
-				unsigned word_addr,
-				unsigned off,
-				const vvp_vector4_t&val,
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_ನಿಯೋಜಿಸು_array_ಶಬ್ದ(vvp_array_t mem,
+				ಚಿಹ್ನೆರಹಿತ ಶಬ್ದ_addr,
+				ಚಿಹ್ನೆರಹಿತ off,
+				ಸ್ಥಿರಾಂಕ vvp_vector4_t&val,
 				vvp_time64_t delay)
 {
-      struct assign_array_word_s*cur = new struct assign_array_word_s;
+      ರಚನೆ ನಿಯೋಜಿಸು_array_ಶಬ್ದ_s*cur = ಹೊಸ ರಚನೆ ನಿಯೋಜಿಸು_array_ಶಬ್ದ_s;
       cur->mem = mem;
-      cur->adr = word_addr;
+      cur->adr = ಶಬ್ದ_addr;
       cur->off = off;
       cur->val = val;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      ವೇಳಾಪಟ್ಟಿ_event(cur, delay, SEQ_NBASSIGN);
 }
 
-void schedule_assign_array_word(vvp_array_t mem,
-				unsigned word_addr,
-				double val,
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_ನಿಯೋಜಿಸು_array_ಶಬ್ದ(vvp_array_t mem,
+				ಚಿಹ್ನೆರಹಿತ ಶಬ್ದ_addr,
+				ದ್ವಿಗುಣ val,
 				vvp_time64_t delay)
 {
-      struct assign_array_r_word_s*cur = new struct assign_array_r_word_s;
+      ರಚನೆ ನಿಯೋಜಿಸು_array_r_ಶಬ್ದ_s*cur = ಹೊಸ ರಚನೆ ನಿಯೋಜಿಸು_array_r_ಶಬ್ದ_s;
       cur->mem = mem;
-      cur->adr = word_addr;
+      cur->adr = ಶಬ್ದ_addr;
       cur->val = val;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      ವೇಳಾಪಟ್ಟಿ_event(cur, delay, SEQ_NBASSIGN);
 }
 
-void schedule_set_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&bit)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_ಗಣ_ಸದಿಶ(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್)
 {
-      struct assign_vector4_event_s*cur = new struct assign_vector4_event_s(bit);
+      ರಚನೆ ನಿಯೋಜಿಸು_vector4_event_s*cur = ಹೊಸ ರಚನೆ ನಿಯೋಜಿಸು_vector4_event_s(ಬಿಟ್);
       cur->ptr = ptr;
-      cur->base = 0;
+      cur->ತಳ = 0;
       cur->vwid = 0;
-      schedule_event_(cur, 0, SEQ_ACTIVE);
+      ವೇಳಾಪಟ್ಟಿ_event(cur, 0, SEQ_ಸಕ್ರಿಯ);
 }
 
-void schedule_set_vector(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_ಗಣ_ಸದಿಶ(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್)
 {
-      struct assign_vector8_event_s*cur = new struct assign_vector8_event_s;
+      ರಚನೆ ನಿಯೋಜಿಸು_vector8_event_s*cur = ಹೊಸ ರಚನೆ ನಿಯೋಜಿಸು_vector8_event_s;
       cur->ptr = ptr;
-      cur->val = bit;
-      schedule_event_(cur, 0, SEQ_ACTIVE);
+      cur->val = ಬಿಟ್;
+      ವೇಳಾಪಟ್ಟಿ_event(cur, 0, SEQ_ಸಕ್ರಿಯ);
 }
 
-void schedule_set_vector(vvp_net_ptr_t ptr, double bit)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_ಗಣ_ಸದಿಶ(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್)
 {
-      struct assign_real_event_s*cur = new struct assign_real_event_s;
+      ರಚನೆ ನಿಯೋಜಿಸು_real_event_s*cur = ಹೊಸ ರಚನೆ ನಿಯೋಜಿಸು_real_event_s;
       cur->ptr = ptr;
-      cur->val = bit;
-      schedule_event_(cur, 0, SEQ_ACTIVE);
+      cur->val = ಬಿಟ್;
+      ವೇಳಾಪಟ್ಟಿ_event(cur, 0, SEQ_ಸಕ್ರಿಯ);
 }
 
-void schedule_init_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&bit)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_init_ಸದಿಶ(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್)
 {
-      struct assign_vector4_event_s*cur = new struct assign_vector4_event_s(bit);
+      ರಚನೆ ನಿಯೋಜಿಸು_vector4_event_s*cur = ಹೊಸ ರಚನೆ ನಿಯೋಜಿಸು_vector4_event_s(ಬಿಟ್);
       cur->ptr = ptr;
-      cur->base = 0;
+      cur->ತಳ = 0;
       cur->vwid = 0;
-      schedule_init_event(cur);
+      ವೇಳಾಪಟ್ಟಿ_init_event(cur);
 }
 
-void schedule_init_vector(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_init_ಸದಿಶ(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್)
 {
-      struct assign_vector8_event_s*cur = new struct assign_vector8_event_s;
+      ರಚನೆ ನಿಯೋಜಿಸು_vector8_event_s*cur = ಹೊಸ ರಚನೆ ನಿಯೋಜಿಸು_vector8_event_s;
       cur->ptr = ptr;
-      cur->val = bit;
-      schedule_init_event(cur);
+      cur->val = ಬಿಟ್;
+      ವೇಳಾಪಟ್ಟಿ_init_event(cur);
 }
 
-void schedule_init_vector(vvp_net_ptr_t ptr, double bit)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_init_ಸದಿಶ(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್)
 {
-      struct assign_real_event_s*cur = new struct assign_real_event_s;
+      ರಚನೆ ನಿಯೋಜಿಸು_real_event_s*cur = ಹೊಸ ರಚನೆ ನಿಯೋಜಿಸು_real_event_s;
       cur->ptr = ptr;
-      cur->val = bit;
-      schedule_init_event(cur);
+      cur->val = ಬಿಟ್;
+      ವೇಳಾಪಟ್ಟಿ_init_event(cur);
 }
 
-void schedule_init_propagate(vvp_net_t*net, vvp_vector4_t bit)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_init_propagate(vvp_net_t*net, vvp_vector4_t ಬಿಟ್)
 {
-      struct propagate_vector4_event_s*cur = new struct propagate_vector4_event_s(bit);
+      ರಚನೆ propagate_vector4_event_s*cur = ಹೊಸ ರಚನೆ propagate_vector4_event_s(ಬಿಟ್);
       cur->net = net;
-      schedule_init_event(cur);
+      ವೇಳಾಪಟ್ಟಿ_init_event(cur);
 }
 
-void schedule_init_propagate(vvp_net_t*net, double bit)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_init_propagate(vvp_net_t*net, ದ್ವಿಗುಣ ಬಿಟ್)
 {
-      struct propagate_real_event_s*cur = new struct propagate_real_event_s;
+      ರಚನೆ propagate_real_event_s*cur = ಹೊಸ ರಚನೆ propagate_real_event_s;
       cur->net = net;
-      cur->val = bit;
-      schedule_init_event(cur);
+      cur->val = ಬಿಟ್;
+      ವೇಳಾಪಟ್ಟಿ_init_event(cur);
 }
 
-void schedule_del_thr(vthread_t thr)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_del_thr(vthread_t thr)
 {
-      struct del_thr_event_s*cur = new del_thr_event_s;
+      ರಚನೆ del_thr_event_s*cur = ಹೊಸ del_thr_event_s;
 
       cur->thr = thr;
 
-      schedule_event_(cur, 0, DEL_THREAD);
+      ವೇಳಾಪಟ್ಟಿ_event(cur, 0, DEL_THREAD);
 }
 
-void schedule_generic(vvp_gen_event_t obj, vvp_time64_t delay,
-		      bool sync_flag, bool ro_flag, bool delete_when_done)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_generic(vvp_gen_event_t obj, vvp_time64_t delay,
+		      ತಾರ್ಕಿಕ sync_flag, ತಾರ್ಕಿಕ ro_flag, ತಾರ್ಕಿಕ delete_when_ಮುಗಿದ)
 {
-      struct generic_event_s*cur = new generic_event_s;
+      ರಚನೆ generic_event_s*cur = ಹೊಸ generic_event_s;
 
       cur->obj = obj;
-      cur->delete_obj_when_done = delete_when_done;
-      schedule_event_(cur, delay,
-		      sync_flag? (ro_flag?SEQ_ROSYNC:SEQ_RWSYNC) : SEQ_ACTIVE);
+      cur->delete_obj_when_ಮುಗಿದ = delete_when_ಮುಗಿದ;
+      ವೇಳಾಪಟ್ಟಿ_event(cur, delay,
+		      sync_flag? (ro_flag?SEQ_ROSYNC:SEQ_RWSYNC) : SEQ_ಸಕ್ರಿಯ);
 
-      if (sync_flag)
+      ಆದರೆ (sync_flag)
 	    vthread_delay_delete();
 }
 
-static bool sim_started;
+ಸ್ಥಿರ ತಾರ್ಕಿಕ sim_started;
 
-void schedule_functor(vvp_gen_event_t obj)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_functor(vvp_gen_event_t obj)
 {
-      struct generic_event_s*cur = new generic_event_s;
+      ರಚನೆ generic_event_s*cur = ಹೊಸ generic_event_s;
 
       cur->obj = obj;
-      cur->delete_obj_when_done = false;
-      if (!sim_started) {
-            schedule_init_event(cur);
-      } else {
-            schedule_event_(cur, 0, SEQ_ACTIVE);
+      cur->delete_obj_when_ಮುಗಿದ = ಸುಳ್ಳು;
+      ಆದರೆ (!sim_started) {
+            ವೇಳಾಪಟ್ಟಿ_init_event(cur);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+            ವೇಳಾಪಟ್ಟಿ_event(cur, 0, SEQ_ಸಕ್ರಿಯ);
       }
 }
 
-void schedule_at_start_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_at_ಆರಂಭ_ದ_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
 {
-      struct generic_event_s*cur = new generic_event_s;
+      ರಚನೆ generic_event_s*cur = ಹೊಸ generic_event_s;
 
       cur->obj = obj;
-      cur->delete_obj_when_done = false;
-      schedule_event_(cur, delay, SEQ_START);
+      cur->delete_obj_when_ಮುಗಿದ = ಸುಳ್ಳು;
+      ವೇಳಾಪಟ್ಟಿ_event(cur, delay, SEQ_ಆರಂಭ);
 }
 
 /*
@@ -1065,22 +1065,22 @@ void schedule_at_start_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
  * after all of the non-blocking assignments, so is effectively the
  * same as the ReadWriteSync time.
  */
-void schedule_at_end_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_at_ಕೊನೆ_ದ_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
 {
-      struct generic_event_s*cur = new generic_event_s;
+      ರಚನೆ generic_event_s*cur = ಹೊಸ generic_event_s;
 
       cur->obj = obj;
-      cur->delete_obj_when_done = false;
-      schedule_event_(cur, delay, SEQ_RWSYNC);
+      cur->delete_obj_when_ಮುಗಿದ = ಸುಳ್ಳು;
+      ವೇಳಾಪಟ್ಟಿ_event(cur, delay, SEQ_RWSYNC);
 }
 
-static vvp_time64_t schedule_time;
-vvp_time64_t schedule_simtime(void)
-{ return schedule_time; }
+ಸ್ಥಿರ vvp_time64_t ವೇಳಾಪಟ್ಟಿ_ಸಮಯ;
+vvp_time64_t ವೇಳಾಪಟ್ಟಿ_simtime(ಶೂನ್ಯ)
+{ ಹಿಂತಿರುಗಿ ವೇಳಾಪಟ್ಟಿ_ಸಮಯ; }
 
-static bool sim_at_rosync = false;
-bool schedule_at_rosync(void)
-{ return sim_at_rosync; }
+ಸ್ಥಿರ ತಾರ್ಕಿಕ sim_at_rosync = ಸುಳ್ಳು;
+ತಾರ್ಕಿಕ ವೇಳಾಪಟ್ಟಿ_at_rosync(ಶೂನ್ಯ)
+{ ಹಿಂತಿರುಗಿ sim_at_rosync; }
 
 /*
  * The scheduler uses this function to drain the rosync events of the
@@ -1092,127 +1092,127 @@ bool schedule_at_rosync(void)
  * Once all the rosync callbacks are done we can safely delete any
  * threads that finished during this time step.
  */
-static void run_rosync(struct event_time_s*ctim)
+ಸ್ಥಿರ ಶೂನ್ಯ ಸತತ_rosync(ರಚನೆ event_ಸಮಯ_s*ctim)
 {
-      sim_at_rosync = true;
-      while (ctim->rosync) {
-	    struct event_s*cur = ctim->rosync->next;
-	    if (cur->next == cur) {
+      sim_at_rosync = ನಿಜ;
+      ಆಗ (ctim->rosync) {
+	    ರಚನೆ event_s*cur = ctim->rosync->ಮುಂದಿನ_2;
+	    ಆದರೆ (cur->ಮುಂದಿನ_2 == cur) {
 		  ctim->rosync = 0;
-	    } else {
-		  ctim->rosync->next = cur->next;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  ctim->rosync->ಮುಂದಿನ_2 = cur->ಮುಂದಿನ_2;
 	    }
 
-	    cur->run_run();
-	    delete cur;
+	    cur->ಸತತ_ಸತತ();
+	    ಅಳಿಸು cur;
       }
-      sim_at_rosync = false;
+      sim_at_rosync = ಸುಳ್ಳು;
 
-      while (ctim->del_thr) {
-	    struct event_s*cur = ctim->del_thr->next;
-	    if (cur->next == cur) {
+      ಆಗ (ctim->del_thr) {
+	    ರಚನೆ event_s*cur = ctim->del_thr->ಮುಂದಿನ_2;
+	    ಆದರೆ (cur->ಮುಂದಿನ_2 == cur) {
 		  ctim->del_thr = 0;
-	    } else {
-		  ctim->del_thr->next = cur->next;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  ctim->del_thr->ಮುಂದಿನ_2 = cur->ಮುಂದಿನ_2;
 	    }
 
-	    cur->run_run();
-	    delete cur;
+	    cur->ಸತತ_ಸತತ();
+	    ಅಳಿಸು cur;
       }
 
-      if (ctim->active || ctim->inactive || ctim->nbassign || ctim->rwsync) {
+      ಆದರೆ (ctim->ಸಕ್ರಿಯ || ctim->inactive || ctim->nbassign || ctim->rwsync) {
 	    cerr << "SCHEDULER ERROR: read-only sync events "
-		 << "created RW events!" << endl;
+		 << "created RW events!" << ಸಾಲು_ಅಂತ್ಯ;
       }
 }
 
-void schedule_simulate(void)
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_simulate(ಶೂನ್ಯ)
 {
-      bool run_finals;
-      sim_started = false;
+      ತಾರ್ಕಿಕ ಸತತ_finals;
+      sim_started = ಸುಳ್ಳು;
 
-      schedule_time = 0;
+      ವೇಳಾಪಟ್ಟಿ_ಸಮಯ = 0;
 
-      if (verbose_flag) {
+      ಆದರೆ (verbose_flag) {
 	    vpi_mcd_printf(1, " ...execute EndOfCompile callbacks\n");
       }
 
       // Execute end of compile callbacks
-      vpiEndOfCompile();
+      vpi_ಕೊನೆ_ದ_Compile();
 
-      if (verbose_flag) {
+      ಆದರೆ (verbose_flag) {
 	    vpi_mcd_printf(1, " ...propagate initialization events\n");
       }
 
 	// Execute initialization events.
-      while (schedule_init_list) {
-	    struct event_s*cur = schedule_init_list->next;
-	    if (cur->next == cur) {
-		  schedule_init_list = 0;
-	    } else {
-		  schedule_init_list->next = cur->next;
+      ಆಗ (ವೇಳಾಪಟ್ಟಿ_init_list) {
+	    ರಚನೆ event_s*cur = ವೇಳಾಪಟ್ಟಿ_init_list->ಮುಂದಿನ_2;
+	    ಆದರೆ (cur->ಮುಂದಿನ_2 == cur) {
+		  ವೇಳಾಪಟ್ಟಿ_init_list = 0;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  ವೇಳಾಪಟ್ಟಿ_init_list->ಮುಂದಿನ_2 = cur->ಮುಂದಿನ_2;
 	    }
-	    cur->run_run();
-	    delete cur;
+	    cur->ಸತತ_ಸತತ();
+	    ಅಳಿಸು cur;
       }
 
-      sim_started = true;
+      sim_started = ನಿಜ;
 
-      if (verbose_flag) {
+      ಆದರೆ (verbose_flag) {
 	    vpi_mcd_printf(1, " ...execute StartOfSim callbacks\n");
       }
 
       // Execute start of simulation callbacks
-      vpiStartOfSim();
+      vpi_ಆರಂಭ_ದ_Sim();
 
-      signals_capture();
+      ಸಂಕೇತಗಳು_capture();
 
-      if (verbose_flag) {
+      ಆದರೆ (verbose_flag) {
 	    vpi_mcd_printf(1, " ...run scheduler\n");
       }
 
       // If there were no compiletf, etc. errors then we are going to
       // process events and when done run the final blocks.
-      run_finals = schedule_runnable;
+      ಸತತ_finals = ವೇಳಾಪಟ್ಟಿ_runnable;
 
-      if (schedule_runnable) while (sched_list) {
+      ಆದರೆ (ವೇಳಾಪಟ್ಟಿ_runnable) ಆಗ (sched_list) {
 
-	    if (schedule_stopped_flag) {
-		  schedule_stopped_flag = false;
+	    ಆದರೆ (ವೇಳಾಪಟ್ಟಿ_stopped_flag) {
+		  ವೇಳಾಪಟ್ಟಿ_stopped_flag = ಸುಳ್ಳು;
 		  stop_handler(0);
 		  // You can finish from the debugger without a time change.
-		  if (!schedule_runnable) break;
-		  continue;
+		  ಆದರೆ (!ವೇಳಾಪಟ್ಟಿ_runnable) ನಿಲ್ಲಿಸು;
+		  ಮುಂದುವರಿ;
 	    }
 
 	      /* ctim is the current time step. */
-	    struct event_time_s* ctim = sched_list;
+	    ರಚನೆ event_ಸಮಯ_s* ctim = sched_list;
 
 	      /* If the time is advancing, then first run the
 		 postponed sync events. Run them all. */
-	    if (ctim->delay > 0) {
+	    ಆದರೆ (ctim->delay > 0) {
 
-		  if (!schedule_runnable) break;
-		  schedule_time += ctim->delay;
+		  ಆದರೆ (!ವೇಳಾಪಟ್ಟಿ_runnable) ನಿಲ್ಲಿಸು;
+		  ವೇಳಾಪಟ್ಟಿ_ಸಮಯ += ctim->delay;
 		    /* When the design is being traced (we are emitting
 		     * file/line information) also print any time changes. */
-		  if (show_file_line) {
+		  ಆದರೆ (show_file_ಸಾಲು) {
 			cerr << "Advancing to simulation time: "
-			     << schedule_time << endl;
+			     << ವೇಳಾಪಟ್ಟಿ_ಸಮಯ << ಸಾಲು_ಅಂತ್ಯ;
 		  }
 		  ctim->delay = 0;
 
-		  vpiNextSimTime();
+		  vpi_ಮುಂದಿನ_Sim_ಸಮಯ();
 		    // Process the cbAtStartOfSimTime callbacks.
-		  while (ctim->start) {
-			struct event_s*cur = ctim->start->next;
-			if (cur->next == cur) {
-			      ctim->start = 0;
-			} else {
-			      ctim->start->next = cur->next;
+		  ಆಗ (ctim->ಆರಂಭ) {
+			ರಚನೆ event_s*cur = ctim->ಆರಂಭ->ಮುಂದಿನ_2;
+			ಆದರೆ (cur->ಮುಂದಿನ_2 == cur) {
+			      ctim->ಆರಂಭ = 0;
+			} ಇಲ್ಲದಿದ್ದರೆ {
+			      ctim->ಆರಂಭ->ಮುಂದಿನ_2 = cur->ಮುಂದಿನ_2;
 			}
-			cur->run_run();
-			delete (cur);
+			cur->ಸತತ_ಸತತ();
+			ಅಳಿಸು (cur);
 		  }
 	    }
 
@@ -1220,26 +1220,26 @@ void schedule_simulate(void)
 	      /* If there are no more active events, advance the event
 		 queues. If there are not events at all, then release
 		 the event_time object. */
-	    if (ctim->active == 0) {
-		  ctim->active = ctim->inactive;
+	    ಆದರೆ (ctim->ಸಕ್ರಿಯ == 0) {
+		  ctim->ಸಕ್ರಿಯ = ctim->inactive;
 		  ctim->inactive = 0;
 
-		  if (ctim->active == 0) {
-			ctim->active = ctim->nbassign;
+		  ಆದರೆ (ctim->ಸಕ್ರಿಯ == 0) {
+			ctim->ಸಕ್ರಿಯ = ctim->nbassign;
 			ctim->nbassign = 0;
 
-			if (ctim->active == 0) {
-			      ctim->active = ctim->rwsync;
+			ಆದರೆ (ctim->ಸಕ್ರಿಯ == 0) {
+			      ctim->ಸಕ್ರಿಯ = ctim->rwsync;
 			      ctim->rwsync = 0;
 
 				/* If out of rw events, then run the rosync
 				   events and delete this time step. This also
 				   deletes threads as needed. */
-			      if (ctim->active == 0) {
-				    run_rosync(ctim);
-				    sched_list = ctim->next;
-				    delete ctim;
-				    continue;
+			      ಆದರೆ (ctim->ಸಕ್ರಿಯ == 0) {
+				    ಸತತ_rosync(ctim);
+				    sched_list = ctim->ಮುಂದಿನ_2;
+				    ಅಳಿಸು ctim;
+				    ಮುಂದುವರಿ;
 			      }
 			}
 		  }
@@ -1248,60 +1248,60 @@ void schedule_simulate(void)
 	      /* Pull the first item off the list. If this is the last
 		 cell in the list, then clear the list. Execute that
 		 event type, and delete it. */
-	    struct event_s*cur = ctim->active->next;
-	    if (cur->next == cur) {
-		  ctim->active = 0;
-	    } else {
-		  ctim->active->next = cur->next;
+	    ರಚನೆ event_s*cur = ctim->ಸಕ್ರಿಯ->ಮುಂದಿನ_2;
+	    ಆದರೆ (cur->ಮುಂದಿನ_2 == cur) {
+		  ctim->ಸಕ್ರಿಯ = 0;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  ctim->ಸಕ್ರಿಯ->ಮುಂದಿನ_2 = cur->ಮುಂದಿನ_2;
 	    }
 
-	    if (schedule_single_step_flag) {
-		  cur->single_step_display();
-		  schedule_stopped_flag = true;
-		  schedule_single_step_flag = false;
+	    ಆದರೆ (ವೇಳಾಪಟ್ಟಿ_single_ಹೆಜ್ಜೆ_flag) {
+		  cur->single_ಹೆಜ್ಜೆ_display();
+		  ವೇಳಾಪಟ್ಟಿ_stopped_flag = ನಿಜ;
+		  ವೇಳಾಪಟ್ಟಿ_single_ಹೆಜ್ಜೆ_flag = ಸುಳ್ಳು;
 	    }
 
-	    cur->run_run();
+	    cur->ಸತತ_ಸತತ();
 
-	    delete (cur);
+	    ಅಳಿಸು (cur);
       }
 
 	// Execute final events.
-      schedule_runnable = run_finals;
-      while (schedule_runnable && schedule_final_list) {
-	    struct event_s*cur = schedule_final_list->next;
-	    if (cur->next == cur) {
-		  schedule_final_list = 0;
-	    } else {
-		  schedule_final_list->next = cur->next;
+      ವೇಳಾಪಟ್ಟಿ_runnable = ಸತತ_finals;
+      ಆಗ (ವೇಳಾಪಟ್ಟಿ_runnable && ವೇಳಾಪಟ್ಟಿ_final_list) {
+	    ರಚನೆ event_s*cur = ವೇಳಾಪಟ್ಟಿ_final_list->ಮುಂದಿನ_2;
+	    ಆದರೆ (cur->ಮುಂದಿನ_2 == cur) {
+		  ವೇಳಾಪಟ್ಟಿ_final_list = 0;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  ವೇಳಾಪಟ್ಟಿ_final_list->ಮುಂದಿನ_2 = cur->ಮುಂದಿನ_2;
 	    }
-	    cur->run_run();
-	    delete cur;
+	    cur->ಸತತ_ಸತತ();
+	    ಅಳಿಸು cur;
       }
 
-      signals_revert();
+      ಸಂಕೇತಗಳು_revert();
 
-      if (verbose_flag) {
+      ಆದರೆ (verbose_flag) {
 	    vpi_mcd_printf(1, " ...execute Postsim callbacks\n");
       }
 
       // Execute post-simulation callbacks
       vpiPostsim();
-#ifdef CHECK_WITH_VALGRIND
-      schedule_delete();
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+      ವೇಳಾಪಟ್ಟಿ_delete();
+#ಆದರೆ_ಅಂತ್ಯ
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void schedule_delete(void)
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_delete(ಶೂನ್ಯ)
 {
-      vthread_event_heap.delete_pool();
-      assign4_heap.delete_pool();
-      assign8_heap.delete_pool();
-      assignr_heap.delete_pool();
-      array_w_heap.delete_pool();
-      array_r_w_heap.delete_pool();
-      generic_event_heap.delete_pool();
-      event_time_heap.delete_pool();
+      vthread_event_ರಾಶಿ.delete_pool();
+      assign4_ರಾಶಿ.delete_pool();
+      assign8_ರಾಶಿ.delete_pool();
+      assignr_ರಾಶಿ.delete_pool();
+      array_w_ರಾಶಿ.delete_pool();
+      array_r_w_ರಾಶಿ.delete_pool();
+      generic_event_ರಾಶಿ.delete_pool();
+      event_ಸಮಯ_ರಾಶಿ.delete_pool();
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ

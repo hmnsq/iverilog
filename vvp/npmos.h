@@ -1,5 +1,5 @@
-#ifndef IVL_npmos_H
-#define IVL_npmos_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ IVL_npmos_H
+#ವ್ಯಾಖ್ಯಾನಿಸು IVL_npmos_H
 /*
  * Copyright (c) 2005-2025 Stephen Williams (steve@icarus.com)
  *
@@ -43,34 +43,34 @@
  * flag to the constructor activates this inversion.
  */
 
-class vvp_fun_pmos_ : public vvp_net_fun_t {
+class vvp_fun_pmos_ : ಸಾರ್ವಜನಿಕ vvp_net_fun_t {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_fun_pmos_(bool enable_invert, bool resistive);
 
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                              vvp_context_t) override;
-      virtual void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-		                unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      virtual void recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-		                unsigned base, unsigned vwid) override;
-      virtual void recv_real(vvp_net_ptr_t port, double real,
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+		                ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t ctx) override;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ recv_vec8_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್,
+		                ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid) override;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ recv_real(vvp_net_ptr_t ಪೋರ್ಟ್, ದ್ವಿಗುಣ real,
                              vvp_context_t ctx) override;
 
-    protected:
-      void generate_output_(vvp_net_ptr_t port);
+    ಸಂರಕ್ಷಿತ:
+      ಶೂನ್ಯ generate_output_(vvp_net_ptr_t ಪೋರ್ಟ್);
 
-      vvp_vector8_t bit_;
+      vvp_vector8_t ಬಿಟ್_2;
       vvp_vector4_t en_;
       bool inv_en_, resistive_;
 };
 
-class vvp_fun_pmos  : public vvp_fun_pmos_ {
+class vvp_fun_pmos  : ಸಾರ್ವಜನಿಕ vvp_fun_pmos_ {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_fun_pmos(bool enable_invert);
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ recv_vec8(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್) override;
 };
 
 /*
@@ -78,12 +78,12 @@ class vvp_fun_pmos  : public vvp_fun_pmos_ {
  * only difference is that the input strength is reduced as it passes
  * through the device.
  */
-class vvp_fun_rpmos  : public vvp_fun_pmos_ {
+class vvp_fun_rpmos  : ಸಾರ್ವಜನಿಕ vvp_fun_pmos_ {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_fun_rpmos(bool enable_invert);
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ recv_vec8(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್) override;
 };
 
 /*
@@ -107,40 +107,40 @@ class vvp_fun_rpmos  : public vvp_fun_pmos_ {
  *    H | 1 x x
  */
 
-class vvp_fun_cmos_ : public vvp_net_fun_t {
-    public:
+class vvp_fun_cmos_ : ಸಾರ್ವಜನಿಕ vvp_net_fun_t {
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_fun_cmos_(bool resistive);
 
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                              vvp_context_t) override;
-      virtual void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-                                unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      virtual void recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-                              unsigned base, unsigned vwid) override;
-      virtual void recv_real(vvp_net_ptr_t port, double real,
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+                                ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t ctx) override;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ recv_vec8_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್,
+                              ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid) override;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ recv_real(vvp_net_ptr_t ಪೋರ್ಟ್, ದ್ವಿಗುಣ real,
                              vvp_context_t) override;
 
-    protected:
-      void generate_output_(vvp_net_ptr_t port);
+    ಸಂರಕ್ಷಿತ:
+      ಶೂನ್ಯ generate_output_(vvp_net_ptr_t ಪೋರ್ಟ್);
 
-      vvp_vector8_t bit_;
+      vvp_vector8_t ಬಿಟ್_2;
       vvp_vector4_t n_en_;
       vvp_vector4_t p_en_;
       bool resistive_;
 };
 
-class vvp_fun_cmos : public vvp_fun_cmos_ {
-    public:
+class vvp_fun_cmos : ಸಾರ್ವಜನಿಕ vvp_fun_cmos_ {
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_fun_cmos();
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ recv_vec8(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್) override;
 };
 
-class vvp_fun_rcmos : public vvp_fun_cmos_ {
-    public:
+class vvp_fun_rcmos : ಸಾರ್ವಜನಿಕ vvp_fun_cmos_ {
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_fun_rcmos();
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ recv_vec8(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್) override;
 };
 
-#endif /* IVL_npmos_H */
+#ಆದರೆ_ಅಂತ್ಯ /* IVL_npmos_H */

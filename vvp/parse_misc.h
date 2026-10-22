@@ -1,5 +1,5 @@
-#ifndef IVL_parse_misc_H
-#define IVL_parse_misc_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ IVL_parse_misc_H
+#ವ್ಯಾಖ್ಯಾನಿಸು IVL_parse_misc_H
 /*
  * Copyright (c) 2001-2014 Stephen Williams (steve@icarus.com)
  *
@@ -25,71 +25,71 @@
  * This method is called to compile the design file. The input is read
  * and a list of statements is created.
  */
-extern int compile_design(const char*path);
+ಬಾಹ್ಯ ಪೂರ್ಣಾಂಕ compile_design(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*ಮಾರ್ಗ);
 
 /*
  * This routine is called to check that the input file has a compatible
  * version.
  */
-extern void verify_version(char *ivl_ver, char* commit);
+ಬಾಹ್ಯ ಶೂನ್ಯ verify_ಆವೃತ್ತಿ(ಅಕ್ಷರ *ivl_ver, ಅಕ್ಷರ* commit);
 
 /*
  * Set the default delay type for the $sdf_annotate task (min/typ/max).
  */
-extern void set_delay_selection(const char* sel);
+ಬಾಹ್ಯ ಶೂನ್ಯ ಗಣ_delay_selection(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ* sel);
 
 /*
  * various functions shared by the lexor and the parser.
  */
-extern int yylex(void);
-extern void yyerror(const char*msg);
+ಬಾಹ್ಯ ಪೂರ್ಣಾಂಕ yylex(ಶೂನ್ಯ);
+ಬಾಹ್ಯ ಶೂನ್ಯ yyerror(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*ಸಂದೇಶ);
 
-extern void destroy_lexor();
+ಬಾಹ್ಯ ಶೂನ್ಯ destroy_lexor();
 
 /*
  * This is the path of the current source file.
  */
-extern const char*yypath;
-extern unsigned yyline;
+ಬಾಹ್ಯ ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*yypath;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ yyline;
 
-struct symb_s {
-      char*text;
-      unsigned idx;
+ರಚನೆ symb_s {
+      ಅಕ್ಷರ*ಪಠ್ಯ;
+      ಚಿಹ್ನೆರಹಿತ idx;
 };
 
-struct symbv_s {
-      unsigned cnt;
-      struct symb_s*vect;
+ರಚನೆ symbv_s {
+      ಚಿಹ್ನೆರಹಿತ cnt;
+      ರಚನೆ symb_s*vect;
 };
 
-extern void symbv_init(struct symbv_s*obj);
-extern void symbv_add(struct symbv_s*obj, struct symb_s item);
+ಬಾಹ್ಯ ಶೂನ್ಯ symbv_init(ರಚನೆ symbv_s*obj);
+ಬಾಹ್ಯ ಶೂನ್ಯ symbv_ಕೂಡಿಸು(ರಚನೆ symbv_s*obj, ರಚನೆ symb_s ಅಂಶ);
 
-struct numbv_s {
-      unsigned cnt;
-      long*nvec;
+ರಚನೆ numbv_s {
+      ಚಿಹ್ನೆರಹಿತ cnt;
+      ದೀರ್ಘ*nvec;
 };
 
-struct enum_name_s {
-      char*text;
+ರಚನೆ enum_name_s {
+      ಅಕ್ಷರ*ಪಠ್ಯ;
       uint64_t val2;
-      char*val4;
+      ಅಕ್ಷರ*val4;
 };
 
-extern void numbv_init(struct numbv_s*obj);
-extern void numbv_add(struct numbv_s*obj, long item);
-extern void numbv_clear(struct numbv_s*obj);
+ಬಾಹ್ಯ ಶೂನ್ಯ numbv_init(ರಚನೆ numbv_s*obj);
+ಬಾಹ್ಯ ಶೂನ್ಯ numbv_ಕೂಡಿಸು(ರಚನೆ numbv_s*obj, ದೀರ್ಘ ಅಂಶ);
+ಬಾಹ್ಯ ಶೂನ್ಯ numbv_clear(ರಚನೆ numbv_s*obj);
 
-struct argv_s {
-      unsigned  argc;
+ರಚನೆ argv_s {
+      ಚಿಹ್ನೆರಹಿತ  argc;
       vpiHandle*argv;
-      char    **syms;
+      ಅಕ್ಷರ    **syms;
 };
 
 
-extern void argv_init(struct argv_s*obj);
-extern void argv_add(struct argv_s*obj, vpiHandle);
-extern void argv_sym_add(struct argv_s*obj, char *);
-extern void argv_sym_lookup(struct argv_s*obj);
+ಬಾಹ್ಯ ಶೂನ್ಯ argv_init(ರಚನೆ argv_s*obj);
+ಬಾಹ್ಯ ಶೂನ್ಯ argv_ಕೂಡಿಸು(ರಚನೆ argv_s*obj, vpiHandle);
+ಬಾಹ್ಯ ಶೂನ್ಯ argv_sym_ಕೂಡಿಸು(ರಚನೆ argv_s*obj, ಅಕ್ಷರ *);
+ಬಾಹ್ಯ ಶೂನ್ಯ argv_sym_lookup(ರಚನೆ argv_s*obj);
 
-#endif /* IVL_parse_misc_H */
+#ಆದರೆ_ಅಂತ್ಯ /* IVL_parse_misc_H */

@@ -1,5 +1,5 @@
-#ifndef IVL_class_type_H
-#define IVL_class_type_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ IVL_class_type_H
+#ವ್ಯಾಖ್ಯಾನಿಸು IVL_class_type_H
 /*
  * Copyright (c) 2012-2025 Stephen Williams (steve@icarus.com)
  *
@@ -31,58 +31,58 @@ class vvp_vector4_t;
  * uses this information to figure out how to construct an actual
  * instance.
  */
-class class_type : public __vpiHandle {
+class class_type : ಸಾರ್ವಜನಿಕ __vpiHandle {
 
-    public:
-      struct inst_x;
-      typedef inst_x*inst_t;
+    ಸಾರ್ವಜನಿಕ:
+      ರಚನೆ inst_x;
+      ಪ್ರಕಾರವ್ಯಾಖ್ಯೆ inst_x*inst_t;
 
-    public:
-      explicit class_type(const std::string&nam, size_t nprop);
+    ಸಾರ್ವಜನಿಕ:
+      explicit class_type(ಸ್ಥಿರಾಂಕ std::string&nam, size_t nprop);
       ~class_type() override;
 
 	// This is the name of the class type.
-      inline const std::string&class_name(void) const { return class_name_; }
+      ಸಾಲೊಳಗೆ ಸ್ಥಿರಾಂಕ std::string&class_name(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ { ಹಿಂತಿರುಗಿ class_name_; }
 	// Number of properties in the class definition.
-      inline size_t property_count(void) const { return properties_.size(); }
+      ಸಾಲೊಳಗೆ size_t property_ಎಣಿಕೆ(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ { ಹಿಂತಿರುಗಿ properties_.ಗಾತ್ರ_2(); }
 
 	// Set the details about the property. This is used during
 	// parse of the .vvp file to fill in the details of the
 	// property for the class definition.
-      void set_property(size_t idx, const std::string&name, const std::string&type, uint64_t array_size);
+      ಶೂನ್ಯ ಗಣ_property(size_t idx, ಸ್ಥಿರಾಂಕ std::string&name, ಸ್ಥಿರಾಂಕ std::string&type, uint64_t array_ಗಾತ್ರ_2);
 
 	// This method is called after all the properties are
 	// defined. This calculates information about the definition.
-      void finish_setup(void);
+      ಶೂನ್ಯ ಮುಕ್ತಾಯ_ಸಿದ್ಧತೆ(ಶೂನ್ಯ);
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
 	// Constructors and destructors for making instances.
-      inst_t instance_new() const;
-      void instance_delete(inst_t) const;
+      inst_t instance_new() ಸ್ಥಿರಾಂಕ;
+      ಶೂನ್ಯ instance_delete(inst_t) ಸ್ಥಿರಾಂಕ;
 
-      void set_vec4(inst_t inst, size_t pid, const vvp_vector4_t&val) const;
-      void get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) const;
-      void set_real(inst_t inst, size_t pid, double val) const;
-      double get_real(inst_t inst, size_t pid) const;
-      void set_string(inst_t inst, size_t pid, const std::string&val) const;
-      std::string get_string(inst_t inst, size_t pid) const;
-      void set_object(inst_t inst, size_t pid, const vvp_object_t&val, size_t idx) const;
-      void get_object(inst_t inst, size_t pid, vvp_object_t&val, size_t idx) const;
+      ಶೂನ್ಯ ಗಣ_vec4(inst_t inst, size_t pid, ಸ್ಥಿರಾಂಕ vvp_vector4_t&val) ಸ್ಥಿರಾಂಕ;
+      ಶೂನ್ಯ get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) ಸ್ಥಿರಾಂಕ;
+      ಶೂನ್ಯ ಗಣ_real(inst_t inst, size_t pid, ದ್ವಿಗುಣ val) ಸ್ಥಿರಾಂಕ;
+      ದ್ವಿಗುಣ get_real(inst_t inst, size_t pid) ಸ್ಥಿರಾಂಕ;
+      ಶೂನ್ಯ ಗಣ_string(inst_t inst, size_t pid, ಸ್ಥಿರಾಂಕ std::string&val) ಸ್ಥಿರಾಂಕ;
+      std::string get_string(inst_t inst, size_t pid) ಸ್ಥಿರಾಂಕ;
+      ಶೂನ್ಯ ಗಣ_object(inst_t inst, size_t pid, ಸ್ಥಿರಾಂಕ vvp_object_t&val, size_t idx) ಸ್ಥಿರಾಂಕ;
+      ಶೂನ್ಯ get_object(inst_t inst, size_t pid, vvp_object_t&val, size_t idx) ಸ್ಥಿರಾಂಕ;
 
-      void copy_property(inst_t dst, size_t idx, inst_t src) const;
+      ಶೂನ್ಯ copy_property(inst_t dst, size_t idx, inst_t src) ಸ್ಥಿರಾಂಕ;
 
-    public: // VPI related methods
-      int get_type_code(void) const override;
+    ಸಾರ್ವಜನಿಕ: // VPI related methods
+      ಪೂರ್ಣಾಂಕ get_type_ಸಂಕೇತ(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ override;
 
-    private:
+    ಖಾಸಗಿ:
       std::string class_name_;
 
-      struct prop_t {
+      ರಚನೆ prop_t {
 	    std::string name;
 	    class_property_t*type;
       };
-      std::vector<prop_t> properties_;
-      size_t instance_size_;
+      std::ಸದಿಶ<prop_t> properties_;
+      size_t instance_ಗಾತ್ರ_2;
 };
 
-#endif /* IVL_class_type_H */
+#ಆದರೆ_ಅಂತ್ಯ /* IVL_class_type_H */

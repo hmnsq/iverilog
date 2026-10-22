@@ -1,5 +1,5 @@
-#ifndef IVL_concat_H
-#define IVL_concat_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ IVL_concat_H
+#ವ್ಯಾಖ್ಯಾನಿಸು IVL_concat_H
 /*
  * Copyright (c) 2004-2025 Stephen Williams (steve@icarus.com)
  *
@@ -32,46 +32,46 @@
  * output vector) can be worked out. The input vectors must match the
  * expected width.
  */
-class vvp_fun_concat  : public vvp_net_fun_t, protected vvp_gen_event_s  {
+class vvp_fun_concat  : ಸಾರ್ವಜನಿಕ vvp_net_fun_t, ಸಂರಕ್ಷಿತ vvp_gen_event_s  {
 
-    public:
-      vvp_fun_concat(unsigned w0, unsigned w1,
-		     unsigned w2, unsigned w3);
+    ಸಾರ್ವಜನಿಕ:
+      vvp_fun_concat(ಚಿಹ್ನೆರಹಿತ w0, ಚಿಹ್ನೆರಹಿತ w1,
+		     ಚಿಹ್ನೆರಹಿತ w2, ಚಿಹ್ನೆರಹಿತ w3);
       ~vvp_fun_concat() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t context) final;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) final;
-    private:
-      void run_run() final;
+      ಶೂನ್ಯ recv_vec4_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+			ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t) final;
+    ಖಾಸಗಿ:
+      ಶೂನ್ಯ ಸತತ_ಸತತ() final;
 
-      unsigned wid_[4];
+      ಚಿಹ್ನೆರಹಿತ wid_[4];
       vvp_vector4_t val_;
       vvp_net_t *net_ = nullptr;
 };
 
-class vvp_fun_concat8  : public vvp_net_fun_t, protected vvp_gen_event_s {
+class vvp_fun_concat8  : ಸಾರ್ವಜನಿಕ vvp_net_fun_t, ಸಂರಕ್ಷಿತ vvp_gen_event_s {
 
-    public:
-      vvp_fun_concat8(unsigned w0, unsigned w1,
-		     unsigned w2, unsigned w3);
+    ಸಾರ್ವಜನಿಕ:
+      vvp_fun_concat8(ಚಿಹ್ನೆರಹಿತ w0, ಚಿಹ್ನೆರಹಿತ w1,
+		     ಚಿಹ್ನೆರಹಿತ w2, ಚಿಹ್ನೆರಹಿತ w3);
       ~vvp_fun_concat8() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t context) final;
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) final;
+      ಶೂನ್ಯ recv_vec8(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್) final;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) final;
-      void recv_vec8_pv(vvp_net_ptr_t p, const vvp_vector8_t&bit,
-			unsigned base, unsigned vwid) final;
+      ಶೂನ್ಯ recv_vec4_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+			ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t) final;
+      ಶೂನ್ಯ recv_vec8_pv(vvp_net_ptr_t p, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್,
+			ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid) final;
 
-    private:
-      void run_run() final;
+    ಖಾಸಗಿ:
+      ಶೂನ್ಯ ಸತತ_ಸತತ() final;
 
-      unsigned wid_[4];
+      ಚಿಹ್ನೆರಹಿತ wid_[4];
       vvp_vector8_t val_;
       vvp_net_t *net_ = nullptr;
 };
@@ -82,21 +82,21 @@ class vvp_fun_concat8  : public vvp_net_fun_t, protected vvp_gen_event_s {
  * times to repeat the input. The width of the input vector is
  * implicit from these values.
  */
-class vvp_fun_repeat  : public vvp_net_fun_t {
+class vvp_fun_repeat  : ಸಾರ್ವಜನಿಕ vvp_net_fun_t {
 
-    public:
-      vvp_fun_repeat(unsigned width, unsigned repeat);
+    ಸಾರ್ವಜನಿಕ:
+      vvp_fun_repeat(ಚಿಹ್ನೆರಹಿತ ಅಗಲ, ಚಿಹ್ನೆರಹಿತ repeat);
       ~vvp_fun_repeat() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t context) override;
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned int base, unsigned int vwid,
+      ಶೂನ್ಯ recv_vec4_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+			ಚಿಹ್ನೆರಹಿತ ಪೂರ್ಣಾಂಕ ತಳ, ಚಿಹ್ನೆರಹಿತ ಪೂರ್ಣಾಂಕ vwid,
 			vvp_context_t context) final;
 
-    private:
-      unsigned wid_;
-      unsigned rep_;
+    ಖಾಸಗಿ:
+      ಚಿಹ್ನೆರಹಿತ wid_;
+      ಚಿಹ್ನೆರಹಿತ rep_;
 };
 
-#endif
+#ಆದರೆ_ಅಂತ್ಯ

@@ -28,7 +28,7 @@
 # include  <string>
 # include  "ivl_alloc.h"
 
-static const char str_char1_table[257] = {
+ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ str_char1_ಕೋಷ್ಟಕ[257] = {
       ".HS1M222" "W3333333" /* 00 0F */ "L4444444" "44444444" /* 10 1F */
       "P5555555" "55555555" /* 20 2F */ "55555555" "55555555" /* 30 3F */
       "S6666666" "66666666" /* 40 4F */ "66666666" "66666666" /* 50 5F */
@@ -38,7 +38,7 @@ static const char str_char1_table[257] = {
       "77777777" "77777777" /* C0 CF */ "77777777" "77777777" /* D0 DF */
       "77777777" "77777777" /* E0 EF */ "77777777" "77777777" /* F0 FF */ };
 
-static const char str_char2_table[257] = {
+ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ str_char2_ಕೋಷ್ಟಕ[257] = {
       ".im0e010" "e0102010" /* 00 0F */ "a0102010" "30102010" /* 10 1F */
       "u0102010" "30102010" /* 20 2F */ "40102010" "30102010" /* 30 3F */
       "t0102010" "30102010" /* 40 4F */ "40102010" "30102010" /* 50 5F */
@@ -49,123 +49,123 @@ static const char str_char2_table[257] = {
       "50102010" "30102010" /* E0 EF */ "40102010" "30102010" /* F0 FF */ };
 
 
-extern "C" void vpip_format_strength(char*str, s_vpi_value*value, unsigned bit)
+ಬಾಹ್ಯ "C" ಶೂನ್ಯ vpip_format_strength(ಅಕ್ಷರ*str, s_vpi_ಮೌಲ್ಯ*value, ಚಿಹ್ನೆರಹಿತ ಬಿಟ್)
 {
       str[0] = '.';
       str[1] = '.';
       str[2] = '.';
       str[3] = 0;
 
-      assert(value->format == vpiStrengthVal);
+      ಪ್ರತಿಜ್ಞಾ(value->format == vpiStrengthVal);
 
-      switch (value->value.strength[bit].logic) {
-	  case vpi0:
-	    str[0] = str_char1_table[value->value.strength[bit].s0];
-	    str[1] = str_char2_table[value->value.strength[bit].s0];
+      ಆಯ್ಕೆ (value->value.strength[ಬಿಟ್].logic) {
+	  ಸ್ಥಿತಿ vpi0:
+	    str[0] = str_char1_ಕೋಷ್ಟಕ[value->value.strength[ಬಿಟ್].s0];
+	    str[1] = str_char2_ಕೋಷ್ಟಕ[value->value.strength[ಬಿಟ್].s0];
 	    str[2] = '0';
-	    break;
-	  case vpi1:
-	    str[0] = str_char1_table[value->value.strength[bit].s1];
-	    str[1] = str_char2_table[value->value.strength[bit].s1];
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ vpi1:
+	    str[0] = str_char1_ಕೋಷ್ಟಕ[value->value.strength[ಬಿಟ್].s1];
+	    str[1] = str_char2_ಕೋಷ್ಟಕ[value->value.strength[ಬಿಟ್].s1];
 	    str[2] = '1';
-	    break;
-	  case vpiX:
-	    if (value->value.strength[bit].s0 == 1) {
-		  str[0] = str_char1_table[value->value.strength[bit].s1];
-		  str[1] = str_char2_table[value->value.strength[bit].s1];
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ vpiX:
+	    ಆದರೆ (value->value.strength[ಬಿಟ್].s0 == 1) {
+		  str[0] = str_char1_ಕೋಷ್ಟಕ[value->value.strength[ಬಿಟ್].s1];
+		  str[1] = str_char2_ಕೋಷ್ಟಕ[value->value.strength[ಬಿಟ್].s1];
 		  str[2] = 'H';
-	    } else if (value->value.strength[bit].s1 == 1) {
-		  str[0] = str_char1_table[value->value.strength[bit].s0];
-		  str[1] = str_char2_table[value->value.strength[bit].s0];
+	    } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (value->value.strength[ಬಿಟ್].s1 == 1) {
+		  str[0] = str_char1_ಕೋಷ್ಟಕ[value->value.strength[ಬಿಟ್].s0];
+		  str[1] = str_char2_ಕೋಷ್ಟಕ[value->value.strength[ಬಿಟ್].s0];
 		  str[2] = 'L';
-	    } else if (value->value.strength[bit].s1 ==
-		       value->value.strength[bit].s0) {
-		  str[0] = str_char1_table[value->value.strength[bit].s0];
-		  str[1] = str_char2_table[value->value.strength[bit].s0];
+	    } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (value->value.strength[ಬಿಟ್].s1 ==
+		       value->value.strength[ಬಿಟ್].s0) {
+		  str[0] = str_char1_ಕೋಷ್ಟಕ[value->value.strength[ಬಿಟ್].s0];
+		  str[1] = str_char2_ಕೋಷ್ಟಕ[value->value.strength[ಬಿಟ್].s0];
 		  str[2] = 'X';
-	    } else {
-		  int ss;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  ಪೂರ್ಣಾಂಕ ss;
 
 		  str[0] = '0';
-		  ss = value->value.strength[bit].s0;
-		  while (ss > 1) {
+		  ss = value->value.strength[ಬಿಟ್].s0;
+		  ಆಗ (ss > 1) {
 			str[0] += 1;
 			ss >>= 1;
 		  }
 		  str[1] = '0';
-		  ss = value->value.strength[bit].s1;
-		  while (ss > 1) {
+		  ss = value->value.strength[ಬಿಟ್].s1;
+		  ಆಗ (ss > 1) {
 			str[1] += 1;
 			ss >>= 1;
 		  }
 		  str[2] = 'X';
 	    }
-	    break;
-	  case vpiZ:
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ vpiZ:
 	    str[0] = 'H';
 	    str[1] = 'i';
 	    str[2] = 'Z';
-	    break;
-	  default:
+	    ನಿಲ್ಲಿಸು;
+	  ಪೂರ್ವನಿಯೋಜಿತ:
 	    fprintf(stderr, "Unsupported type %d.\n",
-	            (int)value->value.strength[bit].logic);
-	    assert(0);
+	            (ಪೂರ್ಣಾಂಕ)value->value.strength[ಬಿಟ್].logic);
+	    ಪ್ರತಿಜ್ಞಾ(0);
       }
 }
 
-static char* vpip_format_pretty_string(const char*msg)
+ಸ್ಥಿರ ಅಕ್ಷರ* vpip_format_pretty_string(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*ಸಂದೇಶ)
 {
-      return strdup(msg);
+      ಹಿಂತಿರುಗಿ strdup(ಸಂದೇಶ);
 }
 
-static char* format_darray_pretty(vvp_darray* aobj)
+ಸ್ಥಿರ ಅಕ್ಷರ* format_darray_pretty(vvp_darray* aobj)
 {
-      if (!aobj || aobj->get_size() == 0) return strdup("{}");
+      ಆದರೆ (!aobj || aobj->get_ಗಾತ್ರ() == 0) ಹಿಂತಿರುಗಿ strdup("{}");
 
       std::string out = "{";
 
-      for (size_t i = 0; i < aobj->get_size(); i += 1) {
-	    if (i > 0) out += ", ";
-	    if (dynamic_cast<vvp_darray_real*>(aobj)) {
-		  double d;
-		  aobj->get_word((unsigned) i, d);
-		  char buf[256];
-		  snprintf(buf, sizeof buf, "%g", d);
+      ಗಾಗಿ (size_t i = 0; i < aobj->get_ಗಾತ್ರ(); i += 1) {
+	    ಆದರೆ (i > 0) out += ", ";
+	    ಆದರೆ (dynamic_cast<vvp_darray_real*>(aobj)) {
+		  ದ್ವಿಗುಣ d;
+		  aobj->get_ಶಬ್ದ((ಚಿಹ್ನೆರಹಿತ) i, d);
+		  ಅಕ್ಷರ buf[256];
+		  snprintf(buf, ಗಾತ್ರ buf, "%g", d);
 		  out += buf;
-	    } else if (dynamic_cast<vvp_darray_string*>(aobj)) {
+	    } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dynamic_cast<vvp_darray_string*>(aobj)) {
 		  std::string s;
-		  aobj->get_word((unsigned) i, s);
+		  aobj->get_ಶಬ್ದ((ಚಿಹ್ನೆರಹಿತ) i, s);
 		  out += "\"";
 		  out += s;
 		  out += "\"";
-	    } else {
+	    } ಇಲ್ಲದಿದ್ದರೆ {
 		  vvp_vector4_t v;
-		  aobj->get_word((unsigned) i, v);
-		  s_vpi_value val;
+		  aobj->get_ಶಬ್ದ((ಚಿಹ್ನೆರಹಿತ) i, v);
+		  s_vpi_ಮೌಲ್ಯ val;
 		  val.format = vpiDecStrVal;
-		  vpip_vec4_get_value(v, v.size(), false, &val);
+		  vpip_vec4_get_ಮೌಲ್ಯ(v, v.size(), ಸುಳ್ಳು, &val);
 		  out += val.value.str;
 	    }
       }
 
       out += "}";
-      return strdup(out.c_str());
+      ಹಿಂತಿರುಗಿ strdup(out.c_str());
 }
 
-extern "C" char* vpip_format_pretty(vpiHandle ref)
+ಬಾಹ್ಯ "C" ಅಕ್ಷರ* vpip_format_pretty(vpiHandle ref)
 {
-      if (!ref) {
-	    return vpip_format_pretty_string("Handle is NULL");
+      ಆದರೆ (!ref) {
+	    ಹಿಂತಿರುಗಿ vpip_format_pretty_string("Handle is NULL");
 	  }
 
-      if (dynamic_cast<__vpiPropQueueRef*>(ref) ||
+      ಆದರೆ (dynamic_cast<__vpiPropQueueRef*>(ref) ||
           dynamic_cast<__vpiDarrayVar*>(ref)) {
 	    vvp_darray* aobj = vpip_vpi_darray_from_handle(ref);
-	    if (!aobj) {
-		  return vpip_format_pretty_string("Object not found");
+	    ಆದರೆ (!aobj) {
+		  ಹಿಂತಿರುಗಿ vpip_format_pretty_string("Object not found");
 		}
-	    return format_darray_pretty(aobj);
+	    ಹಿಂತಿರುಗಿ format_darray_pretty(aobj);
       }
 
-      return vpip_format_pretty_string("Unsupported object type");
+      ಹಿಂತಿರುಗಿ vpip_format_pretty_string("Unsupported object type");
 }

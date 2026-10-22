@@ -19,185 +19,185 @@
 
 # include  "compile.h"
 # include  "enum_type.h"
-#ifdef CHECK_WITH_VALGRIND
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+ಬಳಸಿ ನಾಮಾಕಾಶ std;
 
-struct enumconst_s : public __vpiHandle {
+ರಚನೆ enumconst_s : ಸಾರ್ವಜನಿಕ __vpiHandle {
       enumconst_s();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      ಪೂರ್ಣಾಂಕ get_type_ಸಂಕೇತ(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ override;
+      ಪೂರ್ಣಾಂಕ vpi_get(ಪೂರ್ಣಾಂಕ code) override;
+      ಅಕ್ಷರ* vpi_get_str(ಪೂರ್ಣಾಂಕ code) override;
+      ಶೂನ್ಯ vpi_get_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ val) override;
 
-      const char*name;
-      bool is_signed;
+      ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*name;
+      ತಾರ್ಕಿಕ is_signed;
       vvp_vector2_t val2;
       vvp_vector4_t val4;
 };
 
-struct __vpiEnumTypespec : public __vpiHandle {
+ರಚನೆ __vpiEnumTypespec : ಸಾರ್ವಜನಿಕ __vpiHandle {
       __vpiEnumTypespec();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+      ಪೂರ್ಣಾಂಕ get_type_ಸಂಕೇತ(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ override;
+      ಪೂರ್ಣಾಂಕ vpi_get(ಪೂರ್ಣಾಂಕ code) override;
+      vpiHandle vpi_iterate(ಪೂರ್ಣಾಂಕ code) override;
 
-      std::vector<enumconst_s> names;
-      int base_type_code;
-      bool is_signed;
+      std::vector<enumconst_s> ಹೆಸರುಗಳು;
+      ಪೂರ್ಣಾಂಕ ತಳ_type_ಸಂಕೇತ;
+      ತಾರ್ಕಿಕ is_signed;
 };
 
 
-inline __vpiEnumTypespec::__vpiEnumTypespec()
+ಸಾಲೊಳಗೆ __vpiEnumTypespec::__vpiEnumTypespec()
 { }
 
-int __vpiEnumTypespec::get_type_code(void) const
-{ return vpiEnumTypespec; }
+ಪೂರ್ಣಾಂಕ __vpiEnumTypespec::get_type_ಸಂಕೇತ(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ
+{ ಹಿಂತಿರುಗಿ vpiEnumTypespec; }
 
-int __vpiEnumTypespec::vpi_get(int code)
+ಪೂರ್ಣಾಂಕ __vpiEnumTypespec::vpi_get(ಪೂರ್ಣಾಂಕ code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return names.size();
+      ಆಯ್ಕೆ (code) {
+	  ಸ್ಥಿತಿ vpi_ಗಾತ್ರ:
+	    ಹಿಂತಿರುಗಿ ಹೆಸರುಗಳು.size();
 
 	    /* This is not currently set correctly. We always use vpiReg for
 	     * four state variables and vpiBitVar for two state variables.
 	     * This minimal functionality is needed to get the next() and
 	     * prev() methods to work correctly with invalid values. */
-	  case vpiBaseTypespec:
-	    return base_type_code;
+	  ಸ್ಥಿತಿ vpi_ತಳ_Typespec:
+	    ಹಿಂತಿರುಗಿ ತಳ_type_ಸಂಕೇತ;
 
-	  case vpiSigned:
-	    return is_signed;
+	  ಸ್ಥಿತಿ vpiSigned:
+	    ಹಿಂತಿರುಗಿ is_signed;
 
-	  default:
+	  ಪೂರ್ವನಿಯೋಜಿತ:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by __vpiEnumTypespec\n", code);
-	    assert(0);
-	    return 0;
+	    ಪ್ರತಿಜ್ಞಾ(0);
+	    ಹಿಂತಿರುಗಿ 0;
       }
 }
 
 
-vpiHandle __vpiEnumTypespec::vpi_iterate(int code)
+vpiHandle __vpiEnumTypespec::vpi_iterate(ಪೂರ್ಣಾಂಕ code)
 {
-      if (code == vpiEnumConst) {
-	    vpiHandle*args = static_cast<vpiHandle*>
-	                                (calloc(names.size(), sizeof(vpiHandle*)));
-	    for (size_t idx = 0 ; idx < names.size() ; idx += 1)
-		  args[idx] = &names[idx];
+      ಆದರೆ (code == vpiEnumConst) {
+	    vpiHandle*ವಾದಗಳು = static_cast<vpiHandle*>
+	                                (ಸೊನ್ನೆ_ಸ್ಮರಣೆ_ಕೊಡು(ಹೆಸರುಗಳು.size(), ಗಾತ್ರ(vpiHandle*)));
+	    ಗಾಗಿ (size_t idx = 0 ; idx < ಹೆಸರುಗಳು.size() ; idx += 1)
+		  ವಾದಗಳು[idx] = &ಹೆಸರುಗಳು[idx];
 
-	    return vpip_make_iterator(names.size(), args, true);
+	    ಹಿಂತಿರುಗಿ vpip_make_iterator(ಹೆಸರುಗಳು.size(), ವಾದಗಳು, ನಿಜ);
       }
 
-      return 0;
+      ಹಿಂತಿರುಗಿ 0;
 }
 
 
-inline enumconst_s::enumconst_s()
+ಸಾಲೊಳಗೆ enumconst_s::enumconst_s()
 { }
 
-int enumconst_s::get_type_code(void) const
-{ return vpiEnumConst; }
+ಪೂರ್ಣಾಂಕ enumconst_s::get_type_ಸಂಕೇತ(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ
+{ ಹಿಂತಿರುಗಿ vpiEnumConst; }
 
-int enumconst_s::vpi_get(int code)
+ಪೂರ್ಣಾಂಕ enumconst_s::vpi_get(ಪೂರ್ಣಾಂಕ code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return val4.size()? val4.size() : val2.size();
-	  default:
-	    return 0;
+      ಆಯ್ಕೆ (code) {
+	  ಸ್ಥಿತಿ vpi_ಗಾತ್ರ:
+	    ಹಿಂತಿರುಗಿ val4.size()? val4.size() : val2.size();
+	  ಪೂರ್ವನಿಯೋಜಿತ:
+	    ಹಿಂತಿರುಗಿ 0;
       }
 }
 
 
-char* enumconst_s::vpi_get_str(int code)
+ಅಕ್ಷರ* enumconst_s::vpi_get_str(ಪೂರ್ಣಾಂಕ code)
 {
-      switch (code) {
-	  case vpiName:
-	    return const_cast<char*> (name);
-	  default:
-	    return 0;
+      ಆಯ್ಕೆ (code) {
+	  ಸ್ಥಿತಿ vpiName:
+	    ಹಿಂತಿರುಗಿ const_cast<ಅಕ್ಷರ*> (name);
+	  ಪೂರ್ವನಿಯೋಜಿತ:
+	    ಹಿಂತಿರುಗಿ 0;
       }
 }
 
 
-void enumconst_s::vpi_get_value(p_vpi_value val)
+ಶೂನ್ಯ enumconst_s::vpi_get_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ val)
 {
-      if (val4.size() > 0) {
-	    vpip_vec4_get_value(val4, val4.size(), is_signed, val);
-      } else {
-	    vpip_vec2_get_value(val2, val2.size(), is_signed, val);
+      ಆದರೆ (val4.size() > 0) {
+	    vpip_vec4_get_ಮೌಲ್ಯ(val4, val4.size(), is_signed, val);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    vpip_vec2_get_ಮೌಲ್ಯ(val2, val2.size(), is_signed, val);
       }
 }
 
 
-void compile_enum2_type(char*label, long width, bool signed_flag,
-                        std::list<struct enum_name_s>*names)
+ಶೂನ್ಯ compile_enum2_type(ಅಕ್ಷರ*label, ದೀರ್ಘ width, ತಾರ್ಕಿಕ signed_flag,
+                        std::list<ರಚನೆ enum_name_s>*ಹೆಸರುಗಳು)
 {
-      struct __vpiEnumTypespec*spec = new struct __vpiEnumTypespec;
-      spec->names = std::vector<enumconst_s> (names->size());
+      ರಚನೆ __vpiEnumTypespec*spec = ಹೊಸ ರಚನೆ __vpiEnumTypespec;
+      spec->ಹೆಸರುಗಳು = std::vector<enumconst_s> (ಹೆಸರುಗಳು->size());
       spec->is_signed = signed_flag;
-      spec->base_type_code = vpiBitVar;
+      spec->ತಳ_type_ಸಂಕೇತ = vpi_ಬಿಟ್_Var;
 
       size_t idx = 0;
-      for (list<struct enum_name_s>::iterator cur = names->begin()
-		 ; cur != names->end() ;  ++cur, ++idx) {
-	    assert(cur->val4 == 0);
-	    spec->names[idx].name = cur->text;
-	    spec->names[idx].val2 = vvp_vector2_t(cur->val2, width);
-	    spec->names[idx].is_signed = signed_flag;
+      ಗಾಗಿ (list<ರಚನೆ enum_name_s>::iterator cur = ಹೆಸರುಗಳು->begin()
+		 ; cur != ಹೆಸರುಗಳು->ಕೊನೆ() ;  ++cur, ++idx) {
+	    ಪ್ರತಿಜ್ಞಾ(cur->val4 == 0);
+	    spec->ಹೆಸರುಗಳು[idx].name = cur->ಪಠ್ಯ;
+	    spec->ಹೆಸರುಗಳು[idx].val2 = vvp_vector2_t(cur->val2, width);
+	    spec->ಹೆಸರುಗಳು[idx].is_signed = signed_flag;
       }
 
-      assert(idx == spec->names.size());
-      compile_vpi_symbol(label, spec);
-      vpip_attach_to_current_scope(spec);
+      ಪ್ರತಿಜ್ಞಾ(idx == spec->ಹೆಸರುಗಳು.size());
+      compile_vpi_ಚಿಹ್ನೆ(label, spec);
+      vpip_attach_ಗಮ್ಯ_current_scope(spec);
 
-      free(label);
-      delete names;
+      ಬಿಡುಗಡೆ(label);
+      ಅಳಿಸು ಹೆಸರುಗಳು;
 }
 
-void compile_enum4_type(char*label, long width, bool signed_flag,
-                        std::list<struct enum_name_s>*names)
+ಶೂನ್ಯ compile_enum4_type(ಅಕ್ಷರ*label, ದೀರ್ಘ width, ತಾರ್ಕಿಕ signed_flag,
+                        std::list<ರಚನೆ enum_name_s>*ಹೆಸರುಗಳು)
 {
-      struct __vpiEnumTypespec*spec = new struct __vpiEnumTypespec;
-      spec->names = std::vector<enumconst_s> (names->size());
+      ರಚನೆ __vpiEnumTypespec*spec = ಹೊಸ ರಚನೆ __vpiEnumTypespec;
+      spec->ಹೆಸರುಗಳು = std::vector<enumconst_s> (ಹೆಸರುಗಳು->size());
       spec->is_signed = signed_flag;
-      spec->base_type_code = vpiReg;
+      spec->ತಳ_type_ಸಂಕೇತ = vpiReg;
 
       size_t idx = 0;
-      for (list<struct enum_name_s>::iterator cur = names->begin()
-		 ; cur != names->end() ;  ++cur, ++idx) {
-	    spec->names[idx].name = cur->text;
-	    assert(cur->val4);
-	    spec->names[idx].val4 = vector4_from_text(cur->val4, width);
-	    spec->names[idx].is_signed = signed_flag;
-	    free(cur->val4);
+      ಗಾಗಿ (list<ರಚನೆ enum_name_s>::iterator cur = ಹೆಸರುಗಳು->begin()
+		 ; cur != ಹೆಸರುಗಳು->ಕೊನೆ() ;  ++cur, ++idx) {
+	    spec->ಹೆಸರುಗಳು[idx].name = cur->ಪಠ್ಯ;
+	    ಪ್ರತಿಜ್ಞಾ(cur->val4);
+	    spec->ಹೆಸರುಗಳು[idx].val4 = vector4_from_ಪಠ್ಯ(cur->val4, width);
+	    spec->ಹೆಸರುಗಳು[idx].is_signed = signed_flag;
+	    ಬಿಡುಗಡೆ(cur->val4);
 	    cur->val4 = 0;
       }
 
-      assert(idx == spec->names.size());
-      compile_vpi_symbol(label, spec);
-      vpip_attach_to_current_scope(spec);
+      ಪ್ರತಿಜ್ಞಾ(idx == spec->ಹೆಸರುಗಳು.size());
+      compile_vpi_ಚಿಹ್ನೆ(label, spec);
+      vpip_attach_ಗಮ್ಯ_current_scope(spec);
 
-      free(label);
-      delete names;
+      ಬಿಡುಗಡೆ(label);
+      ಅಳಿಸು ಹೆಸರುಗಳು;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void enum_delete(vpiHandle item)
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+ಶೂನ್ಯ enum_delete(vpiHandle ಅಂಶ)
 {
-      struct __vpiEnumTypespec*obj = dynamic_cast<__vpiEnumTypespec*>(item);
+      ರಚನೆ __vpiEnumTypespec*obj = dynamic_cast<__vpiEnumTypespec*>(ಅಂಶ);
 
-      for (vector<enumconst_s>::iterator iter = obj->names.begin();
-           iter != obj->names.end(); ++ iter ) {
-	    delete [] iter->name;
+      ಗಾಗಿ (vector<enumconst_s>::iterator iter = obj->ಹೆಸರುಗಳು.begin();
+           iter != obj->ಹೆಸರುಗಳು.ಕೊನೆ(); ++ iter ) {
+	    ಅಳಿಸು [] iter->name;
       }
 
-      delete obj;
+      ಅಳಿಸು obj;
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ

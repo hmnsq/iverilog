@@ -1,5 +1,5 @@
-#ifndef IVL_vvp_net_sig_H
-#define IVL_vvp_net_sig_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ IVL_vvp_net_sig_H
+#ವ್ಯಾಖ್ಯಾನಿಸು IVL_vvp_net_sig_H
 /*
  * Copyright (c) 2004-2026 Stephen Williams (steve@icarus.com)
  *
@@ -30,11 +30,11 @@
 # include  <new>
 # include  <cassert>
 
-#ifdef HAVE_IOSFWD
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ HAVE_IOSFWD
 # include  <iosfwd>
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 # include  <iostream>
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 /* vvp_fun_signal
  * This node is the place holder in a vvp network for signals,
@@ -65,26 +65,26 @@
  */
 
 
-class vvp_fun_signal_base : public vvp_net_fun_t {
+class vvp_fun_signal_ತಳ : ಸಾರ್ವಜನಿಕ vvp_net_fun_t {
 
-    public:
-      vvp_fun_signal_base();
+    ಸಾರ್ವಜನಿಕ:
+      vvp_fun_signal_ತಳ();
 
-      void deassign();
-      void deassign_pv(unsigned base, unsigned wid);
+      ಶೂನ್ಯ deassign();
+      ಶೂನ್ಯ deassign_pv(ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ wid);
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
 
 	/* The %cassign/link instruction needs a place to write the
 	   source node of the force, so that subsequent %cassign and
 	   %deassign instructions can undo the link as needed. */
       class vvp_net_t*cassign_link;
 
-    protected:
-      bool continuous_assign_active_;
-      vvp_vector2_t assign_mask_;
+    ಸಂರಕ್ಷಿತ:
+      bool continuous_ನಿಯೋಜಿಸು_ಸಕ್ರಿಯ;
+      vvp_vector2_t ನಿಯೋಜಿಸು_ಮುಖವಾಡ;
 
-    protected:
+    ಸಂರಕ್ಷಿತ:
 	// This is true until at least one propagation happens.
       bool needs_init_;
 };
@@ -93,292 +93,292 @@ class vvp_fun_signal_base : public vvp_net_fun_t {
  * Variables and wires can have their values accessed, so this base
  * class offers the unified concept of an accessible value.
  */
-class vvp_signal_value {
-    public:
-      virtual ~vvp_signal_value() =0;
-      virtual unsigned value_size() const =0;
-      virtual vvp_bit4_t value(unsigned idx) const =0;
-      virtual vvp_scalar_t scalar_value(unsigned idx) const =0;
-      virtual void vec4_value(vvp_vector4_t&) const =0;
-      virtual double real_value() const;
+class vvp_signal_ಮೌಲ್ಯ {
+    ಸಾರ್ವಜನಿಕ:
+      ವಾಸ್ತವಿಕ ~vvp_signal_ಮೌಲ್ಯ() =0;
+      ವಾಸ್ತವಿಕ ಚಿಹ್ನೆರಹಿತ ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ =0;
+      ವಾಸ್ತವಿಕ vvp_bit4_t ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ =0;
+      ವಾಸ್ತವಿಕ vvp_scalar_t scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ =0;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ vec4_ಮೌಲ್ಯ(vvp_vector4_t&) ಸ್ಥಿರಾಂಕ =0;
+      ವಾಸ್ತವಿಕ ದ್ವಿಗುಣ real_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ;
 
-      virtual void get_signal_value(struct t_vpi_value*vp);
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ get_signal_ಮೌಲ್ಯ(ರಚನೆ t_vpi_ಮೌಲ್ಯ*vp);
 };
 
 /*
  * This abstract class is a little more specific than the signal_base
  * class, in that it adds vector access methods.
  */
-class vvp_fun_signal_vec : public vvp_fun_signal_base {
-    public:
-      virtual const vvp_vector4_t& vec4_unfiltered_value() const =0;
+class vvp_fun_signal_vec : ಸಾರ್ವಜನಿಕ vvp_fun_signal_ತಳ {
+    ಸಾರ್ವಜನಿಕ:
+      ವಾಸ್ತವಿಕ ಸ್ಥಿರಾಂಕ vvp_vector4_t& vec4_unfiltered_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ =0;
 };
 
-class automatic_signal_base : public vvp_signal_value, public vvp_net_fil_t {
+class automatic_signal_ತಳ : ಸಾರ್ವಜನಿಕ vvp_signal_ಮೌಲ್ಯ, ಸಾರ್ವಜನಿಕ vvp_net_fil_t {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
 	// Automatic variables cannot be forced or released. Provide
 	// stubs that assert.
-      virtual void release(vvp_net_ptr_t ptr, bool net_flag) override;
-      virtual void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ release(vvp_net_ptr_t ptr, bool net_flag) override;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ release_pv(vvp_net_ptr_t ptr, ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ wid, bool net_flag) override;
 
-      virtual unsigned filter_size() const override;
-      virtual void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
-      virtual void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
-      virtual void force_fil_real(double val, const vvp_vector2_t&mask) override;
-      virtual void get_value(struct t_vpi_value*value) override;
+      ವಾಸ್ತವಿಕ ಚಿಹ್ನೆರಹಿತ filter_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ force_fil_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ) override;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ force_fil_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ) override;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ force_fil_real(ದ್ವಿಗುಣ val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ) override;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ get_ಮೌಲ್ಯ(ರಚನೆ t_vpi_ಮೌಲ್ಯ*ಮೌಲ್ಯ) override;
 };
 
 /*
  * Statically allocated vvp_fun_signal4.
  */
-class vvp_fun_signal4_sa : public vvp_fun_signal_vec {
+class vvp_fun_signal4_sa : ಸಾರ್ವಜನಿಕ vvp_fun_signal_vec {
 
-    public:
-      explicit vvp_fun_signal4_sa(unsigned wid, vvp_bit4_t init=BIT4_X);
+    ಸಾರ್ವಜನಿಕ:
+      explicit vvp_fun_signal4_sa(ಚಿಹ್ನೆರಹಿತ wid, vvp_bit4_t init=BIT4_X);
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t) override;
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      ಶೂನ್ಯ recv_vec8(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್) override;
 
 	// Part select variants of above
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override;
-      void recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
-			unsigned base, unsigned vwid) override;
+      ಶೂನ್ಯ recv_vec4_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+			ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t) override;
+      ಶೂನ್ಯ recv_vec8_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್,
+			ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid) override;
 
 	// Get information about the vector value.
-      const vvp_vector4_t& vec4_unfiltered_value() const override;
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t& vec4_unfiltered_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ override;
 
-    private:
+    ಖಾಸಗಿ:
       vvp_vector4_t bits4_;
 };
 
 /*
  * Automatically allocated vvp_fun_signal4.
  */
-class vvp_fun_signal4_aa : public vvp_fun_signal_vec, public automatic_signal_base, public automatic_hooks_s {
+class vvp_fun_signal4_aa : ಸಾರ್ವಜನಿಕ vvp_fun_signal_vec, ಸಾರ್ವಜನಿಕ automatic_signal_ತಳ, ಸಾರ್ವಜನಿಕ automatic_hooks_s {
 
-    public:
-      explicit vvp_fun_signal4_aa(unsigned wid, vvp_bit4_t init=BIT4_X);
+    ಸಾರ್ವಜನಿಕ:
+      explicit vvp_fun_signal4_aa(ಚಿಹ್ನೆರಹಿತ wid, vvp_bit4_t init=BIT4_X);
       ~vvp_fun_signal4_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+      ಶೂನ್ಯ alloc_instance(vvp_context_t context) override;
+      ಶೂನ್ಯ reset_instance(vvp_context_t context) override;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+      ಶೂನ್ಯ free_instance(vvp_context_t context) override;
+#ಆದರೆ_ಅಂತ್ಯ
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t context) override;
 
 	// Part select variants of above
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override;
+      ಶೂನ್ಯ recv_vec4_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+			ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t) override;
 
 	// Get information about the vector value.
-      unsigned   value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
-      const vvp_vector4_t& vec4_unfiltered_value() const override;
+      ಚಿಹ್ನೆರಹಿತ   ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override;
+      vvp_bit4_t ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
+      vvp_scalar_t scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
+      ಶೂನ್ಯ vec4_ಮೌಲ್ಯ(vvp_vector4_t&) ಸ್ಥಿರಾಂಕ override;
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t& vec4_unfiltered_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ override;
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size) { return vvp_net_fun_t::heap_.alloc(size); }
-      static void operator delete(void*obj);
+    ಸಾರ್ವಜನಿಕ: // These objects are only permallocated.
+      ಸ್ಥಿರ ಶೂನ್ಯ* ಕ್ರಿಯಾಕಾರಕ new(std::size_t ಗಾತ್ರ_2) { ಹಿಂತಿರುಗಿ vvp_net_fun_t::ರಾಶಿ.alloc(ಗಾತ್ರ_2); }
+      ಸ್ಥಿರ ಶೂನ್ಯ ಕ್ರಿಯಾಕಾರಕ delete(ಶೂನ್ಯ*obj);
 
-    private:
-      unsigned context_idx_;
-      unsigned size_;
+    ಖಾಸಗಿ:
+      ಚಿಹ್ನೆರಹಿತ context_idx_;
+      ಚಿಹ್ನೆರಹಿತ ಗಾತ್ರ_3;
       vvp_bit4_t init_;
 };
 
-class vvp_fun_signal_real : public vvp_fun_signal_base {
+class vvp_fun_signal_real : ಸಾರ್ವಜನಿಕ vvp_fun_signal_ತಳ {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_fun_signal_real() {};
 
 	// Get information about the vector value.
-      virtual double real_unfiltered_value() const = 0;
+      ವಾಸ್ತವಿಕ ದ್ವಿಗುಣ real_unfiltered_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ = 0;
 };
 
 /*
  * Statically allocated vvp_fun_signal_real.
  */
-class vvp_fun_signal_real_sa : public vvp_fun_signal_real {
+class vvp_fun_signal_real_sa : ಸಾರ್ವಜನಿಕ vvp_fun_signal_real {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_fun_signal_real_sa();
 
-      void recv_real(vvp_net_ptr_t port, double bit,
+      ಶೂನ್ಯ recv_real(vvp_net_ptr_t ಪೋರ್ಟ್, ದ್ವಿಗುಣ ಬಿಟ್,
                      vvp_context_t) override;
 
 	// Get information about the vector value.
-      double real_unfiltered_value() const override;
+      ದ್ವಿಗುಣ real_unfiltered_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ override;
 
-    private:
-      double bits_;
+    ಖಾಸಗಿ:
+      ದ್ವಿಗುಣ ಬಿಟ್ಟುಗಳು_2;
 };
 
 /*
  * Automatically allocated vvp_fun_signal_real.
  */
-class vvp_fun_signal_real_aa : public vvp_fun_signal_real, public automatic_signal_base, public automatic_hooks_s {
+class vvp_fun_signal_real_aa : ಸಾರ್ವಜನಿಕ vvp_fun_signal_real, ಸಾರ್ವಜನಿಕ automatic_signal_ತಳ, ಸಾರ್ವಜನಿಕ automatic_hooks_s {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_fun_signal_real_aa();
       ~vvp_fun_signal_real_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+      ಶೂನ್ಯ alloc_instance(vvp_context_t context) override;
+      ಶೂನ್ಯ reset_instance(vvp_context_t context) override;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+      ಶೂನ್ಯ free_instance(vvp_context_t context) override;
+#ಆದರೆ_ಅಂತ್ಯ
 
-      void recv_real(vvp_net_ptr_t port, double bit,
+      ಶೂನ್ಯ recv_real(vvp_net_ptr_t ಪೋರ್ಟ್, ದ್ವಿಗುಣ ಬಿಟ್,
                      vvp_context_t context) override;
 
 	// Get information about the vector value.
-      double real_unfiltered_value() const override;
+      ದ್ವಿಗುಣ real_unfiltered_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ override;
 
 	// Get information about the vector value.
-      unsigned   value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
-      double real_value() const override;
-      void get_signal_value(struct t_vpi_value*vp) override;
+      ಚಿಹ್ನೆರಹಿತ   ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override;
+      vvp_bit4_t ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
+      vvp_scalar_t scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
+      ಶೂನ್ಯ vec4_ಮೌಲ್ಯ(vvp_vector4_t&) ಸ್ಥಿರಾಂಕ override;
+      ದ್ವಿಗುಣ real_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ override;
+      ಶೂನ್ಯ get_signal_ಮೌಲ್ಯ(ರಚನೆ t_vpi_ಮೌಲ್ಯ*vp) override;
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size);
-      static void operator delete(void*obj);
+    ಸಾರ್ವಜನಿಕ: // These objects are only permallocated.
+      ಸ್ಥಿರ ಶೂನ್ಯ* ಕ್ರಿಯಾಕಾರಕ new(std::size_t ಗಾತ್ರ_2);
+      ಸ್ಥಿರ ಶೂನ್ಯ ಕ್ರಿಯಾಕಾರಕ delete(ಶೂನ್ಯ*obj);
 
-    private:
-      unsigned context_idx_;
+    ಖಾಸಗಿ:
+      ಚಿಹ್ನೆರಹಿತ context_idx_;
 };
 
 
-class vvp_fun_signal_string : public vvp_fun_signal_base {
+class vvp_fun_signal_string : ಸಾರ್ವಜನಿಕ vvp_fun_signal_ತಳ {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_fun_signal_string() {};
 
-      virtual const std::string& get_string() const =0;
+      ವಾಸ್ತವಿಕ ಸ್ಥಿರಾಂಕ std::string& get_string() ಸ್ಥಿರಾಂಕ =0;
 };
 
 /*
  * Statically allocated vvp_fun_signal_string.
  */
-class vvp_fun_signal_string_sa : public vvp_fun_signal_string {
+class vvp_fun_signal_string_sa : ಸಾರ್ವಜನಿಕ vvp_fun_signal_string {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_fun_signal_string_sa();
 
-      void recv_string(vvp_net_ptr_t port, const std::string&bit,
+      ಶೂನ್ಯ recv_string(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ std::string&ಬಿಟ್,
 		       vvp_context_t context) override;
 
-      const std::string& get_string() const override;
+      ಸ್ಥಿರಾಂಕ std::string& get_string() ಸ್ಥಿರಾಂಕ override;
 
-    private:
-      std::string value_;
+    ಖಾಸಗಿ:
+      std::string ಮೌಲ್ಯ_2;
 };
 
 /*
  * Automatically allocated vvp_fun_signal_real.
  */
-class vvp_fun_signal_string_aa : public vvp_fun_signal_string, public automatic_signal_base, public automatic_hooks_s {
+class vvp_fun_signal_string_aa : ಸಾರ್ವಜನಿಕ vvp_fun_signal_string, ಸಾರ್ವಜನಿಕ automatic_signal_ತಳ, ಸಾರ್ವಜನಿಕ automatic_hooks_s {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_fun_signal_string_aa();
       ~vvp_fun_signal_string_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
-      void recv_string(vvp_net_ptr_t port, const std::string&bit,
+      ಶೂನ್ಯ alloc_instance(vvp_context_t context) override;
+      ಶೂನ್ಯ reset_instance(vvp_context_t context) override;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+      ಶೂನ್ಯ free_instance(vvp_context_t context) override;
+#ಆದರೆ_ಅಂತ್ಯ
+      ಶೂನ್ಯ recv_string(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ std::string&ಬಿಟ್,
 		       vvp_context_t context) override;
 
 	// Get information about the vector value.
-      unsigned   value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
-      double real_value() const override;
-      const std::string& get_string() const override;
-      void get_signal_value(struct t_vpi_value*vp) override;
+      ಚಿಹ್ನೆರಹಿತ   ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override;
+      vvp_bit4_t ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
+      vvp_scalar_t scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
+      ಶೂನ್ಯ vec4_ಮೌಲ್ಯ(vvp_vector4_t&) ಸ್ಥಿರಾಂಕ override;
+      ದ್ವಿಗುಣ real_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ override;
+      ಸ್ಥಿರಾಂಕ std::string& get_string() ಸ್ಥಿರಾಂಕ override;
+      ಶೂನ್ಯ get_signal_ಮೌಲ್ಯ(ರಚನೆ t_vpi_ಮೌಲ್ಯ*vp) override;
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size);
-      static void operator delete(void*obj);
+    ಸಾರ್ವಜನಿಕ: // These objects are only permallocated.
+      ಸ್ಥಿರ ಶೂನ್ಯ* ಕ್ರಿಯಾಕಾರಕ new(std::size_t ಗಾತ್ರ_2);
+      ಸ್ಥಿರ ಶೂನ್ಯ ಕ್ರಿಯಾಕಾರಕ delete(ಶೂನ್ಯ*obj);
 
-    private:
-      unsigned context_idx_;
+    ಖಾಸಗಿ:
+      ಚಿಹ್ನೆರಹಿತ context_idx_;
 };
 
-class vvp_fun_signal_object : public vvp_fun_signal_base {
+class vvp_fun_signal_object : ಸಾರ್ವಜನಿಕ vvp_fun_signal_ತಳ {
 
-    public:
-      explicit vvp_fun_signal_object(unsigned size) { size_ = size; };
-      unsigned size() const { return size_; }
+    ಸಾರ್ವಜನಿಕ:
+      explicit vvp_fun_signal_object(ಚಿಹ್ನೆರಹಿತ ಗಾತ್ರ_2) { ಗಾತ್ರ_3 = ಗಾತ್ರ_2; };
+      ಚಿಹ್ನೆರಹಿತ ಗಾತ್ರ_2() ಸ್ಥಿರಾಂಕ { ಹಿಂತಿರುಗಿ ಗಾತ್ರ_3; }
 
-      virtual vvp_object_t get_object() const =0;
-    private:
-      unsigned size_;
+      ವಾಸ್ತವಿಕ vvp_object_t get_object() ಸ್ಥಿರಾಂಕ =0;
+    ಖಾಸಗಿ:
+      ಚಿಹ್ನೆರಹಿತ ಗಾತ್ರ_3;
 };
 
 /*
  * Statically allocated vvp_fun_signal_string.
  */
-class vvp_fun_signal_object_sa : public vvp_fun_signal_object {
+class vvp_fun_signal_object_sa : ಸಾರ್ವಜನಿಕ vvp_fun_signal_object {
 
-    public:
-      explicit vvp_fun_signal_object_sa(unsigned size);
+    ಸಾರ್ವಜನಿಕ:
+      explicit vvp_fun_signal_object_sa(ಚಿಹ್ನೆರಹಿತ ಗಾತ್ರ_2);
 
-      void recv_object(vvp_net_ptr_t port, vvp_object_t bit,
+      ಶೂನ್ಯ recv_object(vvp_net_ptr_t ಪೋರ್ಟ್, vvp_object_t ಬಿಟ್,
 		    vvp_context_t context) override;
 
-      vvp_object_t get_object() const override;
+      vvp_object_t get_object() ಸ್ಥಿರಾಂಕ override;
 
-    private:
-      vvp_object_t value_;
+    ಖಾಸಗಿ:
+      vvp_object_t ಮೌಲ್ಯ_2;
 };
 
 /*
  * Automatically allocated vvp_fun_signal_real.
  */
-class vvp_fun_signal_object_aa : public vvp_fun_signal_object, public automatic_signal_base, public automatic_hooks_s {
+class vvp_fun_signal_object_aa : ಸಾರ್ವಜನಿಕ vvp_fun_signal_object, ಸಾರ್ವಜನಿಕ automatic_signal_ತಳ, ಸಾರ್ವಜನಿಕ automatic_hooks_s {
 
-    public:
-      explicit vvp_fun_signal_object_aa(unsigned size);
+    ಸಾರ್ವಜನಿಕ:
+      explicit vvp_fun_signal_object_aa(ಚಿಹ್ನೆರಹಿತ ಗಾತ್ರ_2);
       ~vvp_fun_signal_object_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+      ಶೂನ್ಯ alloc_instance(vvp_context_t context) override;
+      ಶೂನ್ಯ reset_instance(vvp_context_t context) override;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+      ಶೂನ್ಯ free_instance(vvp_context_t context) override;
+#ಆದರೆ_ಅಂತ್ಯ
 
-      void recv_object(vvp_net_ptr_t port, vvp_object_t bit,
+      ಶೂನ್ಯ recv_object(vvp_net_ptr_t ಪೋರ್ಟ್, vvp_object_t ಬಿಟ್,
 		    vvp_context_t context) override;
 
 	// Get information about the vector value.
-      unsigned   value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
+      ಚಿಹ್ನೆರಹಿತ   ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override;
+      vvp_bit4_t ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
+      vvp_scalar_t scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
+      ಶೂನ್ಯ vec4_ಮೌಲ್ಯ(vvp_vector4_t&) ಸ್ಥಿರಾಂಕ override;
 	//double real_value() const;
 	//void get_signal_value(struct t_vpi_value*vp);
 
-      vvp_object_t get_object() const override;
+      vvp_object_t get_object() ಸ್ಥಿರಾಂಕ override;
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size);
-      static void operator delete(void*obj);
+    ಸಾರ್ವಜನಿಕ: // These objects are only permallocated.
+      ಸ್ಥಿರ ಶೂನ್ಯ* ಕ್ರಿಯಾಕಾರಕ new(std::size_t ಗಾತ್ರ_2);
+      ಸ್ಥಿರ ಶೂನ್ಯ ಕ್ರಿಯಾಕಾರಕ delete(ಶೂನ್ಯ*obj);
 
-    private:
-      unsigned context_idx_;
+    ಖಾಸಗಿ:
+      ಚಿಹ್ನೆರಹಿತ context_idx_;
 };
 
 
@@ -398,168 +398,168 @@ class vvp_fun_signal_object_aa : public vvp_fun_signal_object, public automatic_
  *            vvp_wire_base
  */
 
-class vvp_wire_base  : public vvp_net_fil_t, public vvp_signal_value {
+class vvp_wire_ತಳ  : ಸಾರ್ವಜನಿಕ vvp_net_fil_t, ಸಾರ್ವಜನಿಕ vvp_signal_ಮೌಲ್ಯ {
 
-    public:
-      vvp_wire_base();
-      ~vvp_wire_base() override;
+    ಸಾರ್ವಜನಿಕ:
+      vvp_wire_ತಳ();
+      ~vvp_wire_ತಳ() override;
 
         // Support for $countdrivers
-      virtual vvp_bit4_t driven_value(unsigned idx) const;
-      virtual bool is_forced(unsigned idx) const;
+      ವಾಸ್ತವಿಕ vvp_bit4_t driven_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ;
+      ವಾಸ್ತವಿಕ bool is_forced(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ;
 };
 
-class vvp_wire_vec4 : public vvp_wire_base {
+class vvp_wire_vec4 : ಸಾರ್ವಜನಿಕ vvp_wire_ತಳ {
 
-    public:
-      vvp_wire_vec4(unsigned wid, vvp_bit4_t init);
+    ಸಾರ್ವಜನಿಕ:
+      vvp_wire_vec4(ಚಿಹ್ನೆರಹಿತ wid, vvp_bit4_t init);
 
 	// The main filter behavior for this class. These methods take
 	// the value that the node is driven to, and applies the force
 	// filters. In wires, this also saves the driven value, so
 	// that when a force is released, we can revert to the driven value.
-      prop_t filter_vec4(const vvp_vector4_t&bit, vvp_vector4_t&rep,
-			 unsigned base, unsigned vwid) override;
-      prop_t filter_vec8(const vvp_vector8_t&val, vvp_vector8_t&rep,
-			 unsigned base, unsigned vwid) override;
+      prop_t filter_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್, vvp_vector4_t&rep,
+			 ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid) override;
+      prop_t filter_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&val, vvp_vector8_t&rep,
+			 ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid) override;
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value) override;
+      ಶೂನ್ಯ get_ಮೌಲ್ಯ(ರಚನೆ t_vpi_ಮೌಲ್ಯ*ಮೌಲ್ಯ) override;
 	// Abstract methods from vvp_net_fit_t
-      unsigned filter_size() const override;
-      void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_real(double val, const vvp_vector2_t&mask) override;
-      void release(vvp_net_ptr_t ptr, bool net_flag) override;
-      void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
+      ಚಿಹ್ನೆರಹಿತ filter_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override;
+      ಶೂನ್ಯ force_fil_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ) override;
+      ಶೂನ್ಯ force_fil_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ) override;
+      ಶೂನ್ಯ force_fil_real(ದ್ವಿಗುಣ val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ) override;
+      ಶೂನ್ಯ release(vvp_net_ptr_t ptr, bool net_flag) override;
+      ಶೂನ್ಯ release_pv(vvp_net_ptr_t ptr, ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ wid, bool net_flag) override;
 
 	// Implementation of vvp_signal_value methods
-      unsigned value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
+      ಚಿಹ್ನೆರಹಿತ ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override;
+      vvp_bit4_t ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
+      vvp_scalar_t scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
+      ಶೂನ್ಯ vec4_ಮೌಲ್ಯ(vvp_vector4_t&) ಸ್ಥಿರಾಂಕ override;
 
         // Support for $countdrivers
-      vvp_bit4_t driven_value(unsigned idx) const override;
-      bool is_forced(unsigned idx) const override;
+      vvp_bit4_t driven_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
+      bool is_forced(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
 
-    private:
-      vvp_bit4_t filtered_value_(unsigned idx) const;
+    ಖಾಸಗಿ:
+      vvp_bit4_t filtered_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ;
 
-    private:
+    ಖಾಸಗಿ:
       bool needs_init_;
       vvp_vector4_t bits4_; // The tracked driven value
       vvp_vector4_t force4_; // the value being forced
 };
 
-class vvp_wire_vec8 : public vvp_wire_base {
+class vvp_wire_vec8 : ಸಾರ್ವಜನಿಕ vvp_wire_ತಳ {
 
-    public:
-      explicit vvp_wire_vec8(unsigned wid);
+    ಸಾರ್ವಜನಿಕ:
+      explicit vvp_wire_vec8(ಚಿಹ್ನೆರಹಿತ wid);
 
 	// The main filter behavior for this class
-      prop_t filter_vec4(const vvp_vector4_t&bit, vvp_vector4_t&rep,
-			 unsigned base, unsigned vwid) override;
-      prop_t filter_vec8(const vvp_vector8_t&val, vvp_vector8_t&rep,
-			 unsigned base, unsigned vwid) override;
+      prop_t filter_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್, vvp_vector4_t&rep,
+			 ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid) override;
+      prop_t filter_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&val, vvp_vector8_t&rep,
+			 ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid) override;
 
 	// island ports use this method to filter arbitrary values
 	// through the force filter.
-      prop_t filter_input_vec8(const vvp_vector8_t&val, vvp_vector8_t&rep) const;
+      prop_t filter_ಒಳಹರಿವು_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&val, vvp_vector8_t&rep) ಸ್ಥಿರಾಂಕ;
 
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value) override;
+      ಶೂನ್ಯ get_ಮೌಲ್ಯ(ರಚನೆ t_vpi_ಮೌಲ್ಯ*ಮೌಲ್ಯ) override;
 	// Abstract methods from vvp_net_fit_t
-      unsigned filter_size() const override;
-      void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_real(double val, const vvp_vector2_t&mask) override;
-      void release(vvp_net_ptr_t ptr, bool net_flag) override;
-      void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
+      ಚಿಹ್ನೆರಹಿತ filter_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override;
+      ಶೂನ್ಯ force_fil_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ) override;
+      ಶೂನ್ಯ force_fil_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ) override;
+      ಶೂನ್ಯ force_fil_real(ದ್ವಿಗುಣ val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ) override;
+      ಶೂನ್ಯ release(vvp_net_ptr_t ptr, bool net_flag) override;
+      ಶೂನ್ಯ release_pv(vvp_net_ptr_t ptr, ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ wid, bool net_flag) override;
 
 	// Implementation of vvp_signal_value methods
-      unsigned value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
+      ಚಿಹ್ನೆರಹಿತ ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override;
+      vvp_bit4_t ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
+      vvp_scalar_t scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
+      ಶೂನ್ಯ vec4_ಮೌಲ್ಯ(vvp_vector4_t&) ಸ್ಥಿರಾಂಕ override;
 	// This is new to vvp_wire_vec8
-      vvp_vector8_t vec8_value() const;
+      vvp_vector8_t vec8_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ;
 
         // Support for $countdrivers
-      vvp_bit4_t driven_value(unsigned idx) const override;
-      bool is_forced(unsigned idx) const override;
+      vvp_bit4_t driven_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
+      bool is_forced(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
 
-    private:
-      vvp_scalar_t filtered_value_(unsigned idx) const;
+    ಖಾಸಗಿ:
+      vvp_scalar_t filtered_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ;
 
-    private:
+    ಖಾಸಗಿ:
       bool needs_init_;
       vvp_vector8_t bits8_;
       vvp_vector8_t force8_; // the value being forced
 };
 
-class vvp_wire_real : public vvp_wire_base {
+class vvp_wire_real : ಸಾರ್ವಜನಿಕ vvp_wire_ತಳ {
 
-    public:
-      explicit vvp_wire_real(void);
+    ಸಾರ್ವಜನಿಕ:
+      explicit vvp_wire_real(ಶೂನ್ಯ);
 
 	// The main filter behavior for this class
-      prop_t filter_real(double&bit) override;
+      prop_t filter_real(ದ್ವಿಗುಣ&ಬಿಟ್) override;
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value) override;
+      ಶೂನ್ಯ get_ಮೌಲ್ಯ(ರಚನೆ t_vpi_ಮೌಲ್ಯ*ಮೌಲ್ಯ) override;
 	// Abstract methods from vvp_net_fit_t
-      unsigned filter_size() const override;
-      void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_real(double val, const vvp_vector2_t&mask) override;
-      void release(vvp_net_ptr_t ptr, bool net_flag) override;
-      void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
+      ಚಿಹ್ನೆರಹಿತ filter_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override;
+      ಶೂನ್ಯ force_fil_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ) override;
+      ಶೂನ್ಯ force_fil_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ) override;
+      ಶೂನ್ಯ force_fil_real(ದ್ವಿಗುಣ val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ) override;
+      ಶೂನ್ಯ release(vvp_net_ptr_t ptr, bool net_flag) override;
+      ಶೂನ್ಯ release_pv(vvp_net_ptr_t ptr, ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ wid, bool net_flag) override;
 
 	// Implementation of vvp_signal_value methods
-      unsigned value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
-      double real_value() const override;
+      ಚಿಹ್ನೆರಹಿತ ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override;
+      vvp_bit4_t ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
+      vvp_scalar_t scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ override;
+      ಶೂನ್ಯ vec4_ಮೌಲ್ಯ(vvp_vector4_t&) ಸ್ಥಿರಾಂಕ override;
+      ದ್ವಿಗುಣ real_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ override;
 
-      void get_signal_value(struct t_vpi_value*vp) override;
+      ಶೂನ್ಯ get_signal_ಮೌಲ್ಯ(ರಚನೆ t_vpi_ಮೌಲ್ಯ*vp) override;
 
-    private:
-      double bit_;
-      double force_;
+    ಖಾಸಗಿ:
+      ದ್ವಿಗುಣ ಬಿಟ್_2;
+      ದ್ವಿಗುಣ force_;
       bool needs_init_ = true;
 };
 
-#if 0
-class vvp_wire_string : public vvp_wire_base {
+#ಆದರೆ 0
+class vvp_wire_string : ಸಾರ್ವಜನಿಕ vvp_wire_ತಳ {
 
-    public:
-      explicit vvp_wire_string(void);
+    ಸಾರ್ವಜನಿಕ:
+      explicit vvp_wire_string(ಶೂನ್ಯ);
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value);
+      ಶೂನ್ಯ get_ಮೌಲ್ಯ(ರಚನೆ t_vpi_ಮೌಲ್ಯ*ಮೌಲ್ಯ);
 	// Abstract methods from vvp_net_fil_t
-      unsigned filter_size() const;
-      void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask);
-      void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask);
-      void force_fil_real(double val, const vvp_vector2_t&mask);
-      void release(vvp_net_ptr_t ptr, bool net_flag);
-      void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag);
+      ಚಿಹ್ನೆರಹಿತ filter_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ;
+      ಶೂನ್ಯ force_fil_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ);
+      ಶೂನ್ಯ force_fil_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ);
+      ಶೂನ್ಯ force_fil_real(ದ್ವಿಗುಣ val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ);
+      ಶೂನ್ಯ release(vvp_net_ptr_t ptr, bool net_flag);
+      ಶೂನ್ಯ release_pv(vvp_net_ptr_t ptr, ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ wid, bool net_flag);
 
 	// Implementation of vvp_signal_value methods
-      unsigned value_size() const;
-      vvp_bit4_t value(unsigned idx) const;
-      vvp_scalar_t scalar_value(unsigned idx) const;
-      void vec4_value(vvp_vector4_t&) const;
-      double real_value() const;
+      ಚಿಹ್ನೆರಹಿತ ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ;
+      vvp_bit4_t ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ;
+      vvp_scalar_t scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ;
+      ಶೂನ್ಯ vec4_ಮೌಲ್ಯ(vvp_vector4_t&) ಸ್ಥಿರಾಂಕ;
+      ದ್ವಿಗುಣ real_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ;
 
-      void get_signal_value(struct t_vpi_value*vp);
+      ಶೂನ್ಯ get_signal_ಮೌಲ್ಯ(ರಚನೆ t_vpi_ಮೌಲ್ಯ*vp);
 
-    private:
-      std::string value_;
+    ಖಾಸಗಿ:
+      std::string ಮೌಲ್ಯ_2;
 };
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-#endif /* IVL_vvp_net_sig_H */
+#ಆದರೆ_ಅಂತ್ಯ /* IVL_vvp_net_sig_H */

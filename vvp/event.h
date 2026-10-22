@@ -1,5 +1,5 @@
-#ifndef IVL_event_H
-#define IVL_event_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ IVL_event_H
+#ವ್ಯಾಖ್ಯಾನಿಸು IVL_event_H
 /*
  * Copyright (c) 2004-2025 Stephen Williams (steve@icarus.com)
  *
@@ -26,88 +26,88 @@
 
 class evctl {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       explicit evctl(uint64_t ecount);
-      bool dec_and_run();
-      virtual void run_run() = 0;
-      virtual ~evctl() {}
-      evctl*next;
+      bool dec_and_ಸತತ();
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ ಸತತ_ಸತತ() = 0;
+      ವಾಸ್ತವಿಕ ~evctl() {}
+      evctl*ಮುಂದಿನ_2;
 
-    private:
+    ಖಾಸಗಿ:
       uint64_t ecount_;
 };
 
-class evctl_real : public evctl {
+class evctl_real : ಸಾರ್ವಜನಿಕ evctl {
 
-    public:
-      explicit evctl_real(class __vpiHandle*handle, double value,
+    ಸಾರ್ವಜನಿಕ:
+      explicit evctl_real(class __vpiHandle*handle, ದ್ವಿಗುಣ ಮೌಲ್ಯ,
                           uint64_t ecount);
-      virtual ~evctl_real() override {}
-      void run_run() override;
+      ವಾಸ್ತವಿಕ ~evctl_real() override {}
+      ಶೂನ್ಯ ಸತತ_ಸತತ() override;
 
-    private:
+    ಖಾಸಗಿ:
       class __vpiHandle*handle_;
-      double value_;
+      ದ್ವಿಗುಣ ಮೌಲ್ಯ_2;
 };
 
-class evctl_vector : public evctl {
+class evctl_ಸದಿಶ : ಸಾರ್ವಜನಿಕ evctl {
 
-    public:
-      explicit evctl_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
-                            unsigned off, unsigned wid, uint64_t ecount);
-      virtual ~evctl_vector() override {}
-      void run_run() override;
+    ಸಾರ್ವಜನಿಕ:
+      explicit evctl_ಸದಿಶ(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಮೌಲ್ಯ,
+                            ಚಿಹ್ನೆರಹಿತ off, ಚಿಹ್ನೆರಹಿತ wid, uint64_t ecount);
+      ವಾಸ್ತವಿಕ ~evctl_ಸದಿಶ() override {}
+      ಶೂನ್ಯ ಸತತ_ಸತತ() override;
 
-    private:
+    ಖಾಸಗಿ:
       vvp_net_ptr_t ptr_;
-      vvp_vector4_t value_;
-      unsigned off_;
-      unsigned wid_;
+      vvp_vector4_t ಮೌಲ್ಯ_2;
+      ಚಿಹ್ನೆರಹಿತ off_;
+      ಚಿಹ್ನೆರಹಿತ wid_;
 };
 
-class evctl_array : public evctl {
+class evctl_array : ಸಾರ್ವಜನಿಕ evctl {
 
-    public:
-      explicit evctl_array(vvp_array_t memory, unsigned index,
-                           const vvp_vector4_t&value, unsigned off,
+    ಸಾರ್ವಜನಿಕ:
+      explicit evctl_array(vvp_array_t ಸ್ಮರಣೆ, ಚಿಹ್ನೆರಹಿತ ಸೂಚ್ಯಂಕ,
+                           ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಮೌಲ್ಯ, ಚಿಹ್ನೆರಹಿತ off,
                            uint64_t ecount);
-      virtual ~evctl_array() override {}
-      virtual void run_run() override;
+      ವಾಸ್ತವಿಕ ~evctl_array() override {}
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ ಸತತ_ಸತತ() override;
 
-    private:
+    ಖಾಸಗಿ:
       vvp_array_t mem_;
-      unsigned idx_;
-      vvp_vector4_t value_;
-      unsigned off_;
+      ಚಿಹ್ನೆರಹಿತ idx_;
+      vvp_vector4_t ಮೌಲ್ಯ_2;
+      ಚಿಹ್ನೆರಹಿತ off_;
 };
 
-class evctl_array_r : public evctl {
+class evctl_array_r : ಸಾರ್ವಜನಿಕ evctl {
 
-    public:
-      explicit evctl_array_r(vvp_array_t memory, unsigned index,
-                           double value, uint64_t ecount);
-      virtual ~evctl_array_r() override {}
-      virtual void run_run() override;
+    ಸಾರ್ವಜನಿಕ:
+      explicit evctl_array_r(vvp_array_t ಸ್ಮರಣೆ, ಚಿಹ್ನೆರಹಿತ ಸೂಚ್ಯಂಕ,
+                           ದ್ವಿಗುಣ ಮೌಲ್ಯ, uint64_t ecount);
+      ವಾಸ್ತವಿಕ ~evctl_array_r() override {}
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ ಸತತ_ಸತತ() override;
 
-    private:
+    ಖಾಸಗಿ:
       vvp_array_t mem_;
-      unsigned idx_;
-      double value_;
+      ಚಿಹ್ನೆರಹಿತ idx_;
+      ದ್ವಿಗುಣ ಮೌಲ್ಯ_2;
 };
 
-extern void schedule_evctl(class __vpiHandle*handle, double value,
+ಬಾಹ್ಯ ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_evctl(class __vpiHandle*handle, ದ್ವಿಗುಣ ಮೌಲ್ಯ,
                            vvp_net_t*event, uint64_t ecount);
 
-extern void schedule_evctl(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
-                           unsigned offset, unsigned wid,
+ಬಾಹ್ಯ ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_evctl(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಮೌಲ್ಯ,
+                           ಚಿಹ್ನೆರಹಿತ ಸ್ಥಾನಾಂತರ_2, ಚಿಹ್ನೆರಹಿತ wid,
                            vvp_net_t*event, uint64_t ecount);
 
-extern void schedule_evctl(vvp_array_t memory, unsigned index,
-                           const vvp_vector4_t&value, unsigned offset,
+ಬಾಹ್ಯ ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_evctl(vvp_array_t ಸ್ಮರಣೆ, ಚಿಹ್ನೆರಹಿತ ಸೂಚ್ಯಂಕ,
+                           ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಮೌಲ್ಯ, ಚಿಹ್ನೆರಹಿತ ಸ್ಥಾನಾಂತರ_2,
                            vvp_net_t*event, uint64_t ecount);
 
-extern void schedule_evctl(vvp_array_t memory, unsigned index,
-                           double value,
+ಬಾಹ್ಯ ಶೂನ್ಯ ವೇಳಾಪಟ್ಟಿ_evctl(vvp_array_t ಸ್ಮರಣೆ, ಚಿಹ್ನೆರಹಿತ ಸೂಚ್ಯಂಕ,
+                           ದ್ವಿಗುಣ ಮೌಲ್ಯ,
                            vvp_net_t*event, uint64_t ecount);
 
 /*
@@ -118,19 +118,19 @@ extern void schedule_evctl(vvp_array_t memory, unsigned index,
  * A "waitable" functor is one that the %wait instruction can wait
  * on. This includes the infrastructure needed to hold threads.
  */
-struct waitable_hooks_s {
+ರಚನೆ waitable_hooks_s {
 
-    public:
-      waitable_hooks_s() : event_ctls(0) { last = &event_ctls; }
-      virtual ~waitable_hooks_s() {}
+    ಸಾರ್ವಜನಿಕ:
+      waitable_hooks_s() : event_ctls(0) { ಕೊನೆಯ = &event_ctls; }
+      ವಾಸ್ತವಿಕ ~waitable_hooks_s() {}
 
-      virtual vthread_t add_waiting_thread(vthread_t thread) = 0;
+      ವಾಸ್ತವಿಕ vthread_t ಕೂಡಿಸು_ಕಾಯುವಿಕೆ_thread(vthread_t thread) = 0;
 
       evctl*event_ctls;
-      evctl**last;
+      evctl**ಕೊನೆಯ;
 
-    protected:
-      void run_waiting_threads_(vthread_t&threads);
+    ಸಂರಕ್ಷಿತ:
+      ಶೂನ್ಯ ಸತತ_ಕಾಯುವಿಕೆ_ಎಳೆಗಳು(vthread_t&ಎಳೆಗಳು);
 };
 
 /*
@@ -138,10 +138,10 @@ struct waitable_hooks_s {
  * of an automatically allocated event. In the general case, all that is
  * needed is the list of threads waiting on that instance.
  */
-struct waitable_state_s {
-      waitable_state_s() : threads(0) {}
+ರಚನೆ waitable_state_s {
+      waitable_state_s() : ಎಳೆಗಳು(0) {}
 
-      vthread_t threads;
+      vthread_t ಎಳೆಗಳು;
 };
 
 /*
@@ -149,78 +149,78 @@ struct waitable_state_s {
  * types. This should be hooked to a vvp_net_t that is connected to
  * the output of a signal that we wish to watch for edges.
  */
-class vvp_fun_edge : public vvp_net_fun_t, public waitable_hooks_s {
+class vvp_fun_ಅಂಚು : ಸಾರ್ವಜನಿಕ vvp_net_fun_t, ಸಾರ್ವಜನಿಕ waitable_hooks_s {
 
-    public:
-      typedef unsigned short edge_t;
-      explicit vvp_fun_edge(edge_t e);
-      virtual ~vvp_fun_edge() override;
+    ಸಾರ್ವಜನಿಕ:
+      ಪ್ರಕಾರವ್ಯಾಖ್ಯೆ ಚಿಹ್ನೆರಹಿತ ಗಿಡ್ಡ ಅಂಚು_t;
+      explicit vvp_fun_ಅಂಚು(ಅಂಚು_t e);
+      ವಾಸ್ತವಿಕ ~vvp_fun_ಅಂಚು() override;
 
-    protected:
-      bool recv_vec4_(const vvp_vector4_t&bit,
-                      vvp_bit4_t&old_bit, vthread_t&threads);
+    ಸಂರಕ್ಷಿತ:
+      bool recv_vec4_(ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+                      vvp_bit4_t&old_ಬಿಟ್, vthread_t&ಎಳೆಗಳು);
 
-      vvp_bit4_t bits_[4];
+      vvp_bit4_t ಬಿಟ್ಟುಗಳು_2[4];
 
-    private:
-      edge_t edge_;
+    ಖಾಸಗಿ:
+      ಅಂಚು_t ಅಂಚು_2;
 };
 
-extern const vvp_fun_edge::edge_t vvp_edge_edge;
-extern const vvp_fun_edge::edge_t vvp_edge_posedge;
-extern const vvp_fun_edge::edge_t vvp_edge_negedge;
-extern const vvp_fun_edge::edge_t vvp_edge_none;
+ಬಾಹ್ಯ ಸ್ಥಿರಾಂಕ vvp_fun_ಅಂಚು::ಅಂಚು_t vvp_ಅಂಚು_ಅಂಚು;
+ಬಾಹ್ಯ ಸ್ಥಿರಾಂಕ vvp_fun_ಅಂಚು::ಅಂಚು_t vvp_ಅಂಚು_posedge;
+ಬಾಹ್ಯ ಸ್ಥಿರಾಂಕ vvp_fun_ಅಂಚು::ಅಂಚು_t vvp_ಅಂಚು_negedge;
+ಬಾಹ್ಯ ಸ್ಥಿರಾಂಕ vvp_fun_ಅಂಚು::ಅಂಚು_t vvp_ಅಂಚು_none;
 
 /*
  * Statically allocated vvp_fun_edge.
  */
-class vvp_fun_edge_sa : public vvp_fun_edge {
+class vvp_fun_ಅಂಚು_sa : ಸಾರ್ವಜನಿಕ vvp_fun_ಅಂಚು {
 
-    public:
-      explicit vvp_fun_edge_sa(edge_t e);
-      virtual ~vvp_fun_edge_sa() override;
+    ಸಾರ್ವಜನಿಕ:
+      explicit vvp_fun_ಅಂಚು_sa(ಅಂಚು_t e);
+      ವಾಸ್ತವಿಕ ~vvp_fun_ಅಂಚು_sa() override;
 
-      vthread_t add_waiting_thread(vthread_t thread) override;
+      vthread_t ಕೂಡಿಸು_ಕಾಯುವಿಕೆ_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t context) override;
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t context) override;
+      ಶೂನ್ಯ recv_vec4_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+			ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t context) override;
 
-    private:
-      vthread_t threads_;
+    ಖಾಸಗಿ:
+      vthread_t ಎಳೆಗಳು_2;
 };
 
 /*
  * Automatically allocated vvp_fun_edge.
  */
-class vvp_fun_edge_aa : public vvp_fun_edge, public automatic_hooks_s {
+class vvp_fun_ಅಂಚು_aa : ಸಾರ್ವಜನಿಕ vvp_fun_ಅಂಚು, ಸಾರ್ವಜನಿಕ automatic_hooks_s {
 
-    public:
-      explicit vvp_fun_edge_aa(edge_t e);
-      virtual ~vvp_fun_edge_aa() override;
+    ಸಾರ್ವಜನಿಕ:
+      explicit vvp_fun_ಅಂಚು_aa(ಅಂಚು_t e);
+      ವಾಸ್ತವಿಕ ~vvp_fun_ಅಂಚು_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+      ಶೂನ್ಯ alloc_instance(vvp_context_t context) override;
+      ಶೂನ್ಯ reset_instance(vvp_context_t context) override;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+      ಶೂನ್ಯ free_instance(vvp_context_t context) override;
+#ಆದರೆ_ಅಂತ್ಯ
 
-      vthread_t add_waiting_thread(vthread_t thread) override;
+      vthread_t ಕೂಡಿಸು_ಕಾಯುವಿಕೆ_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t context) override;
 
-    private:
+    ಖಾಸಗಿ:
       __vpiScope*context_scope_;
-      unsigned context_idx_;
+      ಚಿಹ್ನೆರಹಿತ context_idx_;
 };
 
 /*
  * This is the base object for storing the last received values for a
  * vvp_fun_anyedge functor.
  */
-class anyedge_value;
+class anyedge_ಮೌಲ್ಯ;
 
 /*
  * The vvp_fun_anyedge functor checks to see if any value in an input
@@ -232,73 +232,73 @@ class anyedge_value;
  * values. In this case, any detectable change in the real value leads
  * to an event trigger.
  */
-class vvp_fun_anyedge : public vvp_net_fun_t, public waitable_hooks_s {
+class vvp_fun_anyedge : ಸಾರ್ವಜನಿಕ vvp_net_fun_t, ಸಾರ್ವಜನಿಕ waitable_hooks_s {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_fun_anyedge();
-      virtual ~vvp_fun_anyedge() override;
+      ವಾಸ್ತವಿಕ ~vvp_fun_anyedge() override;
 
-    protected:
-      anyedge_value*last_value_[4];
+    ಸಂರಕ್ಷಿತ:
+      anyedge_ಮೌಲ್ಯ*ಕೊನೆಯ_ಮೌಲ್ಯ[4];
 };
 
 /*
  * Statically allocated vvp_fun_anyedge.
  */
-class vvp_fun_anyedge_sa : public vvp_fun_anyedge {
+class vvp_fun_anyedge_sa : ಸಾರ್ವಜನಿಕ vvp_fun_anyedge {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_fun_anyedge_sa();
-      virtual ~vvp_fun_anyedge_sa() override;
+      ವಾಸ್ತವಿಕ ~vvp_fun_anyedge_sa() override;
 
-      vthread_t add_waiting_thread(vthread_t thread) override;
+      vthread_t ಕೂಡಿಸು_ಕಾಯುವಿಕೆ_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t context) override;
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t context) override;
+      ಶೂನ್ಯ recv_vec4_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+			ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t context) override;
 
-      void recv_real(vvp_net_ptr_t port, double bit,
+      ಶೂನ್ಯ recv_real(vvp_net_ptr_t ಪೋರ್ಟ್, ದ್ವಿಗುಣ ಬಿಟ್,
                      vvp_context_t context) override;
 
-      void recv_string(vvp_net_ptr_t port, const std::string&bit,
+      ಶೂನ್ಯ recv_string(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ std::string&ಬಿಟ್,
 		       vvp_context_t context) override;
-      void recv_object(vvp_net_ptr_t port, vvp_object_t bit,
+      ಶೂನ್ಯ recv_object(vvp_net_ptr_t ಪೋರ್ಟ್, vvp_object_t ಬಿಟ್,
 		       vvp_context_t context) override;
 
-    private:
-      vthread_t threads_;
+    ಖಾಸಗಿ:
+      vthread_t ಎಳೆಗಳು_2;
 };
 
 /*
  * Automatically allocated vvp_fun_anyedge.
  */
-class vvp_fun_anyedge_aa : public vvp_fun_anyedge, public automatic_hooks_s {
+class vvp_fun_anyedge_aa : ಸಾರ್ವಜನಿಕ vvp_fun_anyedge, ಸಾರ್ವಜನಿಕ automatic_hooks_s {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_fun_anyedge_aa();
-      virtual ~vvp_fun_anyedge_aa() override;
+      ವಾಸ್ತವಿಕ ~vvp_fun_anyedge_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+      ಶೂನ್ಯ alloc_instance(vvp_context_t context) override;
+      ಶೂನ್ಯ reset_instance(vvp_context_t context) override;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+      ಶೂನ್ಯ free_instance(vvp_context_t context) override;
+#ಆದರೆ_ಅಂತ್ಯ
 
-      vthread_t add_waiting_thread(vthread_t thread) override;
+      vthread_t ಕೂಡಿಸು_ಕಾಯುವಿಕೆ_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t context) override;
 
-      void recv_real(vvp_net_ptr_t port, double bit,
+      ಶೂನ್ಯ recv_real(vvp_net_ptr_t ಪೋರ್ಟ್, ದ್ವಿಗುಣ ಬಿಟ್,
                      vvp_context_t context) override;
 
-      void recv_string(vvp_net_ptr_t port, const std::string&bit,
+      ಶೂನ್ಯ recv_string(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ std::string&ಬಿಟ್,
 		       vvp_context_t context) override;
 
-    private:
+    ಖಾಸಗಿ:
       __vpiScope*context_scope_;
-      unsigned context_idx_;
+      ಚಿಹ್ನೆರಹಿತ context_idx_;
 };
 
 /*
@@ -307,57 +307,57 @@ class vvp_fun_anyedge_aa : public vvp_fun_anyedge, public automatic_hooks_s {
  * supports wide (more than 4) inputs, so needs a pointer to the base
  * net that is used for output.
  */
-class vvp_fun_event_or : public vvp_net_fun_t, public waitable_hooks_s {
+class vvp_fun_event_or : ಸಾರ್ವಜನಿಕ vvp_net_fun_t, ಸಾರ್ವಜನಿಕ waitable_hooks_s {
 
-    public:
-      explicit vvp_fun_event_or(vvp_net_t*base_net);
+    ಸಾರ್ವಜನಿಕ:
+      explicit vvp_fun_event_or(vvp_net_t*ತಳ_net);
       ~vvp_fun_event_or() override;
 
-    protected:
-      vvp_net_t*base_net_;
+    ಸಂರಕ್ಷಿತ:
+      vvp_net_t*ತಳ_net_2;
 };
 
 /*
  * Statically allocated vvp_fun_event_or.
  */
-class vvp_fun_event_or_sa : public vvp_fun_event_or {
+class vvp_fun_event_or_sa : ಸಾರ್ವಜನಿಕ vvp_fun_event_or {
 
-    public:
-      explicit vvp_fun_event_or_sa(vvp_net_t*base_net);
+    ಸಾರ್ವಜನಿಕ:
+      explicit vvp_fun_event_or_sa(vvp_net_t*ತಳ_net);
       ~vvp_fun_event_or_sa() override;
 
-      vthread_t add_waiting_thread(vthread_t thread) override;
+      vthread_t ಕೂಡಿಸು_ಕಾಯುವಿಕೆ_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t context) override;
 
-    private:
-      vthread_t threads_;
+    ಖಾಸಗಿ:
+      vthread_t ಎಳೆಗಳು_2;
 };
 
 /*
  * Automatically allocated vvp_fun_event_or.
  */
-class vvp_fun_event_or_aa : public vvp_fun_event_or, public automatic_hooks_s {
+class vvp_fun_event_or_aa : ಸಾರ್ವಜನಿಕ vvp_fun_event_or, ಸಾರ್ವಜನಿಕ automatic_hooks_s {
 
-    public:
-      explicit vvp_fun_event_or_aa(vvp_net_t*base_net);
+    ಸಾರ್ವಜನಿಕ:
+      explicit vvp_fun_event_or_aa(vvp_net_t*ತಳ_net);
       ~vvp_fun_event_or_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+      ಶೂನ್ಯ alloc_instance(vvp_context_t context) override;
+      ಶೂನ್ಯ reset_instance(vvp_context_t context) override;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+      ಶೂನ್ಯ free_instance(vvp_context_t context) override;
+#ಆದರೆ_ಅಂತ್ಯ
 
-      vthread_t add_waiting_thread(vthread_t thread) override;
+      vthread_t ಕೂಡಿಸು_ಕಾಯುವಿಕೆ_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t context) override;
 
-    private:
+    ಖಾಸಗಿ:
       __vpiScope*context_scope_;
-      unsigned context_idx_;
+      ಚಿಹ್ನೆರಹಿತ context_idx_;
 };
 
 /*
@@ -365,56 +365,56 @@ class vvp_fun_event_or_aa : public vvp_fun_event_or, public automatic_hooks_s {
  * any input at all to port-0. The idea here is that behavioral code
  * can use a %set/v instruction to trigger the event.
  */
-class vvp_named_event : public vvp_net_fun_t, public waitable_hooks_s {
+class vvp_named_event : ಸಾರ್ವಜನಿಕ vvp_net_fun_t, ಸಾರ್ವಜನಿಕ waitable_hooks_s {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_named_event(class __vpiHandle*eh);
       ~vvp_named_event() override;
 
-    protected:
+    ಸಂರಕ್ಷಿತ:
       class __vpiHandle*handle_;
 };
 
 /*
  * Statically allocated vvp_named_event.
  */
-class vvp_named_event_sa : public vvp_named_event {
+class vvp_named_event_sa : ಸಾರ್ವಜನಿಕ vvp_named_event {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_named_event_sa(class __vpiHandle*eh);
       ~vvp_named_event_sa() override;
 
-      vthread_t add_waiting_thread(vthread_t thread) override;
+      vthread_t ಕೂಡಿಸು_ಕಾಯುವಿಕೆ_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t) override;
 
-    private:
-      vthread_t threads_;
+    ಖಾಸಗಿ:
+      vthread_t ಎಳೆಗಳು_2;
 };
 
 /*
  * Automatically allocated vvp_named_event.
  */
-class vvp_named_event_aa : public vvp_named_event, public automatic_hooks_s {
+class vvp_named_event_aa : ಸಾರ್ವಜನಿಕ vvp_named_event, ಸಾರ್ವಜನಿಕ automatic_hooks_s {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       explicit vvp_named_event_aa(class __vpiHandle*eh);
       ~vvp_named_event_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+      ಶೂನ್ಯ alloc_instance(vvp_context_t context) override;
+      ಶೂನ್ಯ reset_instance(vvp_context_t context) override;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+      ಶೂನ್ಯ free_instance(vvp_context_t context) override;
+#ಆದರೆ_ಅಂತ್ಯ
 
-      vthread_t add_waiting_thread(vthread_t thread) override;
+      vthread_t ಕೂಡಿಸು_ಕಾಯುವಿಕೆ_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t context) override;
 
-    private:
-      unsigned context_idx_;
+    ಖಾಸಗಿ:
+      ಚಿಹ್ನೆರಹಿತ context_idx_;
 };
 
-#endif /* IVL_event_H */
+#ಆದರೆ_ಅಂತ್ಯ /* IVL_event_H */

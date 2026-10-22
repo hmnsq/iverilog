@@ -1,5 +1,5 @@
-#ifndef IVL_slab_H
-#define IVL_slab_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ IVL_slab_H
+#ವ್ಯಾಖ್ಯಾನಿಸು IVL_slab_H
 /*
  * Copyright (c) 2008-2015 Picture Elements, Inc.
  *    Stephen Williams (steve@icarus.com)
@@ -23,95 +23,95 @@
 
 # include  "config.h"
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT> class slab_t {
+ಮಾದರಿ <size_t SLAB_ಗಾತ್ರ, size_t CHUNK_ಎಣಿಕೆ> class slab_t {
 
-      union item_cell_u {
-	    item_cell_u*next;
-	    char space[SLAB_SIZE];
+      ಒಕ್ಕೂಟ ಅಂಶ_cell_u {
+	    ಅಂಶ_cell_u*ಮುಂದಿನ_2;
+	    ಅಕ್ಷರ space[SLAB_ಗಾತ್ರ];
       };
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       slab_t();
 
-      void* alloc_slab();
-      void  free_slab(void*);
-#ifdef CHECK_WITH_VALGRIND
+      ಶೂನ್ಯ* alloc_slab();
+      ಶೂನ್ಯ  free_slab(ಶೂನ್ಯ*);
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
 	// If we have allocated memory then we need to delete it to make
 	// valgrind happy.
-      void delete_pool(void);
-#endif
+      ಶೂನ್ಯ delete_pool(ಶೂನ್ಯ);
+#ಆದರೆ_ಅಂತ್ಯ
 
-      unsigned long pool;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ pool;
 
-    private:
-      item_cell_u*heap_;
-      item_cell_u initial_chunk_[CHUNK_COUNT];
-#ifdef CHECK_WITH_VALGRIND
+    ಖಾಸಗಿ:
+      ಅಂಶ_cell_u*ರಾಶಿ;
+      ಅಂಶ_cell_u initial_chunk_[CHUNK_ಎಣಿಕೆ];
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
 	// Each slab needs a pointer to the allocated space.
-      item_cell_u**slab_pool;
-      unsigned slab_pool_count;
-#endif
+      ಅಂಶ_cell_u**slab_pool;
+      ಚಿಹ್ನೆರಹಿತ slab_pool_ಎಣಿಕೆ;
+#ಆದರೆ_ಅಂತ್ಯ
 };
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-slab_t<SLAB_SIZE,CHUNK_COUNT>::slab_t()
+ಮಾದರಿ <size_t SLAB_ಗಾತ್ರ, size_t CHUNK_ಎಣಿಕೆ>
+slab_t<SLAB_ಗಾತ್ರ,CHUNK_ಎಣಿಕೆ>::slab_t()
 {
-      pool = CHUNK_COUNT;
-      heap_ = initial_chunk_;
-      for (unsigned idx = 0 ; idx < CHUNK_COUNT-1 ; idx += 1)
-	    initial_chunk_[idx].next = initial_chunk_+idx+1;
+      pool = CHUNK_ಎಣಿಕೆ;
+      ರಾಶಿ = initial_chunk_;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < CHUNK_ಎಣಿಕೆ-1 ; idx += 1)
+	    initial_chunk_[idx].ಮುಂದಿನ_2 = initial_chunk_+idx+1;
 
-      initial_chunk_[CHUNK_COUNT-1].next = 0;
-#ifdef CHECK_WITH_VALGRIND
+      initial_chunk_[CHUNK_ಎಣಿಕೆ-1].ಮುಂದಿನ_2 = 0;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
 	// Initially we have no allocated space.
-      slab_pool = NULL;
-      slab_pool_count = 0;
-#endif
+      slab_pool = ಖಾಲಿ;
+      slab_pool_ಎಣಿಕೆ = 0;
+#ಆದರೆ_ಅಂತ್ಯ
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void* slab_t<SLAB_SIZE,CHUNK_COUNT>::alloc_slab()
+ಮಾದರಿ <size_t SLAB_ಗಾತ್ರ, size_t CHUNK_ಎಣಿಕೆ>
+ಸಾಲೊಳಗೆ ಶೂನ್ಯ* slab_t<SLAB_ಗಾತ್ರ,CHUNK_ಎಣಿಕೆ>::alloc_slab()
 {
-      if (heap_ == 0) {
-	    item_cell_u*chunk = new item_cell_u[CHUNK_COUNT];
-#ifdef CHECK_WITH_VALGRIND
-	    slab_pool_count += 1;
-	    slab_pool = static_cast<item_cell_u **>(realloc(slab_pool,
-	                slab_pool_count*sizeof(item_cell_u **)));
-	    slab_pool[slab_pool_count-1] = chunk;
-#endif
-	    for (unsigned idx = 0 ; idx < CHUNK_COUNT ; idx += 1) {
-		  chunk[idx].next = heap_;
-		  heap_ = chunk+idx;
+      ಆದರೆ (ರಾಶಿ == 0) {
+	    ಅಂಶ_cell_u*chunk = new ಅಂಶ_cell_u[CHUNK_ಎಣಿಕೆ];
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+	    slab_pool_ಎಣಿಕೆ += 1;
+	    slab_pool = static_cast<ಅಂಶ_cell_u **>(realloc(slab_pool,
+	                slab_pool_ಎಣಿಕೆ*ಗಾತ್ರ(ಅಂಶ_cell_u **)));
+	    slab_pool[slab_pool_ಎಣಿಕೆ-1] = chunk;
+#ಆದರೆ_ಅಂತ್ಯ
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < CHUNK_ಎಣಿಕೆ ; idx += 1) {
+		  chunk[idx].ಮುಂದಿನ_2 = ರಾಶಿ;
+		  ರಾಶಿ = chunk+idx;
 	    }
-	    pool += CHUNK_COUNT;
+	    pool += CHUNK_ಎಣಿಕೆ;
       }
 
-      item_cell_u*cur = heap_;
-      heap_ = heap_->next;
-      return cur;
+      ಅಂಶ_cell_u*cur = ರಾಶಿ;
+      ರಾಶಿ = ರಾಶಿ->ಮುಂದಿನ_2;
+      ಹಿಂತಿರುಗಿ cur;
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::free_slab(void*ptr)
+ಮಾದರಿ <size_t SLAB_ಗಾತ್ರ, size_t CHUNK_ಎಣಿಕೆ>
+ಸಾಲೊಳಗೆ ಶೂನ್ಯ slab_t<SLAB_ಗಾತ್ರ,CHUNK_ಎಣಿಕೆ>::free_slab(ಶೂನ್ಯ*ptr)
 {
-      item_cell_u*cur = reinterpret_cast<item_cell_u*> (ptr);
-      cur->next = heap_;
-      heap_ = cur;
+      ಅಂಶ_cell_u*cur = reinterpret_cast<ಅಂಶ_cell_u*> (ptr);
+      cur->ಮುಂದಿನ_2 = ರಾಶಿ;
+      ರಾಶಿ = cur;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::delete_pool(void)
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+ಮಾದರಿ <size_t SLAB_ಗಾತ್ರ, size_t CHUNK_ಎಣಿಕೆ>
+ಸಾಲೊಳಗೆ ಶೂನ್ಯ slab_t<SLAB_ಗಾತ್ರ,CHUNK_ಎಣಿಕೆ>::delete_pool(ಶೂನ್ಯ)
 {
-      for (unsigned idx = 0; idx < slab_pool_count; idx += 1) {
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0; idx < slab_pool_ಎಣಿಕೆ; idx += 1) {
 	    delete [] slab_pool[idx];
       }
-      free(slab_pool);
-      slab_pool = NULL;
-      slab_pool_count = 0;
+      ಬಿಡುಗಡೆ(slab_pool);
+      slab_pool = ಖಾಲಿ;
+      slab_pool_ಎಣಿಕೆ = 0;
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 
-#endif /* IVL_slab_H */
+#ಆದರೆ_ಅಂತ್ಯ /* IVL_slab_H */

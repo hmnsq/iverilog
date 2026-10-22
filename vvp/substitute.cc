@@ -24,80 +24,80 @@
 # include  <cassert>
 
 
-class vvp_fun_substitute : public vvp_net_fun_t {
+ವರ್ಗ vvp_fun_substitute : ಸಾರ್ವಜನಿಕ vvp_net_fun_t {
 
-    public:
-      vvp_fun_substitute(unsigned wid, unsigned soff, unsigned swid);
+    ಸಾರ್ವಜನಿಕ:
+      vvp_fun_substitute(ಚಿಹ್ನೆರಹಿತ wid, ಚಿಹ್ನೆರಹಿತ soff, ಚಿಹ್ನೆರಹಿತ swid);
       ~vvp_fun_substitute() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit, vvp_context_t) override;
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್, vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      ಶೂನ್ಯ recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+			ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t ctx) override;
 
-    private:
-      unsigned wid_;
-      unsigned soff_;
-      unsigned swid_;
+    ಖಾಸಗಿ:
+      ಚಿಹ್ನೆರಹಿತ wid_;
+      ಚಿಹ್ನೆರಹಿತ soff_;
+      ಚಿಹ್ನೆರಹಿತ swid_;
 
       vvp_vector4_t val_;
 };
 
-vvp_fun_substitute::vvp_fun_substitute(unsigned wid, unsigned soff, unsigned swid)
+vvp_fun_substitute::vvp_fun_substitute(ಚಿಹ್ನೆರಹಿತ wid, ಚಿಹ್ನೆರಹಿತ soff, ಚಿಹ್ನೆರಹಿತ swid)
 : wid_(wid), soff_(soff), swid_(swid), val_(wid)
 {
-      for (unsigned idx = 0 ; idx < val_.size() ; idx += 1)
-	    val_.set_bit(idx, BIT4_Z);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < val_.size() ; idx += 1)
+	    val_.ಗಣ_ಬಿಟ್(idx, BIT4_Z);
 }
 
 vvp_fun_substitute::~vvp_fun_substitute()
 {
 }
 
-void vvp_fun_substitute::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_substitute::recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
 				   vvp_context_t)
 {
-      unsigned pdx = port.port();
-      assert(pdx <= 1);
+      ಚಿಹ್ನೆರಹಿತ pdx = ಪೋರ್ಟ್.ಪೋರ್ಟ್();
+      ಪ್ರತಿಜ್ಞಾ(pdx <= 1);
 
-      if (pdx == 0) {
-	    assert(bit.size() == wid_);
+      ಆದರೆ (pdx == 0) {
+	    ಪ್ರತಿಜ್ಞಾ(ಬಿಟ್.size() == wid_);
 
-	    for (unsigned idx = 0 ; idx < wid_ ; idx += 1) {
-		  if (idx >= soff_ && idx < (soff_+swid_))
-			continue;
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < wid_ ; idx += 1) {
+		  ಆದರೆ (idx >= soff_ && idx < (soff_+swid_))
+			ಮುಂದುವರಿ;
 
-		  val_.set_bit(idx, bit.value(idx));
+		  val_.ಗಣ_ಬಿಟ್(idx, ಬಿಟ್.value(idx));
 	    }
 
-      } else {
-	    assert(bit.size() == swid_);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಪ್ರತಿಜ್ಞಾ(ಬಿಟ್.size() == swid_);
 
-	    for (unsigned idx = 0 ; idx < swid_ ; idx += 1)
-		  val_.set_bit(idx+soff_, bit.value(idx));
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < swid_ ; idx += 1)
+		  val_.ಗಣ_ಬಿಟ್(idx+soff_, ಬಿಟ್.value(idx));
       }
 
-      port.ptr()->send_vec4(val_, 0);
+      ಪೋರ್ಟ್.ptr()->send_vec4(val_, 0);
 }
 
-void vvp_fun_substitute::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				      unsigned base, unsigned vwid, vvp_context_t ctx)
+ಶೂನ್ಯ vvp_fun_substitute::recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+				      ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, ಬಿಟ್, ತಳ, vwid, ctx);
 }
 
-void compile_substitute(char*label, unsigned width,
-			unsigned soff, unsigned swidth,
-			unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_substitute(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ width,
+			ಚಿಹ್ನೆರಹಿತ soff, ಚಿಹ್ನೆರಹಿತ swidth,
+			ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      vvp_fun_substitute*fun = new vvp_fun_substitute(width, soff, swidth);
+      vvp_fun_substitute*fun = ಹೊಸ vvp_fun_substitute(width, soff, swidth);
 
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = ಹೊಸ vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_ಚಿಹ್ನೆ(label, net);
+      ಬಿಡುಗಡೆ(label);
 
       inputs_connect(net, argc, argv);
-      free(argv);
+      ಬಿಡುಗಡೆ(argv);
 }

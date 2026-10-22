@@ -19,9 +19,9 @@
 
 # include  "vpi_priv.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 # include  <cassert>
 # include  <cstdarg>
 # include  <cstdio>
@@ -29,7 +29,7 @@
 # include  <cstring>
 # include  "ivl_alloc.h"
 
-extern FILE* vpi_trace;
+ಬಾಹ್ಯ FILE* vpi_trace;
 
 /*
  * This table keeps track of the MCD files. Note that there may be
@@ -41,252 +41,252 @@ extern FILE* vpi_trace;
 /*
  * MCD/FD manipulation macros
  */
-#define IS_MCD(mcd)	!(static_cast<unsigned>(mcd)>>31&1)
-#define FD_IDX(fd)	((fd)&~(1U<<31))
-#define FD_INCR		32
+#ವ್ಯಾಖ್ಯಾನಿಸು IS_MCD(mcd)	!(static_cast<ಚಿಹ್ನೆರಹಿತ>(mcd)>>31&1)
+#ವ್ಯಾಖ್ಯಾನಿಸು FD_IDX(fd)	((fd)&~(1U<<31))
+#ವ್ಯಾಖ್ಯಾನಿಸು FD_INCR		32
 
-typedef struct mcd_entry {
+ಪ್ರಕಾರವ್ಯಾಖ್ಯೆ ರಚನೆ mcd_ನಮೂದು {
 	FILE *fp;
-	char *filename;
-} mcd_entry_s;
-static mcd_entry_s mcd_table[31];
-static mcd_entry_s *fd_table = NULL;
-static unsigned fd_table_len = 0;
+	ಅಕ್ಷರ *filename;
+} mcd_ನಮೂದು_s;
+ಸ್ಥಿರ mcd_ನಮೂದು_s mcd_ಕೋಷ್ಟಕ[31];
+ಸ್ಥಿರ mcd_ನಮೂದು_s *fd_ಕೋಷ್ಟಕ = ಖಾಲಿ;
+ಸ್ಥಿರ ಚಿಹ್ನೆರಹಿತ fd_ಕೋಷ್ಟಕ_len = 0;
 
-static FILE* logfile;
+ಸ್ಥಿರ FILE* logfile;
 
-bool vpip_mcd0_disable = false;
+ತಾರ್ಕಿಕ vpip_mcd0_disable = ಸುಳ್ಳು;
 
 /* Initialize mcd portion of vpi.  Must be called before
  * any vpi_mcd routines can be used.
  */
-void vpip_mcd_init(FILE *log)
+ಶೂನ್ಯ vpip_mcd_init(FILE *ಲಘುಗಣಕ)
 {
-      fd_table_len = FD_INCR;
-      fd_table = static_cast<mcd_entry_s *>(malloc(fd_table_len*sizeof(mcd_entry_s)));
-      for (unsigned idx = 0; idx < fd_table_len; idx += 1) {
-	    fd_table[idx].fp = NULL;
-	    fd_table[idx].filename = NULL;
+      fd_ಕೋಷ್ಟಕ_len = FD_INCR;
+      fd_ಕೋಷ್ಟಕ = static_cast<mcd_ನಮೂದು_s *>(ಸ್ಮರಣೆ_ಕೊಡು(fd_ಕೋಷ್ಟಕ_len*ಗಾತ್ರ(mcd_ನಮೂದು_s)));
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0; idx < fd_ಕೋಷ್ಟಕ_len; idx += 1) {
+	    fd_ಕೋಷ್ಟಕ[idx].fp = ಖಾಲಿ;
+	    fd_ಕೋಷ್ಟಕ[idx].filename = ಖಾಲಿ;
       }
 
-      mcd_table[0].fp = stdout;
-      mcd_table[0].filename = strdup("stdout");
+      mcd_ಕೋಷ್ಟಕ[0].fp = stdout;
+      mcd_ಕೋಷ್ಟಕ[0].filename = strdup("stdout");
 
-      fd_table[0].fp = stdin;
-      fd_table[0].filename = strdup("stdin");
-      fd_table[1].fp = stdout;
-      fd_table[1].filename = strdup("stdout");
-      fd_table[2].fp = stderr;
-      fd_table[2].filename = strdup("stderr");
+      fd_ಕೋಷ್ಟಕ[0].fp = stdin;
+      fd_ಕೋಷ್ಟಕ[0].filename = strdup("stdin");
+      fd_ಕೋಷ್ಟಕ[1].fp = stdout;
+      fd_ಕೋಷ್ಟಕ[1].filename = strdup("stdout");
+      fd_ಕೋಷ್ಟಕ[2].fp = stderr;
+      fd_ಕೋಷ್ಟಕ[2].filename = strdup("stderr");
 
-      logfile = log;
+      logfile = ಲಘುಗಣಕ;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vpi_mcd_delete(void)
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+ಶೂನ್ಯ vpi_mcd_delete(ಶೂನ್ಯ)
 {
-      free(mcd_table[0].filename);
-      mcd_table[0].filename = NULL;
-      mcd_table[0].fp = NULL;
+      ಬಿಡುಗಡೆ(mcd_ಕೋಷ್ಟಕ[0].filename);
+      mcd_ಕೋಷ್ಟಕ[0].filename = ಖಾಲಿ;
+      mcd_ಕೋಷ್ಟಕ[0].fp = ಖಾಲಿ;
 
-      free(fd_table[0].filename);
-      fd_table[0].filename = NULL;
-      fd_table[0].fp = NULL;
+      ಬಿಡುಗಡೆ(fd_ಕೋಷ್ಟಕ[0].filename);
+      fd_ಕೋಷ್ಟಕ[0].filename = ಖಾಲಿ;
+      fd_ಕೋಷ್ಟಕ[0].fp = ಖಾಲಿ;
 
-      free(fd_table[1].filename);
-      fd_table[1].filename = NULL;
-      fd_table[1].fp = NULL;
+      ಬಿಡುಗಡೆ(fd_ಕೋಷ್ಟಕ[1].filename);
+      fd_ಕೋಷ್ಟಕ[1].filename = ಖಾಲಿ;
+      fd_ಕೋಷ್ಟಕ[1].fp = ಖಾಲಿ;
 
-      free(fd_table[2].filename);
-      fd_table[2].filename = NULL;
-      fd_table[2].fp = NULL;
+      ಬಿಡುಗಡೆ(fd_ಕೋಷ್ಟಕ[2].filename);
+      fd_ಕೋಷ್ಟಕ[2].filename = ಖಾಲಿ;
+      fd_ಕೋಷ್ಟಕ[2].fp = ಖಾಲಿ;
 
-      free(fd_table);
-      fd_table = NULL;
-      fd_table_len = 0;
+      ಬಿಡುಗಡೆ(fd_ಕೋಷ್ಟಕ);
+      fd_ಕೋಷ್ಟಕ = ಖಾಲಿ;
+      fd_ಕೋಷ್ಟಕ_len = 0;
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 /*
  * Close one or more channels. We refuse to close the preopened ones.
  */
-extern "C" PLI_UINT32 vpi_mcd_close(PLI_UINT32 mcd)
+ಬಾಹ್ಯ "C" PLI_UINT32 vpi_mcd_close(PLI_UINT32 mcd)
 {
-      int rc = 0;
+      ಪೂರ್ಣಾಂಕ rc = 0;
 
-      if (IS_MCD(mcd)) {
-	    if (mcd & 1) rc |= 1;
-	    for(int i = 1; i < 31; i++) {
-		  if ((mcd>>i) & 1) {
-			if (mcd_table[i].fp) {
-			      if (fclose(mcd_table[i].fp)) rc |= 1<<i;
-			      free(mcd_table[i].filename);
-			      mcd_table[i].fp = NULL;
-			      mcd_table[i].filename = NULL;
-			} else {
+      ಆದರೆ (IS_MCD(mcd)) {
+	    ಆದರೆ (mcd & 1) rc |= 1;
+	    ಗಾಗಿ(ಪೂರ್ಣಾಂಕ i = 1; i < 31; i++) {
+		  ಆದರೆ ((mcd>>i) & 1) {
+			ಆದರೆ (mcd_ಕೋಷ್ಟಕ[i].fp) {
+			      ಆದರೆ (fclose(mcd_ಕೋಷ್ಟಕ[i].fp)) rc |= 1<<i;
+			      ಬಿಡುಗಡೆ(mcd_ಕೋಷ್ಟಕ[i].filename);
+			      mcd_ಕೋಷ್ಟಕ[i].fp = ಖಾಲಿ;
+			      mcd_ಕೋಷ್ಟಕ[i].filename = ಖಾಲಿ;
+			} ಇಲ್ಲದಿದ್ದರೆ {
 			      rc |= 1<<i;
 			}
 		  }
 	    }
-      } else {
-	    unsigned idx = FD_IDX(mcd);
-	    if (idx > 2 && idx < fd_table_len && fd_table[idx].fp) {
-		  if (fclose(fd_table[idx].fp)) rc = mcd;
-		  free(fd_table[idx].filename);
-		  fd_table[idx].fp = NULL;
-		  fd_table[idx].filename = NULL;
-	    } else rc = mcd;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ idx = FD_IDX(mcd);
+	    ಆದರೆ (idx > 2 && idx < fd_ಕೋಷ್ಟಕ_len && fd_ಕೋಷ್ಟಕ[idx].fp) {
+		  ಆದರೆ (fclose(fd_ಕೋಷ್ಟಕ[idx].fp)) rc = mcd;
+		  ಬಿಡುಗಡೆ(fd_ಕೋಷ್ಟಕ[idx].filename);
+		  fd_ಕೋಷ್ಟಕ[idx].fp = ಖಾಲಿ;
+		  fd_ಕೋಷ್ಟಕ[idx].filename = ಖಾಲಿ;
+	    } ಇಲ್ಲದಿದ್ದರೆ rc = mcd;
       }
-      return rc;
+      ಹಿಂತಿರುಗಿ rc;
 }
 
-extern "C" char *vpi_mcd_name(PLI_UINT32 mcd)
+ಬಾಹ್ಯ "C" ಅಕ್ಷರ *vpi_mcd_name(PLI_UINT32 mcd)
 {
-	if (IS_MCD(mcd)) {
-		for(int i = 0; i < 31; i++) {
-			if((mcd>>i) & 1)
-				return mcd_table[i].filename;
+	ಆದರೆ (IS_MCD(mcd)) {
+		ಗಾಗಿ(ಪೂರ್ಣಾಂಕ i = 0; i < 31; i++) {
+			ಆದರೆ((mcd>>i) & 1)
+				ಹಿಂತಿರುಗಿ mcd_ಕೋಷ್ಟಕ[i].filename;
 		}
-	} else {
-		unsigned idx = FD_IDX(mcd);
-		if (idx < fd_table_len)
-			return fd_table[idx].filename;
+	} ಇಲ್ಲದಿದ್ದರೆ {
+		ಚಿಹ್ನೆರಹಿತ idx = FD_IDX(mcd);
+		ಆದರೆ (idx < fd_ಕೋಷ್ಟಕ_len)
+			ಹಿಂತಿರುಗಿ fd_ಕೋಷ್ಟಕ[idx].filename;
 	}
-	return NULL;
+	ಹಿಂತಿರುಗಿ ಖಾಲಿ;
 }
 
-extern "C" PLI_UINT32 vpi_mcd_open(char *name)
+ಬಾಹ್ಯ "C" PLI_UINT32 vpi_mcd_open(ಅಕ್ಷರ *name)
 {
-	int i;
+	ಪೂರ್ಣಾಂಕ i;
 
-	for(i = 0; i < 31; i++) {
-		if(mcd_table[i].filename == NULL)
-			goto got_entry;
+	ಗಾಗಿ(i = 0; i < 31; i++) {
+		ಆದರೆ(mcd_ಕೋಷ್ಟಕ[i].filename == ಖಾಲಿ)
+			ಹೋಗು got_ನಮೂದು;
 	}
-	return 0;  /* too many open mcd's */
+	ಹಿಂತಿರುಗಿ 0;  /* too many open mcd's */
 
-got_entry:
-#if defined(__GNUC__)
-	mcd_table[i].fp = fopen(name, "w");
-#else
-	if (strcmp(name, "/dev/null") != 0)
-		mcd_table[i].fp = fopen(name, "w");
-	else
-		mcd_table[i].fp = fopen("nul", "w");
-#endif
-	if(mcd_table[i].fp == NULL)
-		return 0;
-	mcd_table[i].filename = strdup(name);
+got_ನಮೂದು:
+#ಆದರೆ defined(__GNUC__)
+	mcd_ಕೋಷ್ಟಕ[i].fp = fopen(name, "w");
+#ಇಲ್ಲದಿದ್ದರೆ
+	ಆದರೆ (strcmp(name, "/dev/null") != 0)
+		mcd_ಕೋಷ್ಟಕ[i].fp = fopen(name, "w");
+	ಇಲ್ಲದಿದ್ದರೆ
+		mcd_ಕೋಷ್ಟಕ[i].fp = fopen("nul", "w");
+#ಆದರೆ_ಅಂತ್ಯ
+	ಆದರೆ(mcd_ಕೋಷ್ಟಕ[i].fp == ಖಾಲಿ)
+		ಹಿಂತಿರುಗಿ 0;
+	mcd_ಕೋಷ್ಟಕ[i].filename = strdup(name);
 
-	if (vpi_trace) {
+	ಆದರೆ (vpi_trace) {
 	      fprintf(vpi_trace, "vpi_mcd_open(%s) --> 0x%08x\n",
 		      name, 1 << i);
 	}
 
-	return 1<<i;
+	ಹಿಂತಿರುಗಿ 1<<i;
 }
 
-extern "C" PLI_INT32
-vpi_mcd_vprintf(PLI_UINT32 mcd, const char*fmt, va_list ap)
+ಬಾಹ್ಯ "C" PLI_INT32
+vpi_mcd_vprintf(PLI_UINT32 mcd, ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*fmt, va_list ap)
 {
-      char buffer[4096];
-      char *buf_ptr = buffer;
-      int rc = 0;
-      bool need_free = false;
+      ಅಕ್ಷರ ಬಫರ್[4096];
+      ಅಕ್ಷರ *buf_ptr = ಬಫರ್;
+      ಪೂರ್ಣಾಂಕ rc = 0;
+      ತಾರ್ಕಿಕ need_free = ಸುಳ್ಳು;
       va_list saved_ap;
 
-      if (!IS_MCD(mcd)) return EOF;
+      ಆದರೆ (!IS_MCD(mcd)) ಹಿಂತಿರುಗಿ EOF;
 
-      if (vpi_trace) {
+      ಆದರೆ (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_mcd_vprintf(0x%08x, %s, ...);\n",
-		    (unsigned int)mcd, fmt);
+		    (ಚಿಹ್ನೆರಹಿತ ಪೂರ್ಣಾಂಕ)mcd, fmt);
       }
 
       va_copy(saved_ap, ap);
-      rc = vsnprintf(buffer, sizeof buffer, fmt, ap);
-      assert(rc >= 0);
+      rc = vsnprintf(ಬಫರ್, ಗಾತ್ರ ಬಫರ್, fmt, ap);
+      ಪ್ರತಿಜ್ಞಾ(rc >= 0);
 	/*
 	 * If rc is greater than sizeof buffer then the result was truncated
 	 * so the print needs to be redone with a larger buffer (very rare).
 	 */
-      if ((unsigned) rc >= sizeof buffer) {
-	    buf_ptr = static_cast<char *>(malloc(rc + 1));
-	    need_free = true;
+      ಆದರೆ ((ಚಿಹ್ನೆರಹಿತ) rc >= ಗಾತ್ರ ಬಫರ್) {
+	    buf_ptr = static_cast<ಅಕ್ಷರ *>(ಸ್ಮರಣೆ_ಕೊಡು(rc + 1));
+	    need_free = ನಿಜ;
 	    rc = vsnprintf(buf_ptr, rc+1, fmt, saved_ap);
       }
       va_end(saved_ap);
 
-      for(int i = 0; i < 31; i++) {
-	    if((mcd>>i) & 1) {
-		  if(mcd_table[i].fp) {
-			if (i == 0) {
-			      if (logfile)
+      ಗಾಗಿ(ಪೂರ್ಣಾಂಕ i = 0; i < 31; i++) {
+	    ಆದರೆ((mcd>>i) & 1) {
+		  ಆದರೆ(mcd_ಕೋಷ್ಟಕ[i].fp) {
+			ಆದರೆ (i == 0) {
+			      ಆದರೆ (logfile)
 				    fputs(buf_ptr, logfile);
-			      if (vpip_mcd0_disable)
-				    continue;
+			      ಆದರೆ (vpip_mcd0_disable)
+				    ಮುಂದುವರಿ;
 			}
-			fputs(buf_ptr, mcd_table[i].fp);
-		  } else {
+			fputs(buf_ptr, mcd_ಕೋಷ್ಟಕ[i].fp);
+		  } ಇಲ್ಲದಿದ್ದರೆ {
 			rc = EOF;
 		  }
 	    }
       }
-      if (need_free) free(buf_ptr);
+      ಆದರೆ (need_free) ಬಿಡುಗಡೆ(buf_ptr);
 
-      return rc;
+      ಹಿಂತಿರುಗಿ rc;
 }
 
-extern "C" PLI_INT32 vpi_mcd_printf(PLI_UINT32 mcd, const char *fmt, ...)
+ಬಾಹ್ಯ "C" PLI_INT32 vpi_mcd_printf(PLI_UINT32 mcd, ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ *fmt, ...)
 {
       va_list ap;
       va_start(ap, fmt);
-      int r = vpi_mcd_vprintf(mcd,fmt,ap);
+      ಪೂರ್ಣಾಂಕ r = vpi_mcd_vprintf(mcd,fmt,ap);
       va_end(ap);
-      return r;
+      ಹಿಂತಿರುಗಿ r;
 }
 
-extern "C" void vpip_mcd_rawwrite(PLI_UINT32 mcd, const char*buf, size_t cnt)
+ಬಾಹ್ಯ "C" ಶೂನ್ಯ vpip_mcd_rawwrite(PLI_UINT32 mcd, ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*buf, size_t cnt)
 {
-      if (!IS_MCD(mcd)) return;
+      ಆದರೆ (!IS_MCD(mcd)) ಹಿಂತಿರುಗಿ;
 
-      for(int idx = 0; idx < 31; idx += 1) {
-	    if (((mcd>>idx) & 1) == 0)
-		  continue;
+      ಗಾಗಿ(ಪೂರ್ಣಾಂಕ idx = 0; idx < 31; idx += 1) {
+	    ಆದರೆ (((mcd>>idx) & 1) == 0)
+		  ಮುಂದುವರಿ;
 
-	    if (mcd_table[idx].fp == 0)
-		  continue;
+	    ಆದರೆ (mcd_ಕೋಷ್ಟಕ[idx].fp == 0)
+		  ಮುಂದುವರಿ;
 
-	    if (idx == 0) {
-		  if (logfile)
+	    ಆದರೆ (idx == 0) {
+		  ಆದರೆ (logfile)
 			fwrite(buf, 1, cnt, logfile);
-		  if (vpip_mcd0_disable)
-			continue;
+		  ಆದರೆ (vpip_mcd0_disable)
+			ಮುಂದುವರಿ;
 	    }
-	    fwrite(buf, 1, cnt, mcd_table[idx].fp);
+	    fwrite(buf, 1, cnt, mcd_ಕೋಷ್ಟಕ[idx].fp);
       }
 }
 
-extern "C" PLI_INT32 vpi_mcd_flush(PLI_UINT32 mcd)
+ಬಾಹ್ಯ "C" PLI_INT32 vpi_mcd_flush(PLI_UINT32 mcd)
 {
-	int rc = 0;
+	ಪೂರ್ಣಾಂಕ rc = 0;
 
-	if (IS_MCD(mcd)) {
-		for(int i = 0; i < 31; i++) {
-			if((mcd>>i) & 1) {
-				if (i == 0) {
-				      if (logfile)
+	ಆದರೆ (IS_MCD(mcd)) {
+		ಗಾಗಿ(ಪೂರ್ಣಾಂಕ i = 0; i < 31; i++) {
+			ಆದರೆ((mcd>>i) & 1) {
+				ಆದರೆ (i == 0) {
+				      ಆದರೆ (logfile)
 					    fflush(logfile);
-				      if (vpip_mcd0_disable)
-					    continue;
+				      ಆದರೆ (vpip_mcd0_disable)
+					    ಮುಂದುವರಿ;
 				}
-				if (fflush(mcd_table[i].fp)) rc |= 1<<i;
+				ಆದರೆ (fflush(mcd_ಕೋಷ್ಟಕ[i].fp)) rc |= 1<<i;
 			}
 		}
-	} else {
-		unsigned idx = FD_IDX(mcd);
-		if (idx < fd_table_len) rc = fflush(fd_table[idx].fp);
+	} ಇಲ್ಲದಿದ್ದರೆ {
+		ಚಿಹ್ನೆರಹಿತ idx = FD_IDX(mcd);
+		ಆದರೆ (idx < fd_ಕೋಷ್ಟಕ_len) rc = fflush(fd_ಕೋಷ್ಟಕ[idx].fp);
 	}
-	return rc;
+	ಹಿಂತಿರುಗಿ rc;
 }
 
 /*
@@ -300,47 +300,47 @@ extern "C" PLI_INT32 vpi_mcd_flush(PLI_UINT32 mcd)
  * descriptors are distinct from the mcd descriptors, so uses a
  * different fd table.
  */
-extern "C" PLI_INT32 vpi_fopen(const char*name, const char*mode)
+ಬಾಹ್ಯ "C" PLI_INT32 vpi_fopen(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*name, ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*ಬಹುಲಕ)
 {
-      unsigned i;
-      for (i = 0; i < fd_table_len; i += 1) {
-	    if (fd_table[i].filename == NULL) goto got_entry;
+      ಚಿಹ್ನೆರಹಿತ i;
+      ಗಾಗಿ (i = 0; i < fd_ಕೋಷ್ಟಕ_len; i += 1) {
+	    ಆದರೆ (fd_ಕೋಷ್ಟಕ[i].filename == ಖಾಲಿ) ಹೋಗು got_ನಮೂದು;
       }
 	/* We need to allocate more table entries, but to keep things */
 	/* sane we'll hard limit this to 1024 file descriptors total. */
-      if (fd_table_len >= 1024) {
+      ಆದರೆ (fd_ಕೋಷ್ಟಕ_len >= 1024) {
 	    vpi_printf("WARNING: Icarus only supports 1024 open files!\n");
-	    return 0;
+	    ಹಿಂತಿರುಗಿ 0;
       }
-      fd_table_len += FD_INCR;
-      fd_table = static_cast<mcd_entry_s *>
-                 (realloc(fd_table, fd_table_len*sizeof(mcd_entry_s)));
-      for (unsigned idx = i; idx < fd_table_len; idx += 1) {
-	    fd_table[idx].fp = NULL;
-	    fd_table[idx].filename = NULL;
+      fd_ಕೋಷ್ಟಕ_len += FD_INCR;
+      fd_ಕೋಷ್ಟಕ = static_cast<mcd_ನಮೂದು_s *>
+                 (realloc(fd_ಕೋಷ್ಟಕ, fd_ಕೋಷ್ಟಕ_len*ಗಾತ್ರ(mcd_ನಮೂದು_s)));
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = i; idx < fd_ಕೋಷ್ಟಕ_len; idx += 1) {
+	    fd_ಕೋಷ್ಟಕ[idx].fp = ಖಾಲಿ;
+	    fd_ಕೋಷ್ಟಕ[idx].filename = ಖಾಲಿ;
       }
 
-got_entry:
-#ifndef _MSC_VER
-	  fd_table[i].fp = fopen(name, mode);
-#else // Changed for MSVC++ so vpi/pr723.v will pass.
-	  if(strcmp(name, "/dev/null") != 0)
-		fd_table[i].fp = fopen(name, mode);
-	  else
-		fd_table[i].fp = fopen("nul", mode);
-#endif
-      if (fd_table[i].fp == NULL) return 0;
-      fd_table[i].filename = strdup(name);
-      return ((1U<<31)|i);
+got_ನಮೂದು:
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ _MSC_VER
+	  fd_ಕೋಷ್ಟಕ[i].fp = fopen(name, ಬಹುಲಕ);
+#ಇಲ್ಲದಿದ್ದರೆ // Changed for MSVC++ so vpi/pr723.v will pass.
+	  ಆದರೆ(strcmp(name, "/dev/null") != 0)
+		fd_ಕೋಷ್ಟಕ[i].fp = fopen(name, ಬಹುಲಕ);
+	  ಇಲ್ಲದಿದ್ದರೆ
+		fd_ಕೋಷ್ಟಕ[i].fp = fopen("nul", ಬಹುಲಕ);
+#ಆದರೆ_ಅಂತ್ಯ
+      ಆದರೆ (fd_ಕೋಷ್ಟಕ[i].fp == ಖಾಲಿ) ಹಿಂತಿರುಗಿ 0;
+      fd_ಕೋಷ್ಟಕ[i].filename = strdup(name);
+      ಹಿಂತಿರುಗಿ ((1U<<31)|i);
 }
 
-extern "C" FILE *vpi_get_file(PLI_INT32 fd)
+ಬಾಹ್ಯ "C" FILE *vpi_get_file(PLI_INT32 fd)
 {
 	// Only deal with FD's
-      if (IS_MCD(fd)) return NULL;
+      ಆದರೆ (IS_MCD(fd)) ಹಿಂತಿರುಗಿ ಖಾಲಿ;
 
 	// Only know about fd_table_len indices
-      if (FD_IDX(fd) >= fd_table_len) return NULL;
+      ಆದರೆ (FD_IDX(fd) >= fd_ಕೋಷ್ಟಕ_len) ಹಿಂತಿರುಗಿ ಖಾಲಿ;
 
-      return fd_table[FD_IDX(fd)].fp;
+      ಹಿಂತಿರುಗಿ fd_ಕೋಷ್ಟಕ[FD_IDX(fd)].fp;
 }

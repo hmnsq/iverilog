@@ -23,8 +23,8 @@
 # include  <iostream>
 # include  <cassert>
 
-vvp_fun_extend_signed::vvp_fun_extend_signed(unsigned wid)
-: width_(wid)
+vvp_fun_extend_signed::vvp_fun_extend_signed(ಚಿಹ್ನೆರಹಿತ wid)
+: ಅಗಲ_2(wid)
 {
 }
 
@@ -32,28 +32,28 @@ vvp_fun_extend_signed::~vvp_fun_extend_signed()
 {
 }
 
-void vvp_fun_extend_signed::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_extend_signed::recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                                       vvp_context_t)
 {
-      if (bit.size() >= width_) {
-	    port.ptr()->send_vec4(bit, 0);
-	    return;
+      ಆದರೆ (ಬಿಟ್.size() >= ಅಗಲ_2) {
+	    ಪೋರ್ಟ್.ptr()->send_vec4(ಬಿಟ್, 0);
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_vector4_t res (width_);
+      vvp_vector4_t res (ಅಗಲ_2);
 
-      for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1)
-	    res.set_bit(idx, bit.value(idx));
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಬಿಟ್.size() ;  idx += 1)
+	    res.ಗಣ_ಬಿಟ್(idx, ಬಿಟ್.value(idx));
 
-      vvp_bit4_t pad = bit.size() > 0? bit.value(bit.size()-1) : BIT4_0;
-      for (unsigned idx = bit.size() ;  idx < res.size() ;  idx += 1)
-	    res.set_bit(idx, pad);
+      vvp_bit4_t pad = ಬಿಟ್.size() > 0? ಬಿಟ್.value(ಬಿಟ್.size()-1) : BIT4_0;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = ಬಿಟ್.size() ;  idx < res.size() ;  idx += 1)
+	    res.ಗಣ_ಬಿಟ್(idx, pad);
 
-      port.ptr()->send_vec4(res, 0);
+      ಪೋರ್ಟ್.ptr()->send_vec4(res, 0);
 }
 
-void vvp_fun_extend_signed::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-					 unsigned base, unsigned vwid, vvp_context_t ctx)
+ಶೂನ್ಯ vvp_fun_extend_signed::recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+					 ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, ಬಿಟ್, ತಳ, vwid, ctx);
 }

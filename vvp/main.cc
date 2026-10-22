@@ -1,4 +1,4 @@
-const char COPYRIGHT[] =
+ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ COPYRIGHT[] =
   "Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)";
 /*
  *    This source code is free software; you can redistribute it
@@ -24,37 +24,37 @@ const char COPYRIGHT[] =
 # include  <cstdio>
 # include  <cstdlib>
 
-#if defined(HAVE_GETOPT_H)
+#ಆದರೆ defined(HAVE_GETOPT_H)
 # include  <getopt.h>
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-#if defined(__MINGW32__)
+#ಆದರೆ defined(__MINGW32__)
 # include  <windows.h>
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-#include "libvvp.h"
+#ಅನ್ತರ್ಭಾವ "libvvp.h"
 
-using namespace std;
+ಬಳಸಿ ನಾಮಾಕಾಶ std;
 
-#if defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
-extern "C" int getopt(int argc, char*argv[], const char*fmt);
-extern "C" int optind;
-extern "C" const char*optarg;
-#endif
+#ಆದರೆ defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
+ಬಾಹ್ಯ "C" ಪೂರ್ಣಾಂಕ getopt(ಪೂರ್ಣಾಂಕ argc, ಅಕ್ಷರ*argv[], ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*fmt);
+ಬಾಹ್ಯ "C" ಪೂರ್ಣಾಂಕ optind;
+ಬಾಹ್ಯ "C" ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*optarg;
+#ಆದರೆ_ಅಂತ್ಯ
 
-bool version_flag = false;
+ತಾರ್ಕಿಕ ಆವೃತ್ತಿ_flag = ಸುಳ್ಳು;
 
-unsigned module_cnt = 0;
-const char*module_tab[64];
+ಚಿಹ್ನೆರಹಿತ module_cnt = 0;
+ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*module_tab[64];
 
-int main(int argc, char*argv[])
+ಪೂರ್ಣಾಂಕ ಮುಖ್ಯ(ಪೂರ್ಣಾಂಕ argc, ಅಕ್ಷರ*argv[])
 {
-      int opt;
-      unsigned flag_errors = 0;
-      const char *logfile_name = 0x0;
+      ಪೂರ್ಣಾಂಕ opt;
+      ಚಿಹ್ನೆರಹಿತ flag_errors = 0;
+      ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ *logfile_name = 0x0;
 
-      while ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) switch (opt) {
-         case 'h':
+      ಆಗ ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) ಆಯ್ಕೆ (opt) {
+         ಸ್ಥಿತಿ 'h':
            fprintf(stderr,
                    "Usage: vvp [options] input-file [+plusargs...]\n"
                    "Options:\n"
@@ -70,51 +70,51 @@ int main(int argc, char*argv[])
 		   " -s             $stop right away.\n"
                    " -v             Verbose progress messages.\n"
                    " -V             Print the version information.\n" );
-           exit(0);
-	  case 'i':
+           ನಿರ್ಗಮಿಸು(0);
+	  ಸ್ಥಿತಿ 'i':
 	    setvbuf(stdout, 0, _IONBF, 0);
-	    break;
-	  case 'l':
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ 'l':
 	    logfile_name = optarg;
-	    break;
-	  case 'M':
-	    if (strcmp(optarg,"-") == 0) {
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ 'M':
+	    ಆದರೆ (strcmp(optarg,"-") == 0) {
 		  vpip_clear_module_paths();
-	    } else {
-		  vpip_add_module_path(optarg);
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  vpip_ಕೂಡಿಸು_module_ಮಾರ್ಗ(optarg);
 	    }
-	    break;
-	  case 'm':
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ 'm':
 	    module_tab[module_cnt++] = optarg;
-	    break;
-	  case 'n':
-	    vvp_set_stop_is_finish(true, 0);
-	    break;
-          case 'N':
-            vvp_set_stop_is_finish(true, 1);
-            break;
-	  case 'q':
-	    vvp_set_quiet_flag(true);
-	    break;
-	  case 's':
-	    schedule_stop(0);
-	    break;
-	  case 'v':
-	    vvp_set_verbose_flag(true);
-	    break;
-	  case 'V':
-	    version_flag = true;
-	    break;
-	  default:
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ 'n':
+	    vvp_ಗಣ_stop_is_ಮುಕ್ತಾಯ(ನಿಜ, 0);
+	    ನಿಲ್ಲಿಸು;
+          ಸ್ಥಿತಿ 'N':
+            vvp_ಗಣ_stop_is_ಮುಕ್ತಾಯ(ನಿಜ, 1);
+            ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ 'q':
+	    vvp_ಗಣ_quiet_flag(ನಿಜ);
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ 's':
+	    ವೇಳಾಪಟ್ಟಿ_stop(0);
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ 'v':
+	    vvp_ಗಣ_verbose_flag(ನಿಜ);
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ 'V':
+	    ಆವೃತ್ತಿ_flag = ನಿಜ;
+	    ನಿಲ್ಲಿಸು;
+	  ಪೂರ್ವನಿಯೋಜಿತ:
 	    flag_errors += 1;
       }
 
-      if (flag_errors)
-	    return flag_errors;
+      ಆದರೆ (flag_errors)
+	    ಹಿಂತಿರುಗಿ flag_errors;
 
-      if (version_flag) {
-	    fprintf(stderr, "Icarus Verilog runtime version " VERSION " ("
-	                    VERSION_TAG ")\n\n");
+      ಆದರೆ (ಆವೃತ್ತಿ_flag) {
+	    fprintf(stderr, "Icarus Verilog runtime version " ಆವೃತ್ತಿ " ("
+	                    ಆವೃತ್ತಿ_ಟ್ಯಾಗ್ ")\n\n");
 	    fprintf(stderr, "%s\n\n", COPYRIGHT);
 	    fprintf(stderr,
 "  This program is free software; you can redistribute it and/or modify\n"
@@ -131,18 +131,18 @@ int main(int argc, char*argv[])
 "  with this program; if not, write to the Free Software Foundation, Inc.,\n"
 "  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n"
 );
-	    return 0;
+	    ಹಿಂತಿರುಗಿ 0;
       }
 
-      if (optind == argc) {
+      ಆದರೆ (optind == argc) {
 	    fprintf(stderr, "%s: no input file.\n", argv[0]);
-	    return -1;
+	    ಹಿಂತಿರುಗಿ -1;
       }
 
       vvp_init(logfile_name, argc - optind, argv + optind);
 
-      for (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
-	    vpip_load_module(module_tab[idx]);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < module_cnt ;  idx += 1)
+	    vpip_ತುಂಬು_module(module_tab[idx]);
 
-      return vvp_run(argv[optind]);
+      ಹಿಂತಿರುಗಿ vvp_ಸತತ(argv[optind]);
 }

@@ -1,5 +1,5 @@
-#ifndef IVL_udp_H
-#define IVL_udp_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ IVL_udp_H
+#ವ್ಯಾಖ್ಯಾನಿಸು IVL_udp_H
 /*
  * Copyright (c) 2005-2025 Stephen Williams (steve@icarus.com)
  *
@@ -25,32 +25,32 @@
 # include  "vvp_net.h"
 # include  "schedule.h"
 
-struct udp_levels_table;
+ರಚನೆ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ;
 
-struct vvp_udp_s {
+ರಚನೆ vvp_udp_s {
 
-    public:
-      explicit vvp_udp_s(const char*label, char*name, unsigned ports,
+    ಸಾರ್ವಜನಿಕ:
+      explicit vvp_udp_s(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*label, ಅಕ್ಷರ*name, ಚಿಹ್ನೆರಹಿತ ports,
                          vvp_bit4_t init, bool type);
-      virtual ~vvp_udp_s();
+      ವಾಸ್ತವಿಕ ~vvp_udp_s();
 
 	// Return the number of input ports for the defined UDP. This
 	// does *not* include the current output value for a
 	// sequential UDP.
-      unsigned port_count() const;
-      bool is_sequential() const { return seq_; };
-      char *name() { return name_; }
+      ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್_ಎಣಿಕೆ() ಸ್ಥಿರಾಂಕ;
+      bool is_sequential() ಸ್ಥಿರಾಂಕ { ಹಿಂತಿರುಗಿ seq_; };
+      ಅಕ್ಷರ *name() { ಹಿಂತಿರುಗಿ name_; }
 
 	// Return the initial output value.
-      vvp_bit4_t get_init() const;
+      vvp_bit4_t get_init() ಸ್ಥಿರಾಂಕ;
 
-      virtual vvp_bit4_t calculate_output(const udp_levels_table&cur,
-					  const udp_levels_table&prev,
-					  vvp_bit4_t cur_out) =0;
+      ವಾಸ್ತವಿಕ vvp_bit4_t calculate_output(ಸ್ಥಿರಾಂಕ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ&cur,
+					  ಸ್ಥಿರಾಂಕ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ&prev,
+					  vvp_bit4_t cur_ಹೊರಹೋಗು) =0;
 
-    private:
-      char *name_;
-      unsigned ports_;
+    ಖಾಸಗಿ:
+      ಅಕ್ಷರ *name_;
+      ಚಿಹ್ನೆರಹಿತ ports_;
       vvp_bit4_t init_;
       bool seq_;
 };
@@ -104,33 +104,33 @@ struct vvp_udp_s {
  * Only 0, 1 and x characters are allowed in the output position.
  */
 
-struct udp_levels_table {
-      unsigned long mask0;
-      unsigned long mask1;
-      unsigned long maskx;
+ರಚನೆ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ {
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ mask0;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ mask1;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ maskx;
 };
-extern std::ostream& operator<< (std::ostream&o, const struct udp_levels_table&t);
+ಬಾಹ್ಯ std::ostream& ಕ್ರಿಯಾಕಾರಕ<< (std::ostream&o, ಸ್ಥಿರಾಂಕ ರಚನೆ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ&t);
 
-class vvp_udp_comb_s : public vvp_udp_s {
+class vvp_udp_comb_s : ಸಾರ್ವಜನಿಕ vvp_udp_s {
 
-    public:
-      vvp_udp_comb_s(const char*label, char*name__, unsigned ports);
+    ಸಾರ್ವಜನಿಕ:
+      vvp_udp_comb_s(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*label, ಅಕ್ಷರ*name__, ಚಿಹ್ನೆರಹಿತ ports);
       ~vvp_udp_comb_s() override;
-      void compile_table(char**tab);
+      ಶೂನ್ಯ compile_ಕೋಷ್ಟಕ(ಅಕ್ಷರ**tab);
 
 	// Test the cur table with the compiled rows, and return the
 	// bit value that matches.
-      vvp_bit4_t test_levels(const udp_levels_table&cur);
+      vvp_bit4_t test_ಮಟ್ಟಗಳು(ಸ್ಥಿರಾಂಕ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ&cur);
 
-      vvp_bit4_t calculate_output(const udp_levels_table&cur,
-				  const udp_levels_table&prev,
-				  vvp_bit4_t cur_out) override;
+      vvp_bit4_t calculate_output(ಸ್ಥಿರಾಂಕ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ&cur,
+				  ಸ್ಥಿರಾಂಕ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ&prev,
+				  vvp_bit4_t cur_ಹೊರಹೋಗು) override;
 
-    private:
+    ಖಾಸಗಿ:
 	// Level sensitive rows of the device.
-      struct udp_levels_table*levels0_;
-      struct udp_levels_table*levels1_;
-      unsigned nlevels0_, nlevels1_;
+      ರಚನೆ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ*levels0_;
+      ರಚನೆ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ*levels1_;
+      ಚಿಹ್ನೆರಹಿತ nlevels0_, nlevels1_;
 };
 
 /*
@@ -167,53 +167,53 @@ class vvp_udp_comb_s : public vvp_udp_s {
  * edge case, the mask* members give the final position and the
  * edge_mask* bits the initial position of the bit.
  */
-struct udp_edges_table {
-      unsigned long edge_position : 8;
-      unsigned long edge_mask0 : 1;
-      unsigned long edge_mask1 : 1;
-      unsigned long edge_maskx : 1;
-      unsigned long mask0;
-      unsigned long mask1;
-      unsigned long maskx;
+ರಚನೆ udp_ಅಂಚುಗಳು_ಕೋಷ್ಟಕ {
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಅಂಚು_position : 8;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಅಂಚು_mask0 : 1;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಅಂಚು_mask1 : 1;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಅಂಚು_maskx : 1;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ mask0;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ mask1;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ maskx;
 };
 
-class vvp_udp_seq_s : public vvp_udp_s {
+class vvp_udp_seq_s : ಸಾರ್ವಜನಿಕ vvp_udp_s {
 
-    public:
-      vvp_udp_seq_s(const char*label, char*name__, unsigned ports, vvp_bit4_t init);
+    ಸಾರ್ವಜನಿಕ:
+      vvp_udp_seq_s(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*label, ಅಕ್ಷರ*name__, ಚಿಹ್ನೆರಹಿತ ports, vvp_bit4_t init);
       ~vvp_udp_seq_s() override;
 
-      void compile_table(char**tab);
+      ಶೂನ್ಯ compile_ಕೋಷ್ಟಕ(ಅಕ್ಷರ**tab);
 
-      vvp_bit4_t calculate_output(const udp_levels_table&cur,
-				  const udp_levels_table&prev,
-				  vvp_bit4_t cur_out) override;
+      vvp_bit4_t calculate_output(ಸ್ಥಿರಾಂಕ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ&cur,
+				  ಸ್ಥಿರಾಂಕ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ&prev,
+				  vvp_bit4_t cur_ಹೊರಹೋಗು) override;
 
-    private:
-      vvp_bit4_t test_levels_(const udp_levels_table&cur);
+    ಖಾಸಗಿ:
+      vvp_bit4_t test_ಮಟ್ಟಗಳು_2(ಸ್ಥಿರಾಂಕ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ&cur);
 
 	// Level sensitive rows of the device.
-      struct udp_levels_table*levels0_;
-      struct udp_levels_table*levels1_;
-      struct udp_levels_table*levelsx_;
-      struct udp_levels_table*levelsL_;
-      unsigned nlevels0_, nlevels1_, nlevelsx_, nlevelsL_;
+      ರಚನೆ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ*levels0_;
+      ರಚನೆ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ*levels1_;
+      ರಚನೆ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ*levelsx_;
+      ರಚನೆ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ*ಮಟ್ಟಗಳು_L;
+      ಚಿಹ್ನೆರಹಿತ nlevels0_, nlevels1_, nlevelsx_, nlevelsL_;
 
-      vvp_bit4_t test_edges_(const udp_levels_table&cur,
-			     const udp_levels_table&prev);
+      vvp_bit4_t test_ಅಂಚುಗಳು(ಸ್ಥಿರಾಂಕ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ&cur,
+			     ಸ್ಥಿರಾಂಕ udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ&prev);
 
 	// Edge sensitive rows of the device
-      struct udp_edges_table*edges0_;
-      struct udp_edges_table*edges1_;
-      struct udp_edges_table*edgesL_;
-      unsigned nedges0_, nedges1_, nedgesL_;
+      ರಚನೆ udp_ಅಂಚುಗಳು_ಕೋಷ್ಟಕ*edges0_;
+      ರಚನೆ udp_ಅಂಚುಗಳು_ಕೋಷ್ಟಕ*edges1_;
+      ರಚನೆ udp_ಅಂಚುಗಳು_ಕೋಷ್ಟಕ*ಅಂಚುಗಳು_L;
+      ಚಿಹ್ನೆರಹಿತ nedges0_, nedges1_, nedgesL_;
 
 };
 
 /*
  * This looks up a UDP definition from its LABEL.
  */
-struct vvp_udp_s *udp_find(const char *label);
+ರಚನೆ vvp_udp_s *udp_ಕಂಡುಹಿಡಿ(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ *label);
 
 /*
  * The udp_fun_core is the core of the udp instance in the
@@ -222,20 +222,20 @@ struct vvp_udp_s *udp_find(const char *label);
  * the vvp_wide_fun_t objects and processes them to generate the
  * output to be sent.
  */
-class vvp_udp_fun_core  : public vvp_wide_fun_core, private vvp_gen_event_s {
+class vvp_udp_fun_core  : ಸಾರ್ವಜನಿಕ vvp_wide_fun_core, ಖಾಸಗಿ vvp_gen_event_s {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       vvp_udp_fun_core(vvp_net_t*net, vvp_udp_s*def);
       ~vvp_udp_fun_core() override;
 
-      void recv_vec4_from_inputs(unsigned) override;
+      ಶೂನ್ಯ recv_vec4_from_inputs(ಚಿಹ್ನೆರಹಿತ) override;
 
-    private:
-      void run_run() override;
+    ಖಾಸಗಿ:
+      ಶೂನ್ಯ ಸತತ_ಸತತ() override;
 
       vvp_udp_s*def_;
-      vvp_bit4_t cur_out_;
-      udp_levels_table current_;
+      vvp_bit4_t cur_ಹೊರಹೋಗು_2;
+      udp_ಮಟ್ಟಗಳು_ಕೋಷ್ಟಕ current_;
 };
 
-#endif /* IVL_udp_H */
+#ಆದರೆ_ಅಂತ್ಯ /* IVL_udp_H */

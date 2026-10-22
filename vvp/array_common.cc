@@ -19,185 +19,185 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "array_common.h"
+#ಅನ್ತರ್ಭಾವ "array_common.h"
 
-vpiHandle __vpiArrayBase::vpi_array_base_iterate(int code)
+vpiHandle __vpiArrayBase::vpi_array_ತಳ_iterate(ಪೂರ್ಣಾಂಕ code)
 {
-    switch (code) {
-        case vpiReg:
-        case vpiMemoryWord: {
-                struct __vpiArrayIterator*res;
-                res = new __vpiArrayIterator;
-                res->array = this;
-                res->next = 0;
-                return res;
+    ಆಯ್ಕೆ (code) {
+        ಸ್ಥಿತಿ vpiReg:
+        ಸ್ಥಿತಿ vpi_ಸ್ಮರಣೆ_ಶಬ್ದ: {
+                ರಚನೆ __vpiArrayIterator*res;
+                res = ಹೊಸ __vpiArrayIterator;
+                res->array = ಇದು;
+                res->ಮುಂದಿನ_2 = 0;
+                ಹಿಂತಿರುಗಿ res;
         }
     }
 
-    return 0;
+    ಹಿಂತಿರುಗಿ 0;
 }
 
-void __vpiArrayBase::make_vals_words()
+ಶೂನ್ಯ __vpiArrayBase::make_vals_ಪದಗಳು()
 {
-    assert(vals_words == 0);
-    vals_words = new struct __vpiArrayWord[get_size() + 1];
+    ಪ್ರತಿಜ್ಞಾ(vals_ಪದಗಳು == 0);
+    vals_ಪದಗಳು = ಹೊಸ ರಚನೆ __vpiArrayWord[get_ಗಾತ್ರ() + 1];
 
     // Make word[-1] point to the parent.
-    vals_words->parent = this;
+    vals_ಪದಗಳು->ಪೋಷಕ = ಇದು;
     // Now point to word-0
-    vals_words += 1;
+    vals_ಪದಗಳು += 1;
 
-    struct __vpiArrayWord*words = vals_words;
-    for (unsigned idx = 0 ; idx < get_size() ; idx += 1) {
-            words[idx].word0 = words;
+    ರಚನೆ __vpiArrayWord*ಪದಗಳು = vals_ಪದಗಳು;
+    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < get_ಗಾತ್ರ() ; idx += 1) {
+            ಪದಗಳು[idx].word0 = ಪದಗಳು;
     }
 }
 
-vpiHandle __vpiArrayIterator::vpi_index(int)
+vpiHandle __vpiArrayIterator::vpi_ಸೂಚ್ಯಂಕ(ಪೂರ್ಣಾಂಕ)
 {
-      if (next >= array->get_size()) {
-	    vpi_free_object(this);
-	    return 0;
+      ಆದರೆ (ಮುಂದಿನ_2 >= array->get_ಗಾತ್ರ()) {
+	    vpi_free_object(ಇದು);
+	    ಹಿಂತಿರುಗಿ 0;
       }
 
-      unsigned use_index = next;
-      next += 1;
+      ಚಿಹ್ನೆರಹಿತ use_ಸೂಚ್ಯಂಕ = ಮುಂದಿನ_2;
+      ಮುಂದಿನ_2 += 1;
 
-      return array->get_iter_index(this, use_index);
+      ಹಿಂತಿರುಗಿ array->get_iter_ಸೂಚ್ಯಂಕ(ಇದು, use_ಸೂಚ್ಯಂಕ);
 }
 
-static int array_iterator_free_object(vpiHandle ref)
+ಸ್ಥಿರ ಪೂರ್ಣಾಂಕ array_iterator_free_object(vpiHandle ref)
 {
-      struct __vpiArrayIterator*obj = dynamic_cast<__vpiArrayIterator*>(ref);
-      delete obj;
-      return 1;
+      ರಚನೆ __vpiArrayIterator*obj = dynamic_cast<__vpiArrayIterator*>(ref);
+      ಅಳಿಸು obj;
+      ಹಿಂತಿರುಗಿ 1;
 }
 
-__vpiHandle::free_object_fun_t __vpiArrayIterator::free_object_fun(void)
-{ return &array_iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiArrayIterator::free_object_fun(ಶೂನ್ಯ)
+{ ಹಿಂತಿರುಗಿ &array_iterator_free_object; }
 
-vpiHandle __vpiArrayIndex::vpi_iterate(int code)
+vpiHandle __vpiArrayIndex::vpi_iterate(ಪೂರ್ಣಾಂಕ code)
 {
     // TODO originally, __vpiArrayIndex is casted to __vpiDecConst and assigned
     // to res->index - seems like a bug to me
 
-      if (code == vpiIndex) {
-	    struct __vpiArrayIndex*res;
-	    res = new __vpiArrayIndex;
-	    res->index = index;         // see the comment above
-	    res->done = 0;
-	    return res;
+      ಆದರೆ (code == vpi_ಸೂಚ್ಯಂಕ_2) {
+	    ರಚನೆ __vpiArrayIndex*res;
+	    res = ಹೊಸ __vpiArrayIndex;
+	    res->ಸೂಚ್ಯಂಕ = ಸೂಚ್ಯಂಕ;         // see the comment above
+	    res->ಮುಗಿದ = 0;
+	    ಹಿಂತಿರುಗಿ res;
       }
-      return 0;
+      ಹಿಂತಿರುಗಿ 0;
 }
 
-vpiHandle __vpiArrayIndex::vpi_index(int)
+vpiHandle __vpiArrayIndex::vpi_ಸೂಚ್ಯಂಕ(ಪೂರ್ಣಾಂಕ)
 {
-      if (done == 0) {
-            done = 1;
-            return index;
-      }
-
-      vpi_free_object(this);
-      return 0;
-}
-
-static int array_index_free_object(vpiHandle ref)
-{
-      struct __vpiArrayIndex*obj = dynamic_cast<__vpiArrayIndex*>(ref);
-      delete obj;
-      return 1;
-}
-
-__vpiHandle::free_object_fun_t __vpiArrayIndex::free_object_fun(void)
-{ return &array_index_free_object; }
-
-char* __vpiArrayWord::as_word_t::vpi_get_str(int code)
-{
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
-      assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
-      return my_parent->get_word_str(obj, code);
-}
-
-void __vpiArrayWord::as_word_t::vpi_get_value(p_vpi_value vp)
-{
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
-      assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
-      return my_parent->get_word_value(obj, vp);
-}
-
-vpiHandle __vpiArrayWord::as_word_t::vpi_put_value(p_vpi_value vp, int flags)
-{
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
-      assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
-      my_parent->put_word_value(obj, vp, flags);
-      return this;
-}
-
-vpiHandle __vpiArrayWord::as_word_t::vpi_handle(int code)
-{
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
-      assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
-
-      switch (code) {
-
-	  case vpiIndex:
-	    return &(obj->as_index);
-
-	  case vpiLeftRange:
-	    return my_parent->get_left_range();
-
-	  case vpiRightRange:
-	    return my_parent->get_right_range();
-
-	  case vpiParent:
-	    return dynamic_cast<vpiHandle>(my_parent);
-
-	  case vpiScope:
-	    return my_parent->get_scope();
-
-	  case vpiModule:
-	    return vpip_module(my_parent->get_scope());
+      ಆದರೆ (ಮುಗಿದ == 0) {
+            ಮುಗಿದ = 1;
+            ಹಿಂತಿರುಗಿ ಸೂಚ್ಯಂಕ;
       }
 
-      return 0;
+      vpi_free_object(ಇದು);
+      ಹಿಂತಿರುಗಿ 0;
 }
 
-void __vpiArrayWord::as_index_t::vpi_get_value(p_vpi_value vp)
+ಸ್ಥಿರ ಪೂರ್ಣಾಂಕ array_ಸೂಚ್ಯಂಕ_free_object(vpiHandle ref)
 {
-      struct __vpiArrayWord*obj = array_var_index_from_handle(this);
-      assert(obj);
-      unsigned index = obj->get_index();
-
-      assert(vp->format == vpiIntVal);
-      vp->value.integer = index;
+      ರಚನೆ __vpiArrayIndex*obj = dynamic_cast<__vpiArrayIndex*>(ref);
+      ಅಳಿಸು obj;
+      ಹಿಂತಿರುಗಿ 1;
 }
 
-struct __vpiArrayWord*array_var_word_from_handle(vpiHandle ref)
-{
-      if (ref == 0)
-	    return 0;
-      const __vpiArrayWord::as_word_t*ptr = dynamic_cast<__vpiArrayWord::as_word_t*> (ref);
-      if (ptr == 0)
-	    return 0;
+__vpiHandle::free_object_fun_t __vpiArrayIndex::free_object_fun(ಶೂನ್ಯ)
+{ ಹಿಂತಿರುಗಿ &array_ಸೂಚ್ಯಂಕ_free_object; }
 
-      return (struct __vpiArrayWord*)(ref);
+ಅಕ್ಷರ* __vpiArrayWord::as_ಶಬ್ದ_t::vpi_get_str(ಪೂರ್ಣಾಂಕ code)
+{
+      ರಚನೆ __vpiArrayWord*obj = array_var_ಶಬ್ದ_from_handle(ಇದು);
+      ಪ್ರತಿಜ್ಞಾ(obj);
+      ರಚನೆ __vpiArrayBase*my_ಪೋಷಕ = obj->get_ಪೋಷಕ();
+      ಹಿಂತಿರುಗಿ my_ಪೋಷಕ->get_ಶಬ್ದ_str(obj, code);
 }
 
-struct __vpiArrayWord* array_var_index_from_handle(vpiHandle ref)
+ಶೂನ್ಯ __vpiArrayWord::as_ಶಬ್ದ_t::vpi_get_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ vp)
 {
-      if (ref == 0)
-	    return 0;
-      const __vpiArrayWord::as_index_t*ptr = dynamic_cast<__vpiArrayWord::as_index_t*> (ref);
-      if (ptr == 0)
-	    return 0;
+      ರಚನೆ __vpiArrayWord*obj = array_var_ಶಬ್ದ_from_handle(ಇದು);
+      ಪ್ರತಿಜ್ಞಾ(obj);
+      ರಚನೆ __vpiArrayBase*my_ಪೋಷಕ = obj->get_ಪೋಷಕ();
+      ಹಿಂತಿರುಗಿ my_ಪೋಷಕ->get_ಶಬ್ದ_ಮೌಲ್ಯ(obj, vp);
+}
 
-      assert(sizeof(__vpiHandle) == sizeof(__vpiArrayWord::as_index_t));
-      assert(sizeof(__vpiHandle) == sizeof(__vpiArrayWord::as_word_t));
-      return (struct __vpiArrayWord*)(ref-1);
+vpiHandle __vpiArrayWord::as_ಶಬ್ದ_t::vpi_put_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ vp, ಪೂರ್ಣಾಂಕ flags)
+{
+      ರಚನೆ __vpiArrayWord*obj = array_var_ಶಬ್ದ_from_handle(ಇದು);
+      ಪ್ರತಿಜ್ಞಾ(obj);
+      ರಚನೆ __vpiArrayBase*my_ಪೋಷಕ = obj->get_ಪೋಷಕ();
+      my_ಪೋಷಕ->put_ಶಬ್ದ_ಮೌಲ್ಯ(obj, vp, flags);
+      ಹಿಂತಿರುಗಿ ಇದು;
+}
+
+vpiHandle __vpiArrayWord::as_ಶಬ್ದ_t::vpi_handle(ಪೂರ್ಣಾಂಕ code)
+{
+      ರಚನೆ __vpiArrayWord*obj = array_var_ಶಬ್ದ_from_handle(ಇದು);
+      ಪ್ರತಿಜ್ಞಾ(obj);
+      ರಚನೆ __vpiArrayBase*my_ಪೋಷಕ = obj->get_ಪೋಷಕ();
+
+      ಆಯ್ಕೆ (code) {
+
+	  ಸ್ಥಿತಿ vpi_ಸೂಚ್ಯಂಕ_2:
+	    ಹಿಂತಿರುಗಿ &(obj->as_ಸೂಚ್ಯಂಕ);
+
+	  ಸ್ಥಿತಿ vpi_ಎಡ_Range:
+	    ಹಿಂತಿರುಗಿ my_ಪೋಷಕ->get_ಎಡ_range();
+
+	  ಸ್ಥಿತಿ vpi_ಬಲ_Range:
+	    ಹಿಂತಿರುಗಿ my_ಪೋಷಕ->get_ಬಲ_range();
+
+	  ಸ್ಥಿತಿ vpi_ಪೋಷಕ:
+	    ಹಿಂತಿರುಗಿ dynamic_cast<vpiHandle>(my_ಪೋಷಕ);
+
+	  ಸ್ಥಿತಿ vpiScope:
+	    ಹಿಂತಿರುಗಿ my_ಪೋಷಕ->get_scope();
+
+	  ಸ್ಥಿತಿ vpiModule:
+	    ಹಿಂತಿರುಗಿ vpip_module(my_ಪೋಷಕ->get_scope());
+      }
+
+      ಹಿಂತಿರುಗಿ 0;
+}
+
+ಶೂನ್ಯ __vpiArrayWord::as_ಸೂಚ್ಯಂಕ_t::vpi_get_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ vp)
+{
+      ರಚನೆ __vpiArrayWord*obj = array_var_ಸೂಚ್ಯಂಕ_from_handle(ಇದು);
+      ಪ್ರತಿಜ್ಞಾ(obj);
+      ಚಿಹ್ನೆರಹಿತ ಸೂಚ್ಯಂಕ = obj->get_ಸೂಚ್ಯಂಕ();
+
+      ಪ್ರತಿಜ್ಞಾ(vp->format == vpiIntVal);
+      vp->value.integer = ಸೂಚ್ಯಂಕ;
+}
+
+ರಚನೆ __vpiArrayWord*array_var_ಶಬ್ದ_from_handle(vpiHandle ref)
+{
+      ಆದರೆ (ref == 0)
+	    ಹಿಂತಿರುಗಿ 0;
+      ಸ್ಥಿರಾಂಕ __vpiArrayWord::as_ಶಬ್ದ_t*ptr = dynamic_cast<__vpiArrayWord::as_ಶಬ್ದ_t*> (ref);
+      ಆದರೆ (ptr == 0)
+	    ಹಿಂತಿರುಗಿ 0;
+
+      ಹಿಂತಿರುಗಿ (ರಚನೆ __vpiArrayWord*)(ref);
+}
+
+ರಚನೆ __vpiArrayWord* array_var_ಸೂಚ್ಯಂಕ_from_handle(vpiHandle ref)
+{
+      ಆದರೆ (ref == 0)
+	    ಹಿಂತಿರುಗಿ 0;
+      ಸ್ಥಿರಾಂಕ __vpiArrayWord::as_ಸೂಚ್ಯಂಕ_t*ptr = dynamic_cast<__vpiArrayWord::as_ಸೂಚ್ಯಂಕ_t*> (ref);
+      ಆದರೆ (ptr == 0)
+	    ಹಿಂತಿರುಗಿ 0;
+
+      ಪ್ರತಿಜ್ಞಾ(ಗಾತ್ರ(__vpiHandle) == ಗಾತ್ರ(__vpiArrayWord::as_ಸೂಚ್ಯಂಕ_t));
+      ಪ್ರತಿಜ್ಞಾ(ಗಾತ್ರ(__vpiHandle) == ಗಾತ್ರ(__vpiArrayWord::as_ಶಬ್ದ_t));
+      ಹಿಂತಿರುಗಿ (ರಚನೆ __vpiArrayWord*)(ref-1);
 }
 

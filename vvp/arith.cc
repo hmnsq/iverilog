@@ -25,38 +25,38 @@
 # include  <cstdlib>
 # include  <cmath>
 
-using namespace std;
+ಬಳಸಿ ನಾಮಾಕಾಶ std;
 
-vvp_arith_::vvp_arith_(unsigned wid)
+vvp_arith_::vvp_arith_(ಚಿಹ್ನೆರಹಿತ wid)
 : wid_(wid), op_a_(wid), op_b_(wid), x_val_(wid)
 {
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-	    op_a_ .set_bit(idx, BIT4_Z);
-	    op_b_ .set_bit(idx, BIT4_Z);
-	    x_val_.set_bit(idx, BIT4_X);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid ;  idx += 1) {
+	    op_a_ .ಗಣ_ಬಿಟ್(idx, BIT4_Z);
+	    op_b_ .ಗಣ_ಬಿಟ್(idx, BIT4_Z);
+	    x_val_.ಗಣ_ಬಿಟ್(idx, BIT4_X);
       }
 }
 
-void vvp_arith_::dispatch_operand_(vvp_net_ptr_t ptr, const vvp_vector4_t&bit)
+ಶೂನ್ಯ vvp_arith_::dispatch_ಕಾರ್ಯಾಂಶ(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್)
 {
-      unsigned port = ptr.port();
-      switch (port) {
-	  case 0:
-	    op_a_ = bit;
-	    break;
-	  case 1:
-	    op_b_ = bit;
-	    break;
-	  default:
-	    fprintf(stderr, "Unsupported port type %u.\n", port);
-	    assert(0);
+      ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್ = ptr.ಪೋರ್ಟ್();
+      ಆಯ್ಕೆ (ಪೋರ್ಟ್) {
+	  ಸ್ಥಿತಿ 0:
+	    op_a_ = ಬಿಟ್;
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ 1:
+	    op_b_ = ಬಿಟ್;
+	    ನಿಲ್ಲಿಸು;
+	  ಪೂರ್ವನಿಯೋಜಿತ:
+	    fprintf(stderr, "Unsupported port type %u.\n", ಪೋರ್ಟ್);
+	    ಪ್ರತಿಜ್ಞಾ(0);
       }
 }
 
-void vvp_arith_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			      unsigned base, unsigned vwid, vvp_context_t ctx)
+ಶೂನ್ಯ vvp_arith_::recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+			      ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, ಬಿಟ್, ತಳ, vwid, ctx);
 }
 
 vvp_arith_abs::vvp_arith_abs()
@@ -67,42 +67,42 @@ vvp_arith_abs::~vvp_arith_abs()
 {
 }
 
-void vvp_arith_abs::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_arith_abs::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                               vvp_context_t)
 {
-      vvp_vector4_t out (bit.size(), BIT4_0);;
+      vvp_vector4_t out (ಬಿಟ್.size(), BIT4_0);;
 
-      vvp_bit4_t cmp = compare_gtge_signed(bit, out, BIT4_1);
-      switch (cmp) {
-	  case BIT4_1: // bit >= 0
-	    out = bit;
-	    break;
-	  case BIT4_0: //  bit < 0
-	    out = ~bit;
+      vvp_bit4_t cmp = compare_gtge_signed(ಬಿಟ್, out, BIT4_1);
+      ಆಯ್ಕೆ (cmp) {
+	  ಸ್ಥಿತಿ BIT4_1: // bit >= 0
+	    out = ಬಿಟ್;
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ BIT4_0: //  bit < 0
+	    out = ~ಬಿಟ್;
 	    out += 1;
-	    break;
-	  default: // There's an X.
-	    out = vvp_vector4_t(bit.size(), BIT4_X);
-	    break;
+	    ನಿಲ್ಲಿಸು;
+	  ಪೂರ್ವನಿಯೋಜಿತ: // There's an X.
+	    out = vvp_vector4_t(ಬಿಟ್.size(), BIT4_X);
+	    ನಿಲ್ಲಿಸು;
       }
 
       ptr.ptr()->send_vec4(out, 0);
 }
 
-void vvp_arith_abs::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				 unsigned base, unsigned vwid, vvp_context_t ctx)
+ಶೂನ್ಯ vvp_arith_abs::recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+				 ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, ಬಿಟ್, ತಳ, vwid, ctx);
 }
 
-void vvp_arith_abs::recv_real(vvp_net_ptr_t ptr, double bit,
+ಶೂನ್ಯ vvp_arith_abs::recv_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್,
                               vvp_context_t)
 {
-      double out = fabs(bit);
+      ದ್ವಿಗುಣ out = fabs(ಬಿಟ್);
       ptr.ptr()->send_real(out, 0);
 }
 
-vvp_arith_cast_int::vvp_arith_cast_int(unsigned wid)
+vvp_arith_cast_int::vvp_arith_cast_int(ಚಿಹ್ನೆರಹಿತ wid)
 : wid_(wid)
 {
 }
@@ -111,13 +111,13 @@ vvp_arith_cast_int::~vvp_arith_cast_int()
 {
 }
 
-void vvp_arith_cast_int::recv_real(vvp_net_ptr_t ptr, double bit,
+ಶೂನ್ಯ vvp_arith_cast_int::recv_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್,
                                    vvp_context_t)
 {
-      ptr.ptr()->send_vec4(vvp_vector4_t(wid_, bit), 0);
+      ptr.ptr()->send_vec4(vvp_vector4_t(wid_, ಬಿಟ್), 0);
 }
 
-vvp_arith_cast_real::vvp_arith_cast_real(bool signed_flag)
+vvp_arith_cast_real::vvp_arith_cast_real(ತಾರ್ಕಿಕ signed_flag)
 : signed_(signed_flag)
 {
 }
@@ -126,22 +126,22 @@ vvp_arith_cast_real::~vvp_arith_cast_real()
 {
 }
 
-void vvp_arith_cast_real::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_arith_cast_real::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                                     vvp_context_t)
 {
-      double val;
-      vector4_to_value(bit, val, signed_);
+      ದ್ವಿಗುಣ val;
+      vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(ಬಿಟ್, val, signed_);
       ptr.ptr()->send_real(val, 0);
 }
 
-void vvp_arith_cast_real::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				       unsigned base, unsigned vwid,
+ಶೂನ್ಯ vvp_arith_cast_real::recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+				       ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid,
 				       vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, ಬಿಟ್, ತಳ, vwid, ctx);
 }
 
-vvp_arith_cast_vec2::vvp_arith_cast_vec2(unsigned wid)
+vvp_arith_cast_vec2::vvp_arith_cast_vec2(ಚಿಹ್ನೆರಹಿತ wid)
 : wid_(wid)
 {
 }
@@ -150,28 +150,28 @@ vvp_arith_cast_vec2::~vvp_arith_cast_vec2()
 {
 }
 
-void vvp_arith_cast_vec2::recv_real(vvp_net_ptr_t ptr, double bit,
+ಶೂನ್ಯ vvp_arith_cast_vec2::recv_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್,
                                    vvp_context_t)
 {
-      ptr.ptr()->send_vec4(vvp_vector4_t(wid_, bit), 0);
+      ptr.ptr()->send_vec4(vvp_vector4_t(wid_, ಬಿಟ್), 0);
 }
 
-void vvp_arith_cast_vec2::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_arith_cast_vec2::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                                     vvp_context_t)
 {
-      vvp_vector2_t tmp = vvp_vector2_t(bit);
-      ptr.ptr()->send_vec4(vector2_to_vector4(tmp,wid_), 0);
+      vvp_vector2_t tmp = vvp_vector2_t(ಬಿಟ್);
+      ptr.ptr()->send_vec4(vector2_ಗಮ್ಯ_vector4(tmp,wid_), 0);
 }
 
-void vvp_arith_cast_vec2::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				       unsigned base, unsigned vwid, vvp_context_t ctx)
+ಶೂನ್ಯ vvp_arith_cast_vec2::recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+				       ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, ಬಿಟ್, ತಳ, vwid, ctx);
 }
 
 // Division
 
-vvp_arith_div::vvp_arith_div(unsigned wid, bool signed_flag)
+vvp_arith_div::vvp_arith_div(ಚಿಹ್ನೆರಹಿತ wid, ತಾರ್ಕಿಕ signed_flag)
 : vvp_arith_(wid), signed_flag_(signed_flag)
 {
 }
@@ -180,103 +180,103 @@ vvp_arith_div::~vvp_arith_div()
 {
 }
 
-void vvp_arith_div::wide4_(vvp_net_ptr_t ptr)
+ಶೂನ್ಯ vvp_arith_div::wide4_(vvp_net_ptr_t ptr)
 {
-      vvp_vector2_t a2 (op_a_, true);
-      if (a2.is_NaN()) {
+      vvp_vector2_t a2 (op_a_, ನಿಜ);
+      ಆದರೆ (a2.is_NaN()) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_vector2_t b2 (op_b_, true);
-      if (b2.is_NaN() || b2.is_zero()) {
+      vvp_vector2_t b2 (op_b_, ನಿಜ);
+      ಆದರೆ (b2.is_NaN() || b2.is_zero()) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      bool negate = false;
-      if (signed_flag_) {
-	    if (a2.value(a2.size()-1)) {
+      ತಾರ್ಕಿಕ negate = ಸುಳ್ಳು;
+      ಆದರೆ (signed_flag_) {
+	    ಆದರೆ (a2.value(a2.size()-1)) {
 		  a2 = -a2;
-		  negate = true;
+		  negate = ನಿಜ;
             }
-	    if (b2.value(b2.size()-1)) {
+	    ಆದರೆ (b2.value(b2.size()-1)) {
 		  b2 = -b2;
 		  negate = !negate;
             }
       }
       vvp_vector2_t res = a2 / b2;
-      if (negate) res = -res;
-      ptr.ptr()->send_vec4(vector2_to_vector4(res, wid_), 0);
+      ಆದರೆ (negate) res = -res;
+      ptr.ptr()->send_vec4(vector2_ಗಮ್ಯ_vector4(res, wid_), 0);
 }
 
-void vvp_arith_div::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_arith_div::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                               vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
-      if (wid_ > 8 * sizeof(unsigned long)) {
+      ಆದರೆ (wid_ > 8 * ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)) {
 	    wide4_(ptr);
-	    return ;
+	    ಹಿಂತಿರುಗಿ ;
       }
 
-      unsigned long a;
-      if (! vector4_to_value(op_a_, a)) {
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ a;
+      ಆದರೆ (! vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(op_a_, a)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      unsigned long b;
-      if (! vector4_to_value(op_b_, b)) {
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ b;
+      ಆದರೆ (! vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(op_b_, b)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      bool negate = false;
+      ತಾರ್ಕಿಕ negate = ಸುಳ್ಳು;
 	/* If we are doing signed divide, then take the sign out of
 	   the operands for now, and remember to put the sign back
 	   later. */
-      if (signed_flag_) {
-	    unsigned long sign_mask = 0;
-	    if (op_a_.size() != 8 * sizeof(unsigned long)) {
-		  sign_mask = -1UL << op_a_.size();
+      ಆದರೆ (signed_flag_) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ sign_ಮುಖವಾಡ = 0;
+	    ಆದರೆ (op_a_.size() != 8 * ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)) {
+		  sign_ಮುಖವಾಡ = -1UL << op_a_.size();
 	    }
-	    if (op_a_.value(op_a_.size()-1)) {
-		  a = (-a) & ~sign_mask;
+	    ಆದರೆ (op_a_.value(op_a_.size()-1)) {
+		  a = (-a) & ~sign_ಮುಖವಾಡ;
 		  negate = !negate;
 	    }
 
-	    sign_mask = 0;
-	    if (op_b_.size() != 8 * sizeof(unsigned long)) {
-		  sign_mask = -1UL << op_b_.size();
+	    sign_ಮುಖವಾಡ = 0;
+	    ಆದರೆ (op_b_.size() != 8 * ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)) {
+		  sign_ಮುಖವಾಡ = -1UL << op_b_.size();
 	    }
-	    if (op_b_.value(op_b_.size()-1)) {
-		  b = (-b) & ~sign_mask;
+	    ಆದರೆ (op_b_.value(op_b_.size()-1)) {
+		  b = (-b) & ~sign_ಮುಖವಾಡ;
 		  negate = ! negate;
 	    }
       }
 
-      if (b == 0) {
+      ಆದರೆ (b == 0) {
 	    vvp_vector4_t xval (wid_);
-	    for (unsigned idx = 0 ;  idx < wid_ ;  idx += 1)
-		  xval.set_bit(idx, BIT4_X);
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid_ ;  idx += 1)
+		  xval.ಗಣ_ಬಿಟ್(idx, BIT4_X);
 
 	    ptr.ptr()->send_vec4(xval, 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      unsigned long val = a / b;
-      if (negate)
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ val = a / b;
+      ಆದರೆ (negate)
 	    val = -val;
 
-      assert(wid_ <= 8*sizeof(val));
+      ಪ್ರತಿಜ್ಞಾ(wid_ <= 8*ಗಾತ್ರ(val));
 
       vvp_vector4_t vval (wid_);
-      for (unsigned idx = 0 ;  idx < wid_ ;  idx += 1) {
-	    if (val & 1)
-		  vval.set_bit(idx, BIT4_1);
-	    else
-		  vval.set_bit(idx, BIT4_0);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid_ ;  idx += 1) {
+	    ಆದರೆ (val & 1)
+		  vval.ಗಣ_ಬಿಟ್(idx, BIT4_1);
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  vval.ಗಣ_ಬಿಟ್(idx, BIT4_0);
 
 	    val >>= 1;
       }
@@ -285,7 +285,7 @@ void vvp_arith_div::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 }
 
 
-vvp_arith_mod::vvp_arith_mod(unsigned wid, bool sf)
+vvp_arith_mod::vvp_arith_mod(ಚಿಹ್ನೆರಹಿತ wid, ತಾರ್ಕಿಕ sf)
 : vvp_arith_(wid), signed_flag_(sf)
 {
 }
@@ -294,101 +294,101 @@ vvp_arith_mod::~vvp_arith_mod()
 {
 }
 
-void vvp_arith_mod::wide_(vvp_net_ptr_t ptr)
+ಶೂನ್ಯ vvp_arith_mod::wide_(vvp_net_ptr_t ptr)
 {
-      vvp_vector2_t a2 (op_a_, true);
-      if (a2.is_NaN()) {
+      vvp_vector2_t a2 (op_a_, ನಿಜ);
+      ಆದರೆ (a2.is_NaN()) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_vector2_t b2 (op_b_, true);
-      if (b2.is_NaN() || b2.is_zero()) {
+      vvp_vector2_t b2 (op_b_, ನಿಜ);
+      ಆದರೆ (b2.is_NaN() || b2.is_zero()) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      bool negate = false;
-      if (signed_flag_) {
-	    if (a2.value(a2.size()-1)) {
+      ತಾರ್ಕಿಕ negate = ಸುಳ್ಳು;
+      ಆದರೆ (signed_flag_) {
+	    ಆದರೆ (a2.value(a2.size()-1)) {
 		  a2 = -a2;
-		  negate = true;
+		  negate = ನಿಜ;
             }
-	    if (b2.value(b2.size()-1)) {
+	    ಆದರೆ (b2.value(b2.size()-1)) {
 		  b2 = -b2;
             }
       }
       vvp_vector2_t res = a2 % b2;
-      if (negate) res = -res;
-      ptr.ptr()->send_vec4(vector2_to_vector4(res, res.size()), 0);
+      ಆದರೆ (negate) res = -res;
+      ptr.ptr()->send_vec4(vector2_ಗಮ್ಯ_vector4(res, res.size()), 0);
 }
 
-void vvp_arith_mod::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_arith_mod::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                               vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
-      if (wid_ > 8 * sizeof(unsigned long)) {
+      ಆದರೆ (wid_ > 8 * ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)) {
 	    wide_(ptr);
-	    return ;
+	    ಹಿಂತಿರುಗಿ ;
       }
 
-      unsigned long a;
-      if (! vector4_to_value(op_a_, a)) {
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ a;
+      ಆದರೆ (! vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(op_a_, a)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      unsigned long b;
-      if (! vector4_to_value(op_b_, b)) {
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ b;
+      ಆದರೆ (! vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(op_b_, b)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      bool negate = false;
+      ತಾರ್ಕಿಕ negate = ಸುಳ್ಳು;
 	/* If we are doing signed divide, then take the sign out of
 	   the operands for now, and remember to put the sign back
 	   later. */
-      if (signed_flag_) {
-	    unsigned long sign_mask = 0;
-	    if (op_a_.size() != 8 * sizeof(unsigned long)) {
-		  sign_mask = -1UL << op_a_.size();
+      ಆದರೆ (signed_flag_) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ sign_ಮುಖವಾಡ = 0;
+	    ಆದರೆ (op_a_.size() != 8 * ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)) {
+		  sign_ಮುಖವಾಡ = -1UL << op_a_.size();
 	    }
-	    if (op_a_.value(op_a_.size()-1)) {
-		  a = (-a) & ~sign_mask;
+	    ಆದರೆ (op_a_.value(op_a_.size()-1)) {
+		  a = (-a) & ~sign_ಮುಖವಾಡ;
 		  negate = !negate;
 	    }
 
-	    sign_mask = 0;
-	    if (op_b_.size() != 8 * sizeof(unsigned long)) {
-		  sign_mask = -1UL << op_b_.size();
+	    sign_ಮುಖವಾಡ = 0;
+	    ಆದರೆ (op_b_.size() != 8 * ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)) {
+		  sign_ಮುಖವಾಡ = -1UL << op_b_.size();
 	    }
-	    if (op_b_.value(op_b_.size()-1)) {
-		  b = (-b) & ~sign_mask;
+	    ಆದರೆ (op_b_.value(op_b_.size()-1)) {
+		  b = (-b) & ~sign_ಮುಖವಾಡ;
 	    }
       }
 
-      if (b == 0) {
+      ಆದರೆ (b == 0) {
 	    vvp_vector4_t xval (wid_);
-	    for (unsigned idx = 0 ;  idx < wid_ ;  idx += 1)
-		  xval.set_bit(idx, BIT4_X);
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid_ ;  idx += 1)
+		  xval.ಗಣ_ಬಿಟ್(idx, BIT4_X);
 
 	    ptr.ptr()->send_vec4(xval, 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      unsigned long val = a % b;
-      if (negate)
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ val = a % b;
+      ಆದರೆ (negate)
 	    val = -val;
 
-      assert(wid_ <= 8*sizeof(val));
+      ಪ್ರತಿಜ್ಞಾ(wid_ <= 8*ಗಾತ್ರ(val));
 
       vvp_vector4_t vval (wid_);
-      for (unsigned idx = 0 ;  idx < wid_ ;  idx += 1) {
-	    if (val & 1)
-		  vval.set_bit(idx, BIT4_1);
-	    else
-		  vval.set_bit(idx, BIT4_0);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid_ ;  idx += 1) {
+	    ಆದರೆ (val & 1)
+		  vval.ಗಣ_ಬಿಟ್(idx, BIT4_1);
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  vval.ಗಣ_ಬಿಟ್(idx, BIT4_0);
 
 	    val >>= 1;
       }
@@ -399,7 +399,7 @@ void vvp_arith_mod::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 
 // Multiplication
 
-vvp_arith_mult::vvp_arith_mult(unsigned wid)
+vvp_arith_mult::vvp_arith_mult(ಚಿಹ್ನೆರಹಿತ wid)
 : vvp_arith_(wid)
 {
 }
@@ -408,53 +408,53 @@ vvp_arith_mult::~vvp_arith_mult()
 {
 }
 
-void vvp_arith_mult::wide_(vvp_net_ptr_t ptr)
+ಶೂನ್ಯ vvp_arith_mult::wide_(vvp_net_ptr_t ptr)
 {
-      vvp_vector2_t a2 (op_a_, true);
-      vvp_vector2_t b2 (op_b_, true);
+      vvp_vector2_t a2 (op_a_, ನಿಜ);
+      vvp_vector2_t b2 (op_b_, ನಿಜ);
 
-      if (a2.is_NaN() || b2.is_NaN()) {
+      ಆದರೆ (a2.is_NaN() || b2.is_NaN()) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_vector2_t result = a2 * b2;
+      vvp_vector2_t ಫಲಿತಾಂಶ = a2 * b2;
 
-      vvp_vector4_t res4 = vector2_to_vector4(result, wid_);
+      vvp_vector4_t res4 = vector2_ಗಮ್ಯ_vector4(ಫಲಿತಾಂಶ, wid_);
       ptr.ptr()->send_vec4(res4, 0);
 }
 
-void vvp_arith_mult::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_arith_mult::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                                vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
-      if (wid_ > 8 * sizeof(int64_t)) {
+      ಆದರೆ (wid_ > 8 * ಗಾತ್ರ(int64_t)) {
 	    wide_(ptr);
-	    return ;
+	    ಹಿಂತಿರುಗಿ ;
       }
 
       int64_t a;
-      if (! vector4_to_value(op_a_, a, false, true)) {
+      ಆದರೆ (! vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(op_a_, a, ಸುಳ್ಳು, ನಿಜ)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
       int64_t b;
-      if (! vector4_to_value(op_b_, b, false, true)) {
+      ಆದರೆ (! vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(op_b_, b, ಸುಳ್ಳು, ನಿಜ)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
       int64_t val = a * b;
-      assert(wid_ <= 8*sizeof(val));
+      ಪ್ರತಿಜ್ಞಾ(wid_ <= 8*ಗಾತ್ರ(val));
 
       vvp_vector4_t vval (wid_);
-      for (unsigned idx = 0 ;  idx < wid_ ;  idx += 1) {
-	    if (val & 1)
-		  vval.set_bit(idx, BIT4_1);
-	    else
-		  vval.set_bit(idx, BIT4_0);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid_ ;  idx += 1) {
+	    ಆದರೆ (val & 1)
+		  vval.ಗಣ_ಬಿಟ್(idx, BIT4_1);
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  vval.ಗಣ_ಬಿಟ್(idx, BIT4_0);
 
 	    val >>= 1;
       }
@@ -465,7 +465,7 @@ void vvp_arith_mult::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 
 // Power
 
-vvp_arith_pow::vvp_arith_pow(unsigned wid, bool signed_flag)
+vvp_arith_pow::vvp_arith_pow(ಚಿಹ್ನೆರಹಿತ wid, ತಾರ್ಕಿಕ signed_flag)
 : vvp_arith_(wid), signed_flag_(signed_flag)
 {
 }
@@ -474,60 +474,60 @@ vvp_arith_pow::~vvp_arith_pow()
 {
 }
 
-void vvp_arith_pow::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_arith_pow::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                               vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
-      vvp_vector2_t a2 (op_a_, true);
-      vvp_vector2_t b2 (op_b_, true);
+      vvp_vector2_t a2 (op_a_, ನಿಜ);
+      vvp_vector2_t b2 (op_b_, ನಿಜ);
 
         // If we have an X or Z in the arguments return X.
-      if (a2.is_NaN() || b2.is_NaN()) {
+      ಆದರೆ (a2.is_NaN() || b2.is_NaN()) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	// Is the exponent negative? If so, table 5-6 in IEEE1364-2005
 	// defines what value is returned.
-      if (signed_flag_ && b2.value(b2.size()-1)) {
-	    int a_val;
-	    double r_val = 0.0;
-	    if (vector2_to_value(a2, a_val, true)) {
-		  if (a_val == 0) {
+      ಆದರೆ (signed_flag_ && b2.value(b2.size()-1)) {
+	    ಪೂರ್ಣಾಂಕ a_val;
+	    ದ್ವಿಗುಣ r_val = 0.0;
+	    ಆದರೆ (vector2_ಗಮ್ಯ_ಮೌಲ್ಯ(a2, a_val, ನಿಜ)) {
+		  ಆದರೆ (a_val == 0) {
 			ptr.ptr()->send_vec4(x_val_, 0);
-			return;
+			ಹಿಂತಿರುಗಿ;
 		  }
-		  if (a_val == 1) {
+		  ಆದರೆ (a_val == 1) {
 			r_val = 1.0;
 		  }
-		  if (a_val == -1) {
+		  ಆದರೆ (a_val == -1) {
 			r_val = b2.value(0) ? -1.0 : 1.0;
 		  }
 	    }
 	    ptr.ptr()->send_vec4(vvp_vector4_t(wid_, r_val), 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      ptr.ptr()->send_vec4(vector2_to_vector4(pow(a2, b2), wid_), 0);
+      ptr.ptr()->send_vec4(vector2_ಗಮ್ಯ_vector4(ಘಾತ(a2, b2), wid_), 0);
 }
 
 
 // Addition
 
-vvp_arith_sum::vvp_arith_sum(unsigned wid)
+vvp_arith_ಮೊತ್ತ::vvp_arith_ಮೊತ್ತ(ಚಿಹ್ನೆರಹಿತ wid)
 : vvp_arith_(wid)
 {
 }
 
-vvp_arith_sum::~vvp_arith_sum()
+vvp_arith_ಮೊತ್ತ::~vvp_arith_ಮೊತ್ತ()
 {
 }
 
-void vvp_arith_sum::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_arith_ಮೊತ್ತ::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                               vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
       vvp_net_t*net = ptr.ptr();
 
@@ -535,26 +535,26 @@ void vvp_arith_sum::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 
 	/* Pad input vectors with this value to widen to the desired
 	   output width. */
-      const vvp_bit4_t pad = BIT4_0;
+      ಸ್ಥಿರಾಂಕ vvp_bit4_t pad = BIT4_0;
 
-      vvp_bit4_t carry = BIT4_0;
-      for (unsigned idx = 0 ;  idx < wid_ ;  idx += 1) {
+      vvp_bit4_t ವಾಹಕ = BIT4_0;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid_ ;  idx += 1) {
 	    vvp_bit4_t a = (idx >= op_a_.size())? pad : op_a_.value(idx);
 	    vvp_bit4_t b = (idx >= op_b_.size())? pad : op_b_.value(idx);
-	    vvp_bit4_t cur = add_with_carry(a, b, carry);
+	    vvp_bit4_t cur = ಕೂಡಿಸು_with_ವಾಹಕ(a, b, ವಾಹಕ);
 
-	    if (cur == BIT4_X) {
+	    ಆದರೆ (cur == BIT4_X) {
 		  net->send_vec4(x_val_, 0);
-		  return;
+		  ಹಿಂತಿರುಗಿ;
 	    }
 
-	    value.set_bit(idx, cur);
+	    value.ಗಣ_ಬಿಟ್(idx, cur);
       }
 
       net->send_vec4(value, 0);
 }
 
-vvp_arith_sub::vvp_arith_sub(unsigned wid)
+vvp_arith_sub::vvp_arith_sub(ಚಿಹ್ನೆರಹಿತ wid)
 : vvp_arith_(wid)
 {
 }
@@ -569,10 +569,10 @@ vvp_arith_sub::~vvp_arith_sub()
  * further reduce the operation to adding in the inverted value and
  * adding a correction.
  */
-void vvp_arith_sub::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_arith_sub::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                               vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
       vvp_net_t*net = ptr.ptr();
 
@@ -580,43 +580,43 @@ void vvp_arith_sub::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 
 	/* Pad input vectors with this value to widen to the desired
 	   output width. */
-      const vvp_bit4_t pad = BIT4_1;
+      ಸ್ಥಿರಾಂಕ vvp_bit4_t pad = BIT4_1;
 
-      vvp_bit4_t carry = BIT4_1;
-      for (unsigned idx = 0 ;  idx < wid_ ;  idx += 1) {
+      vvp_bit4_t ವಾಹಕ = BIT4_1;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid_ ;  idx += 1) {
 	    vvp_bit4_t a = (idx >= op_a_.size())? pad : op_a_.value(idx);
 	    vvp_bit4_t b = (idx >= op_b_.size())? pad : ~op_b_.value(idx);
-	    vvp_bit4_t cur = add_with_carry(a, b, carry);
+	    vvp_bit4_t cur = ಕೂಡಿಸು_with_ವಾಹಕ(a, b, ವಾಹಕ);
 
-	    if (cur == BIT4_X) {
+	    ಆದರೆ (cur == BIT4_X) {
 		  net->send_vec4(x_val_, 0);
-		  return;
+		  ಹಿಂತಿರುಗಿ;
 	    }
 
-	    value.set_bit(idx, cur);
+	    value.ಗಣ_ಬಿಟ್(idx, cur);
       }
 
       net->send_vec4(value, 0);
 }
 
-vvp_cmp_eeq::vvp_cmp_eeq(unsigned wid)
+vvp_cmp_eeq::vvp_cmp_eeq(ಚಿಹ್ನೆರಹಿತ wid)
 : vvp_arith_(wid)
 {
 }
 
-void vvp_cmp_eeq::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_cmp_eeq::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                             vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
       vvp_vector4_t eeq (1);
-      eeq.set_bit(0, BIT4_1);
+      eeq.ಗಣ_ಬಿಟ್(0, BIT4_1);
 
-      assert(op_a_.size() == op_b_.size());
-      for (unsigned idx = 0 ;  idx < op_a_.size() ;  idx += 1)
-	    if (op_a_.value(idx) != op_b_.value(idx)) {
-		  eeq.set_bit(0, BIT4_0);
-		  break;
+      ಪ್ರತಿಜ್ಞಾ(op_a_.size() == op_b_.size());
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < op_a_.size() ;  idx += 1)
+	    ಆದರೆ (op_a_.value(idx) != op_b_.value(idx)) {
+		  eeq.ಗಣ_ಬಿಟ್(0, BIT4_0);
+		  ನಿಲ್ಲಿಸು;
 	    }
 
 
@@ -624,24 +624,24 @@ void vvp_cmp_eeq::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       net->send_vec4(eeq, 0);
 }
 
-vvp_cmp_nee::vvp_cmp_nee(unsigned wid)
+vvp_cmp_nee::vvp_cmp_nee(ಚಿಹ್ನೆರಹಿತ wid)
 : vvp_arith_(wid)
 {
 }
 
-void vvp_cmp_nee::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_cmp_nee::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                             vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
       vvp_vector4_t eeq (1);
-      eeq.set_bit(0, BIT4_0);
+      eeq.ಗಣ_ಬಿಟ್(0, BIT4_0);
 
-      assert(op_a_.size() == op_b_.size());
-      for (unsigned idx = 0 ;  idx < op_a_.size() ;  idx += 1)
-	    if (op_a_.value(idx) != op_b_.value(idx)) {
-		  eeq.set_bit(0, BIT4_1);
-		  break;
+      ಪ್ರತಿಜ್ಞಾ(op_a_.size() == op_b_.size());
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < op_a_.size() ;  idx += 1)
+	    ಆದರೆ (op_a_.value(idx) != op_b_.value(idx)) {
+		  eeq.ಗಣ_ಬಿಟ್(0, BIT4_1);
+		  ನಿಲ್ಲಿಸು;
 	    }
 
 
@@ -649,7 +649,7 @@ void vvp_cmp_nee::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       net->send_vec4(eeq, 0);
 }
 
-vvp_cmp_eq::vvp_cmp_eq(unsigned wid)
+vvp_cmp_eq::vvp_cmp_eq(ಚಿಹ್ನೆರಹಿತ wid)
 : vvp_arith_(wid)
 {
 }
@@ -660,35 +660,35 @@ vvp_cmp_eq::vvp_cmp_eq(unsigned wid)
  * there are X/Z bits anywhere in A or B, the result is X. Finally,
  * the result is 1.
  */
-void vvp_cmp_eq::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_cmp_eq::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                            vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
-      if (op_a_.size() != op_b_.size()) {
+      ಆದರೆ (op_a_.size() != op_b_.size()) {
 	    cerr << "COMPARISON size mismatch. "
-		 << "a=" << op_a_ << ", b=" << op_b_ << endl;
-	    assert(0);
+		 << "a=" << op_a_ << ", b=" << op_b_ << ಸಾಲು_ಅಂತ್ಯ;
+	    ಪ್ರತಿಜ್ಞಾ(0);
       }
 
       vvp_vector4_t res (1);
-      res.set_bit(0, BIT4_1);
+      res.ಗಣ_ಬಿಟ್(0, BIT4_1);
 
-      for (unsigned idx = 0 ;  idx < op_a_.size() ;  idx += 1) {
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < op_a_.size() ;  idx += 1) {
 	    vvp_bit4_t a = op_a_.value(idx);
 	    vvp_bit4_t b = op_b_.value(idx);
 
-	    if (a == BIT4_X)
-		  res.set_bit(0, BIT4_X);
-	    else if (a == BIT4_Z)
-		  res.set_bit(0, BIT4_X);
-	    else if (b == BIT4_X)
-		  res.set_bit(0, BIT4_X);
-	    else if (b == BIT4_Z)
-		  res.set_bit(0, BIT4_X);
-            else if (a != b) {
-		  res.set_bit(0, BIT4_0);
-		  break;
+	    ಆದರೆ (a == BIT4_X)
+		  res.ಗಣ_ಬಿಟ್(0, BIT4_X);
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (a == BIT4_Z)
+		  res.ಗಣ_ಬಿಟ್(0, BIT4_X);
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (b == BIT4_X)
+		  res.ಗಣ_ಬಿಟ್(0, BIT4_X);
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (b == BIT4_Z)
+		  res.ಗಣ_ಬಿಟ್(0, BIT4_X);
+            ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (a != b) {
+		  res.ಗಣ_ಬಿಟ್(0, BIT4_0);
+		  ನಿಲ್ಲಿಸು;
 	    }
       }
 
@@ -696,7 +696,7 @@ void vvp_cmp_eq::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       net->send_vec4(res, 0);
 }
 
-vvp_cmp_eqx::vvp_cmp_eqx(unsigned wid)
+vvp_cmp_eqx::vvp_cmp_eqx(ಚಿಹ್ನೆರಹಿತ wid)
 : vvp_arith_(wid)
 {
 }
@@ -707,31 +707,31 @@ vvp_cmp_eqx::vvp_cmp_eqx(unsigned wid)
  * there are X/Z bits anywhere in A or B, the result is X. Finally,
  * the result is 1.
  */
-void vvp_cmp_eqx::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_cmp_eqx::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                            vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
-      if (op_a_.size() != op_b_.size()) {
+      ಆದರೆ (op_a_.size() != op_b_.size()) {
 	    cerr << "COMPARISON size mismatch. "
-		 << "a=" << op_a_ << ", b=" << op_b_ << endl;
-	    assert(0);
+		 << "a=" << op_a_ << ", b=" << op_b_ << ಸಾಲು_ಅಂತ್ಯ;
+	    ಪ್ರತಿಜ್ಞಾ(0);
       }
 
       vvp_vector4_t res (1);
-      res.set_bit(0, BIT4_1);
+      res.ಗಣ_ಬಿಟ್(0, BIT4_1);
 
-      for (unsigned idx = 0 ;  idx < op_a_.size() ;  idx += 1) {
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < op_a_.size() ;  idx += 1) {
 	    vvp_bit4_t a = op_a_.value(idx);
 	    vvp_bit4_t b = op_b_.value(idx);
 
-	    if (b == BIT4_X)
-		  continue;
-	    if (b == BIT4_Z)
-		  continue;
-	    if (a != b) {
-		  res.set_bit(0, BIT4_0);
-		  break;
+	    ಆದರೆ (b == BIT4_X)
+		  ಮುಂದುವರಿ;
+	    ಆದರೆ (b == BIT4_Z)
+		  ಮುಂದುವರಿ;
+	    ಆದರೆ (a != b) {
+		  res.ಗಣ_ಬಿಟ್(0, BIT4_0);
+		  ನಿಲ್ಲಿಸು;
 	    }
       }
 
@@ -739,34 +739,34 @@ void vvp_cmp_eqx::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       net->send_vec4(res, 0);
 }
 
-vvp_cmp_eqz::vvp_cmp_eqz(unsigned wid)
+vvp_cmp_eqz::vvp_cmp_eqz(ಚಿಹ್ನೆರಹಿತ wid)
 : vvp_arith_(wid)
 {
 }
 
-void vvp_cmp_eqz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_cmp_eqz::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                            vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
-      if (op_a_.size() != op_b_.size()) {
+      ಆದರೆ (op_a_.size() != op_b_.size()) {
 	    cerr << "COMPARISON size mismatch. "
-		 << "a=" << op_a_ << ", b=" << op_b_ << endl;
-	    assert(0);
+		 << "a=" << op_a_ << ", b=" << op_b_ << ಸಾಲು_ಅಂತ್ಯ;
+	    ಪ್ರತಿಜ್ಞಾ(0);
       }
 
       vvp_vector4_t res (1);
-      res.set_bit(0, BIT4_1);
+      res.ಗಣ_ಬಿಟ್(0, BIT4_1);
 
-      for (unsigned idx = 0 ;  idx < op_a_.size() ;  idx += 1) {
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < op_a_.size() ;  idx += 1) {
 	    vvp_bit4_t a = op_a_.value(idx);
 	    vvp_bit4_t b = op_b_.value(idx);
 
-	    if (b == BIT4_Z)
-		  continue;
-	    if (a != b) {
-		  res.set_bit(0, BIT4_0);
-		  break;
+	    ಆದರೆ (b == BIT4_Z)
+		  ಮುಂದುವರಿ;
+	    ಆದರೆ (a != b) {
+		  res.ಗಣ_ಬಿಟ್(0, BIT4_0);
+		  ನಿಲ್ಲಿಸು;
 	    }
       }
 
@@ -774,7 +774,7 @@ void vvp_cmp_eqz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       net->send_vec4(res, 0);
 }
 
-vvp_cmp_ne::vvp_cmp_ne(unsigned wid)
+vvp_cmp_ne::vvp_cmp_ne(ಚಿಹ್ನೆರಹಿತ wid)
 : vvp_arith_(wid)
 {
 }
@@ -785,35 +785,35 @@ vvp_cmp_ne::vvp_cmp_ne(unsigned wid)
  * there are X/Z bits anywhere in A or B, the result is X. Finally,
  * the result is 0.
  */
-void vvp_cmp_ne::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_cmp_ne::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                            vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
-      if (op_a_.size() != op_b_.size()) {
+      ಆದರೆ (op_a_.size() != op_b_.size()) {
 	    cerr << "internal error: vvp_cmp_ne: op_a_=" << op_a_
-		 << ", op_b_=" << op_b_ << endl;
-	    assert(op_a_.size() == op_b_.size());
+		 << ", op_b_=" << op_b_ << ಸಾಲು_ಅಂತ್ಯ;
+	    ಪ್ರತಿಜ್ಞಾ(op_a_.size() == op_b_.size());
       }
 
       vvp_vector4_t res (1);
-      res.set_bit(0, BIT4_0);
+      res.ಗಣ_ಬಿಟ್(0, BIT4_0);
 
-      for (unsigned idx = 0 ;  idx < op_a_.size() ;  idx += 1) {
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < op_a_.size() ;  idx += 1) {
 	    vvp_bit4_t a = op_a_.value(idx);
 	    vvp_bit4_t b = op_b_.value(idx);
 
-	    if (a == BIT4_X)
-		  res.set_bit(0, BIT4_X);
-	    else if (a == BIT4_Z)
-		  res.set_bit(0, BIT4_X);
-	    else if (b == BIT4_X)
-		  res.set_bit(0, BIT4_X);
-	    else if (b == BIT4_Z)
-		  res.set_bit(0, BIT4_X);
-            else if (a != b) {
-		  res.set_bit(0, BIT4_1);
-		  break;
+	    ಆದರೆ (a == BIT4_X)
+		  res.ಗಣ_ಬಿಟ್(0, BIT4_X);
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (a == BIT4_Z)
+		  res.ಗಣ_ಬಿಟ್(0, BIT4_X);
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (b == BIT4_X)
+		  res.ಗಣ_ಬಿಟ್(0, BIT4_X);
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (b == BIT4_Z)
+		  res.ಗಣ_ಬಿಟ್(0, BIT4_X);
+            ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (a != b) {
+		  res.ಗಣ_ಬಿಟ್(0, BIT4_1);
+		  ನಿಲ್ಲಿಸು;
 	    }
       }
 
@@ -822,79 +822,79 @@ void vvp_cmp_ne::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 }
 
 
-vvp_cmp_gtge_base_::vvp_cmp_gtge_base_(unsigned wid, bool flag)
+vvp_cmp_gtge_ತಳ::vvp_cmp_gtge_ತಳ(ಚಿಹ್ನೆರಹಿತ wid, ತಾರ್ಕಿಕ flag)
 : vvp_arith_(wid), signed_flag_(flag)
 {
 }
 
 
-void vvp_cmp_gtge_base_::recv_vec4_base_(vvp_net_ptr_t ptr,
-					 const vvp_vector4_t&bit,
-					 vvp_bit4_t out_if_equal)
+ಶೂನ್ಯ vvp_cmp_gtge_ತಳ::recv_vec4_ತಳ(vvp_net_ptr_t ptr,
+					 ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+					 vvp_bit4_t ಹೊರಹೋಗು_if_equal)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
       vvp_bit4_t out = signed_flag_
-	    ? compare_gtge_signed(op_a_, op_b_, out_if_equal)
-	    : compare_gtge(op_a_, op_b_, out_if_equal);
+	    ? compare_gtge_signed(op_a_, op_b_, ಹೊರಹೋಗು_if_equal)
+	    : compare_gtge(op_a_, op_b_, ಹೊರಹೋಗು_if_equal);
       vvp_vector4_t val (1);
-      val.set_bit(0, out);
+      val.ಗಣ_ಬಿಟ್(0, out);
       ptr.ptr()->send_vec4(val, 0);
 
-      return;
+      ಹಿಂತಿರುಗಿ;
 }
 
 
-vvp_cmp_ge::vvp_cmp_ge(unsigned wid, bool flag)
-: vvp_cmp_gtge_base_(wid, flag)
+vvp_cmp_ge::vvp_cmp_ge(ಚಿಹ್ನೆರಹಿತ wid, ತಾರ್ಕಿಕ flag)
+: vvp_cmp_gtge_ತಳ(wid, flag)
 {
 }
 
-void vvp_cmp_ge::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_cmp_ge::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                            vvp_context_t)
 {
-      recv_vec4_base_(ptr, bit, BIT4_1);
+      recv_vec4_ತಳ(ptr, ಬಿಟ್, BIT4_1);
 }
 
-vvp_cmp_gt::vvp_cmp_gt(unsigned wid, bool flag)
-: vvp_cmp_gtge_base_(wid, flag)
+vvp_cmp_gt::vvp_cmp_gt(ಚಿಹ್ನೆರಹಿತ wid, ತಾರ್ಕಿಕ flag)
+: vvp_cmp_gtge_ತಳ(wid, flag)
 {
 }
 
-void vvp_cmp_gt::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_cmp_gt::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                            vvp_context_t)
 {
-      recv_vec4_base_(ptr, bit, BIT4_0);
+      recv_vec4_ತಳ(ptr, ಬಿಟ್, BIT4_0);
 }
 
-vvp_cmp_weq::vvp_cmp_weq(unsigned wid)
+vvp_cmp_weq::vvp_cmp_weq(ಚಿಹ್ನೆರಹಿತ wid)
 : vvp_arith_(wid)
 {
 }
 
-void vvp_cmp_weq::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_cmp_weq::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                             vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
       vvp_vector4_t eeq (1);
-      eeq.set_bit(0, BIT4_1);
+      eeq.ಗಣ_ಬಿಟ್(0, BIT4_1);
 
-      assert(op_a_.size() == op_b_.size());
-      for (unsigned idx = 0 ;  idx < op_a_.size() ;  idx += 1) {
+      ಪ್ರತಿಜ್ಞಾ(op_a_.size() == op_b_.size());
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < op_a_.size() ;  idx += 1) {
 	    vvp_bit4_t a = op_a_.value(idx);
 	    vvp_bit4_t b = op_b_.value(idx);
-	    if (b == BIT4_X)
-		  continue;
-	    else if (b == BIT4_Z)
-		  continue;
-	    else if (a == BIT4_X)
-		  eeq.set_bit(0, BIT4_X);
-	    else if (a == BIT4_Z)
-		  eeq.set_bit(0, BIT4_X);
-            else if (a != b) {
-		  eeq.set_bit(0, BIT4_0);
-		  break;
+	    ಆದರೆ (b == BIT4_X)
+		  ಮುಂದುವರಿ;
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (b == BIT4_Z)
+		  ಮುಂದುವರಿ;
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (a == BIT4_X)
+		  eeq.ಗಣ_ಬಿಟ್(0, BIT4_X);
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (a == BIT4_Z)
+		  eeq.ಗಣ_ಬಿಟ್(0, BIT4_X);
+            ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (a != b) {
+		  eeq.ಗಣ_ಬಿಟ್(0, BIT4_0);
+		  ನಿಲ್ಲಿಸು;
 	    }
       }
 
@@ -902,34 +902,34 @@ void vvp_cmp_weq::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       net->send_vec4(eeq, 0);
 }
 
-vvp_cmp_wne::vvp_cmp_wne(unsigned wid)
+vvp_cmp_wne::vvp_cmp_wne(ಚಿಹ್ನೆರಹಿತ wid)
 : vvp_arith_(wid)
 {
 }
 
-void vvp_cmp_wne::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_cmp_wne::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                             vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
       vvp_vector4_t eeq (1);
-      eeq.set_bit(0, BIT4_0);
+      eeq.ಗಣ_ಬಿಟ್(0, BIT4_0);
 
-      assert(op_a_.size() == op_b_.size());
-      for (unsigned idx = 0 ;  idx < op_a_.size() ;  idx += 1) {
+      ಪ್ರತಿಜ್ಞಾ(op_a_.size() == op_b_.size());
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < op_a_.size() ;  idx += 1) {
 	    vvp_bit4_t a = op_a_.value(idx);
 	    vvp_bit4_t b = op_b_.value(idx);
-	    if (b == BIT4_X)
-		  continue;
-	    else if (b == BIT4_Z)
-		  continue;
-	    else if (a == BIT4_X)
-		  eeq.set_bit(0, BIT4_X);
-	    else if (a == BIT4_Z)
-		  eeq.set_bit(0, BIT4_X);
-            else if (a != b) {
-		  eeq.set_bit(0, BIT4_1);
-		  break;
+	    ಆದರೆ (b == BIT4_X)
+		  ಮುಂದುವರಿ;
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (b == BIT4_Z)
+		  ಮುಂದುವರಿ;
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (a == BIT4_X)
+		  eeq.ಗಣ_ಬಿಟ್(0, BIT4_X);
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (a == BIT4_Z)
+		  eeq.ಗಣ_ಬಿಟ್(0, BIT4_X);
+            ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (a != b) {
+		  eeq.ಗಣ_ಬಿಟ್(0, BIT4_1);
+		  ನಿಲ್ಲಿಸು;
 	    }
       }
 
@@ -938,7 +938,7 @@ void vvp_cmp_wne::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 }
 
 
-vvp_shiftl::vvp_shiftl(unsigned wid)
+vvp_shiftl::vvp_shiftl(ಚಿಹ್ನೆರಹಿತ wid)
 : vvp_arith_(wid)
 {
 }
@@ -947,33 +947,33 @@ vvp_shiftl::~vvp_shiftl()
 {
 }
 
-void vvp_shiftl::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_shiftl::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                            vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
       vvp_vector4_t out (op_a_.size());
 
-      bool overflow_flag;
-      unsigned long shift = 0;
-      if (! vector4_to_value(op_b_, overflow_flag, shift)) {
+      ತಾರ್ಕಿಕ ಅತಿಪ್ರವಾಹ_flag;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಸರಿಸು = 0;
+      ಆದರೆ (! vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(op_b_, ಅತಿಪ್ರವಾಹ_flag, ಸರಿಸು)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      if (overflow_flag || shift > out.size())
-	    shift = out.size();
+      ಆದರೆ (ಅತಿಪ್ರವಾಹ_flag || ಸರಿಸು > out.size())
+	    ಸರಿಸು = out.size();
 
-      for (unsigned idx = 0 ;  idx < shift ;  idx += 1)
-	    out.set_bit(idx, BIT4_0);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಸರಿಸು ;  idx += 1)
+	    out.ಗಣ_ಬಿಟ್(idx, BIT4_0);
 
-      for (unsigned idx = shift ;  idx < out.size() ;  idx += 1)
-	    out.set_bit(idx, op_a_.value(idx-shift));
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = ಸರಿಸು ;  idx < out.size() ;  idx += 1)
+	    out.ಗಣ_ಬಿಟ್(idx, op_a_.value(idx-ಸರಿಸು));
 
       ptr.ptr()->send_vec4(out, 0);
 }
 
-vvp_shiftr::vvp_shiftr(unsigned wid, bool signed_flag)
+vvp_shiftr::vvp_shiftr(ಚಿಹ್ನೆರಹಿತ wid, ತಾರ್ಕಿಕ signed_flag)
 : vvp_arith_(wid), signed_flag_(signed_flag)
 {
 }
@@ -982,32 +982,32 @@ vvp_shiftr::~vvp_shiftr()
 {
 }
 
-void vvp_shiftr::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_shiftr::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                            vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
       vvp_vector4_t out (op_a_.size());
 
-      bool overflow_flag;
-      unsigned long shift = 0;
-      if (! vector4_to_value(op_b_, overflow_flag, shift)) {
+      ತಾರ್ಕಿಕ ಅತಿಪ್ರವಾಹ_flag;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಸರಿಸು = 0;
+      ಆದರೆ (! vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(op_b_, ಅತಿಪ್ರವಾಹ_flag, ಸರಿಸು)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      if (overflow_flag || shift > out.size())
-	    shift = out.size();
+      ಆದರೆ (ಅತಿಪ್ರವಾಹ_flag || ಸರಿಸು > out.size())
+	    ಸರಿಸು = out.size();
 
-      for (unsigned idx = shift ;  idx < out.size() ;  idx += 1)
-	    out.set_bit(idx-shift, op_a_.value(idx));
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = ಸರಿಸು ;  idx < out.size() ;  idx += 1)
+	    out.ಗಣ_ಬಿಟ್(idx-ಸರಿಸು, op_a_.value(idx));
 
       vvp_bit4_t pad = BIT4_0;
-      if (signed_flag_ && op_a_.size() > 0)
+      ಆದರೆ (signed_flag_ && op_a_.size() > 0)
 	    pad = op_a_.value(op_a_.size()-1);
 
-      for (unsigned idx = 0 ;  idx < shift ;  idx += 1)
-	    out.set_bit(idx+out.size()-shift, pad);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಸರಿಸು ;  idx += 1)
+	    out.ಗಣ_ಬಿಟ್(idx+out.size()-ಸರಿಸು, pad);
 
       ptr.ptr()->send_vec4(out, 0);
 }
@@ -1019,18 +1019,18 @@ vvp_arith_real_::vvp_arith_real_()
       op_b_ = 0.0;
 }
 
-void vvp_arith_real_::dispatch_operand_(vvp_net_ptr_t ptr, double bit)
+ಶೂನ್ಯ vvp_arith_real_::dispatch_ಕಾರ್ಯಾಂಶ(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್)
 {
-      switch (ptr.port()) {
-	  case 0:
-	    op_a_ = bit;
-	    break;
-	  case 1:
-	    op_b_ = bit;
-	    break;
-	  default:
-	    fprintf(stderr, "Unsupported port type %u.\n", ptr.port());
-	    assert(0);
+      ಆಯ್ಕೆ (ptr.ಪೋರ್ಟ್()) {
+	  ಸ್ಥಿತಿ 0:
+	    op_a_ = ಬಿಟ್;
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ 1:
+	    op_b_ = ಬಿಟ್;
+	    ನಿಲ್ಲಿಸು;
+	  ಪೂರ್ವನಿಯೋಜಿತ:
+	    fprintf(stderr, "Unsupported port type %u.\n", ptr.ಪೋರ್ಟ್());
+	    ಪ್ರತಿಜ್ಞಾ(0);
       }
 }
 
@@ -1044,12 +1044,12 @@ vvp_arith_mult_real::~vvp_arith_mult_real()
 {
 }
 
-void vvp_arith_mult_real::recv_real(vvp_net_ptr_t ptr, double bit,
+ಶೂನ್ಯ vvp_arith_mult_real::recv_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್,
                                     vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
-      double val = op_a_ * op_b_;
+      ದ್ವಿಗುಣ val = op_a_ * op_b_;
       ptr.ptr()->send_real(val, 0);
 }
 
@@ -1062,12 +1062,12 @@ vvp_arith_pow_real::~vvp_arith_pow_real()
 {
 }
 
-void vvp_arith_pow_real::recv_real(vvp_net_ptr_t ptr, double bit,
+ಶೂನ್ಯ vvp_arith_pow_real::recv_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್,
                                    vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
-      double val = pow(op_a_, op_b_);
+      ದ್ವಿಗುಣ val = ಘಾತ(op_a_, op_b_);
       ptr.ptr()->send_real(val, 0);
 }
 
@@ -1080,12 +1080,12 @@ vvp_arith_div_real::~vvp_arith_div_real()
 {
 }
 
-void vvp_arith_div_real::recv_real(vvp_net_ptr_t ptr, double bit,
+ಶೂನ್ಯ vvp_arith_div_real::recv_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್,
                                    vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
-      double val = op_a_ / op_b_;
+      ದ್ವಿಗುಣ val = op_a_ / op_b_;
       ptr.ptr()->send_real(val, 0);
 }
 
@@ -1098,30 +1098,30 @@ vvp_arith_mod_real::~vvp_arith_mod_real()
 {
 }
 
-void vvp_arith_mod_real::recv_real(vvp_net_ptr_t ptr, double bit,
+ಶೂನ್ಯ vvp_arith_mod_real::recv_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್,
                                    vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
-      double val = fmod(op_a_, op_b_);
+      ದ್ವಿಗುಣ val = fmod(op_a_, op_b_);
       ptr.ptr()->send_real(val, 0);
 }
 
 /* Real summation. */
-vvp_arith_sum_real::vvp_arith_sum_real()
+vvp_arith_ಮೊತ್ತ_real::vvp_arith_ಮೊತ್ತ_real()
 {
 }
 
-vvp_arith_sum_real::~vvp_arith_sum_real()
+vvp_arith_ಮೊತ್ತ_real::~vvp_arith_ಮೊತ್ತ_real()
 {
 }
 
-void vvp_arith_sum_real::recv_real(vvp_net_ptr_t ptr, double bit,
+ಶೂನ್ಯ vvp_arith_ಮೊತ್ತ_real::recv_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್,
                                    vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
-      double val = op_a_ + op_b_;
+      ದ್ವಿಗುಣ val = op_a_ + op_b_;
       ptr.ptr()->send_real(val, 0);
 }
 
@@ -1134,12 +1134,12 @@ vvp_arith_sub_real::~vvp_arith_sub_real()
 {
 }
 
-void vvp_arith_sub_real::recv_real(vvp_net_ptr_t ptr, double bit,
+ಶೂನ್ಯ vvp_arith_sub_real::recv_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್,
                                    vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
-      double val = op_a_ - op_b_;
+      ದ್ವಿಗುಣ val = op_a_ - op_b_;
       ptr.ptr()->send_real(val, 0);
 }
 
@@ -1148,14 +1148,14 @@ vvp_cmp_eq_real::vvp_cmp_eq_real()
 {
 }
 
-void vvp_cmp_eq_real::recv_real(vvp_net_ptr_t ptr, const double bit,
+ಶೂನ್ಯ vvp_cmp_eq_real::recv_real(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ ದ್ವಿಗುಣ ಬಿಟ್,
                                 vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
       vvp_vector4_t res (1);
-      if (op_a_ == op_b_) res.set_bit(0, BIT4_1);
-      else res.set_bit(0, BIT4_0);
+      ಆದರೆ (op_a_ == op_b_) res.ಗಣ_ಬಿಟ್(0, BIT4_1);
+      ಇಲ್ಲದಿದ್ದರೆ res.ಗಣ_ಬಿಟ್(0, BIT4_0);
 
       ptr.ptr()->send_vec4(res, 0);
 }
@@ -1165,14 +1165,14 @@ vvp_cmp_ne_real::vvp_cmp_ne_real()
 {
 }
 
-void vvp_cmp_ne_real::recv_real(vvp_net_ptr_t ptr, const double bit,
+ಶೂನ್ಯ vvp_cmp_ne_real::recv_real(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ ದ್ವಿಗುಣ ಬಿಟ್,
                                 vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
       vvp_vector4_t res (1);
-      if (op_a_ != op_b_) res.set_bit(0, BIT4_1);
-      else res.set_bit(0, BIT4_0);
+      ಆದರೆ (op_a_ != op_b_) res.ಗಣ_ಬಿಟ್(0, BIT4_1);
+      ಇಲ್ಲದಿದ್ದರೆ res.ಗಣ_ಬಿಟ್(0, BIT4_0);
 
       ptr.ptr()->send_vec4(res, 0);
 }
@@ -1182,14 +1182,14 @@ vvp_cmp_ge_real::vvp_cmp_ge_real()
 {
 }
 
-void vvp_cmp_ge_real::recv_real(vvp_net_ptr_t ptr, const double bit,
+ಶೂನ್ಯ vvp_cmp_ge_real::recv_real(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ ದ್ವಿಗುಣ ಬಿಟ್,
                                 vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
       vvp_vector4_t res (1);
-      if (op_a_ >= op_b_) res.set_bit(0, BIT4_1);
-      else res.set_bit(0, BIT4_0);
+      ಆದರೆ (op_a_ >= op_b_) res.ಗಣ_ಬಿಟ್(0, BIT4_1);
+      ಇಲ್ಲದಿದ್ದರೆ res.ಗಣ_ಬಿಟ್(0, BIT4_0);
 
       ptr.ptr()->send_vec4(res, 0);
 }
@@ -1199,14 +1199,14 @@ vvp_cmp_gt_real::vvp_cmp_gt_real()
 {
 }
 
-void vvp_cmp_gt_real::recv_real(vvp_net_ptr_t ptr, const double bit,
+ಶೂನ್ಯ vvp_cmp_gt_real::recv_real(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ ದ್ವಿಗುಣ ಬಿಟ್,
                                 vvp_context_t)
 {
-      dispatch_operand_(ptr, bit);
+      dispatch_ಕಾರ್ಯಾಂಶ(ptr, ಬಿಟ್);
 
       vvp_vector4_t res (1);
-      if (op_a_ > op_b_) res.set_bit(0, BIT4_1);
-      else res.set_bit(0, BIT4_0);
+      ಆದರೆ (op_a_ > op_b_) res.ಗಣ_ಬಿಟ್(0, BIT4_1);
+      ಇಲ್ಲದಿದ್ದರೆ res.ಗಣ_ಬಿಟ್(0, BIT4_0);
 
       ptr.ptr()->send_vec4(res, 0);
 }

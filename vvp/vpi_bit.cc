@@ -27,134 +27,134 @@
 # include <cassert>
 
 
-static const __vpiBit*bit_from_handle(const __vpiHandle*ref)
+ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ __vpiBit*ಬಿಟ್_from_handle(ಸ್ಥಿರಾಂಕ __vpiHandle*ref)
 {
-      if (ref == NULL) return NULL;
-      const __vpiBit::as_bit_t*ptr = dynamic_cast<const __vpiBit::as_bit_t*> (ref);
-      if (ptr == NULL) return NULL;
-      return reinterpret_cast<const struct __vpiBit*>(ref);
+      ಆದರೆ (ref == ಖಾಲಿ) ಹಿಂತಿರುಗಿ ಖಾಲಿ;
+      ಸ್ಥಿರಾಂಕ __vpiBit::as_ಬಿಟ್_t*ptr = dynamic_cast<ಸ್ಥಿರಾಂಕ __vpiBit::as_ಬಿಟ್_t*> (ref);
+      ಆದರೆ (ptr == ಖಾಲಿ) ಹಿಂತಿರುಗಿ ಖಾಲಿ;
+      ಹಿಂತಿರುಗಿ reinterpret_cast<ಸ್ಥಿರಾಂಕ ರಚನೆ __vpiBit*>(ref);
 }
 
-static __vpiBit*bit_from_handle(__vpiHandle*ref)
+ಸ್ಥಿರ __vpiBit*ಬಿಟ್_from_handle(__vpiHandle*ref)
 {
-      if (ref == NULL) return NULL;
-      const __vpiBit::as_bit_t*ptr = dynamic_cast<__vpiBit::as_bit_t*> (ref);
-      if (ptr == NULL) return NULL;
-      return reinterpret_cast<struct __vpiBit*>(ref);
+      ಆದರೆ (ref == ಖಾಲಿ) ಹಿಂತಿರುಗಿ ಖಾಲಿ;
+      ಸ್ಥಿರಾಂಕ __vpiBit::as_ಬಿಟ್_t*ptr = dynamic_cast<__vpiBit::as_ಬಿಟ್_t*> (ref);
+      ಆದರೆ (ptr == ಖಾಲಿ) ಹಿಂತಿರುಗಿ ಖಾಲಿ;
+      ಹಿಂತಿರುಗಿ reinterpret_cast<ರಚನೆ __vpiBit*>(ref);
 }
 
-static int bit_get_type(const __vpiBit*rfp)
+ಸ್ಥಿರ ಪೂರ್ಣಾಂಕ ಬಿಟ್_get_type(ಸ್ಥಿರಾಂಕ __vpiBit*rfp)
 {
-      assert(rfp);
+      ಪ್ರತಿಜ್ಞಾ(rfp);
 
-      const struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ಸ್ಥಿರಾಂಕ ರಚನೆ __vpiSignal*ಪೋಷಕ = rfp->get_ಪೋಷಕ();
+      ಪ್ರತಿಜ್ಞಾ(ಪೋಷಕ);
 
-      switch (parent->get_type_code()) {
-	case vpiNet:
-	    return vpiNetBit;
-	case vpiReg:
-	    return vpiRegBit;
+      ಆಯ್ಕೆ (ಪೋಷಕ->get_type_ಸಂಕೇತ()) {
+	ಸ್ಥಿತಿ vpiNet:
+	    ಹಿಂತಿರುಗಿ vpi_Net_ಬಿಟ್;
+	ಸ್ಥಿತಿ vpiReg:
+	    ಹಿಂತಿರುಗಿ vpi_Reg_ಬಿಟ್;
       }
-      assert(0);
-      return 0;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ 0;
 }
 
-static int bit_get(int code, vpiHandle ref)
+ಸ್ಥಿರ ಪೂರ್ಣಾಂಕ ಬಿಟ್_get(ಪೂರ್ಣಾಂಕ code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      ರಚನೆ __vpiBit*rfp = ಬಿಟ್_from_handle(ref);
+      ಪ್ರತಿಜ್ಞಾ(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ರಚನೆ __vpiSignal*ಪೋಷಕ = rfp->get_ಪೋಷಕ();
+      ಪ್ರತಿಜ್ಞಾ(ಪೋಷಕ);
 
-      switch (code) {
-	case vpiArray:  // A bit is not an array
-	    return 0;
+      ಆಯ್ಕೆ (code) {
+	ಸ್ಥಿತಿ vpiArray:  // A bit is not an array
+	    ಹಿಂತಿರುಗಿ 0;
 
-	case vpiAutomatic:
-	    return vpi_get(vpiAutomatic, parent);
+	ಸ್ಥಿತಿ vpiAutomatic:
+	    ಹಿಂತಿರುಗಿ vpi_get(vpiAutomatic, ಪೋಷಕ);
 
-	case vpiIndex:
+	ಸ್ಥಿತಿ vpi_ಸೂಚ್ಯಂಕ_2:
 	    {
-		  s_vpi_value vp;
+		  s_vpi_ಮೌಲ್ಯ vp;
 		  vp.format = vpiIntVal;
-		  vpi_get_value(rfp->index, &vp);
-		  return vp.value.integer;
+		  vpi_get_ಮೌಲ್ಯ(rfp->ಸೂಚ್ಯಂಕ, &vp);
+		  ಹಿಂತಿರುಗಿ vp.value.integer;
 	    }
 
-	case vpiLineNo:
-	    return vpi_get(vpiLineNo, parent);
+	ಸ್ಥಿತಿ vpi_ಸಾಲು_No:
+	    ಹಿಂತಿರುಗಿ vpi_get(vpi_ಸಾಲು_No, ಪೋಷಕ);
 
-	case vpiScalar:  // A bit is a scalar
-	    return 1;
+	ಸ್ಥಿತಿ vpiScalar:  // A bit is a scalar
+	    ಹಿಂತಿರುಗಿ 1;
 
-	case vpiSigned:  // A bit is unsigned
-	    return 0;
+	ಸ್ಥಿತಿ vpiSigned:  // A bit is unsigned
+	    ಹಿಂತಿರುಗಿ 0;
 
-	case vpiSize:  // A bit has a width of 1
-	    return 1;
+	ಸ್ಥಿತಿ vpi_ಗಾತ್ರ:  // A bit has a width of 1
+	    ಹಿಂತಿರುಗಿ 1;
 
-	case vpiVector:  // A bit is not a vector
-	    return 0;
+	ಸ್ಥಿತಿ vpi_ಸದಿಶ:  // A bit is not a vector
+	    ಹಿಂತಿರುಗಿ 0;
 
-	default:
+	ಪೂರ್ವನಿಯೋಜಿತ:
 	    fprintf(stderr, "VPI error: unknown bit_get property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    ಹಿಂತಿರುಗಿ vpiUndefined;
       }
 }
 
-static char* bit_get_str(int code, vpiHandle ref)
+ಸ್ಥಿರ ಅಕ್ಷರ* ಬಿಟ್_get_str(ಪೂರ್ಣಾಂಕ code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      ರಚನೆ __vpiBit*rfp = ಬಿಟ್_from_handle(ref);
+      ಪ್ರತಿಜ್ಞಾ(rfp);
 
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      ಆದರೆ (code == vpiFile) {  // Not implemented for now!
+            ಹಿಂತಿರುಗಿ simple_ಗಣ_rbuf_str(file_ಹೆಸರುಗಳು[0]);
       }
 
-      if ((code != vpiName) && (code != vpiFullName)) return NULL;
+      ಆದರೆ ((code != vpiName) && (code != vpi_ತುಂಬಿದ_Name)) ಹಿಂತಿರುಗಿ ಖಾಲಿ;
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ರಚನೆ __vpiSignal*ಪೋಷಕ = rfp->get_ಪೋಷಕ();
+      ಪ್ರತಿಜ್ಞಾ(ಪೋಷಕ);
 
-      char *nm;
-      const char *ixs;
-      nm = strdup(vpi_get_str(vpiName, parent));
-      s_vpi_value vp;
+      ಅಕ್ಷರ *nm;
+      ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ *ixs;
+      nm = strdup(vpi_get_str(vpiName, ಪೋಷಕ));
+      s_vpi_ಮೌಲ್ಯ vp;
       vp.format = vpiDecStrVal;
-      vpi_get_value(rfp->index, &vp);
+      vpi_get_ಮೌಲ್ಯ(rfp->ಸೂಚ್ಯಂಕ, &vp);
       ixs = vp.value.str;
 
-      char *rbuf = generic_get_str(code, vpip_scope(parent), nm, ixs);
-      free(nm);
-      return rbuf;
+      ಅಕ್ಷರ *rbuf = generic_get_str(code, vpip_scope(ಪೋಷಕ), nm, ixs);
+      ಬಿಡುಗಡೆ(nm);
+      ಹಿಂತಿರುಗಿ rbuf;
 }
 
-static vpiHandle bit_get_handle(int code, vpiHandle ref)
+ಸ್ಥಿರ vpiHandle ಬಿಟ್_get_handle(ಪೂರ್ಣಾಂಕ code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      ರಚನೆ __vpiBit*rfp = ಬಿಟ್_from_handle(ref);
+      ಪ್ರತಿಜ್ಞಾ(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ರಚನೆ __vpiSignal*ಪೋಷಕ = rfp->get_ಪೋಷಕ();
+      ಪ್ರತಿಜ್ಞಾ(ಪೋಷಕ);
 
-      switch (code) {
-	case vpiIndex:
-	    return rfp->index;
+      ಆಯ್ಕೆ (code) {
+	ಸ್ಥಿತಿ vpi_ಸೂಚ್ಯಂಕ_2:
+	    ಹಿಂತಿರುಗಿ rfp->ಸೂಚ್ಯಂಕ;
 
-	case vpiParent:
-	    return parent;
+	ಸ್ಥಿತಿ vpi_ಪೋಷಕ:
+	    ಹಿಂತಿರುಗಿ ಪೋಷಕ;
 
-	case vpiScope:
-	    return vpi_handle(vpiScope, parent);
+	ಸ್ಥಿತಿ vpiScope:
+	    ಹಿಂತಿರುಗಿ vpi_handle(vpiScope, ಪೋಷಕ);
 
-	case vpiModule:
-	    return vpi_handle(vpiModule, parent);
+	ಸ್ಥಿತಿ vpiModule:
+	    ಹಿಂತಿರುಗಿ vpi_handle(vpiModule, ಪೋಷಕ);
       }
 
-    return 0;
+    ಹಿಂತಿರುಗಿ 0;
 }
 
 /*
@@ -177,54 +177,54 @@ static vpiHandle bit_index(int idx, vpiHandle ref)
 }
 */
 
-static void bit_get_value(vpiHandle ref, s_vpi_value*vp)
+ಸ್ಥಿರ ಶೂನ್ಯ ಬಿಟ್_get_ಮೌಲ್ಯ(vpiHandle ref, s_vpi_ಮೌಲ್ಯ*vp)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      ರಚನೆ __vpiBit*rfp = ಬಿಟ್_from_handle(ref);
+      ಪ್ರತಿಜ್ಞಾ(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ರಚನೆ __vpiSignal*ಪೋಷಕ = rfp->get_ಪೋಷಕ();
+      ಪ್ರತಿಜ್ಞಾ(ಪೋಷಕ);
 
-      parent->get_bit_value(rfp, vp);
+      ಪೋಷಕ->get_ಬಿಟ್_ಮೌಲ್ಯ(rfp, vp);
 }
 
-static vpiHandle bit_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
+ಸ್ಥಿರ vpiHandle ಬಿಟ್_put_ಮೌಲ್ಯ(vpiHandle ref, s_vpi_ಮೌಲ್ಯ*vp, ಪೂರ್ಣಾಂಕ flags)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      ರಚನೆ __vpiBit*rfp = ಬಿಟ್_from_handle(ref);
+      ಪ್ರತಿಜ್ಞಾ(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ರಚನೆ __vpiSignal*ಪೋಷಕ = rfp->get_ಪೋಷಕ();
+      ಪ್ರತಿಜ್ಞಾ(ಪೋಷಕ);
 
-      return parent->put_bit_value(rfp, vp, flags);
+      ಹಿಂತಿರುಗಿ ಪೋಷಕ->put_ಬಿಟ್_ಮೌಲ್ಯ(rfp, vp, flags);
 }
 
 
-int __vpiBit::get_index(void) const
+ಪೂರ್ಣಾಂಕ __vpiBit::get_ಸೂಚ್ಯಂಕ(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ
 {
-      s_vpi_value vp;
+      s_vpi_ಮೌಲ್ಯ vp;
       vp.format = vpiIntVal;
-      vpi_get_value(index, &vp);
-      return vp.value.integer;
+      vpi_get_ಮೌಲ್ಯ(ಸೂಚ್ಯಂಕ, &vp);
+      ಹಿಂತಿರುಗಿ vp.value.integer;
 }
 
-int __vpiBit::as_bit_t::get_type_code(void) const
-{ return bit_get_type(bit_from_handle(this)); }
+ಪೂರ್ಣಾಂಕ __vpiBit::as_ಬಿಟ್_t::get_type_ಸಂಕೇತ(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ
+{ ಹಿಂತಿರುಗಿ ಬಿಟ್_get_type(ಬಿಟ್_from_handle(ಇದು)); }
 
-int __vpiBit::as_bit_t::vpi_get(int code)
-{ return bit_get(code, this); }
+ಪೂರ್ಣಾಂಕ __vpiBit::as_ಬಿಟ್_t::vpi_get(ಪೂರ್ಣಾಂಕ code)
+{ ಹಿಂತಿರುಗಿ ಬಿಟ್_get(code, ಇದು); }
 
-char* __vpiBit::as_bit_t::vpi_get_str(int code)
-{ return bit_get_str(code, this); }
+ಅಕ್ಷರ* __vpiBit::as_ಬಿಟ್_t::vpi_get_str(ಪೂರ್ಣಾಂಕ code)
+{ ಹಿಂತಿರುಗಿ ಬಿಟ್_get_str(code, ಇದು); }
 
-void __vpiBit::as_bit_t::vpi_get_value(p_vpi_value val)
-{ bit_get_value(this, val); }
+ಶೂನ್ಯ __vpiBit::as_ಬಿಟ್_t::vpi_get_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ val)
+{ ಬಿಟ್_get_ಮೌಲ್ಯ(ಇದು, val); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_put_value(p_vpi_value val, int flags)
-{ return bit_put_value(this, val, flags); }
+vpiHandle __vpiBit::as_ಬಿಟ್_t::vpi_put_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ val, ಪೂರ್ಣಾಂಕ flags)
+{ ಹಿಂತಿರುಗಿ ಬಿಟ್_put_ಮೌಲ್ಯ(ಇದು, val, flags); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_handle(int code)
-{ return bit_get_handle(code, this); }
+vpiHandle __vpiBit::as_ಬಿಟ್_t::vpi_handle(ಪೂರ್ಣಾಂಕ code)
+{ ಹಿಂತಿರುಗಿ ಬಿಟ್_get_handle(code, ಇದು); }
 
 // FIXME: How are delayed put values handled?
 //vpiHandle __vpiBit::as_bit_t::vpi_iterate(int code) // FIXME: Is this needed?

@@ -26,60 +26,60 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-static int iterator_free_object(vpiHandle ref)
+ಸ್ಥಿರ ಪೂರ್ಣಾಂಕ iterator_free_object(vpiHandle ref)
 {
-      struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
-      assert(hp);
+      ರಚನೆ __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
+      ಪ್ರತಿಜ್ಞಾ(hp);
 
-      if (hp->free_args_flag)
-	    free(hp->args);
+      ಆದರೆ (hp->free_ವಾದಗಳು_flag)
+	    ಬಿಡುಗಡೆ(hp->ವಾದಗಳು);
 
-      delete hp;
-      return 1;
+      ಅಳಿಸು hp;
+      ಹಿಂತಿರುಗಿ 1;
 }
 
-inline __vpiIterator::__vpiIterator()
+ಸಾಲೊಳಗೆ __vpiIterator::__vpiIterator()
 { }
 
-int __vpiIterator::get_type_code(void) const
-{ return vpiIterator; }
+ಪೂರ್ಣಾಂಕ __vpiIterator::get_type_ಸಂಕೇತ(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ
+{ ಹಿಂತಿರುಗಿ vpiIterator; }
 
-__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(void)
-{ return &iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(ಶೂನ್ಯ)
+{ ಹಿಂತಿರುಗಿ &iterator_free_object; }
 
-vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
-			     bool free_args_flag)
+vpiHandle vpip_make_iterator(ಚಿಹ್ನೆರಹಿತ nargs, vpiHandle*ವಾದಗಳು,
+			     ತಾರ್ಕಿಕ free_ವಾದಗಳು_flag)
 {
-      struct __vpiIterator*res = new __vpiIterator;
-      res->args = args;
+      ರಚನೆ __vpiIterator*res = ಹೊಸ __vpiIterator;
+      res->ವಾದಗಳು = ವಾದಗಳು;
       res->nargs = nargs;
-      res->next  = 0;
+      res->ಮುಂದಿನ_2  = 0;
 
-      res->free_args_flag = free_args_flag;
+      res->free_ವಾದಗಳು_flag = free_ವಾದಗಳು_flag;
 
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }
 
 /*
  * The vpi_scan function only applies to iterators. It returns the
  * next vpiHandle in the iterated list.
  */
-vpiHandle vpi_scan(vpiHandle ref)
+vpiHandle vpi_ಪರಿಶೀಲನೆ(vpiHandle ref)
 {
-      if (ref == 0) {
+      ಆದರೆ (ref == 0) {
 	    fprintf(stderr, "ERROR: NULL handle passed to vpi_scan.\n");
-	    assert(0);
-	    return 0;
+	    ಪ್ರತಿಜ್ಞಾ(0);
+	    ಹಿಂತಿರುಗಿ 0;
       }
 
-      if (struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
-	    if (hp->next == hp->nargs) {
+      ಆದರೆ (ರಚನೆ __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
+	    ಆದರೆ (hp->ಮುಂದಿನ_2 == hp->nargs) {
 		  vpi_free_object(ref);
-		  return 0;
+		  ಹಿಂತಿರುಗಿ 0;
 	    }
 
-	    return hp->args[hp->next++];
+	    ಹಿಂತಿರುಗಿ hp->ವಾದಗಳು[hp->ಮುಂದಿನ_2++];
       }
 
-      return ref->vpi_index(0);
+      ಹಿಂತಿರುಗಿ ref->vpi_ಸೂಚ್ಯಂಕ(0);
 }

@@ -22,593 +22,593 @@
 # include  "vpi_priv.h"
 # include  "config.h"
 # include  <map>
-#ifdef CHECK_WITH_VALGRIND
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 # include  <cassert>
 
-using namespace std;
+ಬಳಸಿ ನಾಮಾಕಾಶ std;
 
 /*
  * This class_property_t class is an abstract base class for
  * representing a property of an instance. The definition keeps and
  * array (of pointers) of these in order to define the the class.
  */
-class class_property_t {
-    public:
-      inline class_property_t() { offset_ = 0; }
-      virtual ~class_property_t() =0;
+ವರ್ಗ class_property_t {
+    ಸಾರ್ವಜನಿಕ:
+      ಸಾಲೊಳಗೆ class_property_t() { ಸ್ಥಾನಾಂತರ = 0; }
+      ವಾಸ್ತವಿಕ ~class_property_t() =0;
 	// How much space does an instance of this property require?
-      virtual size_t instance_size() const =0;
+      ವಾಸ್ತವಿಕ size_t instance_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ =0;
 
-      void set_offset(size_t off) { offset_ = off; }
+      ಶೂನ್ಯ ಗಣ_ಸ್ಥಾನಾಂತರ(size_t off) { ಸ್ಥಾನಾಂತರ = off; }
 
-    public:
-      virtual void construct(char*buf) const;
-      virtual void destruct(char*buf) const;
+    ಸಾರ್ವಜನಿಕ:
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ construct(ಅಕ್ಷರ*buf) ಸ್ಥಿರಾಂಕ;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ destruct(ಅಕ್ಷರ*buf) ಸ್ಥಿರಾಂಕ;
 
-      virtual void set_vec4(char*buf, const vvp_vector4_t&val);
-      virtual void get_vec4(char*buf, vvp_vector4_t&val);
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ ಗಣ_vec4(ಅಕ್ಷರ*buf, ಸ್ಥಿರಾಂಕ vvp_vector4_t&val);
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ get_vec4(ಅಕ್ಷರ*buf, vvp_vector4_t&val);
 
-      virtual void set_real(char*buf, double val);
-      virtual double get_real(char*buf);
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ ಗಣ_real(ಅಕ್ಷರ*buf, ದ್ವಿಗುಣ val);
+      ವಾಸ್ತವಿಕ ದ್ವಿಗುಣ get_real(ಅಕ್ಷರ*buf);
 
-      virtual void set_string(char*buf, const std::string&val);
-      virtual string get_string(char*buf);
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ ಗಣ_string(ಅಕ್ಷರ*buf, ಸ್ಥಿರಾಂಕ std::string&val);
+      ವಾಸ್ತವಿಕ string get_string(ಅಕ್ಷರ*buf);
 
-      virtual void set_object(char*buf, const vvp_object_t&val, uint64_t element);
-      virtual void get_object(char*buf, vvp_object_t&val, uint64_t element);
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ ಗಣ_object(ಅಕ್ಷರ*buf, ಸ್ಥಿರಾಂಕ vvp_object_t&val, uint64_t element);
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ get_object(ಅಕ್ಷರ*buf, vvp_object_t&val, uint64_t element);
 
 	// Implement polymorphic shallow copy.
-      virtual void copy(char*buf, char*src) = 0;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ copy(ಅಕ್ಷರ*buf, ಅಕ್ಷರ*src) = 0;
 
-    protected:
-      size_t offset_;
+    ಸಂರಕ್ಷಿತ:
+      size_t ಸ್ಥಾನಾಂತರ;
 };
 
 class_property_t::~class_property_t()
 {
 }
 
-void class_property_t::construct(char*) const
+ಶೂನ್ಯ class_property_t::construct(ಅಕ್ಷರ*) ಸ್ಥಿರಾಂಕ
 {
 }
 
-void class_property_t::destruct(char*) const
+ಶೂನ್ಯ class_property_t::destruct(ಅಕ್ಷರ*) ಸ್ಥಿರಾಂಕ
 {
 }
 
-void class_property_t::set_vec4(char*, const vvp_vector4_t&)
+ಶೂನ್ಯ class_property_t::ಗಣ_vec4(ಅಕ್ಷರ*, ಸ್ಥಿರಾಂಕ vvp_vector4_t&)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void class_property_t::get_vec4(char*, vvp_vector4_t&)
+ಶೂನ್ಯ class_property_t::get_vec4(ಅಕ್ಷರ*, vvp_vector4_t&)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void class_property_t::set_real(char*, double)
+ಶೂನ್ಯ class_property_t::ಗಣ_real(ಅಕ್ಷರ*, ದ್ವಿಗುಣ)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-double class_property_t::get_real(char*)
+ದ್ವಿಗುಣ class_property_t::get_real(ಅಕ್ಷರ*)
 {
-      assert(0);
-      return 0.0;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ 0.0;
 }
 
-void class_property_t::set_string(char*, const string&)
+ಶೂನ್ಯ class_property_t::ಗಣ_string(ಅಕ್ಷರ*, ಸ್ಥಿರಾಂಕ string&)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-string class_property_t::get_string(char*)
+string class_property_t::get_string(ಅಕ್ಷರ*)
 {
-      assert(0);
-      return "";
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ "";
 }
 
-void class_property_t::set_object(char*, const vvp_object_t&, uint64_t)
+ಶೂನ್ಯ class_property_t::ಗಣ_object(ಅಕ್ಷರ*, ಸ್ಥಿರಾಂಕ vvp_object_t&, uint64_t)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void class_property_t::get_object(char*, vvp_object_t&, uint64_t)
+ಶೂನ್ಯ class_property_t::get_object(ಅಕ್ಷರ*, vvp_object_t&, uint64_t)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
 /*
  */
-template <class T> class property_atom : public class_property_t {
-    public:
-      inline explicit property_atom(void) { }
+ಮಾದರಿ <ವರ್ಗ T> ವರ್ಗ property_atom : ಸಾರ್ವಜನಿಕ class_property_t {
+    ಸಾರ್ವಜನಿಕ:
+      ಸಾಲೊಳಗೆ ಸ್ಪಷ್ಟ property_atom(ಶೂನ್ಯ) { }
       ~property_atom() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override { ಹಿಂತಿರುಗಿ ಗಾತ್ರ(T); }
 
-    public:
-      void construct(char*buf) const override
-      { T*tmp = reinterpret_cast<T*> (buf+offset_);
+    ಸಾರ್ವಜನಿಕ:
+      ಶೂನ್ಯ construct(ಅಕ್ಷರ*buf) ಸ್ಥಿರಾಂಕ override
+      { T*tmp = reinterpret_cast<T*> (buf+ಸ್ಥಾನಾಂತರ);
 	*tmp = 0;
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      ಶೂನ್ಯ ಗಣ_vec4(ಅಕ್ಷರ*buf, ಸ್ಥಿರಾಂಕ vvp_vector4_t&val) override;
+      ಶೂನ್ಯ get_vec4(ಅಕ್ಷರ*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      ಶೂನ್ಯ copy(ಅಕ್ಷರ*dst, ಅಕ್ಷರ*src) override;
 };
 
-class property_bit : public class_property_t {
-    public:
-      explicit inline property_bit(size_t wid): wid_(wid) { }
-      ~property_bit() override { }
+ವರ್ಗ property_ಬಿಟ್ : ಸಾರ್ವಜನಿಕ class_property_t {
+    ಸಾರ್ವಜನಿಕ:
+      ಸ್ಪಷ್ಟ ಸಾಲೊಳಗೆ property_ಬಿಟ್(size_t wid): wid_(wid) { }
+      ~property_ಬಿಟ್() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector2_t); }
+      size_t instance_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override { ಹಿಂತಿರುಗಿ ಗಾತ್ರ(vvp_vector2_t); }
 
-    public:
-      void construct(char*buf) const override
-      { new (buf+offset_) vvp_vector2_t (0, wid_); }
+    ಸಾರ್ವಜನಿಕ:
+      ಶೂನ್ಯ construct(ಅಕ್ಷರ*buf) ಸ್ಥಿರಾಂಕ override
+      { ಹೊಸ (buf+ಸ್ಥಾನಾಂತರ) vvp_vector2_t (0, wid_); }
 
-      void destruct(char*buf) const override
-      { vvp_vector2_t*tmp = reinterpret_cast<vvp_vector2_t*>(buf+offset_);
+      ಶೂನ್ಯ destruct(ಅಕ್ಷರ*buf) ಸ್ಥಿರಾಂಕ override
+      { vvp_vector2_t*tmp = reinterpret_cast<vvp_vector2_t*>(buf+ಸ್ಥಾನಾಂತರ);
 	tmp->~vvp_vector2_t();
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      ಶೂನ್ಯ ಗಣ_vec4(ಅಕ್ಷರ*buf, ಸ್ಥಿರಾಂಕ vvp_vector4_t&val) override;
+      ಶೂನ್ಯ get_vec4(ಅಕ್ಷರ*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      ಶೂನ್ಯ copy(ಅಕ್ಷರ*dst, ಅಕ್ಷರ*src) override;
 
-    private:
+    ಖಾಸಗಿ:
       size_t wid_;
 };
 
-class property_logic : public class_property_t {
-    public:
-      explicit inline property_logic(size_t wid): wid_(wid) { }
+ವರ್ಗ property_logic : ಸಾರ್ವಜನಿಕ class_property_t {
+    ಸಾರ್ವಜನಿಕ:
+      ಸ್ಪಷ್ಟ ಸಾಲೊಳಗೆ property_logic(size_t wid): wid_(wid) { }
       ~property_logic() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector4_t); }
+      size_t instance_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override { ಹಿಂತಿರುಗಿ ಗಾತ್ರ(vvp_vector4_t); }
 
-    public:
-      void construct(char*buf) const override
-      { new (buf+offset_) vvp_vector4_t (wid_); }
+    ಸಾರ್ವಜನಿಕ:
+      ಶೂನ್ಯ construct(ಅಕ್ಷರ*buf) ಸ್ಥಿರಾಂಕ override
+      { ಹೊಸ (buf+ಸ್ಥಾನಾಂತರ) vvp_vector4_t (wid_); }
 
-      void destruct(char*buf) const override
-      { vvp_vector4_t*tmp = reinterpret_cast<vvp_vector4_t*>(buf+offset_);
+      ಶೂನ್ಯ destruct(ಅಕ್ಷರ*buf) ಸ್ಥಿರಾಂಕ override
+      { vvp_vector4_t*tmp = reinterpret_cast<vvp_vector4_t*>(buf+ಸ್ಥಾನಾಂತರ);
 	tmp->~vvp_vector4_t();
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      ಶೂನ್ಯ ಗಣ_vec4(ಅಕ್ಷರ*buf, ಸ್ಥಿರಾಂಕ vvp_vector4_t&val) override;
+      ಶೂನ್ಯ get_vec4(ಅಕ್ಷರ*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      ಶೂನ್ಯ copy(ಅಕ್ಷರ*dst, ಅಕ್ಷರ*src) override;
 
-    private:
+    ಖಾಸಗಿ:
       size_t wid_;
 };
 
-template <class T> class property_real : public class_property_t {
-    public:
-      inline explicit property_real(void) { }
+ಮಾದರಿ <ವರ್ಗ T> ವರ್ಗ property_real : ಸಾರ್ವಜನಿಕ class_property_t {
+    ಸಾರ್ವಜನಿಕ:
+      ಸಾಲೊಳಗೆ ಸ್ಪಷ್ಟ property_real(ಶೂನ್ಯ) { }
       ~property_real() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override { ಹಿಂತಿರುಗಿ ಗಾತ್ರ(T); }
 
-    public:
-      void construct(char*buf) const override
-      { T*tmp = reinterpret_cast<T*> (buf+offset_);
+    ಸಾರ್ವಜನಿಕ:
+      ಶೂನ್ಯ construct(ಅಕ್ಷರ*buf) ಸ್ಥಿರಾಂಕ override
+      { T*tmp = reinterpret_cast<T*> (buf+ಸ್ಥಾನಾಂತರ);
 	*tmp = 0.0;
       }
 
-      void set_real(char*buf, double val) override;
-      double get_real(char*buf) override;
+      ಶೂನ್ಯ ಗಣ_real(ಅಕ್ಷರ*buf, ದ್ವಿಗುಣ val) override;
+      ದ್ವಿಗುಣ get_real(ಅಕ್ಷರ*buf) override;
 
-      void copy(char*dst, char*src) override;
+      ಶೂನ್ಯ copy(ಅಕ್ಷರ*dst, ಅಕ್ಷರ*src) override;
 };
 
-class property_string : public class_property_t {
-    public:
-      inline explicit property_string(void) { }
+ವರ್ಗ property_string : ಸಾರ್ವಜನಿಕ class_property_t {
+    ಸಾರ್ವಜನಿಕ:
+      ಸಾಲೊಳಗೆ ಸ್ಪಷ್ಟ property_string(ಶೂನ್ಯ) { }
       ~property_string() override { }
 
-      size_t instance_size() const override { return sizeof(std::string); }
+      size_t instance_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override { ಹಿಂತಿರುಗಿ ಗಾತ್ರ(std::string); }
 
-    public:
-      void construct(char*buf) const override
-      { /* string*tmp = */ new (buf+offset_) string; }
+    ಸಾರ್ವಜನಿಕ:
+      ಶೂನ್ಯ construct(ಅಕ್ಷರ*buf) ಸ್ಥಿರಾಂಕ override
+      { /* string*tmp = */ ಹೊಸ (buf+ಸ್ಥಾನಾಂತರ) string; }
 
-      void destruct(char*buf) const override
-      { string*tmp = reinterpret_cast<string*> (buf+offset_);
+      ಶೂನ್ಯ destruct(ಅಕ್ಷರ*buf) ಸ್ಥಿರಾಂಕ override
+      { string*tmp = reinterpret_cast<string*> (buf+ಸ್ಥಾನಾಂತರ);
 	tmp->~string();
       }
 
-      void set_string(char*buf, const string&) override;
-      string get_string(char*buf) override;
+      ಶೂನ್ಯ ಗಣ_string(ಅಕ್ಷರ*buf, ಸ್ಥಿರಾಂಕ string&) override;
+      string get_string(ಅಕ್ಷರ*buf) override;
 
-      void copy(char*dst, char*src) override;
+      ಶೂನ್ಯ copy(ಅಕ್ಷರ*dst, ಅಕ್ಷರ*src) override;
 };
 
-class property_object : public class_property_t {
-    public:
-      inline explicit property_object(uint64_t as): array_size_(as==0? 1 : as) { }
+ವರ್ಗ property_object : ಸಾರ್ವಜನಿಕ class_property_t {
+    ಸಾರ್ವಜನಿಕ:
+      ಸಾಲೊಳಗೆ ಸ್ಪಷ್ಟ property_object(uint64_t as): array_ಗಾತ್ರ(as==0? 1 : as) { }
       ~property_object() override { }
 
-      size_t instance_size() const override { return array_size_ * sizeof(vvp_object_t); }
+      size_t instance_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ override { ಹಿಂತಿರುಗಿ array_ಗಾತ್ರ * ಗಾತ್ರ(vvp_object_t); }
 
-    public:
-      void construct(char*buf) const override;
+    ಸಾರ್ವಜನಿಕ:
+      ಶೂನ್ಯ construct(ಅಕ್ಷರ*buf) ಸ್ಥಿರಾಂಕ override;
 
-      void destruct(char*buf) const override;
+      ಶೂನ್ಯ destruct(ಅಕ್ಷರ*buf) ಸ್ಥಿರಾಂಕ override;
 
-      void set_object(char*buf, const vvp_object_t&, uint64_t) override;
-      void get_object(char*buf, vvp_object_t&, uint64_t) override;
+      ಶೂನ್ಯ ಗಣ_object(ಅಕ್ಷರ*buf, ಸ್ಥಿರಾಂಕ vvp_object_t&, uint64_t) override;
+      ಶೂನ್ಯ get_object(ಅಕ್ಷರ*buf, vvp_object_t&, uint64_t) override;
 
-      void copy(char*dst, char*src) override;
+      ಶೂನ್ಯ copy(ಅಕ್ಷರ*dst, ಅಕ್ಷರ*src) override;
 
-    private:
-      size_t array_size_;
+    ಖಾಸಗಿ:
+      size_t array_ಗಾತ್ರ;
 };
 
-template <class T> void property_atom<T>::set_vec4(char*buf, const vvp_vector4_t&val)
+ಮಾದರಿ <ವರ್ಗ T> ಶೂನ್ಯ property_atom<T>::ಗಣ_vec4(ಅಕ್ಷರ*buf, ಸ್ಥಿರಾಂಕ vvp_vector4_t&val)
 {
-      T*tmp = reinterpret_cast<T*> (buf+offset_);
-      bool flag = vector4_to_value(val, *tmp, true, false);
-      assert(flag);
+      T*tmp = reinterpret_cast<T*> (buf+ಸ್ಥಾನಾಂತರ);
+      ತಾರ್ಕಿಕ flag = vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(val, *tmp, ನಿಜ, ಸುಳ್ಳು);
+      ಪ್ರತಿಜ್ಞಾ(flag);
 }
 
-template <class T> void property_atom<T>::get_vec4(char*buf, vvp_vector4_t&val)
+ಮಾದರಿ <ವರ್ಗ T> ಶೂನ್ಯ property_atom<T>::get_vec4(ಅಕ್ಷರ*buf, vvp_vector4_t&val)
 {
-      T*src = reinterpret_cast<T*> (buf+offset_);
-      const size_t tmp_cnt = sizeof(T)<sizeof(unsigned long)
+      T*src = reinterpret_cast<T*> (buf+ಸ್ಥಾನಾಂತರ);
+      ಸ್ಥಿರಾಂಕ size_t tmp_cnt = ಗಾತ್ರ(T)<ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)
 				       ? 1
-				       : sizeof(T) / sizeof(unsigned long);
-      unsigned long tmp[tmp_cnt];
+				       : ಗಾತ್ರ(T) / ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ);
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp[tmp_cnt];
       tmp[0] = src[0];
 
-      for (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
-	    tmp[idx] = src[0] >> idx * 8 * sizeof(tmp[0]);
+      ಗಾಗಿ (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
+	    tmp[idx] = src[0] >> idx * 8 * ಗಾತ್ರ(tmp[0]);
 
-      val.resize(8*sizeof(T));
+      val.resize(8*ಗಾತ್ರ(T));
       val.setarray(0, val.size(), tmp);
 }
 
-template <class T> void property_atom<T>::copy(char*dst, char*src)
+ಮಾದರಿ <ವರ್ಗ T> ಶೂನ್ಯ property_atom<T>::copy(ಅಕ್ಷರ*dst, ಅಕ್ಷರ*src)
 {
-      T*dst_obj = reinterpret_cast<T*> (dst+offset_);
-      T*src_obj = reinterpret_cast<T*> (src+offset_);
+      T*dst_obj = reinterpret_cast<T*> (dst+ಸ್ಥಾನಾಂತರ);
+      T*src_obj = reinterpret_cast<T*> (src+ಸ್ಥಾನಾಂತರ);
       *dst_obj = *src_obj;
 }
 
-void property_bit::set_vec4(char*buf, const vvp_vector4_t&val)
+ಶೂನ್ಯ property_ಬಿಟ್::ಗಣ_vec4(ಅಕ್ಷರ*buf, ಸ್ಥಿರಾಂಕ vvp_vector4_t&val)
 {
-      vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
+      vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+ಸ್ಥಾನಾಂತರ);
       *obj = val;
 }
 
-void property_bit::get_vec4(char*buf, vvp_vector4_t&val)
+ಶೂನ್ಯ property_ಬಿಟ್::get_vec4(ಅಕ್ಷರ*buf, vvp_vector4_t&val)
 {
-      const vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
-      val = vector2_to_vector4(*obj, obj->size());
+      ಸ್ಥಿರಾಂಕ vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+ಸ್ಥಾನಾಂತರ);
+      val = vector2_ಗಮ್ಯ_vector4(*obj, obj->size());
 }
 
-void property_bit::copy(char*dst, char*src)
+ಶೂನ್ಯ property_ಬಿಟ್::copy(ಅಕ್ಷರ*dst, ಅಕ್ಷರ*src)
 {
-      vvp_vector2_t*dst_obj = reinterpret_cast<vvp_vector2_t*> (dst+offset_);
-      const vvp_vector2_t*src_obj = reinterpret_cast<vvp_vector2_t*> (src+offset_);
+      vvp_vector2_t*dst_obj = reinterpret_cast<vvp_vector2_t*> (dst+ಸ್ಥಾನಾಂತರ);
+      ಸ್ಥಿರಾಂಕ vvp_vector2_t*src_obj = reinterpret_cast<vvp_vector2_t*> (src+ಸ್ಥಾನಾಂತರ);
       *dst_obj = *src_obj;
 }
 
-void property_logic::set_vec4(char*buf, const vvp_vector4_t&val)
+ಶೂನ್ಯ property_logic::ಗಣ_vec4(ಅಕ್ಷರ*buf, ಸ್ಥಿರಾಂಕ vvp_vector4_t&val)
 {
-      vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
+      vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+ಸ್ಥಾನಾಂತರ);
       *obj = val;
 }
 
-void property_logic::get_vec4(char*buf, vvp_vector4_t&val)
+ಶೂನ್ಯ property_logic::get_vec4(ಅಕ್ಷರ*buf, vvp_vector4_t&val)
 {
-      const vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+ಸ್ಥಾನಾಂತರ);
       val = *obj;
 }
 
-void property_logic::copy(char*dst, char*src)
+ಶೂನ್ಯ property_logic::copy(ಅಕ್ಷರ*dst, ಅಕ್ಷರ*src)
 {
-      vvp_vector4_t*dst_obj = reinterpret_cast<vvp_vector4_t*> (dst+offset_);
-      const vvp_vector4_t*src_obj = reinterpret_cast<vvp_vector4_t*> (src+offset_);
+      vvp_vector4_t*dst_obj = reinterpret_cast<vvp_vector4_t*> (dst+ಸ್ಥಾನಾಂತರ);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t*src_obj = reinterpret_cast<vvp_vector4_t*> (src+ಸ್ಥಾನಾಂತರ);
       *dst_obj = *src_obj;
 }
 
-template <class T> void property_real<T>::set_real(char*buf, double val)
+ಮಾದರಿ <ವರ್ಗ T> ಶೂನ್ಯ property_real<T>::ಗಣ_real(ಅಕ್ಷರ*buf, ದ್ವಿಗುಣ val)
 {
-      T*tmp = reinterpret_cast<T*>(buf+offset_);
+      T*tmp = reinterpret_cast<T*>(buf+ಸ್ಥಾನಾಂತರ);
       *tmp = val;
 }
 
-template <class T> double property_real<T>::get_real(char*buf)
+ಮಾದರಿ <ವರ್ಗ T> ದ್ವಿಗುಣ property_real<T>::get_real(ಅಕ್ಷರ*buf)
 {
-      T*tmp = reinterpret_cast<T*>(buf+offset_);
-      return *tmp;
+      T*tmp = reinterpret_cast<T*>(buf+ಸ್ಥಾನಾಂತರ);
+      ಹಿಂತಿರುಗಿ *tmp;
 }
 
-template <class T> void property_real<T>::copy(char*dst, char*src)
+ಮಾದರಿ <ವರ್ಗ T> ಶೂನ್ಯ property_real<T>::copy(ಅಕ್ಷರ*dst, ಅಕ್ಷರ*src)
 {
-      T*dst_obj = reinterpret_cast<T*> (dst+offset_);
-      T*src_obj = reinterpret_cast<T*> (src+offset_);
+      T*dst_obj = reinterpret_cast<T*> (dst+ಸ್ಥಾನಾಂತರ);
+      T*src_obj = reinterpret_cast<T*> (src+ಸ್ಥಾನಾಂತರ);
       *dst_obj = *src_obj;
 }
 
-void property_string::set_string(char*buf, const string&val)
+ಶೂನ್ಯ property_string::ಗಣ_string(ಅಕ್ಷರ*buf, ಸ್ಥಿರಾಂಕ string&val)
 {
-      string*tmp = reinterpret_cast<string*>(buf+offset_);
+      string*tmp = reinterpret_cast<string*>(buf+ಸ್ಥಾನಾಂತರ);
       *tmp = val;
 }
 
-string property_string::get_string(char*buf)
+string property_string::get_string(ಅಕ್ಷರ*buf)
 {
-      const string*tmp = reinterpret_cast<string*>(buf+offset_);
-      return *tmp;
+      ಸ್ಥಿರಾಂಕ string*tmp = reinterpret_cast<string*>(buf+ಸ್ಥಾನಾಂತರ);
+      ಹಿಂತಿರುಗಿ *tmp;
 }
 
-void property_string::copy(char*dst, char*src)
+ಶೂನ್ಯ property_string::copy(ಅಕ್ಷರ*dst, ಅಕ್ಷರ*src)
 {
-      string*dst_obj = reinterpret_cast<string*> (dst+offset_);
-      const string*src_obj = reinterpret_cast<string*> (src+offset_);
+      string*dst_obj = reinterpret_cast<string*> (dst+ಸ್ಥಾನಾಂತರ);
+      ಸ್ಥಿರಾಂಕ string*src_obj = reinterpret_cast<string*> (src+ಸ್ಥಾನಾಂತರ);
       *dst_obj = *src_obj;
 }
 
-void property_object::construct(char*buf) const
+ಶೂನ್ಯ property_object::construct(ಅಕ್ಷರ*buf) ಸ್ಥಿರಾಂಕ
 {
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
-	    new (buf+offset_ + idx*sizeof(vvp_object_t)) vvp_object_t;
+      ಗಾಗಿ (size_t idx = 0 ; idx < array_ಗಾತ್ರ ; idx += 1)
+	    ಹೊಸ (buf+ಸ್ಥಾನಾಂತರ + idx*ಗಾತ್ರ(vvp_object_t)) vvp_object_t;
 }
 
-void property_object::destruct(char*buf) const
+ಶೂನ್ಯ property_object::destruct(ಅಕ್ಷರ*buf) ಸ್ಥಿರಾಂಕ
 {
-      vvp_object_t*tmp = reinterpret_cast<vvp_object_t*> (buf+offset_);
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      vvp_object_t*tmp = reinterpret_cast<vvp_object_t*> (buf+ಸ್ಥಾನಾಂತರ);
+      ಗಾಗಿ (size_t idx = 0 ; idx < array_ಗಾತ್ರ ; idx += 1)
 	    (tmp+idx)->~vvp_object_t();
 }
 
-void property_object::set_object(char*buf, const vvp_object_t&val, uint64_t idx)
+ಶೂನ್ಯ property_object::ಗಣ_object(ಅಕ್ಷರ*buf, ಸ್ಥಿರಾಂಕ vvp_object_t&val, uint64_t idx)
 {
-      assert(idx < array_size_);
-      vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
+      ಪ್ರತಿಜ್ಞಾ(idx < array_ಗಾತ್ರ);
+      vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+ಸ್ಥಾನಾಂತರ);
       tmp[idx] = val;
 }
 
-void property_object::get_object(char*buf, vvp_object_t&val, uint64_t idx)
+ಶೂನ್ಯ property_object::get_object(ಅಕ್ಷರ*buf, vvp_object_t&val, uint64_t idx)
 {
-      assert(idx < array_size_);
-      const vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
+      ಪ್ರತಿಜ್ಞಾ(idx < array_ಗಾತ್ರ);
+      ಸ್ಥಿರಾಂಕ vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+ಸ್ಥಾನಾಂತರ);
       val = tmp[idx];
 }
 
-void property_object::copy(char*dst, char*src)
+ಶೂನ್ಯ property_object::copy(ಅಕ್ಷರ*dst, ಅಕ್ಷರ*src)
 {
-      vvp_object_t*dst_obj = reinterpret_cast<vvp_object_t*>(dst+offset_);
-      const vvp_object_t*src_obj = reinterpret_cast<vvp_object_t*>(src+offset_);
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      vvp_object_t*dst_obj = reinterpret_cast<vvp_object_t*>(dst+ಸ್ಥಾನಾಂತರ);
+      ಸ್ಥಿರಾಂಕ vvp_object_t*src_obj = reinterpret_cast<vvp_object_t*>(src+ಸ್ಥಾನಾಂತರ);
+      ಗಾಗಿ (size_t idx = 0 ; idx < array_ಗಾತ್ರ ; idx += 1)
 	    dst_obj[idx] = src_obj[idx];
 }
 
 /* **** */
 
-class_type::class_type(const string&nam, size_t nprop)
+class_type::class_type(ಸ್ಥಿರಾಂಕ string&nam, size_t nprop)
 : class_name_(nam), properties_(nprop)
 {
-      instance_size_ = 0;
+      instance_ಗಾತ್ರ_2 = 0;
 }
 
 class_type::~class_type()
 {
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
-	    delete properties_[idx].type;
+      ಗಾಗಿ (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+	    ಅಳಿಸು properties_[idx].type;
 }
 
-void class_type::set_property(size_t idx, const string&name, const string&type, uint64_t array_size)
+ಶೂನ್ಯ class_type::ಗಣ_property(size_t idx, ಸ್ಥಿರಾಂಕ string&name, ಸ್ಥಿರಾಂಕ string&type, uint64_t array_ಗಾತ್ರ_2)
 {
-      assert(idx < properties_.size());
+      ಪ್ರತಿಜ್ಞಾ(idx < properties_.size());
       properties_[idx].name = name;
 
-      if (type == "b8")
-	    properties_[idx].type = new property_atom<uint8_t>;
-      else if (type == "b16")
-	    properties_[idx].type = new property_atom<uint16_t>;
-      else if (type == "b32")
-	    properties_[idx].type = new property_atom<uint32_t>;
-      else if (type == "b64")
-	    properties_[idx].type = new property_atom<uint64_t>;
-      else if (type == "sb8")
-	    properties_[idx].type = new property_atom<int8_t>;
-      else if (type == "sb16")
-	    properties_[idx].type = new property_atom<int16_t>;
-      else if (type == "sb32")
-	    properties_[idx].type = new property_atom<int32_t>;
-      else if (type == "sb64")
-	    properties_[idx].type = new property_atom<int64_t>;
-      else if (type == "r")
-	    properties_[idx].type = new property_real<double>;
-      else if (type == "S")
-	    properties_[idx].type = new property_string;
-      else if (type == "o")
-	    properties_[idx].type = new property_object(array_size);
-      else if (type[0] == 'b') {
+      ಆದರೆ (type == "b8")
+	    properties_[idx].type = ಹೊಸ property_atom<uint8_t>;
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (type == "b16")
+	    properties_[idx].type = ಹೊಸ property_atom<uint16_t>;
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (type == "b32")
+	    properties_[idx].type = ಹೊಸ property_atom<uint32_t>;
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (type == "b64")
+	    properties_[idx].type = ಹೊಸ property_atom<uint64_t>;
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (type == "sb8")
+	    properties_[idx].type = ಹೊಸ property_atom<int8_t>;
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (type == "sb16")
+	    properties_[idx].type = ಹೊಸ property_atom<int16_t>;
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (type == "sb32")
+	    properties_[idx].type = ಹೊಸ property_atom<int32_t>;
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (type == "sb64")
+	    properties_[idx].type = ಹೊಸ property_atom<int64_t>;
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (type == "r")
+	    properties_[idx].type = ಹೊಸ property_real<ದ್ವಿಗುಣ>;
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (type == "S")
+	    properties_[idx].type = ಹೊಸ property_string;
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (type == "o")
+	    properties_[idx].type = ಹೊಸ property_object(array_ಗಾತ್ರ_2);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (type[0] == 'b') {
 	    size_t wid = strtoul(type.c_str()+1, 0, 0);
-	    properties_[idx].type = new property_bit(wid);
-      } else if (type[0] == 'L') {
+	    properties_[idx].type = ಹೊಸ property_ಬಿಟ್(wid);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (type[0] == 'L') {
 	    size_t wid = strtoul(type.c_str()+1,0,0);
-	    properties_[idx].type = new property_logic(wid);
-      } else if (type[0] == 's' && type[1] == 'L') {
+	    properties_[idx].type = ಹೊಸ property_logic(wid);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (type[0] == 's' && type[1] == 'L') {
 	    size_t wid = strtoul(type.c_str()+2,0,0);
-	    properties_[idx].type = new property_logic(wid);
-      } else {
+	    properties_[idx].type = ಹೊಸ property_logic(wid);
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	    properties_[idx].type = 0;
       }
 }
 
-void class_type::finish_setup(void)
+ಶೂನ್ಯ class_type::ಮುಕ್ತಾಯ_ಸಿದ್ಧತೆ(ಶೂನ್ಯ)
 {
-      map<size_t, vector<size_t> > size_map;
+      map<size_t, vector<size_t> > ಗಾತ್ರ_map;
 	// Add up all the sizes to get a total instance size. This
 	// figures out how much memory a complete instance will need.
       size_t accum = 0;
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1) {
-	    assert(properties_[idx].type);
-	    size_t instance_size = properties_[idx].type->instance_size();
-	    accum += instance_size;
-	    size_map[instance_size].push_back(idx);
+      ಗಾಗಿ (size_t idx = 0 ; idx < properties_.size() ; idx += 1) {
+	    ಪ್ರತಿಜ್ಞಾ(properties_[idx].type);
+	    size_t instance_ಗಾತ್ರ = properties_[idx].type->instance_ಗಾತ್ರ();
+	    accum += instance_ಗಾತ್ರ;
+	    ಗಾತ್ರ_map[instance_ಗಾತ್ರ].push_back(idx);
       }
 
-      instance_size_ = accum;
+      instance_ಗಾತ್ರ_2 = accum;
 
 	// Now allocate the properties to offsets within an instance
 	// space. Allocate the properties largest objects first so
 	// that they are assured better alignment.
       accum = 0;
-      for (map<size_t, vector<size_t> >::reverse_iterator cur = size_map.rbegin()
-		 ; cur != size_map.rend() ; ++ cur) {
-	    for (size_t idx = 0 ; idx < cur->second.size() ; idx += 1) {
+      ಗಾಗಿ (map<size_t, vector<size_t> >::reverse_iterator cur = ಗಾತ್ರ_map.rbegin()
+		 ; cur != ಗಾತ್ರ_map.rend() ; ++ cur) {
+	    ಗಾಗಿ (size_t idx = 0 ; idx < cur->second.size() ; idx += 1) {
 		  size_t pid = cur->second[idx];
 		  class_property_t*ptype = properties_[pid].type;
-		  assert(ptype->instance_size() == cur->first);
-		  ptype->set_offset(accum);
-		  accum += cur->first;
+		  ಪ್ರತಿಜ್ಞಾ(ptype->instance_ಗಾತ್ರ() == cur->ಮೊದಲ);
+		  ptype->ಗಣ_ಸ್ಥಾನಾಂತರ(accum);
+		  accum += cur->ಮೊದಲ;
 	    }
       }
 }
 
-class_type::inst_t class_type::instance_new() const
+class_type::inst_t class_type::instance_new() ಸ್ಥಿರಾಂಕ
 {
-      char*buf = new char [instance_size_];
+      ಅಕ್ಷರ*buf = ಹೊಸ ಅಕ್ಷರ [instance_ಗಾತ್ರ_2];
 
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      ಗಾಗಿ (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->construct(buf);
 
-      return reinterpret_cast<inst_t> (buf);
+      ಹಿಂತಿರುಗಿ reinterpret_cast<inst_t> (buf);
 }
 
-void class_type::instance_delete(class_type::inst_t obj) const
+ಶೂನ್ಯ class_type::instance_delete(class_type::inst_t obj) ಸ್ಥಿರಾಂಕ
 {
-      char*buf = reinterpret_cast<char*> (obj);
+      ಅಕ್ಷರ*buf = reinterpret_cast<ಅಕ್ಷರ*> (obj);
 
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      ಗಾಗಿ (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->destruct(buf);
 
-      delete[]buf;
+      ಅಳಿಸು[]buf;
 }
 
-void class_type::set_vec4(class_type::inst_t obj, size_t pid,
-			  const vvp_vector4_t&val) const
+ಶೂನ್ಯ class_type::ಗಣ_vec4(class_type::inst_t obj, size_t pid,
+			  ಸ್ಥಿರಾಂಕ vvp_vector4_t&val) ಸ್ಥಿರಾಂಕ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      properties_[pid].type->set_vec4(buf, val);
+      ಅಕ್ಷರ*buf = reinterpret_cast<ಅಕ್ಷರ*> (obj);
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
+      properties_[pid].type->ಗಣ_vec4(buf, val);
 }
 
-void class_type::get_vec4(class_type::inst_t obj, size_t pid,
-			  vvp_vector4_t&val) const
+ಶೂನ್ಯ class_type::get_vec4(class_type::inst_t obj, size_t pid,
+			  vvp_vector4_t&val) ಸ್ಥಿರಾಂಕ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      ಅಕ್ಷರ*buf = reinterpret_cast<ಅಕ್ಷರ*> (obj);
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
       properties_[pid].type->get_vec4(buf, val);
 }
 
-void class_type::set_real(class_type::inst_t obj, size_t pid,
-			  double val) const
+ಶೂನ್ಯ class_type::ಗಣ_real(class_type::inst_t obj, size_t pid,
+			  ದ್ವಿಗುಣ val) ಸ್ಥಿರಾಂಕ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      properties_[pid].type->set_real(buf, val);
+      ಅಕ್ಷರ*buf = reinterpret_cast<ಅಕ್ಷರ*> (obj);
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
+      properties_[pid].type->ಗಣ_real(buf, val);
 }
 
-double class_type::get_real(class_type::inst_t obj, size_t pid) const
+ದ್ವಿಗುಣ class_type::get_real(class_type::inst_t obj, size_t pid) ಸ್ಥಿರಾಂಕ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      return properties_[pid].type->get_real(buf);
+      ಅಕ್ಷರ*buf = reinterpret_cast<ಅಕ್ಷರ*> (obj);
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
+      ಹಿಂತಿರುಗಿ properties_[pid].type->get_real(buf);
 }
 
-void class_type::set_string(class_type::inst_t obj, size_t pid,
-			    const string&val) const
+ಶೂನ್ಯ class_type::ಗಣ_string(class_type::inst_t obj, size_t pid,
+			    ಸ್ಥಿರಾಂಕ string&val) ಸ್ಥಿರಾಂಕ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      properties_[pid].type->set_string(buf, val);
+      ಅಕ್ಷರ*buf = reinterpret_cast<ಅಕ್ಷರ*> (obj);
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
+      properties_[pid].type->ಗಣ_string(buf, val);
 }
 
-string class_type::get_string(class_type::inst_t obj, size_t pid) const
+string class_type::get_string(class_type::inst_t obj, size_t pid) ಸ್ಥಿರಾಂಕ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      return properties_[pid].type->get_string(buf);
+      ಅಕ್ಷರ*buf = reinterpret_cast<ಅಕ್ಷರ*> (obj);
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
+      ಹಿಂತಿರುಗಿ properties_[pid].type->get_string(buf);
 }
 
-void class_type::set_object(class_type::inst_t obj, size_t pid,
-			    const vvp_object_t&val, size_t idx) const
+ಶೂನ್ಯ class_type::ಗಣ_object(class_type::inst_t obj, size_t pid,
+			    ಸ್ಥಿರಾಂಕ vvp_object_t&val, size_t idx) ಸ್ಥಿರಾಂಕ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      properties_[pid].type->set_object(buf, val, idx);
+      ಅಕ್ಷರ*buf = reinterpret_cast<ಅಕ್ಷರ*> (obj);
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
+      properties_[pid].type->ಗಣ_object(buf, val, idx);
 }
 
-void class_type::get_object(class_type::inst_t obj, size_t pid,
-			    vvp_object_t&val, size_t idx) const
+ಶೂನ್ಯ class_type::get_object(class_type::inst_t obj, size_t pid,
+			    vvp_object_t&val, size_t idx) ಸ್ಥಿರಾಂಕ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      ಅಕ್ಷರ*buf = reinterpret_cast<ಅಕ್ಷರ*> (obj);
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
       properties_[pid].type->get_object(buf, val, idx);
 }
 
-void class_type::copy_property(class_type::inst_t dst, size_t pid, class_type::inst_t src) const
+ಶೂನ್ಯ class_type::copy_property(class_type::inst_t dst, size_t pid, class_type::inst_t src) ಸ್ಥಿರಾಂಕ
 {
-      char*dst_buf = reinterpret_cast<char*> (dst);
-      char*src_buf = reinterpret_cast<char*> (src);
+      ಅಕ್ಷರ*dst_buf = reinterpret_cast<ಅಕ್ಷರ*> (dst);
+      ಅಕ್ಷರ*src_buf = reinterpret_cast<ಅಕ್ಷರ*> (src);
 
-      assert(pid < properties_.size());
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
 
       properties_[pid].type->copy(dst_buf, src_buf);
 }
 
-int class_type::get_type_code(void) const
+ಪೂರ್ಣಾಂಕ class_type::get_type_ಸಂಕೇತ(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ
 {
-      return vpiClassDefn;
+      ಹಿಂತಿರುಗಿ vpiClassDefn;
 }
 
-static class_type*compile_class = 0;
+ಸ್ಥಿರ class_type*compile_class = 0;
 
-void compile_class_start(char*lab, char*nam, unsigned ntype)
+ಶೂನ್ಯ compile_class_ಆರಂಭ(ಅಕ್ಷರ*lab, ಅಕ್ಷರ*nam, ಚಿಹ್ನೆರಹಿತ ntype)
 {
-      assert(compile_class == 0);
-      compile_class = new class_type(nam, ntype);
-      compile_vpi_symbol(lab, compile_class);
-      free(lab);
-      delete[]nam;
+      ಪ್ರತಿಜ್ಞಾ(compile_class == 0);
+      compile_class = ಹೊಸ class_type(nam, ntype);
+      compile_vpi_ಚಿಹ್ನೆ(lab, compile_class);
+      ಬಿಡುಗಡೆ(lab);
+      ಅಳಿಸು[]nam;
 }
 
-void compile_class_property(unsigned idx, char*nam, char*typ, uint64_t array_size)
+ಶೂನ್ಯ compile_class_property(ಚಿಹ್ನೆರಹಿತ idx, ಅಕ್ಷರ*nam, ಅಕ್ಷರ*typ, uint64_t array_ಗಾತ್ರ_2)
 {
-      assert(compile_class);
-      compile_class->set_property(idx, nam, typ, array_size);
-      delete[]nam;
-      delete[]typ;
+      ಪ್ರತಿಜ್ಞಾ(compile_class);
+      compile_class->ಗಣ_property(idx, nam, typ, array_ಗಾತ್ರ_2);
+      ಅಳಿಸು[]nam;
+      ಅಳಿಸು[]typ;
 }
 
-void compile_class_done(void)
+ಶೂನ್ಯ compile_class_ಮುಗಿದ(ಶೂನ್ಯ)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      assert(scope);
-      assert(compile_class);
-      compile_class->finish_setup();
+      ಪ್ರತಿಜ್ಞಾ(scope);
+      ಪ್ರತಿಜ್ಞಾ(compile_class);
+      compile_class->ಮುಕ್ತಾಯ_ಸಿದ್ಧತೆ();
       scope->classes[compile_class->class_name()] = compile_class;
       compile_class = 0;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void class_def_delete(class_type *item)
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+ಶೂನ್ಯ class_def_delete(class_type *ಅಂಶ)
 {
-      delete item;
+      ಅಳಿಸು ಅಂಶ;
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ

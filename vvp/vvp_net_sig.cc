@@ -24,14 +24,14 @@
 # include  "vpi_priv.h"
 # include  <vector>
 # include  <cassert>
-#ifdef CHECK_WITH_VALGRIND
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
 # include  <valgrind/memcheck.h>
 # include  <map>
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 # include  <iostream>
 
-using namespace std;
+ಬಳಸಿ ನಾಮಾಕಾಶ std;
 
 /*
  * The filter_mask_ method takes as an input the value to propagate,
@@ -44,114 +44,114 @@ using namespace std;
  * The "force" vector in the value being force, with the force_mask_
  * member a bit mask of which parts of the force vector really apply.
  */
-template <class T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_mask_(const T&val, const T&force, T&filter, unsigned base)
+ಮಾದರಿ <ವರ್ಗ T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_ಮುಖವಾಡ(ಸ್ಥಿರಾಂಕ T&val, ಸ್ಥಿರಾಂಕ T&force, T&filter, ಚಿಹ್ನೆರಹಿತ ತಳ)
 {
-      if (!test_force_mask_is_zero()) {
+      ಆದರೆ (!test_force_ಮುಖವಾಡ_is_zero()) {
 	      // Some bits are being forced. Go through the
 	      // force_mask_ and force value to see which bits are
 	      // propagated and which are kept from the forced
 	      // value. Update the filter with the filtered result and
 	      // return REPL to indicate that some bits have changed,
 	      // or STOP if no bits change.
-	    bool propagate_flag = force_propagate_;
-	    force_propagate_ = false;
-	    assert(force_mask_.size() == force.size());
-	    assert((base+val.size()) <= force_mask_.size());
+	    ತಾರ್ಕಿಕ propagate_flag = force_propagate_;
+	    force_propagate_ = ಸುಳ್ಳು;
+	    ಪ್ರತಿಜ್ಞಾ(force_ಮುಖವಾಡ_2.size() == force.size());
+	    ಪ್ರತಿಜ್ಞಾ((ತಳ+val.size()) <= force_ಮುಖವಾಡ_2.size());
 
 	    filter = val;
-	    for (unsigned idx = 0 ; idx < val.size() ; idx += 1) {
-		  if (force_mask_.value(base+idx))
-			filter.set_bit(idx, force.value(base+idx));
-		  else
-			propagate_flag = true;
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < val.size() ; idx += 1) {
+		  ಆದರೆ (force_ಮುಖವಾಡ_2.value(ತಳ+idx))
+			filter.ಗಣ_ಬಿಟ್(idx, force.value(ತಳ+idx));
+		  ಇಲ್ಲದಿದ್ದರೆ
+			propagate_flag = ನಿಜ;
 	    }
 
-	    if (propagate_flag) {
-		  run_vpi_callbacks();
-		  return REPL;
-	    } else {
-		  return STOP;
+	    ಆದರೆ (propagate_flag) {
+		  ಸತತ_vpi_callbacks();
+		  ಹಿಂತಿರುಗಿ REPL;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  ಹಿಂತಿರುಗಿ STOP;
 	    }
 
-      } else {
-	    run_vpi_callbacks();
-	    return PROP;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಸತತ_vpi_callbacks();
+	    ಹಿಂತಿರುಗಿ PROP;
       }
 }
 
-template <class T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_mask_(T&val, T force)
+ಮಾದರಿ <ವರ್ಗ T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_ಮುಖವಾಡ(T&val, T force)
 {
 
-      if (test_force_mask(0)) {
+      ಆದರೆ (test_force_ಮುಖವಾಡ(0)) {
 	    val = force;
-	    run_vpi_callbacks();
-	    return REPL;
+	    ಸತತ_vpi_callbacks();
+	    ಹಿಂತಿರುಗಿ REPL;
       }
-      run_vpi_callbacks();
-      return PROP;
+      ಸತತ_vpi_callbacks();
+      ಹಿಂತಿರುಗಿ PROP;
 }
 
-template <class T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_input_mask_(const T&val, const T&force, T&rep) const
+ಮಾದರಿ <ವರ್ಗ T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_ಒಳಹರಿವು_ಮುಖವಾಡ(ಸ್ಥಿರಾಂಕ T&val, ಸ್ಥಿರಾಂಕ T&force, T&rep) ಸ್ಥಿರಾಂಕ
 {
-      if (test_force_mask_is_zero())
-	    return PROP;
+      ಆದರೆ (test_force_ಮುಖವಾಡ_is_zero())
+	    ಹಿಂತಿರುಗಿ PROP;
 
-      assert(force_mask_.size() == force.size());
+      ಪ್ರತಿಜ್ಞಾ(force_ಮುಖವಾಡ_2.size() == force.size());
 
       rep = val;
-      for (unsigned idx = 0 ; idx < val.size() ; idx += 1) {
-	    if (force_mask_.value(idx))
-		  rep.set_bit(idx, force.value(idx));
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < val.size() ; idx += 1) {
+	    ಆದರೆ (force_ಮುಖವಾಡ_2.value(idx))
+		  rep.ಗಣ_ಬಿಟ್(idx, force.value(idx));
       }
 
-      return REPL;
+      ಹಿಂತಿರುಗಿ REPL;
 }
 
-vvp_signal_value::~vvp_signal_value()
+vvp_signal_ಮೌಲ್ಯ::~vvp_signal_ಮೌಲ್ಯ()
 {
 }
 
-double vvp_signal_value::real_value() const
+ದ್ವಿಗುಣ vvp_signal_ಮೌಲ್ಯ::real_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return 0;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ 0;
 }
 
-void vvp_net_t::force_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask)
+ಶೂನ್ಯ vvp_net_t::force_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ)
 {
-      assert(fil);
-      fil->force_fil_vec4(val, mask);
-      fun->force_flag(false);
-      vvp_send_vec4(out_, val, 0);
+      ಪ್ರತಿಜ್ಞಾ(fil);
+      fil->force_fil_vec4(val, ಮುಖವಾಡ);
+      fun->force_flag(ಸುಳ್ಳು);
+      vvp_send_vec4(ಹೊರಹೋಗು_2, val, 0);
 }
 
-void vvp_net_t::force_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask)
+ಶೂನ್ಯ vvp_net_t::force_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ)
 {
-      assert(fil);
-      fil->force_fil_vec8(val, mask);
-      fun->force_flag(false);
-      vvp_send_vec8(out_, val);
+      ಪ್ರತಿಜ್ಞಾ(fil);
+      fil->force_fil_vec8(val, ಮುಖವಾಡ);
+      fun->force_flag(ಸುಳ್ಳು);
+      vvp_send_vec8(ಹೊರಹೋಗು_2, val);
 }
 
-void vvp_net_t::force_real(double val, const vvp_vector2_t&mask)
+ಶೂನ್ಯ vvp_net_t::force_real(ದ್ವಿಗುಣ val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ)
 {
-      assert(fil);
-      fil->force_fil_real(val, mask);
-      fun->force_flag(false);
-      vvp_send_real(out_, val, 0);
+      ಪ್ರತಿಜ್ಞಾ(fil);
+      fil->force_fil_real(val, ಮುಖವಾಡ);
+      fun->force_flag(ಸುಳ್ಳು);
+      vvp_send_real(ಹೊರಹೋಗು_2, val, 0);
 }
 
 /* **** vvp_fun_signal methods **** */
 
-vvp_fun_signal_base::vvp_fun_signal_base()
+vvp_fun_signal_ತಳ::vvp_fun_signal_ತಳ()
 {
-      continuous_assign_active_ = false;
-      needs_init_ = true;
+      continuous_ನಿಯೋಜಿಸು_ಸಕ್ರಿಯ = ಸುಳ್ಳು;
+      needs_init_ = ನಿಜ;
       cassign_link = 0;
-      count_functors_sig += 1;
+      ಎಣಿಕೆ_functors_sig += 1;
 }
 
-vvp_fun_signal4_sa::vvp_fun_signal4_sa(unsigned wid, vvp_bit4_t init)
+vvp_fun_signal4_sa::vvp_fun_signal4_sa(ಚಿಹ್ನೆರಹಿತ wid, vvp_bit4_t init)
 : bits4_(wid, init)
 {
 }
@@ -168,280 +168,280 @@ vvp_fun_signal4_sa::vvp_fun_signal4_sa(unsigned wid, vvp_bit4_t init)
  * the first propagation, and forces the first propagation to happen
  * even if it matches the initial value.
  */
-void vvp_fun_signal4_sa::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_signal4_sa::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                                    vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0: // Normal input (feed from net, or set from process)
+      ಆಯ್ಕೆ (ptr.ಪೋರ್ಟ್()) {
+	  ಸ್ಥಿತಿ 0: // Normal input (feed from net, or set from process)
 	      /* If we don't have a continuous assign mask then just
 		 copy the bits, otherwise we need to see if there are
 		 any holes in the mask so we can set those bits. */
-	    if (assign_mask_.size() == 0) {
-                  if (needs_init_ || !bits4_.eeq(bit)) {
-			assert(bit.size() == bits4_.size());
-			bits4_ = bit;
-			needs_init_ = false;
+	    ಆದರೆ (ನಿಯೋಜಿಸು_ಮುಖವಾಡ.size() == 0) {
+                  ಆದರೆ (needs_init_ || !bits4_.eeq(ಬಿಟ್)) {
+			ಪ್ರತಿಜ್ಞಾ(ಬಿಟ್.size() == bits4_.size());
+			bits4_ = ಬಿಟ್;
+			needs_init_ = ಸುಳ್ಳು;
 			ptr.ptr()->send_vec4(bits4_, 0);
 		  }
-	    } else {
-		  bool changed = false;
-		  assert(bits4_.size() == assign_mask_.size());
-		  for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
-			if (idx >= bits4_.size()) break;
-			if (assign_mask_.value(idx)) continue;
-			bits4_.set_bit(idx, bit.value(idx));
-			changed = true;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  ತಾರ್ಕಿಕ ಬದಲಾಯಿತು = ಸುಳ್ಳು;
+		  ಪ್ರತಿಜ್ಞಾ(bits4_.size() == ನಿಯೋಜಿಸು_ಮುಖವಾಡ.size());
+		  ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಬಿಟ್.size() ;  idx += 1) {
+			ಆದರೆ (idx >= bits4_.size()) ನಿಲ್ಲಿಸು;
+			ಆದರೆ (ನಿಯೋಜಿಸು_ಮುಖವಾಡ.value(idx)) ಮುಂದುವರಿ;
+			bits4_.ಗಣ_ಬಿಟ್(idx, ಬಿಟ್.value(idx));
+			ಬದಲಾಯಿತು = ನಿಜ;
 		  }
-		  if (changed) {
-			needs_init_ = false;
+		  ಆದರೆ (ಬದಲಾಯಿತು) {
+			needs_init_ = ಸುಳ್ಳು;
 			ptr.ptr()->send_vec4(bits4_, 0);
 		  }
 	    }
-	    break;
+	    ನಿಲ್ಲಿಸು;
 
-	  case 1: // Continuous assign value
+	  ಸ್ಥಿತಿ 1: // Continuous assign value
 	      // Handle the simple case of the linked source being wider
 	      // than this signal. Note we don't yet support the case of
 	      // the linked source being narrower than this signal, or
 	      // the case of an expression being assigned.
-	    bits4_ = coerce_to_width(bit, bits4_.size());
-	    assign_mask_ = vvp_vector2_t(vvp_vector2_t::FILL1, bits4_.size());
+	    bits4_ = coerce_ಗಮ್ಯ_ಅಗಲ(ಬಿಟ್, bits4_.size());
+	    ನಿಯೋಜಿಸು_ಮುಖವಾಡ = vvp_vector2_t(vvp_vector2_t::FILL1, bits4_.size());
 	    ptr.ptr()->send_vec4(bits4_, 0);
-	    break;
+	    ನಿಲ್ಲಿಸು;
 
-	  default:
-	    fprintf(stderr, "Unsupported port type %u.\n", ptr.port());
-	    assert(0);
-	    break;
+	  ಪೂರ್ವನಿಯೋಜಿತ:
+	    fprintf(stderr, "Unsupported port type %u.\n", ptr.ಪೋರ್ಟ್());
+	    ಪ್ರತಿಜ್ಞಾ(0);
+	    ನಿಲ್ಲಿಸು;
       }
 }
 
-void vvp_fun_signal4_sa::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+ಶೂನ್ಯ vvp_fun_signal4_sa::recv_vec8(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್)
 {
-      recv_vec4(ptr, reduce4(bit), 0);
+      recv_vec4(ptr, reduce4(ಬಿಟ್), 0);
 }
 
-void vvp_fun_signal4_sa::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				      unsigned base, unsigned vwid, vvp_context_t)
+ಶೂನ್ಯ vvp_fun_signal4_sa::recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+				      ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t)
 {
-      assert(bits4_.size() == vwid);
-      unsigned wid = bit.size();
+      ಪ್ರತಿಜ್ಞಾ(bits4_.size() == vwid);
+      ಚಿಹ್ನೆರಹಿತ wid = ಬಿಟ್.size();
 
-      switch (ptr.port()) {
-	  case 0: // Normal input
-	    if (assign_mask_.size() == 0) {
-                  for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-			if (base+idx >= bits4_.size()) break;
-			bits4_.set_bit(base+idx, bit.value(idx));
+      ಆಯ್ಕೆ (ptr.ಪೋರ್ಟ್()) {
+	  ಸ್ಥಿತಿ 0: // Normal input
+	    ಆದರೆ (ನಿಯೋಜಿಸು_ಮುಖವಾಡ.size() == 0) {
+                  ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid ;  idx += 1) {
+			ಆದರೆ (ತಳ+idx >= bits4_.size()) ನಿಲ್ಲಿಸು;
+			bits4_.ಗಣ_ಬಿಟ್(ತಳ+idx, ಬಿಟ್.value(idx));
 		  }
-		  needs_init_ = false;
+		  needs_init_ = ಸುಳ್ಳು;
 		  ptr.ptr()->send_vec4(bits4_,0);
-	    } else {
-		  bool changed = false;
-		  assert(bits4_.size() == assign_mask_.size());
-		  for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-			if (base+idx >= bits4_.size()) break;
-			if (assign_mask_.value(base+idx)) continue;
-			bits4_.set_bit(base+idx, bit.value(idx));
-			changed = true;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  ತಾರ್ಕಿಕ ಬದಲಾಯಿತು = ಸುಳ್ಳು;
+		  ಪ್ರತಿಜ್ಞಾ(bits4_.size() == ನಿಯೋಜಿಸು_ಮುಖವಾಡ.size());
+		  ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid ;  idx += 1) {
+			ಆದರೆ (ತಳ+idx >= bits4_.size()) ನಿಲ್ಲಿಸು;
+			ಆದರೆ (ನಿಯೋಜಿಸು_ಮುಖವಾಡ.value(ತಳ+idx)) ಮುಂದುವರಿ;
+			bits4_.ಗಣ_ಬಿಟ್(ತಳ+idx, ಬಿಟ್.value(idx));
+			ಬದಲಾಯಿತು = ನಿಜ;
 		  }
-		  if (changed) {
-			needs_init_ = false;
+		  ಆದರೆ (ಬದಲಾಯಿತು) {
+			needs_init_ = ಸುಳ್ಳು;
 			ptr.ptr()->send_vec4(bits4_,0);
 		  }
 	    }
-	    break;
+	    ನಿಲ್ಲಿಸು;
 
-	  case 1: // Continuous assign value
-	    if (assign_mask_.size() == 0)
-		  assign_mask_ = vvp_vector2_t(vvp_vector2_t::FILL0, bits4_.size());
-	    for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-		  if (base+idx >= bits4_.size())
-			break;
-		  bits4_.set_bit(base+idx, bit.value(idx));
-		  assign_mask_.set_bit(base+idx, 1);
+	  ಸ್ಥಿತಿ 1: // Continuous assign value
+	    ಆದರೆ (ನಿಯೋಜಿಸು_ಮುಖವಾಡ.size() == 0)
+		  ನಿಯೋಜಿಸು_ಮುಖವಾಡ = vvp_vector2_t(vvp_vector2_t::FILL0, bits4_.size());
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid ;  idx += 1) {
+		  ಆದರೆ (ತಳ+idx >= bits4_.size())
+			ನಿಲ್ಲಿಸು;
+		  bits4_.ಗಣ_ಬಿಟ್(ತಳ+idx, ಬಿಟ್.value(idx));
+		  ನಿಯೋಜಿಸು_ಮುಖವಾಡ.ಗಣ_ಬಿಟ್(ತಳ+idx, 1);
 	    }
 	    ptr.ptr()->send_vec4(bits4_,0);
-	    break;
+	    ನಿಲ್ಲಿಸು;
 
-	  default:
-	    fprintf(stderr, "Unsupported port type %u.\n", ptr.port());
-	    assert(0);
-	    break;
+	  ಪೂರ್ವನಿಯೋಜಿತ:
+	    fprintf(stderr, "Unsupported port type %u.\n", ptr.ಪೋರ್ಟ್());
+	    ಪ್ರತಿಜ್ಞಾ(0);
+	    ನಿಲ್ಲಿಸು;
       }
 }
 
-void vvp_fun_signal4_sa::recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-				      unsigned base, unsigned vwid)
+ಶೂನ್ಯ vvp_fun_signal4_sa::recv_vec8_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್,
+				      ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid)
 {
-      recv_vec4_pv(ptr, reduce4(bit), base, vwid, 0);
+      recv_vec4_pv(ptr, reduce4(ಬಿಟ್), ತಳ, vwid, 0);
 }
 
-void vvp_fun_signal_base::deassign()
+ಶೂನ್ಯ vvp_fun_signal_ತಳ::deassign()
 {
-      continuous_assign_active_ = false;
-      assign_mask_ = vvp_vector2_t();
+      continuous_ನಿಯೋಜಿಸು_ಸಕ್ರಿಯ = ಸುಳ್ಳು;
+      ನಿಯೋಜಿಸು_ಮುಖವಾಡ = vvp_vector2_t();
 }
 
-void vvp_fun_signal_base::deassign_pv(unsigned base, unsigned wid)
+ಶೂನ್ಯ vvp_fun_signal_ತಳ::deassign_pv(ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ wid)
 {
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-	    assign_mask_.set_bit(base+idx, 0);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid ;  idx += 1) {
+	    ನಿಯೋಜಿಸು_ಮುಖವಾಡ.ಗಣ_ಬಿಟ್(ತಳ+idx, 0);
       }
 
-      if (assign_mask_.is_zero()) {
-	    assign_mask_ = vvp_vector2_t();
+      ಆದರೆ (ನಿಯೋಜಿಸು_ಮುಖವಾಡ.is_zero()) {
+	    ನಿಯೋಜಿಸು_ಮುಖವಾಡ = vvp_vector2_t();
       }
 }
 
-void automatic_signal_base::release(vvp_net_ptr_t,bool)
+ಶೂನ್ಯ automatic_signal_ತಳ::release(vvp_net_ptr_t,ತಾರ್ಕಿಕ)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void automatic_signal_base::release_pv(vvp_net_ptr_t,unsigned,unsigned,bool)
+ಶೂನ್ಯ automatic_signal_ತಳ::release_pv(vvp_net_ptr_t,ಚಿಹ್ನೆರಹಿತ,ಚಿಹ್ನೆರಹಿತ,ತಾರ್ಕಿಕ)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-unsigned automatic_signal_base::filter_size() const
+ಚಿಹ್ನೆರಹಿತ automatic_signal_ತಳ::filter_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ(0);
 }
-void automatic_signal_base::force_fil_vec4(const vvp_vector4_t&, const vvp_vector2_t&)
+ಶೂನ್ಯ automatic_signal_ತಳ::force_fil_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&, ಸ್ಥಿರಾಂಕ vvp_vector2_t&)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
-void automatic_signal_base::force_fil_vec8(const vvp_vector8_t&, const vvp_vector2_t&)
+ಶೂನ್ಯ automatic_signal_ತಳ::force_fil_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&, ಸ್ಥಿರಾಂಕ vvp_vector2_t&)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
-void automatic_signal_base::force_fil_real(double, const vvp_vector2_t&)
+ಶೂನ್ಯ automatic_signal_ತಳ::force_fil_real(ದ್ವಿಗುಣ, ಸ್ಥಿರಾಂಕ vvp_vector2_t&)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
-void automatic_signal_base::get_value(struct t_vpi_value*)
+ಶೂನ್ಯ automatic_signal_ತಳ::get_ಮೌಲ್ಯ(ರಚನೆ t_vpi_ಮೌಲ್ಯ*)
 {
-      assert(0);
-}
-
-const vvp_vector4_t& vvp_fun_signal4_sa::vec4_unfiltered_value() const
-{
-      return bits4_;
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-vvp_fun_signal4_aa::vvp_fun_signal4_aa(unsigned wid, vvp_bit4_t init)
+ಸ್ಥಿರಾಂಕ vvp_vector4_t& vvp_fun_signal4_sa::vec4_unfiltered_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ
 {
-      context_idx_ = vpip_add_item_to_context(this, vpip_peek_context_scope());
-      size_ = wid;
+      ಹಿಂತಿರುಗಿ bits4_;
+}
+
+vvp_fun_signal4_aa::vvp_fun_signal4_aa(ಚಿಹ್ನೆರಹಿತ wid, vvp_bit4_t init)
+{
+      context_idx_ = vpip_ಕೂಡಿಸು_ಅಂಶ_ಗಮ್ಯ_context(ಇದು, vpip_peek_context_scope());
+      ಗಾತ್ರ_3 = wid;
       init_ = init;
 }
 
 vvp_fun_signal4_aa::~vvp_fun_signal4_aa()
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_fun_signal4_aa::alloc_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_signal4_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new vvp_vector4_t(size_, init_));
+      vvp_ಗಣ_context_ಅಂಶ(context, context_idx_, ಹೊಸ vvp_vector4_t(ಗಾತ್ರ_3, init_));
 }
 
-void vvp_fun_signal4_aa::reset_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_signal4_aa::reset_instance(vvp_context_t context)
 {
-      vvp_vector4_t*bits = static_cast<vvp_vector4_t*>
-            (vvp_get_context_item(context, context_idx_));
+      vvp_vector4_t*ಬಿಟ್ಟುಗಳು = static_cast<vvp_vector4_t*>
+            (vvp_get_context_ಅಂಶ(context, context_idx_));
 
-      bits->fill_bits(init_);
+      ಬಿಟ್ಟುಗಳು->fill_ಬಿಟ್ಟುಗಳು(init_);
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_fun_signal4_aa::free_instance(vvp_context_t context)
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+ಶೂನ್ಯ vvp_fun_signal4_aa::free_instance(vvp_context_t context)
 {
-      vvp_vector4_t*bits = static_cast<vvp_vector4_t*>
-            (vvp_get_context_item(context, context_idx_));
-      delete bits;
+      vvp_vector4_t*ಬಿಟ್ಟುಗಳು = static_cast<vvp_vector4_t*>
+            (vvp_get_context_ಅಂಶ(context, context_idx_));
+      ಅಳಿಸು ಬಿಟ್ಟುಗಳು;
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 /*
  * Continuous and forced assignments are not permitted on automatic
  * variables. So we only expect to receive on port 0.
  */
-void vvp_fun_signal4_aa::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_signal4_aa::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                                    vvp_context_t context)
 {
-      assert(ptr.port() == 0);
-      assert(context);
+      ಪ್ರತಿಜ್ಞಾ(ptr.ಪೋರ್ಟ್() == 0);
+      ಪ್ರತಿಜ್ಞಾ(context);
 
       vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
-            (vvp_get_context_item(context, context_idx_));
+            (vvp_get_context_ಅಂಶ(context, context_idx_));
 
-      if (!bits4->eeq(bit)) {
-            *bits4 = bit;
+      ಆದರೆ (!bits4->eeq(ಬಿಟ್)) {
+            *bits4 = ಬಿಟ್;
             ptr.ptr()->send_vec4(*bits4, context);
       }
 }
 
-void vvp_fun_signal4_aa::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				      unsigned base, unsigned vwid, vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_signal4_aa::recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+				      ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t context)
 {
-      assert(ptr.port() == 0);
-      assert(size_ == vwid);
-      assert(context);
+      ಪ್ರತಿಜ್ಞಾ(ptr.ಪೋರ್ಟ್() == 0);
+      ಪ್ರತಿಜ್ಞಾ(ಗಾತ್ರ_3 == vwid);
+      ಪ್ರತಿಜ್ಞಾ(context);
 
       vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
-            (vvp_get_context_item(context, context_idx_));
+            (vvp_get_context_ಅಂಶ(context, context_idx_));
 
-      unsigned wid = bit.size();
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-            if (base+idx >= bits4->size()) break;
-            bits4->set_bit(base+idx, bit.value(idx));
+      ಚಿಹ್ನೆರಹಿತ wid = ಬಿಟ್.size();
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid ;  idx += 1) {
+            ಆದರೆ (ತಳ+idx >= bits4->size()) ನಿಲ್ಲಿಸು;
+            bits4->ಗಣ_ಬಿಟ್(ತಳ+idx, ಬಿಟ್.value(idx));
       }
       ptr.ptr()->send_vec4(*bits4, context);
 }
 
-unsigned vvp_fun_signal4_aa::value_size() const
+ಚಿಹ್ನೆರಹಿತ vvp_fun_signal4_aa::ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ
 {
-      return size_;
+      ಹಿಂತಿರುಗಿ ಗಾತ್ರ_3;
 }
 
-vvp_bit4_t vvp_fun_signal4_aa::value(unsigned idx) const
+vvp_bit4_t vvp_fun_signal4_aa::value(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ
 {
-      const vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
-            (vthread_get_rd_context_item(context_idx_));
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
+            (vthread_get_rd_context_ಅಂಶ(context_idx_));
 
-      return bits4->value(idx);
+      ಹಿಂತಿರುಗಿ bits4->value(idx);
 }
 
-vvp_scalar_t vvp_fun_signal4_aa::scalar_value(unsigned idx) const
+vvp_scalar_t vvp_fun_signal4_aa::scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ
 {
-      const vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
-            (vthread_get_rd_context_item(context_idx_));
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
+            (vthread_get_rd_context_ಅಂಶ(context_idx_));
 
-      return vvp_scalar_t(bits4->value(idx), 6, 6);
+      ಹಿಂತಿರುಗಿ vvp_scalar_t(bits4->value(idx), 6, 6);
 }
 
-void vvp_fun_signal4_aa::vec4_value(vvp_vector4_t&val) const
+ಶೂನ್ಯ vvp_fun_signal4_aa::vec4_ಮೌಲ್ಯ(vvp_vector4_t&val) ಸ್ಥಿರಾಂಕ
 {
-      const vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
-            (vthread_get_rd_context_item(context_idx_));
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
+            (vthread_get_rd_context_ಅಂಶ(context_idx_));
 
       val = *bits4;
 }
 
-const vvp_vector4_t&vvp_fun_signal4_aa::vec4_unfiltered_value() const
+ಸ್ಥಿರಾಂಕ vvp_vector4_t&vvp_fun_signal4_aa::vec4_unfiltered_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ
 {
-      const vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
-            (vthread_get_rd_context_item(context_idx_));
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
+            (vthread_get_rd_context_ಅಂಶ(context_idx_));
 
-      return *bits4;
+      ಹಿಂತಿರುಗಿ *bits4;
 }
 
-void vvp_fun_signal4_aa::operator delete(void*)
+ಶೂನ್ಯ vvp_fun_signal4_aa::ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
 /*
@@ -449,142 +449,142 @@ void vvp_fun_signal4_aa::operator delete(void*)
  * arithmetic test because we want to treat for example -0 different
  * from +0.
  */
-bool bits_equal(double a, double b)
+ತಾರ್ಕಿಕ ಬಿಟ್ಟುಗಳು_equal(ದ್ವಿಗುಣ a, ದ್ವಿಗುಣ b)
 {
-      return memcmp(&a, &b, sizeof a) == 0;
+      ಹಿಂತಿರುಗಿ memcmp(&a, &b, ಗಾತ್ರ a) == 0;
 }
 
 vvp_fun_signal_real_sa::vvp_fun_signal_real_sa()
 {
-      bits_ = 0.0;
+      ಬಿಟ್ಟುಗಳು_2 = 0.0;
 }
 
-double vvp_fun_signal_real_sa::real_unfiltered_value() const
+ದ್ವಿಗುಣ vvp_fun_signal_real_sa::real_unfiltered_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ
 {
-      return bits_;
+      ಹಿಂತಿರುಗಿ ಬಿಟ್ಟುಗಳು_2;
 }
 
-void vvp_fun_signal_real_sa::recv_real(vvp_net_ptr_t ptr, double bit,
+ಶೂನ್ಯ vvp_fun_signal_real_sa::recv_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್,
                                        vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0:
-	    if (!continuous_assign_active_) {
-                  if (needs_init_ || !bits_equal(bits_, bit)) {
-			bits_ = bit;
-			needs_init_ = false;
-			ptr.ptr()->send_real(bit, 0);
+      ಆಯ್ಕೆ (ptr.ಪೋರ್ಟ್()) {
+	  ಸ್ಥಿತಿ 0:
+	    ಆದರೆ (!continuous_ನಿಯೋಜಿಸು_ಸಕ್ರಿಯ) {
+                  ಆದರೆ (needs_init_ || !ಬಿಟ್ಟುಗಳು_equal(ಬಿಟ್ಟುಗಳು_2, ಬಿಟ್)) {
+			ಬಿಟ್ಟುಗಳು_2 = ಬಿಟ್;
+			needs_init_ = ಸುಳ್ಳು;
+			ptr.ptr()->send_real(ಬಿಟ್, 0);
 		  }
 	    }
-	    break;
+	    ನಿಲ್ಲಿಸು;
 
-	  case 1: // Continuous assign value
-	    continuous_assign_active_ = true;
-	    bits_ = bit;
-	    ptr.ptr()->send_real(bit, 0);
-	    break;
+	  ಸ್ಥಿತಿ 1: // Continuous assign value
+	    continuous_ನಿಯೋಜಿಸು_ಸಕ್ರಿಯ = ನಿಜ;
+	    ಬಿಟ್ಟುಗಳು_2 = ಬಿಟ್;
+	    ptr.ptr()->send_real(ಬಿಟ್, 0);
+	    ನಿಲ್ಲಿಸು;
 
-	  default:
-	    fprintf(stderr, "Unsupported port type %u.\n", ptr.port());
-	    assert(0);
-	    break;
+	  ಪೂರ್ವನಿಯೋಜಿತ:
+	    fprintf(stderr, "Unsupported port type %u.\n", ptr.ಪೋರ್ಟ್());
+	    ಪ್ರತಿಜ್ಞಾ(0);
+	    ನಿಲ್ಲಿಸು;
       }
 }
 
 vvp_fun_signal_real_aa::vvp_fun_signal_real_aa()
 {
-      context_idx_ = vpip_add_item_to_context(this, vpip_peek_context_scope());
+      context_idx_ = vpip_ಕೂಡಿಸು_ಅಂಶ_ಗಮ್ಯ_context(ಇದು, vpip_peek_context_scope());
 }
 
 vvp_fun_signal_real_aa::~vvp_fun_signal_real_aa()
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_fun_signal_real_aa::alloc_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_signal_real_aa::alloc_instance(vvp_context_t context)
 {
-      double*bits = new double;
-      vvp_set_context_item(context, context_idx_, bits);
+      ದ್ವಿಗುಣ*ಬಿಟ್ಟುಗಳು = ಹೊಸ ದ್ವಿಗುಣ;
+      vvp_ಗಣ_context_ಅಂಶ(context, context_idx_, ಬಿಟ್ಟುಗಳು);
 
-      *bits = 0.0;
+      *ಬಿಟ್ಟುಗಳು = 0.0;
 }
 
-void vvp_fun_signal_real_aa::reset_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_signal_real_aa::reset_instance(vvp_context_t context)
 {
-      double*bits = static_cast<double*>
-            (vvp_get_context_item(context, context_idx_));
+      ದ್ವಿಗುಣ*ಬಿಟ್ಟುಗಳು = static_cast<ದ್ವಿಗುಣ*>
+            (vvp_get_context_ಅಂಶ(context, context_idx_));
 
-      *bits = 0.0;
+      *ಬಿಟ್ಟುಗಳು = 0.0;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_fun_signal_real_aa::free_instance(vvp_context_t context)
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+ಶೂನ್ಯ vvp_fun_signal_real_aa::free_instance(vvp_context_t context)
 {
-      double*bits = static_cast<double*>
-            (vvp_get_context_item(context, context_idx_));
-      delete bits;
+      ದ್ವಿಗುಣ*ಬಿಟ್ಟುಗಳು = static_cast<ದ್ವಿಗುಣ*>
+            (vvp_get_context_ಅಂಶ(context, context_idx_));
+      ಅಳಿಸು ಬಿಟ್ಟುಗಳು;
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-double vvp_fun_signal_real_aa::real_unfiltered_value() const
+ದ್ವಿಗುಣ vvp_fun_signal_real_aa::real_unfiltered_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ
 {
-      const double*bits = static_cast<double*>
-            (vthread_get_rd_context_item(context_idx_));
+      ಸ್ಥಿರಾಂಕ ದ್ವಿಗುಣ*ಬಿಟ್ಟುಗಳು = static_cast<ದ್ವಿಗುಣ*>
+            (vthread_get_rd_context_ಅಂಶ(context_idx_));
 
-      return *bits;
+      ಹಿಂತಿರುಗಿ *ಬಿಟ್ಟುಗಳು;
 }
 
-double vvp_fun_signal_real_aa::real_value() const
+ದ್ವಿಗುಣ vvp_fun_signal_real_aa::real_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ
 {
-      return real_unfiltered_value();
+      ಹಿಂತಿರುಗಿ real_unfiltered_ಮೌಲ್ಯ();
 }
 
-void vvp_fun_signal_real_aa::recv_real(vvp_net_ptr_t ptr, double bit,
+ಶೂನ್ಯ vvp_fun_signal_real_aa::recv_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್,
                                        vvp_context_t context)
 {
-      assert(ptr.port() == 0);
-      assert(context);
+      ಪ್ರತಿಜ್ಞಾ(ptr.ಪೋರ್ಟ್() == 0);
+      ಪ್ರತಿಜ್ಞಾ(context);
 
-      double*bits = static_cast<double*>
-            (vvp_get_context_item(context, context_idx_));
+      ದ್ವಿಗುಣ*ಬಿಟ್ಟುಗಳು = static_cast<ದ್ವಿಗುಣ*>
+            (vvp_get_context_ಅಂಶ(context, context_idx_));
 
-      if (!bits_equal(*bits,bit)) {
-            *bits = bit;
-            ptr.ptr()->send_real(bit, context);
+      ಆದರೆ (!ಬಿಟ್ಟುಗಳು_equal(*ಬಿಟ್ಟುಗಳು,ಬಿಟ್)) {
+            *ಬಿಟ್ಟುಗಳು = ಬಿಟ್;
+            ptr.ptr()->send_real(ಬಿಟ್, context);
       }
 }
 
-unsigned vvp_fun_signal_real_aa::value_size() const
+ಚಿಹ್ನೆರಹಿತ vvp_fun_signal_real_aa::ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return 1;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ 1;
 }
 
-vvp_bit4_t vvp_fun_signal_real_aa::value(unsigned) const
+vvp_bit4_t vvp_fun_signal_real_aa::value(ಚಿಹ್ನೆರಹಿತ) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return BIT4_X;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ BIT4_X;
 }
 
-vvp_scalar_t vvp_fun_signal_real_aa::scalar_value(unsigned) const
+vvp_scalar_t vvp_fun_signal_real_aa::scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return vvp_scalar_t();
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ vvp_scalar_t();
 }
 
-void vvp_fun_signal_real_aa::vec4_value(vvp_vector4_t&) const
+ಶೂನ್ಯ vvp_fun_signal_real_aa::vec4_ಮೌಲ್ಯ(vvp_vector4_t&) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void* vvp_fun_signal_real_aa::operator new(std::size_t size)
+ಶೂನ್ಯ* vvp_fun_signal_real_aa::ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(std::size_t size)
 {
-      return vvp_net_fun_t::heap_.alloc(size);
+      ಹಿಂತಿರುಗಿ vvp_net_fun_t::ರಾಶಿ.alloc(size);
 }
 
-void vvp_fun_signal_real_aa::operator delete(void*)
+ಶೂನ್ಯ vvp_fun_signal_real_aa::ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
 
@@ -592,229 +592,229 @@ vvp_fun_signal_string_sa::vvp_fun_signal_string_sa()
 {
 }
 
-void vvp_fun_signal_string_sa::recv_string(vvp_net_ptr_t ptr, const std::string&bit,
+ಶೂನ್ಯ vvp_fun_signal_string_sa::recv_string(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ std::string&ಬಿಟ್,
 					   vvp_context_t)
 {
-      assert(ptr.port() == 0);
+      ಪ್ರತಿಜ್ಞಾ(ptr.ಪೋರ್ಟ್() == 0);
 
-      if (needs_init_ || value_ != bit) {
-	    value_ = bit;
-	    needs_init_ = false;
+      ಆದರೆ (needs_init_ || ಮೌಲ್ಯ_2 != ಬಿಟ್) {
+	    ಮೌಲ್ಯ_2 = ಬಿಟ್;
+	    needs_init_ = ಸುಳ್ಳು;
 
-	    ptr.ptr()->send_string(bit, 0);
+	    ptr.ptr()->send_string(ಬಿಟ್, 0);
       }
 }
 
-const string& vvp_fun_signal_string_sa::get_string() const
+ಸ್ಥಿರಾಂಕ string& vvp_fun_signal_string_sa::get_string() ಸ್ಥಿರಾಂಕ
 {
-      return value_;
+      ಹಿಂತಿರುಗಿ ಮೌಲ್ಯ_2;
 }
 
 vvp_fun_signal_string_aa::vvp_fun_signal_string_aa()
 {
-      context_idx_ = vpip_add_item_to_context(this, vpip_peek_context_scope());
+      context_idx_ = vpip_ಕೂಡಿಸು_ಅಂಶ_ಗಮ್ಯ_context(ಇದು, vpip_peek_context_scope());
 }
 
 vvp_fun_signal_string_aa::~vvp_fun_signal_string_aa()
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_fun_signal_string_aa::alloc_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_signal_string_aa::alloc_instance(vvp_context_t context)
 {
-      string*bits = new std::string;
-      vvp_set_context_item(context, context_idx_, bits);
-      *bits = "";
+      string*ಬಿಟ್ಟುಗಳು = ಹೊಸ std::string;
+      vvp_ಗಣ_context_ಅಂಶ(context, context_idx_, ಬಿಟ್ಟುಗಳು);
+      *ಬಿಟ್ಟುಗಳು = "";
 }
 
-void vvp_fun_signal_string_aa::reset_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_signal_string_aa::reset_instance(vvp_context_t context)
 {
-      string*bits = static_cast<std::string*>
-	    (vvp_get_context_item(context, context_idx_));
-      *bits = "";
+      string*ಬಿಟ್ಟುಗಳು = static_cast<std::string*>
+	    (vvp_get_context_ಅಂಶ(context, context_idx_));
+      *ಬಿಟ್ಟುಗಳು = "";
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_fun_signal_string_aa::free_instance(vvp_context_t context)
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+ಶೂನ್ಯ vvp_fun_signal_string_aa::free_instance(vvp_context_t context)
 {
-      string*bits = static_cast<std::string*>
-            (vvp_get_context_item(context, context_idx_));
-      delete bits;
+      string*ಬಿಟ್ಟುಗಳು = static_cast<std::string*>
+            (vvp_get_context_ಅಂಶ(context, context_idx_));
+      ಅಳಿಸು ಬಿಟ್ಟುಗಳು;
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-void vvp_fun_signal_string_aa::recv_string(vvp_net_ptr_t ptr, const std::string&bit, vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_signal_string_aa::recv_string(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ std::string&ಬಿಟ್, vvp_context_t context)
 {
-      assert(ptr.port() == 0);
-      assert(context);
+      ಪ್ರತಿಜ್ಞಾ(ptr.ಪೋರ್ಟ್() == 0);
+      ಪ್ರತಿಜ್ಞಾ(context);
 
-      string*bits = static_cast<std::string*>
-	    (vvp_get_context_item(context, context_idx_));
+      string*ಬಿಟ್ಟುಗಳು = static_cast<std::string*>
+	    (vvp_get_context_ಅಂಶ(context, context_idx_));
 
-      if (*bits != bit) {
-	    *bits = bit;
-	    ptr.ptr()->send_string(bit, context);
+      ಆದರೆ (*ಬಿಟ್ಟುಗಳು != ಬಿಟ್) {
+	    *ಬಿಟ್ಟುಗಳು = ಬಿಟ್;
+	    ptr.ptr()->send_string(ಬಿಟ್, context);
       }
 }
 
-unsigned vvp_fun_signal_string_aa::value_size() const
+ಚಿಹ್ನೆರಹಿತ vvp_fun_signal_string_aa::ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return 1;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ 1;
 }
 
-vvp_bit4_t vvp_fun_signal_string_aa::value(unsigned) const
+vvp_bit4_t vvp_fun_signal_string_aa::value(ಚಿಹ್ನೆರಹಿತ) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return BIT4_X;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ BIT4_X;
 }
 
-vvp_scalar_t vvp_fun_signal_string_aa::scalar_value(unsigned) const
+vvp_scalar_t vvp_fun_signal_string_aa::scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return vvp_scalar_t();
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ vvp_scalar_t();
 }
 
-void vvp_fun_signal_string_aa::vec4_value(vvp_vector4_t&) const
+ಶೂನ್ಯ vvp_fun_signal_string_aa::vec4_ಮೌಲ್ಯ(vvp_vector4_t&) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-double vvp_fun_signal_string_aa::real_value() const
+ದ್ವಿಗುಣ vvp_fun_signal_string_aa::real_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return 0.0;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ 0.0;
 }
 
-const std::string& vvp_fun_signal_string_aa::get_string() const
+ಸ್ಥಿರಾಂಕ std::string& vvp_fun_signal_string_aa::get_string() ಸ್ಥಿರಾಂಕ
 {
-      const string*bits = static_cast<std::string*>
-            (vthread_get_rd_context_item(context_idx_));
+      ಸ್ಥಿರಾಂಕ string*ಬಿಟ್ಟುಗಳು = static_cast<std::string*>
+            (vthread_get_rd_context_ಅಂಶ(context_idx_));
 
-      return *bits;
+      ಹಿಂತಿರುಗಿ *ಬಿಟ್ಟುಗಳು;
 }
 
-void* vvp_fun_signal_string_aa::operator new(std::size_t size)
+ಶೂನ್ಯ* vvp_fun_signal_string_aa::ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(std::size_t size)
 {
-      return vvp_net_fun_t::heap_.alloc(size);
+      ಹಿಂತಿರುಗಿ vvp_net_fun_t::ರಾಶಿ.alloc(size);
 }
 
-void vvp_fun_signal_string_aa::operator delete(void*)
+ಶೂನ್ಯ vvp_fun_signal_string_aa::ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
   /* OBJECT signals */
 
-vvp_fun_signal_object_sa::vvp_fun_signal_object_sa(unsigned size)
+vvp_fun_signal_object_sa::vvp_fun_signal_object_sa(ಚಿಹ್ನೆರಹಿತ size)
 : vvp_fun_signal_object(size)
 {
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_fun_signal_object_aa::free_instance(vvp_context_t context)
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+ಶೂನ್ಯ vvp_fun_signal_object_aa::free_instance(vvp_context_t context)
 {
-      vvp_object_t*bits = static_cast<vvp_object_t*>
-            (vvp_get_context_item(context, context_idx_));
-      delete bits;
+      vvp_object_t*ಬಿಟ್ಟುಗಳು = static_cast<vvp_object_t*>
+            (vvp_get_context_ಅಂಶ(context, context_idx_));
+      ಅಳಿಸು ಬಿಟ್ಟುಗಳು;
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-void vvp_fun_signal_object_sa::recv_object(vvp_net_ptr_t ptr, vvp_object_t bit,
+ಶೂನ್ಯ vvp_fun_signal_object_sa::recv_object(vvp_net_ptr_t ptr, vvp_object_t ಬಿಟ್,
 					   vvp_context_t)
 {
-      assert(ptr.port() == 0);
+      ಪ್ರತಿಜ್ಞಾ(ptr.ಪೋರ್ಟ್() == 0);
 
-      if (needs_init_ || value_ != bit) {
-	    value_ = bit;
-	    needs_init_ = false;
+      ಆದರೆ (needs_init_ || ಮೌಲ್ಯ_2 != ಬಿಟ್) {
+	    ಮೌಲ್ಯ_2 = ಬಿಟ್;
+	    needs_init_ = ಸುಳ್ಳು;
 
-	    ptr.ptr()->send_object(bit, 0);
+	    ptr.ptr()->send_object(ಬಿಟ್, 0);
       }
 }
 
-vvp_object_t vvp_fun_signal_object_sa::get_object() const
+vvp_object_t vvp_fun_signal_object_sa::get_object() ಸ್ಥಿರಾಂಕ
 {
-      return value_;
+      ಹಿಂತಿರುಗಿ ಮೌಲ್ಯ_2;
 }
 
-vvp_fun_signal_object_aa::vvp_fun_signal_object_aa(unsigned size)
+vvp_fun_signal_object_aa::vvp_fun_signal_object_aa(ಚಿಹ್ನೆರಹಿತ size)
 : vvp_fun_signal_object(size)
 {
-      context_idx_ = vpip_add_item_to_context(this, vpip_peek_context_scope());
+      context_idx_ = vpip_ಕೂಡಿಸು_ಅಂಶ_ಗಮ್ಯ_context(ಇದು, vpip_peek_context_scope());
 }
 
 vvp_fun_signal_object_aa::~vvp_fun_signal_object_aa()
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_fun_signal_object_aa::alloc_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_signal_object_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_object_t*bits = new vvp_object_t;
-      vvp_set_context_item(context, context_idx_, bits);
-      bits->reset();
+      vvp_object_t*ಬಿಟ್ಟುಗಳು = ಹೊಸ vvp_object_t;
+      vvp_ಗಣ_context_ಅಂಶ(context, context_idx_, ಬಿಟ್ಟುಗಳು);
+      ಬಿಟ್ಟುಗಳು->reset();
 }
 
-void vvp_fun_signal_object_aa::reset_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_signal_object_aa::reset_instance(vvp_context_t context)
 {
-      vvp_object_t*bits = static_cast<vvp_object_t*>
-	    (vvp_get_context_item(context, context_idx_));
-      bits->reset();
+      vvp_object_t*ಬಿಟ್ಟುಗಳು = static_cast<vvp_object_t*>
+	    (vvp_get_context_ಅಂಶ(context, context_idx_));
+      ಬಿಟ್ಟುಗಳು->reset();
 }
 
-vvp_object_t vvp_fun_signal_object_aa::get_object() const
+vvp_object_t vvp_fun_signal_object_aa::get_object() ಸ್ಥಿರಾಂಕ
 {
-      const vvp_object_t*bits = static_cast<vvp_object_t*>
-	    (vthread_get_rd_context_item(context_idx_));
-      return *bits;
+      ಸ್ಥಿರಾಂಕ vvp_object_t*ಬಿಟ್ಟುಗಳು = static_cast<vvp_object_t*>
+	    (vthread_get_rd_context_ಅಂಶ(context_idx_));
+      ಹಿಂತಿರುಗಿ *ಬಿಟ್ಟುಗಳು;
 }
 
-void vvp_fun_signal_object_aa::recv_object(vvp_net_ptr_t ptr, vvp_object_t bit,
+ಶೂನ್ಯ vvp_fun_signal_object_aa::recv_object(vvp_net_ptr_t ptr, vvp_object_t ಬಿಟ್,
 					   vvp_context_t context)
 {
-      assert(ptr.port() == 0);
-      assert(context);
+      ಪ್ರತಿಜ್ಞಾ(ptr.ಪೋರ್ಟ್() == 0);
+      ಪ್ರತಿಜ್ಞಾ(context);
 
-      vvp_object_t*bits = static_cast<vvp_object_t*>
-	    (vvp_get_context_item(context, context_idx_));
+      vvp_object_t*ಬಿಟ್ಟುಗಳು = static_cast<vvp_object_t*>
+	    (vvp_get_context_ಅಂಶ(context, context_idx_));
 
-      if (*bits != bit) {
-	    *bits = bit;
-	    ptr.ptr()->send_object(bit, context);
+      ಆದರೆ (*ಬಿಟ್ಟುಗಳು != ಬಿಟ್) {
+	    *ಬಿಟ್ಟುಗಳು = ಬಿಟ್;
+	    ptr.ptr()->send_object(ಬಿಟ್, context);
       }
 }
 
-unsigned vvp_fun_signal_object_aa::value_size() const
+ಚಿಹ್ನೆರಹಿತ vvp_fun_signal_object_aa::ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ
 {
-      return 1;
+      ಹಿಂತಿರುಗಿ 1;
 }
 
-vvp_bit4_t vvp_fun_signal_object_aa::value(unsigned) const
+vvp_bit4_t vvp_fun_signal_object_aa::value(ಚಿಹ್ನೆರಹಿತ) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return BIT4_X;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ BIT4_X;
 }
 
-vvp_scalar_t vvp_fun_signal_object_aa::scalar_value(unsigned) const
+vvp_scalar_t vvp_fun_signal_object_aa::scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return vvp_scalar_t();
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ vvp_scalar_t();
 }
 
-void vvp_fun_signal_object_aa::vec4_value(vvp_vector4_t&) const
+ಶೂನ್ಯ vvp_fun_signal_object_aa::vec4_ಮೌಲ್ಯ(vvp_vector4_t&) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void* vvp_fun_signal_object_aa::operator new(std::size_t size)
+ಶೂನ್ಯ* vvp_fun_signal_object_aa::ಕ್ರಿಯಾಕಾರಕ ಹೊಸ(std::size_t size)
 {
-      return vvp_net_fun_t::heap_.alloc(size);
+      ಹಿಂತಿರುಗಿ vvp_net_fun_t::ರಾಶಿ.alloc(size);
 }
 
-void vvp_fun_signal_object_aa::operator delete(void*)
+ಶೂನ್ಯ vvp_fun_signal_object_aa::ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
   /* **** */
@@ -827,572 +827,572 @@ vvp_fun_force::~vvp_fun_force()
 {
 }
 
-void vvp_fun_force::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_force::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
 			      vvp_context_t)
 {
-      assert(ptr.port() == 0);
+      ಪ್ರತಿಜ್ಞಾ(ptr.ಪೋರ್ಟ್() == 0);
       vvp_net_t*net = ptr.ptr();
 
-      vvp_net_t*dst = net->port[3].ptr();
-      assert(dst->fil);
+      vvp_net_t*dst = net->ಪೋರ್ಟ್[3].ptr();
+      ಪ್ರತಿಜ್ಞಾ(dst->fil);
 
-      dst->force_vec4(coerce_to_width(bit, dst->fil->filter_size()), vvp_vector2_t(vvp_vector2_t::FILL1, dst->fil->filter_size()));
+      dst->force_vec4(coerce_ಗಮ್ಯ_ಅಗಲ(ಬಿಟ್, dst->fil->filter_ಗಾತ್ರ()), vvp_vector2_t(vvp_vector2_t::FILL1, dst->fil->filter_ಗಾತ್ರ()));
 }
 
-void vvp_fun_force::recv_real(vvp_net_ptr_t ptr, double bit, vvp_context_t)
+ಶೂನ್ಯ vvp_fun_force::recv_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್, vvp_context_t)
 {
-      assert(ptr.port() == 0);
+      ಪ್ರತಿಜ್ಞಾ(ptr.ಪೋರ್ಟ್() == 0);
       vvp_net_t*net = ptr.ptr();
-      vvp_net_t*dst = net->port[3].ptr();
-      dst->force_real(bit, vvp_vector2_t(vvp_vector2_t::FILL1, 1));
+      vvp_net_t*dst = net->ಪೋರ್ಟ್[3].ptr();
+      dst->force_real(ಬಿಟ್, vvp_vector2_t(vvp_vector2_t::FILL1, 1));
 }
 
-vvp_wire_base::vvp_wire_base()
+vvp_wire_ತಳ::vvp_wire_ತಳ()
 {
 }
 
-vvp_wire_base::~vvp_wire_base()
+vvp_wire_ತಳ::~vvp_wire_ತಳ()
 {
 }
 
-vvp_bit4_t vvp_wire_base::driven_value(unsigned) const
+vvp_bit4_t vvp_wire_ತಳ::driven_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return BIT4_X;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ BIT4_X;
 }
 
-bool vvp_wire_base::is_forced(unsigned) const
+ತಾರ್ಕಿಕ vvp_wire_ತಳ::is_forced(ಚಿಹ್ನೆರಹಿತ) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return false;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
-vvp_wire_vec4::vvp_wire_vec4(unsigned wid, vvp_bit4_t init)
+vvp_wire_vec4::vvp_wire_vec4(ಚಿಹ್ನೆರಹಿತ wid, vvp_bit4_t init)
 : bits4_(wid, init)
 {
-      needs_init_ = true;
+      needs_init_ = ನಿಜ;
 }
 
-vvp_net_fil_t::prop_t vvp_wire_vec4::filter_vec4(const vvp_vector4_t&bit, vvp_vector4_t&rep,
-						 unsigned base, unsigned vwid)
+vvp_net_fil_t::prop_t vvp_wire_vec4::filter_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್, vvp_vector4_t&rep,
+						 ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid)
 {
 	// Special case! the input bit is 0 wid. Interpret this as a
 	// vector of BIT4_X to match the width of the bits4_ vector.
 	// FIXME! This is a hack to work around some buggy gate
 	// implementations! This should be removed!
-      if (base==0 && vwid==0) {
+      ಆದರೆ (ತಳ==0 && vwid==0) {
 	    vvp_vector4_t tmp (bits4_.size(), BIT4_X);
-	    if (bits4_ .eeq(tmp) && !needs_init_) return STOP;
+	    ಆದರೆ (bits4_ .eeq(tmp) && !needs_init_) ಹಿಂತಿರುಗಿ STOP;
 	    bits4_ = tmp;
-	    needs_init_ = false;
-	    return filter_mask_(tmp, force4_, rep, 0);
+	    needs_init_ = ಸುಳ್ಳು;
+	    ಹಿಂತಿರುಗಿ filter_ಮುಖವಾಡ(tmp, force4_, rep, 0);
       }
 
-      if (vwid != bits4_.size()) {
+      ಆದರೆ (vwid != bits4_.size()) {
 	    cerr << "Internal error: Input vector expected width="
 		 << bits4_.size() << ", got "
-		 << "bit=" << bit << ", base=" << base << ", vwid=" << vwid
-		 << endl;
+		 << "bit=" << ಬಿಟ್ << ", base=" << ತಳ << ", vwid=" << vwid
+		 << ಸಾಲು_ಅಂತ್ಯ;
       }
-      assert(bits4_.size() == vwid);
+      ಪ್ರತಿಜ್ಞಾ(bits4_.size() == vwid);
 
 	// Keep track of the value being driven from this net, even if
 	// it is not ultimately what survives the force filter.
-      if (base==0 && bit.size()==vwid) {
-	    if (bits4_ .eeq( bit ) && !needs_init_) return STOP;
-	    bits4_ = bit;
-      } else {
-	    bool rc = bits4_.set_vec(base, bit);
-	    if (rc == false && !needs_init_) return STOP;
+      ಆದರೆ (ತಳ==0 && ಬಿಟ್.size()==vwid) {
+	    ಆದರೆ (bits4_ .eeq( ಬಿಟ್ ) && !needs_init_) ಹಿಂತಿರುಗಿ STOP;
+	    bits4_ = ಬಿಟ್;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ತಾರ್ಕಿಕ rc = bits4_.ಗಣ_vec(ತಳ, ಬಿಟ್);
+	    ಆದರೆ (rc == ಸುಳ್ಳು && !needs_init_) ಹಿಂತಿರುಗಿ STOP;
       }
 
-      needs_init_ = false;
-      return filter_mask_(bit, force4_, rep, base);
+      needs_init_ = ಸುಳ್ಳು;
+      ಹಿಂತಿರುಗಿ filter_ಮುಖವಾಡ(ಬಿಟ್, force4_, rep, ತಳ);
 }
 
-vvp_net_fil_t::prop_t vvp_wire_vec4::filter_vec8(const vvp_vector8_t&bit,
+vvp_net_fil_t::prop_t vvp_wire_vec4::filter_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್,
                                                  vvp_vector8_t&rep,
-                                                 unsigned base,
-                                                 unsigned vwid)
+                                                 ಚಿಹ್ನೆರಹಿತ ತಳ,
+                                                 ಚಿಹ್ನೆರಹಿತ vwid)
 {
-      assert(bits4_.size() == vwid);
+      ಪ್ರತಿಜ್ಞಾ(bits4_.size() == vwid);
 
 	// Keep track of the value being driven from this net, even if
 	// it is not ultimately what survives the force filter.
-      vvp_vector4_t bit4 (reduce4(bit));
-      if (base==0 && bit4.size()==vwid) {
-	    if (bits4_ .eeq( bit4 ) && !needs_init_) return STOP;
+      vvp_vector4_t bit4 (reduce4(ಬಿಟ್));
+      ಆದರೆ (ತಳ==0 && bit4.size()==vwid) {
+	    ಆದರೆ (bits4_ .eeq( bit4 ) && !needs_init_) ಹಿಂತಿರುಗಿ STOP;
 	    bits4_ = bit4;
-      } else {
-	    bool rc = bits4_.set_vec(base, bit4);
-	    if (rc == false && !needs_init_) return STOP;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ತಾರ್ಕಿಕ rc = bits4_.ಗಣ_vec(ತಳ, bit4);
+	    ಆದರೆ (rc == ಸುಳ್ಳು && !needs_init_) ಹಿಂತಿರುಗಿ STOP;
       }
 
-      needs_init_ = false;
-      return filter_mask_(bit, vvp_vector8_t(force4_,6,6), rep, base);
+      needs_init_ = ಸುಳ್ಳು;
+      ಹಿಂತಿರುಗಿ filter_ಮುಖವಾಡ(ಬಿಟ್, vvp_vector8_t(force4_,6,6), rep, ತಳ);
 }
 
-unsigned vvp_wire_vec4::filter_size() const
+ಚಿಹ್ನೆರಹಿತ vvp_wire_vec4::filter_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ
 {
-      return bits4_.size();
+      ಹಿಂತಿರುಗಿ bits4_.size();
 }
 
-void vvp_wire_vec4::force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask)
+ಶೂನ್ಯ vvp_wire_vec4::force_fil_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ)
 {
-      force_mask(mask);
+      force_ಮುಖವಾಡ(ಮುಖವಾಡ);
 
-      if (force4_.size() == 0) {
+      ಆದರೆ (force4_.size() == 0) {
 	    force4_ = val;
-      } else {
-	    for (unsigned idx = 0; idx < mask.size() ; idx += 1) {
-		  if (mask.value(idx) == 0)
-			continue;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0; idx < ಮುಖವಾಡ.size() ; idx += 1) {
+		  ಆದರೆ (ಮುಖವಾಡ.value(idx) == 0)
+			ಮುಂದುವರಿ;
 
-		  force4_.set_bit(idx, val.value(idx));
+		  force4_.ಗಣ_ಬಿಟ್(idx, val.value(idx));
 	    }
       }
-      run_vpi_callbacks();
+      ಸತತ_vpi_callbacks();
 }
 
-void vvp_wire_vec4::force_fil_vec8(const vvp_vector8_t&, const vvp_vector2_t&)
+ಶೂನ್ಯ vvp_wire_vec4::force_fil_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&, ಸ್ಥಿರಾಂಕ vvp_vector2_t&)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_wire_vec4::force_fil_real(double, const vvp_vector2_t&)
+ಶೂನ್ಯ vvp_wire_vec4::force_fil_real(ದ್ವಿಗುಣ, ಸ್ಥಿರಾಂಕ vvp_vector2_t&)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_wire_vec4::release(vvp_net_ptr_t ptr, bool net_flag)
+ಶೂನ್ಯ vvp_wire_vec4::release(vvp_net_ptr_t ptr, ತಾರ್ಕಿಕ net_flag)
 {
-      vvp_vector2_t mask (vvp_vector2_t::FILL1, bits4_.size());
-      if (net_flag) {
+      vvp_vector2_t ಮುಖವಾಡ (vvp_vector2_t::FILL1, bits4_.size());
+      ಆದರೆ (net_flag) {
 	      // Wires revert to their unforced value after release.
-            release_mask(mask);
+            release_ಮುಖವಾಡ(ಮುಖವಾಡ);
 	    needs_init_ = ! force4_ .eeq(bits4_);
 	    ptr.ptr()->send_vec4(bits4_, 0);
-	    run_vpi_callbacks();
-      } else {
+	    ಸತತ_vpi_callbacks();
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	      // Variables keep the current value.
 	    vvp_vector4_t res (bits4_.size());
-	    for (unsigned idx=0; idx<bits4_.size(); idx += 1)
-		  res.set_bit(idx,value(idx));
-            release_mask(mask);
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx=0; idx<bits4_.size(); idx += 1)
+		  res.ಗಣ_ಬಿಟ್(idx,value(idx));
+            release_ಮುಖವಾಡ(ಮುಖವಾಡ);
 	    ptr.ptr()->fun->recv_vec4(ptr, res, 0);
       }
 }
 
-void vvp_wire_vec4::release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag)
+ಶೂನ್ಯ vvp_wire_vec4::release_pv(vvp_net_ptr_t ptr, ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ wid, ತಾರ್ಕಿಕ net_flag)
 {
-      assert(bits4_.size() >= base + wid);
+      ಪ್ರತಿಜ್ಞಾ(bits4_.size() >= ತಳ + wid);
 
-      vvp_vector2_t mask (vvp_vector2_t::FILL0, bits4_.size());
-      for (unsigned idx = 0 ; idx < wid ; idx += 1)
-	    mask.set_bit(base+idx, 1);
+      vvp_vector2_t ಮುಖವಾಡ (vvp_vector2_t::FILL0, bits4_.size());
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < wid ; idx += 1)
+	    ಮುಖವಾಡ.ಗಣ_ಬಿಟ್(ತಳ+idx, 1);
 
-      if (net_flag) {
+      ಆದರೆ (net_flag) {
 	      // Wires revert to their unforced value after release.
-	    release_mask(mask);
-	    needs_init_ = ! force4_.subvalue(base,wid) .eeq(bits4_.subvalue(base,wid));
-	    ptr.ptr()->send_vec4_pv(bits4_.subvalue(base,wid),
-				    base, bits4_.size(), 0);
-	    run_vpi_callbacks();
-      } else {
+	    release_ಮುಖವಾಡ(ಮುಖವಾಡ);
+	    needs_init_ = ! force4_.subvalue(ತಳ,wid) .eeq(bits4_.subvalue(ತಳ,wid));
+	    ptr.ptr()->send_vec4_pv(bits4_.subvalue(ತಳ,wid),
+				    ತಳ, bits4_.size(), 0);
+	    ಸತತ_vpi_callbacks();
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	      // Variables keep the current value.
 	    vvp_vector4_t res (wid);
-	    for (unsigned idx=0; idx<wid; idx += 1)
-		  res.set_bit(idx,value(base+idx));
-	    release_mask(mask);
-	    ptr.ptr()->fun->recv_vec4_pv(ptr, res, base, bits4_.size(), 0);
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx=0; idx<wid; idx += 1)
+		  res.ಗಣ_ಬಿಟ್(idx,value(ತಳ+idx));
+	    release_ಮುಖವಾಡ(ಮುಖವಾಡ);
+	    ptr.ptr()->fun->recv_vec4_pv(ptr, res, ತಳ, bits4_.size(), 0);
       }
 }
 
-unsigned vvp_wire_vec4::value_size() const
+ಚಿಹ್ನೆರಹಿತ vvp_wire_vec4::ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ
 {
-      return bits4_.size();
+      ಹಿಂತಿರುಗಿ bits4_.size();
 }
 
-vvp_bit4_t vvp_wire_vec4::filtered_value_(unsigned idx) const
+vvp_bit4_t vvp_wire_vec4::filtered_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ
 {
-      if (test_force_mask(idx))
-	    return force4_.value(idx);
-      else
-	    return bits4_.value(idx);
+      ಆದರೆ (test_force_ಮುಖವಾಡ(idx))
+	    ಹಿಂತಿರುಗಿ force4_.value(idx);
+      ಇಲ್ಲದಿದ್ದರೆ
+	    ಹಿಂತಿರುಗಿ bits4_.value(idx);
 }
 
-vvp_bit4_t vvp_wire_vec4::value(unsigned idx) const
+vvp_bit4_t vvp_wire_vec4::value(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ
 {
-      return filtered_value_(idx);
+      ಹಿಂತಿರುಗಿ filtered_ಮೌಲ್ಯ(idx);
 }
 
-vvp_scalar_t vvp_wire_vec4::scalar_value(unsigned idx) const
+vvp_scalar_t vvp_wire_vec4::scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ
 {
-      return vvp_scalar_t(value(idx),6,6);
+      ಹಿಂತಿರುಗಿ vvp_scalar_t(value(idx),6,6);
 }
 
-void vvp_wire_vec4::vec4_value(vvp_vector4_t&val) const
+ಶೂನ್ಯ vvp_wire_vec4::vec4_ಮೌಲ್ಯ(vvp_vector4_t&val) ಸ್ಥಿರಾಂಕ
 {
       val = bits4_;
-      if (test_force_mask_is_zero())
-	    return;
+      ಆದರೆ (test_force_ಮುಖವಾಡ_is_zero())
+	    ಹಿಂತಿರುಗಿ;
 
-      for (unsigned idx = 0 ; idx < bits4_.size() ; idx += 1)
-	    val.set_bit(idx, filtered_value_(idx));
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < bits4_.size() ; idx += 1)
+	    val.ಗಣ_ಬಿಟ್(idx, filtered_ಮೌಲ್ಯ(idx));
 }
 
-vvp_bit4_t vvp_wire_vec4::driven_value(unsigned idx) const
+vvp_bit4_t vvp_wire_vec4::driven_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ
 {
-      return bits4_.value(idx);
+      ಹಿಂತಿರುಗಿ bits4_.value(idx);
 }
 
-bool vvp_wire_vec4::is_forced(unsigned idx) const
+ತಾರ್ಕಿಕ vvp_wire_vec4::is_forced(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ
 {
-      return test_force_mask(idx);
+      ಹಿಂತಿರುಗಿ test_force_ಮುಖವಾಡ(idx);
 }
 
-vvp_wire_vec8::vvp_wire_vec8(unsigned wid)
+vvp_wire_vec8::vvp_wire_vec8(ಚಿಹ್ನೆರಹಿತ wid)
 : bits8_(wid)
 {
-      needs_init_ = true;
+      needs_init_ = ನಿಜ;
 }
 
-vvp_net_fil_t::prop_t vvp_wire_vec8::filter_vec4(const vvp_vector4_t&bit,
+vvp_net_fil_t::prop_t vvp_wire_vec8::filter_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                                                  vvp_vector4_t&rep,
-                                                 unsigned base,
-                                                 unsigned vwid)
+                                                 ಚಿಹ್ನೆರಹಿತ ತಳ,
+                                                 ಚಿಹ್ನೆರಹಿತ vwid)
 {
 	// For now there is no support for a non-zero base.
-      assert(0 == base);
-      assert(bits8_.size() == vwid);
-      assert(bits8_.size() == bit.size());
+      ಪ್ರತಿಜ್ಞಾ(0 == ತಳ);
+      ಪ್ರತಿಜ್ಞಾ(bits8_.size() == vwid);
+      ಪ್ರತಿಜ್ಞಾ(bits8_.size() == ಬಿಟ್.size());
 	// QUESTION: Is it really correct to propagate a vec4 if this
 	// is a vec8 node? In fact, it is really possible for a vec4
 	// value to get through to a vec8 filter?
       vvp_vector8_t rep8;
-      prop_t rc = filter_vec8(vvp_vector8_t(bit,6,6), rep8, 0, vwid);
-      if (rc == REPL)
+      prop_t rc = filter_vec8(vvp_vector8_t(ಬಿಟ್,6,6), rep8, 0, vwid);
+      ಆದರೆ (rc == REPL)
 	    rep = reduce4(rep8);
 
-      needs_init_ = false;
-      return rc;
+      needs_init_ = ಸುಳ್ಳು;
+      ಹಿಂತಿರುಗಿ rc;
 }
 
-vvp_net_fil_t::prop_t vvp_wire_vec8::filter_vec8(const vvp_vector8_t&bit, vvp_vector8_t&rep, unsigned base, unsigned vwid)
+vvp_net_fil_t::prop_t vvp_wire_vec8::filter_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್, vvp_vector8_t&rep, ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid)
 {
-      assert(vwid == bits8_.size());
+      ಪ್ರತಿಜ್ಞಾ(vwid == bits8_.size());
 	// Keep track of the value being driven from this net, even if
 	// it is not ultimately what survives the force filter.
-      if (base==0 && bit.size()==vwid) {
-	    if (bits8_.eeq(bit) && !needs_init_) return STOP;
-	    bits8_ = bit;
-      } else {
-	    if (bits8_.subvalue(base, bit.size()).eeq(bit) &&
+      ಆದರೆ (ತಳ==0 && ಬಿಟ್.size()==vwid) {
+	    ಆದರೆ (bits8_.eeq(ಬಿಟ್) && !needs_init_) ಹಿಂತಿರುಗಿ STOP;
+	    bits8_ = ಬಿಟ್;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಆದರೆ (bits8_.subvalue(ತಳ, ಬಿಟ್.size()).eeq(ಬಿಟ್) &&
 		!needs_init_) {
-		  return STOP;
+		  ಹಿಂತಿರುಗಿ STOP;
 	    }
-	    if (bits8_.size() == 0)
+	    ಆದರೆ (bits8_.size() == 0)
 		  bits8_ = vvp_vector8_t(vwid);
-	    assert(bits8_.size() == vwid);
-	    bits8_.set_vec(base, bit);
+	    ಪ್ರತಿಜ್ಞಾ(bits8_.size() == vwid);
+	    bits8_.ಗಣ_vec(ತಳ, ಬಿಟ್);
       }
-      needs_init_ = false;
-      return filter_mask_(bit, force8_, rep, base);
+      needs_init_ = ಸುಳ್ಳು;
+      ಹಿಂತಿರುಗಿ filter_ಮುಖವಾಡ(ಬಿಟ್, force8_, rep, ತಳ);
 }
 
-vvp_net_fil_t::prop_t vvp_wire_vec8::filter_input_vec8(const vvp_vector8_t&bit, vvp_vector8_t&rep) const
+vvp_net_fil_t::prop_t vvp_wire_vec8::filter_ಒಳಹರಿವು_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್, vvp_vector8_t&rep) ಸ್ಥಿರಾಂಕ
 {
-      return filter_input_mask_(bit, force8_, rep);
+      ಹಿಂತಿರುಗಿ filter_ಒಳಹರಿವು_ಮುಖವಾಡ(ಬಿಟ್, force8_, rep);
 }
 
-unsigned vvp_wire_vec8::filter_size() const
+ಚಿಹ್ನೆರಹಿತ vvp_wire_vec8::filter_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ
 {
-      return bits8_.size();
+      ಹಿಂತಿರುಗಿ bits8_.size();
 }
 
-void vvp_wire_vec8::force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask)
+ಶೂನ್ಯ vvp_wire_vec8::force_fil_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ)
 {
-      force_fil_vec8(vvp_vector8_t(val,6,6), mask);
+      force_fil_vec8(vvp_vector8_t(val,6,6), ಮುಖವಾಡ);
 }
 
-void vvp_wire_vec8::force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask)
+ಶೂನ್ಯ vvp_wire_vec8::force_fil_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ)
 {
-      force_mask(mask);
+      force_ಮುಖವಾಡ(ಮುಖವಾಡ);
 
-      if (force8_.size() == 0) {
+      ಆದರೆ (force8_.size() == 0) {
 	    force8_ = val;
-      } else {
-	    for (unsigned idx = 0; idx < mask.size() ; idx += 1) {
-		  if (mask.value(idx) == 0)
-			continue;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0; idx < ಮುಖವಾಡ.size() ; idx += 1) {
+		  ಆದರೆ (ಮುಖವಾಡ.value(idx) == 0)
+			ಮುಂದುವರಿ;
 
-		  force8_.set_bit(idx, val.value(idx));
+		  force8_.ಗಣ_ಬಿಟ್(idx, val.value(idx));
 	    }
       }
-      run_vpi_callbacks();
+      ಸತತ_vpi_callbacks();
 }
 
-void vvp_wire_vec8::force_fil_real(double, const vvp_vector2_t&)
+ಶೂನ್ಯ vvp_wire_vec8::force_fil_real(ದ್ವಿಗುಣ, ಸ್ಥಿರಾಂಕ vvp_vector2_t&)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_wire_vec8::release(vvp_net_ptr_t ptr, bool net_flag)
+ಶೂನ್ಯ vvp_wire_vec8::release(vvp_net_ptr_t ptr, ತಾರ್ಕಿಕ net_flag)
 {
 	// Wires revert to their unforced value after release.
-      vvp_vector2_t mask (vvp_vector2_t::FILL1, bits8_.size());
-      release_mask(mask);
-      if (net_flag) {
+      vvp_vector2_t ಮುಖವಾಡ (vvp_vector2_t::FILL1, bits8_.size());
+      release_ಮುಖವಾಡ(ಮುಖವಾಡ);
+      ಆದರೆ (net_flag) {
 	    needs_init_ = !force8_ .eeq(bits8_);
 	    ptr.ptr()->send_vec8(bits8_);
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	// Variable do not know about strength so this should not be able
 	// to happen. If for some reason it can then it should not be too
 	// hard to fix this code like was done for vvp_wire_vec4 above.
-	    assert(0);
+	    ಪ್ರತಿಜ್ಞಾ(0);
 //	    ptr.ptr()->fun->recv_vec8(ptr, force8_);
       }
 }
 
-void vvp_wire_vec8::release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag)
+ಶೂನ್ಯ vvp_wire_vec8::release_pv(vvp_net_ptr_t ptr, ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ wid, ತಾರ್ಕಿಕ net_flag)
 {
-      assert(bits8_.size() >= base + wid);
+      ಪ್ರತಿಜ್ಞಾ(bits8_.size() >= ತಳ + wid);
 
-      vvp_vector2_t mask (vvp_vector2_t::FILL0, bits8_.size());
-      for (unsigned idx = 0 ; idx < wid ; idx += 1)
-	    mask.set_bit(base+idx, 1);
+      vvp_vector2_t ಮುಖವಾಡ (vvp_vector2_t::FILL0, bits8_.size());
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < wid ; idx += 1)
+	    ಮುಖವಾಡ.ಗಣ_ಬಿಟ್(ತಳ+idx, 1);
 
-      release_mask(mask);
+      release_ಮುಖವಾಡ(ಮುಖವಾಡ);
 
-      if (net_flag) {
-	    needs_init_ = !force8_.subvalue(base,wid) .eeq((bits8_.subvalue(base,wid)));
-	    ptr.ptr()->send_vec8_pv(bits8_.subvalue(base,wid),
-				    base, bits8_.size());
-	    run_vpi_callbacks();
-      } else {
+      ಆದರೆ (net_flag) {
+	    needs_init_ = !force8_.subvalue(ತಳ,wid) .eeq((bits8_.subvalue(ತಳ,wid)));
+	    ptr.ptr()->send_vec8_pv(bits8_.subvalue(ತಳ,wid),
+				    ತಳ, bits8_.size());
+	    ಸತತ_vpi_callbacks();
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	// Variable do not know about strength so this should not be able
 	// to happen. If for some reason it can then it should not be too
 	// hard to fix this code like was done for vvp_wire_vec4 above.
-	    assert(0);
+	    ಪ್ರತಿಜ್ಞಾ(0);
 //	    ptr.ptr()->fun->recv_vec8_pv(ptr, force8_.subvalue(base,wid),
 //					 base, force8_.size());
       }
 }
 
-unsigned vvp_wire_vec8::value_size() const
+ಚಿಹ್ನೆರಹಿತ vvp_wire_vec8::ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ
 {
-      return bits8_.size();
+      ಹಿಂತಿರುಗಿ bits8_.size();
 }
 
-vvp_scalar_t vvp_wire_vec8::filtered_value_(unsigned idx) const
+vvp_scalar_t vvp_wire_vec8::filtered_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ
 {
-      if (test_force_mask(idx))
-	    return force8_.value(idx);
-      else
-	    return bits8_.value(idx);
+      ಆದರೆ (test_force_ಮುಖವಾಡ(idx))
+	    ಹಿಂತಿರುಗಿ force8_.value(idx);
+      ಇಲ್ಲದಿದ್ದರೆ
+	    ಹಿಂತಿರುಗಿ bits8_.value(idx);
 }
 
-vvp_bit4_t vvp_wire_vec8::value(unsigned idx) const
+vvp_bit4_t vvp_wire_vec8::value(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ
 {
-      return filtered_value_(idx).value();
+      ಹಿಂತಿರುಗಿ filtered_ಮೌಲ್ಯ(idx).value();
 }
 
-vvp_scalar_t vvp_wire_vec8::scalar_value(unsigned idx) const
+vvp_scalar_t vvp_wire_vec8::scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ
 {
-      return filtered_value_(idx);
+      ಹಿಂತಿರುಗಿ filtered_ಮೌಲ್ಯ(idx);
 }
 
-vvp_vector8_t vvp_wire_vec8::vec8_value() const
+vvp_vector8_t vvp_wire_vec8::vec8_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ
 {
       vvp_vector8_t tmp = bits8_;
-      for (unsigned idx = 0 ; idx < bits8_.size() ; idx += 1)
-	    tmp.set_bit(idx, filtered_value_(idx));
-      return tmp;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < bits8_.size() ; idx += 1)
+	    tmp.ಗಣ_ಬಿಟ್(idx, filtered_ಮೌಲ್ಯ(idx));
+      ಹಿಂತಿರುಗಿ tmp;
 }
 
-void vvp_wire_vec8::vec4_value(vvp_vector4_t&val) const
+ಶೂನ್ಯ vvp_wire_vec8::vec4_ಮೌಲ್ಯ(vvp_vector4_t&val) ಸ್ಥಿರಾಂಕ
 {
-      val = reduce4(vec8_value());
+      val = reduce4(vec8_ಮೌಲ್ಯ());
 }
 
-vvp_bit4_t vvp_wire_vec8::driven_value(unsigned idx) const
+vvp_bit4_t vvp_wire_vec8::driven_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ
 {
-      return bits8_.value(idx).value();
+      ಹಿಂತಿರುಗಿ bits8_.value(idx).value();
 }
 
-bool vvp_wire_vec8::is_forced(unsigned idx) const
+ತಾರ್ಕಿಕ vvp_wire_vec8::is_forced(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ
 {
-      return test_force_mask(idx);
+      ಹಿಂತಿರುಗಿ test_force_ಮುಖವಾಡ(idx);
 }
 
 vvp_wire_real::vvp_wire_real()
-: bit_(0.0), force_(0.0)
+: ಬಿಟ್_2(0.0), force_(0.0)
 {
 }
 
-vvp_net_fil_t::prop_t vvp_wire_real::filter_real(double&bit)
+vvp_net_fil_t::prop_t vvp_wire_real::filter_real(ದ್ವಿಗುಣ&ಬಿಟ್)
 {
-      if (bits_equal(bit_, bit) && !needs_init_) return STOP;
-      bit_ = bit;
-      needs_init_ = false;
-      return filter_mask_(bit, force_);
+      ಆದರೆ (ಬಿಟ್ಟುಗಳು_equal(ಬಿಟ್_2, ಬಿಟ್) && !needs_init_) ಹಿಂತಿರುಗಿ STOP;
+      ಬಿಟ್_2 = ಬಿಟ್;
+      needs_init_ = ಸುಳ್ಳು;
+      ಹಿಂತಿರುಗಿ filter_ಮುಖವಾಡ(ಬಿಟ್, force_);
 }
 
-unsigned vvp_wire_real::filter_size() const
+ಚಿಹ್ನೆರಹಿತ vvp_wire_real::filter_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return 0;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ 0;
 }
 
-void vvp_wire_real::force_fil_vec4(const vvp_vector4_t&, const vvp_vector2_t&)
+ಶೂನ್ಯ vvp_wire_real::force_fil_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&, ಸ್ಥಿರಾಂಕ vvp_vector2_t&)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_wire_real::force_fil_vec8(const vvp_vector8_t&, const vvp_vector2_t&)
+ಶೂನ್ಯ vvp_wire_real::force_fil_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&, ಸ್ಥಿರಾಂಕ vvp_vector2_t&)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_wire_real::force_fil_real(double val, const vvp_vector2_t&mask)
+ಶೂನ್ಯ vvp_wire_real::force_fil_real(ದ್ವಿಗುಣ val, ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ)
 {
-      force_mask(mask);
-      if (mask.value(0))
+      force_ಮುಖವಾಡ(ಮುಖವಾಡ);
+      ಆದರೆ (ಮುಖವಾಡ.value(0))
 	    force_ = val;
 
-      run_vpi_callbacks();
+      ಸತತ_vpi_callbacks();
 }
 
-void vvp_wire_real::release(vvp_net_ptr_t ptr, bool net_flag)
+ಶೂನ್ಯ vvp_wire_real::release(vvp_net_ptr_t ptr, ತಾರ್ಕಿಕ net_flag)
 {
-      vvp_vector2_t mask (vvp_vector2_t::FILL1, 1);
-      if (net_flag) {
+      vvp_vector2_t ಮುಖವಾಡ (vvp_vector2_t::FILL1, 1);
+      ಆದರೆ (net_flag) {
 	      // Wires revert to their unforced value after release.
-	    release_mask(mask);
-	    needs_init_ = !bits_equal(force_, bit_);
-	    ptr.ptr()->send_real(bit_, 0);
-      } else {
+	    release_ಮುಖವಾಡ(ಮುಖವಾಡ);
+	    needs_init_ = !ಬಿಟ್ಟುಗಳು_equal(force_, ಬಿಟ್_2);
+	    ptr.ptr()->send_real(ಬಿಟ್_2, 0);
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	      // Variables keep the current value.
-	    double res =  real_value();
-	    release_mask(mask);
+	    ದ್ವಿಗುಣ res =  real_ಮೌಲ್ಯ();
+	    release_ಮುಖವಾಡ(ಮುಖವಾಡ);
 	    ptr.ptr()->fun->recv_real(ptr, res, 0);
       }
 }
 
-void vvp_wire_real::release_pv(vvp_net_ptr_t, unsigned, unsigned, bool)
+ಶೂನ್ಯ vvp_wire_real::release_pv(vvp_net_ptr_t, ಚಿಹ್ನೆರಹಿತ, ಚಿಹ್ನೆರಹಿತ, ತಾರ್ಕಿಕ)
 {
-      assert(0);
-#if 0
+      ಪ್ರತಿಜ್ಞಾ(0);
+#ಆದರೆ 0
 	// A real is a single value. If for some reason this part release
 	// can happen the following code should work correctly (requires
 	// a base of 0 and a width of 1).
-      vvp_vector2_t mask (vvp_vector2_t::FILL1, 1);
-      assert(base == 0 && wid == 1);
+      vvp_vector2_t ಮುಖವಾಡ (vvp_vector2_t::FILL1, 1);
+      ಪ್ರತಿಜ್ಞಾ(ತಳ == 0 && wid == 1);
 
-      if (net_flag) {
+      ಆದರೆ (net_flag) {
 	      // Wires revert to their unforced value after release.
-	    release_mask(mask);
-	    ptr.ptr()->send_real(bit_, 0);
-      } else {
+	    release_ಮುಖವಾಡ(ಮುಖವಾಡ);
+	    ptr.ptr()->send_real(ಬಿಟ್_2, 0);
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	      // Variables keep the current value.
-	    double res =  real_value();
-	    release_mask(mask);
+	    ದ್ವಿಗುಣ res =  real_ಮೌಲ್ಯ();
+	    release_ಮುಖವಾಡ(ಮುಖವಾಡ);
 	    ptr.ptr()->fun->recv_real(ptr, res, 0);
       }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 }
 
-unsigned vvp_wire_real::value_size() const
+ಚಿಹ್ನೆರಹಿತ vvp_wire_real::ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return 1;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ 1;
 }
 
-vvp_bit4_t vvp_wire_real::value(unsigned) const
+vvp_bit4_t vvp_wire_real::value(ಚಿಹ್ನೆರಹಿತ) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return BIT4_X;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ BIT4_X;
 }
 
-vvp_scalar_t vvp_wire_real::scalar_value(unsigned) const
+vvp_scalar_t vvp_wire_real::scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return vvp_scalar_t();
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ vvp_scalar_t();
 }
 
-void vvp_wire_real::vec4_value(vvp_vector4_t&) const
+ಶೂನ್ಯ vvp_wire_real::vec4_ಮೌಲ್ಯ(vvp_vector4_t&) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-double vvp_wire_real::real_value() const
+ದ್ವಿಗುಣ vvp_wire_real::real_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ
 {
-      if (test_force_mask(0))
-	    return force_;
-      else
-	    return bit_;
+      ಆದರೆ (test_force_ಮುಖವಾಡ(0))
+	    ಹಿಂತಿರುಗಿ force_;
+      ಇಲ್ಲದಿದ್ದರೆ
+	    ಹಿಂತಿರುಗಿ ಬಿಟ್_2;
 }
 
-#if 0
+#ಆದರೆ 0
 vvp_wire_string::vvp_wire_string()
 {
 }
 
-unsigned vvp_wire_string::filter_size() const
+ಚಿಹ್ನೆರಹಿತ vvp_wire_string::filter_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return 0;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ 0;
 }
 
-void vvp_wire_string::force_fil_vec4(const vvp_vector4_t&, const vvp_vector2_t&)
+ಶೂನ್ಯ vvp_wire_string::force_fil_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&, ಸ್ಥಿರಾಂಕ vvp_vector2_t&)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
-void vvp_wire_string::force_fil_vec8(const vvp_vector8_t&, const vvp_vector2_t&)
+ಶೂನ್ಯ vvp_wire_string::force_fil_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&, ಸ್ಥಿರಾಂಕ vvp_vector2_t&)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
-void vvp_wire_string::force_fil_real(double, const vvp_vector2_t&)
+ಶೂನ್ಯ vvp_wire_string::force_fil_real(ದ್ವಿಗುಣ, ಸ್ಥಿರಾಂಕ vvp_vector2_t&)
 {
-      assert(0);
-}
-
-void vvp_wire_string::release(vvp_net_ptr_t ptr, bool net_flag)
-{
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_wire_string::release_pv(vvp_net_ptr_t, unsigned, unsigned, bool)
+ಶೂನ್ಯ vvp_wire_string::release(vvp_net_ptr_t ptr, ತಾರ್ಕಿಕ net_flag)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-unsigned vvp_wire_string::value_size() const
+ಶೂನ್ಯ vvp_wire_string::release_pv(vvp_net_ptr_t, ಚಿಹ್ನೆರಹಿತ, ಚಿಹ್ನೆರಹಿತ, ತಾರ್ಕಿಕ)
 {
-      assert(0);
-      return 1;
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-vvp_bit4_t vvp_wire_string::value(unsigned) const
+ಚಿಹ್ನೆರಹಿತ vvp_wire_string::ಮೌಲ್ಯ_ಗಾತ್ರ() ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return BIT4_X;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ 1;
 }
 
-vvp_scalar_t vvp_wire_string::scalar_value(unsigned) const
+vvp_bit4_t vvp_wire_string::value(ಚಿಹ್ನೆರಹಿತ) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return vvp_scalar_t();
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ BIT4_X;
 }
 
-void vvp_wire_string::vec4_value(vvp_vector4_t&) const
+vvp_scalar_t vvp_wire_string::scalar_ಮೌಲ್ಯ(ಚಿಹ್ನೆರಹಿತ) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ vvp_scalar_t();
 }
 
-double vvp_wire_string::real_value() const
+ಶೂನ್ಯ vvp_wire_string::vec4_ಮೌಲ್ಯ(vvp_vector4_t&) ಸ್ಥಿರಾಂಕ
 {
-      assert(0);
-      return 0.0;
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
-#endif
+
+ದ್ವಿಗುಣ vvp_wire_string::real_ಮೌಲ್ಯ() ಸ್ಥಿರಾಂಕ
+{
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ 0.0;
+}
+#ಆದರೆ_ಅಂತ್ಯ

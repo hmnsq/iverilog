@@ -25,101 +25,101 @@
  * map of a 4-vbit value to a hex digit. The table handles the display
  * of x, X, z, Z, etc.
  */
-static void draw_hex_table(void)
+ಸ್ಥಿರ ಶೂನ್ಯ draw_hex_ಕೋಷ್ಟಕ(ಶೂನ್ಯ)
 {
-      unsigned idx;
+      ಚಿಹ್ನೆರಹಿತ idx;
 
-      printf("extern const char hex_digits[256] = {\n");
-      for (idx = 0 ;  idx < 256 ;  idx += 1) {
-	    unsigned cnt_z = 0, cnt_x = 0;
-	    unsigned bv = 0, bdx;
+      ಬರೆ("extern const char hex_digits[256] = {\n");
+      ಗಾಗಿ (idx = 0 ;  idx < 256 ;  idx += 1) {
+	    ಚಿಹ್ನೆರಹಿತ cnt_z = 0, cnt_x = 0;
+	    ಚಿಹ್ನೆರಹಿತ bv = 0, bdx;
 
-	    for (bdx = 0 ;  bdx < 4 ;  bdx += 1) {
-		  switch ((idx >> (bdx * 2)) & 3) {
-		      case 0:
-			break;
-		      case 1:
+	    ಗಾಗಿ (bdx = 0 ;  bdx < 4 ;  bdx += 1) {
+		  ಆಯ್ಕೆ ((idx >> (bdx * 2)) & 3) {
+		      ಸ್ಥಿತಿ 0:
+			ನಿಲ್ಲಿಸು;
+		      ಸ್ಥಿತಿ 1:
 			bv |= 1<<bdx;
-			break;
-		      case 2:
+			ನಿಲ್ಲಿಸು;
+		      ಸ್ಥಿತಿ 2:
 			cnt_x += 1;
-			break;
-		      case 3:
+			ನಿಲ್ಲಿಸು;
+		      ಸ್ಥಿತಿ 3:
 			cnt_z += 1;
-			break;
+			ನಿಲ್ಲಿಸು;
 		  }
 	    }
 
-	    if (cnt_z == 4)
-		  printf(" 'z',");
+	    ಆದರೆ (cnt_z == 4)
+		  ಬರೆ(" 'z',");
 
-	    else if (cnt_x == 4)
-		  printf(" 'x',");
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (cnt_x == 4)
+		  ಬರೆ(" 'x',");
 
-	    else if ((cnt_z > 0) && (cnt_x == 0))
-		  printf(" 'Z',");
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ ((cnt_z > 0) && (cnt_x == 0))
+		  ಬರೆ(" 'Z',");
 
-	    else if (cnt_x > 0)
-		  printf(" 'X',");
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (cnt_x > 0)
+		  ಬರೆ(" 'X',");
 
-	    else
-		  printf(" '%c',", (unsigned)"0123456789abcdef"[bv]);
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  ಬರೆ(" '%c',", (ಚಿಹ್ನೆರಹಿತ)"0123456789abcdef"[bv]);
 
-	    if (((idx+1) % 8) == 0)
-		  printf("\n");
+	    ಆದರೆ (((idx+1) % 8) == 0)
+		  ಬರೆ("\n");
       }
-      printf("};\n");
+      ಬರೆ("};\n");
 }
 
-static void draw_oct_table(void)
+ಸ್ಥಿರ ಶೂನ್ಯ draw_oct_ಕೋಷ್ಟಕ(ಶೂನ್ಯ)
 {
-      unsigned idx;
+      ಚಿಹ್ನೆರಹಿತ idx;
 
-      printf("extern const char oct_digits[64] = {\n");
-      for (idx = 0 ;  idx < 64 ;  idx += 1) {
-	    unsigned cnt_z = 0, cnt_x = 0;
-	    unsigned bv = 0, bdx;
+      ಬರೆ("extern const char oct_digits[64] = {\n");
+      ಗಾಗಿ (idx = 0 ;  idx < 64 ;  idx += 1) {
+	    ಚಿಹ್ನೆರಹಿತ cnt_z = 0, cnt_x = 0;
+	    ಚಿಹ್ನೆರಹಿತ bv = 0, bdx;
 
-	    for (bdx = 0 ;  bdx < 3 ;  bdx += 1) {
-		  switch ((idx >> (bdx * 2)) & 3) {
-		      case 0:
-			break;
-		      case 1:
+	    ಗಾಗಿ (bdx = 0 ;  bdx < 3 ;  bdx += 1) {
+		  ಆಯ್ಕೆ ((idx >> (bdx * 2)) & 3) {
+		      ಸ್ಥಿತಿ 0:
+			ನಿಲ್ಲಿಸು;
+		      ಸ್ಥಿತಿ 1:
 			bv |= 1<<bdx;
-			break;
-		      case 2:
+			ನಿಲ್ಲಿಸು;
+		      ಸ್ಥಿತಿ 2:
 			cnt_x += 1;
-			break;
-		      case 3:
+			ನಿಲ್ಲಿಸು;
+		      ಸ್ಥಿತಿ 3:
 			cnt_z += 1;
-			break;
+			ನಿಲ್ಲಿಸು;
 		  }
 	    }
 
-	    if (cnt_z == 3)
-		  printf(" 'z',");
+	    ಆದರೆ (cnt_z == 3)
+		  ಬರೆ(" 'z',");
 
-	    else if (cnt_x == 3)
-		  printf(" 'x',");
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (cnt_x == 3)
+		  ಬರೆ(" 'x',");
 
-	    else if ((cnt_z > 0) && (cnt_x == 0))
-		  printf(" 'Z',");
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ ((cnt_z > 0) && (cnt_x == 0))
+		  ಬರೆ(" 'Z',");
 
-	    else if (cnt_x > 0)
-		  printf(" 'X',");
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (cnt_x > 0)
+		  ಬರೆ(" 'X',");
 
-	    else
-		  printf(" '%c',", (unsigned)"01234567"[bv]);
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  ಬರೆ(" '%c',", (ಚಿಹ್ನೆರಹಿತ)"01234567"[bv]);
 
-	    if (((idx+1) % 8) == 0)
-		  printf("\n");
+	    ಆದರೆ (((idx+1) % 8) == 0)
+		  ಬರೆ("\n");
       }
-      printf("};\n");
+      ಬರೆ("};\n");
 }
 
-int main(void)
+ಪೂರ್ಣಾಂಕ ಮುಖ್ಯ(ಶೂನ್ಯ)
 {
-      draw_hex_table();
-      draw_oct_table();
-      return 0;
+      draw_hex_ಕೋಷ್ಟಕ();
+      draw_oct_ಕೋಷ್ಟಕ();
+      ಹಿಂತಿರುಗಿ 0;
 }

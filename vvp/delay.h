@@ -1,5 +1,5 @@
-#ifndef IVL_delay_H
-#define IVL_delay_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ IVL_delay_H
+#ವ್ಯಾಖ್ಯಾನಿಸು IVL_delay_H
 /*
  * Copyright 2005-2026 Stephen Williams
  *
@@ -23,12 +23,12 @@
 # include  "vvp_net.h"
 # include  "schedule.h"
 
-enum delay_edge_t {
-      DELAY_EDGE_01 = 0, DELAY_EDGE_10, DELAY_EDGE_0z,
-      DELAY_EDGE_z1,     DELAY_EDGE_1z, DELAY_EDGE_z0,
-      DELAY_EDGE_0x,     DELAY_EDGE_x1, DELAY_EDGE_1x,
-      DELAY_EDGE_x0,     DELAY_EDGE_xz, DELAY_EDGE_zx,
-      DELAY_EDGE_COUNT
+ಎಣಿಕೆ delay_ಅಂಚು_t {
+      DELAY_ಅಂಚು_01 = 0, DELAY_ಅಂಚು_10, DELAY_ಅಂಚು_0z,
+      DELAY_ಅಂಚು_z1,     DELAY_ಅಂಚು_1z, DELAY_ಅಂಚು_z0,
+      DELAY_ಅಂಚು_0x,     DELAY_ಅಂಚು_x1, DELAY_ಅಂಚು_1x,
+      DELAY_ಅಂಚು_x0,     DELAY_ಅಂಚು_xz, DELAY_ಅಂಚು_zx,
+      DELAY_ಅಂಚು_ಎಣಿಕೆ
 };
 
 /*
@@ -38,25 +38,25 @@ enum delay_edge_t {
  */
 class vvp_delay_t {
 
-    public:
+    ಸಾರ್ವಜನಿಕ:
       vvp_delay_t(vvp_time64_t rise, vvp_time64_t fall);
       vvp_delay_t(vvp_time64_t rise, vvp_time64_t fall, vvp_time64_t decay);
       ~vvp_delay_t();
 
-      vvp_time64_t get_delay(vvp_bit4_t from, vvp_bit4_t to);
-      vvp_time64_t get_min_delay() const;
+      vvp_time64_t get_delay(vvp_bit4_t from, vvp_bit4_t ಗಮ್ಯ);
+      vvp_time64_t get_min_delay() ಸ್ಥಿರಾಂಕ;
 
-      void set_rise(vvp_time64_t val);
-      void set_fall(vvp_time64_t val);
-      void set_decay(vvp_time64_t val);
-      void set_ignore_decay();
+      ಶೂನ್ಯ ಗಣ_rise(vvp_time64_t val);
+      ಶೂನ್ಯ ಗಣ_fall(vvp_time64_t val);
+      ಶೂನ್ಯ ಗಣ_decay(vvp_time64_t val);
+      ಶೂನ್ಯ ಗಣ_ignore_decay();
 
-    private:
+    ಖಾಸಗಿ:
       vvp_time64_t rise_, fall_, decay_;
       vvp_time64_t min_delay_;
       bool ignore_decay_;
 
-      void calculate_min_delay_();
+      ಶೂನ್ಯ calculate_min_delay_();
 };
 
 /* vvp_fun_delay
@@ -72,46 +72,46 @@ class vvp_delay_t {
  * input. This is a bit of a hack, as it may be more efficient to
  * create the right type of vvp_fun_delay_real.
  */
-class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
+class vvp_fun_delay  : ಸಾರ್ವಜನಿಕ vvp_net_fun_t, ಖಾಸಗಿ vvp_gen_event_s {
 
-      enum delay_type_t {UNKNOWN_DELAY, VEC4_DELAY, VEC8_DELAY, REAL_DELAY};
-      struct event_ {
-	    explicit event_(vvp_time64_t s) : sim_time(s) {
+      ಎಣಿಕೆ delay_type_t {UNKNOWN_DELAY, VEC4_DELAY, VEC8_DELAY, REAL_DELAY};
+      ರಚನೆ event_ {
+	    explicit event_(vvp_time64_t s) : sim_ಸಮಯ(s) {
 		  ptr_real = 0.0;
-		  next = NULL;
+		  ಮುಂದಿನ_2 = ಖಾಲಿ;
 	    }
-	    void (vvp_fun_delay::*run_run_ptr)(const struct vvp_fun_delay::event_*cur);
-	    const vvp_time64_t sim_time;
+	    ಶೂನ್ಯ (vvp_fun_delay::*ಸತತ_ಸತತ_ptr)(ಸ್ಥಿರಾಂಕ ರಚನೆ vvp_fun_delay::event_*cur);
+	    ಸ್ಥಿರಾಂಕ vvp_time64_t sim_ಸಮಯ;
 	    vvp_vector4_t ptr_vec4;
 	    vvp_vector8_t ptr_vec8;
-	    double ptr_real;
-	    struct event_*next;
+	    ದ್ವಿಗುಣ ptr_real;
+	    ರಚನೆ event_*ಮುಂದಿನ_2;
       };
 
-    public:
-      vvp_fun_delay(vvp_net_t*net, unsigned width, const vvp_delay_t&d);
+    ಸಾರ್ವಜನಿಕ:
+      vvp_fun_delay(vvp_net_t*net, ಚಿಹ್ನೆರಹಿತ ಅಗಲ, ಸ್ಥಿರಾಂಕ vvp_delay_t&d);
       ~vvp_fun_delay() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t) override;
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
-      void recv_real(vvp_net_ptr_t port, double bit,
+      ಶೂನ್ಯ recv_vec8(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್) override;
+      ಶೂನ್ಯ recv_real(vvp_net_ptr_t ಪೋರ್ಟ್, ದ್ವಿಗುಣ ಬಿಟ್,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      void recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-			unsigned base, unsigned vwid) override;
+      ಶೂನ್ಯ recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+			ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t ctx) override;
+      ಶೂನ್ಯ recv_vec8_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್,
+			ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid) override;
 
-    private:
-      virtual void run_run() override;
+    ಖಾಸಗಿ:
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ ಸತತ_ಸತತ() override;
 
 
-      void run_run_vec4_(const struct vvp_fun_delay::event_*cur);
-      void run_run_vec8_(const struct vvp_fun_delay::event_*cur);
-      void run_run_real_(const struct vvp_fun_delay::event_*cur);
+      ಶೂನ್ಯ ಸತತ_ಸತತ_vec4(ಸ್ಥಿರಾಂಕ ರಚನೆ vvp_fun_delay::event_*cur);
+      ಶೂನ್ಯ ಸತತ_ಸತತ_vec8(ಸ್ಥಿರಾಂಕ ರಚನೆ vvp_fun_delay::event_*cur);
+      ಶೂನ್ಯ ಸತತ_ಸತತ_real(ಸ್ಥಿರಾಂಕ ರಚನೆ vvp_fun_delay::event_*cur);
 
-    private:
+    ಖಾಸಗಿ:
       vvp_net_t*net_;
       vvp_delay_t delay_;
       delay_type_t type_;
@@ -119,37 +119,37 @@ class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
 
       vvp_vector4_t cur_vec4_;
       vvp_vector8_t cur_vec8_;
-      double cur_real_;
-      vvp_time64_t round_, scale_; // Needed to scale variable time values.
+      ದ್ವಿಗುಣ cur_real_;
+      vvp_time64_t ಸುತ್ತು, scale_; // Needed to scale variable time values.
 
-      struct event_ *list_;
-      void enqueue_(struct event_*cur)
+      ರಚನೆ event_ *list_;
+      ಶೂನ್ಯ ಸರತಿಗೆ_ಸೇರಿಸು(ರಚನೆ event_*cur)
       {
-	    if (list_) {
-		  cur->next = list_->next;
-		  list_->next = cur;
+	    ಆದರೆ (list_) {
+		  cur->ಮುಂದಿನ_2 = list_->ಮುಂದಿನ_2;
+		  list_->ಮುಂದಿನ_2 = cur;
 		  list_ = cur;
-	    } else {
-		  cur->next = cur;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  cur->ಮುಂದಿನ_2 = cur;
 		  list_ = cur;
 	    }
       }
-      struct event_* dequeue_(void)
+      ರಚನೆ event_* ಸರತಿಯಿಂದ_ತೆಗೆ(ಶೂನ್ಯ)
       {
-	    if (list_ == 0)
-		  return 0;
-	    struct event_*cur = list_->next;
-	    if (list_ == cur)
+	    ಆದರೆ (list_ == 0)
+		  ಹಿಂತಿರುಗಿ 0;
+	    ರಚನೆ event_*cur = list_->ಮುಂದಿನ_2;
+	    ಆದರೆ (list_ == cur)
 		  list_ = 0;
-	    else
-		  list_->next = cur->next;
-	    return cur;
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  list_->ಮುಂದಿನ_2 = cur->ಮುಂದಿನ_2;
+	    ಹಿಂತಿರುಗಿ cur;
       }
-      bool clean_pulse_events_(vvp_time64_t use_delay, const vvp_vector4_t&bit);
-      bool clean_pulse_events_(vvp_time64_t use_delay, const vvp_vector8_t&bit);
-      bool clean_pulse_events_(vvp_time64_t use_delay, double bit);
+      bool clean_pulse_events_(vvp_time64_t use_delay, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್);
+      bool clean_pulse_events_(vvp_time64_t use_delay, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್);
+      bool clean_pulse_events_(vvp_time64_t use_delay, ದ್ವಿಗುಣ ಬಿಟ್);
 // Delete this when done!
-      void clean_pulse_events_(vvp_time64_t use_delay);
+      ಶೂನ್ಯ clean_pulse_events_(vvp_time64_t use_delay);
 };
 
 /*
@@ -163,21 +163,21 @@ class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
 class vvp_fun_modpath;
 class vvp_fun_modpath_src;
 
-class vvp_fun_modpath  : public vvp_net_fun_t, private vvp_gen_event_s {
+class vvp_fun_modpath  : ಸಾರ್ವಜನಿಕ vvp_net_fun_t, ಖಾಸಗಿ vvp_gen_event_s {
 
-    public:
-      vvp_fun_modpath(vvp_net_t*net, unsigned width);
+    ಸಾರ್ವಜನಿಕ:
+      vvp_fun_modpath(vvp_net_t*net, ಚಿಹ್ನೆರಹಿತ ಅಗಲ);
       ~vvp_fun_modpath() override;
 
-      void add_modpath_src(vvp_fun_modpath_src*that, bool ifnone);
+      ಶೂನ್ಯ ಕೂಡಿಸು_modpath_src(vvp_fun_modpath_src*that, bool ifnone);
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t) override;
 
-    private:
-      virtual void run_run() override;
+    ಖಾಸಗಿ:
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ ಸತತ_ಸತತ() override;
 
-    private:
+    ಖಾಸಗಿ:
       vvp_net_t*net_;
 
       vvp_vector4_t cur_vec4_;
@@ -185,51 +185,51 @@ class vvp_fun_modpath  : public vvp_net_fun_t, private vvp_gen_event_s {
       vvp_fun_modpath_src*src_list_;
       vvp_fun_modpath_src*ifnone_list_;
 
-    private: // not implemented
-      vvp_fun_modpath(const vvp_fun_modpath&);
-      vvp_fun_modpath& operator= (const vvp_fun_modpath&);
+    ಖಾಸಗಿ: // not implemented
+      vvp_fun_modpath(ಸ್ಥಿರಾಂಕ vvp_fun_modpath&);
+      vvp_fun_modpath& ಕ್ರಿಯಾಕಾರಕ= (ಸ್ಥಿರಾಂಕ vvp_fun_modpath&);
 };
 
-class vvp_fun_modpath_src  : public vvp_net_fun_t {
+class vvp_fun_modpath_src  : ಸಾರ್ವಜನಿಕ vvp_net_fun_t {
 
-      friend class vvp_fun_modpath;
+      ಮಿತ್ರ class vvp_fun_modpath;
 
-    public:
-      explicit vvp_fun_modpath_src(vvp_time64_t const del[12]);
-    protected:
+    ಸಾರ್ವಜನಿಕ:
+      explicit vvp_fun_modpath_src(vvp_time64_t ಸ್ಥಿರಾಂಕ del[12]);
+    ಸಂರಕ್ಷಿತ:
       ~vvp_fun_modpath_src() override;
 
-    public:
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    ಸಾರ್ವಜನಿಕ:
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t) override;
-      virtual bool test_vec4(const vvp_vector4_t&bit);
+      ವಾಸ್ತವಿಕ bool test_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್);
 
-      void get_delay12(vvp_time64_t out[12]) const;
-      void put_delay12(const vvp_time64_t in[12]);
+      ಶೂನ್ಯ get_delay12(vvp_time64_t ಹೊರಹೋಗು[12]) ಸ್ಥಿರಾಂಕ;
+      ಶೂನ್ಯ put_delay12(ಸ್ಥಿರಾಂಕ vvp_time64_t ಒಳ[12]);
 
-    private:
+    ಖಾಸಗಿ:
 	// FIXME: Needs to be a 12-value array
       vvp_time64_t delay_[12];
 	// Used by vvp_fun_modpath to keep a list of modpath_src objects.
-      vvp_fun_modpath_src*next_;
+      vvp_fun_modpath_src*ಮುಂದಿನ;
 
-      vvp_time64_t wake_time_;
+      vvp_time64_t wake_ಸಮಯ;
       bool condition_flag_;
 
-    private:
-      vvp_fun_modpath_src(const vvp_fun_modpath_src&);
-      vvp_fun_modpath_src& operator = (const vvp_fun_modpath_src&);
+    ಖಾಸಗಿ:
+      vvp_fun_modpath_src(ಸ್ಥಿರಾಂಕ vvp_fun_modpath_src&);
+      vvp_fun_modpath_src& ಕ್ರಿಯಾಕಾರಕ = (ಸ್ಥಿರಾಂಕ vvp_fun_modpath_src&);
 };
 
-class vvp_fun_modpath_edge  : public vvp_fun_modpath_src {
+class vvp_fun_modpath_ಅಂಚು  : ಸಾರ್ವಜನಿಕ vvp_fun_modpath_src {
 
-    public:
-      vvp_fun_modpath_edge(vvp_time64_t del[12], bool pos, bool neg);
+    ಸಾರ್ವಜನಿಕ:
+      vvp_fun_modpath_ಅಂಚು(vvp_time64_t del[12], bool pos, bool neg);
 
-      bool test_vec4(const vvp_vector4_t&bit) override;
+      bool test_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್) override;
 
-    private:
-      vvp_bit4_t old_value_;
+    ಖಾಸಗಿ:
+      vvp_bit4_t old_ಮೌಲ್ಯ;
       bool posedge_;
       bool negedge_;
 };
@@ -239,31 +239,31 @@ class vvp_fun_modpath_edge  : public vvp_fun_modpath_src {
 * Upon a (INTERCONNECT ...) statement an intermodpath will be inserted
 * between port1 and port2 and its delay can be annotated
 */
-class vvp_fun_intermodpath  : public vvp_net_fun_t, private vvp_gen_event_s {
+class vvp_fun_intermodpath  : ಸಾರ್ವಜನಿಕ vvp_net_fun_t, ಖಾಸಗಿ vvp_gen_event_s {
 
-    public:
-      vvp_fun_intermodpath(vvp_net_t*net, unsigned width);
+    ಸಾರ್ವಜನಿಕ:
+      vvp_fun_intermodpath(vvp_net_t*net, ಚಿಹ್ನೆರಹಿತ ಅಗಲ);
       ~vvp_fun_intermodpath() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t) override;
 
-      void get_delay12(vvp_time64_t out[12]) const;
-      void put_delay12(const vvp_time64_t in[12]);
+      ಶೂನ್ಯ get_delay12(vvp_time64_t ಹೊರಹೋಗು[12]) ಸ್ಥಿರಾಂಕ;
+      ಶೂನ್ಯ put_delay12(ಸ್ಥಿರಾಂಕ vvp_time64_t ಒಳ[12]);
 
-    private:
-      void run_run() override;
+    ಖಾಸಗಿ:
+      ಶೂನ್ಯ ಸತತ_ಸತತ() override;
 
-    private:
+    ಖಾಸಗಿ:
       vvp_net_t*net_;
 
       vvp_vector4_t cur_vec4_;
 
       vvp_time64_t delay_[12];
 
-    private: // not implemented
-      vvp_fun_intermodpath(const vvp_fun_intermodpath&);
-      vvp_fun_intermodpath& operator= (const vvp_fun_intermodpath&);
+    ಖಾಸಗಿ: // not implemented
+      vvp_fun_intermodpath(ಸ್ಥಿರಾಂಕ vvp_fun_intermodpath&);
+      vvp_fun_intermodpath& ಕ್ರಿಯಾಕಾರಕ= (ಸ್ಥಿರಾಂಕ vvp_fun_intermodpath&);
 };
 
-#endif /* IVL_delay_H */
+#ಆದರೆ_ಅಂತ್ಯ /* IVL_delay_H */

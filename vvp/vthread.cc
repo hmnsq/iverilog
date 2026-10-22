@@ -28,9 +28,9 @@
 # include  "vvp_cobject.h"
 # include  "vvp_darray.h"
 # include  "class_type.h"
-#ifdef CHECK_WITH_VALGRIND
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 # include  <set>
 # include  <typeinfo>
 # include  <vector>
@@ -44,12 +44,12 @@
 # include  <sstream>
 # include  <cstdio>
 
-using namespace std;
+ಬಳಸಿ ನಾಮಾಕಾಶ std;
 
 /* This is the size of an unsigned long in bits. This is just a
    convenience macro. */
-# define CPU_WORD_BITS (8*sizeof(unsigned long))
-# define TOP_BIT (1UL << (CPU_WORD_BITS-1))
+# define CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು (8*ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ))
+# define ತುದಿ_ಬಿಟ್ (1UL << (CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು-1))
 
 /*
  * This vthread_s structure describes all there is to know about a
@@ -88,102 +88,102 @@ using namespace std;
  * to reap the child immediately.
  */
 
-struct vthread_s {
+ರಚನೆ vthread_s {
       vthread_s();
 
-      void debug_dump(ostream&fd, const char*label_text);
+      ಶೂನ್ಯ debug_dump(ostream&fd, ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*label_ಪಠ್ಯ);
 
 	/* This is the program counter. */
-      vvp_code_t pc;
+      vvp_ಸಂಕೇತ_t pc;
 	/* These hold the private thread bits. */
-      enum { FLAGS_COUNT = 512, WORDS_COUNT = 16 };
-      vvp_bit4_t flags[FLAGS_COUNT];
+      ಎಣಿಕೆ { FLAGS_ಎಣಿಕೆ = 512, ಪದಗಳು_ಎಣಿಕೆ = 16 };
+      vvp_bit4_t flags[FLAGS_ಎಣಿಕೆ];
 
 	/* These are the word registers. */
-      union {
+      ಒಕ್ಕೂಟ {
 	    int64_t  w_int;
 	    uint64_t w_uint;
-      } words[WORDS_COUNT];
+      } ಪದಗಳು[ಪದಗಳು_ಎಣಿಕೆ];
 
 	// These vectors are depths within the parent thread's
 	// corresponding stack.  This is how the %ret/* instructions
 	// get at parent thread arguments.
-      vector<unsigned> args_real;
-      vector<unsigned> args_str;
-      vector<unsigned> args_vec4;
+      vector<ಚಿಹ್ನೆರಹಿತ> ವಾದಗಳು_real;
+      vector<ಚಿಹ್ನೆರಹಿತ> ವಾದಗಳು_str;
+      vector<ಚಿಹ್ನೆರಹಿತ> ವಾದಗಳು_vec4;
 
-    private:
-      vector<vvp_vector4_t>stack_vec4_;
-    public:
-      inline vvp_vector4_t pop_vec4(void)
+    ಖಾಸಗಿ:
+      vector<vvp_vector4_t>ರಾಶಿ_vec4;
+    ಸಾರ್ವಜನಿಕ:
+      ಸಾಲೊಳಗೆ vvp_vector4_t ತೆಗೆ_vec4(ಶೂನ್ಯ)
       {
-	    assert(! stack_vec4_.empty());
-	    vvp_vector4_t val = stack_vec4_.back();
-	    stack_vec4_.pop_back();
-	    return val;
+	    ಪ್ರತಿಜ್ಞಾ(! ರಾಶಿ_vec4.empty());
+	    vvp_vector4_t val = ರಾಶಿ_vec4.back();
+	    ರಾಶಿ_vec4.pop_back();
+	    ಹಿಂತಿರುಗಿ val;
       }
-      inline void push_vec4(const vvp_vector4_t&val)
+      ಸಾಲೊಳಗೆ ಶೂನ್ಯ ತಳ್ಳು_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&val)
       {
-	    stack_vec4_.push_back(val);
+	    ರಾಶಿ_vec4.push_back(val);
       }
-      inline const vvp_vector4_t& peek_vec4(unsigned depth)
+      ಸಾಲೊಳಗೆ ಸ್ಥಿರಾಂಕ vvp_vector4_t& peek_vec4(ಚಿಹ್ನೆರಹಿತ ಆಳ)
       {
-	    unsigned size = stack_vec4_.size();
-	    assert(depth < size);
-	    unsigned use_index = size-1-depth;
-	    return stack_vec4_[use_index];
+	    ಚಿಹ್ನೆರಹಿತ size = ರಾಶಿ_vec4.size();
+	    ಪ್ರತಿಜ್ಞಾ(ಆಳ < size);
+	    ಚಿಹ್ನೆರಹಿತ use_ಸೂಚ್ಯಂಕ = size-1-ಆಳ;
+	    ಹಿಂತಿರುಗಿ ರಾಶಿ_vec4[use_ಸೂಚ್ಯಂಕ];
       }
-      inline vvp_vector4_t& peek_vec4(void)
+      ಸಾಲೊಳಗೆ vvp_vector4_t& peek_vec4(ಶೂನ್ಯ)
       {
-	    unsigned use_index = stack_vec4_.size();
-	    assert(use_index >= 1);
-	    return stack_vec4_[use_index-1];
+	    ಚಿಹ್ನೆರಹಿತ use_ಸೂಚ್ಯಂಕ = ರಾಶಿ_vec4.size();
+	    ಪ್ರತಿಜ್ಞಾ(use_ಸೂಚ್ಯಂಕ >= 1);
+	    ಹಿಂತಿರುಗಿ ರಾಶಿ_vec4[use_ಸೂಚ್ಯಂಕ-1];
       }
-      inline void poke_vec4(unsigned depth, const vvp_vector4_t&val)
+      ಸಾಲೊಳಗೆ ಶೂನ್ಯ poke_vec4(ಚಿಹ್ನೆರಹಿತ ಆಳ, ಸ್ಥಿರಾಂಕ vvp_vector4_t&val)
       {
-	    assert(depth < stack_vec4_.size());
-	    unsigned use_index = stack_vec4_.size()-1-depth;
-	    stack_vec4_[use_index] = val;
+	    ಪ್ರತಿಜ್ಞಾ(ಆಳ < ರಾಶಿ_vec4.size());
+	    ಚಿಹ್ನೆರಹಿತ use_ಸೂಚ್ಯಂಕ = ರಾಶಿ_vec4.size()-1-ಆಳ;
+	    ರಾಶಿ_vec4[use_ಸೂಚ್ಯಂಕ] = val;
       }
-      inline void pop_vec4(unsigned cnt)
+      ಸಾಲೊಳಗೆ ಶೂನ್ಯ ತೆಗೆ_vec4(ಚಿಹ್ನೆರಹಿತ cnt)
       {
-	    while (cnt > 0) {
-		  stack_vec4_.pop_back();
+	    ಆಗ (cnt > 0) {
+		  ರಾಶಿ_vec4.pop_back();
 		  cnt -= 1;
 	    }
       }
 
 
-    private:
-      vector<double> stack_real_;
-    public:
-      inline double pop_real(void)
+    ಖಾಸಗಿ:
+      vector<ದ್ವಿಗುಣ> ರಾಶಿ_real;
+    ಸಾರ್ವಜನಿಕ:
+      ಸಾಲೊಳಗೆ ದ್ವಿಗುಣ ತೆಗೆ_real(ಶೂನ್ಯ)
       {
-	    assert(! stack_real_.empty());
-	    double val = stack_real_.back();
-	    stack_real_.pop_back();
-	    return val;
+	    ಪ್ರತಿಜ್ಞಾ(! ರಾಶಿ_real.empty());
+	    ದ್ವಿಗುಣ val = ರಾಶಿ_real.back();
+	    ರಾಶಿ_real.pop_back();
+	    ಹಿಂತಿರುಗಿ val;
       }
-      inline void push_real(double val)
+      ಸಾಲೊಳಗೆ ಶೂನ್ಯ ತಳ್ಳು_real(ದ್ವಿಗುಣ val)
       {
-	    stack_real_.push_back(val);
+	    ರಾಶಿ_real.push_back(val);
       }
-      inline double peek_real(unsigned depth)
+      ಸಾಲೊಳಗೆ ದ್ವಿಗುಣ peek_real(ಚಿಹ್ನೆರಹಿತ ಆಳ)
       {
-	    assert(depth < stack_real_.size());
-	    unsigned use_index = stack_real_.size()-1-depth;
-	    return stack_real_[use_index];
+	    ಪ್ರತಿಜ್ಞಾ(ಆಳ < ರಾಶಿ_real.size());
+	    ಚಿಹ್ನೆರಹಿತ use_ಸೂಚ್ಯಂಕ = ರಾಶಿ_real.size()-1-ಆಳ;
+	    ಹಿಂತಿರುಗಿ ರಾಶಿ_real[use_ಸೂಚ್ಯಂಕ];
       }
-      inline void poke_real(unsigned depth, double val)
+      ಸಾಲೊಳಗೆ ಶೂನ್ಯ poke_real(ಚಿಹ್ನೆರಹಿತ ಆಳ, ದ್ವಿಗುಣ val)
       {
-	    assert(depth < stack_real_.size());
-	    unsigned use_index = stack_real_.size()-1-depth;
-	    stack_real_[use_index] = val;
+	    ಪ್ರತಿಜ್ಞಾ(ಆಳ < ರಾಶಿ_real.size());
+	    ಚಿಹ್ನೆರಹಿತ use_ಸೂಚ್ಯಂಕ = ರಾಶಿ_real.size()-1-ಆಳ;
+	    ರಾಶಿ_real[use_ಸೂಚ್ಯಂಕ] = val;
       }
-      inline void pop_real(unsigned cnt)
+      ಸಾಲೊಳಗೆ ಶೂನ್ಯ ತೆಗೆ_real(ಚಿಹ್ನೆರಹಿತ cnt)
       {
-	    while (cnt > 0) {
-		  stack_real_.pop_back();
+	    ಆಗ (cnt > 0) {
+		  ರಾಶಿ_real.pop_back();
 		  cnt -= 1;
 	    }
       }
@@ -193,175 +193,175 @@ struct vthread_s {
 	   operated on except for special cases. New objects are
 	   pushed onto the top (back()) and pulled from the top
 	   (back()) only. */
-    private:
-      vector<string> stack_str_;
-    public:
-      inline string pop_str(void)
+    ಖಾಸಗಿ:
+      vector<string> ರಾಶಿ_str;
+    ಸಾರ್ವಜನಿಕ:
+      ಸಾಲೊಳಗೆ string ತೆಗೆ_str(ಶೂನ್ಯ)
       {
-	    assert(! stack_str_.empty());
-	    string val = stack_str_.back();
-	    stack_str_.pop_back();
-	    return val;
+	    ಪ್ರತಿಜ್ಞಾ(! ರಾಶಿ_str.empty());
+	    string val = ರಾಶಿ_str.back();
+	    ರಾಶಿ_str.pop_back();
+	    ಹಿಂತಿರುಗಿ val;
       }
-      inline void push_str(const string&val)
+      ಸಾಲೊಳಗೆ ಶೂನ್ಯ ತಳ್ಳು_str(ಸ್ಥಿರಾಂಕ string&val)
       {
-	    stack_str_.push_back(val);
+	    ರಾಶಿ_str.push_back(val);
       }
-      inline string&peek_str(unsigned depth)
+      ಸಾಲೊಳಗೆ string&peek_str(ಚಿಹ್ನೆರಹಿತ ಆಳ)
       {
-	    assert(depth<stack_str_.size());
-	    unsigned use_index = stack_str_.size()-1-depth;
-	    return stack_str_[use_index];
+	    ಪ್ರತಿಜ್ಞಾ(ಆಳ<ರಾಶಿ_str.size());
+	    ಚಿಹ್ನೆರಹಿತ use_ಸೂಚ್ಯಂಕ = ರಾಶಿ_str.size()-1-ಆಳ;
+	    ಹಿಂತಿರುಗಿ ರಾಶಿ_str[use_ಸೂಚ್ಯಂಕ];
       }
-      inline void poke_str(unsigned depth, const string&val)
+      ಸಾಲೊಳಗೆ ಶೂನ್ಯ poke_str(ಚಿಹ್ನೆರಹಿತ ಆಳ, ಸ್ಥಿರಾಂಕ string&val)
       {
-	    assert(depth < stack_str_.size());
-	    unsigned use_index = stack_str_.size()-1-depth;
-	    stack_str_[use_index] = val;
+	    ಪ್ರತಿಜ್ಞಾ(ಆಳ < ರಾಶಿ_str.size());
+	    ಚಿಹ್ನೆರಹಿತ use_ಸೂಚ್ಯಂಕ = ರಾಶಿ_str.size()-1-ಆಳ;
+	    ರಾಶಿ_str[use_ಸೂಚ್ಯಂಕ] = val;
       }
-      inline void pop_str(unsigned cnt)
+      ಸಾಲೊಳಗೆ ಶೂನ್ಯ ತೆಗೆ_str(ಚಿಹ್ನೆರಹಿತ cnt)
       {
-	    while (cnt > 0) {
-		  stack_str_.pop_back();
+	    ಆಗ (cnt > 0) {
+		  ರಾಶಿ_str.pop_back();
 		  cnt -= 1;
 	    }
       }
 
 	/* Objects are also operated on in a stack. */
-    private:
-      enum { STACK_OBJ_MAX_SIZE = 32 };
-      vvp_object_t stack_obj_[STACK_OBJ_MAX_SIZE];
-      unsigned stack_obj_size_;
-    public:
-      inline vvp_object_t& peek_object(void)
+    ಖಾಸಗಿ:
+      ಎಣಿಕೆ { ರಾಶಿ_OBJ_MAX_ಗಾತ್ರ = 32 };
+      vvp_object_t ರಾಶಿ_obj[ರಾಶಿ_OBJ_MAX_ಗಾತ್ರ];
+      ಚಿಹ್ನೆರಹಿತ ರಾಶಿ_obj_ಗಾತ್ರ;
+    ಸಾರ್ವಜನಿಕ:
+      ಸಾಲೊಳಗೆ vvp_object_t& peek_object(ಶೂನ್ಯ)
       {
-	    assert(stack_obj_size_ > 0);
-	    return stack_obj_[stack_obj_size_-1];
+	    ಪ್ರತಿಜ್ಞಾ(ರಾಶಿ_obj_ಗಾತ್ರ > 0);
+	    ಹಿಂತಿರುಗಿ ರಾಶಿ_obj[ರಾಶಿ_obj_ಗಾತ್ರ-1];
       }
-      inline void pop_object(vvp_object_t&obj)
+      ಸಾಲೊಳಗೆ ಶೂನ್ಯ ತೆಗೆ_object(vvp_object_t&obj)
       {
-	    assert(stack_obj_size_ > 0);
-	    stack_obj_size_ -= 1;
-	    obj = stack_obj_[stack_obj_size_];
-	    stack_obj_[stack_obj_size_].reset(0);
+	    ಪ್ರತಿಜ್ಞಾ(ರಾಶಿ_obj_ಗಾತ್ರ > 0);
+	    ರಾಶಿ_obj_ಗಾತ್ರ -= 1;
+	    obj = ರಾಶಿ_obj[ರಾಶಿ_obj_ಗಾತ್ರ];
+	    ರಾಶಿ_obj[ರಾಶಿ_obj_ಗಾತ್ರ].reset(0);
       }
-      inline void pop_object(unsigned cnt, unsigned skip =0)
+      ಸಾಲೊಳಗೆ ಶೂನ್ಯ ತೆಗೆ_object(ಚಿಹ್ನೆರಹಿತ cnt, ಚಿಹ್ನೆರಹಿತ skip =0)
       {
-	    assert((cnt+skip) <= stack_obj_size_);
-	    for (size_t idx = stack_obj_size_-skip-cnt ; idx < stack_obj_size_-skip ; idx += 1)
-		  stack_obj_[idx].reset(0);
-	    stack_obj_size_ -= cnt;
-	    for (size_t idx = stack_obj_size_-skip ; idx < stack_obj_size_ ; idx += 1)
-		  stack_obj_[idx] = stack_obj_[idx+skip];
-	    for (size_t idx = stack_obj_size_ ; idx < stack_obj_size_+skip ; idx += 1)
-		  stack_obj_[idx].reset(0);
+	    ಪ್ರತಿಜ್ಞಾ((cnt+skip) <= ರಾಶಿ_obj_ಗಾತ್ರ);
+	    ಗಾಗಿ (size_t idx = ರಾಶಿ_obj_ಗಾತ್ರ-skip-cnt ; idx < ರಾಶಿ_obj_ಗಾತ್ರ-skip ; idx += 1)
+		  ರಾಶಿ_obj[idx].reset(0);
+	    ರಾಶಿ_obj_ಗಾತ್ರ -= cnt;
+	    ಗಾಗಿ (size_t idx = ರಾಶಿ_obj_ಗಾತ್ರ-skip ; idx < ರಾಶಿ_obj_ಗಾತ್ರ ; idx += 1)
+		  ರಾಶಿ_obj[idx] = ರಾಶಿ_obj[idx+skip];
+	    ಗಾಗಿ (size_t idx = ರಾಶಿ_obj_ಗಾತ್ರ ; idx < ರಾಶಿ_obj_ಗಾತ್ರ+skip ; idx += 1)
+		  ರಾಶಿ_obj[idx].reset(0);
       }
-      inline void push_object(const vvp_object_t&obj)
+      ಸಾಲೊಳಗೆ ಶೂನ್ಯ ತಳ್ಳು_object(ಸ್ಥಿರಾಂಕ vvp_object_t&obj)
       {
-	    assert(stack_obj_size_ < STACK_OBJ_MAX_SIZE);
-	    stack_obj_[stack_obj_size_] = obj;
-	    stack_obj_size_ += 1;
+	    ಪ್ರತಿಜ್ಞಾ(ರಾಶಿ_obj_ಗಾತ್ರ < ರಾಶಿ_OBJ_MAX_ಗಾತ್ರ);
+	    ರಾಶಿ_obj[ರಾಶಿ_obj_ಗಾತ್ರ] = obj;
+	    ರಾಶಿ_obj_ಗಾತ್ರ += 1;
       }
 
 	/* My parent sets this when it wants me to wake it up. */
-      unsigned i_am_joining      :1;
-      unsigned i_am_detached     :1;
-      unsigned i_am_waiting      :1;
-      unsigned i_am_in_function  :1; // True if running function code
-      unsigned i_have_ended      :1;
-      unsigned i_was_disabled    :1;
-      unsigned waiting_for_event :1;
-      unsigned is_scheduled      :1;
-      unsigned delay_delete      :1;
+      ಚಿಹ್ನೆರಹಿತ i_am_joining      :1;
+      ಚಿಹ್ನೆರಹಿತ i_am_detached     :1;
+      ಚಿಹ್ನೆರಹಿತ i_am_ಕಾಯುವಿಕೆ      :1;
+      ಚಿಹ್ನೆರಹಿತ i_am_ಒಳ_function  :1; // True if running function code
+      ಚಿಹ್ನೆರಹಿತ i_have_ended      :1;
+      ಚಿಹ್ನೆರಹಿತ i_was_disabled    :1;
+      ಚಿಹ್ನೆರಹಿತ ಕಾಯುವಿಕೆ_for_event :1;
+      ಚಿಹ್ನೆರಹಿತ is_scheduled      :1;
+      ಚಿಹ್ನೆರಹಿತ delay_delete      :1;
 	/* This points to the children of the thread. */
-      set<struct vthread_s*>children;
+      ಗಣ<ರಚನೆ vthread_s*>children;
 	/* This points to the detached children of the thread. */
-      set<struct vthread_s*>detached_children;
+      ಗಣ<ರಚನೆ vthread_s*>detached_children;
 	/* This points to my parent, if I have one. */
-      struct vthread_s*parent;
+      ರಚನೆ vthread_s*ಪೋಷಕ;
 	/* This points to the containing scope. */
-      __vpiScope*parent_scope;
+      __vpiScope*ಪೋಷಕ_scope;
 	/* This is used for keeping wait queues. */
-      struct vthread_s*wait_next;
+      ರಚನೆ vthread_s*wait_ಮುಂದಿನ;
 	/* These are used to access automatically allocated items. */
       vvp_context_t wt_context, rd_context;
 	/* These are used to pass non-blocking event control information. */
       vvp_net_t*event;
       uint64_t ecount;
 	/* Save the file/line information when available. */
-    private:
-      char *filenm_;
-      unsigned lineno_;
-    public:
-      void set_fileline(char *filenm, unsigned lineno);
+    ಖಾಸಗಿ:
+      ಅಕ್ಷರ *filenm_;
+      ಚಿಹ್ನೆರಹಿತ lineno_;
+    ಸಾರ್ವಜನಿಕ:
+      ಶೂನ್ಯ ಗಣ_fileline(ಅಕ್ಷರ *filenm, ಚಿಹ್ನೆರಹಿತ lineno);
       string get_fileline();
 
-      inline void cleanup()
+      ಸಾಲೊಳಗೆ ಶೂನ್ಯ cleanup()
       {
-	    if (i_was_disabled) {
-		  stack_vec4_.clear();
-		  stack_real_.clear();
-		  stack_str_.clear();
-		  pop_object(stack_obj_size_);
+	    ಆದರೆ (i_was_disabled) {
+		  ರಾಶಿ_vec4.clear();
+		  ರಾಶಿ_real.clear();
+		  ರಾಶಿ_str.clear();
+		  ತೆಗೆ_object(ರಾಶಿ_obj_ಗಾತ್ರ);
 	    }
-	    free(filenm_);
+	    ಬಿಡುಗಡೆ(filenm_);
 	    filenm_ = 0;
-	    assert(stack_vec4_.empty());
-	    assert(stack_real_.empty());
-	    assert(stack_str_.empty());
-	    assert(stack_obj_size_ == 0);
+	    ಪ್ರತಿಜ್ಞಾ(ರಾಶಿ_vec4.empty());
+	    ಪ್ರತಿಜ್ಞಾ(ರಾಶಿ_real.empty());
+	    ಪ್ರತಿಜ್ಞಾ(ರಾಶಿ_str.empty());
+	    ಪ್ರತಿಜ್ಞಾ(ರಾಶಿ_obj_ಗಾತ್ರ == 0);
       }
 };
 
-inline vthread_s::vthread_s()
+ಸಾಲೊಳಗೆ vthread_s::vthread_s()
 {
-      stack_obj_size_ = 0;
+      ರಾಶಿ_obj_ಗಾತ್ರ = 0;
       filenm_ = 0;
       lineno_ = 0;
 }
 
-void vthread_s::set_fileline(char *filenm, unsigned lineno)
+ಶೂನ್ಯ vthread_s::ಗಣ_fileline(ಅಕ್ಷರ *filenm, ಚಿಹ್ನೆರಹಿತ lineno)
 {
-      assert(filenm);
-      if (!filenm_ || (strcmp(filenm_, filenm) != 0)) {
-	    free(filenm_);
+      ಪ್ರತಿಜ್ಞಾ(filenm);
+      ಆದರೆ (!filenm_ || (strcmp(filenm_, filenm) != 0)) {
+	    ಬಿಡುಗಡೆ(filenm_);
 	    filenm_ = strdup(filenm);
       }
       lineno_ = lineno;
 }
 
-inline string vthread_s::get_fileline()
+ಸಾಲೊಳಗೆ string vthread_s::get_fileline()
 {
       ostringstream buf;
-      if (filenm_) {
+      ಆದರೆ (filenm_) {
 	    buf << filenm_ << ":" << lineno_ << ": ";
       }
       string res = buf.str();
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }
 
-void vthread_s::debug_dump(ostream&fd, const char*label)
+ಶೂನ್ಯ vthread_s::debug_dump(ostream&fd, ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*label)
 {
-      fd << "**** " << label << endl;
-      fd << "**** ThreadId: " << this << ", parent id: " << parent << endl;
+      fd << "**** " << label << ಸಾಲು_ಅಂತ್ಯ;
+      fd << "**** ThreadId: " << ಇದು << ", parent id: " << ಪೋಷಕ << ಸಾಲು_ಅಂತ್ಯ;
 
       fd << "**** Flags: ";
-      for (int idx = 0 ; idx < FLAGS_COUNT ; idx += 1)
+      ಗಾಗಿ (ಪೂರ್ಣಾಂಕ idx = 0 ; idx < FLAGS_ಎಣಿಕೆ ; idx += 1)
 	    fd << flags[idx];
-      fd << endl;
-      fd << "**** vec4 stack..." << endl;
-      for (size_t idx = stack_vec4_.size() ; idx > 0 ; idx -= 1)
-	    fd << "    " << (stack_vec4_.size()-idx) << ": " << stack_vec4_[idx-1] << endl;
-      fd << "**** str stack (" << stack_str_.size() << ")..." << endl;
-      fd << "**** obj stack (" << stack_obj_size_ << ")..." << endl;
-      fd << "**** args_vec4 array (" << args_vec4.size() << ")..." << endl;
-      for (size_t idx = 0 ; idx < args_vec4.size() ; idx += 1)
-	    fd << "    " << idx << ": " << args_vec4[idx] << endl;
+      fd << ಸಾಲು_ಅಂತ್ಯ;
+      fd << "**** vec4 stack..." << ಸಾಲು_ಅಂತ್ಯ;
+      ಗಾಗಿ (size_t idx = ರಾಶಿ_vec4.size() ; idx > 0 ; idx -= 1)
+	    fd << "    " << (ರಾಶಿ_vec4.size()-idx) << ": " << ರಾಶಿ_vec4[idx-1] << ಸಾಲು_ಅಂತ್ಯ;
+      fd << "**** str stack (" << ರಾಶಿ_str.size() << ")..." << ಸಾಲು_ಅಂತ್ಯ;
+      fd << "**** obj stack (" << ರಾಶಿ_obj_ಗಾತ್ರ << ")..." << ಸಾಲು_ಅಂತ್ಯ;
+      fd << "**** args_vec4 array (" << ವಾದಗಳು_vec4.size() << ")..." << ಸಾಲು_ಅಂತ್ಯ;
+      ಗಾಗಿ (size_t idx = 0 ; idx < ವಾದಗಳು_vec4.size() ; idx += 1)
+	    fd << "    " << idx << ": " << ವಾದಗಳು_vec4[idx] << ಸಾಲು_ಅಂತ್ಯ;
       fd << "**** file/line (";
-      if (filenm_) fd << filenm_;
-      else fd << "<no file name>";
-      fd << ":" << lineno_ << ")" << endl;
-      fd << "**** Done ****" << endl;
+      ಆದರೆ (filenm_) fd << filenm_;
+      ಇಲ್ಲದಿದ್ದರೆ fd << "<no file name>";
+      fd << ":" << lineno_ << ")" << ಸಾಲು_ಅಂತ್ಯ;
+      fd << "**** Done ****" << ಸಾಲು_ಅಂತ್ಯ;
 }
 
 /*
@@ -373,27 +373,27 @@ void vthread_s::debug_dump(ostream&fd, const char*label)
  * the other string special characters and normalizes the strings to use
  * only this format.
  */
-static string filter_string(const char*text)
+ಸ್ಥಿರ string filter_string(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*ಪಠ್ಯ)
 {
-      vector<char> tmp (strlen(text)+1);
+      vector<ಅಕ್ಷರ> tmp (ಅಕ್ಷರಸರಣಿ_ಉದ್ದ(ಪಠ್ಯ)+1);
       size_t dst = 0;
-      for (const char*ptr = text ; *ptr ; ptr += 1) {
+      ಗಾಗಿ (ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*ptr = ಪಠ್ಯ ; *ptr ; ptr += 1) {
 	    // Not an escape? Move on.
-	    if (*ptr != '\\') {
+	    ಆದರೆ (*ptr != '\\') {
 		  tmp[dst++] = *ptr;
-		  continue;
+		  ಮುಂದುವರಿ;
 	    }
 
 	    // Now we know that *ptr is pointing to a \ character and we
 	    // have an octal sequence coming up. Advance the ptr and start
 	    // processing octal digits.
 	    ptr += 1;
-	    if (*ptr == 0)
-		  break;
+	    ಆದರೆ (*ptr == 0)
+		  ನಿಲ್ಲಿಸು;
 
-	    char byte = 0;
-	    int cnt = 3;
-	    while (*ptr && cnt > 0 && *ptr >= '0' && *ptr <= '7') {
+	    ಅಕ್ಷರ byte = 0;
+	    ಪೂರ್ಣಾಂಕ cnt = 3;
+	    ಆಗ (*ptr && cnt > 0 && *ptr >= '0' && *ptr <= '7') {
 		  byte *= 8;
 		  byte += *ptr - '0';
 		  cnt -= 1;
@@ -402,7 +402,7 @@ static string filter_string(const char*text)
 
 	    // null-bytes are supposed to be removed when assigning a string
 	    // literal to a string.
-	    if (byte != '\0')
+	    ಆದರೆ (byte != '\0')
 		  tmp[dst++] = byte;
 
 	    // After the while loop above, the ptr points to the next character,
@@ -415,66 +415,66 @@ static string filter_string(const char*text)
       // using the known length in the string constructor.
       tmp[dst] = 0;
       string res (&tmp[0], dst);
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }
 
-static void do_join(vthread_t thr, vthread_t child);
+ಸ್ಥಿರ ಶೂನ್ಯ do_join(vthread_t thr, vthread_t ಮಗು);
 
-__vpiScope* vthread_scope(struct vthread_s*thr)
+__vpiScope* vthread_scope(ರಚನೆ vthread_s*thr)
 {
-      return thr->parent_scope;
+      ಹಿಂತಿರುಗಿ thr->ಪೋಷಕ_scope;
 }
 
-struct vthread_s*running_thread = 0;
+ರಚನೆ vthread_s*running_thread = 0;
 
 string get_fileline()
 {
-      return running_thread->get_fileline();
+      ಹಿಂತಿರುಗಿ running_thread->get_fileline();
 }
 
-void vthread_push(struct vthread_s*thr, double val)
+ಶೂನ್ಯ vthread_ತಳ್ಳು(ರಚನೆ vthread_s*thr, ದ್ವಿಗುಣ val)
 {
-      thr->push_real(val);
+      thr->ತಳ್ಳು_real(val);
 }
 
-void vthread_push(struct vthread_s*thr, const string&val)
+ಶೂನ್ಯ vthread_ತಳ್ಳು(ರಚನೆ vthread_s*thr, ಸ್ಥಿರಾಂಕ string&val)
 {
-      thr->push_str(val);
+      thr->ತಳ್ಳು_str(val);
 }
 
-void vthread_push(struct vthread_s*thr, const vvp_vector4_t&val)
+ಶೂನ್ಯ vthread_ತಳ್ಳು(ರಚನೆ vthread_s*thr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&val)
 {
-      thr->push_vec4(val);
+      thr->ತಳ್ಳು_vec4(val);
 }
 
-void vthread_pop_real(struct vthread_s*thr, unsigned depth)
+ಶೂನ್ಯ vthread_ತೆಗೆ_real(ರಚನೆ vthread_s*thr, ಚಿಹ್ನೆರಹಿತ ಆಳ)
 {
-      thr->pop_real(depth);
+      thr->ತೆಗೆ_real(ಆಳ);
 }
 
-void vthread_pop_str(struct vthread_s*thr, unsigned depth)
+ಶೂನ್ಯ vthread_ತೆಗೆ_str(ರಚನೆ vthread_s*thr, ಚಿಹ್ನೆರಹಿತ ಆಳ)
 {
-      thr->pop_str(depth);
+      thr->ತೆಗೆ_str(ಆಳ);
 }
 
-void vthread_pop_vec4(struct vthread_s*thr, unsigned depth)
+ಶೂನ್ಯ vthread_ತೆಗೆ_vec4(ರಚನೆ vthread_s*thr, ಚಿಹ್ನೆರಹಿತ ಆಳ)
 {
-      thr->pop_vec4(depth);
+      thr->ತೆಗೆ_vec4(ಆಳ);
 }
 
-double vthread_get_real_stack(struct vthread_s*thr, unsigned depth)
+ದ್ವಿಗುಣ vthread_get_real_ರಾಶಿ(ರಚನೆ vthread_s*thr, ಚಿಹ್ನೆರಹಿತ ಆಳ)
 {
-      return thr->peek_real(depth);
+      ಹಿಂತಿರುಗಿ thr->peek_real(ಆಳ);
 }
 
-const string&vthread_get_str_stack(struct vthread_s*thr, unsigned depth)
+ಸ್ಥಿರಾಂಕ string&vthread_get_str_ರಾಶಿ(ರಚನೆ vthread_s*thr, ಚಿಹ್ನೆರಹಿತ ಆಳ)
 {
-      return thr->peek_str(depth);
+      ಹಿಂತಿರುಗಿ thr->peek_str(ಆಳ);
 }
 
-const vvp_vector4_t& vthread_get_vec4_stack(struct vthread_s*thr, unsigned depth)
+ಸ್ಥಿರಾಂಕ vvp_vector4_t& vthread_get_vec4_ರಾಶಿ(ರಚನೆ vthread_s*thr, ಚಿಹ್ನೆರಹಿತ ಆಳ)
 {
-      return thr->peek_vec4(depth);
+      ಹಿಂತಿರುಗಿ thr->peek_vec4(ಆಳ);
 }
 
 /*
@@ -487,21 +487,21 @@ const vvp_vector4_t& vthread_get_vec4_stack(struct vthread_s*thr, unsigned depth
  * parameterized by the queue type so that we can create the right
  * derived type of queue object.
  */
-template <class VVP_QUEUE> static vvp_queue*get_queue_object(vthread_t thr, vvp_net_t*net)
+ಮಾದರಿ <ವರ್ಗ VVP_ಸರತಿ> ಸ್ಥಿರ vvp_ಸರತಿ*get_ಸರತಿ_object(vthread_t thr, vvp_net_t*net)
 {
       vvp_fun_signal_object*obj = dynamic_cast<vvp_fun_signal_object*> (net->fun);
-      assert(obj);
+      ಪ್ರತಿಜ್ಞಾ(obj);
 
-      vvp_queue*queue = obj->get_object().peek<vvp_queue>();
-      if (queue == 0) {
-	    assert(obj->get_object().test_nil());
-	    queue = new VVP_QUEUE;
-	    vvp_object_t val (queue);
+      vvp_ಸರತಿ*ಸರತಿ = obj->get_object().peek<vvp_ಸರತಿ>();
+      ಆದರೆ (ಸರತಿ == 0) {
+	    ಪ್ರತಿಜ್ಞಾ(obj->get_object().test_nil());
+	    ಸರತಿ = ಹೊಸ VVP_ಸರತಿ;
+	    vvp_object_t val (ಸರತಿ);
 	    vvp_net_ptr_t ptr (net, 0);
 	    vvp_send_object(ptr, val, thr->wt_context);
       }
 
-      return queue;
+      ಹಿಂತಿರುಗಿ ಸರತಿ;
 }
 
 /*
@@ -510,79 +510,79 @@ template <class VVP_QUEUE> static vvp_queue*get_queue_object(vthread_t thr, vvp_
  * vvp_darray_vec4, vvp_darray_atom<>, etc. (all vvp_darray, but vvp_queue
  * also derives from vvp_darray — test queue vec4 first).
  */
-static void get_queue_or_darray_vec4_from_net(vthread_t thr, vvp_net_t* net,
-					      vvp_queue_vec4*& qsrc,
+ಸ್ಥಿರ ಶೂನ್ಯ get_ಸರತಿ_or_darray_vec4_from_net(vthread_t thr, vvp_net_t* net,
+					      vvp_ಸರತಿ_vec4*& qsrc,
 					      vvp_darray*& dsrc)
 {
       vvp_fun_signal_object* obj = dynamic_cast<vvp_fun_signal_object*>(net->fun);
-      assert(obj);
-      vvp_object_t top = obj->get_object();
-      qsrc = top.peek<vvp_queue_vec4>();
-      if (qsrc) {
+      ಪ್ರತಿಜ್ಞಾ(obj);
+      vvp_object_t ತುದಿ = obj->get_object();
+      qsrc = ತುದಿ.peek<vvp_ಸರತಿ_vec4>();
+      ಆದರೆ (qsrc) {
 	    dsrc = 0;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
-      vvp_darray* dany = top.peek<vvp_darray>();
-      if (dany && dynamic_cast<vvp_queue*>(dany) == 0) {
+      vvp_darray* dany = ತುದಿ.peek<vvp_darray>();
+      ಆದರೆ (dany && dynamic_cast<vvp_ಸರತಿ*>(dany) == 0) {
 	    dsrc = dany;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
-      if (top.test_nil()) {
-	    qsrc = new vvp_queue_vec4();
+      ಆದರೆ (ತುದಿ.test_nil()) {
+	    qsrc = ಹೊಸ vvp_ಸರತಿ_vec4();
 	    vvp_object_t val(qsrc);
 	    vvp_net_ptr_t ptr(net, 0);
 	    vvp_send_object(ptr, val, thr->wt_context);
 	    dsrc = 0;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
       /* e.g. real/string queue — not vec4 queue or plain darray */
       qsrc = 0;
       dsrc = 0;
 }
 
-static void get_queue_or_darray_real_from_net(vthread_t thr, vvp_net_t* net,
-					      vvp_queue_real*& qsrc,
+ಸ್ಥಿರ ಶೂನ್ಯ get_ಸರತಿ_or_darray_real_from_net(vthread_t thr, vvp_net_t* net,
+					      vvp_ಸರತಿ_real*& qsrc,
 					      vvp_darray*& dsrc)
 {
       vvp_fun_signal_object* obj = dynamic_cast<vvp_fun_signal_object*>(net->fun);
-      assert(obj);
-      vvp_object_t top = obj->get_object();
-      qsrc = top.peek<vvp_queue_real>();
-      if (qsrc) {
+      ಪ್ರತಿಜ್ಞಾ(obj);
+      vvp_object_t ತುದಿ = obj->get_object();
+      qsrc = ತುದಿ.peek<vvp_ಸರತಿ_real>();
+      ಆದರೆ (qsrc) {
 	    dsrc = 0;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
-      vvp_darray* dany = top.peek<vvp_darray>();
-      if (dany && dynamic_cast<vvp_queue*>(dany) == 0) {
+      vvp_darray* dany = ತುದಿ.peek<vvp_darray>();
+      ಆದರೆ (dany && dynamic_cast<vvp_ಸರತಿ*>(dany) == 0) {
 	    dsrc = dany;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
-      if (top.test_nil()) {
-	    qsrc = new vvp_queue_real();
+      ಆದರೆ (ತುದಿ.test_nil()) {
+	    qsrc = ಹೊಸ vvp_ಸರತಿ_real();
 	    vvp_object_t val(qsrc);
 	    vvp_net_ptr_t ptr(net, 0);
 	    vvp_send_object(ptr, val, thr->wt_context);
 	    dsrc = 0;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
       /* e.g. real/string queue — not vec4 queue or plain darray */
       qsrc = 0;
       dsrc = 0;
 }
 
-static void get_queue_or_darray_vec4_from_object(vvp_object_t src_obj,
-						 vvp_queue_vec4*& qsrc,
+ಸ್ಥಿರ ಶೂನ್ಯ get_ಸರತಿ_or_darray_vec4_from_object(vvp_object_t src_obj,
+						 vvp_ಸರತಿ_vec4*& qsrc,
 						 vvp_darray*& dsrc)
 {
-      qsrc = src_obj.peek<vvp_queue_vec4>();
-      if (qsrc) {
+      qsrc = src_obj.peek<vvp_ಸರತಿ_vec4>();
+      ಆದರೆ (qsrc) {
 	    dsrc = 0;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
       vvp_darray* dany = src_obj.peek<vvp_darray>();
-      if (dany && dynamic_cast<vvp_queue*>(dany) == 0) {
+      ಆದರೆ (dany && dynamic_cast<vvp_ಸರತಿ*>(dany) == 0) {
 	    dsrc = dany;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
       qsrc = 0;
       dsrc = 0;
@@ -592,54 +592,54 @@ static void get_queue_or_darray_vec4_from_object(vvp_object_t src_obj,
  * The following are used to allow a common template to be written for
  * queue real/string/vec4 operations
  */
-inline static void pop_value(vthread_t thr, double&value, unsigned)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ ಶೂನ್ಯ ತೆಗೆ_ಮೌಲ್ಯ(vthread_t thr, ದ್ವಿಗುಣ&value, ಚಿಹ್ನೆರಹಿತ)
 {
-      value = thr->pop_real();
+      value = thr->ತೆಗೆ_real();
 }
 
-inline static void pop_value(vthread_t thr, string&value, unsigned)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ ಶೂನ್ಯ ತೆಗೆ_ಮೌಲ್ಯ(vthread_t thr, string&value, ಚಿಹ್ನೆರಹಿತ)
 {
-      value = thr->pop_str();
+      value = thr->ತೆಗೆ_str();
 }
 
-inline static void pop_value(vthread_t thr, vvp_vector4_t&value, unsigned wid)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ ಶೂನ್ಯ ತೆಗೆ_ಮೌಲ್ಯ(vthread_t thr, vvp_vector4_t&value, ಚಿಹ್ನೆರಹಿತ wid)
 {
-      value = thr->pop_vec4();
-      assert(value.size() == wid);
+      value = thr->ತೆಗೆ_vec4();
+      ಪ್ರತಿಜ್ಞಾ(value.size() == wid);
 }
 
 /*
  * The following are used to allow the queue templates to print correctly.
  */
-inline static string get_queue_type(double&)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ string get_ಸರತಿ_type(ದ್ವಿಗುಣ&)
 {
-      return "queue<real>";
+      ಹಿಂತಿರುಗಿ "queue<real>";
 }
 
-inline static string get_queue_type(string&)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ string get_ಸರತಿ_type(string&)
 {
-      return "queue<string>";
+      ಹಿಂತಿರುಗಿ "queue<string>";
 }
 
-inline static string get_queue_type(const vvp_vector4_t&value)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ string get_ಸರತಿ_type(ಸ್ಥಿರಾಂಕ vvp_vector4_t&value)
 {
       ostringstream buf;
       buf << "queue<vector[" << value.size() << "]>";
       string res = buf.str();
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }
 
-inline static void print_queue_value(double value)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ ಶೂನ್ಯ print_ಸರತಿ_ಮೌಲ್ಯ(ದ್ವಿಗುಣ value)
 {
       cerr << value;
 }
 
-inline static void print_queue_value(const string&value)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ ಶೂನ್ಯ print_ಸರತಿ_ಮೌಲ್ಯ(ಸ್ಥಿರಾಂಕ string&value)
 {
       cerr << "\"" << value << "\"";
 }
 
-inline static void print_queue_value(const vvp_vector4_t&value)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ ಶೂನ್ಯ print_ಸರತಿ_ಮೌಲ್ಯ(ಸ್ಥಿರಾಂಕ vvp_vector4_t&value)
 {
       cerr << value;
 }
@@ -647,55 +647,55 @@ inline static void print_queue_value(const vvp_vector4_t&value)
 /*
  * The following are used to get a darray/queue default value.
  */
-inline static void dq_default(double&value, unsigned)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ ಶೂನ್ಯ dq_default(ದ್ವಿಗುಣ&value, ಚಿಹ್ನೆರಹಿತ)
 {
       value = 0.0;
 }
 
-inline static void dq_default(string&value, unsigned)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ ಶೂನ್ಯ dq_default(string&value, ಚಿಹ್ನೆರಹಿತ)
 {
       value = "";
 }
 
-inline static void dq_default(vvp_vector4_t&value, unsigned wid)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ ಶೂನ್ಯ dq_default(vvp_vector4_t&value, ಚಿಹ್ನೆರಹಿತ wid)
 {
       value = vvp_vector4_t(wid);
 }
 
 
-template <class T> T coerce_to_width(const T&that, unsigned width)
+ಮಾದರಿ <ವರ್ಗ T> T coerce_ಗಮ್ಯ_ಅಗಲ(ಸ್ಥಿರಾಂಕ T&that, ಚಿಹ್ನೆರಹಿತ width)
 {
-      if (that.size() == width)
-	    return that;
+      ಆದರೆ (that.size() == width)
+	    ಹಿಂತಿರುಗಿ that;
 
-      assert(that.size() > width);
+      ಪ್ರತಿಜ್ಞಾ(that.size() > width);
       T res (width);
-      for (unsigned idx = 0 ;  idx < width ;  idx += 1)
-	    res.set_bit(idx, that.value(idx));
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < width ;  idx += 1)
+	    res.ಗಣ_ಬಿಟ್(idx, that.value(idx));
 
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }
 
 /* Explicitly define the vvp_vector4_t version of coerce_to_width(). */
-template vvp_vector4_t coerce_to_width(const vvp_vector4_t&that,
-                                       unsigned width);
+ಮಾದರಿ vvp_vector4_t coerce_ಗಮ್ಯ_ಅಗಲ(ಸ್ಥಿರಾಂಕ vvp_vector4_t&that,
+                                       ಚಿಹ್ನೆರಹಿತ width);
 
 
-static void multiply_array_imm(unsigned long*res, const unsigned long*val,
-			       unsigned words, unsigned long imm)
+ಸ್ಥಿರ ಶೂನ್ಯ multiply_array_imm(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*res, ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*val,
+			       ಚಿಹ್ನೆರಹಿತ ಪದಗಳು, ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ imm)
 {
-      for (unsigned idx = 0 ; idx < words ; idx += 1)
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಪದಗಳು ; idx += 1)
 	    res[idx] = 0;
 
-      for (unsigned mul_idx = 0 ; mul_idx < words ; mul_idx += 1) {
-	    unsigned long sum;
-	    unsigned long tmp = multiply_with_carry(val[mul_idx], imm, sum);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ mul_idx = 0 ; mul_idx < ಪದಗಳು ; mul_idx += 1) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮೊತ್ತ;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp = multiply_with_ವಾಹಕ(val[mul_idx], imm, ಮೊತ್ತ);
 
-	    unsigned long carry = 0;
-	    res[mul_idx] = add_with_carry(res[mul_idx], tmp, carry);
-	    for (unsigned add_idx = mul_idx+1 ; add_idx < words ; add_idx += 1) {
-		  res[add_idx] = add_with_carry(res[add_idx], sum, carry);
-		  sum = 0;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ವಾಹಕ = 0;
+	    res[mul_idx] = ಕೂಡಿಸು_with_ವಾಹಕ(res[mul_idx], tmp, ವಾಹಕ);
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ ಕೂಡಿಸು_idx = mul_idx+1 ; ಕೂಡಿಸು_idx < ಪದಗಳು ; ಕೂಡಿಸು_idx += 1) {
+		  res[ಕೂಡಿಸು_idx] = ಕೂಡಿಸು_with_ವಾಹಕ(res[ಕೂಡಿಸು_idx], ಮೊತ್ತ, ವಾಹಕ);
+		  ಮೊತ್ತ = 0;
 	    }
       }
 }
@@ -705,27 +705,27 @@ static void multiply_array_imm(unsigned long*res, const unsigned long*val,
  * the last freed context. If none available, create a new one. Add
  * it to the list of live contexts in that scope.
  */
-static vvp_context_t vthread_alloc_context(__vpiScope*scope)
+ಸ್ಥಿರ vvp_context_t vthread_alloc_context(__vpiScope*scope)
 {
-      assert(scope->is_automatic());
+      ಪ್ರತಿಜ್ಞಾ(scope->is_automatic());
 
       vvp_context_t context = scope->free_contexts;
-      if (context) {
-            scope->free_contexts = vvp_get_next_context(context);
-            for (unsigned idx = 0 ; idx < scope->nitem ; idx += 1) {
-                  scope->item[idx]->reset_instance(context);
+      ಆದರೆ (context) {
+            scope->free_contexts = vvp_get_ಮುಂದಿನ_context(context);
+            ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < scope->nitem ; idx += 1) {
+                  scope->ಅಂಶ[idx]->reset_instance(context);
             }
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
             context = vvp_allocate_context(scope->nitem);
-            for (unsigned idx = 0 ; idx < scope->nitem ; idx += 1) {
-                  scope->item[idx]->alloc_instance(context);
+            ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < scope->nitem ; idx += 1) {
+                  scope->ಅಂಶ[idx]->alloc_instance(context);
             }
       }
 
-      vvp_set_next_context(context, scope->live_contexts);
-      scope->live_contexts = context;
+      vvp_ಗಣ_ಮುಂದಿನ_context(context, scope->ಜೀವಂತ_contexts);
+      scope->ಜೀವಂತ_contexts = context;
 
-      return context;
+      ಹಿಂತಿರುಗಿ context;
 }
 
 /*
@@ -733,66 +733,66 @@ static vvp_context_t vthread_alloc_context(__vpiScope*scope)
  * onto the freed context stack. Remove it from the list of live contexts
  * in that scope.
  */
-static void vthread_free_context(vvp_context_t context, __vpiScope*scope)
+ಸ್ಥಿರ ಶೂನ್ಯ vthread_free_context(vvp_context_t context, __vpiScope*scope)
 {
-      assert(scope->is_automatic());
-      assert(context);
+      ಪ್ರತಿಜ್ಞಾ(scope->is_automatic());
+      ಪ್ರತಿಜ್ಞಾ(context);
 
-      if (context == scope->live_contexts) {
-            scope->live_contexts = vvp_get_next_context(context);
-      } else {
-            vvp_context_t tmp = scope->live_contexts;
-            while (context != vvp_get_next_context(tmp)) {
-                  assert(tmp);
-                  tmp = vvp_get_next_context(tmp);
+      ಆದರೆ (context == scope->ಜೀವಂತ_contexts) {
+            scope->ಜೀವಂತ_contexts = vvp_get_ಮುಂದಿನ_context(context);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+            vvp_context_t tmp = scope->ಜೀವಂತ_contexts;
+            ಆಗ (context != vvp_get_ಮುಂದಿನ_context(tmp)) {
+                  ಪ್ರತಿಜ್ಞಾ(tmp);
+                  tmp = vvp_get_ಮುಂದಿನ_context(tmp);
             }
-            vvp_set_next_context(tmp, vvp_get_next_context(context));
+            vvp_ಗಣ_ಮುಂದಿನ_context(tmp, vvp_get_ಮುಂದಿನ_context(context));
       }
 
-      vvp_set_next_context(context, scope->free_contexts);
+      vvp_ಗಣ_ಮುಂದಿನ_context(context, scope->free_contexts);
       scope->free_contexts = context;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void contexts_delete(class __vpiScope*scope)
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+ಶೂನ್ಯ contexts_delete(ವರ್ಗ __vpiScope*scope)
 {
       vvp_context_t context = scope->free_contexts;
 
-      while (context) {
-	    scope->free_contexts = vvp_get_next_context(context);
-	    for (unsigned idx = 0; idx < scope->nitem; idx += 1) {
-		  scope->item[idx]->free_instance(context);
+      ಆಗ (context) {
+	    scope->free_contexts = vvp_get_ಮುಂದಿನ_context(context);
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0; idx < scope->nitem; idx += 1) {
+		  scope->ಅಂಶ[idx]->free_instance(context);
 	    }
-	    free(context);
+	    ಬಿಡುಗಡೆ(context);
 	    context = scope->free_contexts;
       }
-      free(scope->item);
+      ಬಿಡುಗಡೆ(scope->ಅಂಶ);
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 /*
  * Create a new thread with the given start address.
  */
-vthread_t vthread_new(vvp_code_t pc, __vpiScope*scope)
+vthread_t vthread_new(vvp_ಸಂಕೇತ_t pc, __vpiScope*scope)
 {
-      vthread_t thr = new struct vthread_s;
+      vthread_t thr = ಹೊಸ ರಚನೆ vthread_s;
       thr->pc     = pc;
 	//thr->bits4  = vvp_vector4_t(32);
-      thr->parent = 0;
-      thr->parent_scope = scope;
-      thr->wait_next = 0;
+      thr->ಪೋಷಕ = 0;
+      thr->ಪೋಷಕ_scope = scope;
+      thr->wait_ಮುಂದಿನ = 0;
       thr->wt_context = 0;
       thr->rd_context = 0;
 
       thr->i_am_joining  = 0;
       thr->i_am_detached = 0;
-      thr->i_am_waiting  = 0;
-      thr->i_am_in_function = 0;
+      thr->i_am_ಕಾಯುವಿಕೆ  = 0;
+      thr->i_am_ಒಳ_function = 0;
       thr->is_scheduled  = 0;
       thr->i_have_ended  = 0;
       thr->i_was_disabled = 0;
       thr->delay_delete  = 0;
-      thr->waiting_for_event = 0;
+      thr->ಕಾಯುವಿಕೆ_for_event = 0;
       thr->event  = 0;
       thr->ecount = 0;
 
@@ -800,139 +800,139 @@ vthread_t vthread_new(vvp_code_t pc, __vpiScope*scope)
       thr->flags[1] = BIT4_1;
       thr->flags[2] = BIT4_X;
       thr->flags[3] = BIT4_Z;
-      for (int idx = 4 ; idx < 8 ; idx += 1)
+      ಗಾಗಿ (ಪೂರ್ಣಾಂಕ idx = 4 ; idx < 8 ; idx += 1)
 	    thr->flags[idx] = BIT4_X;
 
-      scope->threads .insert(thr);
-      return thr;
+      scope->ಎಳೆಗಳು .insert(thr);
+      ಹಿಂತಿರುಗಿ thr;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-#if 0
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+#ಆದರೆ 0
 /*
  * These are not currently correct. If you use them you will get
  * double delete messages. There is still a leak related to a
  * waiting event that needs to be investigated.
  */
 
-static void wait_next_delete(vthread_t base)
+ಸ್ಥಿರ ಶೂನ್ಯ wait_ಮುಂದಿನ_delete(vthread_t ತಳ)
 {
-      while (base) {
-	    vthread_t tmp = base->wait_next;
-	    delete base;
-	    base = tmp;
-	    if (base->waiting_for_event == 0) break;
+      ಆಗ (ತಳ) {
+	    vthread_t tmp = ತಳ->wait_ಮುಂದಿನ;
+	    ಅಳಿಸು ತಳ;
+	    ತಳ = tmp;
+	    ಆದರೆ (ತಳ->ಕಾಯುವಿಕೆ_for_event == 0) ನಿಲ್ಲಿಸು;
       }
 }
 
-static void child_delete(vthread_t base)
+ಸ್ಥಿರ ಶೂನ್ಯ ಮಗು_delete(vthread_t ತಳ)
 {
-      while (base) {
-	    vthread_t tmp = base->child;
-	    delete base;
-	    base = tmp;
+      ಆಗ (ತಳ) {
+	    vthread_t tmp = ತಳ->ಮಗು;
+	    ಅಳಿಸು ತಳ;
+	    ತಳ = tmp;
       }
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-void vthreads_delete(class __vpiScope*scope)
+ಶೂನ್ಯ vthreads_delete(ವರ್ಗ __vpiScope*scope)
 {
-      for (std::set<vthread_t>::iterator cur = scope->threads.begin()
-		 ; cur != scope->threads.end() ; ++ cur ) {
-	    delete *cur;
+      ಗಾಗಿ (std::ಗಣ<vthread_t>::iterator cur = scope->ಎಳೆಗಳು.begin()
+		 ; cur != scope->ಎಳೆಗಳು.ಕೊನೆ() ; ++ cur ) {
+	    ಅಳಿಸು *cur;
       }
-      scope->threads.clear();
+      scope->ಎಳೆಗಳು.clear();
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
 /*
  * Reaping pulls the thread out of the stack of threads. If I have a
  * child, then hand it over to my parent or fully detach it.
  */
-static void vthread_reap(vthread_t thr)
+ಸ್ಥಿರ ಶೂನ್ಯ vthread_reap(vthread_t thr)
 {
-      if (! thr->children.empty()) {
-	    for (set<vthread_t>::iterator cur = thr->children.begin()
-		       ; cur != thr->children.end() ; ++cur) {
-		  vthread_t child = *cur;
-		  assert(child);
-		  assert(child->parent == thr);
-		  child->parent = thr->parent;
+      ಆದರೆ (! thr->children.empty()) {
+	    ಗಾಗಿ (ಗಣ<vthread_t>::iterator cur = thr->children.begin()
+		       ; cur != thr->children.ಕೊನೆ() ; ++cur) {
+		  vthread_t ಮಗು = *cur;
+		  ಪ್ರತಿಜ್ಞಾ(ಮಗು);
+		  ಪ್ರತಿಜ್ಞಾ(ಮಗು->ಪೋಷಕ == thr);
+		  ಮಗು->ಪೋಷಕ = thr->ಪೋಷಕ;
 	    }
       }
-      if (! thr->detached_children.empty()) {
-	    for (set<vthread_t>::iterator cur = thr->detached_children.begin()
-		       ; cur != thr->detached_children.end() ; ++cur) {
-		  vthread_t child = *cur;
-		  assert(child);
-		  assert(child->parent == thr);
-		  assert(child->i_am_detached);
-		  child->parent = 0;
-		  child->i_am_detached = 0;
+      ಆದರೆ (! thr->detached_children.empty()) {
+	    ಗಾಗಿ (ಗಣ<vthread_t>::iterator cur = thr->detached_children.begin()
+		       ; cur != thr->detached_children.ಕೊನೆ() ; ++cur) {
+		  vthread_t ಮಗು = *cur;
+		  ಪ್ರತಿಜ್ಞಾ(ಮಗು);
+		  ಪ್ರತಿಜ್ಞಾ(ಮಗು->ಪೋಷಕ == thr);
+		  ಪ್ರತಿಜ್ಞಾ(ಮಗು->i_am_detached);
+		  ಮಗು->ಪೋಷಕ = 0;
+		  ಮಗು->i_am_detached = 0;
 	    }
       }
-      if (thr->parent) {
+      ಆದರೆ (thr->ಪೋಷಕ) {
 	      /* assert that the given element was removed. */
-	    if (thr->i_am_detached) {
-		  size_t res = thr->parent->detached_children.erase(thr);
-		  assert(res == 1);
-	    } else {
-		  size_t res = thr->parent->children.erase(thr);
-		  assert(res == 1);
+	    ಆದರೆ (thr->i_am_detached) {
+		  size_t res = thr->ಪೋಷಕ->detached_children.erase(thr);
+		  ಪ್ರತಿಜ್ಞಾ(res == 1);
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  size_t res = thr->ಪೋಷಕ->children.erase(thr);
+		  ಪ್ರತಿಜ್ಞಾ(res == 1);
 	    }
       }
 
-      thr->parent = 0;
+      thr->ಪೋಷಕ = 0;
 
 	// Remove myself from the containing scope if needed.
-      thr->parent_scope->threads.erase(thr);
+      thr->ಪೋಷಕ_scope->ಎಳೆಗಳು.erase(thr);
 
       thr->pc = codespace_null();
 
 	/* If this thread is not scheduled, then is it safe to delete
 	   it now. Otherwise, let the schedule event (which will
 	   execute the thread at of_ZOMBIE) delete the object. */
-      if ((thr->is_scheduled == 0) && (thr->waiting_for_event == 0)) {
-	    assert(thr->children.empty());
-	    assert(thr->wait_next == 0);
-	    if (thr->delay_delete)
-		  schedule_del_thr(thr);
-	    else
+      ಆದರೆ ((thr->is_scheduled == 0) && (thr->ಕಾಯುವಿಕೆ_for_event == 0)) {
+	    ಪ್ರತಿಜ್ಞಾ(thr->children.empty());
+	    ಪ್ರತಿಜ್ಞಾ(thr->wait_ಮುಂದಿನ == 0);
+	    ಆದರೆ (thr->delay_delete)
+		  ವೇಳಾಪಟ್ಟಿ_del_thr(thr);
+	    ಇಲ್ಲದಿದ್ದರೆ
 		  vthread_delete(thr);
       }
 }
 
-void vthread_delete(vthread_t thr)
+ಶೂನ್ಯ vthread_delete(vthread_t thr)
 {
       thr->cleanup();
-      delete thr;
+      ಅಳಿಸು thr;
 }
 
-void vthread_mark_scheduled(vthread_t thr)
+ಶೂನ್ಯ vthread_mark_scheduled(vthread_t thr)
 {
-      while (thr != 0) {
-	    assert(thr->is_scheduled == 0);
+      ಆಗ (thr != 0) {
+	    ಪ್ರತಿಜ್ಞಾ(thr->is_scheduled == 0);
 	    thr->is_scheduled = 1;
-	    thr = thr->wait_next;
+	    thr = thr->wait_ಮುಂದಿನ;
       }
 }
 
-void vthread_mark_final(vthread_t thr)
+ಶೂನ್ಯ vthread_mark_final(vthread_t thr)
 {
       /*
        * The behavior in a final thread is the same as in a function. Any
        * child thread will be executed immediately rather than being
        * scheduled.
        */
-      while (thr != 0) {
-	    thr->i_am_in_function = 1;
-	    thr = thr->wait_next;
+      ಆಗ (thr != 0) {
+	    thr->i_am_ಒಳ_function = 1;
+	    thr = thr->wait_ಮುಂದಿನ;
       }
 }
 
-void vthread_delay_delete()
+ಶೂನ್ಯ vthread_delay_delete()
 {
-      if (running_thread)
+      ಆದರೆ (running_thread)
 	    running_thread->delay_delete = 1;
 }
 
@@ -941,27 +941,27 @@ void vthread_delay_delete()
  * incrementing the PC, and executing the instruction. The thread may
  * be the head of a list, so each thread is run so far as possible.
  */
-void vthread_run(vthread_t thr)
+ಶೂನ್ಯ vthread_ಸತತ(vthread_t thr)
 {
-      while (thr != 0) {
-	    vthread_t tmp = thr->wait_next;
-	    thr->wait_next = 0;
+      ಆಗ (thr != 0) {
+	    vthread_t tmp = thr->wait_ಮುಂದಿನ;
+	    thr->wait_ಮುಂದಿನ = 0;
 
-	    assert(thr->is_scheduled);
+	    ಪ್ರತಿಜ್ಞಾ(thr->is_scheduled);
 	    thr->is_scheduled = 0;
 
             running_thread = thr;
 
-	    for (;;) {
-		  vvp_code_t cp = thr->pc;
+	    ಗಾಗಿ (;;) {
+		  vvp_ಸಂಕೇತ_t cp = thr->pc;
 		  thr->pc += 1;
 
 		    /* Run the opcode implementation. If the execution of
 		       the opcode returns false, then the thread is meant to
 		       be paused, so break out of the loop. */
-		  bool rc = (cp->opcode)(thr, cp);
-		  if (rc == false)
-			break;
+		  ತಾರ್ಕಿಕ rc = (cp->opcode)(thr, cp);
+		  ಆದರೆ (rc == ಸುಳ್ಳು)
+			ನಿಲ್ಲಿಸು;
 	    }
 
 	    thr = tmp;
@@ -973,11 +973,11 @@ void vthread_run(vthread_t thr)
  * The CHUNK_LINK instruction is a special next pointer for linking
  * chunks of code space. It's like a simplified %jmp.
  */
-bool of_CHUNK_LINK(vthread_t thr, vvp_code_t code)
+ತಾರ್ಕಿಕ ದ_CHUNK_LINK(vthread_t thr, vvp_ಸಂಕೇತ_t code)
 {
-      assert(code->cptr);
+      ಪ್ರತಿಜ್ಞಾ(code->cptr);
       thr->pc = code->cptr;
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -985,72 +985,72 @@ bool of_CHUNK_LINK(vthread_t thr, vvp_code_t code)
  * its list. I in fact created that list in the %wait instruction, and
  * I also am certain that the waiting_for_event flag is set.
  */
-void vthread_schedule_list(vthread_t thr)
+ಶೂನ್ಯ vthread_ವೇಳಾಪಟ್ಟಿ_list(vthread_t thr)
 {
-      for (vthread_t cur = thr ;  cur ;  cur = cur->wait_next) {
-	    assert(cur->waiting_for_event);
-	    cur->waiting_for_event = 0;
+      ಗಾಗಿ (vthread_t cur = thr ;  cur ;  cur = cur->wait_ಮುಂದಿನ) {
+	    ಪ್ರತಿಜ್ಞಾ(cur->ಕಾಯುವಿಕೆ_for_event);
+	    cur->ಕಾಯುವಿಕೆ_for_event = 0;
       }
 
-      schedule_vthread(thr, 0);
+      ವೇಳಾಪಟ್ಟಿ_vthread(thr, 0);
 }
 
 vvp_context_t vthread_get_wt_context()
 {
-      if (running_thread)
-            return running_thread->wt_context;
-      else
-            return 0;
+      ಆದರೆ (running_thread)
+            ಹಿಂತಿರುಗಿ running_thread->wt_context;
+      ಇಲ್ಲದಿದ್ದರೆ
+            ಹಿಂತಿರುಗಿ 0;
 }
 
 vvp_context_t vthread_get_rd_context()
 {
-      if (running_thread)
-            return running_thread->rd_context;
-      else
-            return 0;
+      ಆದರೆ (running_thread)
+            ಹಿಂತಿರುಗಿ running_thread->rd_context;
+      ಇಲ್ಲದಿದ್ದರೆ
+            ಹಿಂತಿರುಗಿ 0;
 }
 
-vvp_context_item_t vthread_get_wt_context_item(unsigned context_idx)
+vvp_context_ಅಂಶ_t vthread_get_wt_context_ಅಂಶ(ಚಿಹ್ನೆರಹಿತ context_idx)
 {
-      assert(running_thread && running_thread->wt_context);
-      return vvp_get_context_item(running_thread->wt_context, context_idx);
+      ಪ್ರತಿಜ್ಞಾ(running_thread && running_thread->wt_context);
+      ಹಿಂತಿರುಗಿ vvp_get_context_ಅಂಶ(running_thread->wt_context, context_idx);
 }
 
-vvp_context_item_t vthread_get_rd_context_item(unsigned context_idx)
+vvp_context_ಅಂಶ_t vthread_get_rd_context_ಅಂಶ(ಚಿಹ್ನೆರಹಿತ context_idx)
 {
-      assert(running_thread && running_thread->rd_context);
-      return vvp_get_context_item(running_thread->rd_context, context_idx);
+      ಪ್ರತಿಜ್ಞಾ(running_thread && running_thread->rd_context);
+      ಹಿಂತಿರುಗಿ vvp_get_context_ಅಂಶ(running_thread->rd_context, context_idx);
 }
 
 /*
  * %abs/wr
  */
-bool of_ABS_WR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_ABS_WR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      thr->push_real( fabs(thr->pop_real()) );
-      return true;
+      thr->ತಳ್ಳು_real( fabs(thr->ತೆಗೆ_real()) );
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_ALLOC(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ALLOC(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
         /* Allocate a context. */
-      vvp_context_t child_context = vthread_alloc_context(cp->scope);
+      vvp_context_t ಮಗು_context = vthread_alloc_context(cp->scope);
 
         /* Push the allocated context onto the write context stack. */
-      vvp_set_stacked_context(child_context, thr->wt_context);
-      thr->wt_context = child_context;
+      vvp_ಗಣ_stacked_context(ಮಗು_context, thr->wt_context);
+      thr->wt_context = ಮಗು_context;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_AND(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_AND(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      vvp_vector4_t valb = thr->pop_vec4();
+      vvp_vector4_t valb = thr->ತೆಗೆ_vec4();
       vvp_vector4_t&vala = thr->peek_vec4();
-      assert(vala.size() == valb.size());
+      ಪ್ರತಿಜ್ಞಾ(vala.size() == valb.size());
       vala &= valb;
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -1058,26 +1058,26 @@ bool of_AND(vthread_t thr, vvp_code_t)
  * size, and initialized with BIT4_0 bits. Certain optimizations rely
  * on that.
  */
-static void get_immediate_rval(vvp_code_t cp, vvp_vector4_t&val)
+ಸ್ಥಿರ ಶೂನ್ಯ get_ತಕ್ಷಣ_rval(vvp_ಸಂಕೇತ_t cp, vvp_vector4_t&val)
 {
-      uint32_t vala = cp->bit_idx[0];
-      uint32_t valb = cp->bit_idx[1];
-      unsigned wid  = cp->number;
+      uint32_t vala = cp->ಬಿಟ್_idx[0];
+      uint32_t valb = cp->ಬಿಟ್_idx[1];
+      ಚಿಹ್ನೆರಹಿತ wid  = cp->ಸಂಖ್ಯೆ;
 
-      if (valb == 0) {
+      ಆದರೆ (valb == 0) {
 	      // Special case: if the value is zero, we are done
 	      // before we start.
-	    if (vala == 0) return;
+	    ಆದರೆ (vala == 0) ಹಿಂತಿರುಗಿ;
 
 	      // Special case: The value has no X/Z bits, so we can
 	      // use the setarray method to write the value all at once.
-	    unsigned use_wid = 8*sizeof(unsigned long);
-	    if (wid < use_wid)
+	    ಚಿಹ್ನೆರಹಿತ use_wid = 8*ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ);
+	    ಆದರೆ (wid < use_wid)
 		  use_wid = wid;
-	    unsigned long tmp[1];
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp[1];
 	    tmp[0] = vala;
 	    val.setarray(0, use_wid, tmp);
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	// The immediate value can be values bigger then 32 bits, but
@@ -1087,7 +1087,7 @@ static void get_immediate_rval(vvp_code_t cp, vvp_vector4_t&val)
 	// because vala/valb bits will shift away so (vala|valb) will
 	// turn to zero at or before 32 shifts.
 
-      for (unsigned idx = 0 ; idx < wid && (vala|valb) ; idx += 1) {
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < wid && (vala|valb) ; idx += 1) {
 	    uint32_t ba = 0;
 	      // Convert the vala/valb bits to a ba number that
 	      // matches the encoding of the vvp_bit4_t enumeration.
@@ -1096,7 +1096,7 @@ static void get_immediate_rval(vvp_code_t cp, vvp_vector4_t&val)
 
 	      // Note that the val is already pre-filled with BIT4_0
 	      // bits, os we only need to set non-zero bit values.
-	    if (ba) val.set_bit(idx, (vvp_bit4_t)ba);
+	    ಆದರೆ (ba) val.ಗಣ_ಬಿಟ್(idx, (vvp_bit4_t)ba);
 
 	    vala >>= 1;
 	    valb >>= 1;
@@ -1113,17 +1113,17 @@ static void get_immediate_rval(vvp_code_t cp, vvp_vector4_t&val)
  * Pop 2 and push 1 is the same as pop 1 and replace the remaining top
  * of the stack with a new value. That is what we will do.
  */
-bool of_ADD(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_ಕೂಡಿಸು(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      vvp_vector4_t r = thr->pop_vec4();
+      vvp_vector4_t r = thr->ತೆಗೆ_vec4();
 	// Rather then pop l, use it directly from the stack. When we
 	// assign to 'l', that will edit the top of the stack, which
 	// replaces a pop and a pull.
       vvp_vector4_t&l = thr->peek_vec4();
 
-      l.add(r);
+      l.ಕೂಡಿಸು(r);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -1132,9 +1132,9 @@ bool of_ADD(vthread_t thr, vvp_code_t)
  * Pop1 operand, get the other operand from the arguments, and push
  * the result.
  */
-bool of_ADDI(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ADDI(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->number;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಸಂಖ್ಯೆ;
 
       vvp_vector4_t&l = thr->peek_vec4();
 
@@ -1142,22 +1142,22 @@ bool of_ADDI(vthread_t thr, vvp_code_t cp)
 	// going to be zero, so start the result vector with all zero
 	// bits. Then we only need to replace the bits that are different.
       vvp_vector4_t r (wid, BIT4_0);
-      get_immediate_rval (cp, r);
+      get_ತಕ್ಷಣ_rval (cp, r);
 
-      l.add(r);
+      l.ಕೂಡಿಸು(r);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %add/wr
  */
-bool of_ADD_WR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_ಕೂಡಿಸು_WR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
-      thr->push_real(l + r);
-      return true;
+      ದ್ವಿಗುಣ r = thr->ತೆಗೆ_real();
+      ದ್ವಿಗುಣ l = thr->ತೆಗೆ_real();
+      thr->ತಳ್ಳು_real(l + r);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* %assign/ar <array>, <delay>
@@ -1166,17 +1166,17 @@ bool of_ADD_WR(vthread_t thr, vvp_code_t)
  * is the delay in simulation time. <bit> is the index register
  * containing the real value.
  */
-bool of_ASSIGN_AR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ನಿಯೋಜಿಸು_AR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      long adr = thr->words[3].w_int;
-      unsigned delay = cp->bit_idx[0];
-      double value = thr->pop_real();
+      ದೀರ್ಘ adr = thr->ಪದಗಳು[3].w_int;
+      ಚಿಹ್ನೆರಹಿತ delay = cp->ಬಿಟ್_idx[0];
+      ದ್ವಿಗುಣ value = thr->ತೆಗೆ_real();
 
-      if (adr >= 0) {
-	    schedule_assign_array_word(cp->array, adr, value, delay);
+      ಆದರೆ (adr >= 0) {
+	    ವೇಳಾಪಟ್ಟಿ_ನಿಯೋಜಿಸು_array_ಶಬ್ದ(cp->array, adr, value, delay);
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* %assign/ar/d <array>, <delay_idx>
@@ -1184,17 +1184,17 @@ bool of_ASSIGN_AR(vthread_t thr, vvp_code_t cp)
  * contains the canonical address of the word in the memory.
  * <delay_idx> is the integer register that contains the delay value.
  */
-bool of_ASSIGN_ARD(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ನಿಯೋಜಿಸು_ARD(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      long adr = thr->words[3].w_int;
-      double value = thr->pop_real();
+      ದೀರ್ಘ adr = thr->ಪದಗಳು[3].w_int;
+      ದ್ವಿಗುಣ value = thr->ತೆಗೆ_real();
 
-      if (adr >= 0) {
-	    vvp_time64_t delay = thr->words[cp->bit_idx[0]].w_uint;
-	    schedule_assign_array_word(cp->array, adr, value, delay);
+      ಆದರೆ (adr >= 0) {
+	    vvp_time64_t delay = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_uint;
+	    ವೇಳಾಪಟ್ಟಿ_ನಿಯೋಜಿಸು_array_ಶಬ್ದ(cp->array, adr, value, delay);
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* %assign/ar/e <array>
@@ -1204,35 +1204,35 @@ bool of_ASSIGN_ARD(vthread_t thr, vvp_code_t cp)
  * information is contained in the thread event control registers
  * and is set with %evctl.
  */
-bool of_ASSIGN_ARE(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ನಿಯೋಜಿಸು_ARE(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      long adr = thr->words[3].w_int;
-      double value = thr->pop_real();
+      ದೀರ್ಘ adr = thr->ಪದಗಳು[3].w_int;
+      ದ್ವಿಗುಣ value = thr->ತೆಗೆ_real();
 
-      if (adr >= 0) {
-	    if (thr->ecount == 0) {
-		  schedule_assign_array_word(cp->array, adr, value, 0);
-	    } else {
-		  schedule_evctl(cp->array, adr, value, thr->event,
+      ಆದರೆ (adr >= 0) {
+	    ಆದರೆ (thr->ecount == 0) {
+		  ವೇಳಾಪಟ್ಟಿ_ನಿಯೋಜಿಸು_array_ಶಬ್ದ(cp->array, adr, value, 0);
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  ವೇಳಾಪಟ್ಟಿ_evctl(cp->array, adr, value, thr->event,
 		                 thr->ecount);
 	    }
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %assign/vec4 <var>, <delay>
  */
-bool of_ASSIGN_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ನಿಯೋಜಿಸು_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_ptr_t ptr (cp->net, 0);
-      unsigned delay = cp->bit_idx[0];
-      const vvp_vector4_t&val = thr->peek_vec4();
+      ಚಿಹ್ನೆರಹಿತ delay = cp->ಬಿಟ್_idx[0];
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&val = thr->peek_vec4();
 
-      schedule_assign_vector(ptr, 0, 0, val, delay);
-      thr->pop_vec4(1);
-      return true;
+      ವೇಳಾಪಟ್ಟಿ_ನಿಯೋಜಿಸು_ಸದಿಶ(ptr, 0, 0, val, delay);
+      thr->ತೆಗೆ_vec4(1);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -1243,196 +1243,196 @@ bool of_ASSIGN_VEC4(vthread_t thr, vvp_code_t cp)
  * Returns false if the value is fully out-of-bounds and the assignment should
  * be skipped. Otherwise returns true.
  */
-static bool resize_rval_vec(vvp_vector4_t &val, int64_t &off,
-			    unsigned int sig_wid)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ resize_rval_vec(vvp_vector4_t &val, int64_t &off,
+			    ಚಿಹ್ನೆರಹಿತ ಪೂರ್ಣಾಂಕ sig_wid)
 {
-      unsigned int wid = val.size();
+      ಚಿಹ್ನೆರಹಿತ ಪೂರ್ಣಾಂಕ wid = val.size();
 
         // Fully in bounds, most likely case
-      if (off >= 0 && (uint64_t)off + wid <= sig_wid)
-	    return true;
+      ಆದರೆ (off >= 0 && (uint64_t)off + wid <= sig_wid)
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      unsigned int base = 0;
-      if (off >= 0) {
+      ಚಿಹ್ನೆರಹಿತ ಪೂರ್ಣಾಂಕ ತಳ = 0;
+      ಆದರೆ (off >= 0) {
 	      // Fully out-of-bounds
-	    if ((uint64_t)off >= sig_wid)
-		  return false;
-      } else {
+	    ಆದರೆ ((uint64_t)off >= sig_wid)
+		  ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	      // Fully out-of-bounds */
-	    if ((uint64_t)(-off) >= wid)
-		  return false;
+	    ಆದರೆ ((uint64_t)(-off) >= wid)
+		  ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 
 	      // If the index is below the vector, then only assign the high
 	      // bits that overlap with the target
-	    base = -off;
+	    ತಳ = -off;
 	    wid += off;
 		off = 0;
       }
 
 	// If the value is partly above the target, then only assign
 	// the bits that overlap
-      if ((uint64_t)off + wid > sig_wid)
+      ಆದರೆ ((uint64_t)off + wid > sig_wid)
 	    wid = sig_wid - (uint64_t)off;
 
-      val = val.subvalue(base, wid);
+      val = val.subvalue(ತಳ, wid);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %assign/vec4/a/d <arr>, <offx>, <delx>
  */
-bool of_ASSIGN_VEC4_A_D(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ನಿಯೋಜಿಸು_VEC4_A_D(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      int off_idx = cp->bit_idx[0];
-      int del_idx = cp->bit_idx[1];
-      int adr_idx = 3;
+      ಪೂರ್ಣಾಂಕ off_idx = cp->ಬಿಟ್_idx[0];
+      ಪೂರ್ಣಾಂಕ del_idx = cp->ಬಿಟ್_idx[1];
+      ಪೂರ್ಣಾಂಕ adr_idx = 3;
 
-      int64_t  off = off_idx ? thr->words[off_idx].w_int : 0;
-      vvp_time64_t del = del_idx? thr->words[del_idx].w_uint : 0;
-      long     adr = thr->words[adr_idx].w_int;
+      int64_t  off = off_idx ? thr->ಪದಗಳು[off_idx].w_int : 0;
+      vvp_time64_t del = del_idx? thr->ಪದಗಳು[del_idx].w_uint : 0;
+      ದೀರ್ಘ     adr = thr->ಪದಗಳು[adr_idx].w_int;
 
-      vvp_vector4_t val = thr->pop_vec4();
+      vvp_vector4_t val = thr->ತೆಗೆ_vec4();
 
 	// Abort if flags[4] is set. This can happen if the calculation
 	// into an index register failed.
-      if (thr->flags[4] == BIT4_1)
-	    return true;
+      ಆದರೆ (thr->flags[4] == BIT4_1)
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      if (!resize_rval_vec(val, off, cp->array->get_word_size()))
-	    return true;
+      ಆದರೆ (!resize_rval_vec(val, off, cp->array->get_ಶಬ್ದ_ಗಾತ್ರ()))
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      schedule_assign_array_word(cp->array, adr, off, val, del);
+      ವೇಳಾಪಟ್ಟಿ_ನಿಯೋಜಿಸು_array_ಶಬ್ದ(cp->array, adr, off, val, del);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %assign/vec4/a/e <arr>, <offx>
  */
-bool of_ASSIGN_VEC4_A_E(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ನಿಯೋಜಿಸು_VEC4_A_E(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      int off_idx = cp->bit_idx[0];
-      int adr_idx = 3;
+      ಪೂರ್ಣಾಂಕ off_idx = cp->ಬಿಟ್_idx[0];
+      ಪೂರ್ಣಾಂಕ adr_idx = 3;
 
-      int64_t  off = off_idx ? thr->words[off_idx].w_int : 0;
-      long     adr = thr->words[adr_idx].w_int;
+      int64_t  off = off_idx ? thr->ಪದಗಳು[off_idx].w_int : 0;
+      ದೀರ್ಘ     adr = thr->ಪದಗಳು[adr_idx].w_int;
 
-      vvp_vector4_t val = thr->pop_vec4();
+      vvp_vector4_t val = thr->ತೆಗೆ_vec4();
 
 	// Abort if flags[4] is set. This can happen if the calculation
 	// into an index register failed.
-      if (thr->flags[4] == BIT4_1)
-	    return true;
+      ಆದರೆ (thr->flags[4] == BIT4_1)
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      if (!resize_rval_vec(val, off, cp->array->get_word_size()))
-	    return true;
+      ಆದರೆ (!resize_rval_vec(val, off, cp->array->get_ಶಬ್ದ_ಗಾತ್ರ()))
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      if (thr->ecount == 0) {
-	    schedule_assign_array_word(cp->array, adr, off, val, 0);
-      } else {
-	    schedule_evctl(cp->array, adr, val, off, thr->event, thr->ecount);
+      ಆದರೆ (thr->ecount == 0) {
+	    ವೇಳಾಪಟ್ಟಿ_ನಿಯೋಜಿಸು_array_ಶಬ್ದ(cp->array, adr, off, val, 0);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ವೇಳಾಪಟ್ಟಿ_evctl(cp->array, adr, val, off, thr->event, thr->ecount);
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %assign/vec4/off/d <var>, <off>, <del>
  */
-bool of_ASSIGN_VEC4_OFF_D(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ನಿಯೋಜಿಸು_VEC4_OFF_D(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_ptr_t ptr (cp->net, 0);
-      unsigned off_index = cp->bit_idx[0];
-      unsigned del_index = cp->bit_idx[1];
-      vvp_vector4_t val = thr->pop_vec4();
+      ಚಿಹ್ನೆರಹಿತ off_ಸೂಚ್ಯಂಕ = cp->ಬಿಟ್_idx[0];
+      ಚಿಹ್ನೆರಹಿತ del_ಸೂಚ್ಯಂಕ = cp->ಬಿಟ್_idx[1];
+      vvp_vector4_t val = thr->ತೆಗೆ_vec4();
 
-      int64_t off = thr->words[off_index].w_int;
-      vvp_time64_t del = thr->words[del_index].w_uint;
+      int64_t off = thr->ಪದಗಳು[off_ಸೂಚ್ಯಂಕ].w_int;
+      vvp_time64_t del = thr->ಪದಗಳು[del_ಸೂಚ್ಯಂಕ].w_uint;
 
 	// Abort if flags[4] is set. This can happen if the calculation
 	// into an index register failed.
-      if (thr->flags[4] == BIT4_1)
-	    return true;
+      ಆದರೆ (thr->flags[4] == BIT4_1)
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (cp->net->fil);
-      assert(sig);
+      vvp_signal_ಮೌಲ್ಯ*sig = dynamic_cast<vvp_signal_ಮೌಲ್ಯ*> (cp->net->fil);
+      ಪ್ರತಿಜ್ಞಾ(sig);
 
-      if (!resize_rval_vec(val, off, sig->value_size()))
-	    return true;
+      ಆದರೆ (!resize_rval_vec(val, off, sig->ಮೌಲ್ಯ_ಗಾತ್ರ()))
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      schedule_assign_vector(ptr, off, sig->value_size(), val, del);
-      return true;
+      ವೇಳಾಪಟ್ಟಿ_ನಿಯೋಜಿಸು_ಸದಿಶ(ptr, off, sig->ಮೌಲ್ಯ_ಗಾತ್ರ(), val, del);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %assign/vec4/off/e <var>, <off>
  */
-bool of_ASSIGN_VEC4_OFF_E(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ನಿಯೋಜಿಸು_VEC4_OFF_E(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_ptr_t ptr (cp->net, 0);
-      unsigned off_index = cp->bit_idx[0];
-      vvp_vector4_t val = thr->pop_vec4();
+      ಚಿಹ್ನೆರಹಿತ off_ಸೂಚ್ಯಂಕ = cp->ಬಿಟ್_idx[0];
+      vvp_vector4_t val = thr->ತೆಗೆ_vec4();
 
-      int64_t off = thr->words[off_index].w_int;
+      int64_t off = thr->ಪದಗಳು[off_ಸೂಚ್ಯಂಕ].w_int;
 
 	// Abort if flags[4] is set. This can happen if the calculation
 	// into an index register failed.
-      if (thr->flags[4] == BIT4_1)
-	    return true;
+      ಆದರೆ (thr->flags[4] == BIT4_1)
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (cp->net->fil);
-      assert(sig);
+      vvp_signal_ಮೌಲ್ಯ*sig = dynamic_cast<vvp_signal_ಮೌಲ್ಯ*> (cp->net->fil);
+      ಪ್ರತಿಜ್ಞಾ(sig);
 
-      if (!resize_rval_vec(val, off, sig->value_size()))
-	    return true;
+      ಆದರೆ (!resize_rval_vec(val, off, sig->ಮೌಲ್ಯ_ಗಾತ್ರ()))
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      if (thr->ecount == 0) {
-	    schedule_assign_vector(ptr, off, sig->value_size(), val, 0);
-      } else {
-	    schedule_evctl(ptr, val, off, sig->value_size(), thr->event, thr->ecount);
+      ಆದರೆ (thr->ecount == 0) {
+	    ವೇಳಾಪಟ್ಟಿ_ನಿಯೋಜಿಸು_ಸದಿಶ(ptr, off, sig->ಮೌಲ್ಯ_ಗಾತ್ರ(), val, 0);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ವೇಳಾಪಟ್ಟಿ_evctl(ptr, val, off, sig->ಮೌಲ್ಯ_ಗಾತ್ರ(), thr->event, thr->ecount);
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %assign/vec4/d <var-label> <delay>
  */
-bool of_ASSIGN_VEC4D(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ನಿಯೋಜಿಸು_VEC4_D(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_ptr_t ptr (cp->net, 0);
-      unsigned del_index = cp->bit_idx[0];
-      vvp_time64_t del = thr->words[del_index].w_int;
+      ಚಿಹ್ನೆರಹಿತ del_ಸೂಚ್ಯಂಕ = cp->ಬಿಟ್_idx[0];
+      vvp_time64_t del = thr->ಪದಗಳು[del_ಸೂಚ್ಯಂಕ].w_int;
 
-      vvp_vector4_t value = thr->pop_vec4();
+      vvp_vector4_t value = thr->ತೆಗೆ_vec4();
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (cp->net->fil);
-      assert(sig);
+      vvp_signal_ಮೌಲ್ಯ*sig = dynamic_cast<vvp_signal_ಮೌಲ್ಯ*> (cp->net->fil);
+      ಪ್ರತಿಜ್ಞಾ(sig);
 
-      schedule_assign_vector(ptr, 0, sig->value_size(), value, del);
+      ವೇಳಾಪಟ್ಟಿ_ನಿಯೋಜಿಸು_ಸದಿಶ(ptr, 0, sig->ಮೌಲ್ಯ_ಗಾತ್ರ(), value, del);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %assign/vec4/e <var-label>
  */
-bool of_ASSIGN_VEC4E(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ನಿಯೋಜಿಸು_VEC4_E(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_ptr_t ptr (cp->net, 0);
-      vvp_vector4_t value = thr->pop_vec4();
+      vvp_vector4_t value = thr->ತೆಗೆ_vec4();
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (cp->net->fil);
-      assert(sig);
+      vvp_signal_ಮೌಲ್ಯ*sig = dynamic_cast<vvp_signal_ಮೌಲ್ಯ*> (cp->net->fil);
+      ಪ್ರತಿಜ್ಞಾ(sig);
 
-      if (thr->ecount == 0) {
-	    schedule_assign_vector(ptr, 0, sig->value_size(), value, 0);
-      } else {
-	    schedule_evctl(ptr, value, 0, sig->value_size(), thr->event, thr->ecount);
+      ಆದರೆ (thr->ecount == 0) {
+	    ವೇಳಾಪಟ್ಟಿ_ನಿಯೋಜಿಸು_ಸದಿಶ(ptr, 0, sig->ಮೌಲ್ಯ_ಗಾತ್ರ(), value, 0);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ವೇಳಾಪಟ್ಟಿ_evctl(ptr, value, 0, sig->ಮೌಲ್ಯ_ಗಾತ್ರ(), thr->event, thr->ecount);
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -1442,191 +1442,191 @@ bool of_ASSIGN_VEC4E(vthread_t thr, vvp_code_t cp)
  * vpi_put_value function to do the assign, with the delay written
  * into the vpiInertialDelay carrying the desired delay.
  */
-bool of_ASSIGN_WR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ನಿಯೋಜಿಸು_WR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned delay = cp->bit_idx[0];
-      double value = thr->pop_real();
-      s_vpi_time del;
+      ಚಿಹ್ನೆರಹಿತ delay = cp->ಬಿಟ್_idx[0];
+      ದ್ವಿಗುಣ value = thr->ತೆಗೆ_real();
+      s_vpi_ಸಮಯ del;
 
-      del.type = vpiSimTime;
-      vpip_time_to_timestruct(&del, delay);
+      del.type = vpi_Sim_ಸಮಯ;
+      vpip_ಸಮಯ_ಗಮ್ಯ_timestruct(&del, delay);
 
       __vpiHandle*tmp = cp->handle;
 
-      t_vpi_value val;
+      t_vpi_ಮೌಲ್ಯ val;
       val.format = vpiRealVal;
       val.value.real = value;
-      vpi_put_value(tmp, &val, &del, vpiTransportDelay);
+      vpi_put_ಮೌಲ್ಯ(tmp, &val, &del, vpiTransportDelay);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_ASSIGN_WRD(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ನಿಯೋಜಿಸು_WRD(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vvp_time64_t delay = thr->words[cp->bit_idx[0]].w_uint;
-      double value = thr->pop_real();
-      s_vpi_time del;
+      vvp_time64_t delay = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_uint;
+      ದ್ವಿಗುಣ value = thr->ತೆಗೆ_real();
+      s_vpi_ಸಮಯ del;
 
-      del.type = vpiSimTime;
-      vpip_time_to_timestruct(&del, delay);
+      del.type = vpi_Sim_ಸಮಯ;
+      vpip_ಸಮಯ_ಗಮ್ಯ_timestruct(&del, delay);
 
       __vpiHandle*tmp = cp->handle;
 
-      t_vpi_value val;
+      t_vpi_ಮೌಲ್ಯ val;
       val.format = vpiRealVal;
       val.value.real = value;
-      vpi_put_value(tmp, &val, &del, vpiTransportDelay);
+      vpi_put_ಮೌಲ್ಯ(tmp, &val, &del, vpiTransportDelay);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_ASSIGN_WRE(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ನಿಯೋಜಿಸು_WRE(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      assert(thr->event != 0);
-      double value = thr->pop_real();
+      ಪ್ರತಿಜ್ಞಾ(thr->event != 0);
+      ದ್ವಿಗುಣ value = thr->ತೆಗೆ_real();
       __vpiHandle*tmp = cp->handle;
 
 	// If the count is zero then just put the value.
-      if (thr->ecount == 0) {
-	    t_vpi_value val;
+      ಆದರೆ (thr->ecount == 0) {
+	    t_vpi_ಮೌಲ್ಯ val;
 
 	    val.format = vpiRealVal;
 	    val.value.real = value;
-	    vpi_put_value(tmp, &val, 0, vpiNoDelay);
-      } else {
-	    schedule_evctl(tmp, value, thr->event, thr->ecount);
+	    vpi_put_ಮೌಲ್ಯ(tmp, &val, 0, vpiNoDelay);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ವೇಳಾಪಟ್ಟಿ_evctl(tmp, value, thr->event, thr->ecount);
       }
 
       thr->event = 0;
       thr->ecount = 0;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_BLEND(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_BLEND(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      vvp_vector4_t vala = thr->pop_vec4();
-      vvp_vector4_t valb = thr->pop_vec4();
-      assert(vala.size() == valb.size());
+      vvp_vector4_t vala = thr->ತೆಗೆ_vec4();
+      vvp_vector4_t valb = thr->ತೆಗೆ_vec4();
+      ಪ್ರತಿಜ್ಞಾ(vala.size() == valb.size());
 
-      for (unsigned idx = 0 ; idx < vala.size() ; idx += 1) {
-	    if (vala.value(idx) == valb.value(idx))
-		  continue;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < vala.size() ; idx += 1) {
+	    ಆದರೆ (vala.value(idx) == valb.value(idx))
+		  ಮುಂದುವರಿ;
 
-	    vala.set_bit(idx, BIT4_X);
+	    vala.ಗಣ_ಬಿಟ್(idx, BIT4_X);
       }
 
-      thr->push_vec4(vala);
-      return true;
+      thr->ತಳ್ಳು_vec4(vala);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_BLEND_STR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_BLEND_STR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      string f = thr->pop_str();
-      string t = thr->pop_str();
-      thr->push_str((t == f) ? t : "");
-      return true;
+      string f = thr->ತೆಗೆ_str();
+      string t = thr->ತೆಗೆ_str();
+      thr->ತಳ್ಳು_str((t == f) ? t : "");
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_BLEND_WR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_BLEND_WR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      double f = thr->pop_real();
-      double t = thr->pop_real();
-      thr->push_real((t == f) ? t : 0.0);
-      return true;
+      ದ್ವಿಗುಣ f = thr->ತೆಗೆ_real();
+      ದ್ವಿಗುಣ t = thr->ತೆಗೆ_real();
+      thr->ತಳ್ಳು_real((t == f) ? t : 0.0);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_BREAKPOINT(vthread_t, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_BREAKPOINT(vthread_t, vvp_ಸಂಕೇತ_t)
 {
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %callf/void <code-label>, <scope-label>
  * Combine the %fork and %join steps for invoking a function.
  */
-static bool do_callf_void(vthread_t thr, vthread_t child)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ do_callf_void(vthread_t thr, vthread_t ಮಗು)
 {
 
-      if (child->parent_scope->is_automatic()) {
+      ಆದರೆ (ಮಗು->ಪೋಷಕ_scope->is_automatic()) {
 	      /* The context allocated for this child is the top entry
 		 on the write context stack */
-	    child->wt_context = thr->wt_context;
-	    child->rd_context = thr->wt_context;
+	    ಮಗು->wt_context = thr->wt_context;
+	    ಮಗು->rd_context = thr->wt_context;
       }
 
         // Mark the function thread as a direct child of the current thread.
-      child->parent = thr;
-      thr->children.insert(child);
+      ಮಗು->ಪೋಷಕ = thr;
+      thr->children.insert(ಮಗು);
         // This should be the only child
-      assert(thr->children.size()==1);
+      ಪ್ರತಿಜ್ಞಾ(thr->children.size()==1);
 
         // Execute the function. This SHOULD run the function to completion,
         // but there are some exceptional situations where it won't.
-      assert(child->parent_scope->get_type_code() == vpiFunction);
-      child->is_scheduled = 1;
-      child->i_am_in_function = 1;
-      vthread_run(child);
+      ಪ್ರತಿಜ್ಞಾ(ಮಗು->ಪೋಷಕ_scope->get_type_ಸಂಕೇತ() == vpiFunction);
+      ಮಗು->is_scheduled = 1;
+      ಮಗು->i_am_ಒಳ_function = 1;
+      vthread_ಸತತ(ಮಗು);
       running_thread = thr;
 
-      if (child->i_have_ended) {
-	    do_join(thr, child);
-	    return true;
-      } else {
+      ಆದರೆ (ಮಗು->i_have_ended) {
+	    do_join(thr, ಮಗು);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	    thr->i_am_joining = 1;
-	    return false;
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 }
 
-bool of_CALLF_OBJ(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CALLF_OBJ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vthread_t child = vthread_new(cp->cptr2, cp->scope);
-      return do_callf_void(thr, child);
+      vthread_t ಮಗು = vthread_new(cp->cptr2, cp->scope);
+      ಹಿಂತಿರುಗಿ do_callf_void(thr, ಮಗು);
 
       // XXXX NOT IMPLEMENTED
 }
 
-bool of_CALLF_REAL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CALLF_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vthread_t child = vthread_new(cp->cptr2, cp->scope);
+      vthread_t ಮಗು = vthread_new(cp->cptr2, cp->scope);
 
 	// This is the return value. Push a place-holder value. The function
 	// will replace this with the actual value using a %ret/real instruction.
-      thr->push_real(0.0);
-      child->args_real.push_back(0);
+      thr->ತಳ್ಳು_real(0.0);
+      ಮಗು->ವಾದಗಳು_real.push_back(0);
 
-      return do_callf_void(thr, child);
+      ಹಿಂತಿರುಗಿ do_callf_void(thr, ಮಗು);
 }
 
-bool of_CALLF_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CALLF_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vthread_t child = vthread_new(cp->cptr2, cp->scope);
+      vthread_t ಮಗು = vthread_new(cp->cptr2, cp->scope);
 
-      thr->push_str("");
-      child->args_str.push_back(0);
+      thr->ತಳ್ಳು_str("");
+      ಮಗು->ವಾದಗಳು_str.push_back(0);
 
-      return do_callf_void(thr, child);
+      ಹಿಂತಿರುಗಿ do_callf_void(thr, ಮಗು);
 }
 
-bool of_CALLF_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CALLF_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vthread_t child = vthread_new(cp->cptr2, cp->scope);
+      vthread_t ಮಗು = vthread_new(cp->cptr2, cp->scope);
 
       vpiScopeFunction*scope_func = dynamic_cast<vpiScopeFunction*>(cp->scope);
-      assert(scope_func);
+      ಪ್ರತಿಜ್ಞಾ(scope_func);
 
 	// This is the return value. Push a place-holder value. The function
 	// will replace this with the actual value using a %ret/real instruction.
-      thr->push_vec4(vvp_vector4_t(scope_func->get_func_width(), scope_func->get_func_init_val()));
-      child->args_vec4.push_back(0);
+      thr->ತಳ್ಳು_vec4(vvp_vector4_t(scope_func->get_func_ಅಗಲ(), scope_func->get_func_init_val()));
+      ಮಗು->ವಾದಗಳು_vec4.push_back(0);
 
-      return do_callf_void(thr, child);
+      ಹಿಂತಿರುಗಿ do_callf_void(thr, ಮಗು);
 }
 
-bool of_CALLF_VOID(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CALLF_VOID(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vthread_t child = vthread_new(cp->cptr2, cp->scope);
-      return do_callf_void(thr, child);
+      vthread_t ಮಗು = vthread_new(cp->cptr2, cp->scope);
+      ಹಿಂತಿರುಗಿ do_callf_void(thr, ಮಗು);
 }
 
 /*
@@ -1636,17 +1636,17 @@ bool of_CALLF_VOID(vthread_t thr, vvp_code_t cp)
  * unlinked without specifically knowing the source that this
  * instruction used.
  */
-bool of_CASSIGN_LINK(vthread_t, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CASSIGN_LINK(vthread_t, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*dst = cp->net;
       vvp_net_t*src = cp->net2;
 
-      vvp_fun_signal_base*sig
-	    = dynamic_cast<vvp_fun_signal_base*>(dst->fun);
-      assert(sig);
+      vvp_fun_signal_ತಳ*sig
+	    = dynamic_cast<vvp_fun_signal_ತಳ*>(dst->fun);
+      ಪ್ರತಿಜ್ಞಾ(sig);
 
 	/* Any previous continuous assign should have been removed already. */
-      assert(sig->cassign_link == 0);
+      ಪ್ರತಿಜ್ಞಾ(sig->cassign_link == 0);
 
       sig->cassign_link = src;
 
@@ -1655,7 +1655,7 @@ bool of_CASSIGN_LINK(vthread_t, vvp_code_t cp)
       vvp_net_ptr_t dst_ptr (dst, 1);
       src->link(dst_ptr);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -1664,14 +1664,14 @@ bool of_CASSIGN_LINK(vthread_t, vvp_code_t cp)
  * assign, otherwise the initial assigned value will be propagated to
  * any other nodes driven by the old continuous assign source.
  */
-static void cassign_unlink(vvp_net_t*dst)
+ಸ್ಥಿರ ಶೂನ್ಯ cassign_unlink(vvp_net_t*dst)
 {
-      vvp_fun_signal_base*sig
-	    = dynamic_cast<vvp_fun_signal_base*>(dst->fun);
-      assert(sig);
+      vvp_fun_signal_ತಳ*sig
+	    = dynamic_cast<vvp_fun_signal_ತಳ*>(dst->fun);
+      ಪ್ರತಿಜ್ಞಾ(sig);
 
-      if (sig->cassign_link == 0)
-	    return;
+      ಆದರೆ (sig->cassign_link == 0)
+	    ಹಿಂತಿರುಗಿ;
 
       vvp_net_ptr_t tmp (dst, 1);
       sig->cassign_link->unlink(tmp);
@@ -1690,10 +1690,10 @@ static void cassign_unlink(vvp_net_t*dst)
  * This instruction writes vvp_vector4_t values to port-1 of the
  * target signal.
  */
-bool of_CASSIGN_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CASSIGN_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
-      vvp_vector4_t value = thr->pop_vec4();
+      vvp_vector4_t value = thr->ತೆಗೆ_vec4();
 
 	/* Remove any previous continuous assign to this net. */
       cassign_unlink(net);
@@ -1702,55 +1702,55 @@ bool of_CASSIGN_VEC4(vthread_t thr, vvp_code_t cp)
       vvp_net_ptr_t ptr (net, 1);
       vvp_send_vec4(ptr, value, 0);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %cassign/vec4/off <var>, <off>
  */
-bool of_CASSIGN_VEC4_OFF(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CASSIGN_VEC4_OFF(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
-      unsigned base_idx = cp->bit_idx[0];
-      long base = thr->words[base_idx].w_int;
-      vvp_vector4_t value = thr->pop_vec4();
-      unsigned wid = value.size();
+      ಚಿಹ್ನೆರಹಿತ ತಳ_idx = cp->ಬಿಟ್_idx[0];
+      ದೀರ್ಘ ತಳ = thr->ಪದಗಳು[ತಳ_idx].w_int;
+      vvp_vector4_t value = thr->ತೆಗೆ_vec4();
+      ಚಿಹ್ನೆರಹಿತ wid = value.size();
 
-      if (thr->flags[4] == BIT4_1)
-	    return true;
+      ಆದರೆ (thr->flags[4] == BIT4_1)
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
 	/* Remove any previous continuous assign to this net. */
       cassign_unlink(net);
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (net->fil);
-      assert(sig);
+      vvp_signal_ಮೌಲ್ಯ*sig = dynamic_cast<vvp_signal_ಮೌಲ್ಯ*> (net->fil);
+      ಪ್ರತಿಜ್ಞಾ(sig);
 
-      if (base < 0 && (wid <= (unsigned)-base))
-	    return true;
+      ಆದರೆ (ತಳ < 0 && (wid <= (ಚಿಹ್ನೆರಹಿತ)-ತಳ))
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      if (base >= (long)sig->value_size())
-	    return true;
+      ಆದರೆ (ತಳ >= (ದೀರ್ಘ)sig->ಮೌಲ್ಯ_ಗಾತ್ರ())
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      if (base < 0) {
-	    wid -= (unsigned) -base;
-	    base = 0;
+      ಆದರೆ (ತಳ < 0) {
+	    wid -= (ಚಿಹ್ನೆರಹಿತ) -ತಳ;
+	    ತಳ = 0;
 	    value.resize(wid);
       }
 
-      if (base+wid > sig->value_size()) {
-	    wid = sig->value_size() - base;
+      ಆದರೆ (ತಳ+wid > sig->ಮೌಲ್ಯ_ಗಾತ್ರ()) {
+	    wid = sig->ಮೌಲ್ಯ_ಗಾತ್ರ() - ತಳ;
 	    value.resize(wid);
       }
 
       vvp_net_ptr_t ptr (net, 1);
-      vvp_send_vec4_pv(ptr, value, base, sig->value_size(), 0);
-      return true;
+      vvp_send_vec4_pv(ptr, value, ತಳ, sig->ಮೌಲ್ಯ_ಗಾತ್ರ(), 0);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_CASSIGN_WR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CASSIGN_WR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net  = cp->net;
-      double value = thr->pop_real();
+      ದ್ವಿಗುಣ value = thr->ತೆಗೆ_real();
 
 	/* Remove any previous continuous assign to this net. */
       cassign_unlink(net);
@@ -1759,135 +1759,135 @@ bool of_CASSIGN_WR(vthread_t thr, vvp_code_t cp)
       vvp_net_ptr_t ptr (net, 1);
       vvp_send_real(ptr, value, 0);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %cast2
  */
-bool of_CAST2(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_CAST2(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
       vvp_vector4_t&val = thr->peek_vec4();
-      unsigned wid = val.size();
+      ಚಿಹ್ನೆರಹಿತ wid = val.size();
 
-      for (unsigned idx = 0 ; idx < wid ; idx += 1) {
-	    switch (val.value(idx)) {
-		case BIT4_0:
-		case BIT4_1:
-		  break;
-		default:
-		  val.set_bit(idx, BIT4_0);
-		  break;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < wid ; idx += 1) {
+	    ಆಯ್ಕೆ (val.value(idx)) {
+		ಸ್ಥಿತಿ BIT4_0:
+		ಸ್ಥಿತಿ BIT4_1:
+		  ನಿಲ್ಲಿಸು;
+		ಪೂರ್ವನಿಯೋಜಿತ:
+		  val.ಗಣ_ಬಿಟ್(idx, BIT4_0);
+		  ನಿಲ್ಲಿಸು;
 	    }
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool do_cast_vec_dar(vthread_t thr, vvp_code_t cp, bool as_vec4)
+ತಾರ್ಕಿಕ do_cast_vec_dar(vthread_t thr, vvp_ಸಂಕೇತ_t cp, ತಾರ್ಕಿಕ as_vec4)
 {
-      unsigned wid = cp->number;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಸಂಖ್ಯೆ;
 
       vvp_object_t obj;
-      thr->pop_object(obj);
+      thr->ತೆಗೆ_object(obj);
 
       vvp_darray*darray = obj.peek<vvp_darray>();
-      assert(darray);
+      ಪ್ರತಿಜ್ಞಾ(darray);
 
       vvp_vector4_t vec = darray->get_bitstream(as_vec4);
-      if (vec.size() != wid) {
+      ಆದರೆ (vec.size() != wid) {
 	    cerr << thr->get_fileline()
-	         << "VVP error: size mismatch when casting dynamic array to vector." << endl;
-            thr->push_vec4(vvp_vector4_t(wid));
-            schedule_stop(0);
-            return false;
+	         << "VVP error: size mismatch when casting dynamic array to vector." << ಸಾಲು_ಅಂತ್ಯ;
+            thr->ತಳ್ಳು_vec4(vvp_vector4_t(wid));
+            ವೇಳಾಪಟ್ಟಿ_stop(0);
+            ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
-      thr->push_vec4(vec);
-      return true;
+      thr->ತಳ್ಳು_vec4(vec);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %cast/vec2/dar <wid>
  */
-bool of_CAST_VEC2_DAR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CAST_VEC2_DAR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return do_cast_vec_dar(thr, cp, false);
+      ಹಿಂತಿರುಗಿ do_cast_vec_dar(thr, cp, ಸುಳ್ಳು);
 }
 
 /*
  * %cast/vec4/dar <wid>
  */
-bool of_CAST_VEC4_DAR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CAST_VEC4_DAR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return do_cast_vec_dar(thr, cp, true);
+      ಹಿಂತಿರುಗಿ do_cast_vec_dar(thr, cp, ನಿಜ);
 }
 
 /*
  * %cast/vec4/str <wid>
  */
-bool of_CAST_VEC4_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CAST_VEC4_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->number;
-      string str = thr->pop_str();
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಸಂಖ್ಯೆ;
+      string str = thr->ತೆಗೆ_str();
 
       vvp_vector4_t vec(wid, BIT4_0);
 
-      if (wid != 8*str.length()) {
+      ಆದರೆ (wid != 8*str.length()) {
 	    cerr << thr->get_fileline()
-	         << "VVP error: size mismatch when casting string to vector." << endl;
-            thr->push_vec4(vec);
-            schedule_stop(0);
-            return false;
+	         << "VVP error: size mismatch when casting string to vector." << ಸಾಲು_ಅಂತ್ಯ;
+            thr->ತಳ್ಳು_vec4(vec);
+            ವೇಳಾಪಟ್ಟಿ_stop(0);
+            ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
-      unsigned sdx = 0;
-      unsigned vdx = wid;
-      while (vdx > 0) {
-            char ch = str[sdx++];
+      ಚಿಹ್ನೆರಹಿತ sdx = 0;
+      ಚಿಹ್ನೆರಹಿತ vdx = wid;
+      ಆಗ (vdx > 0) {
+            ಅಕ್ಷರ ch = str[sdx++];
             vdx -= 8;
-            for (unsigned bdx = 0; bdx < 8; bdx += 1) {
-                  if (ch & 1)
-                        vec.set_bit(vdx+bdx, BIT4_1);
+            ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ bdx = 0; bdx < 8; bdx += 1) {
+                  ಆದರೆ (ch & 1)
+                        vec.ಗಣ_ಬಿಟ್(vdx+bdx, BIT4_1);
                   ch >>= 1;
             }
       }
 
-      thr->push_vec4(vec);
-      return true;
+      thr->ತಳ್ಳು_vec4(vec);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-static void do_CMPE(vthread_t thr, const vvp_vector4_t&lval, const vvp_vector4_t&rval)
+ಸ್ಥಿರ ಶೂನ್ಯ do_CMPE(vthread_t thr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&lval, ಸ್ಥಿರಾಂಕ vvp_vector4_t&rval)
 {
-      assert(rval.size() == lval.size());
+      ಪ್ರತಿಜ್ಞಾ(rval.size() == lval.size());
 
-      if (lval.has_xz() || rval.has_xz()) {
+      ಆದರೆ (lval.has_xz() || rval.has_xz()) {
 
-	    unsigned wid = lval.size();
+	    ಚಿಹ್ನೆರಹಿತ wid = lval.size();
 	    vvp_bit4_t eq  = BIT4_1;
 	    vvp_bit4_t eeq = BIT4_1;
 
-	    for (unsigned idx = 0 ; idx < wid ; idx += 1) {
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < wid ; idx += 1) {
 		  vvp_bit4_t lv = lval.value(idx);
 		  vvp_bit4_t rv = rval.value(idx);
 
-		  if (lv != rv)
+		  ಆದರೆ (lv != rv)
 			eeq = BIT4_0;
 
-		  if (eq==BIT4_1 && (bit4_is_xz(lv) || bit4_is_xz(rv)))
+		  ಆದರೆ (eq==BIT4_1 && (bit4_is_xz(lv) || bit4_is_xz(rv)))
 			eq = BIT4_X;
-		  if ((lv == BIT4_0) && (rv==BIT4_1))
+		  ಆದರೆ ((lv == BIT4_0) && (rv==BIT4_1))
 			eq = BIT4_0;
-		  if ((lv == BIT4_1) && (rv==BIT4_0))
+		  ಆದರೆ ((lv == BIT4_1) && (rv==BIT4_0))
 			eq = BIT4_0;
 
-		  if (eq == BIT4_0)
-			break;
+		  ಆದರೆ (eq == BIT4_0)
+			ನಿಲ್ಲಿಸು;
 	    }
 
 	    thr->flags[4] = eq;
 	    thr->flags[6] = eeq;
 
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	      // If there are no XZ bits anywhere, then the results of
 	      // == match the === test.
 	    thr->flags[4] = thr->flags[6] = (lval.eeq(rval)? BIT4_1 : BIT4_0);
@@ -1904,35 +1904,35 @@ static void do_CMPE(vthread_t thr, const vvp_vector4_t&lval, const vvp_vector4_t
  *
  *	6: eeq (case equal)
  */
-bool of_CMPE(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_CMPE(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
 	// We are going to pop these and push nothing in their
 	// place, but for now it is more efficient to use a constant
 	// reference. When we finish, pop the stack without copies.
-      const vvp_vector4_t&rval = thr->peek_vec4(0);
-      const vvp_vector4_t&lval = thr->peek_vec4(1);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&rval = thr->peek_vec4(0);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&lval = thr->peek_vec4(1);
 
       do_CMPE(thr, lval, rval);
 
-      thr->pop_vec4(2);
-      return true;
+      thr->ತೆಗೆ_vec4(2);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_CMPNE(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_CMPNE(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
 	// We are going to pop these and push nothing in their
 	// place, but for now it is more efficient to use a constant
 	// reference. When we finish, pop the stack without copies.
-      const vvp_vector4_t&rval = thr->peek_vec4(0);
-      const vvp_vector4_t&lval = thr->peek_vec4(1);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&rval = thr->peek_vec4(0);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&lval = thr->peek_vec4(1);
 
       do_CMPE(thr, lval, rval);
 
       thr->flags[4] =  ~thr->flags[4];
       thr->flags[6] =  ~thr->flags[6];
 
-      thr->pop_vec4(2);
-      return true;
+      thr->ತೆಗೆ_vec4(2);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -1940,104 +1940,104 @@ bool of_CMPNE(vthread_t thr, vvp_code_t)
  *
  * Pop1 operand, get the other operand from the arguments.
  */
-bool of_CMPIE(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CMPIE(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->number;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಸಂಖ್ಯೆ;
 
-      const vvp_vector4_t&lval = thr->peek_vec4();
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&lval = thr->peek_vec4();
 
 	// I expect that most of the bits of an immediate value are
 	// going to be zero, so start the result vector with all zero
 	// bits. Then we only need to replace the bits that are different.
       vvp_vector4_t rval (wid, BIT4_0);
-      get_immediate_rval (cp, rval);
+      get_ತಕ್ಷಣ_rval (cp, rval);
 
       do_CMPE(thr, lval, rval);
 
-      thr->pop_vec4(1);
-      return true;
+      thr->ತೆಗೆ_vec4(1);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_CMPINE(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CMPINE(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->number;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಸಂಖ್ಯೆ;
 
-      const vvp_vector4_t&lval = thr->peek_vec4();
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&lval = thr->peek_vec4();
 
 	// I expect that most of the bits of an immediate value are
 	// going to be zero, so start the result vector with all zero
 	// bits. Then we only need to replace the bits that are different.
       vvp_vector4_t rval (wid, BIT4_0);
-      get_immediate_rval (cp, rval);
+      get_ತಕ್ಷಣ_rval (cp, rval);
 
       do_CMPE(thr, lval, rval);
 
       thr->flags[4] =  ~thr->flags[4];
       thr->flags[6] =  ~thr->flags[6];
 
-      thr->pop_vec4(1);
-      return true;
+      thr->ತೆಗೆ_vec4(1);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 
 
-static void do_CMPS(vthread_t thr, const vvp_vector4_t&lval, const vvp_vector4_t&rval)
+ಸ್ಥಿರ ಶೂನ್ಯ do_CMPS(vthread_t thr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&lval, ಸ್ಥಿರಾಂಕ vvp_vector4_t&rval)
 {
-      assert(rval.size() == lval.size());
+      ಪ್ರತಿಜ್ಞಾ(rval.size() == lval.size());
 
 	// If either value has XZ bits, then the eq and lt values are
 	// known already to be X. Just calculate the eeq result as a
 	// special case and short circuit the rest of the compare.
-      if (lval.has_xz() || rval.has_xz()) {
+      ಆದರೆ (lval.has_xz() || rval.has_xz()) {
 	    thr->flags[4] = BIT4_X; // eq
 	    thr->flags[5] = BIT4_X; // lt
 	    thr->flags[6] = lval.eeq(rval)? BIT4_1 : BIT4_0;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	// Past this point, we know we are dealing only with fully
 	// defined values.
-      unsigned wid = lval.size();
+      ಚಿಹ್ನೆರಹಿತ wid = lval.size();
 
-      const vvp_bit4_t sig1 = lval.value(wid-1);
-      const vvp_bit4_t sig2 = rval.value(wid-1);
+      ಸ್ಥಿರಾಂಕ vvp_bit4_t sig1 = lval.value(wid-1);
+      ಸ್ಥಿರಾಂಕ vvp_bit4_t sig2 = rval.value(wid-1);
 
 	// If the lval is <0 and the rval is >=0, then we know the result.
-      if ((sig1 == BIT4_1) && (sig2 == BIT4_0)) {
+      ಆದರೆ ((sig1 == BIT4_1) && (sig2 == BIT4_0)) {
 	    thr->flags[4] = BIT4_0; // eq;
 	    thr->flags[5] = BIT4_1; // lt;
 	    thr->flags[6] = BIT4_0; // eeq
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	// If the lval is >=0 and the rval is <0, then we know the result.
-      if ((sig1 == BIT4_0) && (sig2 == BIT4_1)) {
+      ಆದರೆ ((sig1 == BIT4_0) && (sig2 == BIT4_1)) {
 	    thr->flags[4] = BIT4_0; // eq;
 	    thr->flags[5] = BIT4_0; // lt;
 	    thr->flags[6] = BIT4_0; // eeq
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	// The values have the same sign, so we have to look at the
 	// actual value. Scan from the MSB down. As soon as we find a
 	// bit that differs, we know the result.
 
-      for (unsigned idx = 1 ;  idx < wid ;  idx += 1) {
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 1 ;  idx < wid ;  idx += 1) {
 	    vvp_bit4_t lv = lval.value(wid-1-idx);
 	    vvp_bit4_t rv = rval.value(wid-1-idx);
 
-	    if (lv == rv)
-		  continue;
+	    ಆದರೆ (lv == rv)
+		  ಮುಂದುವರಿ;
 
 	    thr->flags[4] = BIT4_0; // eq
 	    thr->flags[6] = BIT4_0; // eeq
 
-	    if (lv==BIT4_0) {
+	    ಆದರೆ (lv==BIT4_0) {
 		  thr->flags[5] = BIT4_1; // lt
-	    } else {
+	    } ಇಲ್ಲದಿದ್ದರೆ {
 		  thr->flags[5] = BIT4_0; // lt
 	    }
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	// If we survive the loop above, then the values must be equal.
@@ -2056,18 +2056,18 @@ static void do_CMPS(vthread_t thr, const vvp_vector4_t&lval, const vvp_vector4_t
  *	5: lt  (less than)
  *	6: eeq (case equal)
  */
-bool of_CMPS(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_CMPS(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
 	// We are going to pop these and push nothing in their
 	// place, but for now it is more efficient to use a constant
 	// reference. When we finish, pop the stack without copies.
-      const vvp_vector4_t&rval = thr->peek_vec4(0);
-      const vvp_vector4_t&lval = thr->peek_vec4(1);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&rval = thr->peek_vec4(0);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&lval = thr->peek_vec4(1);
 
       do_CMPS(thr, lval, rval);
 
-      thr->pop_vec4(2);
-      return true;
+      thr->ತೆಗೆ_vec4(2);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -2075,41 +2075,41 @@ bool of_CMPS(vthread_t thr, vvp_code_t)
  *
  * Pop1 operand, get the other operand from the arguments.
  */
-bool of_CMPIS(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CMPIS(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->number;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಸಂಖ್ಯೆ;
 
-      const vvp_vector4_t&lval = thr->peek_vec4();
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&lval = thr->peek_vec4();
 
 	// I expect that most of the bits of an immediate value are
 	// going to be zero, so start the result vector with all zero
 	// bits. Then we only need to replace the bits that are different.
       vvp_vector4_t rval (wid, BIT4_0);
-      get_immediate_rval (cp, rval);
+      get_ತಕ್ಷಣ_rval (cp, rval);
 
       do_CMPS(thr, lval, rval);
 
-      thr->pop_vec4(1);
-      return true;
+      thr->ತೆಗೆ_vec4(1);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_CMPSTR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_CMPSTR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      string re = thr->pop_str();
-      string le = thr->pop_str();
+      string re = thr->ತೆಗೆ_str();
+      string le = thr->ತೆಗೆ_str();
 
-      int rc = strcmp(le.c_str(), re.c_str());
+      ಪೂರ್ಣಾಂಕ rc = strcmp(le.c_str(), re.c_str());
 
       vvp_bit4_t eq;
       vvp_bit4_t lt;
 
-      if (rc == 0) {
+      ಆದರೆ (rc == 0) {
 	    eq = BIT4_1;
 	    lt = BIT4_0;
-      } else if (rc < 0) {
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (rc < 0) {
 	    eq = BIT4_0;
 	    lt = BIT4_1;
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	    eq = BIT4_0;
 	    lt = BIT4_0;
       }
@@ -2117,32 +2117,32 @@ bool of_CMPSTR(vthread_t thr, vvp_code_t)
       thr->flags[4] = eq;
       thr->flags[5] = lt;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-static void of_CMPU_the_hard_way(vthread_t thr, unsigned wid,
-				 const vvp_vector4_t&lval,
-				 const vvp_vector4_t&rval)
+ಸ್ಥಿರ ಶೂನ್ಯ ದ_CMPU_the_hard_way(vthread_t thr, ಚಿಹ್ನೆರಹಿತ wid,
+				 ಸ್ಥಿರಾಂಕ vvp_vector4_t&lval,
+				 ಸ್ಥಿರಾಂಕ vvp_vector4_t&rval)
 {
       vvp_bit4_t eq = BIT4_1;
       vvp_bit4_t eeq = BIT4_1;
 
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid ;  idx += 1) {
 	    vvp_bit4_t lv = lval.value(idx);
 	    vvp_bit4_t rv = rval.value(idx);
 
-	    if (lv != rv)
+	    ಆದರೆ (lv != rv)
 		  eeq = BIT4_0;
 
-	    if (eq==BIT4_1 && (bit4_is_xz(lv) || bit4_is_xz(rv)))
+	    ಆದರೆ (eq==BIT4_1 && (bit4_is_xz(lv) || bit4_is_xz(rv)))
 		  eq = BIT4_X;
-	    if ((lv == BIT4_0) && (rv==BIT4_1))
+	    ಆದರೆ ((lv == BIT4_0) && (rv==BIT4_1))
 		  eq = BIT4_0;
-	    if ((lv == BIT4_1) && (rv==BIT4_0))
+	    ಆದರೆ ((lv == BIT4_1) && (rv==BIT4_0))
 		  eq = BIT4_0;
 
-	    if (eq == BIT4_0)
-		  break;
+	    ಆದರೆ (eq == BIT4_0)
+		  ನಿಲ್ಲಿಸು;
 
       }
 
@@ -2151,59 +2151,59 @@ static void of_CMPU_the_hard_way(vthread_t thr, unsigned wid,
       thr->flags[6] = eeq;
 }
 
-static void do_CMPU(vthread_t thr, const vvp_vector4_t&lval, const vvp_vector4_t&rval)
+ಸ್ಥಿರ ಶೂನ್ಯ do_CMPU(vthread_t thr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&lval, ಸ್ಥಿರಾಂಕ vvp_vector4_t&rval)
 {
       vvp_bit4_t eq = BIT4_1;
       vvp_bit4_t lt = BIT4_0;
 
-      if (rval.size() != lval.size()) {
+      ಆದರೆ (rval.size() != lval.size()) {
 	    cerr << thr->get_fileline()
 	         << "VVP ERROR: %cmp/u operand width mismatch: lval=" << lval
-		 << ", rval=" << rval << endl;
+		 << ", rval=" << rval << ಸಾಲು_ಅಂತ್ಯ;
       }
-      assert(rval.size() == lval.size());
-      unsigned wid = lval.size();
+      ಪ್ರತಿಜ್ಞಾ(rval.size() == lval.size());
+      ಚಿಹ್ನೆರಹಿತ wid = lval.size();
 
-      unsigned long*larray = lval.subarray(0,wid);
-      if (larray == 0) return of_CMPU_the_hard_way(thr, wid, lval, rval);
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*larray = lval.subarray(0,wid);
+      ಆದರೆ (larray == 0) ಹಿಂತಿರುಗಿ ದ_CMPU_the_hard_way(thr, wid, lval, rval);
 
-      unsigned long*rarray = rval.subarray(0,wid);
-      if (rarray == 0) {
-	    delete[]larray;
-	    return of_CMPU_the_hard_way(thr, wid, lval, rval);
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*rarray = rval.subarray(0,wid);
+      ಆದರೆ (rarray == 0) {
+	    ಅಳಿಸು[]larray;
+	    ಹಿಂತಿರುಗಿ ದ_CMPU_the_hard_way(thr, wid, lval, rval);
       }
 
-      unsigned words = (wid+CPU_WORD_BITS-1) / CPU_WORD_BITS;
+      ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (wid+CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು-1) / CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು;
 
-      for (unsigned wdx = 0 ; wdx < words ; wdx += 1) {
-	    if (larray[wdx] == rarray[wdx])
-		  continue;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ wdx = 0 ; wdx < ಪದಗಳು ; wdx += 1) {
+	    ಆದರೆ (larray[wdx] == rarray[wdx])
+		  ಮುಂದುವರಿ;
 
 	    eq = BIT4_0;
-	    if (larray[wdx] < rarray[wdx])
+	    ಆದರೆ (larray[wdx] < rarray[wdx])
 		  lt = BIT4_1;
-	    else
+	    ಇಲ್ಲದಿದ್ದರೆ
 		  lt = BIT4_0;
       }
 
-      delete[]larray;
-      delete[]rarray;
+      ಅಳಿಸು[]larray;
+      ಅಳಿಸು[]rarray;
 
       thr->flags[4] = eq;
       thr->flags[5] = lt;
       thr->flags[6] = eq;
 }
 
-bool of_CMPU(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_CMPU(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
 
-      const vvp_vector4_t&rval = thr->peek_vec4(0);
-      const vvp_vector4_t&lval = thr->peek_vec4(1);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&rval = thr->peek_vec4(0);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&lval = thr->peek_vec4(1);
 
       do_CMPU(thr, lval, rval);
 
-      thr->pop_vec4(2);
-      return true;
+      thr->ತೆಗೆ_vec4(2);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -2211,119 +2211,119 @@ bool of_CMPU(vthread_t thr, vvp_code_t)
  *
  * Pop1 operand, get the other operand from the arguments.
  */
-bool of_CMPIU(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CMPIU(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->number;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಸಂಖ್ಯೆ;
 
-      const vvp_vector4_t&lval = thr->peek_vec4();
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&lval = thr->peek_vec4();
 
 	// I expect that most of the bits of an immediate value are
 	// going to be zero, so start the result vector with all zero
 	// bits. Then we only need to replace the bits that are different.
       vvp_vector4_t rval (wid, BIT4_0);
-      get_immediate_rval (cp, rval);
+      get_ತಕ್ಷಣ_rval (cp, rval);
 
       do_CMPU(thr, lval, rval);
 
-      thr->pop_vec4(1);
-      return true;
+      thr->ತೆಗೆ_vec4(1);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 
 /*
  * %cmp/x
  */
-bool of_CMPX(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_CMPX(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
       vvp_bit4_t eq = BIT4_1;
-      vvp_vector4_t rval = thr->pop_vec4();
-      vvp_vector4_t lval = thr->pop_vec4();
+      vvp_vector4_t rval = thr->ತೆಗೆ_vec4();
+      vvp_vector4_t lval = thr->ತೆಗೆ_vec4();
 
-      assert(rval.size() == lval.size());
-      unsigned wid = lval.size();
+      ಪ್ರತಿಜ್ಞಾ(rval.size() == lval.size());
+      ಚಿಹ್ನೆರಹಿತ wid = lval.size();
 
-      for (unsigned idx = 0 ; idx < wid ; idx += 1) {
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < wid ; idx += 1) {
 	    vvp_bit4_t lv = lval.value(idx);
 	    vvp_bit4_t rv = rval.value(idx);
-	    if ((lv != rv) && !bit4_is_xz(lv) && !bit4_is_xz(rv)) {
+	    ಆದರೆ ((lv != rv) && !bit4_is_xz(lv) && !bit4_is_xz(rv)) {
 		  eq = BIT4_0;
-		  break;
+		  ನಿಲ್ಲಿಸು;
 	    }
       }
 
       thr->flags[4] = eq;
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-static void do_CMPWE(vthread_t thr, const vvp_vector4_t&lval, const vvp_vector4_t&rval)
+ಸ್ಥಿರ ಶೂನ್ಯ do_CMPWE(vthread_t thr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&lval, ಸ್ಥಿರಾಂಕ vvp_vector4_t&rval)
 {
-      assert(rval.size() == lval.size());
+      ಪ್ರತಿಜ್ಞಾ(rval.size() == lval.size());
 
-      if (lval.has_xz() || rval.has_xz()) {
+      ಆದರೆ (lval.has_xz() || rval.has_xz()) {
 
-	    unsigned wid = lval.size();
+	    ಚಿಹ್ನೆರಹಿತ wid = lval.size();
 	    vvp_bit4_t eq  = BIT4_1;
 
-	    for (unsigned idx = 0 ; idx < wid ; idx += 1) {
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < wid ; idx += 1) {
 		  vvp_bit4_t lv = lval.value(idx);
 		  vvp_bit4_t rv = rval.value(idx);
 
-		  if (bit4_is_xz(rv))
-			continue;
-		  if ((eq == BIT4_1) && bit4_is_xz(lv))
+		  ಆದರೆ (bit4_is_xz(rv))
+			ಮುಂದುವರಿ;
+		  ಆದರೆ ((eq == BIT4_1) && bit4_is_xz(lv))
 			eq = BIT4_X;
-		  if ((lv == BIT4_0) && (rv==BIT4_1))
+		  ಆದರೆ ((lv == BIT4_0) && (rv==BIT4_1))
 			eq = BIT4_0;
-		  if ((lv == BIT4_1) && (rv==BIT4_0))
+		  ಆದರೆ ((lv == BIT4_1) && (rv==BIT4_0))
 			eq = BIT4_0;
 
-		  if (eq == BIT4_0)
-			break;
+		  ಆದರೆ (eq == BIT4_0)
+			ನಿಲ್ಲಿಸು;
 	    }
 
 	    thr->flags[4] = eq;
 
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	      // If there are no XZ bits anywhere, then the results of
 	      // ==? match the === test.
 	    thr->flags[4] = (lval.eeq(rval)? BIT4_1 : BIT4_0);
       }
 }
 
-bool of_CMPWE(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_CMPWE(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
 	// We are going to pop these and push nothing in their
 	// place, but for now it is more efficient to use a constant
 	// reference. When we finish, pop the stack without copies.
-      const vvp_vector4_t&rval = thr->peek_vec4(0);
-      const vvp_vector4_t&lval = thr->peek_vec4(1);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&rval = thr->peek_vec4(0);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&lval = thr->peek_vec4(1);
 
       do_CMPWE(thr, lval, rval);
 
-      thr->pop_vec4(2);
-      return true;
+      thr->ತೆಗೆ_vec4(2);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_CMPWNE(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_CMPWNE(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
 	// We are going to pop these and push nothing in their
 	// place, but for now it is more efficient to use a constant
 	// reference. When we finish, pop the stack without copies.
-      const vvp_vector4_t&rval = thr->peek_vec4(0);
-      const vvp_vector4_t&lval = thr->peek_vec4(1);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&rval = thr->peek_vec4(0);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&lval = thr->peek_vec4(1);
 
       do_CMPWE(thr, lval, rval);
 
       thr->flags[4] =  ~thr->flags[4];
 
-      thr->pop_vec4(2);
-      return true;
+      thr->ತೆಗೆ_vec4(2);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_CMPWR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_CMPWR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
+      ದ್ವಿಗುಣ r = thr->ತೆಗೆ_real();
+      ದ್ವಿಗುಣ l = thr->ತೆಗೆ_real();
 
       vvp_bit4_t eq = (l == r)? BIT4_1 : BIT4_0;
       vvp_bit4_t lt = (l <  r)? BIT4_1 : BIT4_0;
@@ -2331,76 +2331,76 @@ bool of_CMPWR(vthread_t thr, vvp_code_t)
       thr->flags[4] = eq;
       thr->flags[5] = lt;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %cmp/z
  */
-bool of_CMPZ(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_CMPZ(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
       vvp_bit4_t eq = BIT4_1;
-      vvp_vector4_t rval = thr->pop_vec4();
-      vvp_vector4_t lval = thr->pop_vec4();
+      vvp_vector4_t rval = thr->ತೆಗೆ_vec4();
+      vvp_vector4_t lval = thr->ತೆಗೆ_vec4();
 
-      assert(rval.size() == lval.size());
-      unsigned wid = lval.size();
+      ಪ್ರತಿಜ್ಞಾ(rval.size() == lval.size());
+      ಚಿಹ್ನೆರಹಿತ wid = lval.size();
 
-      for (unsigned idx = 0 ; idx < wid ; idx += 1) {
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < wid ; idx += 1) {
 	    vvp_bit4_t lv = lval.value(idx);
 	    vvp_bit4_t rv = rval.value(idx);
-	    if ((lv != rv) && (rv != BIT4_Z) && (lv != BIT4_Z)) {
+	    ಆದರೆ ((lv != rv) && (rv != BIT4_Z) && (lv != BIT4_Z)) {
 		  eq = BIT4_0;
-		  break;
+		  ನಿಲ್ಲಿಸು;
 	    }
       }
 
       thr->flags[4] = eq;
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  *  %concat/str;
  */
-bool of_CONCAT_STR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_CONCAT_STR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      string text = thr->pop_str();
-      thr->peek_str(0).append(text);
-      return true;
+      string ಪಠ್ಯ = thr->ತೆಗೆ_str();
+      thr->peek_str(0).append(ಪಠ್ಯ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  *  %concati/str <string>;
  */
-bool of_CONCATI_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CONCATI_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      const char*text = cp->text;
-      thr->peek_str(0).append(filter_string(text));
-      return true;
+      ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*ಪಠ್ಯ = cp->ಪಠ್ಯ;
+      thr->peek_str(0).append(filter_string(ಪಠ್ಯ));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %concat/vec4
  */
-bool of_CONCAT_VEC4(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_CONCAT_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      const vvp_vector4_t&lsb = thr->peek_vec4(0);
-      const vvp_vector4_t&msb = thr->peek_vec4(1);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&lsb = thr->peek_vec4(0);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&msb = thr->peek_vec4(1);
 
 	// The result is the size of the top two vectors in the stack.
       vvp_vector4_t res (msb.size() + lsb.size(), BIT4_X);
 
 	// Build up the result.
-      res.set_vec(0, lsb);
-      res.set_vec(lsb.size(), msb);
+      res.ಗಣ_vec(0, lsb);
+      res.ಗಣ_vec(lsb.size(), msb);
 
 	// Rearrange the stack to pop the inputs and push the
 	// result. Do that by actually popping only 1 stack position
 	// and replacing the new top with the new value.
-      thr->pop_vec4(1);
+      thr->ತೆಗೆ_vec4(1);
       thr->peek_vec4() = res;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -2409,9 +2409,9 @@ bool of_CONCAT_VEC4(vthread_t thr, vvp_code_t)
  * Concat the immediate value to the LOW bits of the concatenation.
  * Get the HIGH bits from the top of the vec4 stack.
  */
-bool of_CONCATI_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CONCATI_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid  = cp->number;
+      ಚಿಹ್ನೆರಹಿತ wid  = cp->ಸಂಖ್ಯೆ;
 
       vvp_vector4_t&msb = thr->peek_vec4();
 
@@ -2419,38 +2419,38 @@ bool of_CONCATI_VEC4(vthread_t thr, vvp_code_t cp)
 	// going to be zero, so start the result vector with all zero
 	// bits. Then we only need to replace the bits that are different.
       vvp_vector4_t lsb (wid, BIT4_0);
-      get_immediate_rval (cp, lsb);
+      get_ತಕ್ಷಣ_rval (cp, lsb);
 
       vvp_vector4_t res (msb.size()+lsb.size(), BIT4_X);
-      res.set_vec(0, lsb);
-      res.set_vec(lsb.size(), msb);
+      res.ಗಣ_vec(0, lsb);
+      res.ಗಣ_vec(lsb.size(), msb);
 
       msb = res;
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %cvt/rv
  */
-bool of_CVT_RV(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_CVT_RV(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      double val;
-      vvp_vector4_t val4 = thr->pop_vec4();
-      vector4_to_value(val4, val, false);
-      thr->push_real(val);
-      return true;
+      ದ್ವಿಗುಣ val;
+      vvp_vector4_t val4 = thr->ತೆಗೆ_vec4();
+      vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(val4, val, ಸುಳ್ಳು);
+      thr->ತಳ್ಳು_real(val);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %cvt/rv/s
  */
-bool of_CVT_RV_S(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_CVT_RV_S(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      double val;
-      vvp_vector4_t val4 = thr->pop_vec4();
-      vector4_to_value(val4, val, true);
-      thr->push_real(val);
-      return true;
+      ದ್ವಿಗುಣ val;
+      vvp_vector4_t val4 = thr->ತೆಗೆ_vec4();
+      vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(val4, val, ನಿಜ);
+      thr->ತಳ್ಳು_real(val);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -2458,36 +2458,36 @@ bool of_CVT_RV_S(vthread_t thr, vvp_code_t)
  * Pop the top value from the real stack, convert it to a 64bit signed
  * and save it to the indexed register.
  */
-bool of_CVT_SR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CVT_SR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      double r = thr->pop_real();
-      thr->words[cp->bit_idx[0]].w_int = i64round(r);
+      ದ್ವಿಗುಣ r = thr->ತೆಗೆ_real();
+      thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_int = i64round(r);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %cvt/ur <idx>
  */
-bool of_CVT_UR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CVT_UR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      double r = thr->pop_real();
-      thr->words[cp->bit_idx[0]].w_uint = vlg_round_to_u64(r);
+      ದ್ವಿಗುಣ r = thr->ತೆಗೆ_real();
+      thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_uint = vlg_ಸುತ್ತು_ಗಮ್ಯ_u64(r);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %cvt/vr <wid>
  */
-bool of_CVT_VR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CVT_VR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      double r = thr->pop_real();
-      unsigned wid = cp->number;
+      ದ್ವಿಗುಣ r = thr->ತೆಗೆ_real();
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಸಂಖ್ಯೆ;
 
       vvp_vector4_t tmp(wid, r);
-      thr->push_vec4(tmp);
-      return true;
+      thr->ತಳ್ಳು_vec4(tmp);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -2495,28 +2495,28 @@ bool of_CVT_VR(vthread_t thr, vvp_code_t cp)
  * long(1) to port-3 of the addressed net. This turns off an active
  * continuous assign activated by %cassign/v
  */
-bool of_DEASSIGN(vthread_t, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_DEASSIGN(vthread_t, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
-      unsigned base  = cp->bit_idx[0];
-      unsigned width = cp->bit_idx[1];
+      ಚಿಹ್ನೆರಹಿತ ತಳ  = cp->ಬಿಟ್_idx[0];
+      ಚಿಹ್ನೆರಹಿತ width = cp->ಬಿಟ್_idx[1];
 
-      vvp_signal_value*fil = dynamic_cast<vvp_signal_value*> (net->fil);
-      assert(fil);
+      vvp_signal_ಮೌಲ್ಯ*fil = dynamic_cast<vvp_signal_ಮೌಲ್ಯ*> (net->fil);
+      ಪ್ರತಿಜ್ಞಾ(fil);
       vvp_fun_signal_vec*sig = dynamic_cast<vvp_fun_signal_vec*>(net->fun);
-      assert(sig);
+      ಪ್ರತಿಜ್ಞಾ(sig);
 
-      if (base >= fil->value_size()) return true;
-      if (base+width > fil->value_size()) width = fil->value_size() - base;
+      ಆದರೆ (ತಳ >= fil->ಮೌಲ್ಯ_ಗಾತ್ರ()) ಹಿಂತಿರುಗಿ ನಿಜ;
+      ಆದರೆ (ತಳ+width > fil->ಮೌಲ್ಯ_ಗಾತ್ರ()) width = fil->ಮೌಲ್ಯ_ಗಾತ್ರ() - ತಳ;
 
-      bool full_sig = base == 0 && width == fil->value_size();
+      ತಾರ್ಕಿಕ ತುಂಬಿದ_sig = ತಳ == 0 && width == fil->ಮೌಲ್ಯ_ಗಾತ್ರ();
 
 	// This is the net that is forcing me...
-      if (vvp_net_t*src = sig->cassign_link) {
-	    if (! full_sig) {
+      ಆದರೆ (vvp_net_t*src = sig->cassign_link) {
+	    ಆದರೆ (! ತುಂಬಿದ_sig) {
 		  fprintf(stderr, "Sorry: when a signal is assigning a "
 		          "register, I cannot deassign part of it.\n");
-		  exit(1);
+		  ನಿರ್ಗಮಿಸು(1);
 	    }
 	      // And this is the pointer to be removed.
 	    vvp_net_ptr_t dst_ptr (net, 1);
@@ -2525,24 +2525,24 @@ bool of_DEASSIGN(vthread_t, vvp_code_t cp)
       }
 
 	/* Do we release all or part of the net? */
-      if (full_sig) {
+      ಆದರೆ (ತುಂಬಿದ_sig) {
 	    sig->deassign();
-      } else {
-	    sig->deassign_pv(base, width);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    sig->deassign_pv(ತಳ, width);
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_DEASSIGN_WR(vthread_t, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_DEASSIGN_WR(vthread_t, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
 
       vvp_fun_signal_real*sig = dynamic_cast<vvp_fun_signal_real*>(net->fun);
-      assert(sig);
+      ಪ್ರತಿಜ್ಞಾ(sig);
 
 	// This is the net that is forcing me...
-      if (vvp_net_t*src = sig->cassign_link) {
+      ಆದರೆ (vvp_net_t*src = sig->cassign_link) {
 	      // And this is the pointer to be removed.
 	    vvp_net_ptr_t dst_ptr (net, 1);
 	    src->unlink(dst_ptr);
@@ -2551,17 +2551,17 @@ bool of_DEASSIGN_WR(vthread_t, vvp_code_t cp)
 
       sig->deassign();
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %debug/thr
  */
-bool of_DEBUG_THR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_DEBUG_THR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      const char*text = cp->text;
-      thr->debug_dump(cerr, text);
-      return true;
+      ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*ಪಠ್ಯ = cp->ಪಠ್ಯ;
+      thr->debug_dump(cerr, ಪಠ್ಯ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -2569,68 +2569,68 @@ bool of_DEBUG_THR(vthread_t thr, vvp_code_t cp)
  *
  *   %delay <low>, <hig>
  */
-bool of_DELAY(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_DELAY(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vvp_time64_t low = cp->bit_idx[0];
-      vvp_time64_t hig = cp->bit_idx[1];
+      vvp_time64_t ಕೆಳಗಿನ = cp->ಬಿಟ್_idx[0];
+      vvp_time64_t hig = cp->ಬಿಟ್_idx[1];
 
-      vvp_time64_t delay = (hig << 32) | low;
+      vvp_time64_t delay = (hig << 32) | ಕೆಳಗಿನ;
 
-      if (delay == 0) schedule_inactive(thr);
-      else schedule_vthread(thr, delay);
-      return false;
+      ಆದರೆ (delay == 0) ವೇಳಾಪಟ್ಟಿ_inactive(thr);
+      ಇಲ್ಲದಿದ್ದರೆ ವೇಳಾಪಟ್ಟಿ_vthread(thr, delay);
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
-bool of_DELAYX(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_DELAYX(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_time64_t delay;
 
-      assert(cp->number < vthread_s::WORDS_COUNT);
-      delay = thr->words[cp->number].w_uint;
-      if (delay == 0) schedule_inactive(thr);
-      else schedule_vthread(thr, delay);
-      return false;
+      ಪ್ರತಿಜ್ಞಾ(cp->ಸಂಖ್ಯೆ < vthread_s::ಪದಗಳು_ಎಣಿಕೆ);
+      delay = thr->ಪದಗಳು[cp->ಸಂಖ್ಯೆ].w_uint;
+      ಆದರೆ (delay == 0) ವೇಳಾಪಟ್ಟಿ_inactive(thr);
+      ಇಲ್ಲದಿದ್ದರೆ ವೇಳಾಪಟ್ಟಿ_vthread(thr, delay);
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
-bool of_DELETE_ELEM(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_DELETE_ELEM(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
 
-      int64_t idx_val = thr->words[3].w_int;
-      if (thr->flags[4] == BIT4_1) {
+      int64_t idx_val = thr->ಪದಗಳು[3].w_int;
+      ಆದರೆ (thr->flags[4] == BIT4_1) {
 	    cerr << thr->get_fileline()
 	         << "Warning: skipping queue delete() with undefined index."
-	         << endl;
-	    return true;
+	         << ಸಾಲು_ಅಂತ್ಯ;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
-      if (idx_val < 0) {
+      ಆದರೆ (idx_val < 0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: skipping queue delete() with negative index."
-	         << endl;
-	    return true;
+	         << ಸಾಲು_ಅಂತ್ಯ;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
       size_t idx = idx_val;
 
       vvp_fun_signal_object*obj = dynamic_cast<vvp_fun_signal_object*> (net->fun);
-      assert(obj);
+      ಪ್ರತಿಜ್ಞಾ(obj);
 
-      vvp_queue*queue = obj->get_object().peek<vvp_queue>();
-      if (queue == 0) {
+      vvp_ಸರತಿ*ಸರತಿ = obj->get_object().peek<vvp_ಸರತಿ>();
+      ಆದರೆ (ಸರತಿ == 0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: skipping delete(" << idx
-	         << ") on empty queue." << endl;
-      } else {
-	    size_t size = queue->get_size();
-	    if (idx >= size) {
+	         << ") on empty queue." << ಸಾಲು_ಅಂತ್ಯ;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    size_t size = ಸರತಿ->get_ಗಾತ್ರ();
+	    ಆದರೆ (idx >= size) {
 		  cerr << thr->get_fileline()
 		       << "Warning: skipping out of range delete(" << idx
-		       << ") on queue of size " << size << "." << endl;
-	    } else {
-		  queue->erase(idx);
+		       << ") on queue of size " << size << "." << ಸಾಲು_ಅಂತ್ಯ;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  ಸರತಿ->erase(idx);
 	    }
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* %delete/obj <label>
@@ -2639,239 +2639,239 @@ bool of_DELETE_ELEM(vthread_t thr, vvp_code_t cp)
  * causes any value that might be there to be garbage collected, thus
  * deleting the object.
  */
-bool of_DELETE_OBJ(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_DELETE_OBJ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
 	/* set the value into port 0 of the destination. */
       vvp_net_ptr_t ptr (cp->net, 0);
       vvp_send_object(ptr, vvp_object_t(), thr->wt_context);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* %reverse/obj <label>
  * Reverse element order of the queue or dynamic array object at this net.
  */
-bool of_REVERSE_OBJ(vthread_t /*thr*/, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಹಿಮ್ಮುಖ_OBJ(vthread_t /*thr*/, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
 
       vvp_fun_signal_object*obj = dynamic_cast<vvp_fun_signal_object*>(net->fun);
-      assert(obj);
+      ಪ್ರತಿಜ್ಞಾ(obj);
 
       vvp_object_t stor = obj->get_object();
-      if (stor.test_nil()) return true;
+      ಆದರೆ (stor.test_nil()) ಹಿಂತಿರುಗಿ ನಿಜ;
 
 	/* Match other queue ops: peek queues before vvp_darray so concrete
 	   queue types dispatch reverse_elems() correctly. */
-      if (vvp_queue* queue = stor.peek<vvp_queue>()) {
-	    queue->reverse_elems();
-	    return true;
+      ಆದರೆ (vvp_ಸರತಿ* ಸರತಿ = stor.peek<vvp_ಸರತಿ>()) {
+	    ಸರತಿ->ಹಿಮ್ಮುಖ_elems();
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
       vvp_darray*darray = stor.peek<vvp_darray>();
-      assert(darray);
-      darray->reverse_elems();
+      ಪ್ರತಿಜ್ಞಾ(darray);
+      darray->ಹಿಮ್ಮುಖ_elems();
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* %reverse/prop/obj <property-index>
  * Reverse queue/darray property storage inside the class object on stack top.
  */
-bool of_REVERSE_PROP_OBJ(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಹಿಮ್ಮುಖ_PROP_OBJ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->ಸಂಖ್ಯೆ;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t arr_obj;
       cobj->get_object(pid, arr_obj, 0);
-      if (arr_obj.test_nil()) return true;
+      ಆದರೆ (arr_obj.test_nil()) ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      if (vvp_queue* queue = arr_obj.peek<vvp_queue>()) {
-	    queue->reverse_elems();
-	    return true;
+      ಆದರೆ (vvp_ಸರತಿ* ಸರತಿ = arr_obj.peek<vvp_ಸರತಿ>()) {
+	    ಸರತಿ->ಹಿಮ್ಮುಖ_elems();
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
       vvp_darray*darray = arr_obj.peek<vvp_darray>();
-      assert(darray);
-      darray->reverse_elems();
+      ಪ್ರತಿಜ್ಞಾ(darray);
+      darray->ಹಿಮ್ಮುಖ_elems();
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* %sort/obj — ascending sort */
-bool of_SORT_OBJ(vthread_t /*thr*/, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ವಿಂಗಡಿಸು_OBJ(vthread_t /*thr*/, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
 
       vvp_fun_signal_object*obj = dynamic_cast<vvp_fun_signal_object*>(net->fun);
-      assert(obj);
+      ಪ್ರತಿಜ್ಞಾ(obj);
 
       vvp_object_t stor = obj->get_object();
-      if (stor.test_nil()) return true;
+      ಆದರೆ (stor.test_nil()) ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      if (vvp_queue* queue = stor.peek<vvp_queue>()) {
-	    queue->sort_elems(true);
-	    return true;
+      ಆದರೆ (vvp_ಸರತಿ* ಸರತಿ = stor.peek<vvp_ಸರತಿ>()) {
+	    ಸರತಿ->ವಿಂಗಡಿಸು_elems(ನಿಜ);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
       vvp_darray*darray = stor.peek<vvp_darray>();
-      assert(darray);
-      darray->sort_elems(true);
+      ಪ್ರತಿಜ್ಞಾ(darray);
+      darray->ವಿಂಗಡಿಸು_elems(ನಿಜ);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* %sort/prop/obj */
-bool of_SORT_PROP_OBJ(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ವಿಂಗಡಿಸು_PROP_OBJ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->ಸಂಖ್ಯೆ;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t arr_obj;
       cobj->get_object(pid, arr_obj, 0);
-      if (arr_obj.test_nil()) return true;
+      ಆದರೆ (arr_obj.test_nil()) ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      if (vvp_queue* queue = arr_obj.peek<vvp_queue>()) {
-	    queue->sort_elems(true);
-	    return true;
+      ಆದರೆ (vvp_ಸರತಿ* ಸರತಿ = arr_obj.peek<vvp_ಸರತಿ>()) {
+	    ಸರತಿ->ವಿಂಗಡಿಸು_elems(ನಿಜ);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
       vvp_darray*darray = arr_obj.peek<vvp_darray>();
-      assert(darray);
-      darray->sort_elems(true);
+      ಪ್ರತಿಜ್ಞಾ(darray);
+      darray->ವಿಂಗಡಿಸು_elems(ನಿಜ);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* %rsort/obj — descending sort */
-bool of_RSORT_OBJ(vthread_t /*thr*/, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_RSORT_OBJ(vthread_t /*thr*/, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
 
       vvp_fun_signal_object*obj = dynamic_cast<vvp_fun_signal_object*>(net->fun);
-      assert(obj);
+      ಪ್ರತಿಜ್ಞಾ(obj);
 
       vvp_object_t stor = obj->get_object();
-      if (stor.test_nil()) return true;
+      ಆದರೆ (stor.test_nil()) ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      if (vvp_queue* queue = stor.peek<vvp_queue>()) {
-	    queue->sort_elems(false);
-	    return true;
+      ಆದರೆ (vvp_ಸರತಿ* ಸರತಿ = stor.peek<vvp_ಸರತಿ>()) {
+	    ಸರತಿ->ವಿಂಗಡಿಸು_elems(ಸುಳ್ಳು);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
       vvp_darray*darray = stor.peek<vvp_darray>();
-      assert(darray);
-      darray->sort_elems(false);
+      ಪ್ರತಿಜ್ಞಾ(darray);
+      darray->ವಿಂಗಡಿಸು_elems(ಸುಳ್ಳು);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* %rsort/prop/obj */
-bool of_RSORT_PROP_OBJ(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_RSORT_PROP_OBJ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->ಸಂಖ್ಯೆ;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t arr_obj;
       cobj->get_object(pid, arr_obj, 0);
-      if (arr_obj.test_nil()) return true;
+      ಆದರೆ (arr_obj.test_nil()) ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      if (vvp_queue* queue = arr_obj.peek<vvp_queue>()) {
-	    queue->sort_elems(false);
-	    return true;
+      ಆದರೆ (vvp_ಸರತಿ* ಸರತಿ = arr_obj.peek<vvp_ಸರತಿ>()) {
+	    ಸರತಿ->ವಿಂಗಡಿಸು_elems(ಸುಳ್ಳು);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
       vvp_darray*darray = arr_obj.peek<vvp_darray>();
-      assert(darray);
-      darray->sort_elems(false);
+      ಪ್ರತಿಜ್ಞಾ(darray);
+      darray->ವಿಂಗಡಿಸು_elems(ಸುಳ್ಳು);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* %shuffle/obj */
-bool of_SHUFFLE_OBJ(vthread_t /*thr*/, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_SHUFFLE_OBJ(vthread_t /*thr*/, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
 
       vvp_fun_signal_object*obj = dynamic_cast<vvp_fun_signal_object*>(net->fun);
-      assert(obj);
+      ಪ್ರತಿಜ್ಞಾ(obj);
 
       vvp_object_t stor = obj->get_object();
-      if (stor.test_nil()) return true;
+      ಆದರೆ (stor.test_nil()) ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      if (vvp_queue* queue = stor.peek<vvp_queue>()) {
-	    queue->shuffle_elems();
-	    return true;
+      ಆದರೆ (vvp_ಸರತಿ* ಸರತಿ = stor.peek<vvp_ಸರತಿ>()) {
+	    ಸರತಿ->shuffle_elems();
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
       vvp_darray*darray = stor.peek<vvp_darray>();
-      assert(darray);
+      ಪ್ರತಿಜ್ಞಾ(darray);
       darray->shuffle_elems();
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* %shuffle/prop/obj */
-bool of_SHUFFLE_PROP_OBJ(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_SHUFFLE_PROP_OBJ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->ಸಂಖ್ಯೆ;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t arr_obj;
       cobj->get_object(pid, arr_obj, 0);
-      if (arr_obj.test_nil()) return true;
+      ಆದರೆ (arr_obj.test_nil()) ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      if (vvp_queue* queue = arr_obj.peek<vvp_queue>()) {
-	    queue->shuffle_elems();
-	    return true;
+      ಆದರೆ (vvp_ಸರತಿ* ಸರತಿ = arr_obj.peek<vvp_ಸರತಿ>()) {
+	    ಸರತಿ->shuffle_elems();
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
       vvp_darray*darray = arr_obj.peek<vvp_darray>();
-      assert(darray);
+      ಪ್ರತಿಜ್ಞಾ(darray);
       darray->shuffle_elems();
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* %delete/tail <label>, idx
  *
  * Remove all elements after the one specified.
  */
-bool of_DELETE_TAIL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_DELETE_ಬಾಲ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
 
       vvp_fun_signal_object*obj = dynamic_cast<vvp_fun_signal_object*> (net->fun);
-      assert(obj);
+      ಪ್ರತಿಜ್ಞಾ(obj);
 
-      vvp_queue*queue = obj->get_object().peek<vvp_queue>();
-      assert(queue);
+      vvp_ಸರತಿ*ಸರತಿ = obj->get_object().peek<vvp_ಸರತಿ>();
+      ಪ್ರತಿಜ್ಞಾ(ಸರತಿ);
 
-      unsigned idx = thr->words[cp->bit_idx[0]].w_int;
-      queue->erase_tail(idx);
+      ಚಿಹ್ನೆರಹಿತ idx = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_int;
+      ಸರತಿ->erase_ಬಾಲ(idx);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-static bool do_disable(vthread_t thr, vthread_t match)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ do_disable(vthread_t thr, vthread_t ಹೊಂದಿಕೆ)
 {
-      bool flag = false;
+      ತಾರ್ಕಿಕ flag = ಸುಳ್ಳು;
 
 	/* Pull the target thread out of its scope if needed. */
-      thr->parent_scope->threads.erase(thr);
+      thr->ಪೋಷಕ_scope->ಎಳೆಗಳು.erase(thr);
 
 	/* Turn the thread off by setting is program counter to
 	   zero and setting an OFF bit. */
@@ -2882,42 +2882,42 @@ static bool do_disable(vthread_t thr, vthread_t match)
 	/* Turn off all the children of the thread. Simulate a %join
 	   for as many times as needed to clear the results of all the
 	   %forks that this thread has done. */
-      while (! thr->children.empty()) {
+      ಆಗ (! thr->children.empty()) {
 
 	    vthread_t tmp = *(thr->children.begin());
-	    assert(tmp);
-	    assert(tmp->parent == thr);
+	    ಪ್ರತಿಜ್ಞಾ(tmp);
+	    ಪ್ರತಿಜ್ಞಾ(tmp->ಪೋಷಕ == thr);
 	    thr->i_am_joining = 0;
-	    if (do_disable(tmp, match))
-		  flag = true;
+	    ಆದರೆ (do_disable(tmp, ಹೊಂದಿಕೆ))
+		  flag = ನಿಜ;
 
 	    vthread_reap(tmp);
       }
 
-      vthread_t parent = thr->parent;
-      if (parent && parent->i_am_joining) {
+      vthread_t ಪೋಷಕ = thr->ಪೋಷಕ;
+      ಆದರೆ (ಪೋಷಕ && ಪೋಷಕ->i_am_joining) {
 	      // If a parent is waiting in a %join, wake it up. Note
 	      // that it is possible to be waiting in a %join yet
 	      // already scheduled if multiple child threads are
 	      // ending. So check if the thread is already scheduled
 	      // before scheduling it again.
-	    parent->i_am_joining = 0;
-	    if (! parent->i_have_ended)
-		  schedule_vthread(parent, 0, true);
+	    ಪೋಷಕ->i_am_joining = 0;
+	    ಆದರೆ (! ಪೋಷಕ->i_have_ended)
+		  ವೇಳಾಪಟ್ಟಿ_vthread(ಪೋಷಕ, 0, ನಿಜ);
 
-	    do_join(parent, thr);
+	    do_join(ಪೋಷಕ, thr);
 
-      } else if (parent) {
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (ಪೋಷಕ) {
 	      /* If the parent is yet to %join me, let its %join
 		 do the reaping. */
 	      //assert(tmp->is_scheduled == 0);
 
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	      /* No parent at all. Goodbye. */
 	    vthread_reap(thr);
       }
 
-      return flag || (thr == match);
+      ಹಿಂತಿರುಗಿ flag || (thr == ಹೊಂದಿಕೆ);
 }
 
 /*
@@ -2925,20 +2925,20 @@ static bool do_disable(vthread_t thr, vthread_t match)
  * all the target threads. Kill the target threads and wake up a
  * parent that is attempting a %join.
  */
-bool of_DISABLE(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_DISABLE(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       __vpiScope*scope = static_cast<__vpiScope*>(cp->handle);
 
-      bool disabled_myself_flag = false;
+      ತಾರ್ಕಿಕ disabled_myself_flag = ಸುಳ್ಳು;
 
-      while (! scope->threads.empty()) {
-	    set<vthread_t>::iterator cur = scope->threads.begin();
+      ಆಗ (! scope->ಎಳೆಗಳು.empty()) {
+	    ಗಣ<vthread_t>::iterator cur = scope->ಎಳೆಗಳು.begin();
 
-	    if (do_disable(*cur, thr))
-		  disabled_myself_flag = true;
+	    ಆದರೆ (do_disable(*cur, thr))
+		  disabled_myself_flag = ನಿಜ;
       }
 
-      return ! disabled_myself_flag;
+      ಹಿಂತಿರುಗಿ ! disabled_myself_flag;
 }
 
 /*
@@ -2950,64 +2950,64 @@ bool of_DISABLE(vthread_t thr, vvp_code_t cp)
  * `continue` and `break`.
  */
 
-bool of_DISABLE_FLOW(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_DISABLE_FLOW(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      const __vpiScope*scope = static_cast<__vpiScope*>(cp->handle);
+      ಸ್ಥಿರಾಂಕ __vpiScope*scope = static_cast<__vpiScope*>(cp->handle);
       vthread_t cur = thr;
 
-      while (cur && cur->parent_scope != scope)
-	    cur = cur->parent;
+      ಆಗ (cur && cur->ಪೋಷಕ_scope != scope)
+	    cur = cur->ಪೋಷಕ;
 
-      assert(cur);
-      if (cur)
-	    return !do_disable(cur, thr);
+      ಪ್ರತಿಜ್ಞಾ(cur);
+      ಆದರೆ (cur)
+	    ಹಿಂತಿರುಗಿ !do_disable(cur, thr);
 
-      return false;
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
 /*
  * Implement the %disable/fork (SystemVerilog) instruction by disabling
  * all the detached children of the given thread.
  */
-bool of_DISABLE_FORK(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_DISABLE_FORK(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
 	/* If a %disable/fork is being executed then the parent thread
 	 * cannot be waiting in a join. */
-      assert(! thr->i_am_joining);
+      ಪ್ರತಿಜ್ಞಾ(! thr->i_am_joining);
 
 	/* There should be no active children to disable. */
-      assert(thr->children.empty());
+      ಪ್ರತಿಜ್ಞಾ(thr->children.empty());
 
 	/* Disable any detached children. */
-      while (! thr->detached_children.empty()) {
-	    vthread_t child = *(thr->detached_children.begin());
-	    assert(child);
-	    assert(child->parent == thr);
+      ಆಗ (! thr->detached_children.empty()) {
+	    vthread_t ಮಗು = *(thr->detached_children.begin());
+	    ಪ್ರತಿಜ್ಞಾ(ಮಗು);
+	    ಪ್ರತಿಜ್ಞಾ(ಮಗು->ಪೋಷಕ == thr);
 	      /* Disabling the children can never match the parent thread. */
-	    bool res = do_disable(child, thr);
-	    assert(! res);
-	    vthread_reap(child);
+	    ತಾರ್ಕಿಕ res = do_disable(ಮಗು, thr);
+	    ಪ್ರತಿಜ್ಞಾ(! res);
+	    vthread_reap(ಮಗು);
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * This function divides a 2-word number {high, a} by a 1-word
  * number. Assume that high < b.
  */
-static unsigned long divide2words(unsigned long a, unsigned long b,
-				  unsigned long high)
+ಸ್ಥಿರ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ divide2words(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ a, ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ b,
+				  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮೇಲಿನ)
 {
-      unsigned long result = 0;
-      while (high > 0) {
-	    unsigned long tmp_result = ULONG_MAX / b;
-	    unsigned long remain = ULONG_MAX % b;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಫಲಿತಾಂಶ = 0;
+      ಆಗ (ಮೇಲಿನ > 0) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp_ಫಲಿತಾಂಶ = ULONG_MAX / b;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ remain = ULONG_MAX % b;
 
 	    remain += 1;
-	    if (remain >= b) {
+	    ಆದರೆ (remain >= b) {
 		  remain -= b;
-		  tmp_result += 1;
+		  tmp_ಫಲಿತಾಂಶ += 1;
 	    }
 
 	      // Now 0x1_0...0 = b*tmp_result + remain
@@ -3019,13 +3019,13 @@ static unsigned long divide2words(unsigned long a, unsigned long b,
 	      // high*remain as the remainder for another iteration,
 	      // and add tmp_result*high into the current estimate of
 	      // the result.
-	    result += tmp_result * high;
+	    ಫಲಿತಾಂಶ += tmp_ಫಲಿತಾಂಶ * ಮೇಲಿನ;
 
 	      // The new iteration starts with high*remain + a.
-	    remain = multiply_with_carry(high, remain, high);
+	    remain = multiply_with_ವಾಹಕ(ಮೇಲಿನ, remain, ಮೇಲಿನ);
 	    a += remain;
-            if(a < remain)
-              high += 1;
+            ಆದರೆ(a < remain)
+              ಮೇಲಿನ += 1;
 
 	      // Now result*b + {high,a} == the input {high,a}. It is
 	      // possible that the new high >= 1. If so, it will
@@ -3037,46 +3037,46 @@ static unsigned long divide2words(unsigned long a, unsigned long b,
 	// high is now 0, so a is the remaining remainder, so we can
 	// finish off the integer divide with a simple a/b.
 
-      return result + a/b;
+      ಹಿಂತಿರುಗಿ ಫಲಿತಾಂಶ + a/b;
 }
 
-static unsigned long* divide_bits(unsigned long*ap, const unsigned long*bp, unsigned wid)
+ಸ್ಥಿರ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ* divide_ಬಿಟ್ಟುಗಳು(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*ap, ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*bp, ಚಿಹ್ನೆರಹಿತ wid)
 {
 	// Do all our work a cpu-word at a time. The "words" variable
 	// is the number of words of the wid.
-      unsigned words = (wid+CPU_WORD_BITS-1) / CPU_WORD_BITS;
+      ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (wid+CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು-1) / CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು;
 
-      unsigned btop = words-1;
-      while (btop > 0 && bp[btop] == 0)
+      ಚಿಹ್ನೆರಹಿತ btop = ಪದಗಳು-1;
+      ಆಗ (btop > 0 && bp[btop] == 0)
 	    btop -= 1;
 
 	// Detect divide by 0, and exit.
-      if (btop==0 && bp[0]==0)
-	    return 0;
+      ಆದರೆ (btop==0 && bp[0]==0)
+	    ಹಿಂತಿರುಗಿ 0;
 
 	// The result array will eventually accumulate the result. The
 	// diff array is a difference that we use in the intermediate.
-      unsigned long*diff  = new unsigned long[words];
-      unsigned long*result= new unsigned long[words];
-      for (unsigned idx = 0 ; idx < words ; idx += 1)
-	    result[idx] = 0;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*diff  = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ[ಪದಗಳು];
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*ಫಲಿತಾಂಶ= ಹೊಸ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ[ಪದಗಳು];
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಪದಗಳು ; idx += 1)
+	    ಫಲಿತಾಂಶ[idx] = 0;
 
-      for (unsigned cur = words-btop ; cur > 0 ; cur -= 1) {
-	    unsigned cur_ptr = cur-1;
-	    unsigned long cur_res;
-	    if (ap[cur_ptr+btop] >= bp[btop]) {
-		  unsigned long high = 0;
-		  if (cur_ptr+btop+1 < words)
-			high = ap[cur_ptr+btop+1];
-		  cur_res = divide2words(ap[cur_ptr+btop], bp[btop], high);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ cur = ಪದಗಳು-btop ; cur > 0 ; cur -= 1) {
+	    ಚಿಹ್ನೆರಹಿತ cur_ptr = cur-1;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ cur_res;
+	    ಆದರೆ (ap[cur_ptr+btop] >= bp[btop]) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮೇಲಿನ = 0;
+		  ಆದರೆ (cur_ptr+btop+1 < ಪದಗಳು)
+			ಮೇಲಿನ = ap[cur_ptr+btop+1];
+		  cur_res = divide2words(ap[cur_ptr+btop], bp[btop], ಮೇಲಿನ);
 
-	    } else if (cur_ptr+btop+1 >= words) {
-		  continue;
+	    } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (cur_ptr+btop+1 >= ಪದಗಳು) {
+		  ಮುಂದುವರಿ;
 
-	    } else if (ap[cur_ptr+btop+1] == 0) {
-		  continue;
+	    } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (ap[cur_ptr+btop+1] == 0) {
+		  ಮುಂದುವರಿ;
 
-	    } else {
+	    } ಇಲ್ಲದಿದ್ದರೆ {
 		  cur_res = divide2words(ap[cur_ptr+btop], bp[btop],
 					 ap[cur_ptr+btop+1]);
 	    }
@@ -3086,11 +3086,11 @@ static unsigned long* divide_bits(unsigned long*ap, const unsigned long*bp, unsi
 	      // and if the difference comes out negative, then adjust.
 
 	      // diff = (bp * cur_res)  << cur_ptr;
-	    multiply_array_imm(diff+cur_ptr, bp, words-cur_ptr, cur_res);
+	    multiply_array_imm(diff+cur_ptr, bp, ಪದಗಳು-cur_ptr, cur_res);
 	      // ap -= diff
-	    unsigned long carry = 1;
-	    for (unsigned idx = cur_ptr ; idx < words ; idx += 1)
-		  ap[idx] = add_with_carry(ap[idx], ~diff[idx], carry);
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ವಾಹಕ = 1;
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = cur_ptr ; idx < ಪದಗಳು ; idx += 1)
+		  ap[idx] = ಕೂಡಿಸು_with_ವಾಹಕ(ap[idx], ~diff[idx], ವಾಹಕ);
 
 	      // ap has the diff subtracted out of it. If cur_res was
 	      // too large, then ap will turn negative. (We easily
@@ -3098,201 +3098,201 @@ static unsigned long* divide_bits(unsigned long*ap, const unsigned long*bp, unsi
 	      // carry&1. If it is 0, then it is *negative*.) In that
 	      // case, we know that cur_res was too large by 1. Correct by
 	      // adding 1b back in and reducing cur_res.
-	    if ((carry&1) == 0) {
+	    ಆದರೆ ((ವಾಹಕ&1) == 0) {
 		    // Keep adding b back in until the remainder
 		    // becomes positive again.
-		  do {
+		  ಮಾಡು {
 			cur_res -= 1;
-			carry = 0;
-			for (unsigned idx = cur_ptr ; idx < words ; idx += 1)
-			      ap[idx] = add_with_carry(ap[idx], bp[idx-cur_ptr], carry);
-		  } while (carry == 0);
+			ವಾಹಕ = 0;
+			ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = cur_ptr ; idx < ಪದಗಳು ; idx += 1)
+			      ap[idx] = ಕೂಡಿಸು_with_ವಾಹಕ(ap[idx], bp[idx-cur_ptr], ವಾಹಕ);
+		  } ಆಗ (ವಾಹಕ == 0);
 	    }
 
-	    result[cur_ptr] = cur_res;
+	    ಫಲಿತಾಂಶ[cur_ptr] = cur_res;
       }
 
 	// Now ap contains the remainder and result contains the
 	// desired result. We should find that:
 	//  input-a = bp * result + ap;
 
-      delete[]diff;
-      return result;
+      ಅಳಿಸು[]diff;
+      ಹಿಂತಿರುಗಿ ಫಲಿತಾಂಶ;
 }
 
 /*
  * %div
  */
-bool of_DIV(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_DIV(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      vvp_vector4_t valb = thr->pop_vec4();
-      vvp_vector4_t vala = thr->pop_vec4();
+      vvp_vector4_t valb = thr->ತೆಗೆ_vec4();
+      vvp_vector4_t vala = thr->ತೆಗೆ_vec4();
 
-      assert(vala.size()== valb.size());
-      unsigned wid = vala.size();
+      ಪ್ರತಿಜ್ಞಾ(vala.size()== valb.size());
+      ಚಿಹ್ನೆರಹಿತ wid = vala.size();
 
-      unsigned long*ap = vala.subarray(0, wid);
-      if (ap == 0) {
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*ap = vala.subarray(0, wid);
+      ಆದರೆ (ap == 0) {
 	    vvp_vector4_t tmp(wid, BIT4_X);
-	    thr->push_vec4(tmp);
-	    return true;
+	    thr->ತಳ್ಳು_vec4(tmp);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      unsigned long*bp = valb.subarray(0, wid);
-      if (bp == 0) {
-	    delete[]ap;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*bp = valb.subarray(0, wid);
+      ಆದರೆ (bp == 0) {
+	    ಅಳಿಸು[]ap;
 	    vvp_vector4_t tmp(wid, BIT4_X);
-	    thr->push_vec4(tmp);
-	    return true;
+	    thr->ತಳ್ಳು_vec4(tmp);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
 	// If the value fits in a single CPU word, then do it the easy way.
-      if (wid <= CPU_WORD_BITS) {
-	    if (bp[0] == 0) {
+      ಆದರೆ (wid <= CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು) {
+	    ಆದರೆ (bp[0] == 0) {
 		  vvp_vector4_t tmp(wid, BIT4_X);
-		  thr->push_vec4(tmp);
-	    } else {
+		  thr->ತಳ್ಳು_vec4(tmp);
+	    } ಇಲ್ಲದಿದ್ದರೆ {
 		  ap[0] /= bp[0];
 		  vala.setarray(0, wid, ap);
-		  thr->push_vec4(vala);
+		  thr->ತಳ್ಳು_vec4(vala);
 	    }
-	    delete[]ap;
-	    delete[]bp;
-	    return true;
+	    ಅಳಿಸು[]ap;
+	    ಅಳಿಸು[]bp;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      unsigned long*result = divide_bits(ap, bp, wid);
-      if (result == 0) {
-	    delete[]ap;
-	    delete[]bp;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*ಫಲಿತಾಂಶ = divide_ಬಿಟ್ಟುಗಳು(ap, bp, wid);
+      ಆದರೆ (ಫಲಿತಾಂಶ == 0) {
+	    ಅಳಿಸು[]ap;
+	    ಅಳಿಸು[]bp;
 	    vvp_vector4_t tmp(wid, BIT4_X);
-	    thr->push_vec4(tmp);
-	    return true;
+	    thr->ತಳ್ಳು_vec4(tmp);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
 	// Now ap contains the remainder and result contains the
 	// desired result. We should find that:
 	//  input-a = bp * result + ap;
 
-      vala.setarray(0, wid, result);
-      thr->push_vec4(vala);
-      delete[]ap;
-      delete[]bp;
-      delete[]result;
+      vala.setarray(0, wid, ಫಲಿತಾಂಶ);
+      thr->ತಳ್ಳು_vec4(vala);
+      ಅಳಿಸು[]ap;
+      ಅಳಿಸು[]bp;
+      ಅಳಿಸು[]ಫಲಿತಾಂಶ;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 
-static void negate_words(unsigned long*val, unsigned words)
+ಸ್ಥಿರ ಶೂನ್ಯ negate_ಪದಗಳು(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*val, ಚಿಹ್ನೆರಹಿತ ಪದಗಳು)
 {
-      unsigned long carry = 1;
-      for (unsigned idx = 0 ; idx < words ; idx += 1)
-	    val[idx] = add_with_carry(0, ~val[idx], carry);
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ವಾಹಕ = 1;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಪದಗಳು ; idx += 1)
+	    val[idx] = ಕೂಡಿಸು_with_ವಾಹಕ(0, ~val[idx], ವಾಹಕ);
 }
 
 /*
  * %div/s
  */
-bool of_DIV_S(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_DIV_S(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      vvp_vector4_t valb = thr->pop_vec4();
+      vvp_vector4_t valb = thr->ತೆಗೆ_vec4();
       vvp_vector4_t&vala = thr->peek_vec4();
 
-      assert(vala.size()== valb.size());
-      unsigned wid = vala.size();
-      unsigned words = (wid + CPU_WORD_BITS - 1) / CPU_WORD_BITS;
+      ಪ್ರತಿಜ್ಞಾ(vala.size()== valb.size());
+      ಚಿಹ್ನೆರಹಿತ wid = vala.size();
+      ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (wid + CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು - 1) / CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು;
 
 	// Get the values, left in right, in binary form. If there is
 	// a problem with either (caused by an X or Z bit) then we
 	// know right away that the entire result is X.
-      unsigned long*ap = vala.subarray(0, wid);
-      if (ap == 0) {
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*ap = vala.subarray(0, wid);
+      ಆದರೆ (ap == 0) {
 	    vvp_vector4_t tmp(wid, BIT4_X);
 	    vala = tmp;
-	    return true;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      unsigned long*bp = valb.subarray(0, wid);
-      if (bp == 0) {
-	    delete[]ap;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*bp = valb.subarray(0, wid);
+      ಆದರೆ (bp == 0) {
+	    ಅಳಿಸು[]ap;
 	    vvp_vector4_t tmp(wid, BIT4_X);
 	    vala = tmp;
-	    return true;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
 	// Sign extend the bits in the array to fill out the array.
-      unsigned long sign_mask = 0;
-      if (unsigned long sign_bits = (words*CPU_WORD_BITS) - wid) {
-	    sign_mask = -1UL << (CPU_WORD_BITS-sign_bits);
-	    if (ap[words-1] & (sign_mask>>1))
-		  ap[words-1] |= sign_mask;
-	    if (bp[words-1] & (sign_mask>>1))
-		  bp[words-1] |= sign_mask;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ sign_ಮುಖವಾಡ = 0;
+      ಆದರೆ (ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ sign_ಬಿಟ್ಟುಗಳು = (ಪದಗಳು*CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು) - wid) {
+	    sign_ಮುಖವಾಡ = -1UL << (CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು-sign_ಬಿಟ್ಟುಗಳು);
+	    ಆದರೆ (ap[ಪದಗಳು-1] & (sign_ಮುಖವಾಡ>>1))
+		  ap[ಪದಗಳು-1] |= sign_ಮುಖವಾಡ;
+	    ಆದರೆ (bp[ಪದಗಳು-1] & (sign_ಮುಖವಾಡ>>1))
+		  bp[ಪದಗಳು-1] |= sign_ಮುಖವಾಡ;
       }
 
 	// If the value fits in a single word, then use the native divide.
-      if (wid <= CPU_WORD_BITS) {
-	    if (bp[0] == 0) {
+      ಆದರೆ (wid <= CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು) {
+	    ಆದರೆ (bp[0] == 0) {
 		  vvp_vector4_t tmp(wid, BIT4_X);
 		  vala = tmp;
-	    } else if (((long)ap[0] == LONG_MIN) && ((long)bp[0] == -1)) {
+	    } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (((ದೀರ್ಘ)ap[0] == LONG_MIN) && ((ದೀರ್ಘ)bp[0] == -1)) {
 		  vvp_vector4_t tmp(wid, BIT4_0);
-		  tmp.set_bit(wid-1, BIT4_1);
+		  tmp.ಗಣ_ಬಿಟ್(wid-1, BIT4_1);
 		  vala = tmp;
-	    } else {
-		  long tmpa = (long) ap[0];
-		  long tmpb = (long) bp[0];
-		  long res = tmpa / tmpb;
-		  ap[0] = ((unsigned long)res) & ~sign_mask;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  ದೀರ್ಘ tmpa = (ದೀರ್ಘ) ap[0];
+		  ದೀರ್ಘ tmpb = (ದೀರ್ಘ) bp[0];
+		  ದೀರ್ಘ res = tmpa / tmpb;
+		  ap[0] = ((ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)res) & ~sign_ಮುಖವಾಡ;
 		  vala.setarray(0, wid, ap);
 	    }
-	    delete[]ap;
-	    delete[]bp;
-	    return true;
+	    ಅಳಿಸು[]ap;
+	    ಅಳಿಸು[]bp;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
 	// We need to the actual division to positive integers. Make
 	// them positive here, and remember the negations.
-      bool negate_flag = false;
-      if ( ((long) ap[words-1]) < 0 ) {
-	    negate_flag = true;
-	    negate_words(ap, words);
+      ತಾರ್ಕಿಕ negate_flag = ಸುಳ್ಳು;
+      ಆದರೆ ( ((ದೀರ್ಘ) ap[ಪದಗಳು-1]) < 0 ) {
+	    negate_flag = ನಿಜ;
+	    negate_ಪದಗಳು(ap, ಪದಗಳು);
       }
-      if ( ((long) bp[words-1]) < 0 ) {
-	    negate_flag ^= true;
-	    negate_words(bp, words);
+      ಆದರೆ ( ((ದೀರ್ಘ) bp[ಪದಗಳು-1]) < 0 ) {
+	    negate_flag ^= ನಿಜ;
+	    negate_ಪದಗಳು(bp, ಪದಗಳು);
       }
 
-      unsigned long*result = divide_bits(ap, bp, wid);
-      if (result == 0) {
-	    delete[]ap;
-	    delete[]bp;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*ಫಲಿತಾಂಶ = divide_ಬಿಟ್ಟುಗಳು(ap, bp, wid);
+      ಆದರೆ (ಫಲಿತಾಂಶ == 0) {
+	    ಅಳಿಸು[]ap;
+	    ಅಳಿಸು[]bp;
 	    vvp_vector4_t tmp(wid, BIT4_X);
 	    vala = tmp;
-	    return true;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      if (negate_flag) {
-	    negate_words(result, words);
+      ಆದರೆ (negate_flag) {
+	    negate_ಪದಗಳು(ಫಲಿತಾಂಶ, ಪದಗಳು);
       }
 
-      result[words-1] &= ~sign_mask;
+      ಫಲಿತಾಂಶ[ಪದಗಳು-1] &= ~sign_ಮುಖವಾಡ;
 
-      vala.setarray(0, wid, result);
-      delete[]ap;
-      delete[]bp;
-      delete[]result;
-      return true;
+      vala.setarray(0, wid, ಫಲಿತಾಂಶ);
+      ಅಳಿಸು[]ap;
+      ಅಳಿಸು[]bp;
+      ಅಳಿಸು[]ಫಲಿತಾಂಶ;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_DIV_WR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_DIV_WR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
-      thr->push_real(l / r);
+      ದ್ವಿಗುಣ r = thr->ತೆಗೆ_real();
+      ದ್ವಿಗುಣ l = thr->ತೆಗೆ_real();
+      thr->ತಳ್ಳು_real(l / r);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -3302,29 +3302,29 @@ bool of_DIV_WR(vthread_t thr, vvp_code_t)
  *
  * Push a duplicate of the object on the appropriate stack.
  */
-bool of_DUP_OBJ(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_DUP_OBJ(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
       vvp_object_t src = thr->peek_object();
 
         // If it is null push a new null object
-      if (src.test_nil())
-	    thr->push_object(vvp_object_t());
-      else
-	    thr->push_object(src.duplicate());
+      ಆದರೆ (src.test_nil())
+	    thr->ತಳ್ಳು_object(vvp_object_t());
+      ಇಲ್ಲದಿದ್ದರೆ
+	    thr->ತಳ್ಳು_object(src.duplicate());
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_DUP_REAL(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_DUP_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      thr->push_real(thr->peek_real(0));
-      return true;
+      thr->ತಳ್ಳು_real(thr->peek_real(0));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_DUP_VEC4(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_DUP_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      thr->push_vec4(thr->peek_vec4(0));
-      return true;
+      thr->ತಳ್ಳು_vec4(thr->peek_vec4(0));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -3332,197 +3332,197 @@ bool of_DUP_VEC4(vthread_t thr, vvp_code_t)
  * waiting for me to die, then I schedule it. At any rate, I mark
  * myself as a zombie by setting my pc to 0.
  */
-bool of_END(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_ಕೊನೆ(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      assert(! thr->waiting_for_event);
+      ಪ್ರತಿಜ್ಞಾ(! thr->ಕಾಯುವಿಕೆ_for_event);
       thr->i_have_ended = 1;
       thr->pc = codespace_null();
 
 	/* Fully detach any detached children. */
-      while (! thr->detached_children.empty()) {
-	    vthread_t child = *(thr->detached_children.begin());
-	    assert(child);
-	    assert(child->parent == thr);
-	    assert(child->i_am_detached);
-	    child->parent = 0;
-	    child->i_am_detached = 0;
+      ಆಗ (! thr->detached_children.empty()) {
+	    vthread_t ಮಗು = *(thr->detached_children.begin());
+	    ಪ್ರತಿಜ್ಞಾ(ಮಗು);
+	    ಪ್ರತಿಜ್ಞಾ(ಮಗು->ಪೋಷಕ == thr);
+	    ಪ್ರತಿಜ್ಞಾ(ಮಗು->i_am_detached);
+	    ಮಗು->ಪೋಷಕ = 0;
+	    ಮಗು->i_am_detached = 0;
 	    thr->detached_children.erase(thr->detached_children.begin());
       }
 
 	/* It is an error to still have active children running at this
 	 * point in time. They should have all been detached or joined. */
-      assert(thr->children.empty());
+      ಪ್ರತಿಜ್ಞಾ(thr->children.empty());
 
 	/* If I have a parent who is waiting for me, then mark that I
 	   have ended, and schedule that parent. Also, finish the
 	   %join for the parent. */
-      if (!thr->i_am_detached && thr->parent && thr->parent->i_am_joining) {
-	    vthread_t tmp = thr->parent;
-	    assert(! thr->i_am_detached);
+      ಆದರೆ (!thr->i_am_detached && thr->ಪೋಷಕ && thr->ಪೋಷಕ->i_am_joining) {
+	    vthread_t tmp = thr->ಪೋಷಕ;
+	    ಪ್ರತಿಜ್ಞಾ(! thr->i_am_detached);
 
 	    tmp->i_am_joining = 0;
-	    schedule_vthread(tmp, 0, true);
+	    ವೇಳಾಪಟ್ಟಿ_vthread(tmp, 0, ನಿಜ);
 	    do_join(tmp, thr);
-	    return false;
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
 	/* If this thread is not fully detached then remove it from the
 	 * parents detached_children set and reap it. */
-      if (thr->i_am_detached) {
-	    vthread_t tmp = thr->parent;
-	    assert(tmp);
+      ಆದರೆ (thr->i_am_detached) {
+	    vthread_t tmp = thr->ಪೋಷಕ;
+	    ಪ್ರತಿಜ್ಞಾ(tmp);
 	    size_t res = tmp->detached_children.erase(thr);
-	    assert(res == 1);
+	    ಪ್ರತಿಜ್ಞಾ(res == 1);
 	      /* If the parent is waiting for the detached children to
 	       * finish then the last detached child needs to tell the
 	       * parent to wake up when it is finished. */
-	    if (tmp->i_am_waiting && tmp->detached_children.empty()) {
-		  tmp->i_am_waiting = 0;
-		  schedule_vthread(tmp, 0, true);
+	    ಆದರೆ (tmp->i_am_ಕಾಯುವಿಕೆ && tmp->detached_children.empty()) {
+		  tmp->i_am_ಕಾಯುವಿಕೆ = 0;
+		  ವೇಳಾಪಟ್ಟಿ_vthread(tmp, 0, ನಿಜ);
 	    }
 	      /* Fully detach this thread so it will be reaped below. */
 	    thr->i_am_detached = 0;
-	    thr->parent = 0;
+	    thr->ಪೋಷಕ = 0;
       }
 
 	/* If I have no parent, then no one can %join me and there is
 	 * no reason to stick around. This can happen, for example if
 	 * I am an ``initial'' thread. */
-      if (thr->parent == 0) {
+      ಆದರೆ (thr->ಪೋಷಕ == 0) {
 	    vthread_reap(thr);
-	    return false;
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
 	/* If I make it this far, then I have a parent who may wish
 	   to %join me. Remain a zombie so that it can. */
 
-      return false;
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
 /*
  * %event <var-label>
  */
-bool of_EVENT(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_EVENT(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_ptr_t ptr (cp->net, 0);
       vvp_vector4_t tmp (1, BIT4_X);
       vvp_send_vec4(ptr, tmp, thr->wt_context);
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %event/nb <var-label>, <delay>
  */
-bool of_EVENT_NB(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_EVENT_NB(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_time64_t delay;
 
-      delay = thr->words[cp->bit_idx[0]].w_uint;
-      schedule_propagate_event(cp->net, delay);
-      return true;
+      delay = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_uint;
+      ವೇಳಾಪಟ್ಟಿ_propagate_event(cp->net, delay);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_EVCTL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_EVCTL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      assert(thr->event == 0 && thr->ecount == 0);
+      ಪ್ರತಿಜ್ಞಾ(thr->event == 0 && thr->ecount == 0);
       thr->event = cp->net;
-      thr->ecount = thr->words[cp->bit_idx[0]].w_uint;
-      return true;
+      thr->ecount = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_uint;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
-bool of_EVCTLC(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_EVCTLC(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
       thr->event = 0;
       thr->ecount = 0;
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_EVCTLI(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_EVCTLI(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      assert(thr->event == 0 && thr->ecount == 0);
+      ಪ್ರತಿಜ್ಞಾ(thr->event == 0 && thr->ecount == 0);
       thr->event = cp->net;
-      thr->ecount = cp->bit_idx[0];
-      return true;
+      thr->ecount = cp->ಬಿಟ್_idx[0];
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_EVCTLS(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_EVCTLS(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      assert(thr->event == 0 && thr->ecount == 0);
+      ಪ್ರತಿಜ್ಞಾ(thr->event == 0 && thr->ecount == 0);
       thr->event = cp->net;
-      int64_t val = thr->words[cp->bit_idx[0]].w_int;
-      if (val < 0) val = 0;
+      int64_t val = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_int;
+      ಆದರೆ (val < 0) val = 0;
       thr->ecount = val;
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_FLAG_GET_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_FLAG_GET_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      int flag = cp->number;
-      assert(flag < vthread_s::FLAGS_COUNT);
+      ಪೂರ್ಣಾಂಕ flag = cp->ಸಂಖ್ಯೆ;
+      ಪ್ರತಿಜ್ಞಾ(flag < vthread_s::FLAGS_ಎಣಿಕೆ);
 
       vvp_vector4_t val (1, thr->flags[flag]);
-      thr->push_vec4(val);
+      thr->ತಳ್ಳು_vec4(val);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %flag_inv <flag1>
  */
-bool of_FLAG_INV(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_FLAG_INV(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      int flag1 = cp->bit_idx[0];
+      ಪೂರ್ಣಾಂಕ flag1 = cp->ಬಿಟ್_idx[0];
 
       thr->flags[flag1] = ~ thr->flags[flag1];
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %flag_mov <flag1>, <flag2>
  */
-bool of_FLAG_MOV(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_FLAG_MOV(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      int flag1 = cp->bit_idx[0];
-      int flag2 = cp->bit_idx[1];
+      ಪೂರ್ಣಾಂಕ flag1 = cp->ಬಿಟ್_idx[0];
+      ಪೂರ್ಣಾಂಕ flag2 = cp->ಬಿಟ್_idx[1];
 
       thr->flags[flag1] = thr->flags[flag2];
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %flag_or <flag1>, <flag2>
  */
-bool of_FLAG_OR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_FLAG_OR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      int flag1 = cp->bit_idx[0];
-      int flag2 = cp->bit_idx[1];
+      ಪೂರ್ಣಾಂಕ flag1 = cp->ಬಿಟ್_idx[0];
+      ಪೂರ್ಣಾಂಕ flag2 = cp->ಬಿಟ್_idx[1];
 
       thr->flags[flag1] = thr->flags[flag1] | thr->flags[flag2];
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_FLAG_SET_IMM(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_FLAG_ಗಣ_IMM(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      int flag = cp->number;
-      int vali = cp->bit_idx[0];
+      ಪೂರ್ಣಾಂಕ flag = cp->ಸಂಖ್ಯೆ;
+      ಪೂರ್ಣಾಂಕ vali = cp->ಬಿಟ್_idx[0];
 
-      assert(flag < vthread_s::FLAGS_COUNT);
-      assert(vali >= 0 && vali < 4);
+      ಪ್ರತಿಜ್ಞಾ(flag < vthread_s::FLAGS_ಎಣಿಕೆ);
+      ಪ್ರತಿಜ್ಞಾ(vali >= 0 && vali < 4);
 
-      static const vvp_bit4_t map_bit[4] = {BIT4_0, BIT4_1, BIT4_Z, BIT4_X};
-      thr->flags[flag] = map_bit[vali];
-      return true;
+      ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ vvp_bit4_t map_ಬಿಟ್[4] = {BIT4_0, BIT4_1, BIT4_Z, BIT4_X};
+      thr->flags[flag] = map_ಬಿಟ್[vali];
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_FLAG_SET_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_FLAG_ಗಣ_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      int flag = cp->number;
-      assert(flag < vthread_s::FLAGS_COUNT);
+      ಪೂರ್ಣಾಂಕ flag = cp->ಸಂಖ್ಯೆ;
+      ಪ್ರತಿಜ್ಞಾ(flag < vthread_s::FLAGS_ಎಣಿಕೆ);
 
-      const vvp_vector4_t&val = thr->peek_vec4();
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&val = thr->peek_vec4();
       thr->flags[flag] = val.value(0);
-      thr->pop_vec4(1);
+      thr->ತೆಗೆ_vec4(1);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -3532,15 +3532,15 @@ bool of_FLAG_SET_VEC4(vthread_t thr, vvp_code_t cp)
  * unlinked without specifically knowing the source that this
  * instruction used.
  */
-bool of_FORCE_LINK(vthread_t, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_FORCE_LINK(vthread_t, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*dst = cp->net;
       vvp_net_t*src = cp->net2;
 
-      assert(dst->fil);
+      ಪ್ರತಿಜ್ಞಾ(dst->fil);
       dst->fil->force_link(dst, src);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -3555,111 +3555,111 @@ bool of_FORCE_LINK(vthread_t, vvp_code_t cp)
  * The instruction writes a vvp_vector4_t value to port-2 of the
  * target signal.
  */
-bool of_FORCE_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_FORCE_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
 
-      vvp_vector4_t value = thr->pop_vec4();
+      vvp_vector4_t value = thr->ತೆಗೆ_vec4();
 
 	/* Send the force value to the filter on the node. */
 
-      assert(net->fil);
-      if (value.size() != net->fil->filter_size())
-	    value = coerce_to_width(value, net->fil->filter_size());
+      ಪ್ರತಿಜ್ಞಾ(net->fil);
+      ಆದರೆ (value.size() != net->fil->filter_ಗಾತ್ರ())
+	    value = coerce_ಗಮ್ಯ_ಅಗಲ(value, net->fil->filter_ಗಾತ್ರ());
 
-      net->force_vec4(value, vvp_vector2_t(vvp_vector2_t::FILL1, net->fil->filter_size()));
+      net->force_vec4(value, vvp_vector2_t(vvp_vector2_t::FILL1, net->fil->filter_ಗಾತ್ರ()));
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %force/vec4/off <net>, <off>
  */
-bool of_FORCE_VEC4_OFF(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_FORCE_VEC4_OFF(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
-      unsigned base_idx = cp->bit_idx[0];
-      long base = thr->words[base_idx].w_int;
-      vvp_vector4_t value = thr->pop_vec4();
-      unsigned wid = value.size();
+      ಚಿಹ್ನೆರಹಿತ ತಳ_idx = cp->ಬಿಟ್_idx[0];
+      ದೀರ್ಘ ತಳ = thr->ಪದಗಳು[ತಳ_idx].w_int;
+      vvp_vector4_t value = thr->ತೆಗೆ_vec4();
+      ಚಿಹ್ನೆರಹಿತ wid = value.size();
 
-      assert(net->fil);
+      ಪ್ರತಿಜ್ಞಾ(net->fil);
 
-      if (thr->flags[4] == BIT4_1)
-	    return true;
+      ಆದರೆ (thr->flags[4] == BIT4_1)
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
 	// This is the width of the target vector.
-      unsigned use_size = net->fil->filter_size();
+      ಚಿಹ್ನೆರಹಿತ use_ಗಾತ್ರ = net->fil->filter_ಗಾತ್ರ();
 
-      if (base >= (long)use_size)
-	    return true;
-      if (base < -(long)use_size)
-	    return true;
+      ಆದರೆ (ತಳ >= (ದೀರ್ಘ)use_ಗಾತ್ರ)
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
+      ಆದರೆ (ತಳ < -(ದೀರ್ಘ)use_ಗಾತ್ರ)
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      if ((base + wid) > use_size)
-	    wid = use_size - base;
+      ಆದರೆ ((ತಳ + wid) > use_ಗಾತ್ರ)
+	    wid = use_ಗಾತ್ರ - ತಳ;
 
 	// Make a mask of which bits are to be forced, 0 for unforced
 	// bits and 1 for forced bits.
-      vvp_vector2_t mask (vvp_vector2_t::FILL0, use_size);
-      for (unsigned idx = 0 ; idx < wid ; idx += 1)
-	    mask.set_bit(base+idx, 1);
+      vvp_vector2_t ಮುಖವಾಡ (vvp_vector2_t::FILL0, use_ಗಾತ್ರ);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < wid ; idx += 1)
+	    ಮುಖವಾಡ.ಗಣ_ಬಿಟ್(ತಳ+idx, 1);
 
-      vvp_vector4_t tmp (use_size, BIT4_Z);
+      vvp_vector4_t tmp (use_ಗಾತ್ರ, BIT4_Z);
 
 	// vvp_net_t::force_vec4 propagates all the bits of the
 	// forced vector value, regardless of the mask. This
 	// ensures the unforced bits retain their current value.
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(net->fil);
-      assert(sig);
-      sig->vec4_value(tmp);
+      vvp_signal_ಮೌಲ್ಯ*sig = dynamic_cast<vvp_signal_ಮೌಲ್ಯ*>(net->fil);
+      ಪ್ರತಿಜ್ಞಾ(sig);
+      sig->vec4_ಮೌಲ್ಯ(tmp);
 
-      tmp.set_vec(base, value);
+      tmp.ಗಣ_vec(ತಳ, value);
 
-      net->force_vec4(tmp, mask);
-      return true;
+      net->force_vec4(tmp, ಮುಖವಾಡ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %force/vec4/off/d <net>, <off>, <del>
  */
-bool of_FORCE_VEC4_OFF_D(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_FORCE_VEC4_OFF_D(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
 
-      unsigned base_idx = cp->bit_idx[0];
-      long base = thr->words[base_idx].w_int;
+      ಚಿಹ್ನೆರಹಿತ ತಳ_idx = cp->ಬಿಟ್_idx[0];
+      ದೀರ್ಘ ತಳ = thr->ಪದಗಳು[ತಳ_idx].w_int;
 
-      unsigned delay_idx = cp->bit_idx[1];
-      vvp_time64_t delay = thr->words[delay_idx].w_uint;
+      ಚಿಹ್ನೆರಹಿತ delay_idx = cp->ಬಿಟ್_idx[1];
+      vvp_time64_t delay = thr->ಪದಗಳು[delay_idx].w_uint;
 
-      vvp_vector4_t value = thr->pop_vec4();
+      vvp_vector4_t value = thr->ತೆಗೆ_vec4();
 
-      assert(net->fil);
+      ಪ್ರತಿಜ್ಞಾ(net->fil);
 
-      if (thr->flags[4] == BIT4_1)
-	    return true;
+      ಆದರೆ (thr->flags[4] == BIT4_1)
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
 	// This is the width of the target vector.
-      unsigned use_size = net->fil->filter_size();
+      ಚಿಹ್ನೆರಹಿತ use_ಗಾತ್ರ = net->fil->filter_ಗಾತ್ರ();
 
-      if (base >= (long)use_size)
-	    return true;
-      if (base < -(long)use_size)
-	    return true;
+      ಆದರೆ (ತಳ >= (ದೀರ್ಘ)use_ಗಾತ್ರ)
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
+      ಆದರೆ (ತಳ < -(ದೀರ್ಘ)use_ಗಾತ್ರ)
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      schedule_force_vector(net, base, use_size, value, delay);
-      return true;
+      ವೇಳಾಪಟ್ಟಿ_force_ಸದಿಶ(net, ತಳ, use_ಗಾತ್ರ, value, delay);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_FORCE_WR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_FORCE_WR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net  = cp->net;
-      double value = thr->pop_real();
+      ದ್ವಿಗುಣ value = thr->ತೆಗೆ_real();
 
       net->force_real(value, vvp_vector2_t(vvp_vector2_t::FILL1, 1));
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -3668,41 +3668,41 @@ bool of_FORCE_WR(vthread_t thr, vvp_code_t cp)
  * added to the list of children, and for me to be the parent of the
  * new child.
  */
-bool of_FORK(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_FORK(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vthread_t child = vthread_new(cp->cptr2, cp->scope);
+      vthread_t ಮಗು = vthread_new(cp->cptr2, cp->scope);
 
-      if (cp->scope->is_automatic()) {
+      ಆದರೆ (cp->scope->is_automatic()) {
               /* The context allocated for this child is the top entry
                  on the write context stack. */
-            child->wt_context = thr->wt_context;
-            child->rd_context = thr->wt_context;
+            ಮಗು->wt_context = thr->wt_context;
+            ಮಗು->rd_context = thr->wt_context;
       }
 
-      child->parent = thr;
-      thr->children.insert(child);
+      ಮಗು->ಪೋಷಕ = thr;
+      thr->children.insert(ಮಗು);
 
-      if (thr->i_am_in_function) {
-	    child->is_scheduled = 1;
-	    child->i_am_in_function = 1;
-	    vthread_run(child);
+      ಆದರೆ (thr->i_am_ಒಳ_function) {
+	    ಮಗು->is_scheduled = 1;
+	    ಮಗು->i_am_ಒಳ_function = 1;
+	    vthread_ಸತತ(ಮಗು);
 	    running_thread = thr;
-      } else {
-	    schedule_vthread(child, 0, true);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ವೇಳಾಪಟ್ಟಿ_vthread(ಮಗು, 0, ನಿಜ);
       }
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_FREE(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_FREE(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
         /* Pop the child context from the read context stack. */
-      vvp_context_t child_context = thr->rd_context;
-      thr->rd_context = vvp_get_stacked_context(child_context);
+      vvp_context_t ಮಗು_context = thr->rd_context;
+      thr->rd_context = vvp_get_stacked_context(ಮಗು_context);
 
         /* Free the context. */
-      vthread_free_context(child_context, cp->scope);
+      vthread_free_context(ಮಗು_context, cp->scope);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -3712,11 +3712,11 @@ bool of_FREE(vthread_t thr, vvp_code_t cp)
  * X converted to X) and pushes the result. We can more efficiently
  * just to the invert in place.
  */
-bool of_INV(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_INV(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
       vvp_vector4_t&val = thr->peek_vec4();
       val.invert();
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 
@@ -3724,184 +3724,184 @@ bool of_INV(vthread_t thr, vvp_code_t)
  * Index registers, arithmetic.
  */
 
-static inline int64_t get_as_64_bit(uint32_t low_32, uint32_t high_32)
+ಸ್ಥಿರ ಸಾಲೊಳಗೆ int64_t get_as_64_ಬಿಟ್(uint32_t ಕೆಳಗಿನ_32, uint32_t ಮೇಲಿನ_32)
 {
-      int64_t low = low_32;
-      int64_t res = high_32;
+      int64_t ಕೆಳಗಿನ = ಕೆಳಗಿನ_32;
+      int64_t res = ಮೇಲಿನ_32;
 
       res <<= 32;
-      res |= low;
-      return res;
+      res |= ಕೆಳಗಿನ;
+      ಹಿಂತಿರುಗಿ res;
 }
 
-bool of_IX_ADD(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_IX_ಕೂಡಿಸು(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      thr->words[cp->number].w_int += get_as_64_bit(cp->bit_idx[0],
-                                                    cp->bit_idx[1]);
-      return true;
+      thr->ಪದಗಳು[cp->ಸಂಖ್ಯೆ].w_int += get_as_64_ಬಿಟ್(cp->ಬಿಟ್_idx[0],
+                                                    cp->ಬಿಟ್_idx[1]);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_IX_SUB(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_IX_SUB(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      thr->words[cp->number].w_int -= get_as_64_bit(cp->bit_idx[0],
-                                                    cp->bit_idx[1]);
-      return true;
+      thr->ಪದಗಳು[cp->ಸಂಖ್ಯೆ].w_int -= get_as_64_ಬಿಟ್(cp->ಬಿಟ್_idx[0],
+                                                    cp->ಬಿಟ್_idx[1]);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_IX_MUL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_IX_MUL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      thr->words[cp->number].w_int *= get_as_64_bit(cp->bit_idx[0],
-                                                    cp->bit_idx[1]);
-      return true;
+      thr->ಪದಗಳು[cp->ಸಂಖ್ಯೆ].w_int *= get_as_64_ಬಿಟ್(cp->ಬಿಟ್_idx[0],
+                                                    cp->ಬಿಟ್_idx[1]);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_IX_LOAD(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_IX_ತುಂಬು(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      thr->words[cp->number].w_int = get_as_64_bit(cp->bit_idx[0],
-                                                   cp->bit_idx[1]);
-      return true;
+      thr->ಪದಗಳು[cp->ಸಂಖ್ಯೆ].w_int = get_as_64_ಬಿಟ್(cp->ಬಿಟ್_idx[0],
+                                                   cp->ಬಿಟ್_idx[1]);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_IX_MOV(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_IX_MOV(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      thr->words[cp->bit_idx[0]].w_int = thr->words[cp->bit_idx[1]].w_int;
-      return true;
+      thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_int = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[1]].w_int;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_IX_GETV(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_IX_GETV(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned index = cp->bit_idx[0];
+      ಚಿಹ್ನೆರಹಿತ ಸೂಚ್ಯಂಕ = cp->ಬಿಟ್_idx[0];
       vvp_net_t*net = cp->net;
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(net->fil);
-      if (sig == 0) {
-	    assert(net->fil);
+      vvp_signal_ಮೌಲ್ಯ*sig = dynamic_cast<vvp_signal_ಮೌಲ್ಯ*>(net->fil);
+      ಆದರೆ (sig == 0) {
+	    ಪ್ರತಿಜ್ಞಾ(net->fil);
 	    cerr << thr->get_fileline()
 	         << "%%ix/getv error: Net arg not a vector signal? "
-		 << typeid(*net->fil).name() << endl;
+		 << typeid(*net->fil).name() << ಸಾಲು_ಅಂತ್ಯ;
       }
-      assert(sig);
+      ಪ್ರತಿಜ್ಞಾ(sig);
 
       vvp_vector4_t vec;
-      sig->vec4_value(vec);
-      bool overflow_flag;
+      sig->vec4_ಮೌಲ್ಯ(vec);
+      ತಾರ್ಕಿಕ ಅತಿಪ್ರವಾಹ_flag;
       uint64_t val = 0;
-      bool known_flag = vector4_to_value(vec, overflow_flag, val);
+      ತಾರ್ಕಿಕ ತಿಳಿದ_flag = vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(vec, ಅತಿಪ್ರವಾಹ_flag, val);
 
-      if (known_flag)
-	    thr->words[index].w_uint = val;
-      else
-	    thr->words[index].w_uint = 0;
+      ಆದರೆ (ತಿಳಿದ_flag)
+	    thr->ಪದಗಳು[ಸೂಚ್ಯಂಕ].w_uint = val;
+      ಇಲ್ಲದಿದ್ದರೆ
+	    thr->ಪದಗಳು[ಸೂಚ್ಯಂಕ].w_uint = 0;
 
 	/* Set bit 4 as a flag if the input is unknown. */
-      thr->flags[4] = known_flag ? (overflow_flag ? BIT4_X : BIT4_0) : BIT4_1;
+      thr->flags[4] = ತಿಳಿದ_flag ? (ಅತಿಪ್ರವಾಹ_flag ? BIT4_X : BIT4_0) : BIT4_1;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_IX_GETV_S(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_IX_GETV_S(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned index = cp->bit_idx[0];
+      ಚಿಹ್ನೆರಹಿತ ಸೂಚ್ಯಂಕ = cp->ಬಿಟ್_idx[0];
       vvp_net_t*net = cp->net;
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(net->fil);
-      if (sig == 0) {
-	    assert(net->fil);
+      vvp_signal_ಮೌಲ್ಯ*sig = dynamic_cast<vvp_signal_ಮೌಲ್ಯ*>(net->fil);
+      ಆದರೆ (sig == 0) {
+	    ಪ್ರತಿಜ್ಞಾ(net->fil);
 	    cerr << thr->get_fileline()
 	         << "%%ix/getv/s error: Net arg not a vector signal? "
 		 << "fun=" << typeid(*net->fil).name()
 		 << ", fil=" << (net->fil? typeid(*net->fil).name() : "<>")
-		 << endl;
+		 << ಸಾಲು_ಅಂತ್ಯ;
       }
-      assert(sig);
+      ಪ್ರತಿಜ್ಞಾ(sig);
 
       vvp_vector4_t vec;
-      sig->vec4_value(vec);
+      sig->vec4_ಮೌಲ್ಯ(vec);
       int64_t val;
-      bool known_flag = vector4_to_value(vec, val, true, true);
+      ತಾರ್ಕಿಕ ತಿಳಿದ_flag = vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(vec, val, ನಿಜ, ನಿಜ);
 
-      if (known_flag)
-	    thr->words[index].w_int = val;
-      else
-	    thr->words[index].w_int = 0;
+      ಆದರೆ (ತಿಳಿದ_flag)
+	    thr->ಪದಗಳು[ಸೂಚ್ಯಂಕ].w_int = val;
+      ಇಲ್ಲದಿದ್ದರೆ
+	    thr->ಪದಗಳು[ಸೂಚ್ಯಂಕ].w_int = 0;
 
 	/* Set bit 4 as a flag if the input is unknown. */
-      thr->flags[4] = known_flag? BIT4_0 : BIT4_1;
+      thr->flags[4] = ತಿಳಿದ_flag? BIT4_0 : BIT4_1;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-static uint64_t vec4_to_index(vthread_t thr, bool signed_flag)
+ಸ್ಥಿರ uint64_t vec4_ಗಮ್ಯ_ಸೂಚ್ಯಂಕ(vthread_t thr, ತಾರ್ಕಿಕ signed_flag)
 {
 	// Get all the information we need about the vec4 vector, then
 	// pop it away. We only need the bool bits and the length.
-      const vvp_vector4_t&val = thr->peek_vec4();
-      unsigned val_size = val.size();
-      unsigned long*bits = val.subarray(0, val_size, false);
-      thr->pop_vec4(1);
+      ಸ್ಥಿರಾಂಕ vvp_vector4_t&val = thr->peek_vec4();
+      ಚಿಹ್ನೆರಹಿತ val_ಗಾತ್ರ = val.size();
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*ಬಿಟ್ಟುಗಳು = val.subarray(0, val_ಗಾತ್ರ, ಸುಳ್ಳು);
+      thr->ತೆಗೆ_vec4(1);
 
 	// If there are X/Z bits, then the subarray will give us a nil
 	// pointer. Set a flag to indicate the error, and give up.
-      if (bits == 0) {
+      ಆದರೆ (ಬಿಟ್ಟುಗಳು == 0) {
 	    thr->flags[4] = BIT4_1;
-	    return 0;
+	    ಹಿಂತಿರುಗಿ 0;
       }
 
       uint64_t v = 0;
       thr->flags[4] = BIT4_0;
 
-      assert(sizeof(bits[0]) <= sizeof(v));
+      ಪ್ರತಿಜ್ಞಾ(ಗಾತ್ರ(ಬಿಟ್ಟುಗಳು[0]) <= ಗಾತ್ರ(v));
 
       v = 0;
-      for (unsigned idx = 0 ; idx < val_size ; idx += 8*sizeof(bits[0])) {
-	    uint64_t tmp = bits[idx/8/sizeof(bits[0])];
-	    if (idx < 8*sizeof(v)) {
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < val_ಗಾತ್ರ ; idx += 8*ಗಾತ್ರ(ಬಿಟ್ಟುಗಳು[0])) {
+	    uint64_t tmp = ಬಿಟ್ಟುಗಳು[idx/8/ಗಾತ್ರ(ಬಿಟ್ಟುಗಳು[0])];
+	    ಆದರೆ (idx < 8*ಗಾತ್ರ(v)) {
 		  v |= tmp << idx;
-	    } else {
-		  bool overflow = signed_flag && (v >> 63) ? ~tmp != 0 : tmp != 0;
-		  if (overflow) {
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  ತಾರ್ಕಿಕ ಅತಿಪ್ರವಾಹ = signed_flag && (v >> 63) ? ~tmp != 0 : tmp != 0;
+		  ಆದರೆ (ಅತಿಪ್ರವಾಹ) {
 			thr->flags[4] = BIT4_X;
-			break;
+			ನಿಲ್ಲಿಸು;
 		  }
 	    }
       }
 
 	// Set the high bits that are not necessarily filled in by the
 	// subarray function.
-      if (val_size < 8*sizeof(v)) {
-	    if (signed_flag && (v & (static_cast<uint64_t>(1)<<(val_size-1)))) {
+      ಆದರೆ (val_ಗಾತ್ರ < 8*ಗಾತ್ರ(v)) {
+	    ಆದರೆ (signed_flag && (v & (static_cast<uint64_t>(1)<<(val_ಗಾತ್ರ-1)))) {
 		    // Propagate the sign bit...
-		  v |= (~static_cast<uint64_t>(0)) << val_size;
+		  v |= (~static_cast<uint64_t>(0)) << val_ಗಾತ್ರ;
 
-	    } else {
+	    } ಇಲ್ಲದಿದ್ದರೆ {
 		    // Fill with zeros.
-		  v &= ~((~static_cast<uint64_t>(0)) << val_size);
+		  v &= ~((~static_cast<uint64_t>(0)) << val_ಗಾತ್ರ);
 	    }
 
       }
 
-      delete[]bits;
-      return v;
+      ಅಳಿಸು[]ಬಿಟ್ಟುಗಳು;
+      ಹಿಂತಿರುಗಿ v;
 }
 
 /*
  * %ix/vec4 <idx>
  */
-bool of_IX_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_IX_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned use_idx = cp->number;
-      thr->words[use_idx].w_uint = vec4_to_index(thr, false);
-      return true;
+      ಚಿಹ್ನೆರಹಿತ use_idx = cp->ಸಂಖ್ಯೆ;
+      thr->ಪದಗಳು[use_idx].w_uint = vec4_ಗಮ್ಯ_ಸೂಚ್ಯಂಕ(thr, ಸುಳ್ಳು);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %ix/vec4/s <idx>
  */
-bool of_IX_VEC4_S(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_IX_VEC4_S(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned use_idx = cp->number;
-      thr->words[use_idx].w_uint = vec4_to_index(thr, true);
-      return true;
+      ಚಿಹ್ನೆರಹಿತ use_idx = cp->ಸಂಖ್ಯೆ;
+      thr->ಪದಗಳು[use_idx].w_uint = vec4_ಗಮ್ಯ_ಸೂಚ್ಯಂಕ(thr, ನಿಜ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -3909,7 +3909,7 @@ bool of_IX_VEC4_S(vthread_t thr, vvp_code_t cp)
  * counter from the instruction and resuming. If the jump is
  * conditional, then test the bit for the expected value first.
  */
-bool of_JMP(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_JMP(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       thr->pc = cp->cptr;
 
@@ -3917,92 +3917,92 @@ bool of_JMP(vthread_t thr, vvp_code_t cp)
 	   keeps going to the next instruction. However, if there was
 	   a $stop or vpiStop, returning false here can break the
 	   simulation out of a hung loop. */
-      if (schedule_stopped()) {
-	    schedule_vthread(thr, 0, false);
-	    return false;
+      ಆದರೆ (ವೇಳಾಪಟ್ಟಿ_stopped()) {
+	    ವೇಳಾಪಟ್ಟಿ_vthread(thr, 0, ಸುಳ್ಳು);
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %jmp/0 <pc>, <flag>
  */
-bool of_JMP0(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_JMP0(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      if (thr->flags[cp->bit_idx[0]] == BIT4_0)
+      ಆದರೆ (thr->flags[cp->ಬಿಟ್_idx[0]] == BIT4_0)
 	    thr->pc = cp->cptr;
 
 	/* Normally, this returns true so that the processor just
 	   keeps going to the next instruction. However, if there was
 	   a $stop or vpiStop, returning false here can break the
 	   simulation out of a hung loop. */
-      if (schedule_stopped()) {
-	    schedule_vthread(thr, 0, false);
-	    return false;
+      ಆದರೆ (ವೇಳಾಪಟ್ಟಿ_stopped()) {
+	    ವೇಳಾಪಟ್ಟಿ_vthread(thr, 0, ಸುಳ್ಳು);
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %jmp/0xz <pc>, <flag>
  */
-bool of_JMP0XZ(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_JMP0_XZ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      if (thr->flags[cp->bit_idx[0]] != BIT4_1)
+      ಆದರೆ (thr->flags[cp->ಬಿಟ್_idx[0]] != BIT4_1)
 	    thr->pc = cp->cptr;
 
 	/* Normally, this returns true so that the processor just
 	   keeps going to the next instruction. However, if there was
 	   a $stop or vpiStop, returning false here can break the
 	   simulation out of a hung loop. */
-      if (schedule_stopped()) {
-	    schedule_vthread(thr, 0, false);
-	    return false;
+      ಆದರೆ (ವೇಳಾಪಟ್ಟಿ_stopped()) {
+	    ವೇಳಾಪಟ್ಟಿ_vthread(thr, 0, ಸುಳ್ಳು);
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %jmp/1 <pc>, <flag>
  */
-bool of_JMP1(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_JMP1(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      if (thr->flags[cp->bit_idx[0]] == BIT4_1)
+      ಆದರೆ (thr->flags[cp->ಬಿಟ್_idx[0]] == BIT4_1)
 	    thr->pc = cp->cptr;
 
 	/* Normally, this returns true so that the processor just
 	   keeps going to the next instruction. However, if there was
 	   a $stop or vpiStop, returning false here can break the
 	   simulation out of a hung loop. */
-      if (schedule_stopped()) {
-	    schedule_vthread(thr, 0, false);
-	    return false;
+      ಆದರೆ (ವೇಳಾಪಟ್ಟಿ_stopped()) {
+	    ವೇಳಾಪಟ್ಟಿ_vthread(thr, 0, ಸುಳ್ಳು);
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %jmp/1xz <pc>, <flag>
  */
-bool of_JMP1XZ(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_JMP1_XZ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      if (thr->flags[cp->bit_idx[0]] != BIT4_0)
+      ಆದರೆ (thr->flags[cp->ಬಿಟ್_idx[0]] != BIT4_0)
 	    thr->pc = cp->cptr;
 
 	/* Normally, this returns true so that the processor just
 	   keeps going to the next instruction. However, if there was
 	   a $stop or vpiStop, returning false here can break the
 	   simulation out of a hung loop. */
-      if (schedule_stopped()) {
-	    schedule_vthread(thr, 0, false);
-	    return false;
+      ಆದರೆ (ವೇಳಾಪಟ್ಟಿ_stopped()) {
+	    ವೇಳಾಪಟ್ಟಿ_vthread(thr, 0, ಸುಳ್ಳು);
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -4012,155 +4012,155 @@ bool of_JMP1XZ(vthread_t thr, vvp_code_t cp)
  * children know to wake me when they finish.
  */
 
-static void do_join(vthread_t thr, vthread_t child)
+ಸ್ಥಿರ ಶೂನ್ಯ do_join(vthread_t thr, vthread_t ಮಗು)
 {
-      assert(child->parent == thr);
+      ಪ್ರತಿಜ್ಞಾ(ಮಗು->ಪೋಷಕ == thr);
 
         /* If the immediate child thread is in an automatic scope... */
-      if (child->wt_context) {
+      ಆದರೆ (ಮಗು->wt_context) {
               /* and is the top level task/function thread... */
-            if (thr->wt_context != thr->rd_context) {
+            ಆದರೆ (thr->wt_context != thr->rd_context) {
                     /* Pop the child context from the write context stack. */
-                  vvp_context_t child_context = thr->wt_context;
-                  thr->wt_context = vvp_get_stacked_context(child_context);
+                  vvp_context_t ಮಗು_context = thr->wt_context;
+                  thr->wt_context = vvp_get_stacked_context(ಮಗು_context);
 
                     /* Push the child context onto the read context stack */
-                  vvp_set_stacked_context(child_context, thr->rd_context);
-                  thr->rd_context = child_context;
+                  vvp_ಗಣ_stacked_context(ಮಗು_context, thr->rd_context);
+                  thr->rd_context = ಮಗು_context;
             }
       }
 
-      vthread_reap(child);
+      vthread_reap(ಮಗು);
 }
 
-static bool do_join_opcode(vthread_t thr)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ do_join_opcode(vthread_t thr)
 {
-      assert( !thr->i_am_joining );
-      assert( !thr->children.empty());
+      ಪ್ರತಿಜ್ಞಾ( !thr->i_am_joining );
+      ಪ್ರತಿಜ್ಞಾ( !thr->children.empty());
 
 	// Are there any children that have already ended? If so, then
 	// join with that one.
-      for (set<vthread_t>::iterator cur = thr->children.begin()
-		 ; cur != thr->children.end() ; ++cur) {
+      ಗಾಗಿ (ಗಣ<vthread_t>::iterator cur = thr->children.begin()
+		 ; cur != thr->children.ಕೊನೆ() ; ++cur) {
 	    vthread_t curp = *cur;
-	    if (! curp->i_have_ended)
-		  continue;
+	    ಆದರೆ (! curp->i_have_ended)
+		  ಮುಂದುವರಿ;
 
 	      // found something!
 	    do_join(thr, curp);
-	    return true;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
 	// Otherwise, tell my children to awaken me when they end,
 	// then pause.
       thr->i_am_joining = 1;
-      return false;
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
-bool of_JOIN(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_JOIN(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      return do_join_opcode(thr);
+      ಹಿಂತಿರುಗಿ do_join_opcode(thr);
 }
 
 /*
  * This %join/detach <n> instruction causes the thread to detach
  * threads that were created by an earlier %fork.
  */
-bool of_JOIN_DETACH(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_JOIN_DETACH(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned long count = cp->number;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_2 = cp->ಸಂಖ್ಯೆ;
 
-      assert(count == thr->children.size());
+      ಪ್ರತಿಜ್ಞಾ(ಎಣಿಕೆ_2 == thr->children.size());
 
-      while (! thr->children.empty()) {
-	    vthread_t child = *thr->children.begin();
-	    assert(child->parent == thr);
+      ಆಗ (! thr->children.empty()) {
+	    vthread_t ಮಗು = *thr->children.begin();
+	    ಪ್ರತಿಜ್ಞಾ(ಮಗು->ಪೋಷಕ == thr);
 
 	      // We cannot detach automatic tasks/functions within an
 	      // automatic scope. If we try to do that, we might make
 	      // a mess of the allocation of the context. Note that it
 	      // is OK if the child context is distinct (See %exec_ufunc.)
-	    assert(child->wt_context==0 || thr->wt_context!=child->wt_context);
-	    if (child->i_have_ended) {
+	    ಪ್ರತಿಜ್ಞಾ(ಮಗು->wt_context==0 || thr->wt_context!=ಮಗು->wt_context);
+	    ಆದರೆ (ಮಗು->i_have_ended) {
 		    // If the child has already ended, then reap it.
-		  vthread_reap(child);
+		  vthread_reap(ಮಗು);
 
-	    } else {
-		  size_t res = child->parent->children.erase(child);
-		  assert(res == 1);
-		  child->i_am_detached = 1;
-		  thr->detached_children.insert(child);
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  size_t res = ಮಗು->ಪೋಷಕ->children.erase(ಮಗು);
+		  ಪ್ರತಿಜ್ಞಾ(res == 1);
+		  ಮಗು->i_am_detached = 1;
+		  thr->detached_children.insert(ಮಗು);
 	    }
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %load/ar <array-label>, <index>;
 */
-bool of_LOAD_AR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತುಂಬು_AR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned idx = cp->bit_idx[0];
-      double word;
+      ಚಿಹ್ನೆರಹಿತ idx = cp->ಬಿಟ್_idx[0];
+      ದ್ವಿಗುಣ ಶಬ್ದ;
 
 	/* The result is 0.0 if the address is undefined. */
-      if (thr->flags[4] == BIT4_1) {
-	    word = 0.0;
-      } else {
-	    unsigned adr = thr->words[idx].w_int;
-	    word = cp->array->get_word_r(adr);
+      ಆದರೆ (thr->flags[4] == BIT4_1) {
+	    ಶಬ್ದ = 0.0;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ adr = thr->ಪದಗಳು[idx].w_int;
+	    ಶಬ್ದ = cp->array->get_ಶಬ್ದ_r(adr);
       }
 
-      thr->push_real(word);
-      return true;
+      thr->ತಳ್ಳು_real(ಶಬ್ದ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-template <typename ELEM>
-static bool load_dar(vthread_t thr, vvp_code_t cp)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ ತುಂಬು_dar(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      int64_t adr = thr->words[3].w_int;
+      int64_t adr = thr->ಪದಗಳು[3].w_int;
       vvp_net_t*net = cp->net;
-      assert(net);
+      ಪ್ರತಿಜ್ಞಾ(net);
 
       vvp_fun_signal_object*obj = dynamic_cast<vvp_fun_signal_object*> (net->fun);
-      assert(obj);
+      ಪ್ರತಿಜ್ಞಾ(obj);
 
       vvp_darray*darray = obj->get_object().peek<vvp_darray>();
 
-      ELEM word;
-      if (darray &&
+      ELEM ಶಬ್ದ;
+      ಆದರೆ (darray &&
           (adr >= 0) && (thr->flags[4] == BIT4_0)) // A defined address >= 0
-	    darray->get_word(adr, word);
-      else
-	    dq_default(word, obj->size());
+	    darray->get_ಶಬ್ದ(adr, ಶಬ್ದ);
+      ಇಲ್ಲದಿದ್ದರೆ
+	    dq_default(ಶಬ್ದ, obj->size());
 
-      vthread_push(thr, word);
-      return true;
+      vthread_ತಳ್ಳು(thr, ಶಬ್ದ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %load/dar/r <array-label>;
  */
-bool of_LOAD_DAR_R(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತುಂಬು_DAR_R(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return load_dar<double>(thr, cp);
+      ಹಿಂತಿರುಗಿ ತುಂಬು_dar<ದ್ವಿಗುಣ>(thr, cp);
 }
 
 /*
  * %load/dar/str <array-label>;
  */
-bool of_LOAD_DAR_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತುಂಬು_DAR_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return load_dar<string>(thr, cp);
+      ಹಿಂತಿರುಗಿ ತುಂಬು_dar<string>(thr, cp);
 }
 
 /*
  * %load/dar/vec4 <array-label>;
  */
-bool of_LOAD_DAR_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತುಂಬು_DAR_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return load_dar<vvp_vector4_t>(thr, cp);
+      ಹಿಂತಿರುಗಿ ತುಂಬು_dar<vvp_vector4_t>(thr, cp);
 }
 
 /*
@@ -4168,44 +4168,44 @@ bool of_LOAD_DAR_VEC4(vthread_t thr, vvp_code_t cp)
  *   Indexed read of queue/dynamic-array class property; object on stack,
  *   index in words[3] (same as %load/dar/vec4).
  */
-bool of_LOAD_PROP_DAR_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತುಂಬು_PROP_DAR_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t pid = cp->number;
-      unsigned wid = cp->bit_idx[0];
-      int64_t adr = thr->words[3].w_int;
+      size_t pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      int64_t adr = thr->ಪದಗಳು[3].w_int;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t pobj;
       cobj->get_object(pid, pobj, 0);
       vvp_darray*darray = pobj.peek<vvp_darray>();
 
-      vvp_vector4_t word;
-      if (darray && (adr >= 0) && (thr->flags[4] == BIT4_0)) {
-	    darray->get_word(adr, word);
-      } else {
-	    dq_default(word, wid);
+      vvp_vector4_t ಶಬ್ದ;
+      ಆದರೆ (darray && (adr >= 0) && (thr->flags[4] == BIT4_0)) {
+	    darray->get_ಶಬ್ದ(adr, ಶಬ್ದ);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    dq_default(ಶಬ್ದ, wid);
       }
 
-      thr->push_vec4(word);
-      return true;
+      thr->ತಳ್ಳು_vec4(ಶಬ್ದ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %load/obj <var-label>
  */
-bool of_LOAD_OBJ(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತುಂಬು_OBJ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
       vvp_fun_signal_object*fun = dynamic_cast<vvp_fun_signal_object*> (net->fun);
-      assert(fun);
+      ಪ್ರತಿಜ್ಞಾ(fun);
 
       vvp_object_t val = fun->get_object();
-      thr->push_object(val);
+      thr->ತಳ್ಳು_object(val);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -4214,169 +4214,169 @@ bool of_LOAD_OBJ(vthread_t thr, vvp_code_t cp)
  *    value. If flags[4] == 1, the calculation of <index> may have
  *    failed, so push nil.
  */
-bool of_LOAD_OBJA(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತುಂಬು_OBJA(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned idx = cp->bit_idx[0];
-      vvp_object_t word;
+      ಚಿಹ್ನೆರಹಿತ idx = cp->ಬಿಟ್_idx[0];
+      vvp_object_t ಶಬ್ದ;
 
 	/* The result is 0.0 if the address is undefined. */
-      if (thr->flags[4] == BIT4_1) {
+      ಆದರೆ (thr->flags[4] == BIT4_1) {
 	    ; // Return nil
-      } else {
-	    unsigned adr = thr->words[idx].w_int;
-	    cp->array->get_word_obj(adr, word);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ adr = thr->ಪದಗಳು[idx].w_int;
+	    cp->array->get_ಶಬ್ದ_obj(adr, ಶಬ್ದ);
       }
 
-      thr->push_object(word);
-      return true;
+      thr->ತಳ್ಳು_object(ಶಬ್ದ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %load/real <var-label>
  */
-bool of_LOAD_REAL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತುಂಬು_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       __vpiHandle*tmp = cp->handle;
-      t_vpi_value val;
+      t_vpi_ಮೌಲ್ಯ val;
 
       val.format = vpiRealVal;
-      vpi_get_value(tmp, &val);
+      vpi_get_ಮೌಲ್ಯ(tmp, &val);
 
-      thr->push_real(val.value.real);
+      thr->ತಳ್ಳು_real(val.value.real);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %load/str <var-label>
  */
-bool of_LOAD_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತುಂಬು_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
 
 
       vvp_fun_signal_string*fun = dynamic_cast<vvp_fun_signal_string*> (net->fun);
-      assert(fun);
+      ಪ್ರತಿಜ್ಞಾ(fun);
 
-      const string&val = fun->get_string();
-      thr->push_str(val);
+      ಸ್ಥಿರಾಂಕ string&val = fun->get_string();
+      thr->ತಳ್ಳು_str(val);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_LOAD_STRA(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತುಂಬು_STRA(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned idx = cp->bit_idx[0];
-      string word;
+      ಚಿಹ್ನೆರಹಿತ idx = cp->ಬಿಟ್_idx[0];
+      string ಶಬ್ದ;
 
-      if (thr->flags[4] == BIT4_1) {
-	    word = "";
-      } else {
-	    unsigned adr = thr->words[idx].w_int;
-	    word = cp->array->get_word_str(adr);
+      ಆದರೆ (thr->flags[4] == BIT4_1) {
+	    ಶಬ್ದ = "";
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ adr = thr->ಪದಗಳು[idx].w_int;
+	    ಶಬ್ದ = cp->array->get_ಶಬ್ದ_str(adr);
       }
 
-      thr->push_str(word);
-      return true;
+      thr->ತಳ್ಳು_str(ಶಬ್ದ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 
 /*
  * %load/vec4 <net>
  */
-bool of_LOAD_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತುಂಬು_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
 	// Push a placeholder onto the stack in order to reserve the
 	// stack space. Use a reference for the stack top as a target
 	// for the load.
-      thr->push_vec4(vvp_vector4_t());
-      vvp_vector4_t&sig_value = thr->peek_vec4();
+      thr->ತಳ್ಳು_vec4(vvp_vector4_t());
+      vvp_vector4_t&sig_ಮೌಲ್ಯ = thr->peek_vec4();
 
       vvp_net_t*net = cp->net;
 
 	// For the %load to work, the functor must actually be a
 	// signal functor. Only signals save their vector value.
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (net->fil);
-      if (sig == 0) {
+      vvp_signal_ಮೌಲ್ಯ*sig = dynamic_cast<vvp_signal_ಮೌಲ್ಯ*> (net->fil);
+      ಆದರೆ (sig == 0) {
 	    cerr << thr->get_fileline()
 	         << "%load/v error: Net arg not a signal? "
 		 << (net->fil ? typeid(*net->fil).name() :
 	                        typeid(*net->fun).name())
-	         << endl;
-	    assert(sig);
-	    return true;
+	         << ಸಾಲು_ಅಂತ್ಯ;
+	    ಪ್ರತಿಜ್ಞಾ(sig);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
 	// Extract the value from the signal and directly into the
 	// target stack position.
-      sig->vec4_value(sig_value);
+      sig->vec4_ಮೌಲ್ಯ(sig_ಮೌಲ್ಯ);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %load/vec4a <arr>, <adrx>
  */
-bool of_LOAD_VEC4A(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತುಂಬು_VEC4_A(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      int adr_index = cp->bit_idx[0];
+      ಪೂರ್ಣಾಂಕ adr_ಸೂಚ್ಯಂಕ = cp->ಬಿಟ್_idx[0];
 
-      long adr = thr->words[adr_index].w_int;
+      ದೀರ್ಘ adr = thr->ಪದಗಳು[adr_ಸೂಚ್ಯಂಕ].w_int;
 
 	// If flag[3] is set, then the calculation of the address
 	// failed, and this load should return X instead of the actual
 	// value.
-      if (thr->flags[4] == BIT4_1) {
-	    vvp_vector4_t tmp (cp->array->get_word_size(), BIT4_X);
-	    thr->push_vec4(tmp);
-	    return true;
+      ಆದರೆ (thr->flags[4] == BIT4_1) {
+	    vvp_vector4_t tmp (cp->array->get_ಶಬ್ದ_ಗಾತ್ರ(), BIT4_X);
+	    thr->ತಳ್ಳು_vec4(tmp);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      vvp_vector4_t tmp (cp->array->get_word(adr));
-      thr->push_vec4(tmp);
-      return true;
+      vvp_vector4_t tmp (cp->array->get_ಶಬ್ದ(adr));
+      thr->ತಳ್ಳು_vec4(tmp);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-static void do_verylong_mod(vvp_vector4_t&vala, const vvp_vector4_t&valb,
-			    bool left_is_neg, bool right_is_neg)
+ಸ್ಥಿರ ಶೂನ್ಯ do_verylong_mod(vvp_vector4_t&vala, ಸ್ಥಿರಾಂಕ vvp_vector4_t&valb,
+			    ತಾರ್ಕಿಕ ಎಡ_is_neg, ತಾರ್ಕಿಕ ಬಲ_is_neg)
 {
-      bool out_is_neg = left_is_neg;
-      const int len=vala.size();
-      unsigned char *a, *z, *t;
-      a = new unsigned char[len+1];
-      z = new unsigned char[len+1];
-      t = new unsigned char[len+1];
+      ತಾರ್ಕಿಕ ಹೊರಹೋಗು_is_neg = ಎಡ_is_neg;
+      ಸ್ಥಿರಾಂಕ ಪೂರ್ಣಾಂಕ len=vala.size();
+      ಚಿಹ್ನೆರಹಿತ ಅಕ್ಷರ *a, *z, *t;
+      a = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ಅಕ್ಷರ[len+1];
+      z = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ಅಕ್ಷರ[len+1];
+      t = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ಅಕ್ಷರ[len+1];
 
-      unsigned char carry;
-      unsigned char temp;
+      ಚಿಹ್ನೆರಹಿತ ಅಕ್ಷರ ವಾಹಕ;
+      ಚಿಹ್ನೆರಹಿತ ಅಕ್ಷರ ತಾತ್ಕಾಲಿಕ;
 
-      int mxa = -1, mxz = -1;
-      int i;
-      int current, copylen;
+      ಪೂರ್ಣಾಂಕ mxa = -1, mxz = -1;
+      ಪೂರ್ಣಾಂಕ i;
+      ಪೂರ್ಣಾಂಕ current, copylen;
 
-      unsigned lb_carry = left_is_neg? 1 : 0;
-      unsigned rb_carry = right_is_neg? 1 : 0;
-      for (int idx = 0 ;  idx < len ;  idx += 1) {
-	    unsigned lb = vala.value(idx);
-	    unsigned rb = valb.value(idx);
+      ಚಿಹ್ನೆರಹಿತ lb_ವಾಹಕ = ಎಡ_is_neg? 1 : 0;
+      ಚಿಹ್ನೆರಹಿತ rb_ವಾಹಕ = ಬಲ_is_neg? 1 : 0;
+      ಗಾಗಿ (ಪೂರ್ಣಾಂಕ idx = 0 ;  idx < len ;  idx += 1) {
+	    ಚಿಹ್ನೆರಹಿತ lb = vala.value(idx);
+	    ಚಿಹ್ನೆರಹಿತ rb = valb.value(idx);
 
-	    if ((lb | rb) & 2) {
-		  delete []t;
-		  delete []z;
-		  delete []a;
+	    ಆದರೆ ((lb | rb) & 2) {
+		  ಅಳಿಸು []t;
+		  ಅಳಿಸು []z;
+		  ಅಳಿಸು []a;
 		  vvp_vector4_t tmp(len, BIT4_X);
 		  vala = tmp;
-		  return;
+		  ಹಿಂತಿರುಗಿ;
 	    }
 
-	    if (left_is_neg) {
-		  lb = (1-lb) + lb_carry;
-		  lb_carry = (lb & ~1)? 1 : 0;
+	    ಆದರೆ (ಎಡ_is_neg) {
+		  lb = (1-lb) + lb_ವಾಹಕ;
+		  lb_ವಾಹಕ = (lb & ~1)? 1 : 0;
 		  lb &= 1;
 	    }
-	    if (right_is_neg) {
-		  rb = (1-rb) + rb_carry;
-		  rb_carry = (rb & ~1)? 1 : 0;
+	    ಆದರೆ (ಬಲ_is_neg) {
+		  rb = (1-rb) + rb_ವಾಹಕ;
+		  rb_ವಾಹಕ = (rb & ~1)? 1 : 0;
 		  rb &= 1;
 	    }
 
@@ -4387,46 +4387,46 @@ static void do_verylong_mod(vvp_vector4_t&vala, const vvp_vector4_t&valb,
       z[len]=0;
       a[len]=1;
 
-      for(i=len-1;i>=0;i--) {
-	    if(! a[i]) {
+      ಗಾಗಿ(i=len-1;i>=0;i--) {
+	    ಆದರೆ(! a[i]) {
 		  mxa=i;
-		  break;
+		  ನಿಲ್ಲಿಸು;
 	    }
       }
 
-      for(i=len-1;i>=0;i--) {
-	    if(z[i]) {
+      ಗಾಗಿ(i=len-1;i>=0;i--) {
+	    ಆದರೆ(z[i]) {
 		  mxz=i;
-		  break;
+		  ನಿಲ್ಲಿಸು;
 	    }
       }
 
-      if((mxa>mxz)||(mxa==-1)) {
-	    if(mxa==-1) {
-		  delete []t;
-		  delete []z;
-		  delete []a;
+      ಆದರೆ((mxa>mxz)||(mxa==-1)) {
+	    ಆದರೆ(mxa==-1) {
+		  ಅಳಿಸು []t;
+		  ಅಳಿಸು []z;
+		  ಅಳಿಸು []a;
 		  vvp_vector4_t tmpx (len, BIT4_X);
 		  vala = tmpx;
-		  return;
+		  ಹಿಂತಿರುಗಿ;
 	    }
 
-	    goto tally;
+	    ಹೋಗು tally;
       }
 
       copylen = mxa + 2;
       current = mxz - mxa;
 
-      while(current > -1) {
-	    carry = 1;
-	    for(i=0;i<copylen;i++) {
-		  temp = z[i+current] + a[i] + carry;
-		  t[i] = (temp&1);
-		  carry = (temp>>1);
+      ಆಗ(current > -1) {
+	    ವಾಹಕ = 1;
+	    ಗಾಗಿ(i=0;i<copylen;i++) {
+		  ತಾತ್ಕಾಲಿಕ = z[i+current] + a[i] + ವಾಹಕ;
+		  t[i] = (ತಾತ್ಕಾಲಿಕ&1);
+		  ವಾಹಕ = (ತಾತ್ಕಾಲಿಕ>>1);
 	    }
 
-	    if(carry) {
-		  for(i=0;i<copylen;i++) {
+	    ಆದರೆ(ವಾಹಕ) {
+		  ಗಾಗಿ(i=0;i<copylen;i++) {
 			z[i+current] = t[i];
 		  }
 	    }
@@ -4437,216 +4437,216 @@ static void do_verylong_mod(vvp_vector4_t&vala, const vvp_vector4_t&valb,
  tally:
 
       vvp_vector4_t tmp (len, BIT4_X);
-      carry = out_is_neg? 1 : 0;
-      for (int idx = 0 ;  idx < len ;  idx += 1) {
-	    unsigned ob = z[idx];
-	    if (out_is_neg) {
-		  ob = (1-ob) + carry;
-		  carry = (ob & ~1)? 1 : 0;
+      ವಾಹಕ = ಹೊರಹೋಗು_is_neg? 1 : 0;
+      ಗಾಗಿ (ಪೂರ್ಣಾಂಕ idx = 0 ;  idx < len ;  idx += 1) {
+	    ಚಿಹ್ನೆರಹಿತ ob = z[idx];
+	    ಆದರೆ (ಹೊರಹೋಗು_is_neg) {
+		  ob = (1-ob) + ವಾಹಕ;
+		  ವಾಹಕ = (ob & ~1)? 1 : 0;
 		  ob = ob & 1;
 	    }
-	    tmp.set_bit(idx, ob?BIT4_1:BIT4_0);
+	    tmp.ಗಣ_ಬಿಟ್(idx, ob?BIT4_1:BIT4_0);
       }
       vala = tmp;
-      delete []t;
-      delete []z;
-      delete []a;
+      ಅಳಿಸು []t;
+      ಅಳಿಸು []z;
+      ಅಳಿಸು []a;
 }
 
-bool of_MAX_WR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_MAX_WR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
-      if (r != r)
-	    thr->push_real(l);
-      else if (l != l)
-	    thr->push_real(r);
-      else if (r < l)
-	    thr->push_real(l);
-      else
-	    thr->push_real(r);
-      return true;
+      ದ್ವಿಗುಣ r = thr->ತೆಗೆ_real();
+      ದ್ವಿಗುಣ l = thr->ತೆಗೆ_real();
+      ಆದರೆ (r != r)
+	    thr->ತಳ್ಳು_real(l);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (l != l)
+	    thr->ತಳ್ಳು_real(r);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (r < l)
+	    thr->ತಳ್ಳು_real(l);
+      ಇಲ್ಲದಿದ್ದರೆ
+	    thr->ತಳ್ಳು_real(r);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_MIN_WR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_MIN_WR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
-      if (r != r)
-	    thr->push_real(l);
-      else if (l != l)
-	    thr->push_real(r);
-      else if (r < l)
-	    thr->push_real(r);
-      else
-	    thr->push_real(l);
-      return true;
+      ದ್ವಿಗುಣ r = thr->ತೆಗೆ_real();
+      ದ್ವಿಗುಣ l = thr->ತೆಗೆ_real();
+      ಆದರೆ (r != r)
+	    thr->ತಳ್ಳು_real(l);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (l != l)
+	    thr->ತಳ್ಳು_real(r);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (r < l)
+	    thr->ತಳ್ಳು_real(r);
+      ಇಲ್ಲದಿದ್ದರೆ
+	    thr->ತಳ್ಳು_real(l);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_MOD(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_MOD(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      vvp_vector4_t valb = thr->pop_vec4();
+      vvp_vector4_t valb = thr->ತೆಗೆ_vec4();
       vvp_vector4_t&vala = thr->peek_vec4();
 
-      assert(vala.size()==valb.size());
-      unsigned wid = vala.size();
+      ಪ್ರತಿಜ್ಞಾ(vala.size()==valb.size());
+      ಚಿಹ್ನೆರಹಿತ wid = vala.size();
 
-      if(wid <= 8*sizeof(unsigned long long)) {
-	    unsigned long long lv = 0, rv = 0;
+      ಆದರೆ(wid <= 8*ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ದೀರ್ಘ)) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ದೀರ್ಘ lv = 0, rv = 0;
 
-	    for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-		  unsigned long long lb = vala.value(idx);
-		  unsigned long long rb = valb.value(idx);
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid ;  idx += 1) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ದೀರ್ಘ lb = vala.value(idx);
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ದೀರ್ಘ rb = valb.value(idx);
 
-		  if ((lb | rb) & 2)
-			goto x_out;
+		  ಆದರೆ ((lb | rb) & 2)
+			ಹೋಗು x_ಹೊರಹೋಗು;
 
-		  lv |= (unsigned long long) lb << idx;
-		  rv |= (unsigned long long) rb << idx;
+		  lv |= (ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ದೀರ್ಘ) lb << idx;
+		  rv |= (ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ದೀರ್ಘ) rb << idx;
 	    }
 
-	    if (rv == 0)
-		  goto x_out;
+	    ಆದರೆ (rv == 0)
+		  ಹೋಗು x_ಹೊರಹೋಗು;
 
 	    lv %= rv;
 
-	    for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-		  vala.set_bit(idx, (lv&1)?BIT4_1 : BIT4_0);
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid ;  idx += 1) {
+		  vala.ಗಣ_ಬಿಟ್(idx, (lv&1)?BIT4_1 : BIT4_0);
 		  lv >>= 1;
 	    }
 
-	    return true;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      } else {
-	    do_verylong_mod(vala, valb, false, false);
-	    return true;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    do_verylong_mod(vala, valb, ಸುಳ್ಳು, ಸುಳ್ಳು);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
- x_out:
+ x_ಹೊರಹೋಗು:
       vala = vvp_vector4_t(wid, BIT4_X);
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %mod/s
  */
-bool of_MOD_S(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_MOD_S(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      vvp_vector4_t valb = thr->pop_vec4();
+      vvp_vector4_t valb = thr->ತೆಗೆ_vec4();
       vvp_vector4_t&vala = thr->peek_vec4();
 
-      assert(vala.size()==valb.size());
-      unsigned wid = vala.size();
+      ಪ್ರತಿಜ್ಞಾ(vala.size()==valb.size());
+      ಚಿಹ್ನೆರಹಿತ wid = vala.size();
 
 	/* Handle the case that we can fit the bits into a long-long
 	   variable. We cause use native % to do the work. */
-      if(wid <= 8*sizeof(long long)) {
-	    long long lv = 0, rv = 0;
+      ಆದರೆ(wid <= 8*ಗಾತ್ರ(ದೀರ್ಘ ದೀರ್ಘ)) {
+	    ದೀರ್ಘ ದೀರ್ಘ lv = 0, rv = 0;
 
-	    for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-		  long long lb = vala.value(idx);
-		  long long rb = valb.value(idx);
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid ;  idx += 1) {
+		  ದೀರ್ಘ ದೀರ್ಘ lb = vala.value(idx);
+		  ದೀರ್ಘ ದೀರ್ಘ rb = valb.value(idx);
 
-		  if ((lb | rb) & 2)
-			goto x_out;
+		  ಆದರೆ ((lb | rb) & 2)
+			ಹೋಗು x_ಹೊರಹೋಗು;
 
-		  lv |= (long long) lb << idx;
-		  rv |= (long long) rb << idx;
+		  lv |= (ದೀರ್ಘ ದೀರ್ಘ) lb << idx;
+		  rv |= (ದೀರ್ಘ ದೀರ್ಘ) rb << idx;
 	    }
 
-	    if (rv == 0)
-		  goto x_out;
+	    ಆದರೆ (rv == 0)
+		  ಹೋಗು x_ಹೊರಹೋಗು;
 
-	    if ((lv == LLONG_MIN) && (rv == -1))
-		  goto zero_out;
+	    ಆದರೆ ((lv == LLONG_MIN) && (rv == -1))
+		  ಹೋಗು zero_ಹೊರಹೋಗು;
 
 	      /* Sign extend the signed operands when needed. */
-	    if (wid < 8*sizeof(long long)) {
-		  if (lv & (1LL << (wid-1)))
+	    ಆದರೆ (wid < 8*ಗಾತ್ರ(ದೀರ್ಘ ದೀರ್ಘ)) {
+		  ಆದರೆ (lv & (1LL << (wid-1)))
 			lv |= -1ULL << wid;
-		  if (rv & (1LL << (wid-1)))
+		  ಆದರೆ (rv & (1LL << (wid-1)))
 			rv |= -1ULL << wid;
 	    }
 
 	    lv %= rv;
 
-	    for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-		  vala.set_bit(idx, (lv&1)? BIT4_1 : BIT4_0);
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wid ;  idx += 1) {
+		  vala.ಗಣ_ಬಿಟ್(idx, (lv&1)? BIT4_1 : BIT4_0);
 		  lv >>= 1;
 	    }
 
 	      // vala is the top of the stack, edited in place, so we
 	      // do not need to push the result.
 
-	    return true;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 
-	    bool left_is_neg  = vala.value(vala.size()-1) == BIT4_1;
-	    bool right_is_neg = valb.value(valb.size()-1) == BIT4_1;
-	    do_verylong_mod(vala, valb, left_is_neg, right_is_neg);
-	    return true;
+	    ತಾರ್ಕಿಕ ಎಡ_is_neg  = vala.value(vala.size()-1) == BIT4_1;
+	    ತಾರ್ಕಿಕ ಬಲ_is_neg = valb.value(valb.size()-1) == BIT4_1;
+	    do_verylong_mod(vala, valb, ಎಡ_is_neg, ಬಲ_is_neg);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
- x_out:
+ x_ಹೊರಹೋಗು:
       vala = vvp_vector4_t(wid, BIT4_X);
-      return true;
- zero_out:
+      ಹಿಂತಿರುಗಿ ನಿಜ;
+ zero_ಹೊರಹೋಗು:
       vala = vvp_vector4_t(wid, BIT4_0);
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %mod/wr
  */
-bool of_MOD_WR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_MOD_WR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
-      thr->push_real(fmod(l,r));
+      ದ್ವಿಗುಣ r = thr->ತೆಗೆ_real();
+      ದ್ವಿಗುಣ l = thr->ತೆಗೆ_real();
+      thr->ತಳ್ಳು_real(fmod(l,r));
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %neg/wr
  */
-bool of_NEG_WR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_NEG_WR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
       thr->poke_real(0, -thr->peek_real(0));
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %pad/s <wid>
  */
-bool of_PAD_S(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_PAD_S(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->number;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಸಂಖ್ಯೆ;
 
       vvp_vector4_t&val = thr->peek_vec4();
-      unsigned old_size = val.size();
+      ಚಿಹ್ನೆರಹಿತ old_ಗಾತ್ರ = val.size();
 
 	// Sign-extend.
-      if (old_size < wid)
-	    val.resize(wid, val.value(old_size-1));
-      else
+      ಆದರೆ (old_ಗಾತ್ರ < wid)
+	    val.resize(wid, val.value(old_ಗಾತ್ರ-1));
+      ಇಲ್ಲದಿದ್ದರೆ
 	    val.resize(wid);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %pad/u <wid>
  */
-bool of_PAD_U(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_PAD_U(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->number;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಸಂಖ್ಯೆ;
 
       vvp_vector4_t&val = thr->peek_vec4();
       val.resize(wid, BIT4_0);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -4656,58 +4656,58 @@ bool of_PAD_U(vthread_t thr, vvp_code_t cp)
  * index of the part select, and second is the value to be
  * selected. The result is pushed back to the stack.
  */
-static bool of_PART_base(vthread_t thr, vvp_code_t cp, bool signed_flag)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ ದ_PART_ತಳ(vthread_t thr, vvp_ಸಂಕೇತ_t cp, ತಾರ್ಕಿಕ signed_flag)
 {
-      unsigned wid = cp->number;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಸಂಖ್ಯೆ;
 
-      vvp_vector4_t base4 = thr->pop_vec4();
+      vvp_vector4_t base4 = thr->ತೆಗೆ_vec4();
       vvp_vector4_t&value = thr->peek_vec4();
 
       vvp_vector4_t res (wid, BIT4_X);
 
 	// NOTE: This is treating the vector as signed. Is that correct?
-      int32_t base;
-      bool value_ok = vector4_to_value(base4, base, signed_flag);
-      if (! value_ok) {
+      int32_t ತಳ;
+      ತಾರ್ಕಿಕ ಮೌಲ್ಯ_ok = vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(base4, ತಳ, signed_flag);
+      ಆದರೆ (! ಮೌಲ್ಯ_ok) {
 	    value = res;
-	    return true;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      if (base >= (int32_t)value.size()) {
+      ಆದರೆ (ತಳ >= (int32_t)value.size()) {
 	    value = res;
-	    return true;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      if ((base+(int)wid) <= 0) {
+      ಆದರೆ ((ತಳ+(ಪೂರ್ಣಾಂಕ)wid) <= 0) {
 	    value = res;
-	    return true;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      long vbase = 0;
-      if (base < 0) {
-	    vbase = -base;
+      ದೀರ್ಘ vbase = 0;
+      ಆದರೆ (ತಳ < 0) {
+	    vbase = -ತಳ;
 	    wid -= vbase;
-	    base = 0;
+	    ತಳ = 0;
       }
 
-      if ((base+wid) > value.size()) {
-	    wid = value.size() - base;
+      ಆದರೆ ((ತಳ+wid) > value.size()) {
+	    wid = value.size() - ತಳ;
       }
 
-      res .set_vec(vbase, value.subvalue(base, wid));
+      res .ಗಣ_vec(vbase, value.subvalue(ತಳ, wid));
       value = res;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_PART_S(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_PART_S(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return of_PART_base(thr, cp, true);
+      ಹಿಂತಿರುಗಿ ದ_PART_ತಳ(thr, cp, ನಿಜ);
 }
 
-bool of_PART_U(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_PART_U(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return of_PART_base(thr, cp, false);
+      ಹಿಂತಿರುಗಿ ದ_PART_ತಳ(thr, cp, ಸುಳ್ಳು);
 }
 
 /*
@@ -4716,72 +4716,72 @@ bool of_PART_U(vthread_t thr, vvp_code_t cp)
  *
  * Pop the value to be selected. The result is pushed back to the stack.
  */
-static bool of_PARTI_base(vthread_t thr, vvp_code_t cp, bool signed_flag)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ ದ_PARTI_ತಳ(vthread_t thr, vvp_ಸಂಕೇತ_t cp, ತಾರ್ಕಿಕ signed_flag)
 {
-      unsigned wid = cp->number;
-      uint32_t base = cp->bit_idx[0];
-      uint32_t bwid = cp->bit_idx[1];
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಸಂಖ್ಯೆ;
+      uint32_t ತಳ = cp->ಬಿಟ್_idx[0];
+      uint32_t bwid = cp->ಬಿಟ್_idx[1];
 
       vvp_vector4_t&value = thr->peek_vec4();
 
       vvp_vector4_t res (wid, BIT4_X);
 
 	// NOTE: This is treating the vector as signed. Is that correct?
-      int32_t use_base = base;
-      if (signed_flag && bwid < 32 && (base&(1<<(bwid-1)))) {
-	    use_base |= -1UL << bwid;
+      int32_t use_ತಳ = ತಳ;
+      ಆದರೆ (signed_flag && bwid < 32 && (ತಳ&(1<<(bwid-1)))) {
+	    use_ತಳ |= -1UL << bwid;
       }
 
-      if (use_base >= (int32_t)value.size()) {
+      ಆದರೆ (use_ತಳ >= (int32_t)value.size()) {
 	    value = res;
-	    return true;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      if ((use_base+(int32_t)wid) <= 0) {
+      ಆದರೆ ((use_ತಳ+(int32_t)wid) <= 0) {
 	    value = res;
-	    return true;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      long vbase = 0;
-      if (use_base < 0) {
-	    vbase = -use_base;
+      ದೀರ್ಘ vbase = 0;
+      ಆದರೆ (use_ತಳ < 0) {
+	    vbase = -use_ತಳ;
 	    wid -= vbase;
-	    use_base = 0;
+	    use_ತಳ = 0;
       }
 
-      if ((use_base+wid) > value.size()) {
-	    wid = value.size() - use_base;
+      ಆದರೆ ((use_ತಳ+wid) > value.size()) {
+	    wid = value.size() - use_ತಳ;
       }
 
-      res .set_vec(vbase, value.subvalue(use_base, wid));
+      res .ಗಣ_vec(vbase, value.subvalue(use_ತಳ, wid));
       value = res;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_PARTI_S(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_PARTI_S(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return of_PARTI_base(thr, cp, true);
+      ಹಿಂತಿರುಗಿ ದ_PARTI_ತಳ(thr, cp, ನಿಜ);
 }
 
-bool of_PARTI_U(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_PARTI_U(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return of_PARTI_base(thr, cp, false);
+      ಹಿಂತಿರುಗಿ ದ_PARTI_ತಳ(thr, cp, ಸುಳ್ಳು);
 }
 
 /*
  * %mul
  */
-bool of_MUL(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_MUL(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      vvp_vector4_t r = thr->pop_vec4();
+      vvp_vector4_t r = thr->ತೆಗೆ_vec4();
 	// Rather then pop l, use it directly from the stack. When we
 	// assign to 'l', that will edit the top of the stack, which
 	// replaces a pop and a pull.
       vvp_vector4_t&l = thr->peek_vec4();
 
       l.mul(r);
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -4790,9 +4790,9 @@ bool of_MUL(vthread_t thr, vvp_code_t)
  * Pop1 operand, get the other operand from the arguments, and push
  * the result.
  */
-bool of_MULI(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_MULI(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->number;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಸಂಖ್ಯೆ;
 
       vvp_vector4_t&l = thr->peek_vec4();
 
@@ -4800,31 +4800,31 @@ bool of_MULI(vthread_t thr, vvp_code_t cp)
 	// going to be zero, so start the result vector with all zero
 	// bits. Then we only need to replace the bits that are different.
       vvp_vector4_t r (wid, BIT4_0);
-      get_immediate_rval (cp, r);
+      get_ತಕ್ಷಣ_rval (cp, r);
 
       l.mul(r);
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_MUL_WR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_MUL_WR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
-      thr->push_real(l * r);
+      ದ್ವಿಗುಣ r = thr->ತೆಗೆ_real();
+      ದ್ವಿಗುಣ l = thr->ತೆಗೆ_real();
+      thr->ತಳ್ಳು_real(l * r);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_NAND(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_NAND(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      vvp_vector4_t valr = thr->pop_vec4();
+      vvp_vector4_t valr = thr->ತೆಗೆ_vec4();
       vvp_vector4_t&vall = thr->peek_vec4();
-      assert(vall.size() == valr.size());
+      ಪ್ರತಿಜ್ಞಾ(vall.size() == valr.size());
 
       vall &= valr;
       vall.invert();
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -4833,297 +4833,297 @@ bool of_NAND(vthread_t thr, vvp_code_t)
  * it to the stack. The <vpi-object> is a __vpiHandle that is a
  * vpiClassDefn object that defines the item to be created.
  */
-bool of_NEW_COBJ(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_NEW_COBJ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      const class_type*defn = dynamic_cast<const class_type*> (cp->handle);
-      assert(defn);
+      ಸ್ಥಿರಾಂಕ class_type*defn = dynamic_cast<ಸ್ಥಿರಾಂಕ class_type*> (cp->handle);
+      ಪ್ರತಿಜ್ಞಾ(defn);
 
-      vvp_object_t tmp (new vvp_cobject(defn));
-      thr->push_object(tmp);
-      return true;
+      vvp_object_t tmp (ಹೊಸ vvp_cobject(defn));
+      thr->ತಳ್ಳು_object(tmp);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_NEW_DARRAY(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_NEW_DARRAY(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      const char*text = cp->text;
-      size_t size = thr->words[cp->bit_idx[0]].w_int;
-      unsigned word_wid;
+      ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*ಪಠ್ಯ = cp->ಪಠ್ಯ;
+      size_t size = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_int;
+      ಚಿಹ್ನೆರಹಿತ ಶಬ್ದ_wid;
       size_t n;
 
       vvp_object_t obj;
-      if (strcmp(text,"b8") == 0) {
-	    obj = new vvp_darray_atom<uint8_t>(size);
-      } else if (strcmp(text,"b16") == 0) {
-	    obj = new vvp_darray_atom<uint16_t>(size);
-      } else if (strcmp(text,"b32") == 0) {
-	    obj = new vvp_darray_atom<uint32_t>(size);
-      } else if (strcmp(text,"b64") == 0) {
-	    obj = new vvp_darray_atom<uint64_t>(size);
-      } else if (strcmp(text,"sb8") == 0) {
-	    obj = new vvp_darray_atom<int8_t>(size);
-      } else if (strcmp(text,"sb16") == 0) {
-	    obj = new vvp_darray_atom<int16_t>(size);
-      } else if (strcmp(text,"sb32") == 0) {
-	    obj = new vvp_darray_atom<int32_t>(size);
-      } else if (strcmp(text,"sb64") == 0) {
-	    obj = new vvp_darray_atom<int64_t>(size);
-      } else if ((1 == sscanf(text, "b%u%zn", &word_wid, &n)) &&
-                 (n == strlen(text))) {
-	    obj = new vvp_darray_vec2(size, word_wid);
-      } else if ((1 == sscanf(text, "sb%u%zn", &word_wid, &n)) &&
-                 (n == strlen(text))) {
-	    obj = new vvp_darray_vec2(size, word_wid);
-      } else if ((1 == sscanf(text, "v%u%zn", &word_wid, &n)) &&
-                 (n == strlen(text))) {
-	    obj = new vvp_darray_vec4(size, word_wid);
-      } else if ((1 == sscanf(text, "sv%u%zn", &word_wid, &n)) &&
-                 (n == strlen(text))) {
-	    obj = new vvp_darray_vec4(size, word_wid);
-      } else if (strcmp(text,"r") == 0) {
-	    obj = new vvp_darray_real(size);
-      } else if (strcmp(text,"S") == 0) {
-	    obj = new vvp_darray_string(size);
-      } else {
+      ಆದರೆ (strcmp(ಪಠ್ಯ,"b8") == 0) {
+	    obj = ಹೊಸ vvp_darray_atom<uint8_t>(size);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(ಪಠ್ಯ,"b16") == 0) {
+	    obj = ಹೊಸ vvp_darray_atom<uint16_t>(size);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(ಪಠ್ಯ,"b32") == 0) {
+	    obj = ಹೊಸ vvp_darray_atom<uint32_t>(size);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(ಪಠ್ಯ,"b64") == 0) {
+	    obj = ಹೊಸ vvp_darray_atom<uint64_t>(size);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(ಪಠ್ಯ,"sb8") == 0) {
+	    obj = ಹೊಸ vvp_darray_atom<int8_t>(size);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(ಪಠ್ಯ,"sb16") == 0) {
+	    obj = ಹೊಸ vvp_darray_atom<int16_t>(size);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(ಪಠ್ಯ,"sb32") == 0) {
+	    obj = ಹೊಸ vvp_darray_atom<int32_t>(size);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(ಪಠ್ಯ,"sb64") == 0) {
+	    obj = ಹೊಸ vvp_darray_atom<int64_t>(size);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ ((1 == ಅಕ್ಷರಸರಣಿ_ಓದು(ಪಠ್ಯ, "b%u%zn", &ಶಬ್ದ_wid, &n)) &&
+                 (n == ಅಕ್ಷರಸರಣಿ_ಉದ್ದ(ಪಠ್ಯ))) {
+	    obj = ಹೊಸ vvp_darray_vec2(size, ಶಬ್ದ_wid);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ ((1 == ಅಕ್ಷರಸರಣಿ_ಓದು(ಪಠ್ಯ, "sb%u%zn", &ಶಬ್ದ_wid, &n)) &&
+                 (n == ಅಕ್ಷರಸರಣಿ_ಉದ್ದ(ಪಠ್ಯ))) {
+	    obj = ಹೊಸ vvp_darray_vec2(size, ಶಬ್ದ_wid);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ ((1 == ಅಕ್ಷರಸರಣಿ_ಓದು(ಪಠ್ಯ, "v%u%zn", &ಶಬ್ದ_wid, &n)) &&
+                 (n == ಅಕ್ಷರಸರಣಿ_ಉದ್ದ(ಪಠ್ಯ))) {
+	    obj = ಹೊಸ vvp_darray_vec4(size, ಶಬ್ದ_wid);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ ((1 == ಅಕ್ಷರಸರಣಿ_ಓದು(ಪಠ್ಯ, "sv%u%zn", &ಶಬ್ದ_wid, &n)) &&
+                 (n == ಅಕ್ಷರಸರಣಿ_ಉದ್ದ(ಪಠ್ಯ))) {
+	    obj = ಹೊಸ vvp_darray_vec4(size, ಶಬ್ದ_wid);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(ಪಠ್ಯ,"r") == 0) {
+	    obj = ಹೊಸ vvp_darray_real(size);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(ಪಠ್ಯ,"S") == 0) {
+	    obj = ಹೊಸ vvp_darray_string(size);
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	    cerr << get_fileline()
 	         << "Internal error: Unsupported dynamic array type: "
-	         << text << "." << endl;
-	    assert(0);
+	         << ಪಠ್ಯ << "." << ಸಾಲು_ಅಂತ್ಯ;
+	    ಪ್ರತಿಜ್ಞಾ(0);
       }
 
-      thr->push_object(obj);
+      thr->ತಳ್ಳು_object(obj);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_NOOP(vthread_t, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_NOOP(vthread_t, vvp_ಸಂಕೇತ_t)
 {
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %nor/r
  */
-bool of_NORR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_NORR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
       vvp_vector4_t&val = thr->peek_vec4();
       val = vvp_vector4_t(1, ~val.reduce_or());
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * Push a null to the object stack.
  */
-bool of_NULL(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_NULL(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
       vvp_object_t tmp;
-      thr->push_object(tmp);
-      return true;
+      thr->ತಳ್ಳು_object(tmp);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %and/r
  */
-bool of_ANDR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_ANDR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
       vvp_vector4_t&val = thr->peek_vec4();
       val = vvp_vector4_t(1, val.reduce_and());
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %nand/r
  */
-bool of_NANDR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_NANDR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
       vvp_vector4_t&val = thr->peek_vec4();
       val = vvp_vector4_t(1, ~val.reduce_and());
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %or/r
  */
-bool of_ORR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_ORR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
       vvp_vector4_t&val = thr->peek_vec4();
       val = vvp_vector4_t(1, val.reduce_or());
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %xor/r
  */
-bool of_XORR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_XORR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
       vvp_vector4_t&val = thr->peek_vec4();
       val = vvp_vector4_t(1, val.reduce_xor());
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %xnor/r
  */
-bool of_XNORR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_XNORR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
       vvp_vector4_t&val = thr->peek_vec4();
       val = vvp_vector4_t(1, ~val.reduce_xor());
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %or
  */
-bool of_OR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_OR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      vvp_vector4_t valb = thr->pop_vec4();
+      vvp_vector4_t valb = thr->ತೆಗೆ_vec4();
       vvp_vector4_t&vala = thr->peek_vec4();
       vala |= valb;
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %nor
  */
-bool of_NOR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_NOR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      vvp_vector4_t valr = thr->pop_vec4();
+      vvp_vector4_t valr = thr->ತೆಗೆ_vec4();
       vvp_vector4_t&vall = thr->peek_vec4();
-      assert(vall.size() == valr.size());
+      ಪ್ರತಿಜ್ಞಾ(vall.size() == valr.size());
 
       vall |= valr;
       vall.invert();
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %pop/obj <num>, <skip>
  */
-bool of_POP_OBJ(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತೆಗೆ_OBJ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned cnt = cp->bit_idx[0];
-      unsigned skip = cp->bit_idx[1];
+      ಚಿಹ್ನೆರಹಿತ cnt = cp->ಬಿಟ್_idx[0];
+      ಚಿಹ್ನೆರಹಿತ skip = cp->ಬಿಟ್_idx[1];
 
-      thr->pop_object(cnt, skip);
-      return true;
+      thr->ತೆಗೆ_object(cnt, skip);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %pop/real <number>
  */
-bool of_POP_REAL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತೆಗೆ_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned cnt = cp->number;
-      thr->pop_real(cnt);
-      return true;
+      ಚಿಹ್ನೆರಹಿತ cnt = cp->ಸಂಖ್ಯೆ;
+      thr->ತೆಗೆ_real(cnt);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  *  %pop/str <number>
  */
-bool of_POP_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತೆಗೆ_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned cnt = cp->number;
-      thr->pop_str(cnt);
-      return true;
+      ಚಿಹ್ನೆರಹಿತ cnt = cp->ಸಂಖ್ಯೆ;
+      thr->ತೆಗೆ_str(cnt);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  *  %pop/vec4 <number>
  */
-bool of_POP_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತೆಗೆ_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned cnt = cp->number;
-      thr->pop_vec4(cnt);
-      return true;
+      ಚಿಹ್ನೆರಹಿತ cnt = cp->ಸಂಖ್ಯೆ;
+      thr->ತೆಗೆ_vec4(cnt);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %pow
  * %pow/s
  */
-static bool of_POW_base(vthread_t thr, bool signed_flag)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ ದ_POW_ತಳ(vthread_t thr, ತಾರ್ಕಿಕ signed_flag)
 {
-      vvp_vector4_t valb = thr->pop_vec4();
-      vvp_vector4_t vala = thr->pop_vec4();
+      vvp_vector4_t valb = thr->ತೆಗೆ_vec4();
+      vvp_vector4_t vala = thr->ತೆಗೆ_vec4();
 
-      unsigned wid = vala.size();
+      ಚಿಹ್ನೆರಹಿತ wid = vala.size();
 
-      vvp_vector2_t xv2 = vvp_vector2_t(vala, true);
-      vvp_vector2_t yv2 = vvp_vector2_t(valb, true);
+      vvp_vector2_t xv2 = vvp_vector2_t(vala, ನಿಜ);
+      vvp_vector2_t yv2 = vvp_vector2_t(valb, ನಿಜ);
 
 
         /* If we have an X or Z in the arguments return X. */
-      if (xv2.is_NaN() || yv2.is_NaN()) {
+      ಆದರೆ (xv2.is_NaN() || yv2.is_NaN()) {
 	    vvp_vector4_t tmp (wid, BIT4_X);
-	    thr->push_vec4(tmp);
-	    return true;
+	    thr->ತಳ್ಳು_vec4(tmp);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
 	// Is the exponent negative? If so, table 5-6 in IEEE1364-2005
 	// defines what value is returned.
-      if (signed_flag && yv2.value(yv2.size()-1)) {
-	    int a_val;
+      ಆದರೆ (signed_flag && yv2.value(yv2.size()-1)) {
+	    ಪೂರ್ಣಾಂಕ a_val;
 	    vvp_bit4_t pad = BIT4_0, lsb = BIT4_0;
-	    if (vector2_to_value(xv2, a_val, true)) {
-		  if (a_val == 0) {
+	    ಆದರೆ (vector2_ಗಮ್ಯ_ಮೌಲ್ಯ(xv2, a_val, ನಿಜ)) {
+		  ಆದರೆ (a_val == 0) {
 			pad = BIT4_X; lsb = BIT4_X;
 		  }
-		  if (a_val == 1) {
+		  ಆದರೆ (a_val == 1) {
 			pad = BIT4_0; lsb = BIT4_1;
 		  }
-		  if (a_val == -1) {
-			if (yv2.value(0)) {
+		  ಆದರೆ (a_val == -1) {
+			ಆದರೆ (yv2.value(0)) {
 			      pad = BIT4_1; lsb = BIT4_1;
-			} else {
+			} ಇಲ್ಲದಿದ್ದರೆ {
 			      pad = BIT4_0; lsb = BIT4_1;
 			}
 		  }
 	    }
 	    vvp_vector4_t tmp (wid, pad);
-	    tmp.set_bit(0, lsb);
-	    thr->push_vec4(tmp);
-	    return true;
+	    tmp.ಗಣ_ಬಿಟ್(0, lsb);
+	    thr->ತಳ್ಳು_vec4(tmp);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      vvp_vector2_t result = pow(xv2, yv2);
+      vvp_vector2_t ಫಲಿತಾಂಶ = ಘಾತ(xv2, yv2);
 
         /* Copy only what we need of the result. If the result is too
 	   small, zero-pad it. */
-      for (unsigned jdx = 0;  jdx < wid;  jdx += 1) {
-	    if (jdx >= result.size())
-		  vala.set_bit(jdx, BIT4_0);
-	    else
-		  vala.set_bit(jdx, result.value(jdx) ? BIT4_1 : BIT4_0);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ jdx = 0;  jdx < wid;  jdx += 1) {
+	    ಆದರೆ (jdx >= ಫಲಿತಾಂಶ.size())
+		  vala.ಗಣ_ಬಿಟ್(jdx, BIT4_0);
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  vala.ಗಣ_ಬಿಟ್(jdx, ಫಲಿತಾಂಶ.value(jdx) ? BIT4_1 : BIT4_0);
       }
-      thr->push_vec4(vala);
+      thr->ತಳ್ಳು_vec4(vala);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_POW(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_POW(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      return of_POW_base(thr, false);
+      ಹಿಂತಿರುಗಿ ದ_POW_ತಳ(thr, ಸುಳ್ಳು);
 }
 
-bool of_POW_S(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_POW_S(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      return of_POW_base(thr, true);
+      ಹಿಂತಿರುಗಿ ದ_POW_ತಳ(thr, ನಿಜ);
 }
 
-bool of_POW_WR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_POW_WR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
-      thr->push_real(pow(l,r));
+      ದ್ವಿಗುಣ r = thr->ತೆಗೆ_real();
+      ದ್ವಿಗುಣ l = thr->ತೆಗೆ_real();
+      thr->ತಳ್ಳು_real(ಘಾತ(l,r));
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -5131,14 +5131,14 @@ bool of_POW_WR(vthread_t thr, vvp_code_t)
  *
  * Load an object value from the cobject and push it onto the object stack.
  */
-bool of_PROP_OBJ(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_PROP_OBJ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned pid = cp->number;
-      unsigned idx = cp->bit_idx[0];
+      ಚಿಹ್ನೆರಹಿತ pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ idx = cp->ಬಿಟ್_idx[0];
 
-      if (idx != 0) {
-	    assert(idx < vthread_s::WORDS_COUNT);
-	    idx = thr->words[idx].w_uint;
+      ಆದರೆ (idx != 0) {
+	    ಪ್ರತಿಜ್ಞಾ(idx < vthread_s::ಪದಗಳು_ಎಣಿಕೆ);
+	    idx = thr->ಪದಗಳು[idx].w_uint;
       }
 
       vvp_object_t&obj = thr->peek_object();
@@ -5147,40 +5147,40 @@ bool of_PROP_OBJ(vthread_t thr, vvp_code_t cp)
       vvp_object_t val;
       cobj->get_object(pid, val, idx);
 
-      thr->push_object(val);
+      thr->ತಳ್ಳು_object(val);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-static void get_from_obj(unsigned pid, vvp_cobject*cobj, double&val)
+ಸ್ಥಿರ ಶೂನ್ಯ get_from_obj(ಚಿಹ್ನೆರಹಿತ pid, vvp_cobject*cobj, ದ್ವಿಗುಣ&val)
 {
       val = cobj->get_real(pid);
 }
 
-static void get_from_obj(unsigned pid, vvp_cobject*cobj, string&val)
+ಸ್ಥಿರ ಶೂನ್ಯ get_from_obj(ಚಿಹ್ನೆರಹಿತ pid, vvp_cobject*cobj, string&val)
 {
       val = cobj->get_string(pid);
 }
 
-static void get_from_obj(unsigned pid, vvp_cobject*cobj, vvp_vector4_t&val)
+ಸ್ಥಿರ ಶೂನ್ಯ get_from_obj(ಚಿಹ್ನೆರಹಿತ pid, vvp_cobject*cobj, vvp_vector4_t&val)
 {
       cobj->get_vec4(pid, val);
 }
 
-template <typename ELEM>
-static bool prop(vthread_t thr, vvp_code_t cp)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ prop(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned pid = cp->number;
+      ಚಿಹ್ನೆರಹಿತ pid = cp->ಸಂಖ್ಯೆ;
 
       vvp_object_t&obj = thr->peek_object();
       vvp_cobject*cobj = obj.peek<vvp_cobject>();
-      assert(cobj);
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       ELEM val;
       get_from_obj(pid, cobj, val);
-      vthread_push(thr, val);
+      vthread_ತಳ್ಳು(thr, val);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -5189,9 +5189,9 @@ static bool prop(vthread_t thr, vvp_code_t cp)
  * Load a real value from the cobject and push it onto the real value
  * stack.
  */
-bool of_PROP_R(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_PROP_R(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return prop<double>(thr, cp);
+      ಹಿಂತಿರುಗಿ prop<ದ್ವಿಗುಣ>(thr, cp);
 }
 
 /*
@@ -5200,9 +5200,9 @@ bool of_PROP_R(vthread_t thr, vvp_code_t cp)
  * Load a string value from the cobject and push it onto the real value
  * stack.
  */
-bool of_PROP_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_PROP_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return prop<string>(thr, cp);
+      ಹಿಂತಿರುಗಿ prop<string>(thr, cp);
 }
 
 /*
@@ -5211,318 +5211,318 @@ bool of_PROP_STR(vthread_t thr, vvp_code_t cp)
  * Load a property <pid> from the cobject on the top of the stack into
  * the vector space at <base>.
  */
-bool of_PROP_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_PROP_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return prop<vvp_vector4_t>(thr, cp);
+      ಹಿಂತಿರುಗಿ prop<vvp_vector4_t>(thr, cp);
 }
 
-bool of_PUSHI_REAL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_PUSHI_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      double mant = cp->bit_idx[0];
-      uint32_t imant = cp->bit_idx[0];
-      int exp = cp->bit_idx[1];
+      ದ್ವಿಗುಣ mant = cp->ಬಿಟ್_idx[0];
+      uint32_t imant = cp->ಬಿಟ್_idx[0];
+      ಪೂರ್ಣಾಂಕ ಘಾತಾಂಕ = cp->ಬಿಟ್_idx[1];
 
 	// Detect +infinity
-      if (exp==0x3fff && imant==0) {
-	    thr->push_real(INFINITY);
-	    return true;
+      ಆದರೆ (ಘಾತಾಂಕ==0x3fff && imant==0) {
+	    thr->ತಳ್ಳು_real(INFINITY);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 	// Detect -infinity
-      if (exp==0x7fff && imant==0) {
-	    thr->push_real(-INFINITY);
-	    return true;
+      ಆದರೆ (ಘಾತಾಂಕ==0x7fff && imant==0) {
+	    thr->ತಳ್ಳು_real(-INFINITY);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 	// Detect NaN
-      if (exp==0x3fff) {
-	    thr->push_real(nan(""));
-	    return true;
+      ಆದರೆ (ಘಾತಾಂಕ==0x3fff) {
+	    thr->ತಳ್ಳು_real(nan(""));
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      double sign = (exp & 0x4000)? -1.0 : 1.0;
+      ದ್ವಿಗುಣ sign = (ಘಾತಾಂಕ & 0x4000)? -1.0 : 1.0;
 
-      exp &= 0x1fff;
+      ಘಾತಾಂಕ &= 0x1fff;
 
-      mant = sign * ldexp(mant, exp - 0x1000);
-      thr->push_real(mant);
-      return true;
+      mant = sign * ldexp(mant, ಘಾತಾಂಕ - 0x1000);
+      thr->ತಳ್ಳು_real(mant);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_PUSHI_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_PUSHI_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      const char*text = cp->text;
-      thr->push_str(filter_string(text));
-      return true;
+      ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*ಪಠ್ಯ = cp->ಪಠ್ಯ;
+      thr->ತಳ್ಳು_str(filter_string(ಪಠ್ಯ));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %pushi/vec4 <vala>, <valb>, <wid>
  */
-bool of_PUSHI_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_PUSHI_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid  = cp->number;
+      ಚಿಹ್ನೆರಹಿತ wid  = cp->ಸಂಖ್ಯೆ;
 
 	// I expect that most of the bits of an immediate value are
 	// going to be zero, so start the result vector with all zero
 	// bits. Then we only need to replace the bits that are different.
       vvp_vector4_t val (wid, BIT4_0);
-      get_immediate_rval (cp, val);
+      get_ತಕ್ಷಣ_rval (cp, val);
 
-      thr->push_vec4(val);
+      thr->ತಳ್ಳು_vec4(val);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %pushv/str
  *   Pops a vec4 value, and pushes a string.
  */
-bool of_PUSHV_STR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_PUSHV_STR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      vvp_vector4_t vec = thr->pop_vec4();
+      vvp_vector4_t vec = thr->ತೆಗೆ_vec4();
 
       size_t slen = (vec.size() + 7)/8;
-      vector<char>buf;
+      vector<ಅಕ್ಷರ>buf;
       buf.reserve(slen);
 
-      for (size_t idx = 0 ; idx < vec.size() ; idx += 8) {
-	    char tmp = 0;
+      ಗಾಗಿ (size_t idx = 0 ; idx < vec.size() ; idx += 8) {
+	    ಅಕ್ಷರ tmp = 0;
 	    size_t trans = 8;
-	    if (idx+trans > vec.size())
+	    ಆದರೆ (idx+trans > vec.size())
 		  trans = vec.size() - idx;
 
-	    for (size_t bdx = 0 ; bdx < trans ; bdx += 1) {
-		  if (vec.value(idx+bdx) == BIT4_1)
+	    ಗಾಗಿ (size_t bdx = 0 ; bdx < trans ; bdx += 1) {
+		  ಆದರೆ (vec.value(idx+bdx) == BIT4_1)
 			tmp |= 1 << bdx;
 	    }
 
-	    if (tmp != 0)
+	    ಆದರೆ (tmp != 0)
 		  buf.push_back(tmp);
       }
 
       string val;
-      for (vector<char>::reverse_iterator cur = buf.rbegin()
+      ಗಾಗಿ (vector<ಅಕ್ಷರ>::reverse_iterator cur = buf.rbegin()
 		 ; cur != buf.rend() ; ++cur) {
 	    val.push_back(*cur);
       }
 
-      thr->push_str(val);
+      thr->ತಳ್ಳು_str(val);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %putc/str/vec4 <var>, <mux>
  */
-bool of_PUTC_STR_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_PUTC_STR_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned muxr = cp->bit_idx[0];
-      int32_t mux = muxr? thr->words[muxr].w_int : 0;
+      ಚಿಹ್ನೆರಹಿತ muxr = cp->ಬಿಟ್_idx[0];
+      int32_t mux = muxr? thr->ಪದಗಳು[muxr].w_int : 0;
 
-      vvp_vector4_t val = thr->pop_vec4();
-      assert(val.size() == 8);
+      vvp_vector4_t val = thr->ತೆಗೆ_vec4();
+      ಪ್ರತಿಜ್ಞಾ(val.size() == 8);
 
-      if (mux < 0)
-	    return true;
+      ಆದರೆ (mux < 0)
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
 	/* Get the existing value of the string. If we find that the
 	   index is too big for the string, then give up. */
       vvp_net_t*net = cp->net;
       vvp_fun_signal_string*fun = dynamic_cast<vvp_fun_signal_string*> (net->fun);
-      assert(fun);
+      ಪ್ರತಿಜ್ಞಾ(fun);
 
       string tmp = fun->get_string();
-      if (tmp.size() <= (size_t)mux)
-	    return true;
+      ಆದರೆ (tmp.size() <= (size_t)mux)
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
-      char val_str = 0;
-      for (size_t idx = 0 ; idx < 8 ; idx += 1) {
-	    if (val.value(idx)==BIT4_1)
+      ಅಕ್ಷರ val_str = 0;
+      ಗಾಗಿ (size_t idx = 0 ; idx < 8 ; idx += 1) {
+	    ಆದರೆ (val.value(idx)==BIT4_1)
 		  val_str |= 1<<idx;
       }
 
 	// It is a quirk of the Verilog standard that putc(..., 'h00)
 	// has no effect. Test for that case here.
-      if (val_str == 0)
-	    return true;
+      ಆದರೆ (val_str == 0)
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
 
       tmp[mux] = val_str;
 
       vvp_send_string(vvp_net_ptr_t(cp->net, 0), tmp, thr->wt_context);
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-template <typename ELEM, class QTYPE>
-static bool qinsert(vthread_t thr, vvp_code_t cp, unsigned wid=0)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM, ವರ್ಗ QTYPE>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ qinsert(vthread_t thr, vvp_ಸಂಕೇತ_t cp, ಚಿಹ್ನೆರಹಿತ wid=0)
 {
-      int64_t idx = thr->words[3].w_int;
+      int64_t idx = thr->ಪದಗಳು[3].w_int;
       ELEM value;
       vvp_net_t*net = cp->net;
-      pop_value(thr, value, wid); // Pop the value to store.
+      ತೆಗೆ_ಮೌಲ್ಯ(thr, value, wid); // Pop the value to store.
 
-      vvp_queue*queue = get_queue_object<QTYPE>(thr, net);
-      assert(queue);
-      if (idx < 0) {
+      vvp_ಸರತಿ*ಸರತಿ = get_ಸರತಿ_object<QTYPE>(thr, net);
+      ಪ್ರತಿಜ್ಞಾ(ಸರತಿ);
+      ಆದರೆ (idx < 0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot insert at a negative "
-	         << get_queue_type(value)
+	         << get_ಸರತಿ_type(value)
 	         << " index (" << idx << "). ";
-	    print_queue_value(value);
-	    cerr << " was not added." << endl;
-      } else if (thr->flags[4] != BIT4_0) {
+	    print_ಸರತಿ_ಮೌಲ್ಯ(value);
+	    cerr << " was not added." << ಸಾಲು_ಅಂತ್ಯ;
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (thr->flags[4] != BIT4_0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot insert at an undefined "
-	         << get_queue_type(value) << " index. ";
-	    print_queue_value(value);
-	    cerr << " was not added." << endl;
-      } else {
-	    unsigned max_size = thr->words[cp->bit_idx[0]].w_int;
-	    queue->insert(idx, value, max_size);
+	         << get_ಸರತಿ_type(value) << " index. ";
+	    print_ಸರತಿ_ಮೌಲ್ಯ(value);
+	    cerr << " was not added." << ಸಾಲು_ಅಂತ್ಯ;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ max_ಗಾತ್ರ = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_int;
+	    ಸರತಿ->insert(idx, value, max_ಗಾತ್ರ);
       }
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %qinsert/real <var-label>
  */
-bool of_QINSERT_REAL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QINSERT_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qinsert<double, vvp_queue_real>(thr, cp);
+      ಹಿಂತಿರುಗಿ qinsert<ದ್ವಿಗುಣ, vvp_ಸರತಿ_real>(thr, cp);
 }
 
 /*
  * %qinsert/str <var-label>
  */
-bool of_QINSERT_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QINSERT_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qinsert<string, vvp_queue_string>(thr, cp);
+      ಹಿಂತಿರುಗಿ qinsert<string, vvp_ಸರತಿ_string>(thr, cp);
 }
 
 /*
  * %qinsert/v <var-label>
  */
-bool of_QINSERT_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QINSERT_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qinsert<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
+      ಹಿಂತಿರುಗಿ qinsert<vvp_vector4_t, vvp_ಸರತಿ_vec4>(thr, cp, cp->ಬಿಟ್_idx[1]);
 }
 
 /*
  * Helper functions used in the queue pop templates
  */
-inline void push_value(vthread_t thr, double value, unsigned)
+ಸಾಲೊಳಗೆ ಶೂನ್ಯ ತಳ್ಳು_ಮೌಲ್ಯ(vthread_t thr, ದ್ವಿಗುಣ value, ಚಿಹ್ನೆರಹಿತ)
 {
-      thr->push_real(value);
+      thr->ತಳ್ಳು_real(value);
 }
 
-inline void push_value(vthread_t thr, const string&value, unsigned)
+ಸಾಲೊಳಗೆ ಶೂನ್ಯ ತಳ್ಳು_ಮೌಲ್ಯ(vthread_t thr, ಸ್ಥಿರಾಂಕ string&value, ಚಿಹ್ನೆರಹಿತ)
 {
-      thr->push_str(value);
+      thr->ತಳ್ಳು_str(value);
 }
 
-inline void push_value(vthread_t thr, const vvp_vector4_t&value, unsigned wid)
+ಸಾಲೊಳಗೆ ಶೂನ್ಯ ತಳ್ಳು_ಮೌಲ್ಯ(vthread_t thr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&value, ಚಿಹ್ನೆರಹಿತ wid)
 {
-      assert(wid == value.size());
-      thr->push_vec4(value);
+      ಪ್ರತಿಜ್ಞಾ(wid == value.size());
+      thr->ತಳ್ಳು_vec4(value);
 }
 
-template <typename ELEM, class QTYPE>
-static bool q_pop(vthread_t thr, vvp_code_t cp,
-                  void (*get_val_func)(vvp_queue*, ELEM&),
-                  const char*loc, unsigned wid)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM, ವರ್ಗ QTYPE>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ q_ತೆಗೆ(vthread_t thr, vvp_ಸಂಕೇತ_t cp,
+                  ಶೂನ್ಯ (*get_val_func)(vvp_ಸರತಿ*, ELEM&),
+                  ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*loc, ಚಿಹ್ನೆರಹಿತ wid)
 {
       vvp_net_t*net = cp->net;
 
-      vvp_queue*queue = get_queue_object<QTYPE>(thr, net);
-      assert(queue);
+      vvp_ಸರತಿ*ಸರತಿ = get_ಸರತಿ_object<QTYPE>(thr, net);
+      ಪ್ರತಿಜ್ಞಾ(ಸರತಿ);
 
-      size_t size = queue->get_size();
+      size_t size = ಸರತಿ->get_ಗಾತ್ರ();
 
       ELEM value;
-      if (size) {
-	    get_val_func(queue, value);
-      } else {
+      ಆದರೆ (size) {
+	    get_val_func(ಸರತಿ, value);
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	    dq_default(value, wid);
 	    cerr << thr->get_fileline()
 	         << "Warning: pop_" << loc << "() on empty "
-	         << get_queue_type(value) << "." << endl;
+	         << get_ಸರತಿ_type(value) << "." << ಸಾಲು_ಅಂತ್ಯ;
       }
 
-      push_value(thr, value, wid);
-      return true;
+      ತಳ್ಳು_ಮೌಲ್ಯ(thr, value, wid);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-template <typename ELEM>
-static void get_back_value(vvp_queue*queue, ELEM&value)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM>
+ಸ್ಥಿರ ಶೂನ್ಯ get_ಹಿಂಭಾಗ_ಮೌಲ್ಯ(vvp_ಸರತಿ*ಸರತಿ, ELEM&value)
 {
-      queue->get_word(queue->get_size()-1, value);
-      queue->pop_back();
+      ಸರತಿ->get_ಶಬ್ದ(ಸರತಿ->get_ಗಾತ್ರ()-1, value);
+      ಸರತಿ->pop_back();
 }
 
-template <typename ELEM, class QTYPE>
-static bool qpop_b(vthread_t thr, vvp_code_t cp, unsigned wid=0)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM, ವರ್ಗ QTYPE>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ qpop_b(vthread_t thr, vvp_ಸಂಕೇತ_t cp, ಚಿಹ್ನೆರಹಿತ wid=0)
 {
-      return q_pop<ELEM, QTYPE>(thr, cp, get_back_value<ELEM>, "back", wid);
+      ಹಿಂತಿರುಗಿ q_ತೆಗೆ<ELEM, QTYPE>(thr, cp, get_ಹಿಂಭಾಗ_ಮೌಲ್ಯ<ELEM>, "back", wid);
 }
 
 /*
  * %qpop/b/real <var-label>
  */
-bool of_QPOP_B_REAL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QPOP_B_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qpop_b<double, vvp_queue_real>(thr, cp);
+      ಹಿಂತಿರುಗಿ qpop_b<ದ್ವಿಗುಣ, vvp_ಸರತಿ_real>(thr, cp);
 }
 
 /*
  * %qpop/b/str <var-label>
  */
-bool of_QPOP_B_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QPOP_B_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qpop_b<string, vvp_queue_string>(thr, cp);
+      ಹಿಂತಿರುಗಿ qpop_b<string, vvp_ಸರತಿ_string>(thr, cp);
 }
 
 /*
  * %qpop/b/v <var-label>
  */
-bool of_QPOP_B_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QPOP_B_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qpop_b<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[0]);
+      ಹಿಂತಿರುಗಿ qpop_b<vvp_vector4_t, vvp_ಸರತಿ_vec4>(thr, cp, cp->ಬಿಟ್_idx[0]);
 }
 
-template <typename ELEM>
-static void get_front_value(vvp_queue*queue, ELEM&value)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM>
+ಸ್ಥಿರ ಶೂನ್ಯ get_front_ಮೌಲ್ಯ(vvp_ಸರತಿ*ಸರತಿ, ELEM&value)
 {
-      queue->get_word(0, value);
-      queue->pop_front();
+      ಸರತಿ->get_ಶಬ್ದ(0, value);
+      ಸರತಿ->pop_front();
 }
 
-template <typename ELEM, class QTYPE>
-static bool qpop_f(vthread_t thr, vvp_code_t cp, unsigned wid=0)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM, ವರ್ಗ QTYPE>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ qpop_f(vthread_t thr, vvp_ಸಂಕೇತ_t cp, ಚಿಹ್ನೆರಹಿತ wid=0)
 {
-      return q_pop<ELEM, QTYPE>(thr, cp, get_front_value<ELEM>, "front", wid);
+      ಹಿಂತಿರುಗಿ q_ತೆಗೆ<ELEM, QTYPE>(thr, cp, get_front_ಮೌಲ್ಯ<ELEM>, "front", wid);
 }
 
 
 /*
  * %qpop/f/real <var-label>
  */
-bool of_QPOP_F_REAL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QPOP_F_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qpop_f<double, vvp_queue_real>(thr, cp);
+      ಹಿಂತಿರುಗಿ qpop_f<ದ್ವಿಗುಣ, vvp_ಸರತಿ_real>(thr, cp);
 }
 
 /*
  * %qpop/f/str <var-label>
  */
-bool of_QPOP_F_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QPOP_F_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qpop_f<string, vvp_queue_string>(thr, cp);
+      ಹಿಂತಿರುಗಿ qpop_f<string, vvp_ಸರತಿ_string>(thr, cp);
 }
 
 /*
  * %qpop/f/v <var-label>
  */
-bool of_QPOP_F_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QPOP_F_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qpop_f<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[0]);
+      ಹಿಂತಿರುಗಿ qpop_f<vvp_vector4_t, vvp_ಸರತಿ_vec4>(thr, cp, cp->ಬಿಟ್_idx[0]);
 }
 
 /*
@@ -5533,254 +5533,254 @@ bool of_QPOP_F_V(vthread_t thr, vvp_code_t cp)
  * the release/reg command instead. These are very similar to the
  * %deassign instruction.
  */
-static bool do_release_vec(vvp_code_t cp, bool net_flag)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ do_release_vec(vvp_ಸಂಕೇತ_t cp, ತಾರ್ಕಿಕ net_flag)
 {
       vvp_net_t*net = cp->net;
-      unsigned base  = cp->bit_idx[0];
-      unsigned width = cp->bit_idx[1];
+      ಚಿಹ್ನೆರಹಿತ ತಳ  = cp->ಬಿಟ್_idx[0];
+      ಚಿಹ್ನೆರಹಿತ width = cp->ಬಿಟ್_idx[1];
 
-      assert(net->fil);
+      ಪ್ರತಿಜ್ಞಾ(net->fil);
 
-      if (base >= net->fil->filter_size()) return true;
-      if (base+width > net->fil->filter_size())
-	    width = net->fil->filter_size() - base;
+      ಆದರೆ (ತಳ >= net->fil->filter_ಗಾತ್ರ()) ಹಿಂತಿರುಗಿ ನಿಜ;
+      ಆದರೆ (ತಳ+width > net->fil->filter_ಗಾತ್ರ())
+	    width = net->fil->filter_ಗಾತ್ರ() - ತಳ;
 
-      bool full_sig = base == 0 && width == net->fil->filter_size();
+      ತಾರ್ಕಿಕ ತುಂಬಿದ_sig = ತಳ == 0 && width == net->fil->filter_ಗಾತ್ರ();
 
 	// XXXX Can't really do this if this is a partial release?
       net->fil->force_unlink();
 
 	/* Do we release all or part of the net? */
       vvp_net_ptr_t ptr (net, 0);
-      if (full_sig) {
+      ಆದರೆ (ತುಂಬಿದ_sig) {
 	    net->fil->release(ptr, net_flag);
-      } else {
-	    net->fil->release_pv(ptr, base, width, net_flag);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    net->fil->release_pv(ptr, ತಳ, width, net_flag);
       }
-      net->fun->force_flag(false);
+      net->fun->force_flag(ಸುಳ್ಳು);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_RELEASE_NET(vthread_t, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_RELEASE_NET(vthread_t, vvp_ಸಂಕೇತ_t cp)
 {
-      return do_release_vec(cp, true);
+      ಹಿಂತಿರುಗಿ do_release_vec(cp, ನಿಜ);
 }
 
 
-bool of_RELEASE_REG(vthread_t, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_RELEASE_REG(vthread_t, vvp_ಸಂಕೇತ_t cp)
 {
-      return do_release_vec(cp, false);
+      ಹಿಂತಿರುಗಿ do_release_vec(cp, ಸುಳ್ಳು);
 }
 
 /* The type is 1 for registers and 0 for everything else. */
-bool of_RELEASE_WR(vthread_t, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_RELEASE_WR(vthread_t, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
-      unsigned type  = cp->bit_idx[0];
+      ಚಿಹ್ನೆರಹಿತ type  = cp->ಬಿಟ್_idx[0];
 
-      assert(net->fil);
+      ಪ್ರತಿಜ್ಞಾ(net->fil);
       net->fil->force_unlink();
 
 	// Send a command to this signal to unforce itself.
       vvp_net_ptr_t ptr (net, 0);
       net->fil->release(ptr, type==0);
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_REPLICATE(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_REPLICATE(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      int rept = cp->number;
-      vvp_vector4_t val = thr->pop_vec4();
+      ಪೂರ್ಣಾಂಕ rept = cp->ಸಂಖ್ಯೆ;
+      vvp_vector4_t val = thr->ತೆಗೆ_vec4();
       vvp_vector4_t res (val.size() * rept, BIT4_X);
 
-      for (int idx = 0 ; idx < rept ; idx += 1) {
-	    res.set_vec(idx * val.size(), val);
+      ಗಾಗಿ (ಪೂರ್ಣಾಂಕ idx = 0 ; idx < rept ; idx += 1) {
+	    res.ಗಣ_vec(idx * val.size(), val);
       }
 
-      thr->push_vec4(res);
+      thr->ತಳ್ಳು_vec4(res);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-static void poke_val(vthread_t fun_thr, unsigned depth, double val)
+ಸ್ಥಿರ ಶೂನ್ಯ poke_val(vthread_t fun_thr, ಚಿಹ್ನೆರಹಿತ ಆಳ, ದ್ವಿಗುಣ val)
 {
-      fun_thr->parent->poke_real(depth, val);
+      fun_thr->ಪೋಷಕ->poke_real(ಆಳ, val);
 }
 
-static void poke_val(vthread_t fun_thr, unsigned depth, const string&val)
+ಸ್ಥಿರ ಶೂನ್ಯ poke_val(vthread_t fun_thr, ಚಿಹ್ನೆರಹಿತ ಆಳ, ಸ್ಥಿರಾಂಕ string&val)
 {
-      fun_thr->parent->poke_str(depth, val);
+      fun_thr->ಪೋಷಕ->poke_str(ಆಳ, val);
 }
 
-static size_t get_max(vthread_t fun_thr, double&)
+ಸ್ಥಿರ size_t get_max(vthread_t fun_thr, ದ್ವಿಗುಣ&)
 {
-      return fun_thr->args_real.size();
+      ಹಿಂತಿರುಗಿ fun_thr->ವಾದಗಳು_real.size();
 }
 
-static size_t get_max(vthread_t fun_thr, string&)
+ಸ್ಥಿರ size_t get_max(vthread_t fun_thr, string&)
 {
-      return fun_thr->args_str.size();
+      ಹಿಂತಿರುಗಿ fun_thr->ವಾದಗಳು_str.size();
 }
 
-static size_t get_max(vthread_t fun_thr, vvp_vector4_t&)
+ಸ್ಥಿರ size_t get_max(vthread_t fun_thr, vvp_vector4_t&)
 {
-      return fun_thr->args_vec4.size();
+      ಹಿಂತಿರುಗಿ fun_thr->ವಾದಗಳು_vec4.size();
 }
 
-static unsigned get_depth(vthread_t fun_thr, size_t index, double&)
+ಸ್ಥಿರ ಚಿಹ್ನೆರಹಿತ get_ಆಳ(vthread_t fun_thr, size_t ಸೂಚ್ಯಂಕ, ದ್ವಿಗುಣ&)
 {
-      return fun_thr->args_real[index];
+      ಹಿಂತಿರುಗಿ fun_thr->ವಾದಗಳು_real[ಸೂಚ್ಯಂಕ];
 }
 
-static unsigned get_depth(vthread_t fun_thr, size_t index, string&)
+ಸ್ಥಿರ ಚಿಹ್ನೆರಹಿತ get_ಆಳ(vthread_t fun_thr, size_t ಸೂಚ್ಯಂಕ, string&)
 {
-      return fun_thr->args_str[index];
+      ಹಿಂತಿರುಗಿ fun_thr->ವಾದಗಳು_str[ಸೂಚ್ಯಂಕ];
 }
 
-static unsigned get_depth(vthread_t fun_thr, size_t index, vvp_vector4_t&)
+ಸ್ಥಿರ ಚಿಹ್ನೆರಹಿತ get_ಆಳ(vthread_t fun_thr, size_t ಸೂಚ್ಯಂಕ, vvp_vector4_t&)
 {
-      return fun_thr->args_vec4[index];
+      ಹಿಂತಿರುಗಿ fun_thr->ವಾದಗಳು_vec4[ಸೂಚ್ಯಂಕ];
 }
 
-static vthread_t get_func(vthread_t thr)
+ಸ್ಥಿರ vthread_t get_func(vthread_t thr)
 {
       vthread_t fun_thr = thr;
 
-      while (fun_thr->parent_scope->get_type_code() != vpiFunction) {
-	    assert(fun_thr->parent);
-	    fun_thr = fun_thr->parent;
+      ಆಗ (fun_thr->ಪೋಷಕ_scope->get_type_ಸಂಕೇತ() != vpiFunction) {
+	    ಪ್ರತಿಜ್ಞಾ(fun_thr->ಪೋಷಕ);
+	    fun_thr = fun_thr->ಪೋಷಕ;
       }
 
-      return fun_thr;
+      ಹಿಂತಿರುಗಿ fun_thr;
 }
 
-template <typename ELEM>
-static bool ret(vthread_t thr, vvp_code_t cp)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ ret(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t index = cp->number;
+      size_t ಸೂಚ್ಯಂಕ = cp->ಸಂಖ್ಯೆ;
       ELEM val;
-      pop_value(thr, val, 0);
+      ತೆಗೆ_ಮೌಲ್ಯ(thr, val, 0);
 
       vthread_t fun_thr = get_func(thr);
-      assert(index < get_max(fun_thr, val));
+      ಪ್ರತಿಜ್ಞಾ(ಸೂಚ್ಯಂಕ < get_max(fun_thr, val));
 
-      unsigned depth = get_depth(fun_thr, index, val);
+      ಚಿಹ್ನೆರಹಿತ ಆಳ = get_ಆಳ(fun_thr, ಸೂಚ್ಯಂಕ, val);
 	// Use the depth to put the value into the stack of
 	// the parent thread.
-      poke_val(fun_thr, depth, val);
-      return true;
+      poke_val(fun_thr, ಆಳ, val);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %ret/real <index>
  */
-bool of_RET_REAL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_RET_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return ret<double>(thr, cp);
+      ಹಿಂತಿರುಗಿ ret<ದ್ವಿಗುಣ>(thr, cp);
 }
 
 /*
  * %ret/str <index>
  */
-bool of_RET_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_RET_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return ret<string>(thr, cp);
+      ಹಿಂತಿರುಗಿ ret<string>(thr, cp);
 }
 
 /*
  * %ret/vec4 <index>, <offset>, <wid>
  */
-bool of_RET_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_RET_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t index = cp->number;
-      unsigned off_index = cp->bit_idx[0];
-      unsigned int wid = cp->bit_idx[1];
+      size_t ಸೂಚ್ಯಂಕ = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ off_ಸೂಚ್ಯಂಕ = cp->ಬಿಟ್_idx[0];
+      ಚಿಹ್ನೆರಹಿತ ಪೂರ್ಣಾಂಕ wid = cp->ಬಿಟ್_idx[1];
       vvp_vector4_t&val = thr->peek_vec4();
 
       vthread_t fun_thr = get_func(thr);
-      assert(index < get_max(fun_thr, val));
-      assert(val.size() == wid);
-      unsigned depth = get_depth(fun_thr, index, val);
+      ಪ್ರತಿಜ್ಞಾ(ಸೂಚ್ಯಂಕ < get_max(fun_thr, val));
+      ಪ್ರತಿಜ್ಞಾ(val.size() == wid);
+      ಚಿಹ್ನೆರಹಿತ ಆಳ = get_ಆಳ(fun_thr, ಸೂಚ್ಯಂಕ, val);
 
-      int64_t off = off_index ? thr->words[off_index].w_int : 0;
-      unsigned int sig_value_size = fun_thr->parent->peek_vec4(depth).size();
+      int64_t off = off_ಸೂಚ್ಯಂಕ ? thr->ಪದಗಳು[off_ಸೂಚ್ಯಂಕ].w_int : 0;
+      ಚಿಹ್ನೆರಹಿತ ಪೂರ್ಣಾಂಕ sig_ಮೌಲ್ಯ_ಗಾತ್ರ = fun_thr->ಪೋಷಕ->peek_vec4(ಆಳ).size();
 
-      if (off_index!=0 && thr->flags[4] == BIT4_1) {
-	    thr->pop_vec4(1);
-	    return true;
+      ಆದರೆ (off_ಸೂಚ್ಯಂಕ!=0 && thr->flags[4] == BIT4_1) {
+	    thr->ತೆಗೆ_vec4(1);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      if (!resize_rval_vec(val, off, sig_value_size)) {
-	    thr->pop_vec4(1);
-	    return true;
+      ಆದರೆ (!resize_rval_vec(val, off, sig_ಮೌಲ್ಯ_ಗಾತ್ರ)) {
+	    thr->ತೆಗೆ_vec4(1);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      if (off == 0 && val.size() == sig_value_size) {
-	    fun_thr->parent->poke_vec4(depth, val);
-      } else {
-	    vvp_vector4_t tmp_dst = fun_thr->parent->peek_vec4(depth);
-	    tmp_dst.set_vec(off, val);
-	    fun_thr->parent->poke_vec4(depth, tmp_dst);
+      ಆದರೆ (off == 0 && val.size() == sig_ಮೌಲ್ಯ_ಗಾತ್ರ) {
+	    fun_thr->ಪೋಷಕ->poke_vec4(ಆಳ, val);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_vector4_t tmp_dst = fun_thr->ಪೋಷಕ->peek_vec4(ಆಳ);
+	    tmp_dst.ಗಣ_vec(off, val);
+	    fun_thr->ಪೋಷಕ->poke_vec4(ಆಳ, tmp_dst);
       }
 
-      thr->pop_vec4(1);
-      return true;
+      thr->ತೆಗೆ_vec4(1);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-static void push_from_parent(vthread_t thr, vthread_t fun_thr, unsigned depth, double&)
+ಸ್ಥಿರ ಶೂನ್ಯ ತಳ್ಳು_from_ಪೋಷಕ(vthread_t thr, vthread_t fun_thr, ಚಿಹ್ನೆರಹಿತ ಆಳ, ದ್ವಿಗುಣ&)
 {
-      thr->push_real(fun_thr->parent->peek_real(depth));
+      thr->ತಳ್ಳು_real(fun_thr->ಪೋಷಕ->peek_real(ಆಳ));
 }
 
-static void push_from_parent(vthread_t thr, vthread_t fun_thr, unsigned depth, string&)
+ಸ್ಥಿರ ಶೂನ್ಯ ತಳ್ಳು_from_ಪೋಷಕ(vthread_t thr, vthread_t fun_thr, ಚಿಹ್ನೆರಹಿತ ಆಳ, string&)
 {
-      thr->push_str(fun_thr->parent->peek_str(depth));
+      thr->ತಳ್ಳು_str(fun_thr->ಪೋಷಕ->peek_str(ಆಳ));
 }
 
-static void push_from_parent(vthread_t thr, vthread_t fun_thr, unsigned depth, vvp_vector4_t&)
+ಸ್ಥಿರ ಶೂನ್ಯ ತಳ್ಳು_from_ಪೋಷಕ(vthread_t thr, vthread_t fun_thr, ಚಿಹ್ನೆರಹಿತ ಆಳ, vvp_vector4_t&)
 {
-      thr->push_vec4(fun_thr->parent->peek_vec4(depth));
+      thr->ತಳ್ಳು_vec4(fun_thr->ಪೋಷಕ->peek_vec4(ಆಳ));
 }
 
-template <typename ELEM>
-static bool retload(vthread_t thr, vvp_code_t cp)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ retload(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t index = cp->number;
+      size_t ಸೂಚ್ಯಂಕ = cp->ಸಂಖ್ಯೆ;
       ELEM type;
 
       vthread_t fun_thr = get_func(thr);
-      assert(index < get_max(fun_thr, type));
+      ಪ್ರತಿಜ್ಞಾ(ಸೂಚ್ಯಂಕ < get_max(fun_thr, type));
 
-      unsigned depth = get_depth(fun_thr, index, type);
+      ಚಿಹ್ನೆರಹಿತ ಆಳ = get_ಆಳ(fun_thr, ಸೂಚ್ಯಂಕ, type);
 	// Use the depth to extract the values from the stack
 	// of the parent thread.
-      push_from_parent(thr, fun_thr, depth, type);
-      return true;
+      ತಳ್ಳು_from_ಪೋಷಕ(thr, fun_thr, ಆಳ, type);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %retload/real <index>
  */
-bool of_RETLOAD_REAL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_RETLOAD_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return retload<double>(thr, cp);
+      ಹಿಂತಿರುಗಿ retload<ದ್ವಿಗುಣ>(thr, cp);
 }
 
 /*
  * %retload/str <index>
  */
-bool of_RETLOAD_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_RETLOAD_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return retload<string>(thr, cp);
+      ಹಿಂತಿರುಗಿ retload<string>(thr, cp);
 }
 
 /*
  * %retload/vec4 <index>
  */
-bool of_RETLOAD_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_RETLOAD_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return retload<vvp_vector4_t>(thr, cp);
+      ಹಿಂತಿರುಗಿ retload<vvp_vector4_t>(thr, cp);
 }
 
 /*
@@ -5794,72 +5794,72 @@ bool of_RETLOAD_VEC4(vthread_t thr, vvp_code_t cp)
  * The object may be any kind of object that supports shallow_copy(),
  * including dynamic arrays and class objects.
  */
-bool of_SCOPY(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_SCOPY(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
       vvp_object_t tmp;
-      thr->pop_object(tmp);
+      thr->ತೆಗೆ_object(tmp);
 
       vvp_object_t&dest = thr->peek_object();
         // If it is null there is nothing to copy
-      if (!tmp.test_nil())
+      ಆದರೆ (!tmp.test_nil())
 	    dest.shallow_copy(tmp);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-static void thread_peek(vthread_t thr, double&value)
+ಸ್ಥಿರ ಶೂನ್ಯ thread_peek(vthread_t thr, ದ್ವಿಗುಣ&value)
 {
       value = thr->peek_real(0);
 }
 
-static void thread_peek(vthread_t thr, string&value)
+ಸ್ಥಿರ ಶೂನ್ಯ thread_peek(vthread_t thr, string&value)
 {
       value = thr->peek_str(0);
 }
 
-static void thread_peek(vthread_t thr, vvp_vector4_t&value)
+ಸ್ಥಿರ ಶೂನ್ಯ thread_peek(vthread_t thr, vvp_vector4_t&value)
 {
       value = thr->peek_vec4(0);
 }
 
-template <typename ELEM>
-static bool set_dar_obj(vthread_t thr, vvp_code_t cp)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ ಗಣ_dar_obj(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned adr = thr->words[cp->number].w_int;
+      ಚಿಹ್ನೆರಹಿತ adr = thr->ಪದಗಳು[cp->ಸಂಖ್ಯೆ].w_int;
 
       ELEM value;
       thread_peek(thr, value);
 
-      vvp_object_t&top = thr->peek_object();
-      vvp_darray*darray = top.peek<vvp_darray>();
-      assert(darray);
+      vvp_object_t&ತುದಿ = thr->peek_object();
+      vvp_darray*darray = ತುದಿ.peek<vvp_darray>();
+      ಪ್ರತಿಜ್ಞಾ(darray);
 
-      darray->set_word(adr, value);
-      return true;
+      darray->ಗಣ_ಶಬ್ದ(adr, value);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %set/dar/obj/real <index>
  */
-bool of_SET_DAR_OBJ_REAL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಗಣ_DAR_OBJ_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return set_dar_obj<double>(thr, cp);
+      ಹಿಂತಿರುಗಿ ಗಣ_dar_obj<ದ್ವಿಗುಣ>(thr, cp);
 }
 
 /*
  * %set/dar/obj/str <index>
  */
-bool of_SET_DAR_OBJ_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಗಣ_DAR_OBJ_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return set_dar_obj<string>(thr, cp);
+      ಹಿಂತಿರುಗಿ ಗಣ_dar_obj<string>(thr, cp);
 }
 
 /*
  * %set/dar/obj/vec4 <index>
  */
-bool of_SET_DAR_OBJ_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಗಣ_DAR_OBJ_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return set_dar_obj<vvp_vector4_t>(thr, cp);
+      ಹಿಂತಿರುಗಿ ಗಣ_dar_obj<vvp_vector4_t>(thr, cp);
 }
 
 /*
@@ -5867,31 +5867,31 @@ bool of_SET_DAR_OBJ_VEC4(vthread_t thr, vvp_code_t cp)
  *
  * Pop the operand, then push the result.
  */
-bool of_SHIFTL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_SHIFTL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      int use_index = cp->number;
-      uint64_t shift = thr->words[use_index].w_uint;
+      ಪೂರ್ಣಾಂಕ use_ಸೂಚ್ಯಂಕ = cp->ಸಂಖ್ಯೆ;
+      uint64_t ಸರಿಸು = thr->ಪದಗಳು[use_ಸೂಚ್ಯಂಕ].w_uint;
 
       vvp_vector4_t&val = thr->peek_vec4();
-      unsigned wid  = val.size();
+      ಚಿಹ್ನೆರಹಿತ wid  = val.size();
 
-      if (thr->flags[4] == BIT4_1) {
+      ಆದರೆ (thr->flags[4] == BIT4_1) {
 	      // The result is 'bx if the shift amount is undefined
 	    val = vvp_vector4_t(wid, BIT4_X);
 
-      } else if (thr->flags[4] == BIT4_X || shift >= wid) {
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (thr->flags[4] == BIT4_X || ಸರಿಸು >= wid) {
 	      // Shift is so big that all value is shifted out. Write
 	      // a constant 0 result.
 	    val = vvp_vector4_t(wid, BIT4_0);
 
-      } else if (shift > 0) {
-	    vvp_vector4_t blk = val.subvalue(0, wid-shift);
-	    vvp_vector4_t tmp (shift, BIT4_0);
-	    val.set_vec(0, tmp);
-	    val.set_vec(shift, blk);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (ಸರಿಸು > 0) {
+	    vvp_vector4_t blk = val.subvalue(0, wid-ಸರಿಸು);
+	    vvp_vector4_t tmp (ಸರಿಸು, BIT4_0);
+	    val.ಗಣ_vec(0, tmp);
+	    val.ಗಣ_vec(ಸರಿಸು, blk);
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -5900,59 +5900,59 @@ bool of_SHIFTL(vthread_t thr, vvp_code_t cp)
  * the index register with the amount of the shift. This instruction
  * checks flag bit 4, which will be true if the shift is invalid.
  */
-bool of_SHIFTR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_SHIFTR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      int use_index = cp->number;
-      uint64_t shift = thr->words[use_index].w_uint;
+      ಪೂರ್ಣಾಂಕ use_ಸೂಚ್ಯಂಕ = cp->ಸಂಖ್ಯೆ;
+      uint64_t ಸರಿಸು = thr->ಪದಗಳು[use_ಸೂಚ್ಯಂಕ].w_uint;
 
-      vvp_vector4_t val = thr->pop_vec4();
-      unsigned wid  = val.size();
+      vvp_vector4_t val = thr->ತೆಗೆ_vec4();
+      ಚಿಹ್ನೆರಹಿತ wid  = val.size();
 
-      if (thr->flags[4] == BIT4_1) {
+      ಆದರೆ (thr->flags[4] == BIT4_1) {
 	    val = vvp_vector4_t(wid, BIT4_X);
 
-      } else if (thr->flags[4] == BIT4_X || shift > wid) {
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (thr->flags[4] == BIT4_X || ಸರಿಸು > wid) {
 	    val = vvp_vector4_t(wid, BIT4_0);
 
-      } else if (shift > 0) {
-	    vvp_vector4_t blk = val.subvalue(shift, wid-shift);
-	    vvp_vector4_t tmp (shift, BIT4_0);
-	    val.set_vec(0, blk);
-	    val.set_vec(wid-shift, tmp);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (ಸರಿಸು > 0) {
+	    vvp_vector4_t blk = val.subvalue(ಸರಿಸು, wid-ಸರಿಸು);
+	    vvp_vector4_t tmp (ಸರಿಸು, BIT4_0);
+	    val.ಗಣ_vec(0, blk);
+	    val.ಗಣ_vec(wid-ಸರಿಸು, tmp);
       }
 
-      thr->push_vec4(val);
-      return true;
+      thr->ತಳ್ಳು_vec4(val);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  *  %shiftr/s <wid>
  */
-bool of_SHIFTR_S(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_SHIFTR_S(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      int use_index = cp->number;
-      uint64_t shift = thr->words[use_index].w_uint;
+      ಪೂರ್ಣಾಂಕ use_ಸೂಚ್ಯಂಕ = cp->ಸಂಖ್ಯೆ;
+      uint64_t ಸರಿಸು = thr->ಪದಗಳು[use_ಸೂಚ್ಯಂಕ].w_uint;
 
-      vvp_vector4_t val = thr->pop_vec4();
-      unsigned wid  = val.size();
+      vvp_vector4_t val = thr->ತೆಗೆ_vec4();
+      ಚಿಹ್ನೆರಹಿತ wid  = val.size();
 
-      vvp_bit4_t sign_bit = val.value(val.size()-1);
+      vvp_bit4_t sign_ಬಿಟ್ = val.value(val.size()-1);
 
-      if (thr->flags[4] == BIT4_1) {
+      ಆದರೆ (thr->flags[4] == BIT4_1) {
 	    val = vvp_vector4_t(wid, BIT4_X);
 
-      } else if (thr->flags[4] == BIT4_X || shift > wid) {
-	    val = vvp_vector4_t(wid, sign_bit);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (thr->flags[4] == BIT4_X || ಸರಿಸು > wid) {
+	    val = vvp_vector4_t(wid, sign_ಬಿಟ್);
 
-      } else if (shift > 0) {
-	    vvp_vector4_t blk = val.subvalue(shift, wid-shift);
-	    vvp_vector4_t tmp (shift, sign_bit);
-	    val.set_vec(0, blk);
-	    val.set_vec(wid-shift, tmp);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (ಸರಿಸು > 0) {
+	    vvp_vector4_t blk = val.subvalue(ಸರಿಸು, wid-ಸರಿಸು);
+	    vvp_vector4_t tmp (ಸರಿಸು, sign_ಬಿಟ್);
+	    val.ಗಣ_vec(0, blk);
+	    val.ಗಣ_vec(wid-ಸರಿಸು, tmp);
       }
 
-      thr->push_vec4(val);
-      return true;
+      thr->ತಳ್ಳು_vec4(val);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -5962,146 +5962,146 @@ bool of_SHIFTR_S(vthread_t thr, vvp_code_t cp)
  *   Push the remaining msb,
  *   Push the lsb.
  */
-bool of_SPLIT_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ವಿಭಜಿಸು_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned lsb_wid = cp->number;
+      ಚಿಹ್ನೆರಹಿತ lsb_wid = cp->ಸಂಖ್ಯೆ;
 
       vvp_vector4_t&val = thr->peek_vec4();
-      assert(lsb_wid < val.size());
+      ಪ್ರತಿಜ್ಞಾ(lsb_wid < val.size());
 
       vvp_vector4_t lsb = val.subvalue(0, lsb_wid);
       val = val.subvalue(lsb_wid, val.size()-lsb_wid);
 
-      thr->push_vec4(lsb);
-      return true;
+      thr->ತಳ್ಳು_vec4(lsb);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * The following are used to allow the darray templates to print correctly.
  */
-inline static string get_darray_type(double&)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ string get_darray_type(ದ್ವಿಗುಣ&)
 {
-      return "darray<real>";
+      ಹಿಂತಿರುಗಿ "darray<real>";
 }
 
-inline static string get_darray_type(string&)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ string get_darray_type(string&)
 {
-      return "darray<string>";
+      ಹಿಂತಿರುಗಿ "darray<string>";
 }
 
-inline static string get_darray_type(const vvp_vector4_t&value)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ string get_darray_type(ಸ್ಥಿರಾಂಕ vvp_vector4_t&value)
 {
       ostringstream buf;
       buf << "darray<vector[" << value.size() << "]>";
       string res = buf.str();
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }
 
 /*
  * The following are used to allow a common template to be written for
  * darray real/string/vec4 operations
  */
-inline static void dar_pop_value(vthread_t thr, double&value)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ ಶೂನ್ಯ dar_ತೆಗೆ_ಮೌಲ್ಯ(vthread_t thr, ದ್ವಿಗುಣ&value)
 {
-      value = thr->pop_real();
+      value = thr->ತೆಗೆ_real();
 }
 
-inline static void dar_pop_value(vthread_t thr, string&value)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ ಶೂನ್ಯ dar_ತೆಗೆ_ಮೌಲ್ಯ(vthread_t thr, string&value)
 {
-      value = thr->pop_str();
+      value = thr->ತೆಗೆ_str();
 }
 
-inline static void dar_pop_value(vthread_t thr, vvp_vector4_t&value)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ ಶೂನ್ಯ dar_ತೆಗೆ_ಮೌಲ್ಯ(vthread_t thr, vvp_vector4_t&value)
 {
-      value = thr->pop_vec4();
+      value = thr->ತೆಗೆ_vec4();
 }
 
-template <typename ELEM>
-static bool store_dar(vthread_t thr, vvp_code_t cp)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ store_dar(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      int64_t adr = thr->words[3].w_int;
+      int64_t adr = thr->ಪದಗಳು[3].w_int;
       ELEM value;
 	// FIXME: Can we get the size of the underlying array element
 	//        and then use the normal pop_value?
-      dar_pop_value(thr, value);
+      dar_ತೆಗೆ_ಮೌಲ್ಯ(thr, value);
 
       vvp_net_t*net = cp->net;
-      assert(net);
+      ಪ್ರತಿಜ್ಞಾ(net);
 
       vvp_fun_signal_object*obj = dynamic_cast<vvp_fun_signal_object*> (net->fun);
-      assert(obj);
+      ಪ್ರತಿಜ್ಞಾ(obj);
 
       vvp_darray*darray = obj->get_object().peek<vvp_darray>();
 
-      if (adr < 0)
+      ಆದರೆ (adr < 0)
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot write to a negative " << get_darray_type(value)
-	         << " index (" << adr << ")." << endl;
-      else if (thr->flags[4] != BIT4_0)
+	         << " index (" << adr << ")." << ಸಾಲು_ಅಂತ್ಯ;
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (thr->flags[4] != BIT4_0)
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot write to an undefined " << get_darray_type(value)
-	         << " index." << endl;
-      else if (darray)
-	    darray->set_word(adr, value);
-      else
+	         << " index." << ಸಾಲು_ಅಂತ್ಯ;
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (darray)
+	    darray->ಗಣ_ಶಬ್ದ(adr, value);
+      ಇಲ್ಲದಿದ್ದರೆ
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot write to an undefined " << get_darray_type(value)
-	         << "." << endl;
+	         << "." << ಸಾಲು_ಅಂತ್ಯ;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %store/dar/real <var>
  */
-bool of_STORE_DAR_R(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_DAR_R(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_dar<double>(thr, cp);
+      ಹಿಂತಿರುಗಿ store_dar<ದ್ವಿಗುಣ>(thr, cp);
 }
 
 /*
  * %store/dar/str <var>
  */
-bool of_STORE_DAR_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_DAR_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_dar<string>(thr, cp);
+      ಹಿಂತಿರುಗಿ store_dar<string>(thr, cp);
 }
 
 /*
  * %store/dar/vec4 <var>
  */
-bool of_STORE_DAR_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_DAR_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_dar<vvp_vector4_t>(thr, cp);
+      ಹಿಂತಿರುಗಿ store_dar<vvp_vector4_t>(thr, cp);
 }
 
-bool of_STORE_OBJ(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_OBJ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
 	/* set the value into port 0 of the destination. */
       vvp_net_ptr_t ptr (cp->net, 0);
 
       vvp_object_t val;
-      thr->pop_object(val);
+      thr->ತೆಗೆ_object(val);
 
       vvp_send_object(ptr, val, thr->wt_context);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %store/obja <array-label> <index>
  */
-bool of_STORE_OBJA(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_OBJA(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned idx = cp->bit_idx[0];
-      unsigned adr = thr->words[idx].w_int;
+      ಚಿಹ್ನೆರಹಿತ idx = cp->ಬಿಟ್_idx[0];
+      ಚಿಹ್ನೆರಹಿತ adr = thr->ಪದಗಳು[idx].w_int;
 
       vvp_object_t val;
-      thr->pop_object(val);
+      thr->ತೆಗೆ_object(val);
 
-      cp->array->set_word(adr, val);
+      cp->array->ಗಣ_ಶಬ್ದ(adr, val);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 
@@ -6112,74 +6112,74 @@ bool of_STORE_OBJA(vthread_t thr, vvp_code_t cp)
  * the property of the object references by the top of the stack. Do NOT
  * pop the object stack.
  */
-bool of_STORE_PROP_OBJ(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_PROP_OBJ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t pid = cp->number;
-      unsigned idx = cp->bit_idx[0];
+      size_t pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ idx = cp->ಬಿಟ್_idx[0];
 
-      if (idx != 0) {
-	    assert(idx < vthread_s::WORDS_COUNT);
-	    idx = thr->words[idx].w_uint;
+      ಆದರೆ (idx != 0) {
+	    ಪ್ರತಿಜ್ಞಾ(idx < vthread_s::ಪದಗಳು_ಎಣಿಕೆ);
+	    idx = thr->ಪದಗಳು[idx].w_uint;
       }
 
       vvp_object_t val;
-      thr->pop_object(val);
+      thr->ತೆಗೆ_object(val);
 
       vvp_object_t&obj = thr->peek_object();
       vvp_cobject*cobj = obj.peek<vvp_cobject>();
-      assert(cobj);
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
-      cobj->set_object(pid, val, idx);
+      cobj->ಗಣ_object(pid, val, idx);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-static void pop_prop_val(vthread_t thr, double&val, unsigned)
+ಸ್ಥಿರ ಶೂನ್ಯ ತೆಗೆ_prop_val(vthread_t thr, ದ್ವಿಗುಣ&val, ಚಿಹ್ನೆರಹಿತ)
 {
-      val = thr->pop_real();
+      val = thr->ತೆಗೆ_real();
 }
 
-static void pop_prop_val(vthread_t thr, string&val, unsigned)
+ಸ್ಥಿರ ಶೂನ್ಯ ತೆಗೆ_prop_val(vthread_t thr, string&val, ಚಿಹ್ನೆರಹಿತ)
 {
-      val = thr->pop_str();
+      val = thr->ತೆಗೆ_str();
 }
 
-static void pop_prop_val(vthread_t thr, vvp_vector4_t&val, unsigned wid)
+ಸ್ಥಿರ ಶೂನ್ಯ ತೆಗೆ_prop_val(vthread_t thr, vvp_vector4_t&val, ಚಿಹ್ನೆರಹಿತ wid)
 {
-      val = thr->pop_vec4();
-      assert(val.size() >= wid);
+      val = thr->ತೆಗೆ_vec4();
+      ಪ್ರತಿಜ್ಞಾ(val.size() >= wid);
       val.resize(wid);
 }
 
-static void set_val(vvp_cobject*cobj, size_t pid, const double&val)
+ಸ್ಥಿರ ಶೂನ್ಯ ಗಣ_val(vvp_cobject*cobj, size_t pid, ಸ್ಥಿರಾಂಕ ದ್ವಿಗುಣ&val)
 {
-      cobj->set_real(pid, val);
+      cobj->ಗಣ_real(pid, val);
 }
 
-static void set_val(vvp_cobject*cobj, size_t pid, const string&val)
+ಸ್ಥಿರ ಶೂನ್ಯ ಗಣ_val(vvp_cobject*cobj, size_t pid, ಸ್ಥಿರಾಂಕ string&val)
 {
-      cobj->set_string(pid, val);
+      cobj->ಗಣ_string(pid, val);
 }
 
-static void set_val(vvp_cobject*cobj, size_t pid, const vvp_vector4_t&val)
+ಸ್ಥಿರ ಶೂನ್ಯ ಗಣ_val(vvp_cobject*cobj, size_t pid, ಸ್ಥಿರಾಂಕ vvp_vector4_t&val)
 {
-      cobj->set_vec4(pid, val);
+      cobj->ಗಣ_vec4(pid, val);
 }
 
-template <typename ELEM>
-static bool store_prop(vthread_t thr, vvp_code_t cp, unsigned wid=0)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ store_prop(vthread_t thr, vvp_ಸಂಕೇತ_t cp, ಚಿಹ್ನೆರಹಿತ wid=0)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->ಸಂಖ್ಯೆ;
       ELEM val;
-      pop_prop_val(thr, val, wid); // Pop the value to store.
+      ತೆಗೆ_prop_val(thr, val, wid); // Pop the value to store.
 
       vvp_object_t&obj = thr->peek_object();
       vvp_cobject*cobj = obj.peek<vvp_cobject>();
-      assert(cobj);
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
-      set_val(cobj, pid, val);
+      ಗಣ_val(cobj, pid, val);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -6189,9 +6189,9 @@ static bool store_prop(vthread_t thr, vvp_code_t cp, unsigned wid=0)
  * property of the object references by the top of the stack. Do NOT
  * pop the object stack.
  */
-bool of_STORE_PROP_R(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_PROP_R(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_prop<double>(thr, cp);
+      ಹಿಂತಿರುಗಿ store_prop<ದ್ವಿಗುಣ>(thr, cp);
 }
 
 /*
@@ -6201,9 +6201,9 @@ bool of_STORE_PROP_R(vthread_t thr, vvp_code_t cp)
  * the property of the object references by the top of the stack. Do NOT
  * pop the object stack.
  */
-bool of_STORE_PROP_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_PROP_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_prop<string>(thr, cp);
+      ಹಿಂತಿರುಗಿ store_prop<string>(thr, cp);
 }
 
 /*
@@ -6212,1332 +6212,1332 @@ bool of_STORE_PROP_STR(vthread_t thr, vvp_code_t cp)
  * Store vector value into property <id> of cobject in the top of the
  * stack. Do NOT pop the object stack.
  */
-bool of_STORE_PROP_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_PROP_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_prop<vvp_vector4_t>(thr, cp, cp->bit_idx[0]);
+      ಹಿಂತಿರುಗಿ store_prop<vvp_vector4_t>(thr, cp, cp->ಬಿಟ್_idx[0]);
 }
 
-template <class QTYPE>
-static QTYPE* get_queue_prop(vvp_cobject*cobj, size_t pid)
+ಮಾದರಿ <ವರ್ಗ QTYPE>
+ಸ್ಥಿರ QTYPE* get_ಸರತಿ_prop(vvp_cobject*cobj, size_t pid)
 {
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      QTYPE* queue = qobj.peek<QTYPE>();
-      if (queue == 0) {
-	    queue = new QTYPE;
-	    vvp_object_t val(queue);
-	    cobj->set_object(pid, val, 0);
+      QTYPE* ಸರತಿ = qobj.peek<QTYPE>();
+      ಆದರೆ (ಸರತಿ == 0) {
+	    ಸರತಿ = ಹೊಸ QTYPE;
+	    vvp_object_t val(ಸರತಿ);
+	    cobj->ಗಣ_object(pid, val, 0);
       }
-      return queue;
+      ಹಿಂತಿರುಗಿ ಸರತಿ;
 }
 
-template <typename ELEM, class QTYPE>
-static bool store_prop_qb(vthread_t thr, vvp_code_t cp, unsigned wid)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM, ವರ್ಗ QTYPE>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ store_prop_qb(vthread_t thr, vvp_ಸಂಕೇತ_t cp, ಚಿಹ್ನೆರಹಿತ wid)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->ಸಂಖ್ಯೆ;
       ELEM value;
-      unsigned max_size = thr->words[cp->bit_idx[0]].w_uint;
-      pop_value(thr, value, wid);
+      ಚಿಹ್ನೆರಹಿತ max_ಗಾತ್ರ = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_uint;
+      ತೆಗೆ_ಮೌಲ್ಯ(thr, value, wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
-      QTYPE* queue = get_queue_prop<QTYPE>(cobj, pid);
-      assert(queue);
-      queue->push_back(value, max_size);
-      return true;
+      QTYPE* ಸರತಿ = get_ಸರತಿ_prop<QTYPE>(cobj, pid);
+      ಪ್ರತಿಜ್ಞಾ(ಸರತಿ);
+      ಸರತಿ->push_back(value, max_ಗಾತ್ರ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-template <typename ELEM, class QTYPE>
-static bool store_prop_qf(vthread_t thr, vvp_code_t cp, unsigned wid)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM, ವರ್ಗ QTYPE>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ store_prop_qf(vthread_t thr, vvp_ಸಂಕೇತ_t cp, ಚಿಹ್ನೆರಹಿತ wid)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->ಸಂಖ್ಯೆ;
       ELEM value;
-      unsigned max_size = thr->words[cp->bit_idx[0]].w_uint;
-      pop_value(thr, value, wid);
+      ಚಿಹ್ನೆರಹಿತ max_ಗಾತ್ರ = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_uint;
+      ತೆಗೆ_ಮೌಲ್ಯ(thr, value, wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
-      QTYPE* queue = get_queue_prop<QTYPE>(cobj, pid);
-      assert(queue);
-      queue->push_front(value, max_size);
-      return true;
+      QTYPE* ಸರತಿ = get_ಸರತಿ_prop<QTYPE>(cobj, pid);
+      ಪ್ರತಿಜ್ಞಾ(ಸರತಿ);
+      ಸರತಿ->push_front(value, max_ಗಾತ್ರ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_STORE_PROP_QB_R(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_PROP_QB_R(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_prop_qb<double, vvp_queue_real>(thr, cp, 0);
+      ಹಿಂತಿರುಗಿ store_prop_qb<ದ್ವಿಗುಣ, vvp_ಸರತಿ_real>(thr, cp, 0);
 }
 
-bool of_STORE_PROP_QB_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_PROP_QB_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_prop_qb<string, vvp_queue_string>(thr, cp, 0);
+      ಹಿಂತಿರುಗಿ store_prop_qb<string, vvp_ಸರತಿ_string>(thr, cp, 0);
 }
 
-bool of_STORE_PROP_QB_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_PROP_QB_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_prop_qb<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
+      ಹಿಂತಿರುಗಿ store_prop_qb<vvp_vector4_t, vvp_ಸರತಿ_vec4>(thr, cp, cp->ಬಿಟ್_idx[1]);
 }
 
-bool of_STORE_PROP_QF_R(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_PROP_QF_R(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_prop_qf<double, vvp_queue_real>(thr, cp, 0);
+      ಹಿಂತಿರುಗಿ store_prop_qf<ದ್ವಿಗುಣ, vvp_ಸರತಿ_real>(thr, cp, 0);
 }
 
-bool of_STORE_PROP_QF_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_PROP_QF_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_prop_qf<string, vvp_queue_string>(thr, cp, 0);
+      ಹಿಂತಿರುಗಿ store_prop_qf<string, vvp_ಸರತಿ_string>(thr, cp, 0);
 }
 
-bool of_STORE_PROP_QF_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_PROP_QF_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_prop_qf<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
+      ಹಿಂತಿರುಗಿ store_prop_qf<vvp_vector4_t, vvp_ಸರತಿ_vec4>(thr, cp, cp->ಬಿಟ್_idx[1]);
 }
 
-template <typename ELEM, class QTYPE>
-static bool qinsert_prop(vthread_t thr, vvp_code_t cp, unsigned wid)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM, ವರ್ಗ QTYPE>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ qinsert_prop(vthread_t thr, vvp_ಸಂಕೇತ_t cp, ಚಿಹ್ನೆರಹಿತ wid)
 {
-      int64_t idx = thr->words[3].w_int;
+      int64_t idx = thr->ಪದಗಳು[3].w_int;
       ELEM value;
-      size_t pid = cp->number;
-      pop_value(thr, value, wid);
+      size_t pid = cp->ಸಂಖ್ಯೆ;
+      ತೆಗೆ_ಮೌಲ್ಯ(thr, value, wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
-      QTYPE* queue = get_queue_prop<QTYPE>(cobj, pid);
-      assert(queue);
-      if (idx < 0) {
+      QTYPE* ಸರತಿ = get_ಸರತಿ_prop<QTYPE>(cobj, pid);
+      ಪ್ರತಿಜ್ಞಾ(ಸರತಿ);
+      ಆದರೆ (idx < 0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot insert at a negative "
-	         << get_queue_type(value)
+	         << get_ಸರತಿ_type(value)
 	         << " index (" << idx << "). ";
-	    print_queue_value(value);
-	    cerr << " was not added." << endl;
-      } else if (thr->flags[4] != BIT4_0) {
+	    print_ಸರತಿ_ಮೌಲ್ಯ(value);
+	    cerr << " was not added." << ಸಾಲು_ಅಂತ್ಯ;
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (thr->flags[4] != BIT4_0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot insert at an undefined "
-	         << get_queue_type(value) << " index. ";
-	    print_queue_value(value);
-	    cerr << " was not added." << endl;
-      } else {
-	    unsigned max_size = thr->words[cp->bit_idx[0]].w_int;
-	    queue->insert(idx, value, max_size);
+	         << get_ಸರತಿ_type(value) << " index. ";
+	    print_ಸರತಿ_ಮೌಲ್ಯ(value);
+	    cerr << " was not added." << ಸಾಲು_ಅಂತ್ಯ;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ max_ಗಾತ್ರ = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_int;
+	    ಸರತಿ->insert(idx, value, max_ಗಾತ್ರ);
       }
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QINSERT_PROP_R(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QINSERT_PROP_R(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qinsert_prop<double, vvp_queue_real>(thr, cp, 0);
+      ಹಿಂತಿರುಗಿ qinsert_prop<ದ್ವಿಗುಣ, vvp_ಸರತಿ_real>(thr, cp, 0);
 }
 
-bool of_QINSERT_PROP_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QINSERT_PROP_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qinsert_prop<string, vvp_queue_string>(thr, cp, 0);
+      ಹಿಂತಿರುಗಿ qinsert_prop<string, vvp_ಸರತಿ_string>(thr, cp, 0);
 }
 
-bool of_QINSERT_PROP_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QINSERT_PROP_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qinsert_prop<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
+      ಹಿಂತಿರುಗಿ qinsert_prop<vvp_vector4_t, vvp_ಸರತಿ_vec4>(thr, cp, cp->ಬಿಟ್_idx[1]);
 }
 
-template <typename ELEM, class QTYPE>
-static bool q_pop_prop(vthread_t thr, vvp_code_t cp,
-                       void (*get_val_func)(vvp_queue*, ELEM&),
-                       const char*loc, unsigned wid)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM, ವರ್ಗ QTYPE>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ q_ತೆಗೆ_prop(vthread_t thr, vvp_ಸಂಕೇತ_t cp,
+                       ಶೂನ್ಯ (*get_val_func)(vvp_ಸರತಿ*, ELEM&),
+                       ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*loc, ಚಿಹ್ನೆರಹಿತ wid)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->ಸಂಖ್ಯೆ;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
-      QTYPE* queue = get_queue_prop<QTYPE>(cobj, pid);
-      assert(queue);
+      QTYPE* ಸರತಿ = get_ಸರತಿ_prop<QTYPE>(cobj, pid);
+      ಪ್ರತಿಜ್ಞಾ(ಸರತಿ);
 
-      size_t size = queue->get_size();
+      size_t size = ಸರತಿ->get_ಗಾತ್ರ();
 
       ELEM value;
-      if (size) {
-	    get_val_func(queue, value);
-      } else {
+      ಆದರೆ (size) {
+	    get_val_func(ಸರತಿ, value);
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	    dq_default(value, wid);
 	    cerr << thr->get_fileline()
 	         << "Warning: pop_" << loc << "() on empty "
-	         << get_queue_type(value) << "." << endl;
+	         << get_ಸರತಿ_type(value) << "." << ಸಾಲು_ಅಂತ್ಯ;
       }
 
-      push_value(thr, value, wid);
-      return true;
+      ತಳ್ಳು_ಮೌಲ್ಯ(thr, value, wid);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-template <typename ELEM, class QTYPE>
-static bool qpop_b_prop(vthread_t thr, vvp_code_t cp, unsigned wid)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM, ವರ್ಗ QTYPE>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ qpop_b_prop(vthread_t thr, vvp_ಸಂಕೇತ_t cp, ಚಿಹ್ನೆರಹಿತ wid)
 {
-      return q_pop_prop<ELEM, QTYPE>(thr, cp, get_back_value<ELEM>, "back", wid);
+      ಹಿಂತಿರುಗಿ q_ತೆಗೆ_prop<ELEM, QTYPE>(thr, cp, get_ಹಿಂಭಾಗ_ಮೌಲ್ಯ<ELEM>, "back", wid);
 }
 
-template <typename ELEM, class QTYPE>
-static bool qpop_f_prop(vthread_t thr, vvp_code_t cp, unsigned wid)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM, ವರ್ಗ QTYPE>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ qpop_f_prop(vthread_t thr, vvp_ಸಂಕೇತ_t cp, ಚಿಹ್ನೆರಹಿತ wid)
 {
-      return q_pop_prop<ELEM, QTYPE>(thr, cp, get_front_value<ELEM>, "front", wid);
+      ಹಿಂತಿರುಗಿ q_ತೆಗೆ_prop<ELEM, QTYPE>(thr, cp, get_front_ಮೌಲ್ಯ<ELEM>, "front", wid);
 }
 
-bool of_QPOP_PROP_B_REAL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QPOP_PROP_B_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qpop_b_prop<double, vvp_queue_real>(thr, cp, 0);
+      ಹಿಂತಿರುಗಿ qpop_b_prop<ದ್ವಿಗುಣ, vvp_ಸರತಿ_real>(thr, cp, 0);
 }
 
-bool of_QPOP_PROP_B_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QPOP_PROP_B_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qpop_b_prop<string, vvp_queue_string>(thr, cp, 0);
+      ಹಿಂತಿರುಗಿ qpop_b_prop<string, vvp_ಸರತಿ_string>(thr, cp, 0);
 }
 
-bool of_QPOP_PROP_B_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QPOP_PROP_B_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qpop_b_prop<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[0]);
+      ಹಿಂತಿರುಗಿ qpop_b_prop<vvp_vector4_t, vvp_ಸರತಿ_vec4>(thr, cp, cp->ಬಿಟ್_idx[0]);
 }
 
-bool of_QPOP_PROP_F_REAL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QPOP_PROP_F_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qpop_f_prop<double, vvp_queue_real>(thr, cp, 0);
+      ಹಿಂತಿರುಗಿ qpop_f_prop<ದ್ವಿಗುಣ, vvp_ಸರತಿ_real>(thr, cp, 0);
 }
 
-bool of_QPOP_PROP_F_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QPOP_PROP_F_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qpop_f_prop<string, vvp_queue_string>(thr, cp, 0);
+      ಹಿಂತಿರುಗಿ qpop_f_prop<string, vvp_ಸರತಿ_string>(thr, cp, 0);
 }
 
-bool of_QPOP_PROP_F_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_QPOP_PROP_F_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return qpop_f_prop<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[0]);
+      ಹಿಂತಿರುಗಿ qpop_f_prop<vvp_vector4_t, vvp_ಸರತಿ_vec4>(thr, cp, cp->ಬಿಟ್_idx[0]);
 }
 
-static vvp_vector4_t queue_unique_ulong_to_vec4(unsigned long ul, unsigned bits)
+ಸ್ಥಿರ vvp_vector4_t ಸರತಿ_unique_ulong_ಗಮ್ಯ_vec4(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ul, ಚಿಹ್ನೆರಹಿತ ಬಿಟ್ಟುಗಳು)
 {
-      vvp_vector4_t val(bits, BIT4_0);
-      for (unsigned idx = 0; idx < bits && idx < 8 * sizeof(unsigned long); idx += 1) {
-	    if (ul & 1UL) {
-		  val.set_bit(idx, BIT4_1);
-	    } else {
-		  val.set_bit(idx, BIT4_0);
+      vvp_vector4_t val(ಬಿಟ್ಟುಗಳು, BIT4_0);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0; idx < ಬಿಟ್ಟುಗಳು && idx < 8 * ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ); idx += 1) {
+	    ಆದರೆ (ul & 1UL) {
+		  val.ಗಣ_ಬಿಟ್(idx, BIT4_1);
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  val.ಗಣ_ಬಿಟ್(idx, BIT4_0);
 	    }
 	    ul >>= 1;
       }
-      return val;
+      ಹಿಂತಿರುಗಿ val;
 }
 
-template <class SRC> static vvp_queue_vec4* queue_run_unique_src(SRC* src,
-								 unsigned wid,
-								 bool as_index)
+ಮಾದರಿ <ವರ್ಗ SRC> ಸ್ಥಿರ vvp_ಸರತಿ_vec4* ಸರತಿ_ಸತತ_unique_src(SRC* src,
+								 ಚಿಹ್ನೆರಹಿತ wid,
+								 ತಾರ್ಕಿಕ as_ಸೂಚ್ಯಂಕ)
 {
-      vvp_queue_vec4* dst = new vvp_queue_vec4();
-      if (!src) return dst;
-      size_t n = src->get_size();
-      for (size_t i = 0; i < n; i += 1) {
+      vvp_ಸರತಿ_vec4* dst = ಹೊಸ vvp_ಸರತಿ_vec4();
+      ಆದರೆ (!src) ಹಿಂತಿರುಗಿ dst;
+      size_t n = src->get_ಗಾತ್ರ();
+      ಗಾಗಿ (size_t i = 0; i < n; i += 1) {
 	    vvp_vector4_t vi(wid);
-	    src->get_word(i, vi);
-	    bool seen = false;
-	    for (size_t j = 0; j < i; j += 1) {
+	    src->get_ಶಬ್ದ(i, vi);
+	    ತಾರ್ಕಿಕ ನೋಡಿದ = ಸುಳ್ಳು;
+	    ಗಾಗಿ (size_t j = 0; j < i; j += 1) {
 		  vvp_vector4_t vj(wid);
-		  src->get_word(j, vj);
-		  if (vi.eeq(vj)) {
-			seen = true;
-			break;
+		  src->get_ಶಬ್ದ(j, vj);
+		  ಆದರೆ (vi.eeq(vj)) {
+			ನೋಡಿದ = ನಿಜ;
+			ನಿಲ್ಲಿಸು;
 		  }
 	    }
-	    if (seen) continue;
-	    if (as_index) {
-		  dst->push_back(queue_unique_ulong_to_vec4((unsigned long)i, 32), 0);
-	    } else {
+	    ಆದರೆ (ನೋಡಿದ) ಮುಂದುವರಿ;
+	    ಆದರೆ (as_ಸೂಚ್ಯಂಕ) {
+		  dst->push_back(ಸರತಿ_unique_ulong_ಗಮ್ಯ_vec4((ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)i, 32), 0);
+	    } ಇಲ್ಲದಿದ್ದರೆ {
 		  dst->push_back(vi, 0);
 	    }
       }
-      return dst;
+      ಹಿಂತಿರುಗಿ dst;
 }
 
-template <class SRC>
-static vvp_queue_vec4* queue_run_find_matches_src(SRC* src, unsigned wid,
-						  const vvp_vector4_t& cmp,
-						  bool as_index)
+ಮಾದರಿ <ವರ್ಗ SRC>
+ಸ್ಥಿರ vvp_ಸರತಿ_vec4* ಸರತಿ_ಸತತ_ಕಂಡುಹಿಡಿ_matches_src(SRC* src, ಚಿಹ್ನೆರಹಿತ wid,
+						  ಸ್ಥಿರಾಂಕ vvp_vector4_t& cmp,
+						  ತಾರ್ಕಿಕ as_ಸೂಚ್ಯಂಕ)
 {
-      vvp_queue_vec4* dst = new vvp_queue_vec4();
-      if (!src) return dst;
-      size_t n = src->get_size();
-      for (size_t i = 0; i < n; i += 1) {
+      vvp_ಸರತಿ_vec4* dst = ಹೊಸ vvp_ಸರತಿ_vec4();
+      ಆದರೆ (!src) ಹಿಂತಿರುಗಿ dst;
+      size_t n = src->get_ಗಾತ್ರ();
+      ಗಾಗಿ (size_t i = 0; i < n; i += 1) {
 	    vvp_vector4_t vi(wid);
-	    src->get_word(i, vi);
-	    if (vi.eeq(cmp)) {
-		  if (as_index) {
-			dst->push_back(queue_unique_ulong_to_vec4((unsigned long)i, 32), 0);
-		  } else {
+	    src->get_ಶಬ್ದ(i, vi);
+	    ಆದರೆ (vi.eeq(cmp)) {
+		  ಆದರೆ (as_ಸೂಚ್ಯಂಕ) {
+			dst->push_back(ಸರತಿ_unique_ulong_ಗಮ್ಯ_vec4((ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)i, 32), 0);
+		  } ಇಲ್ಲದಿದ್ದರೆ {
 			dst->push_back(vi, 0);
 		  }
 	    }
       }
-      return dst;
+      ಹಿಂತಿರುಗಿ dst;
 }
 
 /* Array/queue locator methods return a queue with 0 or 1 elements (LRM). */
-template <class SRC>
-static vvp_queue_vec4* queue_find_first_last_to_queue_src(SRC* src,
-							  unsigned wid,
-							  const vvp_vector4_t& cmp,
-							  bool want_first,
-							  bool want_index)
+ಮಾದರಿ <ವರ್ಗ SRC>
+ಸ್ಥಿರ vvp_ಸರತಿ_vec4* ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(SRC* src,
+							  ಚಿಹ್ನೆರಹಿತ wid,
+							  ಸ್ಥಿರಾಂಕ vvp_vector4_t& cmp,
+							  ತಾರ್ಕಿಕ want_ಮೊದಲ,
+							  ತಾರ್ಕಿಕ want_ಸೂಚ್ಯಂಕ)
 {
-      vvp_queue_vec4* dst = new vvp_queue_vec4();
-      if (!src || src->get_size() == 0) return dst;
-      size_t n = src->get_size();
-      if (want_first) {
-	    for (size_t i = 0; i < n; i += 1) {
+      vvp_ಸರತಿ_vec4* dst = ಹೊಸ vvp_ಸರತಿ_vec4();
+      ಆದರೆ (!src || src->get_ಗಾತ್ರ() == 0) ಹಿಂತಿರುಗಿ dst;
+      size_t n = src->get_ಗಾತ್ರ();
+      ಆದರೆ (want_ಮೊದಲ) {
+	    ಗಾಗಿ (size_t i = 0; i < n; i += 1) {
 		  vvp_vector4_t vi(wid);
-		  src->get_word(i, vi);
-		  if (vi.eeq(cmp)) {
-			if (want_index) {
+		  src->get_ಶಬ್ದ(i, vi);
+		  ಆದರೆ (vi.eeq(cmp)) {
+			ಆದರೆ (want_ಸೂಚ್ಯಂಕ) {
 			      dst->push_back(
-				  queue_unique_ulong_to_vec4((unsigned long)i, 32),
+				  ಸರತಿ_unique_ulong_ಗಮ್ಯ_vec4((ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)i, 32),
 				  0);
-			} else {
+			} ಇಲ್ಲದಿದ್ದರೆ {
 			      dst->push_back(vi, 0);
 			}
-			return dst;
+			ಹಿಂತಿರುಗಿ dst;
 		  }
 	    }
-      } else {
-	    for (size_t i = n; i > 0; ) {
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಗಾಗಿ (size_t i = n; i > 0; ) {
 		  i -= 1;
 		  vvp_vector4_t vi(wid);
-		  src->get_word(i, vi);
-		  if (vi.eeq(cmp)) {
-			if (want_index) {
+		  src->get_ಶಬ್ದ(i, vi);
+		  ಆದರೆ (vi.eeq(cmp)) {
+			ಆದರೆ (want_ಸೂಚ್ಯಂಕ) {
 			      dst->push_back(
-				  queue_unique_ulong_to_vec4((unsigned long)i, 32),
+				  ಸರತಿ_unique_ulong_ಗಮ್ಯ_vec4((ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)i, 32),
 				  0);
-			} else {
+			} ಇಲ್ಲದಿದ್ದರೆ {
 			      dst->push_back(vi, 0);
 			}
-			return dst;
+			ಹಿಂತಿರುಗಿ dst;
 		  }
 	    }
       }
-      return dst;
+      ಹಿಂತಿರುಗಿ dst;
 }
 
 /* min()/max() return one element with the selected extremum. */
-template <class SRC>
-static vvp_queue_vec4* queue_run_min_max_src(SRC* src, unsigned wid, bool want_max)
+ಮಾದರಿ <ವರ್ಗ SRC>
+ಸ್ಥಿರ vvp_ಸರತಿ_vec4* ಸರತಿ_ಸತತ_min_max_src(SRC* src, ಚಿಹ್ನೆರಹಿತ wid, ತಾರ್ಕಿಕ want_max)
 {
-      vvp_queue_vec4* dst = new vvp_queue_vec4();
-      if (!src || src->get_size() == 0) return dst;
+      vvp_ಸರತಿ_vec4* dst = ಹೊಸ vvp_ಸರತಿ_vec4();
+      ಆದರೆ (!src || src->get_ಗಾತ್ರ() == 0) ಹಿಂತಿರುಗಿ dst;
 
-      vvp_vector4_t best(wid);
-      src->get_word(0, best);
+      vvp_vector4_t ಉತ್ತಮ(wid);
+      src->get_ಶಬ್ದ(0, ಉತ್ತಮ);
 
-      size_t n = src->get_size();
-      for (size_t i = 1 ; i < n ; i += 1) {
+      size_t n = src->get_ಗಾತ್ರ();
+      ಗಾಗಿ (size_t i = 1 ; i < n ; i += 1) {
 	    vvp_vector4_t vi(wid);
-	    src->get_word(i, vi);
+	    src->get_ಶಬ್ದ(i, vi);
 
-	    vvp_bit4_t ge = compare_gtge(vi, best, BIT4_1);
-	    bool replace = want_max ? (ge == BIT4_1) : (ge == BIT4_0);
-	    if (replace) best = vi;
+	    vvp_bit4_t ge = compare_gtge(vi, ಉತ್ತಮ, BIT4_1);
+	    ತಾರ್ಕಿಕ replace = want_max ? (ge == BIT4_1) : (ge == BIT4_0);
+	    ಆದರೆ (replace) ಉತ್ತಮ = vi;
       }
 
-      dst->push_back(best, 0);
-      return dst;
+      dst->push_back(ಉತ್ತಮ, 0);
+      ಹಿಂತಿರುಗಿ dst;
 }
 
-bool of_QUEUE_FIND_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      unsigned wid = cp->bit_idx[0];
-      assert(cmp.size() == wid);
+      vvp_vector4_t cmp = thr->ತೆಗೆ_vec4();
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      ಪ್ರತಿಜ್ಞಾ(cmp.size() == wid);
       vvp_net_t* net = cp->net;
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
-      vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_run_find_matches_src(qsrc, wid, cmp, false);
-      else if (dsrc) dst = queue_run_find_matches_src(dsrc, wid, cmp, false);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
-	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    dst = queue_run_find_matches_src(src, wid, cmp, false);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst;
+      ಆದರೆ (qsrc) dst = ಸರತಿ_ಸತತ_ಕಂಡುಹಿಡಿ_matches_src(qsrc, wid, cmp, ಸುಳ್ಳು);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) dst = ಸರತಿ_ಸತತ_ಕಂಡುಹಿಡಿ_matches_src(dsrc, wid, cmp, ಸುಳ್ಳು);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_vec4>(thr, net);
+	    vvp_ಸರತಿ_vec4* src = dynamic_cast<vvp_ಸರತಿ_vec4*>(src_q);
+	    dst = ಸರತಿ_ಸತತ_ಕಂಡುಹಿಡಿ_matches_src(src, wid, cmp, ಸುಳ್ಳು);
       }
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_FIND_PROP_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_PROP_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      size_t pid = cp->number;
-      unsigned wid = cp->bit_idx[0];
-      assert(cmp.size() == wid);
+      vvp_vector4_t cmp = thr->ತೆಗೆ_vec4();
+      size_t pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      ಪ್ರತಿಜ್ಞಾ(cmp.size() == wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
-      vvp_queue_vec4* dst = qsrc ? queue_run_find_matches_src(qsrc, wid, cmp, false)
-				 : queue_run_find_matches_src(dsrc, wid, cmp, false);
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      get_ಸರತಿ_or_darray_vec4_from_object(qobj, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst = qsrc ? ಸರತಿ_ಸತತ_ಕಂಡುಹಿಡಿ_matches_src(qsrc, wid, cmp, ಸುಳ್ಳು)
+				 : ಸರತಿ_ಸತತ_ಕಂಡುಹಿಡಿ_matches_src(dsrc, wid, cmp, ಸುಳ್ಳು);
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_FIND_INDEX_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಸೂಚ್ಯಂಕ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      unsigned wid = cp->bit_idx[0];
-      assert(cmp.size() == wid);
+      vvp_vector4_t cmp = thr->ತೆಗೆ_vec4();
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      ಪ್ರತಿಜ್ಞಾ(cmp.size() == wid);
       vvp_net_t* net = cp->net;
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
-      vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_run_find_matches_src(qsrc, wid, cmp, true);
-      else if (dsrc) dst = queue_run_find_matches_src(dsrc, wid, cmp, true);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
-	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    dst = queue_run_find_matches_src(src, wid, cmp, true);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst;
+      ಆದರೆ (qsrc) dst = ಸರತಿ_ಸತತ_ಕಂಡುಹಿಡಿ_matches_src(qsrc, wid, cmp, ನಿಜ);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) dst = ಸರತಿ_ಸತತ_ಕಂಡುಹಿಡಿ_matches_src(dsrc, wid, cmp, ನಿಜ);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_vec4>(thr, net);
+	    vvp_ಸರತಿ_vec4* src = dynamic_cast<vvp_ಸರತಿ_vec4*>(src_q);
+	    dst = ಸರತಿ_ಸತತ_ಕಂಡುಹಿಡಿ_matches_src(src, wid, cmp, ನಿಜ);
       }
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_FIND_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಸೂಚ್ಯಂಕ_PROP_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      size_t pid = cp->number;
-      unsigned wid = cp->bit_idx[0];
-      assert(cmp.size() == wid);
+      vvp_vector4_t cmp = thr->ತೆಗೆ_vec4();
+      size_t pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      ಪ್ರತಿಜ್ಞಾ(cmp.size() == wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
-      vvp_queue_vec4* dst = qsrc ? queue_run_find_matches_src(qsrc, wid, cmp, true)
-				 : queue_run_find_matches_src(dsrc, wid, cmp, true);
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      get_ಸರತಿ_or_darray_vec4_from_object(qobj, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst = qsrc ? ಸರತಿ_ಸತತ_ಕಂಡುಹಿಡಿ_matches_src(qsrc, wid, cmp, ನಿಜ)
+				 : ಸರತಿ_ಸತತ_ಕಂಡುಹಿಡಿ_matches_src(dsrc, wid, cmp, ನಿಜ);
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_FIND_FIRST_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      unsigned wid = cp->bit_idx[0];
-      assert(cmp.size() == wid);
+      vvp_vector4_t cmp = thr->ತೆಗೆ_vec4();
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      ಪ್ರತಿಜ್ಞಾ(cmp.size() == wid);
       vvp_net_t* net = cp->net;
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
-      vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_find_first_last_to_queue_src(qsrc, wid, cmp, true, false);
-      else if (dsrc) dst = queue_find_first_last_to_queue_src(dsrc, wid, cmp, true, false);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
-	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    dst = queue_find_first_last_to_queue_src(src, wid, cmp, true, false);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst;
+      ಆದರೆ (qsrc) dst = ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(qsrc, wid, cmp, ನಿಜ, ಸುಳ್ಳು);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) dst = ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(dsrc, wid, cmp, ನಿಜ, ಸುಳ್ಳು);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_vec4>(thr, net);
+	    vvp_ಸರತಿ_vec4* src = dynamic_cast<vvp_ಸರತಿ_vec4*>(src_q);
+	    dst = ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(src, wid, cmp, ನಿಜ, ಸುಳ್ಳು);
       }
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_FIND_FIRST_PROP_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_PROP_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      size_t pid = cp->number;
-      unsigned wid = cp->bit_idx[0];
-      assert(cmp.size() == wid);
+      vvp_vector4_t cmp = thr->ತೆಗೆ_vec4();
+      size_t pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      ಪ್ರತಿಜ್ಞಾ(cmp.size() == wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
-      vvp_queue_vec4* dst =
-	    qsrc ? queue_find_first_last_to_queue_src(qsrc, wid, cmp, true, false)
-		 : queue_find_first_last_to_queue_src(dsrc, wid, cmp, true, false);
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      get_ಸರತಿ_or_darray_vec4_from_object(qobj, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst =
+	    qsrc ? ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(qsrc, wid, cmp, ನಿಜ, ಸುಳ್ಳು)
+		 : ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(dsrc, wid, cmp, ನಿಜ, ಸುಳ್ಳು);
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_FIND_FIRST_INDEX_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಸೂಚ್ಯಂಕ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      unsigned wid = cp->bit_idx[0];
-      assert(cmp.size() == wid);
+      vvp_vector4_t cmp = thr->ತೆಗೆ_vec4();
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      ಪ್ರತಿಜ್ಞಾ(cmp.size() == wid);
       vvp_net_t* net = cp->net;
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
-      vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_find_first_last_to_queue_src(qsrc, wid, cmp, true, true);
-      else if (dsrc) dst = queue_find_first_last_to_queue_src(dsrc, wid, cmp, true, true);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
-	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    dst = queue_find_first_last_to_queue_src(src, wid, cmp, true, true);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst;
+      ಆದರೆ (qsrc) dst = ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(qsrc, wid, cmp, ನಿಜ, ನಿಜ);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) dst = ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(dsrc, wid, cmp, ನಿಜ, ನಿಜ);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_vec4>(thr, net);
+	    vvp_ಸರತಿ_vec4* src = dynamic_cast<vvp_ಸರತಿ_vec4*>(src_q);
+	    dst = ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(src, wid, cmp, ನಿಜ, ನಿಜ);
       }
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_FIND_FIRST_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಸೂಚ್ಯಂಕ_PROP_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      size_t pid = cp->number;
-      unsigned wid = cp->bit_idx[0];
-      assert(cmp.size() == wid);
+      vvp_vector4_t cmp = thr->ತೆಗೆ_vec4();
+      size_t pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      ಪ್ರತಿಜ್ಞಾ(cmp.size() == wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
-      vvp_queue_vec4* dst =
-	    qsrc ? queue_find_first_last_to_queue_src(qsrc, wid, cmp, true, true)
-		 : queue_find_first_last_to_queue_src(dsrc, wid, cmp, true, true);
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      get_ಸರತಿ_or_darray_vec4_from_object(qobj, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst =
+	    qsrc ? ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(qsrc, wid, cmp, ನಿಜ, ನಿಜ)
+		 : ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(dsrc, wid, cmp, ನಿಜ, ನಿಜ);
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_FIND_LAST_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಕೊನೆಯ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      unsigned wid = cp->bit_idx[0];
-      assert(cmp.size() == wid);
+      vvp_vector4_t cmp = thr->ತೆಗೆ_vec4();
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      ಪ್ರತಿಜ್ಞಾ(cmp.size() == wid);
       vvp_net_t* net = cp->net;
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
-      vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_find_first_last_to_queue_src(qsrc, wid, cmp, false, false);
-      else if (dsrc) dst = queue_find_first_last_to_queue_src(dsrc, wid, cmp, false, false);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
-	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    dst = queue_find_first_last_to_queue_src(src, wid, cmp, false, false);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst;
+      ಆದರೆ (qsrc) dst = ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(qsrc, wid, cmp, ಸುಳ್ಳು, ಸುಳ್ಳು);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) dst = ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(dsrc, wid, cmp, ಸುಳ್ಳು, ಸುಳ್ಳು);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_vec4>(thr, net);
+	    vvp_ಸರತಿ_vec4* src = dynamic_cast<vvp_ಸರತಿ_vec4*>(src_q);
+	    dst = ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(src, wid, cmp, ಸುಳ್ಳು, ಸುಳ್ಳು);
       }
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_FIND_LAST_PROP_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಕೊನೆಯ_PROP_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      size_t pid = cp->number;
-      unsigned wid = cp->bit_idx[0];
-      assert(cmp.size() == wid);
+      vvp_vector4_t cmp = thr->ತೆಗೆ_vec4();
+      size_t pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      ಪ್ರತಿಜ್ಞಾ(cmp.size() == wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
-      vvp_queue_vec4* dst =
-	    qsrc ? queue_find_first_last_to_queue_src(qsrc, wid, cmp, false, false)
-		 : queue_find_first_last_to_queue_src(dsrc, wid, cmp, false, false);
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      get_ಸರತಿ_or_darray_vec4_from_object(qobj, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst =
+	    qsrc ? ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(qsrc, wid, cmp, ಸುಳ್ಳು, ಸುಳ್ಳು)
+		 : ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(dsrc, wid, cmp, ಸುಳ್ಳು, ಸುಳ್ಳು);
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_FIND_LAST_INDEX_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಕೊನೆಯ_ಸೂಚ್ಯಂಕ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      unsigned wid = cp->bit_idx[0];
-      assert(cmp.size() == wid);
+      vvp_vector4_t cmp = thr->ತೆಗೆ_vec4();
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      ಪ್ರತಿಜ್ಞಾ(cmp.size() == wid);
       vvp_net_t* net = cp->net;
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
-      vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_find_first_last_to_queue_src(qsrc, wid, cmp, false, true);
-      else if (dsrc) dst = queue_find_first_last_to_queue_src(dsrc, wid, cmp, false, true);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
-	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    dst = queue_find_first_last_to_queue_src(src, wid, cmp, false, true);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst;
+      ಆದರೆ (qsrc) dst = ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(qsrc, wid, cmp, ಸುಳ್ಳು, ನಿಜ);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) dst = ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(dsrc, wid, cmp, ಸುಳ್ಳು, ನಿಜ);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_vec4>(thr, net);
+	    vvp_ಸರತಿ_vec4* src = dynamic_cast<vvp_ಸರತಿ_vec4*>(src_q);
+	    dst = ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(src, wid, cmp, ಸುಳ್ಳು, ನಿಜ);
       }
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_FIND_LAST_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಕೊನೆಯ_ಸೂಚ್ಯಂಕ_PROP_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      size_t pid = cp->number;
-      unsigned wid = cp->bit_idx[0];
-      assert(cmp.size() == wid);
+      vvp_vector4_t cmp = thr->ತೆಗೆ_vec4();
+      size_t pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      ಪ್ರತಿಜ್ಞಾ(cmp.size() == wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
-      vvp_queue_vec4* dst =
-	    qsrc ? queue_find_first_last_to_queue_src(qsrc, wid, cmp, false, true)
-		 : queue_find_first_last_to_queue_src(dsrc, wid, cmp, false, true);
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      get_ಸರತಿ_or_darray_vec4_from_object(qobj, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst =
+	    qsrc ? ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(qsrc, wid, cmp, ಸುಳ್ಳು, ನಿಜ)
+		 : ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಕೊನೆಯ_ಗಮ್ಯ_ಸರತಿ_src(dsrc, wid, cmp, ಸುಳ್ಳು, ನಿಜ);
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_MIN_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_MIN_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t* net = cp->net;
-      unsigned wid = cp->bit_idx[0];
-      vvp_queue_vec4* qsrc = 0;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
-      vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_run_min_max_src(qsrc, wid, false);
-      else if (dsrc) dst = queue_run_min_max_src(dsrc, wid, false);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
-	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    dst = queue_run_min_max_src(src, wid, false);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst;
+      ಆದರೆ (qsrc) dst = ಸರತಿ_ಸತತ_min_max_src(qsrc, wid, ಸುಳ್ಳು);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) dst = ಸರತಿ_ಸತತ_min_max_src(dsrc, wid, ಸುಳ್ಳು);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_vec4>(thr, net);
+	    vvp_ಸರತಿ_vec4* src = dynamic_cast<vvp_ಸರತಿ_vec4*>(src_q);
+	    dst = ಸರತಿ_ಸತತ_min_max_src(src, wid, ಸುಳ್ಳು);
       }
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_MIN_OBJ_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_MIN_OBJ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->bit_idx[0];
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
       vvp_object_t src_obj;
-      thr->pop_object(src_obj);
+      thr->ತೆಗೆ_object(src_obj);
 
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
-      vvp_queue_vec4* dst = qsrc ? queue_run_min_max_src(qsrc, wid, false)
-				 : queue_run_min_max_src(dsrc, wid, false);
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      get_ಸರತಿ_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst = qsrc ? ಸರತಿ_ಸತತ_min_max_src(qsrc, wid, ಸುಳ್ಳು)
+				 : ಸರತಿ_ಸತತ_min_max_src(dsrc, wid, ಸುಳ್ಳು);
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_MIN_PROP_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_MIN_PROP_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t pid = cp->number;
-      unsigned wid = cp->bit_idx[0];
+      size_t pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
-      vvp_queue_vec4* dst = qsrc ? queue_run_min_max_src(qsrc, wid, false)
-				 : queue_run_min_max_src(dsrc, wid, false);
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      get_ಸರತಿ_or_darray_vec4_from_object(qobj, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst = qsrc ? ಸರತಿ_ಸತತ_min_max_src(qsrc, wid, ಸುಳ್ಳು)
+				 : ಸರತಿ_ಸತತ_min_max_src(dsrc, wid, ಸುಳ್ಳು);
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_MAX_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_MAX_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t* net = cp->net;
-      unsigned wid = cp->bit_idx[0];
-      vvp_queue_vec4* qsrc = 0;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
-      vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_run_min_max_src(qsrc, wid, true);
-      else if (dsrc) dst = queue_run_min_max_src(dsrc, wid, true);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
-	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    dst = queue_run_min_max_src(src, wid, true);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst;
+      ಆದರೆ (qsrc) dst = ಸರತಿ_ಸತತ_min_max_src(qsrc, wid, ನಿಜ);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) dst = ಸರತಿ_ಸತತ_min_max_src(dsrc, wid, ನಿಜ);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_vec4>(thr, net);
+	    vvp_ಸರತಿ_vec4* src = dynamic_cast<vvp_ಸರತಿ_vec4*>(src_q);
+	    dst = ಸರತಿ_ಸತತ_min_max_src(src, wid, ನಿಜ);
       }
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_MAX_OBJ_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_MAX_OBJ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->bit_idx[0];
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
       vvp_object_t src_obj;
-      thr->pop_object(src_obj);
+      thr->ತೆಗೆ_object(src_obj);
 
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
-      vvp_queue_vec4* dst = qsrc ? queue_run_min_max_src(qsrc, wid, true)
-				 : queue_run_min_max_src(dsrc, wid, true);
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      get_ಸರತಿ_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst = qsrc ? ಸರತಿ_ಸತತ_min_max_src(qsrc, wid, ನಿಜ)
+				 : ಸರತಿ_ಸತತ_min_max_src(dsrc, wid, ನಿಜ);
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_MAX_PROP_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_MAX_PROP_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t pid = cp->number;
-      unsigned wid = cp->bit_idx[0];
+      size_t pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
-      vvp_queue_vec4* dst = qsrc ? queue_run_min_max_src(qsrc, wid, true)
-				 : queue_run_min_max_src(dsrc, wid, true);
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      get_ಸರತಿ_or_darray_vec4_from_object(qobj, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst = qsrc ? ಸರತಿ_ಸತತ_min_max_src(qsrc, wid, ನಿಜ)
+				 : ಸರತಿ_ಸತತ_min_max_src(dsrc, wid, ನಿಜ);
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_UNIQUE_OBJ_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_UNIQUE_OBJ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->bit_idx[0];
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
       vvp_object_t src_obj;
-      thr->pop_object(src_obj);
+      thr->ತೆಗೆ_object(src_obj);
 
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
-      vvp_queue_vec4* dst = qsrc ? queue_run_unique_src(qsrc, wid, false)
-				 : queue_run_unique_src(dsrc, wid, false);
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      get_ಸರತಿ_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst = qsrc ? ಸರತಿ_ಸತತ_unique_src(qsrc, wid, ಸುಳ್ಳು)
+				 : ಸರತಿ_ಸತತ_unique_src(dsrc, wid, ಸುಳ್ಳು);
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_UNIQUE_INDEX_OBJ_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_UNIQUE_ಸೂಚ್ಯಂಕ_OBJ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->bit_idx[0];
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
       vvp_object_t src_obj;
-      thr->pop_object(src_obj);
+      thr->ತೆಗೆ_object(src_obj);
 
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
-      vvp_queue_vec4* dst = qsrc ? queue_run_unique_src(qsrc, wid, true)
-				 : queue_run_unique_src(dsrc, wid, true);
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      get_ಸರತಿ_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst = qsrc ? ಸರತಿ_ಸತತ_unique_src(qsrc, wid, ನಿಜ)
+				 : ಸರತಿ_ಸತತ_unique_src(dsrc, wid, ನಿಜ);
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_UNIQUE_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_UNIQUE_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
-      unsigned wid = cp->bit_idx[0];
-      vvp_queue_vec4* qsrc = 0;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
-      vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_run_unique_src(qsrc, wid, false);
-      else if (dsrc) dst = queue_run_unique_src(dsrc, wid, false);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
-	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    dst = queue_run_unique_src(src, wid, false);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst;
+      ಆದರೆ (qsrc) dst = ಸರತಿ_ಸತತ_unique_src(qsrc, wid, ಸುಳ್ಳು);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) dst = ಸರತಿ_ಸತತ_unique_src(dsrc, wid, ಸುಳ್ಳು);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_vec4>(thr, net);
+	    vvp_ಸರತಿ_vec4* src = dynamic_cast<vvp_ಸರತಿ_vec4*>(src_q);
+	    dst = ಸರತಿ_ಸತತ_unique_src(src, wid, ಸುಳ್ಳು);
       }
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_UNIQUE_PROP_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_UNIQUE_PROP_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t pid = cp->number;
-      unsigned wid = cp->bit_idx[0];
+      size_t pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
-      vvp_queue_vec4* dst = qsrc ? queue_run_unique_src(qsrc, wid, false)
-				 : queue_run_unique_src(dsrc, wid, false);
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      get_ಸರತಿ_or_darray_vec4_from_object(qobj, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst = qsrc ? ಸರತಿ_ಸತತ_unique_src(qsrc, wid, ಸುಳ್ಳು)
+				 : ಸರತಿ_ಸತತ_unique_src(dsrc, wid, ಸುಳ್ಳು);
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_UNIQUE_INDEX_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_UNIQUE_ಸೂಚ್ಯಂಕ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
-      unsigned wid = cp->bit_idx[0];
-      vvp_queue_vec4* qsrc = 0;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
-      vvp_queue_vec4* dst;
-      if (qsrc) dst = queue_run_unique_src(qsrc, wid, true);
-      else if (dsrc) dst = queue_run_unique_src(dsrc, wid, true);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
-	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    dst = queue_run_unique_src(src, wid, true);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst;
+      ಆದರೆ (qsrc) dst = ಸರತಿ_ಸತತ_unique_src(qsrc, wid, ನಿಜ);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) dst = ಸರತಿ_ಸತತ_unique_src(dsrc, wid, ನಿಜ);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_vec4>(thr, net);
+	    vvp_ಸರತಿ_vec4* src = dynamic_cast<vvp_ಸರತಿ_vec4*>(src_q);
+	    dst = ಸರತಿ_ಸತತ_unique_src(src, wid, ನಿಜ);
       }
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_UNIQUE_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_UNIQUE_ಸೂಚ್ಯಂಕ_PROP_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t pid = cp->number;
-      unsigned wid = cp->bit_idx[0];
+      size_t pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
-      vvp_queue_vec4* dst = qsrc ? queue_run_unique_src(qsrc, wid, true)
-				 : queue_run_unique_src(dsrc, wid, true);
-      thr->push_object(vvp_object_t(dst));
-      return true;
+      get_ಸರತಿ_or_darray_vec4_from_object(qobj, qsrc, dsrc);
+      vvp_ಸರತಿ_vec4* dst = qsrc ? ಸರತಿ_ಸತತ_unique_src(qsrc, wid, ನಿಜ)
+				 : ಸರತಿ_ಸತತ_unique_src(dsrc, wid, ನಿಜ);
+      thr->ತಳ್ಳು_object(vvp_object_t(dst));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_PROP_QUEUE_SIZE(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_PROP_ಸರತಿ_ಗಾತ್ರ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->ಸಂಖ್ಯೆ;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
+      get_ಸರತಿ_or_darray_vec4_from_object(qobj, qsrc, dsrc);
 
-      size_t sz = qsrc ? qsrc->get_size() : (dsrc ? dsrc->get_size() : 0);
+      size_t sz = qsrc ? qsrc->get_ಗಾತ್ರ() : (dsrc ? dsrc->get_ಗಾತ್ರ() : 0);
 
       vvp_vector4_t val(32, BIT4_0);
-      unsigned long ul = sz;
-      for (unsigned idx = 0; idx < 32; idx++) {
-	    if (ul & 1UL) {
-		  val.set_bit(idx, BIT4_1);
-	    } else {
-		  val.set_bit(idx, BIT4_0);
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ul = sz;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0; idx < 32; idx++) {
+	    ಆದರೆ (ul & 1UL) {
+		  val.ಗಣ_ಬಿಟ್(idx, BIT4_1);
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  val.ಗಣ_ಬಿಟ್(idx, BIT4_0);
 	    }
 	    ul >>= 1;
       }
-      thr->push_vec4(val);
-      return true;
+      thr->ತಳ್ಳು_vec4(val);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_SIZE_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_ಗಾತ್ರ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t* net = cp->net;
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       size_t sz =
-	    qsrc ? qsrc->get_size() : (dsrc ? dsrc->get_size() : 0);
+	    qsrc ? qsrc->get_ಗಾತ್ರ() : (dsrc ? dsrc->get_ಗಾತ್ರ() : 0);
 
       vvp_vector4_t val(32, BIT4_0);
-      unsigned long ul = sz;
-      for (unsigned idx = 0; idx < 32; idx++) {
-	    if (ul & 1UL) {
-		  val.set_bit(idx, BIT4_1);
-	    } else {
-		  val.set_bit(idx, BIT4_0);
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ul = sz;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0; idx < 32; idx++) {
+	    ಆದರೆ (ul & 1UL) {
+		  val.ಗಣ_ಬಿಟ್(idx, BIT4_1);
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  val.ಗಣ_ಬಿಟ್(idx, BIT4_0);
 	    }
 	    ul >>= 1;
       }
-      thr->push_vec4(val);
-      return true;
+      thr->ತಳ್ಳು_vec4(val);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_WORD_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_ಶಬ್ದ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->bit_idx[0];
-      unsigned ix_reg = cp->bit_idx[1];
-      int64_t adr = thr->words[ix_reg].w_int;
-      if (thr->flags[4] == BIT4_1) {
-	    thr->push_vec4(vvp_vector4_t(wid));
-	    return true;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      ಚಿಹ್ನೆರಹಿತ ix_reg = cp->ಬಿಟ್_idx[1];
+      int64_t adr = thr->ಪದಗಳು[ix_reg].w_int;
+      ಆದರೆ (thr->flags[4] == BIT4_1) {
+	    thr->ತಳ್ಳು_vec4(vvp_vector4_t(wid));
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
-      if (adr < 0) {
-	    thr->push_vec4(vvp_vector4_t(wid));
-	    return true;
+      ಆದರೆ (adr < 0) {
+	    thr->ತಳ್ಳು_vec4(vvp_vector4_t(wid));
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
       vvp_net_t* net = cp->net;
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_vector4_t out(wid);
-      if (qsrc) {
-	    if ((size_t)adr >= qsrc->get_size()) {
-		  thr->push_vec4(out);
-		  return true;
+      ಆದರೆ (qsrc) {
+	    ಆದರೆ ((size_t)adr >= qsrc->get_ಗಾತ್ರ()) {
+		  thr->ತಳ್ಳು_vec4(out);
+		  ಹಿಂತಿರುಗಿ ನಿಜ;
 	    }
-	    qsrc->get_word((unsigned)adr, out);
-      } else if (dsrc) {
-	    if ((size_t)adr >= dsrc->get_size()) {
-		  thr->push_vec4(out);
-		  return true;
+	    qsrc->get_ಶಬ್ದ((ಚಿಹ್ನೆರಹಿತ)adr, out);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) {
+	    ಆದರೆ ((size_t)adr >= dsrc->get_ಗಾತ್ರ()) {
+		  thr->ತಳ್ಳು_vec4(out);
+		  ಹಿಂತಿರುಗಿ ನಿಜ;
 	    }
-	    dsrc->get_word((unsigned)adr, out);
-      } else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
-	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    if (!src || (size_t)adr >= src->get_size()) {
-		  thr->push_vec4(out);
-		  return true;
+	    dsrc->get_ಶಬ್ದ((ಚಿಹ್ನೆರಹಿತ)adr, out);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_vec4>(thr, net);
+	    vvp_ಸರತಿ_vec4* src = dynamic_cast<vvp_ಸರತಿ_vec4*>(src_q);
+	    ಆದರೆ (!src || (size_t)adr >= src->get_ಗಾತ್ರ()) {
+		  thr->ತಳ್ಳು_vec4(out);
+		  ಹಿಂತಿರುಗಿ ನಿಜ;
 	    }
-	    src->get_word((unsigned)adr, out);
+	    src->get_ಶಬ್ದ((ಚಿಹ್ನೆರಹಿತ)adr, out);
       }
-      thr->push_vec4(out);
-      return true;
+      thr->ತಳ್ಳು_vec4(out);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_WORD_PROP_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_ಶಬ್ದ_PROP_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t pid = cp->number;
-      unsigned wid = cp->bit_idx[0];
-      unsigned ix_reg = cp->bit_idx[1];
-      int64_t adr = thr->words[ix_reg].w_int;
-      if (thr->flags[4] == BIT4_1) {
-	    thr->push_vec4(vvp_vector4_t(wid));
-	    return true;
+      size_t pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      ಚಿಹ್ನೆರಹಿತ ix_reg = cp->ಬಿಟ್_idx[1];
+      int64_t adr = thr->ಪದಗಳು[ix_reg].w_int;
+      ಆದರೆ (thr->flags[4] == BIT4_1) {
+	    thr->ತಳ್ಳು_vec4(vvp_vector4_t(wid));
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
-      if (adr < 0) {
-	    thr->push_vec4(vvp_vector4_t(wid));
-	    return true;
+      ಆದರೆ (adr < 0) {
+	    thr->ತಳ್ಳು_vec4(vvp_vector4_t(wid));
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      vvp_object_t saved_top;
-      bool popped_top = false;
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      if (cobj == 0) {
+      vvp_object_t saved_ತುದಿ;
+      ತಾರ್ಕಿಕ popped_ತುದಿ = ಸುಳ್ಳು;
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಆದರೆ (cobj == 0) {
 	    // Array-locator with(property) keeps an accumulator queue on top.
 	    // Temporarily pop it to access the class object beneath.
-	    thr->pop_object(saved_top);
-	    popped_top = true;
-	    vvp_object_t& below = thr->peek_object();
-	    cobj = below.peek<vvp_cobject>();
+	    thr->ತೆಗೆ_object(saved_ತುದಿ);
+	    popped_ತುದಿ = ನಿಜ;
+	    vvp_object_t& ಕೆಳಗೆ = thr->peek_object();
+	    cobj = ಕೆಳಗೆ.peek<vvp_cobject>();
       }
-      if (cobj == 0) {
-	    if (popped_top) thr->push_object(saved_top);
-	    thr->push_vec4(vvp_vector4_t(wid));
-	    return true;
+      ಆದರೆ (cobj == 0) {
+	    ಆದರೆ (popped_ತುದಿ) thr->ತಳ್ಳು_object(saved_ತುದಿ);
+	    thr->ತಳ್ಳು_vec4(vvp_vector4_t(wid));
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
+      get_ಸರತಿ_or_darray_vec4_from_object(qobj, qsrc, dsrc);
       vvp_vector4_t out(wid);
-      if (qsrc) {
-	    if ((size_t)adr >= qsrc->get_size()) {
-		  thr->push_vec4(out);
-		  return true;
+      ಆದರೆ (qsrc) {
+	    ಆದರೆ ((size_t)adr >= qsrc->get_ಗಾತ್ರ()) {
+		  thr->ತಳ್ಳು_vec4(out);
+		  ಹಿಂತಿರುಗಿ ನಿಜ;
 	    }
-	    qsrc->get_word((unsigned)adr, out);
-      } else if (dsrc) {
-	    if ((size_t)adr >= dsrc->get_size()) {
-		  thr->push_vec4(out);
-		  return true;
+	    qsrc->get_ಶಬ್ದ((ಚಿಹ್ನೆರಹಿತ)adr, out);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) {
+	    ಆದರೆ ((size_t)adr >= dsrc->get_ಗಾತ್ರ()) {
+		  thr->ತಳ್ಳು_vec4(out);
+		  ಹಿಂತಿರುಗಿ ನಿಜ;
 	    }
-	    dsrc->get_word((unsigned)adr, out);
-      } else {
-	    thr->push_vec4(out);
-	    if (popped_top) thr->push_object(saved_top);
-	    return true;
+	    dsrc->get_ಶಬ್ದ((ಚಿಹ್ನೆರಹಿತ)adr, out);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    thr->ತಳ್ಳು_vec4(out);
+	    ಆದರೆ (popped_ತುದಿ) thr->ತಳ್ಳು_object(saved_ತುದಿ);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
-      if (popped_top) thr->push_object(saved_top);
-      thr->push_vec4(out);
-      return true;
+      ಆದರೆ (popped_ತುದಿ) thr->ತಳ್ಳು_object(saved_ತುದಿ);
+      thr->ತಳ್ಳು_vec4(out);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_CMPIX_LTU(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CMPIX_LTU(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned a = cp->number;
-      unsigned b = cp->bit_idx[0];
-      if (thr->words[a].w_uint < thr->words[b].w_uint) {
+      ಚಿಹ್ನೆರಹಿತ a = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ b = cp->ಬಿಟ್_idx[0];
+      ಆದರೆ (thr->ಪದಗಳು[a].w_uint < thr->ಪದಗಳು[b].w_uint) {
 	    thr->flags[4] = BIT4_1;
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	    thr->flags[4] = BIT4_0;
       }
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_CMPIX_SLT0(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_CMPIX_SLT0(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned r = cp->number;
-      thr->flags[4] = (thr->words[r].w_int < 0) ? BIT4_1 : BIT4_0;
-      return true;
+      ಚಿಹ್ನೆರಹಿತ r = cp->ಸಂಖ್ಯೆ;
+      thr->flags[4] = (thr->ಪದಗಳು[r].w_int < 0) ? BIT4_1 : BIT4_0;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_PUSH_IX_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ತಳ್ಳು_IX_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned ix = cp->number;
-      unsigned wid = cp->bit_idx[0];
-      unsigned sgn = cp->bit_idx[1];
+      ಚಿಹ್ನೆರಹಿತ ix = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      ಚಿಹ್ನೆರಹಿತ sgn = cp->ಬಿಟ್_idx[1];
       uint32_t ubits;
-      if (sgn) {
-	    int32_t sv = (int32_t)thr->words[ix].w_int;
+      ಆದರೆ (sgn) {
+	    int32_t sv = (int32_t)thr->ಪದಗಳು[ix].w_int;
 	    ubits = (uint32_t)sv;
-      } else {
-	    ubits = (uint32_t)thr->words[ix].w_uint;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ubits = (uint32_t)thr->ಪದಗಳು[ix].w_uint;
       }
-      if (wid > 32) wid = 32;
+      ಆದರೆ (wid > 32) wid = 32;
       vvp_vector4_t tmp(wid, BIT4_0);
-      for (unsigned idx = 0; idx < wid; idx++) {
-	    if (ubits & 1u) {
-		  tmp.set_bit(idx, BIT4_1);
-	    } else {
-		  tmp.set_bit(idx, BIT4_0);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0; idx < wid; idx++) {
+	    ಆದರೆ (ubits & 1u) {
+		  tmp.ಗಣ_ಬಿಟ್(idx, BIT4_1);
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  tmp.ಗಣ_ಬಿಟ್(idx, BIT4_0);
 	    }
 	    ubits >>= 1;
       }
-      thr->push_vec4(tmp);
-      return true;
+      thr->ತಳ್ಳು_vec4(tmp);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_NEW_EMPTY_V(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_NEW_ಖಾಲಿಗಳು_V(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      thr->push_object(vvp_object_t(new vvp_queue_vec4()));
-      return true;
+      thr->ತಳ್ಳು_object(vvp_object_t(ಹೊಸ vvp_ಸರತಿ_vec4()));
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_QUEUE_APPEND_WORD_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_ಸರತಿ_APPEND_ಶಬ್ದ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->bit_idx[0];
-      vvp_vector4_t elem = thr->pop_vec4();
-      assert(elem.size() == wid);
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      vvp_vector4_t elem = thr->ತೆಗೆ_vec4();
+      ಪ್ರತಿಜ್ಞಾ(elem.size() == wid);
       vvp_object_t qobj;
-      thr->pop_object(qobj);
-      vvp_queue_vec4* q = qobj.peek<vvp_queue_vec4>();
-      assert(q);
+      thr->ತೆಗೆ_object(qobj);
+      vvp_ಸರತಿ_vec4* q = qobj.peek<vvp_ಸರತಿ_vec4>();
+      ಪ್ರತಿಜ್ಞಾ(q);
       q->push_back(elem, 0);
-      thr->push_object(qobj);
-      return true;
+      thr->ತಳ್ಳು_object(qobj);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_DELETE_PROP_ELEM(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_DELETE_PROP_ELEM(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->ಸಂಖ್ಯೆ;
 
-      int64_t idx_val = thr->words[3].w_int;
-      if (thr->flags[4] == BIT4_1) {
+      int64_t idx_val = thr->ಪದಗಳು[3].w_int;
+      ಆದರೆ (thr->flags[4] == BIT4_1) {
 	    cerr << thr->get_fileline()
 	         << "Warning: skipping queue delete() with undefined index."
-	         << endl;
-	    return true;
+	         << ಸಾಲು_ಅಂತ್ಯ;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
-      if (idx_val < 0) {
+      ಆದರೆ (idx_val < 0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: skipping queue delete() with negative index."
-	         << endl;
-	    return true;
+	         << ಸಾಲು_ಅಂತ್ಯ;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
       size_t idx = idx_val;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      vvp_queue* queue = qobj.peek<vvp_queue>();
-      if (queue == 0) {
+      vvp_ಸರತಿ* ಸರತಿ = qobj.peek<vvp_ಸರತಿ>();
+      ಆದರೆ (ಸರತಿ == 0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: skipping delete(" << idx
-	         << ") on empty queue." << endl;
-      } else {
-	    size_t size = queue->get_size();
-	    if (idx >= size) {
+	         << ") on empty queue." << ಸಾಲು_ಅಂತ್ಯ;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    size_t size = ಸರತಿ->get_ಗಾತ್ರ();
+	    ಆದರೆ (idx >= size) {
 		  cerr << thr->get_fileline()
 		       << "Warning: skipping out of range delete(" << idx
-		       << ") on queue of size " << size << "." << endl;
-	    } else {
-		  queue->erase(idx);
+		       << ") on queue of size " << size << "." << ಸಾಲು_ಅಂತ್ಯ;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  ಸರತಿ->erase(idx);
 	    }
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_DELETE_PROP_OBJ(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_DELETE_PROP_OBJ(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->ಸಂಖ್ಯೆ;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
-      cobj->set_object(pid, vvp_object_t(), 0);
+      cobj->ಗಣ_object(pid, vvp_object_t(), 0);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-template <typename ELEM, class QTYPE>
-static bool store_qb(vthread_t thr, vvp_code_t cp, unsigned wid=0)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM, ವರ್ಗ QTYPE>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ store_qb(vthread_t thr, vvp_ಸಂಕೇತ_t cp, ಚಿಹ್ನೆರಹಿತ wid=0)
 {
       ELEM value;
       vvp_net_t*net = cp->net;
-      unsigned max_size = thr->words[cp->bit_idx[0]].w_int;
-      pop_value(thr, value, wid); // Pop the value to store.
+      ಚಿಹ್ನೆರಹಿತ max_ಗಾತ್ರ = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_int;
+      ತೆಗೆ_ಮೌಲ್ಯ(thr, value, wid); // Pop the value to store.
 
-      vvp_queue*queue = get_queue_object<QTYPE>(thr, net);
-      assert(queue);
-      queue->push_back(value, max_size);
-      return true;
+      vvp_ಸರತಿ*ಸರತಿ = get_ಸರತಿ_object<QTYPE>(thr, net);
+      ಪ್ರತಿಜ್ಞಾ(ಸರತಿ);
+      ಸರತಿ->push_back(value, max_ಗಾತ್ರ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %store/qb/r <var-label>, <max-idx>
  */
-bool of_STORE_QB_R(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_QB_R(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_qb<double, vvp_queue_real>(thr, cp);
+      ಹಿಂತಿರುಗಿ store_qb<ದ್ವಿಗುಣ, vvp_ಸರತಿ_real>(thr, cp);
 }
 
 /*
  * %store/qb/str <var-label>, <max-idx>
  */
-bool of_STORE_QB_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_QB_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_qb<string, vvp_queue_string>(thr, cp);
+      ಹಿಂತಿರುಗಿ store_qb<string, vvp_ಸರತಿ_string>(thr, cp);
 }
 
 /*
  * %store/qb/v <var-label>, <max-idx>, <wid>
  */
-bool of_STORE_QB_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_QB_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_qb<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
+      ಹಿಂತಿರುಗಿ store_qb<vvp_vector4_t, vvp_ಸರತಿ_vec4>(thr, cp, cp->ಬಿಟ್_idx[1]);
 }
 
-template <typename ELEM, class QTYPE>
-static bool store_qdar(vthread_t thr, vvp_code_t cp, unsigned wid=0)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM, ವರ್ಗ QTYPE>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ store_qdar(vthread_t thr, vvp_ಸಂಕೇತ_t cp, ಚಿಹ್ನೆರಹಿತ wid=0)
 {
-      int64_t idx = thr->words[3].w_int;
+      int64_t idx = thr->ಪದಗಳು[3].w_int;
       ELEM value;
       vvp_net_t*net = cp->net;
-      pop_value(thr, value, wid); // Pop the value to store.
+      ತೆಗೆ_ಮೌಲ್ಯ(thr, value, wid); // Pop the value to store.
 
-      vvp_queue*queue = get_queue_object<QTYPE>(thr, net);
-      assert(queue);
-      if (idx < 0) {
+      vvp_ಸರತಿ*ಸರತಿ = get_ಸರತಿ_object<QTYPE>(thr, net);
+      ಪ್ರತಿಜ್ಞಾ(ಸರತಿ);
+      ಆದರೆ (idx < 0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot assign to a negative "
-	         << get_queue_type(value)
+	         << get_ಸರತಿ_type(value)
 	         << " index (" << idx << "). ";
-	    print_queue_value(value);
-	    cerr << " was not added." << endl;
-      } else if (thr->flags[4] != BIT4_0) {
+	    print_ಸರತಿ_ಮೌಲ್ಯ(value);
+	    cerr << " was not added." << ಸಾಲು_ಅಂತ್ಯ;
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (thr->flags[4] != BIT4_0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot assign to an undefined "
-	         << get_queue_type(value) << " index. ";
-	    print_queue_value(value);
-	    cerr << " was not added." << endl;
-      } else {
-	    unsigned max_size = thr->words[cp->bit_idx[0]].w_int;
-	    queue->set_word_max(idx, value, max_size);
+	         << get_ಸರತಿ_type(value) << " index. ";
+	    print_ಸರತಿ_ಮೌಲ್ಯ(value);
+	    cerr << " was not added." << ಸಾಲು_ಅಂತ್ಯ;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ max_ಗಾತ್ರ = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_int;
+	    ಸರತಿ->ಗಣ_ಶಬ್ದ_max(idx, value, max_ಗಾತ್ರ);
       }
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %store/qdar/r <var>, idx
  */
-bool of_STORE_QDAR_R(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_QDAR_R(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_qdar<double, vvp_queue_real>(thr, cp);
+      ಹಿಂತಿರುಗಿ store_qdar<ದ್ವಿಗುಣ, vvp_ಸರತಿ_real>(thr, cp);
 }
 
 /*
  * %store/qdar/str <var>, idx
  */
-bool of_STORE_QDAR_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_QDAR_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_qdar<string, vvp_queue_string>(thr, cp);
+      ಹಿಂತಿರುಗಿ store_qdar<string, vvp_ಸರತಿ_string>(thr, cp);
 }
 
 /*
  * %store/qdar/v <var>, idx
  */
-bool of_STORE_QDAR_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_QDAR_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_qdar<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
+      ಹಿಂತಿರುಗಿ store_qdar<vvp_vector4_t, vvp_ಸರತಿ_vec4>(thr, cp, cp->ಬಿಟ್_idx[1]);
 }
 
-template <typename ELEM, class QTYPE>
-static bool store_qf(vthread_t thr, vvp_code_t cp, unsigned wid=0)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM, ವರ್ಗ QTYPE>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ store_qf(vthread_t thr, vvp_ಸಂಕೇತ_t cp, ಚಿಹ್ನೆರಹಿತ wid=0)
 {
       ELEM value;
       vvp_net_t*net = cp->net;
-      unsigned max_size = thr->words[cp->bit_idx[0]].w_int;
-      pop_value(thr, value, wid); // Pop the value to store.
+      ಚಿಹ್ನೆರಹಿತ max_ಗಾತ್ರ = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_int;
+      ತೆಗೆ_ಮೌಲ್ಯ(thr, value, wid); // Pop the value to store.
 
-      vvp_queue*queue = get_queue_object<QTYPE>(thr, net);
-      assert(queue);
-      queue->push_front(value, max_size);
-      return true;
+      vvp_ಸರತಿ*ಸರತಿ = get_ಸರತಿ_object<QTYPE>(thr, net);
+      ಪ್ರತಿಜ್ಞಾ(ಸರತಿ);
+      ಸರತಿ->push_front(value, max_ಗಾತ್ರ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 /*
  * %store/qf/r <var-label>, <max-idx>
  */
-bool of_STORE_QF_R(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_QF_R(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_qf<double, vvp_queue_real>(thr, cp);
+      ಹಿಂತಿರುಗಿ store_qf<ದ್ವಿಗುಣ, vvp_ಸರತಿ_real>(thr, cp);
 }
 
 /*
  * %store/qf/str <var-label>, <max-idx>
  */
-bool of_STORE_QF_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_QF_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_qf<string, vvp_queue_string>(thr, cp);
+      ಹಿಂತಿರುಗಿ store_qf<string, vvp_ಸರತಿ_string>(thr, cp);
 }
 
 /*
  * %store/qb/v <var-label>, <max-idx>, <wid>
  */
-bool of_STORE_QF_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_QF_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_qf<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
+      ಹಿಂತಿರುಗಿ store_qf<vvp_vector4_t, vvp_ಸರತಿ_vec4>(thr, cp, cp->ಬಿಟ್_idx[1]);
 }
 
-template <typename ELEM, class QTYPE>
-static bool store_qobj(vthread_t thr, vvp_code_t cp, unsigned wid=0)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM, ವರ್ಗ QTYPE>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ store_qobj(vthread_t thr, vvp_ಸಂಕೇತ_t cp, ಚಿಹ್ನೆರಹಿತ wid=0)
 {
 // FIXME: Can we actually use wid here?
-      (void)wid;
+      (ಶೂನ್ಯ)wid;
       vvp_net_t*net = cp->net;
 
-      vvp_queue*queue = get_queue_object<QTYPE>(thr, net);
-      assert(queue);
+      vvp_ಸರತಿ*ಸರತಿ = get_ಸರತಿ_object<QTYPE>(thr, net);
+      ಪ್ರತಿಜ್ಞಾ(ಸರತಿ);
 
       vvp_object_t src;
-      thr->pop_object(src);
+      thr->ತೆಗೆ_object(src);
 
         // If it is null just clear the queue
-      if (src.test_nil())
-	    queue->erase_tail(0);
-      else {
-	    unsigned max_size = thr->words[cp->bit_idx[0]].w_int;
-	    queue->copy_elems(src, max_size);
+      ಆದರೆ (src.test_nil())
+	    ಸರತಿ->erase_ಬಾಲ(0);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ max_ಗಾತ್ರ = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_int;
+	    ಸರತಿ->copy_elems(src, max_ಗಾತ್ರ);
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_STORE_QOBJ_R(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_QOBJ_R(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_qobj<double, vvp_queue_real>(thr, cp);
+      ಹಿಂತಿರುಗಿ store_qobj<ದ್ವಿಗುಣ, vvp_ಸರತಿ_real>(thr, cp);
 }
 
-bool of_STORE_QOBJ_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_QOBJ_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_qobj<string, vvp_queue_string>(thr, cp);
+      ಹಿಂತಿರುಗಿ store_qobj<string, vvp_ಸರತಿ_string>(thr, cp);
 }
 
-bool of_STORE_QOBJ_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_QOBJ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store_qobj<vvp_vector4_t, vvp_queue_vec4>(thr, cp, cp->bit_idx[1]);
+      ಹಿಂತಿರುಗಿ store_qobj<vvp_vector4_t, vvp_ಸರತಿ_vec4>(thr, cp, cp->ಬಿಟ್_idx[1]);
 }
 
-static void vvp_send(vthread_t thr, vvp_net_ptr_t ptr, const double&val)
+ಸ್ಥಿರ ಶೂನ್ಯ vvp_send(vthread_t thr, vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ ದ್ವಿಗುಣ&val)
 {
       vvp_send_real(ptr, val, thr->wt_context);
 }
 
-static void vvp_send(vthread_t thr, vvp_net_ptr_t ptr, const string&val)
+ಸ್ಥಿರ ಶೂನ್ಯ vvp_send(vthread_t thr, vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ string&val)
 {
       vvp_send_string(ptr, val, thr->wt_context);
 }
 
-template <typename ELEM>
-static bool store(vthread_t thr, vvp_code_t cp)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ store(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       ELEM val;
-      pop_value(thr, val, 0);
+      ತೆಗೆ_ಮೌಲ್ಯ(thr, val, 0);
 	/* set the value into port 0 of the destination. */
       vvp_net_ptr_t ptr (cp->net, 0);
       vvp_send(thr, ptr, val);
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_STORE_REAL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store<double>(thr, cp);
+      ಹಿಂತಿರುಗಿ store<ದ್ವಿಗುಣ>(thr, cp);
 }
 
-template <typename ELEM>
-static bool storea(vthread_t thr, vvp_code_t cp)
+ಮಾದರಿ <ಬಗೆ_ಹೆಸರು ELEM>
+ಸ್ಥಿರ ತಾರ್ಕಿಕ storea(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned idx = cp->bit_idx[0];
+      ಚಿಹ್ನೆರಹಿತ idx = cp->ಬಿಟ್_idx[0];
       ELEM val;
-      pop_value(thr, val, 0);
+      ತೆಗೆ_ಮೌಲ್ಯ(thr, val, 0);
 
-      if (thr->flags[4] != BIT4_1) {
-	    unsigned adr = thr->words[idx].w_int;
-	    cp->array->set_word(adr, val);
+      ಆದರೆ (thr->flags[4] != BIT4_1) {
+	    ಚಿಹ್ನೆರಹಿತ adr = thr->ಪದಗಳು[idx].w_int;
+	    cp->array->ಗಣ_ಶಬ್ದ(adr, val);
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %store/reala <var-label> <index>
  */
-bool of_STORE_REALA(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_REALA(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return storea<double>(thr, cp);
+      ಹಿಂತಿರುಗಿ storea<ದ್ವಿಗುಣ>(thr, cp);
 }
 
-bool of_STORE_STR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_STR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return store<string>(thr, cp);
+      ಹಿಂತಿರುಗಿ store<string>(thr, cp);
 }
 
 /*
  * %store/stra <array-label> <index>
  */
-bool of_STORE_STRA(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_STRA(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      return storea<string>(thr, cp);
+      ಹಿಂತಿರುಗಿ storea<string>(thr, cp);
 }
 
 /*
@@ -7558,78 +7558,78 @@ bool of_STORE_STRA(vthread_t thr, vvp_code_t cp)
  * not consistent with the %store/vec4/<etc> instructions which have
  * no <wid>.
  */
-bool of_STORE_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_ptr_t ptr(cp->net, 0);
-      const vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (cp->net->fil);
-      unsigned off_index = cp->bit_idx[0];
-      unsigned int wid = cp->bit_idx[1];
+      ಸ್ಥಿರಾಂಕ vvp_signal_ಮೌಲ್ಯ*sig = dynamic_cast<vvp_signal_ಮೌಲ್ಯ*> (cp->net->fil);
+      ಚಿಹ್ನೆರಹಿತ off_ಸೂಚ್ಯಂಕ = cp->ಬಿಟ್_idx[0];
+      ಚಿಹ್ನೆರಹಿತ ಪೂರ್ಣಾಂಕ wid = cp->ಬಿಟ್_idx[1];
 
-      int64_t off = off_index ? thr->words[off_index].w_int : 0;
-      unsigned int sig_value_size = sig->value_size();
+      int64_t off = off_ಸೂಚ್ಯಂಕ ? thr->ಪದಗಳು[off_ಸೂಚ್ಯಂಕ].w_int : 0;
+      ಚಿಹ್ನೆರಹಿತ ಪೂರ್ಣಾಂಕ sig_ಮೌಲ್ಯ_ಗಾತ್ರ = sig->ಮೌಲ್ಯ_ಗಾತ್ರ();
 
       vvp_vector4_t&val = thr->peek_vec4();
-      unsigned val_size = val.size();
+      ಚಿಹ್ನೆರಹಿತ val_ಗಾತ್ರ = val.size();
 
-      if (val_size < wid) {
+      ಆದರೆ (val_ಗಾತ್ರ < wid) {
 	    cerr << thr->get_fileline()
-	         << "XXXX Internal error: val.size()=" << val_size
-		 << ", expecting >= " << wid << endl;
+	         << "XXXX Internal error: val.size()=" << val_ಗಾತ್ರ
+		 << ", expecting >= " << wid << ಸಾಲು_ಅಂತ್ಯ;
       }
-      assert(val_size >= wid);
-      if (val_size > wid) {
+      ಪ್ರತಿಜ್ಞಾ(val_ಗಾತ್ರ >= wid);
+      ಆದರೆ (val_ಗಾತ್ರ > wid) {
 	    val.resize(wid);
       }
 
 	// If there is a problem loading the index register, flags-4
 	// will be set to 1, and we know here to skip the actual assignment.
-      if (off_index!=0 && thr->flags[4] == BIT4_1) {
-	    thr->pop_vec4(1);
-	    return true;
+      ಆದರೆ (off_ಸೂಚ್ಯಂಕ!=0 && thr->flags[4] == BIT4_1) {
+	    thr->ತೆಗೆ_vec4(1);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      if (!resize_rval_vec(val, off, sig_value_size)) {
-	    thr->pop_vec4(1);
-	    return true;
+      ಆದರೆ (!resize_rval_vec(val, off, sig_ಮೌಲ್ಯ_ಗಾತ್ರ)) {
+	    thr->ತೆಗೆ_vec4(1);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      if (off == 0 && val.size() == sig_value_size)
+      ಆದರೆ (off == 0 && val.size() == sig_ಮೌಲ್ಯ_ಗಾತ್ರ)
 	    vvp_send_vec4(ptr, val, thr->wt_context);
-      else
-	    vvp_send_vec4_pv(ptr, val, off, sig_value_size, thr->wt_context);
+      ಇಲ್ಲದಿದ್ದರೆ
+	    vvp_send_vec4_pv(ptr, val, off, sig_ಮೌಲ್ಯ_ಗಾತ್ರ, thr->wt_context);
 
-      thr->pop_vec4(1);
-      return true;
+      thr->ತೆಗೆ_vec4(1);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %store/vec4a <var-label>, <addr>, <offset>
  */
-bool of_STORE_VEC4A(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_STORE_VEC4_A(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned adr_index = cp->bit_idx[0];
-      unsigned off_index = cp->bit_idx[1];
+      ಚಿಹ್ನೆರಹಿತ adr_ಸೂಚ್ಯಂಕ = cp->ಬಿಟ್_idx[0];
+      ಚಿಹ್ನೆರಹಿತ off_ಸೂಚ್ಯಂಕ = cp->ಬಿಟ್_idx[1];
 
-      long adr = adr_index? thr->words[adr_index].w_int : 0;
-      int64_t off = off_index ? thr->words[off_index].w_int : 0;
+      ದೀರ್ಘ adr = adr_ಸೂಚ್ಯಂಕ? thr->ಪದಗಳು[adr_ಸೂಚ್ಯಂಕ].w_int : 0;
+      int64_t off = off_ಸೂಚ್ಯಂಕ ? thr->ಪದಗಳು[off_ಸೂಚ್ಯಂಕ].w_int : 0;
 
 	// Suppress action if flags-4 is true.
-      if (thr->flags[4] == BIT4_1) {
-	    thr->pop_vec4(1);
-	    return true;
+      ಆದರೆ (thr->flags[4] == BIT4_1) {
+	    thr->ತೆಗೆ_vec4(1);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
       vvp_vector4_t &value = thr->peek_vec4();
 
-      if (!resize_rval_vec(value, off, cp->array->get_word_size())) {
-	    thr->pop_vec4(1);
-	    return true;
+      ಆದರೆ (!resize_rval_vec(value, off, cp->array->get_ಶಬ್ದ_ಗಾತ್ರ())) {
+	    thr->ತೆಗೆ_vec4(1);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      cp->array->set_word(adr, off, value);
+      cp->array->ಗಣ_ಶಬ್ದ(adr, off, value);
 
-      thr->pop_vec4(1);
-      return true;
+      thr->ತೆಗೆ_vec4(1);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -7638,13 +7638,13 @@ bool of_STORE_VEC4A(vthread_t thr, vvp_code_t cp)
  *   pop l;
  *   push l-r;
  */
-bool of_SUB(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_SUB(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      vvp_vector4_t r = thr->pop_vec4();
+      vvp_vector4_t r = thr->ತೆಗೆ_vec4();
       vvp_vector4_t&l = thr->peek_vec4();
 
       l.sub(r);
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -7653,9 +7653,9 @@ bool of_SUB(vthread_t thr, vvp_code_t)
  * Pop1 operand, get the other operand from the arguments, and push
  * the result.
  */
-bool of_SUBI(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_SUBI(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->number;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಸಂಖ್ಯೆ;
 
       vvp_vector4_t&l = thr->peek_vec4();
 
@@ -7663,20 +7663,20 @@ bool of_SUBI(vthread_t thr, vvp_code_t cp)
 	// going to be zero, so start the result vector with all zero
 	// bits. Then we only need to replace the bits that are different.
       vvp_vector4_t r (wid, BIT4_0);
-      get_immediate_rval (cp, r);
+      get_ತಕ್ಷಣ_rval (cp, r);
 
       l.sub(r);
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 
 }
 
-bool of_SUB_WR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_SUB_WR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
-      thr->push_real(l - r);
-      return true;
+      ದ್ವಿಗುಣ r = thr->ತೆಗೆ_real();
+      ದ್ವಿಗುಣ l = thr->ತೆಗೆ_real();
+      thr->ತಳ್ಳು_real(l - r);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -7685,67 +7685,67 @@ bool of_SUB_WR(vthread_t thr, vvp_code_t)
  * the result to the stack. This opcode actually works by editing the
  * string in place.
  */
-bool of_SUBSTR(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_SUBSTR(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      int32_t first = thr->words[cp->bit_idx[0]].w_int;
-      int32_t last = thr->words[cp->bit_idx[1]].w_int;
+      int32_t ಮೊದಲ = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[0]].w_int;
+      int32_t ಕೊನೆಯ = thr->ಪದಗಳು[cp->ಬಿಟ್_idx[1]].w_int;
       string&val = thr->peek_str(0);
 
-      if (first < 0 || last < first || last >= (int32_t)val.size()) {
+      ಆದರೆ (ಮೊದಲ < 0 || ಕೊನೆಯ < ಮೊದಲ || ಕೊನೆಯ >= (int32_t)val.size()) {
 	    val = string("");
-	    return true;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      val = val.substr(first, last-first+1);
-      return true;
+      val = val.substr(ಮೊದಲ, ಕೊನೆಯ-ಮೊದಲ+1);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %substr/vec4 <index>, <wid>
  */
-bool of_SUBSTR_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_SUBSTR_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned sel_idx = cp->bit_idx[0];
-      unsigned wid = cp->bit_idx[1];
+      ಚಿಹ್ನೆರಹಿತ sel_idx = cp->ಬಿಟ್_idx[0];
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[1];
 
-      int32_t sel = thr->words[sel_idx].w_int;
-      const string&val = thr->peek_str(0);
+      int32_t sel = thr->ಪದಗಳು[sel_idx].w_int;
+      ಸ್ಥಿರಾಂಕ string&val = thr->peek_str(0);
 
-      assert(wid%8 == 0);
+      ಪ್ರತಿಜ್ಞಾ(wid%8 == 0);
 
-      if (sel < 0 || sel >= (int32_t)val.size()) {
+      ಆದರೆ (sel < 0 || sel >= (int32_t)val.size()) {
 	    vvp_vector4_t res (wid, BIT4_0);
-	    thr->push_vec4(res);
-	    return true;
+	    thr->ತಳ್ಳು_vec4(res);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
       vvp_vector4_t res (wid, BIT4_0);
 
-      assert(wid==8);
-      unsigned char tmp = val[sel];
-      for (int idx = 0 ; idx < 8 ; idx += 1) {
-	    if (tmp & (1<<idx))
-		  res.set_bit(idx, BIT4_1);
+      ಪ್ರತಿಜ್ಞಾ(wid==8);
+      ಚಿಹ್ನೆರಹಿತ ಅಕ್ಷರ tmp = val[sel];
+      ಗಾಗಿ (ಪೂರ್ಣಾಂಕ idx = 0 ; idx < 8 ; idx += 1) {
+	    ಆದರೆ (tmp & (1<<idx))
+		  res.ಗಣ_ಬಿಟ್(idx, BIT4_1);
       }
 
-      thr->push_vec4(res);
-      return true;
+      thr->ತಳ್ಳು_vec4(res);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_FILE_LINE(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_FILE_ಸಾಲು(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vpiHandle handle = cp->handle;
 
 	/* When it is available, keep the file/line information in the
 	   thread for error/warning messages. */
-      thr->set_fileline(vpi_get_str(vpiFile, handle),
-                        vpi_get(vpiLineNo, handle));
+      thr->ಗಣ_fileline(vpi_get_str(vpiFile, handle),
+                        vpi_get(vpi_ಸಾಲು_No, handle));
 
-      if (show_file_line)
+      ಆದರೆ (show_file_ಸಾಲು)
 	    cerr << thr->get_fileline()
-	         << vpi_get_str(_vpiDescription, handle) << endl;
+	         << vpi_get_str(_vpiDescription, handle) << ಸಾಲು_ಅಂತ್ಯ;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -7753,62 +7753,62 @@ bool of_FILE_LINE(vthread_t thr, vvp_code_t cp)
  * Test if the object at the specified variable is nil. If so, write
  * "1" into flags[4], otherwise write "0" into flags[4].
  */
-bool of_TEST_NUL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_TEST_NUL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t*net = cp->net;
 
-      assert(net);
+      ಪ್ರತಿಜ್ಞಾ(net);
       vvp_fun_signal_object*obj = dynamic_cast<vvp_fun_signal_object*> (net->fun);
-      assert(obj);
+      ಪ್ರತಿಜ್ಞಾ(obj);
 
-      if (obj->get_object().test_nil())
+      ಆದರೆ (obj->get_object().test_nil())
 	    thr->flags[4] = BIT4_1;
-      else
+      ಇಲ್ಲದಿದ್ದರೆ
 	    thr->flags[4] = BIT4_0;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_TEST_NUL_A(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_TEST_NUL_A(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned idx = cp->bit_idx[0];
-      unsigned adr = thr->words[idx].w_int;
-      vvp_object_t word;
+      ಚಿಹ್ನೆರಹಿತ idx = cp->ಬಿಟ್_idx[0];
+      ಚಿಹ್ನೆರಹಿತ adr = thr->ಪದಗಳು[idx].w_int;
+      vvp_object_t ಶಬ್ದ;
 
 	/* If the address is undefined, return true. */
-      if (thr->flags[4] == BIT4_1) {
-	    return true;
+      ಆದರೆ (thr->flags[4] == BIT4_1) {
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      cp->array->get_word_obj(adr, word);
-      if (word.test_nil())
+      cp->array->get_ಶಬ್ದ_obj(adr, ಶಬ್ದ);
+      ಆದರೆ (ಶಬ್ದ.test_nil())
 	    thr->flags[4] = BIT4_1;
-      else
+      ಇಲ್ಲದಿದ್ದರೆ
 	    thr->flags[4] = BIT4_0;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_TEST_NUL_OBJ(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_TEST_NUL_OBJ(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      if (thr->peek_object().test_nil())
+      ಆದರೆ (thr->peek_object().test_nil())
 	    thr->flags[4] = BIT4_1;
-      else
+      ಇಲ್ಲದಿದ್ದರೆ
 	    thr->flags[4] = BIT4_0;
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %test_nul/prop <pid>, <idx>
  */
-bool of_TEST_NUL_PROP(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_TEST_NUL_PROP(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned pid = cp->number;
-      unsigned idx = cp->bit_idx[0];
+      ಚಿಹ್ನೆರಹಿತ pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ idx = cp->ಬಿಟ್_idx[0];
 
-      if (idx != 0) {
-	    assert(idx < vthread_s::WORDS_COUNT);
-	    idx = thr->words[idx].w_uint;
+      ಆದರೆ (idx != 0) {
+	    ಪ್ರತಿಜ್ಞಾ(idx < vthread_s::ಪದಗಳು_ಎಣಿಕೆ);
+	    idx = thr->ಪದಗಳು[idx].w_uint;
       }
 
       vvp_object_t&obj = thr->peek_object();
@@ -7817,329 +7817,329 @@ bool of_TEST_NUL_PROP(vthread_t thr, vvp_code_t cp)
       vvp_object_t val;
       cobj->get_object(pid, val, idx);
 
-      if (val.test_nil())
+      ಆದರೆ (val.test_nil())
 	    thr->flags[4] = BIT4_1;
-      else
+      ಇಲ್ಲದಿದ್ದರೆ
 	    thr->flags[4] = BIT4_0;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* and() reduction returns the scalar sum (Verilog-style bitwise-AND per word). */
-template <class SRC>
-static vvp_vector4_t uparr_and_words_src(SRC* src, unsigned wid)
+ಮಾದರಿ <ವರ್ಗ SRC>
+ಸ್ಥಿರ vvp_vector4_t uparr_and_ಪದಗಳು_src(SRC* src, ಚಿಹ್ನೆರಹಿತ wid)
 {
-      if (!src) return vvp_vector4_t(wid, BIT4_X);
+      ಆದರೆ (!src) ಹಿಂತಿರುಗಿ vvp_vector4_t(wid, BIT4_X);
       vvp_vector4_t res(wid, BIT4_1);
-      for (size_t i = 0; i < src->get_size(); i += 1) {
+      ಗಾಗಿ (size_t i = 0; i < src->get_ಗಾತ್ರ(); i += 1) {
 	    vvp_vector4_t vi(wid);
-	    src->get_word(i, vi);
+	    src->get_ಶಬ್ದ(i, vi);
 	    res &= vi;
       }
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }
 
-bool of_UPARR_AND_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_UPARR_AND_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t* net = cp->net;
-      unsigned wid = cp->bit_idx[0];
-      vvp_queue_vec4* qsrc = 0;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_vector4_t res;
-      if (qsrc) res = uparr_and_words_src(qsrc, wid);
-      else if (dsrc) res = uparr_and_words_src(dsrc, wid);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
-	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    res = uparr_and_words_src(src, wid);
+      ಆದರೆ (qsrc) res = uparr_and_ಪದಗಳು_src(qsrc, wid);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) res = uparr_and_ಪದಗಳು_src(dsrc, wid);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_vec4>(thr, net);
+	    vvp_ಸರತಿ_vec4* src = dynamic_cast<vvp_ಸರತಿ_vec4*>(src_q);
+	    res = uparr_and_ಪದಗಳು_src(src, wid);
       }
-      thr->push_vec4(res);
-      return true;
+      thr->ತಳ್ಳು_vec4(res);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* or() reduction returns the scalar sum (Verilog-style bitwise-AND per word). */
-template <class SRC>
-static vvp_vector4_t uparr_or_words_src(SRC* src, unsigned wid)
+ಮಾದರಿ <ವರ್ಗ SRC>
+ಸ್ಥಿರ vvp_vector4_t uparr_or_ಪದಗಳು_src(SRC* src, ಚಿಹ್ನೆರಹಿತ wid)
 {
-      if (!src) return vvp_vector4_t(wid, BIT4_X);
+      ಆದರೆ (!src) ಹಿಂತಿರುಗಿ vvp_vector4_t(wid, BIT4_X);
       vvp_vector4_t res(wid, BIT4_0);
-      for (size_t i = 0; i < src->get_size(); i += 1) {
+      ಗಾಗಿ (size_t i = 0; i < src->get_ಗಾತ್ರ(); i += 1) {
 	    vvp_vector4_t vi(wid);
-	    src->get_word(i, vi);
+	    src->get_ಶಬ್ದ(i, vi);
 	    res |= vi;
       }
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }
 
-bool of_UPARR_OR_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_UPARR_OR_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t* net = cp->net;
-      unsigned wid = cp->bit_idx[0];
-      vvp_queue_vec4* qsrc = 0;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_vector4_t res;
-      if (qsrc) res = uparr_or_words_src(qsrc, wid);
-      else if (dsrc) res = uparr_or_words_src(dsrc, wid);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
-	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    res = uparr_or_words_src(src, wid);
+      ಆದರೆ (qsrc) res = uparr_or_ಪದಗಳು_src(qsrc, wid);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) res = uparr_or_ಪದಗಳು_src(dsrc, wid);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_vec4>(thr, net);
+	    vvp_ಸರತಿ_vec4* src = dynamic_cast<vvp_ಸರತಿ_vec4*>(src_q);
+	    res = uparr_or_ಪದಗಳು_src(src, wid);
       }
-      thr->push_vec4(res);
-      return true;
+      thr->ತಳ್ಳು_vec4(res);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* real product() reduction returns the scalar sum */
-template <class SRC>
-static double uparr_product_words_src_real(SRC* src)
+ಮಾದರಿ <ವರ್ಗ SRC>
+ಸ್ಥಿರ ದ್ವಿಗುಣ uparr_ಗುಣಲಬ್ಧ_ಪದಗಳು_src_real(SRC* src)
 {
-      if (!src) return 0.0;
-      double acc = 1.0;
-      for (size_t i = 0; i < src->get_size(); i += 1) {
-	    double vi;
-	    src->get_word(i, vi);
+      ಆದರೆ (!src) ಹಿಂತಿರುಗಿ 0.0;
+      ದ್ವಿಗುಣ acc = 1.0;
+      ಗಾಗಿ (size_t i = 0; i < src->get_ಗಾತ್ರ(); i += 1) {
+	    ದ್ವಿಗುಣ vi;
+	    src->get_ಶಬ್ದ(i, vi);
 	    acc *= vi;
       }
-      return acc;
+      ಹಿಂತಿರುಗಿ acc;
 }
 
-bool of_UPARR_PRODUCT_REAL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_UPARR_ಗುಣಲಬ್ಧ_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t* net = cp->net;
-      vvp_queue_real* qsrc = 0;
+      vvp_ಸರತಿ_real* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_real_from_net(thr, net, qsrc, dsrc);
-      double sum;
-      if (qsrc) sum = uparr_product_words_src_real(qsrc);
-      else if (dsrc) sum = uparr_product_words_src_real(dsrc);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_real>(thr, net);
-	    vvp_queue_real* src = dynamic_cast<vvp_queue_real*>(src_q);
-	    sum = uparr_product_words_src_real(src);
+      get_ಸರತಿ_or_darray_real_from_net(thr, net, qsrc, dsrc);
+      ದ್ವಿಗುಣ ಮೊತ್ತ;
+      ಆದರೆ (qsrc) ಮೊತ್ತ = uparr_ಗುಣಲಬ್ಧ_ಪದಗಳು_src_real(qsrc);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) ಮೊತ್ತ = uparr_ಗುಣಲಬ್ಧ_ಪದಗಳು_src_real(dsrc);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_real>(thr, net);
+	    vvp_ಸರತಿ_real* src = dynamic_cast<vvp_ಸರತಿ_real*>(src_q);
+	    ಮೊತ್ತ = uparr_ಗುಣಲಬ್ಧ_ಪದಗಳು_src_real(src);
       }
-      thr->push_real(sum);
-      return true;
+      thr->ತಳ್ಳು_real(ಮೊತ್ತ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* product() reduction returns the scalar product (Verilog-style multiplication per word). */
-template <class SRC>
-static vvp_vector4_t uparr_product_words_src(SRC* src, unsigned wid)
+ಮಾದರಿ <ವರ್ಗ SRC>
+ಸ್ಥಿರ vvp_vector4_t uparr_ಗುಣಲಬ್ಧ_ಪದಗಳು_src(SRC* src, ಚಿಹ್ನೆರಹಿತ wid)
 {
-      if (!src) return vvp_vector4_t(wid, BIT4_X);
-      vvp_vector4_t acc = queue_unique_ulong_to_vec4(1UL, wid);
-      for (size_t i = 0; i < src->get_size(); i += 1) {
+      ಆದರೆ (!src) ಹಿಂತಿರುಗಿ vvp_vector4_t(wid, BIT4_X);
+      vvp_vector4_t acc = ಸರತಿ_unique_ulong_ಗಮ್ಯ_vec4(1UL, wid);
+      ಗಾಗಿ (size_t i = 0; i < src->get_ಗಾತ್ರ(); i += 1) {
 	    vvp_vector4_t vi(wid);
-	    src->get_word(i, vi);
+	    src->get_ಶಬ್ದ(i, vi);
 	    acc.mul(vi);
       }
-      return acc;
+      ಹಿಂತಿರುಗಿ acc;
 }
 
-bool of_UPARR_PRODUCT_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_UPARR_ಗುಣಲಬ್ಧ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t* net = cp->net;
-      unsigned wid = cp->bit_idx[0];
-      vvp_queue_vec4* qsrc = 0;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_vector4_t prod;
-      if (qsrc) prod = uparr_product_words_src(qsrc, wid);
-      else if (dsrc) prod = uparr_product_words_src(dsrc, wid);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
-	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    prod = uparr_product_words_src(src, wid);
+      ಆದರೆ (qsrc) prod = uparr_ಗುಣಲಬ್ಧ_ಪದಗಳು_src(qsrc, wid);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) prod = uparr_ಗುಣಲಬ್ಧ_ಪದಗಳು_src(dsrc, wid);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_vec4>(thr, net);
+	    vvp_ಸರತಿ_vec4* src = dynamic_cast<vvp_ಸರತಿ_vec4*>(src_q);
+	    prod = uparr_ಗುಣಲಬ್ಧ_ಪದಗಳು_src(src, wid);
       }
-      thr->push_vec4(prod);
-      return true;
+      thr->ತಳ್ಳು_vec4(prod);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_UPARR_PRODUCT_PROP_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_UPARR_ಗುಣಲಬ್ಧ_PROP_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t pid = cp->number;
-      unsigned wid = cp->bit_idx[0];
+      size_t pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
+      get_ಸರತಿ_or_darray_vec4_from_object(qobj, qsrc, dsrc);
       vvp_vector4_t prod =
-	    qsrc ? uparr_product_words_src(qsrc, wid)
-		 : uparr_product_words_src(dsrc, wid);
-      thr->push_vec4(prod);
-      return true;
+	    qsrc ? uparr_ಗುಣಲಬ್ಧ_ಪದಗಳು_src(qsrc, wid)
+		 : uparr_ಗುಣಲಬ್ಧ_ಪದಗಳು_src(dsrc, wid);
+      thr->ತಳ್ಳು_vec4(prod);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_UPARR_PRODUCT_OBJ_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_UPARR_ಗುಣಲಬ್ಧ_OBJ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->bit_idx[0];
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
       vvp_object_t src_obj;
-      thr->pop_object(src_obj);
+      thr->ತೆಗೆ_object(src_obj);
 
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
+      get_ಸರತಿ_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
       vvp_vector4_t prod =
-	    qsrc ? uparr_product_words_src(qsrc, wid)
-		 : uparr_product_words_src(dsrc, wid);
-      thr->push_vec4(prod);
-      return true;
+	    qsrc ? uparr_ಗುಣಲಬ್ಧ_ಪದಗಳು_src(qsrc, wid)
+		 : uparr_ಗುಣಲಬ್ಧ_ಪದಗಳು_src(dsrc, wid);
+      thr->ತಳ್ಳು_vec4(prod);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* real sum() reduction returns the scalar sum */
-template <class SRC>
-static double uparr_sum_words_src_real(SRC* src)
+ಮಾದರಿ <ವರ್ಗ SRC>
+ಸ್ಥಿರ ದ್ವಿಗುಣ uparr_ಮೊತ್ತ_ಪದಗಳು_src_real(SRC* src)
 {
-      double acc = 0.0;
-      if (!src) return acc;
-      for (size_t i = 0; i < src->get_size(); i += 1) {
-	    double vi;
-	    src->get_word(i, vi);
+      ದ್ವಿಗುಣ acc = 0.0;
+      ಆದರೆ (!src) ಹಿಂತಿರುಗಿ acc;
+      ಗಾಗಿ (size_t i = 0; i < src->get_ಗಾತ್ರ(); i += 1) {
+	    ದ್ವಿಗುಣ vi;
+	    src->get_ಶಬ್ದ(i, vi);
 	    acc += vi;
       }
-      return acc;
+      ಹಿಂತಿರುಗಿ acc;
 }
 
-bool of_UPARR_SUM_REAL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_UPARR_ಮೊತ್ತ_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t* net = cp->net;
-      vvp_queue_real* qsrc = 0;
+      vvp_ಸರತಿ_real* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_real_from_net(thr, net, qsrc, dsrc);
-      double sum;
-      if (qsrc) sum = uparr_sum_words_src_real(qsrc);
-      else if (dsrc) sum = uparr_sum_words_src_real(dsrc);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_real>(thr, net);
-	    vvp_queue_real* src = dynamic_cast<vvp_queue_real*>(src_q);
-	    sum = uparr_sum_words_src_real(src);
+      get_ಸರತಿ_or_darray_real_from_net(thr, net, qsrc, dsrc);
+      ದ್ವಿಗುಣ ಮೊತ್ತ;
+      ಆದರೆ (qsrc) ಮೊತ್ತ = uparr_ಮೊತ್ತ_ಪದಗಳು_src_real(qsrc);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) ಮೊತ್ತ = uparr_ಮೊತ್ತ_ಪದಗಳು_src_real(dsrc);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_real>(thr, net);
+	    vvp_ಸರತಿ_real* src = dynamic_cast<vvp_ಸರತಿ_real*>(src_q);
+	    ಮೊತ್ತ = uparr_ಮೊತ್ತ_ಪದಗಳು_src_real(src);
       }
-      thr->push_real(sum);
-      return true;
+      thr->ತಳ್ಳು_real(ಮೊತ್ತ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* sum() reduction returns the scalar sum (Verilog-style addition per word). */
-template <class SRC>
-static vvp_vector4_t uparr_sum_words_src(SRC* src, unsigned wid)
+ಮಾದರಿ <ವರ್ಗ SRC>
+ಸ್ಥಿರ vvp_vector4_t uparr_ಮೊತ್ತ_ಪದಗಳು_src(SRC* src, ಚಿಹ್ನೆರಹಿತ wid)
 {
-      if (!src) return vvp_vector4_t(wid, BIT4_X);
+      ಆದರೆ (!src) ಹಿಂತಿರುಗಿ vvp_vector4_t(wid, BIT4_X);
       vvp_vector4_t acc(wid, BIT4_0);
-      for (size_t i = 0; i < src->get_size(); i += 1) {
+      ಗಾಗಿ (size_t i = 0; i < src->get_ಗಾತ್ರ(); i += 1) {
 	    vvp_vector4_t vi(wid);
-	    src->get_word(i, vi);
-	    acc.add(vi);
+	    src->get_ಶಬ್ದ(i, vi);
+	    acc.ಕೂಡಿಸು(vi);
       }
-      return acc;
+      ಹಿಂತಿರುಗಿ acc;
 }
 
-bool of_UPARR_SUM_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_UPARR_ಮೊತ್ತ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t* net = cp->net;
-      unsigned wid = cp->bit_idx[0];
-      vvp_queue_vec4* qsrc = 0;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
-      vvp_vector4_t sum;
-      if (qsrc) sum = uparr_sum_words_src(qsrc, wid);
-      else if (dsrc) sum = uparr_sum_words_src(dsrc, wid);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
-	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    sum = uparr_sum_words_src(src, wid);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      vvp_vector4_t ಮೊತ್ತ;
+      ಆದರೆ (qsrc) ಮೊತ್ತ = uparr_ಮೊತ್ತ_ಪದಗಳು_src(qsrc, wid);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) ಮೊತ್ತ = uparr_ಮೊತ್ತ_ಪದಗಳು_src(dsrc, wid);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_vec4>(thr, net);
+	    vvp_ಸರತಿ_vec4* src = dynamic_cast<vvp_ಸರತಿ_vec4*>(src_q);
+	    ಮೊತ್ತ = uparr_ಮೊತ್ತ_ಪದಗಳು_src(src, wid);
       }
-      thr->push_vec4(sum);
-      return true;
+      thr->ತಳ್ಳು_vec4(ಮೊತ್ತ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_UPARR_SUM_PROP_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_UPARR_ಮೊತ್ತ_PROP_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      size_t pid = cp->number;
-      unsigned wid = cp->bit_idx[0];
+      size_t pid = cp->ಸಂಖ್ಯೆ;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
-      assert(cobj);
+      vvp_object_t& ತುದಿ = thr->peek_object();
+      vvp_cobject*cobj = ತುದಿ.peek<vvp_cobject>();
+      ಪ್ರತಿಜ್ಞಾ(cobj);
 
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
-      vvp_vector4_t sum =
-	    qsrc ? uparr_sum_words_src(qsrc, wid)
-		 : uparr_sum_words_src(dsrc, wid);
-      thr->push_vec4(sum);
-      return true;
+      get_ಸರತಿ_or_darray_vec4_from_object(qobj, qsrc, dsrc);
+      vvp_vector4_t ಮೊತ್ತ =
+	    qsrc ? uparr_ಮೊತ್ತ_ಪದಗಳು_src(qsrc, wid)
+		 : uparr_ಮೊತ್ತ_ಪದಗಳು_src(dsrc, wid);
+      thr->ತಳ್ಳು_vec4(ಮೊತ್ತ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_UPARR_SUM_OBJ_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_UPARR_ಮೊತ್ತ_OBJ_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      unsigned wid = cp->bit_idx[0];
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
       vvp_object_t src_obj;
-      thr->pop_object(src_obj);
+      thr->ತೆಗೆ_object(src_obj);
 
-      vvp_queue_vec4* qsrc = 0;
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
-      vvp_vector4_t sum =
-	    qsrc ? uparr_sum_words_src(qsrc, wid)
-		 : uparr_sum_words_src(dsrc, wid);
-      thr->push_vec4(sum);
-      return true;
+      get_ಸರತಿ_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
+      vvp_vector4_t ಮೊತ್ತ =
+	    qsrc ? uparr_ಮೊತ್ತ_ಪದಗಳು_src(qsrc, wid)
+		 : uparr_ಮೊತ್ತ_ಪದಗಳು_src(dsrc, wid);
+      thr->ತಳ್ಳು_vec4(ಮೊತ್ತ);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /* xor() reduction returns the scalar sum (Verilog-style bitwise-XOR per word). */
-template <class SRC>
-static vvp_vector4_t uparr_xor_words_src(SRC* src, unsigned wid)
+ಮಾದರಿ <ವರ್ಗ SRC>
+ಸ್ಥಿರ vvp_vector4_t uparr_xor_ಪದಗಳು_src(SRC* src, ಚಿಹ್ನೆರಹಿತ wid)
 {
-      if (!src) return vvp_vector4_t(wid, BIT4_X);
+      ಆದರೆ (!src) ಹಿಂತಿರುಗಿ vvp_vector4_t(wid, BIT4_X);
       vvp_vector4_t res(wid, BIT4_0);
-      for (size_t i = 0; i < src->get_size(); i += 1) {
+      ಗಾಗಿ (size_t i = 0; i < src->get_ಗಾತ್ರ(); i += 1) {
 	    vvp_vector4_t vi(wid);
-	    src->get_word(i, vi);
+	    src->get_ಶಬ್ದ(i, vi);
 	    res ^= vi;
       }
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }
 
-bool of_UPARR_XOR_V(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_UPARR_XOR_V(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vvp_net_t* net = cp->net;
-      unsigned wid = cp->bit_idx[0];
-      vvp_queue_vec4* qsrc = 0;
+      ಚಿಹ್ನೆರಹಿತ wid = cp->ಬಿಟ್_idx[0];
+      vvp_ಸರತಿ_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
-      get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
+      get_ಸರತಿ_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_vector4_t res;
-      if (qsrc) res = uparr_xor_words_src(qsrc, wid);
-      else if (dsrc) res = uparr_xor_words_src(dsrc, wid);
-      else {
-	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
-	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    res = uparr_xor_words_src(src, wid);
+      ಆದರೆ (qsrc) res = uparr_xor_ಪದಗಳು_src(qsrc, wid);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (dsrc) res = uparr_xor_ಪದಗಳು_src(dsrc, wid);
+      ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_ಸರತಿ* src_q = get_ಸರತಿ_object<vvp_ಸರತಿ_vec4>(thr, net);
+	    vvp_ಸರತಿ_vec4* src = dynamic_cast<vvp_ಸರತಿ_vec4*>(src_q);
+	    res = uparr_xor_ಪದಗಳು_src(src, wid);
       }
-      thr->push_vec4(res);
-      return true;
+      thr->ತಳ್ಳು_vec4(res);
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool of_VPI_CALL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_VPI_CALL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
       vpip_execute_vpi_call(thr, cp->handle);
 
-      if (schedule_stopped()) {
-	    if (! schedule_finished())
-		  schedule_vthread(thr, 0, false);
+      ಆದರೆ (ವೇಳಾಪಟ್ಟಿ_stopped()) {
+	    ಆದರೆ (! ವೇಳಾಪಟ್ಟಿ_ಪೂರ್ಣಗೊಂಡ())
+		  ವೇಳಾಪಟ್ಟಿ_vthread(thr, 0, ಸುಳ್ಳು);
 
-	    return false;
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
-      return schedule_finished()? false : true;
+      ಹಿಂತಿರುಗಿ ವೇಳಾಪಟ್ಟಿ_ಪೂರ್ಣಗೊಂಡ()? ಸುಳ್ಳು : ನಿಜ;
 }
 
 /* %wait <label>;
@@ -8148,86 +8148,86 @@ bool of_VPI_CALL(vthread_t thr, vvp_code_t cp)
  * argument is the  reference to the functor to wait for. This must be
  * an event object of some sort.
  */
-bool of_WAIT(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_WAIT(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      assert(! thr->i_am_in_function);
-      assert(! thr->waiting_for_event);
-      thr->waiting_for_event = 1;
+      ಪ್ರತಿಜ್ಞಾ(! thr->i_am_ಒಳ_function);
+      ಪ್ರತಿಜ್ಞಾ(! thr->ಕಾಯುವಿಕೆ_for_event);
+      thr->ಕಾಯುವಿಕೆ_for_event = 1;
 
 	/* Add this thread to the list in the event. */
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (cp->net->fun);
-      assert(ep);
-      thr->wait_next = ep->add_waiting_thread(thr);
+      ಪ್ರತಿಜ್ಞಾ(ep);
+      thr->wait_ಮುಂದಿನ = ep->ಕೂಡಿಸು_ಕಾಯುವಿಕೆ_thread(thr);
 
 	/* Return false to suspend this thread. */
-      return false;
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
 /*
  * Implement the %wait/fork (SystemVerilog) instruction by suspending
  * the current thread until all the detached children have finished.
  */
-bool of_WAIT_FORK(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_WAIT_FORK(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
 	/* If a %wait/fork is being executed then the parent thread
 	 * cannot be waiting in a join or already waiting. */
-      assert(! thr->i_am_in_function);
-      assert(! thr->i_am_joining);
-      assert(! thr->i_am_waiting);
+      ಪ್ರತಿಜ್ಞಾ(! thr->i_am_ಒಳ_function);
+      ಪ್ರತಿಜ್ಞಾ(! thr->i_am_joining);
+      ಪ್ರತಿಜ್ಞಾ(! thr->i_am_ಕಾಯುವಿಕೆ);
 
 	/* There should be no active children when waiting. */
-      assert(thr->children.empty());
+      ಪ್ರತಿಜ್ಞಾ(thr->children.empty());
 
 	/* If there are no detached children then there is nothing to
 	 * wait for. */
-      if (thr->detached_children.empty()) return true;
+      ಆದರೆ (thr->detached_children.empty()) ಹಿಂತಿರುಗಿ ನಿಜ;
 
 	/* Flag that this process is waiting for the detached children
 	 * to finish and suspend it. */
-      thr->i_am_waiting = 1;
-      return false;
+      thr->i_am_ಕಾಯುವಿಕೆ = 1;
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
 /*
  * %xnor
  */
-bool of_XNOR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_XNOR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      vvp_vector4_t valr = thr->pop_vec4();
+      vvp_vector4_t valr = thr->ತೆಗೆ_vec4();
       vvp_vector4_t&vall = thr->peek_vec4();
-      assert(vall.size() == valr.size());
+      ಪ್ರತಿಜ್ಞಾ(vall.size() == valr.size());
 
       vall ^= valr;
       vall.invert();
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
  * %xor
  */
-bool of_XOR(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_XOR(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
-      vvp_vector4_t valr = thr->pop_vec4();
+      vvp_vector4_t valr = thr->ತೆಗೆ_vec4();
       vvp_vector4_t&vall = thr->peek_vec4();
-      assert(vall.size() == valr.size());
+      ಪ್ರತಿಜ್ಞಾ(vall.size() == valr.size());
 
       vall ^= valr;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 
-bool of_ZOMBIE(vthread_t thr, vvp_code_t)
+ತಾರ್ಕಿಕ ದ_ZOMBIE(vthread_t thr, vvp_ಸಂಕೇತ_t)
 {
       thr->pc = codespace_null();
-      if ((thr->parent == 0) && (thr->children.empty())) {
-	    if (thr->delay_delete)
-		  schedule_del_thr(thr);
-	    else
+      ಆದರೆ ((thr->ಪೋಷಕ == 0) && (thr->children.empty())) {
+	    ಆದರೆ (thr->delay_delete)
+		  ವೇಳಾಪಟ್ಟಿ_del_thr(thr);
+	    ಇಲ್ಲದಿದ್ದರೆ
 		  vthread_delete(thr);
       }
-      return false;
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
 /*
@@ -8237,104 +8237,104 @@ bool of_ZOMBIE(vthread_t thr, vvp_code_t)
  * a ufunc_core object that has all the port information about the
  * function.
  */
-static bool do_exec_ufunc(vthread_t thr, vvp_code_t cp, vthread_t child)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ do_exec_ufunc(vthread_t thr, vvp_ಸಂಕೇತ_t cp, vthread_t ಮಗು)
 {
-      __vpiScope*child_scope = cp->ufunc_core_ptr->func_scope();
-      assert(child_scope);
+      __vpiScope*ಮಗು_scope = cp->ufunc_core_ptr->func_scope();
+      ಪ್ರತಿಜ್ಞಾ(ಮಗು_scope);
 
-      assert(child_scope->get_type_code() == vpiFunction);
-      assert(thr->children.empty());
+      ಪ್ರತಿಜ್ಞಾ(ಮಗು_scope->get_type_ಸಂಕೇತ() == vpiFunction);
+      ಪ್ರತಿಜ್ಞಾ(thr->children.empty());
 
 
         /* We can take a number of shortcuts because we know that a
            continuous assignment can only occur in a static scope. */
-      assert(thr->wt_context == 0);
-      assert(thr->rd_context == 0);
+      ಪ್ರತಿಜ್ಞಾ(thr->wt_context == 0);
+      ಪ್ರತಿಜ್ಞಾ(thr->rd_context == 0);
 
         /* If an automatic function, allocate a context for this call. */
-      vvp_context_t child_context = 0;
-      if (child_scope->is_automatic()) {
-            child_context = vthread_alloc_context(child_scope);
-            thr->wt_context = child_context;
-            thr->rd_context = child_context;
+      vvp_context_t ಮಗು_context = 0;
+      ಆದರೆ (ಮಗು_scope->is_automatic()) {
+            ಮಗು_context = vthread_alloc_context(ಮಗು_scope);
+            thr->wt_context = ಮಗು_context;
+            thr->rd_context = ಮಗು_context;
       }
 
-      child->wt_context = child_context;
-      child->rd_context = child_context;
+      ಮಗು->wt_context = ಮಗು_context;
+      ಮಗು->rd_context = ಮಗು_context;
 
 	/* Copy all the inputs to the ufunc object to the port
 	   variables of the function. This copies all the values
 	   atomically. */
-      cp->ufunc_core_ptr->assign_bits_to_ports(child_context);
-      child->delay_delete = 1;
+      cp->ufunc_core_ptr->ನಿಯೋಜಿಸು_ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_ports(ಮಗು_context);
+      ಮಗು->delay_delete = 1;
 
-      child->parent = thr;
-      thr->children.insert(child);
+      ಮಗು->ಪೋಷಕ = thr;
+      thr->children.insert(ಮಗು);
 	// This should be the only child
-      assert(thr->children.size()==1);
+      ಪ್ರತಿಜ್ಞಾ(thr->children.size()==1);
 
-      child->is_scheduled = 1;
-      child->i_am_in_function = 1;
-      vthread_run(child);
+      ಮಗು->is_scheduled = 1;
+      ಮಗು->i_am_ಒಳ_function = 1;
+      vthread_ಸತತ(ಮಗು);
       running_thread = thr;
 
-      if (child->i_have_ended) {
-	    do_join(thr, child);
-            return true;
-      } else {
+      ಆದರೆ (ಮಗು->i_have_ended) {
+	    do_join(thr, ಮಗು);
+            ಹಿಂತಿರುಗಿ ನಿಜ;
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	    thr->i_am_joining = 1;
-	    return false;
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 }
 
-bool of_EXEC_UFUNC_REAL(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_EXEC_UFUNC_REAL(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      __vpiScope*child_scope = cp->ufunc_core_ptr->func_scope();
-      assert(child_scope);
+      __vpiScope*ಮಗು_scope = cp->ufunc_core_ptr->func_scope();
+      ಪ್ರತಿಜ್ಞಾ(ಮಗು_scope);
 
 	/* Create a temporary thread and run it immediately. */
-      vthread_t child = vthread_new(cp->cptr, child_scope);
-      thr->push_real(0.0);
-      child->args_real.push_back(0);
+      vthread_t ಮಗು = vthread_new(cp->cptr, ಮಗು_scope);
+      thr->ತಳ್ಳು_real(0.0);
+      ಮಗು->ವಾದಗಳು_real.push_back(0);
 
-      return do_exec_ufunc(thr, cp, child);
+      ಹಿಂತಿರುಗಿ do_exec_ufunc(thr, cp, ಮಗು);
 }
 
-bool of_EXEC_UFUNC_VEC4(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_EXEC_UFUNC_VEC4(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      __vpiScope*child_scope = cp->ufunc_core_ptr->func_scope();
-      assert(child_scope);
+      __vpiScope*ಮಗು_scope = cp->ufunc_core_ptr->func_scope();
+      ಪ್ರತಿಜ್ಞಾ(ಮಗು_scope);
 
-      vpiScopeFunction*scope_func = dynamic_cast<vpiScopeFunction*>(child_scope);
-      assert(scope_func);
+      vpiScopeFunction*scope_func = dynamic_cast<vpiScopeFunction*>(ಮಗು_scope);
+      ಪ್ರತಿಜ್ಞಾ(scope_func);
 
 	/* Create a temporary thread and run it immediately. */
-      vthread_t child = vthread_new(cp->cptr, child_scope);
-      thr->push_vec4(vvp_vector4_t(scope_func->get_func_width(), scope_func->get_func_init_val()));
-      child->args_vec4.push_back(0);
+      vthread_t ಮಗು = vthread_new(cp->cptr, ಮಗು_scope);
+      thr->ತಳ್ಳು_vec4(vvp_vector4_t(scope_func->get_func_ಅಗಲ(), scope_func->get_func_init_val()));
+      ಮಗು->ವಾದಗಳು_vec4.push_back(0);
 
-      return do_exec_ufunc(thr, cp, child);
+      ಹಿಂತಿರುಗಿ do_exec_ufunc(thr, cp, ಮಗು);
 }
 
 /*
  * This is a phantom opcode used to harvest the result of calling a user
  * defined function. It is used in code generated by the .ufunc statement.
  */
-bool of_REAP_UFUNC(vthread_t thr, vvp_code_t cp)
+ತಾರ್ಕಿಕ ದ_REAP_UFUNC(vthread_t thr, vvp_ಸಂಕೇತ_t cp)
 {
-      __vpiScope*child_scope = cp->ufunc_core_ptr->func_scope();
-      assert(child_scope);
+      __vpiScope*ಮಗು_scope = cp->ufunc_core_ptr->func_scope();
+      ಪ್ರತಿಜ್ಞಾ(ಮಗು_scope);
 
 	/* Copy the output from the result variable to the output
 	   ports of the .ufunc device. */
-      cp->ufunc_core_ptr->finish_thread();
+      cp->ufunc_core_ptr->ಮುಕ್ತಾಯ_thread();
 
         /* If an automatic function, free the context for this call. */
-      if (child_scope->is_automatic()) {
-            vthread_free_context(thr->rd_context, child_scope);
+      ಆದರೆ (ಮಗು_scope->is_automatic()) {
+            vthread_free_context(thr->rd_context, ಮಗು_scope);
             thr->wt_context = 0;
             thr->rd_context = 0;
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }

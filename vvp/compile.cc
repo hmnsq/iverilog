@@ -38,13 +38,13 @@
 # include  <cstring>
 # include  <cassert>
 
-#ifdef __MINGW32__
-#include <windows.h>
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ __MINGW32__
+#ಅನ್ತರ್ಭಾವ <windows.h>
+#ಆದರೆ_ಅಂತ್ಯ
 
 # include  "ivl_alloc.h"
 
-unsigned compile_errors = 0;
+ಚಿಹ್ನೆರಹಿತ compile_errors = 0;
 
 /*
  * The opcode table lists all the code mnemonics, along with their
@@ -57,19 +57,19 @@ unsigned compile_errors = 0;
  * The opcode_compare function is a helper for that lookup.
  */
 
-enum operand_e {
+ಎಣಿಕೆ ಕಾರ್ಯಾಂಶ_e {
 	/* Place holder for unused operand */
       OA_NONE,
 	/* The operand is a number, an immediate unsigned integer */
-      OA_NUMBER,
+      OA_ಸಂಖ್ಯೆ,
 	/* The operand is a pointer to an array. */
       OA_ARR_PTR,
 	/* The operand is a thread bit index or short integer */
       OA_BIT1,
       OA_BIT2,
 	/* The operand is a pointer to code space */
-      OA_CODE_PTR,
-      OA_CODE_PTR2,
+      OA_ಸಂಕೇತ_PTR,
+      OA_ಸಂಕೇತ_PTR2,
 	/* The operand is a variable or net pointer */
       OA_FUNC_PTR,
 	/* The operand is a second functor pointer */
@@ -80,351 +80,351 @@ enum operand_e {
       OA_STRING
 };
 
-struct opcode_table_s {
-      const char*mnemonic;
-      vvp_code_fun opcode;
+ರಚನೆ opcode_ಕೋಷ್ಟಕ_s {
+      ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*mnemonic;
+      vvp_ಸಂಕೇತ_fun opcode;
 
-      unsigned argc;
-      enum operand_e argt[OPERAND_MAX];
+      ಚಿಹ್ನೆರಹಿತ argc;
+      ಎಣಿಕೆ ಕಾರ್ಯಾಂಶ_e argt[ಕಾರ್ಯಾಂಶ_MAX];
 };
 
-static const struct opcode_table_s opcode_table[] = {
-      { "%abs/wr", of_ABS_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%add",    of_ADD,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%add/wr", of_ADD_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%addi",   of_ADDI,   3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%alloc",  of_ALLOC,  1,  {OA_VPI_PTR,  OA_NONE,     OA_NONE} },
-      { "%and",    of_AND,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%and/r",  of_ANDR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%assign/ar",of_ASSIGN_AR,2,{OA_ARR_PTR,OA_BIT1,     OA_NONE} },
-      { "%assign/ar/d",of_ASSIGN_ARD,2,{OA_ARR_PTR,OA_BIT1,  OA_NONE} },
-      { "%assign/ar/e",of_ASSIGN_ARE,1,{OA_ARR_PTR,OA_NONE,  OA_NONE} },
-      { "%assign/vec4",      of_ASSIGN_VEC4,       2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%assign/vec4/a/d",  of_ASSIGN_VEC4_A_D,   3, {OA_ARR_PTR,  OA_BIT1, OA_BIT2} },
-      { "%assign/vec4/a/e",  of_ASSIGN_VEC4_A_E,   2, {OA_ARR_PTR,  OA_BIT1, OA_NONE} },
-      { "%assign/vec4/d",    of_ASSIGN_VEC4D,      2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%assign/vec4/e",    of_ASSIGN_VEC4E,      1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%assign/vec4/off/d",of_ASSIGN_VEC4_OFF_D, 3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
-      { "%assign/vec4/off/e",of_ASSIGN_VEC4_OFF_E, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%assign/wr",  of_ASSIGN_WR, 2,{OA_VPI_PTR, OA_BIT1, OA_NONE} },
-      { "%assign/wr/d",of_ASSIGN_WRD,2,{OA_VPI_PTR, OA_BIT1, OA_NONE} },
-      { "%assign/wr/e",of_ASSIGN_WRE,1,{OA_VPI_PTR, OA_NONE, OA_NONE} },
-      { "%blend",     of_BLEND,     0, {OA_NONE, OA_NONE, OA_NONE} },
-      { "%blend/str", of_BLEND_STR, 0, {OA_NONE, OA_NONE, OA_NONE} },
-      { "%blend/wr",  of_BLEND_WR,  0, {OA_NONE, OA_NONE, OA_NONE} },
-      { "%breakpoint", of_BREAKPOINT, 0,  {OA_NONE, OA_NONE, OA_NONE} },
-      { "%callf/obj",       of_CALLF_OBJ,       2,{OA_CODE_PTR2,OA_VPI_PTR, OA_NONE} },
-      { "%callf/real",      of_CALLF_REAL,      2,{OA_CODE_PTR2,OA_VPI_PTR, OA_NONE} },
-      { "%callf/str",       of_CALLF_STR,       2,{OA_CODE_PTR2,OA_VPI_PTR, OA_NONE} },
-      { "%callf/vec4",      of_CALLF_VEC4,      2,{OA_CODE_PTR2,OA_VPI_PTR, OA_NONE} },
-      { "%callf/void",      of_CALLF_VOID,      2,{OA_CODE_PTR2,OA_VPI_PTR, OA_NONE} },
-      { "%cassign/link",    of_CASSIGN_LINK,    2,{OA_FUNC_PTR,OA_FUNC_PTR2,OA_NONE} },
-      { "%cassign/vec4",    of_CASSIGN_VEC4,    1,{OA_FUNC_PTR,OA_NONE,     OA_NONE} },
-      { "%cassign/vec4/off",of_CASSIGN_VEC4_OFF,2,{OA_FUNC_PTR,OA_BIT1,     OA_NONE} },
-      { "%cassign/wr",  of_CASSIGN_WR,  1,{OA_FUNC_PTR,OA_NONE,     OA_NONE} },
-      { "%cast/vec2/dar", of_CAST_VEC2_DAR, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%cast/vec4/dar", of_CAST_VEC4_DAR, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%cast/vec4/str", of_CAST_VEC4_STR, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%cast2",   of_CAST2,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/e",   of_CMPE,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/ne",  of_CMPNE,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/s",   of_CMPS,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/str", of_CMPSTR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/u",   of_CMPU,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/we",  of_CMPWE,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/wne", of_CMPWNE, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/wr",  of_CMPWR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/x",   of_CMPX,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/z",   of_CMPZ,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmpi/e",  of_CMPIE,  3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%cmpi/ne", of_CMPINE, 3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%cmpi/s",  of_CMPIS,  3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%cmpi/u",  of_CMPIU,  3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%cmpix/ltu", of_CMPIX_LTU, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%cmpix/slt0", of_CMPIX_SLT0, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%concat/str",  of_CONCAT_STR,  0,{OA_NONE,  OA_NONE,  OA_NONE} },
-      { "%concat/vec4", of_CONCAT_VEC4, 0,{OA_NONE,  OA_NONE,  OA_NONE} },
-      { "%concati/str", of_CONCATI_STR, 1,{OA_STRING,OA_NONE,  OA_NONE} },
-      { "%concati/vec4",of_CONCATI_VEC4,3,{OA_BIT1,  OA_BIT2,  OA_NUMBER} },
-      { "%cvt/rv",   of_CVT_RV,  0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%cvt/rv/s", of_CVT_RV_S,0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%cvt/sr", of_CVT_SR, 1,  {OA_BIT1,     OA_NONE,     OA_NONE} },
-      { "%cvt/ur", of_CVT_UR, 1,  {OA_BIT1,     OA_NONE,     OA_NONE} },
-      { "%cvt/vr", of_CVT_VR, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%deassign",of_DEASSIGN,3,{OA_FUNC_PTR, OA_BIT1,     OA_BIT2} },
-      { "%deassign/wr",of_DEASSIGN_WR,1,{OA_FUNC_PTR, OA_NONE,     OA_NONE} },
-      { "%debug/thr",  of_DEBUG_THR,  1,{OA_STRING,   OA_NONE,     OA_NONE} },
-      { "%delay",  of_DELAY,  2,  {OA_BIT1,     OA_BIT2,     OA_NONE} },
-      { "%delayx", of_DELAYX, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%delete/elem",of_DELETE_ELEM,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
-      { "%delete/obj",of_DELETE_OBJ,1,{OA_FUNC_PTR,OA_NONE,  OA_NONE} },
-      { "%delete/prop/elem", of_DELETE_PROP_ELEM, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%delete/prop/obj",  of_DELETE_PROP_OBJ,  1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%delete/tail",of_DELETE_TAIL,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%disable",  of_DISABLE, 1, {OA_VPI_PTR,OA_NONE,     OA_NONE} },
-      { "%disable/flow", of_DISABLE_FLOW, 1, {OA_VPI_PTR,OA_NONE, OA_NONE} },
-      { "%disable/fork",of_DISABLE_FORK,0,{OA_NONE,OA_NONE,  OA_NONE} },
-      { "%div",      of_DIV,     0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%div/s",    of_DIV_S,   0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%div/wr",   of_DIV_WR,  0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%dup/obj",  of_DUP_OBJ, 0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%dup/real", of_DUP_REAL,0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%dup/vec4", of_DUP_VEC4,0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%end",    of_END,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%evctl",  of_EVCTL,  2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
-      { "%evctl/c",of_EVCTLC, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%evctl/i",of_EVCTLI, 2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
-      { "%evctl/s",of_EVCTLS, 2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
-      { "%event",    of_EVENT,    1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%event/nb", of_EVENT_NB, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%flag_get/vec4", of_FLAG_GET_VEC4, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%flag_inv",      of_FLAG_INV,      1, {OA_BIT1,   OA_NONE, OA_NONE} },
-      { "%flag_mov",      of_FLAG_MOV,      2, {OA_BIT1,   OA_BIT2, OA_NONE} },
-      { "%flag_or",       of_FLAG_OR,       2, {OA_BIT1,   OA_BIT2, OA_NONE} },
-      { "%flag_set/imm",  of_FLAG_SET_IMM,  2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%flag_set/vec4", of_FLAG_SET_VEC4, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%force/link",    of_FORCE_LINK,2,{OA_FUNC_PTR, OA_FUNC_PTR2, OA_NONE} },
-      { "%force/vec4",    of_FORCE_VEC4,    1,{OA_FUNC_PTR, OA_NONE,      OA_NONE} },
-      { "%force/vec4/off",of_FORCE_VEC4_OFF,2,{OA_FUNC_PTR, OA_BIT1,      OA_NONE} },
-      { "%force/vec4/off/d",of_FORCE_VEC4_OFF_D,3,{OA_FUNC_PTR, OA_BIT1,  OA_BIT2} },
-      { "%force/wr",      of_FORCE_WR,      1,{OA_FUNC_PTR, OA_NONE,      OA_NONE} },
-      { "%fork",   of_FORK,   2,  {OA_CODE_PTR2,OA_VPI_PTR,  OA_NONE} },
-      { "%free",   of_FREE,   1,  {OA_VPI_PTR,  OA_NONE,     OA_NONE} },
-      { "%inv",    of_INV,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%ix/add", of_IX_ADD, 3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%ix/getv",of_IX_GETV,2,  {OA_BIT1,     OA_FUNC_PTR, OA_NONE} },
-      { "%ix/getv/s",of_IX_GETV_S,2, {OA_BIT1,   OA_FUNC_PTR, OA_NONE} },
-      { "%ix/load",of_IX_LOAD,3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%ix/mov", of_IX_MOV, 2,  {OA_BIT1,     OA_BIT2,     OA_NONE} },
-      { "%ix/mul", of_IX_MUL, 3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%ix/sub", of_IX_SUB, 3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%ix/vec4",  of_IX_VEC4,  1,  {OA_NUMBER,   OA_NONE, OA_NONE} },
-      { "%ix/vec4/s",of_IX_VEC4_S,1,  {OA_NUMBER,   OA_NONE, OA_NONE} },
-      { "%jmp",    of_JMP,    1,  {OA_CODE_PTR, OA_NONE,     OA_NONE} },
-      { "%jmp/0",  of_JMP0,   2,  {OA_CODE_PTR, OA_BIT1,     OA_NONE} },
-      { "%jmp/0xz",of_JMP0XZ, 2,  {OA_CODE_PTR, OA_BIT1,     OA_NONE} },
-      { "%jmp/1",  of_JMP1,   2,  {OA_CODE_PTR, OA_BIT1,     OA_NONE} },
-      { "%jmp/1xz",of_JMP1XZ, 2,  {OA_CODE_PTR, OA_BIT1,     OA_NONE} },
-      { "%join",   of_JOIN,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%join/detach",of_JOIN_DETACH,1,{OA_NUMBER,OA_NONE,  OA_NONE} },
-      { "%load/ar",of_LOAD_AR,2,  {OA_ARR_PTR,  OA_BIT1,     OA_NONE} },
-      { "%load/dar/r",  of_LOAD_DAR_R,    1, {OA_FUNC_PTR, OA_NONE, OA_NONE}},
-      { "%load/dar/str",of_LOAD_DAR_STR,  1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%load/dar/vec4",of_LOAD_DAR_VEC4,1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%load/obj",   of_LOAD_OBJ,  1,{OA_FUNC_PTR,OA_NONE, OA_NONE} },
-      { "%load/obja",  of_LOAD_OBJA, 2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%load/prop/dar/vec4", of_LOAD_PROP_DAR_VEC4, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%load/real",  of_LOAD_REAL, 1,{OA_VPI_PTR, OA_NONE, OA_NONE} },
-      { "%load/str",   of_LOAD_STR,  1,{OA_FUNC_PTR,OA_NONE, OA_NONE} },
-      { "%load/stra",  of_LOAD_STRA, 2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%load/vec4",  of_LOAD_VEC4, 1,{OA_FUNC_PTR,OA_NONE,  OA_NONE} },
-      { "%load/vec4a", of_LOAD_VEC4A,2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%max/wr", of_MAX_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%min/wr", of_MIN_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%mod",    of_MOD,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%mod/s",  of_MOD_S,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%mod/wr", of_MOD_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%mul",    of_MUL,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%mul/wr", of_MUL_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%muli",   of_MULI,   3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%nand",   of_NAND,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%nand/r", of_NANDR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%neg/wr", of_NEG_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%new/cobj",  of_NEW_COBJ,  1, {OA_VPI_PTR,OA_NONE,  OA_NONE} },
-      { "%new/darray",of_NEW_DARRAY,2, {OA_BIT1,   OA_STRING,OA_NONE} },
-      { "%noop",   of_NOOP,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%nor",    of_NOR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%nor/r",  of_NORR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%null",   of_NULL,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%or",     of_OR,     0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%or/r",   of_ORR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%pad/s",  of_PAD_S,  1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%pad/u",  of_PAD_U,  1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%part/s", of_PART_S, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%part/u", of_PART_U, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%parti/s",of_PARTI_S,3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%parti/u",of_PARTI_U,3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%pop/obj", of_POP_OBJ, 2, {OA_BIT1,    OA_BIT2,     OA_NONE} },
-      { "%pop/real",of_POP_REAL,1, {OA_NUMBER,  OA_NONE,     OA_NONE} },
-      { "%pop/str", of_POP_STR, 1, {OA_NUMBER,  OA_NONE,     OA_NONE} },
-      { "%pop/vec4",of_POP_VEC4,1, {OA_NUMBER,  OA_NONE,     OA_NONE} },
-      { "%pow",     of_POW,     0,  {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%pow/s",   of_POW_S,   0,  {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%pow/wr",  of_POW_WR,  0,  {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%prop/obj",of_PROP_OBJ,2,  {OA_NUMBER,   OA_BIT1,     OA_NONE} },
-      { "%prop/queue/size", of_PROP_QUEUE_SIZE,  1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%prop/r",  of_PROP_R,  1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%prop/str",of_PROP_STR,1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%prop/v",  of_PROP_V,  1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%push/ix/vec4", of_PUSH_IX_VEC4, 3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%pushi/real",of_PUSHI_REAL,2,{OA_BIT1,   OA_BIT2,   OA_NONE} },
-      { "%pushi/str", of_PUSHI_STR, 1,{OA_STRING, OA_NONE,   OA_NONE} },
-      { "%pushi/vec4",of_PUSHI_VEC4,3,{OA_BIT1,   OA_BIT2,   OA_NUMBER} },
-      { "%pushv/str", of_PUSHV_STR, 0,{OA_NONE,   OA_NONE,   OA_NONE} },
-      { "%putc/str/vec4",of_PUTC_STR_VEC4,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qinsert/prop/r",   of_QINSERT_PROP_R,   2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%qinsert/prop/str", of_QINSERT_PROP_STR, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%qinsert/prop/v",   of_QINSERT_PROP_V,   3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%qinsert/real",of_QINSERT_REAL,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qinsert/str", of_QINSERT_STR, 2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qinsert/v",   of_QINSERT_V,   3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
-      { "%qpop/b/real",of_QPOP_B_REAL,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
-      { "%qpop/b/str", of_QPOP_B_STR, 1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
-      { "%qpop/b/v",   of_QPOP_B_V,   2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qpop/f/real",of_QPOP_F_REAL,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
-      { "%qpop/f/str", of_QPOP_F_STR, 1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
-      { "%qpop/f/v",   of_QPOP_F_V,   2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qpop/prop/b/r",   of_QPOP_PROP_B_REAL, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%qpop/prop/b/str", of_QPOP_PROP_B_STR, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%qpop/prop/b/v",   of_QPOP_PROP_B_V,    2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%qpop/prop/f/r",   of_QPOP_PROP_F_REAL, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%qpop/prop/f/str", of_QPOP_PROP_F_STR, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%qpop/prop/f/v",   of_QPOP_PROP_F_V,    2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/append_word/v", of_QUEUE_APPEND_WORD_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/find/index/prop/v", of_QUEUE_FIND_INDEX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find/index/v", of_QUEUE_FIND_INDEX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find/prop/v", of_QUEUE_FIND_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find/v", of_QUEUE_FIND_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find_first/index/prop/v", of_QUEUE_FIND_FIRST_INDEX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find_first/index/v", of_QUEUE_FIND_FIRST_INDEX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find_first/prop/v", of_QUEUE_FIND_FIRST_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find_first/v", of_QUEUE_FIND_FIRST_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find_last/index/prop/v", of_QUEUE_FIND_LAST_INDEX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find_last/index/v", of_QUEUE_FIND_LAST_INDEX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find_last/prop/v", of_QUEUE_FIND_LAST_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find_last/v", of_QUEUE_FIND_LAST_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/max/obj/v", of_QUEUE_MAX_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/max/prop/v", of_QUEUE_MAX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/max/v", of_QUEUE_MAX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/min/obj/v", of_QUEUE_MIN_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/min/prop/v", of_QUEUE_MIN_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/min/v", of_QUEUE_MIN_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/new_empty/v", of_QUEUE_NEW_EMPTY_V, 0, {OA_NONE, OA_NONE, OA_NONE} },
-      { "%queue/size/v", of_QUEUE_SIZE_V, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%queue/unique/index/obj/v", of_QUEUE_UNIQUE_INDEX_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/unique/index/prop/v", of_QUEUE_UNIQUE_INDEX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/unique/index/v", of_QUEUE_UNIQUE_INDEX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/unique/obj/v", of_QUEUE_UNIQUE_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/unique/prop/v", of_QUEUE_UNIQUE_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/unique/v", of_QUEUE_UNIQUE_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/word/prop/v", of_QUEUE_WORD_PROP_V, 3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%queue/word/v", of_QUEUE_WORD_V, 3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
-      { "%release/net",of_RELEASE_NET,3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
-      { "%release/reg",of_RELEASE_REG,3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
-      { "%release/wr", of_RELEASE_WR, 2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%replicate", of_REPLICATE,   1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%ret/real",  of_RET_REAL,    1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%ret/str",   of_RET_STR,     1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%ret/vec4",  of_RET_VEC4,    3,{OA_NUMBER,  OA_BIT1,OA_BIT2} },
-      { "%retload/real",of_RETLOAD_REAL,1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%retload/str", of_RETLOAD_STR, 1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%retload/vec4",of_RETLOAD_VEC4,1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%reverse/obj", of_REVERSE_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%reverse/prop/obj", of_REVERSE_PROP_OBJ, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%rsort/obj", of_RSORT_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%rsort/prop/obj", of_RSORT_PROP_OBJ, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%scopy",  of_SCOPY,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%set/dar/obj/real",of_SET_DAR_OBJ_REAL,1,{OA_NUMBER,OA_NONE,OA_NONE} },
-      { "%set/dar/obj/str", of_SET_DAR_OBJ_STR, 1,{OA_NUMBER,OA_NONE,OA_NONE} },
-      { "%set/dar/obj/vec4",of_SET_DAR_OBJ_VEC4,1,{OA_NUMBER,OA_NONE,OA_NONE} },
-      { "%shiftl",   of_SHIFTL,   1, {OA_NUMBER, OA_NONE,   OA_NONE} },
-      { "%shiftr",   of_SHIFTR,   1, {OA_NUMBER, OA_NONE,   OA_NONE} },
-      { "%shiftr/s", of_SHIFTR_S, 1, {OA_NUMBER, OA_NONE,   OA_NONE} },
-      { "%shuffle/obj", of_SHUFFLE_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%shuffle/prop/obj", of_SHUFFLE_PROP_OBJ, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%sort/obj", of_SORT_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%sort/prop/obj", of_SORT_PROP_OBJ, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%split/vec4",    of_SPLIT_VEC4,    1,{OA_NUMBER,   OA_NONE, OA_NONE} },
-      { "%store/dar/r",   of_STORE_DAR_R,   1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%store/dar/str", of_STORE_DAR_STR, 1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%store/dar/vec4",of_STORE_DAR_VEC4,1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%store/obj",   of_STORE_OBJ,   1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
-      { "%store/obja",  of_STORE_OBJA,  2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%store/prop/obj",of_STORE_PROP_OBJ,2, {OA_NUMBER,  OA_BIT1, OA_NONE} },
-      { "%store/prop/qb/r",   of_STORE_PROP_QB_R,   2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%store/prop/qb/str", of_STORE_PROP_QB_STR, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%store/prop/qb/v",   of_STORE_PROP_QB_V,   3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%store/prop/qf/r",   of_STORE_PROP_QF_R,   2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%store/prop/qf/str", of_STORE_PROP_QF_STR, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%store/prop/qf/v",   of_STORE_PROP_QF_V,   3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%store/prop/r",  of_STORE_PROP_R,  1, {OA_NUMBER,  OA_NONE, OA_NONE} },
-      { "%store/prop/str",of_STORE_PROP_STR,1, {OA_NUMBER,  OA_NONE, OA_NONE} },
-      { "%store/prop/v",  of_STORE_PROP_V,  2, {OA_NUMBER,  OA_BIT1, OA_NONE} },
-      { "%store/qb/r",   of_STORE_QB_R,    2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qb/str", of_STORE_QB_STR,  2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qb/v",   of_STORE_QB_V,    3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
-      { "%store/qdar/r",  of_STORE_QDAR_R,  2,{OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qdar/str",of_STORE_QDAR_STR,2,{OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qdar/v",  of_STORE_QDAR_V,  3,{OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
-      { "%store/qf/r",   of_STORE_QF_R,    2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qf/str", of_STORE_QF_STR,  2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qf/v",   of_STORE_QF_V,    3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
-      { "%store/qobj/r",  of_STORE_QOBJ_R,  2, {OA_FUNC_PTR,OA_BIT1, OA_NONE} },
-      { "%store/qobj/str",of_STORE_QOBJ_STR,2, {OA_FUNC_PTR,OA_BIT1, OA_NONE} },
-      { "%store/qobj/v",  of_STORE_QOBJ_V,  3, {OA_FUNC_PTR,OA_BIT1, OA_BIT2} },
-      { "%store/real",    of_STORE_REAL,    1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
-      { "%store/reala",   of_STORE_REALA,   2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%store/str",     of_STORE_STR,     1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
-      { "%store/stra",    of_STORE_STRA,    2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%store/vec4",    of_STORE_VEC4,    3, {OA_FUNC_PTR,OA_BIT1, OA_BIT2} },
-      { "%store/vec4a",   of_STORE_VEC4A,   3, {OA_ARR_PTR, OA_BIT1, OA_BIT2} },
-      { "%sub",    of_SUB,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%sub/wr", of_SUB_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%subi",   of_SUBI,   3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%substr",     of_SUBSTR,     2,{OA_BIT1,    OA_BIT2, OA_NONE} },
-      { "%substr/vec4",of_SUBSTR_VEC4,2,{OA_BIT1,    OA_BIT2, OA_NONE} },
-      { "%test_nul",     of_TEST_NUL,     1,{OA_FUNC_PTR,OA_NONE,    OA_NONE} },
-      { "%test_nul/a",   of_TEST_NUL_A,   2,{OA_ARR_PTR, OA_BIT1,    OA_NONE} },
-      { "%test_nul/obj", of_TEST_NUL_OBJ, 0,{OA_NONE,    OA_NONE,    OA_NONE} },
-      { "%test_nul/prop",of_TEST_NUL_PROP,2,{OA_NUMBER,  OA_BIT1,    OA_NONE} },
-      { "%uparr/and/v",          of_UPARR_AND_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%uparr/or/v",           of_UPARR_OR_V,           2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%uparr/product/obj/v",  of_UPARR_PRODUCT_OBJ_V,  1, {OA_BIT1,     OA_NONE, OA_NONE} },
-      { "%uparr/product/prop/v", of_UPARR_PRODUCT_PROP_V, 2, {OA_NUMBER,   OA_BIT1, OA_NONE} },
-      { "%uparr/product/r",      of_UPARR_PRODUCT_REAL,   1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%uparr/product/v",      of_UPARR_PRODUCT_V,      2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%uparr/sum/obj/v",      of_UPARR_SUM_OBJ_V,      1, {OA_BIT1,     OA_NONE, OA_NONE} },
-      { "%uparr/sum/prop/v",     of_UPARR_SUM_PROP_V,     2, {OA_NUMBER,   OA_BIT1, OA_NONE} },
-      { "%uparr/sum/r",          of_UPARR_SUM_REAL,       1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%uparr/sum/v",          of_UPARR_SUM_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%uparr/xor/v",          of_UPARR_XOR_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%wait",   of_WAIT,   1,  {OA_FUNC_PTR, OA_NONE,     OA_NONE} },
-      { "%wait/fork",of_WAIT_FORK,0,{OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%xnor",   of_XNOR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%xnor/r", of_XNORR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%xor",    of_XOR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%xor/r",  of_XORR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { 0, of_NOOP, 0, {OA_NONE, OA_NONE, OA_NONE} }
+ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ ರಚನೆ opcode_ಕೋಷ್ಟಕ_s opcode_ಕೋಷ್ಟಕ[] = {
+      { "%abs/wr", ದ_ABS_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%add",    ದ_ಕೂಡಿಸು,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%add/wr", ದ_ಕೂಡಿಸು_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%addi",   ದ_ADDI,   3,  {OA_BIT1,     OA_BIT2,     OA_ಸಂಖ್ಯೆ} },
+      { "%alloc",  ದ_ALLOC,  1,  {OA_VPI_PTR,  OA_NONE,     OA_NONE} },
+      { "%and",    ದ_AND,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%and/r",  ದ_ANDR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%assign/ar",ದ_ನಿಯೋಜಿಸು_AR,2,{OA_ARR_PTR,OA_BIT1,     OA_NONE} },
+      { "%assign/ar/d",ದ_ನಿಯೋಜಿಸು_ARD,2,{OA_ARR_PTR,OA_BIT1,  OA_NONE} },
+      { "%assign/ar/e",ದ_ನಿಯೋಜಿಸು_ARE,1,{OA_ARR_PTR,OA_NONE,  OA_NONE} },
+      { "%assign/vec4",      ದ_ನಿಯೋಜಿಸು_VEC4,       2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%assign/vec4/a/d",  ದ_ನಿಯೋಜಿಸು_VEC4_A_D,   3, {OA_ARR_PTR,  OA_BIT1, OA_BIT2} },
+      { "%assign/vec4/a/e",  ದ_ನಿಯೋಜಿಸು_VEC4_A_E,   2, {OA_ARR_PTR,  OA_BIT1, OA_NONE} },
+      { "%assign/vec4/d",    ದ_ನಿಯೋಜಿಸು_VEC4_D,      2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%assign/vec4/e",    ದ_ನಿಯೋಜಿಸು_VEC4_E,      1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%assign/vec4/off/d",ದ_ನಿಯೋಜಿಸು_VEC4_OFF_D, 3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
+      { "%assign/vec4/off/e",ದ_ನಿಯೋಜಿಸು_VEC4_OFF_E, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%assign/wr",  ದ_ನಿಯೋಜಿಸು_WR, 2,{OA_VPI_PTR, OA_BIT1, OA_NONE} },
+      { "%assign/wr/d",ದ_ನಿಯೋಜಿಸು_WRD,2,{OA_VPI_PTR, OA_BIT1, OA_NONE} },
+      { "%assign/wr/e",ದ_ನಿಯೋಜಿಸು_WRE,1,{OA_VPI_PTR, OA_NONE, OA_NONE} },
+      { "%blend",     ದ_BLEND,     0, {OA_NONE, OA_NONE, OA_NONE} },
+      { "%blend/str", ದ_BLEND_STR, 0, {OA_NONE, OA_NONE, OA_NONE} },
+      { "%blend/wr",  ದ_BLEND_WR,  0, {OA_NONE, OA_NONE, OA_NONE} },
+      { "%breakpoint", ದ_BREAKPOINT, 0,  {OA_NONE, OA_NONE, OA_NONE} },
+      { "%callf/obj",       ದ_CALLF_OBJ,       2,{OA_ಸಂಕೇತ_PTR2,OA_VPI_PTR, OA_NONE} },
+      { "%callf/real",      ದ_CALLF_REAL,      2,{OA_ಸಂಕೇತ_PTR2,OA_VPI_PTR, OA_NONE} },
+      { "%callf/str",       ದ_CALLF_STR,       2,{OA_ಸಂಕೇತ_PTR2,OA_VPI_PTR, OA_NONE} },
+      { "%callf/vec4",      ದ_CALLF_VEC4,      2,{OA_ಸಂಕೇತ_PTR2,OA_VPI_PTR, OA_NONE} },
+      { "%callf/void",      ದ_CALLF_VOID,      2,{OA_ಸಂಕೇತ_PTR2,OA_VPI_PTR, OA_NONE} },
+      { "%cassign/link",    ದ_CASSIGN_LINK,    2,{OA_FUNC_PTR,OA_FUNC_PTR2,OA_NONE} },
+      { "%cassign/vec4",    ದ_CASSIGN_VEC4,    1,{OA_FUNC_PTR,OA_NONE,     OA_NONE} },
+      { "%cassign/vec4/off",ದ_CASSIGN_VEC4_OFF,2,{OA_FUNC_PTR,OA_BIT1,     OA_NONE} },
+      { "%cassign/wr",  ದ_CASSIGN_WR,  1,{OA_FUNC_PTR,OA_NONE,     OA_NONE} },
+      { "%cast/vec2/dar", ದ_CAST_VEC2_DAR, 1,  {OA_ಸಂಖ್ಯೆ,   OA_NONE,     OA_NONE} },
+      { "%cast/vec4/dar", ದ_CAST_VEC4_DAR, 1,  {OA_ಸಂಖ್ಯೆ,   OA_NONE,     OA_NONE} },
+      { "%cast/vec4/str", ದ_CAST_VEC4_STR, 1,  {OA_ಸಂಖ್ಯೆ,   OA_NONE,     OA_NONE} },
+      { "%cast2",   ದ_CAST2,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/e",   ದ_CMPE,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/ne",  ದ_CMPNE,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/s",   ದ_CMPS,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/str", ದ_CMPSTR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/u",   ದ_CMPU,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/we",  ದ_CMPWE,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/wne", ದ_CMPWNE, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/wr",  ದ_CMPWR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/x",   ದ_CMPX,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/z",   ದ_CMPZ,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmpi/e",  ದ_CMPIE,  3,  {OA_BIT1,     OA_BIT2,     OA_ಸಂಖ್ಯೆ} },
+      { "%cmpi/ne", ದ_CMPINE, 3,  {OA_BIT1,     OA_BIT2,     OA_ಸಂಖ್ಯೆ} },
+      { "%cmpi/s",  ದ_CMPIS,  3,  {OA_BIT1,     OA_BIT2,     OA_ಸಂಖ್ಯೆ} },
+      { "%cmpi/u",  ದ_CMPIU,  3,  {OA_BIT1,     OA_BIT2,     OA_ಸಂಖ್ಯೆ} },
+      { "%cmpix/ltu", ದ_CMPIX_LTU, 2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%cmpix/slt0", ದ_CMPIX_SLT0, 1, {OA_ಸಂಖ್ಯೆ, OA_NONE, OA_NONE} },
+      { "%concat/str",  ದ_CONCAT_STR,  0,{OA_NONE,  OA_NONE,  OA_NONE} },
+      { "%concat/vec4", ದ_CONCAT_VEC4, 0,{OA_NONE,  OA_NONE,  OA_NONE} },
+      { "%concati/str", ದ_CONCATI_STR, 1,{OA_STRING,OA_NONE,  OA_NONE} },
+      { "%concati/vec4",ದ_CONCATI_VEC4,3,{OA_BIT1,  OA_BIT2,  OA_ಸಂಖ್ಯೆ} },
+      { "%cvt/rv",   ದ_CVT_RV,  0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%cvt/rv/s", ದ_CVT_RV_S,0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%cvt/sr", ದ_CVT_SR, 1,  {OA_BIT1,     OA_NONE,     OA_NONE} },
+      { "%cvt/ur", ದ_CVT_UR, 1,  {OA_BIT1,     OA_NONE,     OA_NONE} },
+      { "%cvt/vr", ದ_CVT_VR, 1,  {OA_ಸಂಖ್ಯೆ,   OA_NONE,     OA_NONE} },
+      { "%deassign",ದ_DEASSIGN,3,{OA_FUNC_PTR, OA_BIT1,     OA_BIT2} },
+      { "%deassign/wr",ದ_DEASSIGN_WR,1,{OA_FUNC_PTR, OA_NONE,     OA_NONE} },
+      { "%debug/thr",  ದ_DEBUG_THR,  1,{OA_STRING,   OA_NONE,     OA_NONE} },
+      { "%delay",  ದ_DELAY,  2,  {OA_BIT1,     OA_BIT2,     OA_NONE} },
+      { "%delayx", ದ_DELAYX, 1,  {OA_ಸಂಖ್ಯೆ,   OA_NONE,     OA_NONE} },
+      { "%delete/elem",ದ_DELETE_ELEM,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
+      { "%delete/obj",ದ_DELETE_OBJ,1,{OA_FUNC_PTR,OA_NONE,  OA_NONE} },
+      { "%delete/prop/elem", ದ_DELETE_PROP_ELEM, 1, {OA_ಸಂಖ್ಯೆ, OA_NONE, OA_NONE} },
+      { "%delete/prop/obj",  ದ_DELETE_PROP_OBJ,  1, {OA_ಸಂಖ್ಯೆ, OA_NONE, OA_NONE} },
+      { "%delete/tail",ದ_DELETE_ಬಾಲ,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%disable",  ದ_DISABLE, 1, {OA_VPI_PTR,OA_NONE,     OA_NONE} },
+      { "%disable/flow", ದ_DISABLE_FLOW, 1, {OA_VPI_PTR,OA_NONE, OA_NONE} },
+      { "%disable/fork",ದ_DISABLE_FORK,0,{OA_NONE,OA_NONE,  OA_NONE} },
+      { "%div",      ದ_DIV,     0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%div/s",    ದ_DIV_S,   0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%div/wr",   ದ_DIV_WR,  0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%dup/obj",  ದ_DUP_OBJ, 0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%dup/real", ದ_DUP_REAL,0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%dup/vec4", ದ_DUP_VEC4,0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%end",    ದ_ಕೊನೆ,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%evctl",  ದ_EVCTL,  2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
+      { "%evctl/c",ದ_EVCTLC, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%evctl/i",ದ_EVCTLI, 2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
+      { "%evctl/s",ದ_EVCTLS, 2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
+      { "%event",    ದ_EVENT,    1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%event/nb", ದ_EVENT_NB, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%flag_get/vec4", ದ_FLAG_GET_VEC4, 1, {OA_ಸಂಖ್ಯೆ, OA_NONE, OA_NONE} },
+      { "%flag_inv",      ದ_FLAG_INV,      1, {OA_BIT1,   OA_NONE, OA_NONE} },
+      { "%flag_mov",      ದ_FLAG_MOV,      2, {OA_BIT1,   OA_BIT2, OA_NONE} },
+      { "%flag_or",       ದ_FLAG_OR,       2, {OA_BIT1,   OA_BIT2, OA_NONE} },
+      { "%flag_set/imm",  ದ_FLAG_ಗಣ_IMM,  2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%flag_set/vec4", ದ_FLAG_ಗಣ_VEC4, 1, {OA_ಸಂಖ್ಯೆ, OA_NONE, OA_NONE} },
+      { "%force/link",    ದ_FORCE_LINK,2,{OA_FUNC_PTR, OA_FUNC_PTR2, OA_NONE} },
+      { "%force/vec4",    ದ_FORCE_VEC4,    1,{OA_FUNC_PTR, OA_NONE,      OA_NONE} },
+      { "%force/vec4/off",ದ_FORCE_VEC4_OFF,2,{OA_FUNC_PTR, OA_BIT1,      OA_NONE} },
+      { "%force/vec4/off/d",ದ_FORCE_VEC4_OFF_D,3,{OA_FUNC_PTR, OA_BIT1,  OA_BIT2} },
+      { "%force/wr",      ದ_FORCE_WR,      1,{OA_FUNC_PTR, OA_NONE,      OA_NONE} },
+      { "%fork",   ದ_FORK,   2,  {OA_ಸಂಕೇತ_PTR2,OA_VPI_PTR,  OA_NONE} },
+      { "%free",   ದ_FREE,   1,  {OA_VPI_PTR,  OA_NONE,     OA_NONE} },
+      { "%inv",    ದ_INV,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%ix/add", ದ_IX_ಕೂಡಿಸು, 3,  {OA_ಸಂಖ್ಯೆ,   OA_BIT1,     OA_BIT2} },
+      { "%ix/getv",ದ_IX_GETV,2,  {OA_BIT1,     OA_FUNC_PTR, OA_NONE} },
+      { "%ix/getv/s",ದ_IX_GETV_S,2, {OA_BIT1,   OA_FUNC_PTR, OA_NONE} },
+      { "%ix/load",ದ_IX_ತುಂಬು,3,  {OA_ಸಂಖ್ಯೆ,   OA_BIT1,     OA_BIT2} },
+      { "%ix/mov", ದ_IX_MOV, 2,  {OA_BIT1,     OA_BIT2,     OA_NONE} },
+      { "%ix/mul", ದ_IX_MUL, 3,  {OA_ಸಂಖ್ಯೆ,   OA_BIT1,     OA_BIT2} },
+      { "%ix/sub", ದ_IX_SUB, 3,  {OA_ಸಂಖ್ಯೆ,   OA_BIT1,     OA_BIT2} },
+      { "%ix/vec4",  ದ_IX_VEC4,  1,  {OA_ಸಂಖ್ಯೆ,   OA_NONE, OA_NONE} },
+      { "%ix/vec4/s",ದ_IX_VEC4_S,1,  {OA_ಸಂಖ್ಯೆ,   OA_NONE, OA_NONE} },
+      { "%jmp",    ದ_JMP,    1,  {OA_ಸಂಕೇತ_PTR, OA_NONE,     OA_NONE} },
+      { "%jmp/0",  ದ_JMP0,   2,  {OA_ಸಂಕೇತ_PTR, OA_BIT1,     OA_NONE} },
+      { "%jmp/0xz",ದ_JMP0_XZ, 2,  {OA_ಸಂಕೇತ_PTR, OA_BIT1,     OA_NONE} },
+      { "%jmp/1",  ದ_JMP1,   2,  {OA_ಸಂಕೇತ_PTR, OA_BIT1,     OA_NONE} },
+      { "%jmp/1xz",ದ_JMP1_XZ, 2,  {OA_ಸಂಕೇತ_PTR, OA_BIT1,     OA_NONE} },
+      { "%join",   ದ_JOIN,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%join/detach",ದ_JOIN_DETACH,1,{OA_ಸಂಖ್ಯೆ,OA_NONE,  OA_NONE} },
+      { "%load/ar",ದ_ತುಂಬು_AR,2,  {OA_ARR_PTR,  OA_BIT1,     OA_NONE} },
+      { "%load/dar/r",  ದ_ತುಂಬು_DAR_R,    1, {OA_FUNC_PTR, OA_NONE, OA_NONE}},
+      { "%load/dar/str",ದ_ತುಂಬು_DAR_STR,  1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%load/dar/vec4",ದ_ತುಂಬು_DAR_VEC4,1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%load/obj",   ದ_ತುಂಬು_OBJ,  1,{OA_FUNC_PTR,OA_NONE, OA_NONE} },
+      { "%load/obja",  ದ_ತುಂಬು_OBJA, 2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%load/prop/dar/vec4", ದ_ತುಂಬು_PROP_DAR_VEC4, 2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%load/real",  ದ_ತುಂಬು_REAL, 1,{OA_VPI_PTR, OA_NONE, OA_NONE} },
+      { "%load/str",   ದ_ತುಂಬು_STR,  1,{OA_FUNC_PTR,OA_NONE, OA_NONE} },
+      { "%load/stra",  ದ_ತುಂಬು_STRA, 2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%load/vec4",  ದ_ತುಂಬು_VEC4, 1,{OA_FUNC_PTR,OA_NONE,  OA_NONE} },
+      { "%load/vec4a", ದ_ತುಂಬು_VEC4_A,2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%max/wr", ದ_MAX_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%min/wr", ದ_MIN_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%mod",    ದ_MOD,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%mod/s",  ದ_MOD_S,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%mod/wr", ದ_MOD_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%mul",    ದ_MUL,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%mul/wr", ದ_MUL_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%muli",   ದ_MULI,   3,  {OA_BIT1,     OA_BIT2,     OA_ಸಂಖ್ಯೆ} },
+      { "%nand",   ದ_NAND,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%nand/r", ದ_NANDR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%neg/wr", ದ_NEG_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%new/cobj",  ದ_NEW_COBJ,  1, {OA_VPI_PTR,OA_NONE,  OA_NONE} },
+      { "%new/darray",ದ_NEW_DARRAY,2, {OA_BIT1,   OA_STRING,OA_NONE} },
+      { "%noop",   ದ_NOOP,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%nor",    ದ_NOR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%nor/r",  ದ_NORR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%null",   ದ_NULL,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%or",     ದ_OR,     0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%or/r",   ದ_ORR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%pad/s",  ದ_PAD_S,  1,  {OA_ಸಂಖ್ಯೆ,   OA_NONE,     OA_NONE} },
+      { "%pad/u",  ದ_PAD_U,  1,  {OA_ಸಂಖ್ಯೆ,   OA_NONE,     OA_NONE} },
+      { "%part/s", ದ_PART_S, 1,  {OA_ಸಂಖ್ಯೆ,   OA_NONE,     OA_NONE} },
+      { "%part/u", ದ_PART_U, 1,  {OA_ಸಂಖ್ಯೆ,   OA_NONE,     OA_NONE} },
+      { "%parti/s",ದ_PARTI_S,3,  {OA_ಸಂಖ್ಯೆ,   OA_BIT1,     OA_BIT2} },
+      { "%parti/u",ದ_PARTI_U,3,  {OA_ಸಂಖ್ಯೆ,   OA_BIT1,     OA_BIT2} },
+      { "%pop/obj", ದ_ತೆಗೆ_OBJ, 2, {OA_BIT1,    OA_BIT2,     OA_NONE} },
+      { "%pop/real",ದ_ತೆಗೆ_REAL,1, {OA_ಸಂಖ್ಯೆ,  OA_NONE,     OA_NONE} },
+      { "%pop/str", ದ_ತೆಗೆ_STR, 1, {OA_ಸಂಖ್ಯೆ,  OA_NONE,     OA_NONE} },
+      { "%pop/vec4",ದ_ತೆಗೆ_VEC4,1, {OA_ಸಂಖ್ಯೆ,  OA_NONE,     OA_NONE} },
+      { "%pow",     ದ_POW,     0,  {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%pow/s",   ದ_POW_S,   0,  {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%pow/wr",  ದ_POW_WR,  0,  {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%prop/obj",ದ_PROP_OBJ,2,  {OA_ಸಂಖ್ಯೆ,   OA_BIT1,     OA_NONE} },
+      { "%prop/queue/size", ದ_PROP_ಸರತಿ_ಗಾತ್ರ,  1, {OA_ಸಂಖ್ಯೆ, OA_NONE, OA_NONE} },
+      { "%prop/r",  ದ_PROP_R,  1,  {OA_ಸಂಖ್ಯೆ,   OA_NONE,     OA_NONE} },
+      { "%prop/str",ದ_PROP_STR,1,  {OA_ಸಂಖ್ಯೆ,   OA_NONE,     OA_NONE} },
+      { "%prop/v",  ದ_PROP_V,  1,  {OA_ಸಂಖ್ಯೆ,   OA_NONE,     OA_NONE} },
+      { "%push/ix/vec4", ದ_ತಳ್ಳು_IX_VEC4, 3, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_BIT2} },
+      { "%pushi/real",ದ_PUSHI_REAL,2,{OA_BIT1,   OA_BIT2,   OA_NONE} },
+      { "%pushi/str", ದ_PUSHI_STR, 1,{OA_STRING, OA_NONE,   OA_NONE} },
+      { "%pushi/vec4",ದ_PUSHI_VEC4,3,{OA_BIT1,   OA_BIT2,   OA_ಸಂಖ್ಯೆ} },
+      { "%pushv/str", ದ_PUSHV_STR, 0,{OA_NONE,   OA_NONE,   OA_NONE} },
+      { "%putc/str/vec4",ದ_PUTC_STR_VEC4,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%qinsert/prop/r",   ದ_QINSERT_PROP_R,   2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%qinsert/prop/str", ದ_QINSERT_PROP_STR, 2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%qinsert/prop/v",   ದ_QINSERT_PROP_V,   3, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_BIT2} },
+      { "%qinsert/real",ದ_QINSERT_REAL,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%qinsert/str", ದ_QINSERT_STR, 2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%qinsert/v",   ದ_QINSERT_V,   3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
+      { "%qpop/b/real",ದ_QPOP_B_REAL,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
+      { "%qpop/b/str", ದ_QPOP_B_STR, 1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
+      { "%qpop/b/v",   ದ_QPOP_B_V,   2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%qpop/f/real",ದ_QPOP_F_REAL,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
+      { "%qpop/f/str", ದ_QPOP_F_STR, 1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
+      { "%qpop/f/v",   ದ_QPOP_F_V,   2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%qpop/prop/b/r",   ದ_QPOP_PROP_B_REAL, 1, {OA_ಸಂಖ್ಯೆ, OA_NONE, OA_NONE} },
+      { "%qpop/prop/b/str", ದ_QPOP_PROP_B_STR, 1, {OA_ಸಂಖ್ಯೆ, OA_NONE, OA_NONE} },
+      { "%qpop/prop/b/v",   ದ_QPOP_PROP_B_V,    2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%qpop/prop/f/r",   ದ_QPOP_PROP_F_REAL, 1, {OA_ಸಂಖ್ಯೆ, OA_NONE, OA_NONE} },
+      { "%qpop/prop/f/str", ದ_QPOP_PROP_F_STR, 1, {OA_ಸಂಖ್ಯೆ, OA_NONE, OA_NONE} },
+      { "%qpop/prop/f/v",   ದ_QPOP_PROP_F_V,    2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%queue/append_word/v", ದ_ಸರತಿ_APPEND_ಶಬ್ದ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
+      { "%queue/find/index/prop/v", ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಸೂಚ್ಯಂಕ_PROP_V, 2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%queue/find/index/v", ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಸೂಚ್ಯಂಕ_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/find/prop/v", ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_PROP_V, 2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%queue/find/v", ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/find_first/index/prop/v", ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಸೂಚ್ಯಂಕ_PROP_V, 2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%queue/find_first/index/v", ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_ಸೂಚ್ಯಂಕ_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/find_first/prop/v", ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_PROP_V, 2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%queue/find_first/v", ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಮೊದಲ_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/find_last/index/prop/v", ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಕೊನೆಯ_ಸೂಚ್ಯಂಕ_PROP_V, 2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%queue/find_last/index/v", ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಕೊನೆಯ_ಸೂಚ್ಯಂಕ_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/find_last/prop/v", ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಕೊನೆಯ_PROP_V, 2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%queue/find_last/v", ದ_ಸರತಿ_ಕಂಡುಹಿಡಿ_ಕೊನೆಯ_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/max/obj/v", ದ_ಸರತಿ_MAX_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
+      { "%queue/max/prop/v", ದ_ಸರತಿ_MAX_PROP_V, 2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%queue/max/v", ದ_ಸರತಿ_MAX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/min/obj/v", ದ_ಸರತಿ_MIN_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
+      { "%queue/min/prop/v", ದ_ಸರತಿ_MIN_PROP_V, 2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%queue/min/v", ದ_ಸರತಿ_MIN_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/new_empty/v", ದ_ಸರತಿ_NEW_ಖಾಲಿಗಳು_V, 0, {OA_NONE, OA_NONE, OA_NONE} },
+      { "%queue/size/v", ದ_ಸರತಿ_ಗಾತ್ರ_V, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%queue/unique/index/obj/v", ದ_ಸರತಿ_UNIQUE_ಸೂಚ್ಯಂಕ_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
+      { "%queue/unique/index/prop/v", ದ_ಸರತಿ_UNIQUE_ಸೂಚ್ಯಂಕ_PROP_V, 2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%queue/unique/index/v", ದ_ಸರತಿ_UNIQUE_ಸೂಚ್ಯಂಕ_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/unique/obj/v", ದ_ಸರತಿ_UNIQUE_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
+      { "%queue/unique/prop/v", ದ_ಸರತಿ_UNIQUE_PROP_V, 2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%queue/unique/v", ದ_ಸರತಿ_UNIQUE_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/word/prop/v", ದ_ಸರತಿ_ಶಬ್ದ_PROP_V, 3, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_BIT2} },
+      { "%queue/word/v", ದ_ಸರತಿ_ಶಬ್ದ_V, 3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
+      { "%release/net",ದ_RELEASE_NET,3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
+      { "%release/reg",ದ_RELEASE_REG,3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
+      { "%release/wr", ದ_RELEASE_WR, 2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%replicate", ದ_REPLICATE,   1,{OA_ಸಂಖ್ಯೆ,  OA_NONE,OA_NONE} },
+      { "%ret/real",  ದ_RET_REAL,    1,{OA_ಸಂಖ್ಯೆ,  OA_NONE,OA_NONE} },
+      { "%ret/str",   ದ_RET_STR,     1,{OA_ಸಂಖ್ಯೆ,  OA_NONE,OA_NONE} },
+      { "%ret/vec4",  ದ_RET_VEC4,    3,{OA_ಸಂಖ್ಯೆ,  OA_BIT1,OA_BIT2} },
+      { "%retload/real",ದ_RETLOAD_REAL,1,{OA_ಸಂಖ್ಯೆ,  OA_NONE,OA_NONE} },
+      { "%retload/str", ದ_RETLOAD_STR, 1,{OA_ಸಂಖ್ಯೆ,  OA_NONE,OA_NONE} },
+      { "%retload/vec4",ದ_RETLOAD_VEC4,1,{OA_ಸಂಖ್ಯೆ,  OA_NONE,OA_NONE} },
+      { "%reverse/obj", ದ_ಹಿಮ್ಮುಖ_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%reverse/prop/obj", ದ_ಹಿಮ್ಮುಖ_PROP_OBJ, 1, {OA_ಸಂಖ್ಯೆ, OA_NONE, OA_NONE} },
+      { "%rsort/obj", ದ_RSORT_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%rsort/prop/obj", ದ_RSORT_PROP_OBJ, 1, {OA_ಸಂಖ್ಯೆ, OA_NONE, OA_NONE} },
+      { "%scopy",  ದ_SCOPY,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%set/dar/obj/real",ದ_ಗಣ_DAR_OBJ_REAL,1,{OA_ಸಂಖ್ಯೆ,OA_NONE,OA_NONE} },
+      { "%set/dar/obj/str", ದ_ಗಣ_DAR_OBJ_STR, 1,{OA_ಸಂಖ್ಯೆ,OA_NONE,OA_NONE} },
+      { "%set/dar/obj/vec4",ದ_ಗಣ_DAR_OBJ_VEC4,1,{OA_ಸಂಖ್ಯೆ,OA_NONE,OA_NONE} },
+      { "%shiftl",   ದ_SHIFTL,   1, {OA_ಸಂಖ್ಯೆ, OA_NONE,   OA_NONE} },
+      { "%shiftr",   ದ_SHIFTR,   1, {OA_ಸಂಖ್ಯೆ, OA_NONE,   OA_NONE} },
+      { "%shiftr/s", ದ_SHIFTR_S, 1, {OA_ಸಂಖ್ಯೆ, OA_NONE,   OA_NONE} },
+      { "%shuffle/obj", ದ_SHUFFLE_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%shuffle/prop/obj", ದ_SHUFFLE_PROP_OBJ, 1, {OA_ಸಂಖ್ಯೆ, OA_NONE, OA_NONE} },
+      { "%sort/obj", ದ_ವಿಂಗಡಿಸು_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%sort/prop/obj", ದ_ವಿಂಗಡಿಸು_PROP_OBJ, 1, {OA_ಸಂಖ್ಯೆ, OA_NONE, OA_NONE} },
+      { "%split/vec4",    ದ_ವಿಭಜಿಸು_VEC4,    1,{OA_ಸಂಖ್ಯೆ,   OA_NONE, OA_NONE} },
+      { "%store/dar/r",   ದ_STORE_DAR_R,   1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%store/dar/str", ದ_STORE_DAR_STR, 1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%store/dar/vec4",ದ_STORE_DAR_VEC4,1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%store/obj",   ದ_STORE_OBJ,   1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
+      { "%store/obja",  ದ_STORE_OBJA,  2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%store/prop/obj",ದ_STORE_PROP_OBJ,2, {OA_ಸಂಖ್ಯೆ,  OA_BIT1, OA_NONE} },
+      { "%store/prop/qb/r",   ದ_STORE_PROP_QB_R,   2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%store/prop/qb/str", ದ_STORE_PROP_QB_STR, 2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%store/prop/qb/v",   ದ_STORE_PROP_QB_V,   3, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_BIT2} },
+      { "%store/prop/qf/r",   ದ_STORE_PROP_QF_R,   2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%store/prop/qf/str", ದ_STORE_PROP_QF_STR, 2, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_NONE} },
+      { "%store/prop/qf/v",   ದ_STORE_PROP_QF_V,   3, {OA_ಸಂಖ್ಯೆ, OA_BIT1, OA_BIT2} },
+      { "%store/prop/r",  ದ_STORE_PROP_R,  1, {OA_ಸಂಖ್ಯೆ,  OA_NONE, OA_NONE} },
+      { "%store/prop/str",ದ_STORE_PROP_STR,1, {OA_ಸಂಖ್ಯೆ,  OA_NONE, OA_NONE} },
+      { "%store/prop/v",  ದ_STORE_PROP_V,  2, {OA_ಸಂಖ್ಯೆ,  OA_BIT1, OA_NONE} },
+      { "%store/qb/r",   ದ_STORE_QB_R,    2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qb/str", ದ_STORE_QB_STR,  2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qb/v",   ದ_STORE_QB_V,    3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
+      { "%store/qdar/r",  ದ_STORE_QDAR_R,  2,{OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qdar/str",ದ_STORE_QDAR_STR,2,{OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qdar/v",  ದ_STORE_QDAR_V,  3,{OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
+      { "%store/qf/r",   ದ_STORE_QF_R,    2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qf/str", ದ_STORE_QF_STR,  2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qf/v",   ದ_STORE_QF_V,    3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
+      { "%store/qobj/r",  ದ_STORE_QOBJ_R,  2, {OA_FUNC_PTR,OA_BIT1, OA_NONE} },
+      { "%store/qobj/str",ದ_STORE_QOBJ_STR,2, {OA_FUNC_PTR,OA_BIT1, OA_NONE} },
+      { "%store/qobj/v",  ದ_STORE_QOBJ_V,  3, {OA_FUNC_PTR,OA_BIT1, OA_BIT2} },
+      { "%store/real",    ದ_STORE_REAL,    1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
+      { "%store/reala",   ದ_STORE_REALA,   2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%store/str",     ದ_STORE_STR,     1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
+      { "%store/stra",    ದ_STORE_STRA,    2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%store/vec4",    ದ_STORE_VEC4,    3, {OA_FUNC_PTR,OA_BIT1, OA_BIT2} },
+      { "%store/vec4a",   ದ_STORE_VEC4_A,   3, {OA_ARR_PTR, OA_BIT1, OA_BIT2} },
+      { "%sub",    ದ_SUB,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%sub/wr", ದ_SUB_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%subi",   ದ_SUBI,   3,  {OA_BIT1,     OA_BIT2,     OA_ಸಂಖ್ಯೆ} },
+      { "%substr",     ದ_SUBSTR,     2,{OA_BIT1,    OA_BIT2, OA_NONE} },
+      { "%substr/vec4",ದ_SUBSTR_VEC4,2,{OA_BIT1,    OA_BIT2, OA_NONE} },
+      { "%test_nul",     ದ_TEST_NUL,     1,{OA_FUNC_PTR,OA_NONE,    OA_NONE} },
+      { "%test_nul/a",   ದ_TEST_NUL_A,   2,{OA_ARR_PTR, OA_BIT1,    OA_NONE} },
+      { "%test_nul/obj", ದ_TEST_NUL_OBJ, 0,{OA_NONE,    OA_NONE,    OA_NONE} },
+      { "%test_nul/prop",ದ_TEST_NUL_PROP,2,{OA_ಸಂಖ್ಯೆ,  OA_BIT1,    OA_NONE} },
+      { "%uparr/and/v",          ದ_UPARR_AND_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%uparr/or/v",           ದ_UPARR_OR_V,           2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%uparr/product/obj/v",  ದ_UPARR_ಗುಣಲಬ್ಧ_OBJ_V,  1, {OA_BIT1,     OA_NONE, OA_NONE} },
+      { "%uparr/product/prop/v", ದ_UPARR_ಗುಣಲಬ್ಧ_PROP_V, 2, {OA_ಸಂಖ್ಯೆ,   OA_BIT1, OA_NONE} },
+      { "%uparr/product/r",      ದ_UPARR_ಗುಣಲಬ್ಧ_REAL,   1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%uparr/product/v",      ದ_UPARR_ಗುಣಲಬ್ಧ_V,      2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%uparr/sum/obj/v",      ದ_UPARR_ಮೊತ್ತ_OBJ_V,      1, {OA_BIT1,     OA_NONE, OA_NONE} },
+      { "%uparr/sum/prop/v",     ದ_UPARR_ಮೊತ್ತ_PROP_V,     2, {OA_ಸಂಖ್ಯೆ,   OA_BIT1, OA_NONE} },
+      { "%uparr/sum/r",          ದ_UPARR_ಮೊತ್ತ_REAL,       1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%uparr/sum/v",          ದ_UPARR_ಮೊತ್ತ_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%uparr/xor/v",          ದ_UPARR_XOR_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%wait",   ದ_WAIT,   1,  {OA_FUNC_PTR, OA_NONE,     OA_NONE} },
+      { "%wait/fork",ದ_WAIT_FORK,0,{OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%xnor",   ದ_XNOR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%xnor/r", ದ_XNORR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%xor",    ದ_XOR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%xor/r",  ದ_XORR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { 0, ದ_NOOP, 0, {OA_NONE, OA_NONE, OA_NONE} }
 };
 
-static const unsigned opcode_count =
-                    sizeof(opcode_table)/sizeof(*opcode_table) - 1;
+ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ opcode_ಎಣಿಕೆ =
+                    ಗಾತ್ರ(opcode_ಕೋಷ್ಟಕ)/ಗಾತ್ರ(*opcode_ಕೋಷ್ಟಕ) - 1;
 
-static int opcode_compare(const void*k, const void*r)
+ಸ್ಥಿರ ಪೂರ್ಣಾಂಕ opcode_compare(ಸ್ಥಿರಾಂಕ ಶೂನ್ಯ*k, ಸ್ಥಿರಾಂಕ ಶೂನ್ಯ*r)
 {
-      const char*kp = static_cast<const char*>(k);
-      const struct opcode_table_s*rp = static_cast<const struct opcode_table_s*>(r);
-      return strcmp(kp, rp->mnemonic);
+      ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*kp = static_cast<ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*>(k);
+      ಸ್ಥಿರಾಂಕ ರಚನೆ opcode_ಕೋಷ್ಟಕ_s*rp = static_cast<ಸ್ಥಿರಾಂಕ ರಚನೆ opcode_ಕೋಷ್ಟಕ_s*>(r);
+      ಹಿಂತಿರುಗಿ strcmp(kp, rp->mnemonic);
 }
 
 /*
  * Keep a symbol table of addresses within code space. Labels on
  * executable opcodes are mapped to their address here.
  */
-static symbol_table_t sym_codespace = 0;
+ಸ್ಥಿರ ಚಿಹ್ನೆ_ಕೋಷ್ಟಕ_t sym_codespace = 0;
 
 /*
  * Keep a symbol table of functors mentioned in the source. This table
  * is used to resolve references as they come.
  */
-static symbol_table_t sym_functors = 0;
+ಸ್ಥಿರ ಚಿಹ್ನೆ_ಕೋಷ್ಟಕ_t sym_functors = 0;
 
 /*
  * VPI objects are indexed during compile time so that they can be
  * linked together as they are created. This symbol table matches
  * labels to vpiHandles.
  */
-static symbol_table_t sym_vpi = 0;
+ಸ್ಥಿರ ಚಿಹ್ನೆ_ಕೋಷ್ಟಕ_t sym_vpi = 0;
 
 
 /*
@@ -444,96 +444,96 @@ static symbol_table_t sym_vpi = 0;
  *  Add a functor to the symbol table
  */
 
-void define_functor_symbol(const char*label, vvp_net_t*net)
+ಶೂನ್ಯ define_functor_ಚಿಹ್ನೆ(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*label, vvp_net_t*net)
 {
-      symbol_value_t val;
+      ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t val;
       val.net = net;
-      sym_set_value(sym_functors, label, val);
+      sym_ಗಣ_ಮೌಲ್ಯ(sym_functors, label, val);
 }
 
-static vvp_net_t*lookup_functor_symbol(const char*label)
+ಸ್ಥಿರ vvp_net_t*lookup_functor_ಚಿಹ್ನೆ(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*label)
 {
-      assert(sym_functors);
-      symbol_value_t val = sym_get_value(sym_functors, label);
-      return val.net;
+      ಪ್ರತಿಜ್ಞಾ(sym_functors);
+      ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t val = sym_get_ಮೌಲ್ಯ(sym_functors, label);
+      ಹಿಂತಿರುಗಿ val.net;
 }
 
-vpiHandle vvp_lookup_handle(const char*label)
+vpiHandle vvp_lookup_handle(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*label)
 {
-      symbol_value_t val = sym_get_value(sym_vpi, label);
-      if (val.ptr) return (vpiHandle) val.ptr;
-      return 0;
+      ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t val = sym_get_ಮೌಲ್ಯ(sym_vpi, label);
+      ಆದರೆ (val.ptr) ಹಿಂತಿರುಗಿ (vpiHandle) val.ptr;
+      ಹಿಂತಿರುಗಿ 0;
 }
 
-vvp_net_t* vvp_net_lookup(const char*label)
+vvp_net_t* vvp_net_lookup(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*label)
 {
-      static bool t0_trigger_generated = false;
+      ಸ್ಥಿರ ತಾರ್ಕಿಕ t0_trigger_generated = ಸುಳ್ಳು;
 
         /* First, look to see if the symbol is a vpi object of some
 	   sort. If it is, then get the vvp_ipoint_t pointer out of
 	   the vpiHandle. */
-      symbol_value_t val = sym_get_value(sym_vpi, label);
-      if (val.ptr) {
+      ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t val = sym_get_ಮೌಲ್ಯ(sym_vpi, label);
+      ಆದರೆ (val.ptr) {
 	    vpiHandle vpi = static_cast<vpiHandle>(val.ptr);
-	    switch (vpi->get_type_code()) {
-		case vpiNet:
-		case vpiReg:
-		case vpiBitVar:
-		case vpiByteVar:
-		case vpiShortIntVar:
-		case vpiIntVar:
-		case vpiLongIntVar:
-		case vpiIntegerVar: {
-		      const __vpiSignal*sig = dynamic_cast<__vpiSignal*>(vpi);
-		      return sig->node;
+	    ಆಯ್ಕೆ (vpi->get_type_ಸಂಕೇತ()) {
+		ಸ್ಥಿತಿ vpiNet:
+		ಸ್ಥಿತಿ vpiReg:
+		ಸ್ಥಿತಿ vpi_ಬಿಟ್_Var:
+		ಸ್ಥಿತಿ vpiByteVar:
+		ಸ್ಥಿತಿ vpiShortIntVar:
+		ಸ್ಥಿತಿ vpiIntVar:
+		ಸ್ಥಿತಿ vpiLongIntVar:
+		ಸ್ಥಿತಿ vpiIntegerVar: {
+		      ಸ್ಥಿರಾಂಕ __vpiSignal*sig = dynamic_cast<__vpiSignal*>(vpi);
+		      ಹಿಂತಿರುಗಿ sig->ಗಂಟು;
 		}
 
-		case vpiRealVar: {
-		      const __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(vpi);
-		      return sig->net;
+		ಸ್ಥಿತಿ vpiRealVar: {
+		      ಸ್ಥಿರಾಂಕ __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(vpi);
+		      ಹಿಂತಿರುಗಿ sig->net;
 		}
 
-		case vpiStringVar:
-		case vpiArrayVar:
-		case vpiClassVar: {
-		      const __vpiBaseVar*sig = dynamic_cast<__vpiBaseVar*>(vpi);
-		      return sig->get_net();
+		ಸ್ಥಿತಿ vpiStringVar:
+		ಸ್ಥಿತಿ vpiArrayVar:
+		ಸ್ಥಿತಿ vpiClassVar: {
+		      ಸ್ಥಿರಾಂಕ __vpiBaseVar*sig = dynamic_cast<__vpiBaseVar*>(vpi);
+		      ಹಿಂತಿರುಗಿ sig->get_net();
 		}
 
-		case vpiNamedEvent: {
-		      const __vpiNamedEvent*tmp = dynamic_cast<__vpiNamedEvent*>(vpi);
-		      return tmp->funct;
+		ಸ್ಥಿತಿ vpiNamedEvent: {
+		      ಸ್ಥಿರಾಂಕ __vpiNamedEvent*tmp = dynamic_cast<__vpiNamedEvent*>(vpi);
+		      ಹಿಂತಿರುಗಿ tmp->funct;
 		}
 
-		default:
+		ಪೂರ್ವನಿಯೋಜಿತ:
 		  fprintf(stderr, "Unsupported type %d.\n",
-		          vpi->get_type_code());
-		  assert(0);
+		          vpi->get_type_ಸಂಕೇತ());
+		  ಪ್ರತಿಜ್ಞಾ(0);
 	    }
       }
 
 
 	/* Failing that, look for a general functor. */
-      vvp_net_t*tmp = lookup_functor_symbol(label);
+      vvp_net_t*tmp = lookup_functor_ಚಿಹ್ನೆ(label);
 
 	// This is a special label used to create a T0 trigger for the
 	// always_comb/latch processes.
-     if (! t0_trigger_generated && (strcmp(label, "E_0x0") == 0)) {
+     ಆದರೆ (! t0_trigger_generated && (strcmp(label, "E_0x0") == 0)) {
 	      // This should never happen, but if it does then the E_0x0
 	      // event generation may need to be explicitly generated in
 	      // the compiler output instead of implicitly in this code.
-	    assert(! vpip_peek_current_scope()->is_automatic());
-	    t0_trigger_generated = true;
+	    ಪ್ರತಿಜ್ಞಾ(! vpip_peek_current_scope()->is_automatic());
+	    t0_trigger_generated = ನಿಜ;
 	      // Create a local event with no name for the T0 trigger
-	    compile_named_event(strdup(label), strcpy(new char [1],""), true);
+	    compile_named_event(strdup(label), strcpy(ಹೊಸ ಅಕ್ಷರ [1],""), ನಿಜ);
 	    tmp = vvp_net_lookup(label);
-	    assert(tmp);
+	    ಪ್ರತಿಜ್ಞಾ(tmp);
 	      // Create a trigger for the T0 event.
 	    vvp_net_ptr_t ptr (tmp, 0);
-	    schedule_t0_trigger(ptr);
+	    ವೇಳಾಪಟ್ಟಿ_t0_trigger(ptr);
      }
 
-      return tmp;
+      ಹಿಂತಿರುಗಿ tmp;
 }
 
 /*
@@ -554,21 +554,21 @@ vvp_net_t* vvp_net_lookup(const char*label)
  * this call is its last chance. If it cannot complete the operation,
  * it must print an error message and return false.
  */
-static resolv_list_s*resolv_list = 0;
+ಸ್ಥಿರ resolv_list_s*resolv_list = 0;
 
 resolv_list_s::~resolv_list_s()
 {
-      free(label_);
+      ಬಿಡುಗಡೆ(label_);
 }
 
-void resolv_submit(resolv_list_s*cur)
+ಶೂನ್ಯ resolv_submit(resolv_list_s*cur)
 {
-      if (cur->resolve()) {
-	    delete cur;
-	    return;
+      ಆದರೆ (cur->resolve()) {
+	    ಅಳಿಸು cur;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      cur->next = resolv_list;
+      cur->ಮುಂದಿನ_2 = resolv_list;
       resolv_list = cur;
 }
 
@@ -579,35 +579,35 @@ void resolv_submit(resolv_list_s*cur)
  * input that I want that node to feed into. When the name is found,
  * put net->port[port] into the fan-out list for that node.
  */
-struct vvp_net_resolv_list_s: public resolv_list_s {
+ರಚನೆ vvp_net_resolv_list_s: ಸಾರ್ವಜನಿಕ resolv_list_s {
 
-      explicit vvp_net_resolv_list_s(char*l) : resolv_list_s(l) { }
+      ಸ್ಪಷ್ಟ vvp_net_resolv_list_s(ಅಕ್ಷರ*l) : resolv_list_s(l) { }
 	// port to be driven by the located node.
-      vvp_net_ptr_t port;
-      virtual bool resolve(bool mes) override;
+      vvp_net_ptr_t ಪೋರ್ಟ್;
+      ವಾಸ್ತವಿಕ ತಾರ್ಕಿಕ resolve(ತಾರ್ಕಿಕ mes) override;
 };
 
-bool vvp_net_resolv_list_s::resolve(bool mes)
+ತಾರ್ಕಿಕ vvp_net_resolv_list_s::resolve(ತಾರ್ಕಿಕ mes)
 {
       vvp_net_t*tmp = vvp_net_lookup(label());
 
-      if (tmp) {
+      ಆದರೆ (tmp) {
 	      // Link the input port to the located output.
-	    tmp->link(port);
-	    return true;
+	    tmp->link(ಪೋರ್ಟ್);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      if (mes)
+      ಆದರೆ (mes)
 	    fprintf(stderr, "unresolved vvp_net reference: %s\n", label());
 
-      return false;
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
-inline static
-void postpone_functor_input(vvp_net_ptr_t port, char*lab)
+ಸಾಲೊಳಗೆ ಸ್ಥಿರ
+ಶೂನ್ಯ postpone_functor_ಒಳಹರಿವು(vvp_net_ptr_t ಪೋರ್ಟ್, ಅಕ್ಷರ*lab)
 {
-      struct vvp_net_resolv_list_s*res = new struct vvp_net_resolv_list_s(lab);
-      res->port   = port;
+      ರಚನೆ vvp_net_resolv_list_s*res = ಹೊಸ ರಚನೆ vvp_net_resolv_list_s(lab);
+      res->ಪೋರ್ಟ್   = ಪೋರ್ಟ್;
 
       resolv_submit(res);
 }
@@ -617,33 +617,33 @@ void postpone_functor_input(vvp_net_ptr_t port, char*lab)
  *  Generic functor reference lookup.
  */
 
-struct functor_gen_resolv_list_s: public resolv_list_s {
-      explicit functor_gen_resolv_list_s(char*txt) : resolv_list_s(txt) {
+ರಚನೆ functor_gen_resolv_list_s: ಸಾರ್ವಜನಿಕ resolv_list_s {
+      ಸ್ಪಷ್ಟ functor_gen_resolv_list_s(ಅಕ್ಷರ*txt) : resolv_list_s(txt) {
 	    ref = 0;
       }
       vvp_net_t**ref;
-      virtual bool resolve(bool mes) override;
+      ವಾಸ್ತವಿಕ ತಾರ್ಕಿಕ resolve(ತಾರ್ಕಿಕ mes) override;
 };
 
-bool functor_gen_resolv_list_s::resolve(bool mes)
+ತಾರ್ಕಿಕ functor_gen_resolv_list_s::resolve(ತಾರ್ಕಿಕ mes)
 {
       vvp_net_t*tmp = vvp_net_lookup(label());
 
-      if (tmp) {
+      ಆದರೆ (tmp) {
 	    *ref = tmp;
-	    return true;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      if (mes)
+      ಆದರೆ (mes)
 	    fprintf(stderr, "unresolved functor reference: %s\n", label());
 
-      return false;
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
-void functor_ref_lookup(vvp_net_t**ref, char*lab)
+ಶೂನ್ಯ functor_ref_lookup(vvp_net_t**ref, ಅಕ್ಷರ*lab)
 {
-      struct functor_gen_resolv_list_s*res =
-	    new struct functor_gen_resolv_list_s(lab);
+      ರಚನೆ functor_gen_resolv_list_s*res =
+	    ಹೊಸ ರಚನೆ functor_gen_resolv_list_s(lab);
 
       res->ref    = ref;
 
@@ -654,102 +654,102 @@ void functor_ref_lookup(vvp_net_t**ref, char*lab)
  *  vpiHandle lookup
  */
 
-struct vpi_handle_resolv_list_s: public resolv_list_s {
-      explicit vpi_handle_resolv_list_s(char*lab) : resolv_list_s(lab) {
-	    handle = NULL;
+ರಚನೆ vpi_handle_resolv_list_s: ಸಾರ್ವಜನಿಕ resolv_list_s {
+      ಸ್ಪಷ್ಟ vpi_handle_resolv_list_s(ಅಕ್ಷರ*lab) : resolv_list_s(lab) {
+	    handle = ಖಾಲಿ;
       }
-      virtual bool resolve(bool mes) override;
+      ವಾಸ್ತವಿಕ ತಾರ್ಕಿಕ resolve(ತಾರ್ಕಿಕ mes) override;
       vpiHandle *handle;
 };
 
-bool vpi_handle_resolv_list_s::resolve(bool mes)
+ತಾರ್ಕಿಕ vpi_handle_resolv_list_s::resolve(ತಾರ್ಕಿಕ mes)
 {
-      symbol_value_t val = sym_get_value(sym_vpi, label());
-      if (!val.ptr) {
+      ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t val = sym_get_ಮೌಲ್ಯ(sym_vpi, label());
+      ಆದರೆ (!val.ptr) {
 	    // check for thread access symbols
-	    unsigned base, wid;
+	    ಚಿಹ್ನೆರಹಿತ ತಳ, wid;
 	    size_t n = 0;
-	    char ss[32];
-	    if (2 == sscanf(label(), "W<%u,%31[r]>%zn", &base, ss, &n)
-		       && n == strlen(label())) {
+	    ಅಕ್ಷರ ss[32];
+	    ಆದರೆ (2 == ಅಕ್ಷರಸರಣಿ_ಓದು(label(), "W<%u,%31[r]>%zn", &ತಳ, ss, &n)
+		       && n == ಅಕ್ಷರಸರಣಿ_ಉದ್ದ(label())) {
 
-		  val.ptr = vpip_make_vthr_word(base, ss);
-		  sym_set_value(sym_vpi, label(), val);
+		  val.ptr = vpip_make_vthr_ಶಬ್ದ(ತಳ, ss);
+		  sym_ಗಣ_ಮೌಲ್ಯ(sym_vpi, label(), val);
 
-	    } else if (1 == sscanf(label(), "S<%u,str>%zn", &base, &n)
-		       && n == strlen(label())) {
+	    } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (1 == ಅಕ್ಷರಸರಣಿ_ಓದು(label(), "S<%u,str>%zn", &ತಳ, &n)
+		       && n == ಅಕ್ಷರಸರಣಿ_ಉದ್ದ(label())) {
 
-		  val.ptr = vpip_make_vthr_str_stack(base);
-		  sym_set_value(sym_vpi, label(), val);
+		  val.ptr = vpip_make_vthr_str_ರಾಶಿ(ತಳ);
+		  sym_ಗಣ_ಮೌಲ್ಯ(sym_vpi, label(), val);
 
-	    } else if (3 == sscanf(label(), "S<%u,vec4,%31[su]%u>%zn", &base, ss, &wid, &n)
-		       && n == strlen(label())) {
+	    } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (3 == ಅಕ್ಷರಸರಣಿ_ಓದು(label(), "S<%u,vec4,%31[su]%u>%zn", &ತಳ, ss, &wid, &n)
+		       && n == ಅಕ್ಷರಸರಣಿ_ಉದ್ದ(label())) {
 
-		  bool signed_flag = false;
-		  for (char*fp = ss ;  *fp ;  fp += 1) switch (*fp) {
-		      case 's':
-			signed_flag = true;
-			break;
-		      case 'u':
-			signed_flag = false;
-			break;
-		      default:
-			break;
+		  ತಾರ್ಕಿಕ signed_flag = ಸುಳ್ಳು;
+		  ಗಾಗಿ (ಅಕ್ಷರ*fp = ss ;  *fp ;  fp += 1) ಆಯ್ಕೆ (*fp) {
+		      ಸ್ಥಿತಿ 's':
+			signed_flag = ನಿಜ;
+			ನಿಲ್ಲಿಸು;
+		      ಸ್ಥಿತಿ 'u':
+			signed_flag = ಸುಳ್ಳು;
+			ನಿಲ್ಲಿಸು;
+		      ಪೂರ್ವನಿಯೋಜಿತ:
+			ನಿಲ್ಲಿಸು;
 		  }
-		  val.ptr = vpip_make_vthr_vec4_stack(base, signed_flag, wid);
-		  sym_set_value(sym_vpi, label(), val);
+		  val.ptr = vpip_make_vthr_vec4_ರಾಶಿ(ತಳ, signed_flag, wid);
+		  sym_ಗಣ_ಮೌಲ್ಯ(sym_vpi, label(), val);
 	    }
 
       }
 
-      if (!val.ptr) {
+      ಆದರೆ (!val.ptr) {
 	    // check for memory word  M<mem,base,wid>
       }
 
-      if (strcmp(label(), "null") == 0) {
+      ಆದರೆ (strcmp(label(), "null") == 0) {
 	    val.ptr = vpip_make_null_const();
-	    sym_set_value(sym_vpi, label(), val);
+	    sym_ಗಣ_ಮೌಲ್ಯ(sym_vpi, label(), val);
       }
 
-      if (val.ptr) {
+      ಆದರೆ (val.ptr) {
 	    *handle = static_cast<vpiHandle>(val.ptr);
-	    return true;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      if (mes)
+      ಆದರೆ (mes)
 	    fprintf(stderr, "unresolved vpi name lookup: %s\n", label());
 
-      return false;
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
-void compile_vpi_lookup(vpiHandle *handle, char*label)
+ಶೂನ್ಯ compile_vpi_lookup(vpiHandle *handle, ಅಕ್ಷರ*label)
 {
-      if (strcmp(label, "$time") == 0) {
-	    *handle = vpip_sim_time(vpip_peek_current_scope(), false);
-	    free(label);
-	    return;
+      ಆದರೆ (strcmp(label, "$time") == 0) {
+	    *handle = vpip_sim_ಸಮಯ(vpip_peek_current_scope(), ಸುಳ್ಳು);
+	    ಬಿಡುಗಡೆ(label);
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      if (strcmp(label, "$stime") == 0) {
-	    *handle = vpip_sim_time(vpip_peek_current_scope(), true);
-	    free(label);
-	    return;
+      ಆದರೆ (strcmp(label, "$stime") == 0) {
+	    *handle = vpip_sim_ಸಮಯ(vpip_peek_current_scope(), ನಿಜ);
+	    ಬಿಡುಗಡೆ(label);
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      if (strcmp(label, "$realtime") == 0) {
+      ಆದರೆ (strcmp(label, "$realtime") == 0) {
 	    *handle = vpip_sim_realtime(vpip_peek_current_scope());
-	    free(label);
-	    return;
+	    ಬಿಡುಗಡೆ(label);
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      if (strcmp(label, "$simtime") == 0) {
-	    *handle = vpip_sim_time(0, false);
-	    free(label);
-	    return;
+      ಆದರೆ (strcmp(label, "$simtime") == 0) {
+	    *handle = vpip_sim_ಸಮಯ(0, ಸುಳ್ಳು);
+	    ಬಿಡುಗಡೆ(label);
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      struct vpi_handle_resolv_list_s*res
-	    = new struct vpi_handle_resolv_list_s(label);
+      ರಚನೆ vpi_handle_resolv_list_s*res
+	    = ಹೊಸ ರಚನೆ vpi_handle_resolv_list_s(label);
 
       res->handle = handle;
       resolv_submit(res);
@@ -759,80 +759,80 @@ void compile_vpi_lookup(vpiHandle *handle, char*label)
  * Code Label lookup
  */
 
-struct code_label_resolv_list_s: public resolv_list_s {
-      explicit code_label_resolv_list_s(char*lab, bool cptr2) : resolv_list_s(lab) {
-	    code = NULL;
+ರಚನೆ ಸಂಕೇತ_label_resolv_list_s: ಸಾರ್ವಜನಿಕ resolv_list_s {
+      ಸ್ಪಷ್ಟ ಸಂಕೇತ_label_resolv_list_s(ಅಕ್ಷರ*lab, ತಾರ್ಕಿಕ cptr2) : resolv_list_s(lab) {
+	    code = ಖಾಲಿ;
 	    cptr2_flag = cptr2;
       }
-      struct vvp_code_s *code;
-      bool cptr2_flag;
-      virtual bool resolve(bool mes) override;
+      ರಚನೆ vvp_ಸಂಕೇತ_s *code;
+      ತಾರ್ಕಿಕ cptr2_flag;
+      ವಾಸ್ತವಿಕ ತಾರ್ಕಿಕ resolve(ತಾರ್ಕಿಕ mes) override;
 };
 
-bool code_label_resolv_list_s::resolve(bool mes)
+ತಾರ್ಕಿಕ ಸಂಕೇತ_label_resolv_list_s::resolve(ತಾರ್ಕಿಕ mes)
 {
-      symbol_value_t val = sym_get_value(sym_codespace, label());
-      if (val.ptr) {
-	    if (cptr2_flag)
-		  code->cptr2 = reinterpret_cast<vvp_code_t>(val.ptr);
-	    else
-		  code->cptr = reinterpret_cast<vvp_code_t>(val.ptr);
-	    return true;
+      ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t val = sym_get_ಮೌಲ್ಯ(sym_codespace, label());
+      ಆದರೆ (val.ptr) {
+	    ಆದರೆ (cptr2_flag)
+		  code->cptr2 = reinterpret_cast<vvp_ಸಂಕೇತ_t>(val.ptr);
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  code->cptr = reinterpret_cast<vvp_ಸಂಕೇತ_t>(val.ptr);
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      if (mes)
+      ಆದರೆ (mes)
 	    fprintf(stderr, "unresolved code label: %s\n", label());
 
-      return false;
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
-void code_label_lookup(struct vvp_code_s *code, char *label, bool cptr2)
+ಶೂನ್ಯ ಸಂಕೇತ_label_lookup(ರಚನೆ vvp_ಸಂಕೇತ_s *code, ಅಕ್ಷರ *label, ತಾರ್ಕಿಕ cptr2)
 {
-      struct code_label_resolv_list_s *res
-	    = new struct code_label_resolv_list_s(label, cptr2);
+      ರಚನೆ ಸಂಕೇತ_label_resolv_list_s *res
+	    = ಹೊಸ ರಚನೆ ಸಂಕೇತ_label_resolv_list_s(label, cptr2);
 
       res->code  = code;
 
       resolv_submit(res);
 }
 
-struct code_array_resolv_list_s: public resolv_list_s {
-      explicit code_array_resolv_list_s(char*lab) : resolv_list_s(lab) {
-	    code = NULL;
+ರಚನೆ ಸಂಕೇತ_array_resolv_list_s: ಸಾರ್ವಜನಿಕ resolv_list_s {
+      ಸ್ಪಷ್ಟ ಸಂಕೇತ_array_resolv_list_s(ಅಕ್ಷರ*lab) : resolv_list_s(lab) {
+	    code = ಖಾಲಿ;
       }
-      struct vvp_code_s *code;
-      virtual bool resolve(bool mes) override;
+      ರಚನೆ vvp_ಸಂಕೇತ_s *code;
+      ವಾಸ್ತವಿಕ ತಾರ್ಕಿಕ resolve(ತಾರ್ಕಿಕ mes) override;
 };
 
-bool code_array_resolv_list_s::resolve(bool mes)
+ತಾರ್ಕಿಕ ಸಂಕೇತ_array_resolv_list_s::resolve(ತಾರ್ಕಿಕ mes)
 {
-      code->array = array_find(label());
-      if (code->array != 0) {
-	    return true;
+      code->array = array_ಕಂಡುಹಿಡಿ(label());
+      ಆದರೆ (code->array != 0) {
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      if (mes)
+      ಆದರೆ (mes)
 	    fprintf(stderr, "Array unresolved: %s\n", label());
 
-      return false;
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
-static void compile_array_lookup(struct vvp_code_s*code, char*label)
+ಸ್ಥಿರ ಶೂನ್ಯ compile_array_lookup(ರಚನೆ vvp_ಸಂಕೇತ_s*code, ಅಕ್ಷರ*label)
 {
-      struct code_array_resolv_list_s *res
-	    = new struct code_array_resolv_list_s(label);
+      ರಚನೆ ಸಂಕೇತ_array_resolv_list_s *res
+	    = ಹೊಸ ರಚನೆ ಸಂಕೇತ_array_resolv_list_s(label);
 
       res->code  = code;
 
       resolv_submit(res);
 }
 
-static std::list<struct __vpiSysTaskCall*> scheduled_compiletf;
+ಸ್ಥಿರ std::list<ರಚನೆ __vpiSysTaskCall*> scheduled_compiletf;
 
-void compile_compiletf(struct __vpiSysTaskCall*obj)
+ಶೂನ್ಯ compile_compiletf(ರಚನೆ __vpiSysTaskCall*obj)
 {
-      if (obj->defn->info.compiletf == 0)
-	    return;
+      ಆದರೆ (obj->defn->info.compiletf == 0)
+	    ಹಿಂತಿರುಗಿ;
 
       scheduled_compiletf.push_back(obj);
 }
@@ -842,43 +842,43 @@ void compile_compiletf(struct __vpiSysTaskCall*obj)
  * the final stuff. Clean up deferred linking here.
  */
 
-void compile_cleanup(void)
+ಶೂನ್ಯ compile_cleanup(ಶೂನ್ಯ)
 {
-      int lnerrs = -1;
-      int nerrs = 0;
-      int last;
+      ಪೂರ್ಣಾಂಕ lnerrs = -1;
+      ಪೂರ್ಣಾಂಕ nerrs = 0;
+      ಪೂರ್ಣಾಂಕ ಕೊನೆಯ;
 
-      if (verbose_flag) {
+      ಆದರೆ (verbose_flag) {
 	    fprintf(stderr, " ... Linking\n");
 	    fflush(stderr);
       }
 
-      do {
+      ಮಾಡು {
 	    resolv_list_s *res = resolv_list;
 	    resolv_list = 0x0;
-	    last = nerrs == lnerrs;
+	    ಕೊನೆಯ = nerrs == lnerrs;
 	    lnerrs = nerrs;
 	    nerrs = 0;
-	    while (res) {
+	    ಆಗ (res) {
 		  resolv_list_s *cur = res;
-		  res = res->next;
-		  if (cur->resolve(last))
-			delete cur;
-		  else {
+		  res = res->ಮುಂದಿನ_2;
+		  ಆದರೆ (cur->resolve(ಕೊನೆಯ))
+			ಅಳಿಸು cur;
+		  ಇಲ್ಲದಿದ್ದರೆ {
 			nerrs++;
-			cur->next = resolv_list;
+			cur->ಮುಂದಿನ_2 = resolv_list;
 			resolv_list = cur;
 		  }
 	    }
-	    if (nerrs && last)
+	    ಆದರೆ (nerrs && ಕೊನೆಯ)
 		  fprintf(stderr,
 			  "compile_cleanup: %d unresolved items\n",
 			  nerrs);
-      } while (nerrs && !last);
+      } ಆಗ (nerrs && !ಕೊನೆಯ);
 
       compile_errors += nerrs;
 
-      if (verbose_flag) {
+      ಆದರೆ (verbose_flag) {
 	    fprintf(stderr, " ... Removing symbol tables\n");
 	    fflush(stderr);
       }
@@ -886,15 +886,15 @@ void compile_cleanup(void)
 	/* After compile is complete, the vpi symbol table is no
 	   longer needed. VPI objects are located by following
 	   scopes. */
-      delete_symbol_table(sym_vpi);
+      delete_ಚಿಹ್ನೆ_ಕೋಷ್ಟಕ(sym_vpi);
       sym_vpi = 0;
 
 	/* Don't need the code labels. The instructions have numeric
 	   pointers in them, the symbol table is no longer needed. */
-      delete_symbol_table(sym_codespace);
+      delete_ಚಿಹ್ನೆ_ಕೋಷ್ಟಕ(sym_codespace);
       sym_codespace = 0;
 
-      delete_symbol_table(sym_functors);
+      delete_ಚಿಹ್ನೆ_ಕೋಷ್ಟಕ(sym_functors);
       sym_functors = 0;
 
       delete_udp_symbols();
@@ -902,55 +902,55 @@ void compile_cleanup(void)
       compile_island_cleanup();
       compile_array_cleanup();
 
-      if (verbose_flag) {
+      ಆದರೆ (verbose_flag) {
 	    fprintf(stderr, " ... Compiletf functions\n");
 	    fflush(stderr);
       }
 
-      assert(vpi_mode_flag == VPI_MODE_NONE);
-      vpi_mode_flag = VPI_MODE_COMPILETF;
+      ಪ್ರತಿಜ್ಞಾ(vpi_ಬಹುಲಕ_flag == VPI_ಬಹುಲಕ_NONE);
+      vpi_ಬಹುಲಕ_flag = VPI_ಬಹುಲಕ_COMPILETF;
 
-      while (! scheduled_compiletf.empty()) {
-	    struct __vpiSysTaskCall*obj = scheduled_compiletf.front();
+      ಆಗ (! scheduled_compiletf.empty()) {
+	    ರಚನೆ __vpiSysTaskCall*obj = scheduled_compiletf.front();
 	    scheduled_compiletf.pop_front();
 	    vpip_cur_task = obj;
-	    obj->defn->info.compiletf (obj->defn->info.user_data);
+	    obj->defn->info.compiletf (obj->defn->info.user_ದತ್ತಾಂಶ);
 	    vpip_cur_task = 0;
       }
 
-      vpi_mode_flag = VPI_MODE_NONE;
+      vpi_ಬಹುಲಕ_flag = VPI_ಬಹುಲಕ_NONE;
 }
 
-void compile_vpi_symbol(const char*label, vpiHandle obj)
+ಶೂನ್ಯ compile_vpi_ಚಿಹ್ನೆ(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*label, vpiHandle obj)
 {
-      symbol_value_t val;
+      ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t val;
       val.ptr = obj;
-      sym_set_value(sym_vpi, label, val);
+      sym_ಗಣ_ಮೌಲ್ಯ(sym_vpi, label, val);
 }
 
 /*
  * Initialize the compiler by allocation empty symbol tables and
  * initializing the various address spaces.
  */
-void compile_init(void)
+ಶೂನ್ಯ compile_init(ಶೂನ್ಯ)
 {
-      sym_vpi = new_symbol_table();
+      sym_vpi = new_ಚಿಹ್ನೆ_ಕೋಷ್ಟಕ();
 
-      sym_functors = new_symbol_table();
+      sym_functors = new_ಚಿಹ್ನೆ_ಕೋಷ್ಟಕ();
 
-      sym_codespace = new_symbol_table();
+      sym_codespace = new_ಚಿಹ್ನೆ_ಕೋಷ್ಟಕ();
       codespace_init();
 }
 
-void compile_load_vpi_module(char*name)
+ಶೂನ್ಯ compile_ತುಂಬು_vpi_module(ಅಕ್ಷರ*name)
 {
-      vpip_load_module(name);
-      delete[] name;
+      vpip_ತುಂಬು_module(name);
+      ಅಳಿಸು[] name;
 }
 
-void compile_vpi_time_precision(long pre)
+ಶೂನ್ಯ compile_vpi_ಸಮಯ_precision(ದೀರ್ಘ pre)
 {
-      vpip_set_time_precision(pre);
+      vpip_ಗಣ_ಸಮಯ_precision(pre);
 }
 
 /*
@@ -967,59 +967,59 @@ void compile_vpi_time_precision(long pre)
  *
  * The real value is sign * (mant ** exp).
  */
-static bool crstring_header_test(const char*str)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ crstring_ಶೀರ್ಷಿಕೆ_test(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*str)
 {
-      if ((str[0] != 'C') && (str[0] != 'c'))
-	    return false;
-      if ((str[1] != 'r') || (str[2] != '<'))
-	    return false;
+      ಆದರೆ ((str[0] != 'C') && (str[0] != 'c'))
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
+      ಆದರೆ ((str[1] != 'r') || (str[2] != '<'))
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool crstring_test(const char*str)
+ತಾರ್ಕಿಕ crstring_test(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*str)
 {
-      if (!crstring_header_test(str))
-	    return false;
-      const char*tp = strchr(str, '>');
-      if (tp == 0) return false;
-      if (tp[1] != 0) return false;
+      ಆದರೆ (!crstring_ಶೀರ್ಷಿಕೆ_test(str))
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
+      ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*tp = strchr(str, '>');
+      ಆದರೆ (tp == 0) ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
+      ಆದರೆ (tp[1] != 0) ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 
-      if ((strspn(str+3, "0123456789abcdefmg")+3) != (size_t)(tp - str))
-	  return false;
+      ಆದರೆ ((strspn(str+3, "0123456789abcdefmg")+3) != (size_t)(tp - str))
+	  ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-double crstring_to_double(const char*label)
+ದ್ವಿಗುಣ crstring_ಗಮ್ಯ_double(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*label)
 {
-      assert(crstring_header_test(label));
+      ಪ್ರತಿಜ್ಞಾ(crstring_ಶೀರ್ಷಿಕೆ_test(label));
 
-      const char*cp = label+3;
-      assert(*cp == 'm');
+      ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*cp = label+3;
+      ಪ್ರತಿಜ್ಞಾ(*cp == 'm');
       cp += 1;
-      char*ep;
+      ಅಕ್ಷರ*ep;
       uint64_t mant = strtoull(cp, &ep, 16);
       cp = ep;
-      assert(*cp == 'g');
+      ಪ್ರತಿಜ್ಞಾ(*cp == 'g');
       cp += 1;
-      int exp = strtoul(cp, 0, 16);
+      ಪೂರ್ಣಾಂಕ ಘಾತಾಂಕ = strtoul(cp, 0, 16);
 
-      double tmp;
-      if (mant == 0 && exp == 0x3fff) {
+      ದ್ವಿಗುಣ tmp;
+      ಆದರೆ (mant == 0 && ಘಾತಾಂಕ == 0x3fff) {
 	    tmp = INFINITY;
-      } else if (mant == 0 && exp == 0x7fff) {
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (mant == 0 && ಘಾತಾಂಕ == 0x7fff) {
 	    tmp = -INFINITY;
-      } else if (exp == 0x3fff) {
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (ಘಾತಾಂಕ == 0x3fff) {
 	    tmp = nan("");
-      } else {
-	    double sign = (exp & 0x4000)? -1.0 : 1.0;
-	    exp &= 0x1fff;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ದ್ವಿಗುಣ sign = (ಘಾತಾಂಕ & 0x4000)? -1.0 : 1.0;
+	    ಘಾತಾಂಕ &= 0x1fff;
 
-	    tmp = sign * ldexp((double)mant, exp - 0x1000);
+	    tmp = sign * ldexp((ದ್ವಿಗುಣ)mant, ಘಾತಾಂಕ - 0x1000);
       }
 
-      return tmp;
+      ಹಿಂತಿರುಗಿ tmp;
 }
 
 /*
@@ -1036,14 +1036,14 @@ double crstring_to_double(const char*label)
  * and skip the symbol lookup.
  */
 
-void input_connect(vvp_net_t*fdx, unsigned port, char*label)
+ಶೂನ್ಯ ಒಳಹರಿವು_connect(vvp_net_t*fdx, ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್, ಅಕ್ಷರ*label)
 {
-      vvp_net_ptr_t ifdx = vvp_net_ptr_t(fdx, port);
+      vvp_net_ptr_t ifdx = vvp_net_ptr_t(fdx, ಪೋರ್ಟ್);
 
 	/* Is this a vvp_vector4_t constant value? */
-      if (c4string_test(label)) {
+      ಆದರೆ (c4string_test(label)) {
 
-	    vvp_vector4_t tmp = c4string_to_vector4(label);
+	    vvp_vector4_t tmp = c4string_ಗಮ್ಯ_vector4(label);
 
 	      // Inputs that are constants are scheduled to execute as
 	      // soon at the simulation starts. In Verilog, constants
@@ -1056,609 +1056,609 @@ void input_connect(vvp_net_t*fdx, unsigned port, char*label)
 	      // schedule execution before time 0, to make sure it
 	      // occurs before any sensitive processes are started
 	      // or VPI callbacks are executed.
-	    if (label[0] == 'c')
-		  schedule_init_vector(ifdx, tmp);
-	    else
-		  schedule_set_vector(ifdx, tmp);
+	    ಆದರೆ (label[0] == 'c')
+		  ವೇಳಾಪಟ್ಟಿ_init_ಸದಿಶ(ifdx, tmp);
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  ವೇಳಾಪಟ್ಟಿ_ಗಣ_ಸದಿಶ(ifdx, tmp);
 
-	    free(label);
-	    return;
+	    ಬಿಡುಗಡೆ(label);
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	/* Is this a vvp_vector8_t constant value? */
-      if (c8string_test(label)) {
+      ಆದರೆ (c8string_test(label)) {
 
-	    vvp_vector8_t tmp = c8string_to_vector8(label);
-	    if (label[0] == 'c')
-		  schedule_init_vector(ifdx, tmp);
-	    else
-		  schedule_set_vector(ifdx, tmp);
+	    vvp_vector8_t tmp = c8string_ಗಮ್ಯ_vector8(label);
+	    ಆದರೆ (label[0] == 'c')
+		  ವೇಳಾಪಟ್ಟಿ_init_ಸದಿಶ(ifdx, tmp);
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  ವೇಳಾಪಟ್ಟಿ_ಗಣ_ಸದಿಶ(ifdx, tmp);
 
-	    free(label);
-	    return;
+	    ಬಿಡುಗಡೆ(label);
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	/* Handle the Cr<> constant driver, which is a real-value
 	   driver. */
-      if (crstring_test(label)) {
+      ಆದರೆ (crstring_test(label)) {
 
-	    double tmp = crstring_to_double(label);
+	    ದ್ವಿಗುಣ tmp = crstring_ಗಮ್ಯ_double(label);
 
-	    if (label[0] == 'c')
-		  schedule_init_vector(ifdx, tmp);
-	    else
-		  schedule_set_vector(ifdx, tmp);
-	    free(label);
-	    return;
+	    ಆದರೆ (label[0] == 'c')
+		  ವೇಳಾಪಟ್ಟಿ_init_ಸದಿಶ(ifdx, tmp);
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  ವೇಳಾಪಟ್ಟಿ_ಗಣ_ಸದಿಶ(ifdx, tmp);
+	    ಬಿಡುಗಡೆ(label);
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	/* Handle the general case that this is a label for a node in
 	   the vvp net. This arranges for the label to be preserved in
 	   a linker list, and linked when the symbol table is
 	   complete. */
-      postpone_functor_input(ifdx, label);
+      postpone_functor_ಒಳಹರಿವು(ifdx, label);
 }
 
-void inputs_connect(vvp_net_t*fdx, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ inputs_connect(vvp_net_t*fdx, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      if (argc > 4) {
-	    std::cerr << "XXXX argv[0] = " << argv[0].text << std::endl;
+      ಆದರೆ (argc > 4) {
+	    std::cerr << "XXXX argv[0] = " << argv[0].ಪಠ್ಯ << std::ಸಾಲು_ಅಂತ್ಯ;
       }
-      assert(argc <= 4);
+      ಪ್ರತಿಜ್ಞಾ(argc <= 4);
 
-      for (unsigned idx = 0;  idx < argc;  idx += 1) {
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0;  idx < argc;  idx += 1) {
 
-	    input_connect(fdx, idx, argv[idx].text);
+	    ಒಳಹರಿವು_connect(fdx, idx, argv[idx].ಪಠ್ಯ);
       }
 }
 
-void wide_inputs_connect(vvp_wide_fun_core*core,
-			 unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ wide_inputs_connect(vvp_wide_fun_core*core,
+			 ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
 	/* Create input functors to receive values from the
 	   network. These functors pass the data to the core. */
-      unsigned input_functors = (argc+3) / 4;
-      for (unsigned idx = 0 ;  idx < input_functors ;  idx += 1) {
-	    unsigned base = idx*4;
-	    unsigned trans = 4;
-	    if (base+trans > argc)
-		  trans = argc - base;
+      ಚಿಹ್ನೆರಹಿತ ಒಳಹರಿವು_functors = (argc+3) / 4;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಒಳಹರಿವು_functors ;  idx += 1) {
+	    ಚಿಹ್ನೆರಹಿತ ತಳ = idx*4;
+	    ಚಿಹ್ನೆರಹಿತ trans = 4;
+	    ಆದರೆ (ತಳ+trans > argc)
+		  trans = argc - ತಳ;
 
-	    vvp_wide_fun_t*cur = new vvp_wide_fun_t(core, base);
-	    vvp_net_t*ptr = new vvp_net_t;
+	    vvp_wide_fun_t*cur = ಹೊಸ vvp_wide_fun_t(core, ತಳ);
+	    vvp_net_t*ptr = ಹೊಸ vvp_net_t;
 	    ptr->fun = cur;
 
-	    inputs_connect(ptr, trans, argv+base);
+	    inputs_connect(ptr, trans, argv+ತಳ);
       }
 }
 
-template <class T_> void make_arith(T_ *arith, char*label,
-				    unsigned argc, struct symb_s*argv)
+ಮಾದರಿ <ವರ್ಗ T_> ಶೂನ್ಯ make_arith(T_ *arith, ಅಕ್ಷರ*label,
+				    ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = ಹೊಸ vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_ಚಿಹ್ನೆ(label, ptr);
+      ಬಿಡುಗಡೆ(label);
 
-      assert(argc == 2);
+      ಪ್ರತಿಜ್ಞಾ(argc == 2);
       inputs_connect(ptr, argc, argv);
 
-      free(argv);
+      ಬಿಡುಗಡೆ(argv);
 }
 
-void compile_arith_cast_int(char*label, long width,
-                            unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_arith_cast_int(ಅಕ್ಷರ*label, ದೀರ್ಘ width,
+                            ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      vvp_arith_cast_int*arith = new vvp_arith_cast_int((unsigned) width);
+      vvp_arith_cast_int*arith = ಹೊಸ vvp_arith_cast_int((ಚಿಹ್ನೆರಹಿತ) width);
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = ಹೊಸ vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_ಚಿಹ್ನೆ(label, ptr);
+      ಬಿಡುಗಡೆ(label);
 
-      assert(argc == 1);
+      ಪ್ರತಿಜ್ಞಾ(argc == 1);
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      ಬಿಡುಗಡೆ(argv);
 }
 
-void compile_arith_cast_vec2(char*label, long width,
-			     unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_arith_cast_vec2(ಅಕ್ಷರ*label, ದೀರ್ಘ width,
+			     ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      vvp_arith_cast_vec2*arith = new vvp_arith_cast_vec2((unsigned) width);
+      vvp_arith_cast_vec2*arith = ಹೊಸ vvp_arith_cast_vec2((ಚಿಹ್ನೆರಹಿತ) width);
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = ಹೊಸ vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_ಚಿಹ್ನೆ(label, ptr);
+      ಬಿಡುಗಡೆ(label);
 
-      assert(argc == 1);
+      ಪ್ರತಿಜ್ಞಾ(argc == 1);
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      ಬಿಡುಗಡೆ(argv);
 }
 
-void compile_arith_cast_real(char*label, bool signed_flag,
-                             unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_arith_cast_real(ಅಕ್ಷರ*label, ತಾರ್ಕಿಕ signed_flag,
+                             ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      vvp_arith_cast_real*arith = new vvp_arith_cast_real(signed_flag);
+      vvp_arith_cast_real*arith = ಹೊಸ vvp_arith_cast_real(signed_flag);
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = ಹೊಸ vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_ಚಿಹ್ನೆ(label, ptr);
+      ಬಿಡುಗಡೆ(label);
 
-      assert(argc == 1);
+      ಪ್ರತಿಜ್ಞಾ(argc == 1);
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      ಬಿಡುಗಡೆ(argv);
 }
 
-void compile_arith_abs(char*label, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_arith_abs(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      vvp_arith_abs*arith = new vvp_arith_abs;
+      vvp_arith_abs*arith = ಹೊಸ vvp_arith_abs;
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = ಹೊಸ vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_ಚಿಹ್ನೆ(label, ptr);
+      ಬಿಡುಗಡೆ(label);
 
-      assert(argc == 1);
+      ಪ್ರತಿಜ್ಞಾ(argc == 1);
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      ಬಿಡುಗಡೆ(argv);
 }
 
-void compile_arith_div(char*label, long wid, bool signed_flag,
-		       unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_arith_div(ಅಕ್ಷರ*label, ದೀರ್ಘ wid, ತಾರ್ಕಿಕ signed_flag,
+		       ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      if (argc != 2) {
-	    const char *suffix = "";
-	    if (signed_flag) suffix = ".s";
+      ಆದರೆ (argc != 2) {
+	    ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ *suffix = "";
+	    ಆದರೆ (signed_flag) suffix = ".s";
 	    fprintf(stderr, "%s; .arith/div%s has wrong number of "
 	                    "symbols\n", label, suffix);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_ *arith = new vvp_arith_div(wid, signed_flag);
+      vvp_arith_ *arith = ಹೊಸ vvp_arith_div(wid, signed_flag);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_div_r(char*label, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_arith_div_r(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s; .arith/divr has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_div_real;
+      vvp_arith_real_ *arith = ಹೊಸ vvp_arith_div_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mod(char*label, long wid, bool signed_flag,
-		       unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_arith_mod(ಅಕ್ಷರ*label, ದೀರ್ಘ wid, ತಾರ್ಕಿಕ signed_flag,
+		       ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .arith/mod has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_ *arith = new vvp_arith_mod(wid, signed_flag);
+      vvp_arith_ *arith = ಹೊಸ vvp_arith_mod(wid, signed_flag);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mod_r(char*label, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_arith_mod_r(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .arith/mod.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_mod_real;
+      vvp_arith_real_ *arith = ಹೊಸ vvp_arith_mod_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mult(char*label, long wid,
-			unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_arith_mult(ಅಕ್ಷರ*label, ದೀರ್ಘ wid,
+			ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .arith/mult has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_ *arith = new vvp_arith_mult(wid);
+      vvp_arith_ *arith = ಹೊಸ vvp_arith_mult(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mult_r(char*label, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_arith_mult_r(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .arith/mult.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_mult_real;
+      vvp_arith_real_ *arith = ಹೊಸ vvp_arith_mult_real;
       make_arith(arith, label, argc, argv);
 }
 
 
-void compile_arith_pow(char*label, long wid, bool signed_flag,
-		       unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_arith_pow(ಅಕ್ಷರ*label, ದೀರ್ಘ wid, ತಾರ್ಕಿಕ signed_flag,
+		       ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      if (argc != 2) {
-	    const char *suffix = "";
-	    if (signed_flag) suffix = ".s";
+      ಆದರೆ (argc != 2) {
+	    ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ *suffix = "";
+	    ಆದರೆ (signed_flag) suffix = ".s";
 	    fprintf(stderr, "%s .arith/pow%s has wrong number of "
 	                    "symbols\n", label, suffix);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_ *arith = new vvp_arith_pow(wid, signed_flag);
+      vvp_arith_ *arith = ಹೊಸ vvp_arith_pow(wid, signed_flag);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_pow_r(char*label, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_arith_pow_r(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .arith/pow.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_pow_real;
+      vvp_arith_real_ *arith = ಹೊಸ vvp_arith_pow_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sub(char*label, long wid, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_arith_sub(ಅಕ್ಷರ*label, ದೀರ್ಘ wid, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .arith/sub has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_ *arith = new vvp_arith_sub(wid);
+      vvp_arith_ *arith = ಹೊಸ vvp_arith_sub(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sub_r(char*label, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_arith_sub_r(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s; .arith/sub.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_sub_real;
+      vvp_arith_real_ *arith = ಹೊಸ vvp_arith_sub_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sum(char*label, long wid, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_arith_ಮೊತ್ತ(ಅಕ್ಷರ*label, ದೀರ್ಘ wid, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .arith/sum has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_ *arith = new vvp_arith_sum(wid);
+      vvp_arith_ *arith = ಹೊಸ vvp_arith_ಮೊತ್ತ(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sum_r(char*label, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_arith_ಮೊತ್ತ_r(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .arith/sum.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_sum_real;
+      vvp_arith_real_ *arith = ಹೊಸ vvp_arith_ಮೊತ್ತ_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eeq(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_cmp_eeq(ಅಕ್ಷರ*label, ದೀರ್ಘ wid,
+		     ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eeq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_eeq(wid);
+      vvp_arith_ *arith = ಹೊಸ vvp_cmp_eeq(wid);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_nee(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_cmp_nee(ಅಕ್ಷರ*label, ದೀರ್ಘ wid,
+		     ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eeq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_nee(wid);
+      vvp_arith_ *arith = ಹೊಸ vvp_cmp_nee(wid);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eq(char*label, long wid, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_cmp_eq(ಅಕ್ಷರ*label, ದೀರ್ಘ wid, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_eq(wid);
+      vvp_arith_ *arith = ಹೊಸ vvp_cmp_eq(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eqx(char*label, long wid, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_cmp_eqx(ಅಕ್ಷರ*label, ದೀರ್ಘ wid, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eqx has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_eqx(wid);
+      vvp_arith_ *arith = ಹೊಸ vvp_cmp_eqx(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eqz(char*label, long wid, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_cmp_eqz(ಅಕ್ಷರ*label, ದೀರ್ಘ wid, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eqz has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_eqz(wid);
+      vvp_arith_ *arith = ಹೊಸ vvp_cmp_eqz(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eq_r(char*label, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_cmp_eq_r(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eq.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_real_ *arith = new vvp_cmp_eq_real;
+      vvp_arith_real_ *arith = ಹೊಸ vvp_cmp_eq_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ne(char*label, long wid, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_cmp_ne(ಅಕ್ಷರ*label, ದೀರ್ಘ wid, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ne has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_ne(wid);
+      vvp_arith_ *arith = ಹೊಸ vvp_cmp_ne(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ne_r(char*label, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_cmp_ne_r(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ne.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_real_ *arith = new vvp_cmp_ne_real;
+      vvp_arith_real_ *arith = ಹೊಸ vvp_cmp_ne_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ge(char*label, long wid, bool signed_flag,
-		    unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_cmp_ge(ಅಕ್ಷರ*label, ದೀರ್ಘ wid, ತಾರ್ಕಿಕ signed_flag,
+		    ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ge has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_ge(wid, signed_flag);
+      vvp_arith_ *arith = ಹೊಸ vvp_cmp_ge(wid, signed_flag);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ge_r(char*label, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_cmp_ge_r(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ge.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_real_ *arith = new vvp_cmp_ge_real;
+      vvp_arith_real_ *arith = ಹೊಸ vvp_cmp_ge_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_gt(char*label, long wid, bool signed_flag,
-		    unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_cmp_gt(ಅಕ್ಷರ*label, ದೀರ್ಘ wid, ತಾರ್ಕಿಕ signed_flag,
+		    ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/gt has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_gt(wid, signed_flag);
+      vvp_arith_ *arith = ಹೊಸ vvp_cmp_gt(wid, signed_flag);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_gt_r(char*label, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_cmp_gt_r(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/gt.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_real_ *arith = new vvp_cmp_gt_real;
+      vvp_arith_real_ *arith = ಹೊಸ vvp_cmp_gt_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_weq(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_cmp_weq(ಅಕ್ಷರ*label, ದೀರ್ಘ wid,
+		     ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/weq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_weq(wid);
+      vvp_arith_ *arith = ಹೊಸ vvp_cmp_weq(wid);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_wne(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_cmp_wne(ಅಕ್ಷರ*label, ದೀರ್ಘ wid,
+		     ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      if (argc != 2) {
+      ಆದರೆ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/wne has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_wne(wid);
+      vvp_arith_ *arith = ಹೊಸ vvp_cmp_wne(wid);
 
       make_arith(arith, label, argc, argv);
 }
 
 
-void compile_delay(char*label, unsigned width,
-                   vvp_delay_t*delay, struct symb_s arg)
+ಶೂನ್ಯ compile_delay(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ width,
+                   vvp_delay_t*delay, ರಚನೆ symb_s arg)
 {
-      vvp_net_t*net = new vvp_net_t;
-      vvp_fun_delay*obj = new vvp_fun_delay(net, width, *delay);
+      vvp_net_t*net = ಹೊಸ vvp_net_t;
+      vvp_fun_delay*obj = ಹೊಸ vvp_fun_delay(net, width, *delay);
       net->fun = obj;
 
-      delete delay;
+      ಅಳಿಸು delay;
 
-      input_connect(net, 0, arg.text);
+      ಒಳಹರಿವು_connect(net, 0, arg.ಪಠ್ಯ);
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_ಚಿಹ್ನೆ(label, net);
+      ಬಿಡುಗಡೆ(label);
 }
 
-void compile_delay(char*label, unsigned width,
-                   unsigned argc, struct symb_s*argv, bool ignore_decay)
+ಶೂನ್ಯ compile_delay(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ width,
+                   ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv, ತಾರ್ಕಿಕ ignore_decay)
 {
       vvp_delay_t stub (0, 0, 0);
-      if (ignore_decay) stub.set_ignore_decay();
-      vvp_net_t*net = new vvp_net_t;
-      vvp_fun_delay*obj = new vvp_fun_delay(net, width, stub);
+      ಆದರೆ (ignore_decay) stub.ಗಣ_ignore_decay();
+      vvp_net_t*net = ಹೊಸ vvp_net_t;
+      vvp_fun_delay*obj = ಹೊಸ vvp_fun_delay(net, width, stub);
       net->fun = obj;
 
       inputs_connect(net, argc, argv);
-      free(argv);
+      ಬಿಡುಗಡೆ(argv);
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_ಚಿಹ್ನೆ(label, net);
+      ಬಿಡುಗಡೆ(label);
 }
 
 /*
  * Extend nodes.
  */
-void compile_extend_signed(char*label, long wid, struct symb_s arg)
+ಶೂನ್ಯ compile_extend_signed(ಅಕ್ಷರ*label, ದೀರ್ಘ wid, ರಚನೆ symb_s arg)
 {
-      assert(wid >= 0);
+      ಪ್ರತಿಜ್ಞಾ(wid >= 0);
 
-      vvp_fun_extend_signed*fun = new vvp_fun_extend_signed(wid);
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_fun_extend_signed*fun = ಹೊಸ vvp_fun_extend_signed(wid);
+      vvp_net_t*ptr = ಹೊಸ vvp_net_t;
       ptr->fun = fun;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_ಚಿಹ್ನೆ(label, ptr);
+      ಬಿಡುಗಡೆ(label);
 
-      input_connect(ptr, 0, arg.text);
+      ಒಳಹರಿವು_connect(ptr, 0, arg.ಪಠ್ಯ);
 }
 
-struct __vpiModPath* compile_modpath(char*label, unsigned width,
-                                     struct symb_s drv, struct symb_s dest)
+ರಚನೆ __vpiModPath* compile_modpath(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ width,
+                                     ರಚನೆ symb_s drv, ರಚನೆ symb_s dest)
 {
-      vvp_net_t*net = new vvp_net_t;
-      vvp_fun_modpath*obj = new vvp_fun_modpath(net, width);
+      vvp_net_t*net = ಹೊಸ vvp_net_t;
+      vvp_fun_modpath*obj = ಹೊಸ vvp_fun_modpath(net, width);
       net->fun = obj;
 
-      input_connect(net, 0, drv.text);
+      ಒಳಹರಿವು_connect(net, 0, drv.ಪಠ್ಯ);
 
-      define_functor_symbol(label, net);
+      define_functor_ಚಿಹ್ನೆ(label, net);
 
       __vpiModPath*modpath = vpip_make_modpath(net);
 
-      compile_vpi_lookup(&modpath->path_term_out.expr, dest.text);
+      compile_vpi_lookup(&modpath->ಮಾರ್ಗ_ಪದ_ಹೊರಹೋಗು.ಅಭಿವ್ಯಕ್ತಿ, dest.ಪಠ್ಯ);
 
-      free(label);
+      ಬಿಡುಗಡೆ(label);
 
       modpath->modpath = obj;
-      return modpath;
+      ಹಿಂತಿರುಗಿ modpath;
 }
 
-static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
-					       char edge_c,
-					       const struct symb_s&src,
-					       struct numbv_s&vals,
-					       bool ifnone)
+ಸ್ಥಿರ ರಚನೆ __vpiModPathSrc*make_modpath_src(ರಚನೆ __vpiModPath*ಮಾರ್ಗ,
+					       ಅಕ್ಷರ ಅಂಚು_c,
+					       ಸ್ಥಿರಾಂಕ ರಚನೆ symb_s&src,
+					       ರಚನೆ numbv_s&vals,
+					       ತಾರ್ಕಿಕ ifnone)
 {
-      vvp_fun_modpath*dst = path->modpath;
+      vvp_fun_modpath*dst = ಮಾರ್ಗ->modpath;
 
       vvp_time64_t use_delay[12];
-      assert(vals.cnt == 12);
-      for (unsigned idx = 0 ; idx < vals.cnt ;  idx += 1) {
+      ಪ್ರತಿಜ್ಞಾ(vals.cnt == 12);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < vals.cnt ;  idx += 1) {
 	    use_delay[idx] = vals.nvec[idx];
       }
 
@@ -1666,75 +1666,75 @@ static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
 
       vvp_fun_modpath_src*obj = 0;
 
-      int vpi_edge = vpiNoEdge;
-      if (edge_c == 0) {
-	    obj = new vvp_fun_modpath_src(use_delay);
+      ಪೂರ್ಣಾಂಕ vpi_ಅಂಚು = vpi_No_ಅಂಚು;
+      ಆದರೆ (ಅಂಚು_c == 0) {
+	    obj = ಹೊಸ vvp_fun_modpath_src(use_delay);
 
-      } else {
-	    bool posedge, negedge;
-	    switch (edge_c) {
-		case '+':
-		  vpi_edge = vpiPosedge;
-		  posedge = true;
-		  negedge = false;
-		  break;
-		case '-':
-		  vpi_edge = vpiNegedge;
-		  posedge = false;
-		  negedge = true;
-		  break;
-#if 0
-		case '*':
-		  posedge = true;
-		  negedge = true;
-		  break;
-#endif
-		default:
-		  posedge = false;
-		  negedge = false;
-		  fprintf(stderr, "Unknown edge identifier %c(%d).\n", edge_c,
-		          edge_c);
-		  assert(0);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ತಾರ್ಕಿಕ posedge, negedge;
+	    ಆಯ್ಕೆ (ಅಂಚು_c) {
+		ಸ್ಥಿತಿ '+':
+		  vpi_ಅಂಚು = vpiPosedge;
+		  posedge = ನಿಜ;
+		  negedge = ಸುಳ್ಳು;
+		  ನಿಲ್ಲಿಸು;
+		ಸ್ಥಿತಿ '-':
+		  vpi_ಅಂಚು = vpiNegedge;
+		  posedge = ಸುಳ್ಳು;
+		  negedge = ನಿಜ;
+		  ನಿಲ್ಲಿಸು;
+#ಆದರೆ 0
+		ಸ್ಥಿತಿ '*':
+		  posedge = ನಿಜ;
+		  negedge = ನಿಜ;
+		  ನಿಲ್ಲಿಸು;
+#ಆದರೆ_ಅಂತ್ಯ
+		ಪೂರ್ವನಿಯೋಜಿತ:
+		  posedge = ಸುಳ್ಳು;
+		  negedge = ಸುಳ್ಳು;
+		  fprintf(stderr, "Unknown edge identifier %c(%d).\n", ಅಂಚು_c,
+		          ಅಂಚು_c);
+		  ಪ್ರತಿಜ್ಞಾ(0);
 	    }
-	    obj = new vvp_fun_modpath_edge(use_delay, posedge, negedge);
+	    obj = ಹೊಸ vvp_fun_modpath_ಅಂಚು(use_delay, posedge, negedge);
       }
 
-      vvp_net_t*net = new vvp_net_t;
-      struct __vpiModPathSrc* srcobj = vpip_make_modpath_src(path, net) ;
-      vpip_attach_to_current_scope(srcobj);
+      vvp_net_t*net = ಹೊಸ vvp_net_t;
+      ರಚನೆ __vpiModPathSrc* srcobj = vpip_make_modpath_src(ಮಾರ್ಗ, net) ;
+      vpip_attach_ಗಮ್ಯ_current_scope(srcobj);
       net->fun = obj;
 
 	/* Save the vpiEdge directory into the input path term. */
-      srcobj->path_term_in.edge = vpi_edge;
-      input_connect(net, 0, src.text);
-      dst->add_modpath_src(obj, ifnone);
+      srcobj->ಮಾರ್ಗ_ಪದ_ಒಳ.ಅಂಚು = vpi_ಅಂಚು;
+      ಒಳಹರಿವು_connect(net, 0, src.ಪಠ್ಯ);
+      dst->ಕೂಡಿಸು_modpath_src(obj, ifnone);
 
-      return srcobj;
+      ಹಿಂತಿರುಗಿ srcobj;
 }
 
-void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
-			 const struct symb_s&src,
-			 struct numbv_s&vals,
-			 const struct symb_s&condit_src,
-			 const struct symb_s&path_term_in)
+ಶೂನ್ಯ compile_modpath_src(ರಚನೆ __vpiModPath*dst, ಅಕ್ಷರ ಅಂಚು_c,
+			 ಸ್ಥಿರಾಂಕ ರಚನೆ symb_s&src,
+			 ರಚನೆ numbv_s&vals,
+			 ಸ್ಥಿರಾಂಕ ರಚನೆ symb_s&condit_src,
+			 ಸ್ಥಿರಾಂಕ ರಚನೆ symb_s&ಮಾರ್ಗ_ಪದ_ಒಳ)
 {
-      struct __vpiModPathSrc*obj =
-	    make_modpath_src(dst, edge_c, src, vals, false);
-      input_connect(obj->net, 1, condit_src.text);
-      compile_vpi_lookup(&obj->path_term_in.expr, path_term_in.text);
+      ರಚನೆ __vpiModPathSrc*obj =
+	    make_modpath_src(dst, ಅಂಚು_c, src, vals, ಸುಳ್ಳು);
+      ಒಳಹರಿವು_connect(obj->net, 1, condit_src.ಪಠ್ಯ);
+      compile_vpi_lookup(&obj->ಮಾರ್ಗ_ಪದ_ಒಳ.ಅಭಿವ್ಯಕ್ತಿ, ಮಾರ್ಗ_ಪದ_ಒಳ.ಪಠ್ಯ);
 }
 
-void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
-			 const struct symb_s&src,
-			 struct numbv_s&vals,
-			 int condit_src,
-			 const struct symb_s&path_term_in,
-			 bool ifnone)
+ಶೂನ್ಯ compile_modpath_src(ರಚನೆ __vpiModPath*dst, ಅಕ್ಷರ ಅಂಚು_c,
+			 ಸ್ಥಿರಾಂಕ ರಚನೆ symb_s&src,
+			 ರಚನೆ numbv_s&vals,
+			 ಪೂರ್ಣಾಂಕ condit_src,
+			 ಸ್ಥಿರಾಂಕ ರಚನೆ symb_s&ಮಾರ್ಗ_ಪದ_ಒಳ,
+			 ತಾರ್ಕಿಕ ifnone)
 {
-      assert(condit_src == 0);
-      struct __vpiModPathSrc*obj =
-	    make_modpath_src(dst, edge_c, src, vals, ifnone);
-      compile_vpi_lookup(&obj->path_term_in.expr, path_term_in.text);
+      ಪ್ರತಿಜ್ಞಾ(condit_src == 0);
+      ರಚನೆ __vpiModPathSrc*obj =
+	    make_modpath_src(dst, ಅಂಚು_c, src, vals, ifnone);
+      compile_vpi_lookup(&obj->ಮಾರ್ಗ_ಪದ_ಒಳ.ಅಭಿವ್ಯಕ್ತಿ, ಮಾರ್ಗ_ಪದ_ಒಳ.ಪಠ್ಯ);
 }
 
 /*
@@ -1742,106 +1742,106 @@ void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
  * width. The 0 input is the data vector to be shifted and the 1 input
  * is the amount of the shift. An unconnected shift amount is set to 0.
  */
-void compile_shiftl(char*label, long wid, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_shiftl(ಅಕ್ಷರ*label, ದೀರ್ಘ wid, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      vvp_arith_ *arith = new vvp_shiftl(wid);
+      vvp_arith_ *arith = ಹೊಸ vvp_shiftl(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_shiftr(char*label, long wid, bool signed_flag,
-		    unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_shiftr(ಅಕ್ಷರ*label, ದೀರ್ಘ wid, ತಾರ್ಕಿಕ signed_flag,
+		    ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      assert( wid > 0 );
+      ಪ್ರತಿಜ್ಞಾ( wid > 0 );
 
-      vvp_arith_ *arith = new vvp_shiftr(wid, signed_flag);
+      vvp_arith_ *arith = ಹೊಸ vvp_shiftr(wid, signed_flag);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_resolver(char*label, char*type, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_resolver(ಅಕ್ಷರ*label, ಅಕ್ಷರ*type, ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = ಹೊಸ vvp_net_t;
 
       resolv_core*core = 0;
 
-      if (strcmp(type,"tri") == 0) {
-	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_Z, 0,0));
+      ಆದರೆ (strcmp(type,"tri") == 0) {
+	    core = ಹೊಸ resolv_tri(argc, net, vvp_scalar_t(BIT4_Z, 0,0));
 
-      } else if (strcmp(type,"tri0") == 0) {
-	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_0, 5,5));
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type,"tri0") == 0) {
+	    core = ಹೊಸ resolv_tri(argc, net, vvp_scalar_t(BIT4_0, 5,5));
 
-      } else if (strcmp(type,"tri1") == 0) {
-	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_1, 5,5));
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type,"tri1") == 0) {
+	    core = ಹೊಸ resolv_tri(argc, net, vvp_scalar_t(BIT4_1, 5,5));
 
-      } else if (strcmp(type,"triand") == 0) {
-	    core = new resolv_triand(argc, net);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type,"triand") == 0) {
+	    core = ಹೊಸ resolv_triand(argc, net);
 
-      } else if (strcmp(type,"trior") == 0) {
-	    core = new resolv_trior(argc, net);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type,"trior") == 0) {
+	    core = ಹೊಸ resolv_trior(argc, net);
 
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	    fprintf(stderr, "invalid resolver type: %s\n", type);
 	    compile_errors += 1;
-            delete net;
+            ಅಳಿಸು net;
       }
 
-      if (core) {
+      ಆದರೆ (core) {
 	    net->fun = core;
-	    define_functor_symbol(label, net);
+	    define_functor_ಚಿಹ್ನೆ(label, net);
 
-            for (unsigned base = 0 ;  base < argc ;  base += 4) {
-	          unsigned nports = argc - base;
-                  if (nports > 4)
+            ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ ತಳ = 0 ;  ತಳ < argc ;  ತಳ += 4) {
+	          ಚಿಹ್ನೆರಹಿತ nports = argc - ತಳ;
+                  ಆದರೆ (nports > 4)
                         nports = 4;
 
-                  if (base > 0) {
-                        net = new vvp_net_t;
-                        net->fun = new resolv_extend(core, base);
+                  ಆದರೆ (ತಳ > 0) {
+                        net = ಹೊಸ vvp_net_t;
+                        net->fun = ಹೊಸ resolv_extend(core, ತಳ);
                   }
-                  inputs_connect(net, nports, argv+base);
+                  inputs_connect(net, nports, argv+ತಳ);
             }
       }
-      free(type);
-      free(label);
-      free(argv);
+      ಬಿಡುಗಡೆ(type);
+      ಬಿಡುಗಡೆ(label);
+      ಬಿಡುಗಡೆ(argv);
 }
 
-void compile_udp_def(int sequ, char *label, char *name,
-		     unsigned nin, unsigned init, char **table)
+ಶೂನ್ಯ compile_udp_def(ಪೂರ್ಣಾಂಕ sequ, ಅಕ್ಷರ *label, ಅಕ್ಷರ *name,
+		     ಚಿಹ್ನೆರಹಿತ nin, ಚಿಹ್ನೆರಹಿತ init, ಅಕ್ಷರ **ಕೋಷ್ಟಕ)
 {
-      if (sequ) {
+      ಆದರೆ (sequ) {
 	    vvp_bit4_t init4;
-	    if (init == 0)
+	    ಆದರೆ (init == 0)
 		  init4 = BIT4_0;
-	    else if (init == 1)
+	    ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (init == 1)
 		  init4 = BIT4_1;
-	    else
+	    ಇಲ್ಲದಿದ್ದರೆ
 		  init4 = BIT4_X;
 
-	    vvp_udp_seq_s *u = new vvp_udp_seq_s(label, name, nin, init4);
-	    u->compile_table(table);
-      } else {
-	    vvp_udp_comb_s *u = new vvp_udp_comb_s(label, name, nin);
-	    u->compile_table(table);
+	    vvp_udp_seq_s *u = ಹೊಸ vvp_udp_seq_s(label, name, nin, init4);
+	    u->compile_ಕೋಷ್ಟಕ(ಕೋಷ್ಟಕ);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    vvp_udp_comb_s *u = ಹೊಸ vvp_udp_comb_s(label, name, nin);
+	    u->compile_ಕೋಷ್ಟಕ(ಕೋಷ್ಟಕ);
       }
-      free(label);
+      ಬಿಡುಗಡೆ(label);
 }
 
-char **compile_udp_table(char **table, char *row)
+ಅಕ್ಷರ **compile_udp_ಕೋಷ್ಟಕ(ಅಕ್ಷರ **ಕೋಷ್ಟಕ, ಅಕ್ಷರ *ಅಡ್ಡಸಾಲು)
 {
-  if (table)
-    assert(strlen(*table)==strlen(row));
+  ಆದರೆ (ಕೋಷ್ಟಕ)
+    ಪ್ರತಿಜ್ಞಾ(ಅಕ್ಷರಸರಣಿ_ಉದ್ದ(*ಕೋಷ್ಟಕ)==ಅಕ್ಷರಸರಣಿ_ಉದ್ದ(ಅಡ್ಡಸಾಲು));
 
-  char **tt;
-  for (tt = table; tt && *tt; tt++) { }
-  int n = (tt-table) + 2;
+  ಅಕ್ಷರ **tt;
+  ಗಾಗಿ (tt = ಕೋಷ್ಟಕ; tt && *tt; tt++) { }
+  ಪೂರ್ಣಾಂಕ n = (tt-ಕೋಷ್ಟಕ) + 2;
 
-  table = static_cast<char**>(realloc(table, n*sizeof(char*)));
-  table[n-2] = row;
-  table[n-1] = 0x0;
+  ಕೋಷ್ಟಕ = static_cast<ಅಕ್ಷರ**>(realloc(ಕೋಷ್ಟಕ, n*ಗಾತ್ರ(ಅಕ್ಷರ*)));
+  ಕೋಷ್ಟಕ[n-2] = ಅಡ್ಡಸಾಲು;
+  ಕೋಷ್ಟಕ[n-1] = 0x0;
 
-  return table;
+  ಹಿಂತಿರುಗಿ ಕೋಷ್ಟಕ;
 }
 
 
@@ -1851,225 +1851,225 @@ char **compile_udp_table(char **table, char *row)
  * table gives the operand structure that is acceptable, so I can
  * process the operands here as well.
  */
-void compile_code(char*label, char*mnem, comp_operands_t opa)
+ಶೂನ್ಯ compile_ಸಂಕೇತ(ಅಕ್ಷರ*label, ಅಕ್ಷರ*mnem, comp_operands_t opa)
 {
 	/* First, I can give the label a value that is the current
 	   codespace pointer. Don't need the text of the label after
 	   this is done. */
-      if (label)
+      ಆದರೆ (label)
 	    compile_codelabel(label);
 
 	/* Lookup the opcode in the opcode table. */
-      struct opcode_table_s*op = static_cast<struct opcode_table_s*>
-                                            (bsearch(mnem, opcode_table, opcode_count,
-                                                     sizeof(struct opcode_table_s),
+      ರಚನೆ opcode_ಕೋಷ್ಟಕ_s*op = static_cast<ರಚನೆ opcode_ಕೋಷ್ಟಕ_s*>
+                                            (bsearch(mnem, opcode_ಕೋಷ್ಟಕ, opcode_ಎಣಿಕೆ,
+                                                     ಗಾತ್ರ(ರಚನೆ opcode_ಕೋಷ್ಟಕ_s),
                                                      &opcode_compare));
-      if (op == 0) {
+      ಆದರೆ (op == 0) {
 	    yyerror("Invalid opcode");
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      assert(op);
+      ಪ್ರತಿಜ್ಞಾ(op);
 
 	/* Build up the code from the information about the opcode and
 	   the information from the compiler. */
-      vvp_code_t code = codespace_allocate();
+      vvp_ಸಂಕೇತ_t code = codespace_allocate();
       code->opcode = op->opcode;
 
-      if (op->argc != (opa? opa->argc : 0)) {
+      ಆದರೆ (op->argc != (opa? opa->argc : 0)) {
 	    yyerror("operand count");
 	    compile_errors += 1;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	/* Pull the operands that the instruction expects from the
 	   list that the parser supplied. */
 
-      for (unsigned idx = 0 ;  idx < op->argc ;  idx += 1) {
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < op->argc ;  idx += 1) {
 
-	    switch (op->argt[idx]) {
-		case OA_NONE:
-		  break;
+	    ಆಯ್ಕೆ (op->argt[idx]) {
+		ಸ್ಥಿತಿ OA_NONE:
+		  ನಿಲ್ಲಿಸು;
 
-		case OA_ARR_PTR:
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		ಸ್ಥಿತಿ OA_ARR_PTR:
+		  ಆದರೆ (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			ನಿಲ್ಲಿಸು;
 		  }
 
-		  compile_array_lookup(code, opa->argv[idx].symb.text);
-		  break;
+		  compile_array_lookup(code, opa->argv[idx].symb.ಪಠ್ಯ);
+		  ನಿಲ್ಲಿಸು;
 
-		case OA_BIT1:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		ಸ್ಥಿತಿ OA_BIT1:
+		  ಆದರೆ (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
-			break;
+			ನಿಲ್ಲಿಸು;
 		  }
-		  code->bit_idx[0] = opa->argv[idx].numb;
-		  break;
+		  code->ಬಿಟ್_idx[0] = opa->argv[idx].numb;
+		  ನಿಲ್ಲಿಸು;
 
-		case OA_BIT2:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		ಸ್ಥಿತಿ OA_BIT2:
+		  ಆದರೆ (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
-			break;
+			ನಿಲ್ಲಿಸು;
 		  }
-		  code->bit_idx[1] = opa->argv[idx].numb;
-		  break;
+		  code->ಬಿಟ್_idx[1] = opa->argv[idx].numb;
+		  ನಿಲ್ಲಿಸು;
 
-		case OA_CODE_PTR:
-		case OA_CODE_PTR2:
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		ಸ್ಥಿತಿ OA_ಸಂಕೇತ_PTR:
+		ಸ್ಥಿತಿ OA_ಸಂಕೇತ_PTR2:
+		  ಆದರೆ (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			ನಿಲ್ಲಿಸು;
 		  }
 
-		  assert(opa->argv[idx].symb.idx == 0);
-		  code_label_lookup(code, opa->argv[idx].symb.text,
-				    op->argt[idx]==OA_CODE_PTR2);
-		  break;
+		  ಪ್ರತಿಜ್ಞಾ(opa->argv[idx].symb.idx == 0);
+		  ಸಂಕೇತ_label_lookup(code, opa->argv[idx].symb.ಪಠ್ಯ,
+				    op->argt[idx]==OA_ಸಂಕೇತ_PTR2);
+		  ನಿಲ್ಲಿಸು;
 
-		case OA_FUNC_PTR:
+		ಸ್ಥಿತಿ OA_FUNC_PTR:
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  ಆದರೆ (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			ನಿಲ್ಲಿಸು;
 		  }
 
-		  functor_ref_lookup(&code->net, opa->argv[idx].symb.text);
-		  break;
+		  functor_ref_lookup(&code->net, opa->argv[idx].symb.ಪಠ್ಯ);
+		  ನಿಲ್ಲಿಸು;
 
-		case OA_FUNC_PTR2:
+		ಸ್ಥಿತಿ OA_FUNC_PTR2:
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  ಆದರೆ (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			ನಿಲ್ಲಿಸು;
 		  }
 
-		  functor_ref_lookup(&code->net2, opa->argv[idx].symb.text);
-		  break;
+		  functor_ref_lookup(&code->net2, opa->argv[idx].symb.ಪಠ್ಯ);
+		  ನಿಲ್ಲಿಸು;
 
-		case OA_NUMBER:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		ಸ್ಥಿತಿ OA_ಸಂಖ್ಯೆ:
+		  ಆದರೆ (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
-			break;
+			ನಿಲ್ಲಿಸು;
 		  }
 
-		  code->number = opa->argv[idx].numb;
-		  break;
+		  code->ಸಂಖ್ಯೆ = opa->argv[idx].numb;
+		  ನಿಲ್ಲಿಸು;
 
-		case OA_VPI_PTR:
+		ಸ್ಥಿತಿ OA_VPI_PTR:
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  ಆದರೆ (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			ನಿಲ್ಲಿಸು;
 		  }
 
-		  compile_vpi_lookup(&code->handle, opa->argv[idx].symb.text);
-		  break;
+		  compile_vpi_lookup(&code->handle, opa->argv[idx].symb.ಪಠ್ಯ);
+		  ನಿಲ್ಲಿಸು;
 
-		case OA_STRING:
-		  if (opa->argv[idx].ltype != L_STRING) {
+		ಸ್ಥಿತಿ OA_STRING:
+		  ಆದರೆ (opa->argv[idx].ltype != L_STRING) {
 			yyerror("operand format");
-			break;
+			ನಿಲ್ಲಿಸು;
 		  }
 
-		  code->text = opa->argv[idx].text;
-		  break;
+		  code->ಪಠ್ಯ = opa->argv[idx].ಪಠ್ಯ;
+		  ನಿಲ್ಲಿಸು;
 	    }
       }
 
-      free(opa);
+      ಬಿಡುಗಡೆ(opa);
 
-      free(mnem);
+      ಬಿಡುಗಡೆ(mnem);
 }
 
-void compile_codelabel(char*label)
+ಶೂನ್ಯ compile_codelabel(ಅಕ್ಷರ*label)
 {
-      symbol_value_t val;
-      vvp_code_t ptr = codespace_next();
+      ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t val;
+      vvp_ಸಂಕೇತ_t ptr = codespace_ಮುಂದಿನ();
 
       val.ptr = ptr;
-      sym_set_value(sym_codespace, label, val);
+      sym_ಗಣ_ಮೌಲ್ಯ(sym_codespace, label, val);
 
-      free(label);
+      ಬಿಡುಗಡೆ(label);
 }
 
-void compile_file_line(char*label, long file_idx, long lineno,
-                       char*description)
+ಶೂನ್ಯ compile_file_ಸಾಲು(ಅಕ್ಷರ*label, ದೀರ್ಘ file_idx, ದೀರ್ಘ lineno,
+                       ಅಕ್ಷರ*description)
 {
-      if (label) compile_codelabel(label);
+      ಆದರೆ (label) compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
-      vvp_code_t code = codespace_allocate();
-      code->opcode = &of_FILE_LINE;
+      vvp_ಸಂಕೇತ_t code = codespace_allocate();
+      code->opcode = &ದ_FILE_ಸಾಲು;
 
 	/* Create a vpiHandle that contains the information. */
-      code->handle = vpip_build_file_line(description, file_idx, lineno);
-      assert(code->handle);
+      code->handle = vpip_build_file_ಸಾಲು(description, file_idx, lineno);
+      ಪ್ರತಿಜ್ಞಾ(code->handle);
 
 	/* Done with the lexor-allocated name string. */
-      delete[] description;
+      ಅಳಿಸು[] description;
 }
 
-void compile_vpi_call(char*label, char*name,
-                      bool func_as_task_err, bool func_as_task_warn,
-                      long file_idx, long lineno,
-                      unsigned argc, vpiHandle*argv,
-		      unsigned vec4_stack, unsigned real_stack, unsigned string_stack)
+ಶೂನ್ಯ compile_vpi_call(ಅಕ್ಷರ*label, ಅಕ್ಷರ*name,
+                      ತಾರ್ಕಿಕ func_as_task_err, ತಾರ್ಕಿಕ func_as_task_warn,
+                      ದೀರ್ಘ file_idx, ದೀರ್ಘ lineno,
+                      ಚಿಹ್ನೆರಹಿತ argc, vpiHandle*argv,
+		      ಚಿಹ್ನೆರಹಿತ vec4_ರಾಶಿ, ಚಿಹ್ನೆರಹಿತ real_ರಾಶಿ, ಚಿಹ್ನೆರಹಿತ string_ರಾಶಿ)
 {
-      if (label)
+      ಆದರೆ (label)
 	    compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
-      vvp_code_t code = codespace_allocate();
-      code->opcode = &of_VPI_CALL;
+      vvp_ಸಂಕೇತ_t code = codespace_allocate();
+      code->opcode = &ದ_VPI_CALL;
 
 	/* Create a vpiHandle that bundles the call information, and
 	   store that handle in the instruction. */
       code->handle = vpip_build_vpi_call(name, 0, 0,
 					 0, func_as_task_err, func_as_task_warn,
-                                         argc, argv, vec4_stack, real_stack, string_stack,
+                                         argc, argv, vec4_ರಾಶಿ, real_ರಾಶಿ, string_ರಾಶಿ,
 					 file_idx, lineno);
-      if (code->handle == 0)
+      ಆದರೆ (code->handle == 0)
 	    compile_errors += 1;
 
 	/* Done with the lexor-allocated name string. */
-      delete[] name;
+      ಅಳಿಸು[] name;
 }
 
-void compile_vpi_func_call(char*label, char*name,
-			   int val_type, unsigned val_wid,
-			   long file_idx, long lineno,
-			   unsigned argc, vpiHandle*argv,
-			   unsigned vec4_stack,
-			   unsigned real_stack,
-			   unsigned string_stack)
+ಶೂನ್ಯ compile_vpi_func_call(ಅಕ್ಷರ*label, ಅಕ್ಷರ*name,
+			   ಪೂರ್ಣಾಂಕ val_type, ಚಿಹ್ನೆರಹಿತ val_wid,
+			   ದೀರ್ಘ file_idx, ದೀರ್ಘ lineno,
+			   ಚಿಹ್ನೆರಹಿತ argc, vpiHandle*argv,
+			   ಚಿಹ್ನೆರಹಿತ vec4_ರಾಶಿ,
+			   ಚಿಹ್ನೆರಹಿತ real_ರಾಶಿ,
+			   ಚಿಹ್ನೆರಹಿತ string_ರಾಶಿ)
 {
-      if (label)
+      ಆದರೆ (label)
 	    compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
-      vvp_code_t code = codespace_allocate();
-      code->opcode = &of_VPI_CALL;
+      vvp_ಸಂಕೇತ_t code = codespace_allocate();
+      code->opcode = &ದ_VPI_CALL;
 
 	/* Create a vpiHandle that bundles the call information, and
 	   store that handle in the instruction. */
       code->handle = vpip_build_vpi_call(name, val_type, val_wid,
-					 0, true, false,
-                                         argc, argv, vec4_stack, real_stack, string_stack,
+					 0, ನಿಜ, ಸುಳ್ಳು,
+                                         argc, argv, vec4_ರಾಶಿ, real_ರಾಶಿ, string_ರಾಶಿ,
 					 file_idx, lineno);
-      if (code->handle == 0)
+      ಆದರೆ (code->handle == 0)
 	    compile_errors += 1;
 
 	/* Done with the lexor-allocated name string. */
-      delete[] name;
+      ಅಳಿಸು[] name;
 }
 
 /*
@@ -2077,78 +2077,78 @@ void compile_vpi_func_call(char*label, char*name,
  * with the start address referenced by the program symbol passed to
  * me.
  */
-void compile_thread(char*start_sym, char*flag)
+ಶೂನ್ಯ compile_thread(ಅಕ್ಷರ*ಆರಂಭ_sym, ಅಕ್ಷರ*flag)
 {
-      bool push_flag = false;
+      ತಾರ್ಕಿಕ ತಳ್ಳು_flag = ಸುಳ್ಳು;
 
-      symbol_value_t tmp = sym_get_value(sym_codespace, start_sym);
-      vvp_code_t pc = reinterpret_cast<vvp_code_t>(tmp.ptr);
-      if (pc == 0) {
+      ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t tmp = sym_get_ಮೌಲ್ಯ(sym_codespace, ಆರಂಭ_sym);
+      vvp_ಸಂಕೇತ_t pc = reinterpret_cast<vvp_ಸಂಕೇತ_t>(tmp.ptr);
+      ಆದರೆ (pc == 0) {
 	    yyerror("unresolved address");
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      if (flag && (strcmp(flag,"$push") == 0))
-	    push_flag = true;
+      ಆದರೆ (flag && (strcmp(flag,"$push") == 0))
+	    ತಳ್ಳು_flag = ನಿಜ;
 
       vthread_t thr = vthread_new(pc, vpip_peek_current_scope());
 
-      if (flag && (strcmp(flag,"$init") == 0))
-	    schedule_init_vthread(thr);
-      else if (flag && (strcmp(flag,"$final") == 0))
-	    schedule_final_vthread(thr);
-      else
-	    schedule_vthread(thr, 0, push_flag);
+      ಆದರೆ (flag && (strcmp(flag,"$init") == 0))
+	    ವೇಳಾಪಟ್ಟಿ_init_vthread(thr);
+      ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (flag && (strcmp(flag,"$final") == 0))
+	    ವೇಳಾಪಟ್ಟಿ_final_vthread(thr);
+      ಇಲ್ಲದಿದ್ದರೆ
+	    ವೇಳಾಪಟ್ಟಿ_vthread(thr, 0, ತಳ್ಳು_flag);
 
-      free(start_sym);
-      free(flag);
+      ಬಿಡುಗಡೆ(ಆರಂಭ_sym);
+      ಬಿಡುಗಡೆ(flag);
 }
 
-void compile_param_logic(char*label, const char*name, char*value, bool signed_flag,
-                         bool local_flag,
-                         long file_idx, long lineno)
+ಶೂನ್ಯ compile_param_logic(ಅಕ್ಷರ*label, ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*name, ಅಕ್ಷರ*value, ತಾರ್ಕಿಕ signed_flag,
+                         ತಾರ್ಕಿಕ local_flag,
+                         ದೀರ್ಘ file_idx, ದೀರ್ಘ lineno)
 {
-      vvp_vector4_t value4 = c4string_to_vector4(value);
-      vpiHandle obj = vpip_make_binary_param(name, value4, signed_flag,
+      vvp_vector4_t value4 = c4string_ಗಮ್ಯ_vector4(value);
+      vpiHandle obj = vpip_make_ದ್ವಿಮಾನ_param(name, value4, signed_flag,
                                              local_flag, file_idx, lineno);
-      compile_vpi_symbol(label, obj);
-      vpip_attach_to_current_scope(obj);
+      compile_vpi_ಚಿಹ್ನೆ(label, obj);
+      vpip_attach_ಗಮ್ಯ_current_scope(obj);
 
-      free(label);
-      free(value);
+      ಬಿಡುಗಡೆ(label);
+      ಬಿಡುಗಡೆ(value);
 }
 
-void compile_param_string(char*label, const char*name, char*value,
-                          bool local_flag,
-                          long file_idx, long lineno)
+ಶೂನ್ಯ compile_param_string(ಅಕ್ಷರ*label, ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*name, ಅಕ್ಷರ*value,
+                          ತಾರ್ಕಿಕ local_flag,
+                          ದೀರ್ಘ file_idx, ದೀರ್ಘ lineno)
 {
 	// name and value become owned by vpip_make_string_param
       vpiHandle obj = vpip_make_string_param(name, value, local_flag, file_idx, lineno);
-      compile_vpi_symbol(label, obj);
-      vpip_attach_to_current_scope(obj);
+      compile_vpi_ಚಿಹ್ನೆ(label, obj);
+      vpip_attach_ಗಮ್ಯ_current_scope(obj);
 
-      free(label);
+      ಬಿಡುಗಡೆ(label);
 }
 
-void compile_param_real(char*label, const char*name, char*value,
-                        bool local_flag,
-                        long file_idx, long lineno)
+ಶೂನ್ಯ compile_param_real(ಅಕ್ಷರ*label, ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*name, ಅಕ್ಷರ*value,
+                        ತಾರ್ಕಿಕ local_flag,
+                        ದೀರ್ಘ file_idx, ದೀರ್ಘ lineno)
 {
-      double dvalue = crstring_to_double(value);
+      ದ್ವಿಗುಣ dvalue = crstring_ಗಮ್ಯ_double(value);
       vpiHandle obj = vpip_make_real_param(name, dvalue, local_flag, file_idx, lineno);
-      compile_vpi_symbol(label, obj);
-      vpip_attach_to_current_scope(obj);
+      compile_vpi_ಚಿಹ್ನೆ(label, obj);
+      vpip_attach_ಗಮ್ಯ_current_scope(obj);
 
-      free(label);
-      free(value);
+      ಬಿಡುಗಡೆ(label);
+      ಬಿಡುಗಡೆ(value);
 }
 
-void compile_island(char*label, char*type)
+ಶೂನ್ಯ compile_island(ಅಕ್ಷರ*label, ಅಕ್ಷರ*type)
 {
-      if (strcmp(type,"tran") == 0)
+      ಆದರೆ (strcmp(type,"tran") == 0)
 	    compile_island_tran(label);
-      else
-	    assert(0);
+      ಇಲ್ಲದಿದ್ದರೆ
+	    ಪ್ರತಿಜ್ಞಾ(0);
 
-      free(type);
+      ಬಿಡುಗಡೆ(type);
 }

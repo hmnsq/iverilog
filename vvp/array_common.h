@@ -19,32 +19,32 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef ARRAY_COMMON_H
-#define ARRAY_COMMON_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ ARRAY_COMMON_H
+#ವ್ಯಾಖ್ಯಾನಿಸು ARRAY_COMMON_H
 
-#include "vpi_priv.h"
+#ಅನ್ತರ್ಭಾವ "vpi_priv.h"
 
-struct __vpiArrayIterator : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+ರಚನೆ __vpiArrayIterator : ಸಾರ್ವಜನಿಕ __vpiHandle {
+      ಪೂರ್ಣಾಂಕ get_type_ಸಂಕೇತ(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ override
+      { ಹಿಂತಿರುಗಿ vpiIterator; }
 
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+      vpiHandle vpi_ಸೂಚ್ಯಂಕ(ಪೂರ್ಣಾಂಕ idx) override;
+      free_object_fun_t free_object_fun(ಶೂನ್ಯ) override;
 
-      struct __vpiArrayBase*array;
-      unsigned next;
+      ರಚನೆ __vpiArrayBase*array;
+      ಚಿಹ್ನೆರಹಿತ ಮುಂದಿನ_2;
 };
 
-struct __vpiArrayIndex : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+ರಚನೆ __vpiArrayIndex : ಸಾರ್ವಜನಿಕ __vpiHandle {
+      ಪೂರ್ಣಾಂಕ get_type_ಸಂಕೇತ(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ override
+      { ಹಿಂತಿರುಗಿ vpiIterator; }
 
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+      vpiHandle vpi_iterate(ಪೂರ್ಣಾಂಕ ಸಂಕೇತ_2) override;
+      vpiHandle vpi_ಸೂಚ್ಯಂಕ(ಪೂರ್ಣಾಂಕ idx) override;
+      free_object_fun_t free_object_fun(ಶೂನ್ಯ) override;
 
-      __vpiDecConst *index;
-      unsigned done;
+      __vpiDecConst *ಸೂಚ್ಯಂಕ;
+      ಚಿಹ್ನೆರಹಿತ ಮುಗಿದ;
 };
 
 /*
@@ -68,31 +68,31 @@ struct __vpiArrayIndex : public __vpiHandle {
  * of vpi functions is bound to the same structure. All the details
  * for the word also apply when treating this as an index.
  */
-struct __vpiArrayWord {
-      struct as_word_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiMemoryWord; }
-	    int vpi_get(int code) override;
-	    char*vpi_get_str(int code) override;
-	    void vpi_get_value(p_vpi_value vp) override;
-	    vpiHandle vpi_put_value(p_vpi_value vp, int flags) override;
-	    vpiHandle vpi_handle(int code) override;
-      } as_word;
+ರಚನೆ __vpiArrayWord {
+      ರಚನೆ as_ಶಬ್ದ_t : ಸಾರ್ವಜನಿಕ __vpiHandle {
+	    ಪೂರ್ಣಾಂಕ get_type_ಸಂಕೇತ(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ override { ಹಿಂತಿರುಗಿ vpi_ಸ್ಮರಣೆ_ಶಬ್ದ; }
+	    ಪೂರ್ಣಾಂಕ vpi_get(ಪೂರ್ಣಾಂಕ ಸಂಕೇತ_2) override;
+	    ಅಕ್ಷರ*vpi_get_str(ಪೂರ್ಣಾಂಕ ಸಂಕೇತ_2) override;
+	    ಶೂನ್ಯ vpi_get_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ vp) override;
+	    vpiHandle vpi_put_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ vp, ಪೂರ್ಣಾಂಕ flags) override;
+	    vpiHandle vpi_handle(ಪೂರ್ಣಾಂಕ ಸಂಕೇತ_2) override;
+      } as_ಶಬ್ದ;
 
-      struct as_index_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiIndex; }
-	    void vpi_get_value(p_vpi_value val) override;
-      } as_index;
+      ರಚನೆ as_ಸೂಚ್ಯಂಕ_t : ಸಾರ್ವಜನಿಕ __vpiHandle {
+	    ಪೂರ್ಣಾಂಕ get_type_ಸಂಕೇತ(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ override { ಹಿಂತಿರುಗಿ vpi_ಸೂಚ್ಯಂಕ_2; }
+	    ಶೂನ್ಯ vpi_get_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ val) override;
+      } as_ಸೂಚ್ಯಂಕ;
 
-      union {
-	    struct __vpiArrayBase*parent;
-	    struct __vpiArrayWord*word0;
+      ಒಕ್ಕೂಟ {
+	    ರಚನೆ __vpiArrayBase*ಪೋಷಕ;
+	    ರಚನೆ __vpiArrayWord*word0;
       };
 
-      inline unsigned get_index() const { return this - word0; }
-      inline struct __vpiArrayBase*get_parent() const { return (word0 - 1)->parent; }
+      ಸಾಲೊಳಗೆ ಚಿಹ್ನೆರಹಿತ get_ಸೂಚ್ಯಂಕ() ಸ್ಥಿರಾಂಕ { ಹಿಂತಿರುಗಿ this - word0; }
+      ಸಾಲೊಳಗೆ ರಚನೆ __vpiArrayBase*get_ಪೋಷಕ() ಸ್ಥಿರಾಂಕ { ಹಿಂತಿರುಗಿ (word0 - 1)->ಪೋಷಕ; }
 };
 
-struct __vpiArrayWord*array_var_word_from_handle(vpiHandle ref);
-struct __vpiArrayWord*array_var_index_from_handle(vpiHandle ref);
+ರಚನೆ __vpiArrayWord*array_var_ಶಬ್ದ_from_handle(vpiHandle ref);
+ರಚನೆ __vpiArrayWord*array_var_ಸೂಚ್ಯಂಕ_from_handle(vpiHandle ref);
 
-#endif /* ARRAY_COMMON_H */
+#ಆದರೆ_ಅಂತ್ಯ /* ARRAY_COMMON_H */

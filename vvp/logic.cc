@@ -29,130 +29,130 @@
 # include  <cassert>
 # include  <cstdlib>
 
-vvp_fun_boolean_::vvp_fun_boolean_(unsigned wid)
+vvp_fun_boolean_::vvp_fun_boolean_(ಚಿಹ್ನೆರಹಿತ wid)
 {
       net_ = 0;
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-	    input_[idx] = vvp_vector4_t(wid, BIT4_Z);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < 4 ;  idx += 1)
+	    ಒಳಹರಿವು_2[idx] = vvp_vector4_t(wid, BIT4_Z);
 }
 
 vvp_fun_boolean_::~vvp_fun_boolean_()
 {
 }
 
-void vvp_fun_boolean_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_boolean_::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                                  vvp_context_t)
 {
-      unsigned port = ptr.port();
-      if (input_[port] .eeq( bit )) return;
+      ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್ = ptr.ಪೋರ್ಟ್();
+      ಆದರೆ (ಒಳಹರಿವು_2[ಪೋರ್ಟ್] .eeq( ಬಿಟ್ )) ಹಿಂತಿರುಗಿ;
 
-      input_[port] = bit;
-      if (net_ == 0) {
+      ಒಳಹರಿವು_2[ಪೋರ್ಟ್] = ಬಿಟ್;
+      ಆದರೆ (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    ವೇಳಾಪಟ್ಟಿ_functor(ಇದು);
       }
 }
 
-void vvp_fun_boolean_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				    unsigned base, unsigned vwid, vvp_context_t)
+ಶೂನ್ಯ vvp_fun_boolean_::recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+				    ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t)
 {
-      unsigned port = ptr.port();
+      ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್ = ptr.ಪೋರ್ಟ್();
 
-      assert(base + bit.size() <= vwid);
+      ಪ್ರತಿಜ್ಞಾ(ತಳ + ಬಿಟ್.size() <= vwid);
 
 	// Set the part for the input. If nothing changes, then break.
-      bool flag = input_[port] .set_vec(base, bit);
-      if (flag == false)
-	    return;
+      ತಾರ್ಕಿಕ flag = ಒಳಹರಿವು_2[ಪೋರ್ಟ್] .ಗಣ_vec(ತಳ, ಬಿಟ್);
+      ಆದರೆ (flag == ಸುಳ್ಳು)
+	    ಹಿಂತಿರುಗಿ;
 
-      if (net_ == 0) {
+      ಆದರೆ (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    ವೇಳಾಪಟ್ಟಿ_functor(ಇದು);
       }
 }
 
-void vvp_fun_boolean_::recv_real(vvp_net_ptr_t ptr, double real,
+ಶೂನ್ಯ vvp_fun_boolean_::recv_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ real,
                                  vvp_context_t ctx)
 {
-      recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
+      recv_vec4(ptr, double_ಗಮ್ಯ_vector4_LSB(real), ctx);
 }
 
-vvp_fun_and::vvp_fun_and(unsigned wid, bool invert)
+vvp_fun_and::vvp_fun_and(ಚಿಹ್ನೆರಹಿತ wid, ತಾರ್ಕಿಕ invert)
 : vvp_fun_boolean_(wid), invert_(invert)
 {
-      count_functors_logic += 1;
+      ಎಣಿಕೆ_functors_logic += 1;
 }
 
 vvp_fun_and::~vvp_fun_and()
 {
 }
 
-void vvp_fun_and::run_run()
+ಶೂನ್ಯ vvp_fun_and::ಸತತ_ಸತತ()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_[0]);
+      vvp_vector4_t ಫಲಿತಾಂಶ (ಒಳಹರಿವು_2[0]);
 
-      for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
-	    result &= input_[pdx];
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ pdx = 1 ; pdx < 4 ; pdx += 1)
+	    ಫಲಿತಾಂಶ &= ಒಳಹರಿವು_2[pdx];
 
-      if (invert_)
-	    result.invert();
+      ಆದರೆ (invert_)
+	    ಫಲಿತಾಂಶ.invert();
 
-      ptr->send_vec4(result, 0);
+      ptr->send_vec4(ಫಲಿತಾಂಶ, 0);
 }
 
 vvp_fun_equiv::vvp_fun_equiv()
 : vvp_fun_boolean_(1)
 {
-      count_functors_logic += 1;
+      ಎಣಿಕೆ_functors_logic += 1;
 }
 
 vvp_fun_equiv::~vvp_fun_equiv()
 {
 }
 
-void vvp_fun_equiv::run_run()
+ಶೂನ್ಯ vvp_fun_equiv::ಸತತ_ಸತತ()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      assert(input_[0].size() == 1);
-      assert(input_[1].size() == 1);
+      ಪ್ರತಿಜ್ಞಾ(ಒಳಹರಿವು_2[0].size() == 1);
+      ಪ್ರತಿಜ್ಞಾ(ಒಳಹರಿವು_2[1].size() == 1);
 
-      vvp_bit4_t bit = ~(input_[0].value(0) ^ input_[1].value(0));
-      vvp_vector4_t result (1, bit);
+      vvp_bit4_t ಬಿಟ್ = ~(ಒಳಹರಿವು_2[0].value(0) ^ ಒಳಹರಿವು_2[1].value(0));
+      vvp_vector4_t ಫಲಿತಾಂಶ (1, ಬಿಟ್);
 
-      ptr->send_vec4(result, 0);
+      ptr->send_vec4(ಫಲಿತಾಂಶ, 0);
 }
 
 vvp_fun_impl::vvp_fun_impl()
 : vvp_fun_boolean_(1)
 {
-      count_functors_logic += 1;
+      ಎಣಿಕೆ_functors_logic += 1;
 }
 
 vvp_fun_impl::~vvp_fun_impl()
 {
 }
 
-void vvp_fun_impl::run_run()
+ಶೂನ್ಯ vvp_fun_impl::ಸತತ_ಸತತ()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      assert(input_[0].size() == 1);
-      assert(input_[1].size() == 1);
+      ಪ್ರತಿಜ್ಞಾ(ಒಳಹರಿವು_2[0].size() == 1);
+      ಪ್ರತಿಜ್ಞಾ(ಒಳಹರಿವು_2[1].size() == 1);
 
-      vvp_bit4_t bit = ~input_[0].value(0) | input_[1].value(0);
-      vvp_vector4_t result (1, bit);
+      vvp_bit4_t ಬಿಟ್ = ~ಒಳಹರಿವು_2[0].value(0) | ಒಳಹರಿವು_2[1].value(0);
+      vvp_vector4_t ಫಲಿತಾಂಶ (1, ಬಿಟ್);
 
-      ptr->send_vec4(result, 0);
+      ptr->send_vec4(ಫಲಿತಾಂಶ, 0);
 }
 
-vvp_fun_buf_not_::vvp_fun_buf_not_(unsigned wid)
-: input_(wid, BIT4_Z)
+vvp_fun_buf_not_::vvp_fun_buf_not_(ಚಿಹ್ನೆರಹಿತ wid)
+: ಒಳಹರಿವು_2(wid, BIT4_Z)
 {
       net_ = 0;
 }
@@ -161,49 +161,49 @@ vvp_fun_buf_not_::~vvp_fun_buf_not_()
 {
 }
 
-void vvp_fun_buf_not_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_buf_not_::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                                  vvp_context_t)
 {
-      if (ptr.port() != 0) return;
+      ಆದರೆ (ptr.ಪೋರ್ಟ್() != 0) ಹಿಂತಿರುಗಿ;
 
-      if (input_ .eeq( bit )) return;
+      ಆದರೆ (ಒಳಹರಿವು_2 .eeq( ಬಿಟ್ )) ಹಿಂತಿರುಗಿ;
 
-      input_ = bit;
-      if (net_ == 0) {
+      ಒಳಹರಿವು_2 = ಬಿಟ್;
+      ಆದರೆ (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    ವೇಳಾಪಟ್ಟಿ_functor(ಇದು);
       }
 }
 
-void vvp_fun_buf_not_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-                                    unsigned base, unsigned vwid, vvp_context_t)
+ಶೂನ್ಯ vvp_fun_buf_not_::recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+                                    ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t)
 {
-      if (ptr.port() != 0) return;
+      ಆದರೆ (ptr.ಪೋರ್ಟ್() != 0) ಹಿಂತಿರುಗಿ;
 
-      assert(base + bit.size() <= vwid);
+      ಪ್ರತಿಜ್ಞಾ(ತಳ + ಬಿಟ್.size() <= vwid);
 
 	// Set the input part. If nothing changes, then break.
-      bool flag = input_.set_vec(base, bit);
-      if (flag == false) return;
+      ತಾರ್ಕಿಕ flag = ಒಳಹರಿವು_2.ಗಣ_vec(ತಳ, ಬಿಟ್);
+      ಆದರೆ (flag == ಸುಳ್ಳು) ಹಿಂತಿರುಗಿ;
 
-      if (net_ == 0) {
+      ಆದರೆ (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    ವೇಳಾಪಟ್ಟಿ_functor(ಇದು);
       }
 }
 
-void vvp_fun_buf_not_::recv_real(vvp_net_ptr_t ptr, double real,
+ಶೂನ್ಯ vvp_fun_buf_not_::recv_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ real,
                                  vvp_context_t ctx)
 {
-      if (ptr.port() != 0) return;
+      ಆದರೆ (ptr.ಪೋರ್ಟ್() != 0) ಹಿಂತಿರುಗಿ;
 
-      recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
+      recv_vec4(ptr, double_ಗಮ್ಯ_vector4_LSB(real), ctx);
 }
 
-vvp_fun_buf::vvp_fun_buf(unsigned wid)
+vvp_fun_buf::vvp_fun_buf(ಚಿಹ್ನೆರಹಿತ wid)
 : vvp_fun_buf_not_(wid)
 {
-      count_functors_logic += 1;
+      ಎಣಿಕೆ_functors_logic += 1;
 }
 
 vvp_fun_buf::~vvp_fun_buf()
@@ -214,19 +214,19 @@ vvp_fun_buf::~vvp_fun_buf()
  * The buf functor is very simple--change the z bits to x bits in the
  * vector it passes, and propagate the result.
  */
-void vvp_fun_buf::run_run()
+ಶೂನ್ಯ vvp_fun_buf::ಸತತ_ಸತತ()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t tmp (input_);
+      vvp_vector4_t tmp (ಒಳಹರಿವು_2);
       tmp.change_z2x();
       ptr->send_vec4(tmp, 0);
 }
 
 vvp_fun_bufz::vvp_fun_bufz()
 {
-      count_functors_logic += 1;
+      ಎಣಿಕೆ_functors_logic += 1;
 }
 
 vvp_fun_bufz::~vvp_fun_bufz()
@@ -237,46 +237,46 @@ vvp_fun_bufz::~vvp_fun_bufz()
  * The bufz is similar to the buf device, except that it does not
  * bother translating z bits to x.
  */
-void vvp_fun_bufz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_bufz::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                              vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      ಆದರೆ (ptr.ಪೋರ್ಟ್() != 0)
+	    ಹಿಂತಿರುಗಿ;
 
-      ptr.ptr()->send_vec4(bit, 0);
+      ptr.ptr()->send_vec4(ಬಿಟ್, 0);
 }
 
-void vvp_fun_bufz::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-                                unsigned base, unsigned vwid, vvp_context_t)
+ಶೂನ್ಯ vvp_fun_bufz::recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+                                ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      ಆದರೆ (ptr.ಪೋರ್ಟ್() != 0)
+	    ಹಿಂತಿರುಗಿ;
 
-      ptr.ptr()->send_vec4_pv(bit, base, vwid, 0);
+      ptr.ptr()->send_vec4_pv(ಬಿಟ್, ತಳ, vwid, 0);
 }
 
-void vvp_fun_bufz::recv_real(vvp_net_ptr_t ptr, double bit,
+ಶೂನ್ಯ vvp_fun_bufz::recv_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್,
                              vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      ಆದರೆ (ptr.ಪೋರ್ಟ್() != 0)
+	    ಹಿಂತಿರುಗಿ;
 
-      ptr.ptr()->send_real(bit, 0);
+      ptr.ptr()->send_real(ಬಿಟ್, 0);
 }
 
-void vvp_fun_buft::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+ಶೂನ್ಯ vvp_fun_buft::recv_vec8(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್)
 {
-      if (ptr.port() != 0)
-	    return;
+      ಆದರೆ (ptr.ಪೋರ್ಟ್() != 0)
+	    ಹಿಂತಿರುಗಿ;
 
-      ptr.ptr()->send_vec8(bit);
+      ptr.ptr()->send_vec8(ಬಿಟ್);
 }
 
 vvp_fun_muxr::vvp_fun_muxr()
 : a_(0.0), b_(0.0)
 {
       net_ = 0;
-      count_functors_logic += 1;
+      ಎಣಿಕೆ_functors_logic += 1;
       select_ = SEL_BOTH;
 }
 
@@ -284,211 +284,211 @@ vvp_fun_muxr::~vvp_fun_muxr()
 {
 }
 
-void vvp_fun_muxr::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_muxr::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                              vvp_context_t)
 {
 	/* The real valued mux can only take in the select as a
 	   vector4_t. The muxed data is real. */
-      if (ptr.port() != 2)
-	    return;
+      ಆದರೆ (ptr.ಪೋರ್ಟ್() != 2)
+	    ಹಿಂತಿರುಗಿ;
 
-      assert(bit.size() == 1);
+      ಪ್ರತಿಜ್ಞಾ(ಬಿಟ್.size() == 1);
 
-      switch (bit.value(0)) {
-	  case BIT4_0:
-	    if (select_ == SEL_PORT0) return;
+      ಆಯ್ಕೆ (ಬಿಟ್.value(0)) {
+	  ಸ್ಥಿತಿ BIT4_0:
+	    ಆದರೆ (select_ == SEL_PORT0) ಹಿಂತಿರುಗಿ;
 	    select_ = SEL_PORT0;
-	    break;
-	  case BIT4_1:
-	    if (select_ == SEL_PORT1) return;
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ BIT4_1:
+	    ಆದರೆ (select_ == SEL_PORT1) ಹಿಂತಿರುಗಿ;
 	    select_ = SEL_PORT1;
-	    break;
-	  default:
-	    if (select_ == SEL_BOTH) return;
+	    ನಿಲ್ಲಿಸು;
+	  ಪೂರ್ವನಿಯೋಜಿತ:
+	    ಆದರೆ (select_ == SEL_BOTH) ಹಿಂತಿರುಗಿ;
 	    select_ = SEL_BOTH;
       }
 
-      if (net_ == 0) {
+      ಆದರೆ (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    ವೇಳಾಪಟ್ಟಿ_functor(ಇದು);
       }
 }
 
-void vvp_fun_muxr::recv_real(vvp_net_ptr_t ptr, double bit,
+ಶೂನ್ಯ vvp_fun_muxr::recv_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ ಬಿಟ್,
                              vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0:
-	    if (a_ == bit) return;
-	    a_ = bit;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
-	    break;
+      ಆಯ್ಕೆ (ptr.ಪೋರ್ಟ್()) {
+	  ಸ್ಥಿತಿ 0:
+	    ಆದರೆ (a_ == ಬಿಟ್) ಹಿಂತಿರುಗಿ;
+	    a_ = ಬಿಟ್;
+	    ಆದರೆ (select_ == SEL_PORT1) ಹಿಂತಿರುಗಿ; // The other port is selected.
+	    ನಿಲ್ಲಿಸು;
 
-	  case 1:
-	    if (b_ == bit) return;
-	    b_ = bit;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
-	    break;
+	  ಸ್ಥಿತಿ 1:
+	    ಆದರೆ (b_ == ಬಿಟ್) ಹಿಂತಿರುಗಿ;
+	    b_ = ಬಿಟ್;
+	    ಆದರೆ (select_ == SEL_PORT0) ಹಿಂತಿರುಗಿ; // The other port is selected.
+	    ನಿಲ್ಲಿಸು;
 
-	  default:
-	    fprintf(stderr, "Unsupported port type %u.\n", ptr.port());
-	    assert(0);
+	  ಪೂರ್ವನಿಯೋಜಿತ:
+	    fprintf(stderr, "Unsupported port type %u.\n", ptr.ಪೋರ್ಟ್());
+	    ಪ್ರತಿಜ್ಞಾ(0);
       }
 
-      if (net_ == 0) {
+      ಆದರೆ (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    ವೇಳಾಪಟ್ಟಿ_functor(ಇದು);
       }
 }
 
-void vvp_fun_muxr::run_run()
+ಶೂನ್ಯ vvp_fun_muxr::ಸತತ_ಸತತ()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      switch (select_) {
-	  case SEL_PORT0:
+      ಆಯ್ಕೆ (select_) {
+	  ಸ್ಥಿತಿ SEL_PORT0:
 	    ptr->send_real(a_, 0);
-	    break;
-	  case SEL_PORT1:
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ SEL_PORT1:
 	    ptr->send_real(b_, 0);
-	    break;
-	  default:
-	    if (a_ == b_) {
+	    ನಿಲ್ಲಿಸು;
+	  ಪೂರ್ವನಿಯೋಜಿತ:
+	    ಆದರೆ (a_ == b_) {
 		  ptr->send_real(a_, 0);
-	    } else {
+	    } ಇಲ್ಲದಿದ್ದರೆ {
 		  ptr->send_real(0.0, 0); // Should this be NaN?
 	    }
-	    break;
+	    ನಿಲ್ಲಿಸು;
       }
 }
 
-vvp_fun_muxz::vvp_fun_muxz(unsigned wid)
+vvp_fun_muxz::vvp_fun_muxz(ಚಿಹ್ನೆರಹಿತ wid)
 : a_(wid, BIT4_Z), b_(wid, BIT4_Z)
 {
       net_ = 0;
-      count_functors_logic += 1;
+      ಎಣಿಕೆ_functors_logic += 1;
       select_ = SEL_BOTH;
-      has_run_ = false;
+      has_ಸತತ = ಸುಳ್ಳು;
 }
 
 vvp_fun_muxz::~vvp_fun_muxz()
 {
 }
 
-void vvp_fun_muxz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_muxz::recv_vec4(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                              vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0:
-	    if (a_ .eeq(bit) && has_run_) return;
-	    a_ = bit;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
-	    break;
-	  case 1:
-	    if (b_ .eeq(bit) && has_run_) return;
-	    b_ = bit;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
-	    break;
-	  case 2:
-	    assert(bit.size() == 1);
-	    switch (bit.value(0)) {
-		case BIT4_0:
-		  if (select_ == SEL_PORT0) return;
+      ಆಯ್ಕೆ (ptr.ಪೋರ್ಟ್()) {
+	  ಸ್ಥಿತಿ 0:
+	    ಆದರೆ (a_ .eeq(ಬಿಟ್) && has_ಸತತ) ಹಿಂತಿರುಗಿ;
+	    a_ = ಬಿಟ್;
+	    ಆದರೆ (select_ == SEL_PORT1) ಹಿಂತಿರುಗಿ; // The other port is selected.
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ 1:
+	    ಆದರೆ (b_ .eeq(ಬಿಟ್) && has_ಸತತ) ಹಿಂತಿರುಗಿ;
+	    b_ = ಬಿಟ್;
+	    ಆದರೆ (select_ == SEL_PORT0) ಹಿಂತಿರುಗಿ; // The other port is selected.
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ 2:
+	    ಪ್ರತಿಜ್ಞಾ(ಬಿಟ್.size() == 1);
+	    ಆಯ್ಕೆ (ಬಿಟ್.value(0)) {
+		ಸ್ಥಿತಿ BIT4_0:
+		  ಆದರೆ (select_ == SEL_PORT0) ಹಿಂತಿರುಗಿ;
 		  select_ = SEL_PORT0;
-		  break;
-		case BIT4_1:
-		  if (select_ == SEL_PORT1) return;
+		  ನಿಲ್ಲಿಸು;
+		ಸ್ಥಿತಿ BIT4_1:
+		  ಆದರೆ (select_ == SEL_PORT1) ಹಿಂತಿರುಗಿ;
 		  select_ = SEL_PORT1;
-		  break;
-		default:
-		  if (select_ == SEL_BOTH && has_run_) return;
+		  ನಿಲ್ಲಿಸು;
+		ಪೂರ್ವನಿಯೋಜಿತ:
+		  ಆದರೆ (select_ == SEL_BOTH && has_ಸತತ) ಹಿಂತಿರುಗಿ;
 		  select_ = SEL_BOTH;
 	    }
-	    break;
-	  default:
-	    return;
+	    ನಿಲ್ಲಿಸು;
+	  ಪೂರ್ವನಿಯೋಜಿತ:
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      if (net_ == 0) {
+      ಆದರೆ (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    ವೇಳಾಪಟ್ಟಿ_functor(ಇದು);
       }
 }
 
-void vvp_fun_muxz::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				unsigned base, unsigned vwid, vvp_context_t)
+ಶೂನ್ಯ vvp_fun_muxz::recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+				ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t)
 {
-      assert(base + bit.size() <= vwid);
-      bool flag;
+      ಪ್ರತಿಜ್ಞಾ(ತಳ + ಬಿಟ್.size() <= vwid);
+      ತಾರ್ಕಿಕ flag;
 
-      switch (ptr.port()) {
-	  case 0:
-	    flag = a_.set_vec(base, bit);
-	    if (flag == false && has_run_) return;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
-	    break;
-	  case 1:
-	    flag = b_.set_vec(base, bit);
-	    if (flag == false && has_run_) return;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
-	    break;
-	  case 2:
-	    assert((base == 0) && (bit.size() == 1));
-	    recv_vec4(ptr, bit, 0);
-	  default:
-	    return;
+      ಆಯ್ಕೆ (ptr.ಪೋರ್ಟ್()) {
+	  ಸ್ಥಿತಿ 0:
+	    flag = a_.ಗಣ_vec(ತಳ, ಬಿಟ್);
+	    ಆದರೆ (flag == ಸುಳ್ಳು && has_ಸತತ) ಹಿಂತಿರುಗಿ;
+	    ಆದರೆ (select_ == SEL_PORT1) ಹಿಂತಿರುಗಿ; // The other port is selected.
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ 1:
+	    flag = b_.ಗಣ_vec(ತಳ, ಬಿಟ್);
+	    ಆದರೆ (flag == ಸುಳ್ಳು && has_ಸತತ) ಹಿಂತಿರುಗಿ;
+	    ಆದರೆ (select_ == SEL_PORT0) ಹಿಂತಿರುಗಿ; // The other port is selected.
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ 2:
+	    ಪ್ರತಿಜ್ಞಾ((ತಳ == 0) && (ಬಿಟ್.size() == 1));
+	    recv_vec4(ptr, ಬಿಟ್, 0);
+	  ಪೂರ್ವನಿಯೋಜಿತ:
+	    ಹಿಂತಿರುಗಿ;
       }
-      if (net_ == 0) {
+      ಆದರೆ (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    ವೇಳಾಪಟ್ಟಿ_functor(ಇದು);
       }
 }
 
-void vvp_fun_muxz::run_run()
+ಶೂನ್ಯ vvp_fun_muxz::ಸತತ_ಸತತ()
 {
-      has_run_ = true;
+      has_ಸತತ = ನಿಜ;
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      switch (select_) {
-	  case SEL_PORT0:
+      ಆಯ್ಕೆ (select_) {
+	  ಸ್ಥಿತಿ SEL_PORT0:
 	    ptr->send_vec4(a_, 0);
-	    break;
-	  case SEL_PORT1:
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ SEL_PORT1:
 	    ptr->send_vec4(b_, 0);
-	    break;
-	  default:
+	    ನಿಲ್ಲಿಸು;
+	  ಪೂರ್ವನಿಯೋಜಿತ:
 	      {
-		    unsigned min_size = a_.size();
-		    unsigned max_size = min_size;
-		    if (b_.size() < min_size)
-			  min_size = b_.size();
-		    if (b_.size() > max_size)
-			  max_size = b_.size();
+		    ಚಿಹ್ನೆರಹಿತ min_ಗಾತ್ರ = a_.size();
+		    ಚಿಹ್ನೆರಹಿತ max_ಗಾತ್ರ = min_ಗಾತ್ರ;
+		    ಆದರೆ (b_.size() < min_ಗಾತ್ರ)
+			  min_ಗಾತ್ರ = b_.size();
+		    ಆದರೆ (b_.size() > max_ಗಾತ್ರ)
+			  max_ಗಾತ್ರ = b_.size();
 
-		    vvp_vector4_t res (max_size);
+		    vvp_vector4_t res (max_ಗಾತ್ರ);
 
-		    for (unsigned idx = 0 ;  idx < min_size ;  idx += 1) {
-			  if (a_.value(idx) == b_.value(idx))
-				res.set_bit(idx, a_.value(idx));
-			  else
-				res.set_bit(idx, BIT4_X);
+		    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < min_ಗಾತ್ರ ;  idx += 1) {
+			  ಆದರೆ (a_.value(idx) == b_.value(idx))
+				res.ಗಣ_ಬಿಟ್(idx, a_.value(idx));
+			  ಇಲ್ಲದಿದ್ದರೆ
+				res.ಗಣ_ಬಿಟ್(idx, BIT4_X);
 		    }
 
-		    for (unsigned idx = min_size ;  idx < max_size ;  idx += 1)
-			  res.set_bit(idx, BIT4_X);
+		    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = min_ಗಾತ್ರ ;  idx < max_ಗಾತ್ರ ;  idx += 1)
+			  res.ಗಣ_ಬಿಟ್(idx, BIT4_X);
 
 		    ptr->send_vec4(res, 0);
 	      }
-	    break;
+	    ನಿಲ್ಲಿಸು;
       }
 }
 
-vvp_fun_not::vvp_fun_not(unsigned wid)
+vvp_fun_not::vvp_fun_not(ಚಿಹ್ನೆರಹಿತ wid)
 : vvp_fun_buf_not_(wid)
 {
-      count_functors_logic += 1;
+      ಎಣಿಕೆ_functors_logic += 1;
 }
 
 vvp_fun_not::~vvp_fun_not()
@@ -499,65 +499,65 @@ vvp_fun_not::~vvp_fun_not()
  * The not functor is very simple--change the z bits to x bits in the
  * vector it passes, and propagate the inverted result.
  */
-void vvp_fun_not::run_run()
+ಶೂನ್ಯ vvp_fun_not::ಸತತ_ಸತತ()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_, true /* invert */);
-      ptr->send_vec4(result, 0);
+      vvp_vector4_t ಫಲಿತಾಂಶ (ಒಳಹರಿವು_2, ನಿಜ /* invert */);
+      ptr->send_vec4(ಫಲಿತಾಂಶ, 0);
 }
 
-vvp_fun_or::vvp_fun_or(unsigned wid, bool invert)
+vvp_fun_or::vvp_fun_or(ಚಿಹ್ನೆರಹಿತ wid, ತಾರ್ಕಿಕ invert)
 : vvp_fun_boolean_(wid), invert_(invert)
 {
-      count_functors_logic += 1;
+      ಎಣಿಕೆ_functors_logic += 1;
 }
 
 vvp_fun_or::~vvp_fun_or()
 {
 }
 
-void vvp_fun_or::run_run()
+ಶೂನ್ಯ vvp_fun_or::ಸತತ_ಸತತ()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_[0]);
+      vvp_vector4_t ಫಲಿತಾಂಶ (ಒಳಹರಿವು_2[0]);
 
-      for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
-	    result |= input_[pdx];
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ pdx = 1 ; pdx < 4 ; pdx += 1)
+	    ಫಲಿತಾಂಶ |= ಒಳಹರಿವು_2[pdx];
 
-      if (invert_)
-	    result.invert();
+      ಆದರೆ (invert_)
+	    ಫಲಿತಾಂಶ.invert();
 
-      ptr->send_vec4(result, 0);
+      ptr->send_vec4(ಫಲಿತಾಂಶ, 0);
 }
 
-vvp_fun_xor::vvp_fun_xor(unsigned wid, bool invert)
+vvp_fun_xor::vvp_fun_xor(ಚಿಹ್ನೆರಹಿತ wid, ತಾರ್ಕಿಕ invert)
 : vvp_fun_boolean_(wid), invert_(invert)
 {
-      count_functors_logic += 1;
+      ಎಣಿಕೆ_functors_logic += 1;
 }
 
 vvp_fun_xor::~vvp_fun_xor()
 {
 }
 
-void vvp_fun_xor::run_run()
+ಶೂನ್ಯ vvp_fun_xor::ಸತತ_ಸತತ()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_[0]);
+      vvp_vector4_t ಫಲಿತಾಂಶ (ಒಳಹರಿವು_2[0]);
 
-      for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
-	    result ^= input_[pdx];
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ pdx = 1 ; pdx < 4 ; pdx += 1)
+	    ಫಲಿತಾಂಶ ^= ಒಳಹರಿವು_2[pdx];
 
-      if (invert_)
-	    result.invert();
+      ಆದರೆ (invert_)
+	    ಫಲಿತಾಂಶ.invert();
 
-      ptr->send_vec4(result, 0);
+      ptr->send_vec4(ಫಲಿತಾಂಶ, 0);
 }
 
 /*
@@ -566,122 +566,122 @@ void vvp_fun_xor::run_run()
  * functor. Also resolve the inputs to the functor.
  */
 
-void compile_functor(char*label, char*type, unsigned width,
-		     unsigned ostr0, unsigned ostr1,
-		     unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_functor(ಅಕ್ಷರ*label, ಅಕ್ಷರ*type, ಚಿಹ್ನೆರಹಿತ width,
+		     ಚಿಹ್ನೆರಹಿತ ostr0, ಚಿಹ್ನೆರಹಿತ ostr1,
+		     ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
       vvp_net_fun_t* obj = 0;
-      bool strength_aware = false;
+      ತಾರ್ಕಿಕ strength_aware = ಸುಳ್ಳು;
 
-      if (strcmp(type, "OR") == 0) {
-	    obj = new vvp_fun_or(width, false);
+      ಆದರೆ (strcmp(type, "OR") == 0) {
+	    obj = ಹೊಸ vvp_fun_or(width, ಸುಳ್ಳು);
 
-      } else if (strcmp(type, "AND") == 0) {
-	    obj = new vvp_fun_and(width, false);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "AND") == 0) {
+	    obj = ಹೊಸ vvp_fun_and(width, ಸುಳ್ಳು);
 
-      } else if (strcmp(type, "BUF") == 0) {
-	    obj = new vvp_fun_buf(width);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "BUF") == 0) {
+	    obj = ಹೊಸ vvp_fun_buf(width);
 
-      } else if (strcmp(type, "BUFIF0") == 0) {
-	    obj = new vvp_fun_bufif(true,false, ostr0, ostr1);
-	    strength_aware = true;
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "BUFIF0") == 0) {
+	    obj = ಹೊಸ vvp_fun_bufif(ನಿಜ,ಸುಳ್ಳು, ostr0, ostr1);
+	    strength_aware = ನಿಜ;
 
-      } else if (strcmp(type, "BUFIF1") == 0) {
-	    obj = new vvp_fun_bufif(false,false, ostr0, ostr1);
-	    strength_aware = true;
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "BUFIF1") == 0) {
+	    obj = ಹೊಸ vvp_fun_bufif(ಸುಳ್ಳು,ಸುಳ್ಳು, ostr0, ostr1);
+	    strength_aware = ನಿಜ;
 
-      } else if (strcmp(type, "EQUIV") == 0) {
-	    obj = new vvp_fun_equiv();
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "EQUIV") == 0) {
+	    obj = ಹೊಸ vvp_fun_equiv();
 
-      } else if (strcmp(type, "IMPL") == 0) {
-	    obj = new vvp_fun_impl();
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "IMPL") == 0) {
+	    obj = ಹೊಸ vvp_fun_impl();
 
-      } else if (strcmp(type, "NAND") == 0) {
-	    obj = new vvp_fun_and(width, true);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "NAND") == 0) {
+	    obj = ಹೊಸ vvp_fun_and(width, ನಿಜ);
 
-      } else if (strcmp(type, "NOR") == 0) {
-	    obj = new vvp_fun_or(width, true);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "NOR") == 0) {
+	    obj = ಹೊಸ vvp_fun_or(width, ನಿಜ);
 
-      } else if (strcmp(type, "NOTIF0") == 0) {
-	    obj = new vvp_fun_bufif(true,true, ostr0, ostr1);
-	    strength_aware = true;
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "NOTIF0") == 0) {
+	    obj = ಹೊಸ vvp_fun_bufif(ನಿಜ,ನಿಜ, ostr0, ostr1);
+	    strength_aware = ನಿಜ;
 
-      } else if (strcmp(type, "NOTIF1") == 0) {
-	    obj = new vvp_fun_bufif(false,true, ostr0, ostr1);
-	    strength_aware = true;
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "NOTIF1") == 0) {
+	    obj = ಹೊಸ vvp_fun_bufif(ಸುಳ್ಳು,ನಿಜ, ostr0, ostr1);
+	    strength_aware = ನಿಜ;
 
-      } else if (strcmp(type, "BUFT") == 0) {
-	    obj = new vvp_fun_buft();
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "BUFT") == 0) {
+	    obj = ಹೊಸ vvp_fun_buft();
 
-      } else if (strcmp(type, "BUFZ") == 0) {
-	    obj = new vvp_fun_bufz();
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "BUFZ") == 0) {
+	    obj = ಹೊಸ vvp_fun_bufz();
 
-      } else if (strcmp(type, "MUXR") == 0) {
-	    obj = new vvp_fun_muxr;
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "MUXR") == 0) {
+	    obj = ಹೊಸ vvp_fun_muxr;
 
-      } else if (strcmp(type, "MUXZ") == 0) {
-	    obj = new vvp_fun_muxz(width);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "MUXZ") == 0) {
+	    obj = ಹೊಸ vvp_fun_muxz(width);
 
-      } else if (strcmp(type, "CMOS") == 0) {
-	    obj = new vvp_fun_cmos();
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "CMOS") == 0) {
+	    obj = ಹೊಸ vvp_fun_cmos();
 
-      } else if (strcmp(type, "NMOS") == 0) {
-	    obj = new vvp_fun_pmos(true);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "NMOS") == 0) {
+	    obj = ಹೊಸ vvp_fun_pmos(ನಿಜ);
 
-      } else if (strcmp(type, "PMOS") == 0) {
-	    obj = new vvp_fun_pmos(false);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "PMOS") == 0) {
+	    obj = ಹೊಸ vvp_fun_pmos(ಸುಳ್ಳು);
 
-      } else if (strcmp(type, "RCMOS") == 0) {
-	    obj = new vvp_fun_rcmos();
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "RCMOS") == 0) {
+	    obj = ಹೊಸ vvp_fun_rcmos();
 
-      } else if (strcmp(type, "RNMOS") == 0) {
-	    obj = new vvp_fun_rpmos(true);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "RNMOS") == 0) {
+	    obj = ಹೊಸ vvp_fun_rpmos(ನಿಜ);
 
-      } else if (strcmp(type, "RPMOS") == 0) {
-	    obj = new vvp_fun_rpmos(false);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "RPMOS") == 0) {
+	    obj = ಹೊಸ vvp_fun_rpmos(ಸುಳ್ಳು);
 
-      } else if (strcmp(type, "NOT") == 0) {
-	    obj = new vvp_fun_not(width);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "NOT") == 0) {
+	    obj = ಹೊಸ vvp_fun_not(width);
 
-      } else if (strcmp(type, "XNOR") == 0) {
-	    obj = new vvp_fun_xor(width, true);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "XNOR") == 0) {
+	    obj = ಹೊಸ vvp_fun_xor(width, ನಿಜ);
 
-      } else if (strcmp(type, "XOR") == 0) {
-	    obj = new vvp_fun_xor(width, false);
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (strcmp(type, "XOR") == 0) {
+	    obj = ಹೊಸ vvp_fun_xor(width, ಸುಳ್ಳು);
 
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	    yyerror("invalid functor type.");
-	    free(type);
-	    free(argv);
-	    free(label);
-	    return;
+	    ಬಿಡುಗಡೆ(type);
+	    ಬಿಡುಗಡೆ(argv);
+	    ಬಿಡುಗಡೆ(label);
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      free(type);
+      ಬಿಡುಗಡೆ(type);
 
-      assert(argc <= 4);
-      vvp_net_t*net = new vvp_net_t;
+      ಪ್ರತಿಜ್ಞಾ(argc <= 4);
+      vvp_net_t*net = ಹೊಸ vvp_net_t;
       net->fun = obj;
 
       inputs_connect(net, argc, argv);
-      free(argv);
+      ಬಿಡುಗಡೆ(argv);
 
 	/* If both the strengths are the default strong drive, then
 	   there is no need for a specialized driver. Attach the label
 	   to this node and we are finished. */
-      if (strength_aware || (ostr0 == 6 && ostr1 == 6)) {
-	    define_functor_symbol(label, net);
-	    free(label);
-	    return;
+      ಆದರೆ (strength_aware || (ostr0 == 6 && ostr1 == 6)) {
+	    define_functor_ಚಿಹ್ನೆ(label, net);
+	    ಬಿಡುಗಡೆ(label);
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_net_t*net_drv = new vvp_net_t;
-      vvp_net_fun_t*obj_drv = new vvp_fun_drive(ostr0, ostr1);
+      vvp_net_t*net_drv = ಹೊಸ vvp_net_t;
+      vvp_net_fun_t*obj_drv = ಹೊಸ vvp_fun_drive(ostr0, ostr1);
       net_drv->fun = obj_drv;
 
 	/* Point the gate to the drive node. */
       net->link(vvp_net_ptr_t(net_drv, 0));
 
-      define_functor_symbol(label, net_drv);
-      free(label);
+      define_functor_ಚಿಹ್ನೆ(label, net_drv);
+      ಬಿಡುಗಡೆ(label);
 }

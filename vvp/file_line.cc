@@ -19,82 +19,82 @@
 # include "compile.h"
 # include "vpi_priv.h"
 
-class __vpiFileLine : public __vpiHandle {
-    public:
-      explicit __vpiFileLine(const char*desc_, long file_idx_, long lineno_);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+ವರ್ಗ __vpiFileLine : ಸಾರ್ವಜನಿಕ __vpiHandle {
+    ಸಾರ್ವಜನಿಕ:
+      ಸ್ಪಷ್ಟ __vpiFileLine(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*desc_, ದೀರ್ಘ file_idx_, ದೀರ್ಘ lineno_);
+      ಪೂರ್ಣಾಂಕ get_type_ಸಂಕೇತ(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ override;
+      ಪೂರ್ಣಾಂಕ vpi_get(ಪೂರ್ಣಾಂಕ code) override;
+      ಅಕ್ಷರ* vpi_get_str(ಪೂರ್ಣಾಂಕ code) override;
 
-      const char* get_description() const { return description; };
-      unsigned get_file_idx() const { return file_idx; };
-      unsigned get_lineno() const { return lineno; };
+      ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ* get_description() ಸ್ಥಿರಾಂಕ { ಹಿಂತಿರುಗಿ description; };
+      ಚಿಹ್ನೆರಹಿತ get_file_idx() ಸ್ಥಿರಾಂಕ { ಹಿಂತಿರುಗಿ file_idx; };
+      ಚಿಹ್ನೆರಹಿತ get_lineno() ಸ್ಥಿರಾಂಕ { ಹಿಂತಿರುಗಿ lineno; };
 
-    private:
-      const char *description;
-      unsigned file_idx;
-      unsigned lineno;
+    ಖಾಸಗಿ:
+      ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ *description;
+      ಚಿಹ್ನೆರಹಿತ file_idx;
+      ಚಿಹ್ನೆರಹಿತ lineno;
 };
 
-bool show_file_line = false;
-bool code_is_instrumented = false;
+ತಾರ್ಕಿಕ show_file_ಸಾಲು = ಸುಳ್ಳು;
+ತಾರ್ಕಿಕ ಸಂಕೇತ_is_instrumented = ಸುಳ್ಳು;
 
-static int file_line_get(int type, vpiHandle ref)
+ಸ್ಥಿರ ಪೂರ್ಣಾಂಕ file_ಸಾಲು_get(ಪೂರ್ಣಾಂಕ type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      ಪ್ರತಿಜ್ಞಾ(rfp);
 
-      switch (type) {
-	case vpiLineNo:
-	    return rfp->get_lineno();
-	default:
-	    return vpiUndefined;
+      ಆಯ್ಕೆ (type) {
+	ಸ್ಥಿತಿ vpi_ಸಾಲು_No:
+	    ಹಿಂತಿರುಗಿ rfp->get_lineno();
+	ಪೂರ್ವನಿಯೋಜಿತ:
+	    ಹಿಂತಿರುಗಿ vpiUndefined;
       }
 }
 
-static char *file_line_get_str(int type, vpiHandle ref)
+ಸ್ಥಿರ ಅಕ್ಷರ *file_ಸಾಲು_get_str(ಪೂರ್ಣಾಂಕ type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      ಪ್ರತಿಜ್ಞಾ(rfp);
 
-      switch (type) {
-	case vpiFile:
-	    assert(rfp->get_file_idx() < file_names.size());
-	    return simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
-	case _vpiDescription:
-	    if (rfp->get_description()) {
-		  return simple_set_rbuf_str(rfp->get_description());
-	    } else return simple_set_rbuf_str("Procedural tracing.");
-	default:
-	    return 0;
+      ಆಯ್ಕೆ (type) {
+	ಸ್ಥಿತಿ vpiFile:
+	    ಪ್ರತಿಜ್ಞಾ(rfp->get_file_idx() < file_ಹೆಸರುಗಳು.size());
+	    ಹಿಂತಿರುಗಿ simple_ಗಣ_rbuf_str(file_ಹೆಸರುಗಳು[rfp->get_file_idx()]);
+	ಸ್ಥಿತಿ _vpiDescription:
+	    ಆದರೆ (rfp->get_description()) {
+		  ಹಿಂತಿರುಗಿ simple_ಗಣ_rbuf_str(rfp->get_description());
+	    } ಇಲ್ಲದಿದ್ದರೆ ಹಿಂತಿರುಗಿ simple_ಗಣ_rbuf_str("Procedural tracing.");
+	ಪೂರ್ವನಿಯೋಜಿತ:
+	    ಹಿಂತಿರುಗಿ 0;
       }
 }
 
-inline __vpiFileLine::__vpiFileLine(const char*desc_, long file_idx_,
-                                    long lineno_)
+ಸಾಲೊಳಗೆ __vpiFileLine::__vpiFileLine(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*desc_, ದೀರ್ಘ file_idx_,
+                                    ದೀರ್ಘ lineno_)
 {
-      if (desc_) description = vpip_name_string(desc_);
-      else description = 0;
-      file_idx = (unsigned) file_idx_;
-      lineno = (unsigned) lineno_;
+      ಆದರೆ (desc_) description = vpip_name_string(desc_);
+      ಇಲ್ಲದಿದ್ದರೆ description = 0;
+      file_idx = (ಚಿಹ್ನೆರಹಿತ) file_idx_;
+      lineno = (ಚಿಹ್ನೆರಹಿತ) lineno_;
 }
 
-int __vpiFileLine::get_type_code(void) const
-{ return _vpiFileLine; }
+ಪೂರ್ಣಾಂಕ __vpiFileLine::get_type_ಸಂಕೇತ(ಶೂನ್ಯ) ಸ್ಥಿರಾಂಕ
+{ ಹಿಂತಿರುಗಿ vpi_File_ಸಾಲು; }
 
-int __vpiFileLine::vpi_get(int code)
-{ return file_line_get(code, this); }
+ಪೂರ್ಣಾಂಕ __vpiFileLine::vpi_get(ಪೂರ್ಣಾಂಕ code)
+{ ಹಿಂತಿರುಗಿ file_ಸಾಲು_get(code, ಇದು); }
 
-char* __vpiFileLine::vpi_get_str(int code)
-{ return file_line_get_str(code, this); }
+ಅಕ್ಷರ* __vpiFileLine::vpi_get_str(ಪೂರ್ಣಾಂಕ code)
+{ ಹಿಂತಿರುಗಿ file_ಸಾಲು_get_str(code, ಇದು); }
 
 
-vpiHandle vpip_build_file_line(const char*description, long file_idx, long lineno)
+vpiHandle vpip_build_file_ಸಾಲು(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*description, ದೀರ್ಘ file_idx, ದೀರ್ಘ lineno)
 {
-      __vpiFileLine*obj = new __vpiFileLine(description, file_idx, lineno);
+      __vpiFileLine*obj = ಹೊಸ __vpiFileLine(description, file_idx, lineno);
 
 	/* You can turn on the diagnostic output if we find a %file_line. */
-      code_is_instrumented = true;
+      ಸಂಕೇತ_is_instrumented = ನಿಜ;
 
-      return obj;
+      ಹಿಂತಿರುಗಿ obj;
 }

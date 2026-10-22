@@ -1,5 +1,5 @@
-#ifndef IVL_statistics_H
-#define IVL_statistics_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ IVL_statistics_H
+#ವ್ಯಾಖ್ಯಾನಿಸು IVL_statistics_H
 /*
  * Copyright (c) 2002-2014 Stephen Williams (steve@icarus.com)
  *
@@ -20,46 +20,46 @@
  */
 
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
-#ifdef __SUNPRO_CC
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ __SUNPRO_CC
 # include  <stddef.h>
-#else
+#ಇಲ್ಲದಿದ್ದರೆ
 # include  <cstddef>
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-extern unsigned long count_opcodes;
-extern unsigned long count_functors;
-extern unsigned long count_functors_logic;
-extern unsigned long count_functors_bufif;
-extern unsigned long count_functors_resolv;
-extern unsigned long count_functors_sig;
-extern unsigned long count_filters;
-extern unsigned long count_vvp_nets;
-extern unsigned long count_vpi_nets;
-extern unsigned long count_vpi_scopes;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_opcodes;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_functors;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_functors_logic;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_functors_bufif;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_functors_resolv;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_functors_sig;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_filters;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_vvp_nets;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_vpi_nets;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_vpi_scopes;
 
-extern unsigned long count_net_arrays;
-extern unsigned long count_net_array_words;
-extern unsigned long count_var_arrays;
-extern unsigned long count_var_array_words;
-extern unsigned long count_real_arrays;
-extern unsigned long count_real_array_words;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_net_arrays;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_net_array_ಪದಗಳು;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_var_arrays;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_var_array_ಪದಗಳು;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_real_arrays;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_real_array_ಪದಗಳು;
 
 
-extern unsigned long count_time_events;
-extern unsigned long count_time_pool(void);
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_ಸಮಯ_events;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_ಸಮಯ_pool(ಶೂನ್ಯ);
 
-extern unsigned long count_assign_events;
-extern unsigned long count_assign4_pool(void);
-extern unsigned long count_assign8_pool(void);
-extern unsigned long count_assign_real_pool(void);
-extern unsigned long count_assign_aword_pool(void);
-extern unsigned long count_assign_arword_pool(void);
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_ನಿಯೋಜಿಸು_events;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_assign4_pool(ಶೂನ್ಯ);
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_assign8_pool(ಶೂನ್ಯ);
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_ನಿಯೋಜಿಸು_real_pool(ಶೂನ್ಯ);
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_ನಿಯೋಜಿಸು_aword_pool(ಶೂನ್ಯ);
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_ನಿಯೋಜಿಸು_arword_pool(ಶೂನ್ಯ);
 
-extern unsigned long count_gen_events;
-extern unsigned long count_gen_pool(void);
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_gen_events;
+ಬಾಹ್ಯ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_gen_pool(ಶೂನ್ಯ);
 
-extern size_t size_opcodes;
-extern size_t size_vvp_nets;
-extern size_t size_vvp_net_funs;
+ಬಾಹ್ಯ size_t ಗಾತ್ರ_opcodes;
+ಬಾಹ್ಯ size_t ಗಾತ್ರ_vvp_nets;
+ಬಾಹ್ಯ size_t ಗಾತ್ರ_vvp_net_funs;
 
-#endif /* IVL_statistics_H */
+#ಆದರೆ_ಅಂತ್ಯ /* IVL_statistics_H */

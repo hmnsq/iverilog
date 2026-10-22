@@ -1,5 +1,5 @@
-#ifndef IVL_array_H
-#define IVL_array_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ IVL_array_H
+#ವ್ಯಾಖ್ಯಾನಿಸು IVL_array_H
 /*
  * Copyright (c) 2007-2014 Stephen Williams (steve@icarus.com)
  *
@@ -19,20 +19,20 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "vvp_net.h"
-#include "vpi_user.h"
+#ಅನ್ತರ್ಭಾವ "vvp_net.h"
+#ಅನ್ತರ್ಭಾವ "vpi_user.h"
 
-typedef struct __vpiArray* vvp_array_t;
-class value_callback;
+ಪ್ರಕಾರವ್ಯಾಖ್ಯೆ ರಚನೆ __vpiArray* vvp_array_t;
+class ಮೌಲ್ಯ_callback;
 
 /*
  * This function tries to find the array (by label) in the global
  * table of all the arrays in the design.
  */
-extern vvp_array_t array_find(const char*label);
+ಬಾಹ್ಯ vvp_array_t array_ಕಂಡುಹಿಡಿ(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*label);
 
 /* VPI hooks */
-extern value_callback* vpip_array_word_change(p_cb_data data);
-extern value_callback* vpip_array_change(p_cb_data data);
+ಬಾಹ್ಯ ಮೌಲ್ಯ_callback* vpip_array_ಶಬ್ದ_change(p_cb_ದತ್ತಾಂಶ ದತ್ತಾಂಶ);
+ಬಾಹ್ಯ ಮೌಲ್ಯ_callback* vpip_array_change(p_cb_ದತ್ತಾಂಶ ದತ್ತಾಂಶ);
 
-#endif /* IVL_array_H */
+#ಆದರೆ_ಅಂತ್ಯ /* IVL_array_H */

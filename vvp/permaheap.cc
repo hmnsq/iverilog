@@ -22,30 +22,30 @@
 
 permaheap::permaheap()
 {
-      chunk_ptr_ = initial_chunk_.bytes;
-      chunk_remaining_ = sizeof(initial_chunk_);
-      heap_total_ = chunk_remaining_;
+      chunk_ptr_ = initial_chunk_.ಬೈಟುಗಳು;
+      chunk_ಉಳಿದ = ಗಾತ್ರ(initial_chunk_);
+      ರಾಶಿ_ಒಟ್ಟು_2 = chunk_ಉಳಿದ;
 }
 
 permaheap::~permaheap()
 {
 }
 
-void* permaheap::alloc(size_t size)
+ಶೂನ್ಯ* permaheap::alloc(size_t size)
 {
-      assert(size <= CHUNK_SIZE);
+      ಪ್ರತಿಜ್ಞಾ(size <= CHUNK_ಗಾತ್ರ);
 
-      if (size > chunk_remaining_) {
-	    chunk_ptr_ = ::new char[CHUNK_SIZE];
-	    chunk_remaining_ = CHUNK_SIZE;
-	    heap_total_ += CHUNK_SIZE;
+      ಆದರೆ (size > chunk_ಉಳಿದ) {
+	    chunk_ptr_ = ::ಹೊಸ ಅಕ್ಷರ[CHUNK_ಗಾತ್ರ];
+	    chunk_ಉಳಿದ = CHUNK_ಗಾತ್ರ;
+	    ರಾಶಿ_ಒಟ್ಟು_2 += CHUNK_ಗಾತ್ರ;
       }
 
-      assert( (size%sizeof(void*)) == 0 );
+      ಪ್ರತಿಜ್ಞಾ( (size%ಗಾತ್ರ(ಶೂನ್ಯ*)) == 0 );
 
-      void*res = chunk_ptr_;
+      ಶೂನ್ಯ*res = chunk_ptr_;
       chunk_ptr_ += size;
-      chunk_remaining_ -= size;
+      chunk_ಉಳಿದ -= size;
 
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }

@@ -33,204 +33,204 @@
 # include  <climits>
 # include  <cmath>
 # include  <cassert>
-#ifdef CHECK_WITH_VALGRIND
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
 # include  <valgrind/memcheck.h>
 # include  <map>
 # include  "sfunc.h"
 # include  "udp.h"
 # include  "ivl_alloc.h"
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-using namespace std;
+ಬಳಸಿ ನಾಮಾಕಾಶ std;
 
 /* This is the size of an unsigned long in bits. This is just a
    convenience macro. */
-# define CPU_WORD_BITS (8*sizeof(unsigned long))
-# define TOP_BIT (1UL << (CPU_WORD_BITS-1))
+# define CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು (8*ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ))
+# define ತುದಿ_ಬಿಟ್ (1UL << (CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು-1))
 
-permaheap vvp_net_fun_t::heap_;
-permaheap vvp_net_fil_t::heap_;
+permaheap vvp_net_fun_t::ರಾಶಿ;
+permaheap vvp_net_fil_t::ರಾಶಿ;
 
 // Allocate around 1Megabyte/chunk.
-static const size_t VVP_NET_CHUNK = 1024*1024/sizeof(vvp_net_t);
-static vvp_net_t*vvp_net_alloc_table = NULL;
-#ifdef CHECK_WITH_VALGRIND
-static vvp_net_t **vvp_net_pool = NULL;
-static unsigned vvp_net_pool_count = 0;
-#endif
-static size_t vvp_net_alloc_remaining = 0;
+ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ size_t VVP_NET_CHUNK = 1024*1024/ಗಾತ್ರ(vvp_net_t);
+ಸ್ಥಿರ vvp_net_t*vvp_net_alloc_ಕೋಷ್ಟಕ = ಖಾಲಿ;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+ಸ್ಥಿರ vvp_net_t **vvp_net_pool = ಖಾಲಿ;
+ಸ್ಥಿರ ಚಿಹ್ನೆರಹಿತ vvp_net_pool_ಎಣಿಕೆ = 0;
+#ಆದರೆ_ಅಂತ್ಯ
+ಸ್ಥಿರ size_t vvp_net_alloc_ಉಳಿದ = 0;
 // For statistics, count the vvp_nets allocated and the bytes of alloc
 // chunks allocated.
-unsigned long count_vvp_nets = 0;
-size_t size_vvp_nets = 0;
+ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಎಣಿಕೆ_vvp_nets = 0;
+size_t ಗಾತ್ರ_vvp_nets = 0;
 
-void* vvp_net_t::operator new (size_t size)
+ಶೂನ್ಯ* vvp_net_t::ಕ್ರಿಯಾಕಾರಕ ಹೊಸ (size_t size)
 {
-      assert(size == sizeof(vvp_net_t));
-      if (vvp_net_alloc_remaining == 0) {
-	    vvp_net_alloc_table = ::new vvp_net_t[VVP_NET_CHUNK];
-	    vvp_net_alloc_remaining = VVP_NET_CHUNK;
-	    size_vvp_nets += size*VVP_NET_CHUNK;
-#ifdef CHECK_WITH_VALGRIND
-	    VALGRIND_MAKE_MEM_NOACCESS(vvp_net_alloc_table, size*VVP_NET_CHUNK);
-	    VALGRIND_CREATE_MEMPOOL(vvp_net_alloc_table, 0, 0);
-	    vvp_net_pool_count += 1;
+      ಪ್ರತಿಜ್ಞಾ(size == ಗಾತ್ರ(vvp_net_t));
+      ಆದರೆ (vvp_net_alloc_ಉಳಿದ == 0) {
+	    vvp_net_alloc_ಕೋಷ್ಟಕ = ::ಹೊಸ vvp_net_t[VVP_NET_CHUNK];
+	    vvp_net_alloc_ಉಳಿದ = VVP_NET_CHUNK;
+	    ಗಾತ್ರ_vvp_nets += size*VVP_NET_CHUNK;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+	    VALGRIND_MAKE_MEM_NOACCESS(vvp_net_alloc_ಕೋಷ್ಟಕ, size*VVP_NET_CHUNK);
+	    VALGRIND_CREATE_MEMPOOL(vvp_net_alloc_ಕೋಷ್ಟಕ, 0, 0);
+	    vvp_net_pool_ಎಣಿಕೆ += 1;
 	    vvp_net_pool = static_cast<vvp_net_t **>(realloc(vvp_net_pool,
-	                   vvp_net_pool_count*sizeof(vvp_net_t **)));
-	    vvp_net_pool[vvp_net_pool_count-1] = vvp_net_alloc_table;
-#endif
+	                   vvp_net_pool_ಎಣಿಕೆ*ಗಾತ್ರ(vvp_net_t **)));
+	    vvp_net_pool[vvp_net_pool_ಎಣಿಕೆ-1] = vvp_net_alloc_ಕೋಷ್ಟಕ;
+#ಆದರೆ_ಅಂತ್ಯ
       }
 
-      vvp_net_t*return_this = vvp_net_alloc_table;
-#ifdef CHECK_WITH_VALGRIND
-      VALGRIND_MEMPOOL_ALLOC(vvp_net_pool[vvp_net_pool_count-1],
+      vvp_net_t*return_this = vvp_net_alloc_ಕೋಷ್ಟಕ;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+      VALGRIND_MEMPOOL_ALLOC(vvp_net_pool[vvp_net_pool_ಎಣಿಕೆ-1],
                              return_this, size);
-      return_this->pool = vvp_net_pool[vvp_net_pool_count-1];
-#endif
-      vvp_net_alloc_table += 1;
-      vvp_net_alloc_remaining -= 1;
-      count_vvp_nets += 1;
-      return return_this;
+      return_this->pool = vvp_net_pool[vvp_net_pool_ಎಣಿಕೆ-1];
+#ಆದರೆ_ಅಂತ್ಯ
+      vvp_net_alloc_ಕೋಷ್ಟಕ += 1;
+      vvp_net_alloc_ಉಳಿದ -= 1;
+      ಎಣಿಕೆ_vvp_nets += 1;
+      ಹಿಂತಿರುಗಿ return_this;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-static map<vvp_net_t*, bool> vvp_net_map;
-static map<sfunc_core*, bool> sfunc_map;
-static map<vvp_udp_fun_core*, bool> udp_map;
-static map<resolv_core*, bool> resolv_map;
-static vvp_net_t **local_net_pool = 0;
-static unsigned local_net_pool_count = 0;
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+ಸ್ಥಿರ map<vvp_net_t*, ತಾರ್ಕಿಕ> vvp_net_map;
+ಸ್ಥಿರ map<sfunc_core*, ತಾರ್ಕಿಕ> sfunc_map;
+ಸ್ಥಿರ map<vvp_udp_fun_core*, ತಾರ್ಕಿಕ> udp_map;
+ಸ್ಥಿರ map<resolv_core*, ತಾರ್ಕಿಕ> resolv_map;
+ಸ್ಥಿರ vvp_net_t **local_net_pool = 0;
+ಸ್ಥಿರ ಚಿಹ್ನೆರಹಿತ local_net_pool_ಎಣಿಕೆ = 0;
 
-void pool_local_net(vvp_net_t*net)
+ಶೂನ್ಯ pool_local_net(vvp_net_t*net)
 {
-      local_net_pool_count += 1;
+      local_net_pool_ಎಣಿಕೆ += 1;
       local_net_pool = static_cast<vvp_net_t **>(realloc(local_net_pool,
-                       local_net_pool_count*sizeof(vvp_net_t **)));
-      local_net_pool[local_net_pool_count-1] = net;
+                       local_net_pool_ಎಣಿಕೆ*ಗಾತ್ರ(vvp_net_t **)));
+      local_net_pool[local_net_pool_ಎಣಿಕೆ-1] = net;
 }
 
-void vvp_net_delete(vvp_net_t *item)
+ಶೂನ್ಯ vvp_net_delete(vvp_net_t *ಅಂಶ)
 {
-      vvp_net_map[item] = true;
-      if (sfunc_core*tmp = dynamic_cast<sfunc_core*> (item->fun)) {
-	    sfunc_map[tmp] = true;
+      vvp_net_map[ಅಂಶ] = ನಿಜ;
+      ಆದರೆ (sfunc_core*tmp = dynamic_cast<sfunc_core*> (ಅಂಶ->fun)) {
+	    sfunc_map[tmp] = ನಿಜ;
       }
-      if (vvp_udp_fun_core*tmp = dynamic_cast<vvp_udp_fun_core*> (item->fun)) {
-	    udp_map[tmp] = true;
+      ಆದರೆ (vvp_udp_fun_core*tmp = dynamic_cast<vvp_udp_fun_core*> (ಅಂಶ->fun)) {
+	    udp_map[tmp] = ನಿಜ;
       }
-      if (resolv_core*tmp = dynamic_cast<resolv_core*> (item->fun)) {
-	    resolv_map[tmp] = true;
+      ಆದರೆ (resolv_core*tmp = dynamic_cast<resolv_core*> (ಅಂಶ->fun)) {
+	    resolv_map[tmp] = ನಿಜ;
       }
 	/* Only delete static object variables. */
-      if (vvp_fun_signal_object_sa*tmp = dynamic_cast<vvp_fun_signal_object_sa*> (item->fun)) {
-	    delete tmp;
+      ಆದರೆ (vvp_fun_signal_object_sa*tmp = dynamic_cast<vvp_fun_signal_object_sa*> (ಅಂಶ->fun)) {
+	    ಅಳಿಸು tmp;
       }
 	/* Only delete static string variables. */
-      if (vvp_fun_signal_string_sa*tmp = dynamic_cast<vvp_fun_signal_string_sa*> (item->fun)) {
-	    delete tmp;
+      ಆದರೆ (vvp_fun_signal_string_sa*tmp = dynamic_cast<vvp_fun_signal_string_sa*> (ಅಂಶ->fun)) {
+	    ಅಳಿಸು tmp;
       }
 }
 
-void vvp_net_pool_delete()
+ಶೂನ್ಯ vvp_net_pool_delete()
 {
-      unsigned long vvp_nets_del = 0;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ vvp_nets_del = 0;
 
-      for (unsigned idx = 0; idx < local_net_pool_count; idx += 1) {
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0; idx < local_net_pool_ಎಣಿಕೆ; idx += 1) {
 	    vvp_net_delete(local_net_pool[idx]);
       }
-      free(local_net_pool);
+      ಬಿಡುಗಡೆ(local_net_pool);
       local_net_pool = 0;
-      local_net_pool_count = 0;
+      local_net_pool_ಎಣಿಕೆ = 0;
 
-      map<vvp_net_t*, bool>::iterator iter;
-      for (iter = vvp_net_map.begin(); iter != vvp_net_map.end(); ++ iter ) {
+      map<vvp_net_t*, ತಾರ್ಕಿಕ>::iterator iter;
+      ಗಾಗಿ (iter = vvp_net_map.begin(); iter != vvp_net_map.ಕೊನೆ(); ++ iter ) {
 	    vvp_nets_del += 1;
-	    VALGRIND_MEMPOOL_FREE(iter->first->pool, iter->first);
+	    VALGRIND_MEMPOOL_FREE(iter->ಮೊದಲ->pool, iter->ಮೊದಲ);
       }
       vvp_net_map.clear();
 
-      map<sfunc_core*, bool>::iterator siter;
-      for (siter = sfunc_map.begin(); siter != sfunc_map.end(); ++ siter ) {
-	    delete siter->first;
+      map<sfunc_core*, ತಾರ್ಕಿಕ>::iterator siter;
+      ಗಾಗಿ (siter = sfunc_map.begin(); siter != sfunc_map.ಕೊನೆ(); ++ siter ) {
+	    ಅಳಿಸು siter->ಮೊದಲ;
       }
       sfunc_map.clear();
 
-      map<vvp_udp_fun_core*, bool>::iterator uiter;
-      for (uiter = udp_map.begin(); uiter != udp_map.end(); ++ uiter ) {
-	    delete uiter->first;
+      map<vvp_udp_fun_core*, ತಾರ್ಕಿಕ>::iterator uiter;
+      ಗಾಗಿ (uiter = udp_map.begin(); uiter != udp_map.ಕೊನೆ(); ++ uiter ) {
+	    ಅಳಿಸು uiter->ಮೊದಲ;
       }
       udp_map.clear();
 
-      map<resolv_core*, bool>::iterator riter;
-      for (riter = resolv_map.begin(); riter != resolv_map.end(); ++ riter ) {
-	    delete riter->first;
+      map<resolv_core*, ತಾರ್ಕಿಕ>::iterator riter;
+      ಗಾಗಿ (riter = resolv_map.begin(); riter != resolv_map.ಕೊನೆ(); ++ riter ) {
+	    ಅಳಿಸು riter->ಮೊದಲ;
       }
       resolv_map.clear();
 
-      if (RUNNING_ON_VALGRIND && (vvp_nets_del != count_vvp_nets)) {
-	    fflush(NULL);
+      ಆದರೆ (RUNNING_ON_VALGRIND && (vvp_nets_del != ಎಣಿಕೆ_vvp_nets)) {
+	    fflush(ಖಾಲಿ);
 	    VALGRIND_PRINTF("Error: vvp missed deleting %ld of %lu net(s).",
-	                    (long) count_vvp_nets - vvp_nets_del,
-	                    count_vvp_nets);
+	                    (ದೀರ್ಘ) ಎಣಿಕೆ_vvp_nets - vvp_nets_del,
+	                    ಎಣಿಕೆ_vvp_nets);
       }
 
-      for (unsigned idx = 0; idx < vvp_net_pool_count; idx += 1) {
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0; idx < vvp_net_pool_ಎಣಿಕೆ; idx += 1) {
 	    VALGRIND_DESTROY_MEMPOOL(vvp_net_pool[idx]);
-	    ::delete [] vvp_net_pool[idx];
+	    ::ಅಳಿಸು [] vvp_net_pool[idx];
       }
-      free(vvp_net_pool);
-      vvp_net_pool = NULL;
-      vvp_net_pool_count = 0;
+      ಬಿಡುಗಡೆ(vvp_net_pool);
+      vvp_net_pool = ಖಾಲಿ;
+      vvp_net_pool_ಎಣಿಕೆ = 0;
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-void vvp_net_t::operator delete(void*)
+ಶೂನ್ಯ vvp_net_t::ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
 vvp_net_t::vvp_net_t()
-: out_(vvp_net_ptr_t(0,0))
+: ಹೊರಹೋಗು_2(vvp_net_ptr_t(0,0))
 {
       fun = 0;
       fil = 0;
 }
 
-void vvp_net_t::link(vvp_net_ptr_t port_to_link)
+ಶೂನ್ಯ vvp_net_t::link(vvp_net_ptr_t ಪೋರ್ಟ್_ಗಮ್ಯ_link)
 {
-      vvp_net_t*net = port_to_link.ptr();
+      vvp_net_t*net = ಪೋರ್ಟ್_ಗಮ್ಯ_link.ptr();
 
 	// Connect nodes with vvp_fun_modpath_src to the head of the
 	// linked list, so that vvp_fun_modpath_src are always evaluated
 	// before their respective vvp_fun_modpath
-      if (dynamic_cast<vvp_fun_modpath_src*>(net->fun)) {
-	    net->port[port_to_link.port()] = out_;
-	    out_ = port_to_link;
+      ಆದರೆ (dynamic_cast<vvp_fun_modpath_src*>(net->fun)) {
+	    net->ಪೋರ್ಟ್[ಪೋರ್ಟ್_ಗಮ್ಯ_link.ಪೋರ್ಟ್()] = ಹೊರಹೋಗು_2;
+	    ಹೊರಹೋಗು_2 = ಪೋರ್ಟ್_ಗಮ್ಯ_link;
 	// All other nodes connect after the last vvp_fun_modpath_src
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	      // List is empty or first node has no vvp_fun_modpath_src
 	      // then just insert the node into the head of linked list
-	    if (out_.ptr() == nullptr || ! dynamic_cast<vvp_fun_modpath_src*>(out_.ptr()->fun)) {
-		  net->port[port_to_link.port()] = out_;
-		  out_ = port_to_link;
-		  return;
+	    ಆದರೆ (ಹೊರಹೋಗು_2.ptr() == ಶೂನ್ಯಸೂಚಕ || ! dynamic_cast<vvp_fun_modpath_src*>(ಹೊರಹೋಗು_2.ptr()->fun)) {
+		  net->ಪೋರ್ಟ್[ಪೋರ್ಟ್_ಗಮ್ಯ_link.ಪೋರ್ಟ್()] = ಹೊರಹೋಗು_2;
+		  ಹೊರಹೋಗು_2 = ಪೋರ್ಟ್_ಗಮ್ಯ_link;
+		  ಹಿಂತಿರುಗಿ;
 	    }
 
-	    vvp_net_ptr_t cur = out_;
-	    vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr,0);
+	    vvp_net_ptr_t cur = ಹೊರಹೋಗು_2;
+	    vvp_net_ptr_t prev = vvp_net_ptr_t(ಶೂನ್ಯಸೂಚಕ,0);
 
 	      // Traverse through linked list
-	    while (dynamic_cast<vvp_fun_modpath_src*>(cur.ptr()->fun)) {
+	    ಆಗ (dynamic_cast<vvp_fun_modpath_src*>(cur.ptr()->fun)) {
 		  prev = cur;
-		  cur = cur.ptr()->port[cur.port()];
-		  if (! cur.ptr()) break; // End of list
+		  cur = cur.ptr()->ಪೋರ್ಟ್[cur.ಪೋರ್ಟ್()];
+		  ಆದರೆ (! cur.ptr()) ನಿಲ್ಲಿಸು; // End of list
 	    }
 
-	    assert(prev.ptr());
+	    ಪ್ರತಿಜ್ಞಾ(prev.ptr());
 
 	      // Insert after last vvp_fun_modpath_src (or end of list)
-	    net->port[port_to_link.port()] = cur;
-	    prev.ptr()->port[prev.port()] = port_to_link;
+	    net->ಪೋರ್ಟ್[ಪೋರ್ಟ್_ಗಮ್ಯ_link.ಪೋರ್ಟ್()] = cur;
+	    prev.ptr()->ಪೋರ್ಟ್[prev.ಪೋರ್ಟ್()] = ಪೋರ್ಟ್_ಗಮ್ಯ_link;
       }
 }
 
@@ -240,35 +240,35 @@ void vvp_net_t::link(vvp_net_ptr_t port_to_link)
  * driver. The dst_ptr argument is the receiver pin to be located and
  * removed from the fan-out list.
  */
-void vvp_net_t::unlink(vvp_net_ptr_t dst_ptr)
+ಶೂನ್ಯ vvp_net_t::unlink(vvp_net_ptr_t dst_ptr)
 {
       vvp_net_t*net = dst_ptr.ptr();
-      unsigned net_port = dst_ptr.port();
+      ಚಿಹ್ನೆರಹಿತ net_ಪೋರ್ಟ್ = dst_ptr.ಪೋರ್ಟ್();
 
-      if (out_ == dst_ptr) {
+      ಆದರೆ (ಹೊರಹೋಗು_2 == dst_ptr) {
 	      /* If the drive fan-out list starts with this pointer,
 		 then the unlink is easy. Pull the list forward. */
-	    out_ = net->port[net_port];
-      } else if (! out_.nil()) {
+	    ಹೊರಹೋಗು_2 = net->ಪೋರ್ಟ್[net_ಪೋರ್ಟ್];
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (! ಹೊರಹೋಗು_2.nil()) {
 	      /* Scan the linked list, looking for the net_ptr_t
 		 pointer *before* the one we wish to remove. */
-	    vvp_net_ptr_t cur = out_;
-	    assert(!cur.nil());
+	    vvp_net_ptr_t cur = ಹೊರಹೋಗು_2;
+	    ಪ್ರತಿಜ್ಞಾ(!cur.nil());
 	    vvp_net_t*cur_net = cur.ptr();
-	    unsigned cur_port = cur.port();
-	    while (cur_net && cur_net->port[cur_port] != dst_ptr) {
-		  cur = cur_net->port[cur_port];
+	    ಚಿಹ್ನೆರಹಿತ cur_ಪೋರ್ಟ್ = cur.ಪೋರ್ಟ್();
+	    ಆಗ (cur_net && cur_net->ಪೋರ್ಟ್[cur_ಪೋರ್ಟ್] != dst_ptr) {
+		  cur = cur_net->ಪೋರ್ಟ್[cur_ಪೋರ್ಟ್];
 		  cur_net = cur.ptr();
-		  cur_port = cur.port();
+		  cur_ಪೋರ್ಟ್ = cur.ಪೋರ್ಟ್();
 	    }
 	      /* Unlink. */
-	    if (cur_net) cur_net->port[cur_port] = net->port[net_port];
+	    ಆದರೆ (cur_net) cur_net->ಪೋರ್ಟ್[cur_ಪೋರ್ಟ್] = net->ಪೋರ್ಟ್[net_ಪೋರ್ಟ್];
       }
 
-      net->port[net_port] = vvp_net_ptr_t(0,0);
+      net->ಪೋರ್ಟ್[net_ಪೋರ್ಟ್] = vvp_net_ptr_t(0,0);
 }
 
-void vvp_net_t::count_drivers(unsigned idx, unsigned counts[4])
+ಶೂನ್ಯ vvp_net_t::ಎಣಿಕೆ_drivers(ಚಿಹ್ನೆರಹಿತ idx, ಚಿಹ್ನೆರಹಿತ counts[4])
 {
       counts[0] = 0;
       counts[1] = 0;
@@ -276,105 +276,105 @@ void vvp_net_t::count_drivers(unsigned idx, unsigned counts[4])
       counts[3] = 0;
 
         /* $countdrivers can only be used on wires. */
-      vvp_wire_base*wire=dynamic_cast<vvp_wire_base*>(fil);
-      assert(wire);
+      vvp_wire_ತಳ*wire=dynamic_cast<vvp_wire_ತಳ*>(fil);
+      ಪ್ರತಿಜ್ಞಾ(wire);
 
-      if (wire->is_forced(idx))
+      ಆದರೆ (wire->is_forced(idx))
             counts[3] = 1;
 
         /* If the net has multiple drivers, we need to interrogate the
            resolver network to get the driven values. */
-      if (resolv_core*resolver = dynamic_cast<resolv_core*>(fun)) {
-            resolver->count_drivers(idx, counts);
-            return;
+      ಆದರೆ (resolv_core*resolver = dynamic_cast<resolv_core*>(fun)) {
+            resolver->ಎಣಿಕೆ_drivers(idx, counts);
+            ಹಿಂತಿರುಗಿ;
       }
-      if (vvp_island_port*resolver = dynamic_cast<vvp_island_port*>(fun)) {
-            resolver->count_drivers(idx, counts);
-            return;
+      ಆದರೆ (vvp_island_ಪೋರ್ಟ್*resolver = dynamic_cast<vvp_island_ಪೋರ್ಟ್*>(fun)) {
+            resolver->ಎಣಿಕೆ_drivers(idx, counts);
+            ಹಿಂತಿರುಗಿ;
       }
 
         /* If the functor is not a resolver, there is only one driver, so
            we can just interrogate the filter to get the driven value. */
-      update_driver_counts(wire->driven_value(idx), counts);
+      update_driver_counts(wire->driven_ಮೌಲ್ಯ(idx), counts);
 }
 
-void vvp_net_fun_t::operator delete(void*)
+ಶೂನ್ಯ vvp_net_fun_t::ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*)
 {
-#ifndef CHECK_WITH_VALGRIND
-      assert(0);
-#endif
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ CHECK_WITH_VALGRIND
+      ಪ್ರತಿಜ್ಞಾ(0);
+#ಆದರೆ_ಅಂತ್ಯ
 }
 
 
 vvp_net_fil_t::vvp_net_fil_t()
 {
       force_link_ = 0;
-      force_propagate_ = false;
-      count_filters += 1;
+      force_propagate_ = ಸುಳ್ಳು;
+      ಎಣಿಕೆ_filters += 1;
 }
 
 vvp_net_fil_t::~vvp_net_fil_t()
 {
-      assert(force_link_ == 0);
+      ಪ್ರತಿಜ್ಞಾ(force_link_ == 0);
 }
 
-vvp_net_fil_t::prop_t vvp_net_fil_t::filter_vec4(const vvp_vector4_t&,
+vvp_net_fil_t::prop_t vvp_net_fil_t::filter_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&,
                                                  vvp_vector4_t&,
-                                                 unsigned, unsigned)
+                                                 ಚಿಹ್ನೆರಹಿತ, ಚಿಹ್ನೆರಹಿತ)
 {
-      return PROP;
+      ಹಿಂತಿರುಗಿ PROP;
 }
 
-vvp_net_fil_t::prop_t vvp_net_fil_t::filter_vec8(const vvp_vector8_t&,
+vvp_net_fil_t::prop_t vvp_net_fil_t::filter_vec8(ಸ್ಥಿರಾಂಕ vvp_vector8_t&,
                                                  vvp_vector8_t&,
-                                                 unsigned, unsigned)
+                                                 ಚಿಹ್ನೆರಹಿತ, ಚಿಹ್ನೆರಹಿತ)
 {
-      return PROP;
+      ಹಿಂತಿರುಗಿ PROP;
 }
 
-vvp_net_fil_t::prop_t vvp_net_fil_t::filter_real(double&)
+vvp_net_fil_t::prop_t vvp_net_fil_t::filter_real(ದ್ವಿಗುಣ&)
 {
-      return PROP;
+      ಹಿಂತಿರುಗಿ PROP;
 }
 
-vvp_net_fil_t::prop_t vvp_net_fil_t::filter_string(const string&)
+vvp_net_fil_t::prop_t vvp_net_fil_t::filter_string(ಸ್ಥಿರಾಂಕ string&)
 {
-      return PROP;
+      ಹಿಂತಿರುಗಿ PROP;
 }
 
 vvp_net_fil_t::prop_t vvp_net_fil_t::filter_object(vvp_object_t&)
 {
-      return PROP;
+      ಹಿಂತಿರುಗಿ PROP;
 }
 
-void vvp_net_fil_t::force_mask(const vvp_vector2_t&mask)
+ಶೂನ್ಯ vvp_net_fil_t::force_ಮುಖವಾಡ(ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ)
 {
-      if (force_mask_.size() == 0)
-	    force_mask_ = vvp_vector2_t(vvp_vector2_t::FILL0, mask.size());
+      ಆದರೆ (force_ಮುಖವಾಡ_2.size() == 0)
+	    force_ಮುಖವಾಡ_2 = vvp_vector2_t(vvp_vector2_t::FILL0, ಮುಖವಾಡ.size());
 
-      assert(force_mask_.size() == mask.size());
-      for (unsigned idx = 0 ; idx < mask.size() ; idx += 1) {
-	    if (mask.value(idx) == 0)
-		  continue;
+      ಪ್ರತಿಜ್ಞಾ(force_ಮುಖವಾಡ_2.size() == ಮುಖವಾಡ.size());
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಮುಖವಾಡ.size() ; idx += 1) {
+	    ಆದರೆ (ಮುಖವಾಡ.value(idx) == 0)
+		  ಮುಂದುವರಿ;
 
-	    force_mask_.set_bit(idx, 1);
-	    force_propagate_ = true;
+	    force_ಮುಖವಾಡ_2.ಗಣ_ಬಿಟ್(idx, 1);
+	    force_propagate_ = ನಿಜ;
       }
 }
 
-void vvp_net_fil_t::release_mask(const vvp_vector2_t&mask)
+ಶೂನ್ಯ vvp_net_fil_t::release_ಮುಖವಾಡ(ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಮುಖವಾಡ)
 {
-      if (force_mask_.size() == 0)
-	    return;
+      ಆದರೆ (force_ಮುಖವಾಡ_2.size() == 0)
+	    ಹಿಂತಿರುಗಿ;
 
-      assert(force_mask_.size() == mask.size());
-      for (unsigned idx = 0 ; idx < mask.size() ; idx += 1) {
-	    if (mask.value(idx))
-		  force_mask_.set_bit(idx, 0);
+      ಪ್ರತಿಜ್ಞಾ(force_ಮುಖವಾಡ_2.size() == ಮುಖವಾಡ.size());
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಮುಖವಾಡ.size() ; idx += 1) {
+	    ಆದರೆ (ಮುಖವಾಡ.value(idx))
+		  force_ಮುಖವಾಡ_2.ಗಣ_ಬಿಟ್(idx, 0);
       }
 
-      if (force_mask_.is_zero())
-	    force_mask_ = vvp_vector2_t();
+      ಆದರೆ (force_ಮುಖವಾಡ_2.is_zero())
+	    force_ಮುಖವಾಡ_2 = vvp_vector2_t();
 }
 
 /*
@@ -390,243 +390,243 @@ void vvp_net_fil_t::release_mask(const vvp_vector2_t&mask)
  *
  *     port[0]  - This is the normal input.
  */
-void vvp_net_fil_t::force_link(vvp_net_t*dst, vvp_net_t*src)
+ಶೂನ್ಯ vvp_net_fil_t::force_link(vvp_net_t*dst, vvp_net_t*src)
 {
-      assert(dst->fil == this);
+      ಪ್ರತಿಜ್ಞಾ(dst->fil == ಇದು);
 
-      if (force_link_ == 0) {
-	    force_link_ = new vvp_net_t;
+      ಆದರೆ (force_link_ == 0) {
+	    force_link_ = ಹೊಸ vvp_net_t;
 	      // Use port[3] to hold the force destination.
-	    force_link_->port[3] = vvp_net_ptr_t(dst, 0);
-	    force_link_->port[2] = vvp_net_ptr_t(0,0);
-	    force_link_->fun = new vvp_fun_force;
+	    force_link_->ಪೋರ್ಟ್[3] = vvp_net_ptr_t(dst, 0);
+	    force_link_->ಪೋರ್ಟ್[2] = vvp_net_ptr_t(0,0);
+	    force_link_->fun = ಹೊಸ vvp_fun_force;
       }
 
       force_unlink();
-      assert(force_link_->port[2] == vvp_net_ptr_t(0,0));
+      ಪ್ರತಿಜ್ಞಾ(force_link_->ಪೋರ್ಟ್[2] == vvp_net_ptr_t(0,0));
 
 	// Use port[2] to hold the force source.
-      force_link_->port[2] = vvp_net_ptr_t(src,0);
+      force_link_->ಪೋರ್ಟ್[2] = vvp_net_ptr_t(src,0);
 
       vvp_net_ptr_t dst_ptr(force_link_, 0);
       src->link(dst_ptr);
 }
 
-void vvp_net_fil_t::operator delete(void*)
+ಶೂನ್ಯ vvp_net_fil_t::ಕ್ರಿಯಾಕಾರಕ ಅಳಿಸು(ಶೂನ್ಯ*)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_net_fil_t::force_unlink(void)
+ಶೂನ್ಯ vvp_net_fil_t::force_unlink(ಶೂನ್ಯ)
 {
-      if (force_link_ == 0) return;
-      vvp_net_t*src = force_link_->port[2].ptr();
-      if (src == 0) return;
+      ಆದರೆ (force_link_ == 0) ಹಿಂತಿರುಗಿ;
+      vvp_net_t*src = force_link_->ಪೋರ್ಟ್[2].ptr();
+      ಆದರೆ (src == 0) ಹಿಂತಿರುಗಿ;
 
       src->unlink(vvp_net_ptr_t(force_link_,0));
-      force_link_->port[2] = vvp_net_ptr_t(0,0);
+      force_link_->ಪೋರ್ಟ್[2] = vvp_net_ptr_t(0,0);
 }
 
 /* *** BIT operations *** */
-vvp_bit4_t add_with_carry(vvp_bit4_t a, vvp_bit4_t b, vvp_bit4_t&c)
+vvp_bit4_t ಕೂಡಿಸು_with_ವಾಹಕ(vvp_bit4_t a, vvp_bit4_t b, vvp_bit4_t&c)
 {
-      if (bit4_is_xz(a) || bit4_is_xz(b) || bit4_is_xz(c)) {
+      ಆದರೆ (bit4_is_xz(a) || bit4_is_xz(b) || bit4_is_xz(c)) {
 	    c = BIT4_X;
-	    return BIT4_X;
+	    ಹಿಂತಿರುಗಿ BIT4_X;
       }
 
 	// NOTE: This relies on the facts that XZ values have been
 	// weeded out, and that BIT4_1 is 1 and BIT4_0 is 0.
-      int sum = (int)a + (int)b + (int)c;
+      ಪೂರ್ಣಾಂಕ ಮೊತ್ತ = (ಪೂರ್ಣಾಂಕ)a + (ಪೂರ್ಣಾಂಕ)b + (ಪೂರ್ಣಾಂಕ)c;
 
-      switch (sum) {
-	  case 0:
+      ಆಯ್ಕೆ (ಮೊತ್ತ) {
+	  ಸ್ಥಿತಿ 0:
 	      // c must already be 0.
-	    return BIT4_0;
-	  case 1:
+	    ಹಿಂತಿರುಗಿ BIT4_0;
+	  ಸ್ಥಿತಿ 1:
 	    c = BIT4_0;
-	    return BIT4_1;
-	  case 2:
+	    ಹಿಂತಿರುಗಿ BIT4_1;
+	  ಸ್ಥಿತಿ 2:
 	    c = BIT4_1;
-	    return BIT4_0;
-	  case 3:
+	    ಹಿಂತಿರುಗಿ BIT4_0;
+	  ಸ್ಥಿತಿ 3:
 	    c = BIT4_1;
-	    return BIT4_1;
+	    ಹಿಂತಿರುಗಿ BIT4_1;
       }
-      fprintf(stderr, "Incorrect result %d.\n", sum);
-      assert(0);
-      return BIT4_X;
+      fprintf(stderr, "Incorrect result %d.\n", ಮೊತ್ತ);
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ BIT4_X;
 }
 
-vvp_bit4_t scalar_to_bit4(PLI_INT32 scalar)
+vvp_bit4_t scalar_ಗಮ್ಯ_bit4(PLI_INT32 scalar)
 {
-      switch(scalar) {
-	  case vpi0:
-	    return BIT4_0;
-	  case vpi1:
-	    return BIT4_1;
-	  case vpiX:
-	    return BIT4_X;
-	  case vpiZ:
-	    return BIT4_Z;
+      ಆಯ್ಕೆ(scalar) {
+	  ಸ್ಥಿತಿ vpi0:
+	    ಹಿಂತಿರುಗಿ BIT4_0;
+	  ಸ್ಥಿತಿ vpi1:
+	    ಹಿಂತಿರುಗಿ BIT4_1;
+	  ಸ್ಥಿತಿ vpiX:
+	    ಹಿಂತಿರುಗಿ BIT4_X;
+	  ಸ್ಥಿತಿ vpiZ:
+	    ಹಿಂತಿರುಗಿ BIT4_Z;
       }
-      fprintf(stderr, "Unsupported scalar value %d.\n", (int)scalar);
-      assert(0);
-      return BIT4_X;
+      fprintf(stderr, "Unsupported scalar value %d.\n", (ಪೂರ್ಣಾಂಕ)scalar);
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಹಿಂತಿರುಗಿ BIT4_X;
 }
 
-vvp_bit4_t operator ^ (vvp_bit4_t a, vvp_bit4_t b)
+vvp_bit4_t ಕ್ರಿಯಾಕಾರಕ ^ (vvp_bit4_t a, vvp_bit4_t b)
 {
-      if (bit4_is_xz(a))
-	    return BIT4_X;
-      if (bit4_is_xz(b))
-	    return BIT4_X;
-      if (a == BIT4_0)
-	    return b;
-      if (b == BIT4_0)
-	    return a;
-      return BIT4_0;
+      ಆದರೆ (bit4_is_xz(a))
+	    ಹಿಂತಿರುಗಿ BIT4_X;
+      ಆದರೆ (bit4_is_xz(b))
+	    ಹಿಂತಿರುಗಿ BIT4_X;
+      ಆದರೆ (a == BIT4_0)
+	    ಹಿಂತಿರುಗಿ b;
+      ಆದರೆ (b == BIT4_0)
+	    ಹಿಂತಿರುಗಿ a;
+      ಹಿಂತಿರುಗಿ BIT4_0;
 }
 
-ostream& operator<<(ostream&out, vvp_bit4_t bit)
+ostream& ಕ್ರಿಯಾಕಾರಕ<<(ostream&out, vvp_bit4_t ಬಿಟ್)
 {
-      switch (bit) {
-	  case BIT4_0:
+      ಆಯ್ಕೆ (ಬಿಟ್) {
+	  ಸ್ಥಿತಿ BIT4_0:
 	    out << "0";
-	    break;
-	  case BIT4_1:
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ BIT4_1:
 	    out << "1";
-	    break;
-	  case BIT4_X:
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ BIT4_X:
 	    out << "X";
-	    break;
-	  case BIT4_Z:
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ BIT4_Z:
 	    out << "Z";
-	    break;
-	  default:
+	    ನಿಲ್ಲಿಸು;
+	  ಪೂರ್ವನಿಯೋಜಿತ:
 	    out << "?";
-	    break;
+	    ನಿಲ್ಲಿಸು;
       }
-      return out;
+      ಹಿಂತಿರುಗಿ out;
 }
 
-typedef unsigned short edge_t;
+ಪ್ರಕಾರವ್ಯಾಖ್ಯೆ ಚಿಹ್ನೆರಹಿತ ಗಿಡ್ಡ ಅಂಚು_t;
 
-inline edge_t VVP_EDGE(vvp_bit4_t from, vvp_bit4_t to)
+ಸಾಲೊಳಗೆ ಅಂಚು_t VVP_ಅಂಚು(vvp_bit4_t from, vvp_bit4_t to)
 {
-      return 1 << ((from << 2) | to);
+      ಹಿಂತಿರುಗಿ 1 << ((from << 2) | to);
 }
 
-const edge_t vvp_edge_posedge
-      = VVP_EDGE(BIT4_0,BIT4_1)
-      | VVP_EDGE(BIT4_0,BIT4_X)
-      | VVP_EDGE(BIT4_0,BIT4_Z)
-      | VVP_EDGE(BIT4_X,BIT4_1)
-      | VVP_EDGE(BIT4_Z,BIT4_1)
+ಸ್ಥಿರಾಂಕ ಅಂಚು_t vvp_ಅಂಚು_posedge
+      = VVP_ಅಂಚು(BIT4_0,BIT4_1)
+      | VVP_ಅಂಚು(BIT4_0,BIT4_X)
+      | VVP_ಅಂಚು(BIT4_0,BIT4_Z)
+      | VVP_ಅಂಚು(BIT4_X,BIT4_1)
+      | VVP_ಅಂಚು(BIT4_Z,BIT4_1)
       ;
 
-const edge_t vvp_edge_negedge
-      = VVP_EDGE(BIT4_1,BIT4_0)
-      | VVP_EDGE(BIT4_1,BIT4_X)
-      | VVP_EDGE(BIT4_1,BIT4_Z)
-      | VVP_EDGE(BIT4_X,BIT4_0)
-      | VVP_EDGE(BIT4_Z,BIT4_0)
+ಸ್ಥಿರಾಂಕ ಅಂಚು_t vvp_ಅಂಚು_negedge
+      = VVP_ಅಂಚು(BIT4_1,BIT4_0)
+      | VVP_ಅಂಚು(BIT4_1,BIT4_X)
+      | VVP_ಅಂಚು(BIT4_1,BIT4_Z)
+      | VVP_ಅಂಚು(BIT4_X,BIT4_0)
+      | VVP_ಅಂಚು(BIT4_Z,BIT4_0)
       ;
 
-int edge(vvp_bit4_t from, vvp_bit4_t to)
+ಪೂರ್ಣಾಂಕ ಅಂಚು(vvp_bit4_t from, vvp_bit4_t to)
 {
-      edge_t mask = VVP_EDGE(from, to);
-      if (mask & vvp_edge_posedge)
-	    return 1;
-      if (mask & vvp_edge_negedge)
-	    return -1;
-      return 0;
+      ಅಂಚು_t ಮುಖವಾಡ = VVP_ಅಂಚು(from, to);
+      ಆದರೆ (ಮುಖವಾಡ & vvp_ಅಂಚು_posedge)
+	    ಹಿಂತಿರುಗಿ 1;
+      ಆದರೆ (ಮುಖವಾಡ & vvp_ಅಂಚು_negedge)
+	    ಹಿಂತಿರುಗಿ -1;
+      ಹಿಂತಿರುಗಿ 0;
 }
 
-unsigned long multiply_with_carry(unsigned long a, unsigned long b,
-				  unsigned long&carry)
+ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ multiply_with_ವಾಹಕ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ a, ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ b,
+				  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ&ವಾಹಕ)
 {
-      const unsigned long mask = (1UL << (CPU_WORD_BITS/2)) - 1;
-      unsigned long a0 = a & mask;
-      unsigned long a1 = (a >> (CPU_WORD_BITS/2)) & mask;
-      unsigned long b0 = b & mask;
-      unsigned long b1 = (b >> (CPU_WORD_BITS/2)) & mask;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = (1UL << (CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು/2)) - 1;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ a0 = a & ಮುಖವಾಡ;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ a1 = (a >> (CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು/2)) & ಮುಖವಾಡ;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ b0 = b & ಮುಖವಾಡ;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ b1 = (b >> (CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು/2)) & ಮುಖವಾಡ;
 
-      unsigned long tmp = a0 * b0;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp = a0 * b0;
 
-      unsigned long r00 = tmp & mask;
-      unsigned long c00 = (tmp >> (CPU_WORD_BITS/2)) & mask;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ r00 = tmp & ಮುಖವಾಡ;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ c00 = (tmp >> (CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು/2)) & ಮುಖವಾಡ;
 
       tmp = a0 * b1;
 
-      unsigned long r01 = tmp & mask;
-      unsigned long c01 = (tmp >> (CPU_WORD_BITS/2)) & mask;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ r01 = tmp & ಮುಖವಾಡ;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ c01 = (tmp >> (CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು/2)) & ಮುಖವಾಡ;
 
       tmp = a1 * b0;
 
-      unsigned long r10 = tmp & mask;
-      unsigned long c10 = (tmp >> (CPU_WORD_BITS/2)) & mask;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ r10 = tmp & ಮುಖವಾಡ;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ c10 = (tmp >> (CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು/2)) & ಮುಖವಾಡ;
 
       tmp = a1 * b1;
 
-      unsigned long r11 = tmp & mask;
-      unsigned long c11 = (tmp >> (CPU_WORD_BITS/2)) & mask;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ r11 = tmp & ಮುಖವಾಡ;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ c11 = (tmp >> (CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು/2)) & ಮುಖವಾಡ;
 
-      unsigned long r1 = c00 + r01 + r10;
-      unsigned long r2 = (r1 >> (CPU_WORD_BITS/2)) & mask;
-      r1 &= mask;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ r1 = c00 + r01 + r10;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ r2 = (r1 >> (CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು/2)) & ಮುಖವಾಡ;
+      r1 &= ಮುಖವಾಡ;
       r2 += c01 + c10 + r11;
-      unsigned long r3 = (r2 >> (CPU_WORD_BITS/2)) & mask;
-      r2 &= mask;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ r3 = (r2 >> (CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು/2)) & ಮುಖವಾಡ;
+      r2 &= ಮುಖವಾಡ;
       r3 += c11;
-      r3 &= mask;
+      r3 &= ಮುಖವಾಡ;
 
-      carry = (r3 << (CPU_WORD_BITS/2)) + r2;
-      return (r1 << (CPU_WORD_BITS/2)) + r00;
+      ವಾಹಕ = (r3 << (CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು/2)) + r2;
+      ಹಿಂತಿರುಗಿ (r1 << (CPU_ಶಬ್ದ_ಬಿಟ್ಟುಗಳು/2)) + r00;
 }
 
 
-void vvp_send_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&val)
+ಶೂನ್ಯ vvp_send_vec8(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector8_t&val)
 {
-      while (vvp_net_t*cur = ptr.ptr()) {
-	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
+      ಆಗ (vvp_net_t*cur = ptr.ptr()) {
+	    vvp_net_ptr_t ಮುಂದಿನ_val = cur->ಪೋರ್ಟ್[ptr.ಪೋರ್ಟ್()];
 
-	    if (cur->fun)
+	    ಆದರೆ (cur->fun)
 		  cur->fun->recv_vec8(ptr, val);
 
-	    ptr = next_val;
+	    ptr = ಮುಂದಿನ_val;
       }
 }
 
-void vvp_send_real(vvp_net_ptr_t ptr, double val, vvp_context_t context)
+ಶೂನ್ಯ vvp_send_real(vvp_net_ptr_t ptr, ದ್ವಿಗುಣ val, vvp_context_t context)
 {
-      while (vvp_net_t*cur = ptr.ptr()) {
-	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
+      ಆಗ (vvp_net_t*cur = ptr.ptr()) {
+	    vvp_net_ptr_t ಮುಂದಿನ_val = cur->ಪೋರ್ಟ್[ptr.ಪೋರ್ಟ್()];
 
-	    if (cur->fun)
+	    ಆದರೆ (cur->fun)
 		  cur->fun->recv_real(ptr, val, context);
 
-	    ptr = next_val;
+	    ptr = ಮುಂದಿನ_val;
       }
 }
 
-const vvp_vector4_t vvp_vector4_t::nil;
+ಸ್ಥಿರಾಂಕ vvp_vector4_t vvp_vector4_t::nil;
 
-void vvp_vector4_t::copy_bits(const vvp_vector4_t&that)
+ಶೂನ್ಯ vvp_vector4_t::copy_ಬಿಟ್ಟುಗಳು(ಸ್ಥಿರಾಂಕ vvp_vector4_t&that)
 {
 
-      if (size_ == that.size_) {
-	    if (size_ > BITS_PER_WORD) {
-		  unsigned words = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
-		  for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      ಆದರೆ (ಗಾತ್ರ_3 == that.ಗಾತ್ರ_3) {
+	    ಆದರೆ (ಗಾತ್ರ_3 > ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+		  ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (ಗಾತ್ರ_3+ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+		  ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು ;  idx += 1)
 			abits_ptr_[idx] = that.abits_ptr_[idx];
-		  for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+		  ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು ;  idx += 1)
 			bbits_ptr_[idx] = that.bbits_ptr_[idx];
-	    } else {
+	    } ಇಲ್ಲದಿದ್ದರೆ {
 		  abits_val_ = that.abits_val_;
 		  bbits_val_ = that.bbits_val_;
 	    }
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	/* Now we know that the sizes of this and that are definitely
@@ -635,63 +635,63 @@ void vvp_vector4_t::copy_bits(const vvp_vector4_t&that)
 
 	/* If source and destination are both short, then mask/copy
 	   the bit values. */
-      if (size_ <= BITS_PER_WORD && that.size_ <= BITS_PER_WORD) {
-	    unsigned bits_to_copy = (that.size_ < size_) ? that.size_ : size_;
-	    unsigned long mask = ((bits_to_copy < BITS_PER_WORD) ? (1UL << bits_to_copy) :
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ && that.ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_copy = (that.ಗಾತ್ರ_3 < ಗಾತ್ರ_3) ? that.ಗಾತ್ರ_3 : ಗಾತ್ರ_3;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = ((ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_copy < ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) ? (1UL << ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_copy) :
 	                                                           (0UL)) - 1UL;
-	    abits_val_ &= ~mask;
-	    bbits_val_ &= ~mask;
-	    abits_val_ |= that.abits_val_&mask;
-	    bbits_val_ |= that.bbits_val_&mask;
-	    return;
+	    abits_val_ &= ~ಮುಖವಾಡ;
+	    bbits_val_ &= ~ಮುಖವಾಡ;
+	    abits_val_ |= that.abits_val_&ಮುಖವಾಡ;
+	    bbits_val_ |= that.bbits_val_&ಮುಖವಾಡ;
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	/* Now we know that either source or destination are long. If
 	   the destination is short, then mask/copy from the low word
 	   of the long source. */
-      if (size_ <= BITS_PER_WORD) {
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 	    abits_val_ = that.abits_ptr_[0];
 	    bbits_val_ = that.bbits_ptr_[0];
-	    if (size_ < BITS_PER_WORD) {
-		  unsigned long mask = (1UL << size_) - 1UL;
-		  abits_val_ &= mask;
-		  bbits_val_ &= mask;
+	    ಆದರೆ (ಗಾತ್ರ_3 < ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = (1UL << ಗಾತ್ರ_3) - 1UL;
+		  abits_val_ &= ಮುಖವಾಡ;
+		  bbits_val_ &= ಮುಖವಾಡ;
 	    }
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	/* Now we know that the destination must be long. If the
 	   source is short, then mask/copy from its value. */
-      if (that.size_ <= BITS_PER_WORD) {
-	    unsigned long mask;
-	    if (that.size_ < BITS_PER_WORD) {
-		  mask = (1UL << that.size_) - 1UL;
-		  abits_ptr_[0] &= ~mask;
-		  bbits_ptr_[0] &= ~mask;
-	    } else {
-		  mask = -1UL;
+      ಆದರೆ (that.ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ;
+	    ಆದರೆ (that.ಗಾತ್ರ_3 < ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+		  ಮುಖವಾಡ = (1UL << that.ಗಾತ್ರ_3) - 1UL;
+		  abits_ptr_[0] &= ~ಮುಖವಾಡ;
+		  bbits_ptr_[0] &= ~ಮುಖವಾಡ;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
+		  ಮುಖವಾಡ = -1UL;
 	    }
-	    abits_ptr_[0] |= that.abits_val_&mask;
-	    bbits_ptr_[0] |= that.bbits_val_&mask;
-	    return;
+	    abits_ptr_[0] |= that.abits_val_&ಮುಖವಾಡ;
+	    bbits_ptr_[0] |= that.bbits_val_&ಮುಖವಾಡ;
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	/* Finally, we know that source and destination are long. copy
 	   words until we get to the last. */
-      unsigned bits_to_copy = (that.size_ < size_) ? that.size_ : size_;
-      unsigned word = 0;
-      while (bits_to_copy >= BITS_PER_WORD) {
-	    abits_ptr_[word] = that.abits_ptr_[word];
-	    bbits_ptr_[word] = that.bbits_ptr_[word];
-	    bits_to_copy -= BITS_PER_WORD;
-	    word += 1;
+      ಚಿಹ್ನೆರಹಿತ ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_copy = (that.ಗಾತ್ರ_3 < ಗಾತ್ರ_3) ? that.ಗಾತ್ರ_3 : ಗಾತ್ರ_3;
+      ಚಿಹ್ನೆರಹಿತ ಶಬ್ದ = 0;
+      ಆಗ (ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_copy >= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    abits_ptr_[ಶಬ್ದ] = that.abits_ptr_[ಶಬ್ದ];
+	    bbits_ptr_[ಶಬ್ದ] = that.bbits_ptr_[ಶಬ್ದ];
+	    ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_copy -= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಶಬ್ದ += 1;
       }
-      if (bits_to_copy > 0) {
-	    unsigned long mask = (1UL << bits_to_copy) - 1UL;
-	    abits_ptr_[word] &= ~mask;
-	    bbits_ptr_[word] &= ~mask;
-	    abits_ptr_[word] |= that.abits_ptr_[word] & mask;
-	    bbits_ptr_[word] |= that.bbits_ptr_[word] & mask;
+      ಆದರೆ (ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_copy > 0) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = (1UL << ಬಿಟ್ಟುಗಳು_ಗಮ್ಯ_copy) - 1UL;
+	    abits_ptr_[ಶಬ್ದ] &= ~ಮುಖವಾಡ;
+	    bbits_ptr_[ಶಬ್ದ] &= ~ಮುಖವಾಡ;
+	    abits_ptr_[ಶಬ್ದ] |= that.abits_ptr_[ಶಬ್ದ] & ಮುಖವಾಡ;
+	    bbits_ptr_[ಶಬ್ದ] |= that.bbits_ptr_[ಶಬ್ದ] & ಮುಖವಾಡ;
       }
 }
 
@@ -699,15 +699,15 @@ void vvp_vector4_t::copy_bits(const vvp_vector4_t&that)
  * This function should ONLY BE CALLED FROM vvp_vector4_t::copy_from_,
  * as it performs part of that functions tasks.
  */
-void vvp_vector4_t::copy_from_big_(const vvp_vector4_t&that)
+ಶೂನ್ಯ vvp_vector4_t::copy_from_big_(ಸ್ಥಿರಾಂಕ vvp_vector4_t&that)
 {
-      unsigned words = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
-      abits_ptr_ = new unsigned long[2*words];
-      bbits_ptr_ = abits_ptr_ + words;
+      ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (ಗಾತ್ರ_3+ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      abits_ptr_ = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ[2*ಪದಗಳು];
+      bbits_ptr_ = abits_ptr_ + ಪದಗಳು;
 
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು ;  idx += 1)
 	    abits_ptr_[idx] = that.abits_ptr_[idx];
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು ;  idx += 1)
 	    bbits_ptr_[idx] = that.bbits_ptr_[idx];
 }
 
@@ -716,179 +716,179 @@ void vvp_vector4_t::copy_from_big_(const vvp_vector4_t&that)
  * except that we combine that with an invert. This allows the ~ and
  * the assignment to be blended in many common cases.
  */
-void vvp_vector4_t::copy_inverted_from_(const vvp_vector4_t&that)
+ಶೂನ್ಯ vvp_vector4_t::copy_inverted_from_(ಸ್ಥಿರಾಂಕ vvp_vector4_t&that)
 {
-      size_ = that.size_;
-      if (size_ > BITS_PER_WORD) {
-	    unsigned words = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
-	    abits_ptr_ = new unsigned long[2*words];
-	    bbits_ptr_ = abits_ptr_ + words;
+      ಗಾತ್ರ_3 = that.ಗಾತ್ರ_3;
+      ಆದರೆ (ಗಾತ್ರ_3 > ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (ಗಾತ್ರ_3+ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    abits_ptr_ = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ[2*ಪದಗಳು];
+	    bbits_ptr_ = abits_ptr_ + ಪದಗಳು;
 
-	    unsigned remaining = size_;
-	    unsigned idx = 0;
-	    while (remaining >= BITS_PER_WORD) {
+	    ಚಿಹ್ನೆರಹಿತ ಉಳಿದ = ಗಾತ್ರ_3;
+	    ಚಿಹ್ನೆರಹಿತ idx = 0;
+	    ಆಗ (ಉಳಿದ >= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 		  abits_ptr_[idx] = that.bbits_ptr_[idx] | ~that.abits_ptr_[idx];
 		  idx += 1;
-		  remaining -= BITS_PER_WORD;
+		  ಉಳಿದ -= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 	    }
-	    if (remaining > 0) {
-		  unsigned long mask = (1UL<<remaining) - 1UL;
-		  abits_ptr_[idx] = mask & (that.bbits_ptr_[idx] | ~that.abits_ptr_[idx]);
+	    ಆದರೆ (ಉಳಿದ > 0) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = (1UL<<ಉಳಿದ) - 1UL;
+		  abits_ptr_[idx] = ಮುಖವಾಡ & (that.bbits_ptr_[idx] | ~that.abits_ptr_[idx]);
 	    }
 
-	    for (idx = 0 ;  idx < words ;  idx += 1)
+	    ಗಾಗಿ (idx = 0 ;  idx < ಪದಗಳು ;  idx += 1)
 		  bbits_ptr_[idx] = that.bbits_ptr_[idx];
 
-      } else {
-	    unsigned long mask = (size_<BITS_PER_WORD)? (1UL<<size_)-1UL : -1UL;
-	    abits_val_ = mask & (that.bbits_val_ | ~that.abits_val_);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = (ಗಾತ್ರ_3<ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ)? (1UL<<ಗಾತ್ರ_3)-1UL : -1UL;
+	    abits_val_ = ಮುಖವಾಡ & (that.bbits_val_ | ~that.abits_val_);
 	    bbits_val_ = that.bbits_val_;
       }
 }
 
 /* Make sure to set size_ before calling this routine. */
-void vvp_vector4_t::allocate_words_(unsigned long inita, unsigned long initb)
+ಶೂನ್ಯ vvp_vector4_t::allocate_ಪದಗಳು(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ inita, ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ initb)
 {
-      if (size_ > BITS_PER_WORD) {
-	    unsigned cnt = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    abits_ptr_ = new unsigned long[2*cnt];
+      ಆದರೆ (ಗಾತ್ರ_3 > ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ cnt = (ಗಾತ್ರ_3 + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - 1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    abits_ptr_ = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ[2*cnt];
 	    bbits_ptr_ = abits_ptr_ + cnt;
-	    for (unsigned idx = 0 ;  idx < cnt ;  idx += 1)
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < cnt ;  idx += 1)
 		  abits_ptr_[idx] = inita;
-	    for (unsigned idx = 0 ;  idx < cnt ;  idx += 1)
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < cnt ;  idx += 1)
 		  bbits_ptr_[idx] = initb;
 
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	    abits_val_ = inita;
 	    bbits_val_ = initb;
       }
 }
 
-vvp_vector4_t::vvp_vector4_t(unsigned size__, double val)
-: size_(size__)
+vvp_vector4_t::vvp_vector4_t(ಚಿಹ್ನೆರಹಿತ ಗಾತ್ರ_4, ದ್ವಿಗುಣ val)
+: ಗಾತ್ರ_3(ಗಾತ್ರ_4)
 {
-      bool is_neg = false;
-      double fraction;
-      int exponent;
+      ತಾರ್ಕಿಕ is_neg = ಸುಳ್ಳು;
+      ದ್ವಿಗುಣ fraction;
+      ಪೂರ್ಣಾಂಕ exponent;
 
 	/* We return 'bx for a NaN or +/- infinity. */
-      if (val != val || (val && (val == 0.5*val)))  {
-	    allocate_words_(WORD_X_ABITS, WORD_X_BBITS);
-	    return;
+      ಆದರೆ (val != val || (val && (val == 0.5*val)))  {
+	    allocate_ಪದಗಳು(ಶಬ್ದ_X_ABITS, ಶಬ್ದ_X_BBITS);
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	/* Convert to a positive result. */
-      if (val < 0.0) {
-	    is_neg = true;
+      ಆದರೆ (val < 0.0) {
+	    is_neg = ನಿಜ;
 	    val = -val;
       }
-      allocate_words_(WORD_0_ABITS, WORD_0_BBITS);
+      allocate_ಪದಗಳು(ಶಬ್ದ_0_ABITS, ಶಬ್ದ_0_BBITS);
 
 	/* Get the exponent and fractional part of the number. */
       fraction = frexp(val, &exponent);
 
 	/* If the value is small enough just use lround(). */
-      if (exponent < BITS_PER_WORD-2) {
-	    if (is_neg) this->invert();  // Invert the bits if negative.
-	    long sval = lround(val);
-	    if (is_neg) sval = -sval;
+      ಆದರೆ (exponent < ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-2) {
+	    ಆದರೆ (is_neg) ಇದು->invert();  // Invert the bits if negative.
+	    ದೀರ್ಘ sval = lround(val);
+	    ಆದರೆ (is_neg) sval = -sval;
 	      /* This requires that 0 and 1 have the same bbit value. */
-	    if (size_ > BITS_PER_WORD) {
+	    ಆದರೆ (ಗಾತ್ರ_3 > ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 		  abits_ptr_[0] = sval;
-	    } else {
+	    } ಇಲ್ಲದಿದ್ದರೆ {
 		  abits_val_ = sval;
 	    }
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      unsigned nwords = (exponent-1) / BITS_PER_WORD;
-      unsigned my_words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD - 1;
+      ಚಿಹ್ನೆರಹಿತ nwords = (exponent-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      ಚಿಹ್ನೆರಹಿತ my_ಪದಗಳು = (ಗಾತ್ರ_3 + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - 1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - 1;
 
-      fraction = ldexp(fraction, (exponent-1) % BITS_PER_WORD + 1);
+      fraction = ldexp(fraction, (exponent-1) % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ + 1);
 
 	/* Skip any leading bits. */
-      for (int idx = (signed) nwords; idx > (signed) my_words; idx -=1) {
-	    unsigned long bits = (unsigned long) fraction;
-	    fraction = fraction - (double) bits;
-	    fraction = ldexp(fraction, BITS_PER_WORD);
+      ಗಾಗಿ (ಪೂರ್ಣಾಂಕ idx = (ಚಿಹ್ನೆಯುಳ್ಳ) nwords; idx > (ಚಿಹ್ನೆಯುಳ್ಳ) my_ಪದಗಳು; idx -=1) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಬಿಟ್ಟುಗಳು = (ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ) fraction;
+	    fraction = fraction - (ದ್ವಿಗುಣ) ಬಿಟ್ಟುಗಳು;
+	    fraction = ldexp(fraction, ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ);
       }
 
 	/* Convert the remaining bits as appropriate. */
-      if (my_words == 0) {
-		  unsigned long bits = (unsigned long) fraction;
-		  abits_val_ = bits;
-		  fraction = fraction - (double) bits;
+      ಆದರೆ (my_ಪದಗಳು == 0) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಬಿಟ್ಟುಗಳು = (ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ) fraction;
+		  abits_val_ = ಬಿಟ್ಟುಗಳು;
+		  fraction = fraction - (ದ್ವಿಗುಣ) ಬಿಟ್ಟುಗಳು;
 		    /* Round any fractional part up. */
-		  if (fraction >= 0.5) *this += (int64_t) 1;
-      } else {
-	    if (nwords < my_words) my_words = nwords;
-	    for (int idx = (signed)my_words; idx >= 0; idx -= 1) {
-		  unsigned long bits = (unsigned long) fraction;
-		  abits_ptr_[idx] = bits;
-		  fraction = fraction - (double) bits;
-		  fraction = ldexp(fraction, BITS_PER_WORD);
+		  ಆದರೆ (fraction >= 0.5) *ಇದು += (int64_t) 1;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಆದರೆ (nwords < my_ಪದಗಳು) my_ಪದಗಳು = nwords;
+	    ಗಾಗಿ (ಪೂರ್ಣಾಂಕ idx = (ಚಿಹ್ನೆಯುಳ್ಳ)my_ಪದಗಳು; idx >= 0; idx -= 1) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಬಿಟ್ಟುಗಳು = (ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ) fraction;
+		  abits_ptr_[idx] = ಬಿಟ್ಟುಗಳು;
+		  fraction = fraction - (ದ್ವಿಗುಣ) ಬಿಟ್ಟುಗಳು;
+		  fraction = ldexp(fraction, ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ);
 	    }
 	      /* Round any fractional part up. */
-	    if (fraction >= ldexp(0.5, BITS_PER_WORD)) *this += (int64_t) 1;
+	    ಆದರೆ (fraction >= ldexp(0.5, ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ)) *ಇದು += (int64_t) 1;
        }
 
 	/* Convert to a negative number if needed. */
-      if (is_neg) {
-	    this->invert();
-	    *this += (int64_t) 1;
+      ಆದರೆ (is_neg) {
+	    ಇದು->invert();
+	    *ಇದು += (int64_t) 1;
       }
 }
 
-vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that,
-			    unsigned adr, unsigned wid)
+vvp_vector4_t::vvp_vector4_t(ಸ್ಥಿರಾಂಕ vvp_vector4_t&that,
+			    ಚಿಹ್ನೆರಹಿತ adr, ಚಿಹ್ನೆರಹಿತ wid)
 {
 	// Set up and initialize the destination.
-      size_ = wid;
-      allocate_words_(WORD_X_ABITS, WORD_X_BBITS);
+      ಗಾತ್ರ_3 = wid;
+      allocate_ಪದಗಳು(ಶಬ್ದ_X_ABITS, ಶಬ್ದ_X_BBITS);
 
 	// Special case: selecting from far beyond the source vector,
 	// to the result is all X bits. We're done.
-      if (adr >= that.size_)
-	    return;
+      ಆದರೆ (adr >= that.ಗಾತ್ರ_3)
+	    ಹಿಂತಿರುಗಿ;
 
 	// Special case: The source is not quite big enough to supply
 	// all bits, so get the bits that we can. The remainder will
 	// be left at BIT4_X.
-      if ((adr + wid) > that.size_) {
-	    unsigned use_wid = that.size_ - adr;
-	    for (unsigned idx = 0 ; idx < use_wid ; idx += 1)
-		  set_bit(idx, that.value(adr+idx));
+      ಆದರೆ ((adr + wid) > that.ಗಾತ್ರ_3) {
+	    ಚಿಹ್ನೆರಹಿತ use_wid = that.ಗಾತ್ರ_3 - adr;
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < use_wid ; idx += 1)
+		  ಗಣ_ಬಿಟ್(idx, that.value(adr+idx));
 
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	// At the point, we know that the source part is entirely
 	// contained in the source vector.
 	// assert((adr + wid) <= that.size_);
 
-      if (wid > BITS_PER_WORD) {
+      ಆದರೆ (wid > ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 	      /* In this case, the subvector and the source vector are
 		 long. Do the transfer reasonably efficiently. */
-	    unsigned ptr = adr / BITS_PER_WORD;
-	    unsigned long off = adr % BITS_PER_WORD;
-	    unsigned long noff = BITS_PER_WORD - off;
-	    unsigned long lmask = (1UL << off) - 1UL;
-	    unsigned trans = 0;
-	    unsigned dst = 0;
-	    while (trans < wid) {
+	    ಚಿಹ್ನೆರಹಿತ ptr = adr / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ off = adr % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ noff = ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - off;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ lmask = (1UL << off) - 1UL;
+	    ಚಿಹ್ನೆರಹಿತ trans = 0;
+	    ಚಿಹ್ನೆರಹಿತ dst = 0;
+	    ಆಗ (trans < wid) {
 		    // The low bits of the result.
 		  abits_ptr_[dst] = (that.abits_ptr_[ptr] & ~lmask) >> off;
 		  bbits_ptr_[dst] = (that.bbits_ptr_[ptr] & ~lmask) >> off;
 		  trans += noff;
 
-		  if (trans >= wid)
-			break;
+		  ಆದರೆ (trans >= wid)
+			ನಿಲ್ಲಿಸು;
 
 		  ptr += 1;
 
 		    // The high bits of the result. Skip this if the
 		    // source and destination are perfectly aligned.
-		  if (noff != BITS_PER_WORD) {
+		  ಆದರೆ (noff != ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 			abits_ptr_[dst] |= (that.abits_ptr_[ptr]&lmask) << noff;
 			bbits_ptr_[dst] |= (that.bbits_ptr_[ptr]&lmask) << noff;
 			trans += off;
@@ -897,36 +897,36 @@ vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that,
 		  dst += 1;
 	    }
 
-      } else if (that.size_ > BITS_PER_WORD) {
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (that.ಗಾತ್ರ_3 > ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 	      /* In this case, the subvector fits in a single word,
 		 but the source is large. */
-	    unsigned ptr = adr / BITS_PER_WORD;
-	    unsigned long off = adr % BITS_PER_WORD;
-	    unsigned trans = BITS_PER_WORD - off;
-	    if (trans > wid)
+	    ಚಿಹ್ನೆರಹಿತ ptr = adr / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ off = adr % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಚಿಹ್ನೆರಹಿತ trans = ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - off;
+	    ಆದರೆ (trans > wid)
 		  trans = wid;
 
-	    if (trans == BITS_PER_WORD) {
+	    ಆದರೆ (trans == ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 		    // Very special case: Copy exactly 1 perfectly
 		    // aligned word.
 		  abits_val_ = that.abits_ptr_[ptr];
 		  bbits_val_ = that.bbits_ptr_[ptr];
 
-	    } else {
+	    } ಇಲ್ಲದಿದ್ದರೆ {
 		    // lmask is the low bits of the destination,
 		    // masked into the source.
-		  unsigned long lmask = (1UL<<trans) - 1UL;
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ lmask = (1UL<<trans) - 1UL;
 		  lmask <<= off;
 
 		    // The low bits of the result.
 		  abits_val_ = (that.abits_ptr_[ptr] & lmask) >> off;
 		  bbits_val_ = (that.bbits_ptr_[ptr] & lmask) >> off;
 
-		  if (trans < wid) {
+		  ಆದರೆ (trans < wid) {
 			  // If there are more bits, then get them
 			  // from the bottom of the next word of the
 			  // source.
-			unsigned long hmask = (1UL << (wid-trans)) - 1UL;
+			ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ hmask = (1UL << (wid-trans)) - 1UL;
 
 			  // The high bits of the result.
 			abits_val_ |= (that.abits_ptr_[ptr+1]&hmask) << trans;
@@ -934,21 +934,21 @@ vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that,
 		  }
 	    }
 
-      } else if (size_ == BITS_PER_WORD) {
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (ಗಾತ್ರ_3 == ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 	      /* We know that source and destination are short. If the
 		 destination is a full word, then we know the copy is
 		 aligned and complete. */
 	    abits_val_ = that.abits_val_;
 	    bbits_val_ = that.bbits_val_;
 
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	      /* Finally, the source and destination vectors are both
 		 short, so there is a single mask/shift/copy. */
-	    unsigned long mask = (1UL << size_) - 1UL;
-	    mask <<= adr;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = (1UL << ಗಾತ್ರ_3) - 1UL;
+	    ಮುಖವಾಡ <<= adr;
 
-	    abits_val_ = (that.abits_val_ & mask) >> adr;
-	    bbits_val_ = (that.bbits_val_ & mask) >> adr;
+	    abits_val_ = (that.abits_val_ & ಮುಖವಾಡ) >> adr;
+	    bbits_val_ = (that.bbits_val_ & ಮುಖವಾಡ) >> adr;
       }
 
 }
@@ -957,244 +957,244 @@ vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that,
  * Change the size of the vvp_vector4_t vector to the new size. Copy
  * the old values, as many as well fit, into the new vector.
  */
-void vvp_vector4_t::resize(unsigned newsize, vvp_bit4_t pad_bit)
+ಶೂನ್ಯ vvp_vector4_t::resize(ಚಿಹ್ನೆರಹಿತ newsize, vvp_bit4_t pad_ಬಿಟ್)
 {
-      if (size_ == newsize)
-	    return;
+      ಆದರೆ (ಗಾತ್ರ_3 == newsize)
+	    ಹಿಂತಿರುಗಿ;
 
-      unsigned cnt = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-      unsigned long word_pad_abits = 0;
-      unsigned long word_pad_bbits = 0;
-      switch (pad_bit) {
-	  case BIT4_0:
-	    word_pad_abits = WORD_0_ABITS;
-	    word_pad_bbits = WORD_0_BBITS;
-	    break;
-	  case BIT4_1:
-	    word_pad_abits = WORD_1_ABITS;
-	    word_pad_bbits = WORD_1_BBITS;
-	    break;
-	  case BIT4_X:
-	    word_pad_abits = WORD_X_ABITS;
-	    word_pad_bbits = WORD_X_BBITS;
-	    break;
-	  case BIT4_Z:
-	    word_pad_abits = WORD_Z_ABITS;
-	    word_pad_bbits = WORD_Z_BBITS;
-	    break;
+      ಚಿಹ್ನೆರಹಿತ cnt = (ಗಾತ್ರ_3 + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - 1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಶಬ್ದ_pad_abits = 0;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಶಬ್ದ_pad_bbits = 0;
+      ಆಯ್ಕೆ (pad_ಬಿಟ್) {
+	  ಸ್ಥಿತಿ BIT4_0:
+	    ಶಬ್ದ_pad_abits = ಶಬ್ದ_0_ABITS;
+	    ಶಬ್ದ_pad_bbits = ಶಬ್ದ_0_BBITS;
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ BIT4_1:
+	    ಶಬ್ದ_pad_abits = ಶಬ್ದ_1_ABITS;
+	    ಶಬ್ದ_pad_bbits = ಶಬ್ದ_1_BBITS;
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ BIT4_X:
+	    ಶಬ್ದ_pad_abits = ಶಬ್ದ_X_ABITS;
+	    ಶಬ್ದ_pad_bbits = ಶಬ್ದ_X_BBITS;
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ BIT4_Z:
+	    ಶಬ್ದ_pad_abits = ಶಬ್ದ_Z_ABITS;
+	    ಶಬ್ದ_pad_bbits = ಶಬ್ದ_Z_BBITS;
+	    ನಿಲ್ಲಿಸು;
       }
 
-      if (newsize > BITS_PER_WORD) {
-	    unsigned newcnt = (newsize + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    if (newcnt == cnt) {
+      ಆದರೆ (newsize > ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ newcnt = (newsize + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - 1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಆದರೆ (newcnt == cnt) {
 		    // If the word count doesn't change, then there is
 		    // no need for re-allocation so we are done now.
-		  if (newsize > size_) {
-			if (unsigned fill = size_ % BITS_PER_WORD) {
+		  ಆದರೆ (newsize > ಗಾತ್ರ_3) {
+			ಆದರೆ (ಚಿಹ್ನೆರಹಿತ fill = ಗಾತ್ರ_3 % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 			      abits_ptr_[cnt-1] &= ~((-1UL) << fill);
 			      bbits_ptr_[cnt-1] &= ~((-1UL) << fill);
-			      abits_ptr_[cnt-1] |= word_pad_abits << fill;
-			      bbits_ptr_[cnt-1] |= word_pad_bbits << fill;
+			      abits_ptr_[cnt-1] |= ಶಬ್ದ_pad_abits << fill;
+			      bbits_ptr_[cnt-1] |= ಶಬ್ದ_pad_bbits << fill;
 			}
 		  }
-		  size_ = newsize;
-		  return;
+		  ಗಾತ್ರ_3 = newsize;
+		  ಹಿಂತಿರುಗಿ;
 	    }
 
-	    unsigned long*newbits = new unsigned long[2*newcnt];
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*newbits = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ[2*newcnt];
 
-	    if (cnt > 1) {
-		  unsigned trans = cnt;
-		  if (trans > newcnt)
+	    ಆದರೆ (cnt > 1) {
+		  ಚಿಹ್ನೆರಹಿತ trans = cnt;
+		  ಆದರೆ (trans > newcnt)
 			trans = newcnt;
 
-		  for (unsigned idx = 0 ;  idx < trans ;  idx += 1)
+		  ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < trans ;  idx += 1)
 			newbits[idx] = abits_ptr_[idx];
-		  for (unsigned idx = 0 ;  idx < trans ;  idx += 1)
+		  ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < trans ;  idx += 1)
 			newbits[newcnt+idx] = bbits_ptr_[idx];
 
-		  delete[]abits_ptr_;
+		  ಅಳಿಸು[]abits_ptr_;
 
-	    } else {
+	    } ಇಲ್ಲದಿದ್ದರೆ {
 		  newbits[0] = abits_val_;
 		  newbits[newcnt] = bbits_val_;
 	    }
 
-	    if (newsize > size_) {
-		  if (unsigned fill = size_ % BITS_PER_WORD) {
+	    ಆದರೆ (newsize > ಗಾತ್ರ_3) {
+		  ಆದರೆ (ಚಿಹ್ನೆರಹಿತ fill = ಗಾತ್ರ_3 % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 			newbits[cnt-1] &= ~((-1UL) << fill);
-			newbits[cnt-1] |= word_pad_abits << fill;
+			newbits[cnt-1] |= ಶಬ್ದ_pad_abits << fill;
 			newbits[newcnt+cnt-1] &= ~((-1UL) << fill);
-			newbits[newcnt+cnt-1] |= word_pad_bbits << fill;
+			newbits[newcnt+cnt-1] |= ಶಬ್ದ_pad_bbits << fill;
 		  }
-		  for (unsigned idx = cnt ;  idx < newcnt ;  idx += 1)
-			newbits[idx] = word_pad_abits;
-		  for (unsigned idx = cnt ;  idx < newcnt ;  idx += 1)
-			newbits[newcnt+idx] = word_pad_bbits;
+		  ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = cnt ;  idx < newcnt ;  idx += 1)
+			newbits[idx] = ಶಬ್ದ_pad_abits;
+		  ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = cnt ;  idx < newcnt ;  idx += 1)
+			newbits[newcnt+idx] = ಶಬ್ದ_pad_bbits;
 	    }
 
-	    size_ = newsize;
+	    ಗಾತ್ರ_3 = newsize;
 	    abits_ptr_ = newbits;
 	    bbits_ptr_ = newbits + newcnt;
 
-      } else {
-	    if (cnt > 1) {
-		  unsigned long newvala = abits_ptr_[0];
-		  unsigned long newvalb = bbits_ptr_[0];
-		  delete[]abits_ptr_;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಆದರೆ (cnt > 1) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ newvala = abits_ptr_[0];
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ newvalb = bbits_ptr_[0];
+		  ಅಳಿಸು[]abits_ptr_;
 		  abits_val_ = newvala;
 		  bbits_val_ = newvalb;
 	    }
 
-	    if (newsize > size_) {
-		  abits_val_ &= ~((-1UL) << size_);
-		  bbits_val_ &= ~((-1UL) << size_);
-		  abits_val_ |= word_pad_abits << size_;
-		  bbits_val_ |= word_pad_bbits << size_;
+	    ಆದರೆ (newsize > ಗಾತ್ರ_3) {
+		  abits_val_ &= ~((-1UL) << ಗಾತ್ರ_3);
+		  bbits_val_ &= ~((-1UL) << ಗಾತ್ರ_3);
+		  abits_val_ |= ಶಬ್ದ_pad_abits << ಗಾತ್ರ_3;
+		  bbits_val_ |= ಶಬ್ದ_pad_bbits << ಗಾತ್ರ_3;
 	    }
 
-	    size_ = newsize;
+	    ಗಾತ್ರ_3 = newsize;
       }
 }
 
 
-unsigned long* vvp_vector4_t::subarray(unsigned adr, unsigned wid, bool xz_to_0) const
+ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ* vvp_vector4_t::subarray(ಚಿಹ್ನೆರಹಿತ adr, ಚಿಹ್ನೆರಹಿತ wid, ತಾರ್ಕಿಕ xz_ಗಮ್ಯ_0) ಸ್ಥಿರಾಂಕ
 {
-      const unsigned BIT2_PER_WORD = 8*sizeof(unsigned long);
-      unsigned awid = (wid + BIT2_PER_WORD - 1) / (BIT2_PER_WORD);
-      unsigned long*val = new unsigned long[awid];
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ BIT2_ಪ್ರತಿ_ಶಬ್ದ = 8*ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ);
+      ಚಿಹ್ನೆರಹಿತ awid = (wid + BIT2_ಪ್ರತಿ_ಶಬ್ದ - 1) / (BIT2_ಪ್ರತಿ_ಶಬ್ದ);
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*val = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ[awid];
 
-      for (unsigned idx = 0 ;  idx < awid ;  idx += 1)
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < awid ;  idx += 1)
 	    val[idx] = 0;
 
-      if (size_ <= BITS_PER_WORD) {
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 	      /* Handle the special case that the array is small. The
 		 entire value of the vector4 is within the xbits_val_
 		 so we know that the result is a single word, the
 		 source is a single word, and we just have to loop
 		 through that word. */
-	    unsigned long atmp = abits_val_ >> adr;
-	    unsigned long btmp = bbits_val_ >> adr;
-	    if (wid < BIT2_PER_WORD) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ atmp = abits_val_ >> adr;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ btmp = bbits_val_ >> adr;
+	    ಆದರೆ (wid < BIT2_ಪ್ರತಿ_ಶಬ್ದ) {
 		  atmp &= (1UL << wid) - 1;
 		  btmp &= (1UL << wid) - 1;
 	    }
-	    if (btmp) {
-		  if (xz_to_0)
+	    ಆದರೆ (btmp) {
+		  ಆದರೆ (xz_ಗಮ್ಯ_0)
 			atmp &= ~btmp;
-		  else
-			goto x_out;
+		  ಇಲ್ಲದಿದ್ದರೆ
+			ಹೋಗು x_ಹೊರಹೋಗು;
 	    }
 
 	    val[0] = atmp;
 
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 
-	    unsigned val_ptr = 0;
-	    unsigned val_off = 0;
+	    ಚಿಹ್ನೆರಹಿತ val_ptr = 0;
+	    ಚಿಹ್ನೆರಹಿತ val_off = 0;
 
 	      /* Get the first word we are scanning. We may in fact be
 		 somewhere in the middle of that word. */
-	    while (wid > 0) {
-		  unsigned long atmp = abits_ptr_[adr/BITS_PER_WORD];
-		  unsigned long btmp = bbits_ptr_[adr/BITS_PER_WORD];
-		  unsigned long off = adr%BITS_PER_WORD;
+	    ಆಗ (wid > 0) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ atmp = abits_ptr_[adr/ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ];
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ btmp = bbits_ptr_[adr/ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ];
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ off = adr%ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 		  atmp >>= off;
 		  btmp >>= off;
 
-		  unsigned long trans = BITS_PER_WORD - off;
-		  if (trans > (BIT2_PER_WORD - val_off))
-			trans = BIT2_PER_WORD - val_off;
-		  if (wid < trans)
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ trans = ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - off;
+		  ಆದರೆ (trans > (BIT2_ಪ್ರತಿ_ಶಬ್ದ - val_off))
+			trans = BIT2_ಪ್ರತಿ_ಶಬ್ದ - val_off;
+		  ಆದರೆ (wid < trans)
 			trans = wid;
-		  if (trans < BIT2_PER_WORD) {
+		  ಆದರೆ (trans < BIT2_ಪ್ರತಿ_ಶಬ್ದ) {
 			atmp &= (1UL << trans) - 1;
 			btmp &= (1UL << trans) - 1;
 		  }
-		  if (btmp) {
-			if (xz_to_0)
+		  ಆದರೆ (btmp) {
+			ಆದರೆ (xz_ಗಮ್ಯ_0)
 			      atmp &= ~btmp;
-			else
-			      goto x_out;
+			ಇಲ್ಲದಿದ್ದರೆ
+			      ಹೋಗು x_ಹೊರಹೋಗು;
 		  }
 
 		  val[val_ptr] |= atmp << val_off;
 		  adr += trans;
 		  wid -= trans;
 		  val_off += trans;
-		  if (val_off == BIT2_PER_WORD) {
+		  ಆದರೆ (val_off == BIT2_ಪ್ರತಿ_ಶಬ್ದ) {
 			val_ptr += 1;
 			val_off = 0;
 		  }
 	    }
       }
 
-      return val;
+      ಹಿಂತಿರುಗಿ val;
 
- x_out:
-      delete[]val;
-      return 0;
+ x_ಹೊರಹೋಗು:
+      ಅಳಿಸು[]val;
+      ಹಿಂತಿರುಗಿ 0;
 }
 
-void vvp_vector4_t::setarray(unsigned adr, unsigned wid, const unsigned long*val)
+ಶೂನ್ಯ vvp_vector4_t::setarray(ಚಿಹ್ನೆರಹಿತ adr, ಚಿಹ್ನೆರಹಿತ wid, ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*val)
 {
-      assert(adr+wid <= size_);
+      ಪ್ರತಿಜ್ಞಾ(adr+wid <= ಗಾತ್ರ_3);
 
-      const unsigned BIT2_PER_WORD = 8*sizeof(unsigned long);
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ BIT2_ಪ್ರತಿ_ಶಬ್ದ = 8*ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ);
 
-      if (size_ <= BITS_PER_WORD) {
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 	      // We know here that both the source and the target are
 	      // within a single word. Write the bits into the
 	      // abits_val_ directly.
 
-	    assert(BIT2_PER_WORD <= BITS_PER_WORD);
-	    unsigned long lmask = (1UL << adr) - 1UL;
-	    unsigned long hmask = ((adr+wid) < BITS_PER_WORD)
+	    ಪ್ರತಿಜ್ಞಾ(BIT2_ಪ್ರತಿ_ಶಬ್ದ <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ);
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ lmask = (1UL << adr) - 1UL;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ hmask = ((adr+wid) < ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ)
 		  ? -1UL << (adr+wid)
 		  : 0;
-	    unsigned long mask = ~(hmask | lmask);
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = ~(hmask | lmask);
 
-	    abits_val_ &= ~mask;
-	    bbits_val_ &= ~mask;
+	    abits_val_ &= ~ಮುಖವಾಡ;
+	    bbits_val_ &= ~ಮುಖವಾಡ;
 
-	    abits_val_ |= mask & (val[0] << adr);
+	    abits_val_ |= ಮುಖವಾಡ & (val[0] << adr);
 
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	      // The general case, there are multiple words of
 	      // destination, and possibly multiple words of source
 	      // data. Shift and mask as we go.
-	    unsigned off = adr % BITS_PER_WORD;
-	    unsigned ptr = adr / BITS_PER_WORD;
-	    unsigned val_off = 0;
-	    unsigned val_ptr = 0;
-	    while (wid > 0) {
-		  unsigned trans = wid;
-		  if (trans > (BIT2_PER_WORD-val_off))
-			trans = BIT2_PER_WORD-val_off;
-		  if (trans > (BITS_PER_WORD-off))
-			trans = BITS_PER_WORD-off;
+	    ಚಿಹ್ನೆರಹಿತ off = adr % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಚಿಹ್ನೆರಹಿತ ptr = adr / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಚಿಹ್ನೆರಹಿತ val_off = 0;
+	    ಚಿಹ್ನೆರಹಿತ val_ptr = 0;
+	    ಆಗ (wid > 0) {
+		  ಚಿಹ್ನೆರಹಿತ trans = wid;
+		  ಆದರೆ (trans > (BIT2_ಪ್ರತಿ_ಶಬ್ದ-val_off))
+			trans = BIT2_ಪ್ರತಿ_ಶಬ್ದ-val_off;
+		  ಆದರೆ (trans > (ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-off))
+			trans = ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-off;
 
-		  unsigned long lmask = (1UL << off) - 1UL;
-		  unsigned long hmask = ((off+trans) < BITS_PER_WORD)
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ lmask = (1UL << off) - 1UL;
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ hmask = ((off+trans) < ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ)
 			? -1UL << (off+trans)
 			: 0;
-		  unsigned long mask = ~(hmask | lmask);
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = ~(hmask | lmask);
 
-		  abits_ptr_[ptr] &= ~mask;
-		  bbits_ptr_[ptr] &= ~mask;
-		  if (val_off >= off)
-			abits_ptr_[ptr] |= mask & (val[val_ptr] >> (val_off-off));
-		  else
-			abits_ptr_[ptr] |= mask & (val[val_ptr] << (off-val_off));
+		  abits_ptr_[ptr] &= ~ಮುಖವಾಡ;
+		  bbits_ptr_[ptr] &= ~ಮುಖವಾಡ;
+		  ಆದರೆ (val_off >= off)
+			abits_ptr_[ptr] |= ಮುಖವಾಡ & (val[val_ptr] >> (val_off-off));
+		  ಇಲ್ಲದಿದ್ದರೆ
+			abits_ptr_[ptr] |= ಮುಖವಾಡ & (val[val_ptr] << (off-val_off));
 
 		  wid -= trans;
 		  val_off += trans;
-		  if (val_off == BIT2_PER_WORD) {
+		  ಆದರೆ (val_off == BIT2_ಪ್ರತಿ_ಶಬ್ದ) {
 			val_off = 0;
 			val_ptr += 1;
 		  }
 		  off += trans;
-		  if (off == BITS_PER_WORD) {
+		  ಆದರೆ (off == ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 			off = 0;
 			ptr += 1;
 		  }
@@ -1207,12 +1207,12 @@ void vvp_vector4_t::setarray(unsigned adr, unsigned wid, const unsigned long*val
  * into the addressed part of this vector. Use bit masking and word
  * copies to go as fast as reasonably possible.
  */
-bool vvp_vector4_t::set_vec(unsigned adr, const vvp_vector4_t&that)
+ತಾರ್ಕಿಕ vvp_vector4_t::ಗಣ_vec(ಚಿಹ್ನೆರಹಿತ adr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&that)
 {
-      assert(adr+that.size_  <= size_);
-      bool diff_flag = false;
+      ಪ್ರತಿಜ್ಞಾ(adr+that.ಗಾತ್ರ_3  <= ಗಾತ್ರ_3);
+      ತಾರ್ಕಿಕ diff_flag = ಸುಳ್ಳು;
 
-      if (size_ <= BITS_PER_WORD) {
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 
 	      /* The destination vector (me!) is within a bits_val_
 		 word, so the subvector is certainly within a
@@ -1222,200 +1222,200 @@ bool vvp_vector4_t::set_vec(unsigned adr, const vvp_vector4_t&that)
 		 for all the bits that are to come from that. Do the
 		 job by some shifting, masking and OR. */
 
-	    unsigned long lmask = (1UL << adr) - 1;
-	    unsigned long hmask;
-	    unsigned long hshift = adr+that.size_;
-	    if (hshift >= BITS_PER_WORD)
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ lmask = (1UL << adr) - 1;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ hmask;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ hshift = adr+that.ಗಾತ್ರ_3;
+	    ಆದರೆ (hshift >= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ)
 		  hmask = -1UL;
-	    else
-		  hmask = (1UL << (adr+that.size_)) - 1;
-	    unsigned long mask = hmask & ~lmask;
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  hmask = (1UL << (adr+that.ಗಾತ್ರ_3)) - 1;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = hmask & ~lmask;
 
-	    unsigned long tmp = (that.abits_val_<<adr)&mask;
-	    if ((abits_val_&mask) != tmp) {
-		  diff_flag = true;
-		  abits_val_ = (abits_val_ & ~mask) | tmp;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp = (that.abits_val_<<adr)&ಮುಖವಾಡ;
+	    ಆದರೆ ((abits_val_&ಮುಖವಾಡ) != tmp) {
+		  diff_flag = ನಿಜ;
+		  abits_val_ = (abits_val_ & ~ಮುಖವಾಡ) | tmp;
 	    }
-	    tmp = (that.bbits_val_<<adr) & mask;
-	    if ((bbits_val_&mask) != tmp) {
-		  diff_flag = true;
-		  bbits_val_ = (bbits_val_ & ~mask) | tmp;
+	    tmp = (that.bbits_val_<<adr) & ಮುಖವಾಡ;
+	    ಆದರೆ ((bbits_val_&ಮುಖವಾಡ) != tmp) {
+		  diff_flag = ನಿಜ;
+		  bbits_val_ = (bbits_val_ & ~ಮುಖವಾಡ) | tmp;
 	    }
 
-      } else if (that.size_ <= BITS_PER_WORD) {
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (that.ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 
 	      /* This vector is more than a word, but that vector is
 		 still small. Write into the destination, possibly
 		 spanning two destination words, depending on whether
 		 the source vector spans a word transition. */
-	    unsigned long dptr = adr / BITS_PER_WORD;
-	    unsigned long doff = adr % BITS_PER_WORD;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ dptr = adr / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ doff = adr % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-	    unsigned long lmask = (1UL << doff) - 1;
-	    unsigned long hshift = doff+that.size_;
-	    unsigned long hmask;
-	    if (hshift >= BITS_PER_WORD)
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ lmask = (1UL << doff) - 1;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ hshift = doff+that.ಗಾತ್ರ_3;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ hmask;
+	    ಆದರೆ (hshift >= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ)
 		  hmask = -1UL;
-	    else
+	    ಇಲ್ಲದಿದ್ದರೆ
 		  hmask = (1UL << hshift) - 1UL;
 
-	    unsigned long mask = hmask & ~lmask;
-	    unsigned long tmp;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = hmask & ~lmask;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp;
 
-	    tmp = (that.abits_val_ << doff) & mask;
-	    if ((abits_ptr_[dptr] & mask) != tmp) {
-		  diff_flag = true;
-		  abits_ptr_[dptr] = (abits_ptr_[dptr] & ~mask) | tmp;
+	    tmp = (that.abits_val_ << doff) & ಮುಖವಾಡ;
+	    ಆದರೆ ((abits_ptr_[dptr] & ಮುಖವಾಡ) != tmp) {
+		  diff_flag = ನಿಜ;
+		  abits_ptr_[dptr] = (abits_ptr_[dptr] & ~ಮುಖವಾಡ) | tmp;
 	    }
-	    tmp = (that.bbits_val_ << doff) & mask;
-	    if ((bbits_ptr_[dptr] & mask) != tmp) {
-		  diff_flag = true;
-		  bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~mask) | tmp;
+	    tmp = (that.bbits_val_ << doff) & ಮುಖವಾಡ;
+	    ಆದರೆ ((bbits_ptr_[dptr] & ಮುಖವಾಡ) != tmp) {
+		  diff_flag = ನಿಜ;
+		  bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~ಮುಖವಾಡ) | tmp;
 	    }
 
-	    if ((doff + that.size_) > BITS_PER_WORD) {
-		  unsigned tail = doff + that.size_ - BITS_PER_WORD;
-		  mask = (1UL << tail) - 1;
+	    ಆದರೆ ((doff + that.ಗಾತ್ರ_3) > ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+		  ಚಿಹ್ನೆರಹಿತ ಬಾಲ = doff + that.ಗಾತ್ರ_3 - ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+		  ಮುಖವಾಡ = (1UL << ಬಾಲ) - 1;
 
 		  dptr += 1;
-		  tmp = (that.abits_val_ >> (that.size_-tail)) & mask;
-		  if ((abits_ptr_[dptr] & mask) != tmp) {
-			diff_flag = true;
-			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~mask) | tmp;
+		  tmp = (that.abits_val_ >> (that.ಗಾತ್ರ_3-ಬಾಲ)) & ಮುಖವಾಡ;
+		  ಆದರೆ ((abits_ptr_[dptr] & ಮುಖವಾಡ) != tmp) {
+			diff_flag = ನಿಜ;
+			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~ಮುಖವಾಡ) | tmp;
 		  }
-		  tmp = (that.bbits_val_ >> (that.size_-tail)) & mask;
-		  if ((bbits_ptr_[dptr] & mask) != tmp) {
-			diff_flag = true;
-			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~mask) | tmp;
+		  tmp = (that.bbits_val_ >> (that.ಗಾತ್ರ_3-ಬಾಲ)) & ಮುಖವಾಡ;
+		  ಆದರೆ ((bbits_ptr_[dptr] & ಮುಖವಾಡ) != tmp) {
+			diff_flag = ನಿಜ;
+			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~ಮುಖವಾಡ) | tmp;
 		  }
 	    }
 
-      } else if (adr%BITS_PER_WORD == 0) {
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (adr%ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ == 0) {
 
 	      /* In this case, both vectors are long, but the
 		 destination is neatly aligned. That means all but the
 		 last word can be simply copied with no masking. */
 
-	    unsigned remain = that.size_;
-	    unsigned sptr = 0;
-	    unsigned dptr = adr / BITS_PER_WORD;
-	    while (remain >= BITS_PER_WORD) {
-		  if (abits_ptr_[dptr] != that.abits_ptr_[sptr]) {
-			diff_flag = true;
+	    ಚಿಹ್ನೆರಹಿತ remain = that.ಗಾತ್ರ_3;
+	    ಚಿಹ್ನೆರಹಿತ sptr = 0;
+	    ಚಿಹ್ನೆರಹಿತ dptr = adr / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಆಗ (remain >= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+		  ಆದರೆ (abits_ptr_[dptr] != that.abits_ptr_[sptr]) {
+			diff_flag = ನಿಜ;
 			abits_ptr_[dptr] = that.abits_ptr_[sptr];
 		  }
-		  if (bbits_ptr_[dptr] != that.bbits_ptr_[sptr]) {
-			diff_flag = true;
+		  ಆದರೆ (bbits_ptr_[dptr] != that.bbits_ptr_[sptr]) {
+			diff_flag = ನಿಜ;
 			bbits_ptr_[dptr] = that.bbits_ptr_[sptr];
 		  }
 		  dptr += 1;
 		  sptr += 1;
-		  remain -= BITS_PER_WORD;
+		  remain -= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 	    }
 
-	    if (remain > 0) {
-		  unsigned long mask = (1UL << remain) - 1;
-		  unsigned long tmp;
+	    ಆದರೆ (remain > 0) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = (1UL << remain) - 1;
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp;
 
-		  tmp = that.abits_ptr_[sptr] & mask;
-		  if ((abits_ptr_[dptr] & mask) != tmp) {
-			diff_flag = true;
-			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~mask) | tmp;
+		  tmp = that.abits_ptr_[sptr] & ಮುಖವಾಡ;
+		  ಆದರೆ ((abits_ptr_[dptr] & ಮುಖವಾಡ) != tmp) {
+			diff_flag = ನಿಜ;
+			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~ಮುಖವಾಡ) | tmp;
 		  }
-		  tmp = that.bbits_ptr_[sptr] & mask;
-		  if ((bbits_ptr_[dptr] & mask) != tmp) {
-			diff_flag = true;
-			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~mask) | tmp;
+		  tmp = that.bbits_ptr_[sptr] & ಮುಖವಾಡ;
+		  ಆದರೆ ((bbits_ptr_[dptr] & ಮುಖವಾಡ) != tmp) {
+			diff_flag = ನಿಜ;
+			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~ಮುಖವಾಡ) | tmp;
 		  }
 	    }
 
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 
 	      /* We know that there are two long vectors, and we know
 		 that the destination is definitely NOT aligned. */
 
-	    unsigned remain = that.size_;
-	    unsigned sptr = 0;
-	    unsigned dptr = adr / BITS_PER_WORD;
-	    unsigned doff = adr % BITS_PER_WORD;
-	    unsigned long lmask = (1UL << doff) - 1;
-	    unsigned ndoff = BITS_PER_WORD - doff;
-	    while (remain >= BITS_PER_WORD) {
-		  unsigned long tmp;
+	    ಚಿಹ್ನೆರಹಿತ remain = that.ಗಾತ್ರ_3;
+	    ಚಿಹ್ನೆರಹಿತ sptr = 0;
+	    ಚಿಹ್ನೆರಹಿತ dptr = adr / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಚಿಹ್ನೆರಹಿತ doff = adr % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ lmask = (1UL << doff) - 1;
+	    ಚಿಹ್ನೆರಹಿತ ndoff = ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - doff;
+	    ಆಗ (remain >= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp;
 
 		  tmp = (that.abits_ptr_[sptr] << doff) & ~lmask;
-		  if ((abits_ptr_[dptr] & ~lmask) != tmp) {
-			diff_flag = true;
+		  ಆದರೆ ((abits_ptr_[dptr] & ~lmask) != tmp) {
+			diff_flag = ನಿಜ;
 			abits_ptr_[dptr] = (abits_ptr_[dptr] & lmask) | tmp;
 		  }
 		  tmp = (that.bbits_ptr_[sptr] << doff) & ~lmask;
-		  if ((bbits_ptr_[dptr] & ~lmask) != tmp) {
-			diff_flag = true;
+		  ಆದರೆ ((bbits_ptr_[dptr] & ~lmask) != tmp) {
+			diff_flag = ನಿಜ;
 			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & lmask) | tmp;
 		  }
 		  dptr += 1;
 
 		  tmp = (that.abits_ptr_[sptr] >> ndoff) & lmask;
-		  if ((abits_ptr_[dptr] & lmask) != tmp) {
-			diff_flag = true;
+		  ಆದರೆ ((abits_ptr_[dptr] & lmask) != tmp) {
+			diff_flag = ನಿಜ;
 			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~lmask) | tmp;
 		  }
 		  tmp = (that.bbits_ptr_[sptr] >> ndoff) & lmask;
-		  if ((bbits_ptr_[dptr] & lmask) != tmp) {
-			diff_flag = true;
+		  ಆದರೆ ((bbits_ptr_[dptr] & lmask) != tmp) {
+			diff_flag = ನಿಜ;
 			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~lmask) | tmp;
 		  }
 
-		  remain -= BITS_PER_WORD;
+		  remain -= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 		  sptr += 1;
 	    }
 
-	    if (remain > 0) {
-		  unsigned long hshift = doff+remain;
-		  unsigned long hmask;
-		  if (hshift >= BITS_PER_WORD)
+	    ಆದರೆ (remain > 0) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ hshift = doff+remain;
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ hmask;
+		  ಆದರೆ (hshift >= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ)
 			hmask = -1UL;
-		  else
+		  ಇಲ್ಲದಿದ್ದರೆ
 			hmask = (1UL << (doff+remain)) - 1;
 
-		  unsigned long mask = hmask & ~lmask;
-		  unsigned long tmp;
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = hmask & ~lmask;
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp;
 
-		  tmp = (that.abits_ptr_[sptr] << doff) & mask;
-		  if ((abits_ptr_[dptr] & mask) != tmp) {
-			diff_flag = true;
-			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~mask) | tmp;
+		  tmp = (that.abits_ptr_[sptr] << doff) & ಮುಖವಾಡ;
+		  ಆದರೆ ((abits_ptr_[dptr] & ಮುಖವಾಡ) != tmp) {
+			diff_flag = ನಿಜ;
+			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~ಮುಖವಾಡ) | tmp;
 		  }
-		  tmp = (that.bbits_ptr_[sptr] << doff) & mask;
-		  if ((bbits_ptr_[dptr] & mask) != tmp) {
-			diff_flag = true;
-			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~mask) | tmp;
+		  tmp = (that.bbits_ptr_[sptr] << doff) & ಮುಖವಾಡ;
+		  ಆದರೆ ((bbits_ptr_[dptr] & ಮುಖವಾಡ) != tmp) {
+			diff_flag = ನಿಜ;
+			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~ಮುಖವಾಡ) | tmp;
 		  }
 
-		  if ((doff + remain) > BITS_PER_WORD) {
-			unsigned tail = doff + remain - BITS_PER_WORD;
-			if (tail >= BITS_PER_WORD)
-			      mask = -1UL;
-			else
-			      mask = (1UL << tail) - 1;
+		  ಆದರೆ ((doff + remain) > ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+			ಚಿಹ್ನೆರಹಿತ ಬಾಲ = doff + remain - ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+			ಆದರೆ (ಬಾಲ >= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ)
+			      ಮುಖವಾಡ = -1UL;
+			ಇಲ್ಲದಿದ್ದರೆ
+			      ಮುಖವಾಡ = (1UL << ಬಾಲ) - 1;
 
 			dptr += 1;
 
-			tmp = (that.abits_ptr_[sptr] >> (remain-tail))&mask;
-			if ((abits_ptr_[dptr] & mask) != tmp) {
-			      diff_flag = true;
-			      abits_ptr_[dptr] = (abits_ptr_[dptr] & ~mask) | tmp;
+			tmp = (that.abits_ptr_[sptr] >> (remain-ಬಾಲ))&ಮುಖವಾಡ;
+			ಆದರೆ ((abits_ptr_[dptr] & ಮುಖವಾಡ) != tmp) {
+			      diff_flag = ನಿಜ;
+			      abits_ptr_[dptr] = (abits_ptr_[dptr] & ~ಮುಖವಾಡ) | tmp;
 			}
-			tmp = (that.bbits_ptr_[sptr] >> (remain-tail))&mask;
-			if ((bbits_ptr_[dptr] & mask) != tmp) {
-			      diff_flag = true;
-			      bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~mask) | tmp;
+			tmp = (that.bbits_ptr_[sptr] >> (remain-ಬಾಲ))&ಮುಖವಾಡ;
+			ಆದರೆ ((bbits_ptr_[dptr] & ಮುಖವಾಡ) != tmp) {
+			      diff_flag = ನಿಜ;
+			      bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~ಮುಖವಾಡ) | tmp;
 			}
 		  }
 	    }
       }
 
-      return diff_flag;
+      ಹಿಂತಿರುಗಿ diff_flag;
 }
 
 /*
@@ -1425,133 +1425,133 @@ bool vvp_vector4_t::set_vec(unsigned adr, const vvp_vector4_t&that)
  *
  * Assume both vectors are the same size.
  */
-void vvp_vector4_t::add(const vvp_vector4_t&that)
+ಶೂನ್ಯ vvp_vector4_t::ಕೂಡಿಸು(ಸ್ಥಿರಾಂಕ vvp_vector4_t&that)
 {
-      assert(size_ == that.size_);
+      ಪ್ರತಿಜ್ಞಾ(ಗಾತ್ರ_3 == that.ಗಾತ್ರ_3);
 
-      if (size_ < BITS_PER_WORD) {
-	    unsigned long mask = ~(-1UL << size_);
-	    if ((bbits_val_|that.bbits_val_) & mask) {
-		  abits_val_ |= mask;
-		  bbits_val_ |= mask;
-		  return;
+      ಆದರೆ (ಗಾತ್ರ_3 < ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = ~(-1UL << ಗಾತ್ರ_3);
+	    ಆದರೆ ((bbits_val_|that.bbits_val_) & ಮುಖವಾಡ) {
+		  abits_val_ |= ಮುಖವಾಡ;
+		  bbits_val_ |= ಮುಖವಾಡ;
+		  ಹಿಂತಿರುಗಿ;
 	    }
 
 	    abits_val_ += that.abits_val_;
-	    abits_val_ &= mask;
-	    return;
+	    abits_val_ &= ಮುಖವಾಡ;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    if (bbits_val_ | that.bbits_val_) {
-		  abits_val_ = WORD_X_ABITS;
-		  bbits_val_ = WORD_X_BBITS;
-	    } else {
+      ಆದರೆ (ಗಾತ್ರ_3 == ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಆದರೆ (bbits_val_ | that.bbits_val_) {
+		  abits_val_ = ಶಬ್ದ_X_ABITS;
+		  bbits_val_ = ಶಬ್ದ_X_BBITS;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
 		  abits_val_ += that.abits_val_;
 	    }
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      int cnt = size_ / BITS_PER_WORD;
-      unsigned long carry = 0;
-      for (int idx = 0 ; idx < cnt ; idx += 1) {
-	    if (bbits_ptr_[idx] | that.bbits_ptr_[idx])
-		  goto x_out;
+      ಪೂರ್ಣಾಂಕ cnt = ಗಾತ್ರ_3 / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ವಾಹಕ = 0;
+      ಗಾಗಿ (ಪೂರ್ಣಾಂಕ idx = 0 ; idx < cnt ; idx += 1) {
+	    ಆದರೆ (bbits_ptr_[idx] | that.bbits_ptr_[idx])
+		  ಹೋಗು x_ಹೊರಹೋಗು;
 
-	    abits_ptr_[idx] = add_with_carry(abits_ptr_[idx], that.abits_ptr_[idx], carry);
+	    abits_ptr_[idx] = ಕೂಡಿಸು_with_ವಾಹಕ(abits_ptr_[idx], that.abits_ptr_[idx], ವಾಹಕ);
       }
 
-      if (unsigned tail = size_ % BITS_PER_WORD) {
-	    unsigned long mask = ~( -1UL << tail );
-	    if ((bbits_ptr_[cnt] | that.bbits_ptr_[cnt])&mask)
-		  goto x_out;
+      ಆದರೆ (ಚಿಹ್ನೆರಹಿತ ಬಾಲ = ಗಾತ್ರ_3 % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = ~( -1UL << ಬಾಲ );
+	    ಆದರೆ ((bbits_ptr_[cnt] | that.bbits_ptr_[cnt])&ಮುಖವಾಡ)
+		  ಹೋಗು x_ಹೊರಹೋಗು;
 
-	    abits_ptr_[cnt] = add_with_carry(abits_ptr_[cnt], that.abits_ptr_[cnt], carry);
-	    abits_ptr_[cnt] &= mask;
+	    abits_ptr_[cnt] = ಕೂಡಿಸು_with_ವಾಹಕ(abits_ptr_[cnt], that.abits_ptr_[cnt], ವಾಹಕ);
+	    abits_ptr_[cnt] &= ಮುಖವಾಡ;
       }
 
-      return;
+      ಹಿಂತಿರುಗಿ;
 
- x_out:
-      for (int idx = 0 ; idx < cnt ; idx += 1) {
-	    abits_ptr_[idx] = WORD_X_ABITS;
-	    bbits_ptr_[idx] = WORD_X_BBITS;
+ x_ಹೊರಹೋಗು:
+      ಗಾಗಿ (ಪೂರ್ಣಾಂಕ idx = 0 ; idx < cnt ; idx += 1) {
+	    abits_ptr_[idx] = ಶಬ್ದ_X_ABITS;
+	    bbits_ptr_[idx] = ಶಬ್ದ_X_BBITS;
       }
-      if (unsigned tail = size_%BITS_PER_WORD) {
-	    unsigned long mask = ~( -1UL << tail );
-	    abits_ptr_[cnt] = WORD_X_ABITS&mask;
-	    bbits_ptr_[cnt] = WORD_X_BBITS&mask;
+      ಆದರೆ (ಚಿಹ್ನೆರಹಿತ ಬಾಲ = ಗಾತ್ರ_3%ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = ~( -1UL << ಬಾಲ );
+	    abits_ptr_[cnt] = ಶಬ್ದ_X_ABITS&ಮುಖವಾಡ;
+	    bbits_ptr_[cnt] = ಶಬ್ದ_X_BBITS&ಮುಖವಾಡ;
       }
 }
 
-void vvp_vector4_t::sub(const vvp_vector4_t&that)
+ಶೂನ್ಯ vvp_vector4_t::sub(ಸ್ಥಿರಾಂಕ vvp_vector4_t&that)
 {
-      assert(size_ == that.size_);
+      ಪ್ರತಿಜ್ಞಾ(ಗಾತ್ರ_3 == that.ಗಾತ್ರ_3);
 
-      if (size_ < BITS_PER_WORD) {
-	    unsigned long mask = ~(-1UL << size_);
-	    if ((bbits_val_|that.bbits_val_) & mask) {
-		  abits_val_ |= mask;
-		  bbits_val_ |= mask;
-		  return;
+      ಆದರೆ (ಗಾತ್ರ_3 < ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = ~(-1UL << ಗಾತ್ರ_3);
+	    ಆದರೆ ((bbits_val_|that.bbits_val_) & ಮುಖವಾಡ) {
+		  abits_val_ |= ಮುಖವಾಡ;
+		  bbits_val_ |= ಮುಖವಾಡ;
+		  ಹಿಂತಿರುಗಿ;
 	    }
 
 	    abits_val_ -= that.abits_val_;
-	    abits_val_ &= mask;
-	    return;
+	    abits_val_ &= ಮುಖವಾಡ;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    if (bbits_val_ | that.bbits_val_) {
-		  abits_val_ = WORD_X_ABITS;
-		  bbits_val_ = WORD_X_BBITS;
-	    } else {
+      ಆದರೆ (ಗಾತ್ರ_3 == ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಆದರೆ (bbits_val_ | that.bbits_val_) {
+		  abits_val_ = ಶಬ್ದ_X_ABITS;
+		  bbits_val_ = ಶಬ್ದ_X_BBITS;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
 		  abits_val_ -= that.abits_val_;
 	    }
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      int cnt = size_ / BITS_PER_WORD;
-      unsigned long carry = 1;
-      for (int idx = 0 ; idx < cnt ; idx += 1) {
-	    if (bbits_ptr_[idx] | that.bbits_ptr_[idx])
-		  goto x_out;
+      ಪೂರ್ಣಾಂಕ cnt = ಗಾತ್ರ_3 / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ವಾಹಕ = 1;
+      ಗಾಗಿ (ಪೂರ್ಣಾಂಕ idx = 0 ; idx < cnt ; idx += 1) {
+	    ಆದರೆ (bbits_ptr_[idx] | that.bbits_ptr_[idx])
+		  ಹೋಗು x_ಹೊರಹೋಗು;
 
-	    abits_ptr_[idx] = add_with_carry(abits_ptr_[idx], ~that.abits_ptr_[idx], carry);
+	    abits_ptr_[idx] = ಕೂಡಿಸು_with_ವಾಹಕ(abits_ptr_[idx], ~that.abits_ptr_[idx], ವಾಹಕ);
       }
 
-      if (unsigned tail = size_ % BITS_PER_WORD) {
-	    unsigned long mask = ~( -1UL << tail );
-	    if ((bbits_ptr_[cnt] | that.bbits_ptr_[cnt])&mask)
-		  goto x_out;
+      ಆದರೆ (ಚಿಹ್ನೆರಹಿತ ಬಾಲ = ಗಾತ್ರ_3 % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = ~( -1UL << ಬಾಲ );
+	    ಆದರೆ ((bbits_ptr_[cnt] | that.bbits_ptr_[cnt])&ಮುಖವಾಡ)
+		  ಹೋಗು x_ಹೊರಹೋಗು;
 
-	    abits_ptr_[cnt] = add_with_carry(abits_ptr_[cnt], ~that.abits_ptr_[cnt], carry);
-	    abits_ptr_[cnt] &= mask;
+	    abits_ptr_[cnt] = ಕೂಡಿಸು_with_ವಾಹಕ(abits_ptr_[cnt], ~that.abits_ptr_[cnt], ವಾಹಕ);
+	    abits_ptr_[cnt] &= ಮುಖವಾಡ;
       }
 
-      return;
+      ಹಿಂತಿರುಗಿ;
 
- x_out:
-      for (int idx = 0 ; idx < cnt ; idx += 1) {
-	    abits_ptr_[idx] = WORD_X_ABITS;
-	    bbits_ptr_[idx] = WORD_X_BBITS;
+ x_ಹೊರಹೋಗು:
+      ಗಾಗಿ (ಪೂರ್ಣಾಂಕ idx = 0 ; idx < cnt ; idx += 1) {
+	    abits_ptr_[idx] = ಶಬ್ದ_X_ABITS;
+	    bbits_ptr_[idx] = ಶಬ್ದ_X_BBITS;
       }
-      if (unsigned tail = size_%BITS_PER_WORD) {
-	    unsigned long mask = ~( -1UL << tail );
-	    abits_ptr_[cnt] = WORD_X_ABITS&mask;
-	    bbits_ptr_[cnt] = WORD_X_BBITS&mask;
+      ಆದರೆ (ಚಿಹ್ನೆರಹಿತ ಬಾಲ = ಗಾತ್ರ_3%ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = ~( -1UL << ಬಾಲ );
+	    abits_ptr_[cnt] = ಶಬ್ದ_X_ABITS&ಮುಖವಾಡ;
+	    bbits_ptr_[cnt] = ಶಬ್ದ_X_BBITS&ಮುಖವಾಡ;
       }
 
 }
 
-void vvp_vector4_t::mov(unsigned dst, unsigned src, unsigned cnt)
+ಶೂನ್ಯ vvp_vector4_t::mov(ಚಿಹ್ನೆರಹಿತ dst, ಚಿಹ್ನೆರಹಿತ src, ಚಿಹ್ನೆರಹಿತ cnt)
 {
-      assert(dst+cnt <= size_);
-      assert(src+cnt <= size_);
+      ಪ್ರತಿಜ್ಞಾ(dst+cnt <= ಗಾತ್ರ_3);
+      ಪ್ರತಿಜ್ಞಾ(src+cnt <= ಗಾತ್ರ_3);
 
-      if (size_ <= BITS_PER_WORD) {
-	    unsigned long vmask = (1UL << cnt) - 1;
-	    unsigned long tmp;
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ vmask = (1UL << cnt) - 1;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp;
 
 	    tmp = (abits_val_ >> src) & vmask;
 	    abits_val_ &= ~ (vmask << dst);
@@ -1561,21 +1561,21 @@ void vvp_vector4_t::mov(unsigned dst, unsigned src, unsigned cnt)
 	    bbits_val_ &= ~ (vmask << dst);
 	    bbits_val_ |= tmp << dst;
 
-      } else {
-	    unsigned sptr = src / BITS_PER_WORD;
-	    unsigned dptr = dst / BITS_PER_WORD;
-	    unsigned soff = src % BITS_PER_WORD;
-	    unsigned doff = dst % BITS_PER_WORD;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ sptr = src / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಚಿಹ್ನೆರಹಿತ dptr = dst / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಚಿಹ್ನೆರಹಿತ soff = src % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಚಿಹ್ನೆರಹಿತ doff = dst % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-	    while (cnt > 0) {
-		  unsigned trans = cnt;
-		  if ((soff+trans) > BITS_PER_WORD)
-			trans = BITS_PER_WORD - soff;
+	    ಆಗ (cnt > 0) {
+		  ಚಿಹ್ನೆರಹಿತ trans = cnt;
+		  ಆದರೆ ((soff+trans) > ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ)
+			trans = ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - soff;
 
-		  if ((doff+trans) > BITS_PER_WORD)
-			trans = BITS_PER_WORD - doff;
+		  ಆದರೆ ((doff+trans) > ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ)
+			trans = ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - doff;
 
-		  if (trans == BITS_PER_WORD) {
+		  ಆದರೆ (trans == ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 			  // Special case: the transfer count is
 			  // exactly an entire word. For this to be
 			  // true, it must also be true that the
@@ -1584,15 +1584,15 @@ void vvp_vector4_t::mov(unsigned dst, unsigned src, unsigned cnt)
 			bbits_ptr_[dptr] = bbits_ptr_[sptr];
 			dptr += 1;
 			sptr += 1;
-			cnt -= BITS_PER_WORD;
-			continue;
+			cnt -= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+			ಮುಂದುವರಿ;
 		  }
 
 		    // Here we know that either the source or
 		    // destination is unaligned, and also we know that
 		    // the count is less than a full word.
-		  unsigned long vmask = (1UL << trans) - 1;
-		  unsigned long tmp;
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ vmask = (1UL << trans) - 1;
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp;
 
 		  tmp = (abits_ptr_[sptr] >> soff) & vmask;
 		  abits_ptr_[dptr] &= ~ (vmask << doff);
@@ -1604,12 +1604,12 @@ void vvp_vector4_t::mov(unsigned dst, unsigned src, unsigned cnt)
 
 		  cnt -= trans;
 		  soff += trans;
-		  if (soff >= BITS_PER_WORD) {
+		  ಆದರೆ (soff >= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 			soff = 0;
 			sptr += 1;
 		  }
 		  doff += trans;
-		  if (doff >= BITS_PER_WORD) {
+		  ಆದರೆ (doff >= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 			doff = 0;
 			dptr += 1;
 		  }
@@ -1617,199 +1617,199 @@ void vvp_vector4_t::mov(unsigned dst, unsigned src, unsigned cnt)
       }
 }
 
-void vvp_vector4_t::mul(const vvp_vector4_t&that)
+ಶೂನ್ಯ vvp_vector4_t::mul(ಸ್ಥಿರಾಂಕ vvp_vector4_t&that)
 {
-      assert(size_ == that.size_);
+      ಪ್ರತಿಜ್ಞಾ(ಗಾತ್ರ_3 == that.ಗಾತ್ರ_3);
 
-      if (size_ < BITS_PER_WORD) {
-	    unsigned long mask = ~(-1UL << size_);
-	    if ((bbits_val_|that.bbits_val_) & mask) {
-		  abits_val_ |= mask;
-		  bbits_val_ |= mask;
-		  return;
+      ಆದರೆ (ಗಾತ್ರ_3 < ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = ~(-1UL << ಗಾತ್ರ_3);
+	    ಆದರೆ ((bbits_val_|that.bbits_val_) & ಮುಖವಾಡ) {
+		  abits_val_ |= ಮುಖವಾಡ;
+		  bbits_val_ |= ಮುಖವಾಡ;
+		  ಹಿಂತಿರುಗಿ;
 	    }
 
 	    abits_val_ *= that.abits_val_;
-	    abits_val_ &= mask;
-	    return;
+	    abits_val_ &= ಮುಖವಾಡ;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    if (bbits_val_ || that.bbits_val_) {
-		  abits_val_ = WORD_X_ABITS;
-		  bbits_val_ = WORD_X_BBITS;
-	    } else {
+      ಆದರೆ (ಗಾತ್ರ_3 == ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಆದರೆ (bbits_val_ || that.bbits_val_) {
+		  abits_val_ = ಶಬ್ದ_X_ABITS;
+		  bbits_val_ = ಶಬ್ದ_X_BBITS;
+	    } ಇಲ್ಲದಿದ್ದರೆ {
 		  abits_val_ *= that.abits_val_;
 	    }
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      const int cnt = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಪೂರ್ಣಾಂಕ cnt = (ಗಾತ್ರ_3+ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-      unsigned long mask;
-      if (unsigned tail = size_%BITS_PER_WORD) {
-	    mask = ~( -1UL << tail );
-      } else {
-	    mask = ~0UL;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ;
+      ಆದರೆ (ಚಿಹ್ನೆರಹಿತ ಬಾಲ = ಗಾತ್ರ_3%ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಮುಖವಾಡ = ~( -1UL << ಬಾಲ );
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಮುಖವಾಡ = ~0UL;
       }
 
 	// Check for any XZ values ahead of time in a first pass. If
 	// we find any, then force the entire result to be X and be
 	// done.
-      for (int idx = 0 ; idx < cnt ; idx += 1) {
-	    unsigned long lval = bbits_ptr_[idx];
-	    unsigned long rval = that.bbits_ptr_[idx];
-	    if (idx == (cnt-1)) {
-		  lval &= mask;
-		  rval &= mask;
+      ಗಾಗಿ (ಪೂರ್ಣಾಂಕ idx = 0 ; idx < cnt ; idx += 1) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ lval = bbits_ptr_[idx];
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ rval = that.bbits_ptr_[idx];
+	    ಆದರೆ (idx == (cnt-1)) {
+		  lval &= ಮುಖವಾಡ;
+		  rval &= ಮುಖವಾಡ;
 	    }
-	    if (lval || rval) {
-		  for (int xdx = 0 ; xdx < cnt-1 ; xdx += 1) {
-			abits_ptr_[xdx] = WORD_X_ABITS;
-			bbits_ptr_[xdx] = WORD_X_BBITS;
+	    ಆದರೆ (lval || rval) {
+		  ಗಾಗಿ (ಪೂರ್ಣಾಂಕ xdx = 0 ; xdx < cnt-1 ; xdx += 1) {
+			abits_ptr_[xdx] = ಶಬ್ದ_X_ABITS;
+			bbits_ptr_[xdx] = ಶಬ್ದ_X_BBITS;
 		  }
-		  abits_ptr_[cnt-1] = WORD_X_ABITS & mask;
-		  bbits_ptr_[cnt-1] = WORD_X_BBITS & mask;
-		  return;
+		  abits_ptr_[cnt-1] = ಶಬ್ದ_X_ABITS & ಮುಖವಾಡ;
+		  bbits_ptr_[cnt-1] = ಶಬ್ದ_X_BBITS & ಮುಖವಾಡ;
+		  ಹಿಂತಿರುಗಿ;
 	    }
       }
 
 	// Calculate the result into a res array. We need to keep is
 	// separate from the "this" array because we are making
 	// multiple passes.
-      unsigned long*res = new unsigned long[cnt];
-      for (int idx = 0 ; idx < cnt ; idx += 1)
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ*res = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ[cnt];
+      ಗಾಗಿ (ಪೂರ್ಣಾಂಕ idx = 0 ; idx < cnt ; idx += 1)
 	    res[idx] = 0;
 
-      for (int mul_a = 0 ; mul_a < cnt ; mul_a += 1) {
-	    unsigned long lval = abits_ptr_[mul_a];
-	    if (mul_a == (cnt-1))
-		  lval &= mask;
+      ಗಾಗಿ (ಪೂರ್ಣಾಂಕ mul_a = 0 ; mul_a < cnt ; mul_a += 1) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ lval = abits_ptr_[mul_a];
+	    ಆದರೆ (mul_a == (cnt-1))
+		  lval &= ಮುಖವಾಡ;
 
-	    for (int mul_b = 0 ; mul_b < (cnt-mul_a) ; mul_b += 1) {
-		  unsigned long rval = that.abits_ptr_[mul_b];
-		  if (mul_b == (cnt-1))
-			rval &= mask;
+	    ಗಾಗಿ (ಪೂರ್ಣಾಂಕ mul_b = 0 ; mul_b < (cnt-mul_a) ; mul_b += 1) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ rval = that.abits_ptr_[mul_b];
+		  ಆದರೆ (mul_b == (cnt-1))
+			rval &= ಮುಖವಾಡ;
 
-		  unsigned long sum;
-		  unsigned long tmp = multiply_with_carry(lval, rval, sum);
-		  int base = mul_a + mul_b;
-		  unsigned long carry = 0;
-		  res[base] = add_with_carry(res[base], tmp, carry);
-		  for (int add_idx = base+1 ; add_idx < cnt ; add_idx += 1) {
-			res[add_idx] = add_with_carry(res[add_idx], sum, carry);
-			sum = 0;
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮೊತ್ತ;
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp = multiply_with_ವಾಹಕ(lval, rval, ಮೊತ್ತ);
+		  ಪೂರ್ಣಾಂಕ ತಳ = mul_a + mul_b;
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ವಾಹಕ = 0;
+		  res[ತಳ] = ಕೂಡಿಸು_with_ವಾಹಕ(res[ತಳ], tmp, ವಾಹಕ);
+		  ಗಾಗಿ (ಪೂರ್ಣಾಂಕ ಕೂಡಿಸು_idx = ತಳ+1 ; ಕೂಡಿಸು_idx < cnt ; ಕೂಡಿಸು_idx += 1) {
+			res[ಕೂಡಿಸು_idx] = ಕೂಡಿಸು_with_ವಾಹಕ(res[ಕೂಡಿಸು_idx], ಮೊತ್ತ, ವಾಹಕ);
+			ಮೊತ್ತ = 0;
 		  }
 	    }
       }
 
 	// Replace the "this" value with the calculated result. We
 	// know a-priori that the bbits are zero and unchanged.
-      res[cnt-1] &= mask;
-      for (int idx = 0 ; idx < cnt ; idx += 1)
+      res[cnt-1] &= ಮುಖವಾಡ;
+      ಗಾಗಿ (ಪೂರ್ಣಾಂಕ idx = 0 ; idx < cnt ; idx += 1)
 	    abits_ptr_[idx] = res[idx];
 
-      delete[]res;
-      return;
+      ಅಳಿಸು[]res;
+      ಹಿಂತಿರುಗಿ;
 
 
 }
 
-bool vvp_vector4_t::eeq(const vvp_vector4_t&that) const
+ತಾರ್ಕಿಕ vvp_vector4_t::eeq(ಸ್ಥಿರಾಂಕ vvp_vector4_t&that) ಸ್ಥಿರಾಂಕ
 {
-      if (size_ != that.size_)
-	    return false;
+      ಆದರೆ (ಗಾತ್ರ_3 != that.ಗಾತ್ರ_3)
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 
-      if (size_ < BITS_PER_WORD) {
-	    unsigned long mask = (1UL << size_) - 1;
-	    return (abits_val_&mask) == (that.abits_val_&mask)
-		  && (bbits_val_&mask) == (that.bbits_val_&mask);
+      ಆದರೆ (ಗಾತ್ರ_3 < ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = (1UL << ಗಾತ್ರ_3) - 1;
+	    ಹಿಂತಿರುಗಿ (abits_val_&ಮುಖವಾಡ) == (that.abits_val_&ಮುಖವಾಡ)
+		  && (bbits_val_&ಮುಖವಾಡ) == (that.bbits_val_&ಮುಖವಾಡ);
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    return (abits_val_ == that.abits_val_)
+      ಆದರೆ (ಗಾತ್ರ_3 == ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಹಿಂತಿರುಗಿ (abits_val_ == that.abits_val_)
 		  && (bbits_val_ == that.bbits_val_);
       }
 
-      unsigned words = size_ / BITS_PER_WORD;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
-	    if (abits_ptr_[idx] != that.abits_ptr_[idx])
-		  return false;
-	    if (bbits_ptr_[idx] != that.bbits_ptr_[idx])
-		  return false;
+      ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = ಗಾತ್ರ_3 / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು ;  idx += 1) {
+	    ಆದರೆ (abits_ptr_[idx] != that.abits_ptr_[idx])
+		  ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
+	    ಆದರೆ (bbits_ptr_[idx] != that.bbits_ptr_[idx])
+		  ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
-      unsigned long mask = size_%BITS_PER_WORD;
-      if (mask > 0) {
-	    mask = (1UL << mask) - 1;
-	    return (abits_ptr_[words]&mask) == (that.abits_ptr_[words]&mask)
-		  && (bbits_ptr_[words]&mask) == (that.bbits_ptr_[words]&mask);
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = ಗಾತ್ರ_3%ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      ಆದರೆ (ಮುಖವಾಡ > 0) {
+	    ಮುಖವಾಡ = (1UL << ಮುಖವಾಡ) - 1;
+	    ಹಿಂತಿರುಗಿ (abits_ptr_[ಪದಗಳು]&ಮುಖವಾಡ) == (that.abits_ptr_[ಪದಗಳು]&ಮುಖವಾಡ)
+		  && (bbits_ptr_[ಪದಗಳು]&ಮುಖವಾಡ) == (that.bbits_ptr_[ಪದಗಳು]&ಮುಖವಾಡ);
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool vvp_vector4_t::eq_xz(const vvp_vector4_t&that) const
+ತಾರ್ಕಿಕ vvp_vector4_t::eq_xz(ಸ್ಥಿರಾಂಕ vvp_vector4_t&that) ಸ್ಥಿರಾಂಕ
 {
-      if (size_ != that.size_)
-	    return false;
+      ಆದರೆ (ಗಾತ್ರ_3 != that.ಗಾತ್ರ_3)
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 
-      if (size_ < BITS_PER_WORD) {
-	    unsigned long mask = (1UL << size_) - 1;
-	    return ((abits_val_|bbits_val_)&mask) == ((that.abits_val_|that.bbits_val_)&mask)
-		  && (bbits_val_&mask) == (that.bbits_val_&mask);
+      ಆದರೆ (ಗಾತ್ರ_3 < ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = (1UL << ಗಾತ್ರ_3) - 1;
+	    ಹಿಂತಿರುಗಿ ((abits_val_|bbits_val_)&ಮುಖವಾಡ) == ((that.abits_val_|that.bbits_val_)&ಮುಖವಾಡ)
+		  && (bbits_val_&ಮುಖವಾಡ) == (that.bbits_val_&ಮುಖವಾಡ);
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    return ((abits_val_|bbits_val_) == (that.abits_val_|that.bbits_val_))
+      ಆದರೆ (ಗಾತ್ರ_3 == ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಹಿಂತಿರುಗಿ ((abits_val_|bbits_val_) == (that.abits_val_|that.bbits_val_))
 		  && (bbits_val_ == that.bbits_val_);
       }
 
-      unsigned words = size_ / BITS_PER_WORD;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
-	    if ((abits_ptr_[idx]|bbits_ptr_[idx]) != (that.abits_ptr_[idx]|that.bbits_ptr_[idx]))
-		  return false;
-	    if (bbits_ptr_[idx] != that.bbits_ptr_[idx])
-		  return false;
+      ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = ಗಾತ್ರ_3 / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು ;  idx += 1) {
+	    ಆದರೆ ((abits_ptr_[idx]|bbits_ptr_[idx]) != (that.abits_ptr_[idx]|that.bbits_ptr_[idx]))
+		  ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
+	    ಆದರೆ (bbits_ptr_[idx] != that.bbits_ptr_[idx])
+		  ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
-      unsigned long mask = size_%BITS_PER_WORD;
-      if (mask > 0) {
-	    mask = (1UL << mask) - 1;
-	    return ((abits_ptr_[words]|bbits_ptr_[words])&mask) == ((that.abits_ptr_[words]|that.bbits_ptr_[words])&mask)
-		  && (bbits_ptr_[words]&mask) == (that.bbits_ptr_[words]&mask);
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = ಗಾತ್ರ_3%ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      ಆದರೆ (ಮುಖವಾಡ > 0) {
+	    ಮುಖವಾಡ = (1UL << ಮುಖವಾಡ) - 1;
+	    ಹಿಂತಿರುಗಿ ((abits_ptr_[ಪದಗಳು]|bbits_ptr_[ಪದಗಳು])&ಮುಖವಾಡ) == ((that.abits_ptr_[ಪದಗಳು]|that.bbits_ptr_[ಪದಗಳು])&ಮುಖವಾಡ)
+		  && (bbits_ptr_[ಪದಗಳು]&ಮುಖವಾಡ) == (that.bbits_ptr_[ಪದಗಳು]&ಮುಖವಾಡ);
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool vvp_vector4_t::has_xz() const
+ತಾರ್ಕಿಕ vvp_vector4_t::has_xz() ಸ್ಥಿರಾಂಕ
 {
-      if (size_ < BITS_PER_WORD) {
-	    unsigned long mask = -1UL >> (BITS_PER_WORD - size_);
-	    return bbits_val_&mask;
+      ಆದರೆ (ಗಾತ್ರ_3 < ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = -1UL >> (ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - ಗಾತ್ರ_3);
+	    ಹಿಂತಿರುಗಿ bbits_val_&ಮುಖವಾಡ;
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    return bbits_val_;
+      ಆದರೆ (ಗಾತ್ರ_3 == ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಹಿಂತಿರುಗಿ bbits_val_;
       }
 
-      unsigned words = size_ / BITS_PER_WORD;
-      for (unsigned idx = 0 ; idx < words ; idx += 1) {
-	    if (bbits_ptr_[idx])
-		  return true;
+      ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = ಗಾತ್ರ_3 / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಪದಗಳು ; idx += 1) {
+	    ಆದರೆ (bbits_ptr_[idx])
+		  ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      unsigned long mask = size_%BITS_PER_WORD;
-      if (mask > 0) {
-	    mask = -1UL >> (BITS_PER_WORD - mask);
-	    return bbits_ptr_[words]&mask;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = ಗಾತ್ರ_3%ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      ಆದರೆ (ಮುಖವಾಡ > 0) {
+	    ಮುಖವಾಡ = -1UL >> (ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - ಮುಖವಾಡ);
+	    ಹಿಂತಿರುಗಿ bbits_ptr_[ಪದಗಳು]&ಮುಖವಾಡ;
       }
 
-      return false;
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
-void vvp_vector4_t::change_z2x()
+ಶೂನ್ಯ vvp_vector4_t::change_z2x()
 {
 	// This method relies on the fact that both BIT4_X and BIT4_Z
 	// have the bbit set in the vector4 encoding, and also that
@@ -1817,61 +1817,61 @@ void vvp_vector4_t::change_z2x()
 	// or-ing the bbit into the abit, BIT4_X and BIT4_Z both
 	// become BIT4_X.
 
-      if (size_ <= BITS_PER_WORD) {
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 	    abits_val_ |= bbits_val_;
-      } else {
-	    unsigned words = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
-	    for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (ಗಾತ್ರ_3+ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು ;  idx += 1)
 		  abits_ptr_[idx] |= bbits_ptr_[idx];
       }
 }
 
-void vvp_vector4_t::fill_bits(vvp_bit4_t bit)
+ಶೂನ್ಯ vvp_vector4_t::fill_ಬಿಟ್ಟುಗಳು(vvp_bit4_t ಬಿಟ್)
 {
 	/* note: this relies on the bit encoding for the vvp_bit4_t. */
-      static const unsigned long init_atable[4] = {
-	    WORD_0_ABITS,
-	    WORD_1_ABITS,
-	    WORD_Z_ABITS,
-	    WORD_X_ABITS };
-      static const unsigned long init_btable[4] = {
-	    WORD_0_BBITS,
-	    WORD_1_BBITS,
-	    WORD_Z_BBITS,
-	    WORD_X_BBITS };
+      ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ init_atable[4] = {
+	    ಶಬ್ದ_0_ABITS,
+	    ಶಬ್ದ_1_ABITS,
+	    ಶಬ್ದ_Z_ABITS,
+	    ಶಬ್ದ_X_ABITS };
+      ಸ್ಥಿರ ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ init_btable[4] = {
+	    ಶಬ್ದ_0_BBITS,
+	    ಶಬ್ದ_1_BBITS,
+	    ಶಬ್ದ_Z_BBITS,
+	    ಶಬ್ದ_X_BBITS };
 
-      if (size_ <= BITS_PER_WORD) {
-	    abits_val_ = init_atable[bit];
-	    bbits_val_ = init_btable[bit];
-      } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    for (unsigned idx = 0; idx < words; idx += 1) {
-		  abits_ptr_[idx] = init_atable[bit];
-		  bbits_ptr_[idx] = init_btable[bit];
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    abits_val_ = init_atable[ಬಿಟ್];
+	    bbits_val_ = init_btable[ಬಿಟ್];
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (ಗಾತ್ರ_3 + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - 1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0; idx < ಪದಗಳು; idx += 1) {
+		  abits_ptr_[idx] = init_atable[ಬಿಟ್];
+		  bbits_ptr_[idx] = init_btable[ಬಿಟ್];
 	    }
       }
 }
 
-char* vvp_vector4_t::as_string(char*buf, size_t buf_len) const
+ಅಕ್ಷರ* vvp_vector4_t::as_string(ಅಕ್ಷರ*buf, size_t buf_len) ಸ್ಥಿರಾಂಕ
 {
-      char*res = buf;
+      ಅಕ್ಷರ*res = buf;
       *buf++ = 'C';
       *buf++ = '4';
       *buf++ = '<';
       buf_len -= 3;
 
-      for (unsigned idx = 0 ;  idx < size() && buf_len >= 2 ;  idx += 1) {
-	    switch (value(size()-idx-1)) {
-		case BIT4_0:
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < size() && buf_len >= 2 ;  idx += 1) {
+	    ಆಯ್ಕೆ (value(size()-idx-1)) {
+		ಸ್ಥಿತಿ BIT4_0:
 		  *buf++ = '0';
-		  break;
-		case BIT4_1:
+		  ನಿಲ್ಲಿಸು;
+		ಸ್ಥಿತಿ BIT4_1:
 		  *buf++ = '1';
-		  break;
-		case BIT4_X:
+		  ನಿಲ್ಲಿಸು;
+		ಸ್ಥಿತಿ BIT4_X:
 		  *buf++ = 'x';
-		  break;
-		case BIT4_Z:
+		  ನಿಲ್ಲಿಸು;
+		ಸ್ಥಿತಿ BIT4_Z:
 		  *buf++ = 'z';
 	    }
 	    buf_len -= 1;
@@ -1879,132 +1879,132 @@ char* vvp_vector4_t::as_string(char*buf, size_t buf_len) const
 
       *buf++ = '>';
       *buf++ = 0;
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }
 
-void vvp_vector4_t::invert()
+ಶೂನ್ಯ vvp_vector4_t::invert()
 {
-      if (size_ <= BITS_PER_WORD) {
-	    unsigned long mask = (size_<BITS_PER_WORD)? (1UL<<size_)-1UL : -1UL;
-	    abits_val_ = mask & ~abits_val_;
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = (ಗಾತ್ರ_3<ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ)? (1UL<<ಗಾತ್ರ_3)-1UL : -1UL;
+	    abits_val_ = ಮುಖವಾಡ & ~abits_val_;
 	    abits_val_ |= bbits_val_;
-      } else {
-	    unsigned remaining = size_;
-	    unsigned idx = 0;
-	    while (remaining >= BITS_PER_WORD) {
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ ಉಳಿದ = ಗಾತ್ರ_3;
+	    ಚಿಹ್ನೆರಹಿತ idx = 0;
+	    ಆಗ (ಉಳಿದ >= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 		  abits_ptr_[idx] = ~abits_ptr_[idx];
 		  abits_ptr_[idx] |= bbits_ptr_[idx];
 		  idx += 1;
-		  remaining -= BITS_PER_WORD;
+		  ಉಳಿದ -= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 	    }
-	    if (remaining > 0) {
-		  unsigned long mask = (1UL<<remaining) - 1UL;
-		  abits_ptr_[idx] = mask & ~abits_ptr_[idx];
+	    ಆದರೆ (ಉಳಿದ > 0) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = (1UL<<ಉಳಿದ) - 1UL;
+		  abits_ptr_[idx] = ಮುಖವಾಡ & ~abits_ptr_[idx];
 		  abits_ptr_[idx] |= bbits_ptr_[idx];
 	    }
       }
 }
 
-#define BIT_MASK(n) ((n) ? ((~0UL) >> (BITS_PER_WORD - (n))) : ~0UL)
+#ವ್ಯಾಖ್ಯಾನಿಸು ಬಿಟ್_ಮುಖವಾಡ(n) ((n) ? ((~0UL) >> (ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - (n))) : ~0UL)
 
-vvp_bit4_t vvp_vector4_t::reduce_or() const
+vvp_bit4_t vvp_vector4_t::reduce_or() ಸ್ಥಿರಾಂಕ
 {
-      unsigned long mask = BIT_MASK(size_ % BITS_PER_WORD);
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = ಬಿಟ್_ಮುಖವಾಡ(ಗಾತ್ರ_3 % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ);
       vvp_bit4_t res = BIT4_0;
 
-      if (size_ <= BITS_PER_WORD) {
-	    if ((abits_val_ & ~bbits_val_ & mask) != 0UL)
-		  return BIT4_1;
-	    if ((bbits_val_ & mask) != 0UL)
-		  return BIT4_X;
-      } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    unsigned idx;
-	    for (idx = 0; idx < words - 1; idx += 1) {
-		  if ((abits_ptr_[idx] & ~bbits_ptr_[idx]) != 0UL)
-			return BIT4_1;
-		  if (bbits_ptr_[idx] != 0UL)
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಆದರೆ ((abits_val_ & ~bbits_val_ & ಮುಖವಾಡ) != 0UL)
+		  ಹಿಂತಿರುಗಿ BIT4_1;
+	    ಆದರೆ ((bbits_val_ & ಮುಖವಾಡ) != 0UL)
+		  ಹಿಂತಿರುಗಿ BIT4_X;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (ಗಾತ್ರ_3 + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - 1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಚಿಹ್ನೆರಹಿತ idx;
+	    ಗಾಗಿ (idx = 0; idx < ಪದಗಳು - 1; idx += 1) {
+		  ಆದರೆ ((abits_ptr_[idx] & ~bbits_ptr_[idx]) != 0UL)
+			ಹಿಂತಿರುಗಿ BIT4_1;
+		  ಆದರೆ (bbits_ptr_[idx] != 0UL)
 			res = BIT4_X;
 	    }
-	    if ((abits_ptr_[idx] & ~bbits_ptr_[idx] & mask) != 0UL)
-		  return BIT4_1;
-	    if ((bbits_ptr_[idx] & mask) != 0UL)
+	    ಆದರೆ ((abits_ptr_[idx] & ~bbits_ptr_[idx] & ಮುಖವಾಡ) != 0UL)
+		  ಹಿಂತಿರುಗಿ BIT4_1;
+	    ಆದರೆ ((bbits_ptr_[idx] & ಮುಖವಾಡ) != 0UL)
 		  res = BIT4_X;
       }
 
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }
 
-vvp_bit4_t vvp_vector4_t::reduce_and() const
+vvp_bit4_t vvp_vector4_t::reduce_and() ಸ್ಥಿರಾಂಕ
 {
-      unsigned long mask = BIT_MASK(size_ % BITS_PER_WORD);
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = ಬಿಟ್_ಮುಖವಾಡ(ಗಾತ್ರ_3 % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ);
       vvp_bit4_t res = BIT4_1;
 
-      if (size_ <= BITS_PER_WORD) {
-	    if ((abits_val_ | bbits_val_ | ~mask) != ~0UL)
-		  return BIT4_0;
-	    if ((bbits_val_ & mask) != 0UL)
-		  return BIT4_X;
-	} else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    unsigned idx;
-	    for (idx = 0; idx < words - 1; idx += 1) {
-		  if ((abits_ptr_[idx] | bbits_ptr_[idx]) != ~0UL)
-			return BIT4_0;
-		  if (bbits_ptr_[idx] != 0UL)
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಆದರೆ ((abits_val_ | bbits_val_ | ~ಮುಖವಾಡ) != ~0UL)
+		  ಹಿಂತಿರುಗಿ BIT4_0;
+	    ಆದರೆ ((bbits_val_ & ಮುಖವಾಡ) != 0UL)
+		  ಹಿಂತಿರುಗಿ BIT4_X;
+	} ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (ಗಾತ್ರ_3 + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - 1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಚಿಹ್ನೆರಹಿತ idx;
+	    ಗಾಗಿ (idx = 0; idx < ಪದಗಳು - 1; idx += 1) {
+		  ಆದರೆ ((abits_ptr_[idx] | bbits_ptr_[idx]) != ~0UL)
+			ಹಿಂತಿರುಗಿ BIT4_0;
+		  ಆದರೆ (bbits_ptr_[idx] != 0UL)
 			res = BIT4_X;
 	    }
-	    if ((abits_ptr_[idx] | bbits_ptr_[idx] | ~mask) != ~0UL)
-		  return BIT4_0;
-	    if ((bbits_ptr_[idx] & mask) != 0UL)
+	    ಆದರೆ ((abits_ptr_[idx] | bbits_ptr_[idx] | ~ಮುಖವಾಡ) != ~0UL)
+		  ಹಿಂತಿರುಗಿ BIT4_0;
+	    ಆದರೆ ((bbits_ptr_[idx] & ಮುಖವಾಡ) != 0UL)
 		  res = BIT4_X;
       }
 
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }
 
-static unsigned long parity(unsigned long val)
+ಸ್ಥಿರ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ parity(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ val)
 {
-#if defined(__GNUC__)
+#ಆದರೆ defined(__GNUC__)
       // The compiler builtin can use target-specific CPU instructions.
-      return __builtin_parityl(val);
-#else
-#if ULONG_MAX > 0xffffffffUL
+      ಹಿಂತಿರುಗಿ __builtin_parityl(val);
+#ಇಲ್ಲದಿದ್ದರೆ
+#ಆದರೆ ULONG_MAX > 0xffffffffUL
 	val ^= val >> 32;
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 	val ^= val >> 16;
 	val ^= val >> 8;
 	val ^= val >> 4;
 
-      return (0x6996 >> (val & 0xf)) & 1;
-#endif
+      ಹಿಂತಿರುಗಿ (0x6996 >> (val & 0xf)) & 1;
+#ಆದರೆ_ಅಂತ್ಯ
 }
 
-vvp_bit4_t vvp_vector4_t::reduce_xor() const
+vvp_bit4_t vvp_vector4_t::reduce_xor() ಸ್ಥಿರಾಂಕ
 {
-      unsigned long mask = BIT_MASK(size_ % BITS_PER_WORD);
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = ಬಿಟ್_ಮುಖವಾಡ(ಗಾತ್ರ_3 % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ);
 
-      if (size_ <= BITS_PER_WORD) {
-	    if ((bbits_val_ & mask) != 0UL)
-		  return BIT4_X;
-	    return parity(abits_val_ & mask) ? BIT4_1 : BIT4_0;
-      } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    unsigned long val_a = 0UL;
-	    unsigned idx;
-	    for (idx = 0; idx < words - 1; idx += 1) {
-		  if (bbits_ptr_[idx] != 0UL)
-			return BIT4_X;
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಆದರೆ ((bbits_val_ & ಮುಖವಾಡ) != 0UL)
+		  ಹಿಂತಿರುಗಿ BIT4_X;
+	    ಹಿಂತಿರುಗಿ parity(abits_val_ & ಮುಖವಾಡ) ? BIT4_1 : BIT4_0;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (ಗಾತ್ರ_3 + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - 1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ val_a = 0UL;
+	    ಚಿಹ್ನೆರಹಿತ idx;
+	    ಗಾಗಿ (idx = 0; idx < ಪದಗಳು - 1; idx += 1) {
+		  ಆದರೆ (bbits_ptr_[idx] != 0UL)
+			ಹಿಂತಿರುಗಿ BIT4_X;
 		  val_a ^= abits_ptr_[idx];
 	    }
-	    if ((bbits_ptr_[idx] & mask) != 0UL)
-		  return BIT4_X;
-	    val_a ^= abits_ptr_[idx] & mask;
-	    return parity(val_a) ? BIT4_1 : BIT4_0;
+	    ಆದರೆ ((bbits_ptr_[idx] & ಮುಖವಾಡ) != 0UL)
+		  ಹಿಂತಿರುಗಿ BIT4_X;
+	    val_a ^= abits_ptr_[idx] & ಮುಖವಾಡ;
+	    ಹಿಂತಿರುಗಿ parity(val_a) ? BIT4_1 : BIT4_0;
       }
 }
 
-vvp_vector4_t& vvp_vector4_t::operator &= (const vvp_vector4_t&that)
+vvp_vector4_t& vvp_vector4_t::ಕ್ರಿಯಾಕಾರಕ &= (ಸ್ಥಿರಾಂಕ vvp_vector4_t&that)
 {
 	// The truth table is:
 	//     00 01 11 10
@@ -2012,16 +2012,16 @@ vvp_vector4_t& vvp_vector4_t::operator &= (const vvp_vector4_t&that)
 	//  01 00 01 11 11
 	//  11 00 11 11 11
 	//  10 00 11 11 11
-      if (size_ <= BITS_PER_WORD) {
-	    unsigned long tmp1 = abits_val_ | bbits_val_;
-	    unsigned long tmp2 = that.abits_val_ | that.bbits_val_;
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp1 = abits_val_ | bbits_val_;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp2 = that.abits_val_ | that.bbits_val_;
 	    abits_val_ = tmp1 & tmp2;
 	    bbits_val_ = (tmp1 & that.bbits_val_) | (tmp2 & bbits_val_);
-      } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    for (unsigned idx = 0; idx < words ; idx += 1) {
-		  unsigned long tmp1 = abits_ptr_[idx] | bbits_ptr_[idx];
-		  unsigned long tmp2 = that.abits_ptr_[idx] |
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (ಗಾತ್ರ_3 + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - 1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0; idx < ಪದಗಳು ; idx += 1) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp1 = abits_ptr_[idx] | bbits_ptr_[idx];
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp2 = that.abits_ptr_[idx] |
 		                       that.bbits_ptr_[idx];
 		  abits_ptr_[idx] = tmp1 & tmp2;
 		  bbits_ptr_[idx] = (tmp1 & that.bbits_ptr_[idx]) |
@@ -2029,10 +2029,10 @@ vvp_vector4_t& vvp_vector4_t::operator &= (const vvp_vector4_t&that)
 	    }
       }
 
-      return *this;
+      ಹಿಂತಿರುಗಿ *ಇದು;
 }
 
-vvp_vector4_t& vvp_vector4_t::operator |= (const vvp_vector4_t&that)
+vvp_vector4_t& vvp_vector4_t::ಕ್ರಿಯಾಕಾರಕ |= (ಸ್ಥಿರಾಂಕ vvp_vector4_t&that)
 {
 	// The truth table is:
 	//     00 01 11 10
@@ -2040,17 +2040,17 @@ vvp_vector4_t& vvp_vector4_t::operator |= (const vvp_vector4_t&that)
 	//  01 01 01 01 01
 	//  11 11 01 11 11
 	//  10 11 01 11 11
-      if (size_ <= BITS_PER_WORD) {
-	    unsigned long tmp = abits_val_ | bbits_val_ |
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp = abits_val_ | bbits_val_ |
 	                        that.abits_val_ | that.bbits_val_;
 	    bbits_val_ = ((~abits_val_ | bbits_val_) & that.bbits_val_) |
 	                 ((~that.abits_val_ | that.bbits_val_) & bbits_val_);
 	    abits_val_ = tmp;
 
-      } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    for (unsigned idx = 0; idx < words ; idx += 1) {
-		  unsigned long tmp = abits_ptr_[idx] | bbits_ptr_[idx] |
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (ಗಾತ್ರ_3 + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - 1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0; idx < ಪದಗಳು ; idx += 1) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmp = abits_ptr_[idx] | bbits_ptr_[idx] |
 	                        that.abits_ptr_[idx] | that.bbits_ptr_[idx];
 		  bbits_ptr_[idx] = ((~abits_ptr_[idx] | bbits_ptr_[idx]) &
 		                     that.bbits_ptr_[idx]) |
@@ -2060,10 +2060,10 @@ vvp_vector4_t& vvp_vector4_t::operator |= (const vvp_vector4_t&that)
 	    }
       }
 
-      return *this;
+      ಹಿಂತಿರುಗಿ *ಇದು;
 }
 
-vvp_vector4_t& vvp_vector4_t::operator ^= (const vvp_vector4_t&that)
+vvp_vector4_t& vvp_vector4_t::ಕ್ರಿಯಾಕಾರಕ ^= (ಸ್ಥಿರಾಂಕ vvp_vector4_t&that)
 {
 	// The truth table is:
 	//     00 01 11 10
@@ -2071,220 +2071,220 @@ vvp_vector4_t& vvp_vector4_t::operator ^= (const vvp_vector4_t&that)
 	//  01 01 00 11 11
 	//  11 11 11 11 11
 	//  10 11 11 11 11
-      if (size_ <= BITS_PER_WORD) {
-	    unsigned long bval = bbits_val_ | that.bbits_val_;
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ bval = bbits_val_ | that.bbits_val_;
 	    bbits_val_ = bval;
 	    abits_val_ = (abits_val_ ^ that.abits_val_) | bval;
-      } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    for (unsigned idx = 0; idx < words ; idx += 1) {
-		  unsigned long bval = bbits_ptr_[idx] | that.bbits_ptr_[idx];
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (ಗಾತ್ರ_3 + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - 1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0; idx < ಪದಗಳು ; idx += 1) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ bval = bbits_ptr_[idx] | that.bbits_ptr_[idx];
 		  bbits_ptr_[idx] = bval;
 		  abits_ptr_[idx] = (abits_ptr_[idx] ^ that.abits_ptr_[idx]) | bval;
 	    }
       }
 
-      return *this;
+      ಹಿಂತಿರುಗಿ *ಇದು;
 }
 
 /*
 * Add an integer to the vvp_vector4_t in place, bit by bit so that
 * there is no size limitations.
 */
-vvp_vector4_t& vvp_vector4_t::operator += (int64_t that)
+vvp_vector4_t& vvp_vector4_t::ಕ್ರಿಯಾಕಾರಕ += (int64_t that)
 {
-      vvp_bit4_t carry = BIT4_0;
-      unsigned idx;
+      vvp_bit4_t ವಾಹಕ = BIT4_0;
+      ಚಿಹ್ನೆರಹಿತ idx;
 
-      if (has_xz()) {
+      ಆದರೆ (has_xz()) {
 	    vvp_vector4_t xxx (size(), BIT4_X);
-	    *this = xxx;
-	    return *this;
+	    *ಇದು = xxx;
+	    ಹಿಂತಿರುಗಿ *ಇದು;
       }
 
-      for (idx = 0 ; idx < size() ; idx += 1) {
-	    if (that == 0 && carry==BIT4_0)
-		  break;
+      ಗಾಗಿ (idx = 0 ; idx < size() ; idx += 1) {
+	    ಆದರೆ (that == 0 && ವಾಹಕ==BIT4_0)
+		  ನಿಲ್ಲಿಸು;
 
-	    vvp_bit4_t that_bit = (that&1)? BIT4_1 : BIT4_0;
+	    vvp_bit4_t that_ಬಿಟ್ = (that&1)? BIT4_1 : BIT4_0;
 	    that >>= 1;
 
-	    if (that_bit==BIT4_0 && carry==BIT4_0)
-		  continue;
+	    ಆದರೆ (that_ಬಿಟ್==BIT4_0 && ವಾಹಕ==BIT4_0)
+		  ಮುಂದುವರಿ;
 
-	    vvp_bit4_t bit = value(idx);
-	    bit = add_with_carry(bit, that_bit, carry);
+	    vvp_bit4_t ಬಿಟ್ = value(idx);
+	    ಬಿಟ್ = ಕೂಡಿಸು_with_ವಾಹಕ(ಬಿಟ್, that_ಬಿಟ್, ವಾಹಕ);
 
-	    set_bit(idx, bit);
+	    ಗಣ_ಬಿಟ್(idx, ಬಿಟ್);
       }
 
-      return *this;
+      ಹಿಂತಿರುಗಿ *ಇದು;
 }
 
-ostream& operator<< (ostream&out, const vvp_vector4_t&that)
+ostream& ಕ್ರಿಯಾಕಾರಕ<< (ostream&out, ಸ್ಥಿರಾಂಕ vvp_vector4_t&that)
 {
       out << that.size() << "'b";
-      for (unsigned idx = 0 ;  idx < that.size() ;  idx += 1)
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < that.size() ;  idx += 1)
 	    out << that.value(that.size()-idx-1);
-      return out;
+      ಹಿಂತಿರುಗಿ out;
 }
 
-template <class INT>bool vector4_to_value(const vvp_vector4_t&vec, INT&val,
-					  bool is_signed, bool is_arithmetic)
+ಮಾದರಿ <ವರ್ಗ INT>ತಾರ್ಕಿಕ vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(ಸ್ಥಿರಾಂಕ vvp_vector4_t&vec, INT&val,
+					  ತಾರ್ಕಿಕ is_signed, ತಾರ್ಕಿಕ is_arithmetic)
 {
       INT res = 0;
       INT msk = 1;
-      bool rc_flag = true;
+      ತಾರ್ಕಿಕ rc_flag = ನಿಜ;
 
-      unsigned size = vec.size();
-      if (size > 8*sizeof(val)) size = 8*sizeof(val);
-      for (unsigned idx = 0 ;  idx < size ;  idx += 1) {
-	    switch (vec.value(idx)) {
-		case BIT4_0:
-		  break;
-		case BIT4_1:
+      ಚಿಹ್ನೆರಹಿತ size = vec.size();
+      ಆದರೆ (size > 8*ಗಾತ್ರ(val)) size = 8*ಗಾತ್ರ(val);
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < size ;  idx += 1) {
+	    ಆಯ್ಕೆ (vec.value(idx)) {
+		ಸ್ಥಿತಿ BIT4_0:
+		  ನಿಲ್ಲಿಸು;
+		ಸ್ಥಿತಿ BIT4_1:
 		  res |= msk;
-		  break;
-		default:
-		  if (is_arithmetic)
-			return false;
-		  else
-			rc_flag = false;
+		  ನಿಲ್ಲಿಸು;
+		ಪೂರ್ವನಿಯೋಜಿತ:
+		  ಆದರೆ (is_arithmetic)
+			ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
+		  ಇಲ್ಲದಿದ್ದರೆ
+			rc_flag = ಸುಳ್ಳು;
 	    }
 
 	    msk <<= 1;
       }
 
-      if (is_signed && vec.value(vec.size()-1) == BIT4_1) {
-	    if (vec.size() < 8*sizeof(val))
+      ಆದರೆ (is_signed && vec.value(vec.size()-1) == BIT4_1) {
+	    ಆದರೆ (vec.size() < 8*ಗಾತ್ರ(val))
 		  res |= static_cast<INT>(-1ULL << vec.size());
       }
 
       val = res;
-      return rc_flag;
+      ಹಿಂತಿರುಗಿ rc_flag;
 }
 
-template bool vector4_to_value(const vvp_vector4_t&vec, int8_t&val,
-			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, int16_t&val,
-			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, int32_t&val,
-			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, int64_t&val,
-			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, uint8_t&val,
-			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, uint16_t&val,
-			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, uint32_t&val,
-			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, uint64_t&val,
-			       bool is_signed, bool is_arithmetic);
+ಮಾದರಿ ತಾರ್ಕಿಕ vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(ಸ್ಥಿರಾಂಕ vvp_vector4_t&vec, int8_t&val,
+			       ತಾರ್ಕಿಕ is_signed, ತಾರ್ಕಿಕ is_arithmetic);
+ಮಾದರಿ ತಾರ್ಕಿಕ vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(ಸ್ಥಿರಾಂಕ vvp_vector4_t&vec, int16_t&val,
+			       ತಾರ್ಕಿಕ is_signed, ತಾರ್ಕಿಕ is_arithmetic);
+ಮಾದರಿ ತಾರ್ಕಿಕ vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(ಸ್ಥಿರಾಂಕ vvp_vector4_t&vec, int32_t&val,
+			       ತಾರ್ಕಿಕ is_signed, ತಾರ್ಕಿಕ is_arithmetic);
+ಮಾದರಿ ತಾರ್ಕಿಕ vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(ಸ್ಥಿರಾಂಕ vvp_vector4_t&vec, int64_t&val,
+			       ತಾರ್ಕಿಕ is_signed, ತಾರ್ಕಿಕ is_arithmetic);
+ಮಾದರಿ ತಾರ್ಕಿಕ vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(ಸ್ಥಿರಾಂಕ vvp_vector4_t&vec, uint8_t&val,
+			       ತಾರ್ಕಿಕ is_signed, ತಾರ್ಕಿಕ is_arithmetic);
+ಮಾದರಿ ತಾರ್ಕಿಕ vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(ಸ್ಥಿರಾಂಕ vvp_vector4_t&vec, uint16_t&val,
+			       ತಾರ್ಕಿಕ is_signed, ತಾರ್ಕಿಕ is_arithmetic);
+ಮಾದರಿ ತಾರ್ಕಿಕ vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(ಸ್ಥಿರಾಂಕ vvp_vector4_t&vec, uint32_t&val,
+			       ತಾರ್ಕಿಕ is_signed, ತಾರ್ಕಿಕ is_arithmetic);
+ಮಾದರಿ ತಾರ್ಕಿಕ vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(ಸ್ಥಿರಾಂಕ vvp_vector4_t&vec, uint64_t&val,
+			       ತಾರ್ಕಿಕ is_signed, ತಾರ್ಕಿಕ is_arithmetic);
 
-template <class T> bool vector4_to_value(const vvp_vector4_t&vec,
-                                         bool&overflow_flag, T&val)
+ಮಾದರಿ <ವರ್ಗ T> ತಾರ್ಕಿಕ vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(ಸ್ಥಿರಾಂಕ vvp_vector4_t&vec,
+                                         ತಾರ್ಕಿಕ&ಅತಿಪ್ರವಾಹ_flag, T&val)
 {
       T res = 0;
       T msk = 1;
 
-      overflow_flag = false;
-      unsigned size = vec.size();
-      for (unsigned idx = 0 ;  idx < size ;  idx += 1) {
-	    switch (vec.value(idx)) {
-		case BIT4_0:
-		  break;
-		case BIT4_1:
-		  if (msk == 0)
-			overflow_flag = true;
-		  else
+      ಅತಿಪ್ರವಾಹ_flag = ಸುಳ್ಳು;
+      ಚಿಹ್ನೆರಹಿತ size = vec.size();
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < size ;  idx += 1) {
+	    ಆಯ್ಕೆ (vec.value(idx)) {
+		ಸ್ಥಿತಿ BIT4_0:
+		  ನಿಲ್ಲಿಸು;
+		ಸ್ಥಿತಿ BIT4_1:
+		  ಆದರೆ (msk == 0)
+			ಅತಿಪ್ರವಾಹ_flag = ನಿಜ;
+		  ಇಲ್ಲದಿದ್ದರೆ
 			res |= msk;
-		  break;
-		default:
-		  return false;
+		  ನಿಲ್ಲಿಸು;
+		ಪೂರ್ವನಿಯೋಜಿತ:
+		  ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 	    }
 
 	    msk <<= static_cast<T>(1);
       }
 
       val = res;
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-template bool vector4_to_value(const vvp_vector4_t&vec, bool&overflow_flag,
-                               unsigned long&val);
-#ifndef UL_AND_TIME64_SAME
-template bool vector4_to_value(const vvp_vector4_t&vec, bool&overflow_flag,
+ಮಾದರಿ ತಾರ್ಕಿಕ vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(ಸ್ಥಿರಾಂಕ vvp_vector4_t&vec, ತಾರ್ಕಿಕ&ಅತಿಪ್ರವಾಹ_flag,
+                               ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ&val);
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ UL_AND_TIME64_SAME
+ಮಾದರಿ ತಾರ್ಕಿಕ vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(ಸ್ಥಿರಾಂಕ vvp_vector4_t&vec, ತಾರ್ಕಿಕ&ಅತಿಪ್ರವಾಹ_flag,
                                vvp_time64_t&val);
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-bool vector4_to_value(const vvp_vector4_t&vec, double&val, bool signed_flag)
+ತಾರ್ಕಿಕ vector4_ಗಮ್ಯ_ಮೌಲ್ಯ(ಸ್ಥಿರಾಂಕ vvp_vector4_t&vec, ದ್ವಿಗುಣ&val, ತಾರ್ಕಿಕ signed_flag)
 {
 
-      if (vec.size() == 0) {
+      ಆದರೆ (vec.size() == 0) {
 	    val = 0.0;
-	    return true;
+	    ಹಿಂತಿರುಗಿ ನಿಜ;
       }
 
-      bool flag = true;
+      ತಾರ್ಕಿಕ flag = ನಿಜ;
 
-      if (vec.value(vec.size()-1) != BIT4_1) {
-	    signed_flag = false;
+      ಆದರೆ (vec.value(vec.size()-1) != BIT4_1) {
+	    signed_flag = ಸುಳ್ಳು;
       }
 
-      double res = 0.0;
-      if (signed_flag) {
-	    vvp_bit4_t carry = BIT4_1;
-	    for (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
+      ದ್ವಿಗುಣ res = 0.0;
+      ಆದರೆ (signed_flag) {
+	    vvp_bit4_t ವಾಹಕ = BIT4_1;
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < vec.size() ;  idx += 1) {
 		  vvp_bit4_t a = ~vec.value(idx);
-		  vvp_bit4_t x = add_with_carry(a, BIT4_0, carry);
-		  switch (x) {
-		      case BIT4_0:
-			break;
-		      case BIT4_1:
-			res += pow(2.0, (int)idx);
-			break;
-		      default:
-			flag = false;
+		  vvp_bit4_t x = ಕೂಡಿಸು_with_ವಾಹಕ(a, BIT4_0, ವಾಹಕ);
+		  ಆಯ್ಕೆ (x) {
+		      ಸ್ಥಿತಿ BIT4_0:
+			ನಿಲ್ಲಿಸು;
+		      ಸ್ಥಿತಿ BIT4_1:
+			res += ಘಾತ(2.0, (ಪೂರ್ಣಾಂಕ)idx);
+			ನಿಲ್ಲಿಸು;
+		      ಪೂರ್ವನಿಯೋಜಿತ:
+			flag = ಸುಳ್ಳು;
 		  }
 	    }
 	    res *= -1.0;
-      } else {
-	    for (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
-		  switch (vec.value(idx)) {
-		      case BIT4_0:
-			break;
-		      case BIT4_1:
-			res += pow(2.0, (int)idx);
-			break;
-		      default:
-			flag = false;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < vec.size() ;  idx += 1) {
+		  ಆಯ್ಕೆ (vec.value(idx)) {
+		      ಸ್ಥಿತಿ BIT4_0:
+			ನಿಲ್ಲಿಸು;
+		      ಸ್ಥಿತಿ BIT4_1:
+			res += ಘಾತ(2.0, (ಪೂರ್ಣಾಂಕ)idx);
+			ನಿಲ್ಲಿಸು;
+		      ಪೂರ್ವನಿಯೋಜಿತ:
+			flag = ಸುಳ್ಳು;
 		  }
 	    }
       }
       val = res;
-      return flag;
+      ಹಿಂತಿರುಗಿ flag;
 }
 
-bool vector2_to_value(const vvp_vector2_t&a, int32_t&val, bool is_signed)
+ತಾರ್ಕಿಕ vector2_ಗಮ್ಯ_ಮೌಲ್ಯ(ಸ್ಥಿರಾಂಕ vvp_vector2_t&a, int32_t&val, ತಾರ್ಕಿಕ is_signed)
 {
       val = 0;
-      unsigned idx;
-      uint32_t mask;
-      for (idx = 0, mask = 1 ; idx < a.size() && idx < 32 ; idx += 1, mask <<= 1) {
-	    if (a.value(idx)) val |= mask;
+      ಚಿಹ್ನೆರಹಿತ idx;
+      uint32_t ಮುಖವಾಡ;
+      ಗಾಗಿ (idx = 0, ಮುಖವಾಡ = 1 ; idx < a.size() && idx < 32 ; idx += 1, ಮುಖವಾಡ <<= 1) {
+	    ಆದರೆ (a.value(idx)) val |= ಮುಖವಾಡ;
       }
 
-      if (is_signed && a.size() < 32 && a.value(a.size()-1)) {
-	    mask = -1;
-	    mask <<= a.size();
-	    val |= mask;
+      ಆದರೆ (is_signed && a.size() < 32 && a.value(a.size()-1)) {
+	    ಮುಖವಾಡ = -1;
+	    ಮುಖವಾಡ <<= a.size();
+	    val |= ಮುಖವಾಡ;
       }
 
-      return a.size() <= 32;
+      ಹಿಂತಿರುಗಿ a.size() <= 32;
 }
 
-vvp_vector4array_t::vvp_vector4array_t(unsigned width__, unsigned words__)
-: width_(width__), words_(words__)
+vvp_vector4array_t::vvp_vector4array_t(ಚಿಹ್ನೆರಹಿತ ಅಗಲ_3, ಚಿಹ್ನೆರಹಿತ ಪದಗಳು_2)
+: ಅಗಲ_2(ಅಗಲ_3), ಪದಗಳು_3(ಪದಗಳು_2)
 {
 }
 
@@ -2292,65 +2292,65 @@ vvp_vector4array_t::~vvp_vector4array_t()
 {
 }
 
-void vvp_vector4array_t::set_word_(v4cell*cell, const vvp_vector4_t&that)
+ಶೂನ್ಯ vvp_vector4array_t::ಗಣ_ಶಬ್ದ_2(v4cell*cell, ಸ್ಥಿರಾಂಕ vvp_vector4_t&that)
 {
-      assert(that.size_ == width_);
+      ಪ್ರತಿಜ್ಞಾ(that.ಗಾತ್ರ_3 == ಅಗಲ_2);
 
-      if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
+      ಆದರೆ (ಅಗಲ_2 <= vvp_vector4_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 	    cell->abits_val_ = that.abits_val_;
 	    cell->bbits_val_ = that.bbits_val_;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      unsigned cnt = (width_ + vvp_vector4_t::BITS_PER_WORD-1)/vvp_vector4_t::BITS_PER_WORD;
+      ಚಿಹ್ನೆರಹಿತ cnt = (ಅಗಲ_2 + vvp_vector4_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1)/vvp_vector4_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-      if (cell->abits_ptr_ == 0) {
-	    cell->abits_ptr_ = new unsigned long[2*cnt];
+      ಆದರೆ (cell->abits_ptr_ == 0) {
+	    cell->abits_ptr_ = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ[2*cnt];
 	    cell->bbits_ptr_ = cell->abits_ptr_ + cnt;
       }
 
-      for (unsigned idx = 0 ; idx < cnt ; idx += 1)
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < cnt ; idx += 1)
 	    cell->abits_ptr_[idx] = that.abits_ptr_[idx];
-      for (unsigned idx = 0 ; idx < cnt ; idx += 1)
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < cnt ; idx += 1)
 	    cell->bbits_ptr_[idx] = that.bbits_ptr_[idx];
 }
 
-vvp_vector4_t vvp_vector4array_t::get_word_(v4cell*cell) const
+vvp_vector4_t vvp_vector4array_t::get_ಶಬ್ದ_2(v4cell*cell) ಸ್ಥಿರಾಂಕ
 {
-      if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
+      ಆದರೆ (ಅಗಲ_2 <= vvp_vector4_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
 	    vvp_vector4_t res;
-	    res.size_ = width_;
+	    res.ಗಾತ್ರ_3 = ಅಗಲ_2;
 	    res.abits_val_ = cell->abits_val_;
 	    res.bbits_val_ = cell->bbits_val_;
-	    return res;
+	    ಹಿಂತಿರುಗಿ res;
       }
 
-      vvp_vector4_t res (width_, BIT4_X);
-      if (cell->abits_ptr_ == 0)
-	    return res;
+      vvp_vector4_t res (ಅಗಲ_2, BIT4_X);
+      ಆದರೆ (cell->abits_ptr_ == 0)
+	    ಹಿಂತಿರುಗಿ res;
 
-      unsigned cnt = (width_ + vvp_vector4_t::BITS_PER_WORD-1)/vvp_vector4_t::BITS_PER_WORD;
+      ಚಿಹ್ನೆರಹಿತ cnt = (ಅಗಲ_2 + vvp_vector4_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1)/vvp_vector4_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-      for (unsigned idx = 0 ; idx < cnt ; idx += 1)
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < cnt ; idx += 1)
 	    res.abits_ptr_[idx] = cell->abits_ptr_[idx];
-      for (unsigned idx = 0 ; idx < cnt ; idx += 1)
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < cnt ; idx += 1)
 	    res.bbits_ptr_[idx] = cell->bbits_ptr_[idx];
 
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }
 
-vvp_vector4array_sa::vvp_vector4array_sa(unsigned width__, unsigned words__)
-: vvp_vector4array_t(width__, words__)
+vvp_vector4array_sa::vvp_vector4array_sa(ಚಿಹ್ನೆರಹಿತ ಅಗಲ_3, ಚಿಹ್ನೆರಹಿತ ಪದಗಳು_2)
+: vvp_vector4array_t(ಅಗಲ_3, ಪದಗಳು_2)
 {
-      array_ = new v4cell[words_];
+      array_ = ಹೊಸ v4cell[ಪದಗಳು_3];
 
-      if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
-		  array_[idx].abits_val_ = vvp_vector4_t::WORD_X_ABITS;
-		  array_[idx].bbits_val_ = vvp_vector4_t::WORD_X_BBITS;
+      ಆದರೆ (ಅಗಲ_2 <= vvp_vector4_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಪದಗಳು_3 ; idx += 1) {
+		  array_[idx].abits_val_ = vvp_vector4_t::ಶಬ್ದ_X_ABITS;
+		  array_[idx].bbits_val_ = vvp_vector4_t::ಶಬ್ದ_X_BBITS;
 	    }
-      } else {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಪದಗಳು_3 ; idx += 1) {
 		  array_[idx].abits_ptr_ = 0;
 		  array_[idx].bbits_ptr_ = 0;
 	    }
@@ -2359,84 +2359,84 @@ vvp_vector4array_sa::vvp_vector4array_sa(unsigned width__, unsigned words__)
 
 vvp_vector4array_sa::~vvp_vector4array_sa()
 {
-      if (array_) {
-	    if (width_ > vvp_vector4_t::BITS_PER_WORD) {
-		  for (unsigned idx = 0 ; idx < words_ ; idx += 1)
-			if (array_[idx].abits_ptr_)
-			      delete[]array_[idx].abits_ptr_;
+      ಆದರೆ (array_) {
+	    ಆದರೆ (ಅಗಲ_2 > vvp_vector4_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+		  ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಪದಗಳು_3 ; idx += 1)
+			ಆದರೆ (array_[idx].abits_ptr_)
+			      ಅಳಿಸು[]array_[idx].abits_ptr_;
 	    }
-	    delete[]array_;
+	    ಅಳಿಸು[]array_;
       }
 }
 
-void vvp_vector4array_sa::set_word(unsigned index, const vvp_vector4_t&that)
+ಶೂನ್ಯ vvp_vector4array_sa::ಗಣ_ಶಬ್ದ(ಚಿಹ್ನೆರಹಿತ ಸೂಚ್ಯಂಕ, ಸ್ಥಿರಾಂಕ vvp_vector4_t&that)
 {
-      assert(index < words_);
+      ಪ್ರತಿಜ್ಞಾ(ಸೂಚ್ಯಂಕ < ಪದಗಳು_3);
 
-      v4cell*cell = &array_[index];
+      v4cell*cell = &array_[ಸೂಚ್ಯಂಕ];
 
-      set_word_(cell, that);
+      ಗಣ_ಶಬ್ದ_2(cell, that);
 }
 
-vvp_vector4_t vvp_vector4array_sa::get_word(unsigned index) const
+vvp_vector4_t vvp_vector4array_sa::get_ಶಬ್ದ(ಚಿಹ್ನೆರಹಿತ ಸೂಚ್ಯಂಕ) ಸ್ಥಿರಾಂಕ
 {
-      if (index >= words_)
-	    return vvp_vector4_t(width_, BIT4_X);
+      ಆದರೆ (ಸೂಚ್ಯಂಕ >= ಪದಗಳು_3)
+	    ಹಿಂತಿರುಗಿ vvp_vector4_t(ಅಗಲ_2, BIT4_X);
 
-      assert(index < words_);
+      ಪ್ರತಿಜ್ಞಾ(ಸೂಚ್ಯಂಕ < ಪದಗಳು_3);
 
-      v4cell*cell = &array_[index];
+      v4cell*cell = &array_[ಸೂಚ್ಯಂಕ];
 
-      return get_word_(cell);
+      ಹಿಂತಿರುಗಿ get_ಶಬ್ದ_2(cell);
 }
 
-vvp_vector4array_aa::vvp_vector4array_aa(unsigned width__, unsigned words__)
-: vvp_vector4array_t(width__, words__)
+vvp_vector4array_aa::vvp_vector4array_aa(ಚಿಹ್ನೆರಹಿತ ಅಗಲ_3, ಚಿಹ್ನೆರಹಿತ ಪದಗಳು_2)
+: vvp_vector4array_t(ಅಗಲ_3, ಪದಗಳು_2)
 {
-      context_idx_ = vpip_add_item_to_context(this, vpip_peek_context_scope());
+      context_idx_ = vpip_ಕೂಡಿಸು_ಅಂಶ_ಗಮ್ಯ_context(ಇದು, vpip_peek_context_scope());
 }
 
 vvp_vector4array_aa::~vvp_vector4array_aa()
 {
 }
 
-void vvp_vector4array_aa::alloc_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_vector4array_aa::alloc_instance(vvp_context_t context)
 {
-      v4cell*array = new v4cell[words_];
+      v4cell*array = ಹೊಸ v4cell[ಪದಗಳು_3];
 
-      if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
-		  array[idx].abits_val_ = vvp_vector4_t::WORD_X_ABITS;
-		  array[idx].bbits_val_ = vvp_vector4_t::WORD_X_BBITS;
+      ಆದರೆ (ಅಗಲ_2 <= vvp_vector4_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಪದಗಳು_3 ; idx += 1) {
+		  array[idx].abits_val_ = vvp_vector4_t::ಶಬ್ದ_X_ABITS;
+		  array[idx].bbits_val_ = vvp_vector4_t::ಶಬ್ದ_X_BBITS;
 	    }
-      } else {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಪದಗಳು_3 ; idx += 1) {
 		  array[idx].abits_ptr_ = 0;
 		  array[idx].bbits_ptr_ = 0;
 	    }
       }
 
-      vvp_set_context_item(context, context_idx_, array);
+      vvp_ಗಣ_context_ಅಂಶ(context, context_idx_, array);
 }
 
-void vvp_vector4array_aa::reset_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_vector4array_aa::reset_instance(vvp_context_t context)
 {
       v4cell*cell = static_cast<v4cell*>
-            (vvp_get_context_item(context, context_idx_));
+            (vvp_get_context_ಅಂಶ(context, context_idx_));
 
-      if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
-		  cell->abits_val_ = vvp_vector4_t::WORD_X_ABITS;
-		  cell->bbits_val_ = vvp_vector4_t::WORD_X_BBITS;
+      ಆದರೆ (ಅಗಲ_2 <= vvp_vector4_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಪದಗಳು_3 ; idx += 1) {
+		  cell->abits_val_ = vvp_vector4_t::ಶಬ್ದ_X_ABITS;
+		  cell->bbits_val_ = vvp_vector4_t::ಶಬ್ದ_X_BBITS;
                   cell++;
 	    }
-      } else {
-            unsigned cnt = (width_ + vvp_vector4_t::BITS_PER_WORD-1)/vvp_vector4_t::BITS_PER_WORD;
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
-		  if (cell->abits_ptr_) {
-                        for (unsigned n = 0 ; n < cnt ; n += 1) {
-			      cell->abits_ptr_[n] = vvp_vector4_t::WORD_X_ABITS;
-			      cell->bbits_ptr_[n] = vvp_vector4_t::WORD_X_BBITS;
+      } ಇಲ್ಲದಿದ್ದರೆ {
+            ಚಿಹ್ನೆರಹಿತ cnt = (ಅಗಲ_2 + vvp_vector4_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1)/vvp_vector4_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಪದಗಳು_3 ; idx += 1) {
+		  ಆದರೆ (cell->abits_ptr_) {
+                        ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ n = 0 ; n < cnt ; n += 1) {
+			      cell->abits_ptr_[n] = vvp_vector4_t::ಶಬ್ದ_X_ABITS;
+			      cell->bbits_ptr_[n] = vvp_vector4_t::ಶಬ್ದ_X_BBITS;
                         }
                   }
                   cell++;
@@ -2444,36 +2444,36 @@ void vvp_vector4array_aa::reset_instance(vvp_context_t context)
       }
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_vector4array_aa::free_instance(vvp_context_t context)
+#ವ್ಯಾಖ್ಯಾನಿತವಾದರೆ CHECK_WITH_VALGRIND
+ಶೂನ್ಯ vvp_vector4array_aa::free_instance(vvp_context_t context)
 {
       v4cell*cell = static_cast<v4cell*>
-            (vvp_get_context_item(context, context_idx_));
-      delete [] cell;
+            (vvp_get_context_ಅಂಶ(context, context_idx_));
+      ಅಳಿಸು [] cell;
 }
-#endif
+#ಆದರೆ_ಅಂತ್ಯ
 
-void vvp_vector4array_aa::set_word(unsigned index, const vvp_vector4_t&that)
+ಶೂನ್ಯ vvp_vector4array_aa::ಗಣ_ಶಬ್ದ(ಚಿಹ್ನೆರಹಿತ ಸೂಚ್ಯಂಕ, ಸ್ಥಿರಾಂಕ vvp_vector4_t&that)
 {
-      assert(index < words_);
+      ಪ್ರತಿಜ್ಞಾ(ಸೂಚ್ಯಂಕ < ಪದಗಳು_3);
 
       v4cell*cell = static_cast<v4cell*>
-            (vthread_get_wt_context_item(context_idx_)) + index;
+            (vthread_get_wt_context_ಅಂಶ(context_idx_)) + ಸೂಚ್ಯಂಕ;
 
-      set_word_(cell, that);
+      ಗಣ_ಶಬ್ದ_2(cell, that);
 }
 
-vvp_vector4_t vvp_vector4array_aa::get_word(unsigned index) const
+vvp_vector4_t vvp_vector4array_aa::get_ಶಬ್ದ(ಚಿಹ್ನೆರಹಿತ ಸೂಚ್ಯಂಕ) ಸ್ಥಿರಾಂಕ
 {
-      if (index >= words_)
-	    return vvp_vector4_t(width_, BIT4_X);
+      ಆದರೆ (ಸೂಚ್ಯಂಕ >= ಪದಗಳು_3)
+	    ಹಿಂತಿರುಗಿ vvp_vector4_t(ಅಗಲ_2, BIT4_X);
 
-      assert(index < words_);
+      ಪ್ರತಿಜ್ಞಾ(ಸೂಚ್ಯಂಕ < ಪದಗಳು_3);
 
       v4cell*cell = static_cast<v4cell*>
-            (vthread_get_rd_context_item(context_idx_)) + index;
+            (vthread_get_rd_context_ಅಂಶ(context_idx_)) + ಸೂಚ್ಯಂಕ;
 
-      return get_word_(cell);
+      ಹಿಂತಿರುಗಿ get_ಶಬ್ದ_2(cell);
 }
 
 vvp_vector2_t::vvp_vector2_t()
@@ -2482,349 +2482,349 @@ vvp_vector2_t::vvp_vector2_t()
       wid_ = 0;
 }
 
-vvp_vector2_t::vvp_vector2_t(uint64_t v, unsigned wid)
+vvp_vector2_t::vvp_vector2_t(uint64_t v, ಚಿಹ್ನೆರಹಿತ wid)
 {
       wid_ = wid;
-      const unsigned bits_per_word = 8 * sizeof(vec_[0]);
-      const unsigned words = (wid_ + bits_per_word-1) / bits_per_word;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ_2 = 8 * ಗಾತ್ರ(vec_[0]);
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (wid_ + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ_2-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ_2;
 
-      vec_ = new unsigned long[words];
-      for (unsigned idx = 0 ; idx < words ; idx += 1) {
-	    const unsigned shift = idx * bits_per_word;
-	    vec_[idx] = shift < 64 ? v >> shift : 0;
+      vec_ = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ[ಪದಗಳು];
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಪದಗಳು ; idx += 1) {
+	    ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಸರಿಸು = idx * ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ_2;
+	    vec_[idx] = ಸರಿಸು < 64 ? v >> ಸರಿಸು : 0;
       }
 }
 
-vvp_vector2_t::vvp_vector2_t(vvp_vector2_t::fill_t fill, unsigned wid)
+vvp_vector2_t::vvp_vector2_t(vvp_vector2_t::fill_t fill, ಚಿಹ್ನೆರಹಿತ wid)
 {
       wid_ = wid;
-      const unsigned bits_per_word = 8 * sizeof(vec_[0]);
-      const unsigned words = (wid_ + bits_per_word-1) / bits_per_word;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ_2 = 8 * ಗಾತ್ರ(vec_[0]);
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (wid_ + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ_2-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ_2;
 
-      vec_ = new unsigned long[words];
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      vec_ = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ[ಪದಗಳು];
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು ;  idx += 1)
 	    vec_[idx] = fill? -1 : 0;
 }
 
-vvp_vector2_t::vvp_vector2_t(const vvp_vector2_t&that, unsigned base, unsigned wid)
+vvp_vector2_t::vvp_vector2_t(ಸ್ಥಿರಾಂಕ vvp_vector2_t&that, ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ wid)
 {
       wid_ = wid;
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (wid_ + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-      vec_ = new unsigned long[words];
+      vec_ = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ[ಪದಗಳು];
 
-      for (unsigned idx = 0 ; idx < wid ; idx += 1) {
-	    int bit = that.value(base+idx);
-	    if (bit == 0)
-		  continue;
-	    unsigned word = idx / BITS_PER_WORD;
-	    unsigned long mask = 1UL << (idx % BITS_PER_WORD);
-	    vec_[word] |= mask;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < wid ; idx += 1) {
+	    ಪೂರ್ಣಾಂಕ ಬಿಟ್ = that.value(ತಳ+idx);
+	    ಆದರೆ (ಬಿಟ್ == 0)
+		  ಮುಂದುವರಿ;
+	    ಚಿಹ್ನೆರಹಿತ ಶಬ್ದ = idx / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = 1UL << (idx % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ);
+	    vec_[ಶಬ್ದ] |= ಮುಖವಾಡ;
       }
 }
 
-void vvp_vector2_t::copy_from_that_(const vvp_vector4_t&that)
+ಶೂನ್ಯ vvp_vector2_t::copy_from_that_(ಸ್ಥಿರಾಂಕ vvp_vector4_t&that)
 {
       wid_ = that.size();
-      const unsigned words = (that.size() + BITS_PER_WORD-1) / BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (that.size() + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-      if (words == 0) {
+      ಆದರೆ (ಪದಗಳು == 0) {
 	    vec_ = 0;
 	    wid_ = 0;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
 	// Use the subarray method with the xz_to_0 flag set so that
 	// we get values even when there are xz bits.
-      vec_ = that.subarray(0, wid_, true);
+      vec_ = that.subarray(0, wid_, ನಿಜ);
 }
 
-void vvp_vector2_t::copy_from_that_(const vvp_vector2_t&that)
+ಶೂನ್ಯ vvp_vector2_t::copy_from_that_(ಸ್ಥಿರಾಂಕ vvp_vector2_t&that)
 {
       wid_ = that.wid_;
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (wid_ + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-      if (words == 0) {
+      ಆದರೆ (ಪದಗಳು == 0) {
 	    vec_ = 0;
 	    wid_ = 0;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vec_ = new unsigned long[words];
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      vec_ = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ[ಪದಗಳು];
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು ;  idx += 1)
 	    vec_[idx] = that.vec_[idx];
 }
 
-vvp_vector2_t::vvp_vector2_t(const vvp_vector2_t&that, unsigned newsize)
+vvp_vector2_t::vvp_vector2_t(ಸ್ಥಿರಾಂಕ vvp_vector2_t&that, ಚಿಹ್ನೆರಹಿತ newsize)
 {
       wid_ = newsize;
-      if (newsize == 0) {
+      ಆದರೆ (newsize == 0) {
 	    vec_ = 0;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
-      const unsigned twords = (that.wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (wid_ + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ twords = (that.wid_ + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-      vec_ = new unsigned long[words];
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
-	    if (idx < twords)
+      vec_ = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ[ಪದಗಳು];
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು ;  idx += 1) {
+	    ಆದರೆ (idx < twords)
 		  vec_[idx] = that.vec_[idx];
-	    else
+	    ಇಲ್ಲದಿದ್ದರೆ
 		  vec_[idx] = 0;
       }
 }
 
-vvp_vector2_t& vvp_vector2_t::operator= (const vvp_vector2_t&that)
+vvp_vector2_t& vvp_vector2_t::ಕ್ರಿಯಾಕಾರಕ= (ಸ್ಥಿರಾಂಕ vvp_vector2_t&that)
 {
-      if (this == &that)
-	    return *this;
+      ಆದರೆ (ಇದು == &that)
+	    ಹಿಂತಿರುಗಿ *ಇದು;
 
-      delete[] vec_;
+      ಅಳಿಸು[] vec_;
       vec_ = 0;
 
       copy_from_that_(that);
-      return *this;
+      ಹಿಂತಿರುಗಿ *ಇದು;
 }
 
-vvp_vector2_t& vvp_vector2_t::operator= (const vvp_vector4_t&that)
+vvp_vector2_t& vvp_vector2_t::ಕ್ರಿಯಾಕಾರಕ= (ಸ್ಥಿರಾಂಕ vvp_vector4_t&that)
 {
-      delete[]vec_;
+      ಅಳಿಸು[]vec_;
       vec_ = 0;
       copy_from_that_(that);
-      return *this;
+      ಹಿಂತಿರುಗಿ *ಇದು;
 }
 
-vvp_vector2_t& vvp_vector2_t::operator <<= (unsigned int shift)
+vvp_vector2_t& vvp_vector2_t::ಕ್ರಿಯಾಕಾರಕ <<= (ಚಿಹ್ನೆರಹಿತ ಪೂರ್ಣಾಂಕ ಸರಿಸು)
 {
-      if (wid_ == 0)
-	    return *this;
+      ಆದರೆ (wid_ == 0)
+	    ಹಿಂತಿರುಗಿ *ಇದು;
 
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (wid_ + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
 	// Number of words to shift
-      const unsigned wshift = shift / BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ wshift = ಸರಿಸು / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 	// bits to shift within each word.
-      const unsigned long oshift = shift % BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ oshift = ಸರಿಸು % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
 	// If shifting the entire value away, then return zeros.
-      if (wshift >= words) {
-	    for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      ಆದರೆ (wshift >= ಪದಗಳು) {
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು ;  idx += 1)
 		  vec_[idx] = 0;
 
-	    return *this;
+	    ಹಿಂತಿರುಗಿ *ಇದು;
       }
 
 	// Do the word shift first.
-      if (wshift > 0) {
-	    for (unsigned idx = 0 ;  idx < words-wshift ;  idx += 1) {
-		  unsigned sel = words - idx - 1;
+      ಆದರೆ (wshift > 0) {
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು-wshift ;  idx += 1) {
+		  ಚಿಹ್ನೆರಹಿತ sel = ಪದಗಳು - idx - 1;
 		  vec_[sel] = vec_[sel-wshift];
 	    }
 
-	    for (unsigned idx = 0 ;  idx < wshift ;  idx += 1)
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < wshift ;  idx += 1)
 		  vec_[idx] = 0;
       }
 
 	// Do the fine shift.
-      if (oshift != 0) {
-	    unsigned long pad = 0;
-	    for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
-		  unsigned long next_pad = vec_[idx] >> (BITS_PER_WORD-oshift);
+      ಆದರೆ (oshift != 0) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ pad = 0;
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು ;  idx += 1) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಂದಿನ_pad = vec_[idx] >> (ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-oshift);
 		  vec_[idx] = (vec_[idx] << oshift) | pad;
-		  pad = next_pad;
+		  pad = ಮುಂದಿನ_pad;
 	    }
 
 	      // Cleanup the tail bits.
-	    unsigned long mask = -1UL >> (BITS_PER_WORD - wid_%BITS_PER_WORD);
-	    vec_[words-1] &= mask;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = -1UL >> (ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - wid_%ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ);
+	    vec_[ಪದಗಳು-1] &= ಮುಖವಾಡ;
       }
 
-      return *this;
+      ಹಿಂತಿರುಗಿ *ಇದು;
 }
 
-vvp_vector2_t& vvp_vector2_t::operator >>= (unsigned shift)
+vvp_vector2_t& vvp_vector2_t::ಕ್ರಿಯಾಕಾರಕ >>= (ಚಿಹ್ನೆರಹಿತ ಸರಿಸು)
 {
-      if (wid_ == 0)
-	    return *this;
+      ಆದರೆ (wid_ == 0)
+	    ಹಿಂತಿರುಗಿ *ಇದು;
 
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (wid_ + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
 	// Number of words to shift
-      const unsigned wshift = shift / BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ wshift = ಸರಿಸು / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 	// bits to shift within each word.
-      const unsigned long oshift = shift % BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ oshift = ಸರಿಸು % ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
 	// If shifting the entire value away, then return zeros.
-      if (wshift >= words) {
-	    for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      ಆದರೆ (wshift >= ಪದಗಳು) {
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು ;  idx += 1)
 		  vec_[idx] = 0;
 
-	    return *this;
+	    ಹಿಂತಿರುಗಿ *ಇದು;
       }
 
-      if (wshift > 0) {
-	    for (unsigned idx = 0 ;  idx < words-wshift ;  idx += 1)
+      ಆದರೆ (wshift > 0) {
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು-wshift ;  idx += 1)
 		  vec_[idx] = vec_[idx+wshift];
 
-	    for (unsigned idx = words-wshift ;  idx < words ;  idx += 1)
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = ಪದಗಳು-wshift ;  idx < ಪದಗಳು ;  idx += 1)
 		  vec_[idx] = 0;
       }
 
-      if (oshift > 0) {
-	    unsigned long pad = 0;
-	    for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
-		  unsigned long new_pad = vec_[idx-1] <<(BITS_PER_WORD-oshift);
+      ಆದರೆ (oshift > 0) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ pad = 0;
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = ಪದಗಳು ;  idx > 0 ;  idx -= 1) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ new_pad = vec_[idx-1] <<(ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-oshift);
 		  vec_[idx-1] = pad | (vec_[idx-1] >> oshift);
 		  pad = new_pad;
 	    }
 
 	      // Cleanup the tail bits.
 
-	    unsigned use_words = words;
+	    ಚಿಹ್ನೆರಹಿತ use_ಪದಗಳು = ಪದಗಳು;
 	      // Mask_shift is the number of high bits of the top word
 	      // that are to be masked off. We start with the number
 	      // of bits that are not included even in the original,
 	      // then we include the bits of the shift, that are to be
 	      // masked to zero.
-	    unsigned long mask_shift = BITS_PER_WORD - wid_%BITS_PER_WORD;
-	    mask_shift %= BITS_PER_WORD;
-	    mask_shift += oshift;
-	    while (mask_shift >= BITS_PER_WORD) {
-		  vec_[use_words-1] = 0;
-		  use_words -= 1;
-		  mask_shift -= BITS_PER_WORD;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ_ಸರಿಸು = ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - wid_%ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಮುಖವಾಡ_ಸರಿಸು %= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+	    ಮುಖವಾಡ_ಸರಿಸು += oshift;
+	    ಆಗ (ಮುಖವಾಡ_ಸರಿಸು >= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ) {
+		  vec_[use_ಪದಗಳು-1] = 0;
+		  use_ಪದಗಳು -= 1;
+		  ಮುಖವಾಡ_ಸರಿಸು -= ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 	    }
-	    if (mask_shift > 0) {
-		  assert(use_words > 0);
-		  unsigned long mask = -1UL >> mask_shift;
-		  vec_[use_words-1] &= mask;
+	    ಆದರೆ (ಮುಖವಾಡ_ಸರಿಸು > 0) {
+		  ಪ್ರತಿಜ್ಞಾ(use_ಪದಗಳು > 0);
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = -1UL >> ಮುಖವಾಡ_ಸರಿಸು;
+		  vec_[use_ಪದಗಳು-1] &= ಮುಖವಾಡ;
 	    }
       }
 
-      return *this;
+      ಹಿಂತಿರುಗಿ *ಇದು;
 }
 
-static unsigned long add_carry(unsigned long a, unsigned long b,
-			       unsigned long&carry)
+ಸ್ಥಿರ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಕೂಡಿಸು_ವಾಹಕ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ a, ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ b,
+			       ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ&ವಾಹಕ)
 {
-      unsigned long out = carry;
-      carry = 0;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ out = ವಾಹಕ;
+      ವಾಹಕ = 0;
 
-      if ((ULONG_MAX - out) < a)
-	    carry += 1;
+      ಆದರೆ ((ULONG_MAX - out) < a)
+	    ವಾಹಕ += 1;
       out += a;
 
-      if ((ULONG_MAX - out) < b)
-	    carry += 1;
+      ಆದರೆ ((ULONG_MAX - out) < b)
+	    ವಾಹಕ += 1;
       out += b;
 
-      return out;
+      ಹಿಂತಿರುಗಿ out;
 }
 
-vvp_vector2_t& vvp_vector2_t::operator += (const vvp_vector2_t&that)
+vvp_vector2_t& vvp_vector2_t::ಕ್ರಿಯಾಕಾರಕ += (ಸ್ಥಿರಾಂಕ vvp_vector2_t&that)
 {
-      assert(wid_ == that.wid_);
-      if (wid_ == 0)
-	    return *this;
+      ಪ್ರತಿಜ್ಞಾ(wid_ == that.wid_);
+      ಆದರೆ (wid_ == 0)
+	    ಹಿಂತಿರುಗಿ *ಇದು;
 
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (wid_ + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-      unsigned long carry = 0;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
-	    vec_[idx] = add_carry(vec_[idx], that.vec_[idx], carry);
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ವಾಹಕ = 0;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು ;  idx += 1) {
+	    vec_[idx] = ಕೂಡಿಸು_ವಾಹಕ(vec_[idx], that.vec_[idx], ವಾಹಕ);
       }
 
 
 	// Cleanup the tail bits.
-      unsigned long mask = -1UL >> (BITS_PER_WORD - wid_%BITS_PER_WORD);
-      vec_[words-1] &= mask;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = -1UL >> (ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ - wid_%ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ);
+      vec_[ಪದಗಳು-1] &= ಮುಖವಾಡ;
 
-      return *this;
+      ಹಿಂತಿರುಗಿ *ಇದು;
 }
 
-vvp_vector2_t& vvp_vector2_t::operator -= (const vvp_vector2_t&that)
+vvp_vector2_t& vvp_vector2_t::ಕ್ರಿಯಾಕಾರಕ -= (ಸ್ಥಿರಾಂಕ vvp_vector2_t&that)
 {
-      assert(wid_ == that.wid_);
-      if (wid_ == 0)
-	    return *this;
+      ಪ್ರತಿಜ್ಞಾ(wid_ == that.wid_);
+      ಆದರೆ (wid_ == 0)
+	    ಹಿಂತಿರುಗಿ *ಇದು;
 
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (wid_ + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-      unsigned long carry = 1;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
-	    vec_[idx] = add_carry(vec_[idx], ~that.vec_[idx], carry);
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ವಾಹಕ = 1;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು ;  idx += 1) {
+	    vec_[idx] = ಕೂಡಿಸು_ವಾಹಕ(vec_[idx], ~that.vec_[idx], ವಾಹಕ);
       }
 
-      return *this;
+      ಹಿಂತಿರುಗಿ *ಇದು;
 }
 
-void vvp_vector2_t::trim()
+ಶೂನ್ಯ vvp_vector2_t::trim()
 {
-      while (value(wid_-1) == 0 && wid_ > 1) wid_ -= 1;
+      ಆಗ (value(wid_-1) == 0 && wid_ > 1) wid_ -= 1;
 }
 
 /* This is a special trim that is used on numbers we know represent a
  * negative signed value (they came from a negative real value). */
-void vvp_vector2_t::trim_neg()
+ಶೂನ್ಯ vvp_vector2_t::trim_neg()
 {
-      if (value(wid_-1) == 1 && wid_ > 32) {
-	    while (value(wid_-2) == 1 && wid_ > 32) wid_ -= 1;
+      ಆದರೆ (value(wid_-1) == 1 && wid_ > 32) {
+	    ಆಗ (value(wid_-2) == 1 && wid_ > 32) wid_ -= 1;
       }
 }
 
-int vvp_vector2_t::value(unsigned idx) const
+ಪೂರ್ಣಾಂಕ vvp_vector2_t::value(ಚಿಹ್ನೆರಹಿತ idx) ಸ್ಥಿರಾಂಕ
 {
-      if (idx >= wid_)
-	    return 0;
+      ಆದರೆ (idx >= wid_)
+	    ಹಿಂತಿರುಗಿ 0;
 
-      const unsigned bits_per_word = 8 * sizeof(vec_[0]);
-      unsigned addr = idx/bits_per_word;
-      unsigned mask = idx%bits_per_word;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ_2 = 8 * ಗಾತ್ರ(vec_[0]);
+      ಚಿಹ್ನೆರಹಿತ addr = idx/ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ_2;
+      ಚಿಹ್ನೆರಹಿತ ಮುಖವಾಡ = idx%ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ_2;
 
-      if (vec_[addr] & (1UL<<mask))
-	    return 1;
-      else
-	    return 0;
+      ಆದರೆ (vec_[addr] & (1UL<<ಮುಖವಾಡ))
+	    ಹಿಂತಿರುಗಿ 1;
+      ಇಲ್ಲದಿದ್ದರೆ
+	    ಹಿಂತಿರುಗಿ 0;
 }
 
-void vvp_vector2_t::set_bit(unsigned idx, int bit)
+ಶೂನ್ಯ vvp_vector2_t::ಗಣ_ಬಿಟ್(ಚಿಹ್ನೆರಹಿತ idx, ಪೂರ್ಣಾಂಕ ಬಿಟ್)
 {
-      assert(idx < wid_);
+      ಪ್ರತಿಜ್ಞಾ(idx < wid_);
 
-      const unsigned bits_per_word = 8 * sizeof(vec_[0]);
-      unsigned addr = idx/bits_per_word;
-      unsigned long mask = idx%bits_per_word;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ_2 = 8 * ಗಾತ್ರ(vec_[0]);
+      ಚಿಹ್ನೆರಹಿತ addr = idx/ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ_2;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಮುಖವಾಡ = idx%ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ_2;
 
-      if (bit)
-	    vec_[addr] |= 1UL << mask;
-      else
-	    vec_[addr] &= ~(1UL << mask);
+      ಆದರೆ (ಬಿಟ್)
+	    vec_[addr] |= 1UL << ಮುಖವಾಡ;
+      ಇಲ್ಲದಿದ್ದರೆ
+	    vec_[addr] &= ~(1UL << ಮುಖವಾಡ);
 }
 
-void vvp_vector2_t::set_vec(unsigned adr, const vvp_vector2_t&that)
+ಶೂನ್ಯ vvp_vector2_t::ಗಣ_vec(ಚಿಹ್ನೆರಹಿತ adr, ಸ್ಥಿರಾಂಕ vvp_vector2_t&that)
 {
-      assert((adr + that.wid_) <= wid_);
+      ಪ್ರತಿಜ್ಞಾ((adr + that.wid_) <= wid_);
 
-      for (unsigned idx = 0 ; idx < that.wid_ ; idx += 1)
-	    set_bit(adr+idx, that.value(idx));
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < that.wid_ ; idx += 1)
+	    ಗಣ_ಬಿಟ್(adr+idx, that.value(idx));
 }
 
-bool vvp_vector2_t::is_NaN() const
+ತಾರ್ಕಿಕ vvp_vector2_t::is_NaN() ಸ್ಥಿರಾಂಕ
 {
-      return wid_ == 0;
+      ಹಿಂತಿರುಗಿ wid_ == 0;
 }
 
-bool vvp_vector2_t::is_zero() const
+ತಾರ್ಕಿಕ vvp_vector2_t::is_zero() ಸ್ಥಿರಾಂಕ
 {
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (wid_ + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-      for (unsigned idx = 0; idx < words; idx += 1) {
-	    if (vec_[idx] == 0) continue;
-	    return false;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0; idx < ಪದಗಳು; idx += 1) {
+	    ಆದರೆ (vec_[idx] == 0) ಮುಂದುವರಿ;
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 /*
@@ -2832,584 +2832,584 @@ bool vvp_vector2_t::is_zero() const
  * Michael R. Hansen and Hans Rischel page 261 and "Seminumerical
  * Algorithms, Third Edition" by Donald E. Knuth section 4.6.3.
  */
-vvp_vector2_t pow(const vvp_vector2_t&x, vvp_vector2_t&y)
+vvp_vector2_t ಘಾತ(ಸ್ಥಿರಾಂಕ vvp_vector2_t&x, vvp_vector2_t&y)
 {
         /* If we have a zero exponent just return 1. */
-      if (y == vvp_vector2_t(0L, 1)) {
-	    return vvp_vector2_t(1L, x.size());
+      ಆದರೆ (y == vvp_vector2_t(0L, 1)) {
+	    ಹಿಂತಿರುಗಿ vvp_vector2_t(1L, x.size());
       }
 
         /* Is the value odd? */
-      if (y.value(0) == 1) {
-	    y.set_bit(0, 0);  // A quick subtract by 1.
-	    vvp_vector2_t res = x * pow(x, y);
-	    return res;
+      ಆದರೆ (y.value(0) == 1) {
+	    y.ಗಣ_ಬಿಟ್(0, 0);  // A quick subtract by 1.
+	    vvp_vector2_t res = x * ಘಾತ(x, y);
+	    ಹಿಂತಿರುಗಿ res;
       }
 
       y >>= 1;  // A fast divide by two. We know the LSB is zero.
-      vvp_vector2_t z = pow(x, y);
+      vvp_vector2_t z = ಘಾತ(x, y);
       vvp_vector2_t res = z * z;
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }
 
-static void multiply_long(unsigned long a, unsigned long b,
-			  unsigned long&low, unsigned long&high)
+ಸ್ಥಿರ ಶೂನ್ಯ multiply_long(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ a, ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ b,
+			  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ&ಕೆಳಗಿನ, ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ&ಮೇಲಿನ)
 {
-      assert(sizeof(unsigned long) %2 == 0);
+      ಪ್ರತಿಜ್ಞಾ(ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ) %2 == 0);
 
-      const unsigned long word_mask = (1UL << 4UL*sizeof(a)) - 1UL;
-      unsigned long tmpa;
-      unsigned long tmpb;
-      unsigned long res[4];
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಶಬ್ದ_ಮುಖವಾಡ = (1UL << 4UL*ಗಾತ್ರ(a)) - 1UL;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmpa;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmpb;
+      ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ res[4];
 
-      tmpa = a & word_mask;
-      tmpb = b & word_mask;
+      tmpa = a & ಶಬ್ದ_ಮುಖವಾಡ;
+      tmpb = b & ಶಬ್ದ_ಮುಖವಾಡ;
       res[0] = tmpa * tmpb;
-      res[1] = res[0] >> 4UL*sizeof(unsigned long);
-      res[0] &= word_mask;
+      res[1] = res[0] >> 4UL*ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ);
+      res[0] &= ಶಬ್ದ_ಮುಖವಾಡ;
 
-      tmpa = (a >> 4UL*sizeof(unsigned long)) & word_mask;
+      tmpa = (a >> 4UL*ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)) & ಶಬ್ದ_ಮುಖವಾಡ;
       res[1] += tmpa * tmpb;
-      res[2] = res[1] >> 4UL*sizeof(unsigned long);
-      res[1] &= word_mask;
+      res[2] = res[1] >> 4UL*ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ);
+      res[1] &= ಶಬ್ದ_ಮುಖವಾಡ;
 
-      tmpa = a & word_mask;
-      tmpb = (b >> 4UL*sizeof(unsigned long)) & word_mask;
+      tmpa = a & ಶಬ್ದ_ಮುಖವಾಡ;
+      tmpb = (b >> 4UL*ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)) & ಶಬ್ದ_ಮುಖವಾಡ;
       res[1] += tmpa * tmpb;
-      res[2] += res[1] >> 4UL*sizeof(unsigned long);
-      res[3]  = res[2] >> 4UL*sizeof(unsigned long);
-      res[1] &= word_mask;
-      res[2] &= word_mask;
+      res[2] += res[1] >> 4UL*ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ);
+      res[3]  = res[2] >> 4UL*ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ);
+      res[1] &= ಶಬ್ದ_ಮುಖವಾಡ;
+      res[2] &= ಶಬ್ದ_ಮುಖವಾಡ;
 
-      tmpa = (a >> 4UL*sizeof(unsigned long)) & word_mask;
+      tmpa = (a >> 4UL*ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)) & ಶಬ್ದ_ಮುಖವಾಡ;
       res[2] += tmpa * tmpb;
-      res[3] += res[2] >> 4UL*sizeof(unsigned long);
-      res[2] &= word_mask;
+      res[3] += res[2] >> 4UL*ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ);
+      res[2] &= ಶಬ್ದ_ಮುಖವಾಡ;
 
-      high = (res[3] << 4UL*sizeof(unsigned long)) | res[2];
-      low  = (res[1] << 4UL*sizeof(unsigned long)) | res[0];
+      ಮೇಲಿನ = (res[3] << 4UL*ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)) | res[2];
+      ಕೆಳಗಿನ  = (res[1] << 4UL*ಗಾತ್ರ(ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ)) | res[0];
 }
 
-vvp_vector2_t operator * (const vvp_vector2_t&a, const vvp_vector2_t&b)
+vvp_vector2_t ಕ್ರಿಯಾಕಾರಕ * (ಸ್ಥಿರಾಂಕ vvp_vector2_t&a, ಸ್ಥಿರಾಂಕ vvp_vector2_t&b)
 {
-      const unsigned bits_per_word = 8 * sizeof(a.vec_[0]);
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ_2 = 8 * ಗಾತ್ರ(a.vec_[0]);
 
 	// The compiler ensures that the two operands are of equal size.
-      assert(a.size() == b.size());
+      ಪ್ರತಿಜ್ಞಾ(a.size() == b.size());
       vvp_vector2_t r (0, a.size());
 
-      unsigned words = (r.wid_ + bits_per_word - 1) / bits_per_word;
+      ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (r.wid_ + ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ_2 - 1) / ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ_2;
 
-      for (unsigned bdx = 0 ;  bdx < words ;  bdx += 1) {
-	    unsigned long tmpb = b.vec_[bdx];
-	    if (tmpb == 0)
-		  continue;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ bdx = 0 ;  bdx < ಪದಗಳು ;  bdx += 1) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmpb = b.vec_[bdx];
+	    ಆದರೆ (tmpb == 0)
+		  ಮುಂದುವರಿ;
 
-	    for (unsigned adx = 0 ;  adx < words ;  adx += 1) {
-		  unsigned long tmpa = a.vec_[adx];
-		  if (tmpa == 0)
-			continue;
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ adx = 0 ;  adx < ಪದಗಳು ;  adx += 1) {
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ tmpa = a.vec_[adx];
+		  ಆದರೆ (tmpa == 0)
+			ಮುಂದುವರಿ;
 
-		  unsigned long low, hig;
-		  multiply_long(tmpa, tmpb, low, hig);
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ಕೆಳಗಿನ, hig;
+		  multiply_long(tmpa, tmpb, ಕೆಳಗಿನ, hig);
 
-		  unsigned long carry = 0;
-		  for (unsigned sdx = 0
-			     ; (adx+bdx+sdx) < words
+		  ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ ವಾಹಕ = 0;
+		  ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ sdx = 0
+			     ; (adx+bdx+sdx) < ಪದಗಳು
 			     ;  sdx += 1) {
 
-			r.vec_[adx+bdx+sdx] = add_carry(r.vec_[adx+bdx+sdx],
-							low, carry);
-			low = hig;
+			r.vec_[adx+bdx+sdx] = ಕೂಡಿಸು_ವಾಹಕ(r.vec_[adx+bdx+sdx],
+							ಕೆಳಗಿನ, ವಾಹಕ);
+			ಕೆಳಗಿನ = hig;
 			hig = 0;
 		  }
 	    }
       }
 
-      return r;
+      ಹಿಂತಿರುಗಿ r;
 }
 
-static void div_mod (vvp_vector2_t dividend, vvp_vector2_t divisor,
+ಸ್ಥಿರ ಶೂನ್ಯ div_mod (vvp_vector2_t dividend, vvp_vector2_t ಭಾಜಕ,
 		     vvp_vector2_t&quotient, vvp_vector2_t&remainder)
 {
 
       quotient = vvp_vector2_t(0, dividend.size());
 
-      if (divisor == quotient) {
-	    cerr << "ERROR: division by zero, exiting." << endl;
-	    exit(255);
+      ಆದರೆ (ಭಾಜಕ == quotient) {
+	    cerr << "ERROR: division by zero, exiting." << ಸಾಲು_ಅಂತ್ಯ;
+	    ನಿರ್ಗಮಿಸು(255);
       }
 
-      if (dividend < divisor) {
+      ಆದರೆ (dividend < ಭಾಜಕ) {
 	    remainder = dividend;
-	    return;
+	    ಹಿಂತಿರುಗಿ;
       }
 
-      vvp_vector2_t mask (1, dividend.size());
+      vvp_vector2_t ಮುಖವಾಡ (1, dividend.size());
 
 	// Make the dividend 1 bit larger to prevent overflow of
 	// divtmp in startup.
       dividend = vvp_vector2_t(dividend, dividend.size()+1);
-      vvp_vector2_t divtmp (divisor, dividend.size());
+      vvp_vector2_t divtmp (ಭಾಜಕ, dividend.size());
 
-      while (divtmp < dividend) {
+      ಆಗ (divtmp < dividend) {
 	    divtmp <<= 1;
-	    mask <<= 1;
+	    ಮುಖವಾಡ <<= 1;
       }
 
-      while (dividend >= divisor) {
-	    if (divtmp <= dividend) {
+      ಆಗ (dividend >= ಭಾಜಕ) {
+	    ಆದರೆ (divtmp <= dividend) {
 		  dividend -= divtmp;
-		  quotient += mask;
+		  quotient += ಮುಖವಾಡ;
 	    }
 
 	    divtmp >>= 1;
-	    mask >>= 1;
+	    ಮುಖವಾಡ >>= 1;
       }
 
-      remainder = vvp_vector2_t(dividend, mask.size());
+      remainder = vvp_vector2_t(dividend, ಮುಖವಾಡ.size());
 }
 
-vvp_vector2_t operator - (const vvp_vector2_t&that)
+vvp_vector2_t ಕ್ರಿಯಾಕಾರಕ - (ಸ್ಥಿರಾಂಕ vvp_vector2_t&that)
 {
       vvp_vector2_t neg(that);
-      if (neg.wid_ == 0) return neg;
+      ಆದರೆ (neg.wid_ == 0) ಹಿಂತಿರುಗಿ neg;
 
-      const unsigned words = (neg.wid_ + neg.BITS_PER_WORD-1) /
-                                         neg.BITS_PER_WORD;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = (neg.wid_ + neg.ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) /
+                                         neg.ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಪದಗಳು ;  idx += 1) {
 	    neg.vec_[idx] = ~neg.vec_[idx];
       }
       neg += vvp_vector2_t(1, neg.wid_);
 
-      return neg;
+      ಹಿಂತಿರುಗಿ neg;
 }
 
-vvp_vector2_t operator / (const vvp_vector2_t&dividend,
-			  const vvp_vector2_t&divisor)
+vvp_vector2_t ಕ್ರಿಯಾಕಾರಕ / (ಸ್ಥಿರಾಂಕ vvp_vector2_t&dividend,
+			  ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಭಾಜಕ)
 {
       vvp_vector2_t quot, rem;
-      div_mod(dividend, divisor, quot, rem);
-      return quot;
+      div_mod(dividend, ಭಾಜಕ, quot, rem);
+      ಹಿಂತಿರುಗಿ quot;
 }
 
-vvp_vector2_t operator % (const vvp_vector2_t&dividend,
-			  const vvp_vector2_t&divisor)
+vvp_vector2_t ಕ್ರಿಯಾಕಾರಕ % (ಸ್ಥಿರಾಂಕ vvp_vector2_t&dividend,
+			  ಸ್ಥಿರಾಂಕ vvp_vector2_t&ಭಾಜಕ)
 {
       vvp_vector2_t quot, rem;
-      div_mod(dividend, divisor, quot, rem);
-      return rem;
+      div_mod(dividend, ಭಾಜಕ, quot, rem);
+      ಹಿಂತಿರುಗಿ rem;
 }
 
-bool operator > (const vvp_vector2_t&a, const vvp_vector2_t&b)
+ತಾರ್ಕಿಕ ಕ್ರಿಯಾಕಾರಕ > (ಸ್ಥಿರಾಂಕ vvp_vector2_t&a, ಸ್ಥಿರಾಂಕ vvp_vector2_t&b)
 {
-      const unsigned awords = (a.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
-      const unsigned bwords = (b.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ awords = (a.wid_ + vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ bwords = (b.wid_ + vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-      const unsigned words = awords > bwords? awords : bwords;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = awords > bwords? awords : bwords;
 
-      for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
-	    unsigned long aw = (idx <= awords)? a.vec_[idx-1] : 0;
-	    unsigned long bw = (idx <= bwords)? b.vec_[idx-1] : 0;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = ಪದಗಳು ;  idx > 0 ;  idx -= 1) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ aw = (idx <= awords)? a.vec_[idx-1] : 0;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ bw = (idx <= bwords)? b.vec_[idx-1] : 0;
 
-	    if (aw > bw)
-		  return true;
-	    if (aw < bw)
-		  return false;
+	    ಆದರೆ (aw > bw)
+		  ಹಿಂತಿರುಗಿ ನಿಜ;
+	    ಆದರೆ (aw < bw)
+		  ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
 	// If the above loop finishes, then the vectors are equal.
-      return false;
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
-bool operator >= (const vvp_vector2_t&a, const vvp_vector2_t&b)
+ತಾರ್ಕಿಕ ಕ್ರಿಯಾಕಾರಕ >= (ಸ್ಥಿರಾಂಕ vvp_vector2_t&a, ಸ್ಥಿರಾಂಕ vvp_vector2_t&b)
 {
-      const unsigned awords = (a.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
-      const unsigned bwords = (b.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ awords = (a.wid_ + vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ bwords = (b.wid_ + vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-      const unsigned words = awords > bwords? awords : bwords;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = awords > bwords? awords : bwords;
 
-      for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
-	    unsigned long aw = (idx <= awords)? a.vec_[idx-1] : 0;
-	    unsigned long bw = (idx <= bwords)? b.vec_[idx-1] : 0;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = ಪದಗಳು ;  idx > 0 ;  idx -= 1) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ aw = (idx <= awords)? a.vec_[idx-1] : 0;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ bw = (idx <= bwords)? b.vec_[idx-1] : 0;
 
-	    if (aw > bw)
-		  return true;
-	    if (aw < bw)
-		  return false;
+	    ಆದರೆ (aw > bw)
+		  ಹಿಂತಿರುಗಿ ನಿಜ;
+	    ಆದರೆ (aw < bw)
+		  ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
 	// If the above loop finishes, then the vectors are equal.
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool operator < (const vvp_vector2_t&a, const vvp_vector2_t&b)
+ತಾರ್ಕಿಕ ಕ್ರಿಯಾಕಾರಕ < (ಸ್ಥಿರಾಂಕ vvp_vector2_t&a, ಸ್ಥಿರಾಂಕ vvp_vector2_t&b)
 {
-      const unsigned awords = (a.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
-      const unsigned bwords = (b.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ awords = (a.wid_ + vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ bwords = (b.wid_ + vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-      unsigned words = awords;
-      if (bwords > words)
-	    words = bwords;
+      ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = awords;
+      ಆದರೆ (bwords > ಪದಗಳು)
+	    ಪದಗಳು = bwords;
 
-      for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
-	    unsigned long aw = (idx <= awords)? a.vec_[idx-1] : 0;
-	    unsigned long bw = (idx <= bwords)? b.vec_[idx-1] : 0;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = ಪದಗಳು ;  idx > 0 ;  idx -= 1) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ aw = (idx <= awords)? a.vec_[idx-1] : 0;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ bw = (idx <= bwords)? b.vec_[idx-1] : 0;
 
-	    if (aw < bw)
-		  return true;
-	    if (aw > bw)
-		  return false;
+	    ಆದರೆ (aw < bw)
+		  ಹಿಂತಿರುಗಿ ನಿಜ;
+	    ಆದರೆ (aw > bw)
+		  ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
 	// If the above loop finishes, then the vectors are equal.
-      return false;
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 
-bool operator <= (const vvp_vector2_t&a, const vvp_vector2_t&b)
+ತಾರ್ಕಿಕ ಕ್ರಿಯಾಕಾರಕ <= (ಸ್ಥಿರಾಂಕ vvp_vector2_t&a, ಸ್ಥಿರಾಂಕ vvp_vector2_t&b)
 {
 	// XXXX For now, only support equal width vectors.
-      assert(a.wid_ == b.wid_);
+      ಪ್ರತಿಜ್ಞಾ(a.wid_ == b.wid_);
 
-      const unsigned awords = (a.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ awords = (a.wid_ + vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-      for (unsigned idx = awords ;  idx > 0 ;  idx -= 1) {
-	    if (a.vec_[idx-1] < b.vec_[idx-1])
-		  return true;
-	    if (a.vec_[idx-1] > b.vec_[idx-1])
-		  return false;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = awords ;  idx > 0 ;  idx -= 1) {
+	    ಆದರೆ (a.vec_[idx-1] < b.vec_[idx-1])
+		  ಹಿಂತಿರುಗಿ ನಿಜ;
+	    ಆದರೆ (a.vec_[idx-1] > b.vec_[idx-1])
+		  ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
 	// If the above loop finishes, then the vectors are equal.
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool operator == (const vvp_vector2_t&a, const vvp_vector2_t&b)
+ತಾರ್ಕಿಕ ಕ್ರಿಯಾಕಾರಕ == (ಸ್ಥಿರಾಂಕ vvp_vector2_t&a, ಸ್ಥಿರಾಂಕ vvp_vector2_t&b)
 {
-      const unsigned awords = (a.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
-      const unsigned bwords = (b.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ awords = (a.wid_ + vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ bwords = (b.wid_ + vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ-1) / vvp_vector2_t::ಬಿಟ್ಟುಗಳು_ಪ್ರತಿ_ಶಬ್ದ;
 
-      const unsigned words = awords > bwords? awords : bwords;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಪದಗಳು = awords > bwords? awords : bwords;
 
-      for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
-	    unsigned long aw = (idx <= awords)? a.vec_[idx-1] : 0;
-	    unsigned long bw = (idx <= bwords)? b.vec_[idx-1] : 0;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = ಪದಗಳು ;  idx > 0 ;  idx -= 1) {
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ aw = (idx <= awords)? a.vec_[idx-1] : 0;
+	    ಚಿಹ್ನೆರಹಿತ ದೀರ್ಘ bw = (idx <= bwords)? b.vec_[idx-1] : 0;
 
-	    if (aw > bw)
-		  return false;
-	    if (aw < bw)
-		  return false;
+	    ಆದರೆ (aw > bw)
+		  ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
+	    ಆದರೆ (aw < bw)
+		  ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
 
 	// If the above loop finishes, then the vectors are equal.
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
 
-vvp_vector4_t vector2_to_vector4(const vvp_vector2_t&that, unsigned wid)
+vvp_vector4_t vector2_ಗಮ್ಯ_vector4(ಸ್ಥಿರಾಂಕ vvp_vector2_t&that, ಚಿಹ್ನೆರಹಿತ wid)
 {
       vvp_vector4_t res (wid);
 
-      for (unsigned idx = 0 ;  idx < res.size() ;  idx += 1) {
-	    vvp_bit4_t bit = BIT4_0;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < res.size() ;  idx += 1) {
+	    vvp_bit4_t ಬಿಟ್ = BIT4_0;
 
-	    if (that.value(idx))
-		  bit = BIT4_1;
+	    ಆದರೆ (that.value(idx))
+		  ಬಿಟ್ = BIT4_1;
 
-	    res.set_bit(idx, bit);
+	    res.ಗಣ_ಬಿಟ್(idx, ಬಿಟ್);
       }
 
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }
 
-static bool c4string_header_test(const char*str)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ c4string_ಶೀರ್ಷಿಕೆ_test(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*str)
 {
-      if ((str[0] != 'C') && (str[0] != 'c'))
-	    return false;
-      if ((str[1] != '4') || (str[2] != '<'))
-	    return false;
-      return true;
+      ಆದರೆ ((str[0] != 'C') && (str[0] != 'c'))
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
+      ಆದರೆ ((str[1] != '4') || (str[2] != '<'))
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool c4string_test(const char*str)
+ತಾರ್ಕಿಕ c4string_test(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*str)
 {
-      if (!c4string_header_test(str))
-	    return false;
-      size_t value_size = strspn(str+3, "01xz");
-      if (str[3+value_size] != '>')
-	    return false;
-      if (str[3+value_size+1] != 0)
-	    return false;
+      ಆದರೆ (!c4string_ಶೀರ್ಷಿಕೆ_test(str))
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
+      size_t ಮೌಲ್ಯ_ಗಾತ್ರ = strspn(str+3, "01xz");
+      ಆದರೆ (str[3+ಮೌಲ್ಯ_ಗಾತ್ರ] != '>')
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
+      ಆದರೆ (str[3+ಮೌಲ್ಯ_ಗಾತ್ರ+1] != 0)
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 
-      return true;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-vvp_vector4_t c4string_to_vector4(const char*str)
+vvp_vector4_t c4string_ಗಮ್ಯ_vector4(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*str)
 {
-      assert(c4string_header_test(str));
+      ಪ್ರತಿಜ್ಞಾ(c4string_ಶೀರ್ಷಿಕೆ_test(str));
 
       str += 3;
-      const char*tp = str + strspn(str,"01xz");
-      assert(tp[0] == '>');
+      ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*tp = str + strspn(str,"01xz");
+      ಪ್ರತಿಜ್ಞಾ(tp[0] == '>');
 
       vvp_vector4_t tmp (tp-str);
 
-      for (unsigned idx = 0 ;  idx < tmp.size() ;  idx += 1) {
-	    vvp_bit4_t bit;
-	    switch (str[idx]) {
-		case '0':
-		  bit = BIT4_0;
-		  break;
-		case '1':
-		  bit = BIT4_1;
-		  break;
-		case 'x':
-		  bit = BIT4_X;
-		  break;
-		case 'z':
-		  bit = BIT4_Z;
-		  break;
-		default:
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < tmp.size() ;  idx += 1) {
+	    vvp_bit4_t ಬಿಟ್;
+	    ಆಯ್ಕೆ (str[idx]) {
+		ಸ್ಥಿತಿ '0':
+		  ಬಿಟ್ = BIT4_0;
+		  ನಿಲ್ಲಿಸು;
+		ಸ್ಥಿತಿ '1':
+		  ಬಿಟ್ = BIT4_1;
+		  ನಿಲ್ಲಿಸು;
+		ಸ್ಥಿತಿ 'x':
+		  ಬಿಟ್ = BIT4_X;
+		  ನಿಲ್ಲಿಸು;
+		ಸ್ಥಿತಿ 'z':
+		  ಬಿಟ್ = BIT4_Z;
+		  ನಿಲ್ಲಿಸು;
+		ಪೂರ್ವನಿಯೋಜಿತ:
 		  fprintf(stderr, "Unsupported bit value %c(%d).\n", str[idx],
 		          str[idx]);
-		  assert(0);
-		  bit = BIT4_0;
-		  break;
+		  ಪ್ರತಿಜ್ಞಾ(0);
+		  ಬಿಟ್ = BIT4_0;
+		  ನಿಲ್ಲಿಸು;
 	    }
-	    tmp.set_bit(tmp.size()-idx-1, bit);
+	    tmp.ಗಣ_ಬಿಟ್(tmp.size()-idx-1, ಬಿಟ್);
       }
 
-      return tmp;
+      ಹಿಂತಿರುಗಿ tmp;
 }
 
-ostream& operator<< (ostream&out, const vvp_vector2_t&that)
+ostream& ಕ್ರಿಯಾಕಾರಕ<< (ostream&out, ಸ್ಥಿರಾಂಕ vvp_vector2_t&that)
 {
-      if (that.is_NaN()) {
+      ಆದರೆ (that.is_NaN()) {
 	    out << "NaN";
 
-      } else {
-	    out << vector2_to_vector4(that, that.size());
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    out << vector2_ಗಮ್ಯ_vector4(that, that.size());
       }
-      return out;
+      ಹಿಂತಿರುಗಿ out;
 }
 
-vvp_vector8_t::vvp_vector8_t(const vvp_vector8_t&that)
+vvp_vector8_t::vvp_vector8_t(ಸ್ಥಿರಾಂಕ vvp_vector8_t&that)
 {
-      size_ = that.size_;
-      if (size_ <= sizeof(val_)) {
-	    memcpy(val_, that.val_, sizeof val_);
-      } else {
-	    ptr_ = new unsigned char[size_];
-	    memcpy(ptr_, that.ptr_, size_);
+      ಗಾತ್ರ_3 = that.ಗಾತ್ರ_3;
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಗಾತ್ರ(val_)) {
+	    ಸ್ಮರಣೆ_ನಕಲು(val_, that.val_, ಗಾತ್ರ val_);
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ptr_ = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ಅಕ್ಷರ[ಗಾತ್ರ_3];
+	    ಸ್ಮರಣೆ_ನಕಲು(ptr_, that.ptr_, ಗಾತ್ರ_3);
       }
 }
 
-vvp_vector8_t::vvp_vector8_t(const vvp_vector4_t&that,
-			     unsigned str0, unsigned str1)
-: size_(that.size())
+vvp_vector8_t::vvp_vector8_t(ಸ್ಥಿರಾಂಕ vvp_vector4_t&that,
+			     ಚಿಹ್ನೆರಹಿತ str0, ಚಿಹ್ನೆರಹಿತ str1)
+: ಗಾತ್ರ_3(that.size())
 {
-      if (size_ == 0)
-	    return;
+      ಆದರೆ (ಗಾತ್ರ_3 == 0)
+	    ಹಿಂತಿರುಗಿ;
 
-      if (size_ <= sizeof(val_)) {
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಗಾತ್ರ(val_)) {
 	    ptr_ = 0; // Prefill all val_ bytes
-	    for (unsigned idx = 0 ; idx < size_ ; idx += 1)
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಗಾತ್ರ_3 ; idx += 1)
 		  val_[idx] = vvp_scalar_t(that.value(idx),str0, str1).raw();
-      } else {
-	    ptr_ = new unsigned char[size_];
-	    for (unsigned idx = 0 ;  idx < size_ ;  idx += 1)
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ptr_ = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ಅಕ್ಷರ[ಗಾತ್ರ_3];
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < ಗಾತ್ರ_3 ;  idx += 1)
 		  ptr_[idx] = vvp_scalar_t(that.value(idx), str0, str1).raw();
       }
 }
 
-vvp_vector8_t::vvp_vector8_t(const vvp_vector2_t&that,
-			     unsigned str0, unsigned str1)
-: size_(that.size())
+vvp_vector8_t::vvp_vector8_t(ಸ್ಥಿರಾಂಕ vvp_vector2_t&that,
+			     ಚಿಹ್ನೆರಹಿತ str0, ಚಿಹ್ನೆರಹಿತ str1)
+: ಗಾತ್ರ_3(that.size())
 {
-      if (size_ == 0)
-	    return;
+      ಆದರೆ (ಗಾತ್ರ_3 == 0)
+	    ಹಿಂತಿರುಗಿ;
 
-      if (size_ <= sizeof(val_)) {
+      ಆದರೆ (ಗಾತ್ರ_3 <= ಗಾತ್ರ(val_)) {
 	    ptr_ = 0;
-	    for (unsigned idx = 0 ; idx < size_ ; idx += 1)
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಗಾತ್ರ_3 ; idx += 1)
 		  val_[idx] = vvp_scalar_t(that.value(idx)? BIT4_1:BIT4_0, str0, str1).raw();
-      } else {
-	    ptr_ = new unsigned char[size_];
-	    for (unsigned idx = 0 ; idx < size_ ; idx += 1)
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ptr_ = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ಅಕ್ಷರ[ಗಾತ್ರ_3];
+	    ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < ಗಾತ್ರ_3 ; idx += 1)
 		  ptr_[idx] = vvp_scalar_t(that.value(idx)? BIT4_1:BIT4_0, str0, str1).raw();
       }
 }
 
-const vvp_vector8_t vvp_vector8_t::nil;
+ಸ್ಥಿರಾಂಕ vvp_vector8_t vvp_vector8_t::nil;
 
-vvp_vector8_t& vvp_vector8_t::operator= (const vvp_vector8_t&that)
+vvp_vector8_t& vvp_vector8_t::ಕ್ರಿಯಾಕಾರಕ= (ಸ್ಥಿರಾಂಕ vvp_vector8_t&that)
 {
 	// Assign to self.
-      if (this == &that)
-	    return *this;
+      ಆದರೆ (ಇದು == &that)
+	    ಹಿಂತಿರುಗಿ *ಇದು;
 
-      if (size_ != that.size_) {
-	    if (size_ > sizeof(val_))
-		  delete[]ptr_;
-	    size_ = 0;
+      ಆದರೆ (ಗಾತ್ರ_3 != that.ಗಾತ್ರ_3) {
+	    ಆದರೆ (ಗಾತ್ರ_3 > ಗಾತ್ರ(val_))
+		  ಅಳಿಸು[]ptr_;
+	    ಗಾತ್ರ_3 = 0;
       }
 
-      if (that.size_ == 0) {
-	    assert(size_ == 0);
-	    return *this;
+      ಆದರೆ (that.ಗಾತ್ರ_3 == 0) {
+	    ಪ್ರತಿಜ್ಞಾ(ಗಾತ್ರ_3 == 0);
+	    ಹಿಂತಿರುಗಿ *ಇದು;
       }
 
-      if (that.size_ <= sizeof(val_)) {
-	    size_ = that.size_;
-	    memcpy(val_, that.val_, sizeof(val_));
-	    return *this;
+      ಆದರೆ (that.ಗಾತ್ರ_3 <= ಗಾತ್ರ(val_)) {
+	    ಗಾತ್ರ_3 = that.ಗಾತ್ರ_3;
+	    ಸ್ಮರಣೆ_ನಕಲು(val_, that.val_, ಗಾತ್ರ(val_));
+	    ಹಿಂತಿರುಗಿ *ಇದು;
       }
 
-      if (size_ == 0) {
-	    size_ = that.size_;
-	    ptr_ = new unsigned char[size_];
+      ಆದರೆ (ಗಾತ್ರ_3 == 0) {
+	    ಗಾತ್ರ_3 = that.ಗಾತ್ರ_3;
+	    ptr_ = ಹೊಸ ಚಿಹ್ನೆರಹಿತ ಅಕ್ಷರ[ಗಾತ್ರ_3];
       }
 
-      memcpy(ptr_, that.ptr_, size_);
+      ಸ್ಮರಣೆ_ನಕಲು(ptr_, that.ptr_, ಗಾತ್ರ_3);
 
-      return *this;
+      ಹಿಂತಿರುಗಿ *ಇದು;
 }
 
-vvp_vector8_t vvp_vector8_t::subvalue(unsigned base, unsigned wid) const
+vvp_vector8_t vvp_vector8_t::subvalue(ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ wid) ಸ್ಥಿರಾಂಕ
 {
       vvp_vector8_t tmp (wid);
 
-      unsigned char*tmp_ptr = tmp.size_ <= sizeof(val_) ? tmp.val_ : tmp.ptr_;
-      const unsigned char*use_ptr = size_ <= sizeof(val_) ? val_ : ptr_;
+      ಚಿಹ್ನೆರಹಿತ ಅಕ್ಷರ*tmp_ptr = tmp.ಗಾತ್ರ_3 <= ಗಾತ್ರ(val_) ? tmp.val_ : tmp.ptr_;
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಅಕ್ಷರ*use_ptr = ಗಾತ್ರ_3 <= ಗಾತ್ರ(val_) ? val_ : ptr_;
 
-      unsigned idx = 0;
-      while ((idx < wid) && (base+idx < size_)) {
-	    tmp_ptr[idx] = use_ptr[base+idx];
+      ಚಿಹ್ನೆರಹಿತ idx = 0;
+      ಆಗ ((idx < wid) && (ತಳ+idx < ಗಾತ್ರ_3)) {
+	    tmp_ptr[idx] = use_ptr[ತಳ+idx];
 	    idx += 1;
       }
 
-      return tmp;
+      ಹಿಂತಿರುಗಿ tmp;
 }
 
-void vvp_vector8_t::set_vec(unsigned base, const vvp_vector8_t&that)
+ಶೂನ್ಯ vvp_vector8_t::ಗಣ_vec(ಚಿಹ್ನೆರಹಿತ ತಳ, ಸ್ಥಿರಾಂಕ vvp_vector8_t&that)
 {
-      assert((base+that.size()) <= size());
-      for (unsigned idx = 0 ; idx < that.size() ; idx += 1)
-	    set_bit(base+idx, that.value(idx));
+      ಪ್ರತಿಜ್ಞಾ((ತಳ+that.size()) <= size());
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ; idx < that.size() ; idx += 1)
+	    ಗಣ_ಬಿಟ್(ತಳ+idx, that.value(idx));
 }
 
-vvp_vector8_t part_expand(const vvp_vector8_t&that, unsigned wid, unsigned off)
+vvp_vector8_t part_expand(ಸ್ಥಿರಾಂಕ vvp_vector8_t&that, ಚಿಹ್ನೆರಹಿತ wid, ಚಿಹ್ನೆರಹಿತ off)
 {
-      assert(off < wid);
+      ಪ್ರತಿಜ್ಞಾ(off < wid);
       vvp_vector8_t tmp (wid);
 
-      unsigned char* tmp_ptr = tmp.size_<= sizeof(tmp.val_) ?
+      ಚಿಹ್ನೆರಹಿತ ಅಕ್ಷರ* tmp_ptr = tmp.ಗಾತ್ರ_3<= ಗಾತ್ರ(tmp.val_) ?
                                tmp.val_ : tmp.ptr_;
-      const unsigned char* that_ptr = that.size_<= sizeof(that.val_) ?
+      ಸ್ಥಿರಾಂಕ ಚಿಹ್ನೆರಹಿತ ಅಕ್ಷರ* that_ptr = that.ಗಾತ್ರ_3<= ಗಾತ್ರ(that.val_) ?
                                       that.val_ : that.ptr_;
 
-      unsigned idx = off;
+      ಚಿಹ್ನೆರಹಿತ idx = off;
 
-      while (idx < wid && that.size_ > (idx-off)) {
+      ಆಗ (idx < wid && that.ಗಾತ್ರ_3 > (idx-off)) {
 	    tmp_ptr[idx] = that_ptr[idx-off];
 	    idx += 1;
       }
 
-      return tmp;
+      ಹಿಂತಿರುಗಿ tmp;
 }
 
-static bool c8string_header_test(const char*str)
+ಸ್ಥಿರ ತಾರ್ಕಿಕ c8string_ಶೀರ್ಷಿಕೆ_test(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*str)
 {
-      if ((str[0] != 'C') && (str[0] != 'c'))
-	    return false;
-      if ((str[1] != '8') || (str[2] != '<'))
-	    return false;
-      return true;
+      ಆದರೆ ((str[0] != 'C') && (str[0] != 'c'))
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
+      ಆದರೆ ((str[1] != '8') || (str[2] != '<'))
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
+      ಹಿಂತಿರುಗಿ ನಿಜ;
 }
 
-bool c8string_test(const char*str)
+ತಾರ್ಕಿಕ c8string_test(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*str)
 {
-      if (!c8string_header_test(str))
-	    return false;
+      ಆದರೆ (!c8string_ಶೀರ್ಷಿಕೆ_test(str))
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 
-      const char*cp = str+3;
-      for (;; cp += 1) {
-	    if (cp[0] == '>' && cp[1] == 0) return true;
-	    if (cp[0] >= '0' && cp[0] <= '9') continue;
-	    if (cp[0] == 'x') continue;
-	    if (cp[0] == 'z') continue;
-	    return false;
+      ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*cp = str+3;
+      ಗಾಗಿ (;; cp += 1) {
+	    ಆದರೆ (cp[0] == '>' && cp[1] == 0) ಹಿಂತಿರುಗಿ ನಿಜ;
+	    ಆದರೆ (cp[0] >= '0' && cp[0] <= '9') ಮುಂದುವರಿ;
+	    ಆದರೆ (cp[0] == 'x') ಮುಂದುವರಿ;
+	    ಆದರೆ (cp[0] == 'z') ಮುಂದುವರಿ;
+	    ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
       }
-      return false;
+      ಹಿಂತಿರುಗಿ ಸುಳ್ಳು;
 }
 /*
  * The format of a C8<> string is:
  *   C8<aaabbbccc...>
  * where aaa... is a 3 character bit descriptor.
  */
-vvp_vector8_t c8string_to_vector8(const char*str)
+vvp_vector8_t c8string_ಗಮ್ಯ_vector8(ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*str)
 {
-      assert(c8string_header_test(str));
+      ಪ್ರತಿಜ್ಞಾ(c8string_ಶೀರ್ಷಿಕೆ_test(str));
 
-      size_t vsize = strlen(str)-4;
-      assert(vsize%3 == 0);
+      size_t vsize = ಅಕ್ಷರಸರಣಿ_ಉದ್ದ(str)-4;
+      ಪ್ರತಿಜ್ಞಾ(vsize%3 == 0);
       vsize /= 3;
       vvp_vector8_t tmp (vsize);
 
-      for (size_t idx = 0 ; idx < vsize ; idx += 1) {
-	    const char*cp = str+3+3*idx;
-	    vvp_bit4_t bit = BIT4_X;
-	    unsigned dr0 = cp[0]-'0';
-	    unsigned dr1 = cp[1]-'0';
-	    switch (cp[2]) {
-		case '0':
-		  bit = BIT4_0;
-		  break;
-		case '1':
-		  bit = BIT4_1;
-		  break;
-		case 'x':
-		  bit = BIT4_X;
-		  break;
-		case 'z':
-		  bit = BIT4_Z;
-		  break;
+      ಗಾಗಿ (size_t idx = 0 ; idx < vsize ; idx += 1) {
+	    ಸ್ಥಿರಾಂಕ ಅಕ್ಷರ*cp = str+3+3*idx;
+	    vvp_bit4_t ಬಿಟ್ = BIT4_X;
+	    ಚಿಹ್ನೆರಹಿತ dr0 = cp[0]-'0';
+	    ಚಿಹ್ನೆರಹಿತ dr1 = cp[1]-'0';
+	    ಆಯ್ಕೆ (cp[2]) {
+		ಸ್ಥಿತಿ '0':
+		  ಬಿಟ್ = BIT4_0;
+		  ನಿಲ್ಲಿಸು;
+		ಸ್ಥಿತಿ '1':
+		  ಬಿಟ್ = BIT4_1;
+		  ನಿಲ್ಲಿಸು;
+		ಸ್ಥಿತಿ 'x':
+		  ಬಿಟ್ = BIT4_X;
+		  ನಿಲ್ಲಿಸು;
+		ಸ್ಥಿತಿ 'z':
+		  ಬಿಟ್ = BIT4_Z;
+		  ನಿಲ್ಲಿಸು;
 	    }
-	    tmp.set_bit(vsize-idx-1, vvp_scalar_t(bit, dr0, dr1));
+	    tmp.ಗಣ_ಬಿಟ್(vsize-idx-1, vvp_scalar_t(ಬಿಟ್, dr0, dr1));
       }
 
-      return tmp;
+      ಹಿಂತಿರುಗಿ tmp;
 }
 
-ostream& operator<<(ostream&out, const vvp_vector8_t&that)
+ostream& ಕ್ರಿಯಾಕಾರಕ<<(ostream&out, ಸ್ಥಿರಾಂಕ vvp_vector8_t&that)
 {
       out << "C8<";
-      for (unsigned idx = 0 ;  idx < that.size() ; idx += 1)
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < that.size() ; idx += 1)
 	    out << that.value(that.size()-idx-1);
 
       out << ">";
-      return out;
+      ಹಿಂತಿರುಗಿ out;
 }
 
 vvp_net_fun_t::vvp_net_fun_t()
 {
-      count_functors += 1;
+      ಎಣಿಕೆ_functors += 1;
 }
 
 vvp_net_fun_t::~vvp_net_fun_t()
 {
 }
 
-void vvp_net_fun_t::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&,
+ಶೂನ್ಯ vvp_net_fun_t::recv_vec4(vvp_net_ptr_t, ಸ್ಥಿರಾಂಕ vvp_vector4_t&,
                               vvp_context_t)
 {
       fprintf(stderr, "internal error: %s: recv_vec4 not implemented\n",
-	      typeid(*this).name());
-      assert(0);
+	      typeid(*ಇದು).name());
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_net_fun_t::recv_vec4_pv_(vvp_net_ptr_t p, const vvp_vector4_t&bit,
-                                  unsigned base, unsigned vwid, vvp_context_t)
+ಶೂನ್ಯ vvp_net_fun_t::recv_vec4_pv_(vvp_net_ptr_t p, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+                                  ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t)
 {
 	// The majority of functors don't normally expect to receive part
 	// values, because the primary operands of an expression will be
@@ -3424,76 +3424,76 @@ void vvp_net_fun_t::recv_vec4_pv_(vvp_net_ptr_t p, const vvp_vector4_t&bit,
 	// code, but we still need to handle it correctly. See GitHub
 	// issue #99 and br_gh99*.v in the test suite for examples.
 
-      assert(base + bit.size() <= vwid);
+      ಪ್ರತಿಜ್ಞಾ(ತಳ + ಬಿಟ್.size() <= vwid);
 
       vvp_vector4_t tmp(vwid, BIT4_Z);
-      tmp.set_vec(base, bit);
+      tmp.ಗಣ_vec(ತಳ, ಬಿಟ್);
       recv_vec4(p, tmp, 0);
 }
 
-void vvp_net_fun_t::recv_vec4_pv(vvp_net_ptr_t, const vvp_vector4_t&bit,
-                                 unsigned base, unsigned vwid, vvp_context_t)
+ಶೂನ್ಯ vvp_net_fun_t::recv_vec4_pv(vvp_net_ptr_t, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+                                 ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t)
 {
-      cerr << "internal error: " << typeid(*this).name() << ": "
-	   << "recv_vec4_pv(" << bit << ", " << base
-	   << ", " << vwid << ") not implemented" << endl;
-      assert(0);
+      cerr << "internal error: " << typeid(*ಇದು).name() << ": "
+	   << "recv_vec4_pv(" << ಬಿಟ್ << ", " << ತಳ
+	   << ", " << vwid << ") not implemented" << ಸಾಲು_ಅಂತ್ಯ;
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_net_fun_t::recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit)
+ಶೂನ್ಯ vvp_net_fun_t::recv_vec8(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್)
 {
-      recv_vec4(port, reduce4(bit), 0);
+      recv_vec4(ಪೋರ್ಟ್, reduce4(ಬಿಟ್), 0);
 }
 
-void vvp_net_fun_t::recv_vec8_pv_(vvp_net_ptr_t p, const vvp_vector8_t&bit,
-				  unsigned base, unsigned vwid)
+ಶೂನ್ಯ vvp_net_fun_t::recv_vec8_pv_(vvp_net_ptr_t p, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್,
+				  ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid)
 {
 	// This is the strength-aware version of recv_vec4_pv_.
 
-      assert(base + bit.size() <= vwid);
+      ಪ್ರತಿಜ್ಞಾ(ತಳ + ಬಿಟ್.size() <= vwid);
 
       vvp_vector8_t tmp(vwid);
-      tmp.set_vec(base, bit);
+      tmp.ಗಣ_vec(ತಳ, ಬಿಟ್);
       recv_vec8(p, tmp);
 }
 
-void vvp_net_fun_t::recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
-				 unsigned base, unsigned vwid)
+ಶೂನ್ಯ vvp_net_fun_t::recv_vec8_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್,
+				 ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid)
 {
-      recv_vec4_pv(port, reduce4(bit), base, vwid, 0);
+      recv_vec4_pv(ಪೋರ್ಟ್, reduce4(ಬಿಟ್), ತಳ, vwid, 0);
 }
 
-void vvp_net_fun_t::recv_real(vvp_net_ptr_t, double bit, vvp_context_t)
+ಶೂನ್ಯ vvp_net_fun_t::recv_real(vvp_net_ptr_t, ದ್ವಿಗುಣ ಬಿಟ್, vvp_context_t)
 {
       fprintf(stderr, "internal error: %s: recv_real(%f) not implemented\n",
-	      typeid(*this).name(), bit);
-      assert(0);
+	      typeid(*ಇದು).name(), ಬಿಟ್);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_net_fun_t::recv_string(vvp_net_ptr_t, const std::string&bit, vvp_context_t)
+ಶೂನ್ಯ vvp_net_fun_t::recv_string(vvp_net_ptr_t, ಸ್ಥಿರಾಂಕ std::string&ಬಿಟ್, vvp_context_t)
 {
       fprintf(stderr, "internal error: %s: recv_string(%s) not implemented\n",
-	      typeid(*this).name(), bit.c_str());
-      assert(0);
+	      typeid(*ಇದು).name(), ಬಿಟ್.c_str());
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_net_fun_t::recv_object(vvp_net_ptr_t, vvp_object_t, vvp_context_t)
+ಶೂನ್ಯ vvp_net_fun_t::recv_object(vvp_net_ptr_t, vvp_object_t, vvp_context_t)
 {
       fprintf(stderr, "internal error: %s: recv_object(...) not implemented\n",
-	      typeid(*this).name());
-      assert(0);
+	      typeid(*ಇದು).name());
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_net_fun_t::force_flag(bool)
+ಶೂನ್ಯ vvp_net_fun_t::force_flag(ತಾರ್ಕಿಕ)
 {
 }
 
 /* **** vvp_fun_drive methods **** */
 
-vvp_fun_drive::vvp_fun_drive(unsigned str0, unsigned str1)
+vvp_fun_drive::vvp_fun_drive(ಚಿಹ್ನೆರಹಿತ str0, ಚಿಹ್ನೆರಹಿತ str1)
 {
-      assert(str0 < 8);
-      assert(str1 < 8);
+      ಪ್ರತಿಜ್ಞಾ(str0 < 8);
+      ಪ್ರತಿಜ್ಞಾ(str1 < 8);
 
       drive0_ = str0;
       drive1_ = str1;
@@ -3503,100 +3503,100 @@ vvp_fun_drive::~vvp_fun_drive()
 {
 }
 
-void vvp_fun_drive::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_drive::recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                               vvp_context_t)
 {
-      assert(port.port() == 0);
-      port.ptr()->send_vec8(vvp_vector8_t(bit, drive0_, drive1_));
+      ಪ್ರತಿಜ್ಞಾ(ಪೋರ್ಟ್.ಪೋರ್ಟ್() == 0);
+      ಪೋರ್ಟ್.ptr()->send_vec8(vvp_vector8_t(ಬಿಟ್, drive0_, drive1_));
 }
 
-void vvp_fun_drive::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				 unsigned base, unsigned vwid, vvp_context_t ctx)
+ಶೂನ್ಯ vvp_fun_drive::recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+				 ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, ಬಿಟ್, ತಳ, vwid, ctx);
 }
 
 /* **** vvp_wide_fun_* methods **** */
 
-vvp_wide_fun_core::vvp_wide_fun_core(vvp_net_t*net, unsigned nports)
+vvp_wide_fun_core::vvp_wide_fun_core(vvp_net_t*net, ಚಿಹ್ನೆರಹಿತ nports)
 {
       ptr_ = net;
       nports_ = nports;
-      port_values_ = 0;
-      port_rvalues_ = 0;
+      ಪೋರ್ಟ್_ಮೌಲ್ಯಗಳು = 0;
+      ಪೋರ್ಟ್_rvalues = 0;
 }
 
 vvp_wide_fun_core::~vvp_wide_fun_core()
 {
-      delete[] port_values_;
-      delete[] port_rvalues_;
+      ಅಳಿಸು[] ಪೋರ್ಟ್_ಮೌಲ್ಯಗಳು;
+      ಅಳಿಸು[] ಪೋರ್ಟ್_rvalues;
 }
 
-void vvp_wide_fun_core::propagate_vec4(const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_wide_fun_core::propagate_vec4(ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
 				       vvp_time64_t delay)
 {
-      if (delay)
-	    schedule_propagate_vector(ptr_, delay, bit);
-      else
-	    ptr_->send_vec4(bit, 0);
+      ಆದರೆ (delay)
+	    ವೇಳಾಪಟ್ಟಿ_propagate_ಸದಿಶ(ptr_, delay, ಬಿಟ್);
+      ಇಲ್ಲದಿದ್ದರೆ
+	    ptr_->send_vec4(ಬಿಟ್, 0);
 }
 
-void vvp_wide_fun_core::propagate_real(double bit,
+ಶೂನ್ಯ vvp_wide_fun_core::propagate_real(ದ್ವಿಗುಣ ಬಿಟ್,
 				       vvp_time64_t delay)
 {
-      if (delay) {
+      ಆದರೆ (delay) {
 	      // schedule_assign_vector(ptr_->out, bit, delay);
-	    assert(0); // Need a real-value version of assign_vector.
-      } else {
-	    ptr_->send_real(bit, 0);
+	    ಪ್ರತಿಜ್ಞಾ(0); // Need a real-value version of assign_vector.
+      } ಇಲ್ಲದಿದ್ದರೆ {
+	    ptr_->send_real(ಬಿಟ್, 0);
       }
 }
 
 
-unsigned vvp_wide_fun_core::port_count() const
+ಚಿಹ್ನೆರಹಿತ vvp_wide_fun_core::ಪೋರ್ಟ್_ಎಣಿಕೆ() ಸ್ಥಿರಾಂಕ
 {
-      return nports_;
+      ಹಿಂತಿರುಗಿ nports_;
 }
 
-vvp_vector4_t& vvp_wide_fun_core::value(unsigned idx)
+vvp_vector4_t& vvp_wide_fun_core::value(ಚಿಹ್ನೆರಹಿತ idx)
 {
-      assert(idx < nports_);
-      if (port_values_ == 0)
-	    port_values_ = new vvp_vector4_t [nports_];
-      return port_values_[idx];
+      ಪ್ರತಿಜ್ಞಾ(idx < nports_);
+      ಆದರೆ (ಪೋರ್ಟ್_ಮೌಲ್ಯಗಳು == 0)
+	    ಪೋರ್ಟ್_ಮೌಲ್ಯಗಳು = ಹೊಸ vvp_vector4_t [nports_];
+      ಹಿಂತಿರುಗಿ ಪೋರ್ಟ್_ಮೌಲ್ಯಗಳು[idx];
 }
 
-double vvp_wide_fun_core::value_r(unsigned idx)
+ದ್ವಿಗುಣ vvp_wide_fun_core::ಮೌಲ್ಯ_r(ಚಿಹ್ನೆರಹಿತ idx)
 {
-      assert(idx < nports_);
-      return port_rvalues_? port_rvalues_[idx] : 0.0;
+      ಪ್ರತಿಜ್ಞಾ(idx < nports_);
+      ಹಿಂತಿರುಗಿ ಪೋರ್ಟ್_rvalues? ಪೋರ್ಟ್_rvalues[idx] : 0.0;
 }
 
-void vvp_wide_fun_core::recv_real_from_inputs(unsigned)
+ಶೂನ್ಯ vvp_wide_fun_core::recv_real_from_inputs(ಚಿಹ್ನೆರಹಿತ)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void vvp_wide_fun_core::dispatch_vec4_from_input_(unsigned port,
-						  const vvp_vector4_t&bit)
+ಶೂನ್ಯ vvp_wide_fun_core::dispatch_vec4_from_ಒಳಹರಿವು(ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್,
+						  ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್)
 {
-      assert(port < nports_);
-      if (port_values_ == 0) port_values_ = new vvp_vector4_t [nports_];
-      port_values_[port] = bit;
-      recv_vec4_from_inputs(port);
+      ಪ್ರತಿಜ್ಞಾ(ಪೋರ್ಟ್ < nports_);
+      ಆದರೆ (ಪೋರ್ಟ್_ಮೌಲ್ಯಗಳು == 0) ಪೋರ್ಟ್_ಮೌಲ್ಯಗಳು = ಹೊಸ vvp_vector4_t [nports_];
+      ಪೋರ್ಟ್_ಮೌಲ್ಯಗಳು[ಪೋರ್ಟ್] = ಬಿಟ್;
+      recv_vec4_from_inputs(ಪೋರ್ಟ್);
 }
 
-void vvp_wide_fun_core::dispatch_real_from_input_(unsigned port,
-						  double bit)
+ಶೂನ್ಯ vvp_wide_fun_core::dispatch_real_from_ಒಳಹರಿವು(ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್,
+						  ದ್ವಿಗುಣ ಬಿಟ್)
 {
-      assert(port < nports_);
-      if (port_rvalues_ == 0) port_rvalues_ = new double[nports_];
-      port_rvalues_[port] = bit;
-      recv_real_from_inputs(port);
+      ಪ್ರತಿಜ್ಞಾ(ಪೋರ್ಟ್ < nports_);
+      ಆದರೆ (ಪೋರ್ಟ್_rvalues == 0) ಪೋರ್ಟ್_rvalues = ಹೊಸ ದ್ವಿಗುಣ[nports_];
+      ಪೋರ್ಟ್_rvalues[ಪೋರ್ಟ್] = ಬಿಟ್;
+      recv_real_from_inputs(ಪೋರ್ಟ್);
 }
 
-vvp_wide_fun_t::vvp_wide_fun_t(vvp_wide_fun_core*c, unsigned base)
-: core_(c), port_base_(base)
+vvp_wide_fun_t::vvp_wide_fun_t(vvp_wide_fun_core*c, ಚಿಹ್ನೆರಹಿತ ತಳ)
+: core_(c), ಪೋರ್ಟ್_ತಳ_2(ತಳ)
 {
 }
 
@@ -3604,24 +3604,24 @@ vvp_wide_fun_t::~vvp_wide_fun_t()
 {
 }
 
-void vvp_wide_fun_t::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_wide_fun_t::recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                                vvp_context_t)
 {
-      unsigned pidx = port_base_ + port.port();
-      core_->dispatch_vec4_from_input_(pidx, bit);
+      ಚಿಹ್ನೆರಹಿತ pidx = ಪೋರ್ಟ್_ತಳ_2 + ಪೋರ್ಟ್.ಪೋರ್ಟ್();
+      core_->dispatch_vec4_from_ಒಳಹರಿವು(pidx, ಬಿಟ್);
 }
 
-void vvp_wide_fun_t::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				  unsigned base, unsigned vwid, vvp_context_t ctx)
+ಶೂನ್ಯ vvp_wide_fun_t::recv_vec4_pv(vvp_net_ptr_t ptr, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+				  ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, ಬಿಟ್, ತಳ, vwid, ctx);
 }
 
-void vvp_wide_fun_t::recv_real(vvp_net_ptr_t port, double bit,
+ಶೂನ್ಯ vvp_wide_fun_t::recv_real(vvp_net_ptr_t ಪೋರ್ಟ್, ದ್ವಿಗುಣ ಬಿಟ್,
                                vvp_context_t)
 {
-      unsigned pidx = port_base_ + port.port();
-      core_->dispatch_real_from_input_(pidx, bit);
+      ಚಿಹ್ನೆರಹಿತ pidx = ಪೋರ್ಟ್_ತಳ_2 + ಪೋರ್ಟ್.ಪೋರ್ಟ್();
+      core_->dispatch_real_from_ಒಳಹರಿವು(pidx, ಬಿಟ್);
 }
 
 /* **** vvp_scalar_t methods **** */
@@ -3667,34 +3667,34 @@ void vvp_wide_fun_t::recv_real(vvp_net_ptr_t port, double bit,
 # define STREN1(v) (((v)&0x70) >> 4)
 # define STREN0(v) ((v)&0x07)
 
-unsigned vvp_scalar_t::strength0() const
+ಚಿಹ್ನೆರಹಿತ vvp_scalar_t::strength0() ಸ್ಥಿರಾಂಕ
 {
-      return STREN0(value_);
+      ಹಿಂತಿರುಗಿ STREN0(ಮೌಲ್ಯ_2);
 }
 
-unsigned vvp_scalar_t::strength1() const
+ಚಿಹ್ನೆರಹಿತ vvp_scalar_t::strength1() ಸ್ಥಿರಾಂಕ
 {
-      return STREN1(value_);
+      ಹಿಂತಿರುಗಿ STREN1(ಮೌಲ್ಯ_2);
 }
 
-ostream& operator <<(ostream&out, vvp_scalar_t a)
+ostream& ಕ್ರಿಯಾಕಾರಕ <<(ostream&out, vvp_scalar_t a)
 {
       out << a.strength0() << a.strength1();
-      switch (a.value()) {
-	  case BIT4_0:
+      ಆಯ್ಕೆ (a.value()) {
+	  ಸ್ಥಿತಿ BIT4_0:
 	    out << "0";
-	    break;
-	  case BIT4_1:
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ BIT4_1:
 	    out << "1";
-	    break;
-	  case BIT4_X:
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ BIT4_X:
 	    out << "X";
-	    break;
-	  case BIT4_Z:
+	    ನಿಲ್ಲಿಸು;
+	  ಸ್ಥಿತಿ BIT4_Z:
 	    out << "Z";
-	    break;
+	    ನಿಲ್ಲಿಸು;
       }
-      return out;
+      ಹಿಂತಿರುಗಿ out;
 }
 
 /*
@@ -3705,31 +3705,31 @@ ostream& operator <<(ostream&out, vvp_scalar_t a)
 vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b)
 {
 
-      if (UNAMBIG(a.value_) && UNAMBIG(b.value_)) {
+      ಆದರೆ (UNAMBIG(a.ಮೌಲ್ಯ_2) && UNAMBIG(b.ಮೌಲ್ಯ_2)) {
 
 	      /* If both signals are unambiguous, simply choose
 		 the stronger. If they have the same strength
 		 but different values, then this becomes
 		 ambiguous. */
 
-	    if ((b.value_&0x07) > (a.value_&0x07)) {
+	    ಆದರೆ ((b.ಮೌಲ್ಯ_2&0x07) > (a.ಮೌಲ್ಯ_2&0x07)) {
 
 		    /* b value is stronger. Take it. */
-		  return b;
+		  ಹಿಂತಿರುಗಿ b;
 
-	    } else if ((b.value_&0x77) == (a.value_&0x77)) {
+	    } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ ((b.ಮೌಲ್ಯ_2&0x77) == (a.ಮೌಲ್ಯ_2&0x77)) {
 
 		    // Strengths are the same. Since we know already
 		    // that the values are not the same, Make value
 		    // into "x".
 		  vvp_scalar_t tmp (a);
-		  tmp.value_ = (tmp.value_&0x77) | 0x80;
-		  return tmp;
+		  tmp.ಮೌಲ್ಯ_2 = (tmp.ಮೌಲ್ಯ_2&0x77) | 0x80;
+		  ಹಿಂತಿರುಗಿ tmp;
 
-	    } else {
+	    } ಇಲ್ಲದಿದ್ದರೆ {
 
 		    /* Must be "a" is the stronger one. */
-		  return a;
+		  ಹಿಂತಿರುಗಿ a;
 	    }
 
       }
@@ -3738,36 +3738,36 @@ vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b)
 	   will sweep up the weaker parts of the ambiguous
 	   signal. The result may be ambiguous, or maybe not. */
 
-      if (UNAMBIG(a.value_)) {
+      ಆದರೆ (UNAMBIG(a.ಮೌಲ್ಯ_2)) {
 	    vvp_scalar_t res;
 
-	    if ((a.value_&0x70) > (b.value_&0x70))
-		  res.value_ |= a.value_&0xf0;
-	    else
-		  res.value_ |= b.value_&0xf0;
+	    ಆದರೆ ((a.ಮೌಲ್ಯ_2&0x70) > (b.ಮೌಲ್ಯ_2&0x70))
+		  res.ಮೌಲ್ಯ_2 |= a.ಮೌಲ್ಯ_2&0xf0;
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  res.ಮೌಲ್ಯ_2 |= b.ಮೌಲ್ಯ_2&0xf0;
 
-	    if ((a.value_&0x07) > (b.value_&0x07))
-		  res.value_ |= a.value_&0x0f;
-	    else
-		  res.value_ |= b.value_&0x0f;
+	    ಆದರೆ ((a.ಮೌಲ್ಯ_2&0x07) > (b.ಮೌಲ್ಯ_2&0x07))
+		  res.ಮೌಲ್ಯ_2 |= a.ಮೌಲ್ಯ_2&0x0f;
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  res.ಮೌಲ್ಯ_2 |= b.ಮೌಲ್ಯ_2&0x0f;
 
-	    return res;
+	    ಹಿಂತಿರುಗಿ res;
 
-      } else if (UNAMBIG(b.value_)) {
+      } ಇಲ್ಲದಿದ್ದರೆ ಆದರೆ (UNAMBIG(b.ಮೌಲ್ಯ_2)) {
 
 	    vvp_scalar_t res;
 
-	    if ((b.value_&0x70) > (a.value_&0x70))
-		  res.value_ |= b.value_&0xf0;
-	    else
-		  res.value_ |= a.value_&0xf0;
+	    ಆದರೆ ((b.ಮೌಲ್ಯ_2&0x70) > (a.ಮೌಲ್ಯ_2&0x70))
+		  res.ಮೌಲ್ಯ_2 |= b.ಮೌಲ್ಯ_2&0xf0;
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  res.ಮೌಲ್ಯ_2 |= a.ಮೌಲ್ಯ_2&0xf0;
 
-	    if ((b.value_&0x07) > (a.value_&0x07))
-		  res.value_ |= b.value_&0x0f;
-	    else
-		  res.value_ |= a.value_&0x0f;
+	    ಆದರೆ ((b.ಮೌಲ್ಯ_2&0x07) > (a.ಮೌಲ್ಯ_2&0x07))
+		  res.ಮೌಲ್ಯ_2 |= b.ಮೌಲ್ಯ_2&0x0f;
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  res.ಮೌಲ್ಯ_2 |= a.ಮೌಲ್ಯ_2&0x0f;
 
-	    return res;
+	    ಹಿಂತಿರುಗಿ res;
 
       }
 
@@ -3775,57 +3775,57 @@ vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b)
 	/* If both signals are ambiguous, then the result
 	   has an even wider ambiguity. */
 
-      unsigned tmp = 0;
-      int sv1a = (a.value_ & 0x80) ? STREN1(a.value_) : - STREN1(a.value_);
-      int sv0a = (a.value_ & 0x08) ? STREN0(a.value_) : - STREN0(a.value_);
-      int sv1b = (b.value_ & 0x80) ? STREN1(b.value_) : - STREN1(b.value_);
-      int sv0b = (b.value_ & 0x08) ? STREN0(b.value_) : - STREN0(b.value_);
+      ಚಿಹ್ನೆರಹಿತ tmp = 0;
+      ಪೂರ್ಣಾಂಕ sv1a = (a.ಮೌಲ್ಯ_2 & 0x80) ? STREN1(a.ಮೌಲ್ಯ_2) : - STREN1(a.ಮೌಲ್ಯ_2);
+      ಪೂರ್ಣಾಂಕ sv0a = (a.ಮೌಲ್ಯ_2 & 0x08) ? STREN0(a.ಮೌಲ್ಯ_2) : - STREN0(a.ಮೌಲ್ಯ_2);
+      ಪೂರ್ಣಾಂಕ sv1b = (b.ಮೌಲ್ಯ_2 & 0x80) ? STREN1(b.ಮೌಲ್ಯ_2) : - STREN1(b.ಮೌಲ್ಯ_2);
+      ಪೂರ್ಣಾಂಕ sv0b = (b.ಮೌಲ್ಯ_2 & 0x08) ? STREN0(b.ಮೌಲ್ಯ_2) : - STREN0(b.ಮೌಲ್ಯ_2);
 
-      int sv1 = sv1a;
-      int sv0 = sv0a;
+      ಪೂರ್ಣಾಂಕ sv1 = sv1a;
+      ಪೂರ್ಣಾಂಕ sv0 = sv0a;
 
-      if (sv0a > sv1)
+      ಆದರೆ (sv0a > sv1)
 	    sv1 = sv0a;
-      if (sv1b > sv1)
+      ಆದರೆ (sv1b > sv1)
 	    sv1 = sv1b;
-      if (sv0b > sv1)
+      ಆದರೆ (sv0b > sv1)
 	    sv1 = sv0b;
 
-      if (sv1a < sv0)
+      ಆದರೆ (sv1a < sv0)
 	    sv0 = sv1a;
-      if (sv1b < sv0)
+      ಆದರೆ (sv1b < sv0)
 	    sv0 = sv1b;
-      if (sv0b < sv0)
+      ಆದರೆ (sv0b < sv0)
 	    sv0 = sv0b;
 
-      if (sv1 > 0) {
+      ಆದರೆ (sv1 > 0) {
 	    tmp |= 0x80;
 	    tmp |= sv1 << 4;
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	      /* Set the MSB when both arguments MSBs are set. This
 		 can only happen if both one strengths are zero. */
-	    tmp |= (a.value_&b.value_)&0x80;
+	    tmp |= (a.ಮೌಲ್ಯ_2&b.ಮೌಲ್ಯ_2)&0x80;
 	    tmp |= (-sv1) << 4;
       }
 
-      if (sv0 > 0) {
+      ಆದರೆ (sv0 > 0) {
 	    tmp |= 0x08;
 	    tmp |= sv0;
-      } else {
+      } ಇಲ್ಲದಿದ್ದರೆ {
 	    tmp |= (-sv0);
       }
 
       vvp_scalar_t res;
-      res.value_ = tmp;
+      res.ಮೌಲ್ಯ_2 = tmp;
 
 	/* Canonicalize the HiZ value. */
-      if ((res.value_&0x77) == 0)
-	    res.value_ = 0;
+      ಆದರೆ ((res.ಮೌಲ್ಯ_2&0x77) == 0)
+	    res.ಮೌಲ್ಯ_2 = 0;
 
-      return res;
+      ಹಿಂತಿರುಗಿ res;
 }
 
-unsigned vvp_switch_strength_map[2][8] = {
+ಚಿಹ್ನೆರಹಿತ vvp_switch_strength_map[2][8] = {
       {  // non-resistive
 	    0, /* High impedance   --> High impedance   */
 	    1, /* Small capacitor  --> Small capacitor  */
@@ -3848,91 +3848,91 @@ unsigned vvp_switch_strength_map[2][8] = {
       }
 };
 
-vvp_vector4_t reduce4(const vvp_vector8_t&that)
+vvp_vector4_t reduce4(ಸ್ಥಿರಾಂಕ vvp_vector8_t&that)
 {
       vvp_vector4_t out (that.size());
-      for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1)
-	    out.set_bit(idx, that.value(idx).value());
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < out.size() ;  idx += 1)
+	    out.ಗಣ_ಬಿಟ್(idx, that.value(idx).value());
 
-      return out;
+      ಹಿಂತಿರುಗಿ out;
 }
 
-vvp_bit4_t compare_gtge(const vvp_vector4_t&lef, const vvp_vector4_t&rig,
-			vvp_bit4_t out_if_equal)
+vvp_bit4_t compare_gtge(ಸ್ಥಿರಾಂಕ vvp_vector4_t&lef, ಸ್ಥಿರಾಂಕ vvp_vector4_t&rig,
+			vvp_bit4_t ಹೊರಹೋಗು_if_equal)
 {
-      unsigned min_size = lef.size();
-      if (rig.size() < min_size)
-	    min_size = rig.size();
+      ಚಿಹ್ನೆರಹಿತ min_ಗಾತ್ರ = lef.size();
+      ಆದರೆ (rig.size() < min_ಗಾತ್ರ)
+	    min_ಗಾತ್ರ = rig.size();
 
 	// If one of the inputs is nil, treat is as all X values, and
 	// that makes the result BIT4_X.
-      if (min_size == 0)
-	    return BIT4_X;
+      ಆದರೆ (min_ಗಾತ್ರ == 0)
+	    ಹಿಂತಿರುಗಿ BIT4_X;
 
 	// As per the IEEE1364 definition of >, >=, < and <=, if there
 	// are any X or Z values in either of the operand vectors,
 	// then the result of the compare is BIT4_X.
 
 	// Check for X/Z in the left operand
-      if (lef.has_xz())
-	    return BIT4_X;
+      ಆದರೆ (lef.has_xz())
+	    ಹಿಂತಿರುಗಿ BIT4_X;
 
 	// Check for X/Z in the right operand
-      if (rig.has_xz())
-	    return BIT4_X;
+      ಆದರೆ (rig.has_xz())
+	    ಹಿಂತಿರುಗಿ BIT4_X;
 
-      for (unsigned idx = lef.size() ; idx > rig.size() ;  idx -= 1) {
-	    if (lef.value(idx-1) == BIT4_1)
-		  return BIT4_1;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = lef.size() ; idx > rig.size() ;  idx -= 1) {
+	    ಆದರೆ (lef.value(idx-1) == BIT4_1)
+		  ಹಿಂತಿರುಗಿ BIT4_1;
       }
 
-      for (unsigned idx = rig.size() ; idx > lef.size() ;  idx -= 1) {
-	    if (rig.value(idx-1) == BIT4_1)
-		  return BIT4_0;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = rig.size() ; idx > lef.size() ;  idx -= 1) {
+	    ಆದರೆ (rig.value(idx-1) == BIT4_1)
+		  ಹಿಂತಿರುಗಿ BIT4_0;
       }
 
-      for (unsigned idx = min_size ; idx > 0 ;  idx -= 1) {
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = min_ಗಾತ್ರ ; idx > 0 ;  idx -= 1) {
 	    vvp_bit4_t lv = lef.value(idx-1);
 	    vvp_bit4_t rv = rig.value(idx-1);
 
-	    if (lv == rv)
-		  continue;
+	    ಆದರೆ (lv == rv)
+		  ಮುಂದುವರಿ;
 
-	    if (lv == BIT4_1)
-		  return BIT4_1;
-	    else
-		  return BIT4_0;
+	    ಆದರೆ (lv == BIT4_1)
+		  ಹಿಂತಿರುಗಿ BIT4_1;
+	    ಇಲ್ಲದಿದ್ದರೆ
+		  ಹಿಂತಿರುಗಿ BIT4_0;
       }
 
-      return out_if_equal;
+      ಹಿಂತಿರುಗಿ ಹೊರಹೋಗು_if_equal;
 }
 
-vvp_bit4_t compare_gtge_signed(const vvp_vector4_t&a,
-			       const vvp_vector4_t&b,
-			       vvp_bit4_t out_if_equal)
+vvp_bit4_t compare_gtge_signed(ಸ್ಥಿರಾಂಕ vvp_vector4_t&a,
+			       ಸ್ಥಿರಾಂಕ vvp_vector4_t&b,
+			       vvp_bit4_t ಹೊರಹೋಗು_if_equal)
 {
-      assert(a.size() == b.size());
+      ಪ್ರತಿಜ್ಞಾ(a.size() == b.size());
 
-      unsigned sign_idx = a.size()-1;
+      ಚಿಹ್ನೆರಹಿತ sign_idx = a.size()-1;
       vvp_bit4_t a_sign = a.value(sign_idx);
       vvp_bit4_t b_sign = b.value(sign_idx);
 
-      if (bit4_is_xz(a_sign))
-	    return BIT4_X;
-      if (bit4_is_xz(b_sign))
-	    return BIT4_X;
+      ಆದರೆ (bit4_is_xz(a_sign))
+	    ಹಿಂತಿರುಗಿ BIT4_X;
+      ಆದರೆ (bit4_is_xz(b_sign))
+	    ಹಿಂತಿರುಗಿ BIT4_X;
 
-      if (a_sign == b_sign)
-	    return compare_gtge(a, b, out_if_equal);
+      ಆದರೆ (a_sign == b_sign)
+	    ಹಿಂತಿರುಗಿ compare_gtge(a, b, ಹೊರಹೋಗು_if_equal);
 
-      if (a.has_xz())
-	    return BIT4_X;
+      ಆದರೆ (a.has_xz())
+	    ಹಿಂತಿರುಗಿ BIT4_X;
 
-      if (b.has_xz())
-	    return BIT4_X;
+      ಆದರೆ (b.has_xz())
+	    ಹಿಂತಿರುಗಿ BIT4_X;
 
-      if(a_sign == BIT4_0)
-	    return BIT4_1;
-      else
-	    return BIT4_0;
+      ಆದರೆ(a_sign == BIT4_0)
+	    ಹಿಂತಿರುಗಿ BIT4_1;
+      ಇಲ್ಲದಿದ್ದರೆ
+	    ಹಿಂತಿರುಗಿ BIT4_0;
 }

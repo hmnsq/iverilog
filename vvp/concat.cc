@@ -23,10 +23,10 @@
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+ಬಳಸಿ ನಾಮಾಕಾಶ std;
 
-vvp_fun_concat::vvp_fun_concat(unsigned w0, unsigned w1,
-			       unsigned w2, unsigned w3)
+vvp_fun_concat::vvp_fun_concat(ಚಿಹ್ನೆರಹಿತ w0, ಚಿಹ್ನೆರಹಿತ w1,
+			       ಚಿಹ್ನೆರಹಿತ w2, ಚಿಹ್ನೆರಹಿತ w3)
 : val_(w0+w1+w2+w3, BIT4_Z)
 {
       wid_[0] = w0;
@@ -39,64 +39,64 @@ vvp_fun_concat::~vvp_fun_concat()
 {
 }
 
-void vvp_fun_concat::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_concat::recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                                vvp_context_t context)
 {
-      recv_vec4_pv(port, bit, 0, bit.size(), context);
+      recv_vec4_pv(ಪೋರ್ಟ್, ಬಿಟ್, 0, ಬಿಟ್.size(), context);
 }
 
-void vvp_fun_concat::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-                                  unsigned base, unsigned vwid, vvp_context_t)
+ಶೂನ್ಯ vvp_fun_concat::recv_vec4_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+                                  ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t)
 {
-      unsigned pdx = port.port();
+      ಚಿಹ್ನೆರಹಿತ pdx = ಪೋರ್ಟ್.ಪೋರ್ಟ್();
 
-      if (vwid != wid_[pdx]) {
+      ಆದರೆ (vwid != wid_[pdx]) {
 	    cerr << "internal error: port " << pdx
 		 << " expects wid=" << wid_[pdx]
-		 << ", got wid=" << vwid << endl;
-	    assert(0);
+		 << ", got wid=" << vwid << ಸಾಲು_ಅಂತ್ಯ;
+	    ಪ್ರತಿಜ್ಞಾ(0);
       }
 
-      unsigned off = base;
-      for (unsigned idx = 0 ;  idx < pdx ;  idx += 1)
+      ಚಿಹ್ನೆರಹಿತ off = ತಳ;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < pdx ;  idx += 1)
 	    off += wid_[idx];
 
-      if (!val_.set_vec(off, bit))
-	    return;
+      ಆದರೆ (!val_.ಗಣ_vec(off, ಬಿಟ್))
+	    ಹಿಂತಿರುಗಿ;
 
-      if (net_)
-	    return;
+      ಆದರೆ (net_)
+	    ಹಿಂತಿರುಗಿ;
 
-      net_ = port.ptr();
-      schedule_functor(this);
+      net_ = ಪೋರ್ಟ್.ptr();
+      ವೇಳಾಪಟ್ಟಿ_functor(ಇದು);
 }
 
-void vvp_fun_concat::run_run()
+ಶೂನ್ಯ vvp_fun_concat::ಸತತ_ಸತತ()
 {
       vvp_net_t *ptr = net_;
-      net_ = nullptr;
+      net_ = ಶೂನ್ಯಸೂಚಕ;
       ptr->send_vec4(val_, 0);
 }
 
-void compile_concat(char*label, unsigned w0, unsigned w1,
-		    unsigned w2, unsigned w3,
-		    unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_concat(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ w0, ಚಿಹ್ನೆರಹಿತ w1,
+		    ಚಿಹ್ನೆರಹಿತ w2, ಚಿಹ್ನೆರಹಿತ w3,
+		    ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      vvp_fun_concat*fun = new vvp_fun_concat(w0, w1, w2, w3);
+      vvp_fun_concat*fun = ಹೊಸ vvp_fun_concat(w0, w1, w2, w3);
 
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = ಹೊಸ vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_ಚಿಹ್ನೆ(label, net);
+      ಬಿಡುಗಡೆ(label);
 
       inputs_connect(net, argc, argv);
-      free(argv);
+      ಬಿಡುಗಡೆ(argv);
 }
 
 
-vvp_fun_concat8::vvp_fun_concat8(unsigned w0, unsigned w1,
-			       unsigned w2, unsigned w3)
+vvp_fun_concat8::vvp_fun_concat8(ಚಿಹ್ನೆರಹಿತ w0, ಚಿಹ್ನೆರಹಿತ w1,
+			       ಚಿಹ್ನೆರಹಿತ w2, ಚಿಹ್ನೆರಹಿತ w3)
 : val_(w0+w1+w2+w3)
 {
       wid_[0] = w0;
@@ -109,74 +109,74 @@ vvp_fun_concat8::~vvp_fun_concat8()
 {
 }
 
-void vvp_fun_concat8::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_concat8::recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
 				vvp_context_t)
 {
-      vvp_vector8_t bit8 (bit, 6, 6);
-      recv_vec8_pv(port, bit8, 0, bit8.size());
+      vvp_vector8_t bit8 (ಬಿಟ್, 6, 6);
+      recv_vec8_pv(ಪೋರ್ಟ್, bit8, 0, bit8.size());
 }
 
-void vvp_fun_concat8::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-				   unsigned base, unsigned vwid, vvp_context_t)
+ಶೂನ್ಯ vvp_fun_concat8::recv_vec4_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+				   ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t)
 {
-      vvp_vector8_t bit8 (bit, 6, 6);
-      recv_vec8_pv(port, bit8, base, vwid);
+      vvp_vector8_t bit8 (ಬಿಟ್, 6, 6);
+      recv_vec8_pv(ಪೋರ್ಟ್, bit8, ತಳ, vwid);
 }
 
-void vvp_fun_concat8::recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit)
+ಶೂನ್ಯ vvp_fun_concat8::recv_vec8(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್)
 {
-      recv_vec8_pv(port, bit, 0, bit.size());
+      recv_vec8_pv(ಪೋರ್ಟ್, ಬಿಟ್, 0, ಬಿಟ್.size());
 }
 
-void vvp_fun_concat8::recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
-				   unsigned base, unsigned vwid)
+ಶೂನ್ಯ vvp_fun_concat8::recv_vec8_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್,
+				   ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid)
 {
-      unsigned pdx = port.port();
+      ಚಿಹ್ನೆರಹಿತ pdx = ಪೋರ್ಟ್.ಪೋರ್ಟ್();
 
-      if (vwid != wid_[pdx]) {
+      ಆದರೆ (vwid != wid_[pdx]) {
 	    cerr << "internal error: port " << pdx
 		 << " expects wid=" << wid_[pdx]
-		 << ", got wid=" << vwid << endl;
-	    assert(0);
+		 << ", got wid=" << vwid << ಸಾಲು_ಅಂತ್ಯ;
+	    ಪ್ರತಿಜ್ಞಾ(0);
       }
 
-      unsigned off = base;
-      for (unsigned idx = 0 ;  idx < pdx ;  idx += 1)
+      ಚಿಹ್ನೆರಹಿತ off = ತಳ;
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ idx = 0 ;  idx < pdx ;  idx += 1)
 	    off += wid_[idx];
 
-      val_.set_vec(off, bit);
+      val_.ಗಣ_vec(off, ಬಿಟ್);
 
-      if (net_)
-	    return;
+      ಆದರೆ (net_)
+	    ಹಿಂತಿರುಗಿ;
 
-      net_ = port.ptr();
-      schedule_functor(this);
+      net_ = ಪೋರ್ಟ್.ptr();
+      ವೇಳಾಪಟ್ಟಿ_functor(ಇದು);
 }
 
-void vvp_fun_concat8::run_run()
+ಶೂನ್ಯ vvp_fun_concat8::ಸತತ_ಸತತ()
 {
       vvp_net_t *ptr = net_;
-      net_ = nullptr;
+      net_ = ಶೂನ್ಯಸೂಚಕ;
       ptr->send_vec8(val_);
 }
 
-void compile_concat8(char*label, unsigned w0, unsigned w1,
-		     unsigned w2, unsigned w3,
-		     unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_concat8(ಅಕ್ಷರ*label, ಚಿಹ್ನೆರಹಿತ w0, ಚಿಹ್ನೆರಹಿತ w1,
+		     ಚಿಹ್ನೆರಹಿತ w2, ಚಿಹ್ನೆರಹಿತ w3,
+		     ಚಿಹ್ನೆರಹಿತ argc, ರಚನೆ symb_s*argv)
 {
-      vvp_fun_concat8*fun = new vvp_fun_concat8(w0, w1, w2, w3);
+      vvp_fun_concat8*fun = ಹೊಸ vvp_fun_concat8(w0, w1, w2, w3);
 
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = ಹೊಸ vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_ಚಿಹ್ನೆ(label, net);
+      ಬಿಡುಗಡೆ(label);
 
       inputs_connect(net, argc, argv);
-      free(argv);
+      ಬಿಡುಗಡೆ(argv);
 }
 
-vvp_fun_repeat::vvp_fun_repeat(unsigned width, unsigned repeat)
+vvp_fun_repeat::vvp_fun_repeat(ಚಿಹ್ನೆರಹಿತ width, ಚಿಹ್ನೆರಹಿತ repeat)
 : wid_(width), rep_(repeat)
 {
 }
@@ -185,38 +185,38 @@ vvp_fun_repeat::~vvp_fun_repeat()
 {
 }
 
-void vvp_fun_repeat::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_repeat::recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                                vvp_context_t)
 {
-      assert(bit.size() == wid_/rep_);
+      ಪ್ರತಿಜ್ಞಾ(ಬಿಟ್.size() == wid_/rep_);
 
       vvp_vector4_t val (wid_);
 
-      for (unsigned rdx = 0 ;  rdx < rep_ ;  rdx += 1) {
-	    unsigned off = rdx * bit.size();
+      ಗಾಗಿ (ಚಿಹ್ನೆರಹಿತ rdx = 0 ;  rdx < rep_ ;  rdx += 1) {
+	    ಚಿಹ್ನೆರಹಿತ off = rdx * ಬಿಟ್.size();
 
-	    val.set_vec(off, bit);
+	    val.ಗಣ_vec(off, ಬಿಟ್);
       }
 
-      port.ptr()->send_vec4(val, 0);
+      ಪೋರ್ಟ್.ptr()->send_vec4(val, 0);
 }
 
-void vvp_fun_repeat::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t &bit,
-			          unsigned base, unsigned vwid,
+ಶೂನ್ಯ vvp_fun_repeat::recv_vec4_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t &ಬಿಟ್,
+			          ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid,
 				  vvp_context_t context)
 {
-      recv_vec4_pv_(port, bit, base, vwid, context);
+      recv_vec4_pv_(ಪೋರ್ಟ್, ಬಿಟ್, ತಳ, vwid, context);
 }
 
-void compile_repeat(char*label, long width, long repeat, struct symb_s arg)
+ಶೂನ್ಯ compile_repeat(ಅಕ್ಷರ*label, ದೀರ್ಘ width, ದೀರ್ಘ repeat, ರಚನೆ symb_s arg)
 {
-      vvp_fun_repeat*fun = new vvp_fun_repeat(width, repeat);
+      vvp_fun_repeat*fun = ಹೊಸ vvp_fun_repeat(width, repeat);
 
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = ಹೊಸ vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_ಚಿಹ್ನೆ(label, net);
+      ಬಿಡುಗಡೆ(label);
 
-      input_connect(net, 0, arg.text);
+      ಒಳಹರಿವು_connect(net, 0, arg.ಪಠ್ಯ);
 }

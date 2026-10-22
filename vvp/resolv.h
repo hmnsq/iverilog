@@ -1,5 +1,5 @@
-#ifndef IVL_resolv_H
-#define IVL_resolv_H
+#ವ್ಯಾಖ್ಯಾನಿತವಾಗದಿದ್ದರೆ IVL_resolv_H
+#ವ್ಯಾಖ್ಯಾನಿಸು IVL_resolv_H
 /*
  * Copyright (c) 2001-2025 Stephen Williams (steve@icarus.com)
  *
@@ -30,70 +30,70 @@
  * actual functors.
  */
 
-class resolv_core : public vvp_net_fun_t {
+class resolv_core : ಸಾರ್ವಜನಿಕ vvp_net_fun_t {
 
-    public:
-      explicit resolv_core(unsigned nports, vvp_net_t*net);
-      virtual ~resolv_core() override;
+    ಸಾರ್ವಜನಿಕ:
+      explicit resolv_core(ಚಿಹ್ನೆರಹಿತ nports, vvp_net_t*net);
+      ವಾಸ್ತವಿಕ ~resolv_core() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t) override
-            { recv_vec4_(port.port(), bit); }
+            { recv_vec4_(ಪೋರ್ಟ್.ಪೋರ್ಟ್(), ಬಿಟ್); }
 
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override
-            { recv_vec8_(port.port(), bit); }
+      ಶೂನ್ಯ recv_vec8(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್) override
+            { recv_vec8_(ಪೋರ್ಟ್.ಪೋರ್ಟ್(), ಬಿಟ್); }
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override
-            { recv_vec4_pv_(port.port(), bit, base, vwid); }
+      ಶೂನ್ಯ recv_vec4_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+			ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t) override
+            { recv_vec4_pv_(ಪೋರ್ಟ್.ಪೋರ್ಟ್(), ಬಿಟ್, ತಳ, vwid); }
 
-      void recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
-			unsigned base, unsigned vwid) override
-            { recv_vec8_pv_(port.port(), bit, base, vwid); }
+      ಶೂನ್ಯ recv_vec8_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್,
+			ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid) override
+            { recv_vec8_pv_(ಪೋರ್ಟ್.ಪೋರ್ಟ್(), ಬಿಟ್, ತಳ, vwid); }
 
-      virtual void count_drivers(unsigned bit_idx, unsigned counts[3]) =0;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ ಎಣಿಕೆ_drivers(ಚಿಹ್ನೆರಹಿತ ಬಿಟ್_idx, ಚಿಹ್ನೆರಹಿತ counts[3]) =0;
 
-    private:
-      friend class resolv_extend;
-      virtual void recv_vec4_(unsigned port, const vvp_vector4_t&bit) =0;
-      virtual void recv_vec8_(unsigned port, const vvp_vector8_t&bit) =0;
+    ಖಾಸಗಿ:
+      ಮಿತ್ರ class resolv_extend;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ recv_vec4_(ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್) =0;
+      ವಾಸ್ತವಿಕ ಶೂನ್ಯ recv_vec8_(ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್) =0;
 
-      void recv_vec4_pv_(unsigned port, const vvp_vector4_t&bit,
-			 unsigned base, unsigned vwid);
-      void recv_vec8_pv_(unsigned port, const vvp_vector8_t&bit,
-			 unsigned base, unsigned vwid);
+      ಶೂನ್ಯ recv_vec4_pv_(ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+			 ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid);
+      ಶೂನ್ಯ recv_vec8_pv_(ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್,
+			 ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid);
 
-    protected:
-      unsigned nports_;
+    ಸಂರಕ್ಷಿತ:
+      ಚಿಹ್ನೆರಹಿತ nports_;
       vvp_net_t*net_;
 };
 
-class resolv_extend : public vvp_net_fun_t {
+class resolv_extend : ಸಾರ್ವಜನಿಕ vvp_net_fun_t {
 
-    public:
-      resolv_extend(resolv_core*core, unsigned port_base);
+    ಸಾರ್ವಜನಿಕ:
+      resolv_extend(resolv_core*core, ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್_ತಳ);
       ~resolv_extend() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ಶೂನ್ಯ recv_vec4(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
                      vvp_context_t) override
-            { core_->recv_vec4_(port_base_ + port.port(), bit); }
+            { core_->recv_vec4_(ಪೋರ್ಟ್_ತಳ_2 + ಪೋರ್ಟ್.ಪೋರ್ಟ್(), ಬಿಟ್); }
 
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override
-            { core_->recv_vec8_(port_base_ + port.port(), bit); }
+      ಶೂನ್ಯ recv_vec8(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್) override
+            { core_->recv_vec8_(ಪೋರ್ಟ್_ತಳ_2 + ಪೋರ್ಟ್.ಪೋರ್ಟ್(), ಬಿಟ್); }
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override
-            { core_->recv_vec4_pv_(port_base_ + port.port(), bit,
-                                   base, vwid); }
+      ಶೂನ್ಯ recv_vec4_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್,
+			ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid, vvp_context_t) override
+            { core_->recv_vec4_pv_(ಪೋರ್ಟ್_ತಳ_2 + ಪೋರ್ಟ್.ಪೋರ್ಟ್(), ಬಿಟ್,
+                                   ತಳ, vwid); }
 
-      void recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
-			unsigned base, unsigned vwid) override
-            { core_->recv_vec8_pv_(port_base_ + port.port(), bit,
-                                   base, vwid); }
+      ಶೂನ್ಯ recv_vec8_pv(vvp_net_ptr_t ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್,
+			ಚಿಹ್ನೆರಹಿತ ತಳ, ಚಿಹ್ನೆರಹಿತ vwid) override
+            { core_->recv_vec8_pv_(ಪೋರ್ಟ್_ತಳ_2 + ಪೋರ್ಟ್.ಪೋರ್ಟ್(), ಬಿಟ್,
+                                   ತಳ, vwid); }
 
-    private:
+    ಖಾಸಗಿ:
       resolv_core*core_;
-      unsigned port_base_;
+      ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್_ತಳ_2;
 };
 
 /*
@@ -108,22 +108,22 @@ class resolv_extend : public vvp_net_fun_t {
  * strong values (or HiZ) for the sake of resolution. In any case, the
  * propagated value is a vvp_vector8_t value.
  */
-class resolv_tri : public resolv_core {
+class resolv_tri : ಸಾರ್ವಜನಿಕ resolv_core {
 
-    public:
-      explicit resolv_tri(unsigned nports, vvp_net_t*net,
-                          vvp_scalar_t hiz_value);
+    ಸಾರ್ವಜನಿಕ:
+      explicit resolv_tri(ಚಿಹ್ನೆರಹಿತ nports, vvp_net_t*net,
+                          vvp_scalar_t hiz_ಮೌಲ್ಯ);
       ~resolv_tri() override;
 
-      void count_drivers(unsigned bit_idx, unsigned counts[3]) override;
+      ಶೂನ್ಯ ಎಣಿಕೆ_drivers(ಚಿಹ್ನೆರಹಿತ ಬಿಟ್_idx, ಚಿಹ್ನೆರಹಿತ counts[3]) override;
 
-    private:
-      void recv_vec4_(unsigned port, const vvp_vector4_t&bit) override;
-      void recv_vec8_(unsigned port, const vvp_vector8_t&bit) override;
+    ಖಾಸಗಿ:
+      ಶೂನ್ಯ recv_vec4_(ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್) override;
+      ಶೂನ್ಯ recv_vec8_(ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್) override;
 
-    private:
+    ಖಾಸಗಿ:
         // The puller value to be used when a bit is not driven.
-      vvp_scalar_t hiz_value_;
+      vvp_scalar_t hiz_ಮೌಲ್ಯ_2;
         // The array of input values.
       vvp_vector8_t*val_;
 };
@@ -137,44 +137,44 @@ class resolv_tri : public resolv_core {
  * value. It also takes in vvp_vector8_t values, which it reduces to
  * 4-state values for the sake of resolution.
  */
-class resolv_wired_logic : public resolv_core {
+class resolv_wired_logic : ಸಾರ್ವಜನಿಕ resolv_core {
 
-    public:
-      explicit resolv_wired_logic(unsigned nports, vvp_net_t*net);
-      virtual ~resolv_wired_logic() override;
+    ಸಾರ್ವಜನಿಕ:
+      explicit resolv_wired_logic(ಚಿಹ್ನೆರಹಿತ nports, vvp_net_t*net);
+      ವಾಸ್ತವಿಕ ~resolv_wired_logic() override;
 
-      void count_drivers(unsigned bit_idx, unsigned counts[3]) override;
+      ಶೂನ್ಯ ಎಣಿಕೆ_drivers(ಚಿಹ್ನೆರಹಿತ ಬಿಟ್_idx, ಚಿಹ್ನೆರಹಿತ counts[3]) override;
 
-    protected:
-      virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) =0;
+    ಸಂರಕ್ಷಿತ:
+      ವಾಸ್ತವಿಕ vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) =0;
 
-    private:
-      void recv_vec4_(unsigned port, const vvp_vector4_t&bit) override;
-      void recv_vec8_(unsigned port, const vvp_vector8_t&bit) override;
+    ಖಾಸಗಿ:
+      ಶೂನ್ಯ recv_vec4_(ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector4_t&ಬಿಟ್) override;
+      ಶೂನ್ಯ recv_vec8_(ಚಿಹ್ನೆರಹಿತ ಪೋರ್ಟ್, ಸ್ಥಿರಾಂಕ vvp_vector8_t&ಬಿಟ್) override;
 
-    private:
+    ಖಾಸಗಿ:
         // The array of input values.
       vvp_vector4_t*val_;
 };
 
-class resolv_triand : public resolv_wired_logic {
+class resolv_triand : ಸಾರ್ವಜನಿಕ resolv_wired_logic {
 
-    public:
-      explicit resolv_triand(unsigned nports, vvp_net_t*net);
+    ಸಾರ್ವಜನಿಕ:
+      explicit resolv_triand(ಚಿಹ್ನೆರಹಿತ nports, vvp_net_t*net);
       ~resolv_triand() override;
 
-    private:
-      virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
+    ಖಾಸಗಿ:
+      ವಾಸ್ತವಿಕ vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
 };
 
-class resolv_trior : public resolv_wired_logic {
+class resolv_trior : ಸಾರ್ವಜನಿಕ resolv_wired_logic {
 
-    public:
-      explicit resolv_trior(unsigned nports, vvp_net_t*net);
+    ಸಾರ್ವಜನಿಕ:
+      explicit resolv_trior(ಚಿಹ್ನೆರಹಿತ nports, vvp_net_t*net);
       ~resolv_trior() override;
 
-    private:
-      virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
+    ಖಾಸಗಿ:
+      ವಾಸ್ತವಿಕ vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
 };
 
-#endif /* IVL_resolv_H */
+#ಆದರೆ_ಅಂತ್ಯ /* IVL_resolv_H */
