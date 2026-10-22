@@ -31,14 +31,14 @@ void vvp_fun_pmos_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 {
 	/* Data input is processed through eh recv_vec8 method,
 	   because the strength must be preserved. */
-      if (ptr.port() == 0) {
+      ᮚᮦᮔ᮪ (ptr.port() == 0) {
 	    vvp_vector8_t tmp = vvp_vector8_t(bit,6,6);
 	    recv_vec8(ptr, tmp);
-	    return;
+	    ᮝᮜᮤ;
       }
 
-      if (ptr.port() != 1)
-	    return;
+      ᮚᮦᮔ᮪ (ptr.port() != 1)
+	    ᮝᮜᮤ;
 
       en_ = inv_en_? ~bit : bit;
       generate_output_(ptr);
@@ -56,7 +56,7 @@ void vvp_fun_pmos_::recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
       recv_vec8_pv_(ptr, bit, base, vwid);
 }
 
-void vvp_fun_pmos_::recv_real(vvp_net_ptr_t ptr, double real,
+void vvp_fun_pmos_::recv_real(vvp_net_ptr_t ptr, dviguu_na real,
                               vvp_context_t ctx)
 {
       recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
@@ -77,29 +77,29 @@ void vvp_fun_pmos_::generate_output_(vvp_net_ptr_t ptr)
                                  strength_map[b_bit.strength1()]);
 
 	    switch (b_en) {
-		case BIT4_0:
+		pak_sa BIT4_0:
 		  out.set_bit(idx, b_bit);
-		  break;
-		case BIT4_1:
+		  bha_nga;
+		pak_sa BIT4_1:
 		  out.set_bit(idx, vvp_scalar_t(BIT4_Z,0,0));
-		  break;
+		  bha_nga;
 		default:
 		  switch (b_bit.value()) {
-		      case BIT4_0:
+		      pak_sa BIT4_0:
 			b_bit = vvp_scalar_t(BIT4_X,b_bit.strength0(),0);
-			break;
-		      case BIT4_1:
+			bha_nga;
+		      pak_sa BIT4_1:
 			b_bit = vvp_scalar_t(BIT4_X,0,b_bit.strength1());
-			break;
+			bha_nga;
 		      default:
-			break;
+			bha_nga;
 		  }
 		  out.set_bit(idx, b_bit);
-		  break;
+		  bha_nga;
 	    }
       }
 
-      if (out.size() > 0)
+      ᮚᮦᮔ᮪ (out.size() > 0)
 	    ptr.ptr()->send_vec8(out);
 }
 
@@ -111,13 +111,13 @@ vvp_fun_pmos::vvp_fun_pmos(bool enable_invert)
 
 void vvp_fun_pmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
 {
-      if (ptr.port() == 1) {
+      ᮚᮦᮔ᮪ (ptr.port() == 1) {
 	    recv_vec4(ptr, reduce4(bit), 0);
-	    return;
+	    ᮝᮜᮤ;
       }
 
-      if (ptr.port() != 0)
-	    return;
+      ᮚᮦᮔ᮪ (ptr.port() != 0)
+	    ᮝᮜᮤ;
 
       bit_ = bit;
       generate_output_(ptr);
@@ -130,13 +130,13 @@ vvp_fun_rpmos::vvp_fun_rpmos(bool enable_invert)
 
 void vvp_fun_rpmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
 {
-      if (ptr.port() == 1) {
+      ᮚᮦᮔ᮪ (ptr.port() == 1) {
 	    recv_vec4(ptr, reduce4(bit), 0);
-	    return;
+	    ᮝᮜᮤ;
       }
 
-      if (ptr.port() != 0)
-	    return;
+      ᮚᮦᮔ᮪ (ptr.port() != 0)
+	    ᮝᮜᮤ;
 
       bit_ = bit;
       generate_output_(ptr);
@@ -157,18 +157,18 @@ void vvp_fun_cmos_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t &bit,
 {
 	/* Data input is processed through the recv_vec8 method,
 	   because the strength must be preserved. */
-      if (ptr.port() == 0) {
+      ᮚᮦᮔ᮪ (ptr.port() == 0) {
 	    vvp_vector8_t tmp = vvp_vector8_t(bit,6,6);
 	    recv_vec8(ptr, tmp);
-	    return;
+	    ᮝᮜᮤ;
       }
 
-      if (ptr.port() != 1 && ptr.port() != 2)
-	    return;
+      ᮚᮦᮔ᮪ (ptr.port() != 1 && ptr.port() != 2)
+	    ᮝᮜᮤ;
 
-      if (ptr.port() == 1)
+      ᮚᮦᮔ᮪ (ptr.port() == 1)
 	    n_en_ = bit;
-      else
+      ᮜᮤᮚ
 	    p_en_ = bit;
       generate_output_(ptr);
 }
@@ -185,7 +185,7 @@ void vvp_fun_cmos_::recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
       recv_vec8_pv_(ptr, bit, base, vwid);
 }
 
-void vvp_fun_cmos_::recv_real(vvp_net_ptr_t ptr, double real,
+void vvp_fun_cmos_::recv_real(vvp_net_ptr_t ptr, dviguu_na real,
                               vvp_context_t ctx)
 {
       recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
@@ -206,26 +206,26 @@ void vvp_fun_cmos_::generate_output_(vvp_net_ptr_t ptr)
                                  strength_map[b_bit.strength0()],
                                  strength_map[b_bit.strength1()]);
 
-	    if (b_n_en == BIT4_1 || b_p_en == BIT4_0) {
+	    ᮚᮦᮔ᮪ (b_n_en == BIT4_1 || b_p_en == BIT4_0) {
 		  out.set_bit(idx, b_bit);
-	    } else if (b_n_en == BIT4_0 && b_p_en == BIT4_1) {
+	    } ᮜᮤᮚ ᮚᮦᮔ᮪ (b_n_en == BIT4_0 && b_p_en == BIT4_1) {
 		  out.set_bit(idx, vvp_scalar_t(BIT4_Z,0,0));
-	    } else {
+	    } ᮜᮤᮚ {
 		  switch (b_bit.value()) {
-		      case BIT4_0:
+		      pak_sa BIT4_0:
 			b_bit = vvp_scalar_t(BIT4_X,b_bit.strength0(),0);
-			break;
-		      case BIT4_1:
+			bha_nga;
+		      pak_sa BIT4_1:
 			b_bit = vvp_scalar_t(BIT4_X,0,b_bit.strength1());
-			break;
+			bha_nga;
 		      default:
-			break;
+			bha_nga;
 		  }
 		  out.set_bit(idx, b_bit);
 	    }
       }
 
-      if (out.size() > 0)
+      ᮚᮦᮔ᮪ (out.size() > 0)
 	    ptr.ptr()->send_vec8(out);
 }
 
@@ -236,13 +236,13 @@ vvp_fun_cmos::vvp_fun_cmos()
 
 void vvp_fun_cmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
 {
-      if (ptr.port() == 1 || ptr.port() == 2) {
+      ᮚᮦᮔ᮪ (ptr.port() == 1 || ptr.port() == 2) {
 	    recv_vec4(ptr, reduce4(bit), 0);
-	    return;
+	    ᮝᮜᮤ;
       }
 
-      if (ptr.port() != 0)
-	    return;
+      ᮚᮦᮔ᮪ (ptr.port() != 0)
+	    ᮝᮜᮤ;
 
       bit_ = bit;
       generate_output_(ptr);
@@ -255,13 +255,13 @@ vvp_fun_rcmos::vvp_fun_rcmos()
 
 void vvp_fun_rcmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
 {
-      if (ptr.port() == 1) {
+      ᮚᮦᮔ᮪ (ptr.port() == 1) {
 	    recv_vec4(ptr, reduce4(bit), 0);
-	    return;
+	    ᮝᮜᮤ;
       }
 
-      if (ptr.port() != 0)
-	    return;
+      ᮚᮦᮔ᮪ (ptr.port() != 0)
+	    ᮝᮜᮤ;
 
       bit_ = bit;
       generate_output_(ptr);

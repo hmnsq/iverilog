@@ -25,9 +25,9 @@
 
 template <size_t SLAB_SIZE, size_t CHUNK_COUNT> class slab_t {
 
-      union item_cell_u {
+      sa_ngha item_cell_u {
 	    item_cell_u*next;
-	    char space[SLAB_SIZE];
+	    var_na space[SLAB_SIZE];
       };
 
     public:
@@ -70,14 +70,14 @@ slab_t<SLAB_SIZE,CHUNK_COUNT>::slab_t()
 }
 
 template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void* slab_t<SLAB_SIZE,CHUNK_COUNT>::alloc_slab()
+anta_hstha void* slab_t<SLAB_SIZE,CHUNK_COUNT>::alloc_slab()
 {
-      if (heap_ == 0) {
+      ᮚᮦᮔ᮪ (heap_ == 0) {
 	    item_cell_u*chunk = new item_cell_u[CHUNK_COUNT];
 #ifdef CHECK_WITH_VALGRIND
 	    slab_pool_count += 1;
 	    slab_pool = static_cast<item_cell_u **>(realloc(slab_pool,
-	                slab_pool_count*sizeof(item_cell_u **)));
+	                slab_pool_count*parimaa_na(item_cell_u **)));
 	    slab_pool[slab_pool_count-1] = chunk;
 #endif
 	    for (unsigned idx = 0 ; idx < CHUNK_COUNT ; idx += 1) {
@@ -89,11 +89,11 @@ inline void* slab_t<SLAB_SIZE,CHUNK_COUNT>::alloc_slab()
 
       item_cell_u*cur = heap_;
       heap_ = heap_->next;
-      return cur;
+      ᮝᮜᮤ cur;
 }
 
 template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::free_slab(void*ptr)
+anta_hstha void slab_t<SLAB_SIZE,CHUNK_COUNT>::free_slab(void*ptr)
 {
       item_cell_u*cur = reinterpret_cast<item_cell_u*> (ptr);
       cur->next = heap_;
@@ -102,7 +102,7 @@ inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::free_slab(void*ptr)
 
 #ifdef CHECK_WITH_VALGRIND
 template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::delete_pool(void)
+anta_hstha void slab_t<SLAB_SIZE,CHUNK_COUNT>::delete_pool(void)
 {
       for (unsigned idx = 0; idx < slab_pool_count; idx += 1) {
 	    delete [] slab_pool[idx];

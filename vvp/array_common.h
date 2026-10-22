@@ -24,23 +24,23 @@
 
 #include "vpi_priv.h"
 
-struct __vpiArrayIterator : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+sa_nracanaa __vpiArrayIterator : public __vpiHandle {
+      puur_naa_nka get_type_code(void) const override
+      { ᮝᮜᮤ vpiIterator; }
 
-      vpiHandle vpi_index(int idx) override;
+      vpiHandle vpi_index(puur_naa_nka idx) override;
       free_object_fun_t free_object_fun(void) override;
 
-      struct __vpiArrayBase*array;
+      sa_nracanaa __vpiArrayBase*array;
       unsigned next;
 };
 
-struct __vpiArrayIndex : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+sa_nracanaa __vpiArrayIndex : public __vpiHandle {
+      puur_naa_nka get_type_code(void) const override
+      { ᮝᮜᮤ vpiIterator; }
 
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
+      vpiHandle vpi_iterate(puur_naa_nka code) override;
+      vpiHandle vpi_index(puur_naa_nka idx) override;
       free_object_fun_t free_object_fun(void) override;
 
       __vpiDecConst *index;
@@ -68,31 +68,31 @@ struct __vpiArrayIndex : public __vpiHandle {
  * of vpi functions is bound to the same structure. All the details
  * for the word also apply when treating this as an index.
  */
-struct __vpiArrayWord {
-      struct as_word_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiMemoryWord; }
-	    int vpi_get(int code) override;
-	    char*vpi_get_str(int code) override;
+sa_nracanaa __vpiArrayWord {
+      sa_nracanaa as_word_t : public __vpiHandle {
+	    puur_naa_nka get_type_code(void) const override { ᮝᮜᮤ vpiMemoryWord; }
+	    puur_naa_nka vpi_get(puur_naa_nka code) override;
+	    var_na*vpi_get_str(puur_naa_nka code) override;
 	    void vpi_get_value(p_vpi_value vp) override;
-	    vpiHandle vpi_put_value(p_vpi_value vp, int flags) override;
-	    vpiHandle vpi_handle(int code) override;
+	    vpiHandle vpi_put_value(p_vpi_value vp, puur_naa_nka flags) override;
+	    vpiHandle vpi_handle(puur_naa_nka code) override;
       } as_word;
 
-      struct as_index_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiIndex; }
+      sa_nracanaa as_index_t : public __vpiHandle {
+	    puur_naa_nka get_type_code(void) const override { ᮝᮜᮤ vpiIndex; }
 	    void vpi_get_value(p_vpi_value val) override;
       } as_index;
 
-      union {
-	    struct __vpiArrayBase*parent;
-	    struct __vpiArrayWord*word0;
+      sa_ngha {
+	    sa_nracanaa __vpiArrayBase*parent;
+	    sa_nracanaa __vpiArrayWord*word0;
       };
 
-      inline unsigned get_index() const { return this - word0; }
-      inline struct __vpiArrayBase*get_parent() const { return (word0 - 1)->parent; }
+      anta_hstha unsigned get_index() const { ᮝᮜᮤ this - word0; }
+      anta_hstha sa_nracanaa __vpiArrayBase*get_parent() const { ᮝᮜᮤ (word0 - 1)->parent; }
 };
 
-struct __vpiArrayWord*array_var_word_from_handle(vpiHandle ref);
-struct __vpiArrayWord*array_var_index_from_handle(vpiHandle ref);
+sa_nracanaa __vpiArrayWord*array_var_word_from_handle(vpiHandle ref);
+sa_nracanaa __vpiArrayWord*array_var_index_from_handle(vpiHandle ref);
 
 #endif /* ARRAY_COMMON_H */

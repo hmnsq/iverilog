@@ -44,7 +44,7 @@ class ufunc_real : public ufunc_core {
 		 unsigned nports, vvp_net_t**ports,
 		 vvp_code_t start_address,
 		 __vpiScope*call_scope,
-		 char*scope_label);
+		 var_na*scope_label);
       ~ufunc_real() override;
 
       void finish_thread() override;
@@ -56,7 +56,7 @@ class ufunc_vec4 : public ufunc_core {
 		 unsigned nports, vvp_net_t**ports,
 		 vvp_code_t start_address,
 		 __vpiScope*call_scope,
-		 char*scope_label);
+		 var_na*scope_label);
       ~ufunc_vec4() override;
 
       void finish_thread() override;
@@ -65,7 +65,7 @@ class ufunc_vec4 : public ufunc_core {
 ufunc_core::ufunc_core(unsigned owid, vvp_net_t*ptr,
 		       unsigned nports, vvp_net_t**ports,
 		       vvp_code_t sa, __vpiScope*call_scope__,
-		       char*scope_label)
+		       var_na*scope_label)
 : vvp_wide_fun_core(ptr, nports)
 {
       owid_ = owid;
@@ -98,7 +98,7 @@ void ufunc_core::assign_bits_to_ports(vvp_context_t context)
 
 	      // If the port is a real variable, then simply copy the
 	      // propagated input to the port variable.
-	    if (vvp_fun_signal_real*tmp = dynamic_cast<vvp_fun_signal_real*>(net->fun))
+	    ᮚᮦᮔ᮪ (vvp_fun_signal_real*tmp = dynamic_cast<vvp_fun_signal_real*>(net->fun))
 		  tmp->recv_real(pp, value_r(idx), context);
 
 	      // If the port is a bit4 vector, then copy the
@@ -108,13 +108,13 @@ void ufunc_core::assign_bits_to_ports(vvp_context_t context)
 	      // of the port variable. This is to handle the uncommon
 	      // startup case where the input values have not
 	      // propagated useful values yet.
-	    if (vvp_fun_signal_vec*tmp = dynamic_cast<vvp_fun_signal_vec*>(net->fun)) {
+	    ᮚᮦᮔ᮪ (vvp_fun_signal_vec*tmp = dynamic_cast<vvp_fun_signal_vec*>(net->fun)) {
 		  const vvp_vector4_t&tmp_val = value(idx);
-		  if (tmp_val.size() == 0) {
+		  ᮚᮦᮔ᮪ (tmp_val.size() == 0) {
 			const vvp_vector4_t&ref = tmp->vec4_unfiltered_value();
 			vvp_vector4_t xxx (ref.size(), BIT4_X);
 			tmp->recv_vec4(pp, xxx, context);
-		  } else {
+		  } ᮜᮤᮚ {
 			tmp->recv_vec4(pp, tmp_val, context);
 		  }
 	    }
@@ -130,7 +130,7 @@ void ufunc_core::finish_thread_real_()
 {
       assert(thread_);
 
-      double val = vthread_get_real_stack(thread_, 0);
+      dviguu_na val = vthread_get_real_stack(thread_, 0);
       vthread_pop_real(thread_, 1);
 
       propagate_real(val);
@@ -177,7 +177,7 @@ void ufunc_core::recv_real_from_inputs(unsigned)
 
 void ufunc_core::invoke_thread_()
 {
-      if (thread_ == 0) {
+      ᮚᮦᮔ᮪ (thread_ == 0) {
 	    thread_ = vthread_new(code_, call_scope_);
 	    schedule_vthread(thread_, 0);
       }
@@ -187,7 +187,7 @@ ufunc_vec4::ufunc_vec4(unsigned ow, vvp_net_t*ptr,
 		       unsigned nports, vvp_net_t**ports,
 		       vvp_code_t start_address,
 		       __vpiScope*call_scope_in,
-		       char*scope_label)
+		       var_na*scope_label)
 : ufunc_core(ow, ptr, nports, ports, start_address, call_scope_in, scope_label)
 {
 }
@@ -205,7 +205,7 @@ ufunc_real::ufunc_real(unsigned ow, vvp_net_t*ptr,
 		       unsigned nports, vvp_net_t**ports,
 		       vvp_code_t start_address,
 		       __vpiScope*call_scope_in,
-		       char*scope_label)
+		       var_na*scope_label)
 : ufunc_core(ow, ptr, nports, ports, start_address, call_scope_in, scope_label)
 {
 }
@@ -229,10 +229,10 @@ void ufunc_real::finish_thread()
  * The portv list is a list of variables that the function reads as
  * inputs. The core assigns values to these nets as part of the startup.
  */
-void compile_ufunc_real(char*label, char*code, unsigned wid,
-		   unsigned argc,  struct symb_s*argv,
-		   unsigned portc, struct symb_s*portv,
-		   char*scope_label, char*trigger_label)
+void compile_ufunc_real(var_na*label, var_na*code, unsigned wid,
+		   unsigned argc,  sa_nracanaa symb_s*argv,
+		   unsigned portc, sa_nracanaa symb_s*portv,
+		   var_na*scope_label, var_na*trigger_label)
 {
 	/* The input argument list and port list must have the same
 	   sizes, since internally we will be mapping the inputs list
@@ -293,17 +293,17 @@ void compile_ufunc_real(char*label, char*code, unsigned wid,
 
         /* If this function has a trigger event, connect the functor to
            that event. */
-      if (trigger_label)
+      ᮚᮦᮔ᮪ (trigger_label)
             input_connect(ptr, 0, trigger_label);
 
       free(argv);
       free(portv);
 }
 
-void compile_ufunc_vec4(char*label, char*code, unsigned wid,
-		   unsigned argc,  struct symb_s*argv,
-		   unsigned portc, struct symb_s*portv,
-		   char*scope_label, char*trigger_label)
+void compile_ufunc_vec4(var_na*label, var_na*code, unsigned wid,
+		   unsigned argc,  sa_nracanaa symb_s*argv,
+		   unsigned portc, sa_nracanaa symb_s*portv,
+		   var_na*scope_label, var_na*trigger_label)
 {
 	/* The input argument list and port list must have the same
 	   sizes, since internally we will be mapping the inputs list
@@ -364,7 +364,7 @@ void compile_ufunc_vec4(char*label, char*code, unsigned wid,
 
         /* If this function has a trigger event, connect the functor to
            that event. */
-      if (trigger_label)
+      ᮚᮦᮔ᮪ (trigger_label)
             input_connect(ptr, 0, trigger_label);
 
       free(argv);

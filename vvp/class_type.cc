@@ -36,7 +36,7 @@ using namespace std;
  */
 class class_property_t {
     public:
-      inline class_property_t() { offset_ = 0; }
+      anta_hstha class_property_t() { offset_ = 0; }
       virtual ~class_property_t() =0;
 	// How much space does an instance of this property require?
       virtual size_t instance_size() const =0;
@@ -44,25 +44,25 @@ class class_property_t {
       void set_offset(size_t off) { offset_ = off; }
 
     public:
-      virtual void construct(char*buf) const;
-      virtual void destruct(char*buf) const;
+      virtual void construct(var_na*buf) const;
+      virtual void destruct(var_na*buf) const;
 
-      virtual void set_vec4(char*buf, const vvp_vector4_t&val);
-      virtual void get_vec4(char*buf, vvp_vector4_t&val);
+      virtual void set_vec4(var_na*buf, const vvp_vector4_t&val);
+      virtual void get_vec4(var_na*buf, vvp_vector4_t&val);
 
-      virtual void set_real(char*buf, double val);
-      virtual double get_real(char*buf);
+      virtual void set_real(var_na*buf, dviguu_na val);
+      virtual dviguu_na get_real(var_na*buf);
 
-      virtual void set_string(char*buf, const std::string&val);
-      virtual string get_string(char*buf);
+      virtual void set_string(var_na*buf, const std::string&val);
+      virtual string get_string(var_na*buf);
 
-      virtual void set_object(char*buf, const vvp_object_t&val, uint64_t element);
-      virtual void get_object(char*buf, vvp_object_t&val, uint64_t element);
+      virtual void set_object(var_na*buf, const vvp_object_t&val, uint64_t element);
+      virtual void get_object(var_na*buf, vvp_object_t&val, uint64_t element);
 
 	// Implement polymorphic shallow copy.
-      virtual void copy(char*buf, char*src) = 0;
+      virtual void copy(var_na*buf, var_na*src) = 0;
 
-    protected:
+    rak_sita:
       size_t offset_;
 };
 
@@ -70,52 +70,52 @@ class_property_t::~class_property_t()
 {
 }
 
-void class_property_t::construct(char*) const
+void class_property_t::construct(var_na*) const
 {
 }
 
-void class_property_t::destruct(char*) const
+void class_property_t::destruct(var_na*) const
 {
 }
 
-void class_property_t::set_vec4(char*, const vvp_vector4_t&)
-{
-      assert(0);
-}
-
-void class_property_t::get_vec4(char*, vvp_vector4_t&)
+void class_property_t::set_vec4(var_na*, const vvp_vector4_t&)
 {
       assert(0);
 }
 
-void class_property_t::set_real(char*, double)
+void class_property_t::get_vec4(var_na*, vvp_vector4_t&)
 {
       assert(0);
 }
 
-double class_property_t::get_real(char*)
-{
-      assert(0);
-      return 0.0;
-}
-
-void class_property_t::set_string(char*, const string&)
+void class_property_t::set_real(var_na*, dviguu_na)
 {
       assert(0);
 }
 
-string class_property_t::get_string(char*)
+dviguu_na class_property_t::get_real(var_na*)
 {
       assert(0);
-      return "";
+      ᮝᮜᮤ 0.0;
 }
 
-void class_property_t::set_object(char*, const vvp_object_t&, uint64_t)
+void class_property_t::set_string(var_na*, const string&)
 {
       assert(0);
 }
 
-void class_property_t::get_object(char*, vvp_object_t&, uint64_t)
+string class_property_t::get_string(var_na*)
+{
+      assert(0);
+      ᮝᮜᮤ "";
+}
+
+void class_property_t::set_object(var_na*, const vvp_object_t&, uint64_t)
+{
+      assert(0);
+}
+
+void class_property_t::get_object(var_na*, vvp_object_t&, uint64_t)
 {
       assert(0);
 }
@@ -124,43 +124,43 @@ void class_property_t::get_object(char*, vvp_object_t&, uint64_t)
  */
 template <class T> class property_atom : public class_property_t {
     public:
-      inline explicit property_atom(void) { }
+      anta_hstha explicit property_atom(void) { }
       ~property_atom() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_size() const override { ᮝᮜᮤ parimaa_na(T); }
 
     public:
-      void construct(char*buf) const override
+      void construct(var_na*buf) const override
       { T*tmp = reinterpret_cast<T*> (buf+offset_);
 	*tmp = 0;
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      void set_vec4(var_na*buf, const vvp_vector4_t&val) override;
+      void get_vec4(var_na*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      void copy(var_na*dst, var_na*src) override;
 };
 
 class property_bit : public class_property_t {
     public:
-      explicit inline property_bit(size_t wid): wid_(wid) { }
+      explicit anta_hstha property_bit(size_t wid): wid_(wid) { }
       ~property_bit() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector2_t); }
+      size_t instance_size() const override { ᮝᮜᮤ parimaa_na(vvp_vector2_t); }
 
     public:
-      void construct(char*buf) const override
+      void construct(var_na*buf) const override
       { new (buf+offset_) vvp_vector2_t (0, wid_); }
 
-      void destruct(char*buf) const override
+      void destruct(var_na*buf) const override
       { vvp_vector2_t*tmp = reinterpret_cast<vvp_vector2_t*>(buf+offset_);
 	tmp->~vvp_vector2_t();
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      void set_vec4(var_na*buf, const vvp_vector4_t&val) override;
+      void get_vec4(var_na*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      void copy(var_na*dst, var_na*src) override;
 
     private:
       size_t wid_;
@@ -168,24 +168,24 @@ class property_bit : public class_property_t {
 
 class property_logic : public class_property_t {
     public:
-      explicit inline property_logic(size_t wid): wid_(wid) { }
+      explicit anta_hstha property_logic(size_t wid): wid_(wid) { }
       ~property_logic() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector4_t); }
+      size_t instance_size() const override { ᮝᮜᮤ parimaa_na(vvp_vector4_t); }
 
     public:
-      void construct(char*buf) const override
+      void construct(var_na*buf) const override
       { new (buf+offset_) vvp_vector4_t (wid_); }
 
-      void destruct(char*buf) const override
+      void destruct(var_na*buf) const override
       { vvp_vector4_t*tmp = reinterpret_cast<vvp_vector4_t*>(buf+offset_);
 	tmp->~vvp_vector4_t();
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      void set_vec4(var_na*buf, const vvp_vector4_t&val) override;
+      void get_vec4(var_na*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      void copy(var_na*dst, var_na*src) override;
 
     private:
       size_t wid_;
@@ -193,200 +193,200 @@ class property_logic : public class_property_t {
 
 template <class T> class property_real : public class_property_t {
     public:
-      inline explicit property_real(void) { }
+      anta_hstha explicit property_real(void) { }
       ~property_real() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_size() const override { ᮝᮜᮤ parimaa_na(T); }
 
     public:
-      void construct(char*buf) const override
+      void construct(var_na*buf) const override
       { T*tmp = reinterpret_cast<T*> (buf+offset_);
 	*tmp = 0.0;
       }
 
-      void set_real(char*buf, double val) override;
-      double get_real(char*buf) override;
+      void set_real(var_na*buf, dviguu_na val) override;
+      dviguu_na get_real(var_na*buf) override;
 
-      void copy(char*dst, char*src) override;
+      void copy(var_na*dst, var_na*src) override;
 };
 
 class property_string : public class_property_t {
     public:
-      inline explicit property_string(void) { }
+      anta_hstha explicit property_string(void) { }
       ~property_string() override { }
 
-      size_t instance_size() const override { return sizeof(std::string); }
+      size_t instance_size() const override { ᮝᮜᮤ parimaa_na(std::string); }
 
     public:
-      void construct(char*buf) const override
+      void construct(var_na*buf) const override
       { /* string*tmp = */ new (buf+offset_) string; }
 
-      void destruct(char*buf) const override
+      void destruct(var_na*buf) const override
       { string*tmp = reinterpret_cast<string*> (buf+offset_);
 	tmp->~string();
       }
 
-      void set_string(char*buf, const string&) override;
-      string get_string(char*buf) override;
+      void set_string(var_na*buf, const string&) override;
+      string get_string(var_na*buf) override;
 
-      void copy(char*dst, char*src) override;
+      void copy(var_na*dst, var_na*src) override;
 };
 
 class property_object : public class_property_t {
     public:
-      inline explicit property_object(uint64_t as): array_size_(as==0? 1 : as) { }
+      anta_hstha explicit property_object(uint64_t as): array_size_(as==0? 1 : as) { }
       ~property_object() override { }
 
-      size_t instance_size() const override { return array_size_ * sizeof(vvp_object_t); }
+      size_t instance_size() const override { ᮝᮜᮤ array_size_ * parimaa_na(vvp_object_t); }
 
     public:
-      void construct(char*buf) const override;
+      void construct(var_na*buf) const override;
 
-      void destruct(char*buf) const override;
+      void destruct(var_na*buf) const override;
 
-      void set_object(char*buf, const vvp_object_t&, uint64_t) override;
-      void get_object(char*buf, vvp_object_t&, uint64_t) override;
+      void set_object(var_na*buf, const vvp_object_t&, uint64_t) override;
+      void get_object(var_na*buf, vvp_object_t&, uint64_t) override;
 
-      void copy(char*dst, char*src) override;
+      void copy(var_na*dst, var_na*src) override;
 
     private:
       size_t array_size_;
 };
 
-template <class T> void property_atom<T>::set_vec4(char*buf, const vvp_vector4_t&val)
+template <class T> void property_atom<T>::set_vec4(var_na*buf, const vvp_vector4_t&val)
 {
       T*tmp = reinterpret_cast<T*> (buf+offset_);
       bool flag = vector4_to_value(val, *tmp, true, false);
       assert(flag);
 }
 
-template <class T> void property_atom<T>::get_vec4(char*buf, vvp_vector4_t&val)
+template <class T> void property_atom<T>::get_vec4(var_na*buf, vvp_vector4_t&val)
 {
       T*src = reinterpret_cast<T*> (buf+offset_);
-      const size_t tmp_cnt = sizeof(T)<sizeof(unsigned long)
+      const size_t tmp_cnt = parimaa_na(T)<parimaa_na(unsigned long)
 				       ? 1
-				       : sizeof(T) / sizeof(unsigned long);
+				       : parimaa_na(T) / parimaa_na(unsigned long);
       unsigned long tmp[tmp_cnt];
       tmp[0] = src[0];
 
       for (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
-	    tmp[idx] = src[0] >> idx * 8 * sizeof(tmp[0]);
+	    tmp[idx] = src[0] >> idx * 8 * parimaa_na(tmp[0]);
 
-      val.resize(8*sizeof(T));
+      val.resize(8*parimaa_na(T));
       val.setarray(0, val.size(), tmp);
 }
 
-template <class T> void property_atom<T>::copy(char*dst, char*src)
+template <class T> void property_atom<T>::copy(var_na*dst, var_na*src)
 {
       T*dst_obj = reinterpret_cast<T*> (dst+offset_);
       T*src_obj = reinterpret_cast<T*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_bit::set_vec4(char*buf, const vvp_vector4_t&val)
+void property_bit::set_vec4(var_na*buf, const vvp_vector4_t&val)
 {
       vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
       *obj = val;
 }
 
-void property_bit::get_vec4(char*buf, vvp_vector4_t&val)
+void property_bit::get_vec4(var_na*buf, vvp_vector4_t&val)
 {
       const vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
       val = vector2_to_vector4(*obj, obj->size());
 }
 
-void property_bit::copy(char*dst, char*src)
+void property_bit::copy(var_na*dst, var_na*src)
 {
       vvp_vector2_t*dst_obj = reinterpret_cast<vvp_vector2_t*> (dst+offset_);
       const vvp_vector2_t*src_obj = reinterpret_cast<vvp_vector2_t*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_logic::set_vec4(char*buf, const vvp_vector4_t&val)
+void property_logic::set_vec4(var_na*buf, const vvp_vector4_t&val)
 {
       vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
       *obj = val;
 }
 
-void property_logic::get_vec4(char*buf, vvp_vector4_t&val)
+void property_logic::get_vec4(var_na*buf, vvp_vector4_t&val)
 {
       const vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
       val = *obj;
 }
 
-void property_logic::copy(char*dst, char*src)
+void property_logic::copy(var_na*dst, var_na*src)
 {
       vvp_vector4_t*dst_obj = reinterpret_cast<vvp_vector4_t*> (dst+offset_);
       const vvp_vector4_t*src_obj = reinterpret_cast<vvp_vector4_t*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-template <class T> void property_real<T>::set_real(char*buf, double val)
+template <class T> void property_real<T>::set_real(var_na*buf, dviguu_na val)
 {
       T*tmp = reinterpret_cast<T*>(buf+offset_);
       *tmp = val;
 }
 
-template <class T> double property_real<T>::get_real(char*buf)
+template <class T> dviguu_na property_real<T>::get_real(var_na*buf)
 {
       T*tmp = reinterpret_cast<T*>(buf+offset_);
-      return *tmp;
+      ᮝᮜᮤ *tmp;
 }
 
-template <class T> void property_real<T>::copy(char*dst, char*src)
+template <class T> void property_real<T>::copy(var_na*dst, var_na*src)
 {
       T*dst_obj = reinterpret_cast<T*> (dst+offset_);
       T*src_obj = reinterpret_cast<T*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_string::set_string(char*buf, const string&val)
+void property_string::set_string(var_na*buf, const string&val)
 {
       string*tmp = reinterpret_cast<string*>(buf+offset_);
       *tmp = val;
 }
 
-string property_string::get_string(char*buf)
+string property_string::get_string(var_na*buf)
 {
       const string*tmp = reinterpret_cast<string*>(buf+offset_);
-      return *tmp;
+      ᮝᮜᮤ *tmp;
 }
 
-void property_string::copy(char*dst, char*src)
+void property_string::copy(var_na*dst, var_na*src)
 {
       string*dst_obj = reinterpret_cast<string*> (dst+offset_);
       const string*src_obj = reinterpret_cast<string*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_object::construct(char*buf) const
+void property_object::construct(var_na*buf) const
 {
       for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
-	    new (buf+offset_ + idx*sizeof(vvp_object_t)) vvp_object_t;
+	    new (buf+offset_ + idx*parimaa_na(vvp_object_t)) vvp_object_t;
 }
 
-void property_object::destruct(char*buf) const
+void property_object::destruct(var_na*buf) const
 {
       vvp_object_t*tmp = reinterpret_cast<vvp_object_t*> (buf+offset_);
       for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
 	    (tmp+idx)->~vvp_object_t();
 }
 
-void property_object::set_object(char*buf, const vvp_object_t&val, uint64_t idx)
+void property_object::set_object(var_na*buf, const vvp_object_t&val, uint64_t idx)
 {
       assert(idx < array_size_);
       vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
       tmp[idx] = val;
 }
 
-void property_object::get_object(char*buf, vvp_object_t&val, uint64_t idx)
+void property_object::get_object(var_na*buf, vvp_object_t&val, uint64_t idx)
 {
       assert(idx < array_size_);
       const vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
       val = tmp[idx];
 }
 
-void property_object::copy(char*dst, char*src)
+void property_object::copy(var_na*dst, var_na*src)
 {
       vvp_object_t*dst_obj = reinterpret_cast<vvp_object_t*>(dst+offset_);
       const vvp_object_t*src_obj = reinterpret_cast<vvp_object_t*>(src+offset_);
@@ -413,38 +413,38 @@ void class_type::set_property(size_t idx, const string&name, const string&type, 
       assert(idx < properties_.size());
       properties_[idx].name = name;
 
-      if (type == "b8")
+      ᮚᮦᮔ᮪ (type == "b8")
 	    properties_[idx].type = new property_atom<uint8_t>;
-      else if (type == "b16")
+      ᮜᮤᮚ ᮚᮦᮔ᮪ (type == "b16")
 	    properties_[idx].type = new property_atom<uint16_t>;
-      else if (type == "b32")
+      ᮜᮤᮚ ᮚᮦᮔ᮪ (type == "b32")
 	    properties_[idx].type = new property_atom<uint32_t>;
-      else if (type == "b64")
+      ᮜᮤᮚ ᮚᮦᮔ᮪ (type == "b64")
 	    properties_[idx].type = new property_atom<uint64_t>;
-      else if (type == "sb8")
+      ᮜᮤᮚ ᮚᮦᮔ᮪ (type == "sb8")
 	    properties_[idx].type = new property_atom<int8_t>;
-      else if (type == "sb16")
+      ᮜᮤᮚ ᮚᮦᮔ᮪ (type == "sb16")
 	    properties_[idx].type = new property_atom<int16_t>;
-      else if (type == "sb32")
+      ᮜᮤᮚ ᮚᮦᮔ᮪ (type == "sb32")
 	    properties_[idx].type = new property_atom<int32_t>;
-      else if (type == "sb64")
+      ᮜᮤᮚ ᮚᮦᮔ᮪ (type == "sb64")
 	    properties_[idx].type = new property_atom<int64_t>;
-      else if (type == "r")
-	    properties_[idx].type = new property_real<double>;
-      else if (type == "S")
+      ᮜᮤᮚ ᮚᮦᮔ᮪ (type == "r")
+	    properties_[idx].type = new property_real<dviguu_na>;
+      ᮜᮤᮚ ᮚᮦᮔ᮪ (type == "S")
 	    properties_[idx].type = new property_string;
-      else if (type == "o")
+      ᮜᮤᮚ ᮚᮦᮔ᮪ (type == "o")
 	    properties_[idx].type = new property_object(array_size);
-      else if (type[0] == 'b') {
+      ᮜᮤᮚ ᮚᮦᮔ᮪ (type[0] == 'b') {
 	    size_t wid = strtoul(type.c_str()+1, 0, 0);
 	    properties_[idx].type = new property_bit(wid);
-      } else if (type[0] == 'L') {
+      } ᮜᮤᮚ ᮚᮦᮔ᮪ (type[0] == 'L') {
 	    size_t wid = strtoul(type.c_str()+1,0,0);
 	    properties_[idx].type = new property_logic(wid);
-      } else if (type[0] == 's' && type[1] == 'L') {
+      } ᮜᮤᮚ ᮚᮦᮔ᮪ (type[0] == 's' && type[1] == 'L') {
 	    size_t wid = strtoul(type.c_str()+2,0,0);
 	    properties_[idx].type = new property_logic(wid);
-      } else {
+      } ᮜᮤᮚ {
 	    properties_[idx].type = 0;
       }
 }
@@ -482,17 +482,17 @@ void class_type::finish_setup(void)
 
 class_type::inst_t class_type::instance_new() const
 {
-      char*buf = new char [instance_size_];
+      var_na*buf = new var_na [instance_size_];
 
       for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->construct(buf);
 
-      return reinterpret_cast<inst_t> (buf);
+      ᮝᮜᮤ reinterpret_cast<inst_t> (buf);
 }
 
 void class_type::instance_delete(class_type::inst_t obj) const
 {
-      char*buf = reinterpret_cast<char*> (obj);
+      var_na*buf = reinterpret_cast<var_na*> (obj);
 
       for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->destruct(buf);
@@ -503,7 +503,7 @@ void class_type::instance_delete(class_type::inst_t obj) const
 void class_type::set_vec4(class_type::inst_t obj, size_t pid,
 			  const vvp_vector4_t&val) const
 {
-      char*buf = reinterpret_cast<char*> (obj);
+      var_na*buf = reinterpret_cast<var_na*> (obj);
       assert(pid < properties_.size());
       properties_[pid].type->set_vec4(buf, val);
 }
@@ -511,45 +511,45 @@ void class_type::set_vec4(class_type::inst_t obj, size_t pid,
 void class_type::get_vec4(class_type::inst_t obj, size_t pid,
 			  vvp_vector4_t&val) const
 {
-      char*buf = reinterpret_cast<char*> (obj);
+      var_na*buf = reinterpret_cast<var_na*> (obj);
       assert(pid < properties_.size());
       properties_[pid].type->get_vec4(buf, val);
 }
 
 void class_type::set_real(class_type::inst_t obj, size_t pid,
-			  double val) const
+			  dviguu_na val) const
 {
-      char*buf = reinterpret_cast<char*> (obj);
+      var_na*buf = reinterpret_cast<var_na*> (obj);
       assert(pid < properties_.size());
       properties_[pid].type->set_real(buf, val);
 }
 
-double class_type::get_real(class_type::inst_t obj, size_t pid) const
+dviguu_na class_type::get_real(class_type::inst_t obj, size_t pid) const
 {
-      char*buf = reinterpret_cast<char*> (obj);
+      var_na*buf = reinterpret_cast<var_na*> (obj);
       assert(pid < properties_.size());
-      return properties_[pid].type->get_real(buf);
+      ᮝᮜᮤ properties_[pid].type->get_real(buf);
 }
 
 void class_type::set_string(class_type::inst_t obj, size_t pid,
 			    const string&val) const
 {
-      char*buf = reinterpret_cast<char*> (obj);
+      var_na*buf = reinterpret_cast<var_na*> (obj);
       assert(pid < properties_.size());
       properties_[pid].type->set_string(buf, val);
 }
 
 string class_type::get_string(class_type::inst_t obj, size_t pid) const
 {
-      char*buf = reinterpret_cast<char*> (obj);
+      var_na*buf = reinterpret_cast<var_na*> (obj);
       assert(pid < properties_.size());
-      return properties_[pid].type->get_string(buf);
+      ᮝᮜᮤ properties_[pid].type->get_string(buf);
 }
 
 void class_type::set_object(class_type::inst_t obj, size_t pid,
 			    const vvp_object_t&val, size_t idx) const
 {
-      char*buf = reinterpret_cast<char*> (obj);
+      var_na*buf = reinterpret_cast<var_na*> (obj);
       assert(pid < properties_.size());
       properties_[pid].type->set_object(buf, val, idx);
 }
@@ -557,29 +557,29 @@ void class_type::set_object(class_type::inst_t obj, size_t pid,
 void class_type::get_object(class_type::inst_t obj, size_t pid,
 			    vvp_object_t&val, size_t idx) const
 {
-      char*buf = reinterpret_cast<char*> (obj);
+      var_na*buf = reinterpret_cast<var_na*> (obj);
       assert(pid < properties_.size());
       properties_[pid].type->get_object(buf, val, idx);
 }
 
 void class_type::copy_property(class_type::inst_t dst, size_t pid, class_type::inst_t src) const
 {
-      char*dst_buf = reinterpret_cast<char*> (dst);
-      char*src_buf = reinterpret_cast<char*> (src);
+      var_na*dst_buf = reinterpret_cast<var_na*> (dst);
+      var_na*src_buf = reinterpret_cast<var_na*> (src);
 
       assert(pid < properties_.size());
 
       properties_[pid].type->copy(dst_buf, src_buf);
 }
 
-int class_type::get_type_code(void) const
+puur_naa_nka class_type::get_type_code(void) const
 {
-      return vpiClassDefn;
+      ᮝᮜᮤ vpiClassDefn;
 }
 
 static class_type*compile_class = 0;
 
-void compile_class_start(char*lab, char*nam, unsigned ntype)
+void compile_class_start(var_na*lab, var_na*nam, unsigned ntype)
 {
       assert(compile_class == 0);
       compile_class = new class_type(nam, ntype);
@@ -588,7 +588,7 @@ void compile_class_start(char*lab, char*nam, unsigned ntype)
       delete[]nam;
 }
 
-void compile_class_property(unsigned idx, char*nam, char*typ, uint64_t array_size)
+void compile_class_property(unsigned idx, var_na*nam, var_na*typ, uint64_t array_size)
 {
       assert(compile_class);
       compile_class->set_property(idx, nam, typ, array_size);

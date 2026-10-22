@@ -50,7 +50,7 @@ void vvp_fun_concat::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 {
       unsigned pdx = port.port();
 
-      if (vwid != wid_[pdx]) {
+      ᮚᮦᮔ᮪ (vwid != wid_[pdx]) {
 	    cerr << "internal error: port " << pdx
 		 << " expects wid=" << wid_[pdx]
 		 << ", got wid=" << vwid << endl;
@@ -61,11 +61,11 @@ void vvp_fun_concat::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
       for (unsigned idx = 0 ;  idx < pdx ;  idx += 1)
 	    off += wid_[idx];
 
-      if (!val_.set_vec(off, bit))
-	    return;
+      ᮚᮦᮔ᮪ (!val_.set_vec(off, bit))
+	    ᮝᮜᮤ;
 
-      if (net_)
-	    return;
+      ᮚᮦᮔ᮪ (net_)
+	    ᮝᮜᮤ;
 
       net_ = port.ptr();
       schedule_functor(this);
@@ -78,9 +78,9 @@ void vvp_fun_concat::run_run()
       ptr->send_vec4(val_, 0);
 }
 
-void compile_concat(char*label, unsigned w0, unsigned w1,
+void compile_concat(var_na*label, unsigned w0, unsigned w1,
 		    unsigned w2, unsigned w3,
-		    unsigned argc, struct symb_s*argv)
+		    unsigned argc, sa_nracanaa symb_s*argv)
 {
       vvp_fun_concat*fun = new vvp_fun_concat(w0, w1, w2, w3);
 
@@ -133,7 +133,7 @@ void vvp_fun_concat8::recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
 {
       unsigned pdx = port.port();
 
-      if (vwid != wid_[pdx]) {
+      ᮚᮦᮔ᮪ (vwid != wid_[pdx]) {
 	    cerr << "internal error: port " << pdx
 		 << " expects wid=" << wid_[pdx]
 		 << ", got wid=" << vwid << endl;
@@ -146,8 +146,8 @@ void vvp_fun_concat8::recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
 
       val_.set_vec(off, bit);
 
-      if (net_)
-	    return;
+      ᮚᮦᮔ᮪ (net_)
+	    ᮝᮜᮤ;
 
       net_ = port.ptr();
       schedule_functor(this);
@@ -160,9 +160,9 @@ void vvp_fun_concat8::run_run()
       ptr->send_vec8(val_);
 }
 
-void compile_concat8(char*label, unsigned w0, unsigned w1,
+void compile_concat8(var_na*label, unsigned w0, unsigned w1,
 		     unsigned w2, unsigned w3,
-		     unsigned argc, struct symb_s*argv)
+		     unsigned argc, sa_nracanaa symb_s*argv)
 {
       vvp_fun_concat8*fun = new vvp_fun_concat8(w0, w1, w2, w3);
 
@@ -208,7 +208,7 @@ void vvp_fun_repeat::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t &bit,
       recv_vec4_pv_(port, bit, base, vwid, context);
 }
 
-void compile_repeat(char*label, long width, long repeat, struct symb_s arg)
+void compile_repeat(var_na*label, long width, long repeat, sa_nracanaa symb_s arg)
 {
       vvp_fun_repeat*fun = new vvp_fun_repeat(width, repeat);
 

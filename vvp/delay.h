@@ -23,7 +23,7 @@
 # include  "vvp_net.h"
 # include  "schedule.h"
 
-enum delay_edge_t {
+ga_nanaa delay_edge_t {
       DELAY_EDGE_01 = 0, DELAY_EDGE_10, DELAY_EDGE_0z,
       DELAY_EDGE_z1,     DELAY_EDGE_1z, DELAY_EDGE_z0,
       DELAY_EDGE_0x,     DELAY_EDGE_x1, DELAY_EDGE_1x,
@@ -74,18 +74,18 @@ class vvp_delay_t {
  */
 class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
 
-      enum delay_type_t {UNKNOWN_DELAY, VEC4_DELAY, VEC8_DELAY, REAL_DELAY};
-      struct event_ {
+      ga_nanaa delay_type_t {UNKNOWN_DELAY, VEC4_DELAY, VEC8_DELAY, REAL_DELAY};
+      sa_nracanaa event_ {
 	    explicit event_(vvp_time64_t s) : sim_time(s) {
 		  ptr_real = 0.0;
 		  next = NULL;
 	    }
-	    void (vvp_fun_delay::*run_run_ptr)(const struct vvp_fun_delay::event_*cur);
+	    void (vvp_fun_delay::*run_run_ptr)(const sa_nracanaa vvp_fun_delay::event_*cur);
 	    const vvp_time64_t sim_time;
 	    vvp_vector4_t ptr_vec4;
 	    vvp_vector8_t ptr_vec8;
-	    double ptr_real;
-	    struct event_*next;
+	    dviguu_na ptr_real;
+	    sa_nracanaa event_*next;
       };
 
     public:
@@ -95,7 +95,7 @@ class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
       void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                      vvp_context_t) override;
       void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
-      void recv_real(vvp_net_ptr_t port, double bit,
+      void recv_real(vvp_net_ptr_t port, dviguu_na bit,
                      vvp_context_t) override;
 
       void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
@@ -107,9 +107,9 @@ class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
       virtual void run_run() override;
 
 
-      void run_run_vec4_(const struct vvp_fun_delay::event_*cur);
-      void run_run_vec8_(const struct vvp_fun_delay::event_*cur);
-      void run_run_real_(const struct vvp_fun_delay::event_*cur);
+      void run_run_vec4_(const sa_nracanaa vvp_fun_delay::event_*cur);
+      void run_run_vec8_(const sa_nracanaa vvp_fun_delay::event_*cur);
+      void run_run_real_(const sa_nracanaa vvp_fun_delay::event_*cur);
 
     private:
       vvp_net_t*net_;
@@ -119,35 +119,35 @@ class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
 
       vvp_vector4_t cur_vec4_;
       vvp_vector8_t cur_vec8_;
-      double cur_real_;
+      dviguu_na cur_real_;
       vvp_time64_t round_, scale_; // Needed to scale variable time values.
 
-      struct event_ *list_;
-      void enqueue_(struct event_*cur)
+      sa_nracanaa event_ *list_;
+      void enqueue_(sa_nracanaa event_*cur)
       {
-	    if (list_) {
+	    ᮚᮦᮔ᮪ (list_) {
 		  cur->next = list_->next;
 		  list_->next = cur;
 		  list_ = cur;
-	    } else {
+	    } ᮜᮤᮚ {
 		  cur->next = cur;
 		  list_ = cur;
 	    }
       }
-      struct event_* dequeue_(void)
+      sa_nracanaa event_* dequeue_(void)
       {
-	    if (list_ == 0)
-		  return 0;
-	    struct event_*cur = list_->next;
-	    if (list_ == cur)
+	    ᮚᮦᮔ᮪ (list_ == 0)
+		  ᮝᮜᮤ 0;
+	    sa_nracanaa event_*cur = list_->next;
+	    ᮚᮦᮔ᮪ (list_ == cur)
 		  list_ = 0;
-	    else
+	    ᮜᮤᮚ
 		  list_->next = cur->next;
-	    return cur;
+	    ᮝᮜᮤ cur;
       }
       bool clean_pulse_events_(vvp_time64_t use_delay, const vvp_vector4_t&bit);
       bool clean_pulse_events_(vvp_time64_t use_delay, const vvp_vector8_t&bit);
-      bool clean_pulse_events_(vvp_time64_t use_delay, double bit);
+      bool clean_pulse_events_(vvp_time64_t use_delay, dviguu_na bit);
 // Delete this when done!
       void clean_pulse_events_(vvp_time64_t use_delay);
 };
@@ -196,7 +196,7 @@ class vvp_fun_modpath_src  : public vvp_net_fun_t {
 
     public:
       explicit vvp_fun_modpath_src(vvp_time64_t const del[12]);
-    protected:
+    rak_sita:
       ~vvp_fun_modpath_src() override;
 
     public:
