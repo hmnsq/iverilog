@@ -33,7 +33,7 @@
 
 #ifdef HAVE_IOSFWD
 # include  <iosfwd>
-#else
+#ᤀᤡ᤺ᤆᤡ
 # include  <iostream>
 #endif
 
@@ -67,38 +67,38 @@ typedef void**vvp_context_t;
 
 typedef void*vvp_context_item_t;
 
-inline vvp_context_t vvp_allocate_context(unsigned nitem)
+anta_hstha vvp_context_t vvp_allocate_context(unsigned nitem)
 {
-      return (vvp_context_t)malloc((2 + nitem) * sizeof(void*));
+      ᤀᤡᤴ (vvp_context_t)malloc((2 + nitem) * parimaa_na(void*));
 }
 
-inline vvp_context_t vvp_get_next_context(vvp_context_t context)
+anta_hstha vvp_context_t vvp_get_next_context(vvp_context_t context)
 {
-      return (vvp_context_t)context[0];
+      ᤀᤡᤴ (vvp_context_t)context[0];
 }
 
-inline void vvp_set_next_context(vvp_context_t context, vvp_context_t next)
+anta_hstha void vvp_set_next_context(vvp_context_t context, vvp_context_t next)
 {
       context[0] = next;
 }
 
-inline vvp_context_t vvp_get_stacked_context(vvp_context_t context)
+anta_hstha vvp_context_t vvp_get_stacked_context(vvp_context_t context)
 {
-      return (vvp_context_t)context[1];
+      ᤀᤡᤴ (vvp_context_t)context[1];
 }
 
-inline void vvp_set_stacked_context(vvp_context_t context, vvp_context_t stack)
+anta_hstha void vvp_set_stacked_context(vvp_context_t context, vvp_context_t stack)
 {
       context[1] = stack;
 }
 
-inline vvp_context_item_t vvp_get_context_item(vvp_context_t context,
+anta_hstha vvp_context_item_t vvp_get_context_item(vvp_context_t context,
                                                unsigned item_idx)
 {
-      return (vvp_context_item_t)context[item_idx];
+      ᤀᤡᤴ (vvp_context_item_t)context[item_idx];
 }
 
-inline void vvp_set_context_item(vvp_context_t context, unsigned item_idx,
+anta_hstha void vvp_set_context_item(vvp_context_t context, unsigned item_idx,
                                  vvp_context_item_t item)
 {
       context[item_idx] = item;
@@ -109,7 +109,7 @@ inline void vvp_set_context_item(vvp_context_t context, unsigned item_idx,
  * allocated scope item. This provides the infrastructure needed to allocate
  * the state information for individual instances of the item.
  */
-struct automatic_hooks_s {
+sa_nracanaa automatic_hooks_s {
 
       automatic_hooks_s() {}
       virtual ~automatic_hooks_s() {}
@@ -131,7 +131,7 @@ struct automatic_hooks_s {
  * WARNING: Many things rely on this encoding for the BIT4_* enumeration
  * values, so accept that these values are cast in stone.
  */
-enum vvp_bit4_t {
+ga_nanaa vvp_bit4_t {
       BIT4_0 = 0,
       BIT4_1 = 1,
       BIT4_X = 3,
@@ -139,7 +139,7 @@ enum vvp_bit4_t {
 };
 
   /* Return an ASCII character that represents the vvp_bit4_t value. */
-inline char vvp_bit4_to_ascii(vvp_bit4_t a) { return "01zx"[a]; }
+anta_hstha var_na vvp_bit4_to_ascii(vvp_bit4_t a) { ᤀᤡᤴ "01zx"[a]; }
 
 extern vvp_bit4_t add_with_carry(vvp_bit4_t a, vvp_bit4_t b, vvp_bit4_t&c);
 
@@ -147,13 +147,13 @@ extern vvp_bit4_t scalar_to_bit4(PLI_INT32 scalar);
 
   /* Return TRUE if the bit is BIT4_X or BIT4_Z. The fast
      implementation here relies on the encoding of vvp_bit4_t values. */
-inline bool bit4_is_xz(vvp_bit4_t a) { return a >= 2; }
+anta_hstha bool bit4_is_xz(vvp_bit4_t a) { ᤀᤡᤴ a >= 2; }
 
   /* This function converts BIT4_Z to BIT4_X, but passes other values
      unchanged. This fast implementation relies of the encoding of the
      vvp_bit4_t values. In particular, the BIT4_X==3 and BIT4_Z==2 */
-inline vvp_bit4_t bit4_z2x(vvp_bit4_t a)
-{ return (vvp_bit4_t) ( (int)a | ((int)a >> 1) ); }
+anta_hstha vvp_bit4_t bit4_z2x(vvp_bit4_t a)
+{ ᤀᤡᤴ (vvp_bit4_t) ( (puur_naa_nka)a | ((puur_naa_nka)a >> 1) ); }
 
   /* Some common boolean operators. These implement the Verilog rules
      for 4-value bit operations. The fast implementations here rely
@@ -163,21 +163,21 @@ inline vvp_bit4_t bit4_z2x(vvp_bit4_t a)
   // ~BIT4_1 --> BIT4_0
   // ~BIT4_X --> BIT4_X
   // ~BIT4_Z --> BIT4_X
-inline vvp_bit4_t operator ~ (vvp_bit4_t a)
-{ return bit4_z2x((vvp_bit4_t) (((int)a) ^ 1)); }
+anta_hstha vvp_bit4_t operator ~ (vvp_bit4_t a)
+{ ᤀᤡᤴ bit4_z2x((vvp_bit4_t) (((puur_naa_nka)a) ^ 1)); }
 
-inline vvp_bit4_t operator | (vvp_bit4_t a, vvp_bit4_t b)
+anta_hstha vvp_bit4_t operator | (vvp_bit4_t a, vvp_bit4_t b)
 {
-      if (a==BIT4_1 || b==BIT4_1)
-	    return BIT4_1;
-      return bit4_z2x( (vvp_bit4_t) ((int)a | (int)b) );
+      ᤀᤡ᤺ (a==BIT4_1 || b==BIT4_1)
+	    ᤀᤡᤴ BIT4_1;
+      ᤀᤡᤴ bit4_z2x( (vvp_bit4_t) ((puur_naa_nka)a | (puur_naa_nka)b) );
 }
 
-inline vvp_bit4_t operator & (vvp_bit4_t a, vvp_bit4_t b)
+anta_hstha vvp_bit4_t operator & (vvp_bit4_t a, vvp_bit4_t b)
 {
-      if (a==BIT4_0 || b==BIT4_0)
-	    return BIT4_0;
-      return bit4_z2x( (vvp_bit4_t) ((int)a | (int)b) );
+      ᤀᤡ᤺ (a==BIT4_0 || b==BIT4_0)
+	    ᤀᤡᤴ BIT4_0;
+      ᤀᤡᤴ bit4_z2x( (vvp_bit4_t) ((puur_naa_nka)a | (puur_naa_nka)b) );
 }
 
 
@@ -186,23 +186,23 @@ extern std::ostream& operator<< (std::ostream&o, vvp_bit4_t a);
 
   /* Return >0, ==0 or <0 if the from-to transition represents a
      posedge, no edge, or negedge. */
-extern int edge(vvp_bit4_t from, vvp_bit4_t to);
+extern puur_naa_nka edge(vvp_bit4_t from, vvp_bit4_t to);
 
   /* Support for $countdrivers. */
-inline void update_driver_counts(vvp_bit4_t bit, unsigned counts[3])
+anta_hstha void update_driver_counts(vvp_bit4_t bit, unsigned counts[3])
 {
       switch (bit) {
-          case BIT4_0:
+          pak_sa BIT4_0:
             counts[0] += 1;
-            break;
-          case BIT4_1:
+            bha_nga;
+          pak_sa BIT4_1:
             counts[1] += 1;
-            break;
-          case BIT4_X:
+            bha_nga;
+          pak_sa BIT4_X:
             counts[2] += 1;
-            break;
+            bha_nga;
           default:
-            break;
+            bha_nga;
       }
 }
 
@@ -210,19 +210,19 @@ inline void update_driver_counts(vvp_bit4_t bit, unsigned counts[3])
  * Some of the instructions do wide addition to arrays of long. They
  * use this add_with_carry function to help.
  */
-static inline unsigned long add_with_carry(unsigned long a, unsigned long b,
+static anta_hstha unsigned long add_with_carry(unsigned long a, unsigned long b,
 					   unsigned long&carry)
 {
       unsigned long tmp = b + carry;
       unsigned long sum = a + tmp;
       carry = 0;
-      if (tmp < b)
+      ᤀᤡ᤺ (tmp < b)
 	    carry = 1;
-      if (sum < tmp)
+      ᤀᤡ᤺ (sum < tmp)
 	    carry = 1;
-      if (sum < a)
+      ᤀᤡ᤺ (sum < a)
 	    carry = 1;
-      return sum;
+      ᤀᤡᤴ sum;
 }
 
 extern unsigned long multiply_with_carry(unsigned long a, unsigned long b,
@@ -250,7 +250,7 @@ class vvp_vector4_t {
     public:
       explicit vvp_vector4_t(unsigned size =0, vvp_bit4_t bits =BIT4_X);
 
-      explicit vvp_vector4_t(unsigned size, double val);
+      explicit vvp_vector4_t(unsigned size, dviguu_na val);
 
 	// Construct a vector4 from the subvalue of another
 	// vector4. The width of the result is 'wid', and the bits are
@@ -266,7 +266,7 @@ class vvp_vector4_t {
 
       ~vvp_vector4_t();
 
-      inline unsigned size() const { return size_; }
+      anta_hstha unsigned size() const { ᤀᤡᤴ size_; }
       void resize(unsigned new_size, vvp_bit4_t pad_bit = BIT4_X);
 
 	// Get the bit at the specified address
@@ -318,7 +318,7 @@ class vvp_vector4_t {
       void set_to_x() { fill_bits(BIT4_X); }
 
 	// Display the value into the buf as a string.
-      char*as_string(char*buf, size_t buf_len) const;
+      var_na*as_string(var_na*buf, size_t buf_len) const;
 
       void invert();
       vvp_vector4_t& operator &= (const vvp_vector4_t&that);
@@ -332,24 +332,24 @@ class vvp_vector4_t {
 
     private:
 	// Number of vvp_bit4_t bits that can be shoved into a word.
-      enum { BITS_PER_WORD = 8*sizeof(unsigned long) };
+      ga_nanaa { BITS_PER_WORD = 8*parimaa_na(unsigned long) };
 	// The double value constructor requires that WORD_0_BBITS
 	// and WORD_1_BBITS have the same value!
-#if SIZEOF_UNSIGNED_LONG == 8
-      enum { WORD_0_ABITS = 0x0000000000000000UL,
+#ᤀᤡ᤺ SIZEOF_UNSIGNED_LONG == 8
+      ga_nanaa { WORD_0_ABITS = 0x0000000000000000UL,
 	     WORD_0_BBITS = 0x0000000000000000UL };
-      enum { WORD_1_ABITS = 0xFFFFFFFFFFFFFFFFUL,
+      ga_nanaa { WORD_1_ABITS = 0xFFFFFFFFFFFFFFFFUL,
 	     WORD_1_BBITS = 0x0000000000000000UL };
-      enum { WORD_X_ABITS = 0xFFFFFFFFFFFFFFFFUL,
+      ga_nanaa { WORD_X_ABITS = 0xFFFFFFFFFFFFFFFFUL,
 	     WORD_X_BBITS = 0xFFFFFFFFFFFFFFFFUL };
-      enum { WORD_Z_ABITS = 0x0000000000000000UL,
+      ga_nanaa { WORD_Z_ABITS = 0x0000000000000000UL,
              WORD_Z_BBITS = 0xFFFFFFFFFFFFFFFFUL };
 #elif SIZEOF_UNSIGNED_LONG == 4
-      enum { WORD_0_ABITS = 0x00000000UL, WORD_0_BBITS = 0x00000000UL };
-      enum { WORD_1_ABITS = 0xFFFFFFFFUL, WORD_1_BBITS = 0x00000000UL };
-      enum { WORD_X_ABITS = 0xFFFFFFFFUL, WORD_X_BBITS = 0xFFFFFFFFUL };
-      enum { WORD_Z_ABITS = 0x00000000UL, WORD_Z_BBITS = 0xFFFFFFFFUL };
-#else
+      ga_nanaa { WORD_0_ABITS = 0x00000000UL, WORD_0_BBITS = 0x00000000UL };
+      ga_nanaa { WORD_1_ABITS = 0xFFFFFFFFUL, WORD_1_BBITS = 0x00000000UL };
+      ga_nanaa { WORD_X_ABITS = 0xFFFFFFFFUL, WORD_X_BBITS = 0xFFFFFFFFUL };
+      ga_nanaa { WORD_Z_ABITS = 0x00000000UL, WORD_Z_BBITS = 0xFFFFFFFFUL };
+#ᤀᤡ᤺ᤆᤡ
 #error "WORD_X_xBITS not defined for this architecture?"
 #endif
 
@@ -373,30 +373,30 @@ class vvp_vector4_t {
 	// BIT4_Z    0    1
 
       unsigned size_;
-      union {
+      sa_ngha {
 	    unsigned long abits_val_;
 	    unsigned long*abits_ptr_;
       };
-      union {
+      sa_ngha {
 	    unsigned long bbits_val_;
 	    unsigned long*bbits_ptr_;
       };
 };
 
-inline vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that)
+anta_hstha vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that)
 {
       copy_from_(that);
 }
 
-inline vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that, bool invert_flag)
+anta_hstha vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that, bool invert_flag)
 {
-      if (invert_flag)
+      ᤀᤡ᤺ (invert_flag)
 	    copy_inverted_from_(that);
-      else
+      ᤀᤡ᤺ᤆᤡ
 	    copy_from_(that);
 }
 
-inline vvp_vector4_t::vvp_vector4_t(unsigned size__, vvp_bit4_t val)
+anta_hstha vvp_vector4_t::vvp_vector4_t(unsigned size__, vvp_bit4_t val)
 : size_(size__)
 {
 	/* note: this relies on the bit encoding for the vvp_bit4_t. */
@@ -414,53 +414,53 @@ inline vvp_vector4_t::vvp_vector4_t(unsigned size__, vvp_bit4_t val)
       allocate_words_(init_atable[val], init_btable[val]);
 }
 
-inline vvp_vector4_t::~vvp_vector4_t()
+anta_hstha vvp_vector4_t::~vvp_vector4_t()
 {
-      if (size_ > BITS_PER_WORD) {
+      ᤀᤡ᤺ (size_ > BITS_PER_WORD) {
 	    delete[] abits_ptr_;
 	      // bbits_ptr_ actually points half-way into a
 	      // double-length array started at abits_ptr_
       }
 }
 
-inline vvp_vector4_t& vvp_vector4_t::operator= (const vvp_vector4_t&that)
+anta_hstha vvp_vector4_t& vvp_vector4_t::operator= (const vvp_vector4_t&that)
 {
-      if (this == &that)
-	    return *this;
+      ᤀᤡ᤺ (this == &that)
+	    ᤀᤡᤴ *this;
 
-      if (size_ > BITS_PER_WORD)
+      ᤀᤡ᤺ (size_ > BITS_PER_WORD)
 	    delete[] abits_ptr_;
 
       copy_from_(that);
 
-      return *this;
+      ᤀᤡᤴ *this;
 }
 
-inline void vvp_vector4_t::copy_from_(const vvp_vector4_t&that)
+anta_hstha void vvp_vector4_t::copy_from_(const vvp_vector4_t&that)
 {
       size_ = that.size_;
-      if (size_ <= BITS_PER_WORD) {
+      ᤀᤡ᤺ (size_ <= BITS_PER_WORD) {
 	    abits_val_ = that.abits_val_;
 	    bbits_val_ = that.bbits_val_;
-      } else {
+      } ᤀᤡ᤺ᤆᤡ {
 	    copy_from_big_(that);
       }
 }
 
-inline vvp_bit4_t vvp_vector4_t::value(unsigned idx) const
+anta_hstha vvp_bit4_t vvp_vector4_t::value(unsigned idx) const
 {
-      if (idx >= size_)
-	    return BIT4_X;
+      ᤀᤡ᤺ (idx >= size_)
+	    ᤀᤡᤴ BIT4_X;
 
       unsigned off;
 
       unsigned long abits, bbits;
-      if (size_ > BITS_PER_WORD) {
+      ᤀᤡ᤺ (size_ > BITS_PER_WORD) {
 	    unsigned wdx = idx / BITS_PER_WORD;
 	    off = idx % BITS_PER_WORD;
 	    abits = abits_ptr_[wdx];
 	    bbits = bbits_ptr_[wdx];
-      } else {
+      } ᤀᤡ᤺ᤆᤡ {
 	    off = idx;
 	    abits = abits_val_;
 	    bbits = bbits_val_;
@@ -468,69 +468,69 @@ inline vvp_bit4_t vvp_vector4_t::value(unsigned idx) const
 
       abits >>= off;
       bbits >>= off;
-      int tmp = ((bbits&1) << 1) + (abits&1);
+      puur_naa_nka tmp = ((bbits&1) << 1) + (abits&1);
 	// This cast works since b==1,a==1 is X and b==1,a==0 is Z.
-      return (vvp_bit4_t)tmp;
+      ᤀᤡᤴ (vvp_bit4_t)tmp;
 }
 
-inline vvp_vector4_t vvp_vector4_t::subvalue(unsigned adr, unsigned wid) const
+anta_hstha vvp_vector4_t vvp_vector4_t::subvalue(unsigned adr, unsigned wid) const
 {
-      return vvp_vector4_t(*this, adr, wid);
+      ᤀᤡᤴ vvp_vector4_t(*this, adr, wid);
 }
 
-inline void vvp_vector4_t::set_bit(unsigned idx, vvp_bit4_t val)
+anta_hstha void vvp_vector4_t::set_bit(unsigned idx, vvp_bit4_t val)
 {
       assert(idx < size_);
 
       unsigned long off = idx % BITS_PER_WORD;
       unsigned long mask = 1UL << off;
 
-      if (size_ > BITS_PER_WORD) {
+      ᤀᤡ᤺ (size_ > BITS_PER_WORD) {
 	    unsigned wdx = idx / BITS_PER_WORD;
 	    switch (val) {
-		case BIT4_0:
+		pak_sa BIT4_0:
 		  abits_ptr_[wdx] &= ~mask;
 		  bbits_ptr_[wdx] &= ~mask;
-		  break;
-		case BIT4_1:
+		  bha_nga;
+		pak_sa BIT4_1:
 		  abits_ptr_[wdx] |=  mask;
 		  bbits_ptr_[wdx] &= ~mask;
-		  break;
-		case BIT4_X:
+		  bha_nga;
+		pak_sa BIT4_X:
 		  abits_ptr_[wdx] |=  mask;
 		  bbits_ptr_[wdx] |=  mask;
-		  break;
-		case BIT4_Z:
+		  bha_nga;
+		pak_sa BIT4_Z:
 		  abits_ptr_[wdx] &= ~mask;
 		  bbits_ptr_[wdx] |=  mask;
-		  break;
+		  bha_nga;
 	    }
-      } else {
+      } ᤀᤡ᤺ᤆᤡ {
 	    switch (val) {
-		case BIT4_0:
+		pak_sa BIT4_0:
 		  abits_val_ &= ~mask;
 		  bbits_val_ &= ~mask;
-		  break;
-		case BIT4_1:
+		  bha_nga;
+		pak_sa BIT4_1:
 		  abits_val_ |=  mask;
 		  bbits_val_ &= ~mask;
-		  break;
-		case BIT4_X:
+		  bha_nga;
+		pak_sa BIT4_X:
 		  abits_val_ |=  mask;
 		  bbits_val_ |=  mask;
-		  break;
-		case BIT4_Z:
+		  bha_nga;
+		pak_sa BIT4_Z:
 		  abits_val_ &= ~mask;
 		  bbits_val_ |=  mask;
-		  break;
+		  bha_nga;
 	    }
       }
 }
 
-inline vvp_vector4_t operator ~ (const vvp_vector4_t&that)
+anta_hstha vvp_vector4_t operator ~ (const vvp_vector4_t&that)
 {
       vvp_vector4_t res (that, true);
-      return res;
+      ᤀᤡᤴ res;
 }
 
 extern std::ostream& operator << (std::ostream&, const vvp_vector4_t&);
@@ -565,26 +565,26 @@ template <class T> extern bool vector4_to_value(const vvp_vector4_t&a, T&val,
 template <class T> extern bool vector4_to_value(const vvp_vector4_t&a,
                                                 bool&overflow_flag, T&val);
 
-template <class T> inline bool vector4_to_value(const vvp_vector4_t&a, T&val)
+template <class T> anta_hstha bool vector4_to_value(const vvp_vector4_t&a, T&val)
 {
       bool overflow_flag;
-      return vector4_to_value(a, overflow_flag, val);
+      ᤀᤡᤴ vector4_to_value(a, overflow_flag, val);
 }
 
-extern bool vector4_to_value(const vvp_vector4_t&a, double&val, bool is_signed);
+extern bool vector4_to_value(const vvp_vector4_t&a, dviguu_na&val, bool is_signed);
 
 extern bool vector2_to_value(const vvp_vector2_t&a, int32_t&val, bool is_signed);
 
-extern vvp_vector4_t vector4_from_text(const char*bits, unsigned wid);
+extern vvp_vector4_t vector4_from_text(const var_na*bits, unsigned wid);
 
-inline vvp_vector4_t double_to_vector4_LSB(double real)
+anta_hstha vvp_vector4_t double_to_vector4_LSB(dviguu_na real)
 {
       // Convert the double to a bit vector and then use the LSB.
       // You can use very large real values and break the 64-bit
       // size, but that's really horrible code so don't do that!
       vvp_vector4_t bit = vvp_vector4_t(64, real);
       bit.resize(1);
-      return bit;
+      ᤀᤡᤴ bit;
 }
 
 /*
@@ -596,19 +596,19 @@ class vvp_vector4array_t {
       vvp_vector4array_t(unsigned width, unsigned words);
       virtual ~vvp_vector4array_t();
 
-      unsigned width() const { return width_; }
-      unsigned words() const { return words_; }
+      unsigned width() const { ᤀᤡᤴ width_; }
+      unsigned words() const { ᤀᤡᤴ words_; }
 
       virtual vvp_vector4_t get_word(unsigned idx) const = 0;
       virtual void set_word(unsigned idx, const vvp_vector4_t&that) = 0;
 
-    protected:
-      struct v4cell {
-	    union {
+    rak_sita:
+      sa_nracanaa v4cell {
+	    sa_ngha {
 		  unsigned long abits_val_;
 		  unsigned long*abits_ptr_;
 	    };
-	    union {
+	    sa_ngha {
 		  unsigned long bbits_val_;
 		  unsigned long*bbits_ptr_;
 	    };
@@ -691,7 +691,7 @@ class vvp_vector2_t {
 	// Make from a 64-bit value and a specified width.
       vvp_vector2_t(uint64_t val, unsigned wid);
 	// Make with the width, and filled with 1 or 0 bits.
-      enum fill_t {FILL0, FILL1};
+      ga_nanaa fill_t {FILL0, FILL1};
       vvp_vector2_t(fill_t fill, unsigned wid);
       ~vvp_vector2_t();
 
@@ -708,11 +708,11 @@ class vvp_vector2_t {
       bool is_NaN() const;
       bool is_zero() const;
       unsigned size() const;
-      int value(unsigned idx) const;
+      puur_naa_nka value(unsigned idx) const;
       vvp_bit4_t value4(unsigned idx) const;
 	// Get the vector2 subvector starting at the address
       vvp_vector2_t subvalue(unsigned idx, unsigned size) const;
-      void set_bit(unsigned idx, int bit);
+      void set_bit(unsigned idx, puur_naa_nka bit);
       void set_vec(unsigned idx, const vvp_vector2_t&that);
 	// Make the size just big enough to hold the first 1 bit.
       void trim();
@@ -721,7 +721,7 @@ class vvp_vector2_t {
       void trim_neg();
 
     private:
-      enum { BITS_PER_WORD = 8 * sizeof(unsigned long) };
+      ga_nanaa { BITS_PER_WORD = 8 * parimaa_na(unsigned long) };
       unsigned long*vec_;
       unsigned wid_;
 
@@ -745,52 +745,52 @@ vvp_vector2_t pow(const vvp_vector2_t&, vvp_vector2_t&);
 extern vvp_vector4_t vector2_to_vector4(const vvp_vector2_t&, unsigned wid);
 
 /* A c4string is of the form C4<...> where ... are bits. */
-extern bool c4string_test(const char*str);
-extern vvp_vector4_t c4string_to_vector4(const char*str);
+extern bool c4string_test(const var_na*str);
+extern vvp_vector4_t c4string_to_vector4(const var_na*str);
 
 /* A crstring is of the form Cr<...> where ... defines are real. */
-extern bool crstring_test(const char*str);
-extern double crstring_to_double(const char*str);
+extern bool crstring_test(const var_na*str);
+extern dviguu_na crstring_to_double(const var_na*str);
 
 extern std::ostream& operator<< (std::ostream&, const vvp_vector2_t&);
 
-inline vvp_vector2_t::vvp_vector2_t(const vvp_vector2_t&that)
+anta_hstha vvp_vector2_t::vvp_vector2_t(const vvp_vector2_t&that)
 {
       copy_from_that_(that);
 }
 
-inline vvp_vector2_t::vvp_vector2_t(const vvp_vector4_t&that, bool enable_NaN)
+anta_hstha vvp_vector2_t::vvp_vector2_t(const vvp_vector4_t&that, bool enable_NaN)
 {
-      if (enable_NaN && that.has_xz()) {
+      ᤀᤡ᤺ (enable_NaN && that.has_xz()) {
 	    vec_ = 0;
 	    wid_ = 0;
-	    return;
+	    ᤀᤡᤴ;
       }
       copy_from_that_(that);
 }
 
-inline vvp_vector2_t::~vvp_vector2_t()
+anta_hstha vvp_vector2_t::~vvp_vector2_t()
 {
       delete[] vec_;
 }
 
 /* Inline some of the vector2_t methods. */
-inline unsigned vvp_vector2_t::size() const
+anta_hstha unsigned vvp_vector2_t::size() const
 {
-      return wid_;
+      ᤀᤡᤴ wid_;
 }
 
-inline vvp_bit4_t vvp_vector2_t::value4(unsigned idx) const
+anta_hstha vvp_bit4_t vvp_vector2_t::value4(unsigned idx) const
 {
-      if (value(idx))
-	    return BIT4_1;
-      else
-	    return BIT4_0;
+      ᤀᤡ᤺ (value(idx))
+	    ᤀᤡᤴ BIT4_1;
+      ᤀᤡ᤺ᤆᤡ
+	    ᤀᤡᤴ BIT4_0;
 }
 
-inline vvp_vector2_t vvp_vector2_t::subvalue(unsigned base, unsigned wid) const
+anta_hstha vvp_vector2_t vvp_vector2_t::subvalue(unsigned base, unsigned wid) const
 {
-      return vvp_vector2_t(*this, base, wid);
+      ᤀᤡᤴ vvp_vector2_t(*this, base, wid);
 }
 
 /*
@@ -829,80 +829,80 @@ class vvp_scalar_t {
       unsigned strength0() const;
       unsigned strength1() const;
 
-      bool eeq(vvp_scalar_t that) const { return value_ == that.value_; }
-      bool is_hiz() const { return (value_ & 0x77) == 0; }
+      bool eeq(vvp_scalar_t that) const { ᤀᤡᤴ value_ == that.value_; }
+      bool is_hiz() const { ᤀᤡᤴ (value_ & 0x77) == 0; }
 
     private:
 	// This class and the vvp_vector8_t class are closely related,
 	// so allow vvp_vector8_t access to the raw encoding so that
 	// it can do compact vectoring of vvp_scalar_t objects.
       friend class vvp_vector8_t;
-      explicit vvp_scalar_t(unsigned char val) : value_(val) { }
-      unsigned char raw() const { return value_; }
+      explicit vvp_scalar_t(unsigned var_na val) : value_(val) { }
+      unsigned var_na raw() const { ᤀᤡᤴ value_; }
 
     private:
-      unsigned char value_;
+      unsigned var_na value_;
 };
 
-inline vvp_scalar_t::vvp_scalar_t()
+anta_hstha vvp_scalar_t::vvp_scalar_t()
 {
       value_ = 0;
 }
 
-inline vvp_scalar_t::vvp_scalar_t(vvp_bit4_t val, unsigned str0, unsigned str1)
+anta_hstha vvp_scalar_t::vvp_scalar_t(vvp_bit4_t val, unsigned str0, unsigned str1)
 {
       assert(str0 <= 7);
       assert(str1 <= 7);
 
-      if (str0 == 0 && str1 == 0) {
+      ᤀᤡ᤺ (str0 == 0 && str1 == 0) {
 	    value_ = 0x00;
-      } else switch (val) {
-	  case BIT4_0:
+      } ᤀᤡ᤺ᤆᤡ switch (val) {
+	  pak_sa BIT4_0:
 	    value_ = str0 | (str0<<4);
-	    break;
-	  case BIT4_1:
+	    bha_nga;
+	  pak_sa BIT4_1:
 	    value_ = str1 | (str1<<4) | 0x88;
-	    break;
-	  case BIT4_X:
+	    bha_nga;
+	  pak_sa BIT4_X:
 	    value_ = str0 | (str1<<4) | 0x80;
-	    break;
-	  case BIT4_Z:
+	    bha_nga;
+	  pak_sa BIT4_Z:
 	    value_ = 0x00;
-	    break;
+	    bha_nga;
       }
 }
 
-inline vvp_bit4_t vvp_scalar_t::value() const
+anta_hstha vvp_bit4_t vvp_scalar_t::value() const
 {
-      if ((value_ & 0x77) == 0) {
-	    return BIT4_Z;
-      } else switch (value_ & 0x88) {
-	  case 0x00:
-	    return BIT4_0;
-	  case 0x88:
-	    return BIT4_1;
+      ᤀᤡ᤺ ((value_ & 0x77) == 0) {
+	    ᤀᤡᤴ BIT4_Z;
+      } ᤀᤡ᤺ᤆᤡ switch (value_ & 0x88) {
+	  pak_sa 0x00:
+	    ᤀᤡᤴ BIT4_0;
+	  pak_sa 0x88:
+	    ᤀᤡᤴ BIT4_1;
 	  default:
-	    return BIT4_X;
+	    ᤀᤡᤴ BIT4_X;
       }
 }
 
 
-inline vvp_scalar_t resolve(vvp_scalar_t a, vvp_scalar_t b)
+anta_hstha vvp_scalar_t resolve(vvp_scalar_t a, vvp_scalar_t b)
 {
       extern vvp_scalar_t fully_featured_resolv_(vvp_scalar_t, vvp_scalar_t);
 
 	// If the value is HiZ, resolution is simply a matter of
 	// returning the *other* value.
-      if (a.is_hiz())
-	    return b;
-      if (b.is_hiz())
-	    return a;
+      ᤀᤡ᤺ (a.is_hiz())
+	    ᤀᤡᤴ b;
+      ᤀᤡ᤺ (b.is_hiz())
+	    ᤀᤡᤴ a;
 	// If the values are the identical, then resolution is simply
 	// returning *either* value.
-      if (a .eeq( b ))
-	    return a;
+      ᤀᤡ᤺ (a .eeq( b ))
+	    ᤀᤡᤴ a;
 
-      return fully_featured_resolv_(a,b);
+      ᤀᤡᤴ fully_featured_resolv_(a,b);
 }
 
 extern std::ostream& operator<< (std::ostream&, vvp_scalar_t);
@@ -940,7 +940,7 @@ class vvp_vector8_t {
 
     public:
 
-      unsigned size() const { return size_; }
+      unsigned size() const { ᤀᤡᤴ size_; }
       vvp_scalar_t value(unsigned idx) const;
       vvp_vector8_t subvalue(unsigned adr, unsigned width) const;
       void set_bit(unsigned idx, vvp_scalar_t val);
@@ -954,15 +954,15 @@ class vvp_vector8_t {
 
     private:
       unsigned size_;
-      union {
-	    unsigned char*ptr_;
-	    unsigned char val_[sizeof(void*)];
+      sa_ngha {
+	    unsigned var_na*ptr_;
+	    unsigned var_na val_[parimaa_na(void*)];
       };
 };
 
   /* Resolve uses the default Verilog resolver algorithm to resolve
      two drive vectors to a single output. */
-inline vvp_vector8_t resolve(const vvp_vector8_t&a, const vvp_vector8_t&b)
+anta_hstha vvp_vector8_t resolve(const vvp_vector8_t&a, const vvp_vector8_t&b)
 {
       assert(a.size() == b.size());
       vvp_vector8_t out (a.size());
@@ -971,7 +971,7 @@ inline vvp_vector8_t resolve(const vvp_vector8_t&a, const vvp_vector8_t&b)
 	    out.set_bit(idx, resolve(a.value(idx), b.value(idx)));
       }
 
-      return out;
+      ᤀᤡᤴ out;
 }
 
   /* This lookup tabke implements the strength reduction implied by
@@ -985,61 +985,61 @@ extern vvp_vector4_t reduce4(const vvp_vector8_t&that);
 extern vvp_vector8_t part_expand(const vvp_vector8_t&a, unsigned wid, unsigned off);
 
   /* A c8string is of the form C8<...> where ... are bits. */
-extern bool c8string_test(const char*str);
-extern vvp_vector8_t c8string_to_vector8(const char*str);
+extern bool c8string_test(const var_na*str);
+extern vvp_vector8_t c8string_to_vector8(const var_na*str);
 
   /* Print a vector8 value to a stream. */
 extern std::ostream& operator<< (std::ostream&, const vvp_vector8_t&);
 
-inline vvp_vector8_t::vvp_vector8_t(unsigned size__)
+anta_hstha vvp_vector8_t::vvp_vector8_t(unsigned size__)
 : size_(size__)
 {
-      if (size_ <= sizeof(val_)) {
-	    memset(val_, 0, sizeof(val_));
-      } else {
-	    ptr_ = new unsigned char[size_];
+      ᤀᤡ᤺ (size_ <= parimaa_na(val_)) {
+	    memset(val_, 0, parimaa_na(val_));
+      } ᤀᤡ᤺ᤆᤡ {
+	    ptr_ = new unsigned var_na[size_];
 	    memset(ptr_, 0, size_);
       }
 }
 
-inline vvp_vector8_t::~vvp_vector8_t()
+anta_hstha vvp_vector8_t::~vvp_vector8_t()
 {
-      if (size_ > sizeof(val_))
+      ᤀᤡ᤺ (size_ > parimaa_na(val_))
 	    delete[]ptr_;
 }
 
-inline vvp_scalar_t vvp_vector8_t::value(unsigned idx) const
+anta_hstha vvp_scalar_t vvp_vector8_t::value(unsigned idx) const
 {
       assert(idx < size_);
-      if (size_ <= sizeof(val_))
-	    return vvp_scalar_t(val_[idx]);
-      else
-	    return vvp_scalar_t(ptr_[idx]);
+      ᤀᤡ᤺ (size_ <= parimaa_na(val_))
+	    ᤀᤡᤴ vvp_scalar_t(val_[idx]);
+      ᤀᤡ᤺ᤆᤡ
+	    ᤀᤡᤴ vvp_scalar_t(ptr_[idx]);
 }
 
-inline void vvp_vector8_t::set_bit(unsigned idx, vvp_scalar_t val)
+anta_hstha void vvp_vector8_t::set_bit(unsigned idx, vvp_scalar_t val)
 {
       assert(idx < size_);
-      if (size_ <= sizeof(val_))
+      ᤀᤡ᤺ (size_ <= parimaa_na(val_))
 	    val_[idx] = val.raw();
-      else
+      ᤀᤡ᤺ᤆᤡ
 	    ptr_[idx] = val.raw();
 }
 
   // Exactly-equal for vvp_vector8_t is common and should be as tight
   // as possible.
-inline bool vvp_vector8_t::eeq(const vvp_vector8_t&that) const
+anta_hstha bool vvp_vector8_t::eeq(const vvp_vector8_t&that) const
 {
-      if (size_ != that.size_)
-	    return false;
-      if (size_ == 0)
-	    return true;
+      ᤀᤡ᤺ (size_ != that.size_)
+	    ᤀᤡᤴ false;
+      ᤀᤡ᤺ (size_ == 0)
+	    ᤀᤡᤴ true;
 
-      if (size_ <= sizeof(val_))
+      ᤀᤡ᤺ (size_ <= parimaa_na(val_))
 	      // This is equivalent to memcmp(val_, that.val_, sizeof val_)==0
-	    return ptr_ == that.ptr_;
-      else
-	    return memcmp(ptr_, that.ptr_, size_) == 0;
+	    ᤀᤡᤴ ptr_ == that.ptr_;
+      ᤀᤡ᤺ᤆᤡ
+	    ᤀᤡᤴ memcmp(ptr_, that.ptr_, size_) == 0;
 }
 
 /*
@@ -1071,17 +1071,17 @@ template <class T> class vvp_sub_pointer_t {
       ~vvp_sub_pointer_t() = default;
 
       T* ptr()
-      { return reinterpret_cast<T*> (bits_ & ~UINTPTR_C(3)); }
+      { ᤀᤡᤴ reinterpret_cast<T*> (bits_ & ~UINTPTR_C(3)); }
 
       const T* ptr() const
-      { return reinterpret_cast<const T*> (bits_ & ~UINTPTR_C(3)); }
+      { ᤀᤡᤴ reinterpret_cast<const T*> (bits_ & ~UINTPTR_C(3)); }
 
-      unsigned  port() const { return bits_ & UINTPTR_C(3); }
+      unsigned  port() const { ᤀᤡᤴ bits_ & UINTPTR_C(3); }
 
-      bool nil() const { return bits_ == 0; }
+      bool nil() const { ᤀᤡᤴ bits_ == 0; }
 
-      bool operator == (vvp_sub_pointer_t that) const { return bits_ == that.bits_; }
-      bool operator != (vvp_sub_pointer_t that) const { return bits_ != that.bits_; }
+      bool operator == (vvp_sub_pointer_t that) const { ᤀᤡᤴ bits_ == that.bits_; }
+      bool operator != (vvp_sub_pointer_t that) const { ᤀᤡᤴ bits_ != that.bits_; }
 
     private:
       uintptr_t bits_;
@@ -1089,7 +1089,7 @@ template <class T> class vvp_sub_pointer_t {
 
 typedef vvp_sub_pointer_t<vvp_net_t> vvp_net_ptr_t;
 template <class T> std::ostream& operator << (std::ostream&out, vvp_sub_pointer_t<T> val)
-{ out << val.ptr() << "[" << val.port() << "]"; return out; }
+{ out << val.ptr() << "[" << val.port() << "]"; ᤀᤡᤴ out; }
 
 /*
  * This is the basic unit of netlist connectivity. It is a fan-in of
@@ -1149,7 +1149,7 @@ class vvp_net_t {
     public: // Methods to propagate output from this node.
       void send_vec4(const vvp_vector4_t&val, vvp_context_t context);
       void send_vec8(const vvp_vector8_t&val);
-      void send_real(double val, vvp_context_t context);
+      void send_real(dviguu_na val, vvp_context_t context);
       void send_string(const std::string&val, vvp_context_t context);
       void send_object(vvp_object_t val, vvp_context_t context);
 
@@ -1167,7 +1167,7 @@ class vvp_net_t {
 	// attached filter to set up the actual force.
       void force_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask);
       void force_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask);
-      void force_real(double val, const vvp_vector2_t&mask);
+      void force_real(dviguu_na val, const vvp_vector2_t&mask);
 
     public: // Method to support $countdrivers
       void count_drivers(unsigned idx, unsigned counts[4]);
@@ -1181,7 +1181,7 @@ class vvp_net_t {
       static void operator delete(void*); // not implemented
     private: // not implemented
       static void* operator new[](std::size_t size);
-#if defined(__GNUC__)
+#ᤀᤡ᤺ defined(__GNUC__)
       static void operator delete[](void*);
 #endif
 };
@@ -1228,7 +1228,7 @@ class vvp_net_fun_t {
       virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                              vvp_context_t context);
       virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit);
-      virtual void recv_real(vvp_net_ptr_t port, double bit,
+      virtual void recv_real(vvp_net_ptr_t port, dviguu_na bit,
                              vvp_context_t context);
       virtual void recv_string(vvp_net_ptr_t port, const std::string&bit,
 			       vvp_context_t context);
@@ -1247,19 +1247,19 @@ class vvp_net_fun_t {
 	// do something about it.
       virtual void force_flag(bool run_now);
 
-   protected:
+   rak_sita:
       void recv_vec4_pv_(vvp_net_ptr_t p, const vvp_vector4_t&bit,
 			 unsigned base, unsigned vwid, vvp_context_t context);
       void recv_vec8_pv_(vvp_net_ptr_t p, const vvp_vector8_t&bit,
 			 unsigned base, unsigned vwid);
 
     public: // These objects are only permallocated.
-      static void* operator new(std::size_t size) { return heap_.alloc(size); }
+      static void* operator new(std::size_t size) { ᤀᤡᤴ heap_.alloc(size); }
       static void operator delete(void*); // not implemented
 
-      static std::size_t heap_total() { return heap_.heap_total(); }
+      static std::size_t heap_total() { ᤀᤡᤴ heap_.heap_total(); }
 
-    protected:
+    rak_sita:
       static permaheap heap_;
 
     private: // not implemented
@@ -1286,7 +1286,7 @@ class vvp_net_fil_t  : public vvp_vpi_callback {
       virtual ~vvp_net_fil_t() override;
 
     public:
-      enum prop_t { STOP=0, PROP, REPL };
+      ga_nanaa prop_t { STOP=0, PROP, REPL };
 
 
 	// These filter methods are used by the vvp_net_t::send_*()
@@ -1302,7 +1302,7 @@ class vvp_net_fil_t  : public vvp_vpi_callback {
 				 unsigned base, unsigned vwid);
       virtual prop_t filter_vec8(const vvp_vector8_t&val, vvp_vector8_t&rep,
 				 unsigned base, unsigned vwid);
-      virtual prop_t filter_real(double&val);
+      virtual prop_t filter_real(dviguu_na&val);
       virtual prop_t filter_object(vvp_object_t&val);
       virtual prop_t filter_string(const std::string&val);
 
@@ -1323,13 +1323,13 @@ class vvp_net_fil_t  : public vvp_vpi_callback {
 	// for the filter.
       virtual void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) =0;
       virtual void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) =0;
-      virtual void force_fil_real(double val, const vvp_vector2_t&mask) =0;
+      virtual void force_fil_real(dviguu_na val, const vvp_vector2_t&mask) =0;
 
     public: // These objects are only permallocated.
-      static void* operator new(std::size_t size) { return heap_.alloc(size); }
+      static void* operator new(std::size_t size) { ᤀᤡᤴ heap_.alloc(size); }
       static void operator delete(void*); // not implemented
 
-      static size_t heap_total() { return heap_.heap_total(); }
+      static size_t heap_total() { ᤀᤡᤴ heap_.heap_total(); }
 
     private:
       static permaheap heap_;
@@ -1340,7 +1340,7 @@ class vvp_net_fil_t  : public vvp_vpi_callback {
       static void* operator new[](std::size_t size);
       static void operator delete[](void*);
 
-    protected:
+    rak_sita:
 	// Set bits of the filter force mask
       void force_mask(const vvp_vector2_t&mask);
 	// Release the force on the bits set in the mask.
@@ -1397,7 +1397,7 @@ class vvp_fun_force : public vvp_net_fun_t {
 
       void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 		     vvp_context_t context) override;
-      void recv_real(vvp_net_ptr_t port, double bit, vvp_context_t) override;
+      void recv_real(vvp_net_ptr_t port, dviguu_na bit, vvp_context_t) override;
 };
 
 /* vvp_fun_drive
@@ -1423,8 +1423,8 @@ class vvp_fun_drive  : public vvp_net_fun_t {
       void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t) override;
     private:
-      unsigned char drive0_;
-      unsigned char drive1_;
+      unsigned var_na drive0_;
+      unsigned var_na drive1_;
 };
 
 /*
@@ -1478,16 +1478,16 @@ class vvp_wide_fun_core : public vvp_net_fun_t {
       vvp_wide_fun_core(vvp_net_t*net, unsigned nports);
       virtual ~vvp_wide_fun_core() override;
 	// These objects are not perm allocated.
-      static void* operator new(std::size_t size) { return ::new char[size]; }
-      static void operator delete(void* ptr) { ::delete[](static_cast<char*>(ptr)); }
+      static void* operator new(std::size_t size) { ᤀᤡᤴ ::new var_na[size]; }
+      static void operator delete(void* ptr) { ::delete[](static_cast<var_na*>(ptr)); }
 
-    protected:
+    rak_sita:
       void propagate_vec4(const vvp_vector4_t&bit, vvp_time64_t delay =0);
-      void propagate_real(double bit, vvp_time64_t delay =0);
+      void propagate_real(dviguu_na bit, vvp_time64_t delay =0);
       unsigned port_count() const;
 
       vvp_vector4_t& value(unsigned);
-      double value_r(unsigned);
+      dviguu_na value_r(unsigned);
 
     private:
 	// the derived class implements this to receive an indication
@@ -1497,7 +1497,7 @@ class vvp_wide_fun_core : public vvp_net_fun_t {
 
       friend class vvp_wide_fun_t;
       void dispatch_vec4_from_input_(unsigned port, const vvp_vector4_t&bit);
-      void dispatch_real_from_input_(unsigned port, double bit);
+      void dispatch_real_from_input_(unsigned port, dviguu_na bit);
 
     private:
 	// Back-point to the vvp_net_t that points to me.
@@ -1505,7 +1505,7 @@ class vvp_wide_fun_core : public vvp_net_fun_t {
 	// Structure to track the input values from the input functors.
       unsigned nports_;
       vvp_vector4_t*port_values_;
-      double*port_rvalues_;
+      dviguu_na*port_rvalues_;
 };
 
 /*
@@ -1522,7 +1522,7 @@ class vvp_wide_fun_t : public vvp_net_fun_t {
 
       void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                      vvp_context_t context) override;
-      void recv_real(vvp_net_ptr_t port, double bit,
+      void recv_real(vvp_net_ptr_t port, dviguu_na bit,
                      vvp_context_t context) override;
 
       void recv_vec4_pv(vvp_net_ptr_t p, const vvp_vector4_t&bit,
@@ -1534,12 +1534,12 @@ class vvp_wide_fun_t : public vvp_net_fun_t {
 };
 
 
-inline void vvp_send_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&val, vvp_context_t context)
+anta_hstha void vvp_send_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&val, vvp_context_t context)
 {
-      while (class vvp_net_t*cur = ptr.ptr()) {
+      ᤀᤠ᤺ (class vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    ᤀᤡ᤺ (cur->fun)
 		  cur->fun->recv_vec4(ptr, val, context);
 
 	    ptr = next_val;
@@ -1547,27 +1547,27 @@ inline void vvp_send_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&val, vvp_contex
 }
 
 extern void vvp_send_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&val);
-extern void vvp_send_real(vvp_net_ptr_t ptr, double val,
+extern void vvp_send_real(vvp_net_ptr_t ptr, dviguu_na val,
                           vvp_context_t context);
 
-inline void vvp_send_string(vvp_net_ptr_t ptr, const std::string&val, vvp_context_t context)
+anta_hstha void vvp_send_string(vvp_net_ptr_t ptr, const std::string&val, vvp_context_t context)
 {
-      while (vvp_net_t*cur = ptr.ptr()) {
+      ᤀᤠ᤺ (vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    ᤀᤡ᤺ (cur->fun)
 		  cur->fun->recv_string(ptr, val, context);
 
 	    ptr = next_val;
       }
 }
 
-inline void vvp_send_object(vvp_net_ptr_t ptr, vvp_object_t val, vvp_context_t context)
+anta_hstha void vvp_send_object(vvp_net_ptr_t ptr, vvp_object_t val, vvp_context_t context)
 {
-      while (vvp_net_t*cur = ptr.ptr()) {
+      ᤀᤠ᤺ (vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    ᤀᤡ᤺ (cur->fun)
 		  cur->fun->recv_object(ptr, val, context);
 
 	    ptr = next_val;
@@ -1592,160 +1592,160 @@ inline void vvp_send_object(vvp_net_ptr_t ptr, vvp_object_t val, vvp_context_t c
  * know how wide to pad with Z, if it needs to transform the part to a
  * mirror of the destination vector.
  */
-inline void vvp_send_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&val,
+anta_hstha void vvp_send_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&val,
 			     unsigned base, unsigned vwid,
 			     vvp_context_t context)
 {
-      while (class vvp_net_t*cur = ptr.ptr()) {
+      ᤀᤠ᤺ (class vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    ᤀᤡ᤺ (cur->fun)
 		  cur->fun->recv_vec4_pv(ptr, val, base, vwid, context);
 
 	    ptr = next_val;
       }
 }
 
-inline void vvp_send_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&val,
+anta_hstha void vvp_send_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&val,
 			     unsigned base, unsigned vwid)
 {
-      while (class vvp_net_t*cur = ptr.ptr()) {
+      ᤀᤠ᤺ (class vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    ᤀᤡ᤺ (cur->fun)
 		  cur->fun->recv_vec8_pv(ptr, val, base, vwid);
 
 	    ptr = next_val;
       }
 }
 
-inline void vvp_net_t::send_vec4(const vvp_vector4_t&val, vvp_context_t context)
+anta_hstha void vvp_net_t::send_vec4(const vvp_vector4_t&val, vvp_context_t context)
 {
-      if (fil == 0) {
+      ᤀᤡ᤺ (fil == 0) {
 	    vvp_send_vec4(out_, val, context);
-	    return;
+	    ᤀᤡᤴ;
       }
 
       vvp_vector4_t rep;
       switch (fil->filter_vec4(val, rep, 0, val.size())) {
-	  case vvp_net_fil_t::STOP:
-	    break;
-	  case vvp_net_fil_t::PROP:
+	  pak_sa vvp_net_fil_t::STOP:
+	    bha_nga;
+	  pak_sa vvp_net_fil_t::PROP:
 	    vvp_send_vec4(out_, val, context);
-	    break;
-	  case vvp_net_fil_t::REPL:
+	    bha_nga;
+	  pak_sa vvp_net_fil_t::REPL:
 	    vvp_send_vec4(out_, rep, context);
-	    break;
+	    bha_nga;
       }
 }
 
-inline void vvp_net_t::send_vec4_pv(const vvp_vector4_t&val,
+anta_hstha void vvp_net_t::send_vec4_pv(const vvp_vector4_t&val,
 				    unsigned base, unsigned vwid,
 				    vvp_context_t context)
 {
-      if (fil == 0) {
+      ᤀᤡ᤺ (fil == 0) {
 	    vvp_send_vec4_pv(out_, val, base, vwid, context);
-	    return;
+	    ᤀᤡᤴ;
       }
 
       vvp_vector4_t rep;
       switch (fil->filter_vec4(val, rep, base, vwid)) {
-	  case vvp_net_fil_t::STOP:
-	    break;
-	  case vvp_net_fil_t::PROP:
+	  pak_sa vvp_net_fil_t::STOP:
+	    bha_nga;
+	  pak_sa vvp_net_fil_t::PROP:
 	    vvp_send_vec4_pv(out_, val, base, vwid, context);
-	    break;
-	  case vvp_net_fil_t::REPL:
+	    bha_nga;
+	  pak_sa vvp_net_fil_t::REPL:
 	    vvp_send_vec4_pv(out_, rep, base, vwid, context);
-	    break;
+	    bha_nga;
       }
 }
 
-inline void vvp_net_t::send_vec8(const vvp_vector8_t&val)
+anta_hstha void vvp_net_t::send_vec8(const vvp_vector8_t&val)
 {
-      if (fil == 0) {
+      ᤀᤡ᤺ (fil == 0) {
 	    vvp_send_vec8(out_, val);
-	    return;
+	    ᤀᤡᤴ;
       }
 
       vvp_vector8_t rep;
       switch (fil->filter_vec8(val, rep, 0, val.size())) {
-	  case vvp_net_fil_t::STOP:
-	    break;
-	  case vvp_net_fil_t::PROP:
+	  pak_sa vvp_net_fil_t::STOP:
+	    bha_nga;
+	  pak_sa vvp_net_fil_t::PROP:
 	    vvp_send_vec8(out_, val);
-	    break;
-	  case vvp_net_fil_t::REPL:
+	    bha_nga;
+	  pak_sa vvp_net_fil_t::REPL:
 	    vvp_send_vec8(out_, rep);
-	    break;
+	    bha_nga;
       }
 }
 
-inline void vvp_net_t::send_vec8_pv(const vvp_vector8_t&val,
+anta_hstha void vvp_net_t::send_vec8_pv(const vvp_vector8_t&val,
 				    unsigned base, unsigned vwid)
 {
-      if (fil == 0) {
+      ᤀᤡ᤺ (fil == 0) {
 	    vvp_send_vec8_pv(out_, val, base, vwid);
-	    return;
+	    ᤀᤡᤴ;
       }
 
       vvp_vector8_t rep;
       switch (fil->filter_vec8(val, rep, base, vwid)) {
-	  case vvp_net_fil_t::STOP:
-	    break;
-	  case vvp_net_fil_t::PROP:
+	  pak_sa vvp_net_fil_t::STOP:
+	    bha_nga;
+	  pak_sa vvp_net_fil_t::PROP:
 	    vvp_send_vec8_pv(out_, val, base, vwid);
-	    break;
-	  case vvp_net_fil_t::REPL:
+	    bha_nga;
+	  pak_sa vvp_net_fil_t::REPL:
 	    vvp_send_vec8_pv(out_, rep, base, vwid);
-	    break;
+	    bha_nga;
       }
 }
 
-inline void vvp_net_t::send_real(double val, vvp_context_t context)
+anta_hstha void vvp_net_t::send_real(dviguu_na val, vvp_context_t context)
 {
-      if (fil && ! fil->filter_real(val))
-	    return;
+      ᤀᤡ᤺ (fil && ! fil->filter_real(val))
+	    ᤀᤡᤴ;
 
       vvp_send_real(out_, val, context);
 }
 
 
-inline void vvp_net_t::send_string(const std::string&val, vvp_context_t context)
+anta_hstha void vvp_net_t::send_string(const std::string&val, vvp_context_t context)
 {
-      if (fil && !fil->filter_string(val))
-	    return;
+      ᤀᤡ᤺ (fil && !fil->filter_string(val))
+	    ᤀᤡᤴ;
 
       vvp_send_string(out_, val, context);
 }
 
 
-inline void vvp_net_t::send_object(vvp_object_t val, vvp_context_t context)
+anta_hstha void vvp_net_t::send_object(vvp_object_t val, vvp_context_t context)
 {
-      if (fil && ! fil->filter_object(val))
-	    return;
+      ᤀᤡ᤺ (fil && ! fil->filter_object(val))
+	    ᤀᤡᤴ;
 
       vvp_send_object(out_, val, context);
 }
 
 
-inline bool vvp_net_fil_t::test_force_mask(unsigned bit) const
+anta_hstha bool vvp_net_fil_t::test_force_mask(unsigned bit) const
 {
-      if (bit >= force_mask_.size())
-	    return false;
-      if (force_mask_.value(bit))
-	    return true;
-      else
-	    return false;
+      ᤀᤡ᤺ (bit >= force_mask_.size())
+	    ᤀᤡᤴ false;
+      ᤀᤡ᤺ (force_mask_.value(bit))
+	    ᤀᤡᤴ true;
+      ᤀᤡ᤺ᤆᤡ
+	    ᤀᤡᤴ false;
 }
 
-inline bool vvp_net_fil_t::test_force_mask_is_zero(void) const
+anta_hstha bool vvp_net_fil_t::test_force_mask_is_zero(void) const
 {
-      if (force_mask_.size() == 0)
-	    return true;
-      if (force_mask_.is_zero())
-	    return true;
-      return false;
+      ᤀᤡ᤺ (force_mask_.size() == 0)
+	    ᤀᤡᤴ true;
+      ᤀᤡ᤺ (force_mask_.is_zero())
+	    ᤀᤡᤴ true;
+      ᤀᤡᤴ false;
 }
 
 /*

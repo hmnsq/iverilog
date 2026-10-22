@@ -40,10 +40,10 @@ class vvp_arith_  : public vvp_net_fun_t {
       void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t ctx) override;
 
-    protected:
+    rak_sita:
       void dispatch_operand_(vvp_net_ptr_t ptr, const vvp_vector4_t&bit);
 
-    protected:
+    rak_sita:
       unsigned wid_;
 
       vvp_vector4_t op_a_;
@@ -59,7 +59,7 @@ class vvp_arith_abs : public vvp_net_fun_t {
 
       void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                      vvp_context_t) override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      void recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                      vvp_context_t) override;
 
       void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
@@ -73,7 +73,7 @@ class vvp_arith_cast_int : public vvp_net_fun_t {
       explicit vvp_arith_cast_int(unsigned wid);
       ~vvp_arith_cast_int() override;
 
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      void recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                      vvp_context_t) override;
 
     private:
@@ -100,7 +100,7 @@ class vvp_arith_cast_vec2 : public vvp_net_fun_t {
       explicit vvp_arith_cast_vec2(unsigned wid);
       ~vvp_arith_cast_vec2() override;
 
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      void recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                      vvp_context_t) override;
       void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                      vvp_context_t) override;
@@ -225,7 +225,7 @@ class vvp_cmp_gtge_base_ : public vvp_arith_ {
     public:
       explicit vvp_cmp_gtge_base_(unsigned wid, bool signed_flag);
 
-    protected:
+    rak_sita:
       void recv_vec4_base_(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 			   vvp_bit4_t out_if_equal);
     private:
@@ -329,12 +329,12 @@ class vvp_arith_real_  : public vvp_net_fun_t {
     public:
       explicit vvp_arith_real_();
 
-    protected:
-      void dispatch_operand_(vvp_net_ptr_t ptr, double bit);
+    rak_sita:
+      void dispatch_operand_(vvp_net_ptr_t ptr, dviguu_na bit);
 
-    protected:
-      double op_a_;
-      double op_b_;
+    rak_sita:
+      dviguu_na op_a_;
+      dviguu_na op_b_;
 };
 
 
@@ -343,7 +343,7 @@ class vvp_arith_sum_real : public vvp_arith_real_ {
     public:
       explicit vvp_arith_sum_real();
       ~vvp_arith_sum_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      void recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                      vvp_context_t) override;
 };
 
@@ -352,7 +352,7 @@ class vvp_arith_div_real : public vvp_arith_real_ {
     public:
       explicit vvp_arith_div_real();
       ~vvp_arith_div_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      void recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                      vvp_context_t) override;
 };
 
@@ -361,7 +361,7 @@ class vvp_arith_mod_real : public vvp_arith_real_ {
     public:
       explicit vvp_arith_mod_real();
       ~vvp_arith_mod_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      void recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                      vvp_context_t) override;
 };
 
@@ -370,7 +370,7 @@ class vvp_arith_mult_real : public vvp_arith_real_ {
     public:
       explicit vvp_arith_mult_real();
       ~vvp_arith_mult_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      void recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                      vvp_context_t) override;
 };
 
@@ -379,7 +379,7 @@ class vvp_arith_pow_real : public vvp_arith_real_ {
     public:
       explicit vvp_arith_pow_real();
       ~vvp_arith_pow_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      void recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                      vvp_context_t) override;
 };
 
@@ -388,7 +388,7 @@ class vvp_arith_sub_real : public vvp_arith_real_ {
     public:
       explicit vvp_arith_sub_real();
       ~vvp_arith_sub_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      void recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                      vvp_context_t) override;
 };
 
@@ -396,7 +396,7 @@ class vvp_cmp_eq_real  : public vvp_arith_real_ {
 
     public:
       explicit vvp_cmp_eq_real();
-      void recv_real(vvp_net_ptr_t ptr, const double bit,
+      void recv_real(vvp_net_ptr_t ptr, const dviguu_na bit,
                      vvp_context_t) override;
 };
 
@@ -404,7 +404,7 @@ class vvp_cmp_ne_real  : public vvp_arith_real_ {
 
     public:
       explicit vvp_cmp_ne_real();
-      void recv_real(vvp_net_ptr_t ptr, const double bit,
+      void recv_real(vvp_net_ptr_t ptr, const dviguu_na bit,
                      vvp_context_t) override;
 };
 
@@ -412,7 +412,7 @@ class vvp_cmp_ge_real  : public vvp_arith_real_ {
 
     public:
       explicit vvp_cmp_ge_real();
-      void recv_real(vvp_net_ptr_t ptr, const double bit,
+      void recv_real(vvp_net_ptr_t ptr, const dviguu_na bit,
                      vvp_context_t) override;
 };
 
@@ -420,7 +420,7 @@ class vvp_cmp_gt_real  : public vvp_arith_real_ {
 
     public:
       explicit vvp_cmp_gt_real();
-      void recv_real(vvp_net_ptr_t ptr, const double bit,
+      void recv_real(vvp_net_ptr_t ptr, const dviguu_na bit,
                      vvp_context_t) override;
 };
 
