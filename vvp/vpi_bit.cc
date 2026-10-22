@@ -29,21 +29,21 @@
 
 static const __vpiBit*bit_from_handle(const __vpiHandle*ref)
 {
-      if (ref == NULL) return NULL;
+      만약 (ref == NULL) 반환 NULL;
       const __vpiBit::as_bit_t*ptr = dynamic_cast<const __vpiBit::as_bit_t*> (ref);
-      if (ptr == NULL) return NULL;
-      return reinterpret_cast<const struct __vpiBit*>(ref);
+      만약 (ptr == NULL) 반환 NULL;
+      반환 reinterpret_cast<const struct __vpiBit*>(ref);
 }
 
 static __vpiBit*bit_from_handle(__vpiHandle*ref)
 {
-      if (ref == NULL) return NULL;
+      만약 (ref == NULL) 반환 NULL;
       const __vpiBit::as_bit_t*ptr = dynamic_cast<__vpiBit::as_bit_t*> (ref);
-      if (ptr == NULL) return NULL;
-      return reinterpret_cast<struct __vpiBit*>(ref);
+      만약 (ptr == NULL) 반환 NULL;
+      반환 reinterpret_cast<struct __vpiBit*>(ref);
 }
 
-static int bit_get_type(const __vpiBit*rfp)
+static 정수 bit_get_type(const __vpiBit*rfp)
 {
       assert(rfp);
 
@@ -52,15 +52,15 @@ static int bit_get_type(const __vpiBit*rfp)
 
       switch (parent->get_type_code()) {
 	case vpiNet:
-	    return vpiNetBit;
+	    반환 vpiNetBit;
 	case vpiReg:
-	    return vpiRegBit;
+	    반환 vpiRegBit;
       }
       assert(0);
-      return 0;
+      반환 0;
 }
 
-static int bit_get(int code, vpiHandle ref)
+static 정수 bit_get(정수 code, vpiHandle ref)
 {
       struct __vpiBit*rfp = bit_from_handle(ref);
       assert(rfp);
@@ -70,51 +70,51 @@ static int bit_get(int code, vpiHandle ref)
 
       switch (code) {
 	case vpiArray:  // A bit is not an array
-	    return 0;
+	    반환 0;
 
 	case vpiAutomatic:
-	    return vpi_get(vpiAutomatic, parent);
+	    반환 vpi_get(vpiAutomatic, parent);
 
 	case vpiIndex:
 	    {
 		  s_vpi_value vp;
 		  vp.format = vpiIntVal;
 		  vpi_get_value(rfp->index, &vp);
-		  return vp.value.integer;
+		  반환 vp.value.integer;
 	    }
 
 	case vpiLineNo:
-	    return vpi_get(vpiLineNo, parent);
+	    반환 vpi_get(vpiLineNo, parent);
 
 	case vpiScalar:  // A bit is a scalar
-	    return 1;
+	    반환 1;
 
 	case vpiSigned:  // A bit is unsigned
-	    return 0;
+	    반환 0;
 
 	case vpiSize:  // A bit has a width of 1
-	    return 1;
+	    반환 1;
 
 	case vpiVector:  // A bit is not a vector
-	    return 0;
+	    반환 0;
 
 	default:
 	    fprintf(stderr, "VPI error: unknown bit_get property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    반환 vpiUndefined;
       }
 }
 
-static char* bit_get_str(int code, vpiHandle ref)
+static char* bit_get_str(정수 code, vpiHandle ref)
 {
       struct __vpiBit*rfp = bit_from_handle(ref);
       assert(rfp);
 
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      만약 (code == vpiFile) {  // Not implemented for now!
+            반환 simple_set_rbuf_str(file_names[0]);
       }
 
-      if ((code != vpiName) && (code != vpiFullName)) return NULL;
+      만약 ((code != vpiName) && (code != vpiFullName)) 반환 NULL;
 
       struct __vpiSignal*parent = rfp->get_parent();
       assert(parent);
@@ -129,10 +129,10 @@ static char* bit_get_str(int code, vpiHandle ref)
 
       char *rbuf = generic_get_str(code, vpip_scope(parent), nm, ixs);
       free(nm);
-      return rbuf;
+      반환 rbuf;
 }
 
-static vpiHandle bit_get_handle(int code, vpiHandle ref)
+static vpiHandle bit_get_handle(정수 code, vpiHandle ref)
 {
       struct __vpiBit*rfp = bit_from_handle(ref);
       assert(rfp);
@@ -142,19 +142,19 @@ static vpiHandle bit_get_handle(int code, vpiHandle ref)
 
       switch (code) {
 	case vpiIndex:
-	    return rfp->index;
+	    반환 rfp->index;
 
 	case vpiParent:
-	    return parent;
+	    반환 parent;
 
 	case vpiScope:
-	    return vpi_handle(vpiScope, parent);
+	    반환 vpi_handle(vpiScope, parent);
 
 	case vpiModule:
-	    return vpi_handle(vpiModule, parent);
+	    반환 vpi_handle(vpiModule, parent);
       }
 
-    return 0;
+    반환 0;
 }
 
 /*
@@ -188,7 +188,7 @@ static void bit_get_value(vpiHandle ref, s_vpi_value*vp)
       parent->get_bit_value(rfp, vp);
 }
 
-static vpiHandle bit_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
+static vpiHandle bit_put_value(vpiHandle ref, s_vpi_value*vp, 정수 flags)
 {
       struct __vpiBit*rfp = bit_from_handle(ref);
       assert(rfp);
@@ -196,35 +196,35 @@ static vpiHandle bit_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
       struct __vpiSignal*parent = rfp->get_parent();
       assert(parent);
 
-      return parent->put_bit_value(rfp, vp, flags);
+      반환 parent->put_bit_value(rfp, vp, flags);
 }
 
 
-int __vpiBit::get_index(void) const
+정수 __vpiBit::get_index(void) const
 {
       s_vpi_value vp;
       vp.format = vpiIntVal;
       vpi_get_value(index, &vp);
-      return vp.value.integer;
+      반환 vp.value.integer;
 }
 
-int __vpiBit::as_bit_t::get_type_code(void) const
-{ return bit_get_type(bit_from_handle(this)); }
+정수 __vpiBit::as_bit_t::get_type_code(void) const
+{ 반환 bit_get_type(bit_from_handle(this)); }
 
-int __vpiBit::as_bit_t::vpi_get(int code)
-{ return bit_get(code, this); }
+정수 __vpiBit::as_bit_t::vpi_get(정수 code)
+{ 반환 bit_get(code, this); }
 
-char* __vpiBit::as_bit_t::vpi_get_str(int code)
-{ return bit_get_str(code, this); }
+char* __vpiBit::as_bit_t::vpi_get_str(정수 code)
+{ 반환 bit_get_str(code, this); }
 
 void __vpiBit::as_bit_t::vpi_get_value(p_vpi_value val)
 { bit_get_value(this, val); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_put_value(p_vpi_value val, int flags)
-{ return bit_put_value(this, val, flags); }
+vpiHandle __vpiBit::as_bit_t::vpi_put_value(p_vpi_value val, 정수 flags)
+{ 반환 bit_put_value(this, val, flags); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_handle(int code)
-{ return bit_get_handle(code, this); }
+vpiHandle __vpiBit::as_bit_t::vpi_handle(정수 code)
+{ 반환 bit_get_handle(code, this); }
 
 // FIXME: How are delayed put values handled?
 //vpiHandle __vpiBit::as_bit_t::vpi_iterate(int code) // FIXME: Is this needed?

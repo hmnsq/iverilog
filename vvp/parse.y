@@ -72,7 +72,7 @@ static struct __vpiModPath*modpath_dst = 0;
 
       vvp_delay_t*cdelay;
 
-      int      vpi_enum;
+      정수      vpi_enum;
 };
 
 %token K_A K_APV
@@ -505,7 +505,7 @@ statement
     }
  | T_LABEL K_DELAY T_NUMBER symbols ',' T_NUMBER ';'
     { struct symbv_s obj = $4;
-      if ($6 != 0) assert(0);
+      만약 ($6 != 0) assert(0);
       compile_delay($1, $3, obj.cnt, obj.vect, true);
     }
 
@@ -1252,17 +1252,17 @@ delay
 
 %%
 
-int compile_design(const char*path)
+정수 compile_design(const char*path)
 {
       yypath = path;
       yyline = 1;
       yyin = fopen(path, "r");
-      if (yyin == 0) {
+      만약 (yyin == 0) {
 	    fprintf(stderr, "%s: Unable to open input file.\n", path);
-	    return -1;
+	    반환 -1;
       }
 
-      int rc = yyparse();
+      정수 rc = yyparse();
       fclose(yyin);
-      return rc;
+      반환 rc;
 }

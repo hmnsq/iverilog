@@ -29,9 +29,9 @@ using namespace std;
 
 struct enumconst_s : public __vpiHandle {
       enumconst_s();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+      정수 get_type_code(void) const override;
+      정수 vpi_get(정수 code) override;
+      char* vpi_get_str(정수 code) override;
       void vpi_get_value(p_vpi_value val) override;
 
       const char*name;
@@ -42,12 +42,12 @@ struct enumconst_s : public __vpiHandle {
 
 struct __vpiEnumTypespec : public __vpiHandle {
       __vpiEnumTypespec();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+      정수 get_type_code(void) const override;
+      정수 vpi_get(정수 code) override;
+      vpiHandle vpi_iterate(정수 code) override;
 
       std::vector<enumconst_s> names;
-      int base_type_code;
+      정수 base_type_code;
       bool is_signed;
 };
 
@@ -55,82 +55,82 @@ struct __vpiEnumTypespec : public __vpiHandle {
 inline __vpiEnumTypespec::__vpiEnumTypespec()
 { }
 
-int __vpiEnumTypespec::get_type_code(void) const
-{ return vpiEnumTypespec; }
+정수 __vpiEnumTypespec::get_type_code(void) const
+{ 반환 vpiEnumTypespec; }
 
-int __vpiEnumTypespec::vpi_get(int code)
+정수 __vpiEnumTypespec::vpi_get(정수 code)
 {
       switch (code) {
 	  case vpiSize:
-	    return names.size();
+	    반환 names.size();
 
 	    /* This is not currently set correctly. We always use vpiReg for
 	     * four state variables and vpiBitVar for two state variables.
 	     * This minimal functionality is needed to get the next() and
 	     * prev() methods to work correctly with invalid values. */
 	  case vpiBaseTypespec:
-	    return base_type_code;
+	    반환 base_type_code;
 
 	  case vpiSigned:
-	    return is_signed;
+	    반환 is_signed;
 
 	  default:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by __vpiEnumTypespec\n", code);
 	    assert(0);
-	    return 0;
+	    반환 0;
       }
 }
 
 
-vpiHandle __vpiEnumTypespec::vpi_iterate(int code)
+vpiHandle __vpiEnumTypespec::vpi_iterate(정수 code)
 {
-      if (code == vpiEnumConst) {
+      만약 (code == vpiEnumConst) {
 	    vpiHandle*args = static_cast<vpiHandle*>
 	                                (calloc(names.size(), sizeof(vpiHandle*)));
-	    for (size_t idx = 0 ; idx < names.size() ; idx += 1)
+	    위해 (size_t idx = 0 ; idx < names.size() ; idx += 1)
 		  args[idx] = &names[idx];
 
-	    return vpip_make_iterator(names.size(), args, true);
+	    반환 vpip_make_iterator(names.size(), args, true);
       }
 
-      return 0;
+      반환 0;
 }
 
 
 inline enumconst_s::enumconst_s()
 { }
 
-int enumconst_s::get_type_code(void) const
-{ return vpiEnumConst; }
+정수 enumconst_s::get_type_code(void) const
+{ 반환 vpiEnumConst; }
 
-int enumconst_s::vpi_get(int code)
+정수 enumconst_s::vpi_get(정수 code)
 {
       switch (code) {
 	  case vpiSize:
-	    return val4.size()? val4.size() : val2.size();
+	    반환 val4.size()? val4.size() : val2.size();
 	  default:
-	    return 0;
+	    반환 0;
       }
 }
 
 
-char* enumconst_s::vpi_get_str(int code)
+char* enumconst_s::vpi_get_str(정수 code)
 {
       switch (code) {
 	  case vpiName:
-	    return const_cast<char*> (name);
+	    반환 const_cast<char*> (name);
 	  default:
-	    return 0;
+	    반환 0;
       }
 }
 
 
 void enumconst_s::vpi_get_value(p_vpi_value val)
 {
-      if (val4.size() > 0) {
+      만약 (val4.size() > 0) {
 	    vpip_vec4_get_value(val4, val4.size(), is_signed, val);
-      } else {
+      } 아니면 {
 	    vpip_vec2_get_value(val2, val2.size(), is_signed, val);
       }
 }
@@ -145,7 +145,7 @@ void compile_enum2_type(char*label, long width, bool signed_flag,
       spec->base_type_code = vpiBitVar;
 
       size_t idx = 0;
-      for (list<struct enum_name_s>::iterator cur = names->begin()
+      위해 (list<struct enum_name_s>::iterator cur = names->begin()
 		 ; cur != names->end() ;  ++cur, ++idx) {
 	    assert(cur->val4 == 0);
 	    spec->names[idx].name = cur->text;
@@ -170,7 +170,7 @@ void compile_enum4_type(char*label, long width, bool signed_flag,
       spec->base_type_code = vpiReg;
 
       size_t idx = 0;
-      for (list<struct enum_name_s>::iterator cur = names->begin()
+      위해 (list<struct enum_name_s>::iterator cur = names->begin()
 		 ; cur != names->end() ;  ++cur, ++idx) {
 	    spec->names[idx].name = cur->text;
 	    assert(cur->val4);
@@ -193,7 +193,7 @@ void enum_delete(vpiHandle item)
 {
       struct __vpiEnumTypespec*obj = dynamic_cast<__vpiEnumTypespec*>(item);
 
-      for (vector<enumconst_s>::iterator iter = obj->names.begin();
+      위해 (vector<enumconst_s>::iterator iter = obj->names.begin();
            iter != obj->names.end(); ++ iter ) {
 	    delete [] iter->name;
       }

@@ -43,12 +43,12 @@ void vvp_fun_bufif::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 	    en_ = pol_? ~bit : bit;
 	    break;
 	  default:
-	    return;
+	    반환;
       }
 
       vvp_vector8_t out (bit.size());
 
-      for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
+      위해 (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
 	    vvp_bit4_t b_en  = en_.value(idx);
 	    vvp_bit4_t b_bit = bit_.value(idx);
 
@@ -57,9 +57,9 @@ void vvp_fun_bufif::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 		  out.set_bit(idx, vvp_scalar_t(BIT4_Z,drive0_,drive1_));
 		  break;
 		case BIT4_1:
-		  if (bit4_is_xz(b_bit))
+		  만약 (bit4_is_xz(b_bit))
 			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
-		  else
+		  아니면
 			out.set_bit(idx, vvp_scalar_t(b_bit,drive0_,drive1_));
 		  break;
 

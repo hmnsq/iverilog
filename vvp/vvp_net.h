@@ -33,7 +33,7 @@
 
 #ifdef HAVE_IOSFWD
 # include  <iosfwd>
-#else
+#아니면
 # include  <iostream>
 #endif
 
@@ -69,12 +69,12 @@ typedef void*vvp_context_item_t;
 
 inline vvp_context_t vvp_allocate_context(unsigned nitem)
 {
-      return (vvp_context_t)malloc((2 + nitem) * sizeof(void*));
+      반환 (vvp_context_t)malloc((2 + nitem) * sizeof(void*));
 }
 
 inline vvp_context_t vvp_get_next_context(vvp_context_t context)
 {
-      return (vvp_context_t)context[0];
+      반환 (vvp_context_t)context[0];
 }
 
 inline void vvp_set_next_context(vvp_context_t context, vvp_context_t next)
@@ -84,7 +84,7 @@ inline void vvp_set_next_context(vvp_context_t context, vvp_context_t next)
 
 inline vvp_context_t vvp_get_stacked_context(vvp_context_t context)
 {
-      return (vvp_context_t)context[1];
+      반환 (vvp_context_t)context[1];
 }
 
 inline void vvp_set_stacked_context(vvp_context_t context, vvp_context_t stack)
@@ -95,7 +95,7 @@ inline void vvp_set_stacked_context(vvp_context_t context, vvp_context_t stack)
 inline vvp_context_item_t vvp_get_context_item(vvp_context_t context,
                                                unsigned item_idx)
 {
-      return (vvp_context_item_t)context[item_idx];
+      반환 (vvp_context_item_t)context[item_idx];
 }
 
 inline void vvp_set_context_item(vvp_context_t context, unsigned item_idx,
@@ -139,7 +139,7 @@ enum vvp_bit4_t {
 };
 
   /* Return an ASCII character that represents the vvp_bit4_t value. */
-inline char vvp_bit4_to_ascii(vvp_bit4_t a) { return "01zx"[a]; }
+inline char vvp_bit4_to_ascii(vvp_bit4_t a) { 반환 "01zx"[a]; }
 
 extern vvp_bit4_t add_with_carry(vvp_bit4_t a, vvp_bit4_t b, vvp_bit4_t&c);
 
@@ -147,13 +147,13 @@ extern vvp_bit4_t scalar_to_bit4(PLI_INT32 scalar);
 
   /* Return TRUE if the bit is BIT4_X or BIT4_Z. The fast
      implementation here relies on the encoding of vvp_bit4_t values. */
-inline bool bit4_is_xz(vvp_bit4_t a) { return a >= 2; }
+inline bool bit4_is_xz(vvp_bit4_t a) { 반환 a >= 2; }
 
   /* This function converts BIT4_Z to BIT4_X, but passes other values
      unchanged. This fast implementation relies of the encoding of the
      vvp_bit4_t values. In particular, the BIT4_X==3 and BIT4_Z==2 */
 inline vvp_bit4_t bit4_z2x(vvp_bit4_t a)
-{ return (vvp_bit4_t) ( (int)a | ((int)a >> 1) ); }
+{ 반환 (vvp_bit4_t) ( (정수)a | ((정수)a >> 1) ); }
 
   /* Some common boolean operators. These implement the Verilog rules
      for 4-value bit operations. The fast implementations here rely
@@ -164,20 +164,20 @@ inline vvp_bit4_t bit4_z2x(vvp_bit4_t a)
   // ~BIT4_X --> BIT4_X
   // ~BIT4_Z --> BIT4_X
 inline vvp_bit4_t operator ~ (vvp_bit4_t a)
-{ return bit4_z2x((vvp_bit4_t) (((int)a) ^ 1)); }
+{ 반환 bit4_z2x((vvp_bit4_t) (((정수)a) ^ 1)); }
 
 inline vvp_bit4_t operator | (vvp_bit4_t a, vvp_bit4_t b)
 {
-      if (a==BIT4_1 || b==BIT4_1)
-	    return BIT4_1;
-      return bit4_z2x( (vvp_bit4_t) ((int)a | (int)b) );
+      만약 (a==BIT4_1 || b==BIT4_1)
+	    반환 BIT4_1;
+      반환 bit4_z2x( (vvp_bit4_t) ((정수)a | (정수)b) );
 }
 
 inline vvp_bit4_t operator & (vvp_bit4_t a, vvp_bit4_t b)
 {
-      if (a==BIT4_0 || b==BIT4_0)
-	    return BIT4_0;
-      return bit4_z2x( (vvp_bit4_t) ((int)a | (int)b) );
+      만약 (a==BIT4_0 || b==BIT4_0)
+	    반환 BIT4_0;
+      반환 bit4_z2x( (vvp_bit4_t) ((정수)a | (정수)b) );
 }
 
 
@@ -186,7 +186,7 @@ extern std::ostream& operator<< (std::ostream&o, vvp_bit4_t a);
 
   /* Return >0, ==0 or <0 if the from-to transition represents a
      posedge, no edge, or negedge. */
-extern int edge(vvp_bit4_t from, vvp_bit4_t to);
+extern 정수 edge(vvp_bit4_t from, vvp_bit4_t to);
 
   /* Support for $countdrivers. */
 inline void update_driver_counts(vvp_bit4_t bit, unsigned counts[3])
@@ -216,13 +216,13 @@ static inline unsigned long add_with_carry(unsigned long a, unsigned long b,
       unsigned long tmp = b + carry;
       unsigned long sum = a + tmp;
       carry = 0;
-      if (tmp < b)
+      만약 (tmp < b)
 	    carry = 1;
-      if (sum < tmp)
+      만약 (sum < tmp)
 	    carry = 1;
-      if (sum < a)
+      만약 (sum < a)
 	    carry = 1;
-      return sum;
+      반환 sum;
 }
 
 extern unsigned long multiply_with_carry(unsigned long a, unsigned long b,
@@ -266,7 +266,7 @@ class vvp_vector4_t {
 
       ~vvp_vector4_t();
 
-      inline unsigned size() const { return size_; }
+      inline unsigned size() const { 반환 size_; }
       void resize(unsigned new_size, vvp_bit4_t pad_bit = BIT4_X);
 
 	// Get the bit at the specified address
@@ -335,7 +335,7 @@ class vvp_vector4_t {
       enum { BITS_PER_WORD = 8*sizeof(unsigned long) };
 	// The double value constructor requires that WORD_0_BBITS
 	// and WORD_1_BBITS have the same value!
-#if SIZEOF_UNSIGNED_LONG == 8
+#만약 SIZEOF_UNSIGNED_LONG == 8
       enum { WORD_0_ABITS = 0x0000000000000000UL,
 	     WORD_0_BBITS = 0x0000000000000000UL };
       enum { WORD_1_ABITS = 0xFFFFFFFFFFFFFFFFUL,
@@ -349,7 +349,7 @@ class vvp_vector4_t {
       enum { WORD_1_ABITS = 0xFFFFFFFFUL, WORD_1_BBITS = 0x00000000UL };
       enum { WORD_X_ABITS = 0xFFFFFFFFUL, WORD_X_BBITS = 0xFFFFFFFFUL };
       enum { WORD_Z_ABITS = 0x00000000UL, WORD_Z_BBITS = 0xFFFFFFFFUL };
-#else
+#아니면
 #error "WORD_X_xBITS not defined for this architecture?"
 #endif
 
@@ -390,9 +390,9 @@ inline vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that)
 
 inline vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that, bool invert_flag)
 {
-      if (invert_flag)
+      만약 (invert_flag)
 	    copy_inverted_from_(that);
-      else
+      아니면
 	    copy_from_(that);
 }
 
@@ -416,7 +416,7 @@ inline vvp_vector4_t::vvp_vector4_t(unsigned size__, vvp_bit4_t val)
 
 inline vvp_vector4_t::~vvp_vector4_t()
 {
-      if (size_ > BITS_PER_WORD) {
+      만약 (size_ > BITS_PER_WORD) {
 	    delete[] abits_ptr_;
 	      // bbits_ptr_ actually points half-way into a
 	      // double-length array started at abits_ptr_
@@ -425,42 +425,42 @@ inline vvp_vector4_t::~vvp_vector4_t()
 
 inline vvp_vector4_t& vvp_vector4_t::operator= (const vvp_vector4_t&that)
 {
-      if (this == &that)
-	    return *this;
+      만약 (this == &that)
+	    반환 *this;
 
-      if (size_ > BITS_PER_WORD)
+      만약 (size_ > BITS_PER_WORD)
 	    delete[] abits_ptr_;
 
       copy_from_(that);
 
-      return *this;
+      반환 *this;
 }
 
 inline void vvp_vector4_t::copy_from_(const vvp_vector4_t&that)
 {
       size_ = that.size_;
-      if (size_ <= BITS_PER_WORD) {
+      만약 (size_ <= BITS_PER_WORD) {
 	    abits_val_ = that.abits_val_;
 	    bbits_val_ = that.bbits_val_;
-      } else {
+      } 아니면 {
 	    copy_from_big_(that);
       }
 }
 
 inline vvp_bit4_t vvp_vector4_t::value(unsigned idx) const
 {
-      if (idx >= size_)
-	    return BIT4_X;
+      만약 (idx >= size_)
+	    반환 BIT4_X;
 
       unsigned off;
 
       unsigned long abits, bbits;
-      if (size_ > BITS_PER_WORD) {
+      만약 (size_ > BITS_PER_WORD) {
 	    unsigned wdx = idx / BITS_PER_WORD;
 	    off = idx % BITS_PER_WORD;
 	    abits = abits_ptr_[wdx];
 	    bbits = bbits_ptr_[wdx];
-      } else {
+      } 아니면 {
 	    off = idx;
 	    abits = abits_val_;
 	    bbits = bbits_val_;
@@ -468,14 +468,14 @@ inline vvp_bit4_t vvp_vector4_t::value(unsigned idx) const
 
       abits >>= off;
       bbits >>= off;
-      int tmp = ((bbits&1) << 1) + (abits&1);
+      정수 tmp = ((bbits&1) << 1) + (abits&1);
 	// This cast works since b==1,a==1 is X and b==1,a==0 is Z.
-      return (vvp_bit4_t)tmp;
+      반환 (vvp_bit4_t)tmp;
 }
 
 inline vvp_vector4_t vvp_vector4_t::subvalue(unsigned adr, unsigned wid) const
 {
-      return vvp_vector4_t(*this, adr, wid);
+      반환 vvp_vector4_t(*this, adr, wid);
 }
 
 inline void vvp_vector4_t::set_bit(unsigned idx, vvp_bit4_t val)
@@ -485,7 +485,7 @@ inline void vvp_vector4_t::set_bit(unsigned idx, vvp_bit4_t val)
       unsigned long off = idx % BITS_PER_WORD;
       unsigned long mask = 1UL << off;
 
-      if (size_ > BITS_PER_WORD) {
+      만약 (size_ > BITS_PER_WORD) {
 	    unsigned wdx = idx / BITS_PER_WORD;
 	    switch (val) {
 		case BIT4_0:
@@ -505,7 +505,7 @@ inline void vvp_vector4_t::set_bit(unsigned idx, vvp_bit4_t val)
 		  bbits_ptr_[wdx] |=  mask;
 		  break;
 	    }
-      } else {
+      } 아니면 {
 	    switch (val) {
 		case BIT4_0:
 		  abits_val_ &= ~mask;
@@ -530,7 +530,7 @@ inline void vvp_vector4_t::set_bit(unsigned idx, vvp_bit4_t val)
 inline vvp_vector4_t operator ~ (const vvp_vector4_t&that)
 {
       vvp_vector4_t res (that, true);
-      return res;
+      반환 res;
 }
 
 extern std::ostream& operator << (std::ostream&, const vvp_vector4_t&);
@@ -568,7 +568,7 @@ template <class T> extern bool vector4_to_value(const vvp_vector4_t&a,
 template <class T> inline bool vector4_to_value(const vvp_vector4_t&a, T&val)
 {
       bool overflow_flag;
-      return vector4_to_value(a, overflow_flag, val);
+      반환 vector4_to_value(a, overflow_flag, val);
 }
 
 extern bool vector4_to_value(const vvp_vector4_t&a, double&val, bool is_signed);
@@ -584,7 +584,7 @@ inline vvp_vector4_t double_to_vector4_LSB(double real)
       // size, but that's really horrible code so don't do that!
       vvp_vector4_t bit = vvp_vector4_t(64, real);
       bit.resize(1);
-      return bit;
+      반환 bit;
 }
 
 /*
@@ -596,8 +596,8 @@ class vvp_vector4array_t {
       vvp_vector4array_t(unsigned width, unsigned words);
       virtual ~vvp_vector4array_t();
 
-      unsigned width() const { return width_; }
-      unsigned words() const { return words_; }
+      unsigned width() const { 반환 width_; }
+      unsigned words() const { 반환 words_; }
 
       virtual vvp_vector4_t get_word(unsigned idx) const = 0;
       virtual void set_word(unsigned idx, const vvp_vector4_t&that) = 0;
@@ -708,11 +708,11 @@ class vvp_vector2_t {
       bool is_NaN() const;
       bool is_zero() const;
       unsigned size() const;
-      int value(unsigned idx) const;
+      정수 value(unsigned idx) const;
       vvp_bit4_t value4(unsigned idx) const;
 	// Get the vector2 subvector starting at the address
       vvp_vector2_t subvalue(unsigned idx, unsigned size) const;
-      void set_bit(unsigned idx, int bit);
+      void set_bit(unsigned idx, 정수 bit);
       void set_vec(unsigned idx, const vvp_vector2_t&that);
 	// Make the size just big enough to hold the first 1 bit.
       void trim();
@@ -761,10 +761,10 @@ inline vvp_vector2_t::vvp_vector2_t(const vvp_vector2_t&that)
 
 inline vvp_vector2_t::vvp_vector2_t(const vvp_vector4_t&that, bool enable_NaN)
 {
-      if (enable_NaN && that.has_xz()) {
+      만약 (enable_NaN && that.has_xz()) {
 	    vec_ = 0;
 	    wid_ = 0;
-	    return;
+	    반환;
       }
       copy_from_that_(that);
 }
@@ -777,20 +777,20 @@ inline vvp_vector2_t::~vvp_vector2_t()
 /* Inline some of the vector2_t methods. */
 inline unsigned vvp_vector2_t::size() const
 {
-      return wid_;
+      반환 wid_;
 }
 
 inline vvp_bit4_t vvp_vector2_t::value4(unsigned idx) const
 {
-      if (value(idx))
-	    return BIT4_1;
-      else
-	    return BIT4_0;
+      만약 (value(idx))
+	    반환 BIT4_1;
+      아니면
+	    반환 BIT4_0;
 }
 
 inline vvp_vector2_t vvp_vector2_t::subvalue(unsigned base, unsigned wid) const
 {
-      return vvp_vector2_t(*this, base, wid);
+      반환 vvp_vector2_t(*this, base, wid);
 }
 
 /*
@@ -829,8 +829,8 @@ class vvp_scalar_t {
       unsigned strength0() const;
       unsigned strength1() const;
 
-      bool eeq(vvp_scalar_t that) const { return value_ == that.value_; }
-      bool is_hiz() const { return (value_ & 0x77) == 0; }
+      bool eeq(vvp_scalar_t that) const { 반환 value_ == that.value_; }
+      bool is_hiz() const { 반환 (value_ & 0x77) == 0; }
 
     private:
 	// This class and the vvp_vector8_t class are closely related,
@@ -838,7 +838,7 @@ class vvp_scalar_t {
 	// it can do compact vectoring of vvp_scalar_t objects.
       friend class vvp_vector8_t;
       explicit vvp_scalar_t(unsigned char val) : value_(val) { }
-      unsigned char raw() const { return value_; }
+      unsigned char raw() const { 반환 value_; }
 
     private:
       unsigned char value_;
@@ -854,9 +854,9 @@ inline vvp_scalar_t::vvp_scalar_t(vvp_bit4_t val, unsigned str0, unsigned str1)
       assert(str0 <= 7);
       assert(str1 <= 7);
 
-      if (str0 == 0 && str1 == 0) {
+      만약 (str0 == 0 && str1 == 0) {
 	    value_ = 0x00;
-      } else switch (val) {
+      } 아니면 switch (val) {
 	  case BIT4_0:
 	    value_ = str0 | (str0<<4);
 	    break;
@@ -874,15 +874,15 @@ inline vvp_scalar_t::vvp_scalar_t(vvp_bit4_t val, unsigned str0, unsigned str1)
 
 inline vvp_bit4_t vvp_scalar_t::value() const
 {
-      if ((value_ & 0x77) == 0) {
-	    return BIT4_Z;
-      } else switch (value_ & 0x88) {
+      만약 ((value_ & 0x77) == 0) {
+	    반환 BIT4_Z;
+      } 아니면 switch (value_ & 0x88) {
 	  case 0x00:
-	    return BIT4_0;
+	    반환 BIT4_0;
 	  case 0x88:
-	    return BIT4_1;
+	    반환 BIT4_1;
 	  default:
-	    return BIT4_X;
+	    반환 BIT4_X;
       }
 }
 
@@ -893,16 +893,16 @@ inline vvp_scalar_t resolve(vvp_scalar_t a, vvp_scalar_t b)
 
 	// If the value is HiZ, resolution is simply a matter of
 	// returning the *other* value.
-      if (a.is_hiz())
-	    return b;
-      if (b.is_hiz())
-	    return a;
+      만약 (a.is_hiz())
+	    반환 b;
+      만약 (b.is_hiz())
+	    반환 a;
 	// If the values are the identical, then resolution is simply
 	// returning *either* value.
-      if (a .eeq( b ))
-	    return a;
+      만약 (a .eeq( b ))
+	    반환 a;
 
-      return fully_featured_resolv_(a,b);
+      반환 fully_featured_resolv_(a,b);
 }
 
 extern std::ostream& operator<< (std::ostream&, vvp_scalar_t);
@@ -940,7 +940,7 @@ class vvp_vector8_t {
 
     public:
 
-      unsigned size() const { return size_; }
+      unsigned size() const { 반환 size_; }
       vvp_scalar_t value(unsigned idx) const;
       vvp_vector8_t subvalue(unsigned adr, unsigned width) const;
       void set_bit(unsigned idx, vvp_scalar_t val);
@@ -967,11 +967,11 @@ inline vvp_vector8_t resolve(const vvp_vector8_t&a, const vvp_vector8_t&b)
       assert(a.size() == b.size());
       vvp_vector8_t out (a.size());
 
-      for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
+      위해 (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
 	    out.set_bit(idx, resolve(a.value(idx), b.value(idx)));
       }
 
-      return out;
+      반환 out;
 }
 
   /* This lookup tabke implements the strength reduction implied by
@@ -994,9 +994,9 @@ extern std::ostream& operator<< (std::ostream&, const vvp_vector8_t&);
 inline vvp_vector8_t::vvp_vector8_t(unsigned size__)
 : size_(size__)
 {
-      if (size_ <= sizeof(val_)) {
+      만약 (size_ <= sizeof(val_)) {
 	    memset(val_, 0, sizeof(val_));
-      } else {
+      } 아니면 {
 	    ptr_ = new unsigned char[size_];
 	    memset(ptr_, 0, size_);
       }
@@ -1004,25 +1004,25 @@ inline vvp_vector8_t::vvp_vector8_t(unsigned size__)
 
 inline vvp_vector8_t::~vvp_vector8_t()
 {
-      if (size_ > sizeof(val_))
+      만약 (size_ > sizeof(val_))
 	    delete[]ptr_;
 }
 
 inline vvp_scalar_t vvp_vector8_t::value(unsigned idx) const
 {
       assert(idx < size_);
-      if (size_ <= sizeof(val_))
-	    return vvp_scalar_t(val_[idx]);
-      else
-	    return vvp_scalar_t(ptr_[idx]);
+      만약 (size_ <= sizeof(val_))
+	    반환 vvp_scalar_t(val_[idx]);
+      아니면
+	    반환 vvp_scalar_t(ptr_[idx]);
 }
 
 inline void vvp_vector8_t::set_bit(unsigned idx, vvp_scalar_t val)
 {
       assert(idx < size_);
-      if (size_ <= sizeof(val_))
+      만약 (size_ <= sizeof(val_))
 	    val_[idx] = val.raw();
-      else
+      아니면
 	    ptr_[idx] = val.raw();
 }
 
@@ -1030,16 +1030,16 @@ inline void vvp_vector8_t::set_bit(unsigned idx, vvp_scalar_t val)
   // as possible.
 inline bool vvp_vector8_t::eeq(const vvp_vector8_t&that) const
 {
-      if (size_ != that.size_)
-	    return false;
-      if (size_ == 0)
-	    return true;
+      만약 (size_ != that.size_)
+	    반환 false;
+      만약 (size_ == 0)
+	    반환 true;
 
-      if (size_ <= sizeof(val_))
+      만약 (size_ <= sizeof(val_))
 	      // This is equivalent to memcmp(val_, that.val_, sizeof val_)==0
-	    return ptr_ == that.ptr_;
-      else
-	    return memcmp(ptr_, that.ptr_, size_) == 0;
+	    반환 ptr_ == that.ptr_;
+      아니면
+	    반환 memcmp(ptr_, that.ptr_, size_) == 0;
 }
 
 /*
@@ -1071,17 +1071,17 @@ template <class T> class vvp_sub_pointer_t {
       ~vvp_sub_pointer_t() = default;
 
       T* ptr()
-      { return reinterpret_cast<T*> (bits_ & ~UINTPTR_C(3)); }
+      { 반환 reinterpret_cast<T*> (bits_ & ~UINTPTR_C(3)); }
 
       const T* ptr() const
-      { return reinterpret_cast<const T*> (bits_ & ~UINTPTR_C(3)); }
+      { 반환 reinterpret_cast<const T*> (bits_ & ~UINTPTR_C(3)); }
 
-      unsigned  port() const { return bits_ & UINTPTR_C(3); }
+      unsigned  port() const { 반환 bits_ & UINTPTR_C(3); }
 
-      bool nil() const { return bits_ == 0; }
+      bool nil() const { 반환 bits_ == 0; }
 
-      bool operator == (vvp_sub_pointer_t that) const { return bits_ == that.bits_; }
-      bool operator != (vvp_sub_pointer_t that) const { return bits_ != that.bits_; }
+      bool operator == (vvp_sub_pointer_t that) const { 반환 bits_ == that.bits_; }
+      bool operator != (vvp_sub_pointer_t that) const { 반환 bits_ != that.bits_; }
 
     private:
       uintptr_t bits_;
@@ -1089,7 +1089,7 @@ template <class T> class vvp_sub_pointer_t {
 
 typedef vvp_sub_pointer_t<vvp_net_t> vvp_net_ptr_t;
 template <class T> std::ostream& operator << (std::ostream&out, vvp_sub_pointer_t<T> val)
-{ out << val.ptr() << "[" << val.port() << "]"; return out; }
+{ out << val.ptr() << "[" << val.port() << "]"; 반환 out; }
 
 /*
  * This is the basic unit of netlist connectivity. It is a fan-in of
@@ -1181,7 +1181,7 @@ class vvp_net_t {
       static void operator delete(void*); // not implemented
     private: // not implemented
       static void* operator new[](std::size_t size);
-#if defined(__GNUC__)
+#만약 defined(__GNUC__)
       static void operator delete[](void*);
 #endif
 };
@@ -1254,10 +1254,10 @@ class vvp_net_fun_t {
 			 unsigned base, unsigned vwid);
 
     public: // These objects are only permallocated.
-      static void* operator new(std::size_t size) { return heap_.alloc(size); }
+      static void* operator new(std::size_t size) { 반환 heap_.alloc(size); }
       static void operator delete(void*); // not implemented
 
-      static std::size_t heap_total() { return heap_.heap_total(); }
+      static std::size_t heap_total() { 반환 heap_.heap_total(); }
 
     protected:
       static permaheap heap_;
@@ -1326,10 +1326,10 @@ class vvp_net_fil_t  : public vvp_vpi_callback {
       virtual void force_fil_real(double val, const vvp_vector2_t&mask) =0;
 
     public: // These objects are only permallocated.
-      static void* operator new(std::size_t size) { return heap_.alloc(size); }
+      static void* operator new(std::size_t size) { 반환 heap_.alloc(size); }
       static void operator delete(void*); // not implemented
 
-      static size_t heap_total() { return heap_.heap_total(); }
+      static size_t heap_total() { 반환 heap_.heap_total(); }
 
     private:
       static permaheap heap_;
@@ -1478,7 +1478,7 @@ class vvp_wide_fun_core : public vvp_net_fun_t {
       vvp_wide_fun_core(vvp_net_t*net, unsigned nports);
       virtual ~vvp_wide_fun_core() override;
 	// These objects are not perm allocated.
-      static void* operator new(std::size_t size) { return ::new char[size]; }
+      static void* operator new(std::size_t size) { 반환 ::new char[size]; }
       static void operator delete(void* ptr) { ::delete[](static_cast<char*>(ptr)); }
 
     protected:
@@ -1536,10 +1536,10 @@ class vvp_wide_fun_t : public vvp_net_fun_t {
 
 inline void vvp_send_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&val, vvp_context_t context)
 {
-      while (class vvp_net_t*cur = ptr.ptr()) {
+      동안 (class vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    만약 (cur->fun)
 		  cur->fun->recv_vec4(ptr, val, context);
 
 	    ptr = next_val;
@@ -1552,10 +1552,10 @@ extern void vvp_send_real(vvp_net_ptr_t ptr, double val,
 
 inline void vvp_send_string(vvp_net_ptr_t ptr, const std::string&val, vvp_context_t context)
 {
-      while (vvp_net_t*cur = ptr.ptr()) {
+      동안 (vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    만약 (cur->fun)
 		  cur->fun->recv_string(ptr, val, context);
 
 	    ptr = next_val;
@@ -1564,10 +1564,10 @@ inline void vvp_send_string(vvp_net_ptr_t ptr, const std::string&val, vvp_contex
 
 inline void vvp_send_object(vvp_net_ptr_t ptr, vvp_object_t val, vvp_context_t context)
 {
-      while (vvp_net_t*cur = ptr.ptr()) {
+      동안 (vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    만약 (cur->fun)
 		  cur->fun->recv_object(ptr, val, context);
 
 	    ptr = next_val;
@@ -1596,10 +1596,10 @@ inline void vvp_send_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&val,
 			     unsigned base, unsigned vwid,
 			     vvp_context_t context)
 {
-      while (class vvp_net_t*cur = ptr.ptr()) {
+      동안 (class vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    만약 (cur->fun)
 		  cur->fun->recv_vec4_pv(ptr, val, base, vwid, context);
 
 	    ptr = next_val;
@@ -1609,10 +1609,10 @@ inline void vvp_send_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&val,
 inline void vvp_send_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&val,
 			     unsigned base, unsigned vwid)
 {
-      while (class vvp_net_t*cur = ptr.ptr()) {
+      동안 (class vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    만약 (cur->fun)
 		  cur->fun->recv_vec8_pv(ptr, val, base, vwid);
 
 	    ptr = next_val;
@@ -1621,9 +1621,9 @@ inline void vvp_send_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&val,
 
 inline void vvp_net_t::send_vec4(const vvp_vector4_t&val, vvp_context_t context)
 {
-      if (fil == 0) {
+      만약 (fil == 0) {
 	    vvp_send_vec4(out_, val, context);
-	    return;
+	    반환;
       }
 
       vvp_vector4_t rep;
@@ -1643,9 +1643,9 @@ inline void vvp_net_t::send_vec4_pv(const vvp_vector4_t&val,
 				    unsigned base, unsigned vwid,
 				    vvp_context_t context)
 {
-      if (fil == 0) {
+      만약 (fil == 0) {
 	    vvp_send_vec4_pv(out_, val, base, vwid, context);
-	    return;
+	    반환;
       }
 
       vvp_vector4_t rep;
@@ -1663,9 +1663,9 @@ inline void vvp_net_t::send_vec4_pv(const vvp_vector4_t&val,
 
 inline void vvp_net_t::send_vec8(const vvp_vector8_t&val)
 {
-      if (fil == 0) {
+      만약 (fil == 0) {
 	    vvp_send_vec8(out_, val);
-	    return;
+	    반환;
       }
 
       vvp_vector8_t rep;
@@ -1684,9 +1684,9 @@ inline void vvp_net_t::send_vec8(const vvp_vector8_t&val)
 inline void vvp_net_t::send_vec8_pv(const vvp_vector8_t&val,
 				    unsigned base, unsigned vwid)
 {
-      if (fil == 0) {
+      만약 (fil == 0) {
 	    vvp_send_vec8_pv(out_, val, base, vwid);
-	    return;
+	    반환;
       }
 
       vvp_vector8_t rep;
@@ -1704,8 +1704,8 @@ inline void vvp_net_t::send_vec8_pv(const vvp_vector8_t&val,
 
 inline void vvp_net_t::send_real(double val, vvp_context_t context)
 {
-      if (fil && ! fil->filter_real(val))
-	    return;
+      만약 (fil && ! fil->filter_real(val))
+	    반환;
 
       vvp_send_real(out_, val, context);
 }
@@ -1713,8 +1713,8 @@ inline void vvp_net_t::send_real(double val, vvp_context_t context)
 
 inline void vvp_net_t::send_string(const std::string&val, vvp_context_t context)
 {
-      if (fil && !fil->filter_string(val))
-	    return;
+      만약 (fil && !fil->filter_string(val))
+	    반환;
 
       vvp_send_string(out_, val, context);
 }
@@ -1722,8 +1722,8 @@ inline void vvp_net_t::send_string(const std::string&val, vvp_context_t context)
 
 inline void vvp_net_t::send_object(vvp_object_t val, vvp_context_t context)
 {
-      if (fil && ! fil->filter_object(val))
-	    return;
+      만약 (fil && ! fil->filter_object(val))
+	    반환;
 
       vvp_send_object(out_, val, context);
 }
@@ -1731,21 +1731,21 @@ inline void vvp_net_t::send_object(vvp_object_t val, vvp_context_t context)
 
 inline bool vvp_net_fil_t::test_force_mask(unsigned bit) const
 {
-      if (bit >= force_mask_.size())
-	    return false;
-      if (force_mask_.value(bit))
-	    return true;
-      else
-	    return false;
+      만약 (bit >= force_mask_.size())
+	    반환 false;
+      만약 (force_mask_.value(bit))
+	    반환 true;
+      아니면
+	    반환 false;
 }
 
 inline bool vvp_net_fil_t::test_force_mask_is_zero(void) const
 {
-      if (force_mask_.size() == 0)
-	    return true;
-      if (force_mask_.is_zero())
-	    return true;
-      return false;
+      만약 (force_mask_.size() == 0)
+	    반환 true;
+      만약 (force_mask_.is_zero())
+	    반환 true;
+      반환 false;
 }
 
 /*

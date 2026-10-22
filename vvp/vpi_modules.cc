@@ -30,7 +30,7 @@
 static ivl_dll_t*dll_list = 0;
 static unsigned dll_list_cnt = 0;
 
-#if defined(__MINGW32__) || defined (__CYGWIN__)
+#만약 defined(__MINGW32__) || defined (__CYGWIN__)
 typedef PLI_UINT32 (*vpip_set_callback_t)(vpip_routines_s*, PLI_UINT32);
 #endif
 typedef void (*vlog_startup_routines_t)(void);
@@ -52,7 +52,7 @@ void vpip_clear_module_paths()
 
 void vpip_add_module_path(const char*path)
 {
-      if (vpip_module_path_cnt >= VPIP_MODULE_PATH_MAX) {
+      만약 (vpip_module_path_cnt >= VPIP_MODULE_PATH_MAX) {
 	    fprintf(stderr, "Too many module paths specified\n");
 	    exit(1);
       }
@@ -61,27 +61,27 @@ void vpip_add_module_path(const char*path)
 
 void vpip_add_env_and_default_module_paths()
 {
-      if (disable_default_paths)
-	    return;
+      만약 (disable_default_paths)
+	    반환;
 
 #ifdef __MINGW32__
       const char path_sep = ';';
-#else
+#아니면
       const char path_sep = ':';
 #endif
 
-      if (char *var = ::getenv("IVERILOG_VPI_MODULE_PATH")) {
+      만약 (char *var = ::getenv("IVERILOG_VPI_MODULE_PATH")) {
             char *ptr = var;
             const char *end = var+strlen(var);
-            int len = 0;
-            while (ptr <= end) {
-                  if (*ptr == 0 || *ptr == path_sep) {
-                        if (len > 0) {
+            정수 len = 0;
+            동안 (ptr <= end) {
+                  만약 (*ptr == 0 || *ptr == path_sep) {
+                        만약 (len > 0) {
                               vpip_add_module_path(strndup(var, len));
                         }
                         len = 0;
                         var = ptr+1;
-                  } else {
+                  } 아니면 {
                         len++;
                   }
                   ptr++;
@@ -109,20 +109,20 @@ void vpip_add_env_and_default_module_paths()
 	/* Convert to a short name to remove any embedded spaces. */
       GetShortPathName(tmp, basepath, sizeof basepath);
       s = strrchr(basepath, '\\');
-      if (s) *s = 0;
-      else {
+      만약 (s) *s = 0;
+      아니면 {
 	    fprintf(stderr, "%s: Missing first \\ in exe path!\n", tmp);
 	    exit(1);
       }
       s = strrchr(basepath, '\\');
-      if (s) *s = 0;
-      else {
+      만약 (s) *s = 0;
+      아니면 {
 	    fprintf(stderr, "%s: Missing second \\ in exe path!\n", tmp);
 	    exit(1);
       }
       strcat(s, "\\lib\\ivl" IVL_SUFFIX);
       vpip_add_module_path(strdup(basepath));
-#else
+#아니면
 #ifdef MODULE_DIR1
       vpip_add_module_path(MODULE_DIR1);
 #endif
@@ -134,7 +134,7 @@ void vpip_add_env_and_default_module_paths()
 
 void load_module_delete(void)
 {
-      for (unsigned idx = 0; idx < dll_list_cnt; idx += 1) {
+      위해 (unsigned idx = 0; idx < dll_list_cnt; idx += 1) {
 	    ivl_dlclose(dll_list[idx]);
       }
       free(dll_list);
@@ -145,22 +145,22 @@ void load_module_delete(void)
 void vpip_load_module(const char*name)
 {
       struct stat sb;
-      int rc;
+      정수 rc;
       bool export_flag = false;
       char buf[4096];
 
 #ifdef __MINGW32__
       const char sep = '\\';
-#else
+#아니면
       const char sep = '/';
 #endif
 
       ivl_dll_t dll = 0;
       buf[0] = 0;                     /* terminate the string */
 #ifdef __MINGW32__
-      if (strchr(name, '\\') || strchr(name, '/')) {
-#else
-      if (strchr(name, sep)) {
+      만약 (strchr(name, '\\') || strchr(name, '/')) {
+#아니면
+      만약 (strchr(name, sep)) {
 #endif
 	      /* If the name has at least one directory character in
 		 it, then assume it is a complete name, maybe including any
@@ -168,31 +168,31 @@ void vpip_load_module(const char*name)
 	    export_flag = false;
 	    rc = stat(name, &sb);
 
-	    if (rc != 0) {            /* did we find a file? */
+	    만약 (rc != 0) {            /* did we find a file? */
 	          /* no, try with a .vpi suffix too */
 		  export_flag = false;
 		  snprintf(buf, sizeof(buf), "%s.vpi", name);
 		  rc = stat(buf, &sb);
 
 		    /* Try also with the .vpl suffix. */
-		  if (rc != 0) {
+		  만약 (rc != 0) {
 			export_flag = true;
 			snprintf(buf, sizeof(buf), "%s.vpl", name);
 			rc = stat(buf, &sb);
 		  }
 
-		  if (rc != 0) {
+		  만약 (rc != 0) {
 			fprintf(stderr, "%s: Unable to find module file `%s' "
 				"or `%s.vpi'.\n", name, name, name);
-			return;
+			반환;
 		  }
-	    } else {
+	    } 아니면 {
 	      strcpy(buf,name);   /* yes copy the name into the buffer */
 	    }
 
-      } else {
+      } 아니면 {
 	    rc = -1;
-	    for (unsigned idx = 0
+	    위해 (unsigned idx = 0
 		       ; (rc != 0) && (idx < vpip_module_path_cnt)
 		       ;  idx += 1) {
 		  export_flag = false;
@@ -200,7 +200,7 @@ void vpip_load_module(const char*name)
 			   vpip_module_path[idx], sep, name);
 		  rc = stat(buf,&sb);
 
-		  if (rc != 0) {
+		  만약 (rc != 0) {
 			export_flag = true;
 			snprintf(buf, sizeof(buf), "%s%c%s.vpl",
 				 vpip_module_path[idx], sep, name);
@@ -208,11 +208,11 @@ void vpip_load_module(const char*name)
 		  }
 	    }
 
-	    if (rc != 0) {
+	    만약 (rc != 0) {
 		  fprintf(stderr, "%s: Unable to find a "
 			  "`%s.vpi' module on the search path.\n",
 			  name, name);
-		  return;
+		  반환;
 	    }
 
       }
@@ -221,31 +221,31 @@ void vpip_load_module(const char*name)
        * try to open it as a shared object.
        */
       dll = ivl_dlopen(buf, export_flag);
-      if(dll==0) {
+      만약(dll==0) {
 	/* hmm, this failed, let the user know what has really gone wrong */
 	fprintf(stderr,"%s:`%s' failed to open using dlopen() because:\n"
 		"    %s.\n",name,buf,dlerror());
 
-	return;
+	반환;
       }
 
-#if defined(__MINGW32__) || defined (__CYGWIN__)
+#만약 defined(__MINGW32__) || defined (__CYGWIN__)
       void*function = ivl_dlsym(dll, "vpip_set_callback");
-      if (function) {
+      만약 (function) {
             vpip_set_callback_t set_callback = reinterpret_cast<vpip_set_callback_t>(function);
-            if (!set_callback(&vpi_routines, vpip_routines_version)) {
+            만약 (!set_callback(&vpi_routines, vpip_routines_version)) {
 	          fprintf(stderr, "Failed to link VPI module %s. Try rebuilding it with iverilog-vpi.\n", name);
 	          ivl_dlclose(dll);
-	          return;
+	          반환;
             }
       }
 #endif
 
       void*table = ivl_dlsym(dll, LU "vlog_startup_routines" TU);
-      if (table == 0) {
+      만약 (table == 0) {
 	    fprintf(stderr, "%s: no vlog_startup_routines\n", name);
 	    ivl_dlclose(dll);
-	    return;
+	    반환;
       }
 
 	/* Add the dll to the list so it can be closed when we are done. */
@@ -256,7 +256,7 @@ void vpip_load_module(const char*name)
 
       vpi_mode_flag = VPI_MODE_REGISTER;
       vlog_startup_routines_t*routines = (vlog_startup_routines_t*)table;
-      for (unsigned tmp = 0 ;  routines[tmp] ;  tmp += 1)
+      위해 (unsigned tmp = 0 ;  routines[tmp] ;  tmp += 1)
 	    (routines[tmp])();
       vpi_mode_flag = VPI_MODE_NONE;
 }

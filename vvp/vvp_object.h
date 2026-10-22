@@ -40,9 +40,9 @@ class vvp_object {
 
     private:
       friend class vvp_object_t;
-      int ref_cnt_;
+      정수 ref_cnt_;
 
-      static int total_active_cnt_;
+      static 정수 total_active_cnt_;
 };
 
 class vvp_object_t {
@@ -57,23 +57,23 @@ class vvp_object_t {
 
       void reset(vvp_object*tgt = 0);
 
-      bool test_nil() const { return ref_ == 0; }
+      bool test_nil() const { 반환 ref_ == 0; }
       inline bool operator == (const vvp_object_t&that) const
-          { return ref_ == that.ref_; }
+          { 반환 ref_ == that.ref_; }
       inline bool operator != (const vvp_object_t&that) const
-          { return ref_ != that.ref_; }
+          { 반환 ref_ != that.ref_; }
 
       inline void shallow_copy(const vvp_object_t&that)
           { ref_->shallow_copy(that.ref_); }
       inline vvp_object_t duplicate(void) const
-          { return vvp_object_t(ref_->duplicate()); }
+          { 반환 vvp_object_t(ref_->duplicate()); }
 
       template <class T> T*peek(void) const;
 
 	/* Stable ordering for array-of-handle sort (object identity). */
       uintptr_t sort_order_key(void) const
       {
-	    return reinterpret_cast<uintptr_t>(ref_);
+	    반환 reinterpret_cast<uintptr_t>(ref_);
       }
 
     private:
@@ -83,12 +83,12 @@ class vvp_object_t {
 inline vvp_object_t::vvp_object_t(const vvp_object_t&that)
 {
       ref_ = that.ref_;
-      if (ref_) ref_->ref_cnt_ += 1;
+      만약 (ref_) ref_->ref_cnt_ += 1;
 }
 
 inline vvp_object_t::vvp_object_t(class vvp_object*tgt)
 {
-      if (tgt) tgt->ref_cnt_ += 1;
+      만약 (tgt) tgt->ref_cnt_ += 1;
       ref_ = tgt;
 }
 
@@ -103,10 +103,10 @@ inline vvp_object_t::~vvp_object_t()
  */
 inline void vvp_object_t::reset(class vvp_object*tgt)
 {
-      if (tgt) tgt->ref_cnt_ += 1;
-      if (ref_) {
+      만약 (tgt) tgt->ref_cnt_ += 1;
+      만약 (ref_) {
 	    ref_->ref_cnt_ -= 1;
-	    if (ref_->ref_cnt_ <= 0) delete ref_;
+	    만약 (ref_->ref_cnt_ <= 0) delete ref_;
 	    ref_ = 0;
       }
       ref_ = tgt;
@@ -114,15 +114,15 @@ inline void vvp_object_t::reset(class vvp_object*tgt)
 
 inline vvp_object_t& vvp_object_t::operator = (const vvp_object_t&that)
 {
-      if (this == &that) return *this;
+      만약 (this == &that) 반환 *this;
       reset(that.ref_);
-      return *this;
+      반환 *this;
 }
 
 inline vvp_object_t& vvp_object_t::operator = (class vvp_object*that)
 {
       reset(that);
-      return *this;
+      반환 *this;
 }
 
 /*
@@ -134,7 +134,7 @@ inline vvp_object_t& vvp_object_t::operator = (class vvp_object*that)
  */
 template <class T> inline T*vvp_object_t::peek(void) const
 {
-      return dynamic_cast<T*> (ref_);
+      반환 dynamic_cast<T*> (ref_);
 }
 
 #endif /* IVL_vvp_object_H */

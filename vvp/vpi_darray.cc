@@ -44,49 +44,49 @@ __vpiDarrayVar::__vpiDarrayVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
 unsigned __vpiDarrayVar::get_size() const
 {
       const vvp_fun_signal_object*fun = dynamic_cast<vvp_fun_signal_object*> (get_net()->fun);
-      if(!fun)
-        return 0;
+      만약(!fun)
+        반환 0;
 
       vvp_object_t val = fun->get_object();
       const vvp_darray*aval = val.peek<vvp_darray>();
 
-      if(!aval)
-        return 0;
+      만약(!aval)
+        반환 0;
 
-      return aval->get_size();
+      반환 aval->get_size();
 }
 
 vpiHandle __vpiDarrayVar::get_left_range()
 {
       left_range_.set_value(0);
-      return &left_range_;
+      반환 &left_range_;
 }
 
 vpiHandle __vpiDarrayVar::get_right_range()
 {
       right_range_.set_value(get_size() - 1);
-      return &right_range_;
+      반환 &right_range_;
 }
 
-int __vpiDarrayVar::get_word_size() const
+정수 __vpiDarrayVar::get_word_size() const
 {
       vvp_vector4_t new_vec;
       vvp_darray*aobj = get_vvp_darray();
       aobj->get_word(0, new_vec);
-      return new_vec.size();
+      반환 new_vec.size();
 }
 
-char*__vpiDarrayVar::get_word_str(struct __vpiArrayWord*word, int code)
+char*__vpiDarrayVar::get_word_str(struct __vpiArrayWord*word, 정수 code)
 {
       unsigned index = word->get_index();
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      만약 (code == vpiFile) {  // Not implemented for now!
+	    반환 simple_set_rbuf_str(file_names[0]);
       }
 
       char sidx [64];
-      snprintf(sidx, 63, "%d", (int)index);
-      return generic_get_str(code, scope_, name_, sidx);
+      snprintf(sidx, 63, "%d", (정수)index);
+      반환 generic_get_str(code, scope_, name_, sidx);
 }
 
 void __vpiDarrayVar::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
@@ -94,12 +94,12 @@ void __vpiDarrayVar::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
       unsigned index = word->get_index();
       vvp_darray*aobj = get_vvp_darray();
 
-      if(vp->format == vpiObjTypeVal) {
-          if(dynamic_cast<vvp_darray_real*>(aobj))
+      만약(vp->format == vpiObjTypeVal) {
+          만약(dynamic_cast<vvp_darray_real*>(aobj))
               vp->format = vpiRealVal;
-          else if(dynamic_cast<vvp_darray_string*>(aobj))
+          아니면 만약(dynamic_cast<vvp_darray_string*>(aobj))
               vp->format = vpiStringVal;
-          else
+          아니면
               vp->format = vpiVectorVal;
       }
 
@@ -140,7 +140,7 @@ void __vpiDarrayVar::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
       }
 }
 
-void __vpiDarrayVar::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int)
+void __vpiDarrayVar::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, 정수)
 {
       unsigned index = word->get_index();
       vvp_darray*aobj = get_vvp_darray();
@@ -168,71 +168,71 @@ void __vpiDarrayVar::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, 
       }
 }
 
-vpiHandle __vpiDarrayVar::get_iter_index(struct __vpiArrayIterator*, int idx)
+vpiHandle __vpiDarrayVar::get_iter_index(struct __vpiArrayIterator*, 정수 idx)
 {
-      if (vals_words == 0) make_vals_words();
+      만약 (vals_words == 0) make_vals_words();
 
-      return &(vals_words[idx].as_word);
+      반환 &(vals_words[idx].as_word);
 }
 
-int __vpiDarrayVar::vpi_get(int code)
+정수 __vpiDarrayVar::vpi_get(정수 code)
 {
       switch (code) {
 	  case vpiArrayType:
-	    return vpiDynamicArray;
+	    반환 vpiDynamicArray;
 	  case vpiLeftRange:
-	    return 0;
+	    반환 0;
 	  case vpiRightRange:
-	    return get_size() - 1;
+	    반환 get_size() - 1;
 	  case vpiSize:
-            return get_size();
+            반환 get_size();
 
 	  default:
 	    fprintf(stderr, "vpi sorry: property is not implemented");
 	    assert(false);
-	    return 0;
+	    반환 0;
       }
 }
 
-char* __vpiDarrayVar::vpi_get_str(int code)
+char* __vpiDarrayVar::vpi_get_str(정수 code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      만약 (code == vpiFile) {  // Not implemented for now!
+            반환 simple_set_rbuf_str(file_names[0]);
       }
 
-      return generic_get_str(code, scope_, name_, NULL);
+      반환 generic_get_str(code, scope_, name_, NULL);
 }
 
-vpiHandle __vpiDarrayVar::vpi_handle(int code)
+vpiHandle __vpiDarrayVar::vpi_handle(정수 code)
 {
       switch (code) {
           case vpiLeftRange:
-            return get_left_range();
+            반환 get_left_range();
 
           case vpiRightRange:
-            return get_right_range();
+            반환 get_right_range();
 
           case vpiScope:
-            return scope_;
+            반환 scope_;
 
           case vpiModule:
-            return vpip_module(scope_);
+            반환 vpip_module(scope_);
       }
 
-      return 0;
+      반환 0;
 }
 
-vpiHandle __vpiDarrayVar::vpi_index(int index)
+vpiHandle __vpiDarrayVar::vpi_index(정수 index)
 {
-      if (index >= (long) get_size())
-	    return 0;
-      if (index < 0)
-	    return 0;
+      만약 (index >= (long) get_size())
+	    반환 0;
+      만약 (index < 0)
+	    반환 0;
 
-      if (vals_words == 0)
+      만약 (vals_words == 0)
 	    make_vals_words();
 
-      return &(vals_words[index].as_word);
+      반환 &(vals_words[index].as_word);
 }
 
 void __vpiDarrayVar::vpi_get_value(p_vpi_value val)
@@ -246,7 +246,7 @@ vvp_darray*__vpiDarrayVar::get_vvp_darray() const
       assert(fun);
       vvp_object_t obj = fun->get_object();
 
-      return obj.peek<vvp_darray>();
+      반환 obj.peek<vvp_darray>();
 }
 
 vpiHandle vpip_make_darray_var(const char*name, vvp_net_t*net)
@@ -256,7 +256,7 @@ vpiHandle vpip_make_darray_var(const char*name, vvp_net_t*net)
 
       __vpiDarrayVar*obj = new __vpiDarrayVar(scope, use_name, net);
 
-      return obj;
+      반환 obj;
 }
 
 __vpiQueueVar::__vpiQueueVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
@@ -264,13 +264,13 @@ __vpiQueueVar::__vpiQueueVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
 {
 }
 
-int __vpiQueueVar::vpi_get(int code)
+정수 __vpiQueueVar::vpi_get(정수 code)
 {
       switch (code) {
 	  case vpiArrayType:
-	    return vpiQueueArray;
+	    반환 vpiQueueArray;
 	  default:
-	    return __vpiDarrayVar::vpi_get(code);
+	    반환 __vpiDarrayVar::vpi_get(code);
       }
 }
 
@@ -281,7 +281,7 @@ vpiHandle vpip_make_queue_var(const char*name, vvp_net_t*net)
 
       __vpiQueueVar*obj = new __vpiQueueVar(scope, use_name, net);
 
-      return obj;
+      반환 obj;
 }
 
 __vpiPropQueueRef::__vpiPropQueueRef(__vpiScope*scope, unsigned pidx,
@@ -290,45 +290,45 @@ __vpiPropQueueRef::__vpiPropQueueRef(__vpiScope*scope, unsigned pidx,
 {
 }
 
-int __vpiPropQueueRef::get_type_code(void) const
-{ return vpiArrayVar; }
+정수 __vpiPropQueueRef::get_type_code(void) const
+{ 반환 vpiArrayVar; }
 
 static vvp_darray* get_live_darray_from_prop(vvp_net_t* class_net, unsigned pid)
 {
-      if (!class_net) return 0;
+      만약 (!class_net) 반환 0;
       const vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(class_net->fun);
-      if (!fun) return 0;
+      만약 (!fun) 반환 0;
       vvp_object_t obj = fun->get_object();
       vvp_cobject* cobj = obj.peek<vvp_cobject>();
-      if (!cobj) return 0;
+      만약 (!cobj) 반환 0;
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      return qobj.peek<vvp_darray>();
+      반환 qobj.peek<vvp_darray>();
 }
 
-int __vpiPropQueueRef::vpi_get(int code)
+정수 __vpiPropQueueRef::vpi_get(정수 code)
 {
       const vvp_darray* aobj = get_live_darray_from_prop(class_net_, prop_idx_);
       switch (code) {
 	  case vpiArrayType:
-	    return is_queue_ ? vpiQueueArray : vpiDynamicArray;
+	    반환 is_queue_ ? vpiQueueArray : vpiDynamicArray;
 	  case vpiLeftRange:
-	    return 0;
+	    반환 0;
 	  case vpiRightRange:
-	    return aobj ? (int) (aobj->get_size() - 1) : 0;
+	    반환 aobj ? (정수) (aobj->get_size() - 1) : 0;
 	  case vpiSize:
-	    return aobj ? (int) aobj->get_size() : 0;
+	    반환 aobj ? (정수) aobj->get_size() : 0;
 	  default:
-	    return 0;
+	    반환 0;
       }
 }
 
-char* __vpiPropQueueRef::vpi_get_str(int code)
+char* __vpiPropQueueRef::vpi_get_str(정수 code)
 {
-      if (code == vpiFile) {
-	    return simple_set_rbuf_str(file_names[0]);
+      만약 (code == vpiFile) {
+	    반환 simple_set_rbuf_str(file_names[0]);
       }
-      return generic_get_str(code, scope_, "prop_darray", NULL);
+      반환 generic_get_str(code, scope_, "prop_darray", NULL);
 }
 
 void __vpiPropQueueRef::vpi_get_value(p_vpi_value val)
@@ -343,40 +343,40 @@ vpiHandle vpip_make_prop_queue_ref(char* class_label, unsigned prop_idx,
 						     prop_idx,
 						     is_queue_flag != 0);
       functor_ref_lookup(&obj->class_net_, class_label);
-      return obj;
+      반환 obj;
 }
 
 vvp_darray* vpip_vpi_darray_from_handle(vpiHandle ref)
 {
-      if (!ref) return 0;
+      만약 (!ref) 반환 0;
 
-      if (__vpiPropQueueRef* pr = dynamic_cast<__vpiPropQueueRef*>(ref)) {
-	    return get_live_darray_from_prop(pr->class_net_, pr->prop_idx_);
+      만약 (__vpiPropQueueRef* pr = dynamic_cast<__vpiPropQueueRef*>(ref)) {
+	    반환 get_live_darray_from_prop(pr->class_net_, pr->prop_idx_);
       }
 
-      if (const __vpiDarrayVar* dv = dynamic_cast<__vpiDarrayVar*>(ref)) {
+      만약 (const __vpiDarrayVar* dv = dynamic_cast<__vpiDarrayVar*>(ref)) {
 	    const vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(dv->get_net()->fun);
-	    if (!fun) return 0;
+	    만약 (!fun) 반환 0;
 	    vvp_object_t obj = fun->get_object();
-	    return obj.peek<vvp_darray>();
+	    반환 obj.peek<vvp_darray>();
       }
 
-      return 0;
+      반환 0;
 }
 
 #ifdef CHECK_WITH_VALGRIND
 void array_delete(vpiHandle item)
 {
-      if (__vpiPropQueueRef* pq = dynamic_cast<__vpiPropQueueRef*>(item)) {
+      만약 (__vpiPropQueueRef* pq = dynamic_cast<__vpiPropQueueRef*>(item)) {
 	    delete pq;
-	    return;
+	    반환;
       }
 
       __vpiDarrayVar*dobj = dynamic_cast<__vpiDarrayVar*>(item);
-      if (dobj) {
-	    if (dobj->vals_words) delete [] (dobj->vals_words-1);
+      만약 (dobj) {
+	    만약 (dobj->vals_words) delete [] (dobj->vals_words-1);
 	    delete dobj;
-	    return;
+	    반환;
       }
 
       fprintf(stderr, "Need support for deleting array type: %d\n", item->vpi_get(vpiArrayType));

@@ -68,7 +68,7 @@ void vvp_reduce_base::recv_vec4(vvp_net_ptr_t prt, const vvp_vector4_t&bit,
 void vvp_reduce_base::recv_vec4_pv(vvp_net_ptr_t prt, const vvp_vector4_t&bit,
 				   unsigned base, unsigned vwid, vvp_context_t context)
 {
-      if (bits_.size() == 0) {
+      만약 (bits_.size() == 0) {
 	    bits_ = vvp_vector4_t(vwid);
       }
       assert(bits_.size() == vwid);
@@ -97,7 +97,7 @@ vvp_reduce_and::~vvp_reduce_and()
 
 vvp_bit4_t vvp_reduce_and::calculate_result() const
 {
-      return bits_.reduce_and();
+      반환 bits_.reduce_and();
 }
 
 class vvp_reduce_or  : public vvp_reduce_base {
@@ -118,7 +118,7 @@ vvp_reduce_or::~vvp_reduce_or()
 
 vvp_bit4_t vvp_reduce_or::calculate_result() const
 {
-      return bits_.reduce_or();
+      반환 bits_.reduce_or();
 }
 
 class vvp_reduce_xor  : public vvp_reduce_base {
@@ -139,7 +139,7 @@ vvp_reduce_xor::~vvp_reduce_xor()
 
 vvp_bit4_t vvp_reduce_xor::calculate_result() const
 {
-      return bits_.reduce_xor();
+      반환 bits_.reduce_xor();
 }
 
 class vvp_reduce_nand  : public vvp_reduce_base {
@@ -160,7 +160,7 @@ vvp_reduce_nand::~vvp_reduce_nand()
 
 vvp_bit4_t vvp_reduce_nand::calculate_result() const
 {
-      return ~bits_.reduce_and();
+      반환 ~bits_.reduce_and();
 }
 
 class vvp_reduce_nor  : public vvp_reduce_base {
@@ -181,7 +181,7 @@ vvp_reduce_nor::~vvp_reduce_nor()
 
 vvp_bit4_t vvp_reduce_nor::calculate_result() const
 {
-      return ~bits_.reduce_or();
+      반환 ~bits_.reduce_or();
 }
 
 class vvp_reduce_xnor  : public vvp_reduce_base {
@@ -202,7 +202,7 @@ vvp_reduce_xnor::~vvp_reduce_xnor()
 
 vvp_bit4_t vvp_reduce_xnor::calculate_result() const
 {
-      return ~bits_.reduce_xor();
+      반환 ~bits_.reduce_xor();
 }
 
 static void make_reduce(char*label, vvp_net_fun_t*red, const struct symb_s&arg)

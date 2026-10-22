@@ -75,13 +75,13 @@ void vvp_dff::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 
 	  case 1: // CLK
 	    assert(bit.size() == 1);
-	    if (asc_ != BIT4_0)
+	    만약 (asc_ != BIT4_0)
 		  break;
-	    if (ena_ != BIT4_1)
+	    만약 (ena_ != BIT4_1)
 		  break;
 	    tmp = clk_;
 	    clk_ = bit.value(0);
-	    if (clk_ == clk_active_ && tmp != clk_active_)
+	    만약 (clk_ == clk_active_ && tmp != clk_active_)
 		  schedule_propagate_vector(port.ptr(), 0, d_);
 	    break;
 
@@ -94,9 +94,9 @@ void vvp_dff::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 	    assert(bit.size() == 1);
 	    tmp = asc_;
 	    asc_ = bit.value(0);
-	    if (asc_ == BIT4_1 && tmp != BIT4_1)
+	    만약 (asc_ == BIT4_1 && tmp != BIT4_1)
 		  recv_async(port);
-	    else if (tmp == BIT4_Z)
+	    아니면 만약 (tmp == BIT4_Z)
 		  port.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
 	    break;
       }
@@ -182,11 +182,11 @@ void compile_dff_aset(char*label, unsigned width, bool negedge,
 {
       vvp_net_t*ptr = new vvp_net_t;
       vvp_dff*fun;
-      if (asc_value) {
+      만약 (asc_value) {
 	    assert(c4string_test(asc_value));
 	    fun = new vvp_dff_asc(width, negedge, asc_value);
 	    free(asc_value);
-      } else {
+      } 아니면 {
 	    fun = new vvp_dff_aset(width, negedge);
       }
 

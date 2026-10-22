@@ -50,7 +50,7 @@ void vvp_fun_concat::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 {
       unsigned pdx = port.port();
 
-      if (vwid != wid_[pdx]) {
+      만약 (vwid != wid_[pdx]) {
 	    cerr << "internal error: port " << pdx
 		 << " expects wid=" << wid_[pdx]
 		 << ", got wid=" << vwid << endl;
@@ -58,14 +58,14 @@ void vvp_fun_concat::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
       }
 
       unsigned off = base;
-      for (unsigned idx = 0 ;  idx < pdx ;  idx += 1)
+      위해 (unsigned idx = 0 ;  idx < pdx ;  idx += 1)
 	    off += wid_[idx];
 
-      if (!val_.set_vec(off, bit))
-	    return;
+      만약 (!val_.set_vec(off, bit))
+	    반환;
 
-      if (net_)
-	    return;
+      만약 (net_)
+	    반환;
 
       net_ = port.ptr();
       schedule_functor(this);
@@ -133,7 +133,7 @@ void vvp_fun_concat8::recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
 {
       unsigned pdx = port.port();
 
-      if (vwid != wid_[pdx]) {
+      만약 (vwid != wid_[pdx]) {
 	    cerr << "internal error: port " << pdx
 		 << " expects wid=" << wid_[pdx]
 		 << ", got wid=" << vwid << endl;
@@ -141,13 +141,13 @@ void vvp_fun_concat8::recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
       }
 
       unsigned off = base;
-      for (unsigned idx = 0 ;  idx < pdx ;  idx += 1)
+      위해 (unsigned idx = 0 ;  idx < pdx ;  idx += 1)
 	    off += wid_[idx];
 
       val_.set_vec(off, bit);
 
-      if (net_)
-	    return;
+      만약 (net_)
+	    반환;
 
       net_ = port.ptr();
       schedule_functor(this);
@@ -192,7 +192,7 @@ void vvp_fun_repeat::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 
       vvp_vector4_t val (wid_);
 
-      for (unsigned rdx = 0 ;  rdx < rep_ ;  rdx += 1) {
+      위해 (unsigned rdx = 0 ;  rdx < rep_ ;  rdx += 1) {
 	    unsigned off = rdx * bit.size();
 
 	    val.set_vec(off, bit);
