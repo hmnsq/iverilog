@@ -49,37 +49,37 @@ class __vpiScope;
  * This class relies to the vvp_wide_fun_* classes in vvp_net.h.
  */
 
-class ufunc_core : public vvp_wide_fun_core {
+class ufunc_core : பொது vvp_wide_fun_core {
 
-    public:
+    பொது:
       ufunc_core(unsigned ow, vvp_net_t*ptr,
 		 unsigned nports, vvp_net_t**ports,
 		 vvp_code_t start_address,
 		 __vpiScope*call_scope,
-		 char*scope_label);
-      virtual ~ufunc_core() override =0;
+		 எழுத்து*scope_label);
+      மெய்நிகர் ~ufunc_core() override =0;
 
-      __vpiScope*call_scope() { return call_scope_; }
-      __vpiScope*func_scope() { return func_scope_; }
+      __vpiScope*call_scope() { திரும்பு call_scope_; }
+      __vpiScope*func_scope() { திரும்பு func_scope_; }
 
-      void assign_bits_to_ports(vvp_context_t context);
-      virtual void finish_thread() =0;
+      வெறுமை assign_bits_to_ports(vvp_context_t context);
+      மெய்நிகர் வெறுமை finish_thread() =0;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      வெறுமை recv_vec4(vvp_net_ptr_t port, மாறிலி vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-    protected:
-      void finish_thread_real_();
-      void finish_thread_vec4_();
+    பாதுகாக்கப்பட்ட:
+      வெறுமை finish_thread_real_();
+      வெறுமை finish_thread_vec4_();
 
-    private:
-      void recv_vec4_from_inputs(unsigned port) override;
-      void recv_real_from_inputs(unsigned port) override;
+    தனிப்பட்ட:
+      வெறுமை recv_vec4_from_inputs(unsigned port) override;
+      வெறுமை recv_real_from_inputs(unsigned port) override;
 
-      void invoke_thread_(void);
+      வெறுமை invoke_thread_(வெறுமை);
 
 
-    private:
+    தனிப்பட்ட:
 	// output width of the function node.
       unsigned owid_;
 	// The vvp_net_t* objects for the function input ports. We use

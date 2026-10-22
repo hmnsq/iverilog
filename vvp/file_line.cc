@@ -19,82 +19,82 @@
 # include "compile.h"
 # include "vpi_priv.h"
 
-class __vpiFileLine : public __vpiHandle {
-    public:
-      explicit __vpiFileLine(const char*desc_, long file_idx_, long lineno_);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+வகுப்பு __vpiFileLine : பொது __vpiHandle {
+    பொது:
+      explicit __vpiFileLine(மாறிலி எழுத்து*desc_, long file_idx_, long lineno_);
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      முழு vpi_get(முழு code) override;
+      எழுத்து* vpi_get_str(முழு code) override;
 
-      const char* get_description() const { return description; };
-      unsigned get_file_idx() const { return file_idx; };
-      unsigned get_lineno() const { return lineno; };
+      மாறிலி எழுத்து* get_description() மாறிலி { திரும்பு description; };
+      unsigned get_file_idx() மாறிலி { திரும்பு file_idx; };
+      unsigned get_lineno() மாறிலி { திரும்பு lineno; };
 
-    private:
-      const char *description;
+    தனிப்பட்ட:
+      மாறிலி எழுத்து *description;
       unsigned file_idx;
       unsigned lineno;
 };
 
-bool show_file_line = false;
-bool code_is_instrumented = false;
+தருக்க show_file_வரி = பொய்;
+தருக்க code_is_instrumented = பொய்;
 
-static int file_line_get(int type, vpiHandle ref)
+நிலையான முழு file_வரி_get(முழு type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      ப்ரதிஜ்ஞா(rfp);
 
-      switch (type) {
-	case vpiLineNo:
-	    return rfp->get_lineno();
-	default:
-	    return vpiUndefined;
+      தேர்வு (type) {
+	நிலை vpi_வரி_No:
+	    திரும்பு rfp->get_lineno();
+	இயல்பு:
+	    திரும்பு vpiUndefined;
       }
 }
 
-static char *file_line_get_str(int type, vpiHandle ref)
+நிலையான எழுத்து *file_வரி_get_str(முழு type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      ப்ரதிஜ்ஞா(rfp);
 
-      switch (type) {
-	case vpiFile:
-	    assert(rfp->get_file_idx() < file_names.size());
-	    return simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
-	case _vpiDescription:
-	    if (rfp->get_description()) {
-		  return simple_set_rbuf_str(rfp->get_description());
-	    } else return simple_set_rbuf_str("Procedural tracing.");
-	default:
-	    return 0;
+      தேர்வு (type) {
+	நிலை vpiFile:
+	    ப்ரதிஜ்ஞா(rfp->get_file_idx() < file_names.size());
+	    திரும்பு simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
+	நிலை _vpiDescription:
+	    எனில் (rfp->get_description()) {
+		  திரும்பு simple_set_rbuf_str(rfp->get_description());
+	    } இல்லையெனில் திரும்பு simple_set_rbuf_str("Procedural tracing.");
+	இயல்பு:
+	    திரும்பு 0;
       }
 }
 
-inline __vpiFileLine::__vpiFileLine(const char*desc_, long file_idx_,
+உள்வரி __vpiFileLine::__vpiFileLine(மாறிலி எழுத்து*desc_, long file_idx_,
                                     long lineno_)
 {
-      if (desc_) description = vpip_name_string(desc_);
-      else description = 0;
+      எனில் (desc_) description = vpip_name_string(desc_);
+      இல்லையெனில் description = 0;
       file_idx = (unsigned) file_idx_;
       lineno = (unsigned) lineno_;
 }
 
-int __vpiFileLine::get_type_code(void) const
-{ return _vpiFileLine; }
+முழு __vpiFileLine::get_type_code(வெறுமை) மாறிலி
+{ திரும்பு vpi_File_வரி; }
 
-int __vpiFileLine::vpi_get(int code)
-{ return file_line_get(code, this); }
+முழு __vpiFileLine::vpi_get(முழு code)
+{ திரும்பு file_வரி_get(code, இது); }
 
-char* __vpiFileLine::vpi_get_str(int code)
-{ return file_line_get_str(code, this); }
+எழுத்து* __vpiFileLine::vpi_get_str(முழு code)
+{ திரும்பு file_வரி_get_str(code, இது); }
 
 
-vpiHandle vpip_build_file_line(const char*description, long file_idx, long lineno)
+vpiHandle vpip_build_file_வரி(மாறிலி எழுத்து*description, long file_idx, long lineno)
 {
-      __vpiFileLine*obj = new __vpiFileLine(description, file_idx, lineno);
+      __vpiFileLine*obj = புதிய __vpiFileLine(description, file_idx, lineno);
 
 	/* You can turn on the diagnostic output if we find a %file_line. */
-      code_is_instrumented = true;
+      code_is_instrumented = உண்மை;
 
-      return obj;
+      திரும்பு obj;
 }

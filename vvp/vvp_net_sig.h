@@ -32,7 +32,7 @@
 
 #ifdef HAVE_IOSFWD
 # include  <iosfwd>
-#else
+#இல்லையெனில்
 # include  <iostream>
 #endif
 
@@ -65,26 +65,26 @@
  */
 
 
-class vvp_fun_signal_base : public vvp_net_fun_t {
+class vvp_fun_signal_base : பொது vvp_net_fun_t {
 
-    public:
+    பொது:
       vvp_fun_signal_base();
 
-      void deassign();
-      void deassign_pv(unsigned base, unsigned wid);
+      வெறுமை deassign();
+      வெறுமை deassign_pv(unsigned base, unsigned wid);
 
-    public:
+    பொது:
 
 	/* The %cassign/link instruction needs a place to write the
 	   source node of the force, so that subsequent %cassign and
 	   %deassign instructions can undo the link as needed. */
       class vvp_net_t*cassign_link;
 
-    protected:
+    பாதுகாக்கப்பட்ட:
       bool continuous_assign_active_;
       vvp_vector2_t assign_mask_;
 
-    protected:
+    பாதுகாக்கப்பட்ட:
 	// This is true until at least one propagation happens.
       bool needs_init_;
 };
@@ -93,291 +93,291 @@ class vvp_fun_signal_base : public vvp_net_fun_t {
  * Variables and wires can have their values accessed, so this base
  * class offers the unified concept of an accessible value.
  */
-class vvp_signal_value {
-    public:
-      virtual ~vvp_signal_value() =0;
-      virtual unsigned value_size() const =0;
-      virtual vvp_bit4_t value(unsigned idx) const =0;
-      virtual vvp_scalar_t scalar_value(unsigned idx) const =0;
-      virtual void vec4_value(vvp_vector4_t&) const =0;
-      virtual double real_value() const;
+class vvp_signal_மதிப்பு {
+    பொது:
+      மெய்நிகர் ~vvp_signal_மதிப்பு() =0;
+      மெய்நிகர் unsigned மதிப்பு_size() மாறிலி =0;
+      மெய்நிகர் vvp_bit4_t மதிப்பு(unsigned idx) மாறிலி =0;
+      மெய்நிகர் vvp_scalar_t scalar_மதிப்பு(unsigned idx) மாறிலி =0;
+      மெய்நிகர் வெறுமை vec4_மதிப்பு(vvp_vector4_t&) மாறிலி =0;
+      மெய்நிகர் இரட்டை real_மதிப்பு() மாறிலி;
 
-      virtual void get_signal_value(struct t_vpi_value*vp);
+      மெய்நிகர் வெறுமை get_signal_மதிப்பு(கட்டமைப்பு t_vpi_மதிப்பு*vp);
 };
 
 /*
  * This abstract class is a little more specific than the signal_base
  * class, in that it adds vector access methods.
  */
-class vvp_fun_signal_vec : public vvp_fun_signal_base {
-    public:
-      virtual const vvp_vector4_t& vec4_unfiltered_value() const =0;
+class vvp_fun_signal_vec : பொது vvp_fun_signal_base {
+    பொது:
+      மெய்நிகர் மாறிலி vvp_vector4_t& vec4_unfiltered_மதிப்பு() மாறிலி =0;
 };
 
-class automatic_signal_base : public vvp_signal_value, public vvp_net_fil_t {
+class automatic_signal_base : பொது vvp_signal_மதிப்பு, பொது vvp_net_fil_t {
 
-    public:
+    பொது:
 	// Automatic variables cannot be forced or released. Provide
 	// stubs that assert.
-      virtual void release(vvp_net_ptr_t ptr, bool net_flag) override;
-      virtual void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
+      மெய்நிகர் வெறுமை release(vvp_net_ptr_t ptr, bool net_flag) override;
+      மெய்நிகர் வெறுமை release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
 
-      virtual unsigned filter_size() const override;
-      virtual void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
-      virtual void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
-      virtual void force_fil_real(double val, const vvp_vector2_t&mask) override;
-      virtual void get_value(struct t_vpi_value*value) override;
+      மெய்நிகர் unsigned filter_size() மாறிலி override;
+      மெய்நிகர் வெறுமை force_fil_vec4(மாறிலி vvp_vector4_t&val, மாறிலி vvp_vector2_t&mask) override;
+      மெய்நிகர் வெறுமை force_fil_vec8(மாறிலி vvp_vector8_t&val, மாறிலி vvp_vector2_t&mask) override;
+      மெய்நிகர் வெறுமை force_fil_real(இரட்டை val, மாறிலி vvp_vector2_t&mask) override;
+      மெய்நிகர் வெறுமை get_மதிப்பு(கட்டமைப்பு t_vpi_மதிப்பு*மதிப்பு) override;
 };
 
 /*
  * Statically allocated vvp_fun_signal4.
  */
-class vvp_fun_signal4_sa : public vvp_fun_signal_vec {
+class vvp_fun_signal4_sa : பொது vvp_fun_signal_vec {
 
-    public:
+    பொது:
       explicit vvp_fun_signal4_sa(unsigned wid, vvp_bit4_t init=BIT4_X);
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      வெறுமை recv_vec4(vvp_net_ptr_t port, மாறிலி vvp_vector4_t&bit,
                      vvp_context_t) override;
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      வெறுமை recv_vec8(vvp_net_ptr_t port, மாறிலி vvp_vector8_t&bit) override;
 
 	// Part select variants of above
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      வெறுமை recv_vec4_pv(vvp_net_ptr_t port, மாறிலி vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t) override;
-      void recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
+      வெறுமை recv_vec8_pv(vvp_net_ptr_t port, மாறிலி vvp_vector8_t&bit,
 			unsigned base, unsigned vwid) override;
 
 	// Get information about the vector value.
-      const vvp_vector4_t& vec4_unfiltered_value() const override;
+      மாறிலி vvp_vector4_t& vec4_unfiltered_மதிப்பு() மாறிலி override;
 
-    private:
+    தனிப்பட்ட:
       vvp_vector4_t bits4_;
 };
 
 /*
  * Automatically allocated vvp_fun_signal4.
  */
-class vvp_fun_signal4_aa : public vvp_fun_signal_vec, public automatic_signal_base, public automatic_hooks_s {
+class vvp_fun_signal4_aa : பொது vvp_fun_signal_vec, பொது automatic_signal_base, பொது automatic_hooks_s {
 
-    public:
+    பொது:
       explicit vvp_fun_signal4_aa(unsigned wid, vvp_bit4_t init=BIT4_X);
       ~vvp_fun_signal4_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
+      வெறுமை alloc_instance(vvp_context_t context) override;
+      வெறுமை reset_instance(vvp_context_t context) override;
 #ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
+      வெறுமை free_instance(vvp_context_t context) override;
 #endif
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      வெறுமை recv_vec4(vvp_net_ptr_t port, மாறிலி vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
 	// Part select variants of above
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      வெறுமை recv_vec4_pv(vvp_net_ptr_t port, மாறிலி vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t) override;
 
 	// Get information about the vector value.
-      unsigned   value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
-      const vvp_vector4_t& vec4_unfiltered_value() const override;
+      unsigned   மதிப்பு_size() மாறிலி override;
+      vvp_bit4_t மதிப்பு(unsigned idx) மாறிலி override;
+      vvp_scalar_t scalar_மதிப்பு(unsigned idx) மாறிலி override;
+      வெறுமை vec4_மதிப்பு(vvp_vector4_t&) மாறிலி override;
+      மாறிலி vvp_vector4_t& vec4_unfiltered_மதிப்பு() மாறிலி override;
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size) { return vvp_net_fun_t::heap_.alloc(size); }
-      static void operator delete(void*obj);
+    பொது: // These objects are only permallocated.
+      நிலையான வெறுமை* operator new(std::size_t size) { திரும்பு vvp_net_fun_t::heap_.alloc(size); }
+      நிலையான வெறுமை operator delete(வெறுமை*obj);
 
-    private:
+    தனிப்பட்ட:
       unsigned context_idx_;
       unsigned size_;
       vvp_bit4_t init_;
 };
 
-class vvp_fun_signal_real : public vvp_fun_signal_base {
+class vvp_fun_signal_real : பொது vvp_fun_signal_base {
 
-    public:
+    பொது:
       explicit vvp_fun_signal_real() {};
 
 	// Get information about the vector value.
-      virtual double real_unfiltered_value() const = 0;
+      மெய்நிகர் இரட்டை real_unfiltered_மதிப்பு() மாறிலி = 0;
 };
 
 /*
  * Statically allocated vvp_fun_signal_real.
  */
-class vvp_fun_signal_real_sa : public vvp_fun_signal_real {
+class vvp_fun_signal_real_sa : பொது vvp_fun_signal_real {
 
-    public:
+    பொது:
       explicit vvp_fun_signal_real_sa();
 
-      void recv_real(vvp_net_ptr_t port, double bit,
+      வெறுமை recv_real(vvp_net_ptr_t port, இரட்டை bit,
                      vvp_context_t) override;
 
 	// Get information about the vector value.
-      double real_unfiltered_value() const override;
+      இரட்டை real_unfiltered_மதிப்பு() மாறிலி override;
 
-    private:
-      double bits_;
+    தனிப்பட்ட:
+      இரட்டை bits_;
 };
 
 /*
  * Automatically allocated vvp_fun_signal_real.
  */
-class vvp_fun_signal_real_aa : public vvp_fun_signal_real, public automatic_signal_base, public automatic_hooks_s {
+class vvp_fun_signal_real_aa : பொது vvp_fun_signal_real, பொது automatic_signal_base, பொது automatic_hooks_s {
 
-    public:
+    பொது:
       explicit vvp_fun_signal_real_aa();
       ~vvp_fun_signal_real_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
+      வெறுமை alloc_instance(vvp_context_t context) override;
+      வெறுமை reset_instance(vvp_context_t context) override;
 #ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
+      வெறுமை free_instance(vvp_context_t context) override;
 #endif
 
-      void recv_real(vvp_net_ptr_t port, double bit,
+      வெறுமை recv_real(vvp_net_ptr_t port, இரட்டை bit,
                      vvp_context_t context) override;
 
 	// Get information about the vector value.
-      double real_unfiltered_value() const override;
+      இரட்டை real_unfiltered_மதிப்பு() மாறிலி override;
 
 	// Get information about the vector value.
-      unsigned   value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
-      double real_value() const override;
-      void get_signal_value(struct t_vpi_value*vp) override;
+      unsigned   மதிப்பு_size() மாறிலி override;
+      vvp_bit4_t மதிப்பு(unsigned idx) மாறிலி override;
+      vvp_scalar_t scalar_மதிப்பு(unsigned idx) மாறிலி override;
+      வெறுமை vec4_மதிப்பு(vvp_vector4_t&) மாறிலி override;
+      இரட்டை real_மதிப்பு() மாறிலி override;
+      வெறுமை get_signal_மதிப்பு(கட்டமைப்பு t_vpi_மதிப்பு*vp) override;
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size);
-      static void operator delete(void*obj);
+    பொது: // These objects are only permallocated.
+      நிலையான வெறுமை* operator new(std::size_t size);
+      நிலையான வெறுமை operator delete(வெறுமை*obj);
 
-    private:
+    தனிப்பட்ட:
       unsigned context_idx_;
 };
 
 
-class vvp_fun_signal_string : public vvp_fun_signal_base {
+class vvp_fun_signal_string : பொது vvp_fun_signal_base {
 
-    public:
+    பொது:
       explicit vvp_fun_signal_string() {};
 
-      virtual const std::string& get_string() const =0;
+      மெய்நிகர் மாறிலி std::string& get_string() மாறிலி =0;
 };
 
 /*
  * Statically allocated vvp_fun_signal_string.
  */
-class vvp_fun_signal_string_sa : public vvp_fun_signal_string {
+class vvp_fun_signal_string_sa : பொது vvp_fun_signal_string {
 
-    public:
+    பொது:
       explicit vvp_fun_signal_string_sa();
 
-      void recv_string(vvp_net_ptr_t port, const std::string&bit,
+      வெறுமை recv_string(vvp_net_ptr_t port, மாறிலி std::string&bit,
 		       vvp_context_t context) override;
 
-      const std::string& get_string() const override;
+      மாறிலி std::string& get_string() மாறிலி override;
 
-    private:
-      std::string value_;
+    தனிப்பட்ட:
+      std::string மதிப்பு_2;
 };
 
 /*
  * Automatically allocated vvp_fun_signal_real.
  */
-class vvp_fun_signal_string_aa : public vvp_fun_signal_string, public automatic_signal_base, public automatic_hooks_s {
+class vvp_fun_signal_string_aa : பொது vvp_fun_signal_string, பொது automatic_signal_base, பொது automatic_hooks_s {
 
-    public:
+    பொது:
       explicit vvp_fun_signal_string_aa();
       ~vvp_fun_signal_string_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
+      வெறுமை alloc_instance(vvp_context_t context) override;
+      வெறுமை reset_instance(vvp_context_t context) override;
 #ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
+      வெறுமை free_instance(vvp_context_t context) override;
 #endif
-      void recv_string(vvp_net_ptr_t port, const std::string&bit,
+      வெறுமை recv_string(vvp_net_ptr_t port, மாறிலி std::string&bit,
 		       vvp_context_t context) override;
 
 	// Get information about the vector value.
-      unsigned   value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
-      double real_value() const override;
-      const std::string& get_string() const override;
-      void get_signal_value(struct t_vpi_value*vp) override;
+      unsigned   மதிப்பு_size() மாறிலி override;
+      vvp_bit4_t மதிப்பு(unsigned idx) மாறிலி override;
+      vvp_scalar_t scalar_மதிப்பு(unsigned idx) மாறிலி override;
+      வெறுமை vec4_மதிப்பு(vvp_vector4_t&) மாறிலி override;
+      இரட்டை real_மதிப்பு() மாறிலி override;
+      மாறிலி std::string& get_string() மாறிலி override;
+      வெறுமை get_signal_மதிப்பு(கட்டமைப்பு t_vpi_மதிப்பு*vp) override;
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size);
-      static void operator delete(void*obj);
+    பொது: // These objects are only permallocated.
+      நிலையான வெறுமை* operator new(std::size_t size);
+      நிலையான வெறுமை operator delete(வெறுமை*obj);
 
-    private:
+    தனிப்பட்ட:
       unsigned context_idx_;
 };
 
-class vvp_fun_signal_object : public vvp_fun_signal_base {
+class vvp_fun_signal_object : பொது vvp_fun_signal_base {
 
-    public:
+    பொது:
       explicit vvp_fun_signal_object(unsigned size) { size_ = size; };
-      unsigned size() const { return size_; }
+      unsigned size() மாறிலி { திரும்பு size_; }
 
-      virtual vvp_object_t get_object() const =0;
-    private:
+      மெய்நிகர் vvp_object_t get_object() மாறிலி =0;
+    தனிப்பட்ட:
       unsigned size_;
 };
 
 /*
  * Statically allocated vvp_fun_signal_string.
  */
-class vvp_fun_signal_object_sa : public vvp_fun_signal_object {
+class vvp_fun_signal_object_sa : பொது vvp_fun_signal_object {
 
-    public:
+    பொது:
       explicit vvp_fun_signal_object_sa(unsigned size);
 
-      void recv_object(vvp_net_ptr_t port, vvp_object_t bit,
+      வெறுமை recv_object(vvp_net_ptr_t port, vvp_object_t bit,
 		    vvp_context_t context) override;
 
-      vvp_object_t get_object() const override;
+      vvp_object_t get_object() மாறிலி override;
 
-    private:
-      vvp_object_t value_;
+    தனிப்பட்ட:
+      vvp_object_t மதிப்பு_2;
 };
 
 /*
  * Automatically allocated vvp_fun_signal_real.
  */
-class vvp_fun_signal_object_aa : public vvp_fun_signal_object, public automatic_signal_base, public automatic_hooks_s {
+class vvp_fun_signal_object_aa : பொது vvp_fun_signal_object, பொது automatic_signal_base, பொது automatic_hooks_s {
 
-    public:
+    பொது:
       explicit vvp_fun_signal_object_aa(unsigned size);
       ~vvp_fun_signal_object_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
+      வெறுமை alloc_instance(vvp_context_t context) override;
+      வெறுமை reset_instance(vvp_context_t context) override;
 #ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
+      வெறுமை free_instance(vvp_context_t context) override;
 #endif
 
-      void recv_object(vvp_net_ptr_t port, vvp_object_t bit,
+      வெறுமை recv_object(vvp_net_ptr_t port, vvp_object_t bit,
 		    vvp_context_t context) override;
 
 	// Get information about the vector value.
-      unsigned   value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
+      unsigned   மதிப்பு_size() மாறிலி override;
+      vvp_bit4_t மதிப்பு(unsigned idx) மாறிலி override;
+      vvp_scalar_t scalar_மதிப்பு(unsigned idx) மாறிலி override;
+      வெறுமை vec4_மதிப்பு(vvp_vector4_t&) மாறிலி override;
 	//double real_value() const;
 	//void get_signal_value(struct t_vpi_value*vp);
 
-      vvp_object_t get_object() const override;
+      vvp_object_t get_object() மாறிலி override;
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size);
-      static void operator delete(void*obj);
+    பொது: // These objects are only permallocated.
+      நிலையான வெறுமை* operator new(std::size_t size);
+      நிலையான வெறுமை operator delete(வெறுமை*obj);
 
-    private:
+    தனிப்பட்ட:
       unsigned context_idx_;
 };
 
@@ -398,167 +398,167 @@ class vvp_fun_signal_object_aa : public vvp_fun_signal_object, public automatic_
  *            vvp_wire_base
  */
 
-class vvp_wire_base  : public vvp_net_fil_t, public vvp_signal_value {
+class vvp_wire_base  : பொது vvp_net_fil_t, பொது vvp_signal_மதிப்பு {
 
-    public:
+    பொது:
       vvp_wire_base();
       ~vvp_wire_base() override;
 
         // Support for $countdrivers
-      virtual vvp_bit4_t driven_value(unsigned idx) const;
-      virtual bool is_forced(unsigned idx) const;
+      மெய்நிகர் vvp_bit4_t driven_மதிப்பு(unsigned idx) மாறிலி;
+      மெய்நிகர் bool is_forced(unsigned idx) மாறிலி;
 };
 
-class vvp_wire_vec4 : public vvp_wire_base {
+class vvp_wire_vec4 : பொது vvp_wire_base {
 
-    public:
+    பொது:
       vvp_wire_vec4(unsigned wid, vvp_bit4_t init);
 
 	// The main filter behavior for this class. These methods take
 	// the value that the node is driven to, and applies the force
 	// filters. In wires, this also saves the driven value, so
 	// that when a force is released, we can revert to the driven value.
-      prop_t filter_vec4(const vvp_vector4_t&bit, vvp_vector4_t&rep,
+      prop_t filter_vec4(மாறிலி vvp_vector4_t&bit, vvp_vector4_t&rep,
 			 unsigned base, unsigned vwid) override;
-      prop_t filter_vec8(const vvp_vector8_t&val, vvp_vector8_t&rep,
+      prop_t filter_vec8(மாறிலி vvp_vector8_t&val, vvp_vector8_t&rep,
 			 unsigned base, unsigned vwid) override;
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value) override;
+      வெறுமை get_மதிப்பு(கட்டமைப்பு t_vpi_மதிப்பு*மதிப்பு) override;
 	// Abstract methods from vvp_net_fit_t
-      unsigned filter_size() const override;
-      void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_real(double val, const vvp_vector2_t&mask) override;
-      void release(vvp_net_ptr_t ptr, bool net_flag) override;
-      void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
+      unsigned filter_size() மாறிலி override;
+      வெறுமை force_fil_vec4(மாறிலி vvp_vector4_t&val, மாறிலி vvp_vector2_t&mask) override;
+      வெறுமை force_fil_vec8(மாறிலி vvp_vector8_t&val, மாறிலி vvp_vector2_t&mask) override;
+      வெறுமை force_fil_real(இரட்டை val, மாறிலி vvp_vector2_t&mask) override;
+      வெறுமை release(vvp_net_ptr_t ptr, bool net_flag) override;
+      வெறுமை release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
 
 	// Implementation of vvp_signal_value methods
-      unsigned value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
+      unsigned மதிப்பு_size() மாறிலி override;
+      vvp_bit4_t மதிப்பு(unsigned idx) மாறிலி override;
+      vvp_scalar_t scalar_மதிப்பு(unsigned idx) மாறிலி override;
+      வெறுமை vec4_மதிப்பு(vvp_vector4_t&) மாறிலி override;
 
         // Support for $countdrivers
-      vvp_bit4_t driven_value(unsigned idx) const override;
-      bool is_forced(unsigned idx) const override;
+      vvp_bit4_t driven_மதிப்பு(unsigned idx) மாறிலி override;
+      bool is_forced(unsigned idx) மாறிலி override;
 
-    private:
-      vvp_bit4_t filtered_value_(unsigned idx) const;
+    தனிப்பட்ட:
+      vvp_bit4_t filtered_மதிப்பு(unsigned idx) மாறிலி;
 
-    private:
+    தனிப்பட்ட:
       bool needs_init_;
       vvp_vector4_t bits4_; // The tracked driven value
       vvp_vector4_t force4_; // the value being forced
 };
 
-class vvp_wire_vec8 : public vvp_wire_base {
+class vvp_wire_vec8 : பொது vvp_wire_base {
 
-    public:
+    பொது:
       explicit vvp_wire_vec8(unsigned wid);
 
 	// The main filter behavior for this class
-      prop_t filter_vec4(const vvp_vector4_t&bit, vvp_vector4_t&rep,
+      prop_t filter_vec4(மாறிலி vvp_vector4_t&bit, vvp_vector4_t&rep,
 			 unsigned base, unsigned vwid) override;
-      prop_t filter_vec8(const vvp_vector8_t&val, vvp_vector8_t&rep,
+      prop_t filter_vec8(மாறிலி vvp_vector8_t&val, vvp_vector8_t&rep,
 			 unsigned base, unsigned vwid) override;
 
 	// island ports use this method to filter arbitrary values
 	// through the force filter.
-      prop_t filter_input_vec8(const vvp_vector8_t&val, vvp_vector8_t&rep) const;
+      prop_t filter_உள்ளீடு_vec8(மாறிலி vvp_vector8_t&val, vvp_vector8_t&rep) மாறிலி;
 
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value) override;
+      வெறுமை get_மதிப்பு(கட்டமைப்பு t_vpi_மதிப்பு*மதிப்பு) override;
 	// Abstract methods from vvp_net_fit_t
-      unsigned filter_size() const override;
-      void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_real(double val, const vvp_vector2_t&mask) override;
-      void release(vvp_net_ptr_t ptr, bool net_flag) override;
-      void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
+      unsigned filter_size() மாறிலி override;
+      வெறுமை force_fil_vec4(மாறிலி vvp_vector4_t&val, மாறிலி vvp_vector2_t&mask) override;
+      வெறுமை force_fil_vec8(மாறிலி vvp_vector8_t&val, மாறிலி vvp_vector2_t&mask) override;
+      வெறுமை force_fil_real(இரட்டை val, மாறிலி vvp_vector2_t&mask) override;
+      வெறுமை release(vvp_net_ptr_t ptr, bool net_flag) override;
+      வெறுமை release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
 
 	// Implementation of vvp_signal_value methods
-      unsigned value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
+      unsigned மதிப்பு_size() மாறிலி override;
+      vvp_bit4_t மதிப்பு(unsigned idx) மாறிலி override;
+      vvp_scalar_t scalar_மதிப்பு(unsigned idx) மாறிலி override;
+      வெறுமை vec4_மதிப்பு(vvp_vector4_t&) மாறிலி override;
 	// This is new to vvp_wire_vec8
-      vvp_vector8_t vec8_value() const;
+      vvp_vector8_t vec8_மதிப்பு() மாறிலி;
 
         // Support for $countdrivers
-      vvp_bit4_t driven_value(unsigned idx) const override;
-      bool is_forced(unsigned idx) const override;
+      vvp_bit4_t driven_மதிப்பு(unsigned idx) மாறிலி override;
+      bool is_forced(unsigned idx) மாறிலி override;
 
-    private:
-      vvp_scalar_t filtered_value_(unsigned idx) const;
+    தனிப்பட்ட:
+      vvp_scalar_t filtered_மதிப்பு(unsigned idx) மாறிலி;
 
-    private:
+    தனிப்பட்ட:
       bool needs_init_;
       vvp_vector8_t bits8_;
       vvp_vector8_t force8_; // the value being forced
 };
 
-class vvp_wire_real : public vvp_wire_base {
+class vvp_wire_real : பொது vvp_wire_base {
 
-    public:
-      explicit vvp_wire_real(void);
+    பொது:
+      explicit vvp_wire_real(வெறுமை);
 
 	// The main filter behavior for this class
-      prop_t filter_real(double&bit) override;
+      prop_t filter_real(இரட்டை&bit) override;
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value) override;
+      வெறுமை get_மதிப்பு(கட்டமைப்பு t_vpi_மதிப்பு*மதிப்பு) override;
 	// Abstract methods from vvp_net_fit_t
-      unsigned filter_size() const override;
-      void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_real(double val, const vvp_vector2_t&mask) override;
-      void release(vvp_net_ptr_t ptr, bool net_flag) override;
-      void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
+      unsigned filter_size() மாறிலி override;
+      வெறுமை force_fil_vec4(மாறிலி vvp_vector4_t&val, மாறிலி vvp_vector2_t&mask) override;
+      வெறுமை force_fil_vec8(மாறிலி vvp_vector8_t&val, மாறிலி vvp_vector2_t&mask) override;
+      வெறுமை force_fil_real(இரட்டை val, மாறிலி vvp_vector2_t&mask) override;
+      வெறுமை release(vvp_net_ptr_t ptr, bool net_flag) override;
+      வெறுமை release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
 
 	// Implementation of vvp_signal_value methods
-      unsigned value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
-      double real_value() const override;
+      unsigned மதிப்பு_size() மாறிலி override;
+      vvp_bit4_t மதிப்பு(unsigned idx) மாறிலி override;
+      vvp_scalar_t scalar_மதிப்பு(unsigned idx) மாறிலி override;
+      வெறுமை vec4_மதிப்பு(vvp_vector4_t&) மாறிலி override;
+      இரட்டை real_மதிப்பு() மாறிலி override;
 
-      void get_signal_value(struct t_vpi_value*vp) override;
+      வெறுமை get_signal_மதிப்பு(கட்டமைப்பு t_vpi_மதிப்பு*vp) override;
 
-    private:
-      double bit_;
-      double force_;
+    தனிப்பட்ட:
+      இரட்டை bit_;
+      இரட்டை force_;
       bool needs_init_ = true;
 };
 
-#if 0
-class vvp_wire_string : public vvp_wire_base {
+#எனில் 0
+class vvp_wire_string : பொது vvp_wire_base {
 
-    public:
-      explicit vvp_wire_string(void);
+    பொது:
+      explicit vvp_wire_string(வெறுமை);
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value);
+      வெறுமை get_மதிப்பு(கட்டமைப்பு t_vpi_மதிப்பு*மதிப்பு);
 	// Abstract methods from vvp_net_fil_t
-      unsigned filter_size() const;
-      void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask);
-      void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask);
-      void force_fil_real(double val, const vvp_vector2_t&mask);
-      void release(vvp_net_ptr_t ptr, bool net_flag);
-      void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag);
+      unsigned filter_size() மாறிலி;
+      வெறுமை force_fil_vec4(மாறிலி vvp_vector4_t&val, மாறிலி vvp_vector2_t&mask);
+      வெறுமை force_fil_vec8(மாறிலி vvp_vector8_t&val, மாறிலி vvp_vector2_t&mask);
+      வெறுமை force_fil_real(இரட்டை val, மாறிலி vvp_vector2_t&mask);
+      வெறுமை release(vvp_net_ptr_t ptr, bool net_flag);
+      வெறுமை release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag);
 
 	// Implementation of vvp_signal_value methods
-      unsigned value_size() const;
-      vvp_bit4_t value(unsigned idx) const;
-      vvp_scalar_t scalar_value(unsigned idx) const;
-      void vec4_value(vvp_vector4_t&) const;
-      double real_value() const;
+      unsigned மதிப்பு_size() மாறிலி;
+      vvp_bit4_t மதிப்பு(unsigned idx) மாறிலி;
+      vvp_scalar_t scalar_மதிப்பு(unsigned idx) மாறிலி;
+      வெறுமை vec4_மதிப்பு(vvp_vector4_t&) மாறிலி;
+      இரட்டை real_மதிப்பு() மாறிலி;
 
-      void get_signal_value(struct t_vpi_value*vp);
+      வெறுமை get_signal_மதிப்பு(கட்டமைப்பு t_vpi_மதிப்பு*vp);
 
-    private:
-      std::string value_;
+    தனிப்பட்ட:
+      std::string மதிப்பு_2;
 };
 #endif
 

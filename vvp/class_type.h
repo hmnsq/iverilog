@@ -31,53 +31,53 @@ class vvp_vector4_t;
  * uses this information to figure out how to construct an actual
  * instance.
  */
-class class_type : public __vpiHandle {
+class class_type : பொது __vpiHandle {
 
-    public:
-      struct inst_x;
-      typedef inst_x*inst_t;
+    பொது:
+      கட்டமைப்பு inst_x;
+      வகைவரை inst_x*inst_t;
 
-    public:
-      explicit class_type(const std::string&nam, size_t nprop);
+    பொது:
+      explicit class_type(மாறிலி std::string&nam, size_t nprop);
       ~class_type() override;
 
 	// This is the name of the class type.
-      inline const std::string&class_name(void) const { return class_name_; }
+      உள்வரி மாறிலி std::string&class_name(வெறுமை) மாறிலி { திரும்பு class_name_; }
 	// Number of properties in the class definition.
-      inline size_t property_count(void) const { return properties_.size(); }
+      உள்வரி size_t property_மொத்தம்(வெறுமை) மாறிலி { திரும்பு properties_.size(); }
 
 	// Set the details about the property. This is used during
 	// parse of the .vvp file to fill in the details of the
 	// property for the class definition.
-      void set_property(size_t idx, const std::string&name, const std::string&type, uint64_t array_size);
+      வெறுமை set_property(size_t idx, மாறிலி std::string&name, மாறிலி std::string&type, uint64_t array_size);
 
 	// This method is called after all the properties are
 	// defined. This calculates information about the definition.
-      void finish_setup(void);
+      வெறுமை finish_setup(வெறுமை);
 
-    public:
+    பொது:
 	// Constructors and destructors for making instances.
-      inst_t instance_new() const;
-      void instance_delete(inst_t) const;
+      inst_t instance_new() மாறிலி;
+      வெறுமை instance_delete(inst_t) மாறிலி;
 
-      void set_vec4(inst_t inst, size_t pid, const vvp_vector4_t&val) const;
-      void get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) const;
-      void set_real(inst_t inst, size_t pid, double val) const;
-      double get_real(inst_t inst, size_t pid) const;
-      void set_string(inst_t inst, size_t pid, const std::string&val) const;
-      std::string get_string(inst_t inst, size_t pid) const;
-      void set_object(inst_t inst, size_t pid, const vvp_object_t&val, size_t idx) const;
-      void get_object(inst_t inst, size_t pid, vvp_object_t&val, size_t idx) const;
+      வெறுமை set_vec4(inst_t inst, size_t pid, மாறிலி vvp_vector4_t&val) மாறிலி;
+      வெறுமை get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) மாறிலி;
+      வெறுமை set_real(inst_t inst, size_t pid, இரட்டை val) மாறிலி;
+      இரட்டை get_real(inst_t inst, size_t pid) மாறிலி;
+      வெறுமை set_string(inst_t inst, size_t pid, மாறிலி std::string&val) மாறிலி;
+      std::string get_string(inst_t inst, size_t pid) மாறிலி;
+      வெறுமை set_object(inst_t inst, size_t pid, மாறிலி vvp_object_t&val, size_t idx) மாறிலி;
+      வெறுமை get_object(inst_t inst, size_t pid, vvp_object_t&val, size_t idx) மாறிலி;
 
-      void copy_property(inst_t dst, size_t idx, inst_t src) const;
+      வெறுமை copy_property(inst_t dst, size_t idx, inst_t src) மாறிலி;
 
-    public: // VPI related methods
-      int get_type_code(void) const override;
+    பொது: // VPI related methods
+      முழு get_type_code(வெறுமை) மாறிலி override;
 
-    private:
+    தனிப்பட்ட:
       std::string class_name_;
 
-      struct prop_t {
+      கட்டமைப்பு prop_t {
 	    std::string name;
 	    class_property_t*type;
       };

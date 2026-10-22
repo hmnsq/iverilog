@@ -26,7 +26,7 @@
 # include  "vvp_darray.h"
 # include  "config.h"
 #ifdef CHECK_WITH_VALGRIND
-#include  "vvp_cleanup.h"
+#அந்தர்பாவ  "vvp_cleanup.h"
 #endif
 # include  <cstdlib>
 # include  <cstring>
@@ -36,633 +36,633 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+using நாமாகாஶ std;
 
-unsigned long count_net_arrays = 0;
-unsigned long count_net_array_words = 0;
-unsigned long count_var_arrays = 0;
-unsigned long count_var_array_words = 0;
-unsigned long count_real_arrays = 0;
-unsigned long count_real_array_words = 0;
+unsigned long மொத்தம்_net_arrays = 0;
+unsigned long மொத்தம்_net_array_சொற்கள் = 0;
+unsigned long மொத்தம்_var_arrays = 0;
+unsigned long மொத்தம்_var_array_சொற்கள் = 0;
+unsigned long மொத்தம்_real_arrays = 0;
+unsigned long மொத்தம்_real_array_சொற்கள் = 0;
 
-static symbol_map_s<struct __vpiArray>* array_table =0;
+நிலையான குறியீடு_map_s<கட்டமைப்பு __vpiArray>* array_table =0;
 
-class vvp_fun_arrayport;
-static void array_attach_port(vvp_array_t, vvp_fun_arrayport*);
+வகுப்பு vvp_fun_arrayport;
+நிலையான வெறுமை array_attach_port(vvp_array_t, vvp_fun_arrayport*);
 
-vvp_array_t array_find(const char*label)
+vvp_array_t array_find(மாறிலி எழுத்து*label)
 {
-      if (array_table == 0)
-	    return 0;
+      எனில் (array_table == 0)
+	    திரும்பு 0;
 
-      vvp_array_t v = array_table->sym_get_value(label);
-      return v;
+      vvp_array_t v = array_table->sym_get_மதிப்பு(label);
+      திரும்பு v;
 }
 
-struct __vpiArrayVthrA : public __vpiHandle {
-      int get_type_code(void) const override { return vpiMemoryWord; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
+கட்டமைப்பு __vpiArrayVthrA : பொது __vpiHandle {
+      முழு get_type_code(வெறுமை) மாறிலி override { திரும்பு vpiMemoryWord; }
+      முழு vpi_get(முழு code) override;
+      எழுத்து* vpi_get_str(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
+      vpiHandle vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags) override;
+      vpiHandle vpi_handle(முழு code) override;
 
-      struct __vpiArray*array;
+      கட்டமைப்பு __vpiArray*array;
 	// If this is set, then use it to get the index value.
       vpiHandle address_handle;
 	// If wid==0, then address is the address into the array.
       unsigned address;
 
-      unsigned get_address() const
+      unsigned get_address() மாறிலி
       {
-	    if (address_handle) {
-		  s_vpi_value vp;
+	    எனில் (address_handle) {
+		  s_vpi_மதிப்பு vp;
 		    /* Check to see if the value is defined. */
 		  vp.format = vpiVectorVal;
-		  address_handle->vpi_get_value(&vp);
-		  int words = (address_handle->vpi_get(vpiSize)-1)/32 + 1;
-		  for(int idx = 0; idx < words; idx += 1) {
+		  address_handle->vpi_get_மதிப்பு(&vp);
+		  முழு சொற்கள் = (address_handle->vpi_get(vpiSize)-1)/32 + 1;
+		  க்கு(முழு idx = 0; idx < சொற்கள்; idx += 1) {
 			  /* Return UINT_MAX to indicate an X base. */
-			if (vp.value.vector[idx].bval != 0) return UINT_MAX;
+			எனில் (vp.value.vector[idx].bval != 0) திரும்பு UINT_MAX;
 		  }
 		    /* The value is defined so get and return it. */
 		  vp.format = vpiIntVal;
-		  address_handle->vpi_get_value(&vp);
-		  return vp.value.integer;
+		  address_handle->vpi_get_மதிப்பு(&vp);
+		  திரும்பு vp.value.integer;
 	    }
 
-	    return address;
+	    திரும்பு address;
       }
 };
 
 
-struct __vpiArrayVthrAPV : public __vpiHandle {
-      int get_type_code(void) const override { return vpiPartSelect; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_handle(int code) override;
+கட்டமைப்பு __vpiArrayVthrAPV : பொது __vpiHandle {
+      முழு get_type_code(வெறுமை) மாறிலி override { திரும்பு vpiPartSelect; }
+      முழு vpi_get(முழு code) override;
+      எழுத்து* vpi_get_str(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
+      vpiHandle vpi_handle(முழு code) override;
 
-      struct __vpiArray*array;
+      கட்டமைப்பு __vpiArray*array;
       unsigned word_sel;
       unsigned part_bit;
       unsigned part_wid;
 };
 
-bool is_net_array(vpiHandle obj)
+தருக்க is_net_array(vpiHandle obj)
 {
-      struct __vpiArray*rfp = dynamic_cast<__vpiArray*> (obj);
-      assert(rfp);
+      கட்டமைப்பு __vpiArray*rfp = dynamic_cast<__vpiArray*> (obj);
+      ப்ரதிஜ்ஞா(rfp);
 
-      if (rfp->nets != 0) return true;
-      return false;
+      எனில் (rfp->nets != 0) திரும்பு உண்மை;
+      திரும்பு பொய்;
 }
 
 // This function return true if the underlying array words are real.
-static bool vpi_array_is_real(const vvp_array_t arr)
+நிலையான தருக்க vpi_array_is_real(மாறிலி vvp_array_t arr)
 {
 	// Check to see if this is a variable/register array.
-      if (arr->vals4 != 0)  // A bit based variable/register array.
-	    return false;
+      எனில் (arr->vals4 != 0)  // A bit based variable/register array.
+	    திரும்பு பொய்;
 
-      if (dynamic_cast<vvp_darray_real*> (arr->vals))
-	    return true;
+      எனில் (dynamic_cast<vvp_darray_real*> (arr->vals))
+	    திரும்பு உண்மை;
 
-      if (arr->vals != 0)
-	    return false;
+      எனில் (arr->vals != 0)
+	    திரும்பு பொய்;
 
 	// This must be a net array so look at element 0 to find the type.
-      assert(arr->nets != 0);
-      assert(arr->get_size() > 0);
-      const struct __vpiRealVar*rsig = dynamic_cast<__vpiRealVar*>(arr->nets[0]);
-      if (rsig) {
-	    return true;
+      ப்ரதிஜ்ஞா(arr->nets != 0);
+      ப்ரதிஜ்ஞா(arr->get_size() > 0);
+      மாறிலி கட்டமைப்பு __vpiRealVar*rsig = dynamic_cast<__vpiRealVar*>(arr->nets[0]);
+      எனில் (rsig) {
+	    திரும்பு உண்மை;
       }
 
-      return false;
+      திரும்பு பொய்;
 }
 
-static bool vpi_array_is_string(const vvp_array_t arr)
+நிலையான தருக்க vpi_array_is_string(மாறிலி vvp_array_t arr)
 {
 	// Check to see if this is a variable/register array.
-      if (arr->vals4 != 0)  // A bit based variable/register array.
-	    return false;
+      எனில் (arr->vals4 != 0)  // A bit based variable/register array.
+	    திரும்பு பொய்;
 
-      if (dynamic_cast<vvp_darray_string*> (arr->vals))
-	    return true;
+      எனில் (dynamic_cast<vvp_darray_string*> (arr->vals))
+	    திரும்பு உண்மை;
 
-      return false;
+      திரும்பு பொய்;
 }
 
-int __vpiArray::get_word_size() const
+முழு __vpiArray::get_word_size() மாறிலி
 {
       unsigned width;
 
-      assert(get_size() > 0);
+      ப்ரதிஜ்ஞா(get_size() > 0);
 	/* For a net array we need to get the width from the first element. */
-      if (nets) {
-	    assert(vals4 == 0 && vals == 0);
-	    const struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(nets[0]);
-	    assert(vsig);
+      எனில் (nets) {
+	    ப்ரதிஜ்ஞா(vals4 == 0 && vals == 0);
+	    மாறிலி கட்டமைப்பு __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(nets[0]);
+	    ப்ரதிஜ்ஞா(vsig);
 	    width = vpip_size(vsig);
 	/* For a variable array we can get the width from vals_width. */
-      } else {
-	    assert(vals4 || vals);
+      } இல்லையெனில் {
+	    ப்ரதிஜ்ஞா(vals4 || vals);
 	    width = vals_width;
       }
 
-      return width;
+      திரும்பு width;
 }
 
-char*__vpiArray::get_word_str(struct __vpiArrayWord*word, int code)
+எழுத்து*__vpiArray::get_word_str(கட்டமைப்பு __vpiArrayWord*word, முழு code)
 {
       unsigned index = word->get_index();
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      எனில் (code == vpiFile) {  // Not implemented for now!
+	    திரும்பு simple_set_rbuf_str(file_names[0]);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%d", (int)index + first_addr.get_value());
-      return generic_get_str(code, get_scope(), name, sidx);
+      எழுத்து sidx [64];
+      snprintf(sidx, 63, "%d", (முழு)index + first_addr.get_மதிப்பு());
+      திரும்பு generic_get_str(code, get_scope(), name, sidx);
 }
 
-void __vpiArray::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
+வெறுமை __vpiArray::get_word_மதிப்பு(கட்டமைப்பு __vpiArrayWord*word, p_vpi_மதிப்பு vp)
 {
       unsigned index = word->get_index();
 
     // Determine the appropriate format (The Verilog PLI Handbook 5.2.10)
-      if(vp->format == vpiObjTypeVal) {
-          if(vpi_array_is_real(this))
+      எனில்(vp->format == vpiObjTypeVal) {
+          எனில்(vpi_array_is_real(இது))
               vp->format = vpiRealVal;
-          else if(vpi_array_is_string(this))
+          இல்லையெனில் எனில்(vpi_array_is_string(இது))
               vp->format = vpiStringVal;
-          else
+          இல்லையெனில்
               vp->format = vpiIntVal;
       }
 
-      if(vals4) {
-          vpip_vec4_get_value(vals4->get_word(index),
+      எனில்(vals4) {
+          vpip_vec4_get_மதிப்பு(vals4->get_word(index),
                               vals4->width(), signed_flag, vp);
-      } else if(vals) {
-          switch(vp->format) {
-            case vpiBinStrVal:
-            case vpiOctStrVal:
-            case vpiDecStrVal:
-            case vpiHexStrVal:
-            case vpiScalarVal:
-            case vpiIntVal:
-            case vpiVectorVal:
+      } இல்லையெனில் எனில்(vals) {
+          தேர்வு(vp->format) {
+            நிலை vpiBinStrVal:
+            நிலை vpiOctStrVal:
+            நிலை vpiDecStrVal:
+            நிலை vpiHexStrVal:
+            நிலை vpiScalarVal:
+            நிலை vpiIntVal:
+            நிலை vpiVectorVal:
             {
                 vvp_vector4_t v;
                 vals->get_word(index, v);
-                vpip_vec4_get_value(v, vals_width, signed_flag, vp);
+                vpip_vec4_get_மதிப்பு(v, vals_width, signed_flag, vp);
             }
-            break;
+            நிறுத்து;
 
-            case vpiRealVal:
+            நிலை vpiRealVal:
             {
-                double d;
+                இரட்டை d;
                 vals->get_word(index, d);
-                vpip_real_get_value(d, vp);
+                vpip_real_get_மதிப்பு(d, vp);
             }
-            break;
+            நிறுத்து;
 
-            case vpiStringVal:
+            நிலை vpiStringVal:
             {
                 string s;
                 vals->get_word(index, s);
-                vpip_string_get_value(s, vp);
+                vpip_string_get_மதிப்பு(s, vp);
             }
-            break;
+            நிறுத்து;
 
-            default:
+            இயல்பு:
                 fprintf(stderr, "vpi sorry: format is not implemented\n");
-                assert(false);
+                ப்ரதிஜ்ஞா(பொய்);
           }
       }
 }
 
-void __vpiArray::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int)
+வெறுமை __vpiArray::put_word_மதிப்பு(கட்டமைப்பு __vpiArrayWord*word, p_vpi_மதிப்பு vp, முழு)
 {
       unsigned index = word->get_index();
-      vvp_vector4_t val = vec4_from_vpi_value(vp, vals_width);
+      vvp_vector4_t val = vec4_from_vpi_மதிப்பு(vp, vals_width);
       set_word(index, 0, val);
 }
 
-vpiHandle __vpiArray::get_iter_index(struct __vpiArrayIterator*, int idx)
+vpiHandle __vpiArray::get_iter_index(கட்டமைப்பு __vpiArrayIterator*, முழு idx)
 {
-      if (nets) return nets[idx];
+      எனில் (nets) திரும்பு nets[idx];
 
-      assert(vals4 || vals);
+      ப்ரதிஜ்ஞா(vals4 || vals);
 
-      if (vals_words == 0) make_vals_words();
+      எனில் (vals_சொற்கள் == 0) make_vals_சொற்கள்();
 
-      return &(vals_words[idx].as_word);
+      திரும்பு &(vals_சொற்கள்[idx].as_word);
 }
 
-int __vpiArray::vpi_get(int code)
+முழு __vpiArray::vpi_get(முழு code)
 {
-      switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+      தேர்வு (code) {
+	  நிலை vpi_வரி_No:
+	    திரும்பு 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return get_size();
+	  நிலை vpiSize:
+	    திரும்பு get_size();
 
-	  case vpiAutomatic:
-	    return scope->is_automatic()? 1 : 0;
+	  நிலை vpiAutomatic:
+	    திரும்பு scope->is_automatic()? 1 : 0;
 
-	  default:
-	    return 0;
+	  இயல்பு:
+	    திரும்பு 0;
       }
 }
 
-char* __vpiArray::vpi_get_str(int code)
+எழுத்து* __vpiArray::vpi_get_str(முழு code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      எனில் (code == vpiFile) {  // Not implemented for now!
+            திரும்பு simple_set_rbuf_str(file_names[0]);
       }
 
-      return generic_get_str(code, scope, name, NULL);
+      திரும்பு generic_get_str(code, scope, name, வெற்று);
 }
 
-vpiHandle __vpiArray::vpi_handle(int code)
+vpiHandle __vpiArray::vpi_handle(முழு code)
 {
-      switch (code) {
-          case vpiLeftRange:
-            if (swap_addr) return &last_addr;
-            else return &first_addr;
+      தேர்வு (code) {
+          நிலை vpi_இடது_Range:
+            எனில் (swap_addr) திரும்பு &last_addr;
+            இல்லையெனில் திரும்பு &first_addr;
 
-          case vpiRightRange:
-            if (swap_addr) return &first_addr;
-            else return &last_addr;
+          நிலை vpi_வலது_Range:
+            எனில் (swap_addr) திரும்பு &first_addr;
+            இல்லையெனில் திரும்பு &last_addr;
 
-	  case vpiScope:
-	    return scope;
+	  நிலை vpiScope:
+	    திரும்பு scope;
 
-	  case vpiModule:
-	    return vpip_module(scope);
+	  நிலை vpiModule:
+	    திரும்பு vpip_module(scope);
       }
 
-      return 0;
+      திரும்பு 0;
 }
 
 /*
 * VPI code passes indices that are not yet converted to canonical
 * form, so this index function does it here.
 */
-vpiHandle __vpiArray::vpi_index(int index)
+vpiHandle __vpiArray::vpi_index(முழு index)
 {
-      index -= first_addr.get_value();
-      if (index >= (long) get_size())
-	    return 0;
-      if (index < 0)
-	    return 0;
+      index -= first_addr.get_மதிப்பு();
+      எனில் (index >= (long) get_size())
+	    திரும்பு 0;
+      எனில் (index < 0)
+	    திரும்பு 0;
 
-      if (nets != 0) {
-	    return nets[index];
+      எனில் (nets != 0) {
+	    திரும்பு nets[index];
       }
 
-      if (vals_words == 0)
-	    make_vals_words();
+      எனில் (vals_சொற்கள் == 0)
+	    make_vals_சொற்கள்();
 
-      return &(vals_words[index].as_word);
+      திரும்பு &(vals_சொற்கள்[index].as_word);
 }
 
-int __vpiArrayWord::as_word_t::vpi_get(int code)
+முழு __vpiArrayWord::as_word_t::vpi_get(முழு code)
 {
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
-      assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
-      t_vpi_value val;
+      கட்டமைப்பு __vpiArrayWord*obj = array_var_word_from_handle(இது);
+      ப்ரதிஜ்ஞா(obj);
+      கட்டமைப்பு __vpiArrayBase*my_parent = obj->get_parent();
+      t_vpi_மதிப்பு val;
 
-      switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+      தேர்வு (code) {
+	  நிலை vpi_வரி_No:
+	    திரும்பு 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return my_parent->get_word_size();
+	  நிலை vpiSize:
+	    திரும்பு my_parent->get_word_size();
 
-	  case vpiLeftRange:
+	  நிலை vpi_இடது_Range:
             val.format = vpiIntVal;
-	    my_parent->get_left_range()->vpi_get_value(&val);
-            assert(val.format == vpiIntVal);
-            return val.value.integer;
+	    my_parent->get_இடது_range()->vpi_get_மதிப்பு(&val);
+            ப்ரதிஜ்ஞா(val.format == vpiIntVal);
+            திரும்பு val.value.integer;
 
-	  case vpiRightRange:
+	  நிலை vpi_வலது_Range:
             val.format = vpiIntVal;
-	    my_parent->get_right_range()->vpi_get_value(&val);
-            assert(val.format == vpiIntVal);
-            return val.value.integer;
+	    my_parent->get_வலது_range()->vpi_get_மதிப்பு(&val);
+            ப்ரதிஜ்ஞா(val.format == vpiIntVal);
+            திரும்பு val.value.integer;
 
-	  case vpiIndex:
+	  நிலை vpiIndex:
 	    {
-		  int base_offset = 0;
-		  struct __vpiArray*base = dynamic_cast<__vpiArray*> (my_parent);
-		  if (base) {
+		  முழு base_offset = 0;
+		  கட்டமைப்பு __vpiArray*base = dynamic_cast<__vpiArray*> (my_parent);
+		  எனில் (base) {
 			val.format = vpiIntVal;
-			base->first_addr.vpi_get_value(&val);
+			base->first_addr.vpi_get_மதிப்பு(&val);
 			base_offset += val.value.integer;
 		  }
 		  val.format = vpiIntVal;
-		  obj->as_index.vpi_get_value(&val);
-		  assert(val.format == vpiIntVal);
-		  return val.value.integer + base_offset;
+		  obj->as_index.vpi_get_மதிப்பு(&val);
+		  ப்ரதிஜ்ஞா(val.format == vpiIntVal);
+		  திரும்பு val.value.integer + base_offset;
 	    }
 
-	  case vpiAutomatic:
-	    return my_parent->get_scope()->is_automatic()? 1 : 0;
+	  நிலை vpiAutomatic:
+	    திரும்பு my_parent->get_scope()->is_automatic()? 1 : 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiNoThr;
+#எனில் defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  நிலை _vpiFromThr:
+	    திரும்பு _vpiNoThr;
 #endif
 
-	  default:
-	    return 0;
+	  இயல்பு:
+	    திரும்பு 0;
       }
 }
 
 
-int __vpiArrayVthrA::vpi_get(int code)
+முழு __vpiArrayVthrA::vpi_get(முழு code)
 {
-      switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+      தேர்வு (code) {
+	  நிலை vpi_வரி_No:
+	    திரும்பு 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return array->get_word_size();
+	  நிலை vpiSize:
+	    திரும்பு array->get_word_size();
 
-	  case vpiLeftRange:
-	    return array->msb.get_value();
+	  நிலை vpi_இடது_Range:
+	    திரும்பு array->msb.get_மதிப்பு();
 
-	  case vpiRightRange:
-	    return array->lsb.get_value();
+	  நிலை vpi_வலது_Range:
+	    திரும்பு array->lsb.get_மதிப்பு();
 
-	  case vpiIndex:
-	    return (int)get_address() + array->first_addr.get_value();
+	  நிலை vpiIndex:
+	    திரும்பு (முழு)get_address() + array->first_addr.get_மதிப்பு();
 
-	  case vpiAutomatic:
-	    return array->get_scope()->is_automatic() ? 1 : 0;
+	  நிலை vpiAutomatic:
+	    திரும்பு array->get_scope()->is_automatic() ? 1 : 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpi_at_A;
+#எனில் defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  நிலை _vpiFromThr:
+	    திரும்பு _vpi_at_A;
 #endif
 
 	  // If address_handle is not zero we definitely have a
 	  // variable.
-	  case vpiConstantSelect:
-	    return address_handle == 0;
+	  நிலை vpiConstantSelect:
+	    திரும்பு address_handle == 0;
 
-	  default:
-	    return 0;
+	  இயல்பு:
+	    திரும்பு 0;
       }
 }
 
-char* __vpiArrayVthrA::vpi_get_str(int code)
+எழுத்து* __vpiArrayVthrA::vpi_get_str(முழு code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      எனில் (code == vpiFile) {  // Not implemented for now!
+            திரும்பு simple_set_rbuf_str(file_names[0]);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%d", (int)get_address() + array->first_addr.get_value());
-      return generic_get_str(code, array->get_scope(), array->name, sidx);
+      எழுத்து sidx [64];
+      snprintf(sidx, 63, "%d", (முழு)get_address() + array->first_addr.get_மதிப்பு());
+      திரும்பு generic_get_str(code, array->get_scope(), array->name, sidx);
 }
 
-void __vpiArrayVthrA::vpi_get_value(p_vpi_value vp)
+வெறுமை __vpiArrayVthrA::vpi_get_மதிப்பு(p_vpi_மதிப்பு vp)
 {
-      assert(array);
+      ப்ரதிஜ்ஞா(array);
 
       unsigned index = get_address();
-      if (vpi_array_is_real(array)) {
-	    double tmp = array->get_word_r(index);
-	    vpip_real_get_value(tmp, vp);
-      } else if (vpi_array_is_string(array)) {
+      எனில் (vpi_array_is_real(array)) {
+	    இரட்டை tmp = array->get_word_r(index);
+	    vpip_real_get_மதிப்பு(tmp, vp);
+      } இல்லையெனில் எனில் (vpi_array_is_string(array)) {
 	    string tmp = array->get_word_str(index);
-	    vpip_string_get_value(tmp, vp);
-      } else {
+	    vpip_string_get_மதிப்பு(tmp, vp);
+      } இல்லையெனில் {
 	    vvp_vector4_t tmp = array->get_word(index);
 	    unsigned width = array->get_word_size();
-	    vpip_vec4_get_value(tmp, width, array->signed_flag, vp);
+	    vpip_vec4_get_மதிப்பு(tmp, width, array->signed_flag, vp);
       }
 }
 
-vpiHandle __vpiArrayVthrA::vpi_put_value(p_vpi_value vp, int)
+vpiHandle __vpiArrayVthrA::vpi_put_மதிப்பு(p_vpi_மதிப்பு vp, முழு)
 {
       unsigned index = get_address();
 
-      assert(array);
-      assert(index < array->get_size());
+      ப்ரதிஜ்ஞா(array);
+      ப்ரதிஜ்ஞா(index < array->get_size());
 
-      if (vpi_array_is_real(array)) {
-	    double val = real_from_vpi_value(vp);
+      எனில் (vpi_array_is_real(array)) {
+	    இரட்டை val = real_from_vpi_மதிப்பு(vp);
 	    array->set_word(index, val);
-      } else {
+      } இல்லையெனில் {
 	    unsigned width = array->get_word_size();
-	    vvp_vector4_t val = vec4_from_vpi_value(vp, width);
+	    vvp_vector4_t val = vec4_from_vpi_மதிப்பு(vp, width);
 	    array->set_word(index, 0, val);
       }
 
-      return this;
+      திரும்பு இது;
 }
 
-vpiHandle __vpiArrayVthrA::vpi_handle(int code)
+vpiHandle __vpiArrayVthrA::vpi_handle(முழு code)
 {
-      switch (code) {
-	  case vpiIndex:
-	    break;  // Not implemented!
+      தேர்வு (code) {
+	  நிலை vpiIndex:
+	    நிறுத்து;  // Not implemented!
 
-	  case vpiLeftRange:
-	    return &array->msb;
+	  நிலை vpi_இடது_Range:
+	    திரும்பு &array->msb;
 
-	  case vpiRightRange:
-	    return &array->lsb;
+	  நிலை vpi_வலது_Range:
+	    திரும்பு &array->lsb;
 
-	  case vpiParent:
-	  case vpiArray:
-	    return array;
+	  நிலை vpiParent:
+	  நிலை vpiArray:
+	    திரும்பு array;
 
-	  case vpiScope:
-	    return array->get_scope();
+	  நிலை vpiScope:
+	    திரும்பு array->get_scope();
 
-	  case vpiModule:
-	    return vpip_module(array->get_scope());
+	  நிலை vpiModule:
+	    திரும்பு vpip_module(array->get_scope());
       }
 
-      return 0;
+      திரும்பு 0;
 }
 
 
-int __vpiArrayVthrAPV::vpi_get(int code)
+முழு __vpiArrayVthrAPV::vpi_get(முழு code)
 {
-      switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+      தேர்வு (code) {
+	  நிலை vpi_வரி_No:
+	    திரும்பு 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return part_wid;
+	  நிலை vpiSize:
+	    திரும்பு part_wid;
 
-	  case vpiLeftRange:
-	    return part_bit + part_wid - 1;
+	  நிலை vpi_இடது_Range:
+	    திரும்பு part_bit + part_wid - 1;
 
-	  case vpiRightRange:
-	    return part_bit;
+	  நிலை vpi_வலது_Range:
+	    திரும்பு part_bit;
 
-	  case vpiAutomatic:
-	    return array->get_scope()->is_automatic() ? 1 : 0;
+	  நிலை vpiAutomatic:
+	    திரும்பு array->get_scope()->is_automatic() ? 1 : 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpi_at_APV;
+#எனில் defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  நிலை _vpiFromThr:
+	    திரும்பு _vpi_at_APV;
 #endif
 
-	  case vpiConstantSelect:
-	    return 1;
+	  நிலை vpiConstantSelect:
+	    திரும்பு 1;
 
-	  default:
-	    return 0;
+	  இயல்பு:
+	    திரும்பு 0;
       }
 }
 
-char* __vpiArrayVthrAPV::vpi_get_str(int code)
+எழுத்து* __vpiArrayVthrAPV::vpi_get_str(முழு code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      எனில் (code == vpiFile) {  // Not implemented for now!
+            திரும்பு simple_set_rbuf_str(file_names[0]);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%u", word_sel + array->first_addr.get_value());
-      return generic_get_str(code, array->get_scope(), array->name, sidx);
+      எழுத்து sidx [64];
+      snprintf(sidx, 63, "%u", word_sel + array->first_addr.get_மதிப்பு());
+      திரும்பு generic_get_str(code, array->get_scope(), array->name, sidx);
 }
 
-void __vpiArrayVthrAPV::vpi_get_value(p_vpi_value vp)
+வெறுமை __vpiArrayVthrAPV::vpi_get_மதிப்பு(p_vpi_மதிப்பு vp)
 {
-      assert(array);
+      ப்ரதிஜ்ஞா(array);
 
       unsigned index = word_sel;
-      if (vpi_array_is_real(array)) {
-	    double tmp = array->get_word_r(index);
-	    vpip_real_get_value(tmp, vp);
-      } else {
+      எனில் (vpi_array_is_real(array)) {
+	    இரட்டை tmp = array->get_word_r(index);
+	    vpip_real_get_மதிப்பு(tmp, vp);
+      } இல்லையெனில் {
 	    vvp_vector4_t tmp = array->get_word(index);
 	    tmp = tmp.subvalue(part_bit, part_wid);
-	    vpip_vec4_get_value(tmp, part_wid, false, vp);
+	    vpip_vec4_get_மதிப்பு(tmp, part_wid, பொய், vp);
       }
 }
 
-vpiHandle __vpiArrayVthrAPV::vpi_handle(int code)
+vpiHandle __vpiArrayVthrAPV::vpi_handle(முழு code)
 {
-      switch (code) {
+      தேர்வு (code) {
             // Not currently implemented. We would need to create a VPI
             // object for the memory word.
-	  case vpiParent:
-	    return 0;
+	  நிலை vpiParent:
+	    திரும்பு 0;
 
             // Not part of the Verilog standard. We use this internally.
-	  case vpiArray:
-	    return array;
+	  நிலை vpiArray:
+	    திரும்பு array;
 
-	  case vpiScope:
-	    return array->get_scope();
+	  நிலை vpiScope:
+	    திரும்பு array->get_scope();
 
-	  case vpiModule:
-	    return vpip_module(array->get_scope());
+	  நிலை vpiModule:
+	    திரும்பு vpip_module(array->get_scope());
       }
 
-      return 0;
+      திரும்பு 0;
 }
 
-void __vpiArray::set_word(unsigned address, unsigned part_off, const vvp_vector4_t&val)
+வெறுமை __vpiArray::set_word(unsigned address, unsigned part_off, மாறிலி vvp_vector4_t&val)
 {
-      if (address >= get_size())
-	    return;
+      எனில் (address >= get_size())
+	    திரும்பு;
 
-      if (vals4) {
-	    assert(nets == 0);
-	    if (part_off != 0 || val.size() != vals_width) {
+      எனில் (vals4) {
+	    ப்ரதிஜ்ஞா(nets == 0);
+	    எனில் (part_off != 0 || val.size() != vals_width) {
 		  vvp_vector4_t tmp = vals4->get_word(address);
-		  if ((part_off + val.size()) > tmp.size()) {
+		  எனில் ((part_off + val.size()) > tmp.size()) {
 			cerr << "part_off=" << part_off
 			     << " val.size()=" << val.size()
 			     << " vals[address].size()=" << tmp.size()
 			     << " vals_width=" << vals_width << endl;
-			assert(0);
+			ப்ரதிஜ்ஞா(0);
 		  }
 		  tmp.set_vec(part_off, val);
 		  vals4->set_word(address, tmp);
-	    } else {
+	    } இல்லையெனில் {
 		  vals4->set_word(address, val);
 	    }
 	    word_change(address);
-	    return;
+	    திரும்பு;
       }
 
-      if (vals) {
-	    assert(nets == 0);
-	    if (part_off != 0 || val.size() != vals_width) {
+      எனில் (vals) {
+	    ப்ரதிஜ்ஞா(nets == 0);
+	    எனில் (part_off != 0 || val.size() != vals_width) {
 		  vvp_vector4_t tmp;
 		  vals->get_word(address, tmp);
-		  if ((part_off + val.size()) > tmp.size()) {
+		  எனில் ((part_off + val.size()) > tmp.size()) {
 			cerr << "part_off=" << part_off
 			     << " val.size()=" << val.size()
 			     << " vals[address].size()=" << tmp.size()
 			     << " vals_width=" << vals_width << endl;
-			assert(0);
+			ப்ரதிஜ்ஞா(0);
 		  }
 		  tmp.set_vec(part_off, val);
 		  vals->set_word(address, tmp);
-	    } else {
+	    } இல்லையெனில் {
 		  vals->set_word(address, val);
 	    }
 	    word_change(address);
-	    return;
+	    திரும்பு;
       }
 
-      assert(nets != 0);
+      ப்ரதிஜ்ஞா(nets != 0);
 
 	// Select the word of the array that we affect.
       vpiHandle word = nets[address];
-      const struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
-      assert(vsig);
+      மாறிலி கட்டமைப்பு __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
+      ப்ரதிஜ்ஞா(vsig);
 
-      vsig->node->send_vec4_pv(val, part_off, vpip_size(vsig), 0);
+      vsig->முனை->send_vec4_pv(val, part_off, vpip_size(vsig), 0);
       word_change(address);
 }
 
-void __vpiArray::set_word(unsigned address, double val)
+வெறுமை __vpiArray::set_word(unsigned address, இரட்டை val)
 {
-      assert(vals != 0);
-      assert(nets == 0);
+      ப்ரதிஜ்ஞா(vals != 0);
+      ப்ரதிஜ்ஞா(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      எனில் (address >= vals->get_size())
+	    திரும்பு;
 
       vals->set_word(address, val);
       word_change(address);
 }
 
-void __vpiArray::set_word(unsigned address, const string&val)
+வெறுமை __vpiArray::set_word(unsigned address, மாறிலி string&val)
 {
-      assert(vals != 0);
-      assert(nets == 0);
+      ப்ரதிஜ்ஞா(vals != 0);
+      ப்ரதிஜ்ஞா(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      எனில் (address >= vals->get_size())
+	    திரும்பு;
 
       vals->set_word(address, val);
       word_change(address);
 }
 
-void __vpiArray::set_word(unsigned address, const vvp_object_t&val)
+வெறுமை __vpiArray::set_word(unsigned address, மாறிலி vvp_object_t&val)
 {
-      assert(vals != 0);
-      assert(nets == 0);
+      ப்ரதிஜ்ஞா(vals != 0);
+      ப்ரதிஜ்ஞா(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      எனில் (address >= vals->get_size())
+	    திரும்பு;
 
       vals->set_word(address, val);
       word_change(address);
@@ -670,375 +670,375 @@ void __vpiArray::set_word(unsigned address, const vvp_object_t&val)
 
 vvp_vector4_t __vpiArray::get_word(unsigned address)
 {
-      if (vals4) {
-	    assert(nets == 0);
-	    assert(vals == 0);
-	    return vals4->get_word(address);
+      எனில் (vals4) {
+	    ப்ரதிஜ்ஞா(nets == 0);
+	    ப்ரதிஜ்ஞா(vals == 0);
+	    திரும்பு vals4->get_word(address);
       }
 
-      if (vals) {
-	    assert(nets == 0);
-	    assert(vals4== 0);
-	    if (address >= vals->get_size())
-		  return vvp_vector4_t(vals_width, BIT4_X);
+      எனில் (vals) {
+	    ப்ரதிஜ்ஞா(nets == 0);
+	    ப்ரதிஜ்ஞா(vals4== 0);
+	    எனில் (address >= vals->get_size())
+		  திரும்பு vvp_vector4_t(vals_width, BIT4_X);
 
 	    vvp_vector4_t val;
 	    vals->get_word(address, val);
-	    return val;
+	    திரும்பு val;
       }
 
-      assert(vals4 == 0);
-      assert(vals == 0);
-      assert(nets != 0);
+      ப்ரதிஜ்ஞா(vals4 == 0);
+      ப்ரதிஜ்ஞா(vals == 0);
+      ப்ரதிஜ்ஞா(nets != 0);
 
-      if (address >= get_size()) {
+      எனில் (address >= get_size()) {
 	      // Reading outside the array. Return X's but get the
 	      // width by looking at a word that we know is present.
-	    assert(get_size() > 0);
+	    ப்ரதிஜ்ஞா(get_size() > 0);
 	    vpiHandle word = nets[0];
-	    assert(word);
-	    struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
-	    assert(vsig);
-	    vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->node->fil);
-	    assert(sig);
-	    return vvp_vector4_t(sig->value_size(), BIT4_X);
+	    ப்ரதிஜ்ஞா(word);
+	    கட்டமைப்பு __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
+	    ப்ரதிஜ்ஞா(vsig);
+	    vvp_signal_மதிப்பு*sig = dynamic_cast<vvp_signal_மதிப்பு*> (vsig->முனை->fil);
+	    ப்ரதிஜ்ஞா(sig);
+	    திரும்பு vvp_vector4_t(sig->மதிப்பு_size(), BIT4_X);
       }
 
       vpiHandle word = nets[address];
-      struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
-      assert(vsig);
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->node->fil);
-      assert(sig);
+      கட்டமைப்பு __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
+      ப்ரதிஜ்ஞா(vsig);
+      vvp_signal_மதிப்பு*sig = dynamic_cast<vvp_signal_மதிப்பு*> (vsig->முனை->fil);
+      ப்ரதிஜ்ஞா(sig);
 
       vvp_vector4_t val;
-      sig->vec4_value(val);
-      return val;
+      sig->vec4_மதிப்பு(val);
+      திரும்பு val;
 }
 
-double __vpiArray::get_word_r(unsigned address)
+இரட்டை __vpiArray::get_word_r(unsigned address)
 {
-      if (vals) {
-	    assert(vals4 == 0);
-	    assert(nets  == 0);
+      எனில் (vals) {
+	    ப்ரதிஜ்ஞா(vals4 == 0);
+	    ப்ரதிஜ்ஞா(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size())
-		  return 0.0;
+	    எனில் (address >= vals->get_size())
+		  திரும்பு 0.0;
 
-	    double val;
+	    இரட்டை val;
 	    vals->get_word(address, val);
-	    return val;
+	    திரும்பு val;
       }
 
-      if (address >= get_size())
-	    return 0.0;
+      எனில் (address >= get_size())
+	    திரும்பு 0.0;
 
-      assert(nets);
+      ப்ரதிஜ்ஞா(nets);
       vpiHandle word = nets[address];
-      struct __vpiRealVar*vsig = dynamic_cast<__vpiRealVar*>(word);
-      assert(vsig);
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->net->fil);
-      assert(sig);
+      கட்டமைப்பு __vpiRealVar*vsig = dynamic_cast<__vpiRealVar*>(word);
+      ப்ரதிஜ்ஞா(vsig);
+      vvp_signal_மதிப்பு*sig = dynamic_cast<vvp_signal_மதிப்பு*> (vsig->net->fil);
+      ப்ரதிஜ்ஞா(sig);
 
-      double val = sig->real_value();
-      return val;
+      இரட்டை val = sig->real_மதிப்பு();
+      திரும்பு val;
 }
 
-void __vpiArray::get_word_obj(unsigned address, vvp_object_t&val)
+வெறுமை __vpiArray::get_word_obj(unsigned address, vvp_object_t&val)
 {
-      if (vals) {
-	    assert(vals4 == 0);
-	    assert(nets  == 0);
+      எனில் (vals) {
+	    ப்ரதிஜ்ஞா(vals4 == 0);
+	    ப்ரதிஜ்ஞா(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size()) {
+	    எனில் (address >= vals->get_size()) {
 		  val = vvp_object_t();
-		  return;
+		  திரும்பு;
 	    }
 
 	    vals->get_word(address, val);
-	    return;
+	    திரும்பு;
       }
 
-      assert(nets);
+      ப்ரதிஜ்ஞா(nets);
 	// Arrays of string nets not implemented!
-      assert(0);
-      return;
+      ப்ரதிஜ்ஞா(0);
+      திரும்பு;
 }
 
 string __vpiArray::get_word_str(unsigned address)
 {
-      if (vals) {
-	    assert(vals4 == 0);
-	    assert(nets  == 0);
+      எனில் (vals) {
+	    ப்ரதிஜ்ஞா(vals4 == 0);
+	    ப்ரதிஜ்ஞா(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size())
-		  return "";
+	    எனில் (address >= vals->get_size())
+		  திரும்பு "";
 
 	    string val;
 	    vals->get_word(address, val);
-	    return val;
+	    திரும்பு val;
       }
 
-      assert(nets);
+      ப்ரதிஜ்ஞா(nets);
 	// Arrays of string nets not implemented!
-      assert(0);
-      return "";
+      ப்ரதிஜ்ஞா(0);
+      திரும்பு "";
 }
 
-vpiHandle vpip_make_array(const char*label, const char*name,
-                          int first_addr, int last_addr,
-                          bool signed_flag)
+vpiHandle vpip_make_array(மாறிலி எழுத்து*label, மாறிலி எழுத்து*name,
+                          முழு first_addr, முழு last_addr,
+                          தருக்க signed_flag)
 {
-      struct __vpiArray*obj = new __vpiArray;
+      கட்டமைப்பு __vpiArray*obj = புதிய __vpiArray;
 
       obj->signed_flag = signed_flag;
 
 	// Assume increasing addresses.
-      if (last_addr >= first_addr) {
-	    obj->swap_addr = false;
-      } else {
-	    obj->swap_addr = true;
-	    int tmp = last_addr;
+      எனில் (last_addr >= first_addr) {
+	    obj->swap_addr = பொய்;
+      } இல்லையெனில் {
+	    obj->swap_addr = உண்மை;
+	    முழு tmp = last_addr;
 	    last_addr = first_addr;
 	    first_addr = tmp;
       }
-      assert(last_addr >= first_addr);
-      unsigned array_count = last_addr+1-first_addr;
+      ப்ரதிஜ்ஞா(last_addr >= first_addr);
+      unsigned array_மொத்தம் = last_addr+1-first_addr;
 
 	// For now, treat all arrays as memories. This is not quite
 	// correct, as arrays are arrays with memories a special case.
       obj->scope = vpip_peek_current_scope();
       obj->name  = vpip_name_string(name);
-      obj->array_count = array_count;
+      obj->array_மொத்தம் = array_மொத்தம்;
 
-      obj->first_addr.set_value(first_addr);
-      obj->last_addr .set_value(last_addr);
+      obj->first_addr.set_மதிப்பு(first_addr);
+      obj->last_addr .set_மதிப்பு(last_addr);
 
 	// Start off now knowing if we are nets or variables.
       obj->nets = 0;
       obj->vals4 = 0;
       obj->vals  = 0;
       obj->vals_width = 0;
-      obj->vals_words = 0;
+      obj->vals_சொற்கள் = 0;
 
 	// Initialize (clear) the read-ports list.
       obj->ports_ = 0;
       obj->vpi_callbacks = 0;
 
 	/* Add this symbol to the array_symbols table for later lookup. */
-      if (!array_table)
-	    array_table = new symbol_map_s<struct __vpiArray>;
+      எனில் (!array_table)
+	    array_table = புதிய குறியீடு_map_s<கட்டமைப்பு __vpiArray>;
 
-      assert(!array_find(label));
-      array_table->sym_set_value(label, obj);
+      ப்ரதிஜ்ஞா(!array_find(label));
+      array_table->sym_set_மதிப்பு(label, obj);
 
 	/* Add this into the table of VPI objects. This is used for
 	   contexts that try to look up VPI objects in
 	   general. (i.e. arguments to vpi_task calls.) */
-      compile_vpi_symbol(label, obj);
+      compile_vpi_குறியீடு(label, obj);
 
 	/* Blindly attach to the scope as an object. */
       vpip_attach_to_current_scope(obj);
 
-      return obj;
+      திரும்பு obj;
 }
 
-void __vpiArray::alias_word(unsigned long addr, vpiHandle word, int msb_, int lsb_)
+வெறுமை __vpiArray::alias_word(unsigned long addr, vpiHandle word, முழு msb_, முழு lsb_)
 {
-      assert(msb.get_value() == msb_);
-      assert(lsb.get_value() == lsb_);
-      assert(addr < get_size());
-      assert(nets);
+      ப்ரதிஜ்ஞா(msb.get_மதிப்பு() == msb_);
+      ப்ரதிஜ்ஞா(lsb.get_மதிப்பு() == lsb_);
+      ப்ரதிஜ்ஞா(addr < get_size());
+      ப்ரதிஜ்ஞா(nets);
       nets[addr] = word;
 }
 
-void __vpiArray::attach_word(unsigned addr, vpiHandle word)
+வெறுமை __vpiArray::attach_word(unsigned addr, vpiHandle word)
 {
-      assert(addr < get_size());
-      assert(nets);
+      ப்ரதிஜ்ஞா(addr < get_size());
+      ப்ரதிஜ்ஞா(nets);
       nets[addr] = word;
 
-      if (struct __vpiSignal*sig = dynamic_cast<__vpiSignal*>(word)) {
-	    vvp_net_t*net = sig->node;
-	    assert(net);
+      எனில் (கட்டமைப்பு __vpiSignal*sig = dynamic_cast<__vpiSignal*>(word)) {
+	    vvp_net_t*net = sig->முனை;
+	    ப்ரதிஜ்ஞா(net);
 	    vvp_vpi_callback*fun = dynamic_cast<vvp_vpi_callback*>(net->fil);
-	    assert(fun);
-	    fun->attach_as_word(this, addr);
+	    ப்ரதிஜ்ஞா(fun);
+	    fun->attach_as_word(இது, addr);
 	    sig->is_netarray = 1;
-	    sig->within.parent = this;
-	    sig->id.index = new __vpiDecConst(addr + first_addr.get_value());
+	    sig->within.parent = இது;
+	    sig->id.index = புதிய __vpiDecConst(addr + first_addr.get_மதிப்பு());
 	      // Now we know the data type, update the array signed_flag.
 	    signed_flag = sig->signed_flag;
-	    return;
+	    திரும்பு;
       }
 
-      if (struct __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(word)) {
+      எனில் (கட்டமைப்பு __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(word)) {
 	    vvp_net_t*net = sig->net;
-	    assert(net);
+	    ப்ரதிஜ்ஞா(net);
 	    vvp_vpi_callback*fun = dynamic_cast<vvp_vpi_callback*>(net->fil);
-	    assert(fun);
-	    fun->attach_as_word(this, addr);
+	    ப்ரதிஜ்ஞா(fun);
+	    fun->attach_as_word(இது, addr);
 	    sig->is_netarray = 1;
-	    sig->within.parent = this;
-	    sig->id.index = new __vpiDecConst(addr + first_addr.get_value());
+	    sig->within.parent = இது;
+	    sig->id.index = புதிய __vpiDecConst(addr + first_addr.get_மதிப்பு());
 	      // Now we know the data type, update the array signed_flag.
-	    signed_flag = true;
-	    return;
+	    signed_flag = உண்மை;
+	    திரும்பு;
       }
 }
 
-void compile_var_array(char*label, char*name, int last, int first,
-		   int msb, int lsb, char signed_flag)
+வெறுமை compile_var_array(எழுத்து*label, எழுத்து*name, முழு last, முழு first,
+		   முழு msb, முழு lsb, எழுத்து signed_flag)
 {
       vpiHandle obj = vpip_make_array(label, name, first, last,
                                       signed_flag != 0);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      கட்டமைப்பு __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
       arr->vals_width = labs(msb-lsb) + 1;
-      if (vpip_peek_current_scope()->is_automatic()) {
-            arr->vals4 = new vvp_vector4array_aa(arr->vals_width,
+      எனில் (vpip_peek_current_scope()->is_automatic()) {
+            arr->vals4 = புதிய vvp_vector4array_aa(arr->vals_width,
 						 arr->get_size());
-      } else {
-            arr->vals4 = new vvp_vector4array_sa(arr->vals_width,
+      } இல்லையெனில் {
+            arr->vals4 = புதிய vvp_vector4array_sa(arr->vals_width,
 						 arr->get_size());
       }
-      arr->msb.set_value(msb);
-      arr->lsb.set_value(lsb);
+      arr->msb.set_மதிப்பு(msb);
+      arr->lsb.set_மதிப்பு(lsb);
 
-      count_var_arrays += 1;
-      count_var_array_words += arr->get_size();
+      மொத்தம்_var_arrays += 1;
+      மொத்தம்_var_array_சொற்கள் += arr->get_size();
 
-      free(label);
+      விடுவி(label);
       delete[] name;
 }
 
-void compile_var2_array(char*label, char*name, int last, int first,
-		   int msb, int lsb, bool signed_flag)
+வெறுமை compile_var2_array(எழுத்து*label, எழுத்து*name, முழு last, முழு first,
+		   முழு msb, முழு lsb, தருக்க signed_flag)
 {
       vpiHandle obj = vpip_make_array(label, name, first, last, signed_flag);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      கட்டமைப்பு __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->msb.set_value(msb);
-      arr->lsb.set_value(lsb);
+      arr->msb.set_மதிப்பு(msb);
+      arr->lsb.set_மதிப்பு(lsb);
       arr->vals_width = labs(msb-lsb) + 1;
 
-      assert(! arr->nets);
-      if (lsb == 0 && msb == 7 && signed_flag) {
-	    arr->vals = new vvp_darray_atom<int8_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 7 && !signed_flag) {
-	    arr->vals = new vvp_darray_atom<uint8_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 15 && signed_flag) {
-	    arr->vals = new vvp_darray_atom<int16_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 15 && !signed_flag) {
-	    arr->vals = new vvp_darray_atom<uint16_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 31 && signed_flag) {
-	    arr->vals = new vvp_darray_atom<int32_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 31 && !signed_flag) {
-	    arr->vals = new vvp_darray_atom<uint32_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 63 && signed_flag) {
-	    arr->vals = new vvp_darray_atom<int64_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 63 && !signed_flag) {
-	    arr->vals = new vvp_darray_atom<uint64_t>(arr->get_size());
-      } else {
-	    arr->vals = new vvp_darray_vec2(arr->get_size(), arr->vals_width);
+      ப்ரதிஜ்ஞா(! arr->nets);
+      எனில் (lsb == 0 && msb == 7 && signed_flag) {
+	    arr->vals = புதிய vvp_darray_atom<int8_t>(arr->get_size());
+      } இல்லையெனில் எனில் (lsb == 0 && msb == 7 && !signed_flag) {
+	    arr->vals = புதிய vvp_darray_atom<uint8_t>(arr->get_size());
+      } இல்லையெனில் எனில் (lsb == 0 && msb == 15 && signed_flag) {
+	    arr->vals = புதிய vvp_darray_atom<int16_t>(arr->get_size());
+      } இல்லையெனில் எனில் (lsb == 0 && msb == 15 && !signed_flag) {
+	    arr->vals = புதிய vvp_darray_atom<uint16_t>(arr->get_size());
+      } இல்லையெனில் எனில் (lsb == 0 && msb == 31 && signed_flag) {
+	    arr->vals = புதிய vvp_darray_atom<int32_t>(arr->get_size());
+      } இல்லையெனில் எனில் (lsb == 0 && msb == 31 && !signed_flag) {
+	    arr->vals = புதிய vvp_darray_atom<uint32_t>(arr->get_size());
+      } இல்லையெனில் எனில் (lsb == 0 && msb == 63 && signed_flag) {
+	    arr->vals = புதிய vvp_darray_atom<int64_t>(arr->get_size());
+      } இல்லையெனில் எனில் (lsb == 0 && msb == 63 && !signed_flag) {
+	    arr->vals = புதிய vvp_darray_atom<uint64_t>(arr->get_size());
+      } இல்லையெனில் {
+	    arr->vals = புதிய vvp_darray_vec2(arr->get_size(), arr->vals_width);
       }
-      count_var_arrays += 1;
-      count_var_array_words += arr->get_size();
+      மொத்தம்_var_arrays += 1;
+      மொத்தம்_var_array_சொற்கள் += arr->get_size();
 
-      free(label);
+      விடுவி(label);
       delete[] name;
 }
 
-void compile_real_array(char*label, char*name, int last, int first)
+வெறுமை compile_real_array(எழுத்து*label, எழுத்து*name, முழு last, முழு first)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last, true);
+      vpiHandle obj = vpip_make_array(label, name, first, last, உண்மை);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      கட்டமைப்பு __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->vals = new vvp_darray_real(arr->get_size());
+      arr->vals = புதிய vvp_darray_real(arr->get_size());
       arr->vals_width = 1;
 
-      count_real_arrays += 1;
-      count_real_array_words += arr->get_size();
+      மொத்தம்_real_arrays += 1;
+      மொத்தம்_real_array_சொற்கள் += arr->get_size();
 
-      free(label);
+      விடுவி(label);
       delete[] name;
 }
 
-void compile_string_array(char*label, char*name, int last, int first)
+வெறுமை compile_string_array(எழுத்து*label, எழுத்து*name, முழு last, முழு first)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last, true);
+      vpiHandle obj = vpip_make_array(label, name, first, last, உண்மை);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      கட்டமைப்பு __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->vals = new vvp_darray_string(arr->get_size());
+      arr->vals = புதிய vvp_darray_string(arr->get_size());
       arr->vals_width = 1;
 
-      count_real_arrays += 1;
-      count_real_array_words += arr->get_size();
+      மொத்தம்_real_arrays += 1;
+      மொத்தம்_real_array_சொற்கள் += arr->get_size();
 
-      free(label);
+      விடுவி(label);
       delete[] name;
 }
 
-void compile_object_array(char*label, char*name, int last, int first)
+வெறுமை compile_object_array(எழுத்து*label, எழுத்து*name, முழு last, முழு first)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last, true);
+      vpiHandle obj = vpip_make_array(label, name, first, last, உண்மை);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      கட்டமைப்பு __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->vals = new vvp_darray_object(arr->get_size());
+      arr->vals = புதிய vvp_darray_object(arr->get_size());
       arr->vals_width = 1;
 
-      count_real_arrays += 1;
-      count_real_array_words += arr->get_size();
+      மொத்தம்_real_arrays += 1;
+      மொத்தம்_real_array_சொற்கள் += arr->get_size();
 
-      free(label);
+      விடுவி(label);
       delete[] name;
 }
 
-void compile_net_array(char*label, char*name, int last, int first)
+வெறுமை compile_net_array(எழுத்து*label, எழுத்து*name, முழு last, முழு first)
 {
 	// At this point we don't know the array data type, so we
 	// initialise signed_flag to false. This will be corrected
 	// (if necessary) when we attach words to the array.
-      vpiHandle obj = vpip_make_array(label, name, first, last, false);
+      vpiHandle obj = vpip_make_array(label, name, first, last, பொய்);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
-      arr->nets = static_cast<vpiHandle*>(calloc(arr->get_size(), sizeof(vpiHandle)));
+      கட்டமைப்பு __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      arr->nets = static_cast<vpiHandle*>(calloc(arr->get_size(), அளவு(vpiHandle)));
 
-      count_net_arrays += 1;
-      count_net_array_words += arr->get_size();
+      மொத்தம்_net_arrays += 1;
+      மொத்தம்_net_array_சொற்கள் += arr->get_size();
 
-      free(label);
+      விடுவி(label);
       delete[] name;
 }
 
-class vvp_fun_arrayport  : public vvp_net_fun_t {
+வகுப்பு vvp_fun_arrayport  : பொது vvp_net_fun_t {
 
-    public:
+    பொது:
       explicit vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net);
       explicit vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net, long addr);
       ~vvp_fun_arrayport() override;
 
-      virtual void check_word_change(unsigned long addr) = 0;
+      மெய்நிகர் வெறுமை check_word_change(unsigned long addr) = 0;
 
-    protected:
+    பாதுகாக்கப்பட்ட:
       vvp_array_t arr_;
       vvp_net_t  *net_;
       unsigned long addr_;
 
-      friend void array_attach_port(vvp_array_t, vvp_fun_arrayport*);
-      friend void __vpiArray::word_change(unsigned long);
+      friend வெறுமை array_attach_port(vvp_array_t, vvp_fun_arrayport*);
+      friend வெறுமை __vpiArray::word_change(unsigned long);
       vvp_fun_arrayport*next_;
 };
 
@@ -1058,19 +1058,19 @@ vvp_fun_arrayport::~vvp_fun_arrayport()
 {
 }
 
-class vvp_fun_arrayport_sa  : public vvp_fun_arrayport {
+வகுப்பு vvp_fun_arrayport_sa  : பொது vvp_fun_arrayport {
 
-    public:
+    பொது:
       explicit vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net);
       explicit vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net, long addr);
       ~vvp_fun_arrayport_sa() override;
 
-      void check_word_change(unsigned long addr) override;
+      வெறுமை check_word_change(unsigned long addr) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      வெறுமை recv_vec4(vvp_net_ptr_t port, மாறிலி vvp_vector4_t&bit,
                      vvp_context_t) override;
 
-    private:
+    தனிப்பட்ட:
 };
 
 vvp_fun_arrayport_sa::vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net)
@@ -1087,61 +1087,61 @@ vvp_fun_arrayport_sa::~vvp_fun_arrayport_sa()
 {
 }
 
-void vvp_fun_arrayport_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+வெறுமை vvp_fun_arrayport_sa::recv_vec4(vvp_net_ptr_t port, மாறிலி vvp_vector4_t&bit,
                                      vvp_context_t)
 {
-      bool addr_valid_flag;
+      தருக்க addr_valid_flag;
 
-      switch (port.port()) {
+      தேர்வு (port.port()) {
 
-	  case 0: // Address input
-	    addr_valid_flag = vector4_to_value(bit, addr_);
-	    if (! addr_valid_flag)
+	  நிலை 0: // Address input
+	    addr_valid_flag = vector4_to_மதிப்பு(bit, addr_);
+	    எனில் (! addr_valid_flag)
 		  addr_ = arr_->get_size();
-	    if (vpi_array_is_real(arr_))
+	    எனில் (vpi_array_is_real(arr_))
 		  port.ptr()->send_real(arr_->get_word_r(addr_), 0);
-	    else
+	    இல்லையெனில்
 		  port.ptr()->send_vec4(arr_->get_word(addr_), 0);
 
-	    break;
+	    நிறுத்து;
 
-	  default:
+	  இயல்பு:
 	    fprintf(stdout, "XXXX write ports not implemented.\n");
-	    assert(0);
+	    ப்ரதிஜ்ஞா(0);
       }
 }
 
-void vvp_fun_arrayport_sa::check_word_change(unsigned long addr)
+வெறுமை vvp_fun_arrayport_sa::check_word_change(unsigned long addr)
 {
-      if (addr != addr_) return;
+      எனில் (addr != addr_) திரும்பு;
 
-      if (vpi_array_is_real(arr_)) {
+      எனில் (vpi_array_is_real(arr_)) {
 	    net_->send_real(arr_->get_word_r(addr_), 0);
-      } else {
+      } இல்லையெனில் {
 	    net_->send_vec4(arr_->get_word(addr_), 0);
       }
 }
 
-class vvp_fun_arrayport_aa  : public vvp_fun_arrayport, public automatic_hooks_s {
+வகுப்பு vvp_fun_arrayport_aa  : பொது vvp_fun_arrayport, பொது automatic_hooks_s {
 
-    public:
+    பொது:
       explicit vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net);
       explicit vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net, long addr);
       ~vvp_fun_arrayport_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
+      வெறுமை alloc_instance(vvp_context_t context) override;
+      வெறுமை reset_instance(vvp_context_t context) override;
 #ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
+      வெறுமை free_instance(vvp_context_t context) override;
 #endif
 
-      void check_word_change(unsigned long addr) override;
+      வெறுமை check_word_change(unsigned long addr) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      வெறுமை recv_vec4(vvp_net_ptr_t port, மாறிலி vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-    private:
-      void check_word_change_(unsigned long addr, vvp_context_t context);
+    தனிப்பட்ட:
+      வெறுமை check_word_change_(unsigned long addr, vvp_context_t context);
 
       __vpiScope*context_scope_;
       unsigned context_idx_;
@@ -1150,28 +1150,28 @@ class vvp_fun_arrayport_aa  : public vvp_fun_arrayport, public automatic_hooks_s
 vvp_fun_arrayport_aa::vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net)
 : vvp_fun_arrayport(mem, net), context_scope_(context_scope)
 {
-      context_idx_ = vpip_add_item_to_context(this, context_scope);
+      context_idx_ = vpip_add_item_to_context(இது, context_scope);
 }
 
 vvp_fun_arrayport_aa::vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net, long addr)
 : vvp_fun_arrayport(mem, net, addr), context_scope_(context_scope)
 {
-      context_idx_ = vpip_add_item_to_context(this, context_scope);
+      context_idx_ = vpip_add_item_to_context(இது, context_scope);
 }
 
 vvp_fun_arrayport_aa::~vvp_fun_arrayport_aa()
 {
 }
 
-void vvp_fun_arrayport_aa::alloc_instance(vvp_context_t context)
+வெறுமை vvp_fun_arrayport_aa::alloc_instance(vvp_context_t context)
 {
-      unsigned long*addr = new unsigned long;
+      unsigned long*addr = புதிய unsigned long;
       vvp_set_context_item(context, context_idx_, addr);
 
       *addr = addr_;
 }
 
-void vvp_fun_arrayport_aa::reset_instance(vvp_context_t context)
+வெறுமை vvp_fun_arrayport_aa::reset_instance(vvp_context_t context)
 {
       unsigned long*addr = static_cast<unsigned long*>
             (vvp_get_context_item(context, context_idx_));
@@ -1180,7 +1180,7 @@ void vvp_fun_arrayport_aa::reset_instance(vvp_context_t context)
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vvp_fun_arrayport_aa::free_instance(vvp_context_t context)
+வெறுமை vvp_fun_arrayport_aa::free_instance(vvp_context_t context)
 {
       unsigned long*addr = static_cast<unsigned long*>
             (vvp_get_context_item(context, context_idx_));
@@ -1188,143 +1188,143 @@ void vvp_fun_arrayport_aa::free_instance(vvp_context_t context)
 }
 #endif
 
-void vvp_fun_arrayport_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+வெறுமை vvp_fun_arrayport_aa::recv_vec4(vvp_net_ptr_t port, மாறிலி vvp_vector4_t&bit,
                                      vvp_context_t context)
 {
-      if (context) {
+      எனில் (context) {
             unsigned long*addr = static_cast<unsigned long*>
                   (vvp_get_context_item(context, context_idx_));
 
-            bool addr_valid_flag;
+            தருக்க addr_valid_flag;
 
-            switch (port.port()) {
+            தேர்வு (port.port()) {
 
-                case 0: // Address input
-                  addr_valid_flag = vector4_to_value(bit, *addr);
-                  if (! addr_valid_flag) *addr = arr_->get_size();
-                  if (vpi_array_is_real(arr_)) {
+                நிலை 0: // Address input
+                  addr_valid_flag = vector4_to_மதிப்பு(bit, *addr);
+                  எனில் (! addr_valid_flag) *addr = arr_->get_size();
+                  எனில் (vpi_array_is_real(arr_)) {
 			port.ptr()->send_real(arr_->get_word_r(*addr),
 					      context);
-                  } else {
+                  } இல்லையெனில் {
 			port.ptr()->send_vec4(arr_->get_word(*addr),
 					      context);
                   }
-                  break;
+                  நிறுத்து;
 
-                default:
+                இயல்பு:
                   fprintf(stdout, "XXXX write ports not implemented.\n");
-                  assert(0);
+                  ப்ரதிஜ்ஞா(0);
             }
-      } else {
+      } இல்லையெனில் {
             context = context_scope_->live_contexts;
-            while (context) {
+            போது (context) {
                   recv_vec4(port, bit, context);
                   context = vvp_get_next_context(context);
             }
       }
 }
 
-void vvp_fun_arrayport_aa::check_word_change_(unsigned long addr,
+வெறுமை vvp_fun_arrayport_aa::check_word_change_(unsigned long addr,
                                               vvp_context_t context)
 {
-      const unsigned long*port_addr = static_cast<unsigned long*>
+      மாறிலி unsigned long*port_addr = static_cast<unsigned long*>
             (vvp_get_context_item(context, context_idx_));
 
-      if (addr != *port_addr)
-	    return;
+      எனில் (addr != *port_addr)
+	    திரும்பு;
 
-      if (vpi_array_is_real(arr_)) {
+      எனில் (vpi_array_is_real(arr_)) {
 	    net_->send_real(arr_->get_word_r(addr), context);
-      } else {
+      } இல்லையெனில் {
 	    net_->send_vec4(arr_->get_word(addr), context);
       }
 }
 
-void vvp_fun_arrayport_aa::check_word_change(unsigned long addr)
+வெறுமை vvp_fun_arrayport_aa::check_word_change(unsigned long addr)
 {
-      if (arr_->get_scope()->is_automatic()) {
-            assert(vthread_get_wt_context());
+      எனில் (arr_->get_scope()->is_automatic()) {
+            ப்ரதிஜ்ஞா(vthread_get_wt_context());
             check_word_change_(addr, vthread_get_wt_context());
-      } else {
+      } இல்லையெனில் {
             vvp_context_t context = context_scope_->live_contexts;
-            while (context) {
+            போது (context) {
                   check_word_change_(addr, context);
                   context = vvp_get_next_context(context);
             }
       }
 }
 
-static void array_attach_port(vvp_array_t array, vvp_fun_arrayport*fun)
+நிலையான வெறுமை array_attach_port(vvp_array_t array, vvp_fun_arrayport*fun)
 {
-      assert(fun->next_ == 0);
+      ப்ரதிஜ்ஞா(fun->next_ == 0);
       fun->next_ = array->ports_;
       array->ports_ = fun;
-      if (!array->get_scope()->is_automatic() &&
+      எனில் (!array->get_scope()->is_automatic() &&
           (array->vals4 || array->vals)) {
               /* propagate initial values for variable arrays */
-            if (!vpi_array_is_real(array)) {
+            எனில் (!vpi_array_is_real(array)) {
                   vvp_bit4_t init;
-                  if (array->vals4)
+                  எனில் (array->vals4)
                       init = BIT4_X;
-                  else
+                  இல்லையெனில்
                       init = BIT4_0;
                   vvp_vector4_t tmp(array->vals_width, init);
                   schedule_init_propagate(fun->net_, tmp);
-            } else {
+            } இல்லையெனில் {
                   schedule_init_propagate(fun->net_, 0.0);
             }
       }
 }
 
-class array_word_value_callback : public value_callback {
-    public:
-      inline explicit array_word_value_callback(p_cb_data data, long addr)
-      : value_callback(data), word_addr(addr)
+வகுப்பு array_word_மதிப்பு_callback : பொது மதிப்பு_callback {
+    பொது:
+      உள்வரி explicit array_word_மதிப்பு_callback(p_cb_data data, long addr)
+      : மதிப்பு_callback(data), word_addr(addr)
       { }
 
-    public:
+    பொது:
       long word_addr;
 };
 
-void __vpiArray::word_change(unsigned long addr)
+வெறுமை __vpiArray::word_change(unsigned long addr)
 {
-      for (vvp_fun_arrayport*cur = ports_; cur; cur = cur->next_)
+      க்கு (vvp_fun_arrayport*cur = ports_; cur; cur = cur->next_)
 	    cur->check_word_change(addr);
 
 	// Run callbacks attached to the array itself.
-      struct __vpiCallback *next = vpi_callbacks;
-      struct __vpiCallback *prev = 0;
+      கட்டமைப்பு __vpiCallback *next = vpi_callbacks;
+      கட்டமைப்பு __vpiCallback *prev = 0;
 
-      while (next) {
-	    array_word_value_callback*cur = dynamic_cast<array_word_value_callback*>(next);
+      போது (next) {
+	    array_word_மதிப்பு_callback*cur = dynamic_cast<array_word_மதிப்பு_callback*>(next);
 	    next = cur->next;
 
 	      // Skip callbacks that are not for me. -1 is for every element.
-	    if (cur->word_addr != (long)addr && cur->word_addr != -1) {
+	    எனில் (cur->word_addr != (long)addr && cur->word_addr != -1) {
 		  prev = cur;
-		  continue;
+		  தொடர்;
 	    }
 
 	      // For whole array callbacks we need to set the index.
-	    if (cur->word_addr == -1) {
-		  cur->cb_data.index = (PLI_INT32) ((int)addr +
-						    first_addr.get_value());
+	    எனில் (cur->word_addr == -1) {
+		  cur->cb_data.index = (PLI_INT32) ((முழு)addr +
+						    first_addr.get_மதிப்பு());
 	    }
 
-	    if (cur->cb_data.cb_rtn != 0) {
-		  if (cur->test_value_callback_ready()) {
-			if (cur->cb_data.value) {
-			      if (vpi_array_is_real(this)) {
-				    double val = 0.0;
-				    if (addr < vals->get_size())
+	    எனில் (cur->cb_data.cb_rtn != 0) {
+		  எனில் (cur->test_மதிப்பு_callback_ready()) {
+			எனில் (cur->cb_data.value) {
+			      எனில் (vpi_array_is_real(இது)) {
+				    இரட்டை val = 0.0;
+				    எனில் (addr < vals->get_size())
 					  vals->get_word(addr, val);
-				    vpip_real_get_value(val, cur->cb_data.value);
-			      } else if (vals4) {
-				    vpip_vec4_get_value(vals4->get_word(addr),
+				    vpip_real_get_மதிப்பு(val, cur->cb_data.value);
+			      } இல்லையெனில் எனில் (vals4) {
+				    vpip_vec4_get_மதிப்பு(vals4->get_word(addr),
 							vals_width,
 							signed_flag,
 							cur->cb_data.value);
-			      } else if (dynamic_cast<vvp_darray_atom<int8_t>*>(vals)
+			      } இல்லையெனில் எனில் (dynamic_cast<vvp_darray_atom<int8_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int16_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int32_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int64_t>*>(vals)
@@ -1334,14 +1334,14 @@ void __vpiArray::word_change(unsigned long addr)
 				      || dynamic_cast<vvp_darray_atom<uint64_t>*>(vals)
 				      || dynamic_cast<vvp_darray_vec2*>(vals)) {
 				    vvp_vector4_t val;
-				    if (addr < vals->get_size())
+				    எனில் (addr < vals->get_size())
 					  vals->get_word(addr, val);
-				    vpip_vec4_get_value(val,
+				    vpip_vec4_get_மதிப்பு(val,
 							vals_width,
 							signed_flag,
 							cur->cb_data.value);
-			      } else {
-			            assert(0);
+			      } இல்லையெனில் {
+			            ப்ரதிஜ்ஞா(0);
 			      }
 			}
 
@@ -1350,14 +1350,14 @@ void __vpiArray::word_change(unsigned long addr)
 
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } இல்லையெனில் எனில் (prev == 0) {
 
 		  vpi_callbacks = next;
 		  cur->next = 0;
 		  delete cur;
 
-	    } else {
-		  assert(prev->next == cur);
+	    } இல்லையெனில் {
+		  ப்ரதிஜ்ஞா(prev->next == cur);
 		  prev->next = next;
 		  cur->next = 0;
 		  delete cur;
@@ -1365,205 +1365,205 @@ void __vpiArray::word_change(unsigned long addr)
       }
 }
 
-class array_resolv_list_t : public resolv_list_s {
+வகுப்பு array_resolv_list_t : பொது resolv_list_s {
 
-    public:
-      explicit array_resolv_list_t(char*lab) : resolv_list_s(lab) {
+    பொது:
+      explicit array_resolv_list_t(எழுத்து*lab) : resolv_list_s(lab) {
 	    array = 0;
       }
 
       vvp_array_t*array;
-      bool resolve(bool mes) override;
+      தருக்க resolve(தருக்க mes) override;
 
-    private:
+    தனிப்பட்ட:
 };
 
-bool array_resolv_list_t::resolve(bool mes)
+தருக்க array_resolv_list_t::resolve(தருக்க mes)
 {
       *array = array_find(label());
-      if (*array == 0) {
-	    assert(!mes);
-	    return false;
+      எனில் (*array == 0) {
+	    ப்ரதிஜ்ஞா(!mes);
+	    திரும்பு பொய்;
       }
-      return true;
+      திரும்பு உண்மை;
 }
 
-class array_port_resolv_list_t : public resolv_list_s {
+வகுப்பு array_port_resolv_list_t : பொது resolv_list_s {
 
-    public:
-      explicit array_port_resolv_list_t(char* lab, bool use_addr__,
+    பொது:
+      explicit array_port_resolv_list_t(எழுத்து* lab, தருக்க use_addr__,
                                         long addr__);
 
       __vpiScope*context_scope;
       vvp_net_t*ptr;
-      bool use_addr;
+      தருக்க use_addr;
       long addr;
-      bool resolve(bool mes) override;
+      தருக்க resolve(தருக்க mes) override;
 
-    private:
+    தனிப்பட்ட:
 };
 
-array_port_resolv_list_t::array_port_resolv_list_t(char *lab, bool use_addr__,
+array_port_resolv_list_t::array_port_resolv_list_t(எழுத்து *lab, தருக்க use_addr__,
                                                    long addr__)
 : resolv_list_s(lab), use_addr(use_addr__), addr(addr__)
 {
-      if (vpip_peek_current_scope()->is_automatic())
+      எனில் (vpip_peek_current_scope()->is_automatic())
             context_scope = vpip_peek_context_scope();
-      else
+      இல்லையெனில்
             context_scope = 0;
-      ptr = new vvp_net_t;
+      ptr = புதிய vvp_net_t;
 }
 
-bool array_port_resolv_list_t::resolve(bool mes)
+தருக்க array_port_resolv_list_t::resolve(தருக்க mes)
 {
       vvp_array_t mem = array_find(label());
-      if (mem == 0) {
-	    assert(mem || !mes);
-	    return false;
+      எனில் (mem == 0) {
+	    ப்ரதிஜ்ஞா(mem || !mes);
+	    திரும்பு பொய்;
       }
 
       vvp_fun_arrayport*fun;
-      if (use_addr)
-            if (context_scope)
-                  fun = new vvp_fun_arrayport_aa(context_scope, mem, ptr, addr);
-            else
-                  fun = new vvp_fun_arrayport_sa(mem, ptr, addr);
-      else
-            if (context_scope)
-                  fun = new vvp_fun_arrayport_aa(context_scope, mem, ptr);
-            else
-                  fun = new vvp_fun_arrayport_sa(mem, ptr);
+      எனில் (use_addr)
+            எனில் (context_scope)
+                  fun = புதிய vvp_fun_arrayport_aa(context_scope, mem, ptr, addr);
+            இல்லையெனில்
+                  fun = புதிய vvp_fun_arrayport_sa(mem, ptr, addr);
+      இல்லையெனில்
+            எனில் (context_scope)
+                  fun = புதிய vvp_fun_arrayport_aa(context_scope, mem, ptr);
+            இல்லையெனில்
+                  fun = புதிய vvp_fun_arrayport_sa(mem, ptr);
       ptr->fun = fun;
 
       array_attach_port(mem, fun);
 
-      return true;
+      திரும்பு உண்மை;
 }
 
-class array_word_part_callback : public array_word_value_callback {
-    public:
+வகுப்பு array_word_part_callback : பொது array_word_மதிப்பு_callback {
+    பொது:
       explicit array_word_part_callback(p_cb_data data, long addr);
       ~array_word_part_callback() override;
 
-      array_word_part_callback(const array_word_part_callback&) = delete;
-      array_word_part_callback& operator=(const array_word_part_callback&) = delete;
+      array_word_part_callback(மாறிலி array_word_part_callback&) = delete;
+      array_word_part_callback& operator=(மாறிலி array_word_part_callback&) = delete;
 
-      bool test_value_callback_ready(void) override;
+      தருக்க test_மதிப்பு_callback_ready(வெறுமை) override;
 
-    private:
-      char*value_bits_;
+    தனிப்பட்ட:
+      எழுத்து*மதிப்பு_bits;
 };
 
 array_word_part_callback::array_word_part_callback(p_cb_data data, long addr)
-: array_word_value_callback(data, addr)
+: array_word_மதிப்பு_callback(data, addr)
 {
 	// Get the initial value of the part, to use as a reference.
-      struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj);
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      apvword->vpi_get_value(&tmp_value);
+      கட்டமைப்பு __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj);
+      s_vpi_மதிப்பு tmp_மதிப்பு;
+      tmp_மதிப்பு.format = vpiBinStrVal;
+      apvword->vpi_get_மதிப்பு(&tmp_மதிப்பு);
 
-      value_bits_ = new char[apvword->part_wid+1];
+      மதிப்பு_bits = புதிய எழுத்து[apvword->part_wid+1];
 
-      memcpy(value_bits_, tmp_value.value.str, apvword->part_wid);
-      value_bits_[apvword->part_wid] = 0;
+      memcpy(மதிப்பு_bits, tmp_மதிப்பு.value.str, apvword->part_wid);
+      மதிப்பு_bits[apvword->part_wid] = 0;
 }
 
 array_word_part_callback::~array_word_part_callback()
 {
-      delete[]value_bits_;
+      delete[]மதிப்பு_bits;
 }
 
-bool array_word_part_callback::test_value_callback_ready(void)
+தருக்க array_word_part_callback::test_மதிப்பு_callback_ready(வெறுமை)
 {
-      struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(cb_data.obj);
-      assert(apvword);
+      கட்டமைப்பு __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(cb_data.obj);
+      ப்ரதிஜ்ஞா(apvword);
 
 	// Get a reference value that can be used to compare with an
 	// updated value.
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      apvword->vpi_get_value(&tmp_value);
+      s_vpi_மதிப்பு tmp_மதிப்பு;
+      tmp_மதிப்பு.format = vpiBinStrVal;
+      apvword->vpi_get_மதிப்பு(&tmp_மதிப்பு);
 
-      if (memcmp(value_bits_, tmp_value.value.str, apvword->part_wid) == 0)
-	    return false;
+      எனில் (memcmp(மதிப்பு_bits, tmp_மதிப்பு.value.str, apvword->part_wid) == 0)
+	    திரும்பு பொய்;
 
-      memcpy(value_bits_, tmp_value.value.str, apvword->part_wid);
-      return true;
+      memcpy(மதிப்பு_bits, tmp_மதிப்பு.value.str, apvword->part_wid);
+      திரும்பு உண்மை;
 
 }
 
-value_callback*vpip_array_word_change(p_cb_data data)
+மதிப்பு_callback*vpip_array_word_change(p_cb_data data)
 {
-      struct __vpiArray*parent = 0;
-      array_word_value_callback*cbh = 0;
-      if (const struct __vpiArrayWord*word = array_var_word_from_handle(data->obj)) {
+      கட்டமைப்பு __vpiArray*parent = 0;
+      array_word_மதிப்பு_callback*cbh = 0;
+      எனில் (மாறிலி கட்டமைப்பு __vpiArrayWord*word = array_var_word_from_handle(data->obj)) {
 	    parent = static_cast<__vpiArray*>(word->get_parent());
 	    unsigned addr = word->get_index();
-	    cbh = new array_word_value_callback(data, addr);
+	    cbh = புதிய array_word_மதிப்பு_callback(data, addr);
 
-      } else if (struct __vpiArrayVthrA*tword = dynamic_cast<__vpiArrayVthrA*>(data->obj)) {
+      } இல்லையெனில் எனில் (கட்டமைப்பு __vpiArrayVthrA*tword = dynamic_cast<__vpiArrayVthrA*>(data->obj)) {
 	    parent = tword->array;
-	    cbh = new array_word_value_callback(data, tword->address);
+	    cbh = புதிய array_word_மதிப்பு_callback(data, tword->address);
 
-      } else if (struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj)) {
+      } இல்லையெனில் எனில் (கட்டமைப்பு __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj)) {
 	    parent = apvword->array;
-	    cbh = new array_word_part_callback(data, apvword->word_sel);
+	    cbh = புதிய array_word_part_callback(data, apvword->word_sel);
       }
 
-      assert(cbh);
-      assert(parent);
+      ப்ரதிஜ்ஞா(cbh);
+      ப்ரதிஜ்ஞா(parent);
       cbh->next = parent->vpi_callbacks;
       parent->vpi_callbacks = cbh;
 
-      return cbh;
+      திரும்பு cbh;
 }
 
-value_callback* vpip_array_change(p_cb_data data)
+மதிப்பு_callback* vpip_array_change(p_cb_data data)
 {
-      array_word_value_callback*cbh = new array_word_value_callback(data, -1);
-      assert(data->obj);
+      array_word_மதிப்பு_callback*cbh = புதிய array_word_மதிப்பு_callback(data, -1);
+      ப்ரதிஜ்ஞா(data->obj);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(data->obj);
+      கட்டமைப்பு __vpiArray*arr = dynamic_cast<__vpiArray*>(data->obj);
       cbh->next = arr->vpi_callbacks;
       arr->vpi_callbacks = cbh;
-      return cbh;
+      திரும்பு cbh;
 }
 
-void compile_array_port(char*label, char*array, char*addr)
+வெறுமை compile_array_port(எழுத்து*label, எழுத்து*array, எழுத்து*addr)
 {
       array_port_resolv_list_t*resolv_mem
-	    = new array_port_resolv_list_t(array, false, 0);
+	    = புதிய array_port_resolv_list_t(array, பொய், 0);
 
-      define_functor_symbol(label, resolv_mem->ptr);
-      free(label);
+      define_functor_குறியீடு(label, resolv_mem->ptr);
+      விடுவி(label);
 	// Connect the port-0 input as the address.
-      input_connect(resolv_mem->ptr, 0, addr);
+      உள்ளீடு_connect(resolv_mem->ptr, 0, addr);
 
       resolv_submit(resolv_mem);
 }
 
-void compile_array_port(char*label, char*array, long addr)
+வெறுமை compile_array_port(எழுத்து*label, எழுத்து*array, long addr)
 {
       array_port_resolv_list_t*resolv_mem
-	    = new array_port_resolv_list_t(array, true, addr);
+	    = புதிய array_port_resolv_list_t(array, உண்மை, addr);
 
-      define_functor_symbol(label, resolv_mem->ptr);
-      free(label);
+      define_functor_குறியீடு(label, resolv_mem->ptr);
+      விடுவி(label);
 
       resolv_submit(resolv_mem);
 }
 
-void compile_array_alias(char*label, char*name, char*src)
+வெறுமை compile_array_alias(எழுத்து*label, எழுத்து*name, எழுத்து*src)
 {
       vvp_array_t mem = array_find(src);
-      assert(mem);
+      ப்ரதிஜ்ஞா(mem);
 
-      struct __vpiArray*obj = new __vpiArray;
+      கட்டமைப்பு __vpiArray*obj = புதிய __vpiArray;
 
       obj->scope = vpip_peek_current_scope();
       obj->name  = vpip_name_string(name);
-      obj->array_count = mem->array_count;
+      obj->array_மொத்தம் = mem->array_மொத்தம்;
       obj->signed_flag = mem->signed_flag;
 
 	// Need to set an accurate range of addresses.
@@ -1579,21 +1579,21 @@ void compile_array_alias(char*label, char*name, char*src)
       obj->vals4 = mem->vals4;
       obj->vals  = mem->vals;
       obj->vals_width = mem->vals_width;
-      obj->vals_words = mem->vals_words;
+      obj->vals_சொற்கள் = mem->vals_சொற்கள்;
 
       obj->ports_ = 0;
       obj->vpi_callbacks = 0;
 
-      assert(array_table);
-      assert(!array_find(label));
-      array_table->sym_set_value(label, obj);
+      ப்ரதிஜ்ஞா(array_table);
+      ப்ரதிஜ்ஞா(!array_find(label));
+      array_table->sym_set_மதிப்பு(label, obj);
 
-      compile_vpi_symbol(label, obj);
+      compile_vpi_குறியீடு(label, obj);
       vpip_attach_to_current_scope(obj);
 
-      free(label);
-      free(name);
-      free(src);
+      விடுவி(label);
+      விடுவி(name);
+      விடுவி(src);
 }
 
 /*
@@ -1602,12 +1602,12 @@ void compile_array_alias(char*label, char*name, char*src)
  * from expressions like "label[addr]" where "label" is the array and
  * "addr" is the canonical address of the desired word.
  */
-vpiHandle vpip_make_vthr_A(char*label, unsigned addr)
+vpiHandle vpip_make_vthr_A(எழுத்து*label, unsigned addr)
 {
-      struct __vpiArrayVthrA*obj = new __vpiArrayVthrA;
+      கட்டமைப்பு __vpiArrayVthrA*obj = புதிய __vpiArrayVthrA;
 
       array_resolv_list_t*resolv_mem
-	    = new array_resolv_list_t(label);
+	    = புதிய array_resolv_list_t(label);
 
       resolv_mem->array = &obj->array;
       resolv_submit(resolv_mem);
@@ -1615,7 +1615,7 @@ vpiHandle vpip_make_vthr_A(char*label, unsigned addr)
       obj->address_handle = 0;
       obj->address = addr;
 
-      return obj;
+      திரும்பு obj;
 }
 
 /*
@@ -1624,29 +1624,29 @@ vpiHandle vpip_make_vthr_A(char*label, unsigned addr)
  * word address is calculated from the VPI object that symbol
  * represents. The expression that leads to this looks like label[symbol].
  */
-vpiHandle vpip_make_vthr_A(char*label, char*symbol)
+vpiHandle vpip_make_vthr_A(எழுத்து*label, எழுத்து*குறியீடு)
 {
-      struct __vpiArrayVthrA*obj = new __vpiArrayVthrA;
+      கட்டமைப்பு __vpiArrayVthrA*obj = புதிய __vpiArrayVthrA;
 
       array_resolv_list_t*resolv_mem
-	    = new array_resolv_list_t(label);
+	    = புதிய array_resolv_list_t(label);
 
       resolv_mem->array = &obj->array;
       resolv_submit(resolv_mem);
 
       obj->address_handle = 0;
-      compile_vpi_lookup(&obj->address_handle, symbol);
+      compile_vpi_lookup(&obj->address_handle, குறியீடு);
       obj->address = 0;
 
-      return obj;
+      திரும்பு obj;
 }
 
-vpiHandle vpip_make_vthr_A(char*label, vpiHandle handle)
+vpiHandle vpip_make_vthr_A(எழுத்து*label, vpiHandle handle)
 {
-      struct __vpiArrayVthrA*obj = new __vpiArrayVthrA;
+      கட்டமைப்பு __vpiArrayVthrA*obj = புதிய __vpiArrayVthrA;
 
       array_resolv_list_t*resolv_mem
-	    = new array_resolv_list_t(label);
+	    = புதிய array_resolv_list_t(label);
 
       resolv_mem->array = &obj->array;
       resolv_submit(resolv_mem);
@@ -1654,15 +1654,15 @@ vpiHandle vpip_make_vthr_A(char*label, vpiHandle handle)
       obj->address_handle = handle;
       obj->address = 0;
 
-      return obj;
+      திரும்பு obj;
 }
 
-vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned wid)
+vpiHandle vpip_make_vthr_APV(எழுத்து*label, unsigned index, unsigned bit, unsigned wid)
 {
-      struct __vpiArrayVthrAPV*obj = new __vpiArrayVthrAPV;
+      கட்டமைப்பு __vpiArrayVthrAPV*obj = புதிய __vpiArrayVthrAPV;
 
       array_resolv_list_t*resolv_mem
-	    = new array_resolv_list_t(label);
+	    = புதிய array_resolv_list_t(label);
 
       resolv_mem->array = &obj->array;
       resolv_submit(resolv_mem);
@@ -1671,20 +1671,20 @@ vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned 
       obj->part_bit = bit;
       obj->part_wid = wid;
 
-      return obj;
+      திரும்பு obj;
 }
 
-void compile_array_cleanup(void)
+வெறுமை compile_array_cleanup(வெறுமை)
 {
       delete array_table;
       array_table = 0;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void memory_delete(vpiHandle item)
+வெறுமை memory_delete(vpiHandle item)
 {
-      struct __vpiArray*arr = static_cast<struct __vpiArray*>(item);
-      if (arr->vals_words) delete [] (arr->vals_words-1);
+      கட்டமைப்பு __vpiArray*arr = static_cast<கட்டமைப்பு __vpiArray*>(item);
+      எனில் (arr->vals_சொற்கள்) delete [] (arr->vals_சொற்கள்-1);
 
 //      if (arr->vals4) {}
 // Delete the individual words?
@@ -1696,28 +1696,28 @@ void memory_delete(vpiHandle item)
 // constant_delete(handle)?
       delete arr->vals;
 
-      if (arr->nets) {
-	    for (unsigned idx = 0; idx < arr->get_size(); idx += 1) {
-		  if (struct __vpiSignal*sig =
+      எனில் (arr->nets) {
+	    க்கு (unsigned idx = 0; idx < arr->get_size(); idx += 1) {
+		  எனில் (கட்டமைப்பு __vpiSignal*sig =
 		      dynamic_cast<__vpiSignal*>(arr->nets[idx])) {
 // Delete the individual words?
 			constant_delete(sig->id.index);
 		    /* These should only be the real words. */
-		  } else {
-			assert(arr->nets[idx]->get_type_code() ==
+		  } இல்லையெனில் {
+			ப்ரதிஜ்ஞா(arr->nets[idx]->get_type_code() ==
 			       vpiRealVar);
-			struct __vpiRealVar *sigr = static_cast<struct __vpiRealVar *>
+			கட்டமைப்பு __vpiRealVar *sigr = static_cast<கட்டமைப்பு __vpiRealVar *>
 			                            (arr->nets[idx]);
 			constant_delete(sigr->id.index);
 // Why are only the real words still here?
 			delete arr->nets[idx];
 		  }
 	    }
-	    free(arr->nets);
+	    விடுவி(arr->nets);
       }
 
-      while (arr->vpi_callbacks) {
-	    struct __vpiCallback*tmp = arr->vpi_callbacks->next;
+      போது (arr->vpi_callbacks) {
+	    கட்டமைப்பு __vpiCallback*tmp = arr->vpi_callbacks->next;
 	    delete arr->vpi_callbacks;
 	    arr->vpi_callbacks = tmp;
       }
@@ -1725,30 +1725,30 @@ void memory_delete(vpiHandle item)
       delete arr;
 }
 
-void A_delete(vpiHandle item)
+வெறுமை A_delete(vpiHandle item)
 {
-      struct __vpiArrayVthrA*obj = static_cast<struct __vpiArrayVthrA*>(item);
-      if (obj->address_handle) {
-	    switch (obj->address_handle->get_type_code()) {
-		case vpiMemoryWord:
-		  if (vpi_get(_vpiFromThr, obj->address_handle) == _vpi_at_A) {
+      கட்டமைப்பு __vpiArrayVthrA*obj = static_cast<கட்டமைப்பு __vpiArrayVthrA*>(item);
+      எனில் (obj->address_handle) {
+	    தேர்வு (obj->address_handle->get_type_code()) {
+		நிலை vpiMemoryWord:
+		  எனில் (vpi_get(_vpiFromThr, obj->address_handle) == _vpi_at_A) {
 			A_delete(obj->address_handle);
 		  }
-		  break;
-		case vpiPartSelect:
-		  assert(vpi_get(_vpiFromThr, obj->address_handle) ==
+		  நிறுத்து;
+		நிலை vpiPartSelect:
+		  ப்ரதிஜ்ஞா(vpi_get(_vpiFromThr, obj->address_handle) ==
 		         _vpi_at_PV);
 		  PV_delete(obj->address_handle);
-		  break;
+		  நிறுத்து;
 	    }
       }
 
       delete obj;
 }
 
-void APV_delete(vpiHandle item)
+வெறுமை APV_delete(vpiHandle item)
 {
-      struct __vpiArrayVthrAPV*obj = static_cast<struct __vpiArrayVthrAPV*>(item);
+      கட்டமைப்பு __vpiArrayVthrAPV*obj = static_cast<கட்டமைப்பு __vpiArrayVthrAPV*>(item);
       delete obj;
 }
 #endif

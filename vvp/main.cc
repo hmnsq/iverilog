@@ -1,4 +1,4 @@
-const char COPYRIGHT[] =
+மாறிலி எழுத்து COPYRIGHT[] =
   "Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)";
 /*
  *    This source code is free software; you can redistribute it
@@ -24,37 +24,37 @@ const char COPYRIGHT[] =
 # include  <cstdio>
 # include  <cstdlib>
 
-#if defined(HAVE_GETOPT_H)
+#எனில் defined(HAVE_GETOPT_H)
 # include  <getopt.h>
 #endif
 
-#if defined(__MINGW32__)
+#எனில் defined(__MINGW32__)
 # include  <windows.h>
 #endif
 
-#include "libvvp.h"
+#அந்தர்பாவ "libvvp.h"
 
-using namespace std;
+using நாமாகாஶ std;
 
-#if defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
-extern "C" int getopt(int argc, char*argv[], const char*fmt);
-extern "C" int optind;
-extern "C" const char*optarg;
+#எனில் defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
+வெளி "C" முழு getopt(முழு argc, எழுத்து*argv[], மாறிலி எழுத்து*fmt);
+வெளி "C" முழு optind;
+வெளி "C" மாறிலி எழுத்து*optarg;
 #endif
 
-bool version_flag = false;
+தருக்க version_flag = பொய்;
 
 unsigned module_cnt = 0;
-const char*module_tab[64];
+மாறிலி எழுத்து*module_tab[64];
 
-int main(int argc, char*argv[])
+முழு முதன்மை(முழு argc, எழுத்து*argv[])
 {
-      int opt;
+      முழு opt;
       unsigned flag_errors = 0;
-      const char *logfile_name = 0x0;
+      மாறிலி எழுத்து *logfile_name = 0x0;
 
-      while ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) switch (opt) {
-         case 'h':
+      போது ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) தேர்வு (opt) {
+         நிலை 'h':
            fprintf(stderr,
                    "Usage: vvp [options] input-file [+plusargs...]\n"
                    "Options:\n"
@@ -71,48 +71,48 @@ int main(int argc, char*argv[])
                    " -v             Verbose progress messages.\n"
                    " -V             Print the version information.\n" );
            exit(0);
-	  case 'i':
+	  நிலை 'i':
 	    setvbuf(stdout, 0, _IONBF, 0);
-	    break;
-	  case 'l':
+	    நிறுத்து;
+	  நிலை 'l':
 	    logfile_name = optarg;
-	    break;
-	  case 'M':
-	    if (strcmp(optarg,"-") == 0) {
+	    நிறுத்து;
+	  நிலை 'M':
+	    எனில் (strcmp(optarg,"-") == 0) {
 		  vpip_clear_module_paths();
-	    } else {
+	    } இல்லையெனில் {
 		  vpip_add_module_path(optarg);
 	    }
-	    break;
-	  case 'm':
+	    நிறுத்து;
+	  நிலை 'm':
 	    module_tab[module_cnt++] = optarg;
-	    break;
-	  case 'n':
-	    vvp_set_stop_is_finish(true, 0);
-	    break;
-          case 'N':
-            vvp_set_stop_is_finish(true, 1);
-            break;
-	  case 'q':
-	    vvp_set_quiet_flag(true);
-	    break;
-	  case 's':
+	    நிறுத்து;
+	  நிலை 'n':
+	    vvp_set_stop_is_finish(உண்மை, 0);
+	    நிறுத்து;
+          நிலை 'N':
+            vvp_set_stop_is_finish(உண்மை, 1);
+            நிறுத்து;
+	  நிலை 'q':
+	    vvp_set_quiet_flag(உண்மை);
+	    நிறுத்து;
+	  நிலை 's':
 	    schedule_stop(0);
-	    break;
-	  case 'v':
-	    vvp_set_verbose_flag(true);
-	    break;
-	  case 'V':
-	    version_flag = true;
-	    break;
-	  default:
+	    நிறுத்து;
+	  நிலை 'v':
+	    vvp_set_verbose_flag(உண்மை);
+	    நிறுத்து;
+	  நிலை 'V':
+	    version_flag = உண்மை;
+	    நிறுத்து;
+	  இயல்பு:
 	    flag_errors += 1;
       }
 
-      if (flag_errors)
-	    return flag_errors;
+      எனில் (flag_errors)
+	    திரும்பு flag_errors;
 
-      if (version_flag) {
+      எனில் (version_flag) {
 	    fprintf(stderr, "Icarus Verilog runtime version " VERSION " ("
 	                    VERSION_TAG ")\n\n");
 	    fprintf(stderr, "%s\n\n", COPYRIGHT);
@@ -131,18 +131,18 @@ int main(int argc, char*argv[])
 "  with this program; if not, write to the Free Software Foundation, Inc.,\n"
 "  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n"
 );
-	    return 0;
+	    திரும்பு 0;
       }
 
-      if (optind == argc) {
+      எனில் (optind == argc) {
 	    fprintf(stderr, "%s: no input file.\n", argv[0]);
-	    return -1;
+	    திரும்பு -1;
       }
 
       vvp_init(logfile_name, argc - optind, argv + optind);
 
-      for (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
+      க்கு (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
 	    vpip_load_module(module_tab[idx]);
 
-      return vvp_run(argv[optind]);
+      திரும்பு vvp_run(argv[optind]);
 }

@@ -25,175 +25,175 @@
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+using நாமாகாஶ std;
 
-struct enumconst_s : public __vpiHandle {
+கட்டமைப்பு enumconst_s : பொது __vpiHandle {
       enumconst_s();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      முழு vpi_get(முழு code) override;
+      எழுத்து* vpi_get_str(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
 
-      const char*name;
-      bool is_signed;
+      மாறிலி எழுத்து*name;
+      தருக்க is_signed;
       vvp_vector2_t val2;
       vvp_vector4_t val4;
 };
 
-struct __vpiEnumTypespec : public __vpiHandle {
+கட்டமைப்பு __vpiEnumTypespec : பொது __vpiHandle {
       __vpiEnumTypespec();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      முழு vpi_get(முழு code) override;
+      vpiHandle vpi_iterate(முழு code) override;
 
       std::vector<enumconst_s> names;
-      int base_type_code;
-      bool is_signed;
+      முழு base_type_code;
+      தருக்க is_signed;
 };
 
 
-inline __vpiEnumTypespec::__vpiEnumTypespec()
+உள்வரி __vpiEnumTypespec::__vpiEnumTypespec()
 { }
 
-int __vpiEnumTypespec::get_type_code(void) const
-{ return vpiEnumTypespec; }
+முழு __vpiEnumTypespec::get_type_code(வெறுமை) மாறிலி
+{ திரும்பு vpiEnumTypespec; }
 
-int __vpiEnumTypespec::vpi_get(int code)
+முழு __vpiEnumTypespec::vpi_get(முழு code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return names.size();
+      தேர்வு (code) {
+	  நிலை vpiSize:
+	    திரும்பு names.size();
 
 	    /* This is not currently set correctly. We always use vpiReg for
 	     * four state variables and vpiBitVar for two state variables.
 	     * This minimal functionality is needed to get the next() and
 	     * prev() methods to work correctly with invalid values. */
-	  case vpiBaseTypespec:
-	    return base_type_code;
+	  நிலை vpiBaseTypespec:
+	    திரும்பு base_type_code;
 
-	  case vpiSigned:
-	    return is_signed;
+	  நிலை vpiSigned:
+	    திரும்பு is_signed;
 
-	  default:
+	  இயல்பு:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by __vpiEnumTypespec\n", code);
-	    assert(0);
-	    return 0;
+	    ப்ரதிஜ்ஞா(0);
+	    திரும்பு 0;
       }
 }
 
 
-vpiHandle __vpiEnumTypespec::vpi_iterate(int code)
+vpiHandle __vpiEnumTypespec::vpi_iterate(முழு code)
 {
-      if (code == vpiEnumConst) {
+      எனில் (code == vpiEnumConst) {
 	    vpiHandle*args = static_cast<vpiHandle*>
-	                                (calloc(names.size(), sizeof(vpiHandle*)));
-	    for (size_t idx = 0 ; idx < names.size() ; idx += 1)
+	                                (calloc(names.size(), அளவு(vpiHandle*)));
+	    க்கு (size_t idx = 0 ; idx < names.size() ; idx += 1)
 		  args[idx] = &names[idx];
 
-	    return vpip_make_iterator(names.size(), args, true);
+	    திரும்பு vpip_make_iterator(names.size(), args, உண்மை);
       }
 
-      return 0;
+      திரும்பு 0;
 }
 
 
-inline enumconst_s::enumconst_s()
+உள்வரி enumconst_s::enumconst_s()
 { }
 
-int enumconst_s::get_type_code(void) const
-{ return vpiEnumConst; }
+முழு enumconst_s::get_type_code(வெறுமை) மாறிலி
+{ திரும்பு vpiEnumConst; }
 
-int enumconst_s::vpi_get(int code)
+முழு enumconst_s::vpi_get(முழு code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return val4.size()? val4.size() : val2.size();
-	  default:
-	    return 0;
+      தேர்வு (code) {
+	  நிலை vpiSize:
+	    திரும்பு val4.size()? val4.size() : val2.size();
+	  இயல்பு:
+	    திரும்பு 0;
       }
 }
 
 
-char* enumconst_s::vpi_get_str(int code)
+எழுத்து* enumconst_s::vpi_get_str(முழு code)
 {
-      switch (code) {
-	  case vpiName:
-	    return const_cast<char*> (name);
-	  default:
-	    return 0;
+      தேர்வு (code) {
+	  நிலை vpiName:
+	    திரும்பு const_cast<எழுத்து*> (name);
+	  இயல்பு:
+	    திரும்பு 0;
       }
 }
 
 
-void enumconst_s::vpi_get_value(p_vpi_value val)
+வெறுமை enumconst_s::vpi_get_மதிப்பு(p_vpi_மதிப்பு val)
 {
-      if (val4.size() > 0) {
-	    vpip_vec4_get_value(val4, val4.size(), is_signed, val);
-      } else {
-	    vpip_vec2_get_value(val2, val2.size(), is_signed, val);
+      எனில் (val4.size() > 0) {
+	    vpip_vec4_get_மதிப்பு(val4, val4.size(), is_signed, val);
+      } இல்லையெனில் {
+	    vpip_vec2_get_மதிப்பு(val2, val2.size(), is_signed, val);
       }
 }
 
 
-void compile_enum2_type(char*label, long width, bool signed_flag,
-                        std::list<struct enum_name_s>*names)
+வெறுமை compile_enum2_type(எழுத்து*label, long width, தருக்க signed_flag,
+                        std::list<கட்டமைப்பு enum_name_s>*names)
 {
-      struct __vpiEnumTypespec*spec = new struct __vpiEnumTypespec;
+      கட்டமைப்பு __vpiEnumTypespec*spec = புதிய கட்டமைப்பு __vpiEnumTypespec;
       spec->names = std::vector<enumconst_s> (names->size());
       spec->is_signed = signed_flag;
       spec->base_type_code = vpiBitVar;
 
       size_t idx = 0;
-      for (list<struct enum_name_s>::iterator cur = names->begin()
+      க்கு (list<கட்டமைப்பு enum_name_s>::iterator cur = names->begin()
 		 ; cur != names->end() ;  ++cur, ++idx) {
-	    assert(cur->val4 == 0);
+	    ப்ரதிஜ்ஞா(cur->val4 == 0);
 	    spec->names[idx].name = cur->text;
 	    spec->names[idx].val2 = vvp_vector2_t(cur->val2, width);
 	    spec->names[idx].is_signed = signed_flag;
       }
 
-      assert(idx == spec->names.size());
-      compile_vpi_symbol(label, spec);
+      ப்ரதிஜ்ஞா(idx == spec->names.size());
+      compile_vpi_குறியீடு(label, spec);
       vpip_attach_to_current_scope(spec);
 
-      free(label);
+      விடுவி(label);
       delete names;
 }
 
-void compile_enum4_type(char*label, long width, bool signed_flag,
-                        std::list<struct enum_name_s>*names)
+வெறுமை compile_enum4_type(எழுத்து*label, long width, தருக்க signed_flag,
+                        std::list<கட்டமைப்பு enum_name_s>*names)
 {
-      struct __vpiEnumTypespec*spec = new struct __vpiEnumTypespec;
+      கட்டமைப்பு __vpiEnumTypespec*spec = புதிய கட்டமைப்பு __vpiEnumTypespec;
       spec->names = std::vector<enumconst_s> (names->size());
       spec->is_signed = signed_flag;
       spec->base_type_code = vpiReg;
 
       size_t idx = 0;
-      for (list<struct enum_name_s>::iterator cur = names->begin()
+      க்கு (list<கட்டமைப்பு enum_name_s>::iterator cur = names->begin()
 		 ; cur != names->end() ;  ++cur, ++idx) {
 	    spec->names[idx].name = cur->text;
-	    assert(cur->val4);
+	    ப்ரதிஜ்ஞா(cur->val4);
 	    spec->names[idx].val4 = vector4_from_text(cur->val4, width);
 	    spec->names[idx].is_signed = signed_flag;
-	    free(cur->val4);
+	    விடுவி(cur->val4);
 	    cur->val4 = 0;
       }
 
-      assert(idx == spec->names.size());
-      compile_vpi_symbol(label, spec);
+      ப்ரதிஜ்ஞா(idx == spec->names.size());
+      compile_vpi_குறியீடு(label, spec);
       vpip_attach_to_current_scope(spec);
 
-      free(label);
+      விடுவி(label);
       delete names;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void enum_delete(vpiHandle item)
+வெறுமை enum_delete(vpiHandle item)
 {
-      struct __vpiEnumTypespec*obj = dynamic_cast<__vpiEnumTypespec*>(item);
+      கட்டமைப்பு __vpiEnumTypespec*obj = dynamic_cast<__vpiEnumTypespec*>(item);
 
-      for (vector<enumconst_s>::iterator iter = obj->names.begin();
+      க்கு (vector<enumconst_s>::iterator iter = obj->names.begin();
            iter != obj->names.end(); ++ iter ) {
 	    delete [] iter->name;
       }

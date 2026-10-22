@@ -27,42 +27,42 @@
 #endif
 # include  <cassert>
 
-using namespace std;
+using நாமாகாஶ std;
 
 /*
  * This class_property_t class is an abstract base class for
  * representing a property of an instance. The definition keeps and
  * array (of pointers) of these in order to define the the class.
  */
-class class_property_t {
-    public:
-      inline class_property_t() { offset_ = 0; }
-      virtual ~class_property_t() =0;
+வகுப்பு class_property_t {
+    பொது:
+      உள்வரி class_property_t() { offset_ = 0; }
+      மெய்நிகர் ~class_property_t() =0;
 	// How much space does an instance of this property require?
-      virtual size_t instance_size() const =0;
+      மெய்நிகர் size_t instance_size() மாறிலி =0;
 
-      void set_offset(size_t off) { offset_ = off; }
+      வெறுமை set_offset(size_t off) { offset_ = off; }
 
-    public:
-      virtual void construct(char*buf) const;
-      virtual void destruct(char*buf) const;
+    பொது:
+      மெய்நிகர் வெறுமை construct(எழுத்து*buf) மாறிலி;
+      மெய்நிகர் வெறுமை destruct(எழுத்து*buf) மாறிலி;
 
-      virtual void set_vec4(char*buf, const vvp_vector4_t&val);
-      virtual void get_vec4(char*buf, vvp_vector4_t&val);
+      மெய்நிகர் வெறுமை set_vec4(எழுத்து*buf, மாறிலி vvp_vector4_t&val);
+      மெய்நிகர் வெறுமை get_vec4(எழுத்து*buf, vvp_vector4_t&val);
 
-      virtual void set_real(char*buf, double val);
-      virtual double get_real(char*buf);
+      மெய்நிகர் வெறுமை set_real(எழுத்து*buf, இரட்டை val);
+      மெய்நிகர் இரட்டை get_real(எழுத்து*buf);
 
-      virtual void set_string(char*buf, const std::string&val);
-      virtual string get_string(char*buf);
+      மெய்நிகர் வெறுமை set_string(எழுத்து*buf, மாறிலி std::string&val);
+      மெய்நிகர் string get_string(எழுத்து*buf);
 
-      virtual void set_object(char*buf, const vvp_object_t&val, uint64_t element);
-      virtual void get_object(char*buf, vvp_object_t&val, uint64_t element);
+      மெய்நிகர் வெறுமை set_object(எழுத்து*buf, மாறிலி vvp_object_t&val, uint64_t element);
+      மெய்நிகர் வெறுமை get_object(எழுத்து*buf, vvp_object_t&val, uint64_t element);
 
 	// Implement polymorphic shallow copy.
-      virtual void copy(char*buf, char*src) = 0;
+      மெய்நிகர் வெறுமை copy(எழுத்து*buf, எழுத்து*src) = 0;
 
-    protected:
+    பாதுகாக்கப்பட்ட:
       size_t offset_;
 };
 
@@ -70,333 +70,333 @@ class_property_t::~class_property_t()
 {
 }
 
-void class_property_t::construct(char*) const
+வெறுமை class_property_t::construct(எழுத்து*) மாறிலி
 {
 }
 
-void class_property_t::destruct(char*) const
+வெறுமை class_property_t::destruct(எழுத்து*) மாறிலி
 {
 }
 
-void class_property_t::set_vec4(char*, const vvp_vector4_t&)
+வெறுமை class_property_t::set_vec4(எழுத்து*, மாறிலி vvp_vector4_t&)
 {
-      assert(0);
+      ப்ரதிஜ்ஞா(0);
 }
 
-void class_property_t::get_vec4(char*, vvp_vector4_t&)
+வெறுமை class_property_t::get_vec4(எழுத்து*, vvp_vector4_t&)
 {
-      assert(0);
+      ப்ரதிஜ்ஞா(0);
 }
 
-void class_property_t::set_real(char*, double)
+வெறுமை class_property_t::set_real(எழுத்து*, இரட்டை)
 {
-      assert(0);
+      ப்ரதிஜ்ஞா(0);
 }
 
-double class_property_t::get_real(char*)
+இரட்டை class_property_t::get_real(எழுத்து*)
 {
-      assert(0);
-      return 0.0;
+      ப்ரதிஜ்ஞா(0);
+      திரும்பு 0.0;
 }
 
-void class_property_t::set_string(char*, const string&)
+வெறுமை class_property_t::set_string(எழுத்து*, மாறிலி string&)
 {
-      assert(0);
+      ப்ரதிஜ்ஞா(0);
 }
 
-string class_property_t::get_string(char*)
+string class_property_t::get_string(எழுத்து*)
 {
-      assert(0);
-      return "";
+      ப்ரதிஜ்ஞா(0);
+      திரும்பு "";
 }
 
-void class_property_t::set_object(char*, const vvp_object_t&, uint64_t)
+வெறுமை class_property_t::set_object(எழுத்து*, மாறிலி vvp_object_t&, uint64_t)
 {
-      assert(0);
+      ப்ரதிஜ்ஞா(0);
 }
 
-void class_property_t::get_object(char*, vvp_object_t&, uint64_t)
+வெறுமை class_property_t::get_object(எழுத்து*, vvp_object_t&, uint64_t)
 {
-      assert(0);
+      ப்ரதிஜ்ஞா(0);
 }
 
 /*
  */
-template <class T> class property_atom : public class_property_t {
-    public:
-      inline explicit property_atom(void) { }
+template <வகுப்பு T> வகுப்பு property_atom : பொது class_property_t {
+    பொது:
+      உள்வரி explicit property_atom(வெறுமை) { }
       ~property_atom() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_size() மாறிலி override { திரும்பு அளவு(T); }
 
-    public:
-      void construct(char*buf) const override
+    பொது:
+      வெறுமை construct(எழுத்து*buf) மாறிலி override
       { T*tmp = reinterpret_cast<T*> (buf+offset_);
 	*tmp = 0;
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      வெறுமை set_vec4(எழுத்து*buf, மாறிலி vvp_vector4_t&val) override;
+      வெறுமை get_vec4(எழுத்து*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      வெறுமை copy(எழுத்து*dst, எழுத்து*src) override;
 };
 
-class property_bit : public class_property_t {
-    public:
-      explicit inline property_bit(size_t wid): wid_(wid) { }
+வகுப்பு property_bit : பொது class_property_t {
+    பொது:
+      explicit உள்வரி property_bit(size_t wid): wid_(wid) { }
       ~property_bit() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector2_t); }
+      size_t instance_size() மாறிலி override { திரும்பு அளவு(vvp_vector2_t); }
 
-    public:
-      void construct(char*buf) const override
-      { new (buf+offset_) vvp_vector2_t (0, wid_); }
+    பொது:
+      வெறுமை construct(எழுத்து*buf) மாறிலி override
+      { புதிய (buf+offset_) vvp_vector2_t (0, wid_); }
 
-      void destruct(char*buf) const override
+      வெறுமை destruct(எழுத்து*buf) மாறிலி override
       { vvp_vector2_t*tmp = reinterpret_cast<vvp_vector2_t*>(buf+offset_);
 	tmp->~vvp_vector2_t();
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      வெறுமை set_vec4(எழுத்து*buf, மாறிலி vvp_vector4_t&val) override;
+      வெறுமை get_vec4(எழுத்து*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      வெறுமை copy(எழுத்து*dst, எழுத்து*src) override;
 
-    private:
+    தனிப்பட்ட:
       size_t wid_;
 };
 
-class property_logic : public class_property_t {
-    public:
-      explicit inline property_logic(size_t wid): wid_(wid) { }
+வகுப்பு property_logic : பொது class_property_t {
+    பொது:
+      explicit உள்வரி property_logic(size_t wid): wid_(wid) { }
       ~property_logic() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector4_t); }
+      size_t instance_size() மாறிலி override { திரும்பு அளவு(vvp_vector4_t); }
 
-    public:
-      void construct(char*buf) const override
-      { new (buf+offset_) vvp_vector4_t (wid_); }
+    பொது:
+      வெறுமை construct(எழுத்து*buf) மாறிலி override
+      { புதிய (buf+offset_) vvp_vector4_t (wid_); }
 
-      void destruct(char*buf) const override
+      வெறுமை destruct(எழுத்து*buf) மாறிலி override
       { vvp_vector4_t*tmp = reinterpret_cast<vvp_vector4_t*>(buf+offset_);
 	tmp->~vvp_vector4_t();
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      வெறுமை set_vec4(எழுத்து*buf, மாறிலி vvp_vector4_t&val) override;
+      வெறுமை get_vec4(எழுத்து*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      வெறுமை copy(எழுத்து*dst, எழுத்து*src) override;
 
-    private:
+    தனிப்பட்ட:
       size_t wid_;
 };
 
-template <class T> class property_real : public class_property_t {
-    public:
-      inline explicit property_real(void) { }
+template <வகுப்பு T> வகுப்பு property_real : பொது class_property_t {
+    பொது:
+      உள்வரி explicit property_real(வெறுமை) { }
       ~property_real() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_size() மாறிலி override { திரும்பு அளவு(T); }
 
-    public:
-      void construct(char*buf) const override
+    பொது:
+      வெறுமை construct(எழுத்து*buf) மாறிலி override
       { T*tmp = reinterpret_cast<T*> (buf+offset_);
 	*tmp = 0.0;
       }
 
-      void set_real(char*buf, double val) override;
-      double get_real(char*buf) override;
+      வெறுமை set_real(எழுத்து*buf, இரட்டை val) override;
+      இரட்டை get_real(எழுத்து*buf) override;
 
-      void copy(char*dst, char*src) override;
+      வெறுமை copy(எழுத்து*dst, எழுத்து*src) override;
 };
 
-class property_string : public class_property_t {
-    public:
-      inline explicit property_string(void) { }
+வகுப்பு property_string : பொது class_property_t {
+    பொது:
+      உள்வரி explicit property_string(வெறுமை) { }
       ~property_string() override { }
 
-      size_t instance_size() const override { return sizeof(std::string); }
+      size_t instance_size() மாறிலி override { திரும்பு அளவு(std::string); }
 
-    public:
-      void construct(char*buf) const override
-      { /* string*tmp = */ new (buf+offset_) string; }
+    பொது:
+      வெறுமை construct(எழுத்து*buf) மாறிலி override
+      { /* string*tmp = */ புதிய (buf+offset_) string; }
 
-      void destruct(char*buf) const override
+      வெறுமை destruct(எழுத்து*buf) மாறிலி override
       { string*tmp = reinterpret_cast<string*> (buf+offset_);
 	tmp->~string();
       }
 
-      void set_string(char*buf, const string&) override;
-      string get_string(char*buf) override;
+      வெறுமை set_string(எழுத்து*buf, மாறிலி string&) override;
+      string get_string(எழுத்து*buf) override;
 
-      void copy(char*dst, char*src) override;
+      வெறுமை copy(எழுத்து*dst, எழுத்து*src) override;
 };
 
-class property_object : public class_property_t {
-    public:
-      inline explicit property_object(uint64_t as): array_size_(as==0? 1 : as) { }
+வகுப்பு property_object : பொது class_property_t {
+    பொது:
+      உள்வரி explicit property_object(uint64_t as): array_size_(as==0? 1 : as) { }
       ~property_object() override { }
 
-      size_t instance_size() const override { return array_size_ * sizeof(vvp_object_t); }
+      size_t instance_size() மாறிலி override { திரும்பு array_size_ * அளவு(vvp_object_t); }
 
-    public:
-      void construct(char*buf) const override;
+    பொது:
+      வெறுமை construct(எழுத்து*buf) மாறிலி override;
 
-      void destruct(char*buf) const override;
+      வெறுமை destruct(எழுத்து*buf) மாறிலி override;
 
-      void set_object(char*buf, const vvp_object_t&, uint64_t) override;
-      void get_object(char*buf, vvp_object_t&, uint64_t) override;
+      வெறுமை set_object(எழுத்து*buf, மாறிலி vvp_object_t&, uint64_t) override;
+      வெறுமை get_object(எழுத்து*buf, vvp_object_t&, uint64_t) override;
 
-      void copy(char*dst, char*src) override;
+      வெறுமை copy(எழுத்து*dst, எழுத்து*src) override;
 
-    private:
+    தனிப்பட்ட:
       size_t array_size_;
 };
 
-template <class T> void property_atom<T>::set_vec4(char*buf, const vvp_vector4_t&val)
+template <வகுப்பு T> வெறுமை property_atom<T>::set_vec4(எழுத்து*buf, மாறிலி vvp_vector4_t&val)
 {
       T*tmp = reinterpret_cast<T*> (buf+offset_);
-      bool flag = vector4_to_value(val, *tmp, true, false);
-      assert(flag);
+      தருக்க flag = vector4_to_மதிப்பு(val, *tmp, உண்மை, பொய்);
+      ப்ரதிஜ்ஞா(flag);
 }
 
-template <class T> void property_atom<T>::get_vec4(char*buf, vvp_vector4_t&val)
+template <வகுப்பு T> வெறுமை property_atom<T>::get_vec4(எழுத்து*buf, vvp_vector4_t&val)
 {
       T*src = reinterpret_cast<T*> (buf+offset_);
-      const size_t tmp_cnt = sizeof(T)<sizeof(unsigned long)
+      மாறிலி size_t tmp_cnt = அளவு(T)<அளவு(unsigned long)
 				       ? 1
-				       : sizeof(T) / sizeof(unsigned long);
+				       : அளவு(T) / அளவு(unsigned long);
       unsigned long tmp[tmp_cnt];
       tmp[0] = src[0];
 
-      for (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
-	    tmp[idx] = src[0] >> idx * 8 * sizeof(tmp[0]);
+      க்கு (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
+	    tmp[idx] = src[0] >> idx * 8 * அளவு(tmp[0]);
 
-      val.resize(8*sizeof(T));
+      val.resize(8*அளவு(T));
       val.setarray(0, val.size(), tmp);
 }
 
-template <class T> void property_atom<T>::copy(char*dst, char*src)
+template <வகுப்பு T> வெறுமை property_atom<T>::copy(எழுத்து*dst, எழுத்து*src)
 {
       T*dst_obj = reinterpret_cast<T*> (dst+offset_);
       T*src_obj = reinterpret_cast<T*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_bit::set_vec4(char*buf, const vvp_vector4_t&val)
+வெறுமை property_bit::set_vec4(எழுத்து*buf, மாறிலி vvp_vector4_t&val)
 {
       vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
       *obj = val;
 }
 
-void property_bit::get_vec4(char*buf, vvp_vector4_t&val)
+வெறுமை property_bit::get_vec4(எழுத்து*buf, vvp_vector4_t&val)
 {
-      const vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
+      மாறிலி vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
       val = vector2_to_vector4(*obj, obj->size());
 }
 
-void property_bit::copy(char*dst, char*src)
+வெறுமை property_bit::copy(எழுத்து*dst, எழுத்து*src)
 {
       vvp_vector2_t*dst_obj = reinterpret_cast<vvp_vector2_t*> (dst+offset_);
-      const vvp_vector2_t*src_obj = reinterpret_cast<vvp_vector2_t*> (src+offset_);
+      மாறிலி vvp_vector2_t*src_obj = reinterpret_cast<vvp_vector2_t*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_logic::set_vec4(char*buf, const vvp_vector4_t&val)
+வெறுமை property_logic::set_vec4(எழுத்து*buf, மாறிலி vvp_vector4_t&val)
 {
       vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
       *obj = val;
 }
 
-void property_logic::get_vec4(char*buf, vvp_vector4_t&val)
+வெறுமை property_logic::get_vec4(எழுத்து*buf, vvp_vector4_t&val)
 {
-      const vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
+      மாறிலி vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
       val = *obj;
 }
 
-void property_logic::copy(char*dst, char*src)
+வெறுமை property_logic::copy(எழுத்து*dst, எழுத்து*src)
 {
       vvp_vector4_t*dst_obj = reinterpret_cast<vvp_vector4_t*> (dst+offset_);
-      const vvp_vector4_t*src_obj = reinterpret_cast<vvp_vector4_t*> (src+offset_);
+      மாறிலி vvp_vector4_t*src_obj = reinterpret_cast<vvp_vector4_t*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-template <class T> void property_real<T>::set_real(char*buf, double val)
+template <வகுப்பு T> வெறுமை property_real<T>::set_real(எழுத்து*buf, இரட்டை val)
 {
       T*tmp = reinterpret_cast<T*>(buf+offset_);
       *tmp = val;
 }
 
-template <class T> double property_real<T>::get_real(char*buf)
+template <வகுப்பு T> இரட்டை property_real<T>::get_real(எழுத்து*buf)
 {
       T*tmp = reinterpret_cast<T*>(buf+offset_);
-      return *tmp;
+      திரும்பு *tmp;
 }
 
-template <class T> void property_real<T>::copy(char*dst, char*src)
+template <வகுப்பு T> வெறுமை property_real<T>::copy(எழுத்து*dst, எழுத்து*src)
 {
       T*dst_obj = reinterpret_cast<T*> (dst+offset_);
       T*src_obj = reinterpret_cast<T*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_string::set_string(char*buf, const string&val)
+வெறுமை property_string::set_string(எழுத்து*buf, மாறிலி string&val)
 {
       string*tmp = reinterpret_cast<string*>(buf+offset_);
       *tmp = val;
 }
 
-string property_string::get_string(char*buf)
+string property_string::get_string(எழுத்து*buf)
 {
-      const string*tmp = reinterpret_cast<string*>(buf+offset_);
-      return *tmp;
+      மாறிலி string*tmp = reinterpret_cast<string*>(buf+offset_);
+      திரும்பு *tmp;
 }
 
-void property_string::copy(char*dst, char*src)
+வெறுமை property_string::copy(எழுத்து*dst, எழுத்து*src)
 {
       string*dst_obj = reinterpret_cast<string*> (dst+offset_);
-      const string*src_obj = reinterpret_cast<string*> (src+offset_);
+      மாறிலி string*src_obj = reinterpret_cast<string*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_object::construct(char*buf) const
+வெறுமை property_object::construct(எழுத்து*buf) மாறிலி
 {
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
-	    new (buf+offset_ + idx*sizeof(vvp_object_t)) vvp_object_t;
+      க்கு (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+	    புதிய (buf+offset_ + idx*அளவு(vvp_object_t)) vvp_object_t;
 }
 
-void property_object::destruct(char*buf) const
+வெறுமை property_object::destruct(எழுத்து*buf) மாறிலி
 {
       vvp_object_t*tmp = reinterpret_cast<vvp_object_t*> (buf+offset_);
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      க்கு (size_t idx = 0 ; idx < array_size_ ; idx += 1)
 	    (tmp+idx)->~vvp_object_t();
 }
 
-void property_object::set_object(char*buf, const vvp_object_t&val, uint64_t idx)
+வெறுமை property_object::set_object(எழுத்து*buf, மாறிலி vvp_object_t&val, uint64_t idx)
 {
-      assert(idx < array_size_);
+      ப்ரதிஜ்ஞா(idx < array_size_);
       vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
       tmp[idx] = val;
 }
 
-void property_object::get_object(char*buf, vvp_object_t&val, uint64_t idx)
+வெறுமை property_object::get_object(எழுத்து*buf, vvp_object_t&val, uint64_t idx)
 {
-      assert(idx < array_size_);
-      const vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
+      ப்ரதிஜ்ஞா(idx < array_size_);
+      மாறிலி vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
       val = tmp[idx];
 }
 
-void property_object::copy(char*dst, char*src)
+வெறுமை property_object::copy(எழுத்து*dst, எழுத்து*src)
 {
       vvp_object_t*dst_obj = reinterpret_cast<vvp_object_t*>(dst+offset_);
-      const vvp_object_t*src_obj = reinterpret_cast<vvp_object_t*>(src+offset_);
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      மாறிலி vvp_object_t*src_obj = reinterpret_cast<vvp_object_t*>(src+offset_);
+      க்கு (size_t idx = 0 ; idx < array_size_ ; idx += 1)
 	    dst_obj[idx] = src_obj[idx];
 }
 
 /* **** */
 
-class_type::class_type(const string&nam, size_t nprop)
+class_type::class_type(மாறிலி string&nam, size_t nprop)
 : class_name_(nam), properties_(nprop)
 {
       instance_size_ = 0;
@@ -404,59 +404,59 @@ class_type::class_type(const string&nam, size_t nprop)
 
 class_type::~class_type()
 {
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      க்கு (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    delete properties_[idx].type;
 }
 
-void class_type::set_property(size_t idx, const string&name, const string&type, uint64_t array_size)
+வெறுமை class_type::set_property(size_t idx, மாறிலி string&name, மாறிலி string&type, uint64_t array_size)
 {
-      assert(idx < properties_.size());
+      ப்ரதிஜ்ஞா(idx < properties_.size());
       properties_[idx].name = name;
 
-      if (type == "b8")
-	    properties_[idx].type = new property_atom<uint8_t>;
-      else if (type == "b16")
-	    properties_[idx].type = new property_atom<uint16_t>;
-      else if (type == "b32")
-	    properties_[idx].type = new property_atom<uint32_t>;
-      else if (type == "b64")
-	    properties_[idx].type = new property_atom<uint64_t>;
-      else if (type == "sb8")
-	    properties_[idx].type = new property_atom<int8_t>;
-      else if (type == "sb16")
-	    properties_[idx].type = new property_atom<int16_t>;
-      else if (type == "sb32")
-	    properties_[idx].type = new property_atom<int32_t>;
-      else if (type == "sb64")
-	    properties_[idx].type = new property_atom<int64_t>;
-      else if (type == "r")
-	    properties_[idx].type = new property_real<double>;
-      else if (type == "S")
-	    properties_[idx].type = new property_string;
-      else if (type == "o")
-	    properties_[idx].type = new property_object(array_size);
-      else if (type[0] == 'b') {
+      எனில் (type == "b8")
+	    properties_[idx].type = புதிய property_atom<uint8_t>;
+      இல்லையெனில் எனில் (type == "b16")
+	    properties_[idx].type = புதிய property_atom<uint16_t>;
+      இல்லையெனில் எனில் (type == "b32")
+	    properties_[idx].type = புதிய property_atom<uint32_t>;
+      இல்லையெனில் எனில் (type == "b64")
+	    properties_[idx].type = புதிய property_atom<uint64_t>;
+      இல்லையெனில் எனில் (type == "sb8")
+	    properties_[idx].type = புதிய property_atom<int8_t>;
+      இல்லையெனில் எனில் (type == "sb16")
+	    properties_[idx].type = புதிய property_atom<int16_t>;
+      இல்லையெனில் எனில் (type == "sb32")
+	    properties_[idx].type = புதிய property_atom<int32_t>;
+      இல்லையெனில் எனில் (type == "sb64")
+	    properties_[idx].type = புதிய property_atom<int64_t>;
+      இல்லையெனில் எனில் (type == "r")
+	    properties_[idx].type = புதிய property_real<இரட்டை>;
+      இல்லையெனில் எனில் (type == "S")
+	    properties_[idx].type = புதிய property_string;
+      இல்லையெனில் எனில் (type == "o")
+	    properties_[idx].type = புதிய property_object(array_size);
+      இல்லையெனில் எனில் (type[0] == 'b') {
 	    size_t wid = strtoul(type.c_str()+1, 0, 0);
-	    properties_[idx].type = new property_bit(wid);
-      } else if (type[0] == 'L') {
+	    properties_[idx].type = புதிய property_bit(wid);
+      } இல்லையெனில் எனில் (type[0] == 'L') {
 	    size_t wid = strtoul(type.c_str()+1,0,0);
-	    properties_[idx].type = new property_logic(wid);
-      } else if (type[0] == 's' && type[1] == 'L') {
+	    properties_[idx].type = புதிய property_logic(wid);
+      } இல்லையெனில் எனில் (type[0] == 's' && type[1] == 'L') {
 	    size_t wid = strtoul(type.c_str()+2,0,0);
-	    properties_[idx].type = new property_logic(wid);
-      } else {
+	    properties_[idx].type = புதிய property_logic(wid);
+      } இல்லையெனில் {
 	    properties_[idx].type = 0;
       }
 }
 
-void class_type::finish_setup(void)
+வெறுமை class_type::finish_setup(வெறுமை)
 {
       map<size_t, vector<size_t> > size_map;
 	// Add up all the sizes to get a total instance size. This
 	// figures out how much memory a complete instance will need.
       size_t accum = 0;
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1) {
-	    assert(properties_[idx].type);
+      க்கு (size_t idx = 0 ; idx < properties_.size() ; idx += 1) {
+	    ப்ரதிஜ்ஞா(properties_[idx].type);
 	    size_t instance_size = properties_[idx].type->instance_size();
 	    accum += instance_size;
 	    size_map[instance_size].push_back(idx);
@@ -468,146 +468,146 @@ void class_type::finish_setup(void)
 	// space. Allocate the properties largest objects first so
 	// that they are assured better alignment.
       accum = 0;
-      for (map<size_t, vector<size_t> >::reverse_iterator cur = size_map.rbegin()
+      க்கு (map<size_t, vector<size_t> >::reverse_iterator cur = size_map.rbegin()
 		 ; cur != size_map.rend() ; ++ cur) {
-	    for (size_t idx = 0 ; idx < cur->second.size() ; idx += 1) {
+	    க்கு (size_t idx = 0 ; idx < cur->second.size() ; idx += 1) {
 		  size_t pid = cur->second[idx];
 		  class_property_t*ptype = properties_[pid].type;
-		  assert(ptype->instance_size() == cur->first);
+		  ப்ரதிஜ்ஞா(ptype->instance_size() == cur->first);
 		  ptype->set_offset(accum);
 		  accum += cur->first;
 	    }
       }
 }
 
-class_type::inst_t class_type::instance_new() const
+class_type::inst_t class_type::instance_new() மாறிலி
 {
-      char*buf = new char [instance_size_];
+      எழுத்து*buf = புதிய எழுத்து [instance_size_];
 
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      க்கு (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->construct(buf);
 
-      return reinterpret_cast<inst_t> (buf);
+      திரும்பு reinterpret_cast<inst_t> (buf);
 }
 
-void class_type::instance_delete(class_type::inst_t obj) const
+வெறுமை class_type::instance_delete(class_type::inst_t obj) மாறிலி
 {
-      char*buf = reinterpret_cast<char*> (obj);
+      எழுத்து*buf = reinterpret_cast<எழுத்து*> (obj);
 
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      க்கு (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->destruct(buf);
 
       delete[]buf;
 }
 
-void class_type::set_vec4(class_type::inst_t obj, size_t pid,
-			  const vvp_vector4_t&val) const
+வெறுமை class_type::set_vec4(class_type::inst_t obj, size_t pid,
+			  மாறிலி vvp_vector4_t&val) மாறிலி
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      எழுத்து*buf = reinterpret_cast<எழுத்து*> (obj);
+      ப்ரதிஜ்ஞா(pid < properties_.size());
       properties_[pid].type->set_vec4(buf, val);
 }
 
-void class_type::get_vec4(class_type::inst_t obj, size_t pid,
-			  vvp_vector4_t&val) const
+வெறுமை class_type::get_vec4(class_type::inst_t obj, size_t pid,
+			  vvp_vector4_t&val) மாறிலி
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      எழுத்து*buf = reinterpret_cast<எழுத்து*> (obj);
+      ப்ரதிஜ்ஞா(pid < properties_.size());
       properties_[pid].type->get_vec4(buf, val);
 }
 
-void class_type::set_real(class_type::inst_t obj, size_t pid,
-			  double val) const
+வெறுமை class_type::set_real(class_type::inst_t obj, size_t pid,
+			  இரட்டை val) மாறிலி
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      எழுத்து*buf = reinterpret_cast<எழுத்து*> (obj);
+      ப்ரதிஜ்ஞா(pid < properties_.size());
       properties_[pid].type->set_real(buf, val);
 }
 
-double class_type::get_real(class_type::inst_t obj, size_t pid) const
+இரட்டை class_type::get_real(class_type::inst_t obj, size_t pid) மாறிலி
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      return properties_[pid].type->get_real(buf);
+      எழுத்து*buf = reinterpret_cast<எழுத்து*> (obj);
+      ப்ரதிஜ்ஞா(pid < properties_.size());
+      திரும்பு properties_[pid].type->get_real(buf);
 }
 
-void class_type::set_string(class_type::inst_t obj, size_t pid,
-			    const string&val) const
+வெறுமை class_type::set_string(class_type::inst_t obj, size_t pid,
+			    மாறிலி string&val) மாறிலி
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      எழுத்து*buf = reinterpret_cast<எழுத்து*> (obj);
+      ப்ரதிஜ்ஞா(pid < properties_.size());
       properties_[pid].type->set_string(buf, val);
 }
 
-string class_type::get_string(class_type::inst_t obj, size_t pid) const
+string class_type::get_string(class_type::inst_t obj, size_t pid) மாறிலி
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      return properties_[pid].type->get_string(buf);
+      எழுத்து*buf = reinterpret_cast<எழுத்து*> (obj);
+      ப்ரதிஜ்ஞா(pid < properties_.size());
+      திரும்பு properties_[pid].type->get_string(buf);
 }
 
-void class_type::set_object(class_type::inst_t obj, size_t pid,
-			    const vvp_object_t&val, size_t idx) const
+வெறுமை class_type::set_object(class_type::inst_t obj, size_t pid,
+			    மாறிலி vvp_object_t&val, size_t idx) மாறிலி
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      எழுத்து*buf = reinterpret_cast<எழுத்து*> (obj);
+      ப்ரதிஜ்ஞா(pid < properties_.size());
       properties_[pid].type->set_object(buf, val, idx);
 }
 
-void class_type::get_object(class_type::inst_t obj, size_t pid,
-			    vvp_object_t&val, size_t idx) const
+வெறுமை class_type::get_object(class_type::inst_t obj, size_t pid,
+			    vvp_object_t&val, size_t idx) மாறிலி
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      எழுத்து*buf = reinterpret_cast<எழுத்து*> (obj);
+      ப்ரதிஜ்ஞா(pid < properties_.size());
       properties_[pid].type->get_object(buf, val, idx);
 }
 
-void class_type::copy_property(class_type::inst_t dst, size_t pid, class_type::inst_t src) const
+வெறுமை class_type::copy_property(class_type::inst_t dst, size_t pid, class_type::inst_t src) மாறிலி
 {
-      char*dst_buf = reinterpret_cast<char*> (dst);
-      char*src_buf = reinterpret_cast<char*> (src);
+      எழுத்து*dst_buf = reinterpret_cast<எழுத்து*> (dst);
+      எழுத்து*src_buf = reinterpret_cast<எழுத்து*> (src);
 
-      assert(pid < properties_.size());
+      ப்ரதிஜ்ஞா(pid < properties_.size());
 
       properties_[pid].type->copy(dst_buf, src_buf);
 }
 
-int class_type::get_type_code(void) const
+முழு class_type::get_type_code(வெறுமை) மாறிலி
 {
-      return vpiClassDefn;
+      திரும்பு vpiClassDefn;
 }
 
-static class_type*compile_class = 0;
+நிலையான class_type*compile_class = 0;
 
-void compile_class_start(char*lab, char*nam, unsigned ntype)
+வெறுமை compile_class_start(எழுத்து*lab, எழுத்து*nam, unsigned ntype)
 {
-      assert(compile_class == 0);
-      compile_class = new class_type(nam, ntype);
-      compile_vpi_symbol(lab, compile_class);
-      free(lab);
+      ப்ரதிஜ்ஞா(compile_class == 0);
+      compile_class = புதிய class_type(nam, ntype);
+      compile_vpi_குறியீடு(lab, compile_class);
+      விடுவி(lab);
       delete[]nam;
 }
 
-void compile_class_property(unsigned idx, char*nam, char*typ, uint64_t array_size)
+வெறுமை compile_class_property(unsigned idx, எழுத்து*nam, எழுத்து*typ, uint64_t array_size)
 {
-      assert(compile_class);
+      ப்ரதிஜ்ஞா(compile_class);
       compile_class->set_property(idx, nam, typ, array_size);
       delete[]nam;
       delete[]typ;
 }
 
-void compile_class_done(void)
+வெறுமை compile_class_done(வெறுமை)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      assert(scope);
-      assert(compile_class);
+      ப்ரதிஜ்ஞா(scope);
+      ப்ரதிஜ்ஞா(compile_class);
       compile_class->finish_setup();
       scope->classes[compile_class->class_name()] = compile_class;
       compile_class = 0;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void class_def_delete(class_type *item)
+வெறுமை class_def_delete(class_type *item)
 {
       delete item;
 }

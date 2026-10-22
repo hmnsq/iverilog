@@ -41,46 +41,46 @@
 # include  "ivl_alloc.h"
 
 __vpiScope*stop_current_scope = 0;
-bool stop_is_finish = false;  /* When set, $stop acts like $finish (set in main.cc). */
-int  stop_is_finish_exit_code = 0;
+தருக்க stop_is_finish = பொய்;  /* When set, $stop acts like $finish (set in main.cc). */
+முழு  stop_is_finish_exit_code = 0;
 
 #ifndef USE_READLINE
-static char* readline_stub(const char*prompt)
+நிலையான எழுத்து* readline_stub(மாறிலி எழுத்து*prompt)
 {
-      char buf[256];
+      எழுத்து buf[256];
 
-      if (prompt && prompt[0]) {
+      எனில் (prompt && prompt[0]) {
 	    fputs(prompt, stdout);
 	    fflush(stdout);
       }
 
-      if (fgets(buf, sizeof(buf), stdin)) {
-	    char*nl = buf + strlen(buf);
-	    while (nl > buf && isspace(nl[-1])) {
+      எனில் (fgets(buf, அளவு(buf), stdin)) {
+	    எழுத்து*nl = buf + strlen(buf);
+	    போது (nl > buf && isspace(nl[-1])) {
 		  nl -= 1;
 		  nl[0] = 0;
 	    }
 
-	    return strdup(buf);
+	    திரும்பு strdup(buf);
       }
 
-      return 0;
+      திரும்பு 0;
 }
 #define readline(x) readline_stub(x)
 #endif
 
 
-static bool interact_flag = true;
+நிலையான தருக்க interact_flag = உண்மை;
 
-static void cmd_call(unsigned argc, const char*argv[])
+நிலையான வெறுமை cmd_call(unsigned argc, மாறிலி எழுத்து*argv[])
 {
       __vpiHandle**table;
       unsigned ntable;
 
-      if (stop_current_scope == 0) {
-	    vpip_make_root_iterator(table, ntable);
+      எனில் (stop_current_scope == 0) {
+	    vpip_make_வேர்_iterator(table, ntable);
 
-      } else {
+      } இல்லையெனில் {
 	    table = &stop_current_scope->intern[0];
 	    ntable = stop_current_scope->intern.size();
       }
@@ -88,81 +88,81 @@ static void cmd_call(unsigned argc, const char*argv[])
 	/* This is an array of vpiHandles, for passing to the created
 	   command. */
       unsigned vpi_argc = argc - 1;
-      vpiHandle*vpi_argv = static_cast<vpiHandle*>(calloc(vpi_argc, sizeof(vpiHandle)));
-      vpiHandle*vpi_free = static_cast<vpiHandle*>(calloc(vpi_argc, sizeof(vpiHandle)));
+      vpiHandle*vpi_argv = static_cast<vpiHandle*>(calloc(vpi_argc, அளவு(vpiHandle)));
+      vpiHandle*vpi_free = static_cast<vpiHandle*>(calloc(vpi_argc, அளவு(vpiHandle)));
 
       unsigned errors = 0;
 
-      for (unsigned idx = 0 ;  idx < vpi_argc ;  idx += 1) {
+      க்கு (unsigned idx = 0 ;  idx < vpi_argc ;  idx += 1) {
 	    vpiHandle handle = 0;
-	    bool add_to_free_list = false;
+	    தருக்க add_to_free_list = பொய்;
 
 	      /* Detect the special case that the argument is the
 		 .(dot) string. This represents the handle for the
 		 current scope. */
-	    if (stop_current_scope && (strcmp(argv[idx+1], ".") == 0))
+	    எனில் (stop_current_scope && (strcmp(argv[idx+1], ".") == 0))
 		  handle = stop_current_scope;
 
 	      /* Is the argument a quoted string? */
-	    if (handle == 0 && argv[idx+1][0] == '"') {
-		  char*tmp = strdup(argv[idx+1]);
+	    எனில் (handle == 0 && argv[idx+1][0] == '"') {
+		  எழுத்து*tmp = strdup(argv[idx+1]);
 		  tmp[strlen(tmp)-1] = 0;
 
 		    /* Create a temporary vpiStringConst to pass as a
 		       handle. Make it temporary so that memory is
 		       reclaimed after the call is completed. */
-		  handle = vpip_make_string_const(strdup(tmp+1), false);
-		  add_to_free_list = true;
-		  free(tmp);
+		  handle = vpip_make_string_const(strdup(tmp+1), பொய்);
+		  add_to_free_list = உண்மை;
+		  விடுவி(tmp);
 	    }
 
 	      /* Is the argument a decimal constant? */
-	    if (handle == 0
+	    எனில் (handle == 0
 		&& strspn(argv[idx+1],"0123456789") == strlen(argv[idx+1])) {
-		  handle = new __vpiDecConst(strtol(argv[idx+1],0,10));
-		  add_to_free_list = true;
+		  handle = புதிய __vpiDecConst(strtol(argv[idx+1],0,10));
+		  add_to_free_list = உண்மை;
 	    }
 
 	      /* Try to find the vpiHandle within this scope that has
 		 the name in argv[idx+2]. Look in the current scope. */
 
-	    for (unsigned tmp = 0 ;  (tmp < ntable)&& !handle ;  tmp += 1) {
-		  const __vpiScope*scope;
-		  const char*name;
+	    க்கு (unsigned tmp = 0 ;  (tmp < ntable)&& !handle ;  tmp += 1) {
+		  மாறிலி __vpiScope*scope;
+		  மாறிலி எழுத்து*name;
 
-		  switch (table[tmp]->get_type_code()) {
+		  தேர்வு (table[tmp]->get_type_code()) {
 
-		      case vpiModule:
-		      case vpiGenScope:
-		      case vpiFunction:
-		      case vpiTask:
-		      case vpiNamedBegin:
-		      case vpiNamedFork:
+		      நிலை vpiModule:
+		      நிலை vpiGenScope:
+		      நிலை vpiFunction:
+		      நிலை vpiTask:
+		      நிலை vpiNamedBegin:
+		      நிலை vpiNamedFork:
 			scope = dynamic_cast<__vpiScope*>(table[tmp]);
-			if (strcmp(scope->scope_name(), argv[idx+1]) == 0)
+			எனில் (strcmp(scope->scope_name(), argv[idx+1]) == 0)
 			      handle = table[tmp];
-			break;
+			நிறுத்து;
 
-		      case vpiReg:
-		      case vpiNet:
-		      case vpiParameter:
+		      நிலை vpiReg:
+		      நிலை vpiNet:
+		      நிலை vpiParameter:
 			name = vpi_get_str(vpiName,table[tmp]);
-			if (strcmp(argv[idx+1], name) == 0)
+			எனில் (strcmp(argv[idx+1], name) == 0)
 			      handle = table[tmp];
-			break;
+			நிறுத்து;
 		  }
 	    }
 
-	    if (handle == 0) {
+	    எனில் (handle == 0) {
 		  printf("call error: I don't know how to"
 			 " pass %s to %s\n", argv[idx+1], argv[0]);
 		  errors += 1;
 	    }
 
 	    vpi_argv[idx] = handle;
-	    if (add_to_free_list)
+	    எனில் (add_to_free_list)
 		  vpi_free[idx] = handle;
-	    else
+	    இல்லையெனில்
 		  vpi_free[idx] = 0;
 
       }
@@ -170,273 +170,273 @@ static void cmd_call(unsigned argc, const char*argv[])
 	/* If there are no errors so far, then make up a call to the
 	   vpi task and execute that call. Free the call structure
 	   when we finish. */
-      if (errors == 0) {
+      எனில் (errors == 0) {
 	    vpiHandle call_handle = vpip_build_vpi_call(argv[0], 0, 0, 0,
-	                                                true, false,
+	                                                உண்மை, பொய்,
 	                                                vpi_argc, vpi_argv,
 							0, 0, 0,
 	                                                1, 0);
-	    if (call_handle == 0)
-		  goto out;
+	    எனில் (call_handle == 0)
+		  செல் out;
 
 	    vpip_execute_vpi_call(0, call_handle);
 	    vpi_free_object(call_handle);
       }
 
  out:
-      for (unsigned idx = 0 ;  idx < vpi_argc ;  idx += 1) {
-	    if (vpi_free[idx])
+      க்கு (unsigned idx = 0 ;  idx < vpi_argc ;  idx += 1) {
+	    எனில் (vpi_free[idx])
 		  vpi_free_object(vpi_free[idx]);
       }
 
-      free(vpi_argv);
-      free(vpi_free);
+      விடுவி(vpi_argv);
+      விடுவி(vpi_free);
 }
 
-static void cmd_cont(unsigned, const char*[])
+நிலையான வெறுமை cmd_cont(unsigned, மாறிலி எழுத்து*[])
 {
-      interact_flag = false;
+      interact_flag = பொய்;
 }
 
-static void cmd_step(unsigned, const char*[])
+நிலையான வெறுமை cmd_step(unsigned, மாறிலி எழுத்து*[])
 {
-      interact_flag = false;
+      interact_flag = பொய்;
       schedule_single_step(0);
 }
 
-static void cmd_finish(unsigned, const char*[])
+நிலையான வெறுமை cmd_finish(unsigned, மாறிலி எழுத்து*[])
 {
-      interact_flag = false;
+      interact_flag = பொய்;
       schedule_finish(0);
 }
 
-static void cmd_help(unsigned, const char*[]);
+நிலையான வெறுமை cmd_help(unsigned, மாறிலி எழுத்து*[]);
 
-static void cmd_list(unsigned, const char*[])
+நிலையான வெறுமை cmd_list(unsigned, மாறிலி எழுத்து*[])
 {
       __vpiHandle**table;
       unsigned ntable;
 
-      if (stop_current_scope == 0) {
-	    vpip_make_root_iterator(table, ntable);
+      எனில் (stop_current_scope == 0) {
+	    vpip_make_வேர்_iterator(table, ntable);
 
-      } else {
+      } இல்லையெனில் {
 	    table = &stop_current_scope->intern[0];
 	    ntable = stop_current_scope->intern.size();
       }
 
       printf("%u items in this scope:\n", ntable);
-      for (unsigned idx = 0 ;  idx < ntable ;  idx += 1) {
+      க்கு (unsigned idx = 0 ;  idx < ntable ;  idx += 1) {
 
-	    const __vpiScope*scope;
-	    struct __vpiSignal*sig;
+	    மாறிலி __vpiScope*scope;
+	    கட்டமைப்பு __vpiSignal*sig;
 
-	    switch (table[idx]->get_type_code()) {
-		case vpiPackage:
+	    தேர்வு (table[idx]->get_type_code()) {
+		நிலை vpiPackage:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
 		  printf("package : %s\n", scope->scope_name());
-		  break;
+		  நிறுத்து;
 
-		case vpiModule:
+		நிலை vpiModule:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
 		  printf("module  : %s\n", scope->scope_name());
-		  break;
+		  நிறுத்து;
 
-		case vpiGenScope:
+		நிலை vpiGenScope:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
 		  printf("generate: %s\n", scope->scope_name());
-		  break;
+		  நிறுத்து;
 
-		case vpiTask:
+		நிலை vpiTask:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
 		  printf("task    : %s\n", scope->scope_name());
-		  break;
+		  நிறுத்து;
 
-		case vpiFunction:
+		நிலை vpiFunction:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
 		  printf("function: %s\n", scope->scope_name());
-		  break;
+		  நிறுத்து;
 
-		case vpiNamedBegin:
+		நிலை vpiNamedBegin:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
 		  printf("block   : %s\n", scope->scope_name());
-		  break;
+		  நிறுத்து;
 
-		case vpiNamedFork:
+		நிலை vpiNamedFork:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
 		  printf("fork    : %s\n", scope->scope_name());
-		  break;
+		  நிறுத்து;
 
-		case vpiParameter:
+		நிலை vpiParameter:
 		  printf("param   : %s\n", vpi_get_str(vpiName, table[idx]));
-		  break;
+		  நிறுத்து;
 
-		case vpiReg:
+		நிலை vpiReg:
 		  sig = dynamic_cast<__vpiSignal*>(table[idx]);
-		  if ((sig->msb.get_value() == 0) && (sig->lsb.get_value() == 0))
+		  எனில் ((sig->msb.get_மதிப்பு() == 0) && (sig->lsb.get_மதிப்பு() == 0))
 			printf("reg     : %s%s\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "");
-		  else
+		  இல்லையெனில்
 			printf("reg     : %s%s[%d:%d]\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "",
-			       sig->msb.get_value(), sig->lsb.get_value());
-		  break;
+			       sig->msb.get_மதிப்பு(), sig->lsb.get_மதிப்பு());
+		  நிறுத்து;
 
-		case vpiNet:
+		நிலை vpiNet:
 		  sig = dynamic_cast<__vpiSignal*>(table[idx]);
-		  if ((sig->msb.get_value() == 0) && (sig->lsb.get_value() == 0))
+		  எனில் ((sig->msb.get_மதிப்பு() == 0) && (sig->lsb.get_மதிப்பு() == 0))
 			printf("net     : %s%s\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "");
-		  else
+		  இல்லையெனில்
 			printf("net     : %s%s[%d:%d]\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "",
-			       sig->msb.get_value(), sig->lsb.get_value());
-		  break;
+			       sig->msb.get_மதிப்பு(), sig->lsb.get_மதிப்பு());
+		  நிறுத்து;
 
-		case vpiPort:
+		நிலை vpiPort:
 		  printf("port    : %s -- %s\n",
 			 vpi_get_str(vpiName, table[idx]),
 			 direction_as_string(vpi_get(vpiDirection, table[idx])));
-		  break;
+		  நிறுத்து;
 
-		default:
+		இயல்பு:
 		  printf("%8s: <vpi handle>\n",
 			 vpi_type_as_string(table[idx]->get_type_code()));
-		  break;
+		  நிறுத்து;
 	    }
 
       }
 }
 
-static void cmd_load(unsigned argc, const char*argv[])
+நிலையான வெறுமை cmd_load(unsigned argc, மாறிலி எழுத்து*argv[])
 {
       unsigned idx;
 
-      for (idx = 1 ;  idx < argc ;  idx += 1) {
+      க்கு (idx = 1 ;  idx < argc ;  idx += 1) {
 	    printf("Loading module %s...\n", argv[idx]);
 	    vpip_load_module(argv[idx]);
       }
 }
 
-static void cmd_pop(unsigned, const char*[])
+நிலையான வெறுமை cmd_எடு(unsigned, மாறிலி எழுத்து*[])
 {
-      if (stop_current_scope != 0)
+      எனில் (stop_current_scope != 0)
 	    stop_current_scope = stop_current_scope->scope;
 }
 
-static void cmd_push(unsigned argc, const char* argv[])
+நிலையான வெறுமை cmd_தள்ளு(unsigned argc, மாறிலி எழுத்து* argv[])
 {
-      for (unsigned idx = 1 ;  idx < argc ;  idx += 1) {
+      க்கு (unsigned idx = 1 ;  idx < argc ;  idx += 1) {
 	    __vpiHandle**table;
 	    unsigned ntable;
 
-	    if (stop_current_scope) {
+	    எனில் (stop_current_scope) {
 		  table = &stop_current_scope->intern[0];
 		  ntable = stop_current_scope->intern.size();
-	    } else {
-		  vpip_make_root_iterator(table, ntable);
+	    } இல்லையெனில் {
+		  vpip_make_வேர்_iterator(table, ntable);
 	    }
 
 	    __vpiScope*child = 0;
-	    for (unsigned tmp = 0 ;  tmp < ntable ;  tmp += 1) {
+	    க்கு (unsigned tmp = 0 ;  tmp < ntable ;  tmp += 1) {
 		  // Try to convert this item to a scope. If this is not a
 		  // scope, then continue.
 		  __vpiScope*scope = dynamic_cast<__vpiScope*>(table[tmp]);
-		  if (scope == 0)
-			continue;
+		  எனில் (scope == 0)
+			தொடர்;
 
 		  // This is a scope, and the name matches, then
 		  // report that I found the child.
-		  if (strcmp(scope->scope_name(), argv[idx]) == 0) {
+		  எனில் (strcmp(scope->scope_name(), argv[idx]) == 0) {
 			child = scope;
-			break;
+			நிறுத்து;
 		  }
 	    }
 
-	    if (child == 0) {
+	    எனில் (child == 0) {
 		  printf("Scope %s not found.\n", argv[idx]);
-		  return;
+		  திரும்பு;
 	    }
 
 	    stop_current_scope = child;
       }
 }
 
-static void cmd_time(unsigned, const char*[])
+நிலையான வெறுமை cmd_time(unsigned, மாறிலி எழுத்து*[])
 {
       vvp_time64_t ticks = schedule_simtime();
       printf("%" TIME_FMT_U " ticks\n", ticks);
 }
 
-static void cmd_trace(unsigned argc, const char*argv[])
+நிலையான வெறுமை cmd_trace(unsigned argc, மாறிலி எழுத்து*argv[])
 {
-      assert(argc);
-      switch (argc) {
-	case 1:
-	    show_file_line = true;
-	    break;
-	default:
+      ப்ரதிஜ்ஞா(argc);
+      தேர்வு (argc) {
+	நிலை 1:
+	    show_file_வரி = உண்மை;
+	    நிறுத்து;
+	இயல்பு:
 	    printf("Only using the first argument to trace.\n");
 	    // fallthrough
-	case 2:
-	    if ((strcmp(argv[1], "on") == 0) || (strcmp(argv[1], "1") == 0)) {
-		  show_file_line = true;
-	    } else show_file_line = false;
-	    break;
+	நிலை 2:
+	    எனில் ((strcmp(argv[1], "on") == 0) || (strcmp(argv[1], "1") == 0)) {
+		  show_file_வரி = உண்மை;
+	    } இல்லையெனில் show_file_வரி = பொய்;
+	    நிறுத்து;
       }
 
 	/* You can't trace a file if the compiler didn't insert the
 	 * %file_line opcodes. */
-      if (!code_is_instrumented) {
+      எனில் (!code_is_instrumented) {
 	    printf("The vvp input must be instrumented before tracing is "
 	           "available.\n");
 	    printf("Recompile with the -pfileline=1 flag to instrument "
 	           "the input.\n");
-	    show_file_line = false;
-      } else {
+	    show_file_வரி = பொய்;
+      } இல்லையெனில் {
 	    printf("Turning statement tracing %s.\n",
-	           show_file_line ? "on" : "off");
+	           show_file_வரி ? "on" : "off");
       }
 }
 
-static void cmd_where(unsigned, const char*[])
+நிலையான வெறுமை cmd_where(unsigned, மாறிலி எழுத்து*[])
 {
-      const __vpiScope*cur = stop_current_scope;
+      மாறிலி __vpiScope*cur = stop_current_scope;
 
-      while (cur) {
-	    switch (cur->get_type_code()) {
-		case vpiModule:
+      போது (cur) {
+	    தேர்வு (cur->get_type_code()) {
+		நிலை vpiModule:
 		  printf("module %s\n", cur->scope_name());
-		  break;
-		case vpiGenScope:
+		  நிறுத்து;
+		நிலை vpiGenScope:
 		  printf("generate %s\n", cur->scope_name());
-		  break;
-		default:
+		  நிறுத்து;
+		இயல்பு:
 		  printf("scope (%d) %s;\n", cur->get_type_code(), cur->scope_name());
-		  break;
+		  நிறுத்து;
 	    }
 
 	    cur = cur->scope;
       }
 }
 
-static void cmd_unknown(unsigned, const char*argv[])
+நிலையான வெறுமை cmd_unknown(unsigned, மாறிலி எழுத்து*argv[])
 {
       printf("Unknown command: %s\n", argv[0]);
       printf("Try the help command to get a summary\n"
 	     "of available commands.\n");
 }
 
-static struct {
-      const char*name;
-      void (*proc)(unsigned argc, const char*argv[]);
-      const char*summary;
+நிலையான கட்டமைப்பு {
+      மாறிலி எழுத்து*name;
+      வெறுமை (*proc)(unsigned argc, மாறிலி எழுத்து*argv[]);
+      மாறிலி எழுத்து*summary;
 } cmd_table[] = {
-      { "cd",     &cmd_push,
+      { "cd",     &cmd_தள்ளு,
         "Synonym for push."},
       { "cont",   &cmd_cont,
         "Resume (continue) the simulation"},
@@ -452,9 +452,9 @@ static struct {
         "Load a VPI module, a la vvp -m."},
       { "ls",     &cmd_list,
         "Shorthand for \"list\"."},
-      { "pop",    &cmd_pop,
+      { "pop",    &cmd_எடு,
         "Pop one scope from the scope stack."},
-      { "push",   &cmd_push,
+      { "push",   &cmd_தள்ளு,
         "Descend into the named scope."},
       { "step",   &cmd_step,
         "Single-step the scheduler for 1 event."},
@@ -467,11 +467,11 @@ static struct {
       { 0,        &cmd_unknown, 0}
 };
 
-static void cmd_help(unsigned, const char*[])
+நிலையான வெறுமை cmd_help(unsigned, மாறிலி எழுத்து*[])
 {
       printf("Commands can be from the following table of base commands,\n"
 	     "or can be invocations of system tasks/functions.\n\n");
-      for (unsigned idx = 0 ;  cmd_table[idx].name != 0 ;  idx += 1) {
+      க்கு (unsigned idx = 0 ;  cmd_table[idx].name != 0 ;  idx += 1) {
 	    printf("%-8s - %s\n", cmd_table[idx].name, cmd_table[idx].summary);
       }
 
@@ -482,52 +482,52 @@ static void cmd_help(unsigned, const char*[])
 }
 
 
-static void invoke_command(char*txt)
+நிலையான வெறுமை invoke_command(எழுத்து*txt)
 {
       unsigned argc = 0;
-      const char**argv = const_cast<const char**>(new char*[strlen(txt)/2]);
+      மாறிலி எழுத்து**argv = const_cast<மாறிலி எழுத்து**>(புதிய எழுத்து*[strlen(txt)/2]);
 
 	/* Chop the line into words. */
-      for (char*cp = txt+strspn(txt, " ")
+      க்கு (எழுத்து*cp = txt+strspn(txt, " ")
 		 ; *cp; cp += strspn(cp, " ")) {
 	    argv[argc] = cp;
 
-	    if (cp[0] == '"') {
-		  char*tmp = strchr(cp+1, '"');
-		  if (tmp == 0) {
+	    எனில் (cp[0] == '"') {
+		  எழுத்து*tmp = strchr(cp+1, '"');
+		  எனில் (tmp == 0) {
 			printf("Missing close-quote: %s\n", cp);
 			delete[]argv;
-			return;
+			திரும்பு;
 		  }
 
 		  cp = tmp + 1;
 
-	    } else {
+	    } இல்லையெனில் {
 		  cp += strcspn(cp, " ");
 	    }
 
-	    if (*cp) *cp++ = 0;
+	    எனில் (*cp) *cp++ = 0;
 
 	    argc += 1;
       }
 
 
 	/* Look up the command, using argv[0] as the key. */
-      if (argc > 0) {
+      எனில் (argc > 0) {
 
-	    if (argv[0][0] == '$') {
-		  if (strcmp(argv[0], "$stop") == 0) {
+	    எனில் (argv[0][0] == '$') {
+		  எனில் (strcmp(argv[0], "$stop") == 0) {
 			printf("The simulator is already stopped!\n");
-		  } else if (strcmp(argv[0], "$finish") == 0){
+		  } இல்லையெனில் எனில் (strcmp(argv[0], "$finish") == 0){
 			cmd_finish(argc, argv);
-		  } else {
+		  } இல்லையெனில் {
 			cmd_call(argc, argv);
 		  }
-	    } else {
+	    } இல்லையெனில் {
 		  unsigned idx;
-		  for (idx = 0 ;  cmd_table[idx].name ;  idx += 1)
-			if (strcmp(cmd_table[idx].name, argv[0]) == 0)
-			      break;
+		  க்கு (idx = 0 ;  cmd_table[idx].name ;  idx += 1)
+			எனில் (strcmp(cmd_table[idx].name, argv[0]) == 0)
+			      நிறுத்து;
 
 		  cmd_table[idx].proc (argc, argv);
 	    }
@@ -537,21 +537,21 @@ static void invoke_command(char*txt)
       delete[]argv;
 }
 
-static void invoke_command_const(const char*txt)
+நிலையான வெறுமை invoke_command_const(மாறிலி எழுத்து*txt)
 {
-      char *vtxt = strdup(txt);
+      எழுத்து *vtxt = strdup(txt);
       invoke_command(vtxt);
-      free(vtxt);
+      விடுவி(vtxt);
 }
 
-void stop_handler(int rc)
+வெறுமை stop_handler(முழு rc)
 {
         /* The user may be running in a non-interactive environment, so
          * they want $stop and <Control-C> to be the same as $finish. */
-      if (stop_is_finish) {
-	    vpip_set_return_value(stop_is_finish_exit_code);
+      எனில் (stop_is_finish) {
+	    vpip_set_return_மதிப்பு(stop_is_finish_exit_code);
 	    schedule_finish(0);
-	    return;
+	    திரும்பு;
       }
 
       vpi_mcd_printf(1,"** VVP Stop(%d) **\n", rc);
@@ -561,26 +561,26 @@ void stop_handler(int rc)
       vpi_mcd_printf(1,"** Current simulation time is %" TIME_FMT_U " ticks.\n",
 		     schedule_simtime());
 
-      interact_flag = true;
-      while (interact_flag) {
-	    char*input = readline("> ");
-	    if (input == 0)
-		  break;
+      interact_flag = உண்மை;
+      போது (interact_flag) {
+	    எழுத்து*உள்ளீடு = readline("> ");
+	    எனில் (உள்ளீடு == 0)
+		  நிறுத்து;
 
 
 	      /* Advance to the first input character. */
-	    char*first = input;
-	    while (*first && isspace(*first))
+	    எழுத்து*first = உள்ளீடு;
+	    போது (*first && isspace(*first))
 		  first += 1;
 
-	    if (first[0] != 0) {
+	    எனில் (first[0] != 0) {
 #ifdef USE_HISTORY
 		  add_history(first);
 #endif
 		  invoke_command(first);
 	    }
 
-	    free(input);
+	    விடுவி(உள்ளீடு);
       }
 
       vpi_mcd_printf(1,"** Continue **\n");

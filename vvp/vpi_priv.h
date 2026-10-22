@@ -33,14 +33,14 @@
  * Added to use some "vvp_fun_modpath_src"
  * and "vvp_fun_modpath" classes definitions
  */
-#include  "delay.h"
+#அந்தர்பாவ  "delay.h"
 
 
 class class_type;
 class vvp_darray;
 class vvp_fun_arrayport;
 
-typedef struct __vpiArray* vvp_array_t;
+வகைவரை கட்டமைப்பு __vpiArray* vvp_array_t;
 
 /*
  * This header file contains the internal definitions that the vvp
@@ -48,20 +48,20 @@ typedef struct __vpiArray* vvp_array_t;
  * header file elsewhere.
  */
 
-#if defined(__MINGW32__) || defined (__CYGWIN__)
-extern vpip_routines_s vpi_routines;
+#எனில் defined(__MINGW32__) || defined (__CYGWIN__)
+வெளி vpip_routines_s vpi_routines;
 #endif
 
 /*
  * Routines/definitions used to build the file/line number tracing object.
  */
-#define _vpiFileLine    0x1000003
+#define vpi_File_வரி    0x1000003
 #define _vpiDescription 0x1000004
 
-extern bool show_file_line;
-extern bool code_is_instrumented;
+வெளி bool show_file_வரி;
+வெளி bool code_is_instrumented;
 
-extern vpiHandle vpip_build_file_line(const char*description,
+வெளி vpiHandle vpip_build_file_வரி(மாறிலி எழுத்து*description,
                                       long file_idx, long lineno);
 
 /*
@@ -69,17 +69,17 @@ extern vpiHandle vpip_build_file_line(const char*description,
  * is unknown, then return the number stringified. Note that the return
  * value may return to a static buffer.
  */
-extern const char* vpi_type_as_string(PLI_INT32 code);
+வெளி மாறிலி எழுத்து* vpi_type_as_string(PLI_INT32 code);
 
 /*
  * Return the port direction as a string.
  */
-extern const char* direction_as_string(int dir);
+வெளி மாறிலி எழுத்து* direction_as_string(முழு dir);
 
 /*
  * Private VPI properties that are only used in the cleanup code.
  */
-#if defined(CHECK_WITH_VALGRIND) && !defined(BR916_STOPGAP_FIX)
+#எனில் defined(CHECK_WITH_VALGRIND) && !defined(BR916_STOPGAP_FIX)
 #define _vpiFromThr 0x1000001
 #   define _vpiNoThr   0
 #   define _vpiString  1
@@ -96,7 +96,7 @@ extern const char* direction_as_string(int dir);
  * to generate error messages when vpi functions are called
  * incorrectly.
  */
-enum vpi_mode_t {
+எண்ணிக்கை vpi_mode_t {
       VPI_MODE_NONE =0,
 	/* The compiler is calling a register function. */
       VPI_MODE_REGISTER,
@@ -109,7 +109,7 @@ enum vpi_mode_t {
 	/* We are in a ROSync callback. */
       VPI_MODE_ROSYNC
 };
-extern vpi_mode_t vpi_mode_flag;
+வெளி vpi_mode_t vpi_mode_flag;
 
 /*
  * This structure is the very base of a vpiHandle. Every handle
@@ -117,30 +117,30 @@ extern vpi_mode_t vpi_mode_flag;
  * internally pass the derived types as pointers to one of these.
  */
 class __vpiHandle {
-    public:
-      inline __vpiHandle() { }
+    பொது:
+      உள்வரி __vpiHandle() { }
 	// The destructor is virtual so that dynamic types will work.
-      virtual ~__vpiHandle();
+      மெய்நிகர் ~__vpiHandle();
 
-      virtual int get_type_code(void) const =0;
-      virtual int vpi_get(int code);
-      virtual int64_t vpi_get64(int code);
-      virtual char* vpi_get_str(int code);
+      மெய்நிகர் முழு get_type_code(வெறுமை) மாறிலி =0;
+      மெய்நிகர் முழு vpi_get(முழு code);
+      மெய்நிகர் int64_t vpi_get64(முழு code);
+      மெய்நிகர் எழுத்து* vpi_get_str(முழு code);
 
-      virtual void vpi_get_value(p_vpi_value val);
-      virtual vpiHandle vpi_put_value(p_vpi_value val, int flags);
-      virtual vpiHandle vpi_handle(int code);
-      virtual vpiHandle vpi_iterate(int code);
-      virtual vpiHandle vpi_index(int idx);
-      virtual void vpi_get_delays(p_vpi_delay del);
-      virtual void vpi_put_delays(p_vpi_delay del);
+      மெய்நிகர் வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val);
+      மெய்நிகர் vpiHandle vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags);
+      மெய்நிகர் vpiHandle vpi_handle(முழு code);
+      மெய்நிகர் vpiHandle vpi_iterate(முழு code);
+      மெய்நிகர் vpiHandle vpi_index(முழு idx);
+      மெய்நிகர் வெறுமை vpi_get_delays(p_vpi_delay del);
+      மெய்நிகர் வெறுமை vpi_put_delays(p_vpi_delay del);
 
 	// Objects may have destroyer functions of their own. If so,
 	// then this virtual method will return a POINTER to that
 	// function. The pointer is used to "delete" the object, which
 	// is why the function itself cannot be a method.
-      typedef int (*free_object_fun_t)(vpiHandle);
-      virtual free_object_fun_t free_object_fun(void);
+      வகைவரை முழு (*free_object_fun_t)(vpiHandle);
+      மெய்நிகர் free_object_fun_t free_object_fun(வெறுமை);
 };
 
 
@@ -155,10 +155,10 @@ class __vpiHandle {
  * The free_args_flag member is true if when this iterator object is
  * released it must also free the args array.
  */
-struct __vpiIterator : public __vpiHandle {
+கட்டமைப்பு __vpiIterator : பொது __vpiHandle {
       __vpiIterator();
-      int get_type_code(void) const override;
-      free_object_fun_t free_object_fun(void) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      free_object_fun_t free_object_fun(வெறுமை) override;
 
       vpiHandle *args;
       unsigned  nargs;
@@ -166,26 +166,26 @@ struct __vpiIterator : public __vpiHandle {
       bool free_args_flag;
 };
 
-extern vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
+வெளி vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
 				    bool free_args_flag);
 
-class __vpiDecConst : public __vpiHandle {
-    public:
-      explicit __vpiDecConst(int val =0);
-      __vpiDecConst(const __vpiDecConst&that);
-# if __cplusplus >= 201103L
-      __vpiDecConst& operator = (const __vpiDecConst&that) = default;
+class __vpiDecConst : பொது __vpiHandle {
+    பொது:
+      explicit __vpiDecConst(முழு val =0);
+      __vpiDecConst(மாறிலி __vpiDecConst&that);
+# எனில் __cplusplus >= 201103L
+      __vpiDecConst& operator = (மாறிலி __vpiDecConst&that) = இயல்பு;
 # endif
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      முழு vpi_get(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
 
-    public:
-      inline int get_value() const { return value; }
-      inline void set_value(int val) { value = val; }
+    பொது:
+      உள்வரி முழு get_மதிப்பு() மாறிலி { திரும்பு மதிப்பு; }
+      உள்வரி வெறுமை set_மதிப்பு(முழு val) { மதிப்பு = val; }
 
-    private:
-      int value;
+    தனிப்பட்ட:
+      முழு மதிப்பு;
 };
 
 /*
@@ -193,59 +193,59 @@ class __vpiDecConst : public __vpiHandle {
  * are defined and used in vpi_callback.cc. The __vpiCallback are
  * always used in association with vvp_vpi_callback objects.
  */
-struct __vpiCallback : public __vpiHandle {
+கட்டமைப்பு __vpiCallback : பொது __vpiHandle {
       __vpiCallback();
       ~__vpiCallback() override;
-      int get_type_code(void) const override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
 
 	// Used for listing callbacks.
-      struct __vpiCallback*next;
+      கட்டமைப்பு __vpiCallback*next;
 
 	// user supplied callback data
-      struct t_cb_data cb_data;
+      கட்டமைப்பு t_cb_data cb_data;
 };
 
-class value_callback : public __vpiCallback {
-    public:
-      explicit value_callback(p_cb_data data);
+class மதிப்பு_callback : பொது __vpiCallback {
+    பொது:
+      explicit மதிப்பு_callback(p_cb_data data);
 	// Return true if the callback really is ready to be called
-      virtual bool test_value_callback_ready(void);
+      மெய்நிகர் bool test_மதிப்பு_callback_ready(வெறுமை);
 
-    public:
+    பொது:
 	// user supplied callback data
-      struct t_vpi_time cb_time;
-      struct t_vpi_value cb_value;
+      கட்டமைப்பு t_vpi_time cb_time;
+      கட்டமைப்பு t_vpi_மதிப்பு cb_மதிப்பு;
 };
 
-extern void callback_execute(struct __vpiCallback*cur);
+வெளி வெறுமை callback_execute(கட்டமைப்பு __vpiCallback*cur);
 
-struct __vpiSystemTime : public __vpiHandle {
+கட்டமைப்பு __vpiSystemTime : பொது __vpiHandle {
       __vpiSystemTime();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_handle(int code) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      முழு vpi_get(முழு code) override;
+      எழுத்து*vpi_get_str(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
+      vpiHandle vpi_handle(முழு code) override;
 
       __vpiScope*scope;
 };
 
-struct __vpiScopedTime : public __vpiSystemTime {
+கட்டமைப்பு __vpiScopedTime : பொது __vpiSystemTime {
       __vpiScopedTime();
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      எழுத்து*vpi_get_str(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
 };
-struct __vpiScopedSTime : public __vpiSystemTime {
+கட்டமைப்பு __vpiScopedSTime : பொது __vpiSystemTime {
       __vpiScopedSTime();
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      முழு vpi_get(முழு code) override;
+      எழுத்து*vpi_get_str(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
 };
-struct __vpiScopedRealtime : public __vpiSystemTime {
+கட்டமைப்பு __vpiScopedRealtime : பொது __vpiSystemTime {
       __vpiScopedRealtime();
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      முழு vpi_get(முழு code) override;
+      எழுத்து*vpi_get_str(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
 };
 
 /*
@@ -253,24 +253,24 @@ struct __vpiScopedRealtime : public __vpiSystemTime {
  * objects hold the items and properties that are knowingly bound to a
  * scope.
  */
-class __vpiScope : public __vpiHandle {
+class __vpiScope : பொது __vpiHandle {
 
-    public:
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+    பொது:
+      முழு vpi_get(முழு code) override;
+      எழுத்து* vpi_get_str(முழு code) override;
+      vpiHandle vpi_handle(முழு code) override;
+      vpiHandle vpi_iterate(முழு code) override;
 
-    public:
+    பொது:
 	// Return the BASE name of the scope. This does not include
 	// any of the parent hierarchy.
-      inline const char*scope_name() const { return name_; }
+      உள்வரி மாறிலி எழுத்து*scope_name() மாறிலி { திரும்பு name_; }
 
-      inline const char*scope_def_name() const { return tname_; }
+      உள்வரி மாறிலி எழுத்து*scope_def_name() மாறிலி { திரும்பு tname_; }
 	// TRUE if this is an automatic func/task/block
-      inline bool is_automatic() const { return is_automatic_; }
+      உள்வரி bool is_automatic() மாறிலி { திரும்பு is_automatic_; }
 
-    public:
+    பொது:
       __vpiScope *scope;
       unsigned file_idx;
       unsigned lineno;
@@ -279,14 +279,14 @@ class __vpiScope : public __vpiHandle {
       bool is_cell;
 	/* The scope has a system time of its own. */
       __vpiScopedTime scoped_time;
-      struct __vpiScopedSTime scoped_stime;
-      struct __vpiScopedRealtime scoped_realtime;
+      கட்டமைப்பு __vpiScopedSTime scoped_stime;
+      கட்டமைப்பு __vpiScopedRealtime scoped_realtime;
 	/* Keep an array of internal scope items. */
       std::vector<class __vpiHandle*> intern;
 	/* Set of types */
       std::map<std::string,class_type*> classes;
         /* Keep an array of items to be automatically allocated */
-      struct automatic_hooks_s**item;
+      கட்டமைப்பு automatic_hooks_s**item;
       unsigned nitem;
         /* Keep a list of live contexts. */
       vvp_context_t live_contexts;
@@ -294,56 +294,56 @@ class __vpiScope : public __vpiHandle {
       vvp_context_t free_contexts;
 	/* Keep a list of threads in the scope. */
       std::set<vthread_t> threads;
-      signed int time_units :8;
-      signed int time_precision :8;
+      signed முழு time_units :8;
+      signed முழு time_precision :8;
 
-    protected:
-      __vpiScope(const char*nam, const char*tnam, bool is_auto_flag =false);
+    பாதுகாக்கப்பட்ட:
+      __vpiScope(மாறிலி எழுத்து*nam, மாறிலி எழுத்து*tnam, bool is_auto_flag =false);
 
-    private:
+    தனிப்பட்ட:
 	/* The scope has a name. */
-      const char*name_;
-      const char*tname_;
+      மாறிலி எழுத்து*name_;
+      மாறிலி எழுத்து*tname_;
 	/* the scope may be "automatic" */
       bool is_automatic_;
 };
 
-class vpiScopeFunction  : public __vpiScope {
-    public:
-      inline vpiScopeFunction(const char*nam, const char*tnam,
-			      bool auto_flag, int func_type, unsigned func_wid, vvp_bit4_t func_init_val)
+class vpiScopeFunction  : பொது __vpiScope {
+    பொது:
+      உள்வரி vpiScopeFunction(மாறிலி எழுத்து*nam, மாறிலி எழுத்து*tnam,
+			      bool auto_flag, முழு func_type, unsigned func_wid, vvp_bit4_t func_init_val)
       : __vpiScope(nam,tnam, auto_flag), func_type_(func_type), func_wid_(func_wid), func_init_val_(func_init_val)
       { }
 
-      int get_type_code(void) const override { return vpiFunction; }
-      int vpi_get(int code) override
+      முழு get_type_code(வெறுமை) மாறிலி override { திரும்பு vpiFunction; }
+      முழு vpi_get(முழு code) override
       {
-	    switch (code) {
-		case vpiFuncType:
-		  return func_type_;
-		default:
-		  return __vpiScope::vpi_get(code);
+	    தேர்வு (code) {
+		நிலை vpiFuncType:
+		  திரும்பு func_type_;
+		இயல்பு:
+		  திரும்பு __vpiScope::vpi_get(code);
 	    }
       }
 
-    public:
-      inline unsigned get_func_width(void) const { return func_wid_; }
-      inline vvp_bit4_t get_func_init_val(void) const { return func_init_val_; }
+    பொது:
+      உள்வரி unsigned get_func_width(வெறுமை) மாறிலி { திரும்பு func_wid_; }
+      உள்வரி vvp_bit4_t get_func_init_val(வெறுமை) மாறிலி { திரும்பு func_init_val_; }
 
-    private:
-      int func_type_;
+    தனிப்பட்ட:
+      முழு func_type_;
       unsigned func_wid_;
       vvp_bit4_t func_init_val_;
 };
 
-extern __vpiScope* vpip_peek_current_scope(void);
-extern void vpip_attach_to_scope(__vpiScope*scope, vpiHandle obj);
-extern void vpip_attach_to_current_scope(vpiHandle obj);
-extern __vpiScope* vpip_peek_context_scope(void);
-extern unsigned vpip_add_item_to_context(automatic_hooks_s*item,
+வெளி __vpiScope* vpip_peek_current_scope(வெறுமை);
+வெளி வெறுமை vpip_attach_to_scope(__vpiScope*scope, vpiHandle obj);
+வெளி வெறுமை vpip_attach_to_current_scope(vpiHandle obj);
+வெளி __vpiScope* vpip_peek_context_scope(வெறுமை);
+வெளி unsigned vpip_add_item_to_context(automatic_hooks_s*item,
                                          __vpiScope*scope);
-extern vpiHandle vpip_make_root_iterator(int type_code);
-extern void vpip_make_root_iterator(class __vpiHandle**&table,
+வெளி vpiHandle vpip_make_வேர்_iterator(முழு type_code);
+வெளி வெறுமை vpip_make_வேர்_iterator(class __vpiHandle**&table,
 				    unsigned&ntable);
 
 /*
@@ -351,32 +351,32 @@ extern void vpip_make_root_iterator(class __vpiHandle**&table,
  * distinguished by the vpiType code. They also have a parent scope,
  * a declared name and declaration indices.
  */
-struct __vpiSignal : public __vpiHandle {
-      int vpi_get(int code) override;
-      int64_t vpi_get64(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
+கட்டமைப்பு __vpiSignal : பொது __vpiHandle {
+      முழு vpi_get(முழு code) override;
+      int64_t vpi_get64(முழு code) override;
+      எழுத்து* vpi_get_str(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
+      vpiHandle vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags) override;
+      vpiHandle vpi_handle(முழு code) override;
+      vpiHandle vpi_iterate(முழு code) override;
+      vpiHandle vpi_index(முழு idx) override;
 
-    public:
-      unsigned width() const;
-      vpiHandle get_index(int index);
-      void get_bit_value(const struct __vpiBit*bit, p_vpi_value vp);
-      vpiHandle put_bit_value(struct __vpiBit*bit, p_vpi_value vp, int flags);
-      void make_bits();
+    பொது:
+      unsigned width() மாறிலி;
+      vpiHandle get_index(முழு index);
+      வெறுமை get_bit_மதிப்பு(மாறிலி கட்டமைப்பு __vpiBit*bit, p_vpi_மதிப்பு vp);
+      vpiHandle put_bit_மதிப்பு(கட்டமைப்பு __vpiBit*bit, p_vpi_மதிப்பு vp, முழு flags);
+      வெறுமை make_bits();
 
-      struct __vpiBit*bits;
+      கட்டமைப்பு __vpiBit*bits;
 
-    public:
-      union { // The scope or parent array that contains me.
+    பொது:
+      ஒன்றிப்பு { // The scope or parent array that contains me.
 	    vpiHandle parent;
 	    __vpiScope* scope;
       } within;
-      union { // The name of this reg/net, or the index for array words.
-            const char*name;
+      ஒன்றிப்பு { // The name of this reg/net, or the index for array words.
+            மாறிலி எழுத்து*name;
             vpiHandle index;
       } id;
 	/* The indices that define the width and access offset. */
@@ -385,103 +385,103 @@ struct __vpiSignal : public __vpiHandle {
       unsigned signed_flag  : 1;
       unsigned is_netarray  : 1; // This is word of a net array
 	/* The represented value is here. */
-      vvp_net_t*node;
+      vvp_net_t*முனை;
 
-    public:
-      static void*operator new(std::size_t size);
-      static void operator delete(void*); // not implemented
-    protected:
-      inline __vpiSignal() : bits(NULL) { }
-    private: // Not implemented
-      static void*operator new[] (std::size_t size);
-      static void operator delete[](void*);
+    பொது:
+      நிலையான வெறுமை*operator new(std::size_t size);
+      நிலையான வெறுமை operator delete(வெறுமை*); // not implemented
+    பாதுகாக்கப்பட்ட:
+      உள்வரி __vpiSignal() : bits(வெற்று) { }
+    தனிப்பட்ட: // Not implemented
+      நிலையான வெறுமை*operator new[] (std::size_t size);
+      நிலையான வெறுமை operator delete[](வெறுமை*);
 };
-extern unsigned vpip_size(const __vpiSignal *sig);
-extern __vpiScope* vpip_scope(__vpiSignal*sig);
+வெளி unsigned vpip_size(மாறிலி __vpiSignal *sig);
+வெளி __vpiScope* vpip_scope(__vpiSignal*sig);
 
-extern vpiHandle vpip_make_int2(const char*name, int msb, int lsb,
+வெளி vpiHandle vpip_make_int2(மாறிலி எழுத்து*name, முழு msb, முழு lsb,
 			       bool signed_flag, vvp_net_t*vec);
-extern vpiHandle vpip_make_int4(const char*name, int msb, int lsb,
+வெளி vpiHandle vpip_make_int4(மாறிலி எழுத்து*name, முழு msb, முழு lsb,
 			       vvp_net_t*vec);
-extern vpiHandle vpip_make_var4(const char*name, int msb, int lsb,
+வெளி vpiHandle vpip_make_var4(மாறிலி எழுத்து*name, முழு msb, முழு lsb,
 			       bool signed_flag, vvp_net_t*net);
-extern vpiHandle vpip_make_net4(__vpiScope*scope,
-				const char*name, int msb, int lsb,
-				bool signed_flag, vvp_net_t*node);
+வெளி vpiHandle vpip_make_net4(__vpiScope*scope,
+				மாறிலி எழுத்து*name, முழு msb, முழு lsb,
+				bool signed_flag, vvp_net_t*முனை);
 
 /*
  * This is used to represent a bit in a net/reg.
  */
-struct __vpiBit {
-      struct as_bit_t : public __vpiHandle {
-	    int get_type_code(void) const;
-	    int vpi_get(int code);
-	    char* vpi_get_str(int code);
-	    void vpi_get_value(p_vpi_value val);
-	    vpiHandle vpi_put_value(p_vpi_value val, int flags);
-	    vpiHandle vpi_handle(int code);
+கட்டமைப்பு __vpiBit {
+      கட்டமைப்பு as_bit_t : பொது __vpiHandle {
+	    முழு get_type_code(வெறுமை) மாறிலி;
+	    முழு vpi_get(முழு code);
+	    எழுத்து* vpi_get_str(முழு code);
+	    வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val);
+	    vpiHandle vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags);
+	    vpiHandle vpi_handle(முழு code);
       } as_bit;
 
       vpiHandle index;
 
-      union {
-	    struct __vpiSignal*parent;
-	    struct __vpiBit*bit0;
+      ஒன்றிப்பு {
+	    கட்டமைப்பு __vpiSignal*parent;
+	    கட்டமைப்பு __vpiBit*bit0;
       };
 
-      inline unsigned get_norm_index() const { return this - bit0; }
-      inline struct __vpiSignal*get_parent() const {return (bit0 - 1)->parent; }
-      int get_index(void) const;
+      உள்வரி unsigned get_norm_index() மாறிலி { திரும்பு this - bit0; }
+      உள்வரி கட்டமைப்பு __vpiSignal*get_parent() மாறிலி {திரும்பு (bit0 - 1)->parent; }
+      முழு get_index(வெறுமை) மாறிலி;
 };
 
 class vpiPortBitInfo;
 
-class vpiPortInfo  : public __vpiHandle {
-    public:
+class vpiPortInfo  : பொது __vpiHandle {
+    பொது:
       vpiPortInfo( __vpiScope *parent,
                     unsigned index,
-                    int vpi_direction,
+                    முழு vpi_direction,
                     unsigned width,
-                    const char *name,
-                    char* buffer );
+                    மாறிலி எழுத்து *name,
+                    எழுத்து* buffer );
       ~vpiPortInfo() override;
 
-      int get_type_code(void) const override { return vpiPort; }
-      int get_direction(void) { return direction_; }
-      unsigned get_index(void) { return index_; }
-      int get_width(void) { return width_; }
-      void add_port_bit(vpiPortBitInfo* port_bit) { port_bits_.push_back(port_bit); }
+      முழு get_type_code(வெறுமை) மாறிலி override { திரும்பு vpiPort; }
+      முழு get_direction(வெறுமை) { திரும்பு direction_; }
+      unsigned get_index(வெறுமை) { திரும்பு index_; }
+      முழு get_width(வெறுமை) { திரும்பு width_; }
+      வெறுமை add_port_bit(vpiPortBitInfo* port_bit) { port_bits_.தள்ளு_back(port_bit); }
 
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      vvp_net_t* get_port(void) const { return ref_; }
-      vpiHandle vpi_iterate(int code) override;
+      முழு vpi_get(முழு code) override;
+      எழுத்து* vpi_get_str(முழு code) override;
+      vpiHandle vpi_handle(முழு code) override;
+      vvp_net_t* get_port(வெறுமை) மாறிலி { திரும்பு ref_; }
+      vpiHandle vpi_iterate(முழு code) override;
 
       std::vector<vpiPortBitInfo*> port_bits_;
 
-    private:
+    தனிப்பட்ட:
       __vpiScope *parent_;
       unsigned  index_;
-      int       direction_;
+      முழு       direction_;
       unsigned  width_;
-      const char *name_;
+      மாறிலி எழுத்து *name_;
       vvp_net_t *ref_;
 };
 
-class vpiPortBitInfo  : public __vpiHandle {
-    public:
+class vpiPortBitInfo  : பொது __vpiHandle {
+    பொது:
       vpiPortBitInfo(vpiPortInfo *parent,
                      unsigned bit);
       ~vpiPortBitInfo() override;
 
-      int get_type_code(void) const override { return vpiPortBit; }
-      unsigned get_bit(void) const { return bit_; }
+      முழு get_type_code(வெறுமை) மாறிலி override { திரும்பு vpiPortBit; }
+      unsigned get_bit(வெறுமை) மாறிலி { திரும்பு bit_; }
 
-      int vpi_get(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      முழு vpi_get(முழு code) override;
+      vpiHandle vpi_handle(முழு code) override;
 
-    private:
+    தனிப்பட்ட:
       vpiPortInfo *parent_;
       unsigned bit_;
 };
@@ -490,54 +490,54 @@ class vpiPortBitInfo  : public __vpiHandle {
  * This is used by system calls to represent a bit/part select of
  * a simple variable or constant array word.
  */
-struct __vpiPV : public __vpiHandle {
+கட்டமைப்பு __vpiPV : பொது __vpiHandle {
       __vpiPV();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      முழு vpi_get(முழு code) override;
+      எழுத்து* vpi_get_str(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
+      vpiHandle vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags) override;
+      vpiHandle vpi_handle(முழு code) override;
 
       vpiHandle parent;
       vvp_net_t*net;
       vpiHandle sbase;
-      int tbase;
+      முழு tbase;
       unsigned width;
 };
-extern vpiHandle vpip_make_PV(char*name, int base, int width);
-extern vpiHandle vpip_make_PV(char*name, char*symbol, int width);
-extern vpiHandle vpip_make_PV(char*name, vpiHandle handle, int width);
+வெளி vpiHandle vpip_make_PV(எழுத்து*name, முழு base, முழு width);
+வெளி vpiHandle vpip_make_PV(எழுத்து*name, எழுத்து*குறியீடு, முழு width);
+வெளி vpiHandle vpip_make_PV(எழுத்து*name, vpiHandle handle, முழு width);
 
-struct __vpiModPathTerm : public __vpiHandle {
+கட்டமைப்பு __vpiModPathTerm : பொது __vpiHandle {
       __vpiModPathTerm();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      முழு vpi_get(முழு code) override;
+      vpiHandle vpi_handle(முழு code) override;
 
-      vpiHandle expr;
+      vpiHandle கோவை;
 	/* The value returned by vpi_get(vpiEdge, ...); */
-      int edge;
+      முழு edge;
 };
 
-struct __vpiModPathSrc : public __vpiHandle {
+கட்டமைப்பு __vpiModPathSrc : பொது __vpiHandle {
       __vpiModPathSrc();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
-      void vpi_get_delays(p_vpi_delay del) override;
-      void vpi_put_delays(p_vpi_delay del) override;
-      free_object_fun_t free_object_fun(void) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      முழு vpi_get(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
+      vpiHandle vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags) override;
+      vpiHandle vpi_handle(முழு code) override;
+      vpiHandle vpi_iterate(முழு code) override;
+      vpiHandle vpi_index(முழு idx) override;
+      வெறுமை vpi_get_delays(p_vpi_delay del) override;
+      வெறுமை vpi_put_delays(p_vpi_delay del) override;
+      free_object_fun_t free_object_fun(வெறுமை) override;
 
-      struct __vpiModPath *dest;
-      int   type;
+      கட்டமைப்பு __vpiModPath *dest;
+      முழு   type;
 
 	/* This is the input expression for this modpath. */
-      struct __vpiModPathTerm path_term_in;
+      கட்டமைப்பு __vpiModPathTerm path_term_in;
 
 	/* This is the input net for the modpath. signals on this net
 	   are used to determine the modpath. They are *not* propagated
@@ -554,13 +554,13 @@ struct __vpiModPathSrc : public __vpiHandle {
  *
  */
 
-struct __vpiModPath {
+கட்டமைப்பு __vpiModPath {
       __vpiScope   *scope ;
 
       class vvp_fun_modpath*modpath;
 
-      struct __vpiModPathTerm path_term_out;
-      vvp_net_t *input_net  ;
+      கட்டமைப்பு __vpiModPathTerm path_term_out;
+      vvp_net_t *உள்ளீடு_net  ;
 };
 
 
@@ -569,10 +569,10 @@ struct __vpiModPath {
  * for vpiModPath && vpiModPathIn objects
  */
 
-extern struct __vpiModPathSrc* vpip_make_modpath_src(struct __vpiModPath*path,
+வெளி கட்டமைப்பு __vpiModPathSrc* vpip_make_modpath_src(கட்டமைப்பு __vpiModPath*path,
                                                      vvp_net_t *net) ;
 
-extern struct __vpiModPath* vpip_make_modpath(vvp_net_t *net) ;
+வெளி கட்டமைப்பு __vpiModPath* vpip_make_modpath(vvp_net_t *net) ;
 
 /*
  *
@@ -582,17 +582,17 @@ extern struct __vpiModPath* vpip_make_modpath(vvp_net_t *net) ;
  *
  */
 
-struct __vpiInterModPath : public __vpiHandle {
+கட்டமைப்பு __vpiInterModPath : பொது __vpiHandle {
       __vpiInterModPath();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
-      void vpi_get_delays(p_vpi_delay del) override;
-      void vpi_put_delays(p_vpi_delay del) override;
-      free_object_fun_t free_object_fun(void) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      முழு vpi_get(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
+      vpiHandle vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags) override;
+      vpiHandle vpi_handle(முழு code) override;
+      vpiHandle vpi_iterate(முழு code) override;
+      வெறுமை vpi_get_delays(p_vpi_delay del) override;
+      வெறுமை vpi_put_delays(p_vpi_delay del) override;
+      free_object_fun_t free_object_fun(வெறுமை) override;
 
       __vpiScope   *scope ;
 
@@ -610,49 +610,49 @@ struct __vpiInterModPath : public __vpiHandle {
  * for vpiInterModPath
  */
 
-extern struct __vpiInterModPath* vpip_make_intermodpath(vvp_net_t *net, vpiPortInfo* port1, vpiPortInfo* port2);
+வெளி கட்டமைப்பு __vpiInterModPath* vpip_make_intermodpath(vvp_net_t *net, vpiPortInfo* port1, vpiPortInfo* port2);
 
 /*
  * These methods support the vpi creation of events. The name string
  * passed in will be saved, so the caller must allocate it (or not
  * free it) after it is handed to this function.
  */
-class __vpiNamedEvent : public __vpiHandle {
+class __vpiNamedEvent : பொது __vpiHandle {
 
-    public:
-      __vpiNamedEvent(__vpiScope*scope, const char*name);
+    பொது:
+      __vpiNamedEvent(__vpiScope*scope, மாறிலி எழுத்து*name);
       ~__vpiNamedEvent() override;
 
-      __vpiNamedEvent(const __vpiNamedEvent&) = delete;
-      __vpiNamedEvent& operator=(const __vpiNamedEvent&) = delete;
+      __vpiNamedEvent(மாறிலி __vpiNamedEvent&) = delete;
+      __vpiNamedEvent& operator=(மாறிலி __vpiNamedEvent&) = delete;
 
-      int get_type_code(void) const override;
-      __vpiScope*get_scope(void) const { return scope_; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      __vpiScope*get_scope(வெறுமை) மாறிலி { திரும்பு scope_; }
+      முழு vpi_get(முழு code) override;
+      எழுத்து* vpi_get_str(முழு code) override;
+      vpiHandle vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags) override;
+      vpiHandle vpi_handle(முழு code) override;
 
-      inline void add_vpi_callback(__vpiCallback*cb)
+      உள்வரி வெறுமை add_vpi_callback(__vpiCallback*cb)
       { cb->next = callbacks_;
 	callbacks_ = cb;
       }
 
-      void run_vpi_callbacks(void);
+      வெறுமை run_vpi_callbacks(வெறுமை);
 
 	/* The functor, used for %set operations. */
       vvp_net_t*funct;
 
-    private:
+    தனிப்பட்ட:
 	/* base name of the event object */
-      const char*name_;
+      மாறிலி எழுத்து*name_;
 	/* Parent scope of this object. */
       __vpiScope*scope_;
 	/* List of callbacks interested in this event. */
       __vpiCallback*callbacks_;
 };
 
-extern vpiHandle vpip_make_named_event(const char*name, vvp_net_t*f);
+வெளி vpiHandle vpip_make_named_event(மாறிலி எழுத்து*name, vvp_net_t*f);
 
 /*
  * Memory is an array of bits that is accessible in N-bit chunks, with
@@ -661,28 +661,28 @@ extern vpiHandle vpip_make_named_event(const char*name, vvp_net_t*f);
  * the memory.
  */
 
-extern bool is_net_array(vpiHandle obj);
+வெளி bool is_net_array(vpiHandle obj);
 
 /*
  * These are the various variable types.
  */
-struct __vpiRealVar : public __vpiHandle {
+கட்டமைப்பு __vpiRealVar : பொது __vpiHandle {
       __vpiRealVar();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      முழு vpi_get(முழு code) override;
+      எழுத்து* vpi_get_str(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
+      vpiHandle vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags) override;
+      vpiHandle vpi_handle(முழு code) override;
+      vpiHandle vpi_iterate(முழு code) override;
 
-      union { // The scope or parent array that contains me.
+      ஒன்றிப்பு { // The scope or parent array that contains me.
 	    vpiHandle parent;
 	    __vpiScope* scope;
       } within;
 	/* The name of this variable, or the index for array words. */
-      union {
-            const char*name;
+      ஒன்றிப்பு {
+            மாறிலி எழுத்து*name;
             vpiHandle index;
       } id;
       unsigned is_netarray  : 1; // This is word of a net array
@@ -690,66 +690,66 @@ struct __vpiRealVar : public __vpiHandle {
       vvp_net_t*net;
 };
 
-extern __vpiScope* vpip_scope(__vpiRealVar*sig);
-extern vpiHandle vpip_make_real_var(const char*name, vvp_net_t*net);
-extern vpiHandle vpip_make_real_net(__vpiScope*scope,
-				    const char*name, vvp_net_t*net);
+வெளி __vpiScope* vpip_scope(__vpiRealVar*sig);
+வெளி vpiHandle vpip_make_real_var(மாறிலி எழுத்து*name, vvp_net_t*net);
+வெளி vpiHandle vpip_make_real_net(__vpiScope*scope,
+				    மாறிலி எழுத்து*name, vvp_net_t*net);
 
-class __vpiBaseVar : public __vpiHandle {
+class __vpiBaseVar : பொது __vpiHandle {
 
-    public:
-      __vpiBaseVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+    பொது:
+      __vpiBaseVar(__vpiScope*scope, மாறிலி எழுத்து*name, vvp_net_t*net);
 #ifdef CHECK_WITH_VALGRIND
       ~__vpiBaseVar() override;
 #endif
 
-      inline vvp_net_t* get_net() const { return net_; }
+      உள்வரி vvp_net_t* get_net() மாறிலி { திரும்பு net_; }
 
-    protected:
+    பாதுகாக்கப்பட்ட:
       __vpiScope* scope_;
-      const char*name_;
+      மாறிலி எழுத்து*name_;
 
-    private:
+    தனிப்பட்ட:
       vvp_net_t*net_;
 };
 
-class __vpiStringVar : public __vpiBaseVar {
+class __vpiStringVar : பொது __vpiBaseVar {
 
-    public:
-      __vpiStringVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+    பொது:
+      __vpiStringVar(__vpiScope*scope, மாறிலி எழுத்து*name, vvp_net_t*net);
 
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      முழு vpi_get(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
+      vpiHandle vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags) override;
 };
 
-extern vpiHandle vpip_make_string_var(const char*name, vvp_net_t*net);
+வெளி vpiHandle vpip_make_string_var(மாறிலி எழுத்து*name, vvp_net_t*net);
 
-struct __vpiArrayBase {
-      __vpiArrayBase() : vals_words(NULL) {}
-      virtual ~__vpiArrayBase() {}
+கட்டமைப்பு __vpiArrayBase {
+      __vpiArrayBase() : vals_சொற்கள்(வெற்று) {}
+      மெய்நிகர் ~__vpiArrayBase() {}
 
-      virtual unsigned get_size(void) const = 0;
-      virtual vpiHandle get_left_range() = 0;
-      virtual vpiHandle get_right_range() = 0;
-      virtual __vpiScope*get_scope() const = 0;
+      மெய்நிகர் unsigned get_size(வெறுமை) மாறிலி = 0;
+      மெய்நிகர் vpiHandle get_இடது_range() = 0;
+      மெய்நிகர் vpiHandle get_வலது_range() = 0;
+      மெய்நிகர் __vpiScope*get_scope() மாறிலி = 0;
 
-      virtual int get_word_size() const = 0;
-      virtual char*get_word_str(struct __vpiArrayWord*word, int code) = 0;
-      virtual void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) = 0;
-      virtual void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp,
-                                    int flags) = 0;
-      virtual vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) = 0;
+      மெய்நிகர் முழு get_word_size() மாறிலி = 0;
+      மெய்நிகர் எழுத்து*get_word_str(கட்டமைப்பு __vpiArrayWord*word, முழு code) = 0;
+      மெய்நிகர் வெறுமை get_word_மதிப்பு(கட்டமைப்பு __vpiArrayWord*word, p_vpi_மதிப்பு vp) = 0;
+      மெய்நிகர் வெறுமை put_word_மதிப்பு(கட்டமைப்பு __vpiArrayWord*word, p_vpi_மதிப்பு vp,
+                                    முழு flags) = 0;
+      மெய்நிகர் vpiHandle get_iter_index(கட்டமைப்பு __vpiArrayIterator*iter, முழு idx) = 0;
 
     // vpi_iterate is already defined by vpiHandle, so to avoid problems with
     // classes inheriting from vpiHandle and vpiArrayBase just share the common
     // code in the following function
-      vpiHandle vpi_array_base_iterate(int code);
+      vpiHandle vpi_array_base_iterate(முழு code);
 
-      virtual void make_vals_words();
+      மெய்நிகர் வெறுமை make_vals_சொற்கள்();
 
-      struct __vpiArrayWord*vals_words;
+      கட்டமைப்பு __vpiArrayWord*vals_சொற்கள்;
 };
 
 /*
@@ -777,41 +777,41 @@ struct __vpiArrayBase {
 * array of double variables. This is very much like the way the
 * vector4 array works.
 */
-struct __vpiArray : public __vpiArrayBase, public __vpiHandle {
-      int get_type_code(void) const override { return vpiMemory; }
-      unsigned get_size() const override { return array_count; }
-      vpiHandle get_left_range() override { assert(nets == 0); return &msb; }
-      vpiHandle get_right_range() override { assert(nets == 0); return &lsb; }
-      __vpiScope*get_scope() const override { return scope; }
+கட்டமைப்பு __vpiArray : பொது __vpiArrayBase, பொது __vpiHandle {
+      முழு get_type_code(வெறுமை) மாறிலி override { திரும்பு vpiMemory; }
+      unsigned get_size() மாறிலி override { திரும்பு array_மொத்தம்; }
+      vpiHandle get_இடது_range() override { ப்ரதிஜ்ஞா(nets == 0); திரும்பு &msb; }
+      vpiHandle get_வலது_range() override { ப்ரதிஜ்ஞா(nets == 0); திரும்பு &lsb; }
+      __vpiScope*get_scope() மாறிலி override { திரும்பு scope; }
 
-      int get_word_size() const override;
-      char*get_word_str(struct __vpiArrayWord*word, int code) override;
-      void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) override;
-      void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int flags) override;
+      முழு get_word_size() மாறிலி override;
+      எழுத்து*get_word_str(கட்டமைப்பு __vpiArrayWord*word, முழு code) override;
+      வெறுமை get_word_மதிப்பு(கட்டமைப்பு __vpiArrayWord*word, p_vpi_மதிப்பு vp) override;
+      வெறுமை put_word_மதிப்பு(கட்டமைப்பு __vpiArrayWord*word, p_vpi_மதிப்பு vp, முழு flags) override;
 
-      vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) override;
+      vpiHandle get_iter_index(கட்டமைப்பு __vpiArrayIterator*iter, முழு idx) override;
 
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      inline vpiHandle vpi_iterate(int code) override { return vpi_array_base_iterate(code); }
-      vpiHandle vpi_index(int idx) override;
+      முழு vpi_get(முழு code) override;
+      எழுத்து* vpi_get_str(முழு code) override;
+      vpiHandle vpi_handle(முழு code) override;
+      உள்வரி vpiHandle vpi_iterate(முழு code) override { திரும்பு vpi_array_base_iterate(code); }
+      vpiHandle vpi_index(முழு idx) override;
 
-      void set_word(unsigned idx, unsigned off, const vvp_vector4_t&val);
-      void set_word(unsigned idx, double val);
-      void set_word(unsigned idx, const std::string&val);
-      void set_word(unsigned idx, const vvp_object_t&val);
+      வெறுமை set_word(unsigned idx, unsigned off, மாறிலி vvp_vector4_t&val);
+      வெறுமை set_word(unsigned idx, இரட்டை val);
+      வெறுமை set_word(unsigned idx, மாறிலி std::string&val);
+      வெறுமை set_word(unsigned idx, மாறிலி vvp_object_t&val);
 
       vvp_vector4_t get_word(unsigned address);
-      double get_word_r(unsigned address);
-      void get_word_obj(unsigned address, vvp_object_t&val);
+      இரட்டை get_word_r(unsigned address);
+      வெறுமை get_word_obj(unsigned address, vvp_object_t&val);
       std::string get_word_str(unsigned address);
 
-      void alias_word(unsigned long addr, vpiHandle word, int msb, int lsb);
-      void attach_word(unsigned addr, vpiHandle word);
-      void word_change(unsigned long addr);
+      வெறுமை alias_word(unsigned long addr, vpiHandle word, முழு msb, முழு lsb);
+      வெறுமை attach_word(unsigned addr, vpiHandle word);
+      வெறுமை word_change(unsigned long addr);
 
-      const char*name; /* Permanently allocated string */
+      மாறிலி எழுத்து*name; /* Permanently allocated string */
       __vpiDecConst first_addr;
       __vpiDecConst last_addr;
       __vpiDecConst msb;
@@ -824,96 +824,96 @@ struct __vpiArray : public __vpiArrayBase, public __vpiHandle {
       vvp_darray        *vals;
 
       vvp_fun_arrayport*ports_;
-      struct __vpiCallback *vpi_callbacks;
+      கட்டமைப்பு __vpiCallback *vpi_callbacks;
       bool signed_flag;
       bool swap_addr;
 
-private:
-      unsigned array_count;
+தனிப்பட்ட:
+      unsigned array_மொத்தம்;
       __vpiScope*scope;
 
-friend vpiHandle vpip_make_array(const char*label, const char*name,
-                                 int first_addr, int last_addr,
+friend vpiHandle vpip_make_array(மாறிலி எழுத்து*label, மாறிலி எழுத்து*name,
+                                 முழு first_addr, முழு last_addr,
                                  bool signed_flag);
-friend void compile_array_alias(char*label, char*name, char*src);
+friend வெறுமை compile_array_alias(எழுத்து*label, எழுத்து*name, எழுத்து*src);
 };
 
-class __vpiDarrayVar : public __vpiBaseVar, public __vpiArrayBase {
-    public:
-      __vpiDarrayVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+class __vpiDarrayVar : பொது __vpiBaseVar, பொது __vpiArrayBase {
+    பொது:
+      __vpiDarrayVar(__vpiScope*scope, மாறிலி எழுத்து*name, vvp_net_t*net);
 
-      int get_type_code() const override { return vpiArrayVar; }
-      unsigned get_size() const override;
-      vpiHandle get_left_range() override;
-      vpiHandle get_right_range() override;
-      __vpiScope*get_scope() const override { return scope_; }
+      முழு get_type_code() மாறிலி override { திரும்பு vpiArrayVar; }
+      unsigned get_size() மாறிலி override;
+      vpiHandle get_இடது_range() override;
+      vpiHandle get_வலது_range() override;
+      __vpiScope*get_scope() மாறிலி override { திரும்பு scope_; }
 
-      int get_word_size() const override;
-      char*get_word_str(struct __vpiArrayWord*word, int code) override;
-      void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) override;
-      void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int flags) override;
+      முழு get_word_size() மாறிலி override;
+      எழுத்து*get_word_str(கட்டமைப்பு __vpiArrayWord*word, முழு code) override;
+      வெறுமை get_word_மதிப்பு(கட்டமைப்பு __vpiArrayWord*word, p_vpi_மதிப்பு vp) override;
+      வெறுமை put_word_மதிப்பு(கட்டமைப்பு __vpiArrayWord*word, p_vpi_மதிப்பு vp, முழு flags) override;
 
-      vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) override;
-      inline vpiHandle vpi_iterate(int code) override { return vpi_array_base_iterate(code); }
+      vpiHandle get_iter_index(கட்டமைப்பு __vpiArrayIterator*iter, முழு idx) override;
+      உள்வரி vpiHandle vpi_iterate(முழு code) override { திரும்பு vpi_array_base_iterate(code); }
 
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_index(int index) override;
+      முழு vpi_get(முழு code) override;
+      எழுத்து* vpi_get_str(முழு code) override;
+      vpiHandle vpi_handle(முழு code) override;
+      vpiHandle vpi_index(முழு index) override;
 
-      void vpi_get_value(p_vpi_value val) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
 
-    protected:
-      vvp_darray*get_vvp_darray() const;
-      __vpiDecConst left_range_, right_range_;
+    பாதுகாக்கப்பட்ட:
+      vvp_darray*get_vvp_darray() மாறிலி;
+      __vpiDecConst இடது_range, வலது_range;
 };
 
-extern vpiHandle vpip_make_darray_var(const char*name, vvp_net_t*net);
+வெளி vpiHandle vpip_make_darray_var(மாறிலி எழுத்து*name, vvp_net_t*net);
 
-class __vpiQueueVar : public __vpiDarrayVar {
+class __vpiQueueVar : பொது __vpiDarrayVar {
 
-    public:
-      __vpiQueueVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+    பொது:
+      __vpiQueueVar(__vpiScope*scope, மாறிலி எழுத்து*name, vvp_net_t*net);
 
-      int vpi_get(int code) override;
+      முழு vpi_get(முழு code) override;
 };
 
-extern vpiHandle vpip_make_queue_var(const char*name, vvp_net_t*net);
+வெளி vpiHandle vpip_make_queue_var(மாறிலி எழுத்து*name, vvp_net_t*net);
 
-class __vpiPropQueueRef : public __vpiHandle {
+class __vpiPropQueueRef : பொது __vpiHandle {
 
-    public:
+    பொது:
       explicit __vpiPropQueueRef(__vpiScope*scope, unsigned pidx, bool is_queue);
 
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      முழு vpi_get(முழு code) override;
+      எழுத்து* vpi_get_str(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
 
       vvp_net_t* class_net_;
       unsigned prop_idx_;
       bool is_queue_;
 
-    private:
+    தனிப்பட்ட:
       __vpiScope* scope_;
 };
 
-extern vpiHandle vpip_make_prop_queue_ref(char* class_label,
+வெளி vpiHandle vpip_make_prop_queue_ref(எழுத்து* class_label,
                                           unsigned prop_idx,
                                           unsigned is_queue_flag);
-extern vvp_darray* vpip_vpi_darray_from_handle(vpiHandle ref);
+வெளி vvp_darray* vpip_vpi_darray_from_handle(vpiHandle ref);
 
-class __vpiCobjectVar : public __vpiBaseVar {
+class __vpiCobjectVar : பொது __vpiBaseVar {
 
-    public:
-      __vpiCobjectVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+    பொது:
+      __vpiCobjectVar(__vpiScope*scope, மாறிலி எழுத்து*name, vvp_net_t*net);
 
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      முழு vpi_get(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
 };
 
-extern vpiHandle vpip_make_cobject_var(const char*name, vvp_net_t*net);
+வெளி vpiHandle vpip_make_cobject_var(மாறிலி எழுத்து*name, vvp_net_t*net);
 
 /*
  * When a loaded VPI module announces a system task/function, one
@@ -933,46 +933,46 @@ extern vpiHandle vpip_make_cobject_var(const char*name, vvp_net_t*net);
  * additional part is the vbit/vwid that is used by the put of the
  * system function call to place the values in the vthread bit space.
  */
-struct __vpiUserSystf : public __vpiHandle {
+கட்டமைப்பு __vpiUserSystf : பொது __vpiHandle {
       __vpiUserSystf();
-      int get_type_code(void) const override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
 
       s_vpi_systf_data info;
       bool is_user_defn;
 };
 
-extern vpiHandle vpip_make_systf_iterator(void);
+வெளி vpiHandle vpip_make_systf_iterator(வெறுமை);
 
-extern struct __vpiUserSystf* vpip_find_systf(const char*name);
+வெளி கட்டமைப்பு __vpiUserSystf* vpip_find_systf(மாறிலி எழுத்து*name);
 
 
-struct __vpiSysTaskCall : public __vpiHandle {
+கட்டமைப்பு __vpiSysTaskCall : பொது __vpiHandle {
 
       __vpiScope* scope;
-      struct __vpiUserSystf*defn;
+      கட்டமைப்பு __vpiUserSystf*defn;
       unsigned nargs;
       vpiHandle*args;
 	/* Stack consumed by this call */
-      unsigned vec4_stack;
-      unsigned real_stack;
-      unsigned string_stack;
+      unsigned vec4_அடுக்கு;
+      unsigned real_அடுக்கு;
+      unsigned string_அடுக்கு;
 	/* Support for vpi_get_userdata. */
-      void*userdata;
+      வெறுமை*userdata;
 	// This is set if this is a structural call to a function
       class    vvp_net_t*fnet;
       unsigned file_idx;
       unsigned lineno;
-      bool put_value;
-    protected:
-      inline __vpiSysTaskCall()
+      bool put_மதிப்பு;
+    பாதுகாக்கப்பட்ட:
+      உள்வரி __vpiSysTaskCall()
       {
-	    vec4_stack = 0;
-	    real_stack = 0;
-	    string_stack = 0;
+	    vec4_அடுக்கு = 0;
+	    real_அடுக்கு = 0;
+	    string_அடுக்கு = 0;
       }
 };
 
-extern struct __vpiSysTaskCall*vpip_cur_task;
+வெளி கட்டமைப்பு __vpiSysTaskCall*vpip_cur_task;
 
 /*
  * The persistent flag to vpip_make_string_const causes the created
@@ -983,15 +983,15 @@ extern struct __vpiSysTaskCall*vpip_cur_task;
  * text value string, and will delete it in the constructor.
  */
 
-vpiHandle vpip_make_string_const(char*text, bool persistent =true);
-vpiHandle vpip_make_string_param(const char*name, char*value, bool local_flag,
+vpiHandle vpip_make_string_const(எழுத்து*text, bool persistent =true);
+vpiHandle vpip_make_string_param(மாறிலி எழுத்து*name, எழுத்து*மதிப்பு, bool local_flag,
                                  long file_idx, long lineno);
 
-struct __vpiBinaryConst : public __vpiHandle {
+கட்டமைப்பு __vpiBinaryConst : பொது __vpiHandle {
       __vpiBinaryConst();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      முழு vpi_get(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
 
       vvp_vector4_t bits;
 	/* TRUE if this constant is signed. */
@@ -1000,31 +1000,31 @@ struct __vpiBinaryConst : public __vpiHandle {
       unsigned sized_flag  :1;
 };
 
-vpiHandle vpip_make_binary_const(unsigned wid, const char*bits);
-vpiHandle vpip_make_binary_param(const char*name, const vvp_vector4_t&bits,
+vpiHandle vpip_make_இருமம்_const(unsigned wid, மாறிலி எழுத்து*bits);
+vpiHandle vpip_make_இருமம்_param(மாறிலி எழுத்து*name, மாறிலி vvp_vector4_t&bits,
 				 bool signed_flag, bool local_flag,
 				 long file_idx, long lineno);
 
-class __vpiRealConst : public __vpiHandle {
-    public:
-      explicit __vpiRealConst(double);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+class __vpiRealConst : பொது __vpiHandle {
+    பொது:
+      explicit __vpiRealConst(இரட்டை);
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      முழு vpi_get(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
 
-      double value;
+      இரட்டை மதிப்பு;
 };
 
-vpiHandle vpip_make_real_const(double value);
-vpiHandle vpip_make_real_param(const char*name, double value, bool local_flag,
+vpiHandle vpip_make_real_const(இரட்டை மதிப்பு);
+vpiHandle vpip_make_real_param(மாறிலி எழுத்து*name, இரட்டை மதிப்பு, bool local_flag,
                                long file_idx, long lineno);
 
-class __vpiNullConst : public __vpiHandle {
-    public:
+class __vpiNullConst : பொது __vpiHandle {
+    பொது:
       explicit __vpiNullConst();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      முழு vpi_get(முழு code) override;
+      வெறுமை vpi_get_மதிப்பு(p_vpi_மதிப்பு val) override;
 };
 
 vpiHandle vpip_make_null_const();
@@ -1034,14 +1034,14 @@ vpiHandle vpip_make_null_const();
  *  thread.
  */
 
-vpiHandle vpip_make_vthr_word(unsigned base, const char*type);
-vpiHandle vpip_make_vthr_str_stack(unsigned depth);
-vpiHandle vpip_make_vthr_vec4_stack(unsigned depth, bool signed_flag, unsigned wid);
+vpiHandle vpip_make_vthr_word(unsigned base, மாறிலி எழுத்து*type);
+vpiHandle vpip_make_vthr_str_அடுக்கு(unsigned depth);
+vpiHandle vpip_make_vthr_vec4_அடுக்கு(unsigned depth, bool signed_flag, unsigned wid);
 
-vpiHandle vpip_make_vthr_A(char*label, unsigned index);
-vpiHandle vpip_make_vthr_A(char*label, char*symbol);
-vpiHandle vpip_make_vthr_A(char*label, vpiHandle handle);
-vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned wid);
+vpiHandle vpip_make_vthr_A(எழுத்து*label, unsigned index);
+vpiHandle vpip_make_vthr_A(எழுத்து*label, எழுத்து*குறியீடு);
+vpiHandle vpip_make_vthr_A(எழுத்து*label, vpiHandle handle);
+vpiHandle vpip_make_vthr_APV(எழுத்து*label, unsigned index, unsigned bit, unsigned wid);
 
 /*
  * This function is called before any compilation to load VPI
@@ -1049,11 +1049,11 @@ vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned 
  * contained functions before compilation commences. It is called only
  * once per module.
  */
-extern "C" void vpip_load_module(const char*name);
+வெளி "C" வெறுமை vpip_load_module(மாறிலி எழுத்து*name);
 
-extern "C" void vpip_clear_module_paths();
-extern "C" void vpip_add_module_path(const char *path);
-extern "C" void vpip_add_env_and_default_module_paths();
+வெளி "C" வெறுமை vpip_clear_module_paths();
+வெளி "C" வெறுமை vpip_add_module_path(மாறிலி எழுத்து *path);
+வெளி "C" வெறுமை vpip_add_env_and_default_module_paths();
 
 /*
  * The vpip_build_vpi_call function creates a __vpiSysTaskCall object
@@ -1074,22 +1074,22 @@ extern "C" void vpip_add_env_and_default_module_paths();
  * Note that the argv array is saved in the handle, and should should
  * not be released by the caller.
  */
-extern vpiHandle vpip_build_vpi_call(const char*name,
-				     int val_type, unsigned return_width,
+வெளி vpiHandle vpip_build_vpi_call(மாறிலி எழுத்து*name,
+				     முழு val_type, unsigned return_width,
 				     class vvp_net_t*fnet,
 				     bool func_as_task_err,
 				     bool func_as_task_warn,
 				     unsigned argc,
 				     vpiHandle*argv,
-				     unsigned vec4_stack,
-				     unsigned real_stack,
-				     unsigned string_stack,
+				     unsigned vec4_அடுக்கு,
+				     unsigned real_அடுக்கு,
+				     unsigned string_அடுக்கு,
 				     long file_idx,
 				     long lineno);
 
-extern vthread_t vpip_current_vthread;
+வெளி vthread_t vpip_current_vthread;
 
-extern void vpip_execute_vpi_call(vthread_t thr, vpiHandle obj);
+வெளி வெறுமை vpip_execute_vpi_call(vthread_t thr, vpiHandle obj);
 
 
 /*
@@ -1100,21 +1100,21 @@ extern void vpip_execute_vpi_call(vthread_t thr, vpiHandle obj);
 vpiHandle vpip_sim_time(__vpiScope*scope, bool is_stime);
 vpiHandle vpip_sim_realtime(__vpiScope*scope);
 
-extern int vpip_get_time_precision(void);
-extern void vpip_set_time_precision(int pres);
+வெளி முழு vpip_get_time_precision(வெறுமை);
+வெளி வெறுமை vpip_set_time_precision(முழு pres);
 
-extern __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj);
+வெளி __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj);
 
-extern int vpip_time_units_from_handle(vpiHandle obj);
-extern int vpip_time_precision_from_handle(vpiHandle obj);
+வெளி முழு vpip_time_units_from_handle(vpiHandle obj);
+வெளி முழு vpip_time_precision_from_handle(vpiHandle obj);
 
-extern double vpip_scaled_time_from_handle(vvp_time64_t time, vpiHandle obj);
+வெளி இரட்டை vpip_scaled_time_from_handle(vvp_time64_t time, vpiHandle obj);
 
-extern void vpip_time_to_timestruct(struct t_vpi_time*ts, vvp_time64_t ti);
-extern vvp_time64_t vpip_timestruct_to_time(const struct t_vpi_time*ts);
+வெளி வெறுமை vpip_time_to_timestruct(கட்டமைப்பு t_vpi_time*ts, vvp_time64_t ti);
+வெளி vvp_time64_t vpip_timestruct_to_time(மாறிலி கட்டமைப்பு t_vpi_time*ts);
 
-extern double vpip_time_to_scaled_real(vvp_time64_t ti, const __vpiScope*sc);
-extern vvp_time64_t vpip_scaled_real_to_time64(double val, const __vpiScope*sc);
+வெளி இரட்டை vpip_time_to_scaled_real(vvp_time64_t ti, மாறிலி __vpiScope*sc);
+வெளி vvp_time64_t vpip_scaled_real_to_time64(இரட்டை val, மாறிலி __vpiScope*sc);
 
 /*
  * These functions are used mostly as compile time to strings into
@@ -1124,8 +1124,8 @@ extern vvp_time64_t vpip_scaled_real_to_time64(double val, const __vpiScope*sc);
  * reuse it if it can. This us useful for handle names, which may be
  * reused in different scopes.
  */
-extern const char* vpip_string(const char*str);
-extern const char* vpip_name_string(const char*str);
+வெளி மாறிலி எழுத்து* vpip_string(மாறிலி எழுத்து*str);
+வெளி மாறிலி எழுத்து* vpip_name_string(மாறிலி எழுத்து*str);
 
 
 /*
@@ -1133,37 +1133,37 @@ extern const char* vpip_name_string(const char*str);
  * vectors. The input format is a vvp_vector4_t, and the result is
  * written into buf, without overflowing nbuf.
  */
-extern unsigned vpip_vec4_to_dec_str(const vvp_vector4_t&vec4,
-				     char *buf, unsigned int nbuf,
-				     int signed_flag);
+வெளி unsigned vpip_vec4_to_dec_str(மாறிலி vvp_vector4_t&vec4,
+				     எழுத்து *buf, unsigned முழு nbuf,
+				     முழு signed_flag);
 
 
-extern void vpip_vec4_to_hex_str(const vvp_vector4_t&bits, char*buf,
+வெளி வெறுமை vpip_vec4_to_hex_str(மாறிலி vvp_vector4_t&bits, எழுத்து*buf,
 				 unsigned nbuf);
 
-extern void vpip_vec4_to_oct_str(const vvp_vector4_t&bits, char*buf,
+வெளி வெறுமை vpip_vec4_to_oct_str(மாறிலி vvp_vector4_t&bits, எழுத்து*buf,
 				 unsigned nbuf);
 
-extern void vpip_bin_str_to_vec4(vvp_vector4_t&val, const char*buf);
-extern void vpip_oct_str_to_vec4(vvp_vector4_t&val, const char*str);
-extern void vpip_dec_str_to_vec4(vvp_vector4_t&val, const char*str);
-extern void vpip_hex_str_to_vec4(vvp_vector4_t&val, const char*str);
+வெளி வெறுமை vpip_bin_str_to_vec4(vvp_vector4_t&val, மாறிலி எழுத்து*buf);
+வெளி வெறுமை vpip_oct_str_to_vec4(vvp_vector4_t&val, மாறிலி எழுத்து*str);
+வெளி வெறுமை vpip_dec_str_to_vec4(vvp_vector4_t&val, மாறிலி எழுத்து*str);
+வெளி வெறுமை vpip_hex_str_to_vec4(vvp_vector4_t&val, மாறிலி எழுத்து*str);
 
-extern vvp_vector4_t vec4_from_vpi_value(s_vpi_value*vp, unsigned wid);
-extern double real_from_vpi_value(s_vpi_value*vp);
+வெளி vvp_vector4_t vec4_from_vpi_மதிப்பு(s_vpi_மதிப்பு*vp, unsigned wid);
+வெளி இரட்டை real_from_vpi_மதிப்பு(s_vpi_மதிப்பு*vp);
 
-extern void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
-				bool signed_flag, s_vpi_value*vp);
-extern void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
-				bool signed_flag, s_vpi_value*vp);
-extern void vpip_real_get_value(double real, s_vpi_value*vp);
-extern void vpip_string_get_value(const std::string&val, s_vpi_value*vp);
+வெளி வெறுமை vpip_vec4_get_மதிப்பு(மாறிலி vvp_vector4_t&word_val, unsigned width,
+				bool signed_flag, s_vpi_மதிப்பு*vp);
+வெளி வெறுமை vpip_vec2_get_மதிப்பு(மாறிலி vvp_vector2_t&word_val, unsigned width,
+				bool signed_flag, s_vpi_மதிப்பு*vp);
+வெளி வெறுமை vpip_real_get_மதிப்பு(இரட்டை real, s_vpi_மதிப்பு*vp);
+வெளி வெறுமை vpip_string_get_மதிப்பு(மாறிலி std::string&val, s_vpi_மதிப்பு*vp);
 
 /*
  * Function defined in vpi_signal.cc to manage vpi_get_* persistent
  * storage.
  */
-enum vpi_rbuf_t {
+எண்ணிக்கை vpi_rbuf_t {
       RBUF_VAL =0,
 	/* Storage for *_get_value() */
       RBUF_STR,
@@ -1171,25 +1171,25 @@ enum vpi_rbuf_t {
       RBUF_DEL
 	/* Delete the storage for both buffers. */
 };
-extern void *need_result_buf(unsigned cnt, vpi_rbuf_t type);
+வெளி வெறுமை *need_result_buf(unsigned cnt, vpi_rbuf_t type);
 /* following two routines use need_result_buf(, RBUF_STR) */
-extern char *simple_set_rbuf_str(const char *s1);
-extern char *generic_get_str(int code, vpiHandle ref, const char *name, const char *index);
+வெளி எழுத்து *simple_set_rbuf_str(மாறிலி எழுத்து *s1);
+வெளி எழுத்து *generic_get_str(முழு code, vpiHandle ref, மாறிலி எழுத்து *name, மாறிலி எழுத்து *index);
 
 /* A routine to find the enclosing module. */
-extern vpiHandle vpip_module(__vpiScope*scope);
+வெளி vpiHandle vpip_module(__vpiScope*scope);
 
-extern int vpip_delay_selection;
+வெளி முழு vpip_delay_selection;
 
 /* A flag to disable output to MCD bit 0. */
-extern bool vpip_mcd0_disable;
+வெளி bool vpip_mcd0_disable;
 
-inline uint64_t vlg_round_to_u64(double rval)
+உள்வரி uint64_t vlg_round_to_u64(இரட்டை rval)
 {
       // Directly casting a negative double to an unsigned integer types is
       // undefined behavior and behaves differently on different architectures.
       // Cast to signed integer first to get the behavior we want.
-      return static_cast<uint64_t>(static_cast<int64_t>(std::round(rval)));
+      திரும்பு static_cast<uint64_t>(static_cast<int64_t>(std::round(rval)));
 }
 
 #endif /* IVL_vpi_priv_H */

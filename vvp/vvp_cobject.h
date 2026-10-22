@@ -26,28 +26,28 @@
 
 class vvp_vector4_t;
 
-class vvp_cobject : public vvp_object {
+class vvp_cobject : பொது vvp_object {
 
-    public:
-      explicit vvp_cobject(const class_type*defn);
+    பொது:
+      explicit vvp_cobject(மாறிலி class_type*defn);
       ~vvp_cobject() override;
 
-      void set_vec4(size_t pid, const vvp_vector4_t&val);
-      void get_vec4(size_t pid, vvp_vector4_t&val);
+      வெறுமை set_vec4(size_t pid, மாறிலி vvp_vector4_t&val);
+      வெறுமை get_vec4(size_t pid, vvp_vector4_t&val);
 
-      void set_real(size_t pid, double val);
-      double get_real(size_t pid);
+      வெறுமை set_real(size_t pid, இரட்டை val);
+      இரட்டை get_real(size_t pid);
 
-      void set_string(size_t pid, const std::string&val);
+      வெறுமை set_string(size_t pid, மாறிலி std::string&val);
       std::string get_string(size_t pid);
 
-      void set_object(size_t pid, const vvp_object_t&val, size_t idx);
-      void get_object(size_t pid, vvp_object_t&val, size_t idx);
+      வெறுமை set_object(size_t pid, மாறிலி vvp_object_t&val, size_t idx);
+      வெறுமை get_object(size_t pid, vvp_object_t&val, size_t idx);
 
-      void shallow_copy(const vvp_object*that) override;
+      வெறுமை shallow_copy(மாறிலி vvp_object*that) override;
 
-    private:
-      const class_type* defn_;
+    தனிப்பட்ட:
+      மாறிலி class_type* defn_;
 	// For now, only support 32bit bool signed properties.
       class_type::inst_t properties_;
 };

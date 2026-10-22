@@ -36,75 +36,75 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+using நாமாகாஶ std;
 
-inline __vpiUserSystf::__vpiUserSystf()
+உள்வரி __vpiUserSystf::__vpiUserSystf()
 { }
 
-int __vpiUserSystf::get_type_code(void) const
-{ return vpiUserSystf; }
+முழு __vpiUserSystf::get_type_code(வெறுமை) மாறிலி
+{ திரும்பு vpiUserSystf; }
 
 
-static vpiHandle systask_handle(int type, vpiHandle ref)
+நிலையான vpiHandle systask_handle(முழு type, vpiHandle ref)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      கட்டமைப்பு __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      switch (type) {
-	  case vpiScope:
-	    return rfp->scope;
+      தேர்வு (type) {
+	  நிலை vpiScope:
+	    திரும்பு rfp->scope;
 
-	  case vpiUserSystf:
+	  நிலை vpiUserSystf:
 	      /* Assert that vpiUserDefn is true! */
-	    assert(rfp->defn->is_user_defn);
-	    return rfp->defn;
+	    ப்ரதிஜ்ஞா(rfp->defn->is_user_defn);
+	    திரும்பு rfp->defn;
 
-	  default:
-	    return 0;
+	  இயல்பு:
+	    திரும்பு 0;
       };
 }
 
-static int systask_get(int type, vpiHandle ref)
+நிலையான முழு systask_get(முழு type, vpiHandle ref)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      கட்டமைப்பு __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      switch (type) {
+      தேர்வு (type) {
 	    /* This is not the correct way to get this information, but
 	     * some of the code that implements the acc and tf routines
 	     * use this method so we will keep it in for now. */
-	  case vpiTimeUnit:
-	    return rfp->scope->time_units;
-	  case vpiTimePrecision:
-	    return rfp->scope->time_precision;
+	  நிலை vpiTimeUnit:
+	    திரும்பு rfp->scope->time_units;
+	  நிலை vpiTimePrecision:
+	    திரும்பு rfp->scope->time_precision;
 
-	  case vpiLineNo:
-	    return rfp->lineno;
+	  நிலை vpi_வரி_No:
+	    திரும்பு rfp->lineno;
 
-	  case vpiUserDefn:
-	    return rfp->defn->is_user_defn;
+	  நிலை vpiUserDefn:
+	    திரும்பு rfp->defn->is_user_defn;
 
-	  default:
-	    return vpiUndefined;
+	  இயல்பு:
+	    திரும்பு vpiUndefined;
       }
 }
 
 // support getting vpiSize for a system function call
-static int sysfunc_get(int type, vpiHandle ref)
+நிலையான முழு sysfunc_get(முழு type, vpiHandle ref)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      கட்டமைப்பு __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      switch (type) {
-	  case vpiSize:
-	    assert(0); // This should be handled by derived classes
-	    return 0;
+      தேர்வு (type) {
+	  நிலை vpiSize:
+	    ப்ரதிஜ்ஞா(0); // This should be handled by derived classes
+	    திரும்பு 0;
 
-	  case vpiLineNo:
-	    return rfp->lineno;
+	  நிலை vpi_வரி_No:
+	    திரும்பு rfp->lineno;
 
-	  case vpiUserDefn:
-	    return rfp->defn->is_user_defn;
+	  நிலை vpiUserDefn:
+	    திரும்பு rfp->defn->is_user_defn;
 
-	  default:
-	    return vpiUndefined;
+	  இயல்பு:
+	    திரும்பு vpiUndefined;
       }
 }
 
@@ -112,394 +112,394 @@ static int sysfunc_get(int type, vpiHandle ref)
  * the get_str function only needs to support vpiName
  */
 
-static char *systask_get_str(int type, vpiHandle ref)
+நிலையான எழுத்து *systask_get_str(முழு type, vpiHandle ref)
 {
-      const struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      மாறிலி கட்டமைப்பு __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      switch (type) {
-          case vpiFile:
-            assert(rfp->file_idx < file_names.size());
-            return simple_set_rbuf_str(file_names[rfp->file_idx]);
+      தேர்வு (type) {
+          நிலை vpiFile:
+            ப்ரதிஜ்ஞா(rfp->file_idx < file_names.size());
+            திரும்பு simple_set_rbuf_str(file_names[rfp->file_idx]);
 
-          case vpiName:
-            return simple_set_rbuf_str(rfp->defn->info.tfname);
+          நிலை vpiName:
+            திரும்பு simple_set_rbuf_str(rfp->defn->info.tfname);
       }
 
-      return 0;
+      திரும்பு 0;
 }
 
 /*
  * the iter function only supports getting an iterator of the
  * arguments. This works equally well for tasks and functions.
  */
-static vpiHandle systask_iter(int, vpiHandle ref)
+நிலையான vpiHandle systask_iter(முழு, vpiHandle ref)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      கட்டமைப்பு __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      if (rfp->nargs == 0)
-	    return 0;
+      எனில் (rfp->nargs == 0)
+	    திரும்பு 0;
 
-      return vpip_make_iterator(rfp->nargs, rfp->args, false);
+      திரும்பு vpip_make_iterator(rfp->nargs, rfp->args, பொய்);
 }
 
-struct systask_def : public __vpiSysTaskCall {
-      virtual int get_type_code(void) const   override { return vpiSysTaskCall; }
-      virtual int vpi_get(int code)           override { return systask_get(code, this); }
-      virtual char*vpi_get_str(int code)      override { return systask_get_str(code, this); }
-      virtual vpiHandle vpi_handle(int code)  override { return systask_handle(code, this); }
-      virtual vpiHandle vpi_iterate(int code) override { return systask_iter(code, this); }
+கட்டமைப்பு systask_def : பொது __vpiSysTaskCall {
+      மெய்நிகர் முழு get_type_code(வெறுமை) மாறிலி   override { திரும்பு vpiSysTaskCall; }
+      மெய்நிகர் முழு vpi_get(முழு code)           override { திரும்பு systask_get(code, இது); }
+      மெய்நிகர் எழுத்து*vpi_get_str(முழு code)      override { திரும்பு systask_get_str(code, இது); }
+      மெய்நிகர் vpiHandle vpi_handle(முழு code)  override { திரும்பு systask_handle(code, இது); }
+      மெய்நிகர் vpiHandle vpi_iterate(முழு code) override { திரும்பு systask_iter(code, இது); }
 };
 
-struct sysfunc_def : public systask_def {
-      virtual int get_type_code(void) const override { return vpiSysFuncCall; }
-      virtual int vpi_get(int code) override { return sysfunc_get(code, this); }
+கட்டமைப்பு sysfunc_def : பொது systask_def {
+      மெய்நிகர் முழு get_type_code(வெறுமை) மாறிலி override { திரும்பு vpiSysFuncCall; }
+      மெய்நிகர் முழு vpi_get(முழு code) override { திரும்பு sysfunc_get(code, இது); }
 };
 
-struct sysfunc_real : public sysfunc_def {
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      inline double return_value() const { return return_value_; }
+கட்டமைப்பு sysfunc_real : பொது sysfunc_def {
+      vpiHandle vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags) override;
+      உள்வரி இரட்டை return_மதிப்பு() மாறிலி { திரும்பு return_மதிப்பு_2; }
 
-    private:
-      double return_value_;
+    தனிப்பட்ட:
+      இரட்டை return_மதிப்பு_2;
 };
 
-vpiHandle sysfunc_real::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_real::vpi_put_மதிப்பு(p_vpi_மதிப்பு vp, முழு)
 {
-      put_value = true;
+      put_மதிப்பு = உண்மை;
 
-      return_value_ = 0.0;
-      switch (vp->format) {
-	  case vpiRealVal:
-	    return_value_ = vp->value.real;
-	    break;
-	  default:
-	    fprintf(stderr, "Unsupported format %d.\n", (int)vp->format);
-	    assert(0);
+      return_மதிப்பு_2 = 0.0;
+      தேர்வு (vp->format) {
+	  நிலை vpiRealVal:
+	    return_மதிப்பு_2 = vp->value.real;
+	    நிறுத்து;
+	  இயல்பு:
+	    fprintf(stderr, "Unsupported format %d.\n", (முழு)vp->format);
+	    ப்ரதிஜ்ஞா(0);
       }
 
-      return 0;
+      திரும்பு 0;
 }
 
-struct sysfunc_str : public sysfunc_def {
-      int vpi_get(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      inline const std::string& return_value() const { return return_value_; };
+கட்டமைப்பு sysfunc_str : பொது sysfunc_def {
+      முழு vpi_get(முழு code) override;
+      vpiHandle vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags) override;
+      உள்வரி மாறிலி std::string& return_மதிப்பு() மாறிலி { திரும்பு return_மதிப்பு_2; };
 
-    private:
-      std::string return_value_;
+    தனிப்பட்ட:
+      std::string return_மதிப்பு_2;
 };
 
-int sysfunc_str::vpi_get(int code)
+முழு sysfunc_str::vpi_get(முழு code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return return_value_.size();
+      தேர்வு (code) {
+	  நிலை vpiSize:
+	    திரும்பு return_மதிப்பு_2.size();
 
-	  case vpiLineNo:
-	    return lineno;
+	  நிலை vpi_வரி_No:
+	    திரும்பு lineno;
 
-	  case vpiUserDefn:
-	    return defn->is_user_defn;
+	  நிலை vpiUserDefn:
+	    திரும்பு defn->is_user_defn;
 
-	  default:
-	    return vpiUndefined;
-      }
-}
-
-vpiHandle sysfunc_str::vpi_put_value(p_vpi_value vp, int)
-{
-      put_value = true;
-
-      switch (vp->format) {
-	  case vpiStringVal:
-	    return_value_ = std::string(vp->value.str);
-	    break;
-	  default:
-	    fprintf(stderr, "Unsupported format %d.\n", (int)vp->format);
-	    assert(0);
-      }
-
-      return 0;
-}
-
-class sysfunc_vec4 : public sysfunc_def {
-    public:
-      explicit inline sysfunc_vec4(unsigned wid): return_value_(wid, BIT4_X) { }
-      int vpi_get(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      inline const vvp_vector4_t& return_value() const { return return_value_; }
-
-    private:
-      vpiHandle put_value_scalar_(p_vpi_value vp);
-      vpiHandle put_value_int_(p_vpi_value vp);
-      vpiHandle put_value_string_(p_vpi_value vp);
-      vpiHandle put_value_vector_(p_vpi_value vp);
-      vpiHandle put_value_time_(p_vpi_value vp);
-
-      vvp_vector4_t return_value_;
-};
-
-int sysfunc_vec4::vpi_get(int code)
-{
-      switch (code) {
-	  case vpiSize:
-	    return return_value_.size();
-
-	  case vpiLineNo:
-	    return lineno;
-
-	  case vpiUserDefn:
-	    return defn->is_user_defn;
-
-	  default:
-	    return vpiUndefined;
+	  இயல்பு:
+	    திரும்பு vpiUndefined;
       }
 }
 
-vpiHandle sysfunc_vec4::put_value_scalar_(const p_vpi_value vp)
+vpiHandle sysfunc_str::vpi_put_மதிப்பு(p_vpi_மதிப்பு vp, முழு)
 {
-      switch (vp->value.scalar) {
-	  case vpi0:
-	    return_value_.set_bit(0, BIT4_0);
-	    break;
-	  case vpi1:
-	    return_value_.set_bit(0, BIT4_1);
-	    break;
-	  case vpiX:
-	    return_value_.set_bit(0, BIT4_X);
-	    break;
-	  case vpiZ:
-	    return_value_.set_bit(0, BIT4_Z);
-	    break;
-	  default:
-	    fprintf(stderr, "Unsupported value %d.\n", (int)vp->value.scalar);
-	    assert(0);
+      put_மதிப்பு = உண்மை;
+
+      தேர்வு (vp->format) {
+	  நிலை vpiStringVal:
+	    return_மதிப்பு_2 = std::string(vp->value.str);
+	    நிறுத்து;
+	  இயல்பு:
+	    fprintf(stderr, "Unsupported format %d.\n", (முழு)vp->format);
+	    ப்ரதிஜ்ஞா(0);
       }
-      return 0;
+
+      திரும்பு 0;
 }
 
-vpiHandle sysfunc_vec4::put_value_int_(p_vpi_value vp)
+வகுப்பு sysfunc_vec4 : பொது sysfunc_def {
+    பொது:
+      explicit உள்வரி sysfunc_vec4(unsigned wid): return_மதிப்பு_2(wid, BIT4_X) { }
+      முழு vpi_get(முழு code) override;
+      vpiHandle vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags) override;
+      உள்வரி மாறிலி vvp_vector4_t& return_மதிப்பு() மாறிலி { திரும்பு return_மதிப்பு_2; }
+
+    தனிப்பட்ட:
+      vpiHandle put_மதிப்பு_scalar(p_vpi_மதிப்பு vp);
+      vpiHandle put_மதிப்பு_int(p_vpi_மதிப்பு vp);
+      vpiHandle put_மதிப்பு_string(p_vpi_மதிப்பு vp);
+      vpiHandle put_மதிப்பு_vector(p_vpi_மதிப்பு vp);
+      vpiHandle put_மதிப்பு_time(p_vpi_மதிப்பு vp);
+
+      vvp_vector4_t return_மதிப்பு_2;
+};
+
+முழு sysfunc_vec4::vpi_get(முழு code)
+{
+      தேர்வு (code) {
+	  நிலை vpiSize:
+	    திரும்பு return_மதிப்பு_2.size();
+
+	  நிலை vpi_வரி_No:
+	    திரும்பு lineno;
+
+	  நிலை vpiUserDefn:
+	    திரும்பு defn->is_user_defn;
+
+	  இயல்பு:
+	    திரும்பு vpiUndefined;
+      }
+}
+
+vpiHandle sysfunc_vec4::put_மதிப்பு_scalar(மாறிலி p_vpi_மதிப்பு vp)
+{
+      தேர்வு (vp->value.scalar) {
+	  நிலை vpi0:
+	    return_மதிப்பு_2.set_bit(0, BIT4_0);
+	    நிறுத்து;
+	  நிலை vpi1:
+	    return_மதிப்பு_2.set_bit(0, BIT4_1);
+	    நிறுத்து;
+	  நிலை vpiX:
+	    return_மதிப்பு_2.set_bit(0, BIT4_X);
+	    நிறுத்து;
+	  நிலை vpiZ:
+	    return_மதிப்பு_2.set_bit(0, BIT4_Z);
+	    நிறுத்து;
+	  இயல்பு:
+	    fprintf(stderr, "Unsupported value %d.\n", (முழு)vp->value.scalar);
+	    ப்ரதிஜ்ஞா(0);
+      }
+      திரும்பு 0;
+}
+
+vpiHandle sysfunc_vec4::put_மதிப்பு_int(p_vpi_மதிப்பு vp)
 {
       long tmp = vp->value.integer;
-      unsigned width = return_value_.size();
-      for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
-	    return_value_.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
+      unsigned width = return_மதிப்பு_2.size();
+      க்கு (unsigned idx = 0 ;  idx < width ;  idx += 1) {
+	    return_மதிப்பு_2.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
 	    tmp >>= 1;
       }
 
-      return 0;
+      திரும்பு 0;
 }
 
-vpiHandle sysfunc_vec4::put_value_string_(p_vpi_value vp)
+vpiHandle sysfunc_vec4::put_மதிப்பு_string(p_vpi_மதிப்பு vp)
 {
       size_t slen = strlen(vp->value.str);
-      unsigned wid = return_value_.size();
+      unsigned wid = return_மதிப்பு_2.size();
 
-      for (unsigned idx = 0 ; idx < wid ; idx += 1) {
+      க்கு (unsigned idx = 0 ; idx < wid ; idx += 1) {
 	    unsigned cidx = idx / 8;
 	      // If wider then the string, then pad with zero.
-	    if (cidx >= slen) {
-		  return_value_.set_bit(idx, BIT4_0);
-		  continue;
+	    எனில் (cidx >= slen) {
+		  return_மதிப்பு_2.set_bit(idx, BIT4_0);
+		  தொடர்;
 	    }
 
 	      // Put the end of the string in the LSB of the vector
-	    char use_char = vp->value.str[slen - 1 - cidx];
+	    எழுத்து use_char = vp->value.str[slen - 1 - cidx];
 
-	    if ((use_char >> (idx % 8)) & 1)
-		  return_value_.set_bit(idx, BIT4_1);
-	    else
-		  return_value_.set_bit(idx, BIT4_0);
+	    எனில் ((use_char >> (idx % 8)) & 1)
+		  return_மதிப்பு_2.set_bit(idx, BIT4_1);
+	    இல்லையெனில்
+		  return_மதிப்பு_2.set_bit(idx, BIT4_0);
       }
-      return 0;
+      திரும்பு 0;
 }
 
-vpiHandle sysfunc_vec4::put_value_vector_(p_vpi_value vp)
+vpiHandle sysfunc_vec4::put_மதிப்பு_vector(p_vpi_மதிப்பு vp)
 {
-      unsigned width = return_value_.size();
-      for (unsigned idx = 0 ; idx < width ; idx += 1) {
+      unsigned width = return_மதிப்பு_2.size();
+      க்கு (unsigned idx = 0 ; idx < width ; idx += 1) {
 	    unsigned word = idx / 32;
 	    unsigned bidx = idx % 32;
 
 	    unsigned long aval = vp->value.vector[word].aval >> bidx;
 	    unsigned long bval = vp->value.vector[word].bval >> bidx;
 
-	    int bit = (aval&1) | ((bval<<1)&2);
+	    முழு bit = (aval&1) | ((bval<<1)&2);
 	    vvp_bit4_t bit4;
 
-	    switch (bit) {
-		case 0:
+	    தேர்வு (bit) {
+		நிலை 0:
 		  bit4 = BIT4_0;
-		  break;
-		case 1:
+		  நிறுத்து;
+		நிலை 1:
 		  bit4 = BIT4_1;
-		  break;
-		case 2:
+		  நிறுத்து;
+		நிலை 2:
 		  bit4 = BIT4_Z;
-		  break;
-		case 3:
+		  நிறுத்து;
+		நிலை 3:
 		  bit4 = BIT4_X;
-		  break;
-		default:
-		  assert(0);
+		  நிறுத்து;
+		இயல்பு:
+		  ப்ரதிஜ்ஞா(0);
 		  bit4 = BIT4_X;
-		  break;
+		  நிறுத்து;
 	    }
-	    return_value_.set_bit(idx, bit4);
+	    return_மதிப்பு_2.set_bit(idx, bit4);
       }
-      return 0;
+      திரும்பு 0;
 }
 
-vpiHandle sysfunc_vec4::put_value_time_(p_vpi_value vp)
+vpiHandle sysfunc_vec4::put_மதிப்பு_time(p_vpi_மதிப்பு vp)
 {
-      unsigned width = return_value_.size();
+      unsigned width = return_மதிப்பு_2.size();
       long tmp = 0;
-      for (unsigned idx = 0 ; idx < width ; idx += 1) {
-	    if (idx == 0)
-		  tmp = vp->value.time->low;
-	    else if (idx == 32)
-		  tmp = vp->value.time->high;
-	    else if (idx == 64)
+      க்கு (unsigned idx = 0 ; idx < width ; idx += 1) {
+	    எனில் (idx == 0)
+		  tmp = vp->value.time->கீழ்;
+	    இல்லையெனில் எனில் (idx == 32)
+		  tmp = vp->value.time->உயர்வு;
+	    இல்லையெனில் எனில் (idx == 64)
 		  tmp = 0;
 
-	    return_value_.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
+	    return_மதிப்பு_2.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
 	    tmp >>= 1;
       }
-      return 0;
+      திரும்பு 0;
 }
 
-vpiHandle sysfunc_vec4::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_vec4::vpi_put_மதிப்பு(p_vpi_மதிப்பு vp, முழு)
 {
-      put_value = true;
+      put_மதிப்பு = உண்மை;
 
-      switch (vp->format) {
-	  case vpiScalarVal:
-	    return put_value_scalar_(vp);
-	  case vpiIntVal:
-	    return put_value_int_(vp);
-	  case vpiStringVal:
-	    return put_value_string_(vp);
-	  case vpiVectorVal:
-	    return put_value_vector_(vp);
-	  case vpiTimeVal:
-	    return put_value_time_(vp);
-	  default:
-	    fprintf(stderr, "Unsupported format %d setting sysfunc vec4 value.\n", (int)vp->format);
-	    assert(0);
+      தேர்வு (vp->format) {
+	  நிலை vpiScalarVal:
+	    திரும்பு put_மதிப்பு_scalar(vp);
+	  நிலை vpiIntVal:
+	    திரும்பு put_மதிப்பு_int(vp);
+	  நிலை vpiStringVal:
+	    திரும்பு put_மதிப்பு_string(vp);
+	  நிலை vpiVectorVal:
+	    திரும்பு put_மதிப்பு_vector(vp);
+	  நிலை vpiTimeVal:
+	    திரும்பு put_மதிப்பு_time(vp);
+	  இயல்பு:
+	    fprintf(stderr, "Unsupported format %d setting sysfunc vec4 value.\n", (முழு)vp->format);
+	    ப்ரதிஜ்ஞா(0);
       }
 
-      return 0;
+      திரும்பு 0;
 }
 
-struct sysfunc_4net : public sysfunc_def {
-      explicit inline sysfunc_4net(unsigned wid) : vwid_(wid) { }
-      int vpi_get(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+கட்டமைப்பு sysfunc_4net : பொது sysfunc_def {
+      explicit உள்வரி sysfunc_4net(unsigned wid) : vwid_(wid) { }
+      முழு vpi_get(முழு code) override;
+      vpiHandle vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags) override;
 
-    private:
+    தனிப்பட்ட:
       unsigned vwid_;
 };
 
 // support getting vpiSize for a system function call
-int sysfunc_4net::vpi_get(int code)
+முழு sysfunc_4net::vpi_get(முழு code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return vwid_;
+      தேர்வு (code) {
+	  நிலை vpiSize:
+	    திரும்பு vwid_;
 
-	  case vpiLineNo:
-	    return lineno;
+	  நிலை vpi_வரி_No:
+	    திரும்பு lineno;
 
-	  case vpiUserDefn:
-	    return defn->is_user_defn;
+	  நிலை vpiUserDefn:
+	    திரும்பு defn->is_user_defn;
 
-	  default:
-	    return vpiUndefined;
+	  இயல்பு:
+	    திரும்பு vpiUndefined;
       }
 }
 
-vpiHandle sysfunc_4net::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_4net::vpi_put_மதிப்பு(p_vpi_மதிப்பு vp, முழு)
 {
-      put_value = true;
+      put_மதிப்பு = உண்மை;
 
       vvp_vector4_t val (vwid_);
 
-      switch (vp->format) {
+      தேர்வு (vp->format) {
 
-          case vpiScalarVal: {
-	        switch(vp->value.scalar) {
-		      case vpi0:
+          நிலை vpiScalarVal: {
+	        தேர்வு(vp->value.scalar) {
+		      நிலை vpi0:
 			val.set_bit(0, BIT4_0);
-                        break;
-		      case vpi1:
+                        நிறுத்து;
+		      நிலை vpi1:
                         val.set_bit(0, BIT4_1);
-                        break;
-		      case vpiX:
+                        நிறுத்து;
+		      நிலை vpiX:
                         val.set_bit(0, BIT4_X);
-                        break;
-		      case vpiZ:
+                        நிறுத்து;
+		      நிலை vpiZ:
                         val.set_bit(0, BIT4_Z);
-                        break;
-		      default:
+                        நிறுத்து;
+		      இயல்பு:
                         fprintf(stderr, "Unsupported bit value %d.\n",
-                                (int)vp->value.scalar);
-                        assert(0);
+                                (முழு)vp->value.scalar);
+                        ப்ரதிஜ்ஞா(0);
                 }
-		break;
+		நிறுத்து;
           }
 
-	  case vpiIntVal: {
+	  நிலை vpiIntVal: {
 		long tmp = vp->value.integer;
-		for (unsigned idx = 0 ;  idx < vwid_ ;  idx += 1) {
+		க்கு (unsigned idx = 0 ;  idx < vwid_ ;  idx += 1) {
 		      val.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
 		      tmp >>= 1;
 		}
-		break;
+		நிறுத்து;
 	  }
 
-          case vpiTimeVal: {
-                unsigned long tmp = vp->value.time->low;
-                for (unsigned idx = 0 ;  idx < vwid_ ;  idx += 1) {
+          நிலை vpiTimeVal: {
+                unsigned long tmp = vp->value.time->கீழ்;
+                க்கு (unsigned idx = 0 ;  idx < vwid_ ;  idx += 1) {
                       val.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
 
-                      if (idx == 31)
-                            tmp = vp->value.time->high;
-                      else
+                      எனில் (idx == 31)
+                            tmp = vp->value.time->உயர்வு;
+                      இல்லையெனில்
                             tmp >>= 1;
                 }
-                break;
+                நிறுத்து;
           }
 
-	  case vpiVectorVal:
+	  நிலை vpiVectorVal:
 
-	    for (unsigned wdx = 0 ;  wdx < vwid_ ;  wdx += 32) {
+	    க்கு (unsigned wdx = 0 ;  wdx < vwid_ ;  wdx += 32) {
 		  unsigned word = wdx / 32;
 		  unsigned long aval = vp->value.vector[word].aval;
 		  unsigned long bval = vp->value.vector[word].bval;
 
-		  for (unsigned idx = 0 ;  (wdx+idx) < vwid_ && idx < 32;
+		  க்கு (unsigned idx = 0 ;  (wdx+idx) < vwid_ && idx < 32;
 		       idx += 1) {
-			int bit = (aval&1) | ((bval<<1)&2);
+			முழு bit = (aval&1) | ((bval<<1)&2);
 			vvp_bit4_t bit4;
 
-			switch (bit) {
-			    case 0:
+			தேர்வு (bit) {
+			    நிலை 0:
 			      bit4 = BIT4_0;
-			      break;
-			    case 1:
+			      நிறுத்து;
+			    நிலை 1:
 			      bit4 = BIT4_1;
-			      break;
-			    case 2:
+			      நிறுத்து;
+			    நிலை 2:
 			      bit4 = BIT4_Z;
-			      break;
-			    case 3:
+			      நிறுத்து;
+			    நிலை 3:
 			      bit4 = BIT4_X;
-			      break;
-			    default:
+			      நிறுத்து;
+			    இயல்பு:
 			      bit4 = BIT4_X;
 			      fprintf(stderr, "Unsupported bit value %d.\n",
 			              bit);
-			      assert(0);
+			      ப்ரதிஜ்ஞா(0);
 			}
 			val.set_bit(wdx+idx, bit4);
 
@@ -507,50 +507,50 @@ vpiHandle sysfunc_4net::vpi_put_value(p_vpi_value vp, int)
 			bval >>= 1;
 		  }
 	    }
-	    break;
+	    நிறுத்து;
 
-	  default:
-	    fprintf(stderr, "XXXX format=%d, vwid_=%u\n", (int)vp->format, vwid_);
-	    assert(0);
+	  இயல்பு:
+	    fprintf(stderr, "XXXX format=%d, vwid_=%u\n", (முழு)vp->format, vwid_);
+	    ப்ரதிஜ்ஞா(0);
       }
 
       fnet->send_vec4(val, vthread_get_wt_context());
-      return 0;
+      திரும்பு 0;
 }
 
-struct sysfunc_rnet : public sysfunc_def {
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+கட்டமைப்பு sysfunc_rnet : பொது sysfunc_def {
+      vpiHandle vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags) override;
 };
 
-vpiHandle sysfunc_rnet::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_rnet::vpi_put_மதிப்பு(p_vpi_மதிப்பு vp, முழு)
 {
-      put_value = true;
+      put_மதிப்பு = உண்மை;
 
-      double value;
-      switch (vp->format) {
+      இரட்டை value;
+      தேர்வு (vp->format) {
 
-	  case vpiRealVal:
+	  நிலை vpiRealVal:
 	    value = vp->value.real;
-	    break;
+	    நிறுத்து;
 
-	  default:
+	  இயல்பு:
 	    value = 0.0;
-	    fprintf(stderr, "Unsupported format %d.\n", (int)vp->format);
-	    assert(0);
+	    fprintf(stderr, "Unsupported format %d.\n", (முழு)vp->format);
+	    ப்ரதிஜ்ஞா(0);
       }
 
       fnet->send_real(value, vthread_get_wt_context());
 
-      return 0;
+      திரும்பு 0;
 }
 
-struct sysfunc_no : public sysfunc_def {
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+கட்டமைப்பு sysfunc_no : பொது sysfunc_def {
+      vpiHandle vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags) override;
 };
 
-vpiHandle sysfunc_no::vpi_put_value(p_vpi_value, int)
+vpiHandle sysfunc_no::vpi_put_மதிப்பு(p_vpi_மதிப்பு, முழு)
 {
-      return 0;
+      திரும்பு 0;
 }
 
 
@@ -563,209 +563,209 @@ vpiHandle sysfunc_no::vpi_put_value(p_vpi_value, int)
  * by name using the vpi_find_systf function, and they can be
  * collected into an iterator using the vpip_make_systf_iterator function.
  */
-static struct __vpiUserSystf**def_table = 0;
-static unsigned def_count = 0;
+நிலையான கட்டமைப்பு __vpiUserSystf**def_table = 0;
+நிலையான unsigned def_மொத்தம் = 0;
 
-static struct __vpiUserSystf* allocate_def(void)
+நிலையான கட்டமைப்பு __vpiUserSystf* allocate_def(வெறுமை)
 {
-      if (def_table == 0) {
-	    def_table = static_cast<struct __vpiUserSystf**>
-	                (malloc(sizeof(struct __vpiUserSystf*)));
+      எனில் (def_table == 0) {
+	    def_table = static_cast<கட்டமைப்பு __vpiUserSystf**>
+	                (malloc(அளவு(கட்டமைப்பு __vpiUserSystf*)));
 
-	    def_table[0] = new __vpiUserSystf;
+	    def_table[0] = புதிய __vpiUserSystf;
 
-	    def_count = 1;
-	    return def_table[0];
+	    def_மொத்தம் = 1;
+	    திரும்பு def_table[0];
       }
 
-      def_table = static_cast<struct __vpiUserSystf**>
+      def_table = static_cast<கட்டமைப்பு __vpiUserSystf**>
                   (realloc(def_table,
-                   (def_count+1)*sizeof(struct __vpiUserSystf*)));
+                   (def_மொத்தம்+1)*அளவு(கட்டமைப்பு __vpiUserSystf*)));
 
-      def_table[def_count] = new __vpiUserSystf;
+      def_table[def_மொத்தம்] = புதிய __vpiUserSystf;
 
-      return def_table[def_count++];
+      திரும்பு def_table[def_மொத்தம்++];
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void def_table_delete(void)
+வெறுமை def_table_delete(வெறுமை)
 {
-      for (unsigned idx = 0; idx < def_count; idx += 1) {
-	    free(const_cast<char *>(def_table[idx]->info.tfname));
+      க்கு (unsigned idx = 0; idx < def_மொத்தம்; idx += 1) {
+	    விடுவி(const_cast<எழுத்து *>(def_table[idx]->info.tfname));
 	    delete def_table[idx];
       }
-      free(def_table);
+      விடுவி(def_table);
       def_table = 0;
-      def_count = 0;
+      def_மொத்தம் = 0;
 }
 #endif
 
-class __vpiSystfIterator : public __vpiHandle {
-    public:
+வகுப்பு __vpiSystfIterator : பொது __vpiHandle {
+    பொது:
       explicit __vpiSystfIterator(unsigned idx);
-      int get_type_code(void) const override;
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+      முழு get_type_code(வெறுமை) மாறிலி override;
+      vpiHandle vpi_index(முழு idx) override;
+      free_object_fun_t free_object_fun(வெறுமை) override;
 
       unsigned next;
 };
 
-static vpiHandle systf_iterator_scan(vpiHandle ref, int)
+நிலையான vpiHandle systf_iterator_scan(vpiHandle ref, முழு)
 {
       __vpiSystfIterator*obj = dynamic_cast<__vpiSystfIterator*>(ref);
 
-      if (obj->next >= def_count) {
+      எனில் (obj->next >= def_மொத்தம்) {
 	    vpi_free_object(ref);
-	    return 0;
+	    திரும்பு 0;
       }
 
       unsigned use_index = obj->next;
-      while (!def_table[use_index]->is_user_defn) {
+      போது (!def_table[use_index]->is_user_defn) {
 	    obj->next += 1;
 	    use_index = obj->next;
-	    if (obj->next >= def_count) {
+	    எனில் (obj->next >= def_மொத்தம்) {
 		  vpi_free_object(ref);
-		  return 0;
+		  திரும்பு 0;
 	    }
       }
       obj->next += 1;
-      return def_table[use_index];
+      திரும்பு def_table[use_index];
 }
 
-static int systf_iterator_free_object(vpiHandle ref)
+நிலையான முழு systf_iterator_free_object(vpiHandle ref)
 {
       __vpiSystfIterator*obj = dynamic_cast<__vpiSystfIterator*>(ref);
       delete obj;
-      return 1;
+      திரும்பு 1;
 }
 
-inline __vpiSystfIterator::__vpiSystfIterator(unsigned idx)
+உள்வரி __vpiSystfIterator::__vpiSystfIterator(unsigned idx)
 { next = idx; }
 
-int __vpiSystfIterator::get_type_code(void) const
-{ return vpiIterator; }
+முழு __vpiSystfIterator::get_type_code(வெறுமை) மாறிலி
+{ திரும்பு vpiIterator; }
 
-vpiHandle __vpiSystfIterator::vpi_index(int idx)
-{ return systf_iterator_scan(this, idx); }
+vpiHandle __vpiSystfIterator::vpi_index(முழு idx)
+{ திரும்பு systf_iterator_scan(இது, idx); }
 
-__vpiHandle::free_object_fun_t __vpiSystfIterator::free_object_fun(void)
-{ return &systf_iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiSystfIterator::free_object_fun(வெறுமை)
+{ திரும்பு &systf_iterator_free_object; }
 
-vpiHandle vpip_make_systf_iterator(void)
+vpiHandle vpip_make_systf_iterator(வெறுமை)
 {
 	/* Check to see if there are any user defined functions. */
-      bool have_user_defn = false;
+      தருக்க have_user_defn = பொய்;
       unsigned idx;
-      for (idx = 0; idx < def_count; idx += 1) {
-	    if (def_table[idx]->is_user_defn) {
-		  have_user_defn = true;
-		  break;
+      க்கு (idx = 0; idx < def_மொத்தம்; idx += 1) {
+	    எனில் (def_table[idx]->is_user_defn) {
+		  have_user_defn = உண்மை;
+		  நிறுத்து;
 	    }
       }
-      if (!have_user_defn) return 0;
+      எனில் (!have_user_defn) திரும்பு 0;
 
-      __vpiSystfIterator*res = new __vpiSystfIterator(idx);
+      __vpiSystfIterator*res = புதிய __vpiSystfIterator(idx);
       res->next = idx;
-      return res;
+      திரும்பு res;
 }
 
-struct __vpiUserSystf* vpip_find_systf(const char*name)
+கட்டமைப்பு __vpiUserSystf* vpip_find_systf(மாறிலி எழுத்து*name)
 {
-      for (unsigned idx = 0 ;  idx < def_count ;  idx += 1)
-	    if (strcmp(def_table[idx]->info.tfname, name) == 0)
-		  return def_table[idx];
+      க்கு (unsigned idx = 0 ;  idx < def_மொத்தம் ;  idx += 1)
+	    எனில் (strcmp(def_table[idx]->info.tfname, name) == 0)
+		  திரும்பு def_table[idx];
 
-      return 0;
+      திரும்பு 0;
 }
 
-void vpip_make_systf_system_defined(vpiHandle ref)
+வெறுமை vpip_make_systf_system_defined(vpiHandle ref)
 {
-      assert(ref);
-      struct __vpiUserSystf*obj = dynamic_cast<__vpiUserSystf*>(ref);
-      assert(obj);
-      obj->is_user_defn = false;
+      ப்ரதிஜ்ஞா(ref);
+      கட்டமைப்பு __vpiUserSystf*obj = dynamic_cast<__vpiUserSystf*>(ref);
+      ப்ரதிஜ்ஞா(obj);
+      obj->is_user_defn = பொய்;
 }
 
 /*
  * To get better error message we need to cache the vpi_call fail
  * information so that we can print the file name.
  */
-enum vpi_call_error_type {VPI_CALL_NO_DEF, VPI_CALL_TASK_AS_FUNC,
+எண்ணிக்கை vpi_call_error_type {VPI_CALL_NO_DEF, VPI_CALL_TASK_AS_FUNC,
                           VPI_CALL_FUNC_AS_TASK, VPI_CALL_FUNC_AS_TASK_WARN};
-typedef struct vpi_call_error {
+வகைவரை கட்டமைப்பு vpi_call_error {
       vpi_call_error_type type;
-      char *name;
+      எழுத்து *name;
       long file_idx;
       long lineno;
 } vpi_call_error_s, *vpi_call_error_p;
 
-static vpi_call_error_p vpi_call_error_lst = NULL;
-static unsigned vpi_call_error_num = 0;
+நிலையான vpi_call_error_p vpi_call_error_lst = வெற்று;
+நிலையான unsigned vpi_call_error_இலக்கம் = 0;
 
-static void add_vpi_call_error(vpi_call_error_type type, const char *name,
+நிலையான வெறுமை add_vpi_call_error(vpi_call_error_type type, மாறிலி எழுத்து *name,
                                long file_idx, long lineno)
 {
       vpi_call_error_lst = static_cast<vpi_call_error_p>
                            (realloc(vpi_call_error_lst,
-                                    (vpi_call_error_num + 1) *
-                                    sizeof(vpi_call_error_s)));
-      vpi_call_error_lst[vpi_call_error_num].type = type;
-      vpi_call_error_lst[vpi_call_error_num].name = strdup(name);
-      vpi_call_error_lst[vpi_call_error_num].file_idx = file_idx;
-      vpi_call_error_lst[vpi_call_error_num].lineno = lineno;
-      vpi_call_error_num += 1;
+                                    (vpi_call_error_இலக்கம் + 1) *
+                                    அளவு(vpi_call_error_s)));
+      vpi_call_error_lst[vpi_call_error_இலக்கம்].type = type;
+      vpi_call_error_lst[vpi_call_error_இலக்கம்].name = strdup(name);
+      vpi_call_error_lst[vpi_call_error_இலக்கம்].file_idx = file_idx;
+      vpi_call_error_lst[vpi_call_error_இலக்கம்].lineno = lineno;
+      vpi_call_error_இலக்கம் += 1;
 }
 
-void print_vpi_call_errors()
+வெறுமை print_vpi_call_errors()
 {
-      for (unsigned idx = 0; idx < vpi_call_error_num; idx += 1) {
-	    switch (vpi_call_error_lst[idx].type) {
-		case VPI_CALL_NO_DEF:
+      க்கு (unsigned idx = 0; idx < vpi_call_error_இலக்கம்; idx += 1) {
+	    தேர்வு (vpi_call_error_lst[idx].type) {
+		நிலை VPI_CALL_NO_DEF:
 		  fprintf(stderr, "%s:%d: Error: System task/function %s() is "
 		                  "not defined by any module.\n",
 		                  file_names[vpi_call_error_lst[idx].file_idx],
-		                  (int)vpi_call_error_lst[idx].lineno,
+		                  (முழு)vpi_call_error_lst[idx].lineno,
 		                  vpi_call_error_lst[idx].name);
-		  break;
-		case VPI_CALL_TASK_AS_FUNC:
+		  நிறுத்து;
+		நிலை VPI_CALL_TASK_AS_FUNC:
 		  fprintf(stderr, "%s:%d: Error: %s() is a system task, it "
 			          "cannot be called as a function.\n",
 		                  file_names[vpi_call_error_lst[idx].file_idx],
-		                  (int)vpi_call_error_lst[idx].lineno,
+		                  (முழு)vpi_call_error_lst[idx].lineno,
 		                  vpi_call_error_lst[idx].name);
-		  break;
-		case VPI_CALL_FUNC_AS_TASK:
+		  நிறுத்து;
+		நிலை VPI_CALL_FUNC_AS_TASK:
 		  fprintf(stderr, "%s:%d: Error: %s() is a system function, it "
 			          "cannot be called as a task.\n",
 		                  file_names[vpi_call_error_lst[idx].file_idx],
-		                  (int)vpi_call_error_lst[idx].lineno,
+		                  (முழு)vpi_call_error_lst[idx].lineno,
 		                  vpi_call_error_lst[idx].name);
-		  break;
-		case VPI_CALL_FUNC_AS_TASK_WARN:
+		  நிறுத்து;
+		நிலை VPI_CALL_FUNC_AS_TASK_WARN:
                  fprintf(stderr, "%s:%d: Warning: Calling system function "
                                  "%s() as a task.\n",
 		                  file_names[vpi_call_error_lst[idx].file_idx],
-		                  (int)vpi_call_error_lst[idx].lineno,
+		                  (முழு)vpi_call_error_lst[idx].lineno,
 		                  vpi_call_error_lst[idx].name);
                  fprintf(stderr, "%s:%d:          The functions return "
                                  "value will be ignored.\n",
                                  file_names[vpi_call_error_lst[idx].file_idx],
-                                 (int)vpi_call_error_lst[idx].lineno);
-		  break;
+                                 (முழு)vpi_call_error_lst[idx].lineno);
+		  நிறுத்து;
 	    }
-	    free(vpi_call_error_lst[idx].name);
+	    விடுவி(vpi_call_error_lst[idx].name);
       }
-      free(vpi_call_error_lst);
+      விடுவி(vpi_call_error_lst);
       fflush(stderr);
 }
 
 #ifdef CHECK_WITH_VALGRIND
-static void cleanup_vpi_call_args(unsigned argc, vpiHandle*argv)
+நிலையான வெறுமை cleanup_vpi_call_args(unsigned argc, vpiHandle*argv)
 {
-      if (argc) {
+      எனில் (argc) {
 	      /* Since this is just being used to cleanup the arguments a
 	       * system task definition can be used. */
-	    struct __vpiSysTaskCall*obj = new systask_def;
+	    கட்டமைப்பு __vpiSysTaskCall*obj = புதிய systask_def;
 	    obj->nargs = argc;
 	    obj->args  = argv;
 	    vpi_call_delete(obj);
@@ -781,155 +781,155 @@ static void cleanup_vpi_call_args(unsigned argc, vpiHandle*argv)
  * describes the call, and return it. The %vpi_call instruction will
  * store this handle for when it is executed.
  */
-vpiHandle vpip_build_vpi_call(const char*name, int val_code, unsigned return_width,
+vpiHandle vpip_build_vpi_call(மாறிலி எழுத்து*name, முழு val_code, unsigned return_width,
 			      vvp_net_t*fnet,
-			      bool func_as_task_err, bool func_as_task_warn,
+			      தருக்க func_as_task_err, தருக்க func_as_task_warn,
 			      unsigned argc, vpiHandle*argv,
-			      unsigned vec4_stack, unsigned real_stack, unsigned string_stack,
+			      unsigned vec4_அடுக்கு, unsigned real_அடுக்கு, unsigned string_அடுக்கு,
 			      long file_idx, long lineno)
 {
-      assert(!(func_as_task_err && func_as_task_warn));
+      ப்ரதிஜ்ஞா(!(func_as_task_err && func_as_task_warn));
 
-      struct __vpiUserSystf*defn = vpip_find_systf(name);
-      if (defn == 0) {
+      கட்டமைப்பு __vpiUserSystf*defn = vpip_find_systf(name);
+      எனில் (defn == 0) {
 	    add_vpi_call_error(VPI_CALL_NO_DEF, name, file_idx, lineno);
 #ifdef CHECK_WITH_VALGRIND
 	    cleanup_vpi_call_args(argc, argv);
 #endif
-	    return 0;
+	    திரும்பு 0;
       }
 
-      switch (defn->info.type) {
-	  case vpiSysTask:
-	    if (val_code != 0 || fnet != 0) {
+      தேர்வு (defn->info.type) {
+	  நிலை vpiSysTask:
+	    எனில் (val_code != 0 || fnet != 0) {
 		  add_vpi_call_error(VPI_CALL_TASK_AS_FUNC, name, file_idx,
 		                     lineno);
 #ifdef CHECK_WITH_VALGRIND
 		  cleanup_vpi_call_args(argc, argv);
 #endif
-		  return 0;
+		  திரும்பு 0;
 	    }
-	    break;
+	    நிறுத்து;
 
-	  case vpiSysFunc:
-	    if (val_code == 0 && fnet == 0) {
-		  if (func_as_task_err) {
+	  நிலை vpiSysFunc:
+	    எனில் (val_code == 0 && fnet == 0) {
+		  எனில் (func_as_task_err) {
 			add_vpi_call_error(VPI_CALL_FUNC_AS_TASK,
 			                   name, file_idx, lineno);
 #ifdef CHECK_WITH_VALGRIND
 			cleanup_vpi_call_args(argc, argv);
 #endif
-			return 0;
-		  } else if (func_as_task_warn) {
+			திரும்பு 0;
+		  } இல்லையெனில் எனில் (func_as_task_warn) {
 			add_vpi_call_error(VPI_CALL_FUNC_AS_TASK_WARN,
 			                   name, file_idx, lineno);
 		  }
 	    }
-	    break;
+	    நிறுத்து;
 
-	  default:
+	  இயல்பு:
 	    fprintf(stderr, "Unsupported vpi_call type %d.\n",
-	                    (int)defn->info.type);
-	    assert(0);
+	                    (முழு)defn->info.type);
+	    ப்ரதிஜ்ஞா(0);
       }
 
-      struct __vpiSysTaskCall*obj = 0;
+      கட்டமைப்பு __vpiSysTaskCall*obj = 0;
 
-      switch (defn->info.type) {
-	  case vpiSysTask:
-	    obj = new systask_def;
-	    break;
+      தேர்வு (defn->info.type) {
+	  நிலை vpiSysTask:
+	    obj = புதிய systask_def;
+	    நிறுத்து;
 
-	  case vpiSysFunc:
-	    if (fnet && val_code == -vpiRealVal) {
-		  obj = new sysfunc_rnet;
+	  நிலை vpiSysFunc:
+	    எனில் (fnet && val_code == -vpiRealVal) {
+		  obj = புதிய sysfunc_rnet;
 
-	    } else if (fnet && val_code == -vpiVectorVal) {
-		  obj = new sysfunc_4net(return_width);
+	    } இல்லையெனில் எனில் (fnet && val_code == -vpiVectorVal) {
+		  obj = புதிய sysfunc_4net(return_width);
 
-	    } else if (val_code == -vpiRealVal) {
-		  obj = new sysfunc_real;
+	    } இல்லையெனில் எனில் (val_code == -vpiRealVal) {
+		  obj = புதிய sysfunc_real;
 
-	    } else if (val_code == -vpiVectorVal) {
-		  obj = new sysfunc_vec4(return_width);
+	    } இல்லையெனில் எனில் (val_code == -vpiVectorVal) {
+		  obj = புதிய sysfunc_vec4(return_width);
 
-	    } else if (val_code == -vpiStringVal) {
-		  obj = new sysfunc_str;
+	    } இல்லையெனில் எனில் (val_code == -vpiStringVal) {
+		  obj = புதிய sysfunc_str;
 
-           } else if (val_code == 0 && fnet == 0) {
-		  obj = new sysfunc_no;
+           } இல்லையெனில் எனில் (val_code == 0 && fnet == 0) {
+		  obj = புதிய sysfunc_no;
 
-	    } else {
+	    } இல்லையெனில் {
 		  fprintf(stderr, "XXXX fnet=%p, val_code=%d\n", fnet, val_code);
-		  assert(0);
+		  ப்ரதிஜ்ஞா(0);
 	    }
-	    break;
+	    நிறுத்து;
       }
 
       obj->scope = vpip_peek_current_scope();
       obj->defn  = defn;
       obj->nargs = argc;
       obj->args  = argv;
-      obj->vec4_stack = vec4_stack;
-      obj->real_stack = real_stack;
-      obj->string_stack = string_stack;
+      obj->vec4_அடுக்கு = vec4_அடுக்கு;
+      obj->real_அடுக்கு = real_அடுக்கு;
+      obj->string_அடுக்கு = string_அடுக்கு;
       obj->fnet  = fnet;
       obj->file_idx  = (unsigned) file_idx;
       obj->lineno   = (unsigned) lineno;
       obj->userdata  = 0;
-      obj->put_value = false;
+      obj->put_மதிப்பு = பொய்;
 
       compile_compiletf(obj);
 
-      return obj;
+      திரும்பு obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vpi_call_delete(vpiHandle item)
+வெறுமை vpi_call_delete(vpiHandle item)
 {
-      struct __vpiSysTaskCall*obj = dynamic_cast<__vpiSysTaskCall*>(item);
+      கட்டமைப்பு __vpiSysTaskCall*obj = dynamic_cast<__vpiSysTaskCall*>(item);
 	/* The object can be NULL if there was an error. */
-      if (!obj) return;
-      for (unsigned arg = 0; arg < obj->nargs; arg += 1) {
-	    switch (obj->args[arg]->get_type_code()) {
-		case vpiConstant:
-		  switch (vpi_get(_vpiFromThr, obj->args[arg])) {
-		      case _vpiNoThr:
+      எனில் (!obj) திரும்பு;
+      க்கு (unsigned arg = 0; arg < obj->nargs; arg += 1) {
+	    தேர்வு (obj->args[arg]->get_type_code()) {
+		நிலை vpiConstant:
+		  தேர்வு (vpi_get(_vpiFromThr, obj->args[arg])) {
+		      நிலை _vpiNoThr:
 			constant_delete(obj->args[arg]);
-			break;
-		      case _vpiString:
+			நிறுத்து;
+		      நிலை _vpiString:
 			thread_string_delete(obj->args[arg]);
-			break;
-		      case _vpiVThr:
+			நிறுத்து;
+		      நிலை _vpiVThr:
 			thread_vthr_delete(obj->args[arg]);
-			break;
-		      case _vpiWord:
+			நிறுத்து;
+		      நிலை _vpiWord:
 			thread_word_delete(obj->args[arg]);
-			break;
-		      default:
-			assert(0);
+			நிறுத்து;
+		      இயல்பு:
+			ப்ரதிஜ்ஞா(0);
 		  }
-		  break;
-		case vpiMemoryWord:
-		  switch (vpi_get(_vpiFromThr, obj->args[arg])) {
-		      case _vpi_at_A:
+		  நிறுத்து;
+		நிலை vpiMemoryWord:
+		  தேர்வு (vpi_get(_vpiFromThr, obj->args[arg])) {
+		      நிலை _vpi_at_A:
 			A_delete(obj->args[arg]);
-			break;
+			நிறுத்து;
 		  }
-		  break;
-		case vpiPartSelect:
-		  switch (vpi_get(_vpiFromThr, obj->args[arg])) {
-		      case _vpi_at_PV:
+		  நிறுத்து;
+		நிலை vpiPartSelect:
+		  தேர்வு (vpi_get(_vpiFromThr, obj->args[arg])) {
+		      நிலை _vpi_at_PV:
 			PV_delete(obj->args[arg]);
-			break;
-		      case _vpi_at_APV:
+			நிறுத்து;
+		      நிலை _vpi_at_APV:
 			APV_delete(obj->args[arg]);
-			break;
+			நிறுத்து;
 		  }
-		  break;
+		  நிறுத்து;
 	    }
       }
-      free(obj->args);
+      விடுவி(obj->args);
       delete obj;
 }
 #endif
@@ -942,45 +942,45 @@ void vpi_call_delete(vpiHandle item)
 
 vthread_t vpip_current_vthread;
 
-void vpip_execute_vpi_call(vthread_t thr, vpiHandle ref)
+வெறுமை vpip_execute_vpi_call(vthread_t thr, vpiHandle ref)
 {
       vpip_current_vthread = thr;
 
       vpip_cur_task = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      if (vpip_cur_task->defn->info.calltf) {
-	    assert(vpi_mode_flag == VPI_MODE_NONE);
+      எனில் (vpip_cur_task->defn->info.calltf) {
+	    ப்ரதிஜ்ஞா(vpi_mode_flag == VPI_MODE_NONE);
 	    vpi_mode_flag = VPI_MODE_CALLTF;
-	    vpip_cur_task->put_value = false;
+	    vpip_cur_task->put_மதிப்பு = பொய்;
 	    vpip_cur_task->defn->info.calltf(vpip_cur_task->defn->info.user_data);
 	    vpi_mode_flag = VPI_MODE_NONE;
 	      /* If the function call did not set a value then put a
 	       * default value (0). */
-	    if (ref->get_type_code() == vpiSysFuncCall &&
-	        !vpip_cur_task->put_value) {
-		  s_vpi_value val;
+	    எனில் (ref->get_type_code() == vpiSysFuncCall &&
+	        !vpip_cur_task->put_மதிப்பு) {
+		  s_vpi_மதிப்பு val;
 		  val.format = vpiIntVal;
 		  val.value.integer = 0;
-		  vpi_put_value(ref, &val, 0, vpiNoDelay);
+		  vpi_put_மதிப்பு(ref, &val, 0, vpiNoDelay);
 	    }
       }
-      if (vpip_cur_task->vec4_stack > 0)
-	    vthread_pop_vec4(thr, vpip_cur_task->vec4_stack);
-      if (vpip_cur_task->real_stack > 0)
-	    vthread_pop_real(thr, vpip_cur_task->real_stack);
-      if (vpip_cur_task->string_stack > 0)
-	    vthread_pop_str(thr, vpip_cur_task->string_stack);
+      எனில் (vpip_cur_task->vec4_அடுக்கு > 0)
+	    vthread_எடு_vec4(thr, vpip_cur_task->vec4_அடுக்கு);
+      எனில் (vpip_cur_task->real_அடுக்கு > 0)
+	    vthread_எடு_real(thr, vpip_cur_task->real_அடுக்கு);
+      எனில் (vpip_cur_task->string_அடுக்கு > 0)
+	    vthread_எடு_str(thr, vpip_cur_task->string_அடுக்கு);
 
 	/* If the function returns a value, then push the value
 	   to the appropriate thread stack. */
-      if (const sysfunc_real*func_real = dynamic_cast<sysfunc_real*>(ref)) {
-	    vthread_push(thr, func_real->return_value());
+      எனில் (மாறிலி sysfunc_real*func_real = dynamic_cast<sysfunc_real*>(ref)) {
+	    vthread_தள்ளு(thr, func_real->return_மதிப்பு());
       }
-      else if (const sysfunc_str*func_string = dynamic_cast<sysfunc_str*>(ref)) {
-	    vthread_push(thr, func_string->return_value());
+      இல்லையெனில் எனில் (மாறிலி sysfunc_str*func_string = dynamic_cast<sysfunc_str*>(ref)) {
+	    vthread_தள்ளு(thr, func_string->return_மதிப்பு());
       }
-      else if (const sysfunc_vec4*func_vec4 = dynamic_cast<sysfunc_vec4*>(ref)) {
-	    vthread_push(thr, func_vec4->return_value());
+      இல்லையெனில் எனில் (மாறிலி sysfunc_vec4*func_vec4 = dynamic_cast<sysfunc_vec4*>(ref)) {
+	    vthread_தள்ளு(thr, func_vec4->return_மதிப்பு());
       }
       vpip_cur_task = 0;
 }
@@ -991,40 +991,40 @@ void vpip_execute_vpi_call(vthread_t thr, vpiHandle ref)
  * __vpi_userSystf to represent the definition for the calls that come
  * to pass later.
  */
-vpiHandle vpi_register_systf(const struct t_vpi_systf_data*ss)
+vpiHandle vpi_register_systf(மாறிலி கட்டமைப்பு t_vpi_systf_data*ss)
 {
-      struct __vpiUserSystf*cur = allocate_def();
-      assert(ss);
-      switch (ss->type) {
-	  case vpiSysTask:
-	  case vpiSysFunc:
-	    break;
-	  default:
-	    fprintf(stderr, "Unsupported type %d.\n", (int)ss->type);
-	    assert(0);
+      கட்டமைப்பு __vpiUserSystf*cur = allocate_def();
+      ப்ரதிஜ்ஞா(ss);
+      தேர்வு (ss->type) {
+	  நிலை vpiSysTask:
+	  நிலை vpiSysFunc:
+	    நிறுத்து;
+	  இயல்பு:
+	    fprintf(stderr, "Unsupported type %d.\n", (முழு)ss->type);
+	    ப்ரதிஜ்ஞா(0);
       }
 
       cur->info = *ss;
       cur->info.tfname = strdup(ss->tfname);
-      cur->is_user_defn = true;
+      cur->is_user_defn = உண்மை;
 
-      return cur;
+      திரும்பு cur;
 }
 
-PLI_INT32 vpi_put_userdata(vpiHandle ref, void*data)
+PLI_INT32 vpi_put_userdata(vpiHandle ref, வெறுமை*data)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
-      if (rfp == 0)
-	    return 0;
+      கட்டமைப்பு __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      எனில் (rfp == 0)
+	    திரும்பு 0;
 
       rfp->userdata = data;
-      return 1;
+      திரும்பு 1;
 }
 
-void* vpi_get_userdata(vpiHandle ref)
+வெறுமை* vpi_get_userdata(vpiHandle ref)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
-      assert(rfp);
+      கட்டமைப்பு __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      ப்ரதிஜ்ஞா(rfp);
 
-      return rfp->userdata;
+      திரும்பு rfp->userdata;
 }

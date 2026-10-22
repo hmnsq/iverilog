@@ -23,77 +23,77 @@
 
 # include  "config.h"
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT> class slab_t {
+template <size_t SLAB_SIZE, size_t CHUNK_மொத்தம்> class slab_t {
 
-      union item_cell_u {
+      ஒன்றிப்பு item_cell_u {
 	    item_cell_u*next;
-	    char space[SLAB_SIZE];
+	    எழுத்து space[SLAB_SIZE];
       };
 
-    public:
+    பொது:
       slab_t();
 
-      void* alloc_slab();
-      void  free_slab(void*);
+      வெறுமை* alloc_slab();
+      வெறுமை  free_slab(வெறுமை*);
 #ifdef CHECK_WITH_VALGRIND
 	// If we have allocated memory then we need to delete it to make
 	// valgrind happy.
-      void delete_pool(void);
+      வெறுமை delete_pool(வெறுமை);
 #endif
 
       unsigned long pool;
 
-    private:
+    தனிப்பட்ட:
       item_cell_u*heap_;
-      item_cell_u initial_chunk_[CHUNK_COUNT];
+      item_cell_u initial_chunk_[CHUNK_மொத்தம்];
 #ifdef CHECK_WITH_VALGRIND
 	// Each slab needs a pointer to the allocated space.
       item_cell_u**slab_pool;
-      unsigned slab_pool_count;
+      unsigned slab_pool_மொத்தம்;
 #endif
 };
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-slab_t<SLAB_SIZE,CHUNK_COUNT>::slab_t()
+template <size_t SLAB_SIZE, size_t CHUNK_மொத்தம்>
+slab_t<SLAB_SIZE,CHUNK_மொத்தம்>::slab_t()
 {
-      pool = CHUNK_COUNT;
+      pool = CHUNK_மொத்தம்;
       heap_ = initial_chunk_;
-      for (unsigned idx = 0 ; idx < CHUNK_COUNT-1 ; idx += 1)
+      க்கு (unsigned idx = 0 ; idx < CHUNK_மொத்தம்-1 ; idx += 1)
 	    initial_chunk_[idx].next = initial_chunk_+idx+1;
 
-      initial_chunk_[CHUNK_COUNT-1].next = 0;
+      initial_chunk_[CHUNK_மொத்தம்-1].next = 0;
 #ifdef CHECK_WITH_VALGRIND
 	// Initially we have no allocated space.
-      slab_pool = NULL;
-      slab_pool_count = 0;
+      slab_pool = வெற்று;
+      slab_pool_மொத்தம் = 0;
 #endif
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void* slab_t<SLAB_SIZE,CHUNK_COUNT>::alloc_slab()
+template <size_t SLAB_SIZE, size_t CHUNK_மொத்தம்>
+உள்வரி வெறுமை* slab_t<SLAB_SIZE,CHUNK_மொத்தம்>::alloc_slab()
 {
-      if (heap_ == 0) {
-	    item_cell_u*chunk = new item_cell_u[CHUNK_COUNT];
+      எனில் (heap_ == 0) {
+	    item_cell_u*chunk = new item_cell_u[CHUNK_மொத்தம்];
 #ifdef CHECK_WITH_VALGRIND
-	    slab_pool_count += 1;
+	    slab_pool_மொத்தம் += 1;
 	    slab_pool = static_cast<item_cell_u **>(realloc(slab_pool,
-	                slab_pool_count*sizeof(item_cell_u **)));
-	    slab_pool[slab_pool_count-1] = chunk;
+	                slab_pool_மொத்தம்*அளவு(item_cell_u **)));
+	    slab_pool[slab_pool_மொத்தம்-1] = chunk;
 #endif
-	    for (unsigned idx = 0 ; idx < CHUNK_COUNT ; idx += 1) {
+	    க்கு (unsigned idx = 0 ; idx < CHUNK_மொத்தம் ; idx += 1) {
 		  chunk[idx].next = heap_;
 		  heap_ = chunk+idx;
 	    }
-	    pool += CHUNK_COUNT;
+	    pool += CHUNK_மொத்தம்;
       }
 
       item_cell_u*cur = heap_;
       heap_ = heap_->next;
-      return cur;
+      திரும்பு cur;
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::free_slab(void*ptr)
+template <size_t SLAB_SIZE, size_t CHUNK_மொத்தம்>
+உள்வரி வெறுமை slab_t<SLAB_SIZE,CHUNK_மொத்தம்>::free_slab(வெறுமை*ptr)
 {
       item_cell_u*cur = reinterpret_cast<item_cell_u*> (ptr);
       cur->next = heap_;
@@ -101,15 +101,15 @@ inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::free_slab(void*ptr)
 }
 
 #ifdef CHECK_WITH_VALGRIND
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::delete_pool(void)
+template <size_t SLAB_SIZE, size_t CHUNK_மொத்தம்>
+உள்வரி வெறுமை slab_t<SLAB_SIZE,CHUNK_மொத்தம்>::delete_pool(வெறுமை)
 {
-      for (unsigned idx = 0; idx < slab_pool_count; idx += 1) {
+      க்கு (unsigned idx = 0; idx < slab_pool_மொத்தம்; idx += 1) {
 	    delete [] slab_pool[idx];
       }
-      free(slab_pool);
-      slab_pool = NULL;
-      slab_pool_count = 0;
+      விடுவி(slab_pool);
+      slab_pool = வெற்று;
+      slab_pool_மொத்தம் = 0;
 }
 #endif
 

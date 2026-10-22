@@ -26,38 +26,38 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-static int iterator_free_object(vpiHandle ref)
+நிலையான முழு iterator_free_object(vpiHandle ref)
 {
-      struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
-      assert(hp);
+      கட்டமைப்பு __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
+      ப்ரதிஜ்ஞா(hp);
 
-      if (hp->free_args_flag)
-	    free(hp->args);
+      எனில் (hp->free_args_flag)
+	    விடுவி(hp->args);
 
       delete hp;
-      return 1;
+      திரும்பு 1;
 }
 
-inline __vpiIterator::__vpiIterator()
+உள்வரி __vpiIterator::__vpiIterator()
 { }
 
-int __vpiIterator::get_type_code(void) const
-{ return vpiIterator; }
+முழு __vpiIterator::get_type_code(வெறுமை) மாறிலி
+{ திரும்பு vpiIterator; }
 
-__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(void)
-{ return &iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(வெறுமை)
+{ திரும்பு &iterator_free_object; }
 
 vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
-			     bool free_args_flag)
+			     தருக்க free_args_flag)
 {
-      struct __vpiIterator*res = new __vpiIterator;
+      கட்டமைப்பு __vpiIterator*res = புதிய __vpiIterator;
       res->args = args;
       res->nargs = nargs;
       res->next  = 0;
 
       res->free_args_flag = free_args_flag;
 
-      return res;
+      திரும்பு res;
 }
 
 /*
@@ -66,20 +66,20 @@ vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
  */
 vpiHandle vpi_scan(vpiHandle ref)
 {
-      if (ref == 0) {
+      எனில் (ref == 0) {
 	    fprintf(stderr, "ERROR: NULL handle passed to vpi_scan.\n");
-	    assert(0);
-	    return 0;
+	    ப்ரதிஜ்ஞா(0);
+	    திரும்பு 0;
       }
 
-      if (struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
-	    if (hp->next == hp->nargs) {
+      எனில் (கட்டமைப்பு __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
+	    எனில் (hp->next == hp->nargs) {
 		  vpi_free_object(ref);
-		  return 0;
+		  திரும்பு 0;
 	    }
 
-	    return hp->args[hp->next++];
+	    திரும்பு hp->args[hp->next++];
       }
 
-      return ref->vpi_index(0);
+      திரும்பு ref->vpi_index(0);
 }

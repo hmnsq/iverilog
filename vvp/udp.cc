@@ -20,88 +20,88 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "udp.h"
-#include "schedule.h"
-#include "symbols.h"
-#include "compile.h"
-#include "config.h"
-#include <cassert>
-#include <cstdlib>
-#include <cstring>
-#include <cstdio>
-#include <iostream>
+#அந்தர்பாவ "udp.h"
+#அந்தர்பாவ "schedule.h"
+#அந்தர்பாவ "symbols.h"
+#அந்தர்பாவ "compile.h"
+#அந்தர்பாவ "config.h"
+#அந்தர்பாவ <cassert>
+#அந்தர்பாவ <cstdlib>
+#அந்தர்பாவ <cstring>
+#அந்தர்பாவ <cstdio>
+#அந்தர்பாவ <iostream>
 #ifdef CHECK_WITH_VALGRIND
-#include "vvp_cleanup.h"
-#include "ivl_alloc.h"
+#அந்தர்பாவ "vvp_cleanup.h"
+#அந்தர்பாவ "ivl_alloc.h"
 #endif
 
-using namespace std;
+using நாமாகாஶ std;
 
 // We may need these later when we build the VPI interface to
 // UDP definitions.
 #ifdef CHECK_WITH_VALGRIND
-static vvp_udp_s **udp_defns = 0;
-static unsigned udp_defns_count = 0;
+நிலையான vvp_udp_s **udp_defns = 0;
+நிலையான unsigned udp_defns_மொத்தம் = 0;
 
-void udp_defns_delete()
+வெறுமை udp_defns_delete()
 {
-      for (unsigned idx = 0; idx < udp_defns_count; idx += 1) {
-	    if (udp_defns[idx]->is_sequential()) {
+      க்கு (unsigned idx = 0; idx < udp_defns_மொத்தம்; idx += 1) {
+	    எனில் (udp_defns[idx]->is_sequential()) {
 		  vvp_udp_seq_s *obj = static_cast<vvp_udp_seq_s *>
 		                       (udp_defns[idx]);
 		  delete obj;
-	    } else {
+	    } இல்லையெனில் {
 		  vvp_udp_comb_s *obj = static_cast<vvp_udp_comb_s *>
 		                        (udp_defns[idx]);
 		  delete obj;
 	    }
       }
-      free(udp_defns);
+      விடுவி(udp_defns);
       udp_defns = 0;
-      udp_defns_count = 0;
+      udp_defns_மொத்தம் = 0;
 }
 #endif
 
-static symbol_table_t udp_table;
+நிலையான குறியீடு_table_t udp_table;
 
-void delete_udp_symbols()
+வெறுமை delete_udp_symbols()
 {
-      delete_symbol_table(udp_table);
+      delete_குறியீடு_table(udp_table);
       udp_table = 0;
 }
 
-struct vvp_udp_s *udp_find(const char *label)
+கட்டமைப்பு vvp_udp_s *udp_find(மாறிலி எழுத்து *label)
 {
-      symbol_value_t v = sym_get_value(udp_table, label);
-      return (struct vvp_udp_s *)v.ptr;
+      குறியீடு_மதிப்பு_t v = sym_get_மதிப்பு(udp_table, label);
+      திரும்பு (கட்டமைப்பு vvp_udp_s *)v.ptr;
 }
 
-ostream& operator <<(ostream&o, const struct udp_levels_table&table)
+ostream& operator <<(ostream&o, மாறிலி கட்டமைப்பு udp_levels_table&table)
 {
       o << "[" << hex << table.mask0
 	<< "/" << hex << table.mask1
 	<< "/" << hex << table.maskx << "]";
-      return o;
+      திரும்பு o;
 }
 
-vvp_udp_s::vvp_udp_s(const char*label, char*name__, unsigned ports,
-                     vvp_bit4_t init, bool type)
+vvp_udp_s::vvp_udp_s(மாறிலி எழுத்து*label, எழுத்து*name__, unsigned ports,
+                     vvp_bit4_t init, தருக்க type)
 : name_(name__), ports_(ports), init_(init), seq_(type)
 {
-      if (!udp_table)
-	    udp_table = new_symbol_table();
+      எனில் (!udp_table)
+	    udp_table = new_குறியீடு_table();
 
-      assert( !udp_find(label) );
+      ப்ரதிஜ்ஞா( !udp_find(label) );
 
-      symbol_value_t v;
-      v.ptr = this;
-      sym_set_value(udp_table, label, v);
+      குறியீடு_மதிப்பு_t v;
+      v.ptr = இது;
+      sym_set_மதிப்பு(udp_table, label, v);
 
 #ifdef CHECK_WITH_VALGRIND
-      udp_defns_count += 1;
+      udp_defns_மொத்தம் += 1;
       udp_defns = static_cast<vvp_udp_s **>(realloc(udp_defns,
-                  udp_defns_count*sizeof(vvp_udp_s **)));
-      udp_defns[udp_defns_count-1] = this;
+                  udp_defns_மொத்தம்*அளவு(vvp_udp_s **)));
+      udp_defns[udp_defns_மொத்தம்-1] = இது;
 #endif
 }
 
@@ -110,18 +110,18 @@ vvp_udp_s::~vvp_udp_s()
       delete[] name_;
 }
 
-unsigned vvp_udp_s::port_count() const
+unsigned vvp_udp_s::port_மொத்தம்() மாறிலி
 {
-      return ports_;
+      திரும்பு ports_;
 }
 
-vvp_bit4_t vvp_udp_s::get_init() const
+vvp_bit4_t vvp_udp_s::get_init() மாறிலி
 {
-      return init_;
+      திரும்பு init_;
 }
 
-vvp_udp_comb_s::vvp_udp_comb_s(const char*label, char*name__, unsigned ports)
-: vvp_udp_s(label, name__, ports, BIT4_X, false)
+vvp_udp_comb_s::vvp_udp_comb_s(மாறிலி எழுத்து*label, எழுத்து*name__, unsigned ports)
+: vvp_udp_s(label, name__, ports, BIT4_X, பொய்)
 {
       levels0_ = 0;
       levels1_ = 0;
@@ -153,7 +153,7 @@ vvp_udp_comb_s::~vvp_udp_comb_s()
  * the three bit positions is set in the cur input table, the bit
  * position will generate a match.
  */
-vvp_bit4_t vvp_udp_comb_s::test_levels(const udp_levels_table&cur)
+vvp_bit4_t vvp_udp_comb_s::test_levels(மாறிலி udp_levels_table&cur)
 {
 	/* To test for a row match, test that the mask0, mask1 and
 	   maskx vectors all have bits set where the matching
@@ -161,142 +161,142 @@ vvp_bit4_t vvp_udp_comb_s::test_levels(const udp_levels_table&cur)
 	   levels0_[idx] vector has more bits set then the cur mask,
 	   but this is OK and these bits are to be ignored. */
 
-      for (unsigned idx = 0 ;  idx < nlevels0_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levels0_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levels0_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levels0_[idx].maskx))
-		  continue;
+      க்கு (unsigned idx = 0 ;  idx < nlevels0_ ;  idx += 1) {
+	    எனில் (cur.mask0 != (cur.mask0 & levels0_[idx].mask0))
+		  தொடர்;
+	    எனில் (cur.mask1 != (cur.mask1 & levels0_[idx].mask1))
+		  தொடர்;
+	    எனில் (cur.maskx != (cur.maskx & levels0_[idx].maskx))
+		  தொடர்;
 
-	    return BIT4_0;
+	    திரும்பு BIT4_0;
       }
 
-      for (unsigned idx = 0 ;  idx < nlevels1_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levels1_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levels1_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levels1_[idx].maskx))
-		  continue;
+      க்கு (unsigned idx = 0 ;  idx < nlevels1_ ;  idx += 1) {
+	    எனில் (cur.mask0 != (cur.mask0 & levels1_[idx].mask0))
+		  தொடர்;
+	    எனில் (cur.mask1 != (cur.mask1 & levels1_[idx].mask1))
+		  தொடர்;
+	    எனில் (cur.maskx != (cur.maskx & levels1_[idx].maskx))
+		  தொடர்;
 
-	    return BIT4_1;
+	    திரும்பு BIT4_1;
       }
 
-      return BIT4_X;
+      திரும்பு BIT4_X;
 }
 
-vvp_bit4_t vvp_udp_comb_s::calculate_output(const udp_levels_table&cur,
-					    const udp_levels_table&,
+vvp_bit4_t vvp_udp_comb_s::calculate_output(மாறிலி udp_levels_table&cur,
+					    மாறிலி udp_levels_table&,
 					    vvp_bit4_t)
 {
-      return test_levels(cur);
+      திரும்பு test_levels(cur);
 }
 
-static void or_based_on_char(udp_levels_table&cur, char flag,
+நிலையான வெறுமை or_based_on_char(udp_levels_table&cur, எழுத்து flag,
 			     unsigned long mask_bit)
 {
-      switch (flag) {
-	  case '0':
+      தேர்வு (flag) {
+	  நிலை '0':
 	    cur.mask0 |= mask_bit;
-	    break;
-	  case '1':
+	    நிறுத்து;
+	  நிலை '1':
 	    cur.mask1 |= mask_bit;
-	    break;
-	  case 'x':
+	    நிறுத்து;
+	  நிலை 'x':
 	    cur.maskx |= mask_bit;
-	    break;
-	  case 'b':
+	    நிறுத்து;
+	  நிலை 'b':
 	    cur.mask0 |= mask_bit;
 	    cur.mask1 |= mask_bit;
-	    break;
-	  case 'l':
-	    cur.mask0 |= mask_bit;
-	    cur.maskx |= mask_bit;
-	    break;
-	  case 'h':
-	    cur.maskx |= mask_bit;
-	    cur.mask1 |= mask_bit;
-	    break;
-	  case '?':
+	    நிறுத்து;
+	  நிலை 'l':
 	    cur.mask0 |= mask_bit;
 	    cur.maskx |= mask_bit;
+	    நிறுத்து;
+	  நிலை 'h':
+	    cur.maskx |= mask_bit;
 	    cur.mask1 |= mask_bit;
-	    break;
-	  default:
+	    நிறுத்து;
+	  நிலை '?':
+	    cur.mask0 |= mask_bit;
+	    cur.maskx |= mask_bit;
+	    cur.mask1 |= mask_bit;
+	    நிறுத்து;
+	  இயல்பு:
 	    fprintf(stderr, "Unsupported flag %c(%d).\n", flag, flag);
-	    assert(0);
+	    ப்ரதிஜ்ஞா(0);
       }
 }
 
-void vvp_udp_comb_s::compile_table(char**tab)
+வெறுமை vvp_udp_comb_s::compile_table(எழுத்து**tab)
 {
       unsigned nrows0 = 0, nrows1 = 0;
 
 	/* First run through the table to figure out the number of
 	   rows I need for each kind of table. */
-      for (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
-	    assert(strlen(tab[idx]) == port_count() + 1);
-	    switch (tab[idx][port_count()]) {
-		case '0':
+      க்கு (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
+	    ப்ரதிஜ்ஞா(strlen(tab[idx]) == port_மொத்தம்() + 1);
+	    தேர்வு (tab[idx][port_மொத்தம்()]) {
+		நிலை '0':
 		  nrows0 += 1;
-		  break;
-		case '1':
+		  நிறுத்து;
+		நிலை '1':
 		  nrows1 += 1;
-		  break;
-		case 'x':
-		  break;
-		default:
+		  நிறுத்து;
+		நிலை 'x':
+		  நிறுத்து;
+		இயல்பு:
 		  fprintf(stderr, "Unsupported entry %c(%d).\n",
-		          tab[idx][port_count()], tab[idx][port_count()]);
-		  assert(0);
+		          tab[idx][port_மொத்தம்()], tab[idx][port_மொத்தம்()]);
+		  ப்ரதிஜ்ஞா(0);
 	    }
       }
 
       nlevels0_ = nrows0;
-      levels0_ = new udp_levels_table[nlevels0_];
+      levels0_ = புதிய udp_levels_table[nlevels0_];
 
       nlevels1_ = nrows1;
-      levels1_ = new udp_levels_table[nlevels1_];
+      levels1_ = புதிய udp_levels_table[nlevels1_];
 
       nrows0 = 0;
       nrows1 = 0;
-      for (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
-	    struct udp_levels_table cur;
+      க்கு (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
+	    கட்டமைப்பு udp_levels_table cur;
 	    cur.mask0 = 0;
 	    cur.mask1 = 0;
 	    cur.maskx = 0;
-	    if (port_count() > 8*sizeof(cur.mask0)) {
+	    எனில் (port_மொத்தம்() > 8*அளவு(cur.mask0)) {
 		  fprintf(stderr, "internal error: primitive port count=%u "
-			  " > %zu\n", port_count(), sizeof(cur.mask0));
-		  assert(port_count() <= 8*sizeof(cur.mask0));
+			  " > %zu\n", port_மொத்தம்(), அளவு(cur.mask0));
+		  ப்ரதிஜ்ஞா(port_மொத்தம்() <= 8*அளவு(cur.mask0));
 	    }
-	    for (unsigned pp = 0 ;  pp < port_count() ;  pp += 1) {
+	    க்கு (unsigned pp = 0 ;  pp < port_மொத்தம்() ;  pp += 1) {
 		  unsigned long mask_bit = 1UL << pp;
 		  or_based_on_char(cur, tab[idx][pp], mask_bit);
 	    }
 
-	    switch (tab[idx][port_count()]) {
-		case '0':
+	    தேர்வு (tab[idx][port_மொத்தம்()]) {
+		நிலை '0':
 		  levels0_[nrows0++] = cur;
-		  break;
-		case '1':
+		  நிறுத்து;
+		நிலை '1':
 		  levels1_[nrows1++] = cur;
-		  break;
-		default:
-		  break;
+		  நிறுத்து;
+		இயல்பு:
+		  நிறுத்து;
 	    }
 	    delete[] tab[idx];
       }
-      free(tab);
+      விடுவி(tab);
 
-      assert(nrows0 == nlevels0_);
-      assert(nrows1 == nlevels1_);
+      ப்ரதிஜ்ஞா(nrows0 == nlevels0_);
+      ப்ரதிஜ்ஞா(nrows1 == nlevels1_);
 }
 
-vvp_udp_seq_s::vvp_udp_seq_s(const char*label, char*name__,
+vvp_udp_seq_s::vvp_udp_seq_s(மாறிலி எழுத்து*label, எழுத்து*name__,
 			     unsigned ports, vvp_bit4_t init)
-: vvp_udp_s(label, name__, ports, init, true)
+: vvp_udp_s(label, name__, ports, init, உண்மை)
 {
       levels0_ = 0;
       levels1_ = 0;
@@ -328,206 +328,206 @@ vvp_udp_seq_s::~vvp_udp_seq_s()
       delete[] edgesL_;
 }
 
-void edge_based_on_char(struct udp_edges_table&cur, char chr, unsigned pos)
+வெறுமை edge_based_on_char(கட்டமைப்பு udp_edges_table&cur, எழுத்து chr, unsigned pos)
 {
       unsigned long mask_bit = 1UL << pos;
 
-      switch (chr) {
-	  case '0':
+      தேர்வு (chr) {
+	  நிலை '0':
 	    cur.mask0 |= mask_bit;
-	    break;
-	  case '1':
+	    நிறுத்து;
+	  நிலை '1':
 	    cur.mask1 |= mask_bit;
-	    break;
-	  case 'x':
+	    நிறுத்து;
+	  நிலை 'x':
 	    cur.maskx |= mask_bit;
-	    break;
-	  case 'b':
+	    நிறுத்து;
+	  நிலை 'b':
 	    cur.mask0 |= mask_bit;
 	    cur.mask1 |= mask_bit;
-	    break;
-	  case 'l':
-	    cur.mask0 |= mask_bit;
-	    cur.maskx |= mask_bit;
-	    break;
-	  case 'h':
-	    cur.maskx |= mask_bit;
-	    cur.mask1 |= mask_bit;
-	    break;
-	  case '?':
+	    நிறுத்து;
+	  நிலை 'l':
 	    cur.mask0 |= mask_bit;
 	    cur.maskx |= mask_bit;
+	    நிறுத்து;
+	  நிலை 'h':
+	    cur.maskx |= mask_bit;
 	    cur.mask1 |= mask_bit;
-	    break;
+	    நிறுத்து;
+	  நிலை '?':
+	    cur.mask0 |= mask_bit;
+	    cur.maskx |= mask_bit;
+	    cur.mask1 |= mask_bit;
+	    நிறுத்து;
 
-	  case 'B': // (x?) edge
+	  நிலை 'B': // (x?) edge
 	    cur.mask0 |= mask_bit;
 	    cur.mask1 |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 0;
 	    cur.edge_maskx = 1;
 	    cur.edge_mask1 = 0;
-	    break;
-	  case 'f': // (10) edge
+	    நிறுத்து;
+	  நிலை 'f': // (10) edge
 	    cur.mask0 |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 0;
 	    cur.edge_maskx = 0;
 	    cur.edge_mask1 = 1;
-	    break;
-	  case 'F': // (x0) edge
+	    நிறுத்து;
+	  நிலை 'F': // (x0) edge
 	    cur.mask0 |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 0;
 	    cur.edge_maskx = 1;
 	    cur.edge_mask1 = 0;
-	    break;
-	  case 'M': // (1x) edge
+	    நிறுத்து;
+	  நிலை 'M': // (1x) edge
 	    cur.maskx |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 0;
 	    cur.edge_maskx = 0;
 	    cur.edge_mask1 = 1;
-	    break;
-	  case 'N': // (1x) and (10) edge
+	    நிறுத்து;
+	  நிலை 'N': // (1x) and (10) edge
 	    cur.mask0 |= mask_bit;
 	    cur.maskx |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 0;
 	    cur.edge_maskx = 0;
 	    cur.edge_mask1 = 1;
-	    break;
-	  case 'P': // (0x) and (01) edge
+	    நிறுத்து;
+	  நிலை 'P': // (0x) and (01) edge
 	    cur.maskx |= mask_bit;
 	    cur.mask1 |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 1;
 	    cur.edge_maskx = 0;
 	    cur.edge_mask1 = 0;
-	    break;
-	  case 'q': // (bx) edge
+	    நிறுத்து;
+	  நிலை 'q': // (bx) edge
 	    cur.maskx |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 1;
 	    cur.edge_maskx = 0;
 	    cur.edge_mask1 = 1;
-	    break;
-	  case 'Q': // (0x) edge
+	    நிறுத்து;
+	  நிலை 'Q': // (0x) edge
 	    cur.maskx |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 1;
 	    cur.edge_maskx = 0;
 	    cur.edge_mask1 = 0;
-	    break;
-	  case 'r': // (01) edge
+	    நிறுத்து;
+	  நிலை 'r': // (01) edge
 	    cur.mask1 |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 1;
 	    cur.edge_maskx = 0;
 	    cur.edge_mask1 = 0;
-	    break;
-	  case 'R': // (x1) edge
+	    நிறுத்து;
+	  நிலை 'R': // (x1) edge
 	    cur.mask1 |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 0;
 	    cur.edge_maskx = 1;
 	    cur.edge_mask1 = 0;
-	    break;
-	  case '%': // (?x) edge
+	    நிறுத்து;
+	  நிலை '%': // (?x) edge
 	    cur.maskx |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 1;
 	    cur.edge_maskx = 0;
 	    cur.edge_mask1 = 1;
-	    break;
-	  case '+': // (?1) edge
+	    நிறுத்து;
+	  நிலை '+': // (?1) edge
 	    cur.mask1 |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 1;
 	    cur.edge_maskx = 1;
 	    cur.edge_mask1 = 0;
-	    break;
-	  case '_': // (?0) edge
+	    நிறுத்து;
+	  நிலை '_': // (?0) edge
 	    cur.mask0 |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 0;
 	    cur.edge_maskx = 1;
 	    cur.edge_mask1 = 1;
-	    break;
-	  default:
+	    நிறுத்து;
+	  இயல்பு:
 	    fprintf(stderr, "internal error: unknown edge code: %c\n", chr);
-	    assert(0);
+	    ப்ரதிஜ்ஞா(0);
       }
 }
 
-void vvp_udp_seq_s::compile_table(char**tab)
+வெறுமை vvp_udp_seq_s::compile_table(எழுத்து**tab)
 {
 
-      for (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
-	    const char*row = tab[idx];
-	    assert(strlen(row) == port_count() + 2);
+      க்கு (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
+	    மாறிலி எழுத்து*row = tab[idx];
+	    ப்ரதிஜ்ஞா(strlen(row) == port_மொத்தம்() + 2);
 
-	    if (strspn(row, "01xblh?") >= port_count()+1) {
+	    எனில் (strspn(row, "01xblh?") >= port_மொத்தம்()+1) {
 
-		  switch (row[port_count()+1]) {
-		      case '0':
+		  தேர்வு (row[port_மொத்தம்()+1]) {
+		      நிலை '0':
 			nlevels0_ += 1;
-			break;
-		      case '1':
+			நிறுத்து;
+		      நிலை '1':
 			nlevels1_ += 1;
-			break;
-		      case 'x':
+			நிறுத்து;
+		      நிலை 'x':
 			nlevelsx_ += 1;
-			break;
-		      case '-':
+			நிறுத்து;
+		      நிலை '-':
 			nlevelsL_ += 1;
-			break;
-		      default:
+			நிறுத்து;
+		      இயல்பு:
 			fprintf(stderr, "Unsupported entry %c(%d).\n",
-			        row[port_count()+1], row[port_count()+1]);
-			assert(0);
-			break;
+			        row[port_மொத்தம்()+1], row[port_மொத்தம்()+1]);
+			ப்ரதிஜ்ஞா(0);
+			நிறுத்து;
 		  }
 
-	    } else {
+	    } இல்லையெனில் {
 		    /* Rows that have n or p edges will need to be
 		       expanded into 2 rows. */
 		  unsigned extra = 0;
-		  if (strchr(row,'n'))
+		  எனில் (strchr(row,'n'))
 			extra = 1;
-		  if (strchr(row,'p'))
+		  எனில் (strchr(row,'p'))
 			extra = 1;
-		  if (strchr(row,'*'))
+		  எனில் (strchr(row,'*'))
 			extra = 2;
 
-		  switch (row[port_count()+1]) {
-		      case '0':
+		  தேர்வு (row[port_மொத்தம்()+1]) {
+		      நிலை '0':
 			nedges0_ += 1 + extra;
-			break;
-		      case '1':
+			நிறுத்து;
+		      நிலை '1':
 			nedges1_ += 1 + extra;
-			break;
-		      case 'x':
-			break;
-		      case '-':
+			நிறுத்து;
+		      நிலை 'x':
+			நிறுத்து;
+		      நிலை '-':
 			nedgesL_ += 1 + extra;
-			break;
-		      default:
+			நிறுத்து;
+		      இயல்பு:
 			fprintf(stderr, "Unsupported entry %c(%d).\n",
-			        row[port_count()+1], row[port_count()+1]);
-			assert(0);
-			break;
+			        row[port_மொத்தம்()+1], row[port_மொத்தம்()+1]);
+			ப்ரதிஜ்ஞா(0);
+			நிறுத்து;
 		  }
 	    }
       }
 
-      levels0_ = new udp_levels_table[nlevels0_];
-      levels1_ = new udp_levels_table[nlevels1_];
-      levelsx_ = new udp_levels_table[nlevelsx_];
-      levelsL_ = new udp_levels_table[nlevelsL_];
-      edges0_ = new udp_edges_table[nedges0_];
-      edges1_ = new udp_edges_table[nedges1_];
-      edgesL_ = new udp_edges_table[nedgesL_];
+      levels0_ = புதிய udp_levels_table[nlevels0_];
+      levels1_ = புதிய udp_levels_table[nlevels1_];
+      levelsx_ = புதிய udp_levels_table[nlevelsx_];
+      levelsL_ = புதிய udp_levels_table[nlevelsL_];
+      edges0_ = புதிய udp_edges_table[nedges0_];
+      edges1_ = புதிய udp_edges_table[nedges1_];
+      edgesL_ = புதிய udp_edges_table[nedgesL_];
 
       unsigned idx_lev0 = 0;
       unsigned idx_lev1 = 0;
@@ -537,43 +537,43 @@ void vvp_udp_seq_s::compile_table(char**tab)
       unsigned idx_edg1 = 0;
       unsigned idx_edgL = 0;
 
-      for (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
-	    const char*row = tab[idx];
+      க்கு (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
+	    மாறிலி எழுத்து*row = tab[idx];
 
-	    if (strspn(row, "01xblh?") >= port_count()+1) {
-		  struct udp_levels_table cur;
+	    எனில் (strspn(row, "01xblh?") >= port_மொத்தம்()+1) {
+		  கட்டமைப்பு udp_levels_table cur;
 		  cur.mask0 = 0;
 		  cur.mask1 = 0;
 		  cur.maskx = 0;
-		  for (unsigned pp = 0 ;  pp < port_count() ;  pp += 1) {
+		  க்கு (unsigned pp = 0 ;  pp < port_மொத்தம்() ;  pp += 1) {
 			unsigned long mask_bit = 1UL << pp;
 			or_based_on_char(cur, row[pp+1], mask_bit);
 		  }
 
-		  or_based_on_char(cur, row[0], 1UL << port_count());
+		  or_based_on_char(cur, row[0], 1UL << port_மொத்தம்());
 
-		  switch (row[port_count()+1]) {
-		      case '0':
+		  தேர்வு (row[port_மொத்தம்()+1]) {
+		      நிலை '0':
 			levels0_[idx_lev0++] = cur;
-			break;
-		      case '1':
+			நிறுத்து;
+		      நிலை '1':
 			levels1_[idx_lev1++] = cur;
-			break;
-		      case 'x':
+			நிறுத்து;
+		      நிலை 'x':
 			levelsx_[idx_levx++] = cur;
-			break;
-		      case '-':
+			நிறுத்து;
+		      நிலை '-':
 			levelsL_[idx_levL++] = cur;
-			break;
-		      default:
+			நிறுத்து;
+		      இயல்பு:
 			fprintf(stderr, "Unsupported entry %c(%d).\n",
-			        row[port_count()+1], row[port_count()+1]);
-			assert(0);
-			break;
+			        row[port_மொத்தம்()+1], row[port_மொத்தம்()+1]);
+			ப்ரதிஜ்ஞா(0);
+			நிறுத்து;
 		  }
 
-	    } else {
-		  struct udp_edges_table cur;
+	    } இல்லையெனில் {
+		  கட்டமைப்பு udp_edges_table cur;
 		  cur.mask0 = 0;
 		  cur.mask1 = 0;
 		  cur.maskx = 0;
@@ -582,8 +582,8 @@ void vvp_udp_seq_s::compile_table(char**tab)
 		  cur.edge_mask1 = 0;
 		  cur.edge_maskx = 0;
 
-		  bool need_ext0_table = false;
-		  struct udp_edges_table ext0;
+		  தருக்க need_ext0_table = பொய்;
+		  கட்டமைப்பு udp_edges_table ext0;
 		  ext0.mask0 = 0;
 		  ext0.mask1 = 0;
 		  ext0.maskx = 0;
@@ -592,8 +592,8 @@ void vvp_udp_seq_s::compile_table(char**tab)
 		  ext0.edge_mask1 = 0;
 		  ext0.edge_maskx = 0;
 
-		  bool need_ext1_table = false;
-		  struct udp_edges_table ext1;
+		  தருக்க need_ext1_table = பொய்;
+		  கட்டமைப்பு udp_edges_table ext1;
 		  ext1.mask0 = 0;
 		  ext1.mask1 = 0;
 		  ext1.maskx = 0;
@@ -602,117 +602,117 @@ void vvp_udp_seq_s::compile_table(char**tab)
 		  ext1.edge_mask1 = 0;
 		  ext1.edge_maskx = 0;
 
-		  for (unsigned pp = 0 ;  pp < port_count() ; pp += 1) {
-			switch (row[pp+1]) {
-			    case 'n':
+		  க்கு (unsigned pp = 0 ;  pp < port_மொத்தம்() ; pp += 1) {
+			தேர்வு (row[pp+1]) {
+			    நிலை 'n':
 			      edge_based_on_char(cur, 'N', pp);
 			      edge_based_on_char(ext0, '_', pp);
-			      need_ext0_table = true;
-			      break;
-			    case 'p':
+			      need_ext0_table = உண்மை;
+			      நிறுத்து;
+			    நிலை 'p':
 			      edge_based_on_char(cur, 'P', pp);
 			      edge_based_on_char(ext0, '+', pp);
-			      need_ext0_table = true;
-			      break;
-			    case '*':
+			      need_ext0_table = உண்மை;
+			      நிறுத்து;
+			    நிலை '*':
 			      edge_based_on_char(cur, 'P', pp);
 			      edge_based_on_char(ext0, 'N', pp);
 			      edge_based_on_char(ext1, 'B', pp);
-			      need_ext0_table = true;
-			      need_ext1_table = true;
-			      break;
-			    default:
+			      need_ext0_table = உண்மை;
+			      need_ext1_table = உண்மை;
+			      நிறுத்து;
+			    இயல்பு:
 			      edge_based_on_char(cur, row[pp+1], pp);
 			      edge_based_on_char(ext0, row[pp+1], pp);
 			      edge_based_on_char(ext1, row[pp+1], pp);
-			      break;
+			      நிறுத்து;
 			}
 		  }
-		  edge_based_on_char(cur, row[0], port_count());
-		  edge_based_on_char(ext0, row[0], port_count());
-		  edge_based_on_char(ext1, row[0], port_count());
+		  edge_based_on_char(cur, row[0], port_மொத்தம்());
+		  edge_based_on_char(ext0, row[0], port_மொத்தம்());
+		  edge_based_on_char(ext1, row[0], port_மொத்தம்());
 
-		  switch (row[port_count()+1]) {
-		      case '0':
+		  தேர்வு (row[port_மொத்தம்()+1]) {
+		      நிலை '0':
 			edges0_[idx_edg0++] = cur;
-			if (need_ext0_table)
+			எனில் (need_ext0_table)
 			      edges0_[idx_edg0++] = ext0;
-			if (need_ext1_table)
+			எனில் (need_ext1_table)
 			      edges0_[idx_edg0++] = ext1;
-			break;
-		      case '1':
+			நிறுத்து;
+		      நிலை '1':
 			edges1_[idx_edg1++] = cur;
-			if (need_ext0_table)
+			எனில் (need_ext0_table)
 			      edges1_[idx_edg1++] = ext0;
-			if (need_ext1_table)
+			எனில் (need_ext1_table)
 			      edges1_[idx_edg1++] = ext1;
-			break;
-		      case 'x':
-			break;
-		      case '-':
+			நிறுத்து;
+		      நிலை 'x':
+			நிறுத்து;
+		      நிலை '-':
 			edgesL_[idx_edgL++] = cur;
-			if (need_ext0_table)
+			எனில் (need_ext0_table)
 			      edgesL_[idx_edgL++] = ext0;
-			if (need_ext1_table)
+			எனில் (need_ext1_table)
 			      edgesL_[idx_edgL++] = ext1;
-			break;
-		      default:
+			நிறுத்து;
+		      இயல்பு:
 			fprintf(stderr, "Unsupported entry %c(%d).\n",
-			        row[port_count()+1], row[port_count()+1]);
-			assert(0);
-			break;
+			        row[port_மொத்தம்()+1], row[port_மொத்தம்()+1]);
+			ப்ரதிஜ்ஞா(0);
+			நிறுத்து;
 		  }
 
 	    }
 	    delete[] tab[idx];
       }
-      free(tab);
+      விடுவி(tab);
 
-      assert(idx_edg0 == nedges0_);
-      assert(idx_edg1 == nedges1_);
-      assert(idx_edgL == nedgesL_);
+      ப்ரதிஜ்ஞா(idx_edg0 == nedges0_);
+      ப்ரதிஜ்ஞா(idx_edg1 == nedges1_);
+      ப்ரதிஜ்ஞா(idx_edgL == nedgesL_);
 
 }
 
-bool operator == (const udp_levels_table&a, const udp_levels_table&b)
+தருக்க operator == (மாறிலி udp_levels_table&a, மாறிலி udp_levels_table&b)
 {
-      if (a.mask0 != b.mask0)
-	    return false;
-      if (a.mask1 != b.mask1)
-	    return false;
-      if (a.maskx != b.maskx)
-	    return false;
-      return true;
+      எனில் (a.mask0 != b.mask0)
+	    திரும்பு பொய்;
+      எனில் (a.mask1 != b.mask1)
+	    திரும்பு பொய்;
+      எனில் (a.maskx != b.maskx)
+	    திரும்பு பொய்;
+      திரும்பு உண்மை;
 }
 
-vvp_bit4_t vvp_udp_seq_s::calculate_output(const udp_levels_table&cur,
-					   const udp_levels_table&prev,
+vvp_bit4_t vvp_udp_seq_s::calculate_output(மாறிலி udp_levels_table&cur,
+					   மாறிலி udp_levels_table&prev,
 					   vvp_bit4_t cur_out)
 {
-      if (cur == prev)
-	    return cur_out;
+      எனில் (cur == prev)
+	    திரும்பு cur_out;
 
       udp_levels_table cur_tmp = cur;
 
-      unsigned long mask_out = 1UL << port_count();
-      switch (cur_out) {
-	  case BIT4_0:
+      unsigned long mask_out = 1UL << port_மொத்தம்();
+      தேர்வு (cur_out) {
+	  நிலை BIT4_0:
 	    cur_tmp.mask0 |= mask_out;
-	    break;
-	  case BIT4_1:
+	    நிறுத்து;
+	  நிலை BIT4_1:
 	    cur_tmp.mask1 |= mask_out;
-	    break;
-	  default:
+	    நிறுத்து;
+	  இயல்பு:
 	    cur_tmp.maskx |= mask_out;
-	    break;
+	    நிறுத்து;
       }
 
       vvp_bit4_t lev = test_levels_(cur_tmp);
-      if (lev == BIT4_Z) {
+      எனில் (lev == BIT4_Z) {
 	    lev = test_edges_(cur_tmp, prev);
       }
 
-      return lev;
+      திரும்பு lev;
 }
 
 /*
@@ -724,72 +724,72 @@ vvp_bit4_t vvp_udp_seq_s::calculate_output(const udp_levels_table&cur,
  * set the mask bit in bit position [port_count()] to reflect the
  * current output.
  */
-vvp_bit4_t vvp_udp_seq_s::test_levels_(const udp_levels_table&cur)
+vvp_bit4_t vvp_udp_seq_s::test_levels_(மாறிலி udp_levels_table&cur)
 {
-      for (unsigned idx = 0 ;  idx < nlevels0_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levels0_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levels0_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levels0_[idx].maskx))
-		  continue;
+      க்கு (unsigned idx = 0 ;  idx < nlevels0_ ;  idx += 1) {
+	    எனில் (cur.mask0 != (cur.mask0 & levels0_[idx].mask0))
+		  தொடர்;
+	    எனில் (cur.mask1 != (cur.mask1 & levels0_[idx].mask1))
+		  தொடர்;
+	    எனில் (cur.maskx != (cur.maskx & levels0_[idx].maskx))
+		  தொடர்;
 
-	    return BIT4_0;
+	    திரும்பு BIT4_0;
       }
 
-      for (unsigned idx = 0 ;  idx < nlevels1_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levels1_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levels1_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levels1_[idx].maskx))
-		  continue;
+      க்கு (unsigned idx = 0 ;  idx < nlevels1_ ;  idx += 1) {
+	    எனில் (cur.mask0 != (cur.mask0 & levels1_[idx].mask0))
+		  தொடர்;
+	    எனில் (cur.mask1 != (cur.mask1 & levels1_[idx].mask1))
+		  தொடர்;
+	    எனில் (cur.maskx != (cur.maskx & levels1_[idx].maskx))
+		  தொடர்;
 
-	    return BIT4_1;
+	    திரும்பு BIT4_1;
       }
 
 	/* We need to test against an explicit X-output table, since
 	   we need to distinguish from an X output and no match. */
-      for (unsigned idx = 0 ;  idx < nlevelsx_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levelsx_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levelsx_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levelsx_[idx].maskx))
-		  continue;
+      க்கு (unsigned idx = 0 ;  idx < nlevelsx_ ;  idx += 1) {
+	    எனில் (cur.mask0 != (cur.mask0 & levelsx_[idx].mask0))
+		  தொடர்;
+	    எனில் (cur.mask1 != (cur.mask1 & levelsx_[idx].mask1))
+		  தொடர்;
+	    எனில் (cur.maskx != (cur.maskx & levelsx_[idx].maskx))
+		  தொடர்;
 
-	    return BIT4_X;
+	    திரும்பு BIT4_X;
       }
 
 	/* Test the table that requests the next output be the same as
 	   the current output. This gets the current output from the
 	   levels table that was passed in. */
-      for (unsigned idx = 0 ;  idx < nlevelsL_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levelsL_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levelsL_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levelsL_[idx].maskx))
-		  continue;
+      க்கு (unsigned idx = 0 ;  idx < nlevelsL_ ;  idx += 1) {
+	    எனில் (cur.mask0 != (cur.mask0 & levelsL_[idx].mask0))
+		  தொடர்;
+	    எனில் (cur.mask1 != (cur.mask1 & levelsL_[idx].mask1))
+		  தொடர்;
+	    எனில் (cur.maskx != (cur.maskx & levelsL_[idx].maskx))
+		  தொடர்;
 
-	    if (cur.mask0 & (1 << port_count()))
-		  return BIT4_0;
-	    if (cur.mask1 & (1 << port_count()))
-		  return BIT4_1;
-	    if (cur.maskx & (1 << port_count()))
-		  return BIT4_X;
+	    எனில் (cur.mask0 & (1 << port_மொத்தம்()))
+		  திரும்பு BIT4_0;
+	    எனில் (cur.mask1 & (1 << port_மொத்தம்()))
+		  திரும்பு BIT4_1;
+	    எனில் (cur.maskx & (1 << port_மொத்தம்()))
+		  திரும்பு BIT4_X;
 
-	    assert(0);
-	    return BIT4_X;
+	    ப்ரதிஜ்ஞா(0);
+	    திரும்பு BIT4_X;
       }
 
 	/* No explicit levels entry match. Return a Z to signal that
 	   further testing is needed. */
-      return BIT4_Z;
+      திரும்பு BIT4_Z;
 }
 
-vvp_bit4_t vvp_udp_seq_s::test_edges_(const udp_levels_table&cur,
-				      const udp_levels_table&prev)
+vvp_bit4_t vvp_udp_seq_s::test_edges_(மாறிலி udp_levels_table&cur,
+				      மாறிலி udp_levels_table&prev)
 {
 	/* The edge_mask is true for all bits that are different in
 	   the cur and prev tables. */
@@ -798,21 +798,21 @@ vvp_bit4_t vvp_udp_seq_s::test_edges_(const udp_levels_table&cur,
       unsigned long edge1_mask = cur.mask1 ^ prev.mask1;
 
       unsigned long edge_mask = edge0_mask|edgex_mask|edge1_mask;
-      edge_mask &= ~ (-1UL << port_count());
+      edge_mask &= ~ (-1UL << port_மொத்தம்());
 
 	/* If there are no differences, then there are no edges. Give
 	   up now. */
-      if (edge_mask == 0)
-	    return BIT4_X;
+      எனில் (edge_mask == 0)
+	    திரும்பு BIT4_X;
 
       unsigned edge_position = 0;
-      while ((edge_mask&1) == 0) {
+      போது ((edge_mask&1) == 0) {
 	    edge_mask >>= 1;
 	    edge_position += 1;
       }
 
 	/* We expect that there is exactly one edge in here. */
-      assert(edge_mask == 1);
+      ப்ரதிஜ்ஞா(edge_mask == 1);
 
       edge_mask = 1UL << edge_position;
 
@@ -825,97 +825,97 @@ vvp_bit4_t vvp_udp_seq_s::test_edges_(const udp_levels_table&cur,
 	   values we use to test the applicability of the edge_table
 	   entries. */
 
-      for (unsigned idx = 0 ;  idx < nedges0_ ;  idx += 1) {
-	    const struct udp_edges_table*row = edges0_ + idx;
+      க்கு (unsigned idx = 0 ;  idx < nedges0_ ;  idx += 1) {
+	    மாறிலி கட்டமைப்பு udp_edges_table*row = edges0_ + idx;
 
-	    if (row->edge_position != edge_position)
-		  continue;
-	    if (edge_mask0 && !row->edge_mask0)
-		  continue;
-	    if (edge_maskx && !row->edge_maskx)
-		  continue;
-	    if (edge_mask1 && !row->edge_mask1)
-		  continue;
-	    if (cur.mask0 != (cur.mask0 & row->mask0))
-		  continue;
-	    if (cur.maskx != (cur.maskx & row->maskx))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & row->mask1))
-		  continue;
+	    எனில் (row->edge_position != edge_position)
+		  தொடர்;
+	    எனில் (edge_mask0 && !row->edge_mask0)
+		  தொடர்;
+	    எனில் (edge_maskx && !row->edge_maskx)
+		  தொடர்;
+	    எனில் (edge_mask1 && !row->edge_mask1)
+		  தொடர்;
+	    எனில் (cur.mask0 != (cur.mask0 & row->mask0))
+		  தொடர்;
+	    எனில் (cur.maskx != (cur.maskx & row->maskx))
+		  தொடர்;
+	    எனில் (cur.mask1 != (cur.mask1 & row->mask1))
+		  தொடர்;
 
-	    return BIT4_0;
+	    திரும்பு BIT4_0;
       }
 
-      for (unsigned idx = 0 ;  idx < nedges1_ ;  idx += 1) {
-	    const struct udp_edges_table*row = edges1_ + idx;
+      க்கு (unsigned idx = 0 ;  idx < nedges1_ ;  idx += 1) {
+	    மாறிலி கட்டமைப்பு udp_edges_table*row = edges1_ + idx;
 
-	    if (row->edge_position != edge_position)
-		  continue;
-	    if (edge_mask0 && !row->edge_mask0)
-		  continue;
-	    if (edge_maskx && !row->edge_maskx)
-		  continue;
-	    if (edge_mask1 && !row->edge_mask1)
-		  continue;
-	    if (cur.mask0 != (cur.mask0 & row->mask0))
-		  continue;
-	    if (cur.maskx != (cur.maskx & row->maskx))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & row->mask1))
-		  continue;
+	    எனில் (row->edge_position != edge_position)
+		  தொடர்;
+	    எனில் (edge_mask0 && !row->edge_mask0)
+		  தொடர்;
+	    எனில் (edge_maskx && !row->edge_maskx)
+		  தொடர்;
+	    எனில் (edge_mask1 && !row->edge_mask1)
+		  தொடர்;
+	    எனில் (cur.mask0 != (cur.mask0 & row->mask0))
+		  தொடர்;
+	    எனில் (cur.maskx != (cur.maskx & row->maskx))
+		  தொடர்;
+	    எனில் (cur.mask1 != (cur.mask1 & row->mask1))
+		  தொடர்;
 
-	    return BIT4_1;
+	    திரும்பு BIT4_1;
       }
 
-      for (unsigned idx = 0 ;  idx < nedgesL_ ;  idx += 1) {
-	    const struct udp_edges_table*row = edgesL_ + idx;
+      க்கு (unsigned idx = 0 ;  idx < nedgesL_ ;  idx += 1) {
+	    மாறிலி கட்டமைப்பு udp_edges_table*row = edgesL_ + idx;
 
-	    if (row->edge_position != edge_position)
-		  continue;
-	    if (edge_mask0 && !row->edge_mask0)
-		  continue;
-	    if (edge_maskx && !row->edge_maskx)
-		  continue;
-	    if (edge_mask1 && !row->edge_mask1)
-		  continue;
-	    if (cur.mask0 != (cur.mask0 & row->mask0))
-		  continue;
-	    if (cur.maskx != (cur.maskx & row->maskx))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & row->mask1))
-		  continue;
+	    எனில் (row->edge_position != edge_position)
+		  தொடர்;
+	    எனில் (edge_mask0 && !row->edge_mask0)
+		  தொடர்;
+	    எனில் (edge_maskx && !row->edge_maskx)
+		  தொடர்;
+	    எனில் (edge_mask1 && !row->edge_mask1)
+		  தொடர்;
+	    எனில் (cur.mask0 != (cur.mask0 & row->mask0))
+		  தொடர்;
+	    எனில் (cur.maskx != (cur.maskx & row->maskx))
+		  தொடர்;
+	    எனில் (cur.mask1 != (cur.mask1 & row->mask1))
+		  தொடர்;
 
-	    if (cur.mask0 & (1 << port_count()))
-		  return BIT4_0;
-	    if (cur.mask1 & (1 << port_count()))
-		  return BIT4_1;
-	    if (cur.maskx & (1 << port_count()))
-		  return BIT4_X;
+	    எனில் (cur.mask0 & (1 << port_மொத்தம்()))
+		  திரும்பு BIT4_0;
+	    எனில் (cur.mask1 & (1 << port_மொத்தம்()))
+		  திரும்பு BIT4_1;
+	    எனில் (cur.maskx & (1 << port_மொத்தம்()))
+		  திரும்பு BIT4_X;
 
-	    assert(0);
-	    return BIT4_X;
+	    ப்ரதிஜ்ஞா(0);
+	    திரும்பு BIT4_X;
       }
 
-      return BIT4_X;
+      திரும்பு BIT4_X;
 }
 
 vvp_udp_fun_core::vvp_udp_fun_core(vvp_net_t*net, vvp_udp_s*def)
-: vvp_wide_fun_core(net, def->port_count())
+: vvp_wide_fun_core(net, def->port_மொத்தம்())
 {
       def_ = def;
       cur_out_ = def_->get_init();
 	// Assume initially that all the inputs are 1'bx
       current_.mask0 = 0;
       current_.mask1 = 0;
-      current_.maskx = ~ ((-1UL) << port_count());
+      current_.maskx = ~ ((-1UL) << port_மொத்தம்());
 
         // If the initial value is 0 or 1, schedule the initial assignment
         // normally, so that any sensitive always processes can be started
         // first.
-      if (cur_out_ != BIT4_X)
-	    schedule_generic(this, 0, false);
-      else
-	    schedule_functor(this);
+      எனில் (cur_out_ != BIT4_X)
+	    schedule_generic(இது, 0, பொய்);
+      இல்லையெனில்
+	    schedule_functor(இது);
 }
 
 vvp_udp_fun_core::~vvp_udp_fun_core()
@@ -925,49 +925,49 @@ vvp_udp_fun_core::~vvp_udp_fun_core()
 /*
  * This method is used to propagate the initial value on startup.
  */
-void vvp_udp_fun_core::run_run()
+வெறுமை vvp_udp_fun_core::run_run()
 {
       vvp_vector4_t tmp (1);
       tmp.set_bit(0, cur_out_);
       propagate_vec4(tmp);
 }
 
-void vvp_udp_fun_core::recv_vec4_from_inputs(unsigned port)
+வெறுமை vvp_udp_fun_core::recv_vec4_from_inputs(unsigned port)
 {
 	/* For now, assume udps are 1-bit wide. */
       unsigned port_width = value(port).size();
-      assert(port_width == 1);
+      ப்ரதிஜ்ஞா(port_width == 1);
 
       unsigned long mask = 1UL << port;
 
       udp_levels_table prev = current_;
 
-      switch (value(port).value(0)) {
+      தேர்வு (value(port).value(0)) {
 
-	  case BIT4_0:
+	  நிலை BIT4_0:
 	    current_.mask0 |= mask;
 	    current_.mask1 &= ~mask;
 	    current_.maskx &= ~mask;
-	    break;
-	  case BIT4_1:
+	    நிறுத்து;
+	  நிலை BIT4_1:
 	    current_.mask0 &= ~mask;
 	    current_.mask1 |= mask;
 	    current_.maskx &= ~mask;
-	    break;
-	  default:
+	    நிறுத்து;
+	  இயல்பு:
 	    current_.mask0 &= ~mask;
 	    current_.mask1 &= ~mask;
 	    current_.maskx |= mask;
-	    break;
+	    நிறுத்து;
       }
 
       vvp_bit4_t out_bit = def_->calculate_output(current_, prev, cur_out_);
 
-      if (out_bit == cur_out_)
-	    return;
+      எனில் (out_bit == cur_out_)
+	    திரும்பு;
 
       cur_out_ = out_bit;
-      schedule_functor(this);
+      schedule_functor(இது);
 }
 
 
@@ -976,20 +976,20 @@ void vvp_udp_fun_core::recv_vec4_from_inputs(unsigned port)
  * node. We create the nodes needed to integrate the UDP into the
  * netlist. The definition should be parsed already.
  */
-void compile_udp_functor(char*label, char*type,
-			 unsigned argc, struct symb_s*argv)
+வெறுமை compile_udp_functor(எழுத்து*label, எழுத்து*type,
+			 unsigned argc, கட்டமைப்பு symb_s*argv)
 {
-      struct vvp_udp_s *def = udp_find(type);
-      assert(def);
-      free(type);
+      கட்டமைப்பு vvp_udp_s *def = udp_find(type);
+      ப்ரதிஜ்ஞா(def);
+      விடுவி(type);
 
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_udp_fun_core*core = new vvp_udp_fun_core(ptr, def);
+      vvp_net_t*ptr = புதிய vvp_net_t;
+      vvp_udp_fun_core*core = புதிய vvp_udp_fun_core(ptr, def);
       ptr->fun = core;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_குறியீடு(label, ptr);
+      விடுவி(label);
 
       wide_inputs_connect(core, argc, argv);
-      free(argv);
+      விடுவி(argv);
 }

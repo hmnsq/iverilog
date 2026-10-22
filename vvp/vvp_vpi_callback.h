@@ -22,7 +22,7 @@
 # include  "config.h"
 # include  "vpi_user.h"
 
-class value_callback;
+class மதிப்பு_callback;
 
 /*
  * Things derived from vvp_vpi_callback may have callbacks
@@ -34,30 +34,30 @@ class value_callback;
  */
 class vvp_vpi_callback {
 
-    public:
+    பொது:
       vvp_vpi_callback();
-      virtual ~vvp_vpi_callback();
+      மெய்நிகர் ~vvp_vpi_callback();
 
-      void attach_as_word(struct __vpiArray* arr, unsigned long addr);
+      வெறுமை attach_as_word(கட்டமைப்பு __vpiArray* arr, unsigned long addr);
 
-      void add_vpi_callback(value_callback*);
+      வெறுமை add_vpi_callback(மதிப்பு_callback*);
 #ifdef CHECK_WITH_VALGRIND
 	/* This has only been tested at EOS. */
-      void clear_all_callbacks(void);
+      வெறுமை clear_all_callbacks(வெறுமை);
 #endif
 
 	// Derived classes implement this method to provide a way for
 	// vpi to get at the vvp value of the object.
-      virtual void get_value(struct t_vpi_value*value) =0;
+      மெய்நிகர் வெறுமை get_மதிப்பு(கட்டமைப்பு t_vpi_மதிப்பு*மதிப்பு) =0;
 
-    protected:
+    பாதுகாக்கப்பட்ட:
 	// Derived classes call this method to indicate that it is
 	// time to call the callback.
-      void run_vpi_callbacks();
+      வெறுமை run_vpi_callbacks();
 
-    private:
-      value_callback*vpi_callbacks_;
-      struct __vpi_array_word*array_words_;
+    தனிப்பட்ட:
+      மதிப்பு_callback*vpi_callbacks_;
+      கட்டமைப்பு __vpi_array_word*array_சொற்கள்;
 };
 
 

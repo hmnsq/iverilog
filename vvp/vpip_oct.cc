@@ -25,125 +25,125 @@
 # include  <cstdlib>
 # include  <cassert>
 
-extern const char oct_digits[64];
+வெளி மாறிலி எழுத்து oct_digits[64];
 
-void vpip_oct_str_to_vec4(vvp_vector4_t&val, const char*str)
+வெறுமை vpip_oct_str_to_vec4(vvp_vector4_t&val, மாறிலி எழுத்து*str)
 {
       unsigned str_len = strlen(str);
       unsigned skip_chars = 0;
-      const char*tstr = str;
+      மாறிலி எழுத்து*tstr = str;
 	/* Find the number of non-numeric characters. */
-      while ((tstr = strpbrk(tstr, "-_"))) {
+      போது ((tstr = strpbrk(tstr, "-_"))) {
 	    skip_chars += 1;
 	    tstr += 1;
       }
       vvp_vector4_t tval(3*(str_len-skip_chars));
       skip_chars = 0;
-      for (unsigned idx = 0 ;  idx < tval.size() ;  idx += 1) {
+      க்கு (unsigned idx = 0 ;  idx < tval.size() ;  idx += 1) {
 	    unsigned tmp;
 	    unsigned bit_off = idx%3;
 	    unsigned str_off = idx/3;
-	    char ch;
+	    எழுத்து ch;
 
-	    assert(str_off+skip_chars < str_len);
+	    ப்ரதிஜ்ஞா(str_off+skip_chars < str_len);
 	      /* Skip any "_" characters in the string. */
-	    while ((ch = str[str_len-str_off-1-skip_chars]) == '_') {
+	    போது ((ch = str[str_len-str_off-1-skip_chars]) == '_') {
 		  skip_chars += 1;
-		  assert(str_off+skip_chars < str_len);
+		  ப்ரதிஜ்ஞா(str_off+skip_chars < str_len);
 	    }
 
 	      /* If we find a "-" it must be at the head of the string. */
-	    if (ch == '-') assert(0);
+	    எனில் (ch == '-') ப்ரதிஜ்ஞா(0);
 
-	    switch (ch) {
-		case '0':
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-		case '6':
-		case '7':
+	    தேர்வு (ch) {
+		நிலை '0':
+		நிலை '1':
+		நிலை '2':
+		நிலை '3':
+		நிலை '4':
+		நிலை '5':
+		நிலை '6':
+		நிலை '7':
 		  tmp = ch - '0';
 		  tval.set_bit(idx, ((tmp>>bit_off)&1)? BIT4_1 : BIT4_0);
-		  break;
-		case 'x':
-		case 'X':
+		  நிறுத்து;
+		நிலை 'x':
+		நிலை 'X':
 		  tval.set_bit(idx, BIT4_X);
-		  break;
-		case 'z':
-		case 'Z':
+		  நிறுத்து;
+		நிலை 'z':
+		நிலை 'Z':
 		  tval.set_bit(idx, BIT4_Z);
-		  break;
-		default:
+		  நிறுத்து;
+		இயல்பு:
 		    /* Return "x" if there are invalid digits in the string. */
 		  fprintf(stderr, "Warning: Invalid octal digit %c(%d) in "
 		          "\"%s\".\n", ch, ch, str);
-		  for (unsigned jdx = 0 ;  jdx < val.size() ;  jdx += 1) {
+		  க்கு (unsigned jdx = 0 ;  jdx < val.size() ;  jdx += 1) {
 			val.set_bit(jdx, BIT4_X);
 		  }
-		  return;
+		  திரும்பு;
 	    }
       }
 
 	/* Make a negative value when needed. */
-      if (str[0] == '-') {
+      எனில் (str[0] == '-') {
 	    tval.invert();
 	    tval += (int64_t) 1;
       }
 
 	/* Find the correct padding value. */
       vvp_bit4_t pad;
-      switch (tval.value(tval.size()-1)) {
-	  case BIT4_X:  // Pad MSB 'x' with 'x'
+      தேர்வு (tval.value(tval.size()-1)) {
+	  நிலை BIT4_X:  // Pad MSB 'x' with 'x'
 	    pad = BIT4_X;
-	    break;
-	  case BIT4_Z:  // Pad MSB 'z' with 'z'
+	    நிறுத்து;
+	  நிலை BIT4_Z:  // Pad MSB 'z' with 'z'
 	    pad = BIT4_Z;
-	    break;
-	  case BIT4_1:  // If negative pad MSB '1' with '1'
-	    if (str[0] == '-') {
+	    நிறுத்து;
+	  நிலை BIT4_1:  // If negative pad MSB '1' with '1'
+	    எனில் (str[0] == '-') {
 		  pad = BIT4_1;
-		  break;
+		  நிறுத்து;
 	    }
 	    // fallthrough
-	  default:  // Everything else gets '0' padded.
+	  இயல்பு:  // Everything else gets '0' padded.
 	    pad = BIT4_0;
-	    break;
+	    நிறுத்து;
       }
 
 	/* Copy the temporary value to the real value, padding if needed. */
-      for (unsigned idx = 0 ;  idx < val.size() ;  idx += 1) {
-	    if (idx < tval.size()) val.set_bit(idx, tval.value(idx));
-	    else val.set_bit(idx, pad);
+      க்கு (unsigned idx = 0 ;  idx < val.size() ;  idx += 1) {
+	    எனில் (idx < tval.size()) val.set_bit(idx, tval.value(idx));
+	    இல்லையெனில் val.set_bit(idx, pad);
       }
 }
 
-void vpip_vec4_to_oct_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
+வெறுமை vpip_vec4_to_oct_str(மாறிலி vvp_vector4_t&bits, எழுத்து*buf, unsigned nbuf)
 {
       unsigned slen = (bits.size() + 2) / 3;
-      assert(slen < nbuf);
+      ப்ரதிஜ்ஞா(slen < nbuf);
 
       buf[slen] = 0;
 
       unsigned val = 0;
-      for (unsigned idx = 0 ;  idx < bits.size() ;  idx += 1) {
+      க்கு (unsigned idx = 0 ;  idx < bits.size() ;  idx += 1) {
 	    unsigned vs = (idx%3) * 2;
 
-	    switch (bits.value(idx)) {
-		case BIT4_0:
-		  break;
-		case BIT4_1:
+	    தேர்வு (bits.value(idx)) {
+		நிலை BIT4_0:
+		  நிறுத்து;
+		நிலை BIT4_1:
 		  val |= 1 << vs;
-		  break;
-		case BIT4_X:
+		  நிறுத்து;
+		நிலை BIT4_X:
 		  val |= 2 << vs;
-		  break;
-		case BIT4_Z:
+		  நிறுத்து;
+		நிலை BIT4_Z:
 		  val |= 3 << vs;
 	    }
 
-	    if (vs == 4) {
+	    எனில் (vs == 4) {
 		  slen -= 1;
 		  buf[slen] = oct_digits[val];
 		  val = 0;
@@ -151,18 +151,18 @@ void vpip_vec4_to_oct_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
       }
 
 	/* Fill in X or Z if they are the only thing in the value. */
-      switch (bits.size() % 3) {
-	  case 1:
-	    if (val == 2) val = 42;
-	    else if (val == 3) val = 63;
-	    break;
-	  case 2:
-	    if (val == 10) val = 42;
-	    else if (val == 15) val = 63;
-	    break;
+      தேர்வு (bits.size() % 3) {
+	  நிலை 1:
+	    எனில் (val == 2) val = 42;
+	    இல்லையெனில் எனில் (val == 3) val = 63;
+	    நிறுத்து;
+	  நிலை 2:
+	    எனில் (val == 10) val = 42;
+	    இல்லையெனில் எனில் (val == 15) val = 63;
+	    நிறுத்து;
       }
 
-      if (slen > 0) {
+      எனில் (slen > 0) {
 	    slen -= 1;
 	    buf[slen] = oct_digits[val];
       }

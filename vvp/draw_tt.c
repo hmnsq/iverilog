@@ -25,101 +25,101 @@
  * map of a 4-vbit value to a hex digit. The table handles the display
  * of x, X, z, Z, etc.
  */
-static void draw_hex_table(void)
+நிலையான வெறுமை draw_hex_table(வெறுமை)
 {
       unsigned idx;
 
       printf("extern const char hex_digits[256] = {\n");
-      for (idx = 0 ;  idx < 256 ;  idx += 1) {
+      க்கு (idx = 0 ;  idx < 256 ;  idx += 1) {
 	    unsigned cnt_z = 0, cnt_x = 0;
 	    unsigned bv = 0, bdx;
 
-	    for (bdx = 0 ;  bdx < 4 ;  bdx += 1) {
-		  switch ((idx >> (bdx * 2)) & 3) {
-		      case 0:
-			break;
-		      case 1:
+	    க்கு (bdx = 0 ;  bdx < 4 ;  bdx += 1) {
+		  தேர்வு ((idx >> (bdx * 2)) & 3) {
+		      நிலை 0:
+			நிறுத்து;
+		      நிலை 1:
 			bv |= 1<<bdx;
-			break;
-		      case 2:
+			நிறுத்து;
+		      நிலை 2:
 			cnt_x += 1;
-			break;
-		      case 3:
+			நிறுத்து;
+		      நிலை 3:
 			cnt_z += 1;
-			break;
+			நிறுத்து;
 		  }
 	    }
 
-	    if (cnt_z == 4)
+	    எனில் (cnt_z == 4)
 		  printf(" 'z',");
 
-	    else if (cnt_x == 4)
+	    இல்லையெனில் எனில் (cnt_x == 4)
 		  printf(" 'x',");
 
-	    else if ((cnt_z > 0) && (cnt_x == 0))
+	    இல்லையெனில் எனில் ((cnt_z > 0) && (cnt_x == 0))
 		  printf(" 'Z',");
 
-	    else if (cnt_x > 0)
+	    இல்லையெனில் எனில் (cnt_x > 0)
 		  printf(" 'X',");
 
-	    else
+	    இல்லையெனில்
 		  printf(" '%c',", (unsigned)"0123456789abcdef"[bv]);
 
-	    if (((idx+1) % 8) == 0)
+	    எனில் (((idx+1) % 8) == 0)
 		  printf("\n");
       }
       printf("};\n");
 }
 
-static void draw_oct_table(void)
+நிலையான வெறுமை draw_oct_table(வெறுமை)
 {
       unsigned idx;
 
       printf("extern const char oct_digits[64] = {\n");
-      for (idx = 0 ;  idx < 64 ;  idx += 1) {
+      க்கு (idx = 0 ;  idx < 64 ;  idx += 1) {
 	    unsigned cnt_z = 0, cnt_x = 0;
 	    unsigned bv = 0, bdx;
 
-	    for (bdx = 0 ;  bdx < 3 ;  bdx += 1) {
-		  switch ((idx >> (bdx * 2)) & 3) {
-		      case 0:
-			break;
-		      case 1:
+	    க்கு (bdx = 0 ;  bdx < 3 ;  bdx += 1) {
+		  தேர்வு ((idx >> (bdx * 2)) & 3) {
+		      நிலை 0:
+			நிறுத்து;
+		      நிலை 1:
 			bv |= 1<<bdx;
-			break;
-		      case 2:
+			நிறுத்து;
+		      நிலை 2:
 			cnt_x += 1;
-			break;
-		      case 3:
+			நிறுத்து;
+		      நிலை 3:
 			cnt_z += 1;
-			break;
+			நிறுத்து;
 		  }
 	    }
 
-	    if (cnt_z == 3)
+	    எனில் (cnt_z == 3)
 		  printf(" 'z',");
 
-	    else if (cnt_x == 3)
+	    இல்லையெனில் எனில் (cnt_x == 3)
 		  printf(" 'x',");
 
-	    else if ((cnt_z > 0) && (cnt_x == 0))
+	    இல்லையெனில் எனில் ((cnt_z > 0) && (cnt_x == 0))
 		  printf(" 'Z',");
 
-	    else if (cnt_x > 0)
+	    இல்லையெனில் எனில் (cnt_x > 0)
 		  printf(" 'X',");
 
-	    else
+	    இல்லையெனில்
 		  printf(" '%c',", (unsigned)"01234567"[bv]);
 
-	    if (((idx+1) % 8) == 0)
+	    எனில் (((idx+1) % 8) == 0)
 		  printf("\n");
       }
       printf("};\n");
 }
 
-int main(void)
+முழு முதன்மை(வெறுமை)
 {
       draw_hex_table();
       draw_oct_table();
-      return 0;
+      திரும்பு 0;
 }

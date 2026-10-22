@@ -25,71 +25,71 @@
  * This method is called to compile the design file. The input is read
  * and a list of statements is created.
  */
-extern int compile_design(const char*path);
+வெளி முழு compile_design(மாறிலி எழுத்து*path);
 
 /*
  * This routine is called to check that the input file has a compatible
  * version.
  */
-extern void verify_version(char *ivl_ver, char* commit);
+வெளி வெறுமை verify_version(எழுத்து *ivl_ver, எழுத்து* commit);
 
 /*
  * Set the default delay type for the $sdf_annotate task (min/typ/max).
  */
-extern void set_delay_selection(const char* sel);
+வெளி வெறுமை set_delay_selection(மாறிலி எழுத்து* sel);
 
 /*
  * various functions shared by the lexor and the parser.
  */
-extern int yylex(void);
-extern void yyerror(const char*msg);
+வெளி முழு yylex(வெறுமை);
+வெளி வெறுமை yyerror(மாறிலி எழுத்து*செய்தி);
 
-extern void destroy_lexor();
+வெளி வெறுமை destroy_lexor();
 
 /*
  * This is the path of the current source file.
  */
-extern const char*yypath;
-extern unsigned yyline;
+வெளி மாறிலி எழுத்து*yypath;
+வெளி unsigned yyline;
 
-struct symb_s {
-      char*text;
+கட்டமைப்பு symb_s {
+      எழுத்து*text;
       unsigned idx;
 };
 
-struct symbv_s {
+கட்டமைப்பு symbv_s {
       unsigned cnt;
-      struct symb_s*vect;
+      கட்டமைப்பு symb_s*vect;
 };
 
-extern void symbv_init(struct symbv_s*obj);
-extern void symbv_add(struct symbv_s*obj, struct symb_s item);
+வெளி வெறுமை symbv_init(கட்டமைப்பு symbv_s*obj);
+வெளி வெறுமை symbv_add(கட்டமைப்பு symbv_s*obj, கட்டமைப்பு symb_s item);
 
-struct numbv_s {
+கட்டமைப்பு numbv_s {
       unsigned cnt;
       long*nvec;
 };
 
-struct enum_name_s {
-      char*text;
+கட்டமைப்பு enum_name_s {
+      எழுத்து*text;
       uint64_t val2;
-      char*val4;
+      எழுத்து*val4;
 };
 
-extern void numbv_init(struct numbv_s*obj);
-extern void numbv_add(struct numbv_s*obj, long item);
-extern void numbv_clear(struct numbv_s*obj);
+வெளி வெறுமை numbv_init(கட்டமைப்பு numbv_s*obj);
+வெளி வெறுமை numbv_add(கட்டமைப்பு numbv_s*obj, long item);
+வெளி வெறுமை numbv_clear(கட்டமைப்பு numbv_s*obj);
 
-struct argv_s {
+கட்டமைப்பு argv_s {
       unsigned  argc;
       vpiHandle*argv;
-      char    **syms;
+      எழுத்து    **syms;
 };
 
 
-extern void argv_init(struct argv_s*obj);
-extern void argv_add(struct argv_s*obj, vpiHandle);
-extern void argv_sym_add(struct argv_s*obj, char *);
-extern void argv_sym_lookup(struct argv_s*obj);
+வெளி வெறுமை argv_init(கட்டமைப்பு argv_s*obj);
+வெளி வெறுமை argv_add(கட்டமைப்பு argv_s*obj, vpiHandle);
+வெளி வெறுமை argv_sym_add(கட்டமைப்பு argv_s*obj, எழுத்து *);
+வெளி வெறுமை argv_sym_lookup(கட்டமைப்பு argv_s*obj);
 
 #endif /* IVL_parse_misc_H */

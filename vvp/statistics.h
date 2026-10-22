@@ -22,44 +22,44 @@
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
 #ifdef __SUNPRO_CC
 # include  <stddef.h>
-#else
+#இல்லையெனில்
 # include  <cstddef>
 #endif
 
-extern unsigned long count_opcodes;
-extern unsigned long count_functors;
-extern unsigned long count_functors_logic;
-extern unsigned long count_functors_bufif;
-extern unsigned long count_functors_resolv;
-extern unsigned long count_functors_sig;
-extern unsigned long count_filters;
-extern unsigned long count_vvp_nets;
-extern unsigned long count_vpi_nets;
-extern unsigned long count_vpi_scopes;
+வெளி unsigned long மொத்தம்_opcodes;
+வெளி unsigned long மொத்தம்_functors;
+வெளி unsigned long மொத்தம்_functors_logic;
+வெளி unsigned long மொத்தம்_functors_bufif;
+வெளி unsigned long மொத்தம்_functors_resolv;
+வெளி unsigned long மொத்தம்_functors_sig;
+வெளி unsigned long மொத்தம்_filters;
+வெளி unsigned long மொத்தம்_vvp_nets;
+வெளி unsigned long மொத்தம்_vpi_nets;
+வெளி unsigned long மொத்தம்_vpi_scopes;
 
-extern unsigned long count_net_arrays;
-extern unsigned long count_net_array_words;
-extern unsigned long count_var_arrays;
-extern unsigned long count_var_array_words;
-extern unsigned long count_real_arrays;
-extern unsigned long count_real_array_words;
+வெளி unsigned long மொத்தம்_net_arrays;
+வெளி unsigned long மொத்தம்_net_array_சொற்கள்;
+வெளி unsigned long மொத்தம்_var_arrays;
+வெளி unsigned long மொத்தம்_var_array_சொற்கள்;
+வெளி unsigned long மொத்தம்_real_arrays;
+வெளி unsigned long மொத்தம்_real_array_சொற்கள்;
 
 
-extern unsigned long count_time_events;
-extern unsigned long count_time_pool(void);
+வெளி unsigned long மொத்தம்_time_events;
+வெளி unsigned long மொத்தம்_time_pool(வெறுமை);
 
-extern unsigned long count_assign_events;
-extern unsigned long count_assign4_pool(void);
-extern unsigned long count_assign8_pool(void);
-extern unsigned long count_assign_real_pool(void);
-extern unsigned long count_assign_aword_pool(void);
-extern unsigned long count_assign_arword_pool(void);
+வெளி unsigned long மொத்தம்_assign_events;
+வெளி unsigned long மொத்தம்_assign4_pool(வெறுமை);
+வெளி unsigned long மொத்தம்_assign8_pool(வெறுமை);
+வெளி unsigned long மொத்தம்_assign_real_pool(வெறுமை);
+வெளி unsigned long மொத்தம்_assign_aword_pool(வெறுமை);
+வெளி unsigned long மொத்தம்_assign_arword_pool(வெறுமை);
 
-extern unsigned long count_gen_events;
-extern unsigned long count_gen_pool(void);
+வெளி unsigned long மொத்தம்_gen_events;
+வெளி unsigned long மொத்தம்_gen_pool(வெறுமை);
 
-extern size_t size_opcodes;
-extern size_t size_vvp_nets;
-extern size_t size_vvp_net_funs;
+வெளி size_t size_opcodes;
+வெளி size_t size_vvp_nets;
+வெளி size_t size_vvp_net_funs;
 
 #endif /* IVL_statistics_H */

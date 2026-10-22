@@ -32,137 +32,137 @@
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+using நாமாகாஶ std;
 
-static void __compile_var_real(char*label, char*name,
+நிலையான வெறுமை __compile_var_real(எழுத்து*label, எழுத்து*name,
 			       vvp_array_t array, unsigned long array_addr,
-			       bool local_flag)
+			       தருக்க local_flag)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = புதிய vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal_real_aa*tmp = new vvp_fun_signal_real_aa;
+      எனில் (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal_real_aa*tmp = புதிய vvp_fun_signal_real_aa;
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
-	    net->fil = new vvp_wire_real;
-	    net->fun = new vvp_fun_signal_real_sa;
+      } இல்லையெனில் {
+	    net->fil = புதிய vvp_wire_real;
+	    net->fun = புதிய vvp_fun_signal_real_sa;
       }
 
-      define_functor_symbol(label, net);
+      define_functor_குறியீடு(label, net);
 
       vpiHandle obj = vpip_make_real_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_குறியீடு(label, obj);
 
-      if (name) {
-	    assert(!array);
-	    if (!local_flag)
+      எனில் (name) {
+	    ப்ரதிஜ்ஞா(!array);
+	    எனில் (!local_flag)
 		  vpip_attach_to_current_scope(obj);
-            if (!vpip_peek_current_scope()->is_automatic())
+            எனில் (!vpip_peek_current_scope()->is_automatic())
                   schedule_init_vector(vvp_net_ptr_t(net,0), 0.0);
       }
-      if (array) {
-	    assert(!name);
+      எனில் (array) {
+	    ப்ரதிஜ்ஞா(!name);
 	    array->attach_word(array_addr, obj);
       }
-      free(label);
+      விடுவி(label);
       delete[] name;
 }
 
-void compile_var_real(char*label, char*name, bool local_flag)
+வெறுமை compile_var_real(எழுத்து*label, எழுத்து*name, தருக்க local_flag)
 {
       __compile_var_real(label, name, 0, 0, local_flag);
 }
 
-void compile_var_string(char*label, char*name)
+வெறுமை compile_var_string(எழுத்து*label, எழுத்து*name)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = புதிய vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal_string_aa*tmp = new vvp_fun_signal_string_aa;
+      எனில் (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal_string_aa*tmp = புதிய vvp_fun_signal_string_aa;
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } இல்லையெனில் {
 	    net->fil = 0;
-	    net->fun = new vvp_fun_signal_string_sa;
+	    net->fun = புதிய vvp_fun_signal_string_sa;
       }
 
-      define_functor_symbol(label, net);
+      define_functor_குறியீடு(label, net);
 
       vpiHandle obj = vpip_make_string_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_குறியீடு(label, obj);
 
       vpip_attach_to_current_scope(obj);
-      free(label);
+      விடுவி(label);
       delete[] name;
 }
 
-void compile_var_darray(char*label, char*name, unsigned size)
+வெறுமை compile_var_darray(எழுத்து*label, எழுத்து*name, unsigned size)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = புதிய vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal_object_aa*tmp = new vvp_fun_signal_object_aa(size);
+      எனில் (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal_object_aa*tmp = புதிய vvp_fun_signal_object_aa(size);
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } இல்லையெனில் {
 	    net->fil = 0;
-	    net->fun = new vvp_fun_signal_object_sa(size);
+	    net->fun = புதிய vvp_fun_signal_object_sa(size);
       }
 
-      define_functor_symbol(label, net);
+      define_functor_குறியீடு(label, net);
 
       vpiHandle obj = vpip_make_darray_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_குறியீடு(label, obj);
 
       vpip_attach_to_current_scope(obj);
-      free(label);
+      விடுவி(label);
       delete[] name;
 }
 
-void compile_var_queue(char*label, char*name, unsigned size)
+வெறுமை compile_var_queue(எழுத்து*label, எழுத்து*name, unsigned size)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = புதிய vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal_object_aa*tmp = new vvp_fun_signal_object_aa(size);
+      எனில் (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal_object_aa*tmp = புதிய vvp_fun_signal_object_aa(size);
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } இல்லையெனில் {
 	    net->fil = 0;
-	    net->fun = new vvp_fun_signal_object_sa(size);
+	    net->fun = புதிய vvp_fun_signal_object_sa(size);
       }
 
-      define_functor_symbol(label, net);
+      define_functor_குறியீடு(label, net);
 
       vpiHandle obj = vpip_make_queue_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_குறியீடு(label, obj);
 
       vpip_attach_to_current_scope(obj);
-      free(label);
+      விடுவி(label);
       delete[] name;
 }
 
-void compile_var_cobject(char*label, char*name)
+வெறுமை compile_var_cobject(எழுத்து*label, எழுத்து*name)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = புதிய vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal_object_aa*tmp = new vvp_fun_signal_object_aa(1);
+      எனில் (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal_object_aa*tmp = புதிய vvp_fun_signal_object_aa(1);
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } இல்லையெனில் {
 	    net->fil = 0;
-	    net->fun = new vvp_fun_signal_object_sa(1);
+	    net->fun = புதிய vvp_fun_signal_object_sa(1);
       }
 
-      define_functor_symbol(label, net);
+      define_functor_குறியீடு(label, net);
 
       vpiHandle obj = vpip_make_cobject_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_குறியீடு(label, obj);
 
       vpip_attach_to_current_scope(obj);
-      free(label);
+      விடுவி(label);
       delete[] name;
 }
 
@@ -170,100 +170,100 @@ void compile_var_cobject(char*label, char*name)
  * A variable is a special functor, so we allocate that functor and
  * write the label into the symbol table.
  */
-void compile_variable(char*label, char*name,
-		      int msb, int lsb, int vpi_type_code,
-		      bool signed_flag, bool local_flag)
+வெறுமை compile_variable(எழுத்து*label, எழுத்து*name,
+		      முழு msb, முழு lsb, முழு vpi_type_code,
+		      தருக்க signed_flag, தருக்க local_flag)
 {
       unsigned wid = ((msb > lsb)? msb-lsb : lsb-msb) + 1;
 
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = புதிய vvp_net_t;
 
       vvp_bit4_t init;
-      if (vpi_type_code == vpiIntVar)
+      எனில் (vpi_type_code == vpiIntVar)
 	    init = BIT4_0;
-      else
+      இல்லையெனில்
 	    init = BIT4_X;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal4_aa*tmp = new vvp_fun_signal4_aa(wid, init);
+      எனில் (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal4_aa*tmp = புதிய vvp_fun_signal4_aa(wid, init);
 	    net->fil = tmp;
             net->fun = tmp;
-      } else {
-	    net->fil = new vvp_wire_vec4(wid, init);
-            net->fun = new vvp_fun_signal4_sa(wid);
+      } இல்லையெனில் {
+	    net->fil = புதிய vvp_wire_vec4(wid, init);
+            net->fun = புதிய vvp_fun_signal4_sa(wid);
       }
-      const vvp_signal_value*vfil = dynamic_cast<vvp_signal_value*>(net->fil);
+      மாறிலி vvp_signal_மதிப்பு*vfil = dynamic_cast<vvp_signal_மதிப்பு*>(net->fil);
 
-      define_functor_symbol(label, net);
+      define_functor_குறியீடு(label, net);
 
       vpiHandle obj = 0;
-      if (! local_flag) {
+      எனில் (! local_flag) {
 	      /* Make the vpiHandle for the reg. */
-	    switch (vpi_type_code) {
-		case vpiLogicVar:
+	    தேர்வு (vpi_type_code) {
+		நிலை vpiLogicVar:
 		  obj = vpip_make_var4(name, msb, lsb, signed_flag, net);
-		  break;
-		case vpiIntegerVar:
+		  நிறுத்து;
+		நிலை vpiIntegerVar:
 		  obj = vpip_make_int4(name, msb, lsb, net);
-		  break;
-		case vpiIntVar: // This handles all the atom2 int types
+		  நிறுத்து;
+		நிலை vpiIntVar: // This handles all the atom2 int types
 		  obj = vpip_make_int2(name, msb, lsb, signed_flag, net);
-		  break;
-		default:
+		  நிறுத்து;
+		இயல்பு:
 		  fprintf(stderr, "internal error: %s: vpi_type_code=%d\n", name, vpi_type_code);
-		  break;
+		  நிறுத்து;
 	    }
-	    assert(obj);
-	    compile_vpi_symbol(label, obj);
+	    ப்ரதிஜ்ஞா(obj);
+	    compile_vpi_குறியீடு(label, obj);
       }
 	// If the signal has a name, then it goes into the current
 	// scope as a signal.
-      if (name) {
-	    if (obj) vpip_attach_to_current_scope(obj);
-            if (!vpip_peek_current_scope()->is_automatic()) {
+      எனில் (name) {
+	    எனில் (obj) vpip_attach_to_current_scope(obj);
+            எனில் (!vpip_peek_current_scope()->is_automatic()) {
 		  vvp_vector4_t tmp;
-		  vfil->vec4_value(tmp);
+		  vfil->vec4_மதிப்பு(tmp);
 	          schedule_init_vector(vvp_net_ptr_t(net,0), tmp);
 	    }
       }
 
-      free(label);
+      விடுவி(label);
       delete[] name;
 }
 
 
-vvp_net_t* create_constant_node(const char*val_str)
+vvp_net_t* create_constant_முனை(மாறிலி எழுத்து*val_str)
 {
-      if (c4string_test(val_str)) {
-	    vvp_net_t*net = new vvp_net_t;
-	    net->fun = new vvp_fun_bufz;
+      எனில் (c4string_test(val_str)) {
+	    vvp_net_t*net = புதிய vvp_net_t;
+	    net->fun = புதிய vvp_fun_bufz;
 	    schedule_init_vector(vvp_net_ptr_t(net,0), c4string_to_vector4(val_str));
-	    return net;
+	    திரும்பு net;
       }
 
-      if (c8string_test(val_str)) {
-	    vvp_net_t*net = new vvp_net_t;
-	    net->fun = new vvp_fun_bufz;
+      எனில் (c8string_test(val_str)) {
+	    vvp_net_t*net = புதிய vvp_net_t;
+	    net->fun = புதிய vvp_fun_bufz;
 	    schedule_init_vector(vvp_net_ptr_t(net,0), c8string_to_vector8(val_str));
-	    return net;
+	    திரும்பு net;
       }
 
-      if (crstring_test(val_str)) {
-	    vvp_net_t*net = new vvp_net_t;
-	    net->fun = new vvp_fun_bufz;
+      எனில் (crstring_test(val_str)) {
+	    vvp_net_t*net = புதிய vvp_net_t;
+	    net->fun = புதிய vvp_fun_bufz;
 	    schedule_init_vector(vvp_net_ptr_t(net,0), crstring_to_double(val_str));
-	    return net;
+	    திரும்பு net;
       }
 
-      return 0;
+      திரும்பு 0;
 }
 
-class base_net_resolv : public resolv_list_s {
-    public:
-      explicit base_net_resolv(char*ref_label, vvp_array_t array,
+வகுப்பு base_net_resolv : பொது resolv_list_s {
+    பொது:
+      explicit base_net_resolv(எழுத்து*ref_label, vvp_array_t array,
 			       __vpiScope*scope,
-			       char*my_label, char*name,
-			       unsigned array_addr, bool local_flag)
+			       எழுத்து*my_label, எழுத்து*name,
+			       unsigned array_addr, தருக்க local_flag)
       : resolv_list_s(ref_label)
       { my_label_ = my_label;
 	array_ = array;
@@ -273,23 +273,23 @@ class base_net_resolv : public resolv_list_s {
 	local_flag_ = local_flag;
       }
 
-    protected:
-      char*my_label_;
+    பாதுகாக்கப்பட்ட:
+      எழுத்து*my_label_;
       vvp_array_t array_;
-      char*name_;
+      எழுத்து*name_;
       __vpiScope*scope_;
       unsigned array_addr_;
-      bool local_flag_;
+      தருக்க local_flag_;
 };
 
-class __compile_net_resolv : public base_net_resolv {
+வகுப்பு __compile_net_resolv : பொது base_net_resolv {
 
-    public:
-      explicit __compile_net_resolv(char*ref_label, vvp_array_t array,
+    பொது:
+      explicit __compile_net_resolv(எழுத்து*ref_label, vvp_array_t array,
 				    __vpiScope*scope,
-				    char*my_label, char*name,
-				    int msb, int lsb, unsigned array_addr,
-				    int vpi_type_code, bool signed_flag, bool local_flag)
+				    எழுத்து*my_label, எழுத்து*name,
+				    முழு msb, முழு lsb, unsigned array_addr,
+				    முழு vpi_type_code, தருக்க signed_flag, தருக்க local_flag)
       : base_net_resolv(ref_label, array, scope, my_label, name, array_addr, local_flag)
       { msb_ = msb;
 	lsb_ = lsb;
@@ -299,12 +299,12 @@ class __compile_net_resolv : public base_net_resolv {
 
       ~__compile_net_resolv() override { }
 
-      bool resolve(bool message_flag) override;
+      தருக்க resolve(தருக்க message_flag) override;
 
-    private:
-      int msb_, lsb_;
-      int vpi_type_code_;
-      bool signed_flag_;
+    தனிப்பட்ட:
+      முழு msb_, lsb_;
+      முழு vpi_type_code_;
+      தருக்க signed_flag_;
 };
 
 /*
@@ -319,250 +319,250 @@ class __compile_net_resolv : public base_net_resolv {
  * references into the net.
  */
 
-static void do_compile_net(vvp_net_t*node, vvp_array_t array,
+நிலையான வெறுமை do_compile_net(vvp_net_t*முனை, vvp_array_t array,
 			   __vpiScope*scope,
-			   char*my_label, char*name,
-			   int msb, int lsb, unsigned array_addr,
-			   int vpi_type_code, bool signed_flag, bool local_flag)
+			   எழுத்து*my_label, எழுத்து*name,
+			   முழு msb, முழு lsb, unsigned array_addr,
+			   முழு vpi_type_code, தருக்க signed_flag, தருக்க local_flag)
 {
       unsigned wid = ((msb > lsb)? msb-lsb : lsb-msb) + 1;
-      assert(node);
+      ப்ரதிஜ்ஞா(முனை);
 
-      vvp_wire_base*vsig = dynamic_cast<vvp_wire_base*>(node->fil);
+      vvp_wire_base*vsig = dynamic_cast<vvp_wire_base*>(முனை->fil);
 
-      if (vsig == 0) {
-	    switch (vpi_type_code) {
-		case vpiIntVar:
-		  vsig = new vvp_wire_vec4(wid,BIT4_0);
-		  break;
-		case vpiLogicVar:
-		  vsig = new vvp_wire_vec4(wid,BIT4_Z);
-		  break;
-		case -vpiLogicVar:
-		  vsig = new vvp_wire_vec8(wid);
-		  break;
+      எனில் (vsig == 0) {
+	    தேர்வு (vpi_type_code) {
+		நிலை vpiIntVar:
+		  vsig = புதிய vvp_wire_vec4(wid,BIT4_0);
+		  நிறுத்து;
+		நிலை vpiLogicVar:
+		  vsig = புதிய vvp_wire_vec4(wid,BIT4_Z);
+		  நிறுத்து;
+		நிலை -vpiLogicVar:
+		  vsig = புதிய vvp_wire_vec8(wid);
+		  நிறுத்து;
 	    }
-	    assert(vsig);
-	    node->fil = vsig;
+	    ப்ரதிஜ்ஞா(vsig);
+	    முனை->fil = vsig;
       }
 
       vpiHandle obj = 0;
-      if (! local_flag) {
+      எனில் (! local_flag) {
 	      /* Make the vpiHandle for the reg. */
-	    obj = vpip_make_net4(scope, name, msb, lsb, signed_flag, node);
+	    obj = vpip_make_net4(scope, name, msb, lsb, signed_flag, முனை);
 	      /* This attaches the label to the vpiHandle */
-	    compile_vpi_symbol(my_label, obj);
+	    compile_vpi_குறியீடு(my_label, obj);
       }
 #ifdef CHECK_WITH_VALGRIND
-      else pool_local_net(node);
+      இல்லையெனில் pool_local_net(முனை);
 #endif
 
 	// REMOVE ME! Giving the net a label is a legacy of the times
 	// when the .net was a functor of its own. In the long run, we
 	// must fix the code generator to not rely on the label of the
 	// .net, then we will remove that label.
-      define_functor_symbol(my_label, node);
+      define_functor_குறியீடு(my_label, முனை);
 
-      if (array)
+      எனில் (array)
 	    array->attach_word(array_addr, obj);
-      else if (obj)
+      இல்லையெனில் எனில் (obj)
 	    vpip_attach_to_scope(scope,obj);
 
-      free(my_label);
+      விடுவி(my_label);
       delete[] name;
 }
 
-static void __compile_net(char*label,
-			  char*name, char*array_label, unsigned long array_addr,
-			  int msb, int lsb,
-			  int vpi_type_code, bool signed_flag, bool local_flag,
-			  unsigned argc, struct symb_s*argv)
+நிலையான வெறுமை __compile_net(எழுத்து*label,
+			  எழுத்து*name, எழுத்து*array_label, unsigned long array_addr,
+			  முழு msb, முழு lsb,
+			  முழு vpi_type_code, தருக்க signed_flag, தருக்க local_flag,
+			  unsigned argc, கட்டமைப்பு symb_s*argv)
 {
-      vvp_array_t array = array_label? array_find(array_label) : NULL;
-      assert(array_label ? array!=0 : true);
+      vvp_array_t array = array_label? array_find(array_label) : வெற்று;
+      ப்ரதிஜ்ஞா(array_label ? array!=0 : உண்மை);
 
-      free(array_label);
+      விடுவி(array_label);
 
-      assert(argc == 1);
-      vvp_net_t*node = vvp_net_lookup(argv[0].text);
-#if 1
-      if (node == 0) {
+      ப்ரதிஜ்ஞா(argc == 1);
+      vvp_net_t*முனை = vvp_net_lookup(argv[0].text);
+#எனில் 1
+      எனில் (முனை == 0) {
 	      /* No existing net, but the string value may be a
 		 constant. In that case, we will wind up generating a
 		 bufz node that can carry the constant value.
 
 	         NOTE: This is a hack! The code generator should be
 	         fixed so that this is no longer needed. */
-	    node = create_constant_node(argv[0].text);
+	    முனை = create_constant_முனை(argv[0].text);
       }
 #endif
-      if (node == 0) {
+      எனில் (முனை == 0) {
 	    __vpiScope*scope = vpip_peek_current_scope();
 	    __compile_net_resolv*res
-		  = new __compile_net_resolv(argv[0].text,
+		  = புதிய __compile_net_resolv(argv[0].text,
 					     array, scope, label, name,
 					     msb, lsb, array_addr,
 					     vpi_type_code, signed_flag, local_flag);
 	    resolv_submit(res);
-	    free(argv);
-	    return;
+	    விடுவி(argv);
+	    திரும்பு;
       }
-      assert(node);
+      ப்ரதிஜ்ஞா(முனை);
 
       __vpiScope*scope = vpip_peek_current_scope();
-      do_compile_net(node, array, scope, label, name, msb, lsb, array_addr,
+      do_compile_net(முனை, array, scope, label, name, msb, lsb, array_addr,
 		     vpi_type_code, signed_flag, local_flag);
 
-      free(argv[0].text);
-      free(argv);
+      விடுவி(argv[0].text);
+      விடுவி(argv);
 }
 
-bool __compile_net_resolv::resolve(bool msg_flag)
+தருக்க __compile_net_resolv::resolve(தருக்க செய்தி_flag)
 {
-      vvp_net_t*node = vvp_net_lookup(label());
-      if (node == 0) {
-	    if (msg_flag)
+      vvp_net_t*முனை = vvp_net_lookup(label());
+      எனில் (முனை == 0) {
+	    எனில் (செய்தி_flag)
 		  cerr << "Unable to resolve label " << label() << endl;
-	    return false;
+	    திரும்பு பொய்;
       }
 
-      do_compile_net(node, array_, scope_, my_label_, name_, msb_, lsb_, array_addr_, vpi_type_code_, signed_flag_, local_flag_);
-      return true;
+      do_compile_net(முனை, array_, scope_, my_label_, name_, msb_, lsb_, array_addr_, vpi_type_code_, signed_flag_, local_flag_);
+      திரும்பு உண்மை;
 }
 
-void compile_net(char*label, char*name, int msb, int lsb,
-		 int vpi_type_code, bool signed_flag, bool local_flag,
-		 unsigned argc, struct symb_s*argv)
+வெறுமை compile_net(எழுத்து*label, எழுத்து*name, முழு msb, முழு lsb,
+		 முழு vpi_type_code, தருக்க signed_flag, தருக்க local_flag,
+		 unsigned argc, கட்டமைப்பு symb_s*argv)
 {
       __compile_net(label, name, 0, 0, msb, lsb,
 		    vpi_type_code, signed_flag, local_flag,
 		    argc, argv);
 }
 
-void compile_netw(char*label, char*array_label, unsigned long array_addr,
-		  int msb, int lsb, int vpi_type_code, bool signed_flag,
-		  unsigned argc, struct symb_s*argv)
+வெறுமை compile_netw(எழுத்து*label, எழுத்து*array_label, unsigned long array_addr,
+		  முழு msb, முழு lsb, முழு vpi_type_code, தருக்க signed_flag,
+		  unsigned argc, கட்டமைப்பு symb_s*argv)
 {
       __compile_net(label, 0, array_label, array_addr,
-		    msb, lsb, vpi_type_code, signed_flag, false,
+		    msb, lsb, vpi_type_code, signed_flag, பொய்,
 		    argc, argv);
 }
 
-class __compile_real_net_resolv : public base_net_resolv {
+வகுப்பு __compile_real_net_resolv : பொது base_net_resolv {
 
-    public:
-      explicit __compile_real_net_resolv(char*ref_label, vvp_array_t array,
+    பொது:
+      explicit __compile_real_net_resolv(எழுத்து*ref_label, vvp_array_t array,
 					 __vpiScope*scope,
-					 char*my_label, char*name,
-					 unsigned array_addr, bool local_flag)
+					 எழுத்து*my_label, எழுத்து*name,
+					 unsigned array_addr, தருக்க local_flag)
       : base_net_resolv(ref_label, array, scope, my_label, name, array_addr, local_flag)
       {
       }
 
       ~__compile_real_net_resolv() override { }
 
-      bool resolve(bool message_flag) override;
+      தருக்க resolve(தருக்க message_flag) override;
 
-    private:
+    தனிப்பட்ட:
 };
 
-static void __compile_real_net2(vvp_net_t*node, vvp_array_t array,
+நிலையான வெறுமை __compile_real_net2(vvp_net_t*முனை, vvp_array_t array,
 				__vpiScope*scope,
-				char*my_label, char*name,
-				unsigned array_addr, bool local_flag)
+				எழுத்து*my_label, எழுத்து*name,
+				unsigned array_addr, தருக்க local_flag)
 {
-      vvp_wire_base*fil = dynamic_cast<vvp_wire_base*> (node->fil);
+      vvp_wire_base*fil = dynamic_cast<vvp_wire_base*> (முனை->fil);
 
-      if (fil == 0) {
-	    fil = new vvp_wire_real;
-	    node->fil = fil;
+      எனில் (fil == 0) {
+	    fil = புதிய vvp_wire_real;
+	    முனை->fil = fil;
       }
 
       vpiHandle obj = 0;
-      if (!local_flag) {
-	    obj = vpip_make_real_net(scope, name, node);
-	    compile_vpi_symbol(my_label, obj);
+      எனில் (!local_flag) {
+	    obj = vpip_make_real_net(scope, name, முனை);
+	    compile_vpi_குறியீடு(my_label, obj);
       }
 #ifdef CHECK_WITH_VALGRIND
-      else pool_local_net(node);
+      இல்லையெனில் pool_local_net(முனை);
 #endif
 
 	// REMOVE ME! Giving the net a label is a legacy of the times
 	// when the .net was a functor of its own. In the long run, we
 	// must fix the code generator to not rely on the label of the
 	// .net, then we will remove that label.
-      define_functor_symbol(my_label, node);
+      define_functor_குறியீடு(my_label, முனை);
 
-     if (array)
+     எனில் (array)
 	    array->attach_word(array_addr, obj);
-      else if (obj)
+      இல்லையெனில் எனில் (obj)
 	    vpip_attach_to_scope(scope, obj);
 
-      free(my_label);
+      விடுவி(my_label);
       delete[] name;
 }
 
-static void __compile_real(char*label, char*name,
-                           char*array_label, unsigned long array_addr,
-                           int msb, int lsb, bool local_flag,
-                           unsigned argc, struct symb_s*argv)
+நிலையான வெறுமை __compile_real(எழுத்து*label, எழுத்து*name,
+                           எழுத்து*array_label, unsigned long array_addr,
+                           முழு msb, முழு lsb, தருக்க local_flag,
+                           unsigned argc, கட்டமைப்பு symb_s*argv)
 {
-      assert(msb == 0 && lsb == 0);
-      vvp_array_t array = array_label ? array_find(array_label) : NULL;
-      assert(array_label ? array!=0 : true);
+      ப்ரதிஜ்ஞா(msb == 0 && lsb == 0);
+      vvp_array_t array = array_label ? array_find(array_label) : வெற்று;
+      ப்ரதிஜ்ஞா(array_label ? array!=0 : உண்மை);
 
-      free(array_label);
+      விடுவி(array_label);
 
-      assert(argc == 1);
-      vvp_net_t*node = vvp_net_lookup(argv[0].text);
-      if (node == 0) {
+      ப்ரதிஜ்ஞா(argc == 1);
+      vvp_net_t*முனை = vvp_net_lookup(argv[0].text);
+      எனில் (முனை == 0) {
 	      /* No existing net, but the string value may be a
 		 constant. In that case, we will wind up generating a
 		 bufz node that can carry the constant value. */
-	    node = create_constant_node(argv[0].text);
+	    முனை = create_constant_முனை(argv[0].text);
       }
       __vpiScope*scope = vpip_peek_current_scope();
-      if (node == 0) {
+      எனில் (முனை == 0) {
 	    __compile_real_net_resolv*res
-		  = new __compile_real_net_resolv(argv[0].text, array,
+		  = புதிய __compile_real_net_resolv(argv[0].text, array,
 						  scope, label, name,
 						  array_addr, local_flag);
 	    resolv_submit(res);
-	    free(argv);
-	    return;
+	    விடுவி(argv);
+	    திரும்பு;
       }
 
-      assert(node);
-      __compile_real_net2(node, array, scope, label, name, array_addr,
+      ப்ரதிஜ்ஞா(முனை);
+      __compile_real_net2(முனை, array, scope, label, name, array_addr,
                           local_flag);
-      free(argv[0].text);
-      free(argv);
+      விடுவி(argv[0].text);
+      விடுவி(argv);
 }
 
-bool __compile_real_net_resolv::resolve(bool msg_flag)
+தருக்க __compile_real_net_resolv::resolve(தருக்க செய்தி_flag)
 {
-      vvp_net_t*node = vvp_net_lookup(label());
-      if (node == 0) {
-	    if (msg_flag)
+      vvp_net_t*முனை = vvp_net_lookup(label());
+      எனில் (முனை == 0) {
+	    எனில் (செய்தி_flag)
 		  cerr << "Unable to resolve label " << label() << endl;
-	    return false;
+	    திரும்பு பொய்;
       }
 
-      __compile_real_net2(node, array_, scope_, my_label_, name_, array_addr_, local_flag_);
-      return true;
+      __compile_real_net2(முனை, array_, scope_, my_label_, name_, array_addr_, local_flag_);
+      திரும்பு உண்மை;
 }
 
-void compile_net_real(char*label, char*name, int msb, int lsb, bool local_flag,
-		      unsigned argc, struct symb_s*argv)
+வெறுமை compile_net_real(எழுத்து*label, எழுத்து*name, முழு msb, முழு lsb, தருக்க local_flag,
+		      unsigned argc, கட்டமைப்பு symb_s*argv)
 {
       __compile_real(label, name, 0, 0,
                      msb, lsb, local_flag, argc, argv);
 }
 
-void compile_netw_real(char*label, char*array_label, unsigned long array_addr,
-                       int msb, int lsb,
-                       unsigned argc, struct symb_s*argv)
+வெறுமை compile_netw_real(எழுத்து*label, எழுத்து*array_label, unsigned long array_addr,
+                       முழு msb, முழு lsb,
+                       unsigned argc, கட்டமைப்பு symb_s*argv)
 {
       __compile_real(label, 0, array_label, array_addr,
-                     msb, lsb, false, argc, argv);
+                     msb, lsb, பொய், argc, argv);
 }

@@ -24,22 +24,22 @@
 # include  <random>
 # include  <typeinfo>
 
-using namespace std;
+using நாமாகாஶ std;
 
-namespace {
+நாமாகாஶ {
 
-static std::mt19937& shuffle_rng(void)
+நிலையான std::mt19937& shuffle_rng(வெறுமை)
 {
-      static std::mt19937 rng(std::random_device{}());
-      return rng;
+      நிலையான std::mt19937 rng(std::random_device{}());
+      திரும்பு rng;
 }
 
-static bool vec4_lt_unsigned(const vvp_vector4_t&a, const vvp_vector4_t&b)
+நிலையான தருக்க vec4_lt_unsigned(மாறிலி vvp_vector4_t&a, மாறிலி vvp_vector4_t&b)
 {
-      if (a.eeq(b)) return false;
+      எனில் (a.eeq(b)) திரும்பு பொய்;
       vvp_bit4_t gt = compare_gtge(b, a, BIT4_1);
-      if (gt == BIT4_X) return false;
-      return gt == BIT4_1;
+      எனில் (gt == BIT4_X) திரும்பு பொய்;
+      திரும்பு gt == BIT4_1;
 }
 
 } // namespace
@@ -48,287 +48,287 @@ vvp_darray::~vvp_darray()
 {
 }
 
-void vvp_darray::reverse_elems(void)
+வெறுமை vvp_darray::reverse_elems(வெறுமை)
 {
       cerr << "XXXX reverse_elems() not implemented for "
-           << typeid(*this).name() << endl;
+           << typeid(*இது).name() << endl;
 }
 
-void vvp_darray::sort_elems(bool /*ascending*/)
+வெறுமை vvp_darray::sort_elems(தருக்க /*ascending*/)
 {
       cerr << "XXXX sort_elems() not implemented for "
-           << typeid(*this).name() << endl;
+           << typeid(*இது).name() << endl;
 }
 
-void vvp_darray::shuffle_elems(void)
+வெறுமை vvp_darray::shuffle_elems(வெறுமை)
 {
       cerr << "XXXX shuffle_elems() not implemented for "
-           << typeid(*this).name() << endl;
+           << typeid(*இது).name() << endl;
 }
 
-void vvp_darray::set_word(unsigned, const vvp_vector4_t&)
+வெறுமை vvp_darray::set_word(unsigned, மாறிலி vvp_vector4_t&)
 {
-      cerr << "XXXX set_word(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word(vvp_vector4_t) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_darray::set_word(unsigned, double)
+வெறுமை vvp_darray::set_word(unsigned, இரட்டை)
 {
-      cerr << "XXXX set_word(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word(double) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_darray::set_word(unsigned, const string&)
+வெறுமை vvp_darray::set_word(unsigned, மாறிலி string&)
 {
-      cerr << "XXXX set_word(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word(string) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_darray::set_word(unsigned, const vvp_object_t&)
+வெறுமை vvp_darray::set_word(unsigned, மாறிலி vvp_object_t&)
 {
-      cerr << "XXXX set_word(vvp_object_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word(vvp_object_t) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_darray::get_word(unsigned, vvp_vector4_t&)
+வெறுமை vvp_darray::get_word(unsigned, vvp_vector4_t&)
 {
-      cerr << "XXXX get_word(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX get_word(vvp_vector4_t) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_darray::get_word(unsigned, double&)
+வெறுமை vvp_darray::get_word(unsigned, இரட்டை&)
 {
-      cerr << "XXXX get_word(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX get_word(double) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_darray::get_word(unsigned, string&)
+வெறுமை vvp_darray::get_word(unsigned, string&)
 {
-      cerr << "XXXX get_word(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX get_word(string) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_darray::get_word(unsigned, vvp_object_t&)
+வெறுமை vvp_darray::get_word(unsigned, vvp_object_t&)
 {
-      cerr << "XXXX get_word(vvp_object_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX get_word(vvp_object_t) not implemented for " << typeid(*இது).name() << endl;
 }
 
-vvp_vector4_t vvp_darray::get_bitstream(bool)
+vvp_vector4_t vvp_darray::get_bitstream(தருக்க)
 {
-      cerr << "XXXX get_bitstream() not implemented for " << typeid(*this).name() << endl;
-      return vvp_vector4_t();
+      cerr << "XXXX get_bitstream() not implemented for " << typeid(*இது).name() << endl;
+      திரும்பு vvp_vector4_t();
 }
 
-template <class TYPE> vvp_darray_atom<TYPE>::~vvp_darray_atom()
+template <வகுப்பு TYPE> vvp_darray_atom<TYPE>::~vvp_darray_atom()
 {
 }
 
-template <class TYPE> size_t vvp_darray_atom<TYPE>::get_size() const
+template <வகுப்பு TYPE> size_t vvp_darray_atom<TYPE>::get_size() மாறிலி
 {
-      return array_.size();
+      திரும்பு array_.size();
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::reverse_elems(void)
+template <வகுப்பு TYPE> வெறுமை vvp_darray_atom<TYPE>::reverse_elems(வெறுமை)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      க்கு (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::sort_elems(bool ascending)
+template <வகுப்பு TYPE> வெறுமை vvp_darray_atom<TYPE>::sort_elems(தருக்க ascending)
 {
-      if (ascending) std::sort(array_.begin(), array_.end());
-      else std::sort(array_.begin(), array_.end(), std::greater<TYPE>());
+      எனில் (ascending) std::sort(array_.begin(), array_.end());
+      இல்லையெனில் std::sort(array_.begin(), array_.end(), std::greater<TYPE>());
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::shuffle_elems(void)
+template <வகுப்பு TYPE> வெறுமை vvp_darray_atom<TYPE>::shuffle_elems(வெறுமை)
 {
       std::shuffle(array_.begin(), array_.end(), shuffle_rng());
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::set_word(unsigned adr, const vvp_vector4_t&value)
+template <வகுப்பு TYPE> வெறுமை vvp_darray_atom<TYPE>::set_word(unsigned adr, மாறிலி vvp_vector4_t&value)
 {
-      if (adr >= array_.size())
-	    return;
+      எனில் (adr >= array_.size())
+	    திரும்பு;
       TYPE tmp;
-      vector4_to_value(value, tmp, true, false);
+      vector4_to_மதிப்பு(value, tmp, உண்மை, பொய்);
       array_[adr] = tmp;
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::get_word(unsigned adr, vvp_vector4_t&value)
+template <வகுப்பு TYPE> வெறுமை vvp_darray_atom<TYPE>::get_word(unsigned adr, vvp_vector4_t&value)
 {
-      if (adr >= array_.size()) {
-	    value = vvp_vector4_t(8*sizeof(TYPE), BIT4_X);
-	    return;
+      எனில் (adr >= array_.size()) {
+	    value = vvp_vector4_t(8*அளவு(TYPE), BIT4_X);
+	    திரும்பு;
       }
 
       TYPE word = array_[adr];
-      vvp_vector4_t tmp (8*sizeof(TYPE), BIT4_0);
-      for (unsigned idx = 0 ; idx < tmp.size() ; idx += 1) {
-	    if (word&1) tmp.set_bit(idx, BIT4_1);
+      vvp_vector4_t tmp (8*அளவு(TYPE), BIT4_0);
+      க்கு (unsigned idx = 0 ; idx < tmp.size() ; idx += 1) {
+	    எனில் (word&1) tmp.set_bit(idx, BIT4_1);
 	    word >>= 1;
       }
       value = tmp;
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::shallow_copy(const vvp_object*obj)
+template <வகுப்பு TYPE> வெறுமை vvp_darray_atom<TYPE>::shallow_copy(மாறிலி vvp_object*obj)
 {
-      const vvp_darray_atom<TYPE>*that = dynamic_cast<const vvp_darray_atom<TYPE>*>(obj);
-      assert(that);
+      மாறிலி vvp_darray_atom<TYPE>*that = dynamic_cast<மாறிலி vvp_darray_atom<TYPE>*>(obj);
+      ப்ரதிஜ்ஞா(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      unsigned இலக்கம்_பொருட்கள் = min(array_.size(), that->array_.size());
+      க்கு (unsigned idx = 0 ; idx < இலக்கம்_பொருட்கள் ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-template <class TYPE> vvp_object* vvp_darray_atom<TYPE>::duplicate(void) const
+template <வகுப்பு TYPE> vvp_object* vvp_darray_atom<TYPE>::duplicate(வெறுமை) மாறிலி
 {
-      vvp_darray_atom<TYPE>*that = new vvp_darray_atom<TYPE>(array_.size());
-      for (size_t idx = 0 ; idx < array_.size() ; idx += 1)
+      vvp_darray_atom<TYPE>*that = புதிய vvp_darray_atom<TYPE>(array_.size());
+      க்கு (size_t idx = 0 ; idx < array_.size() ; idx += 1)
 	    that->array_[idx] = array_[idx];
 
-      return that;
+      திரும்பு that;
 }
 
-template <class TYPE> vvp_vector4_t vvp_darray_atom<TYPE>::get_bitstream(bool)
+template <வகுப்பு TYPE> vvp_vector4_t vvp_darray_atom<TYPE>::get_bitstream(தருக்க)
 {
-      const unsigned word_wid = sizeof(TYPE) * 8;
+      மாறிலி unsigned word_wid = அளவு(TYPE) * 8;
 
       vvp_vector4_t vec(array_.size() * word_wid, BIT4_0);
 
       unsigned adx = 0;
       unsigned vdx = vec.size();
-      while (vdx > 0) {
+      போது (vdx > 0) {
             TYPE word = array_[adx++];
             vdx -= word_wid;
-            for (unsigned bdx = 0; bdx < word_wid; bdx += 1) {
-                  if (word & 1)
+            க்கு (unsigned bdx = 0; bdx < word_wid; bdx += 1) {
+                  எனில் (word & 1)
                         vec.set_bit(vdx+bdx, BIT4_1);
                   word >>= 1;
             }
       }
 
-      return vec;
+      திரும்பு vec;
 }
 
-template class vvp_darray_atom<uint8_t>;
-template class vvp_darray_atom<uint16_t>;
-template class vvp_darray_atom<uint32_t>;
-template class vvp_darray_atom<uint64_t>;
-template class vvp_darray_atom<int8_t>;
-template class vvp_darray_atom<int16_t>;
-template class vvp_darray_atom<int32_t>;
-template class vvp_darray_atom<int64_t>;
+template வகுப்பு vvp_darray_atom<uint8_t>;
+template வகுப்பு vvp_darray_atom<uint16_t>;
+template வகுப்பு vvp_darray_atom<uint32_t>;
+template வகுப்பு vvp_darray_atom<uint64_t>;
+template வகுப்பு vvp_darray_atom<int8_t>;
+template வகுப்பு vvp_darray_atom<int16_t>;
+template வகுப்பு vvp_darray_atom<int32_t>;
+template வகுப்பு vvp_darray_atom<int64_t>;
 
 vvp_darray_vec4::~vvp_darray_vec4()
 {
 }
 
-size_t vvp_darray_vec4::get_size(void) const
+size_t vvp_darray_vec4::get_size(வெறுமை) மாறிலி
 {
-      return array_.size();
+      திரும்பு array_.size();
 }
 
-void vvp_darray_vec4::set_word(unsigned adr, const vvp_vector4_t&value)
+வெறுமை vvp_darray_vec4::set_word(unsigned adr, மாறிலி vvp_vector4_t&value)
 {
-      if (adr >= array_.size()) return;
-      assert(value.size() == word_wid_);
+      எனில் (adr >= array_.size()) திரும்பு;
+      ப்ரதிஜ்ஞா(value.size() == word_wid_);
       array_[adr] = value;
 }
 
-void vvp_darray_vec4::get_word(unsigned adr, vvp_vector4_t&value)
+வெறுமை vvp_darray_vec4::get_word(unsigned adr, vvp_vector4_t&value)
 {
 	/*
 	 * Return an undefined value for an out of range address or if the
 	 * value has not been written yet (has a size of zero).
 	 */
-      if ((adr >= array_.size()) || (array_[adr].size() == 0)) {
+      எனில் ((adr >= array_.size()) || (array_[adr].size() == 0)) {
 	    value = vvp_vector4_t(word_wid_, BIT4_X);
-	    return;
+	    திரும்பு;
       }
       value = array_[adr];
-      assert(value.size() == word_wid_);
+      ப்ரதிஜ்ஞா(value.size() == word_wid_);
 }
 
-void vvp_darray_vec4::shallow_copy(const vvp_object*obj)
+வெறுமை vvp_darray_vec4::shallow_copy(மாறிலி vvp_object*obj)
 {
-      const vvp_darray_vec4*that = dynamic_cast<const vvp_darray_vec4*>(obj);
-      assert(that);
+      மாறிலி vvp_darray_vec4*that = dynamic_cast<மாறிலி vvp_darray_vec4*>(obj);
+      ப்ரதிஜ்ஞா(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      unsigned இலக்கம்_பொருட்கள் = min(array_.size(), that->array_.size());
+      க்கு (unsigned idx = 0 ; idx < இலக்கம்_பொருட்கள் ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-vvp_object* vvp_darray_vec4::duplicate(void) const
+vvp_object* vvp_darray_vec4::duplicate(வெறுமை) மாறிலி
 {
-      vvp_darray_vec4*that = new vvp_darray_vec4(array_.size(), word_wid_);
+      vvp_darray_vec4*that = புதிய vvp_darray_vec4(array_.size(), word_wid_);
 
-      for (size_t idx = 0 ; idx < array_.size() ; idx += 1)
+      க்கு (size_t idx = 0 ; idx < array_.size() ; idx += 1)
 	    that->array_[idx] = array_[idx];
 
-      return that;
+      திரும்பு that;
 }
 
-vvp_vector4_t vvp_darray_vec4::get_bitstream(bool as_vec4)
+vvp_vector4_t vvp_darray_vec4::get_bitstream(தருக்க as_vec4)
 {
       vvp_vector4_t vec(array_.size() * word_wid_, BIT4_0);
 
       unsigned adx = 0;
       unsigned vdx = vec.size();
-      while (vdx > 0) {
+      போது (vdx > 0) {
             vdx -= word_wid_;
-            for (unsigned bdx = 0; bdx < word_wid_; bdx += 1) {
+            க்கு (unsigned bdx = 0; bdx < word_wid_; bdx += 1) {
                   vvp_bit4_t bit = array_[adx].value(bdx);
-                  if (as_vec4 || (bit == BIT4_1))
+                  எனில் (as_vec4 || (bit == BIT4_1))
                         vec.set_bit(vdx+bdx, bit);
             }
             adx++;
       }
 
-      return vec;
+      திரும்பு vec;
 }
 
-void vvp_darray_vec4::reverse_elems(void)
+வெறுமை vvp_darray_vec4::reverse_elems(வெறுமை)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      க்கு (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-void vvp_darray_vec4::sort_elems(bool ascending)
+வெறுமை vvp_darray_vec4::sort_elems(தருக்க ascending)
 {
-      if (ascending) {
+      எனில் (ascending) {
 	    std::sort(array_.begin(), array_.end(), vec4_lt_unsigned);
-      } else {
+      } இல்லையெனில் {
 	    std::sort(array_.begin(), array_.end(),
-		      [](const vvp_vector4_t&a, const vvp_vector4_t&b) {
-			    return vec4_lt_unsigned(b, a);
+		      [](மாறிலி vvp_vector4_t&a, மாறிலி vvp_vector4_t&b) {
+			    திரும்பு vec4_lt_unsigned(b, a);
 		      });
       }
 }
 
-void vvp_darray_vec4::shuffle_elems(void)
+வெறுமை vvp_darray_vec4::shuffle_elems(வெறுமை)
 {
       std::shuffle(array_.begin(), array_.end(), shuffle_rng());
 }
 
-void vvp_darray_vec2::reverse_elems(void)
+வெறுமை vvp_darray_vec2::reverse_elems(வெறுமை)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      க்கு (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-void vvp_darray_vec2::sort_elems(bool ascending)
+வெறுமை vvp_darray_vec2::sort_elems(தருக்க ascending)
 {
-      if (ascending) {
+      எனில் (ascending) {
 	    std::sort(array_.begin(), array_.end());
-      } else {
+      } இல்லையெனில் {
 	    std::sort(array_.begin(), array_.end(),
-		      [](const vvp_vector2_t&a, const vvp_vector2_t&b) {
-			    return b < a;
+		      [](மாறிலி vvp_vector2_t&a, மாறிலி vvp_vector2_t&b) {
+			    திரும்பு b < a;
 		      });
       }
 }
 
-void vvp_darray_vec2::shuffle_elems(void)
+வெறுமை vvp_darray_vec2::shuffle_elems(வெறுமை)
 {
       std::shuffle(array_.begin(), array_.end(), shuffle_rng());
 }
@@ -337,123 +337,123 @@ vvp_darray_vec2::~vvp_darray_vec2()
 {
 }
 
-size_t vvp_darray_vec2::get_size(void) const
+size_t vvp_darray_vec2::get_size(வெறுமை) மாறிலி
 {
-      return array_.size();
+      திரும்பு array_.size();
 }
 
-void vvp_darray_vec2::set_word(unsigned adr, const vvp_vector4_t&value)
+வெறுமை vvp_darray_vec2::set_word(unsigned adr, மாறிலி vvp_vector4_t&value)
 {
-      if (adr >= array_.size()) return;
-      assert(value.size() == word_wid_);
+      எனில் (adr >= array_.size()) திரும்பு;
+      ப்ரதிஜ்ஞா(value.size() == word_wid_);
       array_[adr] = value;
 }
 
-void vvp_darray_vec2::get_word(unsigned adr, vvp_vector4_t&value)
+வெறுமை vvp_darray_vec2::get_word(unsigned adr, vvp_vector4_t&value)
 {
 	/*
 	 * Return a zero value for an out of range address or if the
 	 * value has not been written yet (has a size of zero).
 	 */
-      if ((adr >= array_.size()) || (array_[adr].size() == 0)) {
+      எனில் ((adr >= array_.size()) || (array_[adr].size() == 0)) {
 	    value = vvp_vector4_t(word_wid_, BIT4_0);
-	    return;
+	    திரும்பு;
       }
-      assert(array_[adr].size() == word_wid_);
+      ப்ரதிஜ்ஞா(array_[adr].size() == word_wid_);
       value.resize(word_wid_);
-      for (unsigned idx = 0; idx < word_wid_; idx += 1) {
+      க்கு (unsigned idx = 0; idx < word_wid_; idx += 1) {
 	    value.set_bit(idx, array_[adr].value4(idx));
       }
 }
 
-void vvp_darray_vec2::shallow_copy(const vvp_object*obj)
+வெறுமை vvp_darray_vec2::shallow_copy(மாறிலி vvp_object*obj)
 {
-      const vvp_darray_vec2*that = dynamic_cast<const vvp_darray_vec2*>(obj);
-      assert(that);
+      மாறிலி vvp_darray_vec2*that = dynamic_cast<மாறிலி vvp_darray_vec2*>(obj);
+      ப்ரதிஜ்ஞா(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      unsigned இலக்கம்_பொருட்கள் = min(array_.size(), that->array_.size());
+      க்கு (unsigned idx = 0 ; idx < இலக்கம்_பொருட்கள் ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-vvp_vector4_t vvp_darray_vec2::get_bitstream(bool)
+vvp_vector4_t vvp_darray_vec2::get_bitstream(தருக்க)
 {
       vvp_vector4_t vec(array_.size() * word_wid_, BIT4_0);
 
       unsigned adx = 0;
       unsigned vdx = vec.size();
-      while (vdx > 0) {
+      போது (vdx > 0) {
             vdx -= word_wid_;
-            for (unsigned bdx = 0; bdx < word_wid_; bdx += 1) {
-                  if (array_[adx].value(bdx))
+            க்கு (unsigned bdx = 0; bdx < word_wid_; bdx += 1) {
+                  எனில் (array_[adx].value(bdx))
                         vec.set_bit(vdx+bdx, BIT4_1);
             }
             adx++;
       }
 
-      return vec;
+      திரும்பு vec;
 }
 
 vvp_darray_object::~vvp_darray_object()
 {
 }
 
-size_t vvp_darray_object::get_size() const
+size_t vvp_darray_object::get_size() மாறிலி
 {
-      return array_.size();
+      திரும்பு array_.size();
 }
 
-void vvp_darray_object::set_word(unsigned adr, const vvp_object_t&value)
+வெறுமை vvp_darray_object::set_word(unsigned adr, மாறிலி vvp_object_t&value)
 {
-      if (adr >= array_.size())
-	    return;
+      எனில் (adr >= array_.size())
+	    திரும்பு;
       array_[adr] = value;
 }
 
-void vvp_darray_object::get_word(unsigned adr, vvp_object_t&value)
+வெறுமை vvp_darray_object::get_word(unsigned adr, vvp_object_t&value)
 {
-      if (adr >= array_.size()) {
+      எனில் (adr >= array_.size()) {
 	    value = vvp_object_t();
-	    return;
+	    திரும்பு;
       }
 
       value = array_[adr];
 }
 
-void vvp_darray_object::shallow_copy(const vvp_object*obj)
+வெறுமை vvp_darray_object::shallow_copy(மாறிலி vvp_object*obj)
 {
-      const vvp_darray_object*that = dynamic_cast<const vvp_darray_object*>(obj);
-      assert(that);
+      மாறிலி vvp_darray_object*that = dynamic_cast<மாறிலி vvp_darray_object*>(obj);
+      ப்ரதிஜ்ஞா(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      unsigned இலக்கம்_பொருட்கள் = min(array_.size(), that->array_.size());
+      க்கு (unsigned idx = 0 ; idx < இலக்கம்_பொருட்கள் ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-void vvp_darray_object::reverse_elems(void)
+வெறுமை vvp_darray_object::reverse_elems(வெறுமை)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      க்கு (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-void vvp_darray_object::sort_elems(bool ascending)
+வெறுமை vvp_darray_object::sort_elems(தருக்க ascending)
 {
-      if (ascending) {
+      எனில் (ascending) {
 	    std::sort(array_.begin(), array_.end(),
-		      [](const vvp_object_t&a, const vvp_object_t&b) {
-			    return a.sort_order_key() < b.sort_order_key();
+		      [](மாறிலி vvp_object_t&a, மாறிலி vvp_object_t&b) {
+			    திரும்பு a.sort_order_சாவி() < b.sort_order_சாவி();
 		      });
-      } else {
+      } இல்லையெனில் {
 	    std::sort(array_.begin(), array_.end(),
-		      [](const vvp_object_t&a, const vvp_object_t&b) {
-			    return a.sort_order_key() > b.sort_order_key();
+		      [](மாறிலி vvp_object_t&a, மாறிலி vvp_object_t&b) {
+			    திரும்பு a.sort_order_சாவி() > b.sort_order_சாவி();
 		      });
       }
 }
 
-void vvp_darray_object::shuffle_elems(void)
+வெறுமை vvp_darray_object::shuffle_elems(வெறுமை)
 {
       std::shuffle(array_.begin(), array_.end(), shuffle_rng());
 }
@@ -462,333 +462,333 @@ vvp_darray_real::~vvp_darray_real()
 {
 }
 
-size_t vvp_darray_real::get_size() const
+size_t vvp_darray_real::get_size() மாறிலி
 {
-      return array_.size();
+      திரும்பு array_.size();
 }
 
-void vvp_darray_real::set_word(unsigned adr, double value)
+வெறுமை vvp_darray_real::set_word(unsigned adr, இரட்டை value)
 {
-      if (adr >= array_.size())
-	    return;
+      எனில் (adr >= array_.size())
+	    திரும்பு;
       array_[adr] = value;
 }
 
-void vvp_darray_real::get_word(unsigned adr, double&value)
+வெறுமை vvp_darray_real::get_word(unsigned adr, இரட்டை&value)
 {
-      if (adr >= array_.size()) {
+      எனில் (adr >= array_.size()) {
 	    value = 0.0;
-	    return;
+	    திரும்பு;
       }
 
       value = array_[adr];
 }
 
-void vvp_darray_real::shallow_copy(const vvp_object*obj)
+வெறுமை vvp_darray_real::shallow_copy(மாறிலி vvp_object*obj)
 {
-      const vvp_darray_real*that = dynamic_cast<const vvp_darray_real*>(obj);
-      assert(that);
+      மாறிலி vvp_darray_real*that = dynamic_cast<மாறிலி vvp_darray_real*>(obj);
+      ப்ரதிஜ்ஞா(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      unsigned இலக்கம்_பொருட்கள் = min(array_.size(), that->array_.size());
+      க்கு (unsigned idx = 0 ; idx < இலக்கம்_பொருட்கள் ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-void vvp_darray_real::reverse_elems(void)
+வெறுமை vvp_darray_real::reverse_elems(வெறுமை)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      க்கு (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-void vvp_darray_real::sort_elems(bool ascending)
+வெறுமை vvp_darray_real::sort_elems(தருக்க ascending)
 {
-      if (ascending) std::sort(array_.begin(), array_.end());
-      else std::sort(array_.begin(), array_.end(), std::greater<double>());
+      எனில் (ascending) std::sort(array_.begin(), array_.end());
+      இல்லையெனில் std::sort(array_.begin(), array_.end(), std::greater<இரட்டை>());
 }
 
-void vvp_darray_real::shuffle_elems(void)
+வெறுமை vvp_darray_real::shuffle_elems(வெறுமை)
 {
       std::shuffle(array_.begin(), array_.end(), shuffle_rng());
 }
 
-vvp_object* vvp_darray_real::duplicate(void) const
+vvp_object* vvp_darray_real::duplicate(வெறுமை) மாறிலி
 {
-      vvp_darray_real*that = new vvp_darray_real(array_.size());
+      vvp_darray_real*that = புதிய vvp_darray_real(array_.size());
 
-      for (size_t idx = 0 ; idx < array_.size() ; idx += 1)
+      க்கு (size_t idx = 0 ; idx < array_.size() ; idx += 1)
 	    that->array_[idx] = array_[idx];
 
-      return that;
+      திரும்பு that;
 }
 
-vvp_vector4_t vvp_darray_real::get_bitstream(bool)
+vvp_vector4_t vvp_darray_real::get_bitstream(தருக்க)
 {
-      const unsigned word_wid = sizeof(double) * 8;
-      assert(word_wid == 64);
+      மாறிலி unsigned word_wid = அளவு(இரட்டை) * 8;
+      ப்ரதிஜ்ஞா(word_wid == 64);
 
       vvp_vector4_t vec(array_.size() * word_wid, BIT4_0);
 
       unsigned adx = 0;
       unsigned vdx = vec.size();
-      while (vdx > 0) {
-            union {
-                double   value;
+      போது (vdx > 0) {
+            ஒன்றிப்பு {
+                இரட்டை   value;
                 uint64_t bits;
             } word;
             word.value = array_[adx++];
             vdx -= word_wid;
-            for (unsigned bdx = 0; bdx < word_wid; bdx += 1) {
-                  if (word.bits & 1)
+            க்கு (unsigned bdx = 0; bdx < word_wid; bdx += 1) {
+                  எனில் (word.bits & 1)
                         vec.set_bit(vdx+bdx, BIT4_1);
                   word.bits >>= 1;
             }
       }
 
-      return vec;
+      திரும்பு vec;
 }
 
 vvp_darray_string::~vvp_darray_string()
 {
 }
 
-size_t vvp_darray_string::get_size() const
+size_t vvp_darray_string::get_size() மாறிலி
 {
-      return array_.size();
+      திரும்பு array_.size();
 }
 
-void vvp_darray_string::set_word(unsigned adr, const string&value)
+வெறுமை vvp_darray_string::set_word(unsigned adr, மாறிலி string&value)
 {
-      if (adr >= array_.size())
-	    return;
+      எனில் (adr >= array_.size())
+	    திரும்பு;
       array_[adr] = value;
 }
 
-void vvp_darray_string::get_word(unsigned adr, string&value)
+வெறுமை vvp_darray_string::get_word(unsigned adr, string&value)
 {
-      if (adr >= array_.size()) {
+      எனில் (adr >= array_.size()) {
 	    value = "";
-	    return;
+	    திரும்பு;
       }
 
       value = array_[adr];
 }
 
-void vvp_darray_string::shallow_copy(const vvp_object*obj)
+வெறுமை vvp_darray_string::shallow_copy(மாறிலி vvp_object*obj)
 {
-      const vvp_darray_string*that = dynamic_cast<const vvp_darray_string*>(obj);
-      assert(that);
+      மாறிலி vvp_darray_string*that = dynamic_cast<மாறிலி vvp_darray_string*>(obj);
+      ப்ரதிஜ்ஞா(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      unsigned இலக்கம்_பொருட்கள் = min(array_.size(), that->array_.size());
+      க்கு (unsigned idx = 0 ; idx < இலக்கம்_பொருட்கள் ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-void vvp_darray_string::reverse_elems(void)
+வெறுமை vvp_darray_string::reverse_elems(வெறுமை)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      க்கு (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-void vvp_darray_string::sort_elems(bool ascending)
+வெறுமை vvp_darray_string::sort_elems(தருக்க ascending)
 {
-      if (ascending) std::sort(array_.begin(), array_.end());
-      else std::sort(array_.begin(), array_.end(), std::greater<string>());
+      எனில் (ascending) std::sort(array_.begin(), array_.end());
+      இல்லையெனில் std::sort(array_.begin(), array_.end(), std::greater<string>());
 }
 
-void vvp_darray_string::shuffle_elems(void)
+வெறுமை vvp_darray_string::shuffle_elems(வெறுமை)
 {
       std::shuffle(array_.begin(), array_.end(), shuffle_rng());
 }
 
-vvp_object* vvp_darray_string::duplicate(void) const
+vvp_object* vvp_darray_string::duplicate(வெறுமை) மாறிலி
 {
-      vvp_darray_string*that = new vvp_darray_string(array_.size());
+      vvp_darray_string*that = புதிய vvp_darray_string(array_.size());
 
-      for (size_t idx = 0 ; idx < array_.size() ; idx += 1)
+      க்கு (size_t idx = 0 ; idx < array_.size() ; idx += 1)
 	    that->array_[idx] = array_[idx];
 
-      return that;
+      திரும்பு that;
 }
 
 vvp_queue::~vvp_queue()
 {
 }
 
-void vvp_queue::copy_elems(vvp_object_t, unsigned)
+வெறுமை vvp_queue::copy_elems(vvp_object_t, unsigned)
 {
-      cerr << "Sorry: copy_elems() not implemented for " << typeid(*this).name() << endl;
+      cerr << "Sorry: copy_elems() not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_queue::set_word_max(unsigned, const vvp_vector4_t&, unsigned)
+வெறுமை vvp_queue::set_word_max(unsigned, மாறிலி vvp_vector4_t&, unsigned)
 {
-      cerr << "XXXX set_word_max(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word_max(vvp_vector4_t) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_queue::insert(unsigned, const vvp_vector4_t&, unsigned)
+வெறுமை vvp_queue::insert(unsigned, மாறிலி vvp_vector4_t&, unsigned)
 {
-      cerr << "XXXX insert(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX insert(vvp_vector4_t) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_queue::push_back(const vvp_vector4_t&, unsigned)
+வெறுமை vvp_queue::push_back(மாறிலி vvp_vector4_t&, unsigned)
 {
-      cerr << "XXXX push_back(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_back(vvp_vector4_t) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_queue::push_front(const vvp_vector4_t&, unsigned)
+வெறுமை vvp_queue::push_front(மாறிலி vvp_vector4_t&, unsigned)
 {
-      cerr << "XXXX push_front(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_front(vvp_vector4_t) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_queue::set_word_max(unsigned, double, unsigned)
+வெறுமை vvp_queue::set_word_max(unsigned, இரட்டை, unsigned)
 {
-      cerr << "XXXX set_word_max(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word_max(double) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_queue::insert(unsigned, double, unsigned)
+வெறுமை vvp_queue::insert(unsigned, இரட்டை, unsigned)
 {
-      cerr << "XXXX set_word_max(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word_max(double) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_queue::push_back(double, unsigned)
+வெறுமை vvp_queue::push_back(இரட்டை, unsigned)
 {
-      cerr << "XXXX push_back(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_back(double) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_queue::push_front(double, unsigned)
+வெறுமை vvp_queue::push_front(இரட்டை, unsigned)
 {
-      cerr << "XXXX push_front(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_front(double) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_queue::set_word_max(unsigned, const string&, unsigned)
+வெறுமை vvp_queue::set_word_max(unsigned, மாறிலி string&, unsigned)
 {
-      cerr << "XXXX set_word_max(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word_max(string) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_queue::insert(unsigned, const string&, unsigned)
+வெறுமை vvp_queue::insert(unsigned, மாறிலி string&, unsigned)
 {
-      cerr << "XXXX set_word_max(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word_max(string) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_queue::push_back(const string&, unsigned)
+வெறுமை vvp_queue::push_back(மாறிலி string&, unsigned)
 {
-      cerr << "XXXX push_back(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_back(string) not implemented for " << typeid(*இது).name() << endl;
 }
 
-void vvp_queue::push_front(const string&, unsigned)
+வெறுமை vvp_queue::push_front(மாறிலி string&, unsigned)
 {
-      cerr << "XXXX push_front(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_front(string) not implemented for " << typeid(*இது).name() << endl;
 }
 
 /*
  * Helper functions used while copying multiple elements into a queue.
  */
-static void print_copy_is_too_big(size_t src_size, unsigned max_size, const string&qtype)
+நிலையான வெறுமை print_copy_is_too_big(size_t src_size, unsigned max_size, மாறிலி string&qtype)
 {
       cerr << get_fileline()
            << "Warning: queue<" << qtype << "> is bounded to have at most "
            << max_size << " elements, source has " << src_size << " elements." << endl;
 }
 
-static void print_copy_is_too_big(double&, size_t src_size, unsigned max_size)
+நிலையான வெறுமை print_copy_is_too_big(இரட்டை&, size_t src_size, unsigned max_size)
 {
       print_copy_is_too_big(src_size, max_size, "real");
 }
 
-static void print_copy_is_too_big(string&, size_t src_size, unsigned max_size)
+நிலையான வெறுமை print_copy_is_too_big(string&, size_t src_size, unsigned max_size)
 {
       print_copy_is_too_big(src_size, max_size, "string");
 }
 
-static void print_copy_is_too_big(vvp_vector4_t&, size_t src_size, unsigned max_size)
+நிலையான வெறுமை print_copy_is_too_big(vvp_vector4_t&, size_t src_size, unsigned max_size)
 {
       print_copy_is_too_big(src_size, max_size, "vector");
 }
 
-template <typename ELEM, class QTYPE, class SRC_TYPE>
-static void copy_elements(QTYPE*queue, SRC_TYPE*src, unsigned max_size)
+template <typename ELEM, வகுப்பு QTYPE, வகுப்பு SRC_TYPE>
+நிலையான வெறுமை copy_elements(QTYPE*queue, SRC_TYPE*src, unsigned max_size)
 {
       size_t src_size = src->get_size();
-      if ((max_size != 0) && (src_size > max_size)) {
+      எனில் ((max_size != 0) && (src_size > max_size)) {
 	    ELEM tmp;
 	    print_copy_is_too_big(tmp, src_size, max_size);
       }
       unsigned copy_size = ((src_size < max_size) ||
                             (max_size == 0)) ? src_size : max_size;
-      if (copy_size < queue->get_size())
+      எனில் (copy_size < queue->get_size())
 	    queue->erase_tail(copy_size);
-      for (unsigned idx=0; idx < copy_size; ++idx) {
+      க்கு (unsigned idx=0; idx < copy_size; ++idx) {
 	    ELEM value;
 	    src->get_word(idx, value);
 	    queue->set_word_max(idx, value, max_size);
       }
 }
 
-void vvp_queue_real::copy_elems(vvp_object_t src, unsigned max_size)
+வெறுமை vvp_queue_real::copy_elems(vvp_object_t src, unsigned max_size)
 {
-      if (vvp_queue*src_queue = src.peek<vvp_queue>())
-	    copy_elements<double, vvp_queue_real, vvp_queue>(this, src_queue, max_size);
-      else if (vvp_darray*src_darray = src.peek<vvp_darray>())
-	    copy_elements<double, vvp_queue_real, vvp_darray>(this, src_darray, max_size);
-      else
+      எனில் (vvp_queue*src_queue = src.peek<vvp_queue>())
+	    copy_elements<இரட்டை, vvp_queue_real, vvp_queue>(இது, src_queue, max_size);
+      இல்லையெனில் எனில் (vvp_darray*src_darray = src.peek<vvp_darray>())
+	    copy_elements<இரட்டை, vvp_queue_real, vvp_darray>(இது, src_darray, max_size);
+      இல்லையெனில்
 	    cerr << get_fileline() << "Sorry: cannot copy object to real queue." << endl;
 }
 
-void vvp_queue_real::set_word_max(unsigned adr, double value, unsigned max_size)
+வெறுமை vvp_queue_real::set_word_max(unsigned adr, இரட்டை value, unsigned max_size)
 {
-      if (adr == queue.size())
-	    if (!max_size || (queue.size() < max_size))
+      எனில் (adr == queue.size())
+	    எனில் (!max_size || (queue.size() < max_size))
 		  queue.push_back(value);
-	    else
+	    இல்லையெனில்
 		  cerr << get_fileline()
 		       << "Warning: assigning to queue<real>[" << adr << "] is"
 		          " outside bound (" << max_size << "). " << value
 		       << " was not added." << endl;
-      else
+      இல்லையெனில்
 	    set_word(adr, value);
 }
 
-void vvp_queue_real::set_word(unsigned adr, double value)
+வெறுமை vvp_queue_real::set_word(unsigned adr, இரட்டை value)
 {
-      if (adr < queue.size())
+      எனில் (adr < queue.size())
 	    queue[adr] = value;
-      else
+      இல்லையெனில்
 	    cerr << get_fileline()
 	         << "Warning: assigning to queue<real>[" << adr << "] is outside "
 	            "of size (" << queue.size() << "). " << value
 	         << " was not added." << endl;
 }
 
-void vvp_queue_real::get_word(unsigned adr, double&value)
+வெறுமை vvp_queue_real::get_word(unsigned adr, இரட்டை&value)
 {
-      if (adr >= queue.size())
+      எனில் (adr >= queue.size())
 	    value = 0.0;
-      else
+      இல்லையெனில்
 	    value = queue[adr];
 }
 
-void vvp_queue_real::insert(unsigned idx, double value, unsigned max_size)
+வெறுமை vvp_queue_real::insert(unsigned idx, இரட்டை value, unsigned max_size)
 {
 	// Inserting past the end of the queue
-      if (idx > queue.size())
+      எனில் (idx > queue.size())
 	    cerr << get_fileline()
 	         << "Warning: inserting to queue<real>[" << idx << "] is "
 	            "outside of size (" << queue.size() << "). " << value
 	         << " was not added." << endl;
 	// Inserting at the end
-      else if (idx == queue.size())
-	    if (!max_size || (queue.size() < max_size))
+      இல்லையெனில் எனில் (idx == queue.size())
+	    எனில் (!max_size || (queue.size() < max_size))
 		  queue.push_back(value);
-	    else
+	    இல்லையெனில்
 		  cerr << get_fileline()
 		       << "Warning: inserting to queue<real>[" << idx << "] is"
 		          " outside bound (" << max_size << "). " << value
 		       << " was not added." << endl;
-      else  {
-	    if (max_size && (queue.size() == max_size)) {
+      இல்லையெனில்  {
+	    எனில் (max_size && (queue.size() == max_size)) {
 		  cerr << get_fileline()
 		       << "Warning: insert("<< idx << ", " << value << ") removed "
 		       << queue.back() << " from already full bounded queue<real> ["
@@ -799,20 +799,20 @@ void vvp_queue_real::insert(unsigned idx, double value, unsigned max_size)
       }
 }
 
-void vvp_queue_real::push_back(double value, unsigned max_size)
+வெறுமை vvp_queue_real::push_back(இரட்டை value, unsigned max_size)
 {
-      if (!max_size || (queue.size() < max_size))
+      எனில் (!max_size || (queue.size() < max_size))
 	    queue.push_back(value);
-      else
+      இல்லையெனில்
 	    cerr << get_fileline()
 	         << "Warning: push_back(" << value
 	         << ") skipped for already full bounded queue<real> ["
 	         << max_size << "]." << endl;
 }
 
-void vvp_queue_real::push_front(double value, unsigned max_size)
+வெறுமை vvp_queue_real::push_front(இரட்டை value, unsigned max_size)
 {
-      if (max_size && (queue.size() == max_size)) {
+      எனில் (max_size && (queue.size() == max_size)) {
 	    cerr << get_fileline()
 	         << "Warning: push_front(" << value << ") removed "
 	         << queue.back() << " from already full bounded queue<real> ["
@@ -822,81 +822,81 @@ void vvp_queue_real::push_front(double value, unsigned max_size)
       queue.push_front(value);
 }
 
-void vvp_queue_real::erase(unsigned idx)
+வெறுமை vvp_queue_real::erase(unsigned idx)
 {
-      assert(queue.size() > idx);
+      ப்ரதிஜ்ஞா(queue.size() > idx);
       queue.erase(queue.begin()+idx);
 }
 
-void vvp_queue_real::erase_tail(unsigned idx)
+வெறுமை vvp_queue_real::erase_tail(unsigned idx)
 {
-      assert(queue.size() >= idx);
-      if (queue.size() > idx)
+      ப்ரதிஜ்ஞா(queue.size() >= idx);
+      எனில் (queue.size() > idx)
 	    queue.resize(idx);
 }
 
-void vvp_queue_string::copy_elems(vvp_object_t src, unsigned max_size)
+வெறுமை vvp_queue_string::copy_elems(vvp_object_t src, unsigned max_size)
 {
-      if (vvp_queue*src_queue = src.peek<vvp_queue>())
-	    copy_elements<string, vvp_queue_string, vvp_queue>(this, src_queue, max_size);
-      else if (vvp_darray*src_darray = src.peek<vvp_darray>())
-	    copy_elements<string, vvp_queue_string, vvp_darray>(this, src_darray, max_size);
-      else
+      எனில் (vvp_queue*src_queue = src.peek<vvp_queue>())
+	    copy_elements<string, vvp_queue_string, vvp_queue>(இது, src_queue, max_size);
+      இல்லையெனில் எனில் (vvp_darray*src_darray = src.peek<vvp_darray>())
+	    copy_elements<string, vvp_queue_string, vvp_darray>(இது, src_darray, max_size);
+      இல்லையெனில்
 	    cerr << get_fileline() << "Sorry: cannot copy object to string queue." << endl;
 }
 
-void vvp_queue_string::set_word_max(unsigned adr, const string&value, unsigned max_size)
+வெறுமை vvp_queue_string::set_word_max(unsigned adr, மாறிலி string&value, unsigned max_size)
 {
-      if (adr == queue.size())
-	    if (!max_size || (queue.size() < max_size))
+      எனில் (adr == queue.size())
+	    எனில் (!max_size || (queue.size() < max_size))
 		  queue.push_back(value);
-	    else
+	    இல்லையெனில்
 		  cerr << get_fileline()
 		       << "Warning: assigning to queue<string>[" << adr << "] is"
 		          " outside bound (" << max_size << "). \"" << value
 		       << "\" was not added." << endl;
-      else
+      இல்லையெனில்
 	    set_word(adr, value);
 }
 
-void vvp_queue_string::set_word(unsigned adr, const string&value)
+வெறுமை vvp_queue_string::set_word(unsigned adr, மாறிலி string&value)
 {
-      if (adr < queue.size())
+      எனில் (adr < queue.size())
 	    queue[adr] = value;
-      else
+      இல்லையெனில்
 	    cerr << get_fileline()
 	         << "Warning: assigning to queue<string>[" << adr << "] is outside "
 	            "of size (" << queue.size() << "). \"" << value
 	         << "\" was not added." << endl;
 }
 
-void vvp_queue_string::get_word(unsigned adr, string&value)
+வெறுமை vvp_queue_string::get_word(unsigned adr, string&value)
 {
-      if (adr >= queue.size())
+      எனில் (adr >= queue.size())
 	    value = "";
-      else
+      இல்லையெனில்
 	    value = queue[adr];
 }
 
-void vvp_queue_string::insert(unsigned idx, const string&value, unsigned max_size)
+வெறுமை vvp_queue_string::insert(unsigned idx, மாறிலி string&value, unsigned max_size)
 {
 	// Inserting past the end of the queue
-      if (idx > queue.size())
+      எனில் (idx > queue.size())
 	    cerr << get_fileline()
 	         << "Warning: inserting to queue<string>[" << idx << "] is "
 	            "outside of size (" << queue.size() << "). \"" << value
 	         << "\" was not added." << endl;
 	// Inserting at the end
-      else if (idx == queue.size())
-	    if (!max_size || (queue.size() < max_size))
+      இல்லையெனில் எனில் (idx == queue.size())
+	    எனில் (!max_size || (queue.size() < max_size))
 		  queue.push_back(value);
-	    else
+	    இல்லையெனில்
 		  cerr << get_fileline()
 		       << "Warning: inserting to queue<string>[" << idx << "] is"
 		          " outside bound (" << max_size << "). \"" << value
 		       << "\" was not added." << endl;
-      else  {
-	    if (max_size && (queue.size() == max_size)) {
+      இல்லையெனில்  {
+	    எனில் (max_size && (queue.size() == max_size)) {
 		  cerr << get_fileline()
 		       << "Warning: insert("<< idx << ", \"" << value << "\") removed \""
 		       << queue.back() << "\" from already full bounded queue<string> ["
@@ -907,20 +907,20 @@ void vvp_queue_string::insert(unsigned idx, const string&value, unsigned max_siz
       }
 }
 
-void vvp_queue_string::push_back(const string&value, unsigned max_size)
+வெறுமை vvp_queue_string::push_back(மாறிலி string&value, unsigned max_size)
 {
-      if (!max_size || (queue.size() < max_size))
+      எனில் (!max_size || (queue.size() < max_size))
 	    queue.push_back(value);
-      else
+      இல்லையெனில்
 	    cerr << get_fileline()
 	         << "Warning: push_back(\"" << value
 	         << "\") skipped for already full bounded queue<string> ["
 	         << max_size << "]." << endl;
 }
 
-void vvp_queue_string::push_front(const string&value, unsigned max_size)
+வெறுமை vvp_queue_string::push_front(மாறிலி string&value, unsigned max_size)
 {
-      if (max_size && (queue.size() == max_size)) {
+      எனில் (max_size && (queue.size() == max_size)) {
 	    cerr << get_fileline()
 	         << "Warning: push_front(\"" << value << "\") removed \""
 	         << queue.back() << "\" from already full bounded queue<string> ["
@@ -930,113 +930,113 @@ void vvp_queue_string::push_front(const string&value, unsigned max_size)
       queue.push_front(value);
 }
 
-void vvp_queue_string::erase(unsigned idx)
+வெறுமை vvp_queue_string::erase(unsigned idx)
 {
-      assert(queue.size() > idx);
+      ப்ரதிஜ்ஞா(queue.size() > idx);
       queue.erase(queue.begin()+idx);
 }
 
-void vvp_queue_string::erase_tail(unsigned idx)
+வெறுமை vvp_queue_string::erase_tail(unsigned idx)
 {
-      assert(queue.size() >= idx);
-      if (queue.size() > idx)
+      ப்ரதிஜ்ஞா(queue.size() >= idx);
+      எனில் (queue.size() > idx)
 	    queue.resize(idx);
 }
 
-void vvp_queue_real::reverse_elems(void)
+வெறுமை vvp_queue_real::reverse_elems(வெறுமை)
 {
       std::reverse(queue.begin(), queue.end());
 }
 
-void vvp_queue_string::reverse_elems(void)
+வெறுமை vvp_queue_string::reverse_elems(வெறுமை)
 {
       std::reverse(queue.begin(), queue.end());
 }
 
-void vvp_queue_real::sort_elems(bool ascending)
+வெறுமை vvp_queue_real::sort_elems(தருக்க ascending)
 {
-      if (ascending) std::sort(queue.begin(), queue.end());
-      else std::sort(queue.begin(), queue.end(), std::greater<double>());
+      எனில் (ascending) std::sort(queue.begin(), queue.end());
+      இல்லையெனில் std::sort(queue.begin(), queue.end(), std::greater<இரட்டை>());
 }
 
-void vvp_queue_real::shuffle_elems(void)
+வெறுமை vvp_queue_real::shuffle_elems(வெறுமை)
 {
       std::shuffle(queue.begin(), queue.end(), shuffle_rng());
 }
 
-void vvp_queue_string::sort_elems(bool ascending)
+வெறுமை vvp_queue_string::sort_elems(தருக்க ascending)
 {
-      if (ascending) std::sort(queue.begin(), queue.end());
-      else std::sort(queue.begin(), queue.end(), std::greater<string>());
+      எனில் (ascending) std::sort(queue.begin(), queue.end());
+      இல்லையெனில் std::sort(queue.begin(), queue.end(), std::greater<string>());
 }
 
-void vvp_queue_string::shuffle_elems(void)
+வெறுமை vvp_queue_string::shuffle_elems(வெறுமை)
 {
       std::shuffle(queue.begin(), queue.end(), shuffle_rng());
 }
 
-void vvp_queue_vec4::copy_elems(vvp_object_t src, unsigned max_size)
+வெறுமை vvp_queue_vec4::copy_elems(vvp_object_t src, unsigned max_size)
 {
-      if (vvp_queue*src_queue = src.peek<vvp_queue>())
-	    copy_elements<vvp_vector4_t, vvp_queue_vec4, vvp_queue>(this, src_queue, max_size);
-      else if (vvp_darray*src_darray = src.peek<vvp_darray>())
-	    copy_elements<vvp_vector4_t, vvp_queue_vec4, vvp_darray>(this, src_darray, max_size);
-      else
+      எனில் (vvp_queue*src_queue = src.peek<vvp_queue>())
+	    copy_elements<vvp_vector4_t, vvp_queue_vec4, vvp_queue>(இது, src_queue, max_size);
+      இல்லையெனில் எனில் (vvp_darray*src_darray = src.peek<vvp_darray>())
+	    copy_elements<vvp_vector4_t, vvp_queue_vec4, vvp_darray>(இது, src_darray, max_size);
+      இல்லையெனில்
 	    cerr << get_fileline() << "Sorry: cannot copy object to vector queue." << endl;
 }
 
-void vvp_queue_vec4::set_word_max(unsigned adr, const vvp_vector4_t&value, unsigned max_size)
+வெறுமை vvp_queue_vec4::set_word_max(unsigned adr, மாறிலி vvp_vector4_t&value, unsigned max_size)
 {
-      if (adr == queue.size())
-	    if (!max_size || (queue.size() < max_size))
+      எனில் (adr == queue.size())
+	    எனில் (!max_size || (queue.size() < max_size))
 		  queue.push_back(value);
-	    else
+	    இல்லையெனில்
 		  cerr << get_fileline()
 		       << "Warning: assigning to queue<vector>[" << adr << "] is"
 		          " outside bound (" << max_size << "). " << value
 		       << " was not added." << endl;
-      else
+      இல்லையெனில்
 	    set_word(adr, value);
 }
 
-void vvp_queue_vec4::set_word(unsigned adr, const vvp_vector4_t&value)
+வெறுமை vvp_queue_vec4::set_word(unsigned adr, மாறிலி vvp_vector4_t&value)
 {
-      if (adr < queue.size())
+      எனில் (adr < queue.size())
 	    queue[adr] = value;
-      else
+      இல்லையெனில்
 	    cerr << get_fileline()
 	         << "Warning: assigning to queue<vector>[" << adr << "] is outside "
 	            "of size (" << queue.size() << "). " << value
 	         << " was not added." << endl;
 }
 
-void vvp_queue_vec4::get_word(unsigned adr, vvp_vector4_t&value)
+வெறுமை vvp_queue_vec4::get_word(unsigned adr, vvp_vector4_t&value)
 {
-      if (adr >= queue.size())
+      எனில் (adr >= queue.size())
 	    value = vvp_vector4_t(queue[0].size());
-      else
+      இல்லையெனில்
 	    value = queue[adr];
 }
 
-void vvp_queue_vec4::insert(unsigned idx, const vvp_vector4_t&value, unsigned max_size)
+வெறுமை vvp_queue_vec4::insert(unsigned idx, மாறிலி vvp_vector4_t&value, unsigned max_size)
 {
 	// Inserting past the end of the queue
-      if (idx > queue.size())
+      எனில் (idx > queue.size())
 	    cerr << get_fileline()
 	         << "Warning: inserting to queue<vector[" << value.size()
 	         << "]>[" << idx << "] is outside of size (" << queue.size()
 	         << "). " << value << " was not added." << endl;
 	// Inserting at the end
-      else if (idx == queue.size())
-	    if (!max_size || (queue.size() < max_size))
+      இல்லையெனில் எனில் (idx == queue.size())
+	    எனில் (!max_size || (queue.size() < max_size))
 		  queue.push_back(value);
-	    else
+	    இல்லையெனில்
 		  cerr << get_fileline()
 		       << "Warning: inserting to queue<vector[" << value.size()
 		       << "]>[" << idx << "] is outside bound (" << max_size
 		       << "). " << value << " was not added." << endl;
-      else  {
-	    if (max_size && (queue.size() == max_size)) {
+      இல்லையெனில்  {
+	    எனில் (max_size && (queue.size() == max_size)) {
 		  cerr << get_fileline()
 		       << "Warning: insert("<< idx << ", " << value << ") removed "
 		       << queue.back() << " from already full bounded queue<vector["
@@ -1047,20 +1047,20 @@ void vvp_queue_vec4::insert(unsigned idx, const vvp_vector4_t&value, unsigned ma
       }
 }
 
-void vvp_queue_vec4::push_back(const vvp_vector4_t&value, unsigned max_size)
+வெறுமை vvp_queue_vec4::push_back(மாறிலி vvp_vector4_t&value, unsigned max_size)
 {
-      if (!max_size || (queue.size() < max_size))
+      எனில் (!max_size || (queue.size() < max_size))
 	    queue.push_back(value);
-      else
+      இல்லையெனில்
 	    cerr << get_fileline()
 	         << "Warning: push_back(" << value
 	         << ") skipped for already full bounded queue<vector["
 	         << value.size() << "]> [" << max_size << "]." << endl;
 }
 
-void vvp_queue_vec4::push_front(const vvp_vector4_t&value, unsigned max_size)
+வெறுமை vvp_queue_vec4::push_front(மாறிலி vvp_vector4_t&value, unsigned max_size)
 {
-      if (max_size && (queue.size() == max_size)) {
+      எனில் (max_size && (queue.size() == max_size)) {
 	    cerr << get_fileline()
 	         << "Warning: push_front(" << value << ") removed "
 	         << queue.back() << " from already full bounded queue<vector["
@@ -1070,37 +1070,37 @@ void vvp_queue_vec4::push_front(const vvp_vector4_t&value, unsigned max_size)
       queue.push_front(value);
 }
 
-void vvp_queue_vec4::erase(unsigned idx)
+வெறுமை vvp_queue_vec4::erase(unsigned idx)
 {
-      assert(queue.size() > idx);
+      ப்ரதிஜ்ஞா(queue.size() > idx);
       queue.erase(queue.begin()+idx);
 }
 
-void vvp_queue_vec4::erase_tail(unsigned idx)
+வெறுமை vvp_queue_vec4::erase_tail(unsigned idx)
 {
-      assert(queue.size() >= idx);
-      if (queue.size() > idx)
+      ப்ரதிஜ்ஞா(queue.size() >= idx);
+      எனில் (queue.size() > idx)
 	    queue.resize(idx);
 }
 
-void vvp_queue_vec4::reverse_elems(void)
+வெறுமை vvp_queue_vec4::reverse_elems(வெறுமை)
 {
       std::reverse(queue.begin(), queue.end());
 }
 
-void vvp_queue_vec4::sort_elems(bool ascending)
+வெறுமை vvp_queue_vec4::sort_elems(தருக்க ascending)
 {
-      if (ascending) {
+      எனில் (ascending) {
 	    std::sort(queue.begin(), queue.end(), vec4_lt_unsigned);
-      } else {
+      } இல்லையெனில் {
 	    std::sort(queue.begin(), queue.end(),
-		      [](const vvp_vector4_t&a, const vvp_vector4_t&b) {
-			    return vec4_lt_unsigned(b, a);
+		      [](மாறிலி vvp_vector4_t&a, மாறிலி vvp_vector4_t&b) {
+			    திரும்பு vec4_lt_unsigned(b, a);
 		      });
       }
 }
 
-void vvp_queue_vec4::shuffle_elems(void)
+வெறுமை vvp_queue_vec4::shuffle_elems(வெறுமை)
 {
       std::shuffle(queue.begin(), queue.end(), shuffle_rng());
 }

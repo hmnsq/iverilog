@@ -31,27 +31,27 @@
  * The key_strdup() function below allocates the strings from this
  * buffer, possibly making a new buffer if needed.
  */
-struct key_strings {
-      struct key_strings*next;
-      char data[64*1024 - sizeof(struct key_strings*)];
+கட்டமைப்பு சாவி_strings {
+      கட்டமைப்பு சாவி_strings*next;
+      எழுத்து data[64*1024 - அளவு(கட்டமைப்பு சாவி_strings*)];
 };
 
-char*symbol_table_s::key_strdup_(const char*str)
+எழுத்து*குறியீடு_table_s::சாவி_strdup(மாறிலி எழுத்து*str)
 {
       unsigned len = strlen(str);
-      assert( (len+1) <= sizeof str_chunk->data );
+      ப்ரதிஜ்ஞா( (len+1) <= அளவு str_chunk->data );
 
-      if ( (len+1) > (sizeof str_chunk->data - str_used) ) {
-	    key_strings*tmp = new key_strings;
+      எனில் ( (len+1) > (அளவு str_chunk->data - str_used) ) {
+	    சாவி_strings*tmp = புதிய சாவி_strings;
 	    tmp->next = str_chunk;
 	    str_chunk = tmp;
 	    str_used = 0;
       }
 
-      char*res = str_chunk->data + str_used;
+      எழுத்து*res = str_chunk->data + str_used;
       str_used += len + 1;
       strcpy(res, str);
-      return res;
+      திரும்பு res;
 }
 
 /*
@@ -67,32 +67,32 @@ char*symbol_table_s::key_strdup_(const char*str)
  * simple binary search to find an item. Each key represents an item.
  */
 
-const unsigned leaf_width = 254;
-const unsigned node_width = 508;
+மாறிலி unsigned leaf_width = 254;
+மாறிலி unsigned முனை_width = 508;
 
-struct tree_data_ {
-      char*key;
-      symbol_value_t val;
+கட்டமைப்பு மரம்_data {
+      எழுத்து*சாவி;
+      குறியீடு_மதிப்பு_t val;
 };
 
-struct tree_node_ {
-      bool leaf_flag;
-      unsigned count;
-      struct tree_node_*parent;
+கட்டமைப்பு மர_முனை {
+      தருக்க leaf_flag;
+      unsigned மொத்தம்;
+      கட்டமைப்பு மர_முனை*parent;
 
-      union {
-	    struct tree_data_ leaf[leaf_width];
-	    struct tree_node_ *child[node_width];
+      ஒன்றிப்பு {
+	    கட்டமைப்பு மரம்_data leaf[leaf_width];
+	    கட்டமைப்பு மர_முனை *child[முனை_width];
       };
 
 };
 
-static inline char* node_last_key(struct tree_node_*node)
+நிலையான உள்வரி எழுத்து* முனை_last_சாவி(கட்டமைப்பு மர_முனை*முனை)
 {
-      while (node->leaf_flag == false)
-	    node = node->child[node->count-1];
+      போது (முனை->leaf_flag == பொய்)
+	    முனை = முனை->child[முனை->மொத்தம்-1];
 
-      return node->leaf[node->count-1].key;
+      திரும்பு முனை->leaf[முனை->மொத்தம்-1].சாவி;
 }
 
 /*
@@ -100,94 +100,94 @@ static inline char* node_last_key(struct tree_node_*node)
  * a root node, and initializing the pointers and members of the root
  * node.
  */
-symbol_table_s::symbol_table_s()
+குறியீடு_table_s::குறியீடு_table_s()
 {
-      root = new struct tree_node_;
-      root->leaf_flag = false;
-      root->count = 0;
-      root->parent = 0;
+      வேர் = புதிய கட்டமைப்பு மர_முனை;
+      வேர்->leaf_flag = பொய்;
+      வேர்->மொத்தம் = 0;
+      வேர்->parent = 0;
 
-      str_chunk = new key_strings;
+      str_chunk = புதிய சாவி_strings;
       str_chunk->next = 0;
       str_used = 0;
 }
 
-static void delete_symbol_node(struct tree_node_*cur)
+நிலையான வெறுமை delete_குறியீடு_முனை(கட்டமைப்பு மர_முனை*cur)
 {
-      if (! cur->leaf_flag) {
-	    for (unsigned idx = 0 ;  idx < cur->count ;  idx += 1)
-		  delete_symbol_node(cur->child[idx]);
+      எனில் (! cur->leaf_flag) {
+	    க்கு (unsigned idx = 0 ;  idx < cur->மொத்தம் ;  idx += 1)
+		  delete_குறியீடு_முனை(cur->child[idx]);
       }
 
       delete cur;
 }
 
 /* Do as split_leaf_ does, but for nodes. */
-static void split_node_(struct tree_node_*cur)
+நிலையான வெறுமை split_முனை(கட்டமைப்பு மர_முனை*cur)
 {
-      assert(!cur->leaf_flag);
-      if (cur->parent) assert(! cur->parent->leaf_flag);
+      ப்ரதிஜ்ஞா(!cur->leaf_flag);
+      எனில் (cur->parent) ப்ரதிஜ்ஞா(! cur->parent->leaf_flag);
 
-      while (cur->count == node_width) {
+      போது (cur->மொத்தம் == முனை_width) {
 	      /* Create a new node to hold half the data from cur. */
-	    struct tree_node_ *new_node = new struct tree_node_;
-	    new_node->leaf_flag = false;
-	    new_node->count = cur->count / 2;
+	    கட்டமைப்பு மர_முனை *new_முனை = புதிய கட்டமைப்பு மர_முனை;
+	    new_முனை->leaf_flag = பொய்;
+	    new_முனை->மொத்தம் = cur->மொத்தம் / 2;
 	      /* cur is not root; new_node becomes sibling. */
-	    if (cur->parent) new_node->parent = cur->parent;
+	    எனில் (cur->parent) new_முனை->parent = cur->parent;
 
 	      /* Move the last half of the data from the end of the old node
 	       * to the beginning of the new node. At the same time, reduce
 	       * the size of the old node. */
-	    unsigned idx1 = new_node->count;
-	    unsigned idx2 = cur->count;
-	    while (idx1 > 0) {
+	    unsigned idx1 = new_முனை->மொத்தம்;
+	    unsigned idx2 = cur->மொத்தம்;
+	    போது (idx1 > 0) {
 		  idx1 -= 1;
 		  idx2 -= 1;
-		  new_node->child[idx1] = cur->child[idx2];
-		  new_node->child[idx1]->parent = new_node;
-		  cur->count -= 1;
+		  new_முனை->child[idx1] = cur->child[idx2];
+		  new_முனை->child[idx1]->parent = new_முனை;
+		  cur->மொத்தம் -= 1;
 	    }
 
-	    assert(new_node->count > 0);
-	    assert(cur->count > 0);
+	    ப்ரதிஜ்ஞா(new_முனை->மொத்தம் > 0);
+	    ப்ரதிஜ்ஞா(cur->மொத்தம் > 0);
 
-	    if (cur->parent == 0) {
+	    எனில் (cur->parent == 0) {
 		    /* cur is root. Move first half of children to another
 		     * new node, and put the two new nodes in cur. The plan
 		     * here is to make cur into the new root and split its
 		     * contents into 2 children. */
 
-		  new_node->parent = cur;
-		  struct tree_node_*new2_node = new struct tree_node_;
-		  new2_node->leaf_flag = false;
-		  new2_node->count = cur->count;
-		  new2_node->parent = cur;
-		  for (unsigned idx = 0; idx < cur->count; idx += 1) {
-			new2_node->child[idx] = cur->child[idx];
-			new2_node->child[idx]->parent = new2_node;
+		  new_முனை->parent = cur;
+		  கட்டமைப்பு மர_முனை*new2_முனை = புதிய கட்டமைப்பு மர_முனை;
+		  new2_முனை->leaf_flag = பொய்;
+		  new2_முனை->மொத்தம் = cur->மொத்தம்;
+		  new2_முனை->parent = cur;
+		  க்கு (unsigned idx = 0; idx < cur->மொத்தம்; idx += 1) {
+			new2_முனை->child[idx] = cur->child[idx];
+			new2_முனை->child[idx]->parent = new2_முனை;
 		  }
-		  cur->child[0] = new2_node;
-		  cur->child[1] = new_node;
-		  cur->count = 2;
+		  cur->child[0] = new2_முனை;
+		  cur->child[1] = new_முனை;
+		  cur->மொத்தம் = 2;
 		    /* no more ancestors, stop the while loop */
-		  break;
+		  நிறுத்து;
 	    }
 
 	      /* cur is not root. hook new_node to cur->parent. */
 	    unsigned idx = 0;
-	    while (cur->parent->child[idx] != cur) {
-		  assert(idx < cur->parent->count);
+	    போது (cur->parent->child[idx] != cur) {
+		  ப்ரதிஜ்ஞா(idx < cur->parent->மொத்தம்);
 		  idx += 1;
 	    }
 	    idx += 1;
 
-	    for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1) {
+	    க்கு (unsigned tmp = cur->parent->மொத்தம் ;  tmp > idx ;  tmp -= 1) {
 		  cur->parent->child[tmp] = cur->parent->child[tmp-1];
 	    }
 
-	    cur->parent->child[idx] = new_node;
-	    cur->parent->count += 1;
+	    cur->parent->child[idx] = new_முனை;
+	    cur->parent->மொத்தம் += 1;
 
 	      /* check the ancestor */
 	    cur = cur->parent;
@@ -199,51 +199,51 @@ static void split_node_(struct tree_node_*cur)
  * the leaf keys into the new node, and add the new leaf into the
  * parent node.
  */
-static struct tree_node_* split_leaf_(struct tree_node_*cur)
+நிலையான கட்டமைப்பு மர_முனை* split_leaf_(கட்டமைப்பு மர_முனை*cur)
 {
-      assert(cur->leaf_flag);
-      assert(cur->parent);
-      assert(! cur->parent->leaf_flag);
+      ப்ரதிஜ்ஞா(cur->leaf_flag);
+      ப்ரதிஜ்ஞா(cur->parent);
+      ப்ரதிஜ்ஞா(! cur->parent->leaf_flag);
 
 	/* Create a new leaf to hold half the data from the old leaf. */
-      struct tree_node_*new_leaf = new struct tree_node_;
-      new_leaf->leaf_flag = true;
-      new_leaf->count = cur->count / 2;
+      கட்டமைப்பு மர_முனை*new_leaf = புதிய கட்டமைப்பு மர_முனை;
+      new_leaf->leaf_flag = உண்மை;
+      new_leaf->மொத்தம் = cur->மொத்தம் / 2;
       new_leaf->parent = cur->parent;
 
 	/* Move the last half of the data from the end of the old leaf
 	   to the beginning of the new leaf. At the same time, reduce
 	   the size of the old leaf. */
-      unsigned idx1 = new_leaf->count;
-      unsigned idx2 = cur->count;
-      while (idx1 > 0) {
+      unsigned idx1 = new_leaf->மொத்தம்;
+      unsigned idx2 = cur->மொத்தம்;
+      போது (idx1 > 0) {
 	    idx1 -= 1;
 	    idx2 -= 1;
 	    new_leaf->leaf[idx1] = cur->leaf[idx2];
-	    cur->count -= 1;
+	    cur->மொத்தம் -= 1;
       }
 
-      assert(new_leaf->count > 0);
-      assert(cur->count > 0);
+      ப்ரதிஜ்ஞா(new_leaf->மொத்தம் > 0);
+      ப்ரதிஜ்ஞா(cur->மொத்தம் > 0);
 
       unsigned idx = 0;
-      while (cur->parent->child[idx] != cur) {
-	    assert(idx < cur->parent->count);
+      போது (cur->parent->child[idx] != cur) {
+	    ப்ரதிஜ்ஞா(idx < cur->parent->மொத்தம்);
 	    idx += 1;
       }
 
       idx += 1;
 
-      for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1)
+      க்கு (unsigned tmp = cur->parent->மொத்தம் ;  tmp > idx ;  tmp -= 1)
 	    cur->parent->child[tmp] = cur->parent->child[tmp-1];
 
       cur->parent->child[idx] = new_leaf;
-      cur->parent->count += 1;
+      cur->parent->மொத்தம் += 1;
 
-      if (cur->parent->count == node_width)
-	    split_node_(cur->parent);
+      எனில் (cur->parent->மொத்தம் == முனை_width)
+	    split_முனை(cur->parent);
 
-      return new_leaf;
+      திரும்பு new_leaf;
 }
 
 
@@ -254,144 +254,144 @@ static struct tree_node_* split_leaf_(struct tree_node_*cur)
  * true.
  */
 
-symbol_value_t symbol_table_s::find_value_(struct tree_node_*cur,
-					   const char*key, symbol_value_t val,
-					   bool force_flag)
+குறியீடு_மதிப்பு_t குறியீடு_table_s::find_மதிப்பு(கட்டமைப்பு மர_முனை*cur,
+					   மாறிலி எழுத்து*சாவி, குறியீடு_மதிப்பு_t val,
+					   தருக்க force_flag)
 {
-      if (cur->leaf_flag) {
+      எனில் (cur->leaf_flag) {
 
 	    unsigned idx = 0;
-	    for (;;) {
+	    க்கு (;;) {
 		    /* If we run out of keys in the leaf, then add
 		       this at the end of the leaf. */
-		  if (idx == cur->count) {
-			cur->leaf[idx].key = key_strdup_(key);
+		  எனில் (idx == cur->மொத்தம்) {
+			cur->leaf[idx].சாவி = சாவி_strdup(சாவி);
 			cur->leaf[idx].val = val;
-			cur->count += 1;
-			if (cur->count == leaf_width)
+			cur->மொத்தம் += 1;
+			எனில் (cur->மொத்தம் == leaf_width)
 			      split_leaf_(cur);
 
-			return val;
+			திரும்பு val;
 		  }
 
-		  int rc = strcmp(key, cur->leaf[idx].key);
+		  முழு rc = strcmp(சாவி, cur->leaf[idx].சாவி);
 
 		    /* If we found the key already in the table, then
 		       set the new value and break. */
-		  if (rc == 0) {
-			if (force_flag)
+		  எனில் (rc == 0) {
+			எனில் (force_flag)
 			      cur->leaf[idx].val = val;
-			return cur->leaf[idx].val;
+			திரும்பு cur->leaf[idx].val;
 		  }
 
 		    /* If this key goes before the current key, then
 		       push all the following entries back and add
 		       this key here. */
-		  if (rc < 0) {
-			for (unsigned tmp = cur->count; tmp > idx; tmp -= 1)
+		  எனில் (rc < 0) {
+			க்கு (unsigned tmp = cur->மொத்தம்; tmp > idx; tmp -= 1)
 			      cur->leaf[tmp] = cur->leaf[tmp-1];
 
-			cur->leaf[idx].key = key_strdup_(key);
+			cur->leaf[idx].சாவி = சாவி_strdup(சாவி);
 			cur->leaf[idx].val = val;
-			cur->count += 1;
-			if (cur->count == leaf_width)
+			cur->மொத்தம் += 1;
+			எனில் (cur->மொத்தம் == leaf_width)
 			      split_leaf_(cur);
 
-			return val;
+			திரும்பு val;
 		  }
 
 		  idx += 1;
 	    }
 
-      } else {
+      } இல்லையெனில் {
 	      /* Do a binary search within the inner node. */
 	    unsigned min = 0;
-	    unsigned max = cur->count;
+	    unsigned max = cur->மொத்தம்;
 	    unsigned idx = max/2;
-	    for (;;) {
-		  int rc = strcmp(key, node_last_key(cur->child[idx]));
-		  if (rc == 0) {
-			return find_value_(cur->child[idx],
-					   key, val, force_flag);
+	    க்கு (;;) {
+		  முழு rc = strcmp(சாவி, முனை_last_சாவி(cur->child[idx]));
+		  எனில் (rc == 0) {
+			திரும்பு find_மதிப்பு(cur->child[idx],
+					   சாவி, val, force_flag);
 		  }
 
-		  if (rc > 0) {
+		  எனில் (rc > 0) {
 			min = idx + 1;
-			if (min == cur->count)
-			      return find_value_(cur->child[idx],
-						 key, val, force_flag);
-			if (min == max)
-			      return find_value_(cur->child[max],
-						 key, val, force_flag);
+			எனில் (min == cur->மொத்தம்)
+			      திரும்பு find_மதிப்பு(cur->child[idx],
+						 சாவி, val, force_flag);
+			எனில் (min == max)
+			      திரும்பு find_மதிப்பு(cur->child[max],
+						 சாவி, val, force_flag);
 
 			idx = min + (max-min)/2;
 
-		  } else  {
+		  } இல்லையெனில்  {
 			max = idx;
-			if (idx == min)
-			      return find_value_(cur->child[idx],
-						 key, val, force_flag);
+			எனில் (idx == min)
+			      திரும்பு find_மதிப்பு(cur->child[idx],
+						 சாவி, val, force_flag);
 			idx = min + (max-min)/2;
 		  }
 	    }
       }
 
-      assert(0);
-      { symbol_value_t tmp;
+      ப்ரதிஜ்ஞா(0);
+      { குறியீடு_மதிப்பு_t tmp;
         tmp.ptr = 0;
-        return tmp;
+        திரும்பு tmp;
       }
 }
 
-void symbol_table_s::sym_set_value(const char*key, symbol_value_t val)
+வெறுமை குறியீடு_table_s::sym_set_மதிப்பு(மாறிலி எழுத்து*சாவி, குறியீடு_மதிப்பு_t val)
 {
-      if (root->count == 0) {
+      எனில் (வேர்->மொத்தம் == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
-	    cur->leaf_flag = true;
-	    cur->parent = root;
-	    cur->count = 1;
-	    cur->leaf[0].key = key_strdup_(key);
+	    கட்டமைப்பு மர_முனை*cur = புதிய கட்டமைப்பு மர_முனை;
+	    cur->leaf_flag = உண்மை;
+	    cur->parent = வேர்;
+	    cur->மொத்தம் = 1;
+	    cur->leaf[0].சாவி = சாவி_strdup(சாவி);
 	    cur->leaf[0].val = val;
 
-	    root->count = 1;
-	    root->child[0] = cur;
-      } else {
-	    find_value_(root, key, val, true);
+	    வேர்->மொத்தம் = 1;
+	    வேர்->child[0] = cur;
+      } இல்லையெனில் {
+	    find_மதிப்பு(வேர், சாவி, val, உண்மை);
       }
 }
 
-symbol_value_t symbol_table_s::sym_get_value(const char*key)
+குறியீடு_மதிப்பு_t குறியீடு_table_s::sym_get_மதிப்பு(மாறிலி எழுத்து*சாவி)
 {
-      symbol_value_t def;
+      குறியீடு_மதிப்பு_t def;
       def.ptr = 0;
 
-      if (root->count == 0) {
+      எனில் (வேர்->மொத்தம் == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
-	    cur->leaf_flag = true;
-	    cur->parent = root;
-	    cur->count = 1;
-	    cur->leaf[0].key = key_strdup_(key);
+	    கட்டமைப்பு மர_முனை*cur = புதிய கட்டமைப்பு மர_முனை;
+	    cur->leaf_flag = உண்மை;
+	    cur->parent = வேர்;
+	    cur->மொத்தம் = 1;
+	    cur->leaf[0].சாவி = சாவி_strdup(சாவி);
 	    cur->leaf[0].val = def;
 
-	    root->count = 1;
-	    root->child[0] = cur;
-	    return cur->leaf[0].val;
-      } else {
-	    return find_value_(root, key, def, false);
+	    வேர்->மொத்தம் = 1;
+	    வேர்->child[0] = cur;
+	    திரும்பு cur->leaf[0].val;
+      } இல்லையெனில் {
+	    திரும்பு find_மதிப்பு(வேர், சாவி, def, பொய்);
       }
 }
 
-symbol_table_s::~symbol_table_s()
+குறியீடு_table_s::~குறியீடு_table_s()
 {
-      delete_symbol_node(root);
-      while (str_chunk) {
-	    key_strings*tmp = str_chunk;
+      delete_குறியீடு_முனை(வேர்);
+      போது (str_chunk) {
+	    சாவி_strings*tmp = str_chunk;
 	    str_chunk = tmp->next;
 	    delete tmp;
       }

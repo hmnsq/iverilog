@@ -22,11 +22,11 @@
 # include  <iostream>
 # include  <typeinfo>
 
-using namespace std;
+using நாமாகாஶ std;
 
-int vvp_object::total_active_cnt_ = 0;
+முழு vvp_object::total_active_cnt_ = 0;
 
-void vvp_object::cleanup(void)
+வெறுமை vvp_object::cleanup(வெறுமை)
 {
 }
 
@@ -35,15 +35,15 @@ vvp_object::~vvp_object()
       total_active_cnt_ -= 1;
 }
 
-void vvp_object::shallow_copy(const vvp_object*)
+வெறுமை vvp_object::shallow_copy(மாறிலி vvp_object*)
 {
-      cerr << "XXXX shallow_copy(vvp_object_t) not implemented for " << typeid(*this).name() << endl;
-      assert(0);
+      cerr << "XXXX shallow_copy(vvp_object_t) not implemented for " << typeid(*இது).name() << endl;
+      ப்ரதிஜ்ஞா(0);
 }
 
-vvp_object* vvp_object::duplicate(void) const
+vvp_object* vvp_object::duplicate(வெறுமை) மாறிலி
 {
-      cerr << "XXXX duplicate() not implemented for " << typeid(*this).name() << endl;
-      assert(0);
-      return 0;
+      cerr << "XXXX duplicate() not implemented for " << typeid(*இது).name() << endl;
+      ப்ரதிஜ்ஞா(0);
+      திரும்பு 0;
 }

@@ -54,63 +54,63 @@
 * branches of analog within the island.
 */
 
-struct vvp_island_branch;
+கட்டமைப்பு vvp_island_branch;
 class vvp_island_port;
 
-class vvp_island  : private vvp_gen_event_s {
+class vvp_island  : தனிப்பட்ட vvp_gen_event_s {
 
-    public:
+    பொது:
       vvp_island();
-      virtual ~vvp_island() override;
+      மெய்நிகர் ~vvp_island() override;
 
-      vvp_island(const vvp_island&) = delete;
-      vvp_island& operator=(const vvp_island&) = delete;
+      vvp_island(மாறிலி vvp_island&) = delete;
+      vvp_island& operator=(மாறிலி vvp_island&) = delete;
 
 	// Ports call this method to flag that something happened at
 	// the input. The island will use this to create an active
 	// event. The run_run() method will then be called by the
 	// scheduler to process whatever happened.
-      void flag_island();
+      வெறுமை flag_island();
 
 	// This is the method that is called, eventually, to process
 	// whatever happened. The derived island class implements this
 	// method to give the island its character.
-      virtual void run_island() =0;
+      மெய்நிகர் வெறுமை run_island() =0;
 
         // Support for $countdrivers.
-      virtual void count_drivers(vvp_island_port*port, unsigned bit_idx,
+      மெய்நிகர் வெறுமை மொத்தம்_drivers(vvp_island_port*port, unsigned bit_idx,
                                  unsigned counts[3]) =0;
 
-    protected:
+    பாதுகாக்கப்பட்ட:
 	// The base class collects a list of all the branches in the
 	// island. The derived island class can access this list for
 	// scanning the mesh.
       vvp_island_branch*branches_;
 
-    public: /* These methods are used during linking. */
+    பொது: /* These methods are used during linking. */
 
 	// Add a port to the island. The key is added to the island
 	// ports symbol table.
-      void add_port(const char*key, vvp_net_t*net);
+      வெறுமை add_port(மாறிலி எழுத்து*சாவி, vvp_net_t*net);
 	// Add a branch to the island.
-      void add_branch(vvp_island_branch*branch, const char*pa, const char*pb);
+      வெறுமை add_branch(vvp_island_branch*branch, மாறிலி எழுத்து*pa, மாறிலி எழுத்து*pb);
 
-      vvp_net_t* find_port(const char*key);
+      vvp_net_t* find_port(மாறிலி எழுத்து*சாவி);
 
 	// Call this method when linking is done.
-      void compile_cleanup(void);
+      வெறுமை compile_cleanup(வெறுமை);
 
-    private:
-      void run_run() override;
+    தனிப்பட்ட:
+      வெறுமை run_run() override;
       bool flagged_;
 
-    private:
+    தனிப்பட்ட:
 	// During link, the vvp_island keeps these symbol tables for
 	// mapping labels local to the island. When linking is done,
 	// the compile_cleanup() method removes these tables.
-      symbol_map_s<vvp_net_t>*ports_;
-      symbol_map_s<vvp_island_branch>*anodes_;
-      symbol_map_s<vvp_island_branch>*bnodes_;
+      குறியீடு_map_s<vvp_net_t>*ports_;
+      குறியீடு_map_s<vvp_island_branch>*anodes_;
+      குறியீடு_map_s<vvp_island_branch>*bnodes_;
 };
 
 /*
@@ -122,19 +122,19 @@ class vvp_island  : private vvp_gen_event_s {
 * pointer from the vvp_net_t that refers to this object.
 */
 
-class vvp_island_port  : public vvp_net_fun_t {
+class vvp_island_port  : பொது vvp_net_fun_t {
 
-    public:
+    பொது:
       explicit vvp_island_port(vvp_island*ip);
       ~vvp_island_port() override;
 
-    public: // Implement vvp_net_fun_t methods
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    பொது: // Implement vvp_net_fun_t methods
+      மெய்நிகர் வெறுமை recv_vec4(vvp_net_ptr_t port, மாறிலி vvp_vector4_t&bit,
                              vvp_context_t) override;
-      virtual void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      மெய்நிகர் வெறுமை recv_vec4_pv(vvp_net_ptr_t port, மாறிலி vvp_vector4_t&bit,
 				unsigned base, unsigned vwid, vvp_context_t) override;
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
-      virtual void recv_vec8_pv(vvp_net_ptr_t p, const vvp_vector8_t&bit,
+      மெய்நிகர் வெறுமை recv_vec8(vvp_net_ptr_t port, மாறிலி vvp_vector8_t&bit) override;
+      மெய்நிகர் வெறுமை recv_vec8_pv(vvp_net_ptr_t p, மாறிலி vvp_vector8_t&bit,
 				unsigned base, unsigned vwid) override;
 
 	// This is painful, but necessary. If the island is connected
@@ -142,57 +142,57 @@ class vvp_island_port  : public vvp_net_fun_t {
 	// a force/release happens to the net. If run_now is true, we
 	// rerun immediately, otherwise we schedule it for the end of
 	// the current time slot.
-      virtual void force_flag(bool run_now) override;
+      மெய்நிகர் வெறுமை force_flag(bool run_now) override;
 
-    public:
+    பொது:
       vvp_vector8_t invalue;
       vvp_vector8_t outvalue;
-      vvp_vector8_t value;
+      vvp_vector8_t மதிப்பு;
 
-    private:
+    தனிப்பட்ட:
       vvp_island*island_;
 
-    public: // Support for $countdrivers.
-      inline void count_drivers(unsigned bit_idx, unsigned counts[3])
+    பொது: // Support for $countdrivers.
+      உள்வரி வெறுமை மொத்தம்_drivers(unsigned bit_idx, unsigned counts[3])
       {
-            island_->count_drivers(this, bit_idx, counts);
+            island_->மொத்தம்_drivers(this, bit_idx, counts);
       }
 
-    private: // not implemented
-      vvp_island_port(const vvp_island_port&);
-      vvp_island_port& operator = (const vvp_island_port&);
+    தனிப்பட்ட: // not implemented
+      vvp_island_port(மாறிலி vvp_island_port&);
+      vvp_island_port& operator = (மாறிலி vvp_island_port&);
 };
 
-inline vvp_vector8_t island_get_value(vvp_net_t*net)
+உள்வரி vvp_vector8_t island_get_மதிப்பு(vvp_net_t*net)
 {
-      const vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
-      const vvp_wire_vec8*fil = dynamic_cast<vvp_wire_vec8*>(net->fil);
+      மாறிலி vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
+      மாறிலி vvp_wire_vec8*fil = dynamic_cast<vvp_wire_vec8*>(net->fil);
 
-      if (fil == 0) {
-	    return fun->invalue;
-      } else {
+      எனில் (fil == 0) {
+	    திரும்பு fun->invalue;
+      } இல்லையெனில் {
 	      // This is painful, but necessary. If the island is
 	      // connected to a forced net, then run the input through
 	      // the force filter first. The island must used the
 	      // forced value for its deliberations.
 	    vvp_vector8_t rep;
-	    switch (fil->filter_input_vec8(fun->invalue, rep)) {
-		default:
-		case vvp_net_fil_t::PROP:
-		  return fun->invalue;
-		case vvp_net_fil_t::REPL:
-		  return rep;
+	    தேர்வு (fil->filter_உள்ளீடு_vec8(fun->invalue, rep)) {
+		இயல்பு:
+		நிலை vvp_net_fil_t::PROP:
+		  திரும்பு fun->invalue;
+		நிலை vvp_net_fil_t::REPL:
+		  திரும்பு rep;
 	    }
       }
 }
 
-inline vvp_vector8_t island_get_sent_value(vvp_net_t*net)
+உள்வரி vvp_vector8_t island_get_sent_மதிப்பு(vvp_net_t*net)
 {
-      const vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
-      return fun->outvalue;
+      மாறிலி vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
+      திரும்பு fun->outvalue;
 }
 
-extern void island_send_value(vvp_net_t*net, const vvp_vector8_t&val);
+வெளி வெறுமை island_send_மதிப்பு(vvp_net_t*net, மாறிலி vvp_vector8_t&val);
 
 /*
 * Branches are connected together to form a mesh of branches. Each
@@ -202,10 +202,10 @@ extern void island_send_value(vvp_net_t*net, const vvp_vector8_t&val);
 * of the island.
 */
 
-typedef vvp_sub_pointer_t<vvp_island_branch> vvp_branch_ptr_t;
+வகைவரை vvp_sub_pointer_t<vvp_island_branch> vvp_branch_ptr_t;
 
-struct vvp_island_branch {
-      virtual ~vvp_island_branch();
+கட்டமைப்பு vvp_island_branch {
+      மெய்நிகர் ~vvp_island_branch();
 	// Keep a list of branches in the island.
       vvp_island_branch*next_branch;
 	// branch mesh connectivity. There is a pointer for each end
@@ -216,11 +216,11 @@ struct vvp_island_branch {
       vvp_net_t*b;
 };
 
-static inline vvp_branch_ptr_t next(vvp_branch_ptr_t cur)
+நிலையான உள்வரி vvp_branch_ptr_t next(vvp_branch_ptr_t cur)
 {
-      const vvp_island_branch*ptr = cur.ptr();
+      மாறிலி vvp_island_branch*ptr = cur.ptr();
       unsigned ab = cur.port();
-      return ptr->link[ab];
+      திரும்பு ptr->link[ab];
 }
 
 /*
@@ -229,12 +229,12 @@ static inline vvp_branch_ptr_t next(vvp_branch_ptr_t cur)
  * cur. All these branch ends together form a "node" of the branch
  * network. (In other words, this does *not* follow the branches.)
  */
-extern void island_collect_node(std::list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur);
+வெளி வெறுமை island_collect_முனை(std::list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur);
 
 /*
  * These functions support compile/linking.
  */
-extern void compile_island_base(char*label, vvp_island*use_island);
-extern vvp_island* compile_find_island(const char*island_name);
+வெளி வெறுமை compile_island_base(எழுத்து*label, vvp_island*use_island);
+வெளி vvp_island* compile_find_island(மாறிலி எழுத்து*island_name);
 
 #endif /* IVL_vvp_island_H */

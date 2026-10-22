@@ -32,17 +32,17 @@
 # include  <cstring>
 # include "ivl_alloc.h"
 
-using namespace std;
+using நாமாகாஶ std;
 
 #ifdef CHECK_WITH_VALGRIND
-static bool at_EOS = false;
+நிலையான தருக்க at_EOS = பொய்;
 #endif
 
-void island_send_value(vvp_net_t*net, const vvp_vector8_t&val)
+வெறுமை island_send_மதிப்பு(vvp_net_t*net, மாறிலி vvp_vector8_t&val)
 {
       vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
-      if (fun->outvalue .eeq(val))
-	    return;
+      எனில் (fun->outvalue .eeq(val))
+	    திரும்பு;
 
       fun->outvalue = val;
       net->send_vec8(fun->outvalue);
@@ -53,7 +53,7 @@ void island_send_value(vvp_net_t*net, const vvp_vector8_t&val)
  */
 vvp_island::vvp_island()
 {
-      flagged_ = false;
+      flagged_ = பொய்;
       branches_ = 0;
       ports_ = 0;
       anodes_ = 0;
@@ -64,23 +64,23 @@ vvp_island::~vvp_island()
 {
 	// We can only delete islands at the end of simulation.
 #ifdef CHECK_WITH_VALGRIND
-      if (!at_EOS) assert(0);
+      எனில் (!at_EOS) ப்ரதிஜ்ஞா(0);
 #endif
 
-      while (branches_) {
+      போது (branches_) {
 	    vvp_island_branch *next_br = branches_->next_branch;
 	    delete branches_;
 	    branches_ = next_br;
       }
 }
 
-void vvp_island::flag_island()
+வெறுமை vvp_island::flag_island()
 {
-      if (flagged_ == true)
-	    return;
+      எனில் (flagged_ == உண்மை)
+	    திரும்பு;
 
-      schedule_generic(this, 0, false, false);
-      flagged_ = true;
+      schedule_generic(இது, 0, பொய், பொய்);
+      flagged_ = உண்மை;
 }
 
 /*
@@ -88,74 +88,74 @@ void vvp_island::flag_island()
 * housecleaning and calls the run_island() method implemented by the
 * derived class.
 */
-void vvp_island::run_run()
+வெறுமை vvp_island::run_run()
 {
-      flagged_ = false;
+      flagged_ = பொய்;
       run_island();
 }
 
 
-void vvp_island::add_port(const char*key, vvp_net_t*net)
+வெறுமை vvp_island::add_port(மாறிலி எழுத்து*சாவி, vvp_net_t*net)
 {
-      if (ports_ == 0)
-	    ports_ = new symbol_map_s<vvp_net_t>;
+      எனில் (ports_ == 0)
+	    ports_ = புதிய குறியீடு_map_s<vvp_net_t>;
 
 	// each port should have a unique label
-      assert(ports_->sym_get_value(key) == 0);
+      ப்ரதிஜ்ஞா(ports_->sym_get_மதிப்பு(சாவி) == 0);
 
-      ports_->sym_set_value(key, net);
+      ports_->sym_set_மதிப்பு(சாவி, net);
 }
 
-void vvp_island::add_branch(vvp_island_branch*branch, const char*pa, const char*pb)
+வெறுமை vvp_island::add_branch(vvp_island_branch*branch, மாறிலி எழுத்து*pa, மாறிலி எழுத்து*pb)
 {
       vvp_island_branch*cur;
-      assert(ports_);
-      branch->a = ports_->sym_get_value(pa);
-      branch->b = ports_->sym_get_value(pb);
-      assert(branch->a && branch->b);
+      ப்ரதிஜ்ஞா(ports_);
+      branch->a = ports_->sym_get_மதிப்பு(pa);
+      branch->b = ports_->sym_get_மதிப்பு(pb);
+      ப்ரதிஜ்ஞா(branch->a && branch->b);
 
       vvp_branch_ptr_t ptra (branch, 0);
       vvp_branch_ptr_t ptrb (branch, 1);
-      if (anodes_ == 0)
-	    anodes_ = new symbol_map_s<vvp_island_branch>;
-      if (bnodes_ == 0)
-	    bnodes_ = new symbol_map_s<vvp_island_branch>;
+      எனில் (anodes_ == 0)
+	    anodes_ = புதிய குறியீடு_map_s<vvp_island_branch>;
+      எனில் (bnodes_ == 0)
+	    bnodes_ = புதிய குறியீடு_map_s<vvp_island_branch>;
 
-      if ((cur = anodes_->sym_get_value(pa))) {
+      எனில் ((cur = anodes_->sym_get_மதிப்பு(pa))) {
 	    branch->link[0] = cur->link[0];
 	    cur->link[0] = ptra;
-      } else if ((cur = bnodes_->sym_get_value(pa))) {
+      } இல்லையெனில் எனில் ((cur = bnodes_->sym_get_மதிப்பு(pa))) {
 	    branch->link[0] = cur->link[1];
 	    cur->link[1] = ptra;
-      } else {
+      } இல்லையெனில் {
 	    branch->link[0] = ptra;
-	    anodes_->sym_set_value(pa, branch);
+	    anodes_->sym_set_மதிப்பு(pa, branch);
       }
 
-      if ((cur = anodes_->sym_get_value(pb))) {
+      எனில் ((cur = anodes_->sym_get_மதிப்பு(pb))) {
 	    branch->link[1] = cur->link[0];
 	    cur->link[0] = ptrb;
-      } else if ((cur = bnodes_->sym_get_value(pb))) {
+      } இல்லையெனில் எனில் ((cur = bnodes_->sym_get_மதிப்பு(pb))) {
 	    branch->link[1] = cur->link[1];
 	    cur->link[1] = ptrb;
-      } else {
+      } இல்லையெனில் {
 	    branch->link[1] = ptrb;
-	    bnodes_->sym_set_value(pb, branch);
+	    bnodes_->sym_set_மதிப்பு(pb, branch);
       }
 
       branch->next_branch = branches_;
       branches_ = branch;
 }
 
-vvp_net_t* vvp_island::find_port(const char*key)
+vvp_net_t* vvp_island::find_port(மாறிலி எழுத்து*சாவி)
 {
-      if (ports_ == 0)
-	    return 0;
-      else
-	    return ports_->sym_get_value(key);
+      எனில் (ports_ == 0)
+	    திரும்பு 0;
+      இல்லையெனில்
+	    திரும்பு ports_->sym_get_மதிப்பு(சாவி);
 }
 
-void vvp_island::compile_cleanup()
+வெறுமை vvp_island::compile_cleanup()
 {
       delete ports_;
       ports_ = 0;
@@ -176,18 +176,18 @@ vvp_island_port::~vvp_island_port()
 {
 }
 
-void vvp_island_port::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&bit,
+வெறுமை vvp_island_port::recv_vec4(vvp_net_ptr_t, மாறிலி vvp_vector4_t&bit,
                                 vvp_context_t)
 {
       vvp_vector8_t tmp (bit, 6, 6);
-      if (invalue .eeq(tmp))
-	    return;
+      எனில் (invalue .eeq(tmp))
+	    திரும்பு;
 
       invalue = tmp;
       island_->flag_island();
 }
 
-void vvp_island_port::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+வெறுமை vvp_island_port::recv_vec4_pv(vvp_net_ptr_t port, மாறிலி vvp_vector4_t&bit,
 				   unsigned base, unsigned vwid, vvp_context_t)
 {
       vvp_vector8_t tmp(bit, 6, 6);
@@ -195,26 +195,26 @@ void vvp_island_port::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 }
 
 
-void vvp_island_port::recv_vec8(vvp_net_ptr_t, const vvp_vector8_t&bit)
+வெறுமை vvp_island_port::recv_vec8(vvp_net_ptr_t, மாறிலி vvp_vector8_t&bit)
 {
-      if (invalue .eeq(bit))
-	    return;
+      எனில் (invalue .eeq(bit))
+	    திரும்பு;
 
       invalue = bit;
       island_->flag_island();
 }
 
-void vvp_island_port::recv_vec8_pv(vvp_net_ptr_t, const vvp_vector8_t&bit,
+வெறுமை vvp_island_port::recv_vec8_pv(vvp_net_ptr_t, மாறிலி vvp_vector8_t&bit,
                                    unsigned base, unsigned vwid)
 {
-      if (invalue.size() == 0) {
+      எனில் (invalue.size() == 0) {
 	    invalue = part_expand(bit, vwid, base);
-      } else {
+      } இல்லையெனில் {
 	    unsigned wid = bit.size();
-	    assert(invalue.size() == vwid);
-	    for (unsigned idx = 0; idx < wid ; idx += 1) {
-		  if ((base+idx) >= vwid)
-			break;
+	    ப்ரதிஜ்ஞா(invalue.size() == vwid);
+	    க்கு (unsigned idx = 0; idx < wid ; idx += 1) {
+		  எனில் ((base+idx) >= vwid)
+			நிறுத்து;
 		  invalue.set_bit(base+idx, bit.value(idx));
 	    }
       }
@@ -222,11 +222,11 @@ void vvp_island_port::recv_vec8_pv(vvp_net_ptr_t, const vvp_vector8_t&bit,
       island_->flag_island();
 }
 
-void vvp_island_port::force_flag(bool run_now)
+வெறுமை vvp_island_port::force_flag(தருக்க run_now)
 {
-      if (run_now)
+      எனில் (run_now)
 	    island_->run_island();
-      else
+      இல்லையெனில்
 	    island_->flag_island();
 }
 
@@ -234,10 +234,10 @@ vvp_island_branch::~vvp_island_branch()
 {
 }
 
-void island_collect_node(list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur)
+வெறுமை island_collect_முனை(list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur)
 {
       conn .push_back(cur);
-      for (vvp_branch_ptr_t idx = next(cur) ; idx != cur ; idx = next(idx))
+      க்கு (vvp_branch_ptr_t idx = next(cur) ; idx != cur ; idx = next(idx))
 	    conn.push_back(idx);
 }
 
@@ -250,42 +250,42 @@ void island_collect_node(list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur)
 * called to erase the symbol table, we still need the list to cleanup the
 * island memory at EOS.
 */
-static symbol_map_s<vvp_island>* island_table = 0;
-static vvp_island** island_list = 0;
-static unsigned island_count = 0;
+நிலையான குறியீடு_map_s<vvp_island>* island_table = 0;
+நிலையான vvp_island** island_list = 0;
+நிலையான unsigned island_மொத்தம் = 0;
 
 #ifdef CHECK_WITH_VALGRIND
-void island_delete()
+வெறுமை island_delete()
 {
-      at_EOS = true;
-      for (unsigned idx = 0; idx < island_count; idx += 1) {
+      at_EOS = உண்மை;
+      க்கு (unsigned idx = 0; idx < island_மொத்தம்; idx += 1) {
 	    delete island_list[idx];
       }
-      free(island_list);
+      விடுவி(island_list);
       island_list = 0;
-      island_count = 0;
+      island_மொத்தம் = 0;
 }
 #endif
 
-void compile_island_base(char*label, vvp_island*use_island)
+வெறுமை compile_island_base(எழுத்து*label, vvp_island*use_island)
 {
-      if (island_table == 0)
-	    island_table = new symbol_map_s<vvp_island>;
+      எனில் (island_table == 0)
+	    island_table = புதிய குறியீடு_map_s<vvp_island>;
 
-      island_table->sym_set_value(label, use_island);
-      island_count += 1;
+      island_table->sym_set_மதிப்பு(label, use_island);
+      island_மொத்தம் += 1;
       island_list = static_cast<vvp_island **>(realloc(island_list,
-                                               island_count*sizeof(vvp_island **)));
-      island_list[island_count-1] = use_island;
-      free(label);
+                                               island_மொத்தம்*அளவு(vvp_island **)));
+      island_list[island_மொத்தம்-1] = use_island;
+      விடுவி(label);
 }
 
-vvp_island* compile_find_island(const char*island)
+vvp_island* compile_find_island(மாறிலி எழுத்து*island)
 {
-      assert(island_table);
-      vvp_island*use_island = island_table->sym_get_value(island);
-      assert(use_island);
-      return use_island;
+      ப்ரதிஜ்ஞா(island_table);
+      vvp_island*use_island = island_table->sym_get_மதிப்பு(island);
+      ப்ரதிஜ்ஞா(use_island);
+      திரும்பு use_island;
 }
 
 /*
@@ -302,34 +302,34 @@ vvp_island* compile_find_island(const char*island)
  * drivers with the external driver and make the output available on
  * <label>.
  */
-void compile_island_port(char*label, char*island, char*src)
+வெறுமை compile_island_port(எழுத்து*label, எழுத்து*island, எழுத்து*src)
 {
-      assert(island_table);
-      vvp_island*use_island = island_table->sym_get_value(island);
-      assert(use_island);
-      free(island);
+      ப்ரதிஜ்ஞா(island_table);
+      vvp_island*use_island = island_table->sym_get_மதிப்பு(island);
+      ப்ரதிஜ்ஞா(use_island);
+      விடுவி(island);
 
-      vvp_net_t*net = new vvp_net_t;
-      vvp_island_port*fun = new vvp_island_port(use_island);
+      vvp_net_t*net = புதிய vvp_net_t;
+      vvp_island_port*fun = புதிய vvp_island_port(use_island);
       net->fun = fun;
 
 	// Get the source from outside the island
-      input_connect(net, 0, src);
+      உள்ளீடு_connect(net, 0, src);
 
 	// Define the functor outside the island.
-      define_functor_symbol(label, net);
+      define_functor_குறியீடு(label, net);
 
 	// Also define it inside the island.
       use_island->add_port(label, net);
 
-      free(label);
+      விடுவி(label);
 }
 
-void compile_island_export(char*label, char*island)
+வெறுமை compile_island_export(எழுத்து*label, எழுத்து*island)
 {
       fprintf(stderr, "XXXX %s .export %s;\n", label, island);
-      free(label);
-      free(island);
+      விடுவி(label);
+      விடுவி(island);
 }
 
 /*
@@ -342,38 +342,38 @@ void compile_island_export(char*label, char*island)
  * <label> is in the domain inside the island. Branches within the
  * island use the <label>.
  */
-void compile_island_import(char*label, char*island, char*src)
+வெறுமை compile_island_import(எழுத்து*label, எழுத்து*island, எழுத்து*src)
 {
-      assert(island_table);
-      vvp_island*use_island = island_table->sym_get_value(island);
-      assert(use_island);
-      free(island);
+      ப்ரதிஜ்ஞா(island_table);
+      vvp_island*use_island = island_table->sym_get_மதிப்பு(island);
+      ப்ரதிஜ்ஞா(use_island);
+      விடுவி(island);
 
-      vvp_net_t*net = new vvp_net_t;
-      vvp_island_port*fun = new vvp_island_port(use_island);
+      vvp_net_t*net = புதிய vvp_net_t;
+      vvp_island_port*fun = புதிய vvp_island_port(use_island);
       net->fun = fun;
 
 	// Get the source from outside the island
-      input_connect(net, 0, src);
+      உள்ளீடு_connect(net, 0, src);
 
 	// Define the functor only inside the island.
       use_island->add_port(label, net);
 
-      free(label);
+      விடுவி(label);
 }
 
-void compile_island_cleanup(void)
+வெறுமை compile_island_cleanup(வெறுமை)
 {
 	// Call the per-island cleanup to get rid of local symbol tables.
-      for (unsigned idx = 0; idx < island_count; idx += 1) {
+      க்கு (unsigned idx = 0; idx < island_மொத்தம்; idx += 1) {
 	    island_list[idx]->compile_cleanup();
       }
 
 	// If we are not doing valgrind checking then free the list.
 #ifndef CHECK_WITH_VALGRIND
-      free(island_list);
+      விடுவி(island_list);
       island_list = 0;
-      island_count = 0;
+      island_மொத்தம் = 0;
 #endif
 
 	// Remove the island symbol table itself.

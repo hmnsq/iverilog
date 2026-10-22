@@ -55,100 +55,100 @@
  * The table is calculated at compile time, therefore, by the
  * draw_tt.c program.
  */
-extern const char hex_digits[256];
-extern const char oct_digits[64];
+வெளி மாறிலி எழுத்து hex_digits[256];
+வெளி மாறிலி எழுத்து oct_digits[64];
 
 /*
  * The string values need a result buf to hold the results. This
  * buffer can be reused for that purpose. Whenever I have a need, the
  * need_result_buf function makes sure that need can be met.
  */
-void *need_result_buf(unsigned cnt, vpi_rbuf_t type)
+வெறுமை *need_result_buf(unsigned cnt, vpi_rbuf_t type)
 {
-      static void*result_buf[2] = {0, 0};
-      static size_t result_buf_size[2] = {0, 0};
+      நிலையான வெறுமை*result_buf[2] = {0, 0};
+      நிலையான size_t result_buf_size[2] = {0, 0};
 
-      if (type == RBUF_DEL) {
-	    free(result_buf[RBUF_VAL]);
+      எனில் (type == RBUF_DEL) {
+	    விடுவி(result_buf[RBUF_VAL]);
 	    result_buf[RBUF_VAL] = 0;
 	    result_buf_size[RBUF_VAL] = 0;
 
-	    free(result_buf[RBUF_STR]);
+	    விடுவி(result_buf[RBUF_STR]);
 	    result_buf[RBUF_STR] = 0;
 	    result_buf_size[RBUF_STR] = 0;
 
-	    return 0;
+	    திரும்பு 0;
       }
 
       cnt = (cnt + 0x0fff) & ~0x0fff;
 
-      if (result_buf_size[type] == 0) {
+      எனில் (result_buf_size[type] == 0) {
 	    result_buf[type] = malloc(cnt);
 	    result_buf_size[type] = cnt;
-      } else if (result_buf_size[type] < cnt) {
+      } இல்லையெனில் எனில் (result_buf_size[type] < cnt) {
 	    result_buf[type] = realloc(result_buf[type], cnt);
 	    result_buf_size[type] = cnt;
       }
 
-      return result_buf[type];
+      திரும்பு result_buf[type];
 }
 
-char *simple_set_rbuf_str(const char *s1)
+எழுத்து *simple_set_rbuf_str(மாறிலி எழுத்து *s1)
 {
-      char *res = static_cast<char *>(need_result_buf(strlen(s1)+1, RBUF_STR));
-      if (res) strcpy(res,s1);
-      return res;
+      எழுத்து *res = static_cast<எழுத்து *>(need_result_buf(strlen(s1)+1, RBUF_STR));
+      எனில் (res) strcpy(res,s1);
+      திரும்பு res;
 }
 
-char *generic_get_str(int code, vpiHandle ref, const char *name, const char *index)
+எழுத்து *generic_get_str(முழு code, vpiHandle ref, மாறிலி எழுத்து *name, மாறிலி எழுத்து *index)
 {
       size_t len = strlen(name) + 1;  /* include space for null termination */
-      char *bn = NULL;
-      bool is_bn_a_pkg = false;
-      if (code == vpiFullName) {
+      எழுத்து *bn = வெற்று;
+      தருக்க is_bn_a_pkg = பொய்;
+      எனில் (code == vpiFullName) {
 	    bn = strdup(vpi_get_str(code,ref));
 	    size_t bn_len = strlen(bn);
 	    is_bn_a_pkg = (bn_len >= 3) && (bn[bn_len-1] == ':') && (bn[bn_len-2] == ':');
 	    len += bn_len;
-	    if (! is_bn_a_pkg) len += 1; // include space for "." separator
+	    எனில் (! is_bn_a_pkg) len += 1; // include space for "." separator
       }
-      if (index != NULL) len += strlen(index) + 2;  /* include space for brackets */
+      எனில் (index != வெற்று) len += strlen(index) + 2;  /* include space for brackets */
 
-      char *res = static_cast<char *>(need_result_buf(len, RBUF_STR));
-      if (!res) {
-	    free(bn);
-	    return NULL;
+      எழுத்து *res = static_cast<எழுத்து *>(need_result_buf(len, RBUF_STR));
+      எனில் (!res) {
+	    விடுவி(bn);
+	    திரும்பு வெற்று;
       }
       *res=0;  /* start with nothing */
 
 	/* if this works, I can make it more efficient later */
-      if (bn != NULL) {
+      எனில் (bn != வெற்று) {
 	    strcat(res, bn);
 	      // A package already has the "::" separator in the name
-	    if (! is_bn_a_pkg) strcat(res, ".");
-	    free(bn);
+	    எனில் (! is_bn_a_pkg) strcat(res, ".");
+	    விடுவி(bn);
       }
       strcat(res, name);
-      if (index != NULL) {
+      எனில் (index != வெற்று) {
 	    strcat(res, "[");
 	    strcat(res, index);
 	    strcat(res, "]");
       }
-      return res;
+      திரும்பு res;
 }
 
-static vpiHandle fill_in_net4(struct __vpiSignal*obj, __vpiScope*scope,
-                              const char*name, int msb, int lsb,
-                              bool signed_flag, vvp_net_t*node);
+நிலையான vpiHandle fill_in_net4(கட்டமைப்பு __vpiSignal*obj, __vpiScope*scope,
+                              மாறிலி எழுத்து*name, முழு msb, முழு lsb,
+                              தருக்க signed_flag, vvp_net_t*முனை);
 
-static vpiHandle fill_in_var4(struct __vpiSignal*obj,
-                              const char*name, int msb, int lsb,
-                              bool signed_flag, vvp_net_t*node)
+நிலையான vpiHandle fill_in_var4(கட்டமைப்பு __vpiSignal*obj,
+                              மாறிலி எழுத்து*name, முழு msb, முழு lsb,
+                              தருக்க signed_flag, vvp_net_t*முனை)
 {
 	// Variable declarations are always resolved immediately,
 	// so we can assume they belong in the current scope.
-      return fill_in_net4(obj, vpip_peek_current_scope(),
-			  name, msb, lsb, signed_flag, node);
+      திரும்பு fill_in_net4(obj, vpip_peek_current_scope(),
+			  name, msb, lsb, signed_flag, முனை);
 }
 
 /*
@@ -156,18 +156,18 @@ static vpiHandle fill_in_var4(struct __vpiSignal*obj,
  * They work with full or partial signals.
  */
 
-static void format_vpiBinStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+நிலையான வெறுமை format_vpiBinStrVal(மாறிலி vvp_signal_மதிப்பு*sig, முழு base, unsigned wid,
+                                s_vpi_மதிப்பு*vp)
 {
-      char *rbuf = static_cast<char *>(need_result_buf(wid+1, RBUF_VAL));
+      எழுத்து *rbuf = static_cast<எழுத்து *>(need_result_buf(wid+1, RBUF_VAL));
       long end = base + (signed)wid;
       long offset = end - 1;
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->மதிப்பு_size();
 
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (idx < 0 || idx >= ssize) {
+      க்கு (long idx = base ;  idx < end ;  idx += 1) {
+	    எனில் (idx < 0 || idx >= ssize) {
                   rbuf[offset-idx] = 'x';
-	    } else {
+	    } இல்லையெனில் {
                   rbuf[offset-idx] = vvp_bit4_to_ascii(sig->value(idx));
 	    }
       }
@@ -176,39 +176,39 @@ static void format_vpiBinStrVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiOctStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+நிலையான வெறுமை format_vpiOctStrVal(மாறிலி vvp_signal_மதிப்பு*sig, முழு base, unsigned wid,
+                                s_vpi_மதிப்பு*vp)
 {
       unsigned dwid = (wid + 2) / 3;
-      char *rbuf = static_cast<char *>(need_result_buf(dwid+1, RBUF_VAL));
+      எழுத்து *rbuf = static_cast<எழுத்து *>(need_result_buf(dwid+1, RBUF_VAL));
       long end = base + (signed)wid;
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->மதிப்பு_size();
       unsigned val = 0;
 
       rbuf[dwid] = 0;
-      for (long idx = base ;  idx < end ;  idx += 1) {
+      க்கு (long idx = base ;  idx < end ;  idx += 1) {
 	    unsigned bit = 0;
-	    if (idx < 0 || idx >= ssize) {
+	    எனில் (idx < 0 || idx >= ssize) {
                   bit = 2; // BIT4_X
-	    } else {
-                  switch (sig->value(idx)) {
-		      case BIT4_0:
+	    } இல்லையெனில் {
+                  தேர்வு (sig->value(idx)) {
+		      நிலை BIT4_0:
 			bit = 0;
-			break;
-		      case BIT4_1:
+			நிறுத்து;
+		      நிலை BIT4_1:
 			bit = 1;
-			break;
-		      case BIT4_X:
+			நிறுத்து;
+		      நிலை BIT4_X:
 			bit = 2;
-			break;
-		      case BIT4_Z:
+			நிறுத்து;
+		      நிலை BIT4_Z:
 			bit = 3;
-			break;
+			நிறுத்து;
                   }
 	    }
 	    val |= bit << 2*((idx-base) % 3);
 
-	    if ((idx-base) % 3 == 2) {
+	    எனில் ((idx-base) % 3 == 2) {
 		dwid -= 1;
 		rbuf[dwid] = oct_digits[val];
 		val = 0;
@@ -216,55 +216,55 @@ static void format_vpiOctStrVal(const vvp_signal_value*sig, int base, unsigned w
       }
 
 	/* Fill in X or Z if they are the only thing in the value. */
-      switch (wid % 3) {
-	  case 1:
-	    if (val == 2) val = 42;
-	    else if (val == 3) val = 63;
-	    break;
-	  case 2:
-	    if (val == 10) val = 42;
-	    else if (val == 15) val = 63;
-	    break;
+      தேர்வு (wid % 3) {
+	  நிலை 1:
+	    எனில் (val == 2) val = 42;
+	    இல்லையெனில் எனில் (val == 3) val = 63;
+	    நிறுத்து;
+	  நிலை 2:
+	    எனில் (val == 10) val = 42;
+	    இல்லையெனில் எனில் (val == 15) val = 63;
+	    நிறுத்து;
       }
 
-      if (dwid > 0) rbuf[0] = oct_digits[val];
+      எனில் (dwid > 0) rbuf[0] = oct_digits[val];
 
       vp->value.str = rbuf;
 }
 
-static void format_vpiHexStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+நிலையான வெறுமை format_vpiHexStrVal(மாறிலி vvp_signal_மதிப்பு*sig, முழு base, unsigned wid,
+                                s_vpi_மதிப்பு*vp)
 {
       unsigned dwid = (wid + 3) / 4;
-      char *rbuf = static_cast<char *>(need_result_buf(dwid+1, RBUF_VAL));
+      எழுத்து *rbuf = static_cast<எழுத்து *>(need_result_buf(dwid+1, RBUF_VAL));
       long end = base + (signed)wid;
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->மதிப்பு_size();
       unsigned val = 0;
 
       rbuf[dwid] = 0;
-      for (long idx = base ;  idx < end ;  idx += 1) {
+      க்கு (long idx = base ;  idx < end ;  idx += 1) {
 	    unsigned bit = 0;
-	    if (idx < 0 || idx >= ssize) {
+	    எனில் (idx < 0 || idx >= ssize) {
                   bit = 2; // BIT4_X
-	    } else {
-                  switch (sig->value(idx)) {
-		      case BIT4_0:
+	    } இல்லையெனில் {
+                  தேர்வு (sig->value(idx)) {
+		      நிலை BIT4_0:
 			bit = 0;
-			break;
-		      case BIT4_1:
+			நிறுத்து;
+		      நிலை BIT4_1:
 			bit = 1;
-			break;
-		      case BIT4_X:
+			நிறுத்து;
+		      நிலை BIT4_X:
 			bit = 2;
-			break;
-		      case BIT4_Z:
+			நிறுத்து;
+		      நிலை BIT4_Z:
 			bit = 3;
-			break;
+			நிறுத்து;
                   }
 	    }
 	    val |= bit << 2*((idx-base) % 4);
 
-	    if ((idx-base) % 4 == 3) {
+	    எனில் ((idx-base) % 4 == 3) {
 		dwid -= 1;
 		rbuf[dwid] = hex_digits[val];
 		val = 0;
@@ -272,63 +272,63 @@ static void format_vpiHexStrVal(const vvp_signal_value*sig, int base, unsigned w
       }
 
 	/* Fill in X or Z if they are the only thing in the value. */
-      switch (wid % 4) {
-	  case 1:
-	    if (val == 2) val = 170;
-	    else if (val == 3) val = 255;
-	    break;
-	  case 2:
-	    if (val == 10) val = 170;
-	    else if (val == 15) val = 255;
-	    break;
-	  case 3:
-	    if (val == 42) val = 170;
-	    else if (val == 63) val = 255;
-	    break;
+      தேர்வு (wid % 4) {
+	  நிலை 1:
+	    எனில் (val == 2) val = 170;
+	    இல்லையெனில் எனில் (val == 3) val = 255;
+	    நிறுத்து;
+	  நிலை 2:
+	    எனில் (val == 10) val = 170;
+	    இல்லையெனில் எனில் (val == 15) val = 255;
+	    நிறுத்து;
+	  நிலை 3:
+	    எனில் (val == 42) val = 170;
+	    இல்லையெனில் எனில் (val == 63) val = 255;
+	    நிறுத்து;
       }
 
-      if (dwid > 0) rbuf[0] = hex_digits[val];
+      எனில் (dwid > 0) rbuf[0] = hex_digits[val];
 
       vp->value.str = rbuf;
 }
 
-static void format_vpiDecStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                int signed_flag, s_vpi_value*vp)
+நிலையான வெறுமை format_vpiDecStrVal(மாறிலி vvp_signal_மதிப்பு*sig, முழு base, unsigned wid,
+                                முழு signed_flag, s_vpi_மதிப்பு*vp)
 {
-      unsigned hwid = (sig->value_size()+2) / 3 + 1;
-      char *rbuf = static_cast<char *>(need_result_buf(hwid, RBUF_VAL));
-      long ssize = (signed)sig->value_size();
+      unsigned hwid = (sig->மதிப்பு_size()+2) / 3 + 1;
+      எழுத்து *rbuf = static_cast<எழுத்து *>(need_result_buf(hwid, RBUF_VAL));
+      long ssize = (signed)sig->மதிப்பு_size();
       long end = base + (signed)wid;
 
 	/* Do we have an end outside of the real signal vector. */
-      if (base < 0 || end > ssize) {
-	    bool all_x = true;
-	    if (end > ssize) end = ssize;
-	    if (base < 0) base = 0;
-	    for (long idx = base ;  idx < end ;  idx += 1) {
-		  if (sig->value(idx) != BIT4_X) {
-			all_x = false;
-			break;
+      எனில் (base < 0 || end > ssize) {
+	    தருக்க all_x = உண்மை;
+	    எனில் (end > ssize) end = ssize;
+	    எனில் (base < 0) base = 0;
+	    க்கு (long idx = base ;  idx < end ;  idx += 1) {
+		  எனில் (sig->value(idx) != BIT4_X) {
+			all_x = பொய்;
+			நிறுத்து;
 		  }
 	    }
 
-	    if (all_x) {
+	    எனில் (all_x) {
 		  rbuf[0] = 'x';
-	    } else {
+	    } இல்லையெனில் {
 		  rbuf[0] = 'X';
 	    }
 	    rbuf[1] = 0;
 
 	    vp->value.str = rbuf;
-	    return;
+	    திரும்பு;
       }
 
       vvp_vector4_t vec4;
-      if (base == 0 && end == ssize) {
-	    sig->vec4_value(vec4);
-      } else {
+      எனில் (base == 0 && end == ssize) {
+	    sig->vec4_மதிப்பு(vec4);
+      } இல்லையெனில் {
 	    vvp_vector4_t tmp;
-	    sig->vec4_value(tmp);
+	    sig->vec4_மதிப்பு(tmp);
 	    vec4 = tmp.subvalue(base, wid);
       }
 
@@ -337,67 +337,67 @@ static void format_vpiDecStrVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiIntVal(const vvp_signal_value*sig, int base, unsigned wid,
-                             int signed_flag, s_vpi_value*vp)
+நிலையான வெறுமை format_vpiIntVal(மாறிலி vvp_signal_மதிப்பு*sig, முழு base, unsigned wid,
+                             முழு signed_flag, s_vpi_மதிப்பு*vp)
 {
       vvp_vector4_t tmp;
-      sig->vec4_value(tmp);
+      sig->vec4_மதிப்பு(tmp);
       vvp_vector4_t sub = tmp.subvalue(base, wid);
 
 	// Normally, we'd be OK with just using long in the call to
 	// vector4_to_value, but some compilers seem to take long as
 	// distinct from int32_t AND int64_t. Since the condition is
 	// constant, the compiler should eliminate the dead code.
-      if (sizeof(vp->value.integer) == sizeof(int32_t)) {
+      எனில் (அளவு(vp->value.integer) == அளவு(int32_t)) {
 	    int32_t val = 0;
-	    vector4_to_value(sub, val, signed_flag, false);
+	    vector4_to_மதிப்பு(sub, val, signed_flag, பொய்);
 	    vp->value.integer = val;
-      } else {
-	    assert(sizeof(vp->value.integer) == sizeof(int64_t));
+      } இல்லையெனில் {
+	    ப்ரதிஜ்ஞா(அளவு(vp->value.integer) == அளவு(int64_t));
 	    int64_t val = 0;
-	    vector4_to_value(sub, val, signed_flag, false);
+	    vector4_to_மதிப்பு(sub, val, signed_flag, பொய்);
 	    vp->value.integer = val;
       }
 }
 
-static void format_vpiRealVal(const vvp_signal_value*sig, int base, unsigned wid,
-                              int signed_flag, s_vpi_value*vp)
+நிலையான வெறுமை format_vpiRealVal(மாறிலி vvp_signal_மதிப்பு*sig, முழு base, unsigned wid,
+                              முழு signed_flag, s_vpi_மதிப்பு*vp)
 {
       vvp_vector4_t vec4(wid);
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->மதிப்பு_size();
       long end = base + (signed)wid;
-      if (end > ssize) end = ssize;
+      எனில் (end > ssize) end = ssize;
 
-      for (long idx = (base < 0) ? 0 : base ;  idx < end ;  idx += 1) {
+      க்கு (long idx = (base < 0) ? 0 : base ;  idx < end ;  idx += 1) {
 	    vec4.set_bit(idx-base, sig->value(idx));
       }
 
       vp->value.real = 0.0;
-      vector4_to_value(vec4, vp->value.real, signed_flag);
+      vector4_to_மதிப்பு(vec4, vp->value.real, signed_flag);
 }
 
-static void format_vpiStringVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+நிலையான வெறுமை format_vpiStringVal(மாறிலி vvp_signal_மதிப்பு*sig, முழு base, unsigned wid,
+                                s_vpi_மதிப்பு*vp)
 {
       /* The result will use a character for each 8 bits of the
 	 vector. Add one extra character for the highest bits that
 	 don't form an 8 bit group. */
-      char *rbuf = static_cast<char *>(need_result_buf(wid/8 + ((wid&7)!=0) + 1, RBUF_VAL));
-      char *cp = rbuf;
+      எழுத்து *rbuf = static_cast<எழுத்து *>(need_result_buf(wid/8 + ((wid&7)!=0) + 1, RBUF_VAL));
+      எழுத்து *cp = rbuf;
 
-      char tmp = 0;
-      for (long idx = base+(signed)wid-1; idx >= base; idx -= 1) {
+      எழுத்து tmp = 0;
+      க்கு (long idx = base+(signed)wid-1; idx >= base; idx -= 1) {
 	    tmp <<= 1;
 
-	    if (idx >=0 && idx < (signed)sig->value_size() &&
+	    எனில் (idx >=0 && idx < (signed)sig->மதிப்பு_size() &&
 	        sig->value(idx) == BIT4_1) {
 		   tmp |= 1;
 	    }
 
-	    if (((idx-base)&7)==0){
+	    எனில் (((idx-base)&7)==0){
 		  /* Skip leading nulls. */
-		  if (tmp == 0 && cp == rbuf)
-			continue;
+		  எனில் (tmp == 0 && cp == rbuf)
+			தொடர்;
 
 		  /* Nulls in the middle get turned into spaces. */
 		  *cp++ = tmp ? tmp : ' ';
@@ -409,45 +409,45 @@ static void format_vpiStringVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiScalarVal(const vvp_signal_value*sig, int base,
-                                s_vpi_value*vp)
+நிலையான வெறுமை format_vpiScalarVal(மாறிலி vvp_signal_மதிப்பு*sig, முழு base,
+                                s_vpi_மதிப்பு*vp)
 {
-      if (base >= 0 && base < (signed)sig->value_size()) {
-	    switch (sig->value(base)) {
-		case BIT4_0:
+      எனில் (base >= 0 && base < (signed)sig->மதிப்பு_size()) {
+	    தேர்வு (sig->value(base)) {
+		நிலை BIT4_0:
 		  vp->value.scalar = vpi0;
-		  break;
-		case BIT4_1:
+		  நிறுத்து;
+		நிலை BIT4_1:
 		  vp->value.scalar = vpi1;
-		  break;
-		case BIT4_X: {
-		  vvp_scalar_t strn = sig->scalar_value(base);
-		  if (strn.strength0() == 1) vp->value.scalar = vpiH;
-		  else if (strn.strength1() == 1) vp->value.scalar = vpiL;
-		  else vp->value.scalar = vpiX;
-		  break;
+		  நிறுத்து;
+		நிலை BIT4_X: {
+		  vvp_scalar_t strn = sig->scalar_மதிப்பு(base);
+		  எனில் (strn.strength0() == 1) vp->value.scalar = vpiH;
+		  இல்லையெனில் எனில் (strn.strength1() == 1) vp->value.scalar = vpiL;
+		  இல்லையெனில் vp->value.scalar = vpiX;
+		  நிறுத்து;
 		}
-		case BIT4_Z:
+		நிலை BIT4_Z:
 		  vp->value.scalar = vpiZ;
-		  break;
+		  நிறுத்து;
 	    }
-      } else {
+      } இல்லையெனில் {
 	    vp->value.scalar = vpiX;
       }
 }
 
-static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
-                                  unsigned wid, s_vpi_value*vp)
+நிலையான வெறுமை format_vpiStrengthVal(மாறிலி vvp_signal_மதிப்பு*sig, முழு base,
+                                  unsigned wid, s_vpi_மதிப்பு*vp)
 {
       long end = base + (signed)wid;
       s_vpi_strengthval*op;
 
       op = static_cast<s_vpi_strengthval*>
-           (need_result_buf(wid * sizeof(s_vpi_strengthval), RBUF_VAL));
+           (need_result_buf(wid * அளவு(s_vpi_strengthval), RBUF_VAL));
 
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (idx >=0 && idx < (signed)sig->value_size()) {
-		  vvp_scalar_t val = sig->scalar_value(idx);
+      க்கு (long idx = base ;  idx < end ;  idx += 1) {
+	    எனில் (idx >=0 && idx < (signed)sig->மதிப்பு_size()) {
+		  vvp_scalar_t val = sig->scalar_மதிப்பு(idx);
 
 		  /* vvp_scalar_t strengths are 0-7, but the vpi strength
 		     is bit0-bit7. This gets the vpi form of the strengths
@@ -455,32 +455,32 @@ static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
 		  unsigned s0 = 1 << val.strength0();
 		  unsigned s1 = 1 << val.strength1();
 
-		  switch (val.value()) {
-		      case BIT4_0:
+		  தேர்வு (val.value()) {
+		      நிலை BIT4_0:
 			op[idx-base].logic = vpi0;
 			op[idx-base].s0 = s0|s1;
 			op[idx-base].s1 = 0;
-			break;
+			நிறுத்து;
 
-		      case BIT4_1:
+		      நிலை BIT4_1:
 			op[idx-base].logic = vpi1;
 			op[idx-base].s0 = 0;
 			op[idx-base].s1 = s0|s1;
-			break;
+			நிறுத்து;
 
-		      case BIT4_X:
+		      நிலை BIT4_X:
 			op[idx-base].logic = vpiX;
 			op[idx-base].s0 = s0;
 			op[idx-base].s1 = s1;
-			break;
+			நிறுத்து;
 
-		      case BIT4_Z:
+		      நிலை BIT4_Z:
 			op[idx-base].logic = vpiZ;
 			op[idx-base].s0 = vpiHiZ;
 			op[idx-base].s1 = vpiHiZ;
-			break;
+			நிறுத்து;
 		  }
-	    } else {
+	    } இல்லையெனில் {
 		  op[idx-base].logic = vpiX;
 		  op[idx-base].s0 = vpiStrongDrive;
 		  op[idx-base].s1 = vpiStrongDrive;
@@ -490,47 +490,47 @@ static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
       vp->value.strength = op;
 }
 
-static void format_vpiVectorVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+நிலையான வெறுமை format_vpiVectorVal(மாறிலி vvp_signal_மதிப்பு*sig, முழு base, unsigned wid,
+                                s_vpi_மதிப்பு*vp)
 {
       long end = base + (signed)wid;
-      unsigned int obit = 0;
+      unsigned முழு obit = 0;
       unsigned hwid = (wid + 31)/32;
 
       s_vpi_vecval *op = static_cast<p_vpi_vecval>
-                         (need_result_buf(hwid * sizeof(s_vpi_vecval), RBUF_VAL));
+                         (need_result_buf(hwid * அளவு(s_vpi_vecval), RBUF_VAL));
       vp->value.vector = op;
 
       op->aval = op->bval = 0;
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (base >= 0 && base < (signed)sig->value_size()) {
-		switch (sig->value(idx)) {
-		case BIT4_0:
+      க்கு (long idx = base ;  idx < end ;  idx += 1) {
+	    எனில் (base >= 0 && base < (signed)sig->மதிப்பு_size()) {
+		தேர்வு (sig->value(idx)) {
+		நிலை BIT4_0:
 		  op->aval &= ~(1 << obit);
 		  op->bval &= ~(1 << obit);
-		  break;
-		case BIT4_1:
+		  நிறுத்து;
+		நிலை BIT4_1:
 		  op->aval |= (1 << obit);
 		  op->bval &= ~(1 << obit);
-		  break;
-		case BIT4_X:
+		  நிறுத்து;
+		நிலை BIT4_X:
 		  op->aval |= (1 << obit);
 		  op->bval |= (1 << obit);
-		  break;
-		case BIT4_Z:
+		  நிறுத்து;
+		நிலை BIT4_Z:
 		  op->aval &= ~(1 << obit);
 		  op->bval |= (1 << obit);
-		  break;
+		  நிறுத்து;
 		}
-	    } else {  /* BIT4_X */
+	    } இல்லையெனில் {  /* BIT4_X */
 		  op->aval |= (1 << obit);
 		  op->bval |= (1 << obit);
 	    }
 
 	    obit++;
-	    if (!(obit % 32)) {
+	    எனில் (!(obit % 32)) {
 		  op += 1;
-		  if ((op - vp->value.vector) < (ptrdiff_t)hwid)
+		  எனில் ((op - vp->value.vector) < (ptrdiff_t)hwid)
 			op->aval = op->bval = 0;
 		  obit = 0;
 	    }
@@ -540,312 +540,312 @@ static void format_vpiVectorVal(const vvp_signal_value*sig, int base, unsigned w
 /*
  * implement vpi_get for vpiReg objects.
  */
-static int signal_get(int code, vpiHandle ref)
+நிலையான முழு signal_get(முழு code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      கட்டமைப்பு __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      ப்ரதிஜ்ஞா(rfp);
 
-      switch (code) {
-	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      தேர்வு (code) {
+	  நிலை vpi_வரி_No:
+	    திரும்பு 0;  // Not implemented for now!
 
-	  case vpiSigned:
-	    return rfp->signed_flag != 0;
+	  நிலை vpiSigned:
+	    திரும்பு rfp->signed_flag != 0;
 
-	  case vpiArray:
-	    return rfp->is_netarray != 0;
+	  நிலை vpiArray:
+	    திரும்பு rfp->is_netarray != 0;
 
-	  case vpiIndex: // This only works while we have a single index.
-	    if (rfp->is_netarray) {
-		  s_vpi_value vp;
+	  நிலை vpiIndex: // This only works while we have a single index.
+	    எனில் (rfp->is_netarray) {
+		  s_vpi_மதிப்பு vp;
 		  vp.format = vpiIntVal;
-		  vpi_get_value(rfp->id.index, &vp);
-		  return vp.value.integer;
-	    } else {
-		  return vpiUndefined;
+		  vpi_get_மதிப்பு(rfp->id.index, &vp);
+		  திரும்பு vp.value.integer;
+	    } இல்லையெனில் {
+		  திரும்பு vpiUndefined;
 	    }
 
-	  case vpiSize:
-	    return rfp->width();
+	  நிலை vpiSize:
+	    திரும்பு rfp->width();
 
-	  case vpiNetType:
-	    if (ref->get_type_code()==vpiNet)
-		  return vpiWire;
-	    else
-		  return vpiUndefined;
+	  நிலை vpiNetType:
+	    எனில் (ref->get_type_code()==vpiNet)
+		  திரும்பு vpiWire;
+	    இல்லையெனில்
+		  திரும்பு vpiUndefined;
 
-	  case vpiLeftRange:
-            return rfp->msb.get_value();
+	  நிலை vpi_இடது_Range:
+            திரும்பு rfp->msb.get_மதிப்பு();
 
-	  case vpiRightRange:
-            return rfp->lsb.get_value();
+	  நிலை vpi_வலது_Range:
+            திரும்பு rfp->lsb.get_மதிப்பு();
 
-	  case vpiScalar:
-	    return (rfp->msb.get_value() == 0 && rfp->lsb.get_value() == 0);
-	  case vpiVector:
-	    return (rfp->msb.get_value() != rfp->lsb.get_value());
+	  நிலை vpiScalar:
+	    திரும்பு (rfp->msb.get_மதிப்பு() == 0 && rfp->lsb.get_மதிப்பு() == 0);
+	  நிலை vpiVector:
+	    திரும்பு (rfp->msb.get_மதிப்பு() != rfp->lsb.get_மதிப்பு());
 
-          case vpiAutomatic:
-            return vpip_scope(rfp)->is_automatic() ? 1  : 0;
+          நிலை vpiAutomatic:
+            திரும்பு vpip_scope(rfp)->is_automatic() ? 1  : 0;
 
 #ifdef BR916_STOPGAP_FIX
-          case _vpiFromThr:
-            return _vpiNoThr;
+          நிலை _vpiFromThr:
+            திரும்பு _vpiNoThr;
 #endif
 
-	  default:
+	  இயல்பு:
 	    fprintf(stderr, "VPI error: unknown signal_get property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    திரும்பு vpiUndefined;
       }
 }
 
 /*
  * implement vpi_get64 for vpiReg objects.
  */
-static int64_t signal_get64(int code, vpiHandle ref)
+நிலையான int64_t signal_get64(முழு code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      கட்டமைப்பு __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      ப்ரதிஜ்ஞா(rfp);
 
-      switch (code) {
+      தேர்வு (code) {
 	    // This private property must return zero when undefined.
-	  case _vpiNexusId:
-	    if (rfp->msb.get_value() == rfp->lsb.get_value())
-		  return reinterpret_cast<int64_t>(rfp->node);
-	    return 0;
+	  நிலை _vpiNexusId:
+	    எனில் (rfp->msb.get_மதிப்பு() == rfp->lsb.get_மதிப்பு())
+		  திரும்பு reinterpret_cast<int64_t>(rfp->முனை);
+	    திரும்பு 0;
 
-	  default:
+	  இயல்பு:
 	    fprintf(stderr, "VPI error: unknown signal_get64 property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    திரும்பு vpiUndefined;
       }
 }
 
-static char* signal_get_str(int code, vpiHandle ref)
+நிலையான எழுத்து* signal_get_str(முழு code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      கட்டமைப்பு __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      ப்ரதிஜ்ஞா(rfp);
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      எனில் (code == vpiFile) {  // Not implemented for now!
+	    திரும்பு simple_set_rbuf_str(file_names[0]);
       }
 
-      if ((code != vpiName) && (code != vpiFullName)) return NULL;
+      எனில் ((code != vpiName) && (code != vpiFullName)) திரும்பு வெற்று;
 
-      char *nm;
-      const char *ixs;
-      if (rfp->is_netarray) {
+      எழுத்து *nm;
+      மாறிலி எழுத்து *ixs;
+      எனில் (rfp->is_netarray) {
 	    nm = strdup(vpi_get_str(vpiName, rfp->within.parent));
-	    s_vpi_value vp;
+	    s_vpi_மதிப்பு vp;
 	    vp.format = vpiDecStrVal;
-	    vpi_get_value(rfp->id.index, &vp);
+	    vpi_get_மதிப்பு(rfp->id.index, &vp);
 	    ixs = vp.value.str;  /* do I need to strdup() this? */
-      } else {
+      } இல்லையெனில் {
 	    nm = strdup(rfp->id.name);
-	    ixs = NULL;
+	    ixs = வெற்று;
       }
 
 	/* The scope information is added here for vpiFullName. */
-      char *rbuf = generic_get_str(code, vpip_scope(rfp), nm, ixs);
-      free(nm);
-      return rbuf;
+      எழுத்து *rbuf = generic_get_str(code, vpip_scope(rfp), nm, ixs);
+      விடுவி(nm);
+      திரும்பு rbuf;
 }
 
-static vpiHandle signal_get_handle(int code, vpiHandle ref)
+நிலையான vpiHandle signal_get_handle(முழு code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      கட்டமைப்பு __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      ப்ரதிஜ்ஞா(rfp);
 
-      switch (code) {
+      தேர்வு (code) {
 
-	  case vpiParent:
-	    return rfp->is_netarray? rfp->within.parent : NULL;
+	  நிலை vpiParent:
+	    திரும்பு rfp->is_netarray? rfp->within.parent : வெற்று;
 
-	  case vpiIndex:
-	    return rfp->is_netarray? rfp->id.index : NULL;
+	  நிலை vpiIndex:
+	    திரும்பு rfp->is_netarray? rfp->id.index : வெற்று;
 
-	  case vpiLeftRange:
-	    return &rfp->msb;
-	  case vpiRightRange:
-	    return &rfp->lsb;
+	  நிலை vpi_இடது_Range:
+	    திரும்பு &rfp->msb;
+	  நிலை vpi_வலது_Range:
+	    திரும்பு &rfp->lsb;
 
-	  case vpiScope:
-	    return vpip_scope(rfp);
+	  நிலை vpiScope:
+	    திரும்பு vpip_scope(rfp);
 
-	  case vpiModule:
-	    return vpip_module(vpip_scope(rfp));
+	  நிலை vpiModule:
+	    திரும்பு vpip_module(vpip_scope(rfp));
       }
 
-      return 0;
+      திரும்பு 0;
 }
 
-static vpiHandle signal_iterate(int code, vpiHandle ref)
+நிலையான vpiHandle signal_iterate(முழு code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      கட்டமைப்பு __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      ப்ரதிஜ்ஞா(rfp);
 
-      if (code == vpiIndex) {
-	    return rfp->is_netarray ? rfp->id.index->vpi_iterate(code) : NULL;
+      எனில் (code == vpiIndex) {
+	    திரும்பு rfp->is_netarray ? rfp->id.index->vpi_iterate(code) : வெற்று;
       }
 
-      return 0;
+      திரும்பு 0;
 }
 
-void __vpiSignal::make_bits()
+வெறுமை __vpiSignal::make_bits()
 {
-      assert(bits == NULL);
-      bits = new struct __vpiBit[width() + 1];
+      ப்ரதிஜ்ஞா(bits == வெற்று);
+      bits = புதிய கட்டமைப்பு __vpiBit[width() + 1];
 
 	// Make word[-1] point to the parent.
-      bits->parent = this;
+      bits->parent = இது;
 	// Now point to word[0].
       bits += 1;
 
 	// Update each bit to point to the base
-      struct __vpiBit*base = bits;
-      for (unsigned idx = 0; idx < width(); idx += 1) {
+      கட்டமைப்பு __vpiBit*base = bits;
+      க்கு (unsigned idx = 0; idx < width(); idx += 1) {
 	    base[idx].bit0 = base;
-	    int real_idx;
-	    if (msb.get_value() >= lsb.get_value()) {
-		  real_idx = idx + lsb.get_value();
-	    } else {
-		  real_idx = lsb.get_value() - idx;
+	    முழு real_idx;
+	    எனில் (msb.get_மதிப்பு() >= lsb.get_மதிப்பு()) {
+		  real_idx = idx + lsb.get_மதிப்பு();
+	    } இல்லையெனில் {
+		  real_idx = lsb.get_மதிப்பு() - idx;
 	    }
-	    base[idx].index = new __vpiDecConst(real_idx);
+	    base[idx].index = புதிய __vpiDecConst(real_idx);
       }
 }
 
-vpiHandle __vpiSignal::get_index(int idx)
+vpiHandle __vpiSignal::get_index(முழு idx)
 {
 	/* Check to see if the index is in range. */
-      if (msb.get_value() >= lsb.get_value()) {
-	    if ((idx > msb.get_value()) || (idx < lsb.get_value())) return 0;
-      } else {
-	    if ((idx < msb.get_value()) || (idx > lsb.get_value())) return 0;
+      எனில் (msb.get_மதிப்பு() >= lsb.get_மதிப்பு()) {
+	    எனில் ((idx > msb.get_மதிப்பு()) || (idx < lsb.get_மதிப்பு())) திரும்பு 0;
+      } இல்லையெனில் {
+	    எனில் ((idx < msb.get_மதிப்பு()) || (idx > lsb.get_மதிப்பு())) திரும்பு 0;
       }
 
 	/* Normalize the index */
       unsigned norm_idx;
-      if (msb.get_value() >= lsb.get_value()) {
-	    norm_idx = idx - lsb.get_value();
-      } else {
-	    norm_idx = lsb.get_value() - idx;
+      எனில் (msb.get_மதிப்பு() >= lsb.get_மதிப்பு()) {
+	    norm_idx = idx - lsb.get_மதிப்பு();
+      } இல்லையெனில் {
+	    norm_idx = lsb.get_மதிப்பு() - idx;
       }
 
-      if (bits == NULL) make_bits();
+      எனில் (bits == வெற்று) make_bits();
 
-      return &(bits[norm_idx].as_bit);
+      திரும்பு &(bits[norm_idx].as_bit);
 }
 
-void __vpiSignal::get_bit_value(const struct __vpiBit*bit, p_vpi_value vp)
+வெறுமை __vpiSignal::get_bit_மதிப்பு(மாறிலி கட்டமைப்பு __vpiBit*bit, p_vpi_மதிப்பு vp)
 {
       unsigned index = bit->get_norm_index();
 
-      vvp_signal_value*vsig = dynamic_cast<vvp_signal_value*>(node->fil);
-      assert(vsig);
+      vvp_signal_மதிப்பு*vsig = dynamic_cast<vvp_signal_மதிப்பு*>(முனை->fil);
+      ப்ரதிஜ்ஞா(vsig);
 
-      if (vp->format == vpiObjTypeVal) {
+      எனில் (vp->format == vpiObjTypeVal) {
 	    vp->format = vpiIntVal;
       }
 
-      switch (vp->format) {
-	case vpiBinStrVal:
+      தேர்வு (vp->format) {
+	நிலை vpiBinStrVal:
             format_vpiBinStrVal(vsig, index, 1, vp);
-	    break;
+	    நிறுத்து;
 
-	case vpiOctStrVal:
+	நிலை vpiOctStrVal:
             format_vpiOctStrVal(vsig, index, 1, vp);
-	    break;
+	    நிறுத்து;
 
-	case vpiDecStrVal:
-            format_vpiDecStrVal(vsig, index, 1, false, vp);
-	    break;
+	நிலை vpiDecStrVal:
+            format_vpiDecStrVal(vsig, index, 1, பொய், vp);
+	    நிறுத்து;
 
-	case vpiHexStrVal:
+	நிலை vpiHexStrVal:
             format_vpiHexStrVal(vsig, index, 1, vp);
-	    break;
+	    நிறுத்து;
 
-	case vpiStringVal:
+	நிலை vpiStringVal:
             format_vpiStringVal(vsig, index, 1, vp);
-	    break;
+	    நிறுத்து;
 
-	case vpiIntVal:
-            format_vpiIntVal(vsig, index, 1, false, vp);
-	    break;
+	நிலை vpiIntVal:
+            format_vpiIntVal(vsig, index, 1, பொய், vp);
+	    நிறுத்து;
 
-	case vpiRealVal:
-            format_vpiRealVal(vsig, index, 1, false, vp);
-	    break;
+	நிலை vpiRealVal:
+            format_vpiRealVal(vsig, index, 1, பொய், vp);
+	    நிறுத்து;
 
-	case vpiScalarVal:
+	நிலை vpiScalarVal:
             format_vpiScalarVal(vsig, index, vp);
-	    break;
+	    நிறுத்து;
 
-        case vpiStrengthVal:
+        நிலை vpiStrengthVal:
             format_vpiStrengthVal(vsig, index, 1, vp);
-            break;
+            நிறுத்து;
 
-	case vpiVectorVal:
+	நிலை vpiVectorVal:
             format_vpiVectorVal(vsig, index, 1, vp);
-	    break;
+	    நிறுத்து;
 
-	default:
+	இயல்பு:
 	    fprintf(stderr, "internal error: get_value() "
 		    "type %d is not implemented for bit "
 		    "select %s[%d] in scope %s.\n",
-		    (int)vp->format, vpi_get_str(vpiName),
+		    (முழு)vp->format, vpi_get_str(vpiName),
 		    bit->get_index(),
-	            vpip_scope(this)->scope_name());
-	    assert(0);
+	            vpip_scope(இது)->scope_name());
+	    ப்ரதிஜ்ஞா(0);
       };
 }
 
-vpiHandle __vpiSignal::put_bit_value(struct __vpiBit*bit, p_vpi_value vp, int flags)
+vpiHandle __vpiSignal::put_bit_மதிப்பு(கட்டமைப்பு __vpiBit*bit, p_vpi_மதிப்பு vp, முழு flags)
 {
       unsigned index = bit->get_norm_index();
-      vvp_net_ptr_t dest(node, 0);
-      vvp_vector4_t val = vec4_from_vpi_value(vp, 1);
+      vvp_net_ptr_t dest(முனை, 0);
+      vvp_vector4_t val = vec4_from_vpi_மதிப்பு(vp, 1);
 
-      if ((flags == vpiForceFlag) || (flags == vpiReleaseFlag)) {
+      எனில் ((flags == vpiForceFlag) || (flags == vpiReleaseFlag)) {
 	    fprintf(stderr, "Sorry: vpi_put_value() for %s does not "
 	                    "currently support force/release.\n",
 	                    bit->as_bit.vpi_get_str(vpiFullName));
-	    return NULL;
+	    திரும்பு வெற்று;
       }
 
-      if ((get_type_code() == vpiNet) &&
-          !dynamic_cast<vvp_island_port*>(node->fun)) {
-	    node->send_vec4_pv(val, index, width(),
+      எனில் ((get_type_code() == vpiNet) &&
+          !dynamic_cast<vvp_island_port*>(முனை->fun)) {
+	    முனை->send_vec4_pv(val, index, width(),
 	                            vthread_get_wt_context());
-      } else {
+      } இல்லையெனில் {
 	    vvp_send_vec4_pv(dest, val, index, width(),
 	                     vthread_get_wt_context());
       }
 
 	// This is not a scheduled event so there is no event to return
-      return NULL;
+      திரும்பு வெற்று;
 }
 
-static vpiHandle signal_index(int idx, vpiHandle ref)
+நிலையான vpiHandle signal_index(முழு idx, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      கட்டமைப்பு __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      ப்ரதிஜ்ஞா(rfp);
 
 	/* We can only get the bit for a net or reg. */
       PLI_INT32 type = vpi_get(vpiType, ref);
-      if ((type != vpiNet) && (type != vpiReg)) return 0;
+      எனில் ((type != vpiNet) && (type != vpiReg)) திரும்பு 0;
 
-      return rfp->get_index(idx);
+      திரும்பு rfp->get_index(idx);
 }
 
-unsigned __vpiSignal::width(void) const
+unsigned __vpiSignal::width(வெறுமை) மாறிலி
 {
-      unsigned wid = (msb.get_value() >= lsb.get_value())
-	    ? (msb.get_value() - lsb.get_value() + 1)
-	    : (lsb.get_value() - msb.get_value() + 1);
+      unsigned wid = (msb.get_மதிப்பு() >= lsb.get_மதிப்பு())
+	    ? (msb.get_மதிப்பு() - lsb.get_மதிப்பு() + 1)
+	    : (lsb.get_மதிப்பு() - msb.get_மதிப்பு() + 1);
 
-      return wid;
+      திரும்பு wid;
 }
 
 /*
@@ -853,75 +853,75 @@ unsigned __vpiSignal::width(void) const
  * the vector to the caller. This causes no side-effect, and reads the
  * variables like a %load would.
  */
-static void signal_get_value(vpiHandle ref, s_vpi_value*vp)
+நிலையான வெறுமை signal_get_மதிப்பு(vpiHandle ref, s_vpi_மதிப்பு*vp)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      கட்டமைப்பு __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      ப்ரதிஜ்ஞா(rfp);
 
       unsigned wid = rfp->width();
 
-      vvp_signal_value*vsig = dynamic_cast<vvp_signal_value*>(rfp->node->fil);
-      assert(vsig);
+      vvp_signal_மதிப்பு*vsig = dynamic_cast<vvp_signal_மதிப்பு*>(rfp->முனை->fil);
+      ப்ரதிஜ்ஞா(vsig);
 
-      switch (vp->format) {
+      தேர்வு (vp->format) {
 
-	  case vpiIntVal:
+	  நிலை vpiIntVal:
 	    format_vpiIntVal(vsig, 0, wid, rfp->signed_flag, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiScalarVal:
+	  நிலை vpiScalarVal:
 	    format_vpiScalarVal(vsig, 0, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiStrengthVal:
+	  நிலை vpiStrengthVal:
 	    format_vpiStrengthVal(vsig, 0, wid, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiBinStrVal:
+	  நிலை vpiBinStrVal:
 	    format_vpiBinStrVal(vsig, 0, wid, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiHexStrVal:
+	  நிலை vpiHexStrVal:
 	    format_vpiHexStrVal(vsig, 0, wid, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiOctStrVal:
+	  நிலை vpiOctStrVal:
 	    format_vpiOctStrVal(vsig, 0, wid, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiDecStrVal:
+	  நிலை vpiDecStrVal:
 	    format_vpiDecStrVal(vsig, 0, wid, rfp->signed_flag, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiStringVal:
+	  நிலை vpiStringVal:
 	    format_vpiStringVal(vsig, 0, wid, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiVectorVal:
+	  நிலை vpiVectorVal:
 	    format_vpiVectorVal(vsig, 0, wid, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiRealVal:
+	  நிலை vpiRealVal:
 	    format_vpiRealVal(vsig, 0, wid, rfp->signed_flag, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiObjTypeVal:
-	    if (wid == 1) {
+	  நிலை vpiObjTypeVal:
+	    எனில் (wid == 1) {
 		  vp->format = vpiScalarVal;
 		  format_vpiScalarVal(vsig, 0, vp);
-	    } else {
+	    } இல்லையெனில் {
 		  vp->format = vpiVectorVal;
 		  format_vpiVectorVal(vsig, 0, wid, vp);
 	    }
-	    break;
+	    நிறுத்து;
 
-	  default:
+	  இயல்பு:
 	    fprintf(stderr, "vvp internal error: get_value: "
 		    "value type %d not implemented."
 		    " Signal is %s in scope %s\n",
-		    (int)vp->format, vpi_get_str(vpiName, ref),
+		    (முழு)vp->format, vpi_get_str(vpiName, ref),
 		    vpip_scope(rfp)->scope_name());
-	    assert(0);
+	    ப்ரதிஜ்ஞா(0);
       }
 }
 
@@ -932,22 +932,22 @@ static void signal_get_value(vpiHandle ref, s_vpi_value*vp)
  * equivalent instruction would cause.
  */
 
-static vvp_vector4_t from_stringval(const char*str, unsigned wid)
+நிலையான vvp_vector4_t from_stringval(மாறிலி எழுத்து*str, unsigned wid)
 {
       unsigned idx;
-      const char*cp;
+      மாறிலி எழுத்து*cp;
 
       cp = str + strlen(str);
       idx = 0;
 
       vvp_vector4_t val(wid, BIT4_0);
 
-      while ((idx < wid) && (cp > str)) {
+      போது ((idx < wid) && (cp > str)) {
 	    unsigned byte = *--cp;
-	    int bit;
+	    முழு bit;
 
-	    for (bit = 0 ;  (bit < 8) && (idx < wid) ;  bit += 1) {
-		  if (byte & 1)
+	    க்கு (bit = 0 ;  (bit < 8) && (idx < wid) ;  bit += 1) {
+		  எனில் (byte & 1)
 			val.set_bit(idx, BIT4_1);
 
 		  byte >>= 1;
@@ -955,17 +955,17 @@ static vvp_vector4_t from_stringval(const char*str, unsigned wid)
 	    }
       }
 
-      return val;
+      திரும்பு val;
 }
 
-static vpiHandle signal_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
+நிலையான vpiHandle signal_put_மதிப்பு(vpiHandle ref, s_vpi_மதிப்பு*vp, முழு flags)
 {
       unsigned wid;
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
-      vvp_net_ptr_t dest(rfp->node, 0);
+      கட்டமைப்பு __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      ப்ரதிஜ்ஞா(rfp);
+      vvp_net_ptr_t dest(rfp->முனை, 0);
 
-      bool net_flag = ref->get_type_code()==vpiNet;
+      தருக்க net_flag = ref->get_type_code()==vpiNet;
 
 	/* If this is a release, then we are not really putting a
 	   value. Instead, issue a release "command" to the signal
@@ -973,157 +973,157 @@ static vpiHandle signal_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
 	   if this net is attached to an island, we need to rerun
 	   the calculations immediately so we can return the
 	   released value. */
-      if (flags == vpiReleaseFlag) {
-	    assert(rfp->node->fil);
-	    rfp->node->fil->force_unlink();
-	    rfp->node->fil->release(dest, net_flag);
-	    rfp->node->fun->force_flag(true);
-	    signal_get_value(ref, vp);
-	    return ref;
+      எனில் (flags == vpiReleaseFlag) {
+	    ப்ரதிஜ்ஞா(rfp->முனை->fil);
+	    rfp->முனை->fil->force_unlink();
+	    rfp->முனை->fil->release(dest, net_flag);
+	    rfp->முனை->fun->force_flag(உண்மை);
+	    signal_get_மதிப்பு(ref, vp);
+	    திரும்பு ref;
       }
 
 	/* Make a vvp_vector4_t vector to receive the translated value
 	   that we are going to poke. This will get populated
 	   differently depending on the format. */
-      wid = (rfp->msb.get_value() >= rfp->lsb.get_value())
-	    ? (rfp->msb.get_value() - rfp->lsb.get_value() + 1)
-	    : (rfp->lsb.get_value() - rfp->msb.get_value() + 1);
+      wid = (rfp->msb.get_மதிப்பு() >= rfp->lsb.get_மதிப்பு())
+	    ? (rfp->msb.get_மதிப்பு() - rfp->lsb.get_மதிப்பு() + 1)
+	    : (rfp->lsb.get_மதிப்பு() - rfp->msb.get_மதிப்பு() + 1);
 
-      vvp_vector4_t val = vec4_from_vpi_value(vp, wid);
+      vvp_vector4_t val = vec4_from_vpi_மதிப்பு(vp, wid);
 
-      if (flags == vpiForceFlag) {
+      எனில் (flags == vpiForceFlag) {
 	    vvp_vector2_t mask (vvp_vector2_t::FILL1, wid);
-	    rfp->node->force_vec4(val, mask);
-      } else if (net_flag && !dynamic_cast<vvp_island_port*>(rfp->node->fun)) {
-	    rfp->node->send_vec4(val, vthread_get_wt_context());
-      } else {
+	    rfp->முனை->force_vec4(val, mask);
+      } இல்லையெனில் எனில் (net_flag && !dynamic_cast<vvp_island_port*>(rfp->முனை->fun)) {
+	    rfp->முனை->send_vec4(val, vthread_get_wt_context());
+      } இல்லையெனில் {
 	    vvp_send_vec4(dest, val, vthread_get_wt_context());
       }
-      return ref;
+      திரும்பு ref;
 }
 
-vvp_vector4_t vec4_from_vpi_value(s_vpi_value*vp, unsigned wid)
+vvp_vector4_t vec4_from_vpi_மதிப்பு(s_vpi_மதிப்பு*vp, unsigned wid)
 {
       vvp_vector4_t val (wid, BIT4_0);
 
-      switch (vp->format) {
+      தேர்வு (vp->format) {
 
-	  case vpiIntVal: {
+	  நிலை vpiIntVal: {
 		long vpi_val = vp->value.integer;
-		for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+		க்கு (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 		      vvp_bit4_t bit = (vpi_val & 1) ? BIT4_1 : BIT4_0;
 		      val.set_bit(idx, bit);
 		      vpi_val >>= 1;
 		}
-		break;
+		நிறுத்து;
 	  }
 
-	  case vpiVectorVal:
-	    for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+	  நிலை vpiVectorVal:
+	    க்கு (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 		  unsigned long aval = vp->value.vector[idx/32].aval;
 		  unsigned long bval = vp->value.vector[idx/32].bval;
 		  aval >>= idx%32;
 		  bval >>= idx%32;
-		  int bitmask = (aval&1) | ((bval<<1)&2);
+		  முழு bitmask = (aval&1) | ((bval<<1)&2);
 		  vvp_bit4_t bit = scalar_to_bit4(bitmask);
 		  val.set_bit(idx, bit);
 	    }
-	    break;
-	  case vpiBinStrVal:
+	    நிறுத்து;
+	  நிலை vpiBinStrVal:
 	    vpip_bin_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiOctStrVal:
+	    நிறுத்து;
+	  நிலை vpiOctStrVal:
 	    vpip_oct_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiDecStrVal:
+	    நிறுத்து;
+	  நிலை vpiDecStrVal:
 	    vpip_dec_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiHexStrVal:
+	    நிறுத்து;
+	  நிலை vpiHexStrVal:
 	    vpip_hex_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiScalarVal:
+	    நிறுத்து;
+	  நிலை vpiScalarVal:
 	    val.set_bit(0, scalar_to_bit4(vp->value.scalar));
-	    break;
-	  case vpiStringVal:
+	    நிறுத்து;
+	  நிலை vpiStringVal:
 	    val = from_stringval(vp->value.str, wid);
-	    break;
-	  case vpiRealVal:
+	    நிறுத்து;
+	  நிலை vpiRealVal:
 	    val = vvp_vector4_t(wid, vp->value.real);
-	    break;
+	    நிறுத்து;
 
-	  default:
+	  இயல்பு:
 	    fprintf(stderr, "vvp internal error: put_value: "
 		    "value type %d not implemented here.\n",
-		    (int)vp->format);
-	    assert(0);
+		    (முழு)vp->format);
+	    ப்ரதிஜ்ஞா(0);
 
       }
 
-      return val;
+      திரும்பு val;
 }
 
-int __vpiSignal::vpi_get(int code)
-{ return signal_get(code, this); }
+முழு __vpiSignal::vpi_get(முழு code)
+{ திரும்பு signal_get(code, இது); }
 
-int64_t __vpiSignal::vpi_get64(int code)
-{ return signal_get64(code, this); }
+int64_t __vpiSignal::vpi_get64(முழு code)
+{ திரும்பு signal_get64(code, இது); }
 
-char* __vpiSignal::vpi_get_str(int code)
-{ return signal_get_str(code, this); }
+எழுத்து* __vpiSignal::vpi_get_str(முழு code)
+{ திரும்பு signal_get_str(code, இது); }
 
-void __vpiSignal::vpi_get_value(p_vpi_value val)
-{ signal_get_value(this, val); }
+வெறுமை __vpiSignal::vpi_get_மதிப்பு(p_vpi_மதிப்பு val)
+{ signal_get_மதிப்பு(இது, val); }
 
-vpiHandle __vpiSignal::vpi_put_value(p_vpi_value val, int flags)
-{ return signal_put_value(this, val, flags); }
+vpiHandle __vpiSignal::vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags)
+{ திரும்பு signal_put_மதிப்பு(இது, val, flags); }
 
-vpiHandle __vpiSignal::vpi_handle(int code)
-{ return signal_get_handle(code, this); }
+vpiHandle __vpiSignal::vpi_handle(முழு code)
+{ திரும்பு signal_get_handle(code, இது); }
 
-vpiHandle __vpiSignal::vpi_iterate(int code)
-{ return signal_iterate(code, this); }
+vpiHandle __vpiSignal::vpi_iterate(முழு code)
+{ திரும்பு signal_iterate(code, இது); }
 
-vpiHandle __vpiSignal::vpi_index(int idx)
-{ return signal_index(idx, this); }
+vpiHandle __vpiSignal::vpi_index(முழு idx)
+{ திரும்பு signal_index(idx, இது); }
 
-struct signal_reg : public __vpiSignal {
-      inline signal_reg() { }
-      int get_type_code(void) const override { return vpiReg; }
+கட்டமைப்பு signal_reg : பொது __vpiSignal {
+      உள்வரி signal_reg() { }
+      முழு get_type_code(வெறுமை) மாறிலி override { திரும்பு vpiReg; }
 };
 
-struct signal_integer : public __vpiSignal {
-      inline signal_integer() { }
-      int get_type_code(void) const override { return vpiIntegerVar; }
+கட்டமைப்பு signal_integer : பொது __vpiSignal {
+      உள்வரி signal_integer() { }
+      முழு get_type_code(வெறுமை) மாறிலி override { திரும்பு vpiIntegerVar; }
 };
 
-struct signal_net : public __vpiSignal {
-      inline signal_net() { }
-      int get_type_code(void) const override { return vpiNet; }
+கட்டமைப்பு signal_net : பொது __vpiSignal {
+      உள்வரி signal_net() { }
+      முழு get_type_code(வெறுமை) மாறிலி override { திரும்பு vpiNet; }
 };
 
-struct signal_byte : public __vpiSignal {
-      inline signal_byte() { }
-      int get_type_code(void) const override { return vpiByteVar; }
+கட்டமைப்பு signal_byte : பொது __vpiSignal {
+      உள்வரி signal_byte() { }
+      முழு get_type_code(வெறுமை) மாறிலி override { திரும்பு vpiByteVar; }
 };
 
-struct signal_bitvar : public __vpiSignal {
-      inline signal_bitvar() { }
-      int get_type_code(void) const override { return vpiBitVar; }
+கட்டமைப்பு signal_bitvar : பொது __vpiSignal {
+      உள்வரி signal_bitvar() { }
+      முழு get_type_code(வெறுமை) மாறிலி override { திரும்பு vpiBitVar; }
 };
 
-struct signal_shortint : public __vpiSignal {
-      inline signal_shortint() { }
-      int get_type_code(void) const override { return vpiShortIntVar; }
+கட்டமைப்பு signal_shortint : பொது __vpiSignal {
+      உள்வரி signal_shortint() { }
+      முழு get_type_code(வெறுமை) மாறிலி override { திரும்பு vpiShortIntVar; }
 };
 
-struct signal_int : public __vpiSignal {
-      inline signal_int() { }
-      int get_type_code(void) const override { return vpiIntVar; }
+கட்டமைப்பு signal_int : பொது __vpiSignal {
+      உள்வரி signal_int() { }
+      முழு get_type_code(வெறுமை) மாறிலி override { திரும்பு vpiIntVar; }
 };
 
-struct signal_longint : public __vpiSignal {
-      inline signal_longint() { }
-      int get_type_code(void) const override { return vpiLongIntVar; }
+கட்டமைப்பு signal_longint : பொது __vpiSignal {
+      உள்வரி signal_longint() { }
+      முழு get_type_code(வெறுமை) மாறிலி override { திரும்பு vpiLongIntVar; }
 };
 
 
@@ -1132,126 +1132,126 @@ struct signal_longint : public __vpiSignal {
  * to minimize the code modifications. Icarus implements integers
  * as 'reg signed [31:0]'.
  */
-vpiHandle vpip_make_int4(const char*name, int msb, int lsb, vvp_net_t*vec)
+vpiHandle vpip_make_int4(மாறிலி எழுத்து*name, முழு msb, முழு lsb, vvp_net_t*vec)
 {
-      __vpiSignal*obj = new signal_integer;
-      return fill_in_var4(obj, name, msb, lsb, true, vec);
+      __vpiSignal*obj = புதிய signal_integer;
+      திரும்பு fill_in_var4(obj, name, msb, lsb, உண்மை, vec);
 }
 
 /*
  * Construct the two-state SystemVerilog variables.
  */
-vpiHandle vpip_make_int2(const char*name, int msb, int lsb, bool signed_flag,
+vpiHandle vpip_make_int2(மாறிலி எழுத்து*name, முழு msb, முழு lsb, தருக்க signed_flag,
                          vvp_net_t*vec)
 {
       __vpiSignal*obj;
 
 	// All unsigned 2-state variables are a vpiBitVar. All 2-state
 	// variables with a non-zero lsb are also a vpiBitVar.
-      if ((! signed_flag) || (lsb != 0) ) {
-	    obj = new signal_bitvar;
-      } else {
+      எனில் ((! signed_flag) || (lsb != 0) ) {
+	    obj = புதிய signal_bitvar;
+      } இல்லையெனில் {
 	      // These could also be bit declarations with matching
 	      // information, but for now they get the apparent type.
-	    switch (msb) {
-		case 7:
-		  obj = new signal_byte;
-		  break;
-		case 15:
-		  obj = new signal_shortint;
-		  break;
-		case 31:
-		  obj = new signal_int;
-		  break;
-		case 63:
-		  obj = new signal_longint;
-		  break;
-		default:
+	    தேர்வு (msb) {
+		நிலை 7:
+		  obj = புதிய signal_byte;
+		  நிறுத்து;
+		நிலை 15:
+		  obj = புதிய signal_shortint;
+		  நிறுத்து;
+		நிலை 31:
+		  obj = புதிய signal_int;
+		  நிறுத்து;
+		நிலை 63:
+		  obj = புதிய signal_longint;
+		  நிறுத்து;
+		இயல்பு:
 		    // Every other type of bit vector is a vpiBitVar with
 		    // array dimensions.
-		  obj = new signal_bitvar;
-		  break;
+		  obj = புதிய signal_bitvar;
+		  நிறுத்து;
 	    }
       }
 
-      return fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
+      திரும்பு fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
 }
 
 /*
  * Construct a vpiReg/vpiLogicVar object. It's like a net, except for the type.
  */
-vpiHandle vpip_make_var4(const char*name, int msb, int lsb,
-			bool signed_flag, vvp_net_t*vec)
+vpiHandle vpip_make_var4(மாறிலி எழுத்து*name, முழு msb, முழு lsb,
+			தருக்க signed_flag, vvp_net_t*vec)
 {
-      __vpiSignal*obj = new signal_reg;
-      return fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
+      __vpiSignal*obj = புதிய signal_reg;
+      திரும்பு fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
 }
 
 #ifdef CHECK_WITH_VALGRIND
-static struct vpiSignal_plug **signal_pool = 0;
-static unsigned signal_pool_count = 0;
-static unsigned long signal_count = 0;
-static unsigned long signal_dels = 0;
+நிலையான கட்டமைப்பு vpiSignal_plug **signal_pool = 0;
+நிலையான unsigned signal_pool_மொத்தம் = 0;
+நிலையான unsigned long signal_மொத்தம் = 0;
+நிலையான unsigned long signal_dels = 0;
 #endif
 
-struct vpiSignal_plug {
-      unsigned char space[sizeof (struct __vpiSignal)];
+கட்டமைப்பு vpiSignal_plug {
+      unsigned எழுத்து space[அளவு (கட்டமைப்பு __vpiSignal)];
 #ifdef CHECK_WITH_VALGRIND
-      struct vpiSignal_plug *pool;
+      கட்டமைப்பு vpiSignal_plug *pool;
 #endif
 };
 
-void* __vpiSignal::operator new(size_t siz)
+வெறுமை* __vpiSignal::operator புதிய(size_t siz)
 {
 #ifdef CHECK_WITH_VALGRIND
-      assert(siz == sizeof(struct vpiSignal_plug) - sizeof(struct vpiSignal_plug *));
-#else
-      assert(siz == sizeof(struct vpiSignal_plug));
+      ப்ரதிஜ்ஞா(siz == அளவு(கட்டமைப்பு vpiSignal_plug) - அளவு(கட்டமைப்பு vpiSignal_plug *));
+#இல்லையெனில்
+      ப்ரதிஜ்ஞா(siz == அளவு(கட்டமைப்பு vpiSignal_plug));
 #endif
-      static struct vpiSignal_plug*alloc_array = 0;
-      static unsigned alloc_index = 0;
-      const unsigned alloc_count = 512;
+      நிலையான கட்டமைப்பு vpiSignal_plug*alloc_array = 0;
+      நிலையான unsigned alloc_index = 0;
+      மாறிலி unsigned alloc_மொத்தம் = 512;
 
-      if ((alloc_array == 0) || (alloc_index == alloc_count)) {
-	    alloc_array = static_cast<struct vpiSignal_plug*>
-	                  (calloc(alloc_count, sizeof(struct vpiSignal_plug)));
+      எனில் ((alloc_array == 0) || (alloc_index == alloc_மொத்தம்)) {
+	    alloc_array = static_cast<கட்டமைப்பு vpiSignal_plug*>
+	                  (calloc(alloc_மொத்தம், அளவு(கட்டமைப்பு vpiSignal_plug)));
 	    alloc_index = 0;
 #ifdef CHECK_WITH_VALGRIND
-	    VALGRIND_MAKE_MEM_NOACCESS(alloc_array, alloc_count *
-	                                            sizeof(struct vpiSignal_plug));
+	    VALGRIND_MAKE_MEM_NOACCESS(alloc_array, alloc_மொத்தம் *
+	                                            அளவு(கட்டமைப்பு vpiSignal_plug));
 	    VALGRIND_CREATE_MEMPOOL(alloc_array, 0, 1);
-	    signal_pool_count += 1;
+	    signal_pool_மொத்தம் += 1;
 	    signal_pool = static_cast<vpiSignal_plug **>
 	                  (realloc(signal_pool,
-	                   signal_pool_count*sizeof(vpiSignal_plug **)));
-	    signal_pool[signal_pool_count-1] = alloc_array;
+	                   signal_pool_மொத்தம்*அளவு(vpiSignal_plug **)));
+	    signal_pool[signal_pool_மொத்தம்-1] = alloc_array;
 #endif
       }
 
-      struct vpiSignal_plug*cur = alloc_array + alloc_index;
+      கட்டமைப்பு vpiSignal_plug*cur = alloc_array + alloc_index;
 #ifdef CHECK_WITH_VALGRIND
-      VALGRIND_MEMPOOL_ALLOC(alloc_array, cur, sizeof(struct vpiSignal_plug));
+      VALGRIND_MEMPOOL_ALLOC(alloc_array, cur, அளவு(கட்டமைப்பு vpiSignal_plug));
       cur->pool = alloc_array;
-      signal_count += 1;
+      signal_மொத்தம் += 1;
 #endif
       alloc_index += 1;
-      return cur;
+      திரும்பு cur;
 }
 
-void __vpiSignal::operator delete(void*)
+வெறுமை __vpiSignal::operator delete(வெறுமை*)
 {
-      assert(0);
+      ப்ரதிஜ்ஞா(0);
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void signal_delete(vpiHandle item)
+வெறுமை signal_delete(vpiHandle item)
 {
-      struct __vpiSignal *obj = static_cast<__vpiSignal *> (item);
-      assert(obj->node->fil);
-      obj->node->fil->clear_all_callbacks();
-      vvp_net_delete(obj->node);
-      if (obj->bits) {
-	    for (unsigned idx=0; idx<obj->width(); idx+=1) {
+      கட்டமைப்பு __vpiSignal *obj = static_cast<__vpiSignal *> (item);
+      ப்ரதிஜ்ஞா(obj->முனை->fil);
+      obj->முனை->fil->clear_all_callbacks();
+      vvp_net_delete(obj->முனை);
+      எனில் (obj->bits) {
+	    க்கு (unsigned idx=0; idx<obj->width(); idx+=1) {
 		  delete obj->bits[idx].index;
 	    }
 	    obj->bits -= 1;
@@ -1261,22 +1261,22 @@ void signal_delete(vpiHandle item)
       VALGRIND_MEMPOOL_FREE(reinterpret_cast<vpiSignal_plug *>(obj)->pool, obj);
 }
 
-void signal_pool_delete()
+வெறுமை signal_pool_delete()
 {
-      if (RUNNING_ON_VALGRIND && (signal_count != signal_dels)) {
-	    fflush(NULL);
+      எனில் (RUNNING_ON_VALGRIND && (signal_மொத்தம் != signal_dels)) {
+	    fflush(வெற்று);
 	    VALGRIND_PRINTF("Error: vvp missed deleting %ld of %lu signal(s).",
-	                    (long) signal_count - signal_dels, signal_count);
+	                    (long) signal_மொத்தம் - signal_dels, signal_மொத்தம்);
       }
 
-      for (unsigned idx = 0; idx < signal_pool_count; idx += 1) {
+      க்கு (unsigned idx = 0; idx < signal_pool_மொத்தம்; idx += 1) {
 	    VALGRIND_DESTROY_MEMPOOL(signal_pool[idx]);
-	    free(signal_pool[idx]);
+	    விடுவி(signal_pool[idx]);
       }
 
-      free(signal_pool);
+      விடுவி(signal_pool);
       signal_pool = 0;
-      signal_pool_count = 0;
+      signal_pool_மொத்தம் = 0;
 }
 #endif
 
@@ -1287,216 +1287,216 @@ void signal_pool_delete()
  * The name is the PLI name for the object. If it is an array it is
  * <name>[<index>].
  */
-static vpiHandle fill_in_net4(struct __vpiSignal*obj, __vpiScope*scope,
-			      const char*name, int msb, int lsb,
-			      bool signed_flag, vvp_net_t*node)
+நிலையான vpiHandle fill_in_net4(கட்டமைப்பு __vpiSignal*obj, __vpiScope*scope,
+			      மாறிலி எழுத்து*name, முழு msb, முழு lsb,
+			      தருக்க signed_flag, vvp_net_t*முனை)
 {
-      obj->id.name = name? vpip_name_string(name) : NULL;
+      obj->id.name = name? vpip_name_string(name) : வெற்று;
       obj->msb = __vpiDecConst(msb);
       obj->lsb = __vpiDecConst(lsb);
       obj->signed_flag = signed_flag? 1 : 0;
       obj->is_netarray = 0;
-      obj->node = node;
+      obj->முனை = முனை;
 
 	// Place this object within a scope. If this object is
 	// attached to an array, then this value will be replaced with
 	// the handle to the parent.
       obj->within.scope = scope;
 
-      count_vpi_nets += 1;
+      மொத்தம்_vpi_nets += 1;
 
-      return obj;
+      திரும்பு obj;
 }
 
 vpiHandle vpip_make_net4(__vpiScope*scope,
-			 const char*name, int msb, int lsb,
-			 bool signed_flag, vvp_net_t*node)
+			 மாறிலி எழுத்து*name, முழு msb, முழு lsb,
+			 தருக்க signed_flag, vvp_net_t*முனை)
 {
-      struct __vpiSignal*obj = new signal_net;
-      return fill_in_net4(obj, scope, name, msb, lsb, signed_flag, node);
+      கட்டமைப்பு __vpiSignal*obj = புதிய signal_net;
+      திரும்பு fill_in_net4(obj, scope, name, msb, lsb, signed_flag, முனை);
 }
 
-static int PV_get_base(struct __vpiPV*rfp)
+நிலையான முழு PV_get_base(கட்டமைப்பு __vpiPV*rfp)
 {
 	/* We return from the symbol base if it is defined. */
-      if (rfp->sbase != 0) {
-	    s_vpi_value val;
+      எனில் (rfp->sbase != 0) {
+	    s_vpi_மதிப்பு val;
 	      /* Check to see if the value is defined. */
 	    val.format = vpiVectorVal;
-	    vpi_get_value(rfp->sbase, &val);
-	    int words = (vpi_get(vpiSize, rfp->sbase)-1)/32 + 1;
-	    for(int idx = 0; idx < words; idx += 1) {
+	    vpi_get_மதிப்பு(rfp->sbase, &val);
+	    முழு சொற்கள் = (vpi_get(vpiSize, rfp->sbase)-1)/32 + 1;
+	    க்கு(முழு idx = 0; idx < சொற்கள்; idx += 1) {
 		    /* Return INT_MIN to indicate an X base. */
-		  if (val.value.vector[idx].bval != 0) return INT_MIN;
+		  எனில் (val.value.vector[idx].bval != 0) திரும்பு INT_MIN;
 	    }
 	      /* The value is defined so get and return it. */
 	    val.format = vpiIntVal;
-	    vpi_get_value(rfp->sbase, &val);
-	    return val.value.integer;
+	    vpi_get_மதிப்பு(rfp->sbase, &val);
+	    திரும்பு val.value.integer;
       }
 
 	/* If the width is zero then tbase is the constant. */
-      return rfp->tbase;
+      திரும்பு rfp->tbase;
 }
 
-static int PV_get(int code, vpiHandle ref)
+நிலையான முழு PV_get(முழு code, vpiHandle ref)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      கட்டமைப்பு __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      ப்ரதிஜ்ஞா(rfp);
 
-      int rval = 0;
-      switch (code) {
-	case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      முழு rval = 0;
+      தேர்வு (code) {
+	நிலை vpi_வரி_No:
+	    திரும்பு 0;  // Not implemented for now!
 
-	case vpiSigned:
-	    return 0;  // A part/bit select is always unsigned!
+	நிலை vpiSigned:
+	    திரும்பு 0;  // A part/bit select is always unsigned!
 
-	case vpiSize:
-	    return rfp->width;
+	நிலை vpiSize:
+	    திரும்பு rfp->width;
 
 	  /* This is like the &A<> in array.cc. */
-	case vpiConstantSelect:
-	    return rfp->sbase == 0;
+	நிலை vpiConstantSelect:
+	    திரும்பு rfp->sbase == 0;
 
-	case vpiLeftRange:
+	நிலை vpi_இடது_Range:
             rval += rfp->width - 1;
 	    // fallthrough
-	case vpiRightRange: {
-	    int left = vpi_get(vpiLeftRange, rfp->parent);
-	    int right = vpi_get(vpiRightRange, rfp->parent);
+	நிலை vpi_வலது_Range: {
+	    முழு இடது = vpi_get(vpi_இடது_Range, rfp->parent);
+	    முழு வலது = vpi_get(vpi_வலது_Range, rfp->parent);
 	    rval += PV_get_base(rfp);
-	    return left >= right ? right + rval : right - rval;
+	    திரும்பு இடது >= வலது ? வலது + rval : வலது - rval;
 	}
 
-        case vpiAutomatic:
-            return vpi_get(vpiAutomatic, rfp->parent);
+        நிலை vpiAutomatic:
+            திரும்பு vpi_get(vpiAutomatic, rfp->parent);
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-        case _vpiFromThr:
-            return _vpi_at_PV;
+#எனில் defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+        நிலை _vpiFromThr:
+            திரும்பு _vpi_at_PV;
 #endif
 
-	default:
+	இயல்பு:
 	    fprintf(stderr, "PV_get: property %d is unknown\n", code);
       }
 
-      return 0;
+      திரும்பு 0;
 }
 
-static char* PV_get_str(int code, vpiHandle ref)
+நிலையான எழுத்து* PV_get_str(முழு code, vpiHandle ref)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      கட்டமைப்பு __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      ப்ரதிஜ்ஞா(rfp);
 
-      switch (code) {
-	case vpiFile:  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      தேர்வு (code) {
+	நிலை vpiFile:  // Not implemented for now!
+	    திரும்பு simple_set_rbuf_str(file_names[0]);
 
-	case vpiName:
-	case vpiFullName: {
-	    const char*nm = vpi_get_str(code, rfp->parent);
+	நிலை vpiName:
+	நிலை vpiFullName: {
+	    மாறிலி எழுத்து*nm = vpi_get_str(code, rfp->parent);
 	    size_t len = 256+strlen(nm);
-	    char *full = static_cast<char *>(malloc(len));
+	    எழுத்து *full = static_cast<எழுத்து *>(malloc(len));
 	    snprintf(full, len, "%s[%d:%d]", nm,
-	                                     (int)vpi_get(vpiLeftRange, ref),
-	                                     (int)vpi_get(vpiRightRange, ref));
+	                                     (முழு)vpi_get(vpi_இடது_Range, ref),
+	                                     (முழு)vpi_get(vpi_வலது_Range, ref));
 	    full[len-1] = 0;
-	    char *res = simple_set_rbuf_str(full);
-	    free(full);
-	    return res;
+	    எழுத்து *res = simple_set_rbuf_str(full);
+	    விடுவி(full);
+	    திரும்பு res;
 	}
 
-	default:
+	இயல்பு:
 	    fprintf(stderr, "PV_get_str: property %d is unknown.\n", code);
       }
 
-      return 0;
+      திரும்பு 0;
 }
 
-static void PV_get_value(vpiHandle ref, p_vpi_value vp)
+நிலையான வெறுமை PV_get_மதிப்பு(vpiHandle ref, p_vpi_மதிப்பு vp)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      கட்டமைப்பு __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      ப்ரதிஜ்ஞா(rfp);
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(rfp->net->fil);
-      assert(sig);
+      vvp_signal_மதிப்பு*sig = dynamic_cast<vvp_signal_மதிப்பு*>(rfp->net->fil);
+      ப்ரதிஜ்ஞா(sig);
 
-      switch (vp->format) {
+      தேர்வு (vp->format) {
 
-	  case vpiIntVal:
+	  நிலை vpiIntVal:
 	    format_vpiIntVal(sig, PV_get_base(rfp), rfp->width, 0, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiBinStrVal:
+	  நிலை vpiBinStrVal:
 	    format_vpiBinStrVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiOctStrVal:
+	  நிலை vpiOctStrVal:
 	    format_vpiOctStrVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiHexStrVal:
+	  நிலை vpiHexStrVal:
 	    format_vpiHexStrVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiDecStrVal:
+	  நிலை vpiDecStrVal:
 	    format_vpiDecStrVal(sig, PV_get_base(rfp), rfp->width, 0, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiStringVal:
+	  நிலை vpiStringVal:
 	    format_vpiStringVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiScalarVal:
+	  நிலை vpiScalarVal:
 	    format_vpiScalarVal(sig, PV_get_base(rfp), vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiStrengthVal:
+	  நிலை vpiStrengthVal:
 	    format_vpiStrengthVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiVectorVal:
+	  நிலை vpiVectorVal:
 	    format_vpiVectorVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    நிறுத்து;
 
-	  case vpiRealVal:
+	  நிலை vpiRealVal:
 	    format_vpiRealVal(sig, PV_get_base(rfp), rfp->width, 0, vp);
-	    break;
+	    நிறுத்து;
 
-	  default:
+	  இயல்பு:
 	    fprintf(stderr, "vvp internal error: PV_get_value: "
 		    "value type %d not implemented. Signal is %s.\n",
-		    (int)vp->format, vpi_get_str(vpiFullName, rfp->parent));
-	    assert(0);
+		    (முழு)vp->format, vpi_get_str(vpiFullName, rfp->parent));
+	    ப்ரதிஜ்ஞா(0);
       }
 }
 
-static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
+நிலையான vpiHandle PV_put_மதிப்பு(vpiHandle ref, p_vpi_மதிப்பு vp, முழு flags)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(rfp->net->fil);
-      assert(sig);
+      கட்டமைப்பு __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      ப்ரதிஜ்ஞா(rfp);
+      vvp_signal_மதிப்பு*sig = dynamic_cast<vvp_signal_மதிப்பு*>(rfp->net->fil);
+      ப்ரதிஜ்ஞா(sig);
 
-      unsigned sig_size = sig->value_size();
+      unsigned sig_size = sig->மதிப்பு_size();
       unsigned width = rfp->width;
-      int base = PV_get_base(rfp);
-      if (base >= (signed) sig_size) return 0;
-      if (base + (signed) width < 0) return 0;
+      முழு base = PV_get_base(rfp);
+      எனில் (base >= (signed) sig_size) திரும்பு 0;
+      எனில் (base + (signed) width < 0) திரும்பு 0;
 
       vvp_vector4_t val;
-      if (flags != vpiReleaseFlag) {
-	    val = vec4_from_vpi_value(vp, width);
+      எனில் (flags != vpiReleaseFlag) {
+	    val = vec4_from_vpi_மதிப்பு(vp, width);
       }
 
 	/*
 	 * If the base is less than zero then trim off any unneeded
 	 * lower bits.
 	 */
-      if (base < 0) {
+      எனில் (base < 0) {
 	    width += base;
-	    if (flags != vpiReleaseFlag) {
+	    எனில் (flags != vpiReleaseFlag) {
 		  val = val.subvalue(-base, width);
 	    }
 	    base = 0;
@@ -1506,16 +1506,16 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 	 * If the value is wider than the signal then trim off any
 	 * unneeded upper bits.
 	 */
-      if (base+width > sig_size) {
+      எனில் (base+width > sig_size) {
 	    width = sig_size - base;
-	    if (flags != vpiReleaseFlag) {
+	    எனில் (flags != vpiReleaseFlag) {
 		  val = val.subvalue(0, width);
 	    }
       }
 
-      assert(rfp->parent);
-      bool net_flag = rfp->parent->get_type_code()==vpiNet;
-      bool full_sig = base == 0 && width == sig_size;
+      ப்ரதிஜ்ஞா(rfp->parent);
+      தருக்க net_flag = rfp->parent->get_type_code()==vpiNet;
+      தருக்க full_sig = base == 0 && width == sig_size;
 
       vvp_net_ptr_t dest(rfp->net, 0);
 
@@ -1525,27 +1525,27 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 	   if this net is attached to an island, we need to rerun
 	   the calculations immediately so we can return the
 	   released value.*/
-      if (flags == vpiReleaseFlag) {
-	    assert(rfp->net->fil);
+      எனில் (flags == vpiReleaseFlag) {
+	    ப்ரதிஜ்ஞா(rfp->net->fil);
 	      // XXXX Can't really do this if this is a partial release?
 	    rfp->net->fil->force_unlink();
-	    if (full_sig) {
+	    எனில் (full_sig) {
 		  rfp->net->fil->release(dest, net_flag);
-	    } else {
+	    } இல்லையெனில் {
 		  rfp->net->fil->release_pv(dest, base, width, net_flag);
 	    }
-	    rfp->net->fun->force_flag(true);
-	    PV_get_value(ref, vp);
-	    return ref;
+	    rfp->net->fun->force_flag(உண்மை);
+	    PV_get_மதிப்பு(ref, vp);
+	    திரும்பு ref;
       }
 
-      if (flags == vpiForceFlag) {
-	    if (full_sig) {
+      எனில் (flags == vpiForceFlag) {
+	    எனில் (full_sig) {
 		  vvp_vector2_t mask (vvp_vector2_t::FILL1, sig_size);
 		  rfp->net->force_vec4(val, mask);
-	    } else {
+	    } இல்லையெனில் {
 		  vvp_vector2_t mask (vvp_vector2_t::FILL0, sig_size);
-		  for (unsigned idx = 0 ; idx < width ; idx += 1)
+		  க்கு (unsigned idx = 0 ; idx < width ; idx += 1)
 		        mask.set_bit(base+idx, 1);
 
 		  vvp_vector4_t tmp (sig_size, BIT4_Z);
@@ -1553,72 +1553,72 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 		    // vvp_net_t::force_vec4 propagates all the bits of the
 		    // forced vector value, regardless of the mask. This
 		    // ensures the unforced bits retain their current value.
-		  sig->vec4_value(tmp);
+		  sig->vec4_மதிப்பு(tmp);
 
 		  tmp.set_vec(base, val);
 		  rfp->net->force_vec4(tmp, mask);
 	    }
-      } else if (net_flag && !dynamic_cast<vvp_island_port*>(rfp->net->fun)) {
-	    if (full_sig) {
+      } இல்லையெனில் எனில் (net_flag && !dynamic_cast<vvp_island_port*>(rfp->net->fun)) {
+	    எனில் (full_sig) {
 		  rfp->net->send_vec4(val, vthread_get_wt_context());
-	    } else {
+	    } இல்லையெனில் {
 		  rfp->net->send_vec4_pv(val, base, sig_size,
 		                         vthread_get_wt_context());
 	    }
-      } else {
-	    if (full_sig) {
+      } இல்லையெனில் {
+	    எனில் (full_sig) {
 		  vvp_send_vec4(dest, val, vthread_get_wt_context());
-	    } else {
+	    } இல்லையெனில் {
 		  vvp_send_vec4_pv(dest, val, base, sig_size,
 	                           vthread_get_wt_context());
 	    }
       }
-      return 0;
+      திரும்பு 0;
 }
 
-static vpiHandle PV_get_handle(int code, vpiHandle ref)
+நிலையான vpiHandle PV_get_handle(முழு code, vpiHandle ref)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      கட்டமைப்பு __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      ப்ரதிஜ்ஞா(rfp);
 
-      switch (code) {
-	  case vpiParent:
-	    return rfp->parent;
+      தேர்வு (code) {
+	  நிலை vpiParent:
+	    திரும்பு rfp->parent;
 
-	  case vpiScope:
-	    return vpi_handle(vpiScope, rfp->parent);
+	  நிலை vpiScope:
+	    திரும்பு vpi_handle(vpiScope, rfp->parent);
 
-	  case vpiModule:
-	    return vpi_handle(vpiModule, rfp->parent);
+	  நிலை vpiModule:
+	    திரும்பு vpi_handle(vpiModule, rfp->parent);
       }
 
-      return 0;
+      திரும்பு 0;
 }
 
-inline __vpiPV::__vpiPV()
+உள்வரி __vpiPV::__vpiPV()
 { }
 
-int __vpiPV::get_type_code(void) const
-{ return vpiPartSelect; }
+முழு __vpiPV::get_type_code(வெறுமை) மாறிலி
+{ திரும்பு vpiPartSelect; }
 
-int __vpiPV::vpi_get(int code)
-{ return PV_get(code, this); }
+முழு __vpiPV::vpi_get(முழு code)
+{ திரும்பு PV_get(code, இது); }
 
-char* __vpiPV::vpi_get_str(int code)
-{ return PV_get_str(code, this); }
+எழுத்து* __vpiPV::vpi_get_str(முழு code)
+{ திரும்பு PV_get_str(code, இது); }
 
-void __vpiPV::vpi_get_value(p_vpi_value val)
-{ PV_get_value(this, val); }
+வெறுமை __vpiPV::vpi_get_மதிப்பு(p_vpi_மதிப்பு val)
+{ PV_get_மதிப்பு(இது, val); }
 
-vpiHandle __vpiPV::vpi_put_value(p_vpi_value val, int flags)
-{ return PV_put_value(this, val, flags); }
+vpiHandle __vpiPV::vpi_put_மதிப்பு(p_vpi_மதிப்பு val, முழு flags)
+{ திரும்பு PV_put_மதிப்பு(இது, val, flags); }
 
-vpiHandle __vpiPV::vpi_handle(int code)
-{ return PV_get_handle(code, this); }
+vpiHandle __vpiPV::vpi_handle(முழு code)
+{ திரும்பு PV_get_handle(code, இது); }
 
-vpiHandle vpip_make_PV(char*var, int base, int width)
+vpiHandle vpip_make_PV(எழுத்து*var, முழு base, முழு width)
 {
-      struct __vpiPV*obj = new __vpiPV;
+      கட்டமைப்பு __vpiPV*obj = புதிய __vpiPV;
       compile_vpi_lookup(&obj->parent, strdup(var));
       obj->sbase = 0;
       obj->tbase = base;
@@ -1626,25 +1626,25 @@ vpiHandle vpip_make_PV(char*var, int base, int width)
       obj->net = 0;
       functor_ref_lookup(&obj->net, var);
 
-      return obj;
+      திரும்பு obj;
 }
 
-vpiHandle vpip_make_PV(char*var, char*symbol, int width)
+vpiHandle vpip_make_PV(எழுத்து*var, எழுத்து*குறியீடு, முழு width)
 {
-      struct __vpiPV*obj = new __vpiPV;
+      கட்டமைப்பு __vpiPV*obj = புதிய __vpiPV;
       compile_vpi_lookup(&obj->parent, strdup(var));
-      compile_vpi_lookup(&obj->sbase, symbol);
+      compile_vpi_lookup(&obj->sbase, குறியீடு);
       obj->tbase = 0;
       obj->width = (unsigned) width;
       obj->net = 0;
       functor_ref_lookup(&obj->net, var);
 
-      return obj;
+      திரும்பு obj;
 }
 
-vpiHandle vpip_make_PV(char*var, vpiHandle handle, int width)
+vpiHandle vpip_make_PV(எழுத்து*var, vpiHandle handle, முழு width)
 {
-      struct __vpiPV*obj = new __vpiPV;
+      கட்டமைப்பு __vpiPV*obj = புதிய __vpiPV;
       compile_vpi_lookup(&obj->parent, strdup(var));
       obj->sbase = handle;
       obj->tbase = 0;
@@ -1652,27 +1652,27 @@ vpiHandle vpip_make_PV(char*var, vpiHandle handle, int width)
       obj->net = 0;
       functor_ref_lookup(&obj->net, var);
 
-      return obj;
+      திரும்பு obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void PV_delete(vpiHandle item)
+வெறுமை PV_delete(vpiHandle item)
 {
-      struct __vpiPV *obj = dynamic_cast<__vpiPV*>(item);
-      if (obj->sbase) {
-	    switch (obj->sbase->get_type_code()) {
-		case vpiMemoryWord:
-		  if (vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_A) {
+      கட்டமைப்பு __vpiPV *obj = dynamic_cast<__vpiPV*>(item);
+      எனில் (obj->sbase) {
+	    தேர்வு (obj->sbase->get_type_code()) {
+		நிலை vpiMemoryWord:
+		  எனில் (vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_A) {
 			A_delete(obj->sbase);
 		  }
-		  break;
-		case vpiPartSelect:
-		  assert(vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_PV);
+		  நிறுத்து;
+		நிலை vpiPartSelect:
+		  ப்ரதிஜ்ஞா(vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_PV);
 		  PV_delete(obj->sbase);
-		  break;
+		  நிறுத்து;
 	    }
       }
-      assert(obj->net->fil);
+      ப்ரதிஜ்ஞா(obj->net->fil);
       obj->net->fil->clear_all_callbacks();
       delete obj;
 }
