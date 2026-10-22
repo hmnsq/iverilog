@@ -30,7 +30,7 @@
  */
 class vvp_object {
     public:
-      inline vvp_object() { ref_cnt_ = 0; total_active_cnt_ += 1; }
+      anta_hstha vvp_object() { ref_cnt_ = 0; total_active_cnt_ += 1; }
       virtual ~vvp_object() =0;
 
       virtual void shallow_copy(const vvp_object*that);
@@ -40,14 +40,14 @@ class vvp_object {
 
     private:
       friend class vvp_object_t;
-      int ref_cnt_;
+      puur_naa_nka ref_cnt_;
 
-      static int total_active_cnt_;
+      static puur_naa_nka total_active_cnt_;
 };
 
 class vvp_object_t {
     public:
-      inline vvp_object_t() : ref_(0) { }
+      anta_hstha vvp_object_t() : ref_(0) { }
       vvp_object_t(const vvp_object_t&that);
       explicit vvp_object_t(class vvp_object*that);
       ~vvp_object_t();
@@ -57,42 +57,42 @@ class vvp_object_t {
 
       void reset(vvp_object*tgt = 0);
 
-      bool test_nil() const { return ref_ == 0; }
-      inline bool operator == (const vvp_object_t&that) const
-          { return ref_ == that.ref_; }
-      inline bool operator != (const vvp_object_t&that) const
-          { return ref_ != that.ref_; }
+      bool test_nil() const { ᬯᬮᬶ ref_ == 0; }
+      anta_hstha bool operator == (const vvp_object_t&that) const
+          { ᬯᬮᬶ ref_ == that.ref_; }
+      anta_hstha bool operator != (const vvp_object_t&that) const
+          { ᬯᬮᬶ ref_ != that.ref_; }
 
-      inline void shallow_copy(const vvp_object_t&that)
+      anta_hstha void shallow_copy(const vvp_object_t&that)
           { ref_->shallow_copy(that.ref_); }
-      inline vvp_object_t duplicate(void) const
-          { return vvp_object_t(ref_->duplicate()); }
+      anta_hstha vvp_object_t duplicate(void) const
+          { ᬯᬮᬶ vvp_object_t(ref_->duplicate()); }
 
       template <class T> T*peek(void) const;
 
 	/* Stable ordering for array-of-handle sort (object identity). */
       uintptr_t sort_order_key(void) const
       {
-	    return reinterpret_cast<uintptr_t>(ref_);
+	    ᬯᬮᬶ reinterpret_cast<uintptr_t>(ref_);
       }
 
     private:
       class vvp_object*ref_;
 };
 
-inline vvp_object_t::vvp_object_t(const vvp_object_t&that)
+anta_hstha vvp_object_t::vvp_object_t(const vvp_object_t&that)
 {
       ref_ = that.ref_;
-      if (ref_) ref_->ref_cnt_ += 1;
+      ᬬᬾᬦ᭄ (ref_) ref_->ref_cnt_ += 1;
 }
 
-inline vvp_object_t::vvp_object_t(class vvp_object*tgt)
+anta_hstha vvp_object_t::vvp_object_t(class vvp_object*tgt)
 {
-      if (tgt) tgt->ref_cnt_ += 1;
+      ᬬᬾᬦ᭄ (tgt) tgt->ref_cnt_ += 1;
       ref_ = tgt;
 }
 
-inline vvp_object_t::~vvp_object_t()
+anta_hstha vvp_object_t::~vvp_object_t()
 {
       reset(0);
 }
@@ -101,28 +101,28 @@ inline vvp_object_t::~vvp_object_t()
  * This is the workhorse of the vvp_object_t class. It manages the
  * pointer to the referenced object.
  */
-inline void vvp_object_t::reset(class vvp_object*tgt)
+anta_hstha void vvp_object_t::reset(class vvp_object*tgt)
 {
-      if (tgt) tgt->ref_cnt_ += 1;
-      if (ref_) {
+      ᬬᬾᬦ᭄ (tgt) tgt->ref_cnt_ += 1;
+      ᬬᬾᬦ᭄ (ref_) {
 	    ref_->ref_cnt_ -= 1;
-	    if (ref_->ref_cnt_ <= 0) delete ref_;
+	    ᬬᬾᬦ᭄ (ref_->ref_cnt_ <= 0) delete ref_;
 	    ref_ = 0;
       }
       ref_ = tgt;
 }
 
-inline vvp_object_t& vvp_object_t::operator = (const vvp_object_t&that)
+anta_hstha vvp_object_t& vvp_object_t::operator = (const vvp_object_t&that)
 {
-      if (this == &that) return *this;
+      ᬬᬾᬦ᭄ (this == &that) ᬯᬮᬶ *this;
       reset(that.ref_);
-      return *this;
+      ᬯᬮᬶ *this;
 }
 
-inline vvp_object_t& vvp_object_t::operator = (class vvp_object*that)
+anta_hstha vvp_object_t& vvp_object_t::operator = (class vvp_object*that)
 {
       reset(that);
-      return *this;
+      ᬯᬮᬶ *this;
 }
 
 /*
@@ -132,9 +132,9 @@ inline vvp_object_t& vvp_object_t::operator = (class vvp_object*that)
  *
  * NOTE: The vvp_object_t object retains ownership of the pointer!
  */
-template <class T> inline T*vvp_object_t::peek(void) const
+template <class T> anta_hstha T*vvp_object_t::peek(void) const
 {
-      return dynamic_cast<T*> (ref_);
+      ᬯᬮᬶ dynamic_cast<T*> (ref_);
 }
 
 #endif /* IVL_vvp_object_H */

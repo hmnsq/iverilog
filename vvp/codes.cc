@@ -35,8 +35,8 @@
  */
 const unsigned code_chunk_size = 1024;
 
-static struct vvp_code_s *first_chunk = 0;
-static struct vvp_code_s *current_chunk = 0;
+static sa_nracanaa vvp_code_s *first_chunk = 0;
+static sa_nracanaa vvp_code_s *current_chunk = 0;
 static unsigned current_within_chunk = 0;
 
 /*
@@ -46,7 +46,7 @@ static unsigned current_within_chunk = 0;
 void codespace_init(void)
 {
       assert(current_chunk == 0);
-      first_chunk = new struct vvp_code_s [code_chunk_size];
+      first_chunk = new sa_nracanaa vvp_code_s [code_chunk_size];
       current_chunk = first_chunk;
 
       current_chunk[0].opcode = &of_ZOMBIE;
@@ -57,14 +57,14 @@ void codespace_init(void)
       current_within_chunk = 1;
 
       count_opcodes = 0;
-      size_opcodes += code_chunk_size * sizeof (struct vvp_code_s);
+      size_opcodes += code_chunk_size * parimaa_na (sa_nracanaa vvp_code_s);
 }
 
 vvp_code_t codespace_next(void)
 {
-      if (current_within_chunk == (code_chunk_size-1)) {
+      ᬬᬾᬦ᭄ (current_within_chunk == (code_chunk_size-1)) {
 	    current_chunk[code_chunk_size-1].cptr
-		  = new struct vvp_code_s [code_chunk_size];
+		  = new sa_nracanaa vvp_code_s [code_chunk_size];
 	    current_chunk = current_chunk[code_chunk_size-1].cptr;
 
 	      /* Put a link opcode on the end of the chunk. */
@@ -73,11 +73,11 @@ vvp_code_t codespace_next(void)
 
 	    current_within_chunk = 0;
 
-	    size_opcodes += code_chunk_size * sizeof (struct vvp_code_s);
+	    size_opcodes += code_chunk_size * parimaa_na (sa_nracanaa vvp_code_s);
       }
 
       vvp_code_t res = current_chunk + current_within_chunk;
-      return res;
+      ᬯᬮᬶ res;
 }
 
 vvp_code_t codespace_allocate(void)
@@ -86,14 +86,14 @@ vvp_code_t codespace_allocate(void)
       current_within_chunk += 1;
       count_opcodes += 1;
 
-      memset(res, 0, sizeof(*res));
+      memset(res, 0, parimaa_na(*res));
 
-      return res;
+      ᬯᬮᬶ res;
 }
 
 vvp_code_t codespace_null(void)
 {
-      return first_chunk + 0;
+      ᬯᬮᬶ first_chunk + 0;
 }
 
 #ifdef CHECK_WITH_VALGRIND
@@ -102,33 +102,33 @@ void codespace_delete(void)
       vvp_code_t cur = first_chunk;
 
 	/* If there are no opcodes then just delete the code space. */
-      if (count_opcodes == 0) {
+      ᬬᬾᬦ᭄ (count_opcodes == 0) {
 	    delete [] cur;
-	    return;
+	    ᬯᬮᬶ;
       }
 
       do {
 	    vvp_code_t next = cur[code_chunk_size-1].cptr;
 	    for (unsigned idx = 0 ; idx < code_chunk_size; idx += 1) {
 		  count_opcodes -= 1;
-		  if ((cur+idx)->opcode == &of_VPI_CALL) {
+		  ᬬᬾᬦ᭄ ((cur+idx)->opcode == &of_VPI_CALL) {
 			vpi_call_delete((cur+idx)->handle);
-		  } else if (((cur+idx)->opcode == &of_EXEC_UFUNC_REAL) ||
+		  } ᬮᬶᬬ ᬬᬾᬦ᭄ (((cur+idx)->opcode == &of_EXEC_UFUNC_REAL) ||
 		             ((cur+idx)->opcode == &of_EXEC_UFUNC_VEC4)) {
 			exec_ufunc_delete((cur+idx));
-		  } else if ((cur+idx)->opcode == &of_FILE_LINE) {
+		  } ᬮᬶᬬ ᬬᬾᬦ᭄ ((cur+idx)->opcode == &of_FILE_LINE) {
 			delete((cur+idx)->handle);
-		  } else if (((cur+idx)->opcode == &of_CONCATI_STR) ||
+		  } ᬮᬶᬬ ᬬᬾᬦ᭄ (((cur+idx)->opcode == &of_CONCATI_STR) ||
 		             ((cur+idx)->opcode == &of_NEW_DARRAY) ||
 		             ((cur+idx)->opcode == &of_PUSHI_STR)) {
 			delete [] ((cur+idx)->text);
 		  }
-		  if (count_opcodes == 0) break;
+		  ᬬᬾᬦ᭄ (count_opcodes == 0) bha_nga;
 	    }
 	      /* Don't count the &of_CHUNK_LINK opcode. */
-	    if (count_opcodes != 0) count_opcodes += 1;
+	    ᬬᬾᬦ᭄ (count_opcodes != 0) count_opcodes += 1;
 	    delete [] cur;
 	    cur = next;
-      } while (cur != 0);
+      } ᬲᭂᬤᭂᬮ (cur != 0);
 }
 #endif
