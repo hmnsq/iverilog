@@ -22,18 +22,18 @@
 /*
  * This is a count of the instruction opcodes that were created.
  */
-unsigned long count_opcodes = 0;
+unsigned long ಎಣಿಕೆ_opcodes = 0;
 
-unsigned long count_functors = 0;
-unsigned long count_functors_logic = 0;
-unsigned long count_functors_bufif = 0;
-unsigned long count_functors_resolv= 0;
-unsigned long count_functors_sig   = 0;
+unsigned long ಎಣಿಕೆ_functors = 0;
+unsigned long ಎಣಿಕೆ_functors_logic = 0;
+unsigned long ಎಣಿಕೆ_functors_bufif = 0;
+unsigned long ಎಣಿಕೆ_functors_resolv= 0;
+unsigned long ಎಣಿಕೆ_functors_sig   = 0;
 
-unsigned long count_filters = 0;
-unsigned long count_vpi_nets = 0;
+unsigned long ಎಣಿಕೆ_filters = 0;
+unsigned long ಎಣಿಕೆ_vpi_nets = 0;
 
-unsigned long count_vpi_scopes = 0;
+unsigned long ಎಣಿಕೆ_vpi_scopes = 0;
 
 size_t size_opcodes = 0;
 

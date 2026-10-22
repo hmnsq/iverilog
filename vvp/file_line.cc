@@ -19,82 +19,82 @@
 # include "compile.h"
 # include "vpi_priv.h"
 
-class __vpiFileLine : public __vpiHandle {
-    public:
-      explicit __vpiFileLine(const char*desc_, long file_idx_, long lineno_);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+ವರ್ಗ __vpiFileLine : ಸಾರ್ವಜನಿಕ __vpiHandle {
+    ಸಾರ್ವಜನಿಕ:
+      explicit __vpiFileLine(ಧ್ರುವ ವರ್ಣ*desc_, long file_idx_, long lineno_);
+      ಪೂರ್ಣಾಙ್ಕ get_type_code(ಶೂನ್ಯ) ಧ್ರುವ override;
+      ಪೂರ್ಣಾಙ್ಕ vpi_get(ಪೂರ್ಣಾಙ್ಕ code) override;
+      ವರ್ಣ* vpi_get_str(ಪೂರ್ಣಾಙ್ಕ code) override;
 
-      const char* get_description() const { return description; };
-      unsigned get_file_idx() const { return file_idx; };
-      unsigned get_lineno() const { return lineno; };
+      ಧ್ರುವ ವರ್ಣ* get_description() ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ description; };
+      unsigned get_file_idx() ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ file_idx; };
+      unsigned get_lineno() ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ lineno; };
 
-    private:
-      const char *description;
+    ಗುಪ್ತ:
+      ಧ್ರುವ ವರ್ಣ *description;
       unsigned file_idx;
       unsigned lineno;
 };
 
-bool show_file_line = false;
-bool code_is_instrumented = false;
+ತಾರ್ಕಿಕ show_file_ಸಾಲು = ಅಸತ್ಯ;
+ತಾರ್ಕಿಕ code_is_instrumented = ಅಸತ್ಯ;
 
-static int file_line_get(int type, vpiHandle ref)
+ಸ್ಥಿರ ಪೂರ್ಣಾಙ್ಕ file_ಸಾಲು_get(ಪೂರ್ಣಾಙ್ಕ type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      ಪ್ರತಿಜ್ಞಾ(rfp);
 
-      switch (type) {
-	case vpiLineNo:
-	    return rfp->get_lineno();
-	default:
-	    return vpiUndefined;
+      ವಿಕಲ್ಪ (type) {
+	ಪಕ್ಷ vpi_ಸಾಲು_No:
+	    ಪ್ರತ್ಯಾಗಮ rfp->get_lineno();
+	ಸ್ವಭಾವ:
+	    ಪ್ರತ್ಯಾಗಮ vpiUndefined;
       }
 }
 
-static char *file_line_get_str(int type, vpiHandle ref)
+ಸ್ಥಿರ ವರ್ಣ *file_ಸಾಲು_get_str(ಪೂರ್ಣಾಙ್ಕ type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      ಪ್ರತಿಜ್ಞಾ(rfp);
 
-      switch (type) {
-	case vpiFile:
-	    assert(rfp->get_file_idx() < file_names.size());
-	    return simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
-	case _vpiDescription:
-	    if (rfp->get_description()) {
-		  return simple_set_rbuf_str(rfp->get_description());
-	    } else return simple_set_rbuf_str("Procedural tracing.");
-	default:
-	    return 0;
+      ವಿಕಲ್ಪ (type) {
+	ಪಕ್ಷ vpiFile:
+	    ಪ್ರತಿಜ್ಞಾ(rfp->get_file_idx() < file_names.size());
+	    ಪ್ರತ್ಯಾಗಮ simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
+	ಪಕ್ಷ _vpiDescription:
+	    ಯದಿ (rfp->get_description()) {
+		  ಪ್ರತ್ಯಾಗಮ simple_set_rbuf_str(rfp->get_description());
+	    } ಅನ್ಯಥಾ ಪ್ರತ್ಯಾಗಮ simple_set_rbuf_str("Procedural tracing.");
+	ಸ್ವಭಾವ:
+	    ಪ್ರತ್ಯಾಗಮ 0;
       }
 }
 
-inline __vpiFileLine::__vpiFileLine(const char*desc_, long file_idx_,
+ಅನ್ತಃಸ್ಥ __vpiFileLine::__vpiFileLine(ಧ್ರುವ ವರ್ಣ*desc_, long file_idx_,
                                     long lineno_)
 {
-      if (desc_) description = vpip_name_string(desc_);
-      else description = 0;
+      ಯದಿ (desc_) description = vpip_name_string(desc_);
+      ಅನ್ಯಥಾ description = 0;
       file_idx = (unsigned) file_idx_;
       lineno = (unsigned) lineno_;
 }
 
-int __vpiFileLine::get_type_code(void) const
-{ return _vpiFileLine; }
+ಪೂರ್ಣಾಙ್ಕ __vpiFileLine::get_type_code(ಶೂನ್ಯ) ಧ್ರುವ
+{ ಪ್ರತ್ಯಾಗಮ vpi_File_ಸಾಲು; }
 
-int __vpiFileLine::vpi_get(int code)
-{ return file_line_get(code, this); }
+ಪೂರ್ಣಾಙ್ಕ __vpiFileLine::vpi_get(ಪೂರ್ಣಾಙ್ಕ code)
+{ ಪ್ರತ್ಯಾಗಮ file_ಸಾಲು_get(code, ಏತತ್); }
 
-char* __vpiFileLine::vpi_get_str(int code)
-{ return file_line_get_str(code, this); }
+ವರ್ಣ* __vpiFileLine::vpi_get_str(ಪೂರ್ಣಾಙ್ಕ code)
+{ ಪ್ರತ್ಯಾಗಮ file_ಸಾಲು_get_str(code, ಏತತ್); }
 
 
-vpiHandle vpip_build_file_line(const char*description, long file_idx, long lineno)
+vpiHandle vpip_build_file_ಸಾಲು(ಧ್ರುವ ವರ್ಣ*description, long file_idx, long lineno)
 {
-      __vpiFileLine*obj = new __vpiFileLine(description, file_idx, lineno);
+      __vpiFileLine*obj = ನೂತನ __vpiFileLine(description, file_idx, lineno);
 
 	/* You can turn on the diagnostic output if we find a %file_line. */
-      code_is_instrumented = true;
+      code_is_instrumented = ಸತ್ಯ;
 
-      return obj;
+      ಪ್ರತ್ಯಾಗಮ obj;
 }

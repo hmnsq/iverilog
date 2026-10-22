@@ -22,9 +22,9 @@
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+using ನಾಮಾಕಾಶ std;
 
-vvp_cobject::vvp_cobject(const class_type*defn)
+vvp_cobject::vvp_cobject(ಧ್ರುವ class_type*defn)
 : defn_(defn), properties_(defn->instance_new())
 {
 }
@@ -35,54 +35,54 @@ vvp_cobject::~vvp_cobject()
       properties_ = 0;
 }
 
-void vvp_cobject::set_vec4(size_t pid, const vvp_vector4_t&val)
+ಶೂನ್ಯ vvp_cobject::set_vec4(size_t pid, ಧ್ರುವ vvp_vector4_t&val)
 {
       defn_->set_vec4(properties_, pid, val);
 }
 
-void vvp_cobject::get_vec4(size_t pid, vvp_vector4_t&val)
+ಶೂನ್ಯ vvp_cobject::get_vec4(size_t pid, vvp_vector4_t&val)
 {
       defn_->get_vec4(properties_, pid, val);
 }
 
-void vvp_cobject::set_real(size_t pid, double val)
+ಶೂನ್ಯ vvp_cobject::set_real(size_t pid, ದ್ವಿಗುಣ val)
 {
       defn_->set_real(properties_, pid, val);
 }
 
-double vvp_cobject::get_real(size_t pid)
+ದ್ವಿಗುಣ vvp_cobject::get_real(size_t pid)
 {
-      return defn_->get_real(properties_, pid);
+      ಪ್ರತ್ಯಾಗಮ defn_->get_real(properties_, pid);
 }
 
-void vvp_cobject::set_string(size_t pid, const string&val)
+ಶೂನ್ಯ vvp_cobject::set_string(size_t pid, ಧ್ರುವ string&val)
 {
       defn_->set_string(properties_, pid, val);
 }
 
 string vvp_cobject::get_string(size_t pid)
 {
-      return defn_->get_string(properties_, pid);
+      ಪ್ರತ್ಯಾಗಮ defn_->get_string(properties_, pid);
 }
 
-void vvp_cobject::set_object(size_t pid, const vvp_object_t&val, size_t idx)
+ಶೂನ್ಯ vvp_cobject::set_object(size_t pid, ಧ್ರುವ vvp_object_t&val, size_t idx)
 {
       defn_->set_object(properties_, pid, val, idx);
 }
 
-void vvp_cobject::get_object(size_t pid, vvp_object_t&val, size_t idx)
+ಶೂನ್ಯ vvp_cobject::get_object(size_t pid, vvp_object_t&val, size_t idx)
 {
-      return defn_->get_object(properties_, pid, val, idx);
+      ಪ್ರತ್ಯಾಗಮ defn_->get_object(properties_, pid, val, idx);
 }
 
-void vvp_cobject::shallow_copy(const vvp_object*obj)
+ಶೂನ್ಯ vvp_cobject::shallow_copy(ಧ್ರುವ vvp_object*obj)
 {
-      const vvp_cobject*that = dynamic_cast<const vvp_cobject*>(obj);
-      assert(that);
+      ಧ್ರುವ vvp_cobject*that = dynamic_cast<ಧ್ರುವ vvp_cobject*>(obj);
+      ಪ್ರತಿಜ್ಞಾ(that);
 
-      assert(defn_ == that->defn_);
+      ಪ್ರತಿಜ್ಞಾ(defn_ == that->defn_);
 
-      for (size_t idx = 0 ; idx < defn_->property_count() ; idx += 1)
+      ಪ್ರತಿ (size_t idx = 0 ; idx < defn_->property_ಎಣಿಕೆ() ; idx += 1)
 	    defn_->copy_property(properties_, idx, that->properties_);
 
 }

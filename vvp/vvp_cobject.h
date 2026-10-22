@@ -26,28 +26,28 @@
 
 class vvp_vector4_t;
 
-class vvp_cobject : public vvp_object {
+class vvp_cobject : ಸಾರ್ವಜನಿಕ vvp_object {
 
-    public:
-      explicit vvp_cobject(const class_type*defn);
+    ಸಾರ್ವಜನಿಕ:
+      explicit vvp_cobject(ಧ್ರುವ class_type*defn);
       ~vvp_cobject() override;
 
-      void set_vec4(size_t pid, const vvp_vector4_t&val);
-      void get_vec4(size_t pid, vvp_vector4_t&val);
+      ಶೂನ್ಯ set_vec4(size_t pid, ಧ್ರುವ vvp_vector4_t&val);
+      ಶೂನ್ಯ get_vec4(size_t pid, vvp_vector4_t&val);
 
-      void set_real(size_t pid, double val);
-      double get_real(size_t pid);
+      ಶೂನ್ಯ set_real(size_t pid, ದ್ವಿಗುಣ val);
+      ದ್ವಿಗುಣ get_real(size_t pid);
 
-      void set_string(size_t pid, const std::string&val);
+      ಶೂನ್ಯ set_string(size_t pid, ಧ್ರುವ std::string&val);
       std::string get_string(size_t pid);
 
-      void set_object(size_t pid, const vvp_object_t&val, size_t idx);
-      void get_object(size_t pid, vvp_object_t&val, size_t idx);
+      ಶೂನ್ಯ set_object(size_t pid, ಧ್ರುವ vvp_object_t&val, size_t idx);
+      ಶೂನ್ಯ get_object(size_t pid, vvp_object_t&val, size_t idx);
 
-      void shallow_copy(const vvp_object*that) override;
+      ಶೂನ್ಯ shallow_copy(ಧ್ರುವ vvp_object*that) override;
 
-    private:
-      const class_type* defn_;
+    ಗುಪ್ತ:
+      ಧ್ರುವ class_type* defn_;
 	// For now, only support 32bit bool signed properties.
       class_type::inst_t properties_;
 };

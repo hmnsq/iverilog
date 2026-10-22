@@ -23,77 +23,77 @@
 # include  <cstdlib>
 # include  "ivl_alloc.h"
 
-const char*yypath;
+ಧ್ರುವ ವರ್ಣ*yypath;
 unsigned yyline;
 
-void yyerror(const char*msg)
+ಶೂನ್ಯ yyerror(ಧ್ರುವ ವರ್ಣ*ಸಂದೇಶ)
 {
-      fprintf(stderr, "%s:%u: %s\n", yypath, yyline, msg);
+      fprintf(stderr, "%s:%u: %s\n", yypath, yyline, ಸಂದೇಶ);
 }
 
-void symbv_init(struct symbv_s*obj)
+ಶೂನ್ಯ symbv_init(ಸಂರಚನಾ symbv_s*obj)
 {
       obj->cnt = 0;
       obj->vect = 0;
 }
 
-void symbv_add(struct symbv_s*obj, struct symb_s item)
+ಶೂನ್ಯ symbv_add(ಸಂರಚನಾ symbv_s*obj, ಸಂರಚನಾ symb_s item)
 {
-      obj->vect = static_cast<struct symb_s*>
-                             (realloc(obj->vect, (obj->cnt+1) * sizeof(struct symb_s)));
+      obj->vect = static_cast<ಸಂರಚನಾ symb_s*>
+                             (realloc(obj->vect, (obj->cnt+1) * ಪರಿಮಾಣ(ಸಂರಚನಾ symb_s)));
       obj->vect[obj->cnt] = item;
       obj->cnt += 1;
 }
 
-void numbv_init(struct numbv_s*obj)
+ಶೂನ್ಯ numbv_init(ಸಂರಚನಾ numbv_s*obj)
 {
       obj->cnt = 0;
       obj->nvec = 0;
 }
 
-void numbv_add(struct numbv_s*obj, long item)
+ಶೂನ್ಯ numbv_add(ಸಂರಚನಾ numbv_s*obj, long item)
 {
-      obj->nvec = static_cast<long*>(realloc(obj->nvec, (obj->cnt+1) * sizeof(long)));
+      obj->nvec = static_cast<long*>(realloc(obj->nvec, (obj->cnt+1) * ಪರಿಮಾಣ(long)));
       obj->nvec[obj->cnt] = item;
       obj->cnt += 1;
 }
 
-void numbv_clear(struct numbv_s*obj)
+ಶೂನ್ಯ numbv_clear(ಸಂರಚನಾ numbv_s*obj)
 {
-      free(obj->nvec);
+      ಮುಕ್ತ(obj->nvec);
       obj->nvec = 0;
       obj->cnt = 0;
 }
 
-void argv_init(struct argv_s*obj)
+ಶೂನ್ಯ argv_init(ಸಂರಚನಾ argv_s*obj)
 {
       obj->argc = 0;
       obj->argv = 0;
       obj->syms = 0;
 }
 
-void argv_add(struct argv_s*obj, vpiHandle item)
+ಶೂನ್ಯ argv_add(ಸಂರಚನಾ argv_s*obj, vpiHandle item)
 {
       obj->argv = static_cast<vpiHandle*>
-                             (realloc(obj->argv, (obj->argc+1)*sizeof(vpiHandle)));
+                             (realloc(obj->argv, (obj->argc+1)*ಪರಿಮಾಣ(vpiHandle)));
       obj->argv[obj->argc] = item;
       obj->argc += 1;
 }
 
-void argv_sym_add(struct argv_s*obj, char *item)
+ಶೂನ್ಯ argv_sym_add(ಸಂರಚನಾ argv_s*obj, ವರ್ಣ *item)
 {
       argv_add(obj, 0x0);
-      obj->syms = static_cast<char**>
-                             (realloc(obj->syms, (obj->argc)*sizeof(char*)));
+      obj->syms = static_cast<ವರ್ಣ**>
+                             (realloc(obj->syms, (obj->argc)*ಪರಿಮಾಣ(ವರ್ಣ*)));
       obj->syms[obj->argc-1] = item;
 }
 
-void argv_sym_lookup(struct argv_s*obj)
+ಶೂನ್ಯ argv_sym_lookup(ಸಂರಚನಾ argv_s*obj)
 {
-      if (!obj->syms)
-	    return;
-      for (unsigned i=0; i < obj->argc; i++)
-	    if (!obj->argv[i])
+      ಯದಿ (!obj->syms)
+	    ಪ್ರತ್ಯಾಗಮ;
+      ಪ್ರತಿ (unsigned i=0; i < obj->argc; i++)
+	    ಯದಿ (!obj->argv[i])
 		  compile_vpi_lookup(&obj->argv[i], obj->syms[i]);
-      free(obj->syms);
+      ಮುಕ್ತ(obj->syms);
 }

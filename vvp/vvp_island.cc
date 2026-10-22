@@ -32,17 +32,17 @@
 # include  <cstring>
 # include "ivl_alloc.h"
 
-using namespace std;
+using ನಾಮಾಕಾಶ std;
 
 #ifdef CHECK_WITH_VALGRIND
-static bool at_EOS = false;
+ಸ್ಥಿರ ತಾರ್ಕಿಕ at_EOS = ಅಸತ್ಯ;
 #endif
 
-void island_send_value(vvp_net_t*net, const vvp_vector8_t&val)
+ಶೂನ್ಯ island_send_ಮೌಲ್ಯ(vvp_net_t*net, ಧ್ರುವ vvp_vector8_t&val)
 {
       vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
-      if (fun->outvalue .eeq(val))
-	    return;
+      ಯದಿ (fun->outvalue .eeq(val))
+	    ಪ್ರತ್ಯಾಗಮ;
 
       fun->outvalue = val;
       net->send_vec8(fun->outvalue);
@@ -53,7 +53,7 @@ void island_send_value(vvp_net_t*net, const vvp_vector8_t&val)
  */
 vvp_island::vvp_island()
 {
-      flagged_ = false;
+      flagged_ = ಅಸತ್ಯ;
       branches_ = 0;
       ports_ = 0;
       anodes_ = 0;
@@ -64,23 +64,23 @@ vvp_island::~vvp_island()
 {
 	// We can only delete islands at the end of simulation.
 #ifdef CHECK_WITH_VALGRIND
-      if (!at_EOS) assert(0);
+      ಯದಿ (!at_EOS) ಪ್ರತಿಜ್ಞಾ(0);
 #endif
 
-      while (branches_) {
+      ಯಾವತ್ (branches_) {
 	    vvp_island_branch *next_br = branches_->next_branch;
 	    delete branches_;
 	    branches_ = next_br;
       }
 }
 
-void vvp_island::flag_island()
+ಶೂನ್ಯ vvp_island::flag_island()
 {
-      if (flagged_ == true)
-	    return;
+      ಯದಿ (flagged_ == ಸತ್ಯ)
+	    ಪ್ರತ್ಯಾಗಮ;
 
-      schedule_generic(this, 0, false, false);
-      flagged_ = true;
+      schedule_generic(ಏತತ್, 0, ಅಸತ್ಯ, ಅಸತ್ಯ);
+      flagged_ = ಸತ್ಯ;
 }
 
 /*
@@ -88,74 +88,74 @@ void vvp_island::flag_island()
 * housecleaning and calls the run_island() method implemented by the
 * derived class.
 */
-void vvp_island::run_run()
+ಶೂನ್ಯ vvp_island::run_run()
 {
-      flagged_ = false;
+      flagged_ = ಅಸತ್ಯ;
       run_island();
 }
 
 
-void vvp_island::add_port(const char*key, vvp_net_t*net)
+ಶೂನ್ಯ vvp_island::add_port(ಧ್ರುವ ವರ್ಣ*ಕೀಲಿ, vvp_net_t*net)
 {
-      if (ports_ == 0)
-	    ports_ = new symbol_map_s<vvp_net_t>;
+      ಯದಿ (ports_ == 0)
+	    ports_ = ನೂತನ ಚಿಹ್ನೆ_map_s<vvp_net_t>;
 
 	// each port should have a unique label
-      assert(ports_->sym_get_value(key) == 0);
+      ಪ್ರತಿಜ್ಞಾ(ports_->sym_get_ಮೌಲ್ಯ(ಕೀಲಿ) == 0);
 
-      ports_->sym_set_value(key, net);
+      ports_->sym_set_ಮೌಲ್ಯ(ಕೀಲಿ, net);
 }
 
-void vvp_island::add_branch(vvp_island_branch*branch, const char*pa, const char*pb)
+ಶೂನ್ಯ vvp_island::add_branch(vvp_island_branch*branch, ಧ್ರುವ ವರ್ಣ*pa, ಧ್ರುವ ವರ್ಣ*pb)
 {
       vvp_island_branch*cur;
-      assert(ports_);
-      branch->a = ports_->sym_get_value(pa);
-      branch->b = ports_->sym_get_value(pb);
-      assert(branch->a && branch->b);
+      ಪ್ರತಿಜ್ಞಾ(ports_);
+      branch->a = ports_->sym_get_ಮೌಲ್ಯ(pa);
+      branch->b = ports_->sym_get_ಮೌಲ್ಯ(pb);
+      ಪ್ರತಿಜ್ಞಾ(branch->a && branch->b);
 
       vvp_branch_ptr_t ptra (branch, 0);
       vvp_branch_ptr_t ptrb (branch, 1);
-      if (anodes_ == 0)
-	    anodes_ = new symbol_map_s<vvp_island_branch>;
-      if (bnodes_ == 0)
-	    bnodes_ = new symbol_map_s<vvp_island_branch>;
+      ಯದಿ (anodes_ == 0)
+	    anodes_ = ನೂತನ ಚಿಹ್ನೆ_map_s<vvp_island_branch>;
+      ಯದಿ (bnodes_ == 0)
+	    bnodes_ = ನೂತನ ಚಿಹ್ನೆ_map_s<vvp_island_branch>;
 
-      if ((cur = anodes_->sym_get_value(pa))) {
+      ಯದಿ ((cur = anodes_->sym_get_ಮೌಲ್ಯ(pa))) {
 	    branch->link[0] = cur->link[0];
 	    cur->link[0] = ptra;
-      } else if ((cur = bnodes_->sym_get_value(pa))) {
+      } ಅನ್ಯಥಾ ಯದಿ ((cur = bnodes_->sym_get_ಮೌಲ್ಯ(pa))) {
 	    branch->link[0] = cur->link[1];
 	    cur->link[1] = ptra;
-      } else {
+      } ಅನ್ಯಥಾ {
 	    branch->link[0] = ptra;
-	    anodes_->sym_set_value(pa, branch);
+	    anodes_->sym_set_ಮೌಲ್ಯ(pa, branch);
       }
 
-      if ((cur = anodes_->sym_get_value(pb))) {
+      ಯದಿ ((cur = anodes_->sym_get_ಮೌಲ್ಯ(pb))) {
 	    branch->link[1] = cur->link[0];
 	    cur->link[0] = ptrb;
-      } else if ((cur = bnodes_->sym_get_value(pb))) {
+      } ಅನ್ಯಥಾ ಯದಿ ((cur = bnodes_->sym_get_ಮೌಲ್ಯ(pb))) {
 	    branch->link[1] = cur->link[1];
 	    cur->link[1] = ptrb;
-      } else {
+      } ಅನ್ಯಥಾ {
 	    branch->link[1] = ptrb;
-	    bnodes_->sym_set_value(pb, branch);
+	    bnodes_->sym_set_ಮೌಲ್ಯ(pb, branch);
       }
 
       branch->next_branch = branches_;
       branches_ = branch;
 }
 
-vvp_net_t* vvp_island::find_port(const char*key)
+vvp_net_t* vvp_island::find_port(ಧ್ರುವ ವರ್ಣ*ಕೀಲಿ)
 {
-      if (ports_ == 0)
-	    return 0;
-      else
-	    return ports_->sym_get_value(key);
+      ಯದಿ (ports_ == 0)
+	    ಪ್ರತ್ಯಾಗಮ 0;
+      ಅನ್ಯಥಾ
+	    ಪ್ರತ್ಯಾಗಮ ports_->sym_get_ಮೌಲ್ಯ(ಕೀಲಿ);
 }
 
-void vvp_island::compile_cleanup()
+ಶೂನ್ಯ vvp_island::compile_cleanup()
 {
       delete ports_;
       ports_ = 0;
@@ -176,18 +176,18 @@ vvp_island_port::~vvp_island_port()
 {
 }
 
-void vvp_island_port::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_island_port::recv_vec4(vvp_net_ptr_t, ಧ್ರುವ vvp_vector4_t&bit,
                                 vvp_context_t)
 {
       vvp_vector8_t tmp (bit, 6, 6);
-      if (invalue .eeq(tmp))
-	    return;
+      ಯದಿ (invalue .eeq(tmp))
+	    ಪ್ರತ್ಯಾಗಮ;
 
       invalue = tmp;
       island_->flag_island();
 }
 
-void vvp_island_port::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_island_port::recv_vec4_pv(vvp_net_ptr_t port, ಧ್ರುವ vvp_vector4_t&bit,
 				   unsigned base, unsigned vwid, vvp_context_t)
 {
       vvp_vector8_t tmp(bit, 6, 6);
@@ -195,26 +195,26 @@ void vvp_island_port::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 }
 
 
-void vvp_island_port::recv_vec8(vvp_net_ptr_t, const vvp_vector8_t&bit)
+ಶೂನ್ಯ vvp_island_port::recv_vec8(vvp_net_ptr_t, ಧ್ರುವ vvp_vector8_t&bit)
 {
-      if (invalue .eeq(bit))
-	    return;
+      ಯದಿ (invalue .eeq(bit))
+	    ಪ್ರತ್ಯಾಗಮ;
 
       invalue = bit;
       island_->flag_island();
 }
 
-void vvp_island_port::recv_vec8_pv(vvp_net_ptr_t, const vvp_vector8_t&bit,
+ಶೂನ್ಯ vvp_island_port::recv_vec8_pv(vvp_net_ptr_t, ಧ್ರುವ vvp_vector8_t&bit,
                                    unsigned base, unsigned vwid)
 {
-      if (invalue.size() == 0) {
+      ಯದಿ (invalue.size() == 0) {
 	    invalue = part_expand(bit, vwid, base);
-      } else {
+      } ಅನ್ಯಥಾ {
 	    unsigned wid = bit.size();
-	    assert(invalue.size() == vwid);
-	    for (unsigned idx = 0; idx < wid ; idx += 1) {
-		  if ((base+idx) >= vwid)
-			break;
+	    ಪ್ರತಿಜ್ಞಾ(invalue.size() == vwid);
+	    ಪ್ರತಿ (unsigned idx = 0; idx < wid ; idx += 1) {
+		  ಯದಿ ((base+idx) >= vwid)
+			ಭಙ್ಗ;
 		  invalue.set_bit(base+idx, bit.value(idx));
 	    }
       }
@@ -222,11 +222,11 @@ void vvp_island_port::recv_vec8_pv(vvp_net_ptr_t, const vvp_vector8_t&bit,
       island_->flag_island();
 }
 
-void vvp_island_port::force_flag(bool run_now)
+ಶೂನ್ಯ vvp_island_port::force_flag(ತಾರ್ಕಿಕ run_now)
 {
-      if (run_now)
+      ಯದಿ (run_now)
 	    island_->run_island();
-      else
+      ಅನ್ಯಥಾ
 	    island_->flag_island();
 }
 
@@ -234,10 +234,10 @@ vvp_island_branch::~vvp_island_branch()
 {
 }
 
-void island_collect_node(list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur)
+ಶೂನ್ಯ island_collect_ಗಂಟು(list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur)
 {
       conn .push_back(cur);
-      for (vvp_branch_ptr_t idx = next(cur) ; idx != cur ; idx = next(idx))
+      ಪ್ರತಿ (vvp_branch_ptr_t idx = next(cur) ; idx != cur ; idx = next(idx))
 	    conn.push_back(idx);
 }
 
@@ -250,42 +250,42 @@ void island_collect_node(list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur)
 * called to erase the symbol table, we still need the list to cleanup the
 * island memory at EOS.
 */
-static symbol_map_s<vvp_island>* island_table = 0;
-static vvp_island** island_list = 0;
-static unsigned island_count = 0;
+ಸ್ಥಿರ ಚಿಹ್ನೆ_map_s<vvp_island>* island_table = 0;
+ಸ್ಥಿರ vvp_island** island_list = 0;
+ಸ್ಥಿರ unsigned island_ಎಣಿಕೆ = 0;
 
 #ifdef CHECK_WITH_VALGRIND
-void island_delete()
+ಶೂನ್ಯ island_delete()
 {
-      at_EOS = true;
-      for (unsigned idx = 0; idx < island_count; idx += 1) {
+      at_EOS = ಸತ್ಯ;
+      ಪ್ರತಿ (unsigned idx = 0; idx < island_ಎಣಿಕೆ; idx += 1) {
 	    delete island_list[idx];
       }
-      free(island_list);
+      ಮುಕ್ತ(island_list);
       island_list = 0;
-      island_count = 0;
+      island_ಎಣಿಕೆ = 0;
 }
 #endif
 
-void compile_island_base(char*label, vvp_island*use_island)
+ಶೂನ್ಯ compile_island_base(ವರ್ಣ*label, vvp_island*use_island)
 {
-      if (island_table == 0)
-	    island_table = new symbol_map_s<vvp_island>;
+      ಯದಿ (island_table == 0)
+	    island_table = ನೂತನ ಚಿಹ್ನೆ_map_s<vvp_island>;
 
-      island_table->sym_set_value(label, use_island);
-      island_count += 1;
+      island_table->sym_set_ಮೌಲ್ಯ(label, use_island);
+      island_ಎಣಿಕೆ += 1;
       island_list = static_cast<vvp_island **>(realloc(island_list,
-                                               island_count*sizeof(vvp_island **)));
-      island_list[island_count-1] = use_island;
-      free(label);
+                                               island_ಎಣಿಕೆ*ಪರಿಮಾಣ(vvp_island **)));
+      island_list[island_ಎಣಿಕೆ-1] = use_island;
+      ಮುಕ್ತ(label);
 }
 
-vvp_island* compile_find_island(const char*island)
+vvp_island* compile_find_island(ಧ್ರುವ ವರ್ಣ*island)
 {
-      assert(island_table);
-      vvp_island*use_island = island_table->sym_get_value(island);
-      assert(use_island);
-      return use_island;
+      ಪ್ರತಿಜ್ಞಾ(island_table);
+      vvp_island*use_island = island_table->sym_get_ಮೌಲ್ಯ(island);
+      ಪ್ರತಿಜ್ಞಾ(use_island);
+      ಪ್ರತ್ಯಾಗಮ use_island;
 }
 
 /*
@@ -302,34 +302,34 @@ vvp_island* compile_find_island(const char*island)
  * drivers with the external driver and make the output available on
  * <label>.
  */
-void compile_island_port(char*label, char*island, char*src)
+ಶೂನ್ಯ compile_island_port(ವರ್ಣ*label, ವರ್ಣ*island, ವರ್ಣ*src)
 {
-      assert(island_table);
-      vvp_island*use_island = island_table->sym_get_value(island);
-      assert(use_island);
-      free(island);
+      ಪ್ರತಿಜ್ಞಾ(island_table);
+      vvp_island*use_island = island_table->sym_get_ಮೌಲ್ಯ(island);
+      ಪ್ರತಿಜ್ಞಾ(use_island);
+      ಮುಕ್ತ(island);
 
-      vvp_net_t*net = new vvp_net_t;
-      vvp_island_port*fun = new vvp_island_port(use_island);
+      vvp_net_t*net = ನೂತನ vvp_net_t;
+      vvp_island_port*fun = ನೂತನ vvp_island_port(use_island);
       net->fun = fun;
 
 	// Get the source from outside the island
-      input_connect(net, 0, src);
+      ಒಳಹರಿವು_connect(net, 0, src);
 
 	// Define the functor outside the island.
-      define_functor_symbol(label, net);
+      define_functor_ಚಿಹ್ನೆ(label, net);
 
 	// Also define it inside the island.
       use_island->add_port(label, net);
 
-      free(label);
+      ಮುಕ್ತ(label);
 }
 
-void compile_island_export(char*label, char*island)
+ಶೂನ್ಯ compile_island_export(ವರ್ಣ*label, ವರ್ಣ*island)
 {
       fprintf(stderr, "XXXX %s .export %s;\n", label, island);
-      free(label);
-      free(island);
+      ಮುಕ್ತ(label);
+      ಮುಕ್ತ(island);
 }
 
 /*
@@ -342,38 +342,38 @@ void compile_island_export(char*label, char*island)
  * <label> is in the domain inside the island. Branches within the
  * island use the <label>.
  */
-void compile_island_import(char*label, char*island, char*src)
+ಶೂನ್ಯ compile_island_import(ವರ್ಣ*label, ವರ್ಣ*island, ವರ್ಣ*src)
 {
-      assert(island_table);
-      vvp_island*use_island = island_table->sym_get_value(island);
-      assert(use_island);
-      free(island);
+      ಪ್ರತಿಜ್ಞಾ(island_table);
+      vvp_island*use_island = island_table->sym_get_ಮೌಲ್ಯ(island);
+      ಪ್ರತಿಜ್ಞಾ(use_island);
+      ಮುಕ್ತ(island);
 
-      vvp_net_t*net = new vvp_net_t;
-      vvp_island_port*fun = new vvp_island_port(use_island);
+      vvp_net_t*net = ನೂತನ vvp_net_t;
+      vvp_island_port*fun = ನೂತನ vvp_island_port(use_island);
       net->fun = fun;
 
 	// Get the source from outside the island
-      input_connect(net, 0, src);
+      ಒಳಹರಿವು_connect(net, 0, src);
 
 	// Define the functor only inside the island.
       use_island->add_port(label, net);
 
-      free(label);
+      ಮುಕ್ತ(label);
 }
 
-void compile_island_cleanup(void)
+ಶೂನ್ಯ compile_island_cleanup(ಶೂನ್ಯ)
 {
 	// Call the per-island cleanup to get rid of local symbol tables.
-      for (unsigned idx = 0; idx < island_count; idx += 1) {
+      ಪ್ರತಿ (unsigned idx = 0; idx < island_ಎಣಿಕೆ; idx += 1) {
 	    island_list[idx]->compile_cleanup();
       }
 
 	// If we are not doing valgrind checking then free the list.
 #ifndef CHECK_WITH_VALGRIND
-      free(island_list);
+      ಮುಕ್ತ(island_list);
       island_list = 0;
-      island_count = 0;
+      island_ಎಣಿಕೆ = 0;
 #endif
 
 	// Remove the island symbol table itself.

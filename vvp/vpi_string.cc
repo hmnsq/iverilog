@@ -30,77 +30,77 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+using ನಾಮಾಕಾಶ std;
 
-__vpiStringVar::__vpiStringVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
+__vpiStringVar::__vpiStringVar(__vpiScope*sc, ಧ್ರುವ ವರ್ಣ*na, vvp_net_t*ne)
 : __vpiBaseVar(sc, na, ne)
 {
 }
 
-int __vpiStringVar::get_type_code(void) const
-{ return vpiStringVar; }
+ಪೂರ್ಣಾಙ್ಕ __vpiStringVar::get_type_code(ಶೂನ್ಯ) ಧ್ರುವ
+{ ಪ್ರತ್ಯಾಗಮ vpiStringVar; }
 
-int __vpiStringVar::vpi_get(int code)
+ಪೂರ್ಣಾಙ್ಕ __vpiStringVar::vpi_get(ಪೂರ್ಣಾಙ್ಕ code)
 {
       vvp_fun_signal_string*fun = dynamic_cast<vvp_fun_signal_string*> (get_net()->fun);
-      assert(fun);
+      ಪ್ರತಿಜ್ಞಾ(fun);
       string str = fun->get_string();
 
-      switch (code) {
-	  case vpiSize:
+      ವಿಕಲ್ಪ (code) {
+	  ಪಕ್ಷ vpiSize:
 	      // The vpiSize of a string variable is the number of
 	      // bytes (characters) in that string.
-	    return str.size();
-	  case vpiLeftRange:
-	    return 0;
-	  case vpiRightRange:
-            return str.size() - 1;
-	  default:
+	    ಪ್ರತ್ಯಾಗಮ str.size();
+	  ಪಕ್ಷ vpi_ಎಡ_Range:
+	    ಪ್ರತ್ಯಾಗಮ 0;
+	  ಪಕ್ಷ vpi_ಬಲ_Range:
+            ಪ್ರತ್ಯಾಗಮ str.size() - 1;
+	  ಸ್ವಭಾವ:
 	    fprintf(stderr, "vpi sorry: property is not implemented");
-	    assert(false);
-	    return 0;
+	    ಪ್ರತಿಜ್ಞಾ(ಅಸತ್ಯ);
+	    ಪ್ರತ್ಯಾಗಮ 0;
       }
 }
 
-void __vpiStringVar::vpi_get_value(p_vpi_value val)
+ಶೂನ್ಯ __vpiStringVar::vpi_get_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ val)
 {
       vvp_fun_signal_string*fun = dynamic_cast<vvp_fun_signal_string*> (get_net()->fun);
-      assert(fun);
+      ಪ್ರತಿಜ್ಞಾ(fun);
       string str = fun->get_string();
 
-      if (val->format == vpiStringVal || val->format == vpiObjTypeVal) {
-	    char*rbuf = static_cast<char *>(need_result_buf(str.size()+1, RBUF_VAL));
+      ಯದಿ (val->format == vpiStringVal || val->format == vpiObjTypeVal) {
+	    ವರ್ಣ*rbuf = static_cast<ವರ್ಣ *>(need_result_buf(str.size()+1, RBUF_VAL));
 	    strcpy(rbuf, str.c_str());
 	    val->format = vpiStringVal;
 	    val->value.str = rbuf;
-	    return;
+	    ಪ್ರತ್ಯಾಗಮ;
       }
 
       val->format = vpiSuppressVal;
 }
 
-vpiHandle __vpiStringVar::vpi_put_value(p_vpi_value val, int)
+vpiHandle __vpiStringVar::vpi_put_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ val, ಪೂರ್ಣಾಙ್ಕ)
 {
       vvp_fun_signal_string*fun = dynamic_cast<vvp_fun_signal_string*> (get_net()->fun);
-      assert(fun);
-      assert(val->format == vpiStringVal);
+      ಪ್ರತಿಜ್ಞಾ(fun);
+      ಪ್ರತಿಜ್ಞಾ(val->format == vpiStringVal);
       vvp_net_ptr_t dest (get_net(), 0);
       vvp_send_string(dest, val->value.str, vthread_get_wt_context());
-      return 0;
+      ಪ್ರತ್ಯಾಗಮ 0;
 }
 
-vpiHandle vpip_make_string_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_string_var(ಧ್ರುವ ವರ್ಣ*name, vvp_net_t*net)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      const char*use_name = name ? vpip_name_string(name) : NULL;
+      ಧ್ರುವ ವರ್ಣ*use_name = name ? vpip_name_string(name) : ರಿಕ್ತ;
 
-      __vpiStringVar*obj = new __vpiStringVar(scope, use_name, net);
+      __vpiStringVar*obj = ನೂತನ __vpiStringVar(scope, use_name, net);
 
-      return obj;
+      ಪ್ರತ್ಯಾಗಮ obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void string_delete(vpiHandle item)
+ಶೂನ್ಯ string_delete(vpiHandle item)
 {
       __vpiStringVar*obj = dynamic_cast<__vpiStringVar*>(item);
       delete obj;

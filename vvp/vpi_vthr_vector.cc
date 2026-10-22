@@ -35,7 +35,7 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+using ನಾಮಾಕಾಶ std;
 
 /*
  * Hex digits that represent 4-value bits of Verilog are not as
@@ -48,179 +48,179 @@ using namespace std;
  * The table is calculated as compile time, therefore, by the
  * draw_tt.c program.
  */
-extern const char hex_digits[256];
-extern const char oct_digits[64];
+ಬಾಹ್ಯ ಧ್ರುವ ವರ್ಣ hex_digits[256];
+ಬಾಹ್ಯ ಧ್ರುವ ವರ್ಣ oct_digits[64];
 
 
-class __vpiVThrWord : public __vpiHandle {
-    public:
+ವರ್ಗ __vpiVThrWord : ಸಾರ್ವಜನಿಕ __vpiHandle {
+    ಸಾರ್ವಜನಿಕ:
       explicit __vpiVThrWord(unsigned base);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      ಪೂರ್ಣಾಙ್ಕ get_type_code(ಶೂನ್ಯ) ಧ್ರುವ override;
+      ಪೂರ್ಣಾಙ್ಕ vpi_get(ಪೂರ್ಣಾಙ್ಕ code) override;
+      ಶೂನ್ಯ vpi_get_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ val) override;
 
-      int get_subtype() const { return subtype; };
-      unsigned get_index() const { return index; };
+      ಪೂರ್ಣಾಙ್ಕ get_subtype() ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ subtype; };
+      unsigned get_index() ಧ್ರುವ { ಪ್ರತ್ಯಾಗಮ index; };
 
-    private:
-      const char* name;
-      int subtype;
+    ಗುಪ್ತ:
+      ಧ್ರುವ ವರ್ಣ* name;
+      ಪೂರ್ಣಾಙ್ಕ subtype;
       unsigned index;
 };
 
-static int vthr_word_get(int code, vpiHandle ref)
+ಸ್ಥಿರ ಪೂರ್ಣಾಙ್ಕ vthr_word_get(ಪೂರ್ಣಾಙ್ಕ code, vpiHandle ref)
 {
-      const __vpiVThrWord*rfp = dynamic_cast<__vpiVThrWord*>(ref);
+      ಧ್ರುವ __vpiVThrWord*rfp = dynamic_cast<__vpiVThrWord*>(ref);
 
-      switch (code) {
+      ವಿಕಲ್ಪ (code) {
 
-	  case vpiConstType:
-	    return rfp->get_subtype();
+	  ಪಕ್ಷ vpiConstType:
+	    ಪ್ರತ್ಯಾಗಮ rfp->get_subtype();
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiWord;
+#ಯದಿ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  ಪಕ್ಷ _vpiFromThr:
+	    ಪ್ರತ್ಯಾಗಮ _vpiWord;
 #endif
 
-	  default:
-	    return 0;
+	  ಸ್ವಭಾವ:
+	    ಪ್ರತ್ಯಾಗಮ 0;
       }
 }
 
-static void vthr_real_get_value(vpiHandle ref, s_vpi_value*vp)
+ಸ್ಥಿರ ಶೂನ್ಯ vthr_real_get_ಮೌಲ್ಯ(vpiHandle ref, s_vpi_ಮೌಲ್ಯ*vp)
 {
-      const __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(ref);
-      static const size_t RBUF_USE_SIZE = 66;
-      char *rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      ಧ್ರುವ __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(ref);
+      ಸ್ಥಿರ ಧ್ರುವ size_t RBUF_USE_SIZE = 66;
+      ವರ್ಣ *rbuf = static_cast<ವರ್ಣ *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
 
-      double val = 0.0;
+      ದ್ವಿಗುಣ val = 0.0;
 
 	/* Get the actual value from the index. It is possible, by the
 	   way, that the vpi_get_value is called from compiletf. If
 	   that's the case, there will be no current thread, and this
 	   will not have access to the proper value. Punt and return a
 	   0.0 value instead. */
-      if (vpip_current_vthread)
-	    val = vthread_get_real_stack(vpip_current_vthread,
+      ಯದಿ (vpip_current_vthread)
+	    val = vthread_get_real_ರಾಶಿ(vpip_current_vthread,
 	                                 obj->get_index());
 
-      switch (vp->format) {
+      ವಿಕಲ್ಪ (vp->format) {
 
-	  case vpiObjTypeVal:
+	  ಪಕ್ಷ vpiObjTypeVal:
 	    vp->format = vpiRealVal;
 	    // fallthrough
-	  case vpiRealVal:
+	  ಪಕ್ಷ vpiRealVal:
 	    vp->value.real = val;
-	    break;
+	    ಭಙ್ಗ;
 
-	  case vpiIntVal:
+	  ಪಕ್ಷ vpiIntVal:
 	      /* NaN or +/- infinity are translated as 0. */
-	    if (val != val || (val && (val == 0.5*val))) {
+	    ಯದಿ (val != val || (val && (val == 0.5*val))) {
 		  val = 0.0;
-	    } else {
+	    } ಅನ್ಯಥಾ {
 		  val = std::round(val);
 	    }
 	    vp->value.integer = (PLI_INT32)val;
-	    break;
+	    ಭಙ್ಗ;
 
-	  case vpiDecStrVal:
-	    if (std::isnan(val))
+	  ಪಕ್ಷ vpiDecStrVal:
+	    ಯದಿ (std::isnan(val))
 		  snprintf(rbuf, RBUF_USE_SIZE, "%s", "nan");
-	    else
+	    ಅನ್ಯಥಾ
 		  snprintf(rbuf, RBUF_USE_SIZE, "%0.0f", std::round(val));
 	    vp->value.str = rbuf;
-	    break;
+	    ಭಙ್ಗ;
 
-	  case vpiOctStrVal:
+	  ಪಕ್ಷ vpiOctStrVal:
 	    snprintf(rbuf, RBUF_USE_SIZE, "%" PRIo64, vlg_round_to_u64(val));
 	    vp->value.str = rbuf;
-	    break;
+	    ಭಙ್ಗ;
 
-	  case vpiHexStrVal:
+	  ಪಕ್ಷ vpiHexStrVal:
 	    snprintf(rbuf, RBUF_USE_SIZE, "%" PRIx64, vlg_round_to_u64(val));
 	    vp->value.str = rbuf;
-	    break;
+	    ಭಙ್ಗ;
 
-	  case vpiBinStrVal: {
+	  ಪಕ್ಷ vpiBinStrVal: {
 		uint64_t vali = vlg_round_to_u64(val);
 		unsigned len = 0;
 
-		while (vali > 0) {
+		ಯಾವತ್ (vali > 0) {
 		      len += 1;
 		      vali /= 2;
 		}
 
 		vali = vlg_round_to_u64(val);
-		for (unsigned idx = 0 ;  idx < len ;  idx += 1) {
+		ಪ್ರತಿ (unsigned idx = 0 ;  idx < len ;  idx += 1) {
 		      rbuf[len-idx-1] = (vali & 1)? '1' : '0';
 		      vali /= 2;
 		}
 
 		rbuf[len] = 0;
-		if (len == 0) {
+		ಯದಿ (len == 0) {
 		      rbuf[0] = '0';
 		      rbuf[1] = 0;
 		}
 		vp->value.str = rbuf;
-		break;
+		ಭಙ್ಗ;
 	  }
 
-	  default:
+	  ಸ್ವಭಾವ:
 	    fprintf(stderr, "vvp error: get %d not supported "
-		      "by vpiConstant (Real)\n", (int)vp->format);
+		      "by vpiConstant (Real)\n", (ಪೂರ್ಣಾಙ್ಕ)vp->format);
 
 	    vp->format = vpiSuppressVal;
-	    break;
+	    ಭಙ್ಗ;
       }
 }
 
-inline __vpiVThrWord::__vpiVThrWord(unsigned base)
+ಅನ್ತಃಸ್ಥ __vpiVThrWord::__vpiVThrWord(unsigned base)
 {
       name = vpip_name_string("W<>");
       subtype = vpiRealConst;
       index = base;
 }
 
-int __vpiVThrWord::get_type_code(void) const
-{ return vpiConstant; }
+ಪೂರ್ಣಾಙ್ಕ __vpiVThrWord::get_type_code(ಶೂನ್ಯ) ಧ್ರುವ
+{ ಪ್ರತ್ಯಾಗಮ vpiConstant; }
 
-int __vpiVThrWord::vpi_get(int code)
-{ return vthr_word_get(code, this); }
+ಪೂರ್ಣಾಙ್ಕ __vpiVThrWord::vpi_get(ಪೂರ್ಣಾಙ್ಕ code)
+{ ಪ್ರತ್ಯಾಗಮ vthr_word_get(code, ಏತತ್); }
 
-void __vpiVThrWord::vpi_get_value(p_vpi_value val)
-{ vthr_real_get_value(this, val); }
+ಶೂನ್ಯ __vpiVThrWord::vpi_get_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ val)
+{ vthr_real_get_ಮೌಲ್ಯ(ಏತತ್, val); }
 
-vpiHandle vpip_make_vthr_word(unsigned base, const char*type)
+vpiHandle vpip_make_vthr_word(unsigned base, ಧ್ರುವ ವರ್ಣ*type)
 {
-      assert(type[0] == 'r');
-      assert(base < 65536);
-      __vpiVThrWord*obj = new __vpiVThrWord(base);
+      ಪ್ರತಿಜ್ಞಾ(type[0] == 'r');
+      ಪ್ರತಿಜ್ಞಾ(base < 65536);
+      __vpiVThrWord*obj = ನೂತನ __vpiVThrWord(base);
 
-      return obj;
+      ಪ್ರತ್ಯಾಗಮ obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-static map<vpiHandle, bool> handle_map;
+ಸ್ಥಿರ map<vpiHandle, ತಾರ್ಕಿಕ> handle_map;
 
-void thread_word_delete(vpiHandle item)
+ಶೂನ್ಯ thread_word_delete(vpiHandle item)
 {
-      handle_map[item] = false;
+      handle_map[item] = ಅಸತ್ಯ;
 }
 
-static void thread_word_delete_real(vpiHandle item)
+ಸ್ಥಿರ ಶೂನ್ಯ thread_word_delete_real(vpiHandle item)
 {
-      class __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(item);
+      ವರ್ಗ __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(item);
       delete obj;
 }
 #endif
 
-class __vpiVThrStrStack : public __vpiHandle {
-    public:
+ವರ್ಗ __vpiVThrStrStack : ಸಾರ್ವಜನಿಕ __vpiHandle {
+    ಸಾರ್ವಜನಿಕ:
       explicit __vpiVThrStrStack(unsigned depth);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-    private:
+      ಪೂರ್ಣಾಙ್ಕ get_type_code(ಶೂನ್ಯ) ಧ್ರುವ override;
+      ಪೂರ್ಣಾಙ್ಕ vpi_get(ಪೂರ್ಣಾಙ್ಕ code) override;
+      ಶೂನ್ಯ vpi_get_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ val) override;
+    ಗುಪ್ತ:
       unsigned depth_;
 };
 
@@ -229,311 +229,311 @@ __vpiVThrStrStack::__vpiVThrStrStack(unsigned d)
 {
 }
 
-int __vpiVThrStrStack::get_type_code(void) const
-{ return vpiConstant; }
+ಪೂರ್ಣಾಙ್ಕ __vpiVThrStrStack::get_type_code(ಶೂನ್ಯ) ಧ್ರುವ
+{ ಪ್ರತ್ಯಾಗಮ vpiConstant; }
 
-int __vpiVThrStrStack::vpi_get(int code)
+ಪೂರ್ಣಾಙ್ಕ __vpiVThrStrStack::vpi_get(ಪೂರ್ಣಾಙ್ಕ code)
 {
-      switch (code) {
-	  case vpiConstType:
-	    return vpiStringConst;
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiString;
+      ವಿಕಲ್ಪ (code) {
+	  ಪಕ್ಷ vpiConstType:
+	    ಪ್ರತ್ಯಾಗಮ vpiStringConst;
+#ಯದಿ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  ಪಕ್ಷ _vpiFromThr:
+	    ಪ್ರತ್ಯಾಗಮ _vpiString;
 #endif
-	  case vpiSize:
-	    return vthread_get_str_stack(vpip_current_vthread, depth_).size();
-	  default:
-	    return 0;
+	  ಪಕ್ಷ vpiSize:
+	    ಪ್ರತ್ಯಾಗಮ vthread_get_str_ರಾಶಿ(vpip_current_vthread, depth_).size();
+	  ಸ್ವಭಾವ:
+	    ಪ್ರತ್ಯಾಗಮ 0;
       }
 }
 
-void __vpiVThrStrStack::vpi_get_value(p_vpi_value vp)
+ಶೂನ್ಯ __vpiVThrStrStack::vpi_get_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ vp)
 {
       string val;
-      char*rbuf = 0;
+      ವರ್ಣ*rbuf = 0;
 
-      if (vpip_current_vthread)
-	    val = vthread_get_str_stack(vpip_current_vthread, depth_);
+      ಯದಿ (vpip_current_vthread)
+	    val = vthread_get_str_ರಾಶಿ(vpip_current_vthread, depth_);
 
-      switch (vp->format) {
+      ವಿಕಲ್ಪ (vp->format) {
 
-	  case vpiObjTypeVal:
+	  ಪಕ್ಷ vpiObjTypeVal:
 	    vp->format = vpiStringVal;
 	    // fallthrough
-	  case vpiStringVal:
-	    rbuf = static_cast<char *>(need_result_buf(val.size()+1, RBUF_VAL));
+	  ಪಕ್ಷ vpiStringVal:
+	    rbuf = static_cast<ವರ್ಣ *>(need_result_buf(val.size()+1, RBUF_VAL));
 	    strcpy(rbuf, val.c_str());
 	    vp->value.str = rbuf;
-	    break;
+	    ಭಙ್ಗ;
 
-	  default:
+	  ಸ್ವಭಾವ:
 	    fprintf(stderr, "vvp error: get %d not supported "
-		      "by vpiConstant (String)\n", (int)vp->format);
+		      "by vpiConstant (String)\n", (ಪೂರ್ಣಾಙ್ಕ)vp->format);
 
 	    vp->format = vpiSuppressVal;
-	    break;
+	    ಭಙ್ಗ;
       }
 }
 
-class __vpiVThrVec4Stack : public __vpiHandle {
-    public:
-      __vpiVThrVec4Stack(unsigned depth, bool signed_flag, unsigned wid);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-    private:
-      static void vpi_get_value_string_(p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_binstr_(p_vpi_value vp, const vvp_vector4_t&val);
-      void vpi_get_value_decstr_(p_vpi_value vp, const vvp_vector4_t&val);
-      void vpi_get_value_int_   (p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_real_  (p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_strength_(p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_octstr_(p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_hexstr_(p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_vector_(p_vpi_value vp, const vvp_vector4_t&val);
-    private:
+ವರ್ಗ __vpiVThrVec4Stack : ಸಾರ್ವಜನಿಕ __vpiHandle {
+    ಸಾರ್ವಜನಿಕ:
+      __vpiVThrVec4Stack(unsigned depth, ತಾರ್ಕಿಕ signed_flag, unsigned wid);
+      ಪೂರ್ಣಾಙ್ಕ get_type_code(ಶೂನ್ಯ) ಧ್ರುವ override;
+      ಪೂರ್ಣಾಙ್ಕ vpi_get(ಪೂರ್ಣಾಙ್ಕ code) override;
+      ವರ್ಣ*vpi_get_str(ಪೂರ್ಣಾಙ್ಕ code) override;
+      ಶೂನ್ಯ vpi_get_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ val) override;
+      vpiHandle vpi_put_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ val, ಪೂರ್ಣಾಙ್ಕ flags) override;
+    ಗುಪ್ತ:
+      ಸ್ಥಿರ ಶೂನ್ಯ vpi_get_ಮೌಲ್ಯ_string(p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val);
+      ಸ್ಥಿರ ಶೂನ್ಯ vpi_get_ಮೌಲ್ಯ_binstr(p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val);
+      ಶೂನ್ಯ vpi_get_ಮೌಲ್ಯ_decstr(p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val);
+      ಶೂನ್ಯ vpi_get_ಮೌಲ್ಯ_int   (p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val);
+      ಸ್ಥಿರ ಶೂನ್ಯ vpi_get_ಮೌಲ್ಯ_real  (p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val);
+      ಸ್ಥಿರ ಶೂನ್ಯ vpi_get_ಮೌಲ್ಯ_strength(p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val);
+      ಸ್ಥಿರ ಶೂನ್ಯ vpi_get_ಮೌಲ್ಯ_octstr(p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val);
+      ಸ್ಥಿರ ಶೂನ್ಯ vpi_get_ಮೌಲ್ಯ_hexstr(p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val);
+      ಸ್ಥಿರ ಶೂನ್ಯ vpi_get_ಮೌಲ್ಯ_vector(p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val);
+    ಗುಪ್ತ:
       unsigned depth_;
-      bool signed_flag_;
+      ತಾರ್ಕಿಕ signed_flag_;
       unsigned expect_width_;
-      const char*name;
+      ಧ್ರುವ ವರ್ಣ*name;
 };
 
-__vpiVThrVec4Stack::__vpiVThrVec4Stack(unsigned d, bool sf, unsigned wid)
+__vpiVThrVec4Stack::__vpiVThrVec4Stack(unsigned d, ತಾರ್ಕಿಕ sf, unsigned wid)
 : depth_(d), signed_flag_(sf), expect_width_(wid)
 {
       name = vpip_name_string("S<,vec4,>");
 }
 
-int __vpiVThrVec4Stack::get_type_code(void) const
-{ return vpiConstant; }
+ಪೂರ್ಣಾಙ್ಕ __vpiVThrVec4Stack::get_type_code(ಶೂನ್ಯ) ಧ್ರುವ
+{ ಪ್ರತ್ಯಾಗಮ vpiConstant; }
 
 
-int __vpiVThrVec4Stack::vpi_get(int code)
+ಪೂರ್ಣಾಙ್ಕ __vpiVThrVec4Stack::vpi_get(ಪೂರ್ಣಾಙ್ಕ code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return expect_width_;
+      ವಿಕಲ್ಪ (code) {
+	  ಪಕ್ಷ vpiSize:
+	    ಪ್ರತ್ಯಾಗಮ expect_width_;
 
-	  case vpiSigned:
-	    return signed_flag_? 1 : 0;
+	  ಪಕ್ಷ vpiSigned:
+	    ಪ್ರತ್ಯಾಗಮ signed_flag_? 1 : 0;
 
-	  case vpiConstType:
-	    return vpiBinaryConst;
+	  ಪಕ್ಷ vpiConstType:
+	    ಪ್ರತ್ಯಾಗಮ vpi_ದ್ವಿಮಾನ_Const;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiVThr;
+#ಯದಿ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  ಪಕ್ಷ _vpiFromThr:
+	    ಪ್ರತ್ಯಾಗಮ _vpiVThr;
 #endif
 
-	  default:
-	    return 0;
+	  ಸ್ವಭಾವ:
+	    ಪ್ರತ್ಯಾಗಮ 0;
       }
 }
 
-char*__vpiVThrVec4Stack::vpi_get_str(int code)
+ವರ್ಣ*__vpiVThrVec4Stack::vpi_get_str(ಪೂರ್ಣಾಙ್ಕ code)
 {
-      switch (code) {
-	  case vpiFullName:
-	    return simple_set_rbuf_str(name);
+      ವಿಕಲ್ಪ (code) {
+	  ಪಕ್ಷ vpiFullName:
+	    ಪ್ರತ್ಯಾಗಮ simple_set_rbuf_str(name);
 
-	  default:
-	    return 0;
+	  ಸ್ವಭಾವ:
+	    ಪ್ರತ್ಯಾಗಮ 0;
       }
 }
 
-void __vpiVThrVec4Stack::vpi_get_value(p_vpi_value vp)
+ಶೂನ್ಯ __vpiVThrVec4Stack::vpi_get_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ vp)
 {
       vvp_vector4_t val;
 
-      if (vpip_current_vthread)
-	    val = vthread_get_vec4_stack(vpip_current_vthread, depth_);
+      ಯದಿ (vpip_current_vthread)
+	    val = vthread_get_vec4_ರಾಶಿ(vpip_current_vthread, depth_);
 
-      switch (vp->format) {
+      ವಿಕಲ್ಪ (vp->format) {
 
-	  case vpiBinStrVal:
-	    vpi_get_value_binstr_(vp, val);
-	    break;
-	  case vpiDecStrVal:
-	    vpi_get_value_decstr_(vp, val);
-	    break;
-	  case vpiOctStrVal:
-	    vpi_get_value_octstr_(vp, val);
-	    break;
-	  case vpiHexStrVal:
-	    vpi_get_value_hexstr_(vp, val);
-	    break;
-	  case vpiIntVal:
-	    vpi_get_value_int_(vp, val);
-	    break;
-	  case vpiRealVal:
-	    vpi_get_value_real_(vp, val);
-	    break;
-	  case vpiStringVal:
-	    vpi_get_value_string_(vp, val);
-	    break;
-	  case vpiStrengthVal:
-	    vpi_get_value_strength_(vp, val);
-	    break;
-	  case vpiObjTypeVal:
+	  ಪಕ್ಷ vpiBinStrVal:
+	    vpi_get_ಮೌಲ್ಯ_binstr(vp, val);
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ vpiDecStrVal:
+	    vpi_get_ಮೌಲ್ಯ_decstr(vp, val);
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ vpiOctStrVal:
+	    vpi_get_ಮೌಲ್ಯ_octstr(vp, val);
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ vpiHexStrVal:
+	    vpi_get_ಮೌಲ್ಯ_hexstr(vp, val);
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ vpiIntVal:
+	    vpi_get_ಮೌಲ್ಯ_int(vp, val);
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ vpiRealVal:
+	    vpi_get_ಮೌಲ್ಯ_real(vp, val);
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ vpiStringVal:
+	    vpi_get_ಮೌಲ್ಯ_string(vp, val);
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ vpiStrengthVal:
+	    vpi_get_ಮೌಲ್ಯ_strength(vp, val);
+	    ಭಙ್ಗ;
+	  ಪಕ್ಷ vpiObjTypeVal:
 	    vp->format = vpiVectorVal;
 	    // fallthrough
-	  case vpiVectorVal:
-	    vpi_get_value_vector_(vp, val);
-	    break;
+	  ಪಕ್ಷ vpiVectorVal:
+	    vpi_get_ಮೌಲ್ಯ_vector(vp, val);
+	    ಭಙ್ಗ;
 
-	  default:
+	  ಸ್ವಭಾವ:
 	    fprintf(stderr, "internal error: vpi_get_value(<format=%d>)"
 		    " not implemented for __vpiVThrVec4Stack.\n", vp->format);
-	    assert(0);
+	    ಪ್ರತಿಜ್ಞಾ(0);
       }
 
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_binstr_(p_vpi_value vp, const vvp_vector4_t&val)
+ಶೂನ್ಯ __vpiVThrVec4Stack::vpi_get_ಮೌಲ್ಯ_binstr(p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val)
 {
       unsigned wid = val.size();
-      char*rbuf = static_cast<char*>(need_result_buf(wid+1, RBUF_VAL));
-      for (unsigned idx = 0 ; idx < wid ; idx += 1) {
+      ವರ್ಣ*rbuf = static_cast<ವರ್ಣ*>(need_result_buf(wid+1, RBUF_VAL));
+      ಪ್ರತಿ (unsigned idx = 0 ; idx < wid ; idx += 1) {
 	    rbuf[wid-idx-1] = vvp_bit4_to_ascii(val.value(idx));
       }
       rbuf[wid] = 0;
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_decstr_(p_vpi_value vp, const vvp_vector4_t&val)
+ಶೂನ್ಯ __vpiVThrVec4Stack::vpi_get_ಮೌಲ್ಯ_decstr(p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val)
 {
       unsigned wid = val.size();
-      int nbuf = (wid+2)/3 + 1;
-      char *rbuf = static_cast<char*>(need_result_buf(nbuf, RBUF_VAL));
+      ಪೂರ್ಣಾಙ್ಕ nbuf = (wid+2)/3 + 1;
+      ವರ್ಣ *rbuf = static_cast<ವರ್ಣ*>(need_result_buf(nbuf, RBUF_VAL));
 
       vpip_vec4_to_dec_str(val, rbuf, nbuf, signed_flag_);
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_octstr_(p_vpi_value vp, const vvp_vector4_t&val)
+ಶೂನ್ಯ __vpiVThrVec4Stack::vpi_get_ಮೌಲ್ಯ_octstr(p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val)
 {
       unsigned wid = val.size();
       unsigned owid = (wid + 2) / 3;
-      char*rbuf = static_cast<char*>(need_result_buf(owid+1, RBUF_VAL));
+      ವರ್ಣ*rbuf = static_cast<ವರ್ಣ*>(need_result_buf(owid+1, RBUF_VAL));
       rbuf[owid] = 0;
 
       unsigned oval = 0;
-      for (unsigned idx = 0; idx < wid ; idx += 1) {
+      ಪ್ರತಿ (unsigned idx = 0; idx < wid ; idx += 1) {
 	    unsigned tmp = 0;
-	    switch (val.value(idx)) {
-		case BIT4_0:
+	    ವಿಕಲ್ಪ (val.value(idx)) {
+		ಪಕ್ಷ BIT4_0:
 		  tmp = 0;
-		  break;
-		case BIT4_1:
+		  ಭಙ್ಗ;
+		ಪಕ್ಷ BIT4_1:
 		  tmp = 1;
-		  break;
-		case BIT4_X:
+		  ಭಙ್ಗ;
+		ಪಕ್ಷ BIT4_X:
 		  tmp = 2;
-		  break;
-		case BIT4_Z:
+		  ಭಙ್ಗ;
+		ಪಕ್ಷ BIT4_Z:
 		  tmp = 3;
-		  break;
+		  ಭಙ್ಗ;
 	    }
 
 	    oval = oval | (tmp << 2*(idx%3));
 
-	    if (idx%3 == 2) {
+	    ಯದಿ (idx%3 == 2) {
 		  owid -= 1;
 		  rbuf[owid] = oct_digits[oval];
 		  oval = 0;
 	    }
       }
 
-      if (owid > 0) {
+      ಯದಿ (owid > 0) {
 	    owid -= 1;
 	    rbuf[owid] = oct_digits[oval];
       }
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_hexstr_(p_vpi_value vp, const vvp_vector4_t&val)
+ಶೂನ್ಯ __vpiVThrVec4Stack::vpi_get_ಮೌಲ್ಯ_hexstr(p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val)
 {
       unsigned wid = val.size();
       unsigned hwid = (wid + 3) /4;
-      char*rbuf = static_cast<char*>(need_result_buf(hwid+1, RBUF_VAL));
+      ವರ್ಣ*rbuf = static_cast<ವರ್ಣ*>(need_result_buf(hwid+1, RBUF_VAL));
       rbuf[hwid] = 0;
 
       unsigned hval = 0;
-      for (unsigned idx = 0; idx < wid ; idx += 1) {
+      ಪ್ರತಿ (unsigned idx = 0; idx < wid ; idx += 1) {
 	    unsigned tmp = 0;
-	    switch (val.value(idx)) {
-		case BIT4_0:
+	    ವಿಕಲ್ಪ (val.value(idx)) {
+		ಪಕ್ಷ BIT4_0:
 		  tmp = 0;
-		  break;
-		case BIT4_1:
+		  ಭಙ್ಗ;
+		ಪಕ್ಷ BIT4_1:
 		  tmp = 1;
-		  break;
-		case BIT4_X:
+		  ಭಙ್ಗ;
+		ಪಕ್ಷ BIT4_X:
 		  tmp = 2;
-		  break;
-		case BIT4_Z:
+		  ಭಙ್ಗ;
+		ಪಕ್ಷ BIT4_Z:
 		  tmp = 3;
-		  break;
+		  ಭಙ್ಗ;
 	    }
 	    hval = hval | (tmp << 2*(idx%4));
 
-	    if (idx%4 == 3) {
+	    ಯದಿ (idx%4 == 3) {
 		  hwid -= 1;
 		  rbuf[hwid] = hex_digits[hval];
 		  hval = 0;
 	    }
       }
 
-      if (hwid > 0) {
+      ಯದಿ (hwid > 0) {
 	    hwid -= 1;
 	    rbuf[hwid] = hex_digits[hval];
       }
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_int_(p_vpi_value vp, const vvp_vector4_t&val)
+ಶೂನ್ಯ __vpiVThrVec4Stack::vpi_get_ಮೌಲ್ಯ_int(p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val)
 {
       int32_t vali = 0;
-      vector4_to_value(val, vali, signed_flag_, false);
+      vector4_to_ಮೌಲ್ಯ(val, vali, signed_flag_, ಅಸತ್ಯ);
       vp->value.integer = vali;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_real_(p_vpi_value vp, const vvp_vector4_t&val)
+ಶೂನ್ಯ __vpiVThrVec4Stack::vpi_get_ಮೌಲ್ಯ_real(p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val)
 {
       unsigned wid = val.size();
       vp->value.real = 0.0;
 
-      for (unsigned idx = wid ; idx > 0 ; idx -= 1) {
+      ಪ್ರತಿ (unsigned idx = wid ; idx > 0 ; idx -= 1) {
 	    vp->value.real *= 2.0;
-	    if (val.value(idx-1) == BIT4_1)
+	    ಯದಿ (val.value(idx-1) == BIT4_1)
 		  vp->value.real += 1.0;
       }
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_string_(p_vpi_value vp, const vvp_vector4_t&val)
+ಶೂನ್ಯ __vpiVThrVec4Stack::vpi_get_ಮೌಲ್ಯ_string(p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val)
 {
-      char*rbuf = static_cast<char*>(need_result_buf((val.size() / 8) + 1, RBUF_VAL));
-      char*cp = rbuf;
+      ವರ್ಣ*rbuf = static_cast<ವರ್ಣ*>(need_result_buf((val.size() / 8) + 1, RBUF_VAL));
+      ವರ್ಣ*cp = rbuf;
 
-      char tmp = 0;
-      for (int bitnr = val.size()-1 ; bitnr >= 0 ; bitnr -= 1) {
+      ವರ್ಣ tmp = 0;
+      ಪ್ರತಿ (ಪೂರ್ಣಾಙ್ಕ bitnr = val.size()-1 ; bitnr >= 0 ; bitnr -= 1) {
 	    tmp <<= 1;
-	    switch (val.value(bitnr)) {
-		case BIT4_1:
+	    ವಿಕಲ್ಪ (val.value(bitnr)) {
+		ಪಕ್ಷ BIT4_1:
 		  tmp |= 1;
-		  break;
-		case BIT4_0:
-		default:
-		  break;
+		  ಭಙ್ಗ;
+		ಪಕ್ಷ BIT4_0:
+		ಸ್ವಭಾವ:
+		  ಭಙ್ಗ;
 	    }
 
-	    if ((bitnr&7)==0) {
+	    ಯದಿ ((bitnr&7)==0) {
 		    // Don't include leading nuls
-		  if (tmp == 0 && cp == rbuf)
-			continue;
+		  ಯದಿ (tmp == 0 && cp == rbuf)
+			ಅನುವರ್ತ;
 
 		  *cp++ = tmp? tmp : ' ';
 		  tmp = 0;
@@ -544,74 +544,74 @@ void __vpiVThrVec4Stack::vpi_get_value_string_(p_vpi_value vp, const vvp_vector4
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_vector_(p_vpi_value vp, const vvp_vector4_t&val)
+ಶೂನ್ಯ __vpiVThrVec4Stack::vpi_get_ಮೌಲ್ಯ_vector(p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val)
 {
       unsigned wid = val.size();
 
       unsigned hwid = (wid+31)/32;
       vp->value.vector = static_cast<s_vpi_vecval*>
-                         (need_result_buf(hwid*sizeof(s_vpi_vecval), RBUF_VAL));
-      assert(vp->value.vector);
+                         (need_result_buf(hwid*ಪರಿಮಾಣ(s_vpi_vecval), RBUF_VAL));
+      ಪ್ರತಿಜ್ಞಾ(vp->value.vector);
 
 	/* Zero the top of the result buffer first since the fill loop below only writes
 	   bits 0..wid-1, which can leave stale data in the unused high bits. */
-      if (hwid == 0) hwid = 1;
+      ಯದಿ (hwid == 0) hwid = 1;
       vp->value.vector[hwid-1].aval = 0;
       vp->value.vector[hwid-1].bval = 0;
 
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-	    int word = idx/32;
+      ಪ್ರತಿ (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+	    ಪೂರ್ಣಾಙ್ಕ word = idx/32;
 	    PLI_INT32 mask = 1 << (idx%32);
 
-	    switch (val.value(idx)) {
-		case BIT4_0:
+	    ವಿಕಲ್ಪ (val.value(idx)) {
+		ಪಕ್ಷ BIT4_0:
 		  vp->value.vector[word].aval &= ~mask;
 		  vp->value.vector[word].bval &= ~mask;
-		  break;
-		case BIT4_1:
+		  ಭಙ್ಗ;
+		ಪಕ್ಷ BIT4_1:
 		  vp->value.vector[word].aval |=  mask;
 		  vp->value.vector[word].bval &= ~mask;
-		  break;
-		case BIT4_X:
+		  ಭಙ್ಗ;
+		ಪಕ್ಷ BIT4_X:
 		  vp->value.vector[word].aval |=  mask;
 		  vp->value.vector[word].bval |=  mask;
-		  break;
-		case BIT4_Z:
+		  ಭಙ್ಗ;
+		ಪಕ್ಷ BIT4_Z:
 		  vp->value.vector[word].aval &= ~mask;
 		  vp->value.vector[word].bval |=  mask;
-		  break;
+		  ಭಙ್ಗ;
 	    }
       }
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_strength_(p_vpi_value vp, const vvp_vector4_t&val)
+ಶೂನ್ಯ __vpiVThrVec4Stack::vpi_get_ಮೌಲ್ಯ_strength(p_vpi_ಮೌಲ್ಯ vp, ಧ್ರುವ vvp_vector4_t&val)
 {
       s_vpi_strengthval*op = static_cast<s_vpi_strengthval*>
-                             (need_result_buf(val.size() * sizeof(s_vpi_strengthval),
+                             (need_result_buf(val.size() * ಪರಿಮಾಣ(s_vpi_strengthval),
                                               RBUF_VAL));
 
-      for (unsigned idx = 0 ; idx < val.size() ; idx += 1) {
-	    switch (val.value(idx)) {
-		case BIT4_0:
+      ಪ್ರತಿ (unsigned idx = 0 ; idx < val.size() ; idx += 1) {
+	    ವಿಕಲ್ಪ (val.value(idx)) {
+		ಪಕ್ಷ BIT4_0:
 		  op[idx].logic = vpi0;
 		  op[idx].s0 = vpiStrongDrive;
 		  op[idx].s1 = 0;
-		  break;
-		case BIT4_1:
+		  ಭಙ್ಗ;
+		ಪಕ್ಷ BIT4_1:
 		  op[idx].logic = vpi1;
 		  op[idx].s0 = 0;
 		  op[idx].s1 = vpiStrongDrive;
-		  break;
-		case BIT4_X:
+		  ಭಙ್ಗ;
+		ಪಕ್ಷ BIT4_X:
 		  op[idx].logic = vpiX;
 		  op[idx].s0 = vpiStrongDrive;
 		  op[idx].s1 = vpiStrongDrive;
-		  break;
-		case BIT4_Z:
+		  ಭಙ್ಗ;
+		ಪಕ್ಷ BIT4_Z:
 		  op[idx].logic = vpiZ;
 		  op[idx].s0 = vpiHiZ;
 		  op[idx].s1 = vpiHiZ;
-		  break;
+		  ಭಙ್ಗ;
 	    }
       }
 
@@ -619,73 +619,73 @@ void __vpiVThrVec4Stack::vpi_get_value_strength_(p_vpi_value vp, const vvp_vecto
       vp->value.strength = op;
 }
 
-vpiHandle __vpiVThrVec4Stack::vpi_put_value(p_vpi_value vp, int /*flags*/)
+vpiHandle __vpiVThrVec4Stack::vpi_put_ಮೌಲ್ಯ(p_vpi_ಮೌಲ್ಯ vp, ಪೂರ್ಣಾಙ್ಕ /*flags*/)
 {
-      assert(vpip_current_vthread);
+      ಪ್ರತಿಜ್ಞಾ(vpip_current_vthread);
 
-      switch (vp->format) {
+      ವಿಕಲ್ಪ (vp->format) {
 
-	  default:
+	  ಸ್ವಭಾವ:
 	    fprintf(stderr, "internal error: vpi_put_value(<format=%d>)"
 		    " not implemented for __vpiVThrVec4Stack.\n", vp->format);
-	    assert(0);
-	    return 0;
+	    ಪ್ರತಿಜ್ಞಾ(0);
+	    ಪ್ರತ್ಯಾಗಮ 0;
       }
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void thread_vthr_delete(vpiHandle item)
+ಶೂನ್ಯ thread_vthr_delete(vpiHandle item)
 {
-      handle_map[item] = true;
+      handle_map[item] = ಸತ್ಯ;
 }
 
-static void thread_vthr_delete_real(vpiHandle item)
+ಸ್ಥಿರ ಶೂನ್ಯ thread_vthr_delete_real(vpiHandle item)
 {
       __vpiVThrVec4Stack*obj = dynamic_cast<__vpiVThrVec4Stack*>(item);
       delete obj;
 }
 
-void vpi_handle_delete()
+ಶೂನ್ಯ vpi_handle_delete()
 {
-      map<vpiHandle, bool>::iterator iter;
-      for (iter = handle_map.begin(); iter != handle_map.end(); ++ iter ) {
-	    if (iter->second) thread_vthr_delete_real(iter->first);
-	    else thread_word_delete_real(iter->first);
+      map<vpiHandle, ತಾರ್ಕಿಕ>::iterator iter;
+      ಪ್ರತಿ (iter = handle_map.begin(); iter != handle_map.end(); ++ iter ) {
+	    ಯದಿ (iter->second) thread_vthr_delete_real(iter->first);
+	    ಅನ್ಯಥಾ thread_word_delete_real(iter->first);
       }
 }
 #endif
 
 
-vpiHandle vpip_make_vthr_str_stack(unsigned depth)
+vpiHandle vpip_make_vthr_str_ರಾಶಿ(unsigned depth)
 {
-      __vpiVThrStrStack*obj = new __vpiVThrStrStack(depth);
-      return obj;
+      __vpiVThrStrStack*obj = ನೂತನ __vpiVThrStrStack(depth);
+      ಪ್ರತ್ಯಾಗಮ obj;
 }
 
-vpiHandle vpip_make_vthr_vec4_stack(unsigned depth, bool signed_flag, unsigned wid)
+vpiHandle vpip_make_vthr_vec4_ರಾಶಿ(unsigned depth, ತಾರ್ಕಿಕ signed_flag, unsigned wid)
 {
-      __vpiVThrVec4Stack*obj = new __vpiVThrVec4Stack(depth, signed_flag, wid);
-      return obj;
+      __vpiVThrVec4Stack*obj = ನೂತನ __vpiVThrVec4Stack(depth, signed_flag, wid);
+      ಪ್ರತ್ಯಾಗಮ obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-static map<vpiHandle, bool> stack_map;
+ಸ್ಥಿರ map<vpiHandle, ತಾರ್ಕಿಕ> ರಾಶಿ_map;
 
-void thread_string_delete(vpiHandle item)
+ಶೂನ್ಯ thread_string_delete(vpiHandle item)
 {
-      stack_map[item] = false;
+      ರಾಶಿ_map[item] = ಅಸತ್ಯ;
 }
 
-static void thread_string_delete_real(vpiHandle item)
+ಸ್ಥಿರ ಶೂನ್ಯ thread_string_delete_real(vpiHandle item)
 {
       __vpiVThrStrStack*obj = dynamic_cast<__vpiVThrStrStack*>(item);
       delete obj;
 }
 
-void vpi_stack_delete()
+ಶೂನ್ಯ vpi_ರಾಶಿ_delete()
 {
-      map<vpiHandle, bool>::iterator iter;
-      for (iter = stack_map.begin(); iter != stack_map.end(); ++ iter ) {
+      map<vpiHandle, ತಾರ್ಕಿಕ>::iterator iter;
+      ಪ್ರತಿ (iter = ರಾಶಿ_map.begin(); iter != ರಾಶಿ_map.end(); ++ iter ) {
 	    thread_string_delete_real(iter->first);
       }
 }

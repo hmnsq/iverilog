@@ -31,27 +31,27 @@
  * The key_strdup() function below allocates the strings from this
  * buffer, possibly making a new buffer if needed.
  */
-struct key_strings {
-      struct key_strings*next;
-      char data[64*1024 - sizeof(struct key_strings*)];
+ಸಂರಚನಾ ಕೀಲಿ_strings {
+      ಸಂರಚನಾ ಕೀಲಿ_strings*next;
+      ವರ್ಣ data[64*1024 - ಪರಿಮಾಣ(ಸಂರಚನಾ ಕೀಲಿ_strings*)];
 };
 
-char*symbol_table_s::key_strdup_(const char*str)
+ವರ್ಣ*ಚಿಹ್ನೆ_table_s::ಕೀಲಿ_strdup(ಧ್ರುವ ವರ್ಣ*str)
 {
       unsigned len = strlen(str);
-      assert( (len+1) <= sizeof str_chunk->data );
+      ಪ್ರತಿಜ್ಞಾ( (len+1) <= ಪರಿಮಾಣ str_chunk->data );
 
-      if ( (len+1) > (sizeof str_chunk->data - str_used) ) {
-	    key_strings*tmp = new key_strings;
+      ಯದಿ ( (len+1) > (ಪರಿಮಾಣ str_chunk->data - str_used) ) {
+	    ಕೀಲಿ_strings*tmp = ನೂತನ ಕೀಲಿ_strings;
 	    tmp->next = str_chunk;
 	    str_chunk = tmp;
 	    str_used = 0;
       }
 
-      char*res = str_chunk->data + str_used;
+      ವರ್ಣ*res = str_chunk->data + str_used;
       str_used += len + 1;
       strcpy(res, str);
-      return res;
+      ಪ್ರತ್ಯಾಗಮ res;
 }
 
 /*
@@ -67,32 +67,32 @@ char*symbol_table_s::key_strdup_(const char*str)
  * simple binary search to find an item. Each key represents an item.
  */
 
-const unsigned leaf_width = 254;
-const unsigned node_width = 508;
+ಧ್ರುವ unsigned leaf_width = 254;
+ಧ್ರುವ unsigned ಗಂಟು_width = 508;
 
-struct tree_data_ {
-      char*key;
-      symbol_value_t val;
+ಸಂರಚನಾ ವೃಕ್ಷ_data {
+      ವರ್ಣ*ಕೀಲಿ;
+      ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t val;
 };
 
-struct tree_node_ {
-      bool leaf_flag;
-      unsigned count;
-      struct tree_node_*parent;
+ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು {
+      ತಾರ್ಕಿಕ leaf_flag;
+      unsigned ಎಣಿಕೆ;
+      ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು*parent;
 
-      union {
-	    struct tree_data_ leaf[leaf_width];
-	    struct tree_node_ *child[node_width];
+      ಸಙ್ಘ {
+	    ಸಂರಚನಾ ವೃಕ್ಷ_data leaf[leaf_width];
+	    ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು *child[ಗಂಟು_width];
       };
 
 };
 
-static inline char* node_last_key(struct tree_node_*node)
+ಸ್ಥಿರ ಅನ್ತಃಸ್ಥ ವರ್ಣ* ಗಂಟು_last_ಕೀಲಿ(ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು*ಗಂಟು)
 {
-      while (node->leaf_flag == false)
-	    node = node->child[node->count-1];
+      ಯಾವತ್ (ಗಂಟು->leaf_flag == ಅಸತ್ಯ)
+	    ಗಂಟು = ಗಂಟು->child[ಗಂಟು->ಎಣಿಕೆ-1];
 
-      return node->leaf[node->count-1].key;
+      ಪ್ರತ್ಯಾಗಮ ಗಂಟು->leaf[ಗಂಟು->ಎಣಿಕೆ-1].ಕೀಲಿ;
 }
 
 /*
@@ -100,94 +100,94 @@ static inline char* node_last_key(struct tree_node_*node)
  * a root node, and initializing the pointers and members of the root
  * node.
  */
-symbol_table_s::symbol_table_s()
+ಚಿಹ್ನೆ_table_s::ಚಿಹ್ನೆ_table_s()
 {
-      root = new struct tree_node_;
-      root->leaf_flag = false;
-      root->count = 0;
-      root->parent = 0;
+      ಬೇರು = ನೂತನ ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು;
+      ಬೇರು->leaf_flag = ಅಸತ್ಯ;
+      ಬೇರು->ಎಣಿಕೆ = 0;
+      ಬೇರು->parent = 0;
 
-      str_chunk = new key_strings;
+      str_chunk = ನೂತನ ಕೀಲಿ_strings;
       str_chunk->next = 0;
       str_used = 0;
 }
 
-static void delete_symbol_node(struct tree_node_*cur)
+ಸ್ಥಿರ ಶೂನ್ಯ delete_ಚಿಹ್ನೆ_ಗಂಟು(ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು*cur)
 {
-      if (! cur->leaf_flag) {
-	    for (unsigned idx = 0 ;  idx < cur->count ;  idx += 1)
-		  delete_symbol_node(cur->child[idx]);
+      ಯದಿ (! cur->leaf_flag) {
+	    ಪ್ರತಿ (unsigned idx = 0 ;  idx < cur->ಎಣಿಕೆ ;  idx += 1)
+		  delete_ಚಿಹ್ನೆ_ಗಂಟು(cur->child[idx]);
       }
 
       delete cur;
 }
 
 /* Do as split_leaf_ does, but for nodes. */
-static void split_node_(struct tree_node_*cur)
+ಸ್ಥಿರ ಶೂನ್ಯ split_ಗಂಟು(ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು*cur)
 {
-      assert(!cur->leaf_flag);
-      if (cur->parent) assert(! cur->parent->leaf_flag);
+      ಪ್ರತಿಜ್ಞಾ(!cur->leaf_flag);
+      ಯದಿ (cur->parent) ಪ್ರತಿಜ್ಞಾ(! cur->parent->leaf_flag);
 
-      while (cur->count == node_width) {
+      ಯಾವತ್ (cur->ಎಣಿಕೆ == ಗಂಟು_width) {
 	      /* Create a new node to hold half the data from cur. */
-	    struct tree_node_ *new_node = new struct tree_node_;
-	    new_node->leaf_flag = false;
-	    new_node->count = cur->count / 2;
+	    ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು *new_ಗಂಟು = ನೂತನ ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು;
+	    new_ಗಂಟು->leaf_flag = ಅಸತ್ಯ;
+	    new_ಗಂಟು->ಎಣಿಕೆ = cur->ಎಣಿಕೆ / 2;
 	      /* cur is not root; new_node becomes sibling. */
-	    if (cur->parent) new_node->parent = cur->parent;
+	    ಯದಿ (cur->parent) new_ಗಂಟು->parent = cur->parent;
 
 	      /* Move the last half of the data from the end of the old node
 	       * to the beginning of the new node. At the same time, reduce
 	       * the size of the old node. */
-	    unsigned idx1 = new_node->count;
-	    unsigned idx2 = cur->count;
-	    while (idx1 > 0) {
+	    unsigned idx1 = new_ಗಂಟು->ಎಣಿಕೆ;
+	    unsigned idx2 = cur->ಎಣಿಕೆ;
+	    ಯಾವತ್ (idx1 > 0) {
 		  idx1 -= 1;
 		  idx2 -= 1;
-		  new_node->child[idx1] = cur->child[idx2];
-		  new_node->child[idx1]->parent = new_node;
-		  cur->count -= 1;
+		  new_ಗಂಟು->child[idx1] = cur->child[idx2];
+		  new_ಗಂಟು->child[idx1]->parent = new_ಗಂಟು;
+		  cur->ಎಣಿಕೆ -= 1;
 	    }
 
-	    assert(new_node->count > 0);
-	    assert(cur->count > 0);
+	    ಪ್ರತಿಜ್ಞಾ(new_ಗಂಟು->ಎಣಿಕೆ > 0);
+	    ಪ್ರತಿಜ್ಞಾ(cur->ಎಣಿಕೆ > 0);
 
-	    if (cur->parent == 0) {
+	    ಯದಿ (cur->parent == 0) {
 		    /* cur is root. Move first half of children to another
 		     * new node, and put the two new nodes in cur. The plan
 		     * here is to make cur into the new root and split its
 		     * contents into 2 children. */
 
-		  new_node->parent = cur;
-		  struct tree_node_*new2_node = new struct tree_node_;
-		  new2_node->leaf_flag = false;
-		  new2_node->count = cur->count;
-		  new2_node->parent = cur;
-		  for (unsigned idx = 0; idx < cur->count; idx += 1) {
-			new2_node->child[idx] = cur->child[idx];
-			new2_node->child[idx]->parent = new2_node;
+		  new_ಗಂಟು->parent = cur;
+		  ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು*new2_ಗಂಟು = ನೂತನ ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು;
+		  new2_ಗಂಟು->leaf_flag = ಅಸತ್ಯ;
+		  new2_ಗಂಟು->ಎಣಿಕೆ = cur->ಎಣಿಕೆ;
+		  new2_ಗಂಟು->parent = cur;
+		  ಪ್ರತಿ (unsigned idx = 0; idx < cur->ಎಣಿಕೆ; idx += 1) {
+			new2_ಗಂಟು->child[idx] = cur->child[idx];
+			new2_ಗಂಟು->child[idx]->parent = new2_ಗಂಟು;
 		  }
-		  cur->child[0] = new2_node;
-		  cur->child[1] = new_node;
-		  cur->count = 2;
+		  cur->child[0] = new2_ಗಂಟು;
+		  cur->child[1] = new_ಗಂಟು;
+		  cur->ಎಣಿಕೆ = 2;
 		    /* no more ancestors, stop the while loop */
-		  break;
+		  ಭಙ್ಗ;
 	    }
 
 	      /* cur is not root. hook new_node to cur->parent. */
 	    unsigned idx = 0;
-	    while (cur->parent->child[idx] != cur) {
-		  assert(idx < cur->parent->count);
+	    ಯಾವತ್ (cur->parent->child[idx] != cur) {
+		  ಪ್ರತಿಜ್ಞಾ(idx < cur->parent->ಎಣಿಕೆ);
 		  idx += 1;
 	    }
 	    idx += 1;
 
-	    for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1) {
+	    ಪ್ರತಿ (unsigned tmp = cur->parent->ಎಣಿಕೆ ;  tmp > idx ;  tmp -= 1) {
 		  cur->parent->child[tmp] = cur->parent->child[tmp-1];
 	    }
 
-	    cur->parent->child[idx] = new_node;
-	    cur->parent->count += 1;
+	    cur->parent->child[idx] = new_ಗಂಟು;
+	    cur->parent->ಎಣಿಕೆ += 1;
 
 	      /* check the ancestor */
 	    cur = cur->parent;
@@ -199,51 +199,51 @@ static void split_node_(struct tree_node_*cur)
  * the leaf keys into the new node, and add the new leaf into the
  * parent node.
  */
-static struct tree_node_* split_leaf_(struct tree_node_*cur)
+ಸ್ಥಿರ ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು* split_leaf_(ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು*cur)
 {
-      assert(cur->leaf_flag);
-      assert(cur->parent);
-      assert(! cur->parent->leaf_flag);
+      ಪ್ರತಿಜ್ಞಾ(cur->leaf_flag);
+      ಪ್ರತಿಜ್ಞಾ(cur->parent);
+      ಪ್ರತಿಜ್ಞಾ(! cur->parent->leaf_flag);
 
 	/* Create a new leaf to hold half the data from the old leaf. */
-      struct tree_node_*new_leaf = new struct tree_node_;
-      new_leaf->leaf_flag = true;
-      new_leaf->count = cur->count / 2;
+      ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು*new_leaf = ನೂತನ ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು;
+      new_leaf->leaf_flag = ಸತ್ಯ;
+      new_leaf->ಎಣಿಕೆ = cur->ಎಣಿಕೆ / 2;
       new_leaf->parent = cur->parent;
 
 	/* Move the last half of the data from the end of the old leaf
 	   to the beginning of the new leaf. At the same time, reduce
 	   the size of the old leaf. */
-      unsigned idx1 = new_leaf->count;
-      unsigned idx2 = cur->count;
-      while (idx1 > 0) {
+      unsigned idx1 = new_leaf->ಎಣಿಕೆ;
+      unsigned idx2 = cur->ಎಣಿಕೆ;
+      ಯಾವತ್ (idx1 > 0) {
 	    idx1 -= 1;
 	    idx2 -= 1;
 	    new_leaf->leaf[idx1] = cur->leaf[idx2];
-	    cur->count -= 1;
+	    cur->ಎಣಿಕೆ -= 1;
       }
 
-      assert(new_leaf->count > 0);
-      assert(cur->count > 0);
+      ಪ್ರತಿಜ್ಞಾ(new_leaf->ಎಣಿಕೆ > 0);
+      ಪ್ರತಿಜ್ಞಾ(cur->ಎಣಿಕೆ > 0);
 
       unsigned idx = 0;
-      while (cur->parent->child[idx] != cur) {
-	    assert(idx < cur->parent->count);
+      ಯಾವತ್ (cur->parent->child[idx] != cur) {
+	    ಪ್ರತಿಜ್ಞಾ(idx < cur->parent->ಎಣಿಕೆ);
 	    idx += 1;
       }
 
       idx += 1;
 
-      for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1)
+      ಪ್ರತಿ (unsigned tmp = cur->parent->ಎಣಿಕೆ ;  tmp > idx ;  tmp -= 1)
 	    cur->parent->child[tmp] = cur->parent->child[tmp-1];
 
       cur->parent->child[idx] = new_leaf;
-      cur->parent->count += 1;
+      cur->parent->ಎಣಿಕೆ += 1;
 
-      if (cur->parent->count == node_width)
-	    split_node_(cur->parent);
+      ಯದಿ (cur->parent->ಎಣಿಕೆ == ಗಂಟು_width)
+	    split_ಗಂಟು(cur->parent);
 
-      return new_leaf;
+      ಪ್ರತ್ಯಾಗಮ new_leaf;
 }
 
 
@@ -254,144 +254,144 @@ static struct tree_node_* split_leaf_(struct tree_node_*cur)
  * true.
  */
 
-symbol_value_t symbol_table_s::find_value_(struct tree_node_*cur,
-					   const char*key, symbol_value_t val,
-					   bool force_flag)
+ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t ಚಿಹ್ನೆ_table_s::find_ಮೌಲ್ಯ(ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು*cur,
+					   ಧ್ರುವ ವರ್ಣ*ಕೀಲಿ, ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t val,
+					   ತಾರ್ಕಿಕ force_flag)
 {
-      if (cur->leaf_flag) {
+      ಯದಿ (cur->leaf_flag) {
 
 	    unsigned idx = 0;
-	    for (;;) {
+	    ಪ್ರತಿ (;;) {
 		    /* If we run out of keys in the leaf, then add
 		       this at the end of the leaf. */
-		  if (idx == cur->count) {
-			cur->leaf[idx].key = key_strdup_(key);
+		  ಯದಿ (idx == cur->ಎಣಿಕೆ) {
+			cur->leaf[idx].ಕೀಲಿ = ಕೀಲಿ_strdup(ಕೀಲಿ);
 			cur->leaf[idx].val = val;
-			cur->count += 1;
-			if (cur->count == leaf_width)
+			cur->ಎಣಿಕೆ += 1;
+			ಯದಿ (cur->ಎಣಿಕೆ == leaf_width)
 			      split_leaf_(cur);
 
-			return val;
+			ಪ್ರತ್ಯಾಗಮ val;
 		  }
 
-		  int rc = strcmp(key, cur->leaf[idx].key);
+		  ಪೂರ್ಣಾಙ್ಕ rc = strcmp(ಕೀಲಿ, cur->leaf[idx].ಕೀಲಿ);
 
 		    /* If we found the key already in the table, then
 		       set the new value and break. */
-		  if (rc == 0) {
-			if (force_flag)
+		  ಯದಿ (rc == 0) {
+			ಯದಿ (force_flag)
 			      cur->leaf[idx].val = val;
-			return cur->leaf[idx].val;
+			ಪ್ರತ್ಯಾಗಮ cur->leaf[idx].val;
 		  }
 
 		    /* If this key goes before the current key, then
 		       push all the following entries back and add
 		       this key here. */
-		  if (rc < 0) {
-			for (unsigned tmp = cur->count; tmp > idx; tmp -= 1)
+		  ಯದಿ (rc < 0) {
+			ಪ್ರತಿ (unsigned tmp = cur->ಎಣಿಕೆ; tmp > idx; tmp -= 1)
 			      cur->leaf[tmp] = cur->leaf[tmp-1];
 
-			cur->leaf[idx].key = key_strdup_(key);
+			cur->leaf[idx].ಕೀಲಿ = ಕೀಲಿ_strdup(ಕೀಲಿ);
 			cur->leaf[idx].val = val;
-			cur->count += 1;
-			if (cur->count == leaf_width)
+			cur->ಎಣಿಕೆ += 1;
+			ಯದಿ (cur->ಎಣಿಕೆ == leaf_width)
 			      split_leaf_(cur);
 
-			return val;
+			ಪ್ರತ್ಯಾಗಮ val;
 		  }
 
 		  idx += 1;
 	    }
 
-      } else {
+      } ಅನ್ಯಥಾ {
 	      /* Do a binary search within the inner node. */
 	    unsigned min = 0;
-	    unsigned max = cur->count;
+	    unsigned max = cur->ಎಣಿಕೆ;
 	    unsigned idx = max/2;
-	    for (;;) {
-		  int rc = strcmp(key, node_last_key(cur->child[idx]));
-		  if (rc == 0) {
-			return find_value_(cur->child[idx],
-					   key, val, force_flag);
+	    ಪ್ರತಿ (;;) {
+		  ಪೂರ್ಣಾಙ್ಕ rc = strcmp(ಕೀಲಿ, ಗಂಟು_last_ಕೀಲಿ(cur->child[idx]));
+		  ಯದಿ (rc == 0) {
+			ಪ್ರತ್ಯಾಗಮ find_ಮೌಲ್ಯ(cur->child[idx],
+					   ಕೀಲಿ, val, force_flag);
 		  }
 
-		  if (rc > 0) {
+		  ಯದಿ (rc > 0) {
 			min = idx + 1;
-			if (min == cur->count)
-			      return find_value_(cur->child[idx],
-						 key, val, force_flag);
-			if (min == max)
-			      return find_value_(cur->child[max],
-						 key, val, force_flag);
+			ಯದಿ (min == cur->ಎಣಿಕೆ)
+			      ಪ್ರತ್ಯಾಗಮ find_ಮೌಲ್ಯ(cur->child[idx],
+						 ಕೀಲಿ, val, force_flag);
+			ಯದಿ (min == max)
+			      ಪ್ರತ್ಯಾಗಮ find_ಮೌಲ್ಯ(cur->child[max],
+						 ಕೀಲಿ, val, force_flag);
 
 			idx = min + (max-min)/2;
 
-		  } else  {
+		  } ಅನ್ಯಥಾ  {
 			max = idx;
-			if (idx == min)
-			      return find_value_(cur->child[idx],
-						 key, val, force_flag);
+			ಯದಿ (idx == min)
+			      ಪ್ರತ್ಯಾಗಮ find_ಮೌಲ್ಯ(cur->child[idx],
+						 ಕೀಲಿ, val, force_flag);
 			idx = min + (max-min)/2;
 		  }
 	    }
       }
 
-      assert(0);
-      { symbol_value_t tmp;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      { ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t tmp;
         tmp.ptr = 0;
-        return tmp;
+        ಪ್ರತ್ಯಾಗಮ tmp;
       }
 }
 
-void symbol_table_s::sym_set_value(const char*key, symbol_value_t val)
+ಶೂನ್ಯ ಚಿಹ್ನೆ_table_s::sym_set_ಮೌಲ್ಯ(ಧ್ರುವ ವರ್ಣ*ಕೀಲಿ, ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t val)
 {
-      if (root->count == 0) {
+      ಯದಿ (ಬೇರು->ಎಣಿಕೆ == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
-	    cur->leaf_flag = true;
-	    cur->parent = root;
-	    cur->count = 1;
-	    cur->leaf[0].key = key_strdup_(key);
+	    ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು*cur = ನೂತನ ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು;
+	    cur->leaf_flag = ಸತ್ಯ;
+	    cur->parent = ಬೇರು;
+	    cur->ಎಣಿಕೆ = 1;
+	    cur->leaf[0].ಕೀಲಿ = ಕೀಲಿ_strdup(ಕೀಲಿ);
 	    cur->leaf[0].val = val;
 
-	    root->count = 1;
-	    root->child[0] = cur;
-      } else {
-	    find_value_(root, key, val, true);
+	    ಬೇರು->ಎಣಿಕೆ = 1;
+	    ಬೇರು->child[0] = cur;
+      } ಅನ್ಯಥಾ {
+	    find_ಮೌಲ್ಯ(ಬೇರು, ಕೀಲಿ, val, ಸತ್ಯ);
       }
 }
 
-symbol_value_t symbol_table_s::sym_get_value(const char*key)
+ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t ಚಿಹ್ನೆ_table_s::sym_get_ಮೌಲ್ಯ(ಧ್ರುವ ವರ್ಣ*ಕೀಲಿ)
 {
-      symbol_value_t def;
+      ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t def;
       def.ptr = 0;
 
-      if (root->count == 0) {
+      ಯದಿ (ಬೇರು->ಎಣಿಕೆ == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
-	    cur->leaf_flag = true;
-	    cur->parent = root;
-	    cur->count = 1;
-	    cur->leaf[0].key = key_strdup_(key);
+	    ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು*cur = ನೂತನ ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು;
+	    cur->leaf_flag = ಸತ್ಯ;
+	    cur->parent = ಬೇರು;
+	    cur->ಎಣಿಕೆ = 1;
+	    cur->leaf[0].ಕೀಲಿ = ಕೀಲಿ_strdup(ಕೀಲಿ);
 	    cur->leaf[0].val = def;
 
-	    root->count = 1;
-	    root->child[0] = cur;
-	    return cur->leaf[0].val;
-      } else {
-	    return find_value_(root, key, def, false);
+	    ಬೇರು->ಎಣಿಕೆ = 1;
+	    ಬೇರು->child[0] = cur;
+	    ಪ್ರತ್ಯಾಗಮ cur->leaf[0].val;
+      } ಅನ್ಯಥಾ {
+	    ಪ್ರತ್ಯಾಗಮ find_ಮೌಲ್ಯ(ಬೇರು, ಕೀಲಿ, def, ಅಸತ್ಯ);
       }
 }
 
-symbol_table_s::~symbol_table_s()
+ಚಿಹ್ನೆ_table_s::~ಚಿಹ್ನೆ_table_s()
 {
-      delete_symbol_node(root);
-      while (str_chunk) {
-	    key_strings*tmp = str_chunk;
+      delete_ಚಿಹ್ನೆ_ಗಂಟು(ಬೇರು);
+      ಯಾವತ್ (str_chunk) {
+	    ಕೀಲಿ_strings*tmp = str_chunk;
 	    str_chunk = tmp->next;
 	    delete tmp;
       }

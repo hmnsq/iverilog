@@ -43,41 +43,41 @@
  * try to look inside. The actual implementation is given in the
  * symbols.cc source file.
  */
-typedef class symbol_table_s *symbol_table_t;
+ಪ್ರಕಾರನಿರ್ದೇಶ class ಚಿಹ್ನೆ_table_s *ಚಿಹ್ನೆ_table_t;
 
-typedef struct symbol_value_s {
-      union {
+ಪ್ರಕಾರನಿರ್ದೇಶ ಸಂರಚನಾ ಚಿಹ್ನೆ_ಮೌಲ್ಯ_s {
+      ಸಙ್ಘ {
 	    vvp_net_t*net;
-	    void*ptr;
+	    ಶೂನ್ಯ*ptr;
       };
-} symbol_value_t;
+} ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t;
 
 
-class symbol_table_s {
-    public:
-      explicit symbol_table_s();
-      virtual ~symbol_table_s();
-      symbol_table_s(const symbol_table_s&) = delete;
-      symbol_table_s& operator=(const symbol_table_s&) = delete;
+class ಚಿಹ್ನೆ_table_s {
+    ಸಾರ್ವಜನಿಕ:
+      explicit ಚಿಹ್ನೆ_table_s();
+      ಆಭಾಸ ~ಚಿಹ್ನೆ_table_s();
+      ಚಿಹ್ನೆ_table_s(ಧ್ರುವ ಚಿಹ್ನೆ_table_s&) = delete;
+      ಚಿಹ್ನೆ_table_s& operator=(ಧ್ರುವ ಚಿಹ್ನೆ_table_s&) = delete;
 
 	// This method locates the value in the symbol table and sets its
 	// value. If the key doesn't yet exist, create it.
-      void sym_set_value(const char*key, symbol_value_t val);
+      ಶೂನ್ಯ sym_set_ಮೌಲ್ಯ(ಧ್ರುವ ವರ್ಣ*ಕೀಲಿ, ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t val);
 
 	// This method locates the value in the symbol table and returns
 	// it. If the value does not exist, create it, initialize it with
 	// zero and return the zero value.
-      symbol_value_t sym_get_value(const char*key);
+      ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t sym_get_ಮೌಲ್ಯ(ಧ್ರುವ ವರ್ಣ*ಕೀಲಿ);
 
-    private:
-      struct tree_node_*root;
-      struct key_strings*str_chunk;
+    ಗುಪ್ತ:
+      ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು*ಬೇರು;
+      ಸಂರಚನಾ ಕೀಲಿ_strings*str_chunk;
       unsigned str_used;
 
-      symbol_value_t find_value_(struct tree_node_*cur,
-				 const char*key, symbol_value_t val,
+      ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t find_ಮೌಲ್ಯ(ಸಂರಚನಾ ವೃಕ್ಷ_ಗಂಟು*cur,
+				 ಧ್ರುವ ವರ್ಣ*ಕೀಲಿ, ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t val,
 				 bool force_flag);
-      char*key_strdup_(const char*str);
+      ವರ್ಣ*ಕೀಲಿ_strdup(ಧ್ರುವ ವರ್ಣ*str);
 };
 
 /*
@@ -87,31 +87,31 @@ class symbol_table_s {
  * the delete_symbol_table method will delete the table, including all
  * the space for the keys.
  */
-inline symbol_table_t new_symbol_table(void) { return new symbol_table_s; }
-inline void delete_symbol_table(symbol_table_t tbl) { delete tbl; }
+ಅನ್ತಃಸ್ಥ ಚಿಹ್ನೆ_table_t new_ಚಿಹ್ನೆ_table(ಶೂನ್ಯ) { ಪ್ರತ್ಯಾಗಮ new ಚಿಹ್ನೆ_table_s; }
+ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ delete_ಚಿಹ್ನೆ_table(ಚಿಹ್ನೆ_table_t tbl) { delete tbl; }
 
 // These are obsolete, and here only to support older code.
-inline void sym_set_value(symbol_table_t tbl, const char*key, symbol_value_t val)
-{ tbl->sym_set_value(key, val); }
+ಅನ್ತಃಸ್ಥ ಶೂನ್ಯ sym_set_ಮೌಲ್ಯ(ಚಿಹ್ನೆ_table_t tbl, ಧ್ರುವ ವರ್ಣ*ಕೀಲಿ, ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t val)
+{ tbl->sym_set_ಮೌಲ್ಯ(ಕೀಲಿ, val); }
 
-inline symbol_value_t sym_get_value(symbol_table_t tbl, const char*key)
-{ return tbl->sym_get_value(key); }
+ಅನ್ತಃಸ್ಥ ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t sym_get_ಮೌಲ್ಯ(ಚಿಹ್ನೆ_table_t tbl, ಧ್ರುವ ವರ್ಣ*ಕೀಲಿ)
+{ ಪ್ರತ್ಯಾಗಮ tbl->sym_get_ಮೌಲ್ಯ(ಕೀಲಿ); }
 
 /*
  * This template is a type-safe interface to the symbol table.
  */
-template <class T> class symbol_map_s : private symbol_table_s {
+template <class T> class ಚಿಹ್ನೆ_map_s : ಗುಪ್ತ ಚಿಹ್ನೆ_table_s {
 
-    public:
-      void sym_set_value(const char*key, T*val)
-      { symbol_value_t tmp;
+    ಸಾರ್ವಜನಿಕ:
+      ಶೂನ್ಯ sym_set_ಮೌಲ್ಯ(ಧ್ರುವ ವರ್ಣ*ಕೀಲಿ, T*val)
+      { ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t tmp;
 	tmp.ptr = val;
-	symbol_table_s::sym_set_value(key, tmp);
+	ಚಿಹ್ನೆ_table_s::sym_set_ಮೌಲ್ಯ(ಕೀಲಿ, tmp);
       }
 
-      T* sym_get_value(const char*key)
-      { symbol_value_t val = symbol_table_s::sym_get_value(key);
-	return reinterpret_cast<T*>(val.ptr);
+      T* sym_get_ಮೌಲ್ಯ(ಧ್ರುವ ವರ್ಣ*ಕೀಲಿ)
+      { ಚಿಹ್ನೆ_ಮೌಲ್ಯ_t val = ಚಿಹ್ನೆ_table_s::sym_get_ಮೌಲ್ಯ(ಕೀಲಿ);
+	ಪ್ರತ್ಯಾಗಮ reinterpret_cast<T*>(val.ptr);
       }
 };
 

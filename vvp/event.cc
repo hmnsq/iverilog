@@ -29,24 +29,24 @@
 
 # include <iostream>
 
-void waitable_hooks_s::run_waiting_threads_(vthread_t&threads)
+ಶೂನ್ಯ waitable_hooks_s::run_waiting_threads_(vthread_t&threads)
 {
 	// Run the non-blocking event controls.
       last = &event_ctls;
-      for (evctl*cur = event_ctls; cur != 0;) {
-	    if (cur->dec_and_run()) {
+      ಪ್ರತಿ (evctl*cur = event_ctls; cur != 0;) {
+	    ಯದಿ (cur->dec_and_run()) {
 		  evctl*nxt = cur->next;
 		  delete cur;
 		  cur = nxt;
 		  *last = cur;
-	    } else {
+	    } ಅನ್ಯಥಾ {
 		  last = &(cur->next);
 		  cur = cur->next;
 	    }
       }
 
       vthread_t tmp = threads;
-      if (tmp == 0) return;
+      ಯದಿ (tmp == 0) ಪ್ರತ್ಯಾಗಮ;
       threads = 0;
 
       vthread_schedule_list(tmp);
@@ -58,132 +58,132 @@ evctl::evctl(uint64_t ecount)
       next = 0;
 }
 
-bool evctl::dec_and_run()
+ತಾರ್ಕಿಕ evctl::dec_and_run()
 {
-      assert(ecount_ != 0);
+      ಪ್ರತಿಜ್ಞಾ(ecount_ != 0);
 
       ecount_ -= 1;
-      if (ecount_ == 0) run_run();
+      ಯದಿ (ecount_ == 0) run_run();
 
-      return ecount_ == 0;
+      ಪ್ರತ್ಯಾಗಮ ecount_ == 0;
 }
 
-evctl_real::evctl_real(__vpiHandle*handle, double value,
+evctl_real::evctl_real(__vpiHandle*handle, ದ್ವಿಗುಣ value,
                        uint64_t ecount)
 :evctl(ecount)
 {
       handle_ = handle;
-      value_ = value;
+      ಮೌಲ್ಯ_2 = value;
 }
 
-void evctl_real::run_run()
+ಶೂನ್ಯ evctl_real::run_run()
 {
-      t_vpi_value val;
+      t_vpi_ಮೌಲ್ಯ val;
 
       val.format = vpiRealVal;
-      val.value.real = value_;
-      vpi_put_value(handle_, &val, 0, vpiNoDelay);
+      val.value.real = ಮೌಲ್ಯ_2;
+      vpi_put_ಮೌಲ್ಯ(handle_, &val, 0, vpiNoDelay);
 }
 
-void schedule_evctl(__vpiHandle*handle, double value,
+ಶೂನ್ಯ schedule_evctl(__vpiHandle*handle, ದ್ವಿಗುಣ value,
                     vvp_net_t*event, uint64_t ecount)
 {
 	// Get the functor we are going to wait on.
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (event->fun);
-      assert(ep);
+      ಪ್ರತಿಜ್ಞಾ(ep);
 	// Now add this call to the end of the event list.
-      *(ep->last) = new evctl_real(handle, value, ecount);
+      *(ep->last) = ನೂತನ evctl_real(handle, value, ecount);
       ep->last = &((*(ep->last))->next);
 }
 
-evctl_vector::evctl_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
+evctl_vector::evctl_vector(vvp_net_ptr_t ptr, ಧ್ರುವ vvp_vector4_t&value,
                            unsigned off, unsigned wid, uint64_t ecount)
-:evctl(ecount), ptr_(ptr), value_(value)
+:evctl(ecount), ptr_(ptr), ಮೌಲ್ಯ_2(value)
 {
       off_ = off;
       wid_ = wid;
 }
 
-void evctl_vector::run_run()
+ಶೂನ್ಯ evctl_vector::run_run()
 {
-      if (wid_ != 0) {
-	    vvp_send_vec4_pv(ptr_, value_, off_, wid_, 0);
-      } else {
-	    vvp_send_vec4(ptr_, value_, 0);
+      ಯದಿ (wid_ != 0) {
+	    vvp_send_vec4_pv(ptr_, ಮೌಲ್ಯ_2, off_, wid_, 0);
+      } ಅನ್ಯಥಾ {
+	    vvp_send_vec4(ptr_, ಮೌಲ್ಯ_2, 0);
       }
 }
 
-void schedule_evctl(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
+ಶೂನ್ಯ schedule_evctl(vvp_net_ptr_t ptr, ಧ್ರುವ vvp_vector4_t&value,
                     unsigned offset, unsigned wid,
                     vvp_net_t*event, uint64_t ecount)
 {
 	// Get the functor we are going to wait on.
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (event->fun);
-      assert(ep);
+      ಪ್ರತಿಜ್ಞಾ(ep);
 	// Now add this call to the end of the event list.
-      *(ep->last) = new evctl_vector(ptr, value, offset, wid, ecount);
+      *(ep->last) = ನೂತನ evctl_vector(ptr, value, offset, wid, ecount);
       ep->last = &((*(ep->last))->next);
 }
 
 evctl_array::evctl_array(vvp_array_t memory, unsigned index,
-                         const vvp_vector4_t&value, unsigned off,
+                         ಧ್ರುವ vvp_vector4_t&value, unsigned off,
                          uint64_t ecount)
-:evctl(ecount), value_(value)
+:evctl(ecount), ಮೌಲ್ಯ_2(value)
 {
       mem_ = memory;
       idx_ = index;
       off_ = off;
 }
 
-void evctl_array::run_run()
+ಶೂನ್ಯ evctl_array::run_run()
 {
-      mem_->set_word(idx_, off_, value_);
+      mem_->set_word(idx_, off_, ಮೌಲ್ಯ_2);
 }
 
-void schedule_evctl(vvp_array_t memory, unsigned index,
-                    const vvp_vector4_t&value, unsigned offset,
+ಶೂನ್ಯ schedule_evctl(vvp_array_t memory, unsigned index,
+                    ಧ್ರುವ vvp_vector4_t&value, unsigned offset,
                     vvp_net_t*event, uint64_t ecount)
 {
 	// Get the functor we are going to wait on.
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (event->fun);
-      assert(ep);
+      ಪ್ರತಿಜ್ಞಾ(ep);
 	// Now add this call to the end of the event list.
-      *(ep->last) = new evctl_array(memory, index, value, offset, ecount);
+      *(ep->last) = ನೂತನ evctl_array(memory, index, value, offset, ecount);
       ep->last = &((*(ep->last))->next);
 }
 
 evctl_array_r::evctl_array_r(vvp_array_t memory, unsigned index,
-                             double value, uint64_t ecount)
+                             ದ್ವಿಗುಣ value, uint64_t ecount)
 :evctl(ecount)
 {
       mem_ = memory;
       idx_ = index;
-      value_ = value;
+      ಮೌಲ್ಯ_2 = value;
 }
 
-void evctl_array_r::run_run()
+ಶೂನ್ಯ evctl_array_r::run_run()
 {
-      mem_->set_word(idx_, value_);
+      mem_->set_word(idx_, ಮೌಲ್ಯ_2);
 }
 
-void schedule_evctl(vvp_array_t memory, unsigned index,
-                    double value,
+ಶೂನ್ಯ schedule_evctl(vvp_array_t memory, unsigned index,
+                    ದ್ವಿಗುಣ value,
                     vvp_net_t*event, uint64_t ecount)
 {
 	// Get the functor we are going to wait on.
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (event->fun);
-      assert(ep);
+      ಪ್ರತಿಜ್ಞಾ(ep);
 	// Now add this call to the end of the event list.
-      *(ep->last) = new evctl_array_r(memory, index, value, ecount);
+      *(ep->last) = ನೂತನ evctl_array_r(memory, index, value, ecount);
       ep->last = &((*(ep->last))->next);
 }
 
-inline vvp_fun_edge::edge_t VVP_EDGE(vvp_bit4_t from, vvp_bit4_t to)
+ಅನ್ತಃಸ್ಥ vvp_fun_edge::edge_t VVP_EDGE(vvp_bit4_t from, vvp_bit4_t to)
 {
-      return 1 << ((from << 2) | to);
+      ಪ್ರತ್ಯಾಗಮ 1 << ((from << 2) | to);
 }
 
-const vvp_fun_edge::edge_t vvp_edge_posedge
+ಧ್ರುವ vvp_fun_edge::edge_t vvp_edge_posedge
       = VVP_EDGE(BIT4_0,BIT4_1)
       | VVP_EDGE(BIT4_0,BIT4_X)
       | VVP_EDGE(BIT4_0,BIT4_Z)
@@ -191,7 +191,7 @@ const vvp_fun_edge::edge_t vvp_edge_posedge
       | VVP_EDGE(BIT4_Z,BIT4_1)
       ;
 
-const vvp_fun_edge::edge_t vvp_edge_negedge
+ಧ್ರುವ vvp_fun_edge::edge_t vvp_edge_negedge
       = VVP_EDGE(BIT4_1,BIT4_0)
       | VVP_EDGE(BIT4_1,BIT4_X)
       | VVP_EDGE(BIT4_1,BIT4_Z)
@@ -199,7 +199,7 @@ const vvp_fun_edge::edge_t vvp_edge_negedge
       | VVP_EDGE(BIT4_Z,BIT4_0)
       ;
 
-const vvp_fun_edge::edge_t vvp_edge_edge
+ಧ್ರುವ vvp_fun_edge::edge_t vvp_edge_edge
       = VVP_EDGE(BIT4_0,BIT4_1)
       | VVP_EDGE(BIT4_1,BIT4_0)
       | VVP_EDGE(BIT4_0,BIT4_X)
@@ -212,12 +212,12 @@ const vvp_fun_edge::edge_t vvp_edge_edge
       | VVP_EDGE(BIT4_1,BIT4_Z)
       ;
 
-const vvp_fun_edge::edge_t vvp_edge_none    = 0;
+ಧ್ರುವ vvp_fun_edge::edge_t vvp_edge_none    = 0;
 
-struct vvp_fun_edge_state_s : public waitable_state_s {
+ಸಂರಚನಾ vvp_fun_edge_state_s : ಸಾರ್ವಜನಿಕ waitable_state_s {
       vvp_fun_edge_state_s()
       {
-            for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+            ಪ್ರತಿ (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
                   bits[idx] = BIT4_X;
       }
 
@@ -227,7 +227,7 @@ struct vvp_fun_edge_state_s : public waitable_state_s {
 vvp_fun_edge::vvp_fun_edge(edge_t e)
 : edge_(e)
 {
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+      ಪ್ರತಿ (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
             bits_[idx] = BIT4_X;
 }
 
@@ -235,7 +235,7 @@ vvp_fun_edge::~vvp_fun_edge()
 {
 }
 
-bool vvp_fun_edge::recv_vec4_(const vvp_vector4_t&bit,
+ತಾರ್ಕಿಕ vvp_fun_edge::recv_vec4_(ಧ್ರುವ vvp_vector4_t&bit,
                               vvp_bit4_t&old_bit, vthread_t&threads)
 {
 	/* See what kind of edge this represents. */
@@ -244,11 +244,11 @@ bool vvp_fun_edge::recv_vec4_(const vvp_vector4_t&bit,
 	/* Save the current input for the next time around. */
       old_bit = bit.value(0);
 
-      if ((edge_ == vvp_edge_none) || (edge_ & mask)) {
+      ಯದಿ ((edge_ == vvp_edge_none) || (edge_ & mask)) {
 	    run_waiting_threads_(threads);
-            return true;
+            ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
       }
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
 
 vvp_fun_edge_sa::vvp_fun_edge_sa(edge_t e)
@@ -265,23 +265,23 @@ vthread_t vvp_fun_edge_sa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = threads_;
       threads_ = thread;
 
-      return tmp;
+      ಪ್ರತ್ಯಾಗಮ tmp;
 }
 
-void vvp_fun_edge_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_edge_sa::recv_vec4(vvp_net_ptr_t port, ಧ್ರುವ vvp_vector4_t&bit,
                                 vvp_context_t)
 {
-      if (recv_vec4_(bit, bits_[port.port()], threads_)) {
+      ಯದಿ (recv_vec4_(bit, bits_[port.port()], threads_)) {
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(bit, 0);
       }
 }
 
-void vvp_fun_edge_sa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_edge_sa::recv_vec4_pv(vvp_net_ptr_t port, ಧ್ರುವ vvp_vector4_t&bit,
 				   unsigned base, unsigned vwid, vvp_context_t)
 {
-      assert(base == 0);
-      if (recv_vec4_(bit, bits_[port.port()], threads_)) {
+      ಪ್ರತಿಜ್ಞಾ(base == 0);
+      ಯದಿ (recv_vec4_(bit, bits_[port.port()], threads_)) {
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4_pv(bit, base, vwid, 0);
       }
@@ -291,31 +291,31 @@ vvp_fun_edge_aa::vvp_fun_edge_aa(edge_t e)
 : vvp_fun_edge(e)
 {
       context_scope_ = vpip_peek_context_scope();
-      context_idx_ = vpip_add_item_to_context(this, context_scope_);
+      context_idx_ = vpip_add_item_to_context(ಏತತ್, context_scope_);
 }
 
 vvp_fun_edge_aa::~vvp_fun_edge_aa()
 {
 }
 
-void vvp_fun_edge_aa::alloc_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_edge_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new vvp_fun_edge_state_s);
+      vvp_set_context_item(context, context_idx_, ನೂತನ vvp_fun_edge_state_s);
       reset_instance(context);
 }
 
-void vvp_fun_edge_aa::reset_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_edge_aa::reset_instance(vvp_context_t context)
 {
       vvp_fun_edge_state_s*state = static_cast<vvp_fun_edge_state_s*>
             (vvp_get_context_item(context, context_idx_));
 
       state->threads = 0;
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+      ಪ್ರತಿ (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
             state->bits[idx] = bits_[idx];
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vvp_fun_edge_aa::free_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_edge_aa::free_instance(vvp_context_t context)
 {
       vvp_fun_edge_state_s*state = static_cast<vvp_fun_edge_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -331,23 +331,23 @@ vthread_t vvp_fun_edge_aa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = state->threads;
       state->threads = thread;
 
-      return tmp;
+      ಪ್ರತ್ಯಾಗಮ tmp;
 }
 
-void vvp_fun_edge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_edge_aa::recv_vec4(vvp_net_ptr_t port, ಧ್ರುವ vvp_vector4_t&bit,
                                 vvp_context_t context)
 {
-      if (context) {
+      ಯದಿ (context) {
             vvp_fun_edge_state_s*state = static_cast<vvp_fun_edge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
-            if (recv_vec4_(bit, state->bits[port.port()], state->threads)) {
+            ಯದಿ (recv_vec4_(bit, state->bits[port.port()], state->threads)) {
                   vvp_net_t*net = port.ptr();
                   net->send_vec4(bit, context);
             }
-      } else {
+      } ಅನ್ಯಥಾ {
             context = context_scope_->live_contexts;
-            while (context) {
+            ಯಾವತ್ (context) {
                   recv_vec4(port, bit, context);
                   context = vvp_get_next_context(context);
             }
@@ -355,223 +355,223 @@ void vvp_fun_edge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
       }
 }
 
-class anyedge_value {
+ವರ್ಗ anyedge_ಮೌಲ್ಯ {
 
-    public:
-      anyedge_value() {};
-      virtual ~anyedge_value() {};
+    ಸಾರ್ವಜನಿಕ:
+      anyedge_ಮೌಲ್ಯ() {};
+      ಆಭಾಸ ~anyedge_ಮೌಲ್ಯ() {};
 
-      virtual void reset() = 0;
+      ಆಭಾಸ ಶೂನ್ಯ reset() = 0;
 
-      virtual void duplicate(anyedge_value*&dup) = 0;
+      ಆಭಾಸ ಶೂನ್ಯ duplicate(anyedge_ಮೌಲ್ಯ*&dup) = 0;
 };
 
-class anyedge_vec4_value : public anyedge_value {
+ವರ್ಗ anyedge_vec4_ಮೌಲ್ಯ : ಸಾರ್ವಜನಿಕ anyedge_ಮೌಲ್ಯ {
 
-    public:
-      anyedge_vec4_value() {};
-      virtual ~anyedge_vec4_value() override {};
+    ಸಾರ್ವಜನಿಕ:
+      anyedge_vec4_ಮೌಲ್ಯ() {};
+      ಆಭಾಸ ~anyedge_vec4_ಮೌಲ್ಯ() override {};
 
-      void reset() override { old_bits.set_to_x(); }
+      ಶೂನ್ಯ reset() override { old_bits.set_to_x(); }
 
-      void set(const vvp_vector4_t&bit) { old_bits = bit; };
+      ಶೂನ್ಯ set(ಧ್ರುವ vvp_vector4_t&bit) { old_bits = bit; };
 
-      void duplicate(anyedge_value*&dup) override;
+      ಶೂನ್ಯ duplicate(anyedge_ಮೌಲ್ಯ*&dup) override;
 
-      bool recv_vec4(const vvp_vector4_t&bit);
+      ತಾರ್ಕಿಕ recv_vec4(ಧ್ರುವ vvp_vector4_t&bit);
 
-      bool recv_vec4_pv(const vvp_vector4_t&bit, unsigned base,
+      ತಾರ್ಕಿಕ recv_vec4_pv(ಧ್ರುವ vvp_vector4_t&bit, unsigned base,
 			unsigned vwid);
 
-    private:
+    ಗುಪ್ತ:
       vvp_vector4_t old_bits;
 };
 
-static anyedge_vec4_value*get_vec4_value(anyedge_value*&value)
+ಸ್ಥಿರ anyedge_vec4_ಮೌಲ್ಯ*get_vec4_ಮೌಲ್ಯ(anyedge_ಮೌಲ್ಯ*&value)
 {
-      anyedge_vec4_value*vec4_value = dynamic_cast<anyedge_vec4_value*>(value);
-      if (!value) {
-	    vec4_value = new anyedge_vec4_value();
+      anyedge_vec4_ಮೌಲ್ಯ*vec4_ಮೌಲ್ಯ = dynamic_cast<anyedge_vec4_ಮೌಲ್ಯ*>(value);
+      ಯದಿ (!value) {
+	    vec4_ಮೌಲ್ಯ = ನೂತನ anyedge_vec4_ಮೌಲ್ಯ();
 	    delete value;
-	    value = vec4_value;
+	    value = vec4_ಮೌಲ್ಯ;
       }
-      return vec4_value;
+      ಪ್ರತ್ಯಾಗಮ vec4_ಮೌಲ್ಯ;
 }
 
-class anyedge_real_value : public anyedge_value {
+ವರ್ಗ anyedge_real_ಮೌಲ್ಯ : ಸಾರ್ವಜನಿಕ anyedge_ಮೌಲ್ಯ {
 
-    public:
-      anyedge_real_value() : old_bits(0.0) {};
-      virtual ~anyedge_real_value() override {};
+    ಸಾರ್ವಜನಿಕ:
+      anyedge_real_ಮೌಲ್ಯ() : old_bits(0.0) {};
+      ಆಭಾಸ ~anyedge_real_ಮೌಲ್ಯ() override {};
 
-      void reset() override { old_bits = 0.0; }
+      ಶೂನ್ಯ reset() override { old_bits = 0.0; }
 
-      void set(double bit) { old_bits = bit; };
+      ಶೂನ್ಯ set(ದ್ವಿಗುಣ bit) { old_bits = bit; };
 
-      void duplicate(anyedge_value*&dup) override;
+      ಶೂನ್ಯ duplicate(anyedge_ಮೌಲ್ಯ*&dup) override;
 
-      bool recv_real(double bit);
+      ತಾರ್ಕಿಕ recv_real(ದ್ವಿಗುಣ bit);
 
-    private:
-      double old_bits;
+    ಗುಪ್ತ:
+      ದ್ವಿಗುಣ old_bits;
 };
 
-static anyedge_real_value*get_real_value(anyedge_value*&value)
+ಸ್ಥಿರ anyedge_real_ಮೌಲ್ಯ*get_real_ಮೌಲ್ಯ(anyedge_ಮೌಲ್ಯ*&value)
 {
-      anyedge_real_value*real_value = dynamic_cast<anyedge_real_value*>(value);
-      if (!value) {
-	    real_value = new anyedge_real_value();
+      anyedge_real_ಮೌಲ್ಯ*real_ಮೌಲ್ಯ = dynamic_cast<anyedge_real_ಮೌಲ್ಯ*>(value);
+      ಯದಿ (!value) {
+	    real_ಮೌಲ್ಯ = ನೂತನ anyedge_real_ಮೌಲ್ಯ();
 	    delete value;
-	    value = real_value;
+	    value = real_ಮೌಲ್ಯ;
       }
-      return real_value;
+      ಪ್ರತ್ಯಾಗಮ real_ಮೌಲ್ಯ;
 }
 
-class anyedge_string_value : public anyedge_value {
+ವರ್ಗ anyedge_string_ಮೌಲ್ಯ : ಸಾರ್ವಜನಿಕ anyedge_ಮೌಲ್ಯ {
 
-    public:
-      anyedge_string_value() {};
-      virtual ~anyedge_string_value() override {};
+    ಸಾರ್ವಜನಿಕ:
+      anyedge_string_ಮೌಲ್ಯ() {};
+      ಆಭಾಸ ~anyedge_string_ಮೌಲ್ಯ() override {};
 
-      void reset() override { old_bits.clear(); }
+      ಶೂನ್ಯ reset() override { old_bits.clear(); }
 
-      void set(const std::string&bit) { old_bits = bit; };
+      ಶೂನ್ಯ set(ಧ್ರುವ std::string&bit) { old_bits = bit; };
 
-      void duplicate(anyedge_value*&dup) override;
+      ಶೂನ್ಯ duplicate(anyedge_ಮೌಲ್ಯ*&dup) override;
 
-      bool recv_string(const std::string&bit);
+      ತಾರ್ಕಿಕ recv_string(ಧ್ರುವ std::string&bit);
 
-    private:
+    ಗುಪ್ತ:
       std::string old_bits;
 };
 
-static anyedge_string_value*get_string_value(anyedge_value*&value)
+ಸ್ಥಿರ anyedge_string_ಮೌಲ್ಯ*get_string_ಮೌಲ್ಯ(anyedge_ಮೌಲ್ಯ*&value)
 {
-      anyedge_string_value*string_value = dynamic_cast<anyedge_string_value*>(value);
-      if (!value) {
-	    string_value = new anyedge_string_value();
+      anyedge_string_ಮೌಲ್ಯ*string_ಮೌಲ್ಯ = dynamic_cast<anyedge_string_ಮೌಲ್ಯ*>(value);
+      ಯದಿ (!value) {
+	    string_ಮೌಲ್ಯ = ನೂತನ anyedge_string_ಮೌಲ್ಯ();
 	    delete value;
-	    value = string_value;
+	    value = string_ಮೌಲ್ಯ;
       }
-      return string_value;
+      ಪ್ರತ್ಯಾಗಮ string_ಮೌಲ್ಯ;
 }
 
-struct vvp_fun_anyedge_state_s : public waitable_state_s {
+ಸಂರಚನಾ vvp_fun_anyedge_state_s : ಸಾರ್ವಜನಿಕ waitable_state_s {
       vvp_fun_anyedge_state_s()
       {
-            for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-                  last_value_[idx] = 0;
+            ಪ್ರತಿ (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+                  last_ಮೌಲ್ಯ[idx] = 0;
       }
 
       ~vvp_fun_anyedge_state_s()
       {
-            for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-                  delete last_value_[idx];
+            ಪ್ರತಿ (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+                  delete last_ಮೌಲ್ಯ[idx];
       }
 
-      anyedge_value *last_value_[4];
-      vvp_fun_anyedge_state_s(const vvp_fun_anyedge_state_s&) = delete;
-      vvp_fun_anyedge_state_s& operator=(const vvp_fun_anyedge_state_s&) = delete;
+      anyedge_ಮೌಲ್ಯ *last_ಮೌಲ್ಯ[4];
+      vvp_fun_anyedge_state_s(ಧ್ರುವ vvp_fun_anyedge_state_s&) = delete;
+      vvp_fun_anyedge_state_s& operator=(ಧ್ರುವ vvp_fun_anyedge_state_s&) = delete;
 };
 
 vvp_fun_anyedge::vvp_fun_anyedge()
 {
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-	    last_value_[idx] = 0;
+      ಪ್ರತಿ (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+	    last_ಮೌಲ್ಯ[idx] = 0;
 }
 
 vvp_fun_anyedge::~vvp_fun_anyedge()
 {
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-	    delete last_value_[idx];
+      ಪ್ರತಿ (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+	    delete last_ಮೌಲ್ಯ[idx];
 }
 
-void anyedge_vec4_value::duplicate(anyedge_value*&dup)
+ಶೂನ್ಯ anyedge_vec4_ಮೌಲ್ಯ::duplicate(anyedge_ಮೌಲ್ಯ*&dup)
 {
-      anyedge_vec4_value*dup_vec4 = get_vec4_value(dup);
-      assert(dup_vec4);
+      anyedge_vec4_ಮೌಲ್ಯ*dup_vec4 = get_vec4_ಮೌಲ್ಯ(dup);
+      ಪ್ರತಿಜ್ಞಾ(dup_vec4);
       dup_vec4->set(old_bits);
 }
 
-bool anyedge_vec4_value::recv_vec4(const vvp_vector4_t&bit)
+ತಾರ್ಕಿಕ anyedge_vec4_ಮೌಲ್ಯ::recv_vec4(ಧ್ರುವ vvp_vector4_t&bit)
 {
-      bool flag = false;
+      ತಾರ್ಕಿಕ flag = ಅಸತ್ಯ;
 
-      if (old_bits.size() != bit.size()) {
-	    if (old_bits.size() == 0) {
+      ಯದಿ (old_bits.size() != bit.size()) {
+	    ಯದಿ (old_bits.size() == 0) {
 		    // Special case: If we've not seen any input yet
 		    // (old_bits.size()==0) then replace it will a reference
 		    // vector that is 'bx. Then compare that with the input
 		    // to see if we are processing a change from 'bx.
 		  old_bits = vvp_vector4_t(bit.size(), BIT4_X);
-		  if (old_bits.eeq(bit))
-			flag = false;
-		  else
-			flag = true;
+		  ಯದಿ (old_bits.eeq(bit))
+			flag = ಅಸತ್ಯ;
+		  ಅನ್ಯಥಾ
+			flag = ಸತ್ಯ;
 
-	    } else {
-		  flag = true;
+	    } ಅನ್ಯಥಾ {
+		  flag = ಸತ್ಯ;
 	    }
 
-      } else {
-	    for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
-		  if (old_bits.value(idx) != bit.value(idx)) {
-			flag = true;
-			break;
+      } ಅನ್ಯಥಾ {
+	    ಪ್ರತಿ (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
+		  ಯದಿ (old_bits.value(idx) != bit.value(idx)) {
+			flag = ಸತ್ಯ;
+			ಭಙ್ಗ;
 		  }
 	    }
       }
 
-      if (flag) {
+      ಯದಿ (flag) {
 	    old_bits = bit;
       }
 
-      return flag;
+      ಪ್ರತ್ಯಾಗಮ flag;
 }
 
-bool anyedge_vec4_value::recv_vec4_pv(const vvp_vector4_t&bit, unsigned base,
+ತಾರ್ಕಿಕ anyedge_vec4_ಮೌಲ್ಯ::recv_vec4_pv(ಧ್ರುವ vvp_vector4_t&bit, unsigned base,
 				      unsigned vwid)
 {
       vvp_vector4_t tmp = old_bits;
-      if (tmp.size() == 0)
+      ಯದಿ (tmp.size() == 0)
 	    tmp = vvp_vector4_t(vwid, BIT4_Z);
-      assert(base + bit.size()<= vwid);
-      assert(tmp.size() == vwid);
+      ಪ್ರತಿಜ್ಞಾ(base + bit.size()<= vwid);
+      ಪ್ರತಿಜ್ಞಾ(tmp.size() == vwid);
       tmp.set_vec(base, bit);
 
-      return recv_vec4(tmp);
+      ಪ್ರತ್ಯಾಗಮ recv_vec4(tmp);
 }
 
-void anyedge_real_value::duplicate(anyedge_value*&dup)
+ಶೂನ್ಯ anyedge_real_ಮೌಲ್ಯ::duplicate(anyedge_ಮೌಲ್ಯ*&dup)
 {
-      anyedge_real_value*dup_real = get_real_value(dup);
-      assert(dup_real);
+      anyedge_real_ಮೌಲ್ಯ*dup_real = get_real_ಮೌಲ್ಯ(dup);
+      ಪ್ರತಿಜ್ಞಾ(dup_real);
       dup_real->set(old_bits);
 }
 
-bool anyedge_real_value::recv_real(double bit)
+ತಾರ್ಕಿಕ anyedge_real_ಮೌಲ್ಯ::recv_real(ದ್ವಿಗುಣ bit)
 {
-      if (old_bits != bit) {
+      ಯದಿ (old_bits != bit) {
 	    old_bits = bit;
-            return true;
+            ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
       }
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
 
-void anyedge_string_value::duplicate(anyedge_value*&dup)
+ಶೂನ್ಯ anyedge_string_ಮೌಲ್ಯ::duplicate(anyedge_ಮೌಲ್ಯ*&dup)
 {
-      anyedge_string_value*dup_string = get_string_value(dup);
-      assert(dup_string);
+      anyedge_string_ಮೌಲ್ಯ*dup_string = get_string_ಮೌಲ್ಯ(dup);
+      ಪ್ರತಿಜ್ಞಾ(dup_string);
       dup_string->set(old_bits);
 }
 
-bool anyedge_string_value::recv_string(const std::string&bit)
+ತಾರ್ಕಿಕ anyedge_string_ಮೌಲ್ಯ::recv_string(ಧ್ರುವ std::string&bit)
 {
-      if (old_bits != bit) {
+      ಯದಿ (old_bits != bit) {
 	    old_bits = bit;
-            return true;
+            ಪ್ರತ್ಯಾಗಮ ಸತ್ಯ;
       }
-      return false;
+      ಪ್ರತ್ಯಾಗಮ ಅಸತ್ಯ;
 }
 
 vvp_fun_anyedge_sa::vvp_fun_anyedge_sa()
@@ -588,51 +588,51 @@ vthread_t vvp_fun_anyedge_sa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = threads_;
       threads_ = thread;
 
-      return tmp;
+      ಪ್ರತ್ಯಾಗಮ tmp;
 }
 
-void vvp_fun_anyedge_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_anyedge_sa::recv_vec4(vvp_net_ptr_t port, ಧ್ರುವ vvp_vector4_t&bit,
                                    vvp_context_t)
 {
-      anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
-      assert(value);
-      if (value->recv_vec4(bit)) {
+      anyedge_vec4_ಮೌಲ್ಯ*value = get_vec4_ಮೌಲ್ಯ(last_ಮೌಲ್ಯ[port.port()]);
+      ಪ್ರತಿಜ್ಞಾ(value);
+      ಯದಿ (value->recv_vec4(bit)) {
 	    run_waiting_threads_(threads_);
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(bit, 0);
       }
 }
 
-void vvp_fun_anyedge_sa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_anyedge_sa::recv_vec4_pv(vvp_net_ptr_t port, ಧ್ರುವ vvp_vector4_t&bit,
 				      unsigned base, unsigned vwid, vvp_context_t)
 {
-      anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
-      assert(value);
-      if (value->recv_vec4_pv(bit, base, vwid)) {
+      anyedge_vec4_ಮೌಲ್ಯ*value = get_vec4_ಮೌಲ್ಯ(last_ಮೌಲ್ಯ[port.port()]);
+      ಪ್ರತಿಜ್ಞಾ(value);
+      ಯದಿ (value->recv_vec4_pv(bit, base, vwid)) {
 	    run_waiting_threads_(threads_);
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(bit, 0);
       }
 }
 
-void vvp_fun_anyedge_sa::recv_real(vvp_net_ptr_t port, double bit,
+ಶೂನ್ಯ vvp_fun_anyedge_sa::recv_real(vvp_net_ptr_t port, ದ್ವಿಗುಣ bit,
                                    vvp_context_t)
 {
-      anyedge_real_value*value = get_real_value(last_value_[port.port()]);
-      assert(value);
-      if (value->recv_real(bit)) {
+      anyedge_real_ಮೌಲ್ಯ*value = get_real_ಮೌಲ್ಯ(last_ಮೌಲ್ಯ[port.port()]);
+      ಪ್ರತಿಜ್ಞಾ(value);
+      ಯದಿ (value->recv_real(bit)) {
 	    run_waiting_threads_(threads_);
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(vvp_vector4_t(), 0);
       }
 }
 
-void vvp_fun_anyedge_sa::recv_string(vvp_net_ptr_t port, const std::string&bit,
+ಶೂನ್ಯ vvp_fun_anyedge_sa::recv_string(vvp_net_ptr_t port, ಧ್ರುವ std::string&bit,
 				     vvp_context_t)
 {
-      anyedge_string_value*value = get_string_value(last_value_[port.port()]);
-      assert(value);
-      if (value->recv_string(bit)) {
+      anyedge_string_ಮೌಲ್ಯ*value = get_string_ಮೌಲ್ಯ(last_ಮೌಲ್ಯ[port.port()]);
+      ಪ್ರತಿಜ್ಞಾ(value);
+      ಯದಿ (value->recv_string(bit)) {
 	    run_waiting_threads_(threads_);
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(vvp_vector4_t(), 0);
@@ -643,7 +643,7 @@ void vvp_fun_anyedge_sa::recv_string(vvp_net_ptr_t port, const std::string&bit,
  * An anyedge receiving an object should do nothing with it, but should
  * trigger waiting threads.
  */
-void vvp_fun_anyedge_sa::recv_object(vvp_net_ptr_t port, vvp_object_t,
+ಶೂನ್ಯ vvp_fun_anyedge_sa::recv_object(vvp_net_ptr_t port, vvp_object_t,
 				     vvp_context_t)
 {
       run_waiting_threads_(threads_);
@@ -654,35 +654,35 @@ void vvp_fun_anyedge_sa::recv_object(vvp_net_ptr_t port, vvp_object_t,
 vvp_fun_anyedge_aa::vvp_fun_anyedge_aa()
 {
       context_scope_ = vpip_peek_context_scope();
-      context_idx_ = vpip_add_item_to_context(this, context_scope_);
+      context_idx_ = vpip_add_item_to_context(ಏತತ್, context_scope_);
 }
 
 vvp_fun_anyedge_aa::~vvp_fun_anyedge_aa()
 {
 }
 
-void vvp_fun_anyedge_aa::alloc_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_anyedge_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new vvp_fun_anyedge_state_s);
+      vvp_set_context_item(context, context_idx_, ನೂತನ vvp_fun_anyedge_state_s);
       reset_instance(context);
 }
 
-void vvp_fun_anyedge_aa::reset_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_anyedge_aa::reset_instance(vvp_context_t context)
 {
       vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
             (vvp_get_context_item(context, context_idx_));
 
       state->threads = 0;
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1) {
-	    if (last_value_[idx])
-	          last_value_[idx]->duplicate(state->last_value_[idx]);
-	    else if (state->last_value_[idx])
-		  state->last_value_[idx]->reset();
+      ಪ್ರತಿ (unsigned idx = 0 ;  idx < 4 ;  idx += 1) {
+	    ಯದಿ (last_ಮೌಲ್ಯ[idx])
+	          last_ಮೌಲ್ಯ[idx]->duplicate(state->last_ಮೌಲ್ಯ[idx]);
+	    ಅನ್ಯಥಾ ಯದಿ (state->last_ಮೌಲ್ಯ[idx])
+		  state->last_ಮೌಲ್ಯ[idx]->reset();
       }
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vvp_fun_anyedge_aa::free_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_anyedge_aa::free_instance(vvp_context_t context)
 {
       vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -698,83 +698,83 @@ vthread_t vvp_fun_anyedge_aa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = state->threads;
       state->threads = thread;
 
-      return tmp;
+      ಪ್ರತ್ಯಾಗಮ tmp;
 }
 
-void vvp_fun_anyedge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_anyedge_aa::recv_vec4(vvp_net_ptr_t port, ಧ್ರುವ vvp_vector4_t&bit,
                                    vvp_context_t context)
 {
-      if (context) {
+      ಯದಿ (context) {
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
-            anyedge_vec4_value*value = get_vec4_value(state->last_value_[port.port()]);
-            assert(value);
-            if (value->recv_vec4(bit)) {
+            anyedge_vec4_ಮೌಲ್ಯ*value = get_vec4_ಮೌಲ್ಯ(state->last_ಮೌಲ್ಯ[port.port()]);
+            ಪ್ರತಿಜ್ಞಾ(value);
+            ಯದಿ (value->recv_vec4(bit)) {
                   run_waiting_threads_(state->threads);
                   vvp_net_t*net = port.ptr();
                   net->send_vec4(bit, context);
             }
-      } else {
+      } ಅನ್ಯಥಾ {
             context = context_scope_->live_contexts;
-            while (context) {
+            ಯಾವತ್ (context) {
                   recv_vec4(port, bit, context);
                   context = vvp_get_next_context(context);
             }
-            anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
-            assert(value);
+            anyedge_vec4_ಮೌಲ್ಯ*value = get_vec4_ಮೌಲ್ಯ(last_ಮೌಲ್ಯ[port.port()]);
+            ಪ್ರತಿಜ್ಞಾ(value);
             value->set(bit);
       }
 }
 
-void vvp_fun_anyedge_aa::recv_real(vvp_net_ptr_t port, double bit,
+ಶೂನ್ಯ vvp_fun_anyedge_aa::recv_real(vvp_net_ptr_t port, ದ್ವಿಗುಣ bit,
                                    vvp_context_t context)
 {
-      if (context) {
+      ಯದಿ (context) {
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
-            anyedge_real_value*value = get_real_value(state->last_value_[port.port()]);
-            assert(value);
-            if (value->recv_real(bit)) {
+            anyedge_real_ಮೌಲ್ಯ*value = get_real_ಮೌಲ್ಯ(state->last_ಮೌಲ್ಯ[port.port()]);
+            ಪ್ರತಿಜ್ಞಾ(value);
+            ಯದಿ (value->recv_real(bit)) {
                   run_waiting_threads_(state->threads);
                   vvp_net_t*net = port.ptr();
                   net->send_vec4(vvp_vector4_t(), context);
             }
-      } else {
+      } ಅನ್ಯಥಾ {
             context = context_scope_->live_contexts;
-            while (context) {
+            ಯಾವತ್ (context) {
                   recv_real(port, bit, context);
                   context = vvp_get_next_context(context);
             }
-            anyedge_real_value*value = get_real_value(last_value_[port.port()]);
-            assert(value);
+            anyedge_real_ಮೌಲ್ಯ*value = get_real_ಮೌಲ್ಯ(last_ಮೌಲ್ಯ[port.port()]);
+            ಪ್ರತಿಜ್ಞಾ(value);
             value->set(bit);
       }
 }
 
-void vvp_fun_anyedge_aa::recv_string(vvp_net_ptr_t port, const std::string&bit,
+ಶೂನ್ಯ vvp_fun_anyedge_aa::recv_string(vvp_net_ptr_t port, ಧ್ರುವ std::string&bit,
 				     vvp_context_t context)
 {
-      if (context) {
+      ಯದಿ (context) {
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
-            anyedge_string_value*value = get_string_value(state->last_value_[port.port()]);
-            assert(value);
-            if (value->recv_string(bit)) {
+            anyedge_string_ಮೌಲ್ಯ*value = get_string_ಮೌಲ್ಯ(state->last_ಮೌಲ್ಯ[port.port()]);
+            ಪ್ರತಿಜ್ಞಾ(value);
+            ಯದಿ (value->recv_string(bit)) {
                   run_waiting_threads_(state->threads);
                   vvp_net_t*net = port.ptr();
                   net->send_vec4(vvp_vector4_t(), context);
             }
-      } else {
+      } ಅನ್ಯಥಾ {
             context = context_scope_->live_contexts;
-            while (context) {
+            ಯಾವತ್ (context) {
                   recv_string(port, bit, context);
                   context = vvp_get_next_context(context);
             }
-            anyedge_string_value*value = get_string_value(last_value_[port.port()]);
-            assert(value);
+            anyedge_string_ಮೌಲ್ಯ*value = get_string_ಮೌಲ್ಯ(last_ಮೌಲ್ಯ[port.port()]);
+            ಪ್ರತಿಜ್ಞಾ(value);
             value->set(bit);
       }
 }
@@ -802,10 +802,10 @@ vthread_t vvp_fun_event_or_sa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = threads_;
       threads_ = thread;
 
-      return tmp;
+      ಪ್ರತ್ಯಾಗಮ tmp;
 }
 
-void vvp_fun_event_or_sa::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_event_or_sa::recv_vec4(vvp_net_ptr_t, ಧ್ರುವ vvp_vector4_t&bit,
                                     vvp_context_t)
 {
       run_waiting_threads_(threads_);
@@ -816,19 +816,19 @@ vvp_fun_event_or_aa::vvp_fun_event_or_aa(vvp_net_t*base_net)
 : vvp_fun_event_or(base_net)
 {
       context_scope_ = vpip_peek_context_scope();
-      context_idx_ = vpip_add_item_to_context(this, context_scope_);
+      context_idx_ = vpip_add_item_to_context(ಏತತ್, context_scope_);
 }
 
 vvp_fun_event_or_aa::~vvp_fun_event_or_aa()
 {
 }
 
-void vvp_fun_event_or_aa::alloc_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_event_or_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new waitable_state_s);
+      vvp_set_context_item(context, context_idx_, ನೂತನ waitable_state_s);
 }
 
-void vvp_fun_event_or_aa::reset_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_event_or_aa::reset_instance(vvp_context_t context)
 {
       waitable_state_s*state = static_cast<waitable_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -837,7 +837,7 @@ void vvp_fun_event_or_aa::reset_instance(vvp_context_t context)
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vvp_fun_event_or_aa::free_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_fun_event_or_aa::free_instance(vvp_context_t context)
 {
       waitable_state_s*state = static_cast<waitable_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -853,21 +853,21 @@ vthread_t vvp_fun_event_or_aa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = state->threads;
       state->threads = thread;
 
-      return tmp;
+      ಪ್ರತ್ಯಾಗಮ tmp;
 }
 
-void vvp_fun_event_or_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_fun_event_or_aa::recv_vec4(vvp_net_ptr_t port, ಧ್ರುವ vvp_vector4_t&bit,
                                     vvp_context_t context)
 {
-      if (context) {
+      ಯದಿ (context) {
             waitable_state_s*state = static_cast<waitable_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
             run_waiting_threads_(state->threads);
             base_net_->send_vec4(bit, context);
-      } else {
+      } ಅನ್ಯಥಾ {
             context = context_scope_->live_contexts;
-            while (context) {
+            ಯಾವತ್ (context) {
                   recv_vec4(port, bit, context);
                   context = vvp_get_next_context(context);
             }
@@ -897,10 +897,10 @@ vthread_t vvp_named_event_sa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = threads_;
       threads_ = thread;
 
-      return tmp;
+      ಪ್ರತ್ಯಾಗಮ tmp;
 }
 
-void vvp_named_event_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_named_event_sa::recv_vec4(vvp_net_ptr_t port, ಧ್ರುವ vvp_vector4_t&bit,
                                    vvp_context_t)
 {
       run_waiting_threads_(threads_);
@@ -908,26 +908,26 @@ void vvp_named_event_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
       net->send_vec4(bit, 0);
 
       __vpiNamedEvent*obj = dynamic_cast<__vpiNamedEvent*>(handle_);
-      assert(obj);
+      ಪ್ರತಿಜ್ಞಾ(obj);
       obj->run_vpi_callbacks();
 }
 
 vvp_named_event_aa::vvp_named_event_aa(__vpiHandle*h)
 : vvp_named_event(h)
 {
-      context_idx_ = vpip_add_item_to_context(this, vpip_peek_context_scope());
+      context_idx_ = vpip_add_item_to_context(ಏತತ್, vpip_peek_context_scope());
 }
 
 vvp_named_event_aa::~vvp_named_event_aa()
 {
 }
 
-void vvp_named_event_aa::alloc_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_named_event_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new waitable_state_s);
+      vvp_set_context_item(context, context_idx_, ನೂತನ waitable_state_s);
 }
 
-void vvp_named_event_aa::reset_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_named_event_aa::reset_instance(vvp_context_t context)
 {
       waitable_state_s*state = static_cast<waitable_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -936,7 +936,7 @@ void vvp_named_event_aa::reset_instance(vvp_context_t context)
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vvp_named_event_aa::free_instance(vvp_context_t context)
+ಶೂನ್ಯ vvp_named_event_aa::free_instance(vvp_context_t context)
 {
       waitable_state_s*state = static_cast<waitable_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -952,13 +952,13 @@ vthread_t vvp_named_event_aa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = state->threads;
       state->threads = thread;
 
-      return tmp;
+      ಪ್ರತ್ಯಾಗಮ tmp;
 }
 
-void vvp_named_event_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ಶೂನ್ಯ vvp_named_event_aa::recv_vec4(vvp_net_ptr_t port, ಧ್ರುವ vvp_vector4_t&bit,
                                    vvp_context_t context)
 {
-      assert(context);
+      ಪ್ರತಿಜ್ಞಾ(context);
 
       waitable_state_s*state = static_cast<waitable_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -976,82 +976,82 @@ void vvp_named_event_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 **  Named events are handled elsewhere.
 */
 
-static void compile_event_or(char*label, unsigned argc, struct symb_s*argv);
+ಸ್ಥಿರ ಶೂನ್ಯ compile_event_or(ವರ್ಣ*label, unsigned argc, ಸಂರಚನಾ symb_s*argv);
 
-void compile_event(char*label, char*type, unsigned argc, struct symb_s*argv)
+ಶೂನ್ಯ compile_event(ವರ್ಣ*label, ವರ್ಣ*type, unsigned argc, ಸಂರಚನಾ symb_s*argv)
 {
       vvp_net_fun_t*fun = 0;
 
-      if (type == 0) {
+      ಯದಿ (type == 0) {
 	    compile_event_or(label, argc, argv);
-	    return;
+	    ಪ್ರತ್ಯಾಗಮ;
       }
 
-      if (strcmp(type,"anyedge") == 0) {
+      ಯದಿ (strcmp(type,"anyedge") == 0) {
 
-	    free(type);
+	    ಮುಕ್ತ(type);
 
-            if (vpip_peek_current_scope()->is_automatic()) {
-                  fun = new vvp_fun_anyedge_aa;
-            } else {
-                  fun = new vvp_fun_anyedge_sa;
+            ಯದಿ (vpip_peek_current_scope()->is_automatic()) {
+                  fun = ನೂತನ vvp_fun_anyedge_aa;
+            } ಅನ್ಯಥಾ {
+                  fun = ನೂತನ vvp_fun_anyedge_sa;
             }
 
-      } else {
+      } ಅನ್ಯಥಾ {
 
 	    vvp_fun_edge::edge_t edge_type = vvp_edge_none;
 
-	    if (strcmp(type,"posedge") == 0)
+	    ಯದಿ (strcmp(type,"posedge") == 0)
 		  edge_type = vvp_edge_posedge;
-	    else if (strcmp(type,"negedge") == 0)
+	    ಅನ್ಯಥಾ ಯದಿ (strcmp(type,"negedge") == 0)
 		  edge_type = vvp_edge_negedge;
-	    else if (strcmp(type,"edge") == 0)
+	    ಅನ್ಯಥಾ ಯದಿ (strcmp(type,"edge") == 0)
 		  edge_type = vvp_edge_edge;
 
-	    assert(argc <= 4);
-	    free(type);
+	    ಪ್ರತಿಜ್ಞಾ(argc <= 4);
+	    ಮುಕ್ತ(type);
 
-            if (vpip_peek_current_scope()->is_automatic()) {
-                  fun = new vvp_fun_edge_aa(edge_type);
-            } else {
-                  fun = new vvp_fun_edge_sa(edge_type);
+            ಯದಿ (vpip_peek_current_scope()->is_automatic()) {
+                  fun = ನೂತನ vvp_fun_edge_aa(edge_type);
+            } ಅನ್ಯಥಾ {
+                  fun = ನೂತನ vvp_fun_edge_sa(edge_type);
             }
 
       }
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = ನೂತನ vvp_net_t;
       ptr->fun = fun;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_ಚಿಹ್ನೆ(label, ptr);
+      ಮುಕ್ತ(label);
 
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      ಮುಕ್ತ(argv);
 }
 
-static void compile_event_or(char*label, unsigned argc, struct symb_s*argv)
+ಸ್ಥಿರ ಶೂನ್ಯ compile_event_or(ವರ್ಣ*label, unsigned argc, ಸಂರಚನಾ symb_s*argv)
 {
-      vvp_net_t*base_net = new vvp_net_t;
-      if (vpip_peek_current_scope()->is_automatic()) {
-            base_net->fun = new vvp_fun_event_or_aa(base_net);
-      } else {
-            base_net->fun = new vvp_fun_event_or_sa(base_net);
+      vvp_net_t*base_net = ನೂತನ vvp_net_t;
+      ಯದಿ (vpip_peek_current_scope()->is_automatic()) {
+            base_net->fun = ನೂತನ vvp_fun_event_or_aa(base_net);
+      } ಅನ್ಯಥಾ {
+            base_net->fun = ನೂತನ vvp_fun_event_or_sa(base_net);
       }
-      define_functor_symbol(label, base_net);
-      free(label);
+      define_functor_ಚಿಹ್ನೆ(label, base_net);
+      ಮುಕ್ತ(label);
 
 	/* This is a simplified version of a wide functor. We don't
 	   care about the data values or what port they arrived on,
 	   so we can use a single shared functor. */
       vvp_net_t*curr_net = base_net;
-      for (unsigned idx = 0 ;  idx < argc ;  idx += 1) {
-	    if (idx > 0 && (idx % 4) == 0) {
-		  curr_net = new vvp_net_t;
+      ಪ್ರತಿ (unsigned idx = 0 ;  idx < argc ;  idx += 1) {
+	    ಯದಿ (idx > 0 && (idx % 4) == 0) {
+		  curr_net = ನೂತನ vvp_net_t;
 		  curr_net->fun = base_net->fun;
 	    }
-	    input_connect(curr_net, idx % 4, argv[idx].text);
+	    ಒಳಹರಿವು_connect(curr_net, idx % 4, argv[idx].text);
       }
-      free(argv);
+      ಮುಕ್ತ(argv);
 }
 
 /*
@@ -1059,27 +1059,27 @@ static void compile_event_or(char*label, unsigned argc, struct symb_s*argv)
  * inputs, it is only accessed by behavioral trigger statements, which
  * in vvp are %set instructions.
  */
-void compile_named_event(char*label, char*name, bool local_flag)
+ಶೂನ್ಯ compile_named_event(ವರ್ಣ*label, ವರ್ಣ*name, ತಾರ್ಕಿಕ local_flag)
 {
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_net_t*ptr = ನೂತನ vvp_net_t;
 
       vpiHandle obj = vpip_make_named_event(name, ptr);
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-            ptr->fun = new vvp_named_event_aa(obj);
-      } else {
-            ptr->fun = new vvp_named_event_sa(obj);
+      ಯದಿ (vpip_peek_current_scope()->is_automatic()) {
+            ptr->fun = ನೂತನ vvp_named_event_aa(obj);
+      } ಅನ್ಯಥಾ {
+            ptr->fun = ನೂತನ vvp_named_event_sa(obj);
       }
-      define_functor_symbol(label, ptr);
-      compile_vpi_symbol(label, obj);
-      if (! local_flag) vpip_attach_to_current_scope(obj);
+      define_functor_ಚಿಹ್ನೆ(label, ptr);
+      compile_vpi_ಚಿಹ್ನೆ(label, obj);
+      ಯದಿ (! local_flag) vpip_attach_to_current_scope(obj);
 
-      free(label);
+      ಮುಕ್ತ(label);
       delete[] name;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void named_event_delete(__vpiHandle*handle)
+ಶೂನ್ಯ named_event_delete(__vpiHandle*handle)
 {
       delete dynamic_cast<__vpiNamedEvent *>(handle);
 }

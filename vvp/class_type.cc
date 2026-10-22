@@ -27,42 +27,42 @@
 #endif
 # include  <cassert>
 
-using namespace std;
+using ನಾಮಾಕಾಶ std;
 
 /*
  * This class_property_t class is an abstract base class for
  * representing a property of an instance. The definition keeps and
  * array (of pointers) of these in order to define the the class.
  */
-class class_property_t {
-    public:
-      inline class_property_t() { offset_ = 0; }
-      virtual ~class_property_t() =0;
+ವರ್ಗ class_property_t {
+    ಸಾರ್ವಜನಿಕ:
+      ಅನ್ತಃಸ್ಥ class_property_t() { offset_ = 0; }
+      ಆಭಾಸ ~class_property_t() =0;
 	// How much space does an instance of this property require?
-      virtual size_t instance_size() const =0;
+      ಆಭಾಸ size_t instance_size() ಧ್ರುವ =0;
 
-      void set_offset(size_t off) { offset_ = off; }
+      ಶೂನ್ಯ set_offset(size_t off) { offset_ = off; }
 
-    public:
-      virtual void construct(char*buf) const;
-      virtual void destruct(char*buf) const;
+    ಸಾರ್ವಜನಿಕ:
+      ಆಭಾಸ ಶೂನ್ಯ construct(ವರ್ಣ*buf) ಧ್ರುವ;
+      ಆಭಾಸ ಶೂನ್ಯ destruct(ವರ್ಣ*buf) ಧ್ರುವ;
 
-      virtual void set_vec4(char*buf, const vvp_vector4_t&val);
-      virtual void get_vec4(char*buf, vvp_vector4_t&val);
+      ಆಭಾಸ ಶೂನ್ಯ set_vec4(ವರ್ಣ*buf, ಧ್ರುವ vvp_vector4_t&val);
+      ಆಭಾಸ ಶೂನ್ಯ get_vec4(ವರ್ಣ*buf, vvp_vector4_t&val);
 
-      virtual void set_real(char*buf, double val);
-      virtual double get_real(char*buf);
+      ಆಭಾಸ ಶೂನ್ಯ set_real(ವರ್ಣ*buf, ದ್ವಿಗುಣ val);
+      ಆಭಾಸ ದ್ವಿಗುಣ get_real(ವರ್ಣ*buf);
 
-      virtual void set_string(char*buf, const std::string&val);
-      virtual string get_string(char*buf);
+      ಆಭಾಸ ಶೂನ್ಯ set_string(ವರ್ಣ*buf, ಧ್ರುವ std::string&val);
+      ಆಭಾಸ string get_string(ವರ್ಣ*buf);
 
-      virtual void set_object(char*buf, const vvp_object_t&val, uint64_t element);
-      virtual void get_object(char*buf, vvp_object_t&val, uint64_t element);
+      ಆಭಾಸ ಶೂನ್ಯ set_object(ವರ್ಣ*buf, ಧ್ರುವ vvp_object_t&val, uint64_t element);
+      ಆಭಾಸ ಶೂನ್ಯ get_object(ವರ್ಣ*buf, vvp_object_t&val, uint64_t element);
 
 	// Implement polymorphic shallow copy.
-      virtual void copy(char*buf, char*src) = 0;
+      ಆಭಾಸ ಶೂನ್ಯ copy(ವರ್ಣ*buf, ವರ್ಣ*src) = 0;
 
-    protected:
+    ರಕ್ಷಿತ:
       size_t offset_;
 };
 
@@ -70,333 +70,333 @@ class_property_t::~class_property_t()
 {
 }
 
-void class_property_t::construct(char*) const
+ಶೂನ್ಯ class_property_t::construct(ವರ್ಣ*) ಧ್ರುವ
 {
 }
 
-void class_property_t::destruct(char*) const
+ಶೂನ್ಯ class_property_t::destruct(ವರ್ಣ*) ಧ್ರುವ
 {
 }
 
-void class_property_t::set_vec4(char*, const vvp_vector4_t&)
+ಶೂನ್ಯ class_property_t::set_vec4(ವರ್ಣ*, ಧ್ರುವ vvp_vector4_t&)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void class_property_t::get_vec4(char*, vvp_vector4_t&)
+ಶೂನ್ಯ class_property_t::get_vec4(ವರ್ಣ*, vvp_vector4_t&)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void class_property_t::set_real(char*, double)
+ಶೂನ್ಯ class_property_t::set_real(ವರ್ಣ*, ದ್ವಿಗುಣ)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-double class_property_t::get_real(char*)
+ದ್ವಿಗುಣ class_property_t::get_real(ವರ್ಣ*)
 {
-      assert(0);
-      return 0.0;
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಪ್ರತ್ಯಾಗಮ 0.0;
 }
 
-void class_property_t::set_string(char*, const string&)
+ಶೂನ್ಯ class_property_t::set_string(ವರ್ಣ*, ಧ್ರುವ string&)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-string class_property_t::get_string(char*)
+string class_property_t::get_string(ವರ್ಣ*)
 {
-      assert(0);
-      return "";
+      ಪ್ರತಿಜ್ಞಾ(0);
+      ಪ್ರತ್ಯಾಗಮ "";
 }
 
-void class_property_t::set_object(char*, const vvp_object_t&, uint64_t)
+ಶೂನ್ಯ class_property_t::set_object(ವರ್ಣ*, ಧ್ರುವ vvp_object_t&, uint64_t)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
-void class_property_t::get_object(char*, vvp_object_t&, uint64_t)
+ಶೂನ್ಯ class_property_t::get_object(ವರ್ಣ*, vvp_object_t&, uint64_t)
 {
-      assert(0);
+      ಪ್ರತಿಜ್ಞಾ(0);
 }
 
 /*
  */
-template <class T> class property_atom : public class_property_t {
-    public:
-      inline explicit property_atom(void) { }
+template <ವರ್ಗ T> ವರ್ಗ property_atom : ಸಾರ್ವಜನಿಕ class_property_t {
+    ಸಾರ್ವಜನಿಕ:
+      ಅನ್ತಃಸ್ಥ explicit property_atom(ಶೂನ್ಯ) { }
       ~property_atom() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_size() ಧ್ರುವ override { ಪ್ರತ್ಯಾಗಮ ಪರಿಮಾಣ(T); }
 
-    public:
-      void construct(char*buf) const override
+    ಸಾರ್ವಜನಿಕ:
+      ಶೂನ್ಯ construct(ವರ್ಣ*buf) ಧ್ರುವ override
       { T*tmp = reinterpret_cast<T*> (buf+offset_);
 	*tmp = 0;
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      ಶೂನ್ಯ set_vec4(ವರ್ಣ*buf, ಧ್ರುವ vvp_vector4_t&val) override;
+      ಶೂನ್ಯ get_vec4(ವರ್ಣ*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      ಶೂನ್ಯ copy(ವರ್ಣ*dst, ವರ್ಣ*src) override;
 };
 
-class property_bit : public class_property_t {
-    public:
-      explicit inline property_bit(size_t wid): wid_(wid) { }
+ವರ್ಗ property_bit : ಸಾರ್ವಜನಿಕ class_property_t {
+    ಸಾರ್ವಜನಿಕ:
+      explicit ಅನ್ತಃಸ್ಥ property_bit(size_t wid): wid_(wid) { }
       ~property_bit() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector2_t); }
+      size_t instance_size() ಧ್ರುವ override { ಪ್ರತ್ಯಾಗಮ ಪರಿಮಾಣ(vvp_vector2_t); }
 
-    public:
-      void construct(char*buf) const override
-      { new (buf+offset_) vvp_vector2_t (0, wid_); }
+    ಸಾರ್ವಜನಿಕ:
+      ಶೂನ್ಯ construct(ವರ್ಣ*buf) ಧ್ರುವ override
+      { ನೂತನ (buf+offset_) vvp_vector2_t (0, wid_); }
 
-      void destruct(char*buf) const override
+      ಶೂನ್ಯ destruct(ವರ್ಣ*buf) ಧ್ರುವ override
       { vvp_vector2_t*tmp = reinterpret_cast<vvp_vector2_t*>(buf+offset_);
 	tmp->~vvp_vector2_t();
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      ಶೂನ್ಯ set_vec4(ವರ್ಣ*buf, ಧ್ರುವ vvp_vector4_t&val) override;
+      ಶೂನ್ಯ get_vec4(ವರ್ಣ*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      ಶೂನ್ಯ copy(ವರ್ಣ*dst, ವರ್ಣ*src) override;
 
-    private:
+    ಗುಪ್ತ:
       size_t wid_;
 };
 
-class property_logic : public class_property_t {
-    public:
-      explicit inline property_logic(size_t wid): wid_(wid) { }
+ವರ್ಗ property_logic : ಸಾರ್ವಜನಿಕ class_property_t {
+    ಸಾರ್ವಜನಿಕ:
+      explicit ಅನ್ತಃಸ್ಥ property_logic(size_t wid): wid_(wid) { }
       ~property_logic() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector4_t); }
+      size_t instance_size() ಧ್ರುವ override { ಪ್ರತ್ಯಾಗಮ ಪರಿಮಾಣ(vvp_vector4_t); }
 
-    public:
-      void construct(char*buf) const override
-      { new (buf+offset_) vvp_vector4_t (wid_); }
+    ಸಾರ್ವಜನಿಕ:
+      ಶೂನ್ಯ construct(ವರ್ಣ*buf) ಧ್ರುವ override
+      { ನೂತನ (buf+offset_) vvp_vector4_t (wid_); }
 
-      void destruct(char*buf) const override
+      ಶೂನ್ಯ destruct(ವರ್ಣ*buf) ಧ್ರುವ override
       { vvp_vector4_t*tmp = reinterpret_cast<vvp_vector4_t*>(buf+offset_);
 	tmp->~vvp_vector4_t();
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      ಶೂನ್ಯ set_vec4(ವರ್ಣ*buf, ಧ್ರುವ vvp_vector4_t&val) override;
+      ಶೂನ್ಯ get_vec4(ವರ್ಣ*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      ಶೂನ್ಯ copy(ವರ್ಣ*dst, ವರ್ಣ*src) override;
 
-    private:
+    ಗುಪ್ತ:
       size_t wid_;
 };
 
-template <class T> class property_real : public class_property_t {
-    public:
-      inline explicit property_real(void) { }
+template <ವರ್ಗ T> ವರ್ಗ property_real : ಸಾರ್ವಜನಿಕ class_property_t {
+    ಸಾರ್ವಜನಿಕ:
+      ಅನ್ತಃಸ್ಥ explicit property_real(ಶೂನ್ಯ) { }
       ~property_real() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_size() ಧ್ರುವ override { ಪ್ರತ್ಯಾಗಮ ಪರಿಮಾಣ(T); }
 
-    public:
-      void construct(char*buf) const override
+    ಸಾರ್ವಜನಿಕ:
+      ಶೂನ್ಯ construct(ವರ್ಣ*buf) ಧ್ರುವ override
       { T*tmp = reinterpret_cast<T*> (buf+offset_);
 	*tmp = 0.0;
       }
 
-      void set_real(char*buf, double val) override;
-      double get_real(char*buf) override;
+      ಶೂನ್ಯ set_real(ವರ್ಣ*buf, ದ್ವಿಗುಣ val) override;
+      ದ್ವಿಗುಣ get_real(ವರ್ಣ*buf) override;
 
-      void copy(char*dst, char*src) override;
+      ಶೂನ್ಯ copy(ವರ್ಣ*dst, ವರ್ಣ*src) override;
 };
 
-class property_string : public class_property_t {
-    public:
-      inline explicit property_string(void) { }
+ವರ್ಗ property_string : ಸಾರ್ವಜನಿಕ class_property_t {
+    ಸಾರ್ವಜನಿಕ:
+      ಅನ್ತಃಸ್ಥ explicit property_string(ಶೂನ್ಯ) { }
       ~property_string() override { }
 
-      size_t instance_size() const override { return sizeof(std::string); }
+      size_t instance_size() ಧ್ರುವ override { ಪ್ರತ್ಯಾಗಮ ಪರಿಮಾಣ(std::string); }
 
-    public:
-      void construct(char*buf) const override
-      { /* string*tmp = */ new (buf+offset_) string; }
+    ಸಾರ್ವಜನಿಕ:
+      ಶೂನ್ಯ construct(ವರ್ಣ*buf) ಧ್ರುವ override
+      { /* string*tmp = */ ನೂತನ (buf+offset_) string; }
 
-      void destruct(char*buf) const override
+      ಶೂನ್ಯ destruct(ವರ್ಣ*buf) ಧ್ರುವ override
       { string*tmp = reinterpret_cast<string*> (buf+offset_);
 	tmp->~string();
       }
 
-      void set_string(char*buf, const string&) override;
-      string get_string(char*buf) override;
+      ಶೂನ್ಯ set_string(ವರ್ಣ*buf, ಧ್ರುವ string&) override;
+      string get_string(ವರ್ಣ*buf) override;
 
-      void copy(char*dst, char*src) override;
+      ಶೂನ್ಯ copy(ವರ್ಣ*dst, ವರ್ಣ*src) override;
 };
 
-class property_object : public class_property_t {
-    public:
-      inline explicit property_object(uint64_t as): array_size_(as==0? 1 : as) { }
+ವರ್ಗ property_object : ಸಾರ್ವಜನಿಕ class_property_t {
+    ಸಾರ್ವಜನಿಕ:
+      ಅನ್ತಃಸ್ಥ explicit property_object(uint64_t as): array_size_(as==0? 1 : as) { }
       ~property_object() override { }
 
-      size_t instance_size() const override { return array_size_ * sizeof(vvp_object_t); }
+      size_t instance_size() ಧ್ರುವ override { ಪ್ರತ್ಯಾಗಮ array_size_ * ಪರಿಮಾಣ(vvp_object_t); }
 
-    public:
-      void construct(char*buf) const override;
+    ಸಾರ್ವಜನಿಕ:
+      ಶೂನ್ಯ construct(ವರ್ಣ*buf) ಧ್ರುವ override;
 
-      void destruct(char*buf) const override;
+      ಶೂನ್ಯ destruct(ವರ್ಣ*buf) ಧ್ರುವ override;
 
-      void set_object(char*buf, const vvp_object_t&, uint64_t) override;
-      void get_object(char*buf, vvp_object_t&, uint64_t) override;
+      ಶೂನ್ಯ set_object(ವರ್ಣ*buf, ಧ್ರುವ vvp_object_t&, uint64_t) override;
+      ಶೂನ್ಯ get_object(ವರ್ಣ*buf, vvp_object_t&, uint64_t) override;
 
-      void copy(char*dst, char*src) override;
+      ಶೂನ್ಯ copy(ವರ್ಣ*dst, ವರ್ಣ*src) override;
 
-    private:
+    ಗುಪ್ತ:
       size_t array_size_;
 };
 
-template <class T> void property_atom<T>::set_vec4(char*buf, const vvp_vector4_t&val)
+template <ವರ್ಗ T> ಶೂನ್ಯ property_atom<T>::set_vec4(ವರ್ಣ*buf, ಧ್ರುವ vvp_vector4_t&val)
 {
       T*tmp = reinterpret_cast<T*> (buf+offset_);
-      bool flag = vector4_to_value(val, *tmp, true, false);
-      assert(flag);
+      ತಾರ್ಕಿಕ flag = vector4_to_ಮೌಲ್ಯ(val, *tmp, ಸತ್ಯ, ಅಸತ್ಯ);
+      ಪ್ರತಿಜ್ಞಾ(flag);
 }
 
-template <class T> void property_atom<T>::get_vec4(char*buf, vvp_vector4_t&val)
+template <ವರ್ಗ T> ಶೂನ್ಯ property_atom<T>::get_vec4(ವರ್ಣ*buf, vvp_vector4_t&val)
 {
       T*src = reinterpret_cast<T*> (buf+offset_);
-      const size_t tmp_cnt = sizeof(T)<sizeof(unsigned long)
+      ಧ್ರುವ size_t tmp_cnt = ಪರಿಮಾಣ(T)<ಪರಿಮಾಣ(unsigned long)
 				       ? 1
-				       : sizeof(T) / sizeof(unsigned long);
+				       : ಪರಿಮಾಣ(T) / ಪರಿಮಾಣ(unsigned long);
       unsigned long tmp[tmp_cnt];
       tmp[0] = src[0];
 
-      for (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
-	    tmp[idx] = src[0] >> idx * 8 * sizeof(tmp[0]);
+      ಪ್ರತಿ (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
+	    tmp[idx] = src[0] >> idx * 8 * ಪರಿಮಾಣ(tmp[0]);
 
-      val.resize(8*sizeof(T));
+      val.resize(8*ಪರಿಮಾಣ(T));
       val.setarray(0, val.size(), tmp);
 }
 
-template <class T> void property_atom<T>::copy(char*dst, char*src)
+template <ವರ್ಗ T> ಶೂನ್ಯ property_atom<T>::copy(ವರ್ಣ*dst, ವರ್ಣ*src)
 {
       T*dst_obj = reinterpret_cast<T*> (dst+offset_);
       T*src_obj = reinterpret_cast<T*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_bit::set_vec4(char*buf, const vvp_vector4_t&val)
+ಶೂನ್ಯ property_bit::set_vec4(ವರ್ಣ*buf, ಧ್ರುವ vvp_vector4_t&val)
 {
       vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
       *obj = val;
 }
 
-void property_bit::get_vec4(char*buf, vvp_vector4_t&val)
+ಶೂನ್ಯ property_bit::get_vec4(ವರ್ಣ*buf, vvp_vector4_t&val)
 {
-      const vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
+      ಧ್ರುವ vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
       val = vector2_to_vector4(*obj, obj->size());
 }
 
-void property_bit::copy(char*dst, char*src)
+ಶೂನ್ಯ property_bit::copy(ವರ್ಣ*dst, ವರ್ಣ*src)
 {
       vvp_vector2_t*dst_obj = reinterpret_cast<vvp_vector2_t*> (dst+offset_);
-      const vvp_vector2_t*src_obj = reinterpret_cast<vvp_vector2_t*> (src+offset_);
+      ಧ್ರುವ vvp_vector2_t*src_obj = reinterpret_cast<vvp_vector2_t*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_logic::set_vec4(char*buf, const vvp_vector4_t&val)
+ಶೂನ್ಯ property_logic::set_vec4(ವರ್ಣ*buf, ಧ್ರುವ vvp_vector4_t&val)
 {
       vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
       *obj = val;
 }
 
-void property_logic::get_vec4(char*buf, vvp_vector4_t&val)
+ಶೂನ್ಯ property_logic::get_vec4(ವರ್ಣ*buf, vvp_vector4_t&val)
 {
-      const vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
+      ಧ್ರುವ vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
       val = *obj;
 }
 
-void property_logic::copy(char*dst, char*src)
+ಶೂನ್ಯ property_logic::copy(ವರ್ಣ*dst, ವರ್ಣ*src)
 {
       vvp_vector4_t*dst_obj = reinterpret_cast<vvp_vector4_t*> (dst+offset_);
-      const vvp_vector4_t*src_obj = reinterpret_cast<vvp_vector4_t*> (src+offset_);
+      ಧ್ರುವ vvp_vector4_t*src_obj = reinterpret_cast<vvp_vector4_t*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-template <class T> void property_real<T>::set_real(char*buf, double val)
+template <ವರ್ಗ T> ಶೂನ್ಯ property_real<T>::set_real(ವರ್ಣ*buf, ದ್ವಿಗುಣ val)
 {
       T*tmp = reinterpret_cast<T*>(buf+offset_);
       *tmp = val;
 }
 
-template <class T> double property_real<T>::get_real(char*buf)
+template <ವರ್ಗ T> ದ್ವಿಗುಣ property_real<T>::get_real(ವರ್ಣ*buf)
 {
       T*tmp = reinterpret_cast<T*>(buf+offset_);
-      return *tmp;
+      ಪ್ರತ್ಯಾಗಮ *tmp;
 }
 
-template <class T> void property_real<T>::copy(char*dst, char*src)
+template <ವರ್ಗ T> ಶೂನ್ಯ property_real<T>::copy(ವರ್ಣ*dst, ವರ್ಣ*src)
 {
       T*dst_obj = reinterpret_cast<T*> (dst+offset_);
       T*src_obj = reinterpret_cast<T*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_string::set_string(char*buf, const string&val)
+ಶೂನ್ಯ property_string::set_string(ವರ್ಣ*buf, ಧ್ರುವ string&val)
 {
       string*tmp = reinterpret_cast<string*>(buf+offset_);
       *tmp = val;
 }
 
-string property_string::get_string(char*buf)
+string property_string::get_string(ವರ್ಣ*buf)
 {
-      const string*tmp = reinterpret_cast<string*>(buf+offset_);
-      return *tmp;
+      ಧ್ರುವ string*tmp = reinterpret_cast<string*>(buf+offset_);
+      ಪ್ರತ್ಯಾಗಮ *tmp;
 }
 
-void property_string::copy(char*dst, char*src)
+ಶೂನ್ಯ property_string::copy(ವರ್ಣ*dst, ವರ್ಣ*src)
 {
       string*dst_obj = reinterpret_cast<string*> (dst+offset_);
-      const string*src_obj = reinterpret_cast<string*> (src+offset_);
+      ಧ್ರುವ string*src_obj = reinterpret_cast<string*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_object::construct(char*buf) const
+ಶೂನ್ಯ property_object::construct(ವರ್ಣ*buf) ಧ್ರುವ
 {
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
-	    new (buf+offset_ + idx*sizeof(vvp_object_t)) vvp_object_t;
+      ಪ್ರತಿ (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+	    ನೂತನ (buf+offset_ + idx*ಪರಿಮಾಣ(vvp_object_t)) vvp_object_t;
 }
 
-void property_object::destruct(char*buf) const
+ಶೂನ್ಯ property_object::destruct(ವರ್ಣ*buf) ಧ್ರುವ
 {
       vvp_object_t*tmp = reinterpret_cast<vvp_object_t*> (buf+offset_);
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      ಪ್ರತಿ (size_t idx = 0 ; idx < array_size_ ; idx += 1)
 	    (tmp+idx)->~vvp_object_t();
 }
 
-void property_object::set_object(char*buf, const vvp_object_t&val, uint64_t idx)
+ಶೂನ್ಯ property_object::set_object(ವರ್ಣ*buf, ಧ್ರುವ vvp_object_t&val, uint64_t idx)
 {
-      assert(idx < array_size_);
+      ಪ್ರತಿಜ್ಞಾ(idx < array_size_);
       vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
       tmp[idx] = val;
 }
 
-void property_object::get_object(char*buf, vvp_object_t&val, uint64_t idx)
+ಶೂನ್ಯ property_object::get_object(ವರ್ಣ*buf, vvp_object_t&val, uint64_t idx)
 {
-      assert(idx < array_size_);
-      const vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
+      ಪ್ರತಿಜ್ಞಾ(idx < array_size_);
+      ಧ್ರುವ vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
       val = tmp[idx];
 }
 
-void property_object::copy(char*dst, char*src)
+ಶೂನ್ಯ property_object::copy(ವರ್ಣ*dst, ವರ್ಣ*src)
 {
       vvp_object_t*dst_obj = reinterpret_cast<vvp_object_t*>(dst+offset_);
-      const vvp_object_t*src_obj = reinterpret_cast<vvp_object_t*>(src+offset_);
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      ಧ್ರುವ vvp_object_t*src_obj = reinterpret_cast<vvp_object_t*>(src+offset_);
+      ಪ್ರತಿ (size_t idx = 0 ; idx < array_size_ ; idx += 1)
 	    dst_obj[idx] = src_obj[idx];
 }
 
 /* **** */
 
-class_type::class_type(const string&nam, size_t nprop)
+class_type::class_type(ಧ್ರುವ string&nam, size_t nprop)
 : class_name_(nam), properties_(nprop)
 {
       instance_size_ = 0;
@@ -404,59 +404,59 @@ class_type::class_type(const string&nam, size_t nprop)
 
 class_type::~class_type()
 {
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      ಪ್ರತಿ (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    delete properties_[idx].type;
 }
 
-void class_type::set_property(size_t idx, const string&name, const string&type, uint64_t array_size)
+ಶೂನ್ಯ class_type::set_property(size_t idx, ಧ್ರುವ string&name, ಧ್ರುವ string&type, uint64_t array_size)
 {
-      assert(idx < properties_.size());
+      ಪ್ರತಿಜ್ಞಾ(idx < properties_.size());
       properties_[idx].name = name;
 
-      if (type == "b8")
-	    properties_[idx].type = new property_atom<uint8_t>;
-      else if (type == "b16")
-	    properties_[idx].type = new property_atom<uint16_t>;
-      else if (type == "b32")
-	    properties_[idx].type = new property_atom<uint32_t>;
-      else if (type == "b64")
-	    properties_[idx].type = new property_atom<uint64_t>;
-      else if (type == "sb8")
-	    properties_[idx].type = new property_atom<int8_t>;
-      else if (type == "sb16")
-	    properties_[idx].type = new property_atom<int16_t>;
-      else if (type == "sb32")
-	    properties_[idx].type = new property_atom<int32_t>;
-      else if (type == "sb64")
-	    properties_[idx].type = new property_atom<int64_t>;
-      else if (type == "r")
-	    properties_[idx].type = new property_real<double>;
-      else if (type == "S")
-	    properties_[idx].type = new property_string;
-      else if (type == "o")
-	    properties_[idx].type = new property_object(array_size);
-      else if (type[0] == 'b') {
+      ಯದಿ (type == "b8")
+	    properties_[idx].type = ನೂತನ property_atom<uint8_t>;
+      ಅನ್ಯಥಾ ಯದಿ (type == "b16")
+	    properties_[idx].type = ನೂತನ property_atom<uint16_t>;
+      ಅನ್ಯಥಾ ಯದಿ (type == "b32")
+	    properties_[idx].type = ನೂತನ property_atom<uint32_t>;
+      ಅನ್ಯಥಾ ಯದಿ (type == "b64")
+	    properties_[idx].type = ನೂತನ property_atom<uint64_t>;
+      ಅನ್ಯಥಾ ಯದಿ (type == "sb8")
+	    properties_[idx].type = ನೂತನ property_atom<int8_t>;
+      ಅನ್ಯಥಾ ಯದಿ (type == "sb16")
+	    properties_[idx].type = ನೂತನ property_atom<int16_t>;
+      ಅನ್ಯಥಾ ಯದಿ (type == "sb32")
+	    properties_[idx].type = ನೂತನ property_atom<int32_t>;
+      ಅನ್ಯಥಾ ಯದಿ (type == "sb64")
+	    properties_[idx].type = ನೂತನ property_atom<int64_t>;
+      ಅನ್ಯಥಾ ಯದಿ (type == "r")
+	    properties_[idx].type = ನೂತನ property_real<ದ್ವಿಗುಣ>;
+      ಅನ್ಯಥಾ ಯದಿ (type == "S")
+	    properties_[idx].type = ನೂತನ property_string;
+      ಅನ್ಯಥಾ ಯದಿ (type == "o")
+	    properties_[idx].type = ನೂತನ property_object(array_size);
+      ಅನ್ಯಥಾ ಯದಿ (type[0] == 'b') {
 	    size_t wid = strtoul(type.c_str()+1, 0, 0);
-	    properties_[idx].type = new property_bit(wid);
-      } else if (type[0] == 'L') {
+	    properties_[idx].type = ನೂತನ property_bit(wid);
+      } ಅನ್ಯಥಾ ಯದಿ (type[0] == 'L') {
 	    size_t wid = strtoul(type.c_str()+1,0,0);
-	    properties_[idx].type = new property_logic(wid);
-      } else if (type[0] == 's' && type[1] == 'L') {
+	    properties_[idx].type = ನೂತನ property_logic(wid);
+      } ಅನ್ಯಥಾ ಯದಿ (type[0] == 's' && type[1] == 'L') {
 	    size_t wid = strtoul(type.c_str()+2,0,0);
-	    properties_[idx].type = new property_logic(wid);
-      } else {
+	    properties_[idx].type = ನೂತನ property_logic(wid);
+      } ಅನ್ಯಥಾ {
 	    properties_[idx].type = 0;
       }
 }
 
-void class_type::finish_setup(void)
+ಶೂನ್ಯ class_type::finish_setup(ಶೂನ್ಯ)
 {
       map<size_t, vector<size_t> > size_map;
 	// Add up all the sizes to get a total instance size. This
 	// figures out how much memory a complete instance will need.
       size_t accum = 0;
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1) {
-	    assert(properties_[idx].type);
+      ಪ್ರತಿ (size_t idx = 0 ; idx < properties_.size() ; idx += 1) {
+	    ಪ್ರತಿಜ್ಞಾ(properties_[idx].type);
 	    size_t instance_size = properties_[idx].type->instance_size();
 	    accum += instance_size;
 	    size_map[instance_size].push_back(idx);
@@ -468,146 +468,146 @@ void class_type::finish_setup(void)
 	// space. Allocate the properties largest objects first so
 	// that they are assured better alignment.
       accum = 0;
-      for (map<size_t, vector<size_t> >::reverse_iterator cur = size_map.rbegin()
+      ಪ್ರತಿ (map<size_t, vector<size_t> >::reverse_iterator cur = size_map.rbegin()
 		 ; cur != size_map.rend() ; ++ cur) {
-	    for (size_t idx = 0 ; idx < cur->second.size() ; idx += 1) {
+	    ಪ್ರತಿ (size_t idx = 0 ; idx < cur->second.size() ; idx += 1) {
 		  size_t pid = cur->second[idx];
 		  class_property_t*ptype = properties_[pid].type;
-		  assert(ptype->instance_size() == cur->first);
+		  ಪ್ರತಿಜ್ಞಾ(ptype->instance_size() == cur->first);
 		  ptype->set_offset(accum);
 		  accum += cur->first;
 	    }
       }
 }
 
-class_type::inst_t class_type::instance_new() const
+class_type::inst_t class_type::instance_new() ಧ್ರುವ
 {
-      char*buf = new char [instance_size_];
+      ವರ್ಣ*buf = ನೂತನ ವರ್ಣ [instance_size_];
 
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      ಪ್ರತಿ (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->construct(buf);
 
-      return reinterpret_cast<inst_t> (buf);
+      ಪ್ರತ್ಯಾಗಮ reinterpret_cast<inst_t> (buf);
 }
 
-void class_type::instance_delete(class_type::inst_t obj) const
+ಶೂನ್ಯ class_type::instance_delete(class_type::inst_t obj) ಧ್ರುವ
 {
-      char*buf = reinterpret_cast<char*> (obj);
+      ವರ್ಣ*buf = reinterpret_cast<ವರ್ಣ*> (obj);
 
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      ಪ್ರತಿ (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->destruct(buf);
 
       delete[]buf;
 }
 
-void class_type::set_vec4(class_type::inst_t obj, size_t pid,
-			  const vvp_vector4_t&val) const
+ಶೂನ್ಯ class_type::set_vec4(class_type::inst_t obj, size_t pid,
+			  ಧ್ರುವ vvp_vector4_t&val) ಧ್ರುವ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      ವರ್ಣ*buf = reinterpret_cast<ವರ್ಣ*> (obj);
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
       properties_[pid].type->set_vec4(buf, val);
 }
 
-void class_type::get_vec4(class_type::inst_t obj, size_t pid,
-			  vvp_vector4_t&val) const
+ಶೂನ್ಯ class_type::get_vec4(class_type::inst_t obj, size_t pid,
+			  vvp_vector4_t&val) ಧ್ರುವ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      ವರ್ಣ*buf = reinterpret_cast<ವರ್ಣ*> (obj);
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
       properties_[pid].type->get_vec4(buf, val);
 }
 
-void class_type::set_real(class_type::inst_t obj, size_t pid,
-			  double val) const
+ಶೂನ್ಯ class_type::set_real(class_type::inst_t obj, size_t pid,
+			  ದ್ವಿಗುಣ val) ಧ್ರುವ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      ವರ್ಣ*buf = reinterpret_cast<ವರ್ಣ*> (obj);
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
       properties_[pid].type->set_real(buf, val);
 }
 
-double class_type::get_real(class_type::inst_t obj, size_t pid) const
+ದ್ವಿಗುಣ class_type::get_real(class_type::inst_t obj, size_t pid) ಧ್ರುವ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      return properties_[pid].type->get_real(buf);
+      ವರ್ಣ*buf = reinterpret_cast<ವರ್ಣ*> (obj);
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
+      ಪ್ರತ್ಯಾಗಮ properties_[pid].type->get_real(buf);
 }
 
-void class_type::set_string(class_type::inst_t obj, size_t pid,
-			    const string&val) const
+ಶೂನ್ಯ class_type::set_string(class_type::inst_t obj, size_t pid,
+			    ಧ್ರುವ string&val) ಧ್ರುವ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      ವರ್ಣ*buf = reinterpret_cast<ವರ್ಣ*> (obj);
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
       properties_[pid].type->set_string(buf, val);
 }
 
-string class_type::get_string(class_type::inst_t obj, size_t pid) const
+string class_type::get_string(class_type::inst_t obj, size_t pid) ಧ್ರುವ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      return properties_[pid].type->get_string(buf);
+      ವರ್ಣ*buf = reinterpret_cast<ವರ್ಣ*> (obj);
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
+      ಪ್ರತ್ಯಾಗಮ properties_[pid].type->get_string(buf);
 }
 
-void class_type::set_object(class_type::inst_t obj, size_t pid,
-			    const vvp_object_t&val, size_t idx) const
+ಶೂನ್ಯ class_type::set_object(class_type::inst_t obj, size_t pid,
+			    ಧ್ರುವ vvp_object_t&val, size_t idx) ಧ್ರುವ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      ವರ್ಣ*buf = reinterpret_cast<ವರ್ಣ*> (obj);
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
       properties_[pid].type->set_object(buf, val, idx);
 }
 
-void class_type::get_object(class_type::inst_t obj, size_t pid,
-			    vvp_object_t&val, size_t idx) const
+ಶೂನ್ಯ class_type::get_object(class_type::inst_t obj, size_t pid,
+			    vvp_object_t&val, size_t idx) ಧ್ರುವ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      ವರ್ಣ*buf = reinterpret_cast<ವರ್ಣ*> (obj);
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
       properties_[pid].type->get_object(buf, val, idx);
 }
 
-void class_type::copy_property(class_type::inst_t dst, size_t pid, class_type::inst_t src) const
+ಶೂನ್ಯ class_type::copy_property(class_type::inst_t dst, size_t pid, class_type::inst_t src) ಧ್ರುವ
 {
-      char*dst_buf = reinterpret_cast<char*> (dst);
-      char*src_buf = reinterpret_cast<char*> (src);
+      ವರ್ಣ*dst_buf = reinterpret_cast<ವರ್ಣ*> (dst);
+      ವರ್ಣ*src_buf = reinterpret_cast<ವರ್ಣ*> (src);
 
-      assert(pid < properties_.size());
+      ಪ್ರತಿಜ್ಞಾ(pid < properties_.size());
 
       properties_[pid].type->copy(dst_buf, src_buf);
 }
 
-int class_type::get_type_code(void) const
+ಪೂರ್ಣಾಙ್ಕ class_type::get_type_code(ಶೂನ್ಯ) ಧ್ರುವ
 {
-      return vpiClassDefn;
+      ಪ್ರತ್ಯಾಗಮ vpiClassDefn;
 }
 
-static class_type*compile_class = 0;
+ಸ್ಥಿರ class_type*compile_class = 0;
 
-void compile_class_start(char*lab, char*nam, unsigned ntype)
+ಶೂನ್ಯ compile_class_start(ವರ್ಣ*lab, ವರ್ಣ*nam, unsigned ntype)
 {
-      assert(compile_class == 0);
-      compile_class = new class_type(nam, ntype);
-      compile_vpi_symbol(lab, compile_class);
-      free(lab);
+      ಪ್ರತಿಜ್ಞಾ(compile_class == 0);
+      compile_class = ನೂತನ class_type(nam, ntype);
+      compile_vpi_ಚಿಹ್ನೆ(lab, compile_class);
+      ಮುಕ್ತ(lab);
       delete[]nam;
 }
 
-void compile_class_property(unsigned idx, char*nam, char*typ, uint64_t array_size)
+ಶೂನ್ಯ compile_class_property(unsigned idx, ವರ್ಣ*nam, ವರ್ಣ*typ, uint64_t array_size)
 {
-      assert(compile_class);
+      ಪ್ರತಿಜ್ಞಾ(compile_class);
       compile_class->set_property(idx, nam, typ, array_size);
       delete[]nam;
       delete[]typ;
 }
 
-void compile_class_done(void)
+ಶೂನ್ಯ compile_class_done(ಶೂನ್ಯ)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      assert(scope);
-      assert(compile_class);
+      ಪ್ರತಿಜ್ಞಾ(scope);
+      ಪ್ರತಿಜ್ಞಾ(compile_class);
       compile_class->finish_setup();
       scope->classes[compile_class->class_name()] = compile_class;
       compile_class = 0;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void class_def_delete(class_type *item)
+ಶೂನ್ಯ class_def_delete(class_type *item)
 {
       delete item;
 }

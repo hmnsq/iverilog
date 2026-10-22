@@ -25,71 +25,71 @@
  * This method is called to compile the design file. The input is read
  * and a list of statements is created.
  */
-extern int compile_design(const char*path);
+ಬಾಹ್ಯ ಪೂರ್ಣಾಙ್ಕ compile_design(ಧ್ರುವ ವರ್ಣ*path);
 
 /*
  * This routine is called to check that the input file has a compatible
  * version.
  */
-extern void verify_version(char *ivl_ver, char* commit);
+ಬಾಹ್ಯ ಶೂನ್ಯ verify_version(ವರ್ಣ *ivl_ver, ವರ್ಣ* commit);
 
 /*
  * Set the default delay type for the $sdf_annotate task (min/typ/max).
  */
-extern void set_delay_selection(const char* sel);
+ಬಾಹ್ಯ ಶೂನ್ಯ set_delay_selection(ಧ್ರುವ ವರ್ಣ* sel);
 
 /*
  * various functions shared by the lexor and the parser.
  */
-extern int yylex(void);
-extern void yyerror(const char*msg);
+ಬಾಹ್ಯ ಪೂರ್ಣಾಙ್ಕ yylex(ಶೂನ್ಯ);
+ಬಾಹ್ಯ ಶೂನ್ಯ yyerror(ಧ್ರುವ ವರ್ಣ*ಸಂದೇಶ);
 
-extern void destroy_lexor();
+ಬಾಹ್ಯ ಶೂನ್ಯ destroy_lexor();
 
 /*
  * This is the path of the current source file.
  */
-extern const char*yypath;
-extern unsigned yyline;
+ಬಾಹ್ಯ ಧ್ರುವ ವರ್ಣ*yypath;
+ಬಾಹ್ಯ unsigned yyline;
 
-struct symb_s {
-      char*text;
+ಸಂರಚನಾ symb_s {
+      ವರ್ಣ*text;
       unsigned idx;
 };
 
-struct symbv_s {
+ಸಂರಚನಾ symbv_s {
       unsigned cnt;
-      struct symb_s*vect;
+      ಸಂರಚನಾ symb_s*vect;
 };
 
-extern void symbv_init(struct symbv_s*obj);
-extern void symbv_add(struct symbv_s*obj, struct symb_s item);
+ಬಾಹ್ಯ ಶೂನ್ಯ symbv_init(ಸಂರಚನಾ symbv_s*obj);
+ಬಾಹ್ಯ ಶೂನ್ಯ symbv_add(ಸಂರಚನಾ symbv_s*obj, ಸಂರಚನಾ symb_s item);
 
-struct numbv_s {
+ಸಂರಚನಾ numbv_s {
       unsigned cnt;
       long*nvec;
 };
 
-struct enum_name_s {
-      char*text;
+ಸಂರಚನಾ enum_name_s {
+      ವರ್ಣ*text;
       uint64_t val2;
-      char*val4;
+      ವರ್ಣ*val4;
 };
 
-extern void numbv_init(struct numbv_s*obj);
-extern void numbv_add(struct numbv_s*obj, long item);
-extern void numbv_clear(struct numbv_s*obj);
+ಬಾಹ್ಯ ಶೂನ್ಯ numbv_init(ಸಂರಚನಾ numbv_s*obj);
+ಬಾಹ್ಯ ಶೂನ್ಯ numbv_add(ಸಂರಚನಾ numbv_s*obj, long item);
+ಬಾಹ್ಯ ಶೂನ್ಯ numbv_clear(ಸಂರಚನಾ numbv_s*obj);
 
-struct argv_s {
+ಸಂರಚನಾ argv_s {
       unsigned  argc;
       vpiHandle*argv;
-      char    **syms;
+      ವರ್ಣ    **syms;
 };
 
 
-extern void argv_init(struct argv_s*obj);
-extern void argv_add(struct argv_s*obj, vpiHandle);
-extern void argv_sym_add(struct argv_s*obj, char *);
-extern void argv_sym_lookup(struct argv_s*obj);
+ಬಾಹ್ಯ ಶೂನ್ಯ argv_init(ಸಂರಚನಾ argv_s*obj);
+ಬಾಹ್ಯ ಶೂನ್ಯ argv_add(ಸಂರಚನಾ argv_s*obj, vpiHandle);
+ಬಾಹ್ಯ ಶೂನ್ಯ argv_sym_add(ಸಂರಚನಾ argv_s*obj, ವರ್ಣ *);
+ಬಾಹ್ಯ ಶೂನ್ಯ argv_sym_lookup(ಸಂರಚನಾ argv_s*obj);
 
 #endif /* IVL_parse_misc_H */

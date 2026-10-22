@@ -22,44 +22,44 @@
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
 #ifdef __SUNPRO_CC
 # include  <stddef.h>
-#else
+#ಅನ್ಯಥಾ
 # include  <cstddef>
 #endif
 
-extern unsigned long count_opcodes;
-extern unsigned long count_functors;
-extern unsigned long count_functors_logic;
-extern unsigned long count_functors_bufif;
-extern unsigned long count_functors_resolv;
-extern unsigned long count_functors_sig;
-extern unsigned long count_filters;
-extern unsigned long count_vvp_nets;
-extern unsigned long count_vpi_nets;
-extern unsigned long count_vpi_scopes;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_opcodes;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_functors;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_functors_logic;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_functors_bufif;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_functors_resolv;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_functors_sig;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_filters;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_vvp_nets;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_vpi_nets;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_vpi_scopes;
 
-extern unsigned long count_net_arrays;
-extern unsigned long count_net_array_words;
-extern unsigned long count_var_arrays;
-extern unsigned long count_var_array_words;
-extern unsigned long count_real_arrays;
-extern unsigned long count_real_array_words;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_net_arrays;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_net_array_ಪದಗಳು;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_var_arrays;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_var_array_ಪದಗಳು;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_real_arrays;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_real_array_ಪದಗಳು;
 
 
-extern unsigned long count_time_events;
-extern unsigned long count_time_pool(void);
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_time_events;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_time_pool(ಶೂನ್ಯ);
 
-extern unsigned long count_assign_events;
-extern unsigned long count_assign4_pool(void);
-extern unsigned long count_assign8_pool(void);
-extern unsigned long count_assign_real_pool(void);
-extern unsigned long count_assign_aword_pool(void);
-extern unsigned long count_assign_arword_pool(void);
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_assign_events;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_assign4_pool(ಶೂನ್ಯ);
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_assign8_pool(ಶೂನ್ಯ);
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_assign_real_pool(ಶೂನ್ಯ);
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_assign_aword_pool(ಶೂನ್ಯ);
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_assign_arword_pool(ಶೂನ್ಯ);
 
-extern unsigned long count_gen_events;
-extern unsigned long count_gen_pool(void);
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_gen_events;
+ಬಾಹ್ಯ unsigned long ಎಣಿಕೆ_gen_pool(ಶೂನ್ಯ);
 
-extern size_t size_opcodes;
-extern size_t size_vvp_nets;
-extern size_t size_vvp_net_funs;
+ಬಾಹ್ಯ size_t size_opcodes;
+ಬಾಹ್ಯ size_t size_vvp_nets;
+ಬಾಹ್ಯ size_t size_vvp_net_funs;
 
 #endif /* IVL_statistics_H */
