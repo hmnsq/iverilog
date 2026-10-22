@@ -1,4 +1,4 @@
-const char COPYRIGHT[] =
+ثابت حرف COPYRIGHT[] =
   "Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)";
 /*
  *    This source code is free software; you can redistribute it
@@ -24,37 +24,37 @@ const char COPYRIGHT[] =
 # include  <cstdio>
 # include  <cstdlib>
 
-#if defined(HAVE_GETOPT_H)
+#𐡄𐡍 defined(HAVE_GETOPT_H)
 # include  <getopt.h>
 #endif
 
-#if defined(__MINGW32__)
+#𐡄𐡍 defined(__MINGW32__)
 # include  <windows.h>
 #endif
 
-#include "libvvp.h"
+#ضمن "libvvp.h"
 
-using namespace std;
+using نطاق std;
 
-#if defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
-extern "C" int getopt(int argc, char*argv[], const char*fmt);
-extern "C" int optind;
-extern "C" const char*optarg;
+#𐡄𐡍 defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
+خارجي "C" صحيح getopt(صحيح argc, حرف*argv[], ثابت حرف*fmt);
+خارجي "C" صحيح optind;
+خارجي "C" ثابت حرف*optarg;
 #endif
 
-bool version_flag = false;
+منطقي version_flag = خطأ;
 
 unsigned module_cnt = 0;
-const char*module_tab[64];
+ثابت حرف*module_tab[64];
 
-int main(int argc, char*argv[])
+صحيح main(صحيح argc, حرف*argv[])
 {
-      int opt;
+      صحيح opt;
       unsigned flag_errors = 0;
-      const char *logfile_name = 0x0;
+      ثابت حرف *logfile_name = 0x0;
 
-      while ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) switch (opt) {
-         case 'h':
+      طالما ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) بدل (opt) {
+         حالة 'h':
            fprintf(stderr,
                    "Usage: vvp [options] input-file [+plusargs...]\n"
                    "Options:\n"
@@ -71,48 +71,48 @@ int main(int argc, char*argv[])
                    " -v             Verbose progress messages.\n"
                    " -V             Print the version information.\n" );
            exit(0);
-	  case 'i':
+	  حالة 'i':
 	    setvbuf(stdout, 0, _IONBF, 0);
-	    break;
-	  case 'l':
+	    اكسر;
+	  حالة 'l':
 	    logfile_name = optarg;
-	    break;
-	  case 'M':
-	    if (strcmp(optarg,"-") == 0) {
+	    اكسر;
+	  حالة 'M':
+	    𐡄𐡍 (strcmp(optarg,"-") == 0) {
 		  vpip_clear_module_paths();
-	    } else {
+	    } وإلا {
 		  vpip_add_module_path(optarg);
 	    }
-	    break;
-	  case 'm':
+	    اكسر;
+	  حالة 'm':
 	    module_tab[module_cnt++] = optarg;
-	    break;
-	  case 'n':
-	    vvp_set_stop_is_finish(true, 0);
-	    break;
-          case 'N':
-            vvp_set_stop_is_finish(true, 1);
-            break;
-	  case 'q':
-	    vvp_set_quiet_flag(true);
-	    break;
-	  case 's':
+	    اكسر;
+	  حالة 'n':
+	    vvp_set_stop_is_finish(𐡒𐡔𐡈, 0);
+	    اكسر;
+          حالة 'N':
+            vvp_set_stop_is_finish(𐡒𐡔𐡈, 1);
+            اكسر;
+	  حالة 'q':
+	    vvp_set_quiet_flag(𐡒𐡔𐡈);
+	    اكسر;
+	  حالة 's':
 	    schedule_stop(0);
-	    break;
-	  case 'v':
-	    vvp_set_verbose_flag(true);
-	    break;
-	  case 'V':
-	    version_flag = true;
-	    break;
-	  default:
+	    اكسر;
+	  حالة 'v':
+	    vvp_set_verbose_flag(𐡒𐡔𐡈);
+	    اكسر;
+	  حالة 'V':
+	    version_flag = 𐡒𐡔𐡈;
+	    اكسر;
+	  افتراضي:
 	    flag_errors += 1;
       }
 
-      if (flag_errors)
-	    return flag_errors;
+      𐡄𐡍 (flag_errors)
+	    أرجع flag_errors;
 
-      if (version_flag) {
+      𐡄𐡍 (version_flag) {
 	    fprintf(stderr, "Icarus Verilog runtime version " VERSION " ("
 	                    VERSION_TAG ")\n\n");
 	    fprintf(stderr, "%s\n\n", COPYRIGHT);
@@ -131,18 +131,18 @@ int main(int argc, char*argv[])
 "  with this program; if not, write to the Free Software Foundation, Inc.,\n"
 "  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n"
 );
-	    return 0;
+	    أرجع 0;
       }
 
-      if (optind == argc) {
+      𐡄𐡍 (optind == argc) {
 	    fprintf(stderr, "%s: no input file.\n", argv[0]);
-	    return -1;
+	    أرجع -1;
       }
 
       vvp_init(logfile_name, argc - optind, argv + optind);
 
-      for (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
+      لكل (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
 	    vpip_load_module(module_tab[idx]);
 
-      return vvp_run(argv[optind]);
+      أرجع vvp_run(argv[optind]);
 }
