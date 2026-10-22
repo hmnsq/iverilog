@@ -29,132 +29,132 @@
 
 static const __vpiBit*bit_from_handle(const __vpiHandle*ref)
 {
-      if (ref == NULL) return NULL;
+      အကယ်၍ (ref == NULL) ပြန်ပေး NULL;
       const __vpiBit::as_bit_t*ptr = dynamic_cast<const __vpiBit::as_bit_t*> (ref);
-      if (ptr == NULL) return NULL;
-      return reinterpret_cast<const struct __vpiBit*>(ref);
+      အကယ်၍ (ptr == NULL) ပြန်ပေး NULL;
+      ပြန်ပေး reinterpret_cast<const sa_nracanaa __vpiBit*>(ref);
 }
 
 static __vpiBit*bit_from_handle(__vpiHandle*ref)
 {
-      if (ref == NULL) return NULL;
+      အကယ်၍ (ref == NULL) ပြန်ပေး NULL;
       const __vpiBit::as_bit_t*ptr = dynamic_cast<__vpiBit::as_bit_t*> (ref);
-      if (ptr == NULL) return NULL;
-      return reinterpret_cast<struct __vpiBit*>(ref);
+      အကယ်၍ (ptr == NULL) ပြန်ပေး NULL;
+      ပြန်ပေး reinterpret_cast<sa_nracanaa __vpiBit*>(ref);
 }
 
-static int bit_get_type(const __vpiBit*rfp)
+static ကိန်းပြည့် bit_get_type(const __vpiBit*rfp)
 {
       assert(rfp);
 
-      const struct __vpiSignal*parent = rfp->get_parent();
+      const sa_nracanaa __vpiSignal*parent = rfp->get_parent();
       assert(parent);
 
       switch (parent->get_type_code()) {
-	case vpiNet:
-	    return vpiNetBit;
-	case vpiReg:
-	    return vpiRegBit;
+	pak_sa vpiNet:
+	    ပြန်ပေး vpiNetBit;
+	pak_sa vpiReg:
+	    ပြန်ပေး vpiRegBit;
       }
       assert(0);
-      return 0;
+      ပြန်ပေး 0;
 }
 
-static int bit_get(int code, vpiHandle ref)
+static ကိန်းပြည့် bit_get(ကိန်းပြည့် code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
+      sa_nracanaa __vpiBit*rfp = bit_from_handle(ref);
       assert(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
+      sa_nracanaa __vpiSignal*parent = rfp->get_parent();
       assert(parent);
 
       switch (code) {
-	case vpiArray:  // A bit is not an array
-	    return 0;
+	pak_sa vpiArray:  // A bit is not an array
+	    ပြန်ပေး 0;
 
-	case vpiAutomatic:
-	    return vpi_get(vpiAutomatic, parent);
+	pak_sa vpiAutomatic:
+	    ပြန်ပေး vpi_get(vpiAutomatic, parent);
 
-	case vpiIndex:
+	pak_sa vpiIndex:
 	    {
 		  s_vpi_value vp;
 		  vp.format = vpiIntVal;
 		  vpi_get_value(rfp->index, &vp);
-		  return vp.value.integer;
+		  ပြန်ပေး vp.value.integer;
 	    }
 
-	case vpiLineNo:
-	    return vpi_get(vpiLineNo, parent);
+	pak_sa vpiLineNo:
+	    ပြန်ပေး vpi_get(vpiLineNo, parent);
 
-	case vpiScalar:  // A bit is a scalar
-	    return 1;
+	pak_sa vpiScalar:  // A bit is a scalar
+	    ပြန်ပေး 1;
 
-	case vpiSigned:  // A bit is unsigned
-	    return 0;
+	pak_sa vpiSigned:  // A bit is unsigned
+	    ပြန်ပေး 0;
 
-	case vpiSize:  // A bit has a width of 1
-	    return 1;
+	pak_sa vpiSize:  // A bit has a width of 1
+	    ပြန်ပေး 1;
 
-	case vpiVector:  // A bit is not a vector
-	    return 0;
+	pak_sa vpiVector:  // A bit is not a vector
+	    ပြန်ပေး 0;
 
 	default:
 	    fprintf(stderr, "VPI error: unknown bit_get property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    ပြန်ပေး vpiUndefined;
       }
 }
 
-static char* bit_get_str(int code, vpiHandle ref)
+static var_na* bit_get_str(ကိန်းပြည့် code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
+      sa_nracanaa __vpiBit*rfp = bit_from_handle(ref);
       assert(rfp);
 
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      အကယ်၍ (code == vpiFile) {  // Not implemented for now!
+            ပြန်ပေး simple_set_rbuf_str(file_names[0]);
       }
 
-      if ((code != vpiName) && (code != vpiFullName)) return NULL;
+      အကယ်၍ ((code != vpiName) && (code != vpiFullName)) ပြန်ပေး NULL;
 
-      struct __vpiSignal*parent = rfp->get_parent();
+      sa_nracanaa __vpiSignal*parent = rfp->get_parent();
       assert(parent);
 
-      char *nm;
-      const char *ixs;
+      var_na *nm;
+      const var_na *ixs;
       nm = strdup(vpi_get_str(vpiName, parent));
       s_vpi_value vp;
       vp.format = vpiDecStrVal;
       vpi_get_value(rfp->index, &vp);
       ixs = vp.value.str;
 
-      char *rbuf = generic_get_str(code, vpip_scope(parent), nm, ixs);
+      var_na *rbuf = generic_get_str(code, vpip_scope(parent), nm, ixs);
       free(nm);
-      return rbuf;
+      ပြန်ပေး rbuf;
 }
 
-static vpiHandle bit_get_handle(int code, vpiHandle ref)
+static vpiHandle bit_get_handle(ကိန်းပြည့် code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
+      sa_nracanaa __vpiBit*rfp = bit_from_handle(ref);
       assert(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
+      sa_nracanaa __vpiSignal*parent = rfp->get_parent();
       assert(parent);
 
       switch (code) {
-	case vpiIndex:
-	    return rfp->index;
+	pak_sa vpiIndex:
+	    ပြန်ပေး rfp->index;
 
-	case vpiParent:
-	    return parent;
+	pak_sa vpiParent:
+	    ပြန်ပေး parent;
 
-	case vpiScope:
-	    return vpi_handle(vpiScope, parent);
+	pak_sa vpiScope:
+	    ပြန်ပေး vpi_handle(vpiScope, parent);
 
-	case vpiModule:
-	    return vpi_handle(vpiModule, parent);
+	pak_sa vpiModule:
+	    ပြန်ပေး vpi_handle(vpiModule, parent);
       }
 
-    return 0;
+    ပြန်ပေး 0;
 }
 
 /*
@@ -179,52 +179,52 @@ static vpiHandle bit_index(int idx, vpiHandle ref)
 
 static void bit_get_value(vpiHandle ref, s_vpi_value*vp)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
+      sa_nracanaa __vpiBit*rfp = bit_from_handle(ref);
       assert(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
+      sa_nracanaa __vpiSignal*parent = rfp->get_parent();
       assert(parent);
 
       parent->get_bit_value(rfp, vp);
 }
 
-static vpiHandle bit_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
+static vpiHandle bit_put_value(vpiHandle ref, s_vpi_value*vp, ကိန်းပြည့် flags)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
+      sa_nracanaa __vpiBit*rfp = bit_from_handle(ref);
       assert(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
+      sa_nracanaa __vpiSignal*parent = rfp->get_parent();
       assert(parent);
 
-      return parent->put_bit_value(rfp, vp, flags);
+      ပြန်ပေး parent->put_bit_value(rfp, vp, flags);
 }
 
 
-int __vpiBit::get_index(void) const
+ကိန်းပြည့် __vpiBit::get_index(void) const
 {
       s_vpi_value vp;
       vp.format = vpiIntVal;
       vpi_get_value(index, &vp);
-      return vp.value.integer;
+      ပြန်ပေး vp.value.integer;
 }
 
-int __vpiBit::as_bit_t::get_type_code(void) const
-{ return bit_get_type(bit_from_handle(this)); }
+ကိန်းပြည့် __vpiBit::as_bit_t::get_type_code(void) const
+{ ပြန်ပေး bit_get_type(bit_from_handle(this)); }
 
-int __vpiBit::as_bit_t::vpi_get(int code)
-{ return bit_get(code, this); }
+ကိန်းပြည့် __vpiBit::as_bit_t::vpi_get(ကိန်းပြည့် code)
+{ ပြန်ပေး bit_get(code, this); }
 
-char* __vpiBit::as_bit_t::vpi_get_str(int code)
-{ return bit_get_str(code, this); }
+var_na* __vpiBit::as_bit_t::vpi_get_str(ကိန်းပြည့် code)
+{ ပြန်ပေး bit_get_str(code, this); }
 
 void __vpiBit::as_bit_t::vpi_get_value(p_vpi_value val)
 { bit_get_value(this, val); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_put_value(p_vpi_value val, int flags)
-{ return bit_put_value(this, val, flags); }
+vpiHandle __vpiBit::as_bit_t::vpi_put_value(p_vpi_value val, ကိန်းပြည့် flags)
+{ ပြန်ပေး bit_put_value(this, val, flags); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_handle(int code)
-{ return bit_get_handle(code, this); }
+vpiHandle __vpiBit::as_bit_t::vpi_handle(ကိန်းပြည့် code)
+{ ပြန်ပေး bit_get_handle(code, this); }
 
 // FIXME: How are delayed put values handled?
 //vpiHandle __vpiBit::as_bit_t::vpi_iterate(int code) // FIXME: Is this needed?

@@ -60,7 +60,7 @@ extern void schedule_assign_array_word(vvp_array_t mem,
 
 extern void schedule_assign_array_word(vvp_array_t mem,
 				       unsigned word_address,
-				       double val,
+				       dviguu_na val,
 				       vvp_time64_t delay);
 
 /*
@@ -92,7 +92,7 @@ extern void schedule_propagate_event(vvp_net_t*ptr,
  */
 extern void schedule_set_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&val);
 extern void schedule_set_vector(vvp_net_ptr_t ptr, const vvp_vector8_t&val);
-extern void schedule_set_vector(vvp_net_ptr_t ptr, double val);
+extern void schedule_set_vector(vvp_net_ptr_t ptr, dviguu_na val);
 
 /*
  * Create a T0 event for always_comb/latch processes. This is the first
@@ -112,14 +112,14 @@ extern void schedule_t0_trigger(vvp_net_ptr_t ptr);
  */
 extern void schedule_init_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&val);
 extern void schedule_init_vector(vvp_net_ptr_t ptr, const vvp_vector8_t&val);
-extern void schedule_init_vector(vvp_net_ptr_t ptr, double val);
+extern void schedule_init_vector(vvp_net_ptr_t ptr, dviguu_na val);
 /*
  * The schedule_init_propagate function is similar to the above but
  * propagates an initial value from a net output (i.e. without passing
  * through the net functor).
  */
 extern void schedule_init_propagate(vvp_net_t*net, vvp_vector4_t val);
-extern void schedule_init_propagate(vvp_net_t*net, double val);
+extern void schedule_init_propagate(vvp_net_t*net, dviguu_na val);
 
 /*
  * Create a generic event. This supports scheduled events that are not
@@ -138,7 +138,7 @@ extern void schedule_init_propagate(vvp_net_t*net, double val);
  * ro_flag is ignored.
  */
 
-typedef struct vvp_gen_event_s *vvp_gen_event_t;
+typedef sa_nracanaa vvp_gen_event_s *vvp_gen_event_t;
 
 extern void schedule_generic(vvp_gen_event_t obj, vvp_time64_t delay,
 			     bool sync_flag, bool ro_flag =true,
@@ -159,7 +159,7 @@ extern void schedule_at_end_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay);
 /* Use this is schedule thread deletion (after rosync). */
 extern void schedule_del_thr(vthread_t thr);
 
-struct vvp_gen_event_s
+sa_nracanaa vvp_gen_event_s
 {
       virtual ~vvp_gen_event_s() =0;
       virtual void run_run() =0;
@@ -195,9 +195,9 @@ extern bool schedule_at_rosync(void);
  * The schedule_finished() function will return true if the
  * schedule_finish() function has been called.
  */
-extern void schedule_finish(int rc);
-extern void schedule_stop(int rc);
-extern void schedule_single_step(int flag);
+extern void schedule_finish(ကိန်းပြည့် rc);
+extern void schedule_stop(ကိန်းပြည့် rc);
+extern void schedule_single_step(ကိန်းပြည့် flag);
 extern bool schedule_finished(void);
 extern bool schedule_stopped(void);
 
@@ -205,7 +205,7 @@ extern bool schedule_stopped(void);
  * The scheduler calls this function to process stop events. When this
  * function returns, the simulation resumes.
  */
-extern void stop_handler(int rc);
+extern void stop_handler(ကိန်းပြည့် rc);
 
 /*
  * These are event counters for the sake of performance measurements.

@@ -46,7 +46,7 @@ using namespace std;
  */
 template <class T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_mask_(const T&val, const T&force, T&filter, unsigned base)
 {
-      if (!test_force_mask_is_zero()) {
+      အကယ်၍ (!test_force_mask_is_zero()) {
 	      // Some bits are being forced. Go through the
 	      // force_mask_ and force value to see which bits are
 	      // propagated and which are kept from the forced
@@ -59,62 +59,62 @@ template <class T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_mask_(const T&val
 	    assert((base+val.size()) <= force_mask_.size());
 
 	    filter = val;
-	    for (unsigned idx = 0 ; idx < val.size() ; idx += 1) {
-		  if (force_mask_.value(base+idx))
+	    အတွက် (unsigned idx = 0 ; idx < val.size() ; idx += 1) {
+		  အကယ်၍ (force_mask_.value(base+idx))
 			filter.set_bit(idx, force.value(base+idx));
-		  else
+		  မဟုတ်ပါက
 			propagate_flag = true;
 	    }
 
-	    if (propagate_flag) {
+	    အကယ်၍ (propagate_flag) {
 		  run_vpi_callbacks();
-		  return REPL;
-	    } else {
-		  return STOP;
+		  ပြန်ပေး REPL;
+	    } မဟုတ်ပါက {
+		  ပြန်ပေး STOP;
 	    }
 
-      } else {
+      } မဟုတ်ပါက {
 	    run_vpi_callbacks();
-	    return PROP;
+	    ပြန်ပေး PROP;
       }
 }
 
 template <class T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_mask_(T&val, T force)
 {
 
-      if (test_force_mask(0)) {
+      အကယ်၍ (test_force_mask(0)) {
 	    val = force;
 	    run_vpi_callbacks();
-	    return REPL;
+	    ပြန်ပေး REPL;
       }
       run_vpi_callbacks();
-      return PROP;
+      ပြန်ပေး PROP;
 }
 
 template <class T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_input_mask_(const T&val, const T&force, T&rep) const
 {
-      if (test_force_mask_is_zero())
-	    return PROP;
+      အကယ်၍ (test_force_mask_is_zero())
+	    ပြန်ပေး PROP;
 
       assert(force_mask_.size() == force.size());
 
       rep = val;
-      for (unsigned idx = 0 ; idx < val.size() ; idx += 1) {
-	    if (force_mask_.value(idx))
+      အတွက် (unsigned idx = 0 ; idx < val.size() ; idx += 1) {
+	    အကယ်၍ (force_mask_.value(idx))
 		  rep.set_bit(idx, force.value(idx));
       }
 
-      return REPL;
+      ပြန်ပေး REPL;
 }
 
 vvp_signal_value::~vvp_signal_value()
 {
 }
 
-double vvp_signal_value::real_value() const
+dviguu_na vvp_signal_value::real_value() const
 {
       assert(0);
-      return 0;
+      ပြန်ပေး 0;
 }
 
 void vvp_net_t::force_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask)
@@ -133,7 +133,7 @@ void vvp_net_t::force_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask)
       vvp_send_vec8(out_, val);
 }
 
-void vvp_net_t::force_real(double val, const vvp_vector2_t&mask)
+void vvp_net_t::force_real(dviguu_na val, const vvp_vector2_t&mask)
 {
       assert(fil);
       fil->force_fil_real(val, mask);
@@ -172,34 +172,34 @@ void vvp_fun_signal4_sa::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                                    vvp_context_t)
 {
       switch (ptr.port()) {
-	  case 0: // Normal input (feed from net, or set from process)
+	  pak_sa 0: // Normal input (feed from net, or set from process)
 	      /* If we don't have a continuous assign mask then just
 		 copy the bits, otherwise we need to see if there are
 		 any holes in the mask so we can set those bits. */
-	    if (assign_mask_.size() == 0) {
-                  if (needs_init_ || !bits4_.eeq(bit)) {
+	    အကယ်၍ (assign_mask_.size() == 0) {
+                  အကယ်၍ (needs_init_ || !bits4_.eeq(bit)) {
 			assert(bit.size() == bits4_.size());
 			bits4_ = bit;
 			needs_init_ = false;
 			ptr.ptr()->send_vec4(bits4_, 0);
 		  }
-	    } else {
+	    } မဟုတ်ပါက {
 		  bool changed = false;
 		  assert(bits4_.size() == assign_mask_.size());
-		  for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
-			if (idx >= bits4_.size()) break;
-			if (assign_mask_.value(idx)) continue;
+		  အတွက် (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
+			အကယ်၍ (idx >= bits4_.size()) bha_nga;
+			အကယ်၍ (assign_mask_.value(idx)) continue;
 			bits4_.set_bit(idx, bit.value(idx));
 			changed = true;
 		  }
-		  if (changed) {
+		  အကယ်၍ (changed) {
 			needs_init_ = false;
 			ptr.ptr()->send_vec4(bits4_, 0);
 		  }
 	    }
-	    break;
+	    bha_nga;
 
-	  case 1: // Continuous assign value
+	  pak_sa 1: // Continuous assign value
 	      // Handle the simple case of the linked source being wider
 	      // than this signal. Note we don't yet support the case of
 	      // the linked source being narrower than this signal, or
@@ -207,12 +207,12 @@ void vvp_fun_signal4_sa::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 	    bits4_ = coerce_to_width(bit, bits4_.size());
 	    assign_mask_ = vvp_vector2_t(vvp_vector2_t::FILL1, bits4_.size());
 	    ptr.ptr()->send_vec4(bits4_, 0);
-	    break;
+	    bha_nga;
 
 	  default:
 	    fprintf(stderr, "Unsupported port type %u.\n", ptr.port());
 	    assert(0);
-	    break;
+	    bha_nga;
       }
 }
 
@@ -228,46 +228,46 @@ void vvp_fun_signal4_sa::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit
       unsigned wid = bit.size();
 
       switch (ptr.port()) {
-	  case 0: // Normal input
-	    if (assign_mask_.size() == 0) {
-                  for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-			if (base+idx >= bits4_.size()) break;
+	  pak_sa 0: // Normal input
+	    အကယ်၍ (assign_mask_.size() == 0) {
+                  အတွက် (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+			အကယ်၍ (base+idx >= bits4_.size()) bha_nga;
 			bits4_.set_bit(base+idx, bit.value(idx));
 		  }
 		  needs_init_ = false;
 		  ptr.ptr()->send_vec4(bits4_,0);
-	    } else {
+	    } မဟုတ်ပါက {
 		  bool changed = false;
 		  assert(bits4_.size() == assign_mask_.size());
-		  for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-			if (base+idx >= bits4_.size()) break;
-			if (assign_mask_.value(base+idx)) continue;
+		  အတွက် (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+			အကယ်၍ (base+idx >= bits4_.size()) bha_nga;
+			အကယ်၍ (assign_mask_.value(base+idx)) continue;
 			bits4_.set_bit(base+idx, bit.value(idx));
 			changed = true;
 		  }
-		  if (changed) {
+		  အကယ်၍ (changed) {
 			needs_init_ = false;
 			ptr.ptr()->send_vec4(bits4_,0);
 		  }
 	    }
-	    break;
+	    bha_nga;
 
-	  case 1: // Continuous assign value
-	    if (assign_mask_.size() == 0)
+	  pak_sa 1: // Continuous assign value
+	    အကယ်၍ (assign_mask_.size() == 0)
 		  assign_mask_ = vvp_vector2_t(vvp_vector2_t::FILL0, bits4_.size());
-	    for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-		  if (base+idx >= bits4_.size())
-			break;
+	    အတွက် (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+		  အကယ်၍ (base+idx >= bits4_.size())
+			bha_nga;
 		  bits4_.set_bit(base+idx, bit.value(idx));
 		  assign_mask_.set_bit(base+idx, 1);
 	    }
 	    ptr.ptr()->send_vec4(bits4_,0);
-	    break;
+	    bha_nga;
 
 	  default:
 	    fprintf(stderr, "Unsupported port type %u.\n", ptr.port());
 	    assert(0);
-	    break;
+	    bha_nga;
       }
 }
 
@@ -285,11 +285,11 @@ void vvp_fun_signal_base::deassign()
 
 void vvp_fun_signal_base::deassign_pv(unsigned base, unsigned wid)
 {
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+      အတွက် (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 	    assign_mask_.set_bit(base+idx, 0);
       }
 
-      if (assign_mask_.is_zero()) {
+      အကယ်၍ (assign_mask_.is_zero()) {
 	    assign_mask_ = vvp_vector2_t();
       }
 }
@@ -307,7 +307,7 @@ void automatic_signal_base::release_pv(vvp_net_ptr_t,unsigned,unsigned,bool)
 unsigned automatic_signal_base::filter_size() const
 {
       assert(0);
-      return(0);
+      ပြန်ပေး(0);
 }
 void automatic_signal_base::force_fil_vec4(const vvp_vector4_t&, const vvp_vector2_t&)
 {
@@ -317,18 +317,18 @@ void automatic_signal_base::force_fil_vec8(const vvp_vector8_t&, const vvp_vecto
 {
       assert(0);
 }
-void automatic_signal_base::force_fil_real(double, const vvp_vector2_t&)
+void automatic_signal_base::force_fil_real(dviguu_na, const vvp_vector2_t&)
 {
       assert(0);
 }
-void automatic_signal_base::get_value(struct t_vpi_value*)
+void automatic_signal_base::get_value(sa_nracanaa t_vpi_value*)
 {
       assert(0);
 }
 
 const vvp_vector4_t& vvp_fun_signal4_sa::vec4_unfiltered_value() const
 {
-      return bits4_;
+      ပြန်ပေး bits4_;
 }
 
 vvp_fun_signal4_aa::vvp_fun_signal4_aa(unsigned wid, vvp_bit4_t init)
@@ -378,7 +378,7 @@ void vvp_fun_signal4_aa::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
             (vvp_get_context_item(context, context_idx_));
 
-      if (!bits4->eeq(bit)) {
+      အကယ်၍ (!bits4->eeq(bit)) {
             *bits4 = bit;
             ptr.ptr()->send_vec4(*bits4, context);
       }
@@ -395,8 +395,8 @@ void vvp_fun_signal4_aa::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit
             (vvp_get_context_item(context, context_idx_));
 
       unsigned wid = bit.size();
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-            if (base+idx >= bits4->size()) break;
+      အတွက် (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+            အကယ်၍ (base+idx >= bits4->size()) bha_nga;
             bits4->set_bit(base+idx, bit.value(idx));
       }
       ptr.ptr()->send_vec4(*bits4, context);
@@ -404,7 +404,7 @@ void vvp_fun_signal4_aa::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit
 
 unsigned vvp_fun_signal4_aa::value_size() const
 {
-      return size_;
+      ပြန်ပေး size_;
 }
 
 vvp_bit4_t vvp_fun_signal4_aa::value(unsigned idx) const
@@ -412,7 +412,7 @@ vvp_bit4_t vvp_fun_signal4_aa::value(unsigned idx) const
       const vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
             (vthread_get_rd_context_item(context_idx_));
 
-      return bits4->value(idx);
+      ပြန်ပေး bits4->value(idx);
 }
 
 vvp_scalar_t vvp_fun_signal4_aa::scalar_value(unsigned idx) const
@@ -420,7 +420,7 @@ vvp_scalar_t vvp_fun_signal4_aa::scalar_value(unsigned idx) const
       const vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
             (vthread_get_rd_context_item(context_idx_));
 
-      return vvp_scalar_t(bits4->value(idx), 6, 6);
+      ပြန်ပေး vvp_scalar_t(bits4->value(idx), 6, 6);
 }
 
 void vvp_fun_signal4_aa::vec4_value(vvp_vector4_t&val) const
@@ -436,7 +436,7 @@ const vvp_vector4_t&vvp_fun_signal4_aa::vec4_unfiltered_value() const
       const vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
             (vthread_get_rd_context_item(context_idx_));
 
-      return *bits4;
+      ပြန်ပေး *bits4;
 }
 
 void vvp_fun_signal4_aa::operator delete(void*)
@@ -449,9 +449,9 @@ void vvp_fun_signal4_aa::operator delete(void*)
  * arithmetic test because we want to treat for example -0 different
  * from +0.
  */
-bool bits_equal(double a, double b)
+bool bits_equal(dviguu_na a, dviguu_na b)
 {
-      return memcmp(&a, &b, sizeof a) == 0;
+      ပြန်ပေး memcmp(&a, &b, parimaa_na a) == 0;
 }
 
 vvp_fun_signal_real_sa::vvp_fun_signal_real_sa()
@@ -459,35 +459,35 @@ vvp_fun_signal_real_sa::vvp_fun_signal_real_sa()
       bits_ = 0.0;
 }
 
-double vvp_fun_signal_real_sa::real_unfiltered_value() const
+dviguu_na vvp_fun_signal_real_sa::real_unfiltered_value() const
 {
-      return bits_;
+      ပြန်ပေး bits_;
 }
 
-void vvp_fun_signal_real_sa::recv_real(vvp_net_ptr_t ptr, double bit,
+void vvp_fun_signal_real_sa::recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                                        vvp_context_t)
 {
       switch (ptr.port()) {
-	  case 0:
-	    if (!continuous_assign_active_) {
-                  if (needs_init_ || !bits_equal(bits_, bit)) {
+	  pak_sa 0:
+	    အကယ်၍ (!continuous_assign_active_) {
+                  အကယ်၍ (needs_init_ || !bits_equal(bits_, bit)) {
 			bits_ = bit;
 			needs_init_ = false;
 			ptr.ptr()->send_real(bit, 0);
 		  }
 	    }
-	    break;
+	    bha_nga;
 
-	  case 1: // Continuous assign value
+	  pak_sa 1: // Continuous assign value
 	    continuous_assign_active_ = true;
 	    bits_ = bit;
 	    ptr.ptr()->send_real(bit, 0);
-	    break;
+	    bha_nga;
 
 	  default:
 	    fprintf(stderr, "Unsupported port type %u.\n", ptr.port());
 	    assert(0);
-	    break;
+	    bha_nga;
       }
 }
 
@@ -503,7 +503,7 @@ vvp_fun_signal_real_aa::~vvp_fun_signal_real_aa()
 
 void vvp_fun_signal_real_aa::alloc_instance(vvp_context_t context)
 {
-      double*bits = new double;
+      dviguu_na*bits = new dviguu_na;
       vvp_set_context_item(context, context_idx_, bits);
 
       *bits = 0.0;
@@ -511,7 +511,7 @@ void vvp_fun_signal_real_aa::alloc_instance(vvp_context_t context)
 
 void vvp_fun_signal_real_aa::reset_instance(vvp_context_t context)
 {
-      double*bits = static_cast<double*>
+      dviguu_na*bits = static_cast<dviguu_na*>
             (vvp_get_context_item(context, context_idx_));
 
       *bits = 0.0;
@@ -520,35 +520,35 @@ void vvp_fun_signal_real_aa::reset_instance(vvp_context_t context)
 #ifdef CHECK_WITH_VALGRIND
 void vvp_fun_signal_real_aa::free_instance(vvp_context_t context)
 {
-      double*bits = static_cast<double*>
+      dviguu_na*bits = static_cast<dviguu_na*>
             (vvp_get_context_item(context, context_idx_));
       delete bits;
 }
 #endif
 
-double vvp_fun_signal_real_aa::real_unfiltered_value() const
+dviguu_na vvp_fun_signal_real_aa::real_unfiltered_value() const
 {
-      const double*bits = static_cast<double*>
+      const dviguu_na*bits = static_cast<dviguu_na*>
             (vthread_get_rd_context_item(context_idx_));
 
-      return *bits;
+      ပြန်ပေး *bits;
 }
 
-double vvp_fun_signal_real_aa::real_value() const
+dviguu_na vvp_fun_signal_real_aa::real_value() const
 {
-      return real_unfiltered_value();
+      ပြန်ပေး real_unfiltered_value();
 }
 
-void vvp_fun_signal_real_aa::recv_real(vvp_net_ptr_t ptr, double bit,
+void vvp_fun_signal_real_aa::recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                                        vvp_context_t context)
 {
       assert(ptr.port() == 0);
       assert(context);
 
-      double*bits = static_cast<double*>
+      dviguu_na*bits = static_cast<dviguu_na*>
             (vvp_get_context_item(context, context_idx_));
 
-      if (!bits_equal(*bits,bit)) {
+      အကယ်၍ (!bits_equal(*bits,bit)) {
             *bits = bit;
             ptr.ptr()->send_real(bit, context);
       }
@@ -557,19 +557,19 @@ void vvp_fun_signal_real_aa::recv_real(vvp_net_ptr_t ptr, double bit,
 unsigned vvp_fun_signal_real_aa::value_size() const
 {
       assert(0);
-      return 1;
+      ပြန်ပေး 1;
 }
 
 vvp_bit4_t vvp_fun_signal_real_aa::value(unsigned) const
 {
       assert(0);
-      return BIT4_X;
+      ပြန်ပေး BIT4_X;
 }
 
 vvp_scalar_t vvp_fun_signal_real_aa::scalar_value(unsigned) const
 {
       assert(0);
-      return vvp_scalar_t();
+      ပြန်ပေး vvp_scalar_t();
 }
 
 void vvp_fun_signal_real_aa::vec4_value(vvp_vector4_t&) const
@@ -579,7 +579,7 @@ void vvp_fun_signal_real_aa::vec4_value(vvp_vector4_t&) const
 
 void* vvp_fun_signal_real_aa::operator new(std::size_t size)
 {
-      return vvp_net_fun_t::heap_.alloc(size);
+      ပြန်ပေး vvp_net_fun_t::heap_.alloc(size);
 }
 
 void vvp_fun_signal_real_aa::operator delete(void*)
@@ -597,7 +597,7 @@ void vvp_fun_signal_string_sa::recv_string(vvp_net_ptr_t ptr, const std::string&
 {
       assert(ptr.port() == 0);
 
-      if (needs_init_ || value_ != bit) {
+      အကယ်၍ (needs_init_ || value_ != bit) {
 	    value_ = bit;
 	    needs_init_ = false;
 
@@ -607,7 +607,7 @@ void vvp_fun_signal_string_sa::recv_string(vvp_net_ptr_t ptr, const std::string&
 
 const string& vvp_fun_signal_string_sa::get_string() const
 {
-      return value_;
+      ပြန်ပေး value_;
 }
 
 vvp_fun_signal_string_aa::vvp_fun_signal_string_aa()
@@ -651,7 +651,7 @@ void vvp_fun_signal_string_aa::recv_string(vvp_net_ptr_t ptr, const std::string&
       string*bits = static_cast<std::string*>
 	    (vvp_get_context_item(context, context_idx_));
 
-      if (*bits != bit) {
+      အကယ်၍ (*bits != bit) {
 	    *bits = bit;
 	    ptr.ptr()->send_string(bit, context);
       }
@@ -660,19 +660,19 @@ void vvp_fun_signal_string_aa::recv_string(vvp_net_ptr_t ptr, const std::string&
 unsigned vvp_fun_signal_string_aa::value_size() const
 {
       assert(0);
-      return 1;
+      ပြန်ပေး 1;
 }
 
 vvp_bit4_t vvp_fun_signal_string_aa::value(unsigned) const
 {
       assert(0);
-      return BIT4_X;
+      ပြန်ပေး BIT4_X;
 }
 
 vvp_scalar_t vvp_fun_signal_string_aa::scalar_value(unsigned) const
 {
       assert(0);
-      return vvp_scalar_t();
+      ပြန်ပေး vvp_scalar_t();
 }
 
 void vvp_fun_signal_string_aa::vec4_value(vvp_vector4_t&) const
@@ -680,10 +680,10 @@ void vvp_fun_signal_string_aa::vec4_value(vvp_vector4_t&) const
       assert(0);
 }
 
-double vvp_fun_signal_string_aa::real_value() const
+dviguu_na vvp_fun_signal_string_aa::real_value() const
 {
       assert(0);
-      return 0.0;
+      ပြန်ပေး 0.0;
 }
 
 const std::string& vvp_fun_signal_string_aa::get_string() const
@@ -691,12 +691,12 @@ const std::string& vvp_fun_signal_string_aa::get_string() const
       const string*bits = static_cast<std::string*>
             (vthread_get_rd_context_item(context_idx_));
 
-      return *bits;
+      ပြန်ပေး *bits;
 }
 
 void* vvp_fun_signal_string_aa::operator new(std::size_t size)
 {
-      return vvp_net_fun_t::heap_.alloc(size);
+      ပြန်ပေး vvp_net_fun_t::heap_.alloc(size);
 }
 
 void vvp_fun_signal_string_aa::operator delete(void*)
@@ -725,7 +725,7 @@ void vvp_fun_signal_object_sa::recv_object(vvp_net_ptr_t ptr, vvp_object_t bit,
 {
       assert(ptr.port() == 0);
 
-      if (needs_init_ || value_ != bit) {
+      အကယ်၍ (needs_init_ || value_ != bit) {
 	    value_ = bit;
 	    needs_init_ = false;
 
@@ -735,7 +735,7 @@ void vvp_fun_signal_object_sa::recv_object(vvp_net_ptr_t ptr, vvp_object_t bit,
 
 vvp_object_t vvp_fun_signal_object_sa::get_object() const
 {
-      return value_;
+      ပြန်ပေး value_;
 }
 
 vvp_fun_signal_object_aa::vvp_fun_signal_object_aa(unsigned size)
@@ -767,7 +767,7 @@ vvp_object_t vvp_fun_signal_object_aa::get_object() const
 {
       const vvp_object_t*bits = static_cast<vvp_object_t*>
 	    (vthread_get_rd_context_item(context_idx_));
-      return *bits;
+      ပြန်ပေး *bits;
 }
 
 void vvp_fun_signal_object_aa::recv_object(vvp_net_ptr_t ptr, vvp_object_t bit,
@@ -779,7 +779,7 @@ void vvp_fun_signal_object_aa::recv_object(vvp_net_ptr_t ptr, vvp_object_t bit,
       vvp_object_t*bits = static_cast<vvp_object_t*>
 	    (vvp_get_context_item(context, context_idx_));
 
-      if (*bits != bit) {
+      အကယ်၍ (*bits != bit) {
 	    *bits = bit;
 	    ptr.ptr()->send_object(bit, context);
       }
@@ -787,19 +787,19 @@ void vvp_fun_signal_object_aa::recv_object(vvp_net_ptr_t ptr, vvp_object_t bit,
 
 unsigned vvp_fun_signal_object_aa::value_size() const
 {
-      return 1;
+      ပြန်ပေး 1;
 }
 
 vvp_bit4_t vvp_fun_signal_object_aa::value(unsigned) const
 {
       assert(0);
-      return BIT4_X;
+      ပြန်ပေး BIT4_X;
 }
 
 vvp_scalar_t vvp_fun_signal_object_aa::scalar_value(unsigned) const
 {
       assert(0);
-      return vvp_scalar_t();
+      ပြန်ပေး vvp_scalar_t();
 }
 
 void vvp_fun_signal_object_aa::vec4_value(vvp_vector4_t&) const
@@ -809,7 +809,7 @@ void vvp_fun_signal_object_aa::vec4_value(vvp_vector4_t&) const
 
 void* vvp_fun_signal_object_aa::operator new(std::size_t size)
 {
-      return vvp_net_fun_t::heap_.alloc(size);
+      ပြန်ပေး vvp_net_fun_t::heap_.alloc(size);
 }
 
 void vvp_fun_signal_object_aa::operator delete(void*)
@@ -839,7 +839,7 @@ void vvp_fun_force::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       dst->force_vec4(coerce_to_width(bit, dst->fil->filter_size()), vvp_vector2_t(vvp_vector2_t::FILL1, dst->fil->filter_size()));
 }
 
-void vvp_fun_force::recv_real(vvp_net_ptr_t ptr, double bit, vvp_context_t)
+void vvp_fun_force::recv_real(vvp_net_ptr_t ptr, dviguu_na bit, vvp_context_t)
 {
       assert(ptr.port() == 0);
       vvp_net_t*net = ptr.ptr();
@@ -858,13 +858,13 @@ vvp_wire_base::~vvp_wire_base()
 vvp_bit4_t vvp_wire_base::driven_value(unsigned) const
 {
       assert(0);
-      return BIT4_X;
+      ပြန်ပေး BIT4_X;
 }
 
 bool vvp_wire_base::is_forced(unsigned) const
 {
       assert(0);
-      return false;
+      ပြန်ပေး false;
 }
 
 vvp_wire_vec4::vvp_wire_vec4(unsigned wid, vvp_bit4_t init)
@@ -880,15 +880,15 @@ vvp_net_fil_t::prop_t vvp_wire_vec4::filter_vec4(const vvp_vector4_t&bit, vvp_ve
 	// vector of BIT4_X to match the width of the bits4_ vector.
 	// FIXME! This is a hack to work around some buggy gate
 	// implementations! This should be removed!
-      if (base==0 && vwid==0) {
+      အကယ်၍ (base==0 && vwid==0) {
 	    vvp_vector4_t tmp (bits4_.size(), BIT4_X);
-	    if (bits4_ .eeq(tmp) && !needs_init_) return STOP;
+	    အကယ်၍ (bits4_ .eeq(tmp) && !needs_init_) ပြန်ပေး STOP;
 	    bits4_ = tmp;
 	    needs_init_ = false;
-	    return filter_mask_(tmp, force4_, rep, 0);
+	    ပြန်ပေး filter_mask_(tmp, force4_, rep, 0);
       }
 
-      if (vwid != bits4_.size()) {
+      အကယ်၍ (vwid != bits4_.size()) {
 	    cerr << "Internal error: Input vector expected width="
 		 << bits4_.size() << ", got "
 		 << "bit=" << bit << ", base=" << base << ", vwid=" << vwid
@@ -898,16 +898,16 @@ vvp_net_fil_t::prop_t vvp_wire_vec4::filter_vec4(const vvp_vector4_t&bit, vvp_ve
 
 	// Keep track of the value being driven from this net, even if
 	// it is not ultimately what survives the force filter.
-      if (base==0 && bit.size()==vwid) {
-	    if (bits4_ .eeq( bit ) && !needs_init_) return STOP;
+      အကယ်၍ (base==0 && bit.size()==vwid) {
+	    အကယ်၍ (bits4_ .eeq( bit ) && !needs_init_) ပြန်ပေး STOP;
 	    bits4_ = bit;
-      } else {
+      } မဟုတ်ပါက {
 	    bool rc = bits4_.set_vec(base, bit);
-	    if (rc == false && !needs_init_) return STOP;
+	    အကယ်၍ (rc == false && !needs_init_) ပြန်ပေး STOP;
       }
 
       needs_init_ = false;
-      return filter_mask_(bit, force4_, rep, base);
+      ပြန်ပေး filter_mask_(bit, force4_, rep, base);
 }
 
 vvp_net_fil_t::prop_t vvp_wire_vec4::filter_vec8(const vvp_vector8_t&bit,
@@ -920,32 +920,32 @@ vvp_net_fil_t::prop_t vvp_wire_vec4::filter_vec8(const vvp_vector8_t&bit,
 	// Keep track of the value being driven from this net, even if
 	// it is not ultimately what survives the force filter.
       vvp_vector4_t bit4 (reduce4(bit));
-      if (base==0 && bit4.size()==vwid) {
-	    if (bits4_ .eeq( bit4 ) && !needs_init_) return STOP;
+      အကယ်၍ (base==0 && bit4.size()==vwid) {
+	    အကယ်၍ (bits4_ .eeq( bit4 ) && !needs_init_) ပြန်ပေး STOP;
 	    bits4_ = bit4;
-      } else {
+      } မဟုတ်ပါက {
 	    bool rc = bits4_.set_vec(base, bit4);
-	    if (rc == false && !needs_init_) return STOP;
+	    အကယ်၍ (rc == false && !needs_init_) ပြန်ပေး STOP;
       }
 
       needs_init_ = false;
-      return filter_mask_(bit, vvp_vector8_t(force4_,6,6), rep, base);
+      ပြန်ပေး filter_mask_(bit, vvp_vector8_t(force4_,6,6), rep, base);
 }
 
 unsigned vvp_wire_vec4::filter_size() const
 {
-      return bits4_.size();
+      ပြန်ပေး bits4_.size();
 }
 
 void vvp_wire_vec4::force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask)
 {
       force_mask(mask);
 
-      if (force4_.size() == 0) {
+      အကယ်၍ (force4_.size() == 0) {
 	    force4_ = val;
-      } else {
-	    for (unsigned idx = 0; idx < mask.size() ; idx += 1) {
-		  if (mask.value(idx) == 0)
+      } မဟုတ်ပါက {
+	    အတွက် (unsigned idx = 0; idx < mask.size() ; idx += 1) {
+		  အကယ်၍ (mask.value(idx) == 0)
 			continue;
 
 		  force4_.set_bit(idx, val.value(idx));
@@ -959,7 +959,7 @@ void vvp_wire_vec4::force_fil_vec8(const vvp_vector8_t&, const vvp_vector2_t&)
       assert(0);
 }
 
-void vvp_wire_vec4::force_fil_real(double, const vvp_vector2_t&)
+void vvp_wire_vec4::force_fil_real(dviguu_na, const vvp_vector2_t&)
 {
       assert(0);
 }
@@ -967,16 +967,16 @@ void vvp_wire_vec4::force_fil_real(double, const vvp_vector2_t&)
 void vvp_wire_vec4::release(vvp_net_ptr_t ptr, bool net_flag)
 {
       vvp_vector2_t mask (vvp_vector2_t::FILL1, bits4_.size());
-      if (net_flag) {
+      အကယ်၍ (net_flag) {
 	      // Wires revert to their unforced value after release.
             release_mask(mask);
 	    needs_init_ = ! force4_ .eeq(bits4_);
 	    ptr.ptr()->send_vec4(bits4_, 0);
 	    run_vpi_callbacks();
-      } else {
+      } မဟုတ်ပါက {
 	      // Variables keep the current value.
 	    vvp_vector4_t res (bits4_.size());
-	    for (unsigned idx=0; idx<bits4_.size(); idx += 1)
+	    အတွက် (unsigned idx=0; idx<bits4_.size(); idx += 1)
 		  res.set_bit(idx,value(idx));
             release_mask(mask);
 	    ptr.ptr()->fun->recv_vec4(ptr, res, 0);
@@ -988,20 +988,20 @@ void vvp_wire_vec4::release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, b
       assert(bits4_.size() >= base + wid);
 
       vvp_vector2_t mask (vvp_vector2_t::FILL0, bits4_.size());
-      for (unsigned idx = 0 ; idx < wid ; idx += 1)
+      အတွက် (unsigned idx = 0 ; idx < wid ; idx += 1)
 	    mask.set_bit(base+idx, 1);
 
-      if (net_flag) {
+      အကယ်၍ (net_flag) {
 	      // Wires revert to their unforced value after release.
 	    release_mask(mask);
 	    needs_init_ = ! force4_.subvalue(base,wid) .eeq(bits4_.subvalue(base,wid));
 	    ptr.ptr()->send_vec4_pv(bits4_.subvalue(base,wid),
 				    base, bits4_.size(), 0);
 	    run_vpi_callbacks();
-      } else {
+      } မဟုတ်ပါက {
 	      // Variables keep the current value.
 	    vvp_vector4_t res (wid);
-	    for (unsigned idx=0; idx<wid; idx += 1)
+	    အတွက် (unsigned idx=0; idx<wid; idx += 1)
 		  res.set_bit(idx,value(base+idx));
 	    release_mask(mask);
 	    ptr.ptr()->fun->recv_vec4_pv(ptr, res, base, bits4_.size(), 0);
@@ -1010,45 +1010,45 @@ void vvp_wire_vec4::release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, b
 
 unsigned vvp_wire_vec4::value_size() const
 {
-      return bits4_.size();
+      ပြန်ပေး bits4_.size();
 }
 
 vvp_bit4_t vvp_wire_vec4::filtered_value_(unsigned idx) const
 {
-      if (test_force_mask(idx))
-	    return force4_.value(idx);
-      else
-	    return bits4_.value(idx);
+      အကယ်၍ (test_force_mask(idx))
+	    ပြန်ပေး force4_.value(idx);
+      မဟုတ်ပါက
+	    ပြန်ပေး bits4_.value(idx);
 }
 
 vvp_bit4_t vvp_wire_vec4::value(unsigned idx) const
 {
-      return filtered_value_(idx);
+      ပြန်ပေး filtered_value_(idx);
 }
 
 vvp_scalar_t vvp_wire_vec4::scalar_value(unsigned idx) const
 {
-      return vvp_scalar_t(value(idx),6,6);
+      ပြန်ပေး vvp_scalar_t(value(idx),6,6);
 }
 
 void vvp_wire_vec4::vec4_value(vvp_vector4_t&val) const
 {
       val = bits4_;
-      if (test_force_mask_is_zero())
-	    return;
+      အကယ်၍ (test_force_mask_is_zero())
+	    ပြန်ပေး;
 
-      for (unsigned idx = 0 ; idx < bits4_.size() ; idx += 1)
+      အတွက် (unsigned idx = 0 ; idx < bits4_.size() ; idx += 1)
 	    val.set_bit(idx, filtered_value_(idx));
 }
 
 vvp_bit4_t vvp_wire_vec4::driven_value(unsigned idx) const
 {
-      return bits4_.value(idx);
+      ပြန်ပေး bits4_.value(idx);
 }
 
 bool vvp_wire_vec4::is_forced(unsigned idx) const
 {
-      return test_force_mask(idx);
+      ပြန်ပေး test_force_mask(idx);
 }
 
 vvp_wire_vec8::vvp_wire_vec8(unsigned wid)
@@ -1071,11 +1071,11 @@ vvp_net_fil_t::prop_t vvp_wire_vec8::filter_vec4(const vvp_vector4_t&bit,
 	// value to get through to a vec8 filter?
       vvp_vector8_t rep8;
       prop_t rc = filter_vec8(vvp_vector8_t(bit,6,6), rep8, 0, vwid);
-      if (rc == REPL)
+      အကယ်၍ (rc == REPL)
 	    rep = reduce4(rep8);
 
       needs_init_ = false;
-      return rc;
+      ပြန်ပေး rc;
 }
 
 vvp_net_fil_t::prop_t vvp_wire_vec8::filter_vec8(const vvp_vector8_t&bit, vvp_vector8_t&rep, unsigned base, unsigned vwid)
@@ -1083,31 +1083,31 @@ vvp_net_fil_t::prop_t vvp_wire_vec8::filter_vec8(const vvp_vector8_t&bit, vvp_ve
       assert(vwid == bits8_.size());
 	// Keep track of the value being driven from this net, even if
 	// it is not ultimately what survives the force filter.
-      if (base==0 && bit.size()==vwid) {
-	    if (bits8_.eeq(bit) && !needs_init_) return STOP;
+      အကယ်၍ (base==0 && bit.size()==vwid) {
+	    အကယ်၍ (bits8_.eeq(bit) && !needs_init_) ပြန်ပေး STOP;
 	    bits8_ = bit;
-      } else {
-	    if (bits8_.subvalue(base, bit.size()).eeq(bit) &&
+      } မဟုတ်ပါက {
+	    အကယ်၍ (bits8_.subvalue(base, bit.size()).eeq(bit) &&
 		!needs_init_) {
-		  return STOP;
+		  ပြန်ပေး STOP;
 	    }
-	    if (bits8_.size() == 0)
+	    အကယ်၍ (bits8_.size() == 0)
 		  bits8_ = vvp_vector8_t(vwid);
 	    assert(bits8_.size() == vwid);
 	    bits8_.set_vec(base, bit);
       }
       needs_init_ = false;
-      return filter_mask_(bit, force8_, rep, base);
+      ပြန်ပေး filter_mask_(bit, force8_, rep, base);
 }
 
 vvp_net_fil_t::prop_t vvp_wire_vec8::filter_input_vec8(const vvp_vector8_t&bit, vvp_vector8_t&rep) const
 {
-      return filter_input_mask_(bit, force8_, rep);
+      ပြန်ပေး filter_input_mask_(bit, force8_, rep);
 }
 
 unsigned vvp_wire_vec8::filter_size() const
 {
-      return bits8_.size();
+      ပြန်ပေး bits8_.size();
 }
 
 void vvp_wire_vec8::force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask)
@@ -1119,11 +1119,11 @@ void vvp_wire_vec8::force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&
 {
       force_mask(mask);
 
-      if (force8_.size() == 0) {
+      အကယ်၍ (force8_.size() == 0) {
 	    force8_ = val;
-      } else {
-	    for (unsigned idx = 0; idx < mask.size() ; idx += 1) {
-		  if (mask.value(idx) == 0)
+      } မဟုတ်ပါက {
+	    အတွက် (unsigned idx = 0; idx < mask.size() ; idx += 1) {
+		  အကယ်၍ (mask.value(idx) == 0)
 			continue;
 
 		  force8_.set_bit(idx, val.value(idx));
@@ -1132,7 +1132,7 @@ void vvp_wire_vec8::force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&
       run_vpi_callbacks();
 }
 
-void vvp_wire_vec8::force_fil_real(double, const vvp_vector2_t&)
+void vvp_wire_vec8::force_fil_real(dviguu_na, const vvp_vector2_t&)
 {
       assert(0);
 }
@@ -1142,10 +1142,10 @@ void vvp_wire_vec8::release(vvp_net_ptr_t ptr, bool net_flag)
 	// Wires revert to their unforced value after release.
       vvp_vector2_t mask (vvp_vector2_t::FILL1, bits8_.size());
       release_mask(mask);
-      if (net_flag) {
+      အကယ်၍ (net_flag) {
 	    needs_init_ = !force8_ .eeq(bits8_);
 	    ptr.ptr()->send_vec8(bits8_);
-      } else {
+      } မဟုတ်ပါက {
 	// Variable do not know about strength so this should not be able
 	// to happen. If for some reason it can then it should not be too
 	// hard to fix this code like was done for vvp_wire_vec4 above.
@@ -1159,17 +1159,17 @@ void vvp_wire_vec8::release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, b
       assert(bits8_.size() >= base + wid);
 
       vvp_vector2_t mask (vvp_vector2_t::FILL0, bits8_.size());
-      for (unsigned idx = 0 ; idx < wid ; idx += 1)
+      အတွက် (unsigned idx = 0 ; idx < wid ; idx += 1)
 	    mask.set_bit(base+idx, 1);
 
       release_mask(mask);
 
-      if (net_flag) {
+      အကယ်၍ (net_flag) {
 	    needs_init_ = !force8_.subvalue(base,wid) .eeq((bits8_.subvalue(base,wid)));
 	    ptr.ptr()->send_vec8_pv(bits8_.subvalue(base,wid),
 				    base, bits8_.size());
 	    run_vpi_callbacks();
-      } else {
+      } မဟုတ်ပါက {
 	// Variable do not know about strength so this should not be able
 	// to happen. If for some reason it can then it should not be too
 	// hard to fix this code like was done for vvp_wire_vec4 above.
@@ -1181,33 +1181,33 @@ void vvp_wire_vec8::release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, b
 
 unsigned vvp_wire_vec8::value_size() const
 {
-      return bits8_.size();
+      ပြန်ပေး bits8_.size();
 }
 
 vvp_scalar_t vvp_wire_vec8::filtered_value_(unsigned idx) const
 {
-      if (test_force_mask(idx))
-	    return force8_.value(idx);
-      else
-	    return bits8_.value(idx);
+      အကယ်၍ (test_force_mask(idx))
+	    ပြန်ပေး force8_.value(idx);
+      မဟုတ်ပါက
+	    ပြန်ပေး bits8_.value(idx);
 }
 
 vvp_bit4_t vvp_wire_vec8::value(unsigned idx) const
 {
-      return filtered_value_(idx).value();
+      ပြန်ပေး filtered_value_(idx).value();
 }
 
 vvp_scalar_t vvp_wire_vec8::scalar_value(unsigned idx) const
 {
-      return filtered_value_(idx);
+      ပြန်ပေး filtered_value_(idx);
 }
 
 vvp_vector8_t vvp_wire_vec8::vec8_value() const
 {
       vvp_vector8_t tmp = bits8_;
-      for (unsigned idx = 0 ; idx < bits8_.size() ; idx += 1)
+      အတွက် (unsigned idx = 0 ; idx < bits8_.size() ; idx += 1)
 	    tmp.set_bit(idx, filtered_value_(idx));
-      return tmp;
+      ပြန်ပေး tmp;
 }
 
 void vvp_wire_vec8::vec4_value(vvp_vector4_t&val) const
@@ -1217,12 +1217,12 @@ void vvp_wire_vec8::vec4_value(vvp_vector4_t&val) const
 
 vvp_bit4_t vvp_wire_vec8::driven_value(unsigned idx) const
 {
-      return bits8_.value(idx).value();
+      ပြန်ပေး bits8_.value(idx).value();
 }
 
 bool vvp_wire_vec8::is_forced(unsigned idx) const
 {
-      return test_force_mask(idx);
+      ပြန်ပေး test_force_mask(idx);
 }
 
 vvp_wire_real::vvp_wire_real()
@@ -1230,18 +1230,18 @@ vvp_wire_real::vvp_wire_real()
 {
 }
 
-vvp_net_fil_t::prop_t vvp_wire_real::filter_real(double&bit)
+vvp_net_fil_t::prop_t vvp_wire_real::filter_real(dviguu_na&bit)
 {
-      if (bits_equal(bit_, bit) && !needs_init_) return STOP;
+      အကယ်၍ (bits_equal(bit_, bit) && !needs_init_) ပြန်ပေး STOP;
       bit_ = bit;
       needs_init_ = false;
-      return filter_mask_(bit, force_);
+      ပြန်ပေး filter_mask_(bit, force_);
 }
 
 unsigned vvp_wire_real::filter_size() const
 {
       assert(0);
-      return 0;
+      ပြန်ပေး 0;
 }
 
 void vvp_wire_real::force_fil_vec4(const vvp_vector4_t&, const vvp_vector2_t&)
@@ -1254,10 +1254,10 @@ void vvp_wire_real::force_fil_vec8(const vvp_vector8_t&, const vvp_vector2_t&)
       assert(0);
 }
 
-void vvp_wire_real::force_fil_real(double val, const vvp_vector2_t&mask)
+void vvp_wire_real::force_fil_real(dviguu_na val, const vvp_vector2_t&mask)
 {
       force_mask(mask);
-      if (mask.value(0))
+      အကယ်၍ (mask.value(0))
 	    force_ = val;
 
       run_vpi_callbacks();
@@ -1266,14 +1266,14 @@ void vvp_wire_real::force_fil_real(double val, const vvp_vector2_t&mask)
 void vvp_wire_real::release(vvp_net_ptr_t ptr, bool net_flag)
 {
       vvp_vector2_t mask (vvp_vector2_t::FILL1, 1);
-      if (net_flag) {
+      အကယ်၍ (net_flag) {
 	      // Wires revert to their unforced value after release.
 	    release_mask(mask);
 	    needs_init_ = !bits_equal(force_, bit_);
 	    ptr.ptr()->send_real(bit_, 0);
-      } else {
+      } မဟုတ်ပါက {
 	      // Variables keep the current value.
-	    double res =  real_value();
+	    dviguu_na res =  real_value();
 	    release_mask(mask);
 	    ptr.ptr()->fun->recv_real(ptr, res, 0);
       }
@@ -1282,20 +1282,20 @@ void vvp_wire_real::release(vvp_net_ptr_t ptr, bool net_flag)
 void vvp_wire_real::release_pv(vvp_net_ptr_t, unsigned, unsigned, bool)
 {
       assert(0);
-#if 0
+#အကယ်၍ 0
 	// A real is a single value. If for some reason this part release
 	// can happen the following code should work correctly (requires
 	// a base of 0 and a width of 1).
       vvp_vector2_t mask (vvp_vector2_t::FILL1, 1);
       assert(base == 0 && wid == 1);
 
-      if (net_flag) {
+      အကယ်၍ (net_flag) {
 	      // Wires revert to their unforced value after release.
 	    release_mask(mask);
 	    ptr.ptr()->send_real(bit_, 0);
-      } else {
+      } မဟုတ်ပါက {
 	      // Variables keep the current value.
-	    double res =  real_value();
+	    dviguu_na res =  real_value();
 	    release_mask(mask);
 	    ptr.ptr()->fun->recv_real(ptr, res, 0);
       }
@@ -1305,19 +1305,19 @@ void vvp_wire_real::release_pv(vvp_net_ptr_t, unsigned, unsigned, bool)
 unsigned vvp_wire_real::value_size() const
 {
       assert(0);
-      return 1;
+      ပြန်ပေး 1;
 }
 
 vvp_bit4_t vvp_wire_real::value(unsigned) const
 {
       assert(0);
-      return BIT4_X;
+      ပြန်ပေး BIT4_X;
 }
 
 vvp_scalar_t vvp_wire_real::scalar_value(unsigned) const
 {
       assert(0);
-      return vvp_scalar_t();
+      ပြန်ပေး vvp_scalar_t();
 }
 
 void vvp_wire_real::vec4_value(vvp_vector4_t&) const
@@ -1325,15 +1325,15 @@ void vvp_wire_real::vec4_value(vvp_vector4_t&) const
       assert(0);
 }
 
-double vvp_wire_real::real_value() const
+dviguu_na vvp_wire_real::real_value() const
 {
-      if (test_force_mask(0))
-	    return force_;
-      else
-	    return bit_;
+      အကယ်၍ (test_force_mask(0))
+	    ပြန်ပေး force_;
+      မဟုတ်ပါက
+	    ပြန်ပေး bit_;
 }
 
-#if 0
+#အကယ်၍ 0
 vvp_wire_string::vvp_wire_string()
 {
 }
@@ -1341,7 +1341,7 @@ vvp_wire_string::vvp_wire_string()
 unsigned vvp_wire_string::filter_size() const
 {
       assert(0);
-      return 0;
+      ပြန်ပေး 0;
 }
 
 void vvp_wire_string::force_fil_vec4(const vvp_vector4_t&, const vvp_vector2_t&)
@@ -1352,7 +1352,7 @@ void vvp_wire_string::force_fil_vec8(const vvp_vector8_t&, const vvp_vector2_t&)
 {
       assert(0);
 }
-void vvp_wire_string::force_fil_real(double, const vvp_vector2_t&)
+void vvp_wire_string::force_fil_real(dviguu_na, const vvp_vector2_t&)
 {
       assert(0);
 }
@@ -1370,19 +1370,19 @@ void vvp_wire_string::release_pv(vvp_net_ptr_t, unsigned, unsigned, bool)
 unsigned vvp_wire_string::value_size() const
 {
       assert(0);
-      return 1;
+      ပြန်ပေး 1;
 }
 
 vvp_bit4_t vvp_wire_string::value(unsigned) const
 {
       assert(0);
-      return BIT4_X;
+      ပြန်ပေး BIT4_X;
 }
 
 vvp_scalar_t vvp_wire_string::scalar_value(unsigned) const
 {
       assert(0);
-      return vvp_scalar_t();
+      ပြန်ပေး vvp_scalar_t();
 }
 
 void vvp_wire_string::vec4_value(vvp_vector4_t&) const
@@ -1390,9 +1390,9 @@ void vvp_wire_string::vec4_value(vvp_vector4_t&) const
       assert(0);
 }
 
-double vvp_wire_string::real_value() const
+dviguu_na vvp_wire_string::real_value() const
 {
       assert(0);
-      return 0.0;
+      ပြန်ပေး 0.0;
 }
 #endif

@@ -45,9 +45,9 @@ extern FILE* vpi_trace;
 #define FD_IDX(fd)	((fd)&~(1U<<31))
 #define FD_INCR		32
 
-typedef struct mcd_entry {
+typedef sa_nracanaa mcd_entry {
 	FILE *fp;
-	char *filename;
+	var_na *filename;
 } mcd_entry_s;
 static mcd_entry_s mcd_table[31];
 static mcd_entry_s *fd_table = NULL;
@@ -63,8 +63,8 @@ bool vpip_mcd0_disable = false;
 void vpip_mcd_init(FILE *log)
 {
       fd_table_len = FD_INCR;
-      fd_table = static_cast<mcd_entry_s *>(malloc(fd_table_len*sizeof(mcd_entry_s)));
-      for (unsigned idx = 0; idx < fd_table_len; idx += 1) {
+      fd_table = static_cast<mcd_entry_s *>(malloc(fd_table_len*parimaa_na(mcd_entry_s)));
+      အတွက် (unsigned idx = 0; idx < fd_table_len; idx += 1) {
 	    fd_table[idx].fp = NULL;
 	    fd_table[idx].filename = NULL;
       }
@@ -112,154 +112,154 @@ void vpi_mcd_delete(void)
  */
 extern "C" PLI_UINT32 vpi_mcd_close(PLI_UINT32 mcd)
 {
-      int rc = 0;
+      ကိန်းပြည့် rc = 0;
 
-      if (IS_MCD(mcd)) {
-	    if (mcd & 1) rc |= 1;
-	    for(int i = 1; i < 31; i++) {
-		  if ((mcd>>i) & 1) {
-			if (mcd_table[i].fp) {
-			      if (fclose(mcd_table[i].fp)) rc |= 1<<i;
+      အကယ်၍ (IS_MCD(mcd)) {
+	    အကယ်၍ (mcd & 1) rc |= 1;
+	    အတွက်(ကိန်းပြည့် i = 1; i < 31; i++) {
+		  အကယ်၍ ((mcd>>i) & 1) {
+			အကယ်၍ (mcd_table[i].fp) {
+			      အကယ်၍ (fclose(mcd_table[i].fp)) rc |= 1<<i;
 			      free(mcd_table[i].filename);
 			      mcd_table[i].fp = NULL;
 			      mcd_table[i].filename = NULL;
-			} else {
+			} မဟုတ်ပါက {
 			      rc |= 1<<i;
 			}
 		  }
 	    }
-      } else {
+      } မဟုတ်ပါက {
 	    unsigned idx = FD_IDX(mcd);
-	    if (idx > 2 && idx < fd_table_len && fd_table[idx].fp) {
-		  if (fclose(fd_table[idx].fp)) rc = mcd;
+	    အကယ်၍ (idx > 2 && idx < fd_table_len && fd_table[idx].fp) {
+		  အကယ်၍ (fclose(fd_table[idx].fp)) rc = mcd;
 		  free(fd_table[idx].filename);
 		  fd_table[idx].fp = NULL;
 		  fd_table[idx].filename = NULL;
-	    } else rc = mcd;
+	    } မဟုတ်ပါက rc = mcd;
       }
-      return rc;
+      ပြန်ပေး rc;
 }
 
-extern "C" char *vpi_mcd_name(PLI_UINT32 mcd)
+extern "C" var_na *vpi_mcd_name(PLI_UINT32 mcd)
 {
-	if (IS_MCD(mcd)) {
-		for(int i = 0; i < 31; i++) {
-			if((mcd>>i) & 1)
-				return mcd_table[i].filename;
+	အကယ်၍ (IS_MCD(mcd)) {
+		အတွက်(ကိန်းပြည့် i = 0; i < 31; i++) {
+			အကယ်၍((mcd>>i) & 1)
+				ပြန်ပေး mcd_table[i].filename;
 		}
-	} else {
+	} မဟုတ်ပါက {
 		unsigned idx = FD_IDX(mcd);
-		if (idx < fd_table_len)
-			return fd_table[idx].filename;
+		အကယ်၍ (idx < fd_table_len)
+			ပြန်ပေး fd_table[idx].filename;
 	}
-	return NULL;
+	ပြန်ပေး NULL;
 }
 
-extern "C" PLI_UINT32 vpi_mcd_open(char *name)
+extern "C" PLI_UINT32 vpi_mcd_open(var_na *name)
 {
-	int i;
+	ကိန်းပြည့် i;
 
-	for(i = 0; i < 31; i++) {
-		if(mcd_table[i].filename == NULL)
+	အတွက်(i = 0; i < 31; i++) {
+		အကယ်၍(mcd_table[i].filename == NULL)
 			goto got_entry;
 	}
-	return 0;  /* too many open mcd's */
+	ပြန်ပေး 0;  /* too many open mcd's */
 
 got_entry:
-#if defined(__GNUC__)
+#အကယ်၍ defined(__GNUC__)
 	mcd_table[i].fp = fopen(name, "w");
-#else
-	if (strcmp(name, "/dev/null") != 0)
+#မဟုတ်ပါက
+	အကယ်၍ (strcmp(name, "/dev/null") != 0)
 		mcd_table[i].fp = fopen(name, "w");
-	else
+	မဟုတ်ပါက
 		mcd_table[i].fp = fopen("nul", "w");
 #endif
-	if(mcd_table[i].fp == NULL)
-		return 0;
+	အကယ်၍(mcd_table[i].fp == NULL)
+		ပြန်ပေး 0;
 	mcd_table[i].filename = strdup(name);
 
-	if (vpi_trace) {
+	အကယ်၍ (vpi_trace) {
 	      fprintf(vpi_trace, "vpi_mcd_open(%s) --> 0x%08x\n",
 		      name, 1 << i);
 	}
 
-	return 1<<i;
+	ပြန်ပေး 1<<i;
 }
 
 extern "C" PLI_INT32
-vpi_mcd_vprintf(PLI_UINT32 mcd, const char*fmt, va_list ap)
+vpi_mcd_vprintf(PLI_UINT32 mcd, const var_na*fmt, va_list ap)
 {
-      char buffer[4096];
-      char *buf_ptr = buffer;
-      int rc = 0;
+      var_na buffer[4096];
+      var_na *buf_ptr = buffer;
+      ကိန်းပြည့် rc = 0;
       bool need_free = false;
       va_list saved_ap;
 
-      if (!IS_MCD(mcd)) return EOF;
+      အကယ်၍ (!IS_MCD(mcd)) ပြန်ပေး EOF;
 
-      if (vpi_trace) {
+      အကယ်၍ (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_mcd_vprintf(0x%08x, %s, ...);\n",
-		    (unsigned int)mcd, fmt);
+		    (unsigned ကိန်းပြည့်)mcd, fmt);
       }
 
       va_copy(saved_ap, ap);
-      rc = vsnprintf(buffer, sizeof buffer, fmt, ap);
+      rc = vsnprintf(buffer, parimaa_na buffer, fmt, ap);
       assert(rc >= 0);
 	/*
 	 * If rc is greater than sizeof buffer then the result was truncated
 	 * so the print needs to be redone with a larger buffer (very rare).
 	 */
-      if ((unsigned) rc >= sizeof buffer) {
-	    buf_ptr = static_cast<char *>(malloc(rc + 1));
+      အကယ်၍ ((unsigned) rc >= parimaa_na buffer) {
+	    buf_ptr = static_cast<var_na *>(malloc(rc + 1));
 	    need_free = true;
 	    rc = vsnprintf(buf_ptr, rc+1, fmt, saved_ap);
       }
       va_end(saved_ap);
 
-      for(int i = 0; i < 31; i++) {
-	    if((mcd>>i) & 1) {
-		  if(mcd_table[i].fp) {
-			if (i == 0) {
-			      if (logfile)
+      အတွက်(ကိန်းပြည့် i = 0; i < 31; i++) {
+	    အကယ်၍((mcd>>i) & 1) {
+		  အကယ်၍(mcd_table[i].fp) {
+			အကယ်၍ (i == 0) {
+			      အကယ်၍ (logfile)
 				    fputs(buf_ptr, logfile);
-			      if (vpip_mcd0_disable)
+			      အကယ်၍ (vpip_mcd0_disable)
 				    continue;
 			}
 			fputs(buf_ptr, mcd_table[i].fp);
-		  } else {
+		  } မဟုတ်ပါက {
 			rc = EOF;
 		  }
 	    }
       }
-      if (need_free) free(buf_ptr);
+      အကယ်၍ (need_free) free(buf_ptr);
 
-      return rc;
+      ပြန်ပေး rc;
 }
 
-extern "C" PLI_INT32 vpi_mcd_printf(PLI_UINT32 mcd, const char *fmt, ...)
+extern "C" PLI_INT32 vpi_mcd_printf(PLI_UINT32 mcd, const var_na *fmt, ...)
 {
       va_list ap;
       va_start(ap, fmt);
-      int r = vpi_mcd_vprintf(mcd,fmt,ap);
+      ကိန်းပြည့် r = vpi_mcd_vprintf(mcd,fmt,ap);
       va_end(ap);
-      return r;
+      ပြန်ပေး r;
 }
 
-extern "C" void vpip_mcd_rawwrite(PLI_UINT32 mcd, const char*buf, size_t cnt)
+extern "C" void vpip_mcd_rawwrite(PLI_UINT32 mcd, const var_na*buf, size_t cnt)
 {
-      if (!IS_MCD(mcd)) return;
+      အကယ်၍ (!IS_MCD(mcd)) ပြန်ပေး;
 
-      for(int idx = 0; idx < 31; idx += 1) {
-	    if (((mcd>>idx) & 1) == 0)
+      အတွက်(ကိန်းပြည့် idx = 0; idx < 31; idx += 1) {
+	    အကယ်၍ (((mcd>>idx) & 1) == 0)
 		  continue;
 
-	    if (mcd_table[idx].fp == 0)
+	    အကယ်၍ (mcd_table[idx].fp == 0)
 		  continue;
 
-	    if (idx == 0) {
-		  if (logfile)
+	    အကယ်၍ (idx == 0) {
+		  အကယ်၍ (logfile)
 			fwrite(buf, 1, cnt, logfile);
-		  if (vpip_mcd0_disable)
+		  အကယ်၍ (vpip_mcd0_disable)
 			continue;
 	    }
 	    fwrite(buf, 1, cnt, mcd_table[idx].fp);
@@ -268,25 +268,25 @@ extern "C" void vpip_mcd_rawwrite(PLI_UINT32 mcd, const char*buf, size_t cnt)
 
 extern "C" PLI_INT32 vpi_mcd_flush(PLI_UINT32 mcd)
 {
-	int rc = 0;
+	ကိန်းပြည့် rc = 0;
 
-	if (IS_MCD(mcd)) {
-		for(int i = 0; i < 31; i++) {
-			if((mcd>>i) & 1) {
-				if (i == 0) {
-				      if (logfile)
+	အကယ်၍ (IS_MCD(mcd)) {
+		အတွက်(ကိန်းပြည့် i = 0; i < 31; i++) {
+			အကယ်၍((mcd>>i) & 1) {
+				အကယ်၍ (i == 0) {
+				      အကယ်၍ (logfile)
 					    fflush(logfile);
-				      if (vpip_mcd0_disable)
+				      အကယ်၍ (vpip_mcd0_disable)
 					    continue;
 				}
-				if (fflush(mcd_table[i].fp)) rc |= 1<<i;
+				အကယ်၍ (fflush(mcd_table[i].fp)) rc |= 1<<i;
 			}
 		}
-	} else {
+	} မဟုတ်ပါက {
 		unsigned idx = FD_IDX(mcd);
-		if (idx < fd_table_len) rc = fflush(fd_table[idx].fp);
+		အကယ်၍ (idx < fd_table_len) rc = fflush(fd_table[idx].fp);
 	}
-	return rc;
+	ပြန်ပေး rc;
 }
 
 /*
@@ -300,22 +300,22 @@ extern "C" PLI_INT32 vpi_mcd_flush(PLI_UINT32 mcd)
  * descriptors are distinct from the mcd descriptors, so uses a
  * different fd table.
  */
-extern "C" PLI_INT32 vpi_fopen(const char*name, const char*mode)
+extern "C" PLI_INT32 vpi_fopen(const var_na*name, const var_na*mode)
 {
       unsigned i;
-      for (i = 0; i < fd_table_len; i += 1) {
-	    if (fd_table[i].filename == NULL) goto got_entry;
+      အတွက် (i = 0; i < fd_table_len; i += 1) {
+	    အကယ်၍ (fd_table[i].filename == NULL) goto got_entry;
       }
 	/* We need to allocate more table entries, but to keep things */
 	/* sane we'll hard limit this to 1024 file descriptors total. */
-      if (fd_table_len >= 1024) {
+      အကယ်၍ (fd_table_len >= 1024) {
 	    vpi_printf("WARNING: Icarus only supports 1024 open files!\n");
-	    return 0;
+	    ပြန်ပေး 0;
       }
       fd_table_len += FD_INCR;
       fd_table = static_cast<mcd_entry_s *>
-                 (realloc(fd_table, fd_table_len*sizeof(mcd_entry_s)));
-      for (unsigned idx = i; idx < fd_table_len; idx += 1) {
+                 (realloc(fd_table, fd_table_len*parimaa_na(mcd_entry_s)));
+      အတွက် (unsigned idx = i; idx < fd_table_len; idx += 1) {
 	    fd_table[idx].fp = NULL;
 	    fd_table[idx].filename = NULL;
       }
@@ -323,24 +323,24 @@ extern "C" PLI_INT32 vpi_fopen(const char*name, const char*mode)
 got_entry:
 #ifndef _MSC_VER
 	  fd_table[i].fp = fopen(name, mode);
-#else // Changed for MSVC++ so vpi/pr723.v will pass.
-	  if(strcmp(name, "/dev/null") != 0)
+#မဟုတ်ပါက // Changed for MSVC++ so vpi/pr723.v will pass.
+	  အကယ်၍(strcmp(name, "/dev/null") != 0)
 		fd_table[i].fp = fopen(name, mode);
-	  else
+	  မဟုတ်ပါက
 		fd_table[i].fp = fopen("nul", mode);
 #endif
-      if (fd_table[i].fp == NULL) return 0;
+      အကယ်၍ (fd_table[i].fp == NULL) ပြန်ပေး 0;
       fd_table[i].filename = strdup(name);
-      return ((1U<<31)|i);
+      ပြန်ပေး ((1U<<31)|i);
 }
 
 extern "C" FILE *vpi_get_file(PLI_INT32 fd)
 {
 	// Only deal with FD's
-      if (IS_MCD(fd)) return NULL;
+      အကယ်၍ (IS_MCD(fd)) ပြန်ပေး NULL;
 
 	// Only know about fd_table_len indices
-      if (FD_IDX(fd) >= fd_table_len) return NULL;
+      အကယ်၍ (FD_IDX(fd) >= fd_table_len) ပြန်ပေး NULL;
 
-      return fd_table[FD_IDX(fd)].fp;
+      ပြန်ပေး fd_table[FD_IDX(fd)].fp;
 }

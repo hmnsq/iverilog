@@ -57,7 +57,7 @@ vvp_dff_aset::vvp_dff_aset(unsigned width, bool negedge)
 {
 }
 
-vvp_dff_asc::vvp_dff_asc(unsigned width, bool negedge, const char*asc_value)
+vvp_dff_asc::vvp_dff_asc(unsigned width, bool negedge, const var_na*asc_value)
 : vvp_dff(width, negedge), asc_value_(c4string_to_vector4(asc_value))
 {
 }
@@ -69,36 +69,36 @@ void vvp_dff::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 
       switch (port.port()) {
 
-	  case 0: // D
+	  pak_sa 0: // D
 	    d_ = bit;
-	    break;
+	    bha_nga;
 
-	  case 1: // CLK
+	  pak_sa 1: // CLK
 	    assert(bit.size() == 1);
-	    if (asc_ != BIT4_0)
-		  break;
-	    if (ena_ != BIT4_1)
-		  break;
+	    အကယ်၍ (asc_ != BIT4_0)
+		  bha_nga;
+	    အကယ်၍ (ena_ != BIT4_1)
+		  bha_nga;
 	    tmp = clk_;
 	    clk_ = bit.value(0);
-	    if (clk_ == clk_active_ && tmp != clk_active_)
+	    အကယ်၍ (clk_ == clk_active_ && tmp != clk_active_)
 		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	    bha_nga;
 
-	  case 2: // CE
+	  pak_sa 2: // CE
 	    assert(bit.size() == 1);
 	    ena_ = bit.value(0);
-	    break;
+	    bha_nga;
 
-	  case 3: // asynch SET/CLR
+	  pak_sa 3: // asynch SET/CLR
 	    assert(bit.size() == 1);
 	    tmp = asc_;
 	    asc_ = bit.value(0);
-	    if (asc_ == BIT4_1 && tmp != BIT4_1)
+	    အကယ်၍ (asc_ == BIT4_1 && tmp != BIT4_1)
 		  recv_async(port);
-	    else if (tmp == BIT4_Z)
+	    မဟုတ်ပါက အကယ်၍ (tmp == BIT4_Z)
 		  port.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
-	    break;
+	    bha_nga;
       }
 }
 
@@ -136,10 +136,10 @@ void vvp_dff_asc::recv_async(vvp_net_ptr_t port)
       schedule_propagate_vector(port.ptr(), 0, asc_value_);
 }
 
-void compile_dff(char*label, unsigned width, bool negedge,
-		 struct symb_s arg_d,
-		 struct symb_s arg_c,
-		 struct symb_s arg_e)
+void compile_dff(var_na*label, unsigned width, bool negedge,
+		 sa_nracanaa symb_s arg_d,
+		 sa_nracanaa symb_s arg_c,
+		 sa_nracanaa symb_s arg_e)
 {
       vvp_net_t*ptr = new vvp_net_t;
       vvp_dff*fun = new vvp_dff(width, negedge);
@@ -155,11 +155,11 @@ void compile_dff(char*label, unsigned width, bool negedge,
       schedule_init_vector(vvp_net_ptr_t(ptr,3), init_val);
 }
 
-void compile_dff_aclr(char*label, unsigned width, bool negedge,
-		      struct symb_s arg_d,
-		      struct symb_s arg_c,
-		      struct symb_s arg_e,
-		      struct symb_s arg_a)
+void compile_dff_aclr(var_na*label, unsigned width, bool negedge,
+		      sa_nracanaa symb_s arg_d,
+		      sa_nracanaa symb_s arg_c,
+		      sa_nracanaa symb_s arg_e,
+		      sa_nracanaa symb_s arg_a)
 {
       vvp_net_t*ptr = new vvp_net_t;
       vvp_dff*fun = new vvp_dff_aclr(width, negedge);
@@ -173,20 +173,20 @@ void compile_dff_aclr(char*label, unsigned width, bool negedge,
       input_connect(ptr, 3, arg_a.text);
 }
 
-void compile_dff_aset(char*label, unsigned width, bool negedge,
-		      struct symb_s arg_d,
-		      struct symb_s arg_c,
-		      struct symb_s arg_e,
-		      struct symb_s arg_a,
-		      char*asc_value)
+void compile_dff_aset(var_na*label, unsigned width, bool negedge,
+		      sa_nracanaa symb_s arg_d,
+		      sa_nracanaa symb_s arg_c,
+		      sa_nracanaa symb_s arg_e,
+		      sa_nracanaa symb_s arg_a,
+		      var_na*asc_value)
 {
       vvp_net_t*ptr = new vvp_net_t;
       vvp_dff*fun;
-      if (asc_value) {
+      အကယ်၍ (asc_value) {
 	    assert(c4string_test(asc_value));
 	    fun = new vvp_dff_asc(width, negedge, asc_value);
 	    free(asc_value);
-      } else {
+      } မဟုတ်ပါက {
 	    fun = new vvp_dff_aset(width, negedge);
       }
 

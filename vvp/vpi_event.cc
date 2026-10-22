@@ -25,7 +25,7 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-inline __vpiNamedEvent::__vpiNamedEvent(__vpiScope*sc, const char*nam)
+anta_hstha __vpiNamedEvent::__vpiNamedEvent(__vpiScope*sc, const var_na*nam)
 {
       scope_ = sc;
       name_ = vpip_name_string(nam);
@@ -34,36 +34,36 @@ inline __vpiNamedEvent::__vpiNamedEvent(__vpiScope*sc, const char*nam)
 
 __vpiNamedEvent::~__vpiNamedEvent()
 {
-      while (callbacks_) {
-	    struct __vpiCallback *tmp = callbacks_->next;
+      နေစဉ် (callbacks_) {
+	    sa_nracanaa __vpiCallback *tmp = callbacks_->next;
 	    delete callbacks_;
 	    callbacks_ = tmp;
       }
 }
 
-int __vpiNamedEvent::get_type_code(void) const
-{ return vpiNamedEvent; }
+ကိန်းပြည့် __vpiNamedEvent::get_type_code(void) const
+{ ပြန်ပေး vpiNamedEvent; }
 
-int __vpiNamedEvent::vpi_get(int code)
+ကိန်းပြည့် __vpiNamedEvent::vpi_get(ကိန်းပြည့် code)
 {
       switch (code) {
 
-	  case vpiAutomatic:
-	    return scope_->is_automatic()? 1 : 0;
+	  pak_sa vpiAutomatic:
+	    ပြန်ပေး scope_->is_automatic()? 1 : 0;
       }
 
-      return 0;
+      ပြန်ပေး 0;
 }
 
-char* __vpiNamedEvent::vpi_get_str(int code)
+var_na* __vpiNamedEvent::vpi_get_str(ကိန်းပြည့် code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      အကယ်၍ (code == vpiFile) {  // Not implemented for now!
+	    ပြန်ပေး simple_set_rbuf_str(file_names[0]);
       }
-      return generic_get_str(code, scope_, name_, NULL);
+      ပြန်ပေး generic_get_str(code, scope_, name_, NULL);
 }
 
-vpiHandle __vpiNamedEvent::vpi_put_value(p_vpi_value, int)
+vpiHandle __vpiNamedEvent::vpi_put_value(p_vpi_value, ကိန်းပြည့်)
 {
 	// p_vpi_value may be NULL, and an event doesn't care
 	// what the value is
@@ -71,30 +71,30 @@ vpiHandle __vpiNamedEvent::vpi_put_value(p_vpi_value, int)
       vvp_net_ptr_t dest(funct, 0);
       vvp_send_vec4(dest, val, vthread_get_wt_context());
 
-      return this;
+      ပြန်ပေး this;
 }
 
-vpiHandle __vpiNamedEvent::vpi_handle(int code)
+vpiHandle __vpiNamedEvent::vpi_handle(ကိန်းပြည့် code)
 {
       switch (code) {
-	  case vpiScope:
-	    return scope_;
+	  pak_sa vpiScope:
+	    ပြန်ပေး scope_;
 
-	  case vpiModule:
-	    return vpip_module(scope_);
+	  pak_sa vpiModule:
+	    ပြန်ပေး vpip_module(scope_);
       }
 
-      return 0;
+      ပြန်ပေး 0;
 }
 
 
-vpiHandle vpip_make_named_event(const char*name, vvp_net_t*funct)
+vpiHandle vpip_make_named_event(const var_na*name, vvp_net_t*funct)
 {
       __vpiNamedEvent*obj = new __vpiNamedEvent(vpip_peek_current_scope(), name);
 
       obj->funct = funct;
 
-      return obj;
+      ပြန်ပေး obj;
 }
 
 /*
@@ -112,22 +112,22 @@ vpiHandle vpip_make_named_event(const char*name, vvp_net_t*funct)
  */
 void __vpiNamedEvent::run_vpi_callbacks()
 {
-      struct __vpiCallback*next = callbacks_;
-      struct __vpiCallback*prev = 0;
-      while (next) {
-	    struct __vpiCallback*cur = next;
+      sa_nracanaa __vpiCallback*next = callbacks_;
+      sa_nracanaa __vpiCallback*prev = 0;
+      နေစဉ် (next) {
+	    sa_nracanaa __vpiCallback*cur = next;
 	    next = cur->next;
 
-	    if (cur->cb_data.cb_rtn != 0) {
+	    အကယ်၍ (cur->cb_data.cb_rtn != 0) {
 		  callback_execute(cur);
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } မဟုတ်ပါက အကယ်၍ (prev == 0) {
 		  callbacks_ = next;
 		  cur->next = 0;
 		  delete cur;
 
-	    } else {
+	    } မဟုတ်ပါက {
 		  assert(prev->next == cur);
 		  prev->next = next;
 		  cur->next = 0;
