@@ -1,9 +1,9 @@
 
-#include <cstdarg>
-#include "vpi_user.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ <cstdarg>
+#ਅਨ੍ਤਰ੍ਭਾਵ "vpi_user.h"
 
 
-void vvp_vpi_init()
+ਖਾਲੀ vvp_vpi_init()
 {
 }
 

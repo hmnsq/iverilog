@@ -1,5 +1,5 @@
-#ifndef IVL_sfunc_H
-#define IVL_sfunc_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ IVL_sfunc_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IVL_sfunc_H
 /*
  * Copyright (c) 2006-2025 Stephen Williams (steve@icarus.com)
  *
@@ -21,26 +21,26 @@
 
 # include  "config.h"
 
-class sfunc_core : public vvp_wide_fun_core, protected vvp_gen_event_s {
+class sfunc_core : ਜਨਤਕ vvp_wide_fun_core, ਸੁਰੱਖਿਅਤ vvp_gen_event_s {
 
-    public:
-      sfunc_core(vvp_net_t*ptr, vpiHandle sys, unsigned argc, vpiHandle*argv);
+    ਜਨਤਕ:
+      sfunc_core(vvp_net_t*ptr, vpiHandle sys, ਬਿਨਾਨਿਸ਼ਾਨੀ argc, vpiHandle*argv);
       ~sfunc_core() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t context) override;
 
-    private:
-      void recv_vec4_from_inputs(unsigned port) override;
-      void recv_real_from_inputs(unsigned port) override;
+    ਨਿਜੀ:
+      ਖਾਲੀ recv_vec4_from_inputs(ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੋਰਟ) override;
+      ਖਾਲੀ recv_real_from_inputs(ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੋਰਟ) override;
 
-      void run_run() override;
+      ਖਾਲੀ ਲੜੀਵਾਰ_ਲੜੀਵਾਰ() override;
 
 
-    private:
+    ਨਿਜੀ:
       vpiHandle sys_;
-      unsigned  argc_;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ  argc_;
       vpiHandle*argv_;
 };
 
-#endif /* IVL_sfunc_H */
+#ਜੇ_ਅੰਤ /* IVL_sfunc_H */

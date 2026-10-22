@@ -35,34 +35,34 @@
  * vpi_time_precision is the precision of the simulation clock. It is
  * set by the :vpi_time_precision directive in the vvp source file.
  */
-static int vpi_time_precision = 0;
+ਸਥਿਰ ਪੂਰਨ vpi_ਸਮਾਂ_precision = 0;
 
-static struct __vpiSystemTime global_simtime;
+ਸਥਿਰ ਬਣਤਰ __vpiSystemTime global_simtime;
 
-void vpip_time_to_timestruct(struct t_vpi_time*ts, vvp_time64_t ti)
+ਖਾਲੀ vpip_ਸਮਾਂ_ਮੰਜ਼ਿਲ_timestruct(ਬਣਤਰ t_vpi_ਸਮਾਂ*ts, vvp_time64_t ti)
 {
-      ts->low  = ti & 0xFFFFFFFF;
-      ts->high = (ti >> 32) & 0xFFFFFFFF;
+      ts->ਨੀਵਾਂ  = ti & 0xFFFFFFFF;
+      ts->ਉੱਚਾ = (ti >> 32) & 0xFFFFFFFF;
 }
 
-vvp_time64_t vpip_timestruct_to_time(const struct t_vpi_time*ts)
+vvp_time64_t vpip_timestruct_ਮੰਜ਼ਿਲ_ਸਮਾਂ(ਅਚਲ ਬਣਤਰ t_vpi_ਸਮਾਂ*ts)
 {
-      vvp_time64_t ti = ts->high;
+      vvp_time64_t ti = ts->ਉੱਚਾ;
       ti <<= 32;
-      ti += ts->low & 0xffffffff;
-      return ti;
+      ti += ts->ਨੀਵਾਂ & 0xffffffff;
+      ਵਾਪਸ ti;
 }
 
-double vpip_time_to_scaled_real(vvp_time64_t ti, const __vpiScope*scope)
+ਦੁੱਗਣਾ vpip_ਸਮਾਂ_ਮੰਜ਼ਿਲ_scaled_real(vvp_time64_t ti, ਅਚਲ __vpiScope*scope)
 {
-      double val;
-      int scale = 0;
-      if (scope) scale = vpi_time_precision - scope->time_units;
+      ਦੁੱਗਣਾ val;
+      ਪੂਰਨ scale = 0;
+      ਜੇ (scope) scale = vpi_ਸਮਾਂ_precision - scope->ਸਮਾਂ_units;
 
-      if (scale >= 0) val = (double)ti * pow(10.0, scale);
-      else val = (double)ti / pow(10.0, -scale);
+      ਜੇ (scale >= 0) val = (ਦੁੱਗਣਾ)ti * ਘਾਤ(10.0, scale);
+      ਨਹੀਂਤਾਂ val = (ਦੁੱਗਣਾ)ti / ਘਾਤ(10.0, -scale);
 
-      return val;
+      ਵਾਪਸ val;
 }
 
 /*
@@ -70,239 +70,239 @@ double vpip_time_to_scaled_real(vvp_time64_t ti, const __vpiScope*scope)
  * does not check for overflow. It is only used for modpath delays and
  * they are required to be non-negative.
  */
-vvp_time64_t vpip_scaled_real_to_time64(double val, const __vpiScope*scope)
+vvp_time64_t vpip_scaled_real_ਮੰਜ਼ਿਲ_time64(ਦੁੱਗਣਾ val, ਅਚਲ __vpiScope*scope)
 {
-      int shift = 0;
-      if (scope) shift = scope->time_units - scope->time_precision;
-      assert(shift >= 0);
+      ਪੂਰਨ ਖਿਸਕਾਓ = 0;
+      ਜੇ (scope) ਖਿਸਕਾਓ = scope->ਸਮਾਂ_units - scope->ਸਮਾਂ_precision;
+      ਪ੍ਰਤਿਜ੍ਞਾ(ਖਿਸਕਾਓ >= 0);
 
-      assert(val >= 0);
+      ਪ੍ਰਤਿਜ੍ਞਾ(val >= 0);
 
 	// Scale to the local precision and then round away from zero.
-      double scale = pow(10.0L, shift);
+      ਦੁੱਗਣਾ scale = ਘਾਤ(10.0L, ਖਿਸਕਾਓ);
       val *= scale;
 
       vvp_time64_t delay = (vvp_time64_t) (val + 0.5);
 
 	// If needed now scale the value to the simulator precision.
-      if (scope) {
-	    shift = scope->time_precision - vpi_time_precision;
-	    assert(shift >= 0);
-	    for (int lp = 0; lp <  shift; lp += 1) delay *= 10;
+      ਜੇ (scope) {
+	    ਖਿਸਕਾਓ = scope->ਸਮਾਂ_precision - vpi_ਸਮਾਂ_precision;
+	    ਪ੍ਰਤਿਜ੍ਞਾ(ਖਿਸਕਾਓ >= 0);
+	    ਲਈ (ਪੂਰਨ lp = 0; lp <  ਖਿਸਕਾਓ; lp += 1) delay *= 10;
       }
 
-      return delay;
+      ਵਾਪਸ delay;
 }
 
-static void timevar_get_value(vpiHandle ref, s_vpi_value*vp, bool is_int_func,
-                              bool is_stime)
+ਸਥਿਰ ਖਾਲੀ timevar_get_ਮੁੱਲ(vpiHandle ref, s_vpi_ਮੁੱਲ*vp, ਤਾਰਕਿਕ is_int_func,
+                              ਤਾਰਕਿਕ is_stime)
 {
 	/* Keep a persistent structure for passing time values back to
 	   the caller. */
-      static struct t_vpi_time time_value;
+      ਸਥਿਰ ਬਣਤਰ t_vpi_ਸਮਾਂ ਸਮਾਂ_ਮੁੱਲ;
 
-      struct __vpiSystemTime*rfp = dynamic_cast<__vpiSystemTime*>(ref);
-      unsigned long num_bits;
-      vvp_time64_t x, simtime = schedule_simtime();
-      int units = rfp->scope? rfp->scope->time_units : vpi_time_precision;
+      ਬਣਤਰ __vpiSystemTime*rfp = dynamic_cast<__vpiSystemTime*>(ref);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ ਅੰਕ_ਬਿੱਟ;
+      vvp_time64_t x, simtime = ਸਮਾਂ_ਸਾਰਣੀ_simtime();
+      ਪੂਰਨ units = rfp->scope? rfp->scope->ਸਮਾਂ_units : vpi_ਸਮਾਂ_precision;
 
-      static const size_t RBUF_USE_SIZE = 128;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      ਸਥਿਰ ਅਚਲ size_t RBUF_USE_ਮਾਪ = 128;
+      ਅੱਖਰ*rbuf = static_cast<ਅੱਖਰ *>(need_ਨਤੀਜਾ_buf(RBUF_USE_ਮਾਪ, RBUF_VAL));
 
 	/* Calculate the divisor needed to scale the simulation time
 	   (in time_precision units) to time units of the scope. */
-      vvp_time64_t divisor = 1;
-      while (units > vpi_time_precision) {
-	    divisor *= 10;
+      vvp_time64_t ਭਾਜਕ = 1;
+      ਜਦੋਂ (units > vpi_ਸਮਾਂ_precision) {
+	    ਭਾਜਕ *= 10;
 	    units -= 1;
       }
 
 	/* Scale the simtime, and use the modulus to round up if
 	   appropriate. */
-      vvp_time64_t simtime_fraction = simtime % divisor;
-      simtime /= divisor;
+      vvp_time64_t simtime_fraction = simtime % ਭਾਜਕ;
+      simtime /= ਭਾਜਕ;
 
-      if ((divisor >= 10) && (simtime_fraction >= (divisor/2)))
+      ਜੇ ((ਭਾਜਕ >= 10) && (simtime_fraction >= (ਭਾਜਕ/2)))
 	    simtime += 1;
 
 	/* If this is a call to $stime only return the lower 32 bits. */
-      if (is_stime) simtime &= 0xffffffff;
+      ਜੇ (is_stime) simtime &= 0xffffffff;
 
-      switch (vp->format) {
-	  case vpiObjTypeVal:
+      ਚੋਣ (vp->format) {
+	  ਹਾਲਤ vpiObjTypeVal:
 	      /* The default format is vpiTimeVal. */
-	    vp->format = vpiTimeVal;
+	    vp->format = vpi_ਸਮਾਂ_Val;
 	    // fallthrough
-	  case vpiTimeVal:
-	    vp->value.time = &time_value;
-	    vp->value.time->type = vpiSimTime;
-	    vpip_time_to_timestruct(vp->value.time, simtime);
-	    break;
+	  ਹਾਲਤ vpi_ਸਮਾਂ_Val:
+	    vp->value.time = &ਸਮਾਂ_ਮੁੱਲ;
+	    vp->value.time->type = vpi_Sim_ਸਮਾਂ;
+	    vpip_ਸਮਾਂ_ਮੰਜ਼ਿਲ_timestruct(vp->value.time, simtime);
+	    ਰੋਕੋ;
 
-	  case vpiRealVal:
+	  ਹਾਲਤ vpiRealVal:
 	      /* If this is an integer based call (anything but $realtime)
 	       * just return the value as a double. */
-	    if (is_int_func)  vp->value.real = double (simtime);
+	    ਜੇ (is_int_func)  vp->value.real = ਦੁੱਗਣਾ (simtime);
 	      /* This is a call to $realtime to return a real value so
 	       * scale this using the scaled real rules. */
-	    else vp->value.real = vpip_time_to_scaled_real(schedule_simtime(),
+	    ਨਹੀਂਤਾਂ vp->value.real = vpip_ਸਮਾਂ_ਮੰਜ਼ਿਲ_scaled_real(ਸਮਾਂ_ਸਾਰਣੀ_simtime(),
 						           rfp->scope);
-	    break;
+	    ਰੋਕੋ;
 
-	  case vpiBinStrVal:
+	  ਹਾਲਤ vpiBinStrVal:
 	    x = simtime;
-	    num_bits = 8 * sizeof(vvp_time64_t);
+	    ਅੰਕ_ਬਿੱਟ = 8 * ਆਕਾਰ(vvp_time64_t);
 
-	    rbuf[num_bits] = 0;
-	    for (unsigned i = 1; i <= num_bits; i++) {
-	      rbuf[num_bits-i] = (x  & 1) ? '1' : '0';
+	    rbuf[ਅੰਕ_ਬਿੱਟ] = 0;
+	    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 1; i <= ਅੰਕ_ਬਿੱਟ; i++) {
+	      rbuf[ਅੰਕ_ਬਿੱਟ-i] = (x  & 1) ? '1' : '0';
 	      x = x >> 1;
 	    }
 
 	    vp->value.str = rbuf;
-	    break;
+	    ਰੋਕੋ;
 
-	  case vpiDecStrVal:
-	    snprintf(rbuf, RBUF_USE_SIZE, "%" TIME_FMT_U, simtime);
+	  ਹਾਲਤ vpiDecStrVal:
+	    snprintf(rbuf, RBUF_USE_ਮਾਪ, "%" ਸਮਾਂ_FMT_U, simtime);
 	    vp->value.str = rbuf;
-	    break;
+	    ਰੋਕੋ;
 
-	  case vpiOctStrVal:
-	    snprintf(rbuf, RBUF_USE_SIZE, "%" TIME_FMT_O, simtime);
+	  ਹਾਲਤ vpiOctStrVal:
+	    snprintf(rbuf, RBUF_USE_ਮਾਪ, "%" ਸਮਾਂ_FMT_O, simtime);
 	    vp->value.str = rbuf;
-	    break;
+	    ਰੋਕੋ;
 
-	  case vpiHexStrVal:
-	    snprintf(rbuf, RBUF_USE_SIZE, "%" TIME_FMT_X, simtime);
+	  ਹਾਲਤ vpiHexStrVal:
+	    snprintf(rbuf, RBUF_USE_ਮਾਪ, "%" ਸਮਾਂ_FMT_X, simtime);
 	    vp->value.str = rbuf;
-	    break;
+	    ਰੋਕੋ;
 
-	  default:
-	    fprintf(stderr, "vpi_time: unknown format: %d\n", (int)vp->format);
-	    assert(0);
+	  ਮੂਲ:
+	    fprintf(stderr, "vpi_time: unknown format: %d\n", (ਪੂਰਨ)vp->format);
+	    ਪ੍ਰਤਿਜ੍ਞਾ(0);
       }
 }
 
-static void timevar_get_ivalue(vpiHandle ref, s_vpi_value*vp)
+ਸਥਿਰ ਖਾਲੀ timevar_get_ivalue(vpiHandle ref, s_vpi_ਮੁੱਲ*vp)
 {
-      timevar_get_value(ref, vp, true, false);
+      timevar_get_ਮੁੱਲ(ref, vp, ਸੱਚ, ਝੂਠ);
 }
 
-static void timevar_get_svalue(vpiHandle ref, s_vpi_value*vp)
+ਸਥਿਰ ਖਾਲੀ timevar_get_svalue(vpiHandle ref, s_vpi_ਮੁੱਲ*vp)
 {
-      timevar_get_value(ref, vp, true, true);
+      timevar_get_ਮੁੱਲ(ref, vp, ਸੱਚ, ਸੱਚ);
 }
 
-static void timevar_get_rvalue(vpiHandle ref, s_vpi_value*vp)
+ਸਥਿਰ ਖਾਲੀ timevar_get_rvalue(vpiHandle ref, s_vpi_ਮੁੱਲ*vp)
 {
-      timevar_get_value(ref, vp, false, false);
+      timevar_get_ਮੁੱਲ(ref, vp, ਝੂਠ, ਝੂਠ);
 }
 
 __vpiScopedTime::__vpiScopedTime()
 { }
 
-char* __vpiScopedTime::vpi_get_str(int code)
+ਅੱਖਰ* __vpiScopedTime::vpi_get_str(ਪੂਰਨ code)
 {
-      switch (code) {
-	  case vpiName:
-	    return simple_set_rbuf_str("$time");
-	  default:
+      ਚੋਣ (code) {
+	  ਹਾਲਤ vpiName:
+	    ਵਾਪਸ simple_ਸੈੱਟ_rbuf_str("$time");
+	  ਮੂਲ:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    ਪ੍ਰਤਿਜ੍ਞਾ(0);
+	    ਵਾਪਸ 0;
       }
 }
 
 
-void __vpiScopedTime::vpi_get_value(p_vpi_value val)
-{ timevar_get_ivalue(this, val); }
+ਖਾਲੀ __vpiScopedTime::vpi_get_ਮੁੱਲ(p_vpi_ਮੁੱਲ val)
+{ timevar_get_ivalue(ਇਹ, val); }
 
 
 __vpiScopedSTime::__vpiScopedSTime()
 { }
 
-int __vpiScopedSTime::vpi_get(int code)
+ਪੂਰਨ __vpiScopedSTime::vpi_get(ਪੂਰਨ code)
 {
-      switch (code) {
-          case vpiSize:
-	    return 32;
+      ਚੋਣ (code) {
+          ਹਾਲਤ vpi_ਮਾਪ:
+	    ਵਾਪਸ 32;
 
-	  default:
-	    return __vpiSystemTime::vpi_get(code);
+	  ਮੂਲ:
+	    ਵਾਪਸ __vpiSystemTime::vpi_get(code);
       }
 }
 
 
-char* __vpiScopedSTime::vpi_get_str(int code)
+ਅੱਖਰ* __vpiScopedSTime::vpi_get_str(ਪੂਰਨ code)
 {
-      switch (code) {
-	  case vpiName:
-	    return simple_set_rbuf_str("$stime");
-	  default:
+      ਚੋਣ (code) {
+	  ਹਾਲਤ vpiName:
+	    ਵਾਪਸ simple_ਸੈੱਟ_rbuf_str("$stime");
+	  ਮੂਲ:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    ਪ੍ਰਤਿਜ੍ਞਾ(0);
+	    ਵਾਪਸ 0;
       }
 }
 
 
-void __vpiScopedSTime::vpi_get_value(p_vpi_value val)
-{ timevar_get_svalue(this, val); }
+ਖਾਲੀ __vpiScopedSTime::vpi_get_ਮੁੱਲ(p_vpi_ਮੁੱਲ val)
+{ timevar_get_svalue(ਇਹ, val); }
 
 __vpiSystemTime::__vpiSystemTime()
 {
       scope = 0;
 }
 
-int __vpiSystemTime::get_type_code(void) const
-{ return vpiSysFuncCall; }
+ਪੂਰਨ __vpiSystemTime::get_type_ਕੋਡ(ਖਾਲੀ) ਅਚਲ
+{ ਵਾਪਸ vpiSysFuncCall; }
 
-int __vpiSystemTime::vpi_get(int code)
+ਪੂਰਨ __vpiSystemTime::vpi_get(ਪੂਰਨ code)
 {
-      switch (code) {
-          case vpiSize:
-	    return 64;
+      ਚੋਣ (code) {
+          ਹਾਲਤ vpi_ਮਾਪ:
+	    ਵਾਪਸ 64;
 
-          case vpiSigned:
-	    return 0;
+          ਹਾਲਤ vpiSigned:
+	    ਵਾਪਸ 0;
 
-	  case vpiFuncType:
-	    return vpiTimeFunc;
+	  ਹਾਲਤ vpiFuncType:
+	    ਵਾਪਸ vpi_ਸਮਾਂ_Func;
 
-          case vpiAutomatic:
-	    return 0;
+          ਹਾਲਤ vpiAutomatic:
+	    ਵਾਪਸ 0;
 
-	  default:
+	  ਮੂਲ:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    ਪ੍ਰਤਿਜ੍ਞਾ(0);
+	    ਵਾਪਸ 0;
       }
 }
 
 
-char* __vpiSystemTime::vpi_get_str(int code)
+ਅੱਖਰ* __vpiSystemTime::vpi_get_str(ਪੂਰਨ code)
 {
-      switch (code) {
-	  case vpiName:
-	    return simple_set_rbuf_str("$simtime");
-	  default:
+      ਚੋਣ (code) {
+	  ਹਾਲਤ vpiName:
+	    ਵਾਪਸ simple_ਸੈੱਟ_rbuf_str("$simtime");
+	  ਮੂਲ:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    ਪ੍ਰਤਿਜ੍ਞਾ(0);
+	    ਵਾਪਸ 0;
       }
 }
 
 
-void __vpiSystemTime::vpi_get_value(p_vpi_value val)
-{ timevar_get_ivalue(this, val); }
+ਖਾਲੀ __vpiSystemTime::vpi_get_ਮੁੱਲ(p_vpi_ਮੁੱਲ val)
+{ timevar_get_ivalue(ਇਹ, val); }
 
-vpiHandle __vpiSystemTime::vpi_handle(int code)
+vpiHandle __vpiSystemTime::vpi_handle(ਪੂਰਨ code)
 {
-      switch (code) {
-	  case vpiScope:
-	    return scope;
-	  default:
-	    return 0;
+      ਚੋਣ (code) {
+	  ਹਾਲਤ vpiScope:
+	    ਵਾਪਸ scope;
+	  ਮੂਲ:
+	    ਵਾਪਸ 0;
       }
 }
 
@@ -310,77 +310,77 @@ vpiHandle __vpiSystemTime::vpi_handle(int code)
 __vpiScopedRealtime::__vpiScopedRealtime()
 { }
 
-int __vpiScopedRealtime::vpi_get(int code)
+ਪੂਰਨ __vpiScopedRealtime::vpi_get(ਪੂਰਨ code)
 {
-      switch (code) {
-          case vpiSize:
-	    return 1;
+      ਚੋਣ (code) {
+          ਹਾਲਤ vpi_ਮਾਪ:
+	    ਵਾਪਸ 1;
 
-          case vpiSigned:
-	    return 0;
+          ਹਾਲਤ vpiSigned:
+	    ਵਾਪਸ 0;
 
-	  case vpiFuncType:
-	    return vpiRealFunc;
+	  ਹਾਲਤ vpiFuncType:
+	    ਵਾਪਸ vpiRealFunc;
 
-          case vpiAutomatic:
-	    return 0;
+          ਹਾਲਤ vpiAutomatic:
+	    ਵਾਪਸ 0;
 
-	  default:
+	  ਮੂਲ:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    ਪ੍ਰਤਿਜ੍ਞਾ(0);
+	    ਵਾਪਸ 0;
       }
 }
 
 
-char* __vpiScopedRealtime::vpi_get_str(int code)
+ਅੱਖਰ* __vpiScopedRealtime::vpi_get_str(ਪੂਰਨ code)
 {
-      switch (code) {
-	  case vpiName:
-	    return simple_set_rbuf_str("$realtime");
-	  default:
+      ਚੋਣ (code) {
+	  ਹਾਲਤ vpiName:
+	    ਵਾਪਸ simple_ਸੈੱਟ_rbuf_str("$realtime");
+	  ਮੂਲ:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    ਪ੍ਰਤਿਜ੍ਞਾ(0);
+	    ਵਾਪਸ 0;
       }
 }
 
 
-void __vpiScopedRealtime::vpi_get_value(p_vpi_value val)
-{ timevar_get_rvalue(this, val); }
+ਖਾਲੀ __vpiScopedRealtime::vpi_get_ਮੁੱਲ(p_vpi_ਮੁੱਲ val)
+{ timevar_get_rvalue(ਇਹ, val); }
 
 /*
  * Create a handle to represent a call to $time/$stime/$simtime. The
  * $time and $stime system functions return a value scaled to a scope,
  * and the $simtime returns the unscaled time.
  */
-vpiHandle vpip_sim_time(__vpiScope*scope, bool is_stime)
+vpiHandle vpip_sim_ਸਮਾਂ(__vpiScope*scope, ਤਾਰਕਿਕ is_stime)
 {
-      if (scope) {
-	    if (is_stime) {
+      ਜੇ (scope) {
+	    ਜੇ (is_stime) {
 		  scope->scoped_stime.scope = scope;
-		  return &scope->scoped_stime;
-	    } else {
-		  scope->scoped_time.scope = scope;
-		  return &scope->scoped_time;
+		  ਵਾਪਸ &scope->scoped_stime;
+	    } ਨਹੀਂਤਾਂ {
+		  scope->scoped_ਸਮਾਂ.scope = scope;
+		  ਵਾਪਸ &scope->scoped_ਸਮਾਂ;
 	    }
-      } else {
-	    return &global_simtime;
+      } ਨਹੀਂਤਾਂ {
+	    ਵਾਪਸ &global_simtime;
       }
 }
 
 vpiHandle vpip_sim_realtime(__vpiScope*scope)
 {
       scope->scoped_realtime.scope = scope;
-      return &scope->scoped_realtime;
+      ਵਾਪਸ &scope->scoped_realtime;
 }
 
-int vpip_get_time_precision(void)
+ਪੂਰਨ vpip_get_ਸਮਾਂ_precision(ਖਾਲੀ)
 {
-      return vpi_time_precision;
+      ਵਾਪਸ vpi_ਸਮਾਂ_precision;
 }
 
-void vpip_set_time_precision(int pre)
+ਖਾਲੀ vpip_ਸੈੱਟ_ਸਮਾਂ_precision(ਪੂਰਨ pre)
 {
-      vpi_time_precision = pre;
+      vpi_ਸਮਾਂ_precision = pre;
 }

@@ -1,5 +1,5 @@
-#ifndef IVL_class_type_H
-#define IVL_class_type_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ IVL_class_type_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IVL_class_type_H
 /*
  * Copyright (c) 2012-2025 Stephen Williams (steve@icarus.com)
  *
@@ -31,58 +31,58 @@ class vvp_vector4_t;
  * uses this information to figure out how to construct an actual
  * instance.
  */
-class class_type : public __vpiHandle {
+class class_type : ਜਨਤਕ __vpiHandle {
 
-    public:
-      struct inst_x;
-      typedef inst_x*inst_t;
+    ਜਨਤਕ:
+      ਬਣਤਰ inst_x;
+      ਕਿਸਮਪਰਿਭਾਸ਼ਾ inst_x*inst_t;
 
-    public:
-      explicit class_type(const std::string&nam, size_t nprop);
+    ਜਨਤਕ:
+      explicit class_type(ਅਚਲ std::string&nam, size_t nprop);
       ~class_type() override;
 
 	// This is the name of the class type.
-      inline const std::string&class_name(void) const { return class_name_; }
+      ਸਤਰਅੰਦਰ ਅਚਲ std::string&class_name(ਖਾਲੀ) ਅਚਲ { ਵਾਪਸ class_name_; }
 	// Number of properties in the class definition.
-      inline size_t property_count(void) const { return properties_.size(); }
+      ਸਤਰਅੰਦਰ size_t property_ਗਿਣਤੀ(ਖਾਲੀ) ਅਚਲ { ਵਾਪਸ properties_.ਮਾਪ(); }
 
 	// Set the details about the property. This is used during
 	// parse of the .vvp file to fill in the details of the
 	// property for the class definition.
-      void set_property(size_t idx, const std::string&name, const std::string&type, uint64_t array_size);
+      ਖਾਲੀ ਸੈੱਟ_property(size_t idx, ਅਚਲ std::string&name, ਅਚਲ std::string&type, uint64_t array_ਮਾਪ_2);
 
 	// This method is called after all the properties are
 	// defined. This calculates information about the definition.
-      void finish_setup(void);
+      ਖਾਲੀ ਅੰਤ_ਤਿਆਰੀ(ਖਾਲੀ);
 
-    public:
+    ਜਨਤਕ:
 	// Constructors and destructors for making instances.
-      inst_t instance_new() const;
-      void instance_delete(inst_t) const;
+      inst_t instance_new() ਅਚਲ;
+      ਖਾਲੀ instance_delete(inst_t) ਅਚਲ;
 
-      void set_vec4(inst_t inst, size_t pid, const vvp_vector4_t&val) const;
-      void get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) const;
-      void set_real(inst_t inst, size_t pid, double val) const;
-      double get_real(inst_t inst, size_t pid) const;
-      void set_string(inst_t inst, size_t pid, const std::string&val) const;
-      std::string get_string(inst_t inst, size_t pid) const;
-      void set_object(inst_t inst, size_t pid, const vvp_object_t&val, size_t idx) const;
-      void get_object(inst_t inst, size_t pid, vvp_object_t&val, size_t idx) const;
+      ਖਾਲੀ ਸੈੱਟ_vec4(inst_t inst, size_t pid, ਅਚਲ vvp_vector4_t&val) ਅਚਲ;
+      ਖਾਲੀ get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) ਅਚਲ;
+      ਖਾਲੀ ਸੈੱਟ_real(inst_t inst, size_t pid, ਦੁੱਗਣਾ val) ਅਚਲ;
+      ਦੁੱਗਣਾ get_real(inst_t inst, size_t pid) ਅਚਲ;
+      ਖਾਲੀ ਸੈੱਟ_string(inst_t inst, size_t pid, ਅਚਲ std::string&val) ਅਚਲ;
+      std::string get_string(inst_t inst, size_t pid) ਅਚਲ;
+      ਖਾਲੀ ਸੈੱਟ_object(inst_t inst, size_t pid, ਅਚਲ vvp_object_t&val, size_t idx) ਅਚਲ;
+      ਖਾਲੀ get_object(inst_t inst, size_t pid, vvp_object_t&val, size_t idx) ਅਚਲ;
 
-      void copy_property(inst_t dst, size_t idx, inst_t src) const;
+      ਖਾਲੀ copy_property(inst_t dst, size_t idx, inst_t src) ਅਚਲ;
 
-    public: // VPI related methods
-      int get_type_code(void) const override;
+    ਜਨਤਕ: // VPI related methods
+      ਪੂਰਨ get_type_ਕੋਡ(ਖਾਲੀ) ਅਚਲ override;
 
-    private:
+    ਨਿਜੀ:
       std::string class_name_;
 
-      struct prop_t {
+      ਬਣਤਰ prop_t {
 	    std::string name;
 	    class_property_t*type;
       };
-      std::vector<prop_t> properties_;
-      size_t instance_size_;
+      std::ਸਦਿਸ਼<prop_t> properties_;
+      size_t instance_ਮਾਪ_2;
 };
 
-#endif /* IVL_class_type_H */
+#ਜੇ_ਅੰਤ /* IVL_class_type_H */

@@ -26,16 +26,16 @@
 # include  "vpi_priv.h"
 # include  "vthread.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
 # include <map>
-#endif
+#ਜੇ_ਅੰਤ
 # include  <cstdio>
 # include  <cstdlib>
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+ਵਰਤੋਂ ਨਾਮਾਕਾਸ਼ std;
 
 /*
  * Hex digits that represent 4-value bits of Verilog are not as
@@ -48,492 +48,492 @@ using namespace std;
  * The table is calculated as compile time, therefore, by the
  * draw_tt.c program.
  */
-extern const char hex_digits[256];
-extern const char oct_digits[64];
+ਬਾਹਰੀ ਅਚਲ ਅੱਖਰ hex_digits[256];
+ਬਾਹਰੀ ਅਚਲ ਅੱਖਰ oct_digits[64];
 
 
-class __vpiVThrWord : public __vpiHandle {
-    public:
-      explicit __vpiVThrWord(unsigned base);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+ਵਰਗ __vpiVThrWord : ਜਨਤਕ __vpiHandle {
+    ਜਨਤਕ:
+      ਸਪਸ਼ਟ __vpiVThrWord(ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ);
+      ਪੂਰਨ get_type_ਕੋਡ(ਖਾਲੀ) ਅਚਲ override;
+      ਪੂਰਨ vpi_get(ਪੂਰਨ code) override;
+      ਖਾਲੀ vpi_get_ਮੁੱਲ(p_vpi_ਮੁੱਲ val) override;
 
-      int get_subtype() const { return subtype; };
-      unsigned get_index() const { return index; };
+      ਪੂਰਨ get_subtype() ਅਚਲ { ਵਾਪਸ subtype; };
+      ਬਿਨਾਨਿਸ਼ਾਨੀ get_ਸੂਚਕਾਂਕ() ਅਚਲ { ਵਾਪਸ ਸੂਚਕਾਂਕ; };
 
-    private:
-      const char* name;
-      int subtype;
-      unsigned index;
+    ਨਿਜੀ:
+      ਅਚਲ ਅੱਖਰ* name;
+      ਪੂਰਨ subtype;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੂਚਕਾਂਕ;
 };
 
-static int vthr_word_get(int code, vpiHandle ref)
+ਸਥਿਰ ਪੂਰਨ vthr_ਸ਼ਬਦ_get(ਪੂਰਨ code, vpiHandle ref)
 {
-      const __vpiVThrWord*rfp = dynamic_cast<__vpiVThrWord*>(ref);
+      ਅਚਲ __vpiVThrWord*rfp = dynamic_cast<__vpiVThrWord*>(ref);
 
-      switch (code) {
+      ਚੋਣ (code) {
 
-	  case vpiConstType:
-	    return rfp->get_subtype();
+	  ਹਾਲਤ vpiConstType:
+	    ਵਾਪਸ rfp->get_subtype();
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiWord;
-#endif
+#ਜੇ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  ਹਾਲਤ _vpiFromThr:
+	    ਵਾਪਸ vpi_ਸ਼ਬਦ;
+#ਜੇ_ਅੰਤ
 
-	  default:
-	    return 0;
+	  ਮੂਲ:
+	    ਵਾਪਸ 0;
       }
 }
 
-static void vthr_real_get_value(vpiHandle ref, s_vpi_value*vp)
+ਸਥਿਰ ਖਾਲੀ vthr_real_get_ਮੁੱਲ(vpiHandle ref, s_vpi_ਮੁੱਲ*vp)
 {
-      const __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(ref);
-      static const size_t RBUF_USE_SIZE = 66;
-      char *rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      ਅਚਲ __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(ref);
+      ਸਥਿਰ ਅਚਲ size_t RBUF_USE_ਮਾਪ = 66;
+      ਅੱਖਰ *rbuf = static_cast<ਅੱਖਰ *>(need_ਨਤੀਜਾ_buf(RBUF_USE_ਮਾਪ, RBUF_VAL));
 
-      double val = 0.0;
+      ਦੁੱਗਣਾ val = 0.0;
 
 	/* Get the actual value from the index. It is possible, by the
 	   way, that the vpi_get_value is called from compiletf. If
 	   that's the case, there will be no current thread, and this
 	   will not have access to the proper value. Punt and return a
 	   0.0 value instead. */
-      if (vpip_current_vthread)
-	    val = vthread_get_real_stack(vpip_current_vthread,
-	                                 obj->get_index());
+      ਜੇ (vpip_current_vthread)
+	    val = vthread_get_real_ਢੇਰ(vpip_current_vthread,
+	                                 obj->get_ਸੂਚਕਾਂਕ());
 
-      switch (vp->format) {
+      ਚੋਣ (vp->format) {
 
-	  case vpiObjTypeVal:
+	  ਹਾਲਤ vpiObjTypeVal:
 	    vp->format = vpiRealVal;
 	    // fallthrough
-	  case vpiRealVal:
+	  ਹਾਲਤ vpiRealVal:
 	    vp->value.real = val;
-	    break;
+	    ਰੋਕੋ;
 
-	  case vpiIntVal:
+	  ਹਾਲਤ vpiIntVal:
 	      /* NaN or +/- infinity are translated as 0. */
-	    if (val != val || (val && (val == 0.5*val))) {
+	    ਜੇ (val != val || (val && (val == 0.5*val))) {
 		  val = 0.0;
-	    } else {
-		  val = std::round(val);
+	    } ਨਹੀਂਤਾਂ {
+		  val = std::ਗੇੜਾ_2(val);
 	    }
 	    vp->value.integer = (PLI_INT32)val;
-	    break;
+	    ਰੋਕੋ;
 
-	  case vpiDecStrVal:
-	    if (std::isnan(val))
-		  snprintf(rbuf, RBUF_USE_SIZE, "%s", "nan");
-	    else
-		  snprintf(rbuf, RBUF_USE_SIZE, "%0.0f", std::round(val));
+	  ਹਾਲਤ vpiDecStrVal:
+	    ਜੇ (std::isnan(val))
+		  snprintf(rbuf, RBUF_USE_ਮਾਪ, "%s", "nan");
+	    ਨਹੀਂਤਾਂ
+		  snprintf(rbuf, RBUF_USE_ਮਾਪ, "%0.0f", std::ਗੇੜਾ_2(val));
 	    vp->value.str = rbuf;
-	    break;
+	    ਰੋਕੋ;
 
-	  case vpiOctStrVal:
-	    snprintf(rbuf, RBUF_USE_SIZE, "%" PRIo64, vlg_round_to_u64(val));
+	  ਹਾਲਤ vpiOctStrVal:
+	    snprintf(rbuf, RBUF_USE_ਮਾਪ, "%" PRIo64, vlg_ਗੇੜਾ_ਮੰਜ਼ਿਲ_u64(val));
 	    vp->value.str = rbuf;
-	    break;
+	    ਰੋਕੋ;
 
-	  case vpiHexStrVal:
-	    snprintf(rbuf, RBUF_USE_SIZE, "%" PRIx64, vlg_round_to_u64(val));
+	  ਹਾਲਤ vpiHexStrVal:
+	    snprintf(rbuf, RBUF_USE_ਮਾਪ, "%" PRIx64, vlg_ਗੇੜਾ_ਮੰਜ਼ਿਲ_u64(val));
 	    vp->value.str = rbuf;
-	    break;
+	    ਰੋਕੋ;
 
-	  case vpiBinStrVal: {
-		uint64_t vali = vlg_round_to_u64(val);
-		unsigned len = 0;
+	  ਹਾਲਤ vpiBinStrVal: {
+		uint64_t vali = vlg_ਗੇੜਾ_ਮੰਜ਼ਿਲ_u64(val);
+		ਬਿਨਾਨਿਸ਼ਾਨੀ len = 0;
 
-		while (vali > 0) {
+		ਜਦੋਂ (vali > 0) {
 		      len += 1;
 		      vali /= 2;
 		}
 
-		vali = vlg_round_to_u64(val);
-		for (unsigned idx = 0 ;  idx < len ;  idx += 1) {
+		vali = vlg_ਗੇੜਾ_ਮੰਜ਼ਿਲ_u64(val);
+		ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0 ;  idx < len ;  idx += 1) {
 		      rbuf[len-idx-1] = (vali & 1)? '1' : '0';
 		      vali /= 2;
 		}
 
 		rbuf[len] = 0;
-		if (len == 0) {
+		ਜੇ (len == 0) {
 		      rbuf[0] = '0';
 		      rbuf[1] = 0;
 		}
 		vp->value.str = rbuf;
-		break;
+		ਰੋਕੋ;
 	  }
 
-	  default:
+	  ਮੂਲ:
 	    fprintf(stderr, "vvp error: get %d not supported "
-		      "by vpiConstant (Real)\n", (int)vp->format);
+		      "by vpiConstant (Real)\n", (ਪੂਰਨ)vp->format);
 
 	    vp->format = vpiSuppressVal;
-	    break;
+	    ਰੋਕੋ;
       }
 }
 
-inline __vpiVThrWord::__vpiVThrWord(unsigned base)
+ਸਤਰਅੰਦਰ __vpiVThrWord::__vpiVThrWord(ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ)
 {
       name = vpip_name_string("W<>");
       subtype = vpiRealConst;
-      index = base;
+      ਸੂਚਕਾਂਕ = ਅਧਾਰ;
 }
 
-int __vpiVThrWord::get_type_code(void) const
-{ return vpiConstant; }
+ਪੂਰਨ __vpiVThrWord::get_type_ਕੋਡ(ਖਾਲੀ) ਅਚਲ
+{ ਵਾਪਸ vpiConstant; }
 
-int __vpiVThrWord::vpi_get(int code)
-{ return vthr_word_get(code, this); }
+ਪੂਰਨ __vpiVThrWord::vpi_get(ਪੂਰਨ code)
+{ ਵਾਪਸ vthr_ਸ਼ਬਦ_get(code, ਇਹ); }
 
-void __vpiVThrWord::vpi_get_value(p_vpi_value val)
-{ vthr_real_get_value(this, val); }
+ਖਾਲੀ __vpiVThrWord::vpi_get_ਮੁੱਲ(p_vpi_ਮੁੱਲ val)
+{ vthr_real_get_ਮੁੱਲ(ਇਹ, val); }
 
-vpiHandle vpip_make_vthr_word(unsigned base, const char*type)
+vpiHandle vpip_make_vthr_ਸ਼ਬਦ(ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਅਚਲ ਅੱਖਰ*type)
 {
-      assert(type[0] == 'r');
-      assert(base < 65536);
-      __vpiVThrWord*obj = new __vpiVThrWord(base);
+      ਪ੍ਰਤਿਜ੍ਞਾ(type[0] == 'r');
+      ਪ੍ਰਤਿਜ੍ਞਾ(ਅਧਾਰ < 65536);
+      __vpiVThrWord*obj = ਨਵਾਂ __vpiVThrWord(ਅਧਾਰ);
 
-      return obj;
+      ਵਾਪਸ obj;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-static map<vpiHandle, bool> handle_map;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
+ਸਥਿਰ map<vpiHandle, ਤਾਰਕਿਕ> handle_map;
 
-void thread_word_delete(vpiHandle item)
+ਖਾਲੀ thread_ਸ਼ਬਦ_delete(vpiHandle ਵਸਤੂ)
 {
-      handle_map[item] = false;
+      handle_map[ਵਸਤੂ] = ਝੂਠ;
 }
 
-static void thread_word_delete_real(vpiHandle item)
+ਸਥਿਰ ਖਾਲੀ thread_ਸ਼ਬਦ_delete_real(vpiHandle ਵਸਤੂ)
 {
-      class __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(item);
-      delete obj;
+      ਵਰਗ __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(ਵਸਤੂ);
+      ਮਿਟਾਓ obj;
 }
-#endif
+#ਜੇ_ਅੰਤ
 
-class __vpiVThrStrStack : public __vpiHandle {
-    public:
-      explicit __vpiVThrStrStack(unsigned depth);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-    private:
-      unsigned depth_;
+ਵਰਗ __vpiVThrStrStack : ਜਨਤਕ __vpiHandle {
+    ਜਨਤਕ:
+      ਸਪਸ਼ਟ __vpiVThrStrStack(ਬਿਨਾਨਿਸ਼ਾਨੀ ਡੂੰਘਾਈ);
+      ਪੂਰਨ get_type_ਕੋਡ(ਖਾਲੀ) ਅਚਲ override;
+      ਪੂਰਨ vpi_get(ਪੂਰਨ code) override;
+      ਖਾਲੀ vpi_get_ਮੁੱਲ(p_vpi_ਮੁੱਲ val) override;
+    ਨਿਜੀ:
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਡੂੰਘਾਈ_2;
 };
 
-__vpiVThrStrStack::__vpiVThrStrStack(unsigned d)
-: depth_(d)
+__vpiVThrStrStack::__vpiVThrStrStack(ਬਿਨਾਨਿਸ਼ਾਨੀ d)
+: ਡੂੰਘਾਈ_2(d)
 {
 }
 
-int __vpiVThrStrStack::get_type_code(void) const
-{ return vpiConstant; }
+ਪੂਰਨ __vpiVThrStrStack::get_type_ਕੋਡ(ਖਾਲੀ) ਅਚਲ
+{ ਵਾਪਸ vpiConstant; }
 
-int __vpiVThrStrStack::vpi_get(int code)
+ਪੂਰਨ __vpiVThrStrStack::vpi_get(ਪੂਰਨ code)
 {
-      switch (code) {
-	  case vpiConstType:
-	    return vpiStringConst;
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiString;
-#endif
-	  case vpiSize:
-	    return vthread_get_str_stack(vpip_current_vthread, depth_).size();
-	  default:
-	    return 0;
+      ਚੋਣ (code) {
+	  ਹਾਲਤ vpiConstType:
+	    ਵਾਪਸ vpiStringConst;
+#ਜੇ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  ਹਾਲਤ _vpiFromThr:
+	    ਵਾਪਸ _vpiString;
+#ਜੇ_ਅੰਤ
+	  ਹਾਲਤ vpi_ਮਾਪ:
+	    ਵਾਪਸ vthread_get_str_ਢੇਰ(vpip_current_vthread, ਡੂੰਘਾਈ_2).size();
+	  ਮੂਲ:
+	    ਵਾਪਸ 0;
       }
 }
 
-void __vpiVThrStrStack::vpi_get_value(p_vpi_value vp)
+ਖਾਲੀ __vpiVThrStrStack::vpi_get_ਮੁੱਲ(p_vpi_ਮੁੱਲ vp)
 {
       string val;
-      char*rbuf = 0;
+      ਅੱਖਰ*rbuf = 0;
 
-      if (vpip_current_vthread)
-	    val = vthread_get_str_stack(vpip_current_vthread, depth_);
+      ਜੇ (vpip_current_vthread)
+	    val = vthread_get_str_ਢੇਰ(vpip_current_vthread, ਡੂੰਘਾਈ_2);
 
-      switch (vp->format) {
+      ਚੋਣ (vp->format) {
 
-	  case vpiObjTypeVal:
+	  ਹਾਲਤ vpiObjTypeVal:
 	    vp->format = vpiStringVal;
 	    // fallthrough
-	  case vpiStringVal:
-	    rbuf = static_cast<char *>(need_result_buf(val.size()+1, RBUF_VAL));
+	  ਹਾਲਤ vpiStringVal:
+	    rbuf = static_cast<ਅੱਖਰ *>(need_ਨਤੀਜਾ_buf(val.size()+1, RBUF_VAL));
 	    strcpy(rbuf, val.c_str());
 	    vp->value.str = rbuf;
-	    break;
+	    ਰੋਕੋ;
 
-	  default:
+	  ਮੂਲ:
 	    fprintf(stderr, "vvp error: get %d not supported "
-		      "by vpiConstant (String)\n", (int)vp->format);
+		      "by vpiConstant (String)\n", (ਪੂਰਨ)vp->format);
 
 	    vp->format = vpiSuppressVal;
-	    break;
+	    ਰੋਕੋ;
       }
 }
 
-class __vpiVThrVec4Stack : public __vpiHandle {
-    public:
-      __vpiVThrVec4Stack(unsigned depth, bool signed_flag, unsigned wid);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-    private:
-      static void vpi_get_value_string_(p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_binstr_(p_vpi_value vp, const vvp_vector4_t&val);
-      void vpi_get_value_decstr_(p_vpi_value vp, const vvp_vector4_t&val);
-      void vpi_get_value_int_   (p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_real_  (p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_strength_(p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_octstr_(p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_hexstr_(p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_vector_(p_vpi_value vp, const vvp_vector4_t&val);
-    private:
-      unsigned depth_;
-      bool signed_flag_;
-      unsigned expect_width_;
-      const char*name;
+ਵਰਗ __vpiVThrVec4Stack : ਜਨਤਕ __vpiHandle {
+    ਜਨਤਕ:
+      __vpiVThrVec4Stack(ਬਿਨਾਨਿਸ਼ਾਨੀ ਡੂੰਘਾਈ, ਤਾਰਕਿਕ signed_flag, ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
+      ਪੂਰਨ get_type_ਕੋਡ(ਖਾਲੀ) ਅਚਲ override;
+      ਪੂਰਨ vpi_get(ਪੂਰਨ code) override;
+      ਅੱਖਰ*vpi_get_str(ਪੂਰਨ code) override;
+      ਖਾਲੀ vpi_get_ਮੁੱਲ(p_vpi_ਮੁੱਲ val) override;
+      vpiHandle vpi_put_ਮੁੱਲ(p_vpi_ਮੁੱਲ val, ਪੂਰਨ flags) override;
+    ਨਿਜੀ:
+      ਸਥਿਰ ਖਾਲੀ vpi_get_ਮੁੱਲ_string(p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val);
+      ਸਥਿਰ ਖਾਲੀ vpi_get_ਮੁੱਲ_binstr(p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val);
+      ਖਾਲੀ vpi_get_ਮੁੱਲ_decstr(p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val);
+      ਖਾਲੀ vpi_get_ਮੁੱਲ_int   (p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val);
+      ਸਥਿਰ ਖਾਲੀ vpi_get_ਮੁੱਲ_real  (p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val);
+      ਸਥਿਰ ਖਾਲੀ vpi_get_ਮੁੱਲ_strength(p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val);
+      ਸਥਿਰ ਖਾਲੀ vpi_get_ਮੁੱਲ_octstr(p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val);
+      ਸਥਿਰ ਖਾਲੀ vpi_get_ਮੁੱਲ_hexstr(p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val);
+      ਸਥਿਰ ਖਾਲੀ vpi_get_ਮੁੱਲ_ਸਦਿਸ਼(p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val);
+    ਨਿਜੀ:
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਡੂੰਘਾਈ_2;
+      ਤਾਰਕਿਕ signed_flag_;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ expect_ਚੌੜਾਈ;
+      ਅਚਲ ਅੱਖਰ*name;
 };
 
-__vpiVThrVec4Stack::__vpiVThrVec4Stack(unsigned d, bool sf, unsigned wid)
-: depth_(d), signed_flag_(sf), expect_width_(wid)
+__vpiVThrVec4Stack::__vpiVThrVec4Stack(ਬਿਨਾਨਿਸ਼ਾਨੀ d, ਤਾਰਕਿਕ sf, ਬਿਨਾਨਿਸ਼ਾਨੀ wid)
+: ਡੂੰਘਾਈ_2(d), signed_flag_(sf), expect_ਚੌੜਾਈ(wid)
 {
       name = vpip_name_string("S<,vec4,>");
 }
 
-int __vpiVThrVec4Stack::get_type_code(void) const
-{ return vpiConstant; }
+ਪੂਰਨ __vpiVThrVec4Stack::get_type_ਕੋਡ(ਖਾਲੀ) ਅਚਲ
+{ ਵਾਪਸ vpiConstant; }
 
 
-int __vpiVThrVec4Stack::vpi_get(int code)
+ਪੂਰਨ __vpiVThrVec4Stack::vpi_get(ਪੂਰਨ code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return expect_width_;
+      ਚੋਣ (code) {
+	  ਹਾਲਤ vpi_ਮਾਪ:
+	    ਵਾਪਸ expect_ਚੌੜਾਈ;
 
-	  case vpiSigned:
-	    return signed_flag_? 1 : 0;
+	  ਹਾਲਤ vpiSigned:
+	    ਵਾਪਸ signed_flag_? 1 : 0;
 
-	  case vpiConstType:
-	    return vpiBinaryConst;
+	  ਹਾਲਤ vpiConstType:
+	    ਵਾਪਸ vpi_ਦੁਆਧਾਰੀ_Const;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiVThr;
-#endif
+#ਜੇ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  ਹਾਲਤ _vpiFromThr:
+	    ਵਾਪਸ _vpiVThr;
+#ਜੇ_ਅੰਤ
 
-	  default:
-	    return 0;
+	  ਮੂਲ:
+	    ਵਾਪਸ 0;
       }
 }
 
-char*__vpiVThrVec4Stack::vpi_get_str(int code)
+ਅੱਖਰ*__vpiVThrVec4Stack::vpi_get_str(ਪੂਰਨ code)
 {
-      switch (code) {
-	  case vpiFullName:
-	    return simple_set_rbuf_str(name);
+      ਚੋਣ (code) {
+	  ਹਾਲਤ vpi_ਭਰਿਆ_Name:
+	    ਵਾਪਸ simple_ਸੈੱਟ_rbuf_str(name);
 
-	  default:
-	    return 0;
+	  ਮੂਲ:
+	    ਵਾਪਸ 0;
       }
 }
 
-void __vpiVThrVec4Stack::vpi_get_value(p_vpi_value vp)
+ਖਾਲੀ __vpiVThrVec4Stack::vpi_get_ਮੁੱਲ(p_vpi_ਮੁੱਲ vp)
 {
       vvp_vector4_t val;
 
-      if (vpip_current_vthread)
-	    val = vthread_get_vec4_stack(vpip_current_vthread, depth_);
+      ਜੇ (vpip_current_vthread)
+	    val = vthread_get_vec4_ਢੇਰ(vpip_current_vthread, ਡੂੰਘਾਈ_2);
 
-      switch (vp->format) {
+      ਚੋਣ (vp->format) {
 
-	  case vpiBinStrVal:
-	    vpi_get_value_binstr_(vp, val);
-	    break;
-	  case vpiDecStrVal:
-	    vpi_get_value_decstr_(vp, val);
-	    break;
-	  case vpiOctStrVal:
-	    vpi_get_value_octstr_(vp, val);
-	    break;
-	  case vpiHexStrVal:
-	    vpi_get_value_hexstr_(vp, val);
-	    break;
-	  case vpiIntVal:
-	    vpi_get_value_int_(vp, val);
-	    break;
-	  case vpiRealVal:
-	    vpi_get_value_real_(vp, val);
-	    break;
-	  case vpiStringVal:
-	    vpi_get_value_string_(vp, val);
-	    break;
-	  case vpiStrengthVal:
-	    vpi_get_value_strength_(vp, val);
-	    break;
-	  case vpiObjTypeVal:
-	    vp->format = vpiVectorVal;
+	  ਹਾਲਤ vpiBinStrVal:
+	    vpi_get_ਮੁੱਲ_binstr(vp, val);
+	    ਰੋਕੋ;
+	  ਹਾਲਤ vpiDecStrVal:
+	    vpi_get_ਮੁੱਲ_decstr(vp, val);
+	    ਰੋਕੋ;
+	  ਹਾਲਤ vpiOctStrVal:
+	    vpi_get_ਮੁੱਲ_octstr(vp, val);
+	    ਰੋਕੋ;
+	  ਹਾਲਤ vpiHexStrVal:
+	    vpi_get_ਮੁੱਲ_hexstr(vp, val);
+	    ਰੋਕੋ;
+	  ਹਾਲਤ vpiIntVal:
+	    vpi_get_ਮੁੱਲ_int(vp, val);
+	    ਰੋਕੋ;
+	  ਹਾਲਤ vpiRealVal:
+	    vpi_get_ਮੁੱਲ_real(vp, val);
+	    ਰੋਕੋ;
+	  ਹਾਲਤ vpiStringVal:
+	    vpi_get_ਮੁੱਲ_string(vp, val);
+	    ਰੋਕੋ;
+	  ਹਾਲਤ vpiStrengthVal:
+	    vpi_get_ਮੁੱਲ_strength(vp, val);
+	    ਰੋਕੋ;
+	  ਹਾਲਤ vpiObjTypeVal:
+	    vp->format = vpi_ਸਦਿਸ਼_Val;
 	    // fallthrough
-	  case vpiVectorVal:
-	    vpi_get_value_vector_(vp, val);
-	    break;
+	  ਹਾਲਤ vpi_ਸਦਿਸ਼_Val:
+	    vpi_get_ਮੁੱਲ_ਸਦਿਸ਼(vp, val);
+	    ਰੋਕੋ;
 
-	  default:
+	  ਮੂਲ:
 	    fprintf(stderr, "internal error: vpi_get_value(<format=%d>)"
 		    " not implemented for __vpiVThrVec4Stack.\n", vp->format);
-	    assert(0);
+	    ਪ੍ਰਤਿਜ੍ਞਾ(0);
       }
 
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_binstr_(p_vpi_value vp, const vvp_vector4_t&val)
+ਖਾਲੀ __vpiVThrVec4Stack::vpi_get_ਮੁੱਲ_binstr(p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val)
 {
-      unsigned wid = val.size();
-      char*rbuf = static_cast<char*>(need_result_buf(wid+1, RBUF_VAL));
-      for (unsigned idx = 0 ; idx < wid ; idx += 1) {
-	    rbuf[wid-idx-1] = vvp_bit4_to_ascii(val.value(idx));
+      ਬਿਨਾਨਿਸ਼ਾਨੀ wid = val.size();
+      ਅੱਖਰ*rbuf = static_cast<ਅੱਖਰ*>(need_ਨਤੀਜਾ_buf(wid+1, RBUF_VAL));
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0 ; idx < wid ; idx += 1) {
+	    rbuf[wid-idx-1] = vvp_bit4_ਮੰਜ਼ਿਲ_ascii(val.value(idx));
       }
       rbuf[wid] = 0;
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_decstr_(p_vpi_value vp, const vvp_vector4_t&val)
+ਖਾਲੀ __vpiVThrVec4Stack::vpi_get_ਮੁੱਲ_decstr(p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val)
 {
-      unsigned wid = val.size();
-      int nbuf = (wid+2)/3 + 1;
-      char *rbuf = static_cast<char*>(need_result_buf(nbuf, RBUF_VAL));
+      ਬਿਨਾਨਿਸ਼ਾਨੀ wid = val.size();
+      ਪੂਰਨ nbuf = (wid+2)/3 + 1;
+      ਅੱਖਰ *rbuf = static_cast<ਅੱਖਰ*>(need_ਨਤੀਜਾ_buf(nbuf, RBUF_VAL));
 
-      vpip_vec4_to_dec_str(val, rbuf, nbuf, signed_flag_);
+      vpip_vec4_ਮੰਜ਼ਿਲ_dec_str(val, rbuf, nbuf, signed_flag_);
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_octstr_(p_vpi_value vp, const vvp_vector4_t&val)
+ਖਾਲੀ __vpiVThrVec4Stack::vpi_get_ਮੁੱਲ_octstr(p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val)
 {
-      unsigned wid = val.size();
-      unsigned owid = (wid + 2) / 3;
-      char*rbuf = static_cast<char*>(need_result_buf(owid+1, RBUF_VAL));
+      ਬਿਨਾਨਿਸ਼ਾਨੀ wid = val.size();
+      ਬਿਨਾਨਿਸ਼ਾਨੀ owid = (wid + 2) / 3;
+      ਅੱਖਰ*rbuf = static_cast<ਅੱਖਰ*>(need_ਨਤੀਜਾ_buf(owid+1, RBUF_VAL));
       rbuf[owid] = 0;
 
-      unsigned oval = 0;
-      for (unsigned idx = 0; idx < wid ; idx += 1) {
-	    unsigned tmp = 0;
-	    switch (val.value(idx)) {
-		case BIT4_0:
+      ਬਿਨਾਨਿਸ਼ਾਨੀ oval = 0;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0; idx < wid ; idx += 1) {
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ tmp = 0;
+	    ਚੋਣ (val.value(idx)) {
+		ਹਾਲਤ BIT4_0:
 		  tmp = 0;
-		  break;
-		case BIT4_1:
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_1:
 		  tmp = 1;
-		  break;
-		case BIT4_X:
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_X:
 		  tmp = 2;
-		  break;
-		case BIT4_Z:
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_Z:
 		  tmp = 3;
-		  break;
+		  ਰੋਕੋ;
 	    }
 
 	    oval = oval | (tmp << 2*(idx%3));
 
-	    if (idx%3 == 2) {
+	    ਜੇ (idx%3 == 2) {
 		  owid -= 1;
 		  rbuf[owid] = oct_digits[oval];
 		  oval = 0;
 	    }
       }
 
-      if (owid > 0) {
+      ਜੇ (owid > 0) {
 	    owid -= 1;
 	    rbuf[owid] = oct_digits[oval];
       }
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_hexstr_(p_vpi_value vp, const vvp_vector4_t&val)
+ਖਾਲੀ __vpiVThrVec4Stack::vpi_get_ਮੁੱਲ_hexstr(p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val)
 {
-      unsigned wid = val.size();
-      unsigned hwid = (wid + 3) /4;
-      char*rbuf = static_cast<char*>(need_result_buf(hwid+1, RBUF_VAL));
+      ਬਿਨਾਨਿਸ਼ਾਨੀ wid = val.size();
+      ਬਿਨਾਨਿਸ਼ਾਨੀ hwid = (wid + 3) /4;
+      ਅੱਖਰ*rbuf = static_cast<ਅੱਖਰ*>(need_ਨਤੀਜਾ_buf(hwid+1, RBUF_VAL));
       rbuf[hwid] = 0;
 
-      unsigned hval = 0;
-      for (unsigned idx = 0; idx < wid ; idx += 1) {
-	    unsigned tmp = 0;
-	    switch (val.value(idx)) {
-		case BIT4_0:
+      ਬਿਨਾਨਿਸ਼ਾਨੀ hval = 0;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0; idx < wid ; idx += 1) {
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ tmp = 0;
+	    ਚੋਣ (val.value(idx)) {
+		ਹਾਲਤ BIT4_0:
 		  tmp = 0;
-		  break;
-		case BIT4_1:
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_1:
 		  tmp = 1;
-		  break;
-		case BIT4_X:
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_X:
 		  tmp = 2;
-		  break;
-		case BIT4_Z:
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_Z:
 		  tmp = 3;
-		  break;
+		  ਰੋਕੋ;
 	    }
 	    hval = hval | (tmp << 2*(idx%4));
 
-	    if (idx%4 == 3) {
+	    ਜੇ (idx%4 == 3) {
 		  hwid -= 1;
 		  rbuf[hwid] = hex_digits[hval];
 		  hval = 0;
 	    }
       }
 
-      if (hwid > 0) {
+      ਜੇ (hwid > 0) {
 	    hwid -= 1;
 	    rbuf[hwid] = hex_digits[hval];
       }
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_int_(p_vpi_value vp, const vvp_vector4_t&val)
+ਖਾਲੀ __vpiVThrVec4Stack::vpi_get_ਮੁੱਲ_int(p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val)
 {
       int32_t vali = 0;
-      vector4_to_value(val, vali, signed_flag_, false);
+      vector4_ਮੰਜ਼ਿਲ_ਮੁੱਲ(val, vali, signed_flag_, ਝੂਠ);
       vp->value.integer = vali;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_real_(p_vpi_value vp, const vvp_vector4_t&val)
+ਖਾਲੀ __vpiVThrVec4Stack::vpi_get_ਮੁੱਲ_real(p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val)
 {
-      unsigned wid = val.size();
+      ਬਿਨਾਨਿਸ਼ਾਨੀ wid = val.size();
       vp->value.real = 0.0;
 
-      for (unsigned idx = wid ; idx > 0 ; idx -= 1) {
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = wid ; idx > 0 ; idx -= 1) {
 	    vp->value.real *= 2.0;
-	    if (val.value(idx-1) == BIT4_1)
+	    ਜੇ (val.value(idx-1) == BIT4_1)
 		  vp->value.real += 1.0;
       }
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_string_(p_vpi_value vp, const vvp_vector4_t&val)
+ਖਾਲੀ __vpiVThrVec4Stack::vpi_get_ਮੁੱਲ_string(p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val)
 {
-      char*rbuf = static_cast<char*>(need_result_buf((val.size() / 8) + 1, RBUF_VAL));
-      char*cp = rbuf;
+      ਅੱਖਰ*rbuf = static_cast<ਅੱਖਰ*>(need_ਨਤੀਜਾ_buf((val.size() / 8) + 1, RBUF_VAL));
+      ਅੱਖਰ*cp = rbuf;
 
-      char tmp = 0;
-      for (int bitnr = val.size()-1 ; bitnr >= 0 ; bitnr -= 1) {
+      ਅੱਖਰ tmp = 0;
+      ਲਈ (ਪੂਰਨ bitnr = val.size()-1 ; bitnr >= 0 ; bitnr -= 1) {
 	    tmp <<= 1;
-	    switch (val.value(bitnr)) {
-		case BIT4_1:
+	    ਚੋਣ (val.value(bitnr)) {
+		ਹਾਲਤ BIT4_1:
 		  tmp |= 1;
-		  break;
-		case BIT4_0:
-		default:
-		  break;
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_0:
+		ਮੂਲ:
+		  ਰੋਕੋ;
 	    }
 
-	    if ((bitnr&7)==0) {
+	    ਜੇ ((bitnr&7)==0) {
 		    // Don't include leading nuls
-		  if (tmp == 0 && cp == rbuf)
-			continue;
+		  ਜੇ (tmp == 0 && cp == rbuf)
+			ਜਾਰੀ;
 
 		  *cp++ = tmp? tmp : ' ';
 		  tmp = 0;
@@ -544,74 +544,74 @@ void __vpiVThrVec4Stack::vpi_get_value_string_(p_vpi_value vp, const vvp_vector4
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_vector_(p_vpi_value vp, const vvp_vector4_t&val)
+ਖਾਲੀ __vpiVThrVec4Stack::vpi_get_ਮੁੱਲ_ਸਦਿਸ਼(p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val)
 {
-      unsigned wid = val.size();
+      ਬਿਨਾਨਿਸ਼ਾਨੀ wid = val.size();
 
-      unsigned hwid = (wid+31)/32;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ hwid = (wid+31)/32;
       vp->value.vector = static_cast<s_vpi_vecval*>
-                         (need_result_buf(hwid*sizeof(s_vpi_vecval), RBUF_VAL));
-      assert(vp->value.vector);
+                         (need_ਨਤੀਜਾ_buf(hwid*ਆਕਾਰ(s_vpi_vecval), RBUF_VAL));
+      ਪ੍ਰਤਿਜ੍ਞਾ(vp->value.vector);
 
 	/* Zero the top of the result buffer first since the fill loop below only writes
 	   bits 0..wid-1, which can leave stale data in the unused high bits. */
-      if (hwid == 0) hwid = 1;
+      ਜੇ (hwid == 0) hwid = 1;
       vp->value.vector[hwid-1].aval = 0;
       vp->value.vector[hwid-1].bval = 0;
 
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-	    int word = idx/32;
-	    PLI_INT32 mask = 1 << (idx%32);
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0 ;  idx < wid ;  idx += 1) {
+	    ਪੂਰਨ ਸ਼ਬਦ_2 = idx/32;
+	    PLI_INT32 ਨਕਾਬ = 1 << (idx%32);
 
-	    switch (val.value(idx)) {
-		case BIT4_0:
-		  vp->value.vector[word].aval &= ~mask;
-		  vp->value.vector[word].bval &= ~mask;
-		  break;
-		case BIT4_1:
-		  vp->value.vector[word].aval |=  mask;
-		  vp->value.vector[word].bval &= ~mask;
-		  break;
-		case BIT4_X:
-		  vp->value.vector[word].aval |=  mask;
-		  vp->value.vector[word].bval |=  mask;
-		  break;
-		case BIT4_Z:
-		  vp->value.vector[word].aval &= ~mask;
-		  vp->value.vector[word].bval |=  mask;
-		  break;
+	    ਚੋਣ (val.value(idx)) {
+		ਹਾਲਤ BIT4_0:
+		  vp->value.vector[ਸ਼ਬਦ_2].aval &= ~ਨਕਾਬ;
+		  vp->value.vector[ਸ਼ਬਦ_2].bval &= ~ਨਕਾਬ;
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_1:
+		  vp->value.vector[ਸ਼ਬਦ_2].aval |=  ਨਕਾਬ;
+		  vp->value.vector[ਸ਼ਬਦ_2].bval &= ~ਨਕਾਬ;
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_X:
+		  vp->value.vector[ਸ਼ਬਦ_2].aval |=  ਨਕਾਬ;
+		  vp->value.vector[ਸ਼ਬਦ_2].bval |=  ਨਕਾਬ;
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_Z:
+		  vp->value.vector[ਸ਼ਬਦ_2].aval &= ~ਨਕਾਬ;
+		  vp->value.vector[ਸ਼ਬਦ_2].bval |=  ਨਕਾਬ;
+		  ਰੋਕੋ;
 	    }
       }
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_strength_(p_vpi_value vp, const vvp_vector4_t&val)
+ਖਾਲੀ __vpiVThrVec4Stack::vpi_get_ਮੁੱਲ_strength(p_vpi_ਮੁੱਲ vp, ਅਚਲ vvp_vector4_t&val)
 {
       s_vpi_strengthval*op = static_cast<s_vpi_strengthval*>
-                             (need_result_buf(val.size() * sizeof(s_vpi_strengthval),
+                             (need_ਨਤੀਜਾ_buf(val.size() * ਆਕਾਰ(s_vpi_strengthval),
                                               RBUF_VAL));
 
-      for (unsigned idx = 0 ; idx < val.size() ; idx += 1) {
-	    switch (val.value(idx)) {
-		case BIT4_0:
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0 ; idx < val.size() ; idx += 1) {
+	    ਚੋਣ (val.value(idx)) {
+		ਹਾਲਤ BIT4_0:
 		  op[idx].logic = vpi0;
 		  op[idx].s0 = vpiStrongDrive;
 		  op[idx].s1 = 0;
-		  break;
-		case BIT4_1:
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_1:
 		  op[idx].logic = vpi1;
 		  op[idx].s0 = 0;
 		  op[idx].s1 = vpiStrongDrive;
-		  break;
-		case BIT4_X:
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_X:
 		  op[idx].logic = vpiX;
 		  op[idx].s0 = vpiStrongDrive;
 		  op[idx].s1 = vpiStrongDrive;
-		  break;
-		case BIT4_Z:
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_Z:
 		  op[idx].logic = vpiZ;
 		  op[idx].s0 = vpiHiZ;
 		  op[idx].s1 = vpiHiZ;
-		  break;
+		  ਰੋਕੋ;
 	    }
       }
 
@@ -619,74 +619,74 @@ void __vpiVThrVec4Stack::vpi_get_value_strength_(p_vpi_value vp, const vvp_vecto
       vp->value.strength = op;
 }
 
-vpiHandle __vpiVThrVec4Stack::vpi_put_value(p_vpi_value vp, int /*flags*/)
+vpiHandle __vpiVThrVec4Stack::vpi_put_ਮੁੱਲ(p_vpi_ਮੁੱਲ vp, ਪੂਰਨ /*flags*/)
 {
-      assert(vpip_current_vthread);
+      ਪ੍ਰਤਿਜ੍ਞਾ(vpip_current_vthread);
 
-      switch (vp->format) {
+      ਚੋਣ (vp->format) {
 
-	  default:
+	  ਮੂਲ:
 	    fprintf(stderr, "internal error: vpi_put_value(<format=%d>)"
 		    " not implemented for __vpiVThrVec4Stack.\n", vp->format);
-	    assert(0);
-	    return 0;
+	    ਪ੍ਰਤਿਜ੍ਞਾ(0);
+	    ਵਾਪਸ 0;
       }
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void thread_vthr_delete(vpiHandle item)
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
+ਖਾਲੀ thread_vthr_delete(vpiHandle ਵਸਤੂ)
 {
-      handle_map[item] = true;
+      handle_map[ਵਸਤੂ] = ਸੱਚ;
 }
 
-static void thread_vthr_delete_real(vpiHandle item)
+ਸਥਿਰ ਖਾਲੀ thread_vthr_delete_real(vpiHandle ਵਸਤੂ)
 {
-      __vpiVThrVec4Stack*obj = dynamic_cast<__vpiVThrVec4Stack*>(item);
-      delete obj;
+      __vpiVThrVec4Stack*obj = dynamic_cast<__vpiVThrVec4Stack*>(ਵਸਤੂ);
+      ਮਿਟਾਓ obj;
 }
 
-void vpi_handle_delete()
+ਖਾਲੀ vpi_handle_delete()
 {
-      map<vpiHandle, bool>::iterator iter;
-      for (iter = handle_map.begin(); iter != handle_map.end(); ++ iter ) {
-	    if (iter->second) thread_vthr_delete_real(iter->first);
-	    else thread_word_delete_real(iter->first);
+      map<vpiHandle, ਤਾਰਕਿਕ>::iterator iter;
+      ਲਈ (iter = handle_map.begin(); iter != handle_map.ਸਿਰਾ(); ++ iter ) {
+	    ਜੇ (iter->second) thread_vthr_delete_real(iter->ਪਹਿਲਾ);
+	    ਨਹੀਂਤਾਂ thread_ਸ਼ਬਦ_delete_real(iter->ਪਹਿਲਾ);
       }
 }
-#endif
+#ਜੇ_ਅੰਤ
 
 
-vpiHandle vpip_make_vthr_str_stack(unsigned depth)
+vpiHandle vpip_make_vthr_str_ਢੇਰ(ਬਿਨਾਨਿਸ਼ਾਨੀ ਡੂੰਘਾਈ)
 {
-      __vpiVThrStrStack*obj = new __vpiVThrStrStack(depth);
-      return obj;
+      __vpiVThrStrStack*obj = ਨਵਾਂ __vpiVThrStrStack(ਡੂੰਘਾਈ);
+      ਵਾਪਸ obj;
 }
 
-vpiHandle vpip_make_vthr_vec4_stack(unsigned depth, bool signed_flag, unsigned wid)
+vpiHandle vpip_make_vthr_vec4_ਢੇਰ(ਬਿਨਾਨਿਸ਼ਾਨੀ ਡੂੰਘਾਈ, ਤਾਰਕਿਕ signed_flag, ਬਿਨਾਨਿਸ਼ਾਨੀ wid)
 {
-      __vpiVThrVec4Stack*obj = new __vpiVThrVec4Stack(depth, signed_flag, wid);
-      return obj;
+      __vpiVThrVec4Stack*obj = ਨਵਾਂ __vpiVThrVec4Stack(ਡੂੰਘਾਈ, signed_flag, wid);
+      ਵਾਪਸ obj;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-static map<vpiHandle, bool> stack_map;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
+ਸਥਿਰ map<vpiHandle, ਤਾਰਕਿਕ> ਢੇਰ_map;
 
-void thread_string_delete(vpiHandle item)
+ਖਾਲੀ thread_string_delete(vpiHandle ਵਸਤੂ)
 {
-      stack_map[item] = false;
+      ਢੇਰ_map[ਵਸਤੂ] = ਝੂਠ;
 }
 
-static void thread_string_delete_real(vpiHandle item)
+ਸਥਿਰ ਖਾਲੀ thread_string_delete_real(vpiHandle ਵਸਤੂ)
 {
-      __vpiVThrStrStack*obj = dynamic_cast<__vpiVThrStrStack*>(item);
-      delete obj;
+      __vpiVThrStrStack*obj = dynamic_cast<__vpiVThrStrStack*>(ਵਸਤੂ);
+      ਮਿਟਾਓ obj;
 }
 
-void vpi_stack_delete()
+ਖਾਲੀ vpi_ਢੇਰ_delete()
 {
-      map<vpiHandle, bool>::iterator iter;
-      for (iter = stack_map.begin(); iter != stack_map.end(); ++ iter ) {
-	    thread_string_delete_real(iter->first);
+      map<vpiHandle, ਤਾਰਕਿਕ>::iterator iter;
+      ਲਈ (iter = ਢੇਰ_map.begin(); iter != ਢੇਰ_map.ਸਿਰਾ(); ++ iter ) {
+	    thread_string_delete_real(iter->ਪਹਿਲਾ);
       }
 }
-#endif
+#ਜੇ_ਅੰਤ

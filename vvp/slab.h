@@ -1,5 +1,5 @@
-#ifndef IVL_slab_H
-#define IVL_slab_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ IVL_slab_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IVL_slab_H
 /*
  * Copyright (c) 2008-2015 Picture Elements, Inc.
  *    Stephen Williams (steve@icarus.com)
@@ -23,95 +23,95 @@
 
 # include  "config.h"
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT> class slab_t {
+ਸਾਂਚਾ <size_t SLAB_ਮਾਪ, size_t CHUNK_ਗਿਣਤੀ> class slab_t {
 
-      union item_cell_u {
-	    item_cell_u*next;
-	    char space[SLAB_SIZE];
+      ਸੰਘ ਵਸਤੂ_cell_u {
+	    ਵਸਤੂ_cell_u*ਅਗਲਾ_2;
+	    ਅੱਖਰ space[SLAB_ਮਾਪ];
       };
 
-    public:
+    ਜਨਤਕ:
       slab_t();
 
-      void* alloc_slab();
-      void  free_slab(void*);
-#ifdef CHECK_WITH_VALGRIND
+      ਖਾਲੀ* alloc_slab();
+      ਖਾਲੀ  free_slab(ਖਾਲੀ*);
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
 	// If we have allocated memory then we need to delete it to make
 	// valgrind happy.
-      void delete_pool(void);
-#endif
+      ਖਾਲੀ delete_pool(ਖਾਲੀ);
+#ਜੇ_ਅੰਤ
 
-      unsigned long pool;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ pool;
 
-    private:
-      item_cell_u*heap_;
-      item_cell_u initial_chunk_[CHUNK_COUNT];
-#ifdef CHECK_WITH_VALGRIND
+    ਨਿਜੀ:
+      ਵਸਤੂ_cell_u*ਢੇਰ;
+      ਵਸਤੂ_cell_u initial_chunk_[CHUNK_ਗਿਣਤੀ];
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
 	// Each slab needs a pointer to the allocated space.
-      item_cell_u**slab_pool;
-      unsigned slab_pool_count;
-#endif
+      ਵਸਤੂ_cell_u**slab_pool;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ slab_pool_ਗਿਣਤੀ;
+#ਜੇ_ਅੰਤ
 };
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-slab_t<SLAB_SIZE,CHUNK_COUNT>::slab_t()
+ਸਾਂਚਾ <size_t SLAB_ਮਾਪ, size_t CHUNK_ਗਿਣਤੀ>
+slab_t<SLAB_ਮਾਪ,CHUNK_ਗਿਣਤੀ>::slab_t()
 {
-      pool = CHUNK_COUNT;
-      heap_ = initial_chunk_;
-      for (unsigned idx = 0 ; idx < CHUNK_COUNT-1 ; idx += 1)
-	    initial_chunk_[idx].next = initial_chunk_+idx+1;
+      pool = CHUNK_ਗਿਣਤੀ;
+      ਢੇਰ = initial_chunk_;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0 ; idx < CHUNK_ਗਿਣਤੀ-1 ; idx += 1)
+	    initial_chunk_[idx].ਅਗਲਾ_2 = initial_chunk_+idx+1;
 
-      initial_chunk_[CHUNK_COUNT-1].next = 0;
-#ifdef CHECK_WITH_VALGRIND
+      initial_chunk_[CHUNK_ਗਿਣਤੀ-1].ਅਗਲਾ_2 = 0;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
 	// Initially we have no allocated space.
-      slab_pool = NULL;
-      slab_pool_count = 0;
-#endif
+      slab_pool = ਨਿਰਾ;
+      slab_pool_ਗਿਣਤੀ = 0;
+#ਜੇ_ਅੰਤ
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void* slab_t<SLAB_SIZE,CHUNK_COUNT>::alloc_slab()
+ਸਾਂਚਾ <size_t SLAB_ਮਾਪ, size_t CHUNK_ਗਿਣਤੀ>
+ਸਤਰਅੰਦਰ ਖਾਲੀ* slab_t<SLAB_ਮਾਪ,CHUNK_ਗਿਣਤੀ>::alloc_slab()
 {
-      if (heap_ == 0) {
-	    item_cell_u*chunk = new item_cell_u[CHUNK_COUNT];
-#ifdef CHECK_WITH_VALGRIND
-	    slab_pool_count += 1;
-	    slab_pool = static_cast<item_cell_u **>(realloc(slab_pool,
-	                slab_pool_count*sizeof(item_cell_u **)));
-	    slab_pool[slab_pool_count-1] = chunk;
-#endif
-	    for (unsigned idx = 0 ; idx < CHUNK_COUNT ; idx += 1) {
-		  chunk[idx].next = heap_;
-		  heap_ = chunk+idx;
+      ਜੇ (ਢੇਰ == 0) {
+	    ਵਸਤੂ_cell_u*chunk = new ਵਸਤੂ_cell_u[CHUNK_ਗਿਣਤੀ];
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
+	    slab_pool_ਗਿਣਤੀ += 1;
+	    slab_pool = static_cast<ਵਸਤੂ_cell_u **>(realloc(slab_pool,
+	                slab_pool_ਗਿਣਤੀ*ਆਕਾਰ(ਵਸਤੂ_cell_u **)));
+	    slab_pool[slab_pool_ਗਿਣਤੀ-1] = chunk;
+#ਜੇ_ਅੰਤ
+	    ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0 ; idx < CHUNK_ਗਿਣਤੀ ; idx += 1) {
+		  chunk[idx].ਅਗਲਾ_2 = ਢੇਰ;
+		  ਢੇਰ = chunk+idx;
 	    }
-	    pool += CHUNK_COUNT;
+	    pool += CHUNK_ਗਿਣਤੀ;
       }
 
-      item_cell_u*cur = heap_;
-      heap_ = heap_->next;
-      return cur;
+      ਵਸਤੂ_cell_u*cur = ਢੇਰ;
+      ਢੇਰ = ਢੇਰ->ਅਗਲਾ_2;
+      ਵਾਪਸ cur;
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::free_slab(void*ptr)
+ਸਾਂਚਾ <size_t SLAB_ਮਾਪ, size_t CHUNK_ਗਿਣਤੀ>
+ਸਤਰਅੰਦਰ ਖਾਲੀ slab_t<SLAB_ਮਾਪ,CHUNK_ਗਿਣਤੀ>::free_slab(ਖਾਲੀ*ptr)
 {
-      item_cell_u*cur = reinterpret_cast<item_cell_u*> (ptr);
-      cur->next = heap_;
-      heap_ = cur;
+      ਵਸਤੂ_cell_u*cur = reinterpret_cast<ਵਸਤੂ_cell_u*> (ptr);
+      cur->ਅਗਲਾ_2 = ਢੇਰ;
+      ਢੇਰ = cur;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::delete_pool(void)
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
+ਸਾਂਚਾ <size_t SLAB_ਮਾਪ, size_t CHUNK_ਗਿਣਤੀ>
+ਸਤਰਅੰਦਰ ਖਾਲੀ slab_t<SLAB_ਮਾਪ,CHUNK_ਗਿਣਤੀ>::delete_pool(ਖਾਲੀ)
 {
-      for (unsigned idx = 0; idx < slab_pool_count; idx += 1) {
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0; idx < slab_pool_ਗਿਣਤੀ; idx += 1) {
 	    delete [] slab_pool[idx];
       }
-      free(slab_pool);
-      slab_pool = NULL;
-      slab_pool_count = 0;
+      ਮੁਕਤ(slab_pool);
+      slab_pool = ਨਿਰਾ;
+      slab_pool_ਗਿਣਤੀ = 0;
 }
-#endif
+#ਜੇ_ਅੰਤ
 
 
-#endif /* IVL_slab_H */
+#ਜੇ_ਅੰਤ /* IVL_slab_H */

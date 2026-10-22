@@ -1,5 +1,5 @@
-#ifndef IVL_compile_H
-#define IVL_compile_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ IVL_compile_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IVL_compile_H
 /*
  * Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)
  *
@@ -31,7 +31,7 @@
  * The file names are kept in this vector. Entry 0 is "N/A" and 1 is
  * for interactive commands.
  */
-extern std::vector<const char*> file_names;
+ਬਾਹਰੀ std::ਸਦਿਸ਼<ਅਚਲ ਅੱਖਰ*> file_ਨਾਂ;
 
 /*
  * The functions described here are the compile time support
@@ -42,24 +42,24 @@ extern std::vector<const char*> file_names;
  * called once to set stuff up.
  */
 
-extern void compile_init(void);
+ਬਾਹਰੀ ਖਾਲੀ compile_init(ਖਾਲੀ);
 
-extern void compile_cleanup(void);
+ਬਾਹਰੀ ਖਾਲੀ compile_cleanup(ਖਾਲੀ);
 
-extern bool verbose_flag;
+ਬਾਹਰੀ bool verbose_flag;
 
 /*
  * If this file opened, then write debug information to this
  * file. This is used for debugging the VVP runtime itself.
  */
-extern std::ofstream debug_file;
+ਬਾਹਰੀ std::ofstream debug_file;
 
 /*
  *  Connect a list of symbols to a contiguous set of ipoints.
  *  Constants C<?> are handled by setting the ival of the ipoint.
  */
-extern void inputs_connect(vvp_net_t*fdx, unsigned argc, struct symb_s*argv);
-extern void input_connect(vvp_net_t*fdx, unsigned port, char*label);
+ਬਾਹਰੀ ਖਾਲੀ inputs_connect(vvp_net_t*fdx, ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ ਨਿਵੇਸ਼_connect(vvp_net_t*fdx, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੋਰਟ, ਅੱਖਰ*label);
 
 /*
  * This function is an expansion of the inputs_connect function. It
@@ -67,28 +67,28 @@ extern void input_connect(vvp_net_t*fdx, unsigned port, char*label);
  * nodes to handle arbitrary width nodes, and connects those nodes to
  * the vvp_wide_fun_core object passed in.
  */
-extern void wide_inputs_connect(vvp_wide_fun_core*core,
-				unsigned argc, struct symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ wide_inputs_connect(vvp_wide_fun_core*core,
+				ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
 
-extern vvp_net_t* vvp_net_lookup(const char*label);
-extern vpiHandle vvp_lookup_handle(const char*label);
+ਬਾਹਰੀ vvp_net_t* vvp_net_lookup(ਅਚਲ ਅੱਖਰ*label);
+ਬਾਹਰੀ vpiHandle vvp_lookup_handle(ਅਚਲ ਅੱਖਰ*label);
 
 /*
  *  Add a functor to the symbol table
  */
-extern void define_functor_symbol(const char*label, vvp_net_t*ipt);
+ਬਾਹਰੀ ਖਾਲੀ define_functor_ਚਿੰਨ੍ਹ(ਅਚਲ ਅੱਖਰ*label, vvp_net_t*ipt);
 
 
 /*
  * This is a count of errors encountered during compilation. If this
  * is non-zero, then simulation is not recommended.
  */
-extern unsigned compile_errors;
+ਬਾਹਰੀ ਬਿਨਾਨਿਸ਼ਾਨੀ compile_errors;
 
-extern const char* module_path;
-extern void compile_load_vpi_module(char*name);
+ਬਾਹਰੀ ਅਚਲ ਅੱਖਰ* module_ਰਸਤਾ;
+ਬਾਹਰੀ ਖਾਲੀ compile_ਲੱਦੋ_vpi_module(ਅੱਖਰ*name);
 
-extern void compile_vpi_time_precision(long pre);
+ਬਾਹਰੀ ਖਾਲੀ compile_vpi_ਸਮਾਂ_precision(ਲੰਮਾ pre);
 
 /*
  * This function is called by the parser to compile a functor
@@ -100,9 +100,9 @@ extern void compile_vpi_time_precision(long pre);
  * of the functor. The compile should match those port parameters up
  * to existing functors to manage the linking.
  */
-extern void compile_functor(char*label, char*type, unsigned width,
-			    unsigned ostr0, unsigned ostr1,
-			    unsigned argc, struct symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_functor(ਅੱਖਰ*label, ਅੱਖਰ*type, ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ ostr0, ਬਿਨਾਨਿਸ਼ਾਨੀ ostr1,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
 
 
 /*
@@ -111,186 +111,186 @@ extern void compile_functor(char*label, char*type, unsigned width,
  * that are blended to make a resolved output. The type string selects
  * a resolution algorithm.
  */
-extern void compile_resolver(char*label, char*type,
-			     unsigned argc, struct symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_resolver(ਅੱਖਰ*label, ਅੱਖਰ*type,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
 
-extern void compile_concat(char*label, unsigned w0, unsigned w1,
-			   unsigned w2, unsigned w3,
-			   unsigned argc, struct symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_concat(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ w0, ਬਿਨਾਨਿਸ਼ਾਨੀ w1,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ w2, ਬਿਨਾਨਿਸ਼ਾਨੀ w3,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
 
-extern void compile_concat8(char*label, unsigned w0, unsigned w1,
-			    unsigned w2, unsigned w3,
-			    unsigned argc, struct symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_concat8(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ w0, ਬਿਨਾਨਿਸ਼ਾਨੀ w1,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ w2, ਬਿਨਾਨਿਸ਼ਾਨੀ w3,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
 
-extern void compile_substitute(char*label, unsigned width,
-			       unsigned soff, unsigned swidth,
-			       unsigned argc, struct symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_substitute(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ,
+			       ਬਿਨਾਨਿਸ਼ਾਨੀ soff, ਬਿਨਾਨਿਸ਼ਾਨੀ swidth,
+			       ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
 
 /*
  * Arrange for the system task/function call to have its compiletf
  * function called.
  */
-extern void compile_compiletf(struct __vpiSysTaskCall*);
+ਬਾਹਰੀ ਖਾਲੀ compile_compiletf(ਬਣਤਰ __vpiSysTaskCall*);
 
 /*
  * Compile delay nodes of various form.
  */
-extern void compile_delay(char*label, unsigned width,
-                          vvp_delay_t*del, struct symb_s input);
-extern void compile_delay(char*label, unsigned width,
-                          unsigned argc, struct symb_s*argv,
+ਬਾਹਰੀ ਖਾਲੀ compile_delay(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ,
+                          vvp_delay_t*del, ਬਣਤਰ symb_s ਨਿਵੇਸ਼);
+ਬਾਹਰੀ ਖਾਲੀ compile_delay(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ,
+                          ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv,
                           bool ignore_decay);
 
 /*
  * This is called by the parser to create a part select node.
  * See the PART SELECT STATEMENT section in the README.txt
  */
-extern void compile_part_select(char*label, char*src,
-				unsigned base, unsigned wid);
-extern void compile_part_select_pv(char*label, char*src,
-				   unsigned base, unsigned wid,
-				   unsigned vec_wid);
-extern void compile_part_select_var(char*label, char*src,
-                                    char*var, unsigned wid, bool is_signed);
+ਬਾਹਰੀ ਖਾਲੀ compile_part_select(ਅੱਖਰ*label, ਅੱਖਰ*src,
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
+ਬਾਹਰੀ ਖਾਲੀ compile_part_select_pv(ਅੱਖਰ*label, ਅੱਖਰ*src,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ wid,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ vec_wid);
+ਬਾਹਰੀ ਖਾਲੀ compile_part_select_var(ਅੱਖਰ*label, ਅੱਖਰ*src,
+                                    ਅੱਖਰ*var, ਬਿਨਾਨਿਸ਼ਾਨੀ wid, bool is_signed);
 
 /*
  * This is called by the parser to make the various arithmetic and
  * comparison functors.
  */
-extern void compile_arith_pow(char*label, long width, bool signed_flag,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_arith_abs(char*label,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_arith_cast_int(char*label, long width,
-			           unsigned argc, struct symb_s*argv);
-extern void compile_arith_cast_real(char*label, bool signed_flag,
-			            unsigned argc, struct symb_s*argv);
-extern void compile_arith_cast_vec2(char*label, long width,
-				    unsigned argc, struct symb_s*argv);
-extern void compile_arith_div(char*label, long width, bool signed_flag,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_arith_mod(char*label, long width, bool signed_flag,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_arith_mult(char*label, long width,
-			       unsigned argc, struct symb_s*argv);
-extern void compile_arith_sum(char*label, long width,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_arith_sub(char*label, long width,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_cmp_eeq(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_nee(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_eq(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_eqx(char*label, long width,
-			    unsigned argc, struct symb_s*argv);
-extern void compile_cmp_eqz(char*label, long width,
-			    unsigned argc, struct symb_s*argv);
-extern void compile_cmp_ne(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_ge(char*label, long width, bool signed_flag,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_gt(char*label, long width, bool signed_flag,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_weq(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_wne(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_arith_pow(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ, bool signed_flag,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_arith_abs(ਅੱਖਰ*label,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_arith_cast_int(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ,
+			           ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_arith_cast_real(ਅੱਖਰ*label, bool signed_flag,
+			            ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_arith_cast_vec2(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ,
+				    ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_arith_div(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ, bool signed_flag,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_arith_mod(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ, bool signed_flag,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_arith_mult(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ,
+			       ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_arith_ਜੋੜ(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_arith_sub(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_cmp_eeq(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_cmp_nee(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_cmp_eq(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_cmp_eqx(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_cmp_eqz(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_cmp_ne(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_cmp_ge(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ, bool signed_flag,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_cmp_gt(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ, bool signed_flag,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_cmp_weq(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_cmp_wne(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
 
-extern void compile_arith_mult_r(char*label, unsigned argc,
-                                 struct symb_s*argv);
-extern void compile_arith_pow_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_arith_div_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_arith_mod_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_arith_sum_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_arith_sub_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_cmp_eq_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_cmp_ne_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_cmp_ge_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_cmp_gt_r(char*label, unsigned argc, struct symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_arith_mult_r(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ argc,
+                                 ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_arith_pow_r(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_arith_div_r(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_arith_mod_r(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_arith_ਜੋੜ_r(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_arith_sub_r(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_cmp_eq_r(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_cmp_ne_r(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_cmp_ge_r(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_cmp_gt_r(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
 
-extern void compile_dff(char*label, unsigned width, bool negedge,
-			struct symb_s arg_d,
-			struct symb_s arg_c,
-			struct symb_s arg_e);
+ਬਾਹਰੀ ਖਾਲੀ compile_dff(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ, bool negedge,
+			ਬਣਤਰ symb_s arg_d,
+			ਬਣਤਰ symb_s arg_c,
+			ਬਣਤਰ symb_s arg_e);
 
-extern void compile_dff_aclr(char*label, unsigned width, bool negedge,
-			     struct symb_s arg_d,
-			     struct symb_s arg_c,
-			     struct symb_s arg_e,
-			     struct symb_s arg_a);
-extern void compile_dff_aset(char*label, unsigned width, bool negedge,
-			     struct symb_s arg_d,
-			     struct symb_s arg_c,
-			     struct symb_s arg_e,
-			     struct symb_s arg_a,
-			     char*asc_value);
+ਬਾਹਰੀ ਖਾਲੀ compile_dff_aclr(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ, bool negedge,
+			     ਬਣਤਰ symb_s arg_d,
+			     ਬਣਤਰ symb_s arg_c,
+			     ਬਣਤਰ symb_s arg_e,
+			     ਬਣਤਰ symb_s arg_a);
+ਬਾਹਰੀ ਖਾਲੀ compile_dff_aset(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ, bool negedge,
+			     ਬਣਤਰ symb_s arg_d,
+			     ਬਣਤਰ symb_s arg_c,
+			     ਬਣਤਰ symb_s arg_e,
+			     ਬਣਤਰ symb_s arg_a,
+			     ਅੱਖਰ*asc_ਮੁੱਲ);
 
-extern void compile_latch(char*label, unsigned width,
-			  struct symb_s arg_d,
-			  struct symb_s arg_e);
+ਬਾਹਰੀ ਖਾਲੀ compile_latch(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ,
+			  ਬਣਤਰ symb_s arg_d,
+			  ਬਣਤਰ symb_s arg_e);
 
-extern void compile_enum2_type(char*label, long width, bool signed_flag,
-			      std::list<struct enum_name_s>*names);
-extern void compile_enum4_type(char*label, long width, bool signed_flag,
-			      std::list<struct enum_name_s>*names);
+ਬਾਹਰੀ ਖਾਲੀ compile_enum2_type(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ, bool signed_flag,
+			      std::list<ਬਣਤਰ enum_name_s>*ਨਾਂ);
+ਬਾਹਰੀ ਖਾਲੀ compile_enum4_type(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ, bool signed_flag,
+			      std::list<ਬਣਤਰ enum_name_s>*ਨਾਂ);
 
-struct __vpiModPath;
-extern __vpiModPath* compile_modpath(char*label,
-                                     unsigned width,
-				     struct symb_s drv,
-				     struct symb_s dest);
-extern void compile_modpath_src(__vpiModPath*dst,
-				char edge_c,
-				const struct symb_s&src,
-				struct numbv_s&vals,
-				const struct symb_s&condit_src,
-				const struct symb_s&path_term_in);
-extern void compile_modpath_src(__vpiModPath*dst,
-				char edge_c,
-				const struct symb_s&src,
-				struct numbv_s&vals,
-				int condit_src, /* match with '0' */
-				const struct symb_s&path_term_in,
+ਬਣਤਰ __vpiModPath;
+ਬਾਹਰੀ __vpiModPath* compile_modpath(ਅੱਖਰ*label,
+                                     ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ,
+				     ਬਣਤਰ symb_s drv,
+				     ਬਣਤਰ symb_s dest);
+ਬਾਹਰੀ ਖਾਲੀ compile_modpath_src(__vpiModPath*dst,
+				ਅੱਖਰ ਕਿਨਾਰਾ_c,
+				ਅਚਲ ਬਣਤਰ symb_s&src,
+				ਬਣਤਰ numbv_s&vals,
+				ਅਚਲ ਬਣਤਰ symb_s&condit_src,
+				ਅਚਲ ਬਣਤਰ symb_s&ਰਸਤਾ_ਪਦ_ਵਿੱਚ);
+ਬਾਹਰੀ ਖਾਲੀ compile_modpath_src(__vpiModPath*dst,
+				ਅੱਖਰ ਕਿਨਾਰਾ_c,
+				ਅਚਲ ਬਣਤਰ symb_s&src,
+				ਬਣਤਰ numbv_s&vals,
+				ਪੂਰਨ condit_src, /* match with '0' */
+				ਅਚਲ ਬਣਤਰ symb_s&ਰਸਤਾ_ਪਦ_ਵਿੱਚ,
 				bool ifnone);
 
-extern void compile_reduce_and(char*label, const struct symb_s&arg);
-extern void compile_reduce_or(char*label, const struct symb_s&arg);
-extern void compile_reduce_xor(char*label, const struct symb_s&arg);
-extern void compile_reduce_nand(char*label, const struct symb_s&arg);
-extern void compile_reduce_nor(char*label, const struct symb_s&arg);
-extern void compile_reduce_xnor(char*label, const struct symb_s&arg);
+ਬਾਹਰੀ ਖਾਲੀ compile_reduce_and(ਅੱਖਰ*label, ਅਚਲ ਬਣਤਰ symb_s&arg);
+ਬਾਹਰੀ ਖਾਲੀ compile_reduce_or(ਅੱਖਰ*label, ਅਚਲ ਬਣਤਰ symb_s&arg);
+ਬਾਹਰੀ ਖਾਲੀ compile_reduce_xor(ਅੱਖਰ*label, ਅਚਲ ਬਣਤਰ symb_s&arg);
+ਬਾਹਰੀ ਖਾਲੀ compile_reduce_nand(ਅੱਖਰ*label, ਅਚਲ ਬਣਤਰ symb_s&arg);
+ਬਾਹਰੀ ਖਾਲੀ compile_reduce_nor(ਅੱਖਰ*label, ਅਚਲ ਬਣਤਰ symb_s&arg);
+ਬਾਹਰੀ ਖਾਲੀ compile_reduce_xnor(ਅੱਖਰ*label, ਅਚਲ ਬਣਤਰ symb_s&arg);
 
-extern void compile_extend_signed(char*label, long width, struct symb_s arg);
+ਬਾਹਰੀ ਖਾਲੀ compile_extend_signed(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ, ਬਣਤਰ symb_s arg);
 
-extern void compile_sfunc(char*label, char*name, char*format_string,
-			  long file_idx, long lineno,
-			  unsigned argc, struct symb_s*argv,
-                          char*trigger_label);
+ਬਾਹਰੀ ਖਾਲੀ compile_sfunc(ਅੱਖਰ*label, ਅੱਖਰ*name, ਅੱਖਰ*format_string,
+			  ਲੰਮਾ file_idx, ਲੰਮਾ lineno,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv,
+                          ਅੱਖਰ*trigger_label);
 
-extern void compile_repeat(char*label, long width, long repeat,
-			   struct symb_s arg);
+ਬਾਹਰੀ ਖਾਲੀ compile_repeat(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ, ਲੰਮਾ repeat,
+			   ਬਣਤਰ symb_s arg);
 
-extern void compile_shiftl(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_shiftr(char*label, long width, bool signed_flag,
-			   unsigned argc, struct symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_shiftl(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_shiftr(ਅੱਖਰ*label, ਲੰਮਾ ਚੌੜਾਈ, bool signed_flag,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
 
-extern void compile_timescale(long units, long precision);
+ਬਾਹਰੀ ਖਾਲੀ compile_timescale(ਲੰਮਾ units, ਲੰਮਾ precision);
 
-extern void compile_vpi_symbol(const char*label, vpiHandle obj);
-extern void compile_vpi_lookup(vpiHandle *objref, char*label);
+ਬਾਹਰੀ ਖਾਲੀ compile_vpi_ਚਿੰਨ੍ਹ(ਅਚਲ ਅੱਖਰ*label, vpiHandle obj);
+ਬਾਹਰੀ ਖਾਲੀ compile_vpi_lookup(vpiHandle *objref, ਅੱਖਰ*label);
 
-extern void compile_param_string(char*label, const char*name, char*value,
+ਬਾਹਰੀ ਖਾਲੀ compile_param_string(ਅੱਖਰ*label, ਅਚਲ ਅੱਖਰ*name, ਅੱਖਰ*ਮੁੱਲ,
                                  bool local_flag,
-                                 long file_idx, long lineno);
-extern void compile_param_logic(char*label, const char*name, char*value,
+                                 ਲੰਮਾ file_idx, ਲੰਮਾ lineno);
+ਬਾਹਰੀ ਖਾਲੀ compile_param_logic(ਅੱਖਰ*label, ਅਚਲ ਅੱਖਰ*name, ਅੱਖਰ*ਮੁੱਲ,
 				bool signed_flag, bool local_flag,
-                                long file_idx, long lineno);
-extern void compile_param_real(char*label, const char*name, char*value,
+                                ਲੰਮਾ file_idx, ਲੰਮਾ lineno);
+ਬਾਹਰੀ ਖਾਲੀ compile_param_real(ਅੱਖਰ*label, ਅਚਲ ਅੱਖਰ*name, ਅੱਖਰ*ਮੁੱਲ,
                                bool local_flag,
-                               long file_idx, long lineno);
+                               ਲੰਮਾ file_idx, ਲੰਮਾ lineno);
 
 /*
  * The resolv_list_s is the base class for a symbol resolve
@@ -311,26 +311,26 @@ extern void compile_param_real(char*label, const char*name, char*value,
  */
 class resolv_list_s {
 
-    public:
-      explicit resolv_list_s(char*lab) : label_(lab) {
-	    next = NULL;
+    ਜਨਤਕ:
+      explicit resolv_list_s(ਅੱਖਰ*lab) : label_(lab) {
+	    ਅਗਲਾ_2 = ਨਿਰਾ;
       }
-      virtual ~resolv_list_s();
+      ਆਭਾਸੀ ~resolv_list_s();
 
-      resolv_list_s(const resolv_list_s&) = delete;
-      resolv_list_s& operator=(const resolv_list_s&) = delete;
+      resolv_list_s(ਅਚਲ resolv_list_s&) = delete;
+      resolv_list_s& ਸੰਚਾਲਕ=(ਅਚਲ resolv_list_s&) = delete;
 
-      virtual bool resolve(bool mes = false) = 0;
+      ਆਭਾਸੀ bool resolve(bool mes = false) = 0;
 
-    protected:
-      const char*label() const { return label_; }
+    ਸੁਰੱਖਿਅਤ:
+      ਅਚਲ ਅੱਖਰ*label() ਅਚਲ { ਵਾਪਸ label_; }
 
-    private:
-      friend void resolv_submit(class resolv_list_s*cur);
-      friend void compile_cleanup(void);
+    ਨਿਜੀ:
+      ਮਿੱਤਰ ਖਾਲੀ resolv_submit(class resolv_list_s*cur);
+      ਮਿੱਤਰ ਖਾਲੀ compile_cleanup(ਖਾਲੀ);
 
-      char*label_;
-      class resolv_list_s*next;
+      ਅੱਖਰ*label_;
+      class resolv_list_s*ਅਗਲਾ_2;
 };
 
 /*
@@ -342,11 +342,11 @@ class resolv_list_s {
  * The text for the label will be deleted by this function, or the
  * cleanup that completes the binding.
  */
-extern void functor_ref_lookup(vvp_net_t**ref, char*lab);
+ਬਾਹਰੀ ਖਾਲੀ functor_ref_lookup(vvp_net_t**ref, ਅੱਖਰ*lab);
 
-extern vpiHandle vpip_make_prop_queue_ref(char* class_label,
-                                          unsigned prop_idx,
-                                          unsigned is_queue_flag);
+ਬਾਹਰੀ vpiHandle vpip_make_prop_ਕਤਾਰ_ref(ਅੱਖਰ* class_label,
+                                          ਬਿਨਾਨਿਸ਼ਾਨੀ prop_idx,
+                                          ਬਿਨਾਨਿਸ਼ਾਨੀ is_ਕਤਾਰ_flag);
 
 /*
  * This function schedules a lookup of the labeled instruction. The
@@ -357,7 +357,7 @@ extern vpiHandle vpip_make_prop_queue_ref(char* class_label,
  * The cptr2 flag tells the lookup to write the code pointer into the
  * cptr2 member of the code, instead of the cptr member.
  */
-extern void code_label_lookup(struct vvp_code_s *code, char *label, bool cptr2);
+ਬਾਹਰੀ ਖਾਲੀ ਕੋਡ_label_lookup(ਬਣਤਰ vvp_ਕੋਡ_s *ਕੋਡ, ਅੱਖਰ *label, bool cptr2);
 
 /*
  * The `compile_udp_def' function creates a UDP.  The `table' is a
@@ -369,52 +369,52 @@ extern void code_label_lookup(struct vvp_code_s *code, char *label, bool cptr2);
  * labeled UDP.
  */
 
-extern void compile_udp_def(int sequ, char*label, char *name,
-			    unsigned nin, unsigned init, char **table);
+ਬਾਹਰੀ ਖਾਲੀ compile_udp_def(ਪੂਰਨ sequ, ਅੱਖਰ*label, ਅੱਖਰ *name,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ nin, ਬਿਨਾਨਿਸ਼ਾਨੀ init, ਅੱਖਰ **ਸਾਰਣੀ);
 
-extern void compile_udp_functor(char*label, char*type,
-				unsigned argc, struct symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_udp_functor(ਅੱਖਰ*label, ਅੱਖਰ*type,
+				ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
 
-extern char **compile_udp_table(char **table, char *row);
+ਬਾਹਰੀ ਅੱਖਰ **compile_udp_ਸਾਰਣੀ(ਅੱਖਰ **ਸਾਰਣੀ, ਅੱਖਰ *ਪੰਕਤੀ);
 
 /*
  * Memory Instances, Ports, and Initialization
  */
 
-extern void compile_var_array(char*label, char*name,
-			      int last, int first,
-			      int msb, int lsb, char signed_flag);
-extern void compile_var2_array(char*label, char*name,
-			      int last, int first,
-			      int msb, int lsb, bool signed_flag);
-extern void compile_real_array(char*label, char*name,
-			       int last, int first);
-extern void compile_string_array(char*label, char*name,
-				 int last, int first);
-extern void compile_object_array(char*label, char*name,
-				 int last, int first);
-extern void compile_net_array(char*label, char*name,
-			      int last, int first);
-extern void compile_array_alias(char*label, char*name, char*src);
+ਬਾਹਰੀ ਖਾਲੀ compile_var_array(ਅੱਖਰ*label, ਅੱਖਰ*name,
+			      ਪੂਰਨ ਆਖਰੀ, ਪੂਰਨ ਪਹਿਲਾ,
+			      ਪੂਰਨ msb, ਪੂਰਨ lsb, ਅੱਖਰ signed_flag);
+ਬਾਹਰੀ ਖਾਲੀ compile_var2_array(ਅੱਖਰ*label, ਅੱਖਰ*name,
+			      ਪੂਰਨ ਆਖਰੀ, ਪੂਰਨ ਪਹਿਲਾ,
+			      ਪੂਰਨ msb, ਪੂਰਨ lsb, bool signed_flag);
+ਬਾਹਰੀ ਖਾਲੀ compile_real_array(ਅੱਖਰ*label, ਅੱਖਰ*name,
+			       ਪੂਰਨ ਆਖਰੀ, ਪੂਰਨ ਪਹਿਲਾ);
+ਬਾਹਰੀ ਖਾਲੀ compile_string_array(ਅੱਖਰ*label, ਅੱਖਰ*name,
+				 ਪੂਰਨ ਆਖਰੀ, ਪੂਰਨ ਪਹਿਲਾ);
+ਬਾਹਰੀ ਖਾਲੀ compile_object_array(ਅੱਖਰ*label, ਅੱਖਰ*name,
+				 ਪੂਰਨ ਆਖਰੀ, ਪੂਰਨ ਪਹਿਲਾ);
+ਬਾਹਰੀ ਖਾਲੀ compile_net_array(ਅੱਖਰ*label, ਅੱਖਰ*name,
+			      ਪੂਰਨ ਆਖਰੀ, ਪੂਰਨ ਪਹਿਲਾ);
+ਬਾਹਰੀ ਖਾਲੀ compile_array_alias(ਅੱਖਰ*label, ਅੱਖਰ*name, ਅੱਖਰ*src);
 
   /* Index is a net. */
-extern void compile_array_port(char*label, char*name, char*addr);
+ਬਾਹਰੀ ਖਾਲੀ compile_array_ਪੋਰਟ(ਅੱਖਰ*label, ਅੱਖਰ*name, ਅੱਖਰ*addr);
   /* Index is a constant address */
-extern void compile_array_port(char*label, char*name, long addr);
+ਬਾਹਰੀ ਖਾਲੀ compile_array_ਪੋਰਟ(ਅੱਖਰ*label, ਅੱਖਰ*name, ਲੰਮਾ addr);
 
-extern void compile_array_cleanup(void);
+ਬਾਹਰੀ ਖਾਲੀ compile_array_cleanup(ਖਾਲੀ);
 
 /*
  * Compile the .ufunc statement.
  */
-extern void compile_ufunc_real(char*label, char*code, unsigned wid,
-			  unsigned argc, struct symb_s*argv,
-			  unsigned portc, struct symb_s*portv,
-			  char*scope_label, char*trigger_label);
-extern void compile_ufunc_vec4(char*label, char*code, unsigned wid,
-			  unsigned argc, struct symb_s*argv,
-			  unsigned portc, struct symb_s*portv,
-			  char*scope_label, char*trigger_label);
+ਬਾਹਰੀ ਖਾਲੀ compile_ufunc_real(ਅੱਖਰ*label, ਅੱਖਰ*ਕੋਡ, ਬਿਨਾਨਿਸ਼ਾਨੀ wid,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ portc, ਬਣਤਰ symb_s*portv,
+			  ਅੱਖਰ*scope_label, ਅੱਖਰ*trigger_label);
+ਬਾਹਰੀ ਖਾਲੀ compile_ufunc_vec4(ਅੱਖਰ*label, ਅੱਖਰ*ਕੋਡ, ਬਿਨਾਨਿਸ਼ਾਨੀ wid,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ portc, ਬਣਤਰ symb_s*portv,
+			  ਅੱਖਰ*scope_label, ਅੱਖਰ*trigger_label);
 
 /*
  * The compile_event function takes the parts of the event statement
@@ -422,9 +422,9 @@ extern void compile_ufunc_vec4(char*label, char*code, unsigned wid,
  * the functor that receives the signals and the event_t that holds
  * the threads.
  */
-extern void compile_event(char*label, char*type,
-			  unsigned argc, struct symb_s*argv);
-extern void compile_named_event(char*label, char*type, bool local_flag=false);
+ਬਾਹਰੀ ਖਾਲੀ compile_event(ਅੱਖਰ*label, ਅੱਖਰ*type,
+			  ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_named_event(ਅੱਖਰ*label, ਅੱਖਰ*type, bool local_flag=false);
 
 
 /*
@@ -436,66 +436,66 @@ extern void compile_named_event(char*label, char*type, bool local_flag=false);
  * symbol table with the address of the instruction.
  */
 
-#define OPERAND_MAX 3
-enum ltype_e { L_NUMB, L_SYMB, L_STRING };
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ ਸੰਕਾਰਜ_MAX 3
+ਗਿਣਤੀ ltype_e { L_NUMB, L_SYMB, L_STRING };
 
-struct comp_operands_s {
-      unsigned argc;
-      struct {
-	    enum ltype_e ltype;
-	    union {
-		  unsigned long numb;
-		  struct symb_s symb;
-		  const char   *text;
+ਬਣਤਰ comp_operands_s {
+      ਬਿਨਾਨਿਸ਼ਾਨੀ argc;
+      ਬਣਤਰ {
+	    ਗਿਣਤੀ ltype_e ltype;
+	    ਸੰਘ {
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ numb;
+		  ਬਣਤਰ symb_s symb;
+		  ਅਚਲ ਅੱਖਰ   *ਪਾਠ;
 	    };
-      } argv[OPERAND_MAX];
+      } argv[ਸੰਕਾਰਜ_MAX];
 };
 
-typedef struct comp_operands_s*comp_operands_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ comp_operands_s*comp_operands_t;
 
-extern void compile_code(char*label, char*mnem, comp_operands_t opa);
+ਬਾਹਰੀ ਖਾਲੀ compile_ਕੋਡ(ਅੱਖਰ*label, ਅੱਖਰ*mnem, comp_operands_t opa);
 
-extern void compile_file_line(char*label, long file_idx, long lineno,
-                              char*description);
+ਬਾਹਰੀ ਖਾਲੀ compile_file_ਸਤਰ(ਅੱਖਰ*label, ਲੰਮਾ file_idx, ਲੰਮਾ lineno,
+                              ਅੱਖਰ*description);
 
-extern void compile_vpi_call(char*label, char*name,
+ਬਾਹਰੀ ਖਾਲੀ compile_vpi_call(ਅੱਖਰ*label, ਅੱਖਰ*name,
 			     bool func_as_task_err, bool func_as_task_warn,
-			     long file_idx, long lineno,
-			     unsigned argc, vpiHandle*argv,
-			     unsigned vec4_stack,
-			     unsigned real_stack,
-			     unsigned string_stack);
+			     ਲੰਮਾ file_idx, ਲੰਮਾ lineno,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ argc, vpiHandle*argv,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ vec4_ਢੇਰ,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ real_ਢੇਰ,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ string_ਢੇਰ);
 
 /* Compile a function call. The vbit and vwid encode the return
    type. If the vwid >0, the return type is a vector. If the vwid is
    <0, the return type is -vpiRealConst or some other constant subtype
    code that represents the function type. */
-extern void compile_vpi_func_call(char*label, char*name,
-				  int val_type, unsigned val_wid,
-				  long file_idx, long lineno,
-				  unsigned argc, vpiHandle*argv,
-				  unsigned vec4_stack,
-				  unsigned real_stack,
-				  unsigned string_stack);
-extern void print_vpi_call_errors();
+ਬਾਹਰੀ ਖਾਲੀ compile_vpi_func_call(ਅੱਖਰ*label, ਅੱਖਰ*name,
+				  ਪੂਰਨ val_type, ਬਿਨਾਨਿਸ਼ਾਨੀ val_wid,
+				  ਲੰਮਾ file_idx, ਲੰਮਾ lineno,
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ argc, vpiHandle*argv,
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ vec4_ਢੇਰ,
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ real_ਢੇਰ,
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ string_ਢੇਰ);
+ਬਾਹਰੀ ਖਾਲੀ print_vpi_call_errors();
 
-extern void compile_codelabel(char*label);
+ਬਾਹਰੀ ਖਾਲੀ compile_codelabel(ਅੱਖਰ*label);
 
 /*
  * The parser uses these functions to compile .scope statements.
  * The implementations of these live in the vpi_scope.cc file.
  */
-extern void compile_scope_decl(char*typ, char*lab, char*nam, char*tnam,
-                               char*par, long file_idx, long lineno,
-                               long def_file_idx, long def_lineno,
-                               long is_cell);
-extern void compile_scope_recall(char*sym);
+ਬਾਹਰੀ ਖਾਲੀ compile_scope_decl(ਅੱਖਰ*typ, ਅੱਖਰ*lab, ਅੱਖਰ*nam, ਅੱਖਰ*tnam,
+                               ਅੱਖਰ*par, ਲੰਮਾ file_idx, ਲੰਮਾ lineno,
+                               ਲੰਮਾ def_file_idx, ਲੰਮਾ def_lineno,
+                               ਲੰਮਾ is_cell);
+ਬਾਹਰੀ ਖਾਲੀ compile_scope_recall(ਅੱਖਰ*sym);
 
 /*
  * The parser uses this function to declare a thread. The start_sym is
  * the start instruction, and must already be defined.
  */
-extern void compile_thread(char*start_sym, char*flag);
+ਬਾਹਰੀ ਖਾਲੀ compile_thread(ਅੱਖਰ*ਸ਼ੁਰੂ_sym, ਅੱਖਰ*flag);
 
 /*
  * This function is called to create a var vector with the given name.
@@ -504,15 +504,15 @@ extern void compile_thread(char*start_sym, char*flag);
  * object codes that identify the type: vpiReg, vpiIntegerVar,
  * vpiIntVar, etc.
  */
-extern void compile_variable(char*label, char*name,
-			     int msb, int lsb, int vpi_type_code,
+ਬਾਹਰੀ ਖਾਲੀ compile_variable(ਅੱਖਰ*label, ਅੱਖਰ*name,
+			     ਪੂਰਨ msb, ਪੂਰਨ lsb, ਪੂਰਨ vpi_type_ਕੋਡ,
 			     bool signed_flag, bool local_flag);
 
-extern void compile_var_real(char*label, char*name, bool local_flag);
-extern void compile_var_string(char*label, char*name);
-extern void compile_var_darray(char*label, char*name, unsigned size);
-extern void compile_var_cobject(char*label, char*name);
-extern void compile_var_queue(char*label, char*name, unsigned size);
+ਬਾਹਰੀ ਖਾਲੀ compile_var_real(ਅੱਖਰ*label, ਅੱਖਰ*name, bool local_flag);
+ਬਾਹਰੀ ਖਾਲੀ compile_var_string(ਅੱਖਰ*label, ਅੱਖਰ*name);
+ਬਾਹਰੀ ਖਾਲੀ compile_var_darray(ਅੱਖਰ*label, ਅੱਖਰ*name, ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ);
+ਬਾਹਰੀ ਖਾਲੀ compile_var_cobject(ਅੱਖਰ*label, ਅੱਖਰ*name);
+ਬਾਹਰੀ ਖਾਲੀ compile_var_ਕਤਾਰ(ਅੱਖਰ*label, ਅੱਖਰ*name, ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ);
 
 /*
  * This function is used to create a scope port
@@ -522,7 +522,7 @@ extern void compile_var_queue(char*label, char*name, unsigned size);
  * nets connected through module ports.
  */
 
-extern void compile_port_info( unsigned index, int vpi_port_type, unsigned width, const char *name, char* buffer );
+ਬਾਹਰੀ ਖਾਲੀ compile_ਪੋਰਟ_info( ਬਿਨਾਨਿਸ਼ਾਨੀ ਸੂਚਕਾਂਕ, ਪੂਰਨ vpi_ਪੋਰਟ_type, ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ, ਅਚਲ ਅੱਖਰ *name, ਅੱਖਰ* ਬਫਰ );
 
 
 /*
@@ -536,40 +536,40 @@ extern void compile_port_info( unsigned index, int vpi_port_type, unsigned width
  *   vpiIntVar -- 2-value logic
  *  -vpiLogic  -- 8-value (i.e. strength aware) logic
  */
-extern void compile_net(char*label, char*name, int msb, int lsb,
-			int vpi_type_code, bool signed_flag, bool local_flag,
-			unsigned argc, struct symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_net(ਅੱਖਰ*label, ਅੱਖਰ*name, ਪੂਰਨ msb, ਪੂਰਨ lsb,
+			ਪੂਰਨ vpi_type_ਕੋਡ, bool signed_flag, bool local_flag,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
 
-extern void compile_net_real(char*label, char*name,
-			     int msb, int lsb, bool local_flag,
-			     unsigned argc, struct symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_net_real(ਅੱਖਰ*label, ਅੱਖਰ*name,
+			     ਪੂਰਨ msb, ਪੂਰਨ lsb, bool local_flag,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
 
-extern void compile_netw(char*label, char*array_label, unsigned long array_addr,
-			 int msb, int lsb, int vpi_type_code, bool signed_flag,
-			 unsigned argc, struct symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_netw(ਅੱਖਰ*label, ਅੱਖਰ*array_label, ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ array_addr,
+			 ਪੂਰਨ msb, ਪੂਰਨ lsb, ਪੂਰਨ vpi_type_ਕੋਡ, bool signed_flag,
+			 ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
 
-extern void compile_netw_real(char*label, char*array_symbol,
-			      unsigned long array_addr,
-			      int msb, int lsb,
-			      unsigned argc, struct symb_s*argv);
+ਬਾਹਰੀ ਖਾਲੀ compile_netw_real(ਅੱਖਰ*label, ਅੱਖਰ*array_ਚਿੰਨ੍ਹ,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ array_addr,
+			      ਪੂਰਨ msb, ਪੂਰਨ lsb,
+			      ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv);
 
 
-extern void compile_island(char*label, char*type);
-extern void compile_island_port(char*label, char*island, char*src);
-extern void compile_island_import(char*label, char*island, char*src);
-extern void compile_island_export(char*label, char*island);
-extern void compile_island_cleanup(void);
+ਬਾਹਰੀ ਖਾਲੀ compile_island(ਅੱਖਰ*label, ਅੱਖਰ*type);
+ਬਾਹਰੀ ਖਾਲੀ compile_island_ਪੋਰਟ(ਅੱਖਰ*label, ਅੱਖਰ*island, ਅੱਖਰ*src);
+ਬਾਹਰੀ ਖਾਲੀ compile_island_import(ਅੱਖਰ*label, ਅੱਖਰ*island, ਅੱਖਰ*src);
+ਬਾਹਰੀ ਖਾਲੀ compile_island_export(ਅੱਖਰ*label, ਅੱਖਰ*island);
+ਬਾਹਰੀ ਖਾਲੀ compile_island_cleanup(ਖਾਲੀ);
 
-extern void compile_island_tran(char*label);
-extern void compile_island_tranif(int sense, char*island,
-				  char*ba, char*bb, char*src, bool resistive);
-extern void compile_island_tranvp(char*island, char*ba, char*bb,
-				  unsigned width, unsigned part, unsigned off);
+ਬਾਹਰੀ ਖਾਲੀ compile_island_tran(ਅੱਖਰ*label);
+ਬਾਹਰੀ ਖਾਲੀ compile_island_tranif(ਪੂਰਨ sense, ਅੱਖਰ*island,
+				  ਅੱਖਰ*ba, ਅੱਖਰ*bb, ਅੱਖਰ*src, bool resistive);
+ਬਾਹਰੀ ਖਾਲੀ compile_island_tranvp(ਅੱਖਰ*island, ਅੱਖਰ*ba, ਅੱਖਰ*bb,
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ, ਬਿਨਾਨਿਸ਼ਾਨੀ part, ਬਿਨਾਨਿਸ਼ਾਨੀ off);
 
-extern void delete_udp_symbols(void);
+ਬਾਹਰੀ ਖਾਲੀ delete_udp_symbols(ਖਾਲੀ);
 
-extern void compile_class_start(char*lab, char*nam, unsigned nprop);
-extern void compile_class_property(unsigned idx, char*nam, char*typ, uint64_t array_size);
-extern void compile_class_done(void);
+ਬਾਹਰੀ ਖਾਲੀ compile_class_ਸ਼ੁਰੂ(ਅੱਖਰ*lab, ਅੱਖਰ*nam, ਬਿਨਾਨਿਸ਼ਾਨੀ nprop);
+ਬਾਹਰੀ ਖਾਲੀ compile_class_property(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, ਅੱਖਰ*nam, ਅੱਖਰ*typ, uint64_t array_ਮਾਪ_2);
+ਬਾਹਰੀ ਖਾਲੀ compile_class_ਪੂਰਾ(ਖਾਲੀ);
 
-#endif /* IVL_compile_H */
+#ਜੇ_ਅੰਤ /* IVL_compile_H */

@@ -19,9 +19,9 @@
 
 # include  "vpi_priv.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#ਜੇ_ਅੰਤ
 # include  <cassert>
 # include  <cstdarg>
 # include  <cstdio>
@@ -29,7 +29,7 @@
 # include  <cstring>
 # include  "ivl_alloc.h"
 
-extern FILE* vpi_trace;
+ਬਾਹਰੀ FILE* vpi_trace;
 
 /*
  * This table keeps track of the MCD files. Note that there may be
@@ -41,252 +41,252 @@ extern FILE* vpi_trace;
 /*
  * MCD/FD manipulation macros
  */
-#define IS_MCD(mcd)	!(static_cast<unsigned>(mcd)>>31&1)
-#define FD_IDX(fd)	((fd)&~(1U<<31))
-#define FD_INCR		32
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IS_MCD(mcd)	!(static_cast<ਬਿਨਾਨਿਸ਼ਾਨੀ>(mcd)>>31&1)
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ FD_IDX(fd)	((fd)&~(1U<<31))
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ FD_INCR		32
 
-typedef struct mcd_entry {
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ mcd_ਇੰਦਰਾਜ {
 	FILE *fp;
-	char *filename;
-} mcd_entry_s;
-static mcd_entry_s mcd_table[31];
-static mcd_entry_s *fd_table = NULL;
-static unsigned fd_table_len = 0;
+	ਅੱਖਰ *filename;
+} mcd_ਇੰਦਰਾਜ_s;
+ਸਥਿਰ mcd_ਇੰਦਰਾਜ_s mcd_ਸਾਰਣੀ[31];
+ਸਥਿਰ mcd_ਇੰਦਰਾਜ_s *fd_ਸਾਰਣੀ = ਨਿਰਾ;
+ਸਥਿਰ ਬਿਨਾਨਿਸ਼ਾਨੀ fd_ਸਾਰਣੀ_len = 0;
 
-static FILE* logfile;
+ਸਥਿਰ FILE* logfile;
 
-bool vpip_mcd0_disable = false;
+ਤਾਰਕਿਕ vpip_mcd0_disable = ਝੂਠ;
 
 /* Initialize mcd portion of vpi.  Must be called before
  * any vpi_mcd routines can be used.
  */
-void vpip_mcd_init(FILE *log)
+ਖਾਲੀ vpip_mcd_init(FILE *ਲਘੂਗਣਕ)
 {
-      fd_table_len = FD_INCR;
-      fd_table = static_cast<mcd_entry_s *>(malloc(fd_table_len*sizeof(mcd_entry_s)));
-      for (unsigned idx = 0; idx < fd_table_len; idx += 1) {
-	    fd_table[idx].fp = NULL;
-	    fd_table[idx].filename = NULL;
+      fd_ਸਾਰਣੀ_len = FD_INCR;
+      fd_ਸਾਰਣੀ = static_cast<mcd_ਇੰਦਰਾਜ_s *>(ਸਮ੍ਰਿਤੀ_ਦਿਓ(fd_ਸਾਰਣੀ_len*ਆਕਾਰ(mcd_ਇੰਦਰਾਜ_s)));
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0; idx < fd_ਸਾਰਣੀ_len; idx += 1) {
+	    fd_ਸਾਰਣੀ[idx].fp = ਨਿਰਾ;
+	    fd_ਸਾਰਣੀ[idx].filename = ਨਿਰਾ;
       }
 
-      mcd_table[0].fp = stdout;
-      mcd_table[0].filename = strdup("stdout");
+      mcd_ਸਾਰਣੀ[0].fp = stdout;
+      mcd_ਸਾਰਣੀ[0].filename = strdup("stdout");
 
-      fd_table[0].fp = stdin;
-      fd_table[0].filename = strdup("stdin");
-      fd_table[1].fp = stdout;
-      fd_table[1].filename = strdup("stdout");
-      fd_table[2].fp = stderr;
-      fd_table[2].filename = strdup("stderr");
+      fd_ਸਾਰਣੀ[0].fp = stdin;
+      fd_ਸਾਰਣੀ[0].filename = strdup("stdin");
+      fd_ਸਾਰਣੀ[1].fp = stdout;
+      fd_ਸਾਰਣੀ[1].filename = strdup("stdout");
+      fd_ਸਾਰਣੀ[2].fp = stderr;
+      fd_ਸਾਰਣੀ[2].filename = strdup("stderr");
 
-      logfile = log;
+      logfile = ਲਘੂਗਣਕ;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vpi_mcd_delete(void)
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
+ਖਾਲੀ vpi_mcd_delete(ਖਾਲੀ)
 {
-      free(mcd_table[0].filename);
-      mcd_table[0].filename = NULL;
-      mcd_table[0].fp = NULL;
+      ਮੁਕਤ(mcd_ਸਾਰਣੀ[0].filename);
+      mcd_ਸਾਰਣੀ[0].filename = ਨਿਰਾ;
+      mcd_ਸਾਰਣੀ[0].fp = ਨਿਰਾ;
 
-      free(fd_table[0].filename);
-      fd_table[0].filename = NULL;
-      fd_table[0].fp = NULL;
+      ਮੁਕਤ(fd_ਸਾਰਣੀ[0].filename);
+      fd_ਸਾਰਣੀ[0].filename = ਨਿਰਾ;
+      fd_ਸਾਰਣੀ[0].fp = ਨਿਰਾ;
 
-      free(fd_table[1].filename);
-      fd_table[1].filename = NULL;
-      fd_table[1].fp = NULL;
+      ਮੁਕਤ(fd_ਸਾਰਣੀ[1].filename);
+      fd_ਸਾਰਣੀ[1].filename = ਨਿਰਾ;
+      fd_ਸਾਰਣੀ[1].fp = ਨਿਰਾ;
 
-      free(fd_table[2].filename);
-      fd_table[2].filename = NULL;
-      fd_table[2].fp = NULL;
+      ਮੁਕਤ(fd_ਸਾਰਣੀ[2].filename);
+      fd_ਸਾਰਣੀ[2].filename = ਨਿਰਾ;
+      fd_ਸਾਰਣੀ[2].fp = ਨਿਰਾ;
 
-      free(fd_table);
-      fd_table = NULL;
-      fd_table_len = 0;
+      ਮੁਕਤ(fd_ਸਾਰਣੀ);
+      fd_ਸਾਰਣੀ = ਨਿਰਾ;
+      fd_ਸਾਰਣੀ_len = 0;
 }
-#endif
+#ਜੇ_ਅੰਤ
 
 /*
  * Close one or more channels. We refuse to close the preopened ones.
  */
-extern "C" PLI_UINT32 vpi_mcd_close(PLI_UINT32 mcd)
+ਬਾਹਰੀ "C" PLI_UINT32 vpi_mcd_close(PLI_UINT32 mcd)
 {
-      int rc = 0;
+      ਪੂਰਨ rc = 0;
 
-      if (IS_MCD(mcd)) {
-	    if (mcd & 1) rc |= 1;
-	    for(int i = 1; i < 31; i++) {
-		  if ((mcd>>i) & 1) {
-			if (mcd_table[i].fp) {
-			      if (fclose(mcd_table[i].fp)) rc |= 1<<i;
-			      free(mcd_table[i].filename);
-			      mcd_table[i].fp = NULL;
-			      mcd_table[i].filename = NULL;
-			} else {
+      ਜੇ (IS_MCD(mcd)) {
+	    ਜੇ (mcd & 1) rc |= 1;
+	    ਲਈ(ਪੂਰਨ i = 1; i < 31; i++) {
+		  ਜੇ ((mcd>>i) & 1) {
+			ਜੇ (mcd_ਸਾਰਣੀ[i].fp) {
+			      ਜੇ (fclose(mcd_ਸਾਰਣੀ[i].fp)) rc |= 1<<i;
+			      ਮੁਕਤ(mcd_ਸਾਰਣੀ[i].filename);
+			      mcd_ਸਾਰਣੀ[i].fp = ਨਿਰਾ;
+			      mcd_ਸਾਰਣੀ[i].filename = ਨਿਰਾ;
+			} ਨਹੀਂਤਾਂ {
 			      rc |= 1<<i;
 			}
 		  }
 	    }
-      } else {
-	    unsigned idx = FD_IDX(mcd);
-	    if (idx > 2 && idx < fd_table_len && fd_table[idx].fp) {
-		  if (fclose(fd_table[idx].fp)) rc = mcd;
-		  free(fd_table[idx].filename);
-		  fd_table[idx].fp = NULL;
-		  fd_table[idx].filename = NULL;
-	    } else rc = mcd;
+      } ਨਹੀਂਤਾਂ {
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ idx = FD_IDX(mcd);
+	    ਜੇ (idx > 2 && idx < fd_ਸਾਰਣੀ_len && fd_ਸਾਰਣੀ[idx].fp) {
+		  ਜੇ (fclose(fd_ਸਾਰਣੀ[idx].fp)) rc = mcd;
+		  ਮੁਕਤ(fd_ਸਾਰਣੀ[idx].filename);
+		  fd_ਸਾਰਣੀ[idx].fp = ਨਿਰਾ;
+		  fd_ਸਾਰਣੀ[idx].filename = ਨਿਰਾ;
+	    } ਨਹੀਂਤਾਂ rc = mcd;
       }
-      return rc;
+      ਵਾਪਸ rc;
 }
 
-extern "C" char *vpi_mcd_name(PLI_UINT32 mcd)
+ਬਾਹਰੀ "C" ਅੱਖਰ *vpi_mcd_name(PLI_UINT32 mcd)
 {
-	if (IS_MCD(mcd)) {
-		for(int i = 0; i < 31; i++) {
-			if((mcd>>i) & 1)
-				return mcd_table[i].filename;
+	ਜੇ (IS_MCD(mcd)) {
+		ਲਈ(ਪੂਰਨ i = 0; i < 31; i++) {
+			ਜੇ((mcd>>i) & 1)
+				ਵਾਪਸ mcd_ਸਾਰਣੀ[i].filename;
 		}
-	} else {
-		unsigned idx = FD_IDX(mcd);
-		if (idx < fd_table_len)
-			return fd_table[idx].filename;
+	} ਨਹੀਂਤਾਂ {
+		ਬਿਨਾਨਿਸ਼ਾਨੀ idx = FD_IDX(mcd);
+		ਜੇ (idx < fd_ਸਾਰਣੀ_len)
+			ਵਾਪਸ fd_ਸਾਰਣੀ[idx].filename;
 	}
-	return NULL;
+	ਵਾਪਸ ਨਿਰਾ;
 }
 
-extern "C" PLI_UINT32 vpi_mcd_open(char *name)
+ਬਾਹਰੀ "C" PLI_UINT32 vpi_mcd_open(ਅੱਖਰ *name)
 {
-	int i;
+	ਪੂਰਨ i;
 
-	for(i = 0; i < 31; i++) {
-		if(mcd_table[i].filename == NULL)
-			goto got_entry;
+	ਲਈ(i = 0; i < 31; i++) {
+		ਜੇ(mcd_ਸਾਰਣੀ[i].filename == ਨਿਰਾ)
+			ਜਾਓ got_ਇੰਦਰਾਜ;
 	}
-	return 0;  /* too many open mcd's */
+	ਵਾਪਸ 0;  /* too many open mcd's */
 
-got_entry:
-#if defined(__GNUC__)
-	mcd_table[i].fp = fopen(name, "w");
-#else
-	if (strcmp(name, "/dev/null") != 0)
-		mcd_table[i].fp = fopen(name, "w");
-	else
-		mcd_table[i].fp = fopen("nul", "w");
-#endif
-	if(mcd_table[i].fp == NULL)
-		return 0;
-	mcd_table[i].filename = strdup(name);
+got_ਇੰਦਰਾਜ:
+#ਜੇ defined(__GNUC__)
+	mcd_ਸਾਰਣੀ[i].fp = fopen(name, "w");
+#ਨਹੀਂਤਾਂ
+	ਜੇ (strcmp(name, "/dev/null") != 0)
+		mcd_ਸਾਰਣੀ[i].fp = fopen(name, "w");
+	ਨਹੀਂਤਾਂ
+		mcd_ਸਾਰਣੀ[i].fp = fopen("nul", "w");
+#ਜੇ_ਅੰਤ
+	ਜੇ(mcd_ਸਾਰਣੀ[i].fp == ਨਿਰਾ)
+		ਵਾਪਸ 0;
+	mcd_ਸਾਰਣੀ[i].filename = strdup(name);
 
-	if (vpi_trace) {
+	ਜੇ (vpi_trace) {
 	      fprintf(vpi_trace, "vpi_mcd_open(%s) --> 0x%08x\n",
 		      name, 1 << i);
 	}
 
-	return 1<<i;
+	ਵਾਪਸ 1<<i;
 }
 
-extern "C" PLI_INT32
-vpi_mcd_vprintf(PLI_UINT32 mcd, const char*fmt, va_list ap)
+ਬਾਹਰੀ "C" PLI_INT32
+vpi_mcd_vprintf(PLI_UINT32 mcd, ਅਚਲ ਅੱਖਰ*fmt, va_list ap)
 {
-      char buffer[4096];
-      char *buf_ptr = buffer;
-      int rc = 0;
-      bool need_free = false;
+      ਅੱਖਰ ਬਫਰ[4096];
+      ਅੱਖਰ *buf_ptr = ਬਫਰ;
+      ਪੂਰਨ rc = 0;
+      ਤਾਰਕਿਕ need_free = ਝੂਠ;
       va_list saved_ap;
 
-      if (!IS_MCD(mcd)) return EOF;
+      ਜੇ (!IS_MCD(mcd)) ਵਾਪਸ EOF;
 
-      if (vpi_trace) {
+      ਜੇ (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_mcd_vprintf(0x%08x, %s, ...);\n",
-		    (unsigned int)mcd, fmt);
+		    (ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੂਰਨ)mcd, fmt);
       }
 
       va_copy(saved_ap, ap);
-      rc = vsnprintf(buffer, sizeof buffer, fmt, ap);
-      assert(rc >= 0);
+      rc = vsnprintf(ਬਫਰ, ਆਕਾਰ ਬਫਰ, fmt, ap);
+      ਪ੍ਰਤਿਜ੍ਞਾ(rc >= 0);
 	/*
 	 * If rc is greater than sizeof buffer then the result was truncated
 	 * so the print needs to be redone with a larger buffer (very rare).
 	 */
-      if ((unsigned) rc >= sizeof buffer) {
-	    buf_ptr = static_cast<char *>(malloc(rc + 1));
-	    need_free = true;
+      ਜੇ ((ਬਿਨਾਨਿਸ਼ਾਨੀ) rc >= ਆਕਾਰ ਬਫਰ) {
+	    buf_ptr = static_cast<ਅੱਖਰ *>(ਸਮ੍ਰਿਤੀ_ਦਿਓ(rc + 1));
+	    need_free = ਸੱਚ;
 	    rc = vsnprintf(buf_ptr, rc+1, fmt, saved_ap);
       }
       va_end(saved_ap);
 
-      for(int i = 0; i < 31; i++) {
-	    if((mcd>>i) & 1) {
-		  if(mcd_table[i].fp) {
-			if (i == 0) {
-			      if (logfile)
+      ਲਈ(ਪੂਰਨ i = 0; i < 31; i++) {
+	    ਜੇ((mcd>>i) & 1) {
+		  ਜੇ(mcd_ਸਾਰਣੀ[i].fp) {
+			ਜੇ (i == 0) {
+			      ਜੇ (logfile)
 				    fputs(buf_ptr, logfile);
-			      if (vpip_mcd0_disable)
-				    continue;
+			      ਜੇ (vpip_mcd0_disable)
+				    ਜਾਰੀ;
 			}
-			fputs(buf_ptr, mcd_table[i].fp);
-		  } else {
+			fputs(buf_ptr, mcd_ਸਾਰਣੀ[i].fp);
+		  } ਨਹੀਂਤਾਂ {
 			rc = EOF;
 		  }
 	    }
       }
-      if (need_free) free(buf_ptr);
+      ਜੇ (need_free) ਮੁਕਤ(buf_ptr);
 
-      return rc;
+      ਵਾਪਸ rc;
 }
 
-extern "C" PLI_INT32 vpi_mcd_printf(PLI_UINT32 mcd, const char *fmt, ...)
+ਬਾਹਰੀ "C" PLI_INT32 vpi_mcd_printf(PLI_UINT32 mcd, ਅਚਲ ਅੱਖਰ *fmt, ...)
 {
       va_list ap;
       va_start(ap, fmt);
-      int r = vpi_mcd_vprintf(mcd,fmt,ap);
+      ਪੂਰਨ r = vpi_mcd_vprintf(mcd,fmt,ap);
       va_end(ap);
-      return r;
+      ਵਾਪਸ r;
 }
 
-extern "C" void vpip_mcd_rawwrite(PLI_UINT32 mcd, const char*buf, size_t cnt)
+ਬਾਹਰੀ "C" ਖਾਲੀ vpip_mcd_rawwrite(PLI_UINT32 mcd, ਅਚਲ ਅੱਖਰ*buf, size_t cnt)
 {
-      if (!IS_MCD(mcd)) return;
+      ਜੇ (!IS_MCD(mcd)) ਵਾਪਸ;
 
-      for(int idx = 0; idx < 31; idx += 1) {
-	    if (((mcd>>idx) & 1) == 0)
-		  continue;
+      ਲਈ(ਪੂਰਨ idx = 0; idx < 31; idx += 1) {
+	    ਜੇ (((mcd>>idx) & 1) == 0)
+		  ਜਾਰੀ;
 
-	    if (mcd_table[idx].fp == 0)
-		  continue;
+	    ਜੇ (mcd_ਸਾਰਣੀ[idx].fp == 0)
+		  ਜਾਰੀ;
 
-	    if (idx == 0) {
-		  if (logfile)
+	    ਜੇ (idx == 0) {
+		  ਜੇ (logfile)
 			fwrite(buf, 1, cnt, logfile);
-		  if (vpip_mcd0_disable)
-			continue;
+		  ਜੇ (vpip_mcd0_disable)
+			ਜਾਰੀ;
 	    }
-	    fwrite(buf, 1, cnt, mcd_table[idx].fp);
+	    fwrite(buf, 1, cnt, mcd_ਸਾਰਣੀ[idx].fp);
       }
 }
 
-extern "C" PLI_INT32 vpi_mcd_flush(PLI_UINT32 mcd)
+ਬਾਹਰੀ "C" PLI_INT32 vpi_mcd_flush(PLI_UINT32 mcd)
 {
-	int rc = 0;
+	ਪੂਰਨ rc = 0;
 
-	if (IS_MCD(mcd)) {
-		for(int i = 0; i < 31; i++) {
-			if((mcd>>i) & 1) {
-				if (i == 0) {
-				      if (logfile)
+	ਜੇ (IS_MCD(mcd)) {
+		ਲਈ(ਪੂਰਨ i = 0; i < 31; i++) {
+			ਜੇ((mcd>>i) & 1) {
+				ਜੇ (i == 0) {
+				      ਜੇ (logfile)
 					    fflush(logfile);
-				      if (vpip_mcd0_disable)
-					    continue;
+				      ਜੇ (vpip_mcd0_disable)
+					    ਜਾਰੀ;
 				}
-				if (fflush(mcd_table[i].fp)) rc |= 1<<i;
+				ਜੇ (fflush(mcd_ਸਾਰਣੀ[i].fp)) rc |= 1<<i;
 			}
 		}
-	} else {
-		unsigned idx = FD_IDX(mcd);
-		if (idx < fd_table_len) rc = fflush(fd_table[idx].fp);
+	} ਨਹੀਂਤਾਂ {
+		ਬਿਨਾਨਿਸ਼ਾਨੀ idx = FD_IDX(mcd);
+		ਜੇ (idx < fd_ਸਾਰਣੀ_len) rc = fflush(fd_ਸਾਰਣੀ[idx].fp);
 	}
-	return rc;
+	ਵਾਪਸ rc;
 }
 
 /*
@@ -300,47 +300,47 @@ extern "C" PLI_INT32 vpi_mcd_flush(PLI_UINT32 mcd)
  * descriptors are distinct from the mcd descriptors, so uses a
  * different fd table.
  */
-extern "C" PLI_INT32 vpi_fopen(const char*name, const char*mode)
+ਬਾਹਰੀ "C" PLI_INT32 vpi_fopen(ਅਚਲ ਅੱਖਰ*name, ਅਚਲ ਅੱਖਰ*ਬਹੁਲਕ)
 {
-      unsigned i;
-      for (i = 0; i < fd_table_len; i += 1) {
-	    if (fd_table[i].filename == NULL) goto got_entry;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ i;
+      ਲਈ (i = 0; i < fd_ਸਾਰਣੀ_len; i += 1) {
+	    ਜੇ (fd_ਸਾਰਣੀ[i].filename == ਨਿਰਾ) ਜਾਓ got_ਇੰਦਰਾਜ;
       }
 	/* We need to allocate more table entries, but to keep things */
 	/* sane we'll hard limit this to 1024 file descriptors total. */
-      if (fd_table_len >= 1024) {
+      ਜੇ (fd_ਸਾਰਣੀ_len >= 1024) {
 	    vpi_printf("WARNING: Icarus only supports 1024 open files!\n");
-	    return 0;
+	    ਵਾਪਸ 0;
       }
-      fd_table_len += FD_INCR;
-      fd_table = static_cast<mcd_entry_s *>
-                 (realloc(fd_table, fd_table_len*sizeof(mcd_entry_s)));
-      for (unsigned idx = i; idx < fd_table_len; idx += 1) {
-	    fd_table[idx].fp = NULL;
-	    fd_table[idx].filename = NULL;
+      fd_ਸਾਰਣੀ_len += FD_INCR;
+      fd_ਸਾਰਣੀ = static_cast<mcd_ਇੰਦਰਾਜ_s *>
+                 (realloc(fd_ਸਾਰਣੀ, fd_ਸਾਰਣੀ_len*ਆਕਾਰ(mcd_ਇੰਦਰਾਜ_s)));
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = i; idx < fd_ਸਾਰਣੀ_len; idx += 1) {
+	    fd_ਸਾਰਣੀ[idx].fp = ਨਿਰਾ;
+	    fd_ਸਾਰਣੀ[idx].filename = ਨਿਰਾ;
       }
 
-got_entry:
-#ifndef _MSC_VER
-	  fd_table[i].fp = fopen(name, mode);
-#else // Changed for MSVC++ so vpi/pr723.v will pass.
-	  if(strcmp(name, "/dev/null") != 0)
-		fd_table[i].fp = fopen(name, mode);
-	  else
-		fd_table[i].fp = fopen("nul", mode);
-#endif
-      if (fd_table[i].fp == NULL) return 0;
-      fd_table[i].filename = strdup(name);
-      return ((1U<<31)|i);
+got_ਇੰਦਰਾਜ:
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ _MSC_VER
+	  fd_ਸਾਰਣੀ[i].fp = fopen(name, ਬਹੁਲਕ);
+#ਨਹੀਂਤਾਂ // Changed for MSVC++ so vpi/pr723.v will pass.
+	  ਜੇ(strcmp(name, "/dev/null") != 0)
+		fd_ਸਾਰਣੀ[i].fp = fopen(name, ਬਹੁਲਕ);
+	  ਨਹੀਂਤਾਂ
+		fd_ਸਾਰਣੀ[i].fp = fopen("nul", ਬਹੁਲਕ);
+#ਜੇ_ਅੰਤ
+      ਜੇ (fd_ਸਾਰਣੀ[i].fp == ਨਿਰਾ) ਵਾਪਸ 0;
+      fd_ਸਾਰਣੀ[i].filename = strdup(name);
+      ਵਾਪਸ ((1U<<31)|i);
 }
 
-extern "C" FILE *vpi_get_file(PLI_INT32 fd)
+ਬਾਹਰੀ "C" FILE *vpi_get_file(PLI_INT32 fd)
 {
 	// Only deal with FD's
-      if (IS_MCD(fd)) return NULL;
+      ਜੇ (IS_MCD(fd)) ਵਾਪਸ ਨਿਰਾ;
 
 	// Only know about fd_table_len indices
-      if (FD_IDX(fd) >= fd_table_len) return NULL;
+      ਜੇ (FD_IDX(fd) >= fd_ਸਾਰਣੀ_len) ਵਾਪਸ ਨਿਰਾ;
 
-      return fd_table[FD_IDX(fd)].fp;
+      ਵਾਪਸ fd_ਸਾਰਣੀ[FD_IDX(fd)].fp;
 }

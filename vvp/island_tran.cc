@@ -25,55 +25,55 @@
 
 # include  <iostream>
 
-using namespace std;
+ਵਰਤੋਂ ਨਾਮਾਕਾਸ਼ std;
 
-class vvp_island_tran : public vvp_island {
+ਵਰਗ vvp_island_tran : ਜਨਤਕ vvp_island {
 
-    public:
-      void run_island() override;
-      void count_drivers(vvp_island_port*port, unsigned bit_idx,
-                         unsigned counts[3]) override;
+    ਜਨਤਕ:
+      ਖਾਲੀ ਲੜੀਵਾਰ_island() override;
+      ਖਾਲੀ ਗਿਣਤੀ_drivers(vvp_island_ਪੋਰਟ*ਪੋਰਟ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਦੋਆਧਾਰੀ_ਅੰਕ_idx,
+                         ਬਿਨਾਨਿਸ਼ਾਨੀ counts[3]) override;
 };
 
-enum tran_state_t {
+ਗਿਣਤੀ tran_state_t {
       tran_disabled,
       tran_enabled,
       tran_unknown
 };
 
-struct vvp_island_branch_tran : public vvp_island_branch {
+ਬਣਤਰ vvp_island_branch_tran : ਜਨਤਕ vvp_island_branch {
 
-      vvp_island_branch_tran(vvp_net_t*en__, bool active_high__,
-                             unsigned width__, unsigned part__,
-                             unsigned offset__, bool resistive__);
-      void run_test_enabled();
-      bool rerun_test_enabled();
-      void run_resolution();
-      void run_output();
+      vvp_island_branch_tran(vvp_net_t*en__, ਤਾਰਕਿਕ ਸਰਗਰਮ_ਉੱਚਾ,
+                             ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ_3, ਬਿਨਾਨਿਸ਼ਾਨੀ part__,
+                             ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਿੱਥ_3, ਤਾਰਕਿਕ resistive__);
+      ਖਾਲੀ ਲੜੀਵਾਰ_test_enabled();
+      ਤਾਰਕਿਕ rerun_test_enabled();
+      ਖਾਲੀ ਲੜੀਵਾਰ_resolution();
+      ਖਾਲੀ ਲੜੀਵਾਰ_output();
 
       vvp_net_t*en;
-      unsigned width, part, offset;
-      bool active_high, resistive;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ width, part, ਵਿੱਥ_2;
+      ਤਾਰਕਿਕ ਸਰਗਰਮ_ਉੱਚਾ_2, resistive;
       tran_state_t state;
 };
 
 vvp_island_branch_tran::vvp_island_branch_tran(vvp_net_t*en__,
-                                               bool active_high__,
-                                               unsigned width__,
-                                               unsigned part__,
-                                               unsigned offset__,
-                                               bool resistive__)
-: en(en__), width(width__), part(part__), offset(offset__),
-  active_high(active_high__), resistive(resistive__)
+                                               ਤਾਰਕਿਕ ਸਰਗਰਮ_ਉੱਚਾ,
+                                               ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ_3,
+                                               ਬਿਨਾਨਿਸ਼ਾਨੀ part__,
+                                               ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਿੱਥ_3,
+                                               ਤਾਰਕਿਕ resistive__)
+: en(en__), width(ਚੌੜਾਈ_3), part(part__), ਵਿੱਥ_2(ਵਿੱਥ_3),
+  ਸਰਗਰਮ_ਉੱਚਾ_2(ਸਰਗਰਮ_ਉੱਚਾ), resistive(resistive__)
 {
       state = en__ ? tran_disabled : tran_enabled;
 }
 
-static inline vvp_island_branch_tran* BRANCH_TRAN(vvp_island_branch*tmp)
+ਸਥਿਰ ਸਤਰਅੰਦਰ vvp_island_branch_tran* BRANCH_TRAN(vvp_island_branch*tmp)
 {
       vvp_island_branch_tran*res = dynamic_cast<vvp_island_branch_tran*>(tmp);
-      assert(res);
-      return res;
+      ਪ੍ਰਤਿਜ੍ਞਾ(res);
+      ਵਾਪਸ res;
 }
 
 /*
@@ -81,128 +81,128 @@ static inline vvp_island_branch_tran* BRANCH_TRAN(vvp_island_branch*tmp)
  * entire island. We run the island by calling run_resolution() for
  * all the branches in the island.
 */
-void vvp_island_tran::run_island()
+ਖਾਲੀ vvp_island_tran::ਲੜੀਵਾਰ_island()
 {
 	// Test to see if any of the branches are enabled. This loop
 	// tests the enabled inputs for all the branches and caches
 	// the results in the state for each branch.
-      for (vvp_island_branch*cur = branches_ ; cur ; cur = cur->next_branch) {
+      ਲਈ (vvp_island_branch*cur = branches_ ; cur ; cur = cur->ਅਗਲਾ_branch) {
 	    vvp_island_branch_tran*tmp = dynamic_cast<vvp_island_branch_tran*>(cur);
-	    assert(tmp);
-	    tmp->run_test_enabled();
+	    ਪ੍ਰਤਿਜ੍ਞਾ(tmp);
+	    tmp->ਲੜੀਵਾਰ_test_enabled();
       }
 
 rerun:
 	// Now resolve all the branches in the island.
-      for (vvp_island_branch*cur = branches_ ; cur ; cur = cur->next_branch) {
+      ਲਈ (vvp_island_branch*cur = branches_ ; cur ; cur = cur->ਅਗਲਾ_branch) {
 	    vvp_island_branch_tran*tmp = dynamic_cast<vvp_island_branch_tran*>(cur);
-	    assert(tmp);
-	    tmp->run_resolution();
+	    ਪ੍ਰਤਿਜ੍ਞਾ(tmp);
+	    tmp->ਲੜੀਵਾਰ_resolution();
       }
 
 	// Now output the resolved values.
-      for (vvp_island_branch*cur = branches_ ; cur ; cur = cur->next_branch) {
+      ਲਈ (vvp_island_branch*cur = branches_ ; cur ; cur = cur->ਅਗਲਾ_branch) {
 	    vvp_island_branch_tran*tmp = dynamic_cast<vvp_island_branch_tran*>(cur);
-	    assert(tmp);
-	    tmp->run_output();
+	    ਪ੍ਰਤਿਜ੍ਞਾ(tmp);
+	    tmp->ਲੜੀਵਾਰ_output();
       }
 
 	// Now check if the enable inputs have been affected by the resolution.
-      bool enable_changed = false;
-      for (vvp_island_branch*cur = branches_ ; cur ; cur = cur->next_branch) {
+      ਤਾਰਕਿਕ enable_ਬਦਲਿਆ = ਝੂਠ;
+      ਲਈ (vvp_island_branch*cur = branches_ ; cur ; cur = cur->ਅਗਲਾ_branch) {
 	    vvp_island_branch_tran*tmp = dynamic_cast<vvp_island_branch_tran*>(cur);
-	    assert(tmp);
-	    enable_changed |= tmp->rerun_test_enabled();
+	    ਪ੍ਰਤਿਜ੍ਞਾ(tmp);
+	    enable_ਬਦਲਿਆ |= tmp->rerun_test_enabled();
       }
-      if (enable_changed) goto rerun;
+      ਜੇ (enable_ਬਦਲਿਆ) ਜਾਓ rerun;
 }
 
-static void count_drivers_(vvp_branch_ptr_t cur, bool other_side_visited,
-                           unsigned bit_idx, unsigned counts[3])
+ਸਥਿਰ ਖਾਲੀ ਗਿਣਤੀ_drivers_2(vvp_branch_ptr_t cur, ਤਾਰਕਿਕ other_side_ਦੇਖਿਆ,
+                           ਬਿਨਾਨਿਸ਼ਾਨੀ ਦੋਆਧਾਰੀ_ਅੰਕ_idx, ਬਿਨਾਨਿਸ਼ਾਨੀ counts[3])
 {
         // First count any value driven into the port associated with
         // the current endpoint.
-      vvp_net_t*net = cur.port() ? cur.ptr()->b : cur.ptr()->a;
-      vvp_scalar_t bit = island_get_value(net).value(bit_idx);
-      update_driver_counts(bit.value(), counts);
+      vvp_net_t*net = cur.ਪੋਰਟ() ? cur.ptr()->b : cur.ptr()->a;
+      vvp_scalar_t ਦੋਆਧਾਰੀ_ਅੰਕ = island_get_ਮੁੱਲ(net).value(ਦੋਆਧਾਰੀ_ਅੰਕ_idx);
+      update_driver_counts(ਦੋਆਧਾਰੀ_ਅੰਕ.value(), counts);
 
         // Now handle all the branches attached to that port.
       vvp_branch_ptr_t idx = cur;
-      do {
+      ਕਰੋ {
             vvp_island_branch_tran*tmp = BRANCH_TRAN(idx.ptr());
 
               // If this branch represents a tran gate, we count the
               // value on the other side of the tran (providing it is
               // enabled) as a single driver.
-            if (tmp->width == 0) {
-                  if (tmp->state == tran_enabled) {
-                        net = idx.port() ? idx.ptr()->a : idx.ptr()->b;
-                        bit = island_get_sent_value(net).value(bit_idx);
-                        update_driver_counts(bit.value(), counts);
+            ਜੇ (tmp->width == 0) {
+                  ਜੇ (tmp->state == tran_enabled) {
+                        net = idx.ਪੋਰਟ() ? idx.ptr()->a : idx.ptr()->b;
+                        ਦੋਆਧਾਰੀ_ਅੰਕ = island_get_ਭੇਜਿਆ_ਮੁੱਲ(net).value(ਦੋਆਧਾਰੀ_ਅੰਕ_idx);
+                        update_driver_counts(ਦੋਆਧਾਰੀ_ਅੰਕ.value(), counts);
                   }
-                  continue;
+                  ਜਾਰੀ;
             }
 
               // If we get here, this branch is a part select. If we've
               // just come from the other end of the branch, we're done.
-            if ((idx == cur) && other_side_visited)
-                  continue;
+            ਜੇ ((idx == cur) && other_side_ਦੇਖਿਆ)
+                  ਜਾਰੀ;
 
               // If this is the narrow end of the part select, the other
               // end must include the bit we are interested in. Follow
               // the branch to collect any drivers on the other side.
-            if (idx.port() == 1) {
+            ਜੇ (idx.ਪੋਰਟ() == 1) {
                   vvp_branch_ptr_t a_side(tmp, 0);
-                  count_drivers_(a_side, true, tmp->offset + bit_idx, counts);
-                  continue;
+                  ਗਿਣਤੀ_drivers_2(a_side, ਸੱਚ, tmp->ਵਿੱਥ_2 + ਦੋਆਧਾਰੀ_ਅੰਕ_idx, counts);
+                  ਜਾਰੀ;
             }
 
               // If we get here, this branch is the wide end of a part
               // select. If the bit we are interested in is within the
               // selected part, follow the branch to collect any drivers
               // on the other side.
-            if ((bit_idx >= tmp->offset) && (bit_idx < tmp->offset+tmp->part)) {
+            ਜੇ ((ਦੋਆਧਾਰੀ_ਅੰਕ_idx >= tmp->ਵਿੱਥ_2) && (ਦੋਆਧਾਰੀ_ਅੰਕ_idx < tmp->ਵਿੱਥ_2+tmp->part)) {
                   vvp_branch_ptr_t b_side(tmp, 1);
-                  count_drivers_(b_side, true, bit_idx - tmp->offset, counts);
-                  continue;
+                  ਗਿਣਤੀ_drivers_2(b_side, ਸੱਚ, ਦੋਆਧਾਰੀ_ਅੰਕ_idx - tmp->ਵਿੱਥ_2, counts);
+                  ਜਾਰੀ;
             }
-      } while ((idx = next(idx)) != cur);
+      } ਜਦੋਂ ((idx = ਅਗਲਾ_2(idx)) != cur);
 }
 
-void vvp_island_tran::count_drivers(vvp_island_port*port, unsigned bit_idx,
-                                    unsigned counts[3])
+ਖਾਲੀ vvp_island_tran::ਗਿਣਤੀ_drivers(vvp_island_ਪੋਰਟ*ਪੋਰਟ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਦੋਆਧਾਰੀ_ਅੰਕ_idx,
+                                    ਬਿਨਾਨਿਸ਼ਾਨੀ counts[3])
 {
         // First we need to find a branch that is attached to the specified
         // port. Unfortunately there's no quick way to do this.
       vvp_island_branch*branch = branches_;
-      unsigned side = 0;
-      while (branch) {
-            if (branch->a->fun == port) {
+      ਬਿਨਾਨਿਸ਼ਾਨੀ side = 0;
+      ਜਦੋਂ (branch) {
+            ਜੇ (branch->a->fun == ਪੋਰਟ) {
                   side = 0;
-                  break;
+                  ਰੋਕੋ;
             }
-            if (branch->b->fun == port) {
+            ਜੇ (branch->b->fun == ਪੋਰਟ) {
                   side = 1;
-                  break;
+                  ਰੋਕੋ;
             }
-            branch = branch->next_branch;
+            branch = branch->ਅਗਲਾ_branch;
       }
-      assert(branch);
+      ਪ੍ਰਤਿਜ੍ਞਾ(branch);
 
         // Now count the drivers, pushing through the network as necessary.
       vvp_branch_ptr_t endpoint(branch, side);
-      count_drivers_(endpoint, false, bit_idx, counts);
+      ਗਿਣਤੀ_drivers_2(endpoint, ਝੂਠ, ਦੋਆਧਾਰੀ_ਅੰਕ_idx, counts);
 }
 
-void vvp_island_branch_tran::run_test_enabled()
+ਖਾਲੀ vvp_island_branch_tran::ਲੜੀਵਾਰ_test_enabled()
 {
-      const vvp_island_port*ep = en? dynamic_cast<vvp_island_port*> (en->fun) : NULL;
+      ਅਚਲ vvp_island_ਪੋਰਟ*ep = en? dynamic_cast<vvp_island_ਪੋਰਟ*> (en->fun) : ਨਿਰਾ;
 
 	// If there is no ep port (no "enabled" input) then this is a
 	// tran branch. Assume it is always enabled.
-      if (ep == 0) {
+      ਜੇ (ep == 0) {
 	    state = tran_enabled;
-	    return;
+	    ਵਾਪਸ;
       }
 
 	// Get the input that is driving this enable.
@@ -221,158 +221,158 @@ void vvp_island_branch_tran::run_test_enabled()
 	// If the outvalue is nil, then we know that this port is a
 	// .import after all, so just read the invalue.
       vvp_bit4_t enable_val;
-      if (ep->outvalue.size() != 0)
+      ਜੇ (ep->outvalue.size() != 0)
 	    enable_val = ep->outvalue.value(0).value();
-      else if (ep->invalue.size() == 0)
+      ਨਹੀਂਤਾਂ ਜੇ (ep->invalue.size() == 0)
 	    enable_val = BIT4_Z;
-      else
+      ਨਹੀਂਤਾਂ
 	    enable_val = ep->invalue.value(0).value();
 
-      switch (enable_val) {
-	  case BIT4_0:
-	    state = active_high ? tran_disabled : tran_enabled;
-	    break;
-	  case BIT4_1:
-	    state = active_high ? tran_enabled : tran_disabled;
-	    break;
-	  default:
+      ਚੋਣ (enable_val) {
+	  ਹਾਲਤ BIT4_0:
+	    state = ਸਰਗਰਮ_ਉੱਚਾ_2 ? tran_disabled : tran_enabled;
+	    ਰੋਕੋ;
+	  ਹਾਲਤ BIT4_1:
+	    state = ਸਰਗਰਮ_ਉੱਚਾ_2 ? tran_enabled : tran_disabled;
+	    ਰੋਕੋ;
+	  ਮੂਲ:
 	    state = tran_unknown;
-	    break;
+	    ਰੋਕੋ;
       }
 }
 
-bool vvp_island_branch_tran::rerun_test_enabled()
+ਤਾਰਕਿਕ vvp_island_branch_tran::rerun_test_enabled()
 {
-      const vvp_island_port*ep = en? dynamic_cast<vvp_island_port*> (en->fun) : NULL;
+      ਅਚਲ vvp_island_ਪੋਰਟ*ep = en? dynamic_cast<vvp_island_ਪੋਰਟ*> (en->fun) : ਨਿਰਾ;
 
-      if (ep == 0)
-	    return false;
+      ਜੇ (ep == 0)
+	    ਵਾਪਸ ਝੂਠ;
 
 	// We are only looking for changes resulting from running the island
 	// resolution. If the outvalue is nil, we know that the enable port
 	// is an .import, so won't be affected.
-      if (ep->outvalue.size() == 0)
-	    return false;
+      ਜੇ (ep->outvalue.size() == 0)
+	    ਵਾਪਸ ਝੂਠ;
 
       vvp_bit4_t enable_val = ep->outvalue.value(0).value();
 
       tran_state_t old_state = state;
 
-      switch (enable_val) {
-	  case BIT4_0:
-	    state = active_high ? tran_disabled : tran_enabled;
-	    break;
-	  case BIT4_1:
-	    state = active_high ? tran_enabled : tran_disabled;
-	    break;
-	  default:
+      ਚੋਣ (enable_val) {
+	  ਹਾਲਤ BIT4_0:
+	    state = ਸਰਗਰਮ_ਉੱਚਾ_2 ? tran_disabled : tran_enabled;
+	    ਰੋਕੋ;
+	  ਹਾਲਤ BIT4_1:
+	    state = ਸਰਗਰਮ_ਉੱਚਾ_2 ? tran_enabled : tran_disabled;
+	    ਰੋਕੋ;
+	  ਮੂਲ:
 	    state = tran_unknown;
-	    break;
+	    ਰੋਕੋ;
       }
 
-      return state != old_state;
+      ਵਾਪਸ state != old_state;
 }
 
 // The IEEE standard does not specify the behaviour when a tranif control
 // input is 'x' or 'z'. We use the rules that are given for MOS switches.
-inline vvp_vector8_t resolve_ambiguous(const vvp_vector8_t&a,
-                                       const vvp_vector8_t&b,
+ਸਤਰਅੰਦਰ vvp_vector8_t resolve_ambiguous(ਅਚਲ vvp_vector8_t&a,
+                                       ਅਚਲ vvp_vector8_t&b,
                                        tran_state_t state,
-                                       const unsigned str_map[8])
+                                       ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ str_map[8])
 {
-      assert(a.size() == b.size());
+      ਪ੍ਰਤਿਜ੍ਞਾ(a.size() == b.size());
       vvp_vector8_t out (a.size());
 
-      for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
-	    vvp_scalar_t a_bit = a.value(idx);
-	    vvp_scalar_t b_bit = b.value(idx);
-            b_bit = vvp_scalar_t(b_bit.value(),
-                                 str_map[b_bit.strength0()],
-                                 str_map[b_bit.strength1()]);
-	    if (state == tran_unknown) {
-		  switch (b_bit.value()) {
-		      case BIT4_0:
-			b_bit = vvp_scalar_t(BIT4_X, b_bit.strength0(), 0);
-			break;
-		      case BIT4_1:
-			b_bit = vvp_scalar_t(BIT4_X, 0, b_bit.strength1());
-			break;
-		      default:
-			break;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0 ;  idx < out.size() ;  idx += 1) {
+	    vvp_scalar_t a_ਦੋਆਧਾਰੀ_ਅੰਕ = a.value(idx);
+	    vvp_scalar_t b_ਦੋਆਧਾਰੀ_ਅੰਕ = b.value(idx);
+            b_ਦੋਆਧਾਰੀ_ਅੰਕ = vvp_scalar_t(b_ਦੋਆਧਾਰੀ_ਅੰਕ.value(),
+                                 str_map[b_ਦੋਆਧਾਰੀ_ਅੰਕ.strength0()],
+                                 str_map[b_ਦੋਆਧਾਰੀ_ਅੰਕ.strength1()]);
+	    ਜੇ (state == tran_unknown) {
+		  ਚੋਣ (b_ਦੋਆਧਾਰੀ_ਅੰਕ.value()) {
+		      ਹਾਲਤ BIT4_0:
+			b_ਦੋਆਧਾਰੀ_ਅੰਕ = vvp_scalar_t(BIT4_X, b_ਦੋਆਧਾਰੀ_ਅੰਕ.strength0(), 0);
+			ਰੋਕੋ;
+		      ਹਾਲਤ BIT4_1:
+			b_ਦੋਆਧਾਰੀ_ਅੰਕ = vvp_scalar_t(BIT4_X, 0, b_ਦੋਆਧਾਰੀ_ਅੰਕ.strength1());
+			ਰੋਕੋ;
+		      ਮੂਲ:
+			ਰੋਕੋ;
 		  }
 	    }
-	    out.set_bit(idx, resolve(a_bit, b_bit));
+	    out.ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(idx, resolve(a_ਦੋਆਧਾਰੀ_ਅੰਕ, b_ਦੋਆਧਾਰੀ_ਅੰਕ));
       }
-      return out;
+      ਵਾਪਸ out;
 }
 
-static void push_value_through_branches(const vvp_vector8_t&val,
-					const list<vvp_branch_ptr_t>&connections);
+ਸਥਿਰ ਖਾਲੀ ਧੱਕੋ_ਮੁੱਲ_through_branches(ਅਚਲ vvp_vector8_t&val,
+					ਅਚਲ list<vvp_branch_ptr_t>&connections);
 
-static void push_value_through_branch(const vvp_vector8_t&val,
+ਸਥਿਰ ਖਾਲੀ ਧੱਕੋ_ਮੁੱਲ_through_branch(ਅਚਲ vvp_vector8_t&val,
                                       vvp_branch_ptr_t cur)
 {
       vvp_island_branch_tran*branch = BRANCH_TRAN(cur.ptr());
 
         // If the branch is disabled, skip.
-      if (branch->state == tran_disabled)
-            return;
+      ਜੇ (branch->state == tran_disabled)
+            ਵਾਪਸ;
 
-      unsigned src_ab = cur.port();
-      unsigned dst_ab = src_ab^1;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ src_ab = cur.ਪੋਰਟ();
+      ਬਿਨਾਨਿਸ਼ਾਨੀ dst_ab = src_ab^1;
 
       vvp_net_t*dst_net = dst_ab? branch->b : branch->a;
-      vvp_island_port*dst_port = dynamic_cast<vvp_island_port*>(dst_net->fun);
+      vvp_island_ਪੋਰਟ*dst_ਪੋਰਟ = dynamic_cast<vvp_island_ਪੋਰਟ*>(dst_net->fun);
 
-      vvp_vector8_t old_val = dst_port->value;
+      vvp_vector8_t old_val = dst_ਪੋਰਟ->value;
 
         // If the port on the other side has not yet been visited,
         // get its input value.
-      if (dst_port->value.size() == 0)
-            dst_port->value = island_get_value(dst_net);
+      ਜੇ (dst_ਪੋਰਟ->value.size() == 0)
+            dst_ਪੋਰਟ->value = island_get_ਮੁੱਲ(dst_net);
 
         // If we don't yet have an initial value for the port, skip.
-      if (dst_port->value.size() == 0)
-            return;
+      ਜੇ (dst_ਪੋਰਟ->value.size() == 0)
+            ਵਾਪਸ;
 
         // Now resolve the pushed value with whatever values we have
         // previously collected (and resolved) for the port.
-      if (branch->width == 0) {
+      ਜੇ (branch->width == 0) {
               // There are no part selects.
-            dst_port->value = resolve_ambiguous(dst_port->value, val, branch->state,
+            dst_ਪੋਰਟ->value = resolve_ambiguous(dst_ਪੋਰਟ->value, val, branch->state,
                                                 vvp_switch_strength_map[branch->resistive]);
 
-      } else if (dst_ab == 1) {
+      } ਨਹੀਂਤਾਂ ਜੇ (dst_ab == 1) {
               // The other side is a strict subset (part select)
               // of this side.
-            vvp_vector8_t tmp = val.subvalue(branch->offset, branch->part);
-            dst_port->value = resolve(dst_port->value, tmp);
+            vvp_vector8_t tmp = val.subvalue(branch->ਵਿੱਥ_2, branch->part);
+            dst_ਪੋਰਟ->value = resolve(dst_ਪੋਰਟ->value, tmp);
 
-      } else {
+      } ਨਹੀਂਤਾਂ {
               // The other side is a superset of this side.
-            vvp_vector8_t tmp = part_expand(val, branch->width, branch->offset);
-            dst_port->value = resolve(dst_port->value, tmp);
+            vvp_vector8_t tmp = part_expand(val, branch->width, branch->ਵਿੱਥ_2);
+            dst_ਪੋਰਟ->value = resolve(dst_ਪੋਰਟ->value, tmp);
       }
 
         // If the resolved value for the port has changed, push the new
         // value back into the network.
-      if (! dst_port->value.eeq(old_val)) {
+      ਜੇ (! dst_ਪੋਰਟ->value.eeq(old_val)) {
             list<vvp_branch_ptr_t> connections;
 
 	    vvp_branch_ptr_t dst_side(branch, dst_ab);
-	    island_collect_node(connections, dst_side);
+	    island_collect_ਗੰਢ(connections, dst_side);
 
-	    push_value_through_branches(dst_port->value, connections);
+	    ਧੱਕੋ_ਮੁੱਲ_through_branches(dst_ਪੋਰਟ->value, connections);
       }
 }
 
-static void push_value_through_branches(const vvp_vector8_t&val,
-					const list<vvp_branch_ptr_t>&connections)
+ਸਥਿਰ ਖਾਲੀ ਧੱਕੋ_ਮੁੱਲ_through_branches(ਅਚਲ vvp_vector8_t&val,
+					ਅਚਲ list<vvp_branch_ptr_t>&connections)
 {
-      for (list<vvp_branch_ptr_t>::const_iterator idx = connections.cbegin()
+      ਲਈ (list<vvp_branch_ptr_t>::const_iterator idx = connections.cbegin()
 		 ; idx != connections.cend() ; ++ idx ) {
 
-            push_value_through_branch(val, *idx);
+            ਧੱਕੋ_ਮੁੱਲ_through_branch(val, *idx);
       }
 }
 
@@ -381,21 +381,21 @@ static void push_value_through_branches(const vvp_vector8_t&val,
  * recursive descent to span the graph of branches, pushing values
  * through the network until a stable state is reached.
  */
-void vvp_island_branch_tran::run_resolution()
+ਖਾਲੀ vvp_island_branch_tran::ਲੜੀਵਾਰ_resolution()
 {
       list<vvp_branch_ptr_t> connections;
-      vvp_island_port*port;
+      vvp_island_ਪੋਰਟ*ਪੋਰਟ;
 
 	// If the A side port hasn't already been visited, then push
         // its input value through all the branches connected to it.
-      port = dynamic_cast<vvp_island_port*>(a->fun);
-      if (port->value.size() == 0) {
-	    vvp_branch_ptr_t a_side(this, 0);
-	    island_collect_node(connections, a_side);
+      ਪੋਰਟ = dynamic_cast<vvp_island_ਪੋਰਟ*>(a->fun);
+      ਜੇ (ਪੋਰਟ->value.size() == 0) {
+	    vvp_branch_ptr_t a_side(ਇਹ, 0);
+	    island_collect_ਗੰਢ(connections, a_side);
 
-	    port->value = island_get_value(a);
-            if (port->value.size() != 0)
-	          push_value_through_branches(port->value, connections);
+	    ਪੋਰਟ->value = island_get_ਮੁੱਲ(a);
+            ਜੇ (ਪੋਰਟ->value.size() != 0)
+	          ਧੱਕੋ_ਮੁੱਲ_through_branches(ਪੋਰਟ->value, connections);
 
             connections.clear();
       }
@@ -403,84 +403,84 @@ void vvp_island_branch_tran::run_resolution()
 	// Do the same for the B side port. Note that if the branch
         // is enabled, the B side port will have already been visited
         // when we resolved the A side port.
-      port = dynamic_cast<vvp_island_port*>(b->fun);
-      if (port->value.size() == 0) {
-	    vvp_branch_ptr_t b_side(this, 1);
-	    island_collect_node(connections, b_side);
+      ਪੋਰਟ = dynamic_cast<vvp_island_ਪੋਰਟ*>(b->fun);
+      ਜੇ (ਪੋਰਟ->value.size() == 0) {
+	    vvp_branch_ptr_t b_side(ਇਹ, 1);
+	    island_collect_ਗੰਢ(connections, b_side);
 
-	    port->value = island_get_value(b);
-	    if (port->value.size() != 0)
-	          push_value_through_branches(port->value, connections);
+	    ਪੋਰਟ->value = island_get_ਮੁੱਲ(b);
+	    ਜੇ (ਪੋਰਟ->value.size() != 0)
+	          ਧੱਕੋ_ਮੁੱਲ_through_branches(ਪੋਰਟ->value, connections);
 
             connections.clear();
       }
 }
 
-void vvp_island_branch_tran::run_output()
+ਖਾਲੀ vvp_island_branch_tran::ਲੜੀਵਾਰ_output()
 {
-      vvp_island_port*port;
+      vvp_island_ਪੋਰਟ*ਪੋਰਟ;
 
 	// If the A side port hasn't already been updated, send the
         // resolved value to the output.
-      port = dynamic_cast<vvp_island_port*>(a->fun);
-      if (port->value.size() != 0) {
-	    island_send_value(a, port->value);
-	    port->value = vvp_vector8_t::nil;
+      ਪੋਰਟ = dynamic_cast<vvp_island_ਪੋਰਟ*>(a->fun);
+      ਜੇ (ਪੋਰਟ->value.size() != 0) {
+	    island_send_ਮੁੱਲ(a, ਪੋਰਟ->value);
+	    ਪੋਰਟ->value = vvp_vector8_t::nil;
       }
 
 	// Do the same for the B side port.
-      port = dynamic_cast<vvp_island_port*>(b->fun);
-      if (port->value.size() != 0) {
-	    island_send_value(b, port->value);
-	    port->value = vvp_vector8_t::nil;
+      ਪੋਰਟ = dynamic_cast<vvp_island_ਪੋਰਟ*>(b->fun);
+      ਜੇ (ਪੋਰਟ->value.size() != 0) {
+	    island_send_ਮੁੱਲ(b, ਪੋਰਟ->value);
+	    ਪੋਰਟ->value = vvp_vector8_t::nil;
       }
 }
 
-void compile_island_tran(char*label)
+ਖਾਲੀ compile_island_tran(ਅੱਖਰ*label)
 {
-      vvp_island*use_island = new vvp_island_tran;
-      compile_island_base(label, use_island);
+      vvp_island*use_island = ਨਵਾਂ vvp_island_tran;
+      compile_island_ਅਧਾਰ(label, use_island);
 }
 
-void compile_island_tranif(int sense, char*island, char*pa, char*pb, char*pe,
-                           bool resistive)
+ਖਾਲੀ compile_island_tranif(ਪੂਰਨ sense, ਅੱਖਰ*island, ਅੱਖਰ*pa, ਅੱਖਰ*pb, ਅੱਖਰ*pe,
+                           ਤਾਰਕਿਕ resistive)
 {
-      vvp_island*use_island = compile_find_island(island);
-      assert(use_island);
-      free(island);
+      vvp_island*use_island = compile_ਲੱਭੋ_island(island);
+      ਪ੍ਰਤਿਜ੍ਞਾ(use_island);
+      ਮੁਕਤ(island);
 
-      vvp_net_t*en = NULL;
+      vvp_net_t*en = ਨਿਰਾ;
 
-      if (pe) {
-	    en = use_island->find_port(pe);
-	    assert(en);
-	    free(pe);
+      ਜੇ (pe) {
+	    en = use_island->ਲੱਭੋ_ਪੋਰਟ(pe);
+	    ਪ੍ਰਤਿਜ੍ਞਾ(en);
+	    ਮੁਕਤ(pe);
       }
 
-      vvp_island_branch_tran*br = new vvp_island_branch_tran(en,
-                                                             sense ? true :
-                                                                     false,
+      vvp_island_branch_tran*br = ਨਵਾਂ vvp_island_branch_tran(en,
+                                                             sense ? ਸੱਚ :
+                                                                     ਝੂਠ,
                                                              0, 0, 0, resistive);
 
-      use_island->add_branch(br, pa, pb);
+      use_island->ਜੋੜੋ_branch(br, pa, pb);
 
-      free(pa);
-      free(pb);
+      ਮੁਕਤ(pa);
+      ਮੁਕਤ(pb);
 }
 
 
-void compile_island_tranvp(char*island, char*pa, char*pb,
-			   unsigned wid, unsigned par, unsigned off)
+ਖਾਲੀ compile_island_tranvp(ਅੱਖਰ*island, ਅੱਖਰ*pa, ਅੱਖਰ*pb,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ wid, ਬਿਨਾਨਿਸ਼ਾਨੀ par, ਬਿਨਾਨਿਸ਼ਾਨੀ off)
 {
-      vvp_island*use_island = compile_find_island(island);
-      assert(use_island);
-      free(island);
+      vvp_island*use_island = compile_ਲੱਭੋ_island(island);
+      ਪ੍ਰਤਿਜ੍ਞਾ(use_island);
+      ਮੁਕਤ(island);
 
-      vvp_island_branch_tran*br = new vvp_island_branch_tran(NULL, false,
-                                                             wid, par, off, false);
+      vvp_island_branch_tran*br = ਨਵਾਂ vvp_island_branch_tran(ਨਿਰਾ, ਝੂਠ,
+                                                             wid, par, off, ਝੂਠ);
 
-      use_island->add_branch(br, pa, pb);
+      use_island->ਜੋੜੋ_branch(br, pa, pb);
 
-      free(pa);
-      free(pb);
+      ਮੁਕਤ(pa);
+      ਮੁਕਤ(pb);
 }

@@ -1,5 +1,5 @@
-#ifndef IVL_udp_H
-#define IVL_udp_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ IVL_udp_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IVL_udp_H
 /*
  * Copyright (c) 2005-2025 Stephen Williams (steve@icarus.com)
  *
@@ -25,32 +25,32 @@
 # include  "vvp_net.h"
 # include  "schedule.h"
 
-struct udp_levels_table;
+ਬਣਤਰ udp_ਪੱਧਰ_ਸਾਰਣੀ;
 
-struct vvp_udp_s {
+ਬਣਤਰ vvp_udp_s {
 
-    public:
-      explicit vvp_udp_s(const char*label, char*name, unsigned ports,
+    ਜਨਤਕ:
+      explicit vvp_udp_s(ਅਚਲ ਅੱਖਰ*label, ਅੱਖਰ*name, ਬਿਨਾਨਿਸ਼ਾਨੀ ports,
                          vvp_bit4_t init, bool type);
-      virtual ~vvp_udp_s();
+      ਆਭਾਸੀ ~vvp_udp_s();
 
 	// Return the number of input ports for the defined UDP. This
 	// does *not* include the current output value for a
 	// sequential UDP.
-      unsigned port_count() const;
-      bool is_sequential() const { return seq_; };
-      char *name() { return name_; }
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੋਰਟ_ਗਿਣਤੀ() ਅਚਲ;
+      bool is_sequential() ਅਚਲ { ਵਾਪਸ seq_; };
+      ਅੱਖਰ *name() { ਵਾਪਸ name_; }
 
 	// Return the initial output value.
-      vvp_bit4_t get_init() const;
+      vvp_bit4_t get_init() ਅਚਲ;
 
-      virtual vvp_bit4_t calculate_output(const udp_levels_table&cur,
-					  const udp_levels_table&prev,
-					  vvp_bit4_t cur_out) =0;
+      ਆਭਾਸੀ vvp_bit4_t calculate_output(ਅਚਲ udp_ਪੱਧਰ_ਸਾਰਣੀ&cur,
+					  ਅਚਲ udp_ਪੱਧਰ_ਸਾਰਣੀ&prev,
+					  vvp_bit4_t cur_ਬਾਹਰਲਾ) =0;
 
-    private:
-      char *name_;
-      unsigned ports_;
+    ਨਿਜੀ:
+      ਅੱਖਰ *name_;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ports_;
       vvp_bit4_t init_;
       bool seq_;
 };
@@ -104,33 +104,33 @@ struct vvp_udp_s {
  * Only 0, 1 and x characters are allowed in the output position.
  */
 
-struct udp_levels_table {
-      unsigned long mask0;
-      unsigned long mask1;
-      unsigned long maskx;
+ਬਣਤਰ udp_ਪੱਧਰ_ਸਾਰਣੀ {
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ mask0;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ mask1;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ maskx;
 };
-extern std::ostream& operator<< (std::ostream&o, const struct udp_levels_table&t);
+ਬਾਹਰੀ std::ostream& ਸੰਚਾਲਕ<< (std::ostream&o, ਅਚਲ ਬਣਤਰ udp_ਪੱਧਰ_ਸਾਰਣੀ&t);
 
-class vvp_udp_comb_s : public vvp_udp_s {
+class vvp_udp_comb_s : ਜਨਤਕ vvp_udp_s {
 
-    public:
-      vvp_udp_comb_s(const char*label, char*name__, unsigned ports);
+    ਜਨਤਕ:
+      vvp_udp_comb_s(ਅਚਲ ਅੱਖਰ*label, ਅੱਖਰ*name__, ਬਿਨਾਨਿਸ਼ਾਨੀ ports);
       ~vvp_udp_comb_s() override;
-      void compile_table(char**tab);
+      ਖਾਲੀ compile_ਸਾਰਣੀ(ਅੱਖਰ**tab);
 
 	// Test the cur table with the compiled rows, and return the
 	// bit value that matches.
-      vvp_bit4_t test_levels(const udp_levels_table&cur);
+      vvp_bit4_t test_ਪੱਧਰ(ਅਚਲ udp_ਪੱਧਰ_ਸਾਰਣੀ&cur);
 
-      vvp_bit4_t calculate_output(const udp_levels_table&cur,
-				  const udp_levels_table&prev,
-				  vvp_bit4_t cur_out) override;
+      vvp_bit4_t calculate_output(ਅਚਲ udp_ਪੱਧਰ_ਸਾਰਣੀ&cur,
+				  ਅਚਲ udp_ਪੱਧਰ_ਸਾਰਣੀ&prev,
+				  vvp_bit4_t cur_ਬਾਹਰਲਾ) override;
 
-    private:
+    ਨਿਜੀ:
 	// Level sensitive rows of the device.
-      struct udp_levels_table*levels0_;
-      struct udp_levels_table*levels1_;
-      unsigned nlevels0_, nlevels1_;
+      ਬਣਤਰ udp_ਪੱਧਰ_ਸਾਰਣੀ*levels0_;
+      ਬਣਤਰ udp_ਪੱਧਰ_ਸਾਰਣੀ*levels1_;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ nlevels0_, nlevels1_;
 };
 
 /*
@@ -167,53 +167,53 @@ class vvp_udp_comb_s : public vvp_udp_s {
  * edge case, the mask* members give the final position and the
  * edge_mask* bits the initial position of the bit.
  */
-struct udp_edges_table {
-      unsigned long edge_position : 8;
-      unsigned long edge_mask0 : 1;
-      unsigned long edge_mask1 : 1;
-      unsigned long edge_maskx : 1;
-      unsigned long mask0;
-      unsigned long mask1;
-      unsigned long maskx;
+ਬਣਤਰ udp_ਕਿਨਾਰੇ_ਸਾਰਣੀ {
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ ਕਿਨਾਰਾ_position : 8;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ ਕਿਨਾਰਾ_mask0 : 1;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ ਕਿਨਾਰਾ_mask1 : 1;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ ਕਿਨਾਰਾ_maskx : 1;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ mask0;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ mask1;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ maskx;
 };
 
-class vvp_udp_seq_s : public vvp_udp_s {
+class vvp_udp_seq_s : ਜਨਤਕ vvp_udp_s {
 
-    public:
-      vvp_udp_seq_s(const char*label, char*name__, unsigned ports, vvp_bit4_t init);
+    ਜਨਤਕ:
+      vvp_udp_seq_s(ਅਚਲ ਅੱਖਰ*label, ਅੱਖਰ*name__, ਬਿਨਾਨਿਸ਼ਾਨੀ ports, vvp_bit4_t init);
       ~vvp_udp_seq_s() override;
 
-      void compile_table(char**tab);
+      ਖਾਲੀ compile_ਸਾਰਣੀ(ਅੱਖਰ**tab);
 
-      vvp_bit4_t calculate_output(const udp_levels_table&cur,
-				  const udp_levels_table&prev,
-				  vvp_bit4_t cur_out) override;
+      vvp_bit4_t calculate_output(ਅਚਲ udp_ਪੱਧਰ_ਸਾਰਣੀ&cur,
+				  ਅਚਲ udp_ਪੱਧਰ_ਸਾਰਣੀ&prev,
+				  vvp_bit4_t cur_ਬਾਹਰਲਾ) override;
 
-    private:
-      vvp_bit4_t test_levels_(const udp_levels_table&cur);
+    ਨਿਜੀ:
+      vvp_bit4_t test_ਪੱਧਰ_2(ਅਚਲ udp_ਪੱਧਰ_ਸਾਰਣੀ&cur);
 
 	// Level sensitive rows of the device.
-      struct udp_levels_table*levels0_;
-      struct udp_levels_table*levels1_;
-      struct udp_levels_table*levelsx_;
-      struct udp_levels_table*levelsL_;
-      unsigned nlevels0_, nlevels1_, nlevelsx_, nlevelsL_;
+      ਬਣਤਰ udp_ਪੱਧਰ_ਸਾਰਣੀ*levels0_;
+      ਬਣਤਰ udp_ਪੱਧਰ_ਸਾਰਣੀ*levels1_;
+      ਬਣਤਰ udp_ਪੱਧਰ_ਸਾਰਣੀ*levelsx_;
+      ਬਣਤਰ udp_ਪੱਧਰ_ਸਾਰਣੀ*ਪੱਧਰ_L;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ nlevels0_, nlevels1_, nlevelsx_, nlevelsL_;
 
-      vvp_bit4_t test_edges_(const udp_levels_table&cur,
-			     const udp_levels_table&prev);
+      vvp_bit4_t test_ਕਿਨਾਰੇ(ਅਚਲ udp_ਪੱਧਰ_ਸਾਰਣੀ&cur,
+			     ਅਚਲ udp_ਪੱਧਰ_ਸਾਰਣੀ&prev);
 
 	// Edge sensitive rows of the device
-      struct udp_edges_table*edges0_;
-      struct udp_edges_table*edges1_;
-      struct udp_edges_table*edgesL_;
-      unsigned nedges0_, nedges1_, nedgesL_;
+      ਬਣਤਰ udp_ਕਿਨਾਰੇ_ਸਾਰਣੀ*edges0_;
+      ਬਣਤਰ udp_ਕਿਨਾਰੇ_ਸਾਰਣੀ*edges1_;
+      ਬਣਤਰ udp_ਕਿਨਾਰੇ_ਸਾਰਣੀ*ਕਿਨਾਰੇ_L;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ nedges0_, nedges1_, nedgesL_;
 
 };
 
 /*
  * This looks up a UDP definition from its LABEL.
  */
-struct vvp_udp_s *udp_find(const char *label);
+ਬਣਤਰ vvp_udp_s *udp_ਲੱਭੋ(ਅਚਲ ਅੱਖਰ *label);
 
 /*
  * The udp_fun_core is the core of the udp instance in the
@@ -222,20 +222,20 @@ struct vvp_udp_s *udp_find(const char *label);
  * the vvp_wide_fun_t objects and processes them to generate the
  * output to be sent.
  */
-class vvp_udp_fun_core  : public vvp_wide_fun_core, private vvp_gen_event_s {
+class vvp_udp_fun_core  : ਜਨਤਕ vvp_wide_fun_core, ਨਿਜੀ vvp_gen_event_s {
 
-    public:
+    ਜਨਤਕ:
       vvp_udp_fun_core(vvp_net_t*net, vvp_udp_s*def);
       ~vvp_udp_fun_core() override;
 
-      void recv_vec4_from_inputs(unsigned) override;
+      ਖਾਲੀ recv_vec4_from_inputs(ਬਿਨਾਨਿਸ਼ਾਨੀ) override;
 
-    private:
-      void run_run() override;
+    ਨਿਜੀ:
+      ਖਾਲੀ ਲੜੀਵਾਰ_ਲੜੀਵਾਰ() override;
 
       vvp_udp_s*def_;
-      vvp_bit4_t cur_out_;
-      udp_levels_table current_;
+      vvp_bit4_t cur_ਬਾਹਰਲਾ_2;
+      udp_ਪੱਧਰ_ਸਾਰਣੀ current_;
 };
 
-#endif /* IVL_udp_H */
+#ਜੇ_ਅੰਤ /* IVL_udp_H */

@@ -26,60 +26,60 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-static int iterator_free_object(vpiHandle ref)
+ਸਥਿਰ ਪੂਰਨ iterator_free_object(vpiHandle ref)
 {
-      struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
-      assert(hp);
+      ਬਣਤਰ __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
+      ਪ੍ਰਤਿਜ੍ਞਾ(hp);
 
-      if (hp->free_args_flag)
-	    free(hp->args);
+      ਜੇ (hp->free_ਦਲੀਲਾਂ_flag)
+	    ਮੁਕਤ(hp->ਦਲੀਲਾਂ);
 
-      delete hp;
-      return 1;
+      ਮਿਟਾਓ hp;
+      ਵਾਪਸ 1;
 }
 
-inline __vpiIterator::__vpiIterator()
+ਸਤਰਅੰਦਰ __vpiIterator::__vpiIterator()
 { }
 
-int __vpiIterator::get_type_code(void) const
-{ return vpiIterator; }
+ਪੂਰਨ __vpiIterator::get_type_ਕੋਡ(ਖਾਲੀ) ਅਚਲ
+{ ਵਾਪਸ vpiIterator; }
 
-__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(void)
-{ return &iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(ਖਾਲੀ)
+{ ਵਾਪਸ &iterator_free_object; }
 
-vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
-			     bool free_args_flag)
+vpiHandle vpip_make_iterator(ਬਿਨਾਨਿਸ਼ਾਨੀ nargs, vpiHandle*ਦਲੀਲਾਂ,
+			     ਤਾਰਕਿਕ free_ਦਲੀਲਾਂ_flag)
 {
-      struct __vpiIterator*res = new __vpiIterator;
-      res->args = args;
+      ਬਣਤਰ __vpiIterator*res = ਨਵਾਂ __vpiIterator;
+      res->ਦਲੀਲਾਂ = ਦਲੀਲਾਂ;
       res->nargs = nargs;
-      res->next  = 0;
+      res->ਅਗਲਾ_2  = 0;
 
-      res->free_args_flag = free_args_flag;
+      res->free_ਦਲੀਲਾਂ_flag = free_ਦਲੀਲਾਂ_flag;
 
-      return res;
+      ਵਾਪਸ res;
 }
 
 /*
  * The vpi_scan function only applies to iterators. It returns the
  * next vpiHandle in the iterated list.
  */
-vpiHandle vpi_scan(vpiHandle ref)
+vpiHandle vpi_ਜਾਂਚ(vpiHandle ref)
 {
-      if (ref == 0) {
+      ਜੇ (ref == 0) {
 	    fprintf(stderr, "ERROR: NULL handle passed to vpi_scan.\n");
-	    assert(0);
-	    return 0;
+	    ਪ੍ਰਤਿਜ੍ਞਾ(0);
+	    ਵਾਪਸ 0;
       }
 
-      if (struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
-	    if (hp->next == hp->nargs) {
+      ਜੇ (ਬਣਤਰ __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
+	    ਜੇ (hp->ਅਗਲਾ_2 == hp->nargs) {
 		  vpi_free_object(ref);
-		  return 0;
+		  ਵਾਪਸ 0;
 	    }
 
-	    return hp->args[hp->next++];
+	    ਵਾਪਸ hp->ਦਲੀਲਾਂ[hp->ਅਗਲਾ_2++];
       }
 
-      return ref->vpi_index(0);
+      ਵਾਪਸ ref->vpi_ਸੂਚਕਾਂਕ(0);
 }

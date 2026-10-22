@@ -1,5 +1,5 @@
-#ifndef IVL_vvp_net_H
-#define IVL_vvp_net_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ IVL_vvp_net_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IVL_vvp_net_H
 /*
  * Copyright (c) 2004-2026 Stephen Williams (steve@icarus.com)
  *
@@ -31,11 +31,11 @@
 # include  <new>
 # include  <cassert>
 
-#ifdef HAVE_IOSFWD
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ HAVE_IOSFWD
 # include  <iosfwd>
-#else
+#ਨਹੀਂਤਾਂ
 # include  <iostream>
-#endif
+#ਜੇ_ਅੰਤ
 
 # include  "ivl_alloc.h"
 
@@ -63,45 +63,45 @@ class  vvp_delay_t;
  * linking to other contexts. The function that adds items to a context knows
  * this, and allocates context indices accordingly.
  */
-typedef void**vvp_context_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਖਾਲੀ**vvp_context_t;
 
-typedef void*vvp_context_item_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਖਾਲੀ*vvp_context_ਵਸਤੂ_t;
 
-inline vvp_context_t vvp_allocate_context(unsigned nitem)
+ਸਤਰਅੰਦਰ vvp_context_t vvp_allocate_context(ਬਿਨਾਨਿਸ਼ਾਨੀ nitem)
 {
-      return (vvp_context_t)malloc((2 + nitem) * sizeof(void*));
+      ਵਾਪਸ (vvp_context_t)ਸਮ੍ਰਿਤੀ_ਦਿਓ((2 + nitem) * ਆਕਾਰ(ਖਾਲੀ*));
 }
 
-inline vvp_context_t vvp_get_next_context(vvp_context_t context)
+ਸਤਰਅੰਦਰ vvp_context_t vvp_get_ਅਗਲਾ_context(vvp_context_t context)
 {
-      return (vvp_context_t)context[0];
+      ਵਾਪਸ (vvp_context_t)context[0];
 }
 
-inline void vvp_set_next_context(vvp_context_t context, vvp_context_t next)
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_ਸੈੱਟ_ਅਗਲਾ_context(vvp_context_t context, vvp_context_t ਅਗਲਾ_2)
 {
-      context[0] = next;
+      context[0] = ਅਗਲਾ_2;
 }
 
-inline vvp_context_t vvp_get_stacked_context(vvp_context_t context)
+ਸਤਰਅੰਦਰ vvp_context_t vvp_get_stacked_context(vvp_context_t context)
 {
-      return (vvp_context_t)context[1];
+      ਵਾਪਸ (vvp_context_t)context[1];
 }
 
-inline void vvp_set_stacked_context(vvp_context_t context, vvp_context_t stack)
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_ਸੈੱਟ_stacked_context(vvp_context_t context, vvp_context_t ਢੇਰ_2)
 {
-      context[1] = stack;
+      context[1] = ਢੇਰ_2;
 }
 
-inline vvp_context_item_t vvp_get_context_item(vvp_context_t context,
-                                               unsigned item_idx)
+ਸਤਰਅੰਦਰ vvp_context_ਵਸਤੂ_t vvp_get_context_ਵਸਤੂ(vvp_context_t context,
+                                               ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਸਤੂ_idx)
 {
-      return (vvp_context_item_t)context[item_idx];
+      ਵਾਪਸ (vvp_context_ਵਸਤੂ_t)context[ਵਸਤੂ_idx];
 }
 
-inline void vvp_set_context_item(vvp_context_t context, unsigned item_idx,
-                                 vvp_context_item_t item)
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_ਸੈੱਟ_context_ਵਸਤੂ(vvp_context_t context, ਬਿਨਾਨਿਸ਼ਾਨੀ ਵਸਤੂ_idx,
+                                 vvp_context_ਵਸਤੂ_t ਵਸਤੂ)
 {
-      context[item_idx] = item;
+      context[ਵਸਤੂ_idx] = ਵਸਤੂ;
 }
 
 /*
@@ -109,16 +109,16 @@ inline void vvp_set_context_item(vvp_context_t context, unsigned item_idx,
  * allocated scope item. This provides the infrastructure needed to allocate
  * the state information for individual instances of the item.
  */
-struct automatic_hooks_s {
+ਬਣਤਰ automatic_hooks_s {
 
       automatic_hooks_s() {}
-      virtual ~automatic_hooks_s() {}
+      ਆਭਾਸੀ ~automatic_hooks_s() {}
 
-      virtual void alloc_instance(vvp_context_t context) = 0;
-      virtual void reset_instance(vvp_context_t context) = 0;
-#ifdef CHECK_WITH_VALGRIND
-      virtual void free_instance(vvp_context_t context) = 0;
-#endif
+      ਆਭਾਸੀ ਖਾਲੀ alloc_instance(vvp_context_t context) = 0;
+      ਆਭਾਸੀ ਖਾਲੀ reset_instance(vvp_context_t context) = 0;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
+      ਆਭਾਸੀ ਖਾਲੀ free_instance(vvp_context_t context) = 0;
+#ਜੇ_ਅੰਤ
 };
 
 /*
@@ -131,7 +131,7 @@ struct automatic_hooks_s {
  * WARNING: Many things rely on this encoding for the BIT4_* enumeration
  * values, so accept that these values are cast in stone.
  */
-enum vvp_bit4_t {
+ਗਿਣਤੀ vvp_bit4_t {
       BIT4_0 = 0,
       BIT4_1 = 1,
       BIT4_X = 3,
@@ -139,21 +139,21 @@ enum vvp_bit4_t {
 };
 
   /* Return an ASCII character that represents the vvp_bit4_t value. */
-inline char vvp_bit4_to_ascii(vvp_bit4_t a) { return "01zx"[a]; }
+ਸਤਰਅੰਦਰ ਅੱਖਰ vvp_bit4_ਮੰਜ਼ਿਲ_ascii(vvp_bit4_t a) { ਵਾਪਸ "01zx"[a]; }
 
-extern vvp_bit4_t add_with_carry(vvp_bit4_t a, vvp_bit4_t b, vvp_bit4_t&c);
+ਬਾਹਰੀ vvp_bit4_t ਜੋੜੋ_with_ਹਾਸਲ(vvp_bit4_t a, vvp_bit4_t b, vvp_bit4_t&c);
 
-extern vvp_bit4_t scalar_to_bit4(PLI_INT32 scalar);
+ਬਾਹਰੀ vvp_bit4_t scalar_ਮੰਜ਼ਿਲ_bit4(PLI_INT32 scalar);
 
   /* Return TRUE if the bit is BIT4_X or BIT4_Z. The fast
      implementation here relies on the encoding of vvp_bit4_t values. */
-inline bool bit4_is_xz(vvp_bit4_t a) { return a >= 2; }
+ਸਤਰਅੰਦਰ bool bit4_is_xz(vvp_bit4_t a) { ਵਾਪਸ a >= 2; }
 
   /* This function converts BIT4_Z to BIT4_X, but passes other values
      unchanged. This fast implementation relies of the encoding of the
      vvp_bit4_t values. In particular, the BIT4_X==3 and BIT4_Z==2 */
-inline vvp_bit4_t bit4_z2x(vvp_bit4_t a)
-{ return (vvp_bit4_t) ( (int)a | ((int)a >> 1) ); }
+ਸਤਰਅੰਦਰ vvp_bit4_t bit4_z2x(vvp_bit4_t a)
+{ ਵਾਪਸ (vvp_bit4_t) ( (ਪੂਰਨ)a | ((ਪੂਰਨ)a >> 1) ); }
 
   /* Some common boolean operators. These implement the Verilog rules
      for 4-value bit operations. The fast implementations here rely
@@ -163,46 +163,46 @@ inline vvp_bit4_t bit4_z2x(vvp_bit4_t a)
   // ~BIT4_1 --> BIT4_0
   // ~BIT4_X --> BIT4_X
   // ~BIT4_Z --> BIT4_X
-inline vvp_bit4_t operator ~ (vvp_bit4_t a)
-{ return bit4_z2x((vvp_bit4_t) (((int)a) ^ 1)); }
+ਸਤਰਅੰਦਰ vvp_bit4_t ਸੰਚਾਲਕ ~ (vvp_bit4_t a)
+{ ਵਾਪਸ bit4_z2x((vvp_bit4_t) (((ਪੂਰਨ)a) ^ 1)); }
 
-inline vvp_bit4_t operator | (vvp_bit4_t a, vvp_bit4_t b)
+ਸਤਰਅੰਦਰ vvp_bit4_t ਸੰਚਾਲਕ | (vvp_bit4_t a, vvp_bit4_t b)
 {
-      if (a==BIT4_1 || b==BIT4_1)
-	    return BIT4_1;
-      return bit4_z2x( (vvp_bit4_t) ((int)a | (int)b) );
+      ਜੇ (a==BIT4_1 || b==BIT4_1)
+	    ਵਾਪਸ BIT4_1;
+      ਵਾਪਸ bit4_z2x( (vvp_bit4_t) ((ਪੂਰਨ)a | (ਪੂਰਨ)b) );
 }
 
-inline vvp_bit4_t operator & (vvp_bit4_t a, vvp_bit4_t b)
+ਸਤਰਅੰਦਰ vvp_bit4_t ਸੰਚਾਲਕ & (vvp_bit4_t a, vvp_bit4_t b)
 {
-      if (a==BIT4_0 || b==BIT4_0)
-	    return BIT4_0;
-      return bit4_z2x( (vvp_bit4_t) ((int)a | (int)b) );
+      ਜੇ (a==BIT4_0 || b==BIT4_0)
+	    ਵਾਪਸ BIT4_0;
+      ਵਾਪਸ bit4_z2x( (vvp_bit4_t) ((ਪੂਰਨ)a | (ਪੂਰਨ)b) );
 }
 
 
-extern vvp_bit4_t operator ^ (vvp_bit4_t a, vvp_bit4_t b);
-extern std::ostream& operator<< (std::ostream&o, vvp_bit4_t a);
+ਬਾਹਰੀ vvp_bit4_t ਸੰਚਾਲਕ ^ (vvp_bit4_t a, vvp_bit4_t b);
+ਬਾਹਰੀ std::ostream& ਸੰਚਾਲਕ<< (std::ostream&o, vvp_bit4_t a);
 
   /* Return >0, ==0 or <0 if the from-to transition represents a
      posedge, no edge, or negedge. */
-extern int edge(vvp_bit4_t from, vvp_bit4_t to);
+ਬਾਹਰੀ ਪੂਰਨ ਕਿਨਾਰਾ(vvp_bit4_t from, vvp_bit4_t ਮੰਜ਼ਿਲ);
 
   /* Support for $countdrivers. */
-inline void update_driver_counts(vvp_bit4_t bit, unsigned counts[3])
+ਸਤਰਅੰਦਰ ਖਾਲੀ update_driver_counts(vvp_bit4_t ਦੋਆਧਾਰੀ_ਅੰਕ, ਬਿਨਾਨਿਸ਼ਾਨੀ counts[3])
 {
-      switch (bit) {
-          case BIT4_0:
+      ਚੋਣ (ਦੋਆਧਾਰੀ_ਅੰਕ) {
+          ਹਾਲਤ BIT4_0:
             counts[0] += 1;
-            break;
-          case BIT4_1:
+            ਰੋਕੋ;
+          ਹਾਲਤ BIT4_1:
             counts[1] += 1;
-            break;
-          case BIT4_X:
+            ਰੋਕੋ;
+          ਹਾਲਤ BIT4_X:
             counts[2] += 1;
-            break;
-          default:
-            break;
+            ਰੋਕੋ;
+          ਮੂਲ:
+            ਰੋਕੋ;
       }
 }
 
@@ -210,23 +210,23 @@ inline void update_driver_counts(vvp_bit4_t bit, unsigned counts[3])
  * Some of the instructions do wide addition to arrays of long. They
  * use this add_with_carry function to help.
  */
-static inline unsigned long add_with_carry(unsigned long a, unsigned long b,
-					   unsigned long&carry)
+ਸਥਿਰ ਸਤਰਅੰਦਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ ਜੋੜੋ_with_ਹਾਸਲ(ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ a, ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ b,
+					   ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ&ਹਾਸਲ)
 {
-      unsigned long tmp = b + carry;
-      unsigned long sum = a + tmp;
-      carry = 0;
-      if (tmp < b)
-	    carry = 1;
-      if (sum < tmp)
-	    carry = 1;
-      if (sum < a)
-	    carry = 1;
-      return sum;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ tmp = b + ਹਾਸਲ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ ਜੋੜ = a + tmp;
+      ਹਾਸਲ = 0;
+      ਜੇ (tmp < b)
+	    ਹਾਸਲ = 1;
+      ਜੇ (ਜੋੜ < tmp)
+	    ਹਾਸਲ = 1;
+      ਜੇ (ਜੋੜ < a)
+	    ਹਾਸਲ = 1;
+      ਵਾਪਸ ਜੋੜ;
 }
 
-extern unsigned long multiply_with_carry(unsigned long a, unsigned long b,
-					 unsigned long&carry);
+ਬਾਹਰੀ ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ multiply_with_ਹਾਸਲ(ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ a, ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ b,
+					 ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ&ਹਾਸਲ);
 
 /*
  * This class represents scalar values collected into vectors. The
@@ -239,127 +239,127 @@ extern unsigned long multiply_with_carry(unsigned long a, unsigned long b,
  */
 class vvp_vector4_t {
 
-      friend vvp_vector4_t operator ~(const vvp_vector4_t&that);
-      friend class vvp_vector4array_t;
-      friend class vvp_vector4array_sa;
-      friend class vvp_vector4array_aa;
+      ਮਿੱਤਰ vvp_vector4_t ਸੰਚਾਲਕ ~(ਅਚਲ vvp_vector4_t&that);
+      ਮਿੱਤਰ class vvp_vector4array_t;
+      ਮਿੱਤਰ class vvp_vector4array_sa;
+      ਮਿੱਤਰ class vvp_vector4array_aa;
 
-    public:
-      static const vvp_vector4_t nil;
+    ਜਨਤਕ:
+      ਸਥਿਰ ਅਚਲ vvp_vector4_t nil;
 
-    public:
-      explicit vvp_vector4_t(unsigned size =0, vvp_bit4_t bits =BIT4_X);
+    ਜਨਤਕ:
+      explicit vvp_vector4_t(ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ =0, vvp_bit4_t ਬਿੱਟ =BIT4_X);
 
-      explicit vvp_vector4_t(unsigned size, double val);
+      explicit vvp_vector4_t(ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ, ਦੁੱਗਣਾ val);
 
 	// Construct a vector4 from the subvalue of another
 	// vector4. The width of the result is 'wid', and the bits are
 	// pulled from 'that' to implement the Verilog part select
 	// semantics. This means that part select beyond 'that'
 	// returns X bits.
-      explicit vvp_vector4_t(const vvp_vector4_t&that,
-			     unsigned adr, unsigned wid);
+      explicit vvp_vector4_t(ਅਚਲ vvp_vector4_t&that,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ adr, ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
 
-      vvp_vector4_t(const vvp_vector4_t&that);
-      vvp_vector4_t(const vvp_vector4_t&that, bool invert_flag);
-      vvp_vector4_t& operator= (const vvp_vector4_t&that);
+      vvp_vector4_t(ਅਚਲ vvp_vector4_t&that);
+      vvp_vector4_t(ਅਚਲ vvp_vector4_t&that, bool invert_flag);
+      vvp_vector4_t& ਸੰਚਾਲਕ= (ਅਚਲ vvp_vector4_t&that);
 
       ~vvp_vector4_t();
 
-      inline unsigned size() const { return size_; }
-      void resize(unsigned new_size, vvp_bit4_t pad_bit = BIT4_X);
+      ਸਤਰਅੰਦਰ ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ() ਅਚਲ { ਵਾਪਸ ਮਾਪ_2; }
+      ਖਾਲੀ resize(ਬਿਨਾਨਿਸ਼ਾਨੀ new_ਮਾਪ, vvp_bit4_t pad_ਦੋਆਧਾਰੀ_ਅੰਕ = BIT4_X);
 
 	// Get the bit at the specified address
-      vvp_bit4_t value(unsigned idx) const;
+      vvp_bit4_t ਮੁੱਲ(ਬਿਨਾਨਿਸ਼ਾਨੀ idx) ਅਚਲ;
 	// Get the vector4 subvector starting at the address
-      vvp_vector4_t subvalue(unsigned idx, unsigned size) const;
+      vvp_vector4_t subvalue(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ) ਅਚਲ;
 	// Get the 2-value bits for the subvector. This returns a new
 	// array of longs, or a nil pointer if an XZ bit was detected
 	// in the array.
-      unsigned long*subarray(unsigned idx, unsigned size, bool xz_to_0 =false) const;
-      void setarray(unsigned idx, unsigned size, const unsigned long*val);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ*subarray(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ, bool xz_ਮੰਜ਼ਿਲ_0 =false) ਅਚਲ;
+      ਖਾਲੀ setarray(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ, ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ*val);
 
 	// Set a 4-value bit or subvector into the vector. Return true
 	// if any bits of the vector change as a result of this operation.
-      void set_bit(unsigned idx, vvp_bit4_t val);
-      bool set_vec(unsigned idx, const vvp_vector4_t&that);
+      ਖਾਲੀ ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, vvp_bit4_t val);
+      bool ਸੈੱਟ_vec(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, ਅਚਲ vvp_vector4_t&that);
 
         // Get the bits from another vector, but keep my size.
-      void copy_bits(const vvp_vector4_t&that);
+      ਖਾਲੀ copy_ਬਿੱਟ(ਅਚਲ vvp_vector4_t&that);
 
 	// Move bits within this vector.
-      void mov(unsigned dst, unsigned src, unsigned cnt);
+      ਖਾਲੀ mov(ਬਿਨਾਨਿਸ਼ਾਨੀ dst, ਬਿਨਾਨਿਸ਼ਾਨੀ src, ਬਿਨਾਨਿਸ਼ਾਨੀ cnt);
 
 	// Add that to this in the Verilog way.
-      void add(const vvp_vector4_t&that);
+      ਖਾਲੀ ਜੋੜੋ(ਅਚਲ vvp_vector4_t&that);
 
 	// Subtract that from this in the Verilog way.
-      void sub(const vvp_vector4_t&that);
+      ਖਾਲੀ sub(ਅਚਲ vvp_vector4_t&that);
 
 	// Multiply this by that in the Verilog way.
-      void mul(const vvp_vector4_t&that);
+      ਖਾਲੀ mul(ਅਚਲ vvp_vector4_t&that);
 
 	// Test that the vectors are exactly equal
-      bool eeq(const vvp_vector4_t&that) const;
+      bool eeq(ਅਚਲ vvp_vector4_t&that) ਅਚਲ;
 
 	// Test that the vectors are equal, with xz comparing as equal.
-      bool eq_xz(const vvp_vector4_t&that) const;
+      bool eq_xz(ਅਚਲ vvp_vector4_t&that) ਅਚਲ;
 
 	// Return true if there is an X or Z anywhere in the vector.
-      bool has_xz() const;
+      bool has_xz() ਅਚਲ;
 
 	// Change all Z bits to X bits.
-      void change_z2x();
+      ਖਾਲੀ change_z2x();
 
 	// Set all bits to the specified value.
-      void fill_bits(vvp_bit4_t bit);
+      ਖਾਲੀ fill_ਬਿੱਟ(vvp_bit4_t ਦੋਆਧਾਰੀ_ਅੰਕ);
 
 	// Change all bits to X bits.
-      void set_to_x() { fill_bits(BIT4_X); }
+      ਖਾਲੀ ਸੈੱਟ_ਮੰਜ਼ਿਲ_x() { fill_ਬਿੱਟ(BIT4_X); }
 
 	// Display the value into the buf as a string.
-      char*as_string(char*buf, size_t buf_len) const;
+      ਅੱਖਰ*as_string(ਅੱਖਰ*buf, size_t buf_len) ਅਚਲ;
 
-      void invert();
-      vvp_vector4_t& operator &= (const vvp_vector4_t&that);
-      vvp_vector4_t& operator |= (const vvp_vector4_t&that);
-      vvp_vector4_t& operator ^= (const vvp_vector4_t&that);
-      vvp_vector4_t& operator += (int64_t);
+      ਖਾਲੀ invert();
+      vvp_vector4_t& ਸੰਚਾਲਕ &= (ਅਚਲ vvp_vector4_t&that);
+      vvp_vector4_t& ਸੰਚਾਲਕ |= (ਅਚਲ vvp_vector4_t&that);
+      vvp_vector4_t& ਸੰਚਾਲਕ ^= (ਅਚਲ vvp_vector4_t&that);
+      vvp_vector4_t& ਸੰਚਾਲਕ += (int64_t);
 
-      vvp_bit4_t reduce_or() const;
-      vvp_bit4_t reduce_and() const;
-      vvp_bit4_t reduce_xor() const;
+      vvp_bit4_t reduce_or() ਅਚਲ;
+      vvp_bit4_t reduce_and() ਅਚਲ;
+      vvp_bit4_t reduce_xor() ਅਚਲ;
 
-    private:
+    ਨਿਜੀ:
 	// Number of vvp_bit4_t bits that can be shoved into a word.
-      enum { BITS_PER_WORD = 8*sizeof(unsigned long) };
+      ਗਿਣਤੀ { ਬਿੱਟ_ਪ੍ਰਤੀ_ਸ਼ਬਦ = 8*ਆਕਾਰ(ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ) };
 	// The double value constructor requires that WORD_0_BBITS
 	// and WORD_1_BBITS have the same value!
-#if SIZEOF_UNSIGNED_LONG == 8
-      enum { WORD_0_ABITS = 0x0000000000000000UL,
-	     WORD_0_BBITS = 0x0000000000000000UL };
-      enum { WORD_1_ABITS = 0xFFFFFFFFFFFFFFFFUL,
-	     WORD_1_BBITS = 0x0000000000000000UL };
-      enum { WORD_X_ABITS = 0xFFFFFFFFFFFFFFFFUL,
-	     WORD_X_BBITS = 0xFFFFFFFFFFFFFFFFUL };
-      enum { WORD_Z_ABITS = 0x0000000000000000UL,
-             WORD_Z_BBITS = 0xFFFFFFFFFFFFFFFFUL };
-#elif SIZEOF_UNSIGNED_LONG == 4
-      enum { WORD_0_ABITS = 0x00000000UL, WORD_0_BBITS = 0x00000000UL };
-      enum { WORD_1_ABITS = 0xFFFFFFFFUL, WORD_1_BBITS = 0x00000000UL };
-      enum { WORD_X_ABITS = 0xFFFFFFFFUL, WORD_X_BBITS = 0xFFFFFFFFUL };
-      enum { WORD_Z_ABITS = 0x00000000UL, WORD_Z_BBITS = 0xFFFFFFFFUL };
-#else
-#error "WORD_X_xBITS not defined for this architecture?"
-#endif
+#ਜੇ SIZEOF_UNSIGNED_LONG == 8
+      ਗਿਣਤੀ { ਸ਼ਬਦ_0_ABITS = 0x0000000000000000UL,
+	     ਸ਼ਬਦ_0_BBITS = 0x0000000000000000UL };
+      ਗਿਣਤੀ { ਸ਼ਬਦ_1_ABITS = 0xFFFFFFFFFFFFFFFFUL,
+	     ਸ਼ਬਦ_1_BBITS = 0x0000000000000000UL };
+      ਗਿਣਤੀ { ਸ਼ਬਦ_X_ABITS = 0xFFFFFFFFFFFFFFFFUL,
+	     ਸ਼ਬਦ_X_BBITS = 0xFFFFFFFFFFFFFFFFUL };
+      ਗਿਣਤੀ { ਸ਼ਬਦ_Z_ABITS = 0x0000000000000000UL,
+             ਸ਼ਬਦ_Z_BBITS = 0xFFFFFFFFFFFFFFFFUL };
+#ਜਾਂਜੇ SIZEOF_UNSIGNED_LONG == 4
+      ਗਿਣਤੀ { ਸ਼ਬਦ_0_ABITS = 0x00000000UL, ਸ਼ਬਦ_0_BBITS = 0x00000000UL };
+      ਗਿਣਤੀ { ਸ਼ਬਦ_1_ABITS = 0xFFFFFFFFUL, ਸ਼ਬਦ_1_BBITS = 0x00000000UL };
+      ਗਿਣਤੀ { ਸ਼ਬਦ_X_ABITS = 0xFFFFFFFFUL, ਸ਼ਬਦ_X_BBITS = 0xFFFFFFFFUL };
+      ਗਿਣਤੀ { ਸ਼ਬਦ_Z_ABITS = 0x00000000UL, ਸ਼ਬਦ_Z_BBITS = 0xFFFFFFFFUL };
+#ਨਹੀਂਤਾਂ
+#ਗਲਤੀ "WORD_X_xBITS not defined for this architecture?"
+#ਜੇ_ਅੰਤ
 
 	// Initialize and operator= use this private method to copy
 	// the data from that object into this object.
-      void copy_from_(const vvp_vector4_t&that);
-      void copy_from_big_(const vvp_vector4_t&that);
-      void copy_inverted_from_(const vvp_vector4_t&that);
+      ਖਾਲੀ copy_from_(ਅਚਲ vvp_vector4_t&that);
+      ਖਾਲੀ copy_from_big_(ਅਚਲ vvp_vector4_t&that);
+      ਖਾਲੀ copy_inverted_from_(ਅਚਲ vvp_vector4_t&that);
 
-      void allocate_words_(unsigned long inita, unsigned long initb);
+      ਖਾਲੀ allocate_ਸ਼ਬਦ(ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ inita, ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ initb);
 
 	// Values in the vvp_vector4_t are stored split across two
 	// arrays. For each bit in the vector, there is an abit and a
@@ -372,95 +372,95 @@ class vvp_vector4_t {
 	// BIT4_X    1    1
 	// BIT4_Z    0    1
 
-      unsigned size_;
-      union {
-	    unsigned long abits_val_;
-	    unsigned long*abits_ptr_;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ_2;
+      ਸੰਘ {
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ abits_val_;
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ*abits_ptr_;
       };
-      union {
-	    unsigned long bbits_val_;
-	    unsigned long*bbits_ptr_;
+      ਸੰਘ {
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ bbits_val_;
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ*bbits_ptr_;
       };
 };
 
-inline vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that)
+ਸਤਰਅੰਦਰ vvp_vector4_t::vvp_vector4_t(ਅਚਲ vvp_vector4_t&that)
 {
       copy_from_(that);
 }
 
-inline vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that, bool invert_flag)
+ਸਤਰਅੰਦਰ vvp_vector4_t::vvp_vector4_t(ਅਚਲ vvp_vector4_t&that, bool invert_flag)
 {
-      if (invert_flag)
+      ਜੇ (invert_flag)
 	    copy_inverted_from_(that);
-      else
+      ਨਹੀਂਤਾਂ
 	    copy_from_(that);
 }
 
-inline vvp_vector4_t::vvp_vector4_t(unsigned size__, vvp_bit4_t val)
-: size_(size__)
+ਸਤਰਅੰਦਰ vvp_vector4_t::vvp_vector4_t(ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ_3, vvp_bit4_t val)
+: ਮਾਪ_2(ਮਾਪ_3)
 {
 	/* note: this relies on the bit encoding for the vvp_bit4_t. */
-      static const unsigned long init_atable[4] = {
-	    WORD_0_ABITS,
-	    WORD_1_ABITS,
-	    WORD_Z_ABITS,
-	    WORD_X_ABITS };
-      static const unsigned long init_btable[4] = {
-	    WORD_0_BBITS,
-	    WORD_1_BBITS,
-	    WORD_Z_BBITS,
-	    WORD_X_BBITS };
+      ਸਥਿਰ ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ init_atable[4] = {
+	    ਸ਼ਬਦ_0_ABITS,
+	    ਸ਼ਬਦ_1_ABITS,
+	    ਸ਼ਬਦ_Z_ABITS,
+	    ਸ਼ਬਦ_X_ABITS };
+      ਸਥਿਰ ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ init_btable[4] = {
+	    ਸ਼ਬਦ_0_BBITS,
+	    ਸ਼ਬਦ_1_BBITS,
+	    ਸ਼ਬਦ_Z_BBITS,
+	    ਸ਼ਬਦ_X_BBITS };
 
-      allocate_words_(init_atable[val], init_btable[val]);
+      allocate_ਸ਼ਬਦ(init_atable[val], init_btable[val]);
 }
 
-inline vvp_vector4_t::~vvp_vector4_t()
+ਸਤਰਅੰਦਰ vvp_vector4_t::~vvp_vector4_t()
 {
-      if (size_ > BITS_PER_WORD) {
+      ਜੇ (ਮਾਪ_2 > ਬਿੱਟ_ਪ੍ਰਤੀ_ਸ਼ਬਦ) {
 	    delete[] abits_ptr_;
 	      // bbits_ptr_ actually points half-way into a
 	      // double-length array started at abits_ptr_
       }
 }
 
-inline vvp_vector4_t& vvp_vector4_t::operator= (const vvp_vector4_t&that)
+ਸਤਰਅੰਦਰ vvp_vector4_t& vvp_vector4_t::ਸੰਚਾਲਕ= (ਅਚਲ vvp_vector4_t&that)
 {
-      if (this == &that)
-	    return *this;
+      ਜੇ (this == &that)
+	    ਵਾਪਸ *this;
 
-      if (size_ > BITS_PER_WORD)
+      ਜੇ (ਮਾਪ_2 > ਬਿੱਟ_ਪ੍ਰਤੀ_ਸ਼ਬਦ)
 	    delete[] abits_ptr_;
 
       copy_from_(that);
 
-      return *this;
+      ਵਾਪਸ *this;
 }
 
-inline void vvp_vector4_t::copy_from_(const vvp_vector4_t&that)
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_vector4_t::copy_from_(ਅਚਲ vvp_vector4_t&that)
 {
-      size_ = that.size_;
-      if (size_ <= BITS_PER_WORD) {
+      ਮਾਪ_2 = that.ਮਾਪ_2;
+      ਜੇ (ਮਾਪ_2 <= ਬਿੱਟ_ਪ੍ਰਤੀ_ਸ਼ਬਦ) {
 	    abits_val_ = that.abits_val_;
 	    bbits_val_ = that.bbits_val_;
-      } else {
+      } ਨਹੀਂਤਾਂ {
 	    copy_from_big_(that);
       }
 }
 
-inline vvp_bit4_t vvp_vector4_t::value(unsigned idx) const
+ਸਤਰਅੰਦਰ vvp_bit4_t vvp_vector4_t::ਮੁੱਲ(ਬਿਨਾਨਿਸ਼ਾਨੀ idx) ਅਚਲ
 {
-      if (idx >= size_)
-	    return BIT4_X;
+      ਜੇ (idx >= ਮਾਪ_2)
+	    ਵਾਪਸ BIT4_X;
 
-      unsigned off;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ off;
 
-      unsigned long abits, bbits;
-      if (size_ > BITS_PER_WORD) {
-	    unsigned wdx = idx / BITS_PER_WORD;
-	    off = idx % BITS_PER_WORD;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ abits, bbits;
+      ਜੇ (ਮਾਪ_2 > ਬਿੱਟ_ਪ੍ਰਤੀ_ਸ਼ਬਦ) {
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ wdx = idx / ਬਿੱਟ_ਪ੍ਰਤੀ_ਸ਼ਬਦ;
+	    off = idx % ਬਿੱਟ_ਪ੍ਰਤੀ_ਸ਼ਬਦ;
 	    abits = abits_ptr_[wdx];
 	    bbits = bbits_ptr_[wdx];
-      } else {
+      } ਨਹੀਂਤਾਂ {
 	    off = idx;
 	    abits = abits_val_;
 	    bbits = bbits_val_;
@@ -468,80 +468,80 @@ inline vvp_bit4_t vvp_vector4_t::value(unsigned idx) const
 
       abits >>= off;
       bbits >>= off;
-      int tmp = ((bbits&1) << 1) + (abits&1);
+      ਪੂਰਨ tmp = ((bbits&1) << 1) + (abits&1);
 	// This cast works since b==1,a==1 is X and b==1,a==0 is Z.
-      return (vvp_bit4_t)tmp;
+      ਵਾਪਸ (vvp_bit4_t)tmp;
 }
 
-inline vvp_vector4_t vvp_vector4_t::subvalue(unsigned adr, unsigned wid) const
+ਸਤਰਅੰਦਰ vvp_vector4_t vvp_vector4_t::subvalue(ਬਿਨਾਨਿਸ਼ਾਨੀ adr, ਬਿਨਾਨਿਸ਼ਾਨੀ wid) ਅਚਲ
 {
-      return vvp_vector4_t(*this, adr, wid);
+      ਵਾਪਸ vvp_vector4_t(*this, adr, wid);
 }
 
-inline void vvp_vector4_t::set_bit(unsigned idx, vvp_bit4_t val)
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_vector4_t::ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, vvp_bit4_t val)
 {
-      assert(idx < size_);
+      ਪ੍ਰਤਿਜ੍ਞਾ(idx < ਮਾਪ_2);
 
-      unsigned long off = idx % BITS_PER_WORD;
-      unsigned long mask = 1UL << off;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ off = idx % ਬਿੱਟ_ਪ੍ਰਤੀ_ਸ਼ਬਦ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ ਨਕਾਬ = 1UL << off;
 
-      if (size_ > BITS_PER_WORD) {
-	    unsigned wdx = idx / BITS_PER_WORD;
-	    switch (val) {
-		case BIT4_0:
-		  abits_ptr_[wdx] &= ~mask;
-		  bbits_ptr_[wdx] &= ~mask;
-		  break;
-		case BIT4_1:
-		  abits_ptr_[wdx] |=  mask;
-		  bbits_ptr_[wdx] &= ~mask;
-		  break;
-		case BIT4_X:
-		  abits_ptr_[wdx] |=  mask;
-		  bbits_ptr_[wdx] |=  mask;
-		  break;
-		case BIT4_Z:
-		  abits_ptr_[wdx] &= ~mask;
-		  bbits_ptr_[wdx] |=  mask;
-		  break;
+      ਜੇ (ਮਾਪ_2 > ਬਿੱਟ_ਪ੍ਰਤੀ_ਸ਼ਬਦ) {
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ wdx = idx / ਬਿੱਟ_ਪ੍ਰਤੀ_ਸ਼ਬਦ;
+	    ਚੋਣ (val) {
+		ਹਾਲਤ BIT4_0:
+		  abits_ptr_[wdx] &= ~ਨਕਾਬ;
+		  bbits_ptr_[wdx] &= ~ਨਕਾਬ;
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_1:
+		  abits_ptr_[wdx] |=  ਨਕਾਬ;
+		  bbits_ptr_[wdx] &= ~ਨਕਾਬ;
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_X:
+		  abits_ptr_[wdx] |=  ਨਕਾਬ;
+		  bbits_ptr_[wdx] |=  ਨਕਾਬ;
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_Z:
+		  abits_ptr_[wdx] &= ~ਨਕਾਬ;
+		  bbits_ptr_[wdx] |=  ਨਕਾਬ;
+		  ਰੋਕੋ;
 	    }
-      } else {
-	    switch (val) {
-		case BIT4_0:
-		  abits_val_ &= ~mask;
-		  bbits_val_ &= ~mask;
-		  break;
-		case BIT4_1:
-		  abits_val_ |=  mask;
-		  bbits_val_ &= ~mask;
-		  break;
-		case BIT4_X:
-		  abits_val_ |=  mask;
-		  bbits_val_ |=  mask;
-		  break;
-		case BIT4_Z:
-		  abits_val_ &= ~mask;
-		  bbits_val_ |=  mask;
-		  break;
+      } ਨਹੀਂਤਾਂ {
+	    ਚੋਣ (val) {
+		ਹਾਲਤ BIT4_0:
+		  abits_val_ &= ~ਨਕਾਬ;
+		  bbits_val_ &= ~ਨਕਾਬ;
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_1:
+		  abits_val_ |=  ਨਕਾਬ;
+		  bbits_val_ &= ~ਨਕਾਬ;
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_X:
+		  abits_val_ |=  ਨਕਾਬ;
+		  bbits_val_ |=  ਨਕਾਬ;
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_Z:
+		  abits_val_ &= ~ਨਕਾਬ;
+		  bbits_val_ |=  ਨਕਾਬ;
+		  ਰੋਕੋ;
 	    }
       }
 }
 
-inline vvp_vector4_t operator ~ (const vvp_vector4_t&that)
+ਸਤਰਅੰਦਰ vvp_vector4_t ਸੰਚਾਲਕ ~ (ਅਚਲ vvp_vector4_t&that)
 {
       vvp_vector4_t res (that, true);
-      return res;
+      ਵਾਪਸ res;
 }
 
-extern std::ostream& operator << (std::ostream&, const vvp_vector4_t&);
+ਬਾਹਰੀ std::ostream& ਸੰਚਾਲਕ << (std::ostream&, ਅਚਲ vvp_vector4_t&);
 
-extern vvp_bit4_t compare_gtge(const vvp_vector4_t&a,
-			       const vvp_vector4_t&b,
+ਬਾਹਰੀ vvp_bit4_t compare_gtge(ਅਚਲ vvp_vector4_t&a,
+			       ਅਚਲ vvp_vector4_t&b,
 			       vvp_bit4_t val_if_equal);
-extern vvp_bit4_t compare_gtge_signed(const vvp_vector4_t&a,
-				      const vvp_vector4_t&b,
+ਬਾਹਰੀ vvp_bit4_t compare_gtge_signed(ਅਚਲ vvp_vector4_t&a,
+				      ਅਚਲ vvp_vector4_t&b,
 				      vvp_bit4_t val_if_equal);
-template <class T> extern T coerce_to_width(const T&that, unsigned width);
+ਸਾਂਚਾ <class T> ਬਾਹਰੀ T coerce_ਮੰਜ਼ਿਲ_ਚੌੜਾਈ(ਅਚਲ T&that, ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ);
 
 /*
  * These functions extract the value of the vector as a native type,
@@ -558,33 +558,33 @@ template <class T> extern T coerce_to_width(const T&that, unsigned width);
  * value will be "false", but the other bits will be transferred. This
  * is what you want if you are doing "vpi_get_value", for example.
  */
-template <class T> extern bool vector4_to_value(const vvp_vector4_t&a, T&val,
+ਸਾਂਚਾ <class T> ਬਾਹਰੀ bool vector4_ਮੰਜ਼ਿਲ_ਮੁੱਲ(ਅਚਲ vvp_vector4_t&a, T&val,
 						bool is_signed,
 						bool is_arithmetic =true);
 
-template <class T> extern bool vector4_to_value(const vvp_vector4_t&a,
-                                                bool&overflow_flag, T&val);
+ਸਾਂਚਾ <class T> ਬਾਹਰੀ bool vector4_ਮੰਜ਼ਿਲ_ਮੁੱਲ(ਅਚਲ vvp_vector4_t&a,
+                                                bool&ਉਛਾਲ_flag, T&val);
 
-template <class T> inline bool vector4_to_value(const vvp_vector4_t&a, T&val)
+ਸਾਂਚਾ <class T> ਸਤਰਅੰਦਰ bool vector4_ਮੰਜ਼ਿਲ_ਮੁੱਲ(ਅਚਲ vvp_vector4_t&a, T&val)
 {
-      bool overflow_flag;
-      return vector4_to_value(a, overflow_flag, val);
+      bool ਉਛਾਲ_flag;
+      ਵਾਪਸ vector4_ਮੰਜ਼ਿਲ_ਮੁੱਲ(a, ਉਛਾਲ_flag, val);
 }
 
-extern bool vector4_to_value(const vvp_vector4_t&a, double&val, bool is_signed);
+ਬਾਹਰੀ bool vector4_ਮੰਜ਼ਿਲ_ਮੁੱਲ(ਅਚਲ vvp_vector4_t&a, ਦੁੱਗਣਾ&val, bool is_signed);
 
-extern bool vector2_to_value(const vvp_vector2_t&a, int32_t&val, bool is_signed);
+ਬਾਹਰੀ bool vector2_ਮੰਜ਼ਿਲ_ਮੁੱਲ(ਅਚਲ vvp_vector2_t&a, int32_t&val, bool is_signed);
 
-extern vvp_vector4_t vector4_from_text(const char*bits, unsigned wid);
+ਬਾਹਰੀ vvp_vector4_t vector4_from_ਪਾਠ(ਅਚਲ ਅੱਖਰ*ਬਿੱਟ, ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
 
-inline vvp_vector4_t double_to_vector4_LSB(double real)
+ਸਤਰਅੰਦਰ vvp_vector4_t double_ਮੰਜ਼ਿਲ_vector4_LSB(ਦੁੱਗਣਾ real)
 {
       // Convert the double to a bit vector and then use the LSB.
       // You can use very large real values and break the 64-bit
       // size, but that's really horrible code so don't do that!
-      vvp_vector4_t bit = vvp_vector4_t(64, real);
-      bit.resize(1);
-      return bit;
+      vvp_vector4_t ਦੋਆਧਾਰੀ_ਅੰਕ = vvp_vector4_t(64, real);
+      ਦੋਆਧਾਰੀ_ਅੰਕ.resize(1);
+      ਵਾਪਸ ਦੋਆਧਾਰੀ_ਅੰਕ;
 }
 
 /*
@@ -592,205 +592,205 @@ inline vvp_vector4_t double_to_vector4_LSB(double real)
  */
 class vvp_vector4array_t {
 
-    public:
-      vvp_vector4array_t(unsigned width, unsigned words);
-      virtual ~vvp_vector4array_t();
+    ਜਨਤਕ:
+      vvp_vector4array_t(ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ਬਦ);
+      ਆਭਾਸੀ ~vvp_vector4array_t();
 
-      unsigned width() const { return width_; }
-      unsigned words() const { return words_; }
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ() ਅਚਲ { ਵਾਪਸ ਚੌੜਾਈ_2; }
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ਬਦ() ਅਚਲ { ਵਾਪਸ ਸ਼ਬਦ_4; }
 
-      virtual vvp_vector4_t get_word(unsigned idx) const = 0;
-      virtual void set_word(unsigned idx, const vvp_vector4_t&that) = 0;
+      ਆਭਾਸੀ vvp_vector4_t get_ਸ਼ਬਦ(ਬਿਨਾਨਿਸ਼ਾਨੀ idx) ਅਚਲ = 0;
+      ਆਭਾਸੀ ਖਾਲੀ ਸੈੱਟ_ਸ਼ਬਦ(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, ਅਚਲ vvp_vector4_t&that) = 0;
 
-    protected:
-      struct v4cell {
-	    union {
-		  unsigned long abits_val_;
-		  unsigned long*abits_ptr_;
+    ਸੁਰੱਖਿਅਤ:
+      ਬਣਤਰ v4cell {
+	    ਸੰਘ {
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ abits_val_;
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ*abits_ptr_;
 	    };
-	    union {
-		  unsigned long bbits_val_;
-		  unsigned long*bbits_ptr_;
+	    ਸੰਘ {
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ bbits_val_;
+		  ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ*bbits_ptr_;
 	    };
       };
 
-      vvp_vector4_t get_word_(v4cell*cell) const;
-      void set_word_(v4cell*cell, const vvp_vector4_t&that);
+      vvp_vector4_t get_ਸ਼ਬਦ_2(v4cell*cell) ਅਚਲ;
+      ਖਾਲੀ ਸੈੱਟ_ਸ਼ਬਦ_2(v4cell*cell, ਅਚਲ vvp_vector4_t&that);
 
-      unsigned width_;
-      unsigned words_;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ_2;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ਬਦ_4;
 
-    private: // Not implemented
-      vvp_vector4array_t(const vvp_vector4array_t&);
-      vvp_vector4array_t& operator = (const vvp_vector4array_t&);
+    ਨਿਜੀ: // Not implemented
+      vvp_vector4array_t(ਅਚਲ vvp_vector4array_t&);
+      vvp_vector4array_t& ਸੰਚਾਲਕ = (ਅਚਲ vvp_vector4array_t&);
 };
 
 /*
  * Statically allocated vvp_vector4array_t
  */
-class vvp_vector4array_sa : public vvp_vector4array_t {
+class vvp_vector4array_sa : ਜਨਤਕ vvp_vector4array_t {
 
-    public:
-      vvp_vector4array_sa(unsigned width, unsigned words);
+    ਜਨਤਕ:
+      vvp_vector4array_sa(ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ਬਦ);
       ~vvp_vector4array_sa() override;
 
-      vvp_vector4_t get_word(unsigned idx) const override;
-      void set_word(unsigned idx, const vvp_vector4_t&that) override;
+      vvp_vector4_t get_ਸ਼ਬਦ(ਬਿਨਾਨਿਸ਼ਾਨੀ idx) ਅਚਲ override;
+      ਖਾਲੀ ਸੈੱਟ_ਸ਼ਬਦ(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, ਅਚਲ vvp_vector4_t&that) override;
 
-    private:
+    ਨਿਜੀ:
       v4cell* array_;
 };
 
 /*
  * Automatically allocated vvp_vector4array_t
  */
-class vvp_vector4array_aa : public vvp_vector4array_t, public automatic_hooks_s {
+class vvp_vector4array_aa : ਜਨਤਕ vvp_vector4array_t, ਜਨਤਕ automatic_hooks_s {
 
-    public:
-      vvp_vector4array_aa(unsigned width, unsigned words);
+    ਜਨਤਕ:
+      vvp_vector4array_aa(ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ, ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ਬਦ);
       ~vvp_vector4array_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+      ਖਾਲੀ alloc_instance(vvp_context_t context) override;
+      ਖਾਲੀ reset_instance(vvp_context_t context) override;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
+      ਖਾਲੀ free_instance(vvp_context_t context) override;
+#ਜੇ_ਅੰਤ
 
-      vvp_vector4_t get_word(unsigned idx) const override;
-      void set_word(unsigned idx, const vvp_vector4_t&that) override;
+      vvp_vector4_t get_ਸ਼ਬਦ(ਬਿਨਾਨਿਸ਼ਾਨੀ idx) ਅਚਲ override;
+      ਖਾਲੀ ਸੈੱਟ_ਸ਼ਬਦ(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, ਅਚਲ vvp_vector4_t&that) override;
 
-    private:
-      unsigned context_idx_;
+    ਨਿਜੀ:
+      ਬਿਨਾਨਿਸ਼ਾਨੀ context_idx_;
 };
 
 /* vvp_vector2_t
  */
 class vvp_vector2_t {
 
-      friend vvp_vector2_t operator - (const vvp_vector2_t&);
-      friend vvp_vector2_t operator + (const vvp_vector2_t&,
-				       const vvp_vector2_t&);
-      friend vvp_vector2_t operator * (const vvp_vector2_t&,
-				       const vvp_vector2_t&);
-      friend bool operator >  (const vvp_vector2_t&, const vvp_vector2_t&);
-      friend bool operator >= (const vvp_vector2_t&, const vvp_vector2_t&);
-      friend bool operator <  (const vvp_vector2_t&, const vvp_vector2_t&);
-      friend bool operator <= (const vvp_vector2_t&, const vvp_vector2_t&);
-      friend bool operator == (const vvp_vector2_t&, const vvp_vector2_t&);
+      ਮਿੱਤਰ vvp_vector2_t ਸੰਚਾਲਕ - (ਅਚਲ vvp_vector2_t&);
+      ਮਿੱਤਰ vvp_vector2_t ਸੰਚਾਲਕ + (ਅਚਲ vvp_vector2_t&,
+				       ਅਚਲ vvp_vector2_t&);
+      ਮਿੱਤਰ vvp_vector2_t ਸੰਚਾਲਕ * (ਅਚਲ vvp_vector2_t&,
+				       ਅਚਲ vvp_vector2_t&);
+      ਮਿੱਤਰ bool ਸੰਚਾਲਕ >  (ਅਚਲ vvp_vector2_t&, ਅਚਲ vvp_vector2_t&);
+      ਮਿੱਤਰ bool ਸੰਚਾਲਕ >= (ਅਚਲ vvp_vector2_t&, ਅਚਲ vvp_vector2_t&);
+      ਮਿੱਤਰ bool ਸੰਚਾਲਕ <  (ਅਚਲ vvp_vector2_t&, ਅਚਲ vvp_vector2_t&);
+      ਮਿੱਤਰ bool ਸੰਚਾਲਕ <= (ਅਚਲ vvp_vector2_t&, ਅਚਲ vvp_vector2_t&);
+      ਮਿੱਤਰ bool ਸੰਚਾਲਕ == (ਅਚਲ vvp_vector2_t&, ਅਚਲ vvp_vector2_t&);
 
-    public:
+    ਜਨਤਕ:
       vvp_vector2_t();
-      vvp_vector2_t(const vvp_vector2_t&);
-      vvp_vector2_t(const vvp_vector2_t&, unsigned newsize);
-      vvp_vector2_t(const vvp_vector2_t&, unsigned base, unsigned wid);
+      vvp_vector2_t(ਅਚਲ vvp_vector2_t&);
+      vvp_vector2_t(ਅਚਲ vvp_vector2_t&, ਬਿਨਾਨਿਸ਼ਾਨੀ newsize);
+      vvp_vector2_t(ਅਚਲ vvp_vector2_t&, ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
 	// Make a vvp_vector2_t from a vvp_vector4_t. If enable_NaN
 	// is true and there are X or Z bits, then the result becomes
 	// a NaN value. If enable_NaN is false then X or Z bits are
 	// converted to 0 as per the standard Verilog rules.
-      explicit vvp_vector2_t(const vvp_vector4_t&that, bool allow_NaN = false);
+      explicit vvp_vector2_t(ਅਚਲ vvp_vector4_t&that, bool allow_NaN = false);
 	// Make from a 64-bit value and a specified width.
-      vvp_vector2_t(uint64_t val, unsigned wid);
+      vvp_vector2_t(uint64_t val, ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
 	// Make with the width, and filled with 1 or 0 bits.
-      enum fill_t {FILL0, FILL1};
-      vvp_vector2_t(fill_t fill, unsigned wid);
+      ਗਿਣਤੀ fill_t {FILL0, FILL1};
+      vvp_vector2_t(fill_t fill, ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
       ~vvp_vector2_t();
 
-      vvp_vector2_t&operator += (const vvp_vector2_t&that);
-      vvp_vector2_t&operator -= (const vvp_vector2_t&that);
-      vvp_vector2_t&operator <<= (unsigned shift);
-      vvp_vector2_t&operator >>= (unsigned shift);
-      vvp_vector2_t&operator = (const vvp_vector2_t&);
+      vvp_vector2_t&ਸੰਚਾਲਕ += (ਅਚਲ vvp_vector2_t&that);
+      vvp_vector2_t&ਸੰਚਾਲਕ -= (ਅਚਲ vvp_vector2_t&that);
+      vvp_vector2_t&ਸੰਚਾਲਕ <<= (ਬਿਨਾਨਿਸ਼ਾਨੀ ਖਿਸਕਾਓ);
+      vvp_vector2_t&ਸੰਚਾਲਕ >>= (ਬਿਨਾਨਿਸ਼ਾਨੀ ਖਿਸਕਾਓ);
+      vvp_vector2_t&ਸੰਚਾਲਕ = (ਅਚਲ vvp_vector2_t&);
 
 	// Assign a vec4 to a vec2, using Verilog rules for converting
 	// XZ values to 0.
-      vvp_vector2_t&operator = (const vvp_vector4_t&);
+      vvp_vector2_t&ਸੰਚਾਲਕ = (ਅਚਲ vvp_vector4_t&);
 
-      bool is_NaN() const;
-      bool is_zero() const;
-      unsigned size() const;
-      int value(unsigned idx) const;
-      vvp_bit4_t value4(unsigned idx) const;
+      bool is_NaN() ਅਚਲ;
+      bool is_zero() ਅਚਲ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ() ਅਚਲ;
+      ਪੂਰਨ ਮੁੱਲ(ਬਿਨਾਨਿਸ਼ਾਨੀ idx) ਅਚਲ;
+      vvp_bit4_t value4(ਬਿਨਾਨਿਸ਼ਾਨੀ idx) ਅਚਲ;
 	// Get the vector2 subvector starting at the address
-      vvp_vector2_t subvalue(unsigned idx, unsigned size) const;
-      void set_bit(unsigned idx, int bit);
-      void set_vec(unsigned idx, const vvp_vector2_t&that);
+      vvp_vector2_t subvalue(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ) ਅਚਲ;
+      ਖਾਲੀ ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, ਪੂਰਨ ਦੋਆਧਾਰੀ_ਅੰਕ);
+      ਖਾਲੀ ਸੈੱਟ_vec(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, ਅਚਲ vvp_vector2_t&that);
 	// Make the size just big enough to hold the first 1 bit.
-      void trim();
+      ਖਾਲੀ trim();
 	// Trim off extra 1 bit since this is representing a negative value.
 	// Always keep at least 32 bits.
-      void trim_neg();
+      ਖਾਲੀ trim_neg();
 
-    private:
-      enum { BITS_PER_WORD = 8 * sizeof(unsigned long) };
-      unsigned long*vec_;
-      unsigned wid_;
+    ਨਿਜੀ:
+      ਗਿਣਤੀ { ਬਿੱਟ_ਪ੍ਰਤੀ_ਸ਼ਬਦ = 8 * ਆਕਾਰ(ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ) };
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ*vec_;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ wid_;
 
-    private:
-      void copy_from_that_(const vvp_vector2_t&that);
-      void copy_from_that_(const vvp_vector4_t&that);
+    ਨਿਜੀ:
+      ਖਾਲੀ copy_from_that_(ਅਚਲ vvp_vector2_t&that);
+      ਖਾਲੀ copy_from_that_(ਅਚਲ vvp_vector4_t&that);
 };
 
-extern bool operator >  (const vvp_vector2_t&, const vvp_vector2_t&);
-extern bool operator >= (const vvp_vector2_t&, const vvp_vector2_t&);
-extern bool operator <  (const vvp_vector2_t&, const vvp_vector2_t&);
-extern bool operator <= (const vvp_vector2_t&, const vvp_vector2_t&);
-extern bool operator == (const vvp_vector2_t&, const vvp_vector2_t&);
-extern vvp_vector2_t operator - (const vvp_vector2_t&);
-extern vvp_vector2_t operator + (const vvp_vector2_t&, const vvp_vector2_t&);
-extern vvp_vector2_t operator * (const vvp_vector2_t&, const vvp_vector2_t&);
-extern vvp_vector2_t operator / (const vvp_vector2_t&, const vvp_vector2_t&);
-extern vvp_vector2_t operator % (const vvp_vector2_t&, const vvp_vector2_t&);
+ਬਾਹਰੀ bool ਸੰਚਾਲਕ >  (ਅਚਲ vvp_vector2_t&, ਅਚਲ vvp_vector2_t&);
+ਬਾਹਰੀ bool ਸੰਚਾਲਕ >= (ਅਚਲ vvp_vector2_t&, ਅਚਲ vvp_vector2_t&);
+ਬਾਹਰੀ bool ਸੰਚਾਲਕ <  (ਅਚਲ vvp_vector2_t&, ਅਚਲ vvp_vector2_t&);
+ਬਾਹਰੀ bool ਸੰਚਾਲਕ <= (ਅਚਲ vvp_vector2_t&, ਅਚਲ vvp_vector2_t&);
+ਬਾਹਰੀ bool ਸੰਚਾਲਕ == (ਅਚਲ vvp_vector2_t&, ਅਚਲ vvp_vector2_t&);
+ਬਾਹਰੀ vvp_vector2_t ਸੰਚਾਲਕ - (ਅਚਲ vvp_vector2_t&);
+ਬਾਹਰੀ vvp_vector2_t ਸੰਚਾਲਕ + (ਅਚਲ vvp_vector2_t&, ਅਚਲ vvp_vector2_t&);
+ਬਾਹਰੀ vvp_vector2_t ਸੰਚਾਲਕ * (ਅਚਲ vvp_vector2_t&, ਅਚਲ vvp_vector2_t&);
+ਬਾਹਰੀ vvp_vector2_t ਸੰਚਾਲਕ / (ਅਚਲ vvp_vector2_t&, ਅਚਲ vvp_vector2_t&);
+ਬਾਹਰੀ vvp_vector2_t ਸੰਚਾਲਕ % (ਅਚਲ vvp_vector2_t&, ਅਚਲ vvp_vector2_t&);
 
-vvp_vector2_t pow(const vvp_vector2_t&, vvp_vector2_t&);
-extern vvp_vector4_t vector2_to_vector4(const vvp_vector2_t&, unsigned wid);
+vvp_vector2_t ਘਾਤ(ਅਚਲ vvp_vector2_t&, vvp_vector2_t&);
+ਬਾਹਰੀ vvp_vector4_t vector2_ਮੰਜ਼ਿਲ_vector4(ਅਚਲ vvp_vector2_t&, ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
 
 /* A c4string is of the form C4<...> where ... are bits. */
-extern bool c4string_test(const char*str);
-extern vvp_vector4_t c4string_to_vector4(const char*str);
+ਬਾਹਰੀ bool c4string_test(ਅਚਲ ਅੱਖਰ*str);
+ਬਾਹਰੀ vvp_vector4_t c4string_ਮੰਜ਼ਿਲ_vector4(ਅਚਲ ਅੱਖਰ*str);
 
 /* A crstring is of the form Cr<...> where ... defines are real. */
-extern bool crstring_test(const char*str);
-extern double crstring_to_double(const char*str);
+ਬਾਹਰੀ bool crstring_test(ਅਚਲ ਅੱਖਰ*str);
+ਬਾਹਰੀ ਦੁੱਗਣਾ crstring_ਮੰਜ਼ਿਲ_double(ਅਚਲ ਅੱਖਰ*str);
 
-extern std::ostream& operator<< (std::ostream&, const vvp_vector2_t&);
+ਬਾਹਰੀ std::ostream& ਸੰਚਾਲਕ<< (std::ostream&, ਅਚਲ vvp_vector2_t&);
 
-inline vvp_vector2_t::vvp_vector2_t(const vvp_vector2_t&that)
+ਸਤਰਅੰਦਰ vvp_vector2_t::vvp_vector2_t(ਅਚਲ vvp_vector2_t&that)
 {
       copy_from_that_(that);
 }
 
-inline vvp_vector2_t::vvp_vector2_t(const vvp_vector4_t&that, bool enable_NaN)
+ਸਤਰਅੰਦਰ vvp_vector2_t::vvp_vector2_t(ਅਚਲ vvp_vector4_t&that, bool enable_NaN)
 {
-      if (enable_NaN && that.has_xz()) {
+      ਜੇ (enable_NaN && that.has_xz()) {
 	    vec_ = 0;
 	    wid_ = 0;
-	    return;
+	    ਵਾਪਸ;
       }
       copy_from_that_(that);
 }
 
-inline vvp_vector2_t::~vvp_vector2_t()
+ਸਤਰਅੰਦਰ vvp_vector2_t::~vvp_vector2_t()
 {
       delete[] vec_;
 }
 
 /* Inline some of the vector2_t methods. */
-inline unsigned vvp_vector2_t::size() const
+ਸਤਰਅੰਦਰ ਬਿਨਾਨਿਸ਼ਾਨੀ vvp_vector2_t::ਮਾਪ() ਅਚਲ
 {
-      return wid_;
+      ਵਾਪਸ wid_;
 }
 
-inline vvp_bit4_t vvp_vector2_t::value4(unsigned idx) const
+ਸਤਰਅੰਦਰ vvp_bit4_t vvp_vector2_t::value4(ਬਿਨਾਨਿਸ਼ਾਨੀ idx) ਅਚਲ
 {
-      if (value(idx))
-	    return BIT4_1;
-      else
-	    return BIT4_0;
+      ਜੇ (ਮੁੱਲ(idx))
+	    ਵਾਪਸ BIT4_1;
+      ਨਹੀਂਤਾਂ
+	    ਵਾਪਸ BIT4_0;
 }
 
-inline vvp_vector2_t vvp_vector2_t::subvalue(unsigned base, unsigned wid) const
+ਸਤਰਅੰਦਰ vvp_vector2_t vvp_vector2_t::subvalue(ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ wid) ਅਚਲ
 {
-      return vvp_vector2_t(*this, base, wid);
+      ਵਾਪਸ vvp_vector2_t(*this, ਅਧਾਰ, wid);
 }
 
 /*
@@ -815,97 +815,97 @@ inline vvp_vector2_t vvp_vector2_t::subvalue(unsigned base, unsigned wid) const
  */
 class vvp_scalar_t {
 
-      friend vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b);
+      ਮਿੱਤਰ vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b);
 
-    public:
+    ਜਨਤਕ:
 	// Make a HiZ value.
       explicit vvp_scalar_t();
 
 	// Make an unambiguous value.
-      explicit vvp_scalar_t(vvp_bit4_t val, unsigned str0, unsigned str1);
+      explicit vvp_scalar_t(vvp_bit4_t val, ਬਿਨਾਨਿਸ਼ਾਨੀ str0, ਬਿਨਾਨਿਸ਼ਾਨੀ str1);
 
 	// Get the vvp_bit4_t version of the value
-      vvp_bit4_t value() const;
-      unsigned strength0() const;
-      unsigned strength1() const;
+      vvp_bit4_t ਮੁੱਲ() ਅਚਲ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ strength0() ਅਚਲ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ strength1() ਅਚਲ;
 
-      bool eeq(vvp_scalar_t that) const { return value_ == that.value_; }
-      bool is_hiz() const { return (value_ & 0x77) == 0; }
+      bool eeq(vvp_scalar_t that) ਅਚਲ { ਵਾਪਸ ਮੁੱਲ_2 == that.ਮੁੱਲ_2; }
+      bool is_hiz() ਅਚਲ { ਵਾਪਸ (ਮੁੱਲ_2 & 0x77) == 0; }
 
-    private:
+    ਨਿਜੀ:
 	// This class and the vvp_vector8_t class are closely related,
 	// so allow vvp_vector8_t access to the raw encoding so that
 	// it can do compact vectoring of vvp_scalar_t objects.
-      friend class vvp_vector8_t;
-      explicit vvp_scalar_t(unsigned char val) : value_(val) { }
-      unsigned char raw() const { return value_; }
+      ਮਿੱਤਰ class vvp_vector8_t;
+      explicit vvp_scalar_t(ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ val) : ਮੁੱਲ_2(val) { }
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ raw() ਅਚਲ { ਵਾਪਸ ਮੁੱਲ_2; }
 
-    private:
-      unsigned char value_;
+    ਨਿਜੀ:
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ ਮੁੱਲ_2;
 };
 
-inline vvp_scalar_t::vvp_scalar_t()
+ਸਤਰਅੰਦਰ vvp_scalar_t::vvp_scalar_t()
 {
-      value_ = 0;
+      ਮੁੱਲ_2 = 0;
 }
 
-inline vvp_scalar_t::vvp_scalar_t(vvp_bit4_t val, unsigned str0, unsigned str1)
+ਸਤਰਅੰਦਰ vvp_scalar_t::vvp_scalar_t(vvp_bit4_t val, ਬਿਨਾਨਿਸ਼ਾਨੀ str0, ਬਿਨਾਨਿਸ਼ਾਨੀ str1)
 {
-      assert(str0 <= 7);
-      assert(str1 <= 7);
+      ਪ੍ਰਤਿਜ੍ਞਾ(str0 <= 7);
+      ਪ੍ਰਤਿਜ੍ਞਾ(str1 <= 7);
 
-      if (str0 == 0 && str1 == 0) {
-	    value_ = 0x00;
-      } else switch (val) {
-	  case BIT4_0:
-	    value_ = str0 | (str0<<4);
-	    break;
-	  case BIT4_1:
-	    value_ = str1 | (str1<<4) | 0x88;
-	    break;
-	  case BIT4_X:
-	    value_ = str0 | (str1<<4) | 0x80;
-	    break;
-	  case BIT4_Z:
-	    value_ = 0x00;
-	    break;
+      ਜੇ (str0 == 0 && str1 == 0) {
+	    ਮੁੱਲ_2 = 0x00;
+      } ਨਹੀਂਤਾਂ ਚੋਣ (val) {
+	  ਹਾਲਤ BIT4_0:
+	    ਮੁੱਲ_2 = str0 | (str0<<4);
+	    ਰੋਕੋ;
+	  ਹਾਲਤ BIT4_1:
+	    ਮੁੱਲ_2 = str1 | (str1<<4) | 0x88;
+	    ਰੋਕੋ;
+	  ਹਾਲਤ BIT4_X:
+	    ਮੁੱਲ_2 = str0 | (str1<<4) | 0x80;
+	    ਰੋਕੋ;
+	  ਹਾਲਤ BIT4_Z:
+	    ਮੁੱਲ_2 = 0x00;
+	    ਰੋਕੋ;
       }
 }
 
-inline vvp_bit4_t vvp_scalar_t::value() const
+ਸਤਰਅੰਦਰ vvp_bit4_t vvp_scalar_t::ਮੁੱਲ() ਅਚਲ
 {
-      if ((value_ & 0x77) == 0) {
-	    return BIT4_Z;
-      } else switch (value_ & 0x88) {
-	  case 0x00:
-	    return BIT4_0;
-	  case 0x88:
-	    return BIT4_1;
-	  default:
-	    return BIT4_X;
+      ਜੇ ((ਮੁੱਲ_2 & 0x77) == 0) {
+	    ਵਾਪਸ BIT4_Z;
+      } ਨਹੀਂਤਾਂ ਚੋਣ (ਮੁੱਲ_2 & 0x88) {
+	  ਹਾਲਤ 0x00:
+	    ਵਾਪਸ BIT4_0;
+	  ਹਾਲਤ 0x88:
+	    ਵਾਪਸ BIT4_1;
+	  ਮੂਲ:
+	    ਵਾਪਸ BIT4_X;
       }
 }
 
 
-inline vvp_scalar_t resolve(vvp_scalar_t a, vvp_scalar_t b)
+ਸਤਰਅੰਦਰ vvp_scalar_t resolve(vvp_scalar_t a, vvp_scalar_t b)
 {
-      extern vvp_scalar_t fully_featured_resolv_(vvp_scalar_t, vvp_scalar_t);
+      ਬਾਹਰੀ vvp_scalar_t fully_featured_resolv_(vvp_scalar_t, vvp_scalar_t);
 
 	// If the value is HiZ, resolution is simply a matter of
 	// returning the *other* value.
-      if (a.is_hiz())
-	    return b;
-      if (b.is_hiz())
-	    return a;
+      ਜੇ (a.is_hiz())
+	    ਵਾਪਸ b;
+      ਜੇ (b.is_hiz())
+	    ਵਾਪਸ a;
 	// If the values are the identical, then resolution is simply
 	// returning *either* value.
-      if (a .eeq( b ))
-	    return a;
+      ਜੇ (a .eeq( b ))
+	    ਵਾਪਸ a;
 
-      return fully_featured_resolv_(a,b);
+      ਵਾਪਸ fully_featured_resolv_(a,b);
 }
 
-extern std::ostream& operator<< (std::ostream&, vvp_scalar_t);
+ਬਾਹਰੀ std::ostream& ਸੰਚਾਲਕ<< (std::ostream&, vvp_scalar_t);
 
 /*
  * This class is a way to carry vectors of strength modeled
@@ -921,125 +921,125 @@ extern std::ostream& operator<< (std::ostream&, vvp_scalar_t);
  */
 class vvp_vector8_t {
 
-      friend vvp_vector8_t part_expand(const vvp_vector8_t&, unsigned, unsigned);
+      ਮਿੱਤਰ vvp_vector8_t part_expand(ਅਚਲ vvp_vector8_t&, ਬਿਨਾਨਿਸ਼ਾਨੀ, ਬਿਨਾਨਿਸ਼ਾਨੀ);
 
-    public:
-      explicit vvp_vector8_t(unsigned size =0);
+    ਜਨਤਕ:
+      explicit vvp_vector8_t(ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ =0);
 	// Make a vvp_vector8_t from a vector4 and a specified
 	// strength.
-      explicit vvp_vector8_t(const vvp_vector4_t&that,
-			     unsigned str0,
-			     unsigned str1);
-      explicit vvp_vector8_t(const vvp_vector2_t&that,
-			     unsigned str0,
-			     unsigned str1);
+      explicit vvp_vector8_t(ਅਚਲ vvp_vector4_t&that,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ str0,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ str1);
+      explicit vvp_vector8_t(ਅਚਲ vvp_vector2_t&that,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ str0,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ str1);
 
       ~vvp_vector8_t();
 
-      static const vvp_vector8_t nil;
+      ਸਥਿਰ ਅਚਲ vvp_vector8_t nil;
 
-    public:
+    ਜਨਤਕ:
 
-      unsigned size() const { return size_; }
-      vvp_scalar_t value(unsigned idx) const;
-      vvp_vector8_t subvalue(unsigned adr, unsigned width) const;
-      void set_bit(unsigned idx, vvp_scalar_t val);
-      void set_vec(unsigned idx, const vvp_vector8_t&that);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ() ਅਚਲ { ਵਾਪਸ ਮਾਪ_2; }
+      vvp_scalar_t ਮੁੱਲ(ਬਿਨਾਨਿਸ਼ਾਨੀ idx) ਅਚਲ;
+      vvp_vector8_t subvalue(ਬਿਨਾਨਿਸ਼ਾਨੀ adr, ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ) ਅਚਲ;
+      ਖਾਲੀ ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, vvp_scalar_t val);
+      ਖਾਲੀ ਸੈੱਟ_vec(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, ਅਚਲ vvp_vector8_t&that);
 
 	// Test that the vectors are exactly equal
-      bool eeq(const vvp_vector8_t&that) const;
+      bool eeq(ਅਚਲ vvp_vector8_t&that) ਅਚਲ;
 
-      vvp_vector8_t(const vvp_vector8_t&that);
-      vvp_vector8_t& operator= (const vvp_vector8_t&that);
+      vvp_vector8_t(ਅਚਲ vvp_vector8_t&that);
+      vvp_vector8_t& ਸੰਚਾਲਕ= (ਅਚਲ vvp_vector8_t&that);
 
-    private:
-      unsigned size_;
-      union {
-	    unsigned char*ptr_;
-	    unsigned char val_[sizeof(void*)];
+    ਨਿਜੀ:
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ_2;
+      ਸੰਘ {
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ*ptr_;
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ val_[ਆਕਾਰ(ਖਾਲੀ*)];
       };
 };
 
   /* Resolve uses the default Verilog resolver algorithm to resolve
      two drive vectors to a single output. */
-inline vvp_vector8_t resolve(const vvp_vector8_t&a, const vvp_vector8_t&b)
+ਸਤਰਅੰਦਰ vvp_vector8_t resolve(ਅਚਲ vvp_vector8_t&a, ਅਚਲ vvp_vector8_t&b)
 {
-      assert(a.size() == b.size());
-      vvp_vector8_t out (a.size());
+      ਪ੍ਰਤਿਜ੍ਞਾ(a.ਮਾਪ() == b.ਮਾਪ());
+      vvp_vector8_t ਬਾਹਰਲਾ (a.ਮਾਪ());
 
-      for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
-	    out.set_bit(idx, resolve(a.value(idx), b.value(idx)));
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0 ;  idx < ਬਾਹਰਲਾ.ਮਾਪ() ;  idx += 1) {
+	    ਬਾਹਰਲਾ.ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(idx, resolve(a.ਮੁੱਲ(idx), b.ਮੁੱਲ(idx)));
       }
 
-      return out;
+      ਵਾਪਸ ਬਾਹਰਲਾ;
 }
 
   /* This lookup tabke implements the strength reduction implied by
      Verilog standard switch devices. The major dimension selects
      between non-resistive and resistive devices. */
-extern unsigned vvp_switch_strength_map[2][8];
+ਬਾਹਰੀ ਬਿਨਾਨਿਸ਼ਾਨੀ vvp_switch_strength_map[2][8];
 
   /* The reduce4 function converts a vector8 to a vector4, losing
      strength information in the process. */
-extern vvp_vector4_t reduce4(const vvp_vector8_t&that);
-extern vvp_vector8_t part_expand(const vvp_vector8_t&a, unsigned wid, unsigned off);
+ਬਾਹਰੀ vvp_vector4_t reduce4(ਅਚਲ vvp_vector8_t&that);
+ਬਾਹਰੀ vvp_vector8_t part_expand(ਅਚਲ vvp_vector8_t&a, ਬਿਨਾਨਿਸ਼ਾਨੀ wid, ਬਿਨਾਨਿਸ਼ਾਨੀ off);
 
   /* A c8string is of the form C8<...> where ... are bits. */
-extern bool c8string_test(const char*str);
-extern vvp_vector8_t c8string_to_vector8(const char*str);
+ਬਾਹਰੀ bool c8string_test(ਅਚਲ ਅੱਖਰ*str);
+ਬਾਹਰੀ vvp_vector8_t c8string_ਮੰਜ਼ਿਲ_vector8(ਅਚਲ ਅੱਖਰ*str);
 
   /* Print a vector8 value to a stream. */
-extern std::ostream& operator<< (std::ostream&, const vvp_vector8_t&);
+ਬਾਹਰੀ std::ostream& ਸੰਚਾਲਕ<< (std::ostream&, ਅਚਲ vvp_vector8_t&);
 
-inline vvp_vector8_t::vvp_vector8_t(unsigned size__)
-: size_(size__)
+ਸਤਰਅੰਦਰ vvp_vector8_t::vvp_vector8_t(ਬਿਨਾਨਿਸ਼ਾਨੀ ਮਾਪ_3)
+: ਮਾਪ_2(ਮਾਪ_3)
 {
-      if (size_ <= sizeof(val_)) {
-	    memset(val_, 0, sizeof(val_));
-      } else {
-	    ptr_ = new unsigned char[size_];
-	    memset(ptr_, 0, size_);
+      ਜੇ (ਮਾਪ_2 <= ਆਕਾਰ(val_)) {
+	    memset(val_, 0, ਆਕਾਰ(val_));
+      } ਨਹੀਂਤਾਂ {
+	    ptr_ = new ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ[ਮਾਪ_2];
+	    memset(ptr_, 0, ਮਾਪ_2);
       }
 }
 
-inline vvp_vector8_t::~vvp_vector8_t()
+ਸਤਰਅੰਦਰ vvp_vector8_t::~vvp_vector8_t()
 {
-      if (size_ > sizeof(val_))
+      ਜੇ (ਮਾਪ_2 > ਆਕਾਰ(val_))
 	    delete[]ptr_;
 }
 
-inline vvp_scalar_t vvp_vector8_t::value(unsigned idx) const
+ਸਤਰਅੰਦਰ vvp_scalar_t vvp_vector8_t::ਮੁੱਲ(ਬਿਨਾਨਿਸ਼ਾਨੀ idx) ਅਚਲ
 {
-      assert(idx < size_);
-      if (size_ <= sizeof(val_))
-	    return vvp_scalar_t(val_[idx]);
-      else
-	    return vvp_scalar_t(ptr_[idx]);
+      ਪ੍ਰਤਿਜ੍ਞਾ(idx < ਮਾਪ_2);
+      ਜੇ (ਮਾਪ_2 <= ਆਕਾਰ(val_))
+	    ਵਾਪਸ vvp_scalar_t(val_[idx]);
+      ਨਹੀਂਤਾਂ
+	    ਵਾਪਸ vvp_scalar_t(ptr_[idx]);
 }
 
-inline void vvp_vector8_t::set_bit(unsigned idx, vvp_scalar_t val)
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_vector8_t::ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, vvp_scalar_t val)
 {
-      assert(idx < size_);
-      if (size_ <= sizeof(val_))
+      ਪ੍ਰਤਿਜ੍ਞਾ(idx < ਮਾਪ_2);
+      ਜੇ (ਮਾਪ_2 <= ਆਕਾਰ(val_))
 	    val_[idx] = val.raw();
-      else
+      ਨਹੀਂਤਾਂ
 	    ptr_[idx] = val.raw();
 }
 
   // Exactly-equal for vvp_vector8_t is common and should be as tight
   // as possible.
-inline bool vvp_vector8_t::eeq(const vvp_vector8_t&that) const
+ਸਤਰਅੰਦਰ bool vvp_vector8_t::eeq(ਅਚਲ vvp_vector8_t&that) ਅਚਲ
 {
-      if (size_ != that.size_)
-	    return false;
-      if (size_ == 0)
-	    return true;
+      ਜੇ (ਮਾਪ_2 != that.ਮਾਪ_2)
+	    ਵਾਪਸ false;
+      ਜੇ (ਮਾਪ_2 == 0)
+	    ਵਾਪਸ true;
 
-      if (size_ <= sizeof(val_))
+      ਜੇ (ਮਾਪ_2 <= ਆਕਾਰ(val_))
 	      // This is equivalent to memcmp(val_, that.val_, sizeof val_)==0
-	    return ptr_ == that.ptr_;
-      else
-	    return memcmp(ptr_, that.ptr_, size_) == 0;
+	    ਵਾਪਸ ptr_ == that.ptr_;
+      ਨਹੀਂਤਾਂ
+	    ਵਾਪਸ memcmp(ptr_, that.ptr_, ਮਾਪ_2) == 0;
 }
 
 /*
@@ -1055,41 +1055,41 @@ inline bool vvp_vector8_t::eeq(const vvp_vector8_t&that) const
  * port identifier into an unsigned long. This works only if vvp_net_t*
  * values are always aligned on 4-byte boundaries.
  */
-template <class T> class vvp_sub_pointer_t {
+ਸਾਂਚਾ <class T> class vvp_sub_ਸੂਚਕ_t {
 
-    public:
-      vvp_sub_pointer_t() : bits_(0) { }
+    ਜਨਤਕ:
+      vvp_sub_ਸੂਚਕ_t() : ਬਿੱਟ_2(0) { }
 
-      vvp_sub_pointer_t(T*ptr__, unsigned port__)
+      vvp_sub_ਸੂਚਕ_t(T*ptr__, ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੋਰਟ_2)
       {
-	    bits_ = reinterpret_cast<uintptr_t> (ptr__);
-	    assert( (bits_  &  UINTPTR_C(3)) == 0 );
-	    assert( (port__ & ~UINTPTR_C(3)) == 0 );
-	    bits_ |= port__;
+	    ਬਿੱਟ_2 = reinterpret_cast<uintptr_t> (ptr__);
+	    ਪ੍ਰਤਿਜ੍ਞਾ( (ਬਿੱਟ_2  &  UINTPTR_C(3)) == 0 );
+	    ਪ੍ਰਤਿਜ੍ਞਾ( (ਪੋਰਟ_2 & ~UINTPTR_C(3)) == 0 );
+	    ਬਿੱਟ_2 |= ਪੋਰਟ_2;
       }
 
-      ~vvp_sub_pointer_t() = default;
+      ~vvp_sub_ਸੂਚਕ_t() = ਮੂਲ;
 
       T* ptr()
-      { return reinterpret_cast<T*> (bits_ & ~UINTPTR_C(3)); }
+      { ਵਾਪਸ reinterpret_cast<T*> (ਬਿੱਟ_2 & ~UINTPTR_C(3)); }
 
-      const T* ptr() const
-      { return reinterpret_cast<const T*> (bits_ & ~UINTPTR_C(3)); }
+      ਅਚਲ T* ptr() ਅਚਲ
+      { ਵਾਪਸ reinterpret_cast<ਅਚਲ T*> (ਬਿੱਟ_2 & ~UINTPTR_C(3)); }
 
-      unsigned  port() const { return bits_ & UINTPTR_C(3); }
+      ਬਿਨਾਨਿਸ਼ਾਨੀ  ਪੋਰਟ() ਅਚਲ { ਵਾਪਸ ਬਿੱਟ_2 & UINTPTR_C(3); }
 
-      bool nil() const { return bits_ == 0; }
+      bool nil() ਅਚਲ { ਵਾਪਸ ਬਿੱਟ_2 == 0; }
 
-      bool operator == (vvp_sub_pointer_t that) const { return bits_ == that.bits_; }
-      bool operator != (vvp_sub_pointer_t that) const { return bits_ != that.bits_; }
+      bool ਸੰਚਾਲਕ == (vvp_sub_ਸੂਚਕ_t that) ਅਚਲ { ਵਾਪਸ ਬਿੱਟ_2 == that.ਬਿੱਟ_2; }
+      bool ਸੰਚਾਲਕ != (vvp_sub_ਸੂਚਕ_t that) ਅਚਲ { ਵਾਪਸ ਬਿੱਟ_2 != that.ਬਿੱਟ_2; }
 
-    private:
-      uintptr_t bits_;
+    ਨਿਜੀ:
+      uintptr_t ਬਿੱਟ_2;
 };
 
-typedef vvp_sub_pointer_t<vvp_net_t> vvp_net_ptr_t;
-template <class T> std::ostream& operator << (std::ostream&out, vvp_sub_pointer_t<T> val)
-{ out << val.ptr() << "[" << val.port() << "]"; return out; }
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ vvp_sub_ਸੂਚਕ_t<vvp_net_t> vvp_net_ptr_t;
+ਸਾਂਚਾ <class T> std::ostream& ਸੰਚਾਲਕ << (std::ostream&ਬਾਹਰਲਾ, vvp_sub_ਸੂਚਕ_t<T> val)
+{ ਬਾਹਰਲਾ << val.ptr() << "[" << val.ਪੋਰਟ() << "]"; ਵਾਪਸ ਬਾਹਰਲਾ; }
 
 /*
  * This is the basic unit of netlist connectivity. It is a fan-in of
@@ -1130,60 +1130,60 @@ template <class T> std::ostream& operator << (std::ostream&out, vvp_sub_pointer_
  * output, possibly filtered, from the vvp_net_t.
  */
 class vvp_net_t {
-    public:
+    ਜਨਤਕ:
       vvp_net_t();
 
-#ifdef CHECK_WITH_VALGRIND
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
       vvp_net_t *pool;
-#endif
-      vvp_net_ptr_t port[4];
+#ਜੇ_ਅੰਤ
+      vvp_net_ptr_t ਪੋਰਟ[4];
       vvp_net_fun_t*fun;
       vvp_net_fil_t*fil;
 
-    public:
+    ਜਨਤਕ:
 	// Connect the port to the output from this net.
-      void link(vvp_net_ptr_t port);
+      ਖਾਲੀ link(vvp_net_ptr_t ਪੋਰਟ);
 	// Disconnect the port from the output of this net.
-      void unlink(vvp_net_ptr_t port);
+      ਖਾਲੀ unlink(vvp_net_ptr_t ਪੋਰਟ);
 
-    public: // Methods to propagate output from this node.
-      void send_vec4(const vvp_vector4_t&val, vvp_context_t context);
-      void send_vec8(const vvp_vector8_t&val);
-      void send_real(double val, vvp_context_t context);
-      void send_string(const std::string&val, vvp_context_t context);
-      void send_object(vvp_object_t val, vvp_context_t context);
+    ਜਨਤਕ: // Methods to propagate output from this node.
+      ਖਾਲੀ send_vec4(ਅਚਲ vvp_vector4_t&val, vvp_context_t context);
+      ਖਾਲੀ send_vec8(ਅਚਲ vvp_vector8_t&val);
+      ਖਾਲੀ send_real(ਦੁੱਗਣਾ val, vvp_context_t context);
+      ਖਾਲੀ send_string(ਅਚਲ std::string&val, vvp_context_t context);
+      ਖਾਲੀ send_object(vvp_object_t val, vvp_context_t context);
 
-      void send_vec4_pv(const vvp_vector4_t&val,
-			unsigned base, unsigned vwid, vvp_context_t context);
-      void send_vec8_pv(const vvp_vector8_t&val,
-			unsigned base, unsigned vwid);
+      ਖਾਲੀ send_vec4_pv(ਅਚਲ vvp_vector4_t&val,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t context);
+      ਖਾਲੀ send_vec8_pv(ਅਚਲ vvp_vector8_t&val,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid);
 
 
-    public: // Methods to arrange for the output of this net to be forced.
+    ਜਨਤਕ: // Methods to arrange for the output of this net to be forced.
 
 	// The intent is that all efforts at force are directed to
 	// operate only on the vvp_net_t whose output is to be
 	// forced. These methods then communicate the force to the
 	// attached filter to set up the actual force.
-      void force_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask);
-      void force_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask);
-      void force_real(double val, const vvp_vector2_t&mask);
+      ਖਾਲੀ force_vec4(ਅਚਲ vvp_vector4_t&val, ਅਚਲ vvp_vector2_t&ਨਕਾਬ);
+      ਖਾਲੀ force_vec8(ਅਚਲ vvp_vector8_t&val, ਅਚਲ vvp_vector2_t&ਨਕਾਬ);
+      ਖਾਲੀ force_real(ਦੁੱਗਣਾ val, ਅਚਲ vvp_vector2_t&ਨਕਾਬ);
 
-    public: // Method to support $countdrivers
-      void count_drivers(unsigned idx, unsigned counts[4]);
+    ਜਨਤਕ: // Method to support $countdrivers
+      ਖਾਲੀ ਗਿਣਤੀ_drivers(ਬਿਨਾਨਿਸ਼ਾਨੀ idx, ਬਿਨਾਨਿਸ਼ਾਨੀ counts[4]);
 
     // This needs to be public so that SDF interconnects can be inserted
-    public:
-      vvp_net_ptr_t out_;
+    ਜਨਤਕ:
+      vvp_net_ptr_t ਬਾਹਰਲਾ_2;
 
-    public: // Need a better new for these objects.
-      static void* operator new(std::size_t size);
-      static void operator delete(void*); // not implemented
-    private: // not implemented
-      static void* operator new[](std::size_t size);
-#if defined(__GNUC__)
-      static void operator delete[](void*);
-#endif
+    ਜਨਤਕ: // Need a better new for these objects.
+      ਸਥਿਰ ਖਾਲੀ* ਸੰਚਾਲਕ new(std::size_t ਮਾਪ);
+      ਸਥਿਰ ਖਾਲੀ ਸੰਚਾਲਕ delete(ਖਾਲੀ*); // not implemented
+    ਨਿਜੀ: // not implemented
+      ਸਥਿਰ ਖਾਲੀ* ਸੰਚਾਲਕ new[](std::size_t ਮਾਪ);
+#ਜੇ defined(__GNUC__)
+      ਸਥਿਰ ਖਾਲੀ ਸੰਚਾਲਕ delete[](ਖਾਲੀ*);
+#ਜੇ_ਅੰਤ
 };
 
 /*
@@ -1221,52 +1221,52 @@ class vvp_net_t {
  */
 class vvp_net_fun_t {
 
-    public:
+    ਜਨਤਕ:
       vvp_net_fun_t();
-      virtual ~vvp_net_fun_t();
+      ਆਭਾਸੀ ~vvp_net_fun_t();
 
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ਆਭਾਸੀ ਖਾਲੀ recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                              vvp_context_t context);
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit);
-      virtual void recv_real(vvp_net_ptr_t port, double bit,
+      ਆਭਾਸੀ ਖਾਲੀ recv_vec8(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector8_t&ਦੋਆਧਾਰੀ_ਅੰਕ);
+      ਆਭਾਸੀ ਖਾਲੀ recv_real(vvp_net_ptr_t ਪੋਰਟ, ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ,
                              vvp_context_t context);
-      virtual void recv_string(vvp_net_ptr_t port, const std::string&bit,
+      ਆਭਾਸੀ ਖਾਲੀ recv_string(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ std::string&ਦੋਆਧਾਰੀ_ਅੰਕ,
 			       vvp_context_t context);
-      virtual void recv_object(vvp_net_ptr_t port, vvp_object_t bit,
+      ਆਭਾਸੀ ਖਾਲੀ recv_object(vvp_net_ptr_t ਪੋਰਟ, vvp_object_t ਦੋਆਧਾਰੀ_ਅੰਕ,
 			       vvp_context_t context);
 
 	// Part select variants of above
-      virtual void recv_vec4_pv(vvp_net_ptr_t p, const vvp_vector4_t&bit,
-				unsigned base, unsigned vwid, vvp_context_t context);
-      virtual void recv_vec8_pv(vvp_net_ptr_t p, const vvp_vector8_t&bit,
-				unsigned base, unsigned vwid);
+      ਆਭਾਸੀ ਖਾਲੀ recv_vec4_pv(vvp_net_ptr_t p, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t context);
+      ਆਭਾਸੀ ਖਾਲੀ recv_vec8_pv(vvp_net_ptr_t p, ਅਚਲ vvp_vector8_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+				ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid);
 
 	// This method is called when the net is forced or
 	// released. This is very rarely needed; island ports use it
 	// to know that the net is being forced and that it needs to
 	// do something about it.
-      virtual void force_flag(bool run_now);
+      ਆਭਾਸੀ ਖਾਲੀ force_flag(bool ਲੜੀਵਾਰ_now);
 
-   protected:
-      void recv_vec4_pv_(vvp_net_ptr_t p, const vvp_vector4_t&bit,
-			 unsigned base, unsigned vwid, vvp_context_t context);
-      void recv_vec8_pv_(vvp_net_ptr_t p, const vvp_vector8_t&bit,
-			 unsigned base, unsigned vwid);
+   ਸੁਰੱਖਿਅਤ:
+      ਖਾਲੀ recv_vec4_pv_(vvp_net_ptr_t p, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			 ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t context);
+      ਖਾਲੀ recv_vec8_pv_(vvp_net_ptr_t p, ਅਚਲ vvp_vector8_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			 ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid);
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size) { return heap_.alloc(size); }
-      static void operator delete(void*); // not implemented
+    ਜਨਤਕ: // These objects are only permallocated.
+      ਸਥਿਰ ਖਾਲੀ* ਸੰਚਾਲਕ new(std::size_t ਮਾਪ) { ਵਾਪਸ ਢੇਰ.alloc(ਮਾਪ); }
+      ਸਥਿਰ ਖਾਲੀ ਸੰਚਾਲਕ delete(ਖਾਲੀ*); // not implemented
 
-      static std::size_t heap_total() { return heap_.heap_total(); }
+      ਸਥਿਰ std::size_t ਢੇਰ_ਕੁੱਲ() { ਵਾਪਸ ਢੇਰ.ਢੇਰ_ਕੁੱਲ(); }
 
-    protected:
-      static permaheap heap_;
+    ਸੁਰੱਖਿਅਤ:
+      ਸਥਿਰ permaheap ਢੇਰ;
 
-    private: // not implemented
-      vvp_net_fun_t(const vvp_net_fun_t&);
-      vvp_net_fun_t& operator= (const vvp_net_fun_t&);
-      static void* operator new[](std::size_t size);
-      static void operator delete[](void*);
+    ਨਿਜੀ: // not implemented
+      vvp_net_fun_t(ਅਚਲ vvp_net_fun_t&);
+      vvp_net_fun_t& ਸੰਚਾਲਕ= (ਅਚਲ vvp_net_fun_t&);
+      ਸਥਿਰ ਖਾਲੀ* ਸੰਚਾਲਕ new[](std::size_t ਮਾਪ);
+      ਸਥਿਰ ਖਾਲੀ ਸੰਚਾਲਕ delete[](ਖਾਲੀ*);
 };
 
 /*
@@ -1279,14 +1279,14 @@ class vvp_net_fun_t {
  * The filter object also provides an implementation hooks for
  * force/release.
  */
-class vvp_net_fil_t  : public vvp_vpi_callback {
+class vvp_net_fil_t  : ਜਨਤਕ vvp_vpi_callback {
 
-    public:
+    ਜਨਤਕ:
       vvp_net_fil_t();
-      virtual ~vvp_net_fil_t() override;
+      ਆਭਾਸੀ ~vvp_net_fil_t() override;
 
-    public:
-      enum prop_t { STOP=0, PROP, REPL };
+    ਜਨਤਕ:
+      ਗਿਣਤੀ prop_t { STOP=0, PROP, REPL };
 
 
 	// These filter methods are used by the vvp_net_t::send_*()
@@ -1298,56 +1298,56 @@ class vvp_net_fil_t  : public vvp_vpi_callback {
 	// value instead. If the function returns STOP, then all the
 	// output bits are filtered by the force mask and there is
 	// nothing to propagate.
-      virtual prop_t filter_vec4(const vvp_vector4_t&bit, vvp_vector4_t&rep,
-				 unsigned base, unsigned vwid);
-      virtual prop_t filter_vec8(const vvp_vector8_t&val, vvp_vector8_t&rep,
-				 unsigned base, unsigned vwid);
-      virtual prop_t filter_real(double&val);
-      virtual prop_t filter_object(vvp_object_t&val);
-      virtual prop_t filter_string(const std::string&val);
+      ਆਭਾਸੀ prop_t filter_vec4(ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ, vvp_vector4_t&rep,
+				 ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid);
+      ਆਭਾਸੀ prop_t filter_vec8(ਅਚਲ vvp_vector8_t&val, vvp_vector8_t&rep,
+				 ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid);
+      ਆਭਾਸੀ prop_t filter_real(ਦੁੱਗਣਾ&val);
+      ਆਭਾਸੀ prop_t filter_object(vvp_object_t&val);
+      ਆਭਾਸੀ prop_t filter_string(ਅਚਲ std::string&val);
 
-      virtual void release(vvp_net_ptr_t ptr, bool net_flag) =0;
-      virtual void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) =0;
+      ਆਭਾਸੀ ਖਾਲੀ release(vvp_net_ptr_t ptr, bool net_flag) =0;
+      ਆਭਾਸੀ ਖਾਲੀ release_pv(vvp_net_ptr_t ptr, ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ wid, bool net_flag) =0;
 
 	// The %force/link instruction needs a place to write the
 	// source node of the force, so that subsequent %force and
 	// %release instructions can undo the link as needed. */
-      void force_link(vvp_net_t*dst, vvp_net_t*src);
-      void force_unlink(void);
+      ਖਾਲੀ force_link(vvp_net_t*dst, vvp_net_t*src);
+      ਖਾਲੀ force_unlink(ਖਾਲੀ);
 
-      virtual unsigned filter_size() const =0;
+      ਆਭਾਸੀ ਬਿਨਾਨਿਸ਼ਾਨੀ filter_ਮਾਪ() ਅਚਲ =0;
 
-    public:
+    ਜਨਤਕ:
 	// Support for force methods. These are called by the
 	// vvp_net_t::force_* methods to set the force value and mask
 	// for the filter.
-      virtual void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) =0;
-      virtual void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) =0;
-      virtual void force_fil_real(double val, const vvp_vector2_t&mask) =0;
+      ਆਭਾਸੀ ਖਾਲੀ force_fil_vec4(ਅਚਲ vvp_vector4_t&val, ਅਚਲ vvp_vector2_t&ਨਕਾਬ) =0;
+      ਆਭਾਸੀ ਖਾਲੀ force_fil_vec8(ਅਚਲ vvp_vector8_t&val, ਅਚਲ vvp_vector2_t&ਨਕਾਬ) =0;
+      ਆਭਾਸੀ ਖਾਲੀ force_fil_real(ਦੁੱਗਣਾ val, ਅਚਲ vvp_vector2_t&ਨਕਾਬ) =0;
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size) { return heap_.alloc(size); }
-      static void operator delete(void*); // not implemented
+    ਜਨਤਕ: // These objects are only permallocated.
+      ਸਥਿਰ ਖਾਲੀ* ਸੰਚਾਲਕ new(std::size_t ਮਾਪ) { ਵਾਪਸ ਢੇਰ.alloc(ਮਾਪ); }
+      ਸਥਿਰ ਖਾਲੀ ਸੰਚਾਲਕ delete(ਖਾਲੀ*); // not implemented
 
-      static size_t heap_total() { return heap_.heap_total(); }
+      ਸਥਿਰ size_t ਢੇਰ_ਕੁੱਲ() { ਵਾਪਸ ਢੇਰ.ਢੇਰ_ਕੁੱਲ(); }
 
-    private:
-      static permaheap heap_;
+    ਨਿਜੀ:
+      ਸਥਿਰ permaheap ਢੇਰ;
 
-    private: // not implemented
-      vvp_net_fil_t(const vvp_net_fil_t&);
-      vvp_net_fil_t& operator= (const vvp_net_fil_t&);
-      static void* operator new[](std::size_t size);
-      static void operator delete[](void*);
+    ਨਿਜੀ: // not implemented
+      vvp_net_fil_t(ਅਚਲ vvp_net_fil_t&);
+      vvp_net_fil_t& ਸੰਚਾਲਕ= (ਅਚਲ vvp_net_fil_t&);
+      ਸਥਿਰ ਖਾਲੀ* ਸੰਚਾਲਕ new[](std::size_t ਮਾਪ);
+      ਸਥਿਰ ਖਾਲੀ ਸੰਚਾਲਕ delete[](ਖਾਲੀ*);
 
-    protected:
+    ਸੁਰੱਖਿਅਤ:
 	// Set bits of the filter force mask
-      void force_mask(const vvp_vector2_t&mask);
+      ਖਾਲੀ force_ਨਕਾਬ(ਅਚਲ vvp_vector2_t&ਨਕਾਬ);
 	// Release the force on the bits set in the mask.
-      void release_mask(const vvp_vector2_t&mask);
+      ਖਾਲੀ release_ਨਕਾਬ(ਅਚਲ vvp_vector2_t&ਨਕਾਬ);
 	// Test bits of the filter force mask;
-      bool test_force_mask(unsigned bit) const;
-      bool test_force_mask_is_zero() const;
+      bool test_force_ਨਕਾਬ(ਬਿਨਾਨਿਸ਼ਾਨੀ ਦੋਆਧਾਰੀ_ਅੰਕ) ਅਚਲ;
+      bool test_force_ਨਕਾਬ_is_zero() ਅਚਲ;
 
 	// This template method is used by derived classes to process
 	// the val through the force mask. The force value is the
@@ -1356,20 +1356,20 @@ class vvp_net_fil_t  : public vvp_vpi_callback {
 	// method returns the replacement value into the "rep"
 	// argument and returns a code indicating whether any changes
 	// were made.
-      template <class T> prop_t filter_mask_(const T&val, const T&force, T&rep, unsigned addr);
+      ਸਾਂਚਾ <class T> prop_t filter_ਨਕਾਬ(ਅਚਲ T&val, ਅਚਲ T&force, T&rep, ਬਿਨਾਨਿਸ਼ਾਨੀ addr);
 	// This template method is similar to the above, but works for
 	// native types that are not so expensive to edit in place.
-      template <class T> prop_t filter_mask_(T&val, T force);
+      ਸਾਂਚਾ <class T> prop_t filter_ਨਕਾਬ(T&val, T force);
 
 	// These templates are similar to filter_mask_, but are
 	// idempotent. Then do not trigger callbacks or otherwise
 	// cause any local changes. These methods are used to test
 	// arbitrary values against the force mask.
-      template <class T> prop_t filter_input_mask_(const T&val, const T&force, T&rep) const;
+      ਸਾਂਚਾ <class T> prop_t filter_ਨਿਵੇਸ਼_ਨਕਾਬ(ਅਚਲ T&val, ਅਚਲ T&force, T&rep) ਅਚਲ;
 
-    private:
+    ਨਿਜੀ:
 	// Mask of forced bits
-      vvp_vector2_t force_mask_;
+      vvp_vector2_t force_ਨਕਾਬ_2;
 	// True if the next filter must propagate. Need this to allow
 	// the forced value to get through.
       bool force_propagate_;
@@ -1389,15 +1389,15 @@ class vvp_net_fil_t  : public vvp_vpi_callback {
  * implementation of vvp_filter_wire_base::force_link in
  * vvp_net_sig.cc for details.
  */
-class vvp_fun_force : public vvp_net_fun_t {
+class vvp_fun_force : ਜਨਤਕ vvp_net_fun_t {
 
-    public:
+    ਜਨਤਕ:
       vvp_fun_force();
       ~vvp_fun_force() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
 		     vvp_context_t context) override;
-      void recv_real(vvp_net_ptr_t port, double bit, vvp_context_t) override;
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ਪੋਰਟ, ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ, vvp_context_t) override;
 };
 
 /* vvp_fun_drive
@@ -1411,20 +1411,20 @@ class vvp_fun_force : public vvp_net_fun_t {
  *
  * This functor only propagates vvp_vector8_t values.
  */
-class vvp_fun_drive  : public vvp_net_fun_t {
+class vvp_fun_drive  : ਜਨਤਕ vvp_net_fun_t {
 
-    public:
-      explicit vvp_fun_drive(unsigned str0 =6, unsigned str1 =6);
+    ਜਨਤਕ:
+      explicit vvp_fun_drive(ਬਿਨਾਨਿਸ਼ਾਨੀ str0 =6, ਬਿਨਾਨਿਸ਼ਾਨੀ str1 =6);
       ~vvp_fun_drive() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override;
-    private:
-      unsigned char drive0_;
-      unsigned char drive1_;
+      ਖਾਲੀ recv_vec4_pv(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t) override;
+    ਨਿਜੀ:
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ drive0_;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਅੱਖਰ drive1_;
 };
 
 /*
@@ -1433,19 +1433,19 @@ class vvp_fun_drive  : public vvp_net_fun_t {
  * input is already wider than the desired output, then it is passed
  * unmodified.
  */
-class vvp_fun_extend_signed  : public vvp_net_fun_t {
+class vvp_fun_extend_signed  : ਜਨਤਕ vvp_net_fun_t {
 
-    public:
-      explicit vvp_fun_extend_signed(unsigned wid);
+    ਜਨਤਕ:
+      explicit vvp_fun_extend_signed(ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
       ~vvp_fun_extend_signed() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override;
-    private:
-      unsigned width_;
+      ਖਾਲੀ recv_vec4_pv(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t) override;
+    ਨਿਜੀ:
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ_2;
 };
 
 /*
@@ -1472,40 +1472,40 @@ class vvp_fun_extend_signed  : public vvp_net_fun_t {
  * does the processing.
  */
 
-class vvp_wide_fun_core : public vvp_net_fun_t {
+class vvp_wide_fun_core : ਜਨਤਕ vvp_net_fun_t {
 
-    public:
-      vvp_wide_fun_core(vvp_net_t*net, unsigned nports);
-      virtual ~vvp_wide_fun_core() override;
+    ਜਨਤਕ:
+      vvp_wide_fun_core(vvp_net_t*net, ਬਿਨਾਨਿਸ਼ਾਨੀ nports);
+      ਆਭਾਸੀ ~vvp_wide_fun_core() override;
 	// These objects are not perm allocated.
-      static void* operator new(std::size_t size) { return ::new char[size]; }
-      static void operator delete(void* ptr) { ::delete[](static_cast<char*>(ptr)); }
+      ਸਥਿਰ ਖਾਲੀ* ਸੰਚਾਲਕ new(std::size_t ਮਾਪ) { ਵਾਪਸ ::new ਅੱਖਰ[ਮਾਪ]; }
+      ਸਥਿਰ ਖਾਲੀ ਸੰਚਾਲਕ delete(ਖਾਲੀ* ptr) { ::delete[](static_cast<ਅੱਖਰ*>(ptr)); }
 
-    protected:
-      void propagate_vec4(const vvp_vector4_t&bit, vvp_time64_t delay =0);
-      void propagate_real(double bit, vvp_time64_t delay =0);
-      unsigned port_count() const;
+    ਸੁਰੱਖਿਅਤ:
+      ਖਾਲੀ propagate_vec4(ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ, vvp_time64_t delay =0);
+      ਖਾਲੀ propagate_real(ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ, vvp_time64_t delay =0);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੋਰਟ_ਗਿਣਤੀ() ਅਚਲ;
 
-      vvp_vector4_t& value(unsigned);
-      double value_r(unsigned);
+      vvp_vector4_t& ਮੁੱਲ(ਬਿਨਾਨਿਸ਼ਾਨੀ);
+      ਦੁੱਗਣਾ ਮੁੱਲ_r(ਬਿਨਾਨਿਸ਼ਾਨੀ);
 
-    private:
+    ਨਿਜੀ:
 	// the derived class implements this to receive an indication
 	// that one of the port input values changed.
-      virtual void recv_vec4_from_inputs(unsigned port) =0;
-      virtual void recv_real_from_inputs(unsigned port);
+      ਆਭਾਸੀ ਖਾਲੀ recv_vec4_from_inputs(ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੋਰਟ) =0;
+      ਆਭਾਸੀ ਖਾਲੀ recv_real_from_inputs(ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੋਰਟ);
 
-      friend class vvp_wide_fun_t;
-      void dispatch_vec4_from_input_(unsigned port, const vvp_vector4_t&bit);
-      void dispatch_real_from_input_(unsigned port, double bit);
+      ਮਿੱਤਰ class vvp_wide_fun_t;
+      ਖਾਲੀ dispatch_vec4_from_ਨਿਵੇਸ਼(ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ);
+      ਖਾਲੀ dispatch_real_from_ਨਿਵੇਸ਼(ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੋਰਟ, ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ);
 
-    private:
+    ਨਿਜੀ:
 	// Back-point to the vvp_net_t that points to me.
       vvp_net_t*ptr_;
 	// Structure to track the input values from the input functors.
-      unsigned nports_;
-      vvp_vector4_t*port_values_;
-      double*port_rvalues_;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ nports_;
+      vvp_vector4_t*ਪੋਰਟ_ਮੁੱਲਾਂ;
+      ਦੁੱਗਣਾ*ਪੋਰਟ_rvalues;
 };
 
 /*
@@ -1514,63 +1514,63 @@ class vvp_wide_fun_core : public vvp_net_fun_t {
  * up to 4 inputs, with the base the port number for the first
  * function input that this functor represents.
  */
-class vvp_wide_fun_t : public vvp_net_fun_t {
+class vvp_wide_fun_t : ਜਨਤਕ vvp_net_fun_t {
 
-    public:
-      vvp_wide_fun_t(vvp_wide_fun_core*c, unsigned base);
+    ਜਨਤਕ:
+      vvp_wide_fun_t(vvp_wide_fun_core*c, ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ);
       ~vvp_wide_fun_t() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t context) override;
-      void recv_real(vvp_net_ptr_t port, double bit,
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ਪੋਰਟ, ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t p, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t context) override;
+      ਖਾਲੀ recv_vec4_pv(vvp_net_ptr_t p, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t context) override;
 
-    private:
+    ਨਿਜੀ:
       vvp_wide_fun_core*core_;
-      unsigned port_base_;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੋਰਟ_ਅਧਾਰ_2;
 };
 
 
-inline void vvp_send_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&val, vvp_context_t context)
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_send_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&val, vvp_context_t context)
 {
-      while (class vvp_net_t*cur = ptr.ptr()) {
-	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
+      ਜਦੋਂ (class vvp_net_t*cur = ptr.ptr()) {
+	    vvp_net_ptr_t ਅਗਲਾ_val = cur->ਪੋਰਟ[ptr.ਪੋਰਟ()];
 
-	    if (cur->fun)
+	    ਜੇ (cur->fun)
 		  cur->fun->recv_vec4(ptr, val, context);
 
-	    ptr = next_val;
+	    ptr = ਅਗਲਾ_val;
       }
 }
 
-extern void vvp_send_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&val);
-extern void vvp_send_real(vvp_net_ptr_t ptr, double val,
+ਬਾਹਰੀ ਖਾਲੀ vvp_send_vec8(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector8_t&val);
+ਬਾਹਰੀ ਖਾਲੀ vvp_send_real(vvp_net_ptr_t ptr, ਦੁੱਗਣਾ val,
                           vvp_context_t context);
 
-inline void vvp_send_string(vvp_net_ptr_t ptr, const std::string&val, vvp_context_t context)
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_send_string(vvp_net_ptr_t ptr, ਅਚਲ std::string&val, vvp_context_t context)
 {
-      while (vvp_net_t*cur = ptr.ptr()) {
-	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
+      ਜਦੋਂ (vvp_net_t*cur = ptr.ptr()) {
+	    vvp_net_ptr_t ਅਗਲਾ_val = cur->ਪੋਰਟ[ptr.ਪੋਰਟ()];
 
-	    if (cur->fun)
+	    ਜੇ (cur->fun)
 		  cur->fun->recv_string(ptr, val, context);
 
-	    ptr = next_val;
+	    ptr = ਅਗਲਾ_val;
       }
 }
 
-inline void vvp_send_object(vvp_net_ptr_t ptr, vvp_object_t val, vvp_context_t context)
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_send_object(vvp_net_ptr_t ptr, vvp_object_t val, vvp_context_t context)
 {
-      while (vvp_net_t*cur = ptr.ptr()) {
-	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
+      ਜਦੋਂ (vvp_net_t*cur = ptr.ptr()) {
+	    vvp_net_ptr_t ਅਗਲਾ_val = cur->ਪੋਰਟ[ptr.ਪੋਰਟ()];
 
-	    if (cur->fun)
+	    ਜੇ (cur->fun)
 		  cur->fun->recv_object(ptr, val, context);
 
-	    ptr = next_val;
+	    ptr = ਅਗਲਾ_val;
       }
 }
 
@@ -1592,168 +1592,168 @@ inline void vvp_send_object(vvp_net_ptr_t ptr, vvp_object_t val, vvp_context_t c
  * know how wide to pad with Z, if it needs to transform the part to a
  * mirror of the destination vector.
  */
-inline void vvp_send_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&val,
-			     unsigned base, unsigned vwid,
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_send_vec4_pv(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&val,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid,
 			     vvp_context_t context)
 {
-      while (class vvp_net_t*cur = ptr.ptr()) {
-	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
+      ਜਦੋਂ (class vvp_net_t*cur = ptr.ptr()) {
+	    vvp_net_ptr_t ਅਗਲਾ_val = cur->ਪੋਰਟ[ptr.ਪੋਰਟ()];
 
-	    if (cur->fun)
-		  cur->fun->recv_vec4_pv(ptr, val, base, vwid, context);
+	    ਜੇ (cur->fun)
+		  cur->fun->recv_vec4_pv(ptr, val, ਅਧਾਰ, vwid, context);
 
-	    ptr = next_val;
+	    ptr = ਅਗਲਾ_val;
       }
 }
 
-inline void vvp_send_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&val,
-			     unsigned base, unsigned vwid)
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_send_vec8_pv(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector8_t&val,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid)
 {
-      while (class vvp_net_t*cur = ptr.ptr()) {
-	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
+      ਜਦੋਂ (class vvp_net_t*cur = ptr.ptr()) {
+	    vvp_net_ptr_t ਅਗਲਾ_val = cur->ਪੋਰਟ[ptr.ਪੋਰਟ()];
 
-	    if (cur->fun)
-		  cur->fun->recv_vec8_pv(ptr, val, base, vwid);
+	    ਜੇ (cur->fun)
+		  cur->fun->recv_vec8_pv(ptr, val, ਅਧਾਰ, vwid);
 
-	    ptr = next_val;
+	    ptr = ਅਗਲਾ_val;
       }
 }
 
-inline void vvp_net_t::send_vec4(const vvp_vector4_t&val, vvp_context_t context)
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_net_t::send_vec4(ਅਚਲ vvp_vector4_t&val, vvp_context_t context)
 {
-      if (fil == 0) {
-	    vvp_send_vec4(out_, val, context);
-	    return;
+      ਜੇ (fil == 0) {
+	    vvp_send_vec4(ਬਾਹਰਲਾ_2, val, context);
+	    ਵਾਪਸ;
       }
 
       vvp_vector4_t rep;
-      switch (fil->filter_vec4(val, rep, 0, val.size())) {
-	  case vvp_net_fil_t::STOP:
-	    break;
-	  case vvp_net_fil_t::PROP:
-	    vvp_send_vec4(out_, val, context);
-	    break;
-	  case vvp_net_fil_t::REPL:
-	    vvp_send_vec4(out_, rep, context);
-	    break;
+      ਚੋਣ (fil->filter_vec4(val, rep, 0, val.ਮਾਪ())) {
+	  ਹਾਲਤ vvp_net_fil_t::STOP:
+	    ਰੋਕੋ;
+	  ਹਾਲਤ vvp_net_fil_t::PROP:
+	    vvp_send_vec4(ਬਾਹਰਲਾ_2, val, context);
+	    ਰੋਕੋ;
+	  ਹਾਲਤ vvp_net_fil_t::REPL:
+	    vvp_send_vec4(ਬਾਹਰਲਾ_2, rep, context);
+	    ਰੋਕੋ;
       }
 }
 
-inline void vvp_net_t::send_vec4_pv(const vvp_vector4_t&val,
-				    unsigned base, unsigned vwid,
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_net_t::send_vec4_pv(ਅਚਲ vvp_vector4_t&val,
+				    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid,
 				    vvp_context_t context)
 {
-      if (fil == 0) {
-	    vvp_send_vec4_pv(out_, val, base, vwid, context);
-	    return;
+      ਜੇ (fil == 0) {
+	    vvp_send_vec4_pv(ਬਾਹਰਲਾ_2, val, ਅਧਾਰ, vwid, context);
+	    ਵਾਪਸ;
       }
 
       vvp_vector4_t rep;
-      switch (fil->filter_vec4(val, rep, base, vwid)) {
-	  case vvp_net_fil_t::STOP:
-	    break;
-	  case vvp_net_fil_t::PROP:
-	    vvp_send_vec4_pv(out_, val, base, vwid, context);
-	    break;
-	  case vvp_net_fil_t::REPL:
-	    vvp_send_vec4_pv(out_, rep, base, vwid, context);
-	    break;
+      ਚੋਣ (fil->filter_vec4(val, rep, ਅਧਾਰ, vwid)) {
+	  ਹਾਲਤ vvp_net_fil_t::STOP:
+	    ਰੋਕੋ;
+	  ਹਾਲਤ vvp_net_fil_t::PROP:
+	    vvp_send_vec4_pv(ਬਾਹਰਲਾ_2, val, ਅਧਾਰ, vwid, context);
+	    ਰੋਕੋ;
+	  ਹਾਲਤ vvp_net_fil_t::REPL:
+	    vvp_send_vec4_pv(ਬਾਹਰਲਾ_2, rep, ਅਧਾਰ, vwid, context);
+	    ਰੋਕੋ;
       }
 }
 
-inline void vvp_net_t::send_vec8(const vvp_vector8_t&val)
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_net_t::send_vec8(ਅਚਲ vvp_vector8_t&val)
 {
-      if (fil == 0) {
-	    vvp_send_vec8(out_, val);
-	    return;
-      }
-
-      vvp_vector8_t rep;
-      switch (fil->filter_vec8(val, rep, 0, val.size())) {
-	  case vvp_net_fil_t::STOP:
-	    break;
-	  case vvp_net_fil_t::PROP:
-	    vvp_send_vec8(out_, val);
-	    break;
-	  case vvp_net_fil_t::REPL:
-	    vvp_send_vec8(out_, rep);
-	    break;
-      }
-}
-
-inline void vvp_net_t::send_vec8_pv(const vvp_vector8_t&val,
-				    unsigned base, unsigned vwid)
-{
-      if (fil == 0) {
-	    vvp_send_vec8_pv(out_, val, base, vwid);
-	    return;
+      ਜੇ (fil == 0) {
+	    vvp_send_vec8(ਬਾਹਰਲਾ_2, val);
+	    ਵਾਪਸ;
       }
 
       vvp_vector8_t rep;
-      switch (fil->filter_vec8(val, rep, base, vwid)) {
-	  case vvp_net_fil_t::STOP:
-	    break;
-	  case vvp_net_fil_t::PROP:
-	    vvp_send_vec8_pv(out_, val, base, vwid);
-	    break;
-	  case vvp_net_fil_t::REPL:
-	    vvp_send_vec8_pv(out_, rep, base, vwid);
-	    break;
+      ਚੋਣ (fil->filter_vec8(val, rep, 0, val.ਮਾਪ())) {
+	  ਹਾਲਤ vvp_net_fil_t::STOP:
+	    ਰੋਕੋ;
+	  ਹਾਲਤ vvp_net_fil_t::PROP:
+	    vvp_send_vec8(ਬਾਹਰਲਾ_2, val);
+	    ਰੋਕੋ;
+	  ਹਾਲਤ vvp_net_fil_t::REPL:
+	    vvp_send_vec8(ਬਾਹਰਲਾ_2, rep);
+	    ਰੋਕੋ;
       }
 }
 
-inline void vvp_net_t::send_real(double val, vvp_context_t context)
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_net_t::send_vec8_pv(ਅਚਲ vvp_vector8_t&val,
+				    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid)
 {
-      if (fil && ! fil->filter_real(val))
-	    return;
+      ਜੇ (fil == 0) {
+	    vvp_send_vec8_pv(ਬਾਹਰਲਾ_2, val, ਅਧਾਰ, vwid);
+	    ਵਾਪਸ;
+      }
 
-      vvp_send_real(out_, val, context);
+      vvp_vector8_t rep;
+      ਚੋਣ (fil->filter_vec8(val, rep, ਅਧਾਰ, vwid)) {
+	  ਹਾਲਤ vvp_net_fil_t::STOP:
+	    ਰੋਕੋ;
+	  ਹਾਲਤ vvp_net_fil_t::PROP:
+	    vvp_send_vec8_pv(ਬਾਹਰਲਾ_2, val, ਅਧਾਰ, vwid);
+	    ਰੋਕੋ;
+	  ਹਾਲਤ vvp_net_fil_t::REPL:
+	    vvp_send_vec8_pv(ਬਾਹਰਲਾ_2, rep, ਅਧਾਰ, vwid);
+	    ਰੋਕੋ;
+      }
+}
+
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_net_t::send_real(ਦੁੱਗਣਾ val, vvp_context_t context)
+{
+      ਜੇ (fil && ! fil->filter_real(val))
+	    ਵਾਪਸ;
+
+      vvp_send_real(ਬਾਹਰਲਾ_2, val, context);
 }
 
 
-inline void vvp_net_t::send_string(const std::string&val, vvp_context_t context)
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_net_t::send_string(ਅਚਲ std::string&val, vvp_context_t context)
 {
-      if (fil && !fil->filter_string(val))
-	    return;
+      ਜੇ (fil && !fil->filter_string(val))
+	    ਵਾਪਸ;
 
-      vvp_send_string(out_, val, context);
+      vvp_send_string(ਬਾਹਰਲਾ_2, val, context);
 }
 
 
-inline void vvp_net_t::send_object(vvp_object_t val, vvp_context_t context)
+ਸਤਰਅੰਦਰ ਖਾਲੀ vvp_net_t::send_object(vvp_object_t val, vvp_context_t context)
 {
-      if (fil && ! fil->filter_object(val))
-	    return;
+      ਜੇ (fil && ! fil->filter_object(val))
+	    ਵਾਪਸ;
 
-      vvp_send_object(out_, val, context);
+      vvp_send_object(ਬਾਹਰਲਾ_2, val, context);
 }
 
 
-inline bool vvp_net_fil_t::test_force_mask(unsigned bit) const
+ਸਤਰਅੰਦਰ bool vvp_net_fil_t::test_force_ਨਕਾਬ(ਬਿਨਾਨਿਸ਼ਾਨੀ ਦੋਆਧਾਰੀ_ਅੰਕ) ਅਚਲ
 {
-      if (bit >= force_mask_.size())
-	    return false;
-      if (force_mask_.value(bit))
-	    return true;
-      else
-	    return false;
+      ਜੇ (ਦੋਆਧਾਰੀ_ਅੰਕ >= force_ਨਕਾਬ_2.ਮਾਪ())
+	    ਵਾਪਸ false;
+      ਜੇ (force_ਨਕਾਬ_2.ਮੁੱਲ(ਦੋਆਧਾਰੀ_ਅੰਕ))
+	    ਵਾਪਸ true;
+      ਨਹੀਂਤਾਂ
+	    ਵਾਪਸ false;
 }
 
-inline bool vvp_net_fil_t::test_force_mask_is_zero(void) const
+ਸਤਰਅੰਦਰ bool vvp_net_fil_t::test_force_ਨਕਾਬ_is_zero(ਖਾਲੀ) ਅਚਲ
 {
-      if (force_mask_.size() == 0)
-	    return true;
-      if (force_mask_.is_zero())
-	    return true;
-      return false;
+      ਜੇ (force_ਨਕਾਬ_2.ਮਾਪ() == 0)
+	    ਵਾਪਸ true;
+      ਜੇ (force_ਨਕਾਬ_2.is_zero())
+	    ਵਾਪਸ true;
+      ਵਾਪਸ false;
 }
 
 /*
  * Undefine the ivl_alloc.h definitions so they don't leak out of this file.
  */
-#undef malloc
-#undef realloc
-#undef calloc
-#undef __ivl_alloc_H
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ ਸਮ੍ਰਿਤੀ_ਦਿਓ
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ realloc
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ ਸਿਫਰ_ਸਮ੍ਰਿਤੀ_ਦਿਓ
+#ਪਰਿਭਾਸ਼ਾ_ਰੱਦ __ivl_alloc_H
 
-#endif /* IVL_vvp_net_H */
+#ਜੇ_ਅੰਤ /* IVL_vvp_net_H */

@@ -26,16 +26,16 @@
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+ਵਰਤੋਂ ਨਾਮਾਕਾਸ਼ std;
 
-struct vvp_fun_part_state_s {
+ਬਣਤਰ vvp_fun_part_state_s {
       vvp_fun_part_state_s() {}
 
-      vvp_vector4_t bits;
+      vvp_vector4_t ਬਿੱਟ;
 };
 
-vvp_fun_part::vvp_fun_part(unsigned base, unsigned wid)
-: base_(base), wid_(wid)
+vvp_fun_part::vvp_fun_part(ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ wid)
+: ਅਧਾਰ_2(ਅਧਾਰ), wid_(wid)
 {
 }
 
@@ -43,8 +43,8 @@ vvp_fun_part::~vvp_fun_part()
 {
 }
 
-vvp_fun_part_sa::vvp_fun_part_sa(unsigned base, unsigned wid)
-: vvp_fun_part(base, wid)
+vvp_fun_part_sa::vvp_fun_part_sa(ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ wid)
+: vvp_fun_part(ਅਧਾਰ, wid)
 {
       net_ = 0;
 }
@@ -53,20 +53,20 @@ vvp_fun_part_sa::~vvp_fun_part_sa()
 {
 }
 
-void vvp_fun_part_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ਖਾਲੀ vvp_fun_part_sa::recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                                 vvp_context_t)
 {
-      assert(port.port() == 0);
+      ਪ੍ਰਤਿਜ੍ਞਾ(ਪੋਰਟ.ਪੋਰਟ() == 0);
 
-      vvp_vector4_t tmp (bit, base_, wid_);
-      if (val_ .eeq( tmp ))
-	    return;
+      vvp_vector4_t tmp (ਦੋਆਧਾਰੀ_ਅੰਕ, ਅਧਾਰ_2, wid_);
+      ਜੇ (val_ .eeq( tmp ))
+	    ਵਾਪਸ;
 
       val_ = tmp;
 
-      if (net_ == 0) {
-	    net_ = port.ptr();
-	    schedule_functor(this);
+      ਜੇ (net_ == 0) {
+	    net_ = ਪੋਰਟ.ptr();
+	    ਸਮਾਂ_ਸਾਰਣੀ_functor(ਇਹ);
       }
 }
 
@@ -76,78 +76,78 @@ void vvp_fun_part_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
  * happen, but is does seem to happen and this should have well
  * defined behavior.
  */
-void vvp_fun_part_sa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-				   unsigned base, unsigned vwid, vvp_context_t)
+ਖਾਲੀ vvp_fun_part_sa::recv_vec4_pv(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t)
 {
       vvp_vector4_t tmp (vwid, BIT4_Z);
-      tmp.set_vec(base_, val_);
-      tmp.set_vec(base, bit);
-      recv_vec4(port, tmp, 0);
+      tmp.ਸੈੱਟ_vec(ਅਧਾਰ_2, val_);
+      tmp.ਸੈੱਟ_vec(ਅਧਾਰ, ਦੋਆਧਾਰੀ_ਅੰਕ);
+      recv_vec4(ਪੋਰਟ, tmp, 0);
 }
 
-void vvp_fun_part_sa::run_run()
+ਖਾਲੀ vvp_fun_part_sa::ਲੜੀਵਾਰ_ਲੜੀਵਾਰ()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
       ptr->send_vec4(val_, 0);
 }
 
-vvp_fun_part_aa::vvp_fun_part_aa(unsigned base, unsigned wid)
-: vvp_fun_part(base, wid)
+vvp_fun_part_aa::vvp_fun_part_aa(ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ wid)
+: vvp_fun_part(ਅਧਾਰ, wid)
 {
       context_scope_ = vpip_peek_context_scope();
-      context_idx_ = vpip_add_item_to_context(this, context_scope_);
+      context_idx_ = vpip_ਜੋੜੋ_ਵਸਤੂ_ਮੰਜ਼ਿਲ_context(ਇਹ, context_scope_);
 }
 
 vvp_fun_part_aa::~vvp_fun_part_aa()
 {
 }
 
-void vvp_fun_part_aa::alloc_instance(vvp_context_t context)
+ਖਾਲੀ vvp_fun_part_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new vvp_vector4_t);
+      vvp_ਸੈੱਟ_context_ਵਸਤੂ(context, context_idx_, ਨਵਾਂ vvp_vector4_t);
 }
 
-void vvp_fun_part_aa::reset_instance(vvp_context_t context)
-{
-      vvp_vector4_t*val = static_cast<vvp_vector4_t*>
-            (vvp_get_context_item(context, context_idx_));
-
-      val->set_to_x();
-}
-
-#ifdef CHECK_WITH_VALGRIND
-void vvp_fun_part_aa::free_instance(vvp_context_t context)
+ਖਾਲੀ vvp_fun_part_aa::reset_instance(vvp_context_t context)
 {
       vvp_vector4_t*val = static_cast<vvp_vector4_t*>
-            (vvp_get_context_item(context, context_idx_));
-      delete val;
-}
-#endif
+            (vvp_get_context_ਵਸਤੂ(context, context_idx_));
 
-void vvp_fun_part_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      val->ਸੈੱਟ_ਮੰਜ਼ਿਲ_x();
+}
+
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
+ਖਾਲੀ vvp_fun_part_aa::free_instance(vvp_context_t context)
+{
+      vvp_vector4_t*val = static_cast<vvp_vector4_t*>
+            (vvp_get_context_ਵਸਤੂ(context, context_idx_));
+      ਮਿਟਾਓ val;
+}
+#ਜੇ_ਅੰਤ
+
+ਖਾਲੀ vvp_fun_part_aa::recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                                 vvp_context_t context)
 {
-      if (context) {
-            assert(port.port() == 0);
+      ਜੇ (context) {
+            ਪ੍ਰਤਿਜ੍ਞਾ(ਪੋਰਟ.ਪੋਰਟ() == 0);
 
             vvp_vector4_t*val = static_cast<vvp_vector4_t*>
-                  (vvp_get_context_item(context, context_idx_));
+                  (vvp_get_context_ਵਸਤੂ(context, context_idx_));
 
             vvp_vector4_t tmp (wid_, BIT4_X);
-            for (unsigned idx = 0 ;  idx < wid_ ;  idx += 1) {
-                  if (idx + base_ < bit.size())
-                        tmp.set_bit(idx, bit.value(base_+idx));
+            ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0 ;  idx < wid_ ;  idx += 1) {
+                  ਜੇ (idx + ਅਧਾਰ_2 < ਦੋਆਧਾਰੀ_ਅੰਕ.size())
+                        tmp.ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(idx, ਦੋਆਧਾਰੀ_ਅੰਕ.value(ਅਧਾਰ_2+idx));
             }
-            if (!val->eeq( tmp )) {
+            ਜੇ (!val->eeq( tmp )) {
                   *val = tmp;
-                  port.ptr()->send_vec4(tmp, context);
+                  ਪੋਰਟ.ptr()->send_vec4(tmp, context);
             }
-      } else {
-            context = context_scope_->live_contexts;
-            while (context) {
-                  recv_vec4(port, bit, context);
-                  context = vvp_get_next_context(context);
+      } ਨਹੀਂਤਾਂ {
+            context = context_scope_->ਜੀਵਤ_contexts;
+            ਜਦੋਂ (context) {
+                  recv_vec4(ਪੋਰਟ, ਦੋਆਧਾਰੀ_ਅੰਕ, context);
+                  context = vvp_get_ਅਗਲਾ_context(context);
             }
       }
 }
@@ -158,29 +158,29 @@ void vvp_fun_part_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
  * happen, but is does seem to happen and this should have well
  * defined behavior.
  */
-void vvp_fun_part_aa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-				   unsigned base, unsigned vwid, vvp_context_t context)
+ਖਾਲੀ vvp_fun_part_aa::recv_vec4_pv(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t context)
 {
-      if (context) {
-	    const vvp_vector4_t*val = static_cast<vvp_vector4_t*>
-	                                         (vvp_get_context_item(context,
+      ਜੇ (context) {
+	    ਅਚਲ vvp_vector4_t*val = static_cast<vvp_vector4_t*>
+	                                         (vvp_get_context_ਵਸਤੂ(context,
 	                                                               context_idx_));
 
 	    vvp_vector4_t tmp (vwid, BIT4_Z);
-	    tmp.set_vec(base_, *val);
-	    tmp.set_vec(base, bit);
-	    recv_vec4(port, tmp, context);
-      } else {
-	    context = context_scope_->live_contexts;
-	    while (context) {
-		  recv_vec4_pv(port, bit, base, vwid, context);
-		  context = vvp_get_next_context(context);
+	    tmp.ਸੈੱਟ_vec(ਅਧਾਰ_2, *val);
+	    tmp.ਸੈੱਟ_vec(ਅਧਾਰ, ਦੋਆਧਾਰੀ_ਅੰਕ);
+	    recv_vec4(ਪੋਰਟ, tmp, context);
+      } ਨਹੀਂਤਾਂ {
+	    context = context_scope_->ਜੀਵਤ_contexts;
+	    ਜਦੋਂ (context) {
+		  recv_vec4_pv(ਪੋਰਟ, ਦੋਆਧਾਰੀ_ਅੰਕ, ਅਧਾਰ, vwid, context);
+		  context = vvp_get_ਅਗਲਾ_context(context);
 	    }
       }
 }
 
-vvp_fun_part_pv::vvp_fun_part_pv(unsigned b, unsigned w, unsigned v)
-: base_(b), wid_(w), vwid_(v)
+vvp_fun_part_pv::vvp_fun_part_pv(ਬਿਨਾਨਿਸ਼ਾਨੀ b, ਬਿਨਾਨਿਸ਼ਾਨੀ w, ਬਿਨਾਨਿਸ਼ਾਨੀ v)
+: ਅਧਾਰ_2(b), wid_(w), vwid_(v)
 {
 }
 
@@ -188,51 +188,51 @@ vvp_fun_part_pv::~vvp_fun_part_pv()
 {
 }
 
-void vvp_fun_part_pv::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ਖਾਲੀ vvp_fun_part_pv::recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                                 vvp_context_t context)
 {
-      assert(port.port() == 0);
+      ਪ੍ਰਤਿਜ੍ਞਾ(ਪੋਰਟ.ਪੋਰਟ() == 0);
 
-      if (bit.size() != wid_) {
+      ਜੇ (ਦੋਆਧਾਰੀ_ਅੰਕ.size() != wid_) {
 	    cerr << "internal error: part_pv data mismatch. "
-		 << "base_=" << base_ << ", wid_=" << wid_
-		 << ", vwid_=" << vwid_ << ", bit=" << bit
-		 << endl;
+		 << "base_=" << ਅਧਾਰ_2 << ", wid_=" << wid_
+		 << ", vwid_=" << vwid_ << ", bit=" << ਦੋਆਧਾਰੀ_ਅੰਕ
+		 << ਸਤਰ_ਅੰਤ;
       }
-      assert(bit.size() == wid_);
+      ਪ੍ਰਤਿਜ੍ਞਾ(ਦੋਆਧਾਰੀ_ਅੰਕ.size() == wid_);
 
-      port.ptr()->send_vec4_pv(bit, base_, vwid_, context);
+      ਪੋਰਟ.ptr()->send_vec4_pv(ਦੋਆਧਾਰੀ_ਅੰਕ, ਅਧਾਰ_2, vwid_, context);
 }
 
-void vvp_fun_part_pv::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-                                 unsigned base, unsigned vwid, vvp_context_t ctx)
+ਖਾਲੀ vvp_fun_part_pv::recv_vec4_pv(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+                                 ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t ctx)
 {
-      assert(port.port() == 0);
-      assert(base + bit.size() <= vwid);
-      assert(vwid == wid_);
+      ਪ੍ਰਤਿਜ੍ਞਾ(ਪੋਰਟ.ਪੋਰਟ() == 0);
+      ਪ੍ਰਤਿਜ੍ਞਾ(ਅਧਾਰ + ਦੋਆਧਾਰੀ_ਅੰਕ.size() <= vwid);
+      ਪ੍ਰਤਿਜ੍ਞਾ(vwid == wid_);
 
       vvp_vector4_t tmp(wid_, BIT4_Z);
-      tmp.set_vec(base, bit);
+      tmp.ਸੈੱਟ_vec(ਅਧਾਰ, ਦੋਆਧਾਰੀ_ਅੰਕ);
 
-      port.ptr()->send_vec4_pv(tmp, base_, vwid_, ctx);
+      ਪੋਰਟ.ptr()->send_vec4_pv(tmp, ਅਧਾਰ_2, vwid_, ctx);
 }
 
-void vvp_fun_part_pv::recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit)
+ਖਾਲੀ vvp_fun_part_pv::recv_vec8(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector8_t&ਦੋਆਧਾਰੀ_ਅੰਕ)
 {
-      assert(port.port() == 0);
+      ਪ੍ਰਤਿਜ੍ਞਾ(ਪੋਰਟ.ਪੋਰਟ() == 0);
 
-      if (bit.size() != wid_) {
+      ਜੇ (ਦੋਆਧਾਰੀ_ਅੰਕ.size() != wid_) {
 	    cerr << "internal error: part_pv (strength-aware) data mismatch. "
-		 << "base_=" << base_ << ", wid_=" << wid_
-		 << ", vwid_=" << vwid_ << ", bit=" << bit
-		 << endl;
+		 << "base_=" << ਅਧਾਰ_2 << ", wid_=" << wid_
+		 << ", vwid_=" << vwid_ << ", bit=" << ਦੋਆਧਾਰੀ_ਅੰਕ
+		 << ਸਤਰ_ਅੰਤ;
       }
-      assert(bit.size() == wid_);
+      ਪ੍ਰਤਿਜ੍ਞਾ(ਦੋਆਧਾਰੀ_ਅੰਕ.size() == wid_);
 
-      port.ptr()->send_vec8_pv(bit, base_, vwid_);
+      ਪੋਰਟ.ptr()->send_vec8_pv(ਦੋਆਧਾਰੀ_ਅੰਕ, ਅਧਾਰ_2, vwid_);
 }
 
-vvp_fun_part_var::vvp_fun_part_var(unsigned w, bool is_signed)
+vvp_fun_part_var::vvp_fun_part_var(ਬਿਨਾਨਿਸ਼ਾਨੀ w, ਤਾਰਕਿਕ is_signed)
 : wid_(w), is_signed_(is_signed)
 {
 }
@@ -241,50 +241,50 @@ vvp_fun_part_var::~vvp_fun_part_var()
 {
 }
 
-bool vvp_fun_part_var::recv_vec4_(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-                                  int&base, vvp_vector4_t&source,
+ਤਾਰਕਿਕ vvp_fun_part_var::recv_vec4_(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+                                  ਪੂਰਨ&ਅਧਾਰ, vvp_vector4_t&ਸਰੋਤ,
                                   vvp_vector4_t&ref)
 {
       int32_t tmp;
-      switch (port.port()) {
-	  case 0:
-	    source = bit;
-	    break;
-	  case 1:
+      ਚੋਣ (ਪੋਰਟ.ਪੋਰਟ()) {
+	  ਹਾਲਤ 0:
+	    ਸਰੋਤ = ਦੋਆਧਾਰੀ_ਅੰਕ;
+	    ਰੋਕੋ;
+	  ਹਾਲਤ 1:
 	      // INT_MIN is before the vector and is used to
 	      // represent a 'bx value on the select input.
 	      // It is also used to guard against 32 bit
 	      // unsigned -> signed address overflow / wrap around.
-	    if (!vector4_to_value(bit, tmp, is_signed_) || (!is_signed_ && tmp < 0))
+	    ਜੇ (!vector4_ਮੰਜ਼ਿਲ_ਮੁੱਲ(ਦੋਆਧਾਰੀ_ਅੰਕ, tmp, is_signed_) || (!is_signed_ && tmp < 0))
 		  tmp = INT32_MIN;
-	    if (static_cast<int>(tmp) == base) return false;
-	    base = tmp;
-	    break;
-	  default:
-	    fprintf(stderr, "Unsupported port type %u.\n", port.port());
-	    assert(0);
-	    break;
+	    ਜੇ (static_cast<ਪੂਰਨ>(tmp) == ਅਧਾਰ) ਵਾਪਸ ਝੂਠ;
+	    ਅਧਾਰ = tmp;
+	    ਰੋਕੋ;
+	  ਮੂਲ:
+	    fprintf(stderr, "Unsupported port type %u.\n", ਪੋਰਟ.ਪੋਰਟ());
+	    ਪ੍ਰਤਿਜ੍ਞਾ(0);
+	    ਰੋਕੋ;
       }
 
       vvp_vector4_t res (wid_);
 
-      for (unsigned idx = 0 ;  idx < wid_ ;  idx += 1) {
-	    int adr = base+idx;
-	    if (adr < 0) continue;
-	    if ((unsigned)adr >= source.size()) break;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0 ;  idx < wid_ ;  idx += 1) {
+	    ਪੂਰਨ adr = ਅਧਾਰ+idx;
+	    ਜੇ (adr < 0) ਜਾਰੀ;
+	    ਜੇ ((ਬਿਨਾਨਿਸ਼ਾਨੀ)adr >= ਸਰੋਤ.size()) ਰੋਕੋ;
 
-	    res.set_bit(idx, source.value((unsigned)adr));
+	    res.ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(idx, ਸਰੋਤ.value((ਬਿਨਾਨਿਸ਼ਾਨੀ)adr));
       }
 
-      if (! ref.eeq(res)) {
+      ਜੇ (! ref.eeq(res)) {
 	    ref = res;
-            return true;
+            ਵਾਪਸ ਸੱਚ;
       }
-      return false;
+      ਵਾਪਸ ਝੂਠ;
 }
 
-vvp_fun_part_var_sa::vvp_fun_part_var_sa(unsigned w, bool is_signed)
-: vvp_fun_part_var(w, is_signed), base_(0)
+vvp_fun_part_var_sa::vvp_fun_part_var_sa(ਬਿਨਾਨਿਸ਼ਾਨੀ w, ਤਾਰਕਿਕ is_signed)
+: vvp_fun_part_var(w, is_signed), ਅਧਾਰ_2(0)
 {
 }
 
@@ -292,108 +292,108 @@ vvp_fun_part_var_sa::~vvp_fun_part_var_sa()
 {
 }
 
-void vvp_fun_part_var_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ਖਾਲੀ vvp_fun_part_var_sa::recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                                     vvp_context_t)
 {
-      if (recv_vec4_(port, bit, base_, source_, ref_)) {
-	    port.ptr()->send_vec4(ref_, 0);
+      ਜੇ (recv_vec4_(ਪੋਰਟ, ਦੋਆਧਾਰੀ_ਅੰਕ, ਅਧਾਰ_2, ਸਰੋਤ_2, ref_)) {
+	    ਪੋਰਟ.ptr()->send_vec4(ref_, 0);
       }
 }
 
-void vvp_fun_part_var_sa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-				       unsigned base, unsigned vwid, vvp_context_t)
+ਖਾਲੀ vvp_fun_part_var_sa::recv_vec4_pv(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+				       ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t)
 {
-      vvp_vector4_t tmp = source_;
-      if (tmp.size() == 0)
+      vvp_vector4_t tmp = ਸਰੋਤ_2;
+      ਜੇ (tmp.size() == 0)
 	    tmp = vvp_vector4_t(vwid);
 
-      assert(tmp.size() == vwid);
-      tmp.set_vec(base, bit);
-      recv_vec4(port, tmp, 0);
+      ਪ੍ਰਤਿਜ੍ਞਾ(tmp.size() == vwid);
+      tmp.ਸੈੱਟ_vec(ਅਧਾਰ, ਦੋਆਧਾਰੀ_ਅੰਕ);
+      recv_vec4(ਪੋਰਟ, tmp, 0);
 }
 
-struct vvp_fun_part_var_state_s {
-      vvp_fun_part_var_state_s() : base(0) { }
+ਬਣਤਰ vvp_fun_part_var_state_s {
+      vvp_fun_part_var_state_s() : ਅਧਾਰ(0) { }
 
-      int base;
-      vvp_vector4_t source;
+      ਪੂਰਨ ਅਧਾਰ;
+      vvp_vector4_t ਸਰੋਤ;
       vvp_vector4_t ref;
 };
 
-vvp_fun_part_var_aa::vvp_fun_part_var_aa(unsigned w, bool is_signed)
+vvp_fun_part_var_aa::vvp_fun_part_var_aa(ਬਿਨਾਨਿਸ਼ਾਨੀ w, ਤਾਰਕਿਕ is_signed)
 : vvp_fun_part_var(w, is_signed)
 {
       context_scope_ = vpip_peek_context_scope();
-      context_idx_ = vpip_add_item_to_context(this, context_scope_);
+      context_idx_ = vpip_ਜੋੜੋ_ਵਸਤੂ_ਮੰਜ਼ਿਲ_context(ਇਹ, context_scope_);
 }
 
 vvp_fun_part_var_aa::~vvp_fun_part_var_aa()
 {
 }
 
-void vvp_fun_part_var_aa::alloc_instance(vvp_context_t context)
+ਖਾਲੀ vvp_fun_part_var_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new vvp_fun_part_var_state_s);
+      vvp_ਸੈੱਟ_context_ਵਸਤੂ(context, context_idx_, ਨਵਾਂ vvp_fun_part_var_state_s);
 }
 
-void vvp_fun_part_var_aa::reset_instance(vvp_context_t context)
-{
-      vvp_fun_part_var_state_s*state = static_cast<vvp_fun_part_var_state_s*>
-            (vvp_get_context_item(context, context_idx_));
-
-      state->base = 0;
-      state->source.set_to_x();
-      state->ref.set_to_x();
-}
-
-#ifdef CHECK_WITH_VALGRIND
-void vvp_fun_part_var_aa::free_instance(vvp_context_t context)
+ਖਾਲੀ vvp_fun_part_var_aa::reset_instance(vvp_context_t context)
 {
       vvp_fun_part_var_state_s*state = static_cast<vvp_fun_part_var_state_s*>
-            (vvp_get_context_item(context, context_idx_));
-      delete state;
-}
-#endif
+            (vvp_get_context_ਵਸਤੂ(context, context_idx_));
 
-void vvp_fun_part_var_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      state->ਅਧਾਰ = 0;
+      state->ਸਰੋਤ.ਸੈੱਟ_ਮੰਜ਼ਿਲ_x();
+      state->ref.ਸੈੱਟ_ਮੰਜ਼ਿਲ_x();
+}
+
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
+ਖਾਲੀ vvp_fun_part_var_aa::free_instance(vvp_context_t context)
+{
+      vvp_fun_part_var_state_s*state = static_cast<vvp_fun_part_var_state_s*>
+            (vvp_get_context_ਵਸਤੂ(context, context_idx_));
+      ਮਿਟਾਓ state;
+}
+#ਜੇ_ਅੰਤ
+
+ਖਾਲੀ vvp_fun_part_var_aa::recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                                     vvp_context_t context)
 {
-      if (context) {
+      ਜੇ (context) {
             vvp_fun_part_var_state_s*state = static_cast<vvp_fun_part_var_state_s*>
-                  (vvp_get_context_item(context, context_idx_));
+                  (vvp_get_context_ਵਸਤੂ(context, context_idx_));
 
-            if (recv_vec4_(port, bit, state->base, state->source, state->ref)) {
-                  port.ptr()->send_vec4(state->ref, context);
+            ਜੇ (recv_vec4_(ਪੋਰਟ, ਦੋਆਧਾਰੀ_ਅੰਕ, state->ਅਧਾਰ, state->ਸਰੋਤ, state->ref)) {
+                  ਪੋਰਟ.ptr()->send_vec4(state->ref, context);
             }
-      } else {
-            context = context_scope_->live_contexts;
-            while (context) {
-                  recv_vec4(port, bit, context);
-                  context = vvp_get_next_context(context);
+      } ਨਹੀਂਤਾਂ {
+            context = context_scope_->ਜੀਵਤ_contexts;
+            ਜਦੋਂ (context) {
+                  recv_vec4(ਪੋਰਟ, ਦੋਆਧਾਰੀ_ਅੰਕ, context);
+                  context = vvp_get_ਅਗਲਾ_context(context);
             }
       }
 }
 
-void vvp_fun_part_var_aa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-				       unsigned base, unsigned vwid, vvp_context_t context)
+ਖਾਲੀ vvp_fun_part_var_aa::recv_vec4_pv(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+				       ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t context)
 {
-      if (context) {
-	    const vvp_fun_part_var_state_s*state = static_cast<vvp_fun_part_var_state_s*>
-	                                                      (vvp_get_context_item(context,
+      ਜੇ (context) {
+	    ਅਚਲ vvp_fun_part_var_state_s*state = static_cast<vvp_fun_part_var_state_s*>
+	                                                      (vvp_get_context_ਵਸਤੂ(context,
 	                                                       context_idx_));
 
-            vvp_vector4_t tmp = state->source;
-            if (tmp.size() == 0)
+            vvp_vector4_t tmp = state->ਸਰੋਤ;
+            ਜੇ (tmp.size() == 0)
                   tmp = vvp_vector4_t(vwid);
 
-            assert(tmp.size() == vwid);
-            tmp.set_vec(base, bit);
-            recv_vec4(port, tmp, context);
-      } else {
-            context = context_scope_->live_contexts;
-            while (context) {
-                  recv_vec4(port, bit, context);
-                  context = vvp_get_next_context(context);
+            ਪ੍ਰਤਿਜ੍ਞਾ(tmp.size() == vwid);
+            tmp.ਸੈੱਟ_vec(ਅਧਾਰ, ਦੋਆਧਾਰੀ_ਅੰਕ);
+            recv_vec4(ਪੋਰਟ, tmp, context);
+      } ਨਹੀਂਤਾਂ {
+            context = context_scope_->ਜੀਵਤ_contexts;
+            ਜਦੋਂ (context) {
+                  recv_vec4(ਪੋਰਟ, ਦੋਆਧਾਰੀ_ਅੰਕ, context);
+                  context = vvp_get_ਅਗਲਾ_context(context);
             }
       }
 }
@@ -402,52 +402,52 @@ void vvp_fun_part_var_aa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&b
  * Given a node functor, create a network node and link it into the
  * netlist. This form assumes nodes with a single input.
  */
-void link_node_1(char*label, char*source, vvp_net_fun_t*fun)
+ਖਾਲੀ link_ਗੰਢ_1(ਅੱਖਰ*label, ਅੱਖਰ*ਸਰੋਤ, vvp_net_fun_t*fun)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = ਨਵਾਂ vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_ਚਿੰਨ੍ਹ(label, net);
+      ਮੁਕਤ(label);
 
-      input_connect(net, 0, source);
+      ਨਿਵੇਸ਼_connect(net, 0, ਸਰੋਤ);
 }
 
-void compile_part_select(char*label, char*source,
-			 unsigned base, unsigned wid)
+ਖਾਲੀ compile_part_select(ਅੱਖਰ*label, ਅੱਖਰ*ਸਰੋਤ,
+			 ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ wid)
 {
       vvp_fun_part*fun = 0;
-      if (vpip_peek_current_scope()->is_automatic()) {
-            fun = new vvp_fun_part_aa(base, wid);
-      } else {
-            fun = new vvp_fun_part_sa(base, wid);
+      ਜੇ (vpip_peek_current_scope()->is_automatic()) {
+            fun = ਨਵਾਂ vvp_fun_part_aa(ਅਧਾਰ, wid);
+      } ਨਹੀਂਤਾਂ {
+            fun = ਨਵਾਂ vvp_fun_part_sa(ਅਧਾਰ, wid);
       }
-      link_node_1(label, source, fun);
+      link_ਗੰਢ_1(label, ਸਰੋਤ, fun);
 }
 
-void compile_part_select_pv(char*label, char*source,
-			    unsigned base, unsigned wid,
-			    unsigned vector_wid)
+ਖਾਲੀ compile_part_select_pv(ਅੱਖਰ*label, ਅੱਖਰ*ਸਰੋਤ,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ wid,
+			    ਬਿਨਾਨਿਸ਼ਾਨੀ ਸਦਿਸ਼_wid)
 {
-      vvp_fun_part_pv*fun = new vvp_fun_part_pv(base, wid, vector_wid);
-      link_node_1(label, source, fun);
+      vvp_fun_part_pv*fun = ਨਵਾਂ vvp_fun_part_pv(ਅਧਾਰ, wid, ਸਦਿਸ਼_wid);
+      link_ਗੰਢ_1(label, ਸਰੋਤ, fun);
 }
 
-void compile_part_select_var(char*label, char*source, char*var,
-			     unsigned wid, bool is_signed)
+ਖਾਲੀ compile_part_select_var(ਅੱਖਰ*label, ਅੱਖਰ*ਸਰੋਤ, ਅੱਖਰ*var,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ wid, ਤਾਰਕਿਕ is_signed)
 {
       vvp_fun_part_var*fun = 0;
-      if (vpip_peek_current_scope()->is_automatic()) {
-            fun = new vvp_fun_part_var_aa(wid, is_signed);
-      } else {
-            fun = new vvp_fun_part_var_sa(wid, is_signed);
+      ਜੇ (vpip_peek_current_scope()->is_automatic()) {
+            fun = ਨਵਾਂ vvp_fun_part_var_aa(wid, is_signed);
+      } ਨਹੀਂਤਾਂ {
+            fun = ਨਵਾਂ vvp_fun_part_var_sa(wid, is_signed);
       }
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = ਨਵਾਂ vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_ਚਿੰਨ੍ਹ(label, net);
+      ਮੁਕਤ(label);
 
-      input_connect(net, 0, source);
-      input_connect(net, 1, var);
+      ਨਿਵੇਸ਼_connect(net, 0, ਸਰੋਤ);
+      ਨਿਵੇਸ਼_connect(net, 1, var);
 }

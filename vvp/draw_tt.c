@@ -25,101 +25,101 @@
  * map of a 4-vbit value to a hex digit. The table handles the display
  * of x, X, z, Z, etc.
  */
-static void draw_hex_table(void)
+ਸਥਿਰ ਖਾਲੀ draw_hex_ਸਾਰਣੀ(ਖਾਲੀ)
 {
-      unsigned idx;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ idx;
 
-      printf("extern const char hex_digits[256] = {\n");
-      for (idx = 0 ;  idx < 256 ;  idx += 1) {
-	    unsigned cnt_z = 0, cnt_x = 0;
-	    unsigned bv = 0, bdx;
+      ਲਿਖੋ("extern const char hex_digits[256] = {\n");
+      ਲਈ (idx = 0 ;  idx < 256 ;  idx += 1) {
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ cnt_z = 0, cnt_x = 0;
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ bv = 0, bdx;
 
-	    for (bdx = 0 ;  bdx < 4 ;  bdx += 1) {
-		  switch ((idx >> (bdx * 2)) & 3) {
-		      case 0:
-			break;
-		      case 1:
+	    ਲਈ (bdx = 0 ;  bdx < 4 ;  bdx += 1) {
+		  ਚੋਣ ((idx >> (bdx * 2)) & 3) {
+		      ਹਾਲਤ 0:
+			ਰੋਕੋ;
+		      ਹਾਲਤ 1:
 			bv |= 1<<bdx;
-			break;
-		      case 2:
+			ਰੋਕੋ;
+		      ਹਾਲਤ 2:
 			cnt_x += 1;
-			break;
-		      case 3:
+			ਰੋਕੋ;
+		      ਹਾਲਤ 3:
 			cnt_z += 1;
-			break;
+			ਰੋਕੋ;
 		  }
 	    }
 
-	    if (cnt_z == 4)
-		  printf(" 'z',");
+	    ਜੇ (cnt_z == 4)
+		  ਲਿਖੋ(" 'z',");
 
-	    else if (cnt_x == 4)
-		  printf(" 'x',");
+	    ਨਹੀਂਤਾਂ ਜੇ (cnt_x == 4)
+		  ਲਿਖੋ(" 'x',");
 
-	    else if ((cnt_z > 0) && (cnt_x == 0))
-		  printf(" 'Z',");
+	    ਨਹੀਂਤਾਂ ਜੇ ((cnt_z > 0) && (cnt_x == 0))
+		  ਲਿਖੋ(" 'Z',");
 
-	    else if (cnt_x > 0)
-		  printf(" 'X',");
+	    ਨਹੀਂਤਾਂ ਜੇ (cnt_x > 0)
+		  ਲਿਖੋ(" 'X',");
 
-	    else
-		  printf(" '%c',", (unsigned)"0123456789abcdef"[bv]);
+	    ਨਹੀਂਤਾਂ
+		  ਲਿਖੋ(" '%c',", (ਬਿਨਾਨਿਸ਼ਾਨੀ)"0123456789abcdef"[bv]);
 
-	    if (((idx+1) % 8) == 0)
-		  printf("\n");
+	    ਜੇ (((idx+1) % 8) == 0)
+		  ਲਿਖੋ("\n");
       }
-      printf("};\n");
+      ਲਿਖੋ("};\n");
 }
 
-static void draw_oct_table(void)
+ਸਥਿਰ ਖਾਲੀ draw_oct_ਸਾਰਣੀ(ਖਾਲੀ)
 {
-      unsigned idx;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ idx;
 
-      printf("extern const char oct_digits[64] = {\n");
-      for (idx = 0 ;  idx < 64 ;  idx += 1) {
-	    unsigned cnt_z = 0, cnt_x = 0;
-	    unsigned bv = 0, bdx;
+      ਲਿਖੋ("extern const char oct_digits[64] = {\n");
+      ਲਈ (idx = 0 ;  idx < 64 ;  idx += 1) {
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ cnt_z = 0, cnt_x = 0;
+	    ਬਿਨਾਨਿਸ਼ਾਨੀ bv = 0, bdx;
 
-	    for (bdx = 0 ;  bdx < 3 ;  bdx += 1) {
-		  switch ((idx >> (bdx * 2)) & 3) {
-		      case 0:
-			break;
-		      case 1:
+	    ਲਈ (bdx = 0 ;  bdx < 3 ;  bdx += 1) {
+		  ਚੋਣ ((idx >> (bdx * 2)) & 3) {
+		      ਹਾਲਤ 0:
+			ਰੋਕੋ;
+		      ਹਾਲਤ 1:
 			bv |= 1<<bdx;
-			break;
-		      case 2:
+			ਰੋਕੋ;
+		      ਹਾਲਤ 2:
 			cnt_x += 1;
-			break;
-		      case 3:
+			ਰੋਕੋ;
+		      ਹਾਲਤ 3:
 			cnt_z += 1;
-			break;
+			ਰੋਕੋ;
 		  }
 	    }
 
-	    if (cnt_z == 3)
-		  printf(" 'z',");
+	    ਜੇ (cnt_z == 3)
+		  ਲਿਖੋ(" 'z',");
 
-	    else if (cnt_x == 3)
-		  printf(" 'x',");
+	    ਨਹੀਂਤਾਂ ਜੇ (cnt_x == 3)
+		  ਲਿਖੋ(" 'x',");
 
-	    else if ((cnt_z > 0) && (cnt_x == 0))
-		  printf(" 'Z',");
+	    ਨਹੀਂਤਾਂ ਜੇ ((cnt_z > 0) && (cnt_x == 0))
+		  ਲਿਖੋ(" 'Z',");
 
-	    else if (cnt_x > 0)
-		  printf(" 'X',");
+	    ਨਹੀਂਤਾਂ ਜੇ (cnt_x > 0)
+		  ਲਿਖੋ(" 'X',");
 
-	    else
-		  printf(" '%c',", (unsigned)"01234567"[bv]);
+	    ਨਹੀਂਤਾਂ
+		  ਲਿਖੋ(" '%c',", (ਬਿਨਾਨਿਸ਼ਾਨੀ)"01234567"[bv]);
 
-	    if (((idx+1) % 8) == 0)
-		  printf("\n");
+	    ਜੇ (((idx+1) % 8) == 0)
+		  ਲਿਖੋ("\n");
       }
-      printf("};\n");
+      ਲਿਖੋ("};\n");
 }
 
-int main(void)
+ਪੂਰਨ ਮੁੱਖ(ਖਾਲੀ)
 {
-      draw_hex_table();
-      draw_oct_table();
-      return 0;
+      draw_hex_ਸਾਰਣੀ();
+      draw_oct_ਸਾਰਣੀ();
+      ਵਾਪਸ 0;
 }

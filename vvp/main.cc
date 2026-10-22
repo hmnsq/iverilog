@@ -1,4 +1,4 @@
-const char COPYRIGHT[] =
+ਅਚਲ ਅੱਖਰ COPYRIGHT[] =
   "Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)";
 /*
  *    This source code is free software; you can redistribute it
@@ -24,37 +24,37 @@ const char COPYRIGHT[] =
 # include  <cstdio>
 # include  <cstdlib>
 
-#if defined(HAVE_GETOPT_H)
+#ਜੇ defined(HAVE_GETOPT_H)
 # include  <getopt.h>
-#endif
+#ਜੇ_ਅੰਤ
 
-#if defined(__MINGW32__)
+#ਜੇ defined(__MINGW32__)
 # include  <windows.h>
-#endif
+#ਜੇ_ਅੰਤ
 
-#include "libvvp.h"
+#ਅਨ੍ਤਰ੍ਭਾਵ "libvvp.h"
 
-using namespace std;
+ਵਰਤੋਂ ਨਾਮਾਕਾਸ਼ std;
 
-#if defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
-extern "C" int getopt(int argc, char*argv[], const char*fmt);
-extern "C" int optind;
-extern "C" const char*optarg;
-#endif
+#ਜੇ defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
+ਬਾਹਰੀ "C" ਪੂਰਨ getopt(ਪੂਰਨ argc, ਅੱਖਰ*argv[], ਅਚਲ ਅੱਖਰ*fmt);
+ਬਾਹਰੀ "C" ਪੂਰਨ optind;
+ਬਾਹਰੀ "C" ਅਚਲ ਅੱਖਰ*optarg;
+#ਜੇ_ਅੰਤ
 
-bool version_flag = false;
+ਤਾਰਕਿਕ ਸੰਸਕਰਣ_flag = ਝੂਠ;
 
-unsigned module_cnt = 0;
-const char*module_tab[64];
+ਬਿਨਾਨਿਸ਼ਾਨੀ module_cnt = 0;
+ਅਚਲ ਅੱਖਰ*module_tab[64];
 
-int main(int argc, char*argv[])
+ਪੂਰਨ ਮੁੱਖ(ਪੂਰਨ argc, ਅੱਖਰ*argv[])
 {
-      int opt;
-      unsigned flag_errors = 0;
-      const char *logfile_name = 0x0;
+      ਪੂਰਨ opt;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ flag_errors = 0;
+      ਅਚਲ ਅੱਖਰ *logfile_name = 0x0;
 
-      while ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) switch (opt) {
-         case 'h':
+      ਜਦੋਂ ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) ਚੋਣ (opt) {
+         ਹਾਲਤ 'h':
            fprintf(stderr,
                    "Usage: vvp [options] input-file [+plusargs...]\n"
                    "Options:\n"
@@ -70,51 +70,51 @@ int main(int argc, char*argv[])
 		   " -s             $stop right away.\n"
                    " -v             Verbose progress messages.\n"
                    " -V             Print the version information.\n" );
-           exit(0);
-	  case 'i':
+           ਬਾਹਰ_ਨਿਕਲੋ(0);
+	  ਹਾਲਤ 'i':
 	    setvbuf(stdout, 0, _IONBF, 0);
-	    break;
-	  case 'l':
+	    ਰੋਕੋ;
+	  ਹਾਲਤ 'l':
 	    logfile_name = optarg;
-	    break;
-	  case 'M':
-	    if (strcmp(optarg,"-") == 0) {
+	    ਰੋਕੋ;
+	  ਹਾਲਤ 'M':
+	    ਜੇ (strcmp(optarg,"-") == 0) {
 		  vpip_clear_module_paths();
-	    } else {
-		  vpip_add_module_path(optarg);
+	    } ਨਹੀਂਤਾਂ {
+		  vpip_ਜੋੜੋ_module_ਰਸਤਾ(optarg);
 	    }
-	    break;
-	  case 'm':
+	    ਰੋਕੋ;
+	  ਹਾਲਤ 'm':
 	    module_tab[module_cnt++] = optarg;
-	    break;
-	  case 'n':
-	    vvp_set_stop_is_finish(true, 0);
-	    break;
-          case 'N':
-            vvp_set_stop_is_finish(true, 1);
-            break;
-	  case 'q':
-	    vvp_set_quiet_flag(true);
-	    break;
-	  case 's':
-	    schedule_stop(0);
-	    break;
-	  case 'v':
-	    vvp_set_verbose_flag(true);
-	    break;
-	  case 'V':
-	    version_flag = true;
-	    break;
-	  default:
+	    ਰੋਕੋ;
+	  ਹਾਲਤ 'n':
+	    vvp_ਸੈੱਟ_stop_is_ਅੰਤ(ਸੱਚ, 0);
+	    ਰੋਕੋ;
+          ਹਾਲਤ 'N':
+            vvp_ਸੈੱਟ_stop_is_ਅੰਤ(ਸੱਚ, 1);
+            ਰੋਕੋ;
+	  ਹਾਲਤ 'q':
+	    vvp_ਸੈੱਟ_quiet_flag(ਸੱਚ);
+	    ਰੋਕੋ;
+	  ਹਾਲਤ 's':
+	    ਸਮਾਂ_ਸਾਰਣੀ_stop(0);
+	    ਰੋਕੋ;
+	  ਹਾਲਤ 'v':
+	    vvp_ਸੈੱਟ_verbose_flag(ਸੱਚ);
+	    ਰੋਕੋ;
+	  ਹਾਲਤ 'V':
+	    ਸੰਸਕਰਣ_flag = ਸੱਚ;
+	    ਰੋਕੋ;
+	  ਮੂਲ:
 	    flag_errors += 1;
       }
 
-      if (flag_errors)
-	    return flag_errors;
+      ਜੇ (flag_errors)
+	    ਵਾਪਸ flag_errors;
 
-      if (version_flag) {
-	    fprintf(stderr, "Icarus Verilog runtime version " VERSION " ("
-	                    VERSION_TAG ")\n\n");
+      ਜੇ (ਸੰਸਕਰਣ_flag) {
+	    fprintf(stderr, "Icarus Verilog runtime version " ਸੰਸਕਰਣ " ("
+	                    ਸੰਸਕਰਣ_ਟੈਗ ")\n\n");
 	    fprintf(stderr, "%s\n\n", COPYRIGHT);
 	    fprintf(stderr,
 "  This program is free software; you can redistribute it and/or modify\n"
@@ -131,18 +131,18 @@ int main(int argc, char*argv[])
 "  with this program; if not, write to the Free Software Foundation, Inc.,\n"
 "  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n"
 );
-	    return 0;
+	    ਵਾਪਸ 0;
       }
 
-      if (optind == argc) {
+      ਜੇ (optind == argc) {
 	    fprintf(stderr, "%s: no input file.\n", argv[0]);
-	    return -1;
+	    ਵਾਪਸ -1;
       }
 
       vvp_init(logfile_name, argc - optind, argv + optind);
 
-      for (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
-	    vpip_load_module(module_tab[idx]);
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0 ;  idx < module_cnt ;  idx += 1)
+	    vpip_ਲੱਦੋ_module(module_tab[idx]);
 
-      return vvp_run(argv[optind]);
+      ਵਾਪਸ vvp_ਲੜੀਵਾਰ(argv[optind]);
 }

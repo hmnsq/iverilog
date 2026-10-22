@@ -1,5 +1,5 @@
-#ifndef IVL_vvp_cleanup_H
-#define IVL_vvp_cleanup_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ IVL_vvp_cleanup_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IVL_vvp_cleanup_H
 /*
  * Copyright (c) 2009-2026 Cary R. (cygcary@yahoo.com)
  *
@@ -25,47 +25,47 @@
 
 /* Routines used to cleanup the runtime memory when it is all finished. */
 
-extern void codespace_delete(void);
-extern void dec_str_delete(void);
-extern void def_table_delete(void);
-extern void island_delete(void);
-extern void vpi_mcd_delete(void);
-extern void load_module_delete(void);
-extern void modpath_delete(void);
-extern void root_table_delete(void);
-extern void schedule_delete(void);
-extern void signal_pool_delete(void);
-extern void simulator_cb_delete(void);
-extern void udp_defns_delete(void);
-extern void vpi_handle_delete(void);
-extern void vpi_stack_delete(void);
-extern void vvp_net_pool_delete(void);
-extern void ufunc_pool_delete(void);
+ਬਾਹਰੀ ਖਾਲੀ codespace_delete(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ dec_str_delete(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ def_ਸਾਰਣੀ_delete(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ island_delete(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ vpi_mcd_delete(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ ਲੱਦੋ_module_delete(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ modpath_delete(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ ਜੜ੍ਹ_ਸਾਰਣੀ_delete(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_delete(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ signal_pool_delete(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ simulator_cb_delete(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ udp_defns_delete(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ vpi_handle_delete(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ vpi_ਢੇਰ_delete(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ vvp_net_pool_delete(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ ufunc_pool_delete(ਖਾਲੀ);
 
-extern void A_delete(class __vpiHandle *item);
-extern void APV_delete(class __vpiHandle *item);
-extern void PV_delete(class __vpiHandle *item);
-extern void class_delete(class __vpiHandle *item);
-extern void class_def_delete(class_type *item);
-extern void constant_delete(class __vpiHandle *item);
-extern void contexts_delete(__vpiScope *scope);
-extern void array_delete(class __vpiHandle *item);
-extern void enum_delete(class __vpiHandle *item);
-extern void memory_delete(class __vpiHandle *item);
-extern void named_event_delete(class __vpiHandle *item);
-extern void parameter_delete(class __vpiHandle *item);
-extern void signal_delete(class __vpiHandle *item);
-extern void real_delete(class __vpiHandle *item);
-extern void string_delete(class __vpiHandle *item);
-extern void thread_string_delete(class __vpiHandle *item);
-extern void thread_vthr_delete(class __vpiHandle *item);
-extern void thread_word_delete(class __vpiHandle *item);
-extern void vpi_call_delete(class __vpiHandle *item);
-extern void exec_ufunc_delete(vvp_code_t euf_code);
-extern void vthreads_delete(__vpiScope*scope);
-extern void vvp_net_delete(vvp_net_t *item);
+ਬਾਹਰੀ ਖਾਲੀ A_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ APV_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ PV_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ class_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ class_def_delete(class_type *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ constant_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ contexts_delete(__vpiScope *scope);
+ਬਾਹਰੀ ਖਾਲੀ array_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ enum_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮ੍ਰਿਤੀ_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ named_event_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ parameter_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ signal_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ real_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ string_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ thread_string_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ thread_vthr_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ thread_ਸ਼ਬਦ_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ vpi_call_delete(class __vpiHandle *ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ exec_ufunc_delete(vvp_ਕੋਡ_t euf_ਕੋਡ);
+ਬਾਹਰੀ ਖਾਲੀ vthreads_delete(__vpiScope*scope);
+ਬਾਹਰੀ ਖਾਲੀ vvp_net_delete(vvp_net_t *ਵਸਤੂ);
 
 
-extern void pool_local_net(vvp_net_t *net);
+ਬਾਹਰੀ ਖਾਲੀ pool_local_net(vvp_net_t *net);
 
-#endif /* IVL_vvp_cleanup_H */
+#ਜੇ_ਅੰਤ /* IVL_vvp_cleanup_H */

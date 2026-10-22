@@ -22,28 +22,28 @@
 # include  <iostream>
 # include  <typeinfo>
 
-using namespace std;
+ਵਰਤੋਂ ਨਾਮਾਕਾਸ਼ std;
 
-int vvp_object::total_active_cnt_ = 0;
+ਪੂਰਨ vvp_object::ਕੁੱਲ_ਸਰਗਰਮ_cnt = 0;
 
-void vvp_object::cleanup(void)
+ਖਾਲੀ vvp_object::cleanup(ਖਾਲੀ)
 {
 }
 
 vvp_object::~vvp_object()
 {
-      total_active_cnt_ -= 1;
+      ਕੁੱਲ_ਸਰਗਰਮ_cnt -= 1;
 }
 
-void vvp_object::shallow_copy(const vvp_object*)
+ਖਾਲੀ vvp_object::shallow_copy(ਅਚਲ vvp_object*)
 {
-      cerr << "XXXX shallow_copy(vvp_object_t) not implemented for " << typeid(*this).name() << endl;
-      assert(0);
+      cerr << "XXXX shallow_copy(vvp_object_t) not implemented for " << typeid(*ਇਹ).name() << ਸਤਰ_ਅੰਤ;
+      ਪ੍ਰਤਿਜ੍ਞਾ(0);
 }
 
-vvp_object* vvp_object::duplicate(void) const
+vvp_object* vvp_object::duplicate(ਖਾਲੀ) ਅਚਲ
 {
-      cerr << "XXXX duplicate() not implemented for " << typeid(*this).name() << endl;
-      assert(0);
-      return 0;
+      cerr << "XXXX duplicate() not implemented for " << typeid(*ਇਹ).name() << ਸਤਰ_ਅੰਤ;
+      ਪ੍ਰਤਿਜ੍ਞਾ(0);
+      ਵਾਪਸ 0;
 }

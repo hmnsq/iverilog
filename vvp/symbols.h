@@ -1,5 +1,5 @@
-#ifndef IVL_symbols_H
-#define IVL_symbols_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ IVL_symbols_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IVL_symbols_H
 /*
  * Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)
  *
@@ -43,41 +43,41 @@
  * try to look inside. The actual implementation is given in the
  * symbols.cc source file.
  */
-typedef class symbol_table_s *symbol_table_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ class ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_s *ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_t;
 
-typedef struct symbol_value_s {
-      union {
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ ਚਿੰਨ੍ਹ_ਮੁੱਲ_s {
+      ਸੰਘ {
 	    vvp_net_t*net;
-	    void*ptr;
+	    ਖਾਲੀ*ptr;
       };
-} symbol_value_t;
+} ਚਿੰਨ੍ਹ_ਮੁੱਲ_t;
 
 
-class symbol_table_s {
-    public:
-      explicit symbol_table_s();
-      virtual ~symbol_table_s();
-      symbol_table_s(const symbol_table_s&) = delete;
-      symbol_table_s& operator=(const symbol_table_s&) = delete;
+class ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_s {
+    ਜਨਤਕ:
+      explicit ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_s();
+      ਆਭਾਸੀ ~ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_s();
+      ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_s(ਅਚਲ ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_s&) = delete;
+      ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_s& ਸੰਚਾਲਕ=(ਅਚਲ ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_s&) = delete;
 
 	// This method locates the value in the symbol table and sets its
 	// value. If the key doesn't yet exist, create it.
-      void sym_set_value(const char*key, symbol_value_t val);
+      ਖਾਲੀ sym_ਸੈੱਟ_ਮੁੱਲ(ਅਚਲ ਅੱਖਰ*ਕੁੰਜੀ, ਚਿੰਨ੍ਹ_ਮੁੱਲ_t val);
 
 	// This method locates the value in the symbol table and returns
 	// it. If the value does not exist, create it, initialize it with
 	// zero and return the zero value.
-      symbol_value_t sym_get_value(const char*key);
+      ਚਿੰਨ੍ਹ_ਮੁੱਲ_t sym_get_ਮੁੱਲ(ਅਚਲ ਅੱਖਰ*ਕੁੰਜੀ);
 
-    private:
-      struct tree_node_*root;
-      struct key_strings*str_chunk;
-      unsigned str_used;
+    ਨਿਜੀ:
+      ਬਣਤਰ ਰੁੱਖ_ਗੰਢ*ਜੜ੍ਹ;
+      ਬਣਤਰ ਕੁੰਜੀ_ਲੜੀਆਂ*str_chunk;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ str_ਵਰਤਿਆ;
 
-      symbol_value_t find_value_(struct tree_node_*cur,
-				 const char*key, symbol_value_t val,
+      ਚਿੰਨ੍ਹ_ਮੁੱਲ_t ਲੱਭੋ_ਮੁੱਲ(ਬਣਤਰ ਰੁੱਖ_ਗੰਢ*cur,
+				 ਅਚਲ ਅੱਖਰ*ਕੁੰਜੀ, ਚਿੰਨ੍ਹ_ਮੁੱਲ_t val,
 				 bool force_flag);
-      char*key_strdup_(const char*str);
+      ਅੱਖਰ*ਕੁੰਜੀ_strdup(ਅਚਲ ਅੱਖਰ*str);
 };
 
 /*
@@ -87,32 +87,32 @@ class symbol_table_s {
  * the delete_symbol_table method will delete the table, including all
  * the space for the keys.
  */
-inline symbol_table_t new_symbol_table(void) { return new symbol_table_s; }
-inline void delete_symbol_table(symbol_table_t tbl) { delete tbl; }
+ਸਤਰਅੰਦਰ ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_t new_ਚਿੰਨ੍ਹ_ਸਾਰਣੀ(ਖਾਲੀ) { ਵਾਪਸ new ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_s; }
+ਸਤਰਅੰਦਰ ਖਾਲੀ delete_ਚਿੰਨ੍ਹ_ਸਾਰਣੀ(ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_t tbl) { delete tbl; }
 
 // These are obsolete, and here only to support older code.
-inline void sym_set_value(symbol_table_t tbl, const char*key, symbol_value_t val)
-{ tbl->sym_set_value(key, val); }
+ਸਤਰਅੰਦਰ ਖਾਲੀ sym_ਸੈੱਟ_ਮੁੱਲ(ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_t tbl, ਅਚਲ ਅੱਖਰ*ਕੁੰਜੀ, ਚਿੰਨ੍ਹ_ਮੁੱਲ_t val)
+{ tbl->sym_ਸੈੱਟ_ਮੁੱਲ(ਕੁੰਜੀ, val); }
 
-inline symbol_value_t sym_get_value(symbol_table_t tbl, const char*key)
-{ return tbl->sym_get_value(key); }
+ਸਤਰਅੰਦਰ ਚਿੰਨ੍ਹ_ਮੁੱਲ_t sym_get_ਮੁੱਲ(ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_t tbl, ਅਚਲ ਅੱਖਰ*ਕੁੰਜੀ)
+{ ਵਾਪਸ tbl->sym_get_ਮੁੱਲ(ਕੁੰਜੀ); }
 
 /*
  * This template is a type-safe interface to the symbol table.
  */
-template <class T> class symbol_map_s : private symbol_table_s {
+ਸਾਂਚਾ <class T> class ਚਿੰਨ੍ਹ_map_s : ਨਿਜੀ ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_s {
 
-    public:
-      void sym_set_value(const char*key, T*val)
-      { symbol_value_t tmp;
+    ਜਨਤਕ:
+      ਖਾਲੀ sym_ਸੈੱਟ_ਮੁੱਲ(ਅਚਲ ਅੱਖਰ*ਕੁੰਜੀ, T*val)
+      { ਚਿੰਨ੍ਹ_ਮੁੱਲ_t tmp;
 	tmp.ptr = val;
-	symbol_table_s::sym_set_value(key, tmp);
+	ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_s::sym_ਸੈੱਟ_ਮੁੱਲ(ਕੁੰਜੀ, tmp);
       }
 
-      T* sym_get_value(const char*key)
-      { symbol_value_t val = symbol_table_s::sym_get_value(key);
-	return reinterpret_cast<T*>(val.ptr);
+      T* sym_get_ਮੁੱਲ(ਅਚਲ ਅੱਖਰ*ਕੁੰਜੀ)
+      { ਚਿੰਨ੍ਹ_ਮੁੱਲ_t val = ਚਿੰਨ੍ਹ_ਸਾਰਣੀ_s::sym_get_ਮੁੱਲ(ਕੁੰਜੀ);
+	ਵਾਪਸ reinterpret_cast<T*>(val.ptr);
       }
 };
 
-#endif /* IVL_symbols_H */
+#ਜੇ_ਅੰਤ /* IVL_symbols_H */

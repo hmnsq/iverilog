@@ -1,5 +1,5 @@
-#ifndef IVL_dff_H
-#define IVL_dff_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ IVL_dff_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IVL_dff_H
 /*
  * Copyright (c) 2005-2025 Stephen Williams (steve@icarus.com)
  *
@@ -35,67 +35,67 @@
  *
  * The base vvp_dff does not implement an asynchronous set/clear.
  */
-class vvp_dff : public vvp_net_fun_t {
+class vvp_dff : ਜਨਤਕ vvp_net_fun_t {
 
-    public:
-      explicit vvp_dff(unsigned width, bool negedge);
+    ਜਨਤਕ:
+      explicit vvp_dff(ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ, bool negedge);
       ~vvp_dff() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      ਖਾਲੀ recv_vec4_pv(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t ctx) override;
 
-    private:
-      virtual void recv_async(vvp_net_ptr_t port);
+    ਨਿਜੀ:
+      ਆਭਾਸੀ ਖਾਲੀ recv_async(vvp_net_ptr_t ਪੋਰਟ);
 
-      vvp_bit4_t clk_active_ : 8;
+      vvp_bit4_t clk_ਸਰਗਰਮ : 8;
       vvp_bit4_t clk_        : 8;
       vvp_bit4_t ena_        : 8;
       vvp_bit4_t asc_        : 8;
 
-    protected:
+    ਸੁਰੱਖਿਅਤ:
       vvp_vector4_t d_;
 };
 
 /*
  * This variant implements an asynchronous clear to all zeros.
  */
-class vvp_dff_aclr : public vvp_dff {
+class vvp_dff_aclr : ਜਨਤਕ vvp_dff {
 
-    public:
-      explicit vvp_dff_aclr(unsigned width, bool negedge);
+    ਜਨਤਕ:
+      explicit vvp_dff_aclr(ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ, bool negedge);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    ਨਿਜੀ:
+      ਖਾਲੀ recv_async(vvp_net_ptr_t ਪੋਰਟ) override;
 };
 
 /*
  * This variant implements an asynchronous set to all ones.
  */
-class vvp_dff_aset : public vvp_dff {
+class vvp_dff_aset : ਜਨਤਕ vvp_dff {
 
-    public:
-      explicit vvp_dff_aset(unsigned width, bool negedge);
+    ਜਨਤਕ:
+      explicit vvp_dff_aset(ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ, bool negedge);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    ਨਿਜੀ:
+      ਖਾਲੀ recv_async(vvp_net_ptr_t ਪੋਰਟ) override;
 };
 
 /*
  * This variant implements an asynchronous set to a specified constant
  * vector value.
  */
-class vvp_dff_asc : public vvp_dff {
+class vvp_dff_asc : ਜਨਤਕ vvp_dff {
 
-    public:
-      explicit vvp_dff_asc(unsigned width, bool negedge, const char*asc_value);
+    ਜਨਤਕ:
+      explicit vvp_dff_asc(ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ, bool negedge, ਅਚਲ ਅੱਖਰ*asc_ਮੁੱਲ);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    ਨਿਜੀ:
+      ਖਾਲੀ recv_async(vvp_net_ptr_t ਪੋਰਟ) override;
 
-      vvp_vector4_t asc_value_;
+      vvp_vector4_t asc_ਮੁੱਲ_2;
 };
 
-#endif /* IVL_dff_H */
+#ਜੇ_ਅੰਤ /* IVL_dff_H */

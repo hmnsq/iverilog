@@ -22,9 +22,9 @@
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+ਵਰਤੋਂ ਨਾਮਾਕਾਸ਼ std;
 
-vvp_cobject::vvp_cobject(const class_type*defn)
+vvp_cobject::vvp_cobject(ਅਚਲ class_type*defn)
 : defn_(defn), properties_(defn->instance_new())
 {
 }
@@ -35,54 +35,54 @@ vvp_cobject::~vvp_cobject()
       properties_ = 0;
 }
 
-void vvp_cobject::set_vec4(size_t pid, const vvp_vector4_t&val)
+ਖਾਲੀ vvp_cobject::ਸੈੱਟ_vec4(size_t pid, ਅਚਲ vvp_vector4_t&val)
 {
-      defn_->set_vec4(properties_, pid, val);
+      defn_->ਸੈੱਟ_vec4(properties_, pid, val);
 }
 
-void vvp_cobject::get_vec4(size_t pid, vvp_vector4_t&val)
+ਖਾਲੀ vvp_cobject::get_vec4(size_t pid, vvp_vector4_t&val)
 {
       defn_->get_vec4(properties_, pid, val);
 }
 
-void vvp_cobject::set_real(size_t pid, double val)
+ਖਾਲੀ vvp_cobject::ਸੈੱਟ_real(size_t pid, ਦੁੱਗਣਾ val)
 {
-      defn_->set_real(properties_, pid, val);
+      defn_->ਸੈੱਟ_real(properties_, pid, val);
 }
 
-double vvp_cobject::get_real(size_t pid)
+ਦੁੱਗਣਾ vvp_cobject::get_real(size_t pid)
 {
-      return defn_->get_real(properties_, pid);
+      ਵਾਪਸ defn_->get_real(properties_, pid);
 }
 
-void vvp_cobject::set_string(size_t pid, const string&val)
+ਖਾਲੀ vvp_cobject::ਸੈੱਟ_string(size_t pid, ਅਚਲ string&val)
 {
-      defn_->set_string(properties_, pid, val);
+      defn_->ਸੈੱਟ_string(properties_, pid, val);
 }
 
 string vvp_cobject::get_string(size_t pid)
 {
-      return defn_->get_string(properties_, pid);
+      ਵਾਪਸ defn_->get_string(properties_, pid);
 }
 
-void vvp_cobject::set_object(size_t pid, const vvp_object_t&val, size_t idx)
+ਖਾਲੀ vvp_cobject::ਸੈੱਟ_object(size_t pid, ਅਚਲ vvp_object_t&val, size_t idx)
 {
-      defn_->set_object(properties_, pid, val, idx);
+      defn_->ਸੈੱਟ_object(properties_, pid, val, idx);
 }
 
-void vvp_cobject::get_object(size_t pid, vvp_object_t&val, size_t idx)
+ਖਾਲੀ vvp_cobject::get_object(size_t pid, vvp_object_t&val, size_t idx)
 {
-      return defn_->get_object(properties_, pid, val, idx);
+      ਵਾਪਸ defn_->get_object(properties_, pid, val, idx);
 }
 
-void vvp_cobject::shallow_copy(const vvp_object*obj)
+ਖਾਲੀ vvp_cobject::shallow_copy(ਅਚਲ vvp_object*obj)
 {
-      const vvp_cobject*that = dynamic_cast<const vvp_cobject*>(obj);
-      assert(that);
+      ਅਚਲ vvp_cobject*that = dynamic_cast<ਅਚਲ vvp_cobject*>(obj);
+      ਪ੍ਰਤਿਜ੍ਞਾ(that);
 
-      assert(defn_ == that->defn_);
+      ਪ੍ਰਤਿਜ੍ਞਾ(defn_ == that->defn_);
 
-      for (size_t idx = 0 ; idx < defn_->property_count() ; idx += 1)
+      ਲਈ (size_t idx = 0 ; idx < defn_->property_ਗਿਣਤੀ() ; idx += 1)
 	    defn_->copy_property(properties_, idx, that->properties_);
 
 }

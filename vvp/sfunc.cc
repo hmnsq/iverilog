@@ -19,9 +19,9 @@
 
 # include  "compile.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
 # include "vvp_cleanup.h"
-#endif
+#ਜੇ_ਅੰਤ
 # include  "sfunc.h"
 # include  <cstdlib>
 # include  <cstring>
@@ -30,7 +30,7 @@
 
 
 sfunc_core::sfunc_core(vvp_net_t*net, vpiHandle sys,
-		       unsigned argc, vpiHandle*argv)
+		       ਬਿਨਾਨਿਸ਼ਾਨੀ argc, vpiHandle*argv)
 : vvp_wide_fun_core(net, argc)
 {
       sys_  = sys;
@@ -40,150 +40,150 @@ sfunc_core::sfunc_core(vvp_net_t*net, vpiHandle sys,
 
 sfunc_core::~sfunc_core()
 {
-      delete sys_;
-#ifdef CHECK_WITH_VALGRIND
-      for (unsigned i = 0; i < argc_; i += 1) {
+      ਮਿਟਾਓ sys_;
+#ਜੇ_ਪਰਿਭਾਸ਼ਿਤ CHECK_WITH_VALGRIND
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i = 0; i < argc_; i += 1) {
 	    constant_delete(argv_[i]);
       }
-#endif
-      delete [] argv_;
+#ਜੇ_ਅੰਤ
+      ਮਿਟਾਓ [] argv_;
 }
 
 /*
  * This method is only called when a trigger event occurs. Just arrange for
  * the function to be called.
  */
-void sfunc_core::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&/*bit*/,
+ਖਾਲੀ sfunc_core::recv_vec4(vvp_net_ptr_t, ਅਚਲ vvp_vector4_t&/*ਦੋਆਧਾਰੀ_ਅੰਕ*/,
                            vvp_context_t)
 {
-      schedule_functor(this);
+      ਸਮਾਂ_ਸਾਰਣੀ_functor(ਇਹ);
 }
 
-void sfunc_core::recv_vec4_from_inputs(unsigned port)
+ਖਾਲੀ sfunc_core::recv_vec4_from_inputs(ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੋਰਟ)
 {
-      vpiHandle vpi = argv_[port];
-      struct __vpiBinaryConst*obj = dynamic_cast<__vpiBinaryConst*>(vpi);
-      assert(obj);
+      vpiHandle vpi = argv_[ਪੋਰਟ];
+      ਬਣਤਰ __vpiBinaryConst*obj = dynamic_cast<__vpiBinaryConst*>(vpi);
+      ਪ੍ਰਤਿਜ੍ਞਾ(obj);
 
-      obj->bits = value(port);
+      obj->ਬਿੱਟ = value(ਪੋਰਟ);
 
         /* Schedule the actual call after this finishes. */
-      schedule_functor(this);
+      ਸਮਾਂ_ਸਾਰਣੀ_functor(ਇਹ);
 }
 
-void sfunc_core::recv_real_from_inputs(unsigned port)
+ਖਾਲੀ sfunc_core::recv_real_from_inputs(ਬਿਨਾਨਿਸ਼ਾਨੀ ਪੋਰਟ)
 {
-      vpiHandle vpi = argv_[port];
+      vpiHandle vpi = argv_[ਪੋਰਟ];
       __vpiRealConst*obj = dynamic_cast<__vpiRealConst*>(vpi);
-      assert(obj);
+      ਪ੍ਰਤਿਜ੍ਞਾ(obj);
 
-      obj->value = value_r(port);
+      obj->value = ਮੁੱਲ_r(ਪੋਰਟ);
 
         /* Schedule the actual call after this finishes. */
-      schedule_functor(this);
+      ਸਮਾਂ_ਸਾਰਣੀ_functor(ਇਹ);
 }
 
-void sfunc_core::run_run()
+ਖਾਲੀ sfunc_core::ਲੜੀਵਾਰ_ਲੜੀਵਾਰ()
 {
       vpip_execute_vpi_call(0, sys_);
 }
 
-static int make_vpi_argv(unsigned argc, vpiHandle*vpi_argv,
-			const char*arg_string)
+ਸਥਿਰ ਪੂਰਨ make_vpi_argv(ਬਿਨਾਨਿਸ਼ਾਨੀ argc, vpiHandle*vpi_argv,
+			ਅਚਲ ਅੱਖਰ*arg_string)
 {
-      unsigned idx = 0;
-      const char*cp = arg_string;
-      int return_type = 0;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0;
+      ਅਚਲ ਅੱਖਰ*cp = arg_string;
+      ਪੂਰਨ return_type = 0;
 
-      switch (*cp) {
-	  case 'r': // real result
+      ਚੋਣ (*cp) {
+	  ਹਾਲਤ 'r': // real result
 	    cp += 1;
 	    return_type = -vpiRealVal;
-	    break;
+	    ਰੋਕੋ;
 
-	  case 'v': // vector4_t
+	  ਹਾਲਤ 'v': // vector4_t
 	    cp += 1;
 	    return_type = strtoul(cp, 0, 10);
 	    cp += strspn(cp, "0123456789");
-	    break;
+	    ਰੋਕੋ;
 
-	  default:
+	  ਮੂਲ:
 	    fprintf(stderr, "Unsupported type %c(%d).\n", *cp, *cp);
-	    assert(0);
-	    break;
+	    ਪ੍ਰਤਿਜ੍ਞਾ(0);
+	    ਰੋਕੋ;
       }
 
-      while (*cp) {
-	    assert(idx < argc);
+      ਜਦੋਂ (*cp) {
+	    ਪ੍ਰਤਿਜ੍ਞਾ(idx < argc);
 
-	    switch (*cp) {
-		case 'r': // real
+	    ਚੋਣ (*cp) {
+		ਹਾਲਤ 'r': // real
 		  cp += 1;
 		  vpi_argv[idx] = vpip_make_real_const(0.0);
-		  break;
+		  ਰੋਕੋ;
 
-		case 'v': { // vector4_t (v<n>)
+		ਹਾਲਤ 'v': { // vector4_t (v<n>)
 		      cp += 1;
-		      unsigned wid = strtoul(cp, 0, 10);
+		      ਬਿਨਾਨਿਸ਼ਾਨੀ wid = strtoul(cp, 0, 10);
 		      cp += strspn(cp, "0123456789");
-		      vpi_argv[idx] = vpip_make_binary_const(wid, "x");
-		      break;
+		      vpi_argv[idx] = vpip_make_ਦੁਆਧਾਰੀ_const(wid, "x");
+		      ਰੋਕੋ;
 		}
 
-		default:
+		ਮੂਲ:
 		  fprintf(stderr, "Unsupported type %c(%d).\n", *cp, *cp);
-		  assert(0);
+		  ਪ੍ਰਤਿਜ੍ਞਾ(0);
 	    }
 	    idx += 1;
       }
 
-      assert(idx == argc);
-      return return_type;
+      ਪ੍ਰਤਿਜ੍ਞਾ(idx == argc);
+      ਵਾਪਸ return_type;
 }
 
 
-void compile_sfunc(char*label, char*name,  char*format_string,
-		   long file_idx, long lineno,
-		   unsigned argc, struct symb_s*argv,
-                   char*trigger_label)
+ਖਾਲੀ compile_sfunc(ਅੱਖਰ*label, ਅੱਖਰ*name,  ਅੱਖਰ*format_string,
+		   ਲੰਮਾ file_idx, ਲੰਮਾ lineno,
+		   ਬਿਨਾਨਿਸ਼ਾਨੀ argc, ਬਣਤਰ symb_s*argv,
+                   ਅੱਖਰ*trigger_label)
 {
-      unsigned vec4_stack = 0;
-      unsigned real_stack = 0;
-      unsigned string_stack = 0;
-      vpiHandle*vpi_argv = new vpiHandle[argc];
-      int val_code = make_vpi_argv(argc, vpi_argv, format_string);
-      unsigned val_width = 0;
-      delete[] format_string;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ vec4_ਢੇਰ = 0;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ real_ਢੇਰ = 0;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ string_ਢੇਰ = 0;
+      vpiHandle*vpi_argv = ਨਵਾਂ vpiHandle[argc];
+      ਪੂਰਨ val_ਕੋਡ = make_vpi_argv(argc, vpi_argv, format_string);
+      ਬਿਨਾਨਿਸ਼ਾਨੀ val_ਚੌੜਾਈ = 0;
+      ਮਿਟਾਓ[] format_string;
 
 	// The make_vpi_argv returns for the function return value a
 	// >0 value for the vector width if this is a vector. Convert
 	// it to the form that the vpip_build_vpi_call uses.
-      if (val_code > 0) {
-	    val_width = val_code;
-	    val_code = -vpiVectorVal;
+      ਜੇ (val_ਕੋਡ > 0) {
+	    val_ਚੌੜਾਈ = val_ਕੋਡ;
+	    val_ਕੋਡ = -vpi_ਸਦਿਸ਼_Val;
       }
 
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_net_t*ptr = ਨਵਾਂ vvp_net_t;
 
-      vpiHandle sys = vpip_build_vpi_call(name, val_code, val_width, ptr,
-                                          true, false, argc, vpi_argv,
-					  vec4_stack, real_stack, string_stack,
+      vpiHandle sys = vpip_build_vpi_call(name, val_ਕੋਡ, val_ਚੌੜਾਈ, ptr,
+                                          ਸੱਚ, ਝੂਠ, argc, vpi_argv,
+					  vec4_ਢੇਰ, real_ਢੇਰ, string_ਢੇਰ,
                                           file_idx, lineno);
-      assert(sys);
+      ਪ੍ਰਤਿਜ੍ਞਾ(sys);
 
 	/* Create and connect the functor to the label. */
-      sfunc_core*score = new sfunc_core(ptr, sys, argc, vpi_argv);
+      sfunc_core*score = ਨਵਾਂ sfunc_core(ptr, sys, argc, vpi_argv);
       ptr->fun = score;
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_ਚਿੰਨ੍ਹ(label, ptr);
+      ਮੁਕਤ(label);
 
 	/* Link the inputs to the functor. */
       wide_inputs_connect(score, argc, argv);
-      free(argv);
+      ਮੁਕਤ(argv);
 
         /* If this function has a trigger event, connect the functor to
            that event. */
-      if (trigger_label)
-            input_connect(ptr, 0, trigger_label);
-      delete[] name;
+      ਜੇ (trigger_label)
+            ਨਿਵੇਸ਼_connect(ptr, 0, trigger_label);
+      ਮਿਟਾਓ[] name;
 }

@@ -1,5 +1,5 @@
-#ifndef IVL_bufif_H
-#define IVL_bufif_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ IVL_bufif_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IVL_bufif_H
 /*
  * Copyright (c) 2001-2025 Stephen Williams (steve@icarus.com)
  *
@@ -31,26 +31,26 @@
  * strengths to the buffered value, and sends H/L in response to
  * unknown enable bits.
  */
-class vvp_fun_bufif  : public vvp_net_fun_t {
+class vvp_fun_bufif  : ਜਨਤਕ vvp_net_fun_t {
 
-    public:
-      vvp_fun_bufif(bool en_invert, bool out_invert,
-		    unsigned str0, unsigned str1);
+    ਜਨਤਕ:
+      vvp_fun_bufif(bool en_invert, bool ਬਾਹਰਲਾ_invert,
+		    ਬਿਨਾਨਿਸ਼ਾਨੀ str0, ਬਿਨਾਨਿਸ਼ਾਨੀ str1);
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      void recv_real(vvp_net_ptr_t port, double real,
+      ਖਾਲੀ recv_vec4_pv(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t ctx) override;
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ਪੋਰਟ, ਦੁੱਗਣਾ real,
                      vvp_context_t ctx) override;
 
-    private:
-      vvp_vector4_t bit_;
+    ਨਿਜੀ:
+      vvp_vector4_t ਦੋਆਧਾਰੀ_ਅੰਕ_2;
       vvp_vector4_t en_;
-      unsigned pol_ : 1;
-      unsigned inv_ : 1;
-      unsigned drive0_ : 8;
-      unsigned drive1_ : 8;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ pol_ : 1;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ inv_ : 1;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ drive0_ : 8;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ drive1_ : 8;
 };
 
-#endif /* IVL_bufif_H */
+#ਜੇ_ਅੰਤ /* IVL_bufif_H */

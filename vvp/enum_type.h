@@ -1,5 +1,5 @@
-#ifndef IVL_enum_type_H
-#define IVL_enum_type_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ IVL_enum_type_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IVL_enum_type_H
 /*
  * Copyright (c) 2010-2014 Stephen Williams (steve@icarus.com)
  *
@@ -19,4 +19,4 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#endif /* IVL_enum_type_H */
+#ਜੇ_ਅੰਤ /* IVL_enum_type_H */

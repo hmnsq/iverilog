@@ -1,5 +1,5 @@
-#ifndef IVL_schedule_H
-#define IVL_schedule_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ IVL_ਸਮਾਂ_ਸਾਰਣੀ_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IVL_ਸਮਾਂ_ਸਾਰਣੀ_H
 /*
  * Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)
  *
@@ -32,14 +32,14 @@
  * to the front of the queue. %fork uses this to get the thread
  * execution ahead of non-blocking assignments.
  */
-extern void schedule_vthread(vthread_t thr, vvp_time64_t delay,
-			     bool push_flag =false);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_vthread(vthread_t thr, vvp_time64_t delay,
+			     bool ਧੱਕੋ_flag =false);
 
-extern void schedule_inactive(vthread_t thr);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_inactive(vthread_t thr);
 
-extern void schedule_init_vthread(vthread_t thr);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_init_vthread(vthread_t thr);
 
-extern void schedule_final_vthread(vthread_t thr);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_final_vthread(vthread_t thr);
 
 /*
  * Create an assignment event. The val passed here will be assigned to
@@ -47,41 +47,41 @@ extern void schedule_final_vthread(vthread_t thr);
  * like a non-blocking assignment. This is in fact mostly used to
  * implement the non-blocking assignment.
  */
-extern void schedule_assign_vector(vvp_net_ptr_t ptr,
-				   unsigned base, unsigned vwid,
-				   const vvp_vector4_t&val,
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_ਸੌਂਪੋ_ਸਦਿਸ਼(vvp_net_ptr_t ptr,
+				   ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid,
+				   ਅਚਲ vvp_vector4_t&val,
 				   vvp_time64_t  delay);
 
-extern void schedule_assign_array_word(vvp_array_t mem,
-				       unsigned word_address,
-				       unsigned off,
-				       const vvp_vector4_t&val,
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_ਸੌਂਪੋ_array_ਸ਼ਬਦ(vvp_array_t mem,
+				       ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ਬਦ_ਪਤਾ,
+				       ਬਿਨਾਨਿਸ਼ਾਨੀ off,
+				       ਅਚਲ vvp_vector4_t&val,
 				       vvp_time64_t delay);
 
-extern void schedule_assign_array_word(vvp_array_t mem,
-				       unsigned word_address,
-				       double val,
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_ਸੌਂਪੋ_array_ਸ਼ਬਦ(vvp_array_t mem,
+				       ਬਿਨਾਨਿਸ਼ਾਨੀ ਸ਼ਬਦ_ਪਤਾ,
+				       ਦੁੱਗਣਾ val,
 				       vvp_time64_t delay);
 
 /*
  * Create an event to force the output of a net.
  */
-extern void schedule_force_vector(vvp_net_t*net,
-				  unsigned base, unsigned vwid,
-				  const vvp_vector4_t&val,
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_force_ਸਦਿਸ਼(vvp_net_t*net,
+				  ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid,
+				  ਅਚਲ vvp_vector4_t&val,
 				  vvp_time64_t delay);
 
 /*
  * Create an event to propagate the output of a net.
  */
-extern void schedule_propagate_vector(vvp_net_t*ptr,
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_propagate_ਸਦਿਸ਼(vvp_net_t*ptr,
 				      vvp_time64_t delay,
-				      const vvp_vector4_t&val);
+				      ਅਚਲ vvp_vector4_t&val);
 
 /*
  * Create an event to propagate the output of an event.
  */
-extern void schedule_propagate_event(vvp_net_t*ptr,
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_propagate_event(vvp_net_t*ptr,
 				     vvp_time64_t delay);
 
 /*
@@ -90,15 +90,15 @@ extern void schedule_propagate_event(vvp_net_t*ptr,
  * constant value (i.e. C4<...>) to the input of a functor. This
  * creates an event in the active queue.
  */
-extern void schedule_set_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&val);
-extern void schedule_set_vector(vvp_net_ptr_t ptr, const vvp_vector8_t&val);
-extern void schedule_set_vector(vvp_net_ptr_t ptr, double val);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_ਸੈੱਟ_ਸਦਿਸ਼(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&val);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_ਸੈੱਟ_ਸਦਿਸ਼(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector8_t&val);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_ਸੈੱਟ_ਸਦਿਸ਼(vvp_net_ptr_t ptr, ਦੁੱਗਣਾ val);
 
 /*
  * Create a T0 event for always_comb/latch processes. This is the first
  * event in the first inactive region.
  */
-extern void schedule_t0_trigger(vvp_net_ptr_t ptr);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_t0_trigger(vvp_net_ptr_t ptr);
 
 /*
  * The schedule_init_vector function assigns an initial value to a
@@ -110,16 +110,16 @@ extern void schedule_t0_trigger(vvp_net_ptr_t ptr);
  * variable, but still allows the initial value to be driven
  * (propagated as events) through the rest of the net.
  */
-extern void schedule_init_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&val);
-extern void schedule_init_vector(vvp_net_ptr_t ptr, const vvp_vector8_t&val);
-extern void schedule_init_vector(vvp_net_ptr_t ptr, double val);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_init_ਸਦਿਸ਼(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&val);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_init_ਸਦਿਸ਼(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector8_t&val);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_init_ਸਦਿਸ਼(vvp_net_ptr_t ptr, ਦੁੱਗਣਾ val);
 /*
  * The schedule_init_propagate function is similar to the above but
  * propagates an initial value from a net output (i.e. without passing
  * through the net functor).
  */
-extern void schedule_init_propagate(vvp_net_t*net, vvp_vector4_t val);
-extern void schedule_init_propagate(vvp_net_t*net, double val);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_init_propagate(vvp_net_t*net, vvp_vector4_t val);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_init_propagate(vvp_net_t*net, ਦੁੱਗਣਾ val);
 
 /*
  * Create a generic event. This supports scheduled events that are not
@@ -138,11 +138,11 @@ extern void schedule_init_propagate(vvp_net_t*net, double val);
  * ro_flag is ignored.
  */
 
-typedef struct vvp_gen_event_s *vvp_gen_event_t;
+ਕਿਸਮਪਰਿਭਾਸ਼ਾ ਬਣਤਰ vvp_gen_event_s *vvp_gen_event_t;
 
-extern void schedule_generic(vvp_gen_event_t obj, vvp_time64_t delay,
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_generic(vvp_gen_event_t obj, vvp_time64_t delay,
 			     bool sync_flag, bool ro_flag =true,
-			     bool delete_obj_when_done =false);
+			     bool delete_obj_when_ਪੂਰਾ =false);
 
 /* Create a functor output event. This is placed in the pre-simulation
  * event queue if the scheduler is still processing pre-simulation
@@ -151,40 +151,40 @@ extern void schedule_generic(vvp_gen_event_t obj, vvp_time64_t delay,
  * the vvp_get_event_s object. The object is never referenced by the
  * scheduler after the run method is called.
 */
-extern void schedule_functor(vvp_gen_event_t obj);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_functor(vvp_gen_event_t obj);
 
-extern void schedule_at_start_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay);
-extern void schedule_at_end_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_at_ਸ਼ੁਰੂ_ਦਾ_simtime(vvp_gen_event_t obj, vvp_time64_t delay);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_at_ਸਿਰਾ_ਦਾ_simtime(vvp_gen_event_t obj, vvp_time64_t delay);
 
 /* Use this is schedule thread deletion (after rosync). */
-extern void schedule_del_thr(vthread_t thr);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_del_thr(vthread_t thr);
 
-struct vvp_gen_event_s
+ਬਣਤਰ vvp_gen_event_s
 {
-      virtual ~vvp_gen_event_s() =0;
-      virtual void run_run() =0;
-      virtual void single_step_display(void);
+      ਆਭਾਸੀ ~vvp_gen_event_s() =0;
+      ਆਭਾਸੀ ਖਾਲੀ ਲੜੀਵਾਰ_ਲੜੀਵਾਰ() =0;
+      ਆਭਾਸੀ ਖਾਲੀ single_ਕਦਮ_display(ਖਾਲੀ);
 };
 
 /*
  * This runs the simulator. It runs until all the functors run out or
  * the simulation is otherwise finished.
  */
-extern void schedule_simulate(void);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_simulate(ਖਾਲੀ);
 
 /*
  * Get the current absolute simulation time. This is not used
  * internally by the scheduler (which uses time differences instead)
  * but is used for printouts and stuff.
  */
-extern vvp_time64_t schedule_simtime(void);
+ਬਾਹਰੀ vvp_time64_t ਸਮਾਂ_ਸਾਰਣੀ_simtime(ਖਾਲੀ);
 
 /*
  * Indicate that the simulator is running the rosync callbacks. This is
  * used to prevent the callbacks from performing any write operations
  * in the current simulation time slot.
  */
-extern bool schedule_at_rosync(void);
+ਬਾਹਰੀ bool ਸਮਾਂ_ਸਾਰਣੀ_at_rosync(ਖਾਲੀ);
 
 /*
  * This function is the equivalent of the $finish system task. It
@@ -195,31 +195,31 @@ extern bool schedule_at_rosync(void);
  * The schedule_finished() function will return true if the
  * schedule_finish() function has been called.
  */
-extern void schedule_finish(int rc);
-extern void schedule_stop(int rc);
-extern void schedule_single_step(int flag);
-extern bool schedule_finished(void);
-extern bool schedule_stopped(void);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_ਅੰਤ(ਪੂਰਨ rc);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_stop(ਪੂਰਨ rc);
+ਬਾਹਰੀ ਖਾਲੀ ਸਮਾਂ_ਸਾਰਣੀ_single_ਕਦਮ(ਪੂਰਨ flag);
+ਬਾਹਰੀ bool ਸਮਾਂ_ਸਾਰਣੀ_ਮੁਕੰਮਲ(ਖਾਲੀ);
+ਬਾਹਰੀ bool ਸਮਾਂ_ਸਾਰਣੀ_stopped(ਖਾਲੀ);
 
 /*
  * The scheduler calls this function to process stop events. When this
  * function returns, the simulation resumes.
  */
-extern void stop_handler(int rc);
+ਬਾਹਰੀ ਖਾਲੀ stop_handler(ਪੂਰਨ rc);
 
 /*
  * These are event counters for the sake of performance measurements.
  */
-extern unsigned long count_assign_events;
-extern unsigned long count_gen_events;
-extern unsigned long count_prop_events;
-extern unsigned long count_thread_events;
-extern unsigned long count_event_pool;
+ਬਾਹਰੀ ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ ਗਿਣਤੀ_ਸੌਂਪੋ_events;
+ਬਾਹਰੀ ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ ਗਿਣਤੀ_gen_events;
+ਬਾਹਰੀ ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ ਗਿਣਤੀ_prop_events;
+ਬਾਹਰੀ ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ ਗਿਣਤੀ_thread_events;
+ਬਾਹਰੀ ਬਿਨਾਨਿਸ਼ਾਨੀ ਲੰਮਾ ਗਿਣਤੀ_event_pool;
 
 // Trigger the simulation callbacks.
-extern void vpiEndOfCompile(void);
-extern void vpiStartOfSim(void);
-extern void vpiPostsim(void);
-extern void vpiNextSimTime(void);
+ਬਾਹਰੀ ਖਾਲੀ vpi_ਸਿਰਾ_ਦਾ_Compile(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ vpi_ਸ਼ੁਰੂ_ਦਾ_Sim(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ vpiPostsim(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ vpi_ਅਗਲਾ_Sim_ਸਮਾਂ(ਖਾਲੀ);
 
-#endif /* IVL_schedule_H */
+#ਜੇ_ਅੰਤ /* IVL_schedule_H */

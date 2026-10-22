@@ -23,73 +23,73 @@
 # include  <iostream>
 # include  <cassert>
 
-vvp_fun_bufif::vvp_fun_bufif(bool en_invert, bool out_invert,
-			     unsigned str0, unsigned str1)
-: pol_(en_invert? 1 : 0), inv_(out_invert? 1 : 0)
+vvp_fun_bufif::vvp_fun_bufif(ਤਾਰਕਿਕ en_invert, ਤਾਰਕਿਕ ਬਾਹਰਲਾ_invert,
+			     ਬਿਨਾਨਿਸ਼ਾਨੀ str0, ਬਿਨਾਨਿਸ਼ਾਨੀ str1)
+: pol_(en_invert? 1 : 0), inv_(ਬਾਹਰਲਾ_invert? 1 : 0)
 {
       drive0_ = str0;
       drive1_ = str1;
-      count_functors_bufif += 1;
+      ਗਿਣਤੀ_functors_bufif += 1;
 }
 
-void vvp_fun_bufif::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ਖਾਲੀ vvp_fun_bufif::recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                               vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0:
-	    bit_ = inv_? ~bit : bit;
-	    break;
-	  case 1:
-	    en_ = pol_? ~bit : bit;
-	    break;
-	  default:
-	    return;
+      ਚੋਣ (ptr.ਪੋਰਟ()) {
+	  ਹਾਲਤ 0:
+	    ਦੋਆਧਾਰੀ_ਅੰਕ_2 = inv_? ~ਦੋਆਧਾਰੀ_ਅੰਕ : ਦੋਆਧਾਰੀ_ਅੰਕ;
+	    ਰੋਕੋ;
+	  ਹਾਲਤ 1:
+	    en_ = pol_? ~ਦੋਆਧਾਰੀ_ਅੰਕ : ਦੋਆਧਾਰੀ_ਅੰਕ;
+	    ਰੋਕੋ;
+	  ਮੂਲ:
+	    ਵਾਪਸ;
       }
 
-      vvp_vector8_t out (bit.size());
+      vvp_vector8_t out (ਦੋਆਧਾਰੀ_ਅੰਕ.size());
 
-      for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0 ;  idx < ਦੋਆਧਾਰੀ_ਅੰਕ.size() ;  idx += 1) {
 	    vvp_bit4_t b_en  = en_.value(idx);
-	    vvp_bit4_t b_bit = bit_.value(idx);
+	    vvp_bit4_t b_ਦੋਆਧਾਰੀ_ਅੰਕ = ਦੋਆਧਾਰੀ_ਅੰਕ_2.value(idx);
 
-	    switch (b_en) {
-		case BIT4_0:
-		  out.set_bit(idx, vvp_scalar_t(BIT4_Z,drive0_,drive1_));
-		  break;
-		case BIT4_1:
-		  if (bit4_is_xz(b_bit))
-			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
-		  else
-			out.set_bit(idx, vvp_scalar_t(b_bit,drive0_,drive1_));
-		  break;
+	    ਚੋਣ (b_en) {
+		ਹਾਲਤ BIT4_0:
+		  out.ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(idx, vvp_scalar_t(BIT4_Z,drive0_,drive1_));
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_1:
+		  ਜੇ (bit4_is_xz(b_ਦੋਆਧਾਰੀ_ਅੰਕ))
+			out.ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
+		  ਨਹੀਂਤਾਂ
+			out.ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(idx, vvp_scalar_t(b_ਦੋਆਧਾਰੀ_ਅੰਕ,drive0_,drive1_));
+		  ਰੋਕੋ;
 
-		default:
-		  switch (b_bit) {
-		      case BIT4_0:
-			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,0));
-			break;
-		      case BIT4_1:
-			out.set_bit(idx, vvp_scalar_t(BIT4_X,0,drive1_));
-			break;
-		      default:
-			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
-			break;
+		ਮੂਲ:
+		  ਚੋਣ (b_ਦੋਆਧਾਰੀ_ਅੰਕ) {
+		      ਹਾਲਤ BIT4_0:
+			out.ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(idx, vvp_scalar_t(BIT4_X,drive0_,0));
+			ਰੋਕੋ;
+		      ਹਾਲਤ BIT4_1:
+			out.ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(idx, vvp_scalar_t(BIT4_X,0,drive1_));
+			ਰੋਕੋ;
+		      ਮੂਲ:
+			out.ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
+			ਰੋਕੋ;
 		  }
-		  break;
+		  ਰੋਕੋ;
 	    }
       }
 
       ptr.ptr()->send_vec8(out);
 }
 
-void vvp_fun_bufif::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			         unsigned base, unsigned vwid, vvp_context_t ctx)
+ਖਾਲੀ vvp_fun_bufif::recv_vec4_pv(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			         ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, ਦੋਆਧਾਰੀ_ਅੰਕ, ਅਧਾਰ, vwid, ctx);
 }
 
-void vvp_fun_bufif::recv_real(vvp_net_ptr_t ptr, double real,
+ਖਾਲੀ vvp_fun_bufif::recv_real(vvp_net_ptr_t ptr, ਦੁੱਗਣਾ real,
                               vvp_context_t ctx)
 {
-      recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
+      recv_vec4(ptr, double_ਮੰਜ਼ਿਲ_vector4_LSB(real), ctx);
 }

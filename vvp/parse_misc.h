@@ -1,5 +1,5 @@
-#ifndef IVL_parse_misc_H
-#define IVL_parse_misc_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ IVL_parse_misc_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IVL_parse_misc_H
 /*
  * Copyright (c) 2001-2014 Stephen Williams (steve@icarus.com)
  *
@@ -25,71 +25,71 @@
  * This method is called to compile the design file. The input is read
  * and a list of statements is created.
  */
-extern int compile_design(const char*path);
+ਬਾਹਰੀ ਪੂਰਨ compile_design(ਅਚਲ ਅੱਖਰ*ਰਸਤਾ);
 
 /*
  * This routine is called to check that the input file has a compatible
  * version.
  */
-extern void verify_version(char *ivl_ver, char* commit);
+ਬਾਹਰੀ ਖਾਲੀ verify_ਸੰਸਕਰਣ(ਅੱਖਰ *ivl_ver, ਅੱਖਰ* commit);
 
 /*
  * Set the default delay type for the $sdf_annotate task (min/typ/max).
  */
-extern void set_delay_selection(const char* sel);
+ਬਾਹਰੀ ਖਾਲੀ ਸੈੱਟ_delay_selection(ਅਚਲ ਅੱਖਰ* sel);
 
 /*
  * various functions shared by the lexor and the parser.
  */
-extern int yylex(void);
-extern void yyerror(const char*msg);
+ਬਾਹਰੀ ਪੂਰਨ yylex(ਖਾਲੀ);
+ਬਾਹਰੀ ਖਾਲੀ yyerror(ਅਚਲ ਅੱਖਰ*ਸੁਨੇਹਾ);
 
-extern void destroy_lexor();
+ਬਾਹਰੀ ਖਾਲੀ destroy_lexor();
 
 /*
  * This is the path of the current source file.
  */
-extern const char*yypath;
-extern unsigned yyline;
+ਬਾਹਰੀ ਅਚਲ ਅੱਖਰ*yypath;
+ਬਾਹਰੀ ਬਿਨਾਨਿਸ਼ਾਨੀ yyline;
 
-struct symb_s {
-      char*text;
-      unsigned idx;
+ਬਣਤਰ symb_s {
+      ਅੱਖਰ*ਪਾਠ;
+      ਬਿਨਾਨਿਸ਼ਾਨੀ idx;
 };
 
-struct symbv_s {
-      unsigned cnt;
-      struct symb_s*vect;
+ਬਣਤਰ symbv_s {
+      ਬਿਨਾਨਿਸ਼ਾਨੀ cnt;
+      ਬਣਤਰ symb_s*vect;
 };
 
-extern void symbv_init(struct symbv_s*obj);
-extern void symbv_add(struct symbv_s*obj, struct symb_s item);
+ਬਾਹਰੀ ਖਾਲੀ symbv_init(ਬਣਤਰ symbv_s*obj);
+ਬਾਹਰੀ ਖਾਲੀ symbv_ਜੋੜੋ(ਬਣਤਰ symbv_s*obj, ਬਣਤਰ symb_s ਵਸਤੂ);
 
-struct numbv_s {
-      unsigned cnt;
-      long*nvec;
+ਬਣਤਰ numbv_s {
+      ਬਿਨਾਨਿਸ਼ਾਨੀ cnt;
+      ਲੰਮਾ*nvec;
 };
 
-struct enum_name_s {
-      char*text;
+ਬਣਤਰ enum_name_s {
+      ਅੱਖਰ*ਪਾਠ;
       uint64_t val2;
-      char*val4;
+      ਅੱਖਰ*val4;
 };
 
-extern void numbv_init(struct numbv_s*obj);
-extern void numbv_add(struct numbv_s*obj, long item);
-extern void numbv_clear(struct numbv_s*obj);
+ਬਾਹਰੀ ਖਾਲੀ numbv_init(ਬਣਤਰ numbv_s*obj);
+ਬਾਹਰੀ ਖਾਲੀ numbv_ਜੋੜੋ(ਬਣਤਰ numbv_s*obj, ਲੰਮਾ ਵਸਤੂ);
+ਬਾਹਰੀ ਖਾਲੀ numbv_clear(ਬਣਤਰ numbv_s*obj);
 
-struct argv_s {
-      unsigned  argc;
+ਬਣਤਰ argv_s {
+      ਬਿਨਾਨਿਸ਼ਾਨੀ  argc;
       vpiHandle*argv;
-      char    **syms;
+      ਅੱਖਰ    **syms;
 };
 
 
-extern void argv_init(struct argv_s*obj);
-extern void argv_add(struct argv_s*obj, vpiHandle);
-extern void argv_sym_add(struct argv_s*obj, char *);
-extern void argv_sym_lookup(struct argv_s*obj);
+ਬਾਹਰੀ ਖਾਲੀ argv_init(ਬਣਤਰ argv_s*obj);
+ਬਾਹਰੀ ਖਾਲੀ argv_ਜੋੜੋ(ਬਣਤਰ argv_s*obj, vpiHandle);
+ਬਾਹਰੀ ਖਾਲੀ argv_sym_ਜੋੜੋ(ਬਣਤਰ argv_s*obj, ਅੱਖਰ *);
+ਬਾਹਰੀ ਖਾਲੀ argv_sym_lookup(ਬਣਤਰ argv_s*obj);
 
-#endif /* IVL_parse_misc_H */
+#ਜੇ_ਅੰਤ /* IVL_parse_misc_H */

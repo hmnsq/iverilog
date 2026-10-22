@@ -1,5 +1,5 @@
-#ifndef IVL_delay_H
-#define IVL_delay_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ IVL_delay_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IVL_delay_H
 /*
  * Copyright 2005-2026 Stephen Williams
  *
@@ -23,12 +23,12 @@
 # include  "vvp_net.h"
 # include  "schedule.h"
 
-enum delay_edge_t {
-      DELAY_EDGE_01 = 0, DELAY_EDGE_10, DELAY_EDGE_0z,
-      DELAY_EDGE_z1,     DELAY_EDGE_1z, DELAY_EDGE_z0,
-      DELAY_EDGE_0x,     DELAY_EDGE_x1, DELAY_EDGE_1x,
-      DELAY_EDGE_x0,     DELAY_EDGE_xz, DELAY_EDGE_zx,
-      DELAY_EDGE_COUNT
+ਗਿਣਤੀ delay_ਕਿਨਾਰਾ_t {
+      DELAY_ਕਿਨਾਰਾ_01 = 0, DELAY_ਕਿਨਾਰਾ_10, DELAY_ਕਿਨਾਰਾ_0z,
+      DELAY_ਕਿਨਾਰਾ_z1,     DELAY_ਕਿਨਾਰਾ_1z, DELAY_ਕਿਨਾਰਾ_z0,
+      DELAY_ਕਿਨਾਰਾ_0x,     DELAY_ਕਿਨਾਰਾ_x1, DELAY_ਕਿਨਾਰਾ_1x,
+      DELAY_ਕਿਨਾਰਾ_x0,     DELAY_ਕਿਨਾਰਾ_xz, DELAY_ਕਿਨਾਰਾ_zx,
+      DELAY_ਕਿਨਾਰਾ_ਗਿਣਤੀ
 };
 
 /*
@@ -38,25 +38,25 @@ enum delay_edge_t {
  */
 class vvp_delay_t {
 
-    public:
+    ਜਨਤਕ:
       vvp_delay_t(vvp_time64_t rise, vvp_time64_t fall);
       vvp_delay_t(vvp_time64_t rise, vvp_time64_t fall, vvp_time64_t decay);
       ~vvp_delay_t();
 
-      vvp_time64_t get_delay(vvp_bit4_t from, vvp_bit4_t to);
-      vvp_time64_t get_min_delay() const;
+      vvp_time64_t get_delay(vvp_bit4_t from, vvp_bit4_t ਮੰਜ਼ਿਲ);
+      vvp_time64_t get_min_delay() ਅਚਲ;
 
-      void set_rise(vvp_time64_t val);
-      void set_fall(vvp_time64_t val);
-      void set_decay(vvp_time64_t val);
-      void set_ignore_decay();
+      ਖਾਲੀ ਸੈੱਟ_rise(vvp_time64_t val);
+      ਖਾਲੀ ਸੈੱਟ_fall(vvp_time64_t val);
+      ਖਾਲੀ ਸੈੱਟ_decay(vvp_time64_t val);
+      ਖਾਲੀ ਸੈੱਟ_ignore_decay();
 
-    private:
+    ਨਿਜੀ:
       vvp_time64_t rise_, fall_, decay_;
       vvp_time64_t min_delay_;
       bool ignore_decay_;
 
-      void calculate_min_delay_();
+      ਖਾਲੀ calculate_min_delay_();
 };
 
 /* vvp_fun_delay
@@ -72,46 +72,46 @@ class vvp_delay_t {
  * input. This is a bit of a hack, as it may be more efficient to
  * create the right type of vvp_fun_delay_real.
  */
-class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
+class vvp_fun_delay  : ਜਨਤਕ vvp_net_fun_t, ਨਿਜੀ vvp_gen_event_s {
 
-      enum delay_type_t {UNKNOWN_DELAY, VEC4_DELAY, VEC8_DELAY, REAL_DELAY};
-      struct event_ {
-	    explicit event_(vvp_time64_t s) : sim_time(s) {
+      ਗਿਣਤੀ delay_type_t {UNKNOWN_DELAY, VEC4_DELAY, VEC8_DELAY, REAL_DELAY};
+      ਬਣਤਰ event_ {
+	    explicit event_(vvp_time64_t s) : sim_ਸਮਾਂ(s) {
 		  ptr_real = 0.0;
-		  next = NULL;
+		  ਅਗਲਾ_2 = ਨਿਰਾ;
 	    }
-	    void (vvp_fun_delay::*run_run_ptr)(const struct vvp_fun_delay::event_*cur);
-	    const vvp_time64_t sim_time;
+	    ਖਾਲੀ (vvp_fun_delay::*ਲੜੀਵਾਰ_ਲੜੀਵਾਰ_ptr)(ਅਚਲ ਬਣਤਰ vvp_fun_delay::event_*cur);
+	    ਅਚਲ vvp_time64_t sim_ਸਮਾਂ;
 	    vvp_vector4_t ptr_vec4;
 	    vvp_vector8_t ptr_vec8;
-	    double ptr_real;
-	    struct event_*next;
+	    ਦੁੱਗਣਾ ptr_real;
+	    ਬਣਤਰ event_*ਅਗਲਾ_2;
       };
 
-    public:
-      vvp_fun_delay(vvp_net_t*net, unsigned width, const vvp_delay_t&d);
+    ਜਨਤਕ:
+      vvp_fun_delay(vvp_net_t*net, ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ, ਅਚਲ vvp_delay_t&d);
       ~vvp_fun_delay() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
-      void recv_real(vvp_net_ptr_t port, double bit,
+      ਖਾਲੀ recv_vec8(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector8_t&ਦੋਆਧਾਰੀ_ਅੰਕ) override;
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ਪੋਰਟ, ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      void recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-			unsigned base, unsigned vwid) override;
+      ਖਾਲੀ recv_vec4_pv(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t ctx) override;
+      ਖਾਲੀ recv_vec8_pv(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector8_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid) override;
 
-    private:
-      virtual void run_run() override;
+    ਨਿਜੀ:
+      ਆਭਾਸੀ ਖਾਲੀ ਲੜੀਵਾਰ_ਲੜੀਵਾਰ() override;
 
 
-      void run_run_vec4_(const struct vvp_fun_delay::event_*cur);
-      void run_run_vec8_(const struct vvp_fun_delay::event_*cur);
-      void run_run_real_(const struct vvp_fun_delay::event_*cur);
+      ਖਾਲੀ ਲੜੀਵਾਰ_ਲੜੀਵਾਰ_vec4(ਅਚਲ ਬਣਤਰ vvp_fun_delay::event_*cur);
+      ਖਾਲੀ ਲੜੀਵਾਰ_ਲੜੀਵਾਰ_vec8(ਅਚਲ ਬਣਤਰ vvp_fun_delay::event_*cur);
+      ਖਾਲੀ ਲੜੀਵਾਰ_ਲੜੀਵਾਰ_real(ਅਚਲ ਬਣਤਰ vvp_fun_delay::event_*cur);
 
-    private:
+    ਨਿਜੀ:
       vvp_net_t*net_;
       vvp_delay_t delay_;
       delay_type_t type_;
@@ -119,37 +119,37 @@ class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
 
       vvp_vector4_t cur_vec4_;
       vvp_vector8_t cur_vec8_;
-      double cur_real_;
-      vvp_time64_t round_, scale_; // Needed to scale variable time values.
+      ਦੁੱਗਣਾ cur_real_;
+      vvp_time64_t ਗੇੜਾ, scale_; // Needed to scale variable time values.
 
-      struct event_ *list_;
-      void enqueue_(struct event_*cur)
+      ਬਣਤਰ event_ *list_;
+      ਖਾਲੀ ਕਤਾਰ_ਵਿੱਚ_ਪਾਓ(ਬਣਤਰ event_*cur)
       {
-	    if (list_) {
-		  cur->next = list_->next;
-		  list_->next = cur;
+	    ਜੇ (list_) {
+		  cur->ਅਗਲਾ_2 = list_->ਅਗਲਾ_2;
+		  list_->ਅਗਲਾ_2 = cur;
 		  list_ = cur;
-	    } else {
-		  cur->next = cur;
+	    } ਨਹੀਂਤਾਂ {
+		  cur->ਅਗਲਾ_2 = cur;
 		  list_ = cur;
 	    }
       }
-      struct event_* dequeue_(void)
+      ਬਣਤਰ event_* ਕਤਾਰ_ਤੋਂ_ਕੱਢੋ(ਖਾਲੀ)
       {
-	    if (list_ == 0)
-		  return 0;
-	    struct event_*cur = list_->next;
-	    if (list_ == cur)
+	    ਜੇ (list_ == 0)
+		  ਵਾਪਸ 0;
+	    ਬਣਤਰ event_*cur = list_->ਅਗਲਾ_2;
+	    ਜੇ (list_ == cur)
 		  list_ = 0;
-	    else
-		  list_->next = cur->next;
-	    return cur;
+	    ਨਹੀਂਤਾਂ
+		  list_->ਅਗਲਾ_2 = cur->ਅਗਲਾ_2;
+	    ਵਾਪਸ cur;
       }
-      bool clean_pulse_events_(vvp_time64_t use_delay, const vvp_vector4_t&bit);
-      bool clean_pulse_events_(vvp_time64_t use_delay, const vvp_vector8_t&bit);
-      bool clean_pulse_events_(vvp_time64_t use_delay, double bit);
+      bool clean_pulse_events_(vvp_time64_t use_delay, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ);
+      bool clean_pulse_events_(vvp_time64_t use_delay, ਅਚਲ vvp_vector8_t&ਦੋਆਧਾਰੀ_ਅੰਕ);
+      bool clean_pulse_events_(vvp_time64_t use_delay, ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ);
 // Delete this when done!
-      void clean_pulse_events_(vvp_time64_t use_delay);
+      ਖਾਲੀ clean_pulse_events_(vvp_time64_t use_delay);
 };
 
 /*
@@ -163,21 +163,21 @@ class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
 class vvp_fun_modpath;
 class vvp_fun_modpath_src;
 
-class vvp_fun_modpath  : public vvp_net_fun_t, private vvp_gen_event_s {
+class vvp_fun_modpath  : ਜਨਤਕ vvp_net_fun_t, ਨਿਜੀ vvp_gen_event_s {
 
-    public:
-      vvp_fun_modpath(vvp_net_t*net, unsigned width);
+    ਜਨਤਕ:
+      vvp_fun_modpath(vvp_net_t*net, ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ);
       ~vvp_fun_modpath() override;
 
-      void add_modpath_src(vvp_fun_modpath_src*that, bool ifnone);
+      ਖਾਲੀ ਜੋੜੋ_modpath_src(vvp_fun_modpath_src*that, bool ifnone);
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
-    private:
-      virtual void run_run() override;
+    ਨਿਜੀ:
+      ਆਭਾਸੀ ਖਾਲੀ ਲੜੀਵਾਰ_ਲੜੀਵਾਰ() override;
 
-    private:
+    ਨਿਜੀ:
       vvp_net_t*net_;
 
       vvp_vector4_t cur_vec4_;
@@ -185,51 +185,51 @@ class vvp_fun_modpath  : public vvp_net_fun_t, private vvp_gen_event_s {
       vvp_fun_modpath_src*src_list_;
       vvp_fun_modpath_src*ifnone_list_;
 
-    private: // not implemented
-      vvp_fun_modpath(const vvp_fun_modpath&);
-      vvp_fun_modpath& operator= (const vvp_fun_modpath&);
+    ਨਿਜੀ: // not implemented
+      vvp_fun_modpath(ਅਚਲ vvp_fun_modpath&);
+      vvp_fun_modpath& ਸੰਚਾਲਕ= (ਅਚਲ vvp_fun_modpath&);
 };
 
-class vvp_fun_modpath_src  : public vvp_net_fun_t {
+class vvp_fun_modpath_src  : ਜਨਤਕ vvp_net_fun_t {
 
-      friend class vvp_fun_modpath;
+      ਮਿੱਤਰ class vvp_fun_modpath;
 
-    public:
-      explicit vvp_fun_modpath_src(vvp_time64_t const del[12]);
-    protected:
+    ਜਨਤਕ:
+      explicit vvp_fun_modpath_src(vvp_time64_t ਅਚਲ del[12]);
+    ਸੁਰੱਖਿਅਤ:
       ~vvp_fun_modpath_src() override;
 
-    public:
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    ਜਨਤਕ:
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
-      virtual bool test_vec4(const vvp_vector4_t&bit);
+      ਆਭਾਸੀ bool test_vec4(ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ);
 
-      void get_delay12(vvp_time64_t out[12]) const;
-      void put_delay12(const vvp_time64_t in[12]);
+      ਖਾਲੀ get_delay12(vvp_time64_t ਬਾਹਰਲਾ[12]) ਅਚਲ;
+      ਖਾਲੀ put_delay12(ਅਚਲ vvp_time64_t ਵਿੱਚ[12]);
 
-    private:
+    ਨਿਜੀ:
 	// FIXME: Needs to be a 12-value array
       vvp_time64_t delay_[12];
 	// Used by vvp_fun_modpath to keep a list of modpath_src objects.
-      vvp_fun_modpath_src*next_;
+      vvp_fun_modpath_src*ਅਗਲਾ;
 
-      vvp_time64_t wake_time_;
+      vvp_time64_t wake_ਸਮਾਂ;
       bool condition_flag_;
 
-    private:
-      vvp_fun_modpath_src(const vvp_fun_modpath_src&);
-      vvp_fun_modpath_src& operator = (const vvp_fun_modpath_src&);
+    ਨਿਜੀ:
+      vvp_fun_modpath_src(ਅਚਲ vvp_fun_modpath_src&);
+      vvp_fun_modpath_src& ਸੰਚਾਲਕ = (ਅਚਲ vvp_fun_modpath_src&);
 };
 
-class vvp_fun_modpath_edge  : public vvp_fun_modpath_src {
+class vvp_fun_modpath_ਕਿਨਾਰਾ  : ਜਨਤਕ vvp_fun_modpath_src {
 
-    public:
-      vvp_fun_modpath_edge(vvp_time64_t del[12], bool pos, bool neg);
+    ਜਨਤਕ:
+      vvp_fun_modpath_ਕਿਨਾਰਾ(vvp_time64_t del[12], bool pos, bool neg);
 
-      bool test_vec4(const vvp_vector4_t&bit) override;
+      bool test_vec4(ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ) override;
 
-    private:
-      vvp_bit4_t old_value_;
+    ਨਿਜੀ:
+      vvp_bit4_t old_ਮੁੱਲ;
       bool posedge_;
       bool negedge_;
 };
@@ -239,31 +239,31 @@ class vvp_fun_modpath_edge  : public vvp_fun_modpath_src {
 * Upon a (INTERCONNECT ...) statement an intermodpath will be inserted
 * between port1 and port2 and its delay can be annotated
 */
-class vvp_fun_intermodpath  : public vvp_net_fun_t, private vvp_gen_event_s {
+class vvp_fun_intermodpath  : ਜਨਤਕ vvp_net_fun_t, ਨਿਜੀ vvp_gen_event_s {
 
-    public:
-      vvp_fun_intermodpath(vvp_net_t*net, unsigned width);
+    ਜਨਤਕ:
+      vvp_fun_intermodpath(vvp_net_t*net, ਬਿਨਾਨਿਸ਼ਾਨੀ ਚੌੜਾਈ);
       ~vvp_fun_intermodpath() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
-      void get_delay12(vvp_time64_t out[12]) const;
-      void put_delay12(const vvp_time64_t in[12]);
+      ਖਾਲੀ get_delay12(vvp_time64_t ਬਾਹਰਲਾ[12]) ਅਚਲ;
+      ਖਾਲੀ put_delay12(ਅਚਲ vvp_time64_t ਵਿੱਚ[12]);
 
-    private:
-      void run_run() override;
+    ਨਿਜੀ:
+      ਖਾਲੀ ਲੜੀਵਾਰ_ਲੜੀਵਾਰ() override;
 
-    private:
+    ਨਿਜੀ:
       vvp_net_t*net_;
 
       vvp_vector4_t cur_vec4_;
 
       vvp_time64_t delay_[12];
 
-    private: // not implemented
-      vvp_fun_intermodpath(const vvp_fun_intermodpath&);
-      vvp_fun_intermodpath& operator= (const vvp_fun_intermodpath&);
+    ਨਿਜੀ: // not implemented
+      vvp_fun_intermodpath(ਅਚਲ vvp_fun_intermodpath&);
+      vvp_fun_intermodpath& ਸੰਚਾਲਕ= (ਅਚਲ vvp_fun_intermodpath&);
 };
 
-#endif /* IVL_delay_H */
+#ਜੇ_ਅੰਤ /* IVL_delay_H */

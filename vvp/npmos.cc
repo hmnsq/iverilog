@@ -19,126 +19,126 @@
 
 # include  "npmos.h"
 
-vvp_fun_pmos_::vvp_fun_pmos_(bool enable_invert, bool resistive)
+vvp_fun_pmos_::vvp_fun_pmos_(ਤਾਰਕਿਕ enable_invert, ਤਾਰਕਿਕ resistive)
 {
       inv_en_ = enable_invert;
       resistive_ = resistive;
 }
 
 
-void vvp_fun_pmos_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ਖਾਲੀ vvp_fun_pmos_::recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                               vvp_context_t)
 {
 	/* Data input is processed through eh recv_vec8 method,
 	   because the strength must be preserved. */
-      if (ptr.port() == 0) {
-	    vvp_vector8_t tmp = vvp_vector8_t(bit,6,6);
+      ਜੇ (ptr.ਪੋਰਟ() == 0) {
+	    vvp_vector8_t tmp = vvp_vector8_t(ਦੋਆਧਾਰੀ_ਅੰਕ,6,6);
 	    recv_vec8(ptr, tmp);
-	    return;
+	    ਵਾਪਸ;
       }
 
-      if (ptr.port() != 1)
-	    return;
+      ਜੇ (ptr.ਪੋਰਟ() != 1)
+	    ਵਾਪਸ;
 
-      en_ = inv_en_? ~bit : bit;
+      en_ = inv_en_? ~ਦੋਆਧਾਰੀ_ਅੰਕ : ਦੋਆਧਾਰੀ_ਅੰਕ;
       generate_output_(ptr);
 }
 
-void vvp_fun_pmos_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			         unsigned base, unsigned vwid, vvp_context_t ctx)
+ਖਾਲੀ vvp_fun_pmos_::recv_vec4_pv(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			         ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, ਦੋਆਧਾਰੀ_ਅੰਕ, ਅਧਾਰ, vwid, ctx);
 }
 
-void vvp_fun_pmos_::recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-			         unsigned base, unsigned vwid)
+ਖਾਲੀ vvp_fun_pmos_::recv_vec8_pv(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector8_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			         ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid)
 {
-      recv_vec8_pv_(ptr, bit, base, vwid);
+      recv_vec8_pv_(ptr, ਦੋਆਧਾਰੀ_ਅੰਕ, ਅਧਾਰ, vwid);
 }
 
-void vvp_fun_pmos_::recv_real(vvp_net_ptr_t ptr, double real,
+ਖਾਲੀ vvp_fun_pmos_::recv_real(vvp_net_ptr_t ptr, ਦੁੱਗਣਾ real,
                               vvp_context_t ctx)
 {
-      recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
+      recv_vec4(ptr, double_ਮੰਜ਼ਿਲ_vector4_LSB(real), ctx);
 }
 
-void vvp_fun_pmos_::generate_output_(vvp_net_ptr_t ptr)
+ਖਾਲੀ vvp_fun_pmos_::generate_output_(vvp_net_ptr_t ptr)
 {
-      const unsigned*strength_map = vvp_switch_strength_map[resistive_];
+      ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ*strength_map = vvp_switch_strength_map[resistive_];
 
-      vvp_vector8_t out (bit_.size());
+      vvp_vector8_t out (ਦੋਆਧਾਰੀ_ਅੰਕ_2.size());
 
-      for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0 ;  idx < out.size() ;  idx += 1) {
 	    vvp_bit4_t   b_en  = en_.value(idx);
-	    vvp_scalar_t b_bit = bit_.value(idx);
+	    vvp_scalar_t b_ਦੋਆਧਾਰੀ_ਅੰਕ = ਦੋਆਧਾਰੀ_ਅੰਕ_2.value(idx);
 
-            b_bit = vvp_scalar_t(b_bit.value(),
-                                 strength_map[b_bit.strength0()],
-                                 strength_map[b_bit.strength1()]);
+            b_ਦੋਆਧਾਰੀ_ਅੰਕ = vvp_scalar_t(b_ਦੋਆਧਾਰੀ_ਅੰਕ.value(),
+                                 strength_map[b_ਦੋਆਧਾਰੀ_ਅੰਕ.strength0()],
+                                 strength_map[b_ਦੋਆਧਾਰੀ_ਅੰਕ.strength1()]);
 
-	    switch (b_en) {
-		case BIT4_0:
-		  out.set_bit(idx, b_bit);
-		  break;
-		case BIT4_1:
-		  out.set_bit(idx, vvp_scalar_t(BIT4_Z,0,0));
-		  break;
-		default:
-		  switch (b_bit.value()) {
-		      case BIT4_0:
-			b_bit = vvp_scalar_t(BIT4_X,b_bit.strength0(),0);
-			break;
-		      case BIT4_1:
-			b_bit = vvp_scalar_t(BIT4_X,0,b_bit.strength1());
-			break;
-		      default:
-			break;
+	    ਚੋਣ (b_en) {
+		ਹਾਲਤ BIT4_0:
+		  out.ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(idx, b_ਦੋਆਧਾਰੀ_ਅੰਕ);
+		  ਰੋਕੋ;
+		ਹਾਲਤ BIT4_1:
+		  out.ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(idx, vvp_scalar_t(BIT4_Z,0,0));
+		  ਰੋਕੋ;
+		ਮੂਲ:
+		  ਚੋਣ (b_ਦੋਆਧਾਰੀ_ਅੰਕ.value()) {
+		      ਹਾਲਤ BIT4_0:
+			b_ਦੋਆਧਾਰੀ_ਅੰਕ = vvp_scalar_t(BIT4_X,b_ਦੋਆਧਾਰੀ_ਅੰਕ.strength0(),0);
+			ਰੋਕੋ;
+		      ਹਾਲਤ BIT4_1:
+			b_ਦੋਆਧਾਰੀ_ਅੰਕ = vvp_scalar_t(BIT4_X,0,b_ਦੋਆਧਾਰੀ_ਅੰਕ.strength1());
+			ਰੋਕੋ;
+		      ਮੂਲ:
+			ਰੋਕੋ;
 		  }
-		  out.set_bit(idx, b_bit);
-		  break;
+		  out.ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(idx, b_ਦੋਆਧਾਰੀ_ਅੰਕ);
+		  ਰੋਕੋ;
 	    }
       }
 
-      if (out.size() > 0)
+      ਜੇ (out.size() > 0)
 	    ptr.ptr()->send_vec8(out);
 }
 
 
-vvp_fun_pmos::vvp_fun_pmos(bool enable_invert)
-: vvp_fun_pmos_(enable_invert, false)
+vvp_fun_pmos::vvp_fun_pmos(ਤਾਰਕਿਕ enable_invert)
+: vvp_fun_pmos_(enable_invert, ਝੂਠ)
 {
 }
 
-void vvp_fun_pmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+ਖਾਲੀ vvp_fun_pmos::recv_vec8(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector8_t&ਦੋਆਧਾਰੀ_ਅੰਕ)
 {
-      if (ptr.port() == 1) {
-	    recv_vec4(ptr, reduce4(bit), 0);
-	    return;
+      ਜੇ (ptr.ਪੋਰਟ() == 1) {
+	    recv_vec4(ptr, reduce4(ਦੋਆਧਾਰੀ_ਅੰਕ), 0);
+	    ਵਾਪਸ;
       }
 
-      if (ptr.port() != 0)
-	    return;
+      ਜੇ (ptr.ਪੋਰਟ() != 0)
+	    ਵਾਪਸ;
 
-      bit_ = bit;
+      ਦੋਆਧਾਰੀ_ਅੰਕ_2 = ਦੋਆਧਾਰੀ_ਅੰਕ;
       generate_output_(ptr);
 }
 
-vvp_fun_rpmos::vvp_fun_rpmos(bool enable_invert)
-: vvp_fun_pmos_(enable_invert, true)
+vvp_fun_rpmos::vvp_fun_rpmos(ਤਾਰਕਿਕ enable_invert)
+: vvp_fun_pmos_(enable_invert, ਸੱਚ)
 {
 }
 
-void vvp_fun_rpmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+ਖਾਲੀ vvp_fun_rpmos::recv_vec8(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector8_t&ਦੋਆਧਾਰੀ_ਅੰਕ)
 {
-      if (ptr.port() == 1) {
-	    recv_vec4(ptr, reduce4(bit), 0);
-	    return;
+      ਜੇ (ptr.ਪੋਰਟ() == 1) {
+	    recv_vec4(ptr, reduce4(ਦੋਆਧਾਰੀ_ਅੰਕ), 0);
+	    ਵਾਪਸ;
       }
 
-      if (ptr.port() != 0)
-	    return;
+      ਜੇ (ptr.ਪੋਰਟ() != 0)
+	    ਵਾਪਸ;
 
-      bit_ = bit;
+      ਦੋਆਧਾਰੀ_ਅੰਕ_2 = ਦੋਆਧਾਰੀ_ਅੰਕ;
       generate_output_(ptr);
 }
 
@@ -147,122 +147,122 @@ void vvp_fun_rpmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
  * CMOS primitive.
  */
 
-vvp_fun_cmos_::vvp_fun_cmos_(bool resistive)
+vvp_fun_cmos_::vvp_fun_cmos_(ਤਾਰਕਿਕ resistive)
 {
       resistive_ = resistive;
 }
 
-void vvp_fun_cmos_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t &bit,
+ਖਾਲੀ vvp_fun_cmos_::recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t &ਦੋਆਧਾਰੀ_ਅੰਕ,
                               vvp_context_t)
 {
 	/* Data input is processed through the recv_vec8 method,
 	   because the strength must be preserved. */
-      if (ptr.port() == 0) {
-	    vvp_vector8_t tmp = vvp_vector8_t(bit,6,6);
+      ਜੇ (ptr.ਪੋਰਟ() == 0) {
+	    vvp_vector8_t tmp = vvp_vector8_t(ਦੋਆਧਾਰੀ_ਅੰਕ,6,6);
 	    recv_vec8(ptr, tmp);
-	    return;
+	    ਵਾਪਸ;
       }
 
-      if (ptr.port() != 1 && ptr.port() != 2)
-	    return;
+      ਜੇ (ptr.ਪੋਰਟ() != 1 && ptr.ਪੋਰਟ() != 2)
+	    ਵਾਪਸ;
 
-      if (ptr.port() == 1)
-	    n_en_ = bit;
-      else
-	    p_en_ = bit;
+      ਜੇ (ptr.ਪੋਰਟ() == 1)
+	    n_en_ = ਦੋਆਧਾਰੀ_ਅੰਕ;
+      ਨਹੀਂਤਾਂ
+	    p_en_ = ਦੋਆਧਾਰੀ_ਅੰਕ;
       generate_output_(ptr);
 }
 
-void vvp_fun_cmos_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			         unsigned base, unsigned vwid, vvp_context_t ctx)
+ਖਾਲੀ vvp_fun_cmos_::recv_vec4_pv(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			         ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, ਦੋਆਧਾਰੀ_ਅੰਕ, ਅਧਾਰ, vwid, ctx);
 }
 
-void vvp_fun_cmos_::recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-			         unsigned base, unsigned vwid)
+ਖਾਲੀ vvp_fun_cmos_::recv_vec8_pv(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector8_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			         ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid)
 {
-      recv_vec8_pv_(ptr, bit, base, vwid);
+      recv_vec8_pv_(ptr, ਦੋਆਧਾਰੀ_ਅੰਕ, ਅਧਾਰ, vwid);
 }
 
-void vvp_fun_cmos_::recv_real(vvp_net_ptr_t ptr, double real,
+ਖਾਲੀ vvp_fun_cmos_::recv_real(vvp_net_ptr_t ptr, ਦੁੱਗਣਾ real,
                               vvp_context_t ctx)
 {
-      recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
+      recv_vec4(ptr, double_ਮੰਜ਼ਿਲ_vector4_LSB(real), ctx);
 }
 
-void vvp_fun_cmos_::generate_output_(vvp_net_ptr_t ptr)
+ਖਾਲੀ vvp_fun_cmos_::generate_output_(vvp_net_ptr_t ptr)
 {
-      const unsigned*strength_map = vvp_switch_strength_map[resistive_];
+      ਅਚਲ ਬਿਨਾਨਿਸ਼ਾਨੀ*strength_map = vvp_switch_strength_map[resistive_];
 
-      vvp_vector8_t out (bit_.size());
+      vvp_vector8_t out (ਦੋਆਧਾਰੀ_ਅੰਕ_2.size());
 
-      for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ idx = 0 ;  idx < out.size() ;  idx += 1) {
 	    vvp_bit4_t   b_n_en  = n_en_.value(idx);
 	    vvp_bit4_t   b_p_en  = p_en_.value(idx);
-	    vvp_scalar_t b_bit = bit_.value(idx);
+	    vvp_scalar_t b_ਦੋਆਧਾਰੀ_ਅੰਕ = ਦੋਆਧਾਰੀ_ਅੰਕ_2.value(idx);
 
-            b_bit = vvp_scalar_t(b_bit.value(),
-                                 strength_map[b_bit.strength0()],
-                                 strength_map[b_bit.strength1()]);
+            b_ਦੋਆਧਾਰੀ_ਅੰਕ = vvp_scalar_t(b_ਦੋਆਧਾਰੀ_ਅੰਕ.value(),
+                                 strength_map[b_ਦੋਆਧਾਰੀ_ਅੰਕ.strength0()],
+                                 strength_map[b_ਦੋਆਧਾਰੀ_ਅੰਕ.strength1()]);
 
-	    if (b_n_en == BIT4_1 || b_p_en == BIT4_0) {
-		  out.set_bit(idx, b_bit);
-	    } else if (b_n_en == BIT4_0 && b_p_en == BIT4_1) {
-		  out.set_bit(idx, vvp_scalar_t(BIT4_Z,0,0));
-	    } else {
-		  switch (b_bit.value()) {
-		      case BIT4_0:
-			b_bit = vvp_scalar_t(BIT4_X,b_bit.strength0(),0);
-			break;
-		      case BIT4_1:
-			b_bit = vvp_scalar_t(BIT4_X,0,b_bit.strength1());
-			break;
-		      default:
-			break;
+	    ਜੇ (b_n_en == BIT4_1 || b_p_en == BIT4_0) {
+		  out.ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(idx, b_ਦੋਆਧਾਰੀ_ਅੰਕ);
+	    } ਨਹੀਂਤਾਂ ਜੇ (b_n_en == BIT4_0 && b_p_en == BIT4_1) {
+		  out.ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(idx, vvp_scalar_t(BIT4_Z,0,0));
+	    } ਨਹੀਂਤਾਂ {
+		  ਚੋਣ (b_ਦੋਆਧਾਰੀ_ਅੰਕ.value()) {
+		      ਹਾਲਤ BIT4_0:
+			b_ਦੋਆਧਾਰੀ_ਅੰਕ = vvp_scalar_t(BIT4_X,b_ਦੋਆਧਾਰੀ_ਅੰਕ.strength0(),0);
+			ਰੋਕੋ;
+		      ਹਾਲਤ BIT4_1:
+			b_ਦੋਆਧਾਰੀ_ਅੰਕ = vvp_scalar_t(BIT4_X,0,b_ਦੋਆਧਾਰੀ_ਅੰਕ.strength1());
+			ਰੋਕੋ;
+		      ਮੂਲ:
+			ਰੋਕੋ;
 		  }
-		  out.set_bit(idx, b_bit);
+		  out.ਸੈੱਟ_ਦੋਆਧਾਰੀ_ਅੰਕ(idx, b_ਦੋਆਧਾਰੀ_ਅੰਕ);
 	    }
       }
 
-      if (out.size() > 0)
+      ਜੇ (out.size() > 0)
 	    ptr.ptr()->send_vec8(out);
 }
 
 vvp_fun_cmos::vvp_fun_cmos()
-: vvp_fun_cmos_(false)
+: vvp_fun_cmos_(ਝੂਠ)
 {
 }
 
-void vvp_fun_cmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+ਖਾਲੀ vvp_fun_cmos::recv_vec8(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector8_t&ਦੋਆਧਾਰੀ_ਅੰਕ)
 {
-      if (ptr.port() == 1 || ptr.port() == 2) {
-	    recv_vec4(ptr, reduce4(bit), 0);
-	    return;
+      ਜੇ (ptr.ਪੋਰਟ() == 1 || ptr.ਪੋਰਟ() == 2) {
+	    recv_vec4(ptr, reduce4(ਦੋਆਧਾਰੀ_ਅੰਕ), 0);
+	    ਵਾਪਸ;
       }
 
-      if (ptr.port() != 0)
-	    return;
+      ਜੇ (ptr.ਪੋਰਟ() != 0)
+	    ਵਾਪਸ;
 
-      bit_ = bit;
+      ਦੋਆਧਾਰੀ_ਅੰਕ_2 = ਦੋਆਧਾਰੀ_ਅੰਕ;
       generate_output_(ptr);
 }
 
 vvp_fun_rcmos::vvp_fun_rcmos()
-: vvp_fun_cmos_(true)
+: vvp_fun_cmos_(ਸੱਚ)
 {
 }
 
-void vvp_fun_rcmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+ਖਾਲੀ vvp_fun_rcmos::recv_vec8(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector8_t&ਦੋਆਧਾਰੀ_ਅੰਕ)
 {
-      if (ptr.port() == 1) {
-	    recv_vec4(ptr, reduce4(bit), 0);
-	    return;
+      ਜੇ (ptr.ਪੋਰਟ() == 1) {
+	    recv_vec4(ptr, reduce4(ਦੋਆਧਾਰੀ_ਅੰਕ), 0);
+	    ਵਾਪਸ;
       }
 
-      if (ptr.port() != 0)
-	    return;
+      ਜੇ (ptr.ਪੋਰਟ() != 0)
+	    ਵਾਪਸ;
 
-      bit_ = bit;
+      ਦੋਆਧਾਰੀ_ਅੰਕ_2 = ਦੋਆਧਾਰੀ_ਅੰਕ;
       generate_output_(ptr);
 }

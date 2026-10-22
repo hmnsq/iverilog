@@ -37,75 +37,75 @@
    BIT4_1) or will propagate an initial value of 'bx. From then on
    the flip-flop operates normally. */
 
-vvp_dff::vvp_dff(unsigned width, bool negedge)
+vvp_dff::vvp_dff(ਬਿਨਾਨਿਸ਼ਾਨੀ width, ਤਾਰਕਿਕ negedge)
 : clk_(BIT4_X), ena_(BIT4_X), asc_(BIT4_Z), d_(width, BIT4_X)
 {
-      clk_active_ = negedge ? BIT4_0 : BIT4_1;
+      clk_ਸਰਗਰਮ = negedge ? BIT4_0 : BIT4_1;
 }
 
 vvp_dff::~vvp_dff()
 {
 }
 
-vvp_dff_aclr::vvp_dff_aclr(unsigned width, bool negedge)
+vvp_dff_aclr::vvp_dff_aclr(ਬਿਨਾਨਿਸ਼ਾਨੀ width, ਤਾਰਕਿਕ negedge)
 : vvp_dff(width, negedge)
 {
 }
 
-vvp_dff_aset::vvp_dff_aset(unsigned width, bool negedge)
+vvp_dff_aset::vvp_dff_aset(ਬਿਨਾਨਿਸ਼ਾਨੀ width, ਤਾਰਕਿਕ negedge)
 : vvp_dff(width, negedge)
 {
 }
 
-vvp_dff_asc::vvp_dff_asc(unsigned width, bool negedge, const char*asc_value)
-: vvp_dff(width, negedge), asc_value_(c4string_to_vector4(asc_value))
+vvp_dff_asc::vvp_dff_asc(ਬਿਨਾਨਿਸ਼ਾਨੀ width, ਤਾਰਕਿਕ negedge, ਅਚਲ ਅੱਖਰ*asc_ਮੁੱਲ)
+: vvp_dff(width, negedge), asc_ਮੁੱਲ_2(c4string_ਮੰਜ਼ਿਲ_vector4(asc_ਮੁੱਲ))
 {
 }
 
-void vvp_dff::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ਖਾਲੀ vvp_dff::recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                         vvp_context_t)
 {
       vvp_bit4_t tmp;
 
-      switch (port.port()) {
+      ਚੋਣ (ਪੋਰਟ.ਪੋਰਟ()) {
 
-	  case 0: // D
-	    d_ = bit;
-	    break;
+	  ਹਾਲਤ 0: // D
+	    d_ = ਦੋਆਧਾਰੀ_ਅੰਕ;
+	    ਰੋਕੋ;
 
-	  case 1: // CLK
-	    assert(bit.size() == 1);
-	    if (asc_ != BIT4_0)
-		  break;
-	    if (ena_ != BIT4_1)
-		  break;
+	  ਹਾਲਤ 1: // CLK
+	    ਪ੍ਰਤਿਜ੍ਞਾ(ਦੋਆਧਾਰੀ_ਅੰਕ.size() == 1);
+	    ਜੇ (asc_ != BIT4_0)
+		  ਰੋਕੋ;
+	    ਜੇ (ena_ != BIT4_1)
+		  ਰੋਕੋ;
 	    tmp = clk_;
-	    clk_ = bit.value(0);
-	    if (clk_ == clk_active_ && tmp != clk_active_)
-		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	    clk_ = ਦੋਆਧਾਰੀ_ਅੰਕ.value(0);
+	    ਜੇ (clk_ == clk_ਸਰਗਰਮ && tmp != clk_ਸਰਗਰਮ)
+		  ਸਮਾਂ_ਸਾਰਣੀ_propagate_ਸਦਿਸ਼(ਪੋਰਟ.ptr(), 0, d_);
+	    ਰੋਕੋ;
 
-	  case 2: // CE
-	    assert(bit.size() == 1);
-	    ena_ = bit.value(0);
-	    break;
+	  ਹਾਲਤ 2: // CE
+	    ਪ੍ਰਤਿਜ੍ਞਾ(ਦੋਆਧਾਰੀ_ਅੰਕ.size() == 1);
+	    ena_ = ਦੋਆਧਾਰੀ_ਅੰਕ.value(0);
+	    ਰੋਕੋ;
 
-	  case 3: // asynch SET/CLR
-	    assert(bit.size() == 1);
+	  ਹਾਲਤ 3: // asynch SET/CLR
+	    ਪ੍ਰਤਿਜ੍ਞਾ(ਦੋਆਧਾਰੀ_ਅੰਕ.size() == 1);
 	    tmp = asc_;
-	    asc_ = bit.value(0);
-	    if (asc_ == BIT4_1 && tmp != BIT4_1)
-		  recv_async(port);
-	    else if (tmp == BIT4_Z)
-		  port.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
-	    break;
+	    asc_ = ਦੋਆਧਾਰੀ_ਅੰਕ.value(0);
+	    ਜੇ (asc_ == BIT4_1 && tmp != BIT4_1)
+		  recv_async(ਪੋਰਟ);
+	    ਨਹੀਂਤਾਂ ਜੇ (tmp == BIT4_Z)
+		  ਪੋਰਟ.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
+	    ਰੋਕੋ;
       }
 }
 
-void vvp_dff::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			   unsigned base, unsigned vwid, vvp_context_t ctx)
+ਖਾਲੀ vvp_dff::recv_vec4_pv(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			   ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, ਦੋਆਧਾਰੀ_ਅੰਕ, ਅਧਾਰ, vwid, ctx);
 }
 
 /*
@@ -115,86 +115,86 @@ void vvp_dff::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
  * NOTE: Don't touch the d_ value, because that tracks the D input,
  * which may be needed when the device is clocked afterwards.
  */
-void vvp_dff::recv_async(vvp_net_ptr_t)
+ਖਾਲੀ vvp_dff::recv_async(vvp_net_ptr_t)
 {
 	// The base dff does not have an asynchronous set/clr input.
-      assert(0);
+      ਪ੍ਰਤਿਜ੍ਞਾ(0);
 }
 
-void vvp_dff_aclr::recv_async(vvp_net_ptr_t port)
+ਖਾਲੀ vvp_dff_aclr::recv_async(vvp_net_ptr_t ਪੋਰਟ)
 {
-      schedule_propagate_vector(port.ptr(), 0, vvp_vector4_t(d_.size(), BIT4_0));
+      ਸਮਾਂ_ਸਾਰਣੀ_propagate_ਸਦਿਸ਼(ਪੋਰਟ.ptr(), 0, vvp_vector4_t(d_.size(), BIT4_0));
 }
 
-void vvp_dff_aset::recv_async(vvp_net_ptr_t port)
+ਖਾਲੀ vvp_dff_aset::recv_async(vvp_net_ptr_t ਪੋਰਟ)
 {
-      schedule_propagate_vector(port.ptr(), 0, vvp_vector4_t(d_.size(), BIT4_1));
+      ਸਮਾਂ_ਸਾਰਣੀ_propagate_ਸਦਿਸ਼(ਪੋਰਟ.ptr(), 0, vvp_vector4_t(d_.size(), BIT4_1));
 }
 
-void vvp_dff_asc::recv_async(vvp_net_ptr_t port)
+ਖਾਲੀ vvp_dff_asc::recv_async(vvp_net_ptr_t ਪੋਰਟ)
 {
-      schedule_propagate_vector(port.ptr(), 0, asc_value_);
+      ਸਮਾਂ_ਸਾਰਣੀ_propagate_ਸਦਿਸ਼(ਪੋਰਟ.ptr(), 0, asc_ਮੁੱਲ_2);
 }
 
-void compile_dff(char*label, unsigned width, bool negedge,
-		 struct symb_s arg_d,
-		 struct symb_s arg_c,
-		 struct symb_s arg_e)
+ਖਾਲੀ compile_dff(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ width, ਤਾਰਕਿਕ negedge,
+		 ਬਣਤਰ symb_s arg_d,
+		 ਬਣਤਰ symb_s arg_c,
+		 ਬਣਤਰ symb_s arg_e)
 {
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_dff*fun = new vvp_dff(width, negedge);
+      vvp_net_t*ptr = ਨਵਾਂ vvp_net_t;
+      vvp_dff*fun = ਨਵਾਂ vvp_dff(width, negedge);
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_c.text);
-      input_connect(ptr, 2, arg_e.text);
+      define_functor_ਚਿੰਨ੍ਹ(label, ptr);
+      ਮੁਕਤ(label);
+      ਨਿਵੇਸ਼_connect(ptr, 0, arg_d.ਪਾਠ);
+      ਨਿਵੇਸ਼_connect(ptr, 1, arg_c.ਪਾਠ);
+      ਨਿਵੇਸ਼_connect(ptr, 2, arg_e.ਪਾਠ);
 
       vvp_vector4_t init_val = vvp_vector4_t(1, BIT4_0);
-      schedule_init_vector(vvp_net_ptr_t(ptr,3), init_val);
+      ਸਮਾਂ_ਸਾਰਣੀ_init_ਸਦਿਸ਼(vvp_net_ptr_t(ptr,3), init_val);
 }
 
-void compile_dff_aclr(char*label, unsigned width, bool negedge,
-		      struct symb_s arg_d,
-		      struct symb_s arg_c,
-		      struct symb_s arg_e,
-		      struct symb_s arg_a)
+ਖਾਲੀ compile_dff_aclr(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ width, ਤਾਰਕਿਕ negedge,
+		      ਬਣਤਰ symb_s arg_d,
+		      ਬਣਤਰ symb_s arg_c,
+		      ਬਣਤਰ symb_s arg_e,
+		      ਬਣਤਰ symb_s arg_a)
 {
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_dff*fun = new vvp_dff_aclr(width, negedge);
+      vvp_net_t*ptr = ਨਵਾਂ vvp_net_t;
+      vvp_dff*fun = ਨਵਾਂ vvp_dff_aclr(width, negedge);
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_c.text);
-      input_connect(ptr, 2, arg_e.text);
-      input_connect(ptr, 3, arg_a.text);
+      define_functor_ਚਿੰਨ੍ਹ(label, ptr);
+      ਮੁਕਤ(label);
+      ਨਿਵੇਸ਼_connect(ptr, 0, arg_d.ਪਾਠ);
+      ਨਿਵੇਸ਼_connect(ptr, 1, arg_c.ਪਾਠ);
+      ਨਿਵੇਸ਼_connect(ptr, 2, arg_e.ਪਾਠ);
+      ਨਿਵੇਸ਼_connect(ptr, 3, arg_a.ਪਾਠ);
 }
 
-void compile_dff_aset(char*label, unsigned width, bool negedge,
-		      struct symb_s arg_d,
-		      struct symb_s arg_c,
-		      struct symb_s arg_e,
-		      struct symb_s arg_a,
-		      char*asc_value)
+ਖਾਲੀ compile_dff_aset(ਅੱਖਰ*label, ਬਿਨਾਨਿਸ਼ਾਨੀ width, ਤਾਰਕਿਕ negedge,
+		      ਬਣਤਰ symb_s arg_d,
+		      ਬਣਤਰ symb_s arg_c,
+		      ਬਣਤਰ symb_s arg_e,
+		      ਬਣਤਰ symb_s arg_a,
+		      ਅੱਖਰ*asc_ਮੁੱਲ)
 {
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_net_t*ptr = ਨਵਾਂ vvp_net_t;
       vvp_dff*fun;
-      if (asc_value) {
-	    assert(c4string_test(asc_value));
-	    fun = new vvp_dff_asc(width, negedge, asc_value);
-	    free(asc_value);
-      } else {
-	    fun = new vvp_dff_aset(width, negedge);
+      ਜੇ (asc_ਮੁੱਲ) {
+	    ਪ੍ਰਤਿਜ੍ਞਾ(c4string_test(asc_ਮੁੱਲ));
+	    fun = ਨਵਾਂ vvp_dff_asc(width, negedge, asc_ਮੁੱਲ);
+	    ਮੁਕਤ(asc_ਮੁੱਲ);
+      } ਨਹੀਂਤਾਂ {
+	    fun = ਨਵਾਂ vvp_dff_aset(width, negedge);
       }
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_c.text);
-      input_connect(ptr, 2, arg_e.text);
-      input_connect(ptr, 3, arg_a.text);
+      define_functor_ਚਿੰਨ੍ਹ(label, ptr);
+      ਮੁਕਤ(label);
+      ਨਿਵੇਸ਼_connect(ptr, 0, arg_d.ਪਾਠ);
+      ਨਿਵੇਸ਼_connect(ptr, 1, arg_c.ਪਾਠ);
+      ਨਿਵੇਸ਼_connect(ptr, 2, arg_e.ਪਾਠ);
+      ਨਿਵੇਸ਼_connect(ptr, 3, arg_a.ਪਾਠ);
 }

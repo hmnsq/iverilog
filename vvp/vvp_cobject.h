@@ -1,5 +1,5 @@
-#ifndef IVL_vvp_cobject_H
-#define IVL_vvp_cobject_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ IVL_vvp_cobject_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IVL_vvp_cobject_H
 /*
  * Copyright (c) 2012-2025 Stephen Williams (steve@icarus.com)
  *
@@ -26,30 +26,30 @@
 
 class vvp_vector4_t;
 
-class vvp_cobject : public vvp_object {
+class vvp_cobject : ਜਨਤਕ vvp_object {
 
-    public:
-      explicit vvp_cobject(const class_type*defn);
+    ਜਨਤਕ:
+      explicit vvp_cobject(ਅਚਲ class_type*defn);
       ~vvp_cobject() override;
 
-      void set_vec4(size_t pid, const vvp_vector4_t&val);
-      void get_vec4(size_t pid, vvp_vector4_t&val);
+      ਖਾਲੀ ਸੈੱਟ_vec4(size_t pid, ਅਚਲ vvp_vector4_t&val);
+      ਖਾਲੀ get_vec4(size_t pid, vvp_vector4_t&val);
 
-      void set_real(size_t pid, double val);
-      double get_real(size_t pid);
+      ਖਾਲੀ ਸੈੱਟ_real(size_t pid, ਦੁੱਗਣਾ val);
+      ਦੁੱਗਣਾ get_real(size_t pid);
 
-      void set_string(size_t pid, const std::string&val);
+      ਖਾਲੀ ਸੈੱਟ_string(size_t pid, ਅਚਲ std::string&val);
       std::string get_string(size_t pid);
 
-      void set_object(size_t pid, const vvp_object_t&val, size_t idx);
-      void get_object(size_t pid, vvp_object_t&val, size_t idx);
+      ਖਾਲੀ ਸੈੱਟ_object(size_t pid, ਅਚਲ vvp_object_t&val, size_t idx);
+      ਖਾਲੀ get_object(size_t pid, vvp_object_t&val, size_t idx);
 
-      void shallow_copy(const vvp_object*that) override;
+      ਖਾਲੀ shallow_copy(ਅਚਲ vvp_object*that) override;
 
-    private:
-      const class_type* defn_;
+    ਨਿਜੀ:
+      ਅਚਲ class_type* defn_;
 	// For now, only support 32bit bool signed properties.
       class_type::inst_t properties_;
 };
 
-#endif /* IVL_vvp_cobject_H */
+#ਜੇ_ਅੰਤ /* IVL_vvp_cobject_H */

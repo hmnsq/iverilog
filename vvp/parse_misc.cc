@@ -23,77 +23,77 @@
 # include  <cstdlib>
 # include  "ivl_alloc.h"
 
-const char*yypath;
-unsigned yyline;
+ਅਚਲ ਅੱਖਰ*yypath;
+ਬਿਨਾਨਿਸ਼ਾਨੀ yyline;
 
-void yyerror(const char*msg)
+ਖਾਲੀ yyerror(ਅਚਲ ਅੱਖਰ*ਸੁਨੇਹਾ)
 {
-      fprintf(stderr, "%s:%u: %s\n", yypath, yyline, msg);
+      fprintf(stderr, "%s:%u: %s\n", yypath, yyline, ਸੁਨੇਹਾ);
 }
 
-void symbv_init(struct symbv_s*obj)
+ਖਾਲੀ symbv_init(ਬਣਤਰ symbv_s*obj)
 {
       obj->cnt = 0;
       obj->vect = 0;
 }
 
-void symbv_add(struct symbv_s*obj, struct symb_s item)
+ਖਾਲੀ symbv_ਜੋੜੋ(ਬਣਤਰ symbv_s*obj, ਬਣਤਰ symb_s ਵਸਤੂ)
 {
-      obj->vect = static_cast<struct symb_s*>
-                             (realloc(obj->vect, (obj->cnt+1) * sizeof(struct symb_s)));
-      obj->vect[obj->cnt] = item;
+      obj->vect = static_cast<ਬਣਤਰ symb_s*>
+                             (realloc(obj->vect, (obj->cnt+1) * ਆਕਾਰ(ਬਣਤਰ symb_s)));
+      obj->vect[obj->cnt] = ਵਸਤੂ;
       obj->cnt += 1;
 }
 
-void numbv_init(struct numbv_s*obj)
+ਖਾਲੀ numbv_init(ਬਣਤਰ numbv_s*obj)
 {
       obj->cnt = 0;
       obj->nvec = 0;
 }
 
-void numbv_add(struct numbv_s*obj, long item)
+ਖਾਲੀ numbv_ਜੋੜੋ(ਬਣਤਰ numbv_s*obj, ਲੰਮਾ ਵਸਤੂ)
 {
-      obj->nvec = static_cast<long*>(realloc(obj->nvec, (obj->cnt+1) * sizeof(long)));
-      obj->nvec[obj->cnt] = item;
+      obj->nvec = static_cast<ਲੰਮਾ*>(realloc(obj->nvec, (obj->cnt+1) * ਆਕਾਰ(ਲੰਮਾ)));
+      obj->nvec[obj->cnt] = ਵਸਤੂ;
       obj->cnt += 1;
 }
 
-void numbv_clear(struct numbv_s*obj)
+ਖਾਲੀ numbv_clear(ਬਣਤਰ numbv_s*obj)
 {
-      free(obj->nvec);
+      ਮੁਕਤ(obj->nvec);
       obj->nvec = 0;
       obj->cnt = 0;
 }
 
-void argv_init(struct argv_s*obj)
+ਖਾਲੀ argv_init(ਬਣਤਰ argv_s*obj)
 {
       obj->argc = 0;
       obj->argv = 0;
       obj->syms = 0;
 }
 
-void argv_add(struct argv_s*obj, vpiHandle item)
+ਖਾਲੀ argv_ਜੋੜੋ(ਬਣਤਰ argv_s*obj, vpiHandle ਵਸਤੂ)
 {
       obj->argv = static_cast<vpiHandle*>
-                             (realloc(obj->argv, (obj->argc+1)*sizeof(vpiHandle)));
-      obj->argv[obj->argc] = item;
+                             (realloc(obj->argv, (obj->argc+1)*ਆਕਾਰ(vpiHandle)));
+      obj->argv[obj->argc] = ਵਸਤੂ;
       obj->argc += 1;
 }
 
-void argv_sym_add(struct argv_s*obj, char *item)
+ਖਾਲੀ argv_sym_ਜੋੜੋ(ਬਣਤਰ argv_s*obj, ਅੱਖਰ *ਵਸਤੂ)
 {
-      argv_add(obj, 0x0);
-      obj->syms = static_cast<char**>
-                             (realloc(obj->syms, (obj->argc)*sizeof(char*)));
-      obj->syms[obj->argc-1] = item;
+      argv_ਜੋੜੋ(obj, 0x0);
+      obj->syms = static_cast<ਅੱਖਰ**>
+                             (realloc(obj->syms, (obj->argc)*ਆਕਾਰ(ਅੱਖਰ*)));
+      obj->syms[obj->argc-1] = ਵਸਤੂ;
 }
 
-void argv_sym_lookup(struct argv_s*obj)
+ਖਾਲੀ argv_sym_lookup(ਬਣਤਰ argv_s*obj)
 {
-      if (!obj->syms)
-	    return;
-      for (unsigned i=0; i < obj->argc; i++)
-	    if (!obj->argv[i])
+      ਜੇ (!obj->syms)
+	    ਵਾਪਸ;
+      ਲਈ (ਬਿਨਾਨਿਸ਼ਾਨੀ i=0; i < obj->argc; i++)
+	    ਜੇ (!obj->argv[i])
 		  compile_vpi_lookup(&obj->argv[i], obj->syms[i]);
-      free(obj->syms);
+      ਮੁਕਤ(obj->syms);
 }

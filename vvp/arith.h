@@ -1,5 +1,5 @@
-#ifndef IVL_arith_H
-#define IVL_arith_H
+#ਜੇ_ਅਪਰਿਭਾਸ਼ਿਤ IVL_arith_H
+#ਪਰਿਭਾਸ਼ਿਤ_ਕਰੋ IVL_arith_H
 /*
  * Copyright (c) 2001-2025 Stephen Williams (steve@icarus.com)
  *
@@ -32,19 +32,19 @@
  * inputs to match, and since only one input at a time changes, the
  * other will need to be initialized to X.
  */
-class vvp_arith_  : public vvp_net_fun_t {
+class vvp_arith_  : ਜਨਤਕ vvp_net_fun_t {
 
-    public:
-      explicit vvp_arith_(unsigned wid);
+    ਜਨਤਕ:
+      explicit vvp_arith_(ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      ਖਾਲੀ recv_vec4_pv(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t ctx) override;
 
-    protected:
-      void dispatch_operand_(vvp_net_ptr_t ptr, const vvp_vector4_t&bit);
+    ਸੁਰੱਖਿਅਤ:
+      ਖਾਲੀ dispatch_ਸੰਕਾਰਜ(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ);
 
-    protected:
-      unsigned wid_;
+    ਸੁਰੱਖਿਅਤ:
+      ਬਿਨਾਨਿਸ਼ਾਨੀ wid_;
 
       vvp_vector4_t op_a_;
       vvp_vector4_t op_b_;
@@ -52,87 +52,87 @@ class vvp_arith_  : public vvp_net_fun_t {
       vvp_vector4_t x_val_;
 };
 
-class vvp_arith_abs : public vvp_net_fun_t {
-    public:
+class vvp_arith_abs : ਜਨਤਕ vvp_net_fun_t {
+    ਜਨਤਕ:
       explicit vvp_arith_abs();
       ~vvp_arith_abs() override;
 
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ptr, ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      ਖਾਲੀ recv_vec4_pv(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t ctx) override;
 
-    private:
+    ਨਿਜੀ:
 };
 
-class vvp_arith_cast_int : public vvp_net_fun_t {
-    public:
-      explicit vvp_arith_cast_int(unsigned wid);
+class vvp_arith_cast_int : ਜਨਤਕ vvp_net_fun_t {
+    ਜਨਤਕ:
+      explicit vvp_arith_cast_int(ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
       ~vvp_arith_cast_int() override;
 
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ptr, ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
-    private:
-      unsigned wid_;
+    ਨਿਜੀ:
+      ਬਿਨਾਨਿਸ਼ਾਨੀ wid_;
 };
 
-class vvp_arith_cast_real : public vvp_net_fun_t {
-    public:
+class vvp_arith_cast_real : ਜਨਤਕ vvp_net_fun_t {
+    ਜਨਤਕ:
       explicit vvp_arith_cast_real(bool signed_flag);
       ~vvp_arith_cast_real() override;
 
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      ਖਾਲੀ recv_vec4_pv(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t ctx) override;
 
-    private:
+    ਨਿਜੀ:
       bool signed_;
 };
 
-class vvp_arith_cast_vec2 : public vvp_net_fun_t {
-    public:
-      explicit vvp_arith_cast_vec2(unsigned wid);
+class vvp_arith_cast_vec2 : ਜਨਤਕ vvp_net_fun_t {
+    ਜਨਤਕ:
+      explicit vvp_arith_cast_vec2(ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
       ~vvp_arith_cast_vec2() override;
 
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ptr, ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      ਖਾਲੀ recv_vec4_pv(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			ਬਿਨਾਨਿਸ਼ਾਨੀ ਅਧਾਰ, ਬਿਨਾਨਿਸ਼ਾਨੀ vwid, vvp_context_t ctx) override;
 
-    private:
-      unsigned wid_;
+    ਨਿਜੀ:
+      ਬਿਨਾਨਿਸ਼ਾਨੀ wid_;
 };
 
-class vvp_arith_div : public vvp_arith_ {
+class vvp_arith_div : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_arith_div(unsigned wid, bool signed_flag);
+    ਜਨਤਕ:
+      explicit vvp_arith_div(ਬਿਨਾਨਿਸ਼ਾਨੀ wid, bool signed_flag);
       ~vvp_arith_div() override;
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
-    private:
-      void wide4_(vvp_net_ptr_t ptr);
+    ਨਿਜੀ:
+      ਖਾਲੀ wide4_(vvp_net_ptr_t ptr);
       bool signed_flag_;
 };
 
-class vvp_arith_mod : public vvp_arith_ {
+class vvp_arith_mod : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_arith_mod(unsigned wid, bool signed_flag);
+    ਜਨਤਕ:
+      explicit vvp_arith_mod(ਬਿਨਾਨਿਸ਼ਾਨੀ wid, bool signed_flag);
       ~vvp_arith_mod() override;
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
-    private:
-      void wide_(vvp_net_ptr_t ptr);
+    ਨਿਜੀ:
+      ਖਾਲੀ wide_(vvp_net_ptr_t ptr);
       bool signed_flag_;
 };
 
@@ -142,74 +142,74 @@ class vvp_arith_mod : public vvp_arith_ {
  * exactly 1 bit.
  */
 
-class vvp_cmp_eeq  : public vvp_arith_ {
+class vvp_cmp_eeq  : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_eeq(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    ਜਨਤਕ:
+      explicit vvp_cmp_eeq(ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_nee  : public vvp_arith_ {
+class vvp_cmp_nee  : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_nee(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    ਜਨਤਕ:
+      explicit vvp_cmp_nee(ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_eq  : public vvp_arith_ {
+class vvp_cmp_eq  : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_eq(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    ਜਨਤਕ:
+      explicit vvp_cmp_eq(ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_eqx  : public vvp_arith_ {
+class vvp_cmp_eqx  : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_eqx(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    ਜਨਤਕ:
+      explicit vvp_cmp_eqx(ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_eqz  : public vvp_arith_ {
+class vvp_cmp_eqz  : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_eqz(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    ਜਨਤਕ:
+      explicit vvp_cmp_eqz(ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_ne  : public vvp_arith_ {
+class vvp_cmp_ne  : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_ne(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    ਜਨਤਕ:
+      explicit vvp_cmp_ne(ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_weq  : public vvp_arith_ {
+class vvp_cmp_weq  : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_weq(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    ਜਨਤਕ:
+      explicit vvp_cmp_weq(ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_wne  : public vvp_arith_ {
+class vvp_cmp_wne  : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_wne(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    ਜਨਤਕ:
+      explicit vvp_cmp_wne(ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
 };
@@ -220,34 +220,34 @@ class vvp_cmp_wne  : public vvp_arith_ {
  * GT and GE call the recv_vec4_base_ method with a different
  * out_if_equal argument that reflects the different expectations.
  */
-class vvp_cmp_gtge_base_ : public vvp_arith_ {
+class vvp_cmp_gtge_ਅਧਾਰ : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_gtge_base_(unsigned wid, bool signed_flag);
+    ਜਨਤਕ:
+      explicit vvp_cmp_gtge_ਅਧਾਰ(ਬਿਨਾਨਿਸ਼ਾਨੀ wid, bool signed_flag);
 
-    protected:
-      void recv_vec4_base_(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			   vvp_bit4_t out_if_equal);
-    private:
+    ਸੁਰੱਖਿਅਤ:
+      ਖਾਲੀ recv_vec4_ਅਧਾਰ(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
+			   vvp_bit4_t ਬਾਹਰਲਾ_if_equal);
+    ਨਿਜੀ:
       bool signed_flag_;
 };
 
-class vvp_cmp_ge  : public vvp_cmp_gtge_base_ {
+class vvp_cmp_ge  : ਜਨਤਕ vvp_cmp_gtge_ਅਧਾਰ {
 
-    public:
-      explicit vvp_cmp_ge(unsigned wid, bool signed_flag);
+    ਜਨਤਕ:
+      explicit vvp_cmp_ge(ਬਿਨਾਨਿਸ਼ਾਨੀ wid, bool signed_flag);
 
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_gt  : public vvp_cmp_gtge_base_ {
+class vvp_cmp_gt  : ਜਨਤਕ vvp_cmp_gtge_ਅਧਾਰ {
 
-    public:
-      explicit vvp_cmp_gt(unsigned wid, bool signed_flag);
+    ਜਨਤਕ:
+      explicit vvp_cmp_gt(ਬਿਨਾਨਿਸ਼ਾਨੀ wid, bool signed_flag);
 
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 };
 
@@ -256,66 +256,66 @@ class vvp_cmp_gt  : public vvp_cmp_gtge_base_ {
  * width as the output. This is different from the typical vvp_arith_
  * object. Perhaps that means this isn't quite a vvp_arith_ object?
  */
-class vvp_arith_mult  : public vvp_arith_ {
+class vvp_arith_mult  : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_arith_mult(unsigned wid);
+    ਜਨਤਕ:
+      explicit vvp_arith_mult(ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
       ~vvp_arith_mult() override;
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
-    private:
-      void wide_(vvp_net_ptr_t ptr);
+    ਨਿਜੀ:
+      ਖਾਲੀ wide_(vvp_net_ptr_t ptr);
 };
 
-class vvp_arith_pow  : public vvp_arith_ {
+class vvp_arith_pow  : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_arith_pow(unsigned wid, bool signed_flag);
+    ਜਨਤਕ:
+      explicit vvp_arith_pow(ਬਿਨਾਨਿਸ਼ਾਨੀ wid, bool signed_flag);
       ~vvp_arith_pow() override;
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      ਖਾਲੀ recv_vec4(vvp_net_ptr_t ptr, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
-    private:
+    ਨਿਜੀ:
       bool signed_flag_;
 };
 
-class vvp_arith_sub  : public vvp_arith_ {
+class vvp_arith_sub  : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_arith_sub(unsigned wid);
+    ਜਨਤਕ:
+      explicit vvp_arith_sub(ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
       ~vvp_arith_sub() override;
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ਆਭਾਸੀ ਖਾਲੀ recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                              vvp_context_t) override;
 
 };
 
-class vvp_arith_sum  : public vvp_arith_ {
+class vvp_arith_ਜੋੜ  : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_arith_sum(unsigned wid);
-      ~vvp_arith_sum() override;
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    ਜਨਤਕ:
+      explicit vvp_arith_ਜੋੜ(ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
+      ~vvp_arith_ਜੋੜ() override;
+      ਆਭਾਸੀ ਖਾਲੀ recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                              vvp_context_t) override;
 
 };
 
-class vvp_shiftl  : public vvp_arith_ {
+class vvp_shiftl  : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_shiftl(unsigned wid);
+    ਜਨਤਕ:
+      explicit vvp_shiftl(ਬਿਨਾਨਿਸ਼ਾਨੀ wid);
       ~vvp_shiftl() override;
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ਆਭਾਸੀ ਖਾਲੀ recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                              vvp_context_t) override;
 };
 
-class vvp_shiftr  : public vvp_arith_ {
+class vvp_shiftr  : ਜਨਤਕ vvp_arith_ {
 
-    public:
-      explicit vvp_shiftr(unsigned wid, bool signed_flag);
+    ਜਨਤਕ:
+      explicit vvp_shiftr(ਬਿਨਾਨਿਸ਼ਾਨੀ wid, bool signed_flag);
       ~vvp_shiftr() override;
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ਆਭਾਸੀ ਖਾਲੀ recv_vec4(vvp_net_ptr_t ਪੋਰਟ, ਅਚਲ vvp_vector4_t&ਦੋਆਧਾਰੀ_ਅੰਕ,
                              vvp_context_t) override;
 
-    private:
+    ਨਿਜੀ:
       bool signed_flag_;
 };
 
@@ -324,104 +324,104 @@ class vvp_shiftr  : public vvp_arith_ {
  * vector expression classes, but the inputs are collected from the
  * recv_real method.
  */
-class vvp_arith_real_  : public vvp_net_fun_t {
+class vvp_arith_real_  : ਜਨਤਕ vvp_net_fun_t {
 
-    public:
+    ਜਨਤਕ:
       explicit vvp_arith_real_();
 
-    protected:
-      void dispatch_operand_(vvp_net_ptr_t ptr, double bit);
+    ਸੁਰੱਖਿਅਤ:
+      ਖਾਲੀ dispatch_ਸੰਕਾਰਜ(vvp_net_ptr_t ptr, ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ);
 
-    protected:
-      double op_a_;
-      double op_b_;
+    ਸੁਰੱਖਿਅਤ:
+      ਦੁੱਗਣਾ op_a_;
+      ਦੁੱਗਣਾ op_b_;
 };
 
 
-class vvp_arith_sum_real : public vvp_arith_real_ {
+class vvp_arith_ਜੋੜ_real : ਜਨਤਕ vvp_arith_real_ {
 
-    public:
-      explicit vvp_arith_sum_real();
-      ~vvp_arith_sum_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+    ਜਨਤਕ:
+      explicit vvp_arith_ਜੋੜ_real();
+      ~vvp_arith_ਜੋੜ_real() override;
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ptr, ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 };
 
-class vvp_arith_div_real : public vvp_arith_real_ {
+class vvp_arith_div_real : ਜਨਤਕ vvp_arith_real_ {
 
-    public:
+    ਜਨਤਕ:
       explicit vvp_arith_div_real();
       ~vvp_arith_div_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ptr, ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 };
 
-class vvp_arith_mod_real : public vvp_arith_real_ {
+class vvp_arith_mod_real : ਜਨਤਕ vvp_arith_real_ {
 
-    public:
+    ਜਨਤਕ:
       explicit vvp_arith_mod_real();
       ~vvp_arith_mod_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ptr, ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 };
 
-class vvp_arith_mult_real : public vvp_arith_real_ {
+class vvp_arith_mult_real : ਜਨਤਕ vvp_arith_real_ {
 
-    public:
+    ਜਨਤਕ:
       explicit vvp_arith_mult_real();
       ~vvp_arith_mult_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ptr, ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 };
 
-class vvp_arith_pow_real : public vvp_arith_real_ {
+class vvp_arith_pow_real : ਜਨਤਕ vvp_arith_real_ {
 
-    public:
+    ਜਨਤਕ:
       explicit vvp_arith_pow_real();
       ~vvp_arith_pow_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ptr, ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 };
 
-class vvp_arith_sub_real : public vvp_arith_real_ {
+class vvp_arith_sub_real : ਜਨਤਕ vvp_arith_real_ {
 
-    public:
+    ਜਨਤਕ:
       explicit vvp_arith_sub_real();
       ~vvp_arith_sub_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ptr, ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 };
 
-class vvp_cmp_eq_real  : public vvp_arith_real_ {
+class vvp_cmp_eq_real  : ਜਨਤਕ vvp_arith_real_ {
 
-    public:
+    ਜਨਤਕ:
       explicit vvp_cmp_eq_real();
-      void recv_real(vvp_net_ptr_t ptr, const double bit,
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ptr, ਅਚਲ ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 };
 
-class vvp_cmp_ne_real  : public vvp_arith_real_ {
+class vvp_cmp_ne_real  : ਜਨਤਕ vvp_arith_real_ {
 
-    public:
+    ਜਨਤਕ:
       explicit vvp_cmp_ne_real();
-      void recv_real(vvp_net_ptr_t ptr, const double bit,
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ptr, ਅਚਲ ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 };
 
-class vvp_cmp_ge_real  : public vvp_arith_real_ {
+class vvp_cmp_ge_real  : ਜਨਤਕ vvp_arith_real_ {
 
-    public:
+    ਜਨਤਕ:
       explicit vvp_cmp_ge_real();
-      void recv_real(vvp_net_ptr_t ptr, const double bit,
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ptr, ਅਚਲ ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 };
 
-class vvp_cmp_gt_real  : public vvp_arith_real_ {
+class vvp_cmp_gt_real  : ਜਨਤਕ vvp_arith_real_ {
 
-    public:
+    ਜਨਤਕ:
       explicit vvp_cmp_gt_real();
-      void recv_real(vvp_net_ptr_t ptr, const double bit,
+      ਖਾਲੀ recv_real(vvp_net_ptr_t ptr, ਅਚਲ ਦੁੱਗਣਾ ਦੋਆਧਾਰੀ_ਅੰਕ,
                      vvp_context_t) override;
 };
 
-#endif /* IVL_arith_H */
+#ਜੇ_ਅੰਤ /* IVL_arith_H */
