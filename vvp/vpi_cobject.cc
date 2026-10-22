@@ -21,113 +21,113 @@
 # include  "compile.h"
 # include  "vpi_priv.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
+#अगर_घोषित CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#पूर्ण_अगर
 
-__vpiCobjectVar::__vpiCobjectVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
+__vpiCobjectVar::__vpiCobjectVar(__vpiScope*sc, स्थिर अक्षर*na, vvp_net_t*ne)
 : __vpiBaseVar(sc, na, ne)
 {
 }
 
-int __vpiCobjectVar::get_type_code(void) const
-{ return vpiClassVar; }
+पूर्णांक __vpiCobjectVar::get_type_code(व्योम) स्थिर
+{ वापस vpiClassVar; }
 
-int __vpiCobjectVar::vpi_get(int code)
+पूर्णांक __vpiCobjectVar::vpi_get(पूर्णांक code)
 {
-      switch (code) {
-	case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      चयन (code) {
+	हाल vpi_पंक्ति_No:
+	    वापस 0;  // Not implemented for now!
 
-	case vpiSize:
-	    return 64;
+	हाल vpi_आकार:
+	    वापस 64;
 
-	case vpiConstType:
-	    return vpiNullConst;
+	हाल vpiConstType:
+	    वापस vpiNullConst;
 
-	case vpiSigned:
-	    return 0;
+	हाल vpiSigned:
+	    वापस 0;
 
-	case vpiAutomatic:
-	    return 0;
+	हाल vpiAutomatic:
+	    वापस 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	case _vpiFromThr:
-	    return _vpiNoThr;
-#endif
+#अगर defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	हाल _vpiFromThr:
+	    वापस _vpiNoThr;
+#पूर्ण_अगर
 
-	default:
-	    fprintf(stderr, "vvp error: get %d not supported "
+	शेष:
+	    ख_लिखो(मानक_त्रुटि, "vvp error: get %d not supported "
 	                    "by vpiClassVar\n", code);
-	    assert(0);
-	    return 0;
+	    निश्चित(0);
+	    वापस 0;
       }
 }
 
-void __vpiCobjectVar::vpi_get_value(p_vpi_value val)
+व्योम __vpiCobjectVar::vpi_get_मूल्य(p_vpi_मूल्य val)
 {
 // FIXME: We need to get the assigned object address if one is assigned.
 //fprintf(stderr, "HERE: %p\n", get_net());
-      static const size_t RBUF_USE_SIZE = 64 + 1;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      अटल स्थिर माप_प्रकार RBUF_USE_आकार = 64 + 1;
+      अक्षर*rbuf = static_cast<अक्षर *>(need_परिणाम_buf(RBUF_USE_आकार, RBUF_VAL));
 
-      switch (val->format) {
-	case vpiObjTypeVal:
+      चयन (val->format) {
+	हाल vpiObjTypeVal:
 	    val->format = vpiStringVal;
 	    // fall through
-	case vpiBinStrVal:
-	case vpiDecStrVal:
-	case vpiOctStrVal:
-	case vpiHexStrVal:
-	case vpiStringVal:
-	    snprintf(rbuf, RBUF_USE_SIZE, "    null");
+	हाल vpiBinStrVal:
+	हाल vpiDecStrVal:
+	हाल vpiOctStrVal:
+	हाल vpiHexStrVal:
+	हाल vpiStringVal:
+	    snprintf(rbuf, RBUF_USE_आकार, "    null");
 	    val->value.str = rbuf;
-	    break;
+	    अवरोध;
 
-	case vpiScalarVal:
+	हाल vpiScalarVal:
 	    val->value.scalar = vpi0;
-	    break;
+	    अवरोध;
 
-	case vpiIntVal:
+	हाल vpiIntVal:
 	    val->value.integer = 0;
-	    break;
+	    अवरोध;
 
-	case vpiVectorVal:
+	हाल vpiVectorVal:
 	    val->value.vector = static_cast<p_vpi_vecval>
-	                        (need_result_buf(2*sizeof(s_vpi_vecval),
+	                        (need_परिणाम_buf(2*माप(s_vpi_vecval),
 	                                         RBUF_VAL));
-	    for (unsigned idx = 0; idx < 2; idx += 1) {
+	    क्रम (अचिन्हित idx = 0; idx < 2; idx += 1) {
 		  val->value.vector[idx].aval = 0;
 		  val->value.vector[idx].bval = 0;
 	    }
-	    break;
+	    अवरोध;
 
-	case vpiRealVal:
+	हाल vpiRealVal:
 	    val->value.real = 0.0;
-	    break;
+	    अवरोध;
 
-	default:
-	    fprintf(stderr, "vvp error: format %d not supported "
-	                    "by vpiClassVar\n", (int)val->format);
+	शेष:
+	    ख_लिखो(मानक_त्रुटि, "vvp error: format %d not supported "
+	                    "by vpiClassVar\n", (पूर्णांक)val->format);
 	    val->format = vpiSuppressVal;
-	    break;
+	    अवरोध;
       }
 }
 
-vpiHandle vpip_make_cobject_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_cobject_var(स्थिर अक्षर*name, vvp_net_t*net)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      const char*use_name = name ? vpip_name_string(name) : NULL;
+      स्थिर अक्षर*use_name = name ? vpip_name_string(name) : शून्य;
 
-      __vpiCobjectVar*obj = new __vpiCobjectVar(scope, use_name, net);
+      __vpiCobjectVar*obj = नया __vpiCobjectVar(scope, use_name, net);
 
-      return obj;
+      वापस obj;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void class_delete(vpiHandle item)
+#अगर_घोषित CHECK_WITH_VALGRIND
+व्योम class_delete(vpiHandle item)
 {
       __vpiCobjectVar*obj = dynamic_cast<__vpiCobjectVar*>(item);
-      delete obj;
+      मिटाओ obj;
 }
-#endif
+#पूर्ण_अगर

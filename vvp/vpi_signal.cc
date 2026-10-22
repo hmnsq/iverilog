@@ -29,9 +29,9 @@
 # include  "schedule.h"
 # include  "statistics.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
+#अगर_घोषित CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#पूर्ण_अगर
 # include  <cmath>
 # include  <iostream>
 # include  <cstdio>
@@ -39,9 +39,9 @@
 # include  <climits>
 # include  <cstring>
 # include  <cassert>
-#ifdef CHECK_WITH_VALGRIND
+#अगर_घोषित CHECK_WITH_VALGRIND
 # include  <valgrind/memcheck.h>
-#endif
+#पूर्ण_अगर
 # include  "ivl_alloc.h"
 
 /*
@@ -55,100 +55,100 @@
  * The table is calculated at compile time, therefore, by the
  * draw_tt.c program.
  */
-extern const char hex_digits[256];
-extern const char oct_digits[64];
+बाह्य स्थिर अक्षर hex_digits[256];
+बाह्य स्थिर अक्षर oct_digits[64];
 
 /*
  * The string values need a result buf to hold the results. This
  * buffer can be reused for that purpose. Whenever I have a need, the
  * need_result_buf function makes sure that need can be met.
  */
-void *need_result_buf(unsigned cnt, vpi_rbuf_t type)
+व्योम *need_परिणाम_buf(अचिन्हित cnt, vpi_rbuf_t type)
 {
-      static void*result_buf[2] = {0, 0};
-      static size_t result_buf_size[2] = {0, 0};
+      अटल व्योम*परिणाम_buf[2] = {0, 0};
+      अटल माप_प्रकार परिणाम_buf_आकार[2] = {0, 0};
 
-      if (type == RBUF_DEL) {
-	    free(result_buf[RBUF_VAL]);
-	    result_buf[RBUF_VAL] = 0;
-	    result_buf_size[RBUF_VAL] = 0;
+      अगर (type == RBUF_DEL) {
+	    मुक्त(परिणाम_buf[RBUF_VAL]);
+	    परिणाम_buf[RBUF_VAL] = 0;
+	    परिणाम_buf_आकार[RBUF_VAL] = 0;
 
-	    free(result_buf[RBUF_STR]);
-	    result_buf[RBUF_STR] = 0;
-	    result_buf_size[RBUF_STR] = 0;
+	    मुक्त(परिणाम_buf[RBUF_STR]);
+	    परिणाम_buf[RBUF_STR] = 0;
+	    परिणाम_buf_आकार[RBUF_STR] = 0;
 
-	    return 0;
+	    वापस 0;
       }
 
       cnt = (cnt + 0x0fff) & ~0x0fff;
 
-      if (result_buf_size[type] == 0) {
-	    result_buf[type] = malloc(cnt);
-	    result_buf_size[type] = cnt;
-      } else if (result_buf_size[type] < cnt) {
-	    result_buf[type] = realloc(result_buf[type], cnt);
-	    result_buf_size[type] = cnt;
+      अगर (परिणाम_buf_आकार[type] == 0) {
+	    परिणाम_buf[type] = दो_स्मृति(cnt);
+	    परिणाम_buf_आकार[type] = cnt;
+      } अन्यथा अगर (परिणाम_buf_आकार[type] < cnt) {
+	    परिणाम_buf[type] = पुनः_स्मृति(परिणाम_buf[type], cnt);
+	    परिणाम_buf_आकार[type] = cnt;
       }
 
-      return result_buf[type];
+      वापस परिणाम_buf[type];
 }
 
-char *simple_set_rbuf_str(const char *s1)
+अक्षर *simple_set_rbuf_str(स्थिर अक्षर *s1)
 {
-      char *res = static_cast<char *>(need_result_buf(strlen(s1)+1, RBUF_STR));
-      if (res) strcpy(res,s1);
-      return res;
+      अक्षर *res = static_cast<अक्षर *>(need_परिणाम_buf(म_माप(s1)+1, RBUF_STR));
+      अगर (res) म_नकल(res,s1);
+      वापस res;
 }
 
-char *generic_get_str(int code, vpiHandle ref, const char *name, const char *index)
+अक्षर *generic_get_str(पूर्णांक code, vpiHandle ref, स्थिर अक्षर *name, स्थिर अक्षर *सूचकांक)
 {
-      size_t len = strlen(name) + 1;  /* include space for null termination */
-      char *bn = NULL;
+      माप_प्रकार len = म_माप(name) + 1;  /* include space for null termination */
+      अक्षर *bn = शून्य;
       bool is_bn_a_pkg = false;
-      if (code == vpiFullName) {
+      अगर (code == vpiFullName) {
 	    bn = strdup(vpi_get_str(code,ref));
-	    size_t bn_len = strlen(bn);
+	    माप_प्रकार bn_len = म_माप(bn);
 	    is_bn_a_pkg = (bn_len >= 3) && (bn[bn_len-1] == ':') && (bn[bn_len-2] == ':');
 	    len += bn_len;
-	    if (! is_bn_a_pkg) len += 1; // include space for "." separator
+	    अगर (! is_bn_a_pkg) len += 1; // include space for "." separator
       }
-      if (index != NULL) len += strlen(index) + 2;  /* include space for brackets */
+      अगर (सूचकांक != शून्य) len += म_माप(सूचकांक) + 2;  /* include space for brackets */
 
-      char *res = static_cast<char *>(need_result_buf(len, RBUF_STR));
-      if (!res) {
-	    free(bn);
-	    return NULL;
+      अक्षर *res = static_cast<अक्षर *>(need_परिणाम_buf(len, RBUF_STR));
+      अगर (!res) {
+	    मुक्त(bn);
+	    वापस शून्य;
       }
       *res=0;  /* start with nothing */
 
 	/* if this works, I can make it more efficient later */
-      if (bn != NULL) {
-	    strcat(res, bn);
+      अगर (bn != शून्य) {
+	    म_जोड़ो(res, bn);
 	      // A package already has the "::" separator in the name
-	    if (! is_bn_a_pkg) strcat(res, ".");
-	    free(bn);
+	    अगर (! is_bn_a_pkg) म_जोड़ो(res, ".");
+	    मुक्त(bn);
       }
-      strcat(res, name);
-      if (index != NULL) {
-	    strcat(res, "[");
-	    strcat(res, index);
-	    strcat(res, "]");
+      म_जोड़ो(res, name);
+      अगर (सूचकांक != शून्य) {
+	    म_जोड़ो(res, "[");
+	    म_जोड़ो(res, सूचकांक);
+	    म_जोड़ो(res, "]");
       }
-      return res;
+      वापस res;
 }
 
-static vpiHandle fill_in_net4(struct __vpiSignal*obj, __vpiScope*scope,
-                              const char*name, int msb, int lsb,
-                              bool signed_flag, vvp_net_t*node);
+अटल vpiHandle fill_in_net4(काष्ठा __vpiSignal*obj, __vpiScope*scope,
+                              स्थिर अक्षर*name, पूर्णांक msb, पूर्णांक lsb,
+                              bool signed_flag, vvp_net_t*गाँठ);
 
-static vpiHandle fill_in_var4(struct __vpiSignal*obj,
-                              const char*name, int msb, int lsb,
-                              bool signed_flag, vvp_net_t*node)
+अटल vpiHandle fill_in_var4(काष्ठा __vpiSignal*obj,
+                              स्थिर अक्षर*name, पूर्णांक msb, पूर्णांक lsb,
+                              bool signed_flag, vvp_net_t*गाँठ)
 {
 	// Variable declarations are always resolved immediately,
 	// so we can assume they belong in the current scope.
-      return fill_in_net4(obj, vpip_peek_current_scope(),
-			  name, msb, lsb, signed_flag, node);
+      वापस fill_in_net4(obj, vpip_peek_current_scope(),
+			  name, msb, lsb, signed_flag, गाँठ);
 }
 
 /*
@@ -156,18 +156,18 @@ static vpiHandle fill_in_var4(struct __vpiSignal*obj,
  * They work with full or partial signals.
  */
 
-static void format_vpiBinStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+अटल व्योम format_vpiBinStrVal(स्थिर vvp_signal_मूल्य*sig, पूर्णांक base, अचिन्हित wid,
+                                s_vpi_मूल्य*vp)
 {
-      char *rbuf = static_cast<char *>(need_result_buf(wid+1, RBUF_VAL));
-      long end = base + (signed)wid;
-      long offset = end - 1;
-      long ssize = (signed)sig->value_size();
+      अक्षर *rbuf = static_cast<अक्षर *>(need_परिणाम_buf(wid+1, RBUF_VAL));
+      दीर्घ end = base + (चिन्हित)wid;
+      दीर्घ offset = end - 1;
+      दीर्घ ssize = (चिन्हित)sig->मूल्य_आकार();
 
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (idx < 0 || idx >= ssize) {
+      क्रम (दीर्घ idx = base ;  idx < end ;  idx += 1) {
+	    अगर (idx < 0 || idx >= ssize) {
                   rbuf[offset-idx] = 'x';
-	    } else {
+	    } अन्यथा {
                   rbuf[offset-idx] = vvp_bit4_to_ascii(sig->value(idx));
 	    }
       }
@@ -176,39 +176,39 @@ static void format_vpiBinStrVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiOctStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+अटल व्योम format_vpiOctStrVal(स्थिर vvp_signal_मूल्य*sig, पूर्णांक base, अचिन्हित wid,
+                                s_vpi_मूल्य*vp)
 {
-      unsigned dwid = (wid + 2) / 3;
-      char *rbuf = static_cast<char *>(need_result_buf(dwid+1, RBUF_VAL));
-      long end = base + (signed)wid;
-      long ssize = (signed)sig->value_size();
-      unsigned val = 0;
+      अचिन्हित dwid = (wid + 2) / 3;
+      अक्षर *rbuf = static_cast<अक्षर *>(need_परिणाम_buf(dwid+1, RBUF_VAL));
+      दीर्घ end = base + (चिन्हित)wid;
+      दीर्घ ssize = (चिन्हित)sig->मूल्य_आकार();
+      अचिन्हित val = 0;
 
       rbuf[dwid] = 0;
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    unsigned bit = 0;
-	    if (idx < 0 || idx >= ssize) {
+      क्रम (दीर्घ idx = base ;  idx < end ;  idx += 1) {
+	    अचिन्हित bit = 0;
+	    अगर (idx < 0 || idx >= ssize) {
                   bit = 2; // BIT4_X
-	    } else {
-                  switch (sig->value(idx)) {
-		      case BIT4_0:
+	    } अन्यथा {
+                  चयन (sig->value(idx)) {
+		      हाल BIT4_0:
 			bit = 0;
-			break;
-		      case BIT4_1:
+			अवरोध;
+		      हाल BIT4_1:
 			bit = 1;
-			break;
-		      case BIT4_X:
+			अवरोध;
+		      हाल BIT4_X:
 			bit = 2;
-			break;
-		      case BIT4_Z:
+			अवरोध;
+		      हाल BIT4_Z:
 			bit = 3;
-			break;
+			अवरोध;
                   }
 	    }
 	    val |= bit << 2*((idx-base) % 3);
 
-	    if ((idx-base) % 3 == 2) {
+	    अगर ((idx-base) % 3 == 2) {
 		dwid -= 1;
 		rbuf[dwid] = oct_digits[val];
 		val = 0;
@@ -216,55 +216,55 @@ static void format_vpiOctStrVal(const vvp_signal_value*sig, int base, unsigned w
       }
 
 	/* Fill in X or Z if they are the only thing in the value. */
-      switch (wid % 3) {
-	  case 1:
-	    if (val == 2) val = 42;
-	    else if (val == 3) val = 63;
-	    break;
-	  case 2:
-	    if (val == 10) val = 42;
-	    else if (val == 15) val = 63;
-	    break;
+      चयन (wid % 3) {
+	  हाल 1:
+	    अगर (val == 2) val = 42;
+	    अन्यथा अगर (val == 3) val = 63;
+	    अवरोध;
+	  हाल 2:
+	    अगर (val == 10) val = 42;
+	    अन्यथा अगर (val == 15) val = 63;
+	    अवरोध;
       }
 
-      if (dwid > 0) rbuf[0] = oct_digits[val];
+      अगर (dwid > 0) rbuf[0] = oct_digits[val];
 
       vp->value.str = rbuf;
 }
 
-static void format_vpiHexStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+अटल व्योम format_vpiHexStrVal(स्थिर vvp_signal_मूल्य*sig, पूर्णांक base, अचिन्हित wid,
+                                s_vpi_मूल्य*vp)
 {
-      unsigned dwid = (wid + 3) / 4;
-      char *rbuf = static_cast<char *>(need_result_buf(dwid+1, RBUF_VAL));
-      long end = base + (signed)wid;
-      long ssize = (signed)sig->value_size();
-      unsigned val = 0;
+      अचिन्हित dwid = (wid + 3) / 4;
+      अक्षर *rbuf = static_cast<अक्षर *>(need_परिणाम_buf(dwid+1, RBUF_VAL));
+      दीर्घ end = base + (चिन्हित)wid;
+      दीर्घ ssize = (चिन्हित)sig->मूल्य_आकार();
+      अचिन्हित val = 0;
 
       rbuf[dwid] = 0;
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    unsigned bit = 0;
-	    if (idx < 0 || idx >= ssize) {
+      क्रम (दीर्घ idx = base ;  idx < end ;  idx += 1) {
+	    अचिन्हित bit = 0;
+	    अगर (idx < 0 || idx >= ssize) {
                   bit = 2; // BIT4_X
-	    } else {
-                  switch (sig->value(idx)) {
-		      case BIT4_0:
+	    } अन्यथा {
+                  चयन (sig->value(idx)) {
+		      हाल BIT4_0:
 			bit = 0;
-			break;
-		      case BIT4_1:
+			अवरोध;
+		      हाल BIT4_1:
 			bit = 1;
-			break;
-		      case BIT4_X:
+			अवरोध;
+		      हाल BIT4_X:
 			bit = 2;
-			break;
-		      case BIT4_Z:
+			अवरोध;
+		      हाल BIT4_Z:
 			bit = 3;
-			break;
+			अवरोध;
                   }
 	    }
 	    val |= bit << 2*((idx-base) % 4);
 
-	    if ((idx-base) % 4 == 3) {
+	    अगर ((idx-base) % 4 == 3) {
 		dwid -= 1;
 		rbuf[dwid] = hex_digits[val];
 		val = 0;
@@ -272,63 +272,63 @@ static void format_vpiHexStrVal(const vvp_signal_value*sig, int base, unsigned w
       }
 
 	/* Fill in X or Z if they are the only thing in the value. */
-      switch (wid % 4) {
-	  case 1:
-	    if (val == 2) val = 170;
-	    else if (val == 3) val = 255;
-	    break;
-	  case 2:
-	    if (val == 10) val = 170;
-	    else if (val == 15) val = 255;
-	    break;
-	  case 3:
-	    if (val == 42) val = 170;
-	    else if (val == 63) val = 255;
-	    break;
+      चयन (wid % 4) {
+	  हाल 1:
+	    अगर (val == 2) val = 170;
+	    अन्यथा अगर (val == 3) val = 255;
+	    अवरोध;
+	  हाल 2:
+	    अगर (val == 10) val = 170;
+	    अन्यथा अगर (val == 15) val = 255;
+	    अवरोध;
+	  हाल 3:
+	    अगर (val == 42) val = 170;
+	    अन्यथा अगर (val == 63) val = 255;
+	    अवरोध;
       }
 
-      if (dwid > 0) rbuf[0] = hex_digits[val];
+      अगर (dwid > 0) rbuf[0] = hex_digits[val];
 
       vp->value.str = rbuf;
 }
 
-static void format_vpiDecStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                int signed_flag, s_vpi_value*vp)
+अटल व्योम format_vpiDecStrVal(स्थिर vvp_signal_मूल्य*sig, पूर्णांक base, अचिन्हित wid,
+                                पूर्णांक signed_flag, s_vpi_मूल्य*vp)
 {
-      unsigned hwid = (sig->value_size()+2) / 3 + 1;
-      char *rbuf = static_cast<char *>(need_result_buf(hwid, RBUF_VAL));
-      long ssize = (signed)sig->value_size();
-      long end = base + (signed)wid;
+      अचिन्हित hwid = (sig->मूल्य_आकार()+2) / 3 + 1;
+      अक्षर *rbuf = static_cast<अक्षर *>(need_परिणाम_buf(hwid, RBUF_VAL));
+      दीर्घ ssize = (चिन्हित)sig->मूल्य_आकार();
+      दीर्घ end = base + (चिन्हित)wid;
 
 	/* Do we have an end outside of the real signal vector. */
-      if (base < 0 || end > ssize) {
+      अगर (base < 0 || end > ssize) {
 	    bool all_x = true;
-	    if (end > ssize) end = ssize;
-	    if (base < 0) base = 0;
-	    for (long idx = base ;  idx < end ;  idx += 1) {
-		  if (sig->value(idx) != BIT4_X) {
+	    अगर (end > ssize) end = ssize;
+	    अगर (base < 0) base = 0;
+	    क्रम (दीर्घ idx = base ;  idx < end ;  idx += 1) {
+		  अगर (sig->value(idx) != BIT4_X) {
 			all_x = false;
-			break;
+			अवरोध;
 		  }
 	    }
 
-	    if (all_x) {
+	    अगर (all_x) {
 		  rbuf[0] = 'x';
-	    } else {
+	    } अन्यथा {
 		  rbuf[0] = 'X';
 	    }
 	    rbuf[1] = 0;
 
 	    vp->value.str = rbuf;
-	    return;
+	    वापस;
       }
 
       vvp_vector4_t vec4;
-      if (base == 0 && end == ssize) {
-	    sig->vec4_value(vec4);
-      } else {
+      अगर (base == 0 && end == ssize) {
+	    sig->vec4_मूल्य(vec4);
+      } अन्यथा {
 	    vvp_vector4_t tmp;
-	    sig->vec4_value(tmp);
+	    sig->vec4_मूल्य(tmp);
 	    vec4 = tmp.subvalue(base, wid);
       }
 
@@ -337,67 +337,67 @@ static void format_vpiDecStrVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiIntVal(const vvp_signal_value*sig, int base, unsigned wid,
-                             int signed_flag, s_vpi_value*vp)
+अटल व्योम format_vpiIntVal(स्थिर vvp_signal_मूल्य*sig, पूर्णांक base, अचिन्हित wid,
+                             पूर्णांक signed_flag, s_vpi_मूल्य*vp)
 {
       vvp_vector4_t tmp;
-      sig->vec4_value(tmp);
+      sig->vec4_मूल्य(tmp);
       vvp_vector4_t sub = tmp.subvalue(base, wid);
 
 	// Normally, we'd be OK with just using long in the call to
 	// vector4_to_value, but some compilers seem to take long as
 	// distinct from int32_t AND int64_t. Since the condition is
 	// constant, the compiler should eliminate the dead code.
-      if (sizeof(vp->value.integer) == sizeof(int32_t)) {
+      अगर (माप(vp->value.integer) == माप(int32_t)) {
 	    int32_t val = 0;
-	    vector4_to_value(sub, val, signed_flag, false);
+	    vector4_to_मूल्य(sub, val, signed_flag, false);
 	    vp->value.integer = val;
-      } else {
-	    assert(sizeof(vp->value.integer) == sizeof(int64_t));
+      } अन्यथा {
+	    निश्चित(माप(vp->value.integer) == माप(int64_t));
 	    int64_t val = 0;
-	    vector4_to_value(sub, val, signed_flag, false);
+	    vector4_to_मूल्य(sub, val, signed_flag, false);
 	    vp->value.integer = val;
       }
 }
 
-static void format_vpiRealVal(const vvp_signal_value*sig, int base, unsigned wid,
-                              int signed_flag, s_vpi_value*vp)
+अटल व्योम format_vpiRealVal(स्थिर vvp_signal_मूल्य*sig, पूर्णांक base, अचिन्हित wid,
+                              पूर्णांक signed_flag, s_vpi_मूल्य*vp)
 {
       vvp_vector4_t vec4(wid);
-      long ssize = (signed)sig->value_size();
-      long end = base + (signed)wid;
-      if (end > ssize) end = ssize;
+      दीर्घ ssize = (चिन्हित)sig->मूल्य_आकार();
+      दीर्घ end = base + (चिन्हित)wid;
+      अगर (end > ssize) end = ssize;
 
-      for (long idx = (base < 0) ? 0 : base ;  idx < end ;  idx += 1) {
+      क्रम (दीर्घ idx = (base < 0) ? 0 : base ;  idx < end ;  idx += 1) {
 	    vec4.set_bit(idx-base, sig->value(idx));
       }
 
       vp->value.real = 0.0;
-      vector4_to_value(vec4, vp->value.real, signed_flag);
+      vector4_to_मूल्य(vec4, vp->value.real, signed_flag);
 }
 
-static void format_vpiStringVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+अटल व्योम format_vpiStringVal(स्थिर vvp_signal_मूल्य*sig, पूर्णांक base, अचिन्हित wid,
+                                s_vpi_मूल्य*vp)
 {
       /* The result will use a character for each 8 bits of the
 	 vector. Add one extra character for the highest bits that
 	 don't form an 8 bit group. */
-      char *rbuf = static_cast<char *>(need_result_buf(wid/8 + ((wid&7)!=0) + 1, RBUF_VAL));
-      char *cp = rbuf;
+      अक्षर *rbuf = static_cast<अक्षर *>(need_परिणाम_buf(wid/8 + ((wid&7)!=0) + 1, RBUF_VAL));
+      अक्षर *cp = rbuf;
 
-      char tmp = 0;
-      for (long idx = base+(signed)wid-1; idx >= base; idx -= 1) {
+      अक्षर tmp = 0;
+      क्रम (दीर्घ idx = base+(चिन्हित)wid-1; idx >= base; idx -= 1) {
 	    tmp <<= 1;
 
-	    if (idx >=0 && idx < (signed)sig->value_size() &&
+	    अगर (idx >=0 && idx < (चिन्हित)sig->मूल्य_आकार() &&
 	        sig->value(idx) == BIT4_1) {
 		   tmp |= 1;
 	    }
 
-	    if (((idx-base)&7)==0){
+	    अगर (((idx-base)&7)==0){
 		  /* Skip leading nulls. */
-		  if (tmp == 0 && cp == rbuf)
-			continue;
+		  अगर (tmp == 0 && cp == rbuf)
+			जारी;
 
 		  /* Nulls in the middle get turned into spaces. */
 		  *cp++ = tmp ? tmp : ' ';
@@ -409,78 +409,78 @@ static void format_vpiStringVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiScalarVal(const vvp_signal_value*sig, int base,
-                                s_vpi_value*vp)
+अटल व्योम format_vpiScalarVal(स्थिर vvp_signal_मूल्य*sig, पूर्णांक base,
+                                s_vpi_मूल्य*vp)
 {
-      if (base >= 0 && base < (signed)sig->value_size()) {
-	    switch (sig->value(base)) {
-		case BIT4_0:
+      अगर (base >= 0 && base < (चिन्हित)sig->मूल्य_आकार()) {
+	    चयन (sig->value(base)) {
+		हाल BIT4_0:
 		  vp->value.scalar = vpi0;
-		  break;
-		case BIT4_1:
+		  अवरोध;
+		हाल BIT4_1:
 		  vp->value.scalar = vpi1;
-		  break;
-		case BIT4_X: {
-		  vvp_scalar_t strn = sig->scalar_value(base);
-		  if (strn.strength0() == 1) vp->value.scalar = vpiH;
-		  else if (strn.strength1() == 1) vp->value.scalar = vpiL;
-		  else vp->value.scalar = vpiX;
-		  break;
+		  अवरोध;
+		हाल BIT4_X: {
+		  vvp_scalar_t strn = sig->scalar_मूल्य(base);
+		  अगर (strn.strength0() == 1) vp->value.scalar = vpiH;
+		  अन्यथा अगर (strn.strength1() == 1) vp->value.scalar = vpiL;
+		  अन्यथा vp->value.scalar = vpiX;
+		  अवरोध;
 		}
-		case BIT4_Z:
+		हाल BIT4_Z:
 		  vp->value.scalar = vpiZ;
-		  break;
+		  अवरोध;
 	    }
-      } else {
+      } अन्यथा {
 	    vp->value.scalar = vpiX;
       }
 }
 
-static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
-                                  unsigned wid, s_vpi_value*vp)
+अटल व्योम format_vpiStrengthVal(स्थिर vvp_signal_मूल्य*sig, पूर्णांक base,
+                                  अचिन्हित wid, s_vpi_मूल्य*vp)
 {
-      long end = base + (signed)wid;
+      दीर्घ end = base + (चिन्हित)wid;
       s_vpi_strengthval*op;
 
       op = static_cast<s_vpi_strengthval*>
-           (need_result_buf(wid * sizeof(s_vpi_strengthval), RBUF_VAL));
+           (need_परिणाम_buf(wid * माप(s_vpi_strengthval), RBUF_VAL));
 
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (idx >=0 && idx < (signed)sig->value_size()) {
-		  vvp_scalar_t val = sig->scalar_value(idx);
+      क्रम (दीर्घ idx = base ;  idx < end ;  idx += 1) {
+	    अगर (idx >=0 && idx < (चिन्हित)sig->मूल्य_आकार()) {
+		  vvp_scalar_t val = sig->scalar_मूल्य(idx);
 
 		  /* vvp_scalar_t strengths are 0-7, but the vpi strength
 		     is bit0-bit7. This gets the vpi form of the strengths
 		     from the vvp_scalar_t strengths. */
-		  unsigned s0 = 1 << val.strength0();
-		  unsigned s1 = 1 << val.strength1();
+		  अचिन्हित s0 = 1 << val.strength0();
+		  अचिन्हित s1 = 1 << val.strength1();
 
-		  switch (val.value()) {
-		      case BIT4_0:
+		  चयन (val.value()) {
+		      हाल BIT4_0:
 			op[idx-base].logic = vpi0;
 			op[idx-base].s0 = s0|s1;
 			op[idx-base].s1 = 0;
-			break;
+			अवरोध;
 
-		      case BIT4_1:
+		      हाल BIT4_1:
 			op[idx-base].logic = vpi1;
 			op[idx-base].s0 = 0;
 			op[idx-base].s1 = s0|s1;
-			break;
+			अवरोध;
 
-		      case BIT4_X:
+		      हाल BIT4_X:
 			op[idx-base].logic = vpiX;
 			op[idx-base].s0 = s0;
 			op[idx-base].s1 = s1;
-			break;
+			अवरोध;
 
-		      case BIT4_Z:
+		      हाल BIT4_Z:
 			op[idx-base].logic = vpiZ;
 			op[idx-base].s0 = vpiHiZ;
 			op[idx-base].s1 = vpiHiZ;
-			break;
+			अवरोध;
 		  }
-	    } else {
+	    } अन्यथा {
 		  op[idx-base].logic = vpiX;
 		  op[idx-base].s0 = vpiStrongDrive;
 		  op[idx-base].s1 = vpiStrongDrive;
@@ -490,47 +490,47 @@ static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
       vp->value.strength = op;
 }
 
-static void format_vpiVectorVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+अटल व्योम format_vpiVectorVal(स्थिर vvp_signal_मूल्य*sig, पूर्णांक base, अचिन्हित wid,
+                                s_vpi_मूल्य*vp)
 {
-      long end = base + (signed)wid;
-      unsigned int obit = 0;
-      unsigned hwid = (wid + 31)/32;
+      दीर्घ end = base + (चिन्हित)wid;
+      अचिन्हित पूर्णांक obit = 0;
+      अचिन्हित hwid = (wid + 31)/32;
 
       s_vpi_vecval *op = static_cast<p_vpi_vecval>
-                         (need_result_buf(hwid * sizeof(s_vpi_vecval), RBUF_VAL));
+                         (need_परिणाम_buf(hwid * माप(s_vpi_vecval), RBUF_VAL));
       vp->value.vector = op;
 
       op->aval = op->bval = 0;
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (base >= 0 && base < (signed)sig->value_size()) {
-		switch (sig->value(idx)) {
-		case BIT4_0:
+      क्रम (दीर्घ idx = base ;  idx < end ;  idx += 1) {
+	    अगर (base >= 0 && base < (चिन्हित)sig->मूल्य_आकार()) {
+		चयन (sig->value(idx)) {
+		हाल BIT4_0:
 		  op->aval &= ~(1 << obit);
 		  op->bval &= ~(1 << obit);
-		  break;
-		case BIT4_1:
+		  अवरोध;
+		हाल BIT4_1:
 		  op->aval |= (1 << obit);
 		  op->bval &= ~(1 << obit);
-		  break;
-		case BIT4_X:
+		  अवरोध;
+		हाल BIT4_X:
 		  op->aval |= (1 << obit);
 		  op->bval |= (1 << obit);
-		  break;
-		case BIT4_Z:
+		  अवरोध;
+		हाल BIT4_Z:
 		  op->aval &= ~(1 << obit);
 		  op->bval |= (1 << obit);
-		  break;
+		  अवरोध;
 		}
-	    } else {  /* BIT4_X */
+	    } अन्यथा {  /* BIT4_X */
 		  op->aval |= (1 << obit);
 		  op->bval |= (1 << obit);
 	    }
 
 	    obit++;
-	    if (!(obit % 32)) {
+	    अगर (!(obit % 32)) {
 		  op += 1;
-		  if ((op - vp->value.vector) < (ptrdiff_t)hwid)
+		  अगर ((op - vp->value.vector) < (सूचक_भेद_प्रकार)hwid)
 			op->aval = op->bval = 0;
 		  obit = 0;
 	    }
@@ -540,312 +540,312 @@ static void format_vpiVectorVal(const vvp_signal_value*sig, int base, unsigned w
 /*
  * implement vpi_get for vpiReg objects.
  */
-static int signal_get(int code, vpiHandle ref)
+अटल पूर्णांक signal_get(पूर्णांक code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      काष्ठा __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      निश्चित(rfp);
 
-      switch (code) {
-	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      चयन (code) {
+	  हाल vpi_पंक्ति_No:
+	    वापस 0;  // Not implemented for now!
 
-	  case vpiSigned:
-	    return rfp->signed_flag != 0;
+	  हाल vpiSigned:
+	    वापस rfp->signed_flag != 0;
 
-	  case vpiArray:
-	    return rfp->is_netarray != 0;
+	  हाल vpiArray:
+	    वापस rfp->is_netarray != 0;
 
-	  case vpiIndex: // This only works while we have a single index.
-	    if (rfp->is_netarray) {
-		  s_vpi_value vp;
+	  हाल vpi_सूचकांक_2: // This only works while we have a single index.
+	    अगर (rfp->is_netarray) {
+		  s_vpi_मूल्य vp;
 		  vp.format = vpiIntVal;
-		  vpi_get_value(rfp->id.index, &vp);
-		  return vp.value.integer;
-	    } else {
-		  return vpiUndefined;
+		  vpi_get_मूल्य(rfp->id.सूचकांक, &vp);
+		  वापस vp.value.integer;
+	    } अन्यथा {
+		  वापस vpiUndefined;
 	    }
 
-	  case vpiSize:
-	    return rfp->width();
+	  हाल vpi_आकार:
+	    वापस rfp->width();
 
-	  case vpiNetType:
-	    if (ref->get_type_code()==vpiNet)
-		  return vpiWire;
-	    else
-		  return vpiUndefined;
+	  हाल vpiNetType:
+	    अगर (ref->get_type_code()==vpiNet)
+		  वापस vpiWire;
+	    अन्यथा
+		  वापस vpiUndefined;
 
-	  case vpiLeftRange:
-            return rfp->msb.get_value();
+	  हाल vpi_बायाँ_Range:
+            वापस rfp->msb.get_मूल्य();
 
-	  case vpiRightRange:
-            return rfp->lsb.get_value();
+	  हाल vpi_दायाँ_Range:
+            वापस rfp->lsb.get_मूल्य();
 
-	  case vpiScalar:
-	    return (rfp->msb.get_value() == 0 && rfp->lsb.get_value() == 0);
-	  case vpiVector:
-	    return (rfp->msb.get_value() != rfp->lsb.get_value());
+	  हाल vpiScalar:
+	    वापस (rfp->msb.get_मूल्य() == 0 && rfp->lsb.get_मूल्य() == 0);
+	  हाल vpiVector:
+	    वापस (rfp->msb.get_मूल्य() != rfp->lsb.get_मूल्य());
 
-          case vpiAutomatic:
-            return vpip_scope(rfp)->is_automatic() ? 1  : 0;
+          हाल vpiAutomatic:
+            वापस vpip_scope(rfp)->is_automatic() ? 1  : 0;
 
-#ifdef BR916_STOPGAP_FIX
-          case _vpiFromThr:
-            return _vpiNoThr;
-#endif
+#अगर_घोषित BR916_STOPGAP_FIX
+          हाल _vpiFromThr:
+            वापस _vpiNoThr;
+#पूर्ण_अगर
 
-	  default:
-	    fprintf(stderr, "VPI error: unknown signal_get property %d.\n",
+	  शेष:
+	    ख_लिखो(मानक_त्रुटि, "VPI error: unknown signal_get property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    वापस vpiUndefined;
       }
 }
 
 /*
  * implement vpi_get64 for vpiReg objects.
  */
-static int64_t signal_get64(int code, vpiHandle ref)
+अटल int64_t signal_get64(पूर्णांक code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      काष्ठा __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      निश्चित(rfp);
 
-      switch (code) {
+      चयन (code) {
 	    // This private property must return zero when undefined.
-	  case _vpiNexusId:
-	    if (rfp->msb.get_value() == rfp->lsb.get_value())
-		  return reinterpret_cast<int64_t>(rfp->node);
-	    return 0;
+	  हाल _vpiNexusId:
+	    अगर (rfp->msb.get_मूल्य() == rfp->lsb.get_मूल्य())
+		  वापस reinterpret_cast<int64_t>(rfp->गाँठ);
+	    वापस 0;
 
-	  default:
-	    fprintf(stderr, "VPI error: unknown signal_get64 property %d.\n",
+	  शेष:
+	    ख_लिखो(मानक_त्रुटि, "VPI error: unknown signal_get64 property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    वापस vpiUndefined;
       }
 }
 
-static char* signal_get_str(int code, vpiHandle ref)
+अटल अक्षर* signal_get_str(पूर्णांक code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      काष्ठा __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      निश्चित(rfp);
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      अगर (code == vpiFile) {  // Not implemented for now!
+	    वापस simple_set_rbuf_str(file_names[0]);
       }
 
-      if ((code != vpiName) && (code != vpiFullName)) return NULL;
+      अगर ((code != vpiName) && (code != vpiFullName)) वापस शून्य;
 
-      char *nm;
-      const char *ixs;
-      if (rfp->is_netarray) {
+      अक्षर *nm;
+      स्थिर अक्षर *ixs;
+      अगर (rfp->is_netarray) {
 	    nm = strdup(vpi_get_str(vpiName, rfp->within.parent));
-	    s_vpi_value vp;
+	    s_vpi_मूल्य vp;
 	    vp.format = vpiDecStrVal;
-	    vpi_get_value(rfp->id.index, &vp);
+	    vpi_get_मूल्य(rfp->id.सूचकांक, &vp);
 	    ixs = vp.value.str;  /* do I need to strdup() this? */
-      } else {
+      } अन्यथा {
 	    nm = strdup(rfp->id.name);
-	    ixs = NULL;
+	    ixs = शून्य;
       }
 
 	/* The scope information is added here for vpiFullName. */
-      char *rbuf = generic_get_str(code, vpip_scope(rfp), nm, ixs);
-      free(nm);
-      return rbuf;
+      अक्षर *rbuf = generic_get_str(code, vpip_scope(rfp), nm, ixs);
+      मुक्त(nm);
+      वापस rbuf;
 }
 
-static vpiHandle signal_get_handle(int code, vpiHandle ref)
+अटल vpiHandle signal_get_handle(पूर्णांक code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      काष्ठा __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      निश्चित(rfp);
 
-      switch (code) {
+      चयन (code) {
 
-	  case vpiParent:
-	    return rfp->is_netarray? rfp->within.parent : NULL;
+	  हाल vpiParent:
+	    वापस rfp->is_netarray? rfp->within.parent : शून्य;
 
-	  case vpiIndex:
-	    return rfp->is_netarray? rfp->id.index : NULL;
+	  हाल vpi_सूचकांक_2:
+	    वापस rfp->is_netarray? rfp->id.सूचकांक : शून्य;
 
-	  case vpiLeftRange:
-	    return &rfp->msb;
-	  case vpiRightRange:
-	    return &rfp->lsb;
+	  हाल vpi_बायाँ_Range:
+	    वापस &rfp->msb;
+	  हाल vpi_दायाँ_Range:
+	    वापस &rfp->lsb;
 
-	  case vpiScope:
-	    return vpip_scope(rfp);
+	  हाल vpiScope:
+	    वापस vpip_scope(rfp);
 
-	  case vpiModule:
-	    return vpip_module(vpip_scope(rfp));
+	  हाल vpiModule:
+	    वापस vpip_module(vpip_scope(rfp));
       }
 
-      return 0;
+      वापस 0;
 }
 
-static vpiHandle signal_iterate(int code, vpiHandle ref)
+अटल vpiHandle signal_iterate(पूर्णांक code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      काष्ठा __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      निश्चित(rfp);
 
-      if (code == vpiIndex) {
-	    return rfp->is_netarray ? rfp->id.index->vpi_iterate(code) : NULL;
+      अगर (code == vpi_सूचकांक_2) {
+	    वापस rfp->is_netarray ? rfp->id.सूचकांक->vpi_iterate(code) : शून्य;
       }
 
-      return 0;
+      वापस 0;
 }
 
-void __vpiSignal::make_bits()
+व्योम __vpiSignal::make_bits()
 {
-      assert(bits == NULL);
-      bits = new struct __vpiBit[width() + 1];
+      निश्चित(bits == शून्य);
+      bits = नया काष्ठा __vpiBit[width() + 1];
 
 	// Make word[-1] point to the parent.
-      bits->parent = this;
+      bits->parent = यह;
 	// Now point to word[0].
       bits += 1;
 
 	// Update each bit to point to the base
-      struct __vpiBit*base = bits;
-      for (unsigned idx = 0; idx < width(); idx += 1) {
+      काष्ठा __vpiBit*base = bits;
+      क्रम (अचिन्हित idx = 0; idx < width(); idx += 1) {
 	    base[idx].bit0 = base;
-	    int real_idx;
-	    if (msb.get_value() >= lsb.get_value()) {
-		  real_idx = idx + lsb.get_value();
-	    } else {
-		  real_idx = lsb.get_value() - idx;
+	    पूर्णांक real_idx;
+	    अगर (msb.get_मूल्य() >= lsb.get_मूल्य()) {
+		  real_idx = idx + lsb.get_मूल्य();
+	    } अन्यथा {
+		  real_idx = lsb.get_मूल्य() - idx;
 	    }
-	    base[idx].index = new __vpiDecConst(real_idx);
+	    base[idx].सूचकांक = नया __vpiDecConst(real_idx);
       }
 }
 
-vpiHandle __vpiSignal::get_index(int idx)
+vpiHandle __vpiSignal::get_सूचकांक(पूर्णांक idx)
 {
 	/* Check to see if the index is in range. */
-      if (msb.get_value() >= lsb.get_value()) {
-	    if ((idx > msb.get_value()) || (idx < lsb.get_value())) return 0;
-      } else {
-	    if ((idx < msb.get_value()) || (idx > lsb.get_value())) return 0;
+      अगर (msb.get_मूल्य() >= lsb.get_मूल्य()) {
+	    अगर ((idx > msb.get_मूल्य()) || (idx < lsb.get_मूल्य())) वापस 0;
+      } अन्यथा {
+	    अगर ((idx < msb.get_मूल्य()) || (idx > lsb.get_मूल्य())) वापस 0;
       }
 
 	/* Normalize the index */
-      unsigned norm_idx;
-      if (msb.get_value() >= lsb.get_value()) {
-	    norm_idx = idx - lsb.get_value();
-      } else {
-	    norm_idx = lsb.get_value() - idx;
+      अचिन्हित norm_idx;
+      अगर (msb.get_मूल्य() >= lsb.get_मूल्य()) {
+	    norm_idx = idx - lsb.get_मूल्य();
+      } अन्यथा {
+	    norm_idx = lsb.get_मूल्य() - idx;
       }
 
-      if (bits == NULL) make_bits();
+      अगर (bits == शून्य) make_bits();
 
-      return &(bits[norm_idx].as_bit);
+      वापस &(bits[norm_idx].as_bit);
 }
 
-void __vpiSignal::get_bit_value(const struct __vpiBit*bit, p_vpi_value vp)
+व्योम __vpiSignal::get_bit_मूल्य(स्थिर काष्ठा __vpiBit*bit, p_vpi_मूल्य vp)
 {
-      unsigned index = bit->get_norm_index();
+      अचिन्हित सूचकांक = bit->get_norm_सूचकांक();
 
-      vvp_signal_value*vsig = dynamic_cast<vvp_signal_value*>(node->fil);
-      assert(vsig);
+      vvp_signal_मूल्य*vsig = dynamic_cast<vvp_signal_मूल्य*>(गाँठ->fil);
+      निश्चित(vsig);
 
-      if (vp->format == vpiObjTypeVal) {
+      अगर (vp->format == vpiObjTypeVal) {
 	    vp->format = vpiIntVal;
       }
 
-      switch (vp->format) {
-	case vpiBinStrVal:
-            format_vpiBinStrVal(vsig, index, 1, vp);
-	    break;
+      चयन (vp->format) {
+	हाल vpiBinStrVal:
+            format_vpiBinStrVal(vsig, सूचकांक, 1, vp);
+	    अवरोध;
 
-	case vpiOctStrVal:
-            format_vpiOctStrVal(vsig, index, 1, vp);
-	    break;
+	हाल vpiOctStrVal:
+            format_vpiOctStrVal(vsig, सूचकांक, 1, vp);
+	    अवरोध;
 
-	case vpiDecStrVal:
-            format_vpiDecStrVal(vsig, index, 1, false, vp);
-	    break;
+	हाल vpiDecStrVal:
+            format_vpiDecStrVal(vsig, सूचकांक, 1, false, vp);
+	    अवरोध;
 
-	case vpiHexStrVal:
-            format_vpiHexStrVal(vsig, index, 1, vp);
-	    break;
+	हाल vpiHexStrVal:
+            format_vpiHexStrVal(vsig, सूचकांक, 1, vp);
+	    अवरोध;
 
-	case vpiStringVal:
-            format_vpiStringVal(vsig, index, 1, vp);
-	    break;
+	हाल vpiStringVal:
+            format_vpiStringVal(vsig, सूचकांक, 1, vp);
+	    अवरोध;
 
-	case vpiIntVal:
-            format_vpiIntVal(vsig, index, 1, false, vp);
-	    break;
+	हाल vpiIntVal:
+            format_vpiIntVal(vsig, सूचकांक, 1, false, vp);
+	    अवरोध;
 
-	case vpiRealVal:
-            format_vpiRealVal(vsig, index, 1, false, vp);
-	    break;
+	हाल vpiRealVal:
+            format_vpiRealVal(vsig, सूचकांक, 1, false, vp);
+	    अवरोध;
 
-	case vpiScalarVal:
-            format_vpiScalarVal(vsig, index, vp);
-	    break;
+	हाल vpiScalarVal:
+            format_vpiScalarVal(vsig, सूचकांक, vp);
+	    अवरोध;
 
-        case vpiStrengthVal:
-            format_vpiStrengthVal(vsig, index, 1, vp);
-            break;
+        हाल vpiStrengthVal:
+            format_vpiStrengthVal(vsig, सूचकांक, 1, vp);
+            अवरोध;
 
-	case vpiVectorVal:
-            format_vpiVectorVal(vsig, index, 1, vp);
-	    break;
+	हाल vpiVectorVal:
+            format_vpiVectorVal(vsig, सूचकांक, 1, vp);
+	    अवरोध;
 
-	default:
-	    fprintf(stderr, "internal error: get_value() "
+	शेष:
+	    ख_लिखो(मानक_त्रुटि, "internal error: get_value() "
 		    "type %d is not implemented for bit "
 		    "select %s[%d] in scope %s.\n",
-		    (int)vp->format, vpi_get_str(vpiName),
-		    bit->get_index(),
-	            vpip_scope(this)->scope_name());
-	    assert(0);
+		    (पूर्णांक)vp->format, vpi_get_str(vpiName),
+		    bit->get_सूचकांक(),
+	            vpip_scope(यह)->scope_name());
+	    निश्चित(0);
       };
 }
 
-vpiHandle __vpiSignal::put_bit_value(struct __vpiBit*bit, p_vpi_value vp, int flags)
+vpiHandle __vpiSignal::put_bit_मूल्य(काष्ठा __vpiBit*bit, p_vpi_मूल्य vp, पूर्णांक flags)
 {
-      unsigned index = bit->get_norm_index();
-      vvp_net_ptr_t dest(node, 0);
-      vvp_vector4_t val = vec4_from_vpi_value(vp, 1);
+      अचिन्हित सूचकांक = bit->get_norm_सूचकांक();
+      vvp_net_ptr_t dest(गाँठ, 0);
+      vvp_vector4_t val = vec4_from_vpi_मूल्य(vp, 1);
 
-      if ((flags == vpiForceFlag) || (flags == vpiReleaseFlag)) {
-	    fprintf(stderr, "Sorry: vpi_put_value() for %s does not "
+      अगर ((flags == vpiForceFlag) || (flags == vpiReleaseFlag)) {
+	    ख_लिखो(मानक_त्रुटि, "Sorry: vpi_put_value() for %s does not "
 	                    "currently support force/release.\n",
 	                    bit->as_bit.vpi_get_str(vpiFullName));
-	    return NULL;
+	    वापस शून्य;
       }
 
-      if ((get_type_code() == vpiNet) &&
-          !dynamic_cast<vvp_island_port*>(node->fun)) {
-	    node->send_vec4_pv(val, index, width(),
+      अगर ((get_type_code() == vpiNet) &&
+          !dynamic_cast<vvp_island_port*>(गाँठ->fun)) {
+	    गाँठ->send_vec4_pv(val, सूचकांक, width(),
 	                            vthread_get_wt_context());
-      } else {
-	    vvp_send_vec4_pv(dest, val, index, width(),
+      } अन्यथा {
+	    vvp_send_vec4_pv(dest, val, सूचकांक, width(),
 	                     vthread_get_wt_context());
       }
 
 	// This is not a scheduled event so there is no event to return
-      return NULL;
+      वापस शून्य;
 }
 
-static vpiHandle signal_index(int idx, vpiHandle ref)
+अटल vpiHandle signal_सूचकांक(पूर्णांक idx, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      काष्ठा __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      निश्चित(rfp);
 
 	/* We can only get the bit for a net or reg. */
       PLI_INT32 type = vpi_get(vpiType, ref);
-      if ((type != vpiNet) && (type != vpiReg)) return 0;
+      अगर ((type != vpiNet) && (type != vpiReg)) वापस 0;
 
-      return rfp->get_index(idx);
+      वापस rfp->get_सूचकांक(idx);
 }
 
-unsigned __vpiSignal::width(void) const
+अचिन्हित __vpiSignal::width(व्योम) स्थिर
 {
-      unsigned wid = (msb.get_value() >= lsb.get_value())
-	    ? (msb.get_value() - lsb.get_value() + 1)
-	    : (lsb.get_value() - msb.get_value() + 1);
+      अचिन्हित wid = (msb.get_मूल्य() >= lsb.get_मूल्य())
+	    ? (msb.get_मूल्य() - lsb.get_मूल्य() + 1)
+	    : (lsb.get_मूल्य() - msb.get_मूल्य() + 1);
 
-      return wid;
+      वापस wid;
 }
 
 /*
@@ -853,75 +853,75 @@ unsigned __vpiSignal::width(void) const
  * the vector to the caller. This causes no side-effect, and reads the
  * variables like a %load would.
  */
-static void signal_get_value(vpiHandle ref, s_vpi_value*vp)
+अटल व्योम signal_get_मूल्य(vpiHandle ref, s_vpi_मूल्य*vp)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      काष्ठा __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      निश्चित(rfp);
 
-      unsigned wid = rfp->width();
+      अचिन्हित wid = rfp->width();
 
-      vvp_signal_value*vsig = dynamic_cast<vvp_signal_value*>(rfp->node->fil);
-      assert(vsig);
+      vvp_signal_मूल्य*vsig = dynamic_cast<vvp_signal_मूल्य*>(rfp->गाँठ->fil);
+      निश्चित(vsig);
 
-      switch (vp->format) {
+      चयन (vp->format) {
 
-	  case vpiIntVal:
+	  हाल vpiIntVal:
 	    format_vpiIntVal(vsig, 0, wid, rfp->signed_flag, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiScalarVal:
+	  हाल vpiScalarVal:
 	    format_vpiScalarVal(vsig, 0, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiStrengthVal:
+	  हाल vpiStrengthVal:
 	    format_vpiStrengthVal(vsig, 0, wid, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiBinStrVal:
+	  हाल vpiBinStrVal:
 	    format_vpiBinStrVal(vsig, 0, wid, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiHexStrVal:
+	  हाल vpiHexStrVal:
 	    format_vpiHexStrVal(vsig, 0, wid, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiOctStrVal:
+	  हाल vpiOctStrVal:
 	    format_vpiOctStrVal(vsig, 0, wid, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiDecStrVal:
+	  हाल vpiDecStrVal:
 	    format_vpiDecStrVal(vsig, 0, wid, rfp->signed_flag, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiStringVal:
+	  हाल vpiStringVal:
 	    format_vpiStringVal(vsig, 0, wid, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiVectorVal:
+	  हाल vpiVectorVal:
 	    format_vpiVectorVal(vsig, 0, wid, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiRealVal:
+	  हाल vpiRealVal:
 	    format_vpiRealVal(vsig, 0, wid, rfp->signed_flag, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiObjTypeVal:
-	    if (wid == 1) {
+	  हाल vpiObjTypeVal:
+	    अगर (wid == 1) {
 		  vp->format = vpiScalarVal;
 		  format_vpiScalarVal(vsig, 0, vp);
-	    } else {
+	    } अन्यथा {
 		  vp->format = vpiVectorVal;
 		  format_vpiVectorVal(vsig, 0, wid, vp);
 	    }
-	    break;
+	    अवरोध;
 
-	  default:
-	    fprintf(stderr, "vvp internal error: get_value: "
+	  शेष:
+	    ख_लिखो(मानक_त्रुटि, "vvp internal error: get_value: "
 		    "value type %d not implemented."
 		    " Signal is %s in scope %s\n",
-		    (int)vp->format, vpi_get_str(vpiName, ref),
+		    (पूर्णांक)vp->format, vpi_get_str(vpiName, ref),
 		    vpip_scope(rfp)->scope_name());
-	    assert(0);
+	    निश्चित(0);
       }
 }
 
@@ -932,22 +932,22 @@ static void signal_get_value(vpiHandle ref, s_vpi_value*vp)
  * equivalent instruction would cause.
  */
 
-static vvp_vector4_t from_stringval(const char*str, unsigned wid)
+अटल vvp_vector4_t from_stringval(स्थिर अक्षर*str, अचिन्हित wid)
 {
-      unsigned idx;
-      const char*cp;
+      अचिन्हित idx;
+      स्थिर अक्षर*cp;
 
-      cp = str + strlen(str);
+      cp = str + म_माप(str);
       idx = 0;
 
       vvp_vector4_t val(wid, BIT4_0);
 
-      while ((idx < wid) && (cp > str)) {
-	    unsigned byte = *--cp;
-	    int bit;
+      जबतक ((idx < wid) && (cp > str)) {
+	    अचिन्हित byte = *--cp;
+	    पूर्णांक bit;
 
-	    for (bit = 0 ;  (bit < 8) && (idx < wid) ;  bit += 1) {
-		  if (byte & 1)
+	    क्रम (bit = 0 ;  (bit < 8) && (idx < wid) ;  bit += 1) {
+		  अगर (byte & 1)
 			val.set_bit(idx, BIT4_1);
 
 		  byte >>= 1;
@@ -955,15 +955,15 @@ static vvp_vector4_t from_stringval(const char*str, unsigned wid)
 	    }
       }
 
-      return val;
+      वापस val;
 }
 
-static vpiHandle signal_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
+अटल vpiHandle signal_put_मूल्य(vpiHandle ref, s_vpi_मूल्य*vp, पूर्णांक flags)
 {
-      unsigned wid;
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
-      vvp_net_ptr_t dest(rfp->node, 0);
+      अचिन्हित wid;
+      काष्ठा __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      निश्चित(rfp);
+      vvp_net_ptr_t dest(rfp->गाँठ, 0);
 
       bool net_flag = ref->get_type_code()==vpiNet;
 
@@ -973,157 +973,157 @@ static vpiHandle signal_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
 	   if this net is attached to an island, we need to rerun
 	   the calculations immediately so we can return the
 	   released value. */
-      if (flags == vpiReleaseFlag) {
-	    assert(rfp->node->fil);
-	    rfp->node->fil->force_unlink();
-	    rfp->node->fil->release(dest, net_flag);
-	    rfp->node->fun->force_flag(true);
-	    signal_get_value(ref, vp);
-	    return ref;
+      अगर (flags == vpiReleaseFlag) {
+	    निश्चित(rfp->गाँठ->fil);
+	    rfp->गाँठ->fil->force_unlink();
+	    rfp->गाँठ->fil->release(dest, net_flag);
+	    rfp->गाँठ->fun->force_flag(true);
+	    signal_get_मूल्य(ref, vp);
+	    वापस ref;
       }
 
 	/* Make a vvp_vector4_t vector to receive the translated value
 	   that we are going to poke. This will get populated
 	   differently depending on the format. */
-      wid = (rfp->msb.get_value() >= rfp->lsb.get_value())
-	    ? (rfp->msb.get_value() - rfp->lsb.get_value() + 1)
-	    : (rfp->lsb.get_value() - rfp->msb.get_value() + 1);
+      wid = (rfp->msb.get_मूल्य() >= rfp->lsb.get_मूल्य())
+	    ? (rfp->msb.get_मूल्य() - rfp->lsb.get_मूल्य() + 1)
+	    : (rfp->lsb.get_मूल्य() - rfp->msb.get_मूल्य() + 1);
 
-      vvp_vector4_t val = vec4_from_vpi_value(vp, wid);
+      vvp_vector4_t val = vec4_from_vpi_मूल्य(vp, wid);
 
-      if (flags == vpiForceFlag) {
+      अगर (flags == vpiForceFlag) {
 	    vvp_vector2_t mask (vvp_vector2_t::FILL1, wid);
-	    rfp->node->force_vec4(val, mask);
-      } else if (net_flag && !dynamic_cast<vvp_island_port*>(rfp->node->fun)) {
-	    rfp->node->send_vec4(val, vthread_get_wt_context());
-      } else {
+	    rfp->गाँठ->force_vec4(val, mask);
+      } अन्यथा अगर (net_flag && !dynamic_cast<vvp_island_port*>(rfp->गाँठ->fun)) {
+	    rfp->गाँठ->send_vec4(val, vthread_get_wt_context());
+      } अन्यथा {
 	    vvp_send_vec4(dest, val, vthread_get_wt_context());
       }
-      return ref;
+      वापस ref;
 }
 
-vvp_vector4_t vec4_from_vpi_value(s_vpi_value*vp, unsigned wid)
+vvp_vector4_t vec4_from_vpi_मूल्य(s_vpi_मूल्य*vp, अचिन्हित wid)
 {
       vvp_vector4_t val (wid, BIT4_0);
 
-      switch (vp->format) {
+      चयन (vp->format) {
 
-	  case vpiIntVal: {
-		long vpi_val = vp->value.integer;
-		for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+	  हाल vpiIntVal: {
+		दीर्घ vpi_val = vp->value.integer;
+		क्रम (अचिन्हित idx = 0 ;  idx < wid ;  idx += 1) {
 		      vvp_bit4_t bit = (vpi_val & 1) ? BIT4_1 : BIT4_0;
 		      val.set_bit(idx, bit);
 		      vpi_val >>= 1;
 		}
-		break;
+		अवरोध;
 	  }
 
-	  case vpiVectorVal:
-	    for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-		  unsigned long aval = vp->value.vector[idx/32].aval;
-		  unsigned long bval = vp->value.vector[idx/32].bval;
+	  हाल vpiVectorVal:
+	    क्रम (अचिन्हित idx = 0 ;  idx < wid ;  idx += 1) {
+		  अचिन्हित दीर्घ aval = vp->value.vector[idx/32].aval;
+		  अचिन्हित दीर्घ bval = vp->value.vector[idx/32].bval;
 		  aval >>= idx%32;
 		  bval >>= idx%32;
-		  int bitmask = (aval&1) | ((bval<<1)&2);
+		  पूर्णांक bitmask = (aval&1) | ((bval<<1)&2);
 		  vvp_bit4_t bit = scalar_to_bit4(bitmask);
 		  val.set_bit(idx, bit);
 	    }
-	    break;
-	  case vpiBinStrVal:
+	    अवरोध;
+	  हाल vpiBinStrVal:
 	    vpip_bin_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiOctStrVal:
+	    अवरोध;
+	  हाल vpiOctStrVal:
 	    vpip_oct_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiDecStrVal:
+	    अवरोध;
+	  हाल vpiDecStrVal:
 	    vpip_dec_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiHexStrVal:
+	    अवरोध;
+	  हाल vpiHexStrVal:
 	    vpip_hex_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiScalarVal:
+	    अवरोध;
+	  हाल vpiScalarVal:
 	    val.set_bit(0, scalar_to_bit4(vp->value.scalar));
-	    break;
-	  case vpiStringVal:
+	    अवरोध;
+	  हाल vpiStringVal:
 	    val = from_stringval(vp->value.str, wid);
-	    break;
-	  case vpiRealVal:
+	    अवरोध;
+	  हाल vpiRealVal:
 	    val = vvp_vector4_t(wid, vp->value.real);
-	    break;
+	    अवरोध;
 
-	  default:
-	    fprintf(stderr, "vvp internal error: put_value: "
+	  शेष:
+	    ख_लिखो(मानक_त्रुटि, "vvp internal error: put_value: "
 		    "value type %d not implemented here.\n",
-		    (int)vp->format);
-	    assert(0);
+		    (पूर्णांक)vp->format);
+	    निश्चित(0);
 
       }
 
-      return val;
+      वापस val;
 }
 
-int __vpiSignal::vpi_get(int code)
-{ return signal_get(code, this); }
+पूर्णांक __vpiSignal::vpi_get(पूर्णांक code)
+{ वापस signal_get(code, यह); }
 
-int64_t __vpiSignal::vpi_get64(int code)
-{ return signal_get64(code, this); }
+int64_t __vpiSignal::vpi_get64(पूर्णांक code)
+{ वापस signal_get64(code, यह); }
 
-char* __vpiSignal::vpi_get_str(int code)
-{ return signal_get_str(code, this); }
+अक्षर* __vpiSignal::vpi_get_str(पूर्णांक code)
+{ वापस signal_get_str(code, यह); }
 
-void __vpiSignal::vpi_get_value(p_vpi_value val)
-{ signal_get_value(this, val); }
+व्योम __vpiSignal::vpi_get_मूल्य(p_vpi_मूल्य val)
+{ signal_get_मूल्य(यह, val); }
 
-vpiHandle __vpiSignal::vpi_put_value(p_vpi_value val, int flags)
-{ return signal_put_value(this, val, flags); }
+vpiHandle __vpiSignal::vpi_put_मूल्य(p_vpi_मूल्य val, पूर्णांक flags)
+{ वापस signal_put_मूल्य(यह, val, flags); }
 
-vpiHandle __vpiSignal::vpi_handle(int code)
-{ return signal_get_handle(code, this); }
+vpiHandle __vpiSignal::vpi_handle(पूर्णांक code)
+{ वापस signal_get_handle(code, यह); }
 
-vpiHandle __vpiSignal::vpi_iterate(int code)
-{ return signal_iterate(code, this); }
+vpiHandle __vpiSignal::vpi_iterate(पूर्णांक code)
+{ वापस signal_iterate(code, यह); }
 
-vpiHandle __vpiSignal::vpi_index(int idx)
-{ return signal_index(idx, this); }
+vpiHandle __vpiSignal::vpi_सूचकांक(पूर्णांक idx)
+{ वापस signal_सूचकांक(idx, यह); }
 
-struct signal_reg : public __vpiSignal {
-      inline signal_reg() { }
-      int get_type_code(void) const override { return vpiReg; }
+काष्ठा signal_reg : खुला __vpiSignal {
+      अंतरभूत signal_reg() { }
+      पूर्णांक get_type_code(व्योम) स्थिर override { वापस vpiReg; }
 };
 
-struct signal_integer : public __vpiSignal {
-      inline signal_integer() { }
-      int get_type_code(void) const override { return vpiIntegerVar; }
+काष्ठा signal_integer : खुला __vpiSignal {
+      अंतरभूत signal_integer() { }
+      पूर्णांक get_type_code(व्योम) स्थिर override { वापस vpiIntegerVar; }
 };
 
-struct signal_net : public __vpiSignal {
-      inline signal_net() { }
-      int get_type_code(void) const override { return vpiNet; }
+काष्ठा signal_net : खुला __vpiSignal {
+      अंतरभूत signal_net() { }
+      पूर्णांक get_type_code(व्योम) स्थिर override { वापस vpiNet; }
 };
 
-struct signal_byte : public __vpiSignal {
-      inline signal_byte() { }
-      int get_type_code(void) const override { return vpiByteVar; }
+काष्ठा signal_byte : खुला __vpiSignal {
+      अंतरभूत signal_byte() { }
+      पूर्णांक get_type_code(व्योम) स्थिर override { वापस vpiByteVar; }
 };
 
-struct signal_bitvar : public __vpiSignal {
-      inline signal_bitvar() { }
-      int get_type_code(void) const override { return vpiBitVar; }
+काष्ठा signal_bitvar : खुला __vpiSignal {
+      अंतरभूत signal_bitvar() { }
+      पूर्णांक get_type_code(व्योम) स्थिर override { वापस vpiBitVar; }
 };
 
-struct signal_shortint : public __vpiSignal {
-      inline signal_shortint() { }
-      int get_type_code(void) const override { return vpiShortIntVar; }
+काष्ठा signal_shortint : खुला __vpiSignal {
+      अंतरभूत signal_shortint() { }
+      पूर्णांक get_type_code(व्योम) स्थिर override { वापस vpiShortIntVar; }
 };
 
-struct signal_int : public __vpiSignal {
-      inline signal_int() { }
-      int get_type_code(void) const override { return vpiIntVar; }
+काष्ठा signal_int : खुला __vpiSignal {
+      अंतरभूत signal_int() { }
+      पूर्णांक get_type_code(व्योम) स्थिर override { वापस vpiIntVar; }
 };
 
-struct signal_longint : public __vpiSignal {
-      inline signal_longint() { }
-      int get_type_code(void) const override { return vpiLongIntVar; }
+काष्ठा signal_longint : खुला __vpiSignal {
+      अंतरभूत signal_longint() { }
+      पूर्णांक get_type_code(व्योम) स्थिर override { वापस vpiLongIntVar; }
 };
 
 
@@ -1132,153 +1132,153 @@ struct signal_longint : public __vpiSignal {
  * to minimize the code modifications. Icarus implements integers
  * as 'reg signed [31:0]'.
  */
-vpiHandle vpip_make_int4(const char*name, int msb, int lsb, vvp_net_t*vec)
+vpiHandle vpip_make_int4(स्थिर अक्षर*name, पूर्णांक msb, पूर्णांक lsb, vvp_net_t*vec)
 {
-      __vpiSignal*obj = new signal_integer;
-      return fill_in_var4(obj, name, msb, lsb, true, vec);
+      __vpiSignal*obj = नया signal_integer;
+      वापस fill_in_var4(obj, name, msb, lsb, true, vec);
 }
 
 /*
  * Construct the two-state SystemVerilog variables.
  */
-vpiHandle vpip_make_int2(const char*name, int msb, int lsb, bool signed_flag,
+vpiHandle vpip_make_int2(स्थिर अक्षर*name, पूर्णांक msb, पूर्णांक lsb, bool signed_flag,
                          vvp_net_t*vec)
 {
       __vpiSignal*obj;
 
 	// All unsigned 2-state variables are a vpiBitVar. All 2-state
 	// variables with a non-zero lsb are also a vpiBitVar.
-      if ((! signed_flag) || (lsb != 0) ) {
-	    obj = new signal_bitvar;
-      } else {
+      अगर ((! signed_flag) || (lsb != 0) ) {
+	    obj = नया signal_bitvar;
+      } अन्यथा {
 	      // These could also be bit declarations with matching
 	      // information, but for now they get the apparent type.
-	    switch (msb) {
-		case 7:
-		  obj = new signal_byte;
-		  break;
-		case 15:
-		  obj = new signal_shortint;
-		  break;
-		case 31:
-		  obj = new signal_int;
-		  break;
-		case 63:
-		  obj = new signal_longint;
-		  break;
-		default:
+	    चयन (msb) {
+		हाल 7:
+		  obj = नया signal_byte;
+		  अवरोध;
+		हाल 15:
+		  obj = नया signal_shortint;
+		  अवरोध;
+		हाल 31:
+		  obj = नया signal_int;
+		  अवरोध;
+		हाल 63:
+		  obj = नया signal_longint;
+		  अवरोध;
+		शेष:
 		    // Every other type of bit vector is a vpiBitVar with
 		    // array dimensions.
-		  obj = new signal_bitvar;
-		  break;
+		  obj = नया signal_bitvar;
+		  अवरोध;
 	    }
       }
 
-      return fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
+      वापस fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
 }
 
 /*
  * Construct a vpiReg/vpiLogicVar object. It's like a net, except for the type.
  */
-vpiHandle vpip_make_var4(const char*name, int msb, int lsb,
+vpiHandle vpip_make_var4(स्थिर अक्षर*name, पूर्णांक msb, पूर्णांक lsb,
 			bool signed_flag, vvp_net_t*vec)
 {
-      __vpiSignal*obj = new signal_reg;
-      return fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
+      __vpiSignal*obj = नया signal_reg;
+      वापस fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
 }
 
-#ifdef CHECK_WITH_VALGRIND
-static struct vpiSignal_plug **signal_pool = 0;
-static unsigned signal_pool_count = 0;
-static unsigned long signal_count = 0;
-static unsigned long signal_dels = 0;
-#endif
+#अगर_घोषित CHECK_WITH_VALGRIND
+अटल काष्ठा vpiSignal_plug **signal_pool = 0;
+अटल अचिन्हित signal_pool_गिनती = 0;
+अटल अचिन्हित दीर्घ signal_गिनती = 0;
+अटल अचिन्हित दीर्घ signal_dels = 0;
+#पूर्ण_अगर
 
-struct vpiSignal_plug {
-      unsigned char space[sizeof (struct __vpiSignal)];
-#ifdef CHECK_WITH_VALGRIND
-      struct vpiSignal_plug *pool;
-#endif
+काष्ठा vpiSignal_plug {
+      अचिन्हित अक्षर space[माप (काष्ठा __vpiSignal)];
+#अगर_घोषित CHECK_WITH_VALGRIND
+      काष्ठा vpiSignal_plug *pool;
+#पूर्ण_अगर
 };
 
-void* __vpiSignal::operator new(size_t siz)
+व्योम* __vpiSignal::चालक नया(माप_प्रकार siz)
 {
-#ifdef CHECK_WITH_VALGRIND
-      assert(siz == sizeof(struct vpiSignal_plug) - sizeof(struct vpiSignal_plug *));
-#else
-      assert(siz == sizeof(struct vpiSignal_plug));
-#endif
-      static struct vpiSignal_plug*alloc_array = 0;
-      static unsigned alloc_index = 0;
-      const unsigned alloc_count = 512;
+#अगर_घोषित CHECK_WITH_VALGRIND
+      निश्चित(siz == माप(काष्ठा vpiSignal_plug) - माप(काष्ठा vpiSignal_plug *));
+#अन्यथा
+      निश्चित(siz == माप(काष्ठा vpiSignal_plug));
+#पूर्ण_अगर
+      अटल काष्ठा vpiSignal_plug*alloc_array = 0;
+      अटल अचिन्हित alloc_सूचकांक = 0;
+      स्थिर अचिन्हित alloc_गिनती = 512;
 
-      if ((alloc_array == 0) || (alloc_index == alloc_count)) {
-	    alloc_array = static_cast<struct vpiSignal_plug*>
-	                  (calloc(alloc_count, sizeof(struct vpiSignal_plug)));
-	    alloc_index = 0;
-#ifdef CHECK_WITH_VALGRIND
-	    VALGRIND_MAKE_MEM_NOACCESS(alloc_array, alloc_count *
-	                                            sizeof(struct vpiSignal_plug));
+      अगर ((alloc_array == 0) || (alloc_सूचकांक == alloc_गिनती)) {
+	    alloc_array = static_cast<काष्ठा vpiSignal_plug*>
+	                  (सुस्मृति(alloc_गिनती, माप(काष्ठा vpiSignal_plug)));
+	    alloc_सूचकांक = 0;
+#अगर_घोषित CHECK_WITH_VALGRIND
+	    VALGRIND_MAKE_MEM_NOACCESS(alloc_array, alloc_गिनती *
+	                                            माप(काष्ठा vpiSignal_plug));
 	    VALGRIND_CREATE_MEMPOOL(alloc_array, 0, 1);
-	    signal_pool_count += 1;
+	    signal_pool_गिनती += 1;
 	    signal_pool = static_cast<vpiSignal_plug **>
-	                  (realloc(signal_pool,
-	                   signal_pool_count*sizeof(vpiSignal_plug **)));
-	    signal_pool[signal_pool_count-1] = alloc_array;
-#endif
+	                  (पुनः_स्मृति(signal_pool,
+	                   signal_pool_गिनती*माप(vpiSignal_plug **)));
+	    signal_pool[signal_pool_गिनती-1] = alloc_array;
+#पूर्ण_अगर
       }
 
-      struct vpiSignal_plug*cur = alloc_array + alloc_index;
-#ifdef CHECK_WITH_VALGRIND
-      VALGRIND_MEMPOOL_ALLOC(alloc_array, cur, sizeof(struct vpiSignal_plug));
+      काष्ठा vpiSignal_plug*cur = alloc_array + alloc_सूचकांक;
+#अगर_घोषित CHECK_WITH_VALGRIND
+      VALGRIND_MEMPOOL_ALLOC(alloc_array, cur, माप(काष्ठा vpiSignal_plug));
       cur->pool = alloc_array;
-      signal_count += 1;
-#endif
-      alloc_index += 1;
-      return cur;
+      signal_गिनती += 1;
+#पूर्ण_अगर
+      alloc_सूचकांक += 1;
+      वापस cur;
 }
 
-void __vpiSignal::operator delete(void*)
+व्योम __vpiSignal::चालक मिटाओ(व्योम*)
 {
-      assert(0);
+      निश्चित(0);
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void signal_delete(vpiHandle item)
+#अगर_घोषित CHECK_WITH_VALGRIND
+व्योम signal_delete(vpiHandle item)
 {
-      struct __vpiSignal *obj = static_cast<__vpiSignal *> (item);
-      assert(obj->node->fil);
-      obj->node->fil->clear_all_callbacks();
-      vvp_net_delete(obj->node);
-      if (obj->bits) {
-	    for (unsigned idx=0; idx<obj->width(); idx+=1) {
-		  delete obj->bits[idx].index;
+      काष्ठा __vpiSignal *obj = static_cast<__vpiSignal *> (item);
+      निश्चित(obj->गाँठ->fil);
+      obj->गाँठ->fil->clear_all_callbacks();
+      vvp_net_delete(obj->गाँठ);
+      अगर (obj->bits) {
+	    क्रम (अचिन्हित idx=0; idx<obj->width(); idx+=1) {
+		  मिटाओ obj->bits[idx].सूचकांक;
 	    }
 	    obj->bits -= 1;
-	    delete [] obj->bits;
+	    मिटाओ [] obj->bits;
       }
       signal_dels += 1;
       VALGRIND_MEMPOOL_FREE(reinterpret_cast<vpiSignal_plug *>(obj)->pool, obj);
 }
 
-void signal_pool_delete()
+व्योम signal_pool_delete()
 {
-      if (RUNNING_ON_VALGRIND && (signal_count != signal_dels)) {
-	    fflush(NULL);
+      अगर (RUNNING_ON_VALGRIND && (signal_गिनती != signal_dels)) {
+	    ख_साफ(शून्य);
 	    VALGRIND_PRINTF("Error: vvp missed deleting %ld of %lu signal(s).",
-	                    (long) signal_count - signal_dels, signal_count);
+	                    (दीर्घ) signal_गिनती - signal_dels, signal_गिनती);
       }
 
-      for (unsigned idx = 0; idx < signal_pool_count; idx += 1) {
+      क्रम (अचिन्हित idx = 0; idx < signal_pool_गिनती; idx += 1) {
 	    VALGRIND_DESTROY_MEMPOOL(signal_pool[idx]);
-	    free(signal_pool[idx]);
+	    मुक्त(signal_pool[idx]);
       }
 
-      free(signal_pool);
+      मुक्त(signal_pool);
       signal_pool = 0;
-      signal_pool_count = 0;
+      signal_pool_गिनती = 0;
 }
-#endif
+#पूर्ण_अगर
 
 /*
  * Construct a vpiNet object. Give the object specified dimensions,
@@ -1287,216 +1287,216 @@ void signal_pool_delete()
  * The name is the PLI name for the object. If it is an array it is
  * <name>[<index>].
  */
-static vpiHandle fill_in_net4(struct __vpiSignal*obj, __vpiScope*scope,
-			      const char*name, int msb, int lsb,
-			      bool signed_flag, vvp_net_t*node)
+अटल vpiHandle fill_in_net4(काष्ठा __vpiSignal*obj, __vpiScope*scope,
+			      स्थिर अक्षर*name, पूर्णांक msb, पूर्णांक lsb,
+			      bool signed_flag, vvp_net_t*गाँठ)
 {
-      obj->id.name = name? vpip_name_string(name) : NULL;
+      obj->id.name = name? vpip_name_string(name) : शून्य;
       obj->msb = __vpiDecConst(msb);
       obj->lsb = __vpiDecConst(lsb);
       obj->signed_flag = signed_flag? 1 : 0;
       obj->is_netarray = 0;
-      obj->node = node;
+      obj->गाँठ = गाँठ;
 
 	// Place this object within a scope. If this object is
 	// attached to an array, then this value will be replaced with
 	// the handle to the parent.
       obj->within.scope = scope;
 
-      count_vpi_nets += 1;
+      गिनती_vpi_nets += 1;
 
-      return obj;
+      वापस obj;
 }
 
 vpiHandle vpip_make_net4(__vpiScope*scope,
-			 const char*name, int msb, int lsb,
-			 bool signed_flag, vvp_net_t*node)
+			 स्थिर अक्षर*name, पूर्णांक msb, पूर्णांक lsb,
+			 bool signed_flag, vvp_net_t*गाँठ)
 {
-      struct __vpiSignal*obj = new signal_net;
-      return fill_in_net4(obj, scope, name, msb, lsb, signed_flag, node);
+      काष्ठा __vpiSignal*obj = नया signal_net;
+      वापस fill_in_net4(obj, scope, name, msb, lsb, signed_flag, गाँठ);
 }
 
-static int PV_get_base(struct __vpiPV*rfp)
+अटल पूर्णांक PV_get_base(काष्ठा __vpiPV*rfp)
 {
 	/* We return from the symbol base if it is defined. */
-      if (rfp->sbase != 0) {
-	    s_vpi_value val;
+      अगर (rfp->sbase != 0) {
+	    s_vpi_मूल्य val;
 	      /* Check to see if the value is defined. */
 	    val.format = vpiVectorVal;
-	    vpi_get_value(rfp->sbase, &val);
-	    int words = (vpi_get(vpiSize, rfp->sbase)-1)/32 + 1;
-	    for(int idx = 0; idx < words; idx += 1) {
+	    vpi_get_मूल्य(rfp->sbase, &val);
+	    पूर्णांक शब्दगण = (vpi_get(vpi_आकार, rfp->sbase)-1)/32 + 1;
+	    क्रम(पूर्णांक idx = 0; idx < शब्दगण; idx += 1) {
 		    /* Return INT_MIN to indicate an X base. */
-		  if (val.value.vector[idx].bval != 0) return INT_MIN;
+		  अगर (val.value.vector[idx].bval != 0) वापस पूर्णांक_न्यून;
 	    }
 	      /* The value is defined so get and return it. */
 	    val.format = vpiIntVal;
-	    vpi_get_value(rfp->sbase, &val);
-	    return val.value.integer;
+	    vpi_get_मूल्य(rfp->sbase, &val);
+	    वापस val.value.integer;
       }
 
 	/* If the width is zero then tbase is the constant. */
-      return rfp->tbase;
+      वापस rfp->tbase;
 }
 
-static int PV_get(int code, vpiHandle ref)
+अटल पूर्णांक PV_get(पूर्णांक code, vpiHandle ref)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      काष्ठा __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      निश्चित(rfp);
 
-      int rval = 0;
-      switch (code) {
-	case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      पूर्णांक rval = 0;
+      चयन (code) {
+	हाल vpi_पंक्ति_No:
+	    वापस 0;  // Not implemented for now!
 
-	case vpiSigned:
-	    return 0;  // A part/bit select is always unsigned!
+	हाल vpiSigned:
+	    वापस 0;  // A part/bit select is always unsigned!
 
-	case vpiSize:
-	    return rfp->width;
+	हाल vpi_आकार:
+	    वापस rfp->width;
 
 	  /* This is like the &A<> in array.cc. */
-	case vpiConstantSelect:
-	    return rfp->sbase == 0;
+	हाल vpiConstantSelect:
+	    वापस rfp->sbase == 0;
 
-	case vpiLeftRange:
+	हाल vpi_बायाँ_Range:
             rval += rfp->width - 1;
 	    // fallthrough
-	case vpiRightRange: {
-	    int left = vpi_get(vpiLeftRange, rfp->parent);
-	    int right = vpi_get(vpiRightRange, rfp->parent);
+	हाल vpi_दायाँ_Range: {
+	    पूर्णांक बाँए = vpi_get(vpi_बायाँ_Range, rfp->parent);
+	    पूर्णांक दाँए = vpi_get(vpi_दायाँ_Range, rfp->parent);
 	    rval += PV_get_base(rfp);
-	    return left >= right ? right + rval : right - rval;
+	    वापस बाँए >= दाँए ? दाँए + rval : दाँए - rval;
 	}
 
-        case vpiAutomatic:
-            return vpi_get(vpiAutomatic, rfp->parent);
+        हाल vpiAutomatic:
+            वापस vpi_get(vpiAutomatic, rfp->parent);
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-        case _vpiFromThr:
-            return _vpi_at_PV;
-#endif
+#अगर defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+        हाल _vpiFromThr:
+            वापस _vpi_at_PV;
+#पूर्ण_अगर
 
-	default:
-	    fprintf(stderr, "PV_get: property %d is unknown\n", code);
+	शेष:
+	    ख_लिखो(मानक_त्रुटि, "PV_get: property %d is unknown\n", code);
       }
 
-      return 0;
+      वापस 0;
 }
 
-static char* PV_get_str(int code, vpiHandle ref)
+अटल अक्षर* PV_get_str(पूर्णांक code, vpiHandle ref)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      काष्ठा __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      निश्चित(rfp);
 
-      switch (code) {
-	case vpiFile:  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      चयन (code) {
+	हाल vpiFile:  // Not implemented for now!
+	    वापस simple_set_rbuf_str(file_names[0]);
 
-	case vpiName:
-	case vpiFullName: {
-	    const char*nm = vpi_get_str(code, rfp->parent);
-	    size_t len = 256+strlen(nm);
-	    char *full = static_cast<char *>(malloc(len));
+	हाल vpiName:
+	हाल vpiFullName: {
+	    स्थिर अक्षर*nm = vpi_get_str(code, rfp->parent);
+	    माप_प्रकार len = 256+म_माप(nm);
+	    अक्षर *full = static_cast<अक्षर *>(दो_स्मृति(len));
 	    snprintf(full, len, "%s[%d:%d]", nm,
-	                                     (int)vpi_get(vpiLeftRange, ref),
-	                                     (int)vpi_get(vpiRightRange, ref));
+	                                     (पूर्णांक)vpi_get(vpi_बायाँ_Range, ref),
+	                                     (पूर्णांक)vpi_get(vpi_दायाँ_Range, ref));
 	    full[len-1] = 0;
-	    char *res = simple_set_rbuf_str(full);
-	    free(full);
-	    return res;
+	    अक्षर *res = simple_set_rbuf_str(full);
+	    मुक्त(full);
+	    वापस res;
 	}
 
-	default:
-	    fprintf(stderr, "PV_get_str: property %d is unknown.\n", code);
+	शेष:
+	    ख_लिखो(मानक_त्रुटि, "PV_get_str: property %d is unknown.\n", code);
       }
 
-      return 0;
+      वापस 0;
 }
 
-static void PV_get_value(vpiHandle ref, p_vpi_value vp)
+अटल व्योम PV_get_मूल्य(vpiHandle ref, p_vpi_मूल्य vp)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      काष्ठा __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      निश्चित(rfp);
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(rfp->net->fil);
-      assert(sig);
+      vvp_signal_मूल्य*sig = dynamic_cast<vvp_signal_मूल्य*>(rfp->net->fil);
+      निश्चित(sig);
 
-      switch (vp->format) {
+      चयन (vp->format) {
 
-	  case vpiIntVal:
+	  हाल vpiIntVal:
 	    format_vpiIntVal(sig, PV_get_base(rfp), rfp->width, 0, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiBinStrVal:
+	  हाल vpiBinStrVal:
 	    format_vpiBinStrVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiOctStrVal:
+	  हाल vpiOctStrVal:
 	    format_vpiOctStrVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiHexStrVal:
+	  हाल vpiHexStrVal:
 	    format_vpiHexStrVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiDecStrVal:
+	  हाल vpiDecStrVal:
 	    format_vpiDecStrVal(sig, PV_get_base(rfp), rfp->width, 0, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiStringVal:
+	  हाल vpiStringVal:
 	    format_vpiStringVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiScalarVal:
+	  हाल vpiScalarVal:
 	    format_vpiScalarVal(sig, PV_get_base(rfp), vp);
-	    break;
+	    अवरोध;
 
-	  case vpiStrengthVal:
+	  हाल vpiStrengthVal:
 	    format_vpiStrengthVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiVectorVal:
+	  हाल vpiVectorVal:
 	    format_vpiVectorVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    अवरोध;
 
-	  case vpiRealVal:
+	  हाल vpiRealVal:
 	    format_vpiRealVal(sig, PV_get_base(rfp), rfp->width, 0, vp);
-	    break;
+	    अवरोध;
 
-	  default:
-	    fprintf(stderr, "vvp internal error: PV_get_value: "
+	  शेष:
+	    ख_लिखो(मानक_त्रुटि, "vvp internal error: PV_get_value: "
 		    "value type %d not implemented. Signal is %s.\n",
-		    (int)vp->format, vpi_get_str(vpiFullName, rfp->parent));
-	    assert(0);
+		    (पूर्णांक)vp->format, vpi_get_str(vpiFullName, rfp->parent));
+	    निश्चित(0);
       }
 }
 
-static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
+अटल vpiHandle PV_put_मूल्य(vpiHandle ref, p_vpi_मूल्य vp, पूर्णांक flags)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(rfp->net->fil);
-      assert(sig);
+      काष्ठा __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      निश्चित(rfp);
+      vvp_signal_मूल्य*sig = dynamic_cast<vvp_signal_मूल्य*>(rfp->net->fil);
+      निश्चित(sig);
 
-      unsigned sig_size = sig->value_size();
-      unsigned width = rfp->width;
-      int base = PV_get_base(rfp);
-      if (base >= (signed) sig_size) return 0;
-      if (base + (signed) width < 0) return 0;
+      अचिन्हित sig_आकार = sig->मूल्य_आकार();
+      अचिन्हित width = rfp->width;
+      पूर्णांक base = PV_get_base(rfp);
+      अगर (base >= (चिन्हित) sig_आकार) वापस 0;
+      अगर (base + (चिन्हित) width < 0) वापस 0;
 
       vvp_vector4_t val;
-      if (flags != vpiReleaseFlag) {
-	    val = vec4_from_vpi_value(vp, width);
+      अगर (flags != vpiReleaseFlag) {
+	    val = vec4_from_vpi_मूल्य(vp, width);
       }
 
 	/*
 	 * If the base is less than zero then trim off any unneeded
 	 * lower bits.
 	 */
-      if (base < 0) {
+      अगर (base < 0) {
 	    width += base;
-	    if (flags != vpiReleaseFlag) {
+	    अगर (flags != vpiReleaseFlag) {
 		  val = val.subvalue(-base, width);
 	    }
 	    base = 0;
@@ -1506,16 +1506,16 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 	 * If the value is wider than the signal then trim off any
 	 * unneeded upper bits.
 	 */
-      if (base+width > sig_size) {
-	    width = sig_size - base;
-	    if (flags != vpiReleaseFlag) {
+      अगर (base+width > sig_आकार) {
+	    width = sig_आकार - base;
+	    अगर (flags != vpiReleaseFlag) {
 		  val = val.subvalue(0, width);
 	    }
       }
 
-      assert(rfp->parent);
+      निश्चित(rfp->parent);
       bool net_flag = rfp->parent->get_type_code()==vpiNet;
-      bool full_sig = base == 0 && width == sig_size;
+      bool full_sig = base == 0 && width == sig_आकार;
 
       vvp_net_ptr_t dest(rfp->net, 0);
 
@@ -1525,155 +1525,155 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 	   if this net is attached to an island, we need to rerun
 	   the calculations immediately so we can return the
 	   released value.*/
-      if (flags == vpiReleaseFlag) {
-	    assert(rfp->net->fil);
+      अगर (flags == vpiReleaseFlag) {
+	    निश्चित(rfp->net->fil);
 	      // XXXX Can't really do this if this is a partial release?
 	    rfp->net->fil->force_unlink();
-	    if (full_sig) {
+	    अगर (full_sig) {
 		  rfp->net->fil->release(dest, net_flag);
-	    } else {
+	    } अन्यथा {
 		  rfp->net->fil->release_pv(dest, base, width, net_flag);
 	    }
 	    rfp->net->fun->force_flag(true);
-	    PV_get_value(ref, vp);
-	    return ref;
+	    PV_get_मूल्य(ref, vp);
+	    वापस ref;
       }
 
-      if (flags == vpiForceFlag) {
-	    if (full_sig) {
-		  vvp_vector2_t mask (vvp_vector2_t::FILL1, sig_size);
+      अगर (flags == vpiForceFlag) {
+	    अगर (full_sig) {
+		  vvp_vector2_t mask (vvp_vector2_t::FILL1, sig_आकार);
 		  rfp->net->force_vec4(val, mask);
-	    } else {
-		  vvp_vector2_t mask (vvp_vector2_t::FILL0, sig_size);
-		  for (unsigned idx = 0 ; idx < width ; idx += 1)
+	    } अन्यथा {
+		  vvp_vector2_t mask (vvp_vector2_t::FILL0, sig_आकार);
+		  क्रम (अचिन्हित idx = 0 ; idx < width ; idx += 1)
 		        mask.set_bit(base+idx, 1);
 
-		  vvp_vector4_t tmp (sig_size, BIT4_Z);
+		  vvp_vector4_t tmp (sig_आकार, BIT4_Z);
 
 		    // vvp_net_t::force_vec4 propagates all the bits of the
 		    // forced vector value, regardless of the mask. This
 		    // ensures the unforced bits retain their current value.
-		  sig->vec4_value(tmp);
+		  sig->vec4_मूल्य(tmp);
 
 		  tmp.set_vec(base, val);
 		  rfp->net->force_vec4(tmp, mask);
 	    }
-      } else if (net_flag && !dynamic_cast<vvp_island_port*>(rfp->net->fun)) {
-	    if (full_sig) {
+      } अन्यथा अगर (net_flag && !dynamic_cast<vvp_island_port*>(rfp->net->fun)) {
+	    अगर (full_sig) {
 		  rfp->net->send_vec4(val, vthread_get_wt_context());
-	    } else {
-		  rfp->net->send_vec4_pv(val, base, sig_size,
+	    } अन्यथा {
+		  rfp->net->send_vec4_pv(val, base, sig_आकार,
 		                         vthread_get_wt_context());
 	    }
-      } else {
-	    if (full_sig) {
+      } अन्यथा {
+	    अगर (full_sig) {
 		  vvp_send_vec4(dest, val, vthread_get_wt_context());
-	    } else {
-		  vvp_send_vec4_pv(dest, val, base, sig_size,
+	    } अन्यथा {
+		  vvp_send_vec4_pv(dest, val, base, sig_आकार,
 	                           vthread_get_wt_context());
 	    }
       }
-      return 0;
+      वापस 0;
 }
 
-static vpiHandle PV_get_handle(int code, vpiHandle ref)
+अटल vpiHandle PV_get_handle(पूर्णांक code, vpiHandle ref)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      काष्ठा __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      निश्चित(rfp);
 
-      switch (code) {
-	  case vpiParent:
-	    return rfp->parent;
+      चयन (code) {
+	  हाल vpiParent:
+	    वापस rfp->parent;
 
-	  case vpiScope:
-	    return vpi_handle(vpiScope, rfp->parent);
+	  हाल vpiScope:
+	    वापस vpi_handle(vpiScope, rfp->parent);
 
-	  case vpiModule:
-	    return vpi_handle(vpiModule, rfp->parent);
+	  हाल vpiModule:
+	    वापस vpi_handle(vpiModule, rfp->parent);
       }
 
-      return 0;
+      वापस 0;
 }
 
-inline __vpiPV::__vpiPV()
+अंतरभूत __vpiPV::__vpiPV()
 { }
 
-int __vpiPV::get_type_code(void) const
-{ return vpiPartSelect; }
+पूर्णांक __vpiPV::get_type_code(व्योम) स्थिर
+{ वापस vpiPartSelect; }
 
-int __vpiPV::vpi_get(int code)
-{ return PV_get(code, this); }
+पूर्णांक __vpiPV::vpi_get(पूर्णांक code)
+{ वापस PV_get(code, यह); }
 
-char* __vpiPV::vpi_get_str(int code)
-{ return PV_get_str(code, this); }
+अक्षर* __vpiPV::vpi_get_str(पूर्णांक code)
+{ वापस PV_get_str(code, यह); }
 
-void __vpiPV::vpi_get_value(p_vpi_value val)
-{ PV_get_value(this, val); }
+व्योम __vpiPV::vpi_get_मूल्य(p_vpi_मूल्य val)
+{ PV_get_मूल्य(यह, val); }
 
-vpiHandle __vpiPV::vpi_put_value(p_vpi_value val, int flags)
-{ return PV_put_value(this, val, flags); }
+vpiHandle __vpiPV::vpi_put_मूल्य(p_vpi_मूल्य val, पूर्णांक flags)
+{ वापस PV_put_मूल्य(यह, val, flags); }
 
-vpiHandle __vpiPV::vpi_handle(int code)
-{ return PV_get_handle(code, this); }
+vpiHandle __vpiPV::vpi_handle(पूर्णांक code)
+{ वापस PV_get_handle(code, यह); }
 
-vpiHandle vpip_make_PV(char*var, int base, int width)
+vpiHandle vpip_make_PV(अक्षर*var, पूर्णांक base, पूर्णांक width)
 {
-      struct __vpiPV*obj = new __vpiPV;
+      काष्ठा __vpiPV*obj = नया __vpiPV;
       compile_vpi_lookup(&obj->parent, strdup(var));
       obj->sbase = 0;
       obj->tbase = base;
-      obj->width = (unsigned) width;
+      obj->width = (अचिन्हित) width;
       obj->net = 0;
       functor_ref_lookup(&obj->net, var);
 
-      return obj;
+      वापस obj;
 }
 
-vpiHandle vpip_make_PV(char*var, char*symbol, int width)
+vpiHandle vpip_make_PV(अक्षर*var, अक्षर*प्रतीक, पूर्णांक width)
 {
-      struct __vpiPV*obj = new __vpiPV;
+      काष्ठा __vpiPV*obj = नया __vpiPV;
       compile_vpi_lookup(&obj->parent, strdup(var));
-      compile_vpi_lookup(&obj->sbase, symbol);
+      compile_vpi_lookup(&obj->sbase, प्रतीक);
       obj->tbase = 0;
-      obj->width = (unsigned) width;
+      obj->width = (अचिन्हित) width;
       obj->net = 0;
       functor_ref_lookup(&obj->net, var);
 
-      return obj;
+      वापस obj;
 }
 
-vpiHandle vpip_make_PV(char*var, vpiHandle handle, int width)
+vpiHandle vpip_make_PV(अक्षर*var, vpiHandle handle, पूर्णांक width)
 {
-      struct __vpiPV*obj = new __vpiPV;
+      काष्ठा __vpiPV*obj = नया __vpiPV;
       compile_vpi_lookup(&obj->parent, strdup(var));
       obj->sbase = handle;
       obj->tbase = 0;
-      obj->width = (unsigned) width;
+      obj->width = (अचिन्हित) width;
       obj->net = 0;
       functor_ref_lookup(&obj->net, var);
 
-      return obj;
+      वापस obj;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void PV_delete(vpiHandle item)
+#अगर_घोषित CHECK_WITH_VALGRIND
+व्योम PV_delete(vpiHandle item)
 {
-      struct __vpiPV *obj = dynamic_cast<__vpiPV*>(item);
-      if (obj->sbase) {
-	    switch (obj->sbase->get_type_code()) {
-		case vpiMemoryWord:
-		  if (vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_A) {
+      काष्ठा __vpiPV *obj = dynamic_cast<__vpiPV*>(item);
+      अगर (obj->sbase) {
+	    चयन (obj->sbase->get_type_code()) {
+		हाल vpiMemoryWord:
+		  अगर (vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_A) {
 			A_delete(obj->sbase);
 		  }
-		  break;
-		case vpiPartSelect:
-		  assert(vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_PV);
+		  अवरोध;
+		हाल vpiPartSelect:
+		  निश्चित(vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_PV);
 		  PV_delete(obj->sbase);
-		  break;
+		  अवरोध;
 	    }
       }
-      assert(obj->net->fil);
+      निश्चित(obj->net->fil);
       obj->net->fil->clear_all_callbacks();
-      delete obj;
+      मिटाओ obj;
 }
-#endif
+#पूर्ण_अगर

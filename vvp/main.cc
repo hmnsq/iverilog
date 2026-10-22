@@ -1,4 +1,4 @@
-const char COPYRIGHT[] =
+स्थिर अक्षर COPYRIGHT[] =
   "Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)";
 /*
  *    This source code is free software; you can redistribute it
@@ -24,38 +24,38 @@ const char COPYRIGHT[] =
 # include  <cstdio>
 # include  <cstdlib>
 
-#if defined(HAVE_GETOPT_H)
+#अगर defined(HAVE_GETOPT_H)
 # include  <getopt.h>
-#endif
+#पूर्ण_अगर
 
-#if defined(__MINGW32__)
+#अगर defined(__MINGW32__)
 # include  <windows.h>
-#endif
+#पूर्ण_अगर
 
-#include "libvvp.h"
+#समावेश "libvvp.h"
 
 using namespace std;
 
-#if defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
-extern "C" int getopt(int argc, char*argv[], const char*fmt);
-extern "C" int optind;
-extern "C" const char*optarg;
-#endif
+#अगर defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
+बाह्य "C" पूर्णांक getopt(पूर्णांक argc, अक्षर*argv[], स्थिर अक्षर*fmt);
+बाह्य "C" पूर्णांक optind;
+बाह्य "C" स्थिर अक्षर*optarg;
+#पूर्ण_अगर
 
 bool version_flag = false;
 
-unsigned module_cnt = 0;
-const char*module_tab[64];
+अचिन्हित module_cnt = 0;
+स्थिर अक्षर*module_tab[64];
 
-int main(int argc, char*argv[])
+पूर्णांक मुख्य(पूर्णांक argc, अक्षर*argv[])
 {
-      int opt;
-      unsigned flag_errors = 0;
-      const char *logfile_name = 0x0;
+      पूर्णांक opt;
+      अचिन्हित flag_errors = 0;
+      स्थिर अक्षर *logfile_name = 0x0;
 
-      while ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) switch (opt) {
-         case 'h':
-           fprintf(stderr,
+      जबतक ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != खातापूर्ण) चयन (opt) {
+         हाल 'h':
+           ख_लिखो(मानक_त्रुटि,
                    "Usage: vvp [options] input-file [+plusargs...]\n"
                    "Options:\n"
                    " -h             Print this help message.\n"
@@ -70,53 +70,53 @@ int main(int argc, char*argv[])
 		   " -s             $stop right away.\n"
                    " -v             Verbose progress messages.\n"
                    " -V             Print the version information.\n" );
-           exit(0);
-	  case 'i':
-	    setvbuf(stdout, 0, _IONBF, 0);
-	    break;
-	  case 'l':
+           निकास(0);
+	  हाल 'i':
+	    रखो_भबफ(मानक_निकास, 0, _IONBF, 0);
+	    अवरोध;
+	  हाल 'l':
 	    logfile_name = optarg;
-	    break;
-	  case 'M':
-	    if (strcmp(optarg,"-") == 0) {
+	    अवरोध;
+	  हाल 'M':
+	    अगर (म_भेद(optarg,"-") == 0) {
 		  vpip_clear_module_paths();
-	    } else {
+	    } अन्यथा {
 		  vpip_add_module_path(optarg);
 	    }
-	    break;
-	  case 'm':
+	    अवरोध;
+	  हाल 'm':
 	    module_tab[module_cnt++] = optarg;
-	    break;
-	  case 'n':
+	    अवरोध;
+	  हाल 'n':
 	    vvp_set_stop_is_finish(true, 0);
-	    break;
-          case 'N':
+	    अवरोध;
+          हाल 'N':
             vvp_set_stop_is_finish(true, 1);
-            break;
-	  case 'q':
+            अवरोध;
+	  हाल 'q':
 	    vvp_set_quiet_flag(true);
-	    break;
-	  case 's':
+	    अवरोध;
+	  हाल 's':
 	    schedule_stop(0);
-	    break;
-	  case 'v':
+	    अवरोध;
+	  हाल 'v':
 	    vvp_set_verbose_flag(true);
-	    break;
-	  case 'V':
+	    अवरोध;
+	  हाल 'V':
 	    version_flag = true;
-	    break;
-	  default:
+	    अवरोध;
+	  शेष:
 	    flag_errors += 1;
       }
 
-      if (flag_errors)
-	    return flag_errors;
+      अगर (flag_errors)
+	    वापस flag_errors;
 
-      if (version_flag) {
-	    fprintf(stderr, "Icarus Verilog runtime version " VERSION " ("
+      अगर (version_flag) {
+	    ख_लिखो(मानक_त्रुटि, "Icarus Verilog runtime version " VERSION " ("
 	                    VERSION_TAG ")\n\n");
-	    fprintf(stderr, "%s\n\n", COPYRIGHT);
-	    fprintf(stderr,
+	    ख_लिखो(मानक_त्रुटि, "%s\n\n", COPYRIGHT);
+	    ख_लिखो(मानक_त्रुटि,
 "  This program is free software; you can redistribute it and/or modify\n"
 "  it under the terms of the GNU General Public License as published by\n"
 "  the Free Software Foundation; either version 2 of the License, or\n"
@@ -131,18 +131,18 @@ int main(int argc, char*argv[])
 "  with this program; if not, write to the Free Software Foundation, Inc.,\n"
 "  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n"
 );
-	    return 0;
+	    वापस 0;
       }
 
-      if (optind == argc) {
-	    fprintf(stderr, "%s: no input file.\n", argv[0]);
-	    return -1;
+      अगर (optind == argc) {
+	    ख_लिखो(मानक_त्रुटि, "%s: no input file.\n", argv[0]);
+	    वापस -1;
       }
 
       vvp_init(logfile_name, argc - optind, argv + optind);
 
-      for (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
+      क्रम (अचिन्हित idx = 0 ;  idx < module_cnt ;  idx += 1)
 	    vpip_load_module(module_tab[idx]);
 
-      return vvp_run(argv[optind]);
+      वापस vvp_run(argv[optind]);
 }

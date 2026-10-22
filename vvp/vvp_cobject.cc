@@ -24,7 +24,7 @@
 
 using namespace std;
 
-vvp_cobject::vvp_cobject(const class_type*defn)
+vvp_cobject::vvp_cobject(स्थिर class_type*defn)
 : defn_(defn), properties_(defn->instance_new())
 {
 }
@@ -35,54 +35,54 @@ vvp_cobject::~vvp_cobject()
       properties_ = 0;
 }
 
-void vvp_cobject::set_vec4(size_t pid, const vvp_vector4_t&val)
+व्योम vvp_cobject::set_vec4(माप_प्रकार pid, स्थिर vvp_vector4_t&val)
 {
       defn_->set_vec4(properties_, pid, val);
 }
 
-void vvp_cobject::get_vec4(size_t pid, vvp_vector4_t&val)
+व्योम vvp_cobject::get_vec4(माप_प्रकार pid, vvp_vector4_t&val)
 {
       defn_->get_vec4(properties_, pid, val);
 }
 
-void vvp_cobject::set_real(size_t pid, double val)
+व्योम vvp_cobject::set_real(माप_प्रकार pid, द्विगुन val)
 {
       defn_->set_real(properties_, pid, val);
 }
 
-double vvp_cobject::get_real(size_t pid)
+द्विगुन vvp_cobject::get_real(माप_प्रकार pid)
 {
-      return defn_->get_real(properties_, pid);
+      वापस defn_->get_real(properties_, pid);
 }
 
-void vvp_cobject::set_string(size_t pid, const string&val)
+व्योम vvp_cobject::set_string(माप_प्रकार pid, स्थिर string&val)
 {
       defn_->set_string(properties_, pid, val);
 }
 
-string vvp_cobject::get_string(size_t pid)
+string vvp_cobject::get_string(माप_प्रकार pid)
 {
-      return defn_->get_string(properties_, pid);
+      वापस defn_->get_string(properties_, pid);
 }
 
-void vvp_cobject::set_object(size_t pid, const vvp_object_t&val, size_t idx)
+व्योम vvp_cobject::set_object(माप_प्रकार pid, स्थिर vvp_object_t&val, माप_प्रकार idx)
 {
       defn_->set_object(properties_, pid, val, idx);
 }
 
-void vvp_cobject::get_object(size_t pid, vvp_object_t&val, size_t idx)
+व्योम vvp_cobject::get_object(माप_प्रकार pid, vvp_object_t&val, माप_प्रकार idx)
 {
-      return defn_->get_object(properties_, pid, val, idx);
+      वापस defn_->get_object(properties_, pid, val, idx);
 }
 
-void vvp_cobject::shallow_copy(const vvp_object*obj)
+व्योम vvp_cobject::shallow_copy(स्थिर vvp_object*obj)
 {
-      const vvp_cobject*that = dynamic_cast<const vvp_cobject*>(obj);
-      assert(that);
+      स्थिर vvp_cobject*that = dynamic_cast<स्थिर vvp_cobject*>(obj);
+      निश्चित(that);
 
-      assert(defn_ == that->defn_);
+      निश्चित(defn_ == that->defn_);
 
-      for (size_t idx = 0 ; idx < defn_->property_count() ; idx += 1)
+      क्रम (माप_प्रकार idx = 0 ; idx < defn_->property_गिनती() ; idx += 1)
 	    defn_->copy_property(properties_, idx, that->properties_);
 
 }

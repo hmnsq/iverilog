@@ -1,5 +1,5 @@
-#ifndef IVL_vvp_vpi_callback_H
-#define IVL_vvp_vpi_callback_H
+#अगर_अघोषित IVL_vvp_vpi_callback_H
+#घोषणा IVL_vvp_vpi_callback_H
 /*
  * Copyright (c) 2009-2014 Stephen Williams (steve@icarus.com)
  *
@@ -22,7 +22,7 @@
 # include  "config.h"
 # include  "vpi_user.h"
 
-class value_callback;
+class मूल्य_callback;
 
 /*
  * Things derived from vvp_vpi_callback may have callbacks
@@ -34,31 +34,31 @@ class value_callback;
  */
 class vvp_vpi_callback {
 
-    public:
+    खुला:
       vvp_vpi_callback();
-      virtual ~vvp_vpi_callback();
+      भव ~vvp_vpi_callback();
 
-      void attach_as_word(struct __vpiArray* arr, unsigned long addr);
+      व्योम attach_as_word(काष्ठा __vpiArray* arr, अचिन्हित दीर्घ addr);
 
-      void add_vpi_callback(value_callback*);
-#ifdef CHECK_WITH_VALGRIND
+      व्योम add_vpi_callback(मूल्य_callback*);
+#अगर_घोषित CHECK_WITH_VALGRIND
 	/* This has only been tested at EOS. */
-      void clear_all_callbacks(void);
-#endif
+      व्योम clear_all_callbacks(व्योम);
+#पूर्ण_अगर
 
 	// Derived classes implement this method to provide a way for
 	// vpi to get at the vvp value of the object.
-      virtual void get_value(struct t_vpi_value*value) =0;
+      भव व्योम get_मूल्य(काष्ठा t_vpi_मूल्य*मूल्य) =0;
 
-    protected:
+    रक्षित:
 	// Derived classes call this method to indicate that it is
 	// time to call the callback.
-      void run_vpi_callbacks();
+      व्योम run_vpi_callbacks();
 
-    private:
-      value_callback*vpi_callbacks_;
-      struct __vpi_array_word*array_words_;
+    निजी:
+      मूल्य_callback*vpi_callbacks_;
+      काष्ठा __vpi_array_word*array_शब्दगण;
 };
 
 
-#endif /* IVL_vvp_vpi_callback_H */
+#पूर्ण_अगर /* IVL_vvp_vpi_callback_H */

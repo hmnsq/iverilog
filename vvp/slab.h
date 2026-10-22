@@ -1,5 +1,5 @@
-#ifndef IVL_slab_H
-#define IVL_slab_H
+#अगर_अघोषित IVL_slab_H
+#घोषणा IVL_slab_H
 /*
  * Copyright (c) 2008-2015 Picture Elements, Inc.
  *    Stephen Williams (steve@icarus.com)
@@ -23,95 +23,95 @@
 
 # include  "config.h"
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT> class slab_t {
+ढाँचा <माप_प्रकार SLAB_आकार, माप_प्रकार CHUNK_गिनती> class slab_t {
 
-      union item_cell_u {
-	    item_cell_u*next;
-	    char space[SLAB_SIZE];
+      जोड़ item_cell_u {
+	    item_cell_u*अग्र_2;
+	    अक्षर space[SLAB_आकार];
       };
 
-    public:
+    खुला:
       slab_t();
 
-      void* alloc_slab();
-      void  free_slab(void*);
-#ifdef CHECK_WITH_VALGRIND
+      व्योम* alloc_slab();
+      व्योम  free_slab(व्योम*);
+#अगर_घोषित CHECK_WITH_VALGRIND
 	// If we have allocated memory then we need to delete it to make
 	// valgrind happy.
-      void delete_pool(void);
-#endif
+      व्योम delete_pool(व्योम);
+#पूर्ण_अगर
 
-      unsigned long pool;
+      अचिन्हित दीर्घ pool;
 
-    private:
+    निजी:
       item_cell_u*heap_;
-      item_cell_u initial_chunk_[CHUNK_COUNT];
-#ifdef CHECK_WITH_VALGRIND
+      item_cell_u initial_chunk_[CHUNK_गिनती];
+#अगर_घोषित CHECK_WITH_VALGRIND
 	// Each slab needs a pointer to the allocated space.
       item_cell_u**slab_pool;
-      unsigned slab_pool_count;
-#endif
+      अचिन्हित slab_pool_गिनती;
+#पूर्ण_अगर
 };
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-slab_t<SLAB_SIZE,CHUNK_COUNT>::slab_t()
+ढाँचा <माप_प्रकार SLAB_आकार, माप_प्रकार CHUNK_गिनती>
+slab_t<SLAB_आकार,CHUNK_गिनती>::slab_t()
 {
-      pool = CHUNK_COUNT;
+      pool = CHUNK_गिनती;
       heap_ = initial_chunk_;
-      for (unsigned idx = 0 ; idx < CHUNK_COUNT-1 ; idx += 1)
-	    initial_chunk_[idx].next = initial_chunk_+idx+1;
+      क्रम (अचिन्हित idx = 0 ; idx < CHUNK_गिनती-1 ; idx += 1)
+	    initial_chunk_[idx].अग्र_2 = initial_chunk_+idx+1;
 
-      initial_chunk_[CHUNK_COUNT-1].next = 0;
-#ifdef CHECK_WITH_VALGRIND
+      initial_chunk_[CHUNK_गिनती-1].अग्र_2 = 0;
+#अगर_घोषित CHECK_WITH_VALGRIND
 	// Initially we have no allocated space.
-      slab_pool = NULL;
-      slab_pool_count = 0;
-#endif
+      slab_pool = शून्य;
+      slab_pool_गिनती = 0;
+#पूर्ण_अगर
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void* slab_t<SLAB_SIZE,CHUNK_COUNT>::alloc_slab()
+ढाँचा <माप_प्रकार SLAB_आकार, माप_प्रकार CHUNK_गिनती>
+अंतरभूत व्योम* slab_t<SLAB_आकार,CHUNK_गिनती>::alloc_slab()
 {
-      if (heap_ == 0) {
-	    item_cell_u*chunk = new item_cell_u[CHUNK_COUNT];
-#ifdef CHECK_WITH_VALGRIND
-	    slab_pool_count += 1;
-	    slab_pool = static_cast<item_cell_u **>(realloc(slab_pool,
-	                slab_pool_count*sizeof(item_cell_u **)));
-	    slab_pool[slab_pool_count-1] = chunk;
-#endif
-	    for (unsigned idx = 0 ; idx < CHUNK_COUNT ; idx += 1) {
-		  chunk[idx].next = heap_;
+      अगर (heap_ == 0) {
+	    item_cell_u*chunk = new item_cell_u[CHUNK_गिनती];
+#अगर_घोषित CHECK_WITH_VALGRIND
+	    slab_pool_गिनती += 1;
+	    slab_pool = static_cast<item_cell_u **>(पुनः_स्मृति(slab_pool,
+	                slab_pool_गिनती*माप(item_cell_u **)));
+	    slab_pool[slab_pool_गिनती-1] = chunk;
+#पूर्ण_अगर
+	    क्रम (अचिन्हित idx = 0 ; idx < CHUNK_गिनती ; idx += 1) {
+		  chunk[idx].अग्र_2 = heap_;
 		  heap_ = chunk+idx;
 	    }
-	    pool += CHUNK_COUNT;
+	    pool += CHUNK_गिनती;
       }
 
       item_cell_u*cur = heap_;
-      heap_ = heap_->next;
-      return cur;
+      heap_ = heap_->अग्र_2;
+      वापस cur;
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::free_slab(void*ptr)
+ढाँचा <माप_प्रकार SLAB_आकार, माप_प्रकार CHUNK_गिनती>
+अंतरभूत व्योम slab_t<SLAB_आकार,CHUNK_गिनती>::free_slab(व्योम*ptr)
 {
       item_cell_u*cur = reinterpret_cast<item_cell_u*> (ptr);
-      cur->next = heap_;
+      cur->अग्र_2 = heap_;
       heap_ = cur;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::delete_pool(void)
+#अगर_घोषित CHECK_WITH_VALGRIND
+ढाँचा <माप_प्रकार SLAB_आकार, माप_प्रकार CHUNK_गिनती>
+अंतरभूत व्योम slab_t<SLAB_आकार,CHUNK_गिनती>::delete_pool(व्योम)
 {
-      for (unsigned idx = 0; idx < slab_pool_count; idx += 1) {
+      क्रम (अचिन्हित idx = 0; idx < slab_pool_गिनती; idx += 1) {
 	    delete [] slab_pool[idx];
       }
-      free(slab_pool);
-      slab_pool = NULL;
-      slab_pool_count = 0;
+      मुक्त(slab_pool);
+      slab_pool = शून्य;
+      slab_pool_गिनती = 0;
 }
-#endif
+#पूर्ण_अगर
 
 
-#endif /* IVL_slab_H */
+#पूर्ण_अगर /* IVL_slab_H */

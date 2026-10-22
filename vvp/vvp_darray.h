@@ -1,5 +1,5 @@
-#ifndef IVL_vvp_darray_H
-#define IVL_vvp_darray_H
+#अगर_अघोषित IVL_vvp_darray_H
+#घोषणा IVL_vvp_darray_H
 /*
  * Copyright (c) 2012-2025 Stephen Williams (steve@icarus.com)
  *
@@ -25,256 +25,256 @@
 # include  <string>
 # include  <vector>
 
-class vvp_darray : public vvp_object {
+class vvp_darray : खुला vvp_object {
 
-    public:
-      inline vvp_darray() { }
-      virtual ~vvp_darray() override;
+    खुला:
+      अंतरभूत vvp_darray() { }
+      भव ~vvp_darray() override;
 
-      virtual size_t get_size(void) const =0;
+      भव माप_प्रकार get_आकार(व्योम) स्थिर =0;
 
-      virtual void set_word(unsigned adr, const vvp_vector4_t&value);
-      virtual void get_word(unsigned adr, vvp_vector4_t&value);
+      भव व्योम set_word(अचिन्हित adr, स्थिर vvp_vector4_t&मूल्य);
+      भव व्योम get_word(अचिन्हित adr, vvp_vector4_t&मूल्य);
 
-      virtual void set_word(unsigned adr, double value);
-      virtual void get_word(unsigned adr, double&value);
+      भव व्योम set_word(अचिन्हित adr, द्विगुन मूल्य);
+      भव व्योम get_word(अचिन्हित adr, द्विगुन&मूल्य);
 
-      virtual void set_word(unsigned adr, const std::string&value);
-      virtual void get_word(unsigned adr, std::string&value);
+      भव व्योम set_word(अचिन्हित adr, स्थिर std::string&मूल्य);
+      भव व्योम get_word(अचिन्हित adr, std::string&मूल्य);
 
-      virtual void set_word(unsigned adr, const vvp_object_t&value);
-      virtual void get_word(unsigned adr, vvp_object_t&value);
+      भव व्योम set_word(अचिन्हित adr, स्थिर vvp_object_t&मूल्य);
+      भव व्योम get_word(अचिन्हित adr, vvp_object_t&मूल्य);
 
-      virtual vvp_vector4_t get_bitstream(bool as_vec4);
+      भव vvp_vector4_t get_bitstream(bool as_vec4);
 
 	/* In-place element order reversal (dynamic arrays and queues). */
-      virtual void reverse_elems(void);
+      भव व्योम reverse_elems(व्योम);
 
 	/* sort: ascending if true, descending if false; shuffle randomizes. */
-      virtual void sort_elems(bool ascending);
-      virtual void shuffle_elems(void);
+      भव व्योम sort_elems(bool ascending);
+      भव व्योम shuffle_elems(व्योम);
 };
 
-template <class TYPE> class vvp_darray_atom : public vvp_darray {
+ढाँचा <class TYPE> class vvp_darray_atom : खुला vvp_darray {
 
-    public:
-      explicit inline vvp_darray_atom(size_t siz) : array_(siz) { }
+    खुला:
+      explicit अंतरभूत vvp_darray_atom(माप_प्रकार siz) : array_(siz) { }
       ~vvp_darray_atom() override;
 
-      size_t get_size(void) const override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
-      void set_word(unsigned adr, const vvp_vector4_t&value) override;
-      void get_word(unsigned adr, vvp_vector4_t&value) override;
-      void shallow_copy(const vvp_object*obj) override;
-      vvp_object* duplicate(void) const override;
+      माप_प्रकार get_आकार(व्योम) स्थिर override;
+      व्योम reverse_elems(व्योम) override;
+      व्योम sort_elems(bool ascending) override;
+      व्योम shuffle_elems(व्योम) override;
+      व्योम set_word(अचिन्हित adr, स्थिर vvp_vector4_t&मूल्य) override;
+      व्योम get_word(अचिन्हित adr, vvp_vector4_t&मूल्य) override;
+      व्योम shallow_copy(स्थिर vvp_object*obj) override;
+      vvp_object* duplicate(व्योम) स्थिर override;
       vvp_vector4_t get_bitstream(bool as_vec4) override;
 
-    private:
+    निजी:
       std::vector<TYPE> array_;
 };
 
-class vvp_darray_vec4 : public vvp_darray {
+class vvp_darray_vec4 : खुला vvp_darray {
 
-    public:
-      inline vvp_darray_vec4(size_t siz, unsigned word_wid) :
+    खुला:
+      अंतरभूत vvp_darray_vec4(माप_प्रकार siz, अचिन्हित word_wid) :
                              array_(siz), word_wid_(word_wid) { }
       ~vvp_darray_vec4() override;
 
-      size_t get_size(void) const override;
-      void set_word(unsigned adr, const vvp_vector4_t&value) override;
-      void get_word(unsigned adr, vvp_vector4_t&value) override;
-      void shallow_copy(const vvp_object*obj) override;
-      vvp_object* duplicate(void) const override;
+      माप_प्रकार get_आकार(व्योम) स्थिर override;
+      व्योम set_word(अचिन्हित adr, स्थिर vvp_vector4_t&मूल्य) override;
+      व्योम get_word(अचिन्हित adr, vvp_vector4_t&मूल्य) override;
+      व्योम shallow_copy(स्थिर vvp_object*obj) override;
+      vvp_object* duplicate(व्योम) स्थिर override;
       vvp_vector4_t get_bitstream(bool as_vec4) override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+      व्योम reverse_elems(व्योम) override;
+      व्योम sort_elems(bool ascending) override;
+      व्योम shuffle_elems(व्योम) override;
 
-    private:
+    निजी:
       std::vector<vvp_vector4_t> array_;
-      unsigned word_wid_;
+      अचिन्हित word_wid_;
 };
 
-class vvp_darray_vec2 : public vvp_darray {
+class vvp_darray_vec2 : खुला vvp_darray {
 
-    public:
-      inline vvp_darray_vec2(size_t siz, unsigned word_wid) :
+    खुला:
+      अंतरभूत vvp_darray_vec2(माप_प्रकार siz, अचिन्हित word_wid) :
                              array_(siz), word_wid_(word_wid) { }
       ~vvp_darray_vec2() override;
 
-      size_t get_size(void) const override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
-      void set_word(unsigned adr, const vvp_vector4_t&value) override;
-      void get_word(unsigned adr, vvp_vector4_t&value) override;
-      void shallow_copy(const vvp_object*obj) override;
+      माप_प्रकार get_आकार(व्योम) स्थिर override;
+      व्योम reverse_elems(व्योम) override;
+      व्योम sort_elems(bool ascending) override;
+      व्योम shuffle_elems(व्योम) override;
+      व्योम set_word(अचिन्हित adr, स्थिर vvp_vector4_t&मूल्य) override;
+      व्योम get_word(अचिन्हित adr, vvp_vector4_t&मूल्य) override;
+      व्योम shallow_copy(स्थिर vvp_object*obj) override;
       vvp_vector4_t get_bitstream(bool as_vec4) override;
 
-    private:
+    निजी:
       std::vector<vvp_vector2_t> array_;
-      unsigned word_wid_;
+      अचिन्हित word_wid_;
 };
 
-class vvp_darray_real : public vvp_darray {
+class vvp_darray_real : खुला vvp_darray {
 
-    public:
-      explicit inline vvp_darray_real(size_t siz) : array_(siz) { }
+    खुला:
+      explicit अंतरभूत vvp_darray_real(माप_प्रकार siz) : array_(siz) { }
       ~vvp_darray_real() override;
 
-      size_t get_size(void) const override;
-      void set_word(unsigned adr, double value) override;
-      void get_word(unsigned adr, double&value) override;
-      void shallow_copy(const vvp_object*obj) override;
-      vvp_object* duplicate(void) const override;
+      माप_प्रकार get_आकार(व्योम) स्थिर override;
+      व्योम set_word(अचिन्हित adr, द्विगुन मूल्य) override;
+      व्योम get_word(अचिन्हित adr, द्विगुन&मूल्य) override;
+      व्योम shallow_copy(स्थिर vvp_object*obj) override;
+      vvp_object* duplicate(व्योम) स्थिर override;
       vvp_vector4_t get_bitstream(bool as_vec4) override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+      व्योम reverse_elems(व्योम) override;
+      व्योम sort_elems(bool ascending) override;
+      व्योम shuffle_elems(व्योम) override;
 
-    private:
-      std::vector<double> array_;
+    निजी:
+      std::vector<द्विगुन> array_;
 };
 
-class vvp_darray_string : public vvp_darray {
+class vvp_darray_string : खुला vvp_darray {
 
-    public:
-      explicit inline vvp_darray_string(size_t siz) : array_(siz) { }
+    खुला:
+      explicit अंतरभूत vvp_darray_string(माप_प्रकार siz) : array_(siz) { }
       ~vvp_darray_string() override;
 
-      size_t get_size(void) const override;
-      void set_word(unsigned adr, const std::string&value) override;
-      void get_word(unsigned adr, std::string&value) override;
-      void shallow_copy(const vvp_object*obj) override;
-      vvp_object* duplicate(void) const override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+      माप_प्रकार get_आकार(व्योम) स्थिर override;
+      व्योम set_word(अचिन्हित adr, स्थिर std::string&मूल्य) override;
+      व्योम get_word(अचिन्हित adr, std::string&मूल्य) override;
+      व्योम shallow_copy(स्थिर vvp_object*obj) override;
+      vvp_object* duplicate(व्योम) स्थिर override;
+      व्योम reverse_elems(व्योम) override;
+      व्योम sort_elems(bool ascending) override;
+      व्योम shuffle_elems(व्योम) override;
 
-    private:
+    निजी:
       std::vector<std::string> array_;
 };
 
-class vvp_darray_object : public vvp_darray {
+class vvp_darray_object : खुला vvp_darray {
 
-    public:
-      explicit inline vvp_darray_object(size_t siz) : array_(siz) { }
+    खुला:
+      explicit अंतरभूत vvp_darray_object(माप_प्रकार siz) : array_(siz) { }
       ~vvp_darray_object() override;
 
-      size_t get_size(void) const override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
-      void set_word(unsigned adr, const vvp_object_t&value) override;
-      void get_word(unsigned adr, vvp_object_t&value) override;
-      void shallow_copy(const vvp_object*obj) override;
+      माप_प्रकार get_आकार(व्योम) स्थिर override;
+      व्योम reverse_elems(व्योम) override;
+      व्योम sort_elems(bool ascending) override;
+      व्योम shuffle_elems(व्योम) override;
+      व्योम set_word(अचिन्हित adr, स्थिर vvp_object_t&मूल्य) override;
+      व्योम get_word(अचिन्हित adr, vvp_object_t&मूल्य) override;
+      व्योम shallow_copy(स्थिर vvp_object*obj) override;
       //virtual vvp_object* duplicate(void) const;
 
-    private:
+    निजी:
       std::vector<vvp_object_t> array_;
 };
 
-class vvp_queue : public vvp_darray {
+class vvp_queue : खुला vvp_darray {
 
-    public:
-      inline vvp_queue(void) { }
+    खुला:
+      अंतरभूत vvp_queue(व्योम) { }
       ~vvp_queue() override;
 
-      virtual size_t get_size(void) const override =0;
-      virtual void copy_elems(vvp_object_t src, unsigned max_size);
+      भव माप_प्रकार get_आकार(व्योम) स्थिर override =0;
+      भव व्योम copy_elems(vvp_object_t src, अचिन्हित max_आकार);
 
-      virtual void set_word_max(unsigned adr, const vvp_vector4_t&value, unsigned max_size);
-      virtual void insert(unsigned idx, const vvp_vector4_t&value, unsigned max_size);
-      virtual void push_back(const vvp_vector4_t&value, unsigned max_size);
-      virtual void push_front(const vvp_vector4_t&value, unsigned max_size);
+      भव व्योम set_word_max(अचिन्हित adr, स्थिर vvp_vector4_t&मूल्य, अचिन्हित max_आकार);
+      भव व्योम जोड़ो(अचिन्हित idx, स्थिर vvp_vector4_t&मूल्य, अचिन्हित max_आकार);
+      भव व्योम धकेलो_back(स्थिर vvp_vector4_t&मूल्य, अचिन्हित max_आकार);
+      भव व्योम धकेलो_front(स्थिर vvp_vector4_t&मूल्य, अचिन्हित max_आकार);
 
-      virtual void set_word_max(unsigned adr, double value, unsigned max_size);
-      virtual void insert(unsigned idx, double value, unsigned max_size);
-      virtual void push_back(double value, unsigned max_size);
-      virtual void push_front(double value, unsigned max_size);
+      भव व्योम set_word_max(अचिन्हित adr, द्विगुन मूल्य, अचिन्हित max_आकार);
+      भव व्योम जोड़ो(अचिन्हित idx, द्विगुन मूल्य, अचिन्हित max_आकार);
+      भव व्योम धकेलो_back(द्विगुन मूल्य, अचिन्हित max_आकार);
+      भव व्योम धकेलो_front(द्विगुन मूल्य, अचिन्हित max_आकार);
 
-      virtual void set_word_max(unsigned adr, const std::string&value, unsigned max_size);
-      virtual void insert(unsigned idx, const std::string&value, unsigned max_size);
-      virtual void push_back(const std::string&value, unsigned max_size);
-      virtual void push_front(const std::string&value, unsigned max_size);
+      भव व्योम set_word_max(अचिन्हित adr, स्थिर std::string&मूल्य, अचिन्हित max_आकार);
+      भव व्योम जोड़ो(अचिन्हित idx, स्थिर std::string&मूल्य, अचिन्हित max_आकार);
+      भव व्योम धकेलो_back(स्थिर std::string&मूल्य, अचिन्हित max_आकार);
+      भव व्योम धकेलो_front(स्थिर std::string&मूल्य, अचिन्हित max_आकार);
 
-      virtual void pop_back(void) =0;
-      virtual void pop_front(void)=0;
-      virtual void erase(unsigned idx)=0;
-      virtual void erase_tail(unsigned idx)=0;
+      भव व्योम निकालो_back(व्योम) =0;
+      भव व्योम निकालो_front(व्योम)=0;
+      भव व्योम erase(अचिन्हित idx)=0;
+      भव व्योम erase_पुच्छ(अचिन्हित idx)=0;
 };
 
-class vvp_queue_real : public vvp_queue {
+class vvp_queue_real : खुला vvp_queue {
 
-    public:
-      size_t get_size(void) const override { return queue.size(); };
-      void copy_elems(vvp_object_t src, unsigned max_size) override;
-      void set_word_max(unsigned adr, double value, unsigned max_size) override;
-      void set_word(unsigned adr, double value) override;
-      void get_word(unsigned adr, double&value) override;
-      void insert(unsigned idx, double value, unsigned max_size) override;
-      void push_back(double value, unsigned max_size) override;
-      void push_front(double value, unsigned max_size) override;
-      void pop_back(void) override { queue.pop_back(); };
-      void pop_front(void) override { queue.pop_front(); };
-      void erase(unsigned idx) override;
-      void erase_tail(unsigned idx) override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+    खुला:
+      माप_प्रकार get_आकार(व्योम) स्थिर override { वापस queue.आकार(); };
+      व्योम copy_elems(vvp_object_t src, अचिन्हित max_आकार) override;
+      व्योम set_word_max(अचिन्हित adr, द्विगुन मूल्य, अचिन्हित max_आकार) override;
+      व्योम set_word(अचिन्हित adr, द्विगुन मूल्य) override;
+      व्योम get_word(अचिन्हित adr, द्विगुन&मूल्य) override;
+      व्योम जोड़ो(अचिन्हित idx, द्विगुन मूल्य, अचिन्हित max_आकार) override;
+      व्योम धकेलो_back(द्विगुन मूल्य, अचिन्हित max_आकार) override;
+      व्योम धकेलो_front(द्विगुन मूल्य, अचिन्हित max_आकार) override;
+      व्योम निकालो_back(व्योम) override { queue.निकालो_back(); };
+      व्योम निकालो_front(व्योम) override { queue.निकालो_front(); };
+      व्योम erase(अचिन्हित idx) override;
+      व्योम erase_पुच्छ(अचिन्हित idx) override;
+      व्योम reverse_elems(व्योम) override;
+      व्योम sort_elems(bool ascending) override;
+      व्योम shuffle_elems(व्योम) override;
 
-    private:
-      std::deque<double> queue;
+    निजी:
+      std::deque<द्विगुन> queue;
 };
 
-class vvp_queue_string : public vvp_queue {
+class vvp_queue_string : खुला vvp_queue {
 
-    public:
-      size_t get_size(void) const override { return queue.size(); };
-      void copy_elems(vvp_object_t src, unsigned max_size) override;
-      void set_word_max(unsigned adr, const std::string&value, unsigned max_size) override;
-      void set_word(unsigned adr, const std::string&value) override;
-      void get_word(unsigned adr, std::string&value) override;
-      void insert(unsigned idx, const std::string&value, unsigned max_size) override;
-      void push_back(const std::string&value, unsigned max_size) override;
-      void push_front(const std::string&value, unsigned max_size) override;
-      void pop_back(void) override { queue.pop_back(); };
-      void pop_front(void) override { queue.pop_front(); };
-      void erase(unsigned idx) override;
-      void erase_tail(unsigned idx) override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+    खुला:
+      माप_प्रकार get_आकार(व्योम) स्थिर override { वापस queue.आकार(); };
+      व्योम copy_elems(vvp_object_t src, अचिन्हित max_आकार) override;
+      व्योम set_word_max(अचिन्हित adr, स्थिर std::string&मूल्य, अचिन्हित max_आकार) override;
+      व्योम set_word(अचिन्हित adr, स्थिर std::string&मूल्य) override;
+      व्योम get_word(अचिन्हित adr, std::string&मूल्य) override;
+      व्योम जोड़ो(अचिन्हित idx, स्थिर std::string&मूल्य, अचिन्हित max_आकार) override;
+      व्योम धकेलो_back(स्थिर std::string&मूल्य, अचिन्हित max_आकार) override;
+      व्योम धकेलो_front(स्थिर std::string&मूल्य, अचिन्हित max_आकार) override;
+      व्योम निकालो_back(व्योम) override { queue.निकालो_back(); };
+      व्योम निकालो_front(व्योम) override { queue.निकालो_front(); };
+      व्योम erase(अचिन्हित idx) override;
+      व्योम erase_पुच्छ(अचिन्हित idx) override;
+      व्योम reverse_elems(व्योम) override;
+      व्योम sort_elems(bool ascending) override;
+      व्योम shuffle_elems(व्योम) override;
 
-    private:
+    निजी:
       std::deque<std::string> queue;
 };
 
-class vvp_queue_vec4 : public vvp_queue {
+class vvp_queue_vec4 : खुला vvp_queue {
 
-    public:
-      size_t get_size(void) const override { return queue.size(); };
-      void copy_elems(vvp_object_t src, unsigned max_size) override;
-      void set_word_max(unsigned adr, const vvp_vector4_t&value, unsigned max_size) override;
-      void set_word(unsigned adr, const vvp_vector4_t&value) override;
-      void get_word(unsigned adr, vvp_vector4_t&value) override;
-      void insert(unsigned idx, const vvp_vector4_t&value, unsigned max_size) override;
-      void push_back(const vvp_vector4_t&value, unsigned max_size) override;
-      void push_front(const vvp_vector4_t&value, unsigned max_size) override;
-      void pop_back(void) override { queue.pop_back(); };
-      void pop_front(void) override { queue.pop_front(); };
-      void erase(unsigned idx) override;
-      void erase_tail(unsigned idx) override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+    खुला:
+      माप_प्रकार get_आकार(व्योम) स्थिर override { वापस queue.आकार(); };
+      व्योम copy_elems(vvp_object_t src, अचिन्हित max_आकार) override;
+      व्योम set_word_max(अचिन्हित adr, स्थिर vvp_vector4_t&मूल्य, अचिन्हित max_आकार) override;
+      व्योम set_word(अचिन्हित adr, स्थिर vvp_vector4_t&मूल्य) override;
+      व्योम get_word(अचिन्हित adr, vvp_vector4_t&मूल्य) override;
+      व्योम जोड़ो(अचिन्हित idx, स्थिर vvp_vector4_t&मूल्य, अचिन्हित max_आकार) override;
+      व्योम धकेलो_back(स्थिर vvp_vector4_t&मूल्य, अचिन्हित max_आकार) override;
+      व्योम धकेलो_front(स्थिर vvp_vector4_t&मूल्य, अचिन्हित max_आकार) override;
+      व्योम निकालो_back(व्योम) override { queue.निकालो_back(); };
+      व्योम निकालो_front(व्योम) override { queue.निकालो_front(); };
+      व्योम erase(अचिन्हित idx) override;
+      व्योम erase_पुच्छ(अचिन्हित idx) override;
+      व्योम reverse_elems(व्योम) override;
+      व्योम sort_elems(bool ascending) override;
+      व्योम shuffle_elems(व्योम) override;
 
-    private:
+    निजी:
       std::deque<vvp_vector4_t> queue;
 };
 
-extern std::string get_fileline();
+बाह्य std::string get_fileline();
 
-#endif /* IVL_vvp_darray_H */
+#पूर्ण_अगर /* IVL_vvp_darray_H */

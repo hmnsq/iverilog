@@ -1,5 +1,5 @@
-#ifndef IVL_bufif_H
-#define IVL_bufif_H
+#अगर_अघोषित IVL_bufif_H
+#घोषणा IVL_bufif_H
 /*
  * Copyright (c) 2001-2025 Stephen Williams (steve@icarus.com)
  *
@@ -31,26 +31,26 @@
  * strengths to the buffered value, and sends H/L in response to
  * unknown enable bits.
  */
-class vvp_fun_bufif  : public vvp_net_fun_t {
+class vvp_fun_bufif  : खुला vvp_net_fun_t {
 
-    public:
+    खुला:
       vvp_fun_bufif(bool en_invert, bool out_invert,
-		    unsigned str0, unsigned str1);
+		    अचिन्हित str0, अचिन्हित str1);
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      व्योम recv_vec4(vvp_net_ptr_t port, स्थिर vvp_vector4_t&bit,
                      vvp_context_t) override;
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      void recv_real(vvp_net_ptr_t port, double real,
+      व्योम recv_vec4_pv(vvp_net_ptr_t ptr, स्थिर vvp_vector4_t&bit,
+			अचिन्हित base, अचिन्हित vwid, vvp_context_t ctx) override;
+      व्योम recv_real(vvp_net_ptr_t port, द्विगुन real,
                      vvp_context_t ctx) override;
 
-    private:
+    निजी:
       vvp_vector4_t bit_;
       vvp_vector4_t en_;
-      unsigned pol_ : 1;
-      unsigned inv_ : 1;
-      unsigned drive0_ : 8;
-      unsigned drive1_ : 8;
+      अचिन्हित pol_ : 1;
+      अचिन्हित inv_ : 1;
+      अचिन्हित drive0_ : 8;
+      अचिन्हित drive1_ : 8;
 };
 
-#endif /* IVL_bufif_H */
+#पूर्ण_अगर /* IVL_bufif_H */

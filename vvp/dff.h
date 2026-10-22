@@ -1,5 +1,5 @@
-#ifndef IVL_dff_H
-#define IVL_dff_H
+#अगर_अघोषित IVL_dff_H
+#घोषणा IVL_dff_H
 /*
  * Copyright (c) 2005-2025 Stephen Williams (steve@icarus.com)
  *
@@ -35,67 +35,67 @@
  *
  * The base vvp_dff does not implement an asynchronous set/clear.
  */
-class vvp_dff : public vvp_net_fun_t {
+class vvp_dff : खुला vvp_net_fun_t {
 
-    public:
-      explicit vvp_dff(unsigned width, bool negedge);
+    खुला:
+      explicit vvp_dff(अचिन्हित width, bool negedge);
       ~vvp_dff() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      व्योम recv_vec4(vvp_net_ptr_t port, स्थिर vvp_vector4_t&bit,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      व्योम recv_vec4_pv(vvp_net_ptr_t ptr, स्थिर vvp_vector4_t&bit,
+			अचिन्हित base, अचिन्हित vwid, vvp_context_t ctx) override;
 
-    private:
-      virtual void recv_async(vvp_net_ptr_t port);
+    निजी:
+      भव व्योम recv_async(vvp_net_ptr_t port);
 
       vvp_bit4_t clk_active_ : 8;
       vvp_bit4_t clk_        : 8;
       vvp_bit4_t ena_        : 8;
       vvp_bit4_t asc_        : 8;
 
-    protected:
+    रक्षित:
       vvp_vector4_t d_;
 };
 
 /*
  * This variant implements an asynchronous clear to all zeros.
  */
-class vvp_dff_aclr : public vvp_dff {
+class vvp_dff_aclr : खुला vvp_dff {
 
-    public:
-      explicit vvp_dff_aclr(unsigned width, bool negedge);
+    खुला:
+      explicit vvp_dff_aclr(अचिन्हित width, bool negedge);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    निजी:
+      व्योम recv_async(vvp_net_ptr_t port) override;
 };
 
 /*
  * This variant implements an asynchronous set to all ones.
  */
-class vvp_dff_aset : public vvp_dff {
+class vvp_dff_aset : खुला vvp_dff {
 
-    public:
-      explicit vvp_dff_aset(unsigned width, bool negedge);
+    खुला:
+      explicit vvp_dff_aset(अचिन्हित width, bool negedge);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    निजी:
+      व्योम recv_async(vvp_net_ptr_t port) override;
 };
 
 /*
  * This variant implements an asynchronous set to a specified constant
  * vector value.
  */
-class vvp_dff_asc : public vvp_dff {
+class vvp_dff_asc : खुला vvp_dff {
 
-    public:
-      explicit vvp_dff_asc(unsigned width, bool negedge, const char*asc_value);
+    खुला:
+      explicit vvp_dff_asc(अचिन्हित width, bool negedge, स्थिर अक्षर*asc_मूल्य);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    निजी:
+      व्योम recv_async(vvp_net_ptr_t port) override;
 
-      vvp_vector4_t asc_value_;
+      vvp_vector4_t asc_मूल्य_2;
 };
 
-#endif /* IVL_dff_H */
+#पूर्ण_अगर /* IVL_dff_H */

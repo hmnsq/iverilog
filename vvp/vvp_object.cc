@@ -24,26 +24,26 @@
 
 using namespace std;
 
-int vvp_object::total_active_cnt_ = 0;
+पूर्णांक vvp_object::योग_active_cnt = 0;
 
-void vvp_object::cleanup(void)
+व्योम vvp_object::cleanup(व्योम)
 {
 }
 
 vvp_object::~vvp_object()
 {
-      total_active_cnt_ -= 1;
+      योग_active_cnt -= 1;
 }
 
-void vvp_object::shallow_copy(const vvp_object*)
+व्योम vvp_object::shallow_copy(स्थिर vvp_object*)
 {
-      cerr << "XXXX shallow_copy(vvp_object_t) not implemented for " << typeid(*this).name() << endl;
-      assert(0);
+      अ_त्रुटि << "XXXX shallow_copy(vvp_object_t) not implemented for " << typeid(*यह).name() << प_पूर्ण;
+      निश्चित(0);
 }
 
-vvp_object* vvp_object::duplicate(void) const
+vvp_object* vvp_object::duplicate(व्योम) स्थिर
 {
-      cerr << "XXXX duplicate() not implemented for " << typeid(*this).name() << endl;
-      assert(0);
-      return 0;
+      अ_त्रुटि << "XXXX duplicate() not implemented for " << typeid(*यह).name() << प_पूर्ण;
+      निश्चित(0);
+      वापस 0;
 }

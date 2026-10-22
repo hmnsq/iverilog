@@ -1,5 +1,5 @@
-#ifndef IVL_vvp_cobject_H
-#define IVL_vvp_cobject_H
+#अगर_अघोषित IVL_vvp_cobject_H
+#घोषणा IVL_vvp_cobject_H
 /*
  * Copyright (c) 2012-2025 Stephen Williams (steve@icarus.com)
  *
@@ -26,30 +26,30 @@
 
 class vvp_vector4_t;
 
-class vvp_cobject : public vvp_object {
+class vvp_cobject : खुला vvp_object {
 
-    public:
-      explicit vvp_cobject(const class_type*defn);
+    खुला:
+      explicit vvp_cobject(स्थिर class_type*defn);
       ~vvp_cobject() override;
 
-      void set_vec4(size_t pid, const vvp_vector4_t&val);
-      void get_vec4(size_t pid, vvp_vector4_t&val);
+      व्योम set_vec4(माप_प्रकार pid, स्थिर vvp_vector4_t&val);
+      व्योम get_vec4(माप_प्रकार pid, vvp_vector4_t&val);
 
-      void set_real(size_t pid, double val);
-      double get_real(size_t pid);
+      व्योम set_real(माप_प्रकार pid, द्विगुन val);
+      द्विगुन get_real(माप_प्रकार pid);
 
-      void set_string(size_t pid, const std::string&val);
-      std::string get_string(size_t pid);
+      व्योम set_string(माप_प्रकार pid, स्थिर std::string&val);
+      std::string get_string(माप_प्रकार pid);
 
-      void set_object(size_t pid, const vvp_object_t&val, size_t idx);
-      void get_object(size_t pid, vvp_object_t&val, size_t idx);
+      व्योम set_object(माप_प्रकार pid, स्थिर vvp_object_t&val, माप_प्रकार idx);
+      व्योम get_object(माप_प्रकार pid, vvp_object_t&val, माप_प्रकार idx);
 
-      void shallow_copy(const vvp_object*that) override;
+      व्योम shallow_copy(स्थिर vvp_object*that) override;
 
-    private:
-      const class_type* defn_;
+    निजी:
+      स्थिर class_type* defn_;
 	// For now, only support 32bit bool signed properties.
       class_type::inst_t properties_;
 };
 
-#endif /* IVL_vvp_cobject_H */
+#पूर्ण_अगर /* IVL_vvp_cobject_H */

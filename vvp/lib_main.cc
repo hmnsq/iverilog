@@ -1,4 +1,4 @@
-const char COPYRIGHT[] =
+स्थिर अक्षर COPYRIGHT[] =
   "Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)";
 /*
  *    This source code is free software; you can redistribute it
@@ -31,89 +31,89 @@ const char COPYRIGHT[] =
 # include  <unistd.h>
 # include  <cassert>
 
-#if defined(HAVE_SYS_RESOURCE_H)
+#अगर defined(HAVE_SYS_RESOURCE_H)
 # include  <sys/time.h>
 # include  <sys/resource.h>
-#endif // defined(HAVE_SYS_RESOURCE_H)
+#पूर्ण_अगर // defined(HAVE_SYS_RESOURCE_H)
 
-#if defined(__MINGW32__)
+#अगर defined(__MINGW32__)
 # include  <windows.h>
-#endif
+#पूर्ण_अगर
 
-#include "libvvp.h"
+#समावेश "libvvp.h"
 
 using namespace std;
 
-ofstream debug_file;
+बख_प्रवाह debug_file;
 
-#if defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
-extern "C" int getopt(int argc, char*argv[], const char*fmt);
-extern "C" int optind;
-extern "C" const char*optarg;
-#endif
+#अगर defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
+बाह्य "C" पूर्णांक getopt(पूर्णांक argc, अक्षर*argv[], स्थिर अक्षर*fmt);
+बाह्य "C" पूर्णांक optind;
+बाह्य "C" स्थिर अक्षर*optarg;
+#पूर्ण_अगर
 
 bool verbose_flag = false;
-static int vvp_return_value = 0;
-static int vvp_used = 0;
+अटल पूर्णांक vvp_return_मूल्य = 0;
+अटल पूर्णांक vvp_used = 0;
 
-void vvp_set_stop_is_finish(bool flag, int exit_code)
+व्योम vvp_set_stop_is_finish(bool flag, पूर्णांक exit_code)
 {
-      extern bool stop_is_finish;
-      extern int  stop_is_finish_exit_code;
+      बाह्य bool stop_is_finish;
+      बाह्य पूर्णांक  stop_is_finish_exit_code;
 
       stop_is_finish = flag;
       stop_is_finish_exit_code = exit_code;
 }
 
-void vvp_set_quiet_flag(bool flag)
+व्योम vvp_set_quiet_flag(bool flag)
 {
       vpip_mcd0_disable = flag;
 }
 
-void vvp_set_verbose_flag(bool flag)
+व्योम vvp_set_verbose_flag(bool flag)
 {
       verbose_flag = flag;
 }
 
-void vpip_set_return_value(int value)
+व्योम vpip_set_return_मूल्य(पूर्णांक value)
 {
-      vvp_return_value = value;
+      vvp_return_मूल्य = value;
 }
 
-static char log_buffer[4096];
+अटल अक्षर log_बफर[4096];
 
-#if defined(HAVE_SYS_RESOURCE_H)
-static void my_getrusage(struct rusage *a)
+#अगर defined(HAVE_SYS_RESOURCE_H)
+अटल व्योम my_getrusage(काष्ठा rusage *a)
 {
       getrusage(RUSAGE_SELF, a);
 
-#     if defined(LINUX)
+#     अगर defined(LINUX)
       {
-	    FILE *statm;
-	    unsigned siz, rss, shd;
-	    long page_size = sysconf(_SC_PAGESIZE);
-	    if (page_size==-1) page_size=0;
-	    statm = fopen("/proc/self/statm", "r");
-	    if (!statm) {
-		  perror("/proc/self/statm");
-		  return;
+	    खाता *statm;
+	    अचिन्हित siz, rss, shd;
+	    दीर्घ page_आकार = sysconf(_SC_PAGESIZE);
+	    अगर (page_आकार==-1) page_आकार=0;
+	    statm = ख_खोलो("/proc/self/statm", "r");
+	    अगर (!statm) {
+		  लिखो_त्रुटि("/proc/self/statm");
+		  वापस;
 	    }
 	      /* Given that these are in pages we'll limit the value to
 	       * what will fit in a 32 bit integer to prevent undefined
 	       * behavior in fscanf(). */
-	    if (3 == fscanf(statm, "%9u %9u %9u", &siz, &rss, &shd)) {
-		  a->ru_maxrss = page_size * siz;
-		  a->ru_idrss  = page_size * rss;
-		  a->ru_ixrss  = page_size * shd;
+	    अगर (3 == ख_पूछो(statm, "%9u %9u %9u", &siz, &rss, &shd)) {
+		  a->ru_maxrss = page_आकार * siz;
+		  a->ru_idrss  = page_आकार * rss;
+		  a->ru_ixrss  = page_आकार * shd;
 	    }
-	    fclose(statm);
+	    ख_बंद(statm);
       }
 #     endif
 }
 
-static void print_rusage(struct rusage *a, struct rusage *b)
+अटल व्योम print_rusage(काष्ठा rusage *a, काष्ठा rusage *b)
 {
-      double delta = a->ru_utime.tv_sec
+      द्विगुन delta = a->ru_utime.tv_sec
 	    +        a->ru_utime.tv_usec/1E6
 	    +        a->ru_stime.tv_sec
 	    +        a->ru_stime.tv_usec/1E6
@@ -132,117 +132,117 @@ static void print_rusage(struct rusage *a, struct rusage *b)
 	      a->ru_ixrss/1024.0 );
 }
 
-#else // ! defined(HAVE_SYS_RESOURCE_H)
+#अन्यथा // ! defined(HAVE_SYS_RESOURCE_H)
 
 // Provide dummies
-struct rusage { int x; };
-inline static void my_getrusage(struct rusage *) { }
-inline static void print_rusage(struct rusage *, struct rusage *){};
+काष्ठा rusage { पूर्णांक x; };
+अंतरभूत अटल व्योम my_getrusage(काष्ठा rusage *) { }
+अंतरभूत अटल व्योम print_rusage(काष्ठा rusage *, काष्ठा rusage *){};
 
-#endif // ! defined(HAVE_SYS_RESOURCE_H)
+#पूर्ण_अगर // ! defined(HAVE_SYS_RESOURCE_H)
 
-static bool have_ivl_version = false;
+अटल bool have_ivl_version = false;
 /*
  * Verify that the input file has a compatible version.
  */
-void verify_version(char*ivl_ver, char*commit)
+व्योम verify_version(अक्षर*ivl_ver, अक्षर*commit)
 {
       have_ivl_version = true;
 
-      if (verbose_flag) {
+      अगर (verbose_flag) {
 	    vpi_mcd_printf(1, " ... VVP file version %s", ivl_ver);
-	    if (commit) vpi_mcd_printf(1, " %s", commit);
+	    अगर (commit) vpi_mcd_printf(1, " %s", commit);
 	    vpi_mcd_printf(1, "\n");
       }
-      delete[] commit;
+      मिटाओ[] commit;
 
-      int file_major, file_minor, file_minor2;
-      char file_extra[128];
+      पूर्णांक file_major, file_minor, file_minor2;
+      अक्षर file_extra[128];
 
 	// Old style format: 0.<major>.<minor> <extra>
 	// This also catches a potential new-new format that has
 	// another sub-minor number.
       file_extra[0] = 0;
-      int rc = sscanf(ivl_ver, "%d.%d.%d %127s", &file_major, &file_minor, &file_minor2, file_extra);
+      पूर्णांक rc = माला_पूछो(ivl_ver, "%d.%d.%d %127s", &file_major, &file_minor, &file_minor2, file_extra);
 
 	// If it wasn't the old style format, try the new format:
 	// <major>.<minor> <extra>
-      if (rc == 2) {
+      अगर (rc == 2) {
 	    file_extra[0] = 0;
-	    rc = sscanf(ivl_ver, "%d.%d %127s", &file_major, &file_minor, file_extra);
-	    assert((rc == 2) || (rc == 3));
+	    rc = माला_पूछो(ivl_ver, "%d.%d %127s", &file_major, &file_minor, file_extra);
+	    निश्चित((rc == 2) || (rc == 3));
 	    file_minor2 = 0;
       }
-      delete[] ivl_ver;
+      मिटाओ[] ivl_ver;
 
 	// If this was the old format, the file_major will be 0. In
 	// this case it is not really what we meant, so convert to the
 	// new format.
-      if (file_major == 0) {
+      अगर (file_major == 0) {
 	    file_major = file_minor;
 	    file_minor = file_minor2;
 	    file_minor2 = 0;
       }
 
-      if (VERSION_MAJOR != file_major) {
+      अगर (VERSION_MAJOR != file_major) {
 	    vpi_mcd_printf(1, "Error: VVP input file %d.%d can not "
 			   "be run with run time version %s\n",
 			   file_major, file_minor, VERSION);
-	    exit(1);
+	    निकास(1);
       }
 
-      if (VERSION_MINOR < file_minor) {
+      अगर (VERSION_MINOR < file_minor) {
 	    vpi_mcd_printf(1, "Warning: VVP input file sub version %d.%d"
 			   " is greater than the run time version %s.\n",
 			   file_major, file_minor, VERSION);
       }
 }
 
-int vpip_delay_selection = _vpiDelaySelTypical;
-void set_delay_selection(const char* sel)
+पूर्णांक vpip_delay_selection = _vpiDelaySelTypical;
+व्योम set_delay_selection(स्थिर अक्षर* sel)
 {
-      if (strcmp("TYPICAL", sel) == 0) {
+      अगर (म_भेद("TYPICAL", sel) == 0) {
 	    vpip_delay_selection = _vpiDelaySelTypical;
-      } else if (strcmp("MINIMUM", sel) == 0) {
+      } अन्यथा अगर (म_भेद("MINIMUM", sel) == 0) {
 	    vpip_delay_selection = _vpiDelaySelMinimum;
-      } else if (strcmp("MAXIMUM", sel) == 0) {
+      } अन्यथा अगर (म_भेद("MAXIMUM", sel) == 0) {
 	    vpip_delay_selection = _vpiDelaySelMaximum;
-      } else {
+      } अन्यथा {
 	    vpi_mcd_printf(1, "Error: Unknown delay selection \"%s\"!", sel);
-	    exit(1);
+	    निकास(1);
       }
-      delete[] sel;
+      मिटाओ[] sel;
 }
 
-static void final_cleanup()
+अटल व्योम final_cleanup()
 {
       vvp_object::cleanup();
 
 	/*
 	 * We only need to cleanup the memory if we are checking with valgrind.
 	 */
-#ifdef CHECK_WITH_VALGRIND
+#अगर_घोषित CHECK_WITH_VALGRIND
 	/* Clean up the file name table. */
-      for (vector<const char*>::iterator cur = file_names.begin();
+      क्रम (vector<स्थिर अक्षर*>::iterator cur = file_names.begin();
            cur != file_names.end() ; ++ cur ) {
-	    delete[] *cur;
+	    मिटाओ[] *cur;
       }
 	/* Clear the static result buffer. */
-      (void)need_result_buf(0, RBUF_DEL);
+      (व्योम)need_परिणाम_buf(0, RBUF_DEL);
       codespace_delete();
-      root_table_delete();
+      मूल_table_delete();
       def_table_delete();
       vpi_mcd_delete();
       dec_str_delete();
       modpath_delete();
       vpi_handle_delete();
-      vpi_stack_delete();
+      vpi_ढेर_delete();
       udp_defns_delete();
       island_delete();
       signal_pool_delete();
       vvp_net_pool_delete();
       ufunc_pool_delete();
-#endif
+#पूर्ण_अगर
 	/*
 	 * Unload the VPI modules. This is essential for MinGW, to ensure
 	 * dump files are flushed before the main process terminates, as
@@ -251,40 +251,40 @@ static void final_cleanup()
 	 */
       load_module_delete();
 
-#ifdef CHECK_WITH_VALGRIND
+#अगर_घोषित CHECK_WITH_VALGRIND
       simulator_cb_delete();
-#endif
+#पूर्ण_अगर
 }
 
-extern void vpip_mcd_init(FILE *log);
-extern void vvp_vpi_init(void);
+बाह्य व्योम vpip_mcd_init(खाता *log);
+बाह्य व्योम vvp_vpi_init(व्योम);
 
-static void report_used(void)
+अटल व्योम report_used(व्योम)
 {
-  fprintf(stderr,
+  ख_लिखो(मानक_त्रुटि,
 	  "This VVP simulation has already run and can not be reused\n");
 }
 
-void vvp_init(const char *logfile_name, int argc, char*argv[])
+व्योम vvp_init(स्थिर अक्षर *logfile_name, पूर्णांक argc, अक्षर*argv[])
 {
-      struct rusage cycle;
-      FILE *logfile = 0x0;
-      extern void vpi_set_vlog_info(int, char**);
+      काष्ठा rusage cycle;
+      खाता *logfile = 0x0;
+      बाह्य व्योम vpi_set_vlog_info(पूर्णांक, अक्षर**);
 
-      if (vvp_used++) {
+      अगर (vvp_used++) {
           report_used();
-          return;
+          वापस;
       }
 
-      if( ::getenv("VVP_WAIT_FOR_DEBUGGER") != 0 ) {
-          fprintf( stderr, "Waiting for debugger...\n");
+      अगर( ::दो_पर्या("VVP_WAIT_FOR_DEBUGGER") != 0 ) {
+          ख_लिखो( मानक_त्रुटि, "Waiting for debugger...\n");
           bool debugger_release = false;
-          while( !debugger_release )  {
-#if defined(__MINGW32__)
+          जबतक( !debugger_release )  {
+#अगर defined(__MINGW32__)
               Sleep(1000);
-#else
+#अन्यथा
               sleep(1);
-#endif
+#पूर्ण_अगर
         }
       }
 
@@ -293,30 +293,30 @@ void vvp_init(const char *logfile_name, int argc, char*argv[])
 	/* If the VVP_DEBUG variable is set, then it contains the path
 	   to the vvp debug file. Open it for output. */
 
-      if (const char*path = getenv("VVP_DEBUG")) {
-	    debug_file.open(path, ios::out);
+      अगर (स्थिर अक्षर*path = दो_पर्या("VVP_DEBUG")) {
+	    debug_file.खोलो(path, पनप::out);
       }
 
 	/* This is needed to get the MCD I/O routines ready for
 	   anything. It is done early because it is plausible that the
 	   compile might affect it, and it is cheap to do. */
 
-      if (logfile_name) {
-	    if (!strcmp(logfile_name, "-"))
-		  logfile = stderr;
-	    else {
-		  logfile = fopen(logfile_name, "w");
-		  if (!logfile) {
-		        perror(logfile_name);
-		        exit(1);
+      अगर (logfile_name) {
+	    अगर (!म_भेद(logfile_name, "-"))
+		  logfile = मानक_त्रुटि;
+	    अन्यथा {
+		  logfile = ख_खोलो(logfile_name, "w");
+		  अगर (!logfile) {
+		        लिखो_त्रुटि(logfile_name);
+		        निकास(1);
 		  }
-		  setvbuf(logfile, log_buffer, _IOLBF, sizeof(log_buffer));
+		  रखो_भबफ(logfile, log_बफर, _IOLBF, माप(log_बफर));
 	    }
       }
 
       vpip_mcd_init(logfile);
 
-      if (verbose_flag) {
+      अगर (verbose_flag) {
 	    my_getrusage(&cycle);
 	    vpi_mcd_printf(1, "Compiling VVP ...\n");
       }
@@ -329,71 +329,71 @@ void vvp_init(const char *logfile_name, int argc, char*argv[])
       compile_init();
 }
 
-int vvp_run(const char *design_path)
+पूर्णांक vvp_run(स्थिर अक्षर *design_path)
 {
-      struct rusage cycles[3];
-      int ret_cd;
+      काष्ठा rusage cycles[3];
+      पूर्णांक ret_cd;
 
-      (void) COPYRIGHT;
-      if (vvp_used++ != 1) {
-          if (vvp_used == 1)
-              fprintf(stderr, "vvp_init() has not been called\n");
-          else
+      (व्योम) COPYRIGHT;
+      अगर (vvp_used++ != 1) {
+          अगर (vvp_used == 1)
+              ख_लिखो(मानक_त्रुटि, "vvp_init() has not been called\n");
+          अन्यथा
               report_used();
-          return 1;
+          वापस 1;
       }
       ++vvp_used;
 
       ret_cd = compile_design(design_path);
       destroy_lexor();
       print_vpi_call_errors();
-      if (ret_cd) return ret_cd;
+      अगर (ret_cd) वापस ret_cd;
 
-      if (!have_ivl_version) {
-	    if (verbose_flag) vpi_mcd_printf(1, "... ");
+      अगर (!have_ivl_version) {
+	    अगर (verbose_flag) vpi_mcd_printf(1, "... ");
 	    vpi_mcd_printf(1, "Warning: vvp input file may not be correct "
 	                      "version!\n");
       }
 
-      if (verbose_flag) {
+      अगर (verbose_flag) {
 	    vpi_mcd_printf(1, "Compile cleanup...\n");
       }
 
       compile_cleanup();
 
-      if (compile_errors > 0) {
+      अगर (compile_errors > 0) {
 	    vpi_mcd_printf(1, "%s: Program not runnable, %u errors.\n",
 		    design_path, compile_errors);
 	    final_cleanup();
-	    return compile_errors;
+	    वापस compile_errors;
       }
 
-      if (verbose_flag) {
+      अगर (verbose_flag) {
 	    vpi_mcd_printf(1, " ... %8lu functors (net_fun pool=%zu bytes)\n",
-			   count_functors, vvp_net_fun_t::heap_total());
-	    vpi_mcd_printf(1, "           %8lu logic\n",  count_functors_logic);
-	    vpi_mcd_printf(1, "           %8lu bufif\n",  count_functors_bufif);
-	    vpi_mcd_printf(1, "           %8lu resolv\n",count_functors_resolv);
-	    vpi_mcd_printf(1, "           %8lu signals\n", count_functors_sig);
+			   गिनती_functors, vvp_net_fun_t::heap_योग());
+	    vpi_mcd_printf(1, "           %8lu logic\n",  गिनती_functors_logic);
+	    vpi_mcd_printf(1, "           %8lu bufif\n",  गिनती_functors_bufif);
+	    vpi_mcd_printf(1, "           %8lu resolv\n",गिनती_functors_resolv);
+	    vpi_mcd_printf(1, "           %8lu signals\n", गिनती_functors_sig);
 	    vpi_mcd_printf(1, " ... %8lu filters (net_fil pool=%zu bytes)\n",
-			   count_filters, vvp_net_fil_t::heap_total());
+			   गिनती_filters, vvp_net_fil_t::heap_योग());
 	    vpi_mcd_printf(1, " ... %8lu opcodes (%zu bytes)\n",
-	                   count_opcodes, size_opcodes);
-	    vpi_mcd_printf(1, " ... %8lu nets\n",     count_vpi_nets);
+	                   गिनती_opcodes, आकार_opcodes);
+	    vpi_mcd_printf(1, " ... %8lu nets\n",     गिनती_vpi_nets);
 	    vpi_mcd_printf(1, " ... %8lu vvp_nets (%zu bytes)\n",
-			   count_vvp_nets, size_vvp_nets);
+			   गिनती_vvp_nets, आकार_vvp_nets);
 	    vpi_mcd_printf(1, " ... %8lu arrays (%lu words)\n",
-			   count_net_arrays, count_net_array_words);
+			   गिनती_net_arrays, गिनती_net_array_शब्दगण);
 	    vpi_mcd_printf(1, " ... %8lu memories\n",
-			   count_var_arrays+count_real_arrays);
+			   गिनती_var_arrays+गिनती_real_arrays);
 	    vpi_mcd_printf(1, "           %8lu logic (%lu words)\n",
-			   count_var_arrays, count_var_array_words);
+			   गिनती_var_arrays, गिनती_var_array_शब्दगण);
 	    vpi_mcd_printf(1, "           %8lu real (%lu words)\n",
-			   count_real_arrays, count_real_array_words);
-	    vpi_mcd_printf(1, " ... %8lu scopes\n",   count_vpi_scopes);
+			   गिनती_real_arrays, गिनती_real_array_शब्दगण);
+	    vpi_mcd_printf(1, " ... %8lu scopes\n",   गिनती_vpi_scopes);
       }
 
-      if (verbose_flag) {
+      अगर (verbose_flag) {
 	    my_getrusage(cycles+1);
 	    print_rusage(cycles+1, cycles+0);
 	    vpi_mcd_printf(1, "Running ...\n");
@@ -402,32 +402,32 @@ int vvp_run(const char *design_path)
 
       schedule_simulate();
 
-      if (verbose_flag) {
+      अगर (verbose_flag) {
 	    my_getrusage(cycles+2);
 	    print_rusage(cycles+2, cycles+1);
 
 	    vpi_mcd_printf(1, "Event counts:\n");
 	    vpi_mcd_printf(1, "    %8lu time steps (pool=%lu)\n",
-			   count_time_events, count_time_pool());
+			   गिनती_time_events, गिनती_time_pool());
 	    vpi_mcd_printf(1, "    %8lu thread schedule events\n",
-		    count_thread_events);
+		    गिनती_thread_events);
 	    vpi_mcd_printf(1, "    %8lu assign events\n",
-		    count_assign_events);
+		    गिनती_assign_events);
 	    vpi_mcd_printf(1, "             ...assign(vec4) pool=%lu\n",
-			   count_assign4_pool());
+			   गिनती_assign4_pool());
 	    vpi_mcd_printf(1, "             ...assign(vec8) pool=%lu\n",
-			   count_assign8_pool());
+			   गिनती_assign8_pool());
 	    vpi_mcd_printf(1, "             ...assign(real) pool=%lu\n",
-			   count_assign_real_pool());
+			   गिनती_assign_real_pool());
 	    vpi_mcd_printf(1, "             ...assign(word) pool=%lu\n",
-			   count_assign_aword_pool());
+			   गिनती_assign_aword_pool());
 	    vpi_mcd_printf(1, "             ...assign(word/r) pool=%lu\n",
-			   count_assign_arword_pool());
+			   गिनती_assign_arword_pool());
 	    vpi_mcd_printf(1, "    %8lu other events (pool=%lu)\n",
-			   count_gen_events, count_gen_pool());
+			   गिनती_gen_events, गिनती_gen_pool());
       }
 
       final_cleanup();
 
-      return vvp_return_value;
+      वापस vvp_return_मूल्य;
 }

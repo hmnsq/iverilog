@@ -19,82 +19,82 @@
 # include "compile.h"
 # include "vpi_priv.h"
 
-class __vpiFileLine : public __vpiHandle {
-    public:
-      explicit __vpiFileLine(const char*desc_, long file_idx_, long lineno_);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+श्रेणी __vpiFileLine : खुला __vpiHandle {
+    खुला:
+      explicit __vpiFileLine(स्थिर अक्षर*desc_, दीर्घ file_idx_, दीर्घ lineno_);
+      पूर्णांक get_type_code(व्योम) स्थिर override;
+      पूर्णांक vpi_get(पूर्णांक code) override;
+      अक्षर* vpi_get_str(पूर्णांक code) override;
 
-      const char* get_description() const { return description; };
-      unsigned get_file_idx() const { return file_idx; };
-      unsigned get_lineno() const { return lineno; };
+      स्थिर अक्षर* get_description() स्थिर { वापस description; };
+      अचिन्हित get_file_idx() स्थिर { वापस file_idx; };
+      अचिन्हित get_lineno() स्थिर { वापस lineno; };
 
-    private:
-      const char *description;
-      unsigned file_idx;
-      unsigned lineno;
+    निजी:
+      स्थिर अक्षर *description;
+      अचिन्हित file_idx;
+      अचिन्हित lineno;
 };
 
-bool show_file_line = false;
+bool show_file_पंक्ति = false;
 bool code_is_instrumented = false;
 
-static int file_line_get(int type, vpiHandle ref)
+अटल पूर्णांक file_पंक्ति_get(पूर्णांक type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      निश्चित(rfp);
 
-      switch (type) {
-	case vpiLineNo:
-	    return rfp->get_lineno();
-	default:
-	    return vpiUndefined;
+      चयन (type) {
+	हाल vpi_पंक्ति_No:
+	    वापस rfp->get_lineno();
+	शेष:
+	    वापस vpiUndefined;
       }
 }
 
-static char *file_line_get_str(int type, vpiHandle ref)
+अटल अक्षर *file_पंक्ति_get_str(पूर्णांक type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      निश्चित(rfp);
 
-      switch (type) {
-	case vpiFile:
-	    assert(rfp->get_file_idx() < file_names.size());
-	    return simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
-	case _vpiDescription:
-	    if (rfp->get_description()) {
-		  return simple_set_rbuf_str(rfp->get_description());
-	    } else return simple_set_rbuf_str("Procedural tracing.");
-	default:
-	    return 0;
+      चयन (type) {
+	हाल vpiFile:
+	    निश्चित(rfp->get_file_idx() < file_names.size());
+	    वापस simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
+	हाल _vpiDescription:
+	    अगर (rfp->get_description()) {
+		  वापस simple_set_rbuf_str(rfp->get_description());
+	    } अन्यथा वापस simple_set_rbuf_str("Procedural tracing.");
+	शेष:
+	    वापस 0;
       }
 }
 
-inline __vpiFileLine::__vpiFileLine(const char*desc_, long file_idx_,
-                                    long lineno_)
+अंतरभूत __vpiFileLine::__vpiFileLine(स्थिर अक्षर*desc_, दीर्घ file_idx_,
+                                    दीर्घ lineno_)
 {
-      if (desc_) description = vpip_name_string(desc_);
-      else description = 0;
-      file_idx = (unsigned) file_idx_;
-      lineno = (unsigned) lineno_;
+      अगर (desc_) description = vpip_name_string(desc_);
+      अन्यथा description = 0;
+      file_idx = (अचिन्हित) file_idx_;
+      lineno = (अचिन्हित) lineno_;
 }
 
-int __vpiFileLine::get_type_code(void) const
-{ return _vpiFileLine; }
+पूर्णांक __vpiFileLine::get_type_code(व्योम) स्थिर
+{ वापस vpi_File_पंक्ति; }
 
-int __vpiFileLine::vpi_get(int code)
-{ return file_line_get(code, this); }
+पूर्णांक __vpiFileLine::vpi_get(पूर्णांक code)
+{ वापस file_पंक्ति_get(code, यह); }
 
-char* __vpiFileLine::vpi_get_str(int code)
-{ return file_line_get_str(code, this); }
+अक्षर* __vpiFileLine::vpi_get_str(पूर्णांक code)
+{ वापस file_पंक्ति_get_str(code, यह); }
 
 
-vpiHandle vpip_build_file_line(const char*description, long file_idx, long lineno)
+vpiHandle vpip_build_file_पंक्ति(स्थिर अक्षर*description, दीर्घ file_idx, दीर्घ lineno)
 {
-      __vpiFileLine*obj = new __vpiFileLine(description, file_idx, lineno);
+      __vpiFileLine*obj = नया __vpiFileLine(description, file_idx, lineno);
 
 	/* You can turn on the diagnostic output if we find a %file_line. */
       code_is_instrumented = true;
 
-      return obj;
+      वापस obj;
 }

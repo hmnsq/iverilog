@@ -23,29 +23,29 @@
 permaheap::permaheap()
 {
       chunk_ptr_ = initial_chunk_.bytes;
-      chunk_remaining_ = sizeof(initial_chunk_);
-      heap_total_ = chunk_remaining_;
+      chunk_remaining_ = माप(initial_chunk_);
+      heap_योग_2 = chunk_remaining_;
 }
 
 permaheap::~permaheap()
 {
 }
 
-void* permaheap::alloc(size_t size)
+व्योम* permaheap::alloc(माप_प्रकार size)
 {
-      assert(size <= CHUNK_SIZE);
+      निश्चित(size <= CHUNK_आकार);
 
-      if (size > chunk_remaining_) {
-	    chunk_ptr_ = ::new char[CHUNK_SIZE];
-	    chunk_remaining_ = CHUNK_SIZE;
-	    heap_total_ += CHUNK_SIZE;
+      अगर (size > chunk_remaining_) {
+	    chunk_ptr_ = ::नया अक्षर[CHUNK_आकार];
+	    chunk_remaining_ = CHUNK_आकार;
+	    heap_योग_2 += CHUNK_आकार;
       }
 
-      assert( (size%sizeof(void*)) == 0 );
+      निश्चित( (size%माप(व्योम*)) == 0 );
 
-      void*res = chunk_ptr_;
+      व्योम*res = chunk_ptr_;
       chunk_ptr_ += size;
       chunk_remaining_ -= size;
 
-      return res;
+      वापस res;
 }

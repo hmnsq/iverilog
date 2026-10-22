@@ -1,5 +1,5 @@
-#ifndef IVL_latch_H
-#define IVL_latch_H
+#अगर_अघोषित IVL_latch_H
+#घोषणा IVL_latch_H
 /*
  * Copyright (c) 2016-2025 Martin Whitaker (icarus@martin-whitaker.me.uk)
  *
@@ -28,21 +28,21 @@
  *   port-0:  D input
  *   port-1:  EN input
  */
-class vvp_latch : public vvp_net_fun_t {
+class vvp_latch : खुला vvp_net_fun_t {
 
-    public:
-      explicit vvp_latch(unsigned width);
+    खुला:
+      explicit vvp_latch(अचिन्हित width);
       ~vvp_latch() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      व्योम recv_vec4(vvp_net_ptr_t port, स्थिर vvp_vector4_t&bit,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      व्योम recv_vec4_pv(vvp_net_ptr_t ptr, स्थिर vvp_vector4_t&bit,
+			अचिन्हित base, अचिन्हित vwid, vvp_context_t ctx) override;
 
-    private:
+    निजी:
       vvp_bit4_t en_;
       vvp_vector4_t d_;
 };
 
-#endif /* IVL_latch_H */
+#पूर्ण_अगर /* IVL_latch_H */

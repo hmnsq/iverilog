@@ -1,5 +1,5 @@
-#ifndef IVL_permaheap_H
-#define IVL_permaheap_H
+#अगर_अघोषित IVL_permaheap_H
+#घोषणा IVL_permaheap_H
 /*
  * Copyright (c) 2009-2014 Stephen Williams (steve@icarus.com)
  *
@@ -20,33 +20,33 @@
  */
 
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
-#ifdef __SUNPRO_CC
+#अगर_घोषित __SUNPRO_CC
 # include  <stddef.h>
-#else
+#अन्यथा
 # include  <cstddef>
-#endif
+#पूर्ण_अगर
 
 class permaheap {
 
-    public:
+    खुला:
       explicit permaheap();
       ~permaheap();
 
-      void* alloc(size_t size);
+      व्योम* alloc(माप_प्रकार आकार);
 
-      size_t heap_total() const { return heap_total_; }
+      माप_प्रकार heap_योग() स्थिर { वापस heap_योग_2; }
 
-    private:
-      enum { INITIAL_CHUNK_SIZE = 512*1024, CHUNK_SIZE=256*1024 };
+    निजी:
+      क्रमागत { INITIAL_CHUNK_आकार = 512*1024, CHUNK_आकार=256*1024 };
 
-      union {
-	    void*align;
-	    char bytes[INITIAL_CHUNK_SIZE];
+      जोड़ {
+	    व्योम*align;
+	    अक्षर bytes[INITIAL_CHUNK_आकार];
       } initial_chunk_;
 
-      char*chunk_ptr_;
-      size_t chunk_remaining_;
-      size_t heap_total_;
+      अक्षर*chunk_ptr_;
+      माप_प्रकार chunk_remaining_;
+      माप_प्रकार heap_योग_2;
 };
 
-#endif /* IVL_permaheap_H */
+#पूर्ण_अगर /* IVL_permaheap_H */

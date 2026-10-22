@@ -1,9 +1,9 @@
 
-#include <cstdarg>
-#include "vpi_user.h"
+#समावेश <cstdarg>
+#समावेश "vpi_user.h"
 
 
-void vvp_vpi_init()
+व्योम vvp_vpi_init()
 {
 }
 

@@ -25,101 +25,101 @@
  * map of a 4-vbit value to a hex digit. The table handles the display
  * of x, X, z, Z, etc.
  */
-static void draw_hex_table(void)
+अटल व्योम draw_hex_table(व्योम)
 {
-      unsigned idx;
+      अचिन्हित idx;
 
-      printf("extern const char hex_digits[256] = {\n");
-      for (idx = 0 ;  idx < 256 ;  idx += 1) {
-	    unsigned cnt_z = 0, cnt_x = 0;
-	    unsigned bv = 0, bdx;
+      म_लिखो("extern const char hex_digits[256] = {\n");
+      क्रम (idx = 0 ;  idx < 256 ;  idx += 1) {
+	    अचिन्हित cnt_z = 0, cnt_x = 0;
+	    अचिन्हित bv = 0, bdx;
 
-	    for (bdx = 0 ;  bdx < 4 ;  bdx += 1) {
-		  switch ((idx >> (bdx * 2)) & 3) {
-		      case 0:
-			break;
-		      case 1:
+	    क्रम (bdx = 0 ;  bdx < 4 ;  bdx += 1) {
+		  चयन ((idx >> (bdx * 2)) & 3) {
+		      हाल 0:
+			अवरोध;
+		      हाल 1:
 			bv |= 1<<bdx;
-			break;
-		      case 2:
+			अवरोध;
+		      हाल 2:
 			cnt_x += 1;
-			break;
-		      case 3:
+			अवरोध;
+		      हाल 3:
 			cnt_z += 1;
-			break;
+			अवरोध;
 		  }
 	    }
 
-	    if (cnt_z == 4)
-		  printf(" 'z',");
+	    अगर (cnt_z == 4)
+		  म_लिखो(" 'z',");
 
-	    else if (cnt_x == 4)
-		  printf(" 'x',");
+	    अन्यथा अगर (cnt_x == 4)
+		  म_लिखो(" 'x',");
 
-	    else if ((cnt_z > 0) && (cnt_x == 0))
-		  printf(" 'Z',");
+	    अन्यथा अगर ((cnt_z > 0) && (cnt_x == 0))
+		  म_लिखो(" 'Z',");
 
-	    else if (cnt_x > 0)
-		  printf(" 'X',");
+	    अन्यथा अगर (cnt_x > 0)
+		  म_लिखो(" 'X',");
 
-	    else
-		  printf(" '%c',", (unsigned)"0123456789abcdef"[bv]);
+	    अन्यथा
+		  म_लिखो(" '%c',", (अचिन्हित)"0123456789abcdef"[bv]);
 
-	    if (((idx+1) % 8) == 0)
-		  printf("\n");
+	    अगर (((idx+1) % 8) == 0)
+		  म_लिखो("\n");
       }
-      printf("};\n");
+      म_लिखो("};\n");
 }
 
-static void draw_oct_table(void)
+अटल व्योम draw_oct_table(व्योम)
 {
-      unsigned idx;
+      अचिन्हित idx;
 
-      printf("extern const char oct_digits[64] = {\n");
-      for (idx = 0 ;  idx < 64 ;  idx += 1) {
-	    unsigned cnt_z = 0, cnt_x = 0;
-	    unsigned bv = 0, bdx;
+      म_लिखो("extern const char oct_digits[64] = {\n");
+      क्रम (idx = 0 ;  idx < 64 ;  idx += 1) {
+	    अचिन्हित cnt_z = 0, cnt_x = 0;
+	    अचिन्हित bv = 0, bdx;
 
-	    for (bdx = 0 ;  bdx < 3 ;  bdx += 1) {
-		  switch ((idx >> (bdx * 2)) & 3) {
-		      case 0:
-			break;
-		      case 1:
+	    क्रम (bdx = 0 ;  bdx < 3 ;  bdx += 1) {
+		  चयन ((idx >> (bdx * 2)) & 3) {
+		      हाल 0:
+			अवरोध;
+		      हाल 1:
 			bv |= 1<<bdx;
-			break;
-		      case 2:
+			अवरोध;
+		      हाल 2:
 			cnt_x += 1;
-			break;
-		      case 3:
+			अवरोध;
+		      हाल 3:
 			cnt_z += 1;
-			break;
+			अवरोध;
 		  }
 	    }
 
-	    if (cnt_z == 3)
-		  printf(" 'z',");
+	    अगर (cnt_z == 3)
+		  म_लिखो(" 'z',");
 
-	    else if (cnt_x == 3)
-		  printf(" 'x',");
+	    अन्यथा अगर (cnt_x == 3)
+		  म_लिखो(" 'x',");
 
-	    else if ((cnt_z > 0) && (cnt_x == 0))
-		  printf(" 'Z',");
+	    अन्यथा अगर ((cnt_z > 0) && (cnt_x == 0))
+		  म_लिखो(" 'Z',");
 
-	    else if (cnt_x > 0)
-		  printf(" 'X',");
+	    अन्यथा अगर (cnt_x > 0)
+		  म_लिखो(" 'X',");
 
-	    else
-		  printf(" '%c',", (unsigned)"01234567"[bv]);
+	    अन्यथा
+		  म_लिखो(" '%c',", (अचिन्हित)"01234567"[bv]);
 
-	    if (((idx+1) % 8) == 0)
-		  printf("\n");
+	    अगर (((idx+1) % 8) == 0)
+		  म_लिखो("\n");
       }
-      printf("};\n");
+      म_लिखो("};\n");
 }
 
-int main(void)
+पूर्णांक मुख्य(व्योम)
 {
       draw_hex_table();
       draw_oct_table();
-      return 0;
+      वापस 0;
 }

@@ -1,5 +1,5 @@
-#ifndef IVL_compile_H
-#define IVL_compile_H
+#अगर_अघोषित IVL_compile_H
+#घोषणा IVL_compile_H
 /*
  * Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)
  *
@@ -31,7 +31,7 @@
  * The file names are kept in this vector. Entry 0 is "N/A" and 1 is
  * for interactive commands.
  */
-extern std::vector<const char*> file_names;
+बाह्य std::vector<स्थिर अक्षर*> file_names;
 
 /*
  * The functions described here are the compile time support
@@ -42,24 +42,24 @@ extern std::vector<const char*> file_names;
  * called once to set stuff up.
  */
 
-extern void compile_init(void);
+बाह्य व्योम compile_init(व्योम);
 
-extern void compile_cleanup(void);
+बाह्य व्योम compile_cleanup(व्योम);
 
-extern bool verbose_flag;
+बाह्य bool verbose_flag;
 
 /*
  * If this file opened, then write debug information to this
  * file. This is used for debugging the VVP runtime itself.
  */
-extern std::ofstream debug_file;
+बाह्य std::ofstream debug_file;
 
 /*
  *  Connect a list of symbols to a contiguous set of ipoints.
  *  Constants C<?> are handled by setting the ival of the ipoint.
  */
-extern void inputs_connect(vvp_net_t*fdx, unsigned argc, struct symb_s*argv);
-extern void input_connect(vvp_net_t*fdx, unsigned port, char*label);
+बाह्य व्योम inputs_connect(vvp_net_t*fdx, अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम निवेश_connect(vvp_net_t*fdx, अचिन्हित port, अक्षर*label);
 
 /*
  * This function is an expansion of the inputs_connect function. It
@@ -67,28 +67,28 @@ extern void input_connect(vvp_net_t*fdx, unsigned port, char*label);
  * nodes to handle arbitrary width nodes, and connects those nodes to
  * the vvp_wide_fun_core object passed in.
  */
-extern void wide_inputs_connect(vvp_wide_fun_core*core,
-				unsigned argc, struct symb_s*argv);
+बाह्य व्योम wide_inputs_connect(vvp_wide_fun_core*core,
+				अचिन्हित argc, काष्ठा symb_s*argv);
 
-extern vvp_net_t* vvp_net_lookup(const char*label);
-extern vpiHandle vvp_lookup_handle(const char*label);
+बाह्य vvp_net_t* vvp_net_lookup(स्थिर अक्षर*label);
+बाह्य vpiHandle vvp_lookup_handle(स्थिर अक्षर*label);
 
 /*
  *  Add a functor to the symbol table
  */
-extern void define_functor_symbol(const char*label, vvp_net_t*ipt);
+बाह्य व्योम define_functor_प्रतीक(स्थिर अक्षर*label, vvp_net_t*ipt);
 
 
 /*
  * This is a count of errors encountered during compilation. If this
  * is non-zero, then simulation is not recommended.
  */
-extern unsigned compile_errors;
+बाह्य अचिन्हित compile_errors;
 
-extern const char* module_path;
-extern void compile_load_vpi_module(char*name);
+बाह्य स्थिर अक्षर* module_path;
+बाह्य व्योम compile_load_vpi_module(अक्षर*name);
 
-extern void compile_vpi_time_precision(long pre);
+बाह्य व्योम compile_vpi_time_precision(दीर्घ pre);
 
 /*
  * This function is called by the parser to compile a functor
@@ -100,9 +100,9 @@ extern void compile_vpi_time_precision(long pre);
  * of the functor. The compile should match those port parameters up
  * to existing functors to manage the linking.
  */
-extern void compile_functor(char*label, char*type, unsigned width,
-			    unsigned ostr0, unsigned ostr1,
-			    unsigned argc, struct symb_s*argv);
+बाह्य व्योम compile_functor(अक्षर*label, अक्षर*type, अचिन्हित width,
+			    अचिन्हित ostr0, अचिन्हित ostr1,
+			    अचिन्हित argc, काष्ठा symb_s*argv);
 
 
 /*
@@ -111,186 +111,186 @@ extern void compile_functor(char*label, char*type, unsigned width,
  * that are blended to make a resolved output. The type string selects
  * a resolution algorithm.
  */
-extern void compile_resolver(char*label, char*type,
-			     unsigned argc, struct symb_s*argv);
+बाह्य व्योम compile_resolver(अक्षर*label, अक्षर*type,
+			     अचिन्हित argc, काष्ठा symb_s*argv);
 
-extern void compile_concat(char*label, unsigned w0, unsigned w1,
-			   unsigned w2, unsigned w3,
-			   unsigned argc, struct symb_s*argv);
+बाह्य व्योम compile_concat(अक्षर*label, अचिन्हित w0, अचिन्हित w1,
+			   अचिन्हित w2, अचिन्हित w3,
+			   अचिन्हित argc, काष्ठा symb_s*argv);
 
-extern void compile_concat8(char*label, unsigned w0, unsigned w1,
-			    unsigned w2, unsigned w3,
-			    unsigned argc, struct symb_s*argv);
+बाह्य व्योम compile_concat8(अक्षर*label, अचिन्हित w0, अचिन्हित w1,
+			    अचिन्हित w2, अचिन्हित w3,
+			    अचिन्हित argc, काष्ठा symb_s*argv);
 
-extern void compile_substitute(char*label, unsigned width,
-			       unsigned soff, unsigned swidth,
-			       unsigned argc, struct symb_s*argv);
+बाह्य व्योम compile_substitute(अक्षर*label, अचिन्हित width,
+			       अचिन्हित soff, अचिन्हित swidth,
+			       अचिन्हित argc, काष्ठा symb_s*argv);
 
 /*
  * Arrange for the system task/function call to have its compiletf
  * function called.
  */
-extern void compile_compiletf(struct __vpiSysTaskCall*);
+बाह्य व्योम compile_compiletf(काष्ठा __vpiSysTaskCall*);
 
 /*
  * Compile delay nodes of various form.
  */
-extern void compile_delay(char*label, unsigned width,
-                          vvp_delay_t*del, struct symb_s input);
-extern void compile_delay(char*label, unsigned width,
-                          unsigned argc, struct symb_s*argv,
+बाह्य व्योम compile_delay(अक्षर*label, अचिन्हित width,
+                          vvp_delay_t*del, काष्ठा symb_s निवेश);
+बाह्य व्योम compile_delay(अक्षर*label, अचिन्हित width,
+                          अचिन्हित argc, काष्ठा symb_s*argv,
                           bool ignore_decay);
 
 /*
  * This is called by the parser to create a part select node.
  * See the PART SELECT STATEMENT section in the README.txt
  */
-extern void compile_part_select(char*label, char*src,
-				unsigned base, unsigned wid);
-extern void compile_part_select_pv(char*label, char*src,
-				   unsigned base, unsigned wid,
-				   unsigned vec_wid);
-extern void compile_part_select_var(char*label, char*src,
-                                    char*var, unsigned wid, bool is_signed);
+बाह्य व्योम compile_part_select(अक्षर*label, अक्षर*src,
+				अचिन्हित base, अचिन्हित wid);
+बाह्य व्योम compile_part_select_pv(अक्षर*label, अक्षर*src,
+				   अचिन्हित base, अचिन्हित wid,
+				   अचिन्हित vec_wid);
+बाह्य व्योम compile_part_select_var(अक्षर*label, अक्षर*src,
+                                    अक्षर*var, अचिन्हित wid, bool is_signed);
 
 /*
  * This is called by the parser to make the various arithmetic and
  * comparison functors.
  */
-extern void compile_arith_pow(char*label, long width, bool signed_flag,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_arith_abs(char*label,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_arith_cast_int(char*label, long width,
-			           unsigned argc, struct symb_s*argv);
-extern void compile_arith_cast_real(char*label, bool signed_flag,
-			            unsigned argc, struct symb_s*argv);
-extern void compile_arith_cast_vec2(char*label, long width,
-				    unsigned argc, struct symb_s*argv);
-extern void compile_arith_div(char*label, long width, bool signed_flag,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_arith_mod(char*label, long width, bool signed_flag,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_arith_mult(char*label, long width,
-			       unsigned argc, struct symb_s*argv);
-extern void compile_arith_sum(char*label, long width,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_arith_sub(char*label, long width,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_cmp_eeq(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_nee(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_eq(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_eqx(char*label, long width,
-			    unsigned argc, struct symb_s*argv);
-extern void compile_cmp_eqz(char*label, long width,
-			    unsigned argc, struct symb_s*argv);
-extern void compile_cmp_ne(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_ge(char*label, long width, bool signed_flag,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_gt(char*label, long width, bool signed_flag,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_weq(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_wne(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
+बाह्य व्योम compile_arith_pow(अक्षर*label, दीर्घ width, bool signed_flag,
+			      अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_arith_abs(अक्षर*label,
+			      अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_arith_cast_int(अक्षर*label, दीर्घ width,
+			           अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_arith_cast_real(अक्षर*label, bool signed_flag,
+			            अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_arith_cast_vec2(अक्षर*label, दीर्घ width,
+				    अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_arith_div(अक्षर*label, दीर्घ width, bool signed_flag,
+			      अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_arith_mod(अक्षर*label, दीर्घ width, bool signed_flag,
+			      अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_arith_mult(अक्षर*label, दीर्घ width,
+			       अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_arith_योग(अक्षर*label, दीर्घ width,
+			      अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_arith_sub(अक्षर*label, दीर्घ width,
+			      अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_cmp_eeq(अक्षर*label, दीर्घ width,
+			   अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_cmp_nee(अक्षर*label, दीर्घ width,
+			   अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_cmp_eq(अक्षर*label, दीर्घ width,
+			   अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_cmp_eqx(अक्षर*label, दीर्घ width,
+			    अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_cmp_eqz(अक्षर*label, दीर्घ width,
+			    अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_cmp_ne(अक्षर*label, दीर्घ width,
+			   अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_cmp_ge(अक्षर*label, दीर्घ width, bool signed_flag,
+			   अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_cmp_gt(अक्षर*label, दीर्घ width, bool signed_flag,
+			   अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_cmp_weq(अक्षर*label, दीर्घ width,
+			   अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_cmp_wne(अक्षर*label, दीर्घ width,
+			   अचिन्हित argc, काष्ठा symb_s*argv);
 
-extern void compile_arith_mult_r(char*label, unsigned argc,
-                                 struct symb_s*argv);
-extern void compile_arith_pow_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_arith_div_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_arith_mod_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_arith_sum_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_arith_sub_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_cmp_eq_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_cmp_ne_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_cmp_ge_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_cmp_gt_r(char*label, unsigned argc, struct symb_s*argv);
+बाह्य व्योम compile_arith_mult_r(अक्षर*label, अचिन्हित argc,
+                                 काष्ठा symb_s*argv);
+बाह्य व्योम compile_arith_pow_r(अक्षर*label, अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_arith_div_r(अक्षर*label, अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_arith_mod_r(अक्षर*label, अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_arith_योग_r(अक्षर*label, अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_arith_sub_r(अक्षर*label, अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_cmp_eq_r(अक्षर*label, अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_cmp_ne_r(अक्षर*label, अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_cmp_ge_r(अक्षर*label, अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_cmp_gt_r(अक्षर*label, अचिन्हित argc, काष्ठा symb_s*argv);
 
-extern void compile_dff(char*label, unsigned width, bool negedge,
-			struct symb_s arg_d,
-			struct symb_s arg_c,
-			struct symb_s arg_e);
+बाह्य व्योम compile_dff(अक्षर*label, अचिन्हित width, bool negedge,
+			काष्ठा symb_s arg_d,
+			काष्ठा symb_s arg_c,
+			काष्ठा symb_s arg_e);
 
-extern void compile_dff_aclr(char*label, unsigned width, bool negedge,
-			     struct symb_s arg_d,
-			     struct symb_s arg_c,
-			     struct symb_s arg_e,
-			     struct symb_s arg_a);
-extern void compile_dff_aset(char*label, unsigned width, bool negedge,
-			     struct symb_s arg_d,
-			     struct symb_s arg_c,
-			     struct symb_s arg_e,
-			     struct symb_s arg_a,
-			     char*asc_value);
+बाह्य व्योम compile_dff_aclr(अक्षर*label, अचिन्हित width, bool negedge,
+			     काष्ठा symb_s arg_d,
+			     काष्ठा symb_s arg_c,
+			     काष्ठा symb_s arg_e,
+			     काष्ठा symb_s arg_a);
+बाह्य व्योम compile_dff_aset(अक्षर*label, अचिन्हित width, bool negedge,
+			     काष्ठा symb_s arg_d,
+			     काष्ठा symb_s arg_c,
+			     काष्ठा symb_s arg_e,
+			     काष्ठा symb_s arg_a,
+			     अक्षर*asc_मूल्य);
 
-extern void compile_latch(char*label, unsigned width,
-			  struct symb_s arg_d,
-			  struct symb_s arg_e);
+बाह्य व्योम compile_latch(अक्षर*label, अचिन्हित width,
+			  काष्ठा symb_s arg_d,
+			  काष्ठा symb_s arg_e);
 
-extern void compile_enum2_type(char*label, long width, bool signed_flag,
-			      std::list<struct enum_name_s>*names);
-extern void compile_enum4_type(char*label, long width, bool signed_flag,
-			      std::list<struct enum_name_s>*names);
+बाह्य व्योम compile_enum2_type(अक्षर*label, दीर्घ width, bool signed_flag,
+			      std::list<काष्ठा enum_name_s>*names);
+बाह्य व्योम compile_enum4_type(अक्षर*label, दीर्घ width, bool signed_flag,
+			      std::list<काष्ठा enum_name_s>*names);
 
-struct __vpiModPath;
-extern __vpiModPath* compile_modpath(char*label,
-                                     unsigned width,
-				     struct symb_s drv,
-				     struct symb_s dest);
-extern void compile_modpath_src(__vpiModPath*dst,
-				char edge_c,
-				const struct symb_s&src,
-				struct numbv_s&vals,
-				const struct symb_s&condit_src,
-				const struct symb_s&path_term_in);
-extern void compile_modpath_src(__vpiModPath*dst,
-				char edge_c,
-				const struct symb_s&src,
-				struct numbv_s&vals,
-				int condit_src, /* match with '0' */
-				const struct symb_s&path_term_in,
+काष्ठा __vpiModPath;
+बाह्य __vpiModPath* compile_modpath(अक्षर*label,
+                                     अचिन्हित width,
+				     काष्ठा symb_s drv,
+				     काष्ठा symb_s dest);
+बाह्य व्योम compile_modpath_src(__vpiModPath*dst,
+				अक्षर edge_c,
+				स्थिर काष्ठा symb_s&src,
+				काष्ठा numbv_s&vals,
+				स्थिर काष्ठा symb_s&condit_src,
+				स्थिर काष्ठा symb_s&path_term_in);
+बाह्य व्योम compile_modpath_src(__vpiModPath*dst,
+				अक्षर edge_c,
+				स्थिर काष्ठा symb_s&src,
+				काष्ठा numbv_s&vals,
+				पूर्णांक condit_src, /* match with '0' */
+				स्थिर काष्ठा symb_s&path_term_in,
 				bool ifnone);
 
-extern void compile_reduce_and(char*label, const struct symb_s&arg);
-extern void compile_reduce_or(char*label, const struct symb_s&arg);
-extern void compile_reduce_xor(char*label, const struct symb_s&arg);
-extern void compile_reduce_nand(char*label, const struct symb_s&arg);
-extern void compile_reduce_nor(char*label, const struct symb_s&arg);
-extern void compile_reduce_xnor(char*label, const struct symb_s&arg);
+बाह्य व्योम compile_reduce_and(अक्षर*label, स्थिर काष्ठा symb_s&arg);
+बाह्य व्योम compile_reduce_or(अक्षर*label, स्थिर काष्ठा symb_s&arg);
+बाह्य व्योम compile_reduce_xor(अक्षर*label, स्थिर काष्ठा symb_s&arg);
+बाह्य व्योम compile_reduce_nand(अक्षर*label, स्थिर काष्ठा symb_s&arg);
+बाह्य व्योम compile_reduce_nor(अक्षर*label, स्थिर काष्ठा symb_s&arg);
+बाह्य व्योम compile_reduce_xnor(अक्षर*label, स्थिर काष्ठा symb_s&arg);
 
-extern void compile_extend_signed(char*label, long width, struct symb_s arg);
+बाह्य व्योम compile_extend_signed(अक्षर*label, दीर्घ width, काष्ठा symb_s arg);
 
-extern void compile_sfunc(char*label, char*name, char*format_string,
-			  long file_idx, long lineno,
-			  unsigned argc, struct symb_s*argv,
-                          char*trigger_label);
+बाह्य व्योम compile_sfunc(अक्षर*label, अक्षर*name, अक्षर*format_string,
+			  दीर्घ file_idx, दीर्घ lineno,
+			  अचिन्हित argc, काष्ठा symb_s*argv,
+                          अक्षर*trigger_label);
 
-extern void compile_repeat(char*label, long width, long repeat,
-			   struct symb_s arg);
+बाह्य व्योम compile_repeat(अक्षर*label, दीर्घ width, दीर्घ repeat,
+			   काष्ठा symb_s arg);
 
-extern void compile_shiftl(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_shiftr(char*label, long width, bool signed_flag,
-			   unsigned argc, struct symb_s*argv);
+बाह्य व्योम compile_shiftl(अक्षर*label, दीर्घ width,
+			   अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_shiftr(अक्षर*label, दीर्घ width, bool signed_flag,
+			   अचिन्हित argc, काष्ठा symb_s*argv);
 
-extern void compile_timescale(long units, long precision);
+बाह्य व्योम compile_timescale(दीर्घ units, दीर्घ precision);
 
-extern void compile_vpi_symbol(const char*label, vpiHandle obj);
-extern void compile_vpi_lookup(vpiHandle *objref, char*label);
+बाह्य व्योम compile_vpi_प्रतीक(स्थिर अक्षर*label, vpiHandle obj);
+बाह्य व्योम compile_vpi_lookup(vpiHandle *objref, अक्षर*label);
 
-extern void compile_param_string(char*label, const char*name, char*value,
+बाह्य व्योम compile_param_string(अक्षर*label, स्थिर अक्षर*name, अक्षर*मूल्य,
                                  bool local_flag,
-                                 long file_idx, long lineno);
-extern void compile_param_logic(char*label, const char*name, char*value,
+                                 दीर्घ file_idx, दीर्घ lineno);
+बाह्य व्योम compile_param_logic(अक्षर*label, स्थिर अक्षर*name, अक्षर*मूल्य,
 				bool signed_flag, bool local_flag,
-                                long file_idx, long lineno);
-extern void compile_param_real(char*label, const char*name, char*value,
+                                दीर्घ file_idx, दीर्घ lineno);
+बाह्य व्योम compile_param_real(अक्षर*label, स्थिर अक्षर*name, अक्षर*मूल्य,
                                bool local_flag,
-                               long file_idx, long lineno);
+                               दीर्घ file_idx, दीर्घ lineno);
 
 /*
  * The resolv_list_s is the base class for a symbol resolve
@@ -311,26 +311,26 @@ extern void compile_param_real(char*label, const char*name, char*value,
  */
 class resolv_list_s {
 
-    public:
-      explicit resolv_list_s(char*lab) : label_(lab) {
-	    next = NULL;
+    खुला:
+      explicit resolv_list_s(अक्षर*lab) : label_(lab) {
+	    अग्र_2 = शून्य;
       }
-      virtual ~resolv_list_s();
+      भव ~resolv_list_s();
 
-      resolv_list_s(const resolv_list_s&) = delete;
-      resolv_list_s& operator=(const resolv_list_s&) = delete;
+      resolv_list_s(स्थिर resolv_list_s&) = delete;
+      resolv_list_s& चालक=(स्थिर resolv_list_s&) = delete;
 
-      virtual bool resolve(bool mes = false) = 0;
+      भव bool resolve(bool mes = false) = 0;
 
-    protected:
-      const char*label() const { return label_; }
+    रक्षित:
+      स्थिर अक्षर*label() स्थिर { वापस label_; }
 
-    private:
-      friend void resolv_submit(class resolv_list_s*cur);
-      friend void compile_cleanup(void);
+    निजी:
+      मित्र व्योम resolv_submit(class resolv_list_s*cur);
+      मित्र व्योम compile_cleanup(व्योम);
 
-      char*label_;
-      class resolv_list_s*next;
+      अक्षर*label_;
+      class resolv_list_s*अग्र_2;
 };
 
 /*
@@ -342,11 +342,11 @@ class resolv_list_s {
  * The text for the label will be deleted by this function, or the
  * cleanup that completes the binding.
  */
-extern void functor_ref_lookup(vvp_net_t**ref, char*lab);
+बाह्य व्योम functor_ref_lookup(vvp_net_t**ref, अक्षर*lab);
 
-extern vpiHandle vpip_make_prop_queue_ref(char* class_label,
-                                          unsigned prop_idx,
-                                          unsigned is_queue_flag);
+बाह्य vpiHandle vpip_make_prop_queue_ref(अक्षर* class_label,
+                                          अचिन्हित prop_idx,
+                                          अचिन्हित is_queue_flag);
 
 /*
  * This function schedules a lookup of the labeled instruction. The
@@ -357,7 +357,7 @@ extern vpiHandle vpip_make_prop_queue_ref(char* class_label,
  * The cptr2 flag tells the lookup to write the code pointer into the
  * cptr2 member of the code, instead of the cptr member.
  */
-extern void code_label_lookup(struct vvp_code_s *code, char *label, bool cptr2);
+बाह्य व्योम code_label_lookup(काष्ठा vvp_code_s *code, अक्षर *label, bool cptr2);
 
 /*
  * The `compile_udp_def' function creates a UDP.  The `table' is a
@@ -369,52 +369,52 @@ extern void code_label_lookup(struct vvp_code_s *code, char *label, bool cptr2);
  * labeled UDP.
  */
 
-extern void compile_udp_def(int sequ, char*label, char *name,
-			    unsigned nin, unsigned init, char **table);
+बाह्य व्योम compile_udp_def(पूर्णांक sequ, अक्षर*label, अक्षर *name,
+			    अचिन्हित nin, अचिन्हित init, अक्षर **table);
 
-extern void compile_udp_functor(char*label, char*type,
-				unsigned argc, struct symb_s*argv);
+बाह्य व्योम compile_udp_functor(अक्षर*label, अक्षर*type,
+				अचिन्हित argc, काष्ठा symb_s*argv);
 
-extern char **compile_udp_table(char **table, char *row);
+बाह्य अक्षर **compile_udp_table(अक्षर **table, अक्षर *row);
 
 /*
  * Memory Instances, Ports, and Initialization
  */
 
-extern void compile_var_array(char*label, char*name,
-			      int last, int first,
-			      int msb, int lsb, char signed_flag);
-extern void compile_var2_array(char*label, char*name,
-			      int last, int first,
-			      int msb, int lsb, bool signed_flag);
-extern void compile_real_array(char*label, char*name,
-			       int last, int first);
-extern void compile_string_array(char*label, char*name,
-				 int last, int first);
-extern void compile_object_array(char*label, char*name,
-				 int last, int first);
-extern void compile_net_array(char*label, char*name,
-			      int last, int first);
-extern void compile_array_alias(char*label, char*name, char*src);
+बाह्य व्योम compile_var_array(अक्षर*label, अक्षर*name,
+			      पूर्णांक last, पूर्णांक first,
+			      पूर्णांक msb, पूर्णांक lsb, अक्षर signed_flag);
+बाह्य व्योम compile_var2_array(अक्षर*label, अक्षर*name,
+			      पूर्णांक last, पूर्णांक first,
+			      पूर्णांक msb, पूर्णांक lsb, bool signed_flag);
+बाह्य व्योम compile_real_array(अक्षर*label, अक्षर*name,
+			       पूर्णांक last, पूर्णांक first);
+बाह्य व्योम compile_string_array(अक्षर*label, अक्षर*name,
+				 पूर्णांक last, पूर्णांक first);
+बाह्य व्योम compile_object_array(अक्षर*label, अक्षर*name,
+				 पूर्णांक last, पूर्णांक first);
+बाह्य व्योम compile_net_array(अक्षर*label, अक्षर*name,
+			      पूर्णांक last, पूर्णांक first);
+बाह्य व्योम compile_array_alias(अक्षर*label, अक्षर*name, अक्षर*src);
 
   /* Index is a net. */
-extern void compile_array_port(char*label, char*name, char*addr);
+बाह्य व्योम compile_array_port(अक्षर*label, अक्षर*name, अक्षर*addr);
   /* Index is a constant address */
-extern void compile_array_port(char*label, char*name, long addr);
+बाह्य व्योम compile_array_port(अक्षर*label, अक्षर*name, दीर्घ addr);
 
-extern void compile_array_cleanup(void);
+बाह्य व्योम compile_array_cleanup(व्योम);
 
 /*
  * Compile the .ufunc statement.
  */
-extern void compile_ufunc_real(char*label, char*code, unsigned wid,
-			  unsigned argc, struct symb_s*argv,
-			  unsigned portc, struct symb_s*portv,
-			  char*scope_label, char*trigger_label);
-extern void compile_ufunc_vec4(char*label, char*code, unsigned wid,
-			  unsigned argc, struct symb_s*argv,
-			  unsigned portc, struct symb_s*portv,
-			  char*scope_label, char*trigger_label);
+बाह्य व्योम compile_ufunc_real(अक्षर*label, अक्षर*code, अचिन्हित wid,
+			  अचिन्हित argc, काष्ठा symb_s*argv,
+			  अचिन्हित portc, काष्ठा symb_s*portv,
+			  अक्षर*scope_label, अक्षर*trigger_label);
+बाह्य व्योम compile_ufunc_vec4(अक्षर*label, अक्षर*code, अचिन्हित wid,
+			  अचिन्हित argc, काष्ठा symb_s*argv,
+			  अचिन्हित portc, काष्ठा symb_s*portv,
+			  अक्षर*scope_label, अक्षर*trigger_label);
 
 /*
  * The compile_event function takes the parts of the event statement
@@ -422,9 +422,9 @@ extern void compile_ufunc_vec4(char*label, char*code, unsigned wid,
  * the functor that receives the signals and the event_t that holds
  * the threads.
  */
-extern void compile_event(char*label, char*type,
-			  unsigned argc, struct symb_s*argv);
-extern void compile_named_event(char*label, char*type, bool local_flag=false);
+बाह्य व्योम compile_event(अक्षर*label, अक्षर*type,
+			  अचिन्हित argc, काष्ठा symb_s*argv);
+बाह्य व्योम compile_named_event(अक्षर*label, अक्षर*type, bool local_flag=false);
 
 
 /*
@@ -436,66 +436,66 @@ extern void compile_named_event(char*label, char*type, bool local_flag=false);
  * symbol table with the address of the instruction.
  */
 
-#define OPERAND_MAX 3
-enum ltype_e { L_NUMB, L_SYMB, L_STRING };
+#घोषणा OPERAND_MAX 3
+क्रमागत ltype_e { L_NUMB, L_SYMB, L_STRING };
 
-struct comp_operands_s {
-      unsigned argc;
-      struct {
-	    enum ltype_e ltype;
-	    union {
-		  unsigned long numb;
-		  struct symb_s symb;
-		  const char   *text;
+काष्ठा comp_operands_s {
+      अचिन्हित argc;
+      काष्ठा {
+	    क्रमागत ltype_e ltype;
+	    जोड़ {
+		  अचिन्हित दीर्घ numb;
+		  काष्ठा symb_s symb;
+		  स्थिर अक्षर   *text;
 	    };
       } argv[OPERAND_MAX];
 };
 
-typedef struct comp_operands_s*comp_operands_t;
+प्रकार काष्ठा comp_operands_s*comp_operands_t;
 
-extern void compile_code(char*label, char*mnem, comp_operands_t opa);
+बाह्य व्योम compile_code(अक्षर*label, अक्षर*mnem, comp_operands_t opa);
 
-extern void compile_file_line(char*label, long file_idx, long lineno,
-                              char*description);
+बाह्य व्योम compile_file_पंक्ति(अक्षर*label, दीर्घ file_idx, दीर्घ lineno,
+                              अक्षर*description);
 
-extern void compile_vpi_call(char*label, char*name,
+बाह्य व्योम compile_vpi_call(अक्षर*label, अक्षर*name,
 			     bool func_as_task_err, bool func_as_task_warn,
-			     long file_idx, long lineno,
-			     unsigned argc, vpiHandle*argv,
-			     unsigned vec4_stack,
-			     unsigned real_stack,
-			     unsigned string_stack);
+			     दीर्घ file_idx, दीर्घ lineno,
+			     अचिन्हित argc, vpiHandle*argv,
+			     अचिन्हित vec4_ढेर,
+			     अचिन्हित real_ढेर,
+			     अचिन्हित string_ढेर);
 
 /* Compile a function call. The vbit and vwid encode the return
    type. If the vwid >0, the return type is a vector. If the vwid is
    <0, the return type is -vpiRealConst or some other constant subtype
    code that represents the function type. */
-extern void compile_vpi_func_call(char*label, char*name,
-				  int val_type, unsigned val_wid,
-				  long file_idx, long lineno,
-				  unsigned argc, vpiHandle*argv,
-				  unsigned vec4_stack,
-				  unsigned real_stack,
-				  unsigned string_stack);
-extern void print_vpi_call_errors();
+बाह्य व्योम compile_vpi_func_call(अक्षर*label, अक्षर*name,
+				  पूर्णांक val_type, अचिन्हित val_wid,
+				  दीर्घ file_idx, दीर्घ lineno,
+				  अचिन्हित argc, vpiHandle*argv,
+				  अचिन्हित vec4_ढेर,
+				  अचिन्हित real_ढेर,
+				  अचिन्हित string_ढेर);
+बाह्य व्योम print_vpi_call_errors();
 
-extern void compile_codelabel(char*label);
+बाह्य व्योम compile_codelabel(अक्षर*label);
 
 /*
  * The parser uses these functions to compile .scope statements.
  * The implementations of these live in the vpi_scope.cc file.
  */
-extern void compile_scope_decl(char*typ, char*lab, char*nam, char*tnam,
-                               char*par, long file_idx, long lineno,
-                               long def_file_idx, long def_lineno,
-                               long is_cell);
-extern void compile_scope_recall(char*sym);
+बाह्य व्योम compile_scope_decl(अक्षर*typ, अक्षर*lab, अक्षर*nam, अक्षर*tnam,
+                               अक्षर*par, दीर्घ file_idx, दीर्घ lineno,
+                               दीर्घ def_file_idx, दीर्घ def_lineno,
+                               दीर्घ is_cell);
+बाह्य व्योम compile_scope_recall(अक्षर*sym);
 
 /*
  * The parser uses this function to declare a thread. The start_sym is
  * the start instruction, and must already be defined.
  */
-extern void compile_thread(char*start_sym, char*flag);
+बाह्य व्योम compile_thread(अक्षर*start_sym, अक्षर*flag);
 
 /*
  * This function is called to create a var vector with the given name.
@@ -504,15 +504,15 @@ extern void compile_thread(char*start_sym, char*flag);
  * object codes that identify the type: vpiReg, vpiIntegerVar,
  * vpiIntVar, etc.
  */
-extern void compile_variable(char*label, char*name,
-			     int msb, int lsb, int vpi_type_code,
+बाह्य व्योम compile_variable(अक्षर*label, अक्षर*name,
+			     पूर्णांक msb, पूर्णांक lsb, पूर्णांक vpi_type_code,
 			     bool signed_flag, bool local_flag);
 
-extern void compile_var_real(char*label, char*name, bool local_flag);
-extern void compile_var_string(char*label, char*name);
-extern void compile_var_darray(char*label, char*name, unsigned size);
-extern void compile_var_cobject(char*label, char*name);
-extern void compile_var_queue(char*label, char*name, unsigned size);
+बाह्य व्योम compile_var_real(अक्षर*label, अक्षर*name, bool local_flag);
+बाह्य व्योम compile_var_string(अक्षर*label, अक्षर*name);
+बाह्य व्योम compile_var_darray(अक्षर*label, अक्षर*name, अचिन्हित आकार);
+बाह्य व्योम compile_var_cobject(अक्षर*label, अक्षर*name);
+बाह्य व्योम compile_var_queue(अक्षर*label, अक्षर*name, अचिन्हित आकार);
 
 /*
  * This function is used to create a scope port
@@ -522,7 +522,7 @@ extern void compile_var_queue(char*label, char*name, unsigned size);
  * nets connected through module ports.
  */
 
-extern void compile_port_info( unsigned index, int vpi_port_type, unsigned width, const char *name, char* buffer );
+बाह्य व्योम compile_port_info( अचिन्हित सूचकांक, पूर्णांक vpi_port_type, अचिन्हित width, स्थिर अक्षर *name, अक्षर* बफर );
 
 
 /*
@@ -536,40 +536,40 @@ extern void compile_port_info( unsigned index, int vpi_port_type, unsigned width
  *   vpiIntVar -- 2-value logic
  *  -vpiLogic  -- 8-value (i.e. strength aware) logic
  */
-extern void compile_net(char*label, char*name, int msb, int lsb,
-			int vpi_type_code, bool signed_flag, bool local_flag,
-			unsigned argc, struct symb_s*argv);
+बाह्य व्योम compile_net(अक्षर*label, अक्षर*name, पूर्णांक msb, पूर्णांक lsb,
+			पूर्णांक vpi_type_code, bool signed_flag, bool local_flag,
+			अचिन्हित argc, काष्ठा symb_s*argv);
 
-extern void compile_net_real(char*label, char*name,
-			     int msb, int lsb, bool local_flag,
-			     unsigned argc, struct symb_s*argv);
+बाह्य व्योम compile_net_real(अक्षर*label, अक्षर*name,
+			     पूर्णांक msb, पूर्णांक lsb, bool local_flag,
+			     अचिन्हित argc, काष्ठा symb_s*argv);
 
-extern void compile_netw(char*label, char*array_label, unsigned long array_addr,
-			 int msb, int lsb, int vpi_type_code, bool signed_flag,
-			 unsigned argc, struct symb_s*argv);
+बाह्य व्योम compile_netw(अक्षर*label, अक्षर*array_label, अचिन्हित दीर्घ array_addr,
+			 पूर्णांक msb, पूर्णांक lsb, पूर्णांक vpi_type_code, bool signed_flag,
+			 अचिन्हित argc, काष्ठा symb_s*argv);
 
-extern void compile_netw_real(char*label, char*array_symbol,
-			      unsigned long array_addr,
-			      int msb, int lsb,
-			      unsigned argc, struct symb_s*argv);
+बाह्य व्योम compile_netw_real(अक्षर*label, अक्षर*array_प्रतीक,
+			      अचिन्हित दीर्घ array_addr,
+			      पूर्णांक msb, पूर्णांक lsb,
+			      अचिन्हित argc, काष्ठा symb_s*argv);
 
 
-extern void compile_island(char*label, char*type);
-extern void compile_island_port(char*label, char*island, char*src);
-extern void compile_island_import(char*label, char*island, char*src);
-extern void compile_island_export(char*label, char*island);
-extern void compile_island_cleanup(void);
+बाह्य व्योम compile_island(अक्षर*label, अक्षर*type);
+बाह्य व्योम compile_island_port(अक्षर*label, अक्षर*island, अक्षर*src);
+बाह्य व्योम compile_island_import(अक्षर*label, अक्षर*island, अक्षर*src);
+बाह्य व्योम compile_island_export(अक्षर*label, अक्षर*island);
+बाह्य व्योम compile_island_cleanup(व्योम);
 
-extern void compile_island_tran(char*label);
-extern void compile_island_tranif(int sense, char*island,
-				  char*ba, char*bb, char*src, bool resistive);
-extern void compile_island_tranvp(char*island, char*ba, char*bb,
-				  unsigned width, unsigned part, unsigned off);
+बाह्य व्योम compile_island_tran(अक्षर*label);
+बाह्य व्योम compile_island_tranif(पूर्णांक sense, अक्षर*island,
+				  अक्षर*ba, अक्षर*bb, अक्षर*src, bool resistive);
+बाह्य व्योम compile_island_tranvp(अक्षर*island, अक्षर*ba, अक्षर*bb,
+				  अचिन्हित width, अचिन्हित part, अचिन्हित off);
 
-extern void delete_udp_symbols(void);
+बाह्य व्योम delete_udp_symbols(व्योम);
 
-extern void compile_class_start(char*lab, char*nam, unsigned nprop);
-extern void compile_class_property(unsigned idx, char*nam, char*typ, uint64_t array_size);
-extern void compile_class_done(void);
+बाह्य व्योम compile_class_start(अक्षर*lab, अक्षर*nam, अचिन्हित nprop);
+बाह्य व्योम compile_class_property(अचिन्हित idx, अक्षर*nam, अक्षर*typ, uint64_t array_आकार_2);
+बाह्य व्योम compile_class_done(व्योम);
 
-#endif /* IVL_compile_H */
+#पूर्ण_अगर /* IVL_compile_H */

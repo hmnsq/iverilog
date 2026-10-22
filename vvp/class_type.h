@@ -1,5 +1,5 @@
-#ifndef IVL_class_type_H
-#define IVL_class_type_H
+#अगर_अघोषित IVL_class_type_H
+#घोषणा IVL_class_type_H
 /*
  * Copyright (c) 2012-2025 Stephen Williams (steve@icarus.com)
  *
@@ -31,58 +31,58 @@ class vvp_vector4_t;
  * uses this information to figure out how to construct an actual
  * instance.
  */
-class class_type : public __vpiHandle {
+class class_type : खुला __vpiHandle {
 
-    public:
-      struct inst_x;
-      typedef inst_x*inst_t;
+    खुला:
+      काष्ठा inst_x;
+      प्रकार inst_x*inst_t;
 
-    public:
-      explicit class_type(const std::string&nam, size_t nprop);
+    खुला:
+      explicit class_type(स्थिर std::string&nam, माप_प्रकार nprop);
       ~class_type() override;
 
 	// This is the name of the class type.
-      inline const std::string&class_name(void) const { return class_name_; }
+      अंतरभूत स्थिर std::string&class_name(व्योम) स्थिर { वापस class_name_; }
 	// Number of properties in the class definition.
-      inline size_t property_count(void) const { return properties_.size(); }
+      अंतरभूत माप_प्रकार property_गिनती(व्योम) स्थिर { वापस properties_.आकार(); }
 
 	// Set the details about the property. This is used during
 	// parse of the .vvp file to fill in the details of the
 	// property for the class definition.
-      void set_property(size_t idx, const std::string&name, const std::string&type, uint64_t array_size);
+      व्योम set_property(माप_प्रकार idx, स्थिर std::string&name, स्थिर std::string&type, uint64_t array_आकार_2);
 
 	// This method is called after all the properties are
 	// defined. This calculates information about the definition.
-      void finish_setup(void);
+      व्योम finish_setup(व्योम);
 
-    public:
+    खुला:
 	// Constructors and destructors for making instances.
-      inst_t instance_new() const;
-      void instance_delete(inst_t) const;
+      inst_t instance_new() स्थिर;
+      व्योम instance_delete(inst_t) स्थिर;
 
-      void set_vec4(inst_t inst, size_t pid, const vvp_vector4_t&val) const;
-      void get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) const;
-      void set_real(inst_t inst, size_t pid, double val) const;
-      double get_real(inst_t inst, size_t pid) const;
-      void set_string(inst_t inst, size_t pid, const std::string&val) const;
-      std::string get_string(inst_t inst, size_t pid) const;
-      void set_object(inst_t inst, size_t pid, const vvp_object_t&val, size_t idx) const;
-      void get_object(inst_t inst, size_t pid, vvp_object_t&val, size_t idx) const;
+      व्योम set_vec4(inst_t inst, माप_प्रकार pid, स्थिर vvp_vector4_t&val) स्थिर;
+      व्योम get_vec4(inst_t inst, माप_प्रकार pid, vvp_vector4_t&val) स्थिर;
+      व्योम set_real(inst_t inst, माप_प्रकार pid, द्विगुन val) स्थिर;
+      द्विगुन get_real(inst_t inst, माप_प्रकार pid) स्थिर;
+      व्योम set_string(inst_t inst, माप_प्रकार pid, स्थिर std::string&val) स्थिर;
+      std::string get_string(inst_t inst, माप_प्रकार pid) स्थिर;
+      व्योम set_object(inst_t inst, माप_प्रकार pid, स्थिर vvp_object_t&val, माप_प्रकार idx) स्थिर;
+      व्योम get_object(inst_t inst, माप_प्रकार pid, vvp_object_t&val, माप_प्रकार idx) स्थिर;
 
-      void copy_property(inst_t dst, size_t idx, inst_t src) const;
+      व्योम copy_property(inst_t dst, माप_प्रकार idx, inst_t src) स्थिर;
 
-    public: // VPI related methods
-      int get_type_code(void) const override;
+    खुला: // VPI related methods
+      पूर्णांक get_type_code(व्योम) स्थिर override;
 
-    private:
+    निजी:
       std::string class_name_;
 
-      struct prop_t {
+      काष्ठा prop_t {
 	    std::string name;
 	    class_property_t*type;
       };
       std::vector<prop_t> properties_;
-      size_t instance_size_;
+      माप_प्रकार instance_आकार_2;
 };
 
-#endif /* IVL_class_type_H */
+#पूर्ण_अगर /* IVL_class_type_H */

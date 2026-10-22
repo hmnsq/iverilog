@@ -37,7 +37,7 @@
    BIT4_1) or will propagate an initial value of 'bx. From then on
    the flip-flop operates normally. */
 
-vvp_dff::vvp_dff(unsigned width, bool negedge)
+vvp_dff::vvp_dff(अचिन्हित width, bool negedge)
 : clk_(BIT4_X), ena_(BIT4_X), asc_(BIT4_Z), d_(width, BIT4_X)
 {
       clk_active_ = negedge ? BIT4_0 : BIT4_1;
@@ -47,63 +47,63 @@ vvp_dff::~vvp_dff()
 {
 }
 
-vvp_dff_aclr::vvp_dff_aclr(unsigned width, bool negedge)
+vvp_dff_aclr::vvp_dff_aclr(अचिन्हित width, bool negedge)
 : vvp_dff(width, negedge)
 {
 }
 
-vvp_dff_aset::vvp_dff_aset(unsigned width, bool negedge)
+vvp_dff_aset::vvp_dff_aset(अचिन्हित width, bool negedge)
 : vvp_dff(width, negedge)
 {
 }
 
-vvp_dff_asc::vvp_dff_asc(unsigned width, bool negedge, const char*asc_value)
-: vvp_dff(width, negedge), asc_value_(c4string_to_vector4(asc_value))
+vvp_dff_asc::vvp_dff_asc(अचिन्हित width, bool negedge, स्थिर अक्षर*asc_मूल्य)
+: vvp_dff(width, negedge), asc_मूल्य_2(c4string_to_vector4(asc_मूल्य))
 {
 }
 
-void vvp_dff::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+व्योम vvp_dff::recv_vec4(vvp_net_ptr_t port, स्थिर vvp_vector4_t&bit,
                         vvp_context_t)
 {
       vvp_bit4_t tmp;
 
-      switch (port.port()) {
+      चयन (port.port()) {
 
-	  case 0: // D
+	  हाल 0: // D
 	    d_ = bit;
-	    break;
+	    अवरोध;
 
-	  case 1: // CLK
-	    assert(bit.size() == 1);
-	    if (asc_ != BIT4_0)
-		  break;
-	    if (ena_ != BIT4_1)
-		  break;
+	  हाल 1: // CLK
+	    निश्चित(bit.size() == 1);
+	    अगर (asc_ != BIT4_0)
+		  अवरोध;
+	    अगर (ena_ != BIT4_1)
+		  अवरोध;
 	    tmp = clk_;
 	    clk_ = bit.value(0);
-	    if (clk_ == clk_active_ && tmp != clk_active_)
+	    अगर (clk_ == clk_active_ && tmp != clk_active_)
 		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	    अवरोध;
 
-	  case 2: // CE
-	    assert(bit.size() == 1);
+	  हाल 2: // CE
+	    निश्चित(bit.size() == 1);
 	    ena_ = bit.value(0);
-	    break;
+	    अवरोध;
 
-	  case 3: // asynch SET/CLR
-	    assert(bit.size() == 1);
+	  हाल 3: // asynch SET/CLR
+	    निश्चित(bit.size() == 1);
 	    tmp = asc_;
 	    asc_ = bit.value(0);
-	    if (asc_ == BIT4_1 && tmp != BIT4_1)
+	    अगर (asc_ == BIT4_1 && tmp != BIT4_1)
 		  recv_async(port);
-	    else if (tmp == BIT4_Z)
+	    अन्यथा अगर (tmp == BIT4_Z)
 		  port.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
-	    break;
+	    अवरोध;
       }
 }
 
-void vvp_dff::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			   unsigned base, unsigned vwid, vvp_context_t ctx)
+व्योम vvp_dff::recv_vec4_pv(vvp_net_ptr_t ptr, स्थिर vvp_vector4_t&bit,
+			   अचिन्हित base, अचिन्हित vwid, vvp_context_t ctx)
 {
       recv_vec4_pv_(ptr, bit, base, vwid, ctx);
 }
@@ -115,86 +115,86 @@ void vvp_dff::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
  * NOTE: Don't touch the d_ value, because that tracks the D input,
  * which may be needed when the device is clocked afterwards.
  */
-void vvp_dff::recv_async(vvp_net_ptr_t)
+व्योम vvp_dff::recv_async(vvp_net_ptr_t)
 {
 	// The base dff does not have an asynchronous set/clr input.
-      assert(0);
+      निश्चित(0);
 }
 
-void vvp_dff_aclr::recv_async(vvp_net_ptr_t port)
+व्योम vvp_dff_aclr::recv_async(vvp_net_ptr_t port)
 {
       schedule_propagate_vector(port.ptr(), 0, vvp_vector4_t(d_.size(), BIT4_0));
 }
 
-void vvp_dff_aset::recv_async(vvp_net_ptr_t port)
+व्योम vvp_dff_aset::recv_async(vvp_net_ptr_t port)
 {
       schedule_propagate_vector(port.ptr(), 0, vvp_vector4_t(d_.size(), BIT4_1));
 }
 
-void vvp_dff_asc::recv_async(vvp_net_ptr_t port)
+व्योम vvp_dff_asc::recv_async(vvp_net_ptr_t port)
 {
-      schedule_propagate_vector(port.ptr(), 0, asc_value_);
+      schedule_propagate_vector(port.ptr(), 0, asc_मूल्य_2);
 }
 
-void compile_dff(char*label, unsigned width, bool negedge,
-		 struct symb_s arg_d,
-		 struct symb_s arg_c,
-		 struct symb_s arg_e)
+व्योम compile_dff(अक्षर*label, अचिन्हित width, bool negedge,
+		 काष्ठा symb_s arg_d,
+		 काष्ठा symb_s arg_c,
+		 काष्ठा symb_s arg_e)
 {
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_dff*fun = new vvp_dff(width, negedge);
+      vvp_net_t*ptr = नया vvp_net_t;
+      vvp_dff*fun = नया vvp_dff(width, negedge);
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_c.text);
-      input_connect(ptr, 2, arg_e.text);
+      define_functor_प्रतीक(label, ptr);
+      मुक्त(label);
+      निवेश_connect(ptr, 0, arg_d.text);
+      निवेश_connect(ptr, 1, arg_c.text);
+      निवेश_connect(ptr, 2, arg_e.text);
 
       vvp_vector4_t init_val = vvp_vector4_t(1, BIT4_0);
       schedule_init_vector(vvp_net_ptr_t(ptr,3), init_val);
 }
 
-void compile_dff_aclr(char*label, unsigned width, bool negedge,
-		      struct symb_s arg_d,
-		      struct symb_s arg_c,
-		      struct symb_s arg_e,
-		      struct symb_s arg_a)
+व्योम compile_dff_aclr(अक्षर*label, अचिन्हित width, bool negedge,
+		      काष्ठा symb_s arg_d,
+		      काष्ठा symb_s arg_c,
+		      काष्ठा symb_s arg_e,
+		      काष्ठा symb_s arg_a)
 {
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_dff*fun = new vvp_dff_aclr(width, negedge);
+      vvp_net_t*ptr = नया vvp_net_t;
+      vvp_dff*fun = नया vvp_dff_aclr(width, negedge);
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_c.text);
-      input_connect(ptr, 2, arg_e.text);
-      input_connect(ptr, 3, arg_a.text);
+      define_functor_प्रतीक(label, ptr);
+      मुक्त(label);
+      निवेश_connect(ptr, 0, arg_d.text);
+      निवेश_connect(ptr, 1, arg_c.text);
+      निवेश_connect(ptr, 2, arg_e.text);
+      निवेश_connect(ptr, 3, arg_a.text);
 }
 
-void compile_dff_aset(char*label, unsigned width, bool negedge,
-		      struct symb_s arg_d,
-		      struct symb_s arg_c,
-		      struct symb_s arg_e,
-		      struct symb_s arg_a,
-		      char*asc_value)
+व्योम compile_dff_aset(अक्षर*label, अचिन्हित width, bool negedge,
+		      काष्ठा symb_s arg_d,
+		      काष्ठा symb_s arg_c,
+		      काष्ठा symb_s arg_e,
+		      काष्ठा symb_s arg_a,
+		      अक्षर*asc_मूल्य)
 {
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_net_t*ptr = नया vvp_net_t;
       vvp_dff*fun;
-      if (asc_value) {
-	    assert(c4string_test(asc_value));
-	    fun = new vvp_dff_asc(width, negedge, asc_value);
-	    free(asc_value);
-      } else {
-	    fun = new vvp_dff_aset(width, negedge);
+      अगर (asc_मूल्य) {
+	    निश्चित(c4string_test(asc_मूल्य));
+	    fun = नया vvp_dff_asc(width, negedge, asc_मूल्य);
+	    मुक्त(asc_मूल्य);
+      } अन्यथा {
+	    fun = नया vvp_dff_aset(width, negedge);
       }
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_c.text);
-      input_connect(ptr, 2, arg_e.text);
-      input_connect(ptr, 3, arg_a.text);
+      define_functor_प्रतीक(label, ptr);
+      मुक्त(label);
+      निवेश_connect(ptr, 0, arg_d.text);
+      निवेश_connect(ptr, 1, arg_c.text);
+      निवेश_connect(ptr, 2, arg_e.text);
+      निवेश_connect(ptr, 3, arg_a.text);
 }

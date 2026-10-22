@@ -20,9 +20,9 @@
 # include  "codes.h"
 # include  "statistics.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
+#अगर_घोषित CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#पूर्ण_अगर
 # include  <cstring>
 # include  <cassert>
 
@@ -33,102 +33,102 @@
  * instruction to branch to the next chunk. This handles the case
  * where the program counter steps off the end of a chunk.
  */
-const unsigned code_chunk_size = 1024;
+स्थिर अचिन्हित code_chunk_आकार = 1024;
 
-static struct vvp_code_s *first_chunk = 0;
-static struct vvp_code_s *current_chunk = 0;
-static unsigned current_within_chunk = 0;
+अटल काष्ठा vvp_code_s *first_chunk = 0;
+अटल काष्ठा vvp_code_s *current_chunk = 0;
+अटल अचिन्हित current_within_chunk = 0;
 
 /*
  * This initializes the code space. It sets up the first code chunk,
  * and places at address 0 a ZOMBIE instruction.
  */
-void codespace_init(void)
+व्योम codespace_init(व्योम)
 {
-      assert(current_chunk == 0);
-      first_chunk = new struct vvp_code_s [code_chunk_size];
+      निश्चित(current_chunk == 0);
+      first_chunk = नया काष्ठा vvp_code_s [code_chunk_आकार];
       current_chunk = first_chunk;
 
       current_chunk[0].opcode = &of_ZOMBIE;
 
-      current_chunk[code_chunk_size-1].opcode = &of_CHUNK_LINK;
-      current_chunk[code_chunk_size-1].cptr = 0;
+      current_chunk[code_chunk_आकार-1].opcode = &of_CHUNK_LINK;
+      current_chunk[code_chunk_आकार-1].cptr = 0;
 
       current_within_chunk = 1;
 
-      count_opcodes = 0;
-      size_opcodes += code_chunk_size * sizeof (struct vvp_code_s);
+      गिनती_opcodes = 0;
+      आकार_opcodes += code_chunk_आकार * माप (काष्ठा vvp_code_s);
 }
 
-vvp_code_t codespace_next(void)
+vvp_code_t codespace_अग्र(व्योम)
 {
-      if (current_within_chunk == (code_chunk_size-1)) {
-	    current_chunk[code_chunk_size-1].cptr
-		  = new struct vvp_code_s [code_chunk_size];
-	    current_chunk = current_chunk[code_chunk_size-1].cptr;
+      अगर (current_within_chunk == (code_chunk_आकार-1)) {
+	    current_chunk[code_chunk_आकार-1].cptr
+		  = नया काष्ठा vvp_code_s [code_chunk_आकार];
+	    current_chunk = current_chunk[code_chunk_आकार-1].cptr;
 
 	      /* Put a link opcode on the end of the chunk. */
-	    current_chunk[code_chunk_size-1].opcode = &of_CHUNK_LINK;
-	    current_chunk[code_chunk_size-1].cptr   = 0;
+	    current_chunk[code_chunk_आकार-1].opcode = &of_CHUNK_LINK;
+	    current_chunk[code_chunk_आकार-1].cptr   = 0;
 
 	    current_within_chunk = 0;
 
-	    size_opcodes += code_chunk_size * sizeof (struct vvp_code_s);
+	    आकार_opcodes += code_chunk_आकार * माप (काष्ठा vvp_code_s);
       }
 
       vvp_code_t res = current_chunk + current_within_chunk;
-      return res;
+      वापस res;
 }
 
-vvp_code_t codespace_allocate(void)
+vvp_code_t codespace_allocate(व्योम)
 {
-      vvp_code_t res = codespace_next();
+      vvp_code_t res = codespace_अग्र();
       current_within_chunk += 1;
-      count_opcodes += 1;
+      गिनती_opcodes += 1;
 
-      memset(res, 0, sizeof(*res));
+      स_रखो(res, 0, माप(*res));
 
-      return res;
+      वापस res;
 }
 
-vvp_code_t codespace_null(void)
+vvp_code_t codespace_null(व्योम)
 {
-      return first_chunk + 0;
+      वापस first_chunk + 0;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void codespace_delete(void)
+#अगर_घोषित CHECK_WITH_VALGRIND
+व्योम codespace_delete(व्योम)
 {
       vvp_code_t cur = first_chunk;
 
 	/* If there are no opcodes then just delete the code space. */
-      if (count_opcodes == 0) {
-	    delete [] cur;
-	    return;
+      अगर (गिनती_opcodes == 0) {
+	    मिटाओ [] cur;
+	    वापस;
       }
 
-      do {
-	    vvp_code_t next = cur[code_chunk_size-1].cptr;
-	    for (unsigned idx = 0 ; idx < code_chunk_size; idx += 1) {
-		  count_opcodes -= 1;
-		  if ((cur+idx)->opcode == &of_VPI_CALL) {
+      करो {
+	    vvp_code_t अग्र_2 = cur[code_chunk_आकार-1].cptr;
+	    क्रम (अचिन्हित idx = 0 ; idx < code_chunk_आकार; idx += 1) {
+		  गिनती_opcodes -= 1;
+		  अगर ((cur+idx)->opcode == &of_VPI_CALL) {
 			vpi_call_delete((cur+idx)->handle);
-		  } else if (((cur+idx)->opcode == &of_EXEC_UFUNC_REAL) ||
+		  } अन्यथा अगर (((cur+idx)->opcode == &of_EXEC_UFUNC_REAL) ||
 		             ((cur+idx)->opcode == &of_EXEC_UFUNC_VEC4)) {
 			exec_ufunc_delete((cur+idx));
-		  } else if ((cur+idx)->opcode == &of_FILE_LINE) {
-			delete((cur+idx)->handle);
-		  } else if (((cur+idx)->opcode == &of_CONCATI_STR) ||
+		  } अन्यथा अगर ((cur+idx)->opcode == &of_FILE_पंक्ति) {
+			मिटाओ((cur+idx)->handle);
+		  } अन्यथा अगर (((cur+idx)->opcode == &of_CONCATI_STR) ||
 		             ((cur+idx)->opcode == &of_NEW_DARRAY) ||
 		             ((cur+idx)->opcode == &of_PUSHI_STR)) {
-			delete [] ((cur+idx)->text);
+			मिटाओ [] ((cur+idx)->text);
 		  }
-		  if (count_opcodes == 0) break;
+		  अगर (गिनती_opcodes == 0) अवरोध;
 	    }
 	      /* Don't count the &of_CHUNK_LINK opcode. */
-	    if (count_opcodes != 0) count_opcodes += 1;
-	    delete [] cur;
-	    cur = next;
-      } while (cur != 0);
+	    अगर (गिनती_opcodes != 0) गिनती_opcodes += 1;
+	    मिटाओ [] cur;
+	    cur = अग्र_2;
+      } जबतक (cur != 0);
 }
-#endif
+#पूर्ण_अगर
