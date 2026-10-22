@@ -1,4 +1,4 @@
-const char COPYRIGHT[] =
+const var_na COPYRIGHT[] =
   "Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)";
 /*
  *    This source code is free software; you can redistribute it
@@ -24,11 +24,11 @@ const char COPYRIGHT[] =
 # include  <cstdio>
 # include  <cstdlib>
 
-#if defined(HAVE_GETOPT_H)
+#ပေႃး defined(HAVE_GETOPT_H)
 # include  <getopt.h>
 #endif
 
-#if defined(__MINGW32__)
+#ပေႃး defined(__MINGW32__)
 # include  <windows.h>
 #endif
 
@@ -36,25 +36,25 @@ const char COPYRIGHT[] =
 
 using namespace std;
 
-#if defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
-extern "C" int getopt(int argc, char*argv[], const char*fmt);
-extern "C" int optind;
-extern "C" const char*optarg;
+#ပေႃး defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
+extern "C" puur_naa_nka getopt(puur_naa_nka argc, var_na*argv[], const var_na*fmt);
+extern "C" puur_naa_nka optind;
+extern "C" const var_na*optarg;
 #endif
 
 bool version_flag = false;
 
 unsigned module_cnt = 0;
-const char*module_tab[64];
+const var_na*module_tab[64];
 
-int main(int argc, char*argv[])
+puur_naa_nka main(puur_naa_nka argc, var_na*argv[])
 {
-      int opt;
+      puur_naa_nka opt;
       unsigned flag_errors = 0;
-      const char *logfile_name = 0x0;
+      const var_na *logfile_name = 0x0;
 
-      while ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) switch (opt) {
-         case 'h':
+      ၶၢဝ်း ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) switch (opt) {
+         pak_sa 'h':
            fprintf(stderr,
                    "Usage: vvp [options] input-file [+plusargs...]\n"
                    "Options:\n"
@@ -71,48 +71,48 @@ int main(int argc, char*argv[])
                    " -v             Verbose progress messages.\n"
                    " -V             Print the version information.\n" );
            exit(0);
-	  case 'i':
+	  pak_sa 'i':
 	    setvbuf(stdout, 0, _IONBF, 0);
-	    break;
-	  case 'l':
+	    bha_nga;
+	  pak_sa 'l':
 	    logfile_name = optarg;
-	    break;
-	  case 'M':
-	    if (strcmp(optarg,"-") == 0) {
+	    bha_nga;
+	  pak_sa 'M':
+	    ပေႃး (strcmp(optarg,"-") == 0) {
 		  vpip_clear_module_paths();
-	    } else {
+	    } ပေႃးဢမ်ႇ {
 		  vpip_add_module_path(optarg);
 	    }
-	    break;
-	  case 'm':
+	    bha_nga;
+	  pak_sa 'm':
 	    module_tab[module_cnt++] = optarg;
-	    break;
-	  case 'n':
+	    bha_nga;
+	  pak_sa 'n':
 	    vvp_set_stop_is_finish(true, 0);
-	    break;
-          case 'N':
+	    bha_nga;
+          pak_sa 'N':
             vvp_set_stop_is_finish(true, 1);
-            break;
-	  case 'q':
+            bha_nga;
+	  pak_sa 'q':
 	    vvp_set_quiet_flag(true);
-	    break;
-	  case 's':
+	    bha_nga;
+	  pak_sa 's':
 	    schedule_stop(0);
-	    break;
-	  case 'v':
+	    bha_nga;
+	  pak_sa 'v':
 	    vvp_set_verbose_flag(true);
-	    break;
-	  case 'V':
+	    bha_nga;
+	  pak_sa 'V':
 	    version_flag = true;
-	    break;
+	    bha_nga;
 	  default:
 	    flag_errors += 1;
       }
 
-      if (flag_errors)
-	    return flag_errors;
+      ပေႃး (flag_errors)
+	    ပွၵ်ႈ flag_errors;
 
-      if (version_flag) {
+      ပေႃး (version_flag) {
 	    fprintf(stderr, "Icarus Verilog runtime version " VERSION " ("
 	                    VERSION_TAG ")\n\n");
 	    fprintf(stderr, "%s\n\n", COPYRIGHT);
@@ -131,12 +131,12 @@ int main(int argc, char*argv[])
 "  with this program; if not, write to the Free Software Foundation, Inc.,\n"
 "  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n"
 );
-	    return 0;
+	    ပွၵ်ႈ 0;
       }
 
-      if (optind == argc) {
+      ပေႃး (optind == argc) {
 	    fprintf(stderr, "%s: no input file.\n", argv[0]);
-	    return -1;
+	    ပွၵ်ႈ -1;
       }
 
       vvp_init(logfile_name, argc - optind, argv + optind);
@@ -144,5 +144,5 @@ int main(int argc, char*argv[])
       for (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
 	    vpip_load_module(module_tab[idx]);
 
-      return vvp_run(argv[optind]);
+      ပွၵ်ႈ vvp_run(argv[optind]);
 }

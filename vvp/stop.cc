@@ -42,29 +42,29 @@
 
 __vpiScope*stop_current_scope = 0;
 bool stop_is_finish = false;  /* When set, $stop acts like $finish (set in main.cc). */
-int  stop_is_finish_exit_code = 0;
+puur_naa_nka  stop_is_finish_exit_code = 0;
 
 #ifndef USE_READLINE
-static char* readline_stub(const char*prompt)
+static var_na* readline_stub(const var_na*prompt)
 {
-      char buf[256];
+      var_na buf[256];
 
-      if (prompt && prompt[0]) {
+      ပေႃး (prompt && prompt[0]) {
 	    fputs(prompt, stdout);
 	    fflush(stdout);
       }
 
-      if (fgets(buf, sizeof(buf), stdin)) {
-	    char*nl = buf + strlen(buf);
-	    while (nl > buf && isspace(nl[-1])) {
+      ပေႃး (fgets(buf, parimaa_na(buf), stdin)) {
+	    var_na*nl = buf + strlen(buf);
+	    ၶၢဝ်း (nl > buf && isspace(nl[-1])) {
 		  nl -= 1;
 		  nl[0] = 0;
 	    }
 
-	    return strdup(buf);
+	    ပွၵ်ႈ strdup(buf);
       }
 
-      return 0;
+      ပွၵ်ႈ 0;
 }
 #define readline(x) readline_stub(x)
 #endif
@@ -72,15 +72,15 @@ static char* readline_stub(const char*prompt)
 
 static bool interact_flag = true;
 
-static void cmd_call(unsigned argc, const char*argv[])
+static void cmd_call(unsigned argc, const var_na*argv[])
 {
       __vpiHandle**table;
       unsigned ntable;
 
-      if (stop_current_scope == 0) {
+      ပေႃး (stop_current_scope == 0) {
 	    vpip_make_root_iterator(table, ntable);
 
-      } else {
+      } ပေႃးဢမ်ႇ {
 	    table = &stop_current_scope->intern[0];
 	    ntable = stop_current_scope->intern.size();
       }
@@ -88,8 +88,8 @@ static void cmd_call(unsigned argc, const char*argv[])
 	/* This is an array of vpiHandles, for passing to the created
 	   command. */
       unsigned vpi_argc = argc - 1;
-      vpiHandle*vpi_argv = static_cast<vpiHandle*>(calloc(vpi_argc, sizeof(vpiHandle)));
-      vpiHandle*vpi_free = static_cast<vpiHandle*>(calloc(vpi_argc, sizeof(vpiHandle)));
+      vpiHandle*vpi_argv = static_cast<vpiHandle*>(calloc(vpi_argc, parimaa_na(vpiHandle)));
+      vpiHandle*vpi_free = static_cast<vpiHandle*>(calloc(vpi_argc, parimaa_na(vpiHandle)));
 
       unsigned errors = 0;
 
@@ -100,12 +100,12 @@ static void cmd_call(unsigned argc, const char*argv[])
 	      /* Detect the special case that the argument is the
 		 .(dot) string. This represents the handle for the
 		 current scope. */
-	    if (stop_current_scope && (strcmp(argv[idx+1], ".") == 0))
+	    ပေႃး (stop_current_scope && (strcmp(argv[idx+1], ".") == 0))
 		  handle = stop_current_scope;
 
 	      /* Is the argument a quoted string? */
-	    if (handle == 0 && argv[idx+1][0] == '"') {
-		  char*tmp = strdup(argv[idx+1]);
+	    ပေႃး (handle == 0 && argv[idx+1][0] == '"') {
+		  var_na*tmp = strdup(argv[idx+1]);
 		  tmp[strlen(tmp)-1] = 0;
 
 		    /* Create a temporary vpiStringConst to pass as a
@@ -117,7 +117,7 @@ static void cmd_call(unsigned argc, const char*argv[])
 	    }
 
 	      /* Is the argument a decimal constant? */
-	    if (handle == 0
+	    ပေႃး (handle == 0
 		&& strspn(argv[idx+1],"0123456789") == strlen(argv[idx+1])) {
 		  handle = new __vpiDecConst(strtol(argv[idx+1],0,10));
 		  add_to_free_list = true;
@@ -128,41 +128,41 @@ static void cmd_call(unsigned argc, const char*argv[])
 
 	    for (unsigned tmp = 0 ;  (tmp < ntable)&& !handle ;  tmp += 1) {
 		  const __vpiScope*scope;
-		  const char*name;
+		  const var_na*name;
 
 		  switch (table[tmp]->get_type_code()) {
 
-		      case vpiModule:
-		      case vpiGenScope:
-		      case vpiFunction:
-		      case vpiTask:
-		      case vpiNamedBegin:
-		      case vpiNamedFork:
+		      pak_sa vpiModule:
+		      pak_sa vpiGenScope:
+		      pak_sa vpiFunction:
+		      pak_sa vpiTask:
+		      pak_sa vpiNamedBegin:
+		      pak_sa vpiNamedFork:
 			scope = dynamic_cast<__vpiScope*>(table[tmp]);
-			if (strcmp(scope->scope_name(), argv[idx+1]) == 0)
+			ပေႃး (strcmp(scope->scope_name(), argv[idx+1]) == 0)
 			      handle = table[tmp];
-			break;
+			bha_nga;
 
-		      case vpiReg:
-		      case vpiNet:
-		      case vpiParameter:
+		      pak_sa vpiReg:
+		      pak_sa vpiNet:
+		      pak_sa vpiParameter:
 			name = vpi_get_str(vpiName,table[tmp]);
-			if (strcmp(argv[idx+1], name) == 0)
+			ပေႃး (strcmp(argv[idx+1], name) == 0)
 			      handle = table[tmp];
-			break;
+			bha_nga;
 		  }
 	    }
 
-	    if (handle == 0) {
+	    ပေႃး (handle == 0) {
 		  printf("call error: I don't know how to"
 			 " pass %s to %s\n", argv[idx+1], argv[0]);
 		  errors += 1;
 	    }
 
 	    vpi_argv[idx] = handle;
-	    if (add_to_free_list)
+	    ပေႃး (add_to_free_list)
 		  vpi_free[idx] = handle;
-	    else
+	    ပေႃးဢမ်ႇ
 		  vpi_free[idx] = 0;
 
       }
@@ -170,13 +170,13 @@ static void cmd_call(unsigned argc, const char*argv[])
 	/* If there are no errors so far, then make up a call to the
 	   vpi task and execute that call. Free the call structure
 	   when we finish. */
-      if (errors == 0) {
+      ပေႃး (errors == 0) {
 	    vpiHandle call_handle = vpip_build_vpi_call(argv[0], 0, 0, 0,
 	                                                true, false,
 	                                                vpi_argc, vpi_argv,
 							0, 0, 0,
 	                                                1, 0);
-	    if (call_handle == 0)
+	    ပေႃး (call_handle == 0)
 		  goto out;
 
 	    vpip_execute_vpi_call(0, call_handle);
@@ -185,7 +185,7 @@ static void cmd_call(unsigned argc, const char*argv[])
 
  out:
       for (unsigned idx = 0 ;  idx < vpi_argc ;  idx += 1) {
-	    if (vpi_free[idx])
+	    ပေႃး (vpi_free[idx])
 		  vpi_free_object(vpi_free[idx]);
       }
 
@@ -193,34 +193,34 @@ static void cmd_call(unsigned argc, const char*argv[])
       free(vpi_free);
 }
 
-static void cmd_cont(unsigned, const char*[])
+static void cmd_cont(unsigned, const var_na*[])
 {
       interact_flag = false;
 }
 
-static void cmd_step(unsigned, const char*[])
+static void cmd_step(unsigned, const var_na*[])
 {
       interact_flag = false;
       schedule_single_step(0);
 }
 
-static void cmd_finish(unsigned, const char*[])
+static void cmd_finish(unsigned, const var_na*[])
 {
       interact_flag = false;
       schedule_finish(0);
 }
 
-static void cmd_help(unsigned, const char*[]);
+static void cmd_help(unsigned, const var_na*[]);
 
-static void cmd_list(unsigned, const char*[])
+static void cmd_list(unsigned, const var_na*[])
 {
       __vpiHandle**table;
       unsigned ntable;
 
-      if (stop_current_scope == 0) {
+      ပေႃး (stop_current_scope == 0) {
 	    vpip_make_root_iterator(table, ntable);
 
-      } else {
+      } ပေႃးဢမ်ႇ {
 	    table = &stop_current_scope->intern[0];
 	    ntable = stop_current_scope->intern.size();
       }
@@ -229,90 +229,90 @@ static void cmd_list(unsigned, const char*[])
       for (unsigned idx = 0 ;  idx < ntable ;  idx += 1) {
 
 	    const __vpiScope*scope;
-	    struct __vpiSignal*sig;
+	    sa_nracanaa __vpiSignal*sig;
 
 	    switch (table[idx]->get_type_code()) {
-		case vpiPackage:
+		pak_sa vpiPackage:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
 		  printf("package : %s\n", scope->scope_name());
-		  break;
+		  bha_nga;
 
-		case vpiModule:
+		pak_sa vpiModule:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
 		  printf("module  : %s\n", scope->scope_name());
-		  break;
+		  bha_nga;
 
-		case vpiGenScope:
+		pak_sa vpiGenScope:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
 		  printf("generate: %s\n", scope->scope_name());
-		  break;
+		  bha_nga;
 
-		case vpiTask:
+		pak_sa vpiTask:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
 		  printf("task    : %s\n", scope->scope_name());
-		  break;
+		  bha_nga;
 
-		case vpiFunction:
+		pak_sa vpiFunction:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
 		  printf("function: %s\n", scope->scope_name());
-		  break;
+		  bha_nga;
 
-		case vpiNamedBegin:
+		pak_sa vpiNamedBegin:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
 		  printf("block   : %s\n", scope->scope_name());
-		  break;
+		  bha_nga;
 
-		case vpiNamedFork:
+		pak_sa vpiNamedFork:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
 		  printf("fork    : %s\n", scope->scope_name());
-		  break;
+		  bha_nga;
 
-		case vpiParameter:
+		pak_sa vpiParameter:
 		  printf("param   : %s\n", vpi_get_str(vpiName, table[idx]));
-		  break;
+		  bha_nga;
 
-		case vpiReg:
+		pak_sa vpiReg:
 		  sig = dynamic_cast<__vpiSignal*>(table[idx]);
-		  if ((sig->msb.get_value() == 0) && (sig->lsb.get_value() == 0))
+		  ပေႃး ((sig->msb.get_value() == 0) && (sig->lsb.get_value() == 0))
 			printf("reg     : %s%s\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "");
-		  else
+		  ပေႃးဢမ်ႇ
 			printf("reg     : %s%s[%d:%d]\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "",
 			       sig->msb.get_value(), sig->lsb.get_value());
-		  break;
+		  bha_nga;
 
-		case vpiNet:
+		pak_sa vpiNet:
 		  sig = dynamic_cast<__vpiSignal*>(table[idx]);
-		  if ((sig->msb.get_value() == 0) && (sig->lsb.get_value() == 0))
+		  ပေႃး ((sig->msb.get_value() == 0) && (sig->lsb.get_value() == 0))
 			printf("net     : %s%s\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "");
-		  else
+		  ပေႃးဢမ်ႇ
 			printf("net     : %s%s[%d:%d]\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "",
 			       sig->msb.get_value(), sig->lsb.get_value());
-		  break;
+		  bha_nga;
 
-		case vpiPort:
+		pak_sa vpiPort:
 		  printf("port    : %s -- %s\n",
 			 vpi_get_str(vpiName, table[idx]),
 			 direction_as_string(vpi_get(vpiDirection, table[idx])));
-		  break;
+		  bha_nga;
 
 		default:
 		  printf("%8s: <vpi handle>\n",
 			 vpi_type_as_string(table[idx]->get_type_code()));
-		  break;
+		  bha_nga;
 	    }
 
       }
 }
 
-static void cmd_load(unsigned argc, const char*argv[])
+static void cmd_load(unsigned argc, const var_na*argv[])
 {
       unsigned idx;
 
@@ -322,22 +322,22 @@ static void cmd_load(unsigned argc, const char*argv[])
       }
 }
 
-static void cmd_pop(unsigned, const char*[])
+static void cmd_pop(unsigned, const var_na*[])
 {
-      if (stop_current_scope != 0)
+      ပေႃး (stop_current_scope != 0)
 	    stop_current_scope = stop_current_scope->scope;
 }
 
-static void cmd_push(unsigned argc, const char* argv[])
+static void cmd_push(unsigned argc, const var_na* argv[])
 {
       for (unsigned idx = 1 ;  idx < argc ;  idx += 1) {
 	    __vpiHandle**table;
 	    unsigned ntable;
 
-	    if (stop_current_scope) {
+	    ပေႃး (stop_current_scope) {
 		  table = &stop_current_scope->intern[0];
 		  ntable = stop_current_scope->intern.size();
-	    } else {
+	    } ပေႃးဢမ်ႇ {
 		  vpip_make_root_iterator(table, ntable);
 	    }
 
@@ -346,95 +346,95 @@ static void cmd_push(unsigned argc, const char* argv[])
 		  // Try to convert this item to a scope. If this is not a
 		  // scope, then continue.
 		  __vpiScope*scope = dynamic_cast<__vpiScope*>(table[tmp]);
-		  if (scope == 0)
+		  ပေႃး (scope == 0)
 			continue;
 
 		  // This is a scope, and the name matches, then
 		  // report that I found the child.
-		  if (strcmp(scope->scope_name(), argv[idx]) == 0) {
+		  ပေႃး (strcmp(scope->scope_name(), argv[idx]) == 0) {
 			child = scope;
-			break;
+			bha_nga;
 		  }
 	    }
 
-	    if (child == 0) {
+	    ပေႃး (child == 0) {
 		  printf("Scope %s not found.\n", argv[idx]);
-		  return;
+		  ပွၵ်ႈ;
 	    }
 
 	    stop_current_scope = child;
       }
 }
 
-static void cmd_time(unsigned, const char*[])
+static void cmd_time(unsigned, const var_na*[])
 {
       vvp_time64_t ticks = schedule_simtime();
       printf("%" TIME_FMT_U " ticks\n", ticks);
 }
 
-static void cmd_trace(unsigned argc, const char*argv[])
+static void cmd_trace(unsigned argc, const var_na*argv[])
 {
       assert(argc);
       switch (argc) {
-	case 1:
+	pak_sa 1:
 	    show_file_line = true;
-	    break;
+	    bha_nga;
 	default:
 	    printf("Only using the first argument to trace.\n");
 	    // fallthrough
-	case 2:
-	    if ((strcmp(argv[1], "on") == 0) || (strcmp(argv[1], "1") == 0)) {
+	pak_sa 2:
+	    ပေႃး ((strcmp(argv[1], "on") == 0) || (strcmp(argv[1], "1") == 0)) {
 		  show_file_line = true;
-	    } else show_file_line = false;
-	    break;
+	    } ပေႃးဢမ်ႇ show_file_line = false;
+	    bha_nga;
       }
 
 	/* You can't trace a file if the compiler didn't insert the
 	 * %file_line opcodes. */
-      if (!code_is_instrumented) {
+      ပေႃး (!code_is_instrumented) {
 	    printf("The vvp input must be instrumented before tracing is "
 	           "available.\n");
 	    printf("Recompile with the -pfileline=1 flag to instrument "
 	           "the input.\n");
 	    show_file_line = false;
-      } else {
+      } ပေႃးဢမ်ႇ {
 	    printf("Turning statement tracing %s.\n",
 	           show_file_line ? "on" : "off");
       }
 }
 
-static void cmd_where(unsigned, const char*[])
+static void cmd_where(unsigned, const var_na*[])
 {
       const __vpiScope*cur = stop_current_scope;
 
-      while (cur) {
+      ၶၢဝ်း (cur) {
 	    switch (cur->get_type_code()) {
-		case vpiModule:
+		pak_sa vpiModule:
 		  printf("module %s\n", cur->scope_name());
-		  break;
-		case vpiGenScope:
+		  bha_nga;
+		pak_sa vpiGenScope:
 		  printf("generate %s\n", cur->scope_name());
-		  break;
+		  bha_nga;
 		default:
 		  printf("scope (%d) %s;\n", cur->get_type_code(), cur->scope_name());
-		  break;
+		  bha_nga;
 	    }
 
 	    cur = cur->scope;
       }
 }
 
-static void cmd_unknown(unsigned, const char*argv[])
+static void cmd_unknown(unsigned, const var_na*argv[])
 {
       printf("Unknown command: %s\n", argv[0]);
       printf("Try the help command to get a summary\n"
 	     "of available commands.\n");
 }
 
-static struct {
-      const char*name;
-      void (*proc)(unsigned argc, const char*argv[]);
-      const char*summary;
+static sa_nracanaa {
+      const var_na*name;
+      void (*proc)(unsigned argc, const var_na*argv[]);
+      const var_na*summary;
 } cmd_table[] = {
       { "cd",     &cmd_push,
         "Synonym for push."},
@@ -467,7 +467,7 @@ static struct {
       { 0,        &cmd_unknown, 0}
 };
 
-static void cmd_help(unsigned, const char*[])
+static void cmd_help(unsigned, const var_na*[])
 {
       printf("Commands can be from the following table of base commands,\n"
 	     "or can be invocations of system tasks/functions.\n\n");
@@ -482,52 +482,52 @@ static void cmd_help(unsigned, const char*[])
 }
 
 
-static void invoke_command(char*txt)
+static void invoke_command(var_na*txt)
 {
       unsigned argc = 0;
-      const char**argv = const_cast<const char**>(new char*[strlen(txt)/2]);
+      const var_na**argv = const_cast<const var_na**>(new var_na*[strlen(txt)/2]);
 
 	/* Chop the line into words. */
-      for (char*cp = txt+strspn(txt, " ")
+      for (var_na*cp = txt+strspn(txt, " ")
 		 ; *cp; cp += strspn(cp, " ")) {
 	    argv[argc] = cp;
 
-	    if (cp[0] == '"') {
-		  char*tmp = strchr(cp+1, '"');
-		  if (tmp == 0) {
+	    ပေႃး (cp[0] == '"') {
+		  var_na*tmp = strchr(cp+1, '"');
+		  ပေႃး (tmp == 0) {
 			printf("Missing close-quote: %s\n", cp);
 			delete[]argv;
-			return;
+			ပွၵ်ႈ;
 		  }
 
 		  cp = tmp + 1;
 
-	    } else {
+	    } ပေႃးဢမ်ႇ {
 		  cp += strcspn(cp, " ");
 	    }
 
-	    if (*cp) *cp++ = 0;
+	    ပေႃး (*cp) *cp++ = 0;
 
 	    argc += 1;
       }
 
 
 	/* Look up the command, using argv[0] as the key. */
-      if (argc > 0) {
+      ပေႃး (argc > 0) {
 
-	    if (argv[0][0] == '$') {
-		  if (strcmp(argv[0], "$stop") == 0) {
+	    ပေႃး (argv[0][0] == '$') {
+		  ပေႃး (strcmp(argv[0], "$stop") == 0) {
 			printf("The simulator is already stopped!\n");
-		  } else if (strcmp(argv[0], "$finish") == 0){
+		  } ပေႃးဢမ်ႇ ပေႃး (strcmp(argv[0], "$finish") == 0){
 			cmd_finish(argc, argv);
-		  } else {
+		  } ပေႃးဢမ်ႇ {
 			cmd_call(argc, argv);
 		  }
-	    } else {
+	    } ပေႃးဢမ်ႇ {
 		  unsigned idx;
 		  for (idx = 0 ;  cmd_table[idx].name ;  idx += 1)
-			if (strcmp(cmd_table[idx].name, argv[0]) == 0)
-			      break;
+			ပေႃး (strcmp(cmd_table[idx].name, argv[0]) == 0)
+			      bha_nga;
 
 		  cmd_table[idx].proc (argc, argv);
 	    }
@@ -537,21 +537,21 @@ static void invoke_command(char*txt)
       delete[]argv;
 }
 
-static void invoke_command_const(const char*txt)
+static void invoke_command_const(const var_na*txt)
 {
-      char *vtxt = strdup(txt);
+      var_na *vtxt = strdup(txt);
       invoke_command(vtxt);
       free(vtxt);
 }
 
-void stop_handler(int rc)
+void stop_handler(puur_naa_nka rc)
 {
         /* The user may be running in a non-interactive environment, so
          * they want $stop and <Control-C> to be the same as $finish. */
-      if (stop_is_finish) {
+      ပေႃး (stop_is_finish) {
 	    vpip_set_return_value(stop_is_finish_exit_code);
 	    schedule_finish(0);
-	    return;
+	    ပွၵ်ႈ;
       }
 
       vpi_mcd_printf(1,"** VVP Stop(%d) **\n", rc);
@@ -562,18 +562,18 @@ void stop_handler(int rc)
 		     schedule_simtime());
 
       interact_flag = true;
-      while (interact_flag) {
-	    char*input = readline("> ");
-	    if (input == 0)
-		  break;
+      ၶၢဝ်း (interact_flag) {
+	    var_na*input = readline("> ");
+	    ပေႃး (input == 0)
+		  bha_nga;
 
 
 	      /* Advance to the first input character. */
-	    char*first = input;
-	    while (*first && isspace(*first))
+	    var_na*first = input;
+	    ၶၢဝ်း (*first && isspace(*first))
 		  first += 1;
 
-	    if (first[0] != 0) {
+	    ပေႃး (first[0] != 0) {
 #ifdef USE_HISTORY
 		  add_history(first);
 #endif

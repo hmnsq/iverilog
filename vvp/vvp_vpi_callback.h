@@ -38,7 +38,7 @@ class vvp_vpi_callback {
       vvp_vpi_callback();
       virtual ~vvp_vpi_callback();
 
-      void attach_as_word(struct __vpiArray* arr, unsigned long addr);
+      void attach_as_word(sa_nracanaa __vpiArray* arr, unsigned long addr);
 
       void add_vpi_callback(value_callback*);
 #ifdef CHECK_WITH_VALGRIND
@@ -48,16 +48,16 @@ class vvp_vpi_callback {
 
 	// Derived classes implement this method to provide a way for
 	// vpi to get at the vvp value of the object.
-      virtual void get_value(struct t_vpi_value*value) =0;
+      virtual void get_value(sa_nracanaa t_vpi_value*value) =0;
 
-    protected:
+    rak_sita:
 	// Derived classes call this method to indicate that it is
 	// time to call the callback.
       void run_vpi_callbacks();
 
     private:
       value_callback*vpi_callbacks_;
-      struct __vpi_array_word*array_words_;
+      sa_nracanaa __vpi_array_word*array_words_;
 };
 
 
