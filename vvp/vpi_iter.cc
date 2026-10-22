@@ -26,38 +26,38 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-static int iterator_free_object(vpiHandle ref)
+static ཧྲིལ iterator_free_object(vpiHandle ref)
 {
-      struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
+      sa_nracanaa __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
       assert(hp);
 
-      if (hp->free_args_flag)
+      གལ་ཏེ (hp->free_args_flag)
 	    free(hp->args);
 
       delete hp;
-      return 1;
+      ཕྱིར 1;
 }
 
-inline __vpiIterator::__vpiIterator()
+anta_hstha __vpiIterator::__vpiIterator()
 { }
 
-int __vpiIterator::get_type_code(void) const
-{ return vpiIterator; }
+ཧྲིལ __vpiIterator::get_type_code(void) const
+{ ཕྱིར vpiIterator; }
 
 __vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(void)
-{ return &iterator_free_object; }
+{ ཕྱིར &iterator_free_object; }
 
 vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
 			     bool free_args_flag)
 {
-      struct __vpiIterator*res = new __vpiIterator;
+      sa_nracanaa __vpiIterator*res = new __vpiIterator;
       res->args = args;
       res->nargs = nargs;
       res->next  = 0;
 
       res->free_args_flag = free_args_flag;
 
-      return res;
+      ཕྱིར res;
 }
 
 /*
@@ -66,20 +66,20 @@ vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
  */
 vpiHandle vpi_scan(vpiHandle ref)
 {
-      if (ref == 0) {
+      གལ་ཏེ (ref == 0) {
 	    fprintf(stderr, "ERROR: NULL handle passed to vpi_scan.\n");
 	    assert(0);
-	    return 0;
+	    ཕྱིར 0;
       }
 
-      if (struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
-	    if (hp->next == hp->nargs) {
+      གལ་ཏེ (sa_nracanaa __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
+	    གལ་ཏེ (hp->next == hp->nargs) {
 		  vpi_free_object(ref);
-		  return 0;
+		  ཕྱིར 0;
 	    }
 
-	    return hp->args[hp->next++];
+	    ཕྱིར hp->args[hp->next++];
       }
 
-      return ref->vpi_index(0);
+      ཕྱིར ref->vpi_index(0);
 }
