@@ -25,125 +25,125 @@
 # include  <cstdlib>
 # include  <cassert>
 
-extern const char oct_digits[64];
+बाह्य ध्रुव वर्ण oct_digits[64];
 
-void vpip_oct_str_to_vec4(vvp_vector4_t&val, const char*str)
+शून्य vpip_oct_str_to_vec4(vvp_vector4_t&val, ध्रुव वर्ण*str)
 {
-      unsigned str_len = strlen(str);
-      unsigned skip_chars = 0;
-      const char*tstr = str;
+      अचिन्हित str_len = म_माप(str);
+      अचिन्हित skip_chars = 0;
+      ध्रुव वर्ण*tstr = str;
 	/* Find the number of non-numeric characters. */
-      while ((tstr = strpbrk(tstr, "-_"))) {
+      यावत् ((tstr = strpbrk(tstr, "-_"))) {
 	    skip_chars += 1;
 	    tstr += 1;
       }
       vvp_vector4_t tval(3*(str_len-skip_chars));
       skip_chars = 0;
-      for (unsigned idx = 0 ;  idx < tval.size() ;  idx += 1) {
-	    unsigned tmp;
-	    unsigned bit_off = idx%3;
-	    unsigned str_off = idx/3;
-	    char ch;
+      प्रति (अचिन्हित idx = 0 ;  idx < tval.size() ;  idx += 1) {
+	    अचिन्हित tmp;
+	    अचिन्हित bit_off = idx%3;
+	    अचिन्हित str_off = idx/3;
+	    वर्ण ch;
 
-	    assert(str_off+skip_chars < str_len);
+	    प्रतिज्ञा(str_off+skip_chars < str_len);
 	      /* Skip any "_" characters in the string. */
-	    while ((ch = str[str_len-str_off-1-skip_chars]) == '_') {
+	    यावत् ((ch = str[str_len-str_off-1-skip_chars]) == '_') {
 		  skip_chars += 1;
-		  assert(str_off+skip_chars < str_len);
+		  प्रतिज्ञा(str_off+skip_chars < str_len);
 	    }
 
 	      /* If we find a "-" it must be at the head of the string. */
-	    if (ch == '-') assert(0);
+	    यदि (ch == '-') प्रतिज्ञा(0);
 
-	    switch (ch) {
-		case '0':
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-		case '6':
-		case '7':
+	    विकल्प (ch) {
+		पक्ष '0':
+		पक्ष '1':
+		पक्ष '2':
+		पक्ष '3':
+		पक्ष '4':
+		पक्ष '5':
+		पक्ष '6':
+		पक्ष '7':
 		  tmp = ch - '0';
 		  tval.set_bit(idx, ((tmp>>bit_off)&1)? BIT4_1 : BIT4_0);
-		  break;
-		case 'x':
-		case 'X':
+		  भङ्ग;
+		पक्ष 'x':
+		पक्ष 'X':
 		  tval.set_bit(idx, BIT4_X);
-		  break;
-		case 'z':
-		case 'Z':
+		  भङ्ग;
+		पक्ष 'z':
+		पक्ष 'Z':
 		  tval.set_bit(idx, BIT4_Z);
-		  break;
-		default:
+		  भङ्ग;
+		स्वभाव:
 		    /* Return "x" if there are invalid digits in the string. */
-		  fprintf(stderr, "Warning: Invalid octal digit %c(%d) in "
+		  ख_लिखो(मानक_त्रुटि, "Warning: Invalid octal digit %c(%d) in "
 		          "\"%s\".\n", ch, ch, str);
-		  for (unsigned jdx = 0 ;  jdx < val.size() ;  jdx += 1) {
+		  प्रति (अचिन्हित jdx = 0 ;  jdx < val.size() ;  jdx += 1) {
 			val.set_bit(jdx, BIT4_X);
 		  }
-		  return;
+		  प्रत्यागम;
 	    }
       }
 
 	/* Make a negative value when needed. */
-      if (str[0] == '-') {
+      यदि (str[0] == '-') {
 	    tval.invert();
 	    tval += (int64_t) 1;
       }
 
 	/* Find the correct padding value. */
       vvp_bit4_t pad;
-      switch (tval.value(tval.size()-1)) {
-	  case BIT4_X:  // Pad MSB 'x' with 'x'
+      विकल्प (tval.value(tval.size()-1)) {
+	  पक्ष BIT4_X:  // Pad MSB 'x' with 'x'
 	    pad = BIT4_X;
-	    break;
-	  case BIT4_Z:  // Pad MSB 'z' with 'z'
+	    भङ्ग;
+	  पक्ष BIT4_Z:  // Pad MSB 'z' with 'z'
 	    pad = BIT4_Z;
-	    break;
-	  case BIT4_1:  // If negative pad MSB '1' with '1'
-	    if (str[0] == '-') {
+	    भङ्ग;
+	  पक्ष BIT4_1:  // If negative pad MSB '1' with '1'
+	    यदि (str[0] == '-') {
 		  pad = BIT4_1;
-		  break;
+		  भङ्ग;
 	    }
 	    // fallthrough
-	  default:  // Everything else gets '0' padded.
+	  स्वभाव:  // Everything else gets '0' padded.
 	    pad = BIT4_0;
-	    break;
+	    भङ्ग;
       }
 
 	/* Copy the temporary value to the real value, padding if needed. */
-      for (unsigned idx = 0 ;  idx < val.size() ;  idx += 1) {
-	    if (idx < tval.size()) val.set_bit(idx, tval.value(idx));
-	    else val.set_bit(idx, pad);
+      प्रति (अचिन्हित idx = 0 ;  idx < val.size() ;  idx += 1) {
+	    यदि (idx < tval.size()) val.set_bit(idx, tval.value(idx));
+	    अन्यथा val.set_bit(idx, pad);
       }
 }
 
-void vpip_vec4_to_oct_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
+शून्य vpip_vec4_to_oct_str(ध्रुव vvp_vector4_t&bits, वर्ण*buf, अचिन्हित nbuf)
 {
-      unsigned slen = (bits.size() + 2) / 3;
-      assert(slen < nbuf);
+      अचिन्हित slen = (bits.size() + 2) / 3;
+      प्रतिज्ञा(slen < nbuf);
 
       buf[slen] = 0;
 
-      unsigned val = 0;
-      for (unsigned idx = 0 ;  idx < bits.size() ;  idx += 1) {
-	    unsigned vs = (idx%3) * 2;
+      अचिन्हित val = 0;
+      प्रति (अचिन्हित idx = 0 ;  idx < bits.size() ;  idx += 1) {
+	    अचिन्हित vs = (idx%3) * 2;
 
-	    switch (bits.value(idx)) {
-		case BIT4_0:
-		  break;
-		case BIT4_1:
+	    विकल्प (bits.value(idx)) {
+		पक्ष BIT4_0:
+		  भङ्ग;
+		पक्ष BIT4_1:
 		  val |= 1 << vs;
-		  break;
-		case BIT4_X:
+		  भङ्ग;
+		पक्ष BIT4_X:
 		  val |= 2 << vs;
-		  break;
-		case BIT4_Z:
+		  भङ्ग;
+		पक्ष BIT4_Z:
 		  val |= 3 << vs;
 	    }
 
-	    if (vs == 4) {
+	    यदि (vs == 4) {
 		  slen -= 1;
 		  buf[slen] = oct_digits[val];
 		  val = 0;
@@ -151,18 +151,18 @@ void vpip_vec4_to_oct_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
       }
 
 	/* Fill in X or Z if they are the only thing in the value. */
-      switch (bits.size() % 3) {
-	  case 1:
-	    if (val == 2) val = 42;
-	    else if (val == 3) val = 63;
-	    break;
-	  case 2:
-	    if (val == 10) val = 42;
-	    else if (val == 15) val = 63;
-	    break;
+      विकल्प (bits.size() % 3) {
+	  पक्ष 1:
+	    यदि (val == 2) val = 42;
+	    अन्यथा यदि (val == 3) val = 63;
+	    भङ्ग;
+	  पक्ष 2:
+	    यदि (val == 10) val = 42;
+	    अन्यथा यदि (val == 15) val = 63;
+	    भङ्ग;
       }
 
-      if (slen > 0) {
+      यदि (slen > 0) {
 	    slen -= 1;
 	    buf[slen] = oct_digits[val];
       }

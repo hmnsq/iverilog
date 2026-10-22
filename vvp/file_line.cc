@@ -19,82 +19,82 @@
 # include "compile.h"
 # include "vpi_priv.h"
 
-class __vpiFileLine : public __vpiHandle {
-    public:
-      explicit __vpiFileLine(const char*desc_, long file_idx_, long lineno_);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+वर्ग __vpiFileLine : सार्वजनिक __vpiHandle {
+    सार्वजनिक:
+      explicit __vpiFileLine(ध्रुव वर्ण*desc_, दीर्घ file_idx_, दीर्घ lineno_);
+      पूर्णाङ्क get_type_code(शून्य) ध्रुव override;
+      पूर्णाङ्क vpi_get(पूर्णाङ्क code) override;
+      वर्ण* vpi_get_str(पूर्णाङ्क code) override;
 
-      const char* get_description() const { return description; };
-      unsigned get_file_idx() const { return file_idx; };
-      unsigned get_lineno() const { return lineno; };
+      ध्रुव वर्ण* get_description() ध्रुव { प्रत्यागम description; };
+      अचिन्हित get_file_idx() ध्रुव { प्रत्यागम file_idx; };
+      अचिन्हित get_lineno() ध्रुव { प्रत्यागम lineno; };
 
-    private:
-      const char *description;
-      unsigned file_idx;
-      unsigned lineno;
+    गुप्त:
+      ध्रुव वर्ण *description;
+      अचिन्हित file_idx;
+      अचिन्हित lineno;
 };
 
-bool show_file_line = false;
-bool code_is_instrumented = false;
+तार्किक show_file_पंक्ति = असत्य;
+तार्किक code_is_instrumented = असत्य;
 
-static int file_line_get(int type, vpiHandle ref)
+स्थिर पूर्णाङ्क file_पंक्ति_get(पूर्णाङ्क type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      प्रतिज्ञा(rfp);
 
-      switch (type) {
-	case vpiLineNo:
-	    return rfp->get_lineno();
-	default:
-	    return vpiUndefined;
+      विकल्प (type) {
+	पक्ष vpi_पंक्ति_No:
+	    प्रत्यागम rfp->get_lineno();
+	स्वभाव:
+	    प्रत्यागम vpiUndefined;
       }
 }
 
-static char *file_line_get_str(int type, vpiHandle ref)
+स्थिर वर्ण *file_पंक्ति_get_str(पूर्णाङ्क type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      प्रतिज्ञा(rfp);
 
-      switch (type) {
-	case vpiFile:
-	    assert(rfp->get_file_idx() < file_names.size());
-	    return simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
-	case _vpiDescription:
-	    if (rfp->get_description()) {
-		  return simple_set_rbuf_str(rfp->get_description());
-	    } else return simple_set_rbuf_str("Procedural tracing.");
-	default:
-	    return 0;
+      विकल्प (type) {
+	पक्ष vpiFile:
+	    प्रतिज्ञा(rfp->get_file_idx() < file_names.size());
+	    प्रत्यागम simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
+	पक्ष _vpiDescription:
+	    यदि (rfp->get_description()) {
+		  प्रत्यागम simple_set_rbuf_str(rfp->get_description());
+	    } अन्यथा प्रत्यागम simple_set_rbuf_str("Procedural tracing.");
+	स्वभाव:
+	    प्रत्यागम 0;
       }
 }
 
-inline __vpiFileLine::__vpiFileLine(const char*desc_, long file_idx_,
-                                    long lineno_)
+अन्तःस्थ __vpiFileLine::__vpiFileLine(ध्रुव वर्ण*desc_, दीर्घ file_idx_,
+                                    दीर्घ lineno_)
 {
-      if (desc_) description = vpip_name_string(desc_);
-      else description = 0;
-      file_idx = (unsigned) file_idx_;
-      lineno = (unsigned) lineno_;
+      यदि (desc_) description = vpip_name_string(desc_);
+      अन्यथा description = 0;
+      file_idx = (अचिन्हित) file_idx_;
+      lineno = (अचिन्हित) lineno_;
 }
 
-int __vpiFileLine::get_type_code(void) const
-{ return _vpiFileLine; }
+पूर्णाङ्क __vpiFileLine::get_type_code(शून्य) ध्रुव
+{ प्रत्यागम vpi_File_पंक्ति; }
 
-int __vpiFileLine::vpi_get(int code)
-{ return file_line_get(code, this); }
+पूर्णाङ्क __vpiFileLine::vpi_get(पूर्णाङ्क code)
+{ प्रत्यागम file_पंक्ति_get(code, एतत्); }
 
-char* __vpiFileLine::vpi_get_str(int code)
-{ return file_line_get_str(code, this); }
+वर्ण* __vpiFileLine::vpi_get_str(पूर्णाङ्क code)
+{ प्रत्यागम file_पंक्ति_get_str(code, एतत्); }
 
 
-vpiHandle vpip_build_file_line(const char*description, long file_idx, long lineno)
+vpiHandle vpip_build_file_पंक्ति(ध्रुव वर्ण*description, दीर्घ file_idx, दीर्घ lineno)
 {
-      __vpiFileLine*obj = new __vpiFileLine(description, file_idx, lineno);
+      __vpiFileLine*obj = नूतन __vpiFileLine(description, file_idx, lineno);
 
 	/* You can turn on the diagnostic output if we find a %file_line. */
-      code_is_instrumented = true;
+      code_is_instrumented = सत्य;
 
-      return obj;
+      प्रत्यागम obj;
 }

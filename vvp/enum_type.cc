@@ -25,175 +25,175 @@
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+using नामाकाश std;
 
-struct enumconst_s : public __vpiHandle {
+संरचना enumconst_s : सार्वजनिक __vpiHandle {
       enumconst_s();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      पूर्णाङ्क get_type_code(शून्य) ध्रुव override;
+      पूर्णाङ्क vpi_get(पूर्णाङ्क code) override;
+      वर्ण* vpi_get_str(पूर्णाङ्क code) override;
+      शून्य vpi_get_मूल्य(p_vpi_मूल्य val) override;
 
-      const char*name;
-      bool is_signed;
+      ध्रुव वर्ण*name;
+      तार्किक is_signed;
       vvp_vector2_t val2;
       vvp_vector4_t val4;
 };
 
-struct __vpiEnumTypespec : public __vpiHandle {
+संरचना __vpiEnumTypespec : सार्वजनिक __vpiHandle {
       __vpiEnumTypespec();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+      पूर्णाङ्क get_type_code(शून्य) ध्रुव override;
+      पूर्णाङ्क vpi_get(पूर्णाङ्क code) override;
+      vpiHandle vpi_iterate(पूर्णाङ्क code) override;
 
       std::vector<enumconst_s> names;
-      int base_type_code;
-      bool is_signed;
+      पूर्णाङ्क base_type_code;
+      तार्किक is_signed;
 };
 
 
-inline __vpiEnumTypespec::__vpiEnumTypespec()
+अन्तःस्थ __vpiEnumTypespec::__vpiEnumTypespec()
 { }
 
-int __vpiEnumTypespec::get_type_code(void) const
-{ return vpiEnumTypespec; }
+पूर्णाङ्क __vpiEnumTypespec::get_type_code(शून्य) ध्रुव
+{ प्रत्यागम vpiEnumTypespec; }
 
-int __vpiEnumTypespec::vpi_get(int code)
+पूर्णाङ्क __vpiEnumTypespec::vpi_get(पूर्णाङ्क code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return names.size();
+      विकल्प (code) {
+	  पक्ष vpiSize:
+	    प्रत्यागम names.size();
 
 	    /* This is not currently set correctly. We always use vpiReg for
 	     * four state variables and vpiBitVar for two state variables.
 	     * This minimal functionality is needed to get the next() and
 	     * prev() methods to work correctly with invalid values. */
-	  case vpiBaseTypespec:
-	    return base_type_code;
+	  पक्ष vpiBaseTypespec:
+	    प्रत्यागम base_type_code;
 
-	  case vpiSigned:
-	    return is_signed;
+	  पक्ष vpiSigned:
+	    प्रत्यागम is_signed;
 
-	  default:
-	    fprintf(stderr, "vvp error: get %d not supported "
+	  स्वभाव:
+	    ख_लिखो(मानक_त्रुटि, "vvp error: get %d not supported "
 		    "by __vpiEnumTypespec\n", code);
-	    assert(0);
-	    return 0;
+	    प्रतिज्ञा(0);
+	    प्रत्यागम 0;
       }
 }
 
 
-vpiHandle __vpiEnumTypespec::vpi_iterate(int code)
+vpiHandle __vpiEnumTypespec::vpi_iterate(पूर्णाङ्क code)
 {
-      if (code == vpiEnumConst) {
+      यदि (code == vpiEnumConst) {
 	    vpiHandle*args = static_cast<vpiHandle*>
-	                                (calloc(names.size(), sizeof(vpiHandle*)));
-	    for (size_t idx = 0 ; idx < names.size() ; idx += 1)
+	                                (सुस्मृति(names.size(), परिमाण(vpiHandle*)));
+	    प्रति (माप_प्रकार idx = 0 ; idx < names.size() ; idx += 1)
 		  args[idx] = &names[idx];
 
-	    return vpip_make_iterator(names.size(), args, true);
+	    प्रत्यागम vpip_make_iterator(names.size(), args, सत्य);
       }
 
-      return 0;
+      प्रत्यागम 0;
 }
 
 
-inline enumconst_s::enumconst_s()
+अन्तःस्थ enumconst_s::enumconst_s()
 { }
 
-int enumconst_s::get_type_code(void) const
-{ return vpiEnumConst; }
+पूर्णाङ्क enumconst_s::get_type_code(शून्य) ध्रुव
+{ प्रत्यागम vpiEnumConst; }
 
-int enumconst_s::vpi_get(int code)
+पूर्णाङ्क enumconst_s::vpi_get(पूर्णाङ्क code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return val4.size()? val4.size() : val2.size();
-	  default:
-	    return 0;
+      विकल्प (code) {
+	  पक्ष vpiSize:
+	    प्रत्यागम val4.size()? val4.size() : val2.size();
+	  स्वभाव:
+	    प्रत्यागम 0;
       }
 }
 
 
-char* enumconst_s::vpi_get_str(int code)
+वर्ण* enumconst_s::vpi_get_str(पूर्णाङ्क code)
 {
-      switch (code) {
-	  case vpiName:
-	    return const_cast<char*> (name);
-	  default:
-	    return 0;
+      विकल्प (code) {
+	  पक्ष vpiName:
+	    प्रत्यागम const_cast<वर्ण*> (name);
+	  स्वभाव:
+	    प्रत्यागम 0;
       }
 }
 
 
-void enumconst_s::vpi_get_value(p_vpi_value val)
+शून्य enumconst_s::vpi_get_मूल्य(p_vpi_मूल्य val)
 {
-      if (val4.size() > 0) {
-	    vpip_vec4_get_value(val4, val4.size(), is_signed, val);
-      } else {
-	    vpip_vec2_get_value(val2, val2.size(), is_signed, val);
+      यदि (val4.size() > 0) {
+	    vpip_vec4_get_मूल्य(val4, val4.size(), is_signed, val);
+      } अन्यथा {
+	    vpip_vec2_get_मूल्य(val2, val2.size(), is_signed, val);
       }
 }
 
 
-void compile_enum2_type(char*label, long width, bool signed_flag,
-                        std::list<struct enum_name_s>*names)
+शून्य compile_enum2_type(वर्ण*label, दीर्घ width, तार्किक signed_flag,
+                        std::list<संरचना enum_name_s>*names)
 {
-      struct __vpiEnumTypespec*spec = new struct __vpiEnumTypespec;
+      संरचना __vpiEnumTypespec*spec = नूतन संरचना __vpiEnumTypespec;
       spec->names = std::vector<enumconst_s> (names->size());
       spec->is_signed = signed_flag;
       spec->base_type_code = vpiBitVar;
 
-      size_t idx = 0;
-      for (list<struct enum_name_s>::iterator cur = names->begin()
+      माप_प्रकार idx = 0;
+      प्रति (list<संरचना enum_name_s>::iterator cur = names->begin()
 		 ; cur != names->end() ;  ++cur, ++idx) {
-	    assert(cur->val4 == 0);
+	    प्रतिज्ञा(cur->val4 == 0);
 	    spec->names[idx].name = cur->text;
 	    spec->names[idx].val2 = vvp_vector2_t(cur->val2, width);
 	    spec->names[idx].is_signed = signed_flag;
       }
 
-      assert(idx == spec->names.size());
-      compile_vpi_symbol(label, spec);
+      प्रतिज्ञा(idx == spec->names.size());
+      compile_vpi_प्रतीक(label, spec);
       vpip_attach_to_current_scope(spec);
 
-      free(label);
+      मुक्त(label);
       delete names;
 }
 
-void compile_enum4_type(char*label, long width, bool signed_flag,
-                        std::list<struct enum_name_s>*names)
+शून्य compile_enum4_type(वर्ण*label, दीर्घ width, तार्किक signed_flag,
+                        std::list<संरचना enum_name_s>*names)
 {
-      struct __vpiEnumTypespec*spec = new struct __vpiEnumTypespec;
+      संरचना __vpiEnumTypespec*spec = नूतन संरचना __vpiEnumTypespec;
       spec->names = std::vector<enumconst_s> (names->size());
       spec->is_signed = signed_flag;
       spec->base_type_code = vpiReg;
 
-      size_t idx = 0;
-      for (list<struct enum_name_s>::iterator cur = names->begin()
+      माप_प्रकार idx = 0;
+      प्रति (list<संरचना enum_name_s>::iterator cur = names->begin()
 		 ; cur != names->end() ;  ++cur, ++idx) {
 	    spec->names[idx].name = cur->text;
-	    assert(cur->val4);
+	    प्रतिज्ञा(cur->val4);
 	    spec->names[idx].val4 = vector4_from_text(cur->val4, width);
 	    spec->names[idx].is_signed = signed_flag;
-	    free(cur->val4);
+	    मुक्त(cur->val4);
 	    cur->val4 = 0;
       }
 
-      assert(idx == spec->names.size());
-      compile_vpi_symbol(label, spec);
+      प्रतिज्ञा(idx == spec->names.size());
+      compile_vpi_प्रतीक(label, spec);
       vpip_attach_to_current_scope(spec);
 
-      free(label);
+      मुक्त(label);
       delete names;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void enum_delete(vpiHandle item)
+शून्य enum_delete(vpiHandle item)
 {
-      struct __vpiEnumTypespec*obj = dynamic_cast<__vpiEnumTypespec*>(item);
+      संरचना __vpiEnumTypespec*obj = dynamic_cast<__vpiEnumTypespec*>(item);
 
-      for (vector<enumconst_s>::iterator iter = obj->names.begin();
+      प्रति (vector<enumconst_s>::iterator iter = obj->names.begin();
            iter != obj->names.end(); ++ iter ) {
 	    delete [] iter->name;
       }

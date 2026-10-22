@@ -43,41 +43,41 @@
  * try to look inside. The actual implementation is given in the
  * symbols.cc source file.
  */
-typedef class symbol_table_s *symbol_table_t;
+प्रकारनिर्देश class प्रतीक_table_s *प्रतीक_table_t;
 
-typedef struct symbol_value_s {
-      union {
+प्रकारनिर्देश संरचना प्रतीक_मूल्य_s {
+      सङ्घ {
 	    vvp_net_t*net;
-	    void*ptr;
+	    शून्य*ptr;
       };
-} symbol_value_t;
+} प्रतीक_मूल्य_t;
 
 
-class symbol_table_s {
-    public:
-      explicit symbol_table_s();
-      virtual ~symbol_table_s();
-      symbol_table_s(const symbol_table_s&) = delete;
-      symbol_table_s& operator=(const symbol_table_s&) = delete;
+class प्रतीक_table_s {
+    सार्वजनिक:
+      explicit प्रतीक_table_s();
+      आभास ~प्रतीक_table_s();
+      प्रतीक_table_s(ध्रुव प्रतीक_table_s&) = delete;
+      प्रतीक_table_s& चालक=(ध्रुव प्रतीक_table_s&) = delete;
 
 	// This method locates the value in the symbol table and sets its
 	// value. If the key doesn't yet exist, create it.
-      void sym_set_value(const char*key, symbol_value_t val);
+      शून्य sym_set_मूल्य(ध्रुव वर्ण*कुंजी, प्रतीक_मूल्य_t val);
 
 	// This method locates the value in the symbol table and returns
 	// it. If the value does not exist, create it, initialize it with
 	// zero and return the zero value.
-      symbol_value_t sym_get_value(const char*key);
+      प्रतीक_मूल्य_t sym_get_मूल्य(ध्रुव वर्ण*कुंजी);
 
-    private:
-      struct tree_node_*root;
-      struct key_strings*str_chunk;
-      unsigned str_used;
+    गुप्त:
+      संरचना वृक्ष_गाँठ*मूल;
+      संरचना कुंजी_strings*str_chunk;
+      अचिन्हित str_used;
 
-      symbol_value_t find_value_(struct tree_node_*cur,
-				 const char*key, symbol_value_t val,
+      प्रतीक_मूल्य_t find_मूल्य(संरचना वृक्ष_गाँठ*cur,
+				 ध्रुव वर्ण*कुंजी, प्रतीक_मूल्य_t val,
 				 bool force_flag);
-      char*key_strdup_(const char*str);
+      वर्ण*कुंजी_strdup(ध्रुव वर्ण*str);
 };
 
 /*
@@ -87,31 +87,31 @@ class symbol_table_s {
  * the delete_symbol_table method will delete the table, including all
  * the space for the keys.
  */
-inline symbol_table_t new_symbol_table(void) { return new symbol_table_s; }
-inline void delete_symbol_table(symbol_table_t tbl) { delete tbl; }
+अन्तःस्थ प्रतीक_table_t new_प्रतीक_table(शून्य) { प्रत्यागम new प्रतीक_table_s; }
+अन्तःस्थ शून्य delete_प्रतीक_table(प्रतीक_table_t tbl) { delete tbl; }
 
 // These are obsolete, and here only to support older code.
-inline void sym_set_value(symbol_table_t tbl, const char*key, symbol_value_t val)
-{ tbl->sym_set_value(key, val); }
+अन्तःस्थ शून्य sym_set_मूल्य(प्रतीक_table_t tbl, ध्रुव वर्ण*कुंजी, प्रतीक_मूल्य_t val)
+{ tbl->sym_set_मूल्य(कुंजी, val); }
 
-inline symbol_value_t sym_get_value(symbol_table_t tbl, const char*key)
-{ return tbl->sym_get_value(key); }
+अन्तःस्थ प्रतीक_मूल्य_t sym_get_मूल्य(प्रतीक_table_t tbl, ध्रुव वर्ण*कुंजी)
+{ प्रत्यागम tbl->sym_get_मूल्य(कुंजी); }
 
 /*
  * This template is a type-safe interface to the symbol table.
  */
-template <class T> class symbol_map_s : private symbol_table_s {
+ढाँचा <class T> class प्रतीक_map_s : गुप्त प्रतीक_table_s {
 
-    public:
-      void sym_set_value(const char*key, T*val)
-      { symbol_value_t tmp;
+    सार्वजनिक:
+      शून्य sym_set_मूल्य(ध्रुव वर्ण*कुंजी, T*val)
+      { प्रतीक_मूल्य_t tmp;
 	tmp.ptr = val;
-	symbol_table_s::sym_set_value(key, tmp);
+	प्रतीक_table_s::sym_set_मूल्य(कुंजी, tmp);
       }
 
-      T* sym_get_value(const char*key)
-      { symbol_value_t val = symbol_table_s::sym_get_value(key);
-	return reinterpret_cast<T*>(val.ptr);
+      T* sym_get_मूल्य(ध्रुव वर्ण*कुंजी)
+      { प्रतीक_मूल्य_t val = प्रतीक_table_s::sym_get_मूल्य(कुंजी);
+	प्रत्यागम reinterpret_cast<T*>(val.ptr);
       }
 };
 

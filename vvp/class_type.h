@@ -31,58 +31,58 @@ class vvp_vector4_t;
  * uses this information to figure out how to construct an actual
  * instance.
  */
-class class_type : public __vpiHandle {
+class class_type : सार्वजनिक __vpiHandle {
 
-    public:
-      struct inst_x;
-      typedef inst_x*inst_t;
+    सार्वजनिक:
+      संरचना inst_x;
+      प्रकारनिर्देश inst_x*inst_t;
 
-    public:
-      explicit class_type(const std::string&nam, size_t nprop);
+    सार्वजनिक:
+      explicit class_type(ध्रुव std::string&nam, माप_प्रकार nprop);
       ~class_type() override;
 
 	// This is the name of the class type.
-      inline const std::string&class_name(void) const { return class_name_; }
+      अन्तःस्थ ध्रुव std::string&class_name(शून्य) ध्रुव { प्रत्यागम class_name_; }
 	// Number of properties in the class definition.
-      inline size_t property_count(void) const { return properties_.size(); }
+      अन्तःस्थ माप_प्रकार property_गिनती(शून्य) ध्रुव { प्रत्यागम properties_.size(); }
 
 	// Set the details about the property. This is used during
 	// parse of the .vvp file to fill in the details of the
 	// property for the class definition.
-      void set_property(size_t idx, const std::string&name, const std::string&type, uint64_t array_size);
+      शून्य set_property(माप_प्रकार idx, ध्रुव std::string&name, ध्रुव std::string&type, uint64_t array_size);
 
 	// This method is called after all the properties are
 	// defined. This calculates information about the definition.
-      void finish_setup(void);
+      शून्य finish_setup(शून्य);
 
-    public:
+    सार्वजनिक:
 	// Constructors and destructors for making instances.
-      inst_t instance_new() const;
-      void instance_delete(inst_t) const;
+      inst_t instance_new() ध्रुव;
+      शून्य instance_delete(inst_t) ध्रुव;
 
-      void set_vec4(inst_t inst, size_t pid, const vvp_vector4_t&val) const;
-      void get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) const;
-      void set_real(inst_t inst, size_t pid, double val) const;
-      double get_real(inst_t inst, size_t pid) const;
-      void set_string(inst_t inst, size_t pid, const std::string&val) const;
-      std::string get_string(inst_t inst, size_t pid) const;
-      void set_object(inst_t inst, size_t pid, const vvp_object_t&val, size_t idx) const;
-      void get_object(inst_t inst, size_t pid, vvp_object_t&val, size_t idx) const;
+      शून्य set_vec4(inst_t inst, माप_प्रकार pid, ध्रुव vvp_vector4_t&val) ध्रुव;
+      शून्य get_vec4(inst_t inst, माप_प्रकार pid, vvp_vector4_t&val) ध्रुव;
+      शून्य set_real(inst_t inst, माप_प्रकार pid, द्विगुण val) ध्रुव;
+      द्विगुण get_real(inst_t inst, माप_प्रकार pid) ध्रुव;
+      शून्य set_string(inst_t inst, माप_प्रकार pid, ध्रुव std::string&val) ध्रुव;
+      std::string get_string(inst_t inst, माप_प्रकार pid) ध्रुव;
+      शून्य set_object(inst_t inst, माप_प्रकार pid, ध्रुव vvp_object_t&val, माप_प्रकार idx) ध्रुव;
+      शून्य get_object(inst_t inst, माप_प्रकार pid, vvp_object_t&val, माप_प्रकार idx) ध्रुव;
 
-      void copy_property(inst_t dst, size_t idx, inst_t src) const;
+      शून्य copy_property(inst_t dst, माप_प्रकार idx, inst_t src) ध्रुव;
 
-    public: // VPI related methods
-      int get_type_code(void) const override;
+    सार्वजनिक: // VPI related methods
+      पूर्णाङ्क get_type_code(शून्य) ध्रुव override;
 
-    private:
+    गुप्त:
       std::string class_name_;
 
-      struct prop_t {
+      संरचना prop_t {
 	    std::string name;
 	    class_property_t*type;
       };
       std::vector<prop_t> properties_;
-      size_t instance_size_;
+      माप_प्रकार instance_size_;
 };
 
 #endif /* IVL_class_type_H */
