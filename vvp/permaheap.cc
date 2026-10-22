@@ -22,30 +22,30 @@
 
 permaheap::permaheap()
 {
-      chunk_ptr_ = initial_chunk_.bytes;
-      chunk_remaining_ = sizeof(initial_chunk_);
-      heap_total_ = chunk_remaining_;
+      chunk_ptr_ = initial_chunk_.بائٹیں;
+      chunk_بقایا = حجم(initial_chunk_);
+      ڈھیر_کل_2 = chunk_بقایا;
 }
 
 permaheap::~permaheap()
 {
 }
 
-void* permaheap::alloc(size_t size)
+خالی* permaheap::alloc(size_t size)
 {
-      assert(size <= CHUNK_SIZE);
+      أكد(size <= CHUNK_سائز);
 
-      if (size > chunk_remaining_) {
-	    chunk_ptr_ = ::new char[CHUNK_SIZE];
-	    chunk_remaining_ = CHUNK_SIZE;
-	    heap_total_ += CHUNK_SIZE;
+      اگر (size > chunk_بقایا) {
+	    chunk_ptr_ = ::نیا حرف[CHUNK_سائز];
+	    chunk_بقایا = CHUNK_سائز;
+	    ڈھیر_کل_2 += CHUNK_سائز;
       }
 
-      assert( (size%sizeof(void*)) == 0 );
+      أكد( (size%حجم(خالی*)) == 0 );
 
-      void*res = chunk_ptr_;
+      خالی*res = chunk_ptr_;
       chunk_ptr_ += size;
-      chunk_remaining_ -= size;
+      chunk_بقایا -= size;
 
-      return res;
+      واپس res;
 }

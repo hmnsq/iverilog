@@ -31,125 +31,125 @@
 # include  "event.h"
 # include  "vvp_net_sig.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
-#include  "vvp_cleanup.h"
-#endif
+#اگر_تعریف_شدہ CHECK_WITH_VALGRIND
+#شامل  "vvp_cleanup.h"
+#اگر_ختم
 # include  <cstdio>
 # include  <cassert>
 # include  <cstdlib>
 
-using namespace std;
+استعمال نامخلا std;
 
-static const char*cb_reason_name(PLI_INT32 reason)
+ساکن ثابت حرف*cb_reason_name(PLI_INT32 reason)
 {
-      switch (reason) {
-	  case cbValueChange:
-	    return "cbValueChange";
-	  case cbStmt:
-	    return "cbStmt";
-	  case cbForce:
-	    return "cbForce";
-	  case cbRelease:
-	    return "cbRelease";
-	  case cbAtStartOfSimTime:
-	    return "cbAtStartOfSimTime";
-	  case cbReadWriteSynch:
-	    return "cbReadWriteSynch";
-	  case cbReadOnlySynch:
-	    return "cbReadOnlySynch";
-	  case cbNextSimTime:
-	    return "cbNextSimTime";
-	  case cbAfterDelay:
-	    return "cbAfterDelay";
-	  case cbEndOfCompile:
-	    return "cbEndOfCompile";
-	  case cbStartOfSimulation:
-	    return "cbStartOfSimulation";
-	  case cbEndOfSimulation:
-	    return "cbEndOfSimulation";
-	  case cbError:
-	    return "cbError";
-	  case cbTchkViolation:
-	    return "cbTchkViolation";
-	  case cbStartOfSave:
-	    return "cbStartOfSave";
-	  case cbEndOfSave:
-	    return "cbEndOfSave";
-	  case cbStartOfRestart:
-	    return "cbStartOfRestart";
-	  case cbEndOfRestart:
-	    return "cbEndOfRestart";
-	  case cbStartOfReset:
-	    return "cbStartOfReset";
-	  case cbEndOfReset:
-	    return "cbEndOfReset";
-	  case cbEnterInteractive:
-	    return "cbEnterInteractive";
-	  case cbExitInteractive:
-	    return "cbExitInteractive";
-	  case cbInteractiveScopeChange:
-	    return "cbInteractiveScopeChange";
-	  case cbUnresolvedSystf:
-	    return "cbUnresolvedSystf";
-	  case cbAtEndOfSimTime:
-	    return "cbAtEndOfSimTime";
-	  default:
-	    return "unrecognised";
+      انتخاب (reason) {
+	  حالت cb_قدر_Change:
+	    واپس "cbValueChange";
+	  حالت cbStmt:
+	    واپس "cbStmt";
+	  حالت cbForce:
+	    واپس "cbForce";
+	  حالت cbRelease:
+	    واپس "cbRelease";
+	  حالت cb_At_آغاز_کا_Sim_وقت:
+	    واپس "cbAtStartOfSimTime";
+	  حالت cbReadWriteSynch:
+	    واپس "cbReadWriteSynch";
+	  حالت cbReadOnlySynch:
+	    واپس "cbReadOnlySynch";
+	  حالت cb_اگلا_Sim_وقت:
+	    واپس "cbNextSimTime";
+	  حالت cbAfterDelay:
+	    واپس "cbAfterDelay";
+	  حالت cb_انتہا_کا_Compile:
+	    واپس "cbEndOfCompile";
+	  حالت cb_آغاز_کا_Simulation:
+	    واپس "cbStartOfSimulation";
+	  حالت cb_انتہا_کا_Simulation:
+	    واپس "cbEndOfSimulation";
+	  حالت cbError:
+	    واپس "cbError";
+	  حالت cbTchkViolation:
+	    واپس "cbTchkViolation";
+	  حالت cb_آغاز_کا_Save:
+	    واپس "cbStartOfSave";
+	  حالت cb_انتہا_کا_Save:
+	    واپس "cbEndOfSave";
+	  حالت cb_آغاز_کا_Restart:
+	    واپس "cbStartOfRestart";
+	  حالت cb_انتہا_کا_Restart:
+	    واپس "cbEndOfRestart";
+	  حالت cb_آغاز_کا_Reset:
+	    واپس "cbStartOfReset";
+	  حالت cb_انتہا_کا_Reset:
+	    واپس "cbEndOfReset";
+	  حالت cbEnterInteractive:
+	    واپس "cbEnterInteractive";
+	  حالت cbExitInteractive:
+	    واپس "cbExitInteractive";
+	  حالت cbInteractiveScopeChange:
+	    واپس "cbInteractiveScopeChange";
+	  حالت cbUnresolvedSystf:
+	    واپس "cbUnresolvedSystf";
+	  حالت cb_At_انتہا_کا_Sim_وقت:
+	    واپس "cbAtEndOfSimTime";
+	  طےشدہ:
+	    واپس "unrecognised";
       }
 }
 
-static bool check_callback_time(p_cb_data data, bool allow_suppress)
+ساکن منطقی check_callback_وقت(p_cb_ڈیٹا ڈیٹا, منطقی allow_suppress)
 {
-      assert(data);
-      if (!data->time) {
-	    if (!allow_suppress) {
+      أكد(ڈیٹا);
+      اگر (!ڈیٹا->time) {
+	    اگر (!allow_suppress) {
 		  fprintf(stderr, "VPI error: null value passed in cb_data.time "
 				  "when registering %s callback\n.",
-				  cb_reason_name(data->reason));
-		  return false;
+				  cb_reason_name(ڈیٹا->reason));
+		  واپس جھوٹ;
 	    }
-	    return true;
+	    واپس سچ;
       }
-      switch (data->time->type) {
-	  case vpiSimTime:
-	    break;
-	  case vpiScaledRealTime:
-	    break;
-	  case vpiSuppressTime:
-	    if (!allow_suppress) {
+      انتخاب (ڈیٹا->time->type) {
+	  حالت vpi_Sim_وقت:
+	    توڑو;
+	  حالت vpi_Scaled_Real_وقت:
+	    توڑو;
+	  حالت vpi_Suppress_وقت:
+	    اگر (!allow_suppress) {
 		  fprintf(stderr, "VPI error: vpiSuppressTime is not valid "
 				  "when registering %s callback\n.",
-				  cb_reason_name(data->reason));
-		  return false;
+				  cb_reason_name(ڈیٹا->reason));
+		  واپس جھوٹ;
 	    }
-	    break;
-	  default:
+	    توڑو;
+	  طےشدہ:
 	    fprintf(stderr, "VPI error: invalid type passed in cb_data time "
 			    "structure when registering %s callback\n.",
-			    cb_reason_name(data->reason));
-	    return false;
+			    cb_reason_name(ڈیٹا->reason));
+	    واپس جھوٹ;
       }
-      return true;
+      واپس سچ;
 }
 
-static void set_callback_time(p_cb_data data)
+ساکن خالی سیٹ_callback_وقت(p_cb_ڈیٹا ڈیٹا)
 {
-      assert(data && data->time);
-      data->time->low  = 0;
-      data->time->high = 0;
-      data->time->real = 0.0;
-      switch (data->time->type) {
-	  case vpiSimTime:
-	    vpip_time_to_timestruct(data->time, schedule_simtime());
-	    break;
-	  case vpiScaledRealTime:
-	    data->time->real = vpip_scaled_time_from_handle(schedule_simtime(), data->obj);
-	    break;
-	  case vpiSuppressTime:
-	    break;
-	  default:
-	    assert(0);
-	    break;
+      أكد(ڈیٹا && ڈیٹا->time);
+      ڈیٹا->time->کم  = 0;
+      ڈیٹا->time->بلند = 0;
+      ڈیٹا->time->real = 0.0;
+      انتخاب (ڈیٹا->time->type) {
+	  حالت vpi_Sim_وقت:
+	    vpip_وقت_مقصد_timestruct(ڈیٹا->time, جدول_وقت_simtime());
+	    توڑو;
+	  حالت vpi_Scaled_Real_وقت:
+	    ڈیٹا->time->real = vpip_scaled_وقت_from_handle(جدول_وقت_simtime(), ڈیٹا->obj);
+	    توڑو;
+	  حالت vpi_Suppress_وقت:
+	    توڑو;
+	  طےشدہ:
+	    أكد(0);
+	    توڑو;
       }
 }
 
@@ -168,133 +168,133 @@ static void set_callback_time(p_cb_data data)
  * event. This member is only used for things like cbReadOnlySync.
  */
 
-class sync_callback;
+جماعت sync_callback;
 
-struct sync_cb  : public vvp_gen_event_s {
+ساخت sync_cb  : عوامی vvp_gen_event_s {
       sync_callback*handle;
-      bool sync_flag;
+      منطقی sync_flag;
 
       ~sync_cb () override { }
 
-      virtual void run_run() override;
+      مجازی خالی تسلسل_تسلسل() override;
 };
 
-inline __vpiCallback::__vpiCallback()
+اندرونی __vpiCallback::__vpiCallback()
 {
-      next = 0;
+      اگلا_2 = 0;
 }
 
 __vpiCallback::~__vpiCallback()
 {
 }
 
-int __vpiCallback::get_type_code(void) const
-{ return vpiCallback; }
+صحیح __vpiCallback::get_type_رمز(خالی) ثابت
+{ واپس vpiCallback; }
 
 
-value_callback::value_callback(p_cb_data data)
+قدر_callback::قدر_callback(p_cb_ڈیٹا ڈیٹا)
 {
-      cb_data = *data;
-      if (data->time) {
-	    cb_time = *(data->time);
-      } else {
-	    cb_time.type = vpiSuppressTime;
+      cb_ڈیٹا = *ڈیٹا;
+      اگر (ڈیٹا->time) {
+	    cb_وقت = *(ڈیٹا->time);
+      } ورنہ {
+	    cb_وقت.type = vpi_Suppress_وقت;
       }
-      cb_data.time = &cb_time;
-      if (data->value) {
-	    cb_value = *(data->value);
-      } else {
-	    cb_value.format = vpiSuppressVal;
+      cb_ڈیٹا.time = &cb_وقت;
+      اگر (ڈیٹا->value) {
+	    cb_قدر = *(ڈیٹا->value);
+      } ورنہ {
+	    cb_قدر.format = vpiSuppressVal;
       }
-      cb_data.value = &cb_value;
+      cb_ڈیٹا.value = &cb_قدر;
 }
 
 /*
  * Normally, any assign to a value triggers a value change callback,
  * so return a constant true here. This is a stub.
  */
-bool value_callback::test_value_callback_ready(void)
+منطقی قدر_callback::test_قدر_callback_ready(خالی)
 {
-      return true;
+      واپس سچ;
 }
 
-static void vpip_real_value_change(value_callback*cbh, vpiHandle ref)
+ساکن خالی vpip_real_قدر_change(قدر_callback*cbh, vpiHandle ref)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
-      assert(rfp);
+      ساخت __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      أكد(rfp);
       vvp_vpi_callback*obj = dynamic_cast<vvp_vpi_callback*>(rfp->net->fil);
-      assert(obj);
+      أكد(obj);
 
-      obj->add_vpi_callback(cbh);
+      obj->جوڑو_vpi_callback(cbh);
 }
 
-class value_part_callback : public value_callback {
-    public:
-      explicit value_part_callback(p_cb_data data);
-      ~value_part_callback() override;
+جماعت قدر_part_callback : عوامی قدر_callback {
+    عوامی:
+      صریح قدر_part_callback(p_cb_ڈیٹا ڈیٹا);
+      ~قدر_part_callback() override;
 
-      value_part_callback(const value_part_callback&) = delete;
-      value_part_callback& operator=(const value_part_callback&) = delete;
+      قدر_part_callback(ثابت قدر_part_callback&) = حذف;
+      قدر_part_callback& عامل=(ثابت قدر_part_callback&) = حذف;
 
-      bool test_value_callback_ready(void) override;
+      منطقی test_قدر_callback_ready(خالی) override;
 
-    private:
-      char*value_bits_;
-      size_t value_off_;
+    نجی:
+      حرف*قدر_بٹ;
+      size_t قدر_off;
 };
 
-inline value_part_callback::value_part_callback(p_cb_data data)
-: value_callback(data)
+اندرونی قدر_part_callback::قدر_part_callback(p_cb_ڈیٹا ڈیٹا)
+: قدر_callback(ڈیٹا)
 {
-      struct __vpiPV*pobj = dynamic_cast<__vpiPV*>(data->obj);
-      assert(pobj);
+      ساخت __vpiPV*pobj = dynamic_cast<__vpiPV*>(ڈیٹا->obj);
+      أكد(pobj);
 
       vvp_vpi_callback*sig_fil;
       sig_fil = dynamic_cast<vvp_vpi_callback*>(pobj->net->fil);
-      assert(sig_fil);
+      أكد(sig_fil);
 
-      sig_fil->add_vpi_callback(this);
+      sig_fil->جوڑو_vpi_callback(یہ);
 	// Get a reference value that can be used to compare with an
 	// updated value. Use the filter get_value to get the value,
 	// and get it in BinStr form so that compares are easy. Note
 	// that the vpiBinStr format has the MSB first, but the tbase
 	// is lsb first.
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      sig_fil->get_value(&tmp_value);
+      s_vpi_قدر tmp_قدر;
+      tmp_قدر.format = vpiBinStrVal;
+      sig_fil->get_قدر(&tmp_قدر);
 
-      value_bits_ = new char[pobj->width+1];
-      value_off_ = pobj->parent->vpi_get(vpiSize) - pobj->width - pobj->tbase;
+      قدر_بٹ = نیا حرف[pobj->width+1];
+      قدر_off = pobj->والد->vpi_get(vpi_سائز) - pobj->width - pobj->tbase;
 
-      memcpy(value_bits_, tmp_value.value.str + value_off_, pobj->width);
-      value_bits_[pobj->width] = 0;
+      حافظہ_نقل(قدر_بٹ, tmp_قدر.value.str + قدر_off, pobj->width);
+      قدر_بٹ[pobj->width] = 0;
 }
 
-value_part_callback::~value_part_callback()
+قدر_part_callback::~قدر_part_callback()
 {
-      delete[]value_bits_;
+      حذف[]قدر_بٹ;
 }
 
-bool value_part_callback::test_value_callback_ready(void)
+منطقی قدر_part_callback::test_قدر_callback_ready(خالی)
 {
-      struct __vpiPV*pobj = dynamic_cast<__vpiPV*>(cb_data.obj);
-      assert(pobj);
+      ساخت __vpiPV*pobj = dynamic_cast<__vpiPV*>(cb_ڈیٹا.obj);
+      أكد(pobj);
 
       vvp_vpi_callback*sig_fil;
       sig_fil = dynamic_cast<vvp_vpi_callback*>(pobj->net->fil);
-      assert(sig_fil);
+      أكد(sig_fil);
 
 	// Get a reference value that can be used to compare with an
 	// updated value.
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      sig_fil->get_value(&tmp_value);
+      s_vpi_قدر tmp_قدر;
+      tmp_قدر.format = vpiBinStrVal;
+      sig_fil->get_قدر(&tmp_قدر);
 
-      if (memcmp(value_bits_, tmp_value.value.str + value_off_, pobj->width) == 0)
-	    return false;
+      اگر (memcmp(قدر_بٹ, tmp_قدر.value.str + قدر_off, pobj->width) == 0)
+	    واپس جھوٹ;
 
-      memcpy(value_bits_, tmp_value.value.str + value_off_, pobj->width);
-      return true;
+      حافظہ_نقل(قدر_بٹ, tmp_قدر.value.str + قدر_off, pobj->width);
+      واپس سچ;
 }
 
 /*
@@ -303,11 +303,11 @@ bool value_part_callback::test_value_callback_ready(void)
  * object, but it refers to a net that is a vvp_vpi_callback, so
  * add the callback to that object.
  */
-static value_callback*make_value_change_part(p_cb_data data)
+ساکن قدر_callback*make_قدر_change_part(p_cb_ڈیٹا ڈیٹا)
 {
 	/* Attach the __vpiCallback object to the signal. */
-      value_callback*cbh = new value_part_callback(data);
-      return cbh;
+      قدر_callback*cbh = نیا قدر_part_callback(ڈیٹا);
+      واپس cbh;
 }
 
 /*
@@ -317,247 +317,247 @@ static value_callback*make_value_change_part(p_cb_data data)
  * does not already have them, create some callback functors to do the
  * actual value change detection.
  */
-static value_callback* make_value_change(p_cb_data data)
+ساکن قدر_callback* make_قدر_change(p_cb_ڈیٹا ڈیٹا)
 {
-      if (!check_callback_time(data, true))
-	    return 0;
+      اگر (!check_callback_وقت(ڈیٹا, سچ))
+	    واپس 0;
 
-      if (vpi_get(vpiAutomatic, data->obj)) {
+      اگر (vpi_get(vpiAutomatic, ڈیٹا->obj)) {
             fprintf(stderr, "vpi error: cannot place value change "
                             "callback on automatically allocated "
                             "variable '%s'\n",
-                            vpi_get_str(vpiName, data->obj));
-            return 0;
+                            vpi_get_str(vpiName, ڈیٹا->obj));
+            واپس 0;
       }
 
 	// Special case: the target object is a vpiPartSelect
-      if (data->obj->get_type_code() == vpiPartSelect) {
-            if (data->obj->vpi_handle(vpiArray))
-	        return vpip_array_word_change(data);
-            else
-	        return make_value_change_part(data);
+      اگر (ڈیٹا->obj->get_type_رمز() == vpiPartSelect) {
+            اگر (ڈیٹا->obj->vpi_handle(vpiArray))
+	        واپس vpip_array_لفظ_change(ڈیٹا);
+            ورنہ
+	        واپس make_قدر_change_part(ڈیٹا);
       }
 
-      if (data->obj->get_type_code() == vpiMemoryWord)
-	    return vpip_array_word_change(data);
+      اگر (ڈیٹا->obj->get_type_رمز() == vpi_حافظہ_لفظ)
+	    واپس vpip_array_لفظ_change(ڈیٹا);
 
-      if (data->obj->get_type_code() == vpiMemory)
-	    return vpip_array_change(data);
+      اگر (ڈیٹا->obj->get_type_رمز() == vpi_حافظہ)
+	    واپس vpip_array_change(ڈیٹا);
 
-      value_callback*obj = new value_callback(data);
+      قدر_callback*obj = نیا قدر_callback(ڈیٹا);
 
-      assert(data->obj);
-      switch (data->obj->get_type_code()) {
+      أكد(ڈیٹا->obj);
+      انتخاب (ڈیٹا->obj->get_type_رمز()) {
 
-	  case vpiReg:
-	  case vpiNet:
-	  case vpiIntegerVar:
-	  case vpiBitVar:
-	  case vpiByteVar:
-	  case vpiShortIntVar:
-	  case vpiIntVar:
-	  case vpiLongIntVar:
+	  حالت vpiReg:
+	  حالت vpiNet:
+	  حالت vpiIntegerVar:
+	  حالت vpi_ثنائی_ہندسہ_Var:
+	  حالت vpiByteVar:
+	  حالت vpiShortIntVar:
+	  حالت vpiIntVar:
+	  حالت vpiLongIntVar:
 	      /* Attach the callback to the vvp_fun_signal node by
 		 putting it in the vpi_callbacks list. */
-	    struct __vpiSignal*sig;
-	    sig = dynamic_cast<__vpiSignal*>(data->obj);
+	    ساخت __vpiSignal*sig;
+	    sig = dynamic_cast<__vpiSignal*>(ڈیٹا->obj);
 
 	    vvp_net_fil_t*sig_fil;
-	    sig_fil = dynamic_cast<vvp_net_fil_t*>(sig->node->fil);
-	    assert(sig_fil);
+	    sig_fil = dynamic_cast<vvp_net_fil_t*>(sig->گرہ->fil);
+	    أكد(sig_fil);
 
 	      /* Attach the __vpiCallback object to the signal. */
-	    sig_fil->add_vpi_callback(obj);
-	    break;
+	    sig_fil->جوڑو_vpi_callback(obj);
+	    توڑو;
 
-	  case vpiRealVar:
-	    vpip_real_value_change(obj, data->obj);
-	    break;
+	  حالت vpiRealVar:
+	    vpip_real_قدر_change(obj, ڈیٹا->obj);
+	    توڑو;
 
-	  case vpiNamedEvent:
+	  حالت vpiNamedEvent:
 	    __vpiNamedEvent*nev;
-	    nev = dynamic_cast<__vpiNamedEvent*>(data->obj);
-	    nev->add_vpi_callback(obj);
-	    break;
+	    nev = dynamic_cast<__vpiNamedEvent*>(ڈیٹا->obj);
+	    nev->جوڑو_vpi_callback(obj);
+	    توڑو;
 
-	  case vpiModule:
-	  case vpiConstant:
-	  case vpiParameter:
+	  حالت vpiModule:
+	  حالت vpiConstant:
+	  حالت vpiParameter:
 	      /* These are constant, so there are no value change
 		 lists to put them in. */
-	    break;
+	    توڑو;
 
-	  default:
+	  طےشدہ:
 	    fprintf(stderr, "make_value_change: sorry: I cannot callback "
 		    "values on type code=%d\n",
-		    data->obj->get_type_code());
-	    delete obj;
-	    return 0;
+		    ڈیٹا->obj->get_type_رمز());
+	    حذف obj;
+	    واپس 0;
       }
 
-      return obj;
+      واپس obj;
 }
 
-class sync_callback : public __vpiCallback {
-    public:
-      explicit sync_callback(p_cb_data data);
+جماعت sync_callback : عوامی __vpiCallback {
+    عوامی:
+      صریح sync_callback(p_cb_ڈیٹا ڈیٹا);
       ~sync_callback() override;
 
-      sync_callback(const sync_callback&) = delete;
-      sync_callback& operator=(const sync_callback&) = delete;
+      sync_callback(ثابت sync_callback&) = حذف;
+      sync_callback& عامل=(ثابت sync_callback&) = حذف;
 
-    public:
+    عوامی:
 	// scheduled event
-      struct sync_cb* cb_sync;
+      ساخت sync_cb* cb_sync;
 	// user supplied callback data
-      struct t_vpi_time cb_time;
+      ساخت t_vpi_وقت cb_وقت;
 
-    private:
+    نجی:
 };
 
-inline sync_callback::sync_callback(p_cb_data data)
+اندرونی sync_callback::sync_callback(p_cb_ڈیٹا ڈیٹا)
 {
       cb_sync = 0;
 
-      cb_data = *data;
-      assert(data->time);
-      cb_time = *(data->time);
-      cb_data.time = &cb_time;
+      cb_ڈیٹا = *ڈیٹا;
+      أكد(ڈیٹا->time);
+      cb_وقت = *(ڈیٹا->time);
+      cb_ڈیٹا.time = &cb_وقت;
 }
 
 sync_callback::~sync_callback()
 {
-      delete cb_sync;
+      حذف cb_sync;
 }
 
-void sync_cb::run_run()
+خالی sync_cb::تسلسل_تسلسل()
 {
-      if (handle == 0)
-	    return;
+      اگر (handle == 0)
+	    واپس;
 
       sync_callback*cur = handle;
 
 	/* Run the callback. If the cb_rtn function pointer is set to
 	   null, then just skip the whole thing and free it. This is
 	   the usual way to cancel one-time callbacks of this sort. */
-      if (cur->cb_data.cb_rtn != 0) {
-	    set_callback_time(&cur->cb_data);
-	    assert(vpi_mode_flag == VPI_MODE_NONE);
-	    vpi_mode_flag = sync_flag? VPI_MODE_ROSYNC : VPI_MODE_RWSYNC;
-	    (cur->cb_data.cb_rtn)(&cur->cb_data);
-	    vpi_mode_flag = VPI_MODE_NONE;
+      اگر (cur->cb_ڈیٹا.cb_rtn != 0) {
+	    سیٹ_callback_وقت(&cur->cb_ڈیٹا);
+	    أكد(vpi_منوال_flag == VPI_منوال_NONE);
+	    vpi_منوال_flag = sync_flag? VPI_منوال_ROSYNC : VPI_منوال_RWSYNC;
+	    (cur->cb_ڈیٹا.cb_rtn)(&cur->cb_ڈیٹا);
+	    vpi_منوال_flag = VPI_منوال_NONE;
       }
 
-      delete cur;
+      حذف cur;
 }
 
-static vvp_time64_t get_sync_cb_time(sync_callback*obj)
+ساکن vvp_time64_t get_sync_cb_وقت(sync_callback*obj)
 {
       vvp_time64_t tv = 0;
-      switch (obj->cb_time.type) {
-	  case vpiSimTime:
-	    tv = vpip_timestruct_to_time(&obj->cb_time);
-	    break;
+      انتخاب (obj->cb_وقت.type) {
+	  حالت vpi_Sim_وقت:
+	    tv = vpip_timestruct_مقصد_وقت(&obj->cb_وقت);
+	    توڑو;
 
-	  case vpiScaledRealTime:
-	    tv = vpip_scaled_real_to_time64(obj->cb_time.real,
-		     vpip_timescale_scope_from_handle(obj->cb_data.obj));
-	    break;
+	  حالت vpi_Scaled_Real_وقت:
+	    tv = vpip_scaled_real_مقصد_time64(obj->cb_وقت.real,
+		     vpip_timescale_scope_from_handle(obj->cb_ڈیٹا.obj));
+	    توڑو;
 
-	  default:
+	  طےشدہ:
 	    fprintf(stderr, "get_sync_cb_time: Unsupported time type %d.\n",
-	            (int)obj->cb_time.type);
-	    assert(0);
-	    break;
+	            (صحیح)obj->cb_وقت.type);
+	    أكد(0);
+	    توڑو;
       }
-      return tv;
+      واپس tv;
 }
 
-static sync_callback* make_sync(p_cb_data data, bool readonly_flag)
+ساکن sync_callback* make_sync(p_cb_ڈیٹا ڈیٹا, منطقی readonly_flag)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      اگر (!check_callback_وقت(ڈیٹا, جھوٹ))
+	    واپس 0;
 
-      sync_callback*obj = new sync_callback(data);
+      sync_callback*obj = نیا sync_callback(ڈیٹا);
 
-      struct sync_cb*cb = new sync_cb;
-      cb->sync_flag = readonly_flag? true : false;
+      ساخت sync_cb*cb = نیا sync_cb;
+      cb->sync_flag = readonly_flag? سچ : جھوٹ;
       cb->handle = obj;
       obj->cb_sync = cb;
 
-      vvp_time64_t tv = get_sync_cb_time(obj);
-      schedule_generic(cb, tv, true, readonly_flag);
+      vvp_time64_t tv = get_sync_cb_وقت(obj);
+      جدول_وقت_generic(cb, tv, سچ, readonly_flag);
 
-      return obj;
+      واپس obj;
 }
 
-static struct __vpiCallback* make_afterdelay(p_cb_data data)
+ساکن ساخت __vpiCallback* make_afterdelay(p_cb_ڈیٹا ڈیٹا)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      اگر (!check_callback_وقت(ڈیٹا, جھوٹ))
+	    واپس 0;
 
-      sync_callback*obj = new sync_callback(data);
-      struct sync_cb*cb = new sync_cb;
-      cb->sync_flag = false;
+      sync_callback*obj = نیا sync_callback(ڈیٹا);
+      ساخت sync_cb*cb = نیا sync_cb;
+      cb->sync_flag = جھوٹ;
       cb->handle = obj;
       obj->cb_sync = cb;
 
-      vvp_time64_t tv = get_sync_cb_time(obj);
-      schedule_generic(cb, tv, false);
+      vvp_time64_t tv = get_sync_cb_وقت(obj);
+      جدول_وقت_generic(cb, tv, جھوٹ);
 
-      return obj;
+      واپس obj;
 }
 
-static struct __vpiCallback* make_at_start_of_sim_time(p_cb_data data)
+ساکن ساخت __vpiCallback* make_at_آغاز_کا_sim_وقت(p_cb_ڈیٹا ڈیٹا)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      اگر (!check_callback_وقت(ڈیٹا, جھوٹ))
+	    واپس 0;
 
-      sync_callback*obj = new sync_callback(data);
-      struct sync_cb*cb = new sync_cb;
-      cb->sync_flag = false;
+      sync_callback*obj = نیا sync_callback(ڈیٹا);
+      ساخت sync_cb*cb = نیا sync_cb;
+      cb->sync_flag = جھوٹ;
       cb->handle = obj;
       obj->cb_sync = cb;
 
-      vvp_time64_t tv = get_sync_cb_time(obj);
-      vvp_time64_t cur = schedule_simtime();
-      if (cur > tv) {
+      vvp_time64_t tv = get_sync_cb_وقت(obj);
+      vvp_time64_t cur = جدول_وقت_simtime();
+      اگر (cur > tv) {
 	    tv = 0;
-	    assert(0);
-      } else if (cur == tv) {
+	    أكد(0);
+      } ورنہ اگر (cur == tv) {
 	    tv = 0;
-      } else {
+      } ورنہ {
 	    tv -= cur;
       }
-      schedule_at_start_of_simtime(cb, tv);
+      جدول_وقت_at_آغاز_کا_simtime(cb, tv);
 
-      return obj;
+      واپس obj;
 }
 
-static struct __vpiCallback* make_at_end_of_sim_time(p_cb_data data)
+ساکن ساخت __vpiCallback* make_at_انتہا_کا_sim_وقت(p_cb_ڈیٹا ڈیٹا)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      اگر (!check_callback_وقت(ڈیٹا, جھوٹ))
+	    واپس 0;
 
-      sync_callback*obj = new sync_callback(data);
-      struct sync_cb*cb = new sync_cb;
-      cb->sync_flag = false;
+      sync_callback*obj = نیا sync_callback(ڈیٹا);
+      ساخت sync_cb*cb = نیا sync_cb;
+      cb->sync_flag = جھوٹ;
       cb->handle = obj;
       obj->cb_sync = cb;
 
-      vvp_time64_t tv = get_sync_cb_time(obj);
-      vvp_time64_t cur = schedule_simtime();
-      if (cur > tv) {
+      vvp_time64_t tv = get_sync_cb_وقت(obj);
+      vvp_time64_t cur = جدول_وقت_simtime();
+      اگر (cur > tv) {
 	    tv = 0;
-	    assert(0);
-      } else if (cur == tv) {
+	    أكد(0);
+      } ورنہ اگر (cur == tv) {
 	    tv = 0;
-      } else {
+      } ورنہ {
 	    tv -= cur;
       }
-      schedule_at_end_of_simtime(cb, tv);
+      جدول_وقت_at_انتہا_کا_simtime(cb, tv);
 
-      return obj;
+      واپس obj;
 }
 
 /*
@@ -565,230 +565,230 @@ static struct __vpiCallback* make_at_end_of_sim_time(p_cb_data data)
  * callbacks.
  */
 
-class simulator_callback : public __vpiCallback {
-    public:
-      explicit simulator_callback(const struct t_cb_data*data);
+جماعت simulator_callback : عوامی __vpiCallback {
+    عوامی:
+      صریح simulator_callback(ثابت ساخت t_cb_ڈیٹا*ڈیٹا);
 
-    public:
-      struct t_vpi_time cb_time;
+    عوامی:
+      ساخت t_vpi_وقت cb_وقت;
 };
 
-inline simulator_callback::simulator_callback(const struct t_cb_data*data)
+اندرونی simulator_callback::simulator_callback(ثابت ساخت t_cb_ڈیٹا*ڈیٹا)
 {
-      cb_data = *data;
-      if ((data->reason == cbNextSimTime) && data->time) {
-	    cb_time = *(data->time);
-      } else if (data->reason == cbEndOfSimulation) {
-	    cb_time.type = vpiSimTime;
-      } else {
-	    cb_time.type = vpiSuppressTime;
+      cb_ڈیٹا = *ڈیٹا;
+      اگر ((ڈیٹا->reason == cb_اگلا_Sim_وقت) && ڈیٹا->time) {
+	    cb_وقت = *(ڈیٹا->time);
+      } ورنہ اگر (ڈیٹا->reason == cb_انتہا_کا_Simulation) {
+	    cb_وقت.type = vpi_Sim_وقت;
+      } ورنہ {
+	    cb_وقت.type = vpi_Suppress_وقت;
       }
-      cb_data.time = &cb_time;
+      cb_ڈیٹا.time = &cb_وقت;
 }
 
-static simulator_callback*NextSimTime = 0;
-static simulator_callback*EndOfCompile = 0;
-static simulator_callback*StartOfSimulation = 0;
-static simulator_callback*EndOfSimulation = 0;
+ساکن simulator_callback*اگلا_Sim_وقت = 0;
+ساکن simulator_callback*انتہا_کا_Compile = 0;
+ساکن simulator_callback*آغاز_کا_Simulation = 0;
+ساکن simulator_callback*انتہا_کا_Simulation = 0;
 
-#ifdef CHECK_WITH_VALGRIND
+#اگر_تعریف_شدہ CHECK_WITH_VALGRIND
 /* This is really only needed if the simulator aborts before starting the
  * main event loop. For that reason we can skip the next sim time queue. */
-void simulator_cb_delete(void)
+خالی simulator_cb_delete(خالی)
 {
       simulator_callback* cur;
 
 	/* Delete all the end of compile callbacks. */
-      while (EndOfCompile) {
-	    cur = EndOfCompile;
-	    EndOfCompile = dynamic_cast<simulator_callback*>(cur->next);
-	    delete cur;
+      جب (انتہا_کا_Compile) {
+	    cur = انتہا_کا_Compile;
+	    انتہا_کا_Compile = dynamic_cast<simulator_callback*>(cur->اگلا_2);
+	    حذف cur;
       }
 
 	/* Delete all the start of simulation callbacks. */
-      while (StartOfSimulation) {
-	    cur = StartOfSimulation;
-	    StartOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    delete cur;
+      جب (آغاز_کا_Simulation) {
+	    cur = آغاز_کا_Simulation;
+	    آغاز_کا_Simulation = dynamic_cast<simulator_callback*>(cur->اگلا_2);
+	    حذف cur;
       }
 
 	/* Delete all the end of simulation callbacks. */
-      while (EndOfSimulation) {
-	    cur = EndOfSimulation;
-	    EndOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    delete cur;
+      جب (انتہا_کا_Simulation) {
+	    cur = انتہا_کا_Simulation;
+	    انتہا_کا_Simulation = dynamic_cast<simulator_callback*>(cur->اگلا_2);
+	    حذف cur;
       }
 }
-#endif
+#اگر_ختم
 
-void vpiEndOfCompile(void) {
+خالی vpi_انتہا_کا_Compile(خالی) {
       simulator_callback* cur;
 
       /*
        * Walk the list of register callbacks, executing them and
        * freeing them when done.
        */
-      assert(vpi_mode_flag == VPI_MODE_NONE);
-      vpi_mode_flag = VPI_MODE_RWSYNC;
+      أكد(vpi_منوال_flag == VPI_منوال_NONE);
+      vpi_منوال_flag = VPI_منوال_RWSYNC;
 
-      while (EndOfCompile) {
-	    cur = EndOfCompile;
-	    EndOfCompile = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
-		  (cur->cb_data.cb_rtn)(&cur->cb_data);
+      جب (انتہا_کا_Compile) {
+	    cur = انتہا_کا_Compile;
+	    انتہا_کا_Compile = dynamic_cast<simulator_callback*>(cur->اگلا_2);
+	    اگر (cur->cb_ڈیٹا.cb_rtn != 0) {
+		  (cur->cb_ڈیٹا.cb_rtn)(&cur->cb_ڈیٹا);
 	    }
-	    delete cur;
+	    حذف cur;
       }
 
-      vpi_mode_flag = VPI_MODE_NONE;
+      vpi_منوال_flag = VPI_منوال_NONE;
 }
 
-void vpiStartOfSim(void) {
+خالی vpi_آغاز_کا_Sim(خالی) {
       simulator_callback* cur;
 
       /*
        * Walk the list of register callbacks, executing them and
        * freeing them when done.
        */
-      assert(vpi_mode_flag == VPI_MODE_NONE);
-      vpi_mode_flag = VPI_MODE_RWSYNC;
+      أكد(vpi_منوال_flag == VPI_منوال_NONE);
+      vpi_منوال_flag = VPI_منوال_RWSYNC;
 
-      while (StartOfSimulation) {
-	    cur = StartOfSimulation;
-	    StartOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
-		  (cur->cb_data.cb_rtn)(&cur->cb_data);
+      جب (آغاز_کا_Simulation) {
+	    cur = آغاز_کا_Simulation;
+	    آغاز_کا_Simulation = dynamic_cast<simulator_callback*>(cur->اگلا_2);
+	    اگر (cur->cb_ڈیٹا.cb_rtn != 0) {
+		  (cur->cb_ڈیٹا.cb_rtn)(&cur->cb_ڈیٹا);
 	    }
-	    delete cur;
+	    حذف cur;
       }
 
-      vpi_mode_flag = VPI_MODE_NONE;
+      vpi_منوال_flag = VPI_منوال_NONE;
 }
 
-void vpiPostsim(void) {
+خالی vpiPostsim(خالی) {
       simulator_callback* cur;
 
       /*
        * Walk the list of register callbacks
        */
-      assert(vpi_mode_flag == VPI_MODE_NONE);
-      vpi_mode_flag = VPI_MODE_ROSYNC;
+      أكد(vpi_منوال_flag == VPI_منوال_NONE);
+      vpi_منوال_flag = VPI_منوال_ROSYNC;
 
-      while (EndOfSimulation) {
-	    cur = EndOfSimulation;
-	    EndOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
-		  set_callback_time(&cur->cb_data);
-		  (cur->cb_data.cb_rtn)(&cur->cb_data);
+      جب (انتہا_کا_Simulation) {
+	    cur = انتہا_کا_Simulation;
+	    انتہا_کا_Simulation = dynamic_cast<simulator_callback*>(cur->اگلا_2);
+	    اگر (cur->cb_ڈیٹا.cb_rtn != 0) {
+		  سیٹ_callback_وقت(&cur->cb_ڈیٹا);
+		  (cur->cb_ڈیٹا.cb_rtn)(&cur->cb_ڈیٹا);
 	    }
-	    delete cur;
+	    حذف cur;
       }
 
-      vpi_mode_flag = VPI_MODE_NONE;
+      vpi_منوال_flag = VPI_منوال_NONE;
 }
 
 /*
  * The scheduler invokes this to clear out callbacks for the next
  * simulation time.
  */
-void vpiNextSimTime(void)
+خالی vpi_اگلا_Sim_وقت(خالی)
 {
       simulator_callback* cur;
-      simulator_callback* next = NextSimTime;
-      NextSimTime = 0;
+      simulator_callback* اگلا_2 = اگلا_Sim_وقت;
+      اگلا_Sim_وقت = 0;
 
-      assert(vpi_mode_flag == VPI_MODE_NONE);
-      vpi_mode_flag = VPI_MODE_RWSYNC;
+      أكد(vpi_منوال_flag == VPI_منوال_NONE);
+      vpi_منوال_flag = VPI_منوال_RWSYNC;
 
-      while (next) {
-            cur = next;
-            next = dynamic_cast<simulator_callback*>(cur->next);
-            if (cur->cb_data.cb_rtn != 0) {
-                  set_callback_time(&cur->cb_data);
-                  (cur->cb_data.cb_rtn)(&cur->cb_data);
+      جب (اگلا_2) {
+            cur = اگلا_2;
+            اگلا_2 = dynamic_cast<simulator_callback*>(cur->اگلا_2);
+            اگر (cur->cb_ڈیٹا.cb_rtn != 0) {
+                  سیٹ_callback_وقت(&cur->cb_ڈیٹا);
+                  (cur->cb_ڈیٹا.cb_rtn)(&cur->cb_ڈیٹا);
             }
-            delete cur;
+            حذف cur;
       }
 
-      vpi_mode_flag = VPI_MODE_NONE;
+      vpi_منوال_flag = VPI_منوال_NONE;
 }
 
-static simulator_callback* make_prepost(p_cb_data data)
+ساکن simulator_callback* make_prepost(p_cb_ڈیٹا ڈیٹا)
 {
-      if ((data->reason == cbNextSimTime) && !check_callback_time(data, true))
-	    return 0;
+      اگر ((ڈیٹا->reason == cb_اگلا_Sim_وقت) && !check_callback_وقت(ڈیٹا, سچ))
+	    واپس 0;
 
-      simulator_callback*obj = new simulator_callback(data);
+      simulator_callback*obj = نیا simulator_callback(ڈیٹا);
 
       /* Insert at head of list */
-      switch (data->reason) {
-	  case cbEndOfCompile:
-	    obj->next = EndOfCompile;
-	    EndOfCompile = obj;
-	    break;
-	  case cbStartOfSimulation:
-	    obj->next = StartOfSimulation;
-	    StartOfSimulation = obj;
-	    break;
-	  case cbEndOfSimulation:
-	    obj->next = EndOfSimulation;
-	    EndOfSimulation = obj;
-	    break;
-	  case cbNextSimTime:
-	    obj->next = NextSimTime;
-	    NextSimTime = obj;
-	    break;
+      انتخاب (ڈیٹا->reason) {
+	  حالت cb_انتہا_کا_Compile:
+	    obj->اگلا_2 = انتہا_کا_Compile;
+	    انتہا_کا_Compile = obj;
+	    توڑو;
+	  حالت cb_آغاز_کا_Simulation:
+	    obj->اگلا_2 = آغاز_کا_Simulation;
+	    آغاز_کا_Simulation = obj;
+	    توڑو;
+	  حالت cb_انتہا_کا_Simulation:
+	    obj->اگلا_2 = انتہا_کا_Simulation;
+	    انتہا_کا_Simulation = obj;
+	    توڑو;
+	  حالت cb_اگلا_Sim_وقت:
+	    obj->اگلا_2 = اگلا_Sim_وقت;
+	    اگلا_Sim_وقت = obj;
+	    توڑو;
       }
 
-      return obj;
+      واپس obj;
 }
 
-vpiHandle vpi_register_cb(p_cb_data data)
+vpiHandle vpi_رجسٹر_cb(p_cb_ڈیٹا ڈیٹا)
 {
-      struct __vpiCallback*obj = 0;
+      ساخت __vpiCallback*obj = 0;
 
-      assert(data);
-      switch (data->reason) {
+      أكد(ڈیٹا);
+      انتخاب (ڈیٹا->reason) {
 
-	  case cbValueChange:
-	    obj = make_value_change(data);
-	    break;
+	  حالت cb_قدر_Change:
+	    obj = make_قدر_change(ڈیٹا);
+	    توڑو;
 
-	  case cbReadOnlySynch:
-	    obj = make_sync(data, true);
-	    break;
+	  حالت cbReadOnlySynch:
+	    obj = make_sync(ڈیٹا, سچ);
+	    توڑو;
 
-	  case cbReadWriteSynch:
-	    obj = make_sync(data, false);
-	    break;
+	  حالت cbReadWriteSynch:
+	    obj = make_sync(ڈیٹا, جھوٹ);
+	    توڑو;
 
-	  case cbAtStartOfSimTime:
-	    obj = make_at_start_of_sim_time(data);
-	    break;
+	  حالت cb_At_آغاز_کا_Sim_وقت:
+	    obj = make_at_آغاز_کا_sim_وقت(ڈیٹا);
+	    توڑو;
 
-	  case cbAtEndOfSimTime:
-	    obj = make_at_end_of_sim_time(data);
-	    break;
+	  حالت cb_At_انتہا_کا_Sim_وقت:
+	    obj = make_at_انتہا_کا_sim_وقت(ڈیٹا);
+	    توڑو;
 
-	  case cbAfterDelay:
-	    obj = make_afterdelay(data);
-	    break;
+	  حالت cbAfterDelay:
+	    obj = make_afterdelay(ڈیٹا);
+	    توڑو;
 
-	  case cbEndOfCompile:
-	  case cbStartOfSimulation:
-	  case cbEndOfSimulation:
-	  case cbNextSimTime:
-	    obj = make_prepost(data);
-	    break;
+	  حالت cb_انتہا_کا_Compile:
+	  حالت cb_آغاز_کا_Simulation:
+	  حالت cb_انتہا_کا_Simulation:
+	  حالت cb_اگلا_Sim_وقت:
+	    obj = make_prepost(ڈیٹا);
+	    توڑو;
 
-	  default:
+	  طےشدہ:
 	    fprintf(stderr, "vpi error: vpi_register_cb invalid or "
 		    "unsupported callback reason: %d\n",
-		    (int)data->reason);
-	    break;
+		    (صحیح)ڈیٹا->reason);
+	    توڑو;
       }
 
-      return obj;
+      واپس obj;
 }
 
 /*
@@ -798,23 +798,23 @@ vpiHandle vpi_register_cb(p_cb_data data)
  */
 PLI_INT32 vpi_remove_cb(vpiHandle ref)
 {
-      struct __vpiCallback*obj = dynamic_cast<__vpiCallback*>(ref);
-      assert(obj);
-      obj->cb_data.cb_rtn = 0;
+      ساخت __vpiCallback*obj = dynamic_cast<__vpiCallback*>(ref);
+      أكد(obj);
+      obj->cb_ڈیٹا.cb_rtn = 0;
 
-      return 1;
+      واپس 1;
 }
 
-void callback_execute(struct __vpiCallback*cur)
+خالی callback_execute(ساخت __vpiCallback*cur)
 {
-      const vpi_mode_t save_mode = vpi_mode_flag;
-      vpi_mode_flag = VPI_MODE_RWSYNC;
+      ثابت vpi_منوال_t save_منوال = vpi_منوال_flag;
+      vpi_منوال_flag = VPI_منوال_RWSYNC;
 
-      assert(cur->cb_data.cb_rtn);
-      set_callback_time(&cur->cb_data);
-      (cur->cb_data.cb_rtn)(&cur->cb_data);
+      أكد(cur->cb_ڈیٹا.cb_rtn);
+      سیٹ_callback_وقت(&cur->cb_ڈیٹا);
+      (cur->cb_ڈیٹا.cb_rtn)(&cur->cb_ڈیٹا);
 
-      vpi_mode_flag = save_mode;
+      vpi_منوال_flag = save_منوال;
 }
 
 /*
@@ -823,55 +823,55 @@ void callback_execute(struct __vpiCallback*cur)
  * the array words minimises memory use for the most common case (no array
  * words) or next most common case (one array word).
  */
-struct __vpi_array_word {
-      struct __vpi_array_word* next;
-      struct __vpiArray* array;
-      unsigned long word;
+ساخت __vpi_array_word {
+      ساخت __vpi_array_word* اگلا_2;
+      ساخت __vpiArray* array;
+      غیرعلامتی طویل لفظ;
 };
 
 vvp_vpi_callback::vvp_vpi_callback()
 {
       vpi_callbacks_ = 0;
-      array_words_ = 0;
+      array_الفاظ = 0;
 }
 
 vvp_vpi_callback::~vvp_vpi_callback()
 {
-      assert(vpi_callbacks_ == 0);
-      assert(array_words_ == 0);
+      أكد(vpi_callbacks_ == 0);
+      أكد(array_الفاظ == 0);
 }
 
-void vvp_vpi_callback::attach_as_word(vvp_array_t arr, unsigned long addr)
+خالی vvp_vpi_callback::attach_as_لفظ(vvp_array_t arr, غیرعلامتی طویل addr)
 {
-      struct __vpi_array_word*tmp = new __vpi_array_word;
+      ساخت __vpi_array_word*tmp = نیا __vpi_array_word;
       tmp->array = arr;
-      tmp->word = addr;
-      tmp->next = array_words_;
-      array_words_ = tmp;
+      tmp->لفظ = addr;
+      tmp->اگلا_2 = array_الفاظ;
+      array_الفاظ = tmp;
 }
 
-void vvp_vpi_callback::add_vpi_callback(value_callback*cb)
+خالی vvp_vpi_callback::جوڑو_vpi_callback(قدر_callback*cb)
 {
-      cb->next = vpi_callbacks_;
+      cb->اگلا_2 = vpi_callbacks_;
       vpi_callbacks_ = cb;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_vpi_callback::clear_all_callbacks()
+#اگر_تعریف_شدہ CHECK_WITH_VALGRIND
+خالی vvp_vpi_callback::clear_all_callbacks()
 {
-      while (vpi_callbacks_) {
-	    value_callback *tmp = dynamic_cast<value_callback*>
-	                            (vpi_callbacks_->next);
-	    delete vpi_callbacks_;
+      جب (vpi_callbacks_) {
+	    قدر_callback *tmp = dynamic_cast<قدر_callback*>
+	                            (vpi_callbacks_->اگلا_2);
+	    حذف vpi_callbacks_;
 	    vpi_callbacks_ = tmp;
       }
-      while (array_words_) {
-	    struct __vpi_array_word*tmp = array_words_->next;
-	    delete array_words_;
-	    array_words_ = tmp;
+      جب (array_الفاظ) {
+	    ساخت __vpi_array_word*tmp = array_الفاظ->اگلا_2;
+	    حذف array_الفاظ;
+	    array_الفاظ = tmp;
       }
 }
-#endif
+#اگر_ختم
 
 /*
  * A vvp_fun_signal uses this method to run its callbacks whenever it
@@ -879,189 +879,189 @@ void vvp_vpi_callback::clear_all_callbacks()
  * callback function. If the cb_rtn pointer is nil, then the object
  * has been marked for deletion. Free it.
  */
-void vvp_vpi_callback::run_vpi_callbacks()
+خالی vvp_vpi_callback::تسلسل_vpi_callbacks()
 {
-      struct __vpi_array_word*array_word = array_words_;
-      while (array_word) {
-	    array_word->array->word_change(array_word->word);
-	    array_word = array_word->next;
+      ساخت __vpi_array_word*array_لفظ = array_الفاظ;
+      جب (array_لفظ) {
+	    array_لفظ->array->لفظ_change(array_لفظ->لفظ);
+	    array_لفظ = array_لفظ->اگلا_2;
       }
 
-      value_callback *next = vpi_callbacks_;
-      value_callback *prev = 0;
+      قدر_callback *اگلا_2 = vpi_callbacks_;
+      قدر_callback *prev = 0;
 
-      while (next) {
-	    value_callback*cur = next;
-	    next = dynamic_cast<value_callback*>(cur->next);
+      جب (اگلا_2) {
+	    قدر_callback*cur = اگلا_2;
+	    اگلا_2 = dynamic_cast<قدر_callback*>(cur->اگلا_2);
 
-	    if (cur->cb_data.cb_rtn != 0) {
-		  if (cur->test_value_callback_ready()) {
-			if (cur->cb_data.value)
-			      get_value(cur->cb_data.value);
+	    اگر (cur->cb_ڈیٹا.cb_rtn != 0) {
+		  اگر (cur->test_قدر_callback_ready()) {
+			اگر (cur->cb_ڈیٹا.value)
+			      get_قدر(cur->cb_ڈیٹا.value);
 
 			callback_execute(cur);
 		  }
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } ورنہ اگر (prev == 0) {
 
-		  vpi_callbacks_ = next;
-		  cur->next = 0;
-		  delete cur;
+		  vpi_callbacks_ = اگلا_2;
+		  cur->اگلا_2 = 0;
+		  حذف cur;
 
-	    } else {
-		  assert(prev->next == cur);
-		  prev->next = next;
-		  cur->next = 0;
-		  delete cur;
+	    } ورنہ {
+		  أكد(prev->اگلا_2 == cur);
+		  prev->اگلا_2 = اگلا_2;
+		  cur->اگلا_2 = 0;
+		  حذف cur;
 	    }
       }
 }
 
-void vvp_signal_value::get_signal_value(struct t_vpi_value*vp)
+خالی vvp_signal_قدر::get_signal_قدر(ساخت t_vpi_قدر*vp)
 {
-      switch (vp->format) {
-	  case vpiScalarVal:
+      انتخاب (vp->format) {
+	  حالت vpiScalarVal:
 	    // This works because vvp_bit4_t has the same encoding
 	    // as a scalar value! See vpip_vec4_get_value() for a
 	    // more robust method.
 	    vp->value.scalar = value(0);
-	    break;
+	    توڑو;
 
-	  case vpiBinStrVal:
-	  case vpiOctStrVal:
-	  case vpiDecStrVal:
-	  case vpiHexStrVal:
-	  case vpiIntVal:
-	  case vpiVectorVal:
-	  case vpiStringVal:
-	  case vpiRealVal: {
-	    unsigned wid = value_size();
+	  حالت vpiBinStrVal:
+	  حالت vpiOctStrVal:
+	  حالت vpiDecStrVal:
+	  حالت vpiHexStrVal:
+	  حالت vpiIntVal:
+	  حالت vpi_سمتیہ_Val:
+	  حالت vpiStringVal:
+	  حالت vpiRealVal: {
+	    غیرعلامتی wid = قدر_سائز();
 	    vvp_vector4_t vec4(wid);
-	    for (unsigned idx = 0; idx < wid; idx += 1) {
-		  vec4.set_bit(idx, value(idx));
+	    برائے (غیرعلامتی idx = 0; idx < wid; idx += 1) {
+		  vec4.سیٹ_ثنائی_ہندسہ(idx, value(idx));
 	    }
-	    vpip_vec4_get_value(vec4, wid, false, vp);
-	    break;
+	    vpip_vec4_get_قدر(vec4, wid, جھوٹ, vp);
+	    توڑو;
 	  }
 
-	  case vpiSuppressVal:
-	    break;
+	  حالت vpiSuppressVal:
+	    توڑو;
 
-	  default:
+	  طےشدہ:
 	    fprintf(stderr, "vpi_callback: value "
 		    "format %d not supported (fun_signal)\n",
-		    (int)vp->format);
+		    (صحیح)vp->format);
       }
 }
 
-static void real_signal_value(struct t_vpi_value*vp, double rval)
+ساکن خالی real_signal_قدر(ساخت t_vpi_قدر*vp, دوہرا rval)
 {
-      static const size_t RBUF_SIZE = 64 + 1;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_SIZE, RBUF_VAL));
+      ساکن ثابت size_t RBUF_سائز = 64 + 1;
+      حرف*rbuf = static_cast<حرف *>(need_نتیجہ_buf(RBUF_سائز, RBUF_VAL));
 
-      switch (vp->format) {
-	  case vpiObjTypeVal:
+      انتخاب (vp->format) {
+	  حالت vpiObjTypeVal:
 	    vp->format = vpiRealVal;
 	    // fallthrough
-	  case vpiRealVal:
+	  حالت vpiRealVal:
 	    vp->value.real = rval;
-	    break;
+	    توڑو;
 
-	  case vpiIntVal:
+	  حالت vpiIntVal:
 	      /* NaN or +/- infinity are translated as 0. */
-	    if (rval != rval || (rval && (rval == 0.5*rval))) {
+	    اگر (rval != rval || (rval && (rval == 0.5*rval))) {
 		  rval = 0.0;
-	    } else {
-		  rval = std::round(rval);
+	    } ورنہ {
+		  rval = std::باری_2(rval);
 	    }
 	    vp->value.integer = (PLI_INT32)rval;
-	    break;
+	    توڑو;
 
-	  case vpiDecStrVal:
-	    if (std::isnan(rval))
-		  snprintf(rbuf, RBUF_SIZE, "%s", "nan");
-	    else
-		  snprintf(rbuf, RBUF_SIZE, "%0.0f", std::round(rval));
+	  حالت vpiDecStrVal:
+	    اگر (std::isnan(rval))
+		  snprintf(rbuf, RBUF_سائز, "%s", "nan");
+	    ورنہ
+		  snprintf(rbuf, RBUF_سائز, "%0.0f", std::باری_2(rval));
 	    vp->value.str = rbuf;
-	    break;
+	    توڑو;
 
-	  case vpiHexStrVal:
-	    snprintf(rbuf, RBUF_SIZE, "%" PRIx64, vlg_round_to_u64(rval));
+	  حالت vpiHexStrVal:
+	    snprintf(rbuf, RBUF_سائز, "%" PRIx64, vlg_باری_مقصد_u64(rval));
 	    vp->value.str = rbuf;
-	    break;
+	    توڑو;
 
-	  case vpiBinStrVal: {
-		uint64_t val = vlg_round_to_u64(rval);
-		unsigned len = 0;
+	  حالت vpiBinStrVal: {
+		uint64_t val = vlg_باری_مقصد_u64(rval);
+		غیرعلامتی len = 0;
 
-		while (val > 0) {
+		جب (val > 0) {
 		      len += 1;
 		      val /= 2;
 		}
 
-		val = vlg_round_to_u64(rval);
-		for (unsigned idx = 0 ;  idx < len ;  idx += 1) {
+		val = vlg_باری_مقصد_u64(rval);
+		برائے (غیرعلامتی idx = 0 ;  idx < len ;  idx += 1) {
 		      rbuf[len-idx-1] = (val & 1)? '1' : '0';
 		      val /= 2;
 		}
 
 		rbuf[len] = 0;
-		if (len == 0) {
+		اگر (len == 0) {
 		      rbuf[0] = '0';
 		      rbuf[1] = 0;
 		}
 		vp->value.str = rbuf;
-		break;
+		توڑو;
 	  }
 
-	  case vpiSuppressVal:
-	    break;
+	  حالت vpiSuppressVal:
+	    توڑو;
 
-	  default:
+	  طےشدہ:
 	    fprintf(stderr, "vpi_callback: value "
 		    "format %d not supported (fun_signal_real)\n",
-		    (int)vp->format);
+		    (صحیح)vp->format);
       }
 }
 
-void vvp_fun_signal_real_aa::get_signal_value(struct t_vpi_value*vp)
+خالی vvp_fun_signal_real_aa::get_signal_قدر(ساخت t_vpi_قدر*vp)
 {
-      real_signal_value(vp, real_value());
+      real_signal_قدر(vp, real_قدر());
 }
 
-void vvp_wire_real::get_signal_value(struct t_vpi_value*vp)
+خالی vvp_wire_real::get_signal_قدر(ساخت t_vpi_قدر*vp)
 {
-      real_signal_value(vp, real_value());
+      real_signal_قدر(vp, real_قدر());
 }
 
-void vvp_fun_signal_string_aa::get_signal_value(struct t_vpi_value*)
+خالی vvp_fun_signal_string_aa::get_signal_قدر(ساخت t_vpi_قدر*)
 {
-      assert(0);
+      أكد(0);
 }
-#if 0
-void vvp_wire_string::get_signal_value(struct t_vpi_value*vp)
+#اگر 0
+خالی vvp_wire_string::get_signal_قدر(ساخت t_vpi_قدر*vp)
 {
-      assert(0);
+      أكد(0);
 }
-#endif
-void vvp_wire_vec4::get_value(struct t_vpi_value*val)
+#اگر_ختم
+خالی vvp_wire_vec4::get_قدر(ساخت t_vpi_قدر*val)
 {
-      get_signal_value(val);
-}
-
-void vvp_wire_vec8::get_value(struct t_vpi_value*val)
-{
-      get_signal_value(val);
+      get_signal_قدر(val);
 }
 
-void vvp_wire_real::get_value(struct t_vpi_value*val)
+خالی vvp_wire_vec8::get_قدر(ساخت t_vpi_قدر*val)
 {
-      get_signal_value(val);
+      get_signal_قدر(val);
 }
-#if 0
-void vvp_wire_string::get_value(struct t_vpi_value*val)
+
+خالی vvp_wire_real::get_قدر(ساخت t_vpi_قدر*val)
 {
-      assert(0);
+      get_signal_قدر(val);
 }
-#endif
+#اگر 0
+خالی vvp_wire_string::get_قدر(ساخت t_vpi_قدر*val)
+{
+      أكد(0);
+}
+#اگر_ختم

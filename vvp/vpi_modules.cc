@@ -27,68 +27,68 @@
 # include  <sys/stat.h>
 # include  "ivl_alloc.h"
 
-static ivl_dll_t*dll_list = 0;
-static unsigned dll_list_cnt = 0;
+ساکن ivl_dll_t*dll_list = 0;
+ساکن غیرعلامتی dll_list_cnt = 0;
 
-#if defined(__MINGW32__) || defined (__CYGWIN__)
-typedef PLI_UINT32 (*vpip_set_callback_t)(vpip_routines_s*, PLI_UINT32);
-#endif
-typedef void (*vlog_startup_routines_t)(void);
+#اگر defined(__MINGW32__) || defined (__CYGWIN__)
+قسمتعریف PLI_UINT32 (*vpip_سیٹ_callback_t)(vpip_routines_s*, PLI_UINT32);
+#اگر_ختم
+قسمتعریف خالی (*vlog_startup_routines_t)(خالی);
 
-# define VPIP_MODULE_PATH_MAX 64
+# define VPIP_MODULE_راستہ_MAX 64
 
-static const char* vpip_module_path[VPIP_MODULE_PATH_MAX] = {0};
+ساکن ثابت حرف* vpip_module_راستہ[VPIP_MODULE_راستہ_MAX] = {0};
 
-static unsigned vpip_module_path_cnt = 0;
+ساکن غیرعلامتی vpip_module_راستہ_cnt = 0;
 
-static bool disable_default_paths = false;
+ساکن منطقی disable_default_paths = جھوٹ;
 
-void vpip_clear_module_paths()
+خالی vpip_clear_module_paths()
 {
-      vpip_module_path_cnt = 0;
-      vpip_module_path[0] = 0;
-      disable_default_paths = true;
+      vpip_module_راستہ_cnt = 0;
+      vpip_module_راستہ[0] = 0;
+      disable_default_paths = سچ;
 }
 
-void vpip_add_module_path(const char*path)
+خالی vpip_جوڑو_module_راستہ(ثابت حرف*راستہ)
 {
-      if (vpip_module_path_cnt >= VPIP_MODULE_PATH_MAX) {
+      اگر (vpip_module_راستہ_cnt >= VPIP_MODULE_راستہ_MAX) {
 	    fprintf(stderr, "Too many module paths specified\n");
-	    exit(1);
+	    باہر_نکلو(1);
       }
-      vpip_module_path[vpip_module_path_cnt++] = path;
+      vpip_module_راستہ[vpip_module_راستہ_cnt++] = راستہ;
 }
 
-void vpip_add_env_and_default_module_paths()
+خالی vpip_جوڑو_env_and_default_module_paths()
 {
-      if (disable_default_paths)
-	    return;
+      اگر (disable_default_paths)
+	    واپس;
 
-#ifdef __MINGW32__
-      const char path_sep = ';';
-#else
-      const char path_sep = ':';
-#endif
+#اگر_تعریف_شدہ __MINGW32__
+      ثابت حرف راستہ_sep = ';';
+#ورنہ
+      ثابت حرف راستہ_sep = ':';
+#اگر_ختم
 
-      if (char *var = ::getenv("IVERILOG_VPI_MODULE_PATH")) {
-            char *ptr = var;
-            const char *end = var+strlen(var);
-            int len = 0;
-            while (ptr <= end) {
-                  if (*ptr == 0 || *ptr == path_sep) {
-                        if (len > 0) {
-                              vpip_add_module_path(strndup(var, len));
+      اگر (حرف *var = ::getenv("IVERILOG_VPI_MODULE_PATH")) {
+            حرف *ptr = var;
+            ثابت حرف *انتہا = var+لڑی_لمبائی(var);
+            صحیح len = 0;
+            جب (ptr <= انتہا) {
+                  اگر (*ptr == 0 || *ptr == راستہ_sep) {
+                        اگر (len > 0) {
+                              vpip_جوڑو_module_راستہ(strndup(var, len));
                         }
                         len = 0;
                         var = ptr+1;
-                  } else {
+                  } ورنہ {
                         len++;
                   }
                   ptr++;
             }
       }
 
-#ifdef __MINGW32__
+#اگر_تعریف_شدہ __MINGW32__
 	/* Calculate the module path from the path to the command.
 	   This is necessary because of the installation process on
 	   Windows. Mostly, it is those darn drive letters, but oh
@@ -103,116 +103,116 @@ void vpip_add_env_and_default_module_paths()
 	   so we chop the file name and the last directory by
 	   turning the last two \ characters to null. Then we append
 	   the lib\ivl$(suffix) to finish. */
-      char *s;
-      char basepath[4096], tmp[4096];
-      GetModuleFileName(NULL, tmp, sizeof tmp);
+      حرف *s;
+      حرف basepath[4096], tmp[4096];
+      GetModuleFileName(تہی, tmp, حجم tmp);
 	/* Convert to a short name to remove any embedded spaces. */
-      GetShortPathName(tmp, basepath, sizeof basepath);
+      Get_Short_راستہ_Name(tmp, basepath, حجم basepath);
       s = strrchr(basepath, '\\');
-      if (s) *s = 0;
-      else {
+      اگر (s) *s = 0;
+      ورنہ {
 	    fprintf(stderr, "%s: Missing first \\ in exe path!\n", tmp);
-	    exit(1);
+	    باہر_نکلو(1);
       }
       s = strrchr(basepath, '\\');
-      if (s) *s = 0;
-      else {
+      اگر (s) *s = 0;
+      ورنہ {
 	    fprintf(stderr, "%s: Missing second \\ in exe path!\n", tmp);
-	    exit(1);
+	    باہر_نکلو(1);
       }
       strcat(s, "\\lib\\ivl" IVL_SUFFIX);
-      vpip_add_module_path(strdup(basepath));
-#else
-#ifdef MODULE_DIR1
-      vpip_add_module_path(MODULE_DIR1);
-#endif
-#endif
-#ifdef MODULE_DIR2
-      vpip_add_module_path(MODULE_DIR2);
-#endif
+      vpip_جوڑو_module_راستہ(strdup(basepath));
+#ورنہ
+#اگر_تعریف_شدہ MODULE_DIR1
+      vpip_جوڑو_module_راستہ(MODULE_DIR1);
+#اگر_ختم
+#اگر_ختم
+#اگر_تعریف_شدہ MODULE_DIR2
+      vpip_جوڑو_module_راستہ(MODULE_DIR2);
+#اگر_ختم
 }
 
-void load_module_delete(void)
+خالی بھرو_module_delete(خالی)
 {
-      for (unsigned idx = 0; idx < dll_list_cnt; idx += 1) {
+      برائے (غیرعلامتی idx = 0; idx < dll_list_cnt; idx += 1) {
 	    ivl_dlclose(dll_list[idx]);
       }
-      free(dll_list);
+      آزاد(dll_list);
       dll_list = 0;
       dll_list_cnt = 0;
 }
 
-void vpip_load_module(const char*name)
+خالی vpip_بھرو_module(ثابت حرف*name)
 {
-      struct stat sb;
-      int rc;
-      bool export_flag = false;
-      char buf[4096];
+      ساخت stat sb;
+      صحیح rc;
+      منطقی export_flag = جھوٹ;
+      حرف buf[4096];
 
-#ifdef __MINGW32__
-      const char sep = '\\';
-#else
-      const char sep = '/';
-#endif
+#اگر_تعریف_شدہ __MINGW32__
+      ثابت حرف sep = '\\';
+#ورنہ
+      ثابت حرف sep = '/';
+#اگر_ختم
 
       ivl_dll_t dll = 0;
       buf[0] = 0;                     /* terminate the string */
-#ifdef __MINGW32__
-      if (strchr(name, '\\') || strchr(name, '/')) {
-#else
-      if (strchr(name, sep)) {
-#endif
+#اگر_تعریف_شدہ __MINGW32__
+      اگر (strchr(name, '\\') || strchr(name, '/')) {
+#ورنہ
+      اگر (strchr(name, sep)) {
+#اگر_ختم
 	      /* If the name has at least one directory character in
 		 it, then assume it is a complete name, maybe including any
 		 possible .vpi suffix. */
-	    export_flag = false;
+	    export_flag = جھوٹ;
 	    rc = stat(name, &sb);
 
-	    if (rc != 0) {            /* did we find a file? */
+	    اگر (rc != 0) {            /* did we find a file? */
 	          /* no, try with a .vpi suffix too */
-		  export_flag = false;
-		  snprintf(buf, sizeof(buf), "%s.vpi", name);
+		  export_flag = جھوٹ;
+		  snprintf(buf, حجم(buf), "%s.vpi", name);
 		  rc = stat(buf, &sb);
 
 		    /* Try also with the .vpl suffix. */
-		  if (rc != 0) {
-			export_flag = true;
-			snprintf(buf, sizeof(buf), "%s.vpl", name);
+		  اگر (rc != 0) {
+			export_flag = سچ;
+			snprintf(buf, حجم(buf), "%s.vpl", name);
 			rc = stat(buf, &sb);
 		  }
 
-		  if (rc != 0) {
+		  اگر (rc != 0) {
 			fprintf(stderr, "%s: Unable to find module file `%s' "
 				"or `%s.vpi'.\n", name, name, name);
-			return;
+			واپس;
 		  }
-	    } else {
+	    } ورنہ {
 	      strcpy(buf,name);   /* yes copy the name into the buffer */
 	    }
 
-      } else {
+      } ورنہ {
 	    rc = -1;
-	    for (unsigned idx = 0
-		       ; (rc != 0) && (idx < vpip_module_path_cnt)
+	    برائے (غیرعلامتی idx = 0
+		       ; (rc != 0) && (idx < vpip_module_راستہ_cnt)
 		       ;  idx += 1) {
-		  export_flag = false;
-		  snprintf(buf, sizeof(buf), "%s%c%s.vpi",
-			   vpip_module_path[idx], sep, name);
+		  export_flag = جھوٹ;
+		  snprintf(buf, حجم(buf), "%s%c%s.vpi",
+			   vpip_module_راستہ[idx], sep, name);
 		  rc = stat(buf,&sb);
 
-		  if (rc != 0) {
-			export_flag = true;
-			snprintf(buf, sizeof(buf), "%s%c%s.vpl",
-				 vpip_module_path[idx], sep, name);
+		  اگر (rc != 0) {
+			export_flag = سچ;
+			snprintf(buf, حجم(buf), "%s%c%s.vpl",
+				 vpip_module_راستہ[idx], sep, name);
 			rc = stat(buf,&sb);
 		  }
 	    }
 
-	    if (rc != 0) {
+	    اگر (rc != 0) {
 		  fprintf(stderr, "%s: Unable to find a "
 			  "`%s.vpi' module on the search path.\n",
 			  name, name);
-		  return;
+		  واپس;
 	    }
 
       }
@@ -221,42 +221,42 @@ void vpip_load_module(const char*name)
        * try to open it as a shared object.
        */
       dll = ivl_dlopen(buf, export_flag);
-      if(dll==0) {
+      اگر(dll==0) {
 	/* hmm, this failed, let the user know what has really gone wrong */
 	fprintf(stderr,"%s:`%s' failed to open using dlopen() because:\n"
 		"    %s.\n",name,buf,dlerror());
 
-	return;
+	واپس;
       }
 
-#if defined(__MINGW32__) || defined (__CYGWIN__)
-      void*function = ivl_dlsym(dll, "vpip_set_callback");
-      if (function) {
-            vpip_set_callback_t set_callback = reinterpret_cast<vpip_set_callback_t>(function);
-            if (!set_callback(&vpi_routines, vpip_routines_version)) {
+#اگر defined(__MINGW32__) || defined (__CYGWIN__)
+      خالی*function = ivl_dlsym(dll, "vpip_set_callback");
+      اگر (function) {
+            vpip_سیٹ_callback_t سیٹ_callback = reinterpret_cast<vpip_سیٹ_callback_t>(function);
+            اگر (!سیٹ_callback(&vpi_routines, vpip_routines_نسخہ)) {
 	          fprintf(stderr, "Failed to link VPI module %s. Try rebuilding it with iverilog-vpi.\n", name);
 	          ivl_dlclose(dll);
-	          return;
+	          واپس;
             }
       }
-#endif
+#اگر_ختم
 
-      void*table = ivl_dlsym(dll, LU "vlog_startup_routines" TU);
-      if (table == 0) {
+      خالی*جدول = ivl_dlsym(dll, LU "vlog_startup_routines" TU);
+      اگر (جدول == 0) {
 	    fprintf(stderr, "%s: no vlog_startup_routines\n", name);
 	    ivl_dlclose(dll);
-	    return;
+	    واپس;
       }
 
 	/* Add the dll to the list so it can be closed when we are done. */
       dll_list_cnt += 1;
       dll_list = static_cast<ivl_dll_t*>
-                 (realloc(dll_list, dll_list_cnt*sizeof(ivl_dll_t)));
+                 (realloc(dll_list, dll_list_cnt*حجم(ivl_dll_t)));
       dll_list[dll_list_cnt-1] = dll;
 
-      vpi_mode_flag = VPI_MODE_REGISTER;
-      vlog_startup_routines_t*routines = (vlog_startup_routines_t*)table;
-      for (unsigned tmp = 0 ;  routines[tmp] ;  tmp += 1)
+      vpi_منوال_flag = VPI_منوال_رجسٹر;
+      vlog_startup_routines_t*routines = (vlog_startup_routines_t*)جدول;
+      برائے (غیرعلامتی tmp = 0 ;  routines[tmp] ;  tmp += 1)
 	    (routines[tmp])();
-      vpi_mode_flag = VPI_MODE_NONE;
+      vpi_منوال_flag = VPI_منوال_NONE;
 }

@@ -37,75 +37,75 @@
    BIT4_1) or will propagate an initial value of 'bx. From then on
    the flip-flop operates normally. */
 
-vvp_dff::vvp_dff(unsigned width, bool negedge)
+vvp_dff::vvp_dff(غیرعلامتی width, منطقی negedge)
 : clk_(BIT4_X), ena_(BIT4_X), asc_(BIT4_Z), d_(width, BIT4_X)
 {
-      clk_active_ = negedge ? BIT4_0 : BIT4_1;
+      clk_فعال = negedge ? BIT4_0 : BIT4_1;
 }
 
 vvp_dff::~vvp_dff()
 {
 }
 
-vvp_dff_aclr::vvp_dff_aclr(unsigned width, bool negedge)
+vvp_dff_aclr::vvp_dff_aclr(غیرعلامتی width, منطقی negedge)
 : vvp_dff(width, negedge)
 {
 }
 
-vvp_dff_aset::vvp_dff_aset(unsigned width, bool negedge)
+vvp_dff_aset::vvp_dff_aset(غیرعلامتی width, منطقی negedge)
 : vvp_dff(width, negedge)
 {
 }
 
-vvp_dff_asc::vvp_dff_asc(unsigned width, bool negedge, const char*asc_value)
-: vvp_dff(width, negedge), asc_value_(c4string_to_vector4(asc_value))
+vvp_dff_asc::vvp_dff_asc(غیرعلامتی width, منطقی negedge, ثابت حرف*asc_قدر)
+: vvp_dff(width, negedge), asc_قدر_2(c4string_مقصد_vector4(asc_قدر))
 {
 }
 
-void vvp_dff::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+خالی vvp_dff::recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                         vvp_context_t)
 {
       vvp_bit4_t tmp;
 
-      switch (port.port()) {
+      انتخاب (پورٹ.پورٹ()) {
 
-	  case 0: // D
-	    d_ = bit;
-	    break;
+	  حالت 0: // D
+	    d_ = ثنائی_ہندسہ;
+	    توڑو;
 
-	  case 1: // CLK
-	    assert(bit.size() == 1);
-	    if (asc_ != BIT4_0)
-		  break;
-	    if (ena_ != BIT4_1)
-		  break;
+	  حالت 1: // CLK
+	    أكد(ثنائی_ہندسہ.size() == 1);
+	    اگر (asc_ != BIT4_0)
+		  توڑو;
+	    اگر (ena_ != BIT4_1)
+		  توڑو;
 	    tmp = clk_;
-	    clk_ = bit.value(0);
-	    if (clk_ == clk_active_ && tmp != clk_active_)
-		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	    clk_ = ثنائی_ہندسہ.value(0);
+	    اگر (clk_ == clk_فعال && tmp != clk_فعال)
+		  جدول_وقت_propagate_سمتیہ(پورٹ.ptr(), 0, d_);
+	    توڑو;
 
-	  case 2: // CE
-	    assert(bit.size() == 1);
-	    ena_ = bit.value(0);
-	    break;
+	  حالت 2: // CE
+	    أكد(ثنائی_ہندسہ.size() == 1);
+	    ena_ = ثنائی_ہندسہ.value(0);
+	    توڑو;
 
-	  case 3: // asynch SET/CLR
-	    assert(bit.size() == 1);
+	  حالت 3: // asynch SET/CLR
+	    أكد(ثنائی_ہندسہ.size() == 1);
 	    tmp = asc_;
-	    asc_ = bit.value(0);
-	    if (asc_ == BIT4_1 && tmp != BIT4_1)
-		  recv_async(port);
-	    else if (tmp == BIT4_Z)
-		  port.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
-	    break;
+	    asc_ = ثنائی_ہندسہ.value(0);
+	    اگر (asc_ == BIT4_1 && tmp != BIT4_1)
+		  recv_async(پورٹ);
+	    ورنہ اگر (tmp == BIT4_Z)
+		  پورٹ.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
+	    توڑو;
       }
 }
 
-void vvp_dff::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			   unsigned base, unsigned vwid, vvp_context_t ctx)
+خالی vvp_dff::recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+			   غیرعلامتی بنیاد, غیرعلامتی vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, ثنائی_ہندسہ, بنیاد, vwid, ctx);
 }
 
 /*
@@ -115,86 +115,86 @@ void vvp_dff::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
  * NOTE: Don't touch the d_ value, because that tracks the D input,
  * which may be needed when the device is clocked afterwards.
  */
-void vvp_dff::recv_async(vvp_net_ptr_t)
+خالی vvp_dff::recv_async(vvp_net_ptr_t)
 {
 	// The base dff does not have an asynchronous set/clr input.
-      assert(0);
+      أكد(0);
 }
 
-void vvp_dff_aclr::recv_async(vvp_net_ptr_t port)
+خالی vvp_dff_aclr::recv_async(vvp_net_ptr_t پورٹ)
 {
-      schedule_propagate_vector(port.ptr(), 0, vvp_vector4_t(d_.size(), BIT4_0));
+      جدول_وقت_propagate_سمتیہ(پورٹ.ptr(), 0, vvp_vector4_t(d_.size(), BIT4_0));
 }
 
-void vvp_dff_aset::recv_async(vvp_net_ptr_t port)
+خالی vvp_dff_aset::recv_async(vvp_net_ptr_t پورٹ)
 {
-      schedule_propagate_vector(port.ptr(), 0, vvp_vector4_t(d_.size(), BIT4_1));
+      جدول_وقت_propagate_سمتیہ(پورٹ.ptr(), 0, vvp_vector4_t(d_.size(), BIT4_1));
 }
 
-void vvp_dff_asc::recv_async(vvp_net_ptr_t port)
+خالی vvp_dff_asc::recv_async(vvp_net_ptr_t پورٹ)
 {
-      schedule_propagate_vector(port.ptr(), 0, asc_value_);
+      جدول_وقت_propagate_سمتیہ(پورٹ.ptr(), 0, asc_قدر_2);
 }
 
-void compile_dff(char*label, unsigned width, bool negedge,
-		 struct symb_s arg_d,
-		 struct symb_s arg_c,
-		 struct symb_s arg_e)
+خالی compile_dff(حرف*label, غیرعلامتی width, منطقی negedge,
+		 ساخت symb_s arg_d,
+		 ساخت symb_s arg_c,
+		 ساخت symb_s arg_e)
 {
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_dff*fun = new vvp_dff(width, negedge);
+      vvp_net_t*ptr = نیا vvp_net_t;
+      vvp_dff*fun = نیا vvp_dff(width, negedge);
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_c.text);
-      input_connect(ptr, 2, arg_e.text);
+      define_functor_علامت(label, ptr);
+      آزاد(label);
+      داخلہ_connect(ptr, 0, arg_d.متن);
+      داخلہ_connect(ptr, 1, arg_c.متن);
+      داخلہ_connect(ptr, 2, arg_e.متن);
 
       vvp_vector4_t init_val = vvp_vector4_t(1, BIT4_0);
-      schedule_init_vector(vvp_net_ptr_t(ptr,3), init_val);
+      جدول_وقت_init_سمتیہ(vvp_net_ptr_t(ptr,3), init_val);
 }
 
-void compile_dff_aclr(char*label, unsigned width, bool negedge,
-		      struct symb_s arg_d,
-		      struct symb_s arg_c,
-		      struct symb_s arg_e,
-		      struct symb_s arg_a)
+خالی compile_dff_aclr(حرف*label, غیرعلامتی width, منطقی negedge,
+		      ساخت symb_s arg_d,
+		      ساخت symb_s arg_c,
+		      ساخت symb_s arg_e,
+		      ساخت symb_s arg_a)
 {
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_dff*fun = new vvp_dff_aclr(width, negedge);
+      vvp_net_t*ptr = نیا vvp_net_t;
+      vvp_dff*fun = نیا vvp_dff_aclr(width, negedge);
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_c.text);
-      input_connect(ptr, 2, arg_e.text);
-      input_connect(ptr, 3, arg_a.text);
+      define_functor_علامت(label, ptr);
+      آزاد(label);
+      داخلہ_connect(ptr, 0, arg_d.متن);
+      داخلہ_connect(ptr, 1, arg_c.متن);
+      داخلہ_connect(ptr, 2, arg_e.متن);
+      داخلہ_connect(ptr, 3, arg_a.متن);
 }
 
-void compile_dff_aset(char*label, unsigned width, bool negedge,
-		      struct symb_s arg_d,
-		      struct symb_s arg_c,
-		      struct symb_s arg_e,
-		      struct symb_s arg_a,
-		      char*asc_value)
+خالی compile_dff_aset(حرف*label, غیرعلامتی width, منطقی negedge,
+		      ساخت symb_s arg_d,
+		      ساخت symb_s arg_c,
+		      ساخت symb_s arg_e,
+		      ساخت symb_s arg_a,
+		      حرف*asc_قدر)
 {
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_net_t*ptr = نیا vvp_net_t;
       vvp_dff*fun;
-      if (asc_value) {
-	    assert(c4string_test(asc_value));
-	    fun = new vvp_dff_asc(width, negedge, asc_value);
-	    free(asc_value);
-      } else {
-	    fun = new vvp_dff_aset(width, negedge);
+      اگر (asc_قدر) {
+	    أكد(c4string_test(asc_قدر));
+	    fun = نیا vvp_dff_asc(width, negedge, asc_قدر);
+	    آزاد(asc_قدر);
+      } ورنہ {
+	    fun = نیا vvp_dff_aset(width, negedge);
       }
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_c.text);
-      input_connect(ptr, 2, arg_e.text);
-      input_connect(ptr, 3, arg_a.text);
+      define_functor_علامت(label, ptr);
+      آزاد(label);
+      داخلہ_connect(ptr, 0, arg_d.متن);
+      داخلہ_connect(ptr, 1, arg_c.متن);
+      داخلہ_connect(ptr, 2, arg_e.متن);
+      داخلہ_connect(ptr, 3, arg_a.متن);
 }

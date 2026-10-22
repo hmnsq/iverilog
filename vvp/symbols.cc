@@ -31,27 +31,27 @@
  * The key_strdup() function below allocates the strings from this
  * buffer, possibly making a new buffer if needed.
  */
-struct key_strings {
-      struct key_strings*next;
-      char data[64*1024 - sizeof(struct key_strings*)];
+ساخت کلید_لڑیاں {
+      ساخت کلید_لڑیاں*اگلا_2;
+      حرف ڈیٹا[64*1024 - حجم(ساخت کلید_لڑیاں*)];
 };
 
-char*symbol_table_s::key_strdup_(const char*str)
+حرف*علامت_جدول_s::کلید_strdup(ثابت حرف*str)
 {
-      unsigned len = strlen(str);
-      assert( (len+1) <= sizeof str_chunk->data );
+      غیرعلامتی len = لڑی_لمبائی(str);
+      أكد( (len+1) <= حجم str_chunk->ڈیٹا );
 
-      if ( (len+1) > (sizeof str_chunk->data - str_used) ) {
-	    key_strings*tmp = new key_strings;
-	    tmp->next = str_chunk;
+      اگر ( (len+1) > (حجم str_chunk->ڈیٹا - str_مستعمل) ) {
+	    کلید_لڑیاں*tmp = نیا کلید_لڑیاں;
+	    tmp->اگلا_2 = str_chunk;
 	    str_chunk = tmp;
-	    str_used = 0;
+	    str_مستعمل = 0;
       }
 
-      char*res = str_chunk->data + str_used;
-      str_used += len + 1;
+      حرف*res = str_chunk->ڈیٹا + str_مستعمل;
+      str_مستعمل += len + 1;
       strcpy(res, str);
-      return res;
+      واپس res;
 }
 
 /*
@@ -67,32 +67,32 @@ char*symbol_table_s::key_strdup_(const char*str)
  * simple binary search to find an item. Each key represents an item.
  */
 
-const unsigned leaf_width = 254;
-const unsigned node_width = 508;
+ثابت غیرعلامتی برگ_چوڑائی = 254;
+ثابت غیرعلامتی گرہ_چوڑائی = 508;
 
-struct tree_data_ {
-      char*key;
-      symbol_value_t val;
+ساخت درخت_ڈیٹا {
+      حرف*کلید;
+      علامت_قدر_t val;
 };
 
-struct tree_node_ {
-      bool leaf_flag;
-      unsigned count;
-      struct tree_node_*parent;
+ساخت درخت_گرہ {
+      منطقی برگ_flag;
+      غیرعلامتی گنتی;
+      ساخت درخت_گرہ*والد;
 
-      union {
-	    struct tree_data_ leaf[leaf_width];
-	    struct tree_node_ *child[node_width];
+      اتحاد {
+	    ساخت درخت_ڈیٹا برگ[برگ_چوڑائی];
+	    ساخت درخت_گرہ *بچہ[گرہ_چوڑائی];
       };
 
 };
 
-static inline char* node_last_key(struct tree_node_*node)
+ساکن اندرونی حرف* گرہ_آخری_کلید(ساخت درخت_گرہ*گرہ)
 {
-      while (node->leaf_flag == false)
-	    node = node->child[node->count-1];
+      جب (گرہ->برگ_flag == جھوٹ)
+	    گرہ = گرہ->بچہ[گرہ->گنتی-1];
 
-      return node->leaf[node->count-1].key;
+      واپس گرہ->برگ[گرہ->گنتی-1].کلید;
 }
 
 /*
@@ -100,97 +100,97 @@ static inline char* node_last_key(struct tree_node_*node)
  * a root node, and initializing the pointers and members of the root
  * node.
  */
-symbol_table_s::symbol_table_s()
+علامت_جدول_s::علامت_جدول_s()
 {
-      root = new struct tree_node_;
-      root->leaf_flag = false;
-      root->count = 0;
-      root->parent = 0;
+      جڑ = نیا ساخت درخت_گرہ;
+      جڑ->برگ_flag = جھوٹ;
+      جڑ->گنتی = 0;
+      جڑ->والد = 0;
 
-      str_chunk = new key_strings;
-      str_chunk->next = 0;
-      str_used = 0;
+      str_chunk = نیا کلید_لڑیاں;
+      str_chunk->اگلا_2 = 0;
+      str_مستعمل = 0;
 }
 
-static void delete_symbol_node(struct tree_node_*cur)
+ساکن خالی delete_علامت_گرہ(ساخت درخت_گرہ*cur)
 {
-      if (! cur->leaf_flag) {
-	    for (unsigned idx = 0 ;  idx < cur->count ;  idx += 1)
-		  delete_symbol_node(cur->child[idx]);
+      اگر (! cur->برگ_flag) {
+	    برائے (غیرعلامتی idx = 0 ;  idx < cur->گنتی ;  idx += 1)
+		  delete_علامت_گرہ(cur->بچہ[idx]);
       }
 
-      delete cur;
+      حذف cur;
 }
 
 /* Do as split_leaf_ does, but for nodes. */
-static void split_node_(struct tree_node_*cur)
+ساکن خالی بانٹو_گرہ(ساخت درخت_گرہ*cur)
 {
-      assert(!cur->leaf_flag);
-      if (cur->parent) assert(! cur->parent->leaf_flag);
+      أكد(!cur->برگ_flag);
+      اگر (cur->والد) أكد(! cur->والد->برگ_flag);
 
-      while (cur->count == node_width) {
+      جب (cur->گنتی == گرہ_چوڑائی) {
 	      /* Create a new node to hold half the data from cur. */
-	    struct tree_node_ *new_node = new struct tree_node_;
-	    new_node->leaf_flag = false;
-	    new_node->count = cur->count / 2;
+	    ساخت درخت_گرہ *new_گرہ = نیا ساخت درخت_گرہ;
+	    new_گرہ->برگ_flag = جھوٹ;
+	    new_گرہ->گنتی = cur->گنتی / 2;
 	      /* cur is not root; new_node becomes sibling. */
-	    if (cur->parent) new_node->parent = cur->parent;
+	    اگر (cur->والد) new_گرہ->والد = cur->والد;
 
 	      /* Move the last half of the data from the end of the old node
 	       * to the beginning of the new node. At the same time, reduce
 	       * the size of the old node. */
-	    unsigned idx1 = new_node->count;
-	    unsigned idx2 = cur->count;
-	    while (idx1 > 0) {
+	    غیرعلامتی idx1 = new_گرہ->گنتی;
+	    غیرعلامتی idx2 = cur->گنتی;
+	    جب (idx1 > 0) {
 		  idx1 -= 1;
 		  idx2 -= 1;
-		  new_node->child[idx1] = cur->child[idx2];
-		  new_node->child[idx1]->parent = new_node;
-		  cur->count -= 1;
+		  new_گرہ->بچہ[idx1] = cur->بچہ[idx2];
+		  new_گرہ->بچہ[idx1]->والد = new_گرہ;
+		  cur->گنتی -= 1;
 	    }
 
-	    assert(new_node->count > 0);
-	    assert(cur->count > 0);
+	    أكد(new_گرہ->گنتی > 0);
+	    أكد(cur->گنتی > 0);
 
-	    if (cur->parent == 0) {
+	    اگر (cur->والد == 0) {
 		    /* cur is root. Move first half of children to another
 		     * new node, and put the two new nodes in cur. The plan
 		     * here is to make cur into the new root and split its
 		     * contents into 2 children. */
 
-		  new_node->parent = cur;
-		  struct tree_node_*new2_node = new struct tree_node_;
-		  new2_node->leaf_flag = false;
-		  new2_node->count = cur->count;
-		  new2_node->parent = cur;
-		  for (unsigned idx = 0; idx < cur->count; idx += 1) {
-			new2_node->child[idx] = cur->child[idx];
-			new2_node->child[idx]->parent = new2_node;
+		  new_گرہ->والد = cur;
+		  ساخت درخت_گرہ*new2_گرہ = نیا ساخت درخت_گرہ;
+		  new2_گرہ->برگ_flag = جھوٹ;
+		  new2_گرہ->گنتی = cur->گنتی;
+		  new2_گرہ->والد = cur;
+		  برائے (غیرعلامتی idx = 0; idx < cur->گنتی; idx += 1) {
+			new2_گرہ->بچہ[idx] = cur->بچہ[idx];
+			new2_گرہ->بچہ[idx]->والد = new2_گرہ;
 		  }
-		  cur->child[0] = new2_node;
-		  cur->child[1] = new_node;
-		  cur->count = 2;
+		  cur->بچہ[0] = new2_گرہ;
+		  cur->بچہ[1] = new_گرہ;
+		  cur->گنتی = 2;
 		    /* no more ancestors, stop the while loop */
-		  break;
+		  توڑو;
 	    }
 
 	      /* cur is not root. hook new_node to cur->parent. */
-	    unsigned idx = 0;
-	    while (cur->parent->child[idx] != cur) {
-		  assert(idx < cur->parent->count);
+	    غیرعلامتی idx = 0;
+	    جب (cur->والد->بچہ[idx] != cur) {
+		  أكد(idx < cur->والد->گنتی);
 		  idx += 1;
 	    }
 	    idx += 1;
 
-	    for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1) {
-		  cur->parent->child[tmp] = cur->parent->child[tmp-1];
+	    برائے (غیرعلامتی tmp = cur->والد->گنتی ;  tmp > idx ;  tmp -= 1) {
+		  cur->والد->بچہ[tmp] = cur->والد->بچہ[tmp-1];
 	    }
 
-	    cur->parent->child[idx] = new_node;
-	    cur->parent->count += 1;
+	    cur->والد->بچہ[idx] = new_گرہ;
+	    cur->والد->گنتی += 1;
 
 	      /* check the ancestor */
-	    cur = cur->parent;
+	    cur = cur->والد;
       }
 }
 
@@ -199,51 +199,51 @@ static void split_node_(struct tree_node_*cur)
  * the leaf keys into the new node, and add the new leaf into the
  * parent node.
  */
-static struct tree_node_* split_leaf_(struct tree_node_*cur)
+ساکن ساخت درخت_گرہ* بانٹو_برگ(ساخت درخت_گرہ*cur)
 {
-      assert(cur->leaf_flag);
-      assert(cur->parent);
-      assert(! cur->parent->leaf_flag);
+      أكد(cur->برگ_flag);
+      أكد(cur->والد);
+      أكد(! cur->والد->برگ_flag);
 
 	/* Create a new leaf to hold half the data from the old leaf. */
-      struct tree_node_*new_leaf = new struct tree_node_;
-      new_leaf->leaf_flag = true;
-      new_leaf->count = cur->count / 2;
-      new_leaf->parent = cur->parent;
+      ساخت درخت_گرہ*new_برگ = نیا ساخت درخت_گرہ;
+      new_برگ->برگ_flag = سچ;
+      new_برگ->گنتی = cur->گنتی / 2;
+      new_برگ->والد = cur->والد;
 
 	/* Move the last half of the data from the end of the old leaf
 	   to the beginning of the new leaf. At the same time, reduce
 	   the size of the old leaf. */
-      unsigned idx1 = new_leaf->count;
-      unsigned idx2 = cur->count;
-      while (idx1 > 0) {
+      غیرعلامتی idx1 = new_برگ->گنتی;
+      غیرعلامتی idx2 = cur->گنتی;
+      جب (idx1 > 0) {
 	    idx1 -= 1;
 	    idx2 -= 1;
-	    new_leaf->leaf[idx1] = cur->leaf[idx2];
-	    cur->count -= 1;
+	    new_برگ->برگ[idx1] = cur->برگ[idx2];
+	    cur->گنتی -= 1;
       }
 
-      assert(new_leaf->count > 0);
-      assert(cur->count > 0);
+      أكد(new_برگ->گنتی > 0);
+      أكد(cur->گنتی > 0);
 
-      unsigned idx = 0;
-      while (cur->parent->child[idx] != cur) {
-	    assert(idx < cur->parent->count);
+      غیرعلامتی idx = 0;
+      جب (cur->والد->بچہ[idx] != cur) {
+	    أكد(idx < cur->والد->گنتی);
 	    idx += 1;
       }
 
       idx += 1;
 
-      for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1)
-	    cur->parent->child[tmp] = cur->parent->child[tmp-1];
+      برائے (غیرعلامتی tmp = cur->والد->گنتی ;  tmp > idx ;  tmp -= 1)
+	    cur->والد->بچہ[tmp] = cur->والد->بچہ[tmp-1];
 
-      cur->parent->child[idx] = new_leaf;
-      cur->parent->count += 1;
+      cur->والد->بچہ[idx] = new_برگ;
+      cur->والد->گنتی += 1;
 
-      if (cur->parent->count == node_width)
-	    split_node_(cur->parent);
+      اگر (cur->والد->گنتی == گرہ_چوڑائی)
+	    بانٹو_گرہ(cur->والد);
 
-      return new_leaf;
+      واپس new_برگ;
 }
 
 
@@ -254,145 +254,145 @@ static struct tree_node_* split_leaf_(struct tree_node_*cur)
  * true.
  */
 
-symbol_value_t symbol_table_s::find_value_(struct tree_node_*cur,
-					   const char*key, symbol_value_t val,
-					   bool force_flag)
+علامت_قدر_t علامت_جدول_s::ڈھونڈو_قدر(ساخت درخت_گرہ*cur,
+					   ثابت حرف*کلید, علامت_قدر_t val,
+					   منطقی force_flag)
 {
-      if (cur->leaf_flag) {
+      اگر (cur->برگ_flag) {
 
-	    unsigned idx = 0;
-	    for (;;) {
+	    غیرعلامتی idx = 0;
+	    برائے (;;) {
 		    /* If we run out of keys in the leaf, then add
 		       this at the end of the leaf. */
-		  if (idx == cur->count) {
-			cur->leaf[idx].key = key_strdup_(key);
-			cur->leaf[idx].val = val;
-			cur->count += 1;
-			if (cur->count == leaf_width)
-			      split_leaf_(cur);
+		  اگر (idx == cur->گنتی) {
+			cur->برگ[idx].کلید = کلید_strdup(کلید);
+			cur->برگ[idx].val = val;
+			cur->گنتی += 1;
+			اگر (cur->گنتی == برگ_چوڑائی)
+			      بانٹو_برگ(cur);
 
-			return val;
+			واپس val;
 		  }
 
-		  int rc = strcmp(key, cur->leaf[idx].key);
+		  صحیح rc = strcmp(کلید, cur->برگ[idx].کلید);
 
 		    /* If we found the key already in the table, then
 		       set the new value and break. */
-		  if (rc == 0) {
-			if (force_flag)
-			      cur->leaf[idx].val = val;
-			return cur->leaf[idx].val;
+		  اگر (rc == 0) {
+			اگر (force_flag)
+			      cur->برگ[idx].val = val;
+			واپس cur->برگ[idx].val;
 		  }
 
 		    /* If this key goes before the current key, then
 		       push all the following entries back and add
 		       this key here. */
-		  if (rc < 0) {
-			for (unsigned tmp = cur->count; tmp > idx; tmp -= 1)
-			      cur->leaf[tmp] = cur->leaf[tmp-1];
+		  اگر (rc < 0) {
+			برائے (غیرعلامتی tmp = cur->گنتی; tmp > idx; tmp -= 1)
+			      cur->برگ[tmp] = cur->برگ[tmp-1];
 
-			cur->leaf[idx].key = key_strdup_(key);
-			cur->leaf[idx].val = val;
-			cur->count += 1;
-			if (cur->count == leaf_width)
-			      split_leaf_(cur);
+			cur->برگ[idx].کلید = کلید_strdup(کلید);
+			cur->برگ[idx].val = val;
+			cur->گنتی += 1;
+			اگر (cur->گنتی == برگ_چوڑائی)
+			      بانٹو_برگ(cur);
 
-			return val;
+			واپس val;
 		  }
 
 		  idx += 1;
 	    }
 
-      } else {
+      } ورنہ {
 	      /* Do a binary search within the inner node. */
-	    unsigned min = 0;
-	    unsigned max = cur->count;
-	    unsigned idx = max/2;
-	    for (;;) {
-		  int rc = strcmp(key, node_last_key(cur->child[idx]));
-		  if (rc == 0) {
-			return find_value_(cur->child[idx],
-					   key, val, force_flag);
+	    غیرعلامتی min = 0;
+	    غیرعلامتی max = cur->گنتی;
+	    غیرعلامتی idx = max/2;
+	    برائے (;;) {
+		  صحیح rc = strcmp(کلید, گرہ_آخری_کلید(cur->بچہ[idx]));
+		  اگر (rc == 0) {
+			واپس ڈھونڈو_قدر(cur->بچہ[idx],
+					   کلید, val, force_flag);
 		  }
 
-		  if (rc > 0) {
+		  اگر (rc > 0) {
 			min = idx + 1;
-			if (min == cur->count)
-			      return find_value_(cur->child[idx],
-						 key, val, force_flag);
-			if (min == max)
-			      return find_value_(cur->child[max],
-						 key, val, force_flag);
+			اگر (min == cur->گنتی)
+			      واپس ڈھونڈو_قدر(cur->بچہ[idx],
+						 کلید, val, force_flag);
+			اگر (min == max)
+			      واپس ڈھونڈو_قدر(cur->بچہ[max],
+						 کلید, val, force_flag);
 
 			idx = min + (max-min)/2;
 
-		  } else  {
+		  } ورنہ  {
 			max = idx;
-			if (idx == min)
-			      return find_value_(cur->child[idx],
-						 key, val, force_flag);
+			اگر (idx == min)
+			      واپس ڈھونڈو_قدر(cur->بچہ[idx],
+						 کلید, val, force_flag);
 			idx = min + (max-min)/2;
 		  }
 	    }
       }
 
-      assert(0);
-      { symbol_value_t tmp;
+      أكد(0);
+      { علامت_قدر_t tmp;
         tmp.ptr = 0;
-        return tmp;
+        واپس tmp;
       }
 }
 
-void symbol_table_s::sym_set_value(const char*key, symbol_value_t val)
+خالی علامت_جدول_s::sym_سیٹ_قدر(ثابت حرف*کلید, علامت_قدر_t val)
 {
-      if (root->count == 0) {
+      اگر (جڑ->گنتی == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
-	    cur->leaf_flag = true;
-	    cur->parent = root;
-	    cur->count = 1;
-	    cur->leaf[0].key = key_strdup_(key);
-	    cur->leaf[0].val = val;
+	    ساخت درخت_گرہ*cur = نیا ساخت درخت_گرہ;
+	    cur->برگ_flag = سچ;
+	    cur->والد = جڑ;
+	    cur->گنتی = 1;
+	    cur->برگ[0].کلید = کلید_strdup(کلید);
+	    cur->برگ[0].val = val;
 
-	    root->count = 1;
-	    root->child[0] = cur;
-      } else {
-	    find_value_(root, key, val, true);
+	    جڑ->گنتی = 1;
+	    جڑ->بچہ[0] = cur;
+      } ورنہ {
+	    ڈھونڈو_قدر(جڑ, کلید, val, سچ);
       }
 }
 
-symbol_value_t symbol_table_s::sym_get_value(const char*key)
+علامت_قدر_t علامت_جدول_s::sym_get_قدر(ثابت حرف*کلید)
 {
-      symbol_value_t def;
+      علامت_قدر_t def;
       def.ptr = 0;
 
-      if (root->count == 0) {
+      اگر (جڑ->گنتی == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
-	    cur->leaf_flag = true;
-	    cur->parent = root;
-	    cur->count = 1;
-	    cur->leaf[0].key = key_strdup_(key);
-	    cur->leaf[0].val = def;
+	    ساخت درخت_گرہ*cur = نیا ساخت درخت_گرہ;
+	    cur->برگ_flag = سچ;
+	    cur->والد = جڑ;
+	    cur->گنتی = 1;
+	    cur->برگ[0].کلید = کلید_strdup(کلید);
+	    cur->برگ[0].val = def;
 
-	    root->count = 1;
-	    root->child[0] = cur;
-	    return cur->leaf[0].val;
-      } else {
-	    return find_value_(root, key, def, false);
+	    جڑ->گنتی = 1;
+	    جڑ->بچہ[0] = cur;
+	    واپس cur->برگ[0].val;
+      } ورنہ {
+	    واپس ڈھونڈو_قدر(جڑ, کلید, def, جھوٹ);
       }
 }
 
-symbol_table_s::~symbol_table_s()
+علامت_جدول_s::~علامت_جدول_s()
 {
-      delete_symbol_node(root);
-      while (str_chunk) {
-	    key_strings*tmp = str_chunk;
-	    str_chunk = tmp->next;
-	    delete tmp;
+      delete_علامت_گرہ(جڑ);
+      جب (str_chunk) {
+	    کلید_لڑیاں*tmp = str_chunk;
+	    str_chunk = tmp->اگلا_2;
+	    حذف tmp;
       }
 }

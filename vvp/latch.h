@@ -1,5 +1,5 @@
-#ifndef IVL_latch_H
-#define IVL_latch_H
+#اگر_غیر_تعریف_شدہ IVL_latch_H
+#تعریف_کرو IVL_latch_H
 /*
  * Copyright (c) 2016-2025 Martin Whitaker (icarus@martin-whitaker.me.uk)
  *
@@ -28,21 +28,21 @@
  *   port-0:  D input
  *   port-1:  EN input
  */
-class vvp_latch : public vvp_net_fun_t {
+class vvp_latch : عوامی vvp_net_fun_t {
 
-    public:
-      explicit vvp_latch(unsigned width);
+    عوامی:
+      explicit vvp_latch(غیرعلامتی چوڑائی);
       ~vvp_latch() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      خالی recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      خالی recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+			غیرعلامتی بنیاد, غیرعلامتی vwid, vvp_context_t ctx) override;
 
-    private:
+    نجی:
       vvp_bit4_t en_;
       vvp_vector4_t d_;
 };
 
-#endif /* IVL_latch_H */
+#اگر_ختم /* IVL_latch_H */

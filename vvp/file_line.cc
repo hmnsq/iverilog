@@ -19,82 +19,82 @@
 # include "compile.h"
 # include "vpi_priv.h"
 
-class __vpiFileLine : public __vpiHandle {
-    public:
-      explicit __vpiFileLine(const char*desc_, long file_idx_, long lineno_);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+جماعت __vpiFileLine : عوامی __vpiHandle {
+    عوامی:
+      صریح __vpiFileLine(ثابت حرف*desc_, طویل file_idx_, طویل lineno_);
+      صحیح get_type_رمز(خالی) ثابت override;
+      صحیح vpi_get(صحیح code) override;
+      حرف* vpi_get_str(صحیح code) override;
 
-      const char* get_description() const { return description; };
-      unsigned get_file_idx() const { return file_idx; };
-      unsigned get_lineno() const { return lineno; };
+      ثابت حرف* get_description() ثابت { واپس description; };
+      غیرعلامتی get_file_idx() ثابت { واپس file_idx; };
+      غیرعلامتی get_lineno() ثابت { واپس lineno; };
 
-    private:
-      const char *description;
-      unsigned file_idx;
-      unsigned lineno;
+    نجی:
+      ثابت حرف *description;
+      غیرعلامتی file_idx;
+      غیرعلامتی lineno;
 };
 
-bool show_file_line = false;
-bool code_is_instrumented = false;
+منطقی show_file_سطر = جھوٹ;
+منطقی رمز_is_instrumented = جھوٹ;
 
-static int file_line_get(int type, vpiHandle ref)
+ساکن صحیح file_سطر_get(صحیح type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      أكد(rfp);
 
-      switch (type) {
-	case vpiLineNo:
-	    return rfp->get_lineno();
-	default:
-	    return vpiUndefined;
+      انتخاب (type) {
+	حالت vpi_سطر_No:
+	    واپس rfp->get_lineno();
+	طےشدہ:
+	    واپس vpiUndefined;
       }
 }
 
-static char *file_line_get_str(int type, vpiHandle ref)
+ساکن حرف *file_سطر_get_str(صحیح type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      أكد(rfp);
 
-      switch (type) {
-	case vpiFile:
-	    assert(rfp->get_file_idx() < file_names.size());
-	    return simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
-	case _vpiDescription:
-	    if (rfp->get_description()) {
-		  return simple_set_rbuf_str(rfp->get_description());
-	    } else return simple_set_rbuf_str("Procedural tracing.");
-	default:
-	    return 0;
+      انتخاب (type) {
+	حالت vpiFile:
+	    أكد(rfp->get_file_idx() < file_نام.size());
+	    واپس simple_سیٹ_rbuf_str(file_نام[rfp->get_file_idx()]);
+	حالت _vpiDescription:
+	    اگر (rfp->get_description()) {
+		  واپس simple_سیٹ_rbuf_str(rfp->get_description());
+	    } ورنہ واپس simple_سیٹ_rbuf_str("Procedural tracing.");
+	طےشدہ:
+	    واپس 0;
       }
 }
 
-inline __vpiFileLine::__vpiFileLine(const char*desc_, long file_idx_,
-                                    long lineno_)
+اندرونی __vpiFileLine::__vpiFileLine(ثابت حرف*desc_, طویل file_idx_,
+                                    طویل lineno_)
 {
-      if (desc_) description = vpip_name_string(desc_);
-      else description = 0;
-      file_idx = (unsigned) file_idx_;
-      lineno = (unsigned) lineno_;
+      اگر (desc_) description = vpip_name_string(desc_);
+      ورنہ description = 0;
+      file_idx = (غیرعلامتی) file_idx_;
+      lineno = (غیرعلامتی) lineno_;
 }
 
-int __vpiFileLine::get_type_code(void) const
-{ return _vpiFileLine; }
+صحیح __vpiFileLine::get_type_رمز(خالی) ثابت
+{ واپس vpi_File_سطر; }
 
-int __vpiFileLine::vpi_get(int code)
-{ return file_line_get(code, this); }
+صحیح __vpiFileLine::vpi_get(صحیح code)
+{ واپس file_سطر_get(code, یہ); }
 
-char* __vpiFileLine::vpi_get_str(int code)
-{ return file_line_get_str(code, this); }
+حرف* __vpiFileLine::vpi_get_str(صحیح code)
+{ واپس file_سطر_get_str(code, یہ); }
 
 
-vpiHandle vpip_build_file_line(const char*description, long file_idx, long lineno)
+vpiHandle vpip_build_file_سطر(ثابت حرف*description, طویل file_idx, طویل lineno)
 {
-      __vpiFileLine*obj = new __vpiFileLine(description, file_idx, lineno);
+      __vpiFileLine*obj = نیا __vpiFileLine(description, file_idx, lineno);
 
 	/* You can turn on the diagnostic output if we find a %file_line. */
-      code_is_instrumented = true;
+      رمز_is_instrumented = سچ;
 
-      return obj;
+      واپس obj;
 }

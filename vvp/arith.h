@@ -1,5 +1,5 @@
-#ifndef IVL_arith_H
-#define IVL_arith_H
+#اگر_غیر_تعریف_شدہ IVL_arith_H
+#تعریف_کرو IVL_arith_H
 /*
  * Copyright (c) 2001-2025 Stephen Williams (steve@icarus.com)
  *
@@ -32,19 +32,19 @@
  * inputs to match, and since only one input at a time changes, the
  * other will need to be initialized to X.
  */
-class vvp_arith_  : public vvp_net_fun_t {
+class vvp_arith_  : عوامی vvp_net_fun_t {
 
-    public:
-      explicit vvp_arith_(unsigned wid);
+    عوامی:
+      explicit vvp_arith_(غیرعلامتی wid);
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      خالی recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+			غیرعلامتی بنیاد, غیرعلامتی vwid, vvp_context_t ctx) override;
 
-    protected:
-      void dispatch_operand_(vvp_net_ptr_t ptr, const vvp_vector4_t&bit);
+    محفوظ:
+      خالی dispatch_عملیہ(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ);
 
-    protected:
-      unsigned wid_;
+    محفوظ:
+      غیرعلامتی wid_;
 
       vvp_vector4_t op_a_;
       vvp_vector4_t op_b_;
@@ -52,87 +52,87 @@ class vvp_arith_  : public vvp_net_fun_t {
       vvp_vector4_t x_val_;
 };
 
-class vvp_arith_abs : public vvp_net_fun_t {
-    public:
+class vvp_arith_abs : عوامی vvp_net_fun_t {
+    عوامی:
       explicit vvp_arith_abs();
       ~vvp_arith_abs() override;
 
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      خالی recv_real(vvp_net_ptr_t ptr, دوہرا ثنائی_ہندسہ,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      خالی recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+			غیرعلامتی بنیاد, غیرعلامتی vwid, vvp_context_t ctx) override;
 
-    private:
+    نجی:
 };
 
-class vvp_arith_cast_int : public vvp_net_fun_t {
-    public:
-      explicit vvp_arith_cast_int(unsigned wid);
+class vvp_arith_cast_int : عوامی vvp_net_fun_t {
+    عوامی:
+      explicit vvp_arith_cast_int(غیرعلامتی wid);
       ~vvp_arith_cast_int() override;
 
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      خالی recv_real(vvp_net_ptr_t ptr, دوہرا ثنائی_ہندسہ,
                      vvp_context_t) override;
 
-    private:
-      unsigned wid_;
+    نجی:
+      غیرعلامتی wid_;
 };
 
-class vvp_arith_cast_real : public vvp_net_fun_t {
-    public:
+class vvp_arith_cast_real : عوامی vvp_net_fun_t {
+    عوامی:
       explicit vvp_arith_cast_real(bool signed_flag);
       ~vvp_arith_cast_real() override;
 
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      خالی recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+			غیرعلامتی بنیاد, غیرعلامتی vwid, vvp_context_t ctx) override;
 
-    private:
+    نجی:
       bool signed_;
 };
 
-class vvp_arith_cast_vec2 : public vvp_net_fun_t {
-    public:
-      explicit vvp_arith_cast_vec2(unsigned wid);
+class vvp_arith_cast_vec2 : عوامی vvp_net_fun_t {
+    عوامی:
+      explicit vvp_arith_cast_vec2(غیرعلامتی wid);
       ~vvp_arith_cast_vec2() override;
 
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      خالی recv_real(vvp_net_ptr_t ptr, دوہرا ثنائی_ہندسہ,
                      vvp_context_t) override;
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      خالی recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+			غیرعلامتی بنیاد, غیرعلامتی vwid, vvp_context_t ctx) override;
 
-    private:
-      unsigned wid_;
+    نجی:
+      غیرعلامتی wid_;
 };
 
-class vvp_arith_div : public vvp_arith_ {
+class vvp_arith_div : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_arith_div(unsigned wid, bool signed_flag);
+    عوامی:
+      explicit vvp_arith_div(غیرعلامتی wid, bool signed_flag);
       ~vvp_arith_div() override;
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
-    private:
-      void wide4_(vvp_net_ptr_t ptr);
+    نجی:
+      خالی wide4_(vvp_net_ptr_t ptr);
       bool signed_flag_;
 };
 
-class vvp_arith_mod : public vvp_arith_ {
+class vvp_arith_mod : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_arith_mod(unsigned wid, bool signed_flag);
+    عوامی:
+      explicit vvp_arith_mod(غیرعلامتی wid, bool signed_flag);
       ~vvp_arith_mod() override;
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
-    private:
-      void wide_(vvp_net_ptr_t ptr);
+    نجی:
+      خالی wide_(vvp_net_ptr_t ptr);
       bool signed_flag_;
 };
 
@@ -142,74 +142,74 @@ class vvp_arith_mod : public vvp_arith_ {
  * exactly 1 bit.
  */
 
-class vvp_cmp_eeq  : public vvp_arith_ {
+class vvp_cmp_eeq  : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_eeq(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    عوامی:
+      explicit vvp_cmp_eeq(غیرعلامتی wid);
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_nee  : public vvp_arith_ {
+class vvp_cmp_nee  : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_nee(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    عوامی:
+      explicit vvp_cmp_nee(غیرعلامتی wid);
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_eq  : public vvp_arith_ {
+class vvp_cmp_eq  : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_eq(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    عوامی:
+      explicit vvp_cmp_eq(غیرعلامتی wid);
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_eqx  : public vvp_arith_ {
+class vvp_cmp_eqx  : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_eqx(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    عوامی:
+      explicit vvp_cmp_eqx(غیرعلامتی wid);
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_eqz  : public vvp_arith_ {
+class vvp_cmp_eqz  : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_eqz(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    عوامی:
+      explicit vvp_cmp_eqz(غیرعلامتی wid);
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_ne  : public vvp_arith_ {
+class vvp_cmp_ne  : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_ne(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    عوامی:
+      explicit vvp_cmp_ne(غیرعلامتی wid);
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_weq  : public vvp_arith_ {
+class vvp_cmp_weq  : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_weq(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    عوامی:
+      explicit vvp_cmp_weq(غیرعلامتی wid);
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_wne  : public vvp_arith_ {
+class vvp_cmp_wne  : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_wne(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    عوامی:
+      explicit vvp_cmp_wne(غیرعلامتی wid);
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
 
 };
@@ -220,34 +220,34 @@ class vvp_cmp_wne  : public vvp_arith_ {
  * GT and GE call the recv_vec4_base_ method with a different
  * out_if_equal argument that reflects the different expectations.
  */
-class vvp_cmp_gtge_base_ : public vvp_arith_ {
+class vvp_cmp_gtge_بنیاد : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_cmp_gtge_base_(unsigned wid, bool signed_flag);
+    عوامی:
+      explicit vvp_cmp_gtge_بنیاد(غیرعلامتی wid, bool signed_flag);
 
-    protected:
-      void recv_vec4_base_(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			   vvp_bit4_t out_if_equal);
-    private:
+    محفوظ:
+      خالی recv_vec4_بنیاد(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+			   vvp_bit4_t برآمد_if_equal);
+    نجی:
       bool signed_flag_;
 };
 
-class vvp_cmp_ge  : public vvp_cmp_gtge_base_ {
+class vvp_cmp_ge  : عوامی vvp_cmp_gtge_بنیاد {
 
-    public:
-      explicit vvp_cmp_ge(unsigned wid, bool signed_flag);
+    عوامی:
+      explicit vvp_cmp_ge(غیرعلامتی wid, bool signed_flag);
 
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_gt  : public vvp_cmp_gtge_base_ {
+class vvp_cmp_gt  : عوامی vvp_cmp_gtge_بنیاد {
 
-    public:
-      explicit vvp_cmp_gt(unsigned wid, bool signed_flag);
+    عوامی:
+      explicit vvp_cmp_gt(غیرعلامتی wid, bool signed_flag);
 
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
 };
 
@@ -256,66 +256,66 @@ class vvp_cmp_gt  : public vvp_cmp_gtge_base_ {
  * width as the output. This is different from the typical vvp_arith_
  * object. Perhaps that means this isn't quite a vvp_arith_ object?
  */
-class vvp_arith_mult  : public vvp_arith_ {
+class vvp_arith_mult  : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_arith_mult(unsigned wid);
+    عوامی:
+      explicit vvp_arith_mult(غیرعلامتی wid);
       ~vvp_arith_mult() override;
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
-    private:
-      void wide_(vvp_net_ptr_t ptr);
+    نجی:
+      خالی wide_(vvp_net_ptr_t ptr);
 };
 
-class vvp_arith_pow  : public vvp_arith_ {
+class vvp_arith_pow  : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_arith_pow(unsigned wid, bool signed_flag);
+    عوامی:
+      explicit vvp_arith_pow(غیرعلامتی wid, bool signed_flag);
       ~vvp_arith_pow() override;
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      خالی recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
-    private:
+    نجی:
       bool signed_flag_;
 };
 
-class vvp_arith_sub  : public vvp_arith_ {
+class vvp_arith_sub  : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_arith_sub(unsigned wid);
+    عوامی:
+      explicit vvp_arith_sub(غیرعلامتی wid);
       ~vvp_arith_sub() override;
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      مجازی خالی recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                              vvp_context_t) override;
 
 };
 
-class vvp_arith_sum  : public vvp_arith_ {
+class vvp_arith_مجموع  : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_arith_sum(unsigned wid);
-      ~vvp_arith_sum() override;
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    عوامی:
+      explicit vvp_arith_مجموع(غیرعلامتی wid);
+      ~vvp_arith_مجموع() override;
+      مجازی خالی recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                              vvp_context_t) override;
 
 };
 
-class vvp_shiftl  : public vvp_arith_ {
+class vvp_shiftl  : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_shiftl(unsigned wid);
+    عوامی:
+      explicit vvp_shiftl(غیرعلامتی wid);
       ~vvp_shiftl() override;
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      مجازی خالی recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                              vvp_context_t) override;
 };
 
-class vvp_shiftr  : public vvp_arith_ {
+class vvp_shiftr  : عوامی vvp_arith_ {
 
-    public:
-      explicit vvp_shiftr(unsigned wid, bool signed_flag);
+    عوامی:
+      explicit vvp_shiftr(غیرعلامتی wid, bool signed_flag);
       ~vvp_shiftr() override;
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      مجازی خالی recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                              vvp_context_t) override;
 
-    private:
+    نجی:
       bool signed_flag_;
 };
 
@@ -324,104 +324,104 @@ class vvp_shiftr  : public vvp_arith_ {
  * vector expression classes, but the inputs are collected from the
  * recv_real method.
  */
-class vvp_arith_real_  : public vvp_net_fun_t {
+class vvp_arith_real_  : عوامی vvp_net_fun_t {
 
-    public:
+    عوامی:
       explicit vvp_arith_real_();
 
-    protected:
-      void dispatch_operand_(vvp_net_ptr_t ptr, double bit);
+    محفوظ:
+      خالی dispatch_عملیہ(vvp_net_ptr_t ptr, دوہرا ثنائی_ہندسہ);
 
-    protected:
-      double op_a_;
-      double op_b_;
+    محفوظ:
+      دوہرا op_a_;
+      دوہرا op_b_;
 };
 
 
-class vvp_arith_sum_real : public vvp_arith_real_ {
+class vvp_arith_مجموع_real : عوامی vvp_arith_real_ {
 
-    public:
-      explicit vvp_arith_sum_real();
-      ~vvp_arith_sum_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+    عوامی:
+      explicit vvp_arith_مجموع_real();
+      ~vvp_arith_مجموع_real() override;
+      خالی recv_real(vvp_net_ptr_t ptr, دوہرا ثنائی_ہندسہ,
                      vvp_context_t) override;
 };
 
-class vvp_arith_div_real : public vvp_arith_real_ {
+class vvp_arith_div_real : عوامی vvp_arith_real_ {
 
-    public:
+    عوامی:
       explicit vvp_arith_div_real();
       ~vvp_arith_div_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      خالی recv_real(vvp_net_ptr_t ptr, دوہرا ثنائی_ہندسہ,
                      vvp_context_t) override;
 };
 
-class vvp_arith_mod_real : public vvp_arith_real_ {
+class vvp_arith_mod_real : عوامی vvp_arith_real_ {
 
-    public:
+    عوامی:
       explicit vvp_arith_mod_real();
       ~vvp_arith_mod_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      خالی recv_real(vvp_net_ptr_t ptr, دوہرا ثنائی_ہندسہ,
                      vvp_context_t) override;
 };
 
-class vvp_arith_mult_real : public vvp_arith_real_ {
+class vvp_arith_mult_real : عوامی vvp_arith_real_ {
 
-    public:
+    عوامی:
       explicit vvp_arith_mult_real();
       ~vvp_arith_mult_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      خالی recv_real(vvp_net_ptr_t ptr, دوہرا ثنائی_ہندسہ,
                      vvp_context_t) override;
 };
 
-class vvp_arith_pow_real : public vvp_arith_real_ {
+class vvp_arith_pow_real : عوامی vvp_arith_real_ {
 
-    public:
+    عوامی:
       explicit vvp_arith_pow_real();
       ~vvp_arith_pow_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      خالی recv_real(vvp_net_ptr_t ptr, دوہرا ثنائی_ہندسہ,
                      vvp_context_t) override;
 };
 
-class vvp_arith_sub_real : public vvp_arith_real_ {
+class vvp_arith_sub_real : عوامی vvp_arith_real_ {
 
-    public:
+    عوامی:
       explicit vvp_arith_sub_real();
       ~vvp_arith_sub_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      خالی recv_real(vvp_net_ptr_t ptr, دوہرا ثنائی_ہندسہ,
                      vvp_context_t) override;
 };
 
-class vvp_cmp_eq_real  : public vvp_arith_real_ {
+class vvp_cmp_eq_real  : عوامی vvp_arith_real_ {
 
-    public:
+    عوامی:
       explicit vvp_cmp_eq_real();
-      void recv_real(vvp_net_ptr_t ptr, const double bit,
+      خالی recv_real(vvp_net_ptr_t ptr, ثابت دوہرا ثنائی_ہندسہ,
                      vvp_context_t) override;
 };
 
-class vvp_cmp_ne_real  : public vvp_arith_real_ {
+class vvp_cmp_ne_real  : عوامی vvp_arith_real_ {
 
-    public:
+    عوامی:
       explicit vvp_cmp_ne_real();
-      void recv_real(vvp_net_ptr_t ptr, const double bit,
+      خالی recv_real(vvp_net_ptr_t ptr, ثابت دوہرا ثنائی_ہندسہ,
                      vvp_context_t) override;
 };
 
-class vvp_cmp_ge_real  : public vvp_arith_real_ {
+class vvp_cmp_ge_real  : عوامی vvp_arith_real_ {
 
-    public:
+    عوامی:
       explicit vvp_cmp_ge_real();
-      void recv_real(vvp_net_ptr_t ptr, const double bit,
+      خالی recv_real(vvp_net_ptr_t ptr, ثابت دوہرا ثنائی_ہندسہ,
                      vvp_context_t) override;
 };
 
-class vvp_cmp_gt_real  : public vvp_arith_real_ {
+class vvp_cmp_gt_real  : عوامی vvp_arith_real_ {
 
-    public:
+    عوامی:
       explicit vvp_cmp_gt_real();
-      void recv_real(vvp_net_ptr_t ptr, const double bit,
+      خالی recv_real(vvp_net_ptr_t ptr, ثابت دوہرا ثنائی_ہندسہ,
                      vvp_context_t) override;
 };
 
-#endif /* IVL_arith_H */
+#اگر_ختم /* IVL_arith_H */

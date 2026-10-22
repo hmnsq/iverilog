@@ -1,5 +1,5 @@
-#ifndef IVL_array_H
-#define IVL_array_H
+#اگر_غیر_تعریف_شدہ IVL_array_H
+#تعریف_کرو IVL_array_H
 /*
  * Copyright (c) 2007-2014 Stephen Williams (steve@icarus.com)
  *
@@ -19,20 +19,20 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "vvp_net.h"
-#include "vpi_user.h"
+#شامل "vvp_net.h"
+#شامل "vpi_user.h"
 
-typedef struct __vpiArray* vvp_array_t;
-class value_callback;
+قسمتعریف ساخت __vpiArray* vvp_array_t;
+class قدر_callback;
 
 /*
  * This function tries to find the array (by label) in the global
  * table of all the arrays in the design.
  */
-extern vvp_array_t array_find(const char*label);
+خارجی vvp_array_t array_ڈھونڈو(ثابت حرف*label);
 
 /* VPI hooks */
-extern value_callback* vpip_array_word_change(p_cb_data data);
-extern value_callback* vpip_array_change(p_cb_data data);
+خارجی قدر_callback* vpip_array_لفظ_change(p_cb_ڈیٹا ڈیٹا);
+خارجی قدر_callback* vpip_array_change(p_cb_ڈیٹا ڈیٹا);
 
-#endif /* IVL_array_H */
+#اگر_ختم /* IVL_array_H */

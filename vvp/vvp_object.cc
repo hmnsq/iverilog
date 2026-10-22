@@ -22,28 +22,28 @@
 # include  <iostream>
 # include  <typeinfo>
 
-using namespace std;
+استعمال نامخلا std;
 
-int vvp_object::total_active_cnt_ = 0;
+صحیح vvp_object::کل_فعال_cnt = 0;
 
-void vvp_object::cleanup(void)
+خالی vvp_object::cleanup(خالی)
 {
 }
 
 vvp_object::~vvp_object()
 {
-      total_active_cnt_ -= 1;
+      کل_فعال_cnt -= 1;
 }
 
-void vvp_object::shallow_copy(const vvp_object*)
+خالی vvp_object::shallow_copy(ثابت vvp_object*)
 {
-      cerr << "XXXX shallow_copy(vvp_object_t) not implemented for " << typeid(*this).name() << endl;
-      assert(0);
+      cerr << "XXXX shallow_copy(vvp_object_t) not implemented for " << typeid(*یہ).name() << سطر_ختم;
+      أكد(0);
 }
 
-vvp_object* vvp_object::duplicate(void) const
+vvp_object* vvp_object::duplicate(خالی) ثابت
 {
-      cerr << "XXXX duplicate() not implemented for " << typeid(*this).name() << endl;
-      assert(0);
-      return 0;
+      cerr << "XXXX duplicate() not implemented for " << typeid(*یہ).name() << سطر_ختم;
+      أكد(0);
+      واپس 0;
 }

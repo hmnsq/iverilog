@@ -1,5 +1,5 @@
-#ifndef IVL_parse_misc_H
-#define IVL_parse_misc_H
+#اگر_غیر_تعریف_شدہ IVL_parse_misc_H
+#تعریف_کرو IVL_parse_misc_H
 /*
  * Copyright (c) 2001-2014 Stephen Williams (steve@icarus.com)
  *
@@ -25,71 +25,71 @@
  * This method is called to compile the design file. The input is read
  * and a list of statements is created.
  */
-extern int compile_design(const char*path);
+خارجی صحیح compile_design(ثابت حرف*راستہ);
 
 /*
  * This routine is called to check that the input file has a compatible
  * version.
  */
-extern void verify_version(char *ivl_ver, char* commit);
+خارجی خالی verify_نسخہ(حرف *ivl_ver, حرف* commit);
 
 /*
  * Set the default delay type for the $sdf_annotate task (min/typ/max).
  */
-extern void set_delay_selection(const char* sel);
+خارجی خالی سیٹ_delay_selection(ثابت حرف* sel);
 
 /*
  * various functions shared by the lexor and the parser.
  */
-extern int yylex(void);
-extern void yyerror(const char*msg);
+خارجی صحیح yylex(خالی);
+خارجی خالی yyerror(ثابت حرف*پیغام);
 
-extern void destroy_lexor();
+خارجی خالی destroy_lexor();
 
 /*
  * This is the path of the current source file.
  */
-extern const char*yypath;
-extern unsigned yyline;
+خارجی ثابت حرف*yypath;
+خارجی غیرعلامتی yyline;
 
-struct symb_s {
-      char*text;
-      unsigned idx;
+ساخت symb_s {
+      حرف*متن;
+      غیرعلامتی idx;
 };
 
-struct symbv_s {
-      unsigned cnt;
-      struct symb_s*vect;
+ساخت symbv_s {
+      غیرعلامتی cnt;
+      ساخت symb_s*vect;
 };
 
-extern void symbv_init(struct symbv_s*obj);
-extern void symbv_add(struct symbv_s*obj, struct symb_s item);
+خارجی خالی symbv_init(ساخت symbv_s*obj);
+خارجی خالی symbv_جوڑو(ساخت symbv_s*obj, ساخت symb_s شے);
 
-struct numbv_s {
-      unsigned cnt;
-      long*nvec;
+ساخت numbv_s {
+      غیرعلامتی cnt;
+      طویل*nvec;
 };
 
-struct enum_name_s {
-      char*text;
+ساخت enum_name_s {
+      حرف*متن;
       uint64_t val2;
-      char*val4;
+      حرف*val4;
 };
 
-extern void numbv_init(struct numbv_s*obj);
-extern void numbv_add(struct numbv_s*obj, long item);
-extern void numbv_clear(struct numbv_s*obj);
+خارجی خالی numbv_init(ساخت numbv_s*obj);
+خارجی خالی numbv_جوڑو(ساخت numbv_s*obj, طویل شے);
+خارجی خالی numbv_clear(ساخت numbv_s*obj);
 
-struct argv_s {
-      unsigned  argc;
+ساخت argv_s {
+      غیرعلامتی  argc;
       vpiHandle*argv;
-      char    **syms;
+      حرف    **syms;
 };
 
 
-extern void argv_init(struct argv_s*obj);
-extern void argv_add(struct argv_s*obj, vpiHandle);
-extern void argv_sym_add(struct argv_s*obj, char *);
-extern void argv_sym_lookup(struct argv_s*obj);
+خارجی خالی argv_init(ساخت argv_s*obj);
+خارجی خالی argv_جوڑو(ساخت argv_s*obj, vpiHandle);
+خارجی خالی argv_sym_جوڑو(ساخت argv_s*obj, حرف *);
+خارجی خالی argv_sym_lookup(ساخت argv_s*obj);
 
-#endif /* IVL_parse_misc_H */
+#اگر_ختم /* IVL_parse_misc_H */

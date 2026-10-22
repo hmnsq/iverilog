@@ -1,5 +1,5 @@
-#ifndef IVL_part_H
-#define IVL_part_H
+#اگر_غیر_تعریف_شدہ IVL_part_H
+#تعریف_کرو IVL_part_H
 /*
  * Copyright (c) 2005-2025 Stephen Williams (steve@icarus.com)
  *
@@ -28,40 +28,40 @@
  * select starts. Input 2, which is typically constant, is the width
  * of the result.
  */
-class vvp_fun_part  : public vvp_net_fun_t {
+class vvp_fun_part  : عوامی vvp_net_fun_t {
 
-    public:
-      vvp_fun_part(unsigned base, unsigned wid);
+    عوامی:
+      vvp_fun_part(غیرعلامتی بنیاد, غیرعلامتی wid);
       ~vvp_fun_part() override;
 
-      unsigned get_base() const { return base_; }
-      unsigned get_wid() const { return wid_; }
+      غیرعلامتی get_بنیاد() ثابت { واپس بنیاد_2; }
+      غیرعلامتی get_wid() ثابت { واپس wid_; }
 
-    protected:
-      unsigned base_;
-      unsigned wid_;
+    محفوظ:
+      غیرعلامتی بنیاد_2;
+      غیرعلامتی wid_;
 };
 
 /*
  * Statically allocated vvp_fun_part.
  */
-class vvp_fun_part_sa  : public vvp_fun_part, public vvp_gen_event_s {
+class vvp_fun_part_sa  : عوامی vvp_fun_part, عوامی vvp_gen_event_s {
 
-    public:
-      vvp_fun_part_sa(unsigned base, unsigned wid);
+    عوامی:
+      vvp_fun_part_sa(غیرعلامتی بنیاد, غیرعلامتی wid);
       ~vvp_fun_part_sa() override;
 
-    public:
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    عوامی:
+      خالی recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override;
+      خالی recv_vec4_pv(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+			غیرعلامتی بنیاد, غیرعلامتی vwid, vvp_context_t) override;
 
-    private:
-      void run_run() override;
+    نجی:
+      خالی تسلسل_تسلسل() override;
 
-    private:
+    نجی:
       vvp_vector4_t val_;
       vvp_net_t*net_;
 };
@@ -69,28 +69,28 @@ class vvp_fun_part_sa  : public vvp_fun_part, public vvp_gen_event_s {
 /*
  * Automatically allocated vvp_fun_part.
  */
-class vvp_fun_part_aa  : public vvp_fun_part, public automatic_hooks_s {
+class vvp_fun_part_aa  : عوامی vvp_fun_part, عوامی automatic_hooks_s {
 
-    public:
-      vvp_fun_part_aa(unsigned base, unsigned wid);
+    عوامی:
+      vvp_fun_part_aa(غیرعلامتی بنیاد, غیرعلامتی wid);
       ~vvp_fun_part_aa() override;
 
-    public:
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+    عوامی:
+      خالی alloc_instance(vvp_context_t context) override;
+      خالی reset_instance(vvp_context_t context) override;
+#اگر_تعریف_شدہ CHECK_WITH_VALGRIND
+      خالی free_instance(vvp_context_t context) override;
+#اگر_ختم
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      خالی recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t context) override;
+      خالی recv_vec4_pv(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+			غیرعلامتی بنیاد, غیرعلامتی vwid, vvp_context_t context) override;
 
-    private:
+    نجی:
       __vpiScope*context_scope_;
-      unsigned context_idx_;
+      غیرعلامتی context_idx_;
 };
 
 /* vvp_fun_part_pv
@@ -100,25 +100,25 @@ class vvp_fun_part_aa  : public vvp_fun_part, public automatic_hooks_s {
  * both statically and automatically allocated scopes, as it has no
  * dynamic state.
  */
-class vvp_fun_part_pv  : public vvp_net_fun_t {
+class vvp_fun_part_pv  : عوامی vvp_net_fun_t {
 
-    public:
-      vvp_fun_part_pv(unsigned base, unsigned wid, unsigned vec_wid);
+    عوامی:
+      vvp_fun_part_pv(غیرعلامتی بنیاد, غیرعلامتی wid, غیرعلامتی vec_wid);
       ~vvp_fun_part_pv() override;
 
-    public:
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    عوامی:
+      خالی recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-                        unsigned base, unsigned vwid, vvp_context_t) override;
+      خالی recv_vec4_pv(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+                        غیرعلامتی بنیاد, غیرعلامتی vwid, vvp_context_t) override;
 
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      خالی recv_vec8(vvp_net_ptr_t پورٹ, ثابت vvp_vector8_t&ثنائی_ہندسہ) override;
 
-    private:
-      unsigned base_;
-      unsigned wid_;
-      unsigned vwid_;
+    نجی:
+      غیرعلامتی بنیاد_2;
+      غیرعلامتی wid_;
+      غیرعلامتی vwid_;
 };
 
 /*
@@ -126,40 +126,40 @@ class vvp_fun_part_pv  : public vvp_net_fun_t {
  * part in port 0, and the base of the part in port 1. The width of
  * the part to take out is fixed.
  */
-class vvp_fun_part_var  : public vvp_net_fun_t {
+class vvp_fun_part_var  : عوامی vvp_net_fun_t {
 
-    public:
-      explicit vvp_fun_part_var(unsigned wid, bool is_signed);
+    عوامی:
+      explicit vvp_fun_part_var(غیرعلامتی wid, bool is_signed);
       ~vvp_fun_part_var() override;
 
-    protected:
-      bool recv_vec4_(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-                      int&base, vvp_vector4_t&source,
+    محفوظ:
+      bool recv_vec4_(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+                      صحیح&بنیاد, vvp_vector4_t&ماخذ,
                       vvp_vector4_t&ref);
 
-      unsigned wid_;
+      غیرعلامتی wid_;
       bool is_signed_;
 };
 
 /*
  * Statically allocated vvp_fun_part_var.
  */
-class vvp_fun_part_var_sa  : public vvp_fun_part_var {
+class vvp_fun_part_var_sa  : عوامی vvp_fun_part_var {
 
-    public:
-      explicit vvp_fun_part_var_sa(unsigned wid, bool is_signed);
+    عوامی:
+      explicit vvp_fun_part_var_sa(غیرعلامتی wid, bool is_signed);
       ~vvp_fun_part_var_sa() override;
 
-    public:
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    عوامی:
+      خالی recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override;
+      خالی recv_vec4_pv(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+			غیرعلامتی بنیاد, غیرعلامتی vwid, vvp_context_t) override;
 
-    private:
-      int base_;
-      vvp_vector4_t source_;
+    نجی:
+      صحیح بنیاد_2;
+      vvp_vector4_t ماخذ_2;
 	// Save the last output, for detecting change.
       vvp_vector4_t ref_;
 };
@@ -167,28 +167,28 @@ class vvp_fun_part_var_sa  : public vvp_fun_part_var {
 /*
  * Automatically allocated vvp_fun_part_var.
  */
-class vvp_fun_part_var_aa  : public vvp_fun_part_var, public automatic_hooks_s {
+class vvp_fun_part_var_aa  : عوامی vvp_fun_part_var, عوامی automatic_hooks_s {
 
-    public:
-      explicit vvp_fun_part_var_aa(unsigned wid, bool is_signed);
+    عوامی:
+      explicit vvp_fun_part_var_aa(غیرعلامتی wid, bool is_signed);
       ~vvp_fun_part_var_aa() override;
 
-    public:
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+    عوامی:
+      خالی alloc_instance(vvp_context_t context) override;
+      خالی reset_instance(vvp_context_t context) override;
+#اگر_تعریف_شدہ CHECK_WITH_VALGRIND
+      خالی free_instance(vvp_context_t context) override;
+#اگر_ختم
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      خالی recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t context) override;
+      خالی recv_vec4_pv(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+			غیرعلامتی بنیاد, غیرعلامتی vwid, vvp_context_t context) override;
 
-    private:
+    نجی:
       __vpiScope*context_scope_;
-      unsigned context_idx_;
+      غیرعلامتی context_idx_;
 };
 
-#endif /* IVL_part_H */
+#اگر_ختم /* IVL_part_H */

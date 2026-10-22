@@ -24,22 +24,22 @@
 # include  <random>
 # include  <typeinfo>
 
-using namespace std;
+استعمال نامخلا std;
 
-namespace {
+نامخلا {
 
-static std::mt19937& shuffle_rng(void)
+ساکن std::mt19937& shuffle_rng(خالی)
 {
-      static std::mt19937 rng(std::random_device{}());
-      return rng;
+      ساکن std::mt19937 rng(std::random_device{}());
+      واپس rng;
 }
 
-static bool vec4_lt_unsigned(const vvp_vector4_t&a, const vvp_vector4_t&b)
+ساکن منطقی vec4_lt_unsigned(ثابت vvp_vector4_t&a, ثابت vvp_vector4_t&b)
 {
-      if (a.eeq(b)) return false;
+      اگر (a.eeq(b)) واپس جھوٹ;
       vvp_bit4_t gt = compare_gtge(b, a, BIT4_1);
-      if (gt == BIT4_X) return false;
-      return gt == BIT4_1;
+      اگر (gt == BIT4_X) واپس جھوٹ;
+      واپس gt == BIT4_1;
 }
 
 } // namespace
@@ -48,1059 +48,1059 @@ vvp_darray::~vvp_darray()
 {
 }
 
-void vvp_darray::reverse_elems(void)
+خالی vvp_darray::الٹ_elems(خالی)
 {
       cerr << "XXXX reverse_elems() not implemented for "
-           << typeid(*this).name() << endl;
+           << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_darray::sort_elems(bool /*ascending*/)
+خالی vvp_darray::ترتیب_دو_elems(منطقی /*ascending*/)
 {
       cerr << "XXXX sort_elems() not implemented for "
-           << typeid(*this).name() << endl;
+           << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_darray::shuffle_elems(void)
+خالی vvp_darray::shuffle_elems(خالی)
 {
       cerr << "XXXX shuffle_elems() not implemented for "
-           << typeid(*this).name() << endl;
+           << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_darray::set_word(unsigned, const vvp_vector4_t&)
+خالی vvp_darray::سیٹ_لفظ(غیرعلامتی, ثابت vvp_vector4_t&)
 {
-      cerr << "XXXX set_word(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word(vvp_vector4_t) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_darray::set_word(unsigned, double)
+خالی vvp_darray::سیٹ_لفظ(غیرعلامتی, دوہرا)
 {
-      cerr << "XXXX set_word(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word(double) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_darray::set_word(unsigned, const string&)
+خالی vvp_darray::سیٹ_لفظ(غیرعلامتی, ثابت string&)
 {
-      cerr << "XXXX set_word(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word(string) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_darray::set_word(unsigned, const vvp_object_t&)
+خالی vvp_darray::سیٹ_لفظ(غیرعلامتی, ثابت vvp_object_t&)
 {
-      cerr << "XXXX set_word(vvp_object_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word(vvp_object_t) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_darray::get_word(unsigned, vvp_vector4_t&)
+خالی vvp_darray::get_لفظ(غیرعلامتی, vvp_vector4_t&)
 {
-      cerr << "XXXX get_word(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX get_word(vvp_vector4_t) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_darray::get_word(unsigned, double&)
+خالی vvp_darray::get_لفظ(غیرعلامتی, دوہرا&)
 {
-      cerr << "XXXX get_word(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX get_word(double) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_darray::get_word(unsigned, string&)
+خالی vvp_darray::get_لفظ(غیرعلامتی, string&)
 {
-      cerr << "XXXX get_word(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX get_word(string) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_darray::get_word(unsigned, vvp_object_t&)
+خالی vvp_darray::get_لفظ(غیرعلامتی, vvp_object_t&)
 {
-      cerr << "XXXX get_word(vvp_object_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX get_word(vvp_object_t) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-vvp_vector4_t vvp_darray::get_bitstream(bool)
+vvp_vector4_t vvp_darray::get_bitstream(منطقی)
 {
-      cerr << "XXXX get_bitstream() not implemented for " << typeid(*this).name() << endl;
-      return vvp_vector4_t();
+      cerr << "XXXX get_bitstream() not implemented for " << typeid(*یہ).name() << سطر_ختم;
+      واپس vvp_vector4_t();
 }
 
-template <class TYPE> vvp_darray_atom<TYPE>::~vvp_darray_atom()
+سانچہ <جماعت TYPE> vvp_darray_atom<TYPE>::~vvp_darray_atom()
 {
 }
 
-template <class TYPE> size_t vvp_darray_atom<TYPE>::get_size() const
+سانچہ <جماعت TYPE> size_t vvp_darray_atom<TYPE>::get_سائز() ثابت
 {
-      return array_.size();
+      واپس array_.size();
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::reverse_elems(void)
+سانچہ <جماعت TYPE> خالی vvp_darray_atom<TYPE>::الٹ_elems(خالی)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      برائے (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::sort_elems(bool ascending)
+سانچہ <جماعت TYPE> خالی vvp_darray_atom<TYPE>::ترتیب_دو_elems(منطقی ascending)
 {
-      if (ascending) std::sort(array_.begin(), array_.end());
-      else std::sort(array_.begin(), array_.end(), std::greater<TYPE>());
+      اگر (ascending) std::sort(array_.begin(), array_.انتہا());
+      ورنہ std::sort(array_.begin(), array_.انتہا(), std::greater<TYPE>());
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::shuffle_elems(void)
+سانچہ <جماعت TYPE> خالی vvp_darray_atom<TYPE>::shuffle_elems(خالی)
 {
-      std::shuffle(array_.begin(), array_.end(), shuffle_rng());
+      std::shuffle(array_.begin(), array_.انتہا(), shuffle_rng());
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::set_word(unsigned adr, const vvp_vector4_t&value)
+سانچہ <جماعت TYPE> خالی vvp_darray_atom<TYPE>::سیٹ_لفظ(غیرعلامتی adr, ثابت vvp_vector4_t&value)
 {
-      if (adr >= array_.size())
-	    return;
+      اگر (adr >= array_.size())
+	    واپس;
       TYPE tmp;
-      vector4_to_value(value, tmp, true, false);
+      vector4_مقصد_قدر(value, tmp, سچ, جھوٹ);
       array_[adr] = tmp;
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::get_word(unsigned adr, vvp_vector4_t&value)
+سانچہ <جماعت TYPE> خالی vvp_darray_atom<TYPE>::get_لفظ(غیرعلامتی adr, vvp_vector4_t&value)
 {
-      if (adr >= array_.size()) {
-	    value = vvp_vector4_t(8*sizeof(TYPE), BIT4_X);
-	    return;
+      اگر (adr >= array_.size()) {
+	    value = vvp_vector4_t(8*حجم(TYPE), BIT4_X);
+	    واپس;
       }
 
-      TYPE word = array_[adr];
-      vvp_vector4_t tmp (8*sizeof(TYPE), BIT4_0);
-      for (unsigned idx = 0 ; idx < tmp.size() ; idx += 1) {
-	    if (word&1) tmp.set_bit(idx, BIT4_1);
-	    word >>= 1;
+      TYPE لفظ = array_[adr];
+      vvp_vector4_t tmp (8*حجم(TYPE), BIT4_0);
+      برائے (غیرعلامتی idx = 0 ; idx < tmp.size() ; idx += 1) {
+	    اگر (لفظ&1) tmp.سیٹ_ثنائی_ہندسہ(idx, BIT4_1);
+	    لفظ >>= 1;
       }
       value = tmp;
 }
 
-template <class TYPE> void vvp_darray_atom<TYPE>::shallow_copy(const vvp_object*obj)
+سانچہ <جماعت TYPE> خالی vvp_darray_atom<TYPE>::shallow_copy(ثابت vvp_object*obj)
 {
-      const vvp_darray_atom<TYPE>*that = dynamic_cast<const vvp_darray_atom<TYPE>*>(obj);
-      assert(that);
+      ثابت vvp_darray_atom<TYPE>*that = dynamic_cast<ثابت vvp_darray_atom<TYPE>*>(obj);
+      أكد(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      غیرعلامتی عدد_اشیاء = min(array_.size(), that->array_.size());
+      برائے (غیرعلامتی idx = 0 ; idx < عدد_اشیاء ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-template <class TYPE> vvp_object* vvp_darray_atom<TYPE>::duplicate(void) const
+سانچہ <جماعت TYPE> vvp_object* vvp_darray_atom<TYPE>::duplicate(خالی) ثابت
 {
-      vvp_darray_atom<TYPE>*that = new vvp_darray_atom<TYPE>(array_.size());
-      for (size_t idx = 0 ; idx < array_.size() ; idx += 1)
+      vvp_darray_atom<TYPE>*that = نیا vvp_darray_atom<TYPE>(array_.size());
+      برائے (size_t idx = 0 ; idx < array_.size() ; idx += 1)
 	    that->array_[idx] = array_[idx];
 
-      return that;
+      واپس that;
 }
 
-template <class TYPE> vvp_vector4_t vvp_darray_atom<TYPE>::get_bitstream(bool)
+سانچہ <جماعت TYPE> vvp_vector4_t vvp_darray_atom<TYPE>::get_bitstream(منطقی)
 {
-      const unsigned word_wid = sizeof(TYPE) * 8;
+      ثابت غیرعلامتی لفظ_wid = حجم(TYPE) * 8;
 
-      vvp_vector4_t vec(array_.size() * word_wid, BIT4_0);
+      vvp_vector4_t vec(array_.size() * لفظ_wid, BIT4_0);
 
-      unsigned adx = 0;
-      unsigned vdx = vec.size();
-      while (vdx > 0) {
-            TYPE word = array_[adx++];
-            vdx -= word_wid;
-            for (unsigned bdx = 0; bdx < word_wid; bdx += 1) {
-                  if (word & 1)
-                        vec.set_bit(vdx+bdx, BIT4_1);
-                  word >>= 1;
+      غیرعلامتی adx = 0;
+      غیرعلامتی vdx = vec.size();
+      جب (vdx > 0) {
+            TYPE لفظ = array_[adx++];
+            vdx -= لفظ_wid;
+            برائے (غیرعلامتی bdx = 0; bdx < لفظ_wid; bdx += 1) {
+                  اگر (لفظ & 1)
+                        vec.سیٹ_ثنائی_ہندسہ(vdx+bdx, BIT4_1);
+                  لفظ >>= 1;
             }
       }
 
-      return vec;
+      واپس vec;
 }
 
-template class vvp_darray_atom<uint8_t>;
-template class vvp_darray_atom<uint16_t>;
-template class vvp_darray_atom<uint32_t>;
-template class vvp_darray_atom<uint64_t>;
-template class vvp_darray_atom<int8_t>;
-template class vvp_darray_atom<int16_t>;
-template class vvp_darray_atom<int32_t>;
-template class vvp_darray_atom<int64_t>;
+سانچہ جماعت vvp_darray_atom<uint8_t>;
+سانچہ جماعت vvp_darray_atom<uint16_t>;
+سانچہ جماعت vvp_darray_atom<uint32_t>;
+سانچہ جماعت vvp_darray_atom<uint64_t>;
+سانچہ جماعت vvp_darray_atom<int8_t>;
+سانچہ جماعت vvp_darray_atom<int16_t>;
+سانچہ جماعت vvp_darray_atom<int32_t>;
+سانچہ جماعت vvp_darray_atom<int64_t>;
 
 vvp_darray_vec4::~vvp_darray_vec4()
 {
 }
 
-size_t vvp_darray_vec4::get_size(void) const
+size_t vvp_darray_vec4::get_سائز(خالی) ثابت
 {
-      return array_.size();
+      واپس array_.size();
 }
 
-void vvp_darray_vec4::set_word(unsigned adr, const vvp_vector4_t&value)
+خالی vvp_darray_vec4::سیٹ_لفظ(غیرعلامتی adr, ثابت vvp_vector4_t&value)
 {
-      if (adr >= array_.size()) return;
-      assert(value.size() == word_wid_);
+      اگر (adr >= array_.size()) واپس;
+      أكد(value.size() == لفظ_wid_2);
       array_[adr] = value;
 }
 
-void vvp_darray_vec4::get_word(unsigned adr, vvp_vector4_t&value)
+خالی vvp_darray_vec4::get_لفظ(غیرعلامتی adr, vvp_vector4_t&value)
 {
 	/*
 	 * Return an undefined value for an out of range address or if the
 	 * value has not been written yet (has a size of zero).
 	 */
-      if ((adr >= array_.size()) || (array_[adr].size() == 0)) {
-	    value = vvp_vector4_t(word_wid_, BIT4_X);
-	    return;
+      اگر ((adr >= array_.size()) || (array_[adr].size() == 0)) {
+	    value = vvp_vector4_t(لفظ_wid_2, BIT4_X);
+	    واپس;
       }
       value = array_[adr];
-      assert(value.size() == word_wid_);
+      أكد(value.size() == لفظ_wid_2);
 }
 
-void vvp_darray_vec4::shallow_copy(const vvp_object*obj)
+خالی vvp_darray_vec4::shallow_copy(ثابت vvp_object*obj)
 {
-      const vvp_darray_vec4*that = dynamic_cast<const vvp_darray_vec4*>(obj);
-      assert(that);
+      ثابت vvp_darray_vec4*that = dynamic_cast<ثابت vvp_darray_vec4*>(obj);
+      أكد(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      غیرعلامتی عدد_اشیاء = min(array_.size(), that->array_.size());
+      برائے (غیرعلامتی idx = 0 ; idx < عدد_اشیاء ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-vvp_object* vvp_darray_vec4::duplicate(void) const
+vvp_object* vvp_darray_vec4::duplicate(خالی) ثابت
 {
-      vvp_darray_vec4*that = new vvp_darray_vec4(array_.size(), word_wid_);
+      vvp_darray_vec4*that = نیا vvp_darray_vec4(array_.size(), لفظ_wid_2);
 
-      for (size_t idx = 0 ; idx < array_.size() ; idx += 1)
+      برائے (size_t idx = 0 ; idx < array_.size() ; idx += 1)
 	    that->array_[idx] = array_[idx];
 
-      return that;
+      واپس that;
 }
 
-vvp_vector4_t vvp_darray_vec4::get_bitstream(bool as_vec4)
+vvp_vector4_t vvp_darray_vec4::get_bitstream(منطقی as_vec4)
 {
-      vvp_vector4_t vec(array_.size() * word_wid_, BIT4_0);
+      vvp_vector4_t vec(array_.size() * لفظ_wid_2, BIT4_0);
 
-      unsigned adx = 0;
-      unsigned vdx = vec.size();
-      while (vdx > 0) {
-            vdx -= word_wid_;
-            for (unsigned bdx = 0; bdx < word_wid_; bdx += 1) {
-                  vvp_bit4_t bit = array_[adx].value(bdx);
-                  if (as_vec4 || (bit == BIT4_1))
-                        vec.set_bit(vdx+bdx, bit);
+      غیرعلامتی adx = 0;
+      غیرعلامتی vdx = vec.size();
+      جب (vdx > 0) {
+            vdx -= لفظ_wid_2;
+            برائے (غیرعلامتی bdx = 0; bdx < لفظ_wid_2; bdx += 1) {
+                  vvp_bit4_t ثنائی_ہندسہ = array_[adx].value(bdx);
+                  اگر (as_vec4 || (ثنائی_ہندسہ == BIT4_1))
+                        vec.سیٹ_ثنائی_ہندسہ(vdx+bdx, ثنائی_ہندسہ);
             }
             adx++;
       }
 
-      return vec;
+      واپس vec;
 }
 
-void vvp_darray_vec4::reverse_elems(void)
+خالی vvp_darray_vec4::الٹ_elems(خالی)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      برائے (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-void vvp_darray_vec4::sort_elems(bool ascending)
+خالی vvp_darray_vec4::ترتیب_دو_elems(منطقی ascending)
 {
-      if (ascending) {
-	    std::sort(array_.begin(), array_.end(), vec4_lt_unsigned);
-      } else {
-	    std::sort(array_.begin(), array_.end(),
-		      [](const vvp_vector4_t&a, const vvp_vector4_t&b) {
-			    return vec4_lt_unsigned(b, a);
+      اگر (ascending) {
+	    std::sort(array_.begin(), array_.انتہا(), vec4_lt_unsigned);
+      } ورنہ {
+	    std::sort(array_.begin(), array_.انتہا(),
+		      [](ثابت vvp_vector4_t&a, ثابت vvp_vector4_t&b) {
+			    واپس vec4_lt_unsigned(b, a);
 		      });
       }
 }
 
-void vvp_darray_vec4::shuffle_elems(void)
+خالی vvp_darray_vec4::shuffle_elems(خالی)
 {
-      std::shuffle(array_.begin(), array_.end(), shuffle_rng());
+      std::shuffle(array_.begin(), array_.انتہا(), shuffle_rng());
 }
 
-void vvp_darray_vec2::reverse_elems(void)
+خالی vvp_darray_vec2::الٹ_elems(خالی)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      برائے (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-void vvp_darray_vec2::sort_elems(bool ascending)
+خالی vvp_darray_vec2::ترتیب_دو_elems(منطقی ascending)
 {
-      if (ascending) {
-	    std::sort(array_.begin(), array_.end());
-      } else {
-	    std::sort(array_.begin(), array_.end(),
-		      [](const vvp_vector2_t&a, const vvp_vector2_t&b) {
-			    return b < a;
+      اگر (ascending) {
+	    std::sort(array_.begin(), array_.انتہا());
+      } ورنہ {
+	    std::sort(array_.begin(), array_.انتہا(),
+		      [](ثابت vvp_vector2_t&a, ثابت vvp_vector2_t&b) {
+			    واپس b < a;
 		      });
       }
 }
 
-void vvp_darray_vec2::shuffle_elems(void)
+خالی vvp_darray_vec2::shuffle_elems(خالی)
 {
-      std::shuffle(array_.begin(), array_.end(), shuffle_rng());
+      std::shuffle(array_.begin(), array_.انتہا(), shuffle_rng());
 }
 
 vvp_darray_vec2::~vvp_darray_vec2()
 {
 }
 
-size_t vvp_darray_vec2::get_size(void) const
+size_t vvp_darray_vec2::get_سائز(خالی) ثابت
 {
-      return array_.size();
+      واپس array_.size();
 }
 
-void vvp_darray_vec2::set_word(unsigned adr, const vvp_vector4_t&value)
+خالی vvp_darray_vec2::سیٹ_لفظ(غیرعلامتی adr, ثابت vvp_vector4_t&value)
 {
-      if (adr >= array_.size()) return;
-      assert(value.size() == word_wid_);
+      اگر (adr >= array_.size()) واپس;
+      أكد(value.size() == لفظ_wid_2);
       array_[adr] = value;
 }
 
-void vvp_darray_vec2::get_word(unsigned adr, vvp_vector4_t&value)
+خالی vvp_darray_vec2::get_لفظ(غیرعلامتی adr, vvp_vector4_t&value)
 {
 	/*
 	 * Return a zero value for an out of range address or if the
 	 * value has not been written yet (has a size of zero).
 	 */
-      if ((adr >= array_.size()) || (array_[adr].size() == 0)) {
-	    value = vvp_vector4_t(word_wid_, BIT4_0);
-	    return;
+      اگر ((adr >= array_.size()) || (array_[adr].size() == 0)) {
+	    value = vvp_vector4_t(لفظ_wid_2, BIT4_0);
+	    واپس;
       }
-      assert(array_[adr].size() == word_wid_);
-      value.resize(word_wid_);
-      for (unsigned idx = 0; idx < word_wid_; idx += 1) {
-	    value.set_bit(idx, array_[adr].value4(idx));
+      أكد(array_[adr].size() == لفظ_wid_2);
+      value.resize(لفظ_wid_2);
+      برائے (غیرعلامتی idx = 0; idx < لفظ_wid_2; idx += 1) {
+	    value.سیٹ_ثنائی_ہندسہ(idx, array_[adr].value4(idx));
       }
 }
 
-void vvp_darray_vec2::shallow_copy(const vvp_object*obj)
+خالی vvp_darray_vec2::shallow_copy(ثابت vvp_object*obj)
 {
-      const vvp_darray_vec2*that = dynamic_cast<const vvp_darray_vec2*>(obj);
-      assert(that);
+      ثابت vvp_darray_vec2*that = dynamic_cast<ثابت vvp_darray_vec2*>(obj);
+      أكد(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      غیرعلامتی عدد_اشیاء = min(array_.size(), that->array_.size());
+      برائے (غیرعلامتی idx = 0 ; idx < عدد_اشیاء ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-vvp_vector4_t vvp_darray_vec2::get_bitstream(bool)
+vvp_vector4_t vvp_darray_vec2::get_bitstream(منطقی)
 {
-      vvp_vector4_t vec(array_.size() * word_wid_, BIT4_0);
+      vvp_vector4_t vec(array_.size() * لفظ_wid_2, BIT4_0);
 
-      unsigned adx = 0;
-      unsigned vdx = vec.size();
-      while (vdx > 0) {
-            vdx -= word_wid_;
-            for (unsigned bdx = 0; bdx < word_wid_; bdx += 1) {
-                  if (array_[adx].value(bdx))
-                        vec.set_bit(vdx+bdx, BIT4_1);
+      غیرعلامتی adx = 0;
+      غیرعلامتی vdx = vec.size();
+      جب (vdx > 0) {
+            vdx -= لفظ_wid_2;
+            برائے (غیرعلامتی bdx = 0; bdx < لفظ_wid_2; bdx += 1) {
+                  اگر (array_[adx].value(bdx))
+                        vec.سیٹ_ثنائی_ہندسہ(vdx+bdx, BIT4_1);
             }
             adx++;
       }
 
-      return vec;
+      واپس vec;
 }
 
 vvp_darray_object::~vvp_darray_object()
 {
 }
 
-size_t vvp_darray_object::get_size() const
+size_t vvp_darray_object::get_سائز() ثابت
 {
-      return array_.size();
+      واپس array_.size();
 }
 
-void vvp_darray_object::set_word(unsigned adr, const vvp_object_t&value)
+خالی vvp_darray_object::سیٹ_لفظ(غیرعلامتی adr, ثابت vvp_object_t&value)
 {
-      if (adr >= array_.size())
-	    return;
+      اگر (adr >= array_.size())
+	    واپس;
       array_[adr] = value;
 }
 
-void vvp_darray_object::get_word(unsigned adr, vvp_object_t&value)
+خالی vvp_darray_object::get_لفظ(غیرعلامتی adr, vvp_object_t&value)
 {
-      if (adr >= array_.size()) {
+      اگر (adr >= array_.size()) {
 	    value = vvp_object_t();
-	    return;
+	    واپس;
       }
 
       value = array_[adr];
 }
 
-void vvp_darray_object::shallow_copy(const vvp_object*obj)
+خالی vvp_darray_object::shallow_copy(ثابت vvp_object*obj)
 {
-      const vvp_darray_object*that = dynamic_cast<const vvp_darray_object*>(obj);
-      assert(that);
+      ثابت vvp_darray_object*that = dynamic_cast<ثابت vvp_darray_object*>(obj);
+      أكد(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      غیرعلامتی عدد_اشیاء = min(array_.size(), that->array_.size());
+      برائے (غیرعلامتی idx = 0 ; idx < عدد_اشیاء ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-void vvp_darray_object::reverse_elems(void)
+خالی vvp_darray_object::الٹ_elems(خالی)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      برائے (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-void vvp_darray_object::sort_elems(bool ascending)
+خالی vvp_darray_object::ترتیب_دو_elems(منطقی ascending)
 {
-      if (ascending) {
-	    std::sort(array_.begin(), array_.end(),
-		      [](const vvp_object_t&a, const vvp_object_t&b) {
-			    return a.sort_order_key() < b.sort_order_key();
+      اگر (ascending) {
+	    std::sort(array_.begin(), array_.انتہا(),
+		      [](ثابت vvp_object_t&a, ثابت vvp_object_t&b) {
+			    واپس a.ترتیب_دو_ترتیب_کلید() < b.ترتیب_دو_ترتیب_کلید();
 		      });
-      } else {
-	    std::sort(array_.begin(), array_.end(),
-		      [](const vvp_object_t&a, const vvp_object_t&b) {
-			    return a.sort_order_key() > b.sort_order_key();
+      } ورنہ {
+	    std::sort(array_.begin(), array_.انتہا(),
+		      [](ثابت vvp_object_t&a, ثابت vvp_object_t&b) {
+			    واپس a.ترتیب_دو_ترتیب_کلید() > b.ترتیب_دو_ترتیب_کلید();
 		      });
       }
 }
 
-void vvp_darray_object::shuffle_elems(void)
+خالی vvp_darray_object::shuffle_elems(خالی)
 {
-      std::shuffle(array_.begin(), array_.end(), shuffle_rng());
+      std::shuffle(array_.begin(), array_.انتہا(), shuffle_rng());
 }
 
 vvp_darray_real::~vvp_darray_real()
 {
 }
 
-size_t vvp_darray_real::get_size() const
+size_t vvp_darray_real::get_سائز() ثابت
 {
-      return array_.size();
+      واپس array_.size();
 }
 
-void vvp_darray_real::set_word(unsigned adr, double value)
+خالی vvp_darray_real::سیٹ_لفظ(غیرعلامتی adr, دوہرا value)
 {
-      if (adr >= array_.size())
-	    return;
+      اگر (adr >= array_.size())
+	    واپس;
       array_[adr] = value;
 }
 
-void vvp_darray_real::get_word(unsigned adr, double&value)
+خالی vvp_darray_real::get_لفظ(غیرعلامتی adr, دوہرا&value)
 {
-      if (adr >= array_.size()) {
+      اگر (adr >= array_.size()) {
 	    value = 0.0;
-	    return;
+	    واپس;
       }
 
       value = array_[adr];
 }
 
-void vvp_darray_real::shallow_copy(const vvp_object*obj)
+خالی vvp_darray_real::shallow_copy(ثابت vvp_object*obj)
 {
-      const vvp_darray_real*that = dynamic_cast<const vvp_darray_real*>(obj);
-      assert(that);
+      ثابت vvp_darray_real*that = dynamic_cast<ثابت vvp_darray_real*>(obj);
+      أكد(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      غیرعلامتی عدد_اشیاء = min(array_.size(), that->array_.size());
+      برائے (غیرعلامتی idx = 0 ; idx < عدد_اشیاء ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-void vvp_darray_real::reverse_elems(void)
+خالی vvp_darray_real::الٹ_elems(خالی)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      برائے (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-void vvp_darray_real::sort_elems(bool ascending)
+خالی vvp_darray_real::ترتیب_دو_elems(منطقی ascending)
 {
-      if (ascending) std::sort(array_.begin(), array_.end());
-      else std::sort(array_.begin(), array_.end(), std::greater<double>());
+      اگر (ascending) std::sort(array_.begin(), array_.انتہا());
+      ورنہ std::sort(array_.begin(), array_.انتہا(), std::greater<دوہرا>());
 }
 
-void vvp_darray_real::shuffle_elems(void)
+خالی vvp_darray_real::shuffle_elems(خالی)
 {
-      std::shuffle(array_.begin(), array_.end(), shuffle_rng());
+      std::shuffle(array_.begin(), array_.انتہا(), shuffle_rng());
 }
 
-vvp_object* vvp_darray_real::duplicate(void) const
+vvp_object* vvp_darray_real::duplicate(خالی) ثابت
 {
-      vvp_darray_real*that = new vvp_darray_real(array_.size());
+      vvp_darray_real*that = نیا vvp_darray_real(array_.size());
 
-      for (size_t idx = 0 ; idx < array_.size() ; idx += 1)
+      برائے (size_t idx = 0 ; idx < array_.size() ; idx += 1)
 	    that->array_[idx] = array_[idx];
 
-      return that;
+      واپس that;
 }
 
-vvp_vector4_t vvp_darray_real::get_bitstream(bool)
+vvp_vector4_t vvp_darray_real::get_bitstream(منطقی)
 {
-      const unsigned word_wid = sizeof(double) * 8;
-      assert(word_wid == 64);
+      ثابت غیرعلامتی لفظ_wid = حجم(دوہرا) * 8;
+      أكد(لفظ_wid == 64);
 
-      vvp_vector4_t vec(array_.size() * word_wid, BIT4_0);
+      vvp_vector4_t vec(array_.size() * لفظ_wid, BIT4_0);
 
-      unsigned adx = 0;
-      unsigned vdx = vec.size();
-      while (vdx > 0) {
-            union {
-                double   value;
-                uint64_t bits;
-            } word;
-            word.value = array_[adx++];
-            vdx -= word_wid;
-            for (unsigned bdx = 0; bdx < word_wid; bdx += 1) {
-                  if (word.bits & 1)
-                        vec.set_bit(vdx+bdx, BIT4_1);
-                  word.bits >>= 1;
+      غیرعلامتی adx = 0;
+      غیرعلامتی vdx = vec.size();
+      جب (vdx > 0) {
+            اتحاد {
+                دوہرا   value;
+                uint64_t بٹ;
+            } لفظ;
+            لفظ.value = array_[adx++];
+            vdx -= لفظ_wid;
+            برائے (غیرعلامتی bdx = 0; bdx < لفظ_wid; bdx += 1) {
+                  اگر (لفظ.بٹ & 1)
+                        vec.سیٹ_ثنائی_ہندسہ(vdx+bdx, BIT4_1);
+                  لفظ.بٹ >>= 1;
             }
       }
 
-      return vec;
+      واپس vec;
 }
 
 vvp_darray_string::~vvp_darray_string()
 {
 }
 
-size_t vvp_darray_string::get_size() const
+size_t vvp_darray_string::get_سائز() ثابت
 {
-      return array_.size();
+      واپس array_.size();
 }
 
-void vvp_darray_string::set_word(unsigned adr, const string&value)
+خالی vvp_darray_string::سیٹ_لفظ(غیرعلامتی adr, ثابت string&value)
 {
-      if (adr >= array_.size())
-	    return;
+      اگر (adr >= array_.size())
+	    واپس;
       array_[adr] = value;
 }
 
-void vvp_darray_string::get_word(unsigned adr, string&value)
+خالی vvp_darray_string::get_لفظ(غیرعلامتی adr, string&value)
 {
-      if (adr >= array_.size()) {
+      اگر (adr >= array_.size()) {
 	    value = "";
-	    return;
+	    واپس;
       }
 
       value = array_[adr];
 }
 
-void vvp_darray_string::shallow_copy(const vvp_object*obj)
+خالی vvp_darray_string::shallow_copy(ثابت vvp_object*obj)
 {
-      const vvp_darray_string*that = dynamic_cast<const vvp_darray_string*>(obj);
-      assert(that);
+      ثابت vvp_darray_string*that = dynamic_cast<ثابت vvp_darray_string*>(obj);
+      أكد(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      غیرعلامتی عدد_اشیاء = min(array_.size(), that->array_.size());
+      برائے (غیرعلامتی idx = 0 ; idx < عدد_اشیاء ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
-void vvp_darray_string::reverse_elems(void)
+خالی vvp_darray_string::الٹ_elems(خالی)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      برائے (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
-void vvp_darray_string::sort_elems(bool ascending)
+خالی vvp_darray_string::ترتیب_دو_elems(منطقی ascending)
 {
-      if (ascending) std::sort(array_.begin(), array_.end());
-      else std::sort(array_.begin(), array_.end(), std::greater<string>());
+      اگر (ascending) std::sort(array_.begin(), array_.انتہا());
+      ورنہ std::sort(array_.begin(), array_.انتہا(), std::greater<string>());
 }
 
-void vvp_darray_string::shuffle_elems(void)
+خالی vvp_darray_string::shuffle_elems(خالی)
 {
-      std::shuffle(array_.begin(), array_.end(), shuffle_rng());
+      std::shuffle(array_.begin(), array_.انتہا(), shuffle_rng());
 }
 
-vvp_object* vvp_darray_string::duplicate(void) const
+vvp_object* vvp_darray_string::duplicate(خالی) ثابت
 {
-      vvp_darray_string*that = new vvp_darray_string(array_.size());
+      vvp_darray_string*that = نیا vvp_darray_string(array_.size());
 
-      for (size_t idx = 0 ; idx < array_.size() ; idx += 1)
+      برائے (size_t idx = 0 ; idx < array_.size() ; idx += 1)
 	    that->array_[idx] = array_[idx];
 
-      return that;
+      واپس that;
 }
 
-vvp_queue::~vvp_queue()
+vvp_قطار::~vvp_قطار()
 {
 }
 
-void vvp_queue::copy_elems(vvp_object_t, unsigned)
+خالی vvp_قطار::copy_elems(vvp_object_t, غیرعلامتی)
 {
-      cerr << "Sorry: copy_elems() not implemented for " << typeid(*this).name() << endl;
+      cerr << "Sorry: copy_elems() not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_queue::set_word_max(unsigned, const vvp_vector4_t&, unsigned)
+خالی vvp_قطار::سیٹ_لفظ_max(غیرعلامتی, ثابت vvp_vector4_t&, غیرعلامتی)
 {
-      cerr << "XXXX set_word_max(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word_max(vvp_vector4_t) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_queue::insert(unsigned, const vvp_vector4_t&, unsigned)
+خالی vvp_قطار::insert(غیرعلامتی, ثابت vvp_vector4_t&, غیرعلامتی)
 {
-      cerr << "XXXX insert(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX insert(vvp_vector4_t) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_queue::push_back(const vvp_vector4_t&, unsigned)
+خالی vvp_قطار::push_back(ثابت vvp_vector4_t&, غیرعلامتی)
 {
-      cerr << "XXXX push_back(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_back(vvp_vector4_t) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_queue::push_front(const vvp_vector4_t&, unsigned)
+خالی vvp_قطار::push_front(ثابت vvp_vector4_t&, غیرعلامتی)
 {
-      cerr << "XXXX push_front(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_front(vvp_vector4_t) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_queue::set_word_max(unsigned, double, unsigned)
+خالی vvp_قطار::سیٹ_لفظ_max(غیرعلامتی, دوہرا, غیرعلامتی)
 {
-      cerr << "XXXX set_word_max(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word_max(double) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_queue::insert(unsigned, double, unsigned)
+خالی vvp_قطار::insert(غیرعلامتی, دوہرا, غیرعلامتی)
 {
-      cerr << "XXXX set_word_max(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word_max(double) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_queue::push_back(double, unsigned)
+خالی vvp_قطار::push_back(دوہرا, غیرعلامتی)
 {
-      cerr << "XXXX push_back(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_back(double) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_queue::push_front(double, unsigned)
+خالی vvp_قطار::push_front(دوہرا, غیرعلامتی)
 {
-      cerr << "XXXX push_front(double) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_front(double) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_queue::set_word_max(unsigned, const string&, unsigned)
+خالی vvp_قطار::سیٹ_لفظ_max(غیرعلامتی, ثابت string&, غیرعلامتی)
 {
-      cerr << "XXXX set_word_max(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word_max(string) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_queue::insert(unsigned, const string&, unsigned)
+خالی vvp_قطار::insert(غیرعلامتی, ثابت string&, غیرعلامتی)
 {
-      cerr << "XXXX set_word_max(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX set_word_max(string) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_queue::push_back(const string&, unsigned)
+خالی vvp_قطار::push_back(ثابت string&, غیرعلامتی)
 {
-      cerr << "XXXX push_back(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_back(string) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
-void vvp_queue::push_front(const string&, unsigned)
+خالی vvp_قطار::push_front(ثابت string&, غیرعلامتی)
 {
-      cerr << "XXXX push_front(string) not implemented for " << typeid(*this).name() << endl;
+      cerr << "XXXX push_front(string) not implemented for " << typeid(*یہ).name() << سطر_ختم;
 }
 
 /*
  * Helper functions used while copying multiple elements into a queue.
  */
-static void print_copy_is_too_big(size_t src_size, unsigned max_size, const string&qtype)
+ساکن خالی print_copy_is_too_big(size_t src_سائز, غیرعلامتی max_سائز, ثابت string&qtype)
 {
       cerr << get_fileline()
            << "Warning: queue<" << qtype << "> is bounded to have at most "
-           << max_size << " elements, source has " << src_size << " elements." << endl;
+           << max_سائز << " elements, source has " << src_سائز << " elements." << سطر_ختم;
 }
 
-static void print_copy_is_too_big(double&, size_t src_size, unsigned max_size)
+ساکن خالی print_copy_is_too_big(دوہرا&, size_t src_سائز, غیرعلامتی max_سائز)
 {
-      print_copy_is_too_big(src_size, max_size, "real");
+      print_copy_is_too_big(src_سائز, max_سائز, "real");
 }
 
-static void print_copy_is_too_big(string&, size_t src_size, unsigned max_size)
+ساکن خالی print_copy_is_too_big(string&, size_t src_سائز, غیرعلامتی max_سائز)
 {
-      print_copy_is_too_big(src_size, max_size, "string");
+      print_copy_is_too_big(src_سائز, max_سائز, "string");
 }
 
-static void print_copy_is_too_big(vvp_vector4_t&, size_t src_size, unsigned max_size)
+ساکن خالی print_copy_is_too_big(vvp_vector4_t&, size_t src_سائز, غیرعلامتی max_سائز)
 {
-      print_copy_is_too_big(src_size, max_size, "vector");
+      print_copy_is_too_big(src_سائز, max_سائز, "vector");
 }
 
-template <typename ELEM, class QTYPE, class SRC_TYPE>
-static void copy_elements(QTYPE*queue, SRC_TYPE*src, unsigned max_size)
+سانچہ <قسم_نام ELEM, جماعت QTYPE, جماعت SRC_TYPE>
+ساکن خالی copy_elements(QTYPE*قطار, SRC_TYPE*src, غیرعلامتی max_سائز)
 {
-      size_t src_size = src->get_size();
-      if ((max_size != 0) && (src_size > max_size)) {
+      size_t src_سائز = src->get_سائز();
+      اگر ((max_سائز != 0) && (src_سائز > max_سائز)) {
 	    ELEM tmp;
-	    print_copy_is_too_big(tmp, src_size, max_size);
+	    print_copy_is_too_big(tmp, src_سائز, max_سائز);
       }
-      unsigned copy_size = ((src_size < max_size) ||
-                            (max_size == 0)) ? src_size : max_size;
-      if (copy_size < queue->get_size())
-	    queue->erase_tail(copy_size);
-      for (unsigned idx=0; idx < copy_size; ++idx) {
+      غیرعلامتی copy_سائز = ((src_سائز < max_سائز) ||
+                            (max_سائز == 0)) ? src_سائز : max_سائز;
+      اگر (copy_سائز < قطار->get_سائز())
+	    قطار->erase_دم(copy_سائز);
+      برائے (غیرعلامتی idx=0; idx < copy_سائز; ++idx) {
 	    ELEM value;
-	    src->get_word(idx, value);
-	    queue->set_word_max(idx, value, max_size);
+	    src->get_لفظ(idx, value);
+	    قطار->سیٹ_لفظ_max(idx, value, max_سائز);
       }
 }
 
-void vvp_queue_real::copy_elems(vvp_object_t src, unsigned max_size)
+خالی vvp_قطار_real::copy_elems(vvp_object_t src, غیرعلامتی max_سائز)
 {
-      if (vvp_queue*src_queue = src.peek<vvp_queue>())
-	    copy_elements<double, vvp_queue_real, vvp_queue>(this, src_queue, max_size);
-      else if (vvp_darray*src_darray = src.peek<vvp_darray>())
-	    copy_elements<double, vvp_queue_real, vvp_darray>(this, src_darray, max_size);
-      else
-	    cerr << get_fileline() << "Sorry: cannot copy object to real queue." << endl;
+      اگر (vvp_قطار*src_قطار = src.peek<vvp_قطار>())
+	    copy_elements<دوہرا, vvp_قطار_real, vvp_قطار>(یہ, src_قطار, max_سائز);
+      ورنہ اگر (vvp_darray*src_darray = src.peek<vvp_darray>())
+	    copy_elements<دوہرا, vvp_قطار_real, vvp_darray>(یہ, src_darray, max_سائز);
+      ورنہ
+	    cerr << get_fileline() << "Sorry: cannot copy object to real queue." << سطر_ختم;
 }
 
-void vvp_queue_real::set_word_max(unsigned adr, double value, unsigned max_size)
+خالی vvp_قطار_real::سیٹ_لفظ_max(غیرعلامتی adr, دوہرا value, غیرعلامتی max_سائز)
 {
-      if (adr == queue.size())
-	    if (!max_size || (queue.size() < max_size))
-		  queue.push_back(value);
-	    else
+      اگر (adr == قطار.size())
+	    اگر (!max_سائز || (قطار.size() < max_سائز))
+		  قطار.push_back(value);
+	    ورنہ
 		  cerr << get_fileline()
 		       << "Warning: assigning to queue<real>[" << adr << "] is"
-		          " outside bound (" << max_size << "). " << value
-		       << " was not added." << endl;
-      else
-	    set_word(adr, value);
+		          " outside bound (" << max_سائز << "). " << value
+		       << " was not added." << سطر_ختم;
+      ورنہ
+	    سیٹ_لفظ(adr, value);
 }
 
-void vvp_queue_real::set_word(unsigned adr, double value)
+خالی vvp_قطار_real::سیٹ_لفظ(غیرعلامتی adr, دوہرا value)
 {
-      if (adr < queue.size())
-	    queue[adr] = value;
-      else
+      اگر (adr < قطار.size())
+	    قطار[adr] = value;
+      ورنہ
 	    cerr << get_fileline()
 	         << "Warning: assigning to queue<real>[" << adr << "] is outside "
-	            "of size (" << queue.size() << "). " << value
-	         << " was not added." << endl;
+	            "of size (" << قطار.size() << "). " << value
+	         << " was not added." << سطر_ختم;
 }
 
-void vvp_queue_real::get_word(unsigned adr, double&value)
+خالی vvp_قطار_real::get_لفظ(غیرعلامتی adr, دوہرا&value)
 {
-      if (adr >= queue.size())
+      اگر (adr >= قطار.size())
 	    value = 0.0;
-      else
-	    value = queue[adr];
+      ورنہ
+	    value = قطار[adr];
 }
 
-void vvp_queue_real::insert(unsigned idx, double value, unsigned max_size)
+خالی vvp_قطار_real::insert(غیرعلامتی idx, دوہرا value, غیرعلامتی max_سائز)
 {
 	// Inserting past the end of the queue
-      if (idx > queue.size())
+      اگر (idx > قطار.size())
 	    cerr << get_fileline()
 	         << "Warning: inserting to queue<real>[" << idx << "] is "
-	            "outside of size (" << queue.size() << "). " << value
-	         << " was not added." << endl;
+	            "outside of size (" << قطار.size() << "). " << value
+	         << " was not added." << سطر_ختم;
 	// Inserting at the end
-      else if (idx == queue.size())
-	    if (!max_size || (queue.size() < max_size))
-		  queue.push_back(value);
-	    else
+      ورنہ اگر (idx == قطار.size())
+	    اگر (!max_سائز || (قطار.size() < max_سائز))
+		  قطار.push_back(value);
+	    ورنہ
 		  cerr << get_fileline()
 		       << "Warning: inserting to queue<real>[" << idx << "] is"
-		          " outside bound (" << max_size << "). " << value
-		       << " was not added." << endl;
-      else  {
-	    if (max_size && (queue.size() == max_size)) {
+		          " outside bound (" << max_سائز << "). " << value
+		       << " was not added." << سطر_ختم;
+      ورنہ  {
+	    اگر (max_سائز && (قطار.size() == max_سائز)) {
 		  cerr << get_fileline()
 		       << "Warning: insert("<< idx << ", " << value << ") removed "
-		       << queue.back() << " from already full bounded queue<real> ["
-		       << max_size << "]." << endl;
-		  queue.pop_back();
+		       << قطار.back() << " from already full bounded queue<real> ["
+		       << max_سائز << "]." << سطر_ختم;
+		  قطار.pop_back();
 	    }
-	    queue.insert(queue.begin()+idx, value);
+	    قطار.insert(قطار.begin()+idx, value);
       }
 }
 
-void vvp_queue_real::push_back(double value, unsigned max_size)
+خالی vvp_قطار_real::push_back(دوہرا value, غیرعلامتی max_سائز)
 {
-      if (!max_size || (queue.size() < max_size))
-	    queue.push_back(value);
-      else
+      اگر (!max_سائز || (قطار.size() < max_سائز))
+	    قطار.push_back(value);
+      ورنہ
 	    cerr << get_fileline()
 	         << "Warning: push_back(" << value
 	         << ") skipped for already full bounded queue<real> ["
-	         << max_size << "]." << endl;
+	         << max_سائز << "]." << سطر_ختم;
 }
 
-void vvp_queue_real::push_front(double value, unsigned max_size)
+خالی vvp_قطار_real::push_front(دوہرا value, غیرعلامتی max_سائز)
 {
-      if (max_size && (queue.size() == max_size)) {
+      اگر (max_سائز && (قطار.size() == max_سائز)) {
 	    cerr << get_fileline()
 	         << "Warning: push_front(" << value << ") removed "
-	         << queue.back() << " from already full bounded queue<real> ["
-	         << max_size << "]." << endl;
-	    queue.pop_back();
+	         << قطار.back() << " from already full bounded queue<real> ["
+	         << max_سائز << "]." << سطر_ختم;
+	    قطار.pop_back();
       }
-      queue.push_front(value);
+      قطار.push_front(value);
 }
 
-void vvp_queue_real::erase(unsigned idx)
+خالی vvp_قطار_real::erase(غیرعلامتی idx)
 {
-      assert(queue.size() > idx);
-      queue.erase(queue.begin()+idx);
+      أكد(قطار.size() > idx);
+      قطار.erase(قطار.begin()+idx);
 }
 
-void vvp_queue_real::erase_tail(unsigned idx)
+خالی vvp_قطار_real::erase_دم(غیرعلامتی idx)
 {
-      assert(queue.size() >= idx);
-      if (queue.size() > idx)
-	    queue.resize(idx);
+      أكد(قطار.size() >= idx);
+      اگر (قطار.size() > idx)
+	    قطار.resize(idx);
 }
 
-void vvp_queue_string::copy_elems(vvp_object_t src, unsigned max_size)
+خالی vvp_قطار_string::copy_elems(vvp_object_t src, غیرعلامتی max_سائز)
 {
-      if (vvp_queue*src_queue = src.peek<vvp_queue>())
-	    copy_elements<string, vvp_queue_string, vvp_queue>(this, src_queue, max_size);
-      else if (vvp_darray*src_darray = src.peek<vvp_darray>())
-	    copy_elements<string, vvp_queue_string, vvp_darray>(this, src_darray, max_size);
-      else
-	    cerr << get_fileline() << "Sorry: cannot copy object to string queue." << endl;
+      اگر (vvp_قطار*src_قطار = src.peek<vvp_قطار>())
+	    copy_elements<string, vvp_قطار_string, vvp_قطار>(یہ, src_قطار, max_سائز);
+      ورنہ اگر (vvp_darray*src_darray = src.peek<vvp_darray>())
+	    copy_elements<string, vvp_قطار_string, vvp_darray>(یہ, src_darray, max_سائز);
+      ورنہ
+	    cerr << get_fileline() << "Sorry: cannot copy object to string queue." << سطر_ختم;
 }
 
-void vvp_queue_string::set_word_max(unsigned adr, const string&value, unsigned max_size)
+خالی vvp_قطار_string::سیٹ_لفظ_max(غیرعلامتی adr, ثابت string&value, غیرعلامتی max_سائز)
 {
-      if (adr == queue.size())
-	    if (!max_size || (queue.size() < max_size))
-		  queue.push_back(value);
-	    else
+      اگر (adr == قطار.size())
+	    اگر (!max_سائز || (قطار.size() < max_سائز))
+		  قطار.push_back(value);
+	    ورنہ
 		  cerr << get_fileline()
 		       << "Warning: assigning to queue<string>[" << adr << "] is"
-		          " outside bound (" << max_size << "). \"" << value
-		       << "\" was not added." << endl;
-      else
-	    set_word(adr, value);
+		          " outside bound (" << max_سائز << "). \"" << value
+		       << "\" was not added." << سطر_ختم;
+      ورنہ
+	    سیٹ_لفظ(adr, value);
 }
 
-void vvp_queue_string::set_word(unsigned adr, const string&value)
+خالی vvp_قطار_string::سیٹ_لفظ(غیرعلامتی adr, ثابت string&value)
 {
-      if (adr < queue.size())
-	    queue[adr] = value;
-      else
+      اگر (adr < قطار.size())
+	    قطار[adr] = value;
+      ورنہ
 	    cerr << get_fileline()
 	         << "Warning: assigning to queue<string>[" << adr << "] is outside "
-	            "of size (" << queue.size() << "). \"" << value
-	         << "\" was not added." << endl;
+	            "of size (" << قطار.size() << "). \"" << value
+	         << "\" was not added." << سطر_ختم;
 }
 
-void vvp_queue_string::get_word(unsigned adr, string&value)
+خالی vvp_قطار_string::get_لفظ(غیرعلامتی adr, string&value)
 {
-      if (adr >= queue.size())
+      اگر (adr >= قطار.size())
 	    value = "";
-      else
-	    value = queue[adr];
+      ورنہ
+	    value = قطار[adr];
 }
 
-void vvp_queue_string::insert(unsigned idx, const string&value, unsigned max_size)
+خالی vvp_قطار_string::insert(غیرعلامتی idx, ثابت string&value, غیرعلامتی max_سائز)
 {
 	// Inserting past the end of the queue
-      if (idx > queue.size())
+      اگر (idx > قطار.size())
 	    cerr << get_fileline()
 	         << "Warning: inserting to queue<string>[" << idx << "] is "
-	            "outside of size (" << queue.size() << "). \"" << value
-	         << "\" was not added." << endl;
+	            "outside of size (" << قطار.size() << "). \"" << value
+	         << "\" was not added." << سطر_ختم;
 	// Inserting at the end
-      else if (idx == queue.size())
-	    if (!max_size || (queue.size() < max_size))
-		  queue.push_back(value);
-	    else
+      ورنہ اگر (idx == قطار.size())
+	    اگر (!max_سائز || (قطار.size() < max_سائز))
+		  قطار.push_back(value);
+	    ورنہ
 		  cerr << get_fileline()
 		       << "Warning: inserting to queue<string>[" << idx << "] is"
-		          " outside bound (" << max_size << "). \"" << value
-		       << "\" was not added." << endl;
-      else  {
-	    if (max_size && (queue.size() == max_size)) {
+		          " outside bound (" << max_سائز << "). \"" << value
+		       << "\" was not added." << سطر_ختم;
+      ورنہ  {
+	    اگر (max_سائز && (قطار.size() == max_سائز)) {
 		  cerr << get_fileline()
 		       << "Warning: insert("<< idx << ", \"" << value << "\") removed \""
-		       << queue.back() << "\" from already full bounded queue<string> ["
-		       << max_size << "]." << endl;
-		  queue.pop_back();
+		       << قطار.back() << "\" from already full bounded queue<string> ["
+		       << max_سائز << "]." << سطر_ختم;
+		  قطار.pop_back();
 	    }
-	    queue.insert(queue.begin()+idx, value);
+	    قطار.insert(قطار.begin()+idx, value);
       }
 }
 
-void vvp_queue_string::push_back(const string&value, unsigned max_size)
+خالی vvp_قطار_string::push_back(ثابت string&value, غیرعلامتی max_سائز)
 {
-      if (!max_size || (queue.size() < max_size))
-	    queue.push_back(value);
-      else
+      اگر (!max_سائز || (قطار.size() < max_سائز))
+	    قطار.push_back(value);
+      ورنہ
 	    cerr << get_fileline()
 	         << "Warning: push_back(\"" << value
 	         << "\") skipped for already full bounded queue<string> ["
-	         << max_size << "]." << endl;
+	         << max_سائز << "]." << سطر_ختم;
 }
 
-void vvp_queue_string::push_front(const string&value, unsigned max_size)
+خالی vvp_قطار_string::push_front(ثابت string&value, غیرعلامتی max_سائز)
 {
-      if (max_size && (queue.size() == max_size)) {
+      اگر (max_سائز && (قطار.size() == max_سائز)) {
 	    cerr << get_fileline()
 	         << "Warning: push_front(\"" << value << "\") removed \""
-	         << queue.back() << "\" from already full bounded queue<string> ["
-	         << max_size << "]." << endl;
-	    queue.pop_back();
+	         << قطار.back() << "\" from already full bounded queue<string> ["
+	         << max_سائز << "]." << سطر_ختم;
+	    قطار.pop_back();
       }
-      queue.push_front(value);
+      قطار.push_front(value);
 }
 
-void vvp_queue_string::erase(unsigned idx)
+خالی vvp_قطار_string::erase(غیرعلامتی idx)
 {
-      assert(queue.size() > idx);
-      queue.erase(queue.begin()+idx);
+      أكد(قطار.size() > idx);
+      قطار.erase(قطار.begin()+idx);
 }
 
-void vvp_queue_string::erase_tail(unsigned idx)
+خالی vvp_قطار_string::erase_دم(غیرعلامتی idx)
 {
-      assert(queue.size() >= idx);
-      if (queue.size() > idx)
-	    queue.resize(idx);
+      أكد(قطار.size() >= idx);
+      اگر (قطار.size() > idx)
+	    قطار.resize(idx);
 }
 
-void vvp_queue_real::reverse_elems(void)
+خالی vvp_قطار_real::الٹ_elems(خالی)
 {
-      std::reverse(queue.begin(), queue.end());
+      std::reverse(قطار.begin(), قطار.انتہا());
 }
 
-void vvp_queue_string::reverse_elems(void)
+خالی vvp_قطار_string::الٹ_elems(خالی)
 {
-      std::reverse(queue.begin(), queue.end());
+      std::reverse(قطار.begin(), قطار.انتہا());
 }
 
-void vvp_queue_real::sort_elems(bool ascending)
+خالی vvp_قطار_real::ترتیب_دو_elems(منطقی ascending)
 {
-      if (ascending) std::sort(queue.begin(), queue.end());
-      else std::sort(queue.begin(), queue.end(), std::greater<double>());
+      اگر (ascending) std::sort(قطار.begin(), قطار.انتہا());
+      ورنہ std::sort(قطار.begin(), قطار.انتہا(), std::greater<دوہرا>());
 }
 
-void vvp_queue_real::shuffle_elems(void)
+خالی vvp_قطار_real::shuffle_elems(خالی)
 {
-      std::shuffle(queue.begin(), queue.end(), shuffle_rng());
+      std::shuffle(قطار.begin(), قطار.انتہا(), shuffle_rng());
 }
 
-void vvp_queue_string::sort_elems(bool ascending)
+خالی vvp_قطار_string::ترتیب_دو_elems(منطقی ascending)
 {
-      if (ascending) std::sort(queue.begin(), queue.end());
-      else std::sort(queue.begin(), queue.end(), std::greater<string>());
+      اگر (ascending) std::sort(قطار.begin(), قطار.انتہا());
+      ورنہ std::sort(قطار.begin(), قطار.انتہا(), std::greater<string>());
 }
 
-void vvp_queue_string::shuffle_elems(void)
+خالی vvp_قطار_string::shuffle_elems(خالی)
 {
-      std::shuffle(queue.begin(), queue.end(), shuffle_rng());
+      std::shuffle(قطار.begin(), قطار.انتہا(), shuffle_rng());
 }
 
-void vvp_queue_vec4::copy_elems(vvp_object_t src, unsigned max_size)
+خالی vvp_قطار_vec4::copy_elems(vvp_object_t src, غیرعلامتی max_سائز)
 {
-      if (vvp_queue*src_queue = src.peek<vvp_queue>())
-	    copy_elements<vvp_vector4_t, vvp_queue_vec4, vvp_queue>(this, src_queue, max_size);
-      else if (vvp_darray*src_darray = src.peek<vvp_darray>())
-	    copy_elements<vvp_vector4_t, vvp_queue_vec4, vvp_darray>(this, src_darray, max_size);
-      else
-	    cerr << get_fileline() << "Sorry: cannot copy object to vector queue." << endl;
+      اگر (vvp_قطار*src_قطار = src.peek<vvp_قطار>())
+	    copy_elements<vvp_vector4_t, vvp_قطار_vec4, vvp_قطار>(یہ, src_قطار, max_سائز);
+      ورنہ اگر (vvp_darray*src_darray = src.peek<vvp_darray>())
+	    copy_elements<vvp_vector4_t, vvp_قطار_vec4, vvp_darray>(یہ, src_darray, max_سائز);
+      ورنہ
+	    cerr << get_fileline() << "Sorry: cannot copy object to vector queue." << سطر_ختم;
 }
 
-void vvp_queue_vec4::set_word_max(unsigned adr, const vvp_vector4_t&value, unsigned max_size)
+خالی vvp_قطار_vec4::سیٹ_لفظ_max(غیرعلامتی adr, ثابت vvp_vector4_t&value, غیرعلامتی max_سائز)
 {
-      if (adr == queue.size())
-	    if (!max_size || (queue.size() < max_size))
-		  queue.push_back(value);
-	    else
+      اگر (adr == قطار.size())
+	    اگر (!max_سائز || (قطار.size() < max_سائز))
+		  قطار.push_back(value);
+	    ورنہ
 		  cerr << get_fileline()
 		       << "Warning: assigning to queue<vector>[" << adr << "] is"
-		          " outside bound (" << max_size << "). " << value
-		       << " was not added." << endl;
-      else
-	    set_word(adr, value);
+		          " outside bound (" << max_سائز << "). " << value
+		       << " was not added." << سطر_ختم;
+      ورنہ
+	    سیٹ_لفظ(adr, value);
 }
 
-void vvp_queue_vec4::set_word(unsigned adr, const vvp_vector4_t&value)
+خالی vvp_قطار_vec4::سیٹ_لفظ(غیرعلامتی adr, ثابت vvp_vector4_t&value)
 {
-      if (adr < queue.size())
-	    queue[adr] = value;
-      else
+      اگر (adr < قطار.size())
+	    قطار[adr] = value;
+      ورنہ
 	    cerr << get_fileline()
 	         << "Warning: assigning to queue<vector>[" << adr << "] is outside "
-	            "of size (" << queue.size() << "). " << value
-	         << " was not added." << endl;
+	            "of size (" << قطار.size() << "). " << value
+	         << " was not added." << سطر_ختم;
 }
 
-void vvp_queue_vec4::get_word(unsigned adr, vvp_vector4_t&value)
+خالی vvp_قطار_vec4::get_لفظ(غیرعلامتی adr, vvp_vector4_t&value)
 {
-      if (adr >= queue.size())
-	    value = vvp_vector4_t(queue[0].size());
-      else
-	    value = queue[adr];
+      اگر (adr >= قطار.size())
+	    value = vvp_vector4_t(قطار[0].size());
+      ورنہ
+	    value = قطار[adr];
 }
 
-void vvp_queue_vec4::insert(unsigned idx, const vvp_vector4_t&value, unsigned max_size)
+خالی vvp_قطار_vec4::insert(غیرعلامتی idx, ثابت vvp_vector4_t&value, غیرعلامتی max_سائز)
 {
 	// Inserting past the end of the queue
-      if (idx > queue.size())
+      اگر (idx > قطار.size())
 	    cerr << get_fileline()
 	         << "Warning: inserting to queue<vector[" << value.size()
-	         << "]>[" << idx << "] is outside of size (" << queue.size()
-	         << "). " << value << " was not added." << endl;
+	         << "]>[" << idx << "] is outside of size (" << قطار.size()
+	         << "). " << value << " was not added." << سطر_ختم;
 	// Inserting at the end
-      else if (idx == queue.size())
-	    if (!max_size || (queue.size() < max_size))
-		  queue.push_back(value);
-	    else
+      ورنہ اگر (idx == قطار.size())
+	    اگر (!max_سائز || (قطار.size() < max_سائز))
+		  قطار.push_back(value);
+	    ورنہ
 		  cerr << get_fileline()
 		       << "Warning: inserting to queue<vector[" << value.size()
-		       << "]>[" << idx << "] is outside bound (" << max_size
-		       << "). " << value << " was not added." << endl;
-      else  {
-	    if (max_size && (queue.size() == max_size)) {
+		       << "]>[" << idx << "] is outside bound (" << max_سائز
+		       << "). " << value << " was not added." << سطر_ختم;
+      ورنہ  {
+	    اگر (max_سائز && (قطار.size() == max_سائز)) {
 		  cerr << get_fileline()
 		       << "Warning: insert("<< idx << ", " << value << ") removed "
-		       << queue.back() << " from already full bounded queue<vector["
-		       << value.size() << "]> [" << max_size << "]." << endl;
-		  queue.pop_back();
+		       << قطار.back() << " from already full bounded queue<vector["
+		       << value.size() << "]> [" << max_سائز << "]." << سطر_ختم;
+		  قطار.pop_back();
 	    }
-	    queue.insert(queue.begin()+idx, value);
+	    قطار.insert(قطار.begin()+idx, value);
       }
 }
 
-void vvp_queue_vec4::push_back(const vvp_vector4_t&value, unsigned max_size)
+خالی vvp_قطار_vec4::push_back(ثابت vvp_vector4_t&value, غیرعلامتی max_سائز)
 {
-      if (!max_size || (queue.size() < max_size))
-	    queue.push_back(value);
-      else
+      اگر (!max_سائز || (قطار.size() < max_سائز))
+	    قطار.push_back(value);
+      ورنہ
 	    cerr << get_fileline()
 	         << "Warning: push_back(" << value
 	         << ") skipped for already full bounded queue<vector["
-	         << value.size() << "]> [" << max_size << "]." << endl;
+	         << value.size() << "]> [" << max_سائز << "]." << سطر_ختم;
 }
 
-void vvp_queue_vec4::push_front(const vvp_vector4_t&value, unsigned max_size)
+خالی vvp_قطار_vec4::push_front(ثابت vvp_vector4_t&value, غیرعلامتی max_سائز)
 {
-      if (max_size && (queue.size() == max_size)) {
+      اگر (max_سائز && (قطار.size() == max_سائز)) {
 	    cerr << get_fileline()
 	         << "Warning: push_front(" << value << ") removed "
-	         << queue.back() << " from already full bounded queue<vector["
-	         << value.size() << "]> [" << max_size << "]." << endl;
-	    queue.pop_back();
+	         << قطار.back() << " from already full bounded queue<vector["
+	         << value.size() << "]> [" << max_سائز << "]." << سطر_ختم;
+	    قطار.pop_back();
       }
-      queue.push_front(value);
+      قطار.push_front(value);
 }
 
-void vvp_queue_vec4::erase(unsigned idx)
+خالی vvp_قطار_vec4::erase(غیرعلامتی idx)
 {
-      assert(queue.size() > idx);
-      queue.erase(queue.begin()+idx);
+      أكد(قطار.size() > idx);
+      قطار.erase(قطار.begin()+idx);
 }
 
-void vvp_queue_vec4::erase_tail(unsigned idx)
+خالی vvp_قطار_vec4::erase_دم(غیرعلامتی idx)
 {
-      assert(queue.size() >= idx);
-      if (queue.size() > idx)
-	    queue.resize(idx);
+      أكد(قطار.size() >= idx);
+      اگر (قطار.size() > idx)
+	    قطار.resize(idx);
 }
 
-void vvp_queue_vec4::reverse_elems(void)
+خالی vvp_قطار_vec4::الٹ_elems(خالی)
 {
-      std::reverse(queue.begin(), queue.end());
+      std::reverse(قطار.begin(), قطار.انتہا());
 }
 
-void vvp_queue_vec4::sort_elems(bool ascending)
+خالی vvp_قطار_vec4::ترتیب_دو_elems(منطقی ascending)
 {
-      if (ascending) {
-	    std::sort(queue.begin(), queue.end(), vec4_lt_unsigned);
-      } else {
-	    std::sort(queue.begin(), queue.end(),
-		      [](const vvp_vector4_t&a, const vvp_vector4_t&b) {
-			    return vec4_lt_unsigned(b, a);
+      اگر (ascending) {
+	    std::sort(قطار.begin(), قطار.انتہا(), vec4_lt_unsigned);
+      } ورنہ {
+	    std::sort(قطار.begin(), قطار.انتہا(),
+		      [](ثابت vvp_vector4_t&a, ثابت vvp_vector4_t&b) {
+			    واپس vec4_lt_unsigned(b, a);
 		      });
       }
 }
 
-void vvp_queue_vec4::shuffle_elems(void)
+خالی vvp_قطار_vec4::shuffle_elems(خالی)
 {
-      std::shuffle(queue.begin(), queue.end(), shuffle_rng());
+      std::shuffle(قطار.begin(), قطار.انتہا(), shuffle_rng());
 }

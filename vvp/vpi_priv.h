@@ -1,5 +1,5 @@
-#ifndef IVL_vpi_priv_H
-#define IVL_vpi_priv_H
+#اگر_غیر_تعریف_شدہ IVL_vpi_priv_H
+#تعریف_کرو IVL_vpi_priv_H
 /*
  * Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)
  * Copyright (c) 2016 CERN Michele Castellana (michele.castellana@cern.ch)
@@ -33,14 +33,14 @@
  * Added to use some "vvp_fun_modpath_src"
  * and "vvp_fun_modpath" classes definitions
  */
-#include  "delay.h"
+#شامل  "delay.h"
 
 
 class class_type;
 class vvp_darray;
 class vvp_fun_arrayport;
 
-typedef struct __vpiArray* vvp_array_t;
+قسمتعریف ساخت __vpiArray* vvp_array_t;
 
 /*
  * This header file contains the internal definitions that the vvp
@@ -48,47 +48,47 @@ typedef struct __vpiArray* vvp_array_t;
  * header file elsewhere.
  */
 
-#if defined(__MINGW32__) || defined (__CYGWIN__)
-extern vpip_routines_s vpi_routines;
-#endif
+#اگر defined(__MINGW32__) || defined (__CYGWIN__)
+خارجی vpip_routines_s vpi_routines;
+#اگر_ختم
 
 /*
  * Routines/definitions used to build the file/line number tracing object.
  */
-#define _vpiFileLine    0x1000003
-#define _vpiDescription 0x1000004
+#تعریف_کرو vpi_File_سطر    0x1000003
+#تعریف_کرو _vpiDescription 0x1000004
 
-extern bool show_file_line;
-extern bool code_is_instrumented;
+خارجی bool show_file_سطر;
+خارجی bool رمز_is_instrumented;
 
-extern vpiHandle vpip_build_file_line(const char*description,
-                                      long file_idx, long lineno);
+خارجی vpiHandle vpip_build_file_سطر(ثابت حرف*description,
+                                      طویل file_idx, طویل lineno);
 
 /*
  * vpi_type_values returns the text form of the vpi type. If the type name
  * is unknown, then return the number stringified. Note that the return
  * value may return to a static buffer.
  */
-extern const char* vpi_type_as_string(PLI_INT32 code);
+خارجی ثابت حرف* vpi_type_as_string(PLI_INT32 رمز);
 
 /*
  * Return the port direction as a string.
  */
-extern const char* direction_as_string(int dir);
+خارجی ثابت حرف* direction_as_string(صحیح dir);
 
 /*
  * Private VPI properties that are only used in the cleanup code.
  */
-#if defined(CHECK_WITH_VALGRIND) && !defined(BR916_STOPGAP_FIX)
-#define _vpiFromThr 0x1000001
+#اگر defined(CHECK_WITH_VALGRIND) && !defined(BR916_STOPGAP_FIX)
+#تعریف_کرو _vpiFromThr 0x1000001
 #   define _vpiNoThr   0
 #   define _vpiString  1
 #   define _vpiVThr    2
-#   define _vpiWord    3
+#   define vpi_لفظ    3
 #   define _vpi_at_PV  4
 #   define _vpi_at_A   5
 #   define _vpi_at_APV 6
-#endif
+#اگر_ختم
 
 
 /*
@@ -96,20 +96,20 @@ extern const char* direction_as_string(int dir);
  * to generate error messages when vpi functions are called
  * incorrectly.
  */
-enum vpi_mode_t {
-      VPI_MODE_NONE =0,
+شمار vpi_منوال_t {
+      VPI_منوال_NONE =0,
 	/* The compiler is calling a register function. */
-      VPI_MODE_REGISTER,
+      VPI_منوال_رجسٹر,
 	/* The compiler is calling a compiletf function. */
-      VPI_MODE_COMPILETF,
+      VPI_منوال_COMPILETF,
 	/* The compiler is calling a calltf function. */
-      VPI_MODE_CALLTF,
+      VPI_منوال_CALLTF,
 	/* We are in the midst of a RWSync callback. */
-      VPI_MODE_RWSYNC,
+      VPI_منوال_RWSYNC,
 	/* We are in a ROSync callback. */
-      VPI_MODE_ROSYNC
+      VPI_منوال_ROSYNC
 };
-extern vpi_mode_t vpi_mode_flag;
+خارجی vpi_منوال_t vpi_منوال_flag;
 
 /*
  * This structure is the very base of a vpiHandle. Every handle
@@ -117,30 +117,30 @@ extern vpi_mode_t vpi_mode_flag;
  * internally pass the derived types as pointers to one of these.
  */
 class __vpiHandle {
-    public:
-      inline __vpiHandle() { }
+    عوامی:
+      اندرونی __vpiHandle() { }
 	// The destructor is virtual so that dynamic types will work.
-      virtual ~__vpiHandle();
+      مجازی ~__vpiHandle();
 
-      virtual int get_type_code(void) const =0;
-      virtual int vpi_get(int code);
-      virtual int64_t vpi_get64(int code);
-      virtual char* vpi_get_str(int code);
+      مجازی صحیح get_type_رمز(خالی) ثابت =0;
+      مجازی صحیح vpi_get(صحیح رمز);
+      مجازی int64_t vpi_get64(صحیح رمز);
+      مجازی حرف* vpi_get_str(صحیح رمز);
 
-      virtual void vpi_get_value(p_vpi_value val);
-      virtual vpiHandle vpi_put_value(p_vpi_value val, int flags);
-      virtual vpiHandle vpi_handle(int code);
-      virtual vpiHandle vpi_iterate(int code);
-      virtual vpiHandle vpi_index(int idx);
-      virtual void vpi_get_delays(p_vpi_delay del);
-      virtual void vpi_put_delays(p_vpi_delay del);
+      مجازی خالی vpi_get_قدر(p_vpi_قدر val);
+      مجازی vpiHandle vpi_put_قدر(p_vpi_قدر val, صحیح flags);
+      مجازی vpiHandle vpi_handle(صحیح رمز);
+      مجازی vpiHandle vpi_iterate(صحیح رمز);
+      مجازی vpiHandle vpi_اشاریہ(صحیح idx);
+      مجازی خالی vpi_get_delays(p_vpi_delay del);
+      مجازی خالی vpi_put_delays(p_vpi_delay del);
 
 	// Objects may have destroyer functions of their own. If so,
 	// then this virtual method will return a POINTER to that
 	// function. The pointer is used to "delete" the object, which
 	// is why the function itself cannot be a method.
-      typedef int (*free_object_fun_t)(vpiHandle);
-      virtual free_object_fun_t free_object_fun(void);
+      قسمتعریف صحیح (*free_object_fun_t)(vpiHandle);
+      مجازی free_object_fun_t free_object_fun(خالی);
 };
 
 
@@ -155,37 +155,37 @@ class __vpiHandle {
  * The free_args_flag member is true if when this iterator object is
  * released it must also free the args array.
  */
-struct __vpiIterator : public __vpiHandle {
+ساخت __vpiIterator : عوامی __vpiHandle {
       __vpiIterator();
-      int get_type_code(void) const override;
-      free_object_fun_t free_object_fun(void) override;
+      صحیح get_type_رمز(خالی) ثابت override;
+      free_object_fun_t free_object_fun(خالی) override;
 
-      vpiHandle *args;
-      unsigned  nargs;
-      unsigned  next;
-      bool free_args_flag;
+      vpiHandle *دلائل;
+      غیرعلامتی  nargs;
+      غیرعلامتی  اگلا_2;
+      bool free_دلائل_flag;
 };
 
-extern vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
-				    bool free_args_flag);
+خارجی vpiHandle vpip_make_iterator(غیرعلامتی nargs, vpiHandle*دلائل,
+				    bool free_دلائل_flag);
 
-class __vpiDecConst : public __vpiHandle {
-    public:
-      explicit __vpiDecConst(int val =0);
-      __vpiDecConst(const __vpiDecConst&that);
-# if __cplusplus >= 201103L
-      __vpiDecConst& operator = (const __vpiDecConst&that) = default;
+class __vpiDecConst : عوامی __vpiHandle {
+    عوامی:
+      explicit __vpiDecConst(صحیح val =0);
+      __vpiDecConst(ثابت __vpiDecConst&that);
+# اگر __cplusplus >= 201103L
+      __vpiDecConst& عامل = (ثابت __vpiDecConst&that) = طےشدہ;
 # endif
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      صحیح get_type_رمز(خالی) ثابت override;
+      صحیح vpi_get(صحیح رمز) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
 
-    public:
-      inline int get_value() const { return value; }
-      inline void set_value(int val) { value = val; }
+    عوامی:
+      اندرونی صحیح get_قدر() ثابت { واپس قدر; }
+      اندرونی خالی سیٹ_قدر(صحیح val) { قدر = val; }
 
-    private:
-      int value;
+    نجی:
+      صحیح قدر;
 };
 
 /*
@@ -193,59 +193,59 @@ class __vpiDecConst : public __vpiHandle {
  * are defined and used in vpi_callback.cc. The __vpiCallback are
  * always used in association with vvp_vpi_callback objects.
  */
-struct __vpiCallback : public __vpiHandle {
+ساخت __vpiCallback : عوامی __vpiHandle {
       __vpiCallback();
       ~__vpiCallback() override;
-      int get_type_code(void) const override;
+      صحیح get_type_رمز(خالی) ثابت override;
 
 	// Used for listing callbacks.
-      struct __vpiCallback*next;
+      ساخت __vpiCallback*اگلا_2;
 
 	// user supplied callback data
-      struct t_cb_data cb_data;
+      ساخت t_cb_ڈیٹا cb_ڈیٹا;
 };
 
-class value_callback : public __vpiCallback {
-    public:
-      explicit value_callback(p_cb_data data);
+class قدر_callback : عوامی __vpiCallback {
+    عوامی:
+      explicit قدر_callback(p_cb_ڈیٹا ڈیٹا);
 	// Return true if the callback really is ready to be called
-      virtual bool test_value_callback_ready(void);
+      مجازی bool test_قدر_callback_ready(خالی);
 
-    public:
+    عوامی:
 	// user supplied callback data
-      struct t_vpi_time cb_time;
-      struct t_vpi_value cb_value;
+      ساخت t_vpi_وقت cb_وقت;
+      ساخت t_vpi_قدر cb_قدر;
 };
 
-extern void callback_execute(struct __vpiCallback*cur);
+خارجی خالی callback_execute(ساخت __vpiCallback*cur);
 
-struct __vpiSystemTime : public __vpiHandle {
+ساخت __vpiSystemTime : عوامی __vpiHandle {
       __vpiSystemTime();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_handle(int code) override;
+      صحیح get_type_رمز(خالی) ثابت override;
+      صحیح vpi_get(صحیح رمز) override;
+      حرف*vpi_get_str(صحیح رمز) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
+      vpiHandle vpi_handle(صحیح رمز) override;
 
       __vpiScope*scope;
 };
 
-struct __vpiScopedTime : public __vpiSystemTime {
+ساخت __vpiScopedTime : عوامی __vpiSystemTime {
       __vpiScopedTime();
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      حرف*vpi_get_str(صحیح رمز) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
 };
-struct __vpiScopedSTime : public __vpiSystemTime {
+ساخت __vpiScopedSTime : عوامی __vpiSystemTime {
       __vpiScopedSTime();
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      صحیح vpi_get(صحیح رمز) override;
+      حرف*vpi_get_str(صحیح رمز) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
 };
-struct __vpiScopedRealtime : public __vpiSystemTime {
+ساخت __vpiScopedRealtime : عوامی __vpiSystemTime {
       __vpiScopedRealtime();
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      صحیح vpi_get(صحیح رمز) override;
+      حرف*vpi_get_str(صحیح رمز) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
 };
 
 /*
@@ -253,291 +253,291 @@ struct __vpiScopedRealtime : public __vpiSystemTime {
  * objects hold the items and properties that are knowingly bound to a
  * scope.
  */
-class __vpiScope : public __vpiHandle {
+class __vpiScope : عوامی __vpiHandle {
 
-    public:
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+    عوامی:
+      صحیح vpi_get(صحیح رمز) override;
+      حرف* vpi_get_str(صحیح رمز) override;
+      vpiHandle vpi_handle(صحیح رمز) override;
+      vpiHandle vpi_iterate(صحیح رمز) override;
 
-    public:
+    عوامی:
 	// Return the BASE name of the scope. This does not include
 	// any of the parent hierarchy.
-      inline const char*scope_name() const { return name_; }
+      اندرونی ثابت حرف*scope_name() ثابت { واپس name_; }
 
-      inline const char*scope_def_name() const { return tname_; }
+      اندرونی ثابت حرف*scope_def_name() ثابت { واپس tname_; }
 	// TRUE if this is an automatic func/task/block
-      inline bool is_automatic() const { return is_automatic_; }
+      اندرونی bool is_automatic() ثابت { واپس is_automatic_; }
 
-    public:
+    عوامی:
       __vpiScope *scope;
-      unsigned file_idx;
-      unsigned lineno;
-      unsigned def_file_idx;
-      unsigned def_lineno;
+      غیرعلامتی file_idx;
+      غیرعلامتی lineno;
+      غیرعلامتی def_file_idx;
+      غیرعلامتی def_lineno;
       bool is_cell;
 	/* The scope has a system time of its own. */
-      __vpiScopedTime scoped_time;
-      struct __vpiScopedSTime scoped_stime;
-      struct __vpiScopedRealtime scoped_realtime;
+      __vpiScopedTime scoped_وقت;
+      ساخت __vpiScopedSTime scoped_stime;
+      ساخت __vpiScopedRealtime scoped_realtime;
 	/* Keep an array of internal scope items. */
-      std::vector<class __vpiHandle*> intern;
+      std::سمتیہ<class __vpiHandle*> intern;
 	/* Set of types */
       std::map<std::string,class_type*> classes;
         /* Keep an array of items to be automatically allocated */
-      struct automatic_hooks_s**item;
-      unsigned nitem;
+      ساخت automatic_hooks_s**شے;
+      غیرعلامتی nitem;
         /* Keep a list of live contexts. */
-      vvp_context_t live_contexts;
+      vvp_context_t زندہ_contexts;
         /* Keep a list of freed contexts. */
       vvp_context_t free_contexts;
 	/* Keep a list of threads in the scope. */
-      std::set<vthread_t> threads;
-      signed int time_units :8;
-      signed int time_precision :8;
+      std::سیٹ<vthread_t> دھاگے;
+      علامتی صحیح وقت_units :8;
+      علامتی صحیح وقت_precision :8;
 
-    protected:
-      __vpiScope(const char*nam, const char*tnam, bool is_auto_flag =false);
+    محفوظ:
+      __vpiScope(ثابت حرف*nam, ثابت حرف*tnam, bool is_auto_flag =false);
 
-    private:
+    نجی:
 	/* The scope has a name. */
-      const char*name_;
-      const char*tname_;
+      ثابت حرف*name_;
+      ثابت حرف*tname_;
 	/* the scope may be "automatic" */
       bool is_automatic_;
 };
 
-class vpiScopeFunction  : public __vpiScope {
-    public:
-      inline vpiScopeFunction(const char*nam, const char*tnam,
-			      bool auto_flag, int func_type, unsigned func_wid, vvp_bit4_t func_init_val)
+class vpiScopeFunction  : عوامی __vpiScope {
+    عوامی:
+      اندرونی vpiScopeFunction(ثابت حرف*nam, ثابت حرف*tnam,
+			      bool auto_flag, صحیح func_type, غیرعلامتی func_wid, vvp_bit4_t func_init_val)
       : __vpiScope(nam,tnam, auto_flag), func_type_(func_type), func_wid_(func_wid), func_init_val_(func_init_val)
       { }
 
-      int get_type_code(void) const override { return vpiFunction; }
-      int vpi_get(int code) override
+      صحیح get_type_رمز(خالی) ثابت override { واپس vpiFunction; }
+      صحیح vpi_get(صحیح رمز) override
       {
-	    switch (code) {
-		case vpiFuncType:
-		  return func_type_;
-		default:
-		  return __vpiScope::vpi_get(code);
+	    انتخاب (رمز) {
+		حالت vpiFuncType:
+		  واپس func_type_;
+		طےشدہ:
+		  واپس __vpiScope::vpi_get(رمز);
 	    }
       }
 
-    public:
-      inline unsigned get_func_width(void) const { return func_wid_; }
-      inline vvp_bit4_t get_func_init_val(void) const { return func_init_val_; }
+    عوامی:
+      اندرونی غیرعلامتی get_func_چوڑائی(خالی) ثابت { واپس func_wid_; }
+      اندرونی vvp_bit4_t get_func_init_val(خالی) ثابت { واپس func_init_val_; }
 
-    private:
-      int func_type_;
-      unsigned func_wid_;
+    نجی:
+      صحیح func_type_;
+      غیرعلامتی func_wid_;
       vvp_bit4_t func_init_val_;
 };
 
-extern __vpiScope* vpip_peek_current_scope(void);
-extern void vpip_attach_to_scope(__vpiScope*scope, vpiHandle obj);
-extern void vpip_attach_to_current_scope(vpiHandle obj);
-extern __vpiScope* vpip_peek_context_scope(void);
-extern unsigned vpip_add_item_to_context(automatic_hooks_s*item,
+خارجی __vpiScope* vpip_peek_current_scope(خالی);
+خارجی خالی vpip_attach_مقصد_scope(__vpiScope*scope, vpiHandle obj);
+خارجی خالی vpip_attach_مقصد_current_scope(vpiHandle obj);
+خارجی __vpiScope* vpip_peek_context_scope(خالی);
+خارجی غیرعلامتی vpip_جوڑو_شے_مقصد_context(automatic_hooks_s*شے,
                                          __vpiScope*scope);
-extern vpiHandle vpip_make_root_iterator(int type_code);
-extern void vpip_make_root_iterator(class __vpiHandle**&table,
-				    unsigned&ntable);
+خارجی vpiHandle vpip_make_جڑ_iterator(صحیح type_رمز);
+خارجی خالی vpip_make_جڑ_iterator(class __vpiHandle**&جدول,
+				    غیرعلامتی&ntable);
 
 /*
  * Signals include the variable types (reg, integer, time) and are
  * distinguished by the vpiType code. They also have a parent scope,
  * a declared name and declaration indices.
  */
-struct __vpiSignal : public __vpiHandle {
-      int vpi_get(int code) override;
-      int64_t vpi_get64(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
+ساخت __vpiSignal : عوامی __vpiHandle {
+      صحیح vpi_get(صحیح رمز) override;
+      int64_t vpi_get64(صحیح رمز) override;
+      حرف* vpi_get_str(صحیح رمز) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
+      vpiHandle vpi_put_قدر(p_vpi_قدر val, صحیح flags) override;
+      vpiHandle vpi_handle(صحیح رمز) override;
+      vpiHandle vpi_iterate(صحیح رمز) override;
+      vpiHandle vpi_اشاریہ(صحیح idx) override;
 
-    public:
-      unsigned width() const;
-      vpiHandle get_index(int index);
-      void get_bit_value(const struct __vpiBit*bit, p_vpi_value vp);
-      vpiHandle put_bit_value(struct __vpiBit*bit, p_vpi_value vp, int flags);
-      void make_bits();
+    عوامی:
+      غیرعلامتی چوڑائی() ثابت;
+      vpiHandle get_اشاریہ(صحیح اشاریہ);
+      خالی get_ثنائی_ہندسہ_قدر(ثابت ساخت __vpiBit*ثنائی_ہندسہ, p_vpi_قدر vp);
+      vpiHandle put_ثنائی_ہندسہ_قدر(ساخت __vpiBit*ثنائی_ہندسہ, p_vpi_قدر vp, صحیح flags);
+      خالی make_بٹ();
 
-      struct __vpiBit*bits;
+      ساخت __vpiBit*بٹ;
 
-    public:
-      union { // The scope or parent array that contains me.
-	    vpiHandle parent;
+    عوامی:
+      اتحاد { // The scope or parent array that contains me.
+	    vpiHandle والد;
 	    __vpiScope* scope;
       } within;
-      union { // The name of this reg/net, or the index for array words.
-            const char*name;
-            vpiHandle index;
+      اتحاد { // The name of this reg/net, or the index for array words.
+            ثابت حرف*name;
+            vpiHandle اشاریہ;
       } id;
 	/* The indices that define the width and access offset. */
       __vpiDecConst msb, lsb;
 	/* Flags */
-      unsigned signed_flag  : 1;
-      unsigned is_netarray  : 1; // This is word of a net array
+      غیرعلامتی signed_flag  : 1;
+      غیرعلامتی is_netarray  : 1; // This is word of a net array
 	/* The represented value is here. */
-      vvp_net_t*node;
+      vvp_net_t*گرہ;
 
-    public:
-      static void*operator new(std::size_t size);
-      static void operator delete(void*); // not implemented
-    protected:
-      inline __vpiSignal() : bits(NULL) { }
-    private: // Not implemented
-      static void*operator new[] (std::size_t size);
-      static void operator delete[](void*);
+    عوامی:
+      ساکن خالی*عامل new(std::size_t سائز);
+      ساکن خالی عامل delete(خالی*); // not implemented
+    محفوظ:
+      اندرونی __vpiSignal() : بٹ(تہی) { }
+    نجی: // Not implemented
+      ساکن خالی*عامل new[] (std::size_t سائز);
+      ساکن خالی عامل delete[](خالی*);
 };
-extern unsigned vpip_size(const __vpiSignal *sig);
-extern __vpiScope* vpip_scope(__vpiSignal*sig);
+خارجی غیرعلامتی vpip_سائز(ثابت __vpiSignal *sig);
+خارجی __vpiScope* vpip_scope(__vpiSignal*sig);
 
-extern vpiHandle vpip_make_int2(const char*name, int msb, int lsb,
+خارجی vpiHandle vpip_make_int2(ثابت حرف*name, صحیح msb, صحیح lsb,
 			       bool signed_flag, vvp_net_t*vec);
-extern vpiHandle vpip_make_int4(const char*name, int msb, int lsb,
+خارجی vpiHandle vpip_make_int4(ثابت حرف*name, صحیح msb, صحیح lsb,
 			       vvp_net_t*vec);
-extern vpiHandle vpip_make_var4(const char*name, int msb, int lsb,
+خارجی vpiHandle vpip_make_var4(ثابت حرف*name, صحیح msb, صحیح lsb,
 			       bool signed_flag, vvp_net_t*net);
-extern vpiHandle vpip_make_net4(__vpiScope*scope,
-				const char*name, int msb, int lsb,
-				bool signed_flag, vvp_net_t*node);
+خارجی vpiHandle vpip_make_net4(__vpiScope*scope,
+				ثابت حرف*name, صحیح msb, صحیح lsb,
+				bool signed_flag, vvp_net_t*گرہ);
 
 /*
  * This is used to represent a bit in a net/reg.
  */
-struct __vpiBit {
-      struct as_bit_t : public __vpiHandle {
-	    int get_type_code(void) const;
-	    int vpi_get(int code);
-	    char* vpi_get_str(int code);
-	    void vpi_get_value(p_vpi_value val);
-	    vpiHandle vpi_put_value(p_vpi_value val, int flags);
-	    vpiHandle vpi_handle(int code);
-      } as_bit;
+ساخت __vpiBit {
+      ساخت as_ثنائی_ہندسہ_t : عوامی __vpiHandle {
+	    صحیح get_type_رمز(خالی) ثابت;
+	    صحیح vpi_get(صحیح رمز);
+	    حرف* vpi_get_str(صحیح رمز);
+	    خالی vpi_get_قدر(p_vpi_قدر val);
+	    vpiHandle vpi_put_قدر(p_vpi_قدر val, صحیح flags);
+	    vpiHandle vpi_handle(صحیح رمز);
+      } as_ثنائی_ہندسہ;
 
-      vpiHandle index;
+      vpiHandle اشاریہ;
 
-      union {
-	    struct __vpiSignal*parent;
-	    struct __vpiBit*bit0;
+      اتحاد {
+	    ساخت __vpiSignal*والد;
+	    ساخت __vpiBit*bit0;
       };
 
-      inline unsigned get_norm_index() const { return this - bit0; }
-      inline struct __vpiSignal*get_parent() const {return (bit0 - 1)->parent; }
-      int get_index(void) const;
+      اندرونی غیرعلامتی get_norm_اشاریہ() ثابت { واپس this - bit0; }
+      اندرونی ساخت __vpiSignal*get_والد() ثابت {واپس (bit0 - 1)->والد; }
+      صحیح get_اشاریہ(خالی) ثابت;
 };
 
-class vpiPortBitInfo;
+class vpi_پورٹ_ثنائی_ہندسہ_Info;
 
-class vpiPortInfo  : public __vpiHandle {
-    public:
-      vpiPortInfo( __vpiScope *parent,
-                    unsigned index,
-                    int vpi_direction,
-                    unsigned width,
-                    const char *name,
-                    char* buffer );
-      ~vpiPortInfo() override;
+class vpi_پورٹ_Info  : عوامی __vpiHandle {
+    عوامی:
+      vpi_پورٹ_Info( __vpiScope *والد,
+                    غیرعلامتی اشاریہ,
+                    صحیح vpi_direction,
+                    غیرعلامتی چوڑائی,
+                    ثابت حرف *name,
+                    حرف* بفر );
+      ~vpi_پورٹ_Info() override;
 
-      int get_type_code(void) const override { return vpiPort; }
-      int get_direction(void) { return direction_; }
-      unsigned get_index(void) { return index_; }
-      int get_width(void) { return width_; }
-      void add_port_bit(vpiPortBitInfo* port_bit) { port_bits_.push_back(port_bit); }
+      صحیح get_type_رمز(خالی) ثابت override { واپس vpi_پورٹ; }
+      صحیح get_direction(خالی) { واپس direction_; }
+      غیرعلامتی get_اشاریہ(خالی) { واپس اشاریہ_2; }
+      صحیح get_چوڑائی(خالی) { واپس چوڑائی_2; }
+      خالی جوڑو_پورٹ_ثنائی_ہندسہ(vpi_پورٹ_ثنائی_ہندسہ_Info* پورٹ_ثنائی_ہندسہ) { پورٹ_بٹ.ڈالو_عقب(پورٹ_ثنائی_ہندسہ); }
 
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      vvp_net_t* get_port(void) const { return ref_; }
-      vpiHandle vpi_iterate(int code) override;
+      صحیح vpi_get(صحیح رمز) override;
+      حرف* vpi_get_str(صحیح رمز) override;
+      vpiHandle vpi_handle(صحیح رمز) override;
+      vvp_net_t* get_پورٹ(خالی) ثابت { واپس ref_; }
+      vpiHandle vpi_iterate(صحیح رمز) override;
 
-      std::vector<vpiPortBitInfo*> port_bits_;
+      std::سمتیہ<vpi_پورٹ_ثنائی_ہندسہ_Info*> پورٹ_بٹ;
 
-    private:
-      __vpiScope *parent_;
-      unsigned  index_;
-      int       direction_;
-      unsigned  width_;
-      const char *name_;
+    نجی:
+      __vpiScope *والد_2;
+      غیرعلامتی  اشاریہ_2;
+      صحیح       direction_;
+      غیرعلامتی  چوڑائی_2;
+      ثابت حرف *name_;
       vvp_net_t *ref_;
 };
 
-class vpiPortBitInfo  : public __vpiHandle {
-    public:
-      vpiPortBitInfo(vpiPortInfo *parent,
-                     unsigned bit);
-      ~vpiPortBitInfo() override;
+class vpi_پورٹ_ثنائی_ہندسہ_Info  : عوامی __vpiHandle {
+    عوامی:
+      vpi_پورٹ_ثنائی_ہندسہ_Info(vpi_پورٹ_Info *والد,
+                     غیرعلامتی ثنائی_ہندسہ);
+      ~vpi_پورٹ_ثنائی_ہندسہ_Info() override;
 
-      int get_type_code(void) const override { return vpiPortBit; }
-      unsigned get_bit(void) const { return bit_; }
+      صحیح get_type_رمز(خالی) ثابت override { واپس vpi_پورٹ_ثنائی_ہندسہ; }
+      غیرعلامتی get_ثنائی_ہندسہ(خالی) ثابت { واپس ثنائی_ہندسہ_2; }
 
-      int vpi_get(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      صحیح vpi_get(صحیح رمز) override;
+      vpiHandle vpi_handle(صحیح رمز) override;
 
-    private:
-      vpiPortInfo *parent_;
-      unsigned bit_;
+    نجی:
+      vpi_پورٹ_Info *والد_2;
+      غیرعلامتی ثنائی_ہندسہ_2;
 };
 
 /*
  * This is used by system calls to represent a bit/part select of
  * a simple variable or constant array word.
  */
-struct __vpiPV : public __vpiHandle {
+ساخت __vpiPV : عوامی __vpiHandle {
       __vpiPV();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
+      صحیح get_type_رمز(خالی) ثابت override;
+      صحیح vpi_get(صحیح رمز) override;
+      حرف* vpi_get_str(صحیح رمز) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
+      vpiHandle vpi_put_قدر(p_vpi_قدر val, صحیح flags) override;
+      vpiHandle vpi_handle(صحیح رمز) override;
 
-      vpiHandle parent;
+      vpiHandle والد;
       vvp_net_t*net;
       vpiHandle sbase;
-      int tbase;
-      unsigned width;
+      صحیح tbase;
+      غیرعلامتی چوڑائی;
 };
-extern vpiHandle vpip_make_PV(char*name, int base, int width);
-extern vpiHandle vpip_make_PV(char*name, char*symbol, int width);
-extern vpiHandle vpip_make_PV(char*name, vpiHandle handle, int width);
+خارجی vpiHandle vpip_make_PV(حرف*name, صحیح بنیاد, صحیح چوڑائی);
+خارجی vpiHandle vpip_make_PV(حرف*name, حرف*علامت, صحیح چوڑائی);
+خارجی vpiHandle vpip_make_PV(حرف*name, vpiHandle handle, صحیح چوڑائی);
 
-struct __vpiModPathTerm : public __vpiHandle {
+ساخت __vpiModPathTerm : عوامی __vpiHandle {
       __vpiModPathTerm();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      صحیح get_type_رمز(خالی) ثابت override;
+      صحیح vpi_get(صحیح رمز) override;
+      vpiHandle vpi_handle(صحیح رمز) override;
 
-      vpiHandle expr;
+      vpiHandle اظہاریہ;
 	/* The value returned by vpi_get(vpiEdge, ...); */
-      int edge;
+      صحیح کنارہ;
 };
 
-struct __vpiModPathSrc : public __vpiHandle {
+ساخت __vpiModPathSrc : عوامی __vpiHandle {
       __vpiModPathSrc();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
-      void vpi_get_delays(p_vpi_delay del) override;
-      void vpi_put_delays(p_vpi_delay del) override;
-      free_object_fun_t free_object_fun(void) override;
+      صحیح get_type_رمز(خالی) ثابت override;
+      صحیح vpi_get(صحیح رمز) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
+      vpiHandle vpi_put_قدر(p_vpi_قدر val, صحیح flags) override;
+      vpiHandle vpi_handle(صحیح رمز) override;
+      vpiHandle vpi_iterate(صحیح رمز) override;
+      vpiHandle vpi_اشاریہ(صحیح idx) override;
+      خالی vpi_get_delays(p_vpi_delay del) override;
+      خالی vpi_put_delays(p_vpi_delay del) override;
+      free_object_fun_t free_object_fun(خالی) override;
 
-      struct __vpiModPath *dest;
-      int   type;
+      ساخت __vpiModPath *dest;
+      صحیح   type;
 
 	/* This is the input expression for this modpath. */
-      struct __vpiModPathTerm path_term_in;
+      ساخت __vpiModPathTerm راستہ_رکن_اندر;
 
 	/* This is the input net for the modpath. signals on this net
 	   are used to determine the modpath. They are *not* propagated
@@ -554,13 +554,13 @@ struct __vpiModPathSrc : public __vpiHandle {
  *
  */
 
-struct __vpiModPath {
+ساخت __vpiModPath {
       __vpiScope   *scope ;
 
       class vvp_fun_modpath*modpath;
 
-      struct __vpiModPathTerm path_term_out;
-      vvp_net_t *input_net  ;
+      ساخت __vpiModPathTerm راستہ_رکن_برآمد;
+      vvp_net_t *داخلہ_net  ;
 };
 
 
@@ -569,10 +569,10 @@ struct __vpiModPath {
  * for vpiModPath && vpiModPathIn objects
  */
 
-extern struct __vpiModPathSrc* vpip_make_modpath_src(struct __vpiModPath*path,
+خارجی ساخت __vpiModPathSrc* vpip_make_modpath_src(ساخت __vpiModPath*راستہ,
                                                      vvp_net_t *net) ;
 
-extern struct __vpiModPath* vpip_make_modpath(vvp_net_t *net) ;
+خارجی ساخت __vpiModPath* vpip_make_modpath(vvp_net_t *net) ;
 
 /*
  *
@@ -582,17 +582,17 @@ extern struct __vpiModPath* vpip_make_modpath(vvp_net_t *net) ;
  *
  */
 
-struct __vpiInterModPath : public __vpiHandle {
+ساخت __vpiInterModPath : عوامی __vpiHandle {
       __vpiInterModPath();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
-      void vpi_get_delays(p_vpi_delay del) override;
-      void vpi_put_delays(p_vpi_delay del) override;
-      free_object_fun_t free_object_fun(void) override;
+      صحیح get_type_رمز(خالی) ثابت override;
+      صحیح vpi_get(صحیح رمز) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
+      vpiHandle vpi_put_قدر(p_vpi_قدر val, صحیح flags) override;
+      vpiHandle vpi_handle(صحیح رمز) override;
+      vpiHandle vpi_iterate(صحیح رمز) override;
+      خالی vpi_get_delays(p_vpi_delay del) override;
+      خالی vpi_put_delays(p_vpi_delay del) override;
+      free_object_fun_t free_object_fun(خالی) override;
 
       __vpiScope   *scope ;
 
@@ -600,8 +600,8 @@ struct __vpiInterModPath : public __vpiHandle {
 
       vvp_net_t *net;
 
-      vpiPortInfo* port1;
-      vpiPortInfo* port2;
+      vpi_پورٹ_Info* port1;
+      vpi_پورٹ_Info* port2;
 };
 
 
@@ -610,49 +610,49 @@ struct __vpiInterModPath : public __vpiHandle {
  * for vpiInterModPath
  */
 
-extern struct __vpiInterModPath* vpip_make_intermodpath(vvp_net_t *net, vpiPortInfo* port1, vpiPortInfo* port2);
+خارجی ساخت __vpiInterModPath* vpip_make_intermodpath(vvp_net_t *net, vpi_پورٹ_Info* port1, vpi_پورٹ_Info* port2);
 
 /*
  * These methods support the vpi creation of events. The name string
  * passed in will be saved, so the caller must allocate it (or not
  * free it) after it is handed to this function.
  */
-class __vpiNamedEvent : public __vpiHandle {
+class __vpiNamedEvent : عوامی __vpiHandle {
 
-    public:
-      __vpiNamedEvent(__vpiScope*scope, const char*name);
+    عوامی:
+      __vpiNamedEvent(__vpiScope*scope, ثابت حرف*name);
       ~__vpiNamedEvent() override;
 
-      __vpiNamedEvent(const __vpiNamedEvent&) = delete;
-      __vpiNamedEvent& operator=(const __vpiNamedEvent&) = delete;
+      __vpiNamedEvent(ثابت __vpiNamedEvent&) = delete;
+      __vpiNamedEvent& عامل=(ثابت __vpiNamedEvent&) = delete;
 
-      int get_type_code(void) const override;
-      __vpiScope*get_scope(void) const { return scope_; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
+      صحیح get_type_رمز(خالی) ثابت override;
+      __vpiScope*get_scope(خالی) ثابت { واپس scope_; }
+      صحیح vpi_get(صحیح رمز) override;
+      حرف* vpi_get_str(صحیح رمز) override;
+      vpiHandle vpi_put_قدر(p_vpi_قدر val, صحیح flags) override;
+      vpiHandle vpi_handle(صحیح رمز) override;
 
-      inline void add_vpi_callback(__vpiCallback*cb)
-      { cb->next = callbacks_;
+      اندرونی خالی جوڑو_vpi_callback(__vpiCallback*cb)
+      { cb->اگلا_2 = callbacks_;
 	callbacks_ = cb;
       }
 
-      void run_vpi_callbacks(void);
+      خالی تسلسل_vpi_callbacks(خالی);
 
 	/* The functor, used for %set operations. */
       vvp_net_t*funct;
 
-    private:
+    نجی:
 	/* base name of the event object */
-      const char*name_;
+      ثابت حرف*name_;
 	/* Parent scope of this object. */
       __vpiScope*scope_;
 	/* List of callbacks interested in this event. */
       __vpiCallback*callbacks_;
 };
 
-extern vpiHandle vpip_make_named_event(const char*name, vvp_net_t*f);
+خارجی vpiHandle vpip_make_named_event(ثابت حرف*name, vvp_net_t*f);
 
 /*
  * Memory is an array of bits that is accessible in N-bit chunks, with
@@ -661,95 +661,95 @@ extern vpiHandle vpip_make_named_event(const char*name, vvp_net_t*f);
  * the memory.
  */
 
-extern bool is_net_array(vpiHandle obj);
+خارجی bool is_net_array(vpiHandle obj);
 
 /*
  * These are the various variable types.
  */
-struct __vpiRealVar : public __vpiHandle {
+ساخت __vpiRealVar : عوامی __vpiHandle {
       __vpiRealVar();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+      صحیح get_type_رمز(خالی) ثابت override;
+      صحیح vpi_get(صحیح رمز) override;
+      حرف* vpi_get_str(صحیح رمز) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
+      vpiHandle vpi_put_قدر(p_vpi_قدر val, صحیح flags) override;
+      vpiHandle vpi_handle(صحیح رمز) override;
+      vpiHandle vpi_iterate(صحیح رمز) override;
 
-      union { // The scope or parent array that contains me.
-	    vpiHandle parent;
+      اتحاد { // The scope or parent array that contains me.
+	    vpiHandle والد;
 	    __vpiScope* scope;
       } within;
 	/* The name of this variable, or the index for array words. */
-      union {
-            const char*name;
-            vpiHandle index;
+      اتحاد {
+            ثابت حرف*name;
+            vpiHandle اشاریہ;
       } id;
-      unsigned is_netarray  : 1; // This is word of a net array
-      unsigned is_wire      : 1; // This is a wire, not a variable
+      غیرعلامتی is_netarray  : 1; // This is word of a net array
+      غیرعلامتی is_wire      : 1; // This is a wire, not a variable
       vvp_net_t*net;
 };
 
-extern __vpiScope* vpip_scope(__vpiRealVar*sig);
-extern vpiHandle vpip_make_real_var(const char*name, vvp_net_t*net);
-extern vpiHandle vpip_make_real_net(__vpiScope*scope,
-				    const char*name, vvp_net_t*net);
+خارجی __vpiScope* vpip_scope(__vpiRealVar*sig);
+خارجی vpiHandle vpip_make_real_var(ثابت حرف*name, vvp_net_t*net);
+خارجی vpiHandle vpip_make_real_net(__vpiScope*scope,
+				    ثابت حرف*name, vvp_net_t*net);
 
-class __vpiBaseVar : public __vpiHandle {
+class __vpiBaseVar : عوامی __vpiHandle {
 
-    public:
-      __vpiBaseVar(__vpiScope*scope, const char*name, vvp_net_t*net);
-#ifdef CHECK_WITH_VALGRIND
+    عوامی:
+      __vpiBaseVar(__vpiScope*scope, ثابت حرف*name, vvp_net_t*net);
+#اگر_تعریف_شدہ CHECK_WITH_VALGRIND
       ~__vpiBaseVar() override;
-#endif
+#اگر_ختم
 
-      inline vvp_net_t* get_net() const { return net_; }
+      اندرونی vvp_net_t* get_net() ثابت { واپس net_; }
 
-    protected:
+    محفوظ:
       __vpiScope* scope_;
-      const char*name_;
+      ثابت حرف*name_;
 
-    private:
+    نجی:
       vvp_net_t*net_;
 };
 
-class __vpiStringVar : public __vpiBaseVar {
+class __vpiStringVar : عوامی __vpiBaseVar {
 
-    public:
-      __vpiStringVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+    عوامی:
+      __vpiStringVar(__vpiScope*scope, ثابت حرف*name, vvp_net_t*net);
 
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      صحیح get_type_رمز(خالی) ثابت override;
+      صحیح vpi_get(صحیح رمز) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
+      vpiHandle vpi_put_قدر(p_vpi_قدر val, صحیح flags) override;
 };
 
-extern vpiHandle vpip_make_string_var(const char*name, vvp_net_t*net);
+خارجی vpiHandle vpip_make_string_var(ثابت حرف*name, vvp_net_t*net);
 
-struct __vpiArrayBase {
-      __vpiArrayBase() : vals_words(NULL) {}
-      virtual ~__vpiArrayBase() {}
+ساخت __vpiArrayBase {
+      __vpiArrayBase() : vals_الفاظ(تہی) {}
+      مجازی ~__vpiArrayBase() {}
 
-      virtual unsigned get_size(void) const = 0;
-      virtual vpiHandle get_left_range() = 0;
-      virtual vpiHandle get_right_range() = 0;
-      virtual __vpiScope*get_scope() const = 0;
+      مجازی غیرعلامتی get_سائز(خالی) ثابت = 0;
+      مجازی vpiHandle get_بایاں_range() = 0;
+      مجازی vpiHandle get_دایاں_range() = 0;
+      مجازی __vpiScope*get_scope() ثابت = 0;
 
-      virtual int get_word_size() const = 0;
-      virtual char*get_word_str(struct __vpiArrayWord*word, int code) = 0;
-      virtual void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) = 0;
-      virtual void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp,
-                                    int flags) = 0;
-      virtual vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) = 0;
+      مجازی صحیح get_لفظ_سائز() ثابت = 0;
+      مجازی حرف*get_لفظ_str(ساخت __vpiArrayWord*لفظ, صحیح رمز) = 0;
+      مجازی خالی get_لفظ_قدر(ساخت __vpiArrayWord*لفظ, p_vpi_قدر vp) = 0;
+      مجازی خالی put_لفظ_قدر(ساخت __vpiArrayWord*لفظ, p_vpi_قدر vp,
+                                    صحیح flags) = 0;
+      مجازی vpiHandle get_iter_اشاریہ(ساخت __vpiArrayIterator*iter, صحیح idx) = 0;
 
     // vpi_iterate is already defined by vpiHandle, so to avoid problems with
     // classes inheriting from vpiHandle and vpiArrayBase just share the common
     // code in the following function
-      vpiHandle vpi_array_base_iterate(int code);
+      vpiHandle vpi_array_بنیاد_iterate(صحیح رمز);
 
-      virtual void make_vals_words();
+      مجازی خالی make_vals_الفاظ();
 
-      struct __vpiArrayWord*vals_words;
+      ساخت __vpiArrayWord*vals_الفاظ;
 };
 
 /*
@@ -777,46 +777,46 @@ struct __vpiArrayBase {
 * array of double variables. This is very much like the way the
 * vector4 array works.
 */
-struct __vpiArray : public __vpiArrayBase, public __vpiHandle {
-      int get_type_code(void) const override { return vpiMemory; }
-      unsigned get_size() const override { return array_count; }
-      vpiHandle get_left_range() override { assert(nets == 0); return &msb; }
-      vpiHandle get_right_range() override { assert(nets == 0); return &lsb; }
-      __vpiScope*get_scope() const override { return scope; }
+ساخت __vpiArray : عوامی __vpiArrayBase, عوامی __vpiHandle {
+      صحیح get_type_رمز(خالی) ثابت override { واپس vpi_حافظہ; }
+      غیرعلامتی get_سائز() ثابت override { واپس array_گنتی; }
+      vpiHandle get_بایاں_range() override { أكد(nets == 0); واپس &msb; }
+      vpiHandle get_دایاں_range() override { أكد(nets == 0); واپس &lsb; }
+      __vpiScope*get_scope() ثابت override { واپس scope; }
 
-      int get_word_size() const override;
-      char*get_word_str(struct __vpiArrayWord*word, int code) override;
-      void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) override;
-      void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int flags) override;
+      صحیح get_لفظ_سائز() ثابت override;
+      حرف*get_لفظ_str(ساخت __vpiArrayWord*لفظ, صحیح رمز) override;
+      خالی get_لفظ_قدر(ساخت __vpiArrayWord*لفظ, p_vpi_قدر vp) override;
+      خالی put_لفظ_قدر(ساخت __vpiArrayWord*لفظ, p_vpi_قدر vp, صحیح flags) override;
 
-      vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) override;
+      vpiHandle get_iter_اشاریہ(ساخت __vpiArrayIterator*iter, صحیح idx) override;
 
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      inline vpiHandle vpi_iterate(int code) override { return vpi_array_base_iterate(code); }
-      vpiHandle vpi_index(int idx) override;
+      صحیح vpi_get(صحیح رمز) override;
+      حرف* vpi_get_str(صحیح رمز) override;
+      vpiHandle vpi_handle(صحیح رمز) override;
+      اندرونی vpiHandle vpi_iterate(صحیح رمز) override { واپس vpi_array_بنیاد_iterate(رمز); }
+      vpiHandle vpi_اشاریہ(صحیح idx) override;
 
-      void set_word(unsigned idx, unsigned off, const vvp_vector4_t&val);
-      void set_word(unsigned idx, double val);
-      void set_word(unsigned idx, const std::string&val);
-      void set_word(unsigned idx, const vvp_object_t&val);
+      خالی سیٹ_لفظ(غیرعلامتی idx, غیرعلامتی off, ثابت vvp_vector4_t&val);
+      خالی سیٹ_لفظ(غیرعلامتی idx, دوہرا val);
+      خالی سیٹ_لفظ(غیرعلامتی idx, ثابت std::string&val);
+      خالی سیٹ_لفظ(غیرعلامتی idx, ثابت vvp_object_t&val);
 
-      vvp_vector4_t get_word(unsigned address);
-      double get_word_r(unsigned address);
-      void get_word_obj(unsigned address, vvp_object_t&val);
-      std::string get_word_str(unsigned address);
+      vvp_vector4_t get_لفظ(غیرعلامتی پتہ);
+      دوہرا get_لفظ_r(غیرعلامتی پتہ);
+      خالی get_لفظ_obj(غیرعلامتی پتہ, vvp_object_t&val);
+      std::string get_لفظ_str(غیرعلامتی پتہ);
 
-      void alias_word(unsigned long addr, vpiHandle word, int msb, int lsb);
-      void attach_word(unsigned addr, vpiHandle word);
-      void word_change(unsigned long addr);
+      خالی alias_لفظ(غیرعلامتی طویل addr, vpiHandle لفظ, صحیح msb, صحیح lsb);
+      خالی attach_لفظ(غیرعلامتی addr, vpiHandle لفظ);
+      خالی لفظ_change(غیرعلامتی طویل addr);
 
-      const char*name; /* Permanently allocated string */
-      __vpiDecConst first_addr;
-      __vpiDecConst last_addr;
+      ثابت حرف*name; /* Permanently allocated string */
+      __vpiDecConst پہلا_addr;
+      __vpiDecConst آخری_addr;
       __vpiDecConst msb;
       __vpiDecConst lsb;
-      unsigned vals_width;
+      غیرعلامتی vals_چوڑائی;
 	// If this is a net array, nets lists the handles.
       vpiHandle*nets;
 	// If this is a var array, then these are used instead of nets.
@@ -824,96 +824,96 @@ struct __vpiArray : public __vpiArrayBase, public __vpiHandle {
       vvp_darray        *vals;
 
       vvp_fun_arrayport*ports_;
-      struct __vpiCallback *vpi_callbacks;
+      ساخت __vpiCallback *vpi_callbacks;
       bool signed_flag;
-      bool swap_addr;
+      bool تبادلہ_addr;
 
-private:
-      unsigned array_count;
+نجی:
+      غیرعلامتی array_گنتی;
       __vpiScope*scope;
 
-friend vpiHandle vpip_make_array(const char*label, const char*name,
-                                 int first_addr, int last_addr,
+دوست vpiHandle vpip_make_array(ثابت حرف*label, ثابت حرف*name,
+                                 صحیح پہلا_addr, صحیح آخری_addr,
                                  bool signed_flag);
-friend void compile_array_alias(char*label, char*name, char*src);
+دوست خالی compile_array_alias(حرف*label, حرف*name, حرف*src);
 };
 
-class __vpiDarrayVar : public __vpiBaseVar, public __vpiArrayBase {
-    public:
-      __vpiDarrayVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+class __vpiDarrayVar : عوامی __vpiBaseVar, عوامی __vpiArrayBase {
+    عوامی:
+      __vpiDarrayVar(__vpiScope*scope, ثابت حرف*name, vvp_net_t*net);
 
-      int get_type_code() const override { return vpiArrayVar; }
-      unsigned get_size() const override;
-      vpiHandle get_left_range() override;
-      vpiHandle get_right_range() override;
-      __vpiScope*get_scope() const override { return scope_; }
+      صحیح get_type_رمز() ثابت override { واپس vpiArrayVar; }
+      غیرعلامتی get_سائز() ثابت override;
+      vpiHandle get_بایاں_range() override;
+      vpiHandle get_دایاں_range() override;
+      __vpiScope*get_scope() ثابت override { واپس scope_; }
 
-      int get_word_size() const override;
-      char*get_word_str(struct __vpiArrayWord*word, int code) override;
-      void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) override;
-      void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int flags) override;
+      صحیح get_لفظ_سائز() ثابت override;
+      حرف*get_لفظ_str(ساخت __vpiArrayWord*لفظ, صحیح رمز) override;
+      خالی get_لفظ_قدر(ساخت __vpiArrayWord*لفظ, p_vpi_قدر vp) override;
+      خالی put_لفظ_قدر(ساخت __vpiArrayWord*لفظ, p_vpi_قدر vp, صحیح flags) override;
 
-      vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) override;
-      inline vpiHandle vpi_iterate(int code) override { return vpi_array_base_iterate(code); }
+      vpiHandle get_iter_اشاریہ(ساخت __vpiArrayIterator*iter, صحیح idx) override;
+      اندرونی vpiHandle vpi_iterate(صحیح رمز) override { واپس vpi_array_بنیاد_iterate(رمز); }
 
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_index(int index) override;
+      صحیح vpi_get(صحیح رمز) override;
+      حرف* vpi_get_str(صحیح رمز) override;
+      vpiHandle vpi_handle(صحیح رمز) override;
+      vpiHandle vpi_اشاریہ(صحیح اشاریہ) override;
 
-      void vpi_get_value(p_vpi_value val) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
 
-    protected:
-      vvp_darray*get_vvp_darray() const;
-      __vpiDecConst left_range_, right_range_;
+    محفوظ:
+      vvp_darray*get_vvp_darray() ثابت;
+      __vpiDecConst بایاں_range, دایاں_range;
 };
 
-extern vpiHandle vpip_make_darray_var(const char*name, vvp_net_t*net);
+خارجی vpiHandle vpip_make_darray_var(ثابت حرف*name, vvp_net_t*net);
 
-class __vpiQueueVar : public __vpiDarrayVar {
+class __vpiQueueVar : عوامی __vpiDarrayVar {
 
-    public:
-      __vpiQueueVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+    عوامی:
+      __vpiQueueVar(__vpiScope*scope, ثابت حرف*name, vvp_net_t*net);
 
-      int vpi_get(int code) override;
+      صحیح vpi_get(صحیح رمز) override;
 };
 
-extern vpiHandle vpip_make_queue_var(const char*name, vvp_net_t*net);
+خارجی vpiHandle vpip_make_قطار_var(ثابت حرف*name, vvp_net_t*net);
 
-class __vpiPropQueueRef : public __vpiHandle {
+class __vpiPropQueueRef : عوامی __vpiHandle {
 
-    public:
-      explicit __vpiPropQueueRef(__vpiScope*scope, unsigned pidx, bool is_queue);
+    عوامی:
+      explicit __vpiPropQueueRef(__vpiScope*scope, غیرعلامتی pidx, bool is_قطار);
 
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      صحیح get_type_رمز(خالی) ثابت override;
+      صحیح vpi_get(صحیح رمز) override;
+      حرف* vpi_get_str(صحیح رمز) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
 
       vvp_net_t* class_net_;
-      unsigned prop_idx_;
-      bool is_queue_;
+      غیرعلامتی prop_idx_;
+      bool is_قطار_2;
 
-    private:
+    نجی:
       __vpiScope* scope_;
 };
 
-extern vpiHandle vpip_make_prop_queue_ref(char* class_label,
-                                          unsigned prop_idx,
-                                          unsigned is_queue_flag);
-extern vvp_darray* vpip_vpi_darray_from_handle(vpiHandle ref);
+خارجی vpiHandle vpip_make_prop_قطار_ref(حرف* class_label,
+                                          غیرعلامتی prop_idx,
+                                          غیرعلامتی is_قطار_flag);
+خارجی vvp_darray* vpip_vpi_darray_from_handle(vpiHandle ref);
 
-class __vpiCobjectVar : public __vpiBaseVar {
+class __vpiCobjectVar : عوامی __vpiBaseVar {
 
-    public:
-      __vpiCobjectVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+    عوامی:
+      __vpiCobjectVar(__vpiScope*scope, ثابت حرف*name, vvp_net_t*net);
 
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      صحیح get_type_رمز(خالی) ثابت override;
+      صحیح vpi_get(صحیح رمز) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
 };
 
-extern vpiHandle vpip_make_cobject_var(const char*name, vvp_net_t*net);
+خارجی vpiHandle vpip_make_cobject_var(ثابت حرف*name, vvp_net_t*net);
 
 /*
  * When a loaded VPI module announces a system task/function, one
@@ -933,46 +933,46 @@ extern vpiHandle vpip_make_cobject_var(const char*name, vvp_net_t*net);
  * additional part is the vbit/vwid that is used by the put of the
  * system function call to place the values in the vthread bit space.
  */
-struct __vpiUserSystf : public __vpiHandle {
+ساخت __vpiUserSystf : عوامی __vpiHandle {
       __vpiUserSystf();
-      int get_type_code(void) const override;
+      صحیح get_type_رمز(خالی) ثابت override;
 
-      s_vpi_systf_data info;
+      s_vpi_systf_ڈیٹا info;
       bool is_user_defn;
 };
 
-extern vpiHandle vpip_make_systf_iterator(void);
+خارجی vpiHandle vpip_make_systf_iterator(خالی);
 
-extern struct __vpiUserSystf* vpip_find_systf(const char*name);
+خارجی ساخت __vpiUserSystf* vpip_ڈھونڈو_systf(ثابت حرف*name);
 
 
-struct __vpiSysTaskCall : public __vpiHandle {
+ساخت __vpiSysTaskCall : عوامی __vpiHandle {
 
       __vpiScope* scope;
-      struct __vpiUserSystf*defn;
-      unsigned nargs;
-      vpiHandle*args;
+      ساخت __vpiUserSystf*defn;
+      غیرعلامتی nargs;
+      vpiHandle*دلائل;
 	/* Stack consumed by this call */
-      unsigned vec4_stack;
-      unsigned real_stack;
-      unsigned string_stack;
+      غیرعلامتی vec4_ڈھیر;
+      غیرعلامتی real_ڈھیر;
+      غیرعلامتی string_ڈھیر;
 	/* Support for vpi_get_userdata. */
-      void*userdata;
+      خالی*userdata;
 	// This is set if this is a structural call to a function
       class    vvp_net_t*fnet;
-      unsigned file_idx;
-      unsigned lineno;
-      bool put_value;
-    protected:
-      inline __vpiSysTaskCall()
+      غیرعلامتی file_idx;
+      غیرعلامتی lineno;
+      bool put_قدر;
+    محفوظ:
+      اندرونی __vpiSysTaskCall()
       {
-	    vec4_stack = 0;
-	    real_stack = 0;
-	    string_stack = 0;
+	    vec4_ڈھیر = 0;
+	    real_ڈھیر = 0;
+	    string_ڈھیر = 0;
       }
 };
 
-extern struct __vpiSysTaskCall*vpip_cur_task;
+خارجی ساخت __vpiSysTaskCall*vpip_cur_task;
 
 /*
  * The persistent flag to vpip_make_string_const causes the created
@@ -983,48 +983,48 @@ extern struct __vpiSysTaskCall*vpip_cur_task;
  * text value string, and will delete it in the constructor.
  */
 
-vpiHandle vpip_make_string_const(char*text, bool persistent =true);
-vpiHandle vpip_make_string_param(const char*name, char*value, bool local_flag,
-                                 long file_idx, long lineno);
+vpiHandle vpip_make_string_const(حرف*متن, bool persistent =true);
+vpiHandle vpip_make_string_param(ثابت حرف*name, حرف*قدر, bool local_flag,
+                                 طویل file_idx, طویل lineno);
 
-struct __vpiBinaryConst : public __vpiHandle {
+ساخت __vpiBinaryConst : عوامی __vpiHandle {
       __vpiBinaryConst();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      صحیح get_type_رمز(خالی) ثابت override;
+      صحیح vpi_get(صحیح رمز) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
 
-      vvp_vector4_t bits;
+      vvp_vector4_t بٹ;
 	/* TRUE if this constant is signed. */
-      unsigned signed_flag :1;
+      غیرعلامتی signed_flag :1;
 	/* TRUE if this constant has an explicit size (i.e. 19'h0 vs. 'h0) */
-      unsigned sized_flag  :1;
+      غیرعلامتی sized_flag  :1;
 };
 
-vpiHandle vpip_make_binary_const(unsigned wid, const char*bits);
-vpiHandle vpip_make_binary_param(const char*name, const vvp_vector4_t&bits,
+vpiHandle vpip_make_ثنائی_const(غیرعلامتی wid, ثابت حرف*بٹ);
+vpiHandle vpip_make_ثنائی_param(ثابت حرف*name, ثابت vvp_vector4_t&بٹ,
 				 bool signed_flag, bool local_flag,
-				 long file_idx, long lineno);
+				 طویل file_idx, طویل lineno);
 
-class __vpiRealConst : public __vpiHandle {
-    public:
-      explicit __vpiRealConst(double);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+class __vpiRealConst : عوامی __vpiHandle {
+    عوامی:
+      explicit __vpiRealConst(دوہرا);
+      صحیح get_type_رمز(خالی) ثابت override;
+      صحیح vpi_get(صحیح رمز) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
 
-      double value;
+      دوہرا قدر;
 };
 
-vpiHandle vpip_make_real_const(double value);
-vpiHandle vpip_make_real_param(const char*name, double value, bool local_flag,
-                               long file_idx, long lineno);
+vpiHandle vpip_make_real_const(دوہرا قدر);
+vpiHandle vpip_make_real_param(ثابت حرف*name, دوہرا قدر, bool local_flag,
+                               طویل file_idx, طویل lineno);
 
-class __vpiNullConst : public __vpiHandle {
-    public:
+class __vpiNullConst : عوامی __vpiHandle {
+    عوامی:
       explicit __vpiNullConst();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      صحیح get_type_رمز(خالی) ثابت override;
+      صحیح vpi_get(صحیح رمز) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
 };
 
 vpiHandle vpip_make_null_const();
@@ -1034,14 +1034,14 @@ vpiHandle vpip_make_null_const();
  *  thread.
  */
 
-vpiHandle vpip_make_vthr_word(unsigned base, const char*type);
-vpiHandle vpip_make_vthr_str_stack(unsigned depth);
-vpiHandle vpip_make_vthr_vec4_stack(unsigned depth, bool signed_flag, unsigned wid);
+vpiHandle vpip_make_vthr_لفظ(غیرعلامتی بنیاد, ثابت حرف*type);
+vpiHandle vpip_make_vthr_str_ڈھیر(غیرعلامتی گہرائی);
+vpiHandle vpip_make_vthr_vec4_ڈھیر(غیرعلامتی گہرائی, bool signed_flag, غیرعلامتی wid);
 
-vpiHandle vpip_make_vthr_A(char*label, unsigned index);
-vpiHandle vpip_make_vthr_A(char*label, char*symbol);
-vpiHandle vpip_make_vthr_A(char*label, vpiHandle handle);
-vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned wid);
+vpiHandle vpip_make_vthr_A(حرف*label, غیرعلامتی اشاریہ);
+vpiHandle vpip_make_vthr_A(حرف*label, حرف*علامت);
+vpiHandle vpip_make_vthr_A(حرف*label, vpiHandle handle);
+vpiHandle vpip_make_vthr_APV(حرف*label, غیرعلامتی اشاریہ, غیرعلامتی ثنائی_ہندسہ, غیرعلامتی wid);
 
 /*
  * This function is called before any compilation to load VPI
@@ -1049,11 +1049,11 @@ vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned 
  * contained functions before compilation commences. It is called only
  * once per module.
  */
-extern "C" void vpip_load_module(const char*name);
+خارجی "C" خالی vpip_بھرو_module(ثابت حرف*name);
 
-extern "C" void vpip_clear_module_paths();
-extern "C" void vpip_add_module_path(const char *path);
-extern "C" void vpip_add_env_and_default_module_paths();
+خارجی "C" خالی vpip_clear_module_paths();
+خارجی "C" خالی vpip_جوڑو_module_راستہ(ثابت حرف *راستہ);
+خارجی "C" خالی vpip_جوڑو_env_and_default_module_paths();
 
 /*
  * The vpip_build_vpi_call function creates a __vpiSysTaskCall object
@@ -1074,22 +1074,22 @@ extern "C" void vpip_add_env_and_default_module_paths();
  * Note that the argv array is saved in the handle, and should should
  * not be released by the caller.
  */
-extern vpiHandle vpip_build_vpi_call(const char*name,
-				     int val_type, unsigned return_width,
+خارجی vpiHandle vpip_build_vpi_call(ثابت حرف*name,
+				     صحیح val_type, غیرعلامتی return_چوڑائی,
 				     class vvp_net_t*fnet,
 				     bool func_as_task_err,
 				     bool func_as_task_warn,
-				     unsigned argc,
+				     غیرعلامتی argc,
 				     vpiHandle*argv,
-				     unsigned vec4_stack,
-				     unsigned real_stack,
-				     unsigned string_stack,
-				     long file_idx,
-				     long lineno);
+				     غیرعلامتی vec4_ڈھیر,
+				     غیرعلامتی real_ڈھیر,
+				     غیرعلامتی string_ڈھیر,
+				     طویل file_idx,
+				     طویل lineno);
 
-extern vthread_t vpip_current_vthread;
+خارجی vthread_t vpip_current_vthread;
 
-extern void vpip_execute_vpi_call(vthread_t thr, vpiHandle obj);
+خارجی خالی vpip_execute_vpi_call(vthread_t thr, vpiHandle obj);
 
 
 /*
@@ -1097,24 +1097,24 @@ extern void vpip_execute_vpi_call(vthread_t thr, vpiHandle obj);
  * and to finish compilation in preparation for execution.
  */
 
-vpiHandle vpip_sim_time(__vpiScope*scope, bool is_stime);
+vpiHandle vpip_sim_وقت(__vpiScope*scope, bool is_stime);
 vpiHandle vpip_sim_realtime(__vpiScope*scope);
 
-extern int vpip_get_time_precision(void);
-extern void vpip_set_time_precision(int pres);
+خارجی صحیح vpip_get_وقت_precision(خالی);
+خارجی خالی vpip_سیٹ_وقت_precision(صحیح pres);
 
-extern __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj);
+خارجی __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj);
 
-extern int vpip_time_units_from_handle(vpiHandle obj);
-extern int vpip_time_precision_from_handle(vpiHandle obj);
+خارجی صحیح vpip_وقت_units_from_handle(vpiHandle obj);
+خارجی صحیح vpip_وقت_precision_from_handle(vpiHandle obj);
 
-extern double vpip_scaled_time_from_handle(vvp_time64_t time, vpiHandle obj);
+خارجی دوہرا vpip_scaled_وقت_from_handle(vvp_time64_t وقت, vpiHandle obj);
 
-extern void vpip_time_to_timestruct(struct t_vpi_time*ts, vvp_time64_t ti);
-extern vvp_time64_t vpip_timestruct_to_time(const struct t_vpi_time*ts);
+خارجی خالی vpip_وقت_مقصد_timestruct(ساخت t_vpi_وقت*ts, vvp_time64_t ti);
+خارجی vvp_time64_t vpip_timestruct_مقصد_وقت(ثابت ساخت t_vpi_وقت*ts);
 
-extern double vpip_time_to_scaled_real(vvp_time64_t ti, const __vpiScope*sc);
-extern vvp_time64_t vpip_scaled_real_to_time64(double val, const __vpiScope*sc);
+خارجی دوہرا vpip_وقت_مقصد_scaled_real(vvp_time64_t ti, ثابت __vpiScope*sc);
+خارجی vvp_time64_t vpip_scaled_real_مقصد_time64(دوہرا val, ثابت __vpiScope*sc);
 
 /*
  * These functions are used mostly as compile time to strings into
@@ -1124,8 +1124,8 @@ extern vvp_time64_t vpip_scaled_real_to_time64(double val, const __vpiScope*sc);
  * reuse it if it can. This us useful for handle names, which may be
  * reused in different scopes.
  */
-extern const char* vpip_string(const char*str);
-extern const char* vpip_name_string(const char*str);
+خارجی ثابت حرف* vpip_string(ثابت حرف*str);
+خارجی ثابت حرف* vpip_name_string(ثابت حرف*str);
 
 
 /*
@@ -1133,37 +1133,37 @@ extern const char* vpip_name_string(const char*str);
  * vectors. The input format is a vvp_vector4_t, and the result is
  * written into buf, without overflowing nbuf.
  */
-extern unsigned vpip_vec4_to_dec_str(const vvp_vector4_t&vec4,
-				     char *buf, unsigned int nbuf,
-				     int signed_flag);
+خارجی غیرعلامتی vpip_vec4_مقصد_dec_str(ثابت vvp_vector4_t&vec4,
+				     حرف *buf, غیرعلامتی صحیح nbuf,
+				     صحیح signed_flag);
 
 
-extern void vpip_vec4_to_hex_str(const vvp_vector4_t&bits, char*buf,
-				 unsigned nbuf);
+خارجی خالی vpip_vec4_مقصد_hex_str(ثابت vvp_vector4_t&بٹ, حرف*buf,
+				 غیرعلامتی nbuf);
 
-extern void vpip_vec4_to_oct_str(const vvp_vector4_t&bits, char*buf,
-				 unsigned nbuf);
+خارجی خالی vpip_vec4_مقصد_oct_str(ثابت vvp_vector4_t&بٹ, حرف*buf,
+				 غیرعلامتی nbuf);
 
-extern void vpip_bin_str_to_vec4(vvp_vector4_t&val, const char*buf);
-extern void vpip_oct_str_to_vec4(vvp_vector4_t&val, const char*str);
-extern void vpip_dec_str_to_vec4(vvp_vector4_t&val, const char*str);
-extern void vpip_hex_str_to_vec4(vvp_vector4_t&val, const char*str);
+خارجی خالی vpip_bin_str_مقصد_vec4(vvp_vector4_t&val, ثابت حرف*buf);
+خارجی خالی vpip_oct_str_مقصد_vec4(vvp_vector4_t&val, ثابت حرف*str);
+خارجی خالی vpip_dec_str_مقصد_vec4(vvp_vector4_t&val, ثابت حرف*str);
+خارجی خالی vpip_hex_str_مقصد_vec4(vvp_vector4_t&val, ثابت حرف*str);
 
-extern vvp_vector4_t vec4_from_vpi_value(s_vpi_value*vp, unsigned wid);
-extern double real_from_vpi_value(s_vpi_value*vp);
+خارجی vvp_vector4_t vec4_from_vpi_قدر(s_vpi_قدر*vp, غیرعلامتی wid);
+خارجی دوہرا real_from_vpi_قدر(s_vpi_قدر*vp);
 
-extern void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
-				bool signed_flag, s_vpi_value*vp);
-extern void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
-				bool signed_flag, s_vpi_value*vp);
-extern void vpip_real_get_value(double real, s_vpi_value*vp);
-extern void vpip_string_get_value(const std::string&val, s_vpi_value*vp);
+خارجی خالی vpip_vec4_get_قدر(ثابت vvp_vector4_t&لفظ_val, غیرعلامتی چوڑائی,
+				bool signed_flag, s_vpi_قدر*vp);
+خارجی خالی vpip_vec2_get_قدر(ثابت vvp_vector2_t&لفظ_val, غیرعلامتی چوڑائی,
+				bool signed_flag, s_vpi_قدر*vp);
+خارجی خالی vpip_real_get_قدر(دوہرا real, s_vpi_قدر*vp);
+خارجی خالی vpip_string_get_قدر(ثابت std::string&val, s_vpi_قدر*vp);
 
 /*
  * Function defined in vpi_signal.cc to manage vpi_get_* persistent
  * storage.
  */
-enum vpi_rbuf_t {
+شمار vpi_rbuf_t {
       RBUF_VAL =0,
 	/* Storage for *_get_value() */
       RBUF_STR,
@@ -1171,25 +1171,25 @@ enum vpi_rbuf_t {
       RBUF_DEL
 	/* Delete the storage for both buffers. */
 };
-extern void *need_result_buf(unsigned cnt, vpi_rbuf_t type);
+خارجی خالی *need_نتیجہ_buf(غیرعلامتی cnt, vpi_rbuf_t type);
 /* following two routines use need_result_buf(, RBUF_STR) */
-extern char *simple_set_rbuf_str(const char *s1);
-extern char *generic_get_str(int code, vpiHandle ref, const char *name, const char *index);
+خارجی حرف *simple_سیٹ_rbuf_str(ثابت حرف *s1);
+خارجی حرف *generic_get_str(صحیح رمز, vpiHandle ref, ثابت حرف *name, ثابت حرف *اشاریہ);
 
 /* A routine to find the enclosing module. */
-extern vpiHandle vpip_module(__vpiScope*scope);
+خارجی vpiHandle vpip_module(__vpiScope*scope);
 
-extern int vpip_delay_selection;
+خارجی صحیح vpip_delay_selection;
 
 /* A flag to disable output to MCD bit 0. */
-extern bool vpip_mcd0_disable;
+خارجی bool vpip_mcd0_disable;
 
-inline uint64_t vlg_round_to_u64(double rval)
+اندرونی uint64_t vlg_باری_مقصد_u64(دوہرا rval)
 {
       // Directly casting a negative double to an unsigned integer types is
       // undefined behavior and behaves differently on different architectures.
       // Cast to signed integer first to get the behavior we want.
-      return static_cast<uint64_t>(static_cast<int64_t>(std::round(rval)));
+      واپس static_cast<uint64_t>(static_cast<int64_t>(std::باری_2(rval)));
 }
 
-#endif /* IVL_vpi_priv_H */
+#اگر_ختم /* IVL_vpi_priv_H */

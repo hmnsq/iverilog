@@ -1,5 +1,5 @@
-#ifndef IVL_vvp_object_H
-#define IVL_vvp_object_H
+#اگر_غیر_تعریف_شدہ IVL_vvp_object_H
+#تعریف_کرو IVL_vvp_object_H
 /*
  * Copyright (c) 2012-2020 Stephen Williams (steve@icarus.com)
  *
@@ -29,70 +29,70 @@
  * smart pointer. This makes garbage collection automatic.
  */
 class vvp_object {
-    public:
-      inline vvp_object() { ref_cnt_ = 0; total_active_cnt_ += 1; }
-      virtual ~vvp_object() =0;
+    عوامی:
+      اندرونی vvp_object() { ref_cnt_ = 0; کل_فعال_cnt += 1; }
+      مجازی ~vvp_object() =0;
 
-      virtual void shallow_copy(const vvp_object*that);
-      virtual vvp_object* duplicate(void) const;
+      مجازی خالی shallow_copy(ثابت vvp_object*that);
+      مجازی vvp_object* duplicate(خالی) ثابت;
 
-      static void cleanup(void);
+      ساکن خالی cleanup(خالی);
 
-    private:
-      friend class vvp_object_t;
-      int ref_cnt_;
+    نجی:
+      دوست class vvp_object_t;
+      صحیح ref_cnt_;
 
-      static int total_active_cnt_;
+      ساکن صحیح کل_فعال_cnt;
 };
 
 class vvp_object_t {
-    public:
-      inline vvp_object_t() : ref_(0) { }
-      vvp_object_t(const vvp_object_t&that);
+    عوامی:
+      اندرونی vvp_object_t() : ref_(0) { }
+      vvp_object_t(ثابت vvp_object_t&that);
       explicit vvp_object_t(class vvp_object*that);
       ~vvp_object_t();
 
-      vvp_object_t& operator = (const vvp_object_t&that);
-      vvp_object_t& operator = (class vvp_object*that);
+      vvp_object_t& عامل = (ثابت vvp_object_t&that);
+      vvp_object_t& عامل = (class vvp_object*that);
 
-      void reset(vvp_object*tgt = 0);
+      خالی reset(vvp_object*tgt = 0);
 
-      bool test_nil() const { return ref_ == 0; }
-      inline bool operator == (const vvp_object_t&that) const
-          { return ref_ == that.ref_; }
-      inline bool operator != (const vvp_object_t&that) const
-          { return ref_ != that.ref_; }
+      bool test_nil() ثابت { واپس ref_ == 0; }
+      اندرونی bool عامل == (ثابت vvp_object_t&that) ثابت
+          { واپس ref_ == that.ref_; }
+      اندرونی bool عامل != (ثابت vvp_object_t&that) ثابت
+          { واپس ref_ != that.ref_; }
 
-      inline void shallow_copy(const vvp_object_t&that)
+      اندرونی خالی shallow_copy(ثابت vvp_object_t&that)
           { ref_->shallow_copy(that.ref_); }
-      inline vvp_object_t duplicate(void) const
-          { return vvp_object_t(ref_->duplicate()); }
+      اندرونی vvp_object_t duplicate(خالی) ثابت
+          { واپس vvp_object_t(ref_->duplicate()); }
 
-      template <class T> T*peek(void) const;
+      سانچہ <class T> T*peek(خالی) ثابت;
 
 	/* Stable ordering for array-of-handle sort (object identity). */
-      uintptr_t sort_order_key(void) const
+      uintptr_t ترتیب_دو_ترتیب_کلید(خالی) ثابت
       {
-	    return reinterpret_cast<uintptr_t>(ref_);
+	    واپس reinterpret_cast<uintptr_t>(ref_);
       }
 
-    private:
+    نجی:
       class vvp_object*ref_;
 };
 
-inline vvp_object_t::vvp_object_t(const vvp_object_t&that)
+اندرونی vvp_object_t::vvp_object_t(ثابت vvp_object_t&that)
 {
       ref_ = that.ref_;
-      if (ref_) ref_->ref_cnt_ += 1;
+      اگر (ref_) ref_->ref_cnt_ += 1;
 }
 
-inline vvp_object_t::vvp_object_t(class vvp_object*tgt)
+اندرونی vvp_object_t::vvp_object_t(class vvp_object*tgt)
 {
-      if (tgt) tgt->ref_cnt_ += 1;
+      اگر (tgt) tgt->ref_cnt_ += 1;
       ref_ = tgt;
 }
 
-inline vvp_object_t::~vvp_object_t()
+اندرونی vvp_object_t::~vvp_object_t()
 {
       reset(0);
 }
@@ -101,28 +101,28 @@ inline vvp_object_t::~vvp_object_t()
  * This is the workhorse of the vvp_object_t class. It manages the
  * pointer to the referenced object.
  */
-inline void vvp_object_t::reset(class vvp_object*tgt)
+اندرونی خالی vvp_object_t::reset(class vvp_object*tgt)
 {
-      if (tgt) tgt->ref_cnt_ += 1;
-      if (ref_) {
+      اگر (tgt) tgt->ref_cnt_ += 1;
+      اگر (ref_) {
 	    ref_->ref_cnt_ -= 1;
-	    if (ref_->ref_cnt_ <= 0) delete ref_;
+	    اگر (ref_->ref_cnt_ <= 0) delete ref_;
 	    ref_ = 0;
       }
       ref_ = tgt;
 }
 
-inline vvp_object_t& vvp_object_t::operator = (const vvp_object_t&that)
+اندرونی vvp_object_t& vvp_object_t::عامل = (ثابت vvp_object_t&that)
 {
-      if (this == &that) return *this;
+      اگر (this == &that) واپس *this;
       reset(that.ref_);
-      return *this;
+      واپس *this;
 }
 
-inline vvp_object_t& vvp_object_t::operator = (class vvp_object*that)
+اندرونی vvp_object_t& vvp_object_t::عامل = (class vvp_object*that)
 {
       reset(that);
-      return *this;
+      واپس *this;
 }
 
 /*
@@ -132,9 +132,9 @@ inline vvp_object_t& vvp_object_t::operator = (class vvp_object*that)
  *
  * NOTE: The vvp_object_t object retains ownership of the pointer!
  */
-template <class T> inline T*vvp_object_t::peek(void) const
+سانچہ <class T> اندرونی T*vvp_object_t::peek(خالی) ثابت
 {
-      return dynamic_cast<T*> (ref_);
+      واپس dynamic_cast<T*> (ref_);
 }
 
-#endif /* IVL_vvp_object_H */
+#اگر_ختم /* IVL_vvp_object_H */

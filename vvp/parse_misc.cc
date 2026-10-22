@@ -23,77 +23,77 @@
 # include  <cstdlib>
 # include  "ivl_alloc.h"
 
-const char*yypath;
-unsigned yyline;
+ثابت حرف*yypath;
+غیرعلامتی yyline;
 
-void yyerror(const char*msg)
+خالی yyerror(ثابت حرف*پیغام)
 {
-      fprintf(stderr, "%s:%u: %s\n", yypath, yyline, msg);
+      fprintf(stderr, "%s:%u: %s\n", yypath, yyline, پیغام);
 }
 
-void symbv_init(struct symbv_s*obj)
+خالی symbv_init(ساخت symbv_s*obj)
 {
       obj->cnt = 0;
       obj->vect = 0;
 }
 
-void symbv_add(struct symbv_s*obj, struct symb_s item)
+خالی symbv_جوڑو(ساخت symbv_s*obj, ساخت symb_s شے)
 {
-      obj->vect = static_cast<struct symb_s*>
-                             (realloc(obj->vect, (obj->cnt+1) * sizeof(struct symb_s)));
-      obj->vect[obj->cnt] = item;
+      obj->vect = static_cast<ساخت symb_s*>
+                             (realloc(obj->vect, (obj->cnt+1) * حجم(ساخت symb_s)));
+      obj->vect[obj->cnt] = شے;
       obj->cnt += 1;
 }
 
-void numbv_init(struct numbv_s*obj)
+خالی numbv_init(ساخت numbv_s*obj)
 {
       obj->cnt = 0;
       obj->nvec = 0;
 }
 
-void numbv_add(struct numbv_s*obj, long item)
+خالی numbv_جوڑو(ساخت numbv_s*obj, طویل شے)
 {
-      obj->nvec = static_cast<long*>(realloc(obj->nvec, (obj->cnt+1) * sizeof(long)));
-      obj->nvec[obj->cnt] = item;
+      obj->nvec = static_cast<طویل*>(realloc(obj->nvec, (obj->cnt+1) * حجم(طویل)));
+      obj->nvec[obj->cnt] = شے;
       obj->cnt += 1;
 }
 
-void numbv_clear(struct numbv_s*obj)
+خالی numbv_clear(ساخت numbv_s*obj)
 {
-      free(obj->nvec);
+      آزاد(obj->nvec);
       obj->nvec = 0;
       obj->cnt = 0;
 }
 
-void argv_init(struct argv_s*obj)
+خالی argv_init(ساخت argv_s*obj)
 {
       obj->argc = 0;
       obj->argv = 0;
       obj->syms = 0;
 }
 
-void argv_add(struct argv_s*obj, vpiHandle item)
+خالی argv_جوڑو(ساخت argv_s*obj, vpiHandle شے)
 {
       obj->argv = static_cast<vpiHandle*>
-                             (realloc(obj->argv, (obj->argc+1)*sizeof(vpiHandle)));
-      obj->argv[obj->argc] = item;
+                             (realloc(obj->argv, (obj->argc+1)*حجم(vpiHandle)));
+      obj->argv[obj->argc] = شے;
       obj->argc += 1;
 }
 
-void argv_sym_add(struct argv_s*obj, char *item)
+خالی argv_sym_جوڑو(ساخت argv_s*obj, حرف *شے)
 {
-      argv_add(obj, 0x0);
-      obj->syms = static_cast<char**>
-                             (realloc(obj->syms, (obj->argc)*sizeof(char*)));
-      obj->syms[obj->argc-1] = item;
+      argv_جوڑو(obj, 0x0);
+      obj->syms = static_cast<حرف**>
+                             (realloc(obj->syms, (obj->argc)*حجم(حرف*)));
+      obj->syms[obj->argc-1] = شے;
 }
 
-void argv_sym_lookup(struct argv_s*obj)
+خالی argv_sym_lookup(ساخت argv_s*obj)
 {
-      if (!obj->syms)
-	    return;
-      for (unsigned i=0; i < obj->argc; i++)
-	    if (!obj->argv[i])
+      اگر (!obj->syms)
+	    واپس;
+      برائے (غیرعلامتی i=0; i < obj->argc; i++)
+	    اگر (!obj->argv[i])
 		  compile_vpi_lookup(&obj->argv[i], obj->syms[i]);
-      free(obj->syms);
+      آزاد(obj->syms);
 }

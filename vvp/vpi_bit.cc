@@ -27,134 +27,134 @@
 # include <cassert>
 
 
-static const __vpiBit*bit_from_handle(const __vpiHandle*ref)
+ساکن ثابت __vpiBit*ثنائی_ہندسہ_from_handle(ثابت __vpiHandle*ref)
 {
-      if (ref == NULL) return NULL;
-      const __vpiBit::as_bit_t*ptr = dynamic_cast<const __vpiBit::as_bit_t*> (ref);
-      if (ptr == NULL) return NULL;
-      return reinterpret_cast<const struct __vpiBit*>(ref);
+      اگر (ref == تہی) واپس تہی;
+      ثابت __vpiBit::as_ثنائی_ہندسہ_t*ptr = dynamic_cast<ثابت __vpiBit::as_ثنائی_ہندسہ_t*> (ref);
+      اگر (ptr == تہی) واپس تہی;
+      واپس reinterpret_cast<ثابت ساخت __vpiBit*>(ref);
 }
 
-static __vpiBit*bit_from_handle(__vpiHandle*ref)
+ساکن __vpiBit*ثنائی_ہندسہ_from_handle(__vpiHandle*ref)
 {
-      if (ref == NULL) return NULL;
-      const __vpiBit::as_bit_t*ptr = dynamic_cast<__vpiBit::as_bit_t*> (ref);
-      if (ptr == NULL) return NULL;
-      return reinterpret_cast<struct __vpiBit*>(ref);
+      اگر (ref == تہی) واپس تہی;
+      ثابت __vpiBit::as_ثنائی_ہندسہ_t*ptr = dynamic_cast<__vpiBit::as_ثنائی_ہندسہ_t*> (ref);
+      اگر (ptr == تہی) واپس تہی;
+      واپس reinterpret_cast<ساخت __vpiBit*>(ref);
 }
 
-static int bit_get_type(const __vpiBit*rfp)
+ساکن صحیح ثنائی_ہندسہ_get_type(ثابت __vpiBit*rfp)
 {
-      assert(rfp);
+      أكد(rfp);
 
-      const struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ثابت ساخت __vpiSignal*والد = rfp->get_والد();
+      أكد(والد);
 
-      switch (parent->get_type_code()) {
-	case vpiNet:
-	    return vpiNetBit;
-	case vpiReg:
-	    return vpiRegBit;
+      انتخاب (والد->get_type_رمز()) {
+	حالت vpiNet:
+	    واپس vpi_Net_ثنائی_ہندسہ;
+	حالت vpiReg:
+	    واپس vpi_Reg_ثنائی_ہندسہ;
       }
-      assert(0);
-      return 0;
+      أكد(0);
+      واپس 0;
 }
 
-static int bit_get(int code, vpiHandle ref)
+ساکن صحیح ثنائی_ہندسہ_get(صحیح code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      ساخت __vpiBit*rfp = ثنائی_ہندسہ_from_handle(ref);
+      أكد(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ساخت __vpiSignal*والد = rfp->get_والد();
+      أكد(والد);
 
-      switch (code) {
-	case vpiArray:  // A bit is not an array
-	    return 0;
+      انتخاب (code) {
+	حالت vpiArray:  // A bit is not an array
+	    واپس 0;
 
-	case vpiAutomatic:
-	    return vpi_get(vpiAutomatic, parent);
+	حالت vpiAutomatic:
+	    واپس vpi_get(vpiAutomatic, والد);
 
-	case vpiIndex:
+	حالت vpi_اشاریہ_2:
 	    {
-		  s_vpi_value vp;
+		  s_vpi_قدر vp;
 		  vp.format = vpiIntVal;
-		  vpi_get_value(rfp->index, &vp);
-		  return vp.value.integer;
+		  vpi_get_قدر(rfp->اشاریہ, &vp);
+		  واپس vp.value.integer;
 	    }
 
-	case vpiLineNo:
-	    return vpi_get(vpiLineNo, parent);
+	حالت vpi_سطر_No:
+	    واپس vpi_get(vpi_سطر_No, والد);
 
-	case vpiScalar:  // A bit is a scalar
-	    return 1;
+	حالت vpiScalar:  // A bit is a scalar
+	    واپس 1;
 
-	case vpiSigned:  // A bit is unsigned
-	    return 0;
+	حالت vpiSigned:  // A bit is unsigned
+	    واپس 0;
 
-	case vpiSize:  // A bit has a width of 1
-	    return 1;
+	حالت vpi_سائز:  // A bit has a width of 1
+	    واپس 1;
 
-	case vpiVector:  // A bit is not a vector
-	    return 0;
+	حالت vpi_سمتیہ:  // A bit is not a vector
+	    واپس 0;
 
-	default:
+	طےشدہ:
 	    fprintf(stderr, "VPI error: unknown bit_get property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    واپس vpiUndefined;
       }
 }
 
-static char* bit_get_str(int code, vpiHandle ref)
+ساکن حرف* ثنائی_ہندسہ_get_str(صحیح code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      ساخت __vpiBit*rfp = ثنائی_ہندسہ_from_handle(ref);
+      أكد(rfp);
 
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      اگر (code == vpiFile) {  // Not implemented for now!
+            واپس simple_سیٹ_rbuf_str(file_نام[0]);
       }
 
-      if ((code != vpiName) && (code != vpiFullName)) return NULL;
+      اگر ((code != vpiName) && (code != vpi_بھرا_Name)) واپس تہی;
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ساخت __vpiSignal*والد = rfp->get_والد();
+      أكد(والد);
 
-      char *nm;
-      const char *ixs;
-      nm = strdup(vpi_get_str(vpiName, parent));
-      s_vpi_value vp;
+      حرف *nm;
+      ثابت حرف *ixs;
+      nm = strdup(vpi_get_str(vpiName, والد));
+      s_vpi_قدر vp;
       vp.format = vpiDecStrVal;
-      vpi_get_value(rfp->index, &vp);
+      vpi_get_قدر(rfp->اشاریہ, &vp);
       ixs = vp.value.str;
 
-      char *rbuf = generic_get_str(code, vpip_scope(parent), nm, ixs);
-      free(nm);
-      return rbuf;
+      حرف *rbuf = generic_get_str(code, vpip_scope(والد), nm, ixs);
+      آزاد(nm);
+      واپس rbuf;
 }
 
-static vpiHandle bit_get_handle(int code, vpiHandle ref)
+ساکن vpiHandle ثنائی_ہندسہ_get_handle(صحیح code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      ساخت __vpiBit*rfp = ثنائی_ہندسہ_from_handle(ref);
+      أكد(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ساخت __vpiSignal*والد = rfp->get_والد();
+      أكد(والد);
 
-      switch (code) {
-	case vpiIndex:
-	    return rfp->index;
+      انتخاب (code) {
+	حالت vpi_اشاریہ_2:
+	    واپس rfp->اشاریہ;
 
-	case vpiParent:
-	    return parent;
+	حالت vpi_والد:
+	    واپس والد;
 
-	case vpiScope:
-	    return vpi_handle(vpiScope, parent);
+	حالت vpiScope:
+	    واپس vpi_handle(vpiScope, والد);
 
-	case vpiModule:
-	    return vpi_handle(vpiModule, parent);
+	حالت vpiModule:
+	    واپس vpi_handle(vpiModule, والد);
       }
 
-    return 0;
+    واپس 0;
 }
 
 /*
@@ -177,54 +177,54 @@ static vpiHandle bit_index(int idx, vpiHandle ref)
 }
 */
 
-static void bit_get_value(vpiHandle ref, s_vpi_value*vp)
+ساکن خالی ثنائی_ہندسہ_get_قدر(vpiHandle ref, s_vpi_قدر*vp)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      ساخت __vpiBit*rfp = ثنائی_ہندسہ_from_handle(ref);
+      أكد(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ساخت __vpiSignal*والد = rfp->get_والد();
+      أكد(والد);
 
-      parent->get_bit_value(rfp, vp);
+      والد->get_ثنائی_ہندسہ_قدر(rfp, vp);
 }
 
-static vpiHandle bit_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
+ساکن vpiHandle ثنائی_ہندسہ_put_قدر(vpiHandle ref, s_vpi_قدر*vp, صحیح flags)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      ساخت __vpiBit*rfp = ثنائی_ہندسہ_from_handle(ref);
+      أكد(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ساخت __vpiSignal*والد = rfp->get_والد();
+      أكد(والد);
 
-      return parent->put_bit_value(rfp, vp, flags);
+      واپس والد->put_ثنائی_ہندسہ_قدر(rfp, vp, flags);
 }
 
 
-int __vpiBit::get_index(void) const
+صحیح __vpiBit::get_اشاریہ(خالی) ثابت
 {
-      s_vpi_value vp;
+      s_vpi_قدر vp;
       vp.format = vpiIntVal;
-      vpi_get_value(index, &vp);
-      return vp.value.integer;
+      vpi_get_قدر(اشاریہ, &vp);
+      واپس vp.value.integer;
 }
 
-int __vpiBit::as_bit_t::get_type_code(void) const
-{ return bit_get_type(bit_from_handle(this)); }
+صحیح __vpiBit::as_ثنائی_ہندسہ_t::get_type_رمز(خالی) ثابت
+{ واپس ثنائی_ہندسہ_get_type(ثنائی_ہندسہ_from_handle(یہ)); }
 
-int __vpiBit::as_bit_t::vpi_get(int code)
-{ return bit_get(code, this); }
+صحیح __vpiBit::as_ثنائی_ہندسہ_t::vpi_get(صحیح code)
+{ واپس ثنائی_ہندسہ_get(code, یہ); }
 
-char* __vpiBit::as_bit_t::vpi_get_str(int code)
-{ return bit_get_str(code, this); }
+حرف* __vpiBit::as_ثنائی_ہندسہ_t::vpi_get_str(صحیح code)
+{ واپس ثنائی_ہندسہ_get_str(code, یہ); }
 
-void __vpiBit::as_bit_t::vpi_get_value(p_vpi_value val)
-{ bit_get_value(this, val); }
+خالی __vpiBit::as_ثنائی_ہندسہ_t::vpi_get_قدر(p_vpi_قدر val)
+{ ثنائی_ہندسہ_get_قدر(یہ, val); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_put_value(p_vpi_value val, int flags)
-{ return bit_put_value(this, val, flags); }
+vpiHandle __vpiBit::as_ثنائی_ہندسہ_t::vpi_put_قدر(p_vpi_قدر val, صحیح flags)
+{ واپس ثنائی_ہندسہ_put_قدر(یہ, val, flags); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_handle(int code)
-{ return bit_get_handle(code, this); }
+vpiHandle __vpiBit::as_ثنائی_ہندسہ_t::vpi_handle(صحیح code)
+{ واپس ثنائی_ہندسہ_get_handle(code, یہ); }
 
 // FIXME: How are delayed put values handled?
 //vpiHandle __vpiBit::as_bit_t::vpi_iterate(int code) // FIXME: Is this needed?

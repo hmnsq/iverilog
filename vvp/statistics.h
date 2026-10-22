@@ -1,5 +1,5 @@
-#ifndef IVL_statistics_H
-#define IVL_statistics_H
+#اگر_غیر_تعریف_شدہ IVL_statistics_H
+#تعریف_کرو IVL_statistics_H
 /*
  * Copyright (c) 2002-2014 Stephen Williams (steve@icarus.com)
  *
@@ -20,46 +20,46 @@
  */
 
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
-#ifdef __SUNPRO_CC
+#اگر_تعریف_شدہ __SUNPRO_CC
 # include  <stddef.h>
-#else
+#ورنہ
 # include  <cstddef>
-#endif
+#اگر_ختم
 
-extern unsigned long count_opcodes;
-extern unsigned long count_functors;
-extern unsigned long count_functors_logic;
-extern unsigned long count_functors_bufif;
-extern unsigned long count_functors_resolv;
-extern unsigned long count_functors_sig;
-extern unsigned long count_filters;
-extern unsigned long count_vvp_nets;
-extern unsigned long count_vpi_nets;
-extern unsigned long count_vpi_scopes;
+خارجی غیرعلامتی طویل گنتی_opcodes;
+خارجی غیرعلامتی طویل گنتی_functors;
+خارجی غیرعلامتی طویل گنتی_functors_logic;
+خارجی غیرعلامتی طویل گنتی_functors_bufif;
+خارجی غیرعلامتی طویل گنتی_functors_resolv;
+خارجی غیرعلامتی طویل گنتی_functors_sig;
+خارجی غیرعلامتی طویل گنتی_filters;
+خارجی غیرعلامتی طویل گنتی_vvp_nets;
+خارجی غیرعلامتی طویل گنتی_vpi_nets;
+خارجی غیرعلامتی طویل گنتی_vpi_scopes;
 
-extern unsigned long count_net_arrays;
-extern unsigned long count_net_array_words;
-extern unsigned long count_var_arrays;
-extern unsigned long count_var_array_words;
-extern unsigned long count_real_arrays;
-extern unsigned long count_real_array_words;
+خارجی غیرعلامتی طویل گنتی_net_arrays;
+خارجی غیرعلامتی طویل گنتی_net_array_الفاظ;
+خارجی غیرعلامتی طویل گنتی_var_arrays;
+خارجی غیرعلامتی طویل گنتی_var_array_الفاظ;
+خارجی غیرعلامتی طویل گنتی_real_arrays;
+خارجی غیرعلامتی طویل گنتی_real_array_الفاظ;
 
 
-extern unsigned long count_time_events;
-extern unsigned long count_time_pool(void);
+خارجی غیرعلامتی طویل گنتی_وقت_events;
+خارجی غیرعلامتی طویل گنتی_وقت_pool(خالی);
 
-extern unsigned long count_assign_events;
-extern unsigned long count_assign4_pool(void);
-extern unsigned long count_assign8_pool(void);
-extern unsigned long count_assign_real_pool(void);
-extern unsigned long count_assign_aword_pool(void);
-extern unsigned long count_assign_arword_pool(void);
+خارجی غیرعلامتی طویل گنتی_تفویض_events;
+خارجی غیرعلامتی طویل گنتی_assign4_pool(خالی);
+خارجی غیرعلامتی طویل گنتی_assign8_pool(خالی);
+خارجی غیرعلامتی طویل گنتی_تفویض_real_pool(خالی);
+خارجی غیرعلامتی طویل گنتی_تفویض_aword_pool(خالی);
+خارجی غیرعلامتی طویل گنتی_تفویض_arword_pool(خالی);
 
-extern unsigned long count_gen_events;
-extern unsigned long count_gen_pool(void);
+خارجی غیرعلامتی طویل گنتی_gen_events;
+خارجی غیرعلامتی طویل گنتی_gen_pool(خالی);
 
-extern size_t size_opcodes;
-extern size_t size_vvp_nets;
-extern size_t size_vvp_net_funs;
+خارجی size_t سائز_opcodes;
+خارجی size_t سائز_vvp_nets;
+خارجی size_t سائز_vvp_net_funs;
 
-#endif /* IVL_statistics_H */
+#اگر_ختم /* IVL_statistics_H */

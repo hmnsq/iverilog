@@ -1,5 +1,5 @@
-#ifndef IVL_resolv_H
-#define IVL_resolv_H
+#اگر_غیر_تعریف_شدہ IVL_resolv_H
+#تعریف_کرو IVL_resolv_H
 /*
  * Copyright (c) 2001-2025 Stephen Williams (steve@icarus.com)
  *
@@ -30,70 +30,70 @@
  * actual functors.
  */
 
-class resolv_core : public vvp_net_fun_t {
+class resolv_core : عوامی vvp_net_fun_t {
 
-    public:
-      explicit resolv_core(unsigned nports, vvp_net_t*net);
-      virtual ~resolv_core() override;
+    عوامی:
+      explicit resolv_core(غیرعلامتی nports, vvp_net_t*net);
+      مجازی ~resolv_core() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      خالی recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override
-            { recv_vec4_(port.port(), bit); }
+            { recv_vec4_(پورٹ.پورٹ(), ثنائی_ہندسہ); }
 
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override
-            { recv_vec8_(port.port(), bit); }
+      خالی recv_vec8(vvp_net_ptr_t پورٹ, ثابت vvp_vector8_t&ثنائی_ہندسہ) override
+            { recv_vec8_(پورٹ.پورٹ(), ثنائی_ہندسہ); }
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override
-            { recv_vec4_pv_(port.port(), bit, base, vwid); }
+      خالی recv_vec4_pv(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+			غیرعلامتی بنیاد, غیرعلامتی vwid, vvp_context_t) override
+            { recv_vec4_pv_(پورٹ.پورٹ(), ثنائی_ہندسہ, بنیاد, vwid); }
 
-      void recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
-			unsigned base, unsigned vwid) override
-            { recv_vec8_pv_(port.port(), bit, base, vwid); }
+      خالی recv_vec8_pv(vvp_net_ptr_t پورٹ, ثابت vvp_vector8_t&ثنائی_ہندسہ,
+			غیرعلامتی بنیاد, غیرعلامتی vwid) override
+            { recv_vec8_pv_(پورٹ.پورٹ(), ثنائی_ہندسہ, بنیاد, vwid); }
 
-      virtual void count_drivers(unsigned bit_idx, unsigned counts[3]) =0;
+      مجازی خالی گنتی_drivers(غیرعلامتی ثنائی_ہندسہ_idx, غیرعلامتی counts[3]) =0;
 
-    private:
-      friend class resolv_extend;
-      virtual void recv_vec4_(unsigned port, const vvp_vector4_t&bit) =0;
-      virtual void recv_vec8_(unsigned port, const vvp_vector8_t&bit) =0;
+    نجی:
+      دوست class resolv_extend;
+      مجازی خالی recv_vec4_(غیرعلامتی پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ) =0;
+      مجازی خالی recv_vec8_(غیرعلامتی پورٹ, ثابت vvp_vector8_t&ثنائی_ہندسہ) =0;
 
-      void recv_vec4_pv_(unsigned port, const vvp_vector4_t&bit,
-			 unsigned base, unsigned vwid);
-      void recv_vec8_pv_(unsigned port, const vvp_vector8_t&bit,
-			 unsigned base, unsigned vwid);
+      خالی recv_vec4_pv_(غیرعلامتی پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+			 غیرعلامتی بنیاد, غیرعلامتی vwid);
+      خالی recv_vec8_pv_(غیرعلامتی پورٹ, ثابت vvp_vector8_t&ثنائی_ہندسہ,
+			 غیرعلامتی بنیاد, غیرعلامتی vwid);
 
-    protected:
-      unsigned nports_;
+    محفوظ:
+      غیرعلامتی nports_;
       vvp_net_t*net_;
 };
 
-class resolv_extend : public vvp_net_fun_t {
+class resolv_extend : عوامی vvp_net_fun_t {
 
-    public:
-      resolv_extend(resolv_core*core, unsigned port_base);
+    عوامی:
+      resolv_extend(resolv_core*core, غیرعلامتی پورٹ_بنیاد);
       ~resolv_extend() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      خالی recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                      vvp_context_t) override
-            { core_->recv_vec4_(port_base_ + port.port(), bit); }
+            { core_->recv_vec4_(پورٹ_بنیاد_2 + پورٹ.پورٹ(), ثنائی_ہندسہ); }
 
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override
-            { core_->recv_vec8_(port_base_ + port.port(), bit); }
+      خالی recv_vec8(vvp_net_ptr_t پورٹ, ثابت vvp_vector8_t&ثنائی_ہندسہ) override
+            { core_->recv_vec8_(پورٹ_بنیاد_2 + پورٹ.پورٹ(), ثنائی_ہندسہ); }
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override
-            { core_->recv_vec4_pv_(port_base_ + port.port(), bit,
-                                   base, vwid); }
+      خالی recv_vec4_pv(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+			غیرعلامتی بنیاد, غیرعلامتی vwid, vvp_context_t) override
+            { core_->recv_vec4_pv_(پورٹ_بنیاد_2 + پورٹ.پورٹ(), ثنائی_ہندسہ,
+                                   بنیاد, vwid); }
 
-      void recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
-			unsigned base, unsigned vwid) override
-            { core_->recv_vec8_pv_(port_base_ + port.port(), bit,
-                                   base, vwid); }
+      خالی recv_vec8_pv(vvp_net_ptr_t پورٹ, ثابت vvp_vector8_t&ثنائی_ہندسہ,
+			غیرعلامتی بنیاد, غیرعلامتی vwid) override
+            { core_->recv_vec8_pv_(پورٹ_بنیاد_2 + پورٹ.پورٹ(), ثنائی_ہندسہ,
+                                   بنیاد, vwid); }
 
-    private:
+    نجی:
       resolv_core*core_;
-      unsigned port_base_;
+      غیرعلامتی پورٹ_بنیاد_2;
 };
 
 /*
@@ -108,22 +108,22 @@ class resolv_extend : public vvp_net_fun_t {
  * strong values (or HiZ) for the sake of resolution. In any case, the
  * propagated value is a vvp_vector8_t value.
  */
-class resolv_tri : public resolv_core {
+class resolv_tri : عوامی resolv_core {
 
-    public:
-      explicit resolv_tri(unsigned nports, vvp_net_t*net,
-                          vvp_scalar_t hiz_value);
+    عوامی:
+      explicit resolv_tri(غیرعلامتی nports, vvp_net_t*net,
+                          vvp_scalar_t hiz_قدر);
       ~resolv_tri() override;
 
-      void count_drivers(unsigned bit_idx, unsigned counts[3]) override;
+      خالی گنتی_drivers(غیرعلامتی ثنائی_ہندسہ_idx, غیرعلامتی counts[3]) override;
 
-    private:
-      void recv_vec4_(unsigned port, const vvp_vector4_t&bit) override;
-      void recv_vec8_(unsigned port, const vvp_vector8_t&bit) override;
+    نجی:
+      خالی recv_vec4_(غیرعلامتی پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ) override;
+      خالی recv_vec8_(غیرعلامتی پورٹ, ثابت vvp_vector8_t&ثنائی_ہندسہ) override;
 
-    private:
+    نجی:
         // The puller value to be used when a bit is not driven.
-      vvp_scalar_t hiz_value_;
+      vvp_scalar_t hiz_قدر_2;
         // The array of input values.
       vvp_vector8_t*val_;
 };
@@ -137,44 +137,44 @@ class resolv_tri : public resolv_core {
  * value. It also takes in vvp_vector8_t values, which it reduces to
  * 4-state values for the sake of resolution.
  */
-class resolv_wired_logic : public resolv_core {
+class resolv_wired_logic : عوامی resolv_core {
 
-    public:
-      explicit resolv_wired_logic(unsigned nports, vvp_net_t*net);
-      virtual ~resolv_wired_logic() override;
+    عوامی:
+      explicit resolv_wired_logic(غیرعلامتی nports, vvp_net_t*net);
+      مجازی ~resolv_wired_logic() override;
 
-      void count_drivers(unsigned bit_idx, unsigned counts[3]) override;
+      خالی گنتی_drivers(غیرعلامتی ثنائی_ہندسہ_idx, غیرعلامتی counts[3]) override;
 
-    protected:
-      virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) =0;
+    محفوظ:
+      مجازی vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) =0;
 
-    private:
-      void recv_vec4_(unsigned port, const vvp_vector4_t&bit) override;
-      void recv_vec8_(unsigned port, const vvp_vector8_t&bit) override;
+    نجی:
+      خالی recv_vec4_(غیرعلامتی پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ) override;
+      خالی recv_vec8_(غیرعلامتی پورٹ, ثابت vvp_vector8_t&ثنائی_ہندسہ) override;
 
-    private:
+    نجی:
         // The array of input values.
       vvp_vector4_t*val_;
 };
 
-class resolv_triand : public resolv_wired_logic {
+class resolv_triand : عوامی resolv_wired_logic {
 
-    public:
-      explicit resolv_triand(unsigned nports, vvp_net_t*net);
+    عوامی:
+      explicit resolv_triand(غیرعلامتی nports, vvp_net_t*net);
       ~resolv_triand() override;
 
-    private:
-      virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
+    نجی:
+      مجازی vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
 };
 
-class resolv_trior : public resolv_wired_logic {
+class resolv_trior : عوامی resolv_wired_logic {
 
-    public:
-      explicit resolv_trior(unsigned nports, vvp_net_t*net);
+    عوامی:
+      explicit resolv_trior(غیرعلامتی nports, vvp_net_t*net);
       ~resolv_trior() override;
 
-    private:
-      virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
+    نجی:
+      مجازی vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
 };
 
-#endif /* IVL_resolv_H */
+#اگر_ختم /* IVL_resolv_H */

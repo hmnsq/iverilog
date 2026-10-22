@@ -19,185 +19,185 @@
 
 # include  "compile.h"
 # include  "enum_type.h"
-#ifdef CHECK_WITH_VALGRIND
+#اگر_تعریف_شدہ CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#اگر_ختم
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+استعمال نامخلا std;
 
-struct enumconst_s : public __vpiHandle {
+ساخت enumconst_s : عوامی __vpiHandle {
       enumconst_s();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      صحیح get_type_رمز(خالی) ثابت override;
+      صحیح vpi_get(صحیح code) override;
+      حرف* vpi_get_str(صحیح code) override;
+      خالی vpi_get_قدر(p_vpi_قدر val) override;
 
-      const char*name;
-      bool is_signed;
+      ثابت حرف*name;
+      منطقی is_signed;
       vvp_vector2_t val2;
       vvp_vector4_t val4;
 };
 
-struct __vpiEnumTypespec : public __vpiHandle {
+ساخت __vpiEnumTypespec : عوامی __vpiHandle {
       __vpiEnumTypespec();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+      صحیح get_type_رمز(خالی) ثابت override;
+      صحیح vpi_get(صحیح code) override;
+      vpiHandle vpi_iterate(صحیح code) override;
 
-      std::vector<enumconst_s> names;
-      int base_type_code;
-      bool is_signed;
+      std::vector<enumconst_s> نام;
+      صحیح بنیاد_type_رمز;
+      منطقی is_signed;
 };
 
 
-inline __vpiEnumTypespec::__vpiEnumTypespec()
+اندرونی __vpiEnumTypespec::__vpiEnumTypespec()
 { }
 
-int __vpiEnumTypespec::get_type_code(void) const
-{ return vpiEnumTypespec; }
+صحیح __vpiEnumTypespec::get_type_رمز(خالی) ثابت
+{ واپس vpiEnumTypespec; }
 
-int __vpiEnumTypespec::vpi_get(int code)
+صحیح __vpiEnumTypespec::vpi_get(صحیح code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return names.size();
+      انتخاب (code) {
+	  حالت vpi_سائز:
+	    واپس نام.size();
 
 	    /* This is not currently set correctly. We always use vpiReg for
 	     * four state variables and vpiBitVar for two state variables.
 	     * This minimal functionality is needed to get the next() and
 	     * prev() methods to work correctly with invalid values. */
-	  case vpiBaseTypespec:
-	    return base_type_code;
+	  حالت vpi_بنیاد_Typespec:
+	    واپس بنیاد_type_رمز;
 
-	  case vpiSigned:
-	    return is_signed;
+	  حالت vpiSigned:
+	    واپس is_signed;
 
-	  default:
+	  طےشدہ:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by __vpiEnumTypespec\n", code);
-	    assert(0);
-	    return 0;
+	    أكد(0);
+	    واپس 0;
       }
 }
 
 
-vpiHandle __vpiEnumTypespec::vpi_iterate(int code)
+vpiHandle __vpiEnumTypespec::vpi_iterate(صحیح code)
 {
-      if (code == vpiEnumConst) {
-	    vpiHandle*args = static_cast<vpiHandle*>
-	                                (calloc(names.size(), sizeof(vpiHandle*)));
-	    for (size_t idx = 0 ; idx < names.size() ; idx += 1)
-		  args[idx] = &names[idx];
+      اگر (code == vpiEnumConst) {
+	    vpiHandle*دلائل = static_cast<vpiHandle*>
+	                                (صفر_حافظہ_دو(نام.size(), حجم(vpiHandle*)));
+	    برائے (size_t idx = 0 ; idx < نام.size() ; idx += 1)
+		  دلائل[idx] = &نام[idx];
 
-	    return vpip_make_iterator(names.size(), args, true);
+	    واپس vpip_make_iterator(نام.size(), دلائل, سچ);
       }
 
-      return 0;
+      واپس 0;
 }
 
 
-inline enumconst_s::enumconst_s()
+اندرونی enumconst_s::enumconst_s()
 { }
 
-int enumconst_s::get_type_code(void) const
-{ return vpiEnumConst; }
+صحیح enumconst_s::get_type_رمز(خالی) ثابت
+{ واپس vpiEnumConst; }
 
-int enumconst_s::vpi_get(int code)
+صحیح enumconst_s::vpi_get(صحیح code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return val4.size()? val4.size() : val2.size();
-	  default:
-	    return 0;
+      انتخاب (code) {
+	  حالت vpi_سائز:
+	    واپس val4.size()? val4.size() : val2.size();
+	  طےشدہ:
+	    واپس 0;
       }
 }
 
 
-char* enumconst_s::vpi_get_str(int code)
+حرف* enumconst_s::vpi_get_str(صحیح code)
 {
-      switch (code) {
-	  case vpiName:
-	    return const_cast<char*> (name);
-	  default:
-	    return 0;
+      انتخاب (code) {
+	  حالت vpiName:
+	    واپس const_cast<حرف*> (name);
+	  طےشدہ:
+	    واپس 0;
       }
 }
 
 
-void enumconst_s::vpi_get_value(p_vpi_value val)
+خالی enumconst_s::vpi_get_قدر(p_vpi_قدر val)
 {
-      if (val4.size() > 0) {
-	    vpip_vec4_get_value(val4, val4.size(), is_signed, val);
-      } else {
-	    vpip_vec2_get_value(val2, val2.size(), is_signed, val);
+      اگر (val4.size() > 0) {
+	    vpip_vec4_get_قدر(val4, val4.size(), is_signed, val);
+      } ورنہ {
+	    vpip_vec2_get_قدر(val2, val2.size(), is_signed, val);
       }
 }
 
 
-void compile_enum2_type(char*label, long width, bool signed_flag,
-                        std::list<struct enum_name_s>*names)
+خالی compile_enum2_type(حرف*label, طویل width, منطقی signed_flag,
+                        std::list<ساخت enum_name_s>*نام)
 {
-      struct __vpiEnumTypespec*spec = new struct __vpiEnumTypespec;
-      spec->names = std::vector<enumconst_s> (names->size());
+      ساخت __vpiEnumTypespec*spec = نیا ساخت __vpiEnumTypespec;
+      spec->نام = std::vector<enumconst_s> (نام->size());
       spec->is_signed = signed_flag;
-      spec->base_type_code = vpiBitVar;
+      spec->بنیاد_type_رمز = vpi_ثنائی_ہندسہ_Var;
 
       size_t idx = 0;
-      for (list<struct enum_name_s>::iterator cur = names->begin()
-		 ; cur != names->end() ;  ++cur, ++idx) {
-	    assert(cur->val4 == 0);
-	    spec->names[idx].name = cur->text;
-	    spec->names[idx].val2 = vvp_vector2_t(cur->val2, width);
-	    spec->names[idx].is_signed = signed_flag;
+      برائے (list<ساخت enum_name_s>::iterator cur = نام->begin()
+		 ; cur != نام->انتہا() ;  ++cur, ++idx) {
+	    أكد(cur->val4 == 0);
+	    spec->نام[idx].name = cur->متن;
+	    spec->نام[idx].val2 = vvp_vector2_t(cur->val2, width);
+	    spec->نام[idx].is_signed = signed_flag;
       }
 
-      assert(idx == spec->names.size());
-      compile_vpi_symbol(label, spec);
-      vpip_attach_to_current_scope(spec);
+      أكد(idx == spec->نام.size());
+      compile_vpi_علامت(label, spec);
+      vpip_attach_مقصد_current_scope(spec);
 
-      free(label);
-      delete names;
+      آزاد(label);
+      حذف نام;
 }
 
-void compile_enum4_type(char*label, long width, bool signed_flag,
-                        std::list<struct enum_name_s>*names)
+خالی compile_enum4_type(حرف*label, طویل width, منطقی signed_flag,
+                        std::list<ساخت enum_name_s>*نام)
 {
-      struct __vpiEnumTypespec*spec = new struct __vpiEnumTypespec;
-      spec->names = std::vector<enumconst_s> (names->size());
+      ساخت __vpiEnumTypespec*spec = نیا ساخت __vpiEnumTypespec;
+      spec->نام = std::vector<enumconst_s> (نام->size());
       spec->is_signed = signed_flag;
-      spec->base_type_code = vpiReg;
+      spec->بنیاد_type_رمز = vpiReg;
 
       size_t idx = 0;
-      for (list<struct enum_name_s>::iterator cur = names->begin()
-		 ; cur != names->end() ;  ++cur, ++idx) {
-	    spec->names[idx].name = cur->text;
-	    assert(cur->val4);
-	    spec->names[idx].val4 = vector4_from_text(cur->val4, width);
-	    spec->names[idx].is_signed = signed_flag;
-	    free(cur->val4);
+      برائے (list<ساخت enum_name_s>::iterator cur = نام->begin()
+		 ; cur != نام->انتہا() ;  ++cur, ++idx) {
+	    spec->نام[idx].name = cur->متن;
+	    أكد(cur->val4);
+	    spec->نام[idx].val4 = vector4_from_متن(cur->val4, width);
+	    spec->نام[idx].is_signed = signed_flag;
+	    آزاد(cur->val4);
 	    cur->val4 = 0;
       }
 
-      assert(idx == spec->names.size());
-      compile_vpi_symbol(label, spec);
-      vpip_attach_to_current_scope(spec);
+      أكد(idx == spec->نام.size());
+      compile_vpi_علامت(label, spec);
+      vpip_attach_مقصد_current_scope(spec);
 
-      free(label);
-      delete names;
+      آزاد(label);
+      حذف نام;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void enum_delete(vpiHandle item)
+#اگر_تعریف_شدہ CHECK_WITH_VALGRIND
+خالی enum_delete(vpiHandle شے)
 {
-      struct __vpiEnumTypespec*obj = dynamic_cast<__vpiEnumTypespec*>(item);
+      ساخت __vpiEnumTypespec*obj = dynamic_cast<__vpiEnumTypespec*>(شے);
 
-      for (vector<enumconst_s>::iterator iter = obj->names.begin();
-           iter != obj->names.end(); ++ iter ) {
-	    delete [] iter->name;
+      برائے (vector<enumconst_s>::iterator iter = obj->نام.begin();
+           iter != obj->نام.انتہا(); ++ iter ) {
+	    حذف [] iter->name;
       }
 
-      delete obj;
+      حذف obj;
 }
-#endif
+#اگر_ختم

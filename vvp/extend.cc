@@ -23,8 +23,8 @@
 # include  <iostream>
 # include  <cassert>
 
-vvp_fun_extend_signed::vvp_fun_extend_signed(unsigned wid)
-: width_(wid)
+vvp_fun_extend_signed::vvp_fun_extend_signed(غیرعلامتی wid)
+: چوڑائی_2(wid)
 {
 }
 
@@ -32,28 +32,28 @@ vvp_fun_extend_signed::~vvp_fun_extend_signed()
 {
 }
 
-void vvp_fun_extend_signed::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+خالی vvp_fun_extend_signed::recv_vec4(vvp_net_ptr_t پورٹ, ثابت vvp_vector4_t&ثنائی_ہندسہ,
                                       vvp_context_t)
 {
-      if (bit.size() >= width_) {
-	    port.ptr()->send_vec4(bit, 0);
-	    return;
+      اگر (ثنائی_ہندسہ.size() >= چوڑائی_2) {
+	    پورٹ.ptr()->send_vec4(ثنائی_ہندسہ, 0);
+	    واپس;
       }
 
-      vvp_vector4_t res (width_);
+      vvp_vector4_t res (چوڑائی_2);
 
-      for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1)
-	    res.set_bit(idx, bit.value(idx));
+      برائے (غیرعلامتی idx = 0 ;  idx < ثنائی_ہندسہ.size() ;  idx += 1)
+	    res.سیٹ_ثنائی_ہندسہ(idx, ثنائی_ہندسہ.value(idx));
 
-      vvp_bit4_t pad = bit.size() > 0? bit.value(bit.size()-1) : BIT4_0;
-      for (unsigned idx = bit.size() ;  idx < res.size() ;  idx += 1)
-	    res.set_bit(idx, pad);
+      vvp_bit4_t pad = ثنائی_ہندسہ.size() > 0? ثنائی_ہندسہ.value(ثنائی_ہندسہ.size()-1) : BIT4_0;
+      برائے (غیرعلامتی idx = ثنائی_ہندسہ.size() ;  idx < res.size() ;  idx += 1)
+	    res.سیٹ_ثنائی_ہندسہ(idx, pad);
 
-      port.ptr()->send_vec4(res, 0);
+      پورٹ.ptr()->send_vec4(res, 0);
 }
 
-void vvp_fun_extend_signed::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-					 unsigned base, unsigned vwid, vvp_context_t ctx)
+خالی vvp_fun_extend_signed::recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ثنائی_ہندسہ,
+					 غیرعلامتی بنیاد, غیرعلامتی vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, ثنائی_ہندسہ, بنیاد, vwid, ctx);
 }

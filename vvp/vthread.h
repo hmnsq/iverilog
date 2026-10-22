@@ -1,5 +1,5 @@
-#ifndef IVL_vthread_H
-#define IVL_vthread_H
+#اگر_غیر_تعریف_شدہ IVL_vthread_H
+#تعریف_کرو IVL_vthread_H
 /*
  * Copyright (c) 2001-2020 Stephen Williams (steve@icarus.com)
  *
@@ -34,8 +34,8 @@
  * fetching the next instruction.
  */
 
-typedef struct vthread_s* vthread_t;
-typedef struct vvp_code_s*vvp_code_t;
+قسمتعریف ساخت vthread_s* vthread_t;
+قسمتعریف ساخت vvp_رمز_s*vvp_رمز_t;
 class __vpiScope;
 
 /*
@@ -43,18 +43,18 @@ class __vpiScope;
  * address. The generated thread is ready to run, but is not yet
  * scheduled.
  */
-extern vthread_t vthread_new(vvp_code_t sa, __vpiScope*scope);
+خارجی vthread_t vthread_new(vvp_رمز_t sa, __vpiScope*scope);
 
 /*
  * This function marks the thread as scheduled. It is used only by the
  * schedule_vthread function.
  */
-extern void vthread_mark_scheduled(vthread_t thr);
+خارجی خالی vthread_mark_scheduled(vthread_t thr);
 
 /*
  * This function marks the thread as being a final procedure.
  */
-extern void vthread_mark_final(vthread_t thr);
+خارجی خالی vthread_mark_final(vthread_t thr);
 
 /*
  * This function causes deletion of the currently running thread to
@@ -62,13 +62,13 @@ extern void vthread_mark_final(vthread_t thr);
  * time step in which the thread terminates. It is only used by the
  * schedule_generic function.
  */
-extern void vthread_delay_delete();
+خارجی خالی vthread_delay_delete();
 
 /*
  * Cause this thread to execute instructions until in is put to sleep
  * by executing some sort of delay or wait instruction.
  */
-extern void vthread_run(vthread_t thr);
+خارجی خالی vthread_تسلسل(vthread_t thr);
 
 /*
  * This function schedules all the threads in the list to be scheduled
@@ -76,9 +76,9 @@ extern void vthread_run(vthread_t thr);
  * of a list, and all the threads in the list are presumably placed in
  * the list by the %wait instruction.
  */
-extern void vthread_schedule_list(vthread_t thr);
+خارجی خالی vthread_جدول_وقت_list(vthread_t thr);
 
-extern __vpiScope*vthread_scope(vthread_t thr);
+خارجی __vpiScope*vthread_scope(vthread_t thr);
 
 /*
  * This function returns a handle to the writable context of the currently
@@ -89,7 +89,7 @@ extern __vpiScope*vthread_scope(vthread_t thr);
  * the input parameters of an automatic task or function to be written to
  * the task/function local variables.
  */
-extern vvp_context_t vthread_get_wt_context();
+خارجی vvp_context_t vthread_get_wt_context();
 
 /*
  * This function returns a handle to the readable context of the currently
@@ -100,40 +100,40 @@ extern vvp_context_t vthread_get_wt_context();
  * thread, thus allowing the output parameters of an automatic task or
  * function to be read from the task/function local variables.
  */
-extern vvp_context_t vthread_get_rd_context();
+خارجی vvp_context_t vthread_get_rd_context();
 
 /*
  * This function returns a handle to an item in the writable context
  * of the currently running thread.
  */
-extern vvp_context_item_t vthread_get_wt_context_item(unsigned context_idx);
+خارجی vvp_context_شے_t vthread_get_wt_context_شے(غیرعلامتی context_idx);
 
 /*
  * This function returns a handle to an item in the readable context
  * of the currently running thread.
  */
-extern vvp_context_item_t vthread_get_rd_context_item(unsigned context_idx);
+خارجی vvp_context_شے_t vthread_get_rd_context_شے(غیرعلامتی context_idx);
 
 /*
  * Access value stacks from thread space.
  */
-extern void vthread_push(struct vthread_s*thr, const vvp_vector4_t&val);
-extern void vthread_push(struct vthread_s*thr, const std::string&val);
-extern void vthread_push(struct vthread_s*thr, double val);
+خارجی خالی vthread_ڈالو(ساخت vthread_s*thr, ثابت vvp_vector4_t&val);
+خارجی خالی vthread_ڈالو(ساخت vthread_s*thr, ثابت std::string&val);
+خارجی خالی vthread_ڈالو(ساخت vthread_s*thr, دوہرا val);
 
-extern void vthread_pop_vec4(struct vthread_s*thr, unsigned count);
-extern void vthread_pop_str(struct vthread_s*thr, unsigned count);
-extern void vthread_pop_real(struct vthread_s*thr, unsigned count);
+خارجی خالی vthread_نکالو_vec4(ساخت vthread_s*thr, غیرعلامتی گنتی);
+خارجی خالی vthread_نکالو_str(ساخت vthread_s*thr, غیرعلامتی گنتی);
+خارجی خالی vthread_نکالو_real(ساخت vthread_s*thr, غیرعلامتی گنتی);
 
 
 /* Get the string from the requested position in the vthread string
    stack. The top of the stack is depth==0, and items below are
    depth==1, etc. */
-extern const std::string&vthread_get_str_stack(struct vthread_s*thr, unsigned depth);
-extern double vthread_get_real_stack(struct vthread_s*thr, unsigned depth);
-extern const vvp_vector4_t& vthread_get_vec4_stack(struct vthread_s*thr, unsigned depth);
+خارجی ثابت std::string&vthread_get_str_ڈھیر(ساخت vthread_s*thr, غیرعلامتی گہرائی);
+خارجی دوہرا vthread_get_real_ڈھیر(ساخت vthread_s*thr, غیرعلامتی گہرائی);
+خارجی ثابت vvp_vector4_t& vthread_get_vec4_ڈھیر(ساخت vthread_s*thr, غیرعلامتی گہرائی);
 
 /* This is used to actually delete a thread once we are done with it. */
-extern void vthread_delete(vthread_t thr);
+خارجی خالی vthread_delete(vthread_t thr);
 
-#endif /* IVL_vthread_H */
+#اگر_ختم /* IVL_vthread_H */
