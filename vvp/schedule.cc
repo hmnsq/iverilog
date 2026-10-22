@@ -55,8 +55,8 @@ unsigned long count_time_events = 0;
  * The event_s objects are base classes for the more specific sort of
  * event.
  */
-struct event_s {
-      struct event_s*next;
+sa_nracanaa event_s {
+      sa_nracanaa event_s*next;
       virtual ~event_s() { }
       virtual void run_run(void) =0;
 
@@ -64,8 +64,8 @@ struct event_s {
       virtual void single_step_display(void);
 
 	// Fallback new/delete
-      static void*operator new (size_t size) { return ::new char[size]; }
-      static void operator delete(void*ptr)  { ::delete[]( static_cast<char*>(ptr) ); }
+      static void*operator new (size_t size) { คืน ::new var_na[size]; }
+      static void operator delete(void*ptr)  { ::delete[]( static_cast<var_na*>(ptr) ); }
 };
 
 void event_s::single_step_display(void)
@@ -73,7 +73,7 @@ void event_s::single_step_display(void)
       std::cerr << "event_s: Step into event " << typeid(*this).name() << std::endl;
 }
 
-struct event_time_s {
+sa_nracanaa event_time_s {
       event_time_s() {
 	    count_time_events += 1;
 	    delay = 0;
@@ -88,15 +88,15 @@ struct event_time_s {
       }
       vvp_time64_t delay;
 
-      struct event_s*start;
-      struct event_s*active;
-      struct event_s*inactive;
-      struct event_s*nbassign;
-      struct event_s*rwsync;
-      struct event_s*rosync;
-      struct event_s*del_thr;
+      sa_nracanaa event_s*start;
+      sa_nracanaa event_s*active;
+      sa_nracanaa event_s*inactive;
+      sa_nracanaa event_s*nbassign;
+      sa_nracanaa event_s*rwsync;
+      sa_nracanaa event_s*rosync;
+      sa_nracanaa event_s*del_thr;
 
-      struct event_time_s*next;
+      sa_nracanaa event_time_s*next;
 
       static void* operator new (size_t);
       static void operator delete(void*obj, size_t s);
@@ -114,7 +114,7 @@ void vvp_gen_event_s::single_step_display(void)
 /*
  * Derived event types
  */
-struct vthread_event_s : public event_s {
+sa_nracanaa vthread_event_s : public event_s {
       vthread_t thr;
       void run_run(void) override;
       void single_step_display(void) override;
@@ -137,13 +137,13 @@ void vthread_event_s::single_step_display(void)
 	   << endl;
 }
 
-static const size_t VTHR_CHUNK_COUNT = 8192 / sizeof(struct vthread_event_s);
-static slab_t<sizeof(vthread_event_s),VTHR_CHUNK_COUNT> vthread_event_heap;
+static const size_t VTHR_CHUNK_COUNT = 8192 / parimaa_na(sa_nracanaa vthread_event_s);
+static slab_t<parimaa_na(vthread_event_s),VTHR_CHUNK_COUNT> vthread_event_heap;
 
-inline void* vthread_event_s::operator new(size_t size)
+anta_hstha void* vthread_event_s::operator new(size_t size)
 {
-      assert(size == sizeof(vthread_event_s));
-      return vthread_event_heap.alloc_slab();
+      assert(size == parimaa_na(vthread_event_s));
+      คืน vthread_event_heap.alloc_slab();
 }
 
 void vthread_event_s::operator delete(void*dptr)
@@ -151,7 +151,7 @@ void vthread_event_s::operator delete(void*dptr)
       vthread_event_heap.free_slab(dptr);
 }
 
-struct del_thr_event_s : public event_s {
+sa_nracanaa del_thr_event_s : public event_s {
       vthread_t thr;
       void run_run(void) override;
       void single_step_display(void) override;
@@ -169,7 +169,7 @@ void del_thr_event_s::single_step_display(void)
 	   << " scope=" << scope->vpi_get_str(vpiFullName) << endl;
 }
 
-struct assign_vector4_event_s  : public event_s {
+sa_nracanaa assign_vector4_event_s  : public event_s {
 	/* The default constructor. */
       explicit assign_vector4_event_s(const vvp_vector4_t&that) : val(that) {
 	    base = 0;
@@ -195,9 +195,9 @@ struct assign_vector4_event_s  : public event_s {
 void assign_vector4_event_s::run_run(void)
 {
       count_assign_events += 1;
-      if (vwid > 0)
+      ถ้า (vwid > 0)
 	    vvp_send_vec4_pv(ptr, val, base, vwid, 0);
-      else
+      มิฉะนั้น
 	    vvp_send_vec4(ptr, val, 0);
 }
 
@@ -207,13 +207,13 @@ void assign_vector4_event_s::single_step_display(void)
 	   << ", vwid=" << vwid << ", base=" << base << endl;
 }
 
-static const size_t ASSIGN4_CHUNK_COUNT = 524288 / sizeof(struct assign_vector4_event_s);
-static slab_t<sizeof(assign_vector4_event_s),ASSIGN4_CHUNK_COUNT> assign4_heap;
+static const size_t ASSIGN4_CHUNK_COUNT = 524288 / parimaa_na(sa_nracanaa assign_vector4_event_s);
+static slab_t<parimaa_na(assign_vector4_event_s),ASSIGN4_CHUNK_COUNT> assign4_heap;
 
-inline void* assign_vector4_event_s::operator new(size_t size)
+anta_hstha void* assign_vector4_event_s::operator new(size_t size)
 {
-      assert(size == sizeof(assign_vector4_event_s));
-      return assign4_heap.alloc_slab();
+      assert(size == parimaa_na(assign_vector4_event_s));
+      คืน assign4_heap.alloc_slab();
 }
 
 void assign_vector4_event_s::operator delete(void*dptr)
@@ -221,9 +221,9 @@ void assign_vector4_event_s::operator delete(void*dptr)
       assign4_heap.free_slab(dptr);
 }
 
-unsigned long count_assign4_pool(void) { return assign4_heap.pool; }
+unsigned long count_assign4_pool(void) { คืน assign4_heap.pool; }
 
-struct assign_vector8_event_s  : public event_s {
+sa_nracanaa assign_vector8_event_s  : public event_s {
       vvp_net_ptr_t ptr;
       vvp_vector8_t val;
       void run_run(void) override;
@@ -244,13 +244,13 @@ void assign_vector8_event_s::single_step_display(void)
       cerr << "assign_vector8_event: Propagate val=" << val << endl;
 }
 
-static const size_t ASSIGN8_CHUNK_COUNT = 8192 / sizeof(struct assign_vector8_event_s);
-static slab_t<sizeof(assign_vector8_event_s),ASSIGN8_CHUNK_COUNT> assign8_heap;
+static const size_t ASSIGN8_CHUNK_COUNT = 8192 / parimaa_na(sa_nracanaa assign_vector8_event_s);
+static slab_t<parimaa_na(assign_vector8_event_s),ASSIGN8_CHUNK_COUNT> assign8_heap;
 
-inline void* assign_vector8_event_s::operator new(size_t size)
+anta_hstha void* assign_vector8_event_s::operator new(size_t size)
 {
-      assert(size == sizeof(assign_vector8_event_s));
-      return assign8_heap.alloc_slab();
+      assert(size == parimaa_na(assign_vector8_event_s));
+      คืน assign8_heap.alloc_slab();
 }
 
 void assign_vector8_event_s::operator delete(void*dptr)
@@ -258,11 +258,11 @@ void assign_vector8_event_s::operator delete(void*dptr)
       assign8_heap.free_slab(dptr);
 }
 
-unsigned long count_assign8_pool() { return assign8_heap.pool; }
+unsigned long count_assign8_pool() { คืน assign8_heap.pool; }
 
-struct assign_real_event_s  : public event_s {
+sa_nracanaa assign_real_event_s  : public event_s {
       vvp_net_ptr_t ptr;
-      double val;
+      dviguu_na val;
       void run_run(void) override;
       void single_step_display(void) override;
 
@@ -281,13 +281,13 @@ void assign_real_event_s::single_step_display(void)
       cerr << "assign_real_event: Propagate val=" << val << endl;
 }
 
-static const size_t ASSIGNR_CHUNK_COUNT = 8192 / sizeof(struct assign_real_event_s);
-static slab_t<sizeof(assign_real_event_s),ASSIGNR_CHUNK_COUNT> assignr_heap;
+static const size_t ASSIGNR_CHUNK_COUNT = 8192 / parimaa_na(sa_nracanaa assign_real_event_s);
+static slab_t<parimaa_na(assign_real_event_s),ASSIGNR_CHUNK_COUNT> assignr_heap;
 
-inline void* assign_real_event_s::operator new (size_t size)
+anta_hstha void* assign_real_event_s::operator new (size_t size)
 {
-      assert(size == sizeof(assign_real_event_s));
-      return assignr_heap.alloc_slab();
+      assert(size == parimaa_na(assign_real_event_s));
+      คืน assignr_heap.alloc_slab();
 }
 
 void assign_real_event_s::operator delete(void*dptr)
@@ -295,9 +295,9 @@ void assign_real_event_s::operator delete(void*dptr)
       assignr_heap.free_slab(dptr);
 }
 
-unsigned long count_assign_real_pool(void) { return assignr_heap.pool; }
+unsigned long count_assign_real_pool(void) { คืน assignr_heap.pool; }
 
-struct assign_array_word_s  : public event_s {
+sa_nracanaa assign_array_word_s  : public event_s {
       vvp_array_t mem;
       unsigned adr;
       vvp_vector4_t val;
@@ -314,13 +314,13 @@ void assign_array_word_s::run_run(void)
       mem->set_word(adr, off, val);
 }
 
-static const size_t ARRAY_W_CHUNK_COUNT = 8192 / sizeof(struct assign_array_word_s);
-static slab_t<sizeof(assign_array_word_s),ARRAY_W_CHUNK_COUNT> array_w_heap;
+static const size_t ARRAY_W_CHUNK_COUNT = 8192 / parimaa_na(sa_nracanaa assign_array_word_s);
+static slab_t<parimaa_na(assign_array_word_s),ARRAY_W_CHUNK_COUNT> array_w_heap;
 
-inline void* assign_array_word_s::operator new (size_t size)
+anta_hstha void* assign_array_word_s::operator new (size_t size)
 {
-      assert(size == sizeof(assign_array_word_s));
-      return array_w_heap.alloc_slab();
+      assert(size == parimaa_na(assign_array_word_s));
+      คืน array_w_heap.alloc_slab();
 }
 
 void assign_array_word_s::operator delete(void*ptr)
@@ -328,9 +328,9 @@ void assign_array_word_s::operator delete(void*ptr)
       array_w_heap.free_slab(ptr);
 }
 
-unsigned long count_assign_aword_pool(void) { return array_w_heap.pool; }
+unsigned long count_assign_aword_pool(void) { คืน array_w_heap.pool; }
 
-struct force_vector4_event_s  : public event_s {
+sa_nracanaa force_vector4_event_s  : public event_s {
 	/* The default constructor. */
       explicit force_vector4_event_s(const vvp_vector4_t&that): val(that) {
 	    net = NULL;
@@ -359,13 +359,13 @@ void force_vector4_event_s::run_run(void)
       count_assign_events += 1;
 
       unsigned wid = val.size();
-      if ((base + wid) > vwid)
+      ถ้า ((base + wid) > vwid)
 	    wid = vwid - base;
 
 	// Make a mask of which bits are to be forced, 0 for unforced
 	// bits and 1 for forced bits.
       vvp_vector2_t mask (vvp_vector2_t::FILL0, vwid);
-      for (unsigned idx = 0 ; idx < wid ; idx += 1)
+      สำหรับ (unsigned idx = 0 ; idx < wid ; idx += 1)
 	    mask.set_bit(base+idx, 1);
 
       vvp_vector4_t tmp (vwid, BIT4_Z);
@@ -387,13 +387,13 @@ void force_vector4_event_s::single_step_display(void)
 	   << ", vwid=" << vwid << ", base=" << base << endl;
 }
 
-static const size_t FORCE4_CHUNK_COUNT = 8192 / sizeof(struct force_vector4_event_s);
-static slab_t<sizeof(force_vector4_event_s),FORCE4_CHUNK_COUNT> force4_heap;
+static const size_t FORCE4_CHUNK_COUNT = 8192 / parimaa_na(sa_nracanaa force_vector4_event_s);
+static slab_t<parimaa_na(force_vector4_event_s),FORCE4_CHUNK_COUNT> force4_heap;
 
-inline void* force_vector4_event_s::operator new(size_t size)
+anta_hstha void* force_vector4_event_s::operator new(size_t size)
 {
-      assert(size == sizeof(force_vector4_event_s));
-      return force4_heap.alloc_slab();
+      assert(size == parimaa_na(force_vector4_event_s));
+      คืน force4_heap.alloc_slab();
 }
 
 void force_vector4_event_s::operator delete(void*dptr)
@@ -401,13 +401,13 @@ void force_vector4_event_s::operator delete(void*dptr)
       force4_heap.free_slab(dptr);
 }
 
-unsigned long count_force4_pool(void) { return force4_heap.pool; }
+unsigned long count_force4_pool(void) { คืน force4_heap.pool; }
 
 /*
  * This class supports the propagation of vec4 outputs from a
  * vvp_net_t object.
  */
-struct propagate_vector4_event_s : public event_s {
+sa_nracanaa propagate_vector4_event_s : public event_s {
 	/* The default constructor. */
       explicit propagate_vector4_event_s(const vvp_vector4_t&that) : val(that) {
 	    net = NULL;
@@ -443,11 +443,11 @@ void propagate_vector4_event_s::single_step_display(void)
  * This class supports the propagation of real outputs from a
  * vvp_net_t object.
  */
-struct propagate_real_event_s : public event_s {
+sa_nracanaa propagate_real_event_s : public event_s {
 	/* Propagate the output of this net. */
       vvp_net_t*net;
 	/* value to propagate */
-      double val;
+      dviguu_na val;
 	/* Action */
       void run_run(void) override;
       void single_step_display(void) override;
@@ -463,10 +463,10 @@ void propagate_real_event_s::single_step_display(void)
       cerr << "propagate_real_event: Propagate val=" << val << endl;
 }
 
-struct assign_array_r_word_s  : public event_s {
+sa_nracanaa assign_array_r_word_s  : public event_s {
       vvp_array_t mem;
       unsigned adr;
-      double val;
+      dviguu_na val;
       void run_run(void) override;
 
       static void* operator new(size_t);
@@ -478,13 +478,13 @@ void assign_array_r_word_s::run_run(void)
       count_assign_events += 1;
       mem->set_word(adr, val);
 }
-static const size_t ARRAY_R_W_CHUNK_COUNT = 8192 / sizeof(struct assign_array_r_word_s);
-static slab_t<sizeof(assign_array_r_word_s),ARRAY_R_W_CHUNK_COUNT> array_r_w_heap;
+static const size_t ARRAY_R_W_CHUNK_COUNT = 8192 / parimaa_na(sa_nracanaa assign_array_r_word_s);
+static slab_t<parimaa_na(assign_array_r_word_s),ARRAY_R_W_CHUNK_COUNT> array_r_w_heap;
 
-inline void* assign_array_r_word_s::operator new(size_t size)
+anta_hstha void* assign_array_r_word_s::operator new(size_t size)
 {
-      assert(size == sizeof(assign_array_r_word_s));
-      return array_r_w_heap.alloc_slab();
+      assert(size == parimaa_na(assign_array_r_word_s));
+      คืน array_r_w_heap.alloc_slab();
 }
 
 void assign_array_r_word_s::operator delete(void*ptr)
@@ -492,9 +492,9 @@ void assign_array_r_word_s::operator delete(void*ptr)
       array_r_w_heap.free_slab(ptr);
 }
 
-unsigned long count_assign_arword_pool(void) { return array_r_w_heap.pool; }
+unsigned long count_assign_arword_pool(void) { คืน array_r_w_heap.pool; }
 
-struct generic_event_s : public event_s {
+sa_nracanaa generic_event_s : public event_s {
       vvp_gen_event_t obj;
       bool delete_obj_when_done;
       void run_run(void) override;
@@ -507,9 +507,9 @@ struct generic_event_s : public event_s {
 void generic_event_s::run_run(void)
 {
       count_gen_events += 1;
-      if (obj) {
+      ถ้า (obj) {
 	    obj->run_run();
-	    if (delete_obj_when_done)
+	    ถ้า (delete_obj_when_done)
 		  delete obj;
       }
 }
@@ -519,13 +519,13 @@ void generic_event_s::single_step_display(void)
       obj->single_step_display();
 }
 
-static const size_t GENERIC_CHUNK_COUNT = 131072 / sizeof(struct generic_event_s);
-static slab_t<sizeof(generic_event_s),GENERIC_CHUNK_COUNT> generic_event_heap;
+static const size_t GENERIC_CHUNK_COUNT = 131072 / parimaa_na(sa_nracanaa generic_event_s);
+static slab_t<parimaa_na(generic_event_s),GENERIC_CHUNK_COUNT> generic_event_heap;
 
-inline void* generic_event_s::operator new(size_t size)
+anta_hstha void* generic_event_s::operator new(size_t size)
 {
-      assert(size == sizeof(generic_event_s));
-      return generic_event_heap.alloc_slab();
+      assert(size == parimaa_na(generic_event_s));
+      คืน generic_event_heap.alloc_slab();
 }
 
 void generic_event_s::operator delete(void*ptr)
@@ -533,7 +533,7 @@ void generic_event_s::operator delete(void*ptr)
       generic_event_heap.free_slab(ptr);
 }
 
-unsigned long count_gen_pool(void) { return generic_event_heap.pool; }
+unsigned long count_gen_pool(void) { คืน generic_event_heap.pool; }
 
 /*
 ** These event_time_s will be required a lot, at high frequency.
@@ -541,29 +541,29 @@ unsigned long count_gen_pool(void) { return generic_event_heap.pool; }
 */
 
 
-static const size_t TIME_CHUNK_COUNT = 8192 / sizeof(struct event_time_s);
-static slab_t<sizeof(event_time_s),TIME_CHUNK_COUNT> event_time_heap;
+static const size_t TIME_CHUNK_COUNT = 8192 / parimaa_na(sa_nracanaa event_time_s);
+static slab_t<parimaa_na(event_time_s),TIME_CHUNK_COUNT> event_time_heap;
 
-inline void* event_time_s::operator new (size_t size)
+anta_hstha void* event_time_s::operator new (size_t size)
 {
-      assert(size == sizeof(struct event_time_s));
+      assert(size == parimaa_na(sa_nracanaa event_time_s));
       void*ptr = event_time_heap.alloc_slab();
-      return ptr;
+      คืน ptr;
 }
 
-inline void event_time_s::operator delete(void*ptr, size_t)
+anta_hstha void event_time_s::operator delete(void*ptr, size_t)
 {
       event_time_heap.free_slab(ptr);
 }
 
-unsigned long count_time_pool(void) { return event_time_heap.pool; }
+unsigned long count_time_pool(void) { คืน event_time_heap.pool; }
 
 /*
  * This is the head of the list of pending events. This includes all
  * the events that have not been executed yet, and reaches into the
  * future.
  */
-static struct event_time_s* sched_list = 0;
+static sa_nracanaa event_time_s* sched_list = 0;
 
 /*
  * This is a list of initialization events. The setup puts
@@ -571,12 +571,12 @@ static struct event_time_s* sched_list = 0;
  * simulation as a whole starts. This prevents time-0 triggers of
  * certain events.
  */
-static struct event_s* schedule_init_list = 0;
+static sa_nracanaa event_s* schedule_init_list = 0;
 
 /*
  * This is the head of the list of final events.
  */
-static struct event_s* schedule_final_list = 0;
+static sa_nracanaa event_s* schedule_final_list = 0;
 
 /*
  * This flag is true until a VPI task or function finishes the
@@ -587,29 +587,29 @@ static bool schedule_stopped_flag  = false;
 static bool schedule_single_step_flag = false;
 static bool no_signals_flag = false;
 
-void schedule_finish(int)
+void schedule_finish(จำนวนเต็ม)
 {
       schedule_runnable = false;
 }
 
-void schedule_stop(int)
+void schedule_stop(จำนวนเต็ม)
 {
       schedule_stopped_flag = true;
 }
 
-void schedule_single_step(int)
+void schedule_single_step(จำนวนเต็ม)
 {
       schedule_single_step_flag = true;
 }
 
 bool schedule_finished(void)
 {
-      return !schedule_runnable;
+      คืน !schedule_runnable;
 }
 
 bool schedule_stopped(void)
 {
-      return schedule_stopped_flag;
+      คืน schedule_stopped_flag;
 }
 
 extern "C" void vvp_no_signals(void)
@@ -624,49 +624,49 @@ extern "C" void vvp_no_signals(void)
  */
 extern bool stop_is_finish;
 
-extern "C" void signals_handler(int signum)
+extern "C" void signals_handler(จำนวนเต็ม signum)
 {
 #ifdef __MINGW32__
 	// Windows implements the original UNIX semantics for signal,
 	// so we have to re-establish the signal handler each time a
 	// signal is caught.
-      signal(signum, &signals_handler);
+      sa_nkeeta(signum, &signals_handler);
 #endif
-      if (signum != SIGINT)
+      ถ้า (signum != SIGINT)
 	    stop_is_finish = true;
       schedule_stopped_flag = true;
 }
 
 static void signals_capture(void)
 {
-      if (no_signals_flag)
-	   return;
+      ถ้า (no_signals_flag)
+	   คืน;
 #ifndef __MINGW32__
-      signal(SIGHUP,  &signals_handler);
+      sa_nkeeta(SIGHUP,  &signals_handler);
 #endif
-      signal(SIGINT,  &signals_handler);
-      signal(SIGTERM, &signals_handler);
+      sa_nkeeta(SIGINT,  &signals_handler);
+      sa_nkeeta(SIGTERM, &signals_handler);
 }
 
 static void signals_revert(void)
 {
-      if (no_signals_flag)
-	   return;
+      ถ้า (no_signals_flag)
+	   คืน;
 #ifndef __MINGW32__
-      signal(SIGHUP,  SIG_DFL);
+      sa_nkeeta(SIGHUP,  SIG_DFL);
 #endif
-      signal(SIGINT,  SIG_DFL);
-      signal(SIGTERM, SIG_DFL);
+      sa_nkeeta(SIGINT,  SIG_DFL);
+      sa_nkeeta(SIGTERM, SIG_DFL);
 }
 
 /*
  * This function puts an event on the end of the pre-simulation event queue.
  */
-static void schedule_init_event(struct event_s*cur)
+static void schedule_init_event(sa_nracanaa event_s*cur)
 {
-      if (schedule_init_list == 0) {
+      ถ้า (schedule_init_list == 0) {
             cur->next = cur;
-      } else {
+      } มิฉะนั้น {
             cur->next = schedule_init_list->next;
             schedule_init_list->next = cur;
       }
@@ -676,11 +676,11 @@ static void schedule_init_event(struct event_s*cur)
 /*
  * This function puts an event on the end of the post-simulation event queue.
  */
-static void schedule_final_event(struct event_s*cur)
+static void schedule_final_event(sa_nracanaa event_s*cur)
 {
-      if (schedule_final_list == 0) {
+      ถ้า (schedule_final_list == 0) {
             cur->next = cur;
-      } else {
+      } มิฉะนั้น {
             cur->next = schedule_final_list->next;
             schedule_final_list->next = cur;
       }
@@ -693,45 +693,45 @@ static void schedule_final_event(struct event_s*cur)
  * itself, and the structure is placed in the right place in the
  * queue.
  */
-typedef enum event_queue_e { SEQ_START, SEQ_ACTIVE, SEQ_INACTIVE, SEQ_NBASSIGN,
+typedef ga_nanaa event_queue_e { SEQ_START, SEQ_ACTIVE, SEQ_INACTIVE, SEQ_NBASSIGN,
 			     SEQ_RWSYNC, SEQ_ROSYNC, DEL_THREAD } event_queue_t;
 
-static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
+static void schedule_event_(sa_nracanaa event_s*cur, vvp_time64_t delay,
 			    event_queue_t select_queue)
 {
       cur->next = cur;
-      struct event_time_s*ctim = sched_list;
+      sa_nracanaa event_time_s*ctim = sched_list;
 
-      if (sched_list == 0) {
+      ถ้า (sched_list == 0) {
 	      /* Is the event_time list completely empty? Create the
 		 first event_time object. */
-	    ctim = new struct event_time_s;
+	    ctim = new sa_nracanaa event_time_s;
 	    ctim->delay = delay;
 	    ctim->next  = 0;
 	    sched_list = ctim;
 
-      } else if (sched_list->delay > delay) {
+      } มิฉะนั้น ถ้า (sched_list->delay > delay) {
 
 	      /* Am I looking for an event before the first event_time?
 		 If so, create a new event_time to go in front. */
-	    struct event_time_s*tmp = new struct event_time_s;
+	    sa_nracanaa event_time_s*tmp = new sa_nracanaa event_time_s;
 	    tmp->delay = delay;
 	    tmp->next = ctim;
 	    ctim->delay -= delay;
 	    ctim = tmp;
 	    sched_list = ctim;
 
-      } else {
-	    struct event_time_s*prev = 0;
+      } มิฉะนั้น {
+	    sa_nracanaa event_time_s*prev = 0;
 
-	    while (ctim->next && (ctim->delay < delay)) {
+	    ขณะ (ctim->next && (ctim->delay < delay)) {
 		  delay -= ctim->delay;
 		  prev = ctim;
 		  ctim = ctim->next;
 	    }
 
-	    if (ctim->delay > delay) {
-		  struct event_time_s*tmp = new struct event_time_s;
+	    ถ้า (ctim->delay > delay) {
+		  sa_nracanaa event_time_s*tmp = new sa_nracanaa event_time_s;
 		  tmp->delay = delay;
 		  tmp->next  = prev->next;
 		  prev->next = tmp;
@@ -739,11 +739,11 @@ static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
 		  tmp->next->delay -= delay;
 		  ctim = tmp;
 
-	    } else if (ctim->delay == delay) {
+	    } มิฉะนั้น ถ้า (ctim->delay == delay) {
 
-	    } else {
+	    } มิฉะนั้น {
 		  assert(ctim->next == 0);
-		  struct event_time_s*tmp = new struct event_time_s;
+		  sa_nracanaa event_time_s*tmp = new sa_nracanaa event_time_s;
 		  tmp->delay = delay - ctim->delay;
 		  tmp->next = 0;
 		  ctim->next = tmp;
@@ -756,41 +756,41 @@ static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
 	   receive the event at hand. Put the event in to the
 	   appropriate list for the kind of assign we have at hand. */
 
-      struct event_s** q = 0;
+      sa_nracanaa event_s** q = 0;
 
       switch (select_queue) {
-	  case SEQ_START:
+	  pak_sa SEQ_START:
 	    q = &ctim->start;
-	    break;
+	    bha_nga;
 
-	  case SEQ_ACTIVE:
+	  pak_sa SEQ_ACTIVE:
 	    q = &ctim->active;
-	    break;
+	    bha_nga;
 
-	  case SEQ_INACTIVE:
+	  pak_sa SEQ_INACTIVE:
 	    assert(delay == 0);
 	    q = &ctim->inactive;
-	    break;
+	    bha_nga;
 
-	  case SEQ_NBASSIGN:
+	  pak_sa SEQ_NBASSIGN:
 	    q = &ctim->nbassign;
-	    break;
+	    bha_nga;
 
-	  case SEQ_RWSYNC:
+	  pak_sa SEQ_RWSYNC:
 	    q = &ctim->rwsync;
-	    break;
+	    bha_nga;
 
-	  case SEQ_ROSYNC:
+	  pak_sa SEQ_ROSYNC:
 	    q = &ctim->rosync;
-	    break;
+	    bha_nga;
 
-	  case DEL_THREAD:
+	  pak_sa DEL_THREAD:
 	    q = &ctim->del_thr;
-	    break;
+	    bha_nga;
       }
 
-      if (q) {
-	    if (*q) {
+      ถ้า (q) {
+	    ถ้า (*q) {
 		  /* Put the cur event on the end of the queue. */
 		  cur->next = (*q)->next;
 		  (*q)->next = cur;
@@ -799,19 +799,19 @@ static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
       }
 }
 
-static void schedule_event_push_(struct event_s*cur)
+static void schedule_event_push_(sa_nracanaa event_s*cur)
 {
-      if ((sched_list == 0) || (sched_list->delay > 0)) {
+      ถ้า ((sched_list == 0) || (sched_list->delay > 0)) {
 	    schedule_event_(cur, 0, SEQ_ACTIVE);
-	    return;
+	    คืน;
       }
 
-      struct event_time_s*ctim = sched_list;
+      sa_nracanaa event_time_s*ctim = sched_list;
 
-      if (ctim->active == 0) {
+      ถ้า (ctim->active == 0) {
 	    cur->next = cur;
 	    ctim->active = cur;
-	    return;
+	    คืน;
       }
 
       cur->next = ctim->active->next;
@@ -820,19 +820,19 @@ static void schedule_event_push_(struct event_s*cur)
 
 void schedule_vthread(vthread_t thr, vvp_time64_t delay, bool push_flag)
 {
-      struct vthread_event_s*cur = new vthread_event_s;
+      sa_nracanaa vthread_event_s*cur = new vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_scheduled(thr);
 
-      if (push_flag && (delay == 0)) {
+      ถ้า (push_flag && (delay == 0)) {
 	      /* Special case: If the delay is 0, the push_flag means
 		 I can push this event in front of everything. This is
 		 used by the %fork statement, for example, to perform
 		 task calls. */
 	    schedule_event_push_(cur);
 
-      } else {
+      } มิฉะนั้น {
 	    schedule_event_(cur, delay, SEQ_ACTIVE);
       }
 }
@@ -840,14 +840,14 @@ void schedule_vthread(vthread_t thr, vvp_time64_t delay, bool push_flag)
 void schedule_t0_trigger(vvp_net_ptr_t ptr)
 {
       vvp_vector4_t bit (1, BIT4_X);
-      struct assign_vector4_event_s*cur = new struct assign_vector4_event_s(bit);
+      sa_nracanaa assign_vector4_event_s*cur = new sa_nracanaa assign_vector4_event_s(bit);
       cur->ptr = ptr;
       schedule_event_(cur, 0, SEQ_INACTIVE);
 }
 
 void schedule_inactive(vthread_t thr)
 {
-      struct vthread_event_s*cur = new vthread_event_s;
+      sa_nracanaa vthread_event_s*cur = new vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_scheduled(thr);
@@ -856,7 +856,7 @@ void schedule_inactive(vthread_t thr)
 
 void schedule_init_vthread(vthread_t thr)
 {
-      struct vthread_event_s*cur = new vthread_event_s;
+      sa_nracanaa vthread_event_s*cur = new vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_scheduled(thr);
@@ -866,7 +866,7 @@ void schedule_init_vthread(vthread_t thr)
 
 void schedule_final_vthread(vthread_t thr)
 {
-      struct vthread_event_s*cur = new vthread_event_s;
+      sa_nracanaa vthread_event_s*cur = new vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_final(thr);
@@ -880,7 +880,7 @@ void schedule_assign_vector(vvp_net_ptr_t ptr,
 			    const vvp_vector4_t&bit,
 			    vvp_time64_t delay)
 {
-      struct assign_vector4_event_s*cur = new struct assign_vector4_event_s(bit);
+      sa_nracanaa assign_vector4_event_s*cur = new sa_nracanaa assign_vector4_event_s(bit);
       cur->ptr = ptr;
       cur->base = base;
       cur->vwid = vwid;
@@ -892,7 +892,7 @@ void schedule_force_vector(vvp_net_t*net,
 			    const vvp_vector4_t&bit,
 			    vvp_time64_t delay)
 {
-      struct force_vector4_event_s*cur = new struct force_vector4_event_s(bit);
+      sa_nracanaa force_vector4_event_s*cur = new sa_nracanaa force_vector4_event_s(bit);
       cur->net = net;
       cur->base = base;
       cur->vwid = vwid;
@@ -903,8 +903,8 @@ void schedule_propagate_vector(vvp_net_t*net,
 			       vvp_time64_t delay,
 			       const vvp_vector4_t&src)
 {
-      struct propagate_vector4_event_s*cur
-	    = new struct propagate_vector4_event_s(src);
+      sa_nracanaa propagate_vector4_event_s*cur
+	    = new sa_nracanaa propagate_vector4_event_s(src);
       cur->net = net;
       schedule_event_(cur, delay, SEQ_NBASSIGN);
 }
@@ -916,8 +916,8 @@ void schedule_propagate_event(vvp_net_t*net,
                               vvp_time64_t delay)
 {
       vvp_vector4_t tmp (1, BIT4_X);
-      struct propagate_vector4_event_s*cur
-	    = new struct propagate_vector4_event_s(tmp);
+      sa_nracanaa propagate_vector4_event_s*cur
+	    = new sa_nracanaa propagate_vector4_event_s(tmp);
       cur->net = net;
       schedule_event_(cur, delay, SEQ_NBASSIGN);
 }
@@ -928,7 +928,7 @@ void schedule_assign_array_word(vvp_array_t mem,
 				const vvp_vector4_t&val,
 				vvp_time64_t delay)
 {
-      struct assign_array_word_s*cur = new struct assign_array_word_s;
+      sa_nracanaa assign_array_word_s*cur = new sa_nracanaa assign_array_word_s;
       cur->mem = mem;
       cur->adr = word_addr;
       cur->off = off;
@@ -938,10 +938,10 @@ void schedule_assign_array_word(vvp_array_t mem,
 
 void schedule_assign_array_word(vvp_array_t mem,
 				unsigned word_addr,
-				double val,
+				dviguu_na val,
 				vvp_time64_t delay)
 {
-      struct assign_array_r_word_s*cur = new struct assign_array_r_word_s;
+      sa_nracanaa assign_array_r_word_s*cur = new sa_nracanaa assign_array_r_word_s;
       cur->mem = mem;
       cur->adr = word_addr;
       cur->val = val;
@@ -950,7 +950,7 @@ void schedule_assign_array_word(vvp_array_t mem,
 
 void schedule_set_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&bit)
 {
-      struct assign_vector4_event_s*cur = new struct assign_vector4_event_s(bit);
+      sa_nracanaa assign_vector4_event_s*cur = new sa_nracanaa assign_vector4_event_s(bit);
       cur->ptr = ptr;
       cur->base = 0;
       cur->vwid = 0;
@@ -959,15 +959,15 @@ void schedule_set_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&bit)
 
 void schedule_set_vector(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
 {
-      struct assign_vector8_event_s*cur = new struct assign_vector8_event_s;
+      sa_nracanaa assign_vector8_event_s*cur = new sa_nracanaa assign_vector8_event_s;
       cur->ptr = ptr;
       cur->val = bit;
       schedule_event_(cur, 0, SEQ_ACTIVE);
 }
 
-void schedule_set_vector(vvp_net_ptr_t ptr, double bit)
+void schedule_set_vector(vvp_net_ptr_t ptr, dviguu_na bit)
 {
-      struct assign_real_event_s*cur = new struct assign_real_event_s;
+      sa_nracanaa assign_real_event_s*cur = new sa_nracanaa assign_real_event_s;
       cur->ptr = ptr;
       cur->val = bit;
       schedule_event_(cur, 0, SEQ_ACTIVE);
@@ -975,7 +975,7 @@ void schedule_set_vector(vvp_net_ptr_t ptr, double bit)
 
 void schedule_init_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&bit)
 {
-      struct assign_vector4_event_s*cur = new struct assign_vector4_event_s(bit);
+      sa_nracanaa assign_vector4_event_s*cur = new sa_nracanaa assign_vector4_event_s(bit);
       cur->ptr = ptr;
       cur->base = 0;
       cur->vwid = 0;
@@ -984,15 +984,15 @@ void schedule_init_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&bit)
 
 void schedule_init_vector(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
 {
-      struct assign_vector8_event_s*cur = new struct assign_vector8_event_s;
+      sa_nracanaa assign_vector8_event_s*cur = new sa_nracanaa assign_vector8_event_s;
       cur->ptr = ptr;
       cur->val = bit;
       schedule_init_event(cur);
 }
 
-void schedule_init_vector(vvp_net_ptr_t ptr, double bit)
+void schedule_init_vector(vvp_net_ptr_t ptr, dviguu_na bit)
 {
-      struct assign_real_event_s*cur = new struct assign_real_event_s;
+      sa_nracanaa assign_real_event_s*cur = new sa_nracanaa assign_real_event_s;
       cur->ptr = ptr;
       cur->val = bit;
       schedule_init_event(cur);
@@ -1000,14 +1000,14 @@ void schedule_init_vector(vvp_net_ptr_t ptr, double bit)
 
 void schedule_init_propagate(vvp_net_t*net, vvp_vector4_t bit)
 {
-      struct propagate_vector4_event_s*cur = new struct propagate_vector4_event_s(bit);
+      sa_nracanaa propagate_vector4_event_s*cur = new sa_nracanaa propagate_vector4_event_s(bit);
       cur->net = net;
       schedule_init_event(cur);
 }
 
-void schedule_init_propagate(vvp_net_t*net, double bit)
+void schedule_init_propagate(vvp_net_t*net, dviguu_na bit)
 {
-      struct propagate_real_event_s*cur = new struct propagate_real_event_s;
+      sa_nracanaa propagate_real_event_s*cur = new sa_nracanaa propagate_real_event_s;
       cur->net = net;
       cur->val = bit;
       schedule_init_event(cur);
@@ -1015,7 +1015,7 @@ void schedule_init_propagate(vvp_net_t*net, double bit)
 
 void schedule_del_thr(vthread_t thr)
 {
-      struct del_thr_event_s*cur = new del_thr_event_s;
+      sa_nracanaa del_thr_event_s*cur = new del_thr_event_s;
 
       cur->thr = thr;
 
@@ -1025,14 +1025,14 @@ void schedule_del_thr(vthread_t thr)
 void schedule_generic(vvp_gen_event_t obj, vvp_time64_t delay,
 		      bool sync_flag, bool ro_flag, bool delete_when_done)
 {
-      struct generic_event_s*cur = new generic_event_s;
+      sa_nracanaa generic_event_s*cur = new generic_event_s;
 
       cur->obj = obj;
       cur->delete_obj_when_done = delete_when_done;
       schedule_event_(cur, delay,
 		      sync_flag? (ro_flag?SEQ_ROSYNC:SEQ_RWSYNC) : SEQ_ACTIVE);
 
-      if (sync_flag)
+      ถ้า (sync_flag)
 	    vthread_delay_delete();
 }
 
@@ -1040,20 +1040,20 @@ static bool sim_started;
 
 void schedule_functor(vvp_gen_event_t obj)
 {
-      struct generic_event_s*cur = new generic_event_s;
+      sa_nracanaa generic_event_s*cur = new generic_event_s;
 
       cur->obj = obj;
       cur->delete_obj_when_done = false;
-      if (!sim_started) {
+      ถ้า (!sim_started) {
             schedule_init_event(cur);
-      } else {
+      } มิฉะนั้น {
             schedule_event_(cur, 0, SEQ_ACTIVE);
       }
 }
 
 void schedule_at_start_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
 {
-      struct generic_event_s*cur = new generic_event_s;
+      sa_nracanaa generic_event_s*cur = new generic_event_s;
 
       cur->obj = obj;
       cur->delete_obj_when_done = false;
@@ -1067,7 +1067,7 @@ void schedule_at_start_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
  */
 void schedule_at_end_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
 {
-      struct generic_event_s*cur = new generic_event_s;
+      sa_nracanaa generic_event_s*cur = new generic_event_s;
 
       cur->obj = obj;
       cur->delete_obj_when_done = false;
@@ -1076,11 +1076,11 @@ void schedule_at_end_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
 
 static vvp_time64_t schedule_time;
 vvp_time64_t schedule_simtime(void)
-{ return schedule_time; }
+{ คืน schedule_time; }
 
 static bool sim_at_rosync = false;
 bool schedule_at_rosync(void)
-{ return sim_at_rosync; }
+{ คืน sim_at_rosync; }
 
 /*
  * The scheduler uses this function to drain the rosync events of the
@@ -1092,14 +1092,14 @@ bool schedule_at_rosync(void)
  * Once all the rosync callbacks are done we can safely delete any
  * threads that finished during this time step.
  */
-static void run_rosync(struct event_time_s*ctim)
+static void run_rosync(sa_nracanaa event_time_s*ctim)
 {
       sim_at_rosync = true;
-      while (ctim->rosync) {
-	    struct event_s*cur = ctim->rosync->next;
-	    if (cur->next == cur) {
+      ขณะ (ctim->rosync) {
+	    sa_nracanaa event_s*cur = ctim->rosync->next;
+	    ถ้า (cur->next == cur) {
 		  ctim->rosync = 0;
-	    } else {
+	    } มิฉะนั้น {
 		  ctim->rosync->next = cur->next;
 	    }
 
@@ -1108,11 +1108,11 @@ static void run_rosync(struct event_time_s*ctim)
       }
       sim_at_rosync = false;
 
-      while (ctim->del_thr) {
-	    struct event_s*cur = ctim->del_thr->next;
-	    if (cur->next == cur) {
+      ขณะ (ctim->del_thr) {
+	    sa_nracanaa event_s*cur = ctim->del_thr->next;
+	    ถ้า (cur->next == cur) {
 		  ctim->del_thr = 0;
-	    } else {
+	    } มิฉะนั้น {
 		  ctim->del_thr->next = cur->next;
 	    }
 
@@ -1120,7 +1120,7 @@ static void run_rosync(struct event_time_s*ctim)
 	    delete cur;
       }
 
-      if (ctim->active || ctim->inactive || ctim->nbassign || ctim->rwsync) {
+      ถ้า (ctim->active || ctim->inactive || ctim->nbassign || ctim->rwsync) {
 	    cerr << "SCHEDULER ERROR: read-only sync events "
 		 << "created RW events!" << endl;
       }
@@ -1133,23 +1133,23 @@ void schedule_simulate(void)
 
       schedule_time = 0;
 
-      if (verbose_flag) {
+      ถ้า (verbose_flag) {
 	    vpi_mcd_printf(1, " ...execute EndOfCompile callbacks\n");
       }
 
       // Execute end of compile callbacks
       vpiEndOfCompile();
 
-      if (verbose_flag) {
+      ถ้า (verbose_flag) {
 	    vpi_mcd_printf(1, " ...propagate initialization events\n");
       }
 
 	// Execute initialization events.
-      while (schedule_init_list) {
-	    struct event_s*cur = schedule_init_list->next;
-	    if (cur->next == cur) {
+      ขณะ (schedule_init_list) {
+	    sa_nracanaa event_s*cur = schedule_init_list->next;
+	    ถ้า (cur->next == cur) {
 		  schedule_init_list = 0;
-	    } else {
+	    } มิฉะนั้น {
 		  schedule_init_list->next = cur->next;
 	    }
 	    cur->run_run();
@@ -1158,7 +1158,7 @@ void schedule_simulate(void)
 
       sim_started = true;
 
-      if (verbose_flag) {
+      ถ้า (verbose_flag) {
 	    vpi_mcd_printf(1, " ...execute StartOfSim callbacks\n");
       }
 
@@ -1167,7 +1167,7 @@ void schedule_simulate(void)
 
       signals_capture();
 
-      if (verbose_flag) {
+      ถ้า (verbose_flag) {
 	    vpi_mcd_printf(1, " ...run scheduler\n");
       }
 
@@ -1175,28 +1175,28 @@ void schedule_simulate(void)
       // process events and when done run the final blocks.
       run_finals = schedule_runnable;
 
-      if (schedule_runnable) while (sched_list) {
+      ถ้า (schedule_runnable) ขณะ (sched_list) {
 
-	    if (schedule_stopped_flag) {
+	    ถ้า (schedule_stopped_flag) {
 		  schedule_stopped_flag = false;
 		  stop_handler(0);
 		  // You can finish from the debugger without a time change.
-		  if (!schedule_runnable) break;
+		  ถ้า (!schedule_runnable) bha_nga;
 		  continue;
 	    }
 
 	      /* ctim is the current time step. */
-	    struct event_time_s* ctim = sched_list;
+	    sa_nracanaa event_time_s* ctim = sched_list;
 
 	      /* If the time is advancing, then first run the
 		 postponed sync events. Run them all. */
-	    if (ctim->delay > 0) {
+	    ถ้า (ctim->delay > 0) {
 
-		  if (!schedule_runnable) break;
+		  ถ้า (!schedule_runnable) bha_nga;
 		  schedule_time += ctim->delay;
 		    /* When the design is being traced (we are emitting
 		     * file/line information) also print any time changes. */
-		  if (show_file_line) {
+		  ถ้า (show_file_line) {
 			cerr << "Advancing to simulation time: "
 			     << schedule_time << endl;
 		  }
@@ -1204,11 +1204,11 @@ void schedule_simulate(void)
 
 		  vpiNextSimTime();
 		    // Process the cbAtStartOfSimTime callbacks.
-		  while (ctim->start) {
-			struct event_s*cur = ctim->start->next;
-			if (cur->next == cur) {
+		  ขณะ (ctim->start) {
+			sa_nracanaa event_s*cur = ctim->start->next;
+			ถ้า (cur->next == cur) {
 			      ctim->start = 0;
-			} else {
+			} มิฉะนั้น {
 			      ctim->start->next = cur->next;
 			}
 			cur->run_run();
@@ -1220,22 +1220,22 @@ void schedule_simulate(void)
 	      /* If there are no more active events, advance the event
 		 queues. If there are not events at all, then release
 		 the event_time object. */
-	    if (ctim->active == 0) {
+	    ถ้า (ctim->active == 0) {
 		  ctim->active = ctim->inactive;
 		  ctim->inactive = 0;
 
-		  if (ctim->active == 0) {
+		  ถ้า (ctim->active == 0) {
 			ctim->active = ctim->nbassign;
 			ctim->nbassign = 0;
 
-			if (ctim->active == 0) {
+			ถ้า (ctim->active == 0) {
 			      ctim->active = ctim->rwsync;
 			      ctim->rwsync = 0;
 
 				/* If out of rw events, then run the rosync
 				   events and delete this time step. This also
 				   deletes threads as needed. */
-			      if (ctim->active == 0) {
+			      ถ้า (ctim->active == 0) {
 				    run_rosync(ctim);
 				    sched_list = ctim->next;
 				    delete ctim;
@@ -1248,14 +1248,14 @@ void schedule_simulate(void)
 	      /* Pull the first item off the list. If this is the last
 		 cell in the list, then clear the list. Execute that
 		 event type, and delete it. */
-	    struct event_s*cur = ctim->active->next;
-	    if (cur->next == cur) {
+	    sa_nracanaa event_s*cur = ctim->active->next;
+	    ถ้า (cur->next == cur) {
 		  ctim->active = 0;
-	    } else {
+	    } มิฉะนั้น {
 		  ctim->active->next = cur->next;
 	    }
 
-	    if (schedule_single_step_flag) {
+	    ถ้า (schedule_single_step_flag) {
 		  cur->single_step_display();
 		  schedule_stopped_flag = true;
 		  schedule_single_step_flag = false;
@@ -1268,11 +1268,11 @@ void schedule_simulate(void)
 
 	// Execute final events.
       schedule_runnable = run_finals;
-      while (schedule_runnable && schedule_final_list) {
-	    struct event_s*cur = schedule_final_list->next;
-	    if (cur->next == cur) {
+      ขณะ (schedule_runnable && schedule_final_list) {
+	    sa_nracanaa event_s*cur = schedule_final_list->next;
+	    ถ้า (cur->next == cur) {
 		  schedule_final_list = 0;
-	    } else {
+	    } มิฉะนั้น {
 		  schedule_final_list->next = cur->next;
 	    }
 	    cur->run_run();
@@ -1281,7 +1281,7 @@ void schedule_simulate(void)
 
       signals_revert();
 
-      if (verbose_flag) {
+      ถ้า (verbose_flag) {
 	    vpi_mcd_printf(1, " ...execute Postsim callbacks\n");
       }
 

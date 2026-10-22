@@ -35,18 +35,18 @@ vvp_fun_extend_signed::~vvp_fun_extend_signed()
 void vvp_fun_extend_signed::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                                       vvp_context_t)
 {
-      if (bit.size() >= width_) {
+      ถ้า (bit.size() >= width_) {
 	    port.ptr()->send_vec4(bit, 0);
-	    return;
+	    คืน;
       }
 
       vvp_vector4_t res (width_);
 
-      for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1)
+      สำหรับ (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1)
 	    res.set_bit(idx, bit.value(idx));
 
       vvp_bit4_t pad = bit.size() > 0? bit.value(bit.size()-1) : BIT4_0;
-      for (unsigned idx = bit.size() ;  idx < res.size() ;  idx += 1)
+      สำหรับ (unsigned idx = bit.size() ;  idx < res.size() ;  idx += 1)
 	    res.set_bit(idx, pad);
 
       port.ptr()->send_vec4(res, 0);

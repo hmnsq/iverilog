@@ -32,7 +32,7 @@
  * output vector) can be worked out. The input vectors must match the
  * expected width.
  */
-class vvp_fun_concat  : public vvp_net_fun_t, protected vvp_gen_event_s  {
+class vvp_fun_concat  : public vvp_net_fun_t, rak_sita vvp_gen_event_s  {
 
     public:
       vvp_fun_concat(unsigned w0, unsigned w1,
@@ -52,7 +52,7 @@ class vvp_fun_concat  : public vvp_net_fun_t, protected vvp_gen_event_s  {
       vvp_net_t *net_ = nullptr;
 };
 
-class vvp_fun_concat8  : public vvp_net_fun_t, protected vvp_gen_event_s {
+class vvp_fun_concat8  : public vvp_net_fun_t, rak_sita vvp_gen_event_s {
 
     public:
       vvp_fun_concat8(unsigned w0, unsigned w1,
@@ -91,7 +91,7 @@ class vvp_fun_repeat  : public vvp_net_fun_t {
       void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                      vvp_context_t context) override;
       void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned int base, unsigned int vwid,
+			unsigned จำนวนเต็ม base, unsigned จำนวนเต็ม vwid,
 			vvp_context_t context) final;
 
     private:

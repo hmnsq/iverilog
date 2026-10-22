@@ -32,20 +32,20 @@
 
 class __vpiStringConst : public __vpiHandle {
     public:
-      explicit __vpiStringConst(char*val);
+      explicit __vpiStringConst(var_na*val);
       ~__vpiStringConst() override;
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
+      จำนวนเต็ม get_type_code(void) const override;
+      จำนวนเต็ม vpi_get(จำนวนเต็ม code) override;
       void vpi_get_value(p_vpi_value val) override;
 
     private:
       void process_string_();
     private:
-      char*value_;
+      var_na*value_;
       size_t value_len_;
 };
 
-inline __vpiStringConst::__vpiStringConst(char*v)
+anta_hstha __vpiStringConst::__vpiStringConst(var_na*v)
 : value_(v)
 {
       process_string_();
@@ -59,15 +59,15 @@ inline __vpiStringConst::__vpiStringConst(char*v)
  */
 void __vpiStringConst::process_string_(void)
 {
-      char*chr = value_;
-      char*dp = value_;
+      var_na*chr = value_;
+      var_na*dp = value_;
 
-      while (*chr) {
-	    char next_char = *chr;
+      ขณะ (*chr) {
+	    var_na next_char = *chr;
 
 	      /* Process octal escapes that I might find. */
-	    if (*chr == '\\') {
-		  for (int idx = 1 ;  idx <= 3 ;  idx += 1) {
+	    ถ้า (*chr == '\\') {
+		  สำหรับ (จำนวนเต็ม idx = 1 ;  idx <= 3 ;  idx += 1) {
 			assert(chr[idx] != 0);
 			assert(chr[idx] < '8');
 			assert(chr[idx] >= '0');
@@ -87,34 +87,34 @@ __vpiStringConst::~__vpiStringConst()
       delete[] value_;
 }
 
-int __vpiStringConst::get_type_code(void) const
-{ return vpiConstant; }
+จำนวนเต็ม __vpiStringConst::get_type_code(void) const
+{ คืน vpiConstant; }
 
-int __vpiStringConst::vpi_get(int code)
+จำนวนเต็ม __vpiStringConst::vpi_get(จำนวนเต็ม code)
 {
       switch (code) {
-          case vpiSize:
-	    return value_len_ * 8;
+          pak_sa vpiSize:
+	    คืน value_len_ * 8;
 
-          case vpiSigned:
-	      return 0;
+          pak_sa vpiSigned:
+	      คืน 0;
 
-	  case vpiConstType:
-	      return vpiStringConst;
+	  pak_sa vpiConstType:
+	      คืน vpiStringConst;
 
-          case vpiAutomatic:
-	      return 0;
+          pak_sa vpiAutomatic:
+	      คืน 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-          case _vpiFromThr:
-	      return _vpiNoThr;
+#ถ้า defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+          pak_sa _vpiFromThr:
+	      คืน _vpiNoThr;
 #endif
 
 	  default:
 	      fprintf(stderr, "vvp error: get %d not supported "
 		      "by vpiStringConst\n", code);
 	      assert(0);
-	      return 0;
+	      คืน 0;
       }
 }
 
@@ -123,171 +123,171 @@ void __vpiStringConst::vpi_get_value(p_vpi_value vp)
       unsigned uint_value;
       p_vpi_vecval vecp;
       unsigned size = value_len_;
-      char*rbuf = 0;
-      char*cp;
+      var_na*rbuf = 0;
+      var_na*cp;
 
       switch (vp->format) {
-	  case vpiObjTypeVal:
+	  pak_sa vpiObjTypeVal:
 	      /* String parameters by default have vpiStringVal values. */
 	    vp->format = vpiStringVal;
 	    // fallthrough
-	  case vpiStringVal:
+	  pak_sa vpiStringVal:
 	    cp = value_;
-	    rbuf = static_cast<char *>(need_result_buf(size + 1, RBUF_VAL));
+	    rbuf = static_cast<var_na *>(need_result_buf(size + 1, RBUF_VAL));
 	    vp->value.str = rbuf;
 
-	    for (unsigned int i = 0; i < size; i++) {
+	    สำหรับ (unsigned จำนวนเต็ม i = 0; i < size; i++) {
 		  // Ignore leading null-bytes and replace other null-bytes with space.
 		  // The LRM is not entirely clear on how null bytes should be handled.
 		  // This is the implementation chosen for iverilog.
-		  if (*cp)
+		  ถ้า (*cp)
 			*rbuf++ = *cp;
-		  else if (rbuf != vp->value.str)
+		  มิฉะนั้น ถ้า (rbuf != vp->value.str)
 			*rbuf++ = ' ';
 
 		  cp++;
 	    }
 	    *rbuf = '\0';
-	    break;
+	    bha_nga;
 
-          case vpiDecStrVal:
+          pak_sa vpiDecStrVal:
 	    // Take the (up to 4) characters of the text, convert the characters
 	    // to a numerical value, and convert that value to a decimal string.
 	    // For example, the string "A" is ASCII 65, so the resulting string
 	    // will be "65". and the string "AB" is 65*256 + 66 == 16706, so
 	    // the resulting string is "16706". The "size" is the number of
 	    // characters of input text to put to work.
-	    if (size > 4){
+	    ถ้า (size > 4){
 		  // We only support standard integers. Ignore other bytes...
 		  size = 4;
 		  fprintf(stderr, "Warning (vpi_const.cc): %%d on constant strings only looks "
 			  "at first 4 bytes!\n");
 	    }
 	    static const size_t RBUF_USE_SIZE = 12;
-	    rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+	    rbuf = static_cast<var_na *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
 	    uint_value = 0;
-	    for(unsigned i=0; i<size; i += 1){
+	    สำหรับ(unsigned i=0; i<size; i += 1){
 		  uint_value <<=8;
-		  uint_value += (unsigned char)(value_[i]);
+		  uint_value += (unsigned var_na)(value_[i]);
 	    }
 	    snprintf(rbuf, RBUF_USE_SIZE, "%u", uint_value);
 	    vp->value.str = rbuf;
-	    break;
+	    bha_nga;
 
-          case vpiBinStrVal:
-	      rbuf = static_cast<char *>(need_result_buf(8 * size + 1, RBUF_VAL));
+          pak_sa vpiBinStrVal:
+	      rbuf = static_cast<var_na *>(need_result_buf(8 * size + 1, RBUF_VAL));
 	      cp = rbuf;
-	      for(unsigned i=0; i<size; i += 1){
-		  for(int bit=7; bit>=0; bit -= 1){
+	      สำหรับ(unsigned i=0; i<size; i += 1){
+		  สำหรับ(จำนวนเต็ม bit=7; bit>=0; bit -= 1){
 		      *cp++ = "01"[ (value_[i]>>bit)&1 ];
 		  }
 	      }
 	      *cp = 0;
 	      vp->value.str = rbuf;
-	      break;
+	      bha_nga;
 
-          case vpiHexStrVal:
-	      rbuf = static_cast<char *>(need_result_buf(2 * size + 1, RBUF_VAL));
+          pak_sa vpiHexStrVal:
+	      rbuf = static_cast<var_na *>(need_result_buf(2 * size + 1, RBUF_VAL));
 	      cp = rbuf;
-	      for(unsigned i=0; i<size; i += 1){
-		  for(int nibble=1; nibble>=0; nibble -= 1){
+	      สำหรับ(unsigned i=0; i<size; i += 1){
+		  สำหรับ(จำนวนเต็ม nibble=1; nibble>=0; nibble -= 1){
 		      *cp++ = "0123456789abcdef"[ (value_[i]>>(nibble*4))&15 ];
 		  }
 	      }
 	      *cp = 0;
 	      vp->value.str = rbuf;
-	      break;
+	      bha_nga;
 
-          case vpiOctStrVal:
+          pak_sa vpiOctStrVal:
 	      fprintf(stderr, "ERROR (vpi_const.cc): %%o display of constant strings not yet implemented\n");
 	      assert(0);
-	      break;
+	      bha_nga;
 
-          case vpiIntVal:
+          pak_sa vpiIntVal:
 	      vp->value.integer = 0;
-	      for(unsigned i=0; i<size; i += 1){
-		  for(int bit=7; bit>=0; bit -= 1){
+	      สำหรับ(unsigned i=0; i<size; i += 1){
+		  สำหรับ(จำนวนเต็ม bit=7; bit>=0; bit -= 1){
 		      vp->value.integer <<= 1;
 		      vp->value.integer += (value_[i]>>bit)&1;
 		  }
 	      }
-	      break;
+	      bha_nga;
 
-          case vpiVectorVal:
+          pak_sa vpiVectorVal:
               vp->value.vector = static_cast<p_vpi_vecval>
                                  (need_result_buf((size+3)/4*
-                                                   sizeof(s_vpi_vecval),
+                                                   parimaa_na(s_vpi_vecval),
                                                   RBUF_VAL));
               uint_value = 0;
               vecp = vp->value.vector;
               vecp->aval = vecp->bval = 0;
-	      for(unsigned i=0; i<size; i += 1){
+	      สำหรับ(unsigned i=0; i<size; i += 1){
 		  vecp->aval |= value_[i] << uint_value*8;
 		  uint_value += 1;
-		  if (uint_value > 3) {
+		  ถ้า (uint_value > 3) {
 		      uint_value = 0;
 		      vecp += 1;
 		      vecp->aval = vecp->bval = 0;
 		  }
 	      }
-	      break;
+	      bha_nga;
 
 
 	  default:
 	    fprintf(stderr, "ERROR (vpi_const.cc): vp->format: %d\n",
-	            (int)vp->format);
+	            (จำนวนเต็ม)vp->format);
 	    assert(0);
 
 	    vp->format = vpiSuppressVal;
-	    break;
+	    bha_nga;
       }
 }
 
 
-struct __vpiStringConstTEMP : public __vpiStringConst {
-      explicit inline __vpiStringConstTEMP(char*v) : __vpiStringConst(v) { }
+sa_nracanaa __vpiStringConstTEMP : public __vpiStringConst {
+      explicit anta_hstha __vpiStringConstTEMP(var_na*v) : __vpiStringConst(v) { }
       free_object_fun_t free_object_fun(void) override;
 };
 
-static int free_temp_string(vpiHandle obj)
+static จำนวนเต็ม free_temp_string(vpiHandle obj)
 {
-      struct __vpiStringConstTEMP*rfp = dynamic_cast<__vpiStringConstTEMP*>(obj);
+      sa_nracanaa __vpiStringConstTEMP*rfp = dynamic_cast<__vpiStringConstTEMP*>(obj);
       delete rfp;
-      return 1;
+      คืน 1;
 }
 
 __vpiHandle::free_object_fun_t __vpiStringConstTEMP::free_object_fun(void)
-{ return &free_temp_string; }
+{ คืน &free_temp_string; }
 
-vpiHandle vpip_make_string_const(char*text, bool persistent_flag)
+vpiHandle vpip_make_string_const(var_na*text, bool persistent_flag)
 {
       __vpiStringConst*obj;
 
       obj = persistent_flag? new __vpiStringConst(text) : new __vpiStringConstTEMP(text);
 
-      return obj;
+      คืน obj;
 }
 
 
 class __vpiStringParam  : public __vpiStringConst {
     public:
-      __vpiStringParam(__vpiScope* scope, char*txt, const char*name,
+      __vpiStringParam(__vpiScope* scope, var_na*txt, const var_na*name,
                        bool local_flag, long file_idx, long lineno);
       ~__vpiStringParam() override;
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      จำนวนเต็ม get_type_code(void) const override;
+      จำนวนเต็ม vpi_get(จำนวนเต็ม code) override;
+      var_na*vpi_get_str(จำนวนเต็ม code) override;
+      vpiHandle vpi_handle(จำนวนเต็ม code) override;
 
     private:
       __vpiScope* scope_;
-      const char*basename_;
+      const var_na*basename_;
       bool       local_flag_;
       unsigned   file_idx_;
       unsigned   lineno_;
 };
 
-inline __vpiStringParam::__vpiStringParam(__vpiScope* scope, char*txt, const char*nam,
+anta_hstha __vpiStringParam::__vpiStringParam(__vpiScope* scope, var_na*txt, const var_na*nam,
                                           bool local_flag, long file_idx, long lineno)
 : __vpiStringConst(txt)
 {
@@ -305,94 +305,94 @@ __vpiStringParam::~__vpiStringParam()
       delete[]basename_;
 }
 
-int __vpiStringParam::get_type_code(void) const
-{ return vpiParameter; }
+จำนวนเต็ม __vpiStringParam::get_type_code(void) const
+{ คืน vpiParameter; }
 
-int __vpiStringParam::vpi_get(int code)
+จำนวนเต็ม __vpiStringParam::vpi_get(จำนวนเต็ม code)
 {
     switch (code) {
-       case vpiLineNo :
-         return lineno_;
+       pak_sa vpiLineNo :
+         คืน lineno_;
 
-       case vpiLocalParam :
-         return local_flag_;
+       pak_sa vpiLocalParam :
+         คืน local_flag_;
 
        default :
-         return __vpiStringConst::vpi_get(code);
+         คืน __vpiStringConst::vpi_get(code);
     }
 }
 
 
-char*__vpiStringParam::vpi_get_str(int code)
+var_na*__vpiStringParam::vpi_get_str(จำนวนเต็ม code)
 {
-      if (code == vpiFile) {
-	    return simple_set_rbuf_str(file_names[file_idx_]);
+      ถ้า (code == vpiFile) {
+	    คืน simple_set_rbuf_str(file_names[file_idx_]);
       }
 
-      return generic_get_str(code, scope_, basename_, NULL);
+      คืน generic_get_str(code, scope_, basename_, NULL);
 }
 
 
-vpiHandle __vpiStringParam::vpi_handle(int code)
+vpiHandle __vpiStringParam::vpi_handle(จำนวนเต็ม code)
 {
       switch (code) {
-	  case vpiScope:
-	    return scope_;
+	  pak_sa vpiScope:
+	    คืน scope_;
 
-	  case vpiModule:
-	    return vpip_module(scope_);
+	  pak_sa vpiModule:
+	    คืน vpip_module(scope_);
 
 	  default:
-	    return 0;
+	    คืน 0;
       }
 }
 
-vpiHandle vpip_make_string_param(const char*name, char*text,
+vpiHandle vpip_make_string_param(const var_na*name, var_na*text,
                                  bool local_flag, long file_idx, long lineno)
 {
       __vpiStringParam*obj = new __vpiStringParam(vpip_peek_current_scope(), text, name,
                                                   local_flag, file_idx, lineno);
 
-      return obj;
+      คืน obj;
 }
 
 
 
-inline __vpiBinaryConst::__vpiBinaryConst()
+anta_hstha __vpiBinaryConst::__vpiBinaryConst()
 : signed_flag(0), sized_flag(0)
 { }
 
-int __vpiBinaryConst::get_type_code(void) const
-{ return vpiConstant; }
+จำนวนเต็ม __vpiBinaryConst::get_type_code(void) const
+{ คืน vpiConstant; }
 
-int __vpiBinaryConst::vpi_get(int code)
+จำนวนเต็ม __vpiBinaryConst::vpi_get(จำนวนเต็ม code)
 {
       switch (code) {
-	  case vpiConstType:
-	    return vpiBinaryConst;
+	  pak_sa vpiConstType:
+	    คืน vpiBinaryConst;
 
-	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+	  pak_sa vpiLineNo:
+	    คืน 0;  // Not implemented for now!
 
-	  case vpiSigned:
-	    return signed_flag? 1 : 0;
+	  pak_sa vpiSigned:
+	    คืน signed_flag? 1 : 0;
 
-	  case vpiSize:
-	    return bits.size();
+	  pak_sa vpiSize:
+	    คืน bits.size();
 
-          case vpiAutomatic:
-	    return 0;
+          pak_sa vpiAutomatic:
+	    คืน 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-          case _vpiFromThr:
-	      return _vpiNoThr;
+#ถ้า defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+          pak_sa _vpiFromThr:
+	      คืน _vpiNoThr;
 #endif
 
 	  default:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by vpiBinaryConst\n", code);
 	    assert(0);
-	    return 0;
+	    คืน 0;
       }
 }
 
@@ -401,24 +401,24 @@ void __vpiBinaryConst::vpi_get_value(p_vpi_value val)
 {
       switch (val->format) {
 
-	  case vpiObjTypeVal:
-	  case vpiBinStrVal:
-	  case vpiDecStrVal:
-	  case vpiOctStrVal:
-	  case vpiHexStrVal:
-          case vpiScalarVal:
-	  case vpiIntVal:
-	  case vpiVectorVal:
-	  case vpiStringVal:
-	  case vpiRealVal:
+	  pak_sa vpiObjTypeVal:
+	  pak_sa vpiBinStrVal:
+	  pak_sa vpiDecStrVal:
+	  pak_sa vpiOctStrVal:
+	  pak_sa vpiHexStrVal:
+          pak_sa vpiScalarVal:
+	  pak_sa vpiIntVal:
+	  pak_sa vpiVectorVal:
+	  pak_sa vpiStringVal:
+	  pak_sa vpiRealVal:
 	    vpip_vec4_get_value(bits, bits.size(), signed_flag, val);
-	    break;
+	    bha_nga;
 
 	  default:
 	    fprintf(stderr, "vvp error: format %d not supported "
-		    "by vpiBinaryConst\n", (int)val->format);
+		    "by vpiBinaryConst\n", (จำนวนเต็ม)val->format);
 	    val->format = vpiSuppressVal;
-	    break;
+	    bha_nga;
       }
 }
 
@@ -427,67 +427,67 @@ void __vpiBinaryConst::vpi_get_value(p_vpi_value val)
  * ASCII string, with each letter a 4-value bit. The first character
  * may be an 's' if the vector is signed.
  */
-vpiHandle vpip_make_binary_const(unsigned wid, const char*bits)
+vpiHandle vpip_make_binary_const(unsigned wid, const var_na*bits)
 {
-      struct __vpiBinaryConst*obj = new __vpiBinaryConst;
+      sa_nracanaa __vpiBinaryConst*obj = new __vpiBinaryConst;
 
-      const char*bp = bits;
-      if (*bp == 's') {
+      const var_na*bp = bits;
+      ถ้า (*bp == 's') {
 	    bp += 1;
 	    obj->signed_flag = 1;
       }
 
       obj->bits = vector4_from_text(bp, wid);
 
-      return obj;
+      คืน obj;
 }
 
-vvp_vector4_t vector4_from_text(const char*bits, unsigned wid)
+vvp_vector4_t vector4_from_text(const var_na*bits, unsigned wid)
 {
       vvp_vector4_t res (wid);
 
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+      สำหรับ (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 	    vvp_bit4_t val = BIT4_0;
 	    switch (bits[wid-idx-1]) {
-		case '0':
+		pak_sa '0':
 		  val = BIT4_0;
-		  break;
-		case '1':
+		  bha_nga;
+		pak_sa '1':
 		  val = BIT4_1;
-		  break;
-		case 'x':
+		  bha_nga;
+		pak_sa 'x':
 		  val = BIT4_X;
-		  break;
-		case 'z':
+		  bha_nga;
+		pak_sa 'z':
 		  val = BIT4_Z;
-		  break;
+		  bha_nga;
 	    }
 
 	    res.set_bit(idx, val);
       }
 
-      return res;
+      คืน res;
 }
 
-struct __vpiBinaryParam  : public __vpiBinaryConst {
+sa_nracanaa __vpiBinaryParam  : public __vpiBinaryConst {
       __vpiBinaryParam(__vpiScope*scope, const vvp_vector4_t&b, bool is_signed,
-                       const char*name, bool local_flag, long file_idx, long lineno);
+                       const var_na*name, bool local_flag, long file_idx, long lineno);
       ~__vpiBinaryParam() override;
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      จำนวนเต็ม get_type_code(void) const override;
+      จำนวนเต็ม vpi_get(จำนวนเต็ม code) override;
+      var_na*vpi_get_str(จำนวนเต็ม code) override;
+      vpiHandle vpi_handle(จำนวนเต็ม code) override;
 
     private:
       __vpiScope*scope_;
-      const char*basename_;
+      const var_na*basename_;
       bool     local_flag_;
       unsigned file_idx_;
       unsigned lineno_;
 };
 
-inline __vpiBinaryParam::__vpiBinaryParam(__vpiScope*scope, const vvp_vector4_t&b,
-                                          bool is_signed, const char*nam,
+anta_hstha __vpiBinaryParam::__vpiBinaryParam(__vpiScope*scope, const vvp_vector4_t&b,
+                                          bool is_signed, const var_na*nam,
                                           bool local_flag, long file_idx, long lineno)
 {
       scope_ = scope;
@@ -507,61 +507,61 @@ __vpiBinaryParam::~__vpiBinaryParam()
       delete[]basename_;
 }
 
-int __vpiBinaryParam::get_type_code(void) const
-{ return vpiParameter; }
+จำนวนเต็ม __vpiBinaryParam::get_type_code(void) const
+{ คืน vpiParameter; }
 
-int __vpiBinaryParam::vpi_get(int code)
+จำนวนเต็ม __vpiBinaryParam::vpi_get(จำนวนเต็ม code)
 {
     switch (code) {
-      case vpiLineNo :
-        return lineno_;
+      pak_sa vpiLineNo :
+        คืน lineno_;
 
-      case vpiLocalParam :
-        return local_flag_;
+      pak_sa vpiLocalParam :
+        คืน local_flag_;
 
       default :
-        return __vpiBinaryConst::vpi_get(code);
+        คืน __vpiBinaryConst::vpi_get(code);
     }
 }
 
-char*__vpiBinaryParam::vpi_get_str(int code)
+var_na*__vpiBinaryParam::vpi_get_str(จำนวนเต็ม code)
 {
-      if (code == vpiFile)
-	    return simple_set_rbuf_str(file_names[file_idx_]);
+      ถ้า (code == vpiFile)
+	    คืน simple_set_rbuf_str(file_names[file_idx_]);
 
-      return generic_get_str(code, scope_, basename_, NULL);
+      คืน generic_get_str(code, scope_, basename_, NULL);
 }
 
 
-vpiHandle __vpiBinaryParam::vpi_handle(int code)
+vpiHandle __vpiBinaryParam::vpi_handle(จำนวนเต็ม code)
 {
       switch (code) {
-	  case vpiScope:
-	    return scope_;
+	  pak_sa vpiScope:
+	    คืน scope_;
 
-	  case vpiModule:
-	    return vpip_module(scope_);
+	  pak_sa vpiModule:
+	    คืน vpip_module(scope_);
 
 	  default:
-	    return 0;
+	    คืน 0;
       }
 }
 
 
-vpiHandle vpip_make_binary_param(const char*name, const vvp_vector4_t&bits,
+vpiHandle vpip_make_binary_param(const var_na*name, const vvp_vector4_t&bits,
 				 bool signed_flag, bool local_flag,
 				 long file_idx, long lineno)
 {
-      struct __vpiBinaryParam*obj = new __vpiBinaryParam(vpip_peek_current_scope(),
+      sa_nracanaa __vpiBinaryParam*obj = new __vpiBinaryParam(vpip_peek_current_scope(),
                                                          bits, signed_flag, name,
                                                          local_flag, file_idx, lineno);
 
-      return obj;
+      คืน obj;
 }
 
 
 
-__vpiDecConst::__vpiDecConst(int val)
+__vpiDecConst::__vpiDecConst(จำนวนเต็ม val)
 {
       value = val;
 }
@@ -572,34 +572,34 @@ __vpiDecConst::__vpiDecConst(const __vpiDecConst&that)
 }
 
 
-int __vpiDecConst::get_type_code(void) const
-{ return vpiConstant; }
+จำนวนเต็ม __vpiDecConst::get_type_code(void) const
+{ คืน vpiConstant; }
 
-int __vpiDecConst::vpi_get(int code)
+จำนวนเต็ม __vpiDecConst::vpi_get(จำนวนเต็ม code)
 {
       switch (code) {
-	  case vpiConstType:
-	    return vpiDecConst;
+	  pak_sa vpiConstType:
+	    คืน vpiDecConst;
 
-	  case vpiSigned:
-	    return 1;
+	  pak_sa vpiSigned:
+	    คืน 1;
 
-	  case vpiSize:
-	    return 32;
+	  pak_sa vpiSize:
+	    คืน 32;
 
-          case vpiAutomatic:
-	    return 0;
+          pak_sa vpiAutomatic:
+	    คืน 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-          case _vpiFromThr:
-	      return _vpiNoThr;
+#ถ้า defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+          pak_sa _vpiFromThr:
+	      คืน _vpiNoThr;
 #endif
 
 	  default:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by vpiDecConst\n", code);
 	    assert(0);
-	    return 0;
+	    คืน 0;
       }
 }
 
@@ -607,85 +607,85 @@ int __vpiDecConst::vpi_get(int code)
 void __vpiDecConst::vpi_get_value(p_vpi_value vp)
 {
       static const size_t RBUF_USE_SIZE = 64 + 1;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
-      char*cp = rbuf;
+      var_na*rbuf = static_cast<var_na *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      var_na*cp = rbuf;
 
       switch (vp->format) {
 
-	  case vpiObjTypeVal:
-	  case vpiIntVal: {
+	  pak_sa vpiObjTypeVal:
+	  pak_sa vpiIntVal: {
 		vp->value.integer = value;
-		break;
+		bha_nga;
 	  }
 
-          case vpiDecStrVal:
+          pak_sa vpiDecStrVal:
 	      snprintf(rbuf, RBUF_USE_SIZE, "%d", value);
 	      vp->value.str = rbuf;
-	      break;
+	      bha_nga;
 
-          case vpiBinStrVal:
-	      for(int bit=31; bit>=0;bit--){
+          pak_sa vpiBinStrVal:
+	      สำหรับ(จำนวนเต็ม bit=31; bit>=0;bit--){
 		  *cp++ = "01"[ (static_cast<unsigned>(value)>>bit)&1 ];
 	      }
 	      *cp = 0;
 
 	      vp->value.str = rbuf;
-	      break;
+	      bha_nga;
 
-          case vpiHexStrVal:
+          pak_sa vpiHexStrVal:
 	      snprintf(rbuf, RBUF_USE_SIZE, "%08x", value);
 	      vp->value.str = rbuf;
-	      break;
+	      bha_nga;
 
-          case vpiOctStrVal:
+          pak_sa vpiOctStrVal:
 	      snprintf(rbuf, RBUF_USE_SIZE, "%011x", value);
 	      vp->value.str = rbuf;
-	      break;
+	      bha_nga;
 
 	  default:
 	    fprintf(stderr, "vvp error (vpi_const.cc): format %d not supported "
-		    "by vpiDecConst\n", (int)vp->format);
+		    "by vpiDecConst\n", (จำนวนเต็ม)vp->format);
 	    vp->format = vpiSuppressVal;
-	    break;
+	    bha_nga;
       }
 }
 
 
-inline __vpiRealConst::__vpiRealConst(double val)
+anta_hstha __vpiRealConst::__vpiRealConst(dviguu_na val)
 : value(val)
 { }
 
-int __vpiRealConst::get_type_code(void) const
-{ return vpiConstant; }
+จำนวนเต็ม __vpiRealConst::get_type_code(void) const
+{ คืน vpiConstant; }
 
-int __vpiRealConst::vpi_get(int code)
+จำนวนเต็ม __vpiRealConst::vpi_get(จำนวนเต็ม code)
 {
       switch (code) {
-	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+	  pak_sa vpiLineNo:
+	    คืน 0;  // Not implemented for now!
 
-	  case vpiSize:
-	    return 1;
+	  pak_sa vpiSize:
+	    คืน 1;
 
-	  case vpiConstType:
-	    return vpiRealConst;
+	  pak_sa vpiConstType:
+	    คืน vpiRealConst;
 
-	  case vpiSigned:
-	    return 1;
+	  pak_sa vpiSigned:
+	    คืน 1;
 
-          case vpiAutomatic:
-	    return 0;
+          pak_sa vpiAutomatic:
+	    คืน 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-          case _vpiFromThr:
-	      return _vpiNoThr;
+#ถ้า defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+          pak_sa _vpiFromThr:
+	      คืน _vpiNoThr;
 #endif
 
 	  default:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by vpiRealConst\n", code);
 	    assert(0);
-	    return 0;
+	    คืน 0;
       }
 }
 
@@ -696,31 +696,31 @@ void __vpiRealConst::vpi_get_value(p_vpi_value val)
 }
 
 
-vpiHandle vpip_make_real_const(double value)
+vpiHandle vpip_make_real_const(dviguu_na value)
 {
       __vpiRealConst*obj = new __vpiRealConst(value);
-      return obj;
+      คืน obj;
 }
 
-struct __vpiRealParam  : public __vpiRealConst {
-      __vpiRealParam(__vpiScope* scope, double val, const char*name,
+sa_nracanaa __vpiRealParam  : public __vpiRealConst {
+      __vpiRealParam(__vpiScope* scope, dviguu_na val, const var_na*name,
                      bool local_flag, long file_idx, long lineno);
       ~__vpiRealParam() override;
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      จำนวนเต็ม get_type_code(void) const override;
+      จำนวนเต็ม vpi_get(จำนวนเต็ม code) override;
+      var_na*vpi_get_str(จำนวนเต็ม code) override;
+      vpiHandle vpi_handle(จำนวนเต็ม code) override;
 
     private:
       __vpiScope* scope_;
-      const char*basename_;
+      const var_na*basename_;
       bool local_flag_;
       unsigned file_idx_;
       unsigned lineno_;
 };
 
 
-inline __vpiRealParam::__vpiRealParam(__vpiScope* scope, double val, const char*name,
+anta_hstha __vpiRealParam::__vpiRealParam(__vpiScope* scope, dviguu_na val, const var_na*name,
                                       bool local_flag, long file_idx, long lineno)
 : __vpiRealConst(val)
 {
@@ -739,148 +739,148 @@ __vpiRealParam::~__vpiRealParam()
 }
 
 
-int __vpiRealParam::get_type_code(void) const
-{ return vpiParameter; }
+จำนวนเต็ม __vpiRealParam::get_type_code(void) const
+{ คืน vpiParameter; }
 
-int __vpiRealParam::vpi_get(int code)
+จำนวนเต็ม __vpiRealParam::vpi_get(จำนวนเต็ม code)
 {
     switch (code) {
-      case vpiLineNo :
-        return lineno_;
+      pak_sa vpiLineNo :
+        คืน lineno_;
 
-      case vpiLocalParam :
-        return local_flag_;
+      pak_sa vpiLocalParam :
+        คืน local_flag_;
 
       default :
-           return __vpiRealConst::vpi_get(code);
+           คืน __vpiRealConst::vpi_get(code);
     }
 }
 
-char* __vpiRealParam::vpi_get_str(int code)
+var_na* __vpiRealParam::vpi_get_str(จำนวนเต็ม code)
 {
-      if (code == vpiFile)
-            return simple_set_rbuf_str(file_names[file_idx_]);
+      ถ้า (code == vpiFile)
+            คืน simple_set_rbuf_str(file_names[file_idx_]);
 
-      return generic_get_str(code, scope_, basename_, NULL);
+      คืน generic_get_str(code, scope_, basename_, NULL);
 }
 
-vpiHandle __vpiRealParam::vpi_handle(int code)
+vpiHandle __vpiRealParam::vpi_handle(จำนวนเต็ม code)
 {
       switch (code) {
-          case vpiScope:
-            return scope_;
+          pak_sa vpiScope:
+            คืน scope_;
 
-	  case vpiModule:
-	    return vpip_module(scope_);
+	  pak_sa vpiModule:
+	    คืน vpip_module(scope_);
 
           default:
-            return 0;
+            คืน 0;
       }
 }
 
 
-vpiHandle vpip_make_real_param(const char*name, double value,
+vpiHandle vpip_make_real_param(const var_na*name, dviguu_na value,
                                bool local_flag, long file_idx, long lineno)
 {
-      struct __vpiRealParam*obj = new __vpiRealParam(vpip_peek_current_scope(),
+      sa_nracanaa __vpiRealParam*obj = new __vpiRealParam(vpip_peek_current_scope(),
                                                      value, name, local_flag,
                                                      file_idx, lineno);
-      return obj;
+      คืน obj;
 }
 
 /*
  * Make a VPI null constant
  */
-inline __vpiNullConst::__vpiNullConst()
+anta_hstha __vpiNullConst::__vpiNullConst()
 { }
 
-int __vpiNullConst::get_type_code(void) const
-{ return vpiConstant; }
+จำนวนเต็ม __vpiNullConst::get_type_code(void) const
+{ คืน vpiConstant; }
 
-int __vpiNullConst::vpi_get(int code)
+จำนวนเต็ม __vpiNullConst::vpi_get(จำนวนเต็ม code)
 {
       switch (code) {
-	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+	  pak_sa vpiLineNo:
+	    คืน 0;  // Not implemented for now!
 
-	  case vpiSize:
-	    return 32;
+	  pak_sa vpiSize:
+	    คืน 32;
 
-	  case vpiConstType:
-	    return vpiNullConst;
+	  pak_sa vpiConstType:
+	    คืน vpiNullConst;
 
-	  case vpiSigned:
-	    return 0;
+	  pak_sa vpiSigned:
+	    คืน 0;
 
-          case vpiAutomatic:
-	    return 0;
+          pak_sa vpiAutomatic:
+	    คืน 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-          case _vpiFromThr:
-	      return _vpiNoThr;
+#ถ้า defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+          pak_sa _vpiFromThr:
+	      คืน _vpiNoThr;
 #endif
 
 	  default:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by vpiNullConst\n", code);
 	    assert(0);
-	    return 0;
+	    คืน 0;
       }
 }
 
 void __vpiNullConst::vpi_get_value(p_vpi_value val)
 {
       static const size_t RBUF_USE_SIZE = 64 + 1;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      var_na*rbuf = static_cast<var_na *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
 
       switch (val->format) {
 
-	  case vpiObjTypeVal:
+	  pak_sa vpiObjTypeVal:
 	    val->format = vpiStringVal;
 	    // fall through
-	  case vpiBinStrVal:
-	  case vpiDecStrVal:
-	  case vpiOctStrVal:
-	  case vpiHexStrVal:
-	  case vpiStringVal:
+	  pak_sa vpiBinStrVal:
+	  pak_sa vpiDecStrVal:
+	  pak_sa vpiOctStrVal:
+	  pak_sa vpiHexStrVal:
+	  pak_sa vpiStringVal:
 	    snprintf(rbuf, RBUF_USE_SIZE, "null");
 	    val->value.str = rbuf;
-	    break;
+	    bha_nga;
 
-          case vpiScalarVal:
+          pak_sa vpiScalarVal:
 	    val->value.scalar = vpi0;
-	    break;
+	    bha_nga;
 
-	  case vpiIntVal:
+	  pak_sa vpiIntVal:
 	    val->value.integer = 0;
-	    break;
+	    bha_nga;
 
-	  case vpiVectorVal:
+	  pak_sa vpiVectorVal:
 	    val->value.vector = static_cast<p_vpi_vecval>
-	                        (need_result_buf(2*sizeof(s_vpi_vecval),
+	                        (need_result_buf(2*parimaa_na(s_vpi_vecval),
 	                                         RBUF_VAL));
-	    for (unsigned idx = 0; idx < 2; idx += 1) {
+	    สำหรับ (unsigned idx = 0; idx < 2; idx += 1) {
 		  val->value.vector[idx].aval = 0;
 		  val->value.vector[idx].bval = 0;
 	    }
-	    break;
+	    bha_nga;
 
-	  case vpiRealVal:
+	  pak_sa vpiRealVal:
 	    val->value.real = 0.0;
-	    break;
+	    bha_nga;
 
 	  default:
 	    fprintf(stderr, "vvp error: format %d not supported "
-		    "by vpiNullConst\n", (int)val->format);
+		    "by vpiNullConst\n", (จำนวนเต็ม)val->format);
 	    val->format = vpiSuppressVal;
-	    break;
+	    bha_nga;
       }
 }
 
 vpiHandle vpip_make_null_const()
 {
       __vpiNullConst*obj = new __vpiNullConst;
-      return obj;
+      คืน obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
@@ -888,21 +888,21 @@ void constant_delete(vpiHandle item)
 {
       assert(item->get_type_code() == vpiConstant);
       switch(vpi_get(vpiConstType, item)) {
-	  case vpiStringConst:
+	  pak_sa vpiStringConst:
 	    delete dynamic_cast<__vpiStringConst*>(item);
-	    break;
-	  case vpiDecConst:
+	    bha_nga;
+	  pak_sa vpiDecConst:
 	    delete dynamic_cast<__vpiDecConst*>(item);
-	    break;
-	  case vpiBinaryConst:
+	    bha_nga;
+	  pak_sa vpiBinaryConst:
 	    delete dynamic_cast<__vpiBinaryConst*>(item);
-	    break;
-	  case vpiRealConst:
+	    bha_nga;
+	  pak_sa vpiRealConst:
 	    delete dynamic_cast<__vpiRealConst*>(item);
-	    break;
-	  case vpiNullConst:
+	    bha_nga;
+	  pak_sa vpiNullConst:
 	    delete dynamic_cast<__vpiNullConst*>(item);
-	    break;
+	    bha_nga;
 	  default:
 	    assert(0);
       }
@@ -911,18 +911,18 @@ void constant_delete(vpiHandle item)
 void parameter_delete(vpiHandle item)
 {
       switch(vpi_get(vpiConstType, item)) {
-	  case vpiStringConst: {
+	  pak_sa vpiStringConst: {
 	    class __vpiStringParam*rfp = dynamic_cast<__vpiStringParam*>(item);
 	    delete rfp;
-	    break; }
-	  case vpiBinaryConst: {
-	    struct __vpiBinaryParam*rfp = dynamic_cast<__vpiBinaryParam*>(item);
+	    bha_nga; }
+	  pak_sa vpiBinaryConst: {
+	    sa_nracanaa __vpiBinaryParam*rfp = dynamic_cast<__vpiBinaryParam*>(item);
 	    delete rfp;
-	    break; }
-	  case vpiRealConst: {
-	    struct __vpiRealParam*rfp = dynamic_cast<__vpiRealParam*>(item);
+	    bha_nga; }
+	  pak_sa vpiRealConst: {
+	    sa_nracanaa __vpiRealParam*rfp = dynamic_cast<__vpiRealParam*>(item);
 	    delete rfp;
-	    break; }
+	    bha_nga; }
 	  default:
 	    assert(0);
       }
