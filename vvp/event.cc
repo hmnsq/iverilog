@@ -29,24 +29,24 @@
 
 # include <iostream>
 
-void waitable_hooks_s::run_waiting_threads_(vthread_t&threads)
+تهی waitable_hooks_s::run_waiting_threads_(vthread_t&threads)
 {
 	// Run the non-blocking event controls.
       last = &event_ctls;
-      for (evctl*cur = event_ctls; cur != 0;) {
-	    if (cur->dec_and_run()) {
+      برای (evctl*cur = event_ctls; cur != 0;) {
+	    اگر (cur->dec_and_run()) {
 		  evctl*nxt = cur->next;
 		  delete cur;
 		  cur = nxt;
 		  *last = cur;
-	    } else {
+	    } وگرنه {
 		  last = &(cur->next);
 		  cur = cur->next;
 	    }
       }
 
       vthread_t tmp = threads;
-      if (tmp == 0) return;
+      اگر (tmp == 0) بازگشت;
       threads = 0;
 
       vthread_schedule_list(tmp);
@@ -58,132 +58,132 @@ evctl::evctl(uint64_t ecount)
       next = 0;
 }
 
-bool evctl::dec_and_run()
+منطقی evctl::dec_and_run()
 {
-      assert(ecount_ != 0);
+      أكد(ecount_ != 0);
 
       ecount_ -= 1;
-      if (ecount_ == 0) run_run();
+      اگر (ecount_ == 0) run_run();
 
-      return ecount_ == 0;
+      بازگشت ecount_ == 0;
 }
 
-evctl_real::evctl_real(__vpiHandle*handle, double value,
+evctl_real::evctl_real(__vpiHandle*handle, دوگانه value,
                        uint64_t ecount)
 :evctl(ecount)
 {
       handle_ = handle;
-      value_ = value;
+      مقدار_2 = value;
 }
 
-void evctl_real::run_run()
+تهی evctl_real::run_run()
 {
-      t_vpi_value val;
+      t_vpi_مقدار val;
 
       val.format = vpiRealVal;
-      val.value.real = value_;
-      vpi_put_value(handle_, &val, 0, vpiNoDelay);
+      val.value.real = مقدار_2;
+      vpi_put_مقدار(handle_, &val, 0, vpiNoDelay);
 }
 
-void schedule_evctl(__vpiHandle*handle, double value,
+تهی schedule_evctl(__vpiHandle*handle, دوگانه value,
                     vvp_net_t*event, uint64_t ecount)
 {
 	// Get the functor we are going to wait on.
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (event->fun);
-      assert(ep);
+      أكد(ep);
 	// Now add this call to the end of the event list.
-      *(ep->last) = new evctl_real(handle, value, ecount);
+      *(ep->last) = جدید evctl_real(handle, value, ecount);
       ep->last = &((*(ep->last))->next);
 }
 
-evctl_vector::evctl_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
+evctl_vector::evctl_vector(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&value,
                            unsigned off, unsigned wid, uint64_t ecount)
-:evctl(ecount), ptr_(ptr), value_(value)
+:evctl(ecount), ptr_(ptr), مقدار_2(value)
 {
       off_ = off;
       wid_ = wid;
 }
 
-void evctl_vector::run_run()
+تهی evctl_vector::run_run()
 {
-      if (wid_ != 0) {
-	    vvp_send_vec4_pv(ptr_, value_, off_, wid_, 0);
-      } else {
-	    vvp_send_vec4(ptr_, value_, 0);
+      اگر (wid_ != 0) {
+	    vvp_send_vec4_pv(ptr_, مقدار_2, off_, wid_, 0);
+      } وگرنه {
+	    vvp_send_vec4(ptr_, مقدار_2, 0);
       }
 }
 
-void schedule_evctl(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
+تهی schedule_evctl(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&value,
                     unsigned offset, unsigned wid,
                     vvp_net_t*event, uint64_t ecount)
 {
 	// Get the functor we are going to wait on.
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (event->fun);
-      assert(ep);
+      أكد(ep);
 	// Now add this call to the end of the event list.
-      *(ep->last) = new evctl_vector(ptr, value, offset, wid, ecount);
+      *(ep->last) = جدید evctl_vector(ptr, value, offset, wid, ecount);
       ep->last = &((*(ep->last))->next);
 }
 
 evctl_array::evctl_array(vvp_array_t memory, unsigned index,
-                         const vvp_vector4_t&value, unsigned off,
+                         ثابت vvp_vector4_t&value, unsigned off,
                          uint64_t ecount)
-:evctl(ecount), value_(value)
+:evctl(ecount), مقدار_2(value)
 {
       mem_ = memory;
       idx_ = index;
       off_ = off;
 }
 
-void evctl_array::run_run()
+تهی evctl_array::run_run()
 {
-      mem_->set_word(idx_, off_, value_);
+      mem_->set_word(idx_, off_, مقدار_2);
 }
 
-void schedule_evctl(vvp_array_t memory, unsigned index,
-                    const vvp_vector4_t&value, unsigned offset,
+تهی schedule_evctl(vvp_array_t memory, unsigned index,
+                    ثابت vvp_vector4_t&value, unsigned offset,
                     vvp_net_t*event, uint64_t ecount)
 {
 	// Get the functor we are going to wait on.
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (event->fun);
-      assert(ep);
+      أكد(ep);
 	// Now add this call to the end of the event list.
-      *(ep->last) = new evctl_array(memory, index, value, offset, ecount);
+      *(ep->last) = جدید evctl_array(memory, index, value, offset, ecount);
       ep->last = &((*(ep->last))->next);
 }
 
 evctl_array_r::evctl_array_r(vvp_array_t memory, unsigned index,
-                             double value, uint64_t ecount)
+                             دوگانه value, uint64_t ecount)
 :evctl(ecount)
 {
       mem_ = memory;
       idx_ = index;
-      value_ = value;
+      مقدار_2 = value;
 }
 
-void evctl_array_r::run_run()
+تهی evctl_array_r::run_run()
 {
-      mem_->set_word(idx_, value_);
+      mem_->set_word(idx_, مقدار_2);
 }
 
-void schedule_evctl(vvp_array_t memory, unsigned index,
-                    double value,
+تهی schedule_evctl(vvp_array_t memory, unsigned index,
+                    دوگانه value,
                     vvp_net_t*event, uint64_t ecount)
 {
 	// Get the functor we are going to wait on.
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (event->fun);
-      assert(ep);
+      أكد(ep);
 	// Now add this call to the end of the event list.
-      *(ep->last) = new evctl_array_r(memory, index, value, ecount);
+      *(ep->last) = جدید evctl_array_r(memory, index, value, ecount);
       ep->last = &((*(ep->last))->next);
 }
 
-inline vvp_fun_edge::edge_t VVP_EDGE(vvp_bit4_t from, vvp_bit4_t to)
+درونخطی vvp_fun_edge::edge_t VVP_EDGE(vvp_bit4_t from, vvp_bit4_t to)
 {
-      return 1 << ((from << 2) | to);
+      بازگشت 1 << ((from << 2) | to);
 }
 
-const vvp_fun_edge::edge_t vvp_edge_posedge
+ثابت vvp_fun_edge::edge_t vvp_edge_posedge
       = VVP_EDGE(BIT4_0,BIT4_1)
       | VVP_EDGE(BIT4_0,BIT4_X)
       | VVP_EDGE(BIT4_0,BIT4_Z)
@@ -191,7 +191,7 @@ const vvp_fun_edge::edge_t vvp_edge_posedge
       | VVP_EDGE(BIT4_Z,BIT4_1)
       ;
 
-const vvp_fun_edge::edge_t vvp_edge_negedge
+ثابت vvp_fun_edge::edge_t vvp_edge_negedge
       = VVP_EDGE(BIT4_1,BIT4_0)
       | VVP_EDGE(BIT4_1,BIT4_X)
       | VVP_EDGE(BIT4_1,BIT4_Z)
@@ -199,7 +199,7 @@ const vvp_fun_edge::edge_t vvp_edge_negedge
       | VVP_EDGE(BIT4_Z,BIT4_0)
       ;
 
-const vvp_fun_edge::edge_t vvp_edge_edge
+ثابت vvp_fun_edge::edge_t vvp_edge_edge
       = VVP_EDGE(BIT4_0,BIT4_1)
       | VVP_EDGE(BIT4_1,BIT4_0)
       | VVP_EDGE(BIT4_0,BIT4_X)
@@ -212,12 +212,12 @@ const vvp_fun_edge::edge_t vvp_edge_edge
       | VVP_EDGE(BIT4_1,BIT4_Z)
       ;
 
-const vvp_fun_edge::edge_t vvp_edge_none    = 0;
+ثابت vvp_fun_edge::edge_t vvp_edge_none    = 0;
 
-struct vvp_fun_edge_state_s : public waitable_state_s {
+ساختار vvp_fun_edge_state_s : عمومی waitable_state_s {
       vvp_fun_edge_state_s()
       {
-            for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+            برای (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
                   bits[idx] = BIT4_X;
       }
 
@@ -227,7 +227,7 @@ struct vvp_fun_edge_state_s : public waitable_state_s {
 vvp_fun_edge::vvp_fun_edge(edge_t e)
 : edge_(e)
 {
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+      برای (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
             bits_[idx] = BIT4_X;
 }
 
@@ -235,7 +235,7 @@ vvp_fun_edge::~vvp_fun_edge()
 {
 }
 
-bool vvp_fun_edge::recv_vec4_(const vvp_vector4_t&bit,
+منطقی vvp_fun_edge::recv_vec4_(ثابت vvp_vector4_t&bit,
                               vvp_bit4_t&old_bit, vthread_t&threads)
 {
 	/* See what kind of edge this represents. */
@@ -244,11 +244,11 @@ bool vvp_fun_edge::recv_vec4_(const vvp_vector4_t&bit,
 	/* Save the current input for the next time around. */
       old_bit = bit.value(0);
 
-      if ((edge_ == vvp_edge_none) || (edge_ & mask)) {
+      اگر ((edge_ == vvp_edge_none) || (edge_ & mask)) {
 	    run_waiting_threads_(threads);
-            return true;
+            بازگشت درست;
       }
-      return false;
+      بازگشت نادرست;
 }
 
 vvp_fun_edge_sa::vvp_fun_edge_sa(edge_t e)
@@ -265,23 +265,23 @@ vthread_t vvp_fun_edge_sa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = threads_;
       threads_ = thread;
 
-      return tmp;
+      بازگشت tmp;
 }
 
-void vvp_fun_edge_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+تهی vvp_fun_edge_sa::recv_vec4(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
                                 vvp_context_t)
 {
-      if (recv_vec4_(bit, bits_[port.port()], threads_)) {
+      اگر (recv_vec4_(bit, bits_[port.port()], threads_)) {
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(bit, 0);
       }
 }
 
-void vvp_fun_edge_sa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+تهی vvp_fun_edge_sa::recv_vec4_pv(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
 				   unsigned base, unsigned vwid, vvp_context_t)
 {
-      assert(base == 0);
-      if (recv_vec4_(bit, bits_[port.port()], threads_)) {
+      أكد(base == 0);
+      اگر (recv_vec4_(bit, bits_[port.port()], threads_)) {
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4_pv(bit, base, vwid, 0);
       }
@@ -291,31 +291,31 @@ vvp_fun_edge_aa::vvp_fun_edge_aa(edge_t e)
 : vvp_fun_edge(e)
 {
       context_scope_ = vpip_peek_context_scope();
-      context_idx_ = vpip_add_item_to_context(this, context_scope_);
+      context_idx_ = vpip_add_item_to_context(این, context_scope_);
 }
 
 vvp_fun_edge_aa::~vvp_fun_edge_aa()
 {
 }
 
-void vvp_fun_edge_aa::alloc_instance(vvp_context_t context)
+تهی vvp_fun_edge_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new vvp_fun_edge_state_s);
+      vvp_set_context_item(context, context_idx_, جدید vvp_fun_edge_state_s);
       reset_instance(context);
 }
 
-void vvp_fun_edge_aa::reset_instance(vvp_context_t context)
+تهی vvp_fun_edge_aa::reset_instance(vvp_context_t context)
 {
       vvp_fun_edge_state_s*state = static_cast<vvp_fun_edge_state_s*>
             (vvp_get_context_item(context, context_idx_));
 
       state->threads = 0;
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+      برای (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
             state->bits[idx] = bits_[idx];
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vvp_fun_edge_aa::free_instance(vvp_context_t context)
+تهی vvp_fun_edge_aa::free_instance(vvp_context_t context)
 {
       vvp_fun_edge_state_s*state = static_cast<vvp_fun_edge_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -331,23 +331,23 @@ vthread_t vvp_fun_edge_aa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = state->threads;
       state->threads = thread;
 
-      return tmp;
+      بازگشت tmp;
 }
 
-void vvp_fun_edge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+تهی vvp_fun_edge_aa::recv_vec4(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
                                 vvp_context_t context)
 {
-      if (context) {
+      اگر (context) {
             vvp_fun_edge_state_s*state = static_cast<vvp_fun_edge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
-            if (recv_vec4_(bit, state->bits[port.port()], state->threads)) {
+            اگر (recv_vec4_(bit, state->bits[port.port()], state->threads)) {
                   vvp_net_t*net = port.ptr();
                   net->send_vec4(bit, context);
             }
-      } else {
+      } وگرنه {
             context = context_scope_->live_contexts;
-            while (context) {
+            وقتی (context) {
                   recv_vec4(port, bit, context);
                   context = vvp_get_next_context(context);
             }
@@ -355,223 +355,223 @@ void vvp_fun_edge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
       }
 }
 
-class anyedge_value {
+رده anyedge_مقدار {
 
-    public:
-      anyedge_value() {};
-      virtual ~anyedge_value() {};
+    عمومی:
+      anyedge_مقدار() {};
+      مجازی ~anyedge_مقدار() {};
 
-      virtual void reset() = 0;
+      مجازی تهی reset() = 0;
 
-      virtual void duplicate(anyedge_value*&dup) = 0;
+      مجازی تهی duplicate(anyedge_مقدار*&dup) = 0;
 };
 
-class anyedge_vec4_value : public anyedge_value {
+رده anyedge_vec4_مقدار : عمومی anyedge_مقدار {
 
-    public:
-      anyedge_vec4_value() {};
-      virtual ~anyedge_vec4_value() override {};
+    عمومی:
+      anyedge_vec4_مقدار() {};
+      مجازی ~anyedge_vec4_مقدار() override {};
 
-      void reset() override { old_bits.set_to_x(); }
+      تهی reset() override { old_bits.set_to_x(); }
 
-      void set(const vvp_vector4_t&bit) { old_bits = bit; };
+      تهی set(ثابت vvp_vector4_t&bit) { old_bits = bit; };
 
-      void duplicate(anyedge_value*&dup) override;
+      تهی duplicate(anyedge_مقدار*&dup) override;
 
-      bool recv_vec4(const vvp_vector4_t&bit);
+      منطقی recv_vec4(ثابت vvp_vector4_t&bit);
 
-      bool recv_vec4_pv(const vvp_vector4_t&bit, unsigned base,
+      منطقی recv_vec4_pv(ثابت vvp_vector4_t&bit, unsigned base,
 			unsigned vwid);
 
-    private:
+    خصوصی:
       vvp_vector4_t old_bits;
 };
 
-static anyedge_vec4_value*get_vec4_value(anyedge_value*&value)
+ایستا anyedge_vec4_مقدار*get_vec4_مقدار(anyedge_مقدار*&value)
 {
-      anyedge_vec4_value*vec4_value = dynamic_cast<anyedge_vec4_value*>(value);
-      if (!value) {
-	    vec4_value = new anyedge_vec4_value();
+      anyedge_vec4_مقدار*vec4_مقدار = dynamic_cast<anyedge_vec4_مقدار*>(value);
+      اگر (!value) {
+	    vec4_مقدار = جدید anyedge_vec4_مقدار();
 	    delete value;
-	    value = vec4_value;
+	    value = vec4_مقدار;
       }
-      return vec4_value;
+      بازگشت vec4_مقدار;
 }
 
-class anyedge_real_value : public anyedge_value {
+رده anyedge_real_مقدار : عمومی anyedge_مقدار {
 
-    public:
-      anyedge_real_value() : old_bits(0.0) {};
-      virtual ~anyedge_real_value() override {};
+    عمومی:
+      anyedge_real_مقدار() : old_bits(0.0) {};
+      مجازی ~anyedge_real_مقدار() override {};
 
-      void reset() override { old_bits = 0.0; }
+      تهی reset() override { old_bits = 0.0; }
 
-      void set(double bit) { old_bits = bit; };
+      تهی set(دوگانه bit) { old_bits = bit; };
 
-      void duplicate(anyedge_value*&dup) override;
+      تهی duplicate(anyedge_مقدار*&dup) override;
 
-      bool recv_real(double bit);
+      منطقی recv_real(دوگانه bit);
 
-    private:
-      double old_bits;
+    خصوصی:
+      دوگانه old_bits;
 };
 
-static anyedge_real_value*get_real_value(anyedge_value*&value)
+ایستا anyedge_real_مقدار*get_real_مقدار(anyedge_مقدار*&value)
 {
-      anyedge_real_value*real_value = dynamic_cast<anyedge_real_value*>(value);
-      if (!value) {
-	    real_value = new anyedge_real_value();
+      anyedge_real_مقدار*real_مقدار = dynamic_cast<anyedge_real_مقدار*>(value);
+      اگر (!value) {
+	    real_مقدار = جدید anyedge_real_مقدار();
 	    delete value;
-	    value = real_value;
+	    value = real_مقدار;
       }
-      return real_value;
+      بازگشت real_مقدار;
 }
 
-class anyedge_string_value : public anyedge_value {
+رده anyedge_string_مقدار : عمومی anyedge_مقدار {
 
-    public:
-      anyedge_string_value() {};
-      virtual ~anyedge_string_value() override {};
+    عمومی:
+      anyedge_string_مقدار() {};
+      مجازی ~anyedge_string_مقدار() override {};
 
-      void reset() override { old_bits.clear(); }
+      تهی reset() override { old_bits.clear(); }
 
-      void set(const std::string&bit) { old_bits = bit; };
+      تهی set(ثابت std::string&bit) { old_bits = bit; };
 
-      void duplicate(anyedge_value*&dup) override;
+      تهی duplicate(anyedge_مقدار*&dup) override;
 
-      bool recv_string(const std::string&bit);
+      منطقی recv_string(ثابت std::string&bit);
 
-    private:
+    خصوصی:
       std::string old_bits;
 };
 
-static anyedge_string_value*get_string_value(anyedge_value*&value)
+ایستا anyedge_string_مقدار*get_string_مقدار(anyedge_مقدار*&value)
 {
-      anyedge_string_value*string_value = dynamic_cast<anyedge_string_value*>(value);
-      if (!value) {
-	    string_value = new anyedge_string_value();
+      anyedge_string_مقدار*string_مقدار = dynamic_cast<anyedge_string_مقدار*>(value);
+      اگر (!value) {
+	    string_مقدار = جدید anyedge_string_مقدار();
 	    delete value;
-	    value = string_value;
+	    value = string_مقدار;
       }
-      return string_value;
+      بازگشت string_مقدار;
 }
 
-struct vvp_fun_anyedge_state_s : public waitable_state_s {
+ساختار vvp_fun_anyedge_state_s : عمومی waitable_state_s {
       vvp_fun_anyedge_state_s()
       {
-            for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-                  last_value_[idx] = 0;
+            برای (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+                  last_مقدار[idx] = 0;
       }
 
       ~vvp_fun_anyedge_state_s()
       {
-            for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-                  delete last_value_[idx];
+            برای (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+                  delete last_مقدار[idx];
       }
 
-      anyedge_value *last_value_[4];
-      vvp_fun_anyedge_state_s(const vvp_fun_anyedge_state_s&) = delete;
-      vvp_fun_anyedge_state_s& operator=(const vvp_fun_anyedge_state_s&) = delete;
+      anyedge_مقدار *last_مقدار[4];
+      vvp_fun_anyedge_state_s(ثابت vvp_fun_anyedge_state_s&) = delete;
+      vvp_fun_anyedge_state_s& operator=(ثابت vvp_fun_anyedge_state_s&) = delete;
 };
 
 vvp_fun_anyedge::vvp_fun_anyedge()
 {
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-	    last_value_[idx] = 0;
+      برای (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+	    last_مقدار[idx] = 0;
 }
 
 vvp_fun_anyedge::~vvp_fun_anyedge()
 {
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-	    delete last_value_[idx];
+      برای (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+	    delete last_مقدار[idx];
 }
 
-void anyedge_vec4_value::duplicate(anyedge_value*&dup)
+تهی anyedge_vec4_مقدار::duplicate(anyedge_مقدار*&dup)
 {
-      anyedge_vec4_value*dup_vec4 = get_vec4_value(dup);
-      assert(dup_vec4);
+      anyedge_vec4_مقدار*dup_vec4 = get_vec4_مقدار(dup);
+      أكد(dup_vec4);
       dup_vec4->set(old_bits);
 }
 
-bool anyedge_vec4_value::recv_vec4(const vvp_vector4_t&bit)
+منطقی anyedge_vec4_مقدار::recv_vec4(ثابت vvp_vector4_t&bit)
 {
-      bool flag = false;
+      منطقی flag = نادرست;
 
-      if (old_bits.size() != bit.size()) {
-	    if (old_bits.size() == 0) {
+      اگر (old_bits.size() != bit.size()) {
+	    اگر (old_bits.size() == 0) {
 		    // Special case: If we've not seen any input yet
 		    // (old_bits.size()==0) then replace it will a reference
 		    // vector that is 'bx. Then compare that with the input
 		    // to see if we are processing a change from 'bx.
 		  old_bits = vvp_vector4_t(bit.size(), BIT4_X);
-		  if (old_bits.eeq(bit))
-			flag = false;
-		  else
-			flag = true;
+		  اگر (old_bits.eeq(bit))
+			flag = نادرست;
+		  وگرنه
+			flag = درست;
 
-	    } else {
-		  flag = true;
+	    } وگرنه {
+		  flag = درست;
 	    }
 
-      } else {
-	    for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
-		  if (old_bits.value(idx) != bit.value(idx)) {
-			flag = true;
-			break;
+      } وگرنه {
+	    برای (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
+		  اگر (old_bits.value(idx) != bit.value(idx)) {
+			flag = درست;
+			بشکن;
 		  }
 	    }
       }
 
-      if (flag) {
+      اگر (flag) {
 	    old_bits = bit;
       }
 
-      return flag;
+      بازگشت flag;
 }
 
-bool anyedge_vec4_value::recv_vec4_pv(const vvp_vector4_t&bit, unsigned base,
+منطقی anyedge_vec4_مقدار::recv_vec4_pv(ثابت vvp_vector4_t&bit, unsigned base,
 				      unsigned vwid)
 {
       vvp_vector4_t tmp = old_bits;
-      if (tmp.size() == 0)
+      اگر (tmp.size() == 0)
 	    tmp = vvp_vector4_t(vwid, BIT4_Z);
-      assert(base + bit.size()<= vwid);
-      assert(tmp.size() == vwid);
+      أكد(base + bit.size()<= vwid);
+      أكد(tmp.size() == vwid);
       tmp.set_vec(base, bit);
 
-      return recv_vec4(tmp);
+      بازگشت recv_vec4(tmp);
 }
 
-void anyedge_real_value::duplicate(anyedge_value*&dup)
+تهی anyedge_real_مقدار::duplicate(anyedge_مقدار*&dup)
 {
-      anyedge_real_value*dup_real = get_real_value(dup);
-      assert(dup_real);
+      anyedge_real_مقدار*dup_real = get_real_مقدار(dup);
+      أكد(dup_real);
       dup_real->set(old_bits);
 }
 
-bool anyedge_real_value::recv_real(double bit)
+منطقی anyedge_real_مقدار::recv_real(دوگانه bit)
 {
-      if (old_bits != bit) {
+      اگر (old_bits != bit) {
 	    old_bits = bit;
-            return true;
+            بازگشت درست;
       }
-      return false;
+      بازگشت نادرست;
 }
 
-void anyedge_string_value::duplicate(anyedge_value*&dup)
+تهی anyedge_string_مقدار::duplicate(anyedge_مقدار*&dup)
 {
-      anyedge_string_value*dup_string = get_string_value(dup);
-      assert(dup_string);
+      anyedge_string_مقدار*dup_string = get_string_مقدار(dup);
+      أكد(dup_string);
       dup_string->set(old_bits);
 }
 
-bool anyedge_string_value::recv_string(const std::string&bit)
+منطقی anyedge_string_مقدار::recv_string(ثابت std::string&bit)
 {
-      if (old_bits != bit) {
+      اگر (old_bits != bit) {
 	    old_bits = bit;
-            return true;
+            بازگشت درست;
       }
-      return false;
+      بازگشت نادرست;
 }
 
 vvp_fun_anyedge_sa::vvp_fun_anyedge_sa()
@@ -588,51 +588,51 @@ vthread_t vvp_fun_anyedge_sa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = threads_;
       threads_ = thread;
 
-      return tmp;
+      بازگشت tmp;
 }
 
-void vvp_fun_anyedge_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+تهی vvp_fun_anyedge_sa::recv_vec4(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
                                    vvp_context_t)
 {
-      anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
-      assert(value);
-      if (value->recv_vec4(bit)) {
+      anyedge_vec4_مقدار*value = get_vec4_مقدار(last_مقدار[port.port()]);
+      أكد(value);
+      اگر (value->recv_vec4(bit)) {
 	    run_waiting_threads_(threads_);
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(bit, 0);
       }
 }
 
-void vvp_fun_anyedge_sa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+تهی vvp_fun_anyedge_sa::recv_vec4_pv(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
 				      unsigned base, unsigned vwid, vvp_context_t)
 {
-      anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
-      assert(value);
-      if (value->recv_vec4_pv(bit, base, vwid)) {
+      anyedge_vec4_مقدار*value = get_vec4_مقدار(last_مقدار[port.port()]);
+      أكد(value);
+      اگر (value->recv_vec4_pv(bit, base, vwid)) {
 	    run_waiting_threads_(threads_);
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(bit, 0);
       }
 }
 
-void vvp_fun_anyedge_sa::recv_real(vvp_net_ptr_t port, double bit,
+تهی vvp_fun_anyedge_sa::recv_real(vvp_net_ptr_t port, دوگانه bit,
                                    vvp_context_t)
 {
-      anyedge_real_value*value = get_real_value(last_value_[port.port()]);
-      assert(value);
-      if (value->recv_real(bit)) {
+      anyedge_real_مقدار*value = get_real_مقدار(last_مقدار[port.port()]);
+      أكد(value);
+      اگر (value->recv_real(bit)) {
 	    run_waiting_threads_(threads_);
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(vvp_vector4_t(), 0);
       }
 }
 
-void vvp_fun_anyedge_sa::recv_string(vvp_net_ptr_t port, const std::string&bit,
+تهی vvp_fun_anyedge_sa::recv_string(vvp_net_ptr_t port, ثابت std::string&bit,
 				     vvp_context_t)
 {
-      anyedge_string_value*value = get_string_value(last_value_[port.port()]);
-      assert(value);
-      if (value->recv_string(bit)) {
+      anyedge_string_مقدار*value = get_string_مقدار(last_مقدار[port.port()]);
+      أكد(value);
+      اگر (value->recv_string(bit)) {
 	    run_waiting_threads_(threads_);
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(vvp_vector4_t(), 0);
@@ -643,7 +643,7 @@ void vvp_fun_anyedge_sa::recv_string(vvp_net_ptr_t port, const std::string&bit,
  * An anyedge receiving an object should do nothing with it, but should
  * trigger waiting threads.
  */
-void vvp_fun_anyedge_sa::recv_object(vvp_net_ptr_t port, vvp_object_t,
+تهی vvp_fun_anyedge_sa::recv_object(vvp_net_ptr_t port, vvp_object_t,
 				     vvp_context_t)
 {
       run_waiting_threads_(threads_);
@@ -654,35 +654,35 @@ void vvp_fun_anyedge_sa::recv_object(vvp_net_ptr_t port, vvp_object_t,
 vvp_fun_anyedge_aa::vvp_fun_anyedge_aa()
 {
       context_scope_ = vpip_peek_context_scope();
-      context_idx_ = vpip_add_item_to_context(this, context_scope_);
+      context_idx_ = vpip_add_item_to_context(این, context_scope_);
 }
 
 vvp_fun_anyedge_aa::~vvp_fun_anyedge_aa()
 {
 }
 
-void vvp_fun_anyedge_aa::alloc_instance(vvp_context_t context)
+تهی vvp_fun_anyedge_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new vvp_fun_anyedge_state_s);
+      vvp_set_context_item(context, context_idx_, جدید vvp_fun_anyedge_state_s);
       reset_instance(context);
 }
 
-void vvp_fun_anyedge_aa::reset_instance(vvp_context_t context)
+تهی vvp_fun_anyedge_aa::reset_instance(vvp_context_t context)
 {
       vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
             (vvp_get_context_item(context, context_idx_));
 
       state->threads = 0;
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1) {
-	    if (last_value_[idx])
-	          last_value_[idx]->duplicate(state->last_value_[idx]);
-	    else if (state->last_value_[idx])
-		  state->last_value_[idx]->reset();
+      برای (unsigned idx = 0 ;  idx < 4 ;  idx += 1) {
+	    اگر (last_مقدار[idx])
+	          last_مقدار[idx]->duplicate(state->last_مقدار[idx]);
+	    وگرنه اگر (state->last_مقدار[idx])
+		  state->last_مقدار[idx]->reset();
       }
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vvp_fun_anyedge_aa::free_instance(vvp_context_t context)
+تهی vvp_fun_anyedge_aa::free_instance(vvp_context_t context)
 {
       vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -698,83 +698,83 @@ vthread_t vvp_fun_anyedge_aa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = state->threads;
       state->threads = thread;
 
-      return tmp;
+      بازگشت tmp;
 }
 
-void vvp_fun_anyedge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+تهی vvp_fun_anyedge_aa::recv_vec4(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
                                    vvp_context_t context)
 {
-      if (context) {
+      اگر (context) {
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
-            anyedge_vec4_value*value = get_vec4_value(state->last_value_[port.port()]);
-            assert(value);
-            if (value->recv_vec4(bit)) {
+            anyedge_vec4_مقدار*value = get_vec4_مقدار(state->last_مقدار[port.port()]);
+            أكد(value);
+            اگر (value->recv_vec4(bit)) {
                   run_waiting_threads_(state->threads);
                   vvp_net_t*net = port.ptr();
                   net->send_vec4(bit, context);
             }
-      } else {
+      } وگرنه {
             context = context_scope_->live_contexts;
-            while (context) {
+            وقتی (context) {
                   recv_vec4(port, bit, context);
                   context = vvp_get_next_context(context);
             }
-            anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
-            assert(value);
+            anyedge_vec4_مقدار*value = get_vec4_مقدار(last_مقدار[port.port()]);
+            أكد(value);
             value->set(bit);
       }
 }
 
-void vvp_fun_anyedge_aa::recv_real(vvp_net_ptr_t port, double bit,
+تهی vvp_fun_anyedge_aa::recv_real(vvp_net_ptr_t port, دوگانه bit,
                                    vvp_context_t context)
 {
-      if (context) {
+      اگر (context) {
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
-            anyedge_real_value*value = get_real_value(state->last_value_[port.port()]);
-            assert(value);
-            if (value->recv_real(bit)) {
+            anyedge_real_مقدار*value = get_real_مقدار(state->last_مقدار[port.port()]);
+            أكد(value);
+            اگر (value->recv_real(bit)) {
                   run_waiting_threads_(state->threads);
                   vvp_net_t*net = port.ptr();
                   net->send_vec4(vvp_vector4_t(), context);
             }
-      } else {
+      } وگرنه {
             context = context_scope_->live_contexts;
-            while (context) {
+            وقتی (context) {
                   recv_real(port, bit, context);
                   context = vvp_get_next_context(context);
             }
-            anyedge_real_value*value = get_real_value(last_value_[port.port()]);
-            assert(value);
+            anyedge_real_مقدار*value = get_real_مقدار(last_مقدار[port.port()]);
+            أكد(value);
             value->set(bit);
       }
 }
 
-void vvp_fun_anyedge_aa::recv_string(vvp_net_ptr_t port, const std::string&bit,
+تهی vvp_fun_anyedge_aa::recv_string(vvp_net_ptr_t port, ثابت std::string&bit,
 				     vvp_context_t context)
 {
-      if (context) {
+      اگر (context) {
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
-            anyedge_string_value*value = get_string_value(state->last_value_[port.port()]);
-            assert(value);
-            if (value->recv_string(bit)) {
+            anyedge_string_مقدار*value = get_string_مقدار(state->last_مقدار[port.port()]);
+            أكد(value);
+            اگر (value->recv_string(bit)) {
                   run_waiting_threads_(state->threads);
                   vvp_net_t*net = port.ptr();
                   net->send_vec4(vvp_vector4_t(), context);
             }
-      } else {
+      } وگرنه {
             context = context_scope_->live_contexts;
-            while (context) {
+            وقتی (context) {
                   recv_string(port, bit, context);
                   context = vvp_get_next_context(context);
             }
-            anyedge_string_value*value = get_string_value(last_value_[port.port()]);
-            assert(value);
+            anyedge_string_مقدار*value = get_string_مقدار(last_مقدار[port.port()]);
+            أكد(value);
             value->set(bit);
       }
 }
@@ -802,10 +802,10 @@ vthread_t vvp_fun_event_or_sa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = threads_;
       threads_ = thread;
 
-      return tmp;
+      بازگشت tmp;
 }
 
-void vvp_fun_event_or_sa::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&bit,
+تهی vvp_fun_event_or_sa::recv_vec4(vvp_net_ptr_t, ثابت vvp_vector4_t&bit,
                                     vvp_context_t)
 {
       run_waiting_threads_(threads_);
@@ -816,19 +816,19 @@ vvp_fun_event_or_aa::vvp_fun_event_or_aa(vvp_net_t*base_net)
 : vvp_fun_event_or(base_net)
 {
       context_scope_ = vpip_peek_context_scope();
-      context_idx_ = vpip_add_item_to_context(this, context_scope_);
+      context_idx_ = vpip_add_item_to_context(این, context_scope_);
 }
 
 vvp_fun_event_or_aa::~vvp_fun_event_or_aa()
 {
 }
 
-void vvp_fun_event_or_aa::alloc_instance(vvp_context_t context)
+تهی vvp_fun_event_or_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new waitable_state_s);
+      vvp_set_context_item(context, context_idx_, جدید waitable_state_s);
 }
 
-void vvp_fun_event_or_aa::reset_instance(vvp_context_t context)
+تهی vvp_fun_event_or_aa::reset_instance(vvp_context_t context)
 {
       waitable_state_s*state = static_cast<waitable_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -837,7 +837,7 @@ void vvp_fun_event_or_aa::reset_instance(vvp_context_t context)
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vvp_fun_event_or_aa::free_instance(vvp_context_t context)
+تهی vvp_fun_event_or_aa::free_instance(vvp_context_t context)
 {
       waitable_state_s*state = static_cast<waitable_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -853,21 +853,21 @@ vthread_t vvp_fun_event_or_aa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = state->threads;
       state->threads = thread;
 
-      return tmp;
+      بازگشت tmp;
 }
 
-void vvp_fun_event_or_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+تهی vvp_fun_event_or_aa::recv_vec4(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
                                     vvp_context_t context)
 {
-      if (context) {
+      اگر (context) {
             waitable_state_s*state = static_cast<waitable_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
             run_waiting_threads_(state->threads);
             base_net_->send_vec4(bit, context);
-      } else {
+      } وگرنه {
             context = context_scope_->live_contexts;
-            while (context) {
+            وقتی (context) {
                   recv_vec4(port, bit, context);
                   context = vvp_get_next_context(context);
             }
@@ -897,10 +897,10 @@ vthread_t vvp_named_event_sa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = threads_;
       threads_ = thread;
 
-      return tmp;
+      بازگشت tmp;
 }
 
-void vvp_named_event_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+تهی vvp_named_event_sa::recv_vec4(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
                                    vvp_context_t)
 {
       run_waiting_threads_(threads_);
@@ -908,26 +908,26 @@ void vvp_named_event_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
       net->send_vec4(bit, 0);
 
       __vpiNamedEvent*obj = dynamic_cast<__vpiNamedEvent*>(handle_);
-      assert(obj);
+      أكد(obj);
       obj->run_vpi_callbacks();
 }
 
 vvp_named_event_aa::vvp_named_event_aa(__vpiHandle*h)
 : vvp_named_event(h)
 {
-      context_idx_ = vpip_add_item_to_context(this, vpip_peek_context_scope());
+      context_idx_ = vpip_add_item_to_context(این, vpip_peek_context_scope());
 }
 
 vvp_named_event_aa::~vvp_named_event_aa()
 {
 }
 
-void vvp_named_event_aa::alloc_instance(vvp_context_t context)
+تهی vvp_named_event_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new waitable_state_s);
+      vvp_set_context_item(context, context_idx_, جدید waitable_state_s);
 }
 
-void vvp_named_event_aa::reset_instance(vvp_context_t context)
+تهی vvp_named_event_aa::reset_instance(vvp_context_t context)
 {
       waitable_state_s*state = static_cast<waitable_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -936,7 +936,7 @@ void vvp_named_event_aa::reset_instance(vvp_context_t context)
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vvp_named_event_aa::free_instance(vvp_context_t context)
+تهی vvp_named_event_aa::free_instance(vvp_context_t context)
 {
       waitable_state_s*state = static_cast<waitable_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -952,13 +952,13 @@ vthread_t vvp_named_event_aa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = state->threads;
       state->threads = thread;
 
-      return tmp;
+      بازگشت tmp;
 }
 
-void vvp_named_event_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+تهی vvp_named_event_aa::recv_vec4(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
                                    vvp_context_t context)
 {
-      assert(context);
+      أكد(context);
 
       waitable_state_s*state = static_cast<waitable_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -976,82 +976,82 @@ void vvp_named_event_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 **  Named events are handled elsewhere.
 */
 
-static void compile_event_or(char*label, unsigned argc, struct symb_s*argv);
+ایستا تهی compile_event_or(نویسه*label, unsigned argc, ساختار symb_s*argv);
 
-void compile_event(char*label, char*type, unsigned argc, struct symb_s*argv)
+تهی compile_event(نویسه*label, نویسه*type, unsigned argc, ساختار symb_s*argv)
 {
       vvp_net_fun_t*fun = 0;
 
-      if (type == 0) {
+      اگر (type == 0) {
 	    compile_event_or(label, argc, argv);
-	    return;
+	    بازگشت;
       }
 
-      if (strcmp(type,"anyedge") == 0) {
+      اگر (strcmp(type,"anyedge") == 0) {
 
-	    free(type);
+	    آزاد(type);
 
-            if (vpip_peek_current_scope()->is_automatic()) {
-                  fun = new vvp_fun_anyedge_aa;
-            } else {
-                  fun = new vvp_fun_anyedge_sa;
+            اگر (vpip_peek_current_scope()->is_automatic()) {
+                  fun = جدید vvp_fun_anyedge_aa;
+            } وگرنه {
+                  fun = جدید vvp_fun_anyedge_sa;
             }
 
-      } else {
+      } وگرنه {
 
 	    vvp_fun_edge::edge_t edge_type = vvp_edge_none;
 
-	    if (strcmp(type,"posedge") == 0)
+	    اگر (strcmp(type,"posedge") == 0)
 		  edge_type = vvp_edge_posedge;
-	    else if (strcmp(type,"negedge") == 0)
+	    وگرنه اگر (strcmp(type,"negedge") == 0)
 		  edge_type = vvp_edge_negedge;
-	    else if (strcmp(type,"edge") == 0)
+	    وگرنه اگر (strcmp(type,"edge") == 0)
 		  edge_type = vvp_edge_edge;
 
-	    assert(argc <= 4);
-	    free(type);
+	    أكد(argc <= 4);
+	    آزاد(type);
 
-            if (vpip_peek_current_scope()->is_automatic()) {
-                  fun = new vvp_fun_edge_aa(edge_type);
-            } else {
-                  fun = new vvp_fun_edge_sa(edge_type);
+            اگر (vpip_peek_current_scope()->is_automatic()) {
+                  fun = جدید vvp_fun_edge_aa(edge_type);
+            } وگرنه {
+                  fun = جدید vvp_fun_edge_sa(edge_type);
             }
 
       }
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = جدید vvp_net_t;
       ptr->fun = fun;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_نماد(label, ptr);
+      آزاد(label);
 
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      آزاد(argv);
 }
 
-static void compile_event_or(char*label, unsigned argc, struct symb_s*argv)
+ایستا تهی compile_event_or(نویسه*label, unsigned argc, ساختار symb_s*argv)
 {
-      vvp_net_t*base_net = new vvp_net_t;
-      if (vpip_peek_current_scope()->is_automatic()) {
-            base_net->fun = new vvp_fun_event_or_aa(base_net);
-      } else {
-            base_net->fun = new vvp_fun_event_or_sa(base_net);
+      vvp_net_t*base_net = جدید vvp_net_t;
+      اگر (vpip_peek_current_scope()->is_automatic()) {
+            base_net->fun = جدید vvp_fun_event_or_aa(base_net);
+      } وگرنه {
+            base_net->fun = جدید vvp_fun_event_or_sa(base_net);
       }
-      define_functor_symbol(label, base_net);
-      free(label);
+      define_functor_نماد(label, base_net);
+      آزاد(label);
 
 	/* This is a simplified version of a wide functor. We don't
 	   care about the data values or what port they arrived on,
 	   so we can use a single shared functor. */
       vvp_net_t*curr_net = base_net;
-      for (unsigned idx = 0 ;  idx < argc ;  idx += 1) {
-	    if (idx > 0 && (idx % 4) == 0) {
-		  curr_net = new vvp_net_t;
+      برای (unsigned idx = 0 ;  idx < argc ;  idx += 1) {
+	    اگر (idx > 0 && (idx % 4) == 0) {
+		  curr_net = جدید vvp_net_t;
 		  curr_net->fun = base_net->fun;
 	    }
-	    input_connect(curr_net, idx % 4, argv[idx].text);
+	    درون_داد_connect(curr_net, idx % 4, argv[idx].text);
       }
-      free(argv);
+      آزاد(argv);
 }
 
 /*
@@ -1059,27 +1059,27 @@ static void compile_event_or(char*label, unsigned argc, struct symb_s*argv)
  * inputs, it is only accessed by behavioral trigger statements, which
  * in vvp are %set instructions.
  */
-void compile_named_event(char*label, char*name, bool local_flag)
+تهی compile_named_event(نویسه*label, نویسه*name, منطقی local_flag)
 {
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_net_t*ptr = جدید vvp_net_t;
 
       vpiHandle obj = vpip_make_named_event(name, ptr);
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-            ptr->fun = new vvp_named_event_aa(obj);
-      } else {
-            ptr->fun = new vvp_named_event_sa(obj);
+      اگر (vpip_peek_current_scope()->is_automatic()) {
+            ptr->fun = جدید vvp_named_event_aa(obj);
+      } وگرنه {
+            ptr->fun = جدید vvp_named_event_sa(obj);
       }
-      define_functor_symbol(label, ptr);
-      compile_vpi_symbol(label, obj);
-      if (! local_flag) vpip_attach_to_current_scope(obj);
+      define_functor_نماد(label, ptr);
+      compile_vpi_نماد(label, obj);
+      اگر (! local_flag) vpip_attach_to_current_scope(obj);
 
-      free(label);
+      آزاد(label);
       delete[] name;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void named_event_delete(__vpiHandle*handle)
+تهی named_event_delete(__vpiHandle*handle)
 {
       delete dynamic_cast<__vpiNamedEvent *>(handle);
 }

@@ -55,100 +55,100 @@
  * The table is calculated at compile time, therefore, by the
  * draw_tt.c program.
  */
-extern const char hex_digits[256];
-extern const char oct_digits[64];
+بیرونی ثابت نویسه hex_digits[256];
+بیرونی ثابت نویسه oct_digits[64];
 
 /*
  * The string values need a result buf to hold the results. This
  * buffer can be reused for that purpose. Whenever I have a need, the
  * need_result_buf function makes sure that need can be met.
  */
-void *need_result_buf(unsigned cnt, vpi_rbuf_t type)
+تهی *need_result_buf(unsigned cnt, vpi_rbuf_t type)
 {
-      static void*result_buf[2] = {0, 0};
-      static size_t result_buf_size[2] = {0, 0};
+      ایستا تهی*result_buf[2] = {0, 0};
+      ایستا size_t result_buf_size[2] = {0, 0};
 
-      if (type == RBUF_DEL) {
-	    free(result_buf[RBUF_VAL]);
+      اگر (type == RBUF_DEL) {
+	    آزاد(result_buf[RBUF_VAL]);
 	    result_buf[RBUF_VAL] = 0;
 	    result_buf_size[RBUF_VAL] = 0;
 
-	    free(result_buf[RBUF_STR]);
+	    آزاد(result_buf[RBUF_STR]);
 	    result_buf[RBUF_STR] = 0;
 	    result_buf_size[RBUF_STR] = 0;
 
-	    return 0;
+	    بازگشت 0;
       }
 
       cnt = (cnt + 0x0fff) & ~0x0fff;
 
-      if (result_buf_size[type] == 0) {
+      اگر (result_buf_size[type] == 0) {
 	    result_buf[type] = malloc(cnt);
 	    result_buf_size[type] = cnt;
-      } else if (result_buf_size[type] < cnt) {
+      } وگرنه اگر (result_buf_size[type] < cnt) {
 	    result_buf[type] = realloc(result_buf[type], cnt);
 	    result_buf_size[type] = cnt;
       }
 
-      return result_buf[type];
+      بازگشت result_buf[type];
 }
 
-char *simple_set_rbuf_str(const char *s1)
+نویسه *simple_set_rbuf_str(ثابت نویسه *s1)
 {
-      char *res = static_cast<char *>(need_result_buf(strlen(s1)+1, RBUF_STR));
-      if (res) strcpy(res,s1);
-      return res;
+      نویسه *res = static_cast<نویسه *>(need_result_buf(strlen(s1)+1, RBUF_STR));
+      اگر (res) strcpy(res,s1);
+      بازگشت res;
 }
 
-char *generic_get_str(int code, vpiHandle ref, const char *name, const char *index)
+نویسه *generic_get_str(صحیح code, vpiHandle ref, ثابت نویسه *name, ثابت نویسه *index)
 {
       size_t len = strlen(name) + 1;  /* include space for null termination */
-      char *bn = NULL;
-      bool is_bn_a_pkg = false;
-      if (code == vpiFullName) {
+      نویسه *bn = پوچ;
+      منطقی is_bn_a_pkg = نادرست;
+      اگر (code == vpiFullName) {
 	    bn = strdup(vpi_get_str(code,ref));
 	    size_t bn_len = strlen(bn);
 	    is_bn_a_pkg = (bn_len >= 3) && (bn[bn_len-1] == ':') && (bn[bn_len-2] == ':');
 	    len += bn_len;
-	    if (! is_bn_a_pkg) len += 1; // include space for "." separator
+	    اگر (! is_bn_a_pkg) len += 1; // include space for "." separator
       }
-      if (index != NULL) len += strlen(index) + 2;  /* include space for brackets */
+      اگر (index != پوچ) len += strlen(index) + 2;  /* include space for brackets */
 
-      char *res = static_cast<char *>(need_result_buf(len, RBUF_STR));
-      if (!res) {
-	    free(bn);
-	    return NULL;
+      نویسه *res = static_cast<نویسه *>(need_result_buf(len, RBUF_STR));
+      اگر (!res) {
+	    آزاد(bn);
+	    بازگشت پوچ;
       }
       *res=0;  /* start with nothing */
 
 	/* if this works, I can make it more efficient later */
-      if (bn != NULL) {
+      اگر (bn != پوچ) {
 	    strcat(res, bn);
 	      // A package already has the "::" separator in the name
-	    if (! is_bn_a_pkg) strcat(res, ".");
-	    free(bn);
+	    اگر (! is_bn_a_pkg) strcat(res, ".");
+	    آزاد(bn);
       }
       strcat(res, name);
-      if (index != NULL) {
+      اگر (index != پوچ) {
 	    strcat(res, "[");
 	    strcat(res, index);
 	    strcat(res, "]");
       }
-      return res;
+      بازگشت res;
 }
 
-static vpiHandle fill_in_net4(struct __vpiSignal*obj, __vpiScope*scope,
-                              const char*name, int msb, int lsb,
-                              bool signed_flag, vvp_net_t*node);
+ایستا vpiHandle fill_in_net4(ساختار __vpiSignal*obj, __vpiScope*scope,
+                              ثابت نویسه*name, صحیح msb, صحیح lsb,
+                              منطقی signed_flag, vvp_net_t*گره);
 
-static vpiHandle fill_in_var4(struct __vpiSignal*obj,
-                              const char*name, int msb, int lsb,
-                              bool signed_flag, vvp_net_t*node)
+ایستا vpiHandle fill_in_var4(ساختار __vpiSignal*obj,
+                              ثابت نویسه*name, صحیح msb, صحیح lsb,
+                              منطقی signed_flag, vvp_net_t*گره)
 {
 	// Variable declarations are always resolved immediately,
 	// so we can assume they belong in the current scope.
-      return fill_in_net4(obj, vpip_peek_current_scope(),
-			  name, msb, lsb, signed_flag, node);
+      بازگشت fill_in_net4(obj, vpip_peek_current_scope(),
+			  name, msb, lsb, signed_flag, گره);
 }
 
 /*
@@ -156,18 +156,18 @@ static vpiHandle fill_in_var4(struct __vpiSignal*obj,
  * They work with full or partial signals.
  */
 
-static void format_vpiBinStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+ایستا تهی format_vpiBinStrVal(ثابت vvp_signal_مقدار*sig, صحیح base, unsigned wid,
+                                s_vpi_مقدار*vp)
 {
-      char *rbuf = static_cast<char *>(need_result_buf(wid+1, RBUF_VAL));
+      نویسه *rbuf = static_cast<نویسه *>(need_result_buf(wid+1, RBUF_VAL));
       long end = base + (signed)wid;
       long offset = end - 1;
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->مقدار_size();
 
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (idx < 0 || idx >= ssize) {
+      برای (long idx = base ;  idx < end ;  idx += 1) {
+	    اگر (idx < 0 || idx >= ssize) {
                   rbuf[offset-idx] = 'x';
-	    } else {
+	    } وگرنه {
                   rbuf[offset-idx] = vvp_bit4_to_ascii(sig->value(idx));
 	    }
       }
@@ -176,39 +176,39 @@ static void format_vpiBinStrVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiOctStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+ایستا تهی format_vpiOctStrVal(ثابت vvp_signal_مقدار*sig, صحیح base, unsigned wid,
+                                s_vpi_مقدار*vp)
 {
       unsigned dwid = (wid + 2) / 3;
-      char *rbuf = static_cast<char *>(need_result_buf(dwid+1, RBUF_VAL));
+      نویسه *rbuf = static_cast<نویسه *>(need_result_buf(dwid+1, RBUF_VAL));
       long end = base + (signed)wid;
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->مقدار_size();
       unsigned val = 0;
 
       rbuf[dwid] = 0;
-      for (long idx = base ;  idx < end ;  idx += 1) {
+      برای (long idx = base ;  idx < end ;  idx += 1) {
 	    unsigned bit = 0;
-	    if (idx < 0 || idx >= ssize) {
+	    اگر (idx < 0 || idx >= ssize) {
                   bit = 2; // BIT4_X
-	    } else {
-                  switch (sig->value(idx)) {
-		      case BIT4_0:
+	    } وگرنه {
+                  انتخاب (sig->value(idx)) {
+		      حالت BIT4_0:
 			bit = 0;
-			break;
-		      case BIT4_1:
+			بشکن;
+		      حالت BIT4_1:
 			bit = 1;
-			break;
-		      case BIT4_X:
+			بشکن;
+		      حالت BIT4_X:
 			bit = 2;
-			break;
-		      case BIT4_Z:
+			بشکن;
+		      حالت BIT4_Z:
 			bit = 3;
-			break;
+			بشکن;
                   }
 	    }
 	    val |= bit << 2*((idx-base) % 3);
 
-	    if ((idx-base) % 3 == 2) {
+	    اگر ((idx-base) % 3 == 2) {
 		dwid -= 1;
 		rbuf[dwid] = oct_digits[val];
 		val = 0;
@@ -216,55 +216,55 @@ static void format_vpiOctStrVal(const vvp_signal_value*sig, int base, unsigned w
       }
 
 	/* Fill in X or Z if they are the only thing in the value. */
-      switch (wid % 3) {
-	  case 1:
-	    if (val == 2) val = 42;
-	    else if (val == 3) val = 63;
-	    break;
-	  case 2:
-	    if (val == 10) val = 42;
-	    else if (val == 15) val = 63;
-	    break;
+      انتخاب (wid % 3) {
+	  حالت 1:
+	    اگر (val == 2) val = 42;
+	    وگرنه اگر (val == 3) val = 63;
+	    بشکن;
+	  حالت 2:
+	    اگر (val == 10) val = 42;
+	    وگرنه اگر (val == 15) val = 63;
+	    بشکن;
       }
 
-      if (dwid > 0) rbuf[0] = oct_digits[val];
+      اگر (dwid > 0) rbuf[0] = oct_digits[val];
 
       vp->value.str = rbuf;
 }
 
-static void format_vpiHexStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+ایستا تهی format_vpiHexStrVal(ثابت vvp_signal_مقدار*sig, صحیح base, unsigned wid,
+                                s_vpi_مقدار*vp)
 {
       unsigned dwid = (wid + 3) / 4;
-      char *rbuf = static_cast<char *>(need_result_buf(dwid+1, RBUF_VAL));
+      نویسه *rbuf = static_cast<نویسه *>(need_result_buf(dwid+1, RBUF_VAL));
       long end = base + (signed)wid;
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->مقدار_size();
       unsigned val = 0;
 
       rbuf[dwid] = 0;
-      for (long idx = base ;  idx < end ;  idx += 1) {
+      برای (long idx = base ;  idx < end ;  idx += 1) {
 	    unsigned bit = 0;
-	    if (idx < 0 || idx >= ssize) {
+	    اگر (idx < 0 || idx >= ssize) {
                   bit = 2; // BIT4_X
-	    } else {
-                  switch (sig->value(idx)) {
-		      case BIT4_0:
+	    } وگرنه {
+                  انتخاب (sig->value(idx)) {
+		      حالت BIT4_0:
 			bit = 0;
-			break;
-		      case BIT4_1:
+			بشکن;
+		      حالت BIT4_1:
 			bit = 1;
-			break;
-		      case BIT4_X:
+			بشکن;
+		      حالت BIT4_X:
 			bit = 2;
-			break;
-		      case BIT4_Z:
+			بشکن;
+		      حالت BIT4_Z:
 			bit = 3;
-			break;
+			بشکن;
                   }
 	    }
 	    val |= bit << 2*((idx-base) % 4);
 
-	    if ((idx-base) % 4 == 3) {
+	    اگر ((idx-base) % 4 == 3) {
 		dwid -= 1;
 		rbuf[dwid] = hex_digits[val];
 		val = 0;
@@ -272,63 +272,63 @@ static void format_vpiHexStrVal(const vvp_signal_value*sig, int base, unsigned w
       }
 
 	/* Fill in X or Z if they are the only thing in the value. */
-      switch (wid % 4) {
-	  case 1:
-	    if (val == 2) val = 170;
-	    else if (val == 3) val = 255;
-	    break;
-	  case 2:
-	    if (val == 10) val = 170;
-	    else if (val == 15) val = 255;
-	    break;
-	  case 3:
-	    if (val == 42) val = 170;
-	    else if (val == 63) val = 255;
-	    break;
+      انتخاب (wid % 4) {
+	  حالت 1:
+	    اگر (val == 2) val = 170;
+	    وگرنه اگر (val == 3) val = 255;
+	    بشکن;
+	  حالت 2:
+	    اگر (val == 10) val = 170;
+	    وگرنه اگر (val == 15) val = 255;
+	    بشکن;
+	  حالت 3:
+	    اگر (val == 42) val = 170;
+	    وگرنه اگر (val == 63) val = 255;
+	    بشکن;
       }
 
-      if (dwid > 0) rbuf[0] = hex_digits[val];
+      اگر (dwid > 0) rbuf[0] = hex_digits[val];
 
       vp->value.str = rbuf;
 }
 
-static void format_vpiDecStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                int signed_flag, s_vpi_value*vp)
+ایستا تهی format_vpiDecStrVal(ثابت vvp_signal_مقدار*sig, صحیح base, unsigned wid,
+                                صحیح signed_flag, s_vpi_مقدار*vp)
 {
-      unsigned hwid = (sig->value_size()+2) / 3 + 1;
-      char *rbuf = static_cast<char *>(need_result_buf(hwid, RBUF_VAL));
-      long ssize = (signed)sig->value_size();
+      unsigned hwid = (sig->مقدار_size()+2) / 3 + 1;
+      نویسه *rbuf = static_cast<نویسه *>(need_result_buf(hwid, RBUF_VAL));
+      long ssize = (signed)sig->مقدار_size();
       long end = base + (signed)wid;
 
 	/* Do we have an end outside of the real signal vector. */
-      if (base < 0 || end > ssize) {
-	    bool all_x = true;
-	    if (end > ssize) end = ssize;
-	    if (base < 0) base = 0;
-	    for (long idx = base ;  idx < end ;  idx += 1) {
-		  if (sig->value(idx) != BIT4_X) {
-			all_x = false;
-			break;
+      اگر (base < 0 || end > ssize) {
+	    منطقی all_x = درست;
+	    اگر (end > ssize) end = ssize;
+	    اگر (base < 0) base = 0;
+	    برای (long idx = base ;  idx < end ;  idx += 1) {
+		  اگر (sig->value(idx) != BIT4_X) {
+			all_x = نادرست;
+			بشکن;
 		  }
 	    }
 
-	    if (all_x) {
+	    اگر (all_x) {
 		  rbuf[0] = 'x';
-	    } else {
+	    } وگرنه {
 		  rbuf[0] = 'X';
 	    }
 	    rbuf[1] = 0;
 
 	    vp->value.str = rbuf;
-	    return;
+	    بازگشت;
       }
 
       vvp_vector4_t vec4;
-      if (base == 0 && end == ssize) {
-	    sig->vec4_value(vec4);
-      } else {
+      اگر (base == 0 && end == ssize) {
+	    sig->vec4_مقدار(vec4);
+      } وگرنه {
 	    vvp_vector4_t tmp;
-	    sig->vec4_value(tmp);
+	    sig->vec4_مقدار(tmp);
 	    vec4 = tmp.subvalue(base, wid);
       }
 
@@ -337,67 +337,67 @@ static void format_vpiDecStrVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiIntVal(const vvp_signal_value*sig, int base, unsigned wid,
-                             int signed_flag, s_vpi_value*vp)
+ایستا تهی format_vpiIntVal(ثابت vvp_signal_مقدار*sig, صحیح base, unsigned wid,
+                             صحیح signed_flag, s_vpi_مقدار*vp)
 {
       vvp_vector4_t tmp;
-      sig->vec4_value(tmp);
+      sig->vec4_مقدار(tmp);
       vvp_vector4_t sub = tmp.subvalue(base, wid);
 
 	// Normally, we'd be OK with just using long in the call to
 	// vector4_to_value, but some compilers seem to take long as
 	// distinct from int32_t AND int64_t. Since the condition is
 	// constant, the compiler should eliminate the dead code.
-      if (sizeof(vp->value.integer) == sizeof(int32_t)) {
+      اگر (اندازه(vp->value.integer) == اندازه(int32_t)) {
 	    int32_t val = 0;
-	    vector4_to_value(sub, val, signed_flag, false);
+	    vector4_to_مقدار(sub, val, signed_flag, نادرست);
 	    vp->value.integer = val;
-      } else {
-	    assert(sizeof(vp->value.integer) == sizeof(int64_t));
+      } وگرنه {
+	    أكد(اندازه(vp->value.integer) == اندازه(int64_t));
 	    int64_t val = 0;
-	    vector4_to_value(sub, val, signed_flag, false);
+	    vector4_to_مقدار(sub, val, signed_flag, نادرست);
 	    vp->value.integer = val;
       }
 }
 
-static void format_vpiRealVal(const vvp_signal_value*sig, int base, unsigned wid,
-                              int signed_flag, s_vpi_value*vp)
+ایستا تهی format_vpiRealVal(ثابت vvp_signal_مقدار*sig, صحیح base, unsigned wid,
+                              صحیح signed_flag, s_vpi_مقدار*vp)
 {
       vvp_vector4_t vec4(wid);
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->مقدار_size();
       long end = base + (signed)wid;
-      if (end > ssize) end = ssize;
+      اگر (end > ssize) end = ssize;
 
-      for (long idx = (base < 0) ? 0 : base ;  idx < end ;  idx += 1) {
+      برای (long idx = (base < 0) ? 0 : base ;  idx < end ;  idx += 1) {
 	    vec4.set_bit(idx-base, sig->value(idx));
       }
 
       vp->value.real = 0.0;
-      vector4_to_value(vec4, vp->value.real, signed_flag);
+      vector4_to_مقدار(vec4, vp->value.real, signed_flag);
 }
 
-static void format_vpiStringVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+ایستا تهی format_vpiStringVal(ثابت vvp_signal_مقدار*sig, صحیح base, unsigned wid,
+                                s_vpi_مقدار*vp)
 {
       /* The result will use a character for each 8 bits of the
 	 vector. Add one extra character for the highest bits that
 	 don't form an 8 bit group. */
-      char *rbuf = static_cast<char *>(need_result_buf(wid/8 + ((wid&7)!=0) + 1, RBUF_VAL));
-      char *cp = rbuf;
+      نویسه *rbuf = static_cast<نویسه *>(need_result_buf(wid/8 + ((wid&7)!=0) + 1, RBUF_VAL));
+      نویسه *cp = rbuf;
 
-      char tmp = 0;
-      for (long idx = base+(signed)wid-1; idx >= base; idx -= 1) {
+      نویسه tmp = 0;
+      برای (long idx = base+(signed)wid-1; idx >= base; idx -= 1) {
 	    tmp <<= 1;
 
-	    if (idx >=0 && idx < (signed)sig->value_size() &&
+	    اگر (idx >=0 && idx < (signed)sig->مقدار_size() &&
 	        sig->value(idx) == BIT4_1) {
 		   tmp |= 1;
 	    }
 
-	    if (((idx-base)&7)==0){
+	    اگر (((idx-base)&7)==0){
 		  /* Skip leading nulls. */
-		  if (tmp == 0 && cp == rbuf)
-			continue;
+		  اگر (tmp == 0 && cp == rbuf)
+			ادامه;
 
 		  /* Nulls in the middle get turned into spaces. */
 		  *cp++ = tmp ? tmp : ' ';
@@ -409,45 +409,45 @@ static void format_vpiStringVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiScalarVal(const vvp_signal_value*sig, int base,
-                                s_vpi_value*vp)
+ایستا تهی format_vpiScalarVal(ثابت vvp_signal_مقدار*sig, صحیح base,
+                                s_vpi_مقدار*vp)
 {
-      if (base >= 0 && base < (signed)sig->value_size()) {
-	    switch (sig->value(base)) {
-		case BIT4_0:
+      اگر (base >= 0 && base < (signed)sig->مقدار_size()) {
+	    انتخاب (sig->value(base)) {
+		حالت BIT4_0:
 		  vp->value.scalar = vpi0;
-		  break;
-		case BIT4_1:
+		  بشکن;
+		حالت BIT4_1:
 		  vp->value.scalar = vpi1;
-		  break;
-		case BIT4_X: {
-		  vvp_scalar_t strn = sig->scalar_value(base);
-		  if (strn.strength0() == 1) vp->value.scalar = vpiH;
-		  else if (strn.strength1() == 1) vp->value.scalar = vpiL;
-		  else vp->value.scalar = vpiX;
-		  break;
+		  بشکن;
+		حالت BIT4_X: {
+		  vvp_scalar_t strn = sig->scalar_مقدار(base);
+		  اگر (strn.strength0() == 1) vp->value.scalar = vpiH;
+		  وگرنه اگر (strn.strength1() == 1) vp->value.scalar = vpiL;
+		  وگرنه vp->value.scalar = vpiX;
+		  بشکن;
 		}
-		case BIT4_Z:
+		حالت BIT4_Z:
 		  vp->value.scalar = vpiZ;
-		  break;
+		  بشکن;
 	    }
-      } else {
+      } وگرنه {
 	    vp->value.scalar = vpiX;
       }
 }
 
-static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
-                                  unsigned wid, s_vpi_value*vp)
+ایستا تهی format_vpiStrengthVal(ثابت vvp_signal_مقدار*sig, صحیح base,
+                                  unsigned wid, s_vpi_مقدار*vp)
 {
       long end = base + (signed)wid;
       s_vpi_strengthval*op;
 
       op = static_cast<s_vpi_strengthval*>
-           (need_result_buf(wid * sizeof(s_vpi_strengthval), RBUF_VAL));
+           (need_result_buf(wid * اندازه(s_vpi_strengthval), RBUF_VAL));
 
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (idx >=0 && idx < (signed)sig->value_size()) {
-		  vvp_scalar_t val = sig->scalar_value(idx);
+      برای (long idx = base ;  idx < end ;  idx += 1) {
+	    اگر (idx >=0 && idx < (signed)sig->مقدار_size()) {
+		  vvp_scalar_t val = sig->scalar_مقدار(idx);
 
 		  /* vvp_scalar_t strengths are 0-7, but the vpi strength
 		     is bit0-bit7. This gets the vpi form of the strengths
@@ -455,32 +455,32 @@ static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
 		  unsigned s0 = 1 << val.strength0();
 		  unsigned s1 = 1 << val.strength1();
 
-		  switch (val.value()) {
-		      case BIT4_0:
+		  انتخاب (val.value()) {
+		      حالت BIT4_0:
 			op[idx-base].logic = vpi0;
 			op[idx-base].s0 = s0|s1;
 			op[idx-base].s1 = 0;
-			break;
+			بشکن;
 
-		      case BIT4_1:
+		      حالت BIT4_1:
 			op[idx-base].logic = vpi1;
 			op[idx-base].s0 = 0;
 			op[idx-base].s1 = s0|s1;
-			break;
+			بشکن;
 
-		      case BIT4_X:
+		      حالت BIT4_X:
 			op[idx-base].logic = vpiX;
 			op[idx-base].s0 = s0;
 			op[idx-base].s1 = s1;
-			break;
+			بشکن;
 
-		      case BIT4_Z:
+		      حالت BIT4_Z:
 			op[idx-base].logic = vpiZ;
 			op[idx-base].s0 = vpiHiZ;
 			op[idx-base].s1 = vpiHiZ;
-			break;
+			بشکن;
 		  }
-	    } else {
+	    } وگرنه {
 		  op[idx-base].logic = vpiX;
 		  op[idx-base].s0 = vpiStrongDrive;
 		  op[idx-base].s1 = vpiStrongDrive;
@@ -490,47 +490,47 @@ static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
       vp->value.strength = op;
 }
 
-static void format_vpiVectorVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+ایستا تهی format_vpiVectorVal(ثابت vvp_signal_مقدار*sig, صحیح base, unsigned wid,
+                                s_vpi_مقدار*vp)
 {
       long end = base + (signed)wid;
-      unsigned int obit = 0;
+      unsigned صحیح obit = 0;
       unsigned hwid = (wid + 31)/32;
 
       s_vpi_vecval *op = static_cast<p_vpi_vecval>
-                         (need_result_buf(hwid * sizeof(s_vpi_vecval), RBUF_VAL));
+                         (need_result_buf(hwid * اندازه(s_vpi_vecval), RBUF_VAL));
       vp->value.vector = op;
 
       op->aval = op->bval = 0;
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (base >= 0 && base < (signed)sig->value_size()) {
-		switch (sig->value(idx)) {
-		case BIT4_0:
+      برای (long idx = base ;  idx < end ;  idx += 1) {
+	    اگر (base >= 0 && base < (signed)sig->مقدار_size()) {
+		انتخاب (sig->value(idx)) {
+		حالت BIT4_0:
 		  op->aval &= ~(1 << obit);
 		  op->bval &= ~(1 << obit);
-		  break;
-		case BIT4_1:
+		  بشکن;
+		حالت BIT4_1:
 		  op->aval |= (1 << obit);
 		  op->bval &= ~(1 << obit);
-		  break;
-		case BIT4_X:
+		  بشکن;
+		حالت BIT4_X:
 		  op->aval |= (1 << obit);
 		  op->bval |= (1 << obit);
-		  break;
-		case BIT4_Z:
+		  بشکن;
+		حالت BIT4_Z:
 		  op->aval &= ~(1 << obit);
 		  op->bval |= (1 << obit);
-		  break;
+		  بشکن;
 		}
-	    } else {  /* BIT4_X */
+	    } وگرنه {  /* BIT4_X */
 		  op->aval |= (1 << obit);
 		  op->bval |= (1 << obit);
 	    }
 
 	    obit++;
-	    if (!(obit % 32)) {
+	    اگر (!(obit % 32)) {
 		  op += 1;
-		  if ((op - vp->value.vector) < (ptrdiff_t)hwid)
+		  اگر ((op - vp->value.vector) < (ptrdiff_t)hwid)
 			op->aval = op->bval = 0;
 		  obit = 0;
 	    }
@@ -540,312 +540,312 @@ static void format_vpiVectorVal(const vvp_signal_value*sig, int base, unsigned w
 /*
  * implement vpi_get for vpiReg objects.
  */
-static int signal_get(int code, vpiHandle ref)
+ایستا صحیح signal_get(صحیح code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      ساختار __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      أكد(rfp);
 
-      switch (code) {
-	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      انتخاب (code) {
+	  حالت vpi_سطر_No:
+	    بازگشت 0;  // Not implemented for now!
 
-	  case vpiSigned:
-	    return rfp->signed_flag != 0;
+	  حالت vpiSigned:
+	    بازگشت rfp->signed_flag != 0;
 
-	  case vpiArray:
-	    return rfp->is_netarray != 0;
+	  حالت vpiArray:
+	    بازگشت rfp->is_netarray != 0;
 
-	  case vpiIndex: // This only works while we have a single index.
-	    if (rfp->is_netarray) {
-		  s_vpi_value vp;
+	  حالت vpiIndex: // This only works while we have a single index.
+	    اگر (rfp->is_netarray) {
+		  s_vpi_مقدار vp;
 		  vp.format = vpiIntVal;
-		  vpi_get_value(rfp->id.index, &vp);
-		  return vp.value.integer;
-	    } else {
-		  return vpiUndefined;
+		  vpi_get_مقدار(rfp->id.index, &vp);
+		  بازگشت vp.value.integer;
+	    } وگرنه {
+		  بازگشت vpiUndefined;
 	    }
 
-	  case vpiSize:
-	    return rfp->width();
+	  حالت vpiSize:
+	    بازگشت rfp->width();
 
-	  case vpiNetType:
-	    if (ref->get_type_code()==vpiNet)
-		  return vpiWire;
-	    else
-		  return vpiUndefined;
+	  حالت vpiNetType:
+	    اگر (ref->get_type_code()==vpiNet)
+		  بازگشت vpiWire;
+	    وگرنه
+		  بازگشت vpiUndefined;
 
-	  case vpiLeftRange:
-            return rfp->msb.get_value();
+	  حالت vpi_چپ_Range:
+            بازگشت rfp->msb.get_مقدار();
 
-	  case vpiRightRange:
-            return rfp->lsb.get_value();
+	  حالت vpi_راست_Range:
+            بازگشت rfp->lsb.get_مقدار();
 
-	  case vpiScalar:
-	    return (rfp->msb.get_value() == 0 && rfp->lsb.get_value() == 0);
-	  case vpiVector:
-	    return (rfp->msb.get_value() != rfp->lsb.get_value());
+	  حالت vpiScalar:
+	    بازگشت (rfp->msb.get_مقدار() == 0 && rfp->lsb.get_مقدار() == 0);
+	  حالت vpiVector:
+	    بازگشت (rfp->msb.get_مقدار() != rfp->lsb.get_مقدار());
 
-          case vpiAutomatic:
-            return vpip_scope(rfp)->is_automatic() ? 1  : 0;
+          حالت vpiAutomatic:
+            بازگشت vpip_scope(rfp)->is_automatic() ? 1  : 0;
 
 #ifdef BR916_STOPGAP_FIX
-          case _vpiFromThr:
-            return _vpiNoThr;
+          حالت _vpiFromThr:
+            بازگشت _vpiNoThr;
 #endif
 
-	  default:
+	  پیشفرض:
 	    fprintf(stderr, "VPI error: unknown signal_get property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    بازگشت vpiUndefined;
       }
 }
 
 /*
  * implement vpi_get64 for vpiReg objects.
  */
-static int64_t signal_get64(int code, vpiHandle ref)
+ایستا int64_t signal_get64(صحیح code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      ساختار __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      أكد(rfp);
 
-      switch (code) {
+      انتخاب (code) {
 	    // This private property must return zero when undefined.
-	  case _vpiNexusId:
-	    if (rfp->msb.get_value() == rfp->lsb.get_value())
-		  return reinterpret_cast<int64_t>(rfp->node);
-	    return 0;
+	  حالت _vpiNexusId:
+	    اگر (rfp->msb.get_مقدار() == rfp->lsb.get_مقدار())
+		  بازگشت reinterpret_cast<int64_t>(rfp->گره);
+	    بازگشت 0;
 
-	  default:
+	  پیشفرض:
 	    fprintf(stderr, "VPI error: unknown signal_get64 property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    بازگشت vpiUndefined;
       }
 }
 
-static char* signal_get_str(int code, vpiHandle ref)
+ایستا نویسه* signal_get_str(صحیح code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      ساختار __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      أكد(rfp);
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      اگر (code == vpiFile) {  // Not implemented for now!
+	    بازگشت simple_set_rbuf_str(file_names[0]);
       }
 
-      if ((code != vpiName) && (code != vpiFullName)) return NULL;
+      اگر ((code != vpiName) && (code != vpiFullName)) بازگشت پوچ;
 
-      char *nm;
-      const char *ixs;
-      if (rfp->is_netarray) {
+      نویسه *nm;
+      ثابت نویسه *ixs;
+      اگر (rfp->is_netarray) {
 	    nm = strdup(vpi_get_str(vpiName, rfp->within.parent));
-	    s_vpi_value vp;
+	    s_vpi_مقدار vp;
 	    vp.format = vpiDecStrVal;
-	    vpi_get_value(rfp->id.index, &vp);
+	    vpi_get_مقدار(rfp->id.index, &vp);
 	    ixs = vp.value.str;  /* do I need to strdup() this? */
-      } else {
+      } وگرنه {
 	    nm = strdup(rfp->id.name);
-	    ixs = NULL;
+	    ixs = پوچ;
       }
 
 	/* The scope information is added here for vpiFullName. */
-      char *rbuf = generic_get_str(code, vpip_scope(rfp), nm, ixs);
-      free(nm);
-      return rbuf;
+      نویسه *rbuf = generic_get_str(code, vpip_scope(rfp), nm, ixs);
+      آزاد(nm);
+      بازگشت rbuf;
 }
 
-static vpiHandle signal_get_handle(int code, vpiHandle ref)
+ایستا vpiHandle signal_get_handle(صحیح code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      ساختار __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      أكد(rfp);
 
-      switch (code) {
+      انتخاب (code) {
 
-	  case vpiParent:
-	    return rfp->is_netarray? rfp->within.parent : NULL;
+	  حالت vpiParent:
+	    بازگشت rfp->is_netarray? rfp->within.parent : پوچ;
 
-	  case vpiIndex:
-	    return rfp->is_netarray? rfp->id.index : NULL;
+	  حالت vpiIndex:
+	    بازگشت rfp->is_netarray? rfp->id.index : پوچ;
 
-	  case vpiLeftRange:
-	    return &rfp->msb;
-	  case vpiRightRange:
-	    return &rfp->lsb;
+	  حالت vpi_چپ_Range:
+	    بازگشت &rfp->msb;
+	  حالت vpi_راست_Range:
+	    بازگشت &rfp->lsb;
 
-	  case vpiScope:
-	    return vpip_scope(rfp);
+	  حالت vpiScope:
+	    بازگشت vpip_scope(rfp);
 
-	  case vpiModule:
-	    return vpip_module(vpip_scope(rfp));
+	  حالت vpiModule:
+	    بازگشت vpip_module(vpip_scope(rfp));
       }
 
-      return 0;
+      بازگشت 0;
 }
 
-static vpiHandle signal_iterate(int code, vpiHandle ref)
+ایستا vpiHandle signal_iterate(صحیح code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      ساختار __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      أكد(rfp);
 
-      if (code == vpiIndex) {
-	    return rfp->is_netarray ? rfp->id.index->vpi_iterate(code) : NULL;
+      اگر (code == vpiIndex) {
+	    بازگشت rfp->is_netarray ? rfp->id.index->vpi_iterate(code) : پوچ;
       }
 
-      return 0;
+      بازگشت 0;
 }
 
-void __vpiSignal::make_bits()
+تهی __vpiSignal::make_bits()
 {
-      assert(bits == NULL);
-      bits = new struct __vpiBit[width() + 1];
+      أكد(bits == پوچ);
+      bits = جدید ساختار __vpiBit[width() + 1];
 
 	// Make word[-1] point to the parent.
-      bits->parent = this;
+      bits->parent = این;
 	// Now point to word[0].
       bits += 1;
 
 	// Update each bit to point to the base
-      struct __vpiBit*base = bits;
-      for (unsigned idx = 0; idx < width(); idx += 1) {
+      ساختار __vpiBit*base = bits;
+      برای (unsigned idx = 0; idx < width(); idx += 1) {
 	    base[idx].bit0 = base;
-	    int real_idx;
-	    if (msb.get_value() >= lsb.get_value()) {
-		  real_idx = idx + lsb.get_value();
-	    } else {
-		  real_idx = lsb.get_value() - idx;
+	    صحیح real_idx;
+	    اگر (msb.get_مقدار() >= lsb.get_مقدار()) {
+		  real_idx = idx + lsb.get_مقدار();
+	    } وگرنه {
+		  real_idx = lsb.get_مقدار() - idx;
 	    }
-	    base[idx].index = new __vpiDecConst(real_idx);
+	    base[idx].index = جدید __vpiDecConst(real_idx);
       }
 }
 
-vpiHandle __vpiSignal::get_index(int idx)
+vpiHandle __vpiSignal::get_index(صحیح idx)
 {
 	/* Check to see if the index is in range. */
-      if (msb.get_value() >= lsb.get_value()) {
-	    if ((idx > msb.get_value()) || (idx < lsb.get_value())) return 0;
-      } else {
-	    if ((idx < msb.get_value()) || (idx > lsb.get_value())) return 0;
+      اگر (msb.get_مقدار() >= lsb.get_مقدار()) {
+	    اگر ((idx > msb.get_مقدار()) || (idx < lsb.get_مقدار())) بازگشت 0;
+      } وگرنه {
+	    اگر ((idx < msb.get_مقدار()) || (idx > lsb.get_مقدار())) بازگشت 0;
       }
 
 	/* Normalize the index */
       unsigned norm_idx;
-      if (msb.get_value() >= lsb.get_value()) {
-	    norm_idx = idx - lsb.get_value();
-      } else {
-	    norm_idx = lsb.get_value() - idx;
+      اگر (msb.get_مقدار() >= lsb.get_مقدار()) {
+	    norm_idx = idx - lsb.get_مقدار();
+      } وگرنه {
+	    norm_idx = lsb.get_مقدار() - idx;
       }
 
-      if (bits == NULL) make_bits();
+      اگر (bits == پوچ) make_bits();
 
-      return &(bits[norm_idx].as_bit);
+      بازگشت &(bits[norm_idx].as_bit);
 }
 
-void __vpiSignal::get_bit_value(const struct __vpiBit*bit, p_vpi_value vp)
+تهی __vpiSignal::get_bit_مقدار(ثابت ساختار __vpiBit*bit, p_vpi_مقدار vp)
 {
       unsigned index = bit->get_norm_index();
 
-      vvp_signal_value*vsig = dynamic_cast<vvp_signal_value*>(node->fil);
-      assert(vsig);
+      vvp_signal_مقدار*vsig = dynamic_cast<vvp_signal_مقدار*>(گره->fil);
+      أكد(vsig);
 
-      if (vp->format == vpiObjTypeVal) {
+      اگر (vp->format == vpiObjTypeVal) {
 	    vp->format = vpiIntVal;
       }
 
-      switch (vp->format) {
-	case vpiBinStrVal:
+      انتخاب (vp->format) {
+	حالت vpiBinStrVal:
             format_vpiBinStrVal(vsig, index, 1, vp);
-	    break;
+	    بشکن;
 
-	case vpiOctStrVal:
+	حالت vpiOctStrVal:
             format_vpiOctStrVal(vsig, index, 1, vp);
-	    break;
+	    بشکن;
 
-	case vpiDecStrVal:
-            format_vpiDecStrVal(vsig, index, 1, false, vp);
-	    break;
+	حالت vpiDecStrVal:
+            format_vpiDecStrVal(vsig, index, 1, نادرست, vp);
+	    بشکن;
 
-	case vpiHexStrVal:
+	حالت vpiHexStrVal:
             format_vpiHexStrVal(vsig, index, 1, vp);
-	    break;
+	    بشکن;
 
-	case vpiStringVal:
+	حالت vpiStringVal:
             format_vpiStringVal(vsig, index, 1, vp);
-	    break;
+	    بشکن;
 
-	case vpiIntVal:
-            format_vpiIntVal(vsig, index, 1, false, vp);
-	    break;
+	حالت vpiIntVal:
+            format_vpiIntVal(vsig, index, 1, نادرست, vp);
+	    بشکن;
 
-	case vpiRealVal:
-            format_vpiRealVal(vsig, index, 1, false, vp);
-	    break;
+	حالت vpiRealVal:
+            format_vpiRealVal(vsig, index, 1, نادرست, vp);
+	    بشکن;
 
-	case vpiScalarVal:
+	حالت vpiScalarVal:
             format_vpiScalarVal(vsig, index, vp);
-	    break;
+	    بشکن;
 
-        case vpiStrengthVal:
+        حالت vpiStrengthVal:
             format_vpiStrengthVal(vsig, index, 1, vp);
-            break;
+            بشکن;
 
-	case vpiVectorVal:
+	حالت vpiVectorVal:
             format_vpiVectorVal(vsig, index, 1, vp);
-	    break;
+	    بشکن;
 
-	default:
+	پیشفرض:
 	    fprintf(stderr, "internal error: get_value() "
 		    "type %d is not implemented for bit "
 		    "select %s[%d] in scope %s.\n",
-		    (int)vp->format, vpi_get_str(vpiName),
+		    (صحیح)vp->format, vpi_get_str(vpiName),
 		    bit->get_index(),
-	            vpip_scope(this)->scope_name());
-	    assert(0);
+	            vpip_scope(این)->scope_name());
+	    أكد(0);
       };
 }
 
-vpiHandle __vpiSignal::put_bit_value(struct __vpiBit*bit, p_vpi_value vp, int flags)
+vpiHandle __vpiSignal::put_bit_مقدار(ساختار __vpiBit*bit, p_vpi_مقدار vp, صحیح flags)
 {
       unsigned index = bit->get_norm_index();
-      vvp_net_ptr_t dest(node, 0);
-      vvp_vector4_t val = vec4_from_vpi_value(vp, 1);
+      vvp_net_ptr_t dest(گره, 0);
+      vvp_vector4_t val = vec4_from_vpi_مقدار(vp, 1);
 
-      if ((flags == vpiForceFlag) || (flags == vpiReleaseFlag)) {
+      اگر ((flags == vpiForceFlag) || (flags == vpiReleaseFlag)) {
 	    fprintf(stderr, "Sorry: vpi_put_value() for %s does not "
 	                    "currently support force/release.\n",
 	                    bit->as_bit.vpi_get_str(vpiFullName));
-	    return NULL;
+	    بازگشت پوچ;
       }
 
-      if ((get_type_code() == vpiNet) &&
-          !dynamic_cast<vvp_island_port*>(node->fun)) {
-	    node->send_vec4_pv(val, index, width(),
+      اگر ((get_type_code() == vpiNet) &&
+          !dynamic_cast<vvp_island_port*>(گره->fun)) {
+	    گره->send_vec4_pv(val, index, width(),
 	                            vthread_get_wt_context());
-      } else {
+      } وگرنه {
 	    vvp_send_vec4_pv(dest, val, index, width(),
 	                     vthread_get_wt_context());
       }
 
 	// This is not a scheduled event so there is no event to return
-      return NULL;
+      بازگشت پوچ;
 }
 
-static vpiHandle signal_index(int idx, vpiHandle ref)
+ایستا vpiHandle signal_index(صحیح idx, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      ساختار __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      أكد(rfp);
 
 	/* We can only get the bit for a net or reg. */
       PLI_INT32 type = vpi_get(vpiType, ref);
-      if ((type != vpiNet) && (type != vpiReg)) return 0;
+      اگر ((type != vpiNet) && (type != vpiReg)) بازگشت 0;
 
-      return rfp->get_index(idx);
+      بازگشت rfp->get_index(idx);
 }
 
-unsigned __vpiSignal::width(void) const
+unsigned __vpiSignal::width(تهی) ثابت
 {
-      unsigned wid = (msb.get_value() >= lsb.get_value())
-	    ? (msb.get_value() - lsb.get_value() + 1)
-	    : (lsb.get_value() - msb.get_value() + 1);
+      unsigned wid = (msb.get_مقدار() >= lsb.get_مقدار())
+	    ? (msb.get_مقدار() - lsb.get_مقدار() + 1)
+	    : (lsb.get_مقدار() - msb.get_مقدار() + 1);
 
-      return wid;
+      بازگشت wid;
 }
 
 /*
@@ -853,75 +853,75 @@ unsigned __vpiSignal::width(void) const
  * the vector to the caller. This causes no side-effect, and reads the
  * variables like a %load would.
  */
-static void signal_get_value(vpiHandle ref, s_vpi_value*vp)
+ایستا تهی signal_get_مقدار(vpiHandle ref, s_vpi_مقدار*vp)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      ساختار __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      أكد(rfp);
 
       unsigned wid = rfp->width();
 
-      vvp_signal_value*vsig = dynamic_cast<vvp_signal_value*>(rfp->node->fil);
-      assert(vsig);
+      vvp_signal_مقدار*vsig = dynamic_cast<vvp_signal_مقدار*>(rfp->گره->fil);
+      أكد(vsig);
 
-      switch (vp->format) {
+      انتخاب (vp->format) {
 
-	  case vpiIntVal:
+	  حالت vpiIntVal:
 	    format_vpiIntVal(vsig, 0, wid, rfp->signed_flag, vp);
-	    break;
+	    بشکن;
 
-	  case vpiScalarVal:
+	  حالت vpiScalarVal:
 	    format_vpiScalarVal(vsig, 0, vp);
-	    break;
+	    بشکن;
 
-	  case vpiStrengthVal:
+	  حالت vpiStrengthVal:
 	    format_vpiStrengthVal(vsig, 0, wid, vp);
-	    break;
+	    بشکن;
 
-	  case vpiBinStrVal:
+	  حالت vpiBinStrVal:
 	    format_vpiBinStrVal(vsig, 0, wid, vp);
-	    break;
+	    بشکن;
 
-	  case vpiHexStrVal:
+	  حالت vpiHexStrVal:
 	    format_vpiHexStrVal(vsig, 0, wid, vp);
-	    break;
+	    بشکن;
 
-	  case vpiOctStrVal:
+	  حالت vpiOctStrVal:
 	    format_vpiOctStrVal(vsig, 0, wid, vp);
-	    break;
+	    بشکن;
 
-	  case vpiDecStrVal:
+	  حالت vpiDecStrVal:
 	    format_vpiDecStrVal(vsig, 0, wid, rfp->signed_flag, vp);
-	    break;
+	    بشکن;
 
-	  case vpiStringVal:
+	  حالت vpiStringVal:
 	    format_vpiStringVal(vsig, 0, wid, vp);
-	    break;
+	    بشکن;
 
-	  case vpiVectorVal:
+	  حالت vpiVectorVal:
 	    format_vpiVectorVal(vsig, 0, wid, vp);
-	    break;
+	    بشکن;
 
-	  case vpiRealVal:
+	  حالت vpiRealVal:
 	    format_vpiRealVal(vsig, 0, wid, rfp->signed_flag, vp);
-	    break;
+	    بشکن;
 
-	  case vpiObjTypeVal:
-	    if (wid == 1) {
+	  حالت vpiObjTypeVal:
+	    اگر (wid == 1) {
 		  vp->format = vpiScalarVal;
 		  format_vpiScalarVal(vsig, 0, vp);
-	    } else {
+	    } وگرنه {
 		  vp->format = vpiVectorVal;
 		  format_vpiVectorVal(vsig, 0, wid, vp);
 	    }
-	    break;
+	    بشکن;
 
-	  default:
+	  پیشفرض:
 	    fprintf(stderr, "vvp internal error: get_value: "
 		    "value type %d not implemented."
 		    " Signal is %s in scope %s\n",
-		    (int)vp->format, vpi_get_str(vpiName, ref),
+		    (صحیح)vp->format, vpi_get_str(vpiName, ref),
 		    vpip_scope(rfp)->scope_name());
-	    assert(0);
+	    أكد(0);
       }
 }
 
@@ -932,22 +932,22 @@ static void signal_get_value(vpiHandle ref, s_vpi_value*vp)
  * equivalent instruction would cause.
  */
 
-static vvp_vector4_t from_stringval(const char*str, unsigned wid)
+ایستا vvp_vector4_t from_stringval(ثابت نویسه*str, unsigned wid)
 {
       unsigned idx;
-      const char*cp;
+      ثابت نویسه*cp;
 
       cp = str + strlen(str);
       idx = 0;
 
       vvp_vector4_t val(wid, BIT4_0);
 
-      while ((idx < wid) && (cp > str)) {
+      وقتی ((idx < wid) && (cp > str)) {
 	    unsigned byte = *--cp;
-	    int bit;
+	    صحیح bit;
 
-	    for (bit = 0 ;  (bit < 8) && (idx < wid) ;  bit += 1) {
-		  if (byte & 1)
+	    برای (bit = 0 ;  (bit < 8) && (idx < wid) ;  bit += 1) {
+		  اگر (byte & 1)
 			val.set_bit(idx, BIT4_1);
 
 		  byte >>= 1;
@@ -955,17 +955,17 @@ static vvp_vector4_t from_stringval(const char*str, unsigned wid)
 	    }
       }
 
-      return val;
+      بازگشت val;
 }
 
-static vpiHandle signal_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
+ایستا vpiHandle signal_put_مقدار(vpiHandle ref, s_vpi_مقدار*vp, صحیح flags)
 {
       unsigned wid;
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
-      vvp_net_ptr_t dest(rfp->node, 0);
+      ساختار __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      أكد(rfp);
+      vvp_net_ptr_t dest(rfp->گره, 0);
 
-      bool net_flag = ref->get_type_code()==vpiNet;
+      منطقی net_flag = ref->get_type_code()==vpiNet;
 
 	/* If this is a release, then we are not really putting a
 	   value. Instead, issue a release "command" to the signal
@@ -973,157 +973,157 @@ static vpiHandle signal_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
 	   if this net is attached to an island, we need to rerun
 	   the calculations immediately so we can return the
 	   released value. */
-      if (flags == vpiReleaseFlag) {
-	    assert(rfp->node->fil);
-	    rfp->node->fil->force_unlink();
-	    rfp->node->fil->release(dest, net_flag);
-	    rfp->node->fun->force_flag(true);
-	    signal_get_value(ref, vp);
-	    return ref;
+      اگر (flags == vpiReleaseFlag) {
+	    أكد(rfp->گره->fil);
+	    rfp->گره->fil->force_unlink();
+	    rfp->گره->fil->release(dest, net_flag);
+	    rfp->گره->fun->force_flag(درست);
+	    signal_get_مقدار(ref, vp);
+	    بازگشت ref;
       }
 
 	/* Make a vvp_vector4_t vector to receive the translated value
 	   that we are going to poke. This will get populated
 	   differently depending on the format. */
-      wid = (rfp->msb.get_value() >= rfp->lsb.get_value())
-	    ? (rfp->msb.get_value() - rfp->lsb.get_value() + 1)
-	    : (rfp->lsb.get_value() - rfp->msb.get_value() + 1);
+      wid = (rfp->msb.get_مقدار() >= rfp->lsb.get_مقدار())
+	    ? (rfp->msb.get_مقدار() - rfp->lsb.get_مقدار() + 1)
+	    : (rfp->lsb.get_مقدار() - rfp->msb.get_مقدار() + 1);
 
-      vvp_vector4_t val = vec4_from_vpi_value(vp, wid);
+      vvp_vector4_t val = vec4_from_vpi_مقدار(vp, wid);
 
-      if (flags == vpiForceFlag) {
+      اگر (flags == vpiForceFlag) {
 	    vvp_vector2_t mask (vvp_vector2_t::FILL1, wid);
-	    rfp->node->force_vec4(val, mask);
-      } else if (net_flag && !dynamic_cast<vvp_island_port*>(rfp->node->fun)) {
-	    rfp->node->send_vec4(val, vthread_get_wt_context());
-      } else {
+	    rfp->گره->force_vec4(val, mask);
+      } وگرنه اگر (net_flag && !dynamic_cast<vvp_island_port*>(rfp->گره->fun)) {
+	    rfp->گره->send_vec4(val, vthread_get_wt_context());
+      } وگرنه {
 	    vvp_send_vec4(dest, val, vthread_get_wt_context());
       }
-      return ref;
+      بازگشت ref;
 }
 
-vvp_vector4_t vec4_from_vpi_value(s_vpi_value*vp, unsigned wid)
+vvp_vector4_t vec4_from_vpi_مقدار(s_vpi_مقدار*vp, unsigned wid)
 {
       vvp_vector4_t val (wid, BIT4_0);
 
-      switch (vp->format) {
+      انتخاب (vp->format) {
 
-	  case vpiIntVal: {
+	  حالت vpiIntVal: {
 		long vpi_val = vp->value.integer;
-		for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+		برای (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 		      vvp_bit4_t bit = (vpi_val & 1) ? BIT4_1 : BIT4_0;
 		      val.set_bit(idx, bit);
 		      vpi_val >>= 1;
 		}
-		break;
+		بشکن;
 	  }
 
-	  case vpiVectorVal:
-	    for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+	  حالت vpiVectorVal:
+	    برای (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 		  unsigned long aval = vp->value.vector[idx/32].aval;
 		  unsigned long bval = vp->value.vector[idx/32].bval;
 		  aval >>= idx%32;
 		  bval >>= idx%32;
-		  int bitmask = (aval&1) | ((bval<<1)&2);
+		  صحیح bitmask = (aval&1) | ((bval<<1)&2);
 		  vvp_bit4_t bit = scalar_to_bit4(bitmask);
 		  val.set_bit(idx, bit);
 	    }
-	    break;
-	  case vpiBinStrVal:
+	    بشکن;
+	  حالت vpiBinStrVal:
 	    vpip_bin_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiOctStrVal:
+	    بشکن;
+	  حالت vpiOctStrVal:
 	    vpip_oct_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiDecStrVal:
+	    بشکن;
+	  حالت vpiDecStrVal:
 	    vpip_dec_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiHexStrVal:
+	    بشکن;
+	  حالت vpiHexStrVal:
 	    vpip_hex_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiScalarVal:
+	    بشکن;
+	  حالت vpiScalarVal:
 	    val.set_bit(0, scalar_to_bit4(vp->value.scalar));
-	    break;
-	  case vpiStringVal:
+	    بشکن;
+	  حالت vpiStringVal:
 	    val = from_stringval(vp->value.str, wid);
-	    break;
-	  case vpiRealVal:
+	    بشکن;
+	  حالت vpiRealVal:
 	    val = vvp_vector4_t(wid, vp->value.real);
-	    break;
+	    بشکن;
 
-	  default:
+	  پیشفرض:
 	    fprintf(stderr, "vvp internal error: put_value: "
 		    "value type %d not implemented here.\n",
-		    (int)vp->format);
-	    assert(0);
+		    (صحیح)vp->format);
+	    أكد(0);
 
       }
 
-      return val;
+      بازگشت val;
 }
 
-int __vpiSignal::vpi_get(int code)
-{ return signal_get(code, this); }
+صحیح __vpiSignal::vpi_get(صحیح code)
+{ بازگشت signal_get(code, این); }
 
-int64_t __vpiSignal::vpi_get64(int code)
-{ return signal_get64(code, this); }
+int64_t __vpiSignal::vpi_get64(صحیح code)
+{ بازگشت signal_get64(code, این); }
 
-char* __vpiSignal::vpi_get_str(int code)
-{ return signal_get_str(code, this); }
+نویسه* __vpiSignal::vpi_get_str(صحیح code)
+{ بازگشت signal_get_str(code, این); }
 
-void __vpiSignal::vpi_get_value(p_vpi_value val)
-{ signal_get_value(this, val); }
+تهی __vpiSignal::vpi_get_مقدار(p_vpi_مقدار val)
+{ signal_get_مقدار(این, val); }
 
-vpiHandle __vpiSignal::vpi_put_value(p_vpi_value val, int flags)
-{ return signal_put_value(this, val, flags); }
+vpiHandle __vpiSignal::vpi_put_مقدار(p_vpi_مقدار val, صحیح flags)
+{ بازگشت signal_put_مقدار(این, val, flags); }
 
-vpiHandle __vpiSignal::vpi_handle(int code)
-{ return signal_get_handle(code, this); }
+vpiHandle __vpiSignal::vpi_handle(صحیح code)
+{ بازگشت signal_get_handle(code, این); }
 
-vpiHandle __vpiSignal::vpi_iterate(int code)
-{ return signal_iterate(code, this); }
+vpiHandle __vpiSignal::vpi_iterate(صحیح code)
+{ بازگشت signal_iterate(code, این); }
 
-vpiHandle __vpiSignal::vpi_index(int idx)
-{ return signal_index(idx, this); }
+vpiHandle __vpiSignal::vpi_index(صحیح idx)
+{ بازگشت signal_index(idx, این); }
 
-struct signal_reg : public __vpiSignal {
-      inline signal_reg() { }
-      int get_type_code(void) const override { return vpiReg; }
+ساختار signal_reg : عمومی __vpiSignal {
+      درونخطی signal_reg() { }
+      صحیح get_type_code(تهی) ثابت override { بازگشت vpiReg; }
 };
 
-struct signal_integer : public __vpiSignal {
-      inline signal_integer() { }
-      int get_type_code(void) const override { return vpiIntegerVar; }
+ساختار signal_integer : عمومی __vpiSignal {
+      درونخطی signal_integer() { }
+      صحیح get_type_code(تهی) ثابت override { بازگشت vpiIntegerVar; }
 };
 
-struct signal_net : public __vpiSignal {
-      inline signal_net() { }
-      int get_type_code(void) const override { return vpiNet; }
+ساختار signal_net : عمومی __vpiSignal {
+      درونخطی signal_net() { }
+      صحیح get_type_code(تهی) ثابت override { بازگشت vpiNet; }
 };
 
-struct signal_byte : public __vpiSignal {
-      inline signal_byte() { }
-      int get_type_code(void) const override { return vpiByteVar; }
+ساختار signal_byte : عمومی __vpiSignal {
+      درونخطی signal_byte() { }
+      صحیح get_type_code(تهی) ثابت override { بازگشت vpiByteVar; }
 };
 
-struct signal_bitvar : public __vpiSignal {
-      inline signal_bitvar() { }
-      int get_type_code(void) const override { return vpiBitVar; }
+ساختار signal_bitvar : عمومی __vpiSignal {
+      درونخطی signal_bitvar() { }
+      صحیح get_type_code(تهی) ثابت override { بازگشت vpiBitVar; }
 };
 
-struct signal_shortint : public __vpiSignal {
-      inline signal_shortint() { }
-      int get_type_code(void) const override { return vpiShortIntVar; }
+ساختار signal_shortint : عمومی __vpiSignal {
+      درونخطی signal_shortint() { }
+      صحیح get_type_code(تهی) ثابت override { بازگشت vpiShortIntVar; }
 };
 
-struct signal_int : public __vpiSignal {
-      inline signal_int() { }
-      int get_type_code(void) const override { return vpiIntVar; }
+ساختار signal_int : عمومی __vpiSignal {
+      درونخطی signal_int() { }
+      صحیح get_type_code(تهی) ثابت override { بازگشت vpiIntVar; }
 };
 
-struct signal_longint : public __vpiSignal {
-      inline signal_longint() { }
-      int get_type_code(void) const override { return vpiLongIntVar; }
+ساختار signal_longint : عمومی __vpiSignal {
+      درونخطی signal_longint() { }
+      صحیح get_type_code(تهی) ثابت override { بازگشت vpiLongIntVar; }
 };
 
 
@@ -1132,126 +1132,126 @@ struct signal_longint : public __vpiSignal {
  * to minimize the code modifications. Icarus implements integers
  * as 'reg signed [31:0]'.
  */
-vpiHandle vpip_make_int4(const char*name, int msb, int lsb, vvp_net_t*vec)
+vpiHandle vpip_make_int4(ثابت نویسه*name, صحیح msb, صحیح lsb, vvp_net_t*vec)
 {
-      __vpiSignal*obj = new signal_integer;
-      return fill_in_var4(obj, name, msb, lsb, true, vec);
+      __vpiSignal*obj = جدید signal_integer;
+      بازگشت fill_in_var4(obj, name, msb, lsb, درست, vec);
 }
 
 /*
  * Construct the two-state SystemVerilog variables.
  */
-vpiHandle vpip_make_int2(const char*name, int msb, int lsb, bool signed_flag,
+vpiHandle vpip_make_int2(ثابت نویسه*name, صحیح msb, صحیح lsb, منطقی signed_flag,
                          vvp_net_t*vec)
 {
       __vpiSignal*obj;
 
 	// All unsigned 2-state variables are a vpiBitVar. All 2-state
 	// variables with a non-zero lsb are also a vpiBitVar.
-      if ((! signed_flag) || (lsb != 0) ) {
-	    obj = new signal_bitvar;
-      } else {
+      اگر ((! signed_flag) || (lsb != 0) ) {
+	    obj = جدید signal_bitvar;
+      } وگرنه {
 	      // These could also be bit declarations with matching
 	      // information, but for now they get the apparent type.
-	    switch (msb) {
-		case 7:
-		  obj = new signal_byte;
-		  break;
-		case 15:
-		  obj = new signal_shortint;
-		  break;
-		case 31:
-		  obj = new signal_int;
-		  break;
-		case 63:
-		  obj = new signal_longint;
-		  break;
-		default:
+	    انتخاب (msb) {
+		حالت 7:
+		  obj = جدید signal_byte;
+		  بشکن;
+		حالت 15:
+		  obj = جدید signal_shortint;
+		  بشکن;
+		حالت 31:
+		  obj = جدید signal_int;
+		  بشکن;
+		حالت 63:
+		  obj = جدید signal_longint;
+		  بشکن;
+		پیشفرض:
 		    // Every other type of bit vector is a vpiBitVar with
 		    // array dimensions.
-		  obj = new signal_bitvar;
-		  break;
+		  obj = جدید signal_bitvar;
+		  بشکن;
 	    }
       }
 
-      return fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
+      بازگشت fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
 }
 
 /*
  * Construct a vpiReg/vpiLogicVar object. It's like a net, except for the type.
  */
-vpiHandle vpip_make_var4(const char*name, int msb, int lsb,
-			bool signed_flag, vvp_net_t*vec)
+vpiHandle vpip_make_var4(ثابت نویسه*name, صحیح msb, صحیح lsb,
+			منطقی signed_flag, vvp_net_t*vec)
 {
-      __vpiSignal*obj = new signal_reg;
-      return fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
+      __vpiSignal*obj = جدید signal_reg;
+      بازگشت fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
 }
 
 #ifdef CHECK_WITH_VALGRIND
-static struct vpiSignal_plug **signal_pool = 0;
-static unsigned signal_pool_count = 0;
-static unsigned long signal_count = 0;
-static unsigned long signal_dels = 0;
+ایستا ساختار vpiSignal_plug **signal_pool = 0;
+ایستا unsigned signal_pool_شمار = 0;
+ایستا unsigned long signal_شمار = 0;
+ایستا unsigned long signal_dels = 0;
 #endif
 
-struct vpiSignal_plug {
-      unsigned char space[sizeof (struct __vpiSignal)];
+ساختار vpiSignal_plug {
+      unsigned نویسه space[اندازه (ساختار __vpiSignal)];
 #ifdef CHECK_WITH_VALGRIND
-      struct vpiSignal_plug *pool;
+      ساختار vpiSignal_plug *pool;
 #endif
 };
 
-void* __vpiSignal::operator new(size_t siz)
+تهی* __vpiSignal::operator جدید(size_t siz)
 {
 #ifdef CHECK_WITH_VALGRIND
-      assert(siz == sizeof(struct vpiSignal_plug) - sizeof(struct vpiSignal_plug *));
-#else
-      assert(siz == sizeof(struct vpiSignal_plug));
+      أكد(siz == اندازه(ساختار vpiSignal_plug) - اندازه(ساختار vpiSignal_plug *));
+#وگرنه
+      أكد(siz == اندازه(ساختار vpiSignal_plug));
 #endif
-      static struct vpiSignal_plug*alloc_array = 0;
-      static unsigned alloc_index = 0;
-      const unsigned alloc_count = 512;
+      ایستا ساختار vpiSignal_plug*alloc_array = 0;
+      ایستا unsigned alloc_index = 0;
+      ثابت unsigned alloc_شمار = 512;
 
-      if ((alloc_array == 0) || (alloc_index == alloc_count)) {
-	    alloc_array = static_cast<struct vpiSignal_plug*>
-	                  (calloc(alloc_count, sizeof(struct vpiSignal_plug)));
+      اگر ((alloc_array == 0) || (alloc_index == alloc_شمار)) {
+	    alloc_array = static_cast<ساختار vpiSignal_plug*>
+	                  (calloc(alloc_شمار, اندازه(ساختار vpiSignal_plug)));
 	    alloc_index = 0;
 #ifdef CHECK_WITH_VALGRIND
-	    VALGRIND_MAKE_MEM_NOACCESS(alloc_array, alloc_count *
-	                                            sizeof(struct vpiSignal_plug));
+	    VALGRIND_MAKE_MEM_NOACCESS(alloc_array, alloc_شمار *
+	                                            اندازه(ساختار vpiSignal_plug));
 	    VALGRIND_CREATE_MEMPOOL(alloc_array, 0, 1);
-	    signal_pool_count += 1;
+	    signal_pool_شمار += 1;
 	    signal_pool = static_cast<vpiSignal_plug **>
 	                  (realloc(signal_pool,
-	                   signal_pool_count*sizeof(vpiSignal_plug **)));
-	    signal_pool[signal_pool_count-1] = alloc_array;
+	                   signal_pool_شمار*اندازه(vpiSignal_plug **)));
+	    signal_pool[signal_pool_شمار-1] = alloc_array;
 #endif
       }
 
-      struct vpiSignal_plug*cur = alloc_array + alloc_index;
+      ساختار vpiSignal_plug*cur = alloc_array + alloc_index;
 #ifdef CHECK_WITH_VALGRIND
-      VALGRIND_MEMPOOL_ALLOC(alloc_array, cur, sizeof(struct vpiSignal_plug));
+      VALGRIND_MEMPOOL_ALLOC(alloc_array, cur, اندازه(ساختار vpiSignal_plug));
       cur->pool = alloc_array;
-      signal_count += 1;
+      signal_شمار += 1;
 #endif
       alloc_index += 1;
-      return cur;
+      بازگشت cur;
 }
 
-void __vpiSignal::operator delete(void*)
+تهی __vpiSignal::operator delete(تهی*)
 {
-      assert(0);
+      أكد(0);
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void signal_delete(vpiHandle item)
+تهی signal_delete(vpiHandle item)
 {
-      struct __vpiSignal *obj = static_cast<__vpiSignal *> (item);
-      assert(obj->node->fil);
-      obj->node->fil->clear_all_callbacks();
-      vvp_net_delete(obj->node);
-      if (obj->bits) {
-	    for (unsigned idx=0; idx<obj->width(); idx+=1) {
+      ساختار __vpiSignal *obj = static_cast<__vpiSignal *> (item);
+      أكد(obj->گره->fil);
+      obj->گره->fil->clear_all_callbacks();
+      vvp_net_delete(obj->گره);
+      اگر (obj->bits) {
+	    برای (unsigned idx=0; idx<obj->width(); idx+=1) {
 		  delete obj->bits[idx].index;
 	    }
 	    obj->bits -= 1;
@@ -1261,22 +1261,22 @@ void signal_delete(vpiHandle item)
       VALGRIND_MEMPOOL_FREE(reinterpret_cast<vpiSignal_plug *>(obj)->pool, obj);
 }
 
-void signal_pool_delete()
+تهی signal_pool_delete()
 {
-      if (RUNNING_ON_VALGRIND && (signal_count != signal_dels)) {
-	    fflush(NULL);
+      اگر (RUNNING_ON_VALGRIND && (signal_شمار != signal_dels)) {
+	    fflush(پوچ);
 	    VALGRIND_PRINTF("Error: vvp missed deleting %ld of %lu signal(s).",
-	                    (long) signal_count - signal_dels, signal_count);
+	                    (long) signal_شمار - signal_dels, signal_شمار);
       }
 
-      for (unsigned idx = 0; idx < signal_pool_count; idx += 1) {
+      برای (unsigned idx = 0; idx < signal_pool_شمار; idx += 1) {
 	    VALGRIND_DESTROY_MEMPOOL(signal_pool[idx]);
-	    free(signal_pool[idx]);
+	    آزاد(signal_pool[idx]);
       }
 
-      free(signal_pool);
+      آزاد(signal_pool);
       signal_pool = 0;
-      signal_pool_count = 0;
+      signal_pool_شمار = 0;
 }
 #endif
 
@@ -1287,216 +1287,216 @@ void signal_pool_delete()
  * The name is the PLI name for the object. If it is an array it is
  * <name>[<index>].
  */
-static vpiHandle fill_in_net4(struct __vpiSignal*obj, __vpiScope*scope,
-			      const char*name, int msb, int lsb,
-			      bool signed_flag, vvp_net_t*node)
+ایستا vpiHandle fill_in_net4(ساختار __vpiSignal*obj, __vpiScope*scope,
+			      ثابت نویسه*name, صحیح msb, صحیح lsb,
+			      منطقی signed_flag, vvp_net_t*گره)
 {
-      obj->id.name = name? vpip_name_string(name) : NULL;
+      obj->id.name = name? vpip_name_string(name) : پوچ;
       obj->msb = __vpiDecConst(msb);
       obj->lsb = __vpiDecConst(lsb);
       obj->signed_flag = signed_flag? 1 : 0;
       obj->is_netarray = 0;
-      obj->node = node;
+      obj->گره = گره;
 
 	// Place this object within a scope. If this object is
 	// attached to an array, then this value will be replaced with
 	// the handle to the parent.
       obj->within.scope = scope;
 
-      count_vpi_nets += 1;
+      شمار_vpi_nets += 1;
 
-      return obj;
+      بازگشت obj;
 }
 
 vpiHandle vpip_make_net4(__vpiScope*scope,
-			 const char*name, int msb, int lsb,
-			 bool signed_flag, vvp_net_t*node)
+			 ثابت نویسه*name, صحیح msb, صحیح lsb,
+			 منطقی signed_flag, vvp_net_t*گره)
 {
-      struct __vpiSignal*obj = new signal_net;
-      return fill_in_net4(obj, scope, name, msb, lsb, signed_flag, node);
+      ساختار __vpiSignal*obj = جدید signal_net;
+      بازگشت fill_in_net4(obj, scope, name, msb, lsb, signed_flag, گره);
 }
 
-static int PV_get_base(struct __vpiPV*rfp)
+ایستا صحیح PV_get_base(ساختار __vpiPV*rfp)
 {
 	/* We return from the symbol base if it is defined. */
-      if (rfp->sbase != 0) {
-	    s_vpi_value val;
+      اگر (rfp->sbase != 0) {
+	    s_vpi_مقدار val;
 	      /* Check to see if the value is defined. */
 	    val.format = vpiVectorVal;
-	    vpi_get_value(rfp->sbase, &val);
-	    int words = (vpi_get(vpiSize, rfp->sbase)-1)/32 + 1;
-	    for(int idx = 0; idx < words; idx += 1) {
+	    vpi_get_مقدار(rfp->sbase, &val);
+	    صحیح واژگان = (vpi_get(vpiSize, rfp->sbase)-1)/32 + 1;
+	    برای(صحیح idx = 0; idx < واژگان; idx += 1) {
 		    /* Return INT_MIN to indicate an X base. */
-		  if (val.value.vector[idx].bval != 0) return INT_MIN;
+		  اگر (val.value.vector[idx].bval != 0) بازگشت INT_MIN;
 	    }
 	      /* The value is defined so get and return it. */
 	    val.format = vpiIntVal;
-	    vpi_get_value(rfp->sbase, &val);
-	    return val.value.integer;
+	    vpi_get_مقدار(rfp->sbase, &val);
+	    بازگشت val.value.integer;
       }
 
 	/* If the width is zero then tbase is the constant. */
-      return rfp->tbase;
+      بازگشت rfp->tbase;
 }
 
-static int PV_get(int code, vpiHandle ref)
+ایستا صحیح PV_get(صحیح code, vpiHandle ref)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      ساختار __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      أكد(rfp);
 
-      int rval = 0;
-      switch (code) {
-	case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      صحیح rval = 0;
+      انتخاب (code) {
+	حالت vpi_سطر_No:
+	    بازگشت 0;  // Not implemented for now!
 
-	case vpiSigned:
-	    return 0;  // A part/bit select is always unsigned!
+	حالت vpiSigned:
+	    بازگشت 0;  // A part/bit select is always unsigned!
 
-	case vpiSize:
-	    return rfp->width;
+	حالت vpiSize:
+	    بازگشت rfp->width;
 
 	  /* This is like the &A<> in array.cc. */
-	case vpiConstantSelect:
-	    return rfp->sbase == 0;
+	حالت vpiConstantSelect:
+	    بازگشت rfp->sbase == 0;
 
-	case vpiLeftRange:
+	حالت vpi_چپ_Range:
             rval += rfp->width - 1;
 	    // fallthrough
-	case vpiRightRange: {
-	    int left = vpi_get(vpiLeftRange, rfp->parent);
-	    int right = vpi_get(vpiRightRange, rfp->parent);
+	حالت vpi_راست_Range: {
+	    صحیح چپ = vpi_get(vpi_چپ_Range, rfp->parent);
+	    صحیح راست = vpi_get(vpi_راست_Range, rfp->parent);
 	    rval += PV_get_base(rfp);
-	    return left >= right ? right + rval : right - rval;
+	    بازگشت چپ >= راست ? راست + rval : راست - rval;
 	}
 
-        case vpiAutomatic:
-            return vpi_get(vpiAutomatic, rfp->parent);
+        حالت vpiAutomatic:
+            بازگشت vpi_get(vpiAutomatic, rfp->parent);
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-        case _vpiFromThr:
-            return _vpi_at_PV;
+#اگر defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+        حالت _vpiFromThr:
+            بازگشت _vpi_at_PV;
 #endif
 
-	default:
+	پیشفرض:
 	    fprintf(stderr, "PV_get: property %d is unknown\n", code);
       }
 
-      return 0;
+      بازگشت 0;
 }
 
-static char* PV_get_str(int code, vpiHandle ref)
+ایستا نویسه* PV_get_str(صحیح code, vpiHandle ref)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      ساختار __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      أكد(rfp);
 
-      switch (code) {
-	case vpiFile:  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      انتخاب (code) {
+	حالت vpiFile:  // Not implemented for now!
+	    بازگشت simple_set_rbuf_str(file_names[0]);
 
-	case vpiName:
-	case vpiFullName: {
-	    const char*nm = vpi_get_str(code, rfp->parent);
+	حالت vpiName:
+	حالت vpiFullName: {
+	    ثابت نویسه*nm = vpi_get_str(code, rfp->parent);
 	    size_t len = 256+strlen(nm);
-	    char *full = static_cast<char *>(malloc(len));
+	    نویسه *full = static_cast<نویسه *>(malloc(len));
 	    snprintf(full, len, "%s[%d:%d]", nm,
-	                                     (int)vpi_get(vpiLeftRange, ref),
-	                                     (int)vpi_get(vpiRightRange, ref));
+	                                     (صحیح)vpi_get(vpi_چپ_Range, ref),
+	                                     (صحیح)vpi_get(vpi_راست_Range, ref));
 	    full[len-1] = 0;
-	    char *res = simple_set_rbuf_str(full);
-	    free(full);
-	    return res;
+	    نویسه *res = simple_set_rbuf_str(full);
+	    آزاد(full);
+	    بازگشت res;
 	}
 
-	default:
+	پیشفرض:
 	    fprintf(stderr, "PV_get_str: property %d is unknown.\n", code);
       }
 
-      return 0;
+      بازگشت 0;
 }
 
-static void PV_get_value(vpiHandle ref, p_vpi_value vp)
+ایستا تهی PV_get_مقدار(vpiHandle ref, p_vpi_مقدار vp)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      ساختار __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      أكد(rfp);
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(rfp->net->fil);
-      assert(sig);
+      vvp_signal_مقدار*sig = dynamic_cast<vvp_signal_مقدار*>(rfp->net->fil);
+      أكد(sig);
 
-      switch (vp->format) {
+      انتخاب (vp->format) {
 
-	  case vpiIntVal:
+	  حالت vpiIntVal:
 	    format_vpiIntVal(sig, PV_get_base(rfp), rfp->width, 0, vp);
-	    break;
+	    بشکن;
 
-	  case vpiBinStrVal:
+	  حالت vpiBinStrVal:
 	    format_vpiBinStrVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    بشکن;
 
-	  case vpiOctStrVal:
+	  حالت vpiOctStrVal:
 	    format_vpiOctStrVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    بشکن;
 
-	  case vpiHexStrVal:
+	  حالت vpiHexStrVal:
 	    format_vpiHexStrVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    بشکن;
 
-	  case vpiDecStrVal:
+	  حالت vpiDecStrVal:
 	    format_vpiDecStrVal(sig, PV_get_base(rfp), rfp->width, 0, vp);
-	    break;
+	    بشکن;
 
-	  case vpiStringVal:
+	  حالت vpiStringVal:
 	    format_vpiStringVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    بشکن;
 
-	  case vpiScalarVal:
+	  حالت vpiScalarVal:
 	    format_vpiScalarVal(sig, PV_get_base(rfp), vp);
-	    break;
+	    بشکن;
 
-	  case vpiStrengthVal:
+	  حالت vpiStrengthVal:
 	    format_vpiStrengthVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    بشکن;
 
-	  case vpiVectorVal:
+	  حالت vpiVectorVal:
 	    format_vpiVectorVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    بشکن;
 
-	  case vpiRealVal:
+	  حالت vpiRealVal:
 	    format_vpiRealVal(sig, PV_get_base(rfp), rfp->width, 0, vp);
-	    break;
+	    بشکن;
 
-	  default:
+	  پیشفرض:
 	    fprintf(stderr, "vvp internal error: PV_get_value: "
 		    "value type %d not implemented. Signal is %s.\n",
-		    (int)vp->format, vpi_get_str(vpiFullName, rfp->parent));
-	    assert(0);
+		    (صحیح)vp->format, vpi_get_str(vpiFullName, rfp->parent));
+	    أكد(0);
       }
 }
 
-static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
+ایستا vpiHandle PV_put_مقدار(vpiHandle ref, p_vpi_مقدار vp, صحیح flags)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(rfp->net->fil);
-      assert(sig);
+      ساختار __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      أكد(rfp);
+      vvp_signal_مقدار*sig = dynamic_cast<vvp_signal_مقدار*>(rfp->net->fil);
+      أكد(sig);
 
-      unsigned sig_size = sig->value_size();
+      unsigned sig_size = sig->مقدار_size();
       unsigned width = rfp->width;
-      int base = PV_get_base(rfp);
-      if (base >= (signed) sig_size) return 0;
-      if (base + (signed) width < 0) return 0;
+      صحیح base = PV_get_base(rfp);
+      اگر (base >= (signed) sig_size) بازگشت 0;
+      اگر (base + (signed) width < 0) بازگشت 0;
 
       vvp_vector4_t val;
-      if (flags != vpiReleaseFlag) {
-	    val = vec4_from_vpi_value(vp, width);
+      اگر (flags != vpiReleaseFlag) {
+	    val = vec4_from_vpi_مقدار(vp, width);
       }
 
 	/*
 	 * If the base is less than zero then trim off any unneeded
 	 * lower bits.
 	 */
-      if (base < 0) {
+      اگر (base < 0) {
 	    width += base;
-	    if (flags != vpiReleaseFlag) {
+	    اگر (flags != vpiReleaseFlag) {
 		  val = val.subvalue(-base, width);
 	    }
 	    base = 0;
@@ -1506,16 +1506,16 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 	 * If the value is wider than the signal then trim off any
 	 * unneeded upper bits.
 	 */
-      if (base+width > sig_size) {
+      اگر (base+width > sig_size) {
 	    width = sig_size - base;
-	    if (flags != vpiReleaseFlag) {
+	    اگر (flags != vpiReleaseFlag) {
 		  val = val.subvalue(0, width);
 	    }
       }
 
-      assert(rfp->parent);
-      bool net_flag = rfp->parent->get_type_code()==vpiNet;
-      bool full_sig = base == 0 && width == sig_size;
+      أكد(rfp->parent);
+      منطقی net_flag = rfp->parent->get_type_code()==vpiNet;
+      منطقی full_sig = base == 0 && width == sig_size;
 
       vvp_net_ptr_t dest(rfp->net, 0);
 
@@ -1525,27 +1525,27 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 	   if this net is attached to an island, we need to rerun
 	   the calculations immediately so we can return the
 	   released value.*/
-      if (flags == vpiReleaseFlag) {
-	    assert(rfp->net->fil);
+      اگر (flags == vpiReleaseFlag) {
+	    أكد(rfp->net->fil);
 	      // XXXX Can't really do this if this is a partial release?
 	    rfp->net->fil->force_unlink();
-	    if (full_sig) {
+	    اگر (full_sig) {
 		  rfp->net->fil->release(dest, net_flag);
-	    } else {
+	    } وگرنه {
 		  rfp->net->fil->release_pv(dest, base, width, net_flag);
 	    }
-	    rfp->net->fun->force_flag(true);
-	    PV_get_value(ref, vp);
-	    return ref;
+	    rfp->net->fun->force_flag(درست);
+	    PV_get_مقدار(ref, vp);
+	    بازگشت ref;
       }
 
-      if (flags == vpiForceFlag) {
-	    if (full_sig) {
+      اگر (flags == vpiForceFlag) {
+	    اگر (full_sig) {
 		  vvp_vector2_t mask (vvp_vector2_t::FILL1, sig_size);
 		  rfp->net->force_vec4(val, mask);
-	    } else {
+	    } وگرنه {
 		  vvp_vector2_t mask (vvp_vector2_t::FILL0, sig_size);
-		  for (unsigned idx = 0 ; idx < width ; idx += 1)
+		  برای (unsigned idx = 0 ; idx < width ; idx += 1)
 		        mask.set_bit(base+idx, 1);
 
 		  vvp_vector4_t tmp (sig_size, BIT4_Z);
@@ -1553,72 +1553,72 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 		    // vvp_net_t::force_vec4 propagates all the bits of the
 		    // forced vector value, regardless of the mask. This
 		    // ensures the unforced bits retain their current value.
-		  sig->vec4_value(tmp);
+		  sig->vec4_مقدار(tmp);
 
 		  tmp.set_vec(base, val);
 		  rfp->net->force_vec4(tmp, mask);
 	    }
-      } else if (net_flag && !dynamic_cast<vvp_island_port*>(rfp->net->fun)) {
-	    if (full_sig) {
+      } وگرنه اگر (net_flag && !dynamic_cast<vvp_island_port*>(rfp->net->fun)) {
+	    اگر (full_sig) {
 		  rfp->net->send_vec4(val, vthread_get_wt_context());
-	    } else {
+	    } وگرنه {
 		  rfp->net->send_vec4_pv(val, base, sig_size,
 		                         vthread_get_wt_context());
 	    }
-      } else {
-	    if (full_sig) {
+      } وگرنه {
+	    اگر (full_sig) {
 		  vvp_send_vec4(dest, val, vthread_get_wt_context());
-	    } else {
+	    } وگرنه {
 		  vvp_send_vec4_pv(dest, val, base, sig_size,
 	                           vthread_get_wt_context());
 	    }
       }
-      return 0;
+      بازگشت 0;
 }
 
-static vpiHandle PV_get_handle(int code, vpiHandle ref)
+ایستا vpiHandle PV_get_handle(صحیح code, vpiHandle ref)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      ساختار __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      أكد(rfp);
 
-      switch (code) {
-	  case vpiParent:
-	    return rfp->parent;
+      انتخاب (code) {
+	  حالت vpiParent:
+	    بازگشت rfp->parent;
 
-	  case vpiScope:
-	    return vpi_handle(vpiScope, rfp->parent);
+	  حالت vpiScope:
+	    بازگشت vpi_handle(vpiScope, rfp->parent);
 
-	  case vpiModule:
-	    return vpi_handle(vpiModule, rfp->parent);
+	  حالت vpiModule:
+	    بازگشت vpi_handle(vpiModule, rfp->parent);
       }
 
-      return 0;
+      بازگشت 0;
 }
 
-inline __vpiPV::__vpiPV()
+درونخطی __vpiPV::__vpiPV()
 { }
 
-int __vpiPV::get_type_code(void) const
-{ return vpiPartSelect; }
+صحیح __vpiPV::get_type_code(تهی) ثابت
+{ بازگشت vpiPartSelect; }
 
-int __vpiPV::vpi_get(int code)
-{ return PV_get(code, this); }
+صحیح __vpiPV::vpi_get(صحیح code)
+{ بازگشت PV_get(code, این); }
 
-char* __vpiPV::vpi_get_str(int code)
-{ return PV_get_str(code, this); }
+نویسه* __vpiPV::vpi_get_str(صحیح code)
+{ بازگشت PV_get_str(code, این); }
 
-void __vpiPV::vpi_get_value(p_vpi_value val)
-{ PV_get_value(this, val); }
+تهی __vpiPV::vpi_get_مقدار(p_vpi_مقدار val)
+{ PV_get_مقدار(این, val); }
 
-vpiHandle __vpiPV::vpi_put_value(p_vpi_value val, int flags)
-{ return PV_put_value(this, val, flags); }
+vpiHandle __vpiPV::vpi_put_مقدار(p_vpi_مقدار val, صحیح flags)
+{ بازگشت PV_put_مقدار(این, val, flags); }
 
-vpiHandle __vpiPV::vpi_handle(int code)
-{ return PV_get_handle(code, this); }
+vpiHandle __vpiPV::vpi_handle(صحیح code)
+{ بازگشت PV_get_handle(code, این); }
 
-vpiHandle vpip_make_PV(char*var, int base, int width)
+vpiHandle vpip_make_PV(نویسه*var, صحیح base, صحیح width)
 {
-      struct __vpiPV*obj = new __vpiPV;
+      ساختار __vpiPV*obj = جدید __vpiPV;
       compile_vpi_lookup(&obj->parent, strdup(var));
       obj->sbase = 0;
       obj->tbase = base;
@@ -1626,25 +1626,25 @@ vpiHandle vpip_make_PV(char*var, int base, int width)
       obj->net = 0;
       functor_ref_lookup(&obj->net, var);
 
-      return obj;
+      بازگشت obj;
 }
 
-vpiHandle vpip_make_PV(char*var, char*symbol, int width)
+vpiHandle vpip_make_PV(نویسه*var, نویسه*نماد, صحیح width)
 {
-      struct __vpiPV*obj = new __vpiPV;
+      ساختار __vpiPV*obj = جدید __vpiPV;
       compile_vpi_lookup(&obj->parent, strdup(var));
-      compile_vpi_lookup(&obj->sbase, symbol);
+      compile_vpi_lookup(&obj->sbase, نماد);
       obj->tbase = 0;
       obj->width = (unsigned) width;
       obj->net = 0;
       functor_ref_lookup(&obj->net, var);
 
-      return obj;
+      بازگشت obj;
 }
 
-vpiHandle vpip_make_PV(char*var, vpiHandle handle, int width)
+vpiHandle vpip_make_PV(نویسه*var, vpiHandle handle, صحیح width)
 {
-      struct __vpiPV*obj = new __vpiPV;
+      ساختار __vpiPV*obj = جدید __vpiPV;
       compile_vpi_lookup(&obj->parent, strdup(var));
       obj->sbase = handle;
       obj->tbase = 0;
@@ -1652,27 +1652,27 @@ vpiHandle vpip_make_PV(char*var, vpiHandle handle, int width)
       obj->net = 0;
       functor_ref_lookup(&obj->net, var);
 
-      return obj;
+      بازگشت obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void PV_delete(vpiHandle item)
+تهی PV_delete(vpiHandle item)
 {
-      struct __vpiPV *obj = dynamic_cast<__vpiPV*>(item);
-      if (obj->sbase) {
-	    switch (obj->sbase->get_type_code()) {
-		case vpiMemoryWord:
-		  if (vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_A) {
+      ساختار __vpiPV *obj = dynamic_cast<__vpiPV*>(item);
+      اگر (obj->sbase) {
+	    انتخاب (obj->sbase->get_type_code()) {
+		حالت vpiMemoryWord:
+		  اگر (vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_A) {
 			A_delete(obj->sbase);
 		  }
-		  break;
-		case vpiPartSelect:
-		  assert(vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_PV);
+		  بشکن;
+		حالت vpiPartSelect:
+		  أكد(vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_PV);
 		  PV_delete(obj->sbase);
-		  break;
+		  بشکن;
 	    }
       }
-      assert(obj->net->fil);
+      أكد(obj->net->fil);
       obj->net->fil->clear_all_callbacks();
       delete obj;
 }

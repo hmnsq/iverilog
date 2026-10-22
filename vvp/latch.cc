@@ -39,55 +39,55 @@ vvp_latch::~vvp_latch()
 {
 }
 
-void vvp_latch::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+تهی vvp_latch::recv_vec4(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
                           vvp_context_t)
 {
       vvp_bit4_t tmp;
 
-      switch (port.port()) {
+      انتخاب (port.port()) {
 
-	  case 0: // D
+	  حالت 0: // D
 	    d_ = bit;
-	    if (en_ == BIT4_1)
+	    اگر (en_ == BIT4_1)
 		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	    بشکن;
 
-	  case 1: // EN
-	    assert(bit.size() == 1);
+	  حالت 1: // EN
+	    أكد(bit.size() == 1);
 	    tmp = en_;
 	    en_ = bit.value(0);
-	    if (en_ == BIT4_1 && tmp != BIT4_1)
+	    اگر (en_ == BIT4_1 && tmp != BIT4_1)
 		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	    بشکن;
 
-	  case 2:
-	    assert(0);
-	    break;
+	  حالت 2:
+	    أكد(0);
+	    بشکن;
 
-	  case 3:
+	  حالت 3:
 	    port.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
-	    break;
+	    بشکن;
       }
 }
 
-void vvp_latch::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+تهی vvp_latch::recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&bit,
 			     unsigned base, unsigned vwid, vvp_context_t ctx)
 {
       recv_vec4_pv_(ptr, bit, base, vwid, ctx);
 }
 
-void compile_latch(char*label, unsigned width,
-		   struct symb_s arg_d,
-		   struct symb_s arg_e)
+تهی compile_latch(نویسه*label, unsigned width,
+		   ساختار symb_s arg_d,
+		   ساختار symb_s arg_e)
 {
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_latch*fun = new vvp_latch(width);
+      vvp_net_t*ptr = جدید vvp_net_t;
+      vvp_latch*fun = جدید vvp_latch(width);
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_e.text);
+      define_functor_نماد(label, ptr);
+      آزاد(label);
+      درون_داد_connect(ptr, 0, arg_d.text);
+      درون_داد_connect(ptr, 1, arg_e.text);
 
       vvp_vector4_t init_val = vvp_vector4_t(1, BIT4_1);
       schedule_init_vector(vvp_net_ptr_t(ptr,3), init_val);

@@ -25,107 +25,107 @@
 # include  "vvp_cleanup.h"
 #endif
 
-__vpiCobjectVar::__vpiCobjectVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
+__vpiCobjectVar::__vpiCobjectVar(__vpiScope*sc, ثابت نویسه*na, vvp_net_t*ne)
 : __vpiBaseVar(sc, na, ne)
 {
 }
 
-int __vpiCobjectVar::get_type_code(void) const
-{ return vpiClassVar; }
+صحیح __vpiCobjectVar::get_type_code(تهی) ثابت
+{ بازگشت vpiClassVar; }
 
-int __vpiCobjectVar::vpi_get(int code)
+صحیح __vpiCobjectVar::vpi_get(صحیح code)
 {
-      switch (code) {
-	case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      انتخاب (code) {
+	حالت vpi_سطر_No:
+	    بازگشت 0;  // Not implemented for now!
 
-	case vpiSize:
-	    return 64;
+	حالت vpiSize:
+	    بازگشت 64;
 
-	case vpiConstType:
-	    return vpiNullConst;
+	حالت vpiConstType:
+	    بازگشت vpiNullConst;
 
-	case vpiSigned:
-	    return 0;
+	حالت vpiSigned:
+	    بازگشت 0;
 
-	case vpiAutomatic:
-	    return 0;
+	حالت vpiAutomatic:
+	    بازگشت 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	case _vpiFromThr:
-	    return _vpiNoThr;
+#اگر defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	حالت _vpiFromThr:
+	    بازگشت _vpiNoThr;
 #endif
 
-	default:
+	پیشفرض:
 	    fprintf(stderr, "vvp error: get %d not supported "
 	                    "by vpiClassVar\n", code);
-	    assert(0);
-	    return 0;
+	    أكد(0);
+	    بازگشت 0;
       }
 }
 
-void __vpiCobjectVar::vpi_get_value(p_vpi_value val)
+تهی __vpiCobjectVar::vpi_get_مقدار(p_vpi_مقدار val)
 {
 // FIXME: We need to get the assigned object address if one is assigned.
 //fprintf(stderr, "HERE: %p\n", get_net());
-      static const size_t RBUF_USE_SIZE = 64 + 1;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      ایستا ثابت size_t RBUF_USE_SIZE = 64 + 1;
+      نویسه*rbuf = static_cast<نویسه *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
 
-      switch (val->format) {
-	case vpiObjTypeVal:
+      انتخاب (val->format) {
+	حالت vpiObjTypeVal:
 	    val->format = vpiStringVal;
 	    // fall through
-	case vpiBinStrVal:
-	case vpiDecStrVal:
-	case vpiOctStrVal:
-	case vpiHexStrVal:
-	case vpiStringVal:
+	حالت vpiBinStrVal:
+	حالت vpiDecStrVal:
+	حالت vpiOctStrVal:
+	حالت vpiHexStrVal:
+	حالت vpiStringVal:
 	    snprintf(rbuf, RBUF_USE_SIZE, "    null");
 	    val->value.str = rbuf;
-	    break;
+	    بشکن;
 
-	case vpiScalarVal:
+	حالت vpiScalarVal:
 	    val->value.scalar = vpi0;
-	    break;
+	    بشکن;
 
-	case vpiIntVal:
+	حالت vpiIntVal:
 	    val->value.integer = 0;
-	    break;
+	    بشکن;
 
-	case vpiVectorVal:
+	حالت vpiVectorVal:
 	    val->value.vector = static_cast<p_vpi_vecval>
-	                        (need_result_buf(2*sizeof(s_vpi_vecval),
+	                        (need_result_buf(2*اندازه(s_vpi_vecval),
 	                                         RBUF_VAL));
-	    for (unsigned idx = 0; idx < 2; idx += 1) {
+	    برای (unsigned idx = 0; idx < 2; idx += 1) {
 		  val->value.vector[idx].aval = 0;
 		  val->value.vector[idx].bval = 0;
 	    }
-	    break;
+	    بشکن;
 
-	case vpiRealVal:
+	حالت vpiRealVal:
 	    val->value.real = 0.0;
-	    break;
+	    بشکن;
 
-	default:
+	پیشفرض:
 	    fprintf(stderr, "vvp error: format %d not supported "
-	                    "by vpiClassVar\n", (int)val->format);
+	                    "by vpiClassVar\n", (صحیح)val->format);
 	    val->format = vpiSuppressVal;
-	    break;
+	    بشکن;
       }
 }
 
-vpiHandle vpip_make_cobject_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_cobject_var(ثابت نویسه*name, vvp_net_t*net)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      const char*use_name = name ? vpip_name_string(name) : NULL;
+      ثابت نویسه*use_name = name ? vpip_name_string(name) : پوچ;
 
-      __vpiCobjectVar*obj = new __vpiCobjectVar(scope, use_name, net);
+      __vpiCobjectVar*obj = جدید __vpiCobjectVar(scope, use_name, net);
 
-      return obj;
+      بازگشت obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void class_delete(vpiHandle item)
+تهی class_delete(vpiHandle item)
 {
       __vpiCobjectVar*obj = dynamic_cast<__vpiCobjectVar*>(item);
       delete obj;

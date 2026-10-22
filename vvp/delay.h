@@ -23,12 +23,12 @@
 # include  "vvp_net.h"
 # include  "schedule.h"
 
-enum delay_edge_t {
+شمارش delay_edge_t {
       DELAY_EDGE_01 = 0, DELAY_EDGE_10, DELAY_EDGE_0z,
       DELAY_EDGE_z1,     DELAY_EDGE_1z, DELAY_EDGE_z0,
       DELAY_EDGE_0x,     DELAY_EDGE_x1, DELAY_EDGE_1x,
       DELAY_EDGE_x0,     DELAY_EDGE_xz, DELAY_EDGE_zx,
-      DELAY_EDGE_COUNT
+      DELAY_EDGE_شمار
 };
 
 /*
@@ -38,25 +38,25 @@ enum delay_edge_t {
  */
 class vvp_delay_t {
 
-    public:
+    عمومی:
       vvp_delay_t(vvp_time64_t rise, vvp_time64_t fall);
       vvp_delay_t(vvp_time64_t rise, vvp_time64_t fall, vvp_time64_t decay);
       ~vvp_delay_t();
 
       vvp_time64_t get_delay(vvp_bit4_t from, vvp_bit4_t to);
-      vvp_time64_t get_min_delay() const;
+      vvp_time64_t get_min_delay() ثابت;
 
-      void set_rise(vvp_time64_t val);
-      void set_fall(vvp_time64_t val);
-      void set_decay(vvp_time64_t val);
-      void set_ignore_decay();
+      تهی set_rise(vvp_time64_t val);
+      تهی set_fall(vvp_time64_t val);
+      تهی set_decay(vvp_time64_t val);
+      تهی set_ignore_decay();
 
-    private:
+    خصوصی:
       vvp_time64_t rise_, fall_, decay_;
       vvp_time64_t min_delay_;
       bool ignore_decay_;
 
-      void calculate_min_delay_();
+      تهی calculate_min_delay_();
 };
 
 /* vvp_fun_delay
@@ -72,46 +72,46 @@ class vvp_delay_t {
  * input. This is a bit of a hack, as it may be more efficient to
  * create the right type of vvp_fun_delay_real.
  */
-class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
+class vvp_fun_delay  : عمومی vvp_net_fun_t, خصوصی vvp_gen_event_s {
 
-      enum delay_type_t {UNKNOWN_DELAY, VEC4_DELAY, VEC8_DELAY, REAL_DELAY};
-      struct event_ {
+      شمارش delay_type_t {UNKNOWN_DELAY, VEC4_DELAY, VEC8_DELAY, REAL_DELAY};
+      ساختار event_ {
 	    explicit event_(vvp_time64_t s) : sim_time(s) {
 		  ptr_real = 0.0;
-		  next = NULL;
+		  next = پوچ;
 	    }
-	    void (vvp_fun_delay::*run_run_ptr)(const struct vvp_fun_delay::event_*cur);
-	    const vvp_time64_t sim_time;
+	    تهی (vvp_fun_delay::*run_run_ptr)(ثابت ساختار vvp_fun_delay::event_*cur);
+	    ثابت vvp_time64_t sim_time;
 	    vvp_vector4_t ptr_vec4;
 	    vvp_vector8_t ptr_vec8;
-	    double ptr_real;
-	    struct event_*next;
+	    دوگانه ptr_real;
+	    ساختار event_*next;
       };
 
-    public:
-      vvp_fun_delay(vvp_net_t*net, unsigned width, const vvp_delay_t&d);
+    عمومی:
+      vvp_fun_delay(vvp_net_t*net, unsigned width, ثابت vvp_delay_t&d);
       ~vvp_fun_delay() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      تهی recv_vec4(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
                      vvp_context_t) override;
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
-      void recv_real(vvp_net_ptr_t port, double bit,
+      تهی recv_vec8(vvp_net_ptr_t port, ثابت vvp_vector8_t&bit) override;
+      تهی recv_real(vvp_net_ptr_t port, دوگانه bit,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      تهی recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      void recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
+      تهی recv_vec8_pv(vvp_net_ptr_t ptr, ثابت vvp_vector8_t&bit,
 			unsigned base, unsigned vwid) override;
 
-    private:
-      virtual void run_run() override;
+    خصوصی:
+      مجازی تهی run_run() override;
 
 
-      void run_run_vec4_(const struct vvp_fun_delay::event_*cur);
-      void run_run_vec8_(const struct vvp_fun_delay::event_*cur);
-      void run_run_real_(const struct vvp_fun_delay::event_*cur);
+      تهی run_run_vec4_(ثابت ساختار vvp_fun_delay::event_*cur);
+      تهی run_run_vec8_(ثابت ساختار vvp_fun_delay::event_*cur);
+      تهی run_run_real_(ثابت ساختار vvp_fun_delay::event_*cur);
 
-    private:
+    خصوصی:
       vvp_net_t*net_;
       vvp_delay_t delay_;
       delay_type_t type_;
@@ -119,37 +119,37 @@ class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
 
       vvp_vector4_t cur_vec4_;
       vvp_vector8_t cur_vec8_;
-      double cur_real_;
+      دوگانه cur_real_;
       vvp_time64_t round_, scale_; // Needed to scale variable time values.
 
-      struct event_ *list_;
-      void enqueue_(struct event_*cur)
+      ساختار event_ *list_;
+      تهی enqueue_(ساختار event_*cur)
       {
-	    if (list_) {
+	    اگر (list_) {
 		  cur->next = list_->next;
 		  list_->next = cur;
 		  list_ = cur;
-	    } else {
+	    } وگرنه {
 		  cur->next = cur;
 		  list_ = cur;
 	    }
       }
-      struct event_* dequeue_(void)
+      ساختار event_* dequeue_(تهی)
       {
-	    if (list_ == 0)
-		  return 0;
-	    struct event_*cur = list_->next;
-	    if (list_ == cur)
+	    اگر (list_ == 0)
+		  بازگشت 0;
+	    ساختار event_*cur = list_->next;
+	    اگر (list_ == cur)
 		  list_ = 0;
-	    else
+	    وگرنه
 		  list_->next = cur->next;
-	    return cur;
+	    بازگشت cur;
       }
-      bool clean_pulse_events_(vvp_time64_t use_delay, const vvp_vector4_t&bit);
-      bool clean_pulse_events_(vvp_time64_t use_delay, const vvp_vector8_t&bit);
-      bool clean_pulse_events_(vvp_time64_t use_delay, double bit);
+      bool clean_pulse_events_(vvp_time64_t use_delay, ثابت vvp_vector4_t&bit);
+      bool clean_pulse_events_(vvp_time64_t use_delay, ثابت vvp_vector8_t&bit);
+      bool clean_pulse_events_(vvp_time64_t use_delay, دوگانه bit);
 // Delete this when done!
-      void clean_pulse_events_(vvp_time64_t use_delay);
+      تهی clean_pulse_events_(vvp_time64_t use_delay);
 };
 
 /*
@@ -163,21 +163,21 @@ class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
 class vvp_fun_modpath;
 class vvp_fun_modpath_src;
 
-class vvp_fun_modpath  : public vvp_net_fun_t, private vvp_gen_event_s {
+class vvp_fun_modpath  : عمومی vvp_net_fun_t, خصوصی vvp_gen_event_s {
 
-    public:
+    عمومی:
       vvp_fun_modpath(vvp_net_t*net, unsigned width);
       ~vvp_fun_modpath() override;
 
-      void add_modpath_src(vvp_fun_modpath_src*that, bool ifnone);
+      تهی add_modpath_src(vvp_fun_modpath_src*that, bool ifnone);
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      تهی recv_vec4(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
                      vvp_context_t) override;
 
-    private:
-      virtual void run_run() override;
+    خصوصی:
+      مجازی تهی run_run() override;
 
-    private:
+    خصوصی:
       vvp_net_t*net_;
 
       vvp_vector4_t cur_vec4_;
@@ -185,29 +185,29 @@ class vvp_fun_modpath  : public vvp_net_fun_t, private vvp_gen_event_s {
       vvp_fun_modpath_src*src_list_;
       vvp_fun_modpath_src*ifnone_list_;
 
-    private: // not implemented
-      vvp_fun_modpath(const vvp_fun_modpath&);
-      vvp_fun_modpath& operator= (const vvp_fun_modpath&);
+    خصوصی: // not implemented
+      vvp_fun_modpath(ثابت vvp_fun_modpath&);
+      vvp_fun_modpath& operator= (ثابت vvp_fun_modpath&);
 };
 
-class vvp_fun_modpath_src  : public vvp_net_fun_t {
+class vvp_fun_modpath_src  : عمومی vvp_net_fun_t {
 
       friend class vvp_fun_modpath;
 
-    public:
-      explicit vvp_fun_modpath_src(vvp_time64_t const del[12]);
-    protected:
+    عمومی:
+      explicit vvp_fun_modpath_src(vvp_time64_t ثابت del[12]);
+    محافظتشده:
       ~vvp_fun_modpath_src() override;
 
-    public:
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    عمومی:
+      تهی recv_vec4(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
                      vvp_context_t) override;
-      virtual bool test_vec4(const vvp_vector4_t&bit);
+      مجازی bool test_vec4(ثابت vvp_vector4_t&bit);
 
-      void get_delay12(vvp_time64_t out[12]) const;
-      void put_delay12(const vvp_time64_t in[12]);
+      تهی get_delay12(vvp_time64_t out[12]) ثابت;
+      تهی put_delay12(ثابت vvp_time64_t in[12]);
 
-    private:
+    خصوصی:
 	// FIXME: Needs to be a 12-value array
       vvp_time64_t delay_[12];
 	// Used by vvp_fun_modpath to keep a list of modpath_src objects.
@@ -216,20 +216,20 @@ class vvp_fun_modpath_src  : public vvp_net_fun_t {
       vvp_time64_t wake_time_;
       bool condition_flag_;
 
-    private:
-      vvp_fun_modpath_src(const vvp_fun_modpath_src&);
-      vvp_fun_modpath_src& operator = (const vvp_fun_modpath_src&);
+    خصوصی:
+      vvp_fun_modpath_src(ثابت vvp_fun_modpath_src&);
+      vvp_fun_modpath_src& operator = (ثابت vvp_fun_modpath_src&);
 };
 
-class vvp_fun_modpath_edge  : public vvp_fun_modpath_src {
+class vvp_fun_modpath_edge  : عمومی vvp_fun_modpath_src {
 
-    public:
+    عمومی:
       vvp_fun_modpath_edge(vvp_time64_t del[12], bool pos, bool neg);
 
-      bool test_vec4(const vvp_vector4_t&bit) override;
+      bool test_vec4(ثابت vvp_vector4_t&bit) override;
 
-    private:
-      vvp_bit4_t old_value_;
+    خصوصی:
+      vvp_bit4_t old_مقدار;
       bool posedge_;
       bool negedge_;
 };
@@ -239,31 +239,31 @@ class vvp_fun_modpath_edge  : public vvp_fun_modpath_src {
 * Upon a (INTERCONNECT ...) statement an intermodpath will be inserted
 * between port1 and port2 and its delay can be annotated
 */
-class vvp_fun_intermodpath  : public vvp_net_fun_t, private vvp_gen_event_s {
+class vvp_fun_intermodpath  : عمومی vvp_net_fun_t, خصوصی vvp_gen_event_s {
 
-    public:
+    عمومی:
       vvp_fun_intermodpath(vvp_net_t*net, unsigned width);
       ~vvp_fun_intermodpath() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      تهی recv_vec4(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
                      vvp_context_t) override;
 
-      void get_delay12(vvp_time64_t out[12]) const;
-      void put_delay12(const vvp_time64_t in[12]);
+      تهی get_delay12(vvp_time64_t out[12]) ثابت;
+      تهی put_delay12(ثابت vvp_time64_t in[12]);
 
-    private:
-      void run_run() override;
+    خصوصی:
+      تهی run_run() override;
 
-    private:
+    خصوصی:
       vvp_net_t*net_;
 
       vvp_vector4_t cur_vec4_;
 
       vvp_time64_t delay_[12];
 
-    private: // not implemented
-      vvp_fun_intermodpath(const vvp_fun_intermodpath&);
-      vvp_fun_intermodpath& operator= (const vvp_fun_intermodpath&);
+    خصوصی: // not implemented
+      vvp_fun_intermodpath(ثابت vvp_fun_intermodpath&);
+      vvp_fun_intermodpath& operator= (ثابت vvp_fun_intermodpath&);
 };
 
 #endif /* IVL_delay_H */

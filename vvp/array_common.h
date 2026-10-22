@@ -22,26 +22,26 @@
 #ifndef ARRAY_COMMON_H
 #define ARRAY_COMMON_H
 
-#include "vpi_priv.h"
+#شامل "vpi_priv.h"
 
-struct __vpiArrayIterator : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+ساختار __vpiArrayIterator : عمومی __vpiHandle {
+      صحیح get_type_code(تهی) ثابت override
+      { بازگشت vpiIterator; }
 
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+      vpiHandle vpi_index(صحیح idx) override;
+      free_object_fun_t free_object_fun(تهی) override;
 
-      struct __vpiArrayBase*array;
+      ساختار __vpiArrayBase*array;
       unsigned next;
 };
 
-struct __vpiArrayIndex : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+ساختار __vpiArrayIndex : عمومی __vpiHandle {
+      صحیح get_type_code(تهی) ثابت override
+      { بازگشت vpiIterator; }
 
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+      vpiHandle vpi_iterate(صحیح code) override;
+      vpiHandle vpi_index(صحیح idx) override;
+      free_object_fun_t free_object_fun(تهی) override;
 
       __vpiDecConst *index;
       unsigned done;
@@ -68,31 +68,31 @@ struct __vpiArrayIndex : public __vpiHandle {
  * of vpi functions is bound to the same structure. All the details
  * for the word also apply when treating this as an index.
  */
-struct __vpiArrayWord {
-      struct as_word_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiMemoryWord; }
-	    int vpi_get(int code) override;
-	    char*vpi_get_str(int code) override;
-	    void vpi_get_value(p_vpi_value vp) override;
-	    vpiHandle vpi_put_value(p_vpi_value vp, int flags) override;
-	    vpiHandle vpi_handle(int code) override;
+ساختار __vpiArrayWord {
+      ساختار as_word_t : عمومی __vpiHandle {
+	    صحیح get_type_code(تهی) ثابت override { بازگشت vpiMemoryWord; }
+	    صحیح vpi_get(صحیح code) override;
+	    نویسه*vpi_get_str(صحیح code) override;
+	    تهی vpi_get_مقدار(p_vpi_مقدار vp) override;
+	    vpiHandle vpi_put_مقدار(p_vpi_مقدار vp, صحیح flags) override;
+	    vpiHandle vpi_handle(صحیح code) override;
       } as_word;
 
-      struct as_index_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiIndex; }
-	    void vpi_get_value(p_vpi_value val) override;
+      ساختار as_index_t : عمومی __vpiHandle {
+	    صحیح get_type_code(تهی) ثابت override { بازگشت vpiIndex; }
+	    تهی vpi_get_مقدار(p_vpi_مقدار val) override;
       } as_index;
 
-      union {
-	    struct __vpiArrayBase*parent;
-	    struct __vpiArrayWord*word0;
+      اجتماع {
+	    ساختار __vpiArrayBase*parent;
+	    ساختار __vpiArrayWord*word0;
       };
 
-      inline unsigned get_index() const { return this - word0; }
-      inline struct __vpiArrayBase*get_parent() const { return (word0 - 1)->parent; }
+      درونخطی unsigned get_index() ثابت { بازگشت this - word0; }
+      درونخطی ساختار __vpiArrayBase*get_parent() ثابت { بازگشت (word0 - 1)->parent; }
 };
 
-struct __vpiArrayWord*array_var_word_from_handle(vpiHandle ref);
-struct __vpiArrayWord*array_var_index_from_handle(vpiHandle ref);
+ساختار __vpiArrayWord*array_var_word_from_handle(vpiHandle ref);
+ساختار __vpiArrayWord*array_var_index_from_handle(vpiHandle ref);
 
 #endif /* ARRAY_COMMON_H */

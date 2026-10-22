@@ -30,186 +30,186 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-static int real_var_get(int code, vpiHandle ref)
+ایستا صحیح real_var_get(صحیح code, vpiHandle ref)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
-      assert(rfp);
+      ساختار __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      أكد(rfp);
 
-      switch (code) {
-	case vpiArray:
-	    return rfp->is_netarray != 0;
+      انتخاب (code) {
+	حالت vpiArray:
+	    بازگشت rfp->is_netarray != 0;
 
-	case vpiSize:
-	    return 1;
+	حالت vpiSize:
+	    بازگشت 1;
 
-	case vpiLineNo:
-	    return 0; // Not implemented for now!
+	حالت vpi_سطر_No:
+	    بازگشت 0; // Not implemented for now!
 
-	case vpiAutomatic:
-	  return vpip_scope(rfp)->is_automatic()? 1 : 0;
+	حالت vpiAutomatic:
+	  بازگشت vpip_scope(rfp)->is_automatic()? 1 : 0;
       }
 
-      return 0;
+      بازگشت 0;
 }
 
-static char* real_var_get_str(int code, vpiHandle ref)
+ایستا نویسه* real_var_get_str(صحیح code, vpiHandle ref)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
-      assert(rfp);
+      ساختار __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      أكد(rfp);
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      اگر (code == vpiFile) {  // Not implemented for now!
+	    بازگشت simple_set_rbuf_str(file_names[0]);
       }
 
-      char *nm;
-      const char *ixs;
-      if (rfp->is_netarray) {
+      نویسه *nm;
+      ثابت نویسه *ixs;
+      اگر (rfp->is_netarray) {
 	    nm = strdup(vpi_get_str(vpiName, rfp->within.parent));
-	    s_vpi_value vp;
+	    s_vpi_مقدار vp;
 	    vp.format = vpiDecStrVal;
-	    vpi_get_value(rfp->id.index, &vp);
+	    vpi_get_مقدار(rfp->id.index, &vp);
 	    ixs = vp.value.str;  /* do I need to strdup() this? */
-      } else {
+      } وگرنه {
 	    nm = strdup(rfp->id.name);
-	    ixs = NULL;
+	    ixs = پوچ;
       }
 
-      char *rbuf = generic_get_str(code, vpip_scope(rfp), nm, ixs);
-      free(nm);
-      return rbuf;
+      نویسه *rbuf = generic_get_str(code, vpip_scope(rfp), nm, ixs);
+      آزاد(nm);
+      بازگشت rbuf;
 }
 
-static vpiHandle real_var_get_handle(int code, vpiHandle ref)
+ایستا vpiHandle real_var_get_handle(صحیح code, vpiHandle ref)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
-      assert(rfp);
+      ساختار __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      أكد(rfp);
 
-      switch (code) {
+      انتخاب (code) {
 
-	  case vpiParent:
-	    return rfp->is_netarray ? rfp->within.parent : NULL;
+	  حالت vpiParent:
+	    بازگشت rfp->is_netarray ? rfp->within.parent : پوچ;
 
-	  case vpiIndex:
-	    return rfp->is_netarray ? rfp->id.index : NULL;
+	  حالت vpiIndex:
+	    بازگشت rfp->is_netarray ? rfp->id.index : پوچ;
 
-	  case vpiScope:
-	    return vpip_scope(rfp);
+	  حالت vpiScope:
+	    بازگشت vpip_scope(rfp);
 
-	  case vpiModule:
-	    return vpip_module(vpip_scope(rfp));
+	  حالت vpiModule:
+	    بازگشت vpip_module(vpip_scope(rfp));
       }
 
-      return 0;
+      بازگشت 0;
 }
 
-static vpiHandle real_var_iterate(int code, vpiHandle ref)
+ایستا vpiHandle real_var_iterate(صحیح code, vpiHandle ref)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
-      assert(rfp);
+      ساختار __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      أكد(rfp);
 
-      if (code == vpiIndex) {
-	    return rfp->is_netarray ? rfp->id.index->vpi_iterate(code) : NULL;
+      اگر (code == vpiIndex) {
+	    بازگشت rfp->is_netarray ? rfp->id.index->vpi_iterate(code) : پوچ;
       }
 
-      return 0;
+      بازگشت 0;
 }
 
-static void real_var_get_value(vpiHandle ref, s_vpi_value*vp)
+ایستا تهی real_var_get_مقدار(vpiHandle ref, s_vpi_مقدار*vp)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
-      assert(rfp);
+      ساختار __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      أكد(rfp);
 
-      vvp_signal_value*fil
-	    = dynamic_cast<vvp_signal_value*>(rfp->net->fil);
+      vvp_signal_مقدار*fil
+	    = dynamic_cast<vvp_signal_مقدار*>(rfp->net->fil);
 
-      fil->get_signal_value(vp);
+      fil->get_signal_مقدار(vp);
 }
 
-static vpiHandle real_var_put_value(vpiHandle ref, p_vpi_value vp, int flags)
+ایستا vpiHandle real_var_put_مقدار(vpiHandle ref, p_vpi_مقدار vp, صحیح flags)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
-      assert(rfp);
+      ساختار __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      أكد(rfp);
       vvp_net_ptr_t destination (rfp->net, 0);
 
 	/* If this is a release, then we are not really putting a
 	   value. Instead, issue a release "command" to the signal
 	   node to cause it to release a forced value. */
-      if (flags == vpiReleaseFlag) {
-	    assert(rfp->net->fil);
+      اگر (flags == vpiReleaseFlag) {
+	    أكد(rfp->net->fil);
 	    rfp->net->fil->force_unlink();
 	    rfp->net->fil->release(destination, rfp->is_wire);
-	    real_var_get_value(ref, vp);
-	    return ref;
+	    real_var_get_مقدار(ref, vp);
+	    بازگشت ref;
       }
 
-      double result = real_from_vpi_value(vp);
+      دوگانه result = real_from_vpi_مقدار(vp);
 
-      if (flags == vpiForceFlag) {
+      اگر (flags == vpiForceFlag) {
 	    vvp_vector2_t mask (vvp_vector2_t::FILL1, 1);
 	    rfp->net->force_real(result, mask);
-      } else if (rfp->is_wire) {
+      } وگرنه اگر (rfp->is_wire) {
 	    rfp->net->send_real(result, vthread_get_wt_context());
-      } else {
+      } وگرنه {
 	    vvp_send_real(destination, result, vthread_get_wt_context());
       }
-      return 0;
+      بازگشت 0;
 }
 
-inline __vpiRealVar::__vpiRealVar()
+درونخطی __vpiRealVar::__vpiRealVar()
 { }
 
-int __vpiRealVar::get_type_code(void) const
-{ return vpiRealVar; }
+صحیح __vpiRealVar::get_type_code(تهی) ثابت
+{ بازگشت vpiRealVar; }
 
-int __vpiRealVar::vpi_get(int code)
-{ return real_var_get(code, this); }
+صحیح __vpiRealVar::vpi_get(صحیح code)
+{ بازگشت real_var_get(code, این); }
 
-char* __vpiRealVar::vpi_get_str(int code)
-{ return real_var_get_str(code, this); }
+نویسه* __vpiRealVar::vpi_get_str(صحیح code)
+{ بازگشت real_var_get_str(code, این); }
 
-void __vpiRealVar::vpi_get_value(p_vpi_value val)
-{ real_var_get_value(this, val); }
+تهی __vpiRealVar::vpi_get_مقدار(p_vpi_مقدار val)
+{ real_var_get_مقدار(این, val); }
 
-vpiHandle __vpiRealVar::vpi_put_value(p_vpi_value val, int flags)
-{ return real_var_put_value(this, val, flags); }
+vpiHandle __vpiRealVar::vpi_put_مقدار(p_vpi_مقدار val, صحیح flags)
+{ بازگشت real_var_put_مقدار(این, val, flags); }
 
-vpiHandle __vpiRealVar::vpi_handle(int code)
-{ return real_var_get_handle(code, this); }
+vpiHandle __vpiRealVar::vpi_handle(صحیح code)
+{ بازگشت real_var_get_handle(code, این); }
 
-vpiHandle __vpiRealVar::vpi_iterate(int code)
-{ return real_var_iterate(code, this); }
+vpiHandle __vpiRealVar::vpi_iterate(صحیح code)
+{ بازگشت real_var_iterate(code, این); }
 
-static vpiHandle vpip_make_real_(__vpiScope*scope, const char*name,
-				 vvp_net_t*net, bool is_wire)
+ایستا vpiHandle vpip_make_real_(__vpiScope*scope, ثابت نویسه*name,
+				 vvp_net_t*net, منطقی is_wire)
 {
-      struct __vpiRealVar*obj = new __vpiRealVar;
+      ساختار __vpiRealVar*obj = جدید __vpiRealVar;
 
-      obj->id.name = name ? vpip_name_string(name) : NULL;
+      obj->id.name = name ? vpip_name_string(name) : پوچ;
       obj->is_netarray = 0;
       obj->is_wire = is_wire;
       obj->net = net;
 
       obj->within.scope = scope;
 
-      return obj;
+      بازگشت obj;
 }
 
-vpiHandle vpip_make_real_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_real_var(ثابت نویسه*name, vvp_net_t*net)
 {
-      return vpip_make_real_(vpip_peek_current_scope(), name, net, false);
+      بازگشت vpip_make_real_(vpip_peek_current_scope(), name, net, نادرست);
 }
 
 vpiHandle vpip_make_real_net(__vpiScope*scope,
-			     const char*name, vvp_net_t*net)
+			     ثابت نویسه*name, vvp_net_t*net)
 {
-      return vpip_make_real_(scope, name, net, true);
+      بازگشت vpip_make_real_(scope, name, net, درست);
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void real_delete(vpiHandle item)
+تهی real_delete(vpiHandle item)
 {
-      struct __vpiRealVar*obj = dynamic_cast<__vpiRealVar*>(item);
-      assert(obj->net->fil);
+      ساختار __vpiRealVar*obj = dynamic_cast<__vpiRealVar*>(item);
+      أكد(obj->net->fil);
       obj->net->fil->clear_all_callbacks();
       vvp_net_delete(obj->net);
 

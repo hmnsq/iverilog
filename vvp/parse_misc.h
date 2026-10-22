@@ -25,71 +25,71 @@
  * This method is called to compile the design file. The input is read
  * and a list of statements is created.
  */
-extern int compile_design(const char*path);
+بیرونی صحیح compile_design(ثابت نویسه*path);
 
 /*
  * This routine is called to check that the input file has a compatible
  * version.
  */
-extern void verify_version(char *ivl_ver, char* commit);
+بیرونی تهی verify_version(نویسه *ivl_ver, نویسه* commit);
 
 /*
  * Set the default delay type for the $sdf_annotate task (min/typ/max).
  */
-extern void set_delay_selection(const char* sel);
+بیرونی تهی set_delay_selection(ثابت نویسه* sel);
 
 /*
  * various functions shared by the lexor and the parser.
  */
-extern int yylex(void);
-extern void yyerror(const char*msg);
+بیرونی صحیح yylex(تهی);
+بیرونی تهی yyerror(ثابت نویسه*پیام);
 
-extern void destroy_lexor();
+بیرونی تهی destroy_lexor();
 
 /*
  * This is the path of the current source file.
  */
-extern const char*yypath;
-extern unsigned yyline;
+بیرونی ثابت نویسه*yypath;
+بیرونی unsigned yyline;
 
-struct symb_s {
-      char*text;
+ساختار symb_s {
+      نویسه*text;
       unsigned idx;
 };
 
-struct symbv_s {
+ساختار symbv_s {
       unsigned cnt;
-      struct symb_s*vect;
+      ساختار symb_s*vect;
 };
 
-extern void symbv_init(struct symbv_s*obj);
-extern void symbv_add(struct symbv_s*obj, struct symb_s item);
+بیرونی تهی symbv_init(ساختار symbv_s*obj);
+بیرونی تهی symbv_add(ساختار symbv_s*obj, ساختار symb_s item);
 
-struct numbv_s {
+ساختار numbv_s {
       unsigned cnt;
       long*nvec;
 };
 
-struct enum_name_s {
-      char*text;
+ساختار enum_name_s {
+      نویسه*text;
       uint64_t val2;
-      char*val4;
+      نویسه*val4;
 };
 
-extern void numbv_init(struct numbv_s*obj);
-extern void numbv_add(struct numbv_s*obj, long item);
-extern void numbv_clear(struct numbv_s*obj);
+بیرونی تهی numbv_init(ساختار numbv_s*obj);
+بیرونی تهی numbv_add(ساختار numbv_s*obj, long item);
+بیرونی تهی numbv_clear(ساختار numbv_s*obj);
 
-struct argv_s {
+ساختار argv_s {
       unsigned  argc;
       vpiHandle*argv;
-      char    **syms;
+      نویسه    **syms;
 };
 
 
-extern void argv_init(struct argv_s*obj);
-extern void argv_add(struct argv_s*obj, vpiHandle);
-extern void argv_sym_add(struct argv_s*obj, char *);
-extern void argv_sym_lookup(struct argv_s*obj);
+بیرونی تهی argv_init(ساختار argv_s*obj);
+بیرونی تهی argv_add(ساختار argv_s*obj, vpiHandle);
+بیرونی تهی argv_sym_add(ساختار argv_s*obj, نویسه *);
+بیرونی تهی argv_sym_lookup(ساختار argv_s*obj);
 
 #endif /* IVL_parse_misc_H */

@@ -26,28 +26,28 @@
 
 class vvp_vector4_t;
 
-class vvp_cobject : public vvp_object {
+class vvp_cobject : عمومی vvp_object {
 
-    public:
-      explicit vvp_cobject(const class_type*defn);
+    عمومی:
+      explicit vvp_cobject(ثابت class_type*defn);
       ~vvp_cobject() override;
 
-      void set_vec4(size_t pid, const vvp_vector4_t&val);
-      void get_vec4(size_t pid, vvp_vector4_t&val);
+      تهی set_vec4(size_t pid, ثابت vvp_vector4_t&val);
+      تهی get_vec4(size_t pid, vvp_vector4_t&val);
 
-      void set_real(size_t pid, double val);
-      double get_real(size_t pid);
+      تهی set_real(size_t pid, دوگانه val);
+      دوگانه get_real(size_t pid);
 
-      void set_string(size_t pid, const std::string&val);
+      تهی set_string(size_t pid, ثابت std::string&val);
       std::string get_string(size_t pid);
 
-      void set_object(size_t pid, const vvp_object_t&val, size_t idx);
-      void get_object(size_t pid, vvp_object_t&val, size_t idx);
+      تهی set_object(size_t pid, ثابت vvp_object_t&val, size_t idx);
+      تهی get_object(size_t pid, vvp_object_t&val, size_t idx);
 
-      void shallow_copy(const vvp_object*that) override;
+      تهی shallow_copy(ثابت vvp_object*that) override;
 
-    private:
-      const class_type* defn_;
+    خصوصی:
+      ثابت class_type* defn_;
 	// For now, only support 32bit bool signed properties.
       class_type::inst_t properties_;
 };

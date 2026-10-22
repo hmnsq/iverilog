@@ -22,44 +22,44 @@
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
 #ifdef __SUNPRO_CC
 # include  <stddef.h>
-#else
+#وگرنه
 # include  <cstddef>
 #endif
 
-extern unsigned long count_opcodes;
-extern unsigned long count_functors;
-extern unsigned long count_functors_logic;
-extern unsigned long count_functors_bufif;
-extern unsigned long count_functors_resolv;
-extern unsigned long count_functors_sig;
-extern unsigned long count_filters;
-extern unsigned long count_vvp_nets;
-extern unsigned long count_vpi_nets;
-extern unsigned long count_vpi_scopes;
+بیرونی unsigned long شمار_opcodes;
+بیرونی unsigned long شمار_functors;
+بیرونی unsigned long شمار_functors_logic;
+بیرونی unsigned long شمار_functors_bufif;
+بیرونی unsigned long شمار_functors_resolv;
+بیرونی unsigned long شمار_functors_sig;
+بیرونی unsigned long شمار_filters;
+بیرونی unsigned long شمار_vvp_nets;
+بیرونی unsigned long شمار_vpi_nets;
+بیرونی unsigned long شمار_vpi_scopes;
 
-extern unsigned long count_net_arrays;
-extern unsigned long count_net_array_words;
-extern unsigned long count_var_arrays;
-extern unsigned long count_var_array_words;
-extern unsigned long count_real_arrays;
-extern unsigned long count_real_array_words;
+بیرونی unsigned long شمار_net_arrays;
+بیرونی unsigned long شمار_net_array_واژگان;
+بیرونی unsigned long شمار_var_arrays;
+بیرونی unsigned long شمار_var_array_واژگان;
+بیرونی unsigned long شمار_real_arrays;
+بیرونی unsigned long شمار_real_array_واژگان;
 
 
-extern unsigned long count_time_events;
-extern unsigned long count_time_pool(void);
+بیرونی unsigned long شمار_time_events;
+بیرونی unsigned long شمار_time_pool(تهی);
 
-extern unsigned long count_assign_events;
-extern unsigned long count_assign4_pool(void);
-extern unsigned long count_assign8_pool(void);
-extern unsigned long count_assign_real_pool(void);
-extern unsigned long count_assign_aword_pool(void);
-extern unsigned long count_assign_arword_pool(void);
+بیرونی unsigned long شمار_assign_events;
+بیرونی unsigned long شمار_assign4_pool(تهی);
+بیرونی unsigned long شمار_assign8_pool(تهی);
+بیرونی unsigned long شمار_assign_real_pool(تهی);
+بیرونی unsigned long شمار_assign_aword_pool(تهی);
+بیرونی unsigned long شمار_assign_arword_pool(تهی);
 
-extern unsigned long count_gen_events;
-extern unsigned long count_gen_pool(void);
+بیرونی unsigned long شمار_gen_events;
+بیرونی unsigned long شمار_gen_pool(تهی);
 
-extern size_t size_opcodes;
-extern size_t size_vvp_nets;
-extern size_t size_vvp_net_funs;
+بیرونی size_t size_opcodes;
+بیرونی size_t size_vvp_nets;
+بیرونی size_t size_vvp_net_funs;
 
 #endif /* IVL_statistics_H */

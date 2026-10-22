@@ -22,7 +22,7 @@
 # include  "config.h"
 # include  "vpi_user.h"
 
-class value_callback;
+class مقدار_callback;
 
 /*
  * Things derived from vvp_vpi_callback may have callbacks
@@ -34,30 +34,30 @@ class value_callback;
  */
 class vvp_vpi_callback {
 
-    public:
+    عمومی:
       vvp_vpi_callback();
-      virtual ~vvp_vpi_callback();
+      مجازی ~vvp_vpi_callback();
 
-      void attach_as_word(struct __vpiArray* arr, unsigned long addr);
+      تهی attach_as_word(ساختار __vpiArray* arr, unsigned long addr);
 
-      void add_vpi_callback(value_callback*);
+      تهی add_vpi_callback(مقدار_callback*);
 #ifdef CHECK_WITH_VALGRIND
 	/* This has only been tested at EOS. */
-      void clear_all_callbacks(void);
+      تهی clear_all_callbacks(تهی);
 #endif
 
 	// Derived classes implement this method to provide a way for
 	// vpi to get at the vvp value of the object.
-      virtual void get_value(struct t_vpi_value*value) =0;
+      مجازی تهی get_مقدار(ساختار t_vpi_مقدار*مقدار) =0;
 
-    protected:
+    محافظتشده:
 	// Derived classes call this method to indicate that it is
 	// time to call the callback.
-      void run_vpi_callbacks();
+      تهی run_vpi_callbacks();
 
-    private:
-      value_callback*vpi_callbacks_;
-      struct __vpi_array_word*array_words_;
+    خصوصی:
+      مقدار_callback*vpi_callbacks_;
+      ساختار __vpi_array_word*array_واژگان;
 };
 
 

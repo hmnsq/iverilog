@@ -31,53 +31,53 @@ class vvp_vector4_t;
  * uses this information to figure out how to construct an actual
  * instance.
  */
-class class_type : public __vpiHandle {
+class class_type : عمومی __vpiHandle {
 
-    public:
-      struct inst_x;
-      typedef inst_x*inst_t;
+    عمومی:
+      ساختار inst_x;
+      تعریفنوع inst_x*inst_t;
 
-    public:
-      explicit class_type(const std::string&nam, size_t nprop);
+    عمومی:
+      explicit class_type(ثابت std::string&nam, size_t nprop);
       ~class_type() override;
 
 	// This is the name of the class type.
-      inline const std::string&class_name(void) const { return class_name_; }
+      درونخطی ثابت std::string&class_name(تهی) ثابت { بازگشت class_name_; }
 	// Number of properties in the class definition.
-      inline size_t property_count(void) const { return properties_.size(); }
+      درونخطی size_t property_شمار(تهی) ثابت { بازگشت properties_.size(); }
 
 	// Set the details about the property. This is used during
 	// parse of the .vvp file to fill in the details of the
 	// property for the class definition.
-      void set_property(size_t idx, const std::string&name, const std::string&type, uint64_t array_size);
+      تهی set_property(size_t idx, ثابت std::string&name, ثابت std::string&type, uint64_t array_size);
 
 	// This method is called after all the properties are
 	// defined. This calculates information about the definition.
-      void finish_setup(void);
+      تهی finish_setup(تهی);
 
-    public:
+    عمومی:
 	// Constructors and destructors for making instances.
-      inst_t instance_new() const;
-      void instance_delete(inst_t) const;
+      inst_t instance_new() ثابت;
+      تهی instance_delete(inst_t) ثابت;
 
-      void set_vec4(inst_t inst, size_t pid, const vvp_vector4_t&val) const;
-      void get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) const;
-      void set_real(inst_t inst, size_t pid, double val) const;
-      double get_real(inst_t inst, size_t pid) const;
-      void set_string(inst_t inst, size_t pid, const std::string&val) const;
-      std::string get_string(inst_t inst, size_t pid) const;
-      void set_object(inst_t inst, size_t pid, const vvp_object_t&val, size_t idx) const;
-      void get_object(inst_t inst, size_t pid, vvp_object_t&val, size_t idx) const;
+      تهی set_vec4(inst_t inst, size_t pid, ثابت vvp_vector4_t&val) ثابت;
+      تهی get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) ثابت;
+      تهی set_real(inst_t inst, size_t pid, دوگانه val) ثابت;
+      دوگانه get_real(inst_t inst, size_t pid) ثابت;
+      تهی set_string(inst_t inst, size_t pid, ثابت std::string&val) ثابت;
+      std::string get_string(inst_t inst, size_t pid) ثابت;
+      تهی set_object(inst_t inst, size_t pid, ثابت vvp_object_t&val, size_t idx) ثابت;
+      تهی get_object(inst_t inst, size_t pid, vvp_object_t&val, size_t idx) ثابت;
 
-      void copy_property(inst_t dst, size_t idx, inst_t src) const;
+      تهی copy_property(inst_t dst, size_t idx, inst_t src) ثابت;
 
-    public: // VPI related methods
-      int get_type_code(void) const override;
+    عمومی: // VPI related methods
+      صحیح get_type_code(تهی) ثابت override;
 
-    private:
+    خصوصی:
       std::string class_name_;
 
-      struct prop_t {
+      ساختار prop_t {
 	    std::string name;
 	    class_property_t*type;
       };

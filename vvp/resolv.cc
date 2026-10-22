@@ -25,7 +25,7 @@
 # include  <algorithm>
 # include  <cassert>
 
-using namespace std;
+using فضاینام std;
 
 /*
  * The core functor for a resolver node stores all the input values
@@ -44,44 +44,44 @@ using namespace std;
 resolv_core::resolv_core(unsigned nports, vvp_net_t*net)
 : nports_(nports), net_(net)
 {
-      count_functors_resolv += 1;
+      شمار_functors_resolv += 1;
 }
 
 resolv_core::~resolv_core()
 {
 }
 
-void resolv_core::recv_vec4_pv_(unsigned port, const vvp_vector4_t&bit,
+تهی resolv_core::recv_vec4_pv_(unsigned port, ثابت vvp_vector4_t&bit,
 				unsigned base, unsigned vwid)
 {
       unsigned wid = bit.size();
       vvp_vector4_t res (vwid);
 
-      for (unsigned idx = 0 ;  idx < base ;  idx += 1)
+      برای (unsigned idx = 0 ;  idx < base ;  idx += 1)
 	    res.set_bit(idx, BIT4_Z);
 
-      for (unsigned idx = 0 ;  idx < wid && idx+base < vwid;  idx += 1)
+      برای (unsigned idx = 0 ;  idx < wid && idx+base < vwid;  idx += 1)
 	    res.set_bit(idx+base, bit.value(idx));
 
-      for (unsigned idx = base+wid ;  idx < vwid ;  idx += 1)
+      برای (unsigned idx = base+wid ;  idx < vwid ;  idx += 1)
 	    res.set_bit(idx, BIT4_Z);
 
       recv_vec4_(port, res);
 }
 
-void resolv_core::recv_vec8_pv_(unsigned port, const vvp_vector8_t&bit,
+تهی resolv_core::recv_vec8_pv_(unsigned port, ثابت vvp_vector8_t&bit,
 				unsigned base, unsigned vwid)
 {
       unsigned wid = bit.size();
       vvp_vector8_t res (vwid);
 
-      for (unsigned idx = 0 ;  idx < base ;  idx += 1)
+      برای (unsigned idx = 0 ;  idx < base ;  idx += 1)
 	    res.set_bit(idx, vvp_scalar_t());
 
-      for (unsigned idx = 0 ;  idx < wid && idx+base < vwid;  idx += 1)
+      برای (unsigned idx = 0 ;  idx < wid && idx+base < vwid;  idx += 1)
 	    res.set_bit(idx+base, bit.value(idx));
 
-      for (unsigned idx = base+wid ;  idx < vwid ;  idx += 1)
+      برای (unsigned idx = base+wid ;  idx < vwid ;  idx += 1)
 	    res.set_bit(idx, vvp_scalar_t());
 
       recv_vec8_(port, res);
@@ -98,23 +98,23 @@ resolv_extend::~resolv_extend()
 }
 
 
-resolv_tri::resolv_tri(unsigned nports, vvp_net_t*net, vvp_scalar_t hiz_value)
-: resolv_core(nports, net), hiz_value_(hiz_value)
+resolv_tri::resolv_tri(unsigned nports, vvp_net_t*net, vvp_scalar_t hiz_مقدار)
+: resolv_core(nports, net), hiz_مقدار_2(hiz_مقدار)
 {
         // count the input (leaf) nodes
       unsigned nnodes = nports;
 
         // add in the intermediate branch nodes
-      while (nports > 4) {
+      وقتی (nports > 4) {
             nports = (nports + 3) / 4;
             nnodes += nports;
       }
         // add one more node for storing the output value
         // (not needed if there is only one input)
-      if (nnodes > 1)
+      اگر (nnodes > 1)
             nnodes += 1;
 
-      val_ = new vvp_vector8_t [nnodes];
+      val_ = جدید vvp_vector8_t [nnodes];
 }
 
 resolv_tri::~resolv_tri()
@@ -122,17 +122,17 @@ resolv_tri::~resolv_tri()
       delete[] val_;
 }
 
-void resolv_tri::recv_vec4_(unsigned port, const vvp_vector4_t&bit)
+تهی resolv_tri::recv_vec4_(unsigned port, ثابت vvp_vector4_t&bit)
 {
       recv_vec8_(port, vvp_vector8_t(bit, 6,6 /* STRONG */));
 }
 
-void resolv_tri::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
+تهی resolv_tri::recv_vec8_(unsigned port, ثابت vvp_vector8_t&bit)
 {
-      assert(port < nports_);
+      أكد(port < nports_);
 
-      if (val_[port].eeq(bit))
-	    return;
+      اگر (val_[port].eeq(bit))
+	    بازگشت;
 
       val_[port] = bit;
 
@@ -145,23 +145,23 @@ void resolv_tri::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
         // group.
       unsigned base = 0;
       unsigned span = nports_;
-      while (span > 1) {
+      وقتی (span > 1) {
             unsigned next_base = base + span;
             unsigned ip = base + (port & ~0x3);
             unsigned op = next_base + (port / 4);
             unsigned ll = min(ip + 4, next_base);
 
             vvp_vector8_t out = val_[ip];
-            for (ip = ip + 1; ip < ll; ip += 1) {
-                  if (val_[ip].size() == 0)
-                        continue;
-                  if (out.size() == 0)
+            برای (ip = ip + 1; ip < ll; ip += 1) {
+                  اگر (val_[ip].size() == 0)
+                        ادامه;
+                  اگر (out.size() == 0)
                         out = val_[ip];
-                  else
+                  وگرنه
                         out = resolve(out, val_[ip]);
             }
-            if (val_[op].eeq(out))
-                  return;
+            اگر (val_[op].eeq(out))
+                  بازگشت;
             val_[op] = out;
 
             base = next_base;
@@ -169,21 +169,21 @@ void resolv_tri::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
             port = port / 4;
       }
 
-      if (! hiz_value_.is_hiz()) {
-	    for (unsigned idx = 0 ;  idx < val_[base].size() ;  idx += 1) {
+      اگر (! hiz_مقدار_2.is_hiz()) {
+	    برای (unsigned idx = 0 ;  idx < val_[base].size() ;  idx += 1) {
 		  val_[base].set_bit(idx, resolve(val_[base].value(idx),
-						  hiz_value_));
+						  hiz_مقدار_2));
 	    }
       }
 
       net_->send_vec8(val_[base]);
 }
 
-void resolv_tri::count_drivers(unsigned bit_idx, unsigned counts[3])
+تهی resolv_tri::شمار_drivers(unsigned bit_idx, unsigned counts[3])
 {
-      for (unsigned idx = 0 ; idx < nports_ ; idx += 1) {
-	    if (val_[idx].size() == 0)
-	          continue;
+      برای (unsigned idx = 0 ; idx < nports_ ; idx += 1) {
+	    اگر (val_[idx].size() == 0)
+	          ادامه;
 
             update_driver_counts(val_[idx].value(bit_idx).value(), counts);
       }
@@ -197,16 +197,16 @@ resolv_wired_logic::resolv_wired_logic(unsigned nports, vvp_net_t*net)
       unsigned nnodes = nports;
 
         // add in the intermediate branch nodes
-      while (nports > 4) {
+      وقتی (nports > 4) {
             nports = (nports + 3) / 4;
             nnodes += nports;
       }
         // add one more node for storing the output value
         // (not needed if there is only one input)
-      if (nnodes > 1)
+      اگر (nnodes > 1)
             nnodes += 1;
 
-      val_ = new vvp_vector4_t [nnodes];
+      val_ = جدید vvp_vector4_t [nnodes];
 }
 
 resolv_wired_logic::~resolv_wired_logic()
@@ -214,12 +214,12 @@ resolv_wired_logic::~resolv_wired_logic()
       delete[] val_;
 }
 
-void resolv_wired_logic::recv_vec4_(unsigned port, const vvp_vector4_t&bit)
+تهی resolv_wired_logic::recv_vec4_(unsigned port, ثابت vvp_vector4_t&bit)
 {
-      assert(port < nports_);
+      أكد(port < nports_);
 
-      if (val_[port].eeq(bit))
-	    return;
+      اگر (val_[port].eeq(bit))
+	    بازگشت;
 
       val_[port] = bit;
 
@@ -232,23 +232,23 @@ void resolv_wired_logic::recv_vec4_(unsigned port, const vvp_vector4_t&bit)
         // group.
       unsigned base = 0;
       unsigned span = nports_;
-      while (span > 1) {
+      وقتی (span > 1) {
             unsigned next_base = base + span;
             unsigned ip = base + (port & ~0x3);
             unsigned op = next_base + (port / 4);
             unsigned ll = min(ip + 4, next_base);
 
             vvp_vector4_t out = val_[ip];
-            for (ip = ip + 1; ip < ll; ip += 1) {
-                  if (val_[ip].size() == 0)
-                        continue;
-                  if (out.size() == 0)
+            برای (ip = ip + 1; ip < ll; ip += 1) {
+                  اگر (val_[ip].size() == 0)
+                        ادامه;
+                  اگر (out.size() == 0)
                         out = val_[ip];
-                  else
+                  وگرنه
                         out = wired_logic_math_(out, val_[ip]);
             }
-            if (val_[op].eeq(out))
-                  return;
+            اگر (val_[op].eeq(out))
+                  بازگشت;
             val_[op] = out;
 
             base = next_base;
@@ -259,16 +259,16 @@ void resolv_wired_logic::recv_vec4_(unsigned port, const vvp_vector4_t&bit)
       net_->send_vec4(val_[base], 0);
 }
 
-void resolv_wired_logic::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
+تهی resolv_wired_logic::recv_vec8_(unsigned port, ثابت vvp_vector8_t&bit)
 {
       recv_vec4_(port, reduce4(bit));
 }
 
-void resolv_wired_logic::count_drivers(unsigned bit_idx, unsigned counts[3])
+تهی resolv_wired_logic::شمار_drivers(unsigned bit_idx, unsigned counts[3])
 {
-      for (unsigned idx = 0 ; idx < nports_ ; idx += 1) {
-	    if (val_[idx].size() == 0)
-	          continue;
+      برای (unsigned idx = 0 ; idx < nports_ ; idx += 1) {
+	    اگر (val_[idx].size() == 0)
+	          ادامه;
 
             update_driver_counts(val_[idx].value(bit_idx), counts);
       }
@@ -286,27 +286,27 @@ resolv_triand::~resolv_triand()
 
 vvp_vector4_t resolv_triand::wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b)
 {
-      assert(a.size() == b.size());
+      أكد(a.size() == b.size());
 
       vvp_vector4_t out (a.size());
 
-      for (unsigned idx = 0 ; idx < out.size() ; idx += 1) {
+      برای (unsigned idx = 0 ; idx < out.size() ; idx += 1) {
 	    vvp_bit4_t abit = a.value(idx);
 	    vvp_bit4_t bbit = b.value(idx);
-	    if (abit == BIT4_Z) {
+	    اگر (abit == BIT4_Z) {
 		  out.set_bit(idx, bbit);
-	    } else if (bbit == BIT4_Z) {
+	    } وگرنه اگر (bbit == BIT4_Z) {
 		  out.set_bit(idx, abit);
-	    } else if (abit == BIT4_0 || bbit == BIT4_0) {
+	    } وگرنه اگر (abit == BIT4_0 || bbit == BIT4_0) {
 		  out.set_bit(idx, BIT4_0);
-	    } else if (abit == BIT4_X || bbit == BIT4_X) {
+	    } وگرنه اگر (abit == BIT4_X || bbit == BIT4_X) {
 		  out.set_bit(idx, BIT4_X);
-	    } else {
+	    } وگرنه {
 		  out.set_bit(idx, BIT4_1);
 	    }
       }
 
-      return out;
+      بازگشت out;
 }
 
 
@@ -321,25 +321,25 @@ resolv_trior::~resolv_trior()
 
 vvp_vector4_t resolv_trior::wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b)
 {
-      assert(a.size() == b.size());
+      أكد(a.size() == b.size());
 
       vvp_vector4_t out (a.size());
 
-      for (unsigned idx = 0 ; idx < out.size() ; idx += 1) {
+      برای (unsigned idx = 0 ; idx < out.size() ; idx += 1) {
 	    vvp_bit4_t abit = a.value(idx);
 	    vvp_bit4_t bbit = b.value(idx);
-	    if (abit == BIT4_Z) {
+	    اگر (abit == BIT4_Z) {
 		  out.set_bit(idx, bbit);
-	    } else if (bbit == BIT4_Z) {
+	    } وگرنه اگر (bbit == BIT4_Z) {
 		  out.set_bit(idx, abit);
-	    } else if (abit == BIT4_1 || bbit == BIT4_1) {
+	    } وگرنه اگر (abit == BIT4_1 || bbit == BIT4_1) {
 		  out.set_bit(idx, BIT4_1);
-	    } else if (abit == BIT4_X || bbit == BIT4_X) {
+	    } وگرنه اگر (abit == BIT4_X || bbit == BIT4_X) {
 		  out.set_bit(idx, BIT4_X);
-	    } else {
+	    } وگرنه {
 		  out.set_bit(idx, BIT4_0);
 	    }
       }
 
-      return out;
+      بازگشت out;
 }

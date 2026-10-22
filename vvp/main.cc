@@ -1,4 +1,4 @@
-const char COPYRIGHT[] =
+ثابت نویسه COPYRIGHT[] =
   "Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)";
 /*
  *    This source code is free software; you can redistribute it
@@ -24,37 +24,37 @@ const char COPYRIGHT[] =
 # include  <cstdio>
 # include  <cstdlib>
 
-#if defined(HAVE_GETOPT_H)
+#اگر defined(HAVE_GETOPT_H)
 # include  <getopt.h>
 #endif
 
-#if defined(__MINGW32__)
+#اگر defined(__MINGW32__)
 # include  <windows.h>
 #endif
 
-#include "libvvp.h"
+#شامل "libvvp.h"
 
-using namespace std;
+using فضاینام std;
 
-#if defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
-extern "C" int getopt(int argc, char*argv[], const char*fmt);
-extern "C" int optind;
-extern "C" const char*optarg;
+#اگر defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
+بیرونی "C" صحیح getopt(صحیح argc, نویسه*argv[], ثابت نویسه*fmt);
+بیرونی "C" صحیح optind;
+بیرونی "C" ثابت نویسه*optarg;
 #endif
 
-bool version_flag = false;
+منطقی version_flag = نادرست;
 
 unsigned module_cnt = 0;
-const char*module_tab[64];
+ثابت نویسه*module_tab[64];
 
-int main(int argc, char*argv[])
+صحیح اصلی(صحیح argc, نویسه*argv[])
 {
-      int opt;
+      صحیح opt;
       unsigned flag_errors = 0;
-      const char *logfile_name = 0x0;
+      ثابت نویسه *logfile_name = 0x0;
 
-      while ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) switch (opt) {
-         case 'h':
+      وقتی ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) انتخاب (opt) {
+         حالت 'h':
            fprintf(stderr,
                    "Usage: vvp [options] input-file [+plusargs...]\n"
                    "Options:\n"
@@ -71,48 +71,48 @@ int main(int argc, char*argv[])
                    " -v             Verbose progress messages.\n"
                    " -V             Print the version information.\n" );
            exit(0);
-	  case 'i':
+	  حالت 'i':
 	    setvbuf(stdout, 0, _IONBF, 0);
-	    break;
-	  case 'l':
+	    بشکن;
+	  حالت 'l':
 	    logfile_name = optarg;
-	    break;
-	  case 'M':
-	    if (strcmp(optarg,"-") == 0) {
+	    بشکن;
+	  حالت 'M':
+	    اگر (strcmp(optarg,"-") == 0) {
 		  vpip_clear_module_paths();
-	    } else {
+	    } وگرنه {
 		  vpip_add_module_path(optarg);
 	    }
-	    break;
-	  case 'm':
+	    بشکن;
+	  حالت 'm':
 	    module_tab[module_cnt++] = optarg;
-	    break;
-	  case 'n':
-	    vvp_set_stop_is_finish(true, 0);
-	    break;
-          case 'N':
-            vvp_set_stop_is_finish(true, 1);
-            break;
-	  case 'q':
-	    vvp_set_quiet_flag(true);
-	    break;
-	  case 's':
+	    بشکن;
+	  حالت 'n':
+	    vvp_set_stop_is_finish(درست, 0);
+	    بشکن;
+          حالت 'N':
+            vvp_set_stop_is_finish(درست, 1);
+            بشکن;
+	  حالت 'q':
+	    vvp_set_quiet_flag(درست);
+	    بشکن;
+	  حالت 's':
 	    schedule_stop(0);
-	    break;
-	  case 'v':
-	    vvp_set_verbose_flag(true);
-	    break;
-	  case 'V':
-	    version_flag = true;
-	    break;
-	  default:
+	    بشکن;
+	  حالت 'v':
+	    vvp_set_verbose_flag(درست);
+	    بشکن;
+	  حالت 'V':
+	    version_flag = درست;
+	    بشکن;
+	  پیشفرض:
 	    flag_errors += 1;
       }
 
-      if (flag_errors)
-	    return flag_errors;
+      اگر (flag_errors)
+	    بازگشت flag_errors;
 
-      if (version_flag) {
+      اگر (version_flag) {
 	    fprintf(stderr, "Icarus Verilog runtime version " VERSION " ("
 	                    VERSION_TAG ")\n\n");
 	    fprintf(stderr, "%s\n\n", COPYRIGHT);
@@ -131,18 +131,18 @@ int main(int argc, char*argv[])
 "  with this program; if not, write to the Free Software Foundation, Inc.,\n"
 "  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n"
 );
-	    return 0;
+	    بازگشت 0;
       }
 
-      if (optind == argc) {
+      اگر (optind == argc) {
 	    fprintf(stderr, "%s: no input file.\n", argv[0]);
-	    return -1;
+	    بازگشت -1;
       }
 
       vvp_init(logfile_name, argc - optind, argv + optind);
 
-      for (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
+      برای (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
 	    vpip_load_module(module_tab[idx]);
 
-      return vvp_run(argv[optind]);
+      بازگشت vvp_run(argv[optind]);
 }

@@ -23,72 +23,72 @@
 # include  <iostream>
 # include  <cassert>
 
-vvp_fun_bufif::vvp_fun_bufif(bool en_invert, bool out_invert,
+vvp_fun_bufif::vvp_fun_bufif(منطقی en_invert, منطقی out_invert,
 			     unsigned str0, unsigned str1)
 : pol_(en_invert? 1 : 0), inv_(out_invert? 1 : 0)
 {
       drive0_ = str0;
       drive1_ = str1;
-      count_functors_bufif += 1;
+      شمار_functors_bufif += 1;
 }
 
-void vvp_fun_bufif::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+تهی vvp_fun_bufif::recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&bit,
                               vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0:
+      انتخاب (ptr.port()) {
+	  حالت 0:
 	    bit_ = inv_? ~bit : bit;
-	    break;
-	  case 1:
+	    بشکن;
+	  حالت 1:
 	    en_ = pol_? ~bit : bit;
-	    break;
-	  default:
-	    return;
+	    بشکن;
+	  پیشفرض:
+	    بازگشت;
       }
 
       vvp_vector8_t out (bit.size());
 
-      for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
+      برای (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
 	    vvp_bit4_t b_en  = en_.value(idx);
 	    vvp_bit4_t b_bit = bit_.value(idx);
 
-	    switch (b_en) {
-		case BIT4_0:
+	    انتخاب (b_en) {
+		حالت BIT4_0:
 		  out.set_bit(idx, vvp_scalar_t(BIT4_Z,drive0_,drive1_));
-		  break;
-		case BIT4_1:
-		  if (bit4_is_xz(b_bit))
+		  بشکن;
+		حالت BIT4_1:
+		  اگر (bit4_is_xz(b_bit))
 			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
-		  else
+		  وگرنه
 			out.set_bit(idx, vvp_scalar_t(b_bit,drive0_,drive1_));
-		  break;
+		  بشکن;
 
-		default:
-		  switch (b_bit) {
-		      case BIT4_0:
+		پیشفرض:
+		  انتخاب (b_bit) {
+		      حالت BIT4_0:
 			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,0));
-			break;
-		      case BIT4_1:
+			بشکن;
+		      حالت BIT4_1:
 			out.set_bit(idx, vvp_scalar_t(BIT4_X,0,drive1_));
-			break;
-		      default:
+			بشکن;
+		      پیشفرض:
 			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
-			break;
+			بشکن;
 		  }
-		  break;
+		  بشکن;
 	    }
       }
 
       ptr.ptr()->send_vec8(out);
 }
 
-void vvp_fun_bufif::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+تهی vvp_fun_bufif::recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&bit,
 			         unsigned base, unsigned vwid, vvp_context_t ctx)
 {
       recv_vec4_pv_(ptr, bit, base, vwid, ctx);
 }
 
-void vvp_fun_bufif::recv_real(vvp_net_ptr_t ptr, double real,
+تهی vvp_fun_bufif::recv_real(vvp_net_ptr_t ptr, دوگانه real,
                               vvp_context_t ctx)
 {
       recv_vec4(ptr, double_to_vector4_LSB(real), ctx);

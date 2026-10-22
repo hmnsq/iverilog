@@ -19,82 +19,82 @@
 # include "compile.h"
 # include "vpi_priv.h"
 
-class __vpiFileLine : public __vpiHandle {
-    public:
-      explicit __vpiFileLine(const char*desc_, long file_idx_, long lineno_);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+رده __vpiFileLine : عمومی __vpiHandle {
+    عمومی:
+      explicit __vpiFileLine(ثابت نویسه*desc_, long file_idx_, long lineno_);
+      صحیح get_type_code(تهی) ثابت override;
+      صحیح vpi_get(صحیح code) override;
+      نویسه* vpi_get_str(صحیح code) override;
 
-      const char* get_description() const { return description; };
-      unsigned get_file_idx() const { return file_idx; };
-      unsigned get_lineno() const { return lineno; };
+      ثابت نویسه* get_description() ثابت { بازگشت description; };
+      unsigned get_file_idx() ثابت { بازگشت file_idx; };
+      unsigned get_lineno() ثابت { بازگشت lineno; };
 
-    private:
-      const char *description;
+    خصوصی:
+      ثابت نویسه *description;
       unsigned file_idx;
       unsigned lineno;
 };
 
-bool show_file_line = false;
-bool code_is_instrumented = false;
+منطقی show_file_سطر = نادرست;
+منطقی code_is_instrumented = نادرست;
 
-static int file_line_get(int type, vpiHandle ref)
+ایستا صحیح file_سطر_get(صحیح type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      أكد(rfp);
 
-      switch (type) {
-	case vpiLineNo:
-	    return rfp->get_lineno();
-	default:
-	    return vpiUndefined;
+      انتخاب (type) {
+	حالت vpi_سطر_No:
+	    بازگشت rfp->get_lineno();
+	پیشفرض:
+	    بازگشت vpiUndefined;
       }
 }
 
-static char *file_line_get_str(int type, vpiHandle ref)
+ایستا نویسه *file_سطر_get_str(صحیح type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      أكد(rfp);
 
-      switch (type) {
-	case vpiFile:
-	    assert(rfp->get_file_idx() < file_names.size());
-	    return simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
-	case _vpiDescription:
-	    if (rfp->get_description()) {
-		  return simple_set_rbuf_str(rfp->get_description());
-	    } else return simple_set_rbuf_str("Procedural tracing.");
-	default:
-	    return 0;
+      انتخاب (type) {
+	حالت vpiFile:
+	    أكد(rfp->get_file_idx() < file_names.size());
+	    بازگشت simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
+	حالت _vpiDescription:
+	    اگر (rfp->get_description()) {
+		  بازگشت simple_set_rbuf_str(rfp->get_description());
+	    } وگرنه بازگشت simple_set_rbuf_str("Procedural tracing.");
+	پیشفرض:
+	    بازگشت 0;
       }
 }
 
-inline __vpiFileLine::__vpiFileLine(const char*desc_, long file_idx_,
+درونخطی __vpiFileLine::__vpiFileLine(ثابت نویسه*desc_, long file_idx_,
                                     long lineno_)
 {
-      if (desc_) description = vpip_name_string(desc_);
-      else description = 0;
+      اگر (desc_) description = vpip_name_string(desc_);
+      وگرنه description = 0;
       file_idx = (unsigned) file_idx_;
       lineno = (unsigned) lineno_;
 }
 
-int __vpiFileLine::get_type_code(void) const
-{ return _vpiFileLine; }
+صحیح __vpiFileLine::get_type_code(تهی) ثابت
+{ بازگشت vpi_File_سطر; }
 
-int __vpiFileLine::vpi_get(int code)
-{ return file_line_get(code, this); }
+صحیح __vpiFileLine::vpi_get(صحیح code)
+{ بازگشت file_سطر_get(code, این); }
 
-char* __vpiFileLine::vpi_get_str(int code)
-{ return file_line_get_str(code, this); }
+نویسه* __vpiFileLine::vpi_get_str(صحیح code)
+{ بازگشت file_سطر_get_str(code, این); }
 
 
-vpiHandle vpip_build_file_line(const char*description, long file_idx, long lineno)
+vpiHandle vpip_build_file_سطر(ثابت نویسه*description, long file_idx, long lineno)
 {
-      __vpiFileLine*obj = new __vpiFileLine(description, file_idx, lineno);
+      __vpiFileLine*obj = جدید __vpiFileLine(description, file_idx, lineno);
 
 	/* You can turn on the diagnostic output if we find a %file_line. */
-      code_is_instrumented = true;
+      code_is_instrumented = درست;
 
-      return obj;
+      بازگشت obj;
 }
