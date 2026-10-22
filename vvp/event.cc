@@ -33,20 +33,20 @@ void waitable_hooks_s::run_waiting_threads_(vthread_t&threads)
 {
 	// Run the non-blocking event controls.
       last = &event_ctls;
-      for (evctl*cur = event_ctls; cur != 0;) {
-	    if (cur->dec_and_run()) {
+      для (evctl*cur = event_ctls; cur != 0;) {
+	    если (cur->dec_and_run()) {
 		  evctl*nxt = cur->next;
 		  delete cur;
 		  cur = nxt;
 		  *last = cur;
-	    } else {
+	    } иначе {
 		  last = &(cur->next);
 		  cur = cur->next;
 	    }
       }
 
       vthread_t tmp = threads;
-      if (tmp == 0) return;
+      если (tmp == 0) вернуть;
       threads = 0;
 
       vthread_schedule_list(tmp);
@@ -63,9 +63,9 @@ bool evctl::dec_and_run()
       assert(ecount_ != 0);
 
       ecount_ -= 1;
-      if (ecount_ == 0) run_run();
+      если (ecount_ == 0) run_run();
 
-      return ecount_ == 0;
+      вернуть ecount_ == 0;
 }
 
 evctl_real::evctl_real(__vpiHandle*handle, double value,
@@ -106,9 +106,9 @@ evctl_vector::evctl_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
 
 void evctl_vector::run_run()
 {
-      if (wid_ != 0) {
+      если (wid_ != 0) {
 	    vvp_send_vec4_pv(ptr_, value_, off_, wid_, 0);
-      } else {
+      } иначе {
 	    vvp_send_vec4(ptr_, value_, 0);
       }
 }
@@ -180,7 +180,7 @@ void schedule_evctl(vvp_array_t memory, unsigned index,
 
 inline vvp_fun_edge::edge_t VVP_EDGE(vvp_bit4_t from, vvp_bit4_t to)
 {
-      return 1 << ((from << 2) | to);
+      вернуть 1 << ((from << 2) | to);
 }
 
 const vvp_fun_edge::edge_t vvp_edge_posedge
@@ -217,7 +217,7 @@ const vvp_fun_edge::edge_t vvp_edge_none    = 0;
 struct vvp_fun_edge_state_s : public waitable_state_s {
       vvp_fun_edge_state_s()
       {
-            for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+            для (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
                   bits[idx] = BIT4_X;
       }
 
@@ -227,7 +227,7 @@ struct vvp_fun_edge_state_s : public waitable_state_s {
 vvp_fun_edge::vvp_fun_edge(edge_t e)
 : edge_(e)
 {
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+      для (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
             bits_[idx] = BIT4_X;
 }
 
@@ -244,11 +244,11 @@ bool vvp_fun_edge::recv_vec4_(const vvp_vector4_t&bit,
 	/* Save the current input for the next time around. */
       old_bit = bit.value(0);
 
-      if ((edge_ == vvp_edge_none) || (edge_ & mask)) {
+      если ((edge_ == vvp_edge_none) || (edge_ & mask)) {
 	    run_waiting_threads_(threads);
-            return true;
+            вернуть true;
       }
-      return false;
+      вернуть false;
 }
 
 vvp_fun_edge_sa::vvp_fun_edge_sa(edge_t e)
@@ -265,13 +265,13 @@ vthread_t vvp_fun_edge_sa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = threads_;
       threads_ = thread;
 
-      return tmp;
+      вернуть tmp;
 }
 
 void vvp_fun_edge_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                                 vvp_context_t)
 {
-      if (recv_vec4_(bit, bits_[port.port()], threads_)) {
+      если (recv_vec4_(bit, bits_[port.port()], threads_)) {
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(bit, 0);
       }
@@ -281,7 +281,7 @@ void vvp_fun_edge_sa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 				   unsigned base, unsigned vwid, vvp_context_t)
 {
       assert(base == 0);
-      if (recv_vec4_(bit, bits_[port.port()], threads_)) {
+      если (recv_vec4_(bit, bits_[port.port()], threads_)) {
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4_pv(bit, base, vwid, 0);
       }
@@ -310,7 +310,7 @@ void vvp_fun_edge_aa::reset_instance(vvp_context_t context)
             (vvp_get_context_item(context, context_idx_));
 
       state->threads = 0;
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+      для (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
             state->bits[idx] = bits_[idx];
 }
 
@@ -331,23 +331,23 @@ vthread_t vvp_fun_edge_aa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = state->threads;
       state->threads = thread;
 
-      return tmp;
+      вернуть tmp;
 }
 
 void vvp_fun_edge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                                 vvp_context_t context)
 {
-      if (context) {
+      если (context) {
             vvp_fun_edge_state_s*state = static_cast<vvp_fun_edge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
-            if (recv_vec4_(bit, state->bits[port.port()], state->threads)) {
+            если (recv_vec4_(bit, state->bits[port.port()], state->threads)) {
                   vvp_net_t*net = port.ptr();
                   net->send_vec4(bit, context);
             }
-      } else {
+      } иначе {
             context = context_scope_->live_contexts;
-            while (context) {
+            пока (context) {
                   recv_vec4(port, bit, context);
                   context = vvp_get_next_context(context);
             }
@@ -390,12 +390,12 @@ class anyedge_vec4_value : public anyedge_value {
 static anyedge_vec4_value*get_vec4_value(anyedge_value*&value)
 {
       anyedge_vec4_value*vec4_value = dynamic_cast<anyedge_vec4_value*>(value);
-      if (!value) {
+      если (!value) {
 	    vec4_value = new anyedge_vec4_value();
 	    delete value;
 	    value = vec4_value;
       }
-      return vec4_value;
+      вернуть vec4_value;
 }
 
 class anyedge_real_value : public anyedge_value {
@@ -419,12 +419,12 @@ class anyedge_real_value : public anyedge_value {
 static anyedge_real_value*get_real_value(anyedge_value*&value)
 {
       anyedge_real_value*real_value = dynamic_cast<anyedge_real_value*>(value);
-      if (!value) {
+      если (!value) {
 	    real_value = new anyedge_real_value();
 	    delete value;
 	    value = real_value;
       }
-      return real_value;
+      вернуть real_value;
 }
 
 class anyedge_string_value : public anyedge_value {
@@ -448,24 +448,24 @@ class anyedge_string_value : public anyedge_value {
 static anyedge_string_value*get_string_value(anyedge_value*&value)
 {
       anyedge_string_value*string_value = dynamic_cast<anyedge_string_value*>(value);
-      if (!value) {
+      если (!value) {
 	    string_value = new anyedge_string_value();
 	    delete value;
 	    value = string_value;
       }
-      return string_value;
+      вернуть string_value;
 }
 
 struct vvp_fun_anyedge_state_s : public waitable_state_s {
       vvp_fun_anyedge_state_s()
       {
-            for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+            для (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
                   last_value_[idx] = 0;
       }
 
       ~vvp_fun_anyedge_state_s()
       {
-            for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+            для (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
                   delete last_value_[idx];
       }
 
@@ -476,13 +476,13 @@ struct vvp_fun_anyedge_state_s : public waitable_state_s {
 
 vvp_fun_anyedge::vvp_fun_anyedge()
 {
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+      для (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
 	    last_value_[idx] = 0;
 }
 
 vvp_fun_anyedge::~vvp_fun_anyedge()
 {
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+      для (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
 	    delete last_value_[idx];
 }
 
@@ -497,49 +497,49 @@ bool anyedge_vec4_value::recv_vec4(const vvp_vector4_t&bit)
 {
       bool flag = false;
 
-      if (old_bits.size() != bit.size()) {
-	    if (old_bits.size() == 0) {
+      если (old_bits.size() != bit.size()) {
+	    если (old_bits.size() == 0) {
 		    // Special case: If we've not seen any input yet
 		    // (old_bits.size()==0) then replace it will a reference
 		    // vector that is 'bx. Then compare that with the input
 		    // to see if we are processing a change from 'bx.
 		  old_bits = vvp_vector4_t(bit.size(), BIT4_X);
-		  if (old_bits.eeq(bit))
+		  если (old_bits.eeq(bit))
 			flag = false;
-		  else
+		  иначе
 			flag = true;
 
-	    } else {
+	    } иначе {
 		  flag = true;
 	    }
 
-      } else {
-	    for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
-		  if (old_bits.value(idx) != bit.value(idx)) {
+      } иначе {
+	    для (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
+		  если (old_bits.value(idx) != bit.value(idx)) {
 			flag = true;
 			break;
 		  }
 	    }
       }
 
-      if (flag) {
+      если (flag) {
 	    old_bits = bit;
       }
 
-      return flag;
+      вернуть flag;
 }
 
 bool anyedge_vec4_value::recv_vec4_pv(const vvp_vector4_t&bit, unsigned base,
 				      unsigned vwid)
 {
       vvp_vector4_t tmp = old_bits;
-      if (tmp.size() == 0)
+      если (tmp.size() == 0)
 	    tmp = vvp_vector4_t(vwid, BIT4_Z);
       assert(base + bit.size()<= vwid);
       assert(tmp.size() == vwid);
       tmp.set_vec(base, bit);
 
-      return recv_vec4(tmp);
+      вернуть recv_vec4(tmp);
 }
 
 void anyedge_real_value::duplicate(anyedge_value*&dup)
@@ -551,11 +551,11 @@ void anyedge_real_value::duplicate(anyedge_value*&dup)
 
 bool anyedge_real_value::recv_real(double bit)
 {
-      if (old_bits != bit) {
+      если (old_bits != bit) {
 	    old_bits = bit;
-            return true;
+            вернуть true;
       }
-      return false;
+      вернуть false;
 }
 
 void anyedge_string_value::duplicate(anyedge_value*&dup)
@@ -567,11 +567,11 @@ void anyedge_string_value::duplicate(anyedge_value*&dup)
 
 bool anyedge_string_value::recv_string(const std::string&bit)
 {
-      if (old_bits != bit) {
+      если (old_bits != bit) {
 	    old_bits = bit;
-            return true;
+            вернуть true;
       }
-      return false;
+      вернуть false;
 }
 
 vvp_fun_anyedge_sa::vvp_fun_anyedge_sa()
@@ -588,7 +588,7 @@ vthread_t vvp_fun_anyedge_sa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = threads_;
       threads_ = thread;
 
-      return tmp;
+      вернуть tmp;
 }
 
 void vvp_fun_anyedge_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
@@ -596,7 +596,7 @@ void vvp_fun_anyedge_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 {
       anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
       assert(value);
-      if (value->recv_vec4(bit)) {
+      если (value->recv_vec4(bit)) {
 	    run_waiting_threads_(threads_);
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(bit, 0);
@@ -608,7 +608,7 @@ void vvp_fun_anyedge_sa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bi
 {
       anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
       assert(value);
-      if (value->recv_vec4_pv(bit, base, vwid)) {
+      если (value->recv_vec4_pv(bit, base, vwid)) {
 	    run_waiting_threads_(threads_);
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(bit, 0);
@@ -620,7 +620,7 @@ void vvp_fun_anyedge_sa::recv_real(vvp_net_ptr_t port, double bit,
 {
       anyedge_real_value*value = get_real_value(last_value_[port.port()]);
       assert(value);
-      if (value->recv_real(bit)) {
+      если (value->recv_real(bit)) {
 	    run_waiting_threads_(threads_);
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(vvp_vector4_t(), 0);
@@ -632,7 +632,7 @@ void vvp_fun_anyedge_sa::recv_string(vvp_net_ptr_t port, const std::string&bit,
 {
       anyedge_string_value*value = get_string_value(last_value_[port.port()]);
       assert(value);
-      if (value->recv_string(bit)) {
+      если (value->recv_string(bit)) {
 	    run_waiting_threads_(threads_);
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(vvp_vector4_t(), 0);
@@ -673,10 +673,10 @@ void vvp_fun_anyedge_aa::reset_instance(vvp_context_t context)
             (vvp_get_context_item(context, context_idx_));
 
       state->threads = 0;
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1) {
-	    if (last_value_[idx])
+      для (unsigned idx = 0 ;  idx < 4 ;  idx += 1) {
+	    если (last_value_[idx])
 	          last_value_[idx]->duplicate(state->last_value_[idx]);
-	    else if (state->last_value_[idx])
+	    иначе если (state->last_value_[idx])
 		  state->last_value_[idx]->reset();
       }
 }
@@ -698,26 +698,26 @@ vthread_t vvp_fun_anyedge_aa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = state->threads;
       state->threads = thread;
 
-      return tmp;
+      вернуть tmp;
 }
 
 void vvp_fun_anyedge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                                    vvp_context_t context)
 {
-      if (context) {
+      если (context) {
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
             anyedge_vec4_value*value = get_vec4_value(state->last_value_[port.port()]);
             assert(value);
-            if (value->recv_vec4(bit)) {
+            если (value->recv_vec4(bit)) {
                   run_waiting_threads_(state->threads);
                   vvp_net_t*net = port.ptr();
                   net->send_vec4(bit, context);
             }
-      } else {
+      } иначе {
             context = context_scope_->live_contexts;
-            while (context) {
+            пока (context) {
                   recv_vec4(port, bit, context);
                   context = vvp_get_next_context(context);
             }
@@ -730,20 +730,20 @@ void vvp_fun_anyedge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 void vvp_fun_anyedge_aa::recv_real(vvp_net_ptr_t port, double bit,
                                    vvp_context_t context)
 {
-      if (context) {
+      если (context) {
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
             anyedge_real_value*value = get_real_value(state->last_value_[port.port()]);
             assert(value);
-            if (value->recv_real(bit)) {
+            если (value->recv_real(bit)) {
                   run_waiting_threads_(state->threads);
                   vvp_net_t*net = port.ptr();
                   net->send_vec4(vvp_vector4_t(), context);
             }
-      } else {
+      } иначе {
             context = context_scope_->live_contexts;
-            while (context) {
+            пока (context) {
                   recv_real(port, bit, context);
                   context = vvp_get_next_context(context);
             }
@@ -756,20 +756,20 @@ void vvp_fun_anyedge_aa::recv_real(vvp_net_ptr_t port, double bit,
 void vvp_fun_anyedge_aa::recv_string(vvp_net_ptr_t port, const std::string&bit,
 				     vvp_context_t context)
 {
-      if (context) {
+      если (context) {
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
             anyedge_string_value*value = get_string_value(state->last_value_[port.port()]);
             assert(value);
-            if (value->recv_string(bit)) {
+            если (value->recv_string(bit)) {
                   run_waiting_threads_(state->threads);
                   vvp_net_t*net = port.ptr();
                   net->send_vec4(vvp_vector4_t(), context);
             }
-      } else {
+      } иначе {
             context = context_scope_->live_contexts;
-            while (context) {
+            пока (context) {
                   recv_string(port, bit, context);
                   context = vvp_get_next_context(context);
             }
@@ -802,7 +802,7 @@ vthread_t vvp_fun_event_or_sa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = threads_;
       threads_ = thread;
 
-      return tmp;
+      вернуть tmp;
 }
 
 void vvp_fun_event_or_sa::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&bit,
@@ -853,21 +853,21 @@ vthread_t vvp_fun_event_or_aa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = state->threads;
       state->threads = thread;
 
-      return tmp;
+      вернуть tmp;
 }
 
 void vvp_fun_event_or_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                                     vvp_context_t context)
 {
-      if (context) {
+      если (context) {
             waitable_state_s*state = static_cast<waitable_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
             run_waiting_threads_(state->threads);
             base_net_->send_vec4(bit, context);
-      } else {
+      } иначе {
             context = context_scope_->live_contexts;
-            while (context) {
+            пока (context) {
                   recv_vec4(port, bit, context);
                   context = vvp_get_next_context(context);
             }
@@ -897,7 +897,7 @@ vthread_t vvp_named_event_sa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = threads_;
       threads_ = thread;
 
-      return tmp;
+      вернуть tmp;
 }
 
 void vvp_named_event_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
@@ -952,7 +952,7 @@ vthread_t vvp_named_event_aa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = state->threads;
       state->threads = thread;
 
-      return tmp;
+      вернуть tmp;
 }
 
 void vvp_named_event_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
@@ -982,38 +982,38 @@ void compile_event(char*label, char*type, unsigned argc, struct symb_s*argv)
 {
       vvp_net_fun_t*fun = 0;
 
-      if (type == 0) {
+      если (type == 0) {
 	    compile_event_or(label, argc, argv);
-	    return;
+	    вернуть;
       }
 
-      if (strcmp(type,"anyedge") == 0) {
+      если (strcmp(type,"anyedge") == 0) {
 
 	    free(type);
 
-            if (vpip_peek_current_scope()->is_automatic()) {
+            если (vpip_peek_current_scope()->is_automatic()) {
                   fun = new vvp_fun_anyedge_aa;
-            } else {
+            } иначе {
                   fun = new vvp_fun_anyedge_sa;
             }
 
-      } else {
+      } иначе {
 
 	    vvp_fun_edge::edge_t edge_type = vvp_edge_none;
 
-	    if (strcmp(type,"posedge") == 0)
+	    если (strcmp(type,"posedge") == 0)
 		  edge_type = vvp_edge_posedge;
-	    else if (strcmp(type,"negedge") == 0)
+	    иначе если (strcmp(type,"negedge") == 0)
 		  edge_type = vvp_edge_negedge;
-	    else if (strcmp(type,"edge") == 0)
+	    иначе если (strcmp(type,"edge") == 0)
 		  edge_type = vvp_edge_edge;
 
 	    assert(argc <= 4);
 	    free(type);
 
-            if (vpip_peek_current_scope()->is_automatic()) {
+            если (vpip_peek_current_scope()->is_automatic()) {
                   fun = new vvp_fun_edge_aa(edge_type);
-            } else {
+            } иначе {
                   fun = new vvp_fun_edge_sa(edge_type);
             }
 
@@ -1032,9 +1032,9 @@ void compile_event(char*label, char*type, unsigned argc, struct symb_s*argv)
 static void compile_event_or(char*label, unsigned argc, struct symb_s*argv)
 {
       vvp_net_t*base_net = new vvp_net_t;
-      if (vpip_peek_current_scope()->is_automatic()) {
+      если (vpip_peek_current_scope()->is_automatic()) {
             base_net->fun = new vvp_fun_event_or_aa(base_net);
-      } else {
+      } иначе {
             base_net->fun = new vvp_fun_event_or_sa(base_net);
       }
       define_functor_symbol(label, base_net);
@@ -1044,8 +1044,8 @@ static void compile_event_or(char*label, unsigned argc, struct symb_s*argv)
 	   care about the data values or what port they arrived on,
 	   so we can use a single shared functor. */
       vvp_net_t*curr_net = base_net;
-      for (unsigned idx = 0 ;  idx < argc ;  idx += 1) {
-	    if (idx > 0 && (idx % 4) == 0) {
+      для (unsigned idx = 0 ;  idx < argc ;  idx += 1) {
+	    если (idx > 0 && (idx % 4) == 0) {
 		  curr_net = new vvp_net_t;
 		  curr_net->fun = base_net->fun;
 	    }
@@ -1065,14 +1065,14 @@ void compile_named_event(char*label, char*name, bool local_flag)
 
       vpiHandle obj = vpip_make_named_event(name, ptr);
 
-      if (vpip_peek_current_scope()->is_automatic()) {
+      если (vpip_peek_current_scope()->is_automatic()) {
             ptr->fun = new vvp_named_event_aa(obj);
-      } else {
+      } иначе {
             ptr->fun = new vvp_named_event_sa(obj);
       }
       define_functor_symbol(label, ptr);
       compile_vpi_symbol(label, obj);
-      if (! local_flag) vpip_attach_to_current_scope(obj);
+      если (! local_flag) vpip_attach_to_current_scope(obj);
 
       free(label);
       delete[] name;

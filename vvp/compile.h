@@ -251,7 +251,7 @@ extern void compile_modpath_src(__vpiModPath*dst,
 				char edge_c,
 				const struct symb_s&src,
 				struct numbv_s&vals,
-				int condit_src, /* match with '0' */
+				целое condit_src, /* match with '0' */
 				const struct symb_s&path_term_in,
 				bool ifnone);
 
@@ -323,7 +323,7 @@ class resolv_list_s {
       virtual bool resolve(bool mes = false) = 0;
 
     protected:
-      const char*label() const { return label_; }
+      const char*label() const { вернуть label_; }
 
     private:
       friend void resolv_submit(class resolv_list_s*cur);
@@ -369,7 +369,7 @@ extern void code_label_lookup(struct vvp_code_s *code, char *label, bool cptr2);
  * labeled UDP.
  */
 
-extern void compile_udp_def(int sequ, char*label, char *name,
+extern void compile_udp_def(целое sequ, char*label, char *name,
 			    unsigned nin, unsigned init, char **table);
 
 extern void compile_udp_functor(char*label, char*type,
@@ -382,19 +382,19 @@ extern char **compile_udp_table(char **table, char *row);
  */
 
 extern void compile_var_array(char*label, char*name,
-			      int last, int first,
-			      int msb, int lsb, char signed_flag);
+			      целое last, целое first,
+			      целое msb, целое lsb, char signed_flag);
 extern void compile_var2_array(char*label, char*name,
-			      int last, int first,
-			      int msb, int lsb, bool signed_flag);
+			      целое last, целое first,
+			      целое msb, целое lsb, bool signed_flag);
 extern void compile_real_array(char*label, char*name,
-			       int last, int first);
+			       целое last, целое first);
 extern void compile_string_array(char*label, char*name,
-				 int last, int first);
+				 целое last, целое first);
 extern void compile_object_array(char*label, char*name,
-				 int last, int first);
+				 целое last, целое first);
 extern void compile_net_array(char*label, char*name,
-			      int last, int first);
+			      целое last, целое first);
 extern void compile_array_alias(char*label, char*name, char*src);
 
   /* Index is a net. */
@@ -471,7 +471,7 @@ extern void compile_vpi_call(char*label, char*name,
    <0, the return type is -vpiRealConst or some other constant subtype
    code that represents the function type. */
 extern void compile_vpi_func_call(char*label, char*name,
-				  int val_type, unsigned val_wid,
+				  целое val_type, unsigned val_wid,
 				  long file_idx, long lineno,
 				  unsigned argc, vpiHandle*argv,
 				  unsigned vec4_stack,
@@ -505,7 +505,7 @@ extern void compile_thread(char*start_sym, char*flag);
  * vpiIntVar, etc.
  */
 extern void compile_variable(char*label, char*name,
-			     int msb, int lsb, int vpi_type_code,
+			     целое msb, целое lsb, целое vpi_type_code,
 			     bool signed_flag, bool local_flag);
 
 extern void compile_var_real(char*label, char*name, bool local_flag);
@@ -522,7 +522,7 @@ extern void compile_var_queue(char*label, char*name, unsigned size);
  * nets connected through module ports.
  */
 
-extern void compile_port_info( unsigned index, int vpi_port_type, unsigned width, const char *name, char* buffer );
+extern void compile_port_info( unsigned index, целое vpi_port_type, unsigned width, const char *name, char* buffer );
 
 
 /*
@@ -536,21 +536,21 @@ extern void compile_port_info( unsigned index, int vpi_port_type, unsigned width
  *   vpiIntVar -- 2-value logic
  *  -vpiLogic  -- 8-value (i.e. strength aware) logic
  */
-extern void compile_net(char*label, char*name, int msb, int lsb,
-			int vpi_type_code, bool signed_flag, bool local_flag,
+extern void compile_net(char*label, char*name, целое msb, целое lsb,
+			целое vpi_type_code, bool signed_flag, bool local_flag,
 			unsigned argc, struct symb_s*argv);
 
 extern void compile_net_real(char*label, char*name,
-			     int msb, int lsb, bool local_flag,
+			     целое msb, целое lsb, bool local_flag,
 			     unsigned argc, struct symb_s*argv);
 
 extern void compile_netw(char*label, char*array_label, unsigned long array_addr,
-			 int msb, int lsb, int vpi_type_code, bool signed_flag,
+			 целое msb, целое lsb, целое vpi_type_code, bool signed_flag,
 			 unsigned argc, struct symb_s*argv);
 
 extern void compile_netw_real(char*label, char*array_symbol,
 			      unsigned long array_addr,
-			      int msb, int lsb,
+			      целое msb, целое lsb,
 			      unsigned argc, struct symb_s*argv);
 
 
@@ -561,7 +561,7 @@ extern void compile_island_export(char*label, char*island);
 extern void compile_island_cleanup(void);
 
 extern void compile_island_tran(char*label);
-extern void compile_island_tranif(int sense, char*island,
+extern void compile_island_tranif(целое sense, char*island,
 				  char*ba, char*bb, char*src, bool resistive);
 extern void compile_island_tranvp(char*island, char*ba, char*bb,
 				  unsigned width, unsigned part, unsigned off);

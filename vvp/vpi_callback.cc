@@ -44,71 +44,71 @@ static const char*cb_reason_name(PLI_INT32 reason)
 {
       switch (reason) {
 	  case cbValueChange:
-	    return "cbValueChange";
+	    вернуть "cbValueChange";
 	  case cbStmt:
-	    return "cbStmt";
+	    вернуть "cbStmt";
 	  case cbForce:
-	    return "cbForce";
+	    вернуть "cbForce";
 	  case cbRelease:
-	    return "cbRelease";
+	    вернуть "cbRelease";
 	  case cbAtStartOfSimTime:
-	    return "cbAtStartOfSimTime";
+	    вернуть "cbAtStartOfSimTime";
 	  case cbReadWriteSynch:
-	    return "cbReadWriteSynch";
+	    вернуть "cbReadWriteSynch";
 	  case cbReadOnlySynch:
-	    return "cbReadOnlySynch";
+	    вернуть "cbReadOnlySynch";
 	  case cbNextSimTime:
-	    return "cbNextSimTime";
+	    вернуть "cbNextSimTime";
 	  case cbAfterDelay:
-	    return "cbAfterDelay";
+	    вернуть "cbAfterDelay";
 	  case cbEndOfCompile:
-	    return "cbEndOfCompile";
+	    вернуть "cbEndOfCompile";
 	  case cbStartOfSimulation:
-	    return "cbStartOfSimulation";
+	    вернуть "cbStartOfSimulation";
 	  case cbEndOfSimulation:
-	    return "cbEndOfSimulation";
+	    вернуть "cbEndOfSimulation";
 	  case cbError:
-	    return "cbError";
+	    вернуть "cbError";
 	  case cbTchkViolation:
-	    return "cbTchkViolation";
+	    вернуть "cbTchkViolation";
 	  case cbStartOfSave:
-	    return "cbStartOfSave";
+	    вернуть "cbStartOfSave";
 	  case cbEndOfSave:
-	    return "cbEndOfSave";
+	    вернуть "cbEndOfSave";
 	  case cbStartOfRestart:
-	    return "cbStartOfRestart";
+	    вернуть "cbStartOfRestart";
 	  case cbEndOfRestart:
-	    return "cbEndOfRestart";
+	    вернуть "cbEndOfRestart";
 	  case cbStartOfReset:
-	    return "cbStartOfReset";
+	    вернуть "cbStartOfReset";
 	  case cbEndOfReset:
-	    return "cbEndOfReset";
+	    вернуть "cbEndOfReset";
 	  case cbEnterInteractive:
-	    return "cbEnterInteractive";
+	    вернуть "cbEnterInteractive";
 	  case cbExitInteractive:
-	    return "cbExitInteractive";
+	    вернуть "cbExitInteractive";
 	  case cbInteractiveScopeChange:
-	    return "cbInteractiveScopeChange";
+	    вернуть "cbInteractiveScopeChange";
 	  case cbUnresolvedSystf:
-	    return "cbUnresolvedSystf";
+	    вернуть "cbUnresolvedSystf";
 	  case cbAtEndOfSimTime:
-	    return "cbAtEndOfSimTime";
+	    вернуть "cbAtEndOfSimTime";
 	  default:
-	    return "unrecognised";
+	    вернуть "unrecognised";
       }
 }
 
 static bool check_callback_time(p_cb_data data, bool allow_suppress)
 {
       assert(data);
-      if (!data->time) {
-	    if (!allow_suppress) {
+      если (!data->time) {
+	    если (!allow_suppress) {
 		  fprintf(stderr, "VPI error: null value passed in cb_data.time "
 				  "when registering %s callback\n.",
 				  cb_reason_name(data->reason));
-		  return false;
+		  вернуть false;
 	    }
-	    return true;
+	    вернуть true;
       }
       switch (data->time->type) {
 	  case vpiSimTime:
@@ -116,20 +116,20 @@ static bool check_callback_time(p_cb_data data, bool allow_suppress)
 	  case vpiScaledRealTime:
 	    break;
 	  case vpiSuppressTime:
-	    if (!allow_suppress) {
+	    если (!allow_suppress) {
 		  fprintf(stderr, "VPI error: vpiSuppressTime is not valid "
 				  "when registering %s callback\n.",
 				  cb_reason_name(data->reason));
-		  return false;
+		  вернуть false;
 	    }
 	    break;
 	  default:
 	    fprintf(stderr, "VPI error: invalid type passed in cb_data time "
 			    "structure when registering %s callback\n.",
 			    cb_reason_name(data->reason));
-	    return false;
+	    вернуть false;
       }
-      return true;
+      вернуть true;
 }
 
 static void set_callback_time(p_cb_data data)
@@ -188,22 +188,22 @@ __vpiCallback::~__vpiCallback()
 {
 }
 
-int __vpiCallback::get_type_code(void) const
-{ return vpiCallback; }
+целое __vpiCallback::get_type_code(void) const
+{ вернуть vpiCallback; }
 
 
 value_callback::value_callback(p_cb_data data)
 {
       cb_data = *data;
-      if (data->time) {
+      если (data->time) {
 	    cb_time = *(data->time);
-      } else {
+      } иначе {
 	    cb_time.type = vpiSuppressTime;
       }
       cb_data.time = &cb_time;
-      if (data->value) {
+      если (data->value) {
 	    cb_value = *(data->value);
-      } else {
+      } иначе {
 	    cb_value.format = vpiSuppressVal;
       }
       cb_data.value = &cb_value;
@@ -215,7 +215,7 @@ value_callback::value_callback(p_cb_data data)
  */
 bool value_callback::test_value_callback_ready(void)
 {
-      return true;
+      вернуть true;
 }
 
 static void vpip_real_value_change(value_callback*cbh, vpiHandle ref)
@@ -290,11 +290,11 @@ bool value_part_callback::test_value_callback_ready(void)
       tmp_value.format = vpiBinStrVal;
       sig_fil->get_value(&tmp_value);
 
-      if (memcmp(value_bits_, tmp_value.value.str + value_off_, pobj->width) == 0)
-	    return false;
+      если (memcmp(value_bits_, tmp_value.value.str + value_off_, pobj->width) == 0)
+	    вернуть false;
 
       memcpy(value_bits_, tmp_value.value.str + value_off_, pobj->width);
-      return true;
+      вернуть true;
 }
 
 /*
@@ -307,7 +307,7 @@ static value_callback*make_value_change_part(p_cb_data data)
 {
 	/* Attach the __vpiCallback object to the signal. */
       value_callback*cbh = new value_part_callback(data);
-      return cbh;
+      вернуть cbh;
 }
 
 /*
@@ -319,30 +319,30 @@ static value_callback*make_value_change_part(p_cb_data data)
  */
 static value_callback* make_value_change(p_cb_data data)
 {
-      if (!check_callback_time(data, true))
-	    return 0;
+      если (!check_callback_time(data, true))
+	    вернуть 0;
 
-      if (vpi_get(vpiAutomatic, data->obj)) {
+      если (vpi_get(vpiAutomatic, data->obj)) {
             fprintf(stderr, "vpi error: cannot place value change "
                             "callback on automatically allocated "
                             "variable '%s'\n",
                             vpi_get_str(vpiName, data->obj));
-            return 0;
+            вернуть 0;
       }
 
 	// Special case: the target object is a vpiPartSelect
-      if (data->obj->get_type_code() == vpiPartSelect) {
-            if (data->obj->vpi_handle(vpiArray))
-	        return vpip_array_word_change(data);
-            else
-	        return make_value_change_part(data);
+      если (data->obj->get_type_code() == vpiPartSelect) {
+            если (data->obj->vpi_handle(vpiArray))
+	        вернуть vpip_array_word_change(data);
+            иначе
+	        вернуть make_value_change_part(data);
       }
 
-      if (data->obj->get_type_code() == vpiMemoryWord)
-	    return vpip_array_word_change(data);
+      если (data->obj->get_type_code() == vpiMemoryWord)
+	    вернуть vpip_array_word_change(data);
 
-      if (data->obj->get_type_code() == vpiMemory)
-	    return vpip_array_change(data);
+      если (data->obj->get_type_code() == vpiMemory)
+	    вернуть vpip_array_change(data);
 
       value_callback*obj = new value_callback(data);
 
@@ -392,10 +392,10 @@ static value_callback* make_value_change(p_cb_data data)
 		    "values on type code=%d\n",
 		    data->obj->get_type_code());
 	    delete obj;
-	    return 0;
+	    вернуть 0;
       }
 
-      return obj;
+      вернуть obj;
 }
 
 class sync_callback : public __vpiCallback {
@@ -432,15 +432,15 @@ sync_callback::~sync_callback()
 
 void sync_cb::run_run()
 {
-      if (handle == 0)
-	    return;
+      если (handle == 0)
+	    вернуть;
 
       sync_callback*cur = handle;
 
 	/* Run the callback. If the cb_rtn function pointer is set to
 	   null, then just skip the whole thing and free it. This is
 	   the usual way to cancel one-time callbacks of this sort. */
-      if (cur->cb_data.cb_rtn != 0) {
+      если (cur->cb_data.cb_rtn != 0) {
 	    set_callback_time(&cur->cb_data);
 	    assert(vpi_mode_flag == VPI_MODE_NONE);
 	    vpi_mode_flag = sync_flag? VPI_MODE_ROSYNC : VPI_MODE_RWSYNC;
@@ -466,17 +466,17 @@ static vvp_time64_t get_sync_cb_time(sync_callback*obj)
 
 	  default:
 	    fprintf(stderr, "get_sync_cb_time: Unsupported time type %d.\n",
-	            (int)obj->cb_time.type);
+	            (целое)obj->cb_time.type);
 	    assert(0);
 	    break;
       }
-      return tv;
+      вернуть tv;
 }
 
 static sync_callback* make_sync(p_cb_data data, bool readonly_flag)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      если (!check_callback_time(data, false))
+	    вернуть 0;
 
       sync_callback*obj = new sync_callback(data);
 
@@ -488,13 +488,13 @@ static sync_callback* make_sync(p_cb_data data, bool readonly_flag)
       vvp_time64_t tv = get_sync_cb_time(obj);
       schedule_generic(cb, tv, true, readonly_flag);
 
-      return obj;
+      вернуть obj;
 }
 
 static struct __vpiCallback* make_afterdelay(p_cb_data data)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      если (!check_callback_time(data, false))
+	    вернуть 0;
 
       sync_callback*obj = new sync_callback(data);
       struct sync_cb*cb = new sync_cb;
@@ -505,13 +505,13 @@ static struct __vpiCallback* make_afterdelay(p_cb_data data)
       vvp_time64_t tv = get_sync_cb_time(obj);
       schedule_generic(cb, tv, false);
 
-      return obj;
+      вернуть obj;
 }
 
 static struct __vpiCallback* make_at_start_of_sim_time(p_cb_data data)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      если (!check_callback_time(data, false))
+	    вернуть 0;
 
       sync_callback*obj = new sync_callback(data);
       struct sync_cb*cb = new sync_cb;
@@ -521,23 +521,23 @@ static struct __vpiCallback* make_at_start_of_sim_time(p_cb_data data)
 
       vvp_time64_t tv = get_sync_cb_time(obj);
       vvp_time64_t cur = schedule_simtime();
-      if (cur > tv) {
+      если (cur > tv) {
 	    tv = 0;
 	    assert(0);
-      } else if (cur == tv) {
+      } иначе если (cur == tv) {
 	    tv = 0;
-      } else {
+      } иначе {
 	    tv -= cur;
       }
       schedule_at_start_of_simtime(cb, tv);
 
-      return obj;
+      вернуть obj;
 }
 
 static struct __vpiCallback* make_at_end_of_sim_time(p_cb_data data)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      если (!check_callback_time(data, false))
+	    вернуть 0;
 
       sync_callback*obj = new sync_callback(data);
       struct sync_cb*cb = new sync_cb;
@@ -547,17 +547,17 @@ static struct __vpiCallback* make_at_end_of_sim_time(p_cb_data data)
 
       vvp_time64_t tv = get_sync_cb_time(obj);
       vvp_time64_t cur = schedule_simtime();
-      if (cur > tv) {
+      если (cur > tv) {
 	    tv = 0;
 	    assert(0);
-      } else if (cur == tv) {
+      } иначе если (cur == tv) {
 	    tv = 0;
-      } else {
+      } иначе {
 	    tv -= cur;
       }
       schedule_at_end_of_simtime(cb, tv);
 
-      return obj;
+      вернуть obj;
 }
 
 /*
@@ -576,11 +576,11 @@ class simulator_callback : public __vpiCallback {
 inline simulator_callback::simulator_callback(const struct t_cb_data*data)
 {
       cb_data = *data;
-      if ((data->reason == cbNextSimTime) && data->time) {
+      если ((data->reason == cbNextSimTime) && data->time) {
 	    cb_time = *(data->time);
-      } else if (data->reason == cbEndOfSimulation) {
+      } иначе если (data->reason == cbEndOfSimulation) {
 	    cb_time.type = vpiSimTime;
-      } else {
+      } иначе {
 	    cb_time.type = vpiSuppressTime;
       }
       cb_data.time = &cb_time;
@@ -599,21 +599,21 @@ void simulator_cb_delete(void)
       simulator_callback* cur;
 
 	/* Delete all the end of compile callbacks. */
-      while (EndOfCompile) {
+      пока (EndOfCompile) {
 	    cur = EndOfCompile;
 	    EndOfCompile = dynamic_cast<simulator_callback*>(cur->next);
 	    delete cur;
       }
 
 	/* Delete all the start of simulation callbacks. */
-      while (StartOfSimulation) {
+      пока (StartOfSimulation) {
 	    cur = StartOfSimulation;
 	    StartOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
 	    delete cur;
       }
 
 	/* Delete all the end of simulation callbacks. */
-      while (EndOfSimulation) {
+      пока (EndOfSimulation) {
 	    cur = EndOfSimulation;
 	    EndOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
 	    delete cur;
@@ -631,10 +631,10 @@ void vpiEndOfCompile(void) {
       assert(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      while (EndOfCompile) {
+      пока (EndOfCompile) {
 	    cur = EndOfCompile;
 	    EndOfCompile = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
+	    если (cur->cb_data.cb_rtn != 0) {
 		  (cur->cb_data.cb_rtn)(&cur->cb_data);
 	    }
 	    delete cur;
@@ -653,10 +653,10 @@ void vpiStartOfSim(void) {
       assert(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      while (StartOfSimulation) {
+      пока (StartOfSimulation) {
 	    cur = StartOfSimulation;
 	    StartOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
+	    если (cur->cb_data.cb_rtn != 0) {
 		  (cur->cb_data.cb_rtn)(&cur->cb_data);
 	    }
 	    delete cur;
@@ -674,10 +674,10 @@ void vpiPostsim(void) {
       assert(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_ROSYNC;
 
-      while (EndOfSimulation) {
+      пока (EndOfSimulation) {
 	    cur = EndOfSimulation;
 	    EndOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
+	    если (cur->cb_data.cb_rtn != 0) {
 		  set_callback_time(&cur->cb_data);
 		  (cur->cb_data.cb_rtn)(&cur->cb_data);
 	    }
@@ -700,10 +700,10 @@ void vpiNextSimTime(void)
       assert(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      while (next) {
+      пока (next) {
             cur = next;
             next = dynamic_cast<simulator_callback*>(cur->next);
-            if (cur->cb_data.cb_rtn != 0) {
+            если (cur->cb_data.cb_rtn != 0) {
                   set_callback_time(&cur->cb_data);
                   (cur->cb_data.cb_rtn)(&cur->cb_data);
             }
@@ -715,8 +715,8 @@ void vpiNextSimTime(void)
 
 static simulator_callback* make_prepost(p_cb_data data)
 {
-      if ((data->reason == cbNextSimTime) && !check_callback_time(data, true))
-	    return 0;
+      если ((data->reason == cbNextSimTime) && !check_callback_time(data, true))
+	    вернуть 0;
 
       simulator_callback*obj = new simulator_callback(data);
 
@@ -740,7 +740,7 @@ static simulator_callback* make_prepost(p_cb_data data)
 	    break;
       }
 
-      return obj;
+      вернуть obj;
 }
 
 vpiHandle vpi_register_cb(p_cb_data data)
@@ -784,11 +784,11 @@ vpiHandle vpi_register_cb(p_cb_data data)
 	  default:
 	    fprintf(stderr, "vpi error: vpi_register_cb invalid or "
 		    "unsupported callback reason: %d\n",
-		    (int)data->reason);
+		    (целое)data->reason);
 	    break;
       }
 
-      return obj;
+      вернуть obj;
 }
 
 /*
@@ -802,7 +802,7 @@ PLI_INT32 vpi_remove_cb(vpiHandle ref)
       assert(obj);
       obj->cb_data.cb_rtn = 0;
 
-      return 1;
+      вернуть 1;
 }
 
 void callback_execute(struct __vpiCallback*cur)
@@ -859,13 +859,13 @@ void vvp_vpi_callback::add_vpi_callback(value_callback*cb)
 #ifdef CHECK_WITH_VALGRIND
 void vvp_vpi_callback::clear_all_callbacks()
 {
-      while (vpi_callbacks_) {
+      пока (vpi_callbacks_) {
 	    value_callback *tmp = dynamic_cast<value_callback*>
 	                            (vpi_callbacks_->next);
 	    delete vpi_callbacks_;
 	    vpi_callbacks_ = tmp;
       }
-      while (array_words_) {
+      пока (array_words_) {
 	    struct __vpi_array_word*tmp = array_words_->next;
 	    delete array_words_;
 	    array_words_ = tmp;
@@ -882,7 +882,7 @@ void vvp_vpi_callback::clear_all_callbacks()
 void vvp_vpi_callback::run_vpi_callbacks()
 {
       struct __vpi_array_word*array_word = array_words_;
-      while (array_word) {
+      пока (array_word) {
 	    array_word->array->word_change(array_word->word);
 	    array_word = array_word->next;
       }
@@ -890,26 +890,26 @@ void vvp_vpi_callback::run_vpi_callbacks()
       value_callback *next = vpi_callbacks_;
       value_callback *prev = 0;
 
-      while (next) {
+      пока (next) {
 	    value_callback*cur = next;
 	    next = dynamic_cast<value_callback*>(cur->next);
 
-	    if (cur->cb_data.cb_rtn != 0) {
-		  if (cur->test_value_callback_ready()) {
-			if (cur->cb_data.value)
+	    если (cur->cb_data.cb_rtn != 0) {
+		  если (cur->test_value_callback_ready()) {
+			если (cur->cb_data.value)
 			      get_value(cur->cb_data.value);
 
 			callback_execute(cur);
 		  }
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } иначе если (prev == 0) {
 
 		  vpi_callbacks_ = next;
 		  cur->next = 0;
 		  delete cur;
 
-	    } else {
+	    } иначе {
 		  assert(prev->next == cur);
 		  prev->next = next;
 		  cur->next = 0;
@@ -938,7 +938,7 @@ void vvp_signal_value::get_signal_value(struct t_vpi_value*vp)
 	  case vpiRealVal: {
 	    unsigned wid = value_size();
 	    vvp_vector4_t vec4(wid);
-	    for (unsigned idx = 0; idx < wid; idx += 1) {
+	    для (unsigned idx = 0; idx < wid; idx += 1) {
 		  vec4.set_bit(idx, value(idx));
 	    }
 	    vpip_vec4_get_value(vec4, wid, false, vp);
@@ -951,7 +951,7 @@ void vvp_signal_value::get_signal_value(struct t_vpi_value*vp)
 	  default:
 	    fprintf(stderr, "vpi_callback: value "
 		    "format %d not supported (fun_signal)\n",
-		    (int)vp->format);
+		    (целое)vp->format);
       }
 }
 
@@ -970,18 +970,18 @@ static void real_signal_value(struct t_vpi_value*vp, double rval)
 
 	  case vpiIntVal:
 	      /* NaN or +/- infinity are translated as 0. */
-	    if (rval != rval || (rval && (rval == 0.5*rval))) {
+	    если (rval != rval || (rval && (rval == 0.5*rval))) {
 		  rval = 0.0;
-	    } else {
+	    } иначе {
 		  rval = std::round(rval);
 	    }
 	    vp->value.integer = (PLI_INT32)rval;
 	    break;
 
 	  case vpiDecStrVal:
-	    if (std::isnan(rval))
+	    если (std::isnan(rval))
 		  snprintf(rbuf, RBUF_SIZE, "%s", "nan");
-	    else
+	    иначе
 		  snprintf(rbuf, RBUF_SIZE, "%0.0f", std::round(rval));
 	    vp->value.str = rbuf;
 	    break;
@@ -995,19 +995,19 @@ static void real_signal_value(struct t_vpi_value*vp, double rval)
 		uint64_t val = vlg_round_to_u64(rval);
 		unsigned len = 0;
 
-		while (val > 0) {
+		пока (val > 0) {
 		      len += 1;
 		      val /= 2;
 		}
 
 		val = vlg_round_to_u64(rval);
-		for (unsigned idx = 0 ;  idx < len ;  idx += 1) {
+		для (unsigned idx = 0 ;  idx < len ;  idx += 1) {
 		      rbuf[len-idx-1] = (val & 1)? '1' : '0';
 		      val /= 2;
 		}
 
 		rbuf[len] = 0;
-		if (len == 0) {
+		если (len == 0) {
 		      rbuf[0] = '0';
 		      rbuf[1] = 0;
 		}
@@ -1021,7 +1021,7 @@ static void real_signal_value(struct t_vpi_value*vp, double rval)
 	  default:
 	    fprintf(stderr, "vpi_callback: value "
 		    "format %d not supported (fun_signal_real)\n",
-		    (int)vp->format);
+		    (целое)vp->format);
       }
 }
 
@@ -1039,7 +1039,7 @@ void vvp_fun_signal_string_aa::get_signal_value(struct t_vpi_value*)
 {
       assert(0);
 }
-#if 0
+#если 0
 void vvp_wire_string::get_signal_value(struct t_vpi_value*vp)
 {
       assert(0);
@@ -1059,7 +1059,7 @@ void vvp_wire_real::get_value(struct t_vpi_value*val)
 {
       get_signal_value(val);
 }
-#if 0
+#если 0
 void vvp_wire_string::get_value(struct t_vpi_value*val)
 {
       assert(0);

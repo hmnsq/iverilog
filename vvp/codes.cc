@@ -62,7 +62,7 @@ void codespace_init(void)
 
 vvp_code_t codespace_next(void)
 {
-      if (current_within_chunk == (code_chunk_size-1)) {
+      если (current_within_chunk == (code_chunk_size-1)) {
 	    current_chunk[code_chunk_size-1].cptr
 		  = new struct vvp_code_s [code_chunk_size];
 	    current_chunk = current_chunk[code_chunk_size-1].cptr;
@@ -77,7 +77,7 @@ vvp_code_t codespace_next(void)
       }
 
       vvp_code_t res = current_chunk + current_within_chunk;
-      return res;
+      вернуть res;
 }
 
 vvp_code_t codespace_allocate(void)
@@ -88,12 +88,12 @@ vvp_code_t codespace_allocate(void)
 
       memset(res, 0, sizeof(*res));
 
-      return res;
+      вернуть res;
 }
 
 vvp_code_t codespace_null(void)
 {
-      return first_chunk + 0;
+      вернуть first_chunk + 0;
 }
 
 #ifdef CHECK_WITH_VALGRIND
@@ -102,33 +102,33 @@ void codespace_delete(void)
       vvp_code_t cur = first_chunk;
 
 	/* If there are no opcodes then just delete the code space. */
-      if (count_opcodes == 0) {
+      если (count_opcodes == 0) {
 	    delete [] cur;
-	    return;
+	    вернуть;
       }
 
       do {
 	    vvp_code_t next = cur[code_chunk_size-1].cptr;
-	    for (unsigned idx = 0 ; idx < code_chunk_size; idx += 1) {
+	    для (unsigned idx = 0 ; idx < code_chunk_size; idx += 1) {
 		  count_opcodes -= 1;
-		  if ((cur+idx)->opcode == &of_VPI_CALL) {
+		  если ((cur+idx)->opcode == &of_VPI_CALL) {
 			vpi_call_delete((cur+idx)->handle);
-		  } else if (((cur+idx)->opcode == &of_EXEC_UFUNC_REAL) ||
+		  } иначе если (((cur+idx)->opcode == &of_EXEC_UFUNC_REAL) ||
 		             ((cur+idx)->opcode == &of_EXEC_UFUNC_VEC4)) {
 			exec_ufunc_delete((cur+idx));
-		  } else if ((cur+idx)->opcode == &of_FILE_LINE) {
+		  } иначе если ((cur+idx)->opcode == &of_FILE_LINE) {
 			delete((cur+idx)->handle);
-		  } else if (((cur+idx)->opcode == &of_CONCATI_STR) ||
+		  } иначе если (((cur+idx)->opcode == &of_CONCATI_STR) ||
 		             ((cur+idx)->opcode == &of_NEW_DARRAY) ||
 		             ((cur+idx)->opcode == &of_PUSHI_STR)) {
 			delete [] ((cur+idx)->text);
 		  }
-		  if (count_opcodes == 0) break;
+		  если (count_opcodes == 0) break;
 	    }
 	      /* Don't count the &of_CHUNK_LINK opcode. */
-	    if (count_opcodes != 0) count_opcodes += 1;
+	    если (count_opcodes != 0) count_opcodes += 1;
 	    delete [] cur;
 	    cur = next;
-      } while (cur != 0);
+      } пока (cur != 0);
 }
 #endif

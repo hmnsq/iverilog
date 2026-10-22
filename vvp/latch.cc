@@ -48,7 +48,7 @@ void vvp_latch::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 
 	  case 0: // D
 	    d_ = bit;
-	    if (en_ == BIT4_1)
+	    если (en_ == BIT4_1)
 		  schedule_propagate_vector(port.ptr(), 0, d_);
 	    break;
 
@@ -56,7 +56,7 @@ void vvp_latch::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 	    assert(bit.size() == 1);
 	    tmp = en_;
 	    en_ = bit.value(0);
-	    if (en_ == BIT4_1 && tmp != BIT4_1)
+	    если (en_ == BIT4_1 && tmp != BIT4_1)
 		  schedule_propagate_vector(port.ptr(), 0, d_);
 	    break;
 

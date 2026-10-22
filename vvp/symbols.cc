@@ -41,7 +41,7 @@ char*symbol_table_s::key_strdup_(const char*str)
       unsigned len = strlen(str);
       assert( (len+1) <= sizeof str_chunk->data );
 
-      if ( (len+1) > (sizeof str_chunk->data - str_used) ) {
+      если ( (len+1) > (sizeof str_chunk->data - str_used) ) {
 	    key_strings*tmp = new key_strings;
 	    tmp->next = str_chunk;
 	    str_chunk = tmp;
@@ -51,7 +51,7 @@ char*symbol_table_s::key_strdup_(const char*str)
       char*res = str_chunk->data + str_used;
       str_used += len + 1;
       strcpy(res, str);
-      return res;
+      вернуть res;
 }
 
 /*
@@ -89,10 +89,10 @@ struct tree_node_ {
 
 static inline char* node_last_key(struct tree_node_*node)
 {
-      while (node->leaf_flag == false)
+      пока (node->leaf_flag == false)
 	    node = node->child[node->count-1];
 
-      return node->leaf[node->count-1].key;
+      вернуть node->leaf[node->count-1].key;
 }
 
 /*
@@ -114,8 +114,8 @@ symbol_table_s::symbol_table_s()
 
 static void delete_symbol_node(struct tree_node_*cur)
 {
-      if (! cur->leaf_flag) {
-	    for (unsigned idx = 0 ;  idx < cur->count ;  idx += 1)
+      если (! cur->leaf_flag) {
+	    для (unsigned idx = 0 ;  idx < cur->count ;  idx += 1)
 		  delete_symbol_node(cur->child[idx]);
       }
 
@@ -126,22 +126,22 @@ static void delete_symbol_node(struct tree_node_*cur)
 static void split_node_(struct tree_node_*cur)
 {
       assert(!cur->leaf_flag);
-      if (cur->parent) assert(! cur->parent->leaf_flag);
+      если (cur->parent) assert(! cur->parent->leaf_flag);
 
-      while (cur->count == node_width) {
+      пока (cur->count == node_width) {
 	      /* Create a new node to hold half the data from cur. */
 	    struct tree_node_ *new_node = new struct tree_node_;
 	    new_node->leaf_flag = false;
 	    new_node->count = cur->count / 2;
 	      /* cur is not root; new_node becomes sibling. */
-	    if (cur->parent) new_node->parent = cur->parent;
+	    если (cur->parent) new_node->parent = cur->parent;
 
 	      /* Move the last half of the data from the end of the old node
 	       * to the beginning of the new node. At the same time, reduce
 	       * the size of the old node. */
 	    unsigned idx1 = new_node->count;
 	    unsigned idx2 = cur->count;
-	    while (idx1 > 0) {
+	    пока (idx1 > 0) {
 		  idx1 -= 1;
 		  idx2 -= 1;
 		  new_node->child[idx1] = cur->child[idx2];
@@ -152,7 +152,7 @@ static void split_node_(struct tree_node_*cur)
 	    assert(new_node->count > 0);
 	    assert(cur->count > 0);
 
-	    if (cur->parent == 0) {
+	    если (cur->parent == 0) {
 		    /* cur is root. Move first half of children to another
 		     * new node, and put the two new nodes in cur. The plan
 		     * here is to make cur into the new root and split its
@@ -163,7 +163,7 @@ static void split_node_(struct tree_node_*cur)
 		  new2_node->leaf_flag = false;
 		  new2_node->count = cur->count;
 		  new2_node->parent = cur;
-		  for (unsigned idx = 0; idx < cur->count; idx += 1) {
+		  для (unsigned idx = 0; idx < cur->count; idx += 1) {
 			new2_node->child[idx] = cur->child[idx];
 			new2_node->child[idx]->parent = new2_node;
 		  }
@@ -176,13 +176,13 @@ static void split_node_(struct tree_node_*cur)
 
 	      /* cur is not root. hook new_node to cur->parent. */
 	    unsigned idx = 0;
-	    while (cur->parent->child[idx] != cur) {
+	    пока (cur->parent->child[idx] != cur) {
 		  assert(idx < cur->parent->count);
 		  idx += 1;
 	    }
 	    idx += 1;
 
-	    for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1) {
+	    для (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1) {
 		  cur->parent->child[tmp] = cur->parent->child[tmp-1];
 	    }
 
@@ -216,7 +216,7 @@ static struct tree_node_* split_leaf_(struct tree_node_*cur)
 	   the size of the old leaf. */
       unsigned idx1 = new_leaf->count;
       unsigned idx2 = cur->count;
-      while (idx1 > 0) {
+      пока (idx1 > 0) {
 	    idx1 -= 1;
 	    idx2 -= 1;
 	    new_leaf->leaf[idx1] = cur->leaf[idx2];
@@ -227,23 +227,23 @@ static struct tree_node_* split_leaf_(struct tree_node_*cur)
       assert(cur->count > 0);
 
       unsigned idx = 0;
-      while (cur->parent->child[idx] != cur) {
+      пока (cur->parent->child[idx] != cur) {
 	    assert(idx < cur->parent->count);
 	    idx += 1;
       }
 
       idx += 1;
 
-      for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1)
+      для (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1)
 	    cur->parent->child[tmp] = cur->parent->child[tmp-1];
 
       cur->parent->child[idx] = new_leaf;
       cur->parent->count += 1;
 
-      if (cur->parent->count == node_width)
+      если (cur->parent->count == node_width)
 	    split_node_(cur->parent);
 
-      return new_leaf;
+      вернуть new_leaf;
 }
 
 
@@ -258,78 +258,78 @@ symbol_value_t symbol_table_s::find_value_(struct tree_node_*cur,
 					   const char*key, symbol_value_t val,
 					   bool force_flag)
 {
-      if (cur->leaf_flag) {
+      если (cur->leaf_flag) {
 
 	    unsigned idx = 0;
-	    for (;;) {
+	    для (;;) {
 		    /* If we run out of keys in the leaf, then add
 		       this at the end of the leaf. */
-		  if (idx == cur->count) {
+		  если (idx == cur->count) {
 			cur->leaf[idx].key = key_strdup_(key);
 			cur->leaf[idx].val = val;
 			cur->count += 1;
-			if (cur->count == leaf_width)
+			если (cur->count == leaf_width)
 			      split_leaf_(cur);
 
-			return val;
+			вернуть val;
 		  }
 
-		  int rc = strcmp(key, cur->leaf[idx].key);
+		  целое rc = strcmp(key, cur->leaf[idx].key);
 
 		    /* If we found the key already in the table, then
 		       set the new value and break. */
-		  if (rc == 0) {
-			if (force_flag)
+		  если (rc == 0) {
+			если (force_flag)
 			      cur->leaf[idx].val = val;
-			return cur->leaf[idx].val;
+			вернуть cur->leaf[idx].val;
 		  }
 
 		    /* If this key goes before the current key, then
 		       push all the following entries back and add
 		       this key here. */
-		  if (rc < 0) {
-			for (unsigned tmp = cur->count; tmp > idx; tmp -= 1)
+		  если (rc < 0) {
+			для (unsigned tmp = cur->count; tmp > idx; tmp -= 1)
 			      cur->leaf[tmp] = cur->leaf[tmp-1];
 
 			cur->leaf[idx].key = key_strdup_(key);
 			cur->leaf[idx].val = val;
 			cur->count += 1;
-			if (cur->count == leaf_width)
+			если (cur->count == leaf_width)
 			      split_leaf_(cur);
 
-			return val;
+			вернуть val;
 		  }
 
 		  idx += 1;
 	    }
 
-      } else {
+      } иначе {
 	      /* Do a binary search within the inner node. */
 	    unsigned min = 0;
 	    unsigned max = cur->count;
 	    unsigned idx = max/2;
-	    for (;;) {
-		  int rc = strcmp(key, node_last_key(cur->child[idx]));
-		  if (rc == 0) {
-			return find_value_(cur->child[idx],
+	    для (;;) {
+		  целое rc = strcmp(key, node_last_key(cur->child[idx]));
+		  если (rc == 0) {
+			вернуть find_value_(cur->child[idx],
 					   key, val, force_flag);
 		  }
 
-		  if (rc > 0) {
+		  если (rc > 0) {
 			min = idx + 1;
-			if (min == cur->count)
-			      return find_value_(cur->child[idx],
+			если (min == cur->count)
+			      вернуть find_value_(cur->child[idx],
 						 key, val, force_flag);
-			if (min == max)
-			      return find_value_(cur->child[max],
+			если (min == max)
+			      вернуть find_value_(cur->child[max],
 						 key, val, force_flag);
 
 			idx = min + (max-min)/2;
 
-		  } else  {
+		  } иначе  {
 			max = idx;
-			if (idx == min)
-			      return find_value_(cur->child[idx],
+			если (idx == min)
+			      вернуть find_value_(cur->child[idx],
 						 key, val, force_flag);
 			idx = min + (max-min)/2;
 		  }
@@ -339,13 +339,13 @@ symbol_value_t symbol_table_s::find_value_(struct tree_node_*cur,
       assert(0);
       { symbol_value_t tmp;
         tmp.ptr = 0;
-        return tmp;
+        вернуть tmp;
       }
 }
 
 void symbol_table_s::sym_set_value(const char*key, symbol_value_t val)
 {
-      if (root->count == 0) {
+      если (root->count == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
@@ -358,7 +358,7 @@ void symbol_table_s::sym_set_value(const char*key, symbol_value_t val)
 
 	    root->count = 1;
 	    root->child[0] = cur;
-      } else {
+      } иначе {
 	    find_value_(root, key, val, true);
       }
 }
@@ -368,7 +368,7 @@ symbol_value_t symbol_table_s::sym_get_value(const char*key)
       symbol_value_t def;
       def.ptr = 0;
 
-      if (root->count == 0) {
+      если (root->count == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
@@ -381,16 +381,16 @@ symbol_value_t symbol_table_s::sym_get_value(const char*key)
 
 	    root->count = 1;
 	    root->child[0] = cur;
-	    return cur->leaf[0].val;
-      } else {
-	    return find_value_(root, key, def, false);
+	    вернуть cur->leaf[0].val;
+      } иначе {
+	    вернуть find_value_(root, key, def, false);
       }
 }
 
 symbol_table_s::~symbol_table_s()
 {
       delete_symbol_node(root);
-      while (str_chunk) {
+      пока (str_chunk) {
 	    key_strings*tmp = str_chunk;
 	    str_chunk = tmp->next;
 	    delete tmp;
