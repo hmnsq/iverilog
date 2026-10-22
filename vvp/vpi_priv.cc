@@ -36,65 +36,65 @@
 # include  <cmath>
 # include  <iostream>
 
-using namespace std;
+using നാമാകാശ std;
 vpi_mode_t vpi_mode_flag = VPI_MODE_NONE;
 FILE*vpi_trace = 0;
 
-static s_vpi_vlog_info  vpi_vlog_info;
-static s_vpi_error_info vpip_last_error = { 0, 0, 0, 0, 0, 0, 0 };
+സ്ഥിതം s_vpi_vlog_info  vpi_vlog_info;
+സ്ഥിതം s_vpi_error_info vpip_last_error = { 0, 0, 0, 0, 0, 0, 0 };
 
-const char* direction_as_string(int dir)
+സ്ഥിരം അക്ഷരം* direction_as_string(പൂർണ്ണസംഖ്യ dir)
 {
-      switch (dir) {
-	  case vpiInput:
-	    return "input";
-	  case vpiOutput:
-	    return "output";
-	  case vpiInout:
-	    return "inout";
-	  case vpiMixedIO:
-	    return "mixed io";
-	  case vpiNoDirection:
-	    return "no direction";
-	  default:
-	    return "INVALID-DIRECTION";
+      തിരഞ്ഞെടുപ്പ് (dir) {
+	  അവസ്ഥ vpi_നിവേശം:
+	    തിരികെ "input";
+	  അവസ്ഥ vpiOutput:
+	    തിരികെ "output";
+	  അവസ്ഥ vpiInout:
+	    തിരികെ "inout";
+	  അവസ്ഥ vpiMixedIO:
+	    തിരികെ "mixed io";
+	  അവസ്ഥ vpiNoDirection:
+	    തിരികെ "no direction";
+	  സ്ഥിരസ്ഥിതി:
+	    തിരികെ "INVALID-DIRECTION";
       }
 }
 
 __vpiHandle::~__vpiHandle()
 { }
 
-int __vpiHandle::vpi_get(int)
-{ return vpiUndefined; }
+പൂർണ്ണസംഖ്യ __vpiHandle::vpi_get(പൂർണ്ണസംഖ്യ)
+{ തിരികെ vpiUndefined; }
 
-int64_t __vpiHandle::vpi_get64(int code)
-{ return (code == _vpiNexusId) ? 0 : vpiUndefined; }
+int64_t __vpiHandle::vpi_get64(പൂർണ്ണസംഖ്യ code)
+{ തിരികെ (code == _vpiNexusId) ? 0 : vpiUndefined; }
 
-char* __vpiHandle::vpi_get_str(int)
-{ return 0; }
+അക്ഷരം* __vpiHandle::vpi_get_str(പൂർണ്ണസംഖ്യ)
+{ തിരികെ 0; }
 
-void __vpiHandle::vpi_get_value(p_vpi_value)
+ശൂന്യം __vpiHandle::vpi_get_മൂല്യം(p_vpi_മൂല്യം)
 { }
 
-vpiHandle __vpiHandle::vpi_put_value(p_vpi_value, int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_put_മൂല്യം(p_vpi_മൂല്യം, പൂർണ്ണസംഖ്യ)
+{ തിരികെ 0; }
 
-vpiHandle __vpiHandle::vpi_handle(int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_handle(പൂർണ്ണസംഖ്യ)
+{ തിരികെ 0; }
 
-vpiHandle __vpiHandle::vpi_iterate(int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_iterate(പൂർണ്ണസംഖ്യ)
+{ തിരികെ 0; }
 
-vpiHandle __vpiHandle::vpi_index(int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_index(പൂർണ്ണസംഖ്യ)
+{ തിരികെ 0; }
 
-void __vpiHandle::vpi_get_delays(p_vpi_delay)
+ശൂന്യം __vpiHandle::vpi_get_delays(p_vpi_delay)
 { }
 
-void __vpiHandle::vpi_put_delays(p_vpi_delay)
+ശൂന്യം __vpiHandle::vpi_put_delays(p_vpi_delay)
 { }
 
-__vpiBaseVar::__vpiBaseVar(__vpiScope*scope, const char*name, vvp_net_t*net)
+__vpiBaseVar::__vpiBaseVar(__vpiScope*scope, സ്ഥിരം അക്ഷരം*name, vvp_net_t*net)
 : scope_(scope), name_(name), net_(net)
 {
 }
@@ -113,134 +113,134 @@ __vpiBaseVar::~__vpiBaseVar()
  * objects will override the free_object_fun method to return an
  * appropriately effective function.
  */
-static int suppress_free(vpiHandle)
-{ return 1; }
-__vpiHandle::free_object_fun_t __vpiHandle::free_object_fun(void)
-{ return &suppress_free; }
+സ്ഥിതം പൂർണ്ണസംഖ്യ suppress_free(vpiHandle)
+{ തിരികെ 1; }
+__vpiHandle::free_object_fun_t __vpiHandle::free_object_fun(ശൂന്യം)
+{ തിരികെ &suppress_free; }
 
 /*
  * The vpip_string function creates a constant string from the pass
  * input. This constant string is permanently allocated from an
  * efficient string buffer store.
  */
-struct vpip_string_chunk {
-      struct vpip_string_chunk*next;
-      char data[64*1024 - sizeof (struct vpip_string_chunk*)];
+ഘടന vpip_string_chunk {
+      ഘടന vpip_string_chunk*next;
+      അക്ഷരം data[64*1024 - വലുപ്പം (ഘടന vpip_string_chunk*)];
 };
 
-unsigned vpip_size(const __vpiSignal *sig)
+unsigned vpip_size(സ്ഥിരം __vpiSignal *sig)
 {
-      return abs(sig->msb.get_value() - sig->lsb.get_value()) + 1;
+      തിരികെ abs(sig->msb.get_മൂല്യം() - sig->lsb.get_മൂല്യം()) + 1;
 }
 
 __vpiScope* vpip_scope(__vpiSignal*sig)
 {
-      if (sig->is_netarray)
-	    return static_cast<__vpiScope*>(vpi_handle(vpiScope,
+      എങ്കിൽ (sig->is_netarray)
+	    തിരികെ static_cast<__vpiScope*>(vpi_handle(vpiScope,
 	                                               sig->within.parent));
-      else
-	    return sig->within.scope;
+      അല്ലെങ്കിൽ
+	    തിരികെ sig->within.scope;
 }
 
 __vpiScope* vpip_scope(__vpiRealVar*sig)
 {
-      if (sig->is_netarray)
-	    return static_cast<__vpiScope*>(vpi_handle(vpiScope,
+      എങ്കിൽ (sig->is_netarray)
+	    തിരികെ static_cast<__vpiScope*>(vpi_handle(vpiScope,
 	                                               sig->within.parent));
-      else
-	    return sig->within.scope;
+      അല്ലെങ്കിൽ
+	    തിരികെ sig->within.scope;
 }
 
 vpiHandle vpip_module(__vpiScope*scope)
 {
-      while(scope && scope->get_type_code() != vpiModule) {
+      ആകുമ്പോൾ(scope && scope->get_type_code() != vpiModule) {
 	    scope = scope->scope;
       }
-      assert(scope);
-      return scope;
+      പ്രതിജ്ഞാ(scope);
+      തിരികെ scope;
 }
 
-const char *vpip_string(const char*str)
+സ്ഥിരം അക്ഷരം *vpip_string(സ്ഥിരം അക്ഷരം*str)
 {
-      static vpip_string_chunk first_chunk = {0, {0}};
-      static vpip_string_chunk*chunk_list = &first_chunk;
-      static unsigned chunk_fill = 0;
+      സ്ഥിതം vpip_string_chunk first_chunk = {0, {0}};
+      സ്ഥിതം vpip_string_chunk*chunk_list = &first_chunk;
+      സ്ഥിതം unsigned chunk_fill = 0;
 
       unsigned len = strlen(str);
-      assert( (len+1) <= sizeof chunk_list->data );
+      പ്രതിജ്ഞാ( (len+1) <= വലുപ്പം chunk_list->data );
 
-      if ( (len+1) > (sizeof chunk_list->data - chunk_fill) ) {
-	    vpip_string_chunk*tmp = new vpip_string_chunk;
+      എങ്കിൽ ( (len+1) > (വലുപ്പം chunk_list->data - chunk_fill) ) {
+	    vpip_string_chunk*tmp = പുതിയ vpip_string_chunk;
 	    tmp->next = chunk_list;
 	    chunk_list = tmp;
 	    chunk_fill = 0;
       }
 
-      char*res = chunk_list->data + chunk_fill;
+      അക്ഷരം*res = chunk_list->data + chunk_fill;
       chunk_fill += len + 1;
 
       strcpy(res, str);
-      return res;
+      തിരികെ res;
 }
 
-static unsigned hash_string(const char*text)
+സ്ഥിതം unsigned hash_string(സ്ഥിരം അക്ഷരം*text)
 {
       unsigned h = 0;
 
-      while (*text) {
+      ആകുമ്പോൾ (*text) {
 	    h = (h << 4) ^ (h >> 28) ^ (unsigned)*text;
 	    text += 1;
       }
-      return h;
+      തിരികെ h;
 }
 
-const char* vpip_name_string(const char*text)
+സ്ഥിരം അക്ഷരം* vpip_name_string(സ്ഥിരം അക്ഷരം*text)
 {
-      const unsigned HASH_SIZE = 4096;
-      static const char*hash_table[HASH_SIZE] = {0};
+      സ്ഥിരം unsigned HASH_SIZE = 4096;
+      സ്ഥിതം സ്ഥിരം അക്ഷരം*hash_table[HASH_SIZE] = {0};
 
-      unsigned hash_value = hash_string(text) % HASH_SIZE;
+      unsigned hash_മൂല്യം = hash_string(text) % HASH_SIZE;
 
 	/* If we easily find the string in the hash table, then return
 	   that and be done. */
-      if (hash_table[hash_value]
-	  && (strcmp(hash_table[hash_value], text) == 0)) {
-	    return hash_table[hash_value];
+      എങ്കിൽ (hash_table[hash_മൂല്യം]
+	  && (strcmp(hash_table[hash_മൂല്യം], text) == 0)) {
+	    തിരികെ hash_table[hash_മൂല്യം];
       }
 
 	/* The existing hash entry is not a match. Replace it with the
 	   newly allocated value, and return the new pointer as the
 	   result to the add. */
-      const char*res = vpip_string(text);
-      hash_table[hash_value] = res;
+      സ്ഥിരം അക്ഷരം*res = vpip_string(text);
+      hash_table[hash_മൂല്യം] = res;
 
-      return res;
+      തിരികെ res;
 }
 
 PLI_INT32 vpi_chk_error(p_vpi_error_info info)
 {
-      if (vpip_last_error.state == 0)
-	    return 0;
+      എങ്കിൽ (vpip_last_error.state == 0)
+	    തിരികെ 0;
 
       info->state = vpip_last_error.state;
       info->level = vpip_last_error.level;
       info->message = vpip_last_error.message;
       info->product = vpi_vlog_info.product;
-      info->code = (char *)"";
+      info->code = (അക്ഷരം *)"";
       info->file = 0;
-      info->line = 0;
+      info->വരി = 0;
 
-      return info->level;
+      തിരികെ info->level;
 }
 
 PLI_INT32 vpi_compare_objects(vpiHandle obj1, vpiHandle obj2)
 {
-      assert(obj1);
-      assert(obj2);
+      പ്രതിജ്ഞാ(obj1);
+      പ്രതിജ്ഞാ(obj2);
 
 	// Does this actually work for all cases?
-      if (obj1 != obj2) return 0;
-      else return 1;
+      എങ്കിൽ (obj1 != obj2) തിരികെ 0;
+      അല്ലെങ്കിൽ തിരികെ 1;
 }
 
 /*
@@ -249,17 +249,17 @@ PLI_INT32 vpi_compare_objects(vpiHandle obj1, vpiHandle obj2)
  * string/data values. We also support passing a task or function handle
  * instead of just a handle to a vpiUserSystf.
  */
-void vpi_get_systf_info(vpiHandle ref, p_vpi_systf_data data)
+ശൂന്യം vpi_get_systf_info(vpiHandle ref, p_vpi_systf_data data)
 {
-      struct __vpiUserSystf* rfp = dynamic_cast<__vpiUserSystf*>(ref);
-      if (rfp == 0) {
-	    struct __vpiSysTaskCall*call = dynamic_cast<__vpiSysTaskCall*>(ref);
-	    assert(call);
+      ഘടന __vpiUserSystf* rfp = dynamic_cast<__vpiUserSystf*>(ref);
+      എങ്കിൽ (rfp == 0) {
+	    ഘടന __vpiSysTaskCall*call = dynamic_cast<__vpiSysTaskCall*>(ref);
+	    പ്രതിജ്ഞാ(call);
 	    rfp = call->defn;
       }
 
 	/* Assert that vpiUserDefn is true! */
-      assert(rfp->is_user_defn);
+      പ്രതിജ്ഞാ(rfp->is_user_defn);
 
       data->type = rfp->info.type;
       data->sysfunctype = rfp->info.sysfunctype;
@@ -274,25 +274,25 @@ void vpi_get_systf_info(vpiHandle ref, p_vpi_systf_data data)
  * When a task is called, this value is set so that vpi_handle can
  * fathom the vpi_handle(vpiSysTfCall,0) function.
  */
-struct __vpiSysTaskCall*vpip_cur_task = 0;
+ഘടന __vpiSysTaskCall*vpip_cur_task = 0;
 
 PLI_INT32 vpi_free_object(vpiHandle ref)
 {
-      int rtn;
+      പൂർണ്ണസംഖ്യ rtn;
 
-      if (vpi_trace) {
+      എങ്കിൽ (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_free_object(%p)", ref);
 	    fflush(vpi_trace);
       }
 
-      assert(ref);
+      പ്രതിജ്ഞാ(ref);
       __vpiHandle::free_object_fun_t fun = ref->free_object_fun();
       rtn = fun (ref);
 
-      if (vpi_trace)
+      എങ്കിൽ (vpi_trace)
 	    fprintf(vpi_trace, " --> %d\n", rtn);
 
-      return rtn;
+      തിരികെ rtn;
 }
 
 PLI_INT32 vpi_release_handle(vpiHandle ref)
@@ -300,402 +300,402 @@ PLI_INT32 vpi_release_handle(vpiHandle ref)
 	// Since SystemVerilog vpi_free_object() has been
 	// renamed vpi_release_handle(), and thus
 	// vpi_free_object() has been deprecated.
-      return vpi_free_object(ref);
+      തിരികെ vpi_free_object(ref);
 }
 
-static int vpip_get_global(int property)
+സ്ഥിതം പൂർണ്ണസംഖ്യ vpip_get_global(പൂർണ്ണസംഖ്യ property)
 {
-      switch (property) {
+      തിരഞ്ഞെടുപ്പ് (property) {
 
-	  case vpiTimeUnit:
-	  case vpiTimePrecision:
-	    return vpip_get_time_precision();
+	  അവസ്ഥ vpiTimeUnit:
+	  അവസ്ഥ vpiTimePrecision:
+	    തിരികെ vpip_get_time_precision();
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vpi error: bad global property: %d\n", property);
-	    assert(0);
-	    return vpiUndefined;
+	    പ്രതിജ്ഞാ(0);
+	    തിരികെ vpiUndefined;
       }
 }
 
-static const char* vpi_property_str(PLI_INT32 code)
+സ്ഥിതം സ്ഥിരം അക്ഷരം* vpi_property_str(PLI_INT32 code)
 {
-      static char buf[32];
-      switch (code) {
-	  case vpiConstType:
-	    return "vpiConstType";
-	  case vpiName:
-	    return "vpiName";
-	  case vpiFullName:
-	    return "vpiFullName";
-	  case vpiTimeUnit:
-	    return "vpiTimeUnit";
-	  case vpiTimePrecision:
-	    return "vpiTimePrecision";
-          case vpiSize:
-	    return "vpiSize";
-          case _vpiNexusId:
-	    return "_vpiNexusId";
-	  default:
-	    snprintf(buf, sizeof(buf), "%d", (int)code);
+      സ്ഥിതം അക്ഷരം buf[32];
+      തിരഞ്ഞെടുപ്പ് (code) {
+	  അവസ്ഥ vpiConstType:
+	    തിരികെ "vpiConstType";
+	  അവസ്ഥ vpiName:
+	    തിരികെ "vpiName";
+	  അവസ്ഥ vpiFullName:
+	    തിരികെ "vpiFullName";
+	  അവസ്ഥ vpiTimeUnit:
+	    തിരികെ "vpiTimeUnit";
+	  അവസ്ഥ vpiTimePrecision:
+	    തിരികെ "vpiTimePrecision";
+          അവസ്ഥ vpiSize:
+	    തിരികെ "vpiSize";
+          അവസ്ഥ _vpiNexusId:
+	    തിരികെ "_vpiNexusId";
+	  സ്ഥിരസ്ഥിതി:
+	    snprintf(buf, വലുപ്പം(buf), "%d", (പൂർണ്ണസംഖ്യ)code);
       }
-      return buf;
+      തിരികെ buf;
 }
 
-const char* vpi_type_as_string(PLI_INT32 code)
+സ്ഥിരം അക്ഷരം* vpi_type_as_string(PLI_INT32 code)
 {
-      static char buf[32];
-      switch (code) {
-	  case vpiArrayType:
-	    return "vpiArrayType";
-	  case vpiBitVar:
-	    return "vpiBitVar";
-	  case vpiByteVar:
-	    return "vpiByteVar";
-	  case vpiClassVar:
-	    return "vpiClassVar";
-	  case vpiConstant:
-	    return "vpiConstant";
-	  case vpiEnumTypespec:
-	    return "vpiEnumTypespec";
-	  case vpiFunction:
-	    return "vpiFunction";
-	  case vpiGenScope:
-	    return "vpiGenScope";
-	  case vpiIntVar:
-	    return "vpiIntVar";
-	  case vpiIntegerVar:
-	    return "vpiIntegerVar";
-	  case vpiIterator:
-	    return "vpiIterator";
-	  case vpiLongIntVar:
-	    return "vpiLongIntVar";
-	  case vpiMemory:
-	    return "vpiMemory";
-	  case vpiMemoryWord:
-	    return "vpiMemoryWord";
-	  case vpiModule:
-	    return "vpiModule";
-	  case vpiNamedBegin:
-	    return "vpiNamedBegin";
-	  case vpiNamedEvent:
-	    return "vpiNamedEvent";
-	  case vpiNamedFork:
-	    return "vpiNamedFork";
-	  case vpiPackage:
-	    return "vpiPackage";
-	  case vpiPathTerm:
-	    return "vpiPathTerm";
-	  case vpiPort:
-	    return "vpiPort";
-	  case vpiNet:
-	    return "vpiNet";
-	  case vpiNetArray:
-	    return "vpiNetArray";
-	  case vpiNetBit:
-	    return "vpiNetBit";
-	  case vpiParameter:
-	    return "vpiParameter";
-	  case vpiPartSelect:
-	    return "vpiPartSelect";
-	  case vpiRealVar:
-	    return "vpiRealVar";
-	  case vpiReg:
-	    return "vpiReg";
-	  case vpiRegBit:
-	    return "vpiRegBit";
-	  case vpiShortIntVar:
-	    return "vpiShortIntVar";
-	  case vpiStringVar:
-	    return "vpiStringVar";
-	  case vpiSysFuncCall:
-	    return "vpiSysFuncCall";
-	  case vpiSysTaskCall:
-	    return "vpiSysTaskCall";
-	  case vpiTask:
-	    return "vpiTask";
-	  case vpiTimeVar:
-	    return "vpiTimeVar";
-	  case vpiUserSystf:
-	    return "vpiUserSystf";
-	  default:
-	    snprintf(buf, sizeof(buf), "%d", (int)code);
+      സ്ഥിതം അക്ഷരം buf[32];
+      തിരഞ്ഞെടുപ്പ് (code) {
+	  അവസ്ഥ vpiArrayType:
+	    തിരികെ "vpiArrayType";
+	  അവസ്ഥ vpiBitVar:
+	    തിരികെ "vpiBitVar";
+	  അവസ്ഥ vpiByteVar:
+	    തിരികെ "vpiByteVar";
+	  അവസ്ഥ vpiClassVar:
+	    തിരികെ "vpiClassVar";
+	  അവസ്ഥ vpiConstant:
+	    തിരികെ "vpiConstant";
+	  അവസ്ഥ vpiEnumTypespec:
+	    തിരികെ "vpiEnumTypespec";
+	  അവസ്ഥ vpiFunction:
+	    തിരികെ "vpiFunction";
+	  അവസ്ഥ vpiGenScope:
+	    തിരികെ "vpiGenScope";
+	  അവസ്ഥ vpiIntVar:
+	    തിരികെ "vpiIntVar";
+	  അവസ്ഥ vpiIntegerVar:
+	    തിരികെ "vpiIntegerVar";
+	  അവസ്ഥ vpiIterator:
+	    തിരികെ "vpiIterator";
+	  അവസ്ഥ vpiLongIntVar:
+	    തിരികെ "vpiLongIntVar";
+	  അവസ്ഥ vpiMemory:
+	    തിരികെ "vpiMemory";
+	  അവസ്ഥ vpiMemoryWord:
+	    തിരികെ "vpiMemoryWord";
+	  അവസ്ഥ vpiModule:
+	    തിരികെ "vpiModule";
+	  അവസ്ഥ vpiNamedBegin:
+	    തിരികെ "vpiNamedBegin";
+	  അവസ്ഥ vpiNamedEvent:
+	    തിരികെ "vpiNamedEvent";
+	  അവസ്ഥ vpiNamedFork:
+	    തിരികെ "vpiNamedFork";
+	  അവസ്ഥ vpiPackage:
+	    തിരികെ "vpiPackage";
+	  അവസ്ഥ vpiPathTerm:
+	    തിരികെ "vpiPathTerm";
+	  അവസ്ഥ vpiPort:
+	    തിരികെ "vpiPort";
+	  അവസ്ഥ vpiNet:
+	    തിരികെ "vpiNet";
+	  അവസ്ഥ vpiNetArray:
+	    തിരികെ "vpiNetArray";
+	  അവസ്ഥ vpiNetBit:
+	    തിരികെ "vpiNetBit";
+	  അവസ്ഥ vpiParameter:
+	    തിരികെ "vpiParameter";
+	  അവസ്ഥ vpiPartSelect:
+	    തിരികെ "vpiPartSelect";
+	  അവസ്ഥ vpiRealVar:
+	    തിരികെ "vpiRealVar";
+	  അവസ്ഥ vpiReg:
+	    തിരികെ "vpiReg";
+	  അവസ്ഥ vpiRegBit:
+	    തിരികെ "vpiRegBit";
+	  അവസ്ഥ vpiShortIntVar:
+	    തിരികെ "vpiShortIntVar";
+	  അവസ്ഥ vpiStringVar:
+	    തിരികെ "vpiStringVar";
+	  അവസ്ഥ vpiSysFuncCall:
+	    തിരികെ "vpiSysFuncCall";
+	  അവസ്ഥ vpiSysTaskCall:
+	    തിരികെ "vpiSysTaskCall";
+	  അവസ്ഥ vpiTask:
+	    തിരികെ "vpiTask";
+	  അവസ്ഥ vpiTimeVar:
+	    തിരികെ "vpiTimeVar";
+	  അവസ്ഥ vpiUserSystf:
+	    തിരികെ "vpiUserSystf";
+	  സ്ഥിരസ്ഥിതി:
+	    snprintf(buf, വലുപ്പം(buf), "%d", (പൂർണ്ണസംഖ്യ)code);
       }
-      return buf;
+      തിരികെ buf;
 }
 
-PLI_INT32 vpi_get(int property, vpiHandle ref)
+PLI_INT32 vpi_get(പൂർണ്ണസംഖ്യ property, vpiHandle ref)
 {
 	/* We don't care what the ref is there is only one delay selection. */
-      if (property == _vpiDelaySelection) return vpip_delay_selection;
+      എങ്കിൽ (property == _vpiDelaySelection) തിരികെ vpip_delay_selection;
 
-      if (ref == 0)
-	    return vpip_get_global(property);
+      എങ്കിൽ (ref == 0)
+	    തിരികെ vpip_get_global(property);
 
-      if (property == vpiType) {
-	    if (vpi_trace) {
+      എങ്കിൽ (property == vpiType) {
+	    എങ്കിൽ (vpi_trace) {
 		  fprintf(vpi_trace, "vpi_get(vpiType, %p) --> %s\n",
 			  ref, vpi_type_as_string(ref->get_type_code()));
 	    }
 
-	    if (ref->get_type_code() == vpiMemory && is_net_array(ref))
-		  return vpiNetArray;
-	    else
-		  return ref->get_type_code();
+	    എങ്കിൽ (ref->get_type_code() == vpiMemory && is_net_array(ref))
+		  തിരികെ vpiNetArray;
+	    അല്ലെങ്കിൽ
+		  തിരികെ ref->get_type_code();
       }
 
-      int res = ref->vpi_get(property);
+      പൂർണ്ണസംഖ്യ res = ref->vpi_get(property);
 
-      if (vpi_trace) {
+      എങ്കിൽ (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_get(%s, %p) --> %d\n",
 		    vpi_property_str(property), ref, res);
       }
 
-      return res;
+      തിരികെ res;
 }
 
-PLI_INT64 vpi_get64(int property, vpiHandle ref)
+PLI_INT64 vpi_get64(പൂർണ്ണസംഖ്യ property, vpiHandle ref)
 {
 	// For now we only support getting the nexus id.
-      if ((ref == 0) || (property != _vpiNexusId)) {
+      എങ്കിൽ ((ref == 0) || (property != _vpiNexusId)) {
 	    fprintf(vpi_trace, "vpi_get64(%s, %p) is not currently supported.\n",
 		    vpi_property_str(property), ref);
-	    return vpiUndefined;
+	    തിരികെ vpiUndefined;
       }
 
       int64_t res = ref->vpi_get64(property);
 
-      if (vpi_trace) {
+      എങ്കിൽ (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_get64(%s, %p) --> %" PRId64 "\n",
 		    vpi_property_str(property), ref, res);
       }
 
-      return res;
+      തിരികെ res;
 }
 
-char* vpi_get_str(PLI_INT32 property, vpiHandle ref)
+അക്ഷരം* vpi_get_str(PLI_INT32 property, vpiHandle ref)
 {
 	/* We don't care what the ref is there is only one delay selection. */
-      if (property == _vpiDelaySelection) {
-	    switch (vpip_delay_selection) {
-		case _vpiDelaySelMinimum:
-		  return simple_set_rbuf_str("MINIMUM");
-		case _vpiDelaySelTypical:
-		  return simple_set_rbuf_str("TYPICAL");
-		case _vpiDelaySelMaximum:
-		  return simple_set_rbuf_str("MAXIMUM");
-		default:
-		  assert(0);
+      എങ്കിൽ (property == _vpiDelaySelection) {
+	    തിരഞ്ഞെടുപ്പ് (vpip_delay_selection) {
+		അവസ്ഥ _vpiDelaySelMinimum:
+		  തിരികെ simple_set_rbuf_str("MINIMUM");
+		അവസ്ഥ _vpiDelaySelTypical:
+		  തിരികെ simple_set_rbuf_str("TYPICAL");
+		അവസ്ഥ _vpiDelaySelMaximum:
+		  തിരികെ simple_set_rbuf_str("MAXIMUM");
+		സ്ഥിരസ്ഥിതി:
+		  പ്രതിജ്ഞാ(0);
 	    }
       }
 
-      if (ref == 0) {
+      എങ്കിൽ (ref == 0) {
 	    fprintf(stderr, "vpi error: vpi_get_str(%s, 0) called "
 		    "with null vpiHandle.\n", vpi_property_str(property));
-	    return 0;
+	    തിരികെ 0;
       }
 
-      if (property == vpiType) {
-	    if (vpi_trace) {
+      എങ്കിൽ (property == vpiType) {
+	    എങ്കിൽ (vpi_trace) {
 		  fprintf(vpi_trace, "vpi_get(vpiType, %p) --> %s\n",
 			  ref, vpi_type_as_string(ref->get_type_code()));
 	    }
 
             PLI_INT32 type;
-	    if (ref->get_type_code() == vpiMemory && is_net_array(ref))
+	    എങ്കിൽ (ref->get_type_code() == vpiMemory && is_net_array(ref))
 		  type = vpiNetArray;
-	    else
+	    അല്ലെങ്കിൽ
 		  type = ref->get_type_code();
-	    return (char *)vpi_type_as_string(type);
+	    തിരികെ (അക്ഷരം *)vpi_type_as_string(type);
       }
 
-      char*res = ref->vpi_get_str(property);
+      അക്ഷരം*res = ref->vpi_get_str(property);
 
-      if (vpi_trace) {
+      എങ്കിൽ (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_get_str(%s, %p) --> %s\n",
 		    vpi_property_str(property), ref, res? res : "<NULL>");
       }
 
-      return res;
+      തിരികെ res;
 }
 
 __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj)
 {
-      const struct __vpiSysTaskCall*task;
-      struct __vpiSignal*signal;
-      struct __vpiRealVar*real;
-      const __vpiNamedEvent*event;
+      സ്ഥിരം ഘടന __vpiSysTaskCall*task;
+      ഘടന __vpiSignal*സൂചന;
+      ഘടന __vpiRealVar*real;
+      സ്ഥിരം __vpiNamedEvent*event;
 
-      switch (obj->get_type_code()) {
-	  case vpiSysTaskCall:
+      തിരഞ്ഞെടുപ്പ് (obj->get_type_code()) {
+	  അവസ്ഥ vpiSysTaskCall:
 	    task = dynamic_cast<__vpiSysTaskCall*>(obj);
-	    return task->scope;
+	    തിരികെ task->scope;
 
-	  case vpiModule:
-	    return dynamic_cast<__vpiScope*>(obj);
+	  അവസ്ഥ vpiModule:
+	    തിരികെ dynamic_cast<__vpiScope*>(obj);
 
-	  case vpiNet:
-	  case vpiReg:
-	  case vpiIntegerVar:
-	  case vpiBitVar:
-	  case vpiByteVar:
-	  case vpiShortIntVar:
-	  case vpiIntVar:
-	  case vpiLongIntVar:
-	    signal = dynamic_cast<__vpiSignal*>(obj);
-	    return vpip_scope(signal);
+	  അവസ്ഥ vpiNet:
+	  അവസ്ഥ vpiReg:
+	  അവസ്ഥ vpiIntegerVar:
+	  അവസ്ഥ vpiBitVar:
+	  അവസ്ഥ vpiByteVar:
+	  അവസ്ഥ vpiShortIntVar:
+	  അവസ്ഥ vpiIntVar:
+	  അവസ്ഥ vpiLongIntVar:
+	    സൂചന = dynamic_cast<__vpiSignal*>(obj);
+	    തിരികെ vpip_scope(സൂചന);
 
-	  case vpiRealVar:
+	  അവസ്ഥ vpiRealVar:
 	    real = dynamic_cast<__vpiRealVar*>(obj);
-	    return vpip_scope(real);
+	    തിരികെ vpip_scope(real);
 
-	  case vpiNamedEvent:
+	  അവസ്ഥ vpiNamedEvent:
 	    event = dynamic_cast<__vpiNamedEvent*>(obj);
-	    return event->get_scope();
+	    തിരികെ event->get_scope();
 
-	  case vpiMemory:
-	  case vpiMemoryWord:
-	  case vpiPartSelect:
-	    return dynamic_cast<__vpiScope*>(obj->vpi_handle(vpiScope));
+	  അവസ്ഥ vpiMemory:
+	  അവസ്ഥ vpiMemoryWord:
+	  അവസ്ഥ vpiPartSelect:
+	    തിരികെ dynamic_cast<__vpiScope*>(obj->vpi_handle(vpiScope));
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "ERROR: vpip_scope_from_handle called with "
 		    "object handle type=%d\n", obj->get_type_code());
-	    assert(0);
-	    return 0;
+	    പ്രതിജ്ഞാ(0);
+	    തിരികെ 0;
       }
 }
 
-int vpip_time_units_from_handle(vpiHandle obj)
+പൂർണ്ണസംഖ്യ vpip_time_units_from_handle(vpiHandle obj)
 {
-      if (obj == 0)
-	    return vpip_get_time_precision();
+      എങ്കിൽ (obj == 0)
+	    തിരികെ vpip_get_time_precision();
 
-      const __vpiScope*scope = vpip_timescale_scope_from_handle(obj);
-      if (scope == 0)
-	    return vpip_get_time_precision();
+      സ്ഥിരം __vpiScope*scope = vpip_timescale_scope_from_handle(obj);
+      എങ്കിൽ (scope == 0)
+	    തിരികെ vpip_get_time_precision();
 
-      return scope->time_units;
+      തിരികെ scope->time_units;
 }
 
-int vpip_time_precision_from_handle(vpiHandle obj)
+പൂർണ്ണസംഖ്യ vpip_time_precision_from_handle(vpiHandle obj)
 {
-      if (obj == 0)
-	    return vpip_get_time_precision();
+      എങ്കിൽ (obj == 0)
+	    തിരികെ vpip_get_time_precision();
 
-      const __vpiScope*scope = vpip_timescale_scope_from_handle(obj);
-      if (scope == 0)
-	    return vpip_get_time_precision();
+      സ്ഥിരം __vpiScope*scope = vpip_timescale_scope_from_handle(obj);
+      എങ്കിൽ (scope == 0)
+	    തിരികെ vpip_get_time_precision();
 
-      return scope->time_precision;
+      തിരികെ scope->time_precision;
 }
 
-double vpip_scaled_time_from_handle(vvp_time64_t time, vpiHandle obj)
+ഇരട്ട vpip_scaled_time_from_handle(vvp_time64_t time, vpiHandle obj)
 {
-      int scale = vpip_get_time_precision() -
+      പൂർണ്ണസംഖ്യ scale = vpip_get_time_precision() -
 	          vpip_time_units_from_handle(obj);
-      if (scale >= 0)
-	    return (double)time * pow(10.0, scale);
-      else
-	    return (double)time / pow(10.0, -scale);
+      എങ്കിൽ (scale >= 0)
+	    തിരികെ (ഇരട്ട)time * pow(10.0, scale);
+      അല്ലെങ്കിൽ
+	    തിരികെ (ഇരട്ട)time / pow(10.0, -scale);
 }
 
-void vpi_get_time(vpiHandle obj, s_vpi_time*vp)
+ശൂന്യം vpi_get_time(vpiHandle obj, s_vpi_time*vp)
 {
       vvp_time64_t time;
 
-      assert(vp);
+      പ്രതിജ്ഞാ(vp);
 
       time = schedule_simtime();
 
-      switch (vp->type) {
-          case vpiSimTime:
-	    vp->high = (time >> 32) & 0xffffffff;
-	    vp->low = time & 0xffffffff;
-	    break;
+      തിരഞ്ഞെടുപ്പ് (vp->type) {
+          അവസ്ഥ vpiSimTime:
+	    vp->മുകളിലെ = (time >> 32) & 0xffffffff;
+	    vp->താഴെയുള്ള = time & 0xffffffff;
+	    നിർത്തുക;
 
-          case vpiScaledRealTime:
+          അവസ്ഥ vpiScaledRealTime:
 	    vp->real = vpip_scaled_time_from_handle(time, obj);
-	    break;
+	    നിർത്തുക;
 
-          default:
-            fprintf(stderr, "vpi_get_time: unknown type: %d\n", (int)vp->type);
-            assert(0);
-	    break;
+          സ്ഥിരസ്ഥിതി:
+            fprintf(stderr, "vpi_get_time: unknown type: %d\n", (പൂർണ്ണസംഖ്യ)vp->type);
+            പ്രതിജ്ഞാ(0);
+	    നിർത്തുക;
       }
 }
 
 PLI_INT32 vpi_get_vlog_info(p_vpi_vlog_info vlog_info_p)
 {
-    if (vlog_info_p != 0) {
+    എങ്കിൽ (vlog_info_p != 0) {
 	  *vlog_info_p = vpi_vlog_info;
-	  return 1;
-    } else {
-	  return 0;
+	  തിരികെ 1;
+    } അല്ലെങ്കിൽ {
+	  തിരികെ 0;
     }
 }
 
-void vpi_set_vlog_info(int argc, char** argv)
+ശൂന്യം vpi_set_vlog_info(പൂർണ്ണസംഖ്യ argc, അക്ഷരം** argv)
 {
-    static char icarus_product[] = "Icarus Verilog";
-    static char icarus_version[] = VERSION;
+    സ്ഥിതം അക്ഷരം icarus_product[] = "Icarus Verilog";
+    സ്ഥിതം അക്ഷരം icarus_version[] = VERSION;
     vpi_vlog_info.product = icarus_product;
     vpi_vlog_info.version = icarus_version;
     vpi_vlog_info.argc    = argc;
     vpi_vlog_info.argv    = argv;
 
-    static char trace_buf[1024];
-    if (const char*path = getenv("VPI_TRACE"))  {
-	  if (!strcmp(path,"-"))
+    സ്ഥിതം അക്ഷരം trace_buf[1024];
+    എങ്കിൽ (സ്ഥിരം അക്ഷരം*path = getenv("VPI_TRACE"))  {
+	  എങ്കിൽ (!strcmp(path,"-"))
 		vpi_trace = stdout;
-	  else {
+	  അല്ലെങ്കിൽ {
 		vpi_trace = fopen(path, "w");
-		if (!vpi_trace) {
+		എങ്കിൽ (!vpi_trace) {
 		      perror(path);
 		      exit(1);
 		}
-		setvbuf(vpi_trace, trace_buf, _IOLBF, sizeof(trace_buf));
+		setvbuf(vpi_trace, trace_buf, _IOLBF, വലുപ്പം(trace_buf));
 	  }
     }
 }
 
-static void vec4_get_value_string(const vvp_vector4_t&word_val, unsigned width,
-				  s_vpi_value*vp)
+സ്ഥിതം ശൂന്യം vec4_get_മൂല്യം_string(സ്ഥിരം vvp_vector4_t&word_val, unsigned width,
+				  s_vpi_മൂല്യം*vp)
 {
       unsigned nchar = width / 8;
       unsigned tail = width % 8;
 
-      char*rbuf = static_cast<char *>(need_result_buf(nchar + 1, RBUF_VAL));
-      char*cp = rbuf;
+      അക്ഷരം*rbuf = static_cast<അക്ഷരം *>(need_result_buf(nchar + 1, RBUF_VAL));
+      അക്ഷരം*cp = rbuf;
 
-      if (tail > 0) {
-	    char char_val = 0;
-	    for (unsigned idx = width-tail; idx < width ;  idx += 1) {
+      എങ്കിൽ (tail > 0) {
+	    അക്ഷരം char_val = 0;
+	    വേണ്ടി (unsigned idx = width-tail; idx < width ;  idx += 1) {
 		  vvp_bit4_t val = word_val.value(idx);
-		  if (val == BIT4_1)
+		  എങ്കിൽ (val == BIT4_1)
 			char_val |= 1 << idx;
 	    }
 
-	    if (char_val != 0)
+	    എങ്കിൽ (char_val != 0)
 		  *cp++ = char_val;
-	    else if (cp != rbuf)
+	    അല്ലെങ്കിൽ എങ്കിൽ (cp != rbuf)
 		  *cp++ = ' ';
       }
 
-      for (unsigned idx = 0 ;  idx < nchar ;  idx += 1) {
+      വേണ്ടി (unsigned idx = 0 ;  idx < nchar ;  idx += 1) {
 	    unsigned bit = (nchar - idx - 1) * 8;
-	    char char_val = 0;
-	    for (unsigned bdx = 0 ;  bdx < 8 ;  bdx += 1) {
+	    അക്ഷരം char_val = 0;
+	    വേണ്ടി (unsigned bdx = 0 ;  bdx < 8 ;  bdx += 1) {
 		  vvp_bit4_t val = word_val.value(bit+bdx);
-		  if (val == BIT4_1)
+		  എങ്കിൽ (val == BIT4_1)
 			char_val |= 1 << bdx;
 	    }
 	    // Ignore leading null-bytes and replace other null-bytes with space.
 	    // The LRM is not entirely clear on how null bytes should be handled.
 	    // This is the implementation chosen for iverilog.
-	    if (char_val != 0)
+	    എങ്കിൽ (char_val != 0)
 		  *cp++ = char_val;
-	    else if (cp != rbuf)
+	    അല്ലെങ്കിൽ എങ്കിൽ (cp != rbuf)
 		  *cp++ = ' ';
       }
 
@@ -709,182 +709,182 @@ static void vec4_get_value_string(const vvp_vector4_t&word_val, unsigned width,
  * value pointer. The width is the real width of the word, in case the
  * word_val width is not accurate.
  */
-void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
-			 bool signed_flag, s_vpi_value*vp)
+ശൂന്യം vpip_vec4_get_മൂല്യം(സ്ഥിരം vvp_vector4_t&word_val, unsigned width,
+			 തർക്കം signed_flag, s_vpi_മൂല്യം*vp)
 {
-      char *rbuf = 0;
+      അക്ഷരം *rbuf = 0;
 
-      switch (vp->format) {
-	  default:
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting vector values.\n", (int)vp->format);
-	    assert(0);
+	                    "getting vector values.\n", (പൂർണ്ണസംഖ്യ)vp->format);
+	    പ്രതിജ്ഞാ(0);
 
-	  case vpiSuppressVal:
-	    break;
+	  അവസ്ഥ vpiSuppressVal:
+	    നിർത്തുക;
 
-	  case vpiBinStrVal:
-	    rbuf = static_cast<char *>(need_result_buf(width+1, RBUF_VAL));
-	    for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
+	  അവസ്ഥ vpiBinStrVal:
+	    rbuf = static_cast<അക്ഷരം *>(need_result_buf(width+1, RBUF_VAL));
+	    വേണ്ടി (unsigned idx = 0 ;  idx < width ;  idx += 1) {
 		  vvp_bit4_t bit = word_val.value(idx);
 		  rbuf[width-idx-1] = vvp_bit4_to_ascii(bit);
 	    }
 	    rbuf[width] = 0;
 	    vp->value.str = rbuf;
-	    break;
+	    നിർത്തുക;
 
-	  case vpiOctStrVal: {
+	  അവസ്ഥ vpiOctStrVal: {
 		unsigned hwid = ((width+2) / 3) + 1;
-		rbuf = static_cast<char *>(need_result_buf(hwid, RBUF_VAL));
+		rbuf = static_cast<അക്ഷരം *>(need_result_buf(hwid, RBUF_VAL));
 		vpip_vec4_to_oct_str(word_val, rbuf, hwid);
 		vp->value.str = rbuf;
-		break;
+		നിർത്തുക;
 	  }
 
-	  case vpiDecStrVal: {
+	  അവസ്ഥ vpiDecStrVal: {
 // HERE need a better estimate.
-		rbuf = static_cast<char *>(need_result_buf(width+1, RBUF_VAL));
+		rbuf = static_cast<അക്ഷരം *>(need_result_buf(width+1, RBUF_VAL));
 		vpip_vec4_to_dec_str(word_val, rbuf, width+1, signed_flag);
 		vp->value.str = rbuf;
-		break;
+		നിർത്തുക;
 	  }
 
-	  case vpiHexStrVal: {
+	  അവസ്ഥ vpiHexStrVal: {
 		unsigned  hwid = ((width + 3) / 4) + 1;
-		rbuf = static_cast<char *>(need_result_buf(hwid, RBUF_VAL));
+		rbuf = static_cast<അക്ഷരം *>(need_result_buf(hwid, RBUF_VAL));
 		vpip_vec4_to_hex_str(word_val, rbuf, hwid);
 		vp->value.str = rbuf;
-		break;
+		നിർത്തുക;
 	  }
 
-          case vpiScalarVal: {
+          അവസ്ഥ vpiScalarVal: {
 	        // scalars should be of size 1
-	        assert(width == 1);
-	        switch(word_val.value(0)) {
-		    case BIT4_0:
+	        പ്രതിജ്ഞാ(width == 1);
+	        തിരഞ്ഞെടുപ്പ്(word_val.value(0)) {
+		    അവസ്ഥ BIT4_0:
 		      vp->value.scalar = vpi0;
-		      break;
-	            case BIT4_1:
+		      നിർത്തുക;
+	            അവസ്ഥ BIT4_1:
                       vp->value.scalar = vpi1;
-                      break;
-	            case BIT4_X:
+                      നിർത്തുക;
+	            അവസ്ഥ BIT4_X:
                       vp->value.scalar = vpiX;
-                      break;
-	            case BIT4_Z:
+                      നിർത്തുക;
+	            അവസ്ഥ BIT4_Z:
                       vp->value.scalar = vpiZ;
-                      break;
+                      നിർത്തുക;
 		}
-                break;
+                നിർത്തുക;
           }
 
-	  case vpiIntVal: {
+	  അവസ്ഥ vpiIntVal: {
 		long val = 0;
 		vvp_bit4_t pad = BIT4_0;
-		if (signed_flag && word_val.size() > 0)
+		എങ്കിൽ (signed_flag && word_val.size() > 0)
 		      pad = word_val.value(word_val.size()-1);
 
-		for (unsigned idx = 0 ; idx < 8*sizeof(val) ;  idx += 1) {
+		വേണ്ടി (unsigned idx = 0 ; idx < 8*വലുപ്പം(val) ;  idx += 1) {
 		      vvp_bit4_t val4 = pad;
-		      if (idx < word_val.size())
+		      എങ്കിൽ (idx < word_val.size())
 			    val4 = word_val.value(idx);
-		      if (val4 == BIT4_1)
+		      എങ്കിൽ (val4 == BIT4_1)
 			    val |= 1L << idx;
 		}
 
 		vp->value.integer = val;
-		break;
+		നിർത്തുക;
 	  }
 
-	  case vpiObjTypeVal:
+	  അവസ്ഥ vpiObjTypeVal:
 	    // Use the following case to actually set the value!
 	    vp->format = vpiVectorVal;
 	    // fallthrough
-	  case vpiVectorVal: {
+	  അവസ്ഥ vpiVectorVal: {
 		unsigned hwid = (width + 31)/32;
 
 		s_vpi_vecval *op = static_cast<p_vpi_vecval>
-		                   (need_result_buf(hwid * sizeof(s_vpi_vecval), RBUF_VAL));
+		                   (need_result_buf(hwid * വലുപ്പം(s_vpi_vecval), RBUF_VAL));
 		vp->value.vector = op;
 
 		op->aval = op->bval = 0;
-		for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
-		      switch (word_val.value(idx)) {
-			  case BIT4_0:
+		വേണ്ടി (unsigned idx = 0 ;  idx < width ;  idx += 1) {
+		      തിരഞ്ഞെടുപ്പ് (word_val.value(idx)) {
+			  അവസ്ഥ BIT4_0:
 			    op->aval &= ~(1 << idx % 32);
 			    op->bval &= ~(1 << idx % 32);
-			    break;
-			  case BIT4_1:
+			    നിർത്തുക;
+			  അവസ്ഥ BIT4_1:
 			    op->aval |=  (1 << idx % 32);
 			    op->bval &= ~(1 << idx % 32);
-			    break;
-			  case BIT4_X:
+			    നിർത്തുക;
+			  അവസ്ഥ BIT4_X:
 			    op->aval |= (1 << idx % 32);
 			    op->bval |= (1 << idx % 32);
-			    break;
-			  case BIT4_Z:
+			    നിർത്തുക;
+			  അവസ്ഥ BIT4_Z:
 			    op->aval &= ~(1 << idx % 32);
 			    op->bval |=  (1 << idx % 32);
-			    break;
+			    നിർത്തുക;
 		      }
-		      if (!((idx+1) % 32) && (idx+1 < width)) {
+		      എങ്കിൽ (!((idx+1) % 32) && (idx+1 < width)) {
 			    op++;
 			    op->aval = op->bval = 0;
 		      }
 		}
-		break;
+		നിർത്തുക;
 	  }
 
-	  case vpiStringVal:
-		vec4_get_value_string(word_val, width, vp);
-		break;
+	  അവസ്ഥ vpiStringVal:
+		vec4_get_മൂല്യം_string(word_val, width, vp);
+		നിർത്തുക;
 
-	  case vpiRealVal:
-		vector4_to_value(word_val, vp->value.real, signed_flag);
-		break;
+	  അവസ്ഥ vpiRealVal:
+		vector4_to_മൂല്യം(word_val, vp->value.real, signed_flag);
+		നിർത്തുക;
       }
 }
 
-void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
-			 bool signed_flag, s_vpi_value*vp)
+ശൂന്യം vpip_vec2_get_മൂല്യം(സ്ഥിരം vvp_vector2_t&word_val, unsigned width,
+			 തർക്കം signed_flag, s_vpi_മൂല്യം*vp)
 {
-      switch (vp->format) {
-	  default:
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting vector2 values.\n", (int)vp->format);
-	    assert(0);
+	                    "getting vector2 values.\n", (പൂർണ്ണസംഖ്യ)vp->format);
+	    പ്രതിജ്ഞാ(0);
 
-	  case vpiSuppressVal:
-	    break;
+	  അവസ്ഥ vpiSuppressVal:
+	    നിർത്തുക;
 
-	  case vpiIntVal:
-	    vector2_to_value(word_val, vp->value.integer, signed_flag);
-	    break;
+	  അവസ്ഥ vpiIntVal:
+	    vector2_to_മൂല്യം(word_val, vp->value.integer, signed_flag);
+	    നിർത്തുക;
 
-	  case vpiObjTypeVal:
+	  അവസ്ഥ vpiObjTypeVal:
 	    vp->format = vpiVectorVal;
 	    // fallthrough
-	  case vpiVectorVal: {
+	  അവസ്ഥ vpiVectorVal: {
 		unsigned hwid = (width + 31)/32;
 
 		s_vpi_vecval *op = static_cast<p_vpi_vecval>
-		                   (need_result_buf(hwid * sizeof(s_vpi_vecval), RBUF_VAL));
+		                   (need_result_buf(hwid * വലുപ്പം(s_vpi_vecval), RBUF_VAL));
 		vp->value.vector = op;
 
 		op->aval = op->bval = 0;
-		for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
-		      if (word_val.value(idx)) {
+		വേണ്ടി (unsigned idx = 0 ;  idx < width ;  idx += 1) {
+		      എങ്കിൽ (word_val.value(idx)) {
 			    op->aval |=  (1 << idx % 32);
 			    op->bval &= ~(1 << idx % 32);
-		      } else {
+		      } അല്ലെങ്കിൽ {
 			    op->aval &= ~(1 << idx % 32);
 			    op->bval &= ~(1 << idx % 32);
 		      }
-		      if (!((idx+1) % 32) && (idx+1 < width)) {
+		      എങ്കിൽ (!((idx+1) % 32) && (idx+1 < width)) {
 			    op++;
 			    op->aval = op->bval = 0;
 		      }
 		}
-		break;
+		നിർത്തുക;
 	  }
       }
 
@@ -893,20 +893,20 @@ void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
 /*
  * Convert a real value to the appropriate integer.
  */
-static PLI_INT32 get_real_as_int(double real)
+സ്ഥിതം PLI_INT32 get_real_as_int(ഇരട്ട real)
 {
-      double rtn;
+      ഇരട്ട rtn;
 
 	/* We would normally want to return 'bx for a NaN or
 	 * +/- infinity, but for an integer the standard says
 	 * to convert 'bx to 0, so we just return 0. */
-      if (real != real || (real && (real == 0.5*real))) {
-	    return 0;
+      എങ്കിൽ (real != real || (real && (real == 0.5*real))) {
+	    തിരികെ 0;
       }
 
       rtn = std::round(real);
 
-      return (PLI_INT32) rtn;
+      തിരികെ (PLI_INT32) rtn;
 }
 
 /*
@@ -914,383 +914,383 @@ static PLI_INT32 get_real_as_int(double real)
  * vpi_value structure. The format is selected by the format of the
  * value pointer.
  */
-void vpip_real_get_value(double real, s_vpi_value*vp)
+ശൂന്യം vpip_real_get_മൂല്യം(ഇരട്ട real, s_vpi_മൂല്യം*vp)
 {
-      char *rbuf = 0;
+      അക്ഷരം *rbuf = 0;
 
-      switch (vp->format) {
-	  default:
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting real values.\n", (int)vp->format);
-	    assert(0);
+	                    "getting real values.\n", (പൂർണ്ണസംഖ്യ)vp->format);
+	    പ്രതിജ്ഞാ(0);
 
-	  case vpiSuppressVal:
-	    break;
+	  അവസ്ഥ vpiSuppressVal:
+	    നിർത്തുക;
 
-	  case vpiObjTypeVal:
+	  അവസ്ഥ vpiObjTypeVal:
 	    // Use the following case to actually set the value!
 	    vp->format = vpiRealVal;
 	    // fallthrough
-	  case vpiRealVal:
+	  അവസ്ഥ vpiRealVal:
 	    vp->value.real = real;
-	    break;
+	    നിർത്തുക;
 
-	  case vpiIntVal:
+	  അവസ്ഥ vpiIntVal:
 	    vp->value.integer = get_real_as_int(real);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiDecStrVal:
-	    rbuf = static_cast<char *>(need_result_buf(1025, RBUF_VAL));
-	    vpip_vec4_to_dec_str(vvp_vector4_t(1024, real), rbuf, 1025, true);
+	  അവസ്ഥ vpiDecStrVal:
+	    rbuf = static_cast<അക്ഷരം *>(need_result_buf(1025, RBUF_VAL));
+	    vpip_vec4_to_dec_str(vvp_vector4_t(1024, real), rbuf, 1025, സത്യം);
 	    vp->value.str = rbuf;
-	    break;
+	    നിർത്തുക;
       }
 }
 
-double real_from_vpi_value(s_vpi_value*vp)
+ഇരട്ട real_from_vpi_മൂല്യം(s_vpi_മൂല്യം*vp)
 {
       vvp_vector4_t vec4(1024);
-      double result;
-      bool is_signed = false;
+      ഇരട്ട result;
+      തർക്കം is_signed = അസത്യം;
 
-      switch (vp->format) {
-	  default:
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "putting real values.\n", (int)vp->format);
-	    assert(0);
+	                    "putting real values.\n", (പൂർണ്ണസംഖ്യ)vp->format);
+	    പ്രതിജ്ഞാ(0);
 
-	  case vpiRealVal:
+	  അവസ്ഥ vpiRealVal:
 	    result = vp->value.real;
-	    break;
+	    നിർത്തുക;
 
-	  case vpiIntVal:
-	    result = (double) vp->value.integer;
-	    break;
+	  അവസ്ഥ vpiIntVal:
+	    result = (ഇരട്ട) vp->value.integer;
+	    നിർത്തുക;
 
-	  case vpiBinStrVal:
+	  അവസ്ഥ vpiBinStrVal:
 	    vpip_bin_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
-	    vector4_to_value(vec4, result, is_signed);
-	    break;
+	    എങ്കിൽ (vp->value.str[0] == '-') is_signed = സത്യം;
+	    vector4_to_മൂല്യം(vec4, result, is_signed);
+	    നിർത്തുക;
 
-	  case vpiOctStrVal:
+	  അവസ്ഥ vpiOctStrVal:
 	    vpip_oct_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
-	    vector4_to_value(vec4, result, is_signed);
-	    break;
+	    എങ്കിൽ (vp->value.str[0] == '-') is_signed = സത്യം;
+	    vector4_to_മൂല്യം(vec4, result, is_signed);
+	    നിർത്തുക;
 
-	  case vpiDecStrVal:
+	  അവസ്ഥ vpiDecStrVal:
 	    vpip_dec_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
-	    vector4_to_value(vec4, result, is_signed);
-	    break;
+	    എങ്കിൽ (vp->value.str[0] == '-') is_signed = സത്യം;
+	    vector4_to_മൂല്യം(vec4, result, is_signed);
+	    നിർത്തുക;
 
-	  case vpiHexStrVal:
+	  അവസ്ഥ vpiHexStrVal:
 	    vpip_hex_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
-	    vector4_to_value(vec4, result, is_signed);
-	    break;
+	    എങ്കിൽ (vp->value.str[0] == '-') is_signed = സത്യം;
+	    vector4_to_മൂല്യം(vec4, result, is_signed);
+	    നിർത്തുക;
 
       }
 
-      return result;
+      തിരികെ result;
 }
 
-void vpip_string_get_value(const string&val, s_vpi_value*vp)
+ശൂന്യം vpip_string_get_മൂല്യം(സ്ഥിരം string&val, s_vpi_മൂല്യം*vp)
 {
-      char *rbuf = 0;
+      അക്ഷരം *rbuf = 0;
 
-      switch (vp->format) {
-	  default:
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting string values.\n", (int)vp->format);
-	    assert(0);
+	                    "getting string values.\n", (പൂർണ്ണസംഖ്യ)vp->format);
+	    പ്രതിജ്ഞാ(0);
 
-	  case vpiSuppressVal:
-	    break;
+	  അവസ്ഥ vpiSuppressVal:
+	    നിർത്തുക;
 
-	  case vpiObjTypeVal:
+	  അവസ്ഥ vpiObjTypeVal:
 	    // Use the following case to actually set the value!
 	    vp->format = vpiStringVal;
 	    // fallthrough
-	  case vpiStringVal:
-	    rbuf = static_cast<char *>(need_result_buf(val.size() + 1, RBUF_VAL));
+	  അവസ്ഥ vpiStringVal:
+	    rbuf = static_cast<അക്ഷരം *>(need_result_buf(val.size() + 1, RBUF_VAL));
 	    strcpy(rbuf, val.c_str());
 	    vp->value.str = rbuf;
-	    break;
+	    നിർത്തുക;
       }
 }
 
 
-void vpi_get_value(vpiHandle expr, s_vpi_value*vp)
+ശൂന്യം vpi_get_മൂല്യം(vpiHandle വ്യഞ്ജകം, s_vpi_മൂല്യം*vp)
 {
-      assert(expr);
-      assert(vp);
+      പ്രതിജ്ഞാ(വ്യഞ്ജകം);
+      പ്രതിജ്ഞാ(vp);
 
 	// Never bother with suppressed values. All the derived
 	// classes can ignore this type.
-      if (vp->format == vpiSuppressVal)
-	    return;
+      എങ്കിൽ (vp->format == vpiSuppressVal)
+	    തിരികെ;
 
-      expr->vpi_get_value(vp);
+      വ്യഞ്ജകം->vpi_get_മൂല്യം(vp);
 
-      if (vpi_trace) switch (vp->format) {
-		case vpiStringVal:
+      എങ്കിൽ (vpi_trace) തിരഞ്ഞെടുപ്പ് (vp->format) {
+		അവസ്ഥ vpiStringVal:
 		  fprintf(vpi_trace,"vpi_get_value(%p=<%d>) -> string=\"%s\"\n",
-			  expr, expr->get_type_code(), vp->value.str);
-		  break;
+			  വ്യഞ്ജകം, വ്യഞ്ജകം->get_type_code(), vp->value.str);
+		  നിർത്തുക;
 
-		case vpiBinStrVal:
+		അവസ്ഥ vpiBinStrVal:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> binstr=%s\n",
-			  expr->get_type_code(), vp->value.str);
-		  break;
+			  വ്യഞ്ജകം->get_type_code(), vp->value.str);
+		  നിർത്തുക;
 
-		case vpiIntVal:
+		അവസ്ഥ vpiIntVal:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> int=%d\n",
-			  expr->get_type_code(), (int)vp->value.integer);
-		  break;
+			  വ്യഞ്ജകം->get_type_code(), (പൂർണ്ണസംഖ്യ)vp->value.integer);
+		  നിർത്തുക;
 
-		case vpiSuppressVal:
+		അവസ്ഥ vpiSuppressVal:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> <suppress>\n",
-			  expr->get_type_code());
-		  break;
+			  വ്യഞ്ജകം->get_type_code());
+		  നിർത്തുക;
 
-		default:
+		സ്ഥിരസ്ഥിതി:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> <%d>=?\n",
-			  expr->get_type_code(), (int)vp->format);
+			  വ്യഞ്ജകം->get_type_code(), (പൂർണ്ണസംഖ്യ)vp->format);
 	    }
 }
 
-struct vpip_put_value_event : vvp_gen_event_s {
+ഘടന vpip_put_മൂല്യം_event : vvp_gen_event_s {
       vpiHandle handle;
-      s_vpi_value value;
-      int flags;
-      virtual void run_run() override;
-      ~vpip_put_value_event() override { }
+      s_vpi_മൂല്യം value;
+      പൂർണ്ണസംഖ്യ flags;
+      മായാ ശൂന്യം run_run() override;
+      ~vpip_put_മൂല്യം_event() override { }
 };
 
-void vpip_put_value_event::run_run()
+ശൂന്യം vpip_put_മൂല്യം_event::run_run()
 {
-      handle->vpi_put_value(&value, flags);
-      switch (value.format) {
+      handle->vpi_put_മൂല്യം(&value, flags);
+      തിരഞ്ഞെടുപ്പ് (value.format) {
 	    /* Free the copied string. */
-	  case vpiBinStrVal:
-	  case vpiOctStrVal:
-	  case vpiDecStrVal:
-	  case vpiHexStrVal:
-	  case vpiStringVal:
-	    free(value.value.str);
-	    break;
+	  അവസ്ഥ vpiBinStrVal:
+	  അവസ്ഥ vpiOctStrVal:
+	  അവസ്ഥ vpiDecStrVal:
+	  അവസ്ഥ vpiHexStrVal:
+	  അവസ്ഥ vpiStringVal:
+	    സ്വതന്ത്രം(value.value.str);
+	    നിർത്തുക;
 	    /* Free the copied time structure. */
-	  case vpiTimeVal:
-	    free(value.value.time);
-	    break;
+	  അവസ്ഥ vpiTimeVal:
+	    സ്വതന്ത്രം(value.value.time);
+	    നിർത്തുക;
 	    /* Free the copied vector structure. */
-	  case vpiVectorVal:
-	    free(value.value.vector);
-	    break;
+	  അവസ്ഥ vpiVectorVal:
+	    സ്വതന്ത്രം(value.value.vector);
+	    നിർത്തുക;
 	    /* Free the copied strength structure. */
-	  case vpiStrengthVal:
-	    free(value.value.strength);
-	    break;
+	  അവസ്ഥ vpiStrengthVal:
+	    സ്വതന്ത്രം(value.value.strength);
+	    നിർത്തുക;
 	    /* Everything else is static in the structure. */
-	  default:
-	    break;
+	  സ്ഥിരസ്ഥിതി:
+	    നിർത്തുക;
       }
 }
 
 /* Make a copy of a pointer to a time structure. */
-static t_vpi_time *timedup(const t_vpi_time *val)
+സ്ഥിതം t_vpi_time *timedup(സ്ഥിരം t_vpi_time *val)
 {
       t_vpi_time *rtn;
-      rtn = static_cast<t_vpi_time *> (malloc(sizeof(t_vpi_time)));
+      rtn = static_cast<t_vpi_time *> (malloc(വലുപ്പം(t_vpi_time)));
       *rtn = *val;
-      return rtn;
+      തിരികെ rtn;
 }
 
 /* Make a copy of a pointer to a vector value structure. */
-static t_vpi_vecval *vectordup(const t_vpi_vecval *val, PLI_INT32 size)
+സ്ഥിതം t_vpi_vecval *vectordup(സ്ഥിരം t_vpi_vecval *val, PLI_INT32 size)
 {
-      unsigned num_bytes;
+      unsigned അക്കം_bytes;
       t_vpi_vecval *rtn;
-      assert(size > 0);
-      num_bytes = ((size + 31)/32)*sizeof(t_vpi_vecval);
-      rtn = static_cast<t_vpi_vecval *> (malloc(num_bytes));
-      memcpy(rtn, val, num_bytes);
-      return rtn;
+      പ്രതിജ്ഞാ(size > 0);
+      അക്കം_bytes = ((size + 31)/32)*വലുപ്പം(t_vpi_vecval);
+      rtn = static_cast<t_vpi_vecval *> (malloc(അക്കം_bytes));
+      memcpy(rtn, val, അക്കം_bytes);
+      തിരികെ rtn;
 }
 
 /* Make a copy of a pointer to a strength structure. */
-static t_vpi_strengthval *strengthdup(const t_vpi_strengthval *val)
+സ്ഥിതം t_vpi_strengthval *strengthdup(സ്ഥിരം t_vpi_strengthval *val)
 {
       t_vpi_strengthval *rtn;
       rtn = static_cast<t_vpi_strengthval *>
-            (malloc(sizeof(t_vpi_strengthval)));
+            (malloc(വലുപ്പം(t_vpi_strengthval)));
       *rtn = *val;
-      return rtn;
+      തിരികെ rtn;
 }
 
-vpiHandle vpi_put_value(vpiHandle obj, s_vpi_value*vp,
+vpiHandle vpi_put_മൂല്യം(vpiHandle obj, s_vpi_മൂല്യം*vp,
 			s_vpi_time*when, PLI_INT32 flags)
 {
-      assert(obj);
+      പ്രതിജ്ഞാ(obj);
 
       flags &= ~vpiReturnEvent;
 
-      if (flags!=vpiNoDelay && flags!=vpiForceFlag && flags!=vpiReleaseFlag) {
+      എങ്കിൽ (flags!=vpiNoDelay && flags!=vpiForceFlag && flags!=vpiReleaseFlag) {
 	    vvp_time64_t dly;
-	    int scale;
+	    പൂർണ്ണസംഖ്യ scale;
 
-	    if (vpi_get(vpiAutomatic, obj)) {
+	    എങ്കിൽ (vpi_get(vpiAutomatic, obj)) {
 		  fprintf(stderr, "VPI error: cannot put a value with "
 				  "a delay on automatically allocated "
 				  "variable '%s'.\n",
 				  vpi_get_str(vpiName, obj));
-		  return 0;
+		  തിരികെ 0;
 	    }
 
-	    assert(when != 0);
+	    പ്രതിജ്ഞാ(when != 0);
 
-	    switch (when->type) {
-		case vpiScaledRealTime:
+	    തിരഞ്ഞെടുപ്പ് (when->type) {
+		അവസ്ഥ vpiScaledRealTime:
 		  scale = vpip_time_units_from_handle(obj) -
 		          vpip_get_time_precision();
-		  if (scale >= 0) {
+		  എങ്കിൽ (scale >= 0) {
 			dly = (vvp_time64_t)(when->real * pow(10.0, scale));
-		  } else {
+		  } അല്ലെങ്കിൽ {
 			dly = (vvp_time64_t)(when->real / pow(10.0, -scale));
 		  }
-		  break;
-		case vpiSimTime:
+		  നിർത്തുക;
+		അവസ്ഥ vpiSimTime:
 		  dly = vpip_timestruct_to_time(when);
-		  break;
-		default:
+		  നിർത്തുക;
+		സ്ഥിരസ്ഥിതി:
 		  dly = 0;
-		  break;
+		  നിർത്തുക;
 	    }
 
-	    if ((dly == 0) && schedule_at_rosync()) {
+	    എങ്കിൽ ((dly == 0) && schedule_at_rosync()) {
 		  fprintf(stderr, "VPI error: attempted to put a value to "
 				  "variable '%s' during a read-only synch "
 				  "callback.\n", vpi_get_str(vpiName, obj));
-		  return 0;
+		  തിരികെ 0;
 	    }
 
-	    vpip_put_value_event*put = new vpip_put_value_event;
+	    vpip_put_മൂല്യം_event*put = പുതിയ vpip_put_മൂല്യം_event;
 	    put->handle = obj;
-	    if (dynamic_cast<__vpiNamedEvent*>(obj)) {
+	    എങ്കിൽ (dynamic_cast<__vpiNamedEvent*>(obj)) {
 		  put->value.format = vpiIntVal;
 		  put->value.value.integer = 0;
-	    } else {
-		  assert(vp);
+	    } അല്ലെങ്കിൽ {
+		  പ്രതിജ്ഞാ(vp);
 		  put->value = *vp;
 	    }
 	      /* Since this is a scheduled put event we must copy any pointer
 	       * data to keep it available until the event is actually run. */
-	    switch (put->value.format) {
+	    തിരഞ്ഞെടുപ്പ് (put->value.format) {
 		  /* Copy the string items. */
-		case vpiBinStrVal:
-		case vpiOctStrVal:
-		case vpiDecStrVal:
-		case vpiHexStrVal:
-		case vpiStringVal:
+		അവസ്ഥ vpiBinStrVal:
+		അവസ്ഥ vpiOctStrVal:
+		അവസ്ഥ vpiDecStrVal:
+		അവസ്ഥ vpiHexStrVal:
+		അവസ്ഥ vpiStringVal:
 		  put->value.value.str = strdup(put->value.value.str);
-		  break;
+		  നിർത്തുക;
 		  /* Copy a time pointer item. */
-		case vpiTimeVal:
+		അവസ്ഥ vpiTimeVal:
 		  put->value.value.time = timedup(put->value.value.time);
-		  break;
+		  നിർത്തുക;
 		  /* Copy a vector pointer item. */
-		case vpiVectorVal:
+		അവസ്ഥ vpiVectorVal:
 		  put->value.value.vector = vectordup(put->value.value.vector,
 		                                      vpi_get(vpiSize, obj));
-		  break;
+		  നിർത്തുക;
 		  /* Copy a strength pointer item. */
-		case vpiStrengthVal:
+		അവസ്ഥ vpiStrengthVal:
 		  put->value.value.strength =
 		      strengthdup(put->value.value.strength);
-		  break;
+		  നിർത്തുക;
 		  /* Everything thing else is already in the structure. */
-		default:
-		  break;
+		സ്ഥിരസ്ഥിതി:
+		  നിർത്തുക;
 	    }
 	    put->flags = flags;
-	    schedule_generic(put, dly, false, true, true);
-	    return 0;
+	    schedule_generic(put, dly, അസത്യം, സത്യം, സത്യം);
+	    തിരികെ 0;
       }
 
-      if (schedule_at_rosync()) {
+      എങ്കിൽ (schedule_at_rosync()) {
             fprintf(stderr, "VPI error: attempted to put a value to "
 			    "variable '%s' during a read-only synch "
 			    "callback.\n", vpi_get_str(vpiName, obj));
-            return 0;
+            തിരികെ 0;
       }
 
-      obj->vpi_put_value(vp, flags);
+      obj->vpi_put_മൂല്യം(vp, flags);
 
-      return 0;
+      തിരികെ 0;
 }
 
 vpiHandle vpi_handle(PLI_INT32 type, vpiHandle ref)
 {
       vpiHandle res = 0;
 
-      if (ref == 0) {
+      എങ്കിൽ (ref == 0) {
 	      // A few types can apply to a nil handle. These are ways
 	      // that the current function can get started finding things.
-	    switch (type) {
+	    തിരഞ്ഞെടുപ്പ് (type) {
 
-		case vpiScope:
+		അവസ്ഥ vpiScope:
 		    // The IEEE1364-2005 doesn't seem to allow this,
 		    // but some users seem to think it's handy, so
 		    // return the scope that contains this SysTfCall.
-		  assert(vpip_cur_task);
+		  പ്രതിജ്ഞാ(vpip_cur_task);
 		  res = vpip_cur_task->vpi_handle(vpiScope);
-		  break;
+		  നിർത്തുക;
 
-		case vpiSysTfCall:
+		അവസ്ഥ vpiSysTfCall:
 		    // This is how VPI users get a first handle into
 		    // the system. This is the handle of the system
 		    // task/function call currently being executed.
-		  if (vpi_trace) {
+		  എങ്കിൽ (vpi_trace) {
 			fprintf(vpi_trace, "vpi_handle(vpiSysTfCall, 0) "
 				"-> %p (%s)\n", vpip_cur_task,
 				vpip_cur_task->defn->info.tfname);
 		  }
-		  return vpip_cur_task;
+		  തിരികെ vpip_cur_task;
 
-		default:
+		സ്ഥിരസ്ഥിതി:
 		  fprintf(stderr, "VPI error: vpi_handle(type=%d, ref=0).\n",
-			  (int)type);
+			  (പൂർണ്ണസംഖ്യ)type);
 		  res = 0;
-		  break;
+		  നിർത്തുക;
 	    }
 
-      } else {
+      } അല്ലെങ്കിൽ {
 
-	    if (type == vpiSysTfCall) {
+	    എങ്കിൽ (type == vpiSysTfCall) {
 		  fprintf(stderr, "VPI error: vpi_handle(vpiSysTfCall, "
 			  "ref!=0).\n");
-		  return 0;
+		  തിരികെ 0;
 	    }
 
 	    res = ref->vpi_handle(type);
       }
 
 
-      if (vpi_trace) {
+      എങ്കിൽ (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle(vpiScope, ref=%p) "
 		    "-> %p\n", vpip_cur_task, ref);
       }
 
-      return res;
+      തിരികെ res;
 }
 
-static vpiHandle vpip_make_udp_iterator()
+സ്ഥിതം vpiHandle vpip_make_udp_iterator()
 {
 // HERE: Add support for iterating over UDP definitions.
 //       See 26.6.16 (page 400 in 1364-2005).
-      return 0;
+      തിരികെ 0;
 }
 
 /*
@@ -1298,180 +1298,180 @@ static vpiHandle vpip_make_udp_iterator()
  * the specified reference. It is up to the iterate_ method to
  * allocate a properly formed iterator.
  */
-static vpiHandle vpi_iterate_global(int type)
+സ്ഥിതം vpiHandle vpi_iterate_global(പൂർണ്ണസംഖ്യ type)
 {
-      switch (type) {
-	  case vpiInstance:
+      തിരഞ്ഞെടുപ്പ് (type) {
+	  അവസ്ഥ vpiInstance:
 	    // fallthrough
-	  case vpiModule:
+	  അവസ്ഥ vpiModule:
 	    // fallthrough
-	  case vpiProgram:
+	  അവസ്ഥ vpiProgram:
 	    // fallthrough
-	  case vpiInterface:
+	  അവസ്ഥ vpiInterface:
 	    // fallthrough
-	  case vpiPackage:
-	    return vpip_make_root_iterator(type);
+	  അവസ്ഥ vpiPackage:
+	    തിരികെ vpip_make_വേര്_iterator(type);
 
-	  case vpiUdpDefn:
-	    return vpip_make_udp_iterator();
+	  അവസ്ഥ vpiUdpDefn:
+	    തിരികെ vpip_make_udp_iterator();
 
-	  case vpiUserSystf:
-	    return vpip_make_systf_iterator();
+	  അവസ്ഥ vpiUserSystf:
+	    തിരികെ vpip_make_systf_iterator();
       }
 
-      return 0;
+      തിരികെ 0;
 }
 
 vpiHandle vpi_iterate(PLI_INT32 type, vpiHandle ref)
 {
       vpiHandle rtn = 0;
 
-      assert(vpi_mode_flag != VPI_MODE_NONE);
-      if (vpi_mode_flag == VPI_MODE_REGISTER) {
+      പ്രതിജ്ഞാ(vpi_mode_flag != VPI_MODE_NONE);
+      എങ്കിൽ (vpi_mode_flag == VPI_MODE_REGISTER) {
 	    fprintf(stderr, "vpi error: vpi_iterate called during "
 		    "vpi_register_systf. You can't do that!\n");
-	    return 0;
+	    തിരികെ 0;
       }
 
-      if (ref == 0)
+      എങ്കിൽ (ref == 0)
 	    rtn = vpi_iterate_global(type);
-      else
+      അല്ലെങ്കിൽ
 	    rtn = ref->vpi_iterate(type);
 
-      if (vpi_trace) {
+      എങ്കിൽ (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_iterate(%d, %p) ->%s\n",
-	    (int)type, ref, rtn ? "" : " (null)");
+	    (പൂർണ്ണസംഖ്യ)type, ref, rtn ? "" : " (null)");
       }
 
-      return rtn;
+      തിരികെ rtn;
 }
 
 vpiHandle vpi_handle_by_index(vpiHandle ref, PLI_INT32 idx)
 {
-      assert(ref);
-      return ref->vpi_index(idx);
+      പ്രതിജ്ഞാ(ref);
+      തിരികെ ref->vpi_index(idx);
 }
 
-static vpiHandle find_name(const char *name, vpiHandle handle)
+സ്ഥിതം vpiHandle find_name(സ്ഥിരം അക്ഷരം *name, vpiHandle handle)
 {
       vpiHandle rtn = 0;
       __vpiScope*ref = dynamic_cast<__vpiScope*>(handle);
 
       /* check module names */
-      if (!strcmp(name, vpi_get_str(vpiName, handle)))
+      എങ്കിൽ (!strcmp(name, vpi_get_str(vpiName, handle)))
 	    rtn = handle;
 
       /* brute force search for the name in all objects in this scope */
-      for (unsigned i = 0 ;  i < ref->intern.size() ;  i += 1) {
+      വേണ്ടി (unsigned i = 0 ;  i < ref->intern.size() ;  i += 1) {
 	      /* The standard says that since a port does not have a full
 	       * name it cannot be found by name. Because of this we need
 	       * to skip ports here so the correct handle can be located. */
-	    if (vpi_get(vpiType, ref->intern[i]) == vpiPort) continue;
-	    const char *nm = vpi_get_str(vpiName, ref->intern[i]);
-	    if (nm && !strcmp(name, nm)) {
+	    എങ്കിൽ (vpi_get(vpiType, ref->intern[i]) == vpiPort) തുടരുക;
+	    സ്ഥിരം അക്ഷരം *nm = vpi_get_str(vpiName, ref->intern[i]);
+	    എങ്കിൽ (nm && !strcmp(name, nm)) {
 		  rtn = ref->intern[i];
-		  break;
-	    } else if (vpi_get(vpiType, ref->intern[i]) == vpiMemory ||
+		  നിർത്തുക;
+	    } അല്ലെങ്കിൽ എങ്കിൽ (vpi_get(vpiType, ref->intern[i]) == vpiMemory ||
 	               vpi_get(vpiType, ref->intern[i]) == vpiNetArray) {
 		  /* We need to iterate on the words */
 		  vpiHandle word_i, word_h;
 		  word_i = vpi_iterate(vpiMemoryWord, ref->intern[i]);
-		  while (word_i && (word_h = vpi_scan(word_i))) {
+		  ആകുമ്പോൾ (word_i && (word_h = vpi_scan(word_i))) {
 			nm = vpi_get_str(vpiName, word_h);
-			if (nm && !strcmp(name, nm)) {
+			എങ്കിൽ (nm && !strcmp(name, nm)) {
 			      rtn = word_h;
 			      vpi_free_object(word_i);
-			      break;
+			      നിർത്തുക;
 			}
 		  }
 	    }
 	    /* found it yet? */
-	    if (rtn) break;
+	    എങ്കിൽ (rtn) നിർത്തുക;
       }
 
-      return rtn;
+      തിരികെ rtn;
 }
 
 // Find the end of the escaped identifier or simple identifier
-static char * find_rest(char *name)
+സ്ഥിതം അക്ഷരം * find_rest(അക്ഷരം *name)
 {
-      char *rest;
-      if (*name == '\\') {
+      അക്ഷരം *rest;
+      എങ്കിൽ (*name == '\\') {
 	    rest = strchr(name, ' ');
-	    if (rest) {
+	    എങ്കിൽ (rest) {
 		  *rest++ = 0; // The space is not part of the string
 		    // There should be a '.' after the escaped ID if there is
 		    // anything more. If it is missing add it to avoid a crash
-		  if ((*rest != '.') && (*rest != 0)) {
+		  എങ്കിൽ ((*rest != '.') && (*rest != 0)) {
 			*--rest = '.';
 			fprintf(stderr, "ERROR: Malformed scope string: \"%s\"", name);
 		  }
-		  if (*rest == 0) {
+		  എങ്കിൽ (*rest == 0) {
 			rest = 0;
 		  }
 	    }
-      } else {
+      } അല്ലെങ്കിൽ {
 	    rest = strchr(name, '.');
       }
-      return rest;
+      തിരികെ rest;
 }
 
-static vpiHandle find_scope(const char *name, vpiHandle handle, int depth)
+സ്ഥിതം vpiHandle find_scope(സ്ഥിരം അക്ഷരം *name, vpiHandle handle, പൂർണ്ണസംഖ്യ depth)
 {
 
       vpiHandle iter = handle==0
-	    ? vpi_iterate(vpiModule, NULL)
+	    ? vpi_iterate(vpiModule, ശൂന്യ)
 	    : vpi_iterate(vpiInternalScope, handle);
 
-      vector<char> name_buf (strlen(name)+1);
+      vector<അക്ഷരം> name_buf (strlen(name)+1);
       strcpy(&name_buf[0], name);
-      char*nm_first = &name_buf[0];
-      char*nm_rest = find_rest(nm_first);
-      if (*nm_first == '\\') ++nm_first;
-      if (nm_rest) {
+      അക്ഷരം*nm_first = &name_buf[0];
+      അക്ഷരം*nm_rest = find_rest(nm_first);
+      എങ്കിൽ (*nm_first == '\\') ++nm_first;
+      എങ്കിൽ (nm_rest) {
 	    *nm_rest++ = 0;
       }
 
       vpiHandle rtn = 0;
       vpiHandle hand;
-      while (iter && (hand = vpi_scan(iter))) {
-	    const char *nm = vpi_get_str(vpiName, hand);
+      ആകുമ്പോൾ (iter && (hand = vpi_scan(iter))) {
+	    സ്ഥിരം അക്ഷരം *nm = vpi_get_str(vpiName, hand);
 
-	    if (strcmp(nm_first,nm)==0) {
-		  if (nm_rest)
+	    എങ്കിൽ (strcmp(nm_first,nm)==0) {
+		  എങ്കിൽ (nm_rest)
 			rtn=find_scope(nm_rest, hand, depth+1);
-		  else
+		  അല്ലെങ്കിൽ
 			rtn = hand;
 	    }
 
 	    /* found it yet ? */
-	    if (rtn) {
+	    എങ്കിൽ (rtn) {
 		  vpi_free_object(iter);
-		  break;
+		  നിർത്തുക;
 	    }
       }
 
-      return rtn;
+      തിരികെ rtn;
 }
 
 // Find the end of the first escaped identifier or simple identifier
-static char * find_next(char *name)
+സ്ഥിതം അക്ഷരം * find_next(അക്ഷരം *name)
 {
-      char *next;
-      if (*name == '\\') {
+      അക്ഷരം *next;
+      എങ്കിൽ (*name == '\\') {
 	    next = strchr(name, ' ');
-	    if (next && *++next == 0) next = 0;
-      } else {
+	    എങ്കിൽ (next && *++next == 0) next = 0;
+      } അല്ലെങ്കിൽ {
 	    next = strchr(name, '.');
       }
-      return next;
+      തിരികെ next;
 }
 
-vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
+vpiHandle vpi_handle_by_name(സ്ഥിരം അക്ഷരം *name, vpiHandle scope)
 {
       vpiHandle hand;
 
-      if (vpi_trace) {
+      എങ്കിൽ (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle_by_name(%s, %p) -->\n",
 		    name, scope);
       }
@@ -1479,31 +1479,31 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 	// Chop the name into path and base. For example, if the name
 	// is "a.b.c", then nm_path becomes "a.b" and nm_base becomes
 	// "c". If the name is "c" then nm_path is nil and nm_base is "c".
-      vector<char> name_buf (strlen(name)+1);
+      vector<അക്ഷരം> name_buf (strlen(name)+1);
       strcpy(&name_buf[0], name);
-      char*nm_path = &name_buf[0];
-      char*nm_base;
+      അക്ഷരം*nm_path = &name_buf[0];
+      അക്ഷരം*nm_base;
 
 	// Check to see if we have an escaped identifier and if so search
 	// the long way because a '.' could be in the escaped name.
-      if (strchr(nm_path, '\\')) {
-	    char *next;
+      എങ്കിൽ (strchr(nm_path, '\\')) {
+	    അക്ഷരം *next;
 	    nm_base = nm_path;
-	    while ((next = find_next(nm_base))) {
+	    ആകുമ്പോൾ ((next = find_next(nm_base))) {
 		  nm_base = ++next;
 	    }
-	    if (nm_path == nm_base) {
+	    എങ്കിൽ (nm_path == nm_base) {
 		  nm_path = 0;
-	    } else {
+	    } അല്ലെങ്കിൽ {
 		  *(nm_base-1) = 0;
 	    }
 
 	// If there is no escaped identifier then just look for the last '.'
-      } else {
+      } അല്ലെങ്കിൽ {
 	    nm_base = strrchr(nm_path, '.');
-	    if (nm_base) {
+	    എങ്കിൽ (nm_base) {
 		  *nm_base++ = 0;
-	    } else {
+	    } അല്ലെങ്കിൽ {
 		  nm_base = nm_path;
 		  nm_path = 0;
 	    }
@@ -1513,56 +1513,56 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
        * traverse the hierarchy specified in name to find the leaf module
        * and try finding it there.
        */
-      if (scope) {
+      എങ്കിൽ (scope) {
 	    /* Some implementations support either a module or a scope. */
-	    switch (vpi_get(vpiType, scope)) {
-		case vpiScope:
+	    തിരഞ്ഞെടുപ്പ് (vpi_get(vpiType, scope)) {
+		അവസ്ഥ vpiScope:
 	          hand = vpi_handle(vpiModule, scope);
-	          break;
-		case vpiModule:
+	          നിർത്തുക;
+		അവസ്ഥ vpiModule:
 	          hand = scope;
-	          break;
-		default:
-		  if (vpi_trace) {
+	          നിർത്തുക;
+		സ്ഥിരസ്ഥിതി:
+		  എങ്കിൽ (vpi_trace) {
 			fprintf(vpi_trace, "vpi_handle_by_name: "
 				"Scope is not a vpiScope or vpiModule\n");
 		  }
 	          // Use vpi_chk_error() here when it is implemented.
-	          return 0;
+	          തിരികെ 0;
 	    }
 
-      } else if (nm_path) {
+      } അല്ലെങ്കിൽ എങ്കിൽ (nm_path) {
 	      // The name has a path, and no other scope handle was
 	      // passed in. That suggests we are looking for "a.b.c"
 	      // in the root scope. So convert "a.b" to a scope and
 	      // start there to look for "c".
-	    hand = find_scope(nm_path, NULL, 0);
+	    hand = find_scope(nm_path, ശൂന്യ, 0);
 	    nm_path = 0;
 
-      } else {
+      } അല്ലെങ്കിൽ {
 	      // Special case: scope==<nil>, meaning we are looking in
 	      // the root, and there is no path to the name, i.e. the
 	      // string is "c" instead of "top.c". Try to find "c" as
 	      // a scope and return that.
-	    hand = find_scope(nm_base, NULL, 0);
+	    hand = find_scope(nm_base, ശൂന്യ, 0);
       }
 
-      if (hand == 0) {
-	    if (vpi_trace) {
+      എങ്കിൽ (hand == 0) {
+	    എങ്കിൽ (vpi_trace) {
 		  fprintf(vpi_trace, "vpi_handle_by_name: "
 			  "Scope does not exist. Giving up.\n");
 	    }
 
-	    return 0;
+	    തിരികെ 0;
       }
 
 	// If there is a path part, then use it to find the
 	// scope. For example, if the full name is a.b.c, then
 	// the nm_path string is a.b and we search for that
 	// scope. If we find it, then set hand to that scope.
-      if (nm_path) {
+      എങ്കിൽ (nm_path) {
 	    vpiHandle tmp = find_scope(nm_path, hand, 0);
-	    while (tmp == 0 && hand != 0) {
+	    ആകുമ്പോൾ (tmp == 0 && hand != 0) {
 		  hand = vpi_handle(vpiScope, hand);
 		  tmp = find_scope(nm_path, hand, 0);
 	    }
@@ -1570,13 +1570,13 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
       }
 
 	// find_name() expects escaped identifiers to be stripped
-      if (*nm_base == '\\') {
+      എങ്കിൽ (*nm_base == '\\') {
 	    // Skip the \ at the beginning
 	    ++nm_base;
 
 	    // Drop the space at the end if it exists
-	    char *next;
-	    if ((next = strchr(nm_base, ' '))) {
+	    അക്ഷരം *next;
+	    എങ്കിൽ ((next = strchr(nm_base, ' '))) {
 		  *next = 0;
 	    }
       }
@@ -1584,29 +1584,29 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 	// Now we have the correct scope, look for the item.
       vpiHandle out = find_name(nm_base, hand);
 
-      if (vpi_trace) {
+      എങ്കിൽ (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle_by_name: DONE\n");
       }
 
-      return out;
+      തിരികെ out;
 }
 
 // Return tuple {x1, x2, x3} with:
 // x1: True when cur and net2 are connected
 // x2: Ptr to previous node
 // x3: True when net is connected to output of previous node
-tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8_and_part_sa(vvp_net_ptr_t cur, vvp_net_t* net2, vvp_net_ptr_t parent) {
+tuple<തർക്കം, vvp_net_ptr_t, തർക്കം> check_connected_to_concat8_and_part_sa(vvp_net_ptr_t cur, vvp_net_t* net2, vvp_net_ptr_t parent) {
 
       vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr, 0);
 
-      while (cur.ptr()) {
-	    if (cur.ptr() == net2 && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
+      ആകുമ്പോൾ (cur.ptr()) {
+	    എങ്കിൽ (cur.ptr() == net2 && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
 		    // Pass on the return value if found
-		  return {true, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
-	    } else if (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
+		  തിരികെ {സത്യം, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
+	    } അല്ലെങ്കിൽ എങ്കിൽ (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
 		  auto res = check_connected_to_concat8_and_part_sa(cur.ptr()->out_, net2, cur);
-		  if (get<0>(res)) {
-			return res;
+		  എങ്കിൽ (get<0>(res)) {
+			തിരികെ res;
 		  }
 	    }
 
@@ -1616,7 +1616,7 @@ tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8_and_part_sa(vvp_net_
       }
 
 	// net2 is not connected to this concat8
-      return {false, vvp_net_ptr_t(nullptr, 0), false};
+      തിരികെ {അസത്യം, vvp_net_ptr_t(nullptr, 0), അസത്യം};
 }
 
 // Check if net2 is connected to current_net through a net of vvp_fun_concat8s
@@ -1624,23 +1624,23 @@ tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8_and_part_sa(vvp_net_
 // x1: True when cur and net2 are connected with concats and part_sas
 // x2: Ptr to previous node
 // x3: True when net is connected to output of x2
-tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8(vvp_net_ptr_t cur, vvp_net_t* net2, vvp_net_ptr_t parent)
+tuple<തർക്കം, vvp_net_ptr_t, തർക്കം> check_connected_to_concat8(vvp_net_ptr_t cur, vvp_net_t* net2, vvp_net_ptr_t parent)
 {
       vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr, 0);
 	// For everything connected
-      while (cur.ptr()) {
+      ആകുമ്പോൾ (cur.ptr()) {
 	      // Check if it's a concat8
-	    if (cur.ptr() == net2) {
-		  return {true, vvp_net_ptr_t(nullptr, 0), false};
-	    } else if (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
+	    എങ്കിൽ (cur.ptr() == net2) {
+		  തിരികെ {സത്യം, vvp_net_ptr_t(nullptr, 0), അസത്യം};
+	    } അല്ലെങ്കിൽ എങ്കിൽ (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
 		  auto res = check_connected_to_concat8(cur.ptr()->out_, net2, cur);
-		  if (get<0>(res)) {
-			if (!get<1>(res).ptr() && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
+		  എങ്കിൽ (get<0>(res)) {
+			എങ്കിൽ (!get<1>(res).ptr() && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
 			      // `parent` is the last part_sa node in front of our destination
 			      // We want to place the intermod node here
-			      return {true, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
+			      തിരികെ {സത്യം, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
 			}
-			return res;
+			തിരികെ res;
 		  }
 	    }
 
@@ -1650,7 +1650,7 @@ tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8(vvp_net_ptr_t cur, v
       }
 
 	// net2 is not connected to this concat8
-      return {false, vvp_net_ptr_t(nullptr, 0), false};
+      തിരികെ {അസത്യം, vvp_net_ptr_t(nullptr, 0), അസത്യം};
 }
 
 // Used to get intermodpath for two ports
@@ -1658,38 +1658,38 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
                            vpiHandle ref1,
                            vpiHandle ref2)
 {
-      if (vpi_trace) {
+      എങ്കിൽ (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle_multi(%d, %p, %p) -->\n",
 	            type, ref1, ref2);
       }
 
-      if (type != vpiInterModPath) {
+      എങ്കിൽ (type != vpiInterModPath) {
 	    fprintf(stderr, "sorry: vpi_handle_multi currently supports"
 	            "only vpiInterModPath\n");
-	    return nullptr;
+	    തിരികെ nullptr;
       }
 
 	// Indicates whether port1 refers to a single bit
-      bool port1_has_index = false;
-      int port1_bit_index = 0;
+      തർക്കം port1_has_index = അസത്യം;
+      പൂർണ്ണസംഖ്യ port1_bit_index = 0;
       vpiPortBitInfo* port1_bit = dynamic_cast<vpiPortBitInfo*>(ref1);
 
-      if (port1_bit) {
+      എങ്കിൽ (port1_bit) {
 	      // Get the bit index
-	    port1_has_index = true;
+	    port1_has_index = സത്യം;
 	    port1_bit_index = vpi_get(vpiBit, port1_bit);
 	      // Update the ref1 to point to the base port
 	    ref1 = vpi_handle(vpiParent, port1_bit);
       }
 
 	// Indicates whether port2 refers to a single bit
-      bool port2_has_index = false;
-      int port2_bit_index = 0;
+      തർക്കം port2_has_index = അസത്യം;
+      പൂർണ്ണസംഖ്യ port2_bit_index = 0;
       vpiPortBitInfo* port2_bit = dynamic_cast<vpiPortBitInfo*>(ref2);
 
-      if (port2_bit) {
+      എങ്കിൽ (port2_bit) {
 	      // Get the bit index
-	    port2_has_index = true;
+	    port2_has_index = സത്യം;
 	    port2_bit_index = vpi_get(vpiBit, port2_bit);
 	      // Update the ref1 to point to the base port
 	    ref2 = vpi_handle(vpiParent, port2_bit);
@@ -1697,18 +1697,18 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 
       vpiPortInfo* port1 = dynamic_cast<vpiPortInfo*>(ref1);
 
-      if (!port1) {
+      എങ്കിൽ (!port1) {
 	    fprintf(stderr, "sorry: second argument of vpi_handle_multi"
 		    "must be a vpiPort\n");
-	    return nullptr;
+	    തിരികെ nullptr;
       }
 
       vpiPortInfo* port2 = dynamic_cast<vpiPortInfo*>(ref2);
 
-      if (!port2) {
+      എങ്കിൽ (!port2) {
 	    fprintf(stderr, "sorry: third argument of vpi_handle_multi"
 		    "must be a vpiPort\n");
-	    return nullptr;
+	    തിരികെ nullptr;
       }
 
 	// Get the names of both ports
@@ -1720,19 +1720,19 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 	// even tho the intermodpath is correctly inserted
       __vpiSignal* output_signal = nullptr;
 
-      if (port1->get_direction() == vpiOutput && port2->get_direction() == vpiOutput) {
+      എങ്കിൽ (port1->get_direction() == vpiOutput && port2->get_direction() == vpiOutput) {
 	    vpiHandle scope_port2 = vpi_handle(vpiScope, ref2);
-	    assert(scope_port2);
+	    പ്രതിജ്ഞാ(scope_port2);
 
 	      // Iterate over nets in the scope of port2
 	    vpiHandle net_i = vpi_iterate(vpiNet, scope_port2) ;
 	    vpiHandle net;
 
-	    while ((net = vpi_scan(net_i)) != NULL) {
+	    ആകുമ്പോൾ ((net = vpi_scan(net_i)) != ശൂന്യ) {
 		  std::string net_name(vpi_get_str(vpiName, net));
 
 		    // Compare whether the net matches with the port name
-		  if (net_name == port2_name) {
+		  എങ്കിൽ (net_name == port2_name) {
 			output_signal = dynamic_cast<__vpiSignal*>(net);
 		  }
 	    }
@@ -1741,48 +1741,48 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
       vvp_net_t* net1 = port1->get_port();
       vvp_net_t* net2 = port2->get_port();
 
-      if (net1 == nullptr || net2 == nullptr) {
+      എങ്കിൽ (net1 == nullptr || net2 == nullptr) {
 	    fprintf(stderr, "Error: Could not find net. "
 		    "Did you run iverilog with '-ginterconnect'?\n");
-	    return nullptr;
+	    തിരികെ nullptr;
       }
 
-      if (net1 == net2) {
+      എങ്കിൽ (net1 == net2) {
 	    fprintf(stderr, "Error: Net for both ports is the same. "
 		    "Did you pass the same port twice?\n");
-	    return nullptr;
+	    തിരികെ nullptr;
       }
 
-      if (!dynamic_cast<vvp_fun_buft*>(net1->fun)) {
+      എങ്കിൽ (!dynamic_cast<vvp_fun_buft*>(net1->fun)) {
 	    fprintf(stderr, "Error: functor of net1 must be"
 		    "vvp_fun_buft\n");
-	    return nullptr;
+	    തിരികെ nullptr;
       }
 
-      if (!dynamic_cast<vvp_fun_buft*>(net2->fun)) {
+      എങ്കിൽ (!dynamic_cast<vvp_fun_buft*>(net2->fun)) {
 	    fprintf(stderr, "Error: functor of net2 must be"
 		    "vvp_fun_buft\n");
-	    return nullptr;
+	    തിരികെ nullptr;
       }
 
 	// If port1 is actually a port bit, we have to get to the correct vvp_fun_part
 	// after which we insert the intermodpath delay
-      if (port1_has_index) {
+      എങ്കിൽ (port1_has_index) {
 	    vvp_net_ptr_t* net1_ptr = &net1->out_;
 
 	      // Search for part selects connected to port1
 	    vvp_net_t* current_net = net1_ptr->ptr();
 
-	    while (current_net) {
-		  const vvp_fun_part* part = dynamic_cast<vvp_fun_part*>(current_net->fun);
+	    ആകുമ്പോൾ (current_net) {
+		  സ്ഥിരം vvp_fun_part* part = dynamic_cast<vvp_fun_part*>(current_net->fun);
 
 		    // Its a part select!
-		  if (part) {
+		  എങ്കിൽ (part) {
 			  // Is it the correct part select?
-			if (part->get_base() == (unsigned)port1_bit_index) {
-			      assert(part->get_wid() == 1);
+			എങ്കിൽ (part->get_base() == (unsigned)port1_bit_index) {
+			      പ്രതിജ്ഞാ(part->get_wid() == 1);
 			      net1 = current_net; // Replace net1 as this is our new start point
-			      break;
+			      നിർത്തുക;
 			}
 		  }
 
@@ -1794,31 +1794,31 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
       vvp_net_ptr_t cur = net1->out_;
       vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr, 0);
 
-      while (cur.ptr()) {
+      ആകുമ്പോൾ (cur.ptr()) {
 	      // Either port2 is directly connected to port1
 	      // Or in the second case port2 is indirectly connected
 	      // to port1 through a net of concat8s
-	    bool is_connected, is_output;
-	    vvp_net_ptr_t previous_node;
-	    tie(is_connected, previous_node, is_output) = port2_has_index
+	    തർക്കം is_connected, is_output;
+	    vvp_net_ptr_t previous_കണ്ണി;
+	    tie(is_connected, previous_കണ്ണി, is_output) = port2_has_index
 		  ? check_connected_to_concat8(cur, net2, vvp_net_ptr_t(net1, 0))
 		  : check_connected_to_concat8_and_part_sa(cur, net2, vvp_net_ptr_t(net1, 0));
-	    if ( (!port2_has_index && cur.ptr() == net2) || is_connected ) {
-		  vvp_net_t*new_net = new vvp_net_t;
+	    എങ്കിൽ ( (!port2_has_index && cur.ptr() == net2) || is_connected ) {
+		  vvp_net_t*new_net = പുതിയ vvp_net_t;
 
 		    // Create new node with intermodpath and connect port2 to it
-		  int width = 1; // TODO
-		  vvp_fun_intermodpath*obj = new vvp_fun_intermodpath(new_net, width);
+		  പൂർണ്ണസംഖ്യ width = 1; // TODO
+		  vvp_fun_intermodpath*obj = പുതിയ vvp_fun_intermodpath(new_net, width);
 
 		  vvp_net_t* output_net = net1;
-		  if (is_connected) {
-			if (is_output) {
-			      output_net = previous_node.ptr(); // net2 is direct output of part_sa
+		  എങ്കിൽ (is_connected) {
+			എങ്കിൽ (is_output) {
+			      output_net = previous_കണ്ണി.ptr(); // net2 is direct output of part_sa
 			      cur = output_net->out_;
 			      prev = vvp_net_ptr_t(nullptr, 0);
-			} else {
-			      prev = previous_node;
-			      if (prev.ptr()) {
+			} അല്ലെങ്കിൽ {
+			      prev = previous_കണ്ണി;
+			      എങ്കിൽ (prev.ptr()) {
 				    cur = prev.ptr()->port[prev.port()];
 			      }
 			}
@@ -1829,13 +1829,13 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 
 		    // Port2 is in the middle of the list
 		    // Insert intermodpath before port2 and keep everything else intact
-		  if (prev.ptr()) {
+		  എങ്കിൽ (prev.ptr()) {
 			prev.ptr()->port[prev.port()] = vvp_net_ptr_t(new_net, 0); // Point to port 0 of vvp_fun_intermodpath
 			new_net->port[0] = cur.ptr()->port[cur.port()]; // Connect the next net in list
 			cur.ptr()->port[cur.port()] = vvp_net_ptr_t(nullptr, 0); // Only port2 is connected to intermodpath
 		    // Port2 is first in list
 		    // Insert intermodpath before port2 and keep everything else intact
-		  } else {
+		  } അല്ലെങ്കിൽ {
 			output_net->out_ = vvp_net_ptr_t(new_net, 0); // Point to port 0 of vvp_fun_intermodpath
 			new_net->port[0] = cur.ptr()->port[cur.port()]; //  Connect the next net in list
 			cur.ptr()->port[cur.port()] = vvp_net_ptr_t(nullptr, 0); // Only port2 is connected to intermodpath
@@ -1844,10 +1844,10 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 		    // If both ports are vpiOutput and port2 is not a vector,
 		    // we have to reassign the __vpiSignal so that the delayed
 		    // values get dumped
-		  if (output_signal && !port2_has_index) {
+		  എങ്കിൽ (output_signal && !port2_has_index) {
 			net2->fil = net1->fil;
 			net1->fil = nullptr;
-			output_signal->node = net2;
+			output_signal->കണ്ണി = net2;
 		  }
 
 		    // Create the VPI intermodpath object
@@ -1855,7 +1855,7 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 		  intermodpath->intermodpath = obj;
 
 		    // Finally done, return the intermodpath object
-		  return intermodpath;
+		  തിരികെ intermodpath;
 	    }
 
 	    prev = cur;
@@ -1865,7 +1865,7 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
       fprintf(stderr, "VPI error: Could not insert intermodpath!\n");
       fprintf(stderr, "\tport1 = %s, port1_has_index = %d, port1_bit_index = %d\n", port1_name.c_str(), port1_has_index, port1_bit_index);
       fprintf(stderr, "\tport2 = %s, port2_has_index = %d, port2_bit_index = %d\n", port2_name.c_str(), port2_has_index, port2_bit_index);
-      return nullptr;
+      തിരികെ nullptr;
 }
 
 /*
@@ -1889,30 +1889,30 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 
 
 
-void vpi_get_delays(vpiHandle expr, p_vpi_delay delays)
+ശൂന്യം vpi_get_delays(vpiHandle വ്യഞ്ജകം, p_vpi_delay delays)
 {
-      assert(expr);
-      assert(delays);
+      പ്രതിജ്ഞാ(വ്യഞ്ജകം);
+      പ്രതിജ്ഞാ(delays);
 
-      expr->vpi_get_delays(delays);
+      വ്യഞ്ജകം->vpi_get_delays(delays);
 
-      if (vpi_trace) {
+      എങ്കിൽ (vpi_trace) {
 	    fprintf(vpi_trace,
-		    "vpi_get_delays(%p, %p) -->\n", expr, delays);
+		    "vpi_get_delays(%p, %p) -->\n", വ്യഞ്ജകം, delays);
       }
 }
 
 
-void vpi_put_delays(vpiHandle expr, p_vpi_delay delays)
+ശൂന്യം vpi_put_delays(vpiHandle വ്യഞ്ജകം, p_vpi_delay delays)
 {
-      assert(expr  );
-      assert(delays );
+      പ്രതിജ്ഞാ(വ്യഞ്ജകം  );
+      പ്രതിജ്ഞാ(delays );
 
-      expr->vpi_put_delays(delays);
+      വ്യഞ്ജകം->vpi_put_delays(delays);
 
-      if (vpi_trace) {
+      എങ്കിൽ (vpi_trace) {
 	    fprintf(vpi_trace,
-		    "vpi_put_delays(%p, %p) -->\n", expr, delays);
+		    "vpi_put_delays(%p, %p) -->\n", വ്യഞ്ജകം, delays);
       }
 }
 
@@ -1923,118 +1923,118 @@ void vpi_put_delays(vpiHandle expr, p_vpi_delay delays)
 
 
 
-extern "C" PLI_INT32 vpi_vprintf(const char*fmt, va_list ap)
+ബാഹ്യ "C" PLI_INT32 vpi_vprintf(സ്ഥിരം അക്ഷരം*fmt, va_list ap)
 {
-      return vpi_mcd_vprintf(1, fmt, ap);
+      തിരികെ vpi_mcd_vprintf(1, fmt, ap);
 }
 
-extern "C" PLI_INT32 vpi_printf(const char *fmt, ...)
+ബാഹ്യ "C" PLI_INT32 vpi_printf(സ്ഥിരം അക്ഷരം *fmt, ...)
 {
       va_list ap;
       va_start(ap, fmt);
-      int r = vpi_mcd_vprintf(1, fmt, ap);
+      പൂർണ്ണസംഖ്യ r = vpi_mcd_vprintf(1, fmt, ap);
       va_end(ap);
-      return r;
+      തിരികെ r;
 }
 
-extern "C" PLI_INT32 vpi_flush(void)
+ബാഹ്യ "C" PLI_INT32 vpi_flush(ശൂന്യം)
 {
-      return vpi_mcd_flush(1);
+      തിരികെ vpi_mcd_flush(1);
 }
 
 
-extern "C" PLI_INT32 vpi_sim_vcontrol(int operation, va_list ap)
+ബാഹ്യ "C" PLI_INT32 vpi_sim_vcontrol(പൂർണ്ണസംഖ്യ operation, va_list ap)
 {
-      long diag_msg;
+      long diag_സന്ദേശം;
 
-      switch (operation) {
-	  case vpiFinish:
-	  case __ivl_legacy_vpiFinish:
-            diag_msg = va_arg(ap, PLI_INT32);
-	    schedule_finish(diag_msg);
-	    break;
+      തിരഞ്ഞെടുപ്പ് (operation) {
+	  അവസ്ഥ vpiFinish:
+	  അവസ്ഥ __ivl_legacy_vpiFinish:
+            diag_സന്ദേശം = va_arg(ap, PLI_INT32);
+	    schedule_finish(diag_സന്ദേശം);
+	    നിർത്തുക;
 
-	  case vpiStop:
-	  case __ivl_legacy_vpiStop:
-            diag_msg = va_arg(ap, PLI_INT32);
-	    schedule_stop(diag_msg);
-	    break;
+	  അവസ്ഥ vpiStop:
+	  അവസ്ഥ __ivl_legacy_vpiStop:
+            diag_സന്ദേശം = va_arg(ap, PLI_INT32);
+	    schedule_stop(diag_സന്ദേശം);
+	    നിർത്തുക;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "Unsupported VPI control operation %d.\n", operation);
-	    return 0;
+	    തിരികെ 0;
       }
-      return 1;
+      തിരികെ 1;
 }
 
-extern "C" PLI_INT32 vpi_sim_control(PLI_INT32 operation, ...)
+ബാഹ്യ "C" PLI_INT32 vpi_sim_control(PLI_INT32 operation, ...)
 {
       va_list ap;
       va_start(ap, operation);
-      int r = vpi_sim_vcontrol(operation, ap);
+      പൂർണ്ണസംഖ്യ r = vpi_sim_vcontrol(operation, ap);
       va_end(ap);
-      return r;
+      തിരികെ r;
 }
 
-extern "C" PLI_INT32 vpi_control(PLI_INT32 operation, ...)
+ബാഹ്യ "C" PLI_INT32 vpi_control(PLI_INT32 operation, ...)
 {
       va_list ap;
       va_start(ap, operation);
-      int r = vpi_sim_vcontrol(operation, ap);
+      പൂർണ്ണസംഖ്യ r = vpi_sim_vcontrol(operation, ap);
       va_end(ap);
-      return r;
+      തിരികെ r;
 }
 
 /*
  * This routine calculated the return value for $clog2.
  * It is easier to do it here vs trying to to use the VPI interface.
  */
-extern "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
+ബാഹ്യ "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
 {
       s_vpi_vecval rtn;
-      s_vpi_value val;
+      s_vpi_മൂല്യം val;
       vvp_vector4_t vec4;
-      bool is_neg = false;  // At this point only a real can be negative.
+      തർക്കം is_neg = അസത്യം;  // At this point only a real can be negative.
 
 	/* Get the value as a vvp_vector4_t. */
       val.format = vpiObjTypeVal;
-      vpi_get_value(arg, &val);
-      if (val.format == vpiRealVal) {
-	    vpi_get_value(arg, &val);
+      vpi_get_മൂല്യം(arg, &val);
+      എങ്കിൽ (val.format == vpiRealVal) {
+	    vpi_get_മൂല്യം(arg, &val);
 	      /* All double values can be represented in 1024 bits. */
 	    vec4 = vvp_vector4_t(1024, val.value.real);
-	    if (val.value.real < 0) is_neg = true;
-      } else {
+	    എങ്കിൽ (val.value.real < 0) is_neg = സത്യം;
+      } അല്ലെങ്കിൽ {
 	    val.format = vpiVectorVal;
-	    vpi_get_value(arg, &val);
+	    vpi_get_മൂല്യം(arg, &val);
 	    unsigned wid = vpi_get(vpiSize, arg);
 	    vec4 = vvp_vector4_t(wid, BIT4_0);
-	    for (unsigned idx=0; idx < wid; idx += 1) {
+	    വേണ്ടി (unsigned idx=0; idx < wid; idx += 1) {
 		PLI_INT32 aval = val.value.vector[idx/32].aval;
 		PLI_INT32 bval = val.value.vector[idx/32].bval;
 		aval >>= idx % 32;
 		bval >>= idx % 32;
-		int bitmask = (aval&1) | ((bval<<1)&2);
+		പൂർണ്ണസംഖ്യ bitmask = (aval&1) | ((bval<<1)&2);
 		vvp_bit4_t bit = scalar_to_bit4(bitmask);
 		vec4.set_bit(idx, bit);
 	    }
       }
 
-      if (vec4.has_xz()) {
+      എങ്കിൽ (vec4.has_xz()) {
 	    rtn.aval = rtn.bval = 0xFFFFFFFFU;  /* Set to 'bx. */
-	    return rtn;
+	    തിരികെ rtn;
       }
 
       vvp_vector2_t vec2(vec4);
 
-      if (is_neg) vec2.trim_neg(); /* This is a special trim! */
-      else vec2.trim(); /* This makes less work shifting. */
+      എങ്കിൽ (is_neg) vec2.trim_neg(); /* This is a special trim! */
+      അല്ലെങ്കിൽ vec2.trim(); /* This makes less work shifting. */
 
 	/* Calculate the clog2 result. */
       PLI_INT32 res = 0;
-      if (!vec2.is_zero()) {
+      എങ്കിൽ (!vec2.is_zero()) {
 	    vec2 -= vvp_vector2_t(1, vec2.size());
-	    while(!vec2.is_zero()) {
+	    ആകുമ്പോൾ(!vec2.is_zero()) {
 		  res += 1;
 		  vec2 >>= 1;
 	    }
@@ -2042,7 +2042,7 @@ extern "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
 
       rtn.aval = res;
       rtn.bval = 0;
-      return rtn;
+      തിരികെ rtn;
 }
 
 /*
@@ -2050,15 +2050,15 @@ extern "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
  * It is done here for performance reasons - interrogating the drivers
  * individually via the VPI interface would be much slower.
  */
-extern "C" void vpip_count_drivers(vpiHandle ref, unsigned idx,
+ബാഹ്യ "C" ശൂന്യം vpip_എണ്ണം_drivers(vpiHandle ref, unsigned idx,
                                    unsigned counts[4])
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
-      rfp->node->count_drivers(idx, counts);
+      ഘടന __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      പ്രതിജ്ഞാ(rfp);
+      rfp->കണ്ണി->എണ്ണം_drivers(idx, counts);
 }
 
-#if defined(__MINGW32__) || defined (__CYGWIN__)
+#എങ്കിൽ defined(__MINGW32__) || defined (__CYGWIN__)
 vpip_routines_s vpi_routines = {
     .register_cb                = vpi_register_cb,
     .remove_cb                  = vpi_remove_cb,
@@ -2075,8 +2075,8 @@ vpip_routines_s vpi_routines = {
     .get_str                    = vpi_get_str,
     .get_delays                 = vpi_get_delays,
     .put_delays                 = vpi_put_delays,
-    .get_value                  = vpi_get_value,
-    .put_value                  = vpi_put_value,
+    .get_മൂല്യം                  = vpi_get_മൂല്യം,
+    .put_മൂല്യം                  = vpi_put_മൂല്യം,
     .get_time                   = vpi_get_time,
     .get_userdata               = vpi_get_userdata,
     .put_userdata               = vpi_put_userdata,
@@ -2096,11 +2096,11 @@ vpip_routines_s vpi_routines = {
     .fopen                      = vpi_fopen,
     .get_file                   = vpi_get_file,
     .calc_clog2                 = vpip_calc_clog2,
-    .count_drivers              = vpip_count_drivers,
+    .എണ്ണം_drivers              = vpip_എണ്ണം_drivers,
     .format_strength            = vpip_format_strength,
     .format_pretty              = vpip_format_pretty,
     .make_systf_system_defined  = vpip_make_systf_system_defined,
     .mcd_rawwrite               = vpip_mcd_rawwrite,
-    .set_return_value           = vpip_set_return_value,
+    .set_return_മൂല്യം           = vpip_set_return_മൂല്യം,
 };
 #endif

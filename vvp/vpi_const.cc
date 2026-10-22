@@ -30,23 +30,23 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-class __vpiStringConst : public __vpiHandle {
-    public:
-      explicit __vpiStringConst(char*val);
+വർഗ്ഗം __vpiStringConst : പൊതു __vpiHandle {
+    പൊതു:
+      explicit __vpiStringConst(അക്ഷരം*val);
       ~__vpiStringConst() override;
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
 
-    private:
-      void process_string_();
-    private:
-      char*value_;
-      size_t value_len_;
+    സ്വകാര്യ:
+      ശൂന്യം process_string_();
+    സ്വകാര്യ:
+      അക്ഷരം*മൂല്യം_2;
+      size_t മൂല്യം_len;
 };
 
-inline __vpiStringConst::__vpiStringConst(char*v)
-: value_(v)
+വരിയിൽ __vpiStringConst::__vpiStringConst(അക്ഷരം*v)
+: മൂല്യം_2(v)
 {
       process_string_();
 }
@@ -57,20 +57,20 @@ inline __vpiStringConst::__vpiStringConst(char*v)
  * included, they are processed already by the compiler that generated
  * the vvp source.
  */
-void __vpiStringConst::process_string_(void)
+ശൂന്യം __vpiStringConst::process_string_(ശൂന്യം)
 {
-      char*chr = value_;
-      char*dp = value_;
+      അക്ഷരം*chr = മൂല്യം_2;
+      അക്ഷരം*dp = മൂല്യം_2;
 
-      while (*chr) {
-	    char next_char = *chr;
+      ആകുമ്പോൾ (*chr) {
+	    അക്ഷരം next_char = *chr;
 
 	      /* Process octal escapes that I might find. */
-	    if (*chr == '\\') {
-		  for (int idx = 1 ;  idx <= 3 ;  idx += 1) {
-			assert(chr[idx] != 0);
-			assert(chr[idx] < '8');
-			assert(chr[idx] >= '0');
+	    എങ്കിൽ (*chr == '\\') {
+		  വേണ്ടി (പൂർണ്ണസംഖ്യ idx = 1 ;  idx <= 3 ;  idx += 1) {
+			പ്രതിജ്ഞാ(chr[idx] != 0);
+			പ്രതിജ്ഞാ(chr[idx] < '8');
+			പ്രതിജ്ഞാ(chr[idx] >= '0');
 			next_char = next_char*8 + chr[idx] - '0';
 		  }
 		  chr += 3;
@@ -79,224 +79,224 @@ void __vpiStringConst::process_string_(void)
 	    chr += 1;
       }
       *dp = 0;
-      value_len_ = dp - value_;
+      മൂല്യം_len = dp - മൂല്യം_2;
 }
 
 __vpiStringConst::~__vpiStringConst()
 {
-      delete[] value_;
+      delete[] മൂല്യം_2;
 }
 
-int __vpiStringConst::get_type_code(void) const
-{ return vpiConstant; }
+പൂർണ്ണസംഖ്യ __vpiStringConst::get_type_code(ശൂന്യം) സ്ഥിരം
+{ തിരികെ vpiConstant; }
 
-int __vpiStringConst::vpi_get(int code)
+പൂർണ്ണസംഖ്യ __vpiStringConst::vpi_get(പൂർണ്ണസംഖ്യ code)
 {
-      switch (code) {
-          case vpiSize:
-	    return value_len_ * 8;
+      തിരഞ്ഞെടുപ്പ് (code) {
+          അവസ്ഥ vpiSize:
+	    തിരികെ മൂല്യം_len * 8;
 
-          case vpiSigned:
-	      return 0;
+          അവസ്ഥ vpiSigned:
+	      തിരികെ 0;
 
-	  case vpiConstType:
-	      return vpiStringConst;
+	  അവസ്ഥ vpiConstType:
+	      തിരികെ vpiStringConst;
 
-          case vpiAutomatic:
-	      return 0;
+          അവസ്ഥ vpiAutomatic:
+	      തിരികെ 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-          case _vpiFromThr:
-	      return _vpiNoThr;
+#എങ്കിൽ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+          അവസ്ഥ _vpiFromThr:
+	      തിരികെ _vpiNoThr;
 #endif
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	      fprintf(stderr, "vvp error: get %d not supported "
 		      "by vpiStringConst\n", code);
-	      assert(0);
-	      return 0;
+	      പ്രതിജ്ഞാ(0);
+	      തിരികെ 0;
       }
 }
 
-void __vpiStringConst::vpi_get_value(p_vpi_value vp)
+ശൂന്യം __vpiStringConst::vpi_get_മൂല്യം(p_vpi_മൂല്യം vp)
 {
-      unsigned uint_value;
+      unsigned uint_മൂല്യം;
       p_vpi_vecval vecp;
-      unsigned size = value_len_;
-      char*rbuf = 0;
-      char*cp;
+      unsigned size = മൂല്യം_len;
+      അക്ഷരം*rbuf = 0;
+      അക്ഷരം*cp;
 
-      switch (vp->format) {
-	  case vpiObjTypeVal:
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
+	  അവസ്ഥ vpiObjTypeVal:
 	      /* String parameters by default have vpiStringVal values. */
 	    vp->format = vpiStringVal;
 	    // fallthrough
-	  case vpiStringVal:
-	    cp = value_;
-	    rbuf = static_cast<char *>(need_result_buf(size + 1, RBUF_VAL));
+	  അവസ്ഥ vpiStringVal:
+	    cp = മൂല്യം_2;
+	    rbuf = static_cast<അക്ഷരം *>(need_result_buf(size + 1, RBUF_VAL));
 	    vp->value.str = rbuf;
 
-	    for (unsigned int i = 0; i < size; i++) {
+	    വേണ്ടി (unsigned പൂർണ്ണസംഖ്യ i = 0; i < size; i++) {
 		  // Ignore leading null-bytes and replace other null-bytes with space.
 		  // The LRM is not entirely clear on how null bytes should be handled.
 		  // This is the implementation chosen for iverilog.
-		  if (*cp)
+		  എങ്കിൽ (*cp)
 			*rbuf++ = *cp;
-		  else if (rbuf != vp->value.str)
+		  അല്ലെങ്കിൽ എങ്കിൽ (rbuf != vp->value.str)
 			*rbuf++ = ' ';
 
 		  cp++;
 	    }
 	    *rbuf = '\0';
-	    break;
+	    നിർത്തുക;
 
-          case vpiDecStrVal:
+          അവസ്ഥ vpiDecStrVal:
 	    // Take the (up to 4) characters of the text, convert the characters
 	    // to a numerical value, and convert that value to a decimal string.
 	    // For example, the string "A" is ASCII 65, so the resulting string
 	    // will be "65". and the string "AB" is 65*256 + 66 == 16706, so
 	    // the resulting string is "16706". The "size" is the number of
 	    // characters of input text to put to work.
-	    if (size > 4){
+	    എങ്കിൽ (size > 4){
 		  // We only support standard integers. Ignore other bytes...
 		  size = 4;
 		  fprintf(stderr, "Warning (vpi_const.cc): %%d on constant strings only looks "
 			  "at first 4 bytes!\n");
 	    }
-	    static const size_t RBUF_USE_SIZE = 12;
-	    rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
-	    uint_value = 0;
-	    for(unsigned i=0; i<size; i += 1){
-		  uint_value <<=8;
-		  uint_value += (unsigned char)(value_[i]);
+	    സ്ഥിതം സ്ഥിരം size_t RBUF_USE_SIZE = 12;
+	    rbuf = static_cast<അക്ഷരം *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+	    uint_മൂല്യം = 0;
+	    വേണ്ടി(unsigned i=0; i<size; i += 1){
+		  uint_മൂല്യം <<=8;
+		  uint_മൂല്യം += (unsigned അക്ഷരം)(മൂല്യം_2[i]);
 	    }
-	    snprintf(rbuf, RBUF_USE_SIZE, "%u", uint_value);
+	    snprintf(rbuf, RBUF_USE_SIZE, "%u", uint_മൂല്യം);
 	    vp->value.str = rbuf;
-	    break;
+	    നിർത്തുക;
 
-          case vpiBinStrVal:
-	      rbuf = static_cast<char *>(need_result_buf(8 * size + 1, RBUF_VAL));
+          അവസ്ഥ vpiBinStrVal:
+	      rbuf = static_cast<അക്ഷരം *>(need_result_buf(8 * size + 1, RBUF_VAL));
 	      cp = rbuf;
-	      for(unsigned i=0; i<size; i += 1){
-		  for(int bit=7; bit>=0; bit -= 1){
-		      *cp++ = "01"[ (value_[i]>>bit)&1 ];
+	      വേണ്ടി(unsigned i=0; i<size; i += 1){
+		  വേണ്ടി(പൂർണ്ണസംഖ്യ bit=7; bit>=0; bit -= 1){
+		      *cp++ = "01"[ (മൂല്യം_2[i]>>bit)&1 ];
 		  }
 	      }
 	      *cp = 0;
 	      vp->value.str = rbuf;
-	      break;
+	      നിർത്തുക;
 
-          case vpiHexStrVal:
-	      rbuf = static_cast<char *>(need_result_buf(2 * size + 1, RBUF_VAL));
+          അവസ്ഥ vpiHexStrVal:
+	      rbuf = static_cast<അക്ഷരം *>(need_result_buf(2 * size + 1, RBUF_VAL));
 	      cp = rbuf;
-	      for(unsigned i=0; i<size; i += 1){
-		  for(int nibble=1; nibble>=0; nibble -= 1){
-		      *cp++ = "0123456789abcdef"[ (value_[i]>>(nibble*4))&15 ];
+	      വേണ്ടി(unsigned i=0; i<size; i += 1){
+		  വേണ്ടി(പൂർണ്ണസംഖ്യ nibble=1; nibble>=0; nibble -= 1){
+		      *cp++ = "0123456789abcdef"[ (മൂല്യം_2[i]>>(nibble*4))&15 ];
 		  }
 	      }
 	      *cp = 0;
 	      vp->value.str = rbuf;
-	      break;
+	      നിർത്തുക;
 
-          case vpiOctStrVal:
+          അവസ്ഥ vpiOctStrVal:
 	      fprintf(stderr, "ERROR (vpi_const.cc): %%o display of constant strings not yet implemented\n");
-	      assert(0);
-	      break;
+	      പ്രതിജ്ഞാ(0);
+	      നിർത്തുക;
 
-          case vpiIntVal:
+          അവസ്ഥ vpiIntVal:
 	      vp->value.integer = 0;
-	      for(unsigned i=0; i<size; i += 1){
-		  for(int bit=7; bit>=0; bit -= 1){
+	      വേണ്ടി(unsigned i=0; i<size; i += 1){
+		  വേണ്ടി(പൂർണ്ണസംഖ്യ bit=7; bit>=0; bit -= 1){
 		      vp->value.integer <<= 1;
-		      vp->value.integer += (value_[i]>>bit)&1;
+		      vp->value.integer += (മൂല്യം_2[i]>>bit)&1;
 		  }
 	      }
-	      break;
+	      നിർത്തുക;
 
-          case vpiVectorVal:
+          അവസ്ഥ vpiVectorVal:
               vp->value.vector = static_cast<p_vpi_vecval>
                                  (need_result_buf((size+3)/4*
-                                                   sizeof(s_vpi_vecval),
+                                                   വലുപ്പം(s_vpi_vecval),
                                                   RBUF_VAL));
-              uint_value = 0;
+              uint_മൂല്യം = 0;
               vecp = vp->value.vector;
               vecp->aval = vecp->bval = 0;
-	      for(unsigned i=0; i<size; i += 1){
-		  vecp->aval |= value_[i] << uint_value*8;
-		  uint_value += 1;
-		  if (uint_value > 3) {
-		      uint_value = 0;
+	      വേണ്ടി(unsigned i=0; i<size; i += 1){
+		  vecp->aval |= മൂല്യം_2[i] << uint_മൂല്യം*8;
+		  uint_മൂല്യം += 1;
+		  എങ്കിൽ (uint_മൂല്യം > 3) {
+		      uint_മൂല്യം = 0;
 		      vecp += 1;
 		      vecp->aval = vecp->bval = 0;
 		  }
 	      }
-	      break;
+	      നിർത്തുക;
 
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "ERROR (vpi_const.cc): vp->format: %d\n",
-	            (int)vp->format);
-	    assert(0);
+	            (പൂർണ്ണസംഖ്യ)vp->format);
+	    പ്രതിജ്ഞാ(0);
 
 	    vp->format = vpiSuppressVal;
-	    break;
+	    നിർത്തുക;
       }
 }
 
 
-struct __vpiStringConstTEMP : public __vpiStringConst {
-      explicit inline __vpiStringConstTEMP(char*v) : __vpiStringConst(v) { }
-      free_object_fun_t free_object_fun(void) override;
+ഘടന __vpiStringConstTEMP : പൊതു __vpiStringConst {
+      explicit വരിയിൽ __vpiStringConstTEMP(അക്ഷരം*v) : __vpiStringConst(v) { }
+      free_object_fun_t free_object_fun(ശൂന്യം) override;
 };
 
-static int free_temp_string(vpiHandle obj)
+സ്ഥിതം പൂർണ്ണസംഖ്യ free_temp_string(vpiHandle obj)
 {
-      struct __vpiStringConstTEMP*rfp = dynamic_cast<__vpiStringConstTEMP*>(obj);
+      ഘടന __vpiStringConstTEMP*rfp = dynamic_cast<__vpiStringConstTEMP*>(obj);
       delete rfp;
-      return 1;
+      തിരികെ 1;
 }
 
-__vpiHandle::free_object_fun_t __vpiStringConstTEMP::free_object_fun(void)
-{ return &free_temp_string; }
+__vpiHandle::free_object_fun_t __vpiStringConstTEMP::free_object_fun(ശൂന്യം)
+{ തിരികെ &free_temp_string; }
 
-vpiHandle vpip_make_string_const(char*text, bool persistent_flag)
+vpiHandle vpip_make_string_const(അക്ഷരം*text, തർക്കം persistent_flag)
 {
       __vpiStringConst*obj;
 
-      obj = persistent_flag? new __vpiStringConst(text) : new __vpiStringConstTEMP(text);
+      obj = persistent_flag? പുതിയ __vpiStringConst(text) : പുതിയ __vpiStringConstTEMP(text);
 
-      return obj;
+      തിരികെ obj;
 }
 
 
-class __vpiStringParam  : public __vpiStringConst {
-    public:
-      __vpiStringParam(__vpiScope* scope, char*txt, const char*name,
-                       bool local_flag, long file_idx, long lineno);
+വർഗ്ഗം __vpiStringParam  : പൊതു __vpiStringConst {
+    പൊതു:
+      __vpiStringParam(__vpiScope* scope, അക്ഷരം*txt, സ്ഥിരം അക്ഷരം*name,
+                       തർക്കം local_flag, long file_idx, long lineno);
       ~__vpiStringParam() override;
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം*vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
 
-    private:
+    സ്വകാര്യ:
       __vpiScope* scope_;
-      const char*basename_;
-      bool       local_flag_;
+      സ്ഥിരം അക്ഷരം*basename_;
+      തർക്കം       local_flag_;
       unsigned   file_idx_;
       unsigned   lineno_;
 };
 
-inline __vpiStringParam::__vpiStringParam(__vpiScope* scope, char*txt, const char*nam,
-                                          bool local_flag, long file_idx, long lineno)
+വരിയിൽ __vpiStringParam::__vpiStringParam(__vpiScope* scope, അക്ഷരം*txt, സ്ഥിരം അക്ഷരം*nam,
+                                          തർക്കം local_flag, long file_idx, long lineno)
 : __vpiStringConst(txt)
 {
       scope_ = scope;
       basename_ = nam;
       local_flag_ = local_flag;
-      assert(file_idx >= 0 && file_idx <= INT_MAX);
+      പ്രതിജ്ഞാ(file_idx >= 0 && file_idx <= INT_MAX);
       file_idx_ = (unsigned) file_idx;
-      assert(lineno >= 0 && lineno <= INT_MAX);
+      പ്രതിജ്ഞാ(lineno >= 0 && lineno <= INT_MAX);
       lineno_ = (unsigned) lineno;
 }
 
@@ -305,120 +305,120 @@ __vpiStringParam::~__vpiStringParam()
       delete[]basename_;
 }
 
-int __vpiStringParam::get_type_code(void) const
-{ return vpiParameter; }
+പൂർണ്ണസംഖ്യ __vpiStringParam::get_type_code(ശൂന്യം) സ്ഥിരം
+{ തിരികെ vpiParameter; }
 
-int __vpiStringParam::vpi_get(int code)
+പൂർണ്ണസംഖ്യ __vpiStringParam::vpi_get(പൂർണ്ണസംഖ്യ code)
 {
-    switch (code) {
-       case vpiLineNo :
-         return lineno_;
+    തിരഞ്ഞെടുപ്പ് (code) {
+       അവസ്ഥ vpi_വരി_No :
+         തിരികെ lineno_;
 
-       case vpiLocalParam :
-         return local_flag_;
+       അവസ്ഥ vpiLocalParam :
+         തിരികെ local_flag_;
 
-       default :
-         return __vpiStringConst::vpi_get(code);
+       സ്ഥിരസ്ഥിതി :
+         തിരികെ __vpiStringConst::vpi_get(code);
     }
 }
 
 
-char*__vpiStringParam::vpi_get_str(int code)
+അക്ഷരം*__vpiStringParam::vpi_get_str(പൂർണ്ണസംഖ്യ code)
 {
-      if (code == vpiFile) {
-	    return simple_set_rbuf_str(file_names[file_idx_]);
+      എങ്കിൽ (code == vpiFile) {
+	    തിരികെ simple_set_rbuf_str(file_names[file_idx_]);
       }
 
-      return generic_get_str(code, scope_, basename_, NULL);
+      തിരികെ generic_get_str(code, scope_, basename_, ശൂന്യ);
 }
 
 
-vpiHandle __vpiStringParam::vpi_handle(int code)
+vpiHandle __vpiStringParam::vpi_handle(പൂർണ്ണസംഖ്യ code)
 {
-      switch (code) {
-	  case vpiScope:
-	    return scope_;
+      തിരഞ്ഞെടുപ്പ് (code) {
+	  അവസ്ഥ vpiScope:
+	    തിരികെ scope_;
 
-	  case vpiModule:
-	    return vpip_module(scope_);
+	  അവസ്ഥ vpiModule:
+	    തിരികെ vpip_module(scope_);
 
-	  default:
-	    return 0;
+	  സ്ഥിരസ്ഥിതി:
+	    തിരികെ 0;
       }
 }
 
-vpiHandle vpip_make_string_param(const char*name, char*text,
-                                 bool local_flag, long file_idx, long lineno)
+vpiHandle vpip_make_string_param(സ്ഥിരം അക്ഷരം*name, അക്ഷരം*text,
+                                 തർക്കം local_flag, long file_idx, long lineno)
 {
-      __vpiStringParam*obj = new __vpiStringParam(vpip_peek_current_scope(), text, name,
+      __vpiStringParam*obj = പുതിയ __vpiStringParam(vpip_peek_current_scope(), text, name,
                                                   local_flag, file_idx, lineno);
 
-      return obj;
+      തിരികെ obj;
 }
 
 
 
-inline __vpiBinaryConst::__vpiBinaryConst()
+വരിയിൽ __vpiBinaryConst::__vpiBinaryConst()
 : signed_flag(0), sized_flag(0)
 { }
 
-int __vpiBinaryConst::get_type_code(void) const
-{ return vpiConstant; }
+പൂർണ്ണസംഖ്യ __vpiBinaryConst::get_type_code(ശൂന്യം) സ്ഥിരം
+{ തിരികെ vpiConstant; }
 
-int __vpiBinaryConst::vpi_get(int code)
+പൂർണ്ണസംഖ്യ __vpiBinaryConst::vpi_get(പൂർണ്ണസംഖ്യ code)
 {
-      switch (code) {
-	  case vpiConstType:
-	    return vpiBinaryConst;
+      തിരഞ്ഞെടുപ്പ് (code) {
+	  അവസ്ഥ vpiConstType:
+	    തിരികെ vpi_ദ്വിമാന_Const;
 
-	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+	  അവസ്ഥ vpi_വരി_No:
+	    തിരികെ 0;  // Not implemented for now!
 
-	  case vpiSigned:
-	    return signed_flag? 1 : 0;
+	  അവസ്ഥ vpiSigned:
+	    തിരികെ signed_flag? 1 : 0;
 
-	  case vpiSize:
-	    return bits.size();
+	  അവസ്ഥ vpiSize:
+	    തിരികെ bits.size();
 
-          case vpiAutomatic:
-	    return 0;
+          അവസ്ഥ vpiAutomatic:
+	    തിരികെ 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-          case _vpiFromThr:
-	      return _vpiNoThr;
+#എങ്കിൽ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+          അവസ്ഥ _vpiFromThr:
+	      തിരികെ _vpiNoThr;
 #endif
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by vpiBinaryConst\n", code);
-	    assert(0);
-	    return 0;
+	    പ്രതിജ്ഞാ(0);
+	    തിരികെ 0;
       }
 }
 
 
-void __vpiBinaryConst::vpi_get_value(p_vpi_value val)
+ശൂന്യം __vpiBinaryConst::vpi_get_മൂല്യം(p_vpi_മൂല്യം val)
 {
-      switch (val->format) {
+      തിരഞ്ഞെടുപ്പ് (val->format) {
 
-	  case vpiObjTypeVal:
-	  case vpiBinStrVal:
-	  case vpiDecStrVal:
-	  case vpiOctStrVal:
-	  case vpiHexStrVal:
-          case vpiScalarVal:
-	  case vpiIntVal:
-	  case vpiVectorVal:
-	  case vpiStringVal:
-	  case vpiRealVal:
-	    vpip_vec4_get_value(bits, bits.size(), signed_flag, val);
-	    break;
+	  അവസ്ഥ vpiObjTypeVal:
+	  അവസ്ഥ vpiBinStrVal:
+	  അവസ്ഥ vpiDecStrVal:
+	  അവസ്ഥ vpiOctStrVal:
+	  അവസ്ഥ vpiHexStrVal:
+          അവസ്ഥ vpiScalarVal:
+	  അവസ്ഥ vpiIntVal:
+	  അവസ്ഥ vpiVectorVal:
+	  അവസ്ഥ vpiStringVal:
+	  അവസ്ഥ vpiRealVal:
+	    vpip_vec4_get_മൂല്യം(bits, bits.size(), signed_flag, val);
+	    നിർത്തുക;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vvp error: format %d not supported "
-		    "by vpiBinaryConst\n", (int)val->format);
+		    "by vpiBinaryConst\n", (പൂർണ്ണസംഖ്യ)val->format);
 	    val->format = vpiSuppressVal;
-	    break;
+	    നിർത്തുക;
       }
 }
 
@@ -427,68 +427,68 @@ void __vpiBinaryConst::vpi_get_value(p_vpi_value val)
  * ASCII string, with each letter a 4-value bit. The first character
  * may be an 's' if the vector is signed.
  */
-vpiHandle vpip_make_binary_const(unsigned wid, const char*bits)
+vpiHandle vpip_make_ദ്വിമാന_const(unsigned wid, സ്ഥിരം അക്ഷരം*bits)
 {
-      struct __vpiBinaryConst*obj = new __vpiBinaryConst;
+      ഘടന __vpiBinaryConst*obj = പുതിയ __vpiBinaryConst;
 
-      const char*bp = bits;
-      if (*bp == 's') {
+      സ്ഥിരം അക്ഷരം*bp = bits;
+      എങ്കിൽ (*bp == 's') {
 	    bp += 1;
 	    obj->signed_flag = 1;
       }
 
       obj->bits = vector4_from_text(bp, wid);
 
-      return obj;
+      തിരികെ obj;
 }
 
-vvp_vector4_t vector4_from_text(const char*bits, unsigned wid)
+vvp_vector4_t vector4_from_text(സ്ഥിരം അക്ഷരം*bits, unsigned wid)
 {
       vvp_vector4_t res (wid);
 
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+      വേണ്ടി (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 	    vvp_bit4_t val = BIT4_0;
-	    switch (bits[wid-idx-1]) {
-		case '0':
+	    തിരഞ്ഞെടുപ്പ് (bits[wid-idx-1]) {
+		അവസ്ഥ '0':
 		  val = BIT4_0;
-		  break;
-		case '1':
+		  നിർത്തുക;
+		അവസ്ഥ '1':
 		  val = BIT4_1;
-		  break;
-		case 'x':
+		  നിർത്തുക;
+		അവസ്ഥ 'x':
 		  val = BIT4_X;
-		  break;
-		case 'z':
+		  നിർത്തുക;
+		അവസ്ഥ 'z':
 		  val = BIT4_Z;
-		  break;
+		  നിർത്തുക;
 	    }
 
 	    res.set_bit(idx, val);
       }
 
-      return res;
+      തിരികെ res;
 }
 
-struct __vpiBinaryParam  : public __vpiBinaryConst {
-      __vpiBinaryParam(__vpiScope*scope, const vvp_vector4_t&b, bool is_signed,
-                       const char*name, bool local_flag, long file_idx, long lineno);
+ഘടന __vpiBinaryParam  : പൊതു __vpiBinaryConst {
+      __vpiBinaryParam(__vpiScope*scope, സ്ഥിരം vvp_vector4_t&b, തർക്കം is_signed,
+                       സ്ഥിരം അക്ഷരം*name, തർക്കം local_flag, long file_idx, long lineno);
       ~__vpiBinaryParam() override;
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം*vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
 
-    private:
+    സ്വകാര്യ:
       __vpiScope*scope_;
-      const char*basename_;
-      bool     local_flag_;
+      സ്ഥിരം അക്ഷരം*basename_;
+      തർക്കം     local_flag_;
       unsigned file_idx_;
       unsigned lineno_;
 };
 
-inline __vpiBinaryParam::__vpiBinaryParam(__vpiScope*scope, const vvp_vector4_t&b,
-                                          bool is_signed, const char*nam,
-                                          bool local_flag, long file_idx, long lineno)
+വരിയിൽ __vpiBinaryParam::__vpiBinaryParam(__vpiScope*scope, സ്ഥിരം vvp_vector4_t&b,
+                                          തർക്കം is_signed, സ്ഥിരം അക്ഷരം*nam,
+                                          തർക്കം local_flag, long file_idx, long lineno)
 {
       scope_ = scope;
       bits = b;
@@ -496,9 +496,9 @@ inline __vpiBinaryParam::__vpiBinaryParam(__vpiScope*scope, const vvp_vector4_t&
       sized_flag = 0;
       basename_ = nam;
       local_flag_ = local_flag;
-      assert(file_idx >= 0 && file_idx <= INT_MAX);
+      പ്രതിജ്ഞാ(file_idx >= 0 && file_idx <= INT_MAX);
       file_idx_ = (unsigned) file_idx;
-      assert(lineno >= 0 && lineno <= INT_MAX);
+      പ്രതിജ്ഞാ(lineno >= 0 && lineno <= INT_MAX);
       lineno_ = (unsigned) lineno;
 }
 
@@ -507,229 +507,229 @@ __vpiBinaryParam::~__vpiBinaryParam()
       delete[]basename_;
 }
 
-int __vpiBinaryParam::get_type_code(void) const
-{ return vpiParameter; }
+പൂർണ്ണസംഖ്യ __vpiBinaryParam::get_type_code(ശൂന്യം) സ്ഥിരം
+{ തിരികെ vpiParameter; }
 
-int __vpiBinaryParam::vpi_get(int code)
+പൂർണ്ണസംഖ്യ __vpiBinaryParam::vpi_get(പൂർണ്ണസംഖ്യ code)
 {
-    switch (code) {
-      case vpiLineNo :
-        return lineno_;
+    തിരഞ്ഞെടുപ്പ് (code) {
+      അവസ്ഥ vpi_വരി_No :
+        തിരികെ lineno_;
 
-      case vpiLocalParam :
-        return local_flag_;
+      അവസ്ഥ vpiLocalParam :
+        തിരികെ local_flag_;
 
-      default :
-        return __vpiBinaryConst::vpi_get(code);
+      സ്ഥിരസ്ഥിതി :
+        തിരികെ __vpiBinaryConst::vpi_get(code);
     }
 }
 
-char*__vpiBinaryParam::vpi_get_str(int code)
+അക്ഷരം*__vpiBinaryParam::vpi_get_str(പൂർണ്ണസംഖ്യ code)
 {
-      if (code == vpiFile)
-	    return simple_set_rbuf_str(file_names[file_idx_]);
+      എങ്കിൽ (code == vpiFile)
+	    തിരികെ simple_set_rbuf_str(file_names[file_idx_]);
 
-      return generic_get_str(code, scope_, basename_, NULL);
+      തിരികെ generic_get_str(code, scope_, basename_, ശൂന്യ);
 }
 
 
-vpiHandle __vpiBinaryParam::vpi_handle(int code)
+vpiHandle __vpiBinaryParam::vpi_handle(പൂർണ്ണസംഖ്യ code)
 {
-      switch (code) {
-	  case vpiScope:
-	    return scope_;
+      തിരഞ്ഞെടുപ്പ് (code) {
+	  അവസ്ഥ vpiScope:
+	    തിരികെ scope_;
 
-	  case vpiModule:
-	    return vpip_module(scope_);
+	  അവസ്ഥ vpiModule:
+	    തിരികെ vpip_module(scope_);
 
-	  default:
-	    return 0;
+	  സ്ഥിരസ്ഥിതി:
+	    തിരികെ 0;
       }
 }
 
 
-vpiHandle vpip_make_binary_param(const char*name, const vvp_vector4_t&bits,
-				 bool signed_flag, bool local_flag,
+vpiHandle vpip_make_ദ്വിമാന_param(സ്ഥിരം അക്ഷരം*name, സ്ഥിരം vvp_vector4_t&bits,
+				 തർക്കം signed_flag, തർക്കം local_flag,
 				 long file_idx, long lineno)
 {
-      struct __vpiBinaryParam*obj = new __vpiBinaryParam(vpip_peek_current_scope(),
+      ഘടന __vpiBinaryParam*obj = പുതിയ __vpiBinaryParam(vpip_peek_current_scope(),
                                                          bits, signed_flag, name,
                                                          local_flag, file_idx, lineno);
 
-      return obj;
+      തിരികെ obj;
 }
 
 
 
-__vpiDecConst::__vpiDecConst(int val)
+__vpiDecConst::__vpiDecConst(പൂർണ്ണസംഖ്യ val)
 {
       value = val;
 }
 
-__vpiDecConst::__vpiDecConst(const __vpiDecConst&that)
+__vpiDecConst::__vpiDecConst(സ്ഥിരം __vpiDecConst&that)
 : __vpiHandle(), value(that.value)
 {
 }
 
 
-int __vpiDecConst::get_type_code(void) const
-{ return vpiConstant; }
+പൂർണ്ണസംഖ്യ __vpiDecConst::get_type_code(ശൂന്യം) സ്ഥിരം
+{ തിരികെ vpiConstant; }
 
-int __vpiDecConst::vpi_get(int code)
+പൂർണ്ണസംഖ്യ __vpiDecConst::vpi_get(പൂർണ്ണസംഖ്യ code)
 {
-      switch (code) {
-	  case vpiConstType:
-	    return vpiDecConst;
+      തിരഞ്ഞെടുപ്പ് (code) {
+	  അവസ്ഥ vpiConstType:
+	    തിരികെ vpiDecConst;
 
-	  case vpiSigned:
-	    return 1;
+	  അവസ്ഥ vpiSigned:
+	    തിരികെ 1;
 
-	  case vpiSize:
-	    return 32;
+	  അവസ്ഥ vpiSize:
+	    തിരികെ 32;
 
-          case vpiAutomatic:
-	    return 0;
+          അവസ്ഥ vpiAutomatic:
+	    തിരികെ 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-          case _vpiFromThr:
-	      return _vpiNoThr;
+#എങ്കിൽ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+          അവസ്ഥ _vpiFromThr:
+	      തിരികെ _vpiNoThr;
 #endif
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by vpiDecConst\n", code);
-	    assert(0);
-	    return 0;
+	    പ്രതിജ്ഞാ(0);
+	    തിരികെ 0;
       }
 }
 
 
-void __vpiDecConst::vpi_get_value(p_vpi_value vp)
+ശൂന്യം __vpiDecConst::vpi_get_മൂല്യം(p_vpi_മൂല്യം vp)
 {
-      static const size_t RBUF_USE_SIZE = 64 + 1;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
-      char*cp = rbuf;
+      സ്ഥിതം സ്ഥിരം size_t RBUF_USE_SIZE = 64 + 1;
+      അക്ഷരം*rbuf = static_cast<അക്ഷരം *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      അക്ഷരം*cp = rbuf;
 
-      switch (vp->format) {
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
 
-	  case vpiObjTypeVal:
-	  case vpiIntVal: {
+	  അവസ്ഥ vpiObjTypeVal:
+	  അവസ്ഥ vpiIntVal: {
 		vp->value.integer = value;
-		break;
+		നിർത്തുക;
 	  }
 
-          case vpiDecStrVal:
+          അവസ്ഥ vpiDecStrVal:
 	      snprintf(rbuf, RBUF_USE_SIZE, "%d", value);
 	      vp->value.str = rbuf;
-	      break;
+	      നിർത്തുക;
 
-          case vpiBinStrVal:
-	      for(int bit=31; bit>=0;bit--){
+          അവസ്ഥ vpiBinStrVal:
+	      വേണ്ടി(പൂർണ്ണസംഖ്യ bit=31; bit>=0;bit--){
 		  *cp++ = "01"[ (static_cast<unsigned>(value)>>bit)&1 ];
 	      }
 	      *cp = 0;
 
 	      vp->value.str = rbuf;
-	      break;
+	      നിർത്തുക;
 
-          case vpiHexStrVal:
+          അവസ്ഥ vpiHexStrVal:
 	      snprintf(rbuf, RBUF_USE_SIZE, "%08x", value);
 	      vp->value.str = rbuf;
-	      break;
+	      നിർത്തുക;
 
-          case vpiOctStrVal:
+          അവസ്ഥ vpiOctStrVal:
 	      snprintf(rbuf, RBUF_USE_SIZE, "%011x", value);
 	      vp->value.str = rbuf;
-	      break;
+	      നിർത്തുക;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vvp error (vpi_const.cc): format %d not supported "
-		    "by vpiDecConst\n", (int)vp->format);
+		    "by vpiDecConst\n", (പൂർണ്ണസംഖ്യ)vp->format);
 	    vp->format = vpiSuppressVal;
-	    break;
+	    നിർത്തുക;
       }
 }
 
 
-inline __vpiRealConst::__vpiRealConst(double val)
+വരിയിൽ __vpiRealConst::__vpiRealConst(ഇരട്ട val)
 : value(val)
 { }
 
-int __vpiRealConst::get_type_code(void) const
-{ return vpiConstant; }
+പൂർണ്ണസംഖ്യ __vpiRealConst::get_type_code(ശൂന്യം) സ്ഥിരം
+{ തിരികെ vpiConstant; }
 
-int __vpiRealConst::vpi_get(int code)
+പൂർണ്ണസംഖ്യ __vpiRealConst::vpi_get(പൂർണ്ണസംഖ്യ code)
 {
-      switch (code) {
-	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      തിരഞ്ഞെടുപ്പ് (code) {
+	  അവസ്ഥ vpi_വരി_No:
+	    തിരികെ 0;  // Not implemented for now!
 
-	  case vpiSize:
-	    return 1;
+	  അവസ്ഥ vpiSize:
+	    തിരികെ 1;
 
-	  case vpiConstType:
-	    return vpiRealConst;
+	  അവസ്ഥ vpiConstType:
+	    തിരികെ vpiRealConst;
 
-	  case vpiSigned:
-	    return 1;
+	  അവസ്ഥ vpiSigned:
+	    തിരികെ 1;
 
-          case vpiAutomatic:
-	    return 0;
+          അവസ്ഥ vpiAutomatic:
+	    തിരികെ 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-          case _vpiFromThr:
-	      return _vpiNoThr;
+#എങ്കിൽ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+          അവസ്ഥ _vpiFromThr:
+	      തിരികെ _vpiNoThr;
 #endif
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by vpiRealConst\n", code);
-	    assert(0);
-	    return 0;
+	    പ്രതിജ്ഞാ(0);
+	    തിരികെ 0;
       }
 }
 
 
-void __vpiRealConst::vpi_get_value(p_vpi_value val)
+ശൂന്യം __vpiRealConst::vpi_get_മൂല്യം(p_vpi_മൂല്യം val)
 {
-      vpip_real_get_value(value, val);
+      vpip_real_get_മൂല്യം(value, val);
 }
 
 
-vpiHandle vpip_make_real_const(double value)
+vpiHandle vpip_make_real_const(ഇരട്ട value)
 {
-      __vpiRealConst*obj = new __vpiRealConst(value);
-      return obj;
+      __vpiRealConst*obj = പുതിയ __vpiRealConst(value);
+      തിരികെ obj;
 }
 
-struct __vpiRealParam  : public __vpiRealConst {
-      __vpiRealParam(__vpiScope* scope, double val, const char*name,
-                     bool local_flag, long file_idx, long lineno);
+ഘടന __vpiRealParam  : പൊതു __vpiRealConst {
+      __vpiRealParam(__vpiScope* scope, ഇരട്ട val, സ്ഥിരം അക്ഷരം*name,
+                     തർക്കം local_flag, long file_idx, long lineno);
       ~__vpiRealParam() override;
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം*vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
 
-    private:
+    സ്വകാര്യ:
       __vpiScope* scope_;
-      const char*basename_;
-      bool local_flag_;
+      സ്ഥിരം അക്ഷരം*basename_;
+      തർക്കം local_flag_;
       unsigned file_idx_;
       unsigned lineno_;
 };
 
 
-inline __vpiRealParam::__vpiRealParam(__vpiScope* scope, double val, const char*name,
-                                      bool local_flag, long file_idx, long lineno)
+വരിയിൽ __vpiRealParam::__vpiRealParam(__vpiScope* scope, ഇരട്ട val, സ്ഥിരം അക്ഷരം*name,
+                                      തർക്കം local_flag, long file_idx, long lineno)
 : __vpiRealConst(val)
 {
       scope_ = scope;
       basename_ = name;
       local_flag_ = local_flag;
-      assert(file_idx >= 0 && file_idx <= INT_MAX);
+      പ്രതിജ്ഞാ(file_idx >= 0 && file_idx <= INT_MAX);
       file_idx_ = (unsigned) file_idx;
-      assert(lineno >= 0 && lineno <= INT_MAX);
+      പ്രതിജ്ഞാ(lineno >= 0 && lineno <= INT_MAX);
       lineno_ = (unsigned) lineno;
 }
 
@@ -739,192 +739,192 @@ __vpiRealParam::~__vpiRealParam()
 }
 
 
-int __vpiRealParam::get_type_code(void) const
-{ return vpiParameter; }
+പൂർണ്ണസംഖ്യ __vpiRealParam::get_type_code(ശൂന്യം) സ്ഥിരം
+{ തിരികെ vpiParameter; }
 
-int __vpiRealParam::vpi_get(int code)
+പൂർണ്ണസംഖ്യ __vpiRealParam::vpi_get(പൂർണ്ണസംഖ്യ code)
 {
-    switch (code) {
-      case vpiLineNo :
-        return lineno_;
+    തിരഞ്ഞെടുപ്പ് (code) {
+      അവസ്ഥ vpi_വരി_No :
+        തിരികെ lineno_;
 
-      case vpiLocalParam :
-        return local_flag_;
+      അവസ്ഥ vpiLocalParam :
+        തിരികെ local_flag_;
 
-      default :
-           return __vpiRealConst::vpi_get(code);
+      സ്ഥിരസ്ഥിതി :
+           തിരികെ __vpiRealConst::vpi_get(code);
     }
 }
 
-char* __vpiRealParam::vpi_get_str(int code)
+അക്ഷരം* __vpiRealParam::vpi_get_str(പൂർണ്ണസംഖ്യ code)
 {
-      if (code == vpiFile)
-            return simple_set_rbuf_str(file_names[file_idx_]);
+      എങ്കിൽ (code == vpiFile)
+            തിരികെ simple_set_rbuf_str(file_names[file_idx_]);
 
-      return generic_get_str(code, scope_, basename_, NULL);
+      തിരികെ generic_get_str(code, scope_, basename_, ശൂന്യ);
 }
 
-vpiHandle __vpiRealParam::vpi_handle(int code)
+vpiHandle __vpiRealParam::vpi_handle(പൂർണ്ണസംഖ്യ code)
 {
-      switch (code) {
-          case vpiScope:
-            return scope_;
+      തിരഞ്ഞെടുപ്പ് (code) {
+          അവസ്ഥ vpiScope:
+            തിരികെ scope_;
 
-	  case vpiModule:
-	    return vpip_module(scope_);
+	  അവസ്ഥ vpiModule:
+	    തിരികെ vpip_module(scope_);
 
-          default:
-            return 0;
+          സ്ഥിരസ്ഥിതി:
+            തിരികെ 0;
       }
 }
 
 
-vpiHandle vpip_make_real_param(const char*name, double value,
-                               bool local_flag, long file_idx, long lineno)
+vpiHandle vpip_make_real_param(സ്ഥിരം അക്ഷരം*name, ഇരട്ട value,
+                               തർക്കം local_flag, long file_idx, long lineno)
 {
-      struct __vpiRealParam*obj = new __vpiRealParam(vpip_peek_current_scope(),
+      ഘടന __vpiRealParam*obj = പുതിയ __vpiRealParam(vpip_peek_current_scope(),
                                                      value, name, local_flag,
                                                      file_idx, lineno);
-      return obj;
+      തിരികെ obj;
 }
 
 /*
  * Make a VPI null constant
  */
-inline __vpiNullConst::__vpiNullConst()
+വരിയിൽ __vpiNullConst::__vpiNullConst()
 { }
 
-int __vpiNullConst::get_type_code(void) const
-{ return vpiConstant; }
+പൂർണ്ണസംഖ്യ __vpiNullConst::get_type_code(ശൂന്യം) സ്ഥിരം
+{ തിരികെ vpiConstant; }
 
-int __vpiNullConst::vpi_get(int code)
+പൂർണ്ണസംഖ്യ __vpiNullConst::vpi_get(പൂർണ്ണസംഖ്യ code)
 {
-      switch (code) {
-	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      തിരഞ്ഞെടുപ്പ് (code) {
+	  അവസ്ഥ vpi_വരി_No:
+	    തിരികെ 0;  // Not implemented for now!
 
-	  case vpiSize:
-	    return 32;
+	  അവസ്ഥ vpiSize:
+	    തിരികെ 32;
 
-	  case vpiConstType:
-	    return vpiNullConst;
+	  അവസ്ഥ vpiConstType:
+	    തിരികെ vpiNullConst;
 
-	  case vpiSigned:
-	    return 0;
+	  അവസ്ഥ vpiSigned:
+	    തിരികെ 0;
 
-          case vpiAutomatic:
-	    return 0;
+          അവസ്ഥ vpiAutomatic:
+	    തിരികെ 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-          case _vpiFromThr:
-	      return _vpiNoThr;
+#എങ്കിൽ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+          അവസ്ഥ _vpiFromThr:
+	      തിരികെ _vpiNoThr;
 #endif
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by vpiNullConst\n", code);
-	    assert(0);
-	    return 0;
+	    പ്രതിജ്ഞാ(0);
+	    തിരികെ 0;
       }
 }
 
-void __vpiNullConst::vpi_get_value(p_vpi_value val)
+ശൂന്യം __vpiNullConst::vpi_get_മൂല്യം(p_vpi_മൂല്യം val)
 {
-      static const size_t RBUF_USE_SIZE = 64 + 1;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      സ്ഥിതം സ്ഥിരം size_t RBUF_USE_SIZE = 64 + 1;
+      അക്ഷരം*rbuf = static_cast<അക്ഷരം *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
 
-      switch (val->format) {
+      തിരഞ്ഞെടുപ്പ് (val->format) {
 
-	  case vpiObjTypeVal:
+	  അവസ്ഥ vpiObjTypeVal:
 	    val->format = vpiStringVal;
 	    // fall through
-	  case vpiBinStrVal:
-	  case vpiDecStrVal:
-	  case vpiOctStrVal:
-	  case vpiHexStrVal:
-	  case vpiStringVal:
+	  അവസ്ഥ vpiBinStrVal:
+	  അവസ്ഥ vpiDecStrVal:
+	  അവസ്ഥ vpiOctStrVal:
+	  അവസ്ഥ vpiHexStrVal:
+	  അവസ്ഥ vpiStringVal:
 	    snprintf(rbuf, RBUF_USE_SIZE, "null");
 	    val->value.str = rbuf;
-	    break;
+	    നിർത്തുക;
 
-          case vpiScalarVal:
+          അവസ്ഥ vpiScalarVal:
 	    val->value.scalar = vpi0;
-	    break;
+	    നിർത്തുക;
 
-	  case vpiIntVal:
+	  അവസ്ഥ vpiIntVal:
 	    val->value.integer = 0;
-	    break;
+	    നിർത്തുക;
 
-	  case vpiVectorVal:
+	  അവസ്ഥ vpiVectorVal:
 	    val->value.vector = static_cast<p_vpi_vecval>
-	                        (need_result_buf(2*sizeof(s_vpi_vecval),
+	                        (need_result_buf(2*വലുപ്പം(s_vpi_vecval),
 	                                         RBUF_VAL));
-	    for (unsigned idx = 0; idx < 2; idx += 1) {
+	    വേണ്ടി (unsigned idx = 0; idx < 2; idx += 1) {
 		  val->value.vector[idx].aval = 0;
 		  val->value.vector[idx].bval = 0;
 	    }
-	    break;
+	    നിർത്തുക;
 
-	  case vpiRealVal:
+	  അവസ്ഥ vpiRealVal:
 	    val->value.real = 0.0;
-	    break;
+	    നിർത്തുക;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vvp error: format %d not supported "
-		    "by vpiNullConst\n", (int)val->format);
+		    "by vpiNullConst\n", (പൂർണ്ണസംഖ്യ)val->format);
 	    val->format = vpiSuppressVal;
-	    break;
+	    നിർത്തുക;
       }
 }
 
 vpiHandle vpip_make_null_const()
 {
-      __vpiNullConst*obj = new __vpiNullConst;
-      return obj;
+      __vpiNullConst*obj = പുതിയ __vpiNullConst;
+      തിരികെ obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void constant_delete(vpiHandle item)
+ശൂന്യം constant_delete(vpiHandle item)
 {
-      assert(item->get_type_code() == vpiConstant);
-      switch(vpi_get(vpiConstType, item)) {
-	  case vpiStringConst:
+      പ്രതിജ്ഞാ(item->get_type_code() == vpiConstant);
+      തിരഞ്ഞെടുപ്പ്(vpi_get(vpiConstType, item)) {
+	  അവസ്ഥ vpiStringConst:
 	    delete dynamic_cast<__vpiStringConst*>(item);
-	    break;
-	  case vpiDecConst:
+	    നിർത്തുക;
+	  അവസ്ഥ vpiDecConst:
 	    delete dynamic_cast<__vpiDecConst*>(item);
-	    break;
-	  case vpiBinaryConst:
+	    നിർത്തുക;
+	  അവസ്ഥ vpi_ദ്വിമാന_Const:
 	    delete dynamic_cast<__vpiBinaryConst*>(item);
-	    break;
-	  case vpiRealConst:
+	    നിർത്തുക;
+	  അവസ്ഥ vpiRealConst:
 	    delete dynamic_cast<__vpiRealConst*>(item);
-	    break;
-	  case vpiNullConst:
+	    നിർത്തുക;
+	  അവസ്ഥ vpiNullConst:
 	    delete dynamic_cast<__vpiNullConst*>(item);
-	    break;
-	  default:
-	    assert(0);
+	    നിർത്തുക;
+	  സ്ഥിരസ്ഥിതി:
+	    പ്രതിജ്ഞാ(0);
       }
 }
 
-void parameter_delete(vpiHandle item)
+ശൂന്യം parameter_delete(vpiHandle item)
 {
-      switch(vpi_get(vpiConstType, item)) {
-	  case vpiStringConst: {
-	    class __vpiStringParam*rfp = dynamic_cast<__vpiStringParam*>(item);
+      തിരഞ്ഞെടുപ്പ്(vpi_get(vpiConstType, item)) {
+	  അവസ്ഥ vpiStringConst: {
+	    വർഗ്ഗം __vpiStringParam*rfp = dynamic_cast<__vpiStringParam*>(item);
 	    delete rfp;
-	    break; }
-	  case vpiBinaryConst: {
-	    struct __vpiBinaryParam*rfp = dynamic_cast<__vpiBinaryParam*>(item);
+	    നിർത്തുക; }
+	  അവസ്ഥ vpi_ദ്വിമാന_Const: {
+	    ഘടന __vpiBinaryParam*rfp = dynamic_cast<__vpiBinaryParam*>(item);
 	    delete rfp;
-	    break; }
-	  case vpiRealConst: {
-	    struct __vpiRealParam*rfp = dynamic_cast<__vpiRealParam*>(item);
+	    നിർത്തുക; }
+	  അവസ്ഥ vpiRealConst: {
+	    ഘടന __vpiRealParam*rfp = dynamic_cast<__vpiRealParam*>(item);
 	    delete rfp;
-	    break; }
-	  default:
-	    assert(0);
+	    നിർത്തുക; }
+	  സ്ഥിരസ്ഥിതി:
+	    പ്രതിജ്ഞാ(0);
       }
 }
 #endif

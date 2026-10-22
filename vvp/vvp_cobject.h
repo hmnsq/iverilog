@@ -26,28 +26,28 @@
 
 class vvp_vector4_t;
 
-class vvp_cobject : public vvp_object {
+class vvp_cobject : പൊതു vvp_object {
 
-    public:
-      explicit vvp_cobject(const class_type*defn);
+    പൊതു:
+      explicit vvp_cobject(സ്ഥിരം class_type*defn);
       ~vvp_cobject() override;
 
-      void set_vec4(size_t pid, const vvp_vector4_t&val);
-      void get_vec4(size_t pid, vvp_vector4_t&val);
+      ശൂന്യം set_vec4(size_t pid, സ്ഥിരം vvp_vector4_t&val);
+      ശൂന്യം get_vec4(size_t pid, vvp_vector4_t&val);
 
-      void set_real(size_t pid, double val);
-      double get_real(size_t pid);
+      ശൂന്യം set_real(size_t pid, ഇരട്ട val);
+      ഇരട്ട get_real(size_t pid);
 
-      void set_string(size_t pid, const std::string&val);
+      ശൂന്യം set_string(size_t pid, സ്ഥിരം std::string&val);
       std::string get_string(size_t pid);
 
-      void set_object(size_t pid, const vvp_object_t&val, size_t idx);
-      void get_object(size_t pid, vvp_object_t&val, size_t idx);
+      ശൂന്യം set_object(size_t pid, സ്ഥിരം vvp_object_t&val, size_t idx);
+      ശൂന്യം get_object(size_t pid, vvp_object_t&val, size_t idx);
 
-      void shallow_copy(const vvp_object*that) override;
+      ശൂന്യം shallow_copy(സ്ഥിരം vvp_object*that) override;
 
-    private:
-      const class_type* defn_;
+    സ്വകാര്യ:
+      സ്ഥിരം class_type* defn_;
 	// For now, only support 32bit bool signed properties.
       class_type::inst_t properties_;
 };

@@ -23,7 +23,7 @@
 permaheap::permaheap()
 {
       chunk_ptr_ = initial_chunk_.bytes;
-      chunk_remaining_ = sizeof(initial_chunk_);
+      chunk_remaining_ = വലുപ്പം(initial_chunk_);
       heap_total_ = chunk_remaining_;
 }
 
@@ -31,21 +31,21 @@ permaheap::~permaheap()
 {
 }
 
-void* permaheap::alloc(size_t size)
+ശൂന്യം* permaheap::alloc(size_t size)
 {
-      assert(size <= CHUNK_SIZE);
+      പ്രതിജ്ഞാ(size <= CHUNK_SIZE);
 
-      if (size > chunk_remaining_) {
-	    chunk_ptr_ = ::new char[CHUNK_SIZE];
+      എങ്കിൽ (size > chunk_remaining_) {
+	    chunk_ptr_ = ::പുതിയ അക്ഷരം[CHUNK_SIZE];
 	    chunk_remaining_ = CHUNK_SIZE;
 	    heap_total_ += CHUNK_SIZE;
       }
 
-      assert( (size%sizeof(void*)) == 0 );
+      പ്രതിജ്ഞാ( (size%വലുപ്പം(ശൂന്യം*)) == 0 );
 
-      void*res = chunk_ptr_;
+      ശൂന്യം*res = chunk_ptr_;
       chunk_ptr_ += size;
       chunk_remaining_ -= size;
 
-      return res;
+      തിരികെ res;
 }

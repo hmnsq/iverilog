@@ -27,134 +27,134 @@
 # include <cassert>
 
 
-static const __vpiBit*bit_from_handle(const __vpiHandle*ref)
+സ്ഥിതം സ്ഥിരം __vpiBit*bit_from_handle(സ്ഥിരം __vpiHandle*ref)
 {
-      if (ref == NULL) return NULL;
-      const __vpiBit::as_bit_t*ptr = dynamic_cast<const __vpiBit::as_bit_t*> (ref);
-      if (ptr == NULL) return NULL;
-      return reinterpret_cast<const struct __vpiBit*>(ref);
+      എങ്കിൽ (ref == ശൂന്യ) തിരികെ ശൂന്യ;
+      സ്ഥിരം __vpiBit::as_bit_t*ptr = dynamic_cast<സ്ഥിരം __vpiBit::as_bit_t*> (ref);
+      എങ്കിൽ (ptr == ശൂന്യ) തിരികെ ശൂന്യ;
+      തിരികെ reinterpret_cast<സ്ഥിരം ഘടന __vpiBit*>(ref);
 }
 
-static __vpiBit*bit_from_handle(__vpiHandle*ref)
+സ്ഥിതം __vpiBit*bit_from_handle(__vpiHandle*ref)
 {
-      if (ref == NULL) return NULL;
-      const __vpiBit::as_bit_t*ptr = dynamic_cast<__vpiBit::as_bit_t*> (ref);
-      if (ptr == NULL) return NULL;
-      return reinterpret_cast<struct __vpiBit*>(ref);
+      എങ്കിൽ (ref == ശൂന്യ) തിരികെ ശൂന്യ;
+      സ്ഥിരം __vpiBit::as_bit_t*ptr = dynamic_cast<__vpiBit::as_bit_t*> (ref);
+      എങ്കിൽ (ptr == ശൂന്യ) തിരികെ ശൂന്യ;
+      തിരികെ reinterpret_cast<ഘടന __vpiBit*>(ref);
 }
 
-static int bit_get_type(const __vpiBit*rfp)
+സ്ഥിതം പൂർണ്ണസംഖ്യ bit_get_type(സ്ഥിരം __vpiBit*rfp)
 {
-      assert(rfp);
+      പ്രതിജ്ഞാ(rfp);
 
-      const struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      സ്ഥിരം ഘടന __vpiSignal*parent = rfp->get_parent();
+      പ്രതിജ്ഞാ(parent);
 
-      switch (parent->get_type_code()) {
-	case vpiNet:
-	    return vpiNetBit;
-	case vpiReg:
-	    return vpiRegBit;
+      തിരഞ്ഞെടുപ്പ് (parent->get_type_code()) {
+	അവസ്ഥ vpiNet:
+	    തിരികെ vpiNetBit;
+	അവസ്ഥ vpiReg:
+	    തിരികെ vpiRegBit;
       }
-      assert(0);
-      return 0;
+      പ്രതിജ്ഞാ(0);
+      തിരികെ 0;
 }
 
-static int bit_get(int code, vpiHandle ref)
+സ്ഥിതം പൂർണ്ണസംഖ്യ bit_get(പൂർണ്ണസംഖ്യ code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      ഘടന __vpiBit*rfp = bit_from_handle(ref);
+      പ്രതിജ്ഞാ(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ഘടന __vpiSignal*parent = rfp->get_parent();
+      പ്രതിജ്ഞാ(parent);
 
-      switch (code) {
-	case vpiArray:  // A bit is not an array
-	    return 0;
+      തിരഞ്ഞെടുപ്പ് (code) {
+	അവസ്ഥ vpiArray:  // A bit is not an array
+	    തിരികെ 0;
 
-	case vpiAutomatic:
-	    return vpi_get(vpiAutomatic, parent);
+	അവസ്ഥ vpiAutomatic:
+	    തിരികെ vpi_get(vpiAutomatic, parent);
 
-	case vpiIndex:
+	അവസ്ഥ vpiIndex:
 	    {
-		  s_vpi_value vp;
+		  s_vpi_മൂല്യം vp;
 		  vp.format = vpiIntVal;
-		  vpi_get_value(rfp->index, &vp);
-		  return vp.value.integer;
+		  vpi_get_മൂല്യം(rfp->index, &vp);
+		  തിരികെ vp.value.integer;
 	    }
 
-	case vpiLineNo:
-	    return vpi_get(vpiLineNo, parent);
+	അവസ്ഥ vpi_വരി_No:
+	    തിരികെ vpi_get(vpi_വരി_No, parent);
 
-	case vpiScalar:  // A bit is a scalar
-	    return 1;
+	അവസ്ഥ vpiScalar:  // A bit is a scalar
+	    തിരികെ 1;
 
-	case vpiSigned:  // A bit is unsigned
-	    return 0;
+	അവസ്ഥ vpiSigned:  // A bit is unsigned
+	    തിരികെ 0;
 
-	case vpiSize:  // A bit has a width of 1
-	    return 1;
+	അവസ്ഥ vpiSize:  // A bit has a width of 1
+	    തിരികെ 1;
 
-	case vpiVector:  // A bit is not a vector
-	    return 0;
+	അവസ്ഥ vpiVector:  // A bit is not a vector
+	    തിരികെ 0;
 
-	default:
+	സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "VPI error: unknown bit_get property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    തിരികെ vpiUndefined;
       }
 }
 
-static char* bit_get_str(int code, vpiHandle ref)
+സ്ഥിതം അക്ഷരം* bit_get_str(പൂർണ്ണസംഖ്യ code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      ഘടന __vpiBit*rfp = bit_from_handle(ref);
+      പ്രതിജ്ഞാ(rfp);
 
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      എങ്കിൽ (code == vpiFile) {  // Not implemented for now!
+            തിരികെ simple_set_rbuf_str(file_names[0]);
       }
 
-      if ((code != vpiName) && (code != vpiFullName)) return NULL;
+      എങ്കിൽ ((code != vpiName) && (code != vpiFullName)) തിരികെ ശൂന്യ;
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ഘടന __vpiSignal*parent = rfp->get_parent();
+      പ്രതിജ്ഞാ(parent);
 
-      char *nm;
-      const char *ixs;
+      അക്ഷരം *nm;
+      സ്ഥിരം അക്ഷരം *ixs;
       nm = strdup(vpi_get_str(vpiName, parent));
-      s_vpi_value vp;
+      s_vpi_മൂല്യം vp;
       vp.format = vpiDecStrVal;
-      vpi_get_value(rfp->index, &vp);
+      vpi_get_മൂല്യം(rfp->index, &vp);
       ixs = vp.value.str;
 
-      char *rbuf = generic_get_str(code, vpip_scope(parent), nm, ixs);
-      free(nm);
-      return rbuf;
+      അക്ഷരം *rbuf = generic_get_str(code, vpip_scope(parent), nm, ixs);
+      സ്വതന്ത്രം(nm);
+      തിരികെ rbuf;
 }
 
-static vpiHandle bit_get_handle(int code, vpiHandle ref)
+സ്ഥിതം vpiHandle bit_get_handle(പൂർണ്ണസംഖ്യ code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      ഘടന __vpiBit*rfp = bit_from_handle(ref);
+      പ്രതിജ്ഞാ(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ഘടന __vpiSignal*parent = rfp->get_parent();
+      പ്രതിജ്ഞാ(parent);
 
-      switch (code) {
-	case vpiIndex:
-	    return rfp->index;
+      തിരഞ്ഞെടുപ്പ് (code) {
+	അവസ്ഥ vpiIndex:
+	    തിരികെ rfp->index;
 
-	case vpiParent:
-	    return parent;
+	അവസ്ഥ vpiParent:
+	    തിരികെ parent;
 
-	case vpiScope:
-	    return vpi_handle(vpiScope, parent);
+	അവസ്ഥ vpiScope:
+	    തിരികെ vpi_handle(vpiScope, parent);
 
-	case vpiModule:
-	    return vpi_handle(vpiModule, parent);
+	അവസ്ഥ vpiModule:
+	    തിരികെ vpi_handle(vpiModule, parent);
       }
 
-    return 0;
+    തിരികെ 0;
 }
 
 /*
@@ -177,54 +177,54 @@ static vpiHandle bit_index(int idx, vpiHandle ref)
 }
 */
 
-static void bit_get_value(vpiHandle ref, s_vpi_value*vp)
+സ്ഥിതം ശൂന്യം bit_get_മൂല്യം(vpiHandle ref, s_vpi_മൂല്യം*vp)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      ഘടന __vpiBit*rfp = bit_from_handle(ref);
+      പ്രതിജ്ഞാ(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ഘടന __vpiSignal*parent = rfp->get_parent();
+      പ്രതിജ്ഞാ(parent);
 
-      parent->get_bit_value(rfp, vp);
+      parent->get_bit_മൂല്യം(rfp, vp);
 }
 
-static vpiHandle bit_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
+സ്ഥിതം vpiHandle bit_put_മൂല്യം(vpiHandle ref, s_vpi_മൂല്യം*vp, പൂർണ്ണസംഖ്യ flags)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      ഘടന __vpiBit*rfp = bit_from_handle(ref);
+      പ്രതിജ്ഞാ(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ഘടന __vpiSignal*parent = rfp->get_parent();
+      പ്രതിജ്ഞാ(parent);
 
-      return parent->put_bit_value(rfp, vp, flags);
+      തിരികെ parent->put_bit_മൂല്യം(rfp, vp, flags);
 }
 
 
-int __vpiBit::get_index(void) const
+പൂർണ്ണസംഖ്യ __vpiBit::get_index(ശൂന്യം) സ്ഥിരം
 {
-      s_vpi_value vp;
+      s_vpi_മൂല്യം vp;
       vp.format = vpiIntVal;
-      vpi_get_value(index, &vp);
-      return vp.value.integer;
+      vpi_get_മൂല്യം(index, &vp);
+      തിരികെ vp.value.integer;
 }
 
-int __vpiBit::as_bit_t::get_type_code(void) const
-{ return bit_get_type(bit_from_handle(this)); }
+പൂർണ്ണസംഖ്യ __vpiBit::as_bit_t::get_type_code(ശൂന്യം) സ്ഥിരം
+{ തിരികെ bit_get_type(bit_from_handle(ഇത്)); }
 
-int __vpiBit::as_bit_t::vpi_get(int code)
-{ return bit_get(code, this); }
+പൂർണ്ണസംഖ്യ __vpiBit::as_bit_t::vpi_get(പൂർണ്ണസംഖ്യ code)
+{ തിരികെ bit_get(code, ഇത്); }
 
-char* __vpiBit::as_bit_t::vpi_get_str(int code)
-{ return bit_get_str(code, this); }
+അക്ഷരം* __vpiBit::as_bit_t::vpi_get_str(പൂർണ്ണസംഖ്യ code)
+{ തിരികെ bit_get_str(code, ഇത്); }
 
-void __vpiBit::as_bit_t::vpi_get_value(p_vpi_value val)
-{ bit_get_value(this, val); }
+ശൂന്യം __vpiBit::as_bit_t::vpi_get_മൂല്യം(p_vpi_മൂല്യം val)
+{ bit_get_മൂല്യം(ഇത്, val); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_put_value(p_vpi_value val, int flags)
-{ return bit_put_value(this, val, flags); }
+vpiHandle __vpiBit::as_bit_t::vpi_put_മൂല്യം(p_vpi_മൂല്യം val, പൂർണ്ണസംഖ്യ flags)
+{ തിരികെ bit_put_മൂല്യം(ഇത്, val, flags); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_handle(int code)
-{ return bit_get_handle(code, this); }
+vpiHandle __vpiBit::as_bit_t::vpi_handle(പൂർണ്ണസംഖ്യ code)
+{ തിരികെ bit_get_handle(code, ഇത്); }
 
 // FIXME: How are delayed put values handled?
 //vpiHandle __vpiBit::as_bit_t::vpi_iterate(int code) // FIXME: Is this needed?

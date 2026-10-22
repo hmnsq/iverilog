@@ -31,20 +31,20 @@
  * base class. This can be used in both statically and automatically
  * allocated scopes, as bits_ is only used for temporary storage.
  */
-class vvp_reduce_base : public vvp_net_fun_t {
+വർഗ്ഗം vvp_reduce_base : പൊതു vvp_net_fun_t {
 
-    public:
+    പൊതു:
       vvp_reduce_base();
-      virtual ~vvp_reduce_base() override;
+      മായാ ~vvp_reduce_base() override;
 
-      void recv_vec4(vvp_net_ptr_t prt, const vvp_vector4_t&bit,
+      ശൂന്യം recv_vec4(vvp_net_ptr_t prt, സ്ഥിരം vvp_vector4_t&bit,
                      vvp_context_t context) override;
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      ശൂന്യം recv_vec4_pv(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t context) override;
 
-      virtual vvp_bit4_t calculate_result() const =0;
+      മായാ vvp_bit4_t calculate_result() സ്ഥിരം =0;
 
-    protected:
+    സംരക്ഷിത:
       vvp_vector4_t bits_;
 };
 
@@ -56,7 +56,7 @@ vvp_reduce_base::~vvp_reduce_base()
 {
 }
 
-void vvp_reduce_base::recv_vec4(vvp_net_ptr_t prt, const vvp_vector4_t&bit,
+ശൂന്യം vvp_reduce_base::recv_vec4(vvp_net_ptr_t prt, സ്ഥിരം vvp_vector4_t&bit,
                                 vvp_context_t context)
 {
       bits_ = bit;
@@ -65,13 +65,13 @@ void vvp_reduce_base::recv_vec4(vvp_net_ptr_t prt, const vvp_vector4_t&bit,
       prt.ptr()->send_vec4(rv, context);
 }
 
-void vvp_reduce_base::recv_vec4_pv(vvp_net_ptr_t prt, const vvp_vector4_t&bit,
+ശൂന്യം vvp_reduce_base::recv_vec4_pv(vvp_net_ptr_t prt, സ്ഥിരം vvp_vector4_t&bit,
 				   unsigned base, unsigned vwid, vvp_context_t context)
 {
-      if (bits_.size() == 0) {
+      എങ്കിൽ (bits_.size() == 0) {
 	    bits_ = vvp_vector4_t(vwid);
       }
-      assert(bits_.size() == vwid);
+      പ്രതിജ്ഞാ(bits_.size() == vwid);
 
       bits_.set_vec(base, bit);
       vvp_bit4_t res = calculate_result();
@@ -79,12 +79,12 @@ void vvp_reduce_base::recv_vec4_pv(vvp_net_ptr_t prt, const vvp_vector4_t&bit,
       prt.ptr()->send_vec4(rv, context);
 }
 
-class vvp_reduce_and  : public vvp_reduce_base {
+വർഗ്ഗം vvp_reduce_and  : പൊതു vvp_reduce_base {
 
-    public:
+    പൊതു:
       vvp_reduce_and();
       ~vvp_reduce_and() override;
-      vvp_bit4_t calculate_result() const override;
+      vvp_bit4_t calculate_result() സ്ഥിരം override;
 };
 
 vvp_reduce_and::vvp_reduce_and()
@@ -95,17 +95,17 @@ vvp_reduce_and::~vvp_reduce_and()
 {
 }
 
-vvp_bit4_t vvp_reduce_and::calculate_result() const
+vvp_bit4_t vvp_reduce_and::calculate_result() സ്ഥിരം
 {
-      return bits_.reduce_and();
+      തിരികെ bits_.reduce_and();
 }
 
-class vvp_reduce_or  : public vvp_reduce_base {
+വർഗ്ഗം vvp_reduce_or  : പൊതു vvp_reduce_base {
 
-    public:
+    പൊതു:
       vvp_reduce_or();
       ~vvp_reduce_or() override;
-      vvp_bit4_t calculate_result() const override;
+      vvp_bit4_t calculate_result() സ്ഥിരം override;
 };
 
 vvp_reduce_or::vvp_reduce_or()
@@ -116,17 +116,17 @@ vvp_reduce_or::~vvp_reduce_or()
 {
 }
 
-vvp_bit4_t vvp_reduce_or::calculate_result() const
+vvp_bit4_t vvp_reduce_or::calculate_result() സ്ഥിരം
 {
-      return bits_.reduce_or();
+      തിരികെ bits_.reduce_or();
 }
 
-class vvp_reduce_xor  : public vvp_reduce_base {
+വർഗ്ഗം vvp_reduce_xor  : പൊതു vvp_reduce_base {
 
-    public:
+    പൊതു:
       vvp_reduce_xor();
       ~vvp_reduce_xor() override;
-      vvp_bit4_t calculate_result() const override;
+      vvp_bit4_t calculate_result() സ്ഥിരം override;
 };
 
 vvp_reduce_xor::vvp_reduce_xor()
@@ -137,17 +137,17 @@ vvp_reduce_xor::~vvp_reduce_xor()
 {
 }
 
-vvp_bit4_t vvp_reduce_xor::calculate_result() const
+vvp_bit4_t vvp_reduce_xor::calculate_result() സ്ഥിരം
 {
-      return bits_.reduce_xor();
+      തിരികെ bits_.reduce_xor();
 }
 
-class vvp_reduce_nand  : public vvp_reduce_base {
+വർഗ്ഗം vvp_reduce_nand  : പൊതു vvp_reduce_base {
 
-    public:
+    പൊതു:
       vvp_reduce_nand();
       ~vvp_reduce_nand() override;
-      vvp_bit4_t calculate_result() const override;
+      vvp_bit4_t calculate_result() സ്ഥിരം override;
 };
 
 vvp_reduce_nand::vvp_reduce_nand()
@@ -158,17 +158,17 @@ vvp_reduce_nand::~vvp_reduce_nand()
 {
 }
 
-vvp_bit4_t vvp_reduce_nand::calculate_result() const
+vvp_bit4_t vvp_reduce_nand::calculate_result() സ്ഥിരം
 {
-      return ~bits_.reduce_and();
+      തിരികെ ~bits_.reduce_and();
 }
 
-class vvp_reduce_nor  : public vvp_reduce_base {
+വർഗ്ഗം vvp_reduce_nor  : പൊതു vvp_reduce_base {
 
-    public:
+    പൊതു:
       vvp_reduce_nor();
       ~vvp_reduce_nor() override;
-      vvp_bit4_t calculate_result() const override;
+      vvp_bit4_t calculate_result() സ്ഥിരം override;
 };
 
 vvp_reduce_nor::vvp_reduce_nor()
@@ -179,17 +179,17 @@ vvp_reduce_nor::~vvp_reduce_nor()
 {
 }
 
-vvp_bit4_t vvp_reduce_nor::calculate_result() const
+vvp_bit4_t vvp_reduce_nor::calculate_result() സ്ഥിരം
 {
-      return ~bits_.reduce_or();
+      തിരികെ ~bits_.reduce_or();
 }
 
-class vvp_reduce_xnor  : public vvp_reduce_base {
+വർഗ്ഗം vvp_reduce_xnor  : പൊതു vvp_reduce_base {
 
-    public:
+    പൊതു:
       vvp_reduce_xnor();
       ~vvp_reduce_xnor() override;
-      vvp_bit4_t calculate_result() const override;
+      vvp_bit4_t calculate_result() സ്ഥിരം override;
 };
 
 vvp_reduce_xnor::vvp_reduce_xnor()
@@ -200,54 +200,54 @@ vvp_reduce_xnor::~vvp_reduce_xnor()
 {
 }
 
-vvp_bit4_t vvp_reduce_xnor::calculate_result() const
+vvp_bit4_t vvp_reduce_xnor::calculate_result() സ്ഥിരം
 {
-      return ~bits_.reduce_xor();
+      തിരികെ ~bits_.reduce_xor();
 }
 
-static void make_reduce(char*label, vvp_net_fun_t*red, const struct symb_s&arg)
+സ്ഥിതം ശൂന്യം make_reduce(അക്ഷരം*label, vvp_net_fun_t*red, സ്ഥിരം ഘടന symb_s&arg)
 {
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_net_t*ptr = പുതിയ vvp_net_t;
       ptr->fun = red;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_ചിഹ്നം(label, ptr);
+      സ്വതന്ത്രം(label);
 
-      input_connect(ptr, 0, arg.text);
+      നിവേശം_connect(ptr, 0, arg.text);
 }
 
-void compile_reduce_and(char*label, const struct symb_s&arg)
+ശൂന്യം compile_reduce_and(അക്ഷരം*label, സ്ഥിരം ഘടന symb_s&arg)
 {
-      vvp_reduce_and* reduce = new vvp_reduce_and;
+      vvp_reduce_and* reduce = പുതിയ vvp_reduce_and;
       make_reduce(label, reduce, arg);
 }
 
-void compile_reduce_or(char*label, const struct symb_s&arg)
+ശൂന്യം compile_reduce_or(അക്ഷരം*label, സ്ഥിരം ഘടന symb_s&arg)
 {
-      vvp_reduce_or* reduce = new vvp_reduce_or;
+      vvp_reduce_or* reduce = പുതിയ vvp_reduce_or;
       make_reduce(label, reduce, arg);
 }
 
-void compile_reduce_xor(char*label, const struct symb_s&arg)
+ശൂന്യം compile_reduce_xor(അക്ഷരം*label, സ്ഥിരം ഘടന symb_s&arg)
 {
-      vvp_reduce_xor* reduce = new vvp_reduce_xor;
+      vvp_reduce_xor* reduce = പുതിയ vvp_reduce_xor;
       make_reduce(label, reduce, arg);
 }
 
-void compile_reduce_nand(char*label, const struct symb_s&arg)
+ശൂന്യം compile_reduce_nand(അക്ഷരം*label, സ്ഥിരം ഘടന symb_s&arg)
 {
-      vvp_reduce_nand* reduce = new vvp_reduce_nand;
+      vvp_reduce_nand* reduce = പുതിയ vvp_reduce_nand;
       make_reduce(label, reduce, arg);
 }
 
-void compile_reduce_nor(char*label, const struct symb_s&arg)
+ശൂന്യം compile_reduce_nor(അക്ഷരം*label, സ്ഥിരം ഘടന symb_s&arg)
 {
-      vvp_reduce_nor* reduce = new vvp_reduce_nor;
+      vvp_reduce_nor* reduce = പുതിയ vvp_reduce_nor;
       make_reduce(label, reduce, arg);
 }
 
-void compile_reduce_xnor(char*label, const struct symb_s&arg)
+ശൂന്യം compile_reduce_xnor(അക്ഷരം*label, സ്ഥിരം ഘടന symb_s&arg)
 {
-      vvp_reduce_xnor* reduce = new vvp_reduce_xnor;
+      vvp_reduce_xnor* reduce = പുതിയ vvp_reduce_xnor;
       make_reduce(label, reduce, arg);
 }

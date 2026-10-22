@@ -32,124 +32,124 @@
 # include  "vvp_net_sig.h"
 # include  "config.h"
 #ifdef CHECK_WITH_VALGRIND
-#include  "vvp_cleanup.h"
+#അന്തര്ഭാവ  "vvp_cleanup.h"
 #endif
 # include  <cstdio>
 # include  <cassert>
 # include  <cstdlib>
 
-using namespace std;
+using നാമാകാശ std;
 
-static const char*cb_reason_name(PLI_INT32 reason)
+സ്ഥിതം സ്ഥിരം അക്ഷരം*cb_reason_name(PLI_INT32 reason)
 {
-      switch (reason) {
-	  case cbValueChange:
-	    return "cbValueChange";
-	  case cbStmt:
-	    return "cbStmt";
-	  case cbForce:
-	    return "cbForce";
-	  case cbRelease:
-	    return "cbRelease";
-	  case cbAtStartOfSimTime:
-	    return "cbAtStartOfSimTime";
-	  case cbReadWriteSynch:
-	    return "cbReadWriteSynch";
-	  case cbReadOnlySynch:
-	    return "cbReadOnlySynch";
-	  case cbNextSimTime:
-	    return "cbNextSimTime";
-	  case cbAfterDelay:
-	    return "cbAfterDelay";
-	  case cbEndOfCompile:
-	    return "cbEndOfCompile";
-	  case cbStartOfSimulation:
-	    return "cbStartOfSimulation";
-	  case cbEndOfSimulation:
-	    return "cbEndOfSimulation";
-	  case cbError:
-	    return "cbError";
-	  case cbTchkViolation:
-	    return "cbTchkViolation";
-	  case cbStartOfSave:
-	    return "cbStartOfSave";
-	  case cbEndOfSave:
-	    return "cbEndOfSave";
-	  case cbStartOfRestart:
-	    return "cbStartOfRestart";
-	  case cbEndOfRestart:
-	    return "cbEndOfRestart";
-	  case cbStartOfReset:
-	    return "cbStartOfReset";
-	  case cbEndOfReset:
-	    return "cbEndOfReset";
-	  case cbEnterInteractive:
-	    return "cbEnterInteractive";
-	  case cbExitInteractive:
-	    return "cbExitInteractive";
-	  case cbInteractiveScopeChange:
-	    return "cbInteractiveScopeChange";
-	  case cbUnresolvedSystf:
-	    return "cbUnresolvedSystf";
-	  case cbAtEndOfSimTime:
-	    return "cbAtEndOfSimTime";
-	  default:
-	    return "unrecognised";
+      തിരഞ്ഞെടുപ്പ് (reason) {
+	  അവസ്ഥ cb_മൂല്യം_Change:
+	    തിരികെ "cbValueChange";
+	  അവസ്ഥ cbStmt:
+	    തിരികെ "cbStmt";
+	  അവസ്ഥ cbForce:
+	    തിരികെ "cbForce";
+	  അവസ്ഥ cbRelease:
+	    തിരികെ "cbRelease";
+	  അവസ്ഥ cbAtStartOfSimTime:
+	    തിരികെ "cbAtStartOfSimTime";
+	  അവസ്ഥ cbReadWriteSynch:
+	    തിരികെ "cbReadWriteSynch";
+	  അവസ്ഥ cbReadOnlySynch:
+	    തിരികെ "cbReadOnlySynch";
+	  അവസ്ഥ cbNextSimTime:
+	    തിരികെ "cbNextSimTime";
+	  അവസ്ഥ cbAfterDelay:
+	    തിരികെ "cbAfterDelay";
+	  അവസ്ഥ cbEndOfCompile:
+	    തിരികെ "cbEndOfCompile";
+	  അവസ്ഥ cbStartOfSimulation:
+	    തിരികെ "cbStartOfSimulation";
+	  അവസ്ഥ cbEndOfSimulation:
+	    തിരികെ "cbEndOfSimulation";
+	  അവസ്ഥ cbError:
+	    തിരികെ "cbError";
+	  അവസ്ഥ cbTchkViolation:
+	    തിരികെ "cbTchkViolation";
+	  അവസ്ഥ cbStartOfSave:
+	    തിരികെ "cbStartOfSave";
+	  അവസ്ഥ cbEndOfSave:
+	    തിരികെ "cbEndOfSave";
+	  അവസ്ഥ cbStartOfRestart:
+	    തിരികെ "cbStartOfRestart";
+	  അവസ്ഥ cbEndOfRestart:
+	    തിരികെ "cbEndOfRestart";
+	  അവസ്ഥ cbStartOfReset:
+	    തിരികെ "cbStartOfReset";
+	  അവസ്ഥ cbEndOfReset:
+	    തിരികെ "cbEndOfReset";
+	  അവസ്ഥ cbEnterInteractive:
+	    തിരികെ "cbEnterInteractive";
+	  അവസ്ഥ cbExitInteractive:
+	    തിരികെ "cbExitInteractive";
+	  അവസ്ഥ cbInteractiveScopeChange:
+	    തിരികെ "cbInteractiveScopeChange";
+	  അവസ്ഥ cbUnresolvedSystf:
+	    തിരികെ "cbUnresolvedSystf";
+	  അവസ്ഥ cbAtEndOfSimTime:
+	    തിരികെ "cbAtEndOfSimTime";
+	  സ്ഥിരസ്ഥിതി:
+	    തിരികെ "unrecognised";
       }
 }
 
-static bool check_callback_time(p_cb_data data, bool allow_suppress)
+സ്ഥിതം തർക്കം check_callback_time(p_cb_data data, തർക്കം allow_suppress)
 {
-      assert(data);
-      if (!data->time) {
-	    if (!allow_suppress) {
+      പ്രതിജ്ഞാ(data);
+      എങ്കിൽ (!data->time) {
+	    എങ്കിൽ (!allow_suppress) {
 		  fprintf(stderr, "VPI error: null value passed in cb_data.time "
 				  "when registering %s callback\n.",
 				  cb_reason_name(data->reason));
-		  return false;
+		  തിരികെ അസത്യം;
 	    }
-	    return true;
+	    തിരികെ സത്യം;
       }
-      switch (data->time->type) {
-	  case vpiSimTime:
-	    break;
-	  case vpiScaledRealTime:
-	    break;
-	  case vpiSuppressTime:
-	    if (!allow_suppress) {
+      തിരഞ്ഞെടുപ്പ് (data->time->type) {
+	  അവസ്ഥ vpiSimTime:
+	    നിർത്തുക;
+	  അവസ്ഥ vpiScaledRealTime:
+	    നിർത്തുക;
+	  അവസ്ഥ vpiSuppressTime:
+	    എങ്കിൽ (!allow_suppress) {
 		  fprintf(stderr, "VPI error: vpiSuppressTime is not valid "
 				  "when registering %s callback\n.",
 				  cb_reason_name(data->reason));
-		  return false;
+		  തിരികെ അസത്യം;
 	    }
-	    break;
-	  default:
+	    നിർത്തുക;
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "VPI error: invalid type passed in cb_data time "
 			    "structure when registering %s callback\n.",
 			    cb_reason_name(data->reason));
-	    return false;
+	    തിരികെ അസത്യം;
       }
-      return true;
+      തിരികെ സത്യം;
 }
 
-static void set_callback_time(p_cb_data data)
+സ്ഥിതം ശൂന്യം set_callback_time(p_cb_data data)
 {
-      assert(data && data->time);
-      data->time->low  = 0;
-      data->time->high = 0;
+      പ്രതിജ്ഞാ(data && data->time);
+      data->time->താഴെയുള്ള  = 0;
+      data->time->മുകളിലെ = 0;
       data->time->real = 0.0;
-      switch (data->time->type) {
-	  case vpiSimTime:
+      തിരഞ്ഞെടുപ്പ് (data->time->type) {
+	  അവസ്ഥ vpiSimTime:
 	    vpip_time_to_timestruct(data->time, schedule_simtime());
-	    break;
-	  case vpiScaledRealTime:
+	    നിർത്തുക;
+	  അവസ്ഥ vpiScaledRealTime:
 	    data->time->real = vpip_scaled_time_from_handle(schedule_simtime(), data->obj);
-	    break;
-	  case vpiSuppressTime:
-	    break;
-	  default:
-	    assert(0);
-	    break;
+	    നിർത്തുക;
+	  അവസ്ഥ vpiSuppressTime:
+	    നിർത്തുക;
+	  സ്ഥിരസ്ഥിതി:
+	    പ്രതിജ്ഞാ(0);
+	    നിർത്തുക;
       }
 }
 
@@ -168,18 +168,18 @@ static void set_callback_time(p_cb_data data)
  * event. This member is only used for things like cbReadOnlySync.
  */
 
-class sync_callback;
+വർഗ്ഗം sync_callback;
 
-struct sync_cb  : public vvp_gen_event_s {
+ഘടന sync_cb  : പൊതു vvp_gen_event_s {
       sync_callback*handle;
-      bool sync_flag;
+      തർക്കം sync_flag;
 
       ~sync_cb () override { }
 
-      virtual void run_run() override;
+      മായാ ശൂന്യം run_run() override;
 };
 
-inline __vpiCallback::__vpiCallback()
+വരിയിൽ __vpiCallback::__vpiCallback()
 {
       next = 0;
 }
@@ -188,113 +188,113 @@ __vpiCallback::~__vpiCallback()
 {
 }
 
-int __vpiCallback::get_type_code(void) const
-{ return vpiCallback; }
+പൂർണ്ണസംഖ്യ __vpiCallback::get_type_code(ശൂന്യം) സ്ഥിരം
+{ തിരികെ vpiCallback; }
 
 
-value_callback::value_callback(p_cb_data data)
+മൂല്യം_callback::മൂല്യം_callback(p_cb_data data)
 {
       cb_data = *data;
-      if (data->time) {
+      എങ്കിൽ (data->time) {
 	    cb_time = *(data->time);
-      } else {
+      } അല്ലെങ്കിൽ {
 	    cb_time.type = vpiSuppressTime;
       }
       cb_data.time = &cb_time;
-      if (data->value) {
-	    cb_value = *(data->value);
-      } else {
-	    cb_value.format = vpiSuppressVal;
+      എങ്കിൽ (data->value) {
+	    cb_മൂല്യം = *(data->value);
+      } അല്ലെങ്കിൽ {
+	    cb_മൂല്യം.format = vpiSuppressVal;
       }
-      cb_data.value = &cb_value;
+      cb_data.value = &cb_മൂല്യം;
 }
 
 /*
  * Normally, any assign to a value triggers a value change callback,
  * so return a constant true here. This is a stub.
  */
-bool value_callback::test_value_callback_ready(void)
+തർക്കം മൂല്യം_callback::test_മൂല്യം_callback_ready(ശൂന്യം)
 {
-      return true;
+      തിരികെ സത്യം;
 }
 
-static void vpip_real_value_change(value_callback*cbh, vpiHandle ref)
+സ്ഥിതം ശൂന്യം vpip_real_മൂല്യം_change(മൂല്യം_callback*cbh, vpiHandle ref)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
-      assert(rfp);
+      ഘടന __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      പ്രതിജ്ഞാ(rfp);
       vvp_vpi_callback*obj = dynamic_cast<vvp_vpi_callback*>(rfp->net->fil);
-      assert(obj);
+      പ്രതിജ്ഞാ(obj);
 
       obj->add_vpi_callback(cbh);
 }
 
-class value_part_callback : public value_callback {
-    public:
-      explicit value_part_callback(p_cb_data data);
-      ~value_part_callback() override;
+വർഗ്ഗം മൂല്യം_part_callback : പൊതു മൂല്യം_callback {
+    പൊതു:
+      explicit മൂല്യം_part_callback(p_cb_data data);
+      ~മൂല്യം_part_callback() override;
 
-      value_part_callback(const value_part_callback&) = delete;
-      value_part_callback& operator=(const value_part_callback&) = delete;
+      മൂല്യം_part_callback(സ്ഥിരം മൂല്യം_part_callback&) = delete;
+      മൂല്യം_part_callback& operator=(സ്ഥിരം മൂല്യം_part_callback&) = delete;
 
-      bool test_value_callback_ready(void) override;
+      തർക്കം test_മൂല്യം_callback_ready(ശൂന്യം) override;
 
-    private:
-      char*value_bits_;
-      size_t value_off_;
+    സ്വകാര്യ:
+      അക്ഷരം*മൂല്യം_bits;
+      size_t മൂല്യം_off;
 };
 
-inline value_part_callback::value_part_callback(p_cb_data data)
-: value_callback(data)
+വരിയിൽ മൂല്യം_part_callback::മൂല്യം_part_callback(p_cb_data data)
+: മൂല്യം_callback(data)
 {
-      struct __vpiPV*pobj = dynamic_cast<__vpiPV*>(data->obj);
-      assert(pobj);
+      ഘടന __vpiPV*pobj = dynamic_cast<__vpiPV*>(data->obj);
+      പ്രതിജ്ഞാ(pobj);
 
       vvp_vpi_callback*sig_fil;
       sig_fil = dynamic_cast<vvp_vpi_callback*>(pobj->net->fil);
-      assert(sig_fil);
+      പ്രതിജ്ഞാ(sig_fil);
 
-      sig_fil->add_vpi_callback(this);
+      sig_fil->add_vpi_callback(ഇത്);
 	// Get a reference value that can be used to compare with an
 	// updated value. Use the filter get_value to get the value,
 	// and get it in BinStr form so that compares are easy. Note
 	// that the vpiBinStr format has the MSB first, but the tbase
 	// is lsb first.
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      sig_fil->get_value(&tmp_value);
+      s_vpi_മൂല്യം tmp_മൂല്യം;
+      tmp_മൂല്യം.format = vpiBinStrVal;
+      sig_fil->get_മൂല്യം(&tmp_മൂല്യം);
 
-      value_bits_ = new char[pobj->width+1];
-      value_off_ = pobj->parent->vpi_get(vpiSize) - pobj->width - pobj->tbase;
+      മൂല്യം_bits = പുതിയ അക്ഷരം[pobj->width+1];
+      മൂല്യം_off = pobj->parent->vpi_get(vpiSize) - pobj->width - pobj->tbase;
 
-      memcpy(value_bits_, tmp_value.value.str + value_off_, pobj->width);
-      value_bits_[pobj->width] = 0;
+      memcpy(മൂല്യം_bits, tmp_മൂല്യം.value.str + മൂല്യം_off, pobj->width);
+      മൂല്യം_bits[pobj->width] = 0;
 }
 
-value_part_callback::~value_part_callback()
+മൂല്യം_part_callback::~മൂല്യം_part_callback()
 {
-      delete[]value_bits_;
+      delete[]മൂല്യം_bits;
 }
 
-bool value_part_callback::test_value_callback_ready(void)
+തർക്കം മൂല്യം_part_callback::test_മൂല്യം_callback_ready(ശൂന്യം)
 {
-      struct __vpiPV*pobj = dynamic_cast<__vpiPV*>(cb_data.obj);
-      assert(pobj);
+      ഘടന __vpiPV*pobj = dynamic_cast<__vpiPV*>(cb_data.obj);
+      പ്രതിജ്ഞാ(pobj);
 
       vvp_vpi_callback*sig_fil;
       sig_fil = dynamic_cast<vvp_vpi_callback*>(pobj->net->fil);
-      assert(sig_fil);
+      പ്രതിജ്ഞാ(sig_fil);
 
 	// Get a reference value that can be used to compare with an
 	// updated value.
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      sig_fil->get_value(&tmp_value);
+      s_vpi_മൂല്യം tmp_മൂല്യം;
+      tmp_മൂല്യം.format = vpiBinStrVal;
+      sig_fil->get_മൂല്യം(&tmp_മൂല്യം);
 
-      if (memcmp(value_bits_, tmp_value.value.str + value_off_, pobj->width) == 0)
-	    return false;
+      എങ്കിൽ (memcmp(മൂല്യം_bits, tmp_മൂല്യം.value.str + മൂല്യം_off, pobj->width) == 0)
+	    തിരികെ അസത്യം;
 
-      memcpy(value_bits_, tmp_value.value.str + value_off_, pobj->width);
-      return true;
+      memcpy(മൂല്യം_bits, tmp_മൂല്യം.value.str + മൂല്യം_off, pobj->width);
+      തിരികെ സത്യം;
 }
 
 /*
@@ -303,11 +303,11 @@ bool value_part_callback::test_value_callback_ready(void)
  * object, but it refers to a net that is a vvp_vpi_callback, so
  * add the callback to that object.
  */
-static value_callback*make_value_change_part(p_cb_data data)
+സ്ഥിതം മൂല്യം_callback*make_മൂല്യം_change_part(p_cb_data data)
 {
 	/* Attach the __vpiCallback object to the signal. */
-      value_callback*cbh = new value_part_callback(data);
-      return cbh;
+      മൂല്യം_callback*cbh = പുതിയ മൂല്യം_part_callback(data);
+      തിരികെ cbh;
 }
 
 /*
@@ -317,110 +317,110 @@ static value_callback*make_value_change_part(p_cb_data data)
  * does not already have them, create some callback functors to do the
  * actual value change detection.
  */
-static value_callback* make_value_change(p_cb_data data)
+സ്ഥിതം മൂല്യം_callback* make_മൂല്യം_change(p_cb_data data)
 {
-      if (!check_callback_time(data, true))
-	    return 0;
+      എങ്കിൽ (!check_callback_time(data, സത്യം))
+	    തിരികെ 0;
 
-      if (vpi_get(vpiAutomatic, data->obj)) {
+      എങ്കിൽ (vpi_get(vpiAutomatic, data->obj)) {
             fprintf(stderr, "vpi error: cannot place value change "
                             "callback on automatically allocated "
                             "variable '%s'\n",
                             vpi_get_str(vpiName, data->obj));
-            return 0;
+            തിരികെ 0;
       }
 
 	// Special case: the target object is a vpiPartSelect
-      if (data->obj->get_type_code() == vpiPartSelect) {
-            if (data->obj->vpi_handle(vpiArray))
-	        return vpip_array_word_change(data);
-            else
-	        return make_value_change_part(data);
+      എങ്കിൽ (data->obj->get_type_code() == vpiPartSelect) {
+            എങ്കിൽ (data->obj->vpi_handle(vpiArray))
+	        തിരികെ vpip_array_word_change(data);
+            അല്ലെങ്കിൽ
+	        തിരികെ make_മൂല്യം_change_part(data);
       }
 
-      if (data->obj->get_type_code() == vpiMemoryWord)
-	    return vpip_array_word_change(data);
+      എങ്കിൽ (data->obj->get_type_code() == vpiMemoryWord)
+	    തിരികെ vpip_array_word_change(data);
 
-      if (data->obj->get_type_code() == vpiMemory)
-	    return vpip_array_change(data);
+      എങ്കിൽ (data->obj->get_type_code() == vpiMemory)
+	    തിരികെ vpip_array_change(data);
 
-      value_callback*obj = new value_callback(data);
+      മൂല്യം_callback*obj = പുതിയ മൂല്യം_callback(data);
 
-      assert(data->obj);
-      switch (data->obj->get_type_code()) {
+      പ്രതിജ്ഞാ(data->obj);
+      തിരഞ്ഞെടുപ്പ് (data->obj->get_type_code()) {
 
-	  case vpiReg:
-	  case vpiNet:
-	  case vpiIntegerVar:
-	  case vpiBitVar:
-	  case vpiByteVar:
-	  case vpiShortIntVar:
-	  case vpiIntVar:
-	  case vpiLongIntVar:
+	  അവസ്ഥ vpiReg:
+	  അവസ്ഥ vpiNet:
+	  അവസ്ഥ vpiIntegerVar:
+	  അവസ്ഥ vpiBitVar:
+	  അവസ്ഥ vpiByteVar:
+	  അവസ്ഥ vpiShortIntVar:
+	  അവസ്ഥ vpiIntVar:
+	  അവസ്ഥ vpiLongIntVar:
 	      /* Attach the callback to the vvp_fun_signal node by
 		 putting it in the vpi_callbacks list. */
-	    struct __vpiSignal*sig;
+	    ഘടന __vpiSignal*sig;
 	    sig = dynamic_cast<__vpiSignal*>(data->obj);
 
 	    vvp_net_fil_t*sig_fil;
-	    sig_fil = dynamic_cast<vvp_net_fil_t*>(sig->node->fil);
-	    assert(sig_fil);
+	    sig_fil = dynamic_cast<vvp_net_fil_t*>(sig->കണ്ണി->fil);
+	    പ്രതിജ്ഞാ(sig_fil);
 
 	      /* Attach the __vpiCallback object to the signal. */
 	    sig_fil->add_vpi_callback(obj);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiRealVar:
-	    vpip_real_value_change(obj, data->obj);
-	    break;
+	  അവസ്ഥ vpiRealVar:
+	    vpip_real_മൂല്യം_change(obj, data->obj);
+	    നിർത്തുക;
 
-	  case vpiNamedEvent:
+	  അവസ്ഥ vpiNamedEvent:
 	    __vpiNamedEvent*nev;
 	    nev = dynamic_cast<__vpiNamedEvent*>(data->obj);
 	    nev->add_vpi_callback(obj);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiModule:
-	  case vpiConstant:
-	  case vpiParameter:
+	  അവസ്ഥ vpiModule:
+	  അവസ്ഥ vpiConstant:
+	  അവസ്ഥ vpiParameter:
 	      /* These are constant, so there are no value change
 		 lists to put them in. */
-	    break;
+	    നിർത്തുക;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "make_value_change: sorry: I cannot callback "
 		    "values on type code=%d\n",
 		    data->obj->get_type_code());
 	    delete obj;
-	    return 0;
+	    തിരികെ 0;
       }
 
-      return obj;
+      തിരികെ obj;
 }
 
-class sync_callback : public __vpiCallback {
-    public:
+വർഗ്ഗം sync_callback : പൊതു __vpiCallback {
+    പൊതു:
       explicit sync_callback(p_cb_data data);
       ~sync_callback() override;
 
-      sync_callback(const sync_callback&) = delete;
-      sync_callback& operator=(const sync_callback&) = delete;
+      sync_callback(സ്ഥിരം sync_callback&) = delete;
+      sync_callback& operator=(സ്ഥിരം sync_callback&) = delete;
 
-    public:
+    പൊതു:
 	// scheduled event
-      struct sync_cb* cb_sync;
+      ഘടന sync_cb* cb_sync;
 	// user supplied callback data
-      struct t_vpi_time cb_time;
+      ഘടന t_vpi_time cb_time;
 
-    private:
+    സ്വകാര്യ:
 };
 
-inline sync_callback::sync_callback(p_cb_data data)
+വരിയിൽ sync_callback::sync_callback(p_cb_data data)
 {
       cb_sync = 0;
 
       cb_data = *data;
-      assert(data->time);
+      പ്രതിജ്ഞാ(data->time);
       cb_time = *(data->time);
       cb_data.time = &cb_time;
 }
@@ -430,19 +430,19 @@ sync_callback::~sync_callback()
       delete cb_sync;
 }
 
-void sync_cb::run_run()
+ശൂന്യം sync_cb::run_run()
 {
-      if (handle == 0)
-	    return;
+      എങ്കിൽ (handle == 0)
+	    തിരികെ;
 
       sync_callback*cur = handle;
 
 	/* Run the callback. If the cb_rtn function pointer is set to
 	   null, then just skip the whole thing and free it. This is
 	   the usual way to cancel one-time callbacks of this sort. */
-      if (cur->cb_data.cb_rtn != 0) {
+      എങ്കിൽ (cur->cb_data.cb_rtn != 0) {
 	    set_callback_time(&cur->cb_data);
-	    assert(vpi_mode_flag == VPI_MODE_NONE);
+	    പ്രതിജ്ഞാ(vpi_mode_flag == VPI_MODE_NONE);
 	    vpi_mode_flag = sync_flag? VPI_MODE_ROSYNC : VPI_MODE_RWSYNC;
 	    (cur->cb_data.cb_rtn)(&cur->cb_data);
 	    vpi_mode_flag = VPI_MODE_NONE;
@@ -451,113 +451,113 @@ void sync_cb::run_run()
       delete cur;
 }
 
-static vvp_time64_t get_sync_cb_time(sync_callback*obj)
+സ്ഥിതം vvp_time64_t get_sync_cb_time(sync_callback*obj)
 {
       vvp_time64_t tv = 0;
-      switch (obj->cb_time.type) {
-	  case vpiSimTime:
+      തിരഞ്ഞെടുപ്പ് (obj->cb_time.type) {
+	  അവസ്ഥ vpiSimTime:
 	    tv = vpip_timestruct_to_time(&obj->cb_time);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiScaledRealTime:
+	  അവസ്ഥ vpiScaledRealTime:
 	    tv = vpip_scaled_real_to_time64(obj->cb_time.real,
 		     vpip_timescale_scope_from_handle(obj->cb_data.obj));
-	    break;
+	    നിർത്തുക;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "get_sync_cb_time: Unsupported time type %d.\n",
-	            (int)obj->cb_time.type);
-	    assert(0);
-	    break;
+	            (പൂർണ്ണസംഖ്യ)obj->cb_time.type);
+	    പ്രതിജ്ഞാ(0);
+	    നിർത്തുക;
       }
-      return tv;
+      തിരികെ tv;
 }
 
-static sync_callback* make_sync(p_cb_data data, bool readonly_flag)
+സ്ഥിതം sync_callback* make_sync(p_cb_data data, തർക്കം readonly_flag)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      എങ്കിൽ (!check_callback_time(data, അസത്യം))
+	    തിരികെ 0;
 
-      sync_callback*obj = new sync_callback(data);
+      sync_callback*obj = പുതിയ sync_callback(data);
 
-      struct sync_cb*cb = new sync_cb;
-      cb->sync_flag = readonly_flag? true : false;
+      ഘടന sync_cb*cb = പുതിയ sync_cb;
+      cb->sync_flag = readonly_flag? സത്യം : അസത്യം;
       cb->handle = obj;
       obj->cb_sync = cb;
 
       vvp_time64_t tv = get_sync_cb_time(obj);
-      schedule_generic(cb, tv, true, readonly_flag);
+      schedule_generic(cb, tv, സത്യം, readonly_flag);
 
-      return obj;
+      തിരികെ obj;
 }
 
-static struct __vpiCallback* make_afterdelay(p_cb_data data)
+സ്ഥിതം ഘടന __vpiCallback* make_afterdelay(p_cb_data data)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      എങ്കിൽ (!check_callback_time(data, അസത്യം))
+	    തിരികെ 0;
 
-      sync_callback*obj = new sync_callback(data);
-      struct sync_cb*cb = new sync_cb;
-      cb->sync_flag = false;
+      sync_callback*obj = പുതിയ sync_callback(data);
+      ഘടന sync_cb*cb = പുതിയ sync_cb;
+      cb->sync_flag = അസത്യം;
       cb->handle = obj;
       obj->cb_sync = cb;
 
       vvp_time64_t tv = get_sync_cb_time(obj);
-      schedule_generic(cb, tv, false);
+      schedule_generic(cb, tv, അസത്യം);
 
-      return obj;
+      തിരികെ obj;
 }
 
-static struct __vpiCallback* make_at_start_of_sim_time(p_cb_data data)
+സ്ഥിതം ഘടന __vpiCallback* make_at_start_of_sim_time(p_cb_data data)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      എങ്കിൽ (!check_callback_time(data, അസത്യം))
+	    തിരികെ 0;
 
-      sync_callback*obj = new sync_callback(data);
-      struct sync_cb*cb = new sync_cb;
-      cb->sync_flag = false;
+      sync_callback*obj = പുതിയ sync_callback(data);
+      ഘടന sync_cb*cb = പുതിയ sync_cb;
+      cb->sync_flag = അസത്യം;
       cb->handle = obj;
       obj->cb_sync = cb;
 
       vvp_time64_t tv = get_sync_cb_time(obj);
       vvp_time64_t cur = schedule_simtime();
-      if (cur > tv) {
+      എങ്കിൽ (cur > tv) {
 	    tv = 0;
-	    assert(0);
-      } else if (cur == tv) {
+	    പ്രതിജ്ഞാ(0);
+      } അല്ലെങ്കിൽ എങ്കിൽ (cur == tv) {
 	    tv = 0;
-      } else {
+      } അല്ലെങ്കിൽ {
 	    tv -= cur;
       }
       schedule_at_start_of_simtime(cb, tv);
 
-      return obj;
+      തിരികെ obj;
 }
 
-static struct __vpiCallback* make_at_end_of_sim_time(p_cb_data data)
+സ്ഥിതം ഘടന __vpiCallback* make_at_end_of_sim_time(p_cb_data data)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      എങ്കിൽ (!check_callback_time(data, അസത്യം))
+	    തിരികെ 0;
 
-      sync_callback*obj = new sync_callback(data);
-      struct sync_cb*cb = new sync_cb;
-      cb->sync_flag = false;
+      sync_callback*obj = പുതിയ sync_callback(data);
+      ഘടന sync_cb*cb = പുതിയ sync_cb;
+      cb->sync_flag = അസത്യം;
       cb->handle = obj;
       obj->cb_sync = cb;
 
       vvp_time64_t tv = get_sync_cb_time(obj);
       vvp_time64_t cur = schedule_simtime();
-      if (cur > tv) {
+      എങ്കിൽ (cur > tv) {
 	    tv = 0;
-	    assert(0);
-      } else if (cur == tv) {
+	    പ്രതിജ്ഞാ(0);
+      } അല്ലെങ്കിൽ എങ്കിൽ (cur == tv) {
 	    tv = 0;
-      } else {
+      } അല്ലെങ്കിൽ {
 	    tv -= cur;
       }
       schedule_at_end_of_simtime(cb, tv);
 
-      return obj;
+      തിരികെ obj;
 }
 
 /*
@@ -565,55 +565,55 @@ static struct __vpiCallback* make_at_end_of_sim_time(p_cb_data data)
  * callbacks.
  */
 
-class simulator_callback : public __vpiCallback {
-    public:
-      explicit simulator_callback(const struct t_cb_data*data);
+വർഗ്ഗം simulator_callback : പൊതു __vpiCallback {
+    പൊതു:
+      explicit simulator_callback(സ്ഥിരം ഘടന t_cb_data*data);
 
-    public:
-      struct t_vpi_time cb_time;
+    പൊതു:
+      ഘടന t_vpi_time cb_time;
 };
 
-inline simulator_callback::simulator_callback(const struct t_cb_data*data)
+വരിയിൽ simulator_callback::simulator_callback(സ്ഥിരം ഘടന t_cb_data*data)
 {
       cb_data = *data;
-      if ((data->reason == cbNextSimTime) && data->time) {
+      എങ്കിൽ ((data->reason == cbNextSimTime) && data->time) {
 	    cb_time = *(data->time);
-      } else if (data->reason == cbEndOfSimulation) {
+      } അല്ലെങ്കിൽ എങ്കിൽ (data->reason == cbEndOfSimulation) {
 	    cb_time.type = vpiSimTime;
-      } else {
+      } അല്ലെങ്കിൽ {
 	    cb_time.type = vpiSuppressTime;
       }
       cb_data.time = &cb_time;
 }
 
-static simulator_callback*NextSimTime = 0;
-static simulator_callback*EndOfCompile = 0;
-static simulator_callback*StartOfSimulation = 0;
-static simulator_callback*EndOfSimulation = 0;
+സ്ഥിതം simulator_callback*NextSimTime = 0;
+സ്ഥിതം simulator_callback*EndOfCompile = 0;
+സ്ഥിതം simulator_callback*StartOfSimulation = 0;
+സ്ഥിതം simulator_callback*EndOfSimulation = 0;
 
 #ifdef CHECK_WITH_VALGRIND
 /* This is really only needed if the simulator aborts before starting the
  * main event loop. For that reason we can skip the next sim time queue. */
-void simulator_cb_delete(void)
+ശൂന്യം simulator_cb_delete(ശൂന്യം)
 {
       simulator_callback* cur;
 
 	/* Delete all the end of compile callbacks. */
-      while (EndOfCompile) {
+      ആകുമ്പോൾ (EndOfCompile) {
 	    cur = EndOfCompile;
 	    EndOfCompile = dynamic_cast<simulator_callback*>(cur->next);
 	    delete cur;
       }
 
 	/* Delete all the start of simulation callbacks. */
-      while (StartOfSimulation) {
+      ആകുമ്പോൾ (StartOfSimulation) {
 	    cur = StartOfSimulation;
 	    StartOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
 	    delete cur;
       }
 
 	/* Delete all the end of simulation callbacks. */
-      while (EndOfSimulation) {
+      ആകുമ്പോൾ (EndOfSimulation) {
 	    cur = EndOfSimulation;
 	    EndOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
 	    delete cur;
@@ -621,20 +621,20 @@ void simulator_cb_delete(void)
 }
 #endif
 
-void vpiEndOfCompile(void) {
+ശൂന്യം vpiEndOfCompile(ശൂന്യം) {
       simulator_callback* cur;
 
       /*
        * Walk the list of register callbacks, executing them and
        * freeing them when done.
        */
-      assert(vpi_mode_flag == VPI_MODE_NONE);
+      പ്രതിജ്ഞാ(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      while (EndOfCompile) {
+      ആകുമ്പോൾ (EndOfCompile) {
 	    cur = EndOfCompile;
 	    EndOfCompile = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
+	    എങ്കിൽ (cur->cb_data.cb_rtn != 0) {
 		  (cur->cb_data.cb_rtn)(&cur->cb_data);
 	    }
 	    delete cur;
@@ -643,20 +643,20 @@ void vpiEndOfCompile(void) {
       vpi_mode_flag = VPI_MODE_NONE;
 }
 
-void vpiStartOfSim(void) {
+ശൂന്യം vpiStartOfSim(ശൂന്യം) {
       simulator_callback* cur;
 
       /*
        * Walk the list of register callbacks, executing them and
        * freeing them when done.
        */
-      assert(vpi_mode_flag == VPI_MODE_NONE);
+      പ്രതിജ്ഞാ(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      while (StartOfSimulation) {
+      ആകുമ്പോൾ (StartOfSimulation) {
 	    cur = StartOfSimulation;
 	    StartOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
+	    എങ്കിൽ (cur->cb_data.cb_rtn != 0) {
 		  (cur->cb_data.cb_rtn)(&cur->cb_data);
 	    }
 	    delete cur;
@@ -665,19 +665,19 @@ void vpiStartOfSim(void) {
       vpi_mode_flag = VPI_MODE_NONE;
 }
 
-void vpiPostsim(void) {
+ശൂന്യം vpiPostsim(ശൂന്യം) {
       simulator_callback* cur;
 
       /*
        * Walk the list of register callbacks
        */
-      assert(vpi_mode_flag == VPI_MODE_NONE);
+      പ്രതിജ്ഞാ(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_ROSYNC;
 
-      while (EndOfSimulation) {
+      ആകുമ്പോൾ (EndOfSimulation) {
 	    cur = EndOfSimulation;
 	    EndOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
+	    എങ്കിൽ (cur->cb_data.cb_rtn != 0) {
 		  set_callback_time(&cur->cb_data);
 		  (cur->cb_data.cb_rtn)(&cur->cb_data);
 	    }
@@ -691,19 +691,19 @@ void vpiPostsim(void) {
  * The scheduler invokes this to clear out callbacks for the next
  * simulation time.
  */
-void vpiNextSimTime(void)
+ശൂന്യം vpiNextSimTime(ശൂന്യം)
 {
       simulator_callback* cur;
       simulator_callback* next = NextSimTime;
       NextSimTime = 0;
 
-      assert(vpi_mode_flag == VPI_MODE_NONE);
+      പ്രതിജ്ഞാ(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      while (next) {
+      ആകുമ്പോൾ (next) {
             cur = next;
             next = dynamic_cast<simulator_callback*>(cur->next);
-            if (cur->cb_data.cb_rtn != 0) {
+            എങ്കിൽ (cur->cb_data.cb_rtn != 0) {
                   set_callback_time(&cur->cb_data);
                   (cur->cb_data.cb_rtn)(&cur->cb_data);
             }
@@ -713,82 +713,82 @@ void vpiNextSimTime(void)
       vpi_mode_flag = VPI_MODE_NONE;
 }
 
-static simulator_callback* make_prepost(p_cb_data data)
+സ്ഥിതം simulator_callback* make_prepost(p_cb_data data)
 {
-      if ((data->reason == cbNextSimTime) && !check_callback_time(data, true))
-	    return 0;
+      എങ്കിൽ ((data->reason == cbNextSimTime) && !check_callback_time(data, സത്യം))
+	    തിരികെ 0;
 
-      simulator_callback*obj = new simulator_callback(data);
+      simulator_callback*obj = പുതിയ simulator_callback(data);
 
       /* Insert at head of list */
-      switch (data->reason) {
-	  case cbEndOfCompile:
+      തിരഞ്ഞെടുപ്പ് (data->reason) {
+	  അവസ്ഥ cbEndOfCompile:
 	    obj->next = EndOfCompile;
 	    EndOfCompile = obj;
-	    break;
-	  case cbStartOfSimulation:
+	    നിർത്തുക;
+	  അവസ്ഥ cbStartOfSimulation:
 	    obj->next = StartOfSimulation;
 	    StartOfSimulation = obj;
-	    break;
-	  case cbEndOfSimulation:
+	    നിർത്തുക;
+	  അവസ്ഥ cbEndOfSimulation:
 	    obj->next = EndOfSimulation;
 	    EndOfSimulation = obj;
-	    break;
-	  case cbNextSimTime:
+	    നിർത്തുക;
+	  അവസ്ഥ cbNextSimTime:
 	    obj->next = NextSimTime;
 	    NextSimTime = obj;
-	    break;
+	    നിർത്തുക;
       }
 
-      return obj;
+      തിരികെ obj;
 }
 
 vpiHandle vpi_register_cb(p_cb_data data)
 {
-      struct __vpiCallback*obj = 0;
+      ഘടന __vpiCallback*obj = 0;
 
-      assert(data);
-      switch (data->reason) {
+      പ്രതിജ്ഞാ(data);
+      തിരഞ്ഞെടുപ്പ് (data->reason) {
 
-	  case cbValueChange:
-	    obj = make_value_change(data);
-	    break;
+	  അവസ്ഥ cb_മൂല്യം_Change:
+	    obj = make_മൂല്യം_change(data);
+	    നിർത്തുക;
 
-	  case cbReadOnlySynch:
-	    obj = make_sync(data, true);
-	    break;
+	  അവസ്ഥ cbReadOnlySynch:
+	    obj = make_sync(data, സത്യം);
+	    നിർത്തുക;
 
-	  case cbReadWriteSynch:
-	    obj = make_sync(data, false);
-	    break;
+	  അവസ്ഥ cbReadWriteSynch:
+	    obj = make_sync(data, അസത്യം);
+	    നിർത്തുക;
 
-	  case cbAtStartOfSimTime:
+	  അവസ്ഥ cbAtStartOfSimTime:
 	    obj = make_at_start_of_sim_time(data);
-	    break;
+	    നിർത്തുക;
 
-	  case cbAtEndOfSimTime:
+	  അവസ്ഥ cbAtEndOfSimTime:
 	    obj = make_at_end_of_sim_time(data);
-	    break;
+	    നിർത്തുക;
 
-	  case cbAfterDelay:
+	  അവസ്ഥ cbAfterDelay:
 	    obj = make_afterdelay(data);
-	    break;
+	    നിർത്തുക;
 
-	  case cbEndOfCompile:
-	  case cbStartOfSimulation:
-	  case cbEndOfSimulation:
-	  case cbNextSimTime:
+	  അവസ്ഥ cbEndOfCompile:
+	  അവസ്ഥ cbStartOfSimulation:
+	  അവസ്ഥ cbEndOfSimulation:
+	  അവസ്ഥ cbNextSimTime:
 	    obj = make_prepost(data);
-	    break;
+	    നിർത്തുക;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vpi error: vpi_register_cb invalid or "
 		    "unsupported callback reason: %d\n",
-		    (int)data->reason);
-	    break;
+		    (പൂർണ്ണസംഖ്യ)data->reason);
+	    നിർത്തുക;
       }
 
-      return obj;
+      തിരികെ obj;
 }
 
 /*
@@ -798,19 +798,19 @@ vpiHandle vpi_register_cb(p_cb_data data)
  */
 PLI_INT32 vpi_remove_cb(vpiHandle ref)
 {
-      struct __vpiCallback*obj = dynamic_cast<__vpiCallback*>(ref);
-      assert(obj);
+      ഘടന __vpiCallback*obj = dynamic_cast<__vpiCallback*>(ref);
+      പ്രതിജ്ഞാ(obj);
       obj->cb_data.cb_rtn = 0;
 
-      return 1;
+      തിരികെ 1;
 }
 
-void callback_execute(struct __vpiCallback*cur)
+ശൂന്യം callback_execute(ഘടന __vpiCallback*cur)
 {
-      const vpi_mode_t save_mode = vpi_mode_flag;
+      സ്ഥിരം vpi_mode_t save_mode = vpi_mode_flag;
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      assert(cur->cb_data.cb_rtn);
+      പ്രതിജ്ഞാ(cur->cb_data.cb_rtn);
       set_callback_time(&cur->cb_data);
       (cur->cb_data.cb_rtn)(&cur->cb_data);
 
@@ -823,52 +823,52 @@ void callback_execute(struct __vpiCallback*cur)
  * the array words minimises memory use for the most common case (no array
  * words) or next most common case (one array word).
  */
-struct __vpi_array_word {
-      struct __vpi_array_word* next;
-      struct __vpiArray* array;
+ഘടന __vpi_array_word {
+      ഘടന __vpi_array_word* next;
+      ഘടന __vpiArray* array;
       unsigned long word;
 };
 
 vvp_vpi_callback::vvp_vpi_callback()
 {
       vpi_callbacks_ = 0;
-      array_words_ = 0;
+      array_വാക്കുകൾ = 0;
 }
 
 vvp_vpi_callback::~vvp_vpi_callback()
 {
-      assert(vpi_callbacks_ == 0);
-      assert(array_words_ == 0);
+      പ്രതിജ്ഞാ(vpi_callbacks_ == 0);
+      പ്രതിജ്ഞാ(array_വാക്കുകൾ == 0);
 }
 
-void vvp_vpi_callback::attach_as_word(vvp_array_t arr, unsigned long addr)
+ശൂന്യം vvp_vpi_callback::attach_as_word(vvp_array_t arr, unsigned long addr)
 {
-      struct __vpi_array_word*tmp = new __vpi_array_word;
+      ഘടന __vpi_array_word*tmp = പുതിയ __vpi_array_word;
       tmp->array = arr;
       tmp->word = addr;
-      tmp->next = array_words_;
-      array_words_ = tmp;
+      tmp->next = array_വാക്കുകൾ;
+      array_വാക്കുകൾ = tmp;
 }
 
-void vvp_vpi_callback::add_vpi_callback(value_callback*cb)
+ശൂന്യം vvp_vpi_callback::add_vpi_callback(മൂല്യം_callback*cb)
 {
       cb->next = vpi_callbacks_;
       vpi_callbacks_ = cb;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vvp_vpi_callback::clear_all_callbacks()
+ശൂന്യം vvp_vpi_callback::clear_all_callbacks()
 {
-      while (vpi_callbacks_) {
-	    value_callback *tmp = dynamic_cast<value_callback*>
+      ആകുമ്പോൾ (vpi_callbacks_) {
+	    മൂല്യം_callback *tmp = dynamic_cast<മൂല്യം_callback*>
 	                            (vpi_callbacks_->next);
 	    delete vpi_callbacks_;
 	    vpi_callbacks_ = tmp;
       }
-      while (array_words_) {
-	    struct __vpi_array_word*tmp = array_words_->next;
-	    delete array_words_;
-	    array_words_ = tmp;
+      ആകുമ്പോൾ (array_വാക്കുകൾ) {
+	    ഘടന __vpi_array_word*tmp = array_വാക്കുകൾ->next;
+	    delete array_വാക്കുകൾ;
+	    array_വാക്കുകൾ = tmp;
       }
 }
 #endif
@@ -879,38 +879,38 @@ void vvp_vpi_callback::clear_all_callbacks()
  * callback function. If the cb_rtn pointer is nil, then the object
  * has been marked for deletion. Free it.
  */
-void vvp_vpi_callback::run_vpi_callbacks()
+ശൂന്യം vvp_vpi_callback::run_vpi_callbacks()
 {
-      struct __vpi_array_word*array_word = array_words_;
-      while (array_word) {
+      ഘടന __vpi_array_word*array_word = array_വാക്കുകൾ;
+      ആകുമ്പോൾ (array_word) {
 	    array_word->array->word_change(array_word->word);
 	    array_word = array_word->next;
       }
 
-      value_callback *next = vpi_callbacks_;
-      value_callback *prev = 0;
+      മൂല്യം_callback *next = vpi_callbacks_;
+      മൂല്യം_callback *prev = 0;
 
-      while (next) {
-	    value_callback*cur = next;
-	    next = dynamic_cast<value_callback*>(cur->next);
+      ആകുമ്പോൾ (next) {
+	    മൂല്യം_callback*cur = next;
+	    next = dynamic_cast<മൂല്യം_callback*>(cur->next);
 
-	    if (cur->cb_data.cb_rtn != 0) {
-		  if (cur->test_value_callback_ready()) {
-			if (cur->cb_data.value)
-			      get_value(cur->cb_data.value);
+	    എങ്കിൽ (cur->cb_data.cb_rtn != 0) {
+		  എങ്കിൽ (cur->test_മൂല്യം_callback_ready()) {
+			എങ്കിൽ (cur->cb_data.value)
+			      get_മൂല്യം(cur->cb_data.value);
 
 			callback_execute(cur);
 		  }
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } അല്ലെങ്കിൽ എങ്കിൽ (prev == 0) {
 
 		  vpi_callbacks_ = next;
 		  cur->next = 0;
 		  delete cur;
 
-	    } else {
-		  assert(prev->next == cur);
+	    } അല്ലെങ്കിൽ {
+		  പ്രതിജ്ഞാ(prev->next == cur);
 		  prev->next = next;
 		  cur->next = 0;
 		  delete cur;
@@ -918,150 +918,150 @@ void vvp_vpi_callback::run_vpi_callbacks()
       }
 }
 
-void vvp_signal_value::get_signal_value(struct t_vpi_value*vp)
+ശൂന്യം vvp_signal_മൂല്യം::get_signal_മൂല്യം(ഘടന t_vpi_മൂല്യം*vp)
 {
-      switch (vp->format) {
-	  case vpiScalarVal:
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
+	  അവസ്ഥ vpiScalarVal:
 	    // This works because vvp_bit4_t has the same encoding
 	    // as a scalar value! See vpip_vec4_get_value() for a
 	    // more robust method.
 	    vp->value.scalar = value(0);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiBinStrVal:
-	  case vpiOctStrVal:
-	  case vpiDecStrVal:
-	  case vpiHexStrVal:
-	  case vpiIntVal:
-	  case vpiVectorVal:
-	  case vpiStringVal:
-	  case vpiRealVal: {
-	    unsigned wid = value_size();
+	  അവസ്ഥ vpiBinStrVal:
+	  അവസ്ഥ vpiOctStrVal:
+	  അവസ്ഥ vpiDecStrVal:
+	  അവസ്ഥ vpiHexStrVal:
+	  അവസ്ഥ vpiIntVal:
+	  അവസ്ഥ vpiVectorVal:
+	  അവസ്ഥ vpiStringVal:
+	  അവസ്ഥ vpiRealVal: {
+	    unsigned wid = മൂല്യം_size();
 	    vvp_vector4_t vec4(wid);
-	    for (unsigned idx = 0; idx < wid; idx += 1) {
+	    വേണ്ടി (unsigned idx = 0; idx < wid; idx += 1) {
 		  vec4.set_bit(idx, value(idx));
 	    }
-	    vpip_vec4_get_value(vec4, wid, false, vp);
-	    break;
+	    vpip_vec4_get_മൂല്യം(vec4, wid, അസത്യം, vp);
+	    നിർത്തുക;
 	  }
 
-	  case vpiSuppressVal:
-	    break;
+	  അവസ്ഥ vpiSuppressVal:
+	    നിർത്തുക;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vpi_callback: value "
 		    "format %d not supported (fun_signal)\n",
-		    (int)vp->format);
+		    (പൂർണ്ണസംഖ്യ)vp->format);
       }
 }
 
-static void real_signal_value(struct t_vpi_value*vp, double rval)
+സ്ഥിതം ശൂന്യം real_signal_മൂല്യം(ഘടന t_vpi_മൂല്യം*vp, ഇരട്ട rval)
 {
-      static const size_t RBUF_SIZE = 64 + 1;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_SIZE, RBUF_VAL));
+      സ്ഥിതം സ്ഥിരം size_t RBUF_SIZE = 64 + 1;
+      അക്ഷരം*rbuf = static_cast<അക്ഷരം *>(need_result_buf(RBUF_SIZE, RBUF_VAL));
 
-      switch (vp->format) {
-	  case vpiObjTypeVal:
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
+	  അവസ്ഥ vpiObjTypeVal:
 	    vp->format = vpiRealVal;
 	    // fallthrough
-	  case vpiRealVal:
+	  അവസ്ഥ vpiRealVal:
 	    vp->value.real = rval;
-	    break;
+	    നിർത്തുക;
 
-	  case vpiIntVal:
+	  അവസ്ഥ vpiIntVal:
 	      /* NaN or +/- infinity are translated as 0. */
-	    if (rval != rval || (rval && (rval == 0.5*rval))) {
+	    എങ്കിൽ (rval != rval || (rval && (rval == 0.5*rval))) {
 		  rval = 0.0;
-	    } else {
+	    } അല്ലെങ്കിൽ {
 		  rval = std::round(rval);
 	    }
 	    vp->value.integer = (PLI_INT32)rval;
-	    break;
+	    നിർത്തുക;
 
-	  case vpiDecStrVal:
-	    if (std::isnan(rval))
+	  അവസ്ഥ vpiDecStrVal:
+	    എങ്കിൽ (std::isnan(rval))
 		  snprintf(rbuf, RBUF_SIZE, "%s", "nan");
-	    else
+	    അല്ലെങ്കിൽ
 		  snprintf(rbuf, RBUF_SIZE, "%0.0f", std::round(rval));
 	    vp->value.str = rbuf;
-	    break;
+	    നിർത്തുക;
 
-	  case vpiHexStrVal:
+	  അവസ്ഥ vpiHexStrVal:
 	    snprintf(rbuf, RBUF_SIZE, "%" PRIx64, vlg_round_to_u64(rval));
 	    vp->value.str = rbuf;
-	    break;
+	    നിർത്തുക;
 
-	  case vpiBinStrVal: {
+	  അവസ്ഥ vpiBinStrVal: {
 		uint64_t val = vlg_round_to_u64(rval);
 		unsigned len = 0;
 
-		while (val > 0) {
+		ആകുമ്പോൾ (val > 0) {
 		      len += 1;
 		      val /= 2;
 		}
 
 		val = vlg_round_to_u64(rval);
-		for (unsigned idx = 0 ;  idx < len ;  idx += 1) {
+		വേണ്ടി (unsigned idx = 0 ;  idx < len ;  idx += 1) {
 		      rbuf[len-idx-1] = (val & 1)? '1' : '0';
 		      val /= 2;
 		}
 
 		rbuf[len] = 0;
-		if (len == 0) {
+		എങ്കിൽ (len == 0) {
 		      rbuf[0] = '0';
 		      rbuf[1] = 0;
 		}
 		vp->value.str = rbuf;
-		break;
+		നിർത്തുക;
 	  }
 
-	  case vpiSuppressVal:
-	    break;
+	  അവസ്ഥ vpiSuppressVal:
+	    നിർത്തുക;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vpi_callback: value "
 		    "format %d not supported (fun_signal_real)\n",
-		    (int)vp->format);
+		    (പൂർണ്ണസംഖ്യ)vp->format);
       }
 }
 
-void vvp_fun_signal_real_aa::get_signal_value(struct t_vpi_value*vp)
+ശൂന്യം vvp_fun_signal_real_aa::get_signal_മൂല്യം(ഘടന t_vpi_മൂല്യം*vp)
 {
-      real_signal_value(vp, real_value());
+      real_signal_മൂല്യം(vp, real_മൂല്യം());
 }
 
-void vvp_wire_real::get_signal_value(struct t_vpi_value*vp)
+ശൂന്യം vvp_wire_real::get_signal_മൂല്യം(ഘടന t_vpi_മൂല്യം*vp)
 {
-      real_signal_value(vp, real_value());
+      real_signal_മൂല്യം(vp, real_മൂല്യം());
 }
 
-void vvp_fun_signal_string_aa::get_signal_value(struct t_vpi_value*)
+ശൂന്യം vvp_fun_signal_string_aa::get_signal_മൂല്യം(ഘടന t_vpi_മൂല്യം*)
 {
-      assert(0);
+      പ്രതിജ്ഞാ(0);
 }
-#if 0
-void vvp_wire_string::get_signal_value(struct t_vpi_value*vp)
+#എങ്കിൽ 0
+ശൂന്യം vvp_wire_string::get_signal_മൂല്യം(ഘടന t_vpi_മൂല്യം*vp)
 {
-      assert(0);
+      പ്രതിജ്ഞാ(0);
 }
 #endif
-void vvp_wire_vec4::get_value(struct t_vpi_value*val)
+ശൂന്യം vvp_wire_vec4::get_മൂല്യം(ഘടന t_vpi_മൂല്യം*val)
 {
-      get_signal_value(val);
+      get_signal_മൂല്യം(val);
 }
 
-void vvp_wire_vec8::get_value(struct t_vpi_value*val)
+ശൂന്യം vvp_wire_vec8::get_മൂല്യം(ഘടന t_vpi_മൂല്യം*val)
 {
-      get_signal_value(val);
+      get_signal_മൂല്യം(val);
 }
 
-void vvp_wire_real::get_value(struct t_vpi_value*val)
+ശൂന്യം vvp_wire_real::get_മൂല്യം(ഘടന t_vpi_മൂല്യം*val)
 {
-      get_signal_value(val);
+      get_signal_മൂല്യം(val);
 }
-#if 0
-void vvp_wire_string::get_value(struct t_vpi_value*val)
+#എങ്കിൽ 0
+ശൂന്യം vvp_wire_string::get_മൂല്യം(ഘടന t_vpi_മൂല്യം*val)
 {
-      assert(0);
+      പ്രതിജ്ഞാ(0);
 }
 #endif

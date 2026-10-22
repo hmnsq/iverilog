@@ -22,9 +22,9 @@
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+using നാമാകാശ std;
 
-vvp_cobject::vvp_cobject(const class_type*defn)
+vvp_cobject::vvp_cobject(സ്ഥിരം class_type*defn)
 : defn_(defn), properties_(defn->instance_new())
 {
 }
@@ -35,54 +35,54 @@ vvp_cobject::~vvp_cobject()
       properties_ = 0;
 }
 
-void vvp_cobject::set_vec4(size_t pid, const vvp_vector4_t&val)
+ശൂന്യം vvp_cobject::set_vec4(size_t pid, സ്ഥിരം vvp_vector4_t&val)
 {
       defn_->set_vec4(properties_, pid, val);
 }
 
-void vvp_cobject::get_vec4(size_t pid, vvp_vector4_t&val)
+ശൂന്യം vvp_cobject::get_vec4(size_t pid, vvp_vector4_t&val)
 {
       defn_->get_vec4(properties_, pid, val);
 }
 
-void vvp_cobject::set_real(size_t pid, double val)
+ശൂന്യം vvp_cobject::set_real(size_t pid, ഇരട്ട val)
 {
       defn_->set_real(properties_, pid, val);
 }
 
-double vvp_cobject::get_real(size_t pid)
+ഇരട്ട vvp_cobject::get_real(size_t pid)
 {
-      return defn_->get_real(properties_, pid);
+      തിരികെ defn_->get_real(properties_, pid);
 }
 
-void vvp_cobject::set_string(size_t pid, const string&val)
+ശൂന്യം vvp_cobject::set_string(size_t pid, സ്ഥിരം string&val)
 {
       defn_->set_string(properties_, pid, val);
 }
 
 string vvp_cobject::get_string(size_t pid)
 {
-      return defn_->get_string(properties_, pid);
+      തിരികെ defn_->get_string(properties_, pid);
 }
 
-void vvp_cobject::set_object(size_t pid, const vvp_object_t&val, size_t idx)
+ശൂന്യം vvp_cobject::set_object(size_t pid, സ്ഥിരം vvp_object_t&val, size_t idx)
 {
       defn_->set_object(properties_, pid, val, idx);
 }
 
-void vvp_cobject::get_object(size_t pid, vvp_object_t&val, size_t idx)
+ശൂന്യം vvp_cobject::get_object(size_t pid, vvp_object_t&val, size_t idx)
 {
-      return defn_->get_object(properties_, pid, val, idx);
+      തിരികെ defn_->get_object(properties_, pid, val, idx);
 }
 
-void vvp_cobject::shallow_copy(const vvp_object*obj)
+ശൂന്യം vvp_cobject::shallow_copy(സ്ഥിരം vvp_object*obj)
 {
-      const vvp_cobject*that = dynamic_cast<const vvp_cobject*>(obj);
-      assert(that);
+      സ്ഥിരം vvp_cobject*that = dynamic_cast<സ്ഥിരം vvp_cobject*>(obj);
+      പ്രതിജ്ഞാ(that);
 
-      assert(defn_ == that->defn_);
+      പ്രതിജ്ഞാ(defn_ == that->defn_);
 
-      for (size_t idx = 0 ; idx < defn_->property_count() ; idx += 1)
+      വേണ്ടി (size_t idx = 0 ; idx < defn_->property_എണ്ണം() ; idx += 1)
 	    defn_->copy_property(properties_, idx, that->properties_);
 
 }

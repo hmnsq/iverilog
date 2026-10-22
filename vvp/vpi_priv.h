@@ -33,14 +33,14 @@
  * Added to use some "vvp_fun_modpath_src"
  * and "vvp_fun_modpath" classes definitions
  */
-#include  "delay.h"
+#അന്തര്ഭാവ  "delay.h"
 
 
 class class_type;
 class vvp_darray;
 class vvp_fun_arrayport;
 
-typedef struct __vpiArray* vvp_array_t;
+തരനിർവചനം ഘടന __vpiArray* vvp_array_t;
 
 /*
  * This header file contains the internal definitions that the vvp
@@ -48,20 +48,20 @@ typedef struct __vpiArray* vvp_array_t;
  * header file elsewhere.
  */
 
-#if defined(__MINGW32__) || defined (__CYGWIN__)
-extern vpip_routines_s vpi_routines;
+#എങ്കിൽ defined(__MINGW32__) || defined (__CYGWIN__)
+ബാഹ്യ vpip_routines_s vpi_routines;
 #endif
 
 /*
  * Routines/definitions used to build the file/line number tracing object.
  */
-#define _vpiFileLine    0x1000003
+#define vpi_File_വരി    0x1000003
 #define _vpiDescription 0x1000004
 
-extern bool show_file_line;
-extern bool code_is_instrumented;
+ബാഹ്യ bool show_file_വരി;
+ബാഹ്യ bool code_is_instrumented;
 
-extern vpiHandle vpip_build_file_line(const char*description,
+ബാഹ്യ vpiHandle vpip_build_file_വരി(സ്ഥിരം അക്ഷരം*description,
                                       long file_idx, long lineno);
 
 /*
@@ -69,17 +69,17 @@ extern vpiHandle vpip_build_file_line(const char*description,
  * is unknown, then return the number stringified. Note that the return
  * value may return to a static buffer.
  */
-extern const char* vpi_type_as_string(PLI_INT32 code);
+ബാഹ്യ സ്ഥിരം അക്ഷരം* vpi_type_as_string(PLI_INT32 code);
 
 /*
  * Return the port direction as a string.
  */
-extern const char* direction_as_string(int dir);
+ബാഹ്യ സ്ഥിരം അക്ഷരം* direction_as_string(പൂർണ്ണസംഖ്യ dir);
 
 /*
  * Private VPI properties that are only used in the cleanup code.
  */
-#if defined(CHECK_WITH_VALGRIND) && !defined(BR916_STOPGAP_FIX)
+#എങ്കിൽ defined(CHECK_WITH_VALGRIND) && !defined(BR916_STOPGAP_FIX)
 #define _vpiFromThr 0x1000001
 #   define _vpiNoThr   0
 #   define _vpiString  1
@@ -96,7 +96,7 @@ extern const char* direction_as_string(int dir);
  * to generate error messages when vpi functions are called
  * incorrectly.
  */
-enum vpi_mode_t {
+എണ്ണൽ vpi_mode_t {
       VPI_MODE_NONE =0,
 	/* The compiler is calling a register function. */
       VPI_MODE_REGISTER,
@@ -109,7 +109,7 @@ enum vpi_mode_t {
 	/* We are in a ROSync callback. */
       VPI_MODE_ROSYNC
 };
-extern vpi_mode_t vpi_mode_flag;
+ബാഹ്യ vpi_mode_t vpi_mode_flag;
 
 /*
  * This structure is the very base of a vpiHandle. Every handle
@@ -117,30 +117,30 @@ extern vpi_mode_t vpi_mode_flag;
  * internally pass the derived types as pointers to one of these.
  */
 class __vpiHandle {
-    public:
-      inline __vpiHandle() { }
+    പൊതു:
+      വരിയിൽ __vpiHandle() { }
 	// The destructor is virtual so that dynamic types will work.
-      virtual ~__vpiHandle();
+      മായാ ~__vpiHandle();
 
-      virtual int get_type_code(void) const =0;
-      virtual int vpi_get(int code);
-      virtual int64_t vpi_get64(int code);
-      virtual char* vpi_get_str(int code);
+      മായാ പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം =0;
+      മായാ പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code);
+      മായാ int64_t vpi_get64(പൂർണ്ണസംഖ്യ code);
+      മായാ അക്ഷരം* vpi_get_str(പൂർണ്ണസംഖ്യ code);
 
-      virtual void vpi_get_value(p_vpi_value val);
-      virtual vpiHandle vpi_put_value(p_vpi_value val, int flags);
-      virtual vpiHandle vpi_handle(int code);
-      virtual vpiHandle vpi_iterate(int code);
-      virtual vpiHandle vpi_index(int idx);
-      virtual void vpi_get_delays(p_vpi_delay del);
-      virtual void vpi_put_delays(p_vpi_delay del);
+      മായാ ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val);
+      മായാ vpiHandle vpi_put_മൂല്യം(p_vpi_മൂല്യം val, പൂർണ്ണസംഖ്യ flags);
+      മായാ vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code);
+      മായാ vpiHandle vpi_iterate(പൂർണ്ണസംഖ്യ code);
+      മായാ vpiHandle vpi_index(പൂർണ്ണസംഖ്യ idx);
+      മായാ ശൂന്യം vpi_get_delays(p_vpi_delay del);
+      മായാ ശൂന്യം vpi_put_delays(p_vpi_delay del);
 
 	// Objects may have destroyer functions of their own. If so,
 	// then this virtual method will return a POINTER to that
 	// function. The pointer is used to "delete" the object, which
 	// is why the function itself cannot be a method.
-      typedef int (*free_object_fun_t)(vpiHandle);
-      virtual free_object_fun_t free_object_fun(void);
+      തരനിർവചനം പൂർണ്ണസംഖ്യ (*free_object_fun_t)(vpiHandle);
+      മായാ free_object_fun_t free_object_fun(ശൂന്യം);
 };
 
 
@@ -155,10 +155,10 @@ class __vpiHandle {
  * The free_args_flag member is true if when this iterator object is
  * released it must also free the args array.
  */
-struct __vpiIterator : public __vpiHandle {
+ഘടന __vpiIterator : പൊതു __vpiHandle {
       __vpiIterator();
-      int get_type_code(void) const override;
-      free_object_fun_t free_object_fun(void) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      free_object_fun_t free_object_fun(ശൂന്യം) override;
 
       vpiHandle *args;
       unsigned  nargs;
@@ -166,26 +166,26 @@ struct __vpiIterator : public __vpiHandle {
       bool free_args_flag;
 };
 
-extern vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
+ബാഹ്യ vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
 				    bool free_args_flag);
 
-class __vpiDecConst : public __vpiHandle {
-    public:
-      explicit __vpiDecConst(int val =0);
-      __vpiDecConst(const __vpiDecConst&that);
-# if __cplusplus >= 201103L
-      __vpiDecConst& operator = (const __vpiDecConst&that) = default;
+class __vpiDecConst : പൊതു __vpiHandle {
+    പൊതു:
+      explicit __vpiDecConst(പൂർണ്ണസംഖ്യ val =0);
+      __vpiDecConst(സ്ഥിരം __vpiDecConst&that);
+# എങ്കിൽ __cplusplus >= 201103L
+      __vpiDecConst& operator = (സ്ഥിരം __vpiDecConst&that) = സ്ഥിരസ്ഥിതി;
 # endif
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
 
-    public:
-      inline int get_value() const { return value; }
-      inline void set_value(int val) { value = val; }
+    പൊതു:
+      വരിയിൽ പൂർണ്ണസംഖ്യ get_മൂല്യം() സ്ഥിരം { തിരികെ മൂല്യം; }
+      വരിയിൽ ശൂന്യം set_മൂല്യം(പൂർണ്ണസംഖ്യ val) { മൂല്യം = val; }
 
-    private:
-      int value;
+    സ്വകാര്യ:
+      പൂർണ്ണസംഖ്യ മൂല്യം;
 };
 
 /*
@@ -193,59 +193,59 @@ class __vpiDecConst : public __vpiHandle {
  * are defined and used in vpi_callback.cc. The __vpiCallback are
  * always used in association with vvp_vpi_callback objects.
  */
-struct __vpiCallback : public __vpiHandle {
+ഘടന __vpiCallback : പൊതു __vpiHandle {
       __vpiCallback();
       ~__vpiCallback() override;
-      int get_type_code(void) const override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
 
 	// Used for listing callbacks.
-      struct __vpiCallback*next;
+      ഘടന __vpiCallback*next;
 
 	// user supplied callback data
-      struct t_cb_data cb_data;
+      ഘടന t_cb_data cb_data;
 };
 
-class value_callback : public __vpiCallback {
-    public:
-      explicit value_callback(p_cb_data data);
+class മൂല്യം_callback : പൊതു __vpiCallback {
+    പൊതു:
+      explicit മൂല്യം_callback(p_cb_data data);
 	// Return true if the callback really is ready to be called
-      virtual bool test_value_callback_ready(void);
+      മായാ bool test_മൂല്യം_callback_ready(ശൂന്യം);
 
-    public:
+    പൊതു:
 	// user supplied callback data
-      struct t_vpi_time cb_time;
-      struct t_vpi_value cb_value;
+      ഘടന t_vpi_time cb_time;
+      ഘടന t_vpi_മൂല്യം cb_മൂല്യം;
 };
 
-extern void callback_execute(struct __vpiCallback*cur);
+ബാഹ്യ ശൂന്യം callback_execute(ഘടന __vpiCallback*cur);
 
-struct __vpiSystemTime : public __vpiHandle {
+ഘടന __vpiSystemTime : പൊതു __vpiHandle {
       __vpiSystemTime();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_handle(int code) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം*vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
+      vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
 
       __vpiScope*scope;
 };
 
-struct __vpiScopedTime : public __vpiSystemTime {
+ഘടന __vpiScopedTime : പൊതു __vpiSystemTime {
       __vpiScopedTime();
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      അക്ഷരം*vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
 };
-struct __vpiScopedSTime : public __vpiSystemTime {
+ഘടന __vpiScopedSTime : പൊതു __vpiSystemTime {
       __vpiScopedSTime();
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം*vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
 };
-struct __vpiScopedRealtime : public __vpiSystemTime {
+ഘടന __vpiScopedRealtime : പൊതു __vpiSystemTime {
       __vpiScopedRealtime();
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം*vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
 };
 
 /*
@@ -253,24 +253,24 @@ struct __vpiScopedRealtime : public __vpiSystemTime {
  * objects hold the items and properties that are knowingly bound to a
  * scope.
  */
-class __vpiScope : public __vpiHandle {
+class __vpiScope : പൊതു __vpiHandle {
 
-    public:
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+    പൊതു:
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം* vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_iterate(പൂർണ്ണസംഖ്യ code) override;
 
-    public:
+    പൊതു:
 	// Return the BASE name of the scope. This does not include
 	// any of the parent hierarchy.
-      inline const char*scope_name() const { return name_; }
+      വരിയിൽ സ്ഥിരം അക്ഷരം*scope_name() സ്ഥിരം { തിരികെ name_; }
 
-      inline const char*scope_def_name() const { return tname_; }
+      വരിയിൽ സ്ഥിരം അക്ഷരം*scope_def_name() സ്ഥിരം { തിരികെ tname_; }
 	// TRUE if this is an automatic func/task/block
-      inline bool is_automatic() const { return is_automatic_; }
+      വരിയിൽ bool is_automatic() സ്ഥിരം { തിരികെ is_automatic_; }
 
-    public:
+    പൊതു:
       __vpiScope *scope;
       unsigned file_idx;
       unsigned lineno;
@@ -279,14 +279,14 @@ class __vpiScope : public __vpiHandle {
       bool is_cell;
 	/* The scope has a system time of its own. */
       __vpiScopedTime scoped_time;
-      struct __vpiScopedSTime scoped_stime;
-      struct __vpiScopedRealtime scoped_realtime;
+      ഘടന __vpiScopedSTime scoped_stime;
+      ഘടന __vpiScopedRealtime scoped_realtime;
 	/* Keep an array of internal scope items. */
       std::vector<class __vpiHandle*> intern;
 	/* Set of types */
       std::map<std::string,class_type*> classes;
         /* Keep an array of items to be automatically allocated */
-      struct automatic_hooks_s**item;
+      ഘടന automatic_hooks_s**item;
       unsigned nitem;
         /* Keep a list of live contexts. */
       vvp_context_t live_contexts;
@@ -294,56 +294,56 @@ class __vpiScope : public __vpiHandle {
       vvp_context_t free_contexts;
 	/* Keep a list of threads in the scope. */
       std::set<vthread_t> threads;
-      signed int time_units :8;
-      signed int time_precision :8;
+      signed പൂർണ്ണസംഖ്യ time_units :8;
+      signed പൂർണ്ണസംഖ്യ time_precision :8;
 
-    protected:
-      __vpiScope(const char*nam, const char*tnam, bool is_auto_flag =false);
+    സംരക്ഷിത:
+      __vpiScope(സ്ഥിരം അക്ഷരം*nam, സ്ഥിരം അക്ഷരം*tnam, bool is_auto_flag =false);
 
-    private:
+    സ്വകാര്യ:
 	/* The scope has a name. */
-      const char*name_;
-      const char*tname_;
+      സ്ഥിരം അക്ഷരം*name_;
+      സ്ഥിരം അക്ഷരം*tname_;
 	/* the scope may be "automatic" */
       bool is_automatic_;
 };
 
-class vpiScopeFunction  : public __vpiScope {
-    public:
-      inline vpiScopeFunction(const char*nam, const char*tnam,
-			      bool auto_flag, int func_type, unsigned func_wid, vvp_bit4_t func_init_val)
+class vpiScopeFunction  : പൊതു __vpiScope {
+    പൊതു:
+      വരിയിൽ vpiScopeFunction(സ്ഥിരം അക്ഷരം*nam, സ്ഥിരം അക്ഷരം*tnam,
+			      bool auto_flag, പൂർണ്ണസംഖ്യ func_type, unsigned func_wid, vvp_bit4_t func_init_val)
       : __vpiScope(nam,tnam, auto_flag), func_type_(func_type), func_wid_(func_wid), func_init_val_(func_init_val)
       { }
 
-      int get_type_code(void) const override { return vpiFunction; }
-      int vpi_get(int code) override
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override { തിരികെ vpiFunction; }
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override
       {
-	    switch (code) {
-		case vpiFuncType:
-		  return func_type_;
-		default:
-		  return __vpiScope::vpi_get(code);
+	    തിരഞ്ഞെടുപ്പ് (code) {
+		അവസ്ഥ vpiFuncType:
+		  തിരികെ func_type_;
+		സ്ഥിരസ്ഥിതി:
+		  തിരികെ __vpiScope::vpi_get(code);
 	    }
       }
 
-    public:
-      inline unsigned get_func_width(void) const { return func_wid_; }
-      inline vvp_bit4_t get_func_init_val(void) const { return func_init_val_; }
+    പൊതു:
+      വരിയിൽ unsigned get_func_width(ശൂന്യം) സ്ഥിരം { തിരികെ func_wid_; }
+      വരിയിൽ vvp_bit4_t get_func_init_val(ശൂന്യം) സ്ഥിരം { തിരികെ func_init_val_; }
 
-    private:
-      int func_type_;
+    സ്വകാര്യ:
+      പൂർണ്ണസംഖ്യ func_type_;
       unsigned func_wid_;
       vvp_bit4_t func_init_val_;
 };
 
-extern __vpiScope* vpip_peek_current_scope(void);
-extern void vpip_attach_to_scope(__vpiScope*scope, vpiHandle obj);
-extern void vpip_attach_to_current_scope(vpiHandle obj);
-extern __vpiScope* vpip_peek_context_scope(void);
-extern unsigned vpip_add_item_to_context(automatic_hooks_s*item,
+ബാഹ്യ __vpiScope* vpip_peek_current_scope(ശൂന്യം);
+ബാഹ്യ ശൂന്യം vpip_attach_to_scope(__vpiScope*scope, vpiHandle obj);
+ബാഹ്യ ശൂന്യം vpip_attach_to_current_scope(vpiHandle obj);
+ബാഹ്യ __vpiScope* vpip_peek_context_scope(ശൂന്യം);
+ബാഹ്യ unsigned vpip_add_item_to_context(automatic_hooks_s*item,
                                          __vpiScope*scope);
-extern vpiHandle vpip_make_root_iterator(int type_code);
-extern void vpip_make_root_iterator(class __vpiHandle**&table,
+ബാഹ്യ vpiHandle vpip_make_വേര്_iterator(പൂർണ്ണസംഖ്യ type_code);
+ബാഹ്യ ശൂന്യം vpip_make_വേര്_iterator(class __vpiHandle**&table,
 				    unsigned&ntable);
 
 /*
@@ -351,32 +351,32 @@ extern void vpip_make_root_iterator(class __vpiHandle**&table,
  * distinguished by the vpiType code. They also have a parent scope,
  * a declared name and declaration indices.
  */
-struct __vpiSignal : public __vpiHandle {
-      int vpi_get(int code) override;
-      int64_t vpi_get64(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
+ഘടന __vpiSignal : പൊതു __vpiHandle {
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      int64_t vpi_get64(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം* vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
+      vpiHandle vpi_put_മൂല്യം(p_vpi_മൂല്യം val, പൂർണ്ണസംഖ്യ flags) override;
+      vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_iterate(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_index(പൂർണ്ണസംഖ്യ idx) override;
 
-    public:
-      unsigned width() const;
-      vpiHandle get_index(int index);
-      void get_bit_value(const struct __vpiBit*bit, p_vpi_value vp);
-      vpiHandle put_bit_value(struct __vpiBit*bit, p_vpi_value vp, int flags);
-      void make_bits();
+    പൊതു:
+      unsigned width() സ്ഥിരം;
+      vpiHandle get_index(പൂർണ്ണസംഖ്യ index);
+      ശൂന്യം get_bit_മൂല്യം(സ്ഥിരം ഘടന __vpiBit*bit, p_vpi_മൂല്യം vp);
+      vpiHandle put_bit_മൂല്യം(ഘടന __vpiBit*bit, p_vpi_മൂല്യം vp, പൂർണ്ണസംഖ്യ flags);
+      ശൂന്യം make_bits();
 
-      struct __vpiBit*bits;
+      ഘടന __vpiBit*bits;
 
-    public:
-      union { // The scope or parent array that contains me.
+    പൊതു:
+      സംഘം { // The scope or parent array that contains me.
 	    vpiHandle parent;
 	    __vpiScope* scope;
       } within;
-      union { // The name of this reg/net, or the index for array words.
-            const char*name;
+      സംഘം { // The name of this reg/net, or the index for array words.
+            സ്ഥിരം അക്ഷരം*name;
             vpiHandle index;
       } id;
 	/* The indices that define the width and access offset. */
@@ -385,103 +385,103 @@ struct __vpiSignal : public __vpiHandle {
       unsigned signed_flag  : 1;
       unsigned is_netarray  : 1; // This is word of a net array
 	/* The represented value is here. */
-      vvp_net_t*node;
+      vvp_net_t*കണ്ണി;
 
-    public:
-      static void*operator new(std::size_t size);
-      static void operator delete(void*); // not implemented
-    protected:
-      inline __vpiSignal() : bits(NULL) { }
-    private: // Not implemented
-      static void*operator new[] (std::size_t size);
-      static void operator delete[](void*);
+    പൊതു:
+      സ്ഥിതം ശൂന്യം*operator new(std::size_t size);
+      സ്ഥിതം ശൂന്യം operator delete(ശൂന്യം*); // not implemented
+    സംരക്ഷിത:
+      വരിയിൽ __vpiSignal() : bits(ശൂന്യ) { }
+    സ്വകാര്യ: // Not implemented
+      സ്ഥിതം ശൂന്യം*operator new[] (std::size_t size);
+      സ്ഥിതം ശൂന്യം operator delete[](ശൂന്യം*);
 };
-extern unsigned vpip_size(const __vpiSignal *sig);
-extern __vpiScope* vpip_scope(__vpiSignal*sig);
+ബാഹ്യ unsigned vpip_size(സ്ഥിരം __vpiSignal *sig);
+ബാഹ്യ __vpiScope* vpip_scope(__vpiSignal*sig);
 
-extern vpiHandle vpip_make_int2(const char*name, int msb, int lsb,
+ബാഹ്യ vpiHandle vpip_make_int2(സ്ഥിരം അക്ഷരം*name, പൂർണ്ണസംഖ്യ msb, പൂർണ്ണസംഖ്യ lsb,
 			       bool signed_flag, vvp_net_t*vec);
-extern vpiHandle vpip_make_int4(const char*name, int msb, int lsb,
+ബാഹ്യ vpiHandle vpip_make_int4(സ്ഥിരം അക്ഷരം*name, പൂർണ്ണസംഖ്യ msb, പൂർണ്ണസംഖ്യ lsb,
 			       vvp_net_t*vec);
-extern vpiHandle vpip_make_var4(const char*name, int msb, int lsb,
+ബാഹ്യ vpiHandle vpip_make_var4(സ്ഥിരം അക്ഷരം*name, പൂർണ്ണസംഖ്യ msb, പൂർണ്ണസംഖ്യ lsb,
 			       bool signed_flag, vvp_net_t*net);
-extern vpiHandle vpip_make_net4(__vpiScope*scope,
-				const char*name, int msb, int lsb,
-				bool signed_flag, vvp_net_t*node);
+ബാഹ്യ vpiHandle vpip_make_net4(__vpiScope*scope,
+				സ്ഥിരം അക്ഷരം*name, പൂർണ്ണസംഖ്യ msb, പൂർണ്ണസംഖ്യ lsb,
+				bool signed_flag, vvp_net_t*കണ്ണി);
 
 /*
  * This is used to represent a bit in a net/reg.
  */
-struct __vpiBit {
-      struct as_bit_t : public __vpiHandle {
-	    int get_type_code(void) const;
-	    int vpi_get(int code);
-	    char* vpi_get_str(int code);
-	    void vpi_get_value(p_vpi_value val);
-	    vpiHandle vpi_put_value(p_vpi_value val, int flags);
-	    vpiHandle vpi_handle(int code);
+ഘടന __vpiBit {
+      ഘടന as_bit_t : പൊതു __vpiHandle {
+	    പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം;
+	    പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code);
+	    അക്ഷരം* vpi_get_str(പൂർണ്ണസംഖ്യ code);
+	    ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val);
+	    vpiHandle vpi_put_മൂല്യം(p_vpi_മൂല്യം val, പൂർണ്ണസംഖ്യ flags);
+	    vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code);
       } as_bit;
 
       vpiHandle index;
 
-      union {
-	    struct __vpiSignal*parent;
-	    struct __vpiBit*bit0;
+      സംഘം {
+	    ഘടന __vpiSignal*parent;
+	    ഘടന __vpiBit*bit0;
       };
 
-      inline unsigned get_norm_index() const { return this - bit0; }
-      inline struct __vpiSignal*get_parent() const {return (bit0 - 1)->parent; }
-      int get_index(void) const;
+      വരിയിൽ unsigned get_norm_index() സ്ഥിരം { തിരികെ this - bit0; }
+      വരിയിൽ ഘടന __vpiSignal*get_parent() സ്ഥിരം {തിരികെ (bit0 - 1)->parent; }
+      പൂർണ്ണസംഖ്യ get_index(ശൂന്യം) സ്ഥിരം;
 };
 
 class vpiPortBitInfo;
 
-class vpiPortInfo  : public __vpiHandle {
-    public:
+class vpiPortInfo  : പൊതു __vpiHandle {
+    പൊതു:
       vpiPortInfo( __vpiScope *parent,
                     unsigned index,
-                    int vpi_direction,
+                    പൂർണ്ണസംഖ്യ vpi_direction,
                     unsigned width,
-                    const char *name,
-                    char* buffer );
+                    സ്ഥിരം അക്ഷരം *name,
+                    അക്ഷരം* buffer );
       ~vpiPortInfo() override;
 
-      int get_type_code(void) const override { return vpiPort; }
-      int get_direction(void) { return direction_; }
-      unsigned get_index(void) { return index_; }
-      int get_width(void) { return width_; }
-      void add_port_bit(vpiPortBitInfo* port_bit) { port_bits_.push_back(port_bit); }
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override { തിരികെ vpiPort; }
+      പൂർണ്ണസംഖ്യ get_direction(ശൂന്യം) { തിരികെ direction_; }
+      unsigned get_index(ശൂന്യം) { തിരികെ index_; }
+      പൂർണ്ണസംഖ്യ get_width(ശൂന്യം) { തിരികെ width_; }
+      ശൂന്യം add_port_bit(vpiPortBitInfo* port_bit) { port_bits_.തള്ളുക_back(port_bit); }
 
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      vvp_net_t* get_port(void) const { return ref_; }
-      vpiHandle vpi_iterate(int code) override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം* vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
+      vvp_net_t* get_port(ശൂന്യം) സ്ഥിരം { തിരികെ ref_; }
+      vpiHandle vpi_iterate(പൂർണ്ണസംഖ്യ code) override;
 
       std::vector<vpiPortBitInfo*> port_bits_;
 
-    private:
+    സ്വകാര്യ:
       __vpiScope *parent_;
       unsigned  index_;
-      int       direction_;
+      പൂർണ്ണസംഖ്യ       direction_;
       unsigned  width_;
-      const char *name_;
+      സ്ഥിരം അക്ഷരം *name_;
       vvp_net_t *ref_;
 };
 
-class vpiPortBitInfo  : public __vpiHandle {
-    public:
+class vpiPortBitInfo  : പൊതു __vpiHandle {
+    പൊതു:
       vpiPortBitInfo(vpiPortInfo *parent,
                      unsigned bit);
       ~vpiPortBitInfo() override;
 
-      int get_type_code(void) const override { return vpiPortBit; }
-      unsigned get_bit(void) const { return bit_; }
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override { തിരികെ vpiPortBit; }
+      unsigned get_bit(ശൂന്യം) സ്ഥിരം { തിരികെ bit_; }
 
-      int vpi_get(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
 
-    private:
+    സ്വകാര്യ:
       vpiPortInfo *parent_;
       unsigned bit_;
 };
@@ -490,54 +490,54 @@ class vpiPortBitInfo  : public __vpiHandle {
  * This is used by system calls to represent a bit/part select of
  * a simple variable or constant array word.
  */
-struct __vpiPV : public __vpiHandle {
+ഘടന __vpiPV : പൊതു __vpiHandle {
       __vpiPV();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം* vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
+      vpiHandle vpi_put_മൂല്യം(p_vpi_മൂല്യം val, പൂർണ്ണസംഖ്യ flags) override;
+      vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
 
       vpiHandle parent;
       vvp_net_t*net;
       vpiHandle sbase;
-      int tbase;
+      പൂർണ്ണസംഖ്യ tbase;
       unsigned width;
 };
-extern vpiHandle vpip_make_PV(char*name, int base, int width);
-extern vpiHandle vpip_make_PV(char*name, char*symbol, int width);
-extern vpiHandle vpip_make_PV(char*name, vpiHandle handle, int width);
+ബാഹ്യ vpiHandle vpip_make_PV(അക്ഷരം*name, പൂർണ്ണസംഖ്യ base, പൂർണ്ണസംഖ്യ width);
+ബാഹ്യ vpiHandle vpip_make_PV(അക്ഷരം*name, അക്ഷരം*ചിഹ്നം, പൂർണ്ണസംഖ്യ width);
+ബാഹ്യ vpiHandle vpip_make_PV(അക്ഷരം*name, vpiHandle handle, പൂർണ്ണസംഖ്യ width);
 
-struct __vpiModPathTerm : public __vpiHandle {
+ഘടന __vpiModPathTerm : പൊതു __vpiHandle {
       __vpiModPathTerm();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
 
-      vpiHandle expr;
+      vpiHandle വ്യഞ്ജകം;
 	/* The value returned by vpi_get(vpiEdge, ...); */
-      int edge;
+      പൂർണ്ണസംഖ്യ edge;
 };
 
-struct __vpiModPathSrc : public __vpiHandle {
+ഘടന __vpiModPathSrc : പൊതു __vpiHandle {
       __vpiModPathSrc();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
-      void vpi_get_delays(p_vpi_delay del) override;
-      void vpi_put_delays(p_vpi_delay del) override;
-      free_object_fun_t free_object_fun(void) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
+      vpiHandle vpi_put_മൂല്യം(p_vpi_മൂല്യം val, പൂർണ്ണസംഖ്യ flags) override;
+      vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_iterate(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_index(പൂർണ്ണസംഖ്യ idx) override;
+      ശൂന്യം vpi_get_delays(p_vpi_delay del) override;
+      ശൂന്യം vpi_put_delays(p_vpi_delay del) override;
+      free_object_fun_t free_object_fun(ശൂന്യം) override;
 
-      struct __vpiModPath *dest;
-      int   type;
+      ഘടന __vpiModPath *dest;
+      പൂർണ്ണസംഖ്യ   type;
 
 	/* This is the input expression for this modpath. */
-      struct __vpiModPathTerm path_term_in;
+      ഘടന __vpiModPathTerm path_term_in;
 
 	/* This is the input net for the modpath. signals on this net
 	   are used to determine the modpath. They are *not* propagated
@@ -554,13 +554,13 @@ struct __vpiModPathSrc : public __vpiHandle {
  *
  */
 
-struct __vpiModPath {
+ഘടന __vpiModPath {
       __vpiScope   *scope ;
 
       class vvp_fun_modpath*modpath;
 
-      struct __vpiModPathTerm path_term_out;
-      vvp_net_t *input_net  ;
+      ഘടന __vpiModPathTerm path_term_out;
+      vvp_net_t *നിവേശം_net  ;
 };
 
 
@@ -569,10 +569,10 @@ struct __vpiModPath {
  * for vpiModPath && vpiModPathIn objects
  */
 
-extern struct __vpiModPathSrc* vpip_make_modpath_src(struct __vpiModPath*path,
+ബാഹ്യ ഘടന __vpiModPathSrc* vpip_make_modpath_src(ഘടന __vpiModPath*path,
                                                      vvp_net_t *net) ;
 
-extern struct __vpiModPath* vpip_make_modpath(vvp_net_t *net) ;
+ബാഹ്യ ഘടന __vpiModPath* vpip_make_modpath(vvp_net_t *net) ;
 
 /*
  *
@@ -582,17 +582,17 @@ extern struct __vpiModPath* vpip_make_modpath(vvp_net_t *net) ;
  *
  */
 
-struct __vpiInterModPath : public __vpiHandle {
+ഘടന __vpiInterModPath : പൊതു __vpiHandle {
       __vpiInterModPath();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
-      void vpi_get_delays(p_vpi_delay del) override;
-      void vpi_put_delays(p_vpi_delay del) override;
-      free_object_fun_t free_object_fun(void) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
+      vpiHandle vpi_put_മൂല്യം(p_vpi_മൂല്യം val, പൂർണ്ണസംഖ്യ flags) override;
+      vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_iterate(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_delays(p_vpi_delay del) override;
+      ശൂന്യം vpi_put_delays(p_vpi_delay del) override;
+      free_object_fun_t free_object_fun(ശൂന്യം) override;
 
       __vpiScope   *scope ;
 
@@ -610,49 +610,49 @@ struct __vpiInterModPath : public __vpiHandle {
  * for vpiInterModPath
  */
 
-extern struct __vpiInterModPath* vpip_make_intermodpath(vvp_net_t *net, vpiPortInfo* port1, vpiPortInfo* port2);
+ബാഹ്യ ഘടന __vpiInterModPath* vpip_make_intermodpath(vvp_net_t *net, vpiPortInfo* port1, vpiPortInfo* port2);
 
 /*
  * These methods support the vpi creation of events. The name string
  * passed in will be saved, so the caller must allocate it (or not
  * free it) after it is handed to this function.
  */
-class __vpiNamedEvent : public __vpiHandle {
+class __vpiNamedEvent : പൊതു __vpiHandle {
 
-    public:
-      __vpiNamedEvent(__vpiScope*scope, const char*name);
+    പൊതു:
+      __vpiNamedEvent(__vpiScope*scope, സ്ഥിരം അക്ഷരം*name);
       ~__vpiNamedEvent() override;
 
-      __vpiNamedEvent(const __vpiNamedEvent&) = delete;
-      __vpiNamedEvent& operator=(const __vpiNamedEvent&) = delete;
+      __vpiNamedEvent(സ്ഥിരം __vpiNamedEvent&) = delete;
+      __vpiNamedEvent& operator=(സ്ഥിരം __vpiNamedEvent&) = delete;
 
-      int get_type_code(void) const override;
-      __vpiScope*get_scope(void) const { return scope_; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      __vpiScope*get_scope(ശൂന്യം) സ്ഥിരം { തിരികെ scope_; }
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം* vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_put_മൂല്യം(p_vpi_മൂല്യം val, പൂർണ്ണസംഖ്യ flags) override;
+      vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
 
-      inline void add_vpi_callback(__vpiCallback*cb)
+      വരിയിൽ ശൂന്യം add_vpi_callback(__vpiCallback*cb)
       { cb->next = callbacks_;
 	callbacks_ = cb;
       }
 
-      void run_vpi_callbacks(void);
+      ശൂന്യം run_vpi_callbacks(ശൂന്യം);
 
 	/* The functor, used for %set operations. */
       vvp_net_t*funct;
 
-    private:
+    സ്വകാര്യ:
 	/* base name of the event object */
-      const char*name_;
+      സ്ഥിരം അക്ഷരം*name_;
 	/* Parent scope of this object. */
       __vpiScope*scope_;
 	/* List of callbacks interested in this event. */
       __vpiCallback*callbacks_;
 };
 
-extern vpiHandle vpip_make_named_event(const char*name, vvp_net_t*f);
+ബാഹ്യ vpiHandle vpip_make_named_event(സ്ഥിരം അക്ഷരം*name, vvp_net_t*f);
 
 /*
  * Memory is an array of bits that is accessible in N-bit chunks, with
@@ -661,28 +661,28 @@ extern vpiHandle vpip_make_named_event(const char*name, vvp_net_t*f);
  * the memory.
  */
 
-extern bool is_net_array(vpiHandle obj);
+ബാഹ്യ bool is_net_array(vpiHandle obj);
 
 /*
  * These are the various variable types.
  */
-struct __vpiRealVar : public __vpiHandle {
+ഘടന __vpiRealVar : പൊതു __vpiHandle {
       __vpiRealVar();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം* vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
+      vpiHandle vpi_put_മൂല്യം(p_vpi_മൂല്യം val, പൂർണ്ണസംഖ്യ flags) override;
+      vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_iterate(പൂർണ്ണസംഖ്യ code) override;
 
-      union { // The scope or parent array that contains me.
+      സംഘം { // The scope or parent array that contains me.
 	    vpiHandle parent;
 	    __vpiScope* scope;
       } within;
 	/* The name of this variable, or the index for array words. */
-      union {
-            const char*name;
+      സംഘം {
+            സ്ഥിരം അക്ഷരം*name;
             vpiHandle index;
       } id;
       unsigned is_netarray  : 1; // This is word of a net array
@@ -690,66 +690,66 @@ struct __vpiRealVar : public __vpiHandle {
       vvp_net_t*net;
 };
 
-extern __vpiScope* vpip_scope(__vpiRealVar*sig);
-extern vpiHandle vpip_make_real_var(const char*name, vvp_net_t*net);
-extern vpiHandle vpip_make_real_net(__vpiScope*scope,
-				    const char*name, vvp_net_t*net);
+ബാഹ്യ __vpiScope* vpip_scope(__vpiRealVar*sig);
+ബാഹ്യ vpiHandle vpip_make_real_var(സ്ഥിരം അക്ഷരം*name, vvp_net_t*net);
+ബാഹ്യ vpiHandle vpip_make_real_net(__vpiScope*scope,
+				    സ്ഥിരം അക്ഷരം*name, vvp_net_t*net);
 
-class __vpiBaseVar : public __vpiHandle {
+class __vpiBaseVar : പൊതു __vpiHandle {
 
-    public:
-      __vpiBaseVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+    പൊതു:
+      __vpiBaseVar(__vpiScope*scope, സ്ഥിരം അക്ഷരം*name, vvp_net_t*net);
 #ifdef CHECK_WITH_VALGRIND
       ~__vpiBaseVar() override;
 #endif
 
-      inline vvp_net_t* get_net() const { return net_; }
+      വരിയിൽ vvp_net_t* get_net() സ്ഥിരം { തിരികെ net_; }
 
-    protected:
+    സംരക്ഷിത:
       __vpiScope* scope_;
-      const char*name_;
+      സ്ഥിരം അക്ഷരം*name_;
 
-    private:
+    സ്വകാര്യ:
       vvp_net_t*net_;
 };
 
-class __vpiStringVar : public __vpiBaseVar {
+class __vpiStringVar : പൊതു __vpiBaseVar {
 
-    public:
-      __vpiStringVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+    പൊതു:
+      __vpiStringVar(__vpiScope*scope, സ്ഥിരം അക്ഷരം*name, vvp_net_t*net);
 
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
+      vpiHandle vpi_put_മൂല്യം(p_vpi_മൂല്യം val, പൂർണ്ണസംഖ്യ flags) override;
 };
 
-extern vpiHandle vpip_make_string_var(const char*name, vvp_net_t*net);
+ബാഹ്യ vpiHandle vpip_make_string_var(സ്ഥിരം അക്ഷരം*name, vvp_net_t*net);
 
-struct __vpiArrayBase {
-      __vpiArrayBase() : vals_words(NULL) {}
-      virtual ~__vpiArrayBase() {}
+ഘടന __vpiArrayBase {
+      __vpiArrayBase() : vals_വാക്കുകൾ(ശൂന്യ) {}
+      മായാ ~__vpiArrayBase() {}
 
-      virtual unsigned get_size(void) const = 0;
-      virtual vpiHandle get_left_range() = 0;
-      virtual vpiHandle get_right_range() = 0;
-      virtual __vpiScope*get_scope() const = 0;
+      മായാ unsigned get_size(ശൂന്യം) സ്ഥിരം = 0;
+      മായാ vpiHandle get_ഇടത്_range() = 0;
+      മായാ vpiHandle get_വലത്_range() = 0;
+      മായാ __vpiScope*get_scope() സ്ഥിരം = 0;
 
-      virtual int get_word_size() const = 0;
-      virtual char*get_word_str(struct __vpiArrayWord*word, int code) = 0;
-      virtual void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) = 0;
-      virtual void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp,
-                                    int flags) = 0;
-      virtual vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) = 0;
+      മായാ പൂർണ്ണസംഖ്യ get_word_size() സ്ഥിരം = 0;
+      മായാ അക്ഷരം*get_word_str(ഘടന __vpiArrayWord*word, പൂർണ്ണസംഖ്യ code) = 0;
+      മായാ ശൂന്യം get_word_മൂല്യം(ഘടന __vpiArrayWord*word, p_vpi_മൂല്യം vp) = 0;
+      മായാ ശൂന്യം put_word_മൂല്യം(ഘടന __vpiArrayWord*word, p_vpi_മൂല്യം vp,
+                                    പൂർണ്ണസംഖ്യ flags) = 0;
+      മായാ vpiHandle get_iter_index(ഘടന __vpiArrayIterator*iter, പൂർണ്ണസംഖ്യ idx) = 0;
 
     // vpi_iterate is already defined by vpiHandle, so to avoid problems with
     // classes inheriting from vpiHandle and vpiArrayBase just share the common
     // code in the following function
-      vpiHandle vpi_array_base_iterate(int code);
+      vpiHandle vpi_array_base_iterate(പൂർണ്ണസംഖ്യ code);
 
-      virtual void make_vals_words();
+      മായാ ശൂന്യം make_vals_വാക്കുകൾ();
 
-      struct __vpiArrayWord*vals_words;
+      ഘടന __vpiArrayWord*vals_വാക്കുകൾ;
 };
 
 /*
@@ -777,41 +777,41 @@ struct __vpiArrayBase {
 * array of double variables. This is very much like the way the
 * vector4 array works.
 */
-struct __vpiArray : public __vpiArrayBase, public __vpiHandle {
-      int get_type_code(void) const override { return vpiMemory; }
-      unsigned get_size() const override { return array_count; }
-      vpiHandle get_left_range() override { assert(nets == 0); return &msb; }
-      vpiHandle get_right_range() override { assert(nets == 0); return &lsb; }
-      __vpiScope*get_scope() const override { return scope; }
+ഘടന __vpiArray : പൊതു __vpiArrayBase, പൊതു __vpiHandle {
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override { തിരികെ vpiMemory; }
+      unsigned get_size() സ്ഥിരം override { തിരികെ array_എണ്ണം; }
+      vpiHandle get_ഇടത്_range() override { പ്രതിജ്ഞാ(nets == 0); തിരികെ &msb; }
+      vpiHandle get_വലത്_range() override { പ്രതിജ്ഞാ(nets == 0); തിരികെ &lsb; }
+      __vpiScope*get_scope() സ്ഥിരം override { തിരികെ scope; }
 
-      int get_word_size() const override;
-      char*get_word_str(struct __vpiArrayWord*word, int code) override;
-      void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) override;
-      void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int flags) override;
+      പൂർണ്ണസംഖ്യ get_word_size() സ്ഥിരം override;
+      അക്ഷരം*get_word_str(ഘടന __vpiArrayWord*word, പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം get_word_മൂല്യം(ഘടന __vpiArrayWord*word, p_vpi_മൂല്യം vp) override;
+      ശൂന്യം put_word_മൂല്യം(ഘടന __vpiArrayWord*word, p_vpi_മൂല്യം vp, പൂർണ്ണസംഖ്യ flags) override;
 
-      vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) override;
+      vpiHandle get_iter_index(ഘടന __vpiArrayIterator*iter, പൂർണ്ണസംഖ്യ idx) override;
 
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      inline vpiHandle vpi_iterate(int code) override { return vpi_array_base_iterate(code); }
-      vpiHandle vpi_index(int idx) override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം* vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
+      വരിയിൽ vpiHandle vpi_iterate(പൂർണ്ണസംഖ്യ code) override { തിരികെ vpi_array_base_iterate(code); }
+      vpiHandle vpi_index(പൂർണ്ണസംഖ്യ idx) override;
 
-      void set_word(unsigned idx, unsigned off, const vvp_vector4_t&val);
-      void set_word(unsigned idx, double val);
-      void set_word(unsigned idx, const std::string&val);
-      void set_word(unsigned idx, const vvp_object_t&val);
+      ശൂന്യം set_word(unsigned idx, unsigned off, സ്ഥിരം vvp_vector4_t&val);
+      ശൂന്യം set_word(unsigned idx, ഇരട്ട val);
+      ശൂന്യം set_word(unsigned idx, സ്ഥിരം std::string&val);
+      ശൂന്യം set_word(unsigned idx, സ്ഥിരം vvp_object_t&val);
 
       vvp_vector4_t get_word(unsigned address);
-      double get_word_r(unsigned address);
-      void get_word_obj(unsigned address, vvp_object_t&val);
+      ഇരട്ട get_word_r(unsigned address);
+      ശൂന്യം get_word_obj(unsigned address, vvp_object_t&val);
       std::string get_word_str(unsigned address);
 
-      void alias_word(unsigned long addr, vpiHandle word, int msb, int lsb);
-      void attach_word(unsigned addr, vpiHandle word);
-      void word_change(unsigned long addr);
+      ശൂന്യം alias_word(unsigned long addr, vpiHandle word, പൂർണ്ണസംഖ്യ msb, പൂർണ്ണസംഖ്യ lsb);
+      ശൂന്യം attach_word(unsigned addr, vpiHandle word);
+      ശൂന്യം word_change(unsigned long addr);
 
-      const char*name; /* Permanently allocated string */
+      സ്ഥിരം അക്ഷരം*name; /* Permanently allocated string */
       __vpiDecConst first_addr;
       __vpiDecConst last_addr;
       __vpiDecConst msb;
@@ -824,96 +824,96 @@ struct __vpiArray : public __vpiArrayBase, public __vpiHandle {
       vvp_darray        *vals;
 
       vvp_fun_arrayport*ports_;
-      struct __vpiCallback *vpi_callbacks;
+      ഘടന __vpiCallback *vpi_callbacks;
       bool signed_flag;
       bool swap_addr;
 
-private:
-      unsigned array_count;
+സ്വകാര്യ:
+      unsigned array_എണ്ണം;
       __vpiScope*scope;
 
-friend vpiHandle vpip_make_array(const char*label, const char*name,
-                                 int first_addr, int last_addr,
+friend vpiHandle vpip_make_array(സ്ഥിരം അക്ഷരം*label, സ്ഥിരം അക്ഷരം*name,
+                                 പൂർണ്ണസംഖ്യ first_addr, പൂർണ്ണസംഖ്യ last_addr,
                                  bool signed_flag);
-friend void compile_array_alias(char*label, char*name, char*src);
+friend ശൂന്യം compile_array_alias(അക്ഷരം*label, അക്ഷരം*name, അക്ഷരം*src);
 };
 
-class __vpiDarrayVar : public __vpiBaseVar, public __vpiArrayBase {
-    public:
-      __vpiDarrayVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+class __vpiDarrayVar : പൊതു __vpiBaseVar, പൊതു __vpiArrayBase {
+    പൊതു:
+      __vpiDarrayVar(__vpiScope*scope, സ്ഥിരം അക്ഷരം*name, vvp_net_t*net);
 
-      int get_type_code() const override { return vpiArrayVar; }
-      unsigned get_size() const override;
-      vpiHandle get_left_range() override;
-      vpiHandle get_right_range() override;
-      __vpiScope*get_scope() const override { return scope_; }
+      പൂർണ്ണസംഖ്യ get_type_code() സ്ഥിരം override { തിരികെ vpiArrayVar; }
+      unsigned get_size() സ്ഥിരം override;
+      vpiHandle get_ഇടത്_range() override;
+      vpiHandle get_വലത്_range() override;
+      __vpiScope*get_scope() സ്ഥിരം override { തിരികെ scope_; }
 
-      int get_word_size() const override;
-      char*get_word_str(struct __vpiArrayWord*word, int code) override;
-      void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) override;
-      void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int flags) override;
+      പൂർണ്ണസംഖ്യ get_word_size() സ്ഥിരം override;
+      അക്ഷരം*get_word_str(ഘടന __vpiArrayWord*word, പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം get_word_മൂല്യം(ഘടന __vpiArrayWord*word, p_vpi_മൂല്യം vp) override;
+      ശൂന്യം put_word_മൂല്യം(ഘടന __vpiArrayWord*word, p_vpi_മൂല്യം vp, പൂർണ്ണസംഖ്യ flags) override;
 
-      vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) override;
-      inline vpiHandle vpi_iterate(int code) override { return vpi_array_base_iterate(code); }
+      vpiHandle get_iter_index(ഘടന __vpiArrayIterator*iter, പൂർണ്ണസംഖ്യ idx) override;
+      വരിയിൽ vpiHandle vpi_iterate(പൂർണ്ണസംഖ്യ code) override { തിരികെ vpi_array_base_iterate(code); }
 
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_index(int index) override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം* vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_index(പൂർണ്ണസംഖ്യ index) override;
 
-      void vpi_get_value(p_vpi_value val) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
 
-    protected:
-      vvp_darray*get_vvp_darray() const;
-      __vpiDecConst left_range_, right_range_;
+    സംരക്ഷിത:
+      vvp_darray*get_vvp_darray() സ്ഥിരം;
+      __vpiDecConst ഇടത്_range, വലത്_range;
 };
 
-extern vpiHandle vpip_make_darray_var(const char*name, vvp_net_t*net);
+ബാഹ്യ vpiHandle vpip_make_darray_var(സ്ഥിരം അക്ഷരം*name, vvp_net_t*net);
 
-class __vpiQueueVar : public __vpiDarrayVar {
+class __vpiQueueVar : പൊതു __vpiDarrayVar {
 
-    public:
-      __vpiQueueVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+    പൊതു:
+      __vpiQueueVar(__vpiScope*scope, സ്ഥിരം അക്ഷരം*name, vvp_net_t*net);
 
-      int vpi_get(int code) override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
 };
 
-extern vpiHandle vpip_make_queue_var(const char*name, vvp_net_t*net);
+ബാഹ്യ vpiHandle vpip_make_queue_var(സ്ഥിരം അക്ഷരം*name, vvp_net_t*net);
 
-class __vpiPropQueueRef : public __vpiHandle {
+class __vpiPropQueueRef : പൊതു __vpiHandle {
 
-    public:
+    പൊതു:
       explicit __vpiPropQueueRef(__vpiScope*scope, unsigned pidx, bool is_queue);
 
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം* vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
 
       vvp_net_t* class_net_;
       unsigned prop_idx_;
       bool is_queue_;
 
-    private:
+    സ്വകാര്യ:
       __vpiScope* scope_;
 };
 
-extern vpiHandle vpip_make_prop_queue_ref(char* class_label,
+ബാഹ്യ vpiHandle vpip_make_prop_queue_ref(അക്ഷരം* class_label,
                                           unsigned prop_idx,
                                           unsigned is_queue_flag);
-extern vvp_darray* vpip_vpi_darray_from_handle(vpiHandle ref);
+ബാഹ്യ vvp_darray* vpip_vpi_darray_from_handle(vpiHandle ref);
 
-class __vpiCobjectVar : public __vpiBaseVar {
+class __vpiCobjectVar : പൊതു __vpiBaseVar {
 
-    public:
-      __vpiCobjectVar(__vpiScope*scope, const char*name, vvp_net_t*net);
+    പൊതു:
+      __vpiCobjectVar(__vpiScope*scope, സ്ഥിരം അക്ഷരം*name, vvp_net_t*net);
 
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
 };
 
-extern vpiHandle vpip_make_cobject_var(const char*name, vvp_net_t*net);
+ബാഹ്യ vpiHandle vpip_make_cobject_var(സ്ഥിരം അക്ഷരം*name, vvp_net_t*net);
 
 /*
  * When a loaded VPI module announces a system task/function, one
@@ -933,46 +933,46 @@ extern vpiHandle vpip_make_cobject_var(const char*name, vvp_net_t*net);
  * additional part is the vbit/vwid that is used by the put of the
  * system function call to place the values in the vthread bit space.
  */
-struct __vpiUserSystf : public __vpiHandle {
+ഘടന __vpiUserSystf : പൊതു __vpiHandle {
       __vpiUserSystf();
-      int get_type_code(void) const override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
 
       s_vpi_systf_data info;
       bool is_user_defn;
 };
 
-extern vpiHandle vpip_make_systf_iterator(void);
+ബാഹ്യ vpiHandle vpip_make_systf_iterator(ശൂന്യം);
 
-extern struct __vpiUserSystf* vpip_find_systf(const char*name);
+ബാഹ്യ ഘടന __vpiUserSystf* vpip_find_systf(സ്ഥിരം അക്ഷരം*name);
 
 
-struct __vpiSysTaskCall : public __vpiHandle {
+ഘടന __vpiSysTaskCall : പൊതു __vpiHandle {
 
       __vpiScope* scope;
-      struct __vpiUserSystf*defn;
+      ഘടന __vpiUserSystf*defn;
       unsigned nargs;
       vpiHandle*args;
 	/* Stack consumed by this call */
-      unsigned vec4_stack;
-      unsigned real_stack;
-      unsigned string_stack;
+      unsigned vec4_അട്ടി;
+      unsigned real_അട്ടി;
+      unsigned string_അട്ടി;
 	/* Support for vpi_get_userdata. */
-      void*userdata;
+      ശൂന്യം*userdata;
 	// This is set if this is a structural call to a function
       class    vvp_net_t*fnet;
       unsigned file_idx;
       unsigned lineno;
-      bool put_value;
-    protected:
-      inline __vpiSysTaskCall()
+      bool put_മൂല്യം;
+    സംരക്ഷിത:
+      വരിയിൽ __vpiSysTaskCall()
       {
-	    vec4_stack = 0;
-	    real_stack = 0;
-	    string_stack = 0;
+	    vec4_അട്ടി = 0;
+	    real_അട്ടി = 0;
+	    string_അട്ടി = 0;
       }
 };
 
-extern struct __vpiSysTaskCall*vpip_cur_task;
+ബാഹ്യ ഘടന __vpiSysTaskCall*vpip_cur_task;
 
 /*
  * The persistent flag to vpip_make_string_const causes the created
@@ -983,15 +983,15 @@ extern struct __vpiSysTaskCall*vpip_cur_task;
  * text value string, and will delete it in the constructor.
  */
 
-vpiHandle vpip_make_string_const(char*text, bool persistent =true);
-vpiHandle vpip_make_string_param(const char*name, char*value, bool local_flag,
+vpiHandle vpip_make_string_const(അക്ഷരം*text, bool persistent =true);
+vpiHandle vpip_make_string_param(സ്ഥിരം അക്ഷരം*name, അക്ഷരം*മൂല്യം, bool local_flag,
                                  long file_idx, long lineno);
 
-struct __vpiBinaryConst : public __vpiHandle {
+ഘടന __vpiBinaryConst : പൊതു __vpiHandle {
       __vpiBinaryConst();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
 
       vvp_vector4_t bits;
 	/* TRUE if this constant is signed. */
@@ -1000,31 +1000,31 @@ struct __vpiBinaryConst : public __vpiHandle {
       unsigned sized_flag  :1;
 };
 
-vpiHandle vpip_make_binary_const(unsigned wid, const char*bits);
-vpiHandle vpip_make_binary_param(const char*name, const vvp_vector4_t&bits,
+vpiHandle vpip_make_ദ്വിമാന_const(unsigned wid, സ്ഥിരം അക്ഷരം*bits);
+vpiHandle vpip_make_ദ്വിമാന_param(സ്ഥിരം അക്ഷരം*name, സ്ഥിരം vvp_vector4_t&bits,
 				 bool signed_flag, bool local_flag,
 				 long file_idx, long lineno);
 
-class __vpiRealConst : public __vpiHandle {
-    public:
-      explicit __vpiRealConst(double);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+class __vpiRealConst : പൊതു __vpiHandle {
+    പൊതു:
+      explicit __vpiRealConst(ഇരട്ട);
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
 
-      double value;
+      ഇരട്ട മൂല്യം;
 };
 
-vpiHandle vpip_make_real_const(double value);
-vpiHandle vpip_make_real_param(const char*name, double value, bool local_flag,
+vpiHandle vpip_make_real_const(ഇരട്ട മൂല്യം);
+vpiHandle vpip_make_real_param(സ്ഥിരം അക്ഷരം*name, ഇരട്ട മൂല്യം, bool local_flag,
                                long file_idx, long lineno);
 
-class __vpiNullConst : public __vpiHandle {
-    public:
+class __vpiNullConst : പൊതു __vpiHandle {
+    പൊതു:
       explicit __vpiNullConst();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
 };
 
 vpiHandle vpip_make_null_const();
@@ -1034,14 +1034,14 @@ vpiHandle vpip_make_null_const();
  *  thread.
  */
 
-vpiHandle vpip_make_vthr_word(unsigned base, const char*type);
-vpiHandle vpip_make_vthr_str_stack(unsigned depth);
-vpiHandle vpip_make_vthr_vec4_stack(unsigned depth, bool signed_flag, unsigned wid);
+vpiHandle vpip_make_vthr_word(unsigned base, സ്ഥിരം അക്ഷരം*type);
+vpiHandle vpip_make_vthr_str_അട്ടി(unsigned depth);
+vpiHandle vpip_make_vthr_vec4_അട്ടി(unsigned depth, bool signed_flag, unsigned wid);
 
-vpiHandle vpip_make_vthr_A(char*label, unsigned index);
-vpiHandle vpip_make_vthr_A(char*label, char*symbol);
-vpiHandle vpip_make_vthr_A(char*label, vpiHandle handle);
-vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned wid);
+vpiHandle vpip_make_vthr_A(അക്ഷരം*label, unsigned index);
+vpiHandle vpip_make_vthr_A(അക്ഷരം*label, അക്ഷരം*ചിഹ്നം);
+vpiHandle vpip_make_vthr_A(അക്ഷരം*label, vpiHandle handle);
+vpiHandle vpip_make_vthr_APV(അക്ഷരം*label, unsigned index, unsigned bit, unsigned wid);
 
 /*
  * This function is called before any compilation to load VPI
@@ -1049,11 +1049,11 @@ vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned 
  * contained functions before compilation commences. It is called only
  * once per module.
  */
-extern "C" void vpip_load_module(const char*name);
+ബാഹ്യ "C" ശൂന്യം vpip_load_module(സ്ഥിരം അക്ഷരം*name);
 
-extern "C" void vpip_clear_module_paths();
-extern "C" void vpip_add_module_path(const char *path);
-extern "C" void vpip_add_env_and_default_module_paths();
+ബാഹ്യ "C" ശൂന്യം vpip_clear_module_paths();
+ബാഹ്യ "C" ശൂന്യം vpip_add_module_path(സ്ഥിരം അക്ഷരം *path);
+ബാഹ്യ "C" ശൂന്യം vpip_add_env_and_default_module_paths();
 
 /*
  * The vpip_build_vpi_call function creates a __vpiSysTaskCall object
@@ -1074,22 +1074,22 @@ extern "C" void vpip_add_env_and_default_module_paths();
  * Note that the argv array is saved in the handle, and should should
  * not be released by the caller.
  */
-extern vpiHandle vpip_build_vpi_call(const char*name,
-				     int val_type, unsigned return_width,
+ബാഹ്യ vpiHandle vpip_build_vpi_call(സ്ഥിരം അക്ഷരം*name,
+				     പൂർണ്ണസംഖ്യ val_type, unsigned return_width,
 				     class vvp_net_t*fnet,
 				     bool func_as_task_err,
 				     bool func_as_task_warn,
 				     unsigned argc,
 				     vpiHandle*argv,
-				     unsigned vec4_stack,
-				     unsigned real_stack,
-				     unsigned string_stack,
+				     unsigned vec4_അട്ടി,
+				     unsigned real_അട്ടി,
+				     unsigned string_അട്ടി,
 				     long file_idx,
 				     long lineno);
 
-extern vthread_t vpip_current_vthread;
+ബാഹ്യ vthread_t vpip_current_vthread;
 
-extern void vpip_execute_vpi_call(vthread_t thr, vpiHandle obj);
+ബാഹ്യ ശൂന്യം vpip_execute_vpi_call(vthread_t thr, vpiHandle obj);
 
 
 /*
@@ -1100,21 +1100,21 @@ extern void vpip_execute_vpi_call(vthread_t thr, vpiHandle obj);
 vpiHandle vpip_sim_time(__vpiScope*scope, bool is_stime);
 vpiHandle vpip_sim_realtime(__vpiScope*scope);
 
-extern int vpip_get_time_precision(void);
-extern void vpip_set_time_precision(int pres);
+ബാഹ്യ പൂർണ്ണസംഖ്യ vpip_get_time_precision(ശൂന്യം);
+ബാഹ്യ ശൂന്യം vpip_set_time_precision(പൂർണ്ണസംഖ്യ pres);
 
-extern __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj);
+ബാഹ്യ __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj);
 
-extern int vpip_time_units_from_handle(vpiHandle obj);
-extern int vpip_time_precision_from_handle(vpiHandle obj);
+ബാഹ്യ പൂർണ്ണസംഖ്യ vpip_time_units_from_handle(vpiHandle obj);
+ബാഹ്യ പൂർണ്ണസംഖ്യ vpip_time_precision_from_handle(vpiHandle obj);
 
-extern double vpip_scaled_time_from_handle(vvp_time64_t time, vpiHandle obj);
+ബാഹ്യ ഇരട്ട vpip_scaled_time_from_handle(vvp_time64_t time, vpiHandle obj);
 
-extern void vpip_time_to_timestruct(struct t_vpi_time*ts, vvp_time64_t ti);
-extern vvp_time64_t vpip_timestruct_to_time(const struct t_vpi_time*ts);
+ബാഹ്യ ശൂന്യം vpip_time_to_timestruct(ഘടന t_vpi_time*ts, vvp_time64_t ti);
+ബാഹ്യ vvp_time64_t vpip_timestruct_to_time(സ്ഥിരം ഘടന t_vpi_time*ts);
 
-extern double vpip_time_to_scaled_real(vvp_time64_t ti, const __vpiScope*sc);
-extern vvp_time64_t vpip_scaled_real_to_time64(double val, const __vpiScope*sc);
+ബാഹ്യ ഇരട്ട vpip_time_to_scaled_real(vvp_time64_t ti, സ്ഥിരം __vpiScope*sc);
+ബാഹ്യ vvp_time64_t vpip_scaled_real_to_time64(ഇരട്ട val, സ്ഥിരം __vpiScope*sc);
 
 /*
  * These functions are used mostly as compile time to strings into
@@ -1124,8 +1124,8 @@ extern vvp_time64_t vpip_scaled_real_to_time64(double val, const __vpiScope*sc);
  * reuse it if it can. This us useful for handle names, which may be
  * reused in different scopes.
  */
-extern const char* vpip_string(const char*str);
-extern const char* vpip_name_string(const char*str);
+ബാഹ്യ സ്ഥിരം അക്ഷരം* vpip_string(സ്ഥിരം അക്ഷരം*str);
+ബാഹ്യ സ്ഥിരം അക്ഷരം* vpip_name_string(സ്ഥിരം അക്ഷരം*str);
 
 
 /*
@@ -1133,37 +1133,37 @@ extern const char* vpip_name_string(const char*str);
  * vectors. The input format is a vvp_vector4_t, and the result is
  * written into buf, without overflowing nbuf.
  */
-extern unsigned vpip_vec4_to_dec_str(const vvp_vector4_t&vec4,
-				     char *buf, unsigned int nbuf,
-				     int signed_flag);
+ബാഹ്യ unsigned vpip_vec4_to_dec_str(സ്ഥിരം vvp_vector4_t&vec4,
+				     അക്ഷരം *buf, unsigned പൂർണ്ണസംഖ്യ nbuf,
+				     പൂർണ്ണസംഖ്യ signed_flag);
 
 
-extern void vpip_vec4_to_hex_str(const vvp_vector4_t&bits, char*buf,
+ബാഹ്യ ശൂന്യം vpip_vec4_to_hex_str(സ്ഥിരം vvp_vector4_t&bits, അക്ഷരം*buf,
 				 unsigned nbuf);
 
-extern void vpip_vec4_to_oct_str(const vvp_vector4_t&bits, char*buf,
+ബാഹ്യ ശൂന്യം vpip_vec4_to_oct_str(സ്ഥിരം vvp_vector4_t&bits, അക്ഷരം*buf,
 				 unsigned nbuf);
 
-extern void vpip_bin_str_to_vec4(vvp_vector4_t&val, const char*buf);
-extern void vpip_oct_str_to_vec4(vvp_vector4_t&val, const char*str);
-extern void vpip_dec_str_to_vec4(vvp_vector4_t&val, const char*str);
-extern void vpip_hex_str_to_vec4(vvp_vector4_t&val, const char*str);
+ബാഹ്യ ശൂന്യം vpip_bin_str_to_vec4(vvp_vector4_t&val, സ്ഥിരം അക്ഷരം*buf);
+ബാഹ്യ ശൂന്യം vpip_oct_str_to_vec4(vvp_vector4_t&val, സ്ഥിരം അക്ഷരം*str);
+ബാഹ്യ ശൂന്യം vpip_dec_str_to_vec4(vvp_vector4_t&val, സ്ഥിരം അക്ഷരം*str);
+ബാഹ്യ ശൂന്യം vpip_hex_str_to_vec4(vvp_vector4_t&val, സ്ഥിരം അക്ഷരം*str);
 
-extern vvp_vector4_t vec4_from_vpi_value(s_vpi_value*vp, unsigned wid);
-extern double real_from_vpi_value(s_vpi_value*vp);
+ബാഹ്യ vvp_vector4_t vec4_from_vpi_മൂല്യം(s_vpi_മൂല്യം*vp, unsigned wid);
+ബാഹ്യ ഇരട്ട real_from_vpi_മൂല്യം(s_vpi_മൂല്യം*vp);
 
-extern void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
-				bool signed_flag, s_vpi_value*vp);
-extern void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
-				bool signed_flag, s_vpi_value*vp);
-extern void vpip_real_get_value(double real, s_vpi_value*vp);
-extern void vpip_string_get_value(const std::string&val, s_vpi_value*vp);
+ബാഹ്യ ശൂന്യം vpip_vec4_get_മൂല്യം(സ്ഥിരം vvp_vector4_t&word_val, unsigned width,
+				bool signed_flag, s_vpi_മൂല്യം*vp);
+ബാഹ്യ ശൂന്യം vpip_vec2_get_മൂല്യം(സ്ഥിരം vvp_vector2_t&word_val, unsigned width,
+				bool signed_flag, s_vpi_മൂല്യം*vp);
+ബാഹ്യ ശൂന്യം vpip_real_get_മൂല്യം(ഇരട്ട real, s_vpi_മൂല്യം*vp);
+ബാഹ്യ ശൂന്യം vpip_string_get_മൂല്യം(സ്ഥിരം std::string&val, s_vpi_മൂല്യം*vp);
 
 /*
  * Function defined in vpi_signal.cc to manage vpi_get_* persistent
  * storage.
  */
-enum vpi_rbuf_t {
+എണ്ണൽ vpi_rbuf_t {
       RBUF_VAL =0,
 	/* Storage for *_get_value() */
       RBUF_STR,
@@ -1171,25 +1171,25 @@ enum vpi_rbuf_t {
       RBUF_DEL
 	/* Delete the storage for both buffers. */
 };
-extern void *need_result_buf(unsigned cnt, vpi_rbuf_t type);
+ബാഹ്യ ശൂന്യം *need_result_buf(unsigned cnt, vpi_rbuf_t type);
 /* following two routines use need_result_buf(, RBUF_STR) */
-extern char *simple_set_rbuf_str(const char *s1);
-extern char *generic_get_str(int code, vpiHandle ref, const char *name, const char *index);
+ബാഹ്യ അക്ഷരം *simple_set_rbuf_str(സ്ഥിരം അക്ഷരം *s1);
+ബാഹ്യ അക്ഷരം *generic_get_str(പൂർണ്ണസംഖ്യ code, vpiHandle ref, സ്ഥിരം അക്ഷരം *name, സ്ഥിരം അക്ഷരം *index);
 
 /* A routine to find the enclosing module. */
-extern vpiHandle vpip_module(__vpiScope*scope);
+ബാഹ്യ vpiHandle vpip_module(__vpiScope*scope);
 
-extern int vpip_delay_selection;
+ബാഹ്യ പൂർണ്ണസംഖ്യ vpip_delay_selection;
 
 /* A flag to disable output to MCD bit 0. */
-extern bool vpip_mcd0_disable;
+ബാഹ്യ bool vpip_mcd0_disable;
 
-inline uint64_t vlg_round_to_u64(double rval)
+വരിയിൽ uint64_t vlg_round_to_u64(ഇരട്ട rval)
 {
       // Directly casting a negative double to an unsigned integer types is
       // undefined behavior and behaves differently on different architectures.
       // Cast to signed integer first to get the behavior we want.
-      return static_cast<uint64_t>(static_cast<int64_t>(std::round(rval)));
+      തിരികെ static_cast<uint64_t>(static_cast<int64_t>(std::round(rval)));
 }
 
 #endif /* IVL_vpi_priv_H */

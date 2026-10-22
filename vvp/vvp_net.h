@@ -33,7 +33,7 @@
 
 #ifdef HAVE_IOSFWD
 # include  <iosfwd>
-#else
+#അല്ലെങ്കിൽ
 # include  <iostream>
 #endif
 
@@ -63,42 +63,42 @@ class  vvp_delay_t;
  * linking to other contexts. The function that adds items to a context knows
  * this, and allocates context indices accordingly.
  */
-typedef void**vvp_context_t;
+തരനിർവചനം ശൂന്യം**vvp_context_t;
 
-typedef void*vvp_context_item_t;
+തരനിർവചനം ശൂന്യം*vvp_context_item_t;
 
-inline vvp_context_t vvp_allocate_context(unsigned nitem)
+വരിയിൽ vvp_context_t vvp_allocate_context(unsigned nitem)
 {
-      return (vvp_context_t)malloc((2 + nitem) * sizeof(void*));
+      തിരികെ (vvp_context_t)malloc((2 + nitem) * വലുപ്പം(ശൂന്യം*));
 }
 
-inline vvp_context_t vvp_get_next_context(vvp_context_t context)
+വരിയിൽ vvp_context_t vvp_get_next_context(vvp_context_t context)
 {
-      return (vvp_context_t)context[0];
+      തിരികെ (vvp_context_t)context[0];
 }
 
-inline void vvp_set_next_context(vvp_context_t context, vvp_context_t next)
+വരിയിൽ ശൂന്യം vvp_set_next_context(vvp_context_t context, vvp_context_t next)
 {
       context[0] = next;
 }
 
-inline vvp_context_t vvp_get_stacked_context(vvp_context_t context)
+വരിയിൽ vvp_context_t vvp_get_stacked_context(vvp_context_t context)
 {
-      return (vvp_context_t)context[1];
+      തിരികെ (vvp_context_t)context[1];
 }
 
-inline void vvp_set_stacked_context(vvp_context_t context, vvp_context_t stack)
+വരിയിൽ ശൂന്യം vvp_set_stacked_context(vvp_context_t context, vvp_context_t അട്ടി)
 {
-      context[1] = stack;
+      context[1] = അട്ടി;
 }
 
-inline vvp_context_item_t vvp_get_context_item(vvp_context_t context,
+വരിയിൽ vvp_context_item_t vvp_get_context_item(vvp_context_t context,
                                                unsigned item_idx)
 {
-      return (vvp_context_item_t)context[item_idx];
+      തിരികെ (vvp_context_item_t)context[item_idx];
 }
 
-inline void vvp_set_context_item(vvp_context_t context, unsigned item_idx,
+വരിയിൽ ശൂന്യം vvp_set_context_item(vvp_context_t context, unsigned item_idx,
                                  vvp_context_item_t item)
 {
       context[item_idx] = item;
@@ -109,15 +109,15 @@ inline void vvp_set_context_item(vvp_context_t context, unsigned item_idx,
  * allocated scope item. This provides the infrastructure needed to allocate
  * the state information for individual instances of the item.
  */
-struct automatic_hooks_s {
+ഘടന automatic_hooks_s {
 
       automatic_hooks_s() {}
-      virtual ~automatic_hooks_s() {}
+      മായാ ~automatic_hooks_s() {}
 
-      virtual void alloc_instance(vvp_context_t context) = 0;
-      virtual void reset_instance(vvp_context_t context) = 0;
+      മായാ ശൂന്യം alloc_instance(vvp_context_t context) = 0;
+      മായാ ശൂന്യം reset_instance(vvp_context_t context) = 0;
 #ifdef CHECK_WITH_VALGRIND
-      virtual void free_instance(vvp_context_t context) = 0;
+      മായാ ശൂന്യം free_instance(vvp_context_t context) = 0;
 #endif
 };
 
@@ -131,7 +131,7 @@ struct automatic_hooks_s {
  * WARNING: Many things rely on this encoding for the BIT4_* enumeration
  * values, so accept that these values are cast in stone.
  */
-enum vvp_bit4_t {
+എണ്ണൽ vvp_bit4_t {
       BIT4_0 = 0,
       BIT4_1 = 1,
       BIT4_X = 3,
@@ -139,21 +139,21 @@ enum vvp_bit4_t {
 };
 
   /* Return an ASCII character that represents the vvp_bit4_t value. */
-inline char vvp_bit4_to_ascii(vvp_bit4_t a) { return "01zx"[a]; }
+വരിയിൽ അക്ഷരം vvp_bit4_to_ascii(vvp_bit4_t a) { തിരികെ "01zx"[a]; }
 
-extern vvp_bit4_t add_with_carry(vvp_bit4_t a, vvp_bit4_t b, vvp_bit4_t&c);
+ബാഹ്യ vvp_bit4_t add_with_carry(vvp_bit4_t a, vvp_bit4_t b, vvp_bit4_t&c);
 
-extern vvp_bit4_t scalar_to_bit4(PLI_INT32 scalar);
+ബാഹ്യ vvp_bit4_t scalar_to_bit4(PLI_INT32 scalar);
 
   /* Return TRUE if the bit is BIT4_X or BIT4_Z. The fast
      implementation here relies on the encoding of vvp_bit4_t values. */
-inline bool bit4_is_xz(vvp_bit4_t a) { return a >= 2; }
+വരിയിൽ bool bit4_is_xz(vvp_bit4_t a) { തിരികെ a >= 2; }
 
   /* This function converts BIT4_Z to BIT4_X, but passes other values
      unchanged. This fast implementation relies of the encoding of the
      vvp_bit4_t values. In particular, the BIT4_X==3 and BIT4_Z==2 */
-inline vvp_bit4_t bit4_z2x(vvp_bit4_t a)
-{ return (vvp_bit4_t) ( (int)a | ((int)a >> 1) ); }
+വരിയിൽ vvp_bit4_t bit4_z2x(vvp_bit4_t a)
+{ തിരികെ (vvp_bit4_t) ( (പൂർണ്ണസംഖ്യ)a | ((പൂർണ്ണസംഖ്യ)a >> 1) ); }
 
   /* Some common boolean operators. These implement the Verilog rules
      for 4-value bit operations. The fast implementations here rely
@@ -163,46 +163,46 @@ inline vvp_bit4_t bit4_z2x(vvp_bit4_t a)
   // ~BIT4_1 --> BIT4_0
   // ~BIT4_X --> BIT4_X
   // ~BIT4_Z --> BIT4_X
-inline vvp_bit4_t operator ~ (vvp_bit4_t a)
-{ return bit4_z2x((vvp_bit4_t) (((int)a) ^ 1)); }
+വരിയിൽ vvp_bit4_t operator ~ (vvp_bit4_t a)
+{ തിരികെ bit4_z2x((vvp_bit4_t) (((പൂർണ്ണസംഖ്യ)a) ^ 1)); }
 
-inline vvp_bit4_t operator | (vvp_bit4_t a, vvp_bit4_t b)
+വരിയിൽ vvp_bit4_t operator | (vvp_bit4_t a, vvp_bit4_t b)
 {
-      if (a==BIT4_1 || b==BIT4_1)
-	    return BIT4_1;
-      return bit4_z2x( (vvp_bit4_t) ((int)a | (int)b) );
+      എങ്കിൽ (a==BIT4_1 || b==BIT4_1)
+	    തിരികെ BIT4_1;
+      തിരികെ bit4_z2x( (vvp_bit4_t) ((പൂർണ്ണസംഖ്യ)a | (പൂർണ്ണസംഖ്യ)b) );
 }
 
-inline vvp_bit4_t operator & (vvp_bit4_t a, vvp_bit4_t b)
+വരിയിൽ vvp_bit4_t operator & (vvp_bit4_t a, vvp_bit4_t b)
 {
-      if (a==BIT4_0 || b==BIT4_0)
-	    return BIT4_0;
-      return bit4_z2x( (vvp_bit4_t) ((int)a | (int)b) );
+      എങ്കിൽ (a==BIT4_0 || b==BIT4_0)
+	    തിരികെ BIT4_0;
+      തിരികെ bit4_z2x( (vvp_bit4_t) ((പൂർണ്ണസംഖ്യ)a | (പൂർണ്ണസംഖ്യ)b) );
 }
 
 
-extern vvp_bit4_t operator ^ (vvp_bit4_t a, vvp_bit4_t b);
-extern std::ostream& operator<< (std::ostream&o, vvp_bit4_t a);
+ബാഹ്യ vvp_bit4_t operator ^ (vvp_bit4_t a, vvp_bit4_t b);
+ബാഹ്യ std::ostream& operator<< (std::ostream&o, vvp_bit4_t a);
 
   /* Return >0, ==0 or <0 if the from-to transition represents a
      posedge, no edge, or negedge. */
-extern int edge(vvp_bit4_t from, vvp_bit4_t to);
+ബാഹ്യ പൂർണ്ണസംഖ്യ edge(vvp_bit4_t from, vvp_bit4_t to);
 
   /* Support for $countdrivers. */
-inline void update_driver_counts(vvp_bit4_t bit, unsigned counts[3])
+വരിയിൽ ശൂന്യം update_driver_counts(vvp_bit4_t bit, unsigned counts[3])
 {
-      switch (bit) {
-          case BIT4_0:
+      തിരഞ്ഞെടുപ്പ് (bit) {
+          അവസ്ഥ BIT4_0:
             counts[0] += 1;
-            break;
-          case BIT4_1:
+            നിർത്തുക;
+          അവസ്ഥ BIT4_1:
             counts[1] += 1;
-            break;
-          case BIT4_X:
+            നിർത്തുക;
+          അവസ്ഥ BIT4_X:
             counts[2] += 1;
-            break;
-          default:
-            break;
+            നിർത്തുക;
+          സ്ഥിരസ്ഥിതി:
+            നിർത്തുക;
       }
 }
 
@@ -210,22 +210,22 @@ inline void update_driver_counts(vvp_bit4_t bit, unsigned counts[3])
  * Some of the instructions do wide addition to arrays of long. They
  * use this add_with_carry function to help.
  */
-static inline unsigned long add_with_carry(unsigned long a, unsigned long b,
+സ്ഥിതം വരിയിൽ unsigned long add_with_carry(unsigned long a, unsigned long b,
 					   unsigned long&carry)
 {
       unsigned long tmp = b + carry;
       unsigned long sum = a + tmp;
       carry = 0;
-      if (tmp < b)
+      എങ്കിൽ (tmp < b)
 	    carry = 1;
-      if (sum < tmp)
+      എങ്കിൽ (sum < tmp)
 	    carry = 1;
-      if (sum < a)
+      എങ്കിൽ (sum < a)
 	    carry = 1;
-      return sum;
+      തിരികെ sum;
 }
 
-extern unsigned long multiply_with_carry(unsigned long a, unsigned long b,
+ബാഹ്യ unsigned long multiply_with_carry(unsigned long a, unsigned long b,
 					 unsigned long&carry);
 
 /*
@@ -239,127 +239,127 @@ extern unsigned long multiply_with_carry(unsigned long a, unsigned long b,
  */
 class vvp_vector4_t {
 
-      friend vvp_vector4_t operator ~(const vvp_vector4_t&that);
+      friend vvp_vector4_t operator ~(സ്ഥിരം vvp_vector4_t&that);
       friend class vvp_vector4array_t;
       friend class vvp_vector4array_sa;
       friend class vvp_vector4array_aa;
 
-    public:
-      static const vvp_vector4_t nil;
+    പൊതു:
+      സ്ഥിതം സ്ഥിരം vvp_vector4_t nil;
 
-    public:
+    പൊതു:
       explicit vvp_vector4_t(unsigned size =0, vvp_bit4_t bits =BIT4_X);
 
-      explicit vvp_vector4_t(unsigned size, double val);
+      explicit vvp_vector4_t(unsigned size, ഇരട്ട val);
 
 	// Construct a vector4 from the subvalue of another
 	// vector4. The width of the result is 'wid', and the bits are
 	// pulled from 'that' to implement the Verilog part select
 	// semantics. This means that part select beyond 'that'
 	// returns X bits.
-      explicit vvp_vector4_t(const vvp_vector4_t&that,
+      explicit vvp_vector4_t(സ്ഥിരം vvp_vector4_t&that,
 			     unsigned adr, unsigned wid);
 
-      vvp_vector4_t(const vvp_vector4_t&that);
-      vvp_vector4_t(const vvp_vector4_t&that, bool invert_flag);
-      vvp_vector4_t& operator= (const vvp_vector4_t&that);
+      vvp_vector4_t(സ്ഥിരം vvp_vector4_t&that);
+      vvp_vector4_t(സ്ഥിരം vvp_vector4_t&that, bool invert_flag);
+      vvp_vector4_t& operator= (സ്ഥിരം vvp_vector4_t&that);
 
       ~vvp_vector4_t();
 
-      inline unsigned size() const { return size_; }
-      void resize(unsigned new_size, vvp_bit4_t pad_bit = BIT4_X);
+      വരിയിൽ unsigned size() സ്ഥിരം { തിരികെ size_; }
+      ശൂന്യം resize(unsigned new_size, vvp_bit4_t pad_bit = BIT4_X);
 
 	// Get the bit at the specified address
-      vvp_bit4_t value(unsigned idx) const;
+      vvp_bit4_t മൂല്യം(unsigned idx) സ്ഥിരം;
 	// Get the vector4 subvector starting at the address
-      vvp_vector4_t subvalue(unsigned idx, unsigned size) const;
+      vvp_vector4_t subvalue(unsigned idx, unsigned size) സ്ഥിരം;
 	// Get the 2-value bits for the subvector. This returns a new
 	// array of longs, or a nil pointer if an XZ bit was detected
 	// in the array.
-      unsigned long*subarray(unsigned idx, unsigned size, bool xz_to_0 =false) const;
-      void setarray(unsigned idx, unsigned size, const unsigned long*val);
+      unsigned long*subarray(unsigned idx, unsigned size, bool xz_to_0 =false) സ്ഥിരം;
+      ശൂന്യം setarray(unsigned idx, unsigned size, സ്ഥിരം unsigned long*val);
 
 	// Set a 4-value bit or subvector into the vector. Return true
 	// if any bits of the vector change as a result of this operation.
-      void set_bit(unsigned idx, vvp_bit4_t val);
-      bool set_vec(unsigned idx, const vvp_vector4_t&that);
+      ശൂന്യം set_bit(unsigned idx, vvp_bit4_t val);
+      bool set_vec(unsigned idx, സ്ഥിരം vvp_vector4_t&that);
 
         // Get the bits from another vector, but keep my size.
-      void copy_bits(const vvp_vector4_t&that);
+      ശൂന്യം copy_bits(സ്ഥിരം vvp_vector4_t&that);
 
 	// Move bits within this vector.
-      void mov(unsigned dst, unsigned src, unsigned cnt);
+      ശൂന്യം mov(unsigned dst, unsigned src, unsigned cnt);
 
 	// Add that to this in the Verilog way.
-      void add(const vvp_vector4_t&that);
+      ശൂന്യം add(സ്ഥിരം vvp_vector4_t&that);
 
 	// Subtract that from this in the Verilog way.
-      void sub(const vvp_vector4_t&that);
+      ശൂന്യം sub(സ്ഥിരം vvp_vector4_t&that);
 
 	// Multiply this by that in the Verilog way.
-      void mul(const vvp_vector4_t&that);
+      ശൂന്യം mul(സ്ഥിരം vvp_vector4_t&that);
 
 	// Test that the vectors are exactly equal
-      bool eeq(const vvp_vector4_t&that) const;
+      bool eeq(സ്ഥിരം vvp_vector4_t&that) സ്ഥിരം;
 
 	// Test that the vectors are equal, with xz comparing as equal.
-      bool eq_xz(const vvp_vector4_t&that) const;
+      bool eq_xz(സ്ഥിരം vvp_vector4_t&that) സ്ഥിരം;
 
 	// Return true if there is an X or Z anywhere in the vector.
-      bool has_xz() const;
+      bool has_xz() സ്ഥിരം;
 
 	// Change all Z bits to X bits.
-      void change_z2x();
+      ശൂന്യം change_z2x();
 
 	// Set all bits to the specified value.
-      void fill_bits(vvp_bit4_t bit);
+      ശൂന്യം fill_bits(vvp_bit4_t bit);
 
 	// Change all bits to X bits.
-      void set_to_x() { fill_bits(BIT4_X); }
+      ശൂന്യം set_to_x() { fill_bits(BIT4_X); }
 
 	// Display the value into the buf as a string.
-      char*as_string(char*buf, size_t buf_len) const;
+      അക്ഷരം*as_string(അക്ഷരം*buf, size_t buf_len) സ്ഥിരം;
 
-      void invert();
-      vvp_vector4_t& operator &= (const vvp_vector4_t&that);
-      vvp_vector4_t& operator |= (const vvp_vector4_t&that);
-      vvp_vector4_t& operator ^= (const vvp_vector4_t&that);
+      ശൂന്യം invert();
+      vvp_vector4_t& operator &= (സ്ഥിരം vvp_vector4_t&that);
+      vvp_vector4_t& operator |= (സ്ഥിരം vvp_vector4_t&that);
+      vvp_vector4_t& operator ^= (സ്ഥിരം vvp_vector4_t&that);
       vvp_vector4_t& operator += (int64_t);
 
-      vvp_bit4_t reduce_or() const;
-      vvp_bit4_t reduce_and() const;
-      vvp_bit4_t reduce_xor() const;
+      vvp_bit4_t reduce_or() സ്ഥിരം;
+      vvp_bit4_t reduce_and() സ്ഥിരം;
+      vvp_bit4_t reduce_xor() സ്ഥിരം;
 
-    private:
+    സ്വകാര്യ:
 	// Number of vvp_bit4_t bits that can be shoved into a word.
-      enum { BITS_PER_WORD = 8*sizeof(unsigned long) };
+      എണ്ണൽ { BITS_PER_WORD = 8*വലുപ്പം(unsigned long) };
 	// The double value constructor requires that WORD_0_BBITS
 	// and WORD_1_BBITS have the same value!
-#if SIZEOF_UNSIGNED_LONG == 8
-      enum { WORD_0_ABITS = 0x0000000000000000UL,
+#എങ്കിൽ SIZEOF_UNSIGNED_LONG == 8
+      എണ്ണൽ { WORD_0_ABITS = 0x0000000000000000UL,
 	     WORD_0_BBITS = 0x0000000000000000UL };
-      enum { WORD_1_ABITS = 0xFFFFFFFFFFFFFFFFUL,
+      എണ്ണൽ { WORD_1_ABITS = 0xFFFFFFFFFFFFFFFFUL,
 	     WORD_1_BBITS = 0x0000000000000000UL };
-      enum { WORD_X_ABITS = 0xFFFFFFFFFFFFFFFFUL,
+      എണ്ണൽ { WORD_X_ABITS = 0xFFFFFFFFFFFFFFFFUL,
 	     WORD_X_BBITS = 0xFFFFFFFFFFFFFFFFUL };
-      enum { WORD_Z_ABITS = 0x0000000000000000UL,
+      എണ്ണൽ { WORD_Z_ABITS = 0x0000000000000000UL,
              WORD_Z_BBITS = 0xFFFFFFFFFFFFFFFFUL };
-#elif SIZEOF_UNSIGNED_LONG == 4
-      enum { WORD_0_ABITS = 0x00000000UL, WORD_0_BBITS = 0x00000000UL };
-      enum { WORD_1_ABITS = 0xFFFFFFFFUL, WORD_1_BBITS = 0x00000000UL };
-      enum { WORD_X_ABITS = 0xFFFFFFFFUL, WORD_X_BBITS = 0xFFFFFFFFUL };
-      enum { WORD_Z_ABITS = 0x00000000UL, WORD_Z_BBITS = 0xFFFFFFFFUL };
-#else
+#അല്ലെങ്കിലെങ്കിൽ SIZEOF_UNSIGNED_LONG == 4
+      എണ്ണൽ { WORD_0_ABITS = 0x00000000UL, WORD_0_BBITS = 0x00000000UL };
+      എണ്ണൽ { WORD_1_ABITS = 0xFFFFFFFFUL, WORD_1_BBITS = 0x00000000UL };
+      എണ്ണൽ { WORD_X_ABITS = 0xFFFFFFFFUL, WORD_X_BBITS = 0xFFFFFFFFUL };
+      എണ്ണൽ { WORD_Z_ABITS = 0x00000000UL, WORD_Z_BBITS = 0xFFFFFFFFUL };
+#അല്ലെങ്കിൽ
 #error "WORD_X_xBITS not defined for this architecture?"
 #endif
 
 	// Initialize and operator= use this private method to copy
 	// the data from that object into this object.
-      void copy_from_(const vvp_vector4_t&that);
-      void copy_from_big_(const vvp_vector4_t&that);
-      void copy_inverted_from_(const vvp_vector4_t&that);
+      ശൂന്യം copy_from_(സ്ഥിരം vvp_vector4_t&that);
+      ശൂന്യം copy_from_big_(സ്ഥിരം vvp_vector4_t&that);
+      ശൂന്യം copy_inverted_from_(സ്ഥിരം vvp_vector4_t&that);
 
-      void allocate_words_(unsigned long inita, unsigned long initb);
+      ശൂന്യം allocate_വാക്കുകൾ(unsigned long inita, unsigned long initb);
 
 	// Values in the vvp_vector4_t are stored split across two
 	// arrays. For each bit in the vector, there is an abit and a
@@ -373,94 +373,94 @@ class vvp_vector4_t {
 	// BIT4_Z    0    1
 
       unsigned size_;
-      union {
+      സംഘം {
 	    unsigned long abits_val_;
 	    unsigned long*abits_ptr_;
       };
-      union {
+      സംഘം {
 	    unsigned long bbits_val_;
 	    unsigned long*bbits_ptr_;
       };
 };
 
-inline vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that)
+വരിയിൽ vvp_vector4_t::vvp_vector4_t(സ്ഥിരം vvp_vector4_t&that)
 {
       copy_from_(that);
 }
 
-inline vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that, bool invert_flag)
+വരിയിൽ vvp_vector4_t::vvp_vector4_t(സ്ഥിരം vvp_vector4_t&that, bool invert_flag)
 {
-      if (invert_flag)
+      എങ്കിൽ (invert_flag)
 	    copy_inverted_from_(that);
-      else
+      അല്ലെങ്കിൽ
 	    copy_from_(that);
 }
 
-inline vvp_vector4_t::vvp_vector4_t(unsigned size__, vvp_bit4_t val)
+വരിയിൽ vvp_vector4_t::vvp_vector4_t(unsigned size__, vvp_bit4_t val)
 : size_(size__)
 {
 	/* note: this relies on the bit encoding for the vvp_bit4_t. */
-      static const unsigned long init_atable[4] = {
+      സ്ഥിതം സ്ഥിരം unsigned long init_atable[4] = {
 	    WORD_0_ABITS,
 	    WORD_1_ABITS,
 	    WORD_Z_ABITS,
 	    WORD_X_ABITS };
-      static const unsigned long init_btable[4] = {
+      സ്ഥിതം സ്ഥിരം unsigned long init_btable[4] = {
 	    WORD_0_BBITS,
 	    WORD_1_BBITS,
 	    WORD_Z_BBITS,
 	    WORD_X_BBITS };
 
-      allocate_words_(init_atable[val], init_btable[val]);
+      allocate_വാക്കുകൾ(init_atable[val], init_btable[val]);
 }
 
-inline vvp_vector4_t::~vvp_vector4_t()
+വരിയിൽ vvp_vector4_t::~vvp_vector4_t()
 {
-      if (size_ > BITS_PER_WORD) {
+      എങ്കിൽ (size_ > BITS_PER_WORD) {
 	    delete[] abits_ptr_;
 	      // bbits_ptr_ actually points half-way into a
 	      // double-length array started at abits_ptr_
       }
 }
 
-inline vvp_vector4_t& vvp_vector4_t::operator= (const vvp_vector4_t&that)
+വരിയിൽ vvp_vector4_t& vvp_vector4_t::operator= (സ്ഥിരം vvp_vector4_t&that)
 {
-      if (this == &that)
-	    return *this;
+      എങ്കിൽ (this == &that)
+	    തിരികെ *this;
 
-      if (size_ > BITS_PER_WORD)
+      എങ്കിൽ (size_ > BITS_PER_WORD)
 	    delete[] abits_ptr_;
 
       copy_from_(that);
 
-      return *this;
+      തിരികെ *this;
 }
 
-inline void vvp_vector4_t::copy_from_(const vvp_vector4_t&that)
+വരിയിൽ ശൂന്യം vvp_vector4_t::copy_from_(സ്ഥിരം vvp_vector4_t&that)
 {
       size_ = that.size_;
-      if (size_ <= BITS_PER_WORD) {
+      എങ്കിൽ (size_ <= BITS_PER_WORD) {
 	    abits_val_ = that.abits_val_;
 	    bbits_val_ = that.bbits_val_;
-      } else {
+      } അല്ലെങ്കിൽ {
 	    copy_from_big_(that);
       }
 }
 
-inline vvp_bit4_t vvp_vector4_t::value(unsigned idx) const
+വരിയിൽ vvp_bit4_t vvp_vector4_t::മൂല്യം(unsigned idx) സ്ഥിരം
 {
-      if (idx >= size_)
-	    return BIT4_X;
+      എങ്കിൽ (idx >= size_)
+	    തിരികെ BIT4_X;
 
       unsigned off;
 
       unsigned long abits, bbits;
-      if (size_ > BITS_PER_WORD) {
+      എങ്കിൽ (size_ > BITS_PER_WORD) {
 	    unsigned wdx = idx / BITS_PER_WORD;
 	    off = idx % BITS_PER_WORD;
 	    abits = abits_ptr_[wdx];
 	    bbits = bbits_ptr_[wdx];
-      } else {
+      } അല്ലെങ്കിൽ {
 	    off = idx;
 	    abits = abits_val_;
 	    bbits = bbits_val_;
@@ -468,80 +468,80 @@ inline vvp_bit4_t vvp_vector4_t::value(unsigned idx) const
 
       abits >>= off;
       bbits >>= off;
-      int tmp = ((bbits&1) << 1) + (abits&1);
+      പൂർണ്ണസംഖ്യ tmp = ((bbits&1) << 1) + (abits&1);
 	// This cast works since b==1,a==1 is X and b==1,a==0 is Z.
-      return (vvp_bit4_t)tmp;
+      തിരികെ (vvp_bit4_t)tmp;
 }
 
-inline vvp_vector4_t vvp_vector4_t::subvalue(unsigned adr, unsigned wid) const
+വരിയിൽ vvp_vector4_t vvp_vector4_t::subvalue(unsigned adr, unsigned wid) സ്ഥിരം
 {
-      return vvp_vector4_t(*this, adr, wid);
+      തിരികെ vvp_vector4_t(*this, adr, wid);
 }
 
-inline void vvp_vector4_t::set_bit(unsigned idx, vvp_bit4_t val)
+വരിയിൽ ശൂന്യം vvp_vector4_t::set_bit(unsigned idx, vvp_bit4_t val)
 {
-      assert(idx < size_);
+      പ്രതിജ്ഞാ(idx < size_);
 
       unsigned long off = idx % BITS_PER_WORD;
       unsigned long mask = 1UL << off;
 
-      if (size_ > BITS_PER_WORD) {
+      എങ്കിൽ (size_ > BITS_PER_WORD) {
 	    unsigned wdx = idx / BITS_PER_WORD;
-	    switch (val) {
-		case BIT4_0:
+	    തിരഞ്ഞെടുപ്പ് (val) {
+		അവസ്ഥ BIT4_0:
 		  abits_ptr_[wdx] &= ~mask;
 		  bbits_ptr_[wdx] &= ~mask;
-		  break;
-		case BIT4_1:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_1:
 		  abits_ptr_[wdx] |=  mask;
 		  bbits_ptr_[wdx] &= ~mask;
-		  break;
-		case BIT4_X:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_X:
 		  abits_ptr_[wdx] |=  mask;
 		  bbits_ptr_[wdx] |=  mask;
-		  break;
-		case BIT4_Z:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_Z:
 		  abits_ptr_[wdx] &= ~mask;
 		  bbits_ptr_[wdx] |=  mask;
-		  break;
+		  നിർത്തുക;
 	    }
-      } else {
-	    switch (val) {
-		case BIT4_0:
+      } അല്ലെങ്കിൽ {
+	    തിരഞ്ഞെടുപ്പ് (val) {
+		അവസ്ഥ BIT4_0:
 		  abits_val_ &= ~mask;
 		  bbits_val_ &= ~mask;
-		  break;
-		case BIT4_1:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_1:
 		  abits_val_ |=  mask;
 		  bbits_val_ &= ~mask;
-		  break;
-		case BIT4_X:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_X:
 		  abits_val_ |=  mask;
 		  bbits_val_ |=  mask;
-		  break;
-		case BIT4_Z:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_Z:
 		  abits_val_ &= ~mask;
 		  bbits_val_ |=  mask;
-		  break;
+		  നിർത്തുക;
 	    }
       }
 }
 
-inline vvp_vector4_t operator ~ (const vvp_vector4_t&that)
+വരിയിൽ vvp_vector4_t operator ~ (സ്ഥിരം vvp_vector4_t&that)
 {
       vvp_vector4_t res (that, true);
-      return res;
+      തിരികെ res;
 }
 
-extern std::ostream& operator << (std::ostream&, const vvp_vector4_t&);
+ബാഹ്യ std::ostream& operator << (std::ostream&, സ്ഥിരം vvp_vector4_t&);
 
-extern vvp_bit4_t compare_gtge(const vvp_vector4_t&a,
-			       const vvp_vector4_t&b,
+ബാഹ്യ vvp_bit4_t compare_gtge(സ്ഥിരം vvp_vector4_t&a,
+			       സ്ഥിരം vvp_vector4_t&b,
 			       vvp_bit4_t val_if_equal);
-extern vvp_bit4_t compare_gtge_signed(const vvp_vector4_t&a,
-				      const vvp_vector4_t&b,
+ബാഹ്യ vvp_bit4_t compare_gtge_signed(സ്ഥിരം vvp_vector4_t&a,
+				      സ്ഥിരം vvp_vector4_t&b,
 				      vvp_bit4_t val_if_equal);
-template <class T> extern T coerce_to_width(const T&that, unsigned width);
+template <class T> ബാഹ്യ T coerce_to_width(സ്ഥിരം T&that, unsigned width);
 
 /*
  * These functions extract the value of the vector as a native type,
@@ -558,33 +558,33 @@ template <class T> extern T coerce_to_width(const T&that, unsigned width);
  * value will be "false", but the other bits will be transferred. This
  * is what you want if you are doing "vpi_get_value", for example.
  */
-template <class T> extern bool vector4_to_value(const vvp_vector4_t&a, T&val,
+template <class T> ബാഹ്യ bool vector4_to_മൂല്യം(സ്ഥിരം vvp_vector4_t&a, T&val,
 						bool is_signed,
 						bool is_arithmetic =true);
 
-template <class T> extern bool vector4_to_value(const vvp_vector4_t&a,
+template <class T> ബാഹ്യ bool vector4_to_മൂല്യം(സ്ഥിരം vvp_vector4_t&a,
                                                 bool&overflow_flag, T&val);
 
-template <class T> inline bool vector4_to_value(const vvp_vector4_t&a, T&val)
+template <class T> വരിയിൽ bool vector4_to_മൂല്യം(സ്ഥിരം vvp_vector4_t&a, T&val)
 {
       bool overflow_flag;
-      return vector4_to_value(a, overflow_flag, val);
+      തിരികെ vector4_to_മൂല്യം(a, overflow_flag, val);
 }
 
-extern bool vector4_to_value(const vvp_vector4_t&a, double&val, bool is_signed);
+ബാഹ്യ bool vector4_to_മൂല്യം(സ്ഥിരം vvp_vector4_t&a, ഇരട്ട&val, bool is_signed);
 
-extern bool vector2_to_value(const vvp_vector2_t&a, int32_t&val, bool is_signed);
+ബാഹ്യ bool vector2_to_മൂല്യം(സ്ഥിരം vvp_vector2_t&a, int32_t&val, bool is_signed);
 
-extern vvp_vector4_t vector4_from_text(const char*bits, unsigned wid);
+ബാഹ്യ vvp_vector4_t vector4_from_text(സ്ഥിരം അക്ഷരം*bits, unsigned wid);
 
-inline vvp_vector4_t double_to_vector4_LSB(double real)
+വരിയിൽ vvp_vector4_t double_to_vector4_LSB(ഇരട്ട real)
 {
       // Convert the double to a bit vector and then use the LSB.
       // You can use very large real values and break the 64-bit
       // size, but that's really horrible code so don't do that!
       vvp_vector4_t bit = vvp_vector4_t(64, real);
       bit.resize(1);
-      return bit;
+      തിരികെ bit;
 }
 
 /*
@@ -592,74 +592,74 @@ inline vvp_vector4_t double_to_vector4_LSB(double real)
  */
 class vvp_vector4array_t {
 
-    public:
-      vvp_vector4array_t(unsigned width, unsigned words);
-      virtual ~vvp_vector4array_t();
+    പൊതു:
+      vvp_vector4array_t(unsigned width, unsigned വാക്കുകൾ);
+      മായാ ~vvp_vector4array_t();
 
-      unsigned width() const { return width_; }
-      unsigned words() const { return words_; }
+      unsigned width() സ്ഥിരം { തിരികെ width_; }
+      unsigned വാക്കുകൾ() സ്ഥിരം { തിരികെ വാക്കുകൾ_3; }
 
-      virtual vvp_vector4_t get_word(unsigned idx) const = 0;
-      virtual void set_word(unsigned idx, const vvp_vector4_t&that) = 0;
+      മായാ vvp_vector4_t get_word(unsigned idx) സ്ഥിരം = 0;
+      മായാ ശൂന്യം set_word(unsigned idx, സ്ഥിരം vvp_vector4_t&that) = 0;
 
-    protected:
-      struct v4cell {
-	    union {
+    സംരക്ഷിത:
+      ഘടന v4cell {
+	    സംഘം {
 		  unsigned long abits_val_;
 		  unsigned long*abits_ptr_;
 	    };
-	    union {
+	    സംഘം {
 		  unsigned long bbits_val_;
 		  unsigned long*bbits_ptr_;
 	    };
       };
 
-      vvp_vector4_t get_word_(v4cell*cell) const;
-      void set_word_(v4cell*cell, const vvp_vector4_t&that);
+      vvp_vector4_t get_word_(v4cell*cell) സ്ഥിരം;
+      ശൂന്യം set_word_(v4cell*cell, സ്ഥിരം vvp_vector4_t&that);
 
       unsigned width_;
-      unsigned words_;
+      unsigned വാക്കുകൾ_3;
 
-    private: // Not implemented
-      vvp_vector4array_t(const vvp_vector4array_t&);
-      vvp_vector4array_t& operator = (const vvp_vector4array_t&);
+    സ്വകാര്യ: // Not implemented
+      vvp_vector4array_t(സ്ഥിരം vvp_vector4array_t&);
+      vvp_vector4array_t& operator = (സ്ഥിരം vvp_vector4array_t&);
 };
 
 /*
  * Statically allocated vvp_vector4array_t
  */
-class vvp_vector4array_sa : public vvp_vector4array_t {
+class vvp_vector4array_sa : പൊതു vvp_vector4array_t {
 
-    public:
-      vvp_vector4array_sa(unsigned width, unsigned words);
+    പൊതു:
+      vvp_vector4array_sa(unsigned width, unsigned വാക്കുകൾ);
       ~vvp_vector4array_sa() override;
 
-      vvp_vector4_t get_word(unsigned idx) const override;
-      void set_word(unsigned idx, const vvp_vector4_t&that) override;
+      vvp_vector4_t get_word(unsigned idx) സ്ഥിരം override;
+      ശൂന്യം set_word(unsigned idx, സ്ഥിരം vvp_vector4_t&that) override;
 
-    private:
+    സ്വകാര്യ:
       v4cell* array_;
 };
 
 /*
  * Automatically allocated vvp_vector4array_t
  */
-class vvp_vector4array_aa : public vvp_vector4array_t, public automatic_hooks_s {
+class vvp_vector4array_aa : പൊതു vvp_vector4array_t, പൊതു automatic_hooks_s {
 
-    public:
-      vvp_vector4array_aa(unsigned width, unsigned words);
+    പൊതു:
+      vvp_vector4array_aa(unsigned width, unsigned വാക്കുകൾ);
       ~vvp_vector4array_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
+      ശൂന്യം alloc_instance(vvp_context_t context) override;
+      ശൂന്യം reset_instance(vvp_context_t context) override;
 #ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
+      ശൂന്യം free_instance(vvp_context_t context) override;
 #endif
 
-      vvp_vector4_t get_word(unsigned idx) const override;
-      void set_word(unsigned idx, const vvp_vector4_t&that) override;
+      vvp_vector4_t get_word(unsigned idx) സ്ഥിരം override;
+      ശൂന്യം set_word(unsigned idx, സ്ഥിരം vvp_vector4_t&that) override;
 
-    private:
+    സ്വകാര്യ:
       unsigned context_idx_;
 };
 
@@ -667,130 +667,130 @@ class vvp_vector4array_aa : public vvp_vector4array_t, public automatic_hooks_s 
  */
 class vvp_vector2_t {
 
-      friend vvp_vector2_t operator - (const vvp_vector2_t&);
-      friend vvp_vector2_t operator + (const vvp_vector2_t&,
-				       const vvp_vector2_t&);
-      friend vvp_vector2_t operator * (const vvp_vector2_t&,
-				       const vvp_vector2_t&);
-      friend bool operator >  (const vvp_vector2_t&, const vvp_vector2_t&);
-      friend bool operator >= (const vvp_vector2_t&, const vvp_vector2_t&);
-      friend bool operator <  (const vvp_vector2_t&, const vvp_vector2_t&);
-      friend bool operator <= (const vvp_vector2_t&, const vvp_vector2_t&);
-      friend bool operator == (const vvp_vector2_t&, const vvp_vector2_t&);
+      friend vvp_vector2_t operator - (സ്ഥിരം vvp_vector2_t&);
+      friend vvp_vector2_t operator + (സ്ഥിരം vvp_vector2_t&,
+				       സ്ഥിരം vvp_vector2_t&);
+      friend vvp_vector2_t operator * (സ്ഥിരം vvp_vector2_t&,
+				       സ്ഥിരം vvp_vector2_t&);
+      friend bool operator >  (സ്ഥിരം vvp_vector2_t&, സ്ഥിരം vvp_vector2_t&);
+      friend bool operator >= (സ്ഥിരം vvp_vector2_t&, സ്ഥിരം vvp_vector2_t&);
+      friend bool operator <  (സ്ഥിരം vvp_vector2_t&, സ്ഥിരം vvp_vector2_t&);
+      friend bool operator <= (സ്ഥിരം vvp_vector2_t&, സ്ഥിരം vvp_vector2_t&);
+      friend bool operator == (സ്ഥിരം vvp_vector2_t&, സ്ഥിരം vvp_vector2_t&);
 
-    public:
+    പൊതു:
       vvp_vector2_t();
-      vvp_vector2_t(const vvp_vector2_t&);
-      vvp_vector2_t(const vvp_vector2_t&, unsigned newsize);
-      vvp_vector2_t(const vvp_vector2_t&, unsigned base, unsigned wid);
+      vvp_vector2_t(സ്ഥിരം vvp_vector2_t&);
+      vvp_vector2_t(സ്ഥിരം vvp_vector2_t&, unsigned newsize);
+      vvp_vector2_t(സ്ഥിരം vvp_vector2_t&, unsigned base, unsigned wid);
 	// Make a vvp_vector2_t from a vvp_vector4_t. If enable_NaN
 	// is true and there are X or Z bits, then the result becomes
 	// a NaN value. If enable_NaN is false then X or Z bits are
 	// converted to 0 as per the standard Verilog rules.
-      explicit vvp_vector2_t(const vvp_vector4_t&that, bool allow_NaN = false);
+      explicit vvp_vector2_t(സ്ഥിരം vvp_vector4_t&that, bool allow_NaN = false);
 	// Make from a 64-bit value and a specified width.
       vvp_vector2_t(uint64_t val, unsigned wid);
 	// Make with the width, and filled with 1 or 0 bits.
-      enum fill_t {FILL0, FILL1};
+      എണ്ണൽ fill_t {FILL0, FILL1};
       vvp_vector2_t(fill_t fill, unsigned wid);
       ~vvp_vector2_t();
 
-      vvp_vector2_t&operator += (const vvp_vector2_t&that);
-      vvp_vector2_t&operator -= (const vvp_vector2_t&that);
+      vvp_vector2_t&operator += (സ്ഥിരം vvp_vector2_t&that);
+      vvp_vector2_t&operator -= (സ്ഥിരം vvp_vector2_t&that);
       vvp_vector2_t&operator <<= (unsigned shift);
       vvp_vector2_t&operator >>= (unsigned shift);
-      vvp_vector2_t&operator = (const vvp_vector2_t&);
+      vvp_vector2_t&operator = (സ്ഥിരം vvp_vector2_t&);
 
 	// Assign a vec4 to a vec2, using Verilog rules for converting
 	// XZ values to 0.
-      vvp_vector2_t&operator = (const vvp_vector4_t&);
+      vvp_vector2_t&operator = (സ്ഥിരം vvp_vector4_t&);
 
-      bool is_NaN() const;
-      bool is_zero() const;
-      unsigned size() const;
-      int value(unsigned idx) const;
-      vvp_bit4_t value4(unsigned idx) const;
+      bool is_NaN() സ്ഥിരം;
+      bool is_zero() സ്ഥിരം;
+      unsigned size() സ്ഥിരം;
+      പൂർണ്ണസംഖ്യ മൂല്യം(unsigned idx) സ്ഥിരം;
+      vvp_bit4_t value4(unsigned idx) സ്ഥിരം;
 	// Get the vector2 subvector starting at the address
-      vvp_vector2_t subvalue(unsigned idx, unsigned size) const;
-      void set_bit(unsigned idx, int bit);
-      void set_vec(unsigned idx, const vvp_vector2_t&that);
+      vvp_vector2_t subvalue(unsigned idx, unsigned size) സ്ഥിരം;
+      ശൂന്യം set_bit(unsigned idx, പൂർണ്ണസംഖ്യ bit);
+      ശൂന്യം set_vec(unsigned idx, സ്ഥിരം vvp_vector2_t&that);
 	// Make the size just big enough to hold the first 1 bit.
-      void trim();
+      ശൂന്യം trim();
 	// Trim off extra 1 bit since this is representing a negative value.
 	// Always keep at least 32 bits.
-      void trim_neg();
+      ശൂന്യം trim_neg();
 
-    private:
-      enum { BITS_PER_WORD = 8 * sizeof(unsigned long) };
+    സ്വകാര്യ:
+      എണ്ണൽ { BITS_PER_WORD = 8 * വലുപ്പം(unsigned long) };
       unsigned long*vec_;
       unsigned wid_;
 
-    private:
-      void copy_from_that_(const vvp_vector2_t&that);
-      void copy_from_that_(const vvp_vector4_t&that);
+    സ്വകാര്യ:
+      ശൂന്യം copy_from_that_(സ്ഥിരം vvp_vector2_t&that);
+      ശൂന്യം copy_from_that_(സ്ഥിരം vvp_vector4_t&that);
 };
 
-extern bool operator >  (const vvp_vector2_t&, const vvp_vector2_t&);
-extern bool operator >= (const vvp_vector2_t&, const vvp_vector2_t&);
-extern bool operator <  (const vvp_vector2_t&, const vvp_vector2_t&);
-extern bool operator <= (const vvp_vector2_t&, const vvp_vector2_t&);
-extern bool operator == (const vvp_vector2_t&, const vvp_vector2_t&);
-extern vvp_vector2_t operator - (const vvp_vector2_t&);
-extern vvp_vector2_t operator + (const vvp_vector2_t&, const vvp_vector2_t&);
-extern vvp_vector2_t operator * (const vvp_vector2_t&, const vvp_vector2_t&);
-extern vvp_vector2_t operator / (const vvp_vector2_t&, const vvp_vector2_t&);
-extern vvp_vector2_t operator % (const vvp_vector2_t&, const vvp_vector2_t&);
+ബാഹ്യ bool operator >  (സ്ഥിരം vvp_vector2_t&, സ്ഥിരം vvp_vector2_t&);
+ബാഹ്യ bool operator >= (സ്ഥിരം vvp_vector2_t&, സ്ഥിരം vvp_vector2_t&);
+ബാഹ്യ bool operator <  (സ്ഥിരം vvp_vector2_t&, സ്ഥിരം vvp_vector2_t&);
+ബാഹ്യ bool operator <= (സ്ഥിരം vvp_vector2_t&, സ്ഥിരം vvp_vector2_t&);
+ബാഹ്യ bool operator == (സ്ഥിരം vvp_vector2_t&, സ്ഥിരം vvp_vector2_t&);
+ബാഹ്യ vvp_vector2_t operator - (സ്ഥിരം vvp_vector2_t&);
+ബാഹ്യ vvp_vector2_t operator + (സ്ഥിരം vvp_vector2_t&, സ്ഥിരം vvp_vector2_t&);
+ബാഹ്യ vvp_vector2_t operator * (സ്ഥിരം vvp_vector2_t&, സ്ഥിരം vvp_vector2_t&);
+ബാഹ്യ vvp_vector2_t operator / (സ്ഥിരം vvp_vector2_t&, സ്ഥിരം vvp_vector2_t&);
+ബാഹ്യ vvp_vector2_t operator % (സ്ഥിരം vvp_vector2_t&, സ്ഥിരം vvp_vector2_t&);
 
-vvp_vector2_t pow(const vvp_vector2_t&, vvp_vector2_t&);
-extern vvp_vector4_t vector2_to_vector4(const vvp_vector2_t&, unsigned wid);
+vvp_vector2_t pow(സ്ഥിരം vvp_vector2_t&, vvp_vector2_t&);
+ബാഹ്യ vvp_vector4_t vector2_to_vector4(സ്ഥിരം vvp_vector2_t&, unsigned wid);
 
 /* A c4string is of the form C4<...> where ... are bits. */
-extern bool c4string_test(const char*str);
-extern vvp_vector4_t c4string_to_vector4(const char*str);
+ബാഹ്യ bool c4string_test(സ്ഥിരം അക്ഷരം*str);
+ബാഹ്യ vvp_vector4_t c4string_to_vector4(സ്ഥിരം അക്ഷരം*str);
 
 /* A crstring is of the form Cr<...> where ... defines are real. */
-extern bool crstring_test(const char*str);
-extern double crstring_to_double(const char*str);
+ബാഹ്യ bool crstring_test(സ്ഥിരം അക്ഷരം*str);
+ബാഹ്യ ഇരട്ട crstring_to_double(സ്ഥിരം അക്ഷരം*str);
 
-extern std::ostream& operator<< (std::ostream&, const vvp_vector2_t&);
+ബാഹ്യ std::ostream& operator<< (std::ostream&, സ്ഥിരം vvp_vector2_t&);
 
-inline vvp_vector2_t::vvp_vector2_t(const vvp_vector2_t&that)
+വരിയിൽ vvp_vector2_t::vvp_vector2_t(സ്ഥിരം vvp_vector2_t&that)
 {
       copy_from_that_(that);
 }
 
-inline vvp_vector2_t::vvp_vector2_t(const vvp_vector4_t&that, bool enable_NaN)
+വരിയിൽ vvp_vector2_t::vvp_vector2_t(സ്ഥിരം vvp_vector4_t&that, bool enable_NaN)
 {
-      if (enable_NaN && that.has_xz()) {
+      എങ്കിൽ (enable_NaN && that.has_xz()) {
 	    vec_ = 0;
 	    wid_ = 0;
-	    return;
+	    തിരികെ;
       }
       copy_from_that_(that);
 }
 
-inline vvp_vector2_t::~vvp_vector2_t()
+വരിയിൽ vvp_vector2_t::~vvp_vector2_t()
 {
       delete[] vec_;
 }
 
 /* Inline some of the vector2_t methods. */
-inline unsigned vvp_vector2_t::size() const
+വരിയിൽ unsigned vvp_vector2_t::size() സ്ഥിരം
 {
-      return wid_;
+      തിരികെ wid_;
 }
 
-inline vvp_bit4_t vvp_vector2_t::value4(unsigned idx) const
+വരിയിൽ vvp_bit4_t vvp_vector2_t::value4(unsigned idx) സ്ഥിരം
 {
-      if (value(idx))
-	    return BIT4_1;
-      else
-	    return BIT4_0;
+      എങ്കിൽ (മൂല്യം(idx))
+	    തിരികെ BIT4_1;
+      അല്ലെങ്കിൽ
+	    തിരികെ BIT4_0;
 }
 
-inline vvp_vector2_t vvp_vector2_t::subvalue(unsigned base, unsigned wid) const
+വരിയിൽ vvp_vector2_t vvp_vector2_t::subvalue(unsigned base, unsigned wid) സ്ഥിരം
 {
-      return vvp_vector2_t(*this, base, wid);
+      തിരികെ vvp_vector2_t(*this, base, wid);
 }
 
 /*
@@ -817,7 +817,7 @@ class vvp_scalar_t {
 
       friend vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b);
 
-    public:
+    പൊതു:
 	// Make a HiZ value.
       explicit vvp_scalar_t();
 
@@ -825,87 +825,87 @@ class vvp_scalar_t {
       explicit vvp_scalar_t(vvp_bit4_t val, unsigned str0, unsigned str1);
 
 	// Get the vvp_bit4_t version of the value
-      vvp_bit4_t value() const;
-      unsigned strength0() const;
-      unsigned strength1() const;
+      vvp_bit4_t മൂല്യം() സ്ഥിരം;
+      unsigned strength0() സ്ഥിരം;
+      unsigned strength1() സ്ഥിരം;
 
-      bool eeq(vvp_scalar_t that) const { return value_ == that.value_; }
-      bool is_hiz() const { return (value_ & 0x77) == 0; }
+      bool eeq(vvp_scalar_t that) സ്ഥിരം { തിരികെ മൂല്യം_2 == that.മൂല്യം_2; }
+      bool is_hiz() സ്ഥിരം { തിരികെ (മൂല്യം_2 & 0x77) == 0; }
 
-    private:
+    സ്വകാര്യ:
 	// This class and the vvp_vector8_t class are closely related,
 	// so allow vvp_vector8_t access to the raw encoding so that
 	// it can do compact vectoring of vvp_scalar_t objects.
       friend class vvp_vector8_t;
-      explicit vvp_scalar_t(unsigned char val) : value_(val) { }
-      unsigned char raw() const { return value_; }
+      explicit vvp_scalar_t(unsigned അക്ഷരം val) : മൂല്യം_2(val) { }
+      unsigned അക്ഷരം raw() സ്ഥിരം { തിരികെ മൂല്യം_2; }
 
-    private:
-      unsigned char value_;
+    സ്വകാര്യ:
+      unsigned അക്ഷരം മൂല്യം_2;
 };
 
-inline vvp_scalar_t::vvp_scalar_t()
+വരിയിൽ vvp_scalar_t::vvp_scalar_t()
 {
-      value_ = 0;
+      മൂല്യം_2 = 0;
 }
 
-inline vvp_scalar_t::vvp_scalar_t(vvp_bit4_t val, unsigned str0, unsigned str1)
+വരിയിൽ vvp_scalar_t::vvp_scalar_t(vvp_bit4_t val, unsigned str0, unsigned str1)
 {
-      assert(str0 <= 7);
-      assert(str1 <= 7);
+      പ്രതിജ്ഞാ(str0 <= 7);
+      പ്രതിജ്ഞാ(str1 <= 7);
 
-      if (str0 == 0 && str1 == 0) {
-	    value_ = 0x00;
-      } else switch (val) {
-	  case BIT4_0:
-	    value_ = str0 | (str0<<4);
-	    break;
-	  case BIT4_1:
-	    value_ = str1 | (str1<<4) | 0x88;
-	    break;
-	  case BIT4_X:
-	    value_ = str0 | (str1<<4) | 0x80;
-	    break;
-	  case BIT4_Z:
-	    value_ = 0x00;
-	    break;
+      എങ്കിൽ (str0 == 0 && str1 == 0) {
+	    മൂല്യം_2 = 0x00;
+      } അല്ലെങ്കിൽ തിരഞ്ഞെടുപ്പ് (val) {
+	  അവസ്ഥ BIT4_0:
+	    മൂല്യം_2 = str0 | (str0<<4);
+	    നിർത്തുക;
+	  അവസ്ഥ BIT4_1:
+	    മൂല്യം_2 = str1 | (str1<<4) | 0x88;
+	    നിർത്തുക;
+	  അവസ്ഥ BIT4_X:
+	    മൂല്യം_2 = str0 | (str1<<4) | 0x80;
+	    നിർത്തുക;
+	  അവസ്ഥ BIT4_Z:
+	    മൂല്യം_2 = 0x00;
+	    നിർത്തുക;
       }
 }
 
-inline vvp_bit4_t vvp_scalar_t::value() const
+വരിയിൽ vvp_bit4_t vvp_scalar_t::മൂല്യം() സ്ഥിരം
 {
-      if ((value_ & 0x77) == 0) {
-	    return BIT4_Z;
-      } else switch (value_ & 0x88) {
-	  case 0x00:
-	    return BIT4_0;
-	  case 0x88:
-	    return BIT4_1;
-	  default:
-	    return BIT4_X;
+      എങ്കിൽ ((മൂല്യം_2 & 0x77) == 0) {
+	    തിരികെ BIT4_Z;
+      } അല്ലെങ്കിൽ തിരഞ്ഞെടുപ്പ് (മൂല്യം_2 & 0x88) {
+	  അവസ്ഥ 0x00:
+	    തിരികെ BIT4_0;
+	  അവസ്ഥ 0x88:
+	    തിരികെ BIT4_1;
+	  സ്ഥിരസ്ഥിതി:
+	    തിരികെ BIT4_X;
       }
 }
 
 
-inline vvp_scalar_t resolve(vvp_scalar_t a, vvp_scalar_t b)
+വരിയിൽ vvp_scalar_t resolve(vvp_scalar_t a, vvp_scalar_t b)
 {
-      extern vvp_scalar_t fully_featured_resolv_(vvp_scalar_t, vvp_scalar_t);
+      ബാഹ്യ vvp_scalar_t fully_featured_resolv_(vvp_scalar_t, vvp_scalar_t);
 
 	// If the value is HiZ, resolution is simply a matter of
 	// returning the *other* value.
-      if (a.is_hiz())
-	    return b;
-      if (b.is_hiz())
-	    return a;
+      എങ്കിൽ (a.is_hiz())
+	    തിരികെ b;
+      എങ്കിൽ (b.is_hiz())
+	    തിരികെ a;
 	// If the values are the identical, then resolution is simply
 	// returning *either* value.
-      if (a .eeq( b ))
-	    return a;
+      എങ്കിൽ (a .eeq( b ))
+	    തിരികെ a;
 
-      return fully_featured_resolv_(a,b);
+      തിരികെ fully_featured_resolv_(a,b);
 }
 
-extern std::ostream& operator<< (std::ostream&, vvp_scalar_t);
+ബാഹ്യ std::ostream& operator<< (std::ostream&, vvp_scalar_t);
 
 /*
  * This class is a way to carry vectors of strength modeled
@@ -921,125 +921,125 @@ extern std::ostream& operator<< (std::ostream&, vvp_scalar_t);
  */
 class vvp_vector8_t {
 
-      friend vvp_vector8_t part_expand(const vvp_vector8_t&, unsigned, unsigned);
+      friend vvp_vector8_t part_expand(സ്ഥിരം vvp_vector8_t&, unsigned, unsigned);
 
-    public:
+    പൊതു:
       explicit vvp_vector8_t(unsigned size =0);
 	// Make a vvp_vector8_t from a vector4 and a specified
 	// strength.
-      explicit vvp_vector8_t(const vvp_vector4_t&that,
+      explicit vvp_vector8_t(സ്ഥിരം vvp_vector4_t&that,
 			     unsigned str0,
 			     unsigned str1);
-      explicit vvp_vector8_t(const vvp_vector2_t&that,
+      explicit vvp_vector8_t(സ്ഥിരം vvp_vector2_t&that,
 			     unsigned str0,
 			     unsigned str1);
 
       ~vvp_vector8_t();
 
-      static const vvp_vector8_t nil;
+      സ്ഥിതം സ്ഥിരം vvp_vector8_t nil;
 
-    public:
+    പൊതു:
 
-      unsigned size() const { return size_; }
-      vvp_scalar_t value(unsigned idx) const;
-      vvp_vector8_t subvalue(unsigned adr, unsigned width) const;
-      void set_bit(unsigned idx, vvp_scalar_t val);
-      void set_vec(unsigned idx, const vvp_vector8_t&that);
+      unsigned size() സ്ഥിരം { തിരികെ size_; }
+      vvp_scalar_t മൂല്യം(unsigned idx) സ്ഥിരം;
+      vvp_vector8_t subvalue(unsigned adr, unsigned width) സ്ഥിരം;
+      ശൂന്യം set_bit(unsigned idx, vvp_scalar_t val);
+      ശൂന്യം set_vec(unsigned idx, സ്ഥിരം vvp_vector8_t&that);
 
 	// Test that the vectors are exactly equal
-      bool eeq(const vvp_vector8_t&that) const;
+      bool eeq(സ്ഥിരം vvp_vector8_t&that) സ്ഥിരം;
 
-      vvp_vector8_t(const vvp_vector8_t&that);
-      vvp_vector8_t& operator= (const vvp_vector8_t&that);
+      vvp_vector8_t(സ്ഥിരം vvp_vector8_t&that);
+      vvp_vector8_t& operator= (സ്ഥിരം vvp_vector8_t&that);
 
-    private:
+    സ്വകാര്യ:
       unsigned size_;
-      union {
-	    unsigned char*ptr_;
-	    unsigned char val_[sizeof(void*)];
+      സംഘം {
+	    unsigned അക്ഷരം*ptr_;
+	    unsigned അക്ഷരം val_[വലുപ്പം(ശൂന്യം*)];
       };
 };
 
   /* Resolve uses the default Verilog resolver algorithm to resolve
      two drive vectors to a single output. */
-inline vvp_vector8_t resolve(const vvp_vector8_t&a, const vvp_vector8_t&b)
+വരിയിൽ vvp_vector8_t resolve(സ്ഥിരം vvp_vector8_t&a, സ്ഥിരം vvp_vector8_t&b)
 {
-      assert(a.size() == b.size());
+      പ്രതിജ്ഞാ(a.size() == b.size());
       vvp_vector8_t out (a.size());
 
-      for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
-	    out.set_bit(idx, resolve(a.value(idx), b.value(idx)));
+      വേണ്ടി (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
+	    out.set_bit(idx, resolve(a.മൂല്യം(idx), b.മൂല്യം(idx)));
       }
 
-      return out;
+      തിരികെ out;
 }
 
   /* This lookup tabke implements the strength reduction implied by
      Verilog standard switch devices. The major dimension selects
      between non-resistive and resistive devices. */
-extern unsigned vvp_switch_strength_map[2][8];
+ബാഹ്യ unsigned vvp_switch_strength_map[2][8];
 
   /* The reduce4 function converts a vector8 to a vector4, losing
      strength information in the process. */
-extern vvp_vector4_t reduce4(const vvp_vector8_t&that);
-extern vvp_vector8_t part_expand(const vvp_vector8_t&a, unsigned wid, unsigned off);
+ബാഹ്യ vvp_vector4_t reduce4(സ്ഥിരം vvp_vector8_t&that);
+ബാഹ്യ vvp_vector8_t part_expand(സ്ഥിരം vvp_vector8_t&a, unsigned wid, unsigned off);
 
   /* A c8string is of the form C8<...> where ... are bits. */
-extern bool c8string_test(const char*str);
-extern vvp_vector8_t c8string_to_vector8(const char*str);
+ബാഹ്യ bool c8string_test(സ്ഥിരം അക്ഷരം*str);
+ബാഹ്യ vvp_vector8_t c8string_to_vector8(സ്ഥിരം അക്ഷരം*str);
 
   /* Print a vector8 value to a stream. */
-extern std::ostream& operator<< (std::ostream&, const vvp_vector8_t&);
+ബാഹ്യ std::ostream& operator<< (std::ostream&, സ്ഥിരം vvp_vector8_t&);
 
-inline vvp_vector8_t::vvp_vector8_t(unsigned size__)
+വരിയിൽ vvp_vector8_t::vvp_vector8_t(unsigned size__)
 : size_(size__)
 {
-      if (size_ <= sizeof(val_)) {
-	    memset(val_, 0, sizeof(val_));
-      } else {
-	    ptr_ = new unsigned char[size_];
+      എങ്കിൽ (size_ <= വലുപ്പം(val_)) {
+	    memset(val_, 0, വലുപ്പം(val_));
+      } അല്ലെങ്കിൽ {
+	    ptr_ = new unsigned അക്ഷരം[size_];
 	    memset(ptr_, 0, size_);
       }
 }
 
-inline vvp_vector8_t::~vvp_vector8_t()
+വരിയിൽ vvp_vector8_t::~vvp_vector8_t()
 {
-      if (size_ > sizeof(val_))
+      എങ്കിൽ (size_ > വലുപ്പം(val_))
 	    delete[]ptr_;
 }
 
-inline vvp_scalar_t vvp_vector8_t::value(unsigned idx) const
+വരിയിൽ vvp_scalar_t vvp_vector8_t::മൂല്യം(unsigned idx) സ്ഥിരം
 {
-      assert(idx < size_);
-      if (size_ <= sizeof(val_))
-	    return vvp_scalar_t(val_[idx]);
-      else
-	    return vvp_scalar_t(ptr_[idx]);
+      പ്രതിജ്ഞാ(idx < size_);
+      എങ്കിൽ (size_ <= വലുപ്പം(val_))
+	    തിരികെ vvp_scalar_t(val_[idx]);
+      അല്ലെങ്കിൽ
+	    തിരികെ vvp_scalar_t(ptr_[idx]);
 }
 
-inline void vvp_vector8_t::set_bit(unsigned idx, vvp_scalar_t val)
+വരിയിൽ ശൂന്യം vvp_vector8_t::set_bit(unsigned idx, vvp_scalar_t val)
 {
-      assert(idx < size_);
-      if (size_ <= sizeof(val_))
+      പ്രതിജ്ഞാ(idx < size_);
+      എങ്കിൽ (size_ <= വലുപ്പം(val_))
 	    val_[idx] = val.raw();
-      else
+      അല്ലെങ്കിൽ
 	    ptr_[idx] = val.raw();
 }
 
   // Exactly-equal for vvp_vector8_t is common and should be as tight
   // as possible.
-inline bool vvp_vector8_t::eeq(const vvp_vector8_t&that) const
+വരിയിൽ bool vvp_vector8_t::eeq(സ്ഥിരം vvp_vector8_t&that) സ്ഥിരം
 {
-      if (size_ != that.size_)
-	    return false;
-      if (size_ == 0)
-	    return true;
+      എങ്കിൽ (size_ != that.size_)
+	    തിരികെ false;
+      എങ്കിൽ (size_ == 0)
+	    തിരികെ true;
 
-      if (size_ <= sizeof(val_))
+      എങ്കിൽ (size_ <= വലുപ്പം(val_))
 	      // This is equivalent to memcmp(val_, that.val_, sizeof val_)==0
-	    return ptr_ == that.ptr_;
-      else
-	    return memcmp(ptr_, that.ptr_, size_) == 0;
+	    തിരികെ ptr_ == that.ptr_;
+      അല്ലെങ്കിൽ
+	    തിരികെ memcmp(ptr_, that.ptr_, size_) == 0;
 }
 
 /*
@@ -1057,39 +1057,39 @@ inline bool vvp_vector8_t::eeq(const vvp_vector8_t&that) const
  */
 template <class T> class vvp_sub_pointer_t {
 
-    public:
+    പൊതു:
       vvp_sub_pointer_t() : bits_(0) { }
 
       vvp_sub_pointer_t(T*ptr__, unsigned port__)
       {
 	    bits_ = reinterpret_cast<uintptr_t> (ptr__);
-	    assert( (bits_  &  UINTPTR_C(3)) == 0 );
-	    assert( (port__ & ~UINTPTR_C(3)) == 0 );
+	    പ്രതിജ്ഞാ( (bits_  &  UINTPTR_C(3)) == 0 );
+	    പ്രതിജ്ഞാ( (port__ & ~UINTPTR_C(3)) == 0 );
 	    bits_ |= port__;
       }
 
-      ~vvp_sub_pointer_t() = default;
+      ~vvp_sub_pointer_t() = സ്ഥിരസ്ഥിതി;
 
       T* ptr()
-      { return reinterpret_cast<T*> (bits_ & ~UINTPTR_C(3)); }
+      { തിരികെ reinterpret_cast<T*> (bits_ & ~UINTPTR_C(3)); }
 
-      const T* ptr() const
-      { return reinterpret_cast<const T*> (bits_ & ~UINTPTR_C(3)); }
+      സ്ഥിരം T* ptr() സ്ഥിരം
+      { തിരികെ reinterpret_cast<സ്ഥിരം T*> (bits_ & ~UINTPTR_C(3)); }
 
-      unsigned  port() const { return bits_ & UINTPTR_C(3); }
+      unsigned  port() സ്ഥിരം { തിരികെ bits_ & UINTPTR_C(3); }
 
-      bool nil() const { return bits_ == 0; }
+      bool nil() സ്ഥിരം { തിരികെ bits_ == 0; }
 
-      bool operator == (vvp_sub_pointer_t that) const { return bits_ == that.bits_; }
-      bool operator != (vvp_sub_pointer_t that) const { return bits_ != that.bits_; }
+      bool operator == (vvp_sub_pointer_t that) സ്ഥിരം { തിരികെ bits_ == that.bits_; }
+      bool operator != (vvp_sub_pointer_t that) സ്ഥിരം { തിരികെ bits_ != that.bits_; }
 
-    private:
+    സ്വകാര്യ:
       uintptr_t bits_;
 };
 
-typedef vvp_sub_pointer_t<vvp_net_t> vvp_net_ptr_t;
+തരനിർവചനം vvp_sub_pointer_t<vvp_net_t> vvp_net_ptr_t;
 template <class T> std::ostream& operator << (std::ostream&out, vvp_sub_pointer_t<T> val)
-{ out << val.ptr() << "[" << val.port() << "]"; return out; }
+{ out << val.ptr() << "[" << val.port() << "]"; തിരികെ out; }
 
 /*
  * This is the basic unit of netlist connectivity. It is a fan-in of
@@ -1130,7 +1130,7 @@ template <class T> std::ostream& operator << (std::ostream&out, vvp_sub_pointer_
  * output, possibly filtered, from the vvp_net_t.
  */
 class vvp_net_t {
-    public:
+    പൊതു:
       vvp_net_t();
 
 #ifdef CHECK_WITH_VALGRIND
@@ -1140,49 +1140,49 @@ class vvp_net_t {
       vvp_net_fun_t*fun;
       vvp_net_fil_t*fil;
 
-    public:
+    പൊതു:
 	// Connect the port to the output from this net.
-      void link(vvp_net_ptr_t port);
+      ശൂന്യം link(vvp_net_ptr_t port);
 	// Disconnect the port from the output of this net.
-      void unlink(vvp_net_ptr_t port);
+      ശൂന്യം unlink(vvp_net_ptr_t port);
 
-    public: // Methods to propagate output from this node.
-      void send_vec4(const vvp_vector4_t&val, vvp_context_t context);
-      void send_vec8(const vvp_vector8_t&val);
-      void send_real(double val, vvp_context_t context);
-      void send_string(const std::string&val, vvp_context_t context);
-      void send_object(vvp_object_t val, vvp_context_t context);
+    പൊതു: // Methods to propagate output from this node.
+      ശൂന്യം send_vec4(സ്ഥിരം vvp_vector4_t&val, vvp_context_t context);
+      ശൂന്യം send_vec8(സ്ഥിരം vvp_vector8_t&val);
+      ശൂന്യം send_real(ഇരട്ട val, vvp_context_t context);
+      ശൂന്യം send_string(സ്ഥിരം std::string&val, vvp_context_t context);
+      ശൂന്യം send_object(vvp_object_t val, vvp_context_t context);
 
-      void send_vec4_pv(const vvp_vector4_t&val,
+      ശൂന്യം send_vec4_pv(സ്ഥിരം vvp_vector4_t&val,
 			unsigned base, unsigned vwid, vvp_context_t context);
-      void send_vec8_pv(const vvp_vector8_t&val,
+      ശൂന്യം send_vec8_pv(സ്ഥിരം vvp_vector8_t&val,
 			unsigned base, unsigned vwid);
 
 
-    public: // Methods to arrange for the output of this net to be forced.
+    പൊതു: // Methods to arrange for the output of this net to be forced.
 
 	// The intent is that all efforts at force are directed to
 	// operate only on the vvp_net_t whose output is to be
 	// forced. These methods then communicate the force to the
 	// attached filter to set up the actual force.
-      void force_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask);
-      void force_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask);
-      void force_real(double val, const vvp_vector2_t&mask);
+      ശൂന്യം force_vec4(സ്ഥിരം vvp_vector4_t&val, സ്ഥിരം vvp_vector2_t&mask);
+      ശൂന്യം force_vec8(സ്ഥിരം vvp_vector8_t&val, സ്ഥിരം vvp_vector2_t&mask);
+      ശൂന്യം force_real(ഇരട്ട val, സ്ഥിരം vvp_vector2_t&mask);
 
-    public: // Method to support $countdrivers
-      void count_drivers(unsigned idx, unsigned counts[4]);
+    പൊതു: // Method to support $countdrivers
+      ശൂന്യം എണ്ണം_drivers(unsigned idx, unsigned counts[4]);
 
     // This needs to be public so that SDF interconnects can be inserted
-    public:
+    പൊതു:
       vvp_net_ptr_t out_;
 
-    public: // Need a better new for these objects.
-      static void* operator new(std::size_t size);
-      static void operator delete(void*); // not implemented
-    private: // not implemented
-      static void* operator new[](std::size_t size);
-#if defined(__GNUC__)
-      static void operator delete[](void*);
+    പൊതു: // Need a better new for these objects.
+      സ്ഥിതം ശൂന്യം* operator new(std::size_t size);
+      സ്ഥിതം ശൂന്യം operator delete(ശൂന്യം*); // not implemented
+    സ്വകാര്യ: // not implemented
+      സ്ഥിതം ശൂന്യം* operator new[](std::size_t size);
+#എങ്കിൽ defined(__GNUC__)
+      സ്ഥിതം ശൂന്യം operator delete[](ശൂന്യം*);
 #endif
 };
 
@@ -1221,52 +1221,52 @@ class vvp_net_t {
  */
 class vvp_net_fun_t {
 
-    public:
+    പൊതു:
       vvp_net_fun_t();
-      virtual ~vvp_net_fun_t();
+      മായാ ~vvp_net_fun_t();
 
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      മായാ ശൂന്യം recv_vec4(vvp_net_ptr_t port, സ്ഥിരം vvp_vector4_t&bit,
                              vvp_context_t context);
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit);
-      virtual void recv_real(vvp_net_ptr_t port, double bit,
+      മായാ ശൂന്യം recv_vec8(vvp_net_ptr_t port, സ്ഥിരം vvp_vector8_t&bit);
+      മായാ ശൂന്യം recv_real(vvp_net_ptr_t port, ഇരട്ട bit,
                              vvp_context_t context);
-      virtual void recv_string(vvp_net_ptr_t port, const std::string&bit,
+      മായാ ശൂന്യം recv_string(vvp_net_ptr_t port, സ്ഥിരം std::string&bit,
 			       vvp_context_t context);
-      virtual void recv_object(vvp_net_ptr_t port, vvp_object_t bit,
+      മായാ ശൂന്യം recv_object(vvp_net_ptr_t port, vvp_object_t bit,
 			       vvp_context_t context);
 
 	// Part select variants of above
-      virtual void recv_vec4_pv(vvp_net_ptr_t p, const vvp_vector4_t&bit,
+      മായാ ശൂന്യം recv_vec4_pv(vvp_net_ptr_t p, സ്ഥിരം vvp_vector4_t&bit,
 				unsigned base, unsigned vwid, vvp_context_t context);
-      virtual void recv_vec8_pv(vvp_net_ptr_t p, const vvp_vector8_t&bit,
+      മായാ ശൂന്യം recv_vec8_pv(vvp_net_ptr_t p, സ്ഥിരം vvp_vector8_t&bit,
 				unsigned base, unsigned vwid);
 
 	// This method is called when the net is forced or
 	// released. This is very rarely needed; island ports use it
 	// to know that the net is being forced and that it needs to
 	// do something about it.
-      virtual void force_flag(bool run_now);
+      മായാ ശൂന്യം force_flag(bool run_now);
 
-   protected:
-      void recv_vec4_pv_(vvp_net_ptr_t p, const vvp_vector4_t&bit,
+   സംരക്ഷിത:
+      ശൂന്യം recv_vec4_pv_(vvp_net_ptr_t p, സ്ഥിരം vvp_vector4_t&bit,
 			 unsigned base, unsigned vwid, vvp_context_t context);
-      void recv_vec8_pv_(vvp_net_ptr_t p, const vvp_vector8_t&bit,
+      ശൂന്യം recv_vec8_pv_(vvp_net_ptr_t p, സ്ഥിരം vvp_vector8_t&bit,
 			 unsigned base, unsigned vwid);
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size) { return heap_.alloc(size); }
-      static void operator delete(void*); // not implemented
+    പൊതു: // These objects are only permallocated.
+      സ്ഥിതം ശൂന്യം* operator new(std::size_t size) { തിരികെ heap_.alloc(size); }
+      സ്ഥിതം ശൂന്യം operator delete(ശൂന്യം*); // not implemented
 
-      static std::size_t heap_total() { return heap_.heap_total(); }
+      സ്ഥിതം std::size_t heap_total() { തിരികെ heap_.heap_total(); }
 
-    protected:
-      static permaheap heap_;
+    സംരക്ഷിത:
+      സ്ഥിതം permaheap heap_;
 
-    private: // not implemented
-      vvp_net_fun_t(const vvp_net_fun_t&);
-      vvp_net_fun_t& operator= (const vvp_net_fun_t&);
-      static void* operator new[](std::size_t size);
-      static void operator delete[](void*);
+    സ്വകാര്യ: // not implemented
+      vvp_net_fun_t(സ്ഥിരം vvp_net_fun_t&);
+      vvp_net_fun_t& operator= (സ്ഥിരം vvp_net_fun_t&);
+      സ്ഥിതം ശൂന്യം* operator new[](std::size_t size);
+      സ്ഥിതം ശൂന്യം operator delete[](ശൂന്യം*);
 };
 
 /*
@@ -1279,14 +1279,14 @@ class vvp_net_fun_t {
  * The filter object also provides an implementation hooks for
  * force/release.
  */
-class vvp_net_fil_t  : public vvp_vpi_callback {
+class vvp_net_fil_t  : പൊതു vvp_vpi_callback {
 
-    public:
+    പൊതു:
       vvp_net_fil_t();
-      virtual ~vvp_net_fil_t() override;
+      മായാ ~vvp_net_fil_t() override;
 
-    public:
-      enum prop_t { STOP=0, PROP, REPL };
+    പൊതു:
+      എണ്ണൽ prop_t { STOP=0, PROP, REPL };
 
 
 	// These filter methods are used by the vvp_net_t::send_*()
@@ -1298,56 +1298,56 @@ class vvp_net_fil_t  : public vvp_vpi_callback {
 	// value instead. If the function returns STOP, then all the
 	// output bits are filtered by the force mask and there is
 	// nothing to propagate.
-      virtual prop_t filter_vec4(const vvp_vector4_t&bit, vvp_vector4_t&rep,
+      മായാ prop_t filter_vec4(സ്ഥിരം vvp_vector4_t&bit, vvp_vector4_t&rep,
 				 unsigned base, unsigned vwid);
-      virtual prop_t filter_vec8(const vvp_vector8_t&val, vvp_vector8_t&rep,
+      മായാ prop_t filter_vec8(സ്ഥിരം vvp_vector8_t&val, vvp_vector8_t&rep,
 				 unsigned base, unsigned vwid);
-      virtual prop_t filter_real(double&val);
-      virtual prop_t filter_object(vvp_object_t&val);
-      virtual prop_t filter_string(const std::string&val);
+      മായാ prop_t filter_real(ഇരട്ട&val);
+      മായാ prop_t filter_object(vvp_object_t&val);
+      മായാ prop_t filter_string(സ്ഥിരം std::string&val);
 
-      virtual void release(vvp_net_ptr_t ptr, bool net_flag) =0;
-      virtual void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) =0;
+      മായാ ശൂന്യം release(vvp_net_ptr_t ptr, bool net_flag) =0;
+      മായാ ശൂന്യം release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) =0;
 
 	// The %force/link instruction needs a place to write the
 	// source node of the force, so that subsequent %force and
 	// %release instructions can undo the link as needed. */
-      void force_link(vvp_net_t*dst, vvp_net_t*src);
-      void force_unlink(void);
+      ശൂന്യം force_link(vvp_net_t*dst, vvp_net_t*src);
+      ശൂന്യം force_unlink(ശൂന്യം);
 
-      virtual unsigned filter_size() const =0;
+      മായാ unsigned filter_size() സ്ഥിരം =0;
 
-    public:
+    പൊതു:
 	// Support for force methods. These are called by the
 	// vvp_net_t::force_* methods to set the force value and mask
 	// for the filter.
-      virtual void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) =0;
-      virtual void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) =0;
-      virtual void force_fil_real(double val, const vvp_vector2_t&mask) =0;
+      മായാ ശൂന്യം force_fil_vec4(സ്ഥിരം vvp_vector4_t&val, സ്ഥിരം vvp_vector2_t&mask) =0;
+      മായാ ശൂന്യം force_fil_vec8(സ്ഥിരം vvp_vector8_t&val, സ്ഥിരം vvp_vector2_t&mask) =0;
+      മായാ ശൂന്യം force_fil_real(ഇരട്ട val, സ്ഥിരം vvp_vector2_t&mask) =0;
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size) { return heap_.alloc(size); }
-      static void operator delete(void*); // not implemented
+    പൊതു: // These objects are only permallocated.
+      സ്ഥിതം ശൂന്യം* operator new(std::size_t size) { തിരികെ heap_.alloc(size); }
+      സ്ഥിതം ശൂന്യം operator delete(ശൂന്യം*); // not implemented
 
-      static size_t heap_total() { return heap_.heap_total(); }
+      സ്ഥിതം size_t heap_total() { തിരികെ heap_.heap_total(); }
 
-    private:
-      static permaheap heap_;
+    സ്വകാര്യ:
+      സ്ഥിതം permaheap heap_;
 
-    private: // not implemented
-      vvp_net_fil_t(const vvp_net_fil_t&);
-      vvp_net_fil_t& operator= (const vvp_net_fil_t&);
-      static void* operator new[](std::size_t size);
-      static void operator delete[](void*);
+    സ്വകാര്യ: // not implemented
+      vvp_net_fil_t(സ്ഥിരം vvp_net_fil_t&);
+      vvp_net_fil_t& operator= (സ്ഥിരം vvp_net_fil_t&);
+      സ്ഥിതം ശൂന്യം* operator new[](std::size_t size);
+      സ്ഥിതം ശൂന്യം operator delete[](ശൂന്യം*);
 
-    protected:
+    സംരക്ഷിത:
 	// Set bits of the filter force mask
-      void force_mask(const vvp_vector2_t&mask);
+      ശൂന്യം force_mask(സ്ഥിരം vvp_vector2_t&mask);
 	// Release the force on the bits set in the mask.
-      void release_mask(const vvp_vector2_t&mask);
+      ശൂന്യം release_mask(സ്ഥിരം vvp_vector2_t&mask);
 	// Test bits of the filter force mask;
-      bool test_force_mask(unsigned bit) const;
-      bool test_force_mask_is_zero() const;
+      bool test_force_mask(unsigned bit) സ്ഥിരം;
+      bool test_force_mask_is_zero() സ്ഥിരം;
 
 	// This template method is used by derived classes to process
 	// the val through the force mask. The force value is the
@@ -1356,7 +1356,7 @@ class vvp_net_fil_t  : public vvp_vpi_callback {
 	// method returns the replacement value into the "rep"
 	// argument and returns a code indicating whether any changes
 	// were made.
-      template <class T> prop_t filter_mask_(const T&val, const T&force, T&rep, unsigned addr);
+      template <class T> prop_t filter_mask_(സ്ഥിരം T&val, സ്ഥിരം T&force, T&rep, unsigned addr);
 	// This template method is similar to the above, but works for
 	// native types that are not so expensive to edit in place.
       template <class T> prop_t filter_mask_(T&val, T force);
@@ -1365,9 +1365,9 @@ class vvp_net_fil_t  : public vvp_vpi_callback {
 	// idempotent. Then do not trigger callbacks or otherwise
 	// cause any local changes. These methods are used to test
 	// arbitrary values against the force mask.
-      template <class T> prop_t filter_input_mask_(const T&val, const T&force, T&rep) const;
+      template <class T> prop_t filter_നിവേശം_mask(സ്ഥിരം T&val, സ്ഥിരം T&force, T&rep) സ്ഥിരം;
 
-    private:
+    സ്വകാര്യ:
 	// Mask of forced bits
       vvp_vector2_t force_mask_;
 	// True if the next filter must propagate. Need this to allow
@@ -1389,15 +1389,15 @@ class vvp_net_fil_t  : public vvp_vpi_callback {
  * implementation of vvp_filter_wire_base::force_link in
  * vvp_net_sig.cc for details.
  */
-class vvp_fun_force : public vvp_net_fun_t {
+class vvp_fun_force : പൊതു vvp_net_fun_t {
 
-    public:
+    പൊതു:
       vvp_fun_force();
       ~vvp_fun_force() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ശൂന്യം recv_vec4(vvp_net_ptr_t port, സ്ഥിരം vvp_vector4_t&bit,
 		     vvp_context_t context) override;
-      void recv_real(vvp_net_ptr_t port, double bit, vvp_context_t) override;
+      ശൂന്യം recv_real(vvp_net_ptr_t port, ഇരട്ട bit, vvp_context_t) override;
 };
 
 /* vvp_fun_drive
@@ -1411,20 +1411,20 @@ class vvp_fun_force : public vvp_net_fun_t {
  *
  * This functor only propagates vvp_vector8_t values.
  */
-class vvp_fun_drive  : public vvp_net_fun_t {
+class vvp_fun_drive  : പൊതു vvp_net_fun_t {
 
-    public:
+    പൊതു:
       explicit vvp_fun_drive(unsigned str0 =6, unsigned str1 =6);
       ~vvp_fun_drive() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ശൂന്യം recv_vec4(vvp_net_ptr_t port, സ്ഥിരം vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ശൂന്യം recv_vec4_pv(vvp_net_ptr_t port, സ്ഥിരം vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t) override;
-    private:
-      unsigned char drive0_;
-      unsigned char drive1_;
+    സ്വകാര്യ:
+      unsigned അക്ഷരം drive0_;
+      unsigned അക്ഷരം drive1_;
 };
 
 /*
@@ -1433,18 +1433,18 @@ class vvp_fun_drive  : public vvp_net_fun_t {
  * input is already wider than the desired output, then it is passed
  * unmodified.
  */
-class vvp_fun_extend_signed  : public vvp_net_fun_t {
+class vvp_fun_extend_signed  : പൊതു vvp_net_fun_t {
 
-    public:
+    പൊതു:
       explicit vvp_fun_extend_signed(unsigned wid);
       ~vvp_fun_extend_signed() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ശൂന്യം recv_vec4(vvp_net_ptr_t port, സ്ഥിരം vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ശൂന്യം recv_vec4_pv(vvp_net_ptr_t port, സ്ഥിരം vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t) override;
-    private:
+    സ്വകാര്യ:
       unsigned width_;
 };
 
@@ -1472,40 +1472,40 @@ class vvp_fun_extend_signed  : public vvp_net_fun_t {
  * does the processing.
  */
 
-class vvp_wide_fun_core : public vvp_net_fun_t {
+class vvp_wide_fun_core : പൊതു vvp_net_fun_t {
 
-    public:
+    പൊതു:
       vvp_wide_fun_core(vvp_net_t*net, unsigned nports);
-      virtual ~vvp_wide_fun_core() override;
+      മായാ ~vvp_wide_fun_core() override;
 	// These objects are not perm allocated.
-      static void* operator new(std::size_t size) { return ::new char[size]; }
-      static void operator delete(void* ptr) { ::delete[](static_cast<char*>(ptr)); }
+      സ്ഥിതം ശൂന്യം* operator new(std::size_t size) { തിരികെ ::new അക്ഷരം[size]; }
+      സ്ഥിതം ശൂന്യം operator delete(ശൂന്യം* ptr) { ::delete[](static_cast<അക്ഷരം*>(ptr)); }
 
-    protected:
-      void propagate_vec4(const vvp_vector4_t&bit, vvp_time64_t delay =0);
-      void propagate_real(double bit, vvp_time64_t delay =0);
-      unsigned port_count() const;
+    സംരക്ഷിത:
+      ശൂന്യം propagate_vec4(സ്ഥിരം vvp_vector4_t&bit, vvp_time64_t delay =0);
+      ശൂന്യം propagate_real(ഇരട്ട bit, vvp_time64_t delay =0);
+      unsigned port_എണ്ണം() സ്ഥിരം;
 
-      vvp_vector4_t& value(unsigned);
-      double value_r(unsigned);
+      vvp_vector4_t& മൂല്യം(unsigned);
+      ഇരട്ട മൂല്യം_r(unsigned);
 
-    private:
+    സ്വകാര്യ:
 	// the derived class implements this to receive an indication
 	// that one of the port input values changed.
-      virtual void recv_vec4_from_inputs(unsigned port) =0;
-      virtual void recv_real_from_inputs(unsigned port);
+      മായാ ശൂന്യം recv_vec4_from_inputs(unsigned port) =0;
+      മായാ ശൂന്യം recv_real_from_inputs(unsigned port);
 
       friend class vvp_wide_fun_t;
-      void dispatch_vec4_from_input_(unsigned port, const vvp_vector4_t&bit);
-      void dispatch_real_from_input_(unsigned port, double bit);
+      ശൂന്യം dispatch_vec4_from_നിവേശം(unsigned port, സ്ഥിരം vvp_vector4_t&bit);
+      ശൂന്യം dispatch_real_from_നിവേശം(unsigned port, ഇരട്ട bit);
 
-    private:
+    സ്വകാര്യ:
 	// Back-point to the vvp_net_t that points to me.
       vvp_net_t*ptr_;
 	// Structure to track the input values from the input functors.
       unsigned nports_;
-      vvp_vector4_t*port_values_;
-      double*port_rvalues_;
+      vvp_vector4_t*port_മൂല്യങ്ങൾ;
+      ഇരട്ട*port_rvalues_;
 };
 
 /*
@@ -1514,60 +1514,60 @@ class vvp_wide_fun_core : public vvp_net_fun_t {
  * up to 4 inputs, with the base the port number for the first
  * function input that this functor represents.
  */
-class vvp_wide_fun_t : public vvp_net_fun_t {
+class vvp_wide_fun_t : പൊതു vvp_net_fun_t {
 
-    public:
+    പൊതു:
       vvp_wide_fun_t(vvp_wide_fun_core*c, unsigned base);
       ~vvp_wide_fun_t() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ശൂന്യം recv_vec4(vvp_net_ptr_t port, സ്ഥിരം vvp_vector4_t&bit,
                      vvp_context_t context) override;
-      void recv_real(vvp_net_ptr_t port, double bit,
+      ശൂന്യം recv_real(vvp_net_ptr_t port, ഇരട്ട bit,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t p, const vvp_vector4_t&bit,
+      ശൂന്യം recv_vec4_pv(vvp_net_ptr_t p, സ്ഥിരം vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t context) override;
 
-    private:
+    സ്വകാര്യ:
       vvp_wide_fun_core*core_;
       unsigned port_base_;
 };
 
 
-inline void vvp_send_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&val, vvp_context_t context)
+വരിയിൽ ശൂന്യം vvp_send_vec4(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector4_t&val, vvp_context_t context)
 {
-      while (class vvp_net_t*cur = ptr.ptr()) {
+      ആകുമ്പോൾ (class vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    എങ്കിൽ (cur->fun)
 		  cur->fun->recv_vec4(ptr, val, context);
 
 	    ptr = next_val;
       }
 }
 
-extern void vvp_send_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&val);
-extern void vvp_send_real(vvp_net_ptr_t ptr, double val,
+ബാഹ്യ ശൂന്യം vvp_send_vec8(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector8_t&val);
+ബാഹ്യ ശൂന്യം vvp_send_real(vvp_net_ptr_t ptr, ഇരട്ട val,
                           vvp_context_t context);
 
-inline void vvp_send_string(vvp_net_ptr_t ptr, const std::string&val, vvp_context_t context)
+വരിയിൽ ശൂന്യം vvp_send_string(vvp_net_ptr_t ptr, സ്ഥിരം std::string&val, vvp_context_t context)
 {
-      while (vvp_net_t*cur = ptr.ptr()) {
+      ആകുമ്പോൾ (vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    എങ്കിൽ (cur->fun)
 		  cur->fun->recv_string(ptr, val, context);
 
 	    ptr = next_val;
       }
 }
 
-inline void vvp_send_object(vvp_net_ptr_t ptr, vvp_object_t val, vvp_context_t context)
+വരിയിൽ ശൂന്യം vvp_send_object(vvp_net_ptr_t ptr, vvp_object_t val, vvp_context_t context)
 {
-      while (vvp_net_t*cur = ptr.ptr()) {
+      ആകുമ്പോൾ (vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    എങ്കിൽ (cur->fun)
 		  cur->fun->recv_object(ptr, val, context);
 
 	    ptr = next_val;
@@ -1592,160 +1592,160 @@ inline void vvp_send_object(vvp_net_ptr_t ptr, vvp_object_t val, vvp_context_t c
  * know how wide to pad with Z, if it needs to transform the part to a
  * mirror of the destination vector.
  */
-inline void vvp_send_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&val,
+വരിയിൽ ശൂന്യം vvp_send_vec4_pv(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector4_t&val,
 			     unsigned base, unsigned vwid,
 			     vvp_context_t context)
 {
-      while (class vvp_net_t*cur = ptr.ptr()) {
+      ആകുമ്പോൾ (class vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    എങ്കിൽ (cur->fun)
 		  cur->fun->recv_vec4_pv(ptr, val, base, vwid, context);
 
 	    ptr = next_val;
       }
 }
 
-inline void vvp_send_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&val,
+വരിയിൽ ശൂന്യം vvp_send_vec8_pv(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector8_t&val,
 			     unsigned base, unsigned vwid)
 {
-      while (class vvp_net_t*cur = ptr.ptr()) {
+      ആകുമ്പോൾ (class vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    എങ്കിൽ (cur->fun)
 		  cur->fun->recv_vec8_pv(ptr, val, base, vwid);
 
 	    ptr = next_val;
       }
 }
 
-inline void vvp_net_t::send_vec4(const vvp_vector4_t&val, vvp_context_t context)
+വരിയിൽ ശൂന്യം vvp_net_t::send_vec4(സ്ഥിരം vvp_vector4_t&val, vvp_context_t context)
 {
-      if (fil == 0) {
+      എങ്കിൽ (fil == 0) {
 	    vvp_send_vec4(out_, val, context);
-	    return;
+	    തിരികെ;
       }
 
       vvp_vector4_t rep;
-      switch (fil->filter_vec4(val, rep, 0, val.size())) {
-	  case vvp_net_fil_t::STOP:
-	    break;
-	  case vvp_net_fil_t::PROP:
+      തിരഞ്ഞെടുപ്പ് (fil->filter_vec4(val, rep, 0, val.size())) {
+	  അവസ്ഥ vvp_net_fil_t::STOP:
+	    നിർത്തുക;
+	  അവസ്ഥ vvp_net_fil_t::PROP:
 	    vvp_send_vec4(out_, val, context);
-	    break;
-	  case vvp_net_fil_t::REPL:
+	    നിർത്തുക;
+	  അവസ്ഥ vvp_net_fil_t::REPL:
 	    vvp_send_vec4(out_, rep, context);
-	    break;
+	    നിർത്തുക;
       }
 }
 
-inline void vvp_net_t::send_vec4_pv(const vvp_vector4_t&val,
+വരിയിൽ ശൂന്യം vvp_net_t::send_vec4_pv(സ്ഥിരം vvp_vector4_t&val,
 				    unsigned base, unsigned vwid,
 				    vvp_context_t context)
 {
-      if (fil == 0) {
+      എങ്കിൽ (fil == 0) {
 	    vvp_send_vec4_pv(out_, val, base, vwid, context);
-	    return;
+	    തിരികെ;
       }
 
       vvp_vector4_t rep;
-      switch (fil->filter_vec4(val, rep, base, vwid)) {
-	  case vvp_net_fil_t::STOP:
-	    break;
-	  case vvp_net_fil_t::PROP:
+      തിരഞ്ഞെടുപ്പ് (fil->filter_vec4(val, rep, base, vwid)) {
+	  അവസ്ഥ vvp_net_fil_t::STOP:
+	    നിർത്തുക;
+	  അവസ്ഥ vvp_net_fil_t::PROP:
 	    vvp_send_vec4_pv(out_, val, base, vwid, context);
-	    break;
-	  case vvp_net_fil_t::REPL:
+	    നിർത്തുക;
+	  അവസ്ഥ vvp_net_fil_t::REPL:
 	    vvp_send_vec4_pv(out_, rep, base, vwid, context);
-	    break;
+	    നിർത്തുക;
       }
 }
 
-inline void vvp_net_t::send_vec8(const vvp_vector8_t&val)
+വരിയിൽ ശൂന്യം vvp_net_t::send_vec8(സ്ഥിരം vvp_vector8_t&val)
 {
-      if (fil == 0) {
+      എങ്കിൽ (fil == 0) {
 	    vvp_send_vec8(out_, val);
-	    return;
+	    തിരികെ;
       }
 
       vvp_vector8_t rep;
-      switch (fil->filter_vec8(val, rep, 0, val.size())) {
-	  case vvp_net_fil_t::STOP:
-	    break;
-	  case vvp_net_fil_t::PROP:
+      തിരഞ്ഞെടുപ്പ് (fil->filter_vec8(val, rep, 0, val.size())) {
+	  അവസ്ഥ vvp_net_fil_t::STOP:
+	    നിർത്തുക;
+	  അവസ്ഥ vvp_net_fil_t::PROP:
 	    vvp_send_vec8(out_, val);
-	    break;
-	  case vvp_net_fil_t::REPL:
+	    നിർത്തുക;
+	  അവസ്ഥ vvp_net_fil_t::REPL:
 	    vvp_send_vec8(out_, rep);
-	    break;
+	    നിർത്തുക;
       }
 }
 
-inline void vvp_net_t::send_vec8_pv(const vvp_vector8_t&val,
+വരിയിൽ ശൂന്യം vvp_net_t::send_vec8_pv(സ്ഥിരം vvp_vector8_t&val,
 				    unsigned base, unsigned vwid)
 {
-      if (fil == 0) {
+      എങ്കിൽ (fil == 0) {
 	    vvp_send_vec8_pv(out_, val, base, vwid);
-	    return;
+	    തിരികെ;
       }
 
       vvp_vector8_t rep;
-      switch (fil->filter_vec8(val, rep, base, vwid)) {
-	  case vvp_net_fil_t::STOP:
-	    break;
-	  case vvp_net_fil_t::PROP:
+      തിരഞ്ഞെടുപ്പ് (fil->filter_vec8(val, rep, base, vwid)) {
+	  അവസ്ഥ vvp_net_fil_t::STOP:
+	    നിർത്തുക;
+	  അവസ്ഥ vvp_net_fil_t::PROP:
 	    vvp_send_vec8_pv(out_, val, base, vwid);
-	    break;
-	  case vvp_net_fil_t::REPL:
+	    നിർത്തുക;
+	  അവസ്ഥ vvp_net_fil_t::REPL:
 	    vvp_send_vec8_pv(out_, rep, base, vwid);
-	    break;
+	    നിർത്തുക;
       }
 }
 
-inline void vvp_net_t::send_real(double val, vvp_context_t context)
+വരിയിൽ ശൂന്യം vvp_net_t::send_real(ഇരട്ട val, vvp_context_t context)
 {
-      if (fil && ! fil->filter_real(val))
-	    return;
+      എങ്കിൽ (fil && ! fil->filter_real(val))
+	    തിരികെ;
 
       vvp_send_real(out_, val, context);
 }
 
 
-inline void vvp_net_t::send_string(const std::string&val, vvp_context_t context)
+വരിയിൽ ശൂന്യം vvp_net_t::send_string(സ്ഥിരം std::string&val, vvp_context_t context)
 {
-      if (fil && !fil->filter_string(val))
-	    return;
+      എങ്കിൽ (fil && !fil->filter_string(val))
+	    തിരികെ;
 
       vvp_send_string(out_, val, context);
 }
 
 
-inline void vvp_net_t::send_object(vvp_object_t val, vvp_context_t context)
+വരിയിൽ ശൂന്യം vvp_net_t::send_object(vvp_object_t val, vvp_context_t context)
 {
-      if (fil && ! fil->filter_object(val))
-	    return;
+      എങ്കിൽ (fil && ! fil->filter_object(val))
+	    തിരികെ;
 
       vvp_send_object(out_, val, context);
 }
 
 
-inline bool vvp_net_fil_t::test_force_mask(unsigned bit) const
+വരിയിൽ bool vvp_net_fil_t::test_force_mask(unsigned bit) സ്ഥിരം
 {
-      if (bit >= force_mask_.size())
-	    return false;
-      if (force_mask_.value(bit))
-	    return true;
-      else
-	    return false;
+      എങ്കിൽ (bit >= force_mask_.size())
+	    തിരികെ false;
+      എങ്കിൽ (force_mask_.മൂല്യം(bit))
+	    തിരികെ true;
+      അല്ലെങ്കിൽ
+	    തിരികെ false;
 }
 
-inline bool vvp_net_fil_t::test_force_mask_is_zero(void) const
+വരിയിൽ bool vvp_net_fil_t::test_force_mask_is_zero(ശൂന്യം) സ്ഥിരം
 {
-      if (force_mask_.size() == 0)
-	    return true;
-      if (force_mask_.is_zero())
-	    return true;
-      return false;
+      എങ്കിൽ (force_mask_.size() == 0)
+	    തിരികെ true;
+      എങ്കിൽ (force_mask_.is_zero())
+	    തിരികെ true;
+      തിരികെ false;
 }
 
 /*

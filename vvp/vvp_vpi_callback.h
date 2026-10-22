@@ -22,7 +22,7 @@
 # include  "config.h"
 # include  "vpi_user.h"
 
-class value_callback;
+class മൂല്യം_callback;
 
 /*
  * Things derived from vvp_vpi_callback may have callbacks
@@ -34,30 +34,30 @@ class value_callback;
  */
 class vvp_vpi_callback {
 
-    public:
+    പൊതു:
       vvp_vpi_callback();
-      virtual ~vvp_vpi_callback();
+      മായാ ~vvp_vpi_callback();
 
-      void attach_as_word(struct __vpiArray* arr, unsigned long addr);
+      ശൂന്യം attach_as_word(ഘടന __vpiArray* arr, unsigned long addr);
 
-      void add_vpi_callback(value_callback*);
+      ശൂന്യം add_vpi_callback(മൂല്യം_callback*);
 #ifdef CHECK_WITH_VALGRIND
 	/* This has only been tested at EOS. */
-      void clear_all_callbacks(void);
+      ശൂന്യം clear_all_callbacks(ശൂന്യം);
 #endif
 
 	// Derived classes implement this method to provide a way for
 	// vpi to get at the vvp value of the object.
-      virtual void get_value(struct t_vpi_value*value) =0;
+      മായാ ശൂന്യം get_മൂല്യം(ഘടന t_vpi_മൂല്യം*മൂല്യം) =0;
 
-    protected:
+    സംരക്ഷിത:
 	// Derived classes call this method to indicate that it is
 	// time to call the callback.
-      void run_vpi_callbacks();
+      ശൂന്യം run_vpi_callbacks();
 
-    private:
-      value_callback*vpi_callbacks_;
-      struct __vpi_array_word*array_words_;
+    സ്വകാര്യ:
+      മൂല്യം_callback*vpi_callbacks_;
+      ഘടന __vpi_array_word*array_വാക്കുകൾ;
 };
 
 

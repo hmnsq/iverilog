@@ -32,72 +32,72 @@
 vvp_fun_boolean_::vvp_fun_boolean_(unsigned wid)
 {
       net_ = 0;
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-	    input_[idx] = vvp_vector4_t(wid, BIT4_Z);
+      വേണ്ടി (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+	    നിവേശം_2[idx] = vvp_vector4_t(wid, BIT4_Z);
 }
 
 vvp_fun_boolean_::~vvp_fun_boolean_()
 {
 }
 
-void vvp_fun_boolean_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ശൂന്യം vvp_fun_boolean_::recv_vec4(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector4_t&bit,
                                  vvp_context_t)
 {
       unsigned port = ptr.port();
-      if (input_[port] .eeq( bit )) return;
+      എങ്കിൽ (നിവേശം_2[port] .eeq( bit )) തിരികെ;
 
-      input_[port] = bit;
-      if (net_ == 0) {
+      നിവേശം_2[port] = bit;
+      എങ്കിൽ (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    schedule_functor(ഇത്);
       }
 }
 
-void vvp_fun_boolean_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ശൂന്യം vvp_fun_boolean_::recv_vec4_pv(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector4_t&bit,
 				    unsigned base, unsigned vwid, vvp_context_t)
 {
       unsigned port = ptr.port();
 
-      assert(base + bit.size() <= vwid);
+      പ്രതിജ്ഞാ(base + bit.size() <= vwid);
 
 	// Set the part for the input. If nothing changes, then break.
-      bool flag = input_[port] .set_vec(base, bit);
-      if (flag == false)
-	    return;
+      തർക്കം flag = നിവേശം_2[port] .set_vec(base, bit);
+      എങ്കിൽ (flag == അസത്യം)
+	    തിരികെ;
 
-      if (net_ == 0) {
+      എങ്കിൽ (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    schedule_functor(ഇത്);
       }
 }
 
-void vvp_fun_boolean_::recv_real(vvp_net_ptr_t ptr, double real,
+ശൂന്യം vvp_fun_boolean_::recv_real(vvp_net_ptr_t ptr, ഇരട്ട real,
                                  vvp_context_t ctx)
 {
       recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
 }
 
-vvp_fun_and::vvp_fun_and(unsigned wid, bool invert)
+vvp_fun_and::vvp_fun_and(unsigned wid, തർക്കം invert)
 : vvp_fun_boolean_(wid), invert_(invert)
 {
-      count_functors_logic += 1;
+      എണ്ണം_functors_logic += 1;
 }
 
 vvp_fun_and::~vvp_fun_and()
 {
 }
 
-void vvp_fun_and::run_run()
+ശൂന്യം vvp_fun_and::run_run()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_[0]);
+      vvp_vector4_t result (നിവേശം_2[0]);
 
-      for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
-	    result &= input_[pdx];
+      വേണ്ടി (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
+	    result &= നിവേശം_2[pdx];
 
-      if (invert_)
+      എങ്കിൽ (invert_)
 	    result.invert();
 
       ptr->send_vec4(result, 0);
@@ -106,22 +106,22 @@ void vvp_fun_and::run_run()
 vvp_fun_equiv::vvp_fun_equiv()
 : vvp_fun_boolean_(1)
 {
-      count_functors_logic += 1;
+      എണ്ണം_functors_logic += 1;
 }
 
 vvp_fun_equiv::~vvp_fun_equiv()
 {
 }
 
-void vvp_fun_equiv::run_run()
+ശൂന്യം vvp_fun_equiv::run_run()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      assert(input_[0].size() == 1);
-      assert(input_[1].size() == 1);
+      പ്രതിജ്ഞാ(നിവേശം_2[0].size() == 1);
+      പ്രതിജ്ഞാ(നിവേശം_2[1].size() == 1);
 
-      vvp_bit4_t bit = ~(input_[0].value(0) ^ input_[1].value(0));
+      vvp_bit4_t bit = ~(നിവേശം_2[0].value(0) ^ നിവേശം_2[1].value(0));
       vvp_vector4_t result (1, bit);
 
       ptr->send_vec4(result, 0);
@@ -130,29 +130,29 @@ void vvp_fun_equiv::run_run()
 vvp_fun_impl::vvp_fun_impl()
 : vvp_fun_boolean_(1)
 {
-      count_functors_logic += 1;
+      എണ്ണം_functors_logic += 1;
 }
 
 vvp_fun_impl::~vvp_fun_impl()
 {
 }
 
-void vvp_fun_impl::run_run()
+ശൂന്യം vvp_fun_impl::run_run()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      assert(input_[0].size() == 1);
-      assert(input_[1].size() == 1);
+      പ്രതിജ്ഞാ(നിവേശം_2[0].size() == 1);
+      പ്രതിജ്ഞാ(നിവേശം_2[1].size() == 1);
 
-      vvp_bit4_t bit = ~input_[0].value(0) | input_[1].value(0);
+      vvp_bit4_t bit = ~നിവേശം_2[0].value(0) | നിവേശം_2[1].value(0);
       vvp_vector4_t result (1, bit);
 
       ptr->send_vec4(result, 0);
 }
 
 vvp_fun_buf_not_::vvp_fun_buf_not_(unsigned wid)
-: input_(wid, BIT4_Z)
+: നിവേശം_2(wid, BIT4_Z)
 {
       net_ = 0;
 }
@@ -161,41 +161,41 @@ vvp_fun_buf_not_::~vvp_fun_buf_not_()
 {
 }
 
-void vvp_fun_buf_not_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ശൂന്യം vvp_fun_buf_not_::recv_vec4(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector4_t&bit,
                                  vvp_context_t)
 {
-      if (ptr.port() != 0) return;
+      എങ്കിൽ (ptr.port() != 0) തിരികെ;
 
-      if (input_ .eeq( bit )) return;
+      എങ്കിൽ (നിവേശം_2 .eeq( bit )) തിരികെ;
 
-      input_ = bit;
-      if (net_ == 0) {
+      നിവേശം_2 = bit;
+      എങ്കിൽ (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    schedule_functor(ഇത്);
       }
 }
 
-void vvp_fun_buf_not_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ശൂന്യം vvp_fun_buf_not_::recv_vec4_pv(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector4_t&bit,
                                     unsigned base, unsigned vwid, vvp_context_t)
 {
-      if (ptr.port() != 0) return;
+      എങ്കിൽ (ptr.port() != 0) തിരികെ;
 
-      assert(base + bit.size() <= vwid);
+      പ്രതിജ്ഞാ(base + bit.size() <= vwid);
 
 	// Set the input part. If nothing changes, then break.
-      bool flag = input_.set_vec(base, bit);
-      if (flag == false) return;
+      തർക്കം flag = നിവേശം_2.set_vec(base, bit);
+      എങ്കിൽ (flag == അസത്യം) തിരികെ;
 
-      if (net_ == 0) {
+      എങ്കിൽ (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    schedule_functor(ഇത്);
       }
 }
 
-void vvp_fun_buf_not_::recv_real(vvp_net_ptr_t ptr, double real,
+ശൂന്യം vvp_fun_buf_not_::recv_real(vvp_net_ptr_t ptr, ഇരട്ട real,
                                  vvp_context_t ctx)
 {
-      if (ptr.port() != 0) return;
+      എങ്കിൽ (ptr.port() != 0) തിരികെ;
 
       recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
 }
@@ -203,7 +203,7 @@ void vvp_fun_buf_not_::recv_real(vvp_net_ptr_t ptr, double real,
 vvp_fun_buf::vvp_fun_buf(unsigned wid)
 : vvp_fun_buf_not_(wid)
 {
-      count_functors_logic += 1;
+      എണ്ണം_functors_logic += 1;
 }
 
 vvp_fun_buf::~vvp_fun_buf()
@@ -214,19 +214,19 @@ vvp_fun_buf::~vvp_fun_buf()
  * The buf functor is very simple--change the z bits to x bits in the
  * vector it passes, and propagate the result.
  */
-void vvp_fun_buf::run_run()
+ശൂന്യം vvp_fun_buf::run_run()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t tmp (input_);
+      vvp_vector4_t tmp (നിവേശം_2);
       tmp.change_z2x();
       ptr->send_vec4(tmp, 0);
 }
 
 vvp_fun_bufz::vvp_fun_bufz()
 {
-      count_functors_logic += 1;
+      എണ്ണം_functors_logic += 1;
 }
 
 vvp_fun_bufz::~vvp_fun_bufz()
@@ -237,37 +237,37 @@ vvp_fun_bufz::~vvp_fun_bufz()
  * The bufz is similar to the buf device, except that it does not
  * bother translating z bits to x.
  */
-void vvp_fun_bufz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ശൂന്യം vvp_fun_bufz::recv_vec4(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector4_t&bit,
                              vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      എങ്കിൽ (ptr.port() != 0)
+	    തിരികെ;
 
       ptr.ptr()->send_vec4(bit, 0);
 }
 
-void vvp_fun_bufz::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ശൂന്യം vvp_fun_bufz::recv_vec4_pv(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector4_t&bit,
                                 unsigned base, unsigned vwid, vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      എങ്കിൽ (ptr.port() != 0)
+	    തിരികെ;
 
       ptr.ptr()->send_vec4_pv(bit, base, vwid, 0);
 }
 
-void vvp_fun_bufz::recv_real(vvp_net_ptr_t ptr, double bit,
+ശൂന്യം vvp_fun_bufz::recv_real(vvp_net_ptr_t ptr, ഇരട്ട bit,
                              vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      എങ്കിൽ (ptr.port() != 0)
+	    തിരികെ;
 
       ptr.ptr()->send_real(bit, 0);
 }
 
-void vvp_fun_buft::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+ശൂന്യം vvp_fun_buft::recv_vec8(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector8_t&bit)
 {
-      if (ptr.port() != 0)
-	    return;
+      എങ്കിൽ (ptr.port() != 0)
+	    തിരികെ;
 
       ptr.ptr()->send_vec8(bit);
 }
@@ -276,7 +276,7 @@ vvp_fun_muxr::vvp_fun_muxr()
 : a_(0.0), b_(0.0)
 {
       net_ = 0;
-      count_functors_logic += 1;
+      എണ്ണം_functors_logic += 1;
       select_ = SEL_BOTH;
 }
 
@@ -284,82 +284,82 @@ vvp_fun_muxr::~vvp_fun_muxr()
 {
 }
 
-void vvp_fun_muxr::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ശൂന്യം vvp_fun_muxr::recv_vec4(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector4_t&bit,
                              vvp_context_t)
 {
 	/* The real valued mux can only take in the select as a
 	   vector4_t. The muxed data is real. */
-      if (ptr.port() != 2)
-	    return;
+      എങ്കിൽ (ptr.port() != 2)
+	    തിരികെ;
 
-      assert(bit.size() == 1);
+      പ്രതിജ്ഞാ(bit.size() == 1);
 
-      switch (bit.value(0)) {
-	  case BIT4_0:
-	    if (select_ == SEL_PORT0) return;
+      തിരഞ്ഞെടുപ്പ് (bit.value(0)) {
+	  അവസ്ഥ BIT4_0:
+	    എങ്കിൽ (select_ == SEL_PORT0) തിരികെ;
 	    select_ = SEL_PORT0;
-	    break;
-	  case BIT4_1:
-	    if (select_ == SEL_PORT1) return;
+	    നിർത്തുക;
+	  അവസ്ഥ BIT4_1:
+	    എങ്കിൽ (select_ == SEL_PORT1) തിരികെ;
 	    select_ = SEL_PORT1;
-	    break;
-	  default:
-	    if (select_ == SEL_BOTH) return;
+	    നിർത്തുക;
+	  സ്ഥിരസ്ഥിതി:
+	    എങ്കിൽ (select_ == SEL_BOTH) തിരികെ;
 	    select_ = SEL_BOTH;
       }
 
-      if (net_ == 0) {
+      എങ്കിൽ (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    schedule_functor(ഇത്);
       }
 }
 
-void vvp_fun_muxr::recv_real(vvp_net_ptr_t ptr, double bit,
+ശൂന്യം vvp_fun_muxr::recv_real(vvp_net_ptr_t ptr, ഇരട്ട bit,
                              vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0:
-	    if (a_ == bit) return;
+      തിരഞ്ഞെടുപ്പ് (ptr.port()) {
+	  അവസ്ഥ 0:
+	    എങ്കിൽ (a_ == bit) തിരികെ;
 	    a_ = bit;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
-	    break;
+	    എങ്കിൽ (select_ == SEL_PORT1) തിരികെ; // The other port is selected.
+	    നിർത്തുക;
 
-	  case 1:
-	    if (b_ == bit) return;
+	  അവസ്ഥ 1:
+	    എങ്കിൽ (b_ == bit) തിരികെ;
 	    b_ = bit;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
-	    break;
+	    എങ്കിൽ (select_ == SEL_PORT0) തിരികെ; // The other port is selected.
+	    നിർത്തുക;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "Unsupported port type %u.\n", ptr.port());
-	    assert(0);
+	    പ്രതിജ്ഞാ(0);
       }
 
-      if (net_ == 0) {
+      എങ്കിൽ (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    schedule_functor(ഇത്);
       }
 }
 
-void vvp_fun_muxr::run_run()
+ശൂന്യം vvp_fun_muxr::run_run()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      switch (select_) {
-	  case SEL_PORT0:
+      തിരഞ്ഞെടുപ്പ് (select_) {
+	  അവസ്ഥ SEL_PORT0:
 	    ptr->send_real(a_, 0);
-	    break;
-	  case SEL_PORT1:
+	    നിർത്തുക;
+	  അവസ്ഥ SEL_PORT1:
 	    ptr->send_real(b_, 0);
-	    break;
-	  default:
-	    if (a_ == b_) {
+	    നിർത്തുക;
+	  സ്ഥിരസ്ഥിതി:
+	    എങ്കിൽ (a_ == b_) {
 		  ptr->send_real(a_, 0);
-	    } else {
+	    } അല്ലെങ്കിൽ {
 		  ptr->send_real(0.0, 0); // Should this be NaN?
 	    }
-	    break;
+	    നിർത്തുക;
       }
 }
 
@@ -367,128 +367,128 @@ vvp_fun_muxz::vvp_fun_muxz(unsigned wid)
 : a_(wid, BIT4_Z), b_(wid, BIT4_Z)
 {
       net_ = 0;
-      count_functors_logic += 1;
+      എണ്ണം_functors_logic += 1;
       select_ = SEL_BOTH;
-      has_run_ = false;
+      has_run_ = അസത്യം;
 }
 
 vvp_fun_muxz::~vvp_fun_muxz()
 {
 }
 
-void vvp_fun_muxz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ശൂന്യം vvp_fun_muxz::recv_vec4(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector4_t&bit,
                              vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0:
-	    if (a_ .eeq(bit) && has_run_) return;
+      തിരഞ്ഞെടുപ്പ് (ptr.port()) {
+	  അവസ്ഥ 0:
+	    എങ്കിൽ (a_ .eeq(bit) && has_run_) തിരികെ;
 	    a_ = bit;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
-	    break;
-	  case 1:
-	    if (b_ .eeq(bit) && has_run_) return;
+	    എങ്കിൽ (select_ == SEL_PORT1) തിരികെ; // The other port is selected.
+	    നിർത്തുക;
+	  അവസ്ഥ 1:
+	    എങ്കിൽ (b_ .eeq(bit) && has_run_) തിരികെ;
 	    b_ = bit;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
-	    break;
-	  case 2:
-	    assert(bit.size() == 1);
-	    switch (bit.value(0)) {
-		case BIT4_0:
-		  if (select_ == SEL_PORT0) return;
+	    എങ്കിൽ (select_ == SEL_PORT0) തിരികെ; // The other port is selected.
+	    നിർത്തുക;
+	  അവസ്ഥ 2:
+	    പ്രതിജ്ഞാ(bit.size() == 1);
+	    തിരഞ്ഞെടുപ്പ് (bit.value(0)) {
+		അവസ്ഥ BIT4_0:
+		  എങ്കിൽ (select_ == SEL_PORT0) തിരികെ;
 		  select_ = SEL_PORT0;
-		  break;
-		case BIT4_1:
-		  if (select_ == SEL_PORT1) return;
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_1:
+		  എങ്കിൽ (select_ == SEL_PORT1) തിരികെ;
 		  select_ = SEL_PORT1;
-		  break;
-		default:
-		  if (select_ == SEL_BOTH && has_run_) return;
+		  നിർത്തുക;
+		സ്ഥിരസ്ഥിതി:
+		  എങ്കിൽ (select_ == SEL_BOTH && has_run_) തിരികെ;
 		  select_ = SEL_BOTH;
 	    }
-	    break;
-	  default:
-	    return;
+	    നിർത്തുക;
+	  സ്ഥിരസ്ഥിതി:
+	    തിരികെ;
       }
 
-      if (net_ == 0) {
+      എങ്കിൽ (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    schedule_functor(ഇത്);
       }
 }
 
-void vvp_fun_muxz::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ശൂന്യം vvp_fun_muxz::recv_vec4_pv(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector4_t&bit,
 				unsigned base, unsigned vwid, vvp_context_t)
 {
-      assert(base + bit.size() <= vwid);
-      bool flag;
+      പ്രതിജ്ഞാ(base + bit.size() <= vwid);
+      തർക്കം flag;
 
-      switch (ptr.port()) {
-	  case 0:
+      തിരഞ്ഞെടുപ്പ് (ptr.port()) {
+	  അവസ്ഥ 0:
 	    flag = a_.set_vec(base, bit);
-	    if (flag == false && has_run_) return;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
-	    break;
-	  case 1:
+	    എങ്കിൽ (flag == അസത്യം && has_run_) തിരികെ;
+	    എങ്കിൽ (select_ == SEL_PORT1) തിരികെ; // The other port is selected.
+	    നിർത്തുക;
+	  അവസ്ഥ 1:
 	    flag = b_.set_vec(base, bit);
-	    if (flag == false && has_run_) return;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
-	    break;
-	  case 2:
-	    assert((base == 0) && (bit.size() == 1));
+	    എങ്കിൽ (flag == അസത്യം && has_run_) തിരികെ;
+	    എങ്കിൽ (select_ == SEL_PORT0) തിരികെ; // The other port is selected.
+	    നിർത്തുക;
+	  അവസ്ഥ 2:
+	    പ്രതിജ്ഞാ((base == 0) && (bit.size() == 1));
 	    recv_vec4(ptr, bit, 0);
-	  default:
-	    return;
+	  സ്ഥിരസ്ഥിതി:
+	    തിരികെ;
       }
-      if (net_ == 0) {
+      എങ്കിൽ (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    schedule_functor(ഇത്);
       }
 }
 
-void vvp_fun_muxz::run_run()
+ശൂന്യം vvp_fun_muxz::run_run()
 {
-      has_run_ = true;
+      has_run_ = സത്യം;
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      switch (select_) {
-	  case SEL_PORT0:
+      തിരഞ്ഞെടുപ്പ് (select_) {
+	  അവസ്ഥ SEL_PORT0:
 	    ptr->send_vec4(a_, 0);
-	    break;
-	  case SEL_PORT1:
+	    നിർത്തുക;
+	  അവസ്ഥ SEL_PORT1:
 	    ptr->send_vec4(b_, 0);
-	    break;
-	  default:
+	    നിർത്തുക;
+	  സ്ഥിരസ്ഥിതി:
 	      {
 		    unsigned min_size = a_.size();
 		    unsigned max_size = min_size;
-		    if (b_.size() < min_size)
+		    എങ്കിൽ (b_.size() < min_size)
 			  min_size = b_.size();
-		    if (b_.size() > max_size)
+		    എങ്കിൽ (b_.size() > max_size)
 			  max_size = b_.size();
 
 		    vvp_vector4_t res (max_size);
 
-		    for (unsigned idx = 0 ;  idx < min_size ;  idx += 1) {
-			  if (a_.value(idx) == b_.value(idx))
+		    വേണ്ടി (unsigned idx = 0 ;  idx < min_size ;  idx += 1) {
+			  എങ്കിൽ (a_.value(idx) == b_.value(idx))
 				res.set_bit(idx, a_.value(idx));
-			  else
+			  അല്ലെങ്കിൽ
 				res.set_bit(idx, BIT4_X);
 		    }
 
-		    for (unsigned idx = min_size ;  idx < max_size ;  idx += 1)
+		    വേണ്ടി (unsigned idx = min_size ;  idx < max_size ;  idx += 1)
 			  res.set_bit(idx, BIT4_X);
 
 		    ptr->send_vec4(res, 0);
 	      }
-	    break;
+	    നിർത്തുക;
       }
 }
 
 vvp_fun_not::vvp_fun_not(unsigned wid)
 : vvp_fun_buf_not_(wid)
 {
-      count_functors_logic += 1;
+      എണ്ണം_functors_logic += 1;
 }
 
 vvp_fun_not::~vvp_fun_not()
@@ -499,62 +499,62 @@ vvp_fun_not::~vvp_fun_not()
  * The not functor is very simple--change the z bits to x bits in the
  * vector it passes, and propagate the inverted result.
  */
-void vvp_fun_not::run_run()
+ശൂന്യം vvp_fun_not::run_run()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_, true /* invert */);
+      vvp_vector4_t result (നിവേശം_2, സത്യം /* invert */);
       ptr->send_vec4(result, 0);
 }
 
-vvp_fun_or::vvp_fun_or(unsigned wid, bool invert)
+vvp_fun_or::vvp_fun_or(unsigned wid, തർക്കം invert)
 : vvp_fun_boolean_(wid), invert_(invert)
 {
-      count_functors_logic += 1;
+      എണ്ണം_functors_logic += 1;
 }
 
 vvp_fun_or::~vvp_fun_or()
 {
 }
 
-void vvp_fun_or::run_run()
+ശൂന്യം vvp_fun_or::run_run()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_[0]);
+      vvp_vector4_t result (നിവേശം_2[0]);
 
-      for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
-	    result |= input_[pdx];
+      വേണ്ടി (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
+	    result |= നിവേശം_2[pdx];
 
-      if (invert_)
+      എങ്കിൽ (invert_)
 	    result.invert();
 
       ptr->send_vec4(result, 0);
 }
 
-vvp_fun_xor::vvp_fun_xor(unsigned wid, bool invert)
+vvp_fun_xor::vvp_fun_xor(unsigned wid, തർക്കം invert)
 : vvp_fun_boolean_(wid), invert_(invert)
 {
-      count_functors_logic += 1;
+      എണ്ണം_functors_logic += 1;
 }
 
 vvp_fun_xor::~vvp_fun_xor()
 {
 }
 
-void vvp_fun_xor::run_run()
+ശൂന്യം vvp_fun_xor::run_run()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_[0]);
+      vvp_vector4_t result (നിവേശം_2[0]);
 
-      for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
-	    result ^= input_[pdx];
+      വേണ്ടി (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
+	    result ^= നിവേശം_2[pdx];
 
-      if (invert_)
+      എങ്കിൽ (invert_)
 	    result.invert();
 
       ptr->send_vec4(result, 0);
@@ -566,122 +566,122 @@ void vvp_fun_xor::run_run()
  * functor. Also resolve the inputs to the functor.
  */
 
-void compile_functor(char*label, char*type, unsigned width,
+ശൂന്യം compile_functor(അക്ഷരം*label, അക്ഷരം*type, unsigned width,
 		     unsigned ostr0, unsigned ostr1,
-		     unsigned argc, struct symb_s*argv)
+		     unsigned argc, ഘടന symb_s*argv)
 {
       vvp_net_fun_t* obj = 0;
-      bool strength_aware = false;
+      തർക്കം strength_aware = അസത്യം;
 
-      if (strcmp(type, "OR") == 0) {
-	    obj = new vvp_fun_or(width, false);
+      എങ്കിൽ (strcmp(type, "OR") == 0) {
+	    obj = പുതിയ vvp_fun_or(width, അസത്യം);
 
-      } else if (strcmp(type, "AND") == 0) {
-	    obj = new vvp_fun_and(width, false);
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "AND") == 0) {
+	    obj = പുതിയ vvp_fun_and(width, അസത്യം);
 
-      } else if (strcmp(type, "BUF") == 0) {
-	    obj = new vvp_fun_buf(width);
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "BUF") == 0) {
+	    obj = പുതിയ vvp_fun_buf(width);
 
-      } else if (strcmp(type, "BUFIF0") == 0) {
-	    obj = new vvp_fun_bufif(true,false, ostr0, ostr1);
-	    strength_aware = true;
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "BUFIF0") == 0) {
+	    obj = പുതിയ vvp_fun_bufif(സത്യം,അസത്യം, ostr0, ostr1);
+	    strength_aware = സത്യം;
 
-      } else if (strcmp(type, "BUFIF1") == 0) {
-	    obj = new vvp_fun_bufif(false,false, ostr0, ostr1);
-	    strength_aware = true;
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "BUFIF1") == 0) {
+	    obj = പുതിയ vvp_fun_bufif(അസത്യം,അസത്യം, ostr0, ostr1);
+	    strength_aware = സത്യം;
 
-      } else if (strcmp(type, "EQUIV") == 0) {
-	    obj = new vvp_fun_equiv();
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "EQUIV") == 0) {
+	    obj = പുതിയ vvp_fun_equiv();
 
-      } else if (strcmp(type, "IMPL") == 0) {
-	    obj = new vvp_fun_impl();
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "IMPL") == 0) {
+	    obj = പുതിയ vvp_fun_impl();
 
-      } else if (strcmp(type, "NAND") == 0) {
-	    obj = new vvp_fun_and(width, true);
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "NAND") == 0) {
+	    obj = പുതിയ vvp_fun_and(width, സത്യം);
 
-      } else if (strcmp(type, "NOR") == 0) {
-	    obj = new vvp_fun_or(width, true);
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "NOR") == 0) {
+	    obj = പുതിയ vvp_fun_or(width, സത്യം);
 
-      } else if (strcmp(type, "NOTIF0") == 0) {
-	    obj = new vvp_fun_bufif(true,true, ostr0, ostr1);
-	    strength_aware = true;
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "NOTIF0") == 0) {
+	    obj = പുതിയ vvp_fun_bufif(സത്യം,സത്യം, ostr0, ostr1);
+	    strength_aware = സത്യം;
 
-      } else if (strcmp(type, "NOTIF1") == 0) {
-	    obj = new vvp_fun_bufif(false,true, ostr0, ostr1);
-	    strength_aware = true;
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "NOTIF1") == 0) {
+	    obj = പുതിയ vvp_fun_bufif(അസത്യം,സത്യം, ostr0, ostr1);
+	    strength_aware = സത്യം;
 
-      } else if (strcmp(type, "BUFT") == 0) {
-	    obj = new vvp_fun_buft();
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "BUFT") == 0) {
+	    obj = പുതിയ vvp_fun_buft();
 
-      } else if (strcmp(type, "BUFZ") == 0) {
-	    obj = new vvp_fun_bufz();
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "BUFZ") == 0) {
+	    obj = പുതിയ vvp_fun_bufz();
 
-      } else if (strcmp(type, "MUXR") == 0) {
-	    obj = new vvp_fun_muxr;
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "MUXR") == 0) {
+	    obj = പുതിയ vvp_fun_muxr;
 
-      } else if (strcmp(type, "MUXZ") == 0) {
-	    obj = new vvp_fun_muxz(width);
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "MUXZ") == 0) {
+	    obj = പുതിയ vvp_fun_muxz(width);
 
-      } else if (strcmp(type, "CMOS") == 0) {
-	    obj = new vvp_fun_cmos();
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "CMOS") == 0) {
+	    obj = പുതിയ vvp_fun_cmos();
 
-      } else if (strcmp(type, "NMOS") == 0) {
-	    obj = new vvp_fun_pmos(true);
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "NMOS") == 0) {
+	    obj = പുതിയ vvp_fun_pmos(സത്യം);
 
-      } else if (strcmp(type, "PMOS") == 0) {
-	    obj = new vvp_fun_pmos(false);
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "PMOS") == 0) {
+	    obj = പുതിയ vvp_fun_pmos(അസത്യം);
 
-      } else if (strcmp(type, "RCMOS") == 0) {
-	    obj = new vvp_fun_rcmos();
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "RCMOS") == 0) {
+	    obj = പുതിയ vvp_fun_rcmos();
 
-      } else if (strcmp(type, "RNMOS") == 0) {
-	    obj = new vvp_fun_rpmos(true);
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "RNMOS") == 0) {
+	    obj = പുതിയ vvp_fun_rpmos(സത്യം);
 
-      } else if (strcmp(type, "RPMOS") == 0) {
-	    obj = new vvp_fun_rpmos(false);
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "RPMOS") == 0) {
+	    obj = പുതിയ vvp_fun_rpmos(അസത്യം);
 
-      } else if (strcmp(type, "NOT") == 0) {
-	    obj = new vvp_fun_not(width);
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "NOT") == 0) {
+	    obj = പുതിയ vvp_fun_not(width);
 
-      } else if (strcmp(type, "XNOR") == 0) {
-	    obj = new vvp_fun_xor(width, true);
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "XNOR") == 0) {
+	    obj = പുതിയ vvp_fun_xor(width, സത്യം);
 
-      } else if (strcmp(type, "XOR") == 0) {
-	    obj = new vvp_fun_xor(width, false);
+      } അല്ലെങ്കിൽ എങ്കിൽ (strcmp(type, "XOR") == 0) {
+	    obj = പുതിയ vvp_fun_xor(width, അസത്യം);
 
-      } else {
+      } അല്ലെങ്കിൽ {
 	    yyerror("invalid functor type.");
-	    free(type);
-	    free(argv);
-	    free(label);
-	    return;
+	    സ്വതന്ത്രം(type);
+	    സ്വതന്ത്രം(argv);
+	    സ്വതന്ത്രം(label);
+	    തിരികെ;
       }
 
-      free(type);
+      സ്വതന്ത്രം(type);
 
-      assert(argc <= 4);
-      vvp_net_t*net = new vvp_net_t;
+      പ്രതിജ്ഞാ(argc <= 4);
+      vvp_net_t*net = പുതിയ vvp_net_t;
       net->fun = obj;
 
       inputs_connect(net, argc, argv);
-      free(argv);
+      സ്വതന്ത്രം(argv);
 
 	/* If both the strengths are the default strong drive, then
 	   there is no need for a specialized driver. Attach the label
 	   to this node and we are finished. */
-      if (strength_aware || (ostr0 == 6 && ostr1 == 6)) {
-	    define_functor_symbol(label, net);
-	    free(label);
-	    return;
+      എങ്കിൽ (strength_aware || (ostr0 == 6 && ostr1 == 6)) {
+	    define_functor_ചിഹ്നം(label, net);
+	    സ്വതന്ത്രം(label);
+	    തിരികെ;
       }
 
-      vvp_net_t*net_drv = new vvp_net_t;
-      vvp_net_fun_t*obj_drv = new vvp_fun_drive(ostr0, ostr1);
+      vvp_net_t*net_drv = പുതിയ vvp_net_t;
+      vvp_net_fun_t*obj_drv = പുതിയ vvp_fun_drive(ostr0, ostr1);
       net_drv->fun = obj_drv;
 
 	/* Point the gate to the drive node. */
       net->link(vvp_net_ptr_t(net_drv, 0));
 
-      define_functor_symbol(label, net_drv);
-      free(label);
+      define_functor_ചിഹ്നം(label, net_drv);
+      സ്വതന്ത്രം(label);
 }

@@ -37,7 +37,7 @@
    BIT4_1) or will propagate an initial value of 'bx. From then on
    the flip-flop operates normally. */
 
-vvp_dff::vvp_dff(unsigned width, bool negedge)
+vvp_dff::vvp_dff(unsigned width, തർക്കം negedge)
 : clk_(BIT4_X), ena_(BIT4_X), asc_(BIT4_Z), d_(width, BIT4_X)
 {
       clk_active_ = negedge ? BIT4_0 : BIT4_1;
@@ -47,62 +47,62 @@ vvp_dff::~vvp_dff()
 {
 }
 
-vvp_dff_aclr::vvp_dff_aclr(unsigned width, bool negedge)
+vvp_dff_aclr::vvp_dff_aclr(unsigned width, തർക്കം negedge)
 : vvp_dff(width, negedge)
 {
 }
 
-vvp_dff_aset::vvp_dff_aset(unsigned width, bool negedge)
+vvp_dff_aset::vvp_dff_aset(unsigned width, തർക്കം negedge)
 : vvp_dff(width, negedge)
 {
 }
 
-vvp_dff_asc::vvp_dff_asc(unsigned width, bool negedge, const char*asc_value)
-: vvp_dff(width, negedge), asc_value_(c4string_to_vector4(asc_value))
+vvp_dff_asc::vvp_dff_asc(unsigned width, തർക്കം negedge, സ്ഥിരം അക്ഷരം*asc_മൂല്യം)
+: vvp_dff(width, negedge), asc_മൂല്യം_2(c4string_to_vector4(asc_മൂല്യം))
 {
 }
 
-void vvp_dff::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ശൂന്യം vvp_dff::recv_vec4(vvp_net_ptr_t port, സ്ഥിരം vvp_vector4_t&bit,
                         vvp_context_t)
 {
       vvp_bit4_t tmp;
 
-      switch (port.port()) {
+      തിരഞ്ഞെടുപ്പ് (port.port()) {
 
-	  case 0: // D
+	  അവസ്ഥ 0: // D
 	    d_ = bit;
-	    break;
+	    നിർത്തുക;
 
-	  case 1: // CLK
-	    assert(bit.size() == 1);
-	    if (asc_ != BIT4_0)
-		  break;
-	    if (ena_ != BIT4_1)
-		  break;
+	  അവസ്ഥ 1: // CLK
+	    പ്രതിജ്ഞാ(bit.size() == 1);
+	    എങ്കിൽ (asc_ != BIT4_0)
+		  നിർത്തുക;
+	    എങ്കിൽ (ena_ != BIT4_1)
+		  നിർത്തുക;
 	    tmp = clk_;
 	    clk_ = bit.value(0);
-	    if (clk_ == clk_active_ && tmp != clk_active_)
+	    എങ്കിൽ (clk_ == clk_active_ && tmp != clk_active_)
 		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	    നിർത്തുക;
 
-	  case 2: // CE
-	    assert(bit.size() == 1);
+	  അവസ്ഥ 2: // CE
+	    പ്രതിജ്ഞാ(bit.size() == 1);
 	    ena_ = bit.value(0);
-	    break;
+	    നിർത്തുക;
 
-	  case 3: // asynch SET/CLR
-	    assert(bit.size() == 1);
+	  അവസ്ഥ 3: // asynch SET/CLR
+	    പ്രതിജ്ഞാ(bit.size() == 1);
 	    tmp = asc_;
 	    asc_ = bit.value(0);
-	    if (asc_ == BIT4_1 && tmp != BIT4_1)
+	    എങ്കിൽ (asc_ == BIT4_1 && tmp != BIT4_1)
 		  recv_async(port);
-	    else if (tmp == BIT4_Z)
+	    അല്ലെങ്കിൽ എങ്കിൽ (tmp == BIT4_Z)
 		  port.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
-	    break;
+	    നിർത്തുക;
       }
 }
 
-void vvp_dff::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ശൂന്യം vvp_dff::recv_vec4_pv(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector4_t&bit,
 			   unsigned base, unsigned vwid, vvp_context_t ctx)
 {
       recv_vec4_pv_(ptr, bit, base, vwid, ctx);
@@ -115,86 +115,86 @@ void vvp_dff::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
  * NOTE: Don't touch the d_ value, because that tracks the D input,
  * which may be needed when the device is clocked afterwards.
  */
-void vvp_dff::recv_async(vvp_net_ptr_t)
+ശൂന്യം vvp_dff::recv_async(vvp_net_ptr_t)
 {
 	// The base dff does not have an asynchronous set/clr input.
-      assert(0);
+      പ്രതിജ്ഞാ(0);
 }
 
-void vvp_dff_aclr::recv_async(vvp_net_ptr_t port)
+ശൂന്യം vvp_dff_aclr::recv_async(vvp_net_ptr_t port)
 {
       schedule_propagate_vector(port.ptr(), 0, vvp_vector4_t(d_.size(), BIT4_0));
 }
 
-void vvp_dff_aset::recv_async(vvp_net_ptr_t port)
+ശൂന്യം vvp_dff_aset::recv_async(vvp_net_ptr_t port)
 {
       schedule_propagate_vector(port.ptr(), 0, vvp_vector4_t(d_.size(), BIT4_1));
 }
 
-void vvp_dff_asc::recv_async(vvp_net_ptr_t port)
+ശൂന്യം vvp_dff_asc::recv_async(vvp_net_ptr_t port)
 {
-      schedule_propagate_vector(port.ptr(), 0, asc_value_);
+      schedule_propagate_vector(port.ptr(), 0, asc_മൂല്യം_2);
 }
 
-void compile_dff(char*label, unsigned width, bool negedge,
-		 struct symb_s arg_d,
-		 struct symb_s arg_c,
-		 struct symb_s arg_e)
+ശൂന്യം compile_dff(അക്ഷരം*label, unsigned width, തർക്കം negedge,
+		 ഘടന symb_s arg_d,
+		 ഘടന symb_s arg_c,
+		 ഘടന symb_s arg_e)
 {
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_dff*fun = new vvp_dff(width, negedge);
+      vvp_net_t*ptr = പുതിയ vvp_net_t;
+      vvp_dff*fun = പുതിയ vvp_dff(width, negedge);
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_c.text);
-      input_connect(ptr, 2, arg_e.text);
+      define_functor_ചിഹ്നം(label, ptr);
+      സ്വതന്ത്രം(label);
+      നിവേശം_connect(ptr, 0, arg_d.text);
+      നിവേശം_connect(ptr, 1, arg_c.text);
+      നിവേശം_connect(ptr, 2, arg_e.text);
 
       vvp_vector4_t init_val = vvp_vector4_t(1, BIT4_0);
       schedule_init_vector(vvp_net_ptr_t(ptr,3), init_val);
 }
 
-void compile_dff_aclr(char*label, unsigned width, bool negedge,
-		      struct symb_s arg_d,
-		      struct symb_s arg_c,
-		      struct symb_s arg_e,
-		      struct symb_s arg_a)
+ശൂന്യം compile_dff_aclr(അക്ഷരം*label, unsigned width, തർക്കം negedge,
+		      ഘടന symb_s arg_d,
+		      ഘടന symb_s arg_c,
+		      ഘടന symb_s arg_e,
+		      ഘടന symb_s arg_a)
 {
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_dff*fun = new vvp_dff_aclr(width, negedge);
+      vvp_net_t*ptr = പുതിയ vvp_net_t;
+      vvp_dff*fun = പുതിയ vvp_dff_aclr(width, negedge);
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_c.text);
-      input_connect(ptr, 2, arg_e.text);
-      input_connect(ptr, 3, arg_a.text);
+      define_functor_ചിഹ്നം(label, ptr);
+      സ്വതന്ത്രം(label);
+      നിവേശം_connect(ptr, 0, arg_d.text);
+      നിവേശം_connect(ptr, 1, arg_c.text);
+      നിവേശം_connect(ptr, 2, arg_e.text);
+      നിവേശം_connect(ptr, 3, arg_a.text);
 }
 
-void compile_dff_aset(char*label, unsigned width, bool negedge,
-		      struct symb_s arg_d,
-		      struct symb_s arg_c,
-		      struct symb_s arg_e,
-		      struct symb_s arg_a,
-		      char*asc_value)
+ശൂന്യം compile_dff_aset(അക്ഷരം*label, unsigned width, തർക്കം negedge,
+		      ഘടന symb_s arg_d,
+		      ഘടന symb_s arg_c,
+		      ഘടന symb_s arg_e,
+		      ഘടന symb_s arg_a,
+		      അക്ഷരം*asc_മൂല്യം)
 {
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_net_t*ptr = പുതിയ vvp_net_t;
       vvp_dff*fun;
-      if (asc_value) {
-	    assert(c4string_test(asc_value));
-	    fun = new vvp_dff_asc(width, negedge, asc_value);
-	    free(asc_value);
-      } else {
-	    fun = new vvp_dff_aset(width, negedge);
+      എങ്കിൽ (asc_മൂല്യം) {
+	    പ്രതിജ്ഞാ(c4string_test(asc_മൂല്യം));
+	    fun = പുതിയ vvp_dff_asc(width, negedge, asc_മൂല്യം);
+	    സ്വതന്ത്രം(asc_മൂല്യം);
+      } അല്ലെങ്കിൽ {
+	    fun = പുതിയ vvp_dff_aset(width, negedge);
       }
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_c.text);
-      input_connect(ptr, 2, arg_e.text);
-      input_connect(ptr, 3, arg_a.text);
+      define_functor_ചിഹ്നം(label, ptr);
+      സ്വതന്ത്രം(label);
+      നിവേശം_connect(ptr, 0, arg_d.text);
+      നിവേശം_connect(ptr, 1, arg_c.text);
+      നിവേശം_connect(ptr, 2, arg_e.text);
+      നിവേശം_connect(ptr, 3, arg_a.text);
 }

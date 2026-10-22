@@ -55,100 +55,100 @@
  * The table is calculated at compile time, therefore, by the
  * draw_tt.c program.
  */
-extern const char hex_digits[256];
-extern const char oct_digits[64];
+ബാഹ്യ സ്ഥിരം അക്ഷരം hex_digits[256];
+ബാഹ്യ സ്ഥിരം അക്ഷരം oct_digits[64];
 
 /*
  * The string values need a result buf to hold the results. This
  * buffer can be reused for that purpose. Whenever I have a need, the
  * need_result_buf function makes sure that need can be met.
  */
-void *need_result_buf(unsigned cnt, vpi_rbuf_t type)
+ശൂന്യം *need_result_buf(unsigned cnt, vpi_rbuf_t type)
 {
-      static void*result_buf[2] = {0, 0};
-      static size_t result_buf_size[2] = {0, 0};
+      സ്ഥിതം ശൂന്യം*result_buf[2] = {0, 0};
+      സ്ഥിതം size_t result_buf_size[2] = {0, 0};
 
-      if (type == RBUF_DEL) {
-	    free(result_buf[RBUF_VAL]);
+      എങ്കിൽ (type == RBUF_DEL) {
+	    സ്വതന്ത്രം(result_buf[RBUF_VAL]);
 	    result_buf[RBUF_VAL] = 0;
 	    result_buf_size[RBUF_VAL] = 0;
 
-	    free(result_buf[RBUF_STR]);
+	    സ്വതന്ത്രം(result_buf[RBUF_STR]);
 	    result_buf[RBUF_STR] = 0;
 	    result_buf_size[RBUF_STR] = 0;
 
-	    return 0;
+	    തിരികെ 0;
       }
 
       cnt = (cnt + 0x0fff) & ~0x0fff;
 
-      if (result_buf_size[type] == 0) {
+      എങ്കിൽ (result_buf_size[type] == 0) {
 	    result_buf[type] = malloc(cnt);
 	    result_buf_size[type] = cnt;
-      } else if (result_buf_size[type] < cnt) {
+      } അല്ലെങ്കിൽ എങ്കിൽ (result_buf_size[type] < cnt) {
 	    result_buf[type] = realloc(result_buf[type], cnt);
 	    result_buf_size[type] = cnt;
       }
 
-      return result_buf[type];
+      തിരികെ result_buf[type];
 }
 
-char *simple_set_rbuf_str(const char *s1)
+അക്ഷരം *simple_set_rbuf_str(സ്ഥിരം അക്ഷരം *s1)
 {
-      char *res = static_cast<char *>(need_result_buf(strlen(s1)+1, RBUF_STR));
-      if (res) strcpy(res,s1);
-      return res;
+      അക്ഷരം *res = static_cast<അക്ഷരം *>(need_result_buf(strlen(s1)+1, RBUF_STR));
+      എങ്കിൽ (res) strcpy(res,s1);
+      തിരികെ res;
 }
 
-char *generic_get_str(int code, vpiHandle ref, const char *name, const char *index)
+അക്ഷരം *generic_get_str(പൂർണ്ണസംഖ്യ code, vpiHandle ref, സ്ഥിരം അക്ഷരം *name, സ്ഥിരം അക്ഷരം *index)
 {
       size_t len = strlen(name) + 1;  /* include space for null termination */
-      char *bn = NULL;
-      bool is_bn_a_pkg = false;
-      if (code == vpiFullName) {
+      അക്ഷരം *bn = ശൂന്യ;
+      തർക്കം is_bn_a_pkg = അസത്യം;
+      എങ്കിൽ (code == vpiFullName) {
 	    bn = strdup(vpi_get_str(code,ref));
 	    size_t bn_len = strlen(bn);
 	    is_bn_a_pkg = (bn_len >= 3) && (bn[bn_len-1] == ':') && (bn[bn_len-2] == ':');
 	    len += bn_len;
-	    if (! is_bn_a_pkg) len += 1; // include space for "." separator
+	    എങ്കിൽ (! is_bn_a_pkg) len += 1; // include space for "." separator
       }
-      if (index != NULL) len += strlen(index) + 2;  /* include space for brackets */
+      എങ്കിൽ (index != ശൂന്യ) len += strlen(index) + 2;  /* include space for brackets */
 
-      char *res = static_cast<char *>(need_result_buf(len, RBUF_STR));
-      if (!res) {
-	    free(bn);
-	    return NULL;
+      അക്ഷരം *res = static_cast<അക്ഷരം *>(need_result_buf(len, RBUF_STR));
+      എങ്കിൽ (!res) {
+	    സ്വതന്ത്രം(bn);
+	    തിരികെ ശൂന്യ;
       }
       *res=0;  /* start with nothing */
 
 	/* if this works, I can make it more efficient later */
-      if (bn != NULL) {
+      എങ്കിൽ (bn != ശൂന്യ) {
 	    strcat(res, bn);
 	      // A package already has the "::" separator in the name
-	    if (! is_bn_a_pkg) strcat(res, ".");
-	    free(bn);
+	    എങ്കിൽ (! is_bn_a_pkg) strcat(res, ".");
+	    സ്വതന്ത്രം(bn);
       }
       strcat(res, name);
-      if (index != NULL) {
+      എങ്കിൽ (index != ശൂന്യ) {
 	    strcat(res, "[");
 	    strcat(res, index);
 	    strcat(res, "]");
       }
-      return res;
+      തിരികെ res;
 }
 
-static vpiHandle fill_in_net4(struct __vpiSignal*obj, __vpiScope*scope,
-                              const char*name, int msb, int lsb,
-                              bool signed_flag, vvp_net_t*node);
+സ്ഥിതം vpiHandle fill_in_net4(ഘടന __vpiSignal*obj, __vpiScope*scope,
+                              സ്ഥിരം അക്ഷരം*name, പൂർണ്ണസംഖ്യ msb, പൂർണ്ണസംഖ്യ lsb,
+                              തർക്കം signed_flag, vvp_net_t*കണ്ണി);
 
-static vpiHandle fill_in_var4(struct __vpiSignal*obj,
-                              const char*name, int msb, int lsb,
-                              bool signed_flag, vvp_net_t*node)
+സ്ഥിതം vpiHandle fill_in_var4(ഘടന __vpiSignal*obj,
+                              സ്ഥിരം അക്ഷരം*name, പൂർണ്ണസംഖ്യ msb, പൂർണ്ണസംഖ്യ lsb,
+                              തർക്കം signed_flag, vvp_net_t*കണ്ണി)
 {
 	// Variable declarations are always resolved immediately,
 	// so we can assume they belong in the current scope.
-      return fill_in_net4(obj, vpip_peek_current_scope(),
-			  name, msb, lsb, signed_flag, node);
+      തിരികെ fill_in_net4(obj, vpip_peek_current_scope(),
+			  name, msb, lsb, signed_flag, കണ്ണി);
 }
 
 /*
@@ -156,18 +156,18 @@ static vpiHandle fill_in_var4(struct __vpiSignal*obj,
  * They work with full or partial signals.
  */
 
-static void format_vpiBinStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+സ്ഥിതം ശൂന്യം format_vpiBinStrVal(സ്ഥിരം vvp_signal_മൂല്യം*sig, പൂർണ്ണസംഖ്യ base, unsigned wid,
+                                s_vpi_മൂല്യം*vp)
 {
-      char *rbuf = static_cast<char *>(need_result_buf(wid+1, RBUF_VAL));
+      അക്ഷരം *rbuf = static_cast<അക്ഷരം *>(need_result_buf(wid+1, RBUF_VAL));
       long end = base + (signed)wid;
       long offset = end - 1;
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->മൂല്യം_size();
 
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (idx < 0 || idx >= ssize) {
+      വേണ്ടി (long idx = base ;  idx < end ;  idx += 1) {
+	    എങ്കിൽ (idx < 0 || idx >= ssize) {
                   rbuf[offset-idx] = 'x';
-	    } else {
+	    } അല്ലെങ്കിൽ {
                   rbuf[offset-idx] = vvp_bit4_to_ascii(sig->value(idx));
 	    }
       }
@@ -176,39 +176,39 @@ static void format_vpiBinStrVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiOctStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+സ്ഥിതം ശൂന്യം format_vpiOctStrVal(സ്ഥിരം vvp_signal_മൂല്യം*sig, പൂർണ്ണസംഖ്യ base, unsigned wid,
+                                s_vpi_മൂല്യം*vp)
 {
       unsigned dwid = (wid + 2) / 3;
-      char *rbuf = static_cast<char *>(need_result_buf(dwid+1, RBUF_VAL));
+      അക്ഷരം *rbuf = static_cast<അക്ഷരം *>(need_result_buf(dwid+1, RBUF_VAL));
       long end = base + (signed)wid;
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->മൂല്യം_size();
       unsigned val = 0;
 
       rbuf[dwid] = 0;
-      for (long idx = base ;  idx < end ;  idx += 1) {
+      വേണ്ടി (long idx = base ;  idx < end ;  idx += 1) {
 	    unsigned bit = 0;
-	    if (idx < 0 || idx >= ssize) {
+	    എങ്കിൽ (idx < 0 || idx >= ssize) {
                   bit = 2; // BIT4_X
-	    } else {
-                  switch (sig->value(idx)) {
-		      case BIT4_0:
+	    } അല്ലെങ്കിൽ {
+                  തിരഞ്ഞെടുപ്പ് (sig->value(idx)) {
+		      അവസ്ഥ BIT4_0:
 			bit = 0;
-			break;
-		      case BIT4_1:
+			നിർത്തുക;
+		      അവസ്ഥ BIT4_1:
 			bit = 1;
-			break;
-		      case BIT4_X:
+			നിർത്തുക;
+		      അവസ്ഥ BIT4_X:
 			bit = 2;
-			break;
-		      case BIT4_Z:
+			നിർത്തുക;
+		      അവസ്ഥ BIT4_Z:
 			bit = 3;
-			break;
+			നിർത്തുക;
                   }
 	    }
 	    val |= bit << 2*((idx-base) % 3);
 
-	    if ((idx-base) % 3 == 2) {
+	    എങ്കിൽ ((idx-base) % 3 == 2) {
 		dwid -= 1;
 		rbuf[dwid] = oct_digits[val];
 		val = 0;
@@ -216,55 +216,55 @@ static void format_vpiOctStrVal(const vvp_signal_value*sig, int base, unsigned w
       }
 
 	/* Fill in X or Z if they are the only thing in the value. */
-      switch (wid % 3) {
-	  case 1:
-	    if (val == 2) val = 42;
-	    else if (val == 3) val = 63;
-	    break;
-	  case 2:
-	    if (val == 10) val = 42;
-	    else if (val == 15) val = 63;
-	    break;
+      തിരഞ്ഞെടുപ്പ് (wid % 3) {
+	  അവസ്ഥ 1:
+	    എങ്കിൽ (val == 2) val = 42;
+	    അല്ലെങ്കിൽ എങ്കിൽ (val == 3) val = 63;
+	    നിർത്തുക;
+	  അവസ്ഥ 2:
+	    എങ്കിൽ (val == 10) val = 42;
+	    അല്ലെങ്കിൽ എങ്കിൽ (val == 15) val = 63;
+	    നിർത്തുക;
       }
 
-      if (dwid > 0) rbuf[0] = oct_digits[val];
+      എങ്കിൽ (dwid > 0) rbuf[0] = oct_digits[val];
 
       vp->value.str = rbuf;
 }
 
-static void format_vpiHexStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+സ്ഥിതം ശൂന്യം format_vpiHexStrVal(സ്ഥിരം vvp_signal_മൂല്യം*sig, പൂർണ്ണസംഖ്യ base, unsigned wid,
+                                s_vpi_മൂല്യം*vp)
 {
       unsigned dwid = (wid + 3) / 4;
-      char *rbuf = static_cast<char *>(need_result_buf(dwid+1, RBUF_VAL));
+      അക്ഷരം *rbuf = static_cast<അക്ഷരം *>(need_result_buf(dwid+1, RBUF_VAL));
       long end = base + (signed)wid;
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->മൂല്യം_size();
       unsigned val = 0;
 
       rbuf[dwid] = 0;
-      for (long idx = base ;  idx < end ;  idx += 1) {
+      വേണ്ടി (long idx = base ;  idx < end ;  idx += 1) {
 	    unsigned bit = 0;
-	    if (idx < 0 || idx >= ssize) {
+	    എങ്കിൽ (idx < 0 || idx >= ssize) {
                   bit = 2; // BIT4_X
-	    } else {
-                  switch (sig->value(idx)) {
-		      case BIT4_0:
+	    } അല്ലെങ്കിൽ {
+                  തിരഞ്ഞെടുപ്പ് (sig->value(idx)) {
+		      അവസ്ഥ BIT4_0:
 			bit = 0;
-			break;
-		      case BIT4_1:
+			നിർത്തുക;
+		      അവസ്ഥ BIT4_1:
 			bit = 1;
-			break;
-		      case BIT4_X:
+			നിർത്തുക;
+		      അവസ്ഥ BIT4_X:
 			bit = 2;
-			break;
-		      case BIT4_Z:
+			നിർത്തുക;
+		      അവസ്ഥ BIT4_Z:
 			bit = 3;
-			break;
+			നിർത്തുക;
                   }
 	    }
 	    val |= bit << 2*((idx-base) % 4);
 
-	    if ((idx-base) % 4 == 3) {
+	    എങ്കിൽ ((idx-base) % 4 == 3) {
 		dwid -= 1;
 		rbuf[dwid] = hex_digits[val];
 		val = 0;
@@ -272,63 +272,63 @@ static void format_vpiHexStrVal(const vvp_signal_value*sig, int base, unsigned w
       }
 
 	/* Fill in X or Z if they are the only thing in the value. */
-      switch (wid % 4) {
-	  case 1:
-	    if (val == 2) val = 170;
-	    else if (val == 3) val = 255;
-	    break;
-	  case 2:
-	    if (val == 10) val = 170;
-	    else if (val == 15) val = 255;
-	    break;
-	  case 3:
-	    if (val == 42) val = 170;
-	    else if (val == 63) val = 255;
-	    break;
+      തിരഞ്ഞെടുപ്പ് (wid % 4) {
+	  അവസ്ഥ 1:
+	    എങ്കിൽ (val == 2) val = 170;
+	    അല്ലെങ്കിൽ എങ്കിൽ (val == 3) val = 255;
+	    നിർത്തുക;
+	  അവസ്ഥ 2:
+	    എങ്കിൽ (val == 10) val = 170;
+	    അല്ലെങ്കിൽ എങ്കിൽ (val == 15) val = 255;
+	    നിർത്തുക;
+	  അവസ്ഥ 3:
+	    എങ്കിൽ (val == 42) val = 170;
+	    അല്ലെങ്കിൽ എങ്കിൽ (val == 63) val = 255;
+	    നിർത്തുക;
       }
 
-      if (dwid > 0) rbuf[0] = hex_digits[val];
+      എങ്കിൽ (dwid > 0) rbuf[0] = hex_digits[val];
 
       vp->value.str = rbuf;
 }
 
-static void format_vpiDecStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                int signed_flag, s_vpi_value*vp)
+സ്ഥിതം ശൂന്യം format_vpiDecStrVal(സ്ഥിരം vvp_signal_മൂല്യം*sig, പൂർണ്ണസംഖ്യ base, unsigned wid,
+                                പൂർണ്ണസംഖ്യ signed_flag, s_vpi_മൂല്യം*vp)
 {
-      unsigned hwid = (sig->value_size()+2) / 3 + 1;
-      char *rbuf = static_cast<char *>(need_result_buf(hwid, RBUF_VAL));
-      long ssize = (signed)sig->value_size();
+      unsigned hwid = (sig->മൂല്യം_size()+2) / 3 + 1;
+      അക്ഷരം *rbuf = static_cast<അക്ഷരം *>(need_result_buf(hwid, RBUF_VAL));
+      long ssize = (signed)sig->മൂല്യം_size();
       long end = base + (signed)wid;
 
 	/* Do we have an end outside of the real signal vector. */
-      if (base < 0 || end > ssize) {
-	    bool all_x = true;
-	    if (end > ssize) end = ssize;
-	    if (base < 0) base = 0;
-	    for (long idx = base ;  idx < end ;  idx += 1) {
-		  if (sig->value(idx) != BIT4_X) {
-			all_x = false;
-			break;
+      എങ്കിൽ (base < 0 || end > ssize) {
+	    തർക്കം all_x = സത്യം;
+	    എങ്കിൽ (end > ssize) end = ssize;
+	    എങ്കിൽ (base < 0) base = 0;
+	    വേണ്ടി (long idx = base ;  idx < end ;  idx += 1) {
+		  എങ്കിൽ (sig->value(idx) != BIT4_X) {
+			all_x = അസത്യം;
+			നിർത്തുക;
 		  }
 	    }
 
-	    if (all_x) {
+	    എങ്കിൽ (all_x) {
 		  rbuf[0] = 'x';
-	    } else {
+	    } അല്ലെങ്കിൽ {
 		  rbuf[0] = 'X';
 	    }
 	    rbuf[1] = 0;
 
 	    vp->value.str = rbuf;
-	    return;
+	    തിരികെ;
       }
 
       vvp_vector4_t vec4;
-      if (base == 0 && end == ssize) {
-	    sig->vec4_value(vec4);
-      } else {
+      എങ്കിൽ (base == 0 && end == ssize) {
+	    sig->vec4_മൂല്യം(vec4);
+      } അല്ലെങ്കിൽ {
 	    vvp_vector4_t tmp;
-	    sig->vec4_value(tmp);
+	    sig->vec4_മൂല്യം(tmp);
 	    vec4 = tmp.subvalue(base, wid);
       }
 
@@ -337,67 +337,67 @@ static void format_vpiDecStrVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiIntVal(const vvp_signal_value*sig, int base, unsigned wid,
-                             int signed_flag, s_vpi_value*vp)
+സ്ഥിതം ശൂന്യം format_vpiIntVal(സ്ഥിരം vvp_signal_മൂല്യം*sig, പൂർണ്ണസംഖ്യ base, unsigned wid,
+                             പൂർണ്ണസംഖ്യ signed_flag, s_vpi_മൂല്യം*vp)
 {
       vvp_vector4_t tmp;
-      sig->vec4_value(tmp);
+      sig->vec4_മൂല്യം(tmp);
       vvp_vector4_t sub = tmp.subvalue(base, wid);
 
 	// Normally, we'd be OK with just using long in the call to
 	// vector4_to_value, but some compilers seem to take long as
 	// distinct from int32_t AND int64_t. Since the condition is
 	// constant, the compiler should eliminate the dead code.
-      if (sizeof(vp->value.integer) == sizeof(int32_t)) {
+      എങ്കിൽ (വലുപ്പം(vp->value.integer) == വലുപ്പം(int32_t)) {
 	    int32_t val = 0;
-	    vector4_to_value(sub, val, signed_flag, false);
+	    vector4_to_മൂല്യം(sub, val, signed_flag, അസത്യം);
 	    vp->value.integer = val;
-      } else {
-	    assert(sizeof(vp->value.integer) == sizeof(int64_t));
+      } അല്ലെങ്കിൽ {
+	    പ്രതിജ്ഞാ(വലുപ്പം(vp->value.integer) == വലുപ്പം(int64_t));
 	    int64_t val = 0;
-	    vector4_to_value(sub, val, signed_flag, false);
+	    vector4_to_മൂല്യം(sub, val, signed_flag, അസത്യം);
 	    vp->value.integer = val;
       }
 }
 
-static void format_vpiRealVal(const vvp_signal_value*sig, int base, unsigned wid,
-                              int signed_flag, s_vpi_value*vp)
+സ്ഥിതം ശൂന്യം format_vpiRealVal(സ്ഥിരം vvp_signal_മൂല്യം*sig, പൂർണ്ണസംഖ്യ base, unsigned wid,
+                              പൂർണ്ണസംഖ്യ signed_flag, s_vpi_മൂല്യം*vp)
 {
       vvp_vector4_t vec4(wid);
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->മൂല്യം_size();
       long end = base + (signed)wid;
-      if (end > ssize) end = ssize;
+      എങ്കിൽ (end > ssize) end = ssize;
 
-      for (long idx = (base < 0) ? 0 : base ;  idx < end ;  idx += 1) {
+      വേണ്ടി (long idx = (base < 0) ? 0 : base ;  idx < end ;  idx += 1) {
 	    vec4.set_bit(idx-base, sig->value(idx));
       }
 
       vp->value.real = 0.0;
-      vector4_to_value(vec4, vp->value.real, signed_flag);
+      vector4_to_മൂല്യം(vec4, vp->value.real, signed_flag);
 }
 
-static void format_vpiStringVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+സ്ഥിതം ശൂന്യം format_vpiStringVal(സ്ഥിരം vvp_signal_മൂല്യം*sig, പൂർണ്ണസംഖ്യ base, unsigned wid,
+                                s_vpi_മൂല്യം*vp)
 {
       /* The result will use a character for each 8 bits of the
 	 vector. Add one extra character for the highest bits that
 	 don't form an 8 bit group. */
-      char *rbuf = static_cast<char *>(need_result_buf(wid/8 + ((wid&7)!=0) + 1, RBUF_VAL));
-      char *cp = rbuf;
+      അക്ഷരം *rbuf = static_cast<അക്ഷരം *>(need_result_buf(wid/8 + ((wid&7)!=0) + 1, RBUF_VAL));
+      അക്ഷരം *cp = rbuf;
 
-      char tmp = 0;
-      for (long idx = base+(signed)wid-1; idx >= base; idx -= 1) {
+      അക്ഷരം tmp = 0;
+      വേണ്ടി (long idx = base+(signed)wid-1; idx >= base; idx -= 1) {
 	    tmp <<= 1;
 
-	    if (idx >=0 && idx < (signed)sig->value_size() &&
+	    എങ്കിൽ (idx >=0 && idx < (signed)sig->മൂല്യം_size() &&
 	        sig->value(idx) == BIT4_1) {
 		   tmp |= 1;
 	    }
 
-	    if (((idx-base)&7)==0){
+	    എങ്കിൽ (((idx-base)&7)==0){
 		  /* Skip leading nulls. */
-		  if (tmp == 0 && cp == rbuf)
-			continue;
+		  എങ്കിൽ (tmp == 0 && cp == rbuf)
+			തുടരുക;
 
 		  /* Nulls in the middle get turned into spaces. */
 		  *cp++ = tmp ? tmp : ' ';
@@ -409,45 +409,45 @@ static void format_vpiStringVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiScalarVal(const vvp_signal_value*sig, int base,
-                                s_vpi_value*vp)
+സ്ഥിതം ശൂന്യം format_vpiScalarVal(സ്ഥിരം vvp_signal_മൂല്യം*sig, പൂർണ്ണസംഖ്യ base,
+                                s_vpi_മൂല്യം*vp)
 {
-      if (base >= 0 && base < (signed)sig->value_size()) {
-	    switch (sig->value(base)) {
-		case BIT4_0:
+      എങ്കിൽ (base >= 0 && base < (signed)sig->മൂല്യം_size()) {
+	    തിരഞ്ഞെടുപ്പ് (sig->value(base)) {
+		അവസ്ഥ BIT4_0:
 		  vp->value.scalar = vpi0;
-		  break;
-		case BIT4_1:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_1:
 		  vp->value.scalar = vpi1;
-		  break;
-		case BIT4_X: {
-		  vvp_scalar_t strn = sig->scalar_value(base);
-		  if (strn.strength0() == 1) vp->value.scalar = vpiH;
-		  else if (strn.strength1() == 1) vp->value.scalar = vpiL;
-		  else vp->value.scalar = vpiX;
-		  break;
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_X: {
+		  vvp_scalar_t strn = sig->scalar_മൂല്യം(base);
+		  എങ്കിൽ (strn.strength0() == 1) vp->value.scalar = vpiH;
+		  അല്ലെങ്കിൽ എങ്കിൽ (strn.strength1() == 1) vp->value.scalar = vpiL;
+		  അല്ലെങ്കിൽ vp->value.scalar = vpiX;
+		  നിർത്തുക;
 		}
-		case BIT4_Z:
+		അവസ്ഥ BIT4_Z:
 		  vp->value.scalar = vpiZ;
-		  break;
+		  നിർത്തുക;
 	    }
-      } else {
+      } അല്ലെങ്കിൽ {
 	    vp->value.scalar = vpiX;
       }
 }
 
-static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
-                                  unsigned wid, s_vpi_value*vp)
+സ്ഥിതം ശൂന്യം format_vpiStrengthVal(സ്ഥിരം vvp_signal_മൂല്യം*sig, പൂർണ്ണസംഖ്യ base,
+                                  unsigned wid, s_vpi_മൂല്യം*vp)
 {
       long end = base + (signed)wid;
       s_vpi_strengthval*op;
 
       op = static_cast<s_vpi_strengthval*>
-           (need_result_buf(wid * sizeof(s_vpi_strengthval), RBUF_VAL));
+           (need_result_buf(wid * വലുപ്പം(s_vpi_strengthval), RBUF_VAL));
 
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (idx >=0 && idx < (signed)sig->value_size()) {
-		  vvp_scalar_t val = sig->scalar_value(idx);
+      വേണ്ടി (long idx = base ;  idx < end ;  idx += 1) {
+	    എങ്കിൽ (idx >=0 && idx < (signed)sig->മൂല്യം_size()) {
+		  vvp_scalar_t val = sig->scalar_മൂല്യം(idx);
 
 		  /* vvp_scalar_t strengths are 0-7, but the vpi strength
 		     is bit0-bit7. This gets the vpi form of the strengths
@@ -455,32 +455,32 @@ static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
 		  unsigned s0 = 1 << val.strength0();
 		  unsigned s1 = 1 << val.strength1();
 
-		  switch (val.value()) {
-		      case BIT4_0:
+		  തിരഞ്ഞെടുപ്പ് (val.value()) {
+		      അവസ്ഥ BIT4_0:
 			op[idx-base].logic = vpi0;
 			op[idx-base].s0 = s0|s1;
 			op[idx-base].s1 = 0;
-			break;
+			നിർത്തുക;
 
-		      case BIT4_1:
+		      അവസ്ഥ BIT4_1:
 			op[idx-base].logic = vpi1;
 			op[idx-base].s0 = 0;
 			op[idx-base].s1 = s0|s1;
-			break;
+			നിർത്തുക;
 
-		      case BIT4_X:
+		      അവസ്ഥ BIT4_X:
 			op[idx-base].logic = vpiX;
 			op[idx-base].s0 = s0;
 			op[idx-base].s1 = s1;
-			break;
+			നിർത്തുക;
 
-		      case BIT4_Z:
+		      അവസ്ഥ BIT4_Z:
 			op[idx-base].logic = vpiZ;
 			op[idx-base].s0 = vpiHiZ;
 			op[idx-base].s1 = vpiHiZ;
-			break;
+			നിർത്തുക;
 		  }
-	    } else {
+	    } അല്ലെങ്കിൽ {
 		  op[idx-base].logic = vpiX;
 		  op[idx-base].s0 = vpiStrongDrive;
 		  op[idx-base].s1 = vpiStrongDrive;
@@ -490,47 +490,47 @@ static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
       vp->value.strength = op;
 }
 
-static void format_vpiVectorVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+സ്ഥിതം ശൂന്യം format_vpiVectorVal(സ്ഥിരം vvp_signal_മൂല്യം*sig, പൂർണ്ണസംഖ്യ base, unsigned wid,
+                                s_vpi_മൂല്യം*vp)
 {
       long end = base + (signed)wid;
-      unsigned int obit = 0;
+      unsigned പൂർണ്ണസംഖ്യ obit = 0;
       unsigned hwid = (wid + 31)/32;
 
       s_vpi_vecval *op = static_cast<p_vpi_vecval>
-                         (need_result_buf(hwid * sizeof(s_vpi_vecval), RBUF_VAL));
+                         (need_result_buf(hwid * വലുപ്പം(s_vpi_vecval), RBUF_VAL));
       vp->value.vector = op;
 
       op->aval = op->bval = 0;
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (base >= 0 && base < (signed)sig->value_size()) {
-		switch (sig->value(idx)) {
-		case BIT4_0:
+      വേണ്ടി (long idx = base ;  idx < end ;  idx += 1) {
+	    എങ്കിൽ (base >= 0 && base < (signed)sig->മൂല്യം_size()) {
+		തിരഞ്ഞെടുപ്പ് (sig->value(idx)) {
+		അവസ്ഥ BIT4_0:
 		  op->aval &= ~(1 << obit);
 		  op->bval &= ~(1 << obit);
-		  break;
-		case BIT4_1:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_1:
 		  op->aval |= (1 << obit);
 		  op->bval &= ~(1 << obit);
-		  break;
-		case BIT4_X:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_X:
 		  op->aval |= (1 << obit);
 		  op->bval |= (1 << obit);
-		  break;
-		case BIT4_Z:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_Z:
 		  op->aval &= ~(1 << obit);
 		  op->bval |= (1 << obit);
-		  break;
+		  നിർത്തുക;
 		}
-	    } else {  /* BIT4_X */
+	    } അല്ലെങ്കിൽ {  /* BIT4_X */
 		  op->aval |= (1 << obit);
 		  op->bval |= (1 << obit);
 	    }
 
 	    obit++;
-	    if (!(obit % 32)) {
+	    എങ്കിൽ (!(obit % 32)) {
 		  op += 1;
-		  if ((op - vp->value.vector) < (ptrdiff_t)hwid)
+		  എങ്കിൽ ((op - vp->value.vector) < (ptrdiff_t)hwid)
 			op->aval = op->bval = 0;
 		  obit = 0;
 	    }
@@ -540,312 +540,312 @@ static void format_vpiVectorVal(const vvp_signal_value*sig, int base, unsigned w
 /*
  * implement vpi_get for vpiReg objects.
  */
-static int signal_get(int code, vpiHandle ref)
+സ്ഥിതം പൂർണ്ണസംഖ്യ signal_get(പൂർണ്ണസംഖ്യ code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      ഘടന __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      പ്രതിജ്ഞാ(rfp);
 
-      switch (code) {
-	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      തിരഞ്ഞെടുപ്പ് (code) {
+	  അവസ്ഥ vpi_വരി_No:
+	    തിരികെ 0;  // Not implemented for now!
 
-	  case vpiSigned:
-	    return rfp->signed_flag != 0;
+	  അവസ്ഥ vpiSigned:
+	    തിരികെ rfp->signed_flag != 0;
 
-	  case vpiArray:
-	    return rfp->is_netarray != 0;
+	  അവസ്ഥ vpiArray:
+	    തിരികെ rfp->is_netarray != 0;
 
-	  case vpiIndex: // This only works while we have a single index.
-	    if (rfp->is_netarray) {
-		  s_vpi_value vp;
+	  അവസ്ഥ vpiIndex: // This only works while we have a single index.
+	    എങ്കിൽ (rfp->is_netarray) {
+		  s_vpi_മൂല്യം vp;
 		  vp.format = vpiIntVal;
-		  vpi_get_value(rfp->id.index, &vp);
-		  return vp.value.integer;
-	    } else {
-		  return vpiUndefined;
+		  vpi_get_മൂല്യം(rfp->id.index, &vp);
+		  തിരികെ vp.value.integer;
+	    } അല്ലെങ്കിൽ {
+		  തിരികെ vpiUndefined;
 	    }
 
-	  case vpiSize:
-	    return rfp->width();
+	  അവസ്ഥ vpiSize:
+	    തിരികെ rfp->width();
 
-	  case vpiNetType:
-	    if (ref->get_type_code()==vpiNet)
-		  return vpiWire;
-	    else
-		  return vpiUndefined;
+	  അവസ്ഥ vpiNetType:
+	    എങ്കിൽ (ref->get_type_code()==vpiNet)
+		  തിരികെ vpiWire;
+	    അല്ലെങ്കിൽ
+		  തിരികെ vpiUndefined;
 
-	  case vpiLeftRange:
-            return rfp->msb.get_value();
+	  അവസ്ഥ vpi_ഇടത്_Range:
+            തിരികെ rfp->msb.get_മൂല്യം();
 
-	  case vpiRightRange:
-            return rfp->lsb.get_value();
+	  അവസ്ഥ vpi_വലത്_Range:
+            തിരികെ rfp->lsb.get_മൂല്യം();
 
-	  case vpiScalar:
-	    return (rfp->msb.get_value() == 0 && rfp->lsb.get_value() == 0);
-	  case vpiVector:
-	    return (rfp->msb.get_value() != rfp->lsb.get_value());
+	  അവസ്ഥ vpiScalar:
+	    തിരികെ (rfp->msb.get_മൂല്യം() == 0 && rfp->lsb.get_മൂല്യം() == 0);
+	  അവസ്ഥ vpiVector:
+	    തിരികെ (rfp->msb.get_മൂല്യം() != rfp->lsb.get_മൂല്യം());
 
-          case vpiAutomatic:
-            return vpip_scope(rfp)->is_automatic() ? 1  : 0;
+          അവസ്ഥ vpiAutomatic:
+            തിരികെ vpip_scope(rfp)->is_automatic() ? 1  : 0;
 
 #ifdef BR916_STOPGAP_FIX
-          case _vpiFromThr:
-            return _vpiNoThr;
+          അവസ്ഥ _vpiFromThr:
+            തിരികെ _vpiNoThr;
 #endif
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "VPI error: unknown signal_get property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    തിരികെ vpiUndefined;
       }
 }
 
 /*
  * implement vpi_get64 for vpiReg objects.
  */
-static int64_t signal_get64(int code, vpiHandle ref)
+സ്ഥിതം int64_t signal_get64(പൂർണ്ണസംഖ്യ code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      ഘടന __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      പ്രതിജ്ഞാ(rfp);
 
-      switch (code) {
+      തിരഞ്ഞെടുപ്പ് (code) {
 	    // This private property must return zero when undefined.
-	  case _vpiNexusId:
-	    if (rfp->msb.get_value() == rfp->lsb.get_value())
-		  return reinterpret_cast<int64_t>(rfp->node);
-	    return 0;
+	  അവസ്ഥ _vpiNexusId:
+	    എങ്കിൽ (rfp->msb.get_മൂല്യം() == rfp->lsb.get_മൂല്യം())
+		  തിരികെ reinterpret_cast<int64_t>(rfp->കണ്ണി);
+	    തിരികെ 0;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "VPI error: unknown signal_get64 property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    തിരികെ vpiUndefined;
       }
 }
 
-static char* signal_get_str(int code, vpiHandle ref)
+സ്ഥിതം അക്ഷരം* signal_get_str(പൂർണ്ണസംഖ്യ code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      ഘടന __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      പ്രതിജ്ഞാ(rfp);
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      എങ്കിൽ (code == vpiFile) {  // Not implemented for now!
+	    തിരികെ simple_set_rbuf_str(file_names[0]);
       }
 
-      if ((code != vpiName) && (code != vpiFullName)) return NULL;
+      എങ്കിൽ ((code != vpiName) && (code != vpiFullName)) തിരികെ ശൂന്യ;
 
-      char *nm;
-      const char *ixs;
-      if (rfp->is_netarray) {
+      അക്ഷരം *nm;
+      സ്ഥിരം അക്ഷരം *ixs;
+      എങ്കിൽ (rfp->is_netarray) {
 	    nm = strdup(vpi_get_str(vpiName, rfp->within.parent));
-	    s_vpi_value vp;
+	    s_vpi_മൂല്യം vp;
 	    vp.format = vpiDecStrVal;
-	    vpi_get_value(rfp->id.index, &vp);
+	    vpi_get_മൂല്യം(rfp->id.index, &vp);
 	    ixs = vp.value.str;  /* do I need to strdup() this? */
-      } else {
+      } അല്ലെങ്കിൽ {
 	    nm = strdup(rfp->id.name);
-	    ixs = NULL;
+	    ixs = ശൂന്യ;
       }
 
 	/* The scope information is added here for vpiFullName. */
-      char *rbuf = generic_get_str(code, vpip_scope(rfp), nm, ixs);
-      free(nm);
-      return rbuf;
+      അക്ഷരം *rbuf = generic_get_str(code, vpip_scope(rfp), nm, ixs);
+      സ്വതന്ത്രം(nm);
+      തിരികെ rbuf;
 }
 
-static vpiHandle signal_get_handle(int code, vpiHandle ref)
+സ്ഥിതം vpiHandle signal_get_handle(പൂർണ്ണസംഖ്യ code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      ഘടന __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      പ്രതിജ്ഞാ(rfp);
 
-      switch (code) {
+      തിരഞ്ഞെടുപ്പ് (code) {
 
-	  case vpiParent:
-	    return rfp->is_netarray? rfp->within.parent : NULL;
+	  അവസ്ഥ vpiParent:
+	    തിരികെ rfp->is_netarray? rfp->within.parent : ശൂന്യ;
 
-	  case vpiIndex:
-	    return rfp->is_netarray? rfp->id.index : NULL;
+	  അവസ്ഥ vpiIndex:
+	    തിരികെ rfp->is_netarray? rfp->id.index : ശൂന്യ;
 
-	  case vpiLeftRange:
-	    return &rfp->msb;
-	  case vpiRightRange:
-	    return &rfp->lsb;
+	  അവസ്ഥ vpi_ഇടത്_Range:
+	    തിരികെ &rfp->msb;
+	  അവസ്ഥ vpi_വലത്_Range:
+	    തിരികെ &rfp->lsb;
 
-	  case vpiScope:
-	    return vpip_scope(rfp);
+	  അവസ്ഥ vpiScope:
+	    തിരികെ vpip_scope(rfp);
 
-	  case vpiModule:
-	    return vpip_module(vpip_scope(rfp));
+	  അവസ്ഥ vpiModule:
+	    തിരികെ vpip_module(vpip_scope(rfp));
       }
 
-      return 0;
+      തിരികെ 0;
 }
 
-static vpiHandle signal_iterate(int code, vpiHandle ref)
+സ്ഥിതം vpiHandle signal_iterate(പൂർണ്ണസംഖ്യ code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      ഘടന __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      പ്രതിജ്ഞാ(rfp);
 
-      if (code == vpiIndex) {
-	    return rfp->is_netarray ? rfp->id.index->vpi_iterate(code) : NULL;
+      എങ്കിൽ (code == vpiIndex) {
+	    തിരികെ rfp->is_netarray ? rfp->id.index->vpi_iterate(code) : ശൂന്യ;
       }
 
-      return 0;
+      തിരികെ 0;
 }
 
-void __vpiSignal::make_bits()
+ശൂന്യം __vpiSignal::make_bits()
 {
-      assert(bits == NULL);
-      bits = new struct __vpiBit[width() + 1];
+      പ്രതിജ്ഞാ(bits == ശൂന്യ);
+      bits = പുതിയ ഘടന __vpiBit[width() + 1];
 
 	// Make word[-1] point to the parent.
-      bits->parent = this;
+      bits->parent = ഇത്;
 	// Now point to word[0].
       bits += 1;
 
 	// Update each bit to point to the base
-      struct __vpiBit*base = bits;
-      for (unsigned idx = 0; idx < width(); idx += 1) {
+      ഘടന __vpiBit*base = bits;
+      വേണ്ടി (unsigned idx = 0; idx < width(); idx += 1) {
 	    base[idx].bit0 = base;
-	    int real_idx;
-	    if (msb.get_value() >= lsb.get_value()) {
-		  real_idx = idx + lsb.get_value();
-	    } else {
-		  real_idx = lsb.get_value() - idx;
+	    പൂർണ്ണസംഖ്യ real_idx;
+	    എങ്കിൽ (msb.get_മൂല്യം() >= lsb.get_മൂല്യം()) {
+		  real_idx = idx + lsb.get_മൂല്യം();
+	    } അല്ലെങ്കിൽ {
+		  real_idx = lsb.get_മൂല്യം() - idx;
 	    }
-	    base[idx].index = new __vpiDecConst(real_idx);
+	    base[idx].index = പുതിയ __vpiDecConst(real_idx);
       }
 }
 
-vpiHandle __vpiSignal::get_index(int idx)
+vpiHandle __vpiSignal::get_index(പൂർണ്ണസംഖ്യ idx)
 {
 	/* Check to see if the index is in range. */
-      if (msb.get_value() >= lsb.get_value()) {
-	    if ((idx > msb.get_value()) || (idx < lsb.get_value())) return 0;
-      } else {
-	    if ((idx < msb.get_value()) || (idx > lsb.get_value())) return 0;
+      എങ്കിൽ (msb.get_മൂല്യം() >= lsb.get_മൂല്യം()) {
+	    എങ്കിൽ ((idx > msb.get_മൂല്യം()) || (idx < lsb.get_മൂല്യം())) തിരികെ 0;
+      } അല്ലെങ്കിൽ {
+	    എങ്കിൽ ((idx < msb.get_മൂല്യം()) || (idx > lsb.get_മൂല്യം())) തിരികെ 0;
       }
 
 	/* Normalize the index */
       unsigned norm_idx;
-      if (msb.get_value() >= lsb.get_value()) {
-	    norm_idx = idx - lsb.get_value();
-      } else {
-	    norm_idx = lsb.get_value() - idx;
+      എങ്കിൽ (msb.get_മൂല്യം() >= lsb.get_മൂല്യം()) {
+	    norm_idx = idx - lsb.get_മൂല്യം();
+      } അല്ലെങ്കിൽ {
+	    norm_idx = lsb.get_മൂല്യം() - idx;
       }
 
-      if (bits == NULL) make_bits();
+      എങ്കിൽ (bits == ശൂന്യ) make_bits();
 
-      return &(bits[norm_idx].as_bit);
+      തിരികെ &(bits[norm_idx].as_bit);
 }
 
-void __vpiSignal::get_bit_value(const struct __vpiBit*bit, p_vpi_value vp)
+ശൂന്യം __vpiSignal::get_bit_മൂല്യം(സ്ഥിരം ഘടന __vpiBit*bit, p_vpi_മൂല്യം vp)
 {
       unsigned index = bit->get_norm_index();
 
-      vvp_signal_value*vsig = dynamic_cast<vvp_signal_value*>(node->fil);
-      assert(vsig);
+      vvp_signal_മൂല്യം*vsig = dynamic_cast<vvp_signal_മൂല്യം*>(കണ്ണി->fil);
+      പ്രതിജ്ഞാ(vsig);
 
-      if (vp->format == vpiObjTypeVal) {
+      എങ്കിൽ (vp->format == vpiObjTypeVal) {
 	    vp->format = vpiIntVal;
       }
 
-      switch (vp->format) {
-	case vpiBinStrVal:
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
+	അവസ്ഥ vpiBinStrVal:
             format_vpiBinStrVal(vsig, index, 1, vp);
-	    break;
+	    നിർത്തുക;
 
-	case vpiOctStrVal:
+	അവസ്ഥ vpiOctStrVal:
             format_vpiOctStrVal(vsig, index, 1, vp);
-	    break;
+	    നിർത്തുക;
 
-	case vpiDecStrVal:
-            format_vpiDecStrVal(vsig, index, 1, false, vp);
-	    break;
+	അവസ്ഥ vpiDecStrVal:
+            format_vpiDecStrVal(vsig, index, 1, അസത്യം, vp);
+	    നിർത്തുക;
 
-	case vpiHexStrVal:
+	അവസ്ഥ vpiHexStrVal:
             format_vpiHexStrVal(vsig, index, 1, vp);
-	    break;
+	    നിർത്തുക;
 
-	case vpiStringVal:
+	അവസ്ഥ vpiStringVal:
             format_vpiStringVal(vsig, index, 1, vp);
-	    break;
+	    നിർത്തുക;
 
-	case vpiIntVal:
-            format_vpiIntVal(vsig, index, 1, false, vp);
-	    break;
+	അവസ്ഥ vpiIntVal:
+            format_vpiIntVal(vsig, index, 1, അസത്യം, vp);
+	    നിർത്തുക;
 
-	case vpiRealVal:
-            format_vpiRealVal(vsig, index, 1, false, vp);
-	    break;
+	അവസ്ഥ vpiRealVal:
+            format_vpiRealVal(vsig, index, 1, അസത്യം, vp);
+	    നിർത്തുക;
 
-	case vpiScalarVal:
+	അവസ്ഥ vpiScalarVal:
             format_vpiScalarVal(vsig, index, vp);
-	    break;
+	    നിർത്തുക;
 
-        case vpiStrengthVal:
+        അവസ്ഥ vpiStrengthVal:
             format_vpiStrengthVal(vsig, index, 1, vp);
-            break;
+            നിർത്തുക;
 
-	case vpiVectorVal:
+	അവസ്ഥ vpiVectorVal:
             format_vpiVectorVal(vsig, index, 1, vp);
-	    break;
+	    നിർത്തുക;
 
-	default:
+	സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "internal error: get_value() "
 		    "type %d is not implemented for bit "
 		    "select %s[%d] in scope %s.\n",
-		    (int)vp->format, vpi_get_str(vpiName),
+		    (പൂർണ്ണസംഖ്യ)vp->format, vpi_get_str(vpiName),
 		    bit->get_index(),
-	            vpip_scope(this)->scope_name());
-	    assert(0);
+	            vpip_scope(ഇത്)->scope_name());
+	    പ്രതിജ്ഞാ(0);
       };
 }
 
-vpiHandle __vpiSignal::put_bit_value(struct __vpiBit*bit, p_vpi_value vp, int flags)
+vpiHandle __vpiSignal::put_bit_മൂല്യം(ഘടന __vpiBit*bit, p_vpi_മൂല്യം vp, പൂർണ്ണസംഖ്യ flags)
 {
       unsigned index = bit->get_norm_index();
-      vvp_net_ptr_t dest(node, 0);
-      vvp_vector4_t val = vec4_from_vpi_value(vp, 1);
+      vvp_net_ptr_t dest(കണ്ണി, 0);
+      vvp_vector4_t val = vec4_from_vpi_മൂല്യം(vp, 1);
 
-      if ((flags == vpiForceFlag) || (flags == vpiReleaseFlag)) {
+      എങ്കിൽ ((flags == vpiForceFlag) || (flags == vpiReleaseFlag)) {
 	    fprintf(stderr, "Sorry: vpi_put_value() for %s does not "
 	                    "currently support force/release.\n",
 	                    bit->as_bit.vpi_get_str(vpiFullName));
-	    return NULL;
+	    തിരികെ ശൂന്യ;
       }
 
-      if ((get_type_code() == vpiNet) &&
-          !dynamic_cast<vvp_island_port*>(node->fun)) {
-	    node->send_vec4_pv(val, index, width(),
+      എങ്കിൽ ((get_type_code() == vpiNet) &&
+          !dynamic_cast<vvp_island_port*>(കണ്ണി->fun)) {
+	    കണ്ണി->send_vec4_pv(val, index, width(),
 	                            vthread_get_wt_context());
-      } else {
+      } അല്ലെങ്കിൽ {
 	    vvp_send_vec4_pv(dest, val, index, width(),
 	                     vthread_get_wt_context());
       }
 
 	// This is not a scheduled event so there is no event to return
-      return NULL;
+      തിരികെ ശൂന്യ;
 }
 
-static vpiHandle signal_index(int idx, vpiHandle ref)
+സ്ഥിതം vpiHandle signal_index(പൂർണ്ണസംഖ്യ idx, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      ഘടന __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      പ്രതിജ്ഞാ(rfp);
 
 	/* We can only get the bit for a net or reg. */
       PLI_INT32 type = vpi_get(vpiType, ref);
-      if ((type != vpiNet) && (type != vpiReg)) return 0;
+      എങ്കിൽ ((type != vpiNet) && (type != vpiReg)) തിരികെ 0;
 
-      return rfp->get_index(idx);
+      തിരികെ rfp->get_index(idx);
 }
 
-unsigned __vpiSignal::width(void) const
+unsigned __vpiSignal::width(ശൂന്യം) സ്ഥിരം
 {
-      unsigned wid = (msb.get_value() >= lsb.get_value())
-	    ? (msb.get_value() - lsb.get_value() + 1)
-	    : (lsb.get_value() - msb.get_value() + 1);
+      unsigned wid = (msb.get_മൂല്യം() >= lsb.get_മൂല്യം())
+	    ? (msb.get_മൂല്യം() - lsb.get_മൂല്യം() + 1)
+	    : (lsb.get_മൂല്യം() - msb.get_മൂല്യം() + 1);
 
-      return wid;
+      തിരികെ wid;
 }
 
 /*
@@ -853,75 +853,75 @@ unsigned __vpiSignal::width(void) const
  * the vector to the caller. This causes no side-effect, and reads the
  * variables like a %load would.
  */
-static void signal_get_value(vpiHandle ref, s_vpi_value*vp)
+സ്ഥിതം ശൂന്യം signal_get_മൂല്യം(vpiHandle ref, s_vpi_മൂല്യം*vp)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      ഘടന __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      പ്രതിജ്ഞാ(rfp);
 
       unsigned wid = rfp->width();
 
-      vvp_signal_value*vsig = dynamic_cast<vvp_signal_value*>(rfp->node->fil);
-      assert(vsig);
+      vvp_signal_മൂല്യം*vsig = dynamic_cast<vvp_signal_മൂല്യം*>(rfp->കണ്ണി->fil);
+      പ്രതിജ്ഞാ(vsig);
 
-      switch (vp->format) {
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
 
-	  case vpiIntVal:
+	  അവസ്ഥ vpiIntVal:
 	    format_vpiIntVal(vsig, 0, wid, rfp->signed_flag, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiScalarVal:
+	  അവസ്ഥ vpiScalarVal:
 	    format_vpiScalarVal(vsig, 0, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiStrengthVal:
+	  അവസ്ഥ vpiStrengthVal:
 	    format_vpiStrengthVal(vsig, 0, wid, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiBinStrVal:
+	  അവസ്ഥ vpiBinStrVal:
 	    format_vpiBinStrVal(vsig, 0, wid, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiHexStrVal:
+	  അവസ്ഥ vpiHexStrVal:
 	    format_vpiHexStrVal(vsig, 0, wid, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiOctStrVal:
+	  അവസ്ഥ vpiOctStrVal:
 	    format_vpiOctStrVal(vsig, 0, wid, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiDecStrVal:
+	  അവസ്ഥ vpiDecStrVal:
 	    format_vpiDecStrVal(vsig, 0, wid, rfp->signed_flag, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiStringVal:
+	  അവസ്ഥ vpiStringVal:
 	    format_vpiStringVal(vsig, 0, wid, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiVectorVal:
+	  അവസ്ഥ vpiVectorVal:
 	    format_vpiVectorVal(vsig, 0, wid, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiRealVal:
+	  അവസ്ഥ vpiRealVal:
 	    format_vpiRealVal(vsig, 0, wid, rfp->signed_flag, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiObjTypeVal:
-	    if (wid == 1) {
+	  അവസ്ഥ vpiObjTypeVal:
+	    എങ്കിൽ (wid == 1) {
 		  vp->format = vpiScalarVal;
 		  format_vpiScalarVal(vsig, 0, vp);
-	    } else {
+	    } അല്ലെങ്കിൽ {
 		  vp->format = vpiVectorVal;
 		  format_vpiVectorVal(vsig, 0, wid, vp);
 	    }
-	    break;
+	    നിർത്തുക;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vvp internal error: get_value: "
 		    "value type %d not implemented."
 		    " Signal is %s in scope %s\n",
-		    (int)vp->format, vpi_get_str(vpiName, ref),
+		    (പൂർണ്ണസംഖ്യ)vp->format, vpi_get_str(vpiName, ref),
 		    vpip_scope(rfp)->scope_name());
-	    assert(0);
+	    പ്രതിജ്ഞാ(0);
       }
 }
 
@@ -932,22 +932,22 @@ static void signal_get_value(vpiHandle ref, s_vpi_value*vp)
  * equivalent instruction would cause.
  */
 
-static vvp_vector4_t from_stringval(const char*str, unsigned wid)
+സ്ഥിതം vvp_vector4_t from_stringval(സ്ഥിരം അക്ഷരം*str, unsigned wid)
 {
       unsigned idx;
-      const char*cp;
+      സ്ഥിരം അക്ഷരം*cp;
 
       cp = str + strlen(str);
       idx = 0;
 
       vvp_vector4_t val(wid, BIT4_0);
 
-      while ((idx < wid) && (cp > str)) {
+      ആകുമ്പോൾ ((idx < wid) && (cp > str)) {
 	    unsigned byte = *--cp;
-	    int bit;
+	    പൂർണ്ണസംഖ്യ bit;
 
-	    for (bit = 0 ;  (bit < 8) && (idx < wid) ;  bit += 1) {
-		  if (byte & 1)
+	    വേണ്ടി (bit = 0 ;  (bit < 8) && (idx < wid) ;  bit += 1) {
+		  എങ്കിൽ (byte & 1)
 			val.set_bit(idx, BIT4_1);
 
 		  byte >>= 1;
@@ -955,17 +955,17 @@ static vvp_vector4_t from_stringval(const char*str, unsigned wid)
 	    }
       }
 
-      return val;
+      തിരികെ val;
 }
 
-static vpiHandle signal_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
+സ്ഥിതം vpiHandle signal_put_മൂല്യം(vpiHandle ref, s_vpi_മൂല്യം*vp, പൂർണ്ണസംഖ്യ flags)
 {
       unsigned wid;
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
-      vvp_net_ptr_t dest(rfp->node, 0);
+      ഘടന __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      പ്രതിജ്ഞാ(rfp);
+      vvp_net_ptr_t dest(rfp->കണ്ണി, 0);
 
-      bool net_flag = ref->get_type_code()==vpiNet;
+      തർക്കം net_flag = ref->get_type_code()==vpiNet;
 
 	/* If this is a release, then we are not really putting a
 	   value. Instead, issue a release "command" to the signal
@@ -973,157 +973,157 @@ static vpiHandle signal_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
 	   if this net is attached to an island, we need to rerun
 	   the calculations immediately so we can return the
 	   released value. */
-      if (flags == vpiReleaseFlag) {
-	    assert(rfp->node->fil);
-	    rfp->node->fil->force_unlink();
-	    rfp->node->fil->release(dest, net_flag);
-	    rfp->node->fun->force_flag(true);
-	    signal_get_value(ref, vp);
-	    return ref;
+      എങ്കിൽ (flags == vpiReleaseFlag) {
+	    പ്രതിജ്ഞാ(rfp->കണ്ണി->fil);
+	    rfp->കണ്ണി->fil->force_unlink();
+	    rfp->കണ്ണി->fil->release(dest, net_flag);
+	    rfp->കണ്ണി->fun->force_flag(സത്യം);
+	    signal_get_മൂല്യം(ref, vp);
+	    തിരികെ ref;
       }
 
 	/* Make a vvp_vector4_t vector to receive the translated value
 	   that we are going to poke. This will get populated
 	   differently depending on the format. */
-      wid = (rfp->msb.get_value() >= rfp->lsb.get_value())
-	    ? (rfp->msb.get_value() - rfp->lsb.get_value() + 1)
-	    : (rfp->lsb.get_value() - rfp->msb.get_value() + 1);
+      wid = (rfp->msb.get_മൂല്യം() >= rfp->lsb.get_മൂല്യം())
+	    ? (rfp->msb.get_മൂല്യം() - rfp->lsb.get_മൂല്യം() + 1)
+	    : (rfp->lsb.get_മൂല്യം() - rfp->msb.get_മൂല്യം() + 1);
 
-      vvp_vector4_t val = vec4_from_vpi_value(vp, wid);
+      vvp_vector4_t val = vec4_from_vpi_മൂല്യം(vp, wid);
 
-      if (flags == vpiForceFlag) {
+      എങ്കിൽ (flags == vpiForceFlag) {
 	    vvp_vector2_t mask (vvp_vector2_t::FILL1, wid);
-	    rfp->node->force_vec4(val, mask);
-      } else if (net_flag && !dynamic_cast<vvp_island_port*>(rfp->node->fun)) {
-	    rfp->node->send_vec4(val, vthread_get_wt_context());
-      } else {
+	    rfp->കണ്ണി->force_vec4(val, mask);
+      } അല്ലെങ്കിൽ എങ്കിൽ (net_flag && !dynamic_cast<vvp_island_port*>(rfp->കണ്ണി->fun)) {
+	    rfp->കണ്ണി->send_vec4(val, vthread_get_wt_context());
+      } അല്ലെങ്കിൽ {
 	    vvp_send_vec4(dest, val, vthread_get_wt_context());
       }
-      return ref;
+      തിരികെ ref;
 }
 
-vvp_vector4_t vec4_from_vpi_value(s_vpi_value*vp, unsigned wid)
+vvp_vector4_t vec4_from_vpi_മൂല്യം(s_vpi_മൂല്യം*vp, unsigned wid)
 {
       vvp_vector4_t val (wid, BIT4_0);
 
-      switch (vp->format) {
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
 
-	  case vpiIntVal: {
+	  അവസ്ഥ vpiIntVal: {
 		long vpi_val = vp->value.integer;
-		for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+		വേണ്ടി (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 		      vvp_bit4_t bit = (vpi_val & 1) ? BIT4_1 : BIT4_0;
 		      val.set_bit(idx, bit);
 		      vpi_val >>= 1;
 		}
-		break;
+		നിർത്തുക;
 	  }
 
-	  case vpiVectorVal:
-	    for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+	  അവസ്ഥ vpiVectorVal:
+	    വേണ്ടി (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 		  unsigned long aval = vp->value.vector[idx/32].aval;
 		  unsigned long bval = vp->value.vector[idx/32].bval;
 		  aval >>= idx%32;
 		  bval >>= idx%32;
-		  int bitmask = (aval&1) | ((bval<<1)&2);
+		  പൂർണ്ണസംഖ്യ bitmask = (aval&1) | ((bval<<1)&2);
 		  vvp_bit4_t bit = scalar_to_bit4(bitmask);
 		  val.set_bit(idx, bit);
 	    }
-	    break;
-	  case vpiBinStrVal:
+	    നിർത്തുക;
+	  അവസ്ഥ vpiBinStrVal:
 	    vpip_bin_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiOctStrVal:
+	    നിർത്തുക;
+	  അവസ്ഥ vpiOctStrVal:
 	    vpip_oct_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiDecStrVal:
+	    നിർത്തുക;
+	  അവസ്ഥ vpiDecStrVal:
 	    vpip_dec_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiHexStrVal:
+	    നിർത്തുക;
+	  അവസ്ഥ vpiHexStrVal:
 	    vpip_hex_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiScalarVal:
+	    നിർത്തുക;
+	  അവസ്ഥ vpiScalarVal:
 	    val.set_bit(0, scalar_to_bit4(vp->value.scalar));
-	    break;
-	  case vpiStringVal:
+	    നിർത്തുക;
+	  അവസ്ഥ vpiStringVal:
 	    val = from_stringval(vp->value.str, wid);
-	    break;
-	  case vpiRealVal:
+	    നിർത്തുക;
+	  അവസ്ഥ vpiRealVal:
 	    val = vvp_vector4_t(wid, vp->value.real);
-	    break;
+	    നിർത്തുക;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vvp internal error: put_value: "
 		    "value type %d not implemented here.\n",
-		    (int)vp->format);
-	    assert(0);
+		    (പൂർണ്ണസംഖ്യ)vp->format);
+	    പ്രതിജ്ഞാ(0);
 
       }
 
-      return val;
+      തിരികെ val;
 }
 
-int __vpiSignal::vpi_get(int code)
-{ return signal_get(code, this); }
+പൂർണ്ണസംഖ്യ __vpiSignal::vpi_get(പൂർണ്ണസംഖ്യ code)
+{ തിരികെ signal_get(code, ഇത്); }
 
-int64_t __vpiSignal::vpi_get64(int code)
-{ return signal_get64(code, this); }
+int64_t __vpiSignal::vpi_get64(പൂർണ്ണസംഖ്യ code)
+{ തിരികെ signal_get64(code, ഇത്); }
 
-char* __vpiSignal::vpi_get_str(int code)
-{ return signal_get_str(code, this); }
+അക്ഷരം* __vpiSignal::vpi_get_str(പൂർണ്ണസംഖ്യ code)
+{ തിരികെ signal_get_str(code, ഇത്); }
 
-void __vpiSignal::vpi_get_value(p_vpi_value val)
-{ signal_get_value(this, val); }
+ശൂന്യം __vpiSignal::vpi_get_മൂല്യം(p_vpi_മൂല്യം val)
+{ signal_get_മൂല്യം(ഇത്, val); }
 
-vpiHandle __vpiSignal::vpi_put_value(p_vpi_value val, int flags)
-{ return signal_put_value(this, val, flags); }
+vpiHandle __vpiSignal::vpi_put_മൂല്യം(p_vpi_മൂല്യം val, പൂർണ്ണസംഖ്യ flags)
+{ തിരികെ signal_put_മൂല്യം(ഇത്, val, flags); }
 
-vpiHandle __vpiSignal::vpi_handle(int code)
-{ return signal_get_handle(code, this); }
+vpiHandle __vpiSignal::vpi_handle(പൂർണ്ണസംഖ്യ code)
+{ തിരികെ signal_get_handle(code, ഇത്); }
 
-vpiHandle __vpiSignal::vpi_iterate(int code)
-{ return signal_iterate(code, this); }
+vpiHandle __vpiSignal::vpi_iterate(പൂർണ്ണസംഖ്യ code)
+{ തിരികെ signal_iterate(code, ഇത്); }
 
-vpiHandle __vpiSignal::vpi_index(int idx)
-{ return signal_index(idx, this); }
+vpiHandle __vpiSignal::vpi_index(പൂർണ്ണസംഖ്യ idx)
+{ തിരികെ signal_index(idx, ഇത്); }
 
-struct signal_reg : public __vpiSignal {
-      inline signal_reg() { }
-      int get_type_code(void) const override { return vpiReg; }
+ഘടന signal_reg : പൊതു __vpiSignal {
+      വരിയിൽ signal_reg() { }
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override { തിരികെ vpiReg; }
 };
 
-struct signal_integer : public __vpiSignal {
-      inline signal_integer() { }
-      int get_type_code(void) const override { return vpiIntegerVar; }
+ഘടന signal_integer : പൊതു __vpiSignal {
+      വരിയിൽ signal_integer() { }
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override { തിരികെ vpiIntegerVar; }
 };
 
-struct signal_net : public __vpiSignal {
-      inline signal_net() { }
-      int get_type_code(void) const override { return vpiNet; }
+ഘടന signal_net : പൊതു __vpiSignal {
+      വരിയിൽ signal_net() { }
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override { തിരികെ vpiNet; }
 };
 
-struct signal_byte : public __vpiSignal {
-      inline signal_byte() { }
-      int get_type_code(void) const override { return vpiByteVar; }
+ഘടന signal_byte : പൊതു __vpiSignal {
+      വരിയിൽ signal_byte() { }
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override { തിരികെ vpiByteVar; }
 };
 
-struct signal_bitvar : public __vpiSignal {
-      inline signal_bitvar() { }
-      int get_type_code(void) const override { return vpiBitVar; }
+ഘടന signal_bitvar : പൊതു __vpiSignal {
+      വരിയിൽ signal_bitvar() { }
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override { തിരികെ vpiBitVar; }
 };
 
-struct signal_shortint : public __vpiSignal {
-      inline signal_shortint() { }
-      int get_type_code(void) const override { return vpiShortIntVar; }
+ഘടന signal_shortint : പൊതു __vpiSignal {
+      വരിയിൽ signal_shortint() { }
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override { തിരികെ vpiShortIntVar; }
 };
 
-struct signal_int : public __vpiSignal {
-      inline signal_int() { }
-      int get_type_code(void) const override { return vpiIntVar; }
+ഘടന signal_int : പൊതു __vpiSignal {
+      വരിയിൽ signal_int() { }
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override { തിരികെ vpiIntVar; }
 };
 
-struct signal_longint : public __vpiSignal {
-      inline signal_longint() { }
-      int get_type_code(void) const override { return vpiLongIntVar; }
+ഘടന signal_longint : പൊതു __vpiSignal {
+      വരിയിൽ signal_longint() { }
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override { തിരികെ vpiLongIntVar; }
 };
 
 
@@ -1132,126 +1132,126 @@ struct signal_longint : public __vpiSignal {
  * to minimize the code modifications. Icarus implements integers
  * as 'reg signed [31:0]'.
  */
-vpiHandle vpip_make_int4(const char*name, int msb, int lsb, vvp_net_t*vec)
+vpiHandle vpip_make_int4(സ്ഥിരം അക്ഷരം*name, പൂർണ്ണസംഖ്യ msb, പൂർണ്ണസംഖ്യ lsb, vvp_net_t*vec)
 {
-      __vpiSignal*obj = new signal_integer;
-      return fill_in_var4(obj, name, msb, lsb, true, vec);
+      __vpiSignal*obj = പുതിയ signal_integer;
+      തിരികെ fill_in_var4(obj, name, msb, lsb, സത്യം, vec);
 }
 
 /*
  * Construct the two-state SystemVerilog variables.
  */
-vpiHandle vpip_make_int2(const char*name, int msb, int lsb, bool signed_flag,
+vpiHandle vpip_make_int2(സ്ഥിരം അക്ഷരം*name, പൂർണ്ണസംഖ്യ msb, പൂർണ്ണസംഖ്യ lsb, തർക്കം signed_flag,
                          vvp_net_t*vec)
 {
       __vpiSignal*obj;
 
 	// All unsigned 2-state variables are a vpiBitVar. All 2-state
 	// variables with a non-zero lsb are also a vpiBitVar.
-      if ((! signed_flag) || (lsb != 0) ) {
-	    obj = new signal_bitvar;
-      } else {
+      എങ്കിൽ ((! signed_flag) || (lsb != 0) ) {
+	    obj = പുതിയ signal_bitvar;
+      } അല്ലെങ്കിൽ {
 	      // These could also be bit declarations with matching
 	      // information, but for now they get the apparent type.
-	    switch (msb) {
-		case 7:
-		  obj = new signal_byte;
-		  break;
-		case 15:
-		  obj = new signal_shortint;
-		  break;
-		case 31:
-		  obj = new signal_int;
-		  break;
-		case 63:
-		  obj = new signal_longint;
-		  break;
-		default:
+	    തിരഞ്ഞെടുപ്പ് (msb) {
+		അവസ്ഥ 7:
+		  obj = പുതിയ signal_byte;
+		  നിർത്തുക;
+		അവസ്ഥ 15:
+		  obj = പുതിയ signal_shortint;
+		  നിർത്തുക;
+		അവസ്ഥ 31:
+		  obj = പുതിയ signal_int;
+		  നിർത്തുക;
+		അവസ്ഥ 63:
+		  obj = പുതിയ signal_longint;
+		  നിർത്തുക;
+		സ്ഥിരസ്ഥിതി:
 		    // Every other type of bit vector is a vpiBitVar with
 		    // array dimensions.
-		  obj = new signal_bitvar;
-		  break;
+		  obj = പുതിയ signal_bitvar;
+		  നിർത്തുക;
 	    }
       }
 
-      return fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
+      തിരികെ fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
 }
 
 /*
  * Construct a vpiReg/vpiLogicVar object. It's like a net, except for the type.
  */
-vpiHandle vpip_make_var4(const char*name, int msb, int lsb,
-			bool signed_flag, vvp_net_t*vec)
+vpiHandle vpip_make_var4(സ്ഥിരം അക്ഷരം*name, പൂർണ്ണസംഖ്യ msb, പൂർണ്ണസംഖ്യ lsb,
+			തർക്കം signed_flag, vvp_net_t*vec)
 {
-      __vpiSignal*obj = new signal_reg;
-      return fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
+      __vpiSignal*obj = പുതിയ signal_reg;
+      തിരികെ fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
 }
 
 #ifdef CHECK_WITH_VALGRIND
-static struct vpiSignal_plug **signal_pool = 0;
-static unsigned signal_pool_count = 0;
-static unsigned long signal_count = 0;
-static unsigned long signal_dels = 0;
+സ്ഥിതം ഘടന vpiSignal_plug **signal_pool = 0;
+സ്ഥിതം unsigned signal_pool_എണ്ണം = 0;
+സ്ഥിതം unsigned long signal_എണ്ണം = 0;
+സ്ഥിതം unsigned long signal_dels = 0;
 #endif
 
-struct vpiSignal_plug {
-      unsigned char space[sizeof (struct __vpiSignal)];
+ഘടന vpiSignal_plug {
+      unsigned അക്ഷരം space[വലുപ്പം (ഘടന __vpiSignal)];
 #ifdef CHECK_WITH_VALGRIND
-      struct vpiSignal_plug *pool;
+      ഘടന vpiSignal_plug *pool;
 #endif
 };
 
-void* __vpiSignal::operator new(size_t siz)
+ശൂന്യം* __vpiSignal::operator പുതിയ(size_t siz)
 {
 #ifdef CHECK_WITH_VALGRIND
-      assert(siz == sizeof(struct vpiSignal_plug) - sizeof(struct vpiSignal_plug *));
-#else
-      assert(siz == sizeof(struct vpiSignal_plug));
+      പ്രതിജ്ഞാ(siz == വലുപ്പം(ഘടന vpiSignal_plug) - വലുപ്പം(ഘടന vpiSignal_plug *));
+#അല്ലെങ്കിൽ
+      പ്രതിജ്ഞാ(siz == വലുപ്പം(ഘടന vpiSignal_plug));
 #endif
-      static struct vpiSignal_plug*alloc_array = 0;
-      static unsigned alloc_index = 0;
-      const unsigned alloc_count = 512;
+      സ്ഥിതം ഘടന vpiSignal_plug*alloc_array = 0;
+      സ്ഥിതം unsigned alloc_index = 0;
+      സ്ഥിരം unsigned alloc_എണ്ണം = 512;
 
-      if ((alloc_array == 0) || (alloc_index == alloc_count)) {
-	    alloc_array = static_cast<struct vpiSignal_plug*>
-	                  (calloc(alloc_count, sizeof(struct vpiSignal_plug)));
+      എങ്കിൽ ((alloc_array == 0) || (alloc_index == alloc_എണ്ണം)) {
+	    alloc_array = static_cast<ഘടന vpiSignal_plug*>
+	                  (calloc(alloc_എണ്ണം, വലുപ്പം(ഘടന vpiSignal_plug)));
 	    alloc_index = 0;
 #ifdef CHECK_WITH_VALGRIND
-	    VALGRIND_MAKE_MEM_NOACCESS(alloc_array, alloc_count *
-	                                            sizeof(struct vpiSignal_plug));
+	    VALGRIND_MAKE_MEM_NOACCESS(alloc_array, alloc_എണ്ണം *
+	                                            വലുപ്പം(ഘടന vpiSignal_plug));
 	    VALGRIND_CREATE_MEMPOOL(alloc_array, 0, 1);
-	    signal_pool_count += 1;
+	    signal_pool_എണ്ണം += 1;
 	    signal_pool = static_cast<vpiSignal_plug **>
 	                  (realloc(signal_pool,
-	                   signal_pool_count*sizeof(vpiSignal_plug **)));
-	    signal_pool[signal_pool_count-1] = alloc_array;
+	                   signal_pool_എണ്ണം*വലുപ്പം(vpiSignal_plug **)));
+	    signal_pool[signal_pool_എണ്ണം-1] = alloc_array;
 #endif
       }
 
-      struct vpiSignal_plug*cur = alloc_array + alloc_index;
+      ഘടന vpiSignal_plug*cur = alloc_array + alloc_index;
 #ifdef CHECK_WITH_VALGRIND
-      VALGRIND_MEMPOOL_ALLOC(alloc_array, cur, sizeof(struct vpiSignal_plug));
+      VALGRIND_MEMPOOL_ALLOC(alloc_array, cur, വലുപ്പം(ഘടന vpiSignal_plug));
       cur->pool = alloc_array;
-      signal_count += 1;
+      signal_എണ്ണം += 1;
 #endif
       alloc_index += 1;
-      return cur;
+      തിരികെ cur;
 }
 
-void __vpiSignal::operator delete(void*)
+ശൂന്യം __vpiSignal::operator delete(ശൂന്യം*)
 {
-      assert(0);
+      പ്രതിജ്ഞാ(0);
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void signal_delete(vpiHandle item)
+ശൂന്യം signal_delete(vpiHandle item)
 {
-      struct __vpiSignal *obj = static_cast<__vpiSignal *> (item);
-      assert(obj->node->fil);
-      obj->node->fil->clear_all_callbacks();
-      vvp_net_delete(obj->node);
-      if (obj->bits) {
-	    for (unsigned idx=0; idx<obj->width(); idx+=1) {
+      ഘടന __vpiSignal *obj = static_cast<__vpiSignal *> (item);
+      പ്രതിജ്ഞാ(obj->കണ്ണി->fil);
+      obj->കണ്ണി->fil->clear_all_callbacks();
+      vvp_net_delete(obj->കണ്ണി);
+      എങ്കിൽ (obj->bits) {
+	    വേണ്ടി (unsigned idx=0; idx<obj->width(); idx+=1) {
 		  delete obj->bits[idx].index;
 	    }
 	    obj->bits -= 1;
@@ -1261,22 +1261,22 @@ void signal_delete(vpiHandle item)
       VALGRIND_MEMPOOL_FREE(reinterpret_cast<vpiSignal_plug *>(obj)->pool, obj);
 }
 
-void signal_pool_delete()
+ശൂന്യം signal_pool_delete()
 {
-      if (RUNNING_ON_VALGRIND && (signal_count != signal_dels)) {
-	    fflush(NULL);
+      എങ്കിൽ (RUNNING_ON_VALGRIND && (signal_എണ്ണം != signal_dels)) {
+	    fflush(ശൂന്യ);
 	    VALGRIND_PRINTF("Error: vvp missed deleting %ld of %lu signal(s).",
-	                    (long) signal_count - signal_dels, signal_count);
+	                    (long) signal_എണ്ണം - signal_dels, signal_എണ്ണം);
       }
 
-      for (unsigned idx = 0; idx < signal_pool_count; idx += 1) {
+      വേണ്ടി (unsigned idx = 0; idx < signal_pool_എണ്ണം; idx += 1) {
 	    VALGRIND_DESTROY_MEMPOOL(signal_pool[idx]);
-	    free(signal_pool[idx]);
+	    സ്വതന്ത്രം(signal_pool[idx]);
       }
 
-      free(signal_pool);
+      സ്വതന്ത്രം(signal_pool);
       signal_pool = 0;
-      signal_pool_count = 0;
+      signal_pool_എണ്ണം = 0;
 }
 #endif
 
@@ -1287,216 +1287,216 @@ void signal_pool_delete()
  * The name is the PLI name for the object. If it is an array it is
  * <name>[<index>].
  */
-static vpiHandle fill_in_net4(struct __vpiSignal*obj, __vpiScope*scope,
-			      const char*name, int msb, int lsb,
-			      bool signed_flag, vvp_net_t*node)
+സ്ഥിതം vpiHandle fill_in_net4(ഘടന __vpiSignal*obj, __vpiScope*scope,
+			      സ്ഥിരം അക്ഷരം*name, പൂർണ്ണസംഖ്യ msb, പൂർണ്ണസംഖ്യ lsb,
+			      തർക്കം signed_flag, vvp_net_t*കണ്ണി)
 {
-      obj->id.name = name? vpip_name_string(name) : NULL;
+      obj->id.name = name? vpip_name_string(name) : ശൂന്യ;
       obj->msb = __vpiDecConst(msb);
       obj->lsb = __vpiDecConst(lsb);
       obj->signed_flag = signed_flag? 1 : 0;
       obj->is_netarray = 0;
-      obj->node = node;
+      obj->കണ്ണി = കണ്ണി;
 
 	// Place this object within a scope. If this object is
 	// attached to an array, then this value will be replaced with
 	// the handle to the parent.
       obj->within.scope = scope;
 
-      count_vpi_nets += 1;
+      എണ്ണം_vpi_nets += 1;
 
-      return obj;
+      തിരികെ obj;
 }
 
 vpiHandle vpip_make_net4(__vpiScope*scope,
-			 const char*name, int msb, int lsb,
-			 bool signed_flag, vvp_net_t*node)
+			 സ്ഥിരം അക്ഷരം*name, പൂർണ്ണസംഖ്യ msb, പൂർണ്ണസംഖ്യ lsb,
+			 തർക്കം signed_flag, vvp_net_t*കണ്ണി)
 {
-      struct __vpiSignal*obj = new signal_net;
-      return fill_in_net4(obj, scope, name, msb, lsb, signed_flag, node);
+      ഘടന __vpiSignal*obj = പുതിയ signal_net;
+      തിരികെ fill_in_net4(obj, scope, name, msb, lsb, signed_flag, കണ്ണി);
 }
 
-static int PV_get_base(struct __vpiPV*rfp)
+സ്ഥിതം പൂർണ്ണസംഖ്യ PV_get_base(ഘടന __vpiPV*rfp)
 {
 	/* We return from the symbol base if it is defined. */
-      if (rfp->sbase != 0) {
-	    s_vpi_value val;
+      എങ്കിൽ (rfp->sbase != 0) {
+	    s_vpi_മൂല്യം val;
 	      /* Check to see if the value is defined. */
 	    val.format = vpiVectorVal;
-	    vpi_get_value(rfp->sbase, &val);
-	    int words = (vpi_get(vpiSize, rfp->sbase)-1)/32 + 1;
-	    for(int idx = 0; idx < words; idx += 1) {
+	    vpi_get_മൂല്യം(rfp->sbase, &val);
+	    പൂർണ്ണസംഖ്യ വാക്കുകൾ = (vpi_get(vpiSize, rfp->sbase)-1)/32 + 1;
+	    വേണ്ടി(പൂർണ്ണസംഖ്യ idx = 0; idx < വാക്കുകൾ; idx += 1) {
 		    /* Return INT_MIN to indicate an X base. */
-		  if (val.value.vector[idx].bval != 0) return INT_MIN;
+		  എങ്കിൽ (val.value.vector[idx].bval != 0) തിരികെ INT_MIN;
 	    }
 	      /* The value is defined so get and return it. */
 	    val.format = vpiIntVal;
-	    vpi_get_value(rfp->sbase, &val);
-	    return val.value.integer;
+	    vpi_get_മൂല്യം(rfp->sbase, &val);
+	    തിരികെ val.value.integer;
       }
 
 	/* If the width is zero then tbase is the constant. */
-      return rfp->tbase;
+      തിരികെ rfp->tbase;
 }
 
-static int PV_get(int code, vpiHandle ref)
+സ്ഥിതം പൂർണ്ണസംഖ്യ PV_get(പൂർണ്ണസംഖ്യ code, vpiHandle ref)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      ഘടന __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      പ്രതിജ്ഞാ(rfp);
 
-      int rval = 0;
-      switch (code) {
-	case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      പൂർണ്ണസംഖ്യ rval = 0;
+      തിരഞ്ഞെടുപ്പ് (code) {
+	അവസ്ഥ vpi_വരി_No:
+	    തിരികെ 0;  // Not implemented for now!
 
-	case vpiSigned:
-	    return 0;  // A part/bit select is always unsigned!
+	അവസ്ഥ vpiSigned:
+	    തിരികെ 0;  // A part/bit select is always unsigned!
 
-	case vpiSize:
-	    return rfp->width;
+	അവസ്ഥ vpiSize:
+	    തിരികെ rfp->width;
 
 	  /* This is like the &A<> in array.cc. */
-	case vpiConstantSelect:
-	    return rfp->sbase == 0;
+	അവസ്ഥ vpiConstantSelect:
+	    തിരികെ rfp->sbase == 0;
 
-	case vpiLeftRange:
+	അവസ്ഥ vpi_ഇടത്_Range:
             rval += rfp->width - 1;
 	    // fallthrough
-	case vpiRightRange: {
-	    int left = vpi_get(vpiLeftRange, rfp->parent);
-	    int right = vpi_get(vpiRightRange, rfp->parent);
+	അവസ്ഥ vpi_വലത്_Range: {
+	    പൂർണ്ണസംഖ്യ ഇടത് = vpi_get(vpi_ഇടത്_Range, rfp->parent);
+	    പൂർണ്ണസംഖ്യ വലത് = vpi_get(vpi_വലത്_Range, rfp->parent);
 	    rval += PV_get_base(rfp);
-	    return left >= right ? right + rval : right - rval;
+	    തിരികെ ഇടത് >= വലത് ? വലത് + rval : വലത് - rval;
 	}
 
-        case vpiAutomatic:
-            return vpi_get(vpiAutomatic, rfp->parent);
+        അവസ്ഥ vpiAutomatic:
+            തിരികെ vpi_get(vpiAutomatic, rfp->parent);
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-        case _vpiFromThr:
-            return _vpi_at_PV;
+#എങ്കിൽ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+        അവസ്ഥ _vpiFromThr:
+            തിരികെ _vpi_at_PV;
 #endif
 
-	default:
+	സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "PV_get: property %d is unknown\n", code);
       }
 
-      return 0;
+      തിരികെ 0;
 }
 
-static char* PV_get_str(int code, vpiHandle ref)
+സ്ഥിതം അക്ഷരം* PV_get_str(പൂർണ്ണസംഖ്യ code, vpiHandle ref)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      ഘടന __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      പ്രതിജ്ഞാ(rfp);
 
-      switch (code) {
-	case vpiFile:  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      തിരഞ്ഞെടുപ്പ് (code) {
+	അവസ്ഥ vpiFile:  // Not implemented for now!
+	    തിരികെ simple_set_rbuf_str(file_names[0]);
 
-	case vpiName:
-	case vpiFullName: {
-	    const char*nm = vpi_get_str(code, rfp->parent);
+	അവസ്ഥ vpiName:
+	അവസ്ഥ vpiFullName: {
+	    സ്ഥിരം അക്ഷരം*nm = vpi_get_str(code, rfp->parent);
 	    size_t len = 256+strlen(nm);
-	    char *full = static_cast<char *>(malloc(len));
+	    അക്ഷരം *full = static_cast<അക്ഷരം *>(malloc(len));
 	    snprintf(full, len, "%s[%d:%d]", nm,
-	                                     (int)vpi_get(vpiLeftRange, ref),
-	                                     (int)vpi_get(vpiRightRange, ref));
+	                                     (പൂർണ്ണസംഖ്യ)vpi_get(vpi_ഇടത്_Range, ref),
+	                                     (പൂർണ്ണസംഖ്യ)vpi_get(vpi_വലത്_Range, ref));
 	    full[len-1] = 0;
-	    char *res = simple_set_rbuf_str(full);
-	    free(full);
-	    return res;
+	    അക്ഷരം *res = simple_set_rbuf_str(full);
+	    സ്വതന്ത്രം(full);
+	    തിരികെ res;
 	}
 
-	default:
+	സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "PV_get_str: property %d is unknown.\n", code);
       }
 
-      return 0;
+      തിരികെ 0;
 }
 
-static void PV_get_value(vpiHandle ref, p_vpi_value vp)
+സ്ഥിതം ശൂന്യം PV_get_മൂല്യം(vpiHandle ref, p_vpi_മൂല്യം vp)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      ഘടന __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      പ്രതിജ്ഞാ(rfp);
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(rfp->net->fil);
-      assert(sig);
+      vvp_signal_മൂല്യം*sig = dynamic_cast<vvp_signal_മൂല്യം*>(rfp->net->fil);
+      പ്രതിജ്ഞാ(sig);
 
-      switch (vp->format) {
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
 
-	  case vpiIntVal:
+	  അവസ്ഥ vpiIntVal:
 	    format_vpiIntVal(sig, PV_get_base(rfp), rfp->width, 0, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiBinStrVal:
+	  അവസ്ഥ vpiBinStrVal:
 	    format_vpiBinStrVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiOctStrVal:
+	  അവസ്ഥ vpiOctStrVal:
 	    format_vpiOctStrVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiHexStrVal:
+	  അവസ്ഥ vpiHexStrVal:
 	    format_vpiHexStrVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiDecStrVal:
+	  അവസ്ഥ vpiDecStrVal:
 	    format_vpiDecStrVal(sig, PV_get_base(rfp), rfp->width, 0, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiStringVal:
+	  അവസ്ഥ vpiStringVal:
 	    format_vpiStringVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiScalarVal:
+	  അവസ്ഥ vpiScalarVal:
 	    format_vpiScalarVal(sig, PV_get_base(rfp), vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiStrengthVal:
+	  അവസ്ഥ vpiStrengthVal:
 	    format_vpiStrengthVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiVectorVal:
+	  അവസ്ഥ vpiVectorVal:
 	    format_vpiVectorVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    നിർത്തുക;
 
-	  case vpiRealVal:
+	  അവസ്ഥ vpiRealVal:
 	    format_vpiRealVal(sig, PV_get_base(rfp), rfp->width, 0, vp);
-	    break;
+	    നിർത്തുക;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vvp internal error: PV_get_value: "
 		    "value type %d not implemented. Signal is %s.\n",
-		    (int)vp->format, vpi_get_str(vpiFullName, rfp->parent));
-	    assert(0);
+		    (പൂർണ്ണസംഖ്യ)vp->format, vpi_get_str(vpiFullName, rfp->parent));
+	    പ്രതിജ്ഞാ(0);
       }
 }
 
-static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
+സ്ഥിതം vpiHandle PV_put_മൂല്യം(vpiHandle ref, p_vpi_മൂല്യം vp, പൂർണ്ണസംഖ്യ flags)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(rfp->net->fil);
-      assert(sig);
+      ഘടന __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      പ്രതിജ്ഞാ(rfp);
+      vvp_signal_മൂല്യം*sig = dynamic_cast<vvp_signal_മൂല്യം*>(rfp->net->fil);
+      പ്രതിജ്ഞാ(sig);
 
-      unsigned sig_size = sig->value_size();
+      unsigned sig_size = sig->മൂല്യം_size();
       unsigned width = rfp->width;
-      int base = PV_get_base(rfp);
-      if (base >= (signed) sig_size) return 0;
-      if (base + (signed) width < 0) return 0;
+      പൂർണ്ണസംഖ്യ base = PV_get_base(rfp);
+      എങ്കിൽ (base >= (signed) sig_size) തിരികെ 0;
+      എങ്കിൽ (base + (signed) width < 0) തിരികെ 0;
 
       vvp_vector4_t val;
-      if (flags != vpiReleaseFlag) {
-	    val = vec4_from_vpi_value(vp, width);
+      എങ്കിൽ (flags != vpiReleaseFlag) {
+	    val = vec4_from_vpi_മൂല്യം(vp, width);
       }
 
 	/*
 	 * If the base is less than zero then trim off any unneeded
 	 * lower bits.
 	 */
-      if (base < 0) {
+      എങ്കിൽ (base < 0) {
 	    width += base;
-	    if (flags != vpiReleaseFlag) {
+	    എങ്കിൽ (flags != vpiReleaseFlag) {
 		  val = val.subvalue(-base, width);
 	    }
 	    base = 0;
@@ -1506,16 +1506,16 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 	 * If the value is wider than the signal then trim off any
 	 * unneeded upper bits.
 	 */
-      if (base+width > sig_size) {
+      എങ്കിൽ (base+width > sig_size) {
 	    width = sig_size - base;
-	    if (flags != vpiReleaseFlag) {
+	    എങ്കിൽ (flags != vpiReleaseFlag) {
 		  val = val.subvalue(0, width);
 	    }
       }
 
-      assert(rfp->parent);
-      bool net_flag = rfp->parent->get_type_code()==vpiNet;
-      bool full_sig = base == 0 && width == sig_size;
+      പ്രതിജ്ഞാ(rfp->parent);
+      തർക്കം net_flag = rfp->parent->get_type_code()==vpiNet;
+      തർക്കം full_sig = base == 0 && width == sig_size;
 
       vvp_net_ptr_t dest(rfp->net, 0);
 
@@ -1525,27 +1525,27 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 	   if this net is attached to an island, we need to rerun
 	   the calculations immediately so we can return the
 	   released value.*/
-      if (flags == vpiReleaseFlag) {
-	    assert(rfp->net->fil);
+      എങ്കിൽ (flags == vpiReleaseFlag) {
+	    പ്രതിജ്ഞാ(rfp->net->fil);
 	      // XXXX Can't really do this if this is a partial release?
 	    rfp->net->fil->force_unlink();
-	    if (full_sig) {
+	    എങ്കിൽ (full_sig) {
 		  rfp->net->fil->release(dest, net_flag);
-	    } else {
+	    } അല്ലെങ്കിൽ {
 		  rfp->net->fil->release_pv(dest, base, width, net_flag);
 	    }
-	    rfp->net->fun->force_flag(true);
-	    PV_get_value(ref, vp);
-	    return ref;
+	    rfp->net->fun->force_flag(സത്യം);
+	    PV_get_മൂല്യം(ref, vp);
+	    തിരികെ ref;
       }
 
-      if (flags == vpiForceFlag) {
-	    if (full_sig) {
+      എങ്കിൽ (flags == vpiForceFlag) {
+	    എങ്കിൽ (full_sig) {
 		  vvp_vector2_t mask (vvp_vector2_t::FILL1, sig_size);
 		  rfp->net->force_vec4(val, mask);
-	    } else {
+	    } അല്ലെങ്കിൽ {
 		  vvp_vector2_t mask (vvp_vector2_t::FILL0, sig_size);
-		  for (unsigned idx = 0 ; idx < width ; idx += 1)
+		  വേണ്ടി (unsigned idx = 0 ; idx < width ; idx += 1)
 		        mask.set_bit(base+idx, 1);
 
 		  vvp_vector4_t tmp (sig_size, BIT4_Z);
@@ -1553,72 +1553,72 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 		    // vvp_net_t::force_vec4 propagates all the bits of the
 		    // forced vector value, regardless of the mask. This
 		    // ensures the unforced bits retain their current value.
-		  sig->vec4_value(tmp);
+		  sig->vec4_മൂല്യം(tmp);
 
 		  tmp.set_vec(base, val);
 		  rfp->net->force_vec4(tmp, mask);
 	    }
-      } else if (net_flag && !dynamic_cast<vvp_island_port*>(rfp->net->fun)) {
-	    if (full_sig) {
+      } അല്ലെങ്കിൽ എങ്കിൽ (net_flag && !dynamic_cast<vvp_island_port*>(rfp->net->fun)) {
+	    എങ്കിൽ (full_sig) {
 		  rfp->net->send_vec4(val, vthread_get_wt_context());
-	    } else {
+	    } അല്ലെങ്കിൽ {
 		  rfp->net->send_vec4_pv(val, base, sig_size,
 		                         vthread_get_wt_context());
 	    }
-      } else {
-	    if (full_sig) {
+      } അല്ലെങ്കിൽ {
+	    എങ്കിൽ (full_sig) {
 		  vvp_send_vec4(dest, val, vthread_get_wt_context());
-	    } else {
+	    } അല്ലെങ്കിൽ {
 		  vvp_send_vec4_pv(dest, val, base, sig_size,
 	                           vthread_get_wt_context());
 	    }
       }
-      return 0;
+      തിരികെ 0;
 }
 
-static vpiHandle PV_get_handle(int code, vpiHandle ref)
+സ്ഥിതം vpiHandle PV_get_handle(പൂർണ്ണസംഖ്യ code, vpiHandle ref)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      ഘടന __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      പ്രതിജ്ഞാ(rfp);
 
-      switch (code) {
-	  case vpiParent:
-	    return rfp->parent;
+      തിരഞ്ഞെടുപ്പ് (code) {
+	  അവസ്ഥ vpiParent:
+	    തിരികെ rfp->parent;
 
-	  case vpiScope:
-	    return vpi_handle(vpiScope, rfp->parent);
+	  അവസ്ഥ vpiScope:
+	    തിരികെ vpi_handle(vpiScope, rfp->parent);
 
-	  case vpiModule:
-	    return vpi_handle(vpiModule, rfp->parent);
+	  അവസ്ഥ vpiModule:
+	    തിരികെ vpi_handle(vpiModule, rfp->parent);
       }
 
-      return 0;
+      തിരികെ 0;
 }
 
-inline __vpiPV::__vpiPV()
+വരിയിൽ __vpiPV::__vpiPV()
 { }
 
-int __vpiPV::get_type_code(void) const
-{ return vpiPartSelect; }
+പൂർണ്ണസംഖ്യ __vpiPV::get_type_code(ശൂന്യം) സ്ഥിരം
+{ തിരികെ vpiPartSelect; }
 
-int __vpiPV::vpi_get(int code)
-{ return PV_get(code, this); }
+പൂർണ്ണസംഖ്യ __vpiPV::vpi_get(പൂർണ്ണസംഖ്യ code)
+{ തിരികെ PV_get(code, ഇത്); }
 
-char* __vpiPV::vpi_get_str(int code)
-{ return PV_get_str(code, this); }
+അക്ഷരം* __vpiPV::vpi_get_str(പൂർണ്ണസംഖ്യ code)
+{ തിരികെ PV_get_str(code, ഇത്); }
 
-void __vpiPV::vpi_get_value(p_vpi_value val)
-{ PV_get_value(this, val); }
+ശൂന്യം __vpiPV::vpi_get_മൂല്യം(p_vpi_മൂല്യം val)
+{ PV_get_മൂല്യം(ഇത്, val); }
 
-vpiHandle __vpiPV::vpi_put_value(p_vpi_value val, int flags)
-{ return PV_put_value(this, val, flags); }
+vpiHandle __vpiPV::vpi_put_മൂല്യം(p_vpi_മൂല്യം val, പൂർണ്ണസംഖ്യ flags)
+{ തിരികെ PV_put_മൂല്യം(ഇത്, val, flags); }
 
-vpiHandle __vpiPV::vpi_handle(int code)
-{ return PV_get_handle(code, this); }
+vpiHandle __vpiPV::vpi_handle(പൂർണ്ണസംഖ്യ code)
+{ തിരികെ PV_get_handle(code, ഇത്); }
 
-vpiHandle vpip_make_PV(char*var, int base, int width)
+vpiHandle vpip_make_PV(അക്ഷരം*var, പൂർണ്ണസംഖ്യ base, പൂർണ്ണസംഖ്യ width)
 {
-      struct __vpiPV*obj = new __vpiPV;
+      ഘടന __vpiPV*obj = പുതിയ __vpiPV;
       compile_vpi_lookup(&obj->parent, strdup(var));
       obj->sbase = 0;
       obj->tbase = base;
@@ -1626,25 +1626,25 @@ vpiHandle vpip_make_PV(char*var, int base, int width)
       obj->net = 0;
       functor_ref_lookup(&obj->net, var);
 
-      return obj;
+      തിരികെ obj;
 }
 
-vpiHandle vpip_make_PV(char*var, char*symbol, int width)
+vpiHandle vpip_make_PV(അക്ഷരം*var, അക്ഷരം*ചിഹ്നം, പൂർണ്ണസംഖ്യ width)
 {
-      struct __vpiPV*obj = new __vpiPV;
+      ഘടന __vpiPV*obj = പുതിയ __vpiPV;
       compile_vpi_lookup(&obj->parent, strdup(var));
-      compile_vpi_lookup(&obj->sbase, symbol);
+      compile_vpi_lookup(&obj->sbase, ചിഹ്നം);
       obj->tbase = 0;
       obj->width = (unsigned) width;
       obj->net = 0;
       functor_ref_lookup(&obj->net, var);
 
-      return obj;
+      തിരികെ obj;
 }
 
-vpiHandle vpip_make_PV(char*var, vpiHandle handle, int width)
+vpiHandle vpip_make_PV(അക്ഷരം*var, vpiHandle handle, പൂർണ്ണസംഖ്യ width)
 {
-      struct __vpiPV*obj = new __vpiPV;
+      ഘടന __vpiPV*obj = പുതിയ __vpiPV;
       compile_vpi_lookup(&obj->parent, strdup(var));
       obj->sbase = handle;
       obj->tbase = 0;
@@ -1652,27 +1652,27 @@ vpiHandle vpip_make_PV(char*var, vpiHandle handle, int width)
       obj->net = 0;
       functor_ref_lookup(&obj->net, var);
 
-      return obj;
+      തിരികെ obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void PV_delete(vpiHandle item)
+ശൂന്യം PV_delete(vpiHandle item)
 {
-      struct __vpiPV *obj = dynamic_cast<__vpiPV*>(item);
-      if (obj->sbase) {
-	    switch (obj->sbase->get_type_code()) {
-		case vpiMemoryWord:
-		  if (vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_A) {
+      ഘടന __vpiPV *obj = dynamic_cast<__vpiPV*>(item);
+      എങ്കിൽ (obj->sbase) {
+	    തിരഞ്ഞെടുപ്പ് (obj->sbase->get_type_code()) {
+		അവസ്ഥ vpiMemoryWord:
+		  എങ്കിൽ (vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_A) {
 			A_delete(obj->sbase);
 		  }
-		  break;
-		case vpiPartSelect:
-		  assert(vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_PV);
+		  നിർത്തുക;
+		അവസ്ഥ vpiPartSelect:
+		  പ്രതിജ്ഞാ(vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_PV);
 		  PV_delete(obj->sbase);
-		  break;
+		  നിർത്തുക;
 	    }
       }
-      assert(obj->net->fil);
+      പ്രതിജ്ഞാ(obj->net->fil);
       obj->net->fil->clear_all_callbacks();
       delete obj;
 }

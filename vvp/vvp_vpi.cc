@@ -1,9 +1,9 @@
 
-#include <cstdarg>
-#include "vpi_user.h"
+#അന്തര്ഭാവ <cstdarg>
+#അന്തര്ഭാവ "vpi_user.h"
 
 
-void vvp_vpi_init()
+ശൂന്യം vvp_vpi_init()
 {
 }
 

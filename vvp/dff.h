@@ -35,67 +35,67 @@
  *
  * The base vvp_dff does not implement an asynchronous set/clear.
  */
-class vvp_dff : public vvp_net_fun_t {
+class vvp_dff : പൊതു vvp_net_fun_t {
 
-    public:
+    പൊതു:
       explicit vvp_dff(unsigned width, bool negedge);
       ~vvp_dff() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ശൂന്യം recv_vec4(vvp_net_ptr_t port, സ്ഥിരം vvp_vector4_t&bit,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      ശൂന്യം recv_vec4_pv(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t ctx) override;
 
-    private:
-      virtual void recv_async(vvp_net_ptr_t port);
+    സ്വകാര്യ:
+      മായാ ശൂന്യം recv_async(vvp_net_ptr_t port);
 
       vvp_bit4_t clk_active_ : 8;
       vvp_bit4_t clk_        : 8;
       vvp_bit4_t ena_        : 8;
       vvp_bit4_t asc_        : 8;
 
-    protected:
+    സംരക്ഷിത:
       vvp_vector4_t d_;
 };
 
 /*
  * This variant implements an asynchronous clear to all zeros.
  */
-class vvp_dff_aclr : public vvp_dff {
+class vvp_dff_aclr : പൊതു vvp_dff {
 
-    public:
+    പൊതു:
       explicit vvp_dff_aclr(unsigned width, bool negedge);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    സ്വകാര്യ:
+      ശൂന്യം recv_async(vvp_net_ptr_t port) override;
 };
 
 /*
  * This variant implements an asynchronous set to all ones.
  */
-class vvp_dff_aset : public vvp_dff {
+class vvp_dff_aset : പൊതു vvp_dff {
 
-    public:
+    പൊതു:
       explicit vvp_dff_aset(unsigned width, bool negedge);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    സ്വകാര്യ:
+      ശൂന്യം recv_async(vvp_net_ptr_t port) override;
 };
 
 /*
  * This variant implements an asynchronous set to a specified constant
  * vector value.
  */
-class vvp_dff_asc : public vvp_dff {
+class vvp_dff_asc : പൊതു vvp_dff {
 
-    public:
-      explicit vvp_dff_asc(unsigned width, bool negedge, const char*asc_value);
+    പൊതു:
+      explicit vvp_dff_asc(unsigned width, bool negedge, സ്ഥിരം അക്ഷരം*asc_മൂല്യം);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    സ്വകാര്യ:
+      ശൂന്യം recv_async(vvp_net_ptr_t port) override;
 
-      vvp_vector4_t asc_value_;
+      vvp_vector4_t asc_മൂല്യം_2;
 };
 
 #endif /* IVL_dff_H */

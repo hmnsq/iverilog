@@ -25,175 +25,175 @@
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+using നാമാകാശ std;
 
-struct enumconst_s : public __vpiHandle {
+ഘടന enumconst_s : പൊതു __vpiHandle {
       enumconst_s();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം* vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
 
-      const char*name;
-      bool is_signed;
+      സ്ഥിരം അക്ഷരം*name;
+      തർക്കം is_signed;
       vvp_vector2_t val2;
       vvp_vector4_t val4;
 };
 
-struct __vpiEnumTypespec : public __vpiHandle {
+ഘടന __vpiEnumTypespec : പൊതു __vpiHandle {
       __vpiEnumTypespec();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_iterate(പൂർണ്ണസംഖ്യ code) override;
 
       std::vector<enumconst_s> names;
-      int base_type_code;
-      bool is_signed;
+      പൂർണ്ണസംഖ്യ base_type_code;
+      തർക്കം is_signed;
 };
 
 
-inline __vpiEnumTypespec::__vpiEnumTypespec()
+വരിയിൽ __vpiEnumTypespec::__vpiEnumTypespec()
 { }
 
-int __vpiEnumTypespec::get_type_code(void) const
-{ return vpiEnumTypespec; }
+പൂർണ്ണസംഖ്യ __vpiEnumTypespec::get_type_code(ശൂന്യം) സ്ഥിരം
+{ തിരികെ vpiEnumTypespec; }
 
-int __vpiEnumTypespec::vpi_get(int code)
+പൂർണ്ണസംഖ്യ __vpiEnumTypespec::vpi_get(പൂർണ്ണസംഖ്യ code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return names.size();
+      തിരഞ്ഞെടുപ്പ് (code) {
+	  അവസ്ഥ vpiSize:
+	    തിരികെ names.size();
 
 	    /* This is not currently set correctly. We always use vpiReg for
 	     * four state variables and vpiBitVar for two state variables.
 	     * This minimal functionality is needed to get the next() and
 	     * prev() methods to work correctly with invalid values. */
-	  case vpiBaseTypespec:
-	    return base_type_code;
+	  അവസ്ഥ vpiBaseTypespec:
+	    തിരികെ base_type_code;
 
-	  case vpiSigned:
-	    return is_signed;
+	  അവസ്ഥ vpiSigned:
+	    തിരികെ is_signed;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by __vpiEnumTypespec\n", code);
-	    assert(0);
-	    return 0;
+	    പ്രതിജ്ഞാ(0);
+	    തിരികെ 0;
       }
 }
 
 
-vpiHandle __vpiEnumTypespec::vpi_iterate(int code)
+vpiHandle __vpiEnumTypespec::vpi_iterate(പൂർണ്ണസംഖ്യ code)
 {
-      if (code == vpiEnumConst) {
+      എങ്കിൽ (code == vpiEnumConst) {
 	    vpiHandle*args = static_cast<vpiHandle*>
-	                                (calloc(names.size(), sizeof(vpiHandle*)));
-	    for (size_t idx = 0 ; idx < names.size() ; idx += 1)
+	                                (calloc(names.size(), വലുപ്പം(vpiHandle*)));
+	    വേണ്ടി (size_t idx = 0 ; idx < names.size() ; idx += 1)
 		  args[idx] = &names[idx];
 
-	    return vpip_make_iterator(names.size(), args, true);
+	    തിരികെ vpip_make_iterator(names.size(), args, സത്യം);
       }
 
-      return 0;
+      തിരികെ 0;
 }
 
 
-inline enumconst_s::enumconst_s()
+വരിയിൽ enumconst_s::enumconst_s()
 { }
 
-int enumconst_s::get_type_code(void) const
-{ return vpiEnumConst; }
+പൂർണ്ണസംഖ്യ enumconst_s::get_type_code(ശൂന്യം) സ്ഥിരം
+{ തിരികെ vpiEnumConst; }
 
-int enumconst_s::vpi_get(int code)
+പൂർണ്ണസംഖ്യ enumconst_s::vpi_get(പൂർണ്ണസംഖ്യ code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return val4.size()? val4.size() : val2.size();
-	  default:
-	    return 0;
+      തിരഞ്ഞെടുപ്പ് (code) {
+	  അവസ്ഥ vpiSize:
+	    തിരികെ val4.size()? val4.size() : val2.size();
+	  സ്ഥിരസ്ഥിതി:
+	    തിരികെ 0;
       }
 }
 
 
-char* enumconst_s::vpi_get_str(int code)
+അക്ഷരം* enumconst_s::vpi_get_str(പൂർണ്ണസംഖ്യ code)
 {
-      switch (code) {
-	  case vpiName:
-	    return const_cast<char*> (name);
-	  default:
-	    return 0;
+      തിരഞ്ഞെടുപ്പ് (code) {
+	  അവസ്ഥ vpiName:
+	    തിരികെ const_cast<അക്ഷരം*> (name);
+	  സ്ഥിരസ്ഥിതി:
+	    തിരികെ 0;
       }
 }
 
 
-void enumconst_s::vpi_get_value(p_vpi_value val)
+ശൂന്യം enumconst_s::vpi_get_മൂല്യം(p_vpi_മൂല്യം val)
 {
-      if (val4.size() > 0) {
-	    vpip_vec4_get_value(val4, val4.size(), is_signed, val);
-      } else {
-	    vpip_vec2_get_value(val2, val2.size(), is_signed, val);
+      എങ്കിൽ (val4.size() > 0) {
+	    vpip_vec4_get_മൂല്യം(val4, val4.size(), is_signed, val);
+      } അല്ലെങ്കിൽ {
+	    vpip_vec2_get_മൂല്യം(val2, val2.size(), is_signed, val);
       }
 }
 
 
-void compile_enum2_type(char*label, long width, bool signed_flag,
-                        std::list<struct enum_name_s>*names)
+ശൂന്യം compile_enum2_type(അക്ഷരം*label, long width, തർക്കം signed_flag,
+                        std::list<ഘടന enum_name_s>*names)
 {
-      struct __vpiEnumTypespec*spec = new struct __vpiEnumTypespec;
+      ഘടന __vpiEnumTypespec*spec = പുതിയ ഘടന __vpiEnumTypespec;
       spec->names = std::vector<enumconst_s> (names->size());
       spec->is_signed = signed_flag;
       spec->base_type_code = vpiBitVar;
 
       size_t idx = 0;
-      for (list<struct enum_name_s>::iterator cur = names->begin()
+      വേണ്ടി (list<ഘടന enum_name_s>::iterator cur = names->begin()
 		 ; cur != names->end() ;  ++cur, ++idx) {
-	    assert(cur->val4 == 0);
+	    പ്രതിജ്ഞാ(cur->val4 == 0);
 	    spec->names[idx].name = cur->text;
 	    spec->names[idx].val2 = vvp_vector2_t(cur->val2, width);
 	    spec->names[idx].is_signed = signed_flag;
       }
 
-      assert(idx == spec->names.size());
-      compile_vpi_symbol(label, spec);
+      പ്രതിജ്ഞാ(idx == spec->names.size());
+      compile_vpi_ചിഹ്നം(label, spec);
       vpip_attach_to_current_scope(spec);
 
-      free(label);
+      സ്വതന്ത്രം(label);
       delete names;
 }
 
-void compile_enum4_type(char*label, long width, bool signed_flag,
-                        std::list<struct enum_name_s>*names)
+ശൂന്യം compile_enum4_type(അക്ഷരം*label, long width, തർക്കം signed_flag,
+                        std::list<ഘടന enum_name_s>*names)
 {
-      struct __vpiEnumTypespec*spec = new struct __vpiEnumTypespec;
+      ഘടന __vpiEnumTypespec*spec = പുതിയ ഘടന __vpiEnumTypespec;
       spec->names = std::vector<enumconst_s> (names->size());
       spec->is_signed = signed_flag;
       spec->base_type_code = vpiReg;
 
       size_t idx = 0;
-      for (list<struct enum_name_s>::iterator cur = names->begin()
+      വേണ്ടി (list<ഘടന enum_name_s>::iterator cur = names->begin()
 		 ; cur != names->end() ;  ++cur, ++idx) {
 	    spec->names[idx].name = cur->text;
-	    assert(cur->val4);
+	    പ്രതിജ്ഞാ(cur->val4);
 	    spec->names[idx].val4 = vector4_from_text(cur->val4, width);
 	    spec->names[idx].is_signed = signed_flag;
-	    free(cur->val4);
+	    സ്വതന്ത്രം(cur->val4);
 	    cur->val4 = 0;
       }
 
-      assert(idx == spec->names.size());
-      compile_vpi_symbol(label, spec);
+      പ്രതിജ്ഞാ(idx == spec->names.size());
+      compile_vpi_ചിഹ്നം(label, spec);
       vpip_attach_to_current_scope(spec);
 
-      free(label);
+      സ്വതന്ത്രം(label);
       delete names;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void enum_delete(vpiHandle item)
+ശൂന്യം enum_delete(vpiHandle item)
 {
-      struct __vpiEnumTypespec*obj = dynamic_cast<__vpiEnumTypespec*>(item);
+      ഘടന __vpiEnumTypespec*obj = dynamic_cast<__vpiEnumTypespec*>(item);
 
-      for (vector<enumconst_s>::iterator iter = obj->names.begin();
+      വേണ്ടി (vector<enumconst_s>::iterator iter = obj->names.begin();
            iter != obj->names.end(); ++ iter ) {
 	    delete [] iter->name;
       }

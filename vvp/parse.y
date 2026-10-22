@@ -34,9 +34,9 @@ using namespace std;
 /*
  * These are bits in the lexor.
  */
-extern FILE*yyin;
+ബാഹ്യ FILE*yyin;
 
-vector <const char*> file_names;
+vector <സ്ഥിരം അക്ഷരം*> file_names;
 
 /*
  * Local variables.
@@ -46,33 +46,33 @@ vector <const char*> file_names;
  * When parsing a modpath list, this is the processed destination that
  * the source items will attach themselves to.
  */
-static struct __vpiModPath*modpath_dst = 0;
+സ്ഥിതം ഘടന __vpiModPath*modpath_dst = 0;
 %}
 
-%union {
-      char*text;
-      char **table;
+%സംഘം {
+      അക്ഷരം*text;
+      അക്ഷരം **table;
       uint64_t numb;
       bool flag;
 
       comp_operands_t opa;
 
-      struct symb_s  symb;
-      struct symbv_s symbv;
+      ഘടന symb_s  symb;
+      ഘടന symbv_s symbv;
 
-      struct numbv_s numbv;
+      ഘടന numbv_s numbv;
 
-      struct enum_name_s enum_name;
-      std::list<struct enum_name_s>*enum_namev;
+      ഘടന enum_name_s enum_name;
+      std::list<ഘടന enum_name_s>*enum_namev;
 
-      struct symb_s vect;
+      ഘടന symb_s vect;
 
-      struct argv_s argv;
+      ഘടന argv_s argv;
       vpiHandle vpi;
 
       vvp_delay_t*cdelay;
 
-      int      vpi_enum;
+      പൂർണ്ണസംഖ്യ      vpi_enum;
 };
 
 %token K_A K_APV
@@ -106,71 +106,71 @@ static struct __vpiModPath*modpath_dst = 0;
 %token K_vpi_call K_vpi_call_w K_vpi_call_i
 %token K_vpi_func K_vpi_func_r K_vpi_func_s
 %token K_ivl_version K_ivl_delay_selection
-%token K_vpi_module K_vpi_time_precision K_file_names K_file_line
-%token K_PORT_INPUT K_PORT_OUTPUT K_PORT_INOUT K_PORT_MIXED K_PORT_NODIR
+%token K_vpi_module K_vpi_time_precision K_file_names K_file_വരി
+%token K_PORT_നിവേശം K_PORT_OUTPUT K_PORT_INOUT K_PORT_MIXED K_PORT_NODIR
 
 %token <text> T_INSTR
 %token <text> T_LABEL
-%token <numb> T_NUMBER
+%token <numb> T_സംഖ്യ
 %token <text> T_STRING
-%token <text> T_SYMBOL
+%token <text> T_ചിഹ്നം
 %token <vect> T_VECTOR
 
-%type <flag>  local_flag
-%type <vpi_enum> port_type
-%type <numb>  signed_t_number
-%type <numb>  dimension dimensions dimensions_opt
-%type <symb>  symbol symbol_opt
-%type <symbv> symbols symbols_net
-%type <numbv> numbers
-%type <text> label_opt
-%type <opa>  operand operands operands_opt
-%type <table> udp_table
+%തരം <flag>  local_flag
+%തരം <vpi_enum> port_type
+%തരം <numb>  signed_t_സംഖ്യ
+%തരം <numb>  dimension dimensions dimensions_opt
+%തരം <symb>  ചിഹ്നം ചിഹ്നം_opt
+%തരം <symbv> symbols symbols_net
+%തരം <numbv> numbers
+%തരം <text> label_opt
+%തരം <opa>  operand operands operands_opt
+%തരം <table> udp_table
 
-%type <argv> argument_opt argument_list
-%type <vpi>  argument symbol_access
-%type <cdelay> delay
+%തരം <argv> argument_opt argument_list
+%തരം <vpi>  argument ചിഹ്നം_access
+%തരം <cdelay> delay
 
-%type <enum_name> enum_type_name
-%type <enum_namev> enum_type_names
+%തരം <enum_name> enum_type_name
+%തരം <enum_namev> enum_type_names
 
 %%
 
-source_file : header_lines_opt program footer_lines;
+source_file : header_വരികൾ_opt program footer_വരികൾ;
 
-header_lines_opt : header_lines | ;
+header_വരികൾ_opt : header_വരികൾ | ;
 
 
-header_lines
-	: header_line
-	| header_lines header_line
+header_വരികൾ
+	: header_വരി
+	| header_വരികൾ header_വരി
 	;
 
-header_line
+header_വരി
 	: K_ivl_version T_STRING ';'
-		{ verify_version($2, NULL); }
+		{ verify_version($2, ശൂന്യ); }
 	| K_ivl_version T_STRING T_STRING ';'
 		{ verify_version($2, $3); }
 	| K_ivl_delay_selection T_STRING ';'
 		{ set_delay_selection($2); }
 	| K_vpi_module T_STRING ';'
 		{ compile_load_vpi_module($2); }
-	| K_vpi_time_precision '+' T_NUMBER ';'
+	| K_vpi_time_precision '+' T_സംഖ്യ ';'
 		{ compile_vpi_time_precision($3); }
-	| K_vpi_time_precision '-' T_NUMBER ';'
+	| K_vpi_time_precision '-' T_സംഖ്യ ';'
 		{ compile_vpi_time_precision(-$3); }
 	;
 
-footer_lines
-	: K_file_names T_NUMBER ';' { file_names.reserve($2); }
+footer_വരികൾ
+	: K_file_names T_സംഖ്യ ';' { file_names.reserve($2); }
 	  name_strings
 	;
 
 name_strings
 	: T_STRING ';'
-		{ file_names.push_back($1); }
+		{ file_names.തള്ളുക_back($1); }
 	| name_strings T_STRING ';'
-		{ file_names.push_back($2); }
+		{ file_names.തള്ളുക_back($2); }
 	;
 
   /* A program is simply a list of statements. No other structure. */
@@ -191,11 +191,11 @@ statement
      label and a type name, and may have operands. The functor may
      also have a delay specification and output strengths. */
 
-	: T_LABEL K_FUNCTOR T_SYMBOL T_NUMBER ',' symbols ';'
+	: T_LABEL K_FUNCTOR T_ചിഹ്നം T_സംഖ്യ ',' symbols ';'
 		{ compile_functor($1, $3, $4, 6, 6, $6.cnt, $6.vect); }
 
-	| T_LABEL K_FUNCTOR T_SYMBOL T_NUMBER
-	          '[' T_NUMBER T_NUMBER ']' ',' symbols ';'
+	| T_LABEL K_FUNCTOR T_ചിഹ്നം T_സംഖ്യ
+	          '[' T_സംഖ്യ T_സംഖ്യ ']' ',' symbols ';'
 		{ unsigned str0 = $6;
 		  unsigned str1 = $7;
 		  compile_functor($1, $3, $4, str0, str1,
@@ -207,289 +207,289 @@ statement
      label (UDP type id) a name (string), the number of inputs, and
      for sequential UDPs the initial value. */
 
-	| T_LABEL K_UDP_S T_STRING ',' T_NUMBER ',' T_NUMBER ',' udp_table ';'
+	| T_LABEL K_UDP_S T_STRING ',' T_സംഖ്യ ',' T_സംഖ്യ ',' udp_table ';'
 		{ compile_udp_def(1, $1, $3, $5, $7, $9); }
 
-	| T_LABEL K_UDP_C T_STRING ',' T_NUMBER ',' udp_table ';'
+	| T_LABEL K_UDP_C T_STRING ',' T_സംഖ്യ ',' udp_table ';'
 		{ compile_udp_def(0, $1, $3, $5, 0, $7); }
 
-	| T_LABEL K_UDP T_SYMBOL ',' symbols ';'
+	| T_LABEL K_UDP T_ചിഹ്നം ',' symbols ';'
 		{ compile_udp_functor($1, $3, $5.cnt, $5.vect); }
 
 
   /* Memory.  Definition, port, initialization */
 
-        | T_LABEL K_ARRAY T_STRING ',' signed_t_number signed_t_number ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ';'
                 { compile_var_array($1, $3, $5, $6, $8, $9, 0); }
 
-        | T_LABEL K_ARRAY_2U T_STRING ',' signed_t_number signed_t_number ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY_2U T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ';'
                 { compile_var2_array($1, $3, $5, $6, $8, $9, false); }
-        | T_LABEL K_ARRAY_2S T_STRING ',' signed_t_number signed_t_number ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY_2S T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ';'
                 { compile_var2_array($1, $3, $5, $6, $8, $9, true); }
 
-        | T_LABEL K_ARRAY_I T_STRING ',' signed_t_number signed_t_number ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY_I T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ';'
                 { compile_var_array($1, $3, $5, $6, $8, $9, 2); }
 
-        | T_LABEL K_ARRAY_R T_STRING ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY_R T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ';'
                 { compile_real_array($1, $3, $5, $6); }
 
-        | T_LABEL K_ARRAY_S T_STRING ',' signed_t_number signed_t_number ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY_S T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ';'
                 { compile_var_array($1, $3, $5, $6, $8, $9, 1); }
 
-        | T_LABEL K_ARRAY_STR T_STRING ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY_STR T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ';'
                 { compile_string_array($1, $3, $5, $6); }
 
-        | T_LABEL K_ARRAY_OBJ T_STRING ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY_OBJ T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ';'
                 { compile_object_array($1, $3, $5, $6); }
 
-        | T_LABEL K_ARRAY T_STRING ',' signed_t_number signed_t_number ';'
+        | T_LABEL K_ARRAY T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ';'
                 { compile_net_array($1, $3, $5, $6); }
 
-        | T_LABEL K_ARRAY_PORT T_SYMBOL ',' T_SYMBOL ';'
+        | T_LABEL K_ARRAY_PORT T_ചിഹ്നം ',' T_ചിഹ്നം ';'
 		{ compile_array_port($1, $3, $5); }
 
-        | T_LABEL K_ARRAY_PORT T_SYMBOL ',' T_NUMBER ';'
+        | T_LABEL K_ARRAY_PORT T_ചിഹ്നം ',' T_സംഖ്യ ';'
 		{ compile_array_port($1, $3, $5); }
 
-        | T_LABEL K_ARRAY T_STRING ',' T_SYMBOL ';'
+        | T_LABEL K_ARRAY T_STRING ',' T_ചിഹ്നം ';'
                 { compile_array_alias($1, $3, $5); }
 
  /* The .ufunc functors are for implementing user defined functions, or
      other thread code that is automatically invoked if any of the
      bits in the symbols list change. */
 
-  | T_LABEL K_UFUNC_REAL T_SYMBOL ',' T_NUMBER ',' T_SYMBOL ';'
+  | T_LABEL K_UFUNC_REAL T_ചിഹ്നം ',' T_സംഖ്യ ',' T_ചിഹ്നം ';'
       { compile_ufunc_real($1, $3, $5, 0, 0, 0, 0, $7, strdup("E_0x0")); }
-  | T_LABEL K_UFUNC_REAL T_SYMBOL ',' T_NUMBER ',' symbols '(' symbols ')' T_SYMBOL ';'
+  | T_LABEL K_UFUNC_REAL T_ചിഹ്നം ',' T_സംഖ്യ ',' symbols '(' symbols ')' T_ചിഹ്നം ';'
       { compile_ufunc_real($1, $3, $5, $7.cnt, $7.vect, $9.cnt, $9.vect, $11, 0); }
 
-  | T_LABEL K_UFUNC_VEC4 T_SYMBOL ',' T_NUMBER ',' T_SYMBOL ';'
+  | T_LABEL K_UFUNC_VEC4 T_ചിഹ്നം ',' T_സംഖ്യ ',' T_ചിഹ്നം ';'
       { compile_ufunc_vec4($1, $3, $5, 0, 0, 0, 0, $7, strdup("E_0x0")); }
-  | T_LABEL K_UFUNC_VEC4 T_SYMBOL ',' T_NUMBER ',' symbols '(' symbols ')' T_SYMBOL ';'
+  | T_LABEL K_UFUNC_VEC4 T_ചിഹ്നം ',' T_സംഖ്യ ',' symbols '(' symbols ')' T_ചിഹ്നം ';'
       { compile_ufunc_vec4($1, $3, $5, $7.cnt, $7.vect, $9.cnt, $9.vect, $11, 0); }
 
-  | T_LABEL K_UFUNC_E T_SYMBOL ',' T_NUMBER ',' T_SYMBOL ',' symbols '(' symbols ')' T_SYMBOL ';'
+  | T_LABEL K_UFUNC_E T_ചിഹ്നം ',' T_സംഖ്യ ',' T_ചിഹ്നം ',' symbols '(' symbols ')' T_ചിഹ്നം ';'
       { compile_ufunc_vec4($1, $3, $5, $9.cnt, $9.vect, $11.cnt, $11.vect, $13, $7); }
 
   /* Resolver statements are very much like functors. They are
      compiled to functors of a different mode. */
 
-	| T_LABEL K_RESOLV T_SYMBOL ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_RESOLV T_ചിഹ്നം ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_resolver($1, $3, obj.cnt, obj.vect);
 		}
 
   /* Part select statements take a single netlist input, and numbers
      that define the part to be selected out of the input. */
 
-	| T_LABEL K_PART T_SYMBOL ',' T_NUMBER ',' T_NUMBER ';'
+	| T_LABEL K_PART T_ചിഹ്നം ',' T_സംഖ്യ ',' T_സംഖ്യ ';'
 		{ compile_part_select($1, $3, $5, $7); }
 
-	| T_LABEL K_PART_PV T_SYMBOL ',' T_NUMBER ',' T_NUMBER ',' T_NUMBER ';'
+	| T_LABEL K_PART_PV T_ചിഹ്നം ',' T_സംഖ്യ ',' T_സംഖ്യ ',' T_സംഖ്യ ';'
 		{ compile_part_select_pv($1, $3, $5, $7, $9); }
 
-	| T_LABEL K_PART_V T_SYMBOL ',' T_SYMBOL ',' T_NUMBER ';'
+	| T_LABEL K_PART_V T_ചിഹ്നം ',' T_ചിഹ്നം ',' T_സംഖ്യ ';'
 		{ compile_part_select_var($1, $3, $5, $7, false); }
-	| T_LABEL K_PART_V_S T_SYMBOL ',' T_SYMBOL ',' T_NUMBER ';'
+	| T_LABEL K_PART_V_S T_ചിഹ്നം ',' T_ചിഹ്നം ',' T_സംഖ്യ ';'
 		{ compile_part_select_var($1, $3, $5, $7, true); }
 
   /* Concatenations */
 
-  | T_LABEL K_CONCAT '[' T_NUMBER T_NUMBER T_NUMBER T_NUMBER ']' ','
+  | T_LABEL K_CONCAT '[' T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ ']' ','
     symbols ';'
       { compile_concat($1, $4, $5, $6, $7, $10.cnt, $10.vect); }
 
-  | T_LABEL K_CONCAT8 '[' T_NUMBER T_NUMBER T_NUMBER T_NUMBER ']' ','
+  | T_LABEL K_CONCAT8 '[' T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ ']' ','
     symbols ';'
       { compile_concat8($1, $4, $5, $6, $7, $10.cnt, $10.vect); }
 
   /* Substitutions (similar to concatenations) */
-  | T_LABEL K_SUBSTITUTE T_NUMBER ',' T_NUMBER T_NUMBER ',' symbols ';'
+  | T_LABEL K_SUBSTITUTE T_സംഖ്യ ',' T_സംഖ്യ T_സംഖ്യ ',' symbols ';'
       { compile_substitute($1, $3, $5, $6, $8.cnt, $8.vect); }
 
   /* The ABS statement is a special arithmetic node that takes 1
      input. Re-use the symbols rule. */
 
         | T_LABEL K_ARITH_ABS symbols ';'
-		{ struct symbv_s obj = $3;
+		{ ഘടന symbv_s obj = $3;
 		  compile_arith_abs($1, obj.cnt, obj.vect);
 		}
 
-  | T_LABEL K_CAST_INT T_NUMBER ',' symbols ';'
-      { struct symbv_s obj = $5;
+  | T_LABEL K_CAST_INT T_സംഖ്യ ',' symbols ';'
+      { ഘടന symbv_s obj = $5;
 	compile_arith_cast_int($1, $3, obj.cnt, obj.vect);
       }
 
   | T_LABEL K_CAST_REAL symbols ';'
-      { struct symbv_s obj = $3;
+      { ഘടന symbv_s obj = $3;
 	compile_arith_cast_real($1, false, obj.cnt, obj.vect);
       }
 
   | T_LABEL K_CAST_REAL_S symbols ';'
-      { struct symbv_s obj = $3;
+      { ഘടന symbv_s obj = $3;
 	compile_arith_cast_real($1, true, obj.cnt, obj.vect);
       }
 
-  | T_LABEL K_CAST_2 T_NUMBER ',' symbols ';'
-      { struct symbv_s obj = $5;
+  | T_LABEL K_CAST_2 T_സംഖ്യ ',' symbols ';'
+      { ഘടന symbv_s obj = $5;
 	compile_arith_cast_vec2($1, $3, obj.cnt, obj.vect);
       }
 
   /* Arithmetic statements generate functor arrays of a given width
      that take like size input vectors. */
 
-	| T_LABEL K_ARITH_DIV T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_DIV T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_arith_div($1, $3, false, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_DIV_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_DIV_R T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_arith_div_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_DIV_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_DIV_S T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_arith_div($1, $3, true, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_MOD T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_MOD T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_arith_mod($1, $3, false, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_MOD_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_MOD_R T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_arith_mod_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_MOD_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_MOD_S T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_arith_mod($1, $3, true, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_MULT T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_MULT T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_arith_mult($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_MULT_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_MULT_R T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_arith_mult_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_POW T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_POW T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_arith_pow($1, $3, false, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_POW_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_POW_R T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_arith_pow_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_POW_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_POW_S T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_arith_pow($1, $3, true, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_SUB T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_SUB T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_arith_sub($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_SUB_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_SUB_R T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_arith_sub_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_SUM T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_SUM T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_arith_sum($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_ARITH_SUM_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_ARITH_SUM_R T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_arith_sum_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_EEQ T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_EEQ T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_cmp_eeq($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_NEE T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_NEE T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_cmp_nee($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_EQ T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_EQ T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_cmp_eq($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_EQX T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_EQX T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_cmp_eqx($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_EQZ T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_EQZ T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_cmp_eqz($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_EQ_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_EQ_R T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_cmp_eq_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_NE T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_NE T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_cmp_ne($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_NE_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_NE_R T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_cmp_ne_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_GE T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_GE T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_cmp_ge($1, $3, false, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_GE_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_GE_R T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_cmp_ge_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_GE_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_GE_S T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_cmp_ge($1, $3, true, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_GT T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_GT T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_cmp_gt($1, $3, false, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_GT_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_GT_R T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_cmp_gt_r($1, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_GT_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_GT_S T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_cmp_gt($1, $3, true, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_WEQ T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_WEQ T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_cmp_weq($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_CMP_WNE T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_CMP_WNE T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_cmp_wne($1, $3, obj.cnt, obj.vect);
 		}
 
@@ -497,115 +497,115 @@ statement
      node takes two form, one with an array of constants and a single
      input, and another with an array of inputs. */
 
- | T_LABEL K_DELAY T_NUMBER delay symbol ';'
+ | T_LABEL K_DELAY T_സംഖ്യ delay ചിഹ്നം ';'
     { compile_delay($1, $3, $4, $5); }
- | T_LABEL K_DELAY T_NUMBER symbols ';'
-    { struct symbv_s obj = $4;
+ | T_LABEL K_DELAY T_സംഖ്യ symbols ';'
+    { ഘടന symbv_s obj = $4;
       compile_delay($1, $3, obj.cnt, obj.vect, false);
     }
- | T_LABEL K_DELAY T_NUMBER symbols ',' T_NUMBER ';'
-    { struct symbv_s obj = $4;
-      if ($6 != 0) assert(0);
+ | T_LABEL K_DELAY T_സംഖ്യ symbols ',' T_സംഖ്യ ';'
+    { ഘടന symbv_s obj = $4;
+      എങ്കിൽ ($6 != 0) പ്രതിജ്ഞാ(0);
       compile_delay($1, $3, obj.cnt, obj.vect, true);
     }
 
- | T_LABEL K_MODPATH T_NUMBER symbol symbol ','
+ | T_LABEL K_MODPATH T_സംഖ്യ ചിഹ്നം ചിഹ്നം ','
     { modpath_dst = compile_modpath($1, $3, $4, $5); }
    modpath_src_list ';'
     { modpath_dst = 0; }
 
   /* DFF nodes have an output and take up to 4 inputs. */
 
-  | T_LABEL K_DFF_N T_NUMBER symbol ',' symbol ',' symbol ';'
+  | T_LABEL K_DFF_N T_സംഖ്യ ചിഹ്നം ',' ചിഹ്നം ',' ചിഹ്നം ';'
       { compile_dff($1, $3, true, $4, $6, $8); }
 
-  | T_LABEL K_DFF_P T_NUMBER symbol ',' symbol ',' symbol ';'
+  | T_LABEL K_DFF_P T_സംഖ്യ ചിഹ്നം ',' ചിഹ്നം ',' ചിഹ്നം ';'
       { compile_dff($1, $3, false, $4, $6, $8); }
 
-  | T_LABEL K_DFF_N_ACLR T_NUMBER symbol ',' symbol ',' symbol ',' symbol ';'
+  | T_LABEL K_DFF_N_ACLR T_സംഖ്യ ചിഹ്നം ',' ചിഹ്നം ',' ചിഹ്നം ',' ചിഹ്നം ';'
       { compile_dff_aclr($1, $3, true, $4, $6, $8, $10); }
 
-  | T_LABEL K_DFF_P_ACLR T_NUMBER symbol ',' symbol ',' symbol ',' symbol ';'
+  | T_LABEL K_DFF_P_ACLR T_സംഖ്യ ചിഹ്നം ',' ചിഹ്നം ',' ചിഹ്നം ',' ചിഹ്നം ';'
       { compile_dff_aclr($1, $3, false, $4, $6, $8, $10); }
 
-  | T_LABEL K_DFF_N_ASET T_NUMBER symbol ',' symbol ',' symbol ',' symbol ';'
+  | T_LABEL K_DFF_N_ASET T_സംഖ്യ ചിഹ്നം ',' ചിഹ്നം ',' ചിഹ്നം ',' ചിഹ്നം ';'
       { compile_dff_aset($1, $3, true, $4, $6, $8, $10, 0); }
 
-  | T_LABEL K_DFF_P_ASET T_NUMBER symbol ',' symbol ',' symbol ',' symbol ';'
+  | T_LABEL K_DFF_P_ASET T_സംഖ്യ ചിഹ്നം ',' ചിഹ്നം ',' ചിഹ്നം ',' ചിഹ്നം ';'
       { compile_dff_aset($1, $3, false, $4, $6, $8, $10, 0); }
 
-  | T_LABEL K_DFF_N_ASET T_NUMBER symbol ',' symbol ',' symbol ',' symbol ',' T_SYMBOL ';'
+  | T_LABEL K_DFF_N_ASET T_സംഖ്യ ചിഹ്നം ',' ചിഹ്നം ',' ചിഹ്നം ',' ചിഹ്നം ',' T_ചിഹ്നം ';'
       { compile_dff_aset($1, $3, true, $4, $6, $8, $10, $12); }
 
-  | T_LABEL K_DFF_P_ASET T_NUMBER symbol ',' symbol ',' symbol ',' symbol ',' T_SYMBOL ';'
+  | T_LABEL K_DFF_P_ASET T_സംഖ്യ ചിഹ്നം ',' ചിഹ്നം ',' ചിഹ്നം ',' ചിഹ്നം ',' T_ചിഹ്നം ';'
       { compile_dff_aset($1, $3, false, $4, $6, $8, $10, $12); }
 
   /* LATCH nodes have an output and take 2 inputs. */
 
-  | T_LABEL K_LATCH T_NUMBER symbol ',' symbol ';'
+  | T_LABEL K_LATCH T_സംഖ്യ ചിഹ്നം ',' ചിഹ്നം ';'
       { compile_latch($1, $3, $4, $6); }
 
   /* The various reduction operator nodes take a single input. */
 
-        | T_LABEL K_REDUCE_AND symbol ';'
+        | T_LABEL K_REDUCE_AND ചിഹ്നം ';'
                 { compile_reduce_and($1, $3); }
 
-        | T_LABEL K_REDUCE_OR symbol ';'
+        | T_LABEL K_REDUCE_OR ചിഹ്നം ';'
                 { compile_reduce_or($1, $3); }
 
-        | T_LABEL K_REDUCE_XOR symbol ';'
+        | T_LABEL K_REDUCE_XOR ചിഹ്നം ';'
                 { compile_reduce_xor($1, $3); }
 
-        | T_LABEL K_REDUCE_NAND symbol ';'
+        | T_LABEL K_REDUCE_NAND ചിഹ്നം ';'
                 { compile_reduce_nand($1, $3); }
 
-        | T_LABEL K_REDUCE_NOR symbol ';'
+        | T_LABEL K_REDUCE_NOR ചിഹ്നം ';'
                 { compile_reduce_nor($1, $3); }
 
-        | T_LABEL K_REDUCE_XNOR symbol ';'
+        | T_LABEL K_REDUCE_XNOR ചിഹ്നം ';'
                 { compile_reduce_xnor($1, $3); }
 
-        | T_LABEL K_REPEAT T_NUMBER ',' T_NUMBER ',' symbol ';'
+        | T_LABEL K_REPEAT T_സംഖ്യ ',' T_സംഖ്യ ',' ചിഹ്നം ';'
                 { compile_repeat($1, $3, $5, $7); }
 
   /* The extend nodes take a width and a symbol. */
 
-        | T_LABEL K_EXTEND_S T_NUMBER ',' symbol ';'
+        | T_LABEL K_EXTEND_S T_സംഖ്യ ',' ചിഹ്നം ';'
                 { compile_extend_signed($1, $3, $5); }
 
   /* System function call */
-        | T_LABEL K_SFUNC T_NUMBER T_NUMBER T_STRING ','
+        | T_LABEL K_SFUNC T_സംഖ്യ T_സംഖ്യ T_STRING ','
           T_STRING ',' symbols ';'
                 { compile_sfunc($1, $5, $7, $3, $4, $9.cnt, $9.vect, 0); }
 
-        | T_LABEL K_SFUNC_E T_NUMBER T_NUMBER T_STRING ',' T_SYMBOL ','
+        | T_LABEL K_SFUNC_E T_സംഖ്യ T_സംഖ്യ T_STRING ',' T_ചിഹ്നം ','
           T_STRING ',' symbols ';'
                 { compile_sfunc($1, $5, $9, $3, $4, $11.cnt, $11.vect, $7); }
 
   /* System function call - no arguments */
-        | T_LABEL K_SFUNC T_NUMBER T_NUMBER T_STRING ','
+        | T_LABEL K_SFUNC T_സംഖ്യ T_സംഖ്യ T_STRING ','
           T_STRING ';'
                 { compile_sfunc($1, $5, $7, $3, $4, 0, 0, 0); }
 
-        | T_LABEL K_SFUNC_E T_NUMBER T_NUMBER T_STRING ',' T_SYMBOL ','
+        | T_LABEL K_SFUNC_E T_സംഖ്യ T_സംഖ്യ T_STRING ',' T_ചിഹ്നം ','
           T_STRING ';'
                 { compile_sfunc($1, $5, $9, $3, $4, 0, 0, $7); }
 
   /* Shift nodes. */
 
-	| T_LABEL K_SHIFTL T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_SHIFTL T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		  compile_shiftl($1, $3, obj.cnt, obj.vect);
 		}
 
-	| T_LABEL K_SHIFTR T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_SHIFTR T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		      compile_shiftr($1, $3, false, obj.cnt, obj.vect);
 		}
 
 
-	| T_LABEL K_SHIFTRS T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+	| T_LABEL K_SHIFTRS T_സംഖ്യ ',' symbols ';'
+		{ ഘടന symbv_s obj = $5;
 		      compile_shiftr($1, $3, true, obj.cnt, obj.vect);
 		}
 
@@ -614,10 +614,10 @@ statement
      list of inputs. If the type is instead a string, then we have a
      named event instead. */
 
-	| T_LABEL K_EVENT T_SYMBOL ',' symbols ';'
+	| T_LABEL K_EVENT T_ചിഹ്നം ',' symbols ';'
                 { compile_event($1, $3, $5.cnt, $5.vect); }
 
-	| T_LABEL K_EVENT K_DEBUG T_SYMBOL ',' symbols ';'
+	| T_LABEL K_EVENT K_DEBUG T_ചിഹ്നം ',' symbols ';'
                 { compile_event($1, $4, $6.cnt, $6.vect); }
 
 	| T_LABEL K_EVENT T_STRING ';'
@@ -639,12 +639,12 @@ statement
 
   /* %file_line statements are instructions that have unusual operand
      requirements so are handled by their own rules. */
-	| label_opt K_file_line T_NUMBER T_NUMBER T_STRING ';'
-		{ compile_file_line($1, $3, $4, $5); }
+	| label_opt K_file_വരി T_സംഖ്യ T_സംഖ്യ T_STRING ';'
+		{ compile_file_വരി($1, $3, $4, $5); }
 
-	| label_opt K_file_line T_NUMBER T_NUMBER T_NUMBER ';'
-		{ assert($5 == 0);
-		  compile_file_line($1, $3, $4, 0); }
+	| label_opt K_file_വരി T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ ';'
+		{ പ്രതിജ്ഞാ($5 == 0);
+		  compile_file_വരി($1, $3, $4, 0); }
 
   /* %vpi_call statements are instructions that have unusual operand
      requirements so are handled by their own rules. The %vpi_func
@@ -652,37 +652,37 @@ statement
      after the name, and is used for function calls. */
 
   /* This version does not allow a function to be called as a task. */
-  | label_opt K_vpi_call T_NUMBER T_NUMBER T_STRING
-    argument_opt '{' T_NUMBER T_NUMBER T_NUMBER '}' ';'
+  | label_opt K_vpi_call T_സംഖ്യ T_സംഖ്യ T_STRING
+    argument_opt '{' T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ '}' ';'
       { compile_vpi_call($1, $5, true, false, $3, $4,
 			 $6.argc, $6.argv, $8, $9, $10); }
 
   /* This version allows a function to be called as a task, but prints a
    * warning message. */
-  | label_opt K_vpi_call_w T_NUMBER T_NUMBER T_STRING
-    argument_opt '{' T_NUMBER T_NUMBER T_NUMBER '}' ';'
+  | label_opt K_vpi_call_w T_സംഖ്യ T_സംഖ്യ T_STRING
+    argument_opt '{' T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ '}' ';'
       { compile_vpi_call($1, $5, false, true, $3, $4,
 			 $6.argc, $6.argv, $8, $9, $10); }
 
   /* This version allows a function to be called as a task and does not
    * print a message. */
-  | label_opt K_vpi_call_i T_NUMBER T_NUMBER T_STRING
-    argument_opt '{' T_NUMBER T_NUMBER T_NUMBER '}' ';'
+  | label_opt K_vpi_call_i T_സംഖ്യ T_സംഖ്യ T_STRING
+    argument_opt '{' T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ '}' ';'
       { compile_vpi_call($1, $5, false, false, $3, $4,
 			 $6.argc, $6.argv, $8, $9, $10); }
 
-  | label_opt K_vpi_func T_NUMBER T_NUMBER T_STRING T_NUMBER
-    argument_opt  '{' T_NUMBER T_NUMBER T_NUMBER '}' ';'
+  | label_opt K_vpi_func T_സംഖ്യ T_സംഖ്യ T_STRING T_സംഖ്യ
+    argument_opt  '{' T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ '}' ';'
       { compile_vpi_func_call($1, $5, -vpiVectorVal, $6, $3, $4,
 			      $7.argc, $7.argv, $9, $10, $11); }
 
-  | label_opt K_vpi_func_r T_NUMBER T_NUMBER T_STRING
-    argument_opt '{' T_NUMBER T_NUMBER T_NUMBER '}' ';'
+  | label_opt K_vpi_func_r T_സംഖ്യ T_സംഖ്യ T_STRING
+    argument_opt '{' T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ '}' ';'
       { compile_vpi_func_call($1, $5, -vpiRealVal, 0, $3, $4,
 			      $6.argc, $6.argv, $8, $9, $10); }
 
-  | label_opt K_vpi_func_s T_NUMBER T_NUMBER T_STRING
-    argument_opt '{' T_NUMBER T_NUMBER T_NUMBER '}' ';'
+  | label_opt K_vpi_func_s T_സംഖ്യ T_സംഖ്യ T_STRING
+    argument_opt '{' T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ '}' ';'
       { compile_vpi_func_call($1, $5, -vpiStringVal, 0, $3, $4,
 			      $6.argc, $6.argv, $8, $9, $10); }
 
@@ -701,78 +701,78 @@ statement
      The final symbol is the label of the parent scope. If there is no
      parent scope, then this is a root scope. */
 
-	| T_LABEL K_SCOPE T_SYMBOL ',' T_STRING T_STRING T_NUMBER T_NUMBER ';'
+	| T_LABEL K_SCOPE T_ചിഹ്നം ',' T_STRING T_STRING T_സംഖ്യ T_സംഖ്യ ';'
 		{ compile_scope_decl($1, $3, $5, $6, 0, $7, $8, $7, $8, 0); }
 
-	| T_LABEL K_SCOPE T_SYMBOL ',' T_STRING T_STRING T_NUMBER T_NUMBER ','
-	  T_NUMBER T_NUMBER T_NUMBER ',' T_SYMBOL ';'
+	| T_LABEL K_SCOPE T_ചിഹ്നം ',' T_STRING T_STRING T_സംഖ്യ T_സംഖ്യ ','
+	  T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ ',' T_ചിഹ്നം ';'
 		{ compile_scope_decl($1, $3, $5, $6, $14, $7, $8, $10, $11, $12); }
 
   /* Scope recall has no label of its own, but refers by label to a
      declared scope. */
 
-	|         K_SCOPE T_SYMBOL ';'
+	|         K_SCOPE T_ചിഹ്നം ';'
 		{ compile_scope_recall($2); }
 
 
   /* Port information for scopes... currently this is just meta-data for VPI queries */
 
-	| K_PORT_INFO T_NUMBER port_type T_NUMBER T_STRING T_SYMBOL ';'
+	| K_PORT_INFO T_സംഖ്യ port_type T_സംഖ്യ T_STRING T_ചിഹ്നം ';'
 		{ compile_port_info( $2 /* port_index */, $3, $4 /* width */,
 		                     $5 /*&name */, $6 /* buffer */ ); }
 
-	| K_PORT_INFO T_NUMBER port_type T_NUMBER T_STRING ';'
+	| K_PORT_INFO T_സംഖ്യ port_type T_സംഖ്യ T_STRING ';'
 		{ compile_port_info( $2 /* port_index */, $3, $4 /* width */,
 		                     $5 /*&name */, nullptr /* buffer */ ); }
 
-	|         K_TIMESCALE T_NUMBER T_NUMBER';'
+	|         K_TIMESCALE T_സംഖ്യ T_സംഖ്യ';'
 		{ compile_timescale($2, $3); }
-	|         K_TIMESCALE '-' T_NUMBER T_NUMBER';'
+	|         K_TIMESCALE '-' T_സംഖ്യ T_സംഖ്യ';'
 		{ compile_timescale(-$3, $4); }
-	|         K_TIMESCALE T_NUMBER '-' T_NUMBER';'
+	|         K_TIMESCALE T_സംഖ്യ '-' T_സംഖ്യ';'
 		{ compile_timescale($2, -$4); }
-	|         K_TIMESCALE '-' T_NUMBER '-' T_NUMBER';'
+	|         K_TIMESCALE '-' T_സംഖ്യ '-' T_സംഖ്യ';'
 		{ compile_timescale(-$3, -$5); }
 
   /* Thread statements declare a thread with its starting address. The
      starting address must already be defined. The .thread statement
      may also take an optional flag word. */
 
-	|         K_THREAD T_SYMBOL ';'
+	|         K_THREAD T_ചിഹ്നം ';'
 		{ compile_thread($2, 0); }
 
-	|         K_THREAD T_SYMBOL ',' T_SYMBOL ';'
+	|         K_THREAD T_ചിഹ്നം ',' T_ചിഹ്നം ';'
 		{ compile_thread($2, $4); }
 
   /* Var statements declare a bit of a variable. This also implicitly
      creates a functor with the same name that acts as the output of
      the variable in the netlist. */
 
-  | T_LABEL K_VAR local_flag T_STRING ',' signed_t_number signed_t_number ';'
+  | T_LABEL K_VAR local_flag T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ';'
       { compile_variable($1, $4, $6, $7, vpiLogicVar, false, $3); }
 
-  | T_LABEL K_VAR_S local_flag T_STRING ',' signed_t_number signed_t_number ';'
+  | T_LABEL K_VAR_S local_flag T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ';'
       { compile_variable($1, $4, $6, $7, vpiLogicVar, true, $3); }
 
-  | T_LABEL K_VAR_I local_flag T_STRING ',' T_NUMBER T_NUMBER ';'
+  | T_LABEL K_VAR_I local_flag T_STRING ',' T_സംഖ്യ T_സംഖ്യ ';'
       { compile_variable($1, $4, $6, $7, vpiIntegerVar, true, $3); }
 
-  | T_LABEL K_VAR_2S local_flag T_STRING ',' signed_t_number signed_t_number ';'
+  | T_LABEL K_VAR_2S local_flag T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ';'
       { compile_variable($1, $4, $6, $7, vpiIntVar, true, $3); }
 
-  | T_LABEL K_VAR_2U local_flag T_STRING ',' signed_t_number signed_t_number ';'
+  | T_LABEL K_VAR_2U local_flag T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ';'
       { compile_variable($1, $4, $6, $7, vpiIntVar, false, $3); }
 
-  | T_LABEL K_VAR_R local_flag T_STRING ',' signed_t_number signed_t_number ';'
+  | T_LABEL K_VAR_R local_flag T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ';'
       { compile_var_real($1, $4, $3); }
 
   | T_LABEL K_VAR_STR T_STRING ';'
       { compile_var_string($1, $3); }
 
-  | T_LABEL K_VAR_DARRAY T_STRING ',' T_NUMBER ';'
+  | T_LABEL K_VAR_DARRAY T_STRING ',' T_സംഖ്യ ';'
       { compile_var_darray($1, $3, $5); }
 
-  | T_LABEL K_VAR_QUEUE T_STRING  ',' T_NUMBER';'
+  | T_LABEL K_VAR_QUEUE T_STRING  ',' T_സംഖ്യ';'
       { compile_var_queue($1, $3, $5); }
 
   | T_LABEL K_VAR_COBJECT T_STRING ';'
@@ -781,125 +781,125 @@ statement
   /* Net statements are similar to .var statements, except that they
      declare nets, and they have an input list. */
 
-  | T_LABEL K_NET local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET local_flag T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ
     ',' symbols_net ';'
       { compile_net($1, $4, $6, $7, vpiLogicVar, false, $3, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET_S local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET_S local_flag T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ
     ',' symbols_net ';'
       { compile_net($1, $4, $6, $7, vpiLogicVar, true, $3, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET_2U local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET_2U local_flag T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ
     ',' symbols_net ';'
       { compile_net($1, $4, $6, $7, vpiIntVar, false, $3, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET_2S local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET_2S local_flag T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ
     ',' symbols_net ';'
       { compile_net($1, $4, $6, $7, vpiIntVar, true, $3, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET8 local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET8 local_flag T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ
     ',' symbols_net ';'
       { compile_net($1, $4, $6, $7, -vpiLogicVar, false, $3, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET8_2U local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET8_2U local_flag T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ
     ',' symbols_net ';'
       { compile_net($1, $4, $6, $7, -vpiLogicVar, false, $3, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET8_S local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET8_S local_flag T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ
     ',' symbols_net ';'
       { compile_net($1, $4, $6, $7, -vpiLogicVar, true, $3, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET8_2S local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET8_2S local_flag T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ
     ',' symbols_net ';'
       { compile_net($1, $4, $6, $7, -vpiLogicVar, true, $3, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET_R local_flag T_STRING ',' signed_t_number signed_t_number
+  | T_LABEL K_NET_R local_flag T_STRING ',' signed_t_സംഖ്യ signed_t_സംഖ്യ
     ',' symbols_net ';'
       { compile_net_real($1, $4, $6, $7, $3, $9.cnt, $9.vect); }
 
   /* Arrayed versions of net directives. */
 
-  | T_LABEL K_NET T_SYMBOL T_NUMBER ',' signed_t_number signed_t_number ','
+  | T_LABEL K_NET T_ചിഹ്നം T_സംഖ്യ ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ','
     symbols_net ';'
       { compile_netw($1, $3, $4, $6, $7, vpiLogicVar, false, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET_S T_SYMBOL T_NUMBER ',' signed_t_number signed_t_number ','
+  | T_LABEL K_NET_S T_ചിഹ്നം T_സംഖ്യ ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ','
     symbols_net ';'
       { compile_netw($1, $3, $4, $6, $7, vpiLogicVar, true, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET_2U T_SYMBOL T_NUMBER ',' signed_t_number signed_t_number ','
+  | T_LABEL K_NET_2U T_ചിഹ്നം T_സംഖ്യ ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ','
     symbols_net ';'
       { compile_netw($1, $3, $4, $6, $7, vpiIntVar, false, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET_2S T_SYMBOL T_NUMBER ',' signed_t_number signed_t_number ','
+  | T_LABEL K_NET_2S T_ചിഹ്നം T_സംഖ്യ ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ','
     symbols_net ';'
       { compile_netw($1, $3, $4, $6, $7, vpiIntVar, true, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET8 T_SYMBOL T_NUMBER ',' signed_t_number signed_t_number ','
+  | T_LABEL K_NET8 T_ചിഹ്നം T_സംഖ്യ ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ','
     symbols_net ';'
       { compile_netw($1, $3, $4, $6, $7, -vpiLogicVar, false, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET8_S T_SYMBOL T_NUMBER ',' signed_t_number signed_t_number ','
+  | T_LABEL K_NET8_S T_ചിഹ്നം T_സംഖ്യ ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ','
     symbols_net ';'
       { compile_netw($1, $3, $4, $6, $7, -vpiLogicVar, true, $9.cnt, $9.vect); }
 
-  | T_LABEL K_NET_R T_SYMBOL T_NUMBER ',' signed_t_number signed_t_number ','
+  | T_LABEL K_NET_R T_ചിഹ്നം T_സംഖ്യ ',' signed_t_സംഖ്യ signed_t_സംഖ്യ ','
     symbols_net ';'
       { compile_netw_real($1, $3, $4, $6, $7, $9.cnt, $9.vect); }
 
   /* Parameter statements come in a few simple forms. The most basic
      is the string parameter. */
 
-	| T_LABEL K_PARAM_STR T_STRING T_NUMBER T_NUMBER T_NUMBER',' T_STRING ';'
+	| T_LABEL K_PARAM_STR T_STRING T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ',' T_STRING ';'
 		{ compile_param_string($1, $3, $8, $4, $5, $6); }
 
-	| T_LABEL K_PARAM_L T_STRING T_NUMBER T_NUMBER T_NUMBER',' T_SYMBOL ';'
+	| T_LABEL K_PARAM_L T_STRING T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ',' T_ചിഹ്നം ';'
 		{ compile_param_logic($1, $3, $8, false, $4, $5, $6); }
 
-	| T_LABEL K_PARAM_L T_STRING T_NUMBER T_NUMBER T_NUMBER',' '+' T_SYMBOL ';'
+	| T_LABEL K_PARAM_L T_STRING T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ',' '+' T_ചിഹ്നം ';'
 		{ compile_param_logic($1, $3, $9, true, $4, $5, $6 ); }
 
-	| T_LABEL K_PARAM_REAL T_STRING T_NUMBER T_NUMBER T_NUMBER',' T_SYMBOL ';'
+	| T_LABEL K_PARAM_REAL T_STRING T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ',' T_ചിഹ്നം ';'
 		{ compile_param_real($1, $3, $8, $4, $5, $6); }
 
   /* Islands */
 
-  | T_LABEL K_ISLAND T_SYMBOL ';'
+  | T_LABEL K_ISLAND T_ചിഹ്നം ';'
       { compile_island($1, $3); }
 
-  | T_LABEL K_PORT T_SYMBOL ',' T_SYMBOL ';'
+  | T_LABEL K_PORT T_ചിഹ്നം ',' T_ചിഹ്നം ';'
       { compile_island_port($1, $3, $5); }
 
-  | T_LABEL K_IMPORT T_SYMBOL ',' T_SYMBOL ';'
+  | T_LABEL K_IMPORT T_ചിഹ്നം ',' T_ചിഹ്നം ';'
       { compile_island_import($1, $3, $5); }
 
-  | T_LABEL K_EXPORT T_SYMBOL ';'
+  | T_LABEL K_EXPORT T_ചിഹ്നം ';'
       { compile_island_export($1, $3); }
 
-  | K_RTRAN T_SYMBOL ',' T_SYMBOL T_SYMBOL ';'
+  | K_RTRAN T_ചിഹ്നം ',' T_ചിഹ്നം T_ചിഹ്നം ';'
       { compile_island_tranif(0, $2, $4, $5, 0, 1); }
 
-  | K_RTRANIF0 T_SYMBOL ',' T_SYMBOL T_SYMBOL ',' T_SYMBOL ';'
+  | K_RTRANIF0 T_ചിഹ്നം ',' T_ചിഹ്നം T_ചിഹ്നം ',' T_ചിഹ്നം ';'
       { compile_island_tranif(0, $2, $4, $5, $7, 1); }
 
-  | K_RTRANIF1 T_SYMBOL ',' T_SYMBOL T_SYMBOL ',' T_SYMBOL ';'
+  | K_RTRANIF1 T_ചിഹ്നം ',' T_ചിഹ്നം T_ചിഹ്നം ',' T_ചിഹ്നം ';'
       { compile_island_tranif(1, $2, $4, $5, $7, 1); }
 
-  | K_TRAN T_SYMBOL ',' T_SYMBOL T_SYMBOL ';'
+  | K_TRAN T_ചിഹ്നം ',' T_ചിഹ്നം T_ചിഹ്നം ';'
       { compile_island_tranif(0, $2, $4, $5, 0, 0); }
 
-  | K_TRANIF0 T_SYMBOL ',' T_SYMBOL T_SYMBOL ',' T_SYMBOL ';'
+  | K_TRANIF0 T_ചിഹ്നം ',' T_ചിഹ്നം T_ചിഹ്നം ',' T_ചിഹ്നം ';'
       { compile_island_tranif(0, $2, $4, $5, $7, 0); }
 
-  | K_TRANIF1 T_SYMBOL ',' T_SYMBOL T_SYMBOL ',' T_SYMBOL ';'
+  | K_TRANIF1 T_ചിഹ്നം ',' T_ചിഹ്നം T_ചിഹ്നം ',' T_ചിഹ്നം ';'
       { compile_island_tranif(1, $2, $4, $5, $7, 0); }
 
-  | K_TRANVP T_NUMBER T_NUMBER T_NUMBER ',' T_SYMBOL ',' T_SYMBOL T_SYMBOL ';'
+  | K_TRANVP T_സംഖ്യ T_സംഖ്യ T_സംഖ്യ ',' T_ചിഹ്നം ',' T_ചിഹ്നം T_ചിഹ്നം ';'
       { compile_island_tranvp($6, $8, $9, $2, $3, $4); }
 
   /* Other statements */
 
-  | T_LABEL K_CLASS T_STRING '[' T_NUMBER ']'
+  | T_LABEL K_CLASS T_STRING '[' T_സംഖ്യ ']'
       { compile_class_start($1, $3, $5); }
     class_properties_opt ';'
       { compile_class_done(); }
@@ -923,7 +923,7 @@ class_properties
   ;
 
 class_property
-  : T_NUMBER ':' T_STRING ',' T_STRING dimensions_opt
+  : T_സംഖ്യ ':' T_STRING ',' T_STRING dimensions_opt
       { compile_class_property($1, $3, $5, $6); }
   ;
 
@@ -947,37 +947,37 @@ dimensions
   ;
 
 dimension
-  : '[' T_NUMBER ':' T_NUMBER ']'
+  : '[' T_സംഖ്യ ':' T_സംഖ്യ ']'
       { $$ = ($2 > $4? $2 - $4 : $4 - $2) + 1; }
   ;
 
   /* Enumeration types */
 enum_type
-  : T_LABEL K_ENUM2 '(' T_NUMBER ')' enum_type_names ';'
+  : T_LABEL K_ENUM2 '(' T_സംഖ്യ ')' enum_type_names ';'
       { compile_enum2_type($1, $4, false, $6); }
-  | T_LABEL K_ENUM2_S '(' T_NUMBER ')' enum_type_names ';'
+  | T_LABEL K_ENUM2_S '(' T_സംഖ്യ ')' enum_type_names ';'
       { compile_enum2_type($1, $4, true, $6); }
-  | T_LABEL K_ENUM4 '(' T_NUMBER ')' enum_type_names ';'
+  | T_LABEL K_ENUM4 '(' T_സംഖ്യ ')' enum_type_names ';'
       { compile_enum4_type($1, $4, false, $6); }
-  | T_LABEL K_ENUM4_S '(' T_NUMBER ')' enum_type_names ';'
+  | T_LABEL K_ENUM4_S '(' T_സംഖ്യ ')' enum_type_names ';'
       { compile_enum4_type($1, $4, true, $6); }
   ;
 
 enum_type_names
   : enum_type_name
-      { list<struct enum_name_s>*tmp = new list<struct enum_name_s>;
-	tmp->push_back($1);
+      { list<ഘടന enum_name_s>*tmp = new list<ഘടന enum_name_s>;
+	tmp->തള്ളുക_back($1);
 	$$ = tmp;
       }
   | enum_type_names ',' enum_type_name
-      { list<struct enum_name_s>*tmp = $1;
-	tmp->push_back($3);
+      { list<ഘടന enum_name_s>*tmp = $1;
+	tmp->തള്ളുക_back($3);
 	$$ = tmp;
       }
   ;
 
 enum_type_name
-  : T_STRING T_NUMBER
+  : T_STRING T_സംഖ്യ
       { $$.text = $1; $$.val2 = $2; $$.val4 = 0; }
   | T_STRING T_VECTOR
       { $$.text = $1; $$.val2 = 0; $$.val4 = $2.text; }
@@ -1004,11 +1004,11 @@ operands_opt
 operands
 	: operands ',' operand
 		{ comp_operands_t opa = $1;
-		  assert(opa->argc < 3);
-		  assert($3->argc == 1);
+		  പ്രതിജ്ഞാ(opa->argc < 3);
+		  പ്രതിജ്ഞാ($3->argc == 1);
 		  opa->argv[opa->argc] = $3->argv[0];
 		  opa->argc += 1;
-		  free($3);
+		  സ്വതന്ത്രം($3);
 		  $$ =  opa;
 		}
 	| operand
@@ -1016,17 +1016,17 @@ operands
 	;
 
 operand
-  : symbol
+  : ചിഹ്നം
       { comp_operands_t opa = static_cast<comp_operands_t>
-                                         (calloc(1, sizeof(struct comp_operands_s)));
+                                         (calloc(1, വലുപ്പം(ഘടന comp_operands_s)));
 	opa->argc = 1;
 	opa->argv[0].ltype = L_SYMB;
 	opa->argv[0].symb = $1;
 	$$ = opa;
       }
-  | T_NUMBER
+  | T_സംഖ്യ
       { comp_operands_t opa = static_cast<comp_operands_t>
-                                         (calloc(1, sizeof(struct comp_operands_s)));
+                                         (calloc(1, വലുപ്പം(ഘടന comp_operands_s)));
 	opa->argc = 1;
 	opa->argv[0].ltype = L_NUMB;
 	opa->argv[0].numb = $1;
@@ -1034,7 +1034,7 @@ operand
       }
   | T_STRING
       { comp_operands_t opa = static_cast<comp_operands_t>
-                                         (calloc(1, sizeof(struct comp_operands_s)));
+                                         (calloc(1, വലുപ്പം(ഘടന comp_operands_s)));
 	opa->argc = 1;
 	opa->argv[0].ltype = L_STRING;
 	opa->argv[0].text = $1;
@@ -1063,7 +1063,7 @@ argument_opt
 		  $$ = $2;
 		}
 	| /* empty */
-		{ struct argv_s tmp;
+		{ ഘടന argv_s tmp;
 		  argv_init(&tmp);
 		  $$ = tmp;
 		}
@@ -1071,24 +1071,24 @@ argument_opt
 
 argument_list
   : argument
-      { struct argv_s tmp;
+      { ഘടന argv_s tmp;
 	argv_init(&tmp);
 	argv_add(&tmp, $1);
 	$$ = tmp;
       }
   | argument_list ',' argument
-      { struct argv_s tmp = $1;
+      { ഘടന argv_s tmp = $1;
 	argv_add(&tmp, $3);
 	$$ = tmp;
       }
-  | T_SYMBOL
-      { struct argv_s tmp;
+  | T_ചിഹ്നം
+      { ഘടന argv_s tmp;
 	argv_init(&tmp);
 	argv_sym_add(&tmp, $1);
 	$$ = tmp;
       }
-  | argument_list ',' T_SYMBOL
-      { struct argv_s tmp = $1;
+  | argument_list ',' T_ചിഹ്നം
+      { ഘടന argv_s tmp = $1;
 	argv_sym_add(&tmp, $3);
 	$$ = tmp;
       }
@@ -1098,44 +1098,44 @@ argument
   : T_STRING
       { $$ = vpip_make_string_const($1); }
   | T_VECTOR
-      { $$ = vpip_make_binary_const($1.idx, $1.text);
-	free($1.text);
+      { $$ = vpip_make_ദ്വിമാന_const($1.idx, $1.text);
+	സ്വതന്ത്രം($1.text);
       }
-  | symbol_access
+  | ചിഹ്നം_access
       { $$ = $1; }
   ;
 
-symbol_access
-  : K_A '<' T_SYMBOL ',' T_NUMBER '>'
+ചിഹ്നം_access
+  : K_A '<' T_ചിഹ്നം ',' T_സംഖ്യ '>'
       { $$ = vpip_make_vthr_A($3, $5); }
-  | K_A '<' T_SYMBOL ',' T_SYMBOL '>'
+  | K_A '<' T_ചിഹ്നം ',' T_ചിഹ്നം '>'
       { $$ = vpip_make_vthr_A($3, $5); }
-  | K_A '<' T_SYMBOL ',' symbol_access '>'
+  | K_A '<' T_ചിഹ്നം ',' ചിഹ്നം_access '>'
       { $$ = vpip_make_vthr_A($3, $5); }
-  | K_PV '<' T_SYMBOL ',' T_NUMBER ',' T_NUMBER '>'
+  | K_PV '<' T_ചിഹ്നം ',' T_സംഖ്യ ',' T_സംഖ്യ '>'
       { $$ = vpip_make_PV($3, $5, $7); }
-  | K_PV '<' T_SYMBOL ',' '-' T_NUMBER ',' T_NUMBER '>'
+  | K_PV '<' T_ചിഹ്നം ',' '-' T_സംഖ്യ ',' T_സംഖ്യ '>'
       { $$ = vpip_make_PV($3, -$6, $8); }
-  | K_PV '<' T_SYMBOL ',' T_SYMBOL ',' T_NUMBER '>'
+  | K_PV '<' T_ചിഹ്നം ',' T_ചിഹ്നം ',' T_സംഖ്യ '>'
       { $$ = vpip_make_PV($3, $5, $7); }
-  | K_PV '<' T_SYMBOL ',' symbol_access ',' T_NUMBER '>'
+  | K_PV '<' T_ചിഹ്നം ',' ചിഹ്നം_access ',' T_സംഖ്യ '>'
       { $$ = vpip_make_PV($3, $5, $7); }
-  | K_APV '<' T_SYMBOL ',' T_NUMBER ',' T_NUMBER ',' T_NUMBER '>'
+  | K_APV '<' T_ചിഹ്നം ',' T_സംഖ്യ ',' T_സംഖ്യ ',' T_സംഖ്യ '>'
       { $$ = vpip_make_vthr_APV($3, $5, $7, $9); }
-  | K_PQ '<' T_SYMBOL ',' T_NUMBER ',' T_NUMBER '>'
+  | K_PQ '<' T_ചിഹ്നം ',' T_സംഖ്യ ',' T_സംഖ്യ '>'
       { $$ = vpip_make_prop_queue_ref($3, $5, $7); }
   ;
 
   /* functor operands can only be a list of symbols. */
 symbols
-	: symbol
-		{ struct symbv_s obj;
+	: ചിഹ്നം
+		{ ഘടന symbv_s obj;
 		  symbv_init(&obj);
 		  symbv_add(&obj, $1);
 		  $$ = obj;
 		}
-	| symbols ',' symbol
-		{ struct symbv_s obj = $1;
+	| symbols ',' ചിഹ്നം
+		{ ഘടന symbv_s obj = $1;
 		  symbv_add(&obj, $3);
 		  $$ = obj;
 		}
@@ -1143,14 +1143,14 @@ symbols
 
 
 numbers
-	: T_NUMBER
-		{ struct numbv_s obj;
+	: T_സംഖ്യ
+		{ ഘടന numbv_s obj;
 		  numbv_init(&obj);
 		  numbv_add(&obj, $1);
 		  $$ = obj;
 		}
-	| numbers ',' T_NUMBER
-		{ struct numbv_s obj = $1;
+	| numbers ',' T_സംഖ്യ
+		{ ഘടന numbv_s obj = $1;
 		  numbv_add(&obj, $3);
 		  $$ = obj;
 		}
@@ -1158,14 +1158,14 @@ numbers
 
 
 symbols_net
-	: symbol_opt
-		{ struct symbv_s obj;
+	: ചിഹ്നം_opt
+		{ ഘടന symbv_s obj;
 		  symbv_init(&obj);
 		  symbv_add(&obj, $1);
 		  $$ = obj;
 		}
-	| symbols_net ',' symbol_opt
-		{ struct symbv_s obj = $1;
+	| symbols_net ',' ചിഹ്നം_opt
+		{ ഘടന symbv_s obj = $1;
 		  symbv_add(&obj, $3);
 		  $$ = obj;
 		}
@@ -1175,15 +1175,15 @@ symbols_net
      particular, functor vectors can be indexed with the [] syntax,
      with values from 0 up. */
 
-symbol
-	: T_SYMBOL
+ചിഹ്നം
+	: T_ചിഹ്നം
 		{ $$.text = $1;
 		  $$.idx = 0;
 		}
 	;
 
-symbol_opt
-	: symbol
+ചിഹ്നം_opt
+	: ചിഹ്നം
 		{ $$ = $1; }
 	|
 		{ $$.text = 0;
@@ -1201,7 +1201,7 @@ modpath_src_list
         ;
 
 port_type
-        : K_PORT_INPUT { $$ = vpiInput; }
+        : K_PORT_നിവേശം { $$ = vpi_നിവേശം; }
         | K_PORT_OUTPUT { $$ = vpiOutput; }
         | K_PORT_INOUT  { $$ = vpiInout; }
         | K_PORT_MIXED  { $$ = vpiMixedIO; }
@@ -1209,23 +1209,23 @@ port_type
         ;
 
 modpath_src
-  : symbol '(' numbers ')' symbol
+  : ചിഹ്നം '(' numbers ')' ചിഹ്നം
       { compile_modpath_src(modpath_dst, 0, $1, $3, 0, $5, false); }
-  | symbol '(' numbers '?' ')' symbol
+  | ചിഹ്നം '(' numbers '?' ')' ചിഹ്നം
       { compile_modpath_src(modpath_dst, 0, $1, $3, 0, $6, true); }
-  | symbol '(' numbers '?' symbol ')' symbol
+  | ചിഹ്നം '(' numbers '?' ചിഹ്നം ')' ചിഹ്നം
       { compile_modpath_src(modpath_dst, 0, $1, $3, $5, $7); }
-  | symbol '+' '(' numbers ')' symbol
+  | ചിഹ്നം '+' '(' numbers ')' ചിഹ്നം
       { compile_modpath_src(modpath_dst, '+', $1, $4, 0, $6, false); }
-  | symbol '+' '(' numbers '?' ')' symbol
+  | ചിഹ്നം '+' '(' numbers '?' ')' ചിഹ്നം
       { compile_modpath_src(modpath_dst, '+', $1, $4, 0, $7, true); }
-  | symbol '+' '(' numbers '?' symbol ')' symbol
+  | ചിഹ്നം '+' '(' numbers '?' ചിഹ്നം ')' ചിഹ്നം
       { compile_modpath_src(modpath_dst, '+', $1, $4, $6, $8); }
-  | symbol '-' '(' numbers ')' symbol
+  | ചിഹ്നം '-' '(' numbers ')' ചിഹ്നം
       { compile_modpath_src(modpath_dst, '-', $1, $4, 0, $6, false); }
-  | symbol '-' '(' numbers '?' ')' symbol
+  | ചിഹ്നം '-' '(' numbers '?' ')' ചിഹ്നം
       { compile_modpath_src(modpath_dst, '-', $1, $4, 0, $7, true); }
-  | symbol '-' '(' numbers '?' symbol ')' symbol
+  | ചിഹ്നം '-' '(' numbers '?' ചിഹ്നം ')' ചിഹ്നം
       { compile_modpath_src(modpath_dst, '-', $1, $4, $6, $8); }
   ;
 
@@ -1236,33 +1236,33 @@ udp_table
 		{ $$ = compile_udp_table($1,  $3); }
 	;
 
-signed_t_number
-	: T_NUMBER     { $$ = $1; }
-	| '-' T_NUMBER { $$ = -$2; }
+signed_t_സംഖ്യ
+	: T_സംഖ്യ     { $$ = $1; }
+	| '-' T_സംഖ്യ { $$ = -$2; }
 	;
 
 delay
-	: '(' T_NUMBER ')'
+	: '(' T_സംഖ്യ ')'
 		{ $$ = new vvp_delay_t($2, $2); }
-	| '(' T_NUMBER ',' T_NUMBER ')'
+	| '(' T_സംഖ്യ ',' T_സംഖ്യ ')'
 		{ $$ = new vvp_delay_t($2, $4); }
-	| '(' T_NUMBER ',' T_NUMBER ',' T_NUMBER ')'
+	| '(' T_സംഖ്യ ',' T_സംഖ്യ ',' T_സംഖ്യ ')'
 		{ $$ = new vvp_delay_t($2, $4, $6); }
 	;
 
 %%
 
-int compile_design(const char*path)
+പൂർണ്ണസംഖ്യ compile_design(സ്ഥിരം അക്ഷരം*path)
 {
       yypath = path;
       yyline = 1;
       yyin = fopen(path, "r");
-      if (yyin == 0) {
+      എങ്കിൽ (yyin == 0) {
 	    fprintf(stderr, "%s: Unable to open input file.\n", path);
-	    return -1;
+	    തിരികെ -1;
       }
 
-      int rc = yyparse();
+      പൂർണ്ണസംഖ്യ rc = yyparse();
       fclose(yyin);
-      return rc;
+      തിരികെ rc;
 }

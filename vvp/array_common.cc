@@ -19,185 +19,185 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "array_common.h"
+#അന്തര്ഭാവ "array_common.h"
 
-vpiHandle __vpiArrayBase::vpi_array_base_iterate(int code)
+vpiHandle __vpiArrayBase::vpi_array_base_iterate(പൂർണ്ണസംഖ്യ code)
 {
-    switch (code) {
-        case vpiReg:
-        case vpiMemoryWord: {
-                struct __vpiArrayIterator*res;
-                res = new __vpiArrayIterator;
-                res->array = this;
+    തിരഞ്ഞെടുപ്പ് (code) {
+        അവസ്ഥ vpiReg:
+        അവസ്ഥ vpiMemoryWord: {
+                ഘടന __vpiArrayIterator*res;
+                res = പുതിയ __vpiArrayIterator;
+                res->array = ഇത്;
                 res->next = 0;
-                return res;
+                തിരികെ res;
         }
     }
 
-    return 0;
+    തിരികെ 0;
 }
 
-void __vpiArrayBase::make_vals_words()
+ശൂന്യം __vpiArrayBase::make_vals_വാക്കുകൾ()
 {
-    assert(vals_words == 0);
-    vals_words = new struct __vpiArrayWord[get_size() + 1];
+    പ്രതിജ്ഞാ(vals_വാക്കുകൾ == 0);
+    vals_വാക്കുകൾ = പുതിയ ഘടന __vpiArrayWord[get_size() + 1];
 
     // Make word[-1] point to the parent.
-    vals_words->parent = this;
+    vals_വാക്കുകൾ->parent = ഇത്;
     // Now point to word-0
-    vals_words += 1;
+    vals_വാക്കുകൾ += 1;
 
-    struct __vpiArrayWord*words = vals_words;
-    for (unsigned idx = 0 ; idx < get_size() ; idx += 1) {
-            words[idx].word0 = words;
+    ഘടന __vpiArrayWord*വാക്കുകൾ = vals_വാക്കുകൾ;
+    വേണ്ടി (unsigned idx = 0 ; idx < get_size() ; idx += 1) {
+            വാക്കുകൾ[idx].word0 = വാക്കുകൾ;
     }
 }
 
-vpiHandle __vpiArrayIterator::vpi_index(int)
+vpiHandle __vpiArrayIterator::vpi_index(പൂർണ്ണസംഖ്യ)
 {
-      if (next >= array->get_size()) {
-	    vpi_free_object(this);
-	    return 0;
+      എങ്കിൽ (next >= array->get_size()) {
+	    vpi_free_object(ഇത്);
+	    തിരികെ 0;
       }
 
       unsigned use_index = next;
       next += 1;
 
-      return array->get_iter_index(this, use_index);
+      തിരികെ array->get_iter_index(ഇത്, use_index);
 }
 
-static int array_iterator_free_object(vpiHandle ref)
+സ്ഥിതം പൂർണ്ണസംഖ്യ array_iterator_free_object(vpiHandle ref)
 {
-      struct __vpiArrayIterator*obj = dynamic_cast<__vpiArrayIterator*>(ref);
+      ഘടന __vpiArrayIterator*obj = dynamic_cast<__vpiArrayIterator*>(ref);
       delete obj;
-      return 1;
+      തിരികെ 1;
 }
 
-__vpiHandle::free_object_fun_t __vpiArrayIterator::free_object_fun(void)
-{ return &array_iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiArrayIterator::free_object_fun(ശൂന്യം)
+{ തിരികെ &array_iterator_free_object; }
 
-vpiHandle __vpiArrayIndex::vpi_iterate(int code)
+vpiHandle __vpiArrayIndex::vpi_iterate(പൂർണ്ണസംഖ്യ code)
 {
     // TODO originally, __vpiArrayIndex is casted to __vpiDecConst and assigned
     // to res->index - seems like a bug to me
 
-      if (code == vpiIndex) {
-	    struct __vpiArrayIndex*res;
-	    res = new __vpiArrayIndex;
+      എങ്കിൽ (code == vpiIndex) {
+	    ഘടന __vpiArrayIndex*res;
+	    res = പുതിയ __vpiArrayIndex;
 	    res->index = index;         // see the comment above
 	    res->done = 0;
-	    return res;
+	    തിരികെ res;
       }
-      return 0;
+      തിരികെ 0;
 }
 
-vpiHandle __vpiArrayIndex::vpi_index(int)
+vpiHandle __vpiArrayIndex::vpi_index(പൂർണ്ണസംഖ്യ)
 {
-      if (done == 0) {
+      എങ്കിൽ (done == 0) {
             done = 1;
-            return index;
+            തിരികെ index;
       }
 
-      vpi_free_object(this);
-      return 0;
+      vpi_free_object(ഇത്);
+      തിരികെ 0;
 }
 
-static int array_index_free_object(vpiHandle ref)
+സ്ഥിതം പൂർണ്ണസംഖ്യ array_index_free_object(vpiHandle ref)
 {
-      struct __vpiArrayIndex*obj = dynamic_cast<__vpiArrayIndex*>(ref);
+      ഘടന __vpiArrayIndex*obj = dynamic_cast<__vpiArrayIndex*>(ref);
       delete obj;
-      return 1;
+      തിരികെ 1;
 }
 
-__vpiHandle::free_object_fun_t __vpiArrayIndex::free_object_fun(void)
-{ return &array_index_free_object; }
+__vpiHandle::free_object_fun_t __vpiArrayIndex::free_object_fun(ശൂന്യം)
+{ തിരികെ &array_index_free_object; }
 
-char* __vpiArrayWord::as_word_t::vpi_get_str(int code)
+അക്ഷരം* __vpiArrayWord::as_word_t::vpi_get_str(പൂർണ്ണസംഖ്യ code)
 {
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
-      assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
-      return my_parent->get_word_str(obj, code);
+      ഘടന __vpiArrayWord*obj = array_var_word_from_handle(ഇത്);
+      പ്രതിജ്ഞാ(obj);
+      ഘടന __vpiArrayBase*my_parent = obj->get_parent();
+      തിരികെ my_parent->get_word_str(obj, code);
 }
 
-void __vpiArrayWord::as_word_t::vpi_get_value(p_vpi_value vp)
+ശൂന്യം __vpiArrayWord::as_word_t::vpi_get_മൂല്യം(p_vpi_മൂല്യം vp)
 {
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
-      assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
-      return my_parent->get_word_value(obj, vp);
+      ഘടന __vpiArrayWord*obj = array_var_word_from_handle(ഇത്);
+      പ്രതിജ്ഞാ(obj);
+      ഘടന __vpiArrayBase*my_parent = obj->get_parent();
+      തിരികെ my_parent->get_word_മൂല്യം(obj, vp);
 }
 
-vpiHandle __vpiArrayWord::as_word_t::vpi_put_value(p_vpi_value vp, int flags)
+vpiHandle __vpiArrayWord::as_word_t::vpi_put_മൂല്യം(p_vpi_മൂല്യം vp, പൂർണ്ണസംഖ്യ flags)
 {
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
-      assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
-      my_parent->put_word_value(obj, vp, flags);
-      return this;
+      ഘടന __vpiArrayWord*obj = array_var_word_from_handle(ഇത്);
+      പ്രതിജ്ഞാ(obj);
+      ഘടന __vpiArrayBase*my_parent = obj->get_parent();
+      my_parent->put_word_മൂല്യം(obj, vp, flags);
+      തിരികെ ഇത്;
 }
 
-vpiHandle __vpiArrayWord::as_word_t::vpi_handle(int code)
+vpiHandle __vpiArrayWord::as_word_t::vpi_handle(പൂർണ്ണസംഖ്യ code)
 {
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
-      assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
+      ഘടന __vpiArrayWord*obj = array_var_word_from_handle(ഇത്);
+      പ്രതിജ്ഞാ(obj);
+      ഘടന __vpiArrayBase*my_parent = obj->get_parent();
 
-      switch (code) {
+      തിരഞ്ഞെടുപ്പ് (code) {
 
-	  case vpiIndex:
-	    return &(obj->as_index);
+	  അവസ്ഥ vpiIndex:
+	    തിരികെ &(obj->as_index);
 
-	  case vpiLeftRange:
-	    return my_parent->get_left_range();
+	  അവസ്ഥ vpi_ഇടത്_Range:
+	    തിരികെ my_parent->get_ഇടത്_range();
 
-	  case vpiRightRange:
-	    return my_parent->get_right_range();
+	  അവസ്ഥ vpi_വലത്_Range:
+	    തിരികെ my_parent->get_വലത്_range();
 
-	  case vpiParent:
-	    return dynamic_cast<vpiHandle>(my_parent);
+	  അവസ്ഥ vpiParent:
+	    തിരികെ dynamic_cast<vpiHandle>(my_parent);
 
-	  case vpiScope:
-	    return my_parent->get_scope();
+	  അവസ്ഥ vpiScope:
+	    തിരികെ my_parent->get_scope();
 
-	  case vpiModule:
-	    return vpip_module(my_parent->get_scope());
+	  അവസ്ഥ vpiModule:
+	    തിരികെ vpip_module(my_parent->get_scope());
       }
 
-      return 0;
+      തിരികെ 0;
 }
 
-void __vpiArrayWord::as_index_t::vpi_get_value(p_vpi_value vp)
+ശൂന്യം __vpiArrayWord::as_index_t::vpi_get_മൂല്യം(p_vpi_മൂല്യം vp)
 {
-      struct __vpiArrayWord*obj = array_var_index_from_handle(this);
-      assert(obj);
+      ഘടന __vpiArrayWord*obj = array_var_index_from_handle(ഇത്);
+      പ്രതിജ്ഞാ(obj);
       unsigned index = obj->get_index();
 
-      assert(vp->format == vpiIntVal);
+      പ്രതിജ്ഞാ(vp->format == vpiIntVal);
       vp->value.integer = index;
 }
 
-struct __vpiArrayWord*array_var_word_from_handle(vpiHandle ref)
+ഘടന __vpiArrayWord*array_var_word_from_handle(vpiHandle ref)
 {
-      if (ref == 0)
-	    return 0;
-      const __vpiArrayWord::as_word_t*ptr = dynamic_cast<__vpiArrayWord::as_word_t*> (ref);
-      if (ptr == 0)
-	    return 0;
+      എങ്കിൽ (ref == 0)
+	    തിരികെ 0;
+      സ്ഥിരം __vpiArrayWord::as_word_t*ptr = dynamic_cast<__vpiArrayWord::as_word_t*> (ref);
+      എങ്കിൽ (ptr == 0)
+	    തിരികെ 0;
 
-      return (struct __vpiArrayWord*)(ref);
+      തിരികെ (ഘടന __vpiArrayWord*)(ref);
 }
 
-struct __vpiArrayWord* array_var_index_from_handle(vpiHandle ref)
+ഘടന __vpiArrayWord* array_var_index_from_handle(vpiHandle ref)
 {
-      if (ref == 0)
-	    return 0;
-      const __vpiArrayWord::as_index_t*ptr = dynamic_cast<__vpiArrayWord::as_index_t*> (ref);
-      if (ptr == 0)
-	    return 0;
+      എങ്കിൽ (ref == 0)
+	    തിരികെ 0;
+      സ്ഥിരം __vpiArrayWord::as_index_t*ptr = dynamic_cast<__vpiArrayWord::as_index_t*> (ref);
+      എങ്കിൽ (ptr == 0)
+	    തിരികെ 0;
 
-      assert(sizeof(__vpiHandle) == sizeof(__vpiArrayWord::as_index_t));
-      assert(sizeof(__vpiHandle) == sizeof(__vpiArrayWord::as_word_t));
-      return (struct __vpiArrayWord*)(ref-1);
+      പ്രതിജ്ഞാ(വലുപ്പം(__vpiHandle) == വലുപ്പം(__vpiArrayWord::as_index_t));
+      പ്രതിജ്ഞാ(വലുപ്പം(__vpiHandle) == വലുപ്പം(__vpiArrayWord::as_word_t));
+      തിരികെ (ഘടന __vpiArrayWord*)(ref-1);
 }
 

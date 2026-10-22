@@ -22,11 +22,11 @@
 # include  <iostream>
 # include  <typeinfo>
 
-using namespace std;
+using നാമാകാശ std;
 
-int vvp_object::total_active_cnt_ = 0;
+പൂർണ്ണസംഖ്യ vvp_object::total_active_cnt_ = 0;
 
-void vvp_object::cleanup(void)
+ശൂന്യം vvp_object::cleanup(ശൂന്യം)
 {
 }
 
@@ -35,15 +35,15 @@ vvp_object::~vvp_object()
       total_active_cnt_ -= 1;
 }
 
-void vvp_object::shallow_copy(const vvp_object*)
+ശൂന്യം vvp_object::shallow_copy(സ്ഥിരം vvp_object*)
 {
-      cerr << "XXXX shallow_copy(vvp_object_t) not implemented for " << typeid(*this).name() << endl;
-      assert(0);
+      cerr << "XXXX shallow_copy(vvp_object_t) not implemented for " << typeid(*ഇത്).name() << endl;
+      പ്രതിജ്ഞാ(0);
 }
 
-vvp_object* vvp_object::duplicate(void) const
+vvp_object* vvp_object::duplicate(ശൂന്യം) സ്ഥിരം
 {
-      cerr << "XXXX duplicate() not implemented for " << typeid(*this).name() << endl;
-      assert(0);
-      return 0;
+      cerr << "XXXX duplicate() not implemented for " << typeid(*ഇത്).name() << endl;
+      പ്രതിജ്ഞാ(0);
+      തിരികെ 0;
 }

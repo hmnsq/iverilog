@@ -25,145 +25,145 @@
 # include  <cstdlib>
 # include  <cassert>
 
-extern const char hex_digits[256];
+ബാഹ്യ സ്ഥിരം അക്ഷരം hex_digits[256];
 
-void vpip_hex_str_to_vec4(vvp_vector4_t&val, const char*str)
+ശൂന്യം vpip_hex_str_to_vec4(vvp_vector4_t&val, സ്ഥിരം അക്ഷരം*str)
 {
       unsigned str_len = strlen(str);
       unsigned skip_chars = 0;
-      const char*tstr = str;
+      സ്ഥിരം അക്ഷരം*tstr = str;
 	/* Find the number of non-numeric characters. */
-      while ((tstr = strpbrk(tstr, "-_"))) {
+      ആകുമ്പോൾ ((tstr = strpbrk(tstr, "-_"))) {
 	    skip_chars += 1;
 	    tstr += 1;
       }
       vvp_vector4_t tval(4*(str_len-skip_chars));
       skip_chars = 0;
-      for (unsigned idx = 0 ;  idx < tval.size() ;  idx += 1) {
+      വേണ്ടി (unsigned idx = 0 ;  idx < tval.size() ;  idx += 1) {
 	    unsigned tmp;
 	    unsigned bit_off = idx%4;
 	    unsigned str_off = idx/4;
-	    char ch;
+	    അക്ഷരം ch;
 
-	    assert (str_off+skip_chars < str_len);
+	    പ്രതിജ്ഞാ (str_off+skip_chars < str_len);
 	      /* Skip any "_" characters in the string. */
-	    while((ch = str[str_len-str_off-1-skip_chars]) == '_') {
+	    ആകുമ്പോൾ((ch = str[str_len-str_off-1-skip_chars]) == '_') {
 		  skip_chars += 1;
-		  assert (str_off+skip_chars < str_len);
+		  പ്രതിജ്ഞാ (str_off+skip_chars < str_len);
 	    }
 
 	      /* If we find a "-" it must be at the head of the string. */
-	    if (ch == '-') assert(0);
+	    എങ്കിൽ (ch == '-') പ്രതിജ്ഞാ(0);
 
-	    switch (ch) {
-		case '0':
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-		case '6':
-		case '7':
-		case '8':
-		case '9':
+	    തിരഞ്ഞെടുപ്പ് (ch) {
+		അവസ്ഥ '0':
+		അവസ്ഥ '1':
+		അവസ്ഥ '2':
+		അവസ്ഥ '3':
+		അവസ്ഥ '4':
+		അവസ്ഥ '5':
+		അവസ്ഥ '6':
+		അവസ്ഥ '7':
+		അവസ്ഥ '8':
+		അവസ്ഥ '9':
 		  tmp = ch - '0';
 		  tval.set_bit(idx, ((tmp>>bit_off)&1)? BIT4_1 : BIT4_0);
-		  break;
-		case 'a':
-		case 'b':
-		case 'c':
-		case 'd':
-		case 'e':
-		case 'f':
+		  നിർത്തുക;
+		അവസ്ഥ 'a':
+		അവസ്ഥ 'b':
+		അവസ്ഥ 'c':
+		അവസ്ഥ 'd':
+		അവസ്ഥ 'e':
+		അവസ്ഥ 'f':
 		  tmp = ch - 'a' + 10;
 		  tval.set_bit(idx, ((tmp>>bit_off)&1)? BIT4_1 : BIT4_0);
-		  break;
-		case 'A':
-		case 'B':
-		case 'C':
-		case 'D':
-		case 'E':
-		case 'F':
+		  നിർത്തുക;
+		അവസ്ഥ 'A':
+		അവസ്ഥ 'B':
+		അവസ്ഥ 'C':
+		അവസ്ഥ 'D':
+		അവസ്ഥ 'E':
+		അവസ്ഥ 'F':
 		  tmp = ch - 'A' + 10;
 		  tval.set_bit(idx, ((tmp>>bit_off)&1)? BIT4_1 : BIT4_0);
-		  break;
-		case 'x':
-		case 'X':
+		  നിർത്തുക;
+		അവസ്ഥ 'x':
+		അവസ്ഥ 'X':
 		  tval.set_bit(idx, BIT4_X);
-		  break;
-		case 'z':
-		case 'Z':
+		  നിർത്തുക;
+		അവസ്ഥ 'z':
+		അവസ്ഥ 'Z':
 		  tval.set_bit(idx, BIT4_Z);
-		  break;
-		default:
+		  നിർത്തുക;
+		സ്ഥിരസ്ഥിതി:
 		    /* Return "x" if there are invalid digits in the string. */
 		  fprintf(stderr, "Warning: Invalid hex digit %c(%d) in "
 		          "\"%s\".\n", ch, ch, str);
-		  for (unsigned jdx = 0 ;  jdx < val.size() ;  jdx += 1) {
+		  വേണ്ടി (unsigned jdx = 0 ;  jdx < val.size() ;  jdx += 1) {
 			val.set_bit(jdx, BIT4_X);
 		  }
-		  return;
+		  തിരികെ;
 	    }
       }
 
 	/* Make a negative value when needed. */
-      if (str[0] == '-') {
+      എങ്കിൽ (str[0] == '-') {
 	    tval.invert();
 	    tval += (int64_t) 1;
       }
 
 	/* Find the correct padding value. */
       vvp_bit4_t pad;
-      switch (tval.value(tval.size()-1)) {
-	  case BIT4_X:  // Pad MSB 'x' with 'x'.
+      തിരഞ്ഞെടുപ്പ് (tval.value(tval.size()-1)) {
+	  അവസ്ഥ BIT4_X:  // Pad MSB 'x' with 'x'.
 	    pad = BIT4_X;
-	    break;
-	  case BIT4_Z:  // Pad MSB 'z' with 'z'.
+	    നിർത്തുക;
+	  അവസ്ഥ BIT4_Z:  // Pad MSB 'z' with 'z'.
 	    pad = BIT4_Z;
-	    break;
-	  case BIT4_1:  // If negative pad MSB '1' with '1'.
-	    if (str[0] == '-') {
+	    നിർത്തുക;
+	  അവസ്ഥ BIT4_1:  // If negative pad MSB '1' with '1'.
+	    എങ്കിൽ (str[0] == '-') {
 		  pad = BIT4_1;
-		  break;
+		  നിർത്തുക;
 	    }
 	    // fallthrough
-	  default:  // Everything else gets '0' padded.
+	  സ്ഥിരസ്ഥിതി:  // Everything else gets '0' padded.
 	    pad = BIT4_0;
-	    break;
+	    നിർത്തുക;
       }
 
 	/* Copy the temporary value to the real value, padding if needed. */
-      for (unsigned idx = 0 ;  idx < val.size() ;  idx += 1) {
-	    if (idx < tval.size()) val.set_bit(idx, tval.value(idx));
-	    else val.set_bit(idx, pad);
+      വേണ്ടി (unsigned idx = 0 ;  idx < val.size() ;  idx += 1) {
+	    എങ്കിൽ (idx < tval.size()) val.set_bit(idx, tval.value(idx));
+	    അല്ലെങ്കിൽ val.set_bit(idx, pad);
       }
 }
 
-void vpip_vec4_to_hex_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
+ശൂന്യം vpip_vec4_to_hex_str(സ്ഥിരം vvp_vector4_t&bits, അക്ഷരം*buf, unsigned nbuf)
 {
       unsigned slen = (bits.size() + 3) / 4;
-      assert(slen < nbuf);
+      പ്രതിജ്ഞാ(slen < nbuf);
 
       buf[slen] = 0;
 
       unsigned val = 0;
-      for (unsigned idx = 0 ;  idx < bits.size() ;  idx += 1) {
+      വേണ്ടി (unsigned idx = 0 ;  idx < bits.size() ;  idx += 1) {
 	    unsigned vs = (idx%4) * 2;
 
-	    switch (bits.value(idx)) {
-		case BIT4_0:
-		  break;
-		case BIT4_1:
+	    തിരഞ്ഞെടുപ്പ് (bits.value(idx)) {
+		അവസ്ഥ BIT4_0:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_1:
 		  val |= 1 << vs;
-		  break;
-		case BIT4_X:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_X:
 		  val |= 2 << vs;
-		  break;
-		case BIT4_Z:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_Z:
 		  val |= 3 << vs;
 	    }
 
-	    if (vs == 6) {
+	    എങ്കിൽ (vs == 6) {
 		  slen -= 1;
 		  buf[slen] = hex_digits[val];
 		  val = 0;
@@ -171,22 +171,22 @@ void vpip_vec4_to_hex_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
       }
 
 	/* Fill in X or Z if they are the only thing in the value. */
-      switch (bits.size() % 4) {
-	  case 1:
-	    if (val == 2) val = 170;
-	    else if (val == 3) val = 255;
-	    break;
-	  case 2:
-	    if (val == 10) val = 170;
-	    else if (val == 15) val = 255;
-	    break;
-	  case 3:
-	    if (val == 42) val = 170;
-	    else if (val == 63) val = 255;
-	    break;
+      തിരഞ്ഞെടുപ്പ് (bits.size() % 4) {
+	  അവസ്ഥ 1:
+	    എങ്കിൽ (val == 2) val = 170;
+	    അല്ലെങ്കിൽ എങ്കിൽ (val == 3) val = 255;
+	    നിർത്തുക;
+	  അവസ്ഥ 2:
+	    എങ്കിൽ (val == 10) val = 170;
+	    അല്ലെങ്കിൽ എങ്കിൽ (val == 15) val = 255;
+	    നിർത്തുക;
+	  അവസ്ഥ 3:
+	    എങ്കിൽ (val == 42) val = 170;
+	    അല്ലെങ്കിൽ എങ്കിൽ (val == 63) val = 255;
+	    നിർത്തുക;
       }
 
-      if (slen > 0) {
+      എങ്കിൽ (slen > 0) {
 	    slen -= 1;
 	    buf[slen] = hex_digits[val];
       }

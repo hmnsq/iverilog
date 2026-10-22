@@ -21,23 +21,23 @@
 
 # include  "config.h"
 
-class sfunc_core : public vvp_wide_fun_core, protected vvp_gen_event_s {
+class sfunc_core : പൊതു vvp_wide_fun_core, സംരക്ഷിത vvp_gen_event_s {
 
-    public:
+    പൊതു:
       sfunc_core(vvp_net_t*ptr, vpiHandle sys, unsigned argc, vpiHandle*argv);
       ~sfunc_core() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ശൂന്യം recv_vec4(vvp_net_ptr_t port, സ്ഥിരം vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-    private:
-      void recv_vec4_from_inputs(unsigned port) override;
-      void recv_real_from_inputs(unsigned port) override;
+    സ്വകാര്യ:
+      ശൂന്യം recv_vec4_from_inputs(unsigned port) override;
+      ശൂന്യം recv_real_from_inputs(unsigned port) override;
 
-      void run_run() override;
+      ശൂന്യം run_run() override;
 
 
-    private:
+    സ്വകാര്യ:
       vpiHandle sys_;
       unsigned  argc_;
       vpiHandle*argv_;

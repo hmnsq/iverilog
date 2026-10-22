@@ -22,44 +22,44 @@
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
 #ifdef __SUNPRO_CC
 # include  <stddef.h>
-#else
+#അല്ലെങ്കിൽ
 # include  <cstddef>
 #endif
 
-extern unsigned long count_opcodes;
-extern unsigned long count_functors;
-extern unsigned long count_functors_logic;
-extern unsigned long count_functors_bufif;
-extern unsigned long count_functors_resolv;
-extern unsigned long count_functors_sig;
-extern unsigned long count_filters;
-extern unsigned long count_vvp_nets;
-extern unsigned long count_vpi_nets;
-extern unsigned long count_vpi_scopes;
+ബാഹ്യ unsigned long എണ്ണം_opcodes;
+ബാഹ്യ unsigned long എണ്ണം_functors;
+ബാഹ്യ unsigned long എണ്ണം_functors_logic;
+ബാഹ്യ unsigned long എണ്ണം_functors_bufif;
+ബാഹ്യ unsigned long എണ്ണം_functors_resolv;
+ബാഹ്യ unsigned long എണ്ണം_functors_sig;
+ബാഹ്യ unsigned long എണ്ണം_filters;
+ബാഹ്യ unsigned long എണ്ണം_vvp_nets;
+ബാഹ്യ unsigned long എണ്ണം_vpi_nets;
+ബാഹ്യ unsigned long എണ്ണം_vpi_scopes;
 
-extern unsigned long count_net_arrays;
-extern unsigned long count_net_array_words;
-extern unsigned long count_var_arrays;
-extern unsigned long count_var_array_words;
-extern unsigned long count_real_arrays;
-extern unsigned long count_real_array_words;
+ബാഹ്യ unsigned long എണ്ണം_net_arrays;
+ബാഹ്യ unsigned long എണ്ണം_net_array_വാക്കുകൾ;
+ബാഹ്യ unsigned long എണ്ണം_var_arrays;
+ബാഹ്യ unsigned long എണ്ണം_var_array_വാക്കുകൾ;
+ബാഹ്യ unsigned long എണ്ണം_real_arrays;
+ബാഹ്യ unsigned long എണ്ണം_real_array_വാക്കുകൾ;
 
 
-extern unsigned long count_time_events;
-extern unsigned long count_time_pool(void);
+ബാഹ്യ unsigned long എണ്ണം_time_events;
+ബാഹ്യ unsigned long എണ്ണം_time_pool(ശൂന്യം);
 
-extern unsigned long count_assign_events;
-extern unsigned long count_assign4_pool(void);
-extern unsigned long count_assign8_pool(void);
-extern unsigned long count_assign_real_pool(void);
-extern unsigned long count_assign_aword_pool(void);
-extern unsigned long count_assign_arword_pool(void);
+ബാഹ്യ unsigned long എണ്ണം_assign_events;
+ബാഹ്യ unsigned long എണ്ണം_assign4_pool(ശൂന്യം);
+ബാഹ്യ unsigned long എണ്ണം_assign8_pool(ശൂന്യം);
+ബാഹ്യ unsigned long എണ്ണം_assign_real_pool(ശൂന്യം);
+ബാഹ്യ unsigned long എണ്ണം_assign_aword_pool(ശൂന്യം);
+ബാഹ്യ unsigned long എണ്ണം_assign_arword_pool(ശൂന്യം);
 
-extern unsigned long count_gen_events;
-extern unsigned long count_gen_pool(void);
+ബാഹ്യ unsigned long എണ്ണം_gen_events;
+ബാഹ്യ unsigned long എണ്ണം_gen_pool(ശൂന്യം);
 
-extern size_t size_opcodes;
-extern size_t size_vvp_nets;
-extern size_t size_vvp_net_funs;
+ബാഹ്യ size_t size_opcodes;
+ബാഹ്യ size_t size_vvp_nets;
+ബാഹ്യ size_t size_vvp_net_funs;
 
 #endif /* IVL_statistics_H */

@@ -32,14 +32,14 @@
  * to the front of the queue. %fork uses this to get the thread
  * execution ahead of non-blocking assignments.
  */
-extern void schedule_vthread(vthread_t thr, vvp_time64_t delay,
-			     bool push_flag =false);
+ബാഹ്യ ശൂന്യം schedule_vthread(vthread_t thr, vvp_time64_t delay,
+			     bool തള്ളുക_flag =false);
 
-extern void schedule_inactive(vthread_t thr);
+ബാഹ്യ ശൂന്യം schedule_inactive(vthread_t thr);
 
-extern void schedule_init_vthread(vthread_t thr);
+ബാഹ്യ ശൂന്യം schedule_init_vthread(vthread_t thr);
 
-extern void schedule_final_vthread(vthread_t thr);
+ബാഹ്യ ശൂന്യം schedule_final_vthread(vthread_t thr);
 
 /*
  * Create an assignment event. The val passed here will be assigned to
@@ -47,41 +47,41 @@ extern void schedule_final_vthread(vthread_t thr);
  * like a non-blocking assignment. This is in fact mostly used to
  * implement the non-blocking assignment.
  */
-extern void schedule_assign_vector(vvp_net_ptr_t ptr,
+ബാഹ്യ ശൂന്യം schedule_assign_vector(vvp_net_ptr_t ptr,
 				   unsigned base, unsigned vwid,
-				   const vvp_vector4_t&val,
+				   സ്ഥിരം vvp_vector4_t&val,
 				   vvp_time64_t  delay);
 
-extern void schedule_assign_array_word(vvp_array_t mem,
+ബാഹ്യ ശൂന്യം schedule_assign_array_word(vvp_array_t mem,
 				       unsigned word_address,
 				       unsigned off,
-				       const vvp_vector4_t&val,
+				       സ്ഥിരം vvp_vector4_t&val,
 				       vvp_time64_t delay);
 
-extern void schedule_assign_array_word(vvp_array_t mem,
+ബാഹ്യ ശൂന്യം schedule_assign_array_word(vvp_array_t mem,
 				       unsigned word_address,
-				       double val,
+				       ഇരട്ട val,
 				       vvp_time64_t delay);
 
 /*
  * Create an event to force the output of a net.
  */
-extern void schedule_force_vector(vvp_net_t*net,
+ബാഹ്യ ശൂന്യം schedule_force_vector(vvp_net_t*net,
 				  unsigned base, unsigned vwid,
-				  const vvp_vector4_t&val,
+				  സ്ഥിരം vvp_vector4_t&val,
 				  vvp_time64_t delay);
 
 /*
  * Create an event to propagate the output of a net.
  */
-extern void schedule_propagate_vector(vvp_net_t*ptr,
+ബാഹ്യ ശൂന്യം schedule_propagate_vector(vvp_net_t*ptr,
 				      vvp_time64_t delay,
-				      const vvp_vector4_t&val);
+				      സ്ഥിരം vvp_vector4_t&val);
 
 /*
  * Create an event to propagate the output of an event.
  */
-extern void schedule_propagate_event(vvp_net_t*ptr,
+ബാഹ്യ ശൂന്യം schedule_propagate_event(vvp_net_t*ptr,
 				     vvp_time64_t delay);
 
 /*
@@ -90,15 +90,15 @@ extern void schedule_propagate_event(vvp_net_t*ptr,
  * constant value (i.e. C4<...>) to the input of a functor. This
  * creates an event in the active queue.
  */
-extern void schedule_set_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&val);
-extern void schedule_set_vector(vvp_net_ptr_t ptr, const vvp_vector8_t&val);
-extern void schedule_set_vector(vvp_net_ptr_t ptr, double val);
+ബാഹ്യ ശൂന്യം schedule_set_vector(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector4_t&val);
+ബാഹ്യ ശൂന്യം schedule_set_vector(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector8_t&val);
+ബാഹ്യ ശൂന്യം schedule_set_vector(vvp_net_ptr_t ptr, ഇരട്ട val);
 
 /*
  * Create a T0 event for always_comb/latch processes. This is the first
  * event in the first inactive region.
  */
-extern void schedule_t0_trigger(vvp_net_ptr_t ptr);
+ബാഹ്യ ശൂന്യം schedule_t0_trigger(vvp_net_ptr_t ptr);
 
 /*
  * The schedule_init_vector function assigns an initial value to a
@@ -110,16 +110,16 @@ extern void schedule_t0_trigger(vvp_net_ptr_t ptr);
  * variable, but still allows the initial value to be driven
  * (propagated as events) through the rest of the net.
  */
-extern void schedule_init_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&val);
-extern void schedule_init_vector(vvp_net_ptr_t ptr, const vvp_vector8_t&val);
-extern void schedule_init_vector(vvp_net_ptr_t ptr, double val);
+ബാഹ്യ ശൂന്യം schedule_init_vector(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector4_t&val);
+ബാഹ്യ ശൂന്യം schedule_init_vector(vvp_net_ptr_t ptr, സ്ഥിരം vvp_vector8_t&val);
+ബാഹ്യ ശൂന്യം schedule_init_vector(vvp_net_ptr_t ptr, ഇരട്ട val);
 /*
  * The schedule_init_propagate function is similar to the above but
  * propagates an initial value from a net output (i.e. without passing
  * through the net functor).
  */
-extern void schedule_init_propagate(vvp_net_t*net, vvp_vector4_t val);
-extern void schedule_init_propagate(vvp_net_t*net, double val);
+ബാഹ്യ ശൂന്യം schedule_init_propagate(vvp_net_t*net, vvp_vector4_t val);
+ബാഹ്യ ശൂന്യം schedule_init_propagate(vvp_net_t*net, ഇരട്ട val);
 
 /*
  * Create a generic event. This supports scheduled events that are not
@@ -138,9 +138,9 @@ extern void schedule_init_propagate(vvp_net_t*net, double val);
  * ro_flag is ignored.
  */
 
-typedef struct vvp_gen_event_s *vvp_gen_event_t;
+തരനിർവചനം ഘടന vvp_gen_event_s *vvp_gen_event_t;
 
-extern void schedule_generic(vvp_gen_event_t obj, vvp_time64_t delay,
+ബാഹ്യ ശൂന്യം schedule_generic(vvp_gen_event_t obj, vvp_time64_t delay,
 			     bool sync_flag, bool ro_flag =true,
 			     bool delete_obj_when_done =false);
 
@@ -151,40 +151,40 @@ extern void schedule_generic(vvp_gen_event_t obj, vvp_time64_t delay,
  * the vvp_get_event_s object. The object is never referenced by the
  * scheduler after the run method is called.
 */
-extern void schedule_functor(vvp_gen_event_t obj);
+ബാഹ്യ ശൂന്യം schedule_functor(vvp_gen_event_t obj);
 
-extern void schedule_at_start_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay);
-extern void schedule_at_end_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay);
+ബാഹ്യ ശൂന്യം schedule_at_start_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay);
+ബാഹ്യ ശൂന്യം schedule_at_end_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay);
 
 /* Use this is schedule thread deletion (after rosync). */
-extern void schedule_del_thr(vthread_t thr);
+ബാഹ്യ ശൂന്യം schedule_del_thr(vthread_t thr);
 
-struct vvp_gen_event_s
+ഘടന vvp_gen_event_s
 {
-      virtual ~vvp_gen_event_s() =0;
-      virtual void run_run() =0;
-      virtual void single_step_display(void);
+      മായാ ~vvp_gen_event_s() =0;
+      മായാ ശൂന്യം run_run() =0;
+      മായാ ശൂന്യം single_step_display(ശൂന്യം);
 };
 
 /*
  * This runs the simulator. It runs until all the functors run out or
  * the simulation is otherwise finished.
  */
-extern void schedule_simulate(void);
+ബാഹ്യ ശൂന്യം schedule_simulate(ശൂന്യം);
 
 /*
  * Get the current absolute simulation time. This is not used
  * internally by the scheduler (which uses time differences instead)
  * but is used for printouts and stuff.
  */
-extern vvp_time64_t schedule_simtime(void);
+ബാഹ്യ vvp_time64_t schedule_simtime(ശൂന്യം);
 
 /*
  * Indicate that the simulator is running the rosync callbacks. This is
  * used to prevent the callbacks from performing any write operations
  * in the current simulation time slot.
  */
-extern bool schedule_at_rosync(void);
+ബാഹ്യ bool schedule_at_rosync(ശൂന്യം);
 
 /*
  * This function is the equivalent of the $finish system task. It
@@ -195,31 +195,31 @@ extern bool schedule_at_rosync(void);
  * The schedule_finished() function will return true if the
  * schedule_finish() function has been called.
  */
-extern void schedule_finish(int rc);
-extern void schedule_stop(int rc);
-extern void schedule_single_step(int flag);
-extern bool schedule_finished(void);
-extern bool schedule_stopped(void);
+ബാഹ്യ ശൂന്യം schedule_finish(പൂർണ്ണസംഖ്യ rc);
+ബാഹ്യ ശൂന്യം schedule_stop(പൂർണ്ണസംഖ്യ rc);
+ബാഹ്യ ശൂന്യം schedule_single_step(പൂർണ്ണസംഖ്യ flag);
+ബാഹ്യ bool schedule_finished(ശൂന്യം);
+ബാഹ്യ bool schedule_stopped(ശൂന്യം);
 
 /*
  * The scheduler calls this function to process stop events. When this
  * function returns, the simulation resumes.
  */
-extern void stop_handler(int rc);
+ബാഹ്യ ശൂന്യം stop_handler(പൂർണ്ണസംഖ്യ rc);
 
 /*
  * These are event counters for the sake of performance measurements.
  */
-extern unsigned long count_assign_events;
-extern unsigned long count_gen_events;
-extern unsigned long count_prop_events;
-extern unsigned long count_thread_events;
-extern unsigned long count_event_pool;
+ബാഹ്യ unsigned long എണ്ണം_assign_events;
+ബാഹ്യ unsigned long എണ്ണം_gen_events;
+ബാഹ്യ unsigned long എണ്ണം_prop_events;
+ബാഹ്യ unsigned long എണ്ണം_thread_events;
+ബാഹ്യ unsigned long എണ്ണം_event_pool;
 
 // Trigger the simulation callbacks.
-extern void vpiEndOfCompile(void);
-extern void vpiStartOfSim(void);
-extern void vpiPostsim(void);
-extern void vpiNextSimTime(void);
+ബാഹ്യ ശൂന്യം vpiEndOfCompile(ശൂന്യം);
+ബാഹ്യ ശൂന്യം vpiStartOfSim(ശൂന്യം);
+ബാഹ്യ ശൂന്യം vpiPostsim(ശൂന്യം);
+ബാഹ്യ ശൂന്യം vpiNextSimTime(ശൂന്യം);
 
 #endif /* IVL_schedule_H */

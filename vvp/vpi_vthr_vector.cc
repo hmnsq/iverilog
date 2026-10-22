@@ -35,7 +35,7 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+using നാമാകാശ std;
 
 /*
  * Hex digits that represent 4-value bits of Verilog are not as
@@ -48,179 +48,179 @@ using namespace std;
  * The table is calculated as compile time, therefore, by the
  * draw_tt.c program.
  */
-extern const char hex_digits[256];
-extern const char oct_digits[64];
+ബാഹ്യ സ്ഥിരം അക്ഷരം hex_digits[256];
+ബാഹ്യ സ്ഥിരം അക്ഷരം oct_digits[64];
 
 
-class __vpiVThrWord : public __vpiHandle {
-    public:
+വർഗ്ഗം __vpiVThrWord : പൊതു __vpiHandle {
+    പൊതു:
       explicit __vpiVThrWord(unsigned base);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
 
-      int get_subtype() const { return subtype; };
-      unsigned get_index() const { return index; };
+      പൂർണ്ണസംഖ്യ get_subtype() സ്ഥിരം { തിരികെ subtype; };
+      unsigned get_index() സ്ഥിരം { തിരികെ index; };
 
-    private:
-      const char* name;
-      int subtype;
+    സ്വകാര്യ:
+      സ്ഥിരം അക്ഷരം* name;
+      പൂർണ്ണസംഖ്യ subtype;
       unsigned index;
 };
 
-static int vthr_word_get(int code, vpiHandle ref)
+സ്ഥിതം പൂർണ്ണസംഖ്യ vthr_word_get(പൂർണ്ണസംഖ്യ code, vpiHandle ref)
 {
-      const __vpiVThrWord*rfp = dynamic_cast<__vpiVThrWord*>(ref);
+      സ്ഥിരം __vpiVThrWord*rfp = dynamic_cast<__vpiVThrWord*>(ref);
 
-      switch (code) {
+      തിരഞ്ഞെടുപ്പ് (code) {
 
-	  case vpiConstType:
-	    return rfp->get_subtype();
+	  അവസ്ഥ vpiConstType:
+	    തിരികെ rfp->get_subtype();
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiWord;
+#എങ്കിൽ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  അവസ്ഥ _vpiFromThr:
+	    തിരികെ _vpiWord;
 #endif
 
-	  default:
-	    return 0;
+	  സ്ഥിരസ്ഥിതി:
+	    തിരികെ 0;
       }
 }
 
-static void vthr_real_get_value(vpiHandle ref, s_vpi_value*vp)
+സ്ഥിതം ശൂന്യം vthr_real_get_മൂല്യം(vpiHandle ref, s_vpi_മൂല്യം*vp)
 {
-      const __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(ref);
-      static const size_t RBUF_USE_SIZE = 66;
-      char *rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      സ്ഥിരം __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(ref);
+      സ്ഥിതം സ്ഥിരം size_t RBUF_USE_SIZE = 66;
+      അക്ഷരം *rbuf = static_cast<അക്ഷരം *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
 
-      double val = 0.0;
+      ഇരട്ട val = 0.0;
 
 	/* Get the actual value from the index. It is possible, by the
 	   way, that the vpi_get_value is called from compiletf. If
 	   that's the case, there will be no current thread, and this
 	   will not have access to the proper value. Punt and return a
 	   0.0 value instead. */
-      if (vpip_current_vthread)
-	    val = vthread_get_real_stack(vpip_current_vthread,
+      എങ്കിൽ (vpip_current_vthread)
+	    val = vthread_get_real_അട്ടി(vpip_current_vthread,
 	                                 obj->get_index());
 
-      switch (vp->format) {
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
 
-	  case vpiObjTypeVal:
+	  അവസ്ഥ vpiObjTypeVal:
 	    vp->format = vpiRealVal;
 	    // fallthrough
-	  case vpiRealVal:
+	  അവസ്ഥ vpiRealVal:
 	    vp->value.real = val;
-	    break;
+	    നിർത്തുക;
 
-	  case vpiIntVal:
+	  അവസ്ഥ vpiIntVal:
 	      /* NaN or +/- infinity are translated as 0. */
-	    if (val != val || (val && (val == 0.5*val))) {
+	    എങ്കിൽ (val != val || (val && (val == 0.5*val))) {
 		  val = 0.0;
-	    } else {
+	    } അല്ലെങ്കിൽ {
 		  val = std::round(val);
 	    }
 	    vp->value.integer = (PLI_INT32)val;
-	    break;
+	    നിർത്തുക;
 
-	  case vpiDecStrVal:
-	    if (std::isnan(val))
+	  അവസ്ഥ vpiDecStrVal:
+	    എങ്കിൽ (std::isnan(val))
 		  snprintf(rbuf, RBUF_USE_SIZE, "%s", "nan");
-	    else
+	    അല്ലെങ്കിൽ
 		  snprintf(rbuf, RBUF_USE_SIZE, "%0.0f", std::round(val));
 	    vp->value.str = rbuf;
-	    break;
+	    നിർത്തുക;
 
-	  case vpiOctStrVal:
+	  അവസ്ഥ vpiOctStrVal:
 	    snprintf(rbuf, RBUF_USE_SIZE, "%" PRIo64, vlg_round_to_u64(val));
 	    vp->value.str = rbuf;
-	    break;
+	    നിർത്തുക;
 
-	  case vpiHexStrVal:
+	  അവസ്ഥ vpiHexStrVal:
 	    snprintf(rbuf, RBUF_USE_SIZE, "%" PRIx64, vlg_round_to_u64(val));
 	    vp->value.str = rbuf;
-	    break;
+	    നിർത്തുക;
 
-	  case vpiBinStrVal: {
+	  അവസ്ഥ vpiBinStrVal: {
 		uint64_t vali = vlg_round_to_u64(val);
 		unsigned len = 0;
 
-		while (vali > 0) {
+		ആകുമ്പോൾ (vali > 0) {
 		      len += 1;
 		      vali /= 2;
 		}
 
 		vali = vlg_round_to_u64(val);
-		for (unsigned idx = 0 ;  idx < len ;  idx += 1) {
+		വേണ്ടി (unsigned idx = 0 ;  idx < len ;  idx += 1) {
 		      rbuf[len-idx-1] = (vali & 1)? '1' : '0';
 		      vali /= 2;
 		}
 
 		rbuf[len] = 0;
-		if (len == 0) {
+		എങ്കിൽ (len == 0) {
 		      rbuf[0] = '0';
 		      rbuf[1] = 0;
 		}
 		vp->value.str = rbuf;
-		break;
+		നിർത്തുക;
 	  }
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vvp error: get %d not supported "
-		      "by vpiConstant (Real)\n", (int)vp->format);
+		      "by vpiConstant (Real)\n", (പൂർണ്ണസംഖ്യ)vp->format);
 
 	    vp->format = vpiSuppressVal;
-	    break;
+	    നിർത്തുക;
       }
 }
 
-inline __vpiVThrWord::__vpiVThrWord(unsigned base)
+വരിയിൽ __vpiVThrWord::__vpiVThrWord(unsigned base)
 {
       name = vpip_name_string("W<>");
       subtype = vpiRealConst;
       index = base;
 }
 
-int __vpiVThrWord::get_type_code(void) const
-{ return vpiConstant; }
+പൂർണ്ണസംഖ്യ __vpiVThrWord::get_type_code(ശൂന്യം) സ്ഥിരം
+{ തിരികെ vpiConstant; }
 
-int __vpiVThrWord::vpi_get(int code)
-{ return vthr_word_get(code, this); }
+പൂർണ്ണസംഖ്യ __vpiVThrWord::vpi_get(പൂർണ്ണസംഖ്യ code)
+{ തിരികെ vthr_word_get(code, ഇത്); }
 
-void __vpiVThrWord::vpi_get_value(p_vpi_value val)
-{ vthr_real_get_value(this, val); }
+ശൂന്യം __vpiVThrWord::vpi_get_മൂല്യം(p_vpi_മൂല്യം val)
+{ vthr_real_get_മൂല്യം(ഇത്, val); }
 
-vpiHandle vpip_make_vthr_word(unsigned base, const char*type)
+vpiHandle vpip_make_vthr_word(unsigned base, സ്ഥിരം അക്ഷരം*type)
 {
-      assert(type[0] == 'r');
-      assert(base < 65536);
-      __vpiVThrWord*obj = new __vpiVThrWord(base);
+      പ്രതിജ്ഞാ(type[0] == 'r');
+      പ്രതിജ്ഞാ(base < 65536);
+      __vpiVThrWord*obj = പുതിയ __vpiVThrWord(base);
 
-      return obj;
+      തിരികെ obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-static map<vpiHandle, bool> handle_map;
+സ്ഥിതം map<vpiHandle, തർക്കം> handle_map;
 
-void thread_word_delete(vpiHandle item)
+ശൂന്യം thread_word_delete(vpiHandle item)
 {
-      handle_map[item] = false;
+      handle_map[item] = അസത്യം;
 }
 
-static void thread_word_delete_real(vpiHandle item)
+സ്ഥിതം ശൂന്യം thread_word_delete_real(vpiHandle item)
 {
-      class __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(item);
+      വർഗ്ഗം __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(item);
       delete obj;
 }
 #endif
 
-class __vpiVThrStrStack : public __vpiHandle {
-    public:
+വർഗ്ഗം __vpiVThrStrStack : പൊതു __vpiHandle {
+    പൊതു:
       explicit __vpiVThrStrStack(unsigned depth);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-    private:
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
+    സ്വകാര്യ:
       unsigned depth_;
 };
 
@@ -229,311 +229,311 @@ __vpiVThrStrStack::__vpiVThrStrStack(unsigned d)
 {
 }
 
-int __vpiVThrStrStack::get_type_code(void) const
-{ return vpiConstant; }
+പൂർണ്ണസംഖ്യ __vpiVThrStrStack::get_type_code(ശൂന്യം) സ്ഥിരം
+{ തിരികെ vpiConstant; }
 
-int __vpiVThrStrStack::vpi_get(int code)
+പൂർണ്ണസംഖ്യ __vpiVThrStrStack::vpi_get(പൂർണ്ണസംഖ്യ code)
 {
-      switch (code) {
-	  case vpiConstType:
-	    return vpiStringConst;
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiString;
+      തിരഞ്ഞെടുപ്പ് (code) {
+	  അവസ്ഥ vpiConstType:
+	    തിരികെ vpiStringConst;
+#എങ്കിൽ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  അവസ്ഥ _vpiFromThr:
+	    തിരികെ _vpiString;
 #endif
-	  case vpiSize:
-	    return vthread_get_str_stack(vpip_current_vthread, depth_).size();
-	  default:
-	    return 0;
+	  അവസ്ഥ vpiSize:
+	    തിരികെ vthread_get_str_അട്ടി(vpip_current_vthread, depth_).size();
+	  സ്ഥിരസ്ഥിതി:
+	    തിരികെ 0;
       }
 }
 
-void __vpiVThrStrStack::vpi_get_value(p_vpi_value vp)
+ശൂന്യം __vpiVThrStrStack::vpi_get_മൂല്യം(p_vpi_മൂല്യം vp)
 {
       string val;
-      char*rbuf = 0;
+      അക്ഷരം*rbuf = 0;
 
-      if (vpip_current_vthread)
-	    val = vthread_get_str_stack(vpip_current_vthread, depth_);
+      എങ്കിൽ (vpip_current_vthread)
+	    val = vthread_get_str_അട്ടി(vpip_current_vthread, depth_);
 
-      switch (vp->format) {
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
 
-	  case vpiObjTypeVal:
+	  അവസ്ഥ vpiObjTypeVal:
 	    vp->format = vpiStringVal;
 	    // fallthrough
-	  case vpiStringVal:
-	    rbuf = static_cast<char *>(need_result_buf(val.size()+1, RBUF_VAL));
+	  അവസ്ഥ vpiStringVal:
+	    rbuf = static_cast<അക്ഷരം *>(need_result_buf(val.size()+1, RBUF_VAL));
 	    strcpy(rbuf, val.c_str());
 	    vp->value.str = rbuf;
-	    break;
+	    നിർത്തുക;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "vvp error: get %d not supported "
-		      "by vpiConstant (String)\n", (int)vp->format);
+		      "by vpiConstant (String)\n", (പൂർണ്ണസംഖ്യ)vp->format);
 
 	    vp->format = vpiSuppressVal;
-	    break;
+	    നിർത്തുക;
       }
 }
 
-class __vpiVThrVec4Stack : public __vpiHandle {
-    public:
-      __vpiVThrVec4Stack(unsigned depth, bool signed_flag, unsigned wid);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-    private:
-      static void vpi_get_value_string_(p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_binstr_(p_vpi_value vp, const vvp_vector4_t&val);
-      void vpi_get_value_decstr_(p_vpi_value vp, const vvp_vector4_t&val);
-      void vpi_get_value_int_   (p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_real_  (p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_strength_(p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_octstr_(p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_hexstr_(p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_vector_(p_vpi_value vp, const vvp_vector4_t&val);
-    private:
+വർഗ്ഗം __vpiVThrVec4Stack : പൊതു __vpiHandle {
+    പൊതു:
+      __vpiVThrVec4Stack(unsigned depth, തർക്കം signed_flag, unsigned wid);
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override;
+      പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+      അക്ഷരം*vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+      ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
+      vpiHandle vpi_put_മൂല്യം(p_vpi_മൂല്യം val, പൂർണ്ണസംഖ്യ flags) override;
+    സ്വകാര്യ:
+      സ്ഥിതം ശൂന്യം vpi_get_മൂല്യം_string(p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val);
+      സ്ഥിതം ശൂന്യം vpi_get_മൂല്യം_binstr(p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val);
+      ശൂന്യം vpi_get_മൂല്യം_decstr(p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val);
+      ശൂന്യം vpi_get_മൂല്യം_int   (p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val);
+      സ്ഥിതം ശൂന്യം vpi_get_മൂല്യം_real  (p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val);
+      സ്ഥിതം ശൂന്യം vpi_get_മൂല്യം_strength(p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val);
+      സ്ഥിതം ശൂന്യം vpi_get_മൂല്യം_octstr(p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val);
+      സ്ഥിതം ശൂന്യം vpi_get_മൂല്യം_hexstr(p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val);
+      സ്ഥിതം ശൂന്യം vpi_get_മൂല്യം_vector(p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val);
+    സ്വകാര്യ:
       unsigned depth_;
-      bool signed_flag_;
+      തർക്കം signed_flag_;
       unsigned expect_width_;
-      const char*name;
+      സ്ഥിരം അക്ഷരം*name;
 };
 
-__vpiVThrVec4Stack::__vpiVThrVec4Stack(unsigned d, bool sf, unsigned wid)
+__vpiVThrVec4Stack::__vpiVThrVec4Stack(unsigned d, തർക്കം sf, unsigned wid)
 : depth_(d), signed_flag_(sf), expect_width_(wid)
 {
       name = vpip_name_string("S<,vec4,>");
 }
 
-int __vpiVThrVec4Stack::get_type_code(void) const
-{ return vpiConstant; }
+പൂർണ്ണസംഖ്യ __vpiVThrVec4Stack::get_type_code(ശൂന്യം) സ്ഥിരം
+{ തിരികെ vpiConstant; }
 
 
-int __vpiVThrVec4Stack::vpi_get(int code)
+പൂർണ്ണസംഖ്യ __vpiVThrVec4Stack::vpi_get(പൂർണ്ണസംഖ്യ code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return expect_width_;
+      തിരഞ്ഞെടുപ്പ് (code) {
+	  അവസ്ഥ vpiSize:
+	    തിരികെ expect_width_;
 
-	  case vpiSigned:
-	    return signed_flag_? 1 : 0;
+	  അവസ്ഥ vpiSigned:
+	    തിരികെ signed_flag_? 1 : 0;
 
-	  case vpiConstType:
-	    return vpiBinaryConst;
+	  അവസ്ഥ vpiConstType:
+	    തിരികെ vpi_ദ്വിമാന_Const;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiVThr;
+#എങ്കിൽ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  അവസ്ഥ _vpiFromThr:
+	    തിരികെ _vpiVThr;
 #endif
 
-	  default:
-	    return 0;
+	  സ്ഥിരസ്ഥിതി:
+	    തിരികെ 0;
       }
 }
 
-char*__vpiVThrVec4Stack::vpi_get_str(int code)
+അക്ഷരം*__vpiVThrVec4Stack::vpi_get_str(പൂർണ്ണസംഖ്യ code)
 {
-      switch (code) {
-	  case vpiFullName:
-	    return simple_set_rbuf_str(name);
+      തിരഞ്ഞെടുപ്പ് (code) {
+	  അവസ്ഥ vpiFullName:
+	    തിരികെ simple_set_rbuf_str(name);
 
-	  default:
-	    return 0;
+	  സ്ഥിരസ്ഥിതി:
+	    തിരികെ 0;
       }
 }
 
-void __vpiVThrVec4Stack::vpi_get_value(p_vpi_value vp)
+ശൂന്യം __vpiVThrVec4Stack::vpi_get_മൂല്യം(p_vpi_മൂല്യം vp)
 {
       vvp_vector4_t val;
 
-      if (vpip_current_vthread)
-	    val = vthread_get_vec4_stack(vpip_current_vthread, depth_);
+      എങ്കിൽ (vpip_current_vthread)
+	    val = vthread_get_vec4_അട്ടി(vpip_current_vthread, depth_);
 
-      switch (vp->format) {
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
 
-	  case vpiBinStrVal:
-	    vpi_get_value_binstr_(vp, val);
-	    break;
-	  case vpiDecStrVal:
-	    vpi_get_value_decstr_(vp, val);
-	    break;
-	  case vpiOctStrVal:
-	    vpi_get_value_octstr_(vp, val);
-	    break;
-	  case vpiHexStrVal:
-	    vpi_get_value_hexstr_(vp, val);
-	    break;
-	  case vpiIntVal:
-	    vpi_get_value_int_(vp, val);
-	    break;
-	  case vpiRealVal:
-	    vpi_get_value_real_(vp, val);
-	    break;
-	  case vpiStringVal:
-	    vpi_get_value_string_(vp, val);
-	    break;
-	  case vpiStrengthVal:
-	    vpi_get_value_strength_(vp, val);
-	    break;
-	  case vpiObjTypeVal:
+	  അവസ്ഥ vpiBinStrVal:
+	    vpi_get_മൂല്യം_binstr(vp, val);
+	    നിർത്തുക;
+	  അവസ്ഥ vpiDecStrVal:
+	    vpi_get_മൂല്യം_decstr(vp, val);
+	    നിർത്തുക;
+	  അവസ്ഥ vpiOctStrVal:
+	    vpi_get_മൂല്യം_octstr(vp, val);
+	    നിർത്തുക;
+	  അവസ്ഥ vpiHexStrVal:
+	    vpi_get_മൂല്യം_hexstr(vp, val);
+	    നിർത്തുക;
+	  അവസ്ഥ vpiIntVal:
+	    vpi_get_മൂല്യം_int(vp, val);
+	    നിർത്തുക;
+	  അവസ്ഥ vpiRealVal:
+	    vpi_get_മൂല്യം_real(vp, val);
+	    നിർത്തുക;
+	  അവസ്ഥ vpiStringVal:
+	    vpi_get_മൂല്യം_string(vp, val);
+	    നിർത്തുക;
+	  അവസ്ഥ vpiStrengthVal:
+	    vpi_get_മൂല്യം_strength(vp, val);
+	    നിർത്തുക;
+	  അവസ്ഥ vpiObjTypeVal:
 	    vp->format = vpiVectorVal;
 	    // fallthrough
-	  case vpiVectorVal:
-	    vpi_get_value_vector_(vp, val);
-	    break;
+	  അവസ്ഥ vpiVectorVal:
+	    vpi_get_മൂല്യം_vector(vp, val);
+	    നിർത്തുക;
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "internal error: vpi_get_value(<format=%d>)"
 		    " not implemented for __vpiVThrVec4Stack.\n", vp->format);
-	    assert(0);
+	    പ്രതിജ്ഞാ(0);
       }
 
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_binstr_(p_vpi_value vp, const vvp_vector4_t&val)
+ശൂന്യം __vpiVThrVec4Stack::vpi_get_മൂല്യം_binstr(p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val)
 {
       unsigned wid = val.size();
-      char*rbuf = static_cast<char*>(need_result_buf(wid+1, RBUF_VAL));
-      for (unsigned idx = 0 ; idx < wid ; idx += 1) {
+      അക്ഷരം*rbuf = static_cast<അക്ഷരം*>(need_result_buf(wid+1, RBUF_VAL));
+      വേണ്ടി (unsigned idx = 0 ; idx < wid ; idx += 1) {
 	    rbuf[wid-idx-1] = vvp_bit4_to_ascii(val.value(idx));
       }
       rbuf[wid] = 0;
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_decstr_(p_vpi_value vp, const vvp_vector4_t&val)
+ശൂന്യം __vpiVThrVec4Stack::vpi_get_മൂല്യം_decstr(p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val)
 {
       unsigned wid = val.size();
-      int nbuf = (wid+2)/3 + 1;
-      char *rbuf = static_cast<char*>(need_result_buf(nbuf, RBUF_VAL));
+      പൂർണ്ണസംഖ്യ nbuf = (wid+2)/3 + 1;
+      അക്ഷരം *rbuf = static_cast<അക്ഷരം*>(need_result_buf(nbuf, RBUF_VAL));
 
       vpip_vec4_to_dec_str(val, rbuf, nbuf, signed_flag_);
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_octstr_(p_vpi_value vp, const vvp_vector4_t&val)
+ശൂന്യം __vpiVThrVec4Stack::vpi_get_മൂല്യം_octstr(p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val)
 {
       unsigned wid = val.size();
       unsigned owid = (wid + 2) / 3;
-      char*rbuf = static_cast<char*>(need_result_buf(owid+1, RBUF_VAL));
+      അക്ഷരം*rbuf = static_cast<അക്ഷരം*>(need_result_buf(owid+1, RBUF_VAL));
       rbuf[owid] = 0;
 
       unsigned oval = 0;
-      for (unsigned idx = 0; idx < wid ; idx += 1) {
+      വേണ്ടി (unsigned idx = 0; idx < wid ; idx += 1) {
 	    unsigned tmp = 0;
-	    switch (val.value(idx)) {
-		case BIT4_0:
+	    തിരഞ്ഞെടുപ്പ് (val.value(idx)) {
+		അവസ്ഥ BIT4_0:
 		  tmp = 0;
-		  break;
-		case BIT4_1:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_1:
 		  tmp = 1;
-		  break;
-		case BIT4_X:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_X:
 		  tmp = 2;
-		  break;
-		case BIT4_Z:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_Z:
 		  tmp = 3;
-		  break;
+		  നിർത്തുക;
 	    }
 
 	    oval = oval | (tmp << 2*(idx%3));
 
-	    if (idx%3 == 2) {
+	    എങ്കിൽ (idx%3 == 2) {
 		  owid -= 1;
 		  rbuf[owid] = oct_digits[oval];
 		  oval = 0;
 	    }
       }
 
-      if (owid > 0) {
+      എങ്കിൽ (owid > 0) {
 	    owid -= 1;
 	    rbuf[owid] = oct_digits[oval];
       }
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_hexstr_(p_vpi_value vp, const vvp_vector4_t&val)
+ശൂന്യം __vpiVThrVec4Stack::vpi_get_മൂല്യം_hexstr(p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val)
 {
       unsigned wid = val.size();
       unsigned hwid = (wid + 3) /4;
-      char*rbuf = static_cast<char*>(need_result_buf(hwid+1, RBUF_VAL));
+      അക്ഷരം*rbuf = static_cast<അക്ഷരം*>(need_result_buf(hwid+1, RBUF_VAL));
       rbuf[hwid] = 0;
 
       unsigned hval = 0;
-      for (unsigned idx = 0; idx < wid ; idx += 1) {
+      വേണ്ടി (unsigned idx = 0; idx < wid ; idx += 1) {
 	    unsigned tmp = 0;
-	    switch (val.value(idx)) {
-		case BIT4_0:
+	    തിരഞ്ഞെടുപ്പ് (val.value(idx)) {
+		അവസ്ഥ BIT4_0:
 		  tmp = 0;
-		  break;
-		case BIT4_1:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_1:
 		  tmp = 1;
-		  break;
-		case BIT4_X:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_X:
 		  tmp = 2;
-		  break;
-		case BIT4_Z:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_Z:
 		  tmp = 3;
-		  break;
+		  നിർത്തുക;
 	    }
 	    hval = hval | (tmp << 2*(idx%4));
 
-	    if (idx%4 == 3) {
+	    എങ്കിൽ (idx%4 == 3) {
 		  hwid -= 1;
 		  rbuf[hwid] = hex_digits[hval];
 		  hval = 0;
 	    }
       }
 
-      if (hwid > 0) {
+      എങ്കിൽ (hwid > 0) {
 	    hwid -= 1;
 	    rbuf[hwid] = hex_digits[hval];
       }
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_int_(p_vpi_value vp, const vvp_vector4_t&val)
+ശൂന്യം __vpiVThrVec4Stack::vpi_get_മൂല്യം_int(p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val)
 {
       int32_t vali = 0;
-      vector4_to_value(val, vali, signed_flag_, false);
+      vector4_to_മൂല്യം(val, vali, signed_flag_, അസത്യം);
       vp->value.integer = vali;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_real_(p_vpi_value vp, const vvp_vector4_t&val)
+ശൂന്യം __vpiVThrVec4Stack::vpi_get_മൂല്യം_real(p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val)
 {
       unsigned wid = val.size();
       vp->value.real = 0.0;
 
-      for (unsigned idx = wid ; idx > 0 ; idx -= 1) {
+      വേണ്ടി (unsigned idx = wid ; idx > 0 ; idx -= 1) {
 	    vp->value.real *= 2.0;
-	    if (val.value(idx-1) == BIT4_1)
+	    എങ്കിൽ (val.value(idx-1) == BIT4_1)
 		  vp->value.real += 1.0;
       }
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_string_(p_vpi_value vp, const vvp_vector4_t&val)
+ശൂന്യം __vpiVThrVec4Stack::vpi_get_മൂല്യം_string(p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val)
 {
-      char*rbuf = static_cast<char*>(need_result_buf((val.size() / 8) + 1, RBUF_VAL));
-      char*cp = rbuf;
+      അക്ഷരം*rbuf = static_cast<അക്ഷരം*>(need_result_buf((val.size() / 8) + 1, RBUF_VAL));
+      അക്ഷരം*cp = rbuf;
 
-      char tmp = 0;
-      for (int bitnr = val.size()-1 ; bitnr >= 0 ; bitnr -= 1) {
+      അക്ഷരം tmp = 0;
+      വേണ്ടി (പൂർണ്ണസംഖ്യ bitnr = val.size()-1 ; bitnr >= 0 ; bitnr -= 1) {
 	    tmp <<= 1;
-	    switch (val.value(bitnr)) {
-		case BIT4_1:
+	    തിരഞ്ഞെടുപ്പ് (val.value(bitnr)) {
+		അവസ്ഥ BIT4_1:
 		  tmp |= 1;
-		  break;
-		case BIT4_0:
-		default:
-		  break;
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_0:
+		സ്ഥിരസ്ഥിതി:
+		  നിർത്തുക;
 	    }
 
-	    if ((bitnr&7)==0) {
+	    എങ്കിൽ ((bitnr&7)==0) {
 		    // Don't include leading nuls
-		  if (tmp == 0 && cp == rbuf)
-			continue;
+		  എങ്കിൽ (tmp == 0 && cp == rbuf)
+			തുടരുക;
 
 		  *cp++ = tmp? tmp : ' ';
 		  tmp = 0;
@@ -544,74 +544,74 @@ void __vpiVThrVec4Stack::vpi_get_value_string_(p_vpi_value vp, const vvp_vector4
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_vector_(p_vpi_value vp, const vvp_vector4_t&val)
+ശൂന്യം __vpiVThrVec4Stack::vpi_get_മൂല്യം_vector(p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val)
 {
       unsigned wid = val.size();
 
       unsigned hwid = (wid+31)/32;
       vp->value.vector = static_cast<s_vpi_vecval*>
-                         (need_result_buf(hwid*sizeof(s_vpi_vecval), RBUF_VAL));
-      assert(vp->value.vector);
+                         (need_result_buf(hwid*വലുപ്പം(s_vpi_vecval), RBUF_VAL));
+      പ്രതിജ്ഞാ(vp->value.vector);
 
 	/* Zero the top of the result buffer first since the fill loop below only writes
 	   bits 0..wid-1, which can leave stale data in the unused high bits. */
-      if (hwid == 0) hwid = 1;
+      എങ്കിൽ (hwid == 0) hwid = 1;
       vp->value.vector[hwid-1].aval = 0;
       vp->value.vector[hwid-1].bval = 0;
 
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-	    int word = idx/32;
+      വേണ്ടി (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+	    പൂർണ്ണസംഖ്യ word = idx/32;
 	    PLI_INT32 mask = 1 << (idx%32);
 
-	    switch (val.value(idx)) {
-		case BIT4_0:
+	    തിരഞ്ഞെടുപ്പ് (val.value(idx)) {
+		അവസ്ഥ BIT4_0:
 		  vp->value.vector[word].aval &= ~mask;
 		  vp->value.vector[word].bval &= ~mask;
-		  break;
-		case BIT4_1:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_1:
 		  vp->value.vector[word].aval |=  mask;
 		  vp->value.vector[word].bval &= ~mask;
-		  break;
-		case BIT4_X:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_X:
 		  vp->value.vector[word].aval |=  mask;
 		  vp->value.vector[word].bval |=  mask;
-		  break;
-		case BIT4_Z:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_Z:
 		  vp->value.vector[word].aval &= ~mask;
 		  vp->value.vector[word].bval |=  mask;
-		  break;
+		  നിർത്തുക;
 	    }
       }
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_strength_(p_vpi_value vp, const vvp_vector4_t&val)
+ശൂന്യം __vpiVThrVec4Stack::vpi_get_മൂല്യം_strength(p_vpi_മൂല്യം vp, സ്ഥിരം vvp_vector4_t&val)
 {
       s_vpi_strengthval*op = static_cast<s_vpi_strengthval*>
-                             (need_result_buf(val.size() * sizeof(s_vpi_strengthval),
+                             (need_result_buf(val.size() * വലുപ്പം(s_vpi_strengthval),
                                               RBUF_VAL));
 
-      for (unsigned idx = 0 ; idx < val.size() ; idx += 1) {
-	    switch (val.value(idx)) {
-		case BIT4_0:
+      വേണ്ടി (unsigned idx = 0 ; idx < val.size() ; idx += 1) {
+	    തിരഞ്ഞെടുപ്പ് (val.value(idx)) {
+		അവസ്ഥ BIT4_0:
 		  op[idx].logic = vpi0;
 		  op[idx].s0 = vpiStrongDrive;
 		  op[idx].s1 = 0;
-		  break;
-		case BIT4_1:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_1:
 		  op[idx].logic = vpi1;
 		  op[idx].s0 = 0;
 		  op[idx].s1 = vpiStrongDrive;
-		  break;
-		case BIT4_X:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_X:
 		  op[idx].logic = vpiX;
 		  op[idx].s0 = vpiStrongDrive;
 		  op[idx].s1 = vpiStrongDrive;
-		  break;
-		case BIT4_Z:
+		  നിർത്തുക;
+		അവസ്ഥ BIT4_Z:
 		  op[idx].logic = vpiZ;
 		  op[idx].s0 = vpiHiZ;
 		  op[idx].s1 = vpiHiZ;
-		  break;
+		  നിർത്തുക;
 	    }
       }
 
@@ -619,73 +619,73 @@ void __vpiVThrVec4Stack::vpi_get_value_strength_(p_vpi_value vp, const vvp_vecto
       vp->value.strength = op;
 }
 
-vpiHandle __vpiVThrVec4Stack::vpi_put_value(p_vpi_value vp, int /*flags*/)
+vpiHandle __vpiVThrVec4Stack::vpi_put_മൂല്യം(p_vpi_മൂല്യം vp, പൂർണ്ണസംഖ്യ /*flags*/)
 {
-      assert(vpip_current_vthread);
+      പ്രതിജ്ഞാ(vpip_current_vthread);
 
-      switch (vp->format) {
+      തിരഞ്ഞെടുപ്പ് (vp->format) {
 
-	  default:
+	  സ്ഥിരസ്ഥിതി:
 	    fprintf(stderr, "internal error: vpi_put_value(<format=%d>)"
 		    " not implemented for __vpiVThrVec4Stack.\n", vp->format);
-	    assert(0);
-	    return 0;
+	    പ്രതിജ്ഞാ(0);
+	    തിരികെ 0;
       }
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void thread_vthr_delete(vpiHandle item)
+ശൂന്യം thread_vthr_delete(vpiHandle item)
 {
-      handle_map[item] = true;
+      handle_map[item] = സത്യം;
 }
 
-static void thread_vthr_delete_real(vpiHandle item)
+സ്ഥിതം ശൂന്യം thread_vthr_delete_real(vpiHandle item)
 {
       __vpiVThrVec4Stack*obj = dynamic_cast<__vpiVThrVec4Stack*>(item);
       delete obj;
 }
 
-void vpi_handle_delete()
+ശൂന്യം vpi_handle_delete()
 {
-      map<vpiHandle, bool>::iterator iter;
-      for (iter = handle_map.begin(); iter != handle_map.end(); ++ iter ) {
-	    if (iter->second) thread_vthr_delete_real(iter->first);
-	    else thread_word_delete_real(iter->first);
+      map<vpiHandle, തർക്കം>::iterator iter;
+      വേണ്ടി (iter = handle_map.begin(); iter != handle_map.end(); ++ iter ) {
+	    എങ്കിൽ (iter->second) thread_vthr_delete_real(iter->first);
+	    അല്ലെങ്കിൽ thread_word_delete_real(iter->first);
       }
 }
 #endif
 
 
-vpiHandle vpip_make_vthr_str_stack(unsigned depth)
+vpiHandle vpip_make_vthr_str_അട്ടി(unsigned depth)
 {
-      __vpiVThrStrStack*obj = new __vpiVThrStrStack(depth);
-      return obj;
+      __vpiVThrStrStack*obj = പുതിയ __vpiVThrStrStack(depth);
+      തിരികെ obj;
 }
 
-vpiHandle vpip_make_vthr_vec4_stack(unsigned depth, bool signed_flag, unsigned wid)
+vpiHandle vpip_make_vthr_vec4_അട്ടി(unsigned depth, തർക്കം signed_flag, unsigned wid)
 {
-      __vpiVThrVec4Stack*obj = new __vpiVThrVec4Stack(depth, signed_flag, wid);
-      return obj;
+      __vpiVThrVec4Stack*obj = പുതിയ __vpiVThrVec4Stack(depth, signed_flag, wid);
+      തിരികെ obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-static map<vpiHandle, bool> stack_map;
+സ്ഥിതം map<vpiHandle, തർക്കം> അട്ടി_map;
 
-void thread_string_delete(vpiHandle item)
+ശൂന്യം thread_string_delete(vpiHandle item)
 {
-      stack_map[item] = false;
+      അട്ടി_map[item] = അസത്യം;
 }
 
-static void thread_string_delete_real(vpiHandle item)
+സ്ഥിതം ശൂന്യം thread_string_delete_real(vpiHandle item)
 {
       __vpiVThrStrStack*obj = dynamic_cast<__vpiVThrStrStack*>(item);
       delete obj;
 }
 
-void vpi_stack_delete()
+ശൂന്യം vpi_അട്ടി_delete()
 {
-      map<vpiHandle, bool>::iterator iter;
-      for (iter = stack_map.begin(); iter != stack_map.end(); ++ iter ) {
+      map<vpiHandle, തർക്കം>::iterator iter;
+      വേണ്ടി (iter = അട്ടി_map.begin(); iter != അട്ടി_map.end(); ++ iter ) {
 	    thread_string_delete_real(iter->first);
       }
 }

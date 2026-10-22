@@ -1,4 +1,4 @@
-const char COPYRIGHT[] =
+സ്ഥിരം അക്ഷരം COPYRIGHT[] =
   "Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)";
 /*
  *    This source code is free software; you can redistribute it
@@ -24,37 +24,37 @@ const char COPYRIGHT[] =
 # include  <cstdio>
 # include  <cstdlib>
 
-#if defined(HAVE_GETOPT_H)
+#എങ്കിൽ defined(HAVE_GETOPT_H)
 # include  <getopt.h>
 #endif
 
-#if defined(__MINGW32__)
+#എങ്കിൽ defined(__MINGW32__)
 # include  <windows.h>
 #endif
 
-#include "libvvp.h"
+#അന്തര്ഭാവ "libvvp.h"
 
-using namespace std;
+using നാമാകാശ std;
 
-#if defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
-extern "C" int getopt(int argc, char*argv[], const char*fmt);
-extern "C" int optind;
-extern "C" const char*optarg;
+#എങ്കിൽ defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
+ബാഹ്യ "C" പൂർണ്ണസംഖ്യ getopt(പൂർണ്ണസംഖ്യ argc, അക്ഷരം*argv[], സ്ഥിരം അക്ഷരം*fmt);
+ബാഹ്യ "C" പൂർണ്ണസംഖ്യ optind;
+ബാഹ്യ "C" സ്ഥിരം അക്ഷരം*optarg;
 #endif
 
-bool version_flag = false;
+തർക്കം version_flag = അസത്യം;
 
 unsigned module_cnt = 0;
-const char*module_tab[64];
+സ്ഥിരം അക്ഷരം*module_tab[64];
 
-int main(int argc, char*argv[])
+പൂർണ്ണസംഖ്യ പ്രധാന(പൂർണ്ണസംഖ്യ argc, അക്ഷരം*argv[])
 {
-      int opt;
+      പൂർണ്ണസംഖ്യ opt;
       unsigned flag_errors = 0;
-      const char *logfile_name = 0x0;
+      സ്ഥിരം അക്ഷരം *logfile_name = 0x0;
 
-      while ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) switch (opt) {
-         case 'h':
+      ആകുമ്പോൾ ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) തിരഞ്ഞെടുപ്പ് (opt) {
+         അവസ്ഥ 'h':
            fprintf(stderr,
                    "Usage: vvp [options] input-file [+plusargs...]\n"
                    "Options:\n"
@@ -71,48 +71,48 @@ int main(int argc, char*argv[])
                    " -v             Verbose progress messages.\n"
                    " -V             Print the version information.\n" );
            exit(0);
-	  case 'i':
+	  അവസ്ഥ 'i':
 	    setvbuf(stdout, 0, _IONBF, 0);
-	    break;
-	  case 'l':
+	    നിർത്തുക;
+	  അവസ്ഥ 'l':
 	    logfile_name = optarg;
-	    break;
-	  case 'M':
-	    if (strcmp(optarg,"-") == 0) {
+	    നിർത്തുക;
+	  അവസ്ഥ 'M':
+	    എങ്കിൽ (strcmp(optarg,"-") == 0) {
 		  vpip_clear_module_paths();
-	    } else {
+	    } അല്ലെങ്കിൽ {
 		  vpip_add_module_path(optarg);
 	    }
-	    break;
-	  case 'm':
+	    നിർത്തുക;
+	  അവസ്ഥ 'm':
 	    module_tab[module_cnt++] = optarg;
-	    break;
-	  case 'n':
-	    vvp_set_stop_is_finish(true, 0);
-	    break;
-          case 'N':
-            vvp_set_stop_is_finish(true, 1);
-            break;
-	  case 'q':
-	    vvp_set_quiet_flag(true);
-	    break;
-	  case 's':
+	    നിർത്തുക;
+	  അവസ്ഥ 'n':
+	    vvp_set_stop_is_finish(സത്യം, 0);
+	    നിർത്തുക;
+          അവസ്ഥ 'N':
+            vvp_set_stop_is_finish(സത്യം, 1);
+            നിർത്തുക;
+	  അവസ്ഥ 'q':
+	    vvp_set_quiet_flag(സത്യം);
+	    നിർത്തുക;
+	  അവസ്ഥ 's':
 	    schedule_stop(0);
-	    break;
-	  case 'v':
-	    vvp_set_verbose_flag(true);
-	    break;
-	  case 'V':
-	    version_flag = true;
-	    break;
-	  default:
+	    നിർത്തുക;
+	  അവസ്ഥ 'v':
+	    vvp_set_verbose_flag(സത്യം);
+	    നിർത്തുക;
+	  അവസ്ഥ 'V':
+	    version_flag = സത്യം;
+	    നിർത്തുക;
+	  സ്ഥിരസ്ഥിതി:
 	    flag_errors += 1;
       }
 
-      if (flag_errors)
-	    return flag_errors;
+      എങ്കിൽ (flag_errors)
+	    തിരികെ flag_errors;
 
-      if (version_flag) {
+      എങ്കിൽ (version_flag) {
 	    fprintf(stderr, "Icarus Verilog runtime version " VERSION " ("
 	                    VERSION_TAG ")\n\n");
 	    fprintf(stderr, "%s\n\n", COPYRIGHT);
@@ -131,18 +131,18 @@ int main(int argc, char*argv[])
 "  with this program; if not, write to the Free Software Foundation, Inc.,\n"
 "  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n"
 );
-	    return 0;
+	    തിരികെ 0;
       }
 
-      if (optind == argc) {
+      എങ്കിൽ (optind == argc) {
 	    fprintf(stderr, "%s: no input file.\n", argv[0]);
-	    return -1;
+	    തിരികെ -1;
       }
 
       vvp_init(logfile_name, argc - optind, argv + optind);
 
-      for (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
+      വേണ്ടി (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
 	    vpip_load_module(module_tab[idx]);
 
-      return vvp_run(argv[optind]);
+      തിരികെ vvp_run(argv[optind]);
 }

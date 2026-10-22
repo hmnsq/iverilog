@@ -22,26 +22,26 @@
 #ifndef ARRAY_COMMON_H
 #define ARRAY_COMMON_H
 
-#include "vpi_priv.h"
+#അന്തര്ഭാവ "vpi_priv.h"
 
-struct __vpiArrayIterator : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+ഘടന __vpiArrayIterator : പൊതു __vpiHandle {
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override
+      { തിരികെ vpiIterator; }
 
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+      vpiHandle vpi_index(പൂർണ്ണസംഖ്യ idx) override;
+      free_object_fun_t free_object_fun(ശൂന്യം) override;
 
-      struct __vpiArrayBase*array;
+      ഘടന __vpiArrayBase*array;
       unsigned next;
 };
 
-struct __vpiArrayIndex : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+ഘടന __vpiArrayIndex : പൊതു __vpiHandle {
+      പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override
+      { തിരികെ vpiIterator; }
 
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+      vpiHandle vpi_iterate(പൂർണ്ണസംഖ്യ code) override;
+      vpiHandle vpi_index(പൂർണ്ണസംഖ്യ idx) override;
+      free_object_fun_t free_object_fun(ശൂന്യം) override;
 
       __vpiDecConst *index;
       unsigned done;
@@ -68,31 +68,31 @@ struct __vpiArrayIndex : public __vpiHandle {
  * of vpi functions is bound to the same structure. All the details
  * for the word also apply when treating this as an index.
  */
-struct __vpiArrayWord {
-      struct as_word_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiMemoryWord; }
-	    int vpi_get(int code) override;
-	    char*vpi_get_str(int code) override;
-	    void vpi_get_value(p_vpi_value vp) override;
-	    vpiHandle vpi_put_value(p_vpi_value vp, int flags) override;
-	    vpiHandle vpi_handle(int code) override;
+ഘടന __vpiArrayWord {
+      ഘടന as_word_t : പൊതു __vpiHandle {
+	    പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override { തിരികെ vpiMemoryWord; }
+	    പൂർണ്ണസംഖ്യ vpi_get(പൂർണ്ണസംഖ്യ code) override;
+	    അക്ഷരം*vpi_get_str(പൂർണ്ണസംഖ്യ code) override;
+	    ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം vp) override;
+	    vpiHandle vpi_put_മൂല്യം(p_vpi_മൂല്യം vp, പൂർണ്ണസംഖ്യ flags) override;
+	    vpiHandle vpi_handle(പൂർണ്ണസംഖ്യ code) override;
       } as_word;
 
-      struct as_index_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiIndex; }
-	    void vpi_get_value(p_vpi_value val) override;
+      ഘടന as_index_t : പൊതു __vpiHandle {
+	    പൂർണ്ണസംഖ്യ get_type_code(ശൂന്യം) സ്ഥിരം override { തിരികെ vpiIndex; }
+	    ശൂന്യം vpi_get_മൂല്യം(p_vpi_മൂല്യം val) override;
       } as_index;
 
-      union {
-	    struct __vpiArrayBase*parent;
-	    struct __vpiArrayWord*word0;
+      സംഘം {
+	    ഘടന __vpiArrayBase*parent;
+	    ഘടന __vpiArrayWord*word0;
       };
 
-      inline unsigned get_index() const { return this - word0; }
-      inline struct __vpiArrayBase*get_parent() const { return (word0 - 1)->parent; }
+      വരിയിൽ unsigned get_index() സ്ഥിരം { തിരികെ this - word0; }
+      വരിയിൽ ഘടന __vpiArrayBase*get_parent() സ്ഥിരം { തിരികെ (word0 - 1)->parent; }
 };
 
-struct __vpiArrayWord*array_var_word_from_handle(vpiHandle ref);
-struct __vpiArrayWord*array_var_index_from_handle(vpiHandle ref);
+ഘടന __vpiArrayWord*array_var_word_from_handle(vpiHandle ref);
+ഘടന __vpiArrayWord*array_var_index_from_handle(vpiHandle ref);
 
 #endif /* ARRAY_COMMON_H */

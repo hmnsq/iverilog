@@ -27,42 +27,42 @@
 #endif
 # include  <cassert>
 
-using namespace std;
+using നാമാകാശ std;
 
 /*
  * This class_property_t class is an abstract base class for
  * representing a property of an instance. The definition keeps and
  * array (of pointers) of these in order to define the the class.
  */
-class class_property_t {
-    public:
-      inline class_property_t() { offset_ = 0; }
-      virtual ~class_property_t() =0;
+വർഗ്ഗം class_property_t {
+    പൊതു:
+      വരിയിൽ class_property_t() { offset_ = 0; }
+      മായാ ~class_property_t() =0;
 	// How much space does an instance of this property require?
-      virtual size_t instance_size() const =0;
+      മായാ size_t instance_size() സ്ഥിരം =0;
 
-      void set_offset(size_t off) { offset_ = off; }
+      ശൂന്യം set_offset(size_t off) { offset_ = off; }
 
-    public:
-      virtual void construct(char*buf) const;
-      virtual void destruct(char*buf) const;
+    പൊതു:
+      മായാ ശൂന്യം construct(അക്ഷരം*buf) സ്ഥിരം;
+      മായാ ശൂന്യം destruct(അക്ഷരം*buf) സ്ഥിരം;
 
-      virtual void set_vec4(char*buf, const vvp_vector4_t&val);
-      virtual void get_vec4(char*buf, vvp_vector4_t&val);
+      മായാ ശൂന്യം set_vec4(അക്ഷരം*buf, സ്ഥിരം vvp_vector4_t&val);
+      മായാ ശൂന്യം get_vec4(അക്ഷരം*buf, vvp_vector4_t&val);
 
-      virtual void set_real(char*buf, double val);
-      virtual double get_real(char*buf);
+      മായാ ശൂന്യം set_real(അക്ഷരം*buf, ഇരട്ട val);
+      മായാ ഇരട്ട get_real(അക്ഷരം*buf);
 
-      virtual void set_string(char*buf, const std::string&val);
-      virtual string get_string(char*buf);
+      മായാ ശൂന്യം set_string(അക്ഷരം*buf, സ്ഥിരം std::string&val);
+      മായാ string get_string(അക്ഷരം*buf);
 
-      virtual void set_object(char*buf, const vvp_object_t&val, uint64_t element);
-      virtual void get_object(char*buf, vvp_object_t&val, uint64_t element);
+      മായാ ശൂന്യം set_object(അക്ഷരം*buf, സ്ഥിരം vvp_object_t&val, uint64_t element);
+      മായാ ശൂന്യം get_object(അക്ഷരം*buf, vvp_object_t&val, uint64_t element);
 
 	// Implement polymorphic shallow copy.
-      virtual void copy(char*buf, char*src) = 0;
+      മായാ ശൂന്യം copy(അക്ഷരം*buf, അക്ഷരം*src) = 0;
 
-    protected:
+    സംരക്ഷിത:
       size_t offset_;
 };
 
@@ -70,333 +70,333 @@ class_property_t::~class_property_t()
 {
 }
 
-void class_property_t::construct(char*) const
+ശൂന്യം class_property_t::construct(അക്ഷരം*) സ്ഥിരം
 {
 }
 
-void class_property_t::destruct(char*) const
+ശൂന്യം class_property_t::destruct(അക്ഷരം*) സ്ഥിരം
 {
 }
 
-void class_property_t::set_vec4(char*, const vvp_vector4_t&)
+ശൂന്യം class_property_t::set_vec4(അക്ഷരം*, സ്ഥിരം vvp_vector4_t&)
 {
-      assert(0);
+      പ്രതിജ്ഞാ(0);
 }
 
-void class_property_t::get_vec4(char*, vvp_vector4_t&)
+ശൂന്യം class_property_t::get_vec4(അക്ഷരം*, vvp_vector4_t&)
 {
-      assert(0);
+      പ്രതിജ്ഞാ(0);
 }
 
-void class_property_t::set_real(char*, double)
+ശൂന്യം class_property_t::set_real(അക്ഷരം*, ഇരട്ട)
 {
-      assert(0);
+      പ്രതിജ്ഞാ(0);
 }
 
-double class_property_t::get_real(char*)
+ഇരട്ട class_property_t::get_real(അക്ഷരം*)
 {
-      assert(0);
-      return 0.0;
+      പ്രതിജ്ഞാ(0);
+      തിരികെ 0.0;
 }
 
-void class_property_t::set_string(char*, const string&)
+ശൂന്യം class_property_t::set_string(അക്ഷരം*, സ്ഥിരം string&)
 {
-      assert(0);
+      പ്രതിജ്ഞാ(0);
 }
 
-string class_property_t::get_string(char*)
+string class_property_t::get_string(അക്ഷരം*)
 {
-      assert(0);
-      return "";
+      പ്രതിജ്ഞാ(0);
+      തിരികെ "";
 }
 
-void class_property_t::set_object(char*, const vvp_object_t&, uint64_t)
+ശൂന്യം class_property_t::set_object(അക്ഷരം*, സ്ഥിരം vvp_object_t&, uint64_t)
 {
-      assert(0);
+      പ്രതിജ്ഞാ(0);
 }
 
-void class_property_t::get_object(char*, vvp_object_t&, uint64_t)
+ശൂന്യം class_property_t::get_object(അക്ഷരം*, vvp_object_t&, uint64_t)
 {
-      assert(0);
+      പ്രതിജ്ഞാ(0);
 }
 
 /*
  */
-template <class T> class property_atom : public class_property_t {
-    public:
-      inline explicit property_atom(void) { }
+template <വർഗ്ഗം T> വർഗ്ഗം property_atom : പൊതു class_property_t {
+    പൊതു:
+      വരിയിൽ explicit property_atom(ശൂന്യം) { }
       ~property_atom() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_size() സ്ഥിരം override { തിരികെ വലുപ്പം(T); }
 
-    public:
-      void construct(char*buf) const override
+    പൊതു:
+      ശൂന്യം construct(അക്ഷരം*buf) സ്ഥിരം override
       { T*tmp = reinterpret_cast<T*> (buf+offset_);
 	*tmp = 0;
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      ശൂന്യം set_vec4(അക്ഷരം*buf, സ്ഥിരം vvp_vector4_t&val) override;
+      ശൂന്യം get_vec4(അക്ഷരം*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      ശൂന്യം copy(അക്ഷരം*dst, അക്ഷരം*src) override;
 };
 
-class property_bit : public class_property_t {
-    public:
-      explicit inline property_bit(size_t wid): wid_(wid) { }
+വർഗ്ഗം property_bit : പൊതു class_property_t {
+    പൊതു:
+      explicit വരിയിൽ property_bit(size_t wid): wid_(wid) { }
       ~property_bit() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector2_t); }
+      size_t instance_size() സ്ഥിരം override { തിരികെ വലുപ്പം(vvp_vector2_t); }
 
-    public:
-      void construct(char*buf) const override
-      { new (buf+offset_) vvp_vector2_t (0, wid_); }
+    പൊതു:
+      ശൂന്യം construct(അക്ഷരം*buf) സ്ഥിരം override
+      { പുതിയ (buf+offset_) vvp_vector2_t (0, wid_); }
 
-      void destruct(char*buf) const override
+      ശൂന്യം destruct(അക്ഷരം*buf) സ്ഥിരം override
       { vvp_vector2_t*tmp = reinterpret_cast<vvp_vector2_t*>(buf+offset_);
 	tmp->~vvp_vector2_t();
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      ശൂന്യം set_vec4(അക്ഷരം*buf, സ്ഥിരം vvp_vector4_t&val) override;
+      ശൂന്യം get_vec4(അക്ഷരം*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      ശൂന്യം copy(അക്ഷരം*dst, അക്ഷരം*src) override;
 
-    private:
+    സ്വകാര്യ:
       size_t wid_;
 };
 
-class property_logic : public class_property_t {
-    public:
-      explicit inline property_logic(size_t wid): wid_(wid) { }
+വർഗ്ഗം property_logic : പൊതു class_property_t {
+    പൊതു:
+      explicit വരിയിൽ property_logic(size_t wid): wid_(wid) { }
       ~property_logic() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector4_t); }
+      size_t instance_size() സ്ഥിരം override { തിരികെ വലുപ്പം(vvp_vector4_t); }
 
-    public:
-      void construct(char*buf) const override
-      { new (buf+offset_) vvp_vector4_t (wid_); }
+    പൊതു:
+      ശൂന്യം construct(അക്ഷരം*buf) സ്ഥിരം override
+      { പുതിയ (buf+offset_) vvp_vector4_t (wid_); }
 
-      void destruct(char*buf) const override
+      ശൂന്യം destruct(അക്ഷരം*buf) സ്ഥിരം override
       { vvp_vector4_t*tmp = reinterpret_cast<vvp_vector4_t*>(buf+offset_);
 	tmp->~vvp_vector4_t();
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      ശൂന്യം set_vec4(അക്ഷരം*buf, സ്ഥിരം vvp_vector4_t&val) override;
+      ശൂന്യം get_vec4(അക്ഷരം*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      ശൂന്യം copy(അക്ഷരം*dst, അക്ഷരം*src) override;
 
-    private:
+    സ്വകാര്യ:
       size_t wid_;
 };
 
-template <class T> class property_real : public class_property_t {
-    public:
-      inline explicit property_real(void) { }
+template <വർഗ്ഗം T> വർഗ്ഗം property_real : പൊതു class_property_t {
+    പൊതു:
+      വരിയിൽ explicit property_real(ശൂന്യം) { }
       ~property_real() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_size() സ്ഥിരം override { തിരികെ വലുപ്പം(T); }
 
-    public:
-      void construct(char*buf) const override
+    പൊതു:
+      ശൂന്യം construct(അക്ഷരം*buf) സ്ഥിരം override
       { T*tmp = reinterpret_cast<T*> (buf+offset_);
 	*tmp = 0.0;
       }
 
-      void set_real(char*buf, double val) override;
-      double get_real(char*buf) override;
+      ശൂന്യം set_real(അക്ഷരം*buf, ഇരട്ട val) override;
+      ഇരട്ട get_real(അക്ഷരം*buf) override;
 
-      void copy(char*dst, char*src) override;
+      ശൂന്യം copy(അക്ഷരം*dst, അക്ഷരം*src) override;
 };
 
-class property_string : public class_property_t {
-    public:
-      inline explicit property_string(void) { }
+വർഗ്ഗം property_string : പൊതു class_property_t {
+    പൊതു:
+      വരിയിൽ explicit property_string(ശൂന്യം) { }
       ~property_string() override { }
 
-      size_t instance_size() const override { return sizeof(std::string); }
+      size_t instance_size() സ്ഥിരം override { തിരികെ വലുപ്പം(std::string); }
 
-    public:
-      void construct(char*buf) const override
-      { /* string*tmp = */ new (buf+offset_) string; }
+    പൊതു:
+      ശൂന്യം construct(അക്ഷരം*buf) സ്ഥിരം override
+      { /* string*tmp = */ പുതിയ (buf+offset_) string; }
 
-      void destruct(char*buf) const override
+      ശൂന്യം destruct(അക്ഷരം*buf) സ്ഥിരം override
       { string*tmp = reinterpret_cast<string*> (buf+offset_);
 	tmp->~string();
       }
 
-      void set_string(char*buf, const string&) override;
-      string get_string(char*buf) override;
+      ശൂന്യം set_string(അക്ഷരം*buf, സ്ഥിരം string&) override;
+      string get_string(അക്ഷരം*buf) override;
 
-      void copy(char*dst, char*src) override;
+      ശൂന്യം copy(അക്ഷരം*dst, അക്ഷരം*src) override;
 };
 
-class property_object : public class_property_t {
-    public:
-      inline explicit property_object(uint64_t as): array_size_(as==0? 1 : as) { }
+വർഗ്ഗം property_object : പൊതു class_property_t {
+    പൊതു:
+      വരിയിൽ explicit property_object(uint64_t as): array_size_(as==0? 1 : as) { }
       ~property_object() override { }
 
-      size_t instance_size() const override { return array_size_ * sizeof(vvp_object_t); }
+      size_t instance_size() സ്ഥിരം override { തിരികെ array_size_ * വലുപ്പം(vvp_object_t); }
 
-    public:
-      void construct(char*buf) const override;
+    പൊതു:
+      ശൂന്യം construct(അക്ഷരം*buf) സ്ഥിരം override;
 
-      void destruct(char*buf) const override;
+      ശൂന്യം destruct(അക്ഷരം*buf) സ്ഥിരം override;
 
-      void set_object(char*buf, const vvp_object_t&, uint64_t) override;
-      void get_object(char*buf, vvp_object_t&, uint64_t) override;
+      ശൂന്യം set_object(അക്ഷരം*buf, സ്ഥിരം vvp_object_t&, uint64_t) override;
+      ശൂന്യം get_object(അക്ഷരം*buf, vvp_object_t&, uint64_t) override;
 
-      void copy(char*dst, char*src) override;
+      ശൂന്യം copy(അക്ഷരം*dst, അക്ഷരം*src) override;
 
-    private:
+    സ്വകാര്യ:
       size_t array_size_;
 };
 
-template <class T> void property_atom<T>::set_vec4(char*buf, const vvp_vector4_t&val)
+template <വർഗ്ഗം T> ശൂന്യം property_atom<T>::set_vec4(അക്ഷരം*buf, സ്ഥിരം vvp_vector4_t&val)
 {
       T*tmp = reinterpret_cast<T*> (buf+offset_);
-      bool flag = vector4_to_value(val, *tmp, true, false);
-      assert(flag);
+      തർക്കം flag = vector4_to_മൂല്യം(val, *tmp, സത്യം, അസത്യം);
+      പ്രതിജ്ഞാ(flag);
 }
 
-template <class T> void property_atom<T>::get_vec4(char*buf, vvp_vector4_t&val)
+template <വർഗ്ഗം T> ശൂന്യം property_atom<T>::get_vec4(അക്ഷരം*buf, vvp_vector4_t&val)
 {
       T*src = reinterpret_cast<T*> (buf+offset_);
-      const size_t tmp_cnt = sizeof(T)<sizeof(unsigned long)
+      സ്ഥിരം size_t tmp_cnt = വലുപ്പം(T)<വലുപ്പം(unsigned long)
 				       ? 1
-				       : sizeof(T) / sizeof(unsigned long);
+				       : വലുപ്പം(T) / വലുപ്പം(unsigned long);
       unsigned long tmp[tmp_cnt];
       tmp[0] = src[0];
 
-      for (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
-	    tmp[idx] = src[0] >> idx * 8 * sizeof(tmp[0]);
+      വേണ്ടി (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
+	    tmp[idx] = src[0] >> idx * 8 * വലുപ്പം(tmp[0]);
 
-      val.resize(8*sizeof(T));
+      val.resize(8*വലുപ്പം(T));
       val.setarray(0, val.size(), tmp);
 }
 
-template <class T> void property_atom<T>::copy(char*dst, char*src)
+template <വർഗ്ഗം T> ശൂന്യം property_atom<T>::copy(അക്ഷരം*dst, അക്ഷരം*src)
 {
       T*dst_obj = reinterpret_cast<T*> (dst+offset_);
       T*src_obj = reinterpret_cast<T*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_bit::set_vec4(char*buf, const vvp_vector4_t&val)
+ശൂന്യം property_bit::set_vec4(അക്ഷരം*buf, സ്ഥിരം vvp_vector4_t&val)
 {
       vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
       *obj = val;
 }
 
-void property_bit::get_vec4(char*buf, vvp_vector4_t&val)
+ശൂന്യം property_bit::get_vec4(അക്ഷരം*buf, vvp_vector4_t&val)
 {
-      const vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
+      സ്ഥിരം vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
       val = vector2_to_vector4(*obj, obj->size());
 }
 
-void property_bit::copy(char*dst, char*src)
+ശൂന്യം property_bit::copy(അക്ഷരം*dst, അക്ഷരം*src)
 {
       vvp_vector2_t*dst_obj = reinterpret_cast<vvp_vector2_t*> (dst+offset_);
-      const vvp_vector2_t*src_obj = reinterpret_cast<vvp_vector2_t*> (src+offset_);
+      സ്ഥിരം vvp_vector2_t*src_obj = reinterpret_cast<vvp_vector2_t*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_logic::set_vec4(char*buf, const vvp_vector4_t&val)
+ശൂന്യം property_logic::set_vec4(അക്ഷരം*buf, സ്ഥിരം vvp_vector4_t&val)
 {
       vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
       *obj = val;
 }
 
-void property_logic::get_vec4(char*buf, vvp_vector4_t&val)
+ശൂന്യം property_logic::get_vec4(അക്ഷരം*buf, vvp_vector4_t&val)
 {
-      const vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
+      സ്ഥിരം vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
       val = *obj;
 }
 
-void property_logic::copy(char*dst, char*src)
+ശൂന്യം property_logic::copy(അക്ഷരം*dst, അക്ഷരം*src)
 {
       vvp_vector4_t*dst_obj = reinterpret_cast<vvp_vector4_t*> (dst+offset_);
-      const vvp_vector4_t*src_obj = reinterpret_cast<vvp_vector4_t*> (src+offset_);
+      സ്ഥിരം vvp_vector4_t*src_obj = reinterpret_cast<vvp_vector4_t*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-template <class T> void property_real<T>::set_real(char*buf, double val)
+template <വർഗ്ഗം T> ശൂന്യം property_real<T>::set_real(അക്ഷരം*buf, ഇരട്ട val)
 {
       T*tmp = reinterpret_cast<T*>(buf+offset_);
       *tmp = val;
 }
 
-template <class T> double property_real<T>::get_real(char*buf)
+template <വർഗ്ഗം T> ഇരട്ട property_real<T>::get_real(അക്ഷരം*buf)
 {
       T*tmp = reinterpret_cast<T*>(buf+offset_);
-      return *tmp;
+      തിരികെ *tmp;
 }
 
-template <class T> void property_real<T>::copy(char*dst, char*src)
+template <വർഗ്ഗം T> ശൂന്യം property_real<T>::copy(അക്ഷരം*dst, അക്ഷരം*src)
 {
       T*dst_obj = reinterpret_cast<T*> (dst+offset_);
       T*src_obj = reinterpret_cast<T*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_string::set_string(char*buf, const string&val)
+ശൂന്യം property_string::set_string(അക്ഷരം*buf, സ്ഥിരം string&val)
 {
       string*tmp = reinterpret_cast<string*>(buf+offset_);
       *tmp = val;
 }
 
-string property_string::get_string(char*buf)
+string property_string::get_string(അക്ഷരം*buf)
 {
-      const string*tmp = reinterpret_cast<string*>(buf+offset_);
-      return *tmp;
+      സ്ഥിരം string*tmp = reinterpret_cast<string*>(buf+offset_);
+      തിരികെ *tmp;
 }
 
-void property_string::copy(char*dst, char*src)
+ശൂന്യം property_string::copy(അക്ഷരം*dst, അക്ഷരം*src)
 {
       string*dst_obj = reinterpret_cast<string*> (dst+offset_);
-      const string*src_obj = reinterpret_cast<string*> (src+offset_);
+      സ്ഥിരം string*src_obj = reinterpret_cast<string*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_object::construct(char*buf) const
+ശൂന്യം property_object::construct(അക്ഷരം*buf) സ്ഥിരം
 {
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
-	    new (buf+offset_ + idx*sizeof(vvp_object_t)) vvp_object_t;
+      വേണ്ടി (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+	    പുതിയ (buf+offset_ + idx*വലുപ്പം(vvp_object_t)) vvp_object_t;
 }
 
-void property_object::destruct(char*buf) const
+ശൂന്യം property_object::destruct(അക്ഷരം*buf) സ്ഥിരം
 {
       vvp_object_t*tmp = reinterpret_cast<vvp_object_t*> (buf+offset_);
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      വേണ്ടി (size_t idx = 0 ; idx < array_size_ ; idx += 1)
 	    (tmp+idx)->~vvp_object_t();
 }
 
-void property_object::set_object(char*buf, const vvp_object_t&val, uint64_t idx)
+ശൂന്യം property_object::set_object(അക്ഷരം*buf, സ്ഥിരം vvp_object_t&val, uint64_t idx)
 {
-      assert(idx < array_size_);
+      പ്രതിജ്ഞാ(idx < array_size_);
       vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
       tmp[idx] = val;
 }
 
-void property_object::get_object(char*buf, vvp_object_t&val, uint64_t idx)
+ശൂന്യം property_object::get_object(അക്ഷരം*buf, vvp_object_t&val, uint64_t idx)
 {
-      assert(idx < array_size_);
-      const vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
+      പ്രതിജ്ഞാ(idx < array_size_);
+      സ്ഥിരം vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
       val = tmp[idx];
 }
 
-void property_object::copy(char*dst, char*src)
+ശൂന്യം property_object::copy(അക്ഷരം*dst, അക്ഷരം*src)
 {
       vvp_object_t*dst_obj = reinterpret_cast<vvp_object_t*>(dst+offset_);
-      const vvp_object_t*src_obj = reinterpret_cast<vvp_object_t*>(src+offset_);
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      സ്ഥിരം vvp_object_t*src_obj = reinterpret_cast<vvp_object_t*>(src+offset_);
+      വേണ്ടി (size_t idx = 0 ; idx < array_size_ ; idx += 1)
 	    dst_obj[idx] = src_obj[idx];
 }
 
 /* **** */
 
-class_type::class_type(const string&nam, size_t nprop)
+class_type::class_type(സ്ഥിരം string&nam, size_t nprop)
 : class_name_(nam), properties_(nprop)
 {
       instance_size_ = 0;
@@ -404,59 +404,59 @@ class_type::class_type(const string&nam, size_t nprop)
 
 class_type::~class_type()
 {
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      വേണ്ടി (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    delete properties_[idx].type;
 }
 
-void class_type::set_property(size_t idx, const string&name, const string&type, uint64_t array_size)
+ശൂന്യം class_type::set_property(size_t idx, സ്ഥിരം string&name, സ്ഥിരം string&type, uint64_t array_size)
 {
-      assert(idx < properties_.size());
+      പ്രതിജ്ഞാ(idx < properties_.size());
       properties_[idx].name = name;
 
-      if (type == "b8")
-	    properties_[idx].type = new property_atom<uint8_t>;
-      else if (type == "b16")
-	    properties_[idx].type = new property_atom<uint16_t>;
-      else if (type == "b32")
-	    properties_[idx].type = new property_atom<uint32_t>;
-      else if (type == "b64")
-	    properties_[idx].type = new property_atom<uint64_t>;
-      else if (type == "sb8")
-	    properties_[idx].type = new property_atom<int8_t>;
-      else if (type == "sb16")
-	    properties_[idx].type = new property_atom<int16_t>;
-      else if (type == "sb32")
-	    properties_[idx].type = new property_atom<int32_t>;
-      else if (type == "sb64")
-	    properties_[idx].type = new property_atom<int64_t>;
-      else if (type == "r")
-	    properties_[idx].type = new property_real<double>;
-      else if (type == "S")
-	    properties_[idx].type = new property_string;
-      else if (type == "o")
-	    properties_[idx].type = new property_object(array_size);
-      else if (type[0] == 'b') {
+      എങ്കിൽ (type == "b8")
+	    properties_[idx].type = പുതിയ property_atom<uint8_t>;
+      അല്ലെങ്കിൽ എങ്കിൽ (type == "b16")
+	    properties_[idx].type = പുതിയ property_atom<uint16_t>;
+      അല്ലെങ്കിൽ എങ്കിൽ (type == "b32")
+	    properties_[idx].type = പുതിയ property_atom<uint32_t>;
+      അല്ലെങ്കിൽ എങ്കിൽ (type == "b64")
+	    properties_[idx].type = പുതിയ property_atom<uint64_t>;
+      അല്ലെങ്കിൽ എങ്കിൽ (type == "sb8")
+	    properties_[idx].type = പുതിയ property_atom<int8_t>;
+      അല്ലെങ്കിൽ എങ്കിൽ (type == "sb16")
+	    properties_[idx].type = പുതിയ property_atom<int16_t>;
+      അല്ലെങ്കിൽ എങ്കിൽ (type == "sb32")
+	    properties_[idx].type = പുതിയ property_atom<int32_t>;
+      അല്ലെങ്കിൽ എങ്കിൽ (type == "sb64")
+	    properties_[idx].type = പുതിയ property_atom<int64_t>;
+      അല്ലെങ്കിൽ എങ്കിൽ (type == "r")
+	    properties_[idx].type = പുതിയ property_real<ഇരട്ട>;
+      അല്ലെങ്കിൽ എങ്കിൽ (type == "S")
+	    properties_[idx].type = പുതിയ property_string;
+      അല്ലെങ്കിൽ എങ്കിൽ (type == "o")
+	    properties_[idx].type = പുതിയ property_object(array_size);
+      അല്ലെങ്കിൽ എങ്കിൽ (type[0] == 'b') {
 	    size_t wid = strtoul(type.c_str()+1, 0, 0);
-	    properties_[idx].type = new property_bit(wid);
-      } else if (type[0] == 'L') {
+	    properties_[idx].type = പുതിയ property_bit(wid);
+      } അല്ലെങ്കിൽ എങ്കിൽ (type[0] == 'L') {
 	    size_t wid = strtoul(type.c_str()+1,0,0);
-	    properties_[idx].type = new property_logic(wid);
-      } else if (type[0] == 's' && type[1] == 'L') {
+	    properties_[idx].type = പുതിയ property_logic(wid);
+      } അല്ലെങ്കിൽ എങ്കിൽ (type[0] == 's' && type[1] == 'L') {
 	    size_t wid = strtoul(type.c_str()+2,0,0);
-	    properties_[idx].type = new property_logic(wid);
-      } else {
+	    properties_[idx].type = പുതിയ property_logic(wid);
+      } അല്ലെങ്കിൽ {
 	    properties_[idx].type = 0;
       }
 }
 
-void class_type::finish_setup(void)
+ശൂന്യം class_type::finish_setup(ശൂന്യം)
 {
       map<size_t, vector<size_t> > size_map;
 	// Add up all the sizes to get a total instance size. This
 	// figures out how much memory a complete instance will need.
       size_t accum = 0;
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1) {
-	    assert(properties_[idx].type);
+      വേണ്ടി (size_t idx = 0 ; idx < properties_.size() ; idx += 1) {
+	    പ്രതിജ്ഞാ(properties_[idx].type);
 	    size_t instance_size = properties_[idx].type->instance_size();
 	    accum += instance_size;
 	    size_map[instance_size].push_back(idx);
@@ -468,146 +468,146 @@ void class_type::finish_setup(void)
 	// space. Allocate the properties largest objects first so
 	// that they are assured better alignment.
       accum = 0;
-      for (map<size_t, vector<size_t> >::reverse_iterator cur = size_map.rbegin()
+      വേണ്ടി (map<size_t, vector<size_t> >::reverse_iterator cur = size_map.rbegin()
 		 ; cur != size_map.rend() ; ++ cur) {
-	    for (size_t idx = 0 ; idx < cur->second.size() ; idx += 1) {
+	    വേണ്ടി (size_t idx = 0 ; idx < cur->second.size() ; idx += 1) {
 		  size_t pid = cur->second[idx];
 		  class_property_t*ptype = properties_[pid].type;
-		  assert(ptype->instance_size() == cur->first);
+		  പ്രതിജ്ഞാ(ptype->instance_size() == cur->first);
 		  ptype->set_offset(accum);
 		  accum += cur->first;
 	    }
       }
 }
 
-class_type::inst_t class_type::instance_new() const
+class_type::inst_t class_type::instance_new() സ്ഥിരം
 {
-      char*buf = new char [instance_size_];
+      അക്ഷരം*buf = പുതിയ അക്ഷരം [instance_size_];
 
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      വേണ്ടി (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->construct(buf);
 
-      return reinterpret_cast<inst_t> (buf);
+      തിരികെ reinterpret_cast<inst_t> (buf);
 }
 
-void class_type::instance_delete(class_type::inst_t obj) const
+ശൂന്യം class_type::instance_delete(class_type::inst_t obj) സ്ഥിരം
 {
-      char*buf = reinterpret_cast<char*> (obj);
+      അക്ഷരം*buf = reinterpret_cast<അക്ഷരം*> (obj);
 
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      വേണ്ടി (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->destruct(buf);
 
       delete[]buf;
 }
 
-void class_type::set_vec4(class_type::inst_t obj, size_t pid,
-			  const vvp_vector4_t&val) const
+ശൂന്യം class_type::set_vec4(class_type::inst_t obj, size_t pid,
+			  സ്ഥിരം vvp_vector4_t&val) സ്ഥിരം
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      അക്ഷരം*buf = reinterpret_cast<അക്ഷരം*> (obj);
+      പ്രതിജ്ഞാ(pid < properties_.size());
       properties_[pid].type->set_vec4(buf, val);
 }
 
-void class_type::get_vec4(class_type::inst_t obj, size_t pid,
-			  vvp_vector4_t&val) const
+ശൂന്യം class_type::get_vec4(class_type::inst_t obj, size_t pid,
+			  vvp_vector4_t&val) സ്ഥിരം
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      അക്ഷരം*buf = reinterpret_cast<അക്ഷരം*> (obj);
+      പ്രതിജ്ഞാ(pid < properties_.size());
       properties_[pid].type->get_vec4(buf, val);
 }
 
-void class_type::set_real(class_type::inst_t obj, size_t pid,
-			  double val) const
+ശൂന്യം class_type::set_real(class_type::inst_t obj, size_t pid,
+			  ഇരട്ട val) സ്ഥിരം
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      അക്ഷരം*buf = reinterpret_cast<അക്ഷരം*> (obj);
+      പ്രതിജ്ഞാ(pid < properties_.size());
       properties_[pid].type->set_real(buf, val);
 }
 
-double class_type::get_real(class_type::inst_t obj, size_t pid) const
+ഇരട്ട class_type::get_real(class_type::inst_t obj, size_t pid) സ്ഥിരം
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      return properties_[pid].type->get_real(buf);
+      അക്ഷരം*buf = reinterpret_cast<അക്ഷരം*> (obj);
+      പ്രതിജ്ഞാ(pid < properties_.size());
+      തിരികെ properties_[pid].type->get_real(buf);
 }
 
-void class_type::set_string(class_type::inst_t obj, size_t pid,
-			    const string&val) const
+ശൂന്യം class_type::set_string(class_type::inst_t obj, size_t pid,
+			    സ്ഥിരം string&val) സ്ഥിരം
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      അക്ഷരം*buf = reinterpret_cast<അക്ഷരം*> (obj);
+      പ്രതിജ്ഞാ(pid < properties_.size());
       properties_[pid].type->set_string(buf, val);
 }
 
-string class_type::get_string(class_type::inst_t obj, size_t pid) const
+string class_type::get_string(class_type::inst_t obj, size_t pid) സ്ഥിരം
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      return properties_[pid].type->get_string(buf);
+      അക്ഷരം*buf = reinterpret_cast<അക്ഷരം*> (obj);
+      പ്രതിജ്ഞാ(pid < properties_.size());
+      തിരികെ properties_[pid].type->get_string(buf);
 }
 
-void class_type::set_object(class_type::inst_t obj, size_t pid,
-			    const vvp_object_t&val, size_t idx) const
+ശൂന്യം class_type::set_object(class_type::inst_t obj, size_t pid,
+			    സ്ഥിരം vvp_object_t&val, size_t idx) സ്ഥിരം
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      അക്ഷരം*buf = reinterpret_cast<അക്ഷരം*> (obj);
+      പ്രതിജ്ഞാ(pid < properties_.size());
       properties_[pid].type->set_object(buf, val, idx);
 }
 
-void class_type::get_object(class_type::inst_t obj, size_t pid,
-			    vvp_object_t&val, size_t idx) const
+ശൂന്യം class_type::get_object(class_type::inst_t obj, size_t pid,
+			    vvp_object_t&val, size_t idx) സ്ഥിരം
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      അക്ഷരം*buf = reinterpret_cast<അക്ഷരം*> (obj);
+      പ്രതിജ്ഞാ(pid < properties_.size());
       properties_[pid].type->get_object(buf, val, idx);
 }
 
-void class_type::copy_property(class_type::inst_t dst, size_t pid, class_type::inst_t src) const
+ശൂന്യം class_type::copy_property(class_type::inst_t dst, size_t pid, class_type::inst_t src) സ്ഥിരം
 {
-      char*dst_buf = reinterpret_cast<char*> (dst);
-      char*src_buf = reinterpret_cast<char*> (src);
+      അക്ഷരം*dst_buf = reinterpret_cast<അക്ഷരം*> (dst);
+      അക്ഷരം*src_buf = reinterpret_cast<അക്ഷരം*> (src);
 
-      assert(pid < properties_.size());
+      പ്രതിജ്ഞാ(pid < properties_.size());
 
       properties_[pid].type->copy(dst_buf, src_buf);
 }
 
-int class_type::get_type_code(void) const
+പൂർണ്ണസംഖ്യ class_type::get_type_code(ശൂന്യം) സ്ഥിരം
 {
-      return vpiClassDefn;
+      തിരികെ vpiClassDefn;
 }
 
-static class_type*compile_class = 0;
+സ്ഥിതം class_type*compile_class = 0;
 
-void compile_class_start(char*lab, char*nam, unsigned ntype)
+ശൂന്യം compile_class_start(അക്ഷരം*lab, അക്ഷരം*nam, unsigned ntype)
 {
-      assert(compile_class == 0);
-      compile_class = new class_type(nam, ntype);
-      compile_vpi_symbol(lab, compile_class);
-      free(lab);
+      പ്രതിജ്ഞാ(compile_class == 0);
+      compile_class = പുതിയ class_type(nam, ntype);
+      compile_vpi_ചിഹ്നം(lab, compile_class);
+      സ്വതന്ത്രം(lab);
       delete[]nam;
 }
 
-void compile_class_property(unsigned idx, char*nam, char*typ, uint64_t array_size)
+ശൂന്യം compile_class_property(unsigned idx, അക്ഷരം*nam, അക്ഷരം*typ, uint64_t array_size)
 {
-      assert(compile_class);
+      പ്രതിജ്ഞാ(compile_class);
       compile_class->set_property(idx, nam, typ, array_size);
       delete[]nam;
       delete[]typ;
 }
 
-void compile_class_done(void)
+ശൂന്യം compile_class_done(ശൂന്യം)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      assert(scope);
-      assert(compile_class);
+      പ്രതിജ്ഞാ(scope);
+      പ്രതിജ്ഞാ(compile_class);
       compile_class->finish_setup();
       scope->classes[compile_class->class_name()] = compile_class;
       compile_class = 0;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void class_def_delete(class_type *item)
+ശൂന്യം class_def_delete(class_type *item)
 {
       delete item;
 }
