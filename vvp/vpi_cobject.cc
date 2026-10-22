@@ -30,37 +30,37 @@ __vpiCobjectVar::__vpiCobjectVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
 {
 }
 
-int __vpiCobjectVar::get_type_code(void) const
-{ return vpiClassVar; }
+цяло __vpiCobjectVar::get_type_code(void) const
+{ върни vpiClassVar; }
 
-int __vpiCobjectVar::vpi_get(int code)
+цяло __vpiCobjectVar::vpi_get(цяло code)
 {
       switch (code) {
 	case vpiLineNo:
-	    return 0;  // Not implemented for now!
+	    върни 0;  // Not implemented for now!
 
 	case vpiSize:
-	    return 64;
+	    върни 64;
 
 	case vpiConstType:
-	    return vpiNullConst;
+	    върни vpiNullConst;
 
 	case vpiSigned:
-	    return 0;
+	    върни 0;
 
 	case vpiAutomatic:
-	    return 0;
+	    върни 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+#ако defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
 	case _vpiFromThr:
-	    return _vpiNoThr;
+	    върни _vpiNoThr;
 #endif
 
 	default:
 	    fprintf(stderr, "vvp error: get %d not supported "
 	                    "by vpiClassVar\n", code);
 	    assert(0);
-	    return 0;
+	    върни 0;
       }
 }
 
@@ -96,7 +96,7 @@ void __vpiCobjectVar::vpi_get_value(p_vpi_value val)
 	    val->value.vector = static_cast<p_vpi_vecval>
 	                        (need_result_buf(2*sizeof(s_vpi_vecval),
 	                                         RBUF_VAL));
-	    for (unsigned idx = 0; idx < 2; idx += 1) {
+	    за (unsigned idx = 0; idx < 2; idx += 1) {
 		  val->value.vector[idx].aval = 0;
 		  val->value.vector[idx].bval = 0;
 	    }
@@ -108,7 +108,7 @@ void __vpiCobjectVar::vpi_get_value(p_vpi_value val)
 
 	default:
 	    fprintf(stderr, "vvp error: format %d not supported "
-	                    "by vpiClassVar\n", (int)val->format);
+	                    "by vpiClassVar\n", (цяло)val->format);
 	    val->format = vpiSuppressVal;
 	    break;
       }
@@ -121,7 +121,7 @@ vpiHandle vpip_make_cobject_var(const char*name, vvp_net_t*net)
 
       __vpiCobjectVar*obj = new __vpiCobjectVar(scope, use_name, net);
 
-      return obj;
+      върни obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND

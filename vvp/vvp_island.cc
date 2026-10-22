@@ -41,8 +41,8 @@ static bool at_EOS = false;
 void island_send_value(vvp_net_t*net, const vvp_vector8_t&val)
 {
       vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
-      if (fun->outvalue .eeq(val))
-	    return;
+      ако (fun->outvalue .eeq(val))
+	    върни;
 
       fun->outvalue = val;
       net->send_vec8(fun->outvalue);
@@ -64,10 +64,10 @@ vvp_island::~vvp_island()
 {
 	// We can only delete islands at the end of simulation.
 #ifdef CHECK_WITH_VALGRIND
-      if (!at_EOS) assert(0);
+      ако (!at_EOS) assert(0);
 #endif
 
-      while (branches_) {
+      докато (branches_) {
 	    vvp_island_branch *next_br = branches_->next_branch;
 	    delete branches_;
 	    branches_ = next_br;
@@ -76,8 +76,8 @@ vvp_island::~vvp_island()
 
 void vvp_island::flag_island()
 {
-      if (flagged_ == true)
-	    return;
+      ако (flagged_ == true)
+	    върни;
 
       schedule_generic(this, 0, false, false);
       flagged_ = true;
@@ -97,7 +97,7 @@ void vvp_island::run_run()
 
 void vvp_island::add_port(const char*key, vvp_net_t*net)
 {
-      if (ports_ == 0)
+      ако (ports_ == 0)
 	    ports_ = new symbol_map_s<vvp_net_t>;
 
 	// each port should have a unique label
@@ -116,29 +116,29 @@ void vvp_island::add_branch(vvp_island_branch*branch, const char*pa, const char*
 
       vvp_branch_ptr_t ptra (branch, 0);
       vvp_branch_ptr_t ptrb (branch, 1);
-      if (anodes_ == 0)
+      ако (anodes_ == 0)
 	    anodes_ = new symbol_map_s<vvp_island_branch>;
-      if (bnodes_ == 0)
+      ако (bnodes_ == 0)
 	    bnodes_ = new symbol_map_s<vvp_island_branch>;
 
-      if ((cur = anodes_->sym_get_value(pa))) {
+      ако ((cur = anodes_->sym_get_value(pa))) {
 	    branch->link[0] = cur->link[0];
 	    cur->link[0] = ptra;
-      } else if ((cur = bnodes_->sym_get_value(pa))) {
+      } иначе ако ((cur = bnodes_->sym_get_value(pa))) {
 	    branch->link[0] = cur->link[1];
 	    cur->link[1] = ptra;
-      } else {
+      } иначе {
 	    branch->link[0] = ptra;
 	    anodes_->sym_set_value(pa, branch);
       }
 
-      if ((cur = anodes_->sym_get_value(pb))) {
+      ако ((cur = anodes_->sym_get_value(pb))) {
 	    branch->link[1] = cur->link[0];
 	    cur->link[0] = ptrb;
-      } else if ((cur = bnodes_->sym_get_value(pb))) {
+      } иначе ако ((cur = bnodes_->sym_get_value(pb))) {
 	    branch->link[1] = cur->link[1];
 	    cur->link[1] = ptrb;
-      } else {
+      } иначе {
 	    branch->link[1] = ptrb;
 	    bnodes_->sym_set_value(pb, branch);
       }
@@ -149,10 +149,10 @@ void vvp_island::add_branch(vvp_island_branch*branch, const char*pa, const char*
 
 vvp_net_t* vvp_island::find_port(const char*key)
 {
-      if (ports_ == 0)
-	    return 0;
-      else
-	    return ports_->sym_get_value(key);
+      ако (ports_ == 0)
+	    върни 0;
+      иначе
+	    върни ports_->sym_get_value(key);
 }
 
 void vvp_island::compile_cleanup()
@@ -180,8 +180,8 @@ void vvp_island_port::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&bit,
                                 vvp_context_t)
 {
       vvp_vector8_t tmp (bit, 6, 6);
-      if (invalue .eeq(tmp))
-	    return;
+      ако (invalue .eeq(tmp))
+	    върни;
 
       invalue = tmp;
       island_->flag_island();
@@ -197,8 +197,8 @@ void vvp_island_port::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 
 void vvp_island_port::recv_vec8(vvp_net_ptr_t, const vvp_vector8_t&bit)
 {
-      if (invalue .eeq(bit))
-	    return;
+      ако (invalue .eeq(bit))
+	    върни;
 
       invalue = bit;
       island_->flag_island();
@@ -207,13 +207,13 @@ void vvp_island_port::recv_vec8(vvp_net_ptr_t, const vvp_vector8_t&bit)
 void vvp_island_port::recv_vec8_pv(vvp_net_ptr_t, const vvp_vector8_t&bit,
                                    unsigned base, unsigned vwid)
 {
-      if (invalue.size() == 0) {
+      ако (invalue.size() == 0) {
 	    invalue = part_expand(bit, vwid, base);
-      } else {
+      } иначе {
 	    unsigned wid = bit.size();
 	    assert(invalue.size() == vwid);
-	    for (unsigned idx = 0; idx < wid ; idx += 1) {
-		  if ((base+idx) >= vwid)
+	    за (unsigned idx = 0; idx < wid ; idx += 1) {
+		  ако ((base+idx) >= vwid)
 			break;
 		  invalue.set_bit(base+idx, bit.value(idx));
 	    }
@@ -224,9 +224,9 @@ void vvp_island_port::recv_vec8_pv(vvp_net_ptr_t, const vvp_vector8_t&bit,
 
 void vvp_island_port::force_flag(bool run_now)
 {
-      if (run_now)
+      ако (run_now)
 	    island_->run_island();
-      else
+      иначе
 	    island_->flag_island();
 }
 
@@ -237,7 +237,7 @@ vvp_island_branch::~vvp_island_branch()
 void island_collect_node(list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur)
 {
       conn .push_back(cur);
-      for (vvp_branch_ptr_t idx = next(cur) ; idx != cur ; idx = next(idx))
+      за (vvp_branch_ptr_t idx = next(cur) ; idx != cur ; idx = next(idx))
 	    conn.push_back(idx);
 }
 
@@ -258,7 +258,7 @@ static unsigned island_count = 0;
 void island_delete()
 {
       at_EOS = true;
-      for (unsigned idx = 0; idx < island_count; idx += 1) {
+      за (unsigned idx = 0; idx < island_count; idx += 1) {
 	    delete island_list[idx];
       }
       free(island_list);
@@ -269,7 +269,7 @@ void island_delete()
 
 void compile_island_base(char*label, vvp_island*use_island)
 {
-      if (island_table == 0)
+      ако (island_table == 0)
 	    island_table = new symbol_map_s<vvp_island>;
 
       island_table->sym_set_value(label, use_island);
@@ -285,7 +285,7 @@ vvp_island* compile_find_island(const char*island)
       assert(island_table);
       vvp_island*use_island = island_table->sym_get_value(island);
       assert(use_island);
-      return use_island;
+      върни use_island;
 }
 
 /*
@@ -365,7 +365,7 @@ void compile_island_import(char*label, char*island, char*src)
 void compile_island_cleanup(void)
 {
 	// Call the per-island cleanup to get rid of local symbol tables.
-      for (unsigned idx = 0; idx < island_count; idx += 1) {
+      за (unsigned idx = 0; idx < island_count; idx += 1) {
 	    island_list[idx]->compile_cleanup();
       }
 

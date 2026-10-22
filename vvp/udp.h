@@ -38,8 +38,8 @@ struct vvp_udp_s {
 	// does *not* include the current output value for a
 	// sequential UDP.
       unsigned port_count() const;
-      bool is_sequential() const { return seq_; };
-      char *name() { return name_; }
+      bool is_sequential() const { върни seq_; };
+      char *name() { върни name_; }
 
 	// Return the initial output value.
       vvp_bit4_t get_init() const;

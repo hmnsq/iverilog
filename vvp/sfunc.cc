@@ -42,7 +42,7 @@ sfunc_core::~sfunc_core()
 {
       delete sys_;
 #ifdef CHECK_WITH_VALGRIND
-      for (unsigned i = 0; i < argc_; i += 1) {
+      за (unsigned i = 0; i < argc_; i += 1) {
 	    constant_delete(argv_[i]);
       }
 #endif
@@ -88,12 +88,12 @@ void sfunc_core::run_run()
       vpip_execute_vpi_call(0, sys_);
 }
 
-static int make_vpi_argv(unsigned argc, vpiHandle*vpi_argv,
+static цяло make_vpi_argv(unsigned argc, vpiHandle*vpi_argv,
 			const char*arg_string)
 {
       unsigned idx = 0;
       const char*cp = arg_string;
-      int return_type = 0;
+      цяло return_type = 0;
 
       switch (*cp) {
 	  case 'r': // real result
@@ -113,7 +113,7 @@ static int make_vpi_argv(unsigned argc, vpiHandle*vpi_argv,
 	    break;
       }
 
-      while (*cp) {
+      докато (*cp) {
 	    assert(idx < argc);
 
 	    switch (*cp) {
@@ -138,7 +138,7 @@ static int make_vpi_argv(unsigned argc, vpiHandle*vpi_argv,
       }
 
       assert(idx == argc);
-      return return_type;
+      върни return_type;
 }
 
 
@@ -151,14 +151,14 @@ void compile_sfunc(char*label, char*name,  char*format_string,
       unsigned real_stack = 0;
       unsigned string_stack = 0;
       vpiHandle*vpi_argv = new vpiHandle[argc];
-      int val_code = make_vpi_argv(argc, vpi_argv, format_string);
+      цяло val_code = make_vpi_argv(argc, vpi_argv, format_string);
       unsigned val_width = 0;
       delete[] format_string;
 
 	// The make_vpi_argv returns for the function return value a
 	// >0 value for the vector width if this is a vector. Convert
 	// it to the form that the vpip_build_vpi_call uses.
-      if (val_code > 0) {
+      ако (val_code > 0) {
 	    val_width = val_code;
 	    val_code = -vpiVectorVal;
       }
@@ -183,7 +183,7 @@ void compile_sfunc(char*label, char*name,  char*format_string,
 
         /* If this function has a trigger event, connect the functor to
            that event. */
-      if (trigger_label)
+      ако (trigger_label)
             input_connect(ptr, 0, trigger_label);
       delete[] name;
 }

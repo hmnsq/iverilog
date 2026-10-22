@@ -33,13 +33,13 @@ void vpip_oct_str_to_vec4(vvp_vector4_t&val, const char*str)
       unsigned skip_chars = 0;
       const char*tstr = str;
 	/* Find the number of non-numeric characters. */
-      while ((tstr = strpbrk(tstr, "-_"))) {
+      докато ((tstr = strpbrk(tstr, "-_"))) {
 	    skip_chars += 1;
 	    tstr += 1;
       }
       vvp_vector4_t tval(3*(str_len-skip_chars));
       skip_chars = 0;
-      for (unsigned idx = 0 ;  idx < tval.size() ;  idx += 1) {
+      за (unsigned idx = 0 ;  idx < tval.size() ;  idx += 1) {
 	    unsigned tmp;
 	    unsigned bit_off = idx%3;
 	    unsigned str_off = idx/3;
@@ -47,13 +47,13 @@ void vpip_oct_str_to_vec4(vvp_vector4_t&val, const char*str)
 
 	    assert(str_off+skip_chars < str_len);
 	      /* Skip any "_" characters in the string. */
-	    while ((ch = str[str_len-str_off-1-skip_chars]) == '_') {
+	    докато ((ch = str[str_len-str_off-1-skip_chars]) == '_') {
 		  skip_chars += 1;
 		  assert(str_off+skip_chars < str_len);
 	    }
 
 	      /* If we find a "-" it must be at the head of the string. */
-	    if (ch == '-') assert(0);
+	    ако (ch == '-') assert(0);
 
 	    switch (ch) {
 		case '0':
@@ -79,15 +79,15 @@ void vpip_oct_str_to_vec4(vvp_vector4_t&val, const char*str)
 		    /* Return "x" if there are invalid digits in the string. */
 		  fprintf(stderr, "Warning: Invalid octal digit %c(%d) in "
 		          "\"%s\".\n", ch, ch, str);
-		  for (unsigned jdx = 0 ;  jdx < val.size() ;  jdx += 1) {
+		  за (unsigned jdx = 0 ;  jdx < val.size() ;  jdx += 1) {
 			val.set_bit(jdx, BIT4_X);
 		  }
-		  return;
+		  върни;
 	    }
       }
 
 	/* Make a negative value when needed. */
-      if (str[0] == '-') {
+      ако (str[0] == '-') {
 	    tval.invert();
 	    tval += (int64_t) 1;
       }
@@ -102,7 +102,7 @@ void vpip_oct_str_to_vec4(vvp_vector4_t&val, const char*str)
 	    pad = BIT4_Z;
 	    break;
 	  case BIT4_1:  // If negative pad MSB '1' with '1'
-	    if (str[0] == '-') {
+	    ако (str[0] == '-') {
 		  pad = BIT4_1;
 		  break;
 	    }
@@ -113,9 +113,9 @@ void vpip_oct_str_to_vec4(vvp_vector4_t&val, const char*str)
       }
 
 	/* Copy the temporary value to the real value, padding if needed. */
-      for (unsigned idx = 0 ;  idx < val.size() ;  idx += 1) {
-	    if (idx < tval.size()) val.set_bit(idx, tval.value(idx));
-	    else val.set_bit(idx, pad);
+      за (unsigned idx = 0 ;  idx < val.size() ;  idx += 1) {
+	    ако (idx < tval.size()) val.set_bit(idx, tval.value(idx));
+	    иначе val.set_bit(idx, pad);
       }
 }
 
@@ -127,7 +127,7 @@ void vpip_vec4_to_oct_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
       buf[slen] = 0;
 
       unsigned val = 0;
-      for (unsigned idx = 0 ;  idx < bits.size() ;  idx += 1) {
+      за (unsigned idx = 0 ;  idx < bits.size() ;  idx += 1) {
 	    unsigned vs = (idx%3) * 2;
 
 	    switch (bits.value(idx)) {
@@ -143,7 +143,7 @@ void vpip_vec4_to_oct_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
 		  val |= 3 << vs;
 	    }
 
-	    if (vs == 4) {
+	    ако (vs == 4) {
 		  slen -= 1;
 		  buf[slen] = oct_digits[val];
 		  val = 0;
@@ -153,16 +153,16 @@ void vpip_vec4_to_oct_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
 	/* Fill in X or Z if they are the only thing in the value. */
       switch (bits.size() % 3) {
 	  case 1:
-	    if (val == 2) val = 42;
-	    else if (val == 3) val = 63;
+	    ако (val == 2) val = 42;
+	    иначе ако (val == 3) val = 63;
 	    break;
 	  case 2:
-	    if (val == 10) val = 42;
-	    else if (val == 15) val = 63;
+	    ако (val == 10) val = 42;
+	    иначе ако (val == 15) val = 63;
 	    break;
       }
 
-      if (slen > 0) {
+      ако (slen > 0) {
 	    slen -= 1;
 	    buf[slen] = oct_digits[val];
       }

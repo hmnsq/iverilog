@@ -87,7 +87,7 @@ class symbol_table_s {
  * the delete_symbol_table method will delete the table, including all
  * the space for the keys.
  */
-inline symbol_table_t new_symbol_table(void) { return new symbol_table_s; }
+inline symbol_table_t new_symbol_table(void) { върни new symbol_table_s; }
 inline void delete_symbol_table(symbol_table_t tbl) { delete tbl; }
 
 // These are obsolete, and here only to support older code.
@@ -95,7 +95,7 @@ inline void sym_set_value(symbol_table_t tbl, const char*key, symbol_value_t val
 { tbl->sym_set_value(key, val); }
 
 inline symbol_value_t sym_get_value(symbol_table_t tbl, const char*key)
-{ return tbl->sym_get_value(key); }
+{ върни tbl->sym_get_value(key); }
 
 /*
  * This template is a type-safe interface to the symbol table.
@@ -111,7 +111,7 @@ template <class T> class symbol_map_s : private symbol_table_s {
 
       T* sym_get_value(const char*key)
       { symbol_value_t val = symbol_table_s::sym_get_value(key);
-	return reinterpret_cast<T*>(val.ptr);
+	върни reinterpret_cast<T*>(val.ptr);
       }
 };
 

@@ -400,11 +400,11 @@ static const struct opcode_table_s opcode_table[] = {
 static const unsigned opcode_count =
                     sizeof(opcode_table)/sizeof(*opcode_table) - 1;
 
-static int opcode_compare(const void*k, const void*r)
+static цяло opcode_compare(const void*k, const void*r)
 {
       const char*kp = static_cast<const char*>(k);
       const struct opcode_table_s*rp = static_cast<const struct opcode_table_s*>(r);
-      return strcmp(kp, rp->mnemonic);
+      върни strcmp(kp, rp->mnemonic);
 }
 
 /*
@@ -455,14 +455,14 @@ static vvp_net_t*lookup_functor_symbol(const char*label)
 {
       assert(sym_functors);
       symbol_value_t val = sym_get_value(sym_functors, label);
-      return val.net;
+      върни val.net;
 }
 
 vpiHandle vvp_lookup_handle(const char*label)
 {
       symbol_value_t val = sym_get_value(sym_vpi, label);
-      if (val.ptr) return (vpiHandle) val.ptr;
-      return 0;
+      ако (val.ptr) върни (vpiHandle) val.ptr;
+      върни 0;
 }
 
 vvp_net_t* vvp_net_lookup(const char*label)
@@ -473,7 +473,7 @@ vvp_net_t* vvp_net_lookup(const char*label)
 	   sort. If it is, then get the vvp_ipoint_t pointer out of
 	   the vpiHandle. */
       symbol_value_t val = sym_get_value(sym_vpi, label);
-      if (val.ptr) {
+      ако (val.ptr) {
 	    vpiHandle vpi = static_cast<vpiHandle>(val.ptr);
 	    switch (vpi->get_type_code()) {
 		case vpiNet:
@@ -485,24 +485,24 @@ vvp_net_t* vvp_net_lookup(const char*label)
 		case vpiLongIntVar:
 		case vpiIntegerVar: {
 		      const __vpiSignal*sig = dynamic_cast<__vpiSignal*>(vpi);
-		      return sig->node;
+		      върни sig->node;
 		}
 
 		case vpiRealVar: {
 		      const __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(vpi);
-		      return sig->net;
+		      върни sig->net;
 		}
 
 		case vpiStringVar:
 		case vpiArrayVar:
 		case vpiClassVar: {
 		      const __vpiBaseVar*sig = dynamic_cast<__vpiBaseVar*>(vpi);
-		      return sig->get_net();
+		      върни sig->get_net();
 		}
 
 		case vpiNamedEvent: {
 		      const __vpiNamedEvent*tmp = dynamic_cast<__vpiNamedEvent*>(vpi);
-		      return tmp->funct;
+		      върни tmp->funct;
 		}
 
 		default:
@@ -518,7 +518,7 @@ vvp_net_t* vvp_net_lookup(const char*label)
 
 	// This is a special label used to create a T0 trigger for the
 	// always_comb/latch processes.
-     if (! t0_trigger_generated && (strcmp(label, "E_0x0") == 0)) {
+     ако (! t0_trigger_generated && (strcmp(label, "E_0x0") == 0)) {
 	      // This should never happen, but if it does then the E_0x0
 	      // event generation may need to be explicitly generated in
 	      // the compiler output instead of implicitly in this code.
@@ -533,7 +533,7 @@ vvp_net_t* vvp_net_lookup(const char*label)
 	    schedule_t0_trigger(ptr);
      }
 
-      return tmp;
+      върни tmp;
 }
 
 /*
@@ -563,9 +563,9 @@ resolv_list_s::~resolv_list_s()
 
 void resolv_submit(resolv_list_s*cur)
 {
-      if (cur->resolve()) {
+      ако (cur->resolve()) {
 	    delete cur;
-	    return;
+	    върни;
       }
 
       cur->next = resolv_list;
@@ -591,16 +591,16 @@ bool vvp_net_resolv_list_s::resolve(bool mes)
 {
       vvp_net_t*tmp = vvp_net_lookup(label());
 
-      if (tmp) {
+      ако (tmp) {
 	      // Link the input port to the located output.
 	    tmp->link(port);
-	    return true;
+	    върни true;
       }
 
-      if (mes)
+      ако (mes)
 	    fprintf(stderr, "unresolved vvp_net reference: %s\n", label());
 
-      return false;
+      върни false;
 }
 
 inline static
@@ -629,15 +629,15 @@ bool functor_gen_resolv_list_s::resolve(bool mes)
 {
       vvp_net_t*tmp = vvp_net_lookup(label());
 
-      if (tmp) {
+      ако (tmp) {
 	    *ref = tmp;
-	    return true;
+	    върни true;
       }
 
-      if (mes)
+      ако (mes)
 	    fprintf(stderr, "unresolved functor reference: %s\n", label());
 
-      return false;
+      върни false;
 }
 
 void functor_ref_lookup(vvp_net_t**ref, char*lab)
@@ -665,28 +665,28 @@ struct vpi_handle_resolv_list_s: public resolv_list_s {
 bool vpi_handle_resolv_list_s::resolve(bool mes)
 {
       symbol_value_t val = sym_get_value(sym_vpi, label());
-      if (!val.ptr) {
+      ако (!val.ptr) {
 	    // check for thread access symbols
 	    unsigned base, wid;
 	    size_t n = 0;
 	    char ss[32];
-	    if (2 == sscanf(label(), "W<%u,%31[r]>%zn", &base, ss, &n)
+	    ако (2 == sscanf(label(), "W<%u,%31[r]>%zn", &base, ss, &n)
 		       && n == strlen(label())) {
 
 		  val.ptr = vpip_make_vthr_word(base, ss);
 		  sym_set_value(sym_vpi, label(), val);
 
-	    } else if (1 == sscanf(label(), "S<%u,str>%zn", &base, &n)
+	    } иначе ако (1 == sscanf(label(), "S<%u,str>%zn", &base, &n)
 		       && n == strlen(label())) {
 
 		  val.ptr = vpip_make_vthr_str_stack(base);
 		  sym_set_value(sym_vpi, label(), val);
 
-	    } else if (3 == sscanf(label(), "S<%u,vec4,%31[su]%u>%zn", &base, ss, &wid, &n)
+	    } иначе ако (3 == sscanf(label(), "S<%u,vec4,%31[su]%u>%zn", &base, ss, &wid, &n)
 		       && n == strlen(label())) {
 
 		  bool signed_flag = false;
-		  for (char*fp = ss ;  *fp ;  fp += 1) switch (*fp) {
+		  за (char*fp = ss ;  *fp ;  fp += 1) switch (*fp) {
 		      case 's':
 			signed_flag = true;
 			break;
@@ -702,50 +702,50 @@ bool vpi_handle_resolv_list_s::resolve(bool mes)
 
       }
 
-      if (!val.ptr) {
+      ако (!val.ptr) {
 	    // check for memory word  M<mem,base,wid>
       }
 
-      if (strcmp(label(), "null") == 0) {
+      ако (strcmp(label(), "null") == 0) {
 	    val.ptr = vpip_make_null_const();
 	    sym_set_value(sym_vpi, label(), val);
       }
 
-      if (val.ptr) {
+      ако (val.ptr) {
 	    *handle = static_cast<vpiHandle>(val.ptr);
-	    return true;
+	    върни true;
       }
 
-      if (mes)
+      ако (mes)
 	    fprintf(stderr, "unresolved vpi name lookup: %s\n", label());
 
-      return false;
+      върни false;
 }
 
 void compile_vpi_lookup(vpiHandle *handle, char*label)
 {
-      if (strcmp(label, "$time") == 0) {
+      ако (strcmp(label, "$time") == 0) {
 	    *handle = vpip_sim_time(vpip_peek_current_scope(), false);
 	    free(label);
-	    return;
+	    върни;
       }
 
-      if (strcmp(label, "$stime") == 0) {
+      ако (strcmp(label, "$stime") == 0) {
 	    *handle = vpip_sim_time(vpip_peek_current_scope(), true);
 	    free(label);
-	    return;
+	    върни;
       }
 
-      if (strcmp(label, "$realtime") == 0) {
+      ако (strcmp(label, "$realtime") == 0) {
 	    *handle = vpip_sim_realtime(vpip_peek_current_scope());
 	    free(label);
-	    return;
+	    върни;
       }
 
-      if (strcmp(label, "$simtime") == 0) {
+      ако (strcmp(label, "$simtime") == 0) {
 	    *handle = vpip_sim_time(0, false);
 	    free(label);
-	    return;
+	    върни;
       }
 
       struct vpi_handle_resolv_list_s*res
@@ -772,18 +772,18 @@ struct code_label_resolv_list_s: public resolv_list_s {
 bool code_label_resolv_list_s::resolve(bool mes)
 {
       symbol_value_t val = sym_get_value(sym_codespace, label());
-      if (val.ptr) {
-	    if (cptr2_flag)
+      ако (val.ptr) {
+	    ако (cptr2_flag)
 		  code->cptr2 = reinterpret_cast<vvp_code_t>(val.ptr);
-	    else
+	    иначе
 		  code->cptr = reinterpret_cast<vvp_code_t>(val.ptr);
-	    return true;
+	    върни true;
       }
 
-      if (mes)
+      ако (mes)
 	    fprintf(stderr, "unresolved code label: %s\n", label());
 
-      return false;
+      върни false;
 }
 
 void code_label_lookup(struct vvp_code_s *code, char *label, bool cptr2)
@@ -807,14 +807,14 @@ struct code_array_resolv_list_s: public resolv_list_s {
 bool code_array_resolv_list_s::resolve(bool mes)
 {
       code->array = array_find(label());
-      if (code->array != 0) {
-	    return true;
+      ако (code->array != 0) {
+	    върни true;
       }
 
-      if (mes)
+      ако (mes)
 	    fprintf(stderr, "Array unresolved: %s\n", label());
 
-      return false;
+      върни false;
 }
 
 static void compile_array_lookup(struct vvp_code_s*code, char*label)
@@ -831,8 +831,8 @@ static std::list<struct __vpiSysTaskCall*> scheduled_compiletf;
 
 void compile_compiletf(struct __vpiSysTaskCall*obj)
 {
-      if (obj->defn->info.compiletf == 0)
-	    return;
+      ако (obj->defn->info.compiletf == 0)
+	    върни;
 
       scheduled_compiletf.push_back(obj);
 }
@@ -844,11 +844,11 @@ void compile_compiletf(struct __vpiSysTaskCall*obj)
 
 void compile_cleanup(void)
 {
-      int lnerrs = -1;
-      int nerrs = 0;
-      int last;
+      цяло lnerrs = -1;
+      цяло nerrs = 0;
+      цяло last;
 
-      if (verbose_flag) {
+      ако (verbose_flag) {
 	    fprintf(stderr, " ... Linking\n");
 	    fflush(stderr);
       }
@@ -859,26 +859,26 @@ void compile_cleanup(void)
 	    last = nerrs == lnerrs;
 	    lnerrs = nerrs;
 	    nerrs = 0;
-	    while (res) {
+	    докато (res) {
 		  resolv_list_s *cur = res;
 		  res = res->next;
-		  if (cur->resolve(last))
+		  ако (cur->resolve(last))
 			delete cur;
-		  else {
+		  иначе {
 			nerrs++;
 			cur->next = resolv_list;
 			resolv_list = cur;
 		  }
 	    }
-	    if (nerrs && last)
+	    ако (nerrs && last)
 		  fprintf(stderr,
 			  "compile_cleanup: %d unresolved items\n",
 			  nerrs);
-      } while (nerrs && !last);
+      } докато (nerrs && !last);
 
       compile_errors += nerrs;
 
-      if (verbose_flag) {
+      ако (verbose_flag) {
 	    fprintf(stderr, " ... Removing symbol tables\n");
 	    fflush(stderr);
       }
@@ -902,7 +902,7 @@ void compile_cleanup(void)
       compile_island_cleanup();
       compile_array_cleanup();
 
-      if (verbose_flag) {
+      ако (verbose_flag) {
 	    fprintf(stderr, " ... Compiletf functions\n");
 	    fflush(stderr);
       }
@@ -910,7 +910,7 @@ void compile_cleanup(void)
       assert(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_COMPILETF;
 
-      while (! scheduled_compiletf.empty()) {
+      докато (! scheduled_compiletf.empty()) {
 	    struct __vpiSysTaskCall*obj = scheduled_compiletf.front();
 	    scheduled_compiletf.pop_front();
 	    vpip_cur_task = obj;
@@ -969,26 +969,26 @@ void compile_vpi_time_precision(long pre)
  */
 static bool crstring_header_test(const char*str)
 {
-      if ((str[0] != 'C') && (str[0] != 'c'))
-	    return false;
-      if ((str[1] != 'r') || (str[2] != '<'))
-	    return false;
+      ако ((str[0] != 'C') && (str[0] != 'c'))
+	    върни false;
+      ако ((str[1] != 'r') || (str[2] != '<'))
+	    върни false;
 
-      return true;
+      върни true;
 }
 
 bool crstring_test(const char*str)
 {
-      if (!crstring_header_test(str))
-	    return false;
+      ако (!crstring_header_test(str))
+	    върни false;
       const char*tp = strchr(str, '>');
-      if (tp == 0) return false;
-      if (tp[1] != 0) return false;
+      ако (tp == 0) върни false;
+      ако (tp[1] != 0) върни false;
 
-      if ((strspn(str+3, "0123456789abcdefmg")+3) != (size_t)(tp - str))
-	  return false;
+      ако ((strspn(str+3, "0123456789abcdefmg")+3) != (size_t)(tp - str))
+	  върни false;
 
-      return true;
+      върни true;
 }
 
 double crstring_to_double(const char*label)
@@ -1003,23 +1003,23 @@ double crstring_to_double(const char*label)
       cp = ep;
       assert(*cp == 'g');
       cp += 1;
-      int exp = strtoul(cp, 0, 16);
+      цяло exp = strtoul(cp, 0, 16);
 
       double tmp;
-      if (mant == 0 && exp == 0x3fff) {
+      ако (mant == 0 && exp == 0x3fff) {
 	    tmp = INFINITY;
-      } else if (mant == 0 && exp == 0x7fff) {
+      } иначе ако (mant == 0 && exp == 0x7fff) {
 	    tmp = -INFINITY;
-      } else if (exp == 0x3fff) {
+      } иначе ако (exp == 0x3fff) {
 	    tmp = nan("");
-      } else {
+      } иначе {
 	    double sign = (exp & 0x4000)? -1.0 : 1.0;
 	    exp &= 0x1fff;
 
 	    tmp = sign * ldexp((double)mant, exp - 0x1000);
       }
 
-      return tmp;
+      върни tmp;
 }
 
 /*
@@ -1041,7 +1041,7 @@ void input_connect(vvp_net_t*fdx, unsigned port, char*label)
       vvp_net_ptr_t ifdx = vvp_net_ptr_t(fdx, port);
 
 	/* Is this a vvp_vector4_t constant value? */
-      if (c4string_test(label)) {
+      ако (c4string_test(label)) {
 
 	    vvp_vector4_t tmp = c4string_to_vector4(label);
 
@@ -1056,40 +1056,40 @@ void input_connect(vvp_net_t*fdx, unsigned port, char*label)
 	      // schedule execution before time 0, to make sure it
 	      // occurs before any sensitive processes are started
 	      // or VPI callbacks are executed.
-	    if (label[0] == 'c')
+	    ако (label[0] == 'c')
 		  schedule_init_vector(ifdx, tmp);
-	    else
+	    иначе
 		  schedule_set_vector(ifdx, tmp);
 
 	    free(label);
-	    return;
+	    върни;
       }
 
 	/* Is this a vvp_vector8_t constant value? */
-      if (c8string_test(label)) {
+      ако (c8string_test(label)) {
 
 	    vvp_vector8_t tmp = c8string_to_vector8(label);
-	    if (label[0] == 'c')
+	    ако (label[0] == 'c')
 		  schedule_init_vector(ifdx, tmp);
-	    else
+	    иначе
 		  schedule_set_vector(ifdx, tmp);
 
 	    free(label);
-	    return;
+	    върни;
       }
 
 	/* Handle the Cr<> constant driver, which is a real-value
 	   driver. */
-      if (crstring_test(label)) {
+      ако (crstring_test(label)) {
 
 	    double tmp = crstring_to_double(label);
 
-	    if (label[0] == 'c')
+	    ако (label[0] == 'c')
 		  schedule_init_vector(ifdx, tmp);
-	    else
+	    иначе
 		  schedule_set_vector(ifdx, tmp);
 	    free(label);
-	    return;
+	    върни;
       }
 
 	/* Handle the general case that this is a label for a node in
@@ -1101,12 +1101,12 @@ void input_connect(vvp_net_t*fdx, unsigned port, char*label)
 
 void inputs_connect(vvp_net_t*fdx, unsigned argc, struct symb_s*argv)
 {
-      if (argc > 4) {
+      ако (argc > 4) {
 	    std::cerr << "XXXX argv[0] = " << argv[0].text << std::endl;
       }
       assert(argc <= 4);
 
-      for (unsigned idx = 0;  idx < argc;  idx += 1) {
+      за (unsigned idx = 0;  idx < argc;  idx += 1) {
 
 	    input_connect(fdx, idx, argv[idx].text);
       }
@@ -1118,10 +1118,10 @@ void wide_inputs_connect(vvp_wide_fun_core*core,
 	/* Create input functors to receive values from the
 	   network. These functors pass the data to the core. */
       unsigned input_functors = (argc+3) / 4;
-      for (unsigned idx = 0 ;  idx < input_functors ;  idx += 1) {
+      за (unsigned idx = 0 ;  idx < input_functors ;  idx += 1) {
 	    unsigned base = idx*4;
 	    unsigned trans = 4;
-	    if (base+trans > argc)
+	    ако (base+trans > argc)
 		  trans = argc - base;
 
 	    vvp_wide_fun_t*cur = new vvp_wide_fun_t(core, base);
@@ -1215,13 +1215,13 @@ void compile_arith_div(char*label, long wid, bool signed_flag,
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ако (argc != 2) {
 	    const char *suffix = "";
-	    if (signed_flag) suffix = ".s";
+	    ако (signed_flag) suffix = ".s";
 	    fprintf(stderr, "%s; .arith/div%s has wrong number of "
 	                    "symbols\n", label, suffix);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_ *arith = new vvp_arith_div(wid, signed_flag);
@@ -1230,10 +1230,10 @@ void compile_arith_div(char*label, long wid, bool signed_flag,
 
 void compile_arith_div_r(char*label, unsigned argc, struct symb_s*argv)
 {
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s; .arith/divr has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_real_ *arith = new vvp_arith_div_real;
@@ -1245,10 +1245,10 @@ void compile_arith_mod(char*label, long wid, bool signed_flag,
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .arith/mod has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_ *arith = new vvp_arith_mod(wid, signed_flag);
@@ -1258,10 +1258,10 @@ void compile_arith_mod(char*label, long wid, bool signed_flag,
 
 void compile_arith_mod_r(char*label, unsigned argc, struct symb_s*argv)
 {
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .arith/mod.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_real_ *arith = new vvp_arith_mod_real;
@@ -1273,10 +1273,10 @@ void compile_arith_mult(char*label, long wid,
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .arith/mult has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_ *arith = new vvp_arith_mult(wid);
@@ -1285,10 +1285,10 @@ void compile_arith_mult(char*label, long wid,
 
 void compile_arith_mult_r(char*label, unsigned argc, struct symb_s*argv)
 {
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .arith/mult.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_real_ *arith = new vvp_arith_mult_real;
@@ -1301,13 +1301,13 @@ void compile_arith_pow(char*label, long wid, bool signed_flag,
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ако (argc != 2) {
 	    const char *suffix = "";
-	    if (signed_flag) suffix = ".s";
+	    ако (signed_flag) suffix = ".s";
 	    fprintf(stderr, "%s .arith/pow%s has wrong number of "
 	                    "symbols\n", label, suffix);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_ *arith = new vvp_arith_pow(wid, signed_flag);
@@ -1316,10 +1316,10 @@ void compile_arith_pow(char*label, long wid, bool signed_flag,
 
 void compile_arith_pow_r(char*label, unsigned argc, struct symb_s*argv)
 {
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .arith/pow.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_real_ *arith = new vvp_arith_pow_real;
@@ -1330,10 +1330,10 @@ void compile_arith_sub(char*label, long wid, unsigned argc, struct symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .arith/sub has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_ *arith = new vvp_arith_sub(wid);
@@ -1342,10 +1342,10 @@ void compile_arith_sub(char*label, long wid, unsigned argc, struct symb_s*argv)
 
 void compile_arith_sub_r(char*label, unsigned argc, struct symb_s*argv)
 {
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s; .arith/sub.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_real_ *arith = new vvp_arith_sub_real;
@@ -1356,10 +1356,10 @@ void compile_arith_sum(char*label, long wid, unsigned argc, struct symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .arith/sum has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_ *arith = new vvp_arith_sum(wid);
@@ -1368,10 +1368,10 @@ void compile_arith_sum(char*label, long wid, unsigned argc, struct symb_s*argv)
 
 void compile_arith_sum_r(char*label, unsigned argc, struct symb_s*argv)
 {
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .arith/sum.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_real_ *arith = new vvp_arith_sum_real;
@@ -1383,10 +1383,10 @@ void compile_cmp_eeq(char*label, long wid,
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eeq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_ *arith = new vvp_cmp_eeq(wid);
@@ -1399,10 +1399,10 @@ void compile_cmp_nee(char*label, long wid,
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eeq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_ *arith = new vvp_cmp_nee(wid);
@@ -1414,10 +1414,10 @@ void compile_cmp_eq(char*label, long wid, unsigned argc, struct symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_ *arith = new vvp_cmp_eq(wid);
@@ -1428,10 +1428,10 @@ void compile_cmp_eqx(char*label, long wid, unsigned argc, struct symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eqx has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_ *arith = new vvp_cmp_eqx(wid);
@@ -1442,10 +1442,10 @@ void compile_cmp_eqz(char*label, long wid, unsigned argc, struct symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eqz has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_ *arith = new vvp_cmp_eqz(wid);
@@ -1454,10 +1454,10 @@ void compile_cmp_eqz(char*label, long wid, unsigned argc, struct symb_s*argv)
 
 void compile_cmp_eq_r(char*label, unsigned argc, struct symb_s*argv)
 {
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eq.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_real_ *arith = new vvp_cmp_eq_real;
@@ -1468,10 +1468,10 @@ void compile_cmp_ne(char*label, long wid, unsigned argc, struct symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ne has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_ *arith = new vvp_cmp_ne(wid);
@@ -1480,10 +1480,10 @@ void compile_cmp_ne(char*label, long wid, unsigned argc, struct symb_s*argv)
 
 void compile_cmp_ne_r(char*label, unsigned argc, struct symb_s*argv)
 {
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ne.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_real_ *arith = new vvp_cmp_ne_real;
@@ -1495,10 +1495,10 @@ void compile_cmp_ge(char*label, long wid, bool signed_flag,
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ge has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_ *arith = new vvp_cmp_ge(wid, signed_flag);
@@ -1508,10 +1508,10 @@ void compile_cmp_ge(char*label, long wid, bool signed_flag,
 
 void compile_cmp_ge_r(char*label, unsigned argc, struct symb_s*argv)
 {
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ge.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_real_ *arith = new vvp_cmp_ge_real;
@@ -1523,10 +1523,10 @@ void compile_cmp_gt(char*label, long wid, bool signed_flag,
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .cmp/gt has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_ *arith = new vvp_cmp_gt(wid, signed_flag);
@@ -1536,10 +1536,10 @@ void compile_cmp_gt(char*label, long wid, bool signed_flag,
 
 void compile_cmp_gt_r(char*label, unsigned argc, struct symb_s*argv)
 {
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .cmp/gt.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_real_ *arith = new vvp_cmp_gt_real;
@@ -1551,10 +1551,10 @@ void compile_cmp_weq(char*label, long wid,
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .cmp/weq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_ *arith = new vvp_cmp_weq(wid);
@@ -1567,10 +1567,10 @@ void compile_cmp_wne(char*label, long wid,
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ако (argc != 2) {
 	    fprintf(stderr, "%s .cmp/wne has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       vvp_arith_ *arith = new vvp_cmp_wne(wid);
@@ -1598,7 +1598,7 @@ void compile_delay(char*label, unsigned width,
                    unsigned argc, struct symb_s*argv, bool ignore_decay)
 {
       vvp_delay_t stub (0, 0, 0);
-      if (ignore_decay) stub.set_ignore_decay();
+      ако (ignore_decay) stub.set_ignore_decay();
       vvp_net_t*net = new vvp_net_t;
       vvp_fun_delay*obj = new vvp_fun_delay(net, width, stub);
       net->fun = obj;
@@ -1645,7 +1645,7 @@ struct __vpiModPath* compile_modpath(char*label, unsigned width,
       free(label);
 
       modpath->modpath = obj;
-      return modpath;
+      върни modpath;
 }
 
 static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
@@ -1658,7 +1658,7 @@ static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
 
       vvp_time64_t use_delay[12];
       assert(vals.cnt == 12);
-      for (unsigned idx = 0 ; idx < vals.cnt ;  idx += 1) {
+      за (unsigned idx = 0 ; idx < vals.cnt ;  idx += 1) {
 	    use_delay[idx] = vals.nvec[idx];
       }
 
@@ -1666,11 +1666,11 @@ static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
 
       vvp_fun_modpath_src*obj = 0;
 
-      int vpi_edge = vpiNoEdge;
-      if (edge_c == 0) {
+      цяло vpi_edge = vpiNoEdge;
+      ако (edge_c == 0) {
 	    obj = new vvp_fun_modpath_src(use_delay);
 
-      } else {
+      } иначе {
 	    bool posedge, negedge;
 	    switch (edge_c) {
 		case '+':
@@ -1683,7 +1683,7 @@ static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
 		  posedge = false;
 		  negedge = true;
 		  break;
-#if 0
+#ако 0
 		case '*':
 		  posedge = true;
 		  negedge = true;
@@ -1709,7 +1709,7 @@ static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
       input_connect(net, 0, src.text);
       dst->add_modpath_src(obj, ifnone);
 
-      return srcobj;
+      върни srcobj;
 }
 
 void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
@@ -1727,7 +1727,7 @@ void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
 void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
 			 const struct symb_s&src,
 			 struct numbv_s&vals,
-			 int condit_src,
+			 цяло condit_src,
 			 const struct symb_s&path_term_in,
 			 bool ifnone)
 {
@@ -1765,37 +1765,37 @@ void compile_resolver(char*label, char*type, unsigned argc, struct symb_s*argv)
 
       resolv_core*core = 0;
 
-      if (strcmp(type,"tri") == 0) {
+      ако (strcmp(type,"tri") == 0) {
 	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_Z, 0,0));
 
-      } else if (strcmp(type,"tri0") == 0) {
+      } иначе ако (strcmp(type,"tri0") == 0) {
 	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_0, 5,5));
 
-      } else if (strcmp(type,"tri1") == 0) {
+      } иначе ако (strcmp(type,"tri1") == 0) {
 	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_1, 5,5));
 
-      } else if (strcmp(type,"triand") == 0) {
+      } иначе ако (strcmp(type,"triand") == 0) {
 	    core = new resolv_triand(argc, net);
 
-      } else if (strcmp(type,"trior") == 0) {
+      } иначе ако (strcmp(type,"trior") == 0) {
 	    core = new resolv_trior(argc, net);
 
-      } else {
+      } иначе {
 	    fprintf(stderr, "invalid resolver type: %s\n", type);
 	    compile_errors += 1;
             delete net;
       }
 
-      if (core) {
+      ако (core) {
 	    net->fun = core;
 	    define_functor_symbol(label, net);
 
-            for (unsigned base = 0 ;  base < argc ;  base += 4) {
+            за (unsigned base = 0 ;  base < argc ;  base += 4) {
 	          unsigned nports = argc - base;
-                  if (nports > 4)
+                  ако (nports > 4)
                         nports = 4;
 
-                  if (base > 0) {
+                  ако (base > 0) {
                         net = new vvp_net_t;
                         net->fun = new resolv_extend(core, base);
                   }
@@ -1807,21 +1807,21 @@ void compile_resolver(char*label, char*type, unsigned argc, struct symb_s*argv)
       free(argv);
 }
 
-void compile_udp_def(int sequ, char *label, char *name,
+void compile_udp_def(цяло sequ, char *label, char *name,
 		     unsigned nin, unsigned init, char **table)
 {
-      if (sequ) {
+      ако (sequ) {
 	    vvp_bit4_t init4;
-	    if (init == 0)
+	    ако (init == 0)
 		  init4 = BIT4_0;
-	    else if (init == 1)
+	    иначе ако (init == 1)
 		  init4 = BIT4_1;
-	    else
+	    иначе
 		  init4 = BIT4_X;
 
 	    vvp_udp_seq_s *u = new vvp_udp_seq_s(label, name, nin, init4);
 	    u->compile_table(table);
-      } else {
+      } иначе {
 	    vvp_udp_comb_s *u = new vvp_udp_comb_s(label, name, nin);
 	    u->compile_table(table);
       }
@@ -1830,18 +1830,18 @@ void compile_udp_def(int sequ, char *label, char *name,
 
 char **compile_udp_table(char **table, char *row)
 {
-  if (table)
+  ако (table)
     assert(strlen(*table)==strlen(row));
 
   char **tt;
-  for (tt = table; tt && *tt; tt++) { }
-  int n = (tt-table) + 2;
+  за (tt = table; tt && *tt; tt++) { }
+  цяло n = (tt-table) + 2;
 
   table = static_cast<char**>(realloc(table, n*sizeof(char*)));
   table[n-2] = row;
   table[n-1] = 0x0;
 
-  return table;
+  върни table;
 }
 
 
@@ -1856,7 +1856,7 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
 	/* First, I can give the label a value that is the current
 	   codespace pointer. Don't need the text of the label after
 	   this is done. */
-      if (label)
+      ако (label)
 	    compile_codelabel(label);
 
 	/* Lookup the opcode in the opcode table. */
@@ -1864,10 +1864,10 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
                                             (bsearch(mnem, opcode_table, opcode_count,
                                                      sizeof(struct opcode_table_s),
                                                      &opcode_compare));
-      if (op == 0) {
+      ако (op == 0) {
 	    yyerror("Invalid opcode");
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
       assert(op);
@@ -1877,23 +1877,23 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
       vvp_code_t code = codespace_allocate();
       code->opcode = op->opcode;
 
-      if (op->argc != (opa? opa->argc : 0)) {
+      ако (op->argc != (opa? opa->argc : 0)) {
 	    yyerror("operand count");
 	    compile_errors += 1;
-	    return;
+	    върни;
       }
 
 	/* Pull the operands that the instruction expects from the
 	   list that the parser supplied. */
 
-      for (unsigned idx = 0 ;  idx < op->argc ;  idx += 1) {
+      за (unsigned idx = 0 ;  idx < op->argc ;  idx += 1) {
 
 	    switch (op->argt[idx]) {
 		case OA_NONE:
 		  break;
 
 		case OA_ARR_PTR:
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  ако (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
 			break;
 		  }
@@ -1902,7 +1902,7 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
 		  break;
 
 		case OA_BIT1:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		  ако (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
 			break;
 		  }
@@ -1910,7 +1910,7 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
 		  break;
 
 		case OA_BIT2:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		  ако (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
 			break;
 		  }
@@ -1919,7 +1919,7 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
 
 		case OA_CODE_PTR:
 		case OA_CODE_PTR2:
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  ако (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
 			break;
 		  }
@@ -1933,7 +1933,7 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  ако (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
 			break;
 		  }
@@ -1945,7 +1945,7 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  ако (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
 			break;
 		  }
@@ -1954,7 +1954,7 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
 		  break;
 
 		case OA_NUMBER:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		  ако (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
 			break;
 		  }
@@ -1966,7 +1966,7 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  ако (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
 			break;
 		  }
@@ -1975,7 +1975,7 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
 		  break;
 
 		case OA_STRING:
-		  if (opa->argv[idx].ltype != L_STRING) {
+		  ако (opa->argv[idx].ltype != L_STRING) {
 			yyerror("operand format");
 			break;
 		  }
@@ -2004,7 +2004,7 @@ void compile_codelabel(char*label)
 void compile_file_line(char*label, long file_idx, long lineno,
                        char*description)
 {
-      if (label) compile_codelabel(label);
+      ако (label) compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
       vvp_code_t code = codespace_allocate();
@@ -2024,7 +2024,7 @@ void compile_vpi_call(char*label, char*name,
                       unsigned argc, vpiHandle*argv,
 		      unsigned vec4_stack, unsigned real_stack, unsigned string_stack)
 {
-      if (label)
+      ако (label)
 	    compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
@@ -2037,7 +2037,7 @@ void compile_vpi_call(char*label, char*name,
 					 0, func_as_task_err, func_as_task_warn,
                                          argc, argv, vec4_stack, real_stack, string_stack,
 					 file_idx, lineno);
-      if (code->handle == 0)
+      ако (code->handle == 0)
 	    compile_errors += 1;
 
 	/* Done with the lexor-allocated name string. */
@@ -2045,14 +2045,14 @@ void compile_vpi_call(char*label, char*name,
 }
 
 void compile_vpi_func_call(char*label, char*name,
-			   int val_type, unsigned val_wid,
+			   цяло val_type, unsigned val_wid,
 			   long file_idx, long lineno,
 			   unsigned argc, vpiHandle*argv,
 			   unsigned vec4_stack,
 			   unsigned real_stack,
 			   unsigned string_stack)
 {
-      if (label)
+      ако (label)
 	    compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
@@ -2065,7 +2065,7 @@ void compile_vpi_func_call(char*label, char*name,
 					 0, true, false,
                                          argc, argv, vec4_stack, real_stack, string_stack,
 					 file_idx, lineno);
-      if (code->handle == 0)
+      ако (code->handle == 0)
 	    compile_errors += 1;
 
 	/* Done with the lexor-allocated name string. */
@@ -2083,21 +2083,21 @@ void compile_thread(char*start_sym, char*flag)
 
       symbol_value_t tmp = sym_get_value(sym_codespace, start_sym);
       vvp_code_t pc = reinterpret_cast<vvp_code_t>(tmp.ptr);
-      if (pc == 0) {
+      ако (pc == 0) {
 	    yyerror("unresolved address");
-	    return;
+	    върни;
       }
 
-      if (flag && (strcmp(flag,"$push") == 0))
+      ако (flag && (strcmp(flag,"$push") == 0))
 	    push_flag = true;
 
       vthread_t thr = vthread_new(pc, vpip_peek_current_scope());
 
-      if (flag && (strcmp(flag,"$init") == 0))
+      ако (flag && (strcmp(flag,"$init") == 0))
 	    schedule_init_vthread(thr);
-      else if (flag && (strcmp(flag,"$final") == 0))
+      иначе ако (flag && (strcmp(flag,"$final") == 0))
 	    schedule_final_vthread(thr);
-      else
+      иначе
 	    schedule_vthread(thr, 0, push_flag);
 
       free(start_sym);
@@ -2145,9 +2145,9 @@ void compile_param_real(char*label, const char*name, char*value,
 
 void compile_island(char*label, char*type)
 {
-      if (strcmp(type,"tran") == 0)
+      ако (strcmp(type,"tran") == 0)
 	    compile_island_tran(label);
-      else
+      иначе
 	    assert(0);
 
       free(type);

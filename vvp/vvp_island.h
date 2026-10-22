@@ -168,9 +168,9 @@ inline vvp_vector8_t island_get_value(vvp_net_t*net)
       const vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
       const vvp_wire_vec8*fil = dynamic_cast<vvp_wire_vec8*>(net->fil);
 
-      if (fil == 0) {
-	    return fun->invalue;
-      } else {
+      ако (fil == 0) {
+	    върни fun->invalue;
+      } иначе {
 	      // This is painful, but necessary. If the island is
 	      // connected to a forced net, then run the input through
 	      // the force filter first. The island must used the
@@ -179,9 +179,9 @@ inline vvp_vector8_t island_get_value(vvp_net_t*net)
 	    switch (fil->filter_input_vec8(fun->invalue, rep)) {
 		default:
 		case vvp_net_fil_t::PROP:
-		  return fun->invalue;
+		  върни fun->invalue;
 		case vvp_net_fil_t::REPL:
-		  return rep;
+		  върни rep;
 	    }
       }
 }
@@ -189,7 +189,7 @@ inline vvp_vector8_t island_get_value(vvp_net_t*net)
 inline vvp_vector8_t island_get_sent_value(vvp_net_t*net)
 {
       const vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
-      return fun->outvalue;
+      върни fun->outvalue;
 }
 
 extern void island_send_value(vvp_net_t*net, const vvp_vector8_t&val);
@@ -220,7 +220,7 @@ static inline vvp_branch_ptr_t next(vvp_branch_ptr_t cur)
 {
       const vvp_island_branch*ptr = cur.ptr();
       unsigned ab = cur.port();
-      return ptr->link[ab];
+      върни ptr->link[ab];
 }
 
 /*
