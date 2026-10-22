@@ -19,7 +19,7 @@ extern "C" {
  * This function may be called at any time.
  */
 
-extern void vvp_set_stop_is_finish(bool flag, int exit_code);
+extern void vvp_set_stop_is_finish(bool flag, ціле exit_code);
 
 /* vvp_set_quiet_flag(true) is equivalent to vvp's "-q" option.
  *
@@ -52,14 +52,14 @@ extern void vvp_no_signals(void);
  * the library is first unloaded and reloaded.
  */
 
-extern void vvp_init(const char *logfile_name, int argc, char*argv[]);
+extern void vvp_init(const char *logfile_name, ціле argc, char*argv[]);
 
 /* vvp_run() starts the simulation and returns the exit status
  * when it is complete. The argument is the path to a VVP file containing
  * compiled Verilog code.
  */
 
-extern int vvp_run(const char *design_path);
+extern ціле vvp_run(const char *design_path);
 
 /* vpip_load_module(module_name) may be called after vvp_init() and before
  * vvp_run() to load and initialise a VPI module. It is equivalent to

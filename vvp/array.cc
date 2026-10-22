@@ -52,20 +52,20 @@ static void array_attach_port(vvp_array_t, vvp_fun_arrayport*);
 
 vvp_array_t array_find(const char*label)
 {
-      if (array_table == 0)
-	    return 0;
+      якщо (array_table == 0)
+	    повернути 0;
 
       vvp_array_t v = array_table->sym_get_value(label);
-      return v;
+      повернути v;
 }
 
 struct __vpiArrayVthrA : public __vpiHandle {
-      int get_type_code(void) const override { return vpiMemoryWord; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+      ціле get_type_code(void) const override { повернути vpiMemoryWord; }
+      ціле vpi_get(ціле code) override;
+      char* vpi_get_str(ціле code) override;
       void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
+      vpiHandle vpi_put_value(p_vpi_value val, ціле flags) override;
+      vpiHandle vpi_handle(ціле code) override;
 
       struct __vpiArray*array;
 	// If this is set, then use it to get the index value.
@@ -75,33 +75,33 @@ struct __vpiArrayVthrA : public __vpiHandle {
 
       unsigned get_address() const
       {
-	    if (address_handle) {
+	    якщо (address_handle) {
 		  s_vpi_value vp;
 		    /* Check to see if the value is defined. */
 		  vp.format = vpiVectorVal;
 		  address_handle->vpi_get_value(&vp);
-		  int words = (address_handle->vpi_get(vpiSize)-1)/32 + 1;
-		  for(int idx = 0; idx < words; idx += 1) {
+		  ціле words = (address_handle->vpi_get(vpiSize)-1)/32 + 1;
+		  для(ціле idx = 0; idx < words; idx += 1) {
 			  /* Return UINT_MAX to indicate an X base. */
-			if (vp.value.vector[idx].bval != 0) return UINT_MAX;
+			якщо (vp.value.vector[idx].bval != 0) повернути UINT_MAX;
 		  }
 		    /* The value is defined so get and return it. */
 		  vp.format = vpiIntVal;
 		  address_handle->vpi_get_value(&vp);
-		  return vp.value.integer;
+		  повернути vp.value.integer;
 	    }
 
-	    return address;
+	    повернути address;
       }
 };
 
 
 struct __vpiArrayVthrAPV : public __vpiHandle {
-      int get_type_code(void) const override { return vpiPartSelect; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+      ціле get_type_code(void) const override { повернути vpiPartSelect; }
+      ціле vpi_get(ціле code) override;
+      char* vpi_get_str(ціле code) override;
       void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_handle(int code) override;
+      vpiHandle vpi_handle(ціле code) override;
 
       struct __vpiArray*array;
       unsigned word_sel;
@@ -114,77 +114,77 @@ bool is_net_array(vpiHandle obj)
       struct __vpiArray*rfp = dynamic_cast<__vpiArray*> (obj);
       assert(rfp);
 
-      if (rfp->nets != 0) return true;
-      return false;
+      якщо (rfp->nets != 0) повернути true;
+      повернути false;
 }
 
 // This function return true if the underlying array words are real.
 static bool vpi_array_is_real(const vvp_array_t arr)
 {
 	// Check to see if this is a variable/register array.
-      if (arr->vals4 != 0)  // A bit based variable/register array.
-	    return false;
+      якщо (arr->vals4 != 0)  // A bit based variable/register array.
+	    повернути false;
 
-      if (dynamic_cast<vvp_darray_real*> (arr->vals))
-	    return true;
+      якщо (dynamic_cast<vvp_darray_real*> (arr->vals))
+	    повернути true;
 
-      if (arr->vals != 0)
-	    return false;
+      якщо (arr->vals != 0)
+	    повернути false;
 
 	// This must be a net array so look at element 0 to find the type.
       assert(arr->nets != 0);
       assert(arr->get_size() > 0);
       const struct __vpiRealVar*rsig = dynamic_cast<__vpiRealVar*>(arr->nets[0]);
-      if (rsig) {
-	    return true;
+      якщо (rsig) {
+	    повернути true;
       }
 
-      return false;
+      повернути false;
 }
 
 static bool vpi_array_is_string(const vvp_array_t arr)
 {
 	// Check to see if this is a variable/register array.
-      if (arr->vals4 != 0)  // A bit based variable/register array.
-	    return false;
+      якщо (arr->vals4 != 0)  // A bit based variable/register array.
+	    повернути false;
 
-      if (dynamic_cast<vvp_darray_string*> (arr->vals))
-	    return true;
+      якщо (dynamic_cast<vvp_darray_string*> (arr->vals))
+	    повернути true;
 
-      return false;
+      повернути false;
 }
 
-int __vpiArray::get_word_size() const
+ціле __vpiArray::get_word_size() const
 {
       unsigned width;
 
       assert(get_size() > 0);
 	/* For a net array we need to get the width from the first element. */
-      if (nets) {
+      якщо (nets) {
 	    assert(vals4 == 0 && vals == 0);
 	    const struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(nets[0]);
 	    assert(vsig);
 	    width = vpip_size(vsig);
 	/* For a variable array we can get the width from vals_width. */
-      } else {
+      } інакше {
 	    assert(vals4 || vals);
 	    width = vals_width;
       }
 
-      return width;
+      повернути width;
 }
 
-char*__vpiArray::get_word_str(struct __vpiArrayWord*word, int code)
+char*__vpiArray::get_word_str(struct __vpiArrayWord*word, ціле code)
 {
       unsigned index = word->get_index();
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      якщо (code == vpiFile) {  // Not implemented for now!
+	    повернути simple_set_rbuf_str(file_names[0]);
       }
 
       char sidx [64];
-      snprintf(sidx, 63, "%d", (int)index + first_addr.get_value());
-      return generic_get_str(code, get_scope(), name, sidx);
+      snprintf(sidx, 63, "%d", (ціле)index + first_addr.get_value());
+      повернути generic_get_str(code, get_scope(), name, sidx);
 }
 
 void __vpiArray::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
@@ -192,19 +192,19 @@ void __vpiArray::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
       unsigned index = word->get_index();
 
     // Determine the appropriate format (The Verilog PLI Handbook 5.2.10)
-      if(vp->format == vpiObjTypeVal) {
-          if(vpi_array_is_real(this))
+      якщо(vp->format == vpiObjTypeVal) {
+          якщо(vpi_array_is_real(this))
               vp->format = vpiRealVal;
-          else if(vpi_array_is_string(this))
+          інакше якщо(vpi_array_is_string(this))
               vp->format = vpiStringVal;
-          else
+          інакше
               vp->format = vpiIntVal;
       }
 
-      if(vals4) {
+      якщо(vals4) {
           vpip_vec4_get_value(vals4->get_word(index),
                               vals4->width(), signed_flag, vp);
-      } else if(vals) {
+      } інакше якщо(vals) {
           switch(vp->format) {
             case vpiBinStrVal:
             case vpiOctStrVal:
@@ -243,94 +243,94 @@ void __vpiArray::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
       }
 }
 
-void __vpiArray::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int)
+void __vpiArray::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, ціле)
 {
       unsigned index = word->get_index();
       vvp_vector4_t val = vec4_from_vpi_value(vp, vals_width);
       set_word(index, 0, val);
 }
 
-vpiHandle __vpiArray::get_iter_index(struct __vpiArrayIterator*, int idx)
+vpiHandle __vpiArray::get_iter_index(struct __vpiArrayIterator*, ціле idx)
 {
-      if (nets) return nets[idx];
+      якщо (nets) повернути nets[idx];
 
       assert(vals4 || vals);
 
-      if (vals_words == 0) make_vals_words();
+      якщо (vals_words == 0) make_vals_words();
 
-      return &(vals_words[idx].as_word);
+      повернути &(vals_words[idx].as_word);
 }
 
-int __vpiArray::vpi_get(int code)
+ціле __vpiArray::vpi_get(ціле code)
 {
       switch (code) {
 	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+	    повернути 0; // Not implemented for now!
 
 	  case vpiSize:
-	    return get_size();
+	    повернути get_size();
 
 	  case vpiAutomatic:
-	    return scope->is_automatic()? 1 : 0;
+	    повернути scope->is_automatic()? 1 : 0;
 
 	  default:
-	    return 0;
+	    повернути 0;
       }
 }
 
-char* __vpiArray::vpi_get_str(int code)
+char* __vpiArray::vpi_get_str(ціле code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      якщо (code == vpiFile) {  // Not implemented for now!
+            повернути simple_set_rbuf_str(file_names[0]);
       }
 
-      return generic_get_str(code, scope, name, NULL);
+      повернути generic_get_str(code, scope, name, NULL);
 }
 
-vpiHandle __vpiArray::vpi_handle(int code)
+vpiHandle __vpiArray::vpi_handle(ціле code)
 {
       switch (code) {
           case vpiLeftRange:
-            if (swap_addr) return &last_addr;
-            else return &first_addr;
+            якщо (swap_addr) повернути &last_addr;
+            інакше повернути &first_addr;
 
           case vpiRightRange:
-            if (swap_addr) return &first_addr;
-            else return &last_addr;
+            якщо (swap_addr) повернути &first_addr;
+            інакше повернути &last_addr;
 
 	  case vpiScope:
-	    return scope;
+	    повернути scope;
 
 	  case vpiModule:
-	    return vpip_module(scope);
+	    повернути vpip_module(scope);
       }
 
-      return 0;
+      повернути 0;
 }
 
 /*
 * VPI code passes indices that are not yet converted to canonical
 * form, so this index function does it here.
 */
-vpiHandle __vpiArray::vpi_index(int index)
+vpiHandle __vpiArray::vpi_index(ціле index)
 {
       index -= first_addr.get_value();
-      if (index >= (long) get_size())
-	    return 0;
-      if (index < 0)
-	    return 0;
+      якщо (index >= (long) get_size())
+	    повернути 0;
+      якщо (index < 0)
+	    повернути 0;
 
-      if (nets != 0) {
-	    return nets[index];
+      якщо (nets != 0) {
+	    повернути nets[index];
       }
 
-      if (vals_words == 0)
+      якщо (vals_words == 0)
 	    make_vals_words();
 
-      return &(vals_words[index].as_word);
+      повернути &(vals_words[index].as_word);
 }
 
-int __vpiArrayWord::as_word_t::vpi_get(int code)
+ціле __vpiArrayWord::as_word_t::vpi_get(ціле code)
 {
       struct __vpiArrayWord*obj = array_var_word_from_handle(this);
       assert(obj);
@@ -339,28 +339,28 @@ int __vpiArrayWord::as_word_t::vpi_get(int code)
 
       switch (code) {
 	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+	    повернути 0; // Not implemented for now!
 
 	  case vpiSize:
-	    return my_parent->get_word_size();
+	    повернути my_parent->get_word_size();
 
 	  case vpiLeftRange:
             val.format = vpiIntVal;
 	    my_parent->get_left_range()->vpi_get_value(&val);
             assert(val.format == vpiIntVal);
-            return val.value.integer;
+            повернути val.value.integer;
 
 	  case vpiRightRange:
             val.format = vpiIntVal;
 	    my_parent->get_right_range()->vpi_get_value(&val);
             assert(val.format == vpiIntVal);
-            return val.value.integer;
+            повернути val.value.integer;
 
 	  case vpiIndex:
 	    {
-		  int base_offset = 0;
+		  ціле base_offset = 0;
 		  struct __vpiArray*base = dynamic_cast<__vpiArray*> (my_parent);
-		  if (base) {
+		  якщо (base) {
 			val.format = vpiIntVal;
 			base->first_addr.vpi_get_value(&val);
 			base_offset += val.value.integer;
@@ -368,68 +368,68 @@ int __vpiArrayWord::as_word_t::vpi_get(int code)
 		  val.format = vpiIntVal;
 		  obj->as_index.vpi_get_value(&val);
 		  assert(val.format == vpiIntVal);
-		  return val.value.integer + base_offset;
+		  повернути val.value.integer + base_offset;
 	    }
 
 	  case vpiAutomatic:
-	    return my_parent->get_scope()->is_automatic()? 1 : 0;
+	    повернути my_parent->get_scope()->is_automatic()? 1 : 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+#якщо defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
 	  case _vpiFromThr:
-	    return _vpiNoThr;
+	    повернути _vpiNoThr;
 #endif
 
 	  default:
-	    return 0;
+	    повернути 0;
       }
 }
 
 
-int __vpiArrayVthrA::vpi_get(int code)
+ціле __vpiArrayVthrA::vpi_get(ціле code)
 {
       switch (code) {
 	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+	    повернути 0; // Not implemented for now!
 
 	  case vpiSize:
-	    return array->get_word_size();
+	    повернути array->get_word_size();
 
 	  case vpiLeftRange:
-	    return array->msb.get_value();
+	    повернути array->msb.get_value();
 
 	  case vpiRightRange:
-	    return array->lsb.get_value();
+	    повернути array->lsb.get_value();
 
 	  case vpiIndex:
-	    return (int)get_address() + array->first_addr.get_value();
+	    повернути (ціле)get_address() + array->first_addr.get_value();
 
 	  case vpiAutomatic:
-	    return array->get_scope()->is_automatic() ? 1 : 0;
+	    повернути array->get_scope()->is_automatic() ? 1 : 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+#якщо defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
 	  case _vpiFromThr:
-	    return _vpi_at_A;
+	    повернути _vpi_at_A;
 #endif
 
 	  // If address_handle is not zero we definitely have a
 	  // variable.
 	  case vpiConstantSelect:
-	    return address_handle == 0;
+	    повернути address_handle == 0;
 
 	  default:
-	    return 0;
+	    повернути 0;
       }
 }
 
-char* __vpiArrayVthrA::vpi_get_str(int code)
+char* __vpiArrayVthrA::vpi_get_str(ціле code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      якщо (code == vpiFile) {  // Not implemented for now!
+            повернути simple_set_rbuf_str(file_names[0]);
       }
 
       char sidx [64];
-      snprintf(sidx, 63, "%d", (int)get_address() + array->first_addr.get_value());
-      return generic_get_str(code, array->get_scope(), array->name, sidx);
+      snprintf(sidx, 63, "%d", (ціле)get_address() + array->first_addr.get_value());
+      повернути generic_get_str(code, array->get_scope(), array->name, sidx);
 }
 
 void __vpiArrayVthrA::vpi_get_value(p_vpi_value vp)
@@ -437,105 +437,105 @@ void __vpiArrayVthrA::vpi_get_value(p_vpi_value vp)
       assert(array);
 
       unsigned index = get_address();
-      if (vpi_array_is_real(array)) {
+      якщо (vpi_array_is_real(array)) {
 	    double tmp = array->get_word_r(index);
 	    vpip_real_get_value(tmp, vp);
-      } else if (vpi_array_is_string(array)) {
+      } інакше якщо (vpi_array_is_string(array)) {
 	    string tmp = array->get_word_str(index);
 	    vpip_string_get_value(tmp, vp);
-      } else {
+      } інакше {
 	    vvp_vector4_t tmp = array->get_word(index);
 	    unsigned width = array->get_word_size();
 	    vpip_vec4_get_value(tmp, width, array->signed_flag, vp);
       }
 }
 
-vpiHandle __vpiArrayVthrA::vpi_put_value(p_vpi_value vp, int)
+vpiHandle __vpiArrayVthrA::vpi_put_value(p_vpi_value vp, ціле)
 {
       unsigned index = get_address();
 
       assert(array);
       assert(index < array->get_size());
 
-      if (vpi_array_is_real(array)) {
+      якщо (vpi_array_is_real(array)) {
 	    double val = real_from_vpi_value(vp);
 	    array->set_word(index, val);
-      } else {
+      } інакше {
 	    unsigned width = array->get_word_size();
 	    vvp_vector4_t val = vec4_from_vpi_value(vp, width);
 	    array->set_word(index, 0, val);
       }
 
-      return this;
+      повернути this;
 }
 
-vpiHandle __vpiArrayVthrA::vpi_handle(int code)
+vpiHandle __vpiArrayVthrA::vpi_handle(ціле code)
 {
       switch (code) {
 	  case vpiIndex:
 	    break;  // Not implemented!
 
 	  case vpiLeftRange:
-	    return &array->msb;
+	    повернути &array->msb;
 
 	  case vpiRightRange:
-	    return &array->lsb;
+	    повернути &array->lsb;
 
 	  case vpiParent:
 	  case vpiArray:
-	    return array;
+	    повернути array;
 
 	  case vpiScope:
-	    return array->get_scope();
+	    повернути array->get_scope();
 
 	  case vpiModule:
-	    return vpip_module(array->get_scope());
+	    повернути vpip_module(array->get_scope());
       }
 
-      return 0;
+      повернути 0;
 }
 
 
-int __vpiArrayVthrAPV::vpi_get(int code)
+ціле __vpiArrayVthrAPV::vpi_get(ціле code)
 {
       switch (code) {
 	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+	    повернути 0; // Not implemented for now!
 
 	  case vpiSize:
-	    return part_wid;
+	    повернути part_wid;
 
 	  case vpiLeftRange:
-	    return part_bit + part_wid - 1;
+	    повернути part_bit + part_wid - 1;
 
 	  case vpiRightRange:
-	    return part_bit;
+	    повернути part_bit;
 
 	  case vpiAutomatic:
-	    return array->get_scope()->is_automatic() ? 1 : 0;
+	    повернути array->get_scope()->is_automatic() ? 1 : 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+#якщо defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
 	  case _vpiFromThr:
-	    return _vpi_at_APV;
+	    повернути _vpi_at_APV;
 #endif
 
 	  case vpiConstantSelect:
-	    return 1;
+	    повернути 1;
 
 	  default:
-	    return 0;
+	    повернути 0;
       }
 }
 
-char* __vpiArrayVthrAPV::vpi_get_str(int code)
+char* __vpiArrayVthrAPV::vpi_get_str(ціле code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      якщо (code == vpiFile) {  // Not implemented for now!
+            повернути simple_set_rbuf_str(file_names[0]);
       }
 
       char sidx [64];
       snprintf(sidx, 63, "%u", word_sel + array->first_addr.get_value());
-      return generic_get_str(code, array->get_scope(), array->name, sidx);
+      повернути generic_get_str(code, array->get_scope(), array->name, sidx);
 }
 
 void __vpiArrayVthrAPV::vpi_get_value(p_vpi_value vp)
@@ -543,48 +543,48 @@ void __vpiArrayVthrAPV::vpi_get_value(p_vpi_value vp)
       assert(array);
 
       unsigned index = word_sel;
-      if (vpi_array_is_real(array)) {
+      якщо (vpi_array_is_real(array)) {
 	    double tmp = array->get_word_r(index);
 	    vpip_real_get_value(tmp, vp);
-      } else {
+      } інакше {
 	    vvp_vector4_t tmp = array->get_word(index);
 	    tmp = tmp.subvalue(part_bit, part_wid);
 	    vpip_vec4_get_value(tmp, part_wid, false, vp);
       }
 }
 
-vpiHandle __vpiArrayVthrAPV::vpi_handle(int code)
+vpiHandle __vpiArrayVthrAPV::vpi_handle(ціле code)
 {
       switch (code) {
             // Not currently implemented. We would need to create a VPI
             // object for the memory word.
 	  case vpiParent:
-	    return 0;
+	    повернути 0;
 
             // Not part of the Verilog standard. We use this internally.
 	  case vpiArray:
-	    return array;
+	    повернути array;
 
 	  case vpiScope:
-	    return array->get_scope();
+	    повернути array->get_scope();
 
 	  case vpiModule:
-	    return vpip_module(array->get_scope());
+	    повернути vpip_module(array->get_scope());
       }
 
-      return 0;
+      повернути 0;
 }
 
 void __vpiArray::set_word(unsigned address, unsigned part_off, const vvp_vector4_t&val)
 {
-      if (address >= get_size())
-	    return;
+      якщо (address >= get_size())
+	    повернути;
 
-      if (vals4) {
+      якщо (vals4) {
 	    assert(nets == 0);
-	    if (part_off != 0 || val.size() != vals_width) {
+	    якщо (part_off != 0 || val.size() != vals_width) {
 		  vvp_vector4_t tmp = vals4->get_word(address);
-		  if ((part_off + val.size()) > tmp.size()) {
+		  якщо ((part_off + val.size()) > tmp.size()) {
 			cerr << "part_off=" << part_off
 			     << " val.size()=" << val.size()
 			     << " vals[address].size()=" << tmp.size()
@@ -593,19 +593,19 @@ void __vpiArray::set_word(unsigned address, unsigned part_off, const vvp_vector4
 		  }
 		  tmp.set_vec(part_off, val);
 		  vals4->set_word(address, tmp);
-	    } else {
+	    } інакше {
 		  vals4->set_word(address, val);
 	    }
 	    word_change(address);
-	    return;
+	    повернути;
       }
 
-      if (vals) {
+      якщо (vals) {
 	    assert(nets == 0);
-	    if (part_off != 0 || val.size() != vals_width) {
+	    якщо (part_off != 0 || val.size() != vals_width) {
 		  vvp_vector4_t tmp;
 		  vals->get_word(address, tmp);
-		  if ((part_off + val.size()) > tmp.size()) {
+		  якщо ((part_off + val.size()) > tmp.size()) {
 			cerr << "part_off=" << part_off
 			     << " val.size()=" << val.size()
 			     << " vals[address].size()=" << tmp.size()
@@ -614,11 +614,11 @@ void __vpiArray::set_word(unsigned address, unsigned part_off, const vvp_vector4
 		  }
 		  tmp.set_vec(part_off, val);
 		  vals->set_word(address, tmp);
-	    } else {
+	    } інакше {
 		  vals->set_word(address, val);
 	    }
 	    word_change(address);
-	    return;
+	    повернути;
       }
 
       assert(nets != 0);
@@ -637,8 +637,8 @@ void __vpiArray::set_word(unsigned address, double val)
       assert(vals != 0);
       assert(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      якщо (address >= vals->get_size())
+	    повернути;
 
       vals->set_word(address, val);
       word_change(address);
@@ -649,8 +649,8 @@ void __vpiArray::set_word(unsigned address, const string&val)
       assert(vals != 0);
       assert(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      якщо (address >= vals->get_size())
+	    повернути;
 
       vals->set_word(address, val);
       word_change(address);
@@ -661,8 +661,8 @@ void __vpiArray::set_word(unsigned address, const vvp_object_t&val)
       assert(vals != 0);
       assert(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      якщо (address >= vals->get_size())
+	    повернути;
 
       vals->set_word(address, val);
       word_change(address);
@@ -670,28 +670,28 @@ void __vpiArray::set_word(unsigned address, const vvp_object_t&val)
 
 vvp_vector4_t __vpiArray::get_word(unsigned address)
 {
-      if (vals4) {
+      якщо (vals4) {
 	    assert(nets == 0);
 	    assert(vals == 0);
-	    return vals4->get_word(address);
+	    повернути vals4->get_word(address);
       }
 
-      if (vals) {
+      якщо (vals) {
 	    assert(nets == 0);
 	    assert(vals4== 0);
-	    if (address >= vals->get_size())
-		  return vvp_vector4_t(vals_width, BIT4_X);
+	    якщо (address >= vals->get_size())
+		  повернути vvp_vector4_t(vals_width, BIT4_X);
 
 	    vvp_vector4_t val;
 	    vals->get_word(address, val);
-	    return val;
+	    повернути val;
       }
 
       assert(vals4 == 0);
       assert(vals == 0);
       assert(nets != 0);
 
-      if (address >= get_size()) {
+      якщо (address >= get_size()) {
 	      // Reading outside the array. Return X's but get the
 	      // width by looking at a word that we know is present.
 	    assert(get_size() > 0);
@@ -701,7 +701,7 @@ vvp_vector4_t __vpiArray::get_word(unsigned address)
 	    assert(vsig);
 	    vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->node->fil);
 	    assert(sig);
-	    return vvp_vector4_t(sig->value_size(), BIT4_X);
+	    повернути vvp_vector4_t(sig->value_size(), BIT4_X);
       }
 
       vpiHandle word = nets[address];
@@ -712,26 +712,26 @@ vvp_vector4_t __vpiArray::get_word(unsigned address)
 
       vvp_vector4_t val;
       sig->vec4_value(val);
-      return val;
+      повернути val;
 }
 
 double __vpiArray::get_word_r(unsigned address)
 {
-      if (vals) {
+      якщо (vals) {
 	    assert(vals4 == 0);
 	    assert(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size())
-		  return 0.0;
+	    якщо (address >= vals->get_size())
+		  повернути 0.0;
 
 	    double val;
 	    vals->get_word(address, val);
-	    return val;
+	    повернути val;
       }
 
-      if (address >= get_size())
-	    return 0.0;
+      якщо (address >= get_size())
+	    повернути 0.0;
 
       assert(nets);
       vpiHandle word = nets[address];
@@ -741,54 +741,54 @@ double __vpiArray::get_word_r(unsigned address)
       assert(sig);
 
       double val = sig->real_value();
-      return val;
+      повернути val;
 }
 
 void __vpiArray::get_word_obj(unsigned address, vvp_object_t&val)
 {
-      if (vals) {
+      якщо (vals) {
 	    assert(vals4 == 0);
 	    assert(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size()) {
+	    якщо (address >= vals->get_size()) {
 		  val = vvp_object_t();
-		  return;
+		  повернути;
 	    }
 
 	    vals->get_word(address, val);
-	    return;
+	    повернути;
       }
 
       assert(nets);
 	// Arrays of string nets not implemented!
       assert(0);
-      return;
+      повернути;
 }
 
 string __vpiArray::get_word_str(unsigned address)
 {
-      if (vals) {
+      якщо (vals) {
 	    assert(vals4 == 0);
 	    assert(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size())
-		  return "";
+	    якщо (address >= vals->get_size())
+		  повернути "";
 
 	    string val;
 	    vals->get_word(address, val);
-	    return val;
+	    повернути val;
       }
 
       assert(nets);
 	// Arrays of string nets not implemented!
       assert(0);
-      return "";
+      повернути "";
 }
 
 vpiHandle vpip_make_array(const char*label, const char*name,
-                          int first_addr, int last_addr,
+                          ціле first_addr, ціле last_addr,
                           bool signed_flag)
 {
       struct __vpiArray*obj = new __vpiArray;
@@ -796,11 +796,11 @@ vpiHandle vpip_make_array(const char*label, const char*name,
       obj->signed_flag = signed_flag;
 
 	// Assume increasing addresses.
-      if (last_addr >= first_addr) {
+      якщо (last_addr >= first_addr) {
 	    obj->swap_addr = false;
-      } else {
+      } інакше {
 	    obj->swap_addr = true;
-	    int tmp = last_addr;
+	    ціле tmp = last_addr;
 	    last_addr = first_addr;
 	    first_addr = tmp;
       }
@@ -828,7 +828,7 @@ vpiHandle vpip_make_array(const char*label, const char*name,
       obj->vpi_callbacks = 0;
 
 	/* Add this symbol to the array_symbols table for later lookup. */
-      if (!array_table)
+      якщо (!array_table)
 	    array_table = new symbol_map_s<struct __vpiArray>;
 
       assert(!array_find(label));
@@ -842,10 +842,10 @@ vpiHandle vpip_make_array(const char*label, const char*name,
 	/* Blindly attach to the scope as an object. */
       vpip_attach_to_current_scope(obj);
 
-      return obj;
+      повернути obj;
 }
 
-void __vpiArray::alias_word(unsigned long addr, vpiHandle word, int msb_, int lsb_)
+void __vpiArray::alias_word(unsigned long addr, vpiHandle word, ціле msb_, ціле lsb_)
 {
       assert(msb.get_value() == msb_);
       assert(lsb.get_value() == lsb_);
@@ -860,7 +860,7 @@ void __vpiArray::attach_word(unsigned addr, vpiHandle word)
       assert(nets);
       nets[addr] = word;
 
-      if (struct __vpiSignal*sig = dynamic_cast<__vpiSignal*>(word)) {
+      якщо (struct __vpiSignal*sig = dynamic_cast<__vpiSignal*>(word)) {
 	    vvp_net_t*net = sig->node;
 	    assert(net);
 	    vvp_vpi_callback*fun = dynamic_cast<vvp_vpi_callback*>(net->fil);
@@ -871,10 +871,10 @@ void __vpiArray::attach_word(unsigned addr, vpiHandle word)
 	    sig->id.index = new __vpiDecConst(addr + first_addr.get_value());
 	      // Now we know the data type, update the array signed_flag.
 	    signed_flag = sig->signed_flag;
-	    return;
+	    повернути;
       }
 
-      if (struct __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(word)) {
+      якщо (struct __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(word)) {
 	    vvp_net_t*net = sig->net;
 	    assert(net);
 	    vvp_vpi_callback*fun = dynamic_cast<vvp_vpi_callback*>(net->fil);
@@ -885,12 +885,12 @@ void __vpiArray::attach_word(unsigned addr, vpiHandle word)
 	    sig->id.index = new __vpiDecConst(addr + first_addr.get_value());
 	      // Now we know the data type, update the array signed_flag.
 	    signed_flag = true;
-	    return;
+	    повернути;
       }
 }
 
-void compile_var_array(char*label, char*name, int last, int first,
-		   int msb, int lsb, char signed_flag)
+void compile_var_array(char*label, char*name, ціле last, ціле first,
+		   ціле msb, ціле lsb, char signed_flag)
 {
       vpiHandle obj = vpip_make_array(label, name, first, last,
                                       signed_flag != 0);
@@ -899,10 +899,10 @@ void compile_var_array(char*label, char*name, int last, int first,
 
 	/* Make the words. */
       arr->vals_width = labs(msb-lsb) + 1;
-      if (vpip_peek_current_scope()->is_automatic()) {
+      якщо (vpip_peek_current_scope()->is_automatic()) {
             arr->vals4 = new vvp_vector4array_aa(arr->vals_width,
 						 arr->get_size());
-      } else {
+      } інакше {
             arr->vals4 = new vvp_vector4array_sa(arr->vals_width,
 						 arr->get_size());
       }
@@ -916,8 +916,8 @@ void compile_var_array(char*label, char*name, int last, int first,
       delete[] name;
 }
 
-void compile_var2_array(char*label, char*name, int last, int first,
-		   int msb, int lsb, bool signed_flag)
+void compile_var2_array(char*label, char*name, ціле last, ціле first,
+		   ціле msb, ціле lsb, bool signed_flag)
 {
       vpiHandle obj = vpip_make_array(label, name, first, last, signed_flag);
 
@@ -929,23 +929,23 @@ void compile_var2_array(char*label, char*name, int last, int first,
       arr->vals_width = labs(msb-lsb) + 1;
 
       assert(! arr->nets);
-      if (lsb == 0 && msb == 7 && signed_flag) {
+      якщо (lsb == 0 && msb == 7 && signed_flag) {
 	    arr->vals = new vvp_darray_atom<int8_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 7 && !signed_flag) {
+      } інакше якщо (lsb == 0 && msb == 7 && !signed_flag) {
 	    arr->vals = new vvp_darray_atom<uint8_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 15 && signed_flag) {
+      } інакше якщо (lsb == 0 && msb == 15 && signed_flag) {
 	    arr->vals = new vvp_darray_atom<int16_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 15 && !signed_flag) {
+      } інакше якщо (lsb == 0 && msb == 15 && !signed_flag) {
 	    arr->vals = new vvp_darray_atom<uint16_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 31 && signed_flag) {
+      } інакше якщо (lsb == 0 && msb == 31 && signed_flag) {
 	    arr->vals = new vvp_darray_atom<int32_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 31 && !signed_flag) {
+      } інакше якщо (lsb == 0 && msb == 31 && !signed_flag) {
 	    arr->vals = new vvp_darray_atom<uint32_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 63 && signed_flag) {
+      } інакше якщо (lsb == 0 && msb == 63 && signed_flag) {
 	    arr->vals = new vvp_darray_atom<int64_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 63 && !signed_flag) {
+      } інакше якщо (lsb == 0 && msb == 63 && !signed_flag) {
 	    arr->vals = new vvp_darray_atom<uint64_t>(arr->get_size());
-      } else {
+      } інакше {
 	    arr->vals = new vvp_darray_vec2(arr->get_size(), arr->vals_width);
       }
       count_var_arrays += 1;
@@ -955,7 +955,7 @@ void compile_var2_array(char*label, char*name, int last, int first,
       delete[] name;
 }
 
-void compile_real_array(char*label, char*name, int last, int first)
+void compile_real_array(char*label, char*name, ціле last, ціле first)
 {
       vpiHandle obj = vpip_make_array(label, name, first, last, true);
 
@@ -972,7 +972,7 @@ void compile_real_array(char*label, char*name, int last, int first)
       delete[] name;
 }
 
-void compile_string_array(char*label, char*name, int last, int first)
+void compile_string_array(char*label, char*name, ціле last, ціле first)
 {
       vpiHandle obj = vpip_make_array(label, name, first, last, true);
 
@@ -989,7 +989,7 @@ void compile_string_array(char*label, char*name, int last, int first)
       delete[] name;
 }
 
-void compile_object_array(char*label, char*name, int last, int first)
+void compile_object_array(char*label, char*name, ціле last, ціле first)
 {
       vpiHandle obj = vpip_make_array(label, name, first, last, true);
 
@@ -1006,7 +1006,7 @@ void compile_object_array(char*label, char*name, int last, int first)
       delete[] name;
 }
 
-void compile_net_array(char*label, char*name, int last, int first)
+void compile_net_array(char*label, char*name, ціле last, ціле first)
 {
 	// At this point we don't know the array data type, so we
 	// initialise signed_flag to false. This will be corrected
@@ -1096,11 +1096,11 @@ void vvp_fun_arrayport_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit
 
 	  case 0: // Address input
 	    addr_valid_flag = vector4_to_value(bit, addr_);
-	    if (! addr_valid_flag)
+	    якщо (! addr_valid_flag)
 		  addr_ = arr_->get_size();
-	    if (vpi_array_is_real(arr_))
+	    якщо (vpi_array_is_real(arr_))
 		  port.ptr()->send_real(arr_->get_word_r(addr_), 0);
-	    else
+	    інакше
 		  port.ptr()->send_vec4(arr_->get_word(addr_), 0);
 
 	    break;
@@ -1113,11 +1113,11 @@ void vvp_fun_arrayport_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit
 
 void vvp_fun_arrayport_sa::check_word_change(unsigned long addr)
 {
-      if (addr != addr_) return;
+      якщо (addr != addr_) повернути;
 
-      if (vpi_array_is_real(arr_)) {
+      якщо (vpi_array_is_real(arr_)) {
 	    net_->send_real(arr_->get_word_r(addr_), 0);
-      } else {
+      } інакше {
 	    net_->send_vec4(arr_->get_word(addr_), 0);
       }
 }
@@ -1191,7 +1191,7 @@ void vvp_fun_arrayport_aa::free_instance(vvp_context_t context)
 void vvp_fun_arrayport_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                                      vvp_context_t context)
 {
-      if (context) {
+      якщо (context) {
             unsigned long*addr = static_cast<unsigned long*>
                   (vvp_get_context_item(context, context_idx_));
 
@@ -1201,11 +1201,11 @@ void vvp_fun_arrayport_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit
 
                 case 0: // Address input
                   addr_valid_flag = vector4_to_value(bit, *addr);
-                  if (! addr_valid_flag) *addr = arr_->get_size();
-                  if (vpi_array_is_real(arr_)) {
+                  якщо (! addr_valid_flag) *addr = arr_->get_size();
+                  якщо (vpi_array_is_real(arr_)) {
 			port.ptr()->send_real(arr_->get_word_r(*addr),
 					      context);
-                  } else {
+                  } інакше {
 			port.ptr()->send_vec4(arr_->get_word(*addr),
 					      context);
                   }
@@ -1215,9 +1215,9 @@ void vvp_fun_arrayport_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit
                   fprintf(stdout, "XXXX write ports not implemented.\n");
                   assert(0);
             }
-      } else {
+      } інакше {
             context = context_scope_->live_contexts;
-            while (context) {
+            поки (context) {
                   recv_vec4(port, bit, context);
                   context = vvp_get_next_context(context);
             }
@@ -1230,24 +1230,24 @@ void vvp_fun_arrayport_aa::check_word_change_(unsigned long addr,
       const unsigned long*port_addr = static_cast<unsigned long*>
             (vvp_get_context_item(context, context_idx_));
 
-      if (addr != *port_addr)
-	    return;
+      якщо (addr != *port_addr)
+	    повернути;
 
-      if (vpi_array_is_real(arr_)) {
+      якщо (vpi_array_is_real(arr_)) {
 	    net_->send_real(arr_->get_word_r(addr), context);
-      } else {
+      } інакше {
 	    net_->send_vec4(arr_->get_word(addr), context);
       }
 }
 
 void vvp_fun_arrayport_aa::check_word_change(unsigned long addr)
 {
-      if (arr_->get_scope()->is_automatic()) {
+      якщо (arr_->get_scope()->is_automatic()) {
             assert(vthread_get_wt_context());
             check_word_change_(addr, vthread_get_wt_context());
-      } else {
+      } інакше {
             vvp_context_t context = context_scope_->live_contexts;
-            while (context) {
+            поки (context) {
                   check_word_change_(addr, context);
                   context = vvp_get_next_context(context);
             }
@@ -1259,18 +1259,18 @@ static void array_attach_port(vvp_array_t array, vvp_fun_arrayport*fun)
       assert(fun->next_ == 0);
       fun->next_ = array->ports_;
       array->ports_ = fun;
-      if (!array->get_scope()->is_automatic() &&
+      якщо (!array->get_scope()->is_automatic() &&
           (array->vals4 || array->vals)) {
               /* propagate initial values for variable arrays */
-            if (!vpi_array_is_real(array)) {
+            якщо (!vpi_array_is_real(array)) {
                   vvp_bit4_t init;
-                  if (array->vals4)
+                  якщо (array->vals4)
                       init = BIT4_X;
-                  else
+                  інакше
                       init = BIT4_0;
                   vvp_vector4_t tmp(array->vals_width, init);
                   schedule_init_propagate(fun->net_, tmp);
-            } else {
+            } інакше {
                   schedule_init_propagate(fun->net_, 0.0);
             }
       }
@@ -1288,43 +1288,43 @@ class array_word_value_callback : public value_callback {
 
 void __vpiArray::word_change(unsigned long addr)
 {
-      for (vvp_fun_arrayport*cur = ports_; cur; cur = cur->next_)
+      для (vvp_fun_arrayport*cur = ports_; cur; cur = cur->next_)
 	    cur->check_word_change(addr);
 
 	// Run callbacks attached to the array itself.
       struct __vpiCallback *next = vpi_callbacks;
       struct __vpiCallback *prev = 0;
 
-      while (next) {
+      поки (next) {
 	    array_word_value_callback*cur = dynamic_cast<array_word_value_callback*>(next);
 	    next = cur->next;
 
 	      // Skip callbacks that are not for me. -1 is for every element.
-	    if (cur->word_addr != (long)addr && cur->word_addr != -1) {
+	    якщо (cur->word_addr != (long)addr && cur->word_addr != -1) {
 		  prev = cur;
 		  continue;
 	    }
 
 	      // For whole array callbacks we need to set the index.
-	    if (cur->word_addr == -1) {
-		  cur->cb_data.index = (PLI_INT32) ((int)addr +
+	    якщо (cur->word_addr == -1) {
+		  cur->cb_data.index = (PLI_INT32) ((ціле)addr +
 						    first_addr.get_value());
 	    }
 
-	    if (cur->cb_data.cb_rtn != 0) {
-		  if (cur->test_value_callback_ready()) {
-			if (cur->cb_data.value) {
-			      if (vpi_array_is_real(this)) {
+	    якщо (cur->cb_data.cb_rtn != 0) {
+		  якщо (cur->test_value_callback_ready()) {
+			якщо (cur->cb_data.value) {
+			      якщо (vpi_array_is_real(this)) {
 				    double val = 0.0;
-				    if (addr < vals->get_size())
+				    якщо (addr < vals->get_size())
 					  vals->get_word(addr, val);
 				    vpip_real_get_value(val, cur->cb_data.value);
-			      } else if (vals4) {
+			      } інакше якщо (vals4) {
 				    vpip_vec4_get_value(vals4->get_word(addr),
 							vals_width,
 							signed_flag,
 							cur->cb_data.value);
-			      } else if (dynamic_cast<vvp_darray_atom<int8_t>*>(vals)
+			      } інакше якщо (dynamic_cast<vvp_darray_atom<int8_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int16_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int32_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int64_t>*>(vals)
@@ -1334,13 +1334,13 @@ void __vpiArray::word_change(unsigned long addr)
 				      || dynamic_cast<vvp_darray_atom<uint64_t>*>(vals)
 				      || dynamic_cast<vvp_darray_vec2*>(vals)) {
 				    vvp_vector4_t val;
-				    if (addr < vals->get_size())
+				    якщо (addr < vals->get_size())
 					  vals->get_word(addr, val);
 				    vpip_vec4_get_value(val,
 							vals_width,
 							signed_flag,
 							cur->cb_data.value);
-			      } else {
+			      } інакше {
 			            assert(0);
 			      }
 			}
@@ -1350,13 +1350,13 @@ void __vpiArray::word_change(unsigned long addr)
 
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } інакше якщо (prev == 0) {
 
 		  vpi_callbacks = next;
 		  cur->next = 0;
 		  delete cur;
 
-	    } else {
+	    } інакше {
 		  assert(prev->next == cur);
 		  prev->next = next;
 		  cur->next = 0;
@@ -1381,11 +1381,11 @@ class array_resolv_list_t : public resolv_list_s {
 bool array_resolv_list_t::resolve(bool mes)
 {
       *array = array_find(label());
-      if (*array == 0) {
+      якщо (*array == 0) {
 	    assert(!mes);
-	    return false;
+	    повернути false;
       }
-      return true;
+      повернути true;
 }
 
 class array_port_resolv_list_t : public resolv_list_s {
@@ -1407,9 +1407,9 @@ array_port_resolv_list_t::array_port_resolv_list_t(char *lab, bool use_addr__,
                                                    long addr__)
 : resolv_list_s(lab), use_addr(use_addr__), addr(addr__)
 {
-      if (vpip_peek_current_scope()->is_automatic())
+      якщо (vpip_peek_current_scope()->is_automatic())
             context_scope = vpip_peek_context_scope();
-      else
+      інакше
             context_scope = 0;
       ptr = new vvp_net_t;
 }
@@ -1417,27 +1417,27 @@ array_port_resolv_list_t::array_port_resolv_list_t(char *lab, bool use_addr__,
 bool array_port_resolv_list_t::resolve(bool mes)
 {
       vvp_array_t mem = array_find(label());
-      if (mem == 0) {
+      якщо (mem == 0) {
 	    assert(mem || !mes);
-	    return false;
+	    повернути false;
       }
 
       vvp_fun_arrayport*fun;
-      if (use_addr)
-            if (context_scope)
+      якщо (use_addr)
+            якщо (context_scope)
                   fun = new vvp_fun_arrayport_aa(context_scope, mem, ptr, addr);
-            else
+            інакше
                   fun = new vvp_fun_arrayport_sa(mem, ptr, addr);
-      else
-            if (context_scope)
+      інакше
+            якщо (context_scope)
                   fun = new vvp_fun_arrayport_aa(context_scope, mem, ptr);
-            else
+            інакше
                   fun = new vvp_fun_arrayport_sa(mem, ptr);
       ptr->fun = fun;
 
       array_attach_port(mem, fun);
 
-      return true;
+      повернути true;
 }
 
 class array_word_part_callback : public array_word_value_callback {
@@ -1485,11 +1485,11 @@ bool array_word_part_callback::test_value_callback_ready(void)
       tmp_value.format = vpiBinStrVal;
       apvword->vpi_get_value(&tmp_value);
 
-      if (memcmp(value_bits_, tmp_value.value.str, apvword->part_wid) == 0)
-	    return false;
+      якщо (memcmp(value_bits_, tmp_value.value.str, apvword->part_wid) == 0)
+	    повернути false;
 
       memcpy(value_bits_, tmp_value.value.str, apvword->part_wid);
-      return true;
+      повернути true;
 
 }
 
@@ -1497,16 +1497,16 @@ value_callback*vpip_array_word_change(p_cb_data data)
 {
       struct __vpiArray*parent = 0;
       array_word_value_callback*cbh = 0;
-      if (const struct __vpiArrayWord*word = array_var_word_from_handle(data->obj)) {
+      якщо (const struct __vpiArrayWord*word = array_var_word_from_handle(data->obj)) {
 	    parent = static_cast<__vpiArray*>(word->get_parent());
 	    unsigned addr = word->get_index();
 	    cbh = new array_word_value_callback(data, addr);
 
-      } else if (struct __vpiArrayVthrA*tword = dynamic_cast<__vpiArrayVthrA*>(data->obj)) {
+      } інакше якщо (struct __vpiArrayVthrA*tword = dynamic_cast<__vpiArrayVthrA*>(data->obj)) {
 	    parent = tword->array;
 	    cbh = new array_word_value_callback(data, tword->address);
 
-      } else if (struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj)) {
+      } інакше якщо (struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj)) {
 	    parent = apvword->array;
 	    cbh = new array_word_part_callback(data, apvword->word_sel);
       }
@@ -1516,7 +1516,7 @@ value_callback*vpip_array_word_change(p_cb_data data)
       cbh->next = parent->vpi_callbacks;
       parent->vpi_callbacks = cbh;
 
-      return cbh;
+      повернути cbh;
 }
 
 value_callback* vpip_array_change(p_cb_data data)
@@ -1527,7 +1527,7 @@ value_callback* vpip_array_change(p_cb_data data)
       struct __vpiArray*arr = dynamic_cast<__vpiArray*>(data->obj);
       cbh->next = arr->vpi_callbacks;
       arr->vpi_callbacks = cbh;
-      return cbh;
+      повернути cbh;
 }
 
 void compile_array_port(char*label, char*array, char*addr)
@@ -1615,7 +1615,7 @@ vpiHandle vpip_make_vthr_A(char*label, unsigned addr)
       obj->address_handle = 0;
       obj->address = addr;
 
-      return obj;
+      повернути obj;
 }
 
 /*
@@ -1638,7 +1638,7 @@ vpiHandle vpip_make_vthr_A(char*label, char*symbol)
       compile_vpi_lookup(&obj->address_handle, symbol);
       obj->address = 0;
 
-      return obj;
+      повернути obj;
 }
 
 vpiHandle vpip_make_vthr_A(char*label, vpiHandle handle)
@@ -1654,7 +1654,7 @@ vpiHandle vpip_make_vthr_A(char*label, vpiHandle handle)
       obj->address_handle = handle;
       obj->address = 0;
 
-      return obj;
+      повернути obj;
 }
 
 vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned wid)
@@ -1671,7 +1671,7 @@ vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned 
       obj->part_bit = bit;
       obj->part_wid = wid;
 
-      return obj;
+      повернути obj;
 }
 
 void compile_array_cleanup(void)
@@ -1684,7 +1684,7 @@ void compile_array_cleanup(void)
 void memory_delete(vpiHandle item)
 {
       struct __vpiArray*arr = static_cast<struct __vpiArray*>(item);
-      if (arr->vals_words) delete [] (arr->vals_words-1);
+      якщо (arr->vals_words) delete [] (arr->vals_words-1);
 
 //      if (arr->vals4) {}
 // Delete the individual words?
@@ -1696,14 +1696,14 @@ void memory_delete(vpiHandle item)
 // constant_delete(handle)?
       delete arr->vals;
 
-      if (arr->nets) {
-	    for (unsigned idx = 0; idx < arr->get_size(); idx += 1) {
-		  if (struct __vpiSignal*sig =
+      якщо (arr->nets) {
+	    для (unsigned idx = 0; idx < arr->get_size(); idx += 1) {
+		  якщо (struct __vpiSignal*sig =
 		      dynamic_cast<__vpiSignal*>(arr->nets[idx])) {
 // Delete the individual words?
 			constant_delete(sig->id.index);
 		    /* These should only be the real words. */
-		  } else {
+		  } інакше {
 			assert(arr->nets[idx]->get_type_code() ==
 			       vpiRealVar);
 			struct __vpiRealVar *sigr = static_cast<struct __vpiRealVar *>
@@ -1716,7 +1716,7 @@ void memory_delete(vpiHandle item)
 	    free(arr->nets);
       }
 
-      while (arr->vpi_callbacks) {
+      поки (arr->vpi_callbacks) {
 	    struct __vpiCallback*tmp = arr->vpi_callbacks->next;
 	    delete arr->vpi_callbacks;
 	    arr->vpi_callbacks = tmp;
@@ -1728,10 +1728,10 @@ void memory_delete(vpiHandle item)
 void A_delete(vpiHandle item)
 {
       struct __vpiArrayVthrA*obj = static_cast<struct __vpiArrayVthrA*>(item);
-      if (obj->address_handle) {
+      якщо (obj->address_handle) {
 	    switch (obj->address_handle->get_type_code()) {
 		case vpiMemoryWord:
-		  if (vpi_get(_vpiFromThr, obj->address_handle) == _vpi_at_A) {
+		  якщо (vpi_get(_vpiFromThr, obj->address_handle) == _vpi_at_A) {
 			A_delete(obj->address_handle);
 		  }
 		  break;

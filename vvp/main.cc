@@ -24,11 +24,11 @@ const char COPYRIGHT[] =
 # include  <cstdio>
 # include  <cstdlib>
 
-#if defined(HAVE_GETOPT_H)
+#якщо defined(HAVE_GETOPT_H)
 # include  <getopt.h>
 #endif
 
-#if defined(__MINGW32__)
+#якщо defined(__MINGW32__)
 # include  <windows.h>
 #endif
 
@@ -36,9 +36,9 @@ const char COPYRIGHT[] =
 
 using namespace std;
 
-#if defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
-extern "C" int getopt(int argc, char*argv[], const char*fmt);
-extern "C" int optind;
+#якщо defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
+extern "C" ціле getopt(ціле argc, char*argv[], const char*fmt);
+extern "C" ціле optind;
 extern "C" const char*optarg;
 #endif
 
@@ -47,13 +47,13 @@ bool version_flag = false;
 unsigned module_cnt = 0;
 const char*module_tab[64];
 
-int main(int argc, char*argv[])
+ціле main(ціле argc, char*argv[])
 {
-      int opt;
+      ціле opt;
       unsigned flag_errors = 0;
       const char *logfile_name = 0x0;
 
-      while ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) switch (opt) {
+      поки ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) switch (opt) {
          case 'h':
            fprintf(stderr,
                    "Usage: vvp [options] input-file [+plusargs...]\n"
@@ -78,9 +78,9 @@ int main(int argc, char*argv[])
 	    logfile_name = optarg;
 	    break;
 	  case 'M':
-	    if (strcmp(optarg,"-") == 0) {
+	    якщо (strcmp(optarg,"-") == 0) {
 		  vpip_clear_module_paths();
-	    } else {
+	    } інакше {
 		  vpip_add_module_path(optarg);
 	    }
 	    break;
@@ -109,10 +109,10 @@ int main(int argc, char*argv[])
 	    flag_errors += 1;
       }
 
-      if (flag_errors)
-	    return flag_errors;
+      якщо (flag_errors)
+	    повернути flag_errors;
 
-      if (version_flag) {
+      якщо (version_flag) {
 	    fprintf(stderr, "Icarus Verilog runtime version " VERSION " ("
 	                    VERSION_TAG ")\n\n");
 	    fprintf(stderr, "%s\n\n", COPYRIGHT);
@@ -131,18 +131,18 @@ int main(int argc, char*argv[])
 "  with this program; if not, write to the Free Software Foundation, Inc.,\n"
 "  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n"
 );
-	    return 0;
+	    повернути 0;
       }
 
-      if (optind == argc) {
+      якщо (optind == argc) {
 	    fprintf(stderr, "%s: no input file.\n", argv[0]);
-	    return -1;
+	    повернути -1;
       }
 
       vvp_init(logfile_name, argc - optind, argv + optind);
 
-      for (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
+      для (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
 	    vpip_load_module(module_tab[idx]);
 
-      return vvp_run(argv[optind]);
+      повернути vvp_run(argv[optind]);
 }

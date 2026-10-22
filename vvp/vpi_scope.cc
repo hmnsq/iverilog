@@ -35,11 +35,11 @@ using namespace std;
 
 static vector<vpiHandle> vpip_root_table;
 
-static vpiHandle make_subset_iterator_(int type_code, const vector<vpiHandle>&table);
+static vpiHandle make_subset_iterator_(ціле type_code, const vector<vpiHandle>&table);
 
-vpiHandle vpip_make_root_iterator(int type_code)
+vpiHandle vpip_make_root_iterator(ціле type_code)
 {
-      return make_subset_iterator_(type_code, vpip_root_table);
+      повернути make_subset_iterator_(type_code, vpip_root_table);
 }
 
 void vpip_make_root_iterator(__vpiHandle**&table, unsigned&ntable)
@@ -58,7 +58,7 @@ static unsigned class_list_count = 0;
 
 static void delete_sub_scopes(__vpiScope *scope)
 {
-      for (unsigned idx = 0; idx < scope->intern.size(); idx += 1) {
+      для (unsigned idx = 0; idx < scope->intern.size(); idx += 1) {
 	    vpiHandle item = (scope->intern)[idx];
 	    __vpiScope*lscope = static_cast<__vpiScope*>(item);
 	    switch(item->get_type_code()) {
@@ -134,7 +134,7 @@ static void delete_sub_scopes(__vpiScope *scope)
 
 	/* Save any class definitions to clean up later. */
       map<std::string, class_type*>::iterator citer;
-      for (citer = scope->classes.begin();
+      для (citer = scope->classes.begin();
            citer != scope->classes.end(); ++ citer ) {
 	    class_list_count += 1;
 	    class_list = static_cast<class_type **>
@@ -146,7 +146,7 @@ static void delete_sub_scopes(__vpiScope *scope)
 
 void root_table_delete(void)
 {
-      for (unsigned idx = 0; idx < vpip_root_table.size(); idx += 1) {
+      для (unsigned idx = 0; idx < vpip_root_table.size(); idx += 1) {
 	    __vpiScope *scope = static_cast<__vpiScope *>
 	          (vpip_root_table[idx]);
 	    vthreads_delete(scope);
@@ -156,7 +156,7 @@ void root_table_delete(void)
       vpip_root_table.clear();
 
 	/* Clean up all the class definitions. */
-      for (unsigned idx = 0; idx < class_list_count; idx += 1) {
+      для (unsigned idx = 0; idx < class_list_count; idx += 1) {
             class_def_delete(class_list[idx]);
       }
       free(class_list);
@@ -167,41 +167,41 @@ void root_table_delete(void)
 
 static void construct_scope_fullname(__vpiScope*ref, char*buf)
 {
-      if (ref->scope) {
+      якщо (ref->scope) {
 	    construct_scope_fullname(ref->scope, buf);
 	      // Add a "." separator, unless this is for a package
-	    if (ref->scope->get_type_code() != vpiPackage) {
+	    якщо (ref->scope->get_type_code() != vpiPackage) {
 		  strcat(buf, ".");
 	    }
       }
 
       strcat(buf, ref->scope_name());
 	// For a package, add a "::" to the end
-      if (ref->get_type_code() == vpiPackage) strcat(buf, "::");
+      якщо (ref->get_type_code() == vpiPackage) strcat(buf, "::");
 }
 
-static const char* scope_get_type(int code)
+static const char* scope_get_type(ціле code)
 {
       switch (code) {
           case vpiModule:
-            return "vpiModule";
+            повернути "vpiModule";
           case vpiGenScope:
-            return "vpiGenScope";
+            повернути "vpiGenScope";
           case vpiFunction:
-            return "vpiFunction";
+            повернути "vpiFunction";
           case vpiTask:
-            return "vpiTask";
+            повернути "vpiTask";
           case vpiNamedBegin:
-            return "vpiNamedBegin";
+            повернути "vpiNamedBegin";
           case vpiNamedFork:
-            return "vpiNamedFork";
+            повернути "vpiNamedFork";
           default:
             fprintf(stderr, "VPI error: invalid scope type code %d.\n", code);
-            return NULL;
+            повернути NULL;
       }
 }
 
-static char* scope_get_str(int code, vpiHandle obj)
+static char* scope_get_str(ціле code, vpiHandle obj)
 {
       __vpiScope*ref = dynamic_cast<__vpiScope*>(obj);
       assert(ref);
@@ -237,12 +237,12 @@ static char* scope_get_str(int code, vpiHandle obj)
 
 	  default:
 	    fprintf(stderr, "VPI error: invalid scope string code %d.\n", code);
-	    return NULL;
+	    повернути NULL;
       }
-      return simple_set_rbuf_str(p);
+      повернути simple_set_rbuf_str(p);
 }
 
-static vpiHandle scope_get_handle(int code, vpiHandle obj)
+static vpiHandle scope_get_handle(ціле code, vpiHandle obj)
 {
       __vpiScope*rfp = dynamic_cast<__vpiScope*>(obj);
       assert(rfp);
@@ -250,44 +250,44 @@ static vpiHandle scope_get_handle(int code, vpiHandle obj)
       switch (code) {
 
 	  case vpiScope:
-	    return rfp->scope;
+	    повернути rfp->scope;
 
 	  case vpiModule:
-	    return rfp->scope;
+	    повернути rfp->scope;
       }
 
-      return 0;
+      повернути 0;
 }
 
 /* compares vpiType's considering object classes */
-static int compare_types(int code, int type)
+static ціле compare_types(ціле code, ціле type)
 {
 	/* NOTE: The Verilog VPI does not for any object support
 	   vpiScope as an iterator parameter, so it is used here as a
 	   means to scan everything in the *current* scope. */
-      if (code == vpiScope)
-	    return 1;
+      якщо (code == vpiScope)
+	    повернути 1;
 
-      if (code == type)
-	    return 1;
+      якщо (code == type)
+	    повернути 1;
 
-      if ( code == vpiInternalScope &&
+      якщо ( code == vpiInternalScope &&
 	     (type == vpiModule ||
 	     type == vpiGenScope ||
 	     type == vpiFunction ||
 	     type == vpiTask ||
 	     type == vpiNamedBegin ||
 	     type == vpiNamedFork) )
-	    return 1;
+	    повернути 1;
 
-      if ( code == vpiInstance &&
+      якщо ( code == vpiInstance &&
 	    (type == vpiModule ||
 	     type == vpiProgram ||
 	     type == vpiInterface ||
 	     type == vpiPackage) )
-	    return 1;
+	    повернути 1;
 
-      if ( code == vpiVariables &&
+      якщо ( code == vpiVariables &&
 	     (type == vpiIntegerVar  ||
 	      type == vpiBitVar      ||
 	      type == vpiByteVar     ||
@@ -296,31 +296,31 @@ static int compare_types(int code, int type)
 	      type == vpiLongIntVar  ||
 	      type == vpiTimeVar     ||
 	      type == vpiRealVar))
-	    return 1;
+	    повернути 1;
 
-      return 0;
+      повернути 0;
 }
 
-static vpiHandle make_subset_iterator_(int type_code, const vector<vpiHandle>&table)
+static vpiHandle make_subset_iterator_(ціле type_code, const vector<vpiHandle>&table)
 {
       unsigned mcnt = 0, ncnt = 0;
       vpiHandle*args;
 
-      for (unsigned idx = 0; idx < table.size(); idx += 1)
-	    if (compare_types(type_code, table[idx]->get_type_code()))
+      для (unsigned idx = 0; idx < table.size(); idx += 1)
+	    якщо (compare_types(type_code, table[idx]->get_type_code()))
 		  mcnt += 1;
 
-      if (mcnt == 0)
-	    return 0;
+      якщо (mcnt == 0)
+	    повернути 0;
 
       args = static_cast<vpiHandle*>(calloc(mcnt, sizeof(vpiHandle)));
-      for (unsigned idx = 0; idx < table.size(); idx += 1)
-	    if (compare_types(type_code, table[idx]->get_type_code()))
+      для (unsigned idx = 0; idx < table.size(); idx += 1)
+	    якщо (compare_types(type_code, table[idx]->get_type_code()))
 		  args[ncnt++] = table[idx];
 
       assert(ncnt == mcnt);
 
-      return vpip_make_iterator(mcnt, args, true);
+      повернути vpip_make_iterator(mcnt, args, true);
 }
 
 /*
@@ -329,12 +329,12 @@ static vpiHandle make_subset_iterator_(int type_code, const vector<vpiHandle>&ta
  * things that are contained in the scope object, by generating an
  * iterator for the requested set of items.
  */
-static vpiHandle module_iter(int code, vpiHandle obj)
+static vpiHandle module_iter(ціле code, vpiHandle obj)
 {
       __vpiScope*ref = dynamic_cast<__vpiScope*>(obj);
       assert(ref);
 
-      return make_subset_iterator_(code, ref->intern);
+      повернути make_subset_iterator_(code, ref->intern);
 }
 
 
@@ -345,106 +345,106 @@ __vpiScope::__vpiScope(const char*nam, const char*tnam, bool auto_flag)
       tname_ = vpip_name_string(tnam? tnam : "");
 }
 
-int __vpiScope::vpi_get(int code)
+ціле __vpiScope::vpi_get(ціле code)
 {
       switch (code) {
 	  case vpiCellInstance:
-	    return is_cell? 1 : 0;
+	    повернути is_cell? 1 : 0;
 
 	  case vpiDefLineNo:
-	    return def_lineno;
+	    повернути def_lineno;
 
 	  case vpiLineNo:
-	    return lineno;
+	    повернути lineno;
 
 	  case vpiTimeUnit:
-	    return time_units;
+	    повернути time_units;
 
 	  case vpiTimePrecision:
-	    return time_precision;
+	    повернути time_precision;
 
 	  case vpiTopModule:
-	    return 0x0 == scope;
+	    повернути 0x0 == scope;
 
           case vpiAutomatic:
-	    return is_automatic_? 1 : 0;
+	    повернути is_automatic_? 1 : 0;
       }
 
-      return vpiUndefined;
+      повернути vpiUndefined;
 }
 
 
-char*__vpiScope::vpi_get_str(int code)
-{ return scope_get_str(code, this); }
+char*__vpiScope::vpi_get_str(ціле code)
+{ повернути scope_get_str(code, this); }
 
-vpiHandle __vpiScope::vpi_handle(int code)
-{ return scope_get_handle(code, this); }
+vpiHandle __vpiScope::vpi_handle(ціле code)
+{ повернути scope_get_handle(code, this); }
 
-vpiHandle __vpiScope::vpi_iterate(int code)
-{ return module_iter(code, this); }
+vpiHandle __vpiScope::vpi_iterate(ціле code)
+{ повернути module_iter(code, this); }
 
 
 class vpiScopeModule  : public __vpiScope {
     public:
       inline vpiScopeModule(const char*nam, const char*tnam)
       : __vpiScope(nam,tnam,false) { }
-      int get_type_code(void) const override { return vpiModule; }
+      ціле get_type_code(void) const override { повернути vpiModule; }
 };
 
 struct vpiScopePackage  : public __vpiScope {
       inline vpiScopePackage(const char*nam, const char*tnam)
       : __vpiScope(nam,tnam) { }
-      int get_type_code(void) const override { return vpiPackage; }
+      ціле get_type_code(void) const override { повернути vpiPackage; }
 };
 
 struct vpiScopeTask  : public __vpiScope {
       inline vpiScopeTask(const char*nam, const char*tnam)
       : __vpiScope(nam,tnam) { }
-      int get_type_code(void) const override { return vpiTask; }
+      ціле get_type_code(void) const override { повернути vpiTask; }
 };
 
 struct vpiScopeTaskAuto  : public __vpiScope {
       inline vpiScopeTaskAuto(const char*nam, const char*tnam)
       : __vpiScope(nam,tnam,true) {  }
-      int get_type_code(void) const override { return vpiTask; }
+      ціле get_type_code(void) const override { повернути vpiTask; }
 };
 
 struct vpiScopeBegin  : public __vpiScope {
       inline vpiScopeBegin(const char*nam, const char*tnam)
       : __vpiScope(nam,tnam,false) { }
-      int get_type_code(void) const override { return vpiNamedBegin; }
+      ціле get_type_code(void) const override { повернути vpiNamedBegin; }
 };
 
 class vpiScopeBeginAuto  : public __vpiScope {
     public:
       inline vpiScopeBeginAuto(const char*nam, const char*tnam)
       : __vpiScope(nam,tnam,true) {  }
-      int get_type_code(void) const override { return vpiNamedBegin; }
+      ціле get_type_code(void) const override { повернути vpiNamedBegin; }
 };
 
 struct vpiScopeGenerate  : public __vpiScope {
       inline vpiScopeGenerate(const char*nam, const char*tnam)
       : __vpiScope(nam,tnam) { }
-      int get_type_code(void) const override { return vpiGenScope; }
+      ціле get_type_code(void) const override { повернути vpiGenScope; }
 };
 
 struct vpiScopeFork  : public __vpiScope {
       inline vpiScopeFork(const char*nam, const char*tnam)
       : __vpiScope(nam,tnam,false) { }
-      int get_type_code(void) const override { return vpiNamedFork; }
+      ціле get_type_code(void) const override { повернути vpiNamedFork; }
 };
 
 class vpiScopeForkAuto  : public __vpiScope {
     public:
       inline vpiScopeForkAuto(const char*nam, const char*tnam)
       : __vpiScope(nam,tnam,true) {  }
-      int get_type_code(void) const override { return vpiNamedFork; }
+      ціле get_type_code(void) const override { повернути vpiNamedFork; }
 };
 
 struct vpiScopeClass  : public __vpiScope {
       inline vpiScopeClass(const char*nam, const char*tnam)
       : __vpiScope(nam,tnam) { }
-      int get_type_code(void) const override { return vpiClassTypespec; }
+      ціле get_type_code(void) const override { повернути vpiClassTypespec; }
 };
 
 /*
@@ -477,25 +477,25 @@ compile_scope_decl(char*label, char*type, char*name, char*tname,
       unsigned wid;
 
       __vpiScope*scope;
-      if (strcmp(type,"module") == 0) {
+      якщо (strcmp(type,"module") == 0) {
 	    scope = new vpiScopeModule(name, tname);
-      } else if ( sscanf(type, "function.vec%c.%c%u", &vec_type, &sign_flag, &wid) == 3 ) {
-	    int type_code;
-	    if (sign_flag=='s') {
+      } інакше якщо ( sscanf(type, "function.vec%c.%c%u", &vec_type, &sign_flag, &wid) == 3 ) {
+	    ціле type_code;
+	    якщо (sign_flag=='s') {
 		  type_code = vpiSizedSignedFunc;
-	    } else if (sign_flag=='u') {
+	    } інакше якщо (sign_flag=='u') {
 		  type_code = vpiSizedFunc;
-	    } else if (sign_flag=='i') {
+	    } інакше якщо (sign_flag=='i') {
 		  type_code = vpiIntFunc;
-	    } else {
+	    } інакше {
 		  assert(0);
 		  type_code = vpiSizedFunc;
 	    }
 	    vvp_bit4_t init_val = vec_type == '4' ? BIT4_X : BIT4_0;
 	    scope = new vpiScopeFunction(name, tname, false, type_code, wid, init_val);
 
-      } else if ( sscanf(type, "autofunction.vec%c.%c%u", &vec_type, &sign_flag, &wid) == 3 ) {
-	    int type_code;
+      } інакше якщо ( sscanf(type, "autofunction.vec%c.%c%u", &vec_type, &sign_flag, &wid) == 3 ) {
+	    ціле type_code;
 	    switch (sign_flag) {
 		case 's':
 		  type_code = vpiSizedSignedFunc;
@@ -511,41 +511,41 @@ compile_scope_decl(char*label, char*type, char*name, char*tname,
 	    vvp_bit4_t init_val = vec_type == '4' ? BIT4_X : BIT4_0;
 	    scope = new vpiScopeFunction(name, tname, true, type_code, wid, init_val);
 
-      } else if (strcmp(type,"function.obj") == 0) {
+      } інакше якщо (strcmp(type,"function.obj") == 0) {
 	    scope = new vpiScopeFunction(name, tname, false, vpiSizedFunc, 0, BIT4_0);
-      } else if (strcmp(type,"autofunction.obj") == 0) {
+      } інакше якщо (strcmp(type,"autofunction.obj") == 0) {
 	    scope = new vpiScopeFunction(name, tname, true, vpiSizedFunc, 0, BIT4_0);
-      } else if (strcmp(type,"function.real") == 0) {
+      } інакше якщо (strcmp(type,"function.real") == 0) {
 	    scope = new vpiScopeFunction(name, tname, false, vpiRealFunc, 0, BIT4_0);
-      } else if (strcmp(type,"autofunction.real") == 0) {
+      } інакше якщо (strcmp(type,"autofunction.real") == 0) {
 	    scope = new vpiScopeFunction(name, tname, true, vpiRealFunc, 0, BIT4_0);
-      } else if (strcmp(type,"function.str") == 0) {
+      } інакше якщо (strcmp(type,"function.str") == 0) {
 	    scope = new vpiScopeFunction(name, tname, false, vpiOtherFunc, 0, BIT4_0);
-      } else if (strcmp(type,"autofunction.str") == 0) {
+      } інакше якщо (strcmp(type,"autofunction.str") == 0) {
 	    scope = new vpiScopeFunction(name, tname, true, vpiOtherFunc, 0, BIT4_0);
-      } else if (strcmp(type,"function.void") == 0) {
+      } інакше якщо (strcmp(type,"function.void") == 0) {
 	    scope = new vpiScopeFunction(name, tname, false, vpiOtherFunc, 0, BIT4_0);
-      } else if (strcmp(type,"autofunction.void") == 0) {
+      } інакше якщо (strcmp(type,"autofunction.void") == 0) {
 	    scope = new vpiScopeFunction(name, tname, true, vpiOtherFunc, 0, BIT4_0);
-      } else if (strcmp(type,"task") == 0) {
+      } інакше якщо (strcmp(type,"task") == 0) {
 	    scope = new vpiScopeTask(name, tname);
-      } else if (strcmp(type,"autotask") == 0) {
+      } інакше якщо (strcmp(type,"autotask") == 0) {
 	    scope = new vpiScopeTaskAuto(name, tname);
-      } else if (strcmp(type,"fork") == 0) {
+      } інакше якщо (strcmp(type,"fork") == 0) {
 	    scope = new vpiScopeFork(name, tname);
-      } else if (strcmp(type,"autofork") == 0) {
+      } інакше якщо (strcmp(type,"autofork") == 0) {
 	    scope = new vpiScopeForkAuto(name, tname);
-      } else if (strcmp(type,"begin") == 0) {
+      } інакше якщо (strcmp(type,"begin") == 0) {
 	    scope = new vpiScopeBegin(name, tname);
-      } else if (strcmp(type,"autobegin") == 0) {
+      } інакше якщо (strcmp(type,"autobegin") == 0) {
 	    scope = new vpiScopeBeginAuto(name, tname);
-      } else if (strcmp(type,"generate") == 0) {
+      } інакше якщо (strcmp(type,"generate") == 0) {
 	    scope = new vpiScopeGenerate(name, tname);
-      } else if (strcmp(type,"package") == 0) {
+      } інакше якщо (strcmp(type,"package") == 0) {
 	    scope = new vpiScopePackage(name, tname);
-      } else if (strcmp(type,"class") == 0) {
+      } інакше якщо (strcmp(type,"class") == 0) {
 	    scope = new vpiScopeClass(name, tname);
-      } else {
+      } інакше {
 	    scope = new vpiScopeModule(name, tname);
 	    assert(0);
       }
@@ -559,8 +559,8 @@ compile_scope_decl(char*label, char*type, char*name, char*tname,
       scope->live_contexts = 0;
       scope->free_contexts = 0;
 
-      if (is_cell) scope->is_cell = true;
-      else scope->is_cell = false;
+      якщо (is_cell) scope->is_cell = true;
+      інакше scope->is_cell = false;
 
       current_scope = scope;
 
@@ -571,7 +571,7 @@ compile_scope_decl(char*label, char*type, char*name, char*tname,
       delete[] name;
       delete[] tname;
 
-      if (parent) {
+      якщо (parent) {
 	    static vpiHandle obj;
 	    compile_vpi_lookup(&obj, parent);
 	    assert(obj);
@@ -583,7 +583,7 @@ compile_scope_decl(char*label, char*type, char*name, char*tname,
 	    scope->time_units = sp->time_units;
 	    scope->time_precision = sp->time_precision;
 
-      } else {
+      } інакше {
 	    scope->scope = 0x0;
 
 	    vpip_root_table.push_back(scope);
@@ -617,7 +617,7 @@ void compile_timescale(long units, long precision)
 
 __vpiScope* vpip_peek_current_scope(void)
 {
-      return current_scope;
+      повернути current_scope;
 }
 
 void vpip_attach_to_current_scope(vpiHandle obj)
@@ -632,10 +632,10 @@ __vpiScope* vpip_peek_context_scope(void)
         /* A context is allocated for each automatic task or function.
            Storage for nested scopes (named blocks) is allocated in
            the parent context. */
-      while (scope->scope && scope->scope->is_automatic())
+      поки (scope->scope && scope->scope->is_automatic())
             scope = scope->scope;
 
-      return scope;
+      повернути scope;
 }
 
 unsigned vpip_add_item_to_context(automatic_hooks_s*item,
@@ -646,10 +646,10 @@ unsigned vpip_add_item_to_context(automatic_hooks_s*item,
 
       unsigned idx = scope->nitem++;
 
-      if (scope->item == 0)
+      якщо (scope->item == 0)
 	    scope->item = static_cast<automatic_hooks_s**>
 	                  (malloc(sizeof(automatic_hooks_s*)));
-      else
+      інакше
 	    scope->item = static_cast<automatic_hooks_s**>
 	                  (realloc(scope->item,
 	                   sizeof(automatic_hooks_s*)*scope->nitem));
@@ -657,13 +657,13 @@ unsigned vpip_add_item_to_context(automatic_hooks_s*item,
       scope->item[idx] = item;
 
         /* Offset the context index by 2 to leave space for the list links. */
-      return 2 + idx;
+      повернути 2 + idx;
 }
 
 
 vpiPortInfo::vpiPortInfo( __vpiScope *parent,
               unsigned index,
-              int vpi_direction,
+              ціле vpi_direction,
               unsigned width,
               const char *name,
               char* buffer) :
@@ -673,8 +673,8 @@ vpiPortInfo::vpiPortInfo( __vpiScope *parent,
       width_(width),
       name_(name)
 {
-      if (buffer != nullptr) functor_ref_lookup(&ref_, buffer);
-      else ref_ = nullptr;
+      якщо (buffer != nullptr) functor_ref_lookup(&ref_, buffer);
+      інакше ref_ = nullptr;
 }
 
 vpiPortInfo::~vpiPortInfo()
@@ -689,36 +689,36 @@ void port_delete(__vpiHandle *handle)
 }
 #endif
 
-int vpiPortInfo::vpi_get(int code)
+ціле vpiPortInfo::vpi_get(ціле code)
 {
       switch( code ) {
 
         case vpiDirection :
-          return direction_;
+          повернути direction_;
         case vpiPortIndex :
-          return index_;
+          повернути index_;
         case vpiSize :
-          return width_;
+          повернути width_;
         default :
-          return vpiUndefined;
+          повернути vpiUndefined;
       }
 
 }
 
 
-char *vpiPortInfo::vpi_get_str(int code)
+char *vpiPortInfo::vpi_get_str(ціле code)
 {
       switch( code ) {
         case vpiName :
-          return simple_set_rbuf_str(name_);
+          повернути simple_set_rbuf_str(name_);
         default :
-          return NULL;
+          повернути NULL;
       }
 
 }
 
 
-vpiHandle vpiPortInfo::vpi_handle(int code)
+vpiHandle vpiPortInfo::vpi_handle(ціле code)
 {
 
       switch (code) {
@@ -726,15 +726,15 @@ vpiHandle vpiPortInfo::vpi_handle(int code)
           case vpiParent:
           case vpiScope:
           case vpiModule:
-            return parent_;
+            повернути parent_;
           default :
             break;
       }
 
-      return 0;
+      повернути 0;
 }
 
-static vpiHandle portinfo_iterate(int code, vpiHandle ref)
+static vpiHandle portinfo_iterate(ціле code, vpiHandle ref)
 {
       vpiPortInfo*rfp = dynamic_cast<vpiPortInfo*>(ref);
       assert(rfp);
@@ -744,19 +744,19 @@ static vpiHandle portinfo_iterate(int code, vpiHandle ref)
 	  case vpiBit: {
 	    vpiHandle*args = static_cast<vpiHandle*>(calloc(width, sizeof(vpiHandle*)));
 
-	    for (unsigned i = 0; i<rfp->port_bits_.size(); i++) {
+	    для (unsigned i = 0; i<rfp->port_bits_.size(); i++) {
 		  args[i] = rfp->port_bits_[i];
 	    }
 
-	    return vpip_make_iterator(width, args, true);
+	    повернути vpip_make_iterator(width, args, true);
 	  }
       }
-      return 0;
+      повернути 0;
 }
 
-vpiHandle vpiPortInfo::vpi_iterate(int code)
+vpiHandle vpiPortInfo::vpi_iterate(ціле code)
 {
-      return portinfo_iterate(code, this);
+      повернути portinfo_iterate(code, this);
 }
 
 
@@ -778,43 +778,43 @@ void port_bit_delete(__vpiHandle *handle)
 }
 #endif
 
-vpiHandle vpiPortBitInfo::vpi_handle(int code)
+vpiHandle vpiPortBitInfo::vpi_handle(ціле code)
 {
 
       switch (code) {
           case vpiParent:
-            return parent_;
+            повернути parent_;
           default :
             break;
       }
 
-      return 0;
+      повернути 0;
 }
 
-int vpiPortBitInfo::vpi_get(int code)
+ціле vpiPortBitInfo::vpi_get(ціле code)
 {
       switch( code ) {
         case vpiBit :
-          return bit_;
+          повернути bit_;
         default :
           break;
       }
 
-      return 0;
+      повернути 0;
 }
 
 /* Port info is meta-data to allow vpi queries of the port signature of modules for
  * code-generators etc.  There are no actual nets corresponding to instances of module ports
  * as elaboration directly connects nets connected through module ports.
  */
-void compile_port_info( unsigned index, int vpi_direction, unsigned width, const char *name, char* buffer )
+void compile_port_info( unsigned index, ціле vpi_direction, unsigned width, const char *name, char* buffer )
 {
       vpiPortInfo* obj = new vpiPortInfo( vpip_peek_current_scope(),
                                           index, vpi_direction, width, name, buffer );
       vpip_attach_to_current_scope(obj);
 
 	// Create vpiPortBit objects
-      for (unsigned i=0; i<width; i++) {
+      для (unsigned i=0; i<width; i++) {
 	    vpiPortBitInfo* obj_bit = new vpiPortBitInfo(obj, i);
 	    obj->add_port_bit(obj_bit);
 	    vpip_attach_to_current_scope(obj_bit);

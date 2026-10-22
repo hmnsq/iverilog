@@ -34,8 +34,8 @@ class __vpiStringConst : public __vpiHandle {
     public:
       explicit __vpiStringConst(char*val);
       ~__vpiStringConst() override;
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
+      ціле get_type_code(void) const override;
+      ціле vpi_get(ціле code) override;
       void vpi_get_value(p_vpi_value val) override;
 
     private:
@@ -62,12 +62,12 @@ void __vpiStringConst::process_string_(void)
       char*chr = value_;
       char*dp = value_;
 
-      while (*chr) {
+      поки (*chr) {
 	    char next_char = *chr;
 
 	      /* Process octal escapes that I might find. */
-	    if (*chr == '\\') {
-		  for (int idx = 1 ;  idx <= 3 ;  idx += 1) {
+	    якщо (*chr == '\\') {
+		  для (ціле idx = 1 ;  idx <= 3 ;  idx += 1) {
 			assert(chr[idx] != 0);
 			assert(chr[idx] < '8');
 			assert(chr[idx] >= '0');
@@ -87,34 +87,34 @@ __vpiStringConst::~__vpiStringConst()
       delete[] value_;
 }
 
-int __vpiStringConst::get_type_code(void) const
-{ return vpiConstant; }
+ціле __vpiStringConst::get_type_code(void) const
+{ повернути vpiConstant; }
 
-int __vpiStringConst::vpi_get(int code)
+ціле __vpiStringConst::vpi_get(ціле code)
 {
       switch (code) {
           case vpiSize:
-	    return value_len_ * 8;
+	    повернути value_len_ * 8;
 
           case vpiSigned:
-	      return 0;
+	      повернути 0;
 
 	  case vpiConstType:
-	      return vpiStringConst;
+	      повернути vpiStringConst;
 
           case vpiAutomatic:
-	      return 0;
+	      повернути 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+#якщо defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
           case _vpiFromThr:
-	      return _vpiNoThr;
+	      повернути _vpiNoThr;
 #endif
 
 	  default:
 	      fprintf(stderr, "vvp error: get %d not supported "
 		      "by vpiStringConst\n", code);
 	      assert(0);
-	      return 0;
+	      повернути 0;
       }
 }
 
@@ -136,13 +136,13 @@ void __vpiStringConst::vpi_get_value(p_vpi_value vp)
 	    rbuf = static_cast<char *>(need_result_buf(size + 1, RBUF_VAL));
 	    vp->value.str = rbuf;
 
-	    for (unsigned int i = 0; i < size; i++) {
+	    для (unsigned ціле i = 0; i < size; i++) {
 		  // Ignore leading null-bytes and replace other null-bytes with space.
 		  // The LRM is not entirely clear on how null bytes should be handled.
 		  // This is the implementation chosen for iverilog.
-		  if (*cp)
+		  якщо (*cp)
 			*rbuf++ = *cp;
-		  else if (rbuf != vp->value.str)
+		  інакше якщо (rbuf != vp->value.str)
 			*rbuf++ = ' ';
 
 		  cp++;
@@ -157,7 +157,7 @@ void __vpiStringConst::vpi_get_value(p_vpi_value vp)
 	    // will be "65". and the string "AB" is 65*256 + 66 == 16706, so
 	    // the resulting string is "16706". The "size" is the number of
 	    // characters of input text to put to work.
-	    if (size > 4){
+	    якщо (size > 4){
 		  // We only support standard integers. Ignore other bytes...
 		  size = 4;
 		  fprintf(stderr, "Warning (vpi_const.cc): %%d on constant strings only looks "
@@ -166,7 +166,7 @@ void __vpiStringConst::vpi_get_value(p_vpi_value vp)
 	    static const size_t RBUF_USE_SIZE = 12;
 	    rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
 	    uint_value = 0;
-	    for(unsigned i=0; i<size; i += 1){
+	    для(unsigned i=0; i<size; i += 1){
 		  uint_value <<=8;
 		  uint_value += (unsigned char)(value_[i]);
 	    }
@@ -177,8 +177,8 @@ void __vpiStringConst::vpi_get_value(p_vpi_value vp)
           case vpiBinStrVal:
 	      rbuf = static_cast<char *>(need_result_buf(8 * size + 1, RBUF_VAL));
 	      cp = rbuf;
-	      for(unsigned i=0; i<size; i += 1){
-		  for(int bit=7; bit>=0; bit -= 1){
+	      для(unsigned i=0; i<size; i += 1){
+		  для(ціле bit=7; bit>=0; bit -= 1){
 		      *cp++ = "01"[ (value_[i]>>bit)&1 ];
 		  }
 	      }
@@ -189,8 +189,8 @@ void __vpiStringConst::vpi_get_value(p_vpi_value vp)
           case vpiHexStrVal:
 	      rbuf = static_cast<char *>(need_result_buf(2 * size + 1, RBUF_VAL));
 	      cp = rbuf;
-	      for(unsigned i=0; i<size; i += 1){
-		  for(int nibble=1; nibble>=0; nibble -= 1){
+	      для(unsigned i=0; i<size; i += 1){
+		  для(ціле nibble=1; nibble>=0; nibble -= 1){
 		      *cp++ = "0123456789abcdef"[ (value_[i]>>(nibble*4))&15 ];
 		  }
 	      }
@@ -205,8 +205,8 @@ void __vpiStringConst::vpi_get_value(p_vpi_value vp)
 
           case vpiIntVal:
 	      vp->value.integer = 0;
-	      for(unsigned i=0; i<size; i += 1){
-		  for(int bit=7; bit>=0; bit -= 1){
+	      для(unsigned i=0; i<size; i += 1){
+		  для(ціле bit=7; bit>=0; bit -= 1){
 		      vp->value.integer <<= 1;
 		      vp->value.integer += (value_[i]>>bit)&1;
 		  }
@@ -221,10 +221,10 @@ void __vpiStringConst::vpi_get_value(p_vpi_value vp)
               uint_value = 0;
               vecp = vp->value.vector;
               vecp->aval = vecp->bval = 0;
-	      for(unsigned i=0; i<size; i += 1){
+	      для(unsigned i=0; i<size; i += 1){
 		  vecp->aval |= value_[i] << uint_value*8;
 		  uint_value += 1;
-		  if (uint_value > 3) {
+		  якщо (uint_value > 3) {
 		      uint_value = 0;
 		      vecp += 1;
 		      vecp->aval = vecp->bval = 0;
@@ -235,7 +235,7 @@ void __vpiStringConst::vpi_get_value(p_vpi_value vp)
 
 	  default:
 	    fprintf(stderr, "ERROR (vpi_const.cc): vp->format: %d\n",
-	            (int)vp->format);
+	            (ціле)vp->format);
 	    assert(0);
 
 	    vp->format = vpiSuppressVal;
@@ -249,15 +249,15 @@ struct __vpiStringConstTEMP : public __vpiStringConst {
       free_object_fun_t free_object_fun(void) override;
 };
 
-static int free_temp_string(vpiHandle obj)
+static ціле free_temp_string(vpiHandle obj)
 {
       struct __vpiStringConstTEMP*rfp = dynamic_cast<__vpiStringConstTEMP*>(obj);
       delete rfp;
-      return 1;
+      повернути 1;
 }
 
 __vpiHandle::free_object_fun_t __vpiStringConstTEMP::free_object_fun(void)
-{ return &free_temp_string; }
+{ повернути &free_temp_string; }
 
 vpiHandle vpip_make_string_const(char*text, bool persistent_flag)
 {
@@ -265,7 +265,7 @@ vpiHandle vpip_make_string_const(char*text, bool persistent_flag)
 
       obj = persistent_flag? new __vpiStringConst(text) : new __vpiStringConstTEMP(text);
 
-      return obj;
+      повернути obj;
 }
 
 
@@ -274,10 +274,10 @@ class __vpiStringParam  : public __vpiStringConst {
       __vpiStringParam(__vpiScope* scope, char*txt, const char*name,
                        bool local_flag, long file_idx, long lineno);
       ~__vpiStringParam() override;
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      ціле get_type_code(void) const override;
+      ціле vpi_get(ціле code) override;
+      char*vpi_get_str(ціле code) override;
+      vpiHandle vpi_handle(ціле code) override;
 
     private:
       __vpiScope* scope_;
@@ -305,45 +305,45 @@ __vpiStringParam::~__vpiStringParam()
       delete[]basename_;
 }
 
-int __vpiStringParam::get_type_code(void) const
-{ return vpiParameter; }
+ціле __vpiStringParam::get_type_code(void) const
+{ повернути vpiParameter; }
 
-int __vpiStringParam::vpi_get(int code)
+ціле __vpiStringParam::vpi_get(ціле code)
 {
     switch (code) {
        case vpiLineNo :
-         return lineno_;
+         повернути lineno_;
 
        case vpiLocalParam :
-         return local_flag_;
+         повернути local_flag_;
 
        default :
-         return __vpiStringConst::vpi_get(code);
+         повернути __vpiStringConst::vpi_get(code);
     }
 }
 
 
-char*__vpiStringParam::vpi_get_str(int code)
+char*__vpiStringParam::vpi_get_str(ціле code)
 {
-      if (code == vpiFile) {
-	    return simple_set_rbuf_str(file_names[file_idx_]);
+      якщо (code == vpiFile) {
+	    повернути simple_set_rbuf_str(file_names[file_idx_]);
       }
 
-      return generic_get_str(code, scope_, basename_, NULL);
+      повернути generic_get_str(code, scope_, basename_, NULL);
 }
 
 
-vpiHandle __vpiStringParam::vpi_handle(int code)
+vpiHandle __vpiStringParam::vpi_handle(ціле code)
 {
       switch (code) {
 	  case vpiScope:
-	    return scope_;
+	    повернути scope_;
 
 	  case vpiModule:
-	    return vpip_module(scope_);
+	    повернути vpip_module(scope_);
 
 	  default:
-	    return 0;
+	    повернути 0;
       }
 }
 
@@ -353,7 +353,7 @@ vpiHandle vpip_make_string_param(const char*name, char*text,
       __vpiStringParam*obj = new __vpiStringParam(vpip_peek_current_scope(), text, name,
                                                   local_flag, file_idx, lineno);
 
-      return obj;
+      повернути obj;
 }
 
 
@@ -362,37 +362,37 @@ inline __vpiBinaryConst::__vpiBinaryConst()
 : signed_flag(0), sized_flag(0)
 { }
 
-int __vpiBinaryConst::get_type_code(void) const
-{ return vpiConstant; }
+ціле __vpiBinaryConst::get_type_code(void) const
+{ повернути vpiConstant; }
 
-int __vpiBinaryConst::vpi_get(int code)
+ціле __vpiBinaryConst::vpi_get(ціле code)
 {
       switch (code) {
 	  case vpiConstType:
-	    return vpiBinaryConst;
+	    повернути vpiBinaryConst;
 
 	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+	    повернути 0;  // Not implemented for now!
 
 	  case vpiSigned:
-	    return signed_flag? 1 : 0;
+	    повернути signed_flag? 1 : 0;
 
 	  case vpiSize:
-	    return bits.size();
+	    повернути bits.size();
 
           case vpiAutomatic:
-	    return 0;
+	    повернути 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+#якщо defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
           case _vpiFromThr:
-	      return _vpiNoThr;
+	      повернути _vpiNoThr;
 #endif
 
 	  default:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by vpiBinaryConst\n", code);
 	    assert(0);
-	    return 0;
+	    повернути 0;
       }
 }
 
@@ -416,7 +416,7 @@ void __vpiBinaryConst::vpi_get_value(p_vpi_value val)
 
 	  default:
 	    fprintf(stderr, "vvp error: format %d not supported "
-		    "by vpiBinaryConst\n", (int)val->format);
+		    "by vpiBinaryConst\n", (ціле)val->format);
 	    val->format = vpiSuppressVal;
 	    break;
       }
@@ -432,21 +432,21 @@ vpiHandle vpip_make_binary_const(unsigned wid, const char*bits)
       struct __vpiBinaryConst*obj = new __vpiBinaryConst;
 
       const char*bp = bits;
-      if (*bp == 's') {
+      якщо (*bp == 's') {
 	    bp += 1;
 	    obj->signed_flag = 1;
       }
 
       obj->bits = vector4_from_text(bp, wid);
 
-      return obj;
+      повернути obj;
 }
 
 vvp_vector4_t vector4_from_text(const char*bits, unsigned wid)
 {
       vvp_vector4_t res (wid);
 
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+      для (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 	    vvp_bit4_t val = BIT4_0;
 	    switch (bits[wid-idx-1]) {
 		case '0':
@@ -466,17 +466,17 @@ vvp_vector4_t vector4_from_text(const char*bits, unsigned wid)
 	    res.set_bit(idx, val);
       }
 
-      return res;
+      повернути res;
 }
 
 struct __vpiBinaryParam  : public __vpiBinaryConst {
       __vpiBinaryParam(__vpiScope*scope, const vvp_vector4_t&b, bool is_signed,
                        const char*name, bool local_flag, long file_idx, long lineno);
       ~__vpiBinaryParam() override;
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      ціле get_type_code(void) const override;
+      ціле vpi_get(ціле code) override;
+      char*vpi_get_str(ціле code) override;
+      vpiHandle vpi_handle(ціле code) override;
 
     private:
       __vpiScope*scope_;
@@ -507,43 +507,43 @@ __vpiBinaryParam::~__vpiBinaryParam()
       delete[]basename_;
 }
 
-int __vpiBinaryParam::get_type_code(void) const
-{ return vpiParameter; }
+ціле __vpiBinaryParam::get_type_code(void) const
+{ повернути vpiParameter; }
 
-int __vpiBinaryParam::vpi_get(int code)
+ціле __vpiBinaryParam::vpi_get(ціле code)
 {
     switch (code) {
       case vpiLineNo :
-        return lineno_;
+        повернути lineno_;
 
       case vpiLocalParam :
-        return local_flag_;
+        повернути local_flag_;
 
       default :
-        return __vpiBinaryConst::vpi_get(code);
+        повернути __vpiBinaryConst::vpi_get(code);
     }
 }
 
-char*__vpiBinaryParam::vpi_get_str(int code)
+char*__vpiBinaryParam::vpi_get_str(ціле code)
 {
-      if (code == vpiFile)
-	    return simple_set_rbuf_str(file_names[file_idx_]);
+      якщо (code == vpiFile)
+	    повернути simple_set_rbuf_str(file_names[file_idx_]);
 
-      return generic_get_str(code, scope_, basename_, NULL);
+      повернути generic_get_str(code, scope_, basename_, NULL);
 }
 
 
-vpiHandle __vpiBinaryParam::vpi_handle(int code)
+vpiHandle __vpiBinaryParam::vpi_handle(ціле code)
 {
       switch (code) {
 	  case vpiScope:
-	    return scope_;
+	    повернути scope_;
 
 	  case vpiModule:
-	    return vpip_module(scope_);
+	    повернути vpip_module(scope_);
 
 	  default:
-	    return 0;
+	    повернути 0;
       }
 }
 
@@ -556,12 +556,12 @@ vpiHandle vpip_make_binary_param(const char*name, const vvp_vector4_t&bits,
                                                          bits, signed_flag, name,
                                                          local_flag, file_idx, lineno);
 
-      return obj;
+      повернути obj;
 }
 
 
 
-__vpiDecConst::__vpiDecConst(int val)
+__vpiDecConst::__vpiDecConst(ціле val)
 {
       value = val;
 }
@@ -572,34 +572,34 @@ __vpiDecConst::__vpiDecConst(const __vpiDecConst&that)
 }
 
 
-int __vpiDecConst::get_type_code(void) const
-{ return vpiConstant; }
+ціле __vpiDecConst::get_type_code(void) const
+{ повернути vpiConstant; }
 
-int __vpiDecConst::vpi_get(int code)
+ціле __vpiDecConst::vpi_get(ціле code)
 {
       switch (code) {
 	  case vpiConstType:
-	    return vpiDecConst;
+	    повернути vpiDecConst;
 
 	  case vpiSigned:
-	    return 1;
+	    повернути 1;
 
 	  case vpiSize:
-	    return 32;
+	    повернути 32;
 
           case vpiAutomatic:
-	    return 0;
+	    повернути 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+#якщо defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
           case _vpiFromThr:
-	      return _vpiNoThr;
+	      повернути _vpiNoThr;
 #endif
 
 	  default:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by vpiDecConst\n", code);
 	    assert(0);
-	    return 0;
+	    повернути 0;
       }
 }
 
@@ -624,7 +624,7 @@ void __vpiDecConst::vpi_get_value(p_vpi_value vp)
 	      break;
 
           case vpiBinStrVal:
-	      for(int bit=31; bit>=0;bit--){
+	      для(ціле bit=31; bit>=0;bit--){
 		  *cp++ = "01"[ (static_cast<unsigned>(value)>>bit)&1 ];
 	      }
 	      *cp = 0;
@@ -644,7 +644,7 @@ void __vpiDecConst::vpi_get_value(p_vpi_value vp)
 
 	  default:
 	    fprintf(stderr, "vvp error (vpi_const.cc): format %d not supported "
-		    "by vpiDecConst\n", (int)vp->format);
+		    "by vpiDecConst\n", (ціле)vp->format);
 	    vp->format = vpiSuppressVal;
 	    break;
       }
@@ -655,37 +655,37 @@ inline __vpiRealConst::__vpiRealConst(double val)
 : value(val)
 { }
 
-int __vpiRealConst::get_type_code(void) const
-{ return vpiConstant; }
+ціле __vpiRealConst::get_type_code(void) const
+{ повернути vpiConstant; }
 
-int __vpiRealConst::vpi_get(int code)
+ціле __vpiRealConst::vpi_get(ціле code)
 {
       switch (code) {
 	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+	    повернути 0;  // Not implemented for now!
 
 	  case vpiSize:
-	    return 1;
+	    повернути 1;
 
 	  case vpiConstType:
-	    return vpiRealConst;
+	    повернути vpiRealConst;
 
 	  case vpiSigned:
-	    return 1;
+	    повернути 1;
 
           case vpiAutomatic:
-	    return 0;
+	    повернути 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+#якщо defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
           case _vpiFromThr:
-	      return _vpiNoThr;
+	      повернути _vpiNoThr;
 #endif
 
 	  default:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by vpiRealConst\n", code);
 	    assert(0);
-	    return 0;
+	    повернути 0;
       }
 }
 
@@ -699,17 +699,17 @@ void __vpiRealConst::vpi_get_value(p_vpi_value val)
 vpiHandle vpip_make_real_const(double value)
 {
       __vpiRealConst*obj = new __vpiRealConst(value);
-      return obj;
+      повернути obj;
 }
 
 struct __vpiRealParam  : public __vpiRealConst {
       __vpiRealParam(__vpiScope* scope, double val, const char*name,
                      bool local_flag, long file_idx, long lineno);
       ~__vpiRealParam() override;
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      ціле get_type_code(void) const override;
+      ціле vpi_get(ціле code) override;
+      char*vpi_get_str(ціле code) override;
+      vpiHandle vpi_handle(ціле code) override;
 
     private:
       __vpiScope* scope_;
@@ -739,42 +739,42 @@ __vpiRealParam::~__vpiRealParam()
 }
 
 
-int __vpiRealParam::get_type_code(void) const
-{ return vpiParameter; }
+ціле __vpiRealParam::get_type_code(void) const
+{ повернути vpiParameter; }
 
-int __vpiRealParam::vpi_get(int code)
+ціле __vpiRealParam::vpi_get(ціле code)
 {
     switch (code) {
       case vpiLineNo :
-        return lineno_;
+        повернути lineno_;
 
       case vpiLocalParam :
-        return local_flag_;
+        повернути local_flag_;
 
       default :
-           return __vpiRealConst::vpi_get(code);
+           повернути __vpiRealConst::vpi_get(code);
     }
 }
 
-char* __vpiRealParam::vpi_get_str(int code)
+char* __vpiRealParam::vpi_get_str(ціле code)
 {
-      if (code == vpiFile)
-            return simple_set_rbuf_str(file_names[file_idx_]);
+      якщо (code == vpiFile)
+            повернути simple_set_rbuf_str(file_names[file_idx_]);
 
-      return generic_get_str(code, scope_, basename_, NULL);
+      повернути generic_get_str(code, scope_, basename_, NULL);
 }
 
-vpiHandle __vpiRealParam::vpi_handle(int code)
+vpiHandle __vpiRealParam::vpi_handle(ціле code)
 {
       switch (code) {
           case vpiScope:
-            return scope_;
+            повернути scope_;
 
 	  case vpiModule:
-	    return vpip_module(scope_);
+	    повернути vpip_module(scope_);
 
           default:
-            return 0;
+            повернути 0;
       }
 }
 
@@ -785,7 +785,7 @@ vpiHandle vpip_make_real_param(const char*name, double value,
       struct __vpiRealParam*obj = new __vpiRealParam(vpip_peek_current_scope(),
                                                      value, name, local_flag,
                                                      file_idx, lineno);
-      return obj;
+      повернути obj;
 }
 
 /*
@@ -794,37 +794,37 @@ vpiHandle vpip_make_real_param(const char*name, double value,
 inline __vpiNullConst::__vpiNullConst()
 { }
 
-int __vpiNullConst::get_type_code(void) const
-{ return vpiConstant; }
+ціле __vpiNullConst::get_type_code(void) const
+{ повернути vpiConstant; }
 
-int __vpiNullConst::vpi_get(int code)
+ціле __vpiNullConst::vpi_get(ціле code)
 {
       switch (code) {
 	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+	    повернути 0;  // Not implemented for now!
 
 	  case vpiSize:
-	    return 32;
+	    повернути 32;
 
 	  case vpiConstType:
-	    return vpiNullConst;
+	    повернути vpiNullConst;
 
 	  case vpiSigned:
-	    return 0;
+	    повернути 0;
 
           case vpiAutomatic:
-	    return 0;
+	    повернути 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+#якщо defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
           case _vpiFromThr:
-	      return _vpiNoThr;
+	      повернути _vpiNoThr;
 #endif
 
 	  default:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by vpiNullConst\n", code);
 	    assert(0);
-	    return 0;
+	    повернути 0;
       }
 }
 
@@ -859,7 +859,7 @@ void __vpiNullConst::vpi_get_value(p_vpi_value val)
 	    val->value.vector = static_cast<p_vpi_vecval>
 	                        (need_result_buf(2*sizeof(s_vpi_vecval),
 	                                         RBUF_VAL));
-	    for (unsigned idx = 0; idx < 2; idx += 1) {
+	    для (unsigned idx = 0; idx < 2; idx += 1) {
 		  val->value.vector[idx].aval = 0;
 		  val->value.vector[idx].bval = 0;
 	    }
@@ -871,7 +871,7 @@ void __vpiNullConst::vpi_get_value(p_vpi_value val)
 
 	  default:
 	    fprintf(stderr, "vvp error: format %d not supported "
-		    "by vpiNullConst\n", (int)val->format);
+		    "by vpiNullConst\n", (ціле)val->format);
 	    val->format = vpiSuppressVal;
 	    break;
       }
@@ -880,7 +880,7 @@ void __vpiNullConst::vpi_get_value(p_vpi_value val)
 vpiHandle vpip_make_null_const()
 {
       __vpiNullConst*obj = new __vpiNullConst;
-      return obj;
+      повернути obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND

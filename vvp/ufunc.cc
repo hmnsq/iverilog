@@ -92,13 +92,13 @@ ufunc_core::~ufunc_core()
  */
 void ufunc_core::assign_bits_to_ports(vvp_context_t context)
 {
-      for (unsigned idx = 0 ; idx < port_count() ;  idx += 1) {
+      для (unsigned idx = 0 ; idx < port_count() ;  idx += 1) {
 	    vvp_net_t*net = ports_[idx];
 	    vvp_net_ptr_t pp (net, 0);
 
 	      // If the port is a real variable, then simply copy the
 	      // propagated input to the port variable.
-	    if (vvp_fun_signal_real*tmp = dynamic_cast<vvp_fun_signal_real*>(net->fun))
+	    якщо (vvp_fun_signal_real*tmp = dynamic_cast<vvp_fun_signal_real*>(net->fun))
 		  tmp->recv_real(pp, value_r(idx), context);
 
 	      // If the port is a bit4 vector, then copy the
@@ -108,13 +108,13 @@ void ufunc_core::assign_bits_to_ports(vvp_context_t context)
 	      // of the port variable. This is to handle the uncommon
 	      // startup case where the input values have not
 	      // propagated useful values yet.
-	    if (vvp_fun_signal_vec*tmp = dynamic_cast<vvp_fun_signal_vec*>(net->fun)) {
+	    якщо (vvp_fun_signal_vec*tmp = dynamic_cast<vvp_fun_signal_vec*>(net->fun)) {
 		  const vvp_vector4_t&tmp_val = value(idx);
-		  if (tmp_val.size() == 0) {
+		  якщо (tmp_val.size() == 0) {
 			const vvp_vector4_t&ref = tmp->vec4_unfiltered_value();
 			vvp_vector4_t xxx (ref.size(), BIT4_X);
 			tmp->recv_vec4(pp, xxx, context);
-		  } else {
+		  } інакше {
 			tmp->recv_vec4(pp, tmp_val, context);
 		  }
 	    }
@@ -177,7 +177,7 @@ void ufunc_core::recv_real_from_inputs(unsigned)
 
 void ufunc_core::invoke_thread_()
 {
-      if (thread_ == 0) {
+      якщо (thread_ == 0) {
 	    thread_ = vthread_new(code_, call_scope_);
 	    schedule_vthread(thread_, 0);
       }
@@ -271,7 +271,7 @@ void compile_ufunc_real(char*label, char*code, unsigned wid,
 	   not the same as the input ports) and arrange for their
 	   binding. */
       vvp_net_t**ports = new vvp_net_t*[portc];
-      for (unsigned idx = 0 ;  idx < portc ;  idx += 1) {
+      для (unsigned idx = 0 ;  idx < portc ;  idx += 1) {
 	    functor_ref_lookup(&ports[idx], portv[idx].text);
       }
 
@@ -293,7 +293,7 @@ void compile_ufunc_real(char*label, char*code, unsigned wid,
 
         /* If this function has a trigger event, connect the functor to
            that event. */
-      if (trigger_label)
+      якщо (trigger_label)
             input_connect(ptr, 0, trigger_label);
 
       free(argv);
@@ -342,7 +342,7 @@ void compile_ufunc_vec4(char*label, char*code, unsigned wid,
 	   not the same as the input ports) and arrange for their
 	   binding. */
       vvp_net_t**ports = new vvp_net_t*[portc];
-      for (unsigned idx = 0 ;  idx < portc ;  idx += 1) {
+      для (unsigned idx = 0 ;  idx < portc ;  idx += 1) {
 	    functor_ref_lookup(&ports[idx], portv[idx].text);
       }
 
@@ -364,7 +364,7 @@ void compile_ufunc_vec4(char*label, char*code, unsigned wid,
 
         /* If this function has a trigger event, connect the functor to
            that event. */
-      if (trigger_label)
+      якщо (trigger_label)
             input_connect(ptr, 0, trigger_label);
 
       free(argv);
@@ -381,7 +381,7 @@ void exec_ufunc_delete(vvp_code_t euf_code)
 void ufunc_pool_delete(void)
 {
       std::map<ufunc_core*, bool>::iterator iter;
-      for (iter = ufunc_map.begin(); iter != ufunc_map.end(); ++ iter ) {
+      для (iter = ufunc_map.begin(); iter != ufunc_map.end(); ++ iter ) {
 	    delete iter->first;
       }
 }

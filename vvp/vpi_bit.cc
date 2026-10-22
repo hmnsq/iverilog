@@ -29,21 +29,21 @@
 
 static const __vpiBit*bit_from_handle(const __vpiHandle*ref)
 {
-      if (ref == NULL) return NULL;
+      якщо (ref == NULL) повернути NULL;
       const __vpiBit::as_bit_t*ptr = dynamic_cast<const __vpiBit::as_bit_t*> (ref);
-      if (ptr == NULL) return NULL;
-      return reinterpret_cast<const struct __vpiBit*>(ref);
+      якщо (ptr == NULL) повернути NULL;
+      повернути reinterpret_cast<const struct __vpiBit*>(ref);
 }
 
 static __vpiBit*bit_from_handle(__vpiHandle*ref)
 {
-      if (ref == NULL) return NULL;
+      якщо (ref == NULL) повернути NULL;
       const __vpiBit::as_bit_t*ptr = dynamic_cast<__vpiBit::as_bit_t*> (ref);
-      if (ptr == NULL) return NULL;
-      return reinterpret_cast<struct __vpiBit*>(ref);
+      якщо (ptr == NULL) повернути NULL;
+      повернути reinterpret_cast<struct __vpiBit*>(ref);
 }
 
-static int bit_get_type(const __vpiBit*rfp)
+static ціле bit_get_type(const __vpiBit*rfp)
 {
       assert(rfp);
 
@@ -52,15 +52,15 @@ static int bit_get_type(const __vpiBit*rfp)
 
       switch (parent->get_type_code()) {
 	case vpiNet:
-	    return vpiNetBit;
+	    повернути vpiNetBit;
 	case vpiReg:
-	    return vpiRegBit;
+	    повернути vpiRegBit;
       }
       assert(0);
-      return 0;
+      повернути 0;
 }
 
-static int bit_get(int code, vpiHandle ref)
+static ціле bit_get(ціле code, vpiHandle ref)
 {
       struct __vpiBit*rfp = bit_from_handle(ref);
       assert(rfp);
@@ -70,51 +70,51 @@ static int bit_get(int code, vpiHandle ref)
 
       switch (code) {
 	case vpiArray:  // A bit is not an array
-	    return 0;
+	    повернути 0;
 
 	case vpiAutomatic:
-	    return vpi_get(vpiAutomatic, parent);
+	    повернути vpi_get(vpiAutomatic, parent);
 
 	case vpiIndex:
 	    {
 		  s_vpi_value vp;
 		  vp.format = vpiIntVal;
 		  vpi_get_value(rfp->index, &vp);
-		  return vp.value.integer;
+		  повернути vp.value.integer;
 	    }
 
 	case vpiLineNo:
-	    return vpi_get(vpiLineNo, parent);
+	    повернути vpi_get(vpiLineNo, parent);
 
 	case vpiScalar:  // A bit is a scalar
-	    return 1;
+	    повернути 1;
 
 	case vpiSigned:  // A bit is unsigned
-	    return 0;
+	    повернути 0;
 
 	case vpiSize:  // A bit has a width of 1
-	    return 1;
+	    повернути 1;
 
 	case vpiVector:  // A bit is not a vector
-	    return 0;
+	    повернути 0;
 
 	default:
 	    fprintf(stderr, "VPI error: unknown bit_get property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    повернути vpiUndefined;
       }
 }
 
-static char* bit_get_str(int code, vpiHandle ref)
+static char* bit_get_str(ціле code, vpiHandle ref)
 {
       struct __vpiBit*rfp = bit_from_handle(ref);
       assert(rfp);
 
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      якщо (code == vpiFile) {  // Not implemented for now!
+            повернути simple_set_rbuf_str(file_names[0]);
       }
 
-      if ((code != vpiName) && (code != vpiFullName)) return NULL;
+      якщо ((code != vpiName) && (code != vpiFullName)) повернути NULL;
 
       struct __vpiSignal*parent = rfp->get_parent();
       assert(parent);
@@ -129,10 +129,10 @@ static char* bit_get_str(int code, vpiHandle ref)
 
       char *rbuf = generic_get_str(code, vpip_scope(parent), nm, ixs);
       free(nm);
-      return rbuf;
+      повернути rbuf;
 }
 
-static vpiHandle bit_get_handle(int code, vpiHandle ref)
+static vpiHandle bit_get_handle(ціле code, vpiHandle ref)
 {
       struct __vpiBit*rfp = bit_from_handle(ref);
       assert(rfp);
@@ -142,19 +142,19 @@ static vpiHandle bit_get_handle(int code, vpiHandle ref)
 
       switch (code) {
 	case vpiIndex:
-	    return rfp->index;
+	    повернути rfp->index;
 
 	case vpiParent:
-	    return parent;
+	    повернути parent;
 
 	case vpiScope:
-	    return vpi_handle(vpiScope, parent);
+	    повернути vpi_handle(vpiScope, parent);
 
 	case vpiModule:
-	    return vpi_handle(vpiModule, parent);
+	    повернути vpi_handle(vpiModule, parent);
       }
 
-    return 0;
+    повернути 0;
 }
 
 /*
@@ -188,7 +188,7 @@ static void bit_get_value(vpiHandle ref, s_vpi_value*vp)
       parent->get_bit_value(rfp, vp);
 }
 
-static vpiHandle bit_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
+static vpiHandle bit_put_value(vpiHandle ref, s_vpi_value*vp, ціле flags)
 {
       struct __vpiBit*rfp = bit_from_handle(ref);
       assert(rfp);
@@ -196,35 +196,35 @@ static vpiHandle bit_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
       struct __vpiSignal*parent = rfp->get_parent();
       assert(parent);
 
-      return parent->put_bit_value(rfp, vp, flags);
+      повернути parent->put_bit_value(rfp, vp, flags);
 }
 
 
-int __vpiBit::get_index(void) const
+ціле __vpiBit::get_index(void) const
 {
       s_vpi_value vp;
       vp.format = vpiIntVal;
       vpi_get_value(index, &vp);
-      return vp.value.integer;
+      повернути vp.value.integer;
 }
 
-int __vpiBit::as_bit_t::get_type_code(void) const
-{ return bit_get_type(bit_from_handle(this)); }
+ціле __vpiBit::as_bit_t::get_type_code(void) const
+{ повернути bit_get_type(bit_from_handle(this)); }
 
-int __vpiBit::as_bit_t::vpi_get(int code)
-{ return bit_get(code, this); }
+ціле __vpiBit::as_bit_t::vpi_get(ціле code)
+{ повернути bit_get(code, this); }
 
-char* __vpiBit::as_bit_t::vpi_get_str(int code)
-{ return bit_get_str(code, this); }
+char* __vpiBit::as_bit_t::vpi_get_str(ціле code)
+{ повернути bit_get_str(code, this); }
 
 void __vpiBit::as_bit_t::vpi_get_value(p_vpi_value val)
 { bit_get_value(this, val); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_put_value(p_vpi_value val, int flags)
-{ return bit_put_value(this, val, flags); }
+vpiHandle __vpiBit::as_bit_t::vpi_put_value(p_vpi_value val, ціле flags)
+{ повернути bit_put_value(this, val, flags); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_handle(int code)
-{ return bit_get_handle(code, this); }
+vpiHandle __vpiBit::as_bit_t::vpi_handle(ціле code)
+{ повернути bit_get_handle(code, this); }
 
 // FIXME: How are delayed put values handled?
 //vpiHandle __vpiBit::as_bit_t::vpi_iterate(int code) // FIXME: Is this needed?

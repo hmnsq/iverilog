@@ -59,8 +59,8 @@ class ufunc_core : public vvp_wide_fun_core {
 		 char*scope_label);
       virtual ~ufunc_core() override =0;
 
-      __vpiScope*call_scope() { return call_scope_; }
-      __vpiScope*func_scope() { return func_scope_; }
+      __vpiScope*call_scope() { повернути call_scope_; }
+      __vpiScope*func_scope() { повернути func_scope_; }
 
       void assign_bits_to_ports(vvp_context_t context);
       virtual void finish_thread() =0;

@@ -37,18 +37,18 @@
 /* #define MAX_DIGITS 20 */
 
 
-#if SIZEOF_UNSIGNED_LONG * CHAR_BIT >= 64
+#якщо SIZEOF_UNSIGNED_LONG * CHAR_BIT >= 64
 #define BDIGITS 9
 #define BASE 1000000000
 #define BBITS 32
 #define BMASK 0xffffffff
-#else
-#if SIZEOF_UNSIGNED_LONG * CHAR_BIT >= 32
+#інакше
+#якщо SIZEOF_UNSIGNED_LONG * CHAR_BIT >= 32
 #define BDIGITS 4
 #define BASE 10000
 #define BBITS 16
 #define BMASK 0xffff
-#else
+#інакше
 #error apparent non-conforming word length
 #endif
 #endif
@@ -61,7 +61,7 @@
 /* Jump through some hoops so we don't have to malloc/free valv
  * on every call, and implement an optional malloc-less version. */
 static unsigned long *valv=NULL;
-static unsigned int vlen_alloc=0;
+static unsigned ціле vlen_alloc=0;
 
 /* The program works by building a base BASE representation of the number
  * in the valv array.  BBITS bits of the number can be put in at a time.
@@ -73,16 +73,16 @@ static unsigned int vlen_alloc=0;
  * less than or equal to 2^BBITS.  BBITS and BASE are configured above
  * to depend on the "unsigned long" length of the host, for efficiency.
  */
-static inline void shift_in(unsigned int vlen, unsigned long val)
+static inline void shift_in(unsigned ціле vlen, unsigned long val)
 {
-	unsigned int i;
+	unsigned ціле i;
 	/* printf("shift in %u\n",val); */
-	for (i=0; i<vlen; i++) {
+	для (i=0; i<vlen; i++) {
 		val=(valv[i]<<BBITS)+val;
 		valv[i]=val%BASE;
 		val=val/BASE;
 	}
-	if (val!=0)
+	якщо (val!=0)
 	      fprintf(stderr,"internal error: carry out %lu in " __FILE__ "\n",val);
 }
 
@@ -91,21 +91,21 @@ static inline void shift_in(unsigned int vlen, unsigned long val)
  * to work, I suppose, but for speed and control I prefer to write
  * the steps out longhand.
  */
-static inline int write_digits(unsigned long v, char **buf,
-                               unsigned int *nbuf, int zero_suppress)
+static inline ціле write_digits(unsigned long v, char **buf,
+                               unsigned ціле *nbuf, ціле zero_suppress)
 {
 	char segment[BDIGITS];
-	int i;
-	for (i=BDIGITS-1; i>=0; --i) {
+	ціле i;
+	для (i=BDIGITS-1; i>=0; --i) {
 		segment[i] = '0' + v%10;
 		v=v/10;
 	}
-	for (i=0; i<BDIGITS; ++i) {
-		if (!(zero_suppress&=(segment[i]=='0'))) {
+	для (i=0; i<BDIGITS; ++i) {
+		якщо (!(zero_suppress&=(segment[i]=='0'))) {
 			*(*buf)++=segment[i]; --(*nbuf);
 		}
 	}
-	return zero_suppress;
+	повернути zero_suppress;
 }
 
 #ifdef CHECK_WITH_VALGRIND
@@ -118,16 +118,16 @@ void dec_str_delete(void)
 #endif
 
 unsigned vpip_vec4_to_dec_str(const vvp_vector4_t&vec4,
-			      char *buf, unsigned int nbuf,
-			      int signed_flag)
+			      char *buf, unsigned ціле nbuf,
+			      ціле signed_flag)
 {
-      unsigned int idx, vlen;
-      unsigned int mbits=vec4.size();   /* number of non-sign bits */
+      unsigned ціле idx, vlen;
+      unsigned ціле mbits=vec4.size();   /* number of non-sign bits */
       unsigned count_x = 0, count_z = 0;
 
       unsigned long val=0;
-      int comp=0;
-      if (signed_flag) {
+      ціле comp=0;
+      якщо (signed_flag) {
 	    switch (vec4.value(vec4.size()-1)) {
 		case BIT4_X:
 		  count_x += 1;
@@ -148,16 +148,16 @@ unsigned vpip_vec4_to_dec_str(const vvp_vector4_t&vec4,
 	/* printf("vlen=%d\n",vlen); */
 
 #define ALLOC_MARGIN 4
-      if (!valv || vlen > vlen_alloc) {
-	    if (valv) free(valv);
+      якщо (!valv || vlen > vlen_alloc) {
+	    якщо (valv) free(valv);
 	    valv = static_cast<unsigned long*>
 	           (calloc(vlen+ALLOC_MARGIN, sizeof (*valv)));
 	    vlen_alloc=vlen+ALLOC_MARGIN;
-      } else {
+      } інакше {
 	    memset(valv,0,vlen*sizeof(valv[0]));
       }
 
-      for (idx = 0; idx < mbits; idx += 1) {
+      для (idx = 0; idx < mbits; idx += 1) {
 	      /* printf("%c ",bits[mbits-idx-1]); */
 	    switch (vec4.value(mbits-idx-1)) {
 		case BIT4_Z:
@@ -167,46 +167,46 @@ unsigned vpip_vec4_to_dec_str(const vvp_vector4_t&vec4,
 		  count_x += 1;
 		  break;
 		case BIT4_1:
-		  if (! comp)
+		  якщо (! comp)
 			val += 1;
 		  break;
 		case BIT4_0:
-		  if (comp)
+		  якщо (comp)
 			val += 1;
 		  break;
 	    }
 
-	    if ((mbits-idx-1)%BBITS==0) {
+	    якщо ((mbits-idx-1)%BBITS==0) {
 		    /* make negative 2's complement, not 1's complement */
-		  if (comp && idx==mbits-1) ++val;
+		  якщо (comp && idx==mbits-1) ++val;
 		  shift_in(vlen,val);
 		  val=0;
-	    } else {
+	    } інакше {
 		  val=val+val;
 	    }
       }
 
-	if (count_x == vec4.size()) {
+	якщо (count_x == vec4.size()) {
 	      buf[0] = 'x';
 	      buf[1] = 0;
-	} else if (count_x > 0) {
+	} інакше якщо (count_x > 0) {
 	      buf[0] = 'X';
 	      buf[1] = 0;
-	} else if (count_z == vec4.size()) {
+	} інакше якщо (count_z == vec4.size()) {
 	      buf[0] = 'z';
 	      buf[1] = 0;
-	} else if (count_z > 0) {
+	} інакше якщо (count_z > 0) {
 	      buf[0] = 'Z';
 	      buf[1] = 0;
-	} else {
-	      int i;
-	      int zero_suppress=1;
-	      if (comp) {
+	} інакше {
+	      ціле i;
+	      ціле zero_suppress=1;
+	      якщо (comp) {
 		    *buf++='-';
 		    nbuf--;
 		      /* printf("-"); */
 	      }
-	      for (i=vlen-1; i>=0; i--) {
+	      для (i=vlen-1; i>=0; i--) {
 		    zero_suppress = write_digits(valv[i],
 						 &buf,&nbuf,zero_suppress);
 		      /* printf(",%.4u",valv[i]); */
@@ -216,52 +216,52 @@ unsigned vpip_vec4_to_dec_str(const vvp_vector4_t&vec4,
 		 * way we can still have zero_suppress on in the
 		 * comp=1 case is if mbits==0, and therefore vlen==0.
 		 * We represent 1'sb1 as "-1". */
-	      if (zero_suppress) *buf++='0'+comp;
+	      якщо (zero_suppress) *buf++='0'+comp;
 		/* printf("\n"); */
 	      *buf='\0';
 	}
-	return 0;
+	повернути 0;
 }
 
 void vpip_dec_str_to_vec4(vvp_vector4_t&vec, const char*buf)
 {
 	/* Support for [xX]_*. */
-      if (buf[0] == 'x' || buf[0] == 'X') {
-	    for (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
+      якщо (buf[0] == 'x' || buf[0] == 'X') {
+	    для (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
 		  vec.set_bit(idx, BIT4_X);
 	    }
 	    const char*tbuf = buf+1;
 	      /* See if this is a valid constant. */
-	    while (*tbuf) {
-		  if (*tbuf != '_') {
+	    поки (*tbuf) {
+		  якщо (*tbuf != '_') {
 			fprintf(stderr, "Warning: Invalid decimal \"x\" "
 			                "value \"%s\".\n", buf);
-			return;
+			повернути;
 		  }
 		  tbuf += 1;
 	    }
-	    return;
+	    повернути;
       }
 
 	/* Support for [zZ]_*. */
-      if (buf[0] == 'z' || buf[0] == 'Z') {
+      якщо (buf[0] == 'z' || buf[0] == 'Z') {
 	    const char*tbuf = buf+1;
 	      /* See if this is a valid constant, if not return "x". */
-	    while (*tbuf) {
-		  if (*tbuf != '_') {
+	    поки (*tbuf) {
+		  якщо (*tbuf != '_') {
 			fprintf(stderr, "Warning: Invalid decimal \"z\" "
 			                "value \"%s\".\n", buf);
-			for (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
+			для (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
 			      vec.set_bit(idx, BIT4_X);
 			}
-			return;
+			повернути;
 		  }
 		  tbuf += 1;
 	    }
-	    for (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
+	    для (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
 		  vec.set_bit(idx, BIT4_Z);
 	    }
-	    return;
+	    повернути;
       }
 
 	/* The str string is the decimal value with the least
@@ -271,31 +271,31 @@ void vpip_dec_str_to_vec4(vvp_vector4_t&vec, const char*buf)
       unsigned slen = strlen(buf);
       char*str = new char[slen + 1];
       bool is_negative = false;
-      for (unsigned idx = 0 ;  idx < slen ;  idx += 1) {
-	    if (idx == slen-1 && buf[slen-idx-1] == '-') {
+      для (unsigned idx = 0 ;  idx < slen ;  idx += 1) {
+	    якщо (idx == slen-1 && buf[slen-idx-1] == '-') {
 	          is_negative = true;
 		  slen--;
 		  continue;
 	    }
-	    while (buf[slen-idx-1] == '_') {
+	    поки (buf[slen-idx-1] == '_') {
 		  slen--;
 	    }
-	    if (isdigit(buf[slen-idx-1]))
+	    якщо (isdigit(buf[slen-idx-1]))
 		  str[idx] = buf[slen-idx-1];
-            else {
+            інакше {
 		    /* Return "x" if there are invalid digits in the string. */
 		  fprintf(stderr, "Warning: Invalid decimal digit %c(%d) in "
 		          "\"%s.\"\n", buf[slen-idx-1], buf[slen-idx-1], buf);
-		  for (unsigned jdx = 0 ;  jdx < vec.size() ;  jdx += 1) {
+		  для (unsigned jdx = 0 ;  jdx < vec.size() ;  jdx += 1) {
 			vec.set_bit(jdx, BIT4_X);
 		  }
-		  return;
+		  повернути;
             }
       }
 
       str[slen] = 0;
 
-      for (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
+      для (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
 	    vvp_bit4_t val4 = BIT4_0;
 
 	    switch (str[0]) {
@@ -312,9 +312,9 @@ void vpip_dec_str_to_vec4(vvp_vector4_t&vec, const char*buf)
 
 	      /* Divide the str string by 2 in decimal. */
 	    char*cp = str;
-	    while (*cp) {
+	    поки (*cp) {
 		  unsigned val = cp[0] - '0';
-		  if ((val&1) && (cp > str))
+		  якщо ((val&1) && (cp > str))
 			cp[-1] += 5;
 
 		  cp[0] = '0' + val/2;
@@ -323,7 +323,7 @@ void vpip_dec_str_to_vec4(vvp_vector4_t&vec, const char*buf)
 
       }
 
-      if (is_negative) {
+      якщо (is_negative) {
             vec.invert();
             vec += (int64_t) 1;
       }
