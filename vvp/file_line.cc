@@ -19,82 +19,82 @@
 # include "compile.h"
 # include "vpi_priv.h"
 
-class __vpiFileLine : public __vpiHandle {
-    public:
-      explicit __vpiFileLine(const char*desc_, long file_idx_, long lineno_);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+صنف __vpiFileLine : عام __vpiHandle {
+    عام:
+      explicit __vpiFileLine(ثابت حرف*desc_, long file_idx_, long lineno_);
+      صحيح get_type_code(فراغ) ثابت override;
+      صحيح vpi_get(صحيح code) override;
+      حرف* vpi_get_str(صحيح code) override;
 
-      const char* get_description() const { return description; };
-      unsigned get_file_idx() const { return file_idx; };
-      unsigned get_lineno() const { return lineno; };
+      ثابت حرف* get_description() ثابت { أرجع description; };
+      unsigned get_file_idx() ثابت { أرجع file_idx; };
+      unsigned get_lineno() ثابت { أرجع lineno; };
 
-    private:
-      const char *description;
+    خاص:
+      ثابت حرف *description;
       unsigned file_idx;
       unsigned lineno;
 };
 
-bool show_file_line = false;
-bool code_is_instrumented = false;
+منطقي show_file_لي = خطأ;
+منطقي code_is_instrumented = خطأ;
 
-static int file_line_get(int type, vpiHandle ref)
+ساكن صحيح file_لي_get(صحيح type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      أكد(rfp);
 
-      switch (type) {
-	case vpiLineNo:
-	    return rfp->get_lineno();
-	default:
-	    return vpiUndefined;
+      بدل (type) {
+	حالة vpi_لي_No:
+	    أرجع rfp->get_lineno();
+	افتراضي:
+	    أرجع vpiUndefined;
       }
 }
 
-static char *file_line_get_str(int type, vpiHandle ref)
+ساكن حرف *file_لي_get_str(صحيح type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      أكد(rfp);
 
-      switch (type) {
-	case vpiFile:
-	    assert(rfp->get_file_idx() < file_names.size());
-	    return simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
-	case _vpiDescription:
-	    if (rfp->get_description()) {
-		  return simple_set_rbuf_str(rfp->get_description());
-	    } else return simple_set_rbuf_str("Procedural tracing.");
-	default:
-	    return 0;
+      بدل (type) {
+	حالة vpiFile:
+	    أكد(rfp->get_file_idx() < file_names.size());
+	    أرجع simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
+	حالة _vpiDescription:
+	    إذا (rfp->get_description()) {
+		  أرجع simple_set_rbuf_str(rfp->get_description());
+	    } وإلا أرجع simple_set_rbuf_str("Procedural tracing.");
+	افتراضي:
+	    أرجع 0;
       }
 }
 
-inline __vpiFileLine::__vpiFileLine(const char*desc_, long file_idx_,
+مضمن __vpiFileLine::__vpiFileLine(ثابت حرف*desc_, long file_idx_,
                                     long lineno_)
 {
-      if (desc_) description = vpip_name_string(desc_);
-      else description = 0;
+      إذا (desc_) description = vpip_name_string(desc_);
+      وإلا description = 0;
       file_idx = (unsigned) file_idx_;
       lineno = (unsigned) lineno_;
 }
 
-int __vpiFileLine::get_type_code(void) const
-{ return _vpiFileLine; }
+صحيح __vpiFileLine::get_type_code(فراغ) ثابت
+{ أرجع vpi_File_لي; }
 
-int __vpiFileLine::vpi_get(int code)
-{ return file_line_get(code, this); }
+صحيح __vpiFileLine::vpi_get(صحيح code)
+{ أرجع file_لي_get(code, هذا); }
 
-char* __vpiFileLine::vpi_get_str(int code)
-{ return file_line_get_str(code, this); }
+حرف* __vpiFileLine::vpi_get_str(صحيح code)
+{ أرجع file_لي_get_str(code, هذا); }
 
 
-vpiHandle vpip_build_file_line(const char*description, long file_idx, long lineno)
+vpiHandle vpip_build_file_لي(ثابت حرف*description, long file_idx, long lineno)
 {
-      __vpiFileLine*obj = new __vpiFileLine(description, file_idx, lineno);
+      __vpiFileLine*obj = جديد __vpiFileLine(description, file_idx, lineno);
 
 	/* You can turn on the diagnostic output if we find a %file_line. */
       code_is_instrumented = true;
 
-      return obj;
+      أرجع obj;
 }

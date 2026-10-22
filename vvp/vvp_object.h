@@ -29,70 +29,70 @@
  * smart pointer. This makes garbage collection automatic.
  */
 class vvp_object {
-    public:
-      inline vvp_object() { ref_cnt_ = 0; total_active_cnt_ += 1; }
+    عام:
+      مضمن vvp_object() { ref_cnt_ = 0; total_active_cnt_ += 1; }
       virtual ~vvp_object() =0;
 
-      virtual void shallow_copy(const vvp_object*that);
-      virtual vvp_object* duplicate(void) const;
+      virtual فراغ shallow_copy(ثابت vvp_object*that);
+      virtual vvp_object* duplicate(فراغ) ثابت;
 
-      static void cleanup(void);
+      ساكن فراغ cleanup(فراغ);
 
-    private:
+    خاص:
       friend class vvp_object_t;
-      int ref_cnt_;
+      صحيح ref_cnt_;
 
-      static int total_active_cnt_;
+      ساكن صحيح total_active_cnt_;
 };
 
 class vvp_object_t {
-    public:
-      inline vvp_object_t() : ref_(0) { }
-      vvp_object_t(const vvp_object_t&that);
+    عام:
+      مضمن vvp_object_t() : ref_(0) { }
+      vvp_object_t(ثابت vvp_object_t&that);
       explicit vvp_object_t(class vvp_object*that);
       ~vvp_object_t();
 
-      vvp_object_t& operator = (const vvp_object_t&that);
+      vvp_object_t& operator = (ثابت vvp_object_t&that);
       vvp_object_t& operator = (class vvp_object*that);
 
-      void reset(vvp_object*tgt = 0);
+      فراغ reset(vvp_object*tgt = 0);
 
-      bool test_nil() const { return ref_ == 0; }
-      inline bool operator == (const vvp_object_t&that) const
-          { return ref_ == that.ref_; }
-      inline bool operator != (const vvp_object_t&that) const
-          { return ref_ != that.ref_; }
+      bool test_nil() ثابت { أرجع ref_ == 0; }
+      مضمن bool operator == (ثابت vvp_object_t&that) ثابت
+          { أرجع ref_ == that.ref_; }
+      مضمن bool operator != (ثابت vvp_object_t&that) ثابت
+          { أرجع ref_ != that.ref_; }
 
-      inline void shallow_copy(const vvp_object_t&that)
+      مضمن فراغ shallow_copy(ثابت vvp_object_t&that)
           { ref_->shallow_copy(that.ref_); }
-      inline vvp_object_t duplicate(void) const
-          { return vvp_object_t(ref_->duplicate()); }
+      مضمن vvp_object_t duplicate(فراغ) ثابت
+          { أرجع vvp_object_t(ref_->duplicate()); }
 
-      template <class T> T*peek(void) const;
+      template <class T> T*peek(فراغ) ثابت;
 
 	/* Stable ordering for array-of-handle sort (object identity). */
-      uintptr_t sort_order_key(void) const
+      uintptr_t sort_order_مبودي(فراغ) ثابت
       {
-	    return reinterpret_cast<uintptr_t>(ref_);
+	    أرجع reinterpret_cast<uintptr_t>(ref_);
       }
 
-    private:
+    خاص:
       class vvp_object*ref_;
 };
 
-inline vvp_object_t::vvp_object_t(const vvp_object_t&that)
+مضمن vvp_object_t::vvp_object_t(ثابت vvp_object_t&that)
 {
       ref_ = that.ref_;
-      if (ref_) ref_->ref_cnt_ += 1;
+      إذا (ref_) ref_->ref_cnt_ += 1;
 }
 
-inline vvp_object_t::vvp_object_t(class vvp_object*tgt)
+مضمن vvp_object_t::vvp_object_t(class vvp_object*tgt)
 {
-      if (tgt) tgt->ref_cnt_ += 1;
+      إذا (tgt) tgt->ref_cnt_ += 1;
       ref_ = tgt;
 }
 
-inline vvp_object_t::~vvp_object_t()
+مضمن vvp_object_t::~vvp_object_t()
 {
       reset(0);
 }
@@ -101,28 +101,28 @@ inline vvp_object_t::~vvp_object_t()
  * This is the workhorse of the vvp_object_t class. It manages the
  * pointer to the referenced object.
  */
-inline void vvp_object_t::reset(class vvp_object*tgt)
+مضمن فراغ vvp_object_t::reset(class vvp_object*tgt)
 {
-      if (tgt) tgt->ref_cnt_ += 1;
-      if (ref_) {
+      إذا (tgt) tgt->ref_cnt_ += 1;
+      إذا (ref_) {
 	    ref_->ref_cnt_ -= 1;
-	    if (ref_->ref_cnt_ <= 0) delete ref_;
+	    إذا (ref_->ref_cnt_ <= 0) delete ref_;
 	    ref_ = 0;
       }
       ref_ = tgt;
 }
 
-inline vvp_object_t& vvp_object_t::operator = (const vvp_object_t&that)
+مضمن vvp_object_t& vvp_object_t::operator = (ثابت vvp_object_t&that)
 {
-      if (this == &that) return *this;
+      إذا (this == &that) أرجع *this;
       reset(that.ref_);
-      return *this;
+      أرجع *this;
 }
 
-inline vvp_object_t& vvp_object_t::operator = (class vvp_object*that)
+مضمن vvp_object_t& vvp_object_t::operator = (class vvp_object*that)
 {
       reset(that);
-      return *this;
+      أرجع *this;
 }
 
 /*
@@ -132,9 +132,9 @@ inline vvp_object_t& vvp_object_t::operator = (class vvp_object*that)
  *
  * NOTE: The vvp_object_t object retains ownership of the pointer!
  */
-template <class T> inline T*vvp_object_t::peek(void) const
+template <class T> مضمن T*vvp_object_t::peek(فراغ) ثابت
 {
-      return dynamic_cast<T*> (ref_);
+      أرجع dynamic_cast<T*> (ref_);
 }
 
 #endif /* IVL_vvp_object_H */

@@ -22,44 +22,44 @@
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
 #ifdef __SUNPRO_CC
 # include  <stddef.h>
-#else
+#وإلا
 # include  <cstddef>
 #endif
 
-extern unsigned long count_opcodes;
-extern unsigned long count_functors;
-extern unsigned long count_functors_logic;
-extern unsigned long count_functors_bufif;
-extern unsigned long count_functors_resolv;
-extern unsigned long count_functors_sig;
-extern unsigned long count_filters;
-extern unsigned long count_vvp_nets;
-extern unsigned long count_vpi_nets;
-extern unsigned long count_vpi_scopes;
+خارجي unsigned long كدي_opcodes;
+خارجي unsigned long كدي_functors;
+خارجي unsigned long كدي_functors_logic;
+خارجي unsigned long كدي_functors_bufif;
+خارجي unsigned long كدي_functors_resolv;
+خارجي unsigned long كدي_functors_sig;
+خارجي unsigned long كدي_filters;
+خارجي unsigned long كدي_vvp_nets;
+خارجي unsigned long كدي_vpi_nets;
+خارجي unsigned long كدي_vpi_scopes;
 
-extern unsigned long count_net_arrays;
-extern unsigned long count_net_array_words;
-extern unsigned long count_var_arrays;
-extern unsigned long count_var_array_words;
-extern unsigned long count_real_arrays;
-extern unsigned long count_real_array_words;
+خارجي unsigned long كدي_net_arrays;
+خارجي unsigned long كدي_net_array_كلموم;
+خارجي unsigned long كدي_var_arrays;
+خارجي unsigned long كدي_var_array_كلموم;
+خارجي unsigned long كدي_real_arrays;
+خارجي unsigned long كدي_real_array_كلموم;
 
 
-extern unsigned long count_time_events;
-extern unsigned long count_time_pool(void);
+خارجي unsigned long كدي_time_events;
+خارجي unsigned long كدي_time_pool(فراغ);
 
-extern unsigned long count_assign_events;
-extern unsigned long count_assign4_pool(void);
-extern unsigned long count_assign8_pool(void);
-extern unsigned long count_assign_real_pool(void);
-extern unsigned long count_assign_aword_pool(void);
-extern unsigned long count_assign_arword_pool(void);
+خارجي unsigned long كدي_assign_events;
+خارجي unsigned long كدي_assign4_pool(فراغ);
+خارجي unsigned long كدي_assign8_pool(فراغ);
+خارجي unsigned long كدي_assign_real_pool(فراغ);
+خارجي unsigned long كدي_assign_aword_pool(فراغ);
+خارجي unsigned long كدي_assign_arword_pool(فراغ);
 
-extern unsigned long count_gen_events;
-extern unsigned long count_gen_pool(void);
+خارجي unsigned long كدي_gen_events;
+خارجي unsigned long كدي_gen_pool(فراغ);
 
-extern size_t size_opcodes;
-extern size_t size_vvp_nets;
-extern size_t size_vvp_net_funs;
+خارجي size_t size_opcodes;
+خارجي size_t size_vvp_nets;
+خارجي size_t size_vvp_net_funs;
 
 #endif /* IVL_statistics_H */
