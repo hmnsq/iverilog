@@ -32,7 +32,7 @@
 
 #ifdef HAVE_IOSFWD
 # include  <iosfwd>
-#else
+#وإلا
 # include  <iostream>
 #endif
 
@@ -65,26 +65,26 @@
  */
 
 
-class vvp_fun_signal_base : public vvp_net_fun_t {
+class vvp_fun_signal_base : عام vvp_net_fun_t {
 
-    public:
+    عام:
       vvp_fun_signal_base();
 
-      void deassign();
-      void deassign_pv(unsigned base, unsigned wid);
+      فراغ deassign();
+      فراغ deassign_pv(unsigned base, unsigned wid);
 
-    public:
+    عام:
 
 	/* The %cassign/link instruction needs a place to write the
 	   source node of the force, so that subsequent %cassign and
 	   %deassign instructions can undo the link as needed. */
       class vvp_net_t*cassign_link;
 
-    protected:
+    محمي:
       bool continuous_assign_active_;
       vvp_vector2_t assign_mask_;
 
-    protected:
+    محمي:
 	// This is true until at least one propagation happens.
       bool needs_init_;
 };
@@ -93,291 +93,291 @@ class vvp_fun_signal_base : public vvp_net_fun_t {
  * Variables and wires can have their values accessed, so this base
  * class offers the unified concept of an accessible value.
  */
-class vvp_signal_value {
-    public:
-      virtual ~vvp_signal_value() =0;
-      virtual unsigned value_size() const =0;
-      virtual vvp_bit4_t value(unsigned idx) const =0;
-      virtual vvp_scalar_t scalar_value(unsigned idx) const =0;
-      virtual void vec4_value(vvp_vector4_t&) const =0;
-      virtual double real_value() const;
+class vvp_signal_قيمة {
+    عام:
+      virtual ~vvp_signal_قيمة() =0;
+      virtual unsigned قيمة_size() ثابت =0;
+      virtual vvp_bit4_t قيمة(unsigned idx) ثابت =0;
+      virtual vvp_scalar_t scalar_قيمة(unsigned idx) ثابت =0;
+      virtual فراغ vec4_قيمة(vvp_vector4_t&) ثابت =0;
+      virtual مزدوج real_قيمة() ثابت;
 
-      virtual void get_signal_value(struct t_vpi_value*vp);
+      virtual فراغ get_signal_قيمة(بنية t_vpi_قيمة*vp);
 };
 
 /*
  * This abstract class is a little more specific than the signal_base
  * class, in that it adds vector access methods.
  */
-class vvp_fun_signal_vec : public vvp_fun_signal_base {
-    public:
-      virtual const vvp_vector4_t& vec4_unfiltered_value() const =0;
+class vvp_fun_signal_vec : عام vvp_fun_signal_base {
+    عام:
+      virtual ثابت vvp_vector4_t& vec4_unfiltered_قيمة() ثابت =0;
 };
 
-class automatic_signal_base : public vvp_signal_value, public vvp_net_fil_t {
+class automatic_signal_base : عام vvp_signal_قيمة, عام vvp_net_fil_t {
 
-    public:
+    عام:
 	// Automatic variables cannot be forced or released. Provide
 	// stubs that assert.
-      virtual void release(vvp_net_ptr_t ptr, bool net_flag) override;
-      virtual void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
+      virtual فراغ release(vvp_net_ptr_t ptr, bool net_flag) override;
+      virtual فراغ release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
 
-      virtual unsigned filter_size() const override;
-      virtual void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
-      virtual void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
-      virtual void force_fil_real(double val, const vvp_vector2_t&mask) override;
-      virtual void get_value(struct t_vpi_value*value) override;
+      virtual unsigned filter_size() ثابت override;
+      virtual فراغ force_fil_vec4(ثابت vvp_vector4_t&val, ثابت vvp_vector2_t&mask) override;
+      virtual فراغ force_fil_vec8(ثابت vvp_vector8_t&val, ثابت vvp_vector2_t&mask) override;
+      virtual فراغ force_fil_real(مزدوج val, ثابت vvp_vector2_t&mask) override;
+      virtual فراغ get_قيمة(بنية t_vpi_قيمة*قيمة) override;
 };
 
 /*
  * Statically allocated vvp_fun_signal4.
  */
-class vvp_fun_signal4_sa : public vvp_fun_signal_vec {
+class vvp_fun_signal4_sa : عام vvp_fun_signal_vec {
 
-    public:
+    عام:
       explicit vvp_fun_signal4_sa(unsigned wid, vvp_bit4_t init=BIT4_X);
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
                      vvp_context_t) override;
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      فراغ recv_vec8(vvp_net_ptr_t port, ثابت vvp_vector8_t&bit) override;
 
 	// Part select variants of above
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4_pv(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t) override;
-      void recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
+      فراغ recv_vec8_pv(vvp_net_ptr_t port, ثابت vvp_vector8_t&bit,
 			unsigned base, unsigned vwid) override;
 
 	// Get information about the vector value.
-      const vvp_vector4_t& vec4_unfiltered_value() const override;
+      ثابت vvp_vector4_t& vec4_unfiltered_قيمة() ثابت override;
 
-    private:
+    خاص:
       vvp_vector4_t bits4_;
 };
 
 /*
  * Automatically allocated vvp_fun_signal4.
  */
-class vvp_fun_signal4_aa : public vvp_fun_signal_vec, public automatic_signal_base, public automatic_hooks_s {
+class vvp_fun_signal4_aa : عام vvp_fun_signal_vec, عام automatic_signal_base, عام automatic_hooks_s {
 
-    public:
+    عام:
       explicit vvp_fun_signal4_aa(unsigned wid, vvp_bit4_t init=BIT4_X);
       ~vvp_fun_signal4_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
+      فراغ alloc_instance(vvp_context_t context) override;
+      فراغ reset_instance(vvp_context_t context) override;
 #ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
+      فراغ free_instance(vvp_context_t context) override;
 #endif
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
 	// Part select variants of above
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4_pv(vvp_net_ptr_t port, ثابت vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t) override;
 
 	// Get information about the vector value.
-      unsigned   value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
-      const vvp_vector4_t& vec4_unfiltered_value() const override;
+      unsigned   قيمة_size() ثابت override;
+      vvp_bit4_t قيمة(unsigned idx) ثابت override;
+      vvp_scalar_t scalar_قيمة(unsigned idx) ثابت override;
+      فراغ vec4_قيمة(vvp_vector4_t&) ثابت override;
+      ثابت vvp_vector4_t& vec4_unfiltered_قيمة() ثابت override;
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size) { return vvp_net_fun_t::heap_.alloc(size); }
-      static void operator delete(void*obj);
+    عام: // These objects are only permallocated.
+      ساكن فراغ* operator new(std::size_t size) { إرجاع vvp_net_fun_t::heap_.alloc(size); }
+      ساكن فراغ operator delete(فراغ*obj);
 
-    private:
+    خاص:
       unsigned context_idx_;
       unsigned size_;
       vvp_bit4_t init_;
 };
 
-class vvp_fun_signal_real : public vvp_fun_signal_base {
+class vvp_fun_signal_real : عام vvp_fun_signal_base {
 
-    public:
+    عام:
       explicit vvp_fun_signal_real() {};
 
 	// Get information about the vector value.
-      virtual double real_unfiltered_value() const = 0;
+      virtual مزدوج real_unfiltered_قيمة() ثابت = 0;
 };
 
 /*
  * Statically allocated vvp_fun_signal_real.
  */
-class vvp_fun_signal_real_sa : public vvp_fun_signal_real {
+class vvp_fun_signal_real_sa : عام vvp_fun_signal_real {
 
-    public:
+    عام:
       explicit vvp_fun_signal_real_sa();
 
-      void recv_real(vvp_net_ptr_t port, double bit,
+      فراغ recv_real(vvp_net_ptr_t port, مزدوج bit,
                      vvp_context_t) override;
 
 	// Get information about the vector value.
-      double real_unfiltered_value() const override;
+      مزدوج real_unfiltered_قيمة() ثابت override;
 
-    private:
-      double bits_;
+    خاص:
+      مزدوج bits_;
 };
 
 /*
  * Automatically allocated vvp_fun_signal_real.
  */
-class vvp_fun_signal_real_aa : public vvp_fun_signal_real, public automatic_signal_base, public automatic_hooks_s {
+class vvp_fun_signal_real_aa : عام vvp_fun_signal_real, عام automatic_signal_base, عام automatic_hooks_s {
 
-    public:
+    عام:
       explicit vvp_fun_signal_real_aa();
       ~vvp_fun_signal_real_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
+      فراغ alloc_instance(vvp_context_t context) override;
+      فراغ reset_instance(vvp_context_t context) override;
 #ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
+      فراغ free_instance(vvp_context_t context) override;
 #endif
 
-      void recv_real(vvp_net_ptr_t port, double bit,
+      فراغ recv_real(vvp_net_ptr_t port, مزدوج bit,
                      vvp_context_t context) override;
 
 	// Get information about the vector value.
-      double real_unfiltered_value() const override;
+      مزدوج real_unfiltered_قيمة() ثابت override;
 
 	// Get information about the vector value.
-      unsigned   value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
-      double real_value() const override;
-      void get_signal_value(struct t_vpi_value*vp) override;
+      unsigned   قيمة_size() ثابت override;
+      vvp_bit4_t قيمة(unsigned idx) ثابت override;
+      vvp_scalar_t scalar_قيمة(unsigned idx) ثابت override;
+      فراغ vec4_قيمة(vvp_vector4_t&) ثابت override;
+      مزدوج real_قيمة() ثابت override;
+      فراغ get_signal_قيمة(بنية t_vpi_قيمة*vp) override;
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size);
-      static void operator delete(void*obj);
+    عام: // These objects are only permallocated.
+      ساكن فراغ* operator new(std::size_t size);
+      ساكن فراغ operator delete(فراغ*obj);
 
-    private:
+    خاص:
       unsigned context_idx_;
 };
 
 
-class vvp_fun_signal_string : public vvp_fun_signal_base {
+class vvp_fun_signal_string : عام vvp_fun_signal_base {
 
-    public:
+    عام:
       explicit vvp_fun_signal_string() {};
 
-      virtual const std::string& get_string() const =0;
+      virtual ثابت std::string& get_string() ثابت =0;
 };
 
 /*
  * Statically allocated vvp_fun_signal_string.
  */
-class vvp_fun_signal_string_sa : public vvp_fun_signal_string {
+class vvp_fun_signal_string_sa : عام vvp_fun_signal_string {
 
-    public:
+    عام:
       explicit vvp_fun_signal_string_sa();
 
-      void recv_string(vvp_net_ptr_t port, const std::string&bit,
+      فراغ recv_string(vvp_net_ptr_t port, ثابت std::string&bit,
 		       vvp_context_t context) override;
 
-      const std::string& get_string() const override;
+      ثابت std::string& get_string() ثابت override;
 
-    private:
-      std::string value_;
+    خاص:
+      std::string قيمة_2;
 };
 
 /*
  * Automatically allocated vvp_fun_signal_real.
  */
-class vvp_fun_signal_string_aa : public vvp_fun_signal_string, public automatic_signal_base, public automatic_hooks_s {
+class vvp_fun_signal_string_aa : عام vvp_fun_signal_string, عام automatic_signal_base, عام automatic_hooks_s {
 
-    public:
+    عام:
       explicit vvp_fun_signal_string_aa();
       ~vvp_fun_signal_string_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
+      فراغ alloc_instance(vvp_context_t context) override;
+      فراغ reset_instance(vvp_context_t context) override;
 #ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
+      فراغ free_instance(vvp_context_t context) override;
 #endif
-      void recv_string(vvp_net_ptr_t port, const std::string&bit,
+      فراغ recv_string(vvp_net_ptr_t port, ثابت std::string&bit,
 		       vvp_context_t context) override;
 
 	// Get information about the vector value.
-      unsigned   value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
-      double real_value() const override;
-      const std::string& get_string() const override;
-      void get_signal_value(struct t_vpi_value*vp) override;
+      unsigned   قيمة_size() ثابت override;
+      vvp_bit4_t قيمة(unsigned idx) ثابت override;
+      vvp_scalar_t scalar_قيمة(unsigned idx) ثابت override;
+      فراغ vec4_قيمة(vvp_vector4_t&) ثابت override;
+      مزدوج real_قيمة() ثابت override;
+      ثابت std::string& get_string() ثابت override;
+      فراغ get_signal_قيمة(بنية t_vpi_قيمة*vp) override;
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size);
-      static void operator delete(void*obj);
+    عام: // These objects are only permallocated.
+      ساكن فراغ* operator new(std::size_t size);
+      ساكن فراغ operator delete(فراغ*obj);
 
-    private:
+    خاص:
       unsigned context_idx_;
 };
 
-class vvp_fun_signal_object : public vvp_fun_signal_base {
+class vvp_fun_signal_object : عام vvp_fun_signal_base {
 
-    public:
+    عام:
       explicit vvp_fun_signal_object(unsigned size) { size_ = size; };
-      unsigned size() const { return size_; }
+      unsigned size() ثابت { إرجاع size_; }
 
-      virtual vvp_object_t get_object() const =0;
-    private:
+      virtual vvp_object_t get_object() ثابت =0;
+    خاص:
       unsigned size_;
 };
 
 /*
  * Statically allocated vvp_fun_signal_string.
  */
-class vvp_fun_signal_object_sa : public vvp_fun_signal_object {
+class vvp_fun_signal_object_sa : عام vvp_fun_signal_object {
 
-    public:
+    عام:
       explicit vvp_fun_signal_object_sa(unsigned size);
 
-      void recv_object(vvp_net_ptr_t port, vvp_object_t bit,
+      فراغ recv_object(vvp_net_ptr_t port, vvp_object_t bit,
 		    vvp_context_t context) override;
 
-      vvp_object_t get_object() const override;
+      vvp_object_t get_object() ثابت override;
 
-    private:
-      vvp_object_t value_;
+    خاص:
+      vvp_object_t قيمة_2;
 };
 
 /*
  * Automatically allocated vvp_fun_signal_real.
  */
-class vvp_fun_signal_object_aa : public vvp_fun_signal_object, public automatic_signal_base, public automatic_hooks_s {
+class vvp_fun_signal_object_aa : عام vvp_fun_signal_object, عام automatic_signal_base, عام automatic_hooks_s {
 
-    public:
+    عام:
       explicit vvp_fun_signal_object_aa(unsigned size);
       ~vvp_fun_signal_object_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
+      فراغ alloc_instance(vvp_context_t context) override;
+      فراغ reset_instance(vvp_context_t context) override;
 #ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
+      فراغ free_instance(vvp_context_t context) override;
 #endif
 
-      void recv_object(vvp_net_ptr_t port, vvp_object_t bit,
+      فراغ recv_object(vvp_net_ptr_t port, vvp_object_t bit,
 		    vvp_context_t context) override;
 
 	// Get information about the vector value.
-      unsigned   value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
+      unsigned   قيمة_size() ثابت override;
+      vvp_bit4_t قيمة(unsigned idx) ثابت override;
+      vvp_scalar_t scalar_قيمة(unsigned idx) ثابت override;
+      فراغ vec4_قيمة(vvp_vector4_t&) ثابت override;
 	//double real_value() const;
 	//void get_signal_value(struct t_vpi_value*vp);
 
-      vvp_object_t get_object() const override;
+      vvp_object_t get_object() ثابت override;
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size);
-      static void operator delete(void*obj);
+    عام: // These objects are only permallocated.
+      ساكن فراغ* operator new(std::size_t size);
+      ساكن فراغ operator delete(فراغ*obj);
 
-    private:
+    خاص:
       unsigned context_idx_;
 };
 
@@ -398,167 +398,167 @@ class vvp_fun_signal_object_aa : public vvp_fun_signal_object, public automatic_
  *            vvp_wire_base
  */
 
-class vvp_wire_base  : public vvp_net_fil_t, public vvp_signal_value {
+class vvp_wire_base  : عام vvp_net_fil_t, عام vvp_signal_قيمة {
 
-    public:
+    عام:
       vvp_wire_base();
       ~vvp_wire_base() override;
 
         // Support for $countdrivers
-      virtual vvp_bit4_t driven_value(unsigned idx) const;
-      virtual bool is_forced(unsigned idx) const;
+      virtual vvp_bit4_t driven_قيمة(unsigned idx) ثابت;
+      virtual bool is_forced(unsigned idx) ثابت;
 };
 
-class vvp_wire_vec4 : public vvp_wire_base {
+class vvp_wire_vec4 : عام vvp_wire_base {
 
-    public:
+    عام:
       vvp_wire_vec4(unsigned wid, vvp_bit4_t init);
 
 	// The main filter behavior for this class. These methods take
 	// the value that the node is driven to, and applies the force
 	// filters. In wires, this also saves the driven value, so
 	// that when a force is released, we can revert to the driven value.
-      prop_t filter_vec4(const vvp_vector4_t&bit, vvp_vector4_t&rep,
+      prop_t filter_vec4(ثابت vvp_vector4_t&bit, vvp_vector4_t&rep,
 			 unsigned base, unsigned vwid) override;
-      prop_t filter_vec8(const vvp_vector8_t&val, vvp_vector8_t&rep,
+      prop_t filter_vec8(ثابت vvp_vector8_t&val, vvp_vector8_t&rep,
 			 unsigned base, unsigned vwid) override;
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value) override;
+      فراغ get_قيمة(بنية t_vpi_قيمة*قيمة) override;
 	// Abstract methods from vvp_net_fit_t
-      unsigned filter_size() const override;
-      void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_real(double val, const vvp_vector2_t&mask) override;
-      void release(vvp_net_ptr_t ptr, bool net_flag) override;
-      void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
+      unsigned filter_size() ثابت override;
+      فراغ force_fil_vec4(ثابت vvp_vector4_t&val, ثابت vvp_vector2_t&mask) override;
+      فراغ force_fil_vec8(ثابت vvp_vector8_t&val, ثابت vvp_vector2_t&mask) override;
+      فراغ force_fil_real(مزدوج val, ثابت vvp_vector2_t&mask) override;
+      فراغ release(vvp_net_ptr_t ptr, bool net_flag) override;
+      فراغ release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
 
 	// Implementation of vvp_signal_value methods
-      unsigned value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
+      unsigned قيمة_size() ثابت override;
+      vvp_bit4_t قيمة(unsigned idx) ثابت override;
+      vvp_scalar_t scalar_قيمة(unsigned idx) ثابت override;
+      فراغ vec4_قيمة(vvp_vector4_t&) ثابت override;
 
         // Support for $countdrivers
-      vvp_bit4_t driven_value(unsigned idx) const override;
-      bool is_forced(unsigned idx) const override;
+      vvp_bit4_t driven_قيمة(unsigned idx) ثابت override;
+      bool is_forced(unsigned idx) ثابت override;
 
-    private:
-      vvp_bit4_t filtered_value_(unsigned idx) const;
+    خاص:
+      vvp_bit4_t filtered_قيمة(unsigned idx) ثابت;
 
-    private:
+    خاص:
       bool needs_init_;
       vvp_vector4_t bits4_; // The tracked driven value
       vvp_vector4_t force4_; // the value being forced
 };
 
-class vvp_wire_vec8 : public vvp_wire_base {
+class vvp_wire_vec8 : عام vvp_wire_base {
 
-    public:
+    عام:
       explicit vvp_wire_vec8(unsigned wid);
 
 	// The main filter behavior for this class
-      prop_t filter_vec4(const vvp_vector4_t&bit, vvp_vector4_t&rep,
+      prop_t filter_vec4(ثابت vvp_vector4_t&bit, vvp_vector4_t&rep,
 			 unsigned base, unsigned vwid) override;
-      prop_t filter_vec8(const vvp_vector8_t&val, vvp_vector8_t&rep,
+      prop_t filter_vec8(ثابت vvp_vector8_t&val, vvp_vector8_t&rep,
 			 unsigned base, unsigned vwid) override;
 
 	// island ports use this method to filter arbitrary values
 	// through the force filter.
-      prop_t filter_input_vec8(const vvp_vector8_t&val, vvp_vector8_t&rep) const;
+      prop_t filter_إدخال_vec8(ثابت vvp_vector8_t&val, vvp_vector8_t&rep) ثابت;
 
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value) override;
+      فراغ get_قيمة(بنية t_vpi_قيمة*قيمة) override;
 	// Abstract methods from vvp_net_fit_t
-      unsigned filter_size() const override;
-      void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_real(double val, const vvp_vector2_t&mask) override;
-      void release(vvp_net_ptr_t ptr, bool net_flag) override;
-      void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
+      unsigned filter_size() ثابت override;
+      فراغ force_fil_vec4(ثابت vvp_vector4_t&val, ثابت vvp_vector2_t&mask) override;
+      فراغ force_fil_vec8(ثابت vvp_vector8_t&val, ثابت vvp_vector2_t&mask) override;
+      فراغ force_fil_real(مزدوج val, ثابت vvp_vector2_t&mask) override;
+      فراغ release(vvp_net_ptr_t ptr, bool net_flag) override;
+      فراغ release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
 
 	// Implementation of vvp_signal_value methods
-      unsigned value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
+      unsigned قيمة_size() ثابت override;
+      vvp_bit4_t قيمة(unsigned idx) ثابت override;
+      vvp_scalar_t scalar_قيمة(unsigned idx) ثابت override;
+      فراغ vec4_قيمة(vvp_vector4_t&) ثابت override;
 	// This is new to vvp_wire_vec8
-      vvp_vector8_t vec8_value() const;
+      vvp_vector8_t vec8_قيمة() ثابت;
 
         // Support for $countdrivers
-      vvp_bit4_t driven_value(unsigned idx) const override;
-      bool is_forced(unsigned idx) const override;
+      vvp_bit4_t driven_قيمة(unsigned idx) ثابت override;
+      bool is_forced(unsigned idx) ثابت override;
 
-    private:
-      vvp_scalar_t filtered_value_(unsigned idx) const;
+    خاص:
+      vvp_scalar_t filtered_قيمة(unsigned idx) ثابت;
 
-    private:
+    خاص:
       bool needs_init_;
       vvp_vector8_t bits8_;
       vvp_vector8_t force8_; // the value being forced
 };
 
-class vvp_wire_real : public vvp_wire_base {
+class vvp_wire_real : عام vvp_wire_base {
 
-    public:
-      explicit vvp_wire_real(void);
+    عام:
+      explicit vvp_wire_real(فراغ);
 
 	// The main filter behavior for this class
-      prop_t filter_real(double&bit) override;
+      prop_t filter_real(مزدوج&bit) override;
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value) override;
+      فراغ get_قيمة(بنية t_vpi_قيمة*قيمة) override;
 	// Abstract methods from vvp_net_fit_t
-      unsigned filter_size() const override;
-      void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
-      void force_fil_real(double val, const vvp_vector2_t&mask) override;
-      void release(vvp_net_ptr_t ptr, bool net_flag) override;
-      void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
+      unsigned filter_size() ثابت override;
+      فراغ force_fil_vec4(ثابت vvp_vector4_t&val, ثابت vvp_vector2_t&mask) override;
+      فراغ force_fil_vec8(ثابت vvp_vector8_t&val, ثابت vvp_vector2_t&mask) override;
+      فراغ force_fil_real(مزدوج val, ثابت vvp_vector2_t&mask) override;
+      فراغ release(vvp_net_ptr_t ptr, bool net_flag) override;
+      فراغ release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
 
 	// Implementation of vvp_signal_value methods
-      unsigned value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
-      double real_value() const override;
+      unsigned قيمة_size() ثابت override;
+      vvp_bit4_t قيمة(unsigned idx) ثابت override;
+      vvp_scalar_t scalar_قيمة(unsigned idx) ثابت override;
+      فراغ vec4_قيمة(vvp_vector4_t&) ثابت override;
+      مزدوج real_قيمة() ثابت override;
 
-      void get_signal_value(struct t_vpi_value*vp) override;
+      فراغ get_signal_قيمة(بنية t_vpi_قيمة*vp) override;
 
-    private:
-      double bit_;
-      double force_;
+    خاص:
+      مزدوج bit_;
+      مزدوج force_;
       bool needs_init_ = true;
 };
 
-#if 0
-class vvp_wire_string : public vvp_wire_base {
+#إذا 0
+class vvp_wire_string : عام vvp_wire_base {
 
-    public:
-      explicit vvp_wire_string(void);
+    عام:
+      explicit vvp_wire_string(فراغ);
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value);
+      فراغ get_قيمة(بنية t_vpi_قيمة*قيمة);
 	// Abstract methods from vvp_net_fil_t
-      unsigned filter_size() const;
-      void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask);
-      void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask);
-      void force_fil_real(double val, const vvp_vector2_t&mask);
-      void release(vvp_net_ptr_t ptr, bool net_flag);
-      void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag);
+      unsigned filter_size() ثابت;
+      فراغ force_fil_vec4(ثابت vvp_vector4_t&val, ثابت vvp_vector2_t&mask);
+      فراغ force_fil_vec8(ثابت vvp_vector8_t&val, ثابت vvp_vector2_t&mask);
+      فراغ force_fil_real(مزدوج val, ثابت vvp_vector2_t&mask);
+      فراغ release(vvp_net_ptr_t ptr, bool net_flag);
+      فراغ release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag);
 
 	// Implementation of vvp_signal_value methods
-      unsigned value_size() const;
-      vvp_bit4_t value(unsigned idx) const;
-      vvp_scalar_t scalar_value(unsigned idx) const;
-      void vec4_value(vvp_vector4_t&) const;
-      double real_value() const;
+      unsigned قيمة_size() ثابت;
+      vvp_bit4_t قيمة(unsigned idx) ثابت;
+      vvp_scalar_t scalar_قيمة(unsigned idx) ثابت;
+      فراغ vec4_قيمة(vvp_vector4_t&) ثابت;
+      مزدوج real_قيمة() ثابت;
 
-      void get_signal_value(struct t_vpi_value*vp);
+      فراغ get_signal_قيمة(بنية t_vpi_قيمة*vp);
 
-    private:
-      std::string value_;
+    خاص:
+      std::string قيمة_2;
 };
 #endif
 
