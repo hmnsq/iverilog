@@ -28,16 +28,16 @@
  * select starts. Input 2, which is typically constant, is the width
  * of the result.
  */
-class vvp_fun_part  : public vvp_net_fun_t {
+class vvp_fun_part  : ସର୍ବସାଧାରଣ vvp_net_fun_t {
 
-    public:
+    ସର୍ବସାଧାରଣ:
       vvp_fun_part(unsigned base, unsigned wid);
       ~vvp_fun_part() override;
 
-      unsigned get_base() const { return base_; }
-      unsigned get_wid() const { return wid_; }
+      unsigned get_base() ଅଚଳ { ଫେରନ୍ତୁ base_; }
+      unsigned get_wid() ଅଚଳ { ଫେରନ୍ତୁ wid_; }
 
-    protected:
+    ସୁରକ୍ଷିତ:
       unsigned base_;
       unsigned wid_;
 };
@@ -45,23 +45,23 @@ class vvp_fun_part  : public vvp_net_fun_t {
 /*
  * Statically allocated vvp_fun_part.
  */
-class vvp_fun_part_sa  : public vvp_fun_part, public vvp_gen_event_s {
+class vvp_fun_part_sa  : ସର୍ବସାଧାରଣ vvp_fun_part, ସର୍ବସାଧାରଣ vvp_gen_event_s {
 
-    public:
+    ସର୍ବସାଧାରଣ:
       vvp_fun_part_sa(unsigned base, unsigned wid);
       ~vvp_fun_part_sa() override;
 
-    public:
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    ସର୍ବସାଧାରଣ:
+      ଶୂନ୍ୟ recv_vec4(vvp_net_ptr_t port, ଅଚଳ vvp_vector4_t&bit,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ଶୂନ୍ୟ recv_vec4_pv(vvp_net_ptr_t port, ଅଚଳ vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t) override;
 
-    private:
-      void run_run() override;
+    ବ୍ୟକ୍ତିଗତ:
+      ଶୂନ୍ୟ run_run() override;
 
-    private:
+    ବ୍ୟକ୍ତିଗତ:
       vvp_vector4_t val_;
       vvp_net_t*net_;
 };
@@ -69,26 +69,26 @@ class vvp_fun_part_sa  : public vvp_fun_part, public vvp_gen_event_s {
 /*
  * Automatically allocated vvp_fun_part.
  */
-class vvp_fun_part_aa  : public vvp_fun_part, public automatic_hooks_s {
+class vvp_fun_part_aa  : ସର୍ବସାଧାରଣ vvp_fun_part, ସର୍ବସାଧାରଣ automatic_hooks_s {
 
-    public:
+    ସର୍ବସାଧାରଣ:
       vvp_fun_part_aa(unsigned base, unsigned wid);
       ~vvp_fun_part_aa() override;
 
-    public:
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
+    ସର୍ବସାଧାରଣ:
+      ଶୂନ୍ୟ alloc_instance(vvp_context_t context) override;
+      ଶୂନ୍ୟ reset_instance(vvp_context_t context) override;
 #ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
+      ଶୂନ୍ୟ free_instance(vvp_context_t context) override;
 #endif
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ଶୂନ୍ୟ recv_vec4(vvp_net_ptr_t port, ଅଚଳ vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ଶୂନ୍ୟ recv_vec4_pv(vvp_net_ptr_t port, ଅଚଳ vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t context) override;
 
-    private:
+    ବ୍ୟକ୍ତିଗତ:
       __vpiScope*context_scope_;
       unsigned context_idx_;
 };
@@ -100,22 +100,22 @@ class vvp_fun_part_aa  : public vvp_fun_part, public automatic_hooks_s {
  * both statically and automatically allocated scopes, as it has no
  * dynamic state.
  */
-class vvp_fun_part_pv  : public vvp_net_fun_t {
+class vvp_fun_part_pv  : ସର୍ବସାଧାରଣ vvp_net_fun_t {
 
-    public:
+    ସର୍ବସାଧାରଣ:
       vvp_fun_part_pv(unsigned base, unsigned wid, unsigned vec_wid);
       ~vvp_fun_part_pv() override;
 
-    public:
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    ସର୍ବସାଧାରଣ:
+      ଶୂନ୍ୟ recv_vec4(vvp_net_ptr_t port, ଅଚଳ vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ଶୂନ୍ୟ recv_vec4_pv(vvp_net_ptr_t port, ଅଚଳ vvp_vector4_t&bit,
                         unsigned base, unsigned vwid, vvp_context_t) override;
 
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      ଶୂନ୍ୟ recv_vec8(vvp_net_ptr_t port, ଅଚଳ vvp_vector8_t&bit) override;
 
-    private:
+    ବ୍ୟକ୍ତିଗତ:
       unsigned base_;
       unsigned wid_;
       unsigned vwid_;
@@ -126,15 +126,15 @@ class vvp_fun_part_pv  : public vvp_net_fun_t {
  * part in port 0, and the base of the part in port 1. The width of
  * the part to take out is fixed.
  */
-class vvp_fun_part_var  : public vvp_net_fun_t {
+class vvp_fun_part_var  : ସର୍ବସାଧାରଣ vvp_net_fun_t {
 
-    public:
+    ସର୍ବସାଧାରଣ:
       explicit vvp_fun_part_var(unsigned wid, bool is_signed);
       ~vvp_fun_part_var() override;
 
-    protected:
-      bool recv_vec4_(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-                      int&base, vvp_vector4_t&source,
+    ସୁରକ୍ଷିତ:
+      bool recv_vec4_(vvp_net_ptr_t port, ଅଚଳ vvp_vector4_t&bit,
+                      ପୂର୍ଣ୍ଣସଂଖ୍ୟା&base, vvp_vector4_t&source,
                       vvp_vector4_t&ref);
 
       unsigned wid_;
@@ -144,21 +144,21 @@ class vvp_fun_part_var  : public vvp_net_fun_t {
 /*
  * Statically allocated vvp_fun_part_var.
  */
-class vvp_fun_part_var_sa  : public vvp_fun_part_var {
+class vvp_fun_part_var_sa  : ସର୍ବସାଧାରଣ vvp_fun_part_var {
 
-    public:
+    ସର୍ବସାଧାରଣ:
       explicit vvp_fun_part_var_sa(unsigned wid, bool is_signed);
       ~vvp_fun_part_var_sa() override;
 
-    public:
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    ସର୍ବସାଧାରଣ:
+      ଶୂନ୍ୟ recv_vec4(vvp_net_ptr_t port, ଅଚଳ vvp_vector4_t&bit,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ଶୂନ୍ୟ recv_vec4_pv(vvp_net_ptr_t port, ଅଚଳ vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t) override;
 
-    private:
-      int base_;
+    ବ୍ୟକ୍ତିଗତ:
+      ପୂର୍ଣ୍ଣସଂଖ୍ୟା base_;
       vvp_vector4_t source_;
 	// Save the last output, for detecting change.
       vvp_vector4_t ref_;
@@ -167,26 +167,26 @@ class vvp_fun_part_var_sa  : public vvp_fun_part_var {
 /*
  * Automatically allocated vvp_fun_part_var.
  */
-class vvp_fun_part_var_aa  : public vvp_fun_part_var, public automatic_hooks_s {
+class vvp_fun_part_var_aa  : ସର୍ବସାଧାରଣ vvp_fun_part_var, ସର୍ବସାଧାରଣ automatic_hooks_s {
 
-    public:
+    ସର୍ବସାଧାରଣ:
       explicit vvp_fun_part_var_aa(unsigned wid, bool is_signed);
       ~vvp_fun_part_var_aa() override;
 
-    public:
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
+    ସର୍ବସାଧାରଣ:
+      ଶୂନ୍ୟ alloc_instance(vvp_context_t context) override;
+      ଶୂନ୍ୟ reset_instance(vvp_context_t context) override;
 #ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
+      ଶୂନ୍ୟ free_instance(vvp_context_t context) override;
 #endif
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ଶୂନ୍ୟ recv_vec4(vvp_net_ptr_t port, ଅଚଳ vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      ଶୂନ୍ୟ recv_vec4_pv(vvp_net_ptr_t port, ଅଚଳ vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t context) override;
 
-    private:
+    ବ୍ୟକ୍ତିଗତ:
       __vpiScope*context_scope_;
       unsigned context_idx_;
 };

@@ -25,107 +25,107 @@
 # include  "vvp_cleanup.h"
 #endif
 
-__vpiCobjectVar::__vpiCobjectVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
+__vpiCobjectVar::__vpiCobjectVar(__vpiScope*sc, ଅଚଳ ଅକ୍ଷର*na, vvp_net_t*ne)
 : __vpiBaseVar(sc, na, ne)
 {
 }
 
-int __vpiCobjectVar::get_type_code(void) const
-{ return vpiClassVar; }
+ପୂର୍ଣ୍ଣସଂଖ୍ୟା __vpiCobjectVar::get_type_code(ଶୂନ୍ୟ) ଅଚଳ
+{ ଫେରନ୍ତୁ vpiClassVar; }
 
-int __vpiCobjectVar::vpi_get(int code)
+ପୂର୍ଣ୍ଣସଂଖ୍ୟା __vpiCobjectVar::vpi_get(ପୂର୍ଣ୍ଣସଂଖ୍ୟା code)
 {
-      switch (code) {
-	case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      ବାଛ (code) {
+	ସ୍ଥିତି vpi_ଧାଡ଼ି_No:
+	    ଫେରନ୍ତୁ 0;  // Not implemented for now!
 
-	case vpiSize:
-	    return 64;
+	ସ୍ଥିତି vpiSize:
+	    ଫେରନ୍ତୁ 64;
 
-	case vpiConstType:
-	    return vpiNullConst;
+	ସ୍ଥିତି vpiConstType:
+	    ଫେରନ୍ତୁ vpiNullConst;
 
-	case vpiSigned:
-	    return 0;
+	ସ୍ଥିତି vpiSigned:
+	    ଫେରନ୍ତୁ 0;
 
-	case vpiAutomatic:
-	    return 0;
+	ସ୍ଥିତି vpiAutomatic:
+	    ଫେରନ୍ତୁ 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	case _vpiFromThr:
-	    return _vpiNoThr;
+#ଯଦି defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	ସ୍ଥିତି _vpiFromThr:
+	    ଫେରନ୍ତୁ _vpiNoThr;
 #endif
 
-	default:
+	ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
 	    fprintf(stderr, "vvp error: get %d not supported "
 	                    "by vpiClassVar\n", code);
-	    assert(0);
-	    return 0;
+	    ପ୍ରତିଜ୍ଞା(0);
+	    ଫେରନ୍ତୁ 0;
       }
 }
 
-void __vpiCobjectVar::vpi_get_value(p_vpi_value val)
+ଶୂନ୍ୟ __vpiCobjectVar::vpi_get_ମୂଲ୍ୟ(p_vpi_ମୂଲ୍ୟ val)
 {
 // FIXME: We need to get the assigned object address if one is assigned.
 //fprintf(stderr, "HERE: %p\n", get_net());
-      static const size_t RBUF_USE_SIZE = 64 + 1;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      ସ୍ଥିର ଅଚଳ size_t RBUF_USE_SIZE = 64 + 1;
+      ଅକ୍ଷର*rbuf = static_cast<ଅକ୍ଷର *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
 
-      switch (val->format) {
-	case vpiObjTypeVal:
+      ବାଛ (val->format) {
+	ସ୍ଥିତି vpiObjTypeVal:
 	    val->format = vpiStringVal;
 	    // fall through
-	case vpiBinStrVal:
-	case vpiDecStrVal:
-	case vpiOctStrVal:
-	case vpiHexStrVal:
-	case vpiStringVal:
+	ସ୍ଥିତି vpiBinStrVal:
+	ସ୍ଥିତି vpiDecStrVal:
+	ସ୍ଥିତି vpiOctStrVal:
+	ସ୍ଥିତି vpiHexStrVal:
+	ସ୍ଥିତି vpiStringVal:
 	    snprintf(rbuf, RBUF_USE_SIZE, "    null");
 	    val->value.str = rbuf;
-	    break;
+	    ଭାଙ୍ଗ;
 
-	case vpiScalarVal:
+	ସ୍ଥିତି vpiScalarVal:
 	    val->value.scalar = vpi0;
-	    break;
+	    ଭାଙ୍ଗ;
 
-	case vpiIntVal:
+	ସ୍ଥିତି vpiIntVal:
 	    val->value.integer = 0;
-	    break;
+	    ଭାଙ୍ଗ;
 
-	case vpiVectorVal:
+	ସ୍ଥିତି vpiVectorVal:
 	    val->value.vector = static_cast<p_vpi_vecval>
-	                        (need_result_buf(2*sizeof(s_vpi_vecval),
+	                        (need_result_buf(2*ଆକାର(s_vpi_vecval),
 	                                         RBUF_VAL));
-	    for (unsigned idx = 0; idx < 2; idx += 1) {
+	    ପାଇଁ (unsigned idx = 0; idx < 2; idx += 1) {
 		  val->value.vector[idx].aval = 0;
 		  val->value.vector[idx].bval = 0;
 	    }
-	    break;
+	    ଭାଙ୍ଗ;
 
-	case vpiRealVal:
+	ସ୍ଥିତି vpiRealVal:
 	    val->value.real = 0.0;
-	    break;
+	    ଭାଙ୍ଗ;
 
-	default:
+	ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
 	    fprintf(stderr, "vvp error: format %d not supported "
-	                    "by vpiClassVar\n", (int)val->format);
+	                    "by vpiClassVar\n", (ପୂର୍ଣ୍ଣସଂଖ୍ୟା)val->format);
 	    val->format = vpiSuppressVal;
-	    break;
+	    ଭାଙ୍ଗ;
       }
 }
 
-vpiHandle vpip_make_cobject_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_cobject_var(ଅଚଳ ଅକ୍ଷର*name, vvp_net_t*net)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      const char*use_name = name ? vpip_name_string(name) : NULL;
+      ଅଚଳ ଅକ୍ଷର*use_name = name ? vpip_name_string(name) : ଖାଲି;
 
-      __vpiCobjectVar*obj = new __vpiCobjectVar(scope, use_name, net);
+      __vpiCobjectVar*obj = ନୂତନ __vpiCobjectVar(scope, use_name, net);
 
-      return obj;
+      ଫେରନ୍ତୁ obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void class_delete(vpiHandle item)
+ଶୂନ୍ୟ class_delete(vpiHandle item)
 {
       __vpiCobjectVar*obj = dynamic_cast<__vpiCobjectVar*>(item);
       delete obj;

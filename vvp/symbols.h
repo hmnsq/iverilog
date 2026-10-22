@@ -43,41 +43,41 @@
  * try to look inside. The actual implementation is given in the
  * symbols.cc source file.
  */
-typedef class symbol_table_s *symbol_table_t;
+ପ୍ରକାରବ୍ୟାଖ୍ୟା class ପ୍ରତୀକ_table_s *ପ୍ରତୀକ_table_t;
 
-typedef struct symbol_value_s {
-      union {
+ପ୍ରକାରବ୍ୟାଖ୍ୟା ସଂରଚନା ପ୍ରତୀକ_ମୂଲ୍ୟ_s {
+      ସଂଘ {
 	    vvp_net_t*net;
-	    void*ptr;
+	    ଶୂନ୍ୟ*ptr;
       };
-} symbol_value_t;
+} ପ୍ରତୀକ_ମୂଲ୍ୟ_t;
 
 
-class symbol_table_s {
-    public:
-      explicit symbol_table_s();
-      virtual ~symbol_table_s();
-      symbol_table_s(const symbol_table_s&) = delete;
-      symbol_table_s& operator=(const symbol_table_s&) = delete;
+class ପ୍ରତୀକ_table_s {
+    ସର୍ବସାଧାରଣ:
+      explicit ପ୍ରତୀକ_table_s();
+      ଆଭାସୀ ~ପ୍ରତୀକ_table_s();
+      ପ୍ରତୀକ_table_s(ଅଚଳ ପ୍ରତୀକ_table_s&) = delete;
+      ପ୍ରତୀକ_table_s& operator=(ଅଚଳ ପ୍ରତୀକ_table_s&) = delete;
 
 	// This method locates the value in the symbol table and sets its
 	// value. If the key doesn't yet exist, create it.
-      void sym_set_value(const char*key, symbol_value_t val);
+      ଶୂନ୍ୟ sym_set_ମୂଲ୍ୟ(ଅଚଳ ଅକ୍ଷର*ଚାବି, ପ୍ରତୀକ_ମୂଲ୍ୟ_t val);
 
 	// This method locates the value in the symbol table and returns
 	// it. If the value does not exist, create it, initialize it with
 	// zero and return the zero value.
-      symbol_value_t sym_get_value(const char*key);
+      ପ୍ରତୀକ_ମୂଲ୍ୟ_t sym_get_ମୂଲ୍ୟ(ଅଚଳ ଅକ୍ଷର*ଚାବି);
 
-    private:
-      struct tree_node_*root;
-      struct key_strings*str_chunk;
+    ବ୍ୟକ୍ତିଗତ:
+      ସଂରଚନା ବୃକ୍ଷ_ଗଣ୍ଠି*ମୂଳ;
+      ସଂରଚନା ଚାବି_strings*str_chunk;
       unsigned str_used;
 
-      symbol_value_t find_value_(struct tree_node_*cur,
-				 const char*key, symbol_value_t val,
+      ପ୍ରତୀକ_ମୂଲ୍ୟ_t find_ମୂଲ୍ୟ(ସଂରଚନା ବୃକ୍ଷ_ଗଣ୍ଠି*cur,
+				 ଅଚଳ ଅକ୍ଷର*ଚାବି, ପ୍ରତୀକ_ମୂଲ୍ୟ_t val,
 				 bool force_flag);
-      char*key_strdup_(const char*str);
+      ଅକ୍ଷର*ଚାବି_strdup(ଅଚଳ ଅକ୍ଷର*str);
 };
 
 /*
@@ -87,31 +87,31 @@ class symbol_table_s {
  * the delete_symbol_table method will delete the table, including all
  * the space for the keys.
  */
-inline symbol_table_t new_symbol_table(void) { return new symbol_table_s; }
-inline void delete_symbol_table(symbol_table_t tbl) { delete tbl; }
+ଧାଡ଼ିଭିତରେ ପ୍ରତୀକ_table_t new_ପ୍ରତୀକ_table(ଶୂନ୍ୟ) { ଫେରନ୍ତୁ new ପ୍ରତୀକ_table_s; }
+ଧାଡ଼ିଭିତରେ ଶୂନ୍ୟ delete_ପ୍ରତୀକ_table(ପ୍ରତୀକ_table_t tbl) { delete tbl; }
 
 // These are obsolete, and here only to support older code.
-inline void sym_set_value(symbol_table_t tbl, const char*key, symbol_value_t val)
-{ tbl->sym_set_value(key, val); }
+ଧାଡ଼ିଭିତରେ ଶୂନ୍ୟ sym_set_ମୂଲ୍ୟ(ପ୍ରତୀକ_table_t tbl, ଅଚଳ ଅକ୍ଷର*ଚାବି, ପ୍ରତୀକ_ମୂଲ୍ୟ_t val)
+{ tbl->sym_set_ମୂଲ୍ୟ(ଚାବି, val); }
 
-inline symbol_value_t sym_get_value(symbol_table_t tbl, const char*key)
-{ return tbl->sym_get_value(key); }
+ଧାଡ଼ିଭିତରେ ପ୍ରତୀକ_ମୂଲ୍ୟ_t sym_get_ମୂଲ୍ୟ(ପ୍ରତୀକ_table_t tbl, ଅଚଳ ଅକ୍ଷର*ଚାବି)
+{ ଫେରନ୍ତୁ tbl->sym_get_ମୂଲ୍ୟ(ଚାବି); }
 
 /*
  * This template is a type-safe interface to the symbol table.
  */
-template <class T> class symbol_map_s : private symbol_table_s {
+template <class T> class ପ୍ରତୀକ_map_s : ବ୍ୟକ୍ତିଗତ ପ୍ରତୀକ_table_s {
 
-    public:
-      void sym_set_value(const char*key, T*val)
-      { symbol_value_t tmp;
+    ସର୍ବସାଧାରଣ:
+      ଶୂନ୍ୟ sym_set_ମୂଲ୍ୟ(ଅଚଳ ଅକ୍ଷର*ଚାବି, T*val)
+      { ପ୍ରତୀକ_ମୂଲ୍ୟ_t tmp;
 	tmp.ptr = val;
-	symbol_table_s::sym_set_value(key, tmp);
+	ପ୍ରତୀକ_table_s::sym_set_ମୂଲ୍ୟ(ଚାବି, tmp);
       }
 
-      T* sym_get_value(const char*key)
-      { symbol_value_t val = symbol_table_s::sym_get_value(key);
-	return reinterpret_cast<T*>(val.ptr);
+      T* sym_get_ମୂଲ୍ୟ(ଅଚଳ ଅକ୍ଷର*ଚାବି)
+      { ପ୍ରତୀକ_ମୂଲ୍ୟ_t val = ପ୍ରତୀକ_table_s::sym_get_ମୂଲ୍ୟ(ଚାବି);
+	ଫେରନ୍ତୁ reinterpret_cast<T*>(val.ptr);
       }
 };
 

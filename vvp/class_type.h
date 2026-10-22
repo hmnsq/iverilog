@@ -31,53 +31,53 @@ class vvp_vector4_t;
  * uses this information to figure out how to construct an actual
  * instance.
  */
-class class_type : public __vpiHandle {
+class class_type : ସର୍ବସାଧାରଣ __vpiHandle {
 
-    public:
-      struct inst_x;
-      typedef inst_x*inst_t;
+    ସର୍ବସାଧାରଣ:
+      ସଂରଚନା inst_x;
+      ପ୍ରକାରବ୍ୟାଖ୍ୟା inst_x*inst_t;
 
-    public:
-      explicit class_type(const std::string&nam, size_t nprop);
+    ସର୍ବସାଧାରଣ:
+      explicit class_type(ଅଚଳ std::string&nam, size_t nprop);
       ~class_type() override;
 
 	// This is the name of the class type.
-      inline const std::string&class_name(void) const { return class_name_; }
+      ଧାଡ଼ିଭିତରେ ଅଚଳ std::string&class_name(ଶୂନ୍ୟ) ଅଚଳ { ଫେରନ୍ତୁ class_name_; }
 	// Number of properties in the class definition.
-      inline size_t property_count(void) const { return properties_.size(); }
+      ଧାଡ଼ିଭିତରେ size_t property_ଗଣନା(ଶୂନ୍ୟ) ଅଚଳ { ଫେରନ୍ତୁ properties_.size(); }
 
 	// Set the details about the property. This is used during
 	// parse of the .vvp file to fill in the details of the
 	// property for the class definition.
-      void set_property(size_t idx, const std::string&name, const std::string&type, uint64_t array_size);
+      ଶୂନ୍ୟ set_property(size_t idx, ଅଚଳ std::string&name, ଅଚଳ std::string&type, uint64_t array_size);
 
 	// This method is called after all the properties are
 	// defined. This calculates information about the definition.
-      void finish_setup(void);
+      ଶୂନ୍ୟ finish_setup(ଶୂନ୍ୟ);
 
-    public:
+    ସର୍ବସାଧାରଣ:
 	// Constructors and destructors for making instances.
-      inst_t instance_new() const;
-      void instance_delete(inst_t) const;
+      inst_t instance_new() ଅଚଳ;
+      ଶୂନ୍ୟ instance_delete(inst_t) ଅଚଳ;
 
-      void set_vec4(inst_t inst, size_t pid, const vvp_vector4_t&val) const;
-      void get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) const;
-      void set_real(inst_t inst, size_t pid, double val) const;
-      double get_real(inst_t inst, size_t pid) const;
-      void set_string(inst_t inst, size_t pid, const std::string&val) const;
-      std::string get_string(inst_t inst, size_t pid) const;
-      void set_object(inst_t inst, size_t pid, const vvp_object_t&val, size_t idx) const;
-      void get_object(inst_t inst, size_t pid, vvp_object_t&val, size_t idx) const;
+      ଶୂନ୍ୟ set_vec4(inst_t inst, size_t pid, ଅଚଳ vvp_vector4_t&val) ଅଚଳ;
+      ଶୂନ୍ୟ get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) ଅଚଳ;
+      ଶୂନ୍ୟ set_real(inst_t inst, size_t pid, ଦ୍ୱିଗୁଣ val) ଅଚଳ;
+      ଦ୍ୱିଗୁଣ get_real(inst_t inst, size_t pid) ଅଚଳ;
+      ଶୂନ୍ୟ set_string(inst_t inst, size_t pid, ଅଚଳ std::string&val) ଅଚଳ;
+      std::string get_string(inst_t inst, size_t pid) ଅଚଳ;
+      ଶୂନ୍ୟ set_object(inst_t inst, size_t pid, ଅଚଳ vvp_object_t&val, size_t idx) ଅଚଳ;
+      ଶୂନ୍ୟ get_object(inst_t inst, size_t pid, vvp_object_t&val, size_t idx) ଅଚଳ;
 
-      void copy_property(inst_t dst, size_t idx, inst_t src) const;
+      ଶୂନ୍ୟ copy_property(inst_t dst, size_t idx, inst_t src) ଅଚଳ;
 
-    public: // VPI related methods
-      int get_type_code(void) const override;
+    ସର୍ବସାଧାରଣ: // VPI related methods
+      ପୂର୍ଣ୍ଣସଂଖ୍ୟା get_type_code(ଶୂନ୍ୟ) ଅଚଳ override;
 
-    private:
+    ବ୍ୟକ୍ତିଗତ:
       std::string class_name_;
 
-      struct prop_t {
+      ସଂରଚନା prop_t {
 	    std::string name;
 	    class_property_t*type;
       };

@@ -33,20 +33,20 @@
  * instruction to branch to the next chunk. This handles the case
  * where the program counter steps off the end of a chunk.
  */
-const unsigned code_chunk_size = 1024;
+ଅଚଳ unsigned code_chunk_size = 1024;
 
-static struct vvp_code_s *first_chunk = 0;
-static struct vvp_code_s *current_chunk = 0;
-static unsigned current_within_chunk = 0;
+ସ୍ଥିର ସଂରଚନା vvp_code_s *first_chunk = 0;
+ସ୍ଥିର ସଂରଚନା vvp_code_s *current_chunk = 0;
+ସ୍ଥିର unsigned current_within_chunk = 0;
 
 /*
  * This initializes the code space. It sets up the first code chunk,
  * and places at address 0 a ZOMBIE instruction.
  */
-void codespace_init(void)
+ଶୂନ୍ୟ codespace_init(ଶୂନ୍ୟ)
 {
-      assert(current_chunk == 0);
-      first_chunk = new struct vvp_code_s [code_chunk_size];
+      ପ୍ରତିଜ୍ଞା(current_chunk == 0);
+      first_chunk = ନୂତନ ସଂରଚନା vvp_code_s [code_chunk_size];
       current_chunk = first_chunk;
 
       current_chunk[0].opcode = &of_ZOMBIE;
@@ -56,15 +56,15 @@ void codespace_init(void)
 
       current_within_chunk = 1;
 
-      count_opcodes = 0;
-      size_opcodes += code_chunk_size * sizeof (struct vvp_code_s);
+      ଗଣନା_opcodes = 0;
+      size_opcodes += code_chunk_size * ଆକାର (ସଂରଚନା vvp_code_s);
 }
 
-vvp_code_t codespace_next(void)
+vvp_code_t codespace_next(ଶୂନ୍ୟ)
 {
-      if (current_within_chunk == (code_chunk_size-1)) {
+      ଯଦି (current_within_chunk == (code_chunk_size-1)) {
 	    current_chunk[code_chunk_size-1].cptr
-		  = new struct vvp_code_s [code_chunk_size];
+		  = ନୂତନ ସଂରଚନା vvp_code_s [code_chunk_size];
 	    current_chunk = current_chunk[code_chunk_size-1].cptr;
 
 	      /* Put a link opcode on the end of the chunk. */
@@ -73,62 +73,62 @@ vvp_code_t codespace_next(void)
 
 	    current_within_chunk = 0;
 
-	    size_opcodes += code_chunk_size * sizeof (struct vvp_code_s);
+	    size_opcodes += code_chunk_size * ଆକାର (ସଂରଚନା vvp_code_s);
       }
 
       vvp_code_t res = current_chunk + current_within_chunk;
-      return res;
+      ଫେରନ୍ତୁ res;
 }
 
-vvp_code_t codespace_allocate(void)
+vvp_code_t codespace_allocate(ଶୂନ୍ୟ)
 {
       vvp_code_t res = codespace_next();
       current_within_chunk += 1;
-      count_opcodes += 1;
+      ଗଣନା_opcodes += 1;
 
-      memset(res, 0, sizeof(*res));
+      memset(res, 0, ଆକାର(*res));
 
-      return res;
+      ଫେରନ୍ତୁ res;
 }
 
-vvp_code_t codespace_null(void)
+vvp_code_t codespace_null(ଶୂନ୍ୟ)
 {
-      return first_chunk + 0;
+      ଫେରନ୍ତୁ first_chunk + 0;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void codespace_delete(void)
+ଶୂନ୍ୟ codespace_delete(ଶୂନ୍ୟ)
 {
       vvp_code_t cur = first_chunk;
 
 	/* If there are no opcodes then just delete the code space. */
-      if (count_opcodes == 0) {
+      ଯଦି (ଗଣନା_opcodes == 0) {
 	    delete [] cur;
-	    return;
+	    ଫେରନ୍ତୁ;
       }
 
-      do {
+      କର {
 	    vvp_code_t next = cur[code_chunk_size-1].cptr;
-	    for (unsigned idx = 0 ; idx < code_chunk_size; idx += 1) {
-		  count_opcodes -= 1;
-		  if ((cur+idx)->opcode == &of_VPI_CALL) {
+	    ପାଇଁ (unsigned idx = 0 ; idx < code_chunk_size; idx += 1) {
+		  ଗଣନା_opcodes -= 1;
+		  ଯଦି ((cur+idx)->opcode == &of_VPI_CALL) {
 			vpi_call_delete((cur+idx)->handle);
-		  } else if (((cur+idx)->opcode == &of_EXEC_UFUNC_REAL) ||
+		  } ଅନ୍ୟଥା ଯଦି (((cur+idx)->opcode == &of_EXEC_UFUNC_REAL) ||
 		             ((cur+idx)->opcode == &of_EXEC_UFUNC_VEC4)) {
 			exec_ufunc_delete((cur+idx));
-		  } else if ((cur+idx)->opcode == &of_FILE_LINE) {
+		  } ଅନ୍ୟଥା ଯଦି ((cur+idx)->opcode == &of_FILE_ଧାଡ଼ି) {
 			delete((cur+idx)->handle);
-		  } else if (((cur+idx)->opcode == &of_CONCATI_STR) ||
+		  } ଅନ୍ୟଥା ଯଦି (((cur+idx)->opcode == &of_CONCATI_STR) ||
 		             ((cur+idx)->opcode == &of_NEW_DARRAY) ||
 		             ((cur+idx)->opcode == &of_PUSHI_STR)) {
 			delete [] ((cur+idx)->text);
 		  }
-		  if (count_opcodes == 0) break;
+		  ଯଦି (ଗଣନା_opcodes == 0) ଭାଙ୍ଗ;
 	    }
 	      /* Don't count the &of_CHUNK_LINK opcode. */
-	    if (count_opcodes != 0) count_opcodes += 1;
+	    ଯଦି (ଗଣନା_opcodes != 0) ଗଣନା_opcodes += 1;
 	    delete [] cur;
 	    cur = next;
-      } while (cur != 0);
+      } ଯେତେବେଳେ (cur != 0);
 }
 #endif

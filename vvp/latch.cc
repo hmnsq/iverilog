@@ -39,55 +39,55 @@ vvp_latch::~vvp_latch()
 {
 }
 
-void vvp_latch::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+ଶୂନ୍ୟ vvp_latch::recv_vec4(vvp_net_ptr_t port, ଅଚଳ vvp_vector4_t&bit,
                           vvp_context_t)
 {
       vvp_bit4_t tmp;
 
-      switch (port.port()) {
+      ବାଛ (port.port()) {
 
-	  case 0: // D
+	  ସ୍ଥିତି 0: // D
 	    d_ = bit;
-	    if (en_ == BIT4_1)
+	    ଯଦି (en_ == BIT4_1)
 		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	    ଭାଙ୍ଗ;
 
-	  case 1: // EN
-	    assert(bit.size() == 1);
+	  ସ୍ଥିତି 1: // EN
+	    ପ୍ରତିଜ୍ଞା(bit.size() == 1);
 	    tmp = en_;
 	    en_ = bit.value(0);
-	    if (en_ == BIT4_1 && tmp != BIT4_1)
+	    ଯଦି (en_ == BIT4_1 && tmp != BIT4_1)
 		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	    ଭାଙ୍ଗ;
 
-	  case 2:
-	    assert(0);
-	    break;
+	  ସ୍ଥିତି 2:
+	    ପ୍ରତିଜ୍ଞା(0);
+	    ଭାଙ୍ଗ;
 
-	  case 3:
+	  ସ୍ଥିତି 3:
 	    port.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
-	    break;
+	    ଭାଙ୍ଗ;
       }
 }
 
-void vvp_latch::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+ଶୂନ୍ୟ vvp_latch::recv_vec4_pv(vvp_net_ptr_t ptr, ଅଚଳ vvp_vector4_t&bit,
 			     unsigned base, unsigned vwid, vvp_context_t ctx)
 {
       recv_vec4_pv_(ptr, bit, base, vwid, ctx);
 }
 
-void compile_latch(char*label, unsigned width,
-		   struct symb_s arg_d,
-		   struct symb_s arg_e)
+ଶୂନ୍ୟ compile_latch(ଅକ୍ଷର*label, unsigned width,
+		   ସଂରଚନା symb_s arg_d,
+		   ସଂରଚନା symb_s arg_e)
 {
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_latch*fun = new vvp_latch(width);
+      vvp_net_t*ptr = ନୂତନ vvp_net_t;
+      vvp_latch*fun = ନୂତନ vvp_latch(width);
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_e.text);
+      define_functor_ପ୍ରତୀକ(label, ptr);
+      ମୁକ୍ତ(label);
+      ନିବେଶ_connect(ptr, 0, arg_d.text);
+      ନିବେଶ_connect(ptr, 1, arg_e.text);
 
       vvp_vector4_t init_val = vvp_vector4_t(1, BIT4_1);
       schedule_init_vector(vvp_net_ptr_t(ptr,3), init_val);

@@ -22,44 +22,44 @@
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
 #ifdef __SUNPRO_CC
 # include  <stddef.h>
-#else
+#ଅନ୍ୟଥା
 # include  <cstddef>
 #endif
 
-extern unsigned long count_opcodes;
-extern unsigned long count_functors;
-extern unsigned long count_functors_logic;
-extern unsigned long count_functors_bufif;
-extern unsigned long count_functors_resolv;
-extern unsigned long count_functors_sig;
-extern unsigned long count_filters;
-extern unsigned long count_vvp_nets;
-extern unsigned long count_vpi_nets;
-extern unsigned long count_vpi_scopes;
+ବାହ୍ୟ unsigned long ଗଣନା_opcodes;
+ବାହ୍ୟ unsigned long ଗଣନା_functors;
+ବାହ୍ୟ unsigned long ଗଣନା_functors_logic;
+ବାହ୍ୟ unsigned long ଗଣନା_functors_bufif;
+ବାହ୍ୟ unsigned long ଗଣନା_functors_resolv;
+ବାହ୍ୟ unsigned long ଗଣନା_functors_sig;
+ବାହ୍ୟ unsigned long ଗଣନା_filters;
+ବାହ୍ୟ unsigned long ଗଣନା_vvp_nets;
+ବାହ୍ୟ unsigned long ଗଣନା_vpi_nets;
+ବାହ୍ୟ unsigned long ଗଣନା_vpi_scopes;
 
-extern unsigned long count_net_arrays;
-extern unsigned long count_net_array_words;
-extern unsigned long count_var_arrays;
-extern unsigned long count_var_array_words;
-extern unsigned long count_real_arrays;
-extern unsigned long count_real_array_words;
+ବାହ୍ୟ unsigned long ଗଣନା_net_arrays;
+ବାହ୍ୟ unsigned long ଗଣନା_net_array_ଶବ୍ଦଗୁଡ଼ିକ;
+ବାହ୍ୟ unsigned long ଗଣନା_var_arrays;
+ବାହ୍ୟ unsigned long ଗଣନା_var_array_ଶବ୍ଦଗୁଡ଼ିକ;
+ବାହ୍ୟ unsigned long ଗଣନା_real_arrays;
+ବାହ୍ୟ unsigned long ଗଣନା_real_array_ଶବ୍ଦଗୁଡ଼ିକ;
 
 
-extern unsigned long count_time_events;
-extern unsigned long count_time_pool(void);
+ବାହ୍ୟ unsigned long ଗଣନା_time_events;
+ବାହ୍ୟ unsigned long ଗଣନା_time_pool(ଶୂନ୍ୟ);
 
-extern unsigned long count_assign_events;
-extern unsigned long count_assign4_pool(void);
-extern unsigned long count_assign8_pool(void);
-extern unsigned long count_assign_real_pool(void);
-extern unsigned long count_assign_aword_pool(void);
-extern unsigned long count_assign_arword_pool(void);
+ବାହ୍ୟ unsigned long ଗଣନା_assign_events;
+ବାହ୍ୟ unsigned long ଗଣନା_assign4_pool(ଶୂନ୍ୟ);
+ବାହ୍ୟ unsigned long ଗଣନା_assign8_pool(ଶୂନ୍ୟ);
+ବାହ୍ୟ unsigned long ଗଣନା_assign_real_pool(ଶୂନ୍ୟ);
+ବାହ୍ୟ unsigned long ଗଣନା_assign_aword_pool(ଶୂନ୍ୟ);
+ବାହ୍ୟ unsigned long ଗଣନା_assign_arword_pool(ଶୂନ୍ୟ);
 
-extern unsigned long count_gen_events;
-extern unsigned long count_gen_pool(void);
+ବାହ୍ୟ unsigned long ଗଣନା_gen_events;
+ବାହ୍ୟ unsigned long ଗଣନା_gen_pool(ଶୂନ୍ୟ);
 
-extern size_t size_opcodes;
-extern size_t size_vvp_nets;
-extern size_t size_vvp_net_funs;
+ବାହ୍ୟ size_t size_opcodes;
+ବାହ୍ୟ size_t size_vvp_nets;
+ବାହ୍ୟ size_t size_vvp_net_funs;
 
 #endif /* IVL_statistics_H */

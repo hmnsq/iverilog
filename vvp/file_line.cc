@@ -19,82 +19,82 @@
 # include "compile.h"
 # include "vpi_priv.h"
 
-class __vpiFileLine : public __vpiHandle {
-    public:
-      explicit __vpiFileLine(const char*desc_, long file_idx_, long lineno_);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+ଶ୍ରେଣୀ __vpiFileLine : ସର୍ବସାଧାରଣ __vpiHandle {
+    ସର୍ବସାଧାରଣ:
+      explicit __vpiFileLine(ଅଚଳ ଅକ୍ଷର*desc_, long file_idx_, long lineno_);
+      ପୂର୍ଣ୍ଣସଂଖ୍ୟା get_type_code(ଶୂନ୍ୟ) ଅଚଳ override;
+      ପୂର୍ଣ୍ଣସଂଖ୍ୟା vpi_get(ପୂର୍ଣ୍ଣସଂଖ୍ୟା code) override;
+      ଅକ୍ଷର* vpi_get_str(ପୂର୍ଣ୍ଣସଂଖ୍ୟା code) override;
 
-      const char* get_description() const { return description; };
-      unsigned get_file_idx() const { return file_idx; };
-      unsigned get_lineno() const { return lineno; };
+      ଅଚଳ ଅକ୍ଷର* get_description() ଅଚଳ { ଫେରନ୍ତୁ description; };
+      unsigned get_file_idx() ଅଚଳ { ଫେରନ୍ତୁ file_idx; };
+      unsigned get_lineno() ଅଚଳ { ଫେରନ୍ତୁ lineno; };
 
-    private:
-      const char *description;
+    ବ୍ୟକ୍ତିଗତ:
+      ଅଚଳ ଅକ୍ଷର *description;
       unsigned file_idx;
       unsigned lineno;
 };
 
-bool show_file_line = false;
-bool code_is_instrumented = false;
+ତାର୍କିକ show_file_ଧାଡ଼ି = ମିଥ୍ୟା;
+ତାର୍କିକ code_is_instrumented = ମିଥ୍ୟା;
 
-static int file_line_get(int type, vpiHandle ref)
+ସ୍ଥିର ପୂର୍ଣ୍ଣସଂଖ୍ୟା file_ଧାଡ଼ି_get(ପୂର୍ଣ୍ଣସଂଖ୍ୟା type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      ପ୍ରତିଜ୍ଞା(rfp);
 
-      switch (type) {
-	case vpiLineNo:
-	    return rfp->get_lineno();
-	default:
-	    return vpiUndefined;
+      ବାଛ (type) {
+	ସ୍ଥିତି vpi_ଧାଡ଼ି_No:
+	    ଫେରନ୍ତୁ rfp->get_lineno();
+	ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
+	    ଫେରନ୍ତୁ vpiUndefined;
       }
 }
 
-static char *file_line_get_str(int type, vpiHandle ref)
+ସ୍ଥିର ଅକ୍ଷର *file_ଧାଡ଼ି_get_str(ପୂର୍ଣ୍ଣସଂଖ୍ୟା type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      ପ୍ରତିଜ୍ଞା(rfp);
 
-      switch (type) {
-	case vpiFile:
-	    assert(rfp->get_file_idx() < file_names.size());
-	    return simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
-	case _vpiDescription:
-	    if (rfp->get_description()) {
-		  return simple_set_rbuf_str(rfp->get_description());
-	    } else return simple_set_rbuf_str("Procedural tracing.");
-	default:
-	    return 0;
+      ବାଛ (type) {
+	ସ୍ଥିତି vpiFile:
+	    ପ୍ରତିଜ୍ଞା(rfp->get_file_idx() < file_names.size());
+	    ଫେରନ୍ତୁ simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
+	ସ୍ଥିତି _vpiDescription:
+	    ଯଦି (rfp->get_description()) {
+		  ଫେରନ୍ତୁ simple_set_rbuf_str(rfp->get_description());
+	    } ଅନ୍ୟଥା ଫେରନ୍ତୁ simple_set_rbuf_str("Procedural tracing.");
+	ପୂର୍ବନିର୍ଦ୍ଧାରିତ:
+	    ଫେରନ୍ତୁ 0;
       }
 }
 
-inline __vpiFileLine::__vpiFileLine(const char*desc_, long file_idx_,
+ଧାଡ଼ିଭିତରେ __vpiFileLine::__vpiFileLine(ଅଚଳ ଅକ୍ଷର*desc_, long file_idx_,
                                     long lineno_)
 {
-      if (desc_) description = vpip_name_string(desc_);
-      else description = 0;
+      ଯଦି (desc_) description = vpip_name_string(desc_);
+      ଅନ୍ୟଥା description = 0;
       file_idx = (unsigned) file_idx_;
       lineno = (unsigned) lineno_;
 }
 
-int __vpiFileLine::get_type_code(void) const
-{ return _vpiFileLine; }
+ପୂର୍ଣ୍ଣସଂଖ୍ୟା __vpiFileLine::get_type_code(ଶୂନ୍ୟ) ଅଚଳ
+{ ଫେରନ୍ତୁ vpi_File_ଧାଡ଼ି; }
 
-int __vpiFileLine::vpi_get(int code)
-{ return file_line_get(code, this); }
+ପୂର୍ଣ୍ଣସଂଖ୍ୟା __vpiFileLine::vpi_get(ପୂର୍ଣ୍ଣସଂଖ୍ୟା code)
+{ ଫେରନ୍ତୁ file_ଧାଡ଼ି_get(code, ଏହି); }
 
-char* __vpiFileLine::vpi_get_str(int code)
-{ return file_line_get_str(code, this); }
+ଅକ୍ଷର* __vpiFileLine::vpi_get_str(ପୂର୍ଣ୍ଣସଂଖ୍ୟା code)
+{ ଫେରନ୍ତୁ file_ଧାଡ଼ି_get_str(code, ଏହି); }
 
 
-vpiHandle vpip_build_file_line(const char*description, long file_idx, long lineno)
+vpiHandle vpip_build_file_ଧାଡ଼ି(ଅଚଳ ଅକ୍ଷର*description, long file_idx, long lineno)
 {
-      __vpiFileLine*obj = new __vpiFileLine(description, file_idx, lineno);
+      __vpiFileLine*obj = ନୂତନ __vpiFileLine(description, file_idx, lineno);
 
 	/* You can turn on the diagnostic output if we find a %file_line. */
-      code_is_instrumented = true;
+      code_is_instrumented = ସତ୍ୟ;
 
-      return obj;
+      ଫେରନ୍ତୁ obj;
 }

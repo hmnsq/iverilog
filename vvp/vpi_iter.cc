@@ -26,38 +26,38 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-static int iterator_free_object(vpiHandle ref)
+ସ୍ଥିର ପୂର୍ଣ୍ଣସଂଖ୍ୟା iterator_free_object(vpiHandle ref)
 {
-      struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
-      assert(hp);
+      ସଂରଚନା __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
+      ପ୍ରତିଜ୍ଞା(hp);
 
-      if (hp->free_args_flag)
-	    free(hp->args);
+      ଯଦି (hp->free_args_flag)
+	    ମୁକ୍ତ(hp->args);
 
       delete hp;
-      return 1;
+      ଫେରନ୍ତୁ 1;
 }
 
-inline __vpiIterator::__vpiIterator()
+ଧାଡ଼ିଭିତରେ __vpiIterator::__vpiIterator()
 { }
 
-int __vpiIterator::get_type_code(void) const
-{ return vpiIterator; }
+ପୂର୍ଣ୍ଣସଂଖ୍ୟା __vpiIterator::get_type_code(ଶୂନ୍ୟ) ଅଚଳ
+{ ଫେରନ୍ତୁ vpiIterator; }
 
-__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(void)
-{ return &iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(ଶୂନ୍ୟ)
+{ ଫେରନ୍ତୁ &iterator_free_object; }
 
 vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
-			     bool free_args_flag)
+			     ତାର୍କିକ free_args_flag)
 {
-      struct __vpiIterator*res = new __vpiIterator;
+      ସଂରଚନା __vpiIterator*res = ନୂତନ __vpiIterator;
       res->args = args;
       res->nargs = nargs;
       res->next  = 0;
 
       res->free_args_flag = free_args_flag;
 
-      return res;
+      ଫେରନ୍ତୁ res;
 }
 
 /*
@@ -66,20 +66,20 @@ vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
  */
 vpiHandle vpi_scan(vpiHandle ref)
 {
-      if (ref == 0) {
+      ଯଦି (ref == 0) {
 	    fprintf(stderr, "ERROR: NULL handle passed to vpi_scan.\n");
-	    assert(0);
-	    return 0;
+	    ପ୍ରତିଜ୍ଞା(0);
+	    ଫେରନ୍ତୁ 0;
       }
 
-      if (struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
-	    if (hp->next == hp->nargs) {
+      ଯଦି (ସଂରଚନା __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
+	    ଯଦି (hp->next == hp->nargs) {
 		  vpi_free_object(ref);
-		  return 0;
+		  ଫେରନ୍ତୁ 0;
 	    }
 
-	    return hp->args[hp->next++];
+	    ଫେରନ୍ତୁ hp->args[hp->next++];
       }
 
-      return ref->vpi_index(0);
+      ଫେରନ୍ତୁ ref->vpi_index(0);
 }

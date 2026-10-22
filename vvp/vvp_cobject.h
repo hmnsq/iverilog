@@ -26,28 +26,28 @@
 
 class vvp_vector4_t;
 
-class vvp_cobject : public vvp_object {
+class vvp_cobject : ସର୍ବସାଧାରଣ vvp_object {
 
-    public:
-      explicit vvp_cobject(const class_type*defn);
+    ସର୍ବସାଧାରଣ:
+      explicit vvp_cobject(ଅଚଳ class_type*defn);
       ~vvp_cobject() override;
 
-      void set_vec4(size_t pid, const vvp_vector4_t&val);
-      void get_vec4(size_t pid, vvp_vector4_t&val);
+      ଶୂନ୍ୟ set_vec4(size_t pid, ଅଚଳ vvp_vector4_t&val);
+      ଶୂନ୍ୟ get_vec4(size_t pid, vvp_vector4_t&val);
 
-      void set_real(size_t pid, double val);
-      double get_real(size_t pid);
+      ଶୂନ୍ୟ set_real(size_t pid, ଦ୍ୱିଗୁଣ val);
+      ଦ୍ୱିଗୁଣ get_real(size_t pid);
 
-      void set_string(size_t pid, const std::string&val);
+      ଶୂନ୍ୟ set_string(size_t pid, ଅଚଳ std::string&val);
       std::string get_string(size_t pid);
 
-      void set_object(size_t pid, const vvp_object_t&val, size_t idx);
-      void get_object(size_t pid, vvp_object_t&val, size_t idx);
+      ଶୂନ୍ୟ set_object(size_t pid, ଅଚଳ vvp_object_t&val, size_t idx);
+      ଶୂନ୍ୟ get_object(size_t pid, vvp_object_t&val, size_t idx);
 
-      void shallow_copy(const vvp_object*that) override;
+      ଶୂନ୍ୟ shallow_copy(ଅଚଳ vvp_object*that) override;
 
-    private:
-      const class_type* defn_;
+    ବ୍ୟକ୍ତିଗତ:
+      ଅଚଳ class_type* defn_;
 	// For now, only support 32bit bool signed properties.
       class_type::inst_t properties_;
 };
