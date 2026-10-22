@@ -25,89 +25,89 @@
 # include  <cstdlib>
 # include  <cassert>
 
-void vpip_bin_str_to_vec4(vvp_vector4_t&vec4, const char*buf)
+शून्य vpip_bin_str_to_vec4(vvp_vector4_t&vec4, स्थिरांक अक्षर*buf)
 {
-      const char*ebuf = buf + strlen(buf);
-      unsigned idx = 0;
-      unsigned skip_chars = 0;
-      const char*tbuf = buf;
+      स्थिरांक अक्षर*ebuf = buf + म_माप(buf);
+      अचिन्हित idx = 0;
+      अचिन्हित skip_chars = 0;
+      स्थिरांक अक्षर*tbuf = buf;
 	/* Find the number of non-numeric characters. */
-      while ((tbuf = strpbrk(tbuf, "-_"))) {
+      पर्यंत ((tbuf = strpbrk(tbuf, "-_"))) {
 	    skip_chars += 1;
 	    tbuf += 1;
       }
-      vvp_vector4_t tval(strlen(buf)-skip_chars);
-      while (ebuf > buf) {
+      vvp_vector4_t tval(म_माप(buf)-skip_chars);
+      पर्यंत (ebuf > buf) {
 	    ebuf -= 1;
 	      /* Skip any "_" characters in the string. */
-	    while (*ebuf == '_') {
+	    पर्यंत (*ebuf == '_') {
 		  ebuf -= 1;
-		  assert(ebuf > buf);
+		  प्रतिज्ञा(ebuf > buf);
 	    }
 
 	      /*  If we find a "-" it must be at the head of the string. */
-	    if (*ebuf == '-') {
-		  if (ebuf != buf) assert(0);
-		  break;
+	    जर (*ebuf == '-') {
+		  जर (ebuf != buf) प्रतिज्ञा(0);
+		  थांबा;
 	    }
 
-	    assert(idx < tval.size());
-	    switch (*ebuf) {
-		case '0':
+	    प्रतिज्ञा(idx < tval.size());
+	    निवड (*ebuf) {
+		स्थिती '0':
 		  tval.set_bit(idx, BIT4_0);
-		  break;
-		case '1':
+		  थांबा;
+		स्थिती '1':
 		  tval.set_bit(idx, BIT4_1);
-		  break;
-		case 'x':
-		case 'X':
+		  थांबा;
+		स्थिती 'x':
+		स्थिती 'X':
 		  tval.set_bit(idx, BIT4_X);
-		  break;
-		case 'z':
-		case 'Z':
+		  थांबा;
+		स्थिती 'z':
+		स्थिती 'Z':
 		  tval.set_bit(idx, BIT4_Z);
-		  break;
-		default:
+		  थांबा;
+		पूर्वनिर्धारित:
 		    /* Return "x" if there are invalid digits in the string. */
-		  fprintf(stderr, "Warning: Invalid binary digit %c(%d) in "
+		  ख_लिखो(मानक_त्रुटि, "Warning: Invalid binary digit %c(%d) in "
 		          "\"%s\".\n", *ebuf, *ebuf, buf);
-		  for (unsigned jdx = 0 ;  jdx < vec4.size() ;  jdx += 1) {
+		  साठी (अचिन्हित jdx = 0 ;  jdx < vec4.size() ;  jdx += 1) {
 			vec4.set_bit(jdx, BIT4_X);
 		  }
-		  return;
+		  परत;
 	    }
 
 	    idx += 1;
       }
 
 	/* Make a negative value when needed. */
-      if (buf[0] == '-') {
+      जर (buf[0] == '-') {
 	    tval.invert();
 	    tval += (int64_t) 1;
       }
 
 	/* Find the correct padding value. */
       vvp_bit4_t pad;
-      switch (tval.value(tval.size()-1)) {
-	  case BIT4_X:  // Pad MSB 'x' with 'x'
+      निवड (tval.value(tval.size()-1)) {
+	  स्थिती BIT4_X:  // Pad MSB 'x' with 'x'
 	    pad = BIT4_X;
-	    break;
-	  case BIT4_Z:  // Pad MSB 'z' with 'z'
+	    थांबा;
+	  स्थिती BIT4_Z:  // Pad MSB 'z' with 'z'
 	    pad = BIT4_Z;
-	    break;
-	  case BIT4_1:  // If negative pad MSB '1' with '1'
-	    if (buf[0] == '-') {
+	    थांबा;
+	  स्थिती BIT4_1:  // If negative pad MSB '1' with '1'
+	    जर (buf[0] == '-') {
 		  pad = BIT4_1;
-		  break;
+		  थांबा;
 	    }
 	    // fallthrough
-	  default:  // Everything else gets '0' padded/
+	  पूर्वनिर्धारित:  // Everything else gets '0' padded/
 	    pad = BIT4_0;
-	    break;
+	    थांबा;
       }
 
-      for (unsigned jdx = 0 ;  jdx < vec4.size() ; jdx += 1) {
-	    if (jdx < tval.size()) vec4.set_bit(jdx, tval.value(jdx));
-	    else vec4.set_bit(jdx, pad);
+      साठी (अचिन्हित jdx = 0 ;  jdx < vec4.size() ; jdx += 1) {
+	    जर (jdx < tval.size()) vec4.set_bit(jdx, tval.value(jdx));
+	    अन्यथा vec4.set_bit(jdx, pad);
       }
 }

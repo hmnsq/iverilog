@@ -36,75 +36,75 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+using नामाकाश std;
 
-inline __vpiUserSystf::__vpiUserSystf()
+ओळीत __vpiUserSystf::__vpiUserSystf()
 { }
 
-int __vpiUserSystf::get_type_code(void) const
-{ return vpiUserSystf; }
+पूर्णांक __vpiUserSystf::get_type_code(शून्य) स्थिरांक
+{ परत vpiUserSystf; }
 
 
-static vpiHandle systask_handle(int type, vpiHandle ref)
+स्थिर vpiHandle systask_handle(पूर्णांक type, vpiHandle ref)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      संरचना __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      switch (type) {
-	  case vpiScope:
-	    return rfp->scope;
+      निवड (type) {
+	  स्थिती vpiScope:
+	    परत rfp->scope;
 
-	  case vpiUserSystf:
+	  स्थिती vpiUserSystf:
 	      /* Assert that vpiUserDefn is true! */
-	    assert(rfp->defn->is_user_defn);
-	    return rfp->defn;
+	    प्रतिज्ञा(rfp->defn->is_user_defn);
+	    परत rfp->defn;
 
-	  default:
-	    return 0;
+	  पूर्वनिर्धारित:
+	    परत 0;
       };
 }
 
-static int systask_get(int type, vpiHandle ref)
+स्थिर पूर्णांक systask_get(पूर्णांक type, vpiHandle ref)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      संरचना __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      switch (type) {
+      निवड (type) {
 	    /* This is not the correct way to get this information, but
 	     * some of the code that implements the acc and tf routines
 	     * use this method so we will keep it in for now. */
-	  case vpiTimeUnit:
-	    return rfp->scope->time_units;
-	  case vpiTimePrecision:
-	    return rfp->scope->time_precision;
+	  स्थिती vpiTimeUnit:
+	    परत rfp->scope->time_units;
+	  स्थिती vpiTimePrecision:
+	    परत rfp->scope->time_precision;
 
-	  case vpiLineNo:
-	    return rfp->lineno;
+	  स्थिती vpi_ओळ_No:
+	    परत rfp->lineno;
 
-	  case vpiUserDefn:
-	    return rfp->defn->is_user_defn;
+	  स्थिती vpiUserDefn:
+	    परत rfp->defn->is_user_defn;
 
-	  default:
-	    return vpiUndefined;
+	  पूर्वनिर्धारित:
+	    परत vpiUndefined;
       }
 }
 
 // support getting vpiSize for a system function call
-static int sysfunc_get(int type, vpiHandle ref)
+स्थिर पूर्णांक sysfunc_get(पूर्णांक type, vpiHandle ref)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      संरचना __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      switch (type) {
-	  case vpiSize:
-	    assert(0); // This should be handled by derived classes
-	    return 0;
+      निवड (type) {
+	  स्थिती vpiSize:
+	    प्रतिज्ञा(0); // This should be handled by derived classes
+	    परत 0;
 
-	  case vpiLineNo:
-	    return rfp->lineno;
+	  स्थिती vpi_ओळ_No:
+	    परत rfp->lineno;
 
-	  case vpiUserDefn:
-	    return rfp->defn->is_user_defn;
+	  स्थिती vpiUserDefn:
+	    परत rfp->defn->is_user_defn;
 
-	  default:
-	    return vpiUndefined;
+	  पूर्वनिर्धारित:
+	    परत vpiUndefined;
       }
 }
 
@@ -112,394 +112,394 @@ static int sysfunc_get(int type, vpiHandle ref)
  * the get_str function only needs to support vpiName
  */
 
-static char *systask_get_str(int type, vpiHandle ref)
+स्थिर अक्षर *systask_get_str(पूर्णांक type, vpiHandle ref)
 {
-      const struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      स्थिरांक संरचना __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      switch (type) {
-          case vpiFile:
-            assert(rfp->file_idx < file_names.size());
-            return simple_set_rbuf_str(file_names[rfp->file_idx]);
+      निवड (type) {
+          स्थिती vpiFile:
+            प्रतिज्ञा(rfp->file_idx < file_names.size());
+            परत simple_set_rbuf_str(file_names[rfp->file_idx]);
 
-          case vpiName:
-            return simple_set_rbuf_str(rfp->defn->info.tfname);
+          स्थिती vpiName:
+            परत simple_set_rbuf_str(rfp->defn->info.tfname);
       }
 
-      return 0;
+      परत 0;
 }
 
 /*
  * the iter function only supports getting an iterator of the
  * arguments. This works equally well for tasks and functions.
  */
-static vpiHandle systask_iter(int, vpiHandle ref)
+स्थिर vpiHandle systask_iter(पूर्णांक, vpiHandle ref)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      संरचना __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      if (rfp->nargs == 0)
-	    return 0;
+      जर (rfp->nargs == 0)
+	    परत 0;
 
-      return vpip_make_iterator(rfp->nargs, rfp->args, false);
+      परत vpip_make_iterator(rfp->nargs, rfp->args, असत्य);
 }
 
-struct systask_def : public __vpiSysTaskCall {
-      virtual int get_type_code(void) const   override { return vpiSysTaskCall; }
-      virtual int vpi_get(int code)           override { return systask_get(code, this); }
-      virtual char*vpi_get_str(int code)      override { return systask_get_str(code, this); }
-      virtual vpiHandle vpi_handle(int code)  override { return systask_handle(code, this); }
-      virtual vpiHandle vpi_iterate(int code) override { return systask_iter(code, this); }
+संरचना systask_def : सार्वजनिक __vpiSysTaskCall {
+      आभासी पूर्णांक get_type_code(शून्य) स्थिरांक   override { परत vpiSysTaskCall; }
+      आभासी पूर्णांक vpi_get(पूर्णांक code)           override { परत systask_get(code, हे); }
+      आभासी अक्षर*vpi_get_str(पूर्णांक code)      override { परत systask_get_str(code, हे); }
+      आभासी vpiHandle vpi_handle(पूर्णांक code)  override { परत systask_handle(code, हे); }
+      आभासी vpiHandle vpi_iterate(पूर्णांक code) override { परत systask_iter(code, हे); }
 };
 
-struct sysfunc_def : public systask_def {
-      virtual int get_type_code(void) const override { return vpiSysFuncCall; }
-      virtual int vpi_get(int code) override { return sysfunc_get(code, this); }
+संरचना sysfunc_def : सार्वजनिक systask_def {
+      आभासी पूर्णांक get_type_code(शून्य) स्थिरांक override { परत vpiSysFuncCall; }
+      आभासी पूर्णांक vpi_get(पूर्णांक code) override { परत sysfunc_get(code, हे); }
 };
 
-struct sysfunc_real : public sysfunc_def {
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      inline double return_value() const { return return_value_; }
+संरचना sysfunc_real : सार्वजनिक sysfunc_def {
+      vpiHandle vpi_put_मूल्य(p_vpi_मूल्य val, पूर्णांक flags) override;
+      ओळीत द्विगुण return_मूल्य() स्थिरांक { परत return_मूल्य_2; }
 
-    private:
-      double return_value_;
+    खाजगी:
+      द्विगुण return_मूल्य_2;
 };
 
-vpiHandle sysfunc_real::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_real::vpi_put_मूल्य(p_vpi_मूल्य vp, पूर्णांक)
 {
-      put_value = true;
+      put_मूल्य = सत्य;
 
-      return_value_ = 0.0;
-      switch (vp->format) {
-	  case vpiRealVal:
-	    return_value_ = vp->value.real;
-	    break;
-	  default:
-	    fprintf(stderr, "Unsupported format %d.\n", (int)vp->format);
-	    assert(0);
+      return_मूल्य_2 = 0.0;
+      निवड (vp->format) {
+	  स्थिती vpiRealVal:
+	    return_मूल्य_2 = vp->value.real;
+	    थांबा;
+	  पूर्वनिर्धारित:
+	    ख_लिखो(मानक_त्रुटि, "Unsupported format %d.\n", (पूर्णांक)vp->format);
+	    प्रतिज्ञा(0);
       }
 
-      return 0;
+      परत 0;
 }
 
-struct sysfunc_str : public sysfunc_def {
-      int vpi_get(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      inline const std::string& return_value() const { return return_value_; };
+संरचना sysfunc_str : सार्वजनिक sysfunc_def {
+      पूर्णांक vpi_get(पूर्णांक code) override;
+      vpiHandle vpi_put_मूल्य(p_vpi_मूल्य val, पूर्णांक flags) override;
+      ओळीत स्थिरांक std::string& return_मूल्य() स्थिरांक { परत return_मूल्य_2; };
 
-    private:
-      std::string return_value_;
+    खाजगी:
+      std::string return_मूल्य_2;
 };
 
-int sysfunc_str::vpi_get(int code)
+पूर्णांक sysfunc_str::vpi_get(पूर्णांक code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return return_value_.size();
+      निवड (code) {
+	  स्थिती vpiSize:
+	    परत return_मूल्य_2.size();
 
-	  case vpiLineNo:
-	    return lineno;
+	  स्थिती vpi_ओळ_No:
+	    परत lineno;
 
-	  case vpiUserDefn:
-	    return defn->is_user_defn;
+	  स्थिती vpiUserDefn:
+	    परत defn->is_user_defn;
 
-	  default:
-	    return vpiUndefined;
-      }
-}
-
-vpiHandle sysfunc_str::vpi_put_value(p_vpi_value vp, int)
-{
-      put_value = true;
-
-      switch (vp->format) {
-	  case vpiStringVal:
-	    return_value_ = std::string(vp->value.str);
-	    break;
-	  default:
-	    fprintf(stderr, "Unsupported format %d.\n", (int)vp->format);
-	    assert(0);
-      }
-
-      return 0;
-}
-
-class sysfunc_vec4 : public sysfunc_def {
-    public:
-      explicit inline sysfunc_vec4(unsigned wid): return_value_(wid, BIT4_X) { }
-      int vpi_get(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      inline const vvp_vector4_t& return_value() const { return return_value_; }
-
-    private:
-      vpiHandle put_value_scalar_(p_vpi_value vp);
-      vpiHandle put_value_int_(p_vpi_value vp);
-      vpiHandle put_value_string_(p_vpi_value vp);
-      vpiHandle put_value_vector_(p_vpi_value vp);
-      vpiHandle put_value_time_(p_vpi_value vp);
-
-      vvp_vector4_t return_value_;
-};
-
-int sysfunc_vec4::vpi_get(int code)
-{
-      switch (code) {
-	  case vpiSize:
-	    return return_value_.size();
-
-	  case vpiLineNo:
-	    return lineno;
-
-	  case vpiUserDefn:
-	    return defn->is_user_defn;
-
-	  default:
-	    return vpiUndefined;
+	  पूर्वनिर्धारित:
+	    परत vpiUndefined;
       }
 }
 
-vpiHandle sysfunc_vec4::put_value_scalar_(const p_vpi_value vp)
+vpiHandle sysfunc_str::vpi_put_मूल्य(p_vpi_मूल्य vp, पूर्णांक)
 {
-      switch (vp->value.scalar) {
-	  case vpi0:
-	    return_value_.set_bit(0, BIT4_0);
-	    break;
-	  case vpi1:
-	    return_value_.set_bit(0, BIT4_1);
-	    break;
-	  case vpiX:
-	    return_value_.set_bit(0, BIT4_X);
-	    break;
-	  case vpiZ:
-	    return_value_.set_bit(0, BIT4_Z);
-	    break;
-	  default:
-	    fprintf(stderr, "Unsupported value %d.\n", (int)vp->value.scalar);
-	    assert(0);
+      put_मूल्य = सत्य;
+
+      निवड (vp->format) {
+	  स्थिती vpiStringVal:
+	    return_मूल्य_2 = std::string(vp->value.str);
+	    थांबा;
+	  पूर्वनिर्धारित:
+	    ख_लिखो(मानक_त्रुटि, "Unsupported format %d.\n", (पूर्णांक)vp->format);
+	    प्रतिज्ञा(0);
       }
-      return 0;
+
+      परत 0;
 }
 
-vpiHandle sysfunc_vec4::put_value_int_(p_vpi_value vp)
+वर्ग sysfunc_vec4 : सार्वजनिक sysfunc_def {
+    सार्वजनिक:
+      explicit ओळीत sysfunc_vec4(अचिन्हित wid): return_मूल्य_2(wid, BIT4_X) { }
+      पूर्णांक vpi_get(पूर्णांक code) override;
+      vpiHandle vpi_put_मूल्य(p_vpi_मूल्य val, पूर्णांक flags) override;
+      ओळीत स्थिरांक vvp_vector4_t& return_मूल्य() स्थिरांक { परत return_मूल्य_2; }
+
+    खाजगी:
+      vpiHandle put_मूल्य_scalar(p_vpi_मूल्य vp);
+      vpiHandle put_मूल्य_int(p_vpi_मूल्य vp);
+      vpiHandle put_मूल्य_string(p_vpi_मूल्य vp);
+      vpiHandle put_मूल्य_vector(p_vpi_मूल्य vp);
+      vpiHandle put_मूल्य_time(p_vpi_मूल्य vp);
+
+      vvp_vector4_t return_मूल्य_2;
+};
+
+पूर्णांक sysfunc_vec4::vpi_get(पूर्णांक code)
 {
-      long tmp = vp->value.integer;
-      unsigned width = return_value_.size();
-      for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
-	    return_value_.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
+      निवड (code) {
+	  स्थिती vpiSize:
+	    परत return_मूल्य_2.size();
+
+	  स्थिती vpi_ओळ_No:
+	    परत lineno;
+
+	  स्थिती vpiUserDefn:
+	    परत defn->is_user_defn;
+
+	  पूर्वनिर्धारित:
+	    परत vpiUndefined;
+      }
+}
+
+vpiHandle sysfunc_vec4::put_मूल्य_scalar(स्थिरांक p_vpi_मूल्य vp)
+{
+      निवड (vp->value.scalar) {
+	  स्थिती vpi0:
+	    return_मूल्य_2.set_bit(0, BIT4_0);
+	    थांबा;
+	  स्थिती vpi1:
+	    return_मूल्य_2.set_bit(0, BIT4_1);
+	    थांबा;
+	  स्थिती vpiX:
+	    return_मूल्य_2.set_bit(0, BIT4_X);
+	    थांबा;
+	  स्थिती vpiZ:
+	    return_मूल्य_2.set_bit(0, BIT4_Z);
+	    थांबा;
+	  पूर्वनिर्धारित:
+	    ख_लिखो(मानक_त्रुटि, "Unsupported value %d.\n", (पूर्णांक)vp->value.scalar);
+	    प्रतिज्ञा(0);
+      }
+      परत 0;
+}
+
+vpiHandle sysfunc_vec4::put_मूल्य_int(p_vpi_मूल्य vp)
+{
+      दीर्घ tmp = vp->value.integer;
+      अचिन्हित width = return_मूल्य_2.size();
+      साठी (अचिन्हित idx = 0 ;  idx < width ;  idx += 1) {
+	    return_मूल्य_2.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
 	    tmp >>= 1;
       }
 
-      return 0;
+      परत 0;
 }
 
-vpiHandle sysfunc_vec4::put_value_string_(p_vpi_value vp)
+vpiHandle sysfunc_vec4::put_मूल्य_string(p_vpi_मूल्य vp)
 {
-      size_t slen = strlen(vp->value.str);
-      unsigned wid = return_value_.size();
+      माप_प्रकार slen = म_माप(vp->value.str);
+      अचिन्हित wid = return_मूल्य_2.size();
 
-      for (unsigned idx = 0 ; idx < wid ; idx += 1) {
-	    unsigned cidx = idx / 8;
+      साठी (अचिन्हित idx = 0 ; idx < wid ; idx += 1) {
+	    अचिन्हित cidx = idx / 8;
 	      // If wider then the string, then pad with zero.
-	    if (cidx >= slen) {
-		  return_value_.set_bit(idx, BIT4_0);
-		  continue;
+	    जर (cidx >= slen) {
+		  return_मूल्य_2.set_bit(idx, BIT4_0);
+		  सुरूठेवा;
 	    }
 
 	      // Put the end of the string in the LSB of the vector
-	    char use_char = vp->value.str[slen - 1 - cidx];
+	    अक्षर use_char = vp->value.str[slen - 1 - cidx];
 
-	    if ((use_char >> (idx % 8)) & 1)
-		  return_value_.set_bit(idx, BIT4_1);
-	    else
-		  return_value_.set_bit(idx, BIT4_0);
+	    जर ((use_char >> (idx % 8)) & 1)
+		  return_मूल्य_2.set_bit(idx, BIT4_1);
+	    अन्यथा
+		  return_मूल्य_2.set_bit(idx, BIT4_0);
       }
-      return 0;
+      परत 0;
 }
 
-vpiHandle sysfunc_vec4::put_value_vector_(p_vpi_value vp)
+vpiHandle sysfunc_vec4::put_मूल्य_vector(p_vpi_मूल्य vp)
 {
-      unsigned width = return_value_.size();
-      for (unsigned idx = 0 ; idx < width ; idx += 1) {
-	    unsigned word = idx / 32;
-	    unsigned bidx = idx % 32;
+      अचिन्हित width = return_मूल्य_2.size();
+      साठी (अचिन्हित idx = 0 ; idx < width ; idx += 1) {
+	    अचिन्हित word = idx / 32;
+	    अचिन्हित bidx = idx % 32;
 
-	    unsigned long aval = vp->value.vector[word].aval >> bidx;
-	    unsigned long bval = vp->value.vector[word].bval >> bidx;
+	    अचिन्हित दीर्घ aval = vp->value.vector[word].aval >> bidx;
+	    अचिन्हित दीर्घ bval = vp->value.vector[word].bval >> bidx;
 
-	    int bit = (aval&1) | ((bval<<1)&2);
+	    पूर्णांक bit = (aval&1) | ((bval<<1)&2);
 	    vvp_bit4_t bit4;
 
-	    switch (bit) {
-		case 0:
+	    निवड (bit) {
+		स्थिती 0:
 		  bit4 = BIT4_0;
-		  break;
-		case 1:
+		  थांबा;
+		स्थिती 1:
 		  bit4 = BIT4_1;
-		  break;
-		case 2:
+		  थांबा;
+		स्थिती 2:
 		  bit4 = BIT4_Z;
-		  break;
-		case 3:
+		  थांबा;
+		स्थिती 3:
 		  bit4 = BIT4_X;
-		  break;
-		default:
-		  assert(0);
+		  थांबा;
+		पूर्वनिर्धारित:
+		  प्रतिज्ञा(0);
 		  bit4 = BIT4_X;
-		  break;
+		  थांबा;
 	    }
-	    return_value_.set_bit(idx, bit4);
+	    return_मूल्य_2.set_bit(idx, bit4);
       }
-      return 0;
+      परत 0;
 }
 
-vpiHandle sysfunc_vec4::put_value_time_(p_vpi_value vp)
+vpiHandle sysfunc_vec4::put_मूल्य_time(p_vpi_मूल्य vp)
 {
-      unsigned width = return_value_.size();
-      long tmp = 0;
-      for (unsigned idx = 0 ; idx < width ; idx += 1) {
-	    if (idx == 0)
-		  tmp = vp->value.time->low;
-	    else if (idx == 32)
-		  tmp = vp->value.time->high;
-	    else if (idx == 64)
+      अचिन्हित width = return_मूल्य_2.size();
+      दीर्घ tmp = 0;
+      साठी (अचिन्हित idx = 0 ; idx < width ; idx += 1) {
+	    जर (idx == 0)
+		  tmp = vp->value.समय->खालचा;
+	    अन्यथा जर (idx == 32)
+		  tmp = vp->value.समय->वरचा;
+	    अन्यथा जर (idx == 64)
 		  tmp = 0;
 
-	    return_value_.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
+	    return_मूल्य_2.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
 	    tmp >>= 1;
       }
-      return 0;
+      परत 0;
 }
 
-vpiHandle sysfunc_vec4::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_vec4::vpi_put_मूल्य(p_vpi_मूल्य vp, पूर्णांक)
 {
-      put_value = true;
+      put_मूल्य = सत्य;
 
-      switch (vp->format) {
-	  case vpiScalarVal:
-	    return put_value_scalar_(vp);
-	  case vpiIntVal:
-	    return put_value_int_(vp);
-	  case vpiStringVal:
-	    return put_value_string_(vp);
-	  case vpiVectorVal:
-	    return put_value_vector_(vp);
-	  case vpiTimeVal:
-	    return put_value_time_(vp);
-	  default:
-	    fprintf(stderr, "Unsupported format %d setting sysfunc vec4 value.\n", (int)vp->format);
-	    assert(0);
+      निवड (vp->format) {
+	  स्थिती vpiScalarVal:
+	    परत put_मूल्य_scalar(vp);
+	  स्थिती vpiIntVal:
+	    परत put_मूल्य_int(vp);
+	  स्थिती vpiStringVal:
+	    परत put_मूल्य_string(vp);
+	  स्थिती vpiVectorVal:
+	    परत put_मूल्य_vector(vp);
+	  स्थिती vpiTimeVal:
+	    परत put_मूल्य_time(vp);
+	  पूर्वनिर्धारित:
+	    ख_लिखो(मानक_त्रुटि, "Unsupported format %d setting sysfunc vec4 value.\n", (पूर्णांक)vp->format);
+	    प्रतिज्ञा(0);
       }
 
-      return 0;
+      परत 0;
 }
 
-struct sysfunc_4net : public sysfunc_def {
-      explicit inline sysfunc_4net(unsigned wid) : vwid_(wid) { }
-      int vpi_get(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+संरचना sysfunc_4net : सार्वजनिक sysfunc_def {
+      explicit ओळीत sysfunc_4net(अचिन्हित wid) : vwid_(wid) { }
+      पूर्णांक vpi_get(पूर्णांक code) override;
+      vpiHandle vpi_put_मूल्य(p_vpi_मूल्य val, पूर्णांक flags) override;
 
-    private:
-      unsigned vwid_;
+    खाजगी:
+      अचिन्हित vwid_;
 };
 
 // support getting vpiSize for a system function call
-int sysfunc_4net::vpi_get(int code)
+पूर्णांक sysfunc_4net::vpi_get(पूर्णांक code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return vwid_;
+      निवड (code) {
+	  स्थिती vpiSize:
+	    परत vwid_;
 
-	  case vpiLineNo:
-	    return lineno;
+	  स्थिती vpi_ओळ_No:
+	    परत lineno;
 
-	  case vpiUserDefn:
-	    return defn->is_user_defn;
+	  स्थिती vpiUserDefn:
+	    परत defn->is_user_defn;
 
-	  default:
-	    return vpiUndefined;
+	  पूर्वनिर्धारित:
+	    परत vpiUndefined;
       }
 }
 
-vpiHandle sysfunc_4net::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_4net::vpi_put_मूल्य(p_vpi_मूल्य vp, पूर्णांक)
 {
-      put_value = true;
+      put_मूल्य = सत्य;
 
       vvp_vector4_t val (vwid_);
 
-      switch (vp->format) {
+      निवड (vp->format) {
 
-          case vpiScalarVal: {
-	        switch(vp->value.scalar) {
-		      case vpi0:
+          स्थिती vpiScalarVal: {
+	        निवड(vp->value.scalar) {
+		      स्थिती vpi0:
 			val.set_bit(0, BIT4_0);
-                        break;
-		      case vpi1:
+                        थांबा;
+		      स्थिती vpi1:
                         val.set_bit(0, BIT4_1);
-                        break;
-		      case vpiX:
+                        थांबा;
+		      स्थिती vpiX:
                         val.set_bit(0, BIT4_X);
-                        break;
-		      case vpiZ:
+                        थांबा;
+		      स्थिती vpiZ:
                         val.set_bit(0, BIT4_Z);
-                        break;
-		      default:
-                        fprintf(stderr, "Unsupported bit value %d.\n",
-                                (int)vp->value.scalar);
-                        assert(0);
+                        थांबा;
+		      पूर्वनिर्धारित:
+                        ख_लिखो(मानक_त्रुटि, "Unsupported bit value %d.\n",
+                                (पूर्णांक)vp->value.scalar);
+                        प्रतिज्ञा(0);
                 }
-		break;
+		थांबा;
           }
 
-	  case vpiIntVal: {
-		long tmp = vp->value.integer;
-		for (unsigned idx = 0 ;  idx < vwid_ ;  idx += 1) {
+	  स्थिती vpiIntVal: {
+		दीर्घ tmp = vp->value.integer;
+		साठी (अचिन्हित idx = 0 ;  idx < vwid_ ;  idx += 1) {
 		      val.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
 		      tmp >>= 1;
 		}
-		break;
+		थांबा;
 	  }
 
-          case vpiTimeVal: {
-                unsigned long tmp = vp->value.time->low;
-                for (unsigned idx = 0 ;  idx < vwid_ ;  idx += 1) {
+          स्थिती vpiTimeVal: {
+                अचिन्हित दीर्घ tmp = vp->value.समय->खालचा;
+                साठी (अचिन्हित idx = 0 ;  idx < vwid_ ;  idx += 1) {
                       val.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
 
-                      if (idx == 31)
-                            tmp = vp->value.time->high;
-                      else
+                      जर (idx == 31)
+                            tmp = vp->value.समय->वरचा;
+                      अन्यथा
                             tmp >>= 1;
                 }
-                break;
+                थांबा;
           }
 
-	  case vpiVectorVal:
+	  स्थिती vpiVectorVal:
 
-	    for (unsigned wdx = 0 ;  wdx < vwid_ ;  wdx += 32) {
-		  unsigned word = wdx / 32;
-		  unsigned long aval = vp->value.vector[word].aval;
-		  unsigned long bval = vp->value.vector[word].bval;
+	    साठी (अचिन्हित wdx = 0 ;  wdx < vwid_ ;  wdx += 32) {
+		  अचिन्हित word = wdx / 32;
+		  अचिन्हित दीर्घ aval = vp->value.vector[word].aval;
+		  अचिन्हित दीर्घ bval = vp->value.vector[word].bval;
 
-		  for (unsigned idx = 0 ;  (wdx+idx) < vwid_ && idx < 32;
+		  साठी (अचिन्हित idx = 0 ;  (wdx+idx) < vwid_ && idx < 32;
 		       idx += 1) {
-			int bit = (aval&1) | ((bval<<1)&2);
+			पूर्णांक bit = (aval&1) | ((bval<<1)&2);
 			vvp_bit4_t bit4;
 
-			switch (bit) {
-			    case 0:
+			निवड (bit) {
+			    स्थिती 0:
 			      bit4 = BIT4_0;
-			      break;
-			    case 1:
+			      थांबा;
+			    स्थिती 1:
 			      bit4 = BIT4_1;
-			      break;
-			    case 2:
+			      थांबा;
+			    स्थिती 2:
 			      bit4 = BIT4_Z;
-			      break;
-			    case 3:
+			      थांबा;
+			    स्थिती 3:
 			      bit4 = BIT4_X;
-			      break;
-			    default:
+			      थांबा;
+			    पूर्वनिर्धारित:
 			      bit4 = BIT4_X;
-			      fprintf(stderr, "Unsupported bit value %d.\n",
+			      ख_लिखो(मानक_त्रुटि, "Unsupported bit value %d.\n",
 			              bit);
-			      assert(0);
+			      प्रतिज्ञा(0);
 			}
 			val.set_bit(wdx+idx, bit4);
 
@@ -507,50 +507,50 @@ vpiHandle sysfunc_4net::vpi_put_value(p_vpi_value vp, int)
 			bval >>= 1;
 		  }
 	    }
-	    break;
+	    थांबा;
 
-	  default:
-	    fprintf(stderr, "XXXX format=%d, vwid_=%u\n", (int)vp->format, vwid_);
-	    assert(0);
+	  पूर्वनिर्धारित:
+	    ख_लिखो(मानक_त्रुटि, "XXXX format=%d, vwid_=%u\n", (पूर्णांक)vp->format, vwid_);
+	    प्रतिज्ञा(0);
       }
 
       fnet->send_vec4(val, vthread_get_wt_context());
-      return 0;
+      परत 0;
 }
 
-struct sysfunc_rnet : public sysfunc_def {
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+संरचना sysfunc_rnet : सार्वजनिक sysfunc_def {
+      vpiHandle vpi_put_मूल्य(p_vpi_मूल्य val, पूर्णांक flags) override;
 };
 
-vpiHandle sysfunc_rnet::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_rnet::vpi_put_मूल्य(p_vpi_मूल्य vp, पूर्णांक)
 {
-      put_value = true;
+      put_मूल्य = सत्य;
 
-      double value;
-      switch (vp->format) {
+      द्विगुण value;
+      निवड (vp->format) {
 
-	  case vpiRealVal:
+	  स्थिती vpiRealVal:
 	    value = vp->value.real;
-	    break;
+	    थांबा;
 
-	  default:
+	  पूर्वनिर्धारित:
 	    value = 0.0;
-	    fprintf(stderr, "Unsupported format %d.\n", (int)vp->format);
-	    assert(0);
+	    ख_लिखो(मानक_त्रुटि, "Unsupported format %d.\n", (पूर्णांक)vp->format);
+	    प्रतिज्ञा(0);
       }
 
       fnet->send_real(value, vthread_get_wt_context());
 
-      return 0;
+      परत 0;
 }
 
-struct sysfunc_no : public sysfunc_def {
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+संरचना sysfunc_no : सार्वजनिक sysfunc_def {
+      vpiHandle vpi_put_मूल्य(p_vpi_मूल्य val, पूर्णांक flags) override;
 };
 
-vpiHandle sysfunc_no::vpi_put_value(p_vpi_value, int)
+vpiHandle sysfunc_no::vpi_put_मूल्य(p_vpi_मूल्य, पूर्णांक)
 {
-      return 0;
+      परत 0;
 }
 
 
@@ -563,209 +563,209 @@ vpiHandle sysfunc_no::vpi_put_value(p_vpi_value, int)
  * by name using the vpi_find_systf function, and they can be
  * collected into an iterator using the vpip_make_systf_iterator function.
  */
-static struct __vpiUserSystf**def_table = 0;
-static unsigned def_count = 0;
+स्थिर संरचना __vpiUserSystf**def_table = 0;
+स्थिर अचिन्हित def_मोजणी = 0;
 
-static struct __vpiUserSystf* allocate_def(void)
+स्थिर संरचना __vpiUserSystf* allocate_def(शून्य)
 {
-      if (def_table == 0) {
-	    def_table = static_cast<struct __vpiUserSystf**>
-	                (malloc(sizeof(struct __vpiUserSystf*)));
+      जर (def_table == 0) {
+	    def_table = static_cast<संरचना __vpiUserSystf**>
+	                (दो_स्मृति(आकार(संरचना __vpiUserSystf*)));
 
-	    def_table[0] = new __vpiUserSystf;
+	    def_table[0] = नवीन __vpiUserSystf;
 
-	    def_count = 1;
-	    return def_table[0];
+	    def_मोजणी = 1;
+	    परत def_table[0];
       }
 
-      def_table = static_cast<struct __vpiUserSystf**>
-                  (realloc(def_table,
-                   (def_count+1)*sizeof(struct __vpiUserSystf*)));
+      def_table = static_cast<संरचना __vpiUserSystf**>
+                  (पुनः_स्मृति(def_table,
+                   (def_मोजणी+1)*आकार(संरचना __vpiUserSystf*)));
 
-      def_table[def_count] = new __vpiUserSystf;
+      def_table[def_मोजणी] = नवीन __vpiUserSystf;
 
-      return def_table[def_count++];
+      परत def_table[def_मोजणी++];
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void def_table_delete(void)
+शून्य def_table_delete(शून्य)
 {
-      for (unsigned idx = 0; idx < def_count; idx += 1) {
-	    free(const_cast<char *>(def_table[idx]->info.tfname));
+      साठी (अचिन्हित idx = 0; idx < def_मोजणी; idx += 1) {
+	    मुक्त(const_cast<अक्षर *>(def_table[idx]->info.tfname));
 	    delete def_table[idx];
       }
-      free(def_table);
+      मुक्त(def_table);
       def_table = 0;
-      def_count = 0;
+      def_मोजणी = 0;
 }
 #endif
 
-class __vpiSystfIterator : public __vpiHandle {
-    public:
-      explicit __vpiSystfIterator(unsigned idx);
-      int get_type_code(void) const override;
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+वर्ग __vpiSystfIterator : सार्वजनिक __vpiHandle {
+    सार्वजनिक:
+      explicit __vpiSystfIterator(अचिन्हित idx);
+      पूर्णांक get_type_code(शून्य) स्थिरांक override;
+      vpiHandle vpi_index(पूर्णांक idx) override;
+      free_object_fun_t free_object_fun(शून्य) override;
 
-      unsigned next;
+      अचिन्हित next;
 };
 
-static vpiHandle systf_iterator_scan(vpiHandle ref, int)
+स्थिर vpiHandle systf_iterator_scan(vpiHandle ref, पूर्णांक)
 {
       __vpiSystfIterator*obj = dynamic_cast<__vpiSystfIterator*>(ref);
 
-      if (obj->next >= def_count) {
+      जर (obj->next >= def_मोजणी) {
 	    vpi_free_object(ref);
-	    return 0;
+	    परत 0;
       }
 
-      unsigned use_index = obj->next;
-      while (!def_table[use_index]->is_user_defn) {
+      अचिन्हित use_index = obj->next;
+      पर्यंत (!def_table[use_index]->is_user_defn) {
 	    obj->next += 1;
 	    use_index = obj->next;
-	    if (obj->next >= def_count) {
+	    जर (obj->next >= def_मोजणी) {
 		  vpi_free_object(ref);
-		  return 0;
+		  परत 0;
 	    }
       }
       obj->next += 1;
-      return def_table[use_index];
+      परत def_table[use_index];
 }
 
-static int systf_iterator_free_object(vpiHandle ref)
+स्थिर पूर्णांक systf_iterator_free_object(vpiHandle ref)
 {
       __vpiSystfIterator*obj = dynamic_cast<__vpiSystfIterator*>(ref);
       delete obj;
-      return 1;
+      परत 1;
 }
 
-inline __vpiSystfIterator::__vpiSystfIterator(unsigned idx)
+ओळीत __vpiSystfIterator::__vpiSystfIterator(अचिन्हित idx)
 { next = idx; }
 
-int __vpiSystfIterator::get_type_code(void) const
-{ return vpiIterator; }
+पूर्णांक __vpiSystfIterator::get_type_code(शून्य) स्थिरांक
+{ परत vpiIterator; }
 
-vpiHandle __vpiSystfIterator::vpi_index(int idx)
-{ return systf_iterator_scan(this, idx); }
+vpiHandle __vpiSystfIterator::vpi_index(पूर्णांक idx)
+{ परत systf_iterator_scan(हे, idx); }
 
-__vpiHandle::free_object_fun_t __vpiSystfIterator::free_object_fun(void)
-{ return &systf_iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiSystfIterator::free_object_fun(शून्य)
+{ परत &systf_iterator_free_object; }
 
-vpiHandle vpip_make_systf_iterator(void)
+vpiHandle vpip_make_systf_iterator(शून्य)
 {
 	/* Check to see if there are any user defined functions. */
-      bool have_user_defn = false;
-      unsigned idx;
-      for (idx = 0; idx < def_count; idx += 1) {
-	    if (def_table[idx]->is_user_defn) {
-		  have_user_defn = true;
-		  break;
+      तार्किक have_user_defn = असत्य;
+      अचिन्हित idx;
+      साठी (idx = 0; idx < def_मोजणी; idx += 1) {
+	    जर (def_table[idx]->is_user_defn) {
+		  have_user_defn = सत्य;
+		  थांबा;
 	    }
       }
-      if (!have_user_defn) return 0;
+      जर (!have_user_defn) परत 0;
 
-      __vpiSystfIterator*res = new __vpiSystfIterator(idx);
+      __vpiSystfIterator*res = नवीन __vpiSystfIterator(idx);
       res->next = idx;
-      return res;
+      परत res;
 }
 
-struct __vpiUserSystf* vpip_find_systf(const char*name)
+संरचना __vpiUserSystf* vpip_find_systf(स्थिरांक अक्षर*name)
 {
-      for (unsigned idx = 0 ;  idx < def_count ;  idx += 1)
-	    if (strcmp(def_table[idx]->info.tfname, name) == 0)
-		  return def_table[idx];
+      साठी (अचिन्हित idx = 0 ;  idx < def_मोजणी ;  idx += 1)
+	    जर (म_भेद(def_table[idx]->info.tfname, name) == 0)
+		  परत def_table[idx];
 
-      return 0;
+      परत 0;
 }
 
-void vpip_make_systf_system_defined(vpiHandle ref)
+शून्य vpip_make_systf_system_defined(vpiHandle ref)
 {
-      assert(ref);
-      struct __vpiUserSystf*obj = dynamic_cast<__vpiUserSystf*>(ref);
-      assert(obj);
-      obj->is_user_defn = false;
+      प्रतिज्ञा(ref);
+      संरचना __vpiUserSystf*obj = dynamic_cast<__vpiUserSystf*>(ref);
+      प्रतिज्ञा(obj);
+      obj->is_user_defn = असत्य;
 }
 
 /*
  * To get better error message we need to cache the vpi_call fail
  * information so that we can print the file name.
  */
-enum vpi_call_error_type {VPI_CALL_NO_DEF, VPI_CALL_TASK_AS_FUNC,
+गणना vpi_call_error_type {VPI_CALL_NO_DEF, VPI_CALL_TASK_AS_FUNC,
                           VPI_CALL_FUNC_AS_TASK, VPI_CALL_FUNC_AS_TASK_WARN};
-typedef struct vpi_call_error {
+प्रकारव्याख्या संरचना vpi_call_error {
       vpi_call_error_type type;
-      char *name;
-      long file_idx;
-      long lineno;
+      अक्षर *name;
+      दीर्घ file_idx;
+      दीर्घ lineno;
 } vpi_call_error_s, *vpi_call_error_p;
 
-static vpi_call_error_p vpi_call_error_lst = NULL;
-static unsigned vpi_call_error_num = 0;
+स्थिर vpi_call_error_p vpi_call_error_lst = रिक्त;
+स्थिर अचिन्हित vpi_call_error_अंक = 0;
 
-static void add_vpi_call_error(vpi_call_error_type type, const char *name,
-                               long file_idx, long lineno)
+स्थिर शून्य add_vpi_call_error(vpi_call_error_type type, स्थिरांक अक्षर *name,
+                               दीर्घ file_idx, दीर्घ lineno)
 {
       vpi_call_error_lst = static_cast<vpi_call_error_p>
-                           (realloc(vpi_call_error_lst,
-                                    (vpi_call_error_num + 1) *
-                                    sizeof(vpi_call_error_s)));
-      vpi_call_error_lst[vpi_call_error_num].type = type;
-      vpi_call_error_lst[vpi_call_error_num].name = strdup(name);
-      vpi_call_error_lst[vpi_call_error_num].file_idx = file_idx;
-      vpi_call_error_lst[vpi_call_error_num].lineno = lineno;
-      vpi_call_error_num += 1;
+                           (पुनः_स्मृति(vpi_call_error_lst,
+                                    (vpi_call_error_अंक + 1) *
+                                    आकार(vpi_call_error_s)));
+      vpi_call_error_lst[vpi_call_error_अंक].type = type;
+      vpi_call_error_lst[vpi_call_error_अंक].name = strdup(name);
+      vpi_call_error_lst[vpi_call_error_अंक].file_idx = file_idx;
+      vpi_call_error_lst[vpi_call_error_अंक].lineno = lineno;
+      vpi_call_error_अंक += 1;
 }
 
-void print_vpi_call_errors()
+शून्य print_vpi_call_errors()
 {
-      for (unsigned idx = 0; idx < vpi_call_error_num; idx += 1) {
-	    switch (vpi_call_error_lst[idx].type) {
-		case VPI_CALL_NO_DEF:
-		  fprintf(stderr, "%s:%d: Error: System task/function %s() is "
+      साठी (अचिन्हित idx = 0; idx < vpi_call_error_अंक; idx += 1) {
+	    निवड (vpi_call_error_lst[idx].type) {
+		स्थिती VPI_CALL_NO_DEF:
+		  ख_लिखो(मानक_त्रुटि, "%s:%d: Error: System task/function %s() is "
 		                  "not defined by any module.\n",
 		                  file_names[vpi_call_error_lst[idx].file_idx],
-		                  (int)vpi_call_error_lst[idx].lineno,
+		                  (पूर्णांक)vpi_call_error_lst[idx].lineno,
 		                  vpi_call_error_lst[idx].name);
-		  break;
-		case VPI_CALL_TASK_AS_FUNC:
-		  fprintf(stderr, "%s:%d: Error: %s() is a system task, it "
+		  थांबा;
+		स्थिती VPI_CALL_TASK_AS_FUNC:
+		  ख_लिखो(मानक_त्रुटि, "%s:%d: Error: %s() is a system task, it "
 			          "cannot be called as a function.\n",
 		                  file_names[vpi_call_error_lst[idx].file_idx],
-		                  (int)vpi_call_error_lst[idx].lineno,
+		                  (पूर्णांक)vpi_call_error_lst[idx].lineno,
 		                  vpi_call_error_lst[idx].name);
-		  break;
-		case VPI_CALL_FUNC_AS_TASK:
-		  fprintf(stderr, "%s:%d: Error: %s() is a system function, it "
+		  थांबा;
+		स्थिती VPI_CALL_FUNC_AS_TASK:
+		  ख_लिखो(मानक_त्रुटि, "%s:%d: Error: %s() is a system function, it "
 			          "cannot be called as a task.\n",
 		                  file_names[vpi_call_error_lst[idx].file_idx],
-		                  (int)vpi_call_error_lst[idx].lineno,
+		                  (पूर्णांक)vpi_call_error_lst[idx].lineno,
 		                  vpi_call_error_lst[idx].name);
-		  break;
-		case VPI_CALL_FUNC_AS_TASK_WARN:
-                 fprintf(stderr, "%s:%d: Warning: Calling system function "
+		  थांबा;
+		स्थिती VPI_CALL_FUNC_AS_TASK_WARN:
+                 ख_लिखो(मानक_त्रुटि, "%s:%d: Warning: Calling system function "
                                  "%s() as a task.\n",
 		                  file_names[vpi_call_error_lst[idx].file_idx],
-		                  (int)vpi_call_error_lst[idx].lineno,
+		                  (पूर्णांक)vpi_call_error_lst[idx].lineno,
 		                  vpi_call_error_lst[idx].name);
-                 fprintf(stderr, "%s:%d:          The functions return "
+                 ख_लिखो(मानक_त्रुटि, "%s:%d:          The functions return "
                                  "value will be ignored.\n",
                                  file_names[vpi_call_error_lst[idx].file_idx],
-                                 (int)vpi_call_error_lst[idx].lineno);
-		  break;
+                                 (पूर्णांक)vpi_call_error_lst[idx].lineno);
+		  थांबा;
 	    }
-	    free(vpi_call_error_lst[idx].name);
+	    मुक्त(vpi_call_error_lst[idx].name);
       }
-      free(vpi_call_error_lst);
-      fflush(stderr);
+      मुक्त(vpi_call_error_lst);
+      ख_साफ(मानक_त्रुटि);
 }
 
 #ifdef CHECK_WITH_VALGRIND
-static void cleanup_vpi_call_args(unsigned argc, vpiHandle*argv)
+स्थिर शून्य cleanup_vpi_call_args(अचिन्हित argc, vpiHandle*argv)
 {
-      if (argc) {
+      जर (argc) {
 	      /* Since this is just being used to cleanup the arguments a
 	       * system task definition can be used. */
-	    struct __vpiSysTaskCall*obj = new systask_def;
+	    संरचना __vpiSysTaskCall*obj = नवीन systask_def;
 	    obj->nargs = argc;
 	    obj->args  = argv;
 	    vpi_call_delete(obj);
@@ -781,155 +781,155 @@ static void cleanup_vpi_call_args(unsigned argc, vpiHandle*argv)
  * describes the call, and return it. The %vpi_call instruction will
  * store this handle for when it is executed.
  */
-vpiHandle vpip_build_vpi_call(const char*name, int val_code, unsigned return_width,
+vpiHandle vpip_build_vpi_call(स्थिरांक अक्षर*name, पूर्णांक val_code, अचिन्हित return_width,
 			      vvp_net_t*fnet,
-			      bool func_as_task_err, bool func_as_task_warn,
-			      unsigned argc, vpiHandle*argv,
-			      unsigned vec4_stack, unsigned real_stack, unsigned string_stack,
-			      long file_idx, long lineno)
+			      तार्किक func_as_task_err, तार्किक func_as_task_warn,
+			      अचिन्हित argc, vpiHandle*argv,
+			      अचिन्हित vec4_चळत, अचिन्हित real_चळत, अचिन्हित string_चळत,
+			      दीर्घ file_idx, दीर्घ lineno)
 {
-      assert(!(func_as_task_err && func_as_task_warn));
+      प्रतिज्ञा(!(func_as_task_err && func_as_task_warn));
 
-      struct __vpiUserSystf*defn = vpip_find_systf(name);
-      if (defn == 0) {
+      संरचना __vpiUserSystf*defn = vpip_find_systf(name);
+      जर (defn == 0) {
 	    add_vpi_call_error(VPI_CALL_NO_DEF, name, file_idx, lineno);
 #ifdef CHECK_WITH_VALGRIND
 	    cleanup_vpi_call_args(argc, argv);
 #endif
-	    return 0;
+	    परत 0;
       }
 
-      switch (defn->info.type) {
-	  case vpiSysTask:
-	    if (val_code != 0 || fnet != 0) {
+      निवड (defn->info.type) {
+	  स्थिती vpiSysTask:
+	    जर (val_code != 0 || fnet != 0) {
 		  add_vpi_call_error(VPI_CALL_TASK_AS_FUNC, name, file_idx,
 		                     lineno);
 #ifdef CHECK_WITH_VALGRIND
 		  cleanup_vpi_call_args(argc, argv);
 #endif
-		  return 0;
+		  परत 0;
 	    }
-	    break;
+	    थांबा;
 
-	  case vpiSysFunc:
-	    if (val_code == 0 && fnet == 0) {
-		  if (func_as_task_err) {
+	  स्थिती vpiSysFunc:
+	    जर (val_code == 0 && fnet == 0) {
+		  जर (func_as_task_err) {
 			add_vpi_call_error(VPI_CALL_FUNC_AS_TASK,
 			                   name, file_idx, lineno);
 #ifdef CHECK_WITH_VALGRIND
 			cleanup_vpi_call_args(argc, argv);
 #endif
-			return 0;
-		  } else if (func_as_task_warn) {
+			परत 0;
+		  } अन्यथा जर (func_as_task_warn) {
 			add_vpi_call_error(VPI_CALL_FUNC_AS_TASK_WARN,
 			                   name, file_idx, lineno);
 		  }
 	    }
-	    break;
+	    थांबा;
 
-	  default:
-	    fprintf(stderr, "Unsupported vpi_call type %d.\n",
-	                    (int)defn->info.type);
-	    assert(0);
+	  पूर्वनिर्धारित:
+	    ख_लिखो(मानक_त्रुटि, "Unsupported vpi_call type %d.\n",
+	                    (पूर्णांक)defn->info.type);
+	    प्रतिज्ञा(0);
       }
 
-      struct __vpiSysTaskCall*obj = 0;
+      संरचना __vpiSysTaskCall*obj = 0;
 
-      switch (defn->info.type) {
-	  case vpiSysTask:
-	    obj = new systask_def;
-	    break;
+      निवड (defn->info.type) {
+	  स्थिती vpiSysTask:
+	    obj = नवीन systask_def;
+	    थांबा;
 
-	  case vpiSysFunc:
-	    if (fnet && val_code == -vpiRealVal) {
-		  obj = new sysfunc_rnet;
+	  स्थिती vpiSysFunc:
+	    जर (fnet && val_code == -vpiRealVal) {
+		  obj = नवीन sysfunc_rnet;
 
-	    } else if (fnet && val_code == -vpiVectorVal) {
-		  obj = new sysfunc_4net(return_width);
+	    } अन्यथा जर (fnet && val_code == -vpiVectorVal) {
+		  obj = नवीन sysfunc_4net(return_width);
 
-	    } else if (val_code == -vpiRealVal) {
-		  obj = new sysfunc_real;
+	    } अन्यथा जर (val_code == -vpiRealVal) {
+		  obj = नवीन sysfunc_real;
 
-	    } else if (val_code == -vpiVectorVal) {
-		  obj = new sysfunc_vec4(return_width);
+	    } अन्यथा जर (val_code == -vpiVectorVal) {
+		  obj = नवीन sysfunc_vec4(return_width);
 
-	    } else if (val_code == -vpiStringVal) {
-		  obj = new sysfunc_str;
+	    } अन्यथा जर (val_code == -vpiStringVal) {
+		  obj = नवीन sysfunc_str;
 
-           } else if (val_code == 0 && fnet == 0) {
-		  obj = new sysfunc_no;
+           } अन्यथा जर (val_code == 0 && fnet == 0) {
+		  obj = नवीन sysfunc_no;
 
-	    } else {
-		  fprintf(stderr, "XXXX fnet=%p, val_code=%d\n", fnet, val_code);
-		  assert(0);
+	    } अन्यथा {
+		  ख_लिखो(मानक_त्रुटि, "XXXX fnet=%p, val_code=%d\n", fnet, val_code);
+		  प्रतिज्ञा(0);
 	    }
-	    break;
+	    थांबा;
       }
 
       obj->scope = vpip_peek_current_scope();
       obj->defn  = defn;
       obj->nargs = argc;
       obj->args  = argv;
-      obj->vec4_stack = vec4_stack;
-      obj->real_stack = real_stack;
-      obj->string_stack = string_stack;
+      obj->vec4_चळत = vec4_चळत;
+      obj->real_चळत = real_चळत;
+      obj->string_चळत = string_चळत;
       obj->fnet  = fnet;
-      obj->file_idx  = (unsigned) file_idx;
-      obj->lineno   = (unsigned) lineno;
+      obj->file_idx  = (अचिन्हित) file_idx;
+      obj->lineno   = (अचिन्हित) lineno;
       obj->userdata  = 0;
-      obj->put_value = false;
+      obj->put_मूल्य = असत्य;
 
       compile_compiletf(obj);
 
-      return obj;
+      परत obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vpi_call_delete(vpiHandle item)
+शून्य vpi_call_delete(vpiHandle item)
 {
-      struct __vpiSysTaskCall*obj = dynamic_cast<__vpiSysTaskCall*>(item);
+      संरचना __vpiSysTaskCall*obj = dynamic_cast<__vpiSysTaskCall*>(item);
 	/* The object can be NULL if there was an error. */
-      if (!obj) return;
-      for (unsigned arg = 0; arg < obj->nargs; arg += 1) {
-	    switch (obj->args[arg]->get_type_code()) {
-		case vpiConstant:
-		  switch (vpi_get(_vpiFromThr, obj->args[arg])) {
-		      case _vpiNoThr:
+      जर (!obj) परत;
+      साठी (अचिन्हित arg = 0; arg < obj->nargs; arg += 1) {
+	    निवड (obj->args[arg]->get_type_code()) {
+		स्थिती vpiConstant:
+		  निवड (vpi_get(_vpiFromThr, obj->args[arg])) {
+		      स्थिती _vpiNoThr:
 			constant_delete(obj->args[arg]);
-			break;
-		      case _vpiString:
+			थांबा;
+		      स्थिती _vpiString:
 			thread_string_delete(obj->args[arg]);
-			break;
-		      case _vpiVThr:
+			थांबा;
+		      स्थिती _vpiVThr:
 			thread_vthr_delete(obj->args[arg]);
-			break;
-		      case _vpiWord:
+			थांबा;
+		      स्थिती _vpiWord:
 			thread_word_delete(obj->args[arg]);
-			break;
-		      default:
-			assert(0);
+			थांबा;
+		      पूर्वनिर्धारित:
+			प्रतिज्ञा(0);
 		  }
-		  break;
-		case vpiMemoryWord:
-		  switch (vpi_get(_vpiFromThr, obj->args[arg])) {
-		      case _vpi_at_A:
+		  थांबा;
+		स्थिती vpiMemoryWord:
+		  निवड (vpi_get(_vpiFromThr, obj->args[arg])) {
+		      स्थिती _vpi_at_A:
 			A_delete(obj->args[arg]);
-			break;
+			थांबा;
 		  }
-		  break;
-		case vpiPartSelect:
-		  switch (vpi_get(_vpiFromThr, obj->args[arg])) {
-		      case _vpi_at_PV:
+		  थांबा;
+		स्थिती vpiPartSelect:
+		  निवड (vpi_get(_vpiFromThr, obj->args[arg])) {
+		      स्थिती _vpi_at_PV:
 			PV_delete(obj->args[arg]);
-			break;
-		      case _vpi_at_APV:
+			थांबा;
+		      स्थिती _vpi_at_APV:
 			APV_delete(obj->args[arg]);
-			break;
+			थांबा;
 		  }
-		  break;
+		  थांबा;
 	    }
       }
-      free(obj->args);
+      मुक्त(obj->args);
       delete obj;
 }
 #endif
@@ -942,45 +942,45 @@ void vpi_call_delete(vpiHandle item)
 
 vthread_t vpip_current_vthread;
 
-void vpip_execute_vpi_call(vthread_t thr, vpiHandle ref)
+शून्य vpip_execute_vpi_call(vthread_t thr, vpiHandle ref)
 {
       vpip_current_vthread = thr;
 
       vpip_cur_task = dynamic_cast<__vpiSysTaskCall*>(ref);
 
-      if (vpip_cur_task->defn->info.calltf) {
-	    assert(vpi_mode_flag == VPI_MODE_NONE);
+      जर (vpip_cur_task->defn->info.calltf) {
+	    प्रतिज्ञा(vpi_mode_flag == VPI_MODE_NONE);
 	    vpi_mode_flag = VPI_MODE_CALLTF;
-	    vpip_cur_task->put_value = false;
+	    vpip_cur_task->put_मूल्य = असत्य;
 	    vpip_cur_task->defn->info.calltf(vpip_cur_task->defn->info.user_data);
 	    vpi_mode_flag = VPI_MODE_NONE;
 	      /* If the function call did not set a value then put a
 	       * default value (0). */
-	    if (ref->get_type_code() == vpiSysFuncCall &&
-	        !vpip_cur_task->put_value) {
-		  s_vpi_value val;
+	    जर (ref->get_type_code() == vpiSysFuncCall &&
+	        !vpip_cur_task->put_मूल्य) {
+		  s_vpi_मूल्य val;
 		  val.format = vpiIntVal;
 		  val.value.integer = 0;
-		  vpi_put_value(ref, &val, 0, vpiNoDelay);
+		  vpi_put_मूल्य(ref, &val, 0, vpiNoDelay);
 	    }
       }
-      if (vpip_cur_task->vec4_stack > 0)
-	    vthread_pop_vec4(thr, vpip_cur_task->vec4_stack);
-      if (vpip_cur_task->real_stack > 0)
-	    vthread_pop_real(thr, vpip_cur_task->real_stack);
-      if (vpip_cur_task->string_stack > 0)
-	    vthread_pop_str(thr, vpip_cur_task->string_stack);
+      जर (vpip_cur_task->vec4_चळत > 0)
+	    vthread_काढा_vec4(thr, vpip_cur_task->vec4_चळत);
+      जर (vpip_cur_task->real_चळत > 0)
+	    vthread_काढा_real(thr, vpip_cur_task->real_चळत);
+      जर (vpip_cur_task->string_चळत > 0)
+	    vthread_काढा_str(thr, vpip_cur_task->string_चळत);
 
 	/* If the function returns a value, then push the value
 	   to the appropriate thread stack. */
-      if (const sysfunc_real*func_real = dynamic_cast<sysfunc_real*>(ref)) {
-	    vthread_push(thr, func_real->return_value());
+      जर (स्थिरांक sysfunc_real*func_real = dynamic_cast<sysfunc_real*>(ref)) {
+	    vthread_ढकला(thr, func_real->return_मूल्य());
       }
-      else if (const sysfunc_str*func_string = dynamic_cast<sysfunc_str*>(ref)) {
-	    vthread_push(thr, func_string->return_value());
+      अन्यथा जर (स्थिरांक sysfunc_str*func_string = dynamic_cast<sysfunc_str*>(ref)) {
+	    vthread_ढकला(thr, func_string->return_मूल्य());
       }
-      else if (const sysfunc_vec4*func_vec4 = dynamic_cast<sysfunc_vec4*>(ref)) {
-	    vthread_push(thr, func_vec4->return_value());
+      अन्यथा जर (स्थिरांक sysfunc_vec4*func_vec4 = dynamic_cast<sysfunc_vec4*>(ref)) {
+	    vthread_ढकला(thr, func_vec4->return_मूल्य());
       }
       vpip_cur_task = 0;
 }
@@ -991,40 +991,40 @@ void vpip_execute_vpi_call(vthread_t thr, vpiHandle ref)
  * __vpi_userSystf to represent the definition for the calls that come
  * to pass later.
  */
-vpiHandle vpi_register_systf(const struct t_vpi_systf_data*ss)
+vpiHandle vpi_register_systf(स्थिरांक संरचना t_vpi_systf_data*ss)
 {
-      struct __vpiUserSystf*cur = allocate_def();
-      assert(ss);
-      switch (ss->type) {
-	  case vpiSysTask:
-	  case vpiSysFunc:
-	    break;
-	  default:
-	    fprintf(stderr, "Unsupported type %d.\n", (int)ss->type);
-	    assert(0);
+      संरचना __vpiUserSystf*cur = allocate_def();
+      प्रतिज्ञा(ss);
+      निवड (ss->type) {
+	  स्थिती vpiSysTask:
+	  स्थिती vpiSysFunc:
+	    थांबा;
+	  पूर्वनिर्धारित:
+	    ख_लिखो(मानक_त्रुटि, "Unsupported type %d.\n", (पूर्णांक)ss->type);
+	    प्रतिज्ञा(0);
       }
 
       cur->info = *ss;
       cur->info.tfname = strdup(ss->tfname);
-      cur->is_user_defn = true;
+      cur->is_user_defn = सत्य;
 
-      return cur;
+      परत cur;
 }
 
-PLI_INT32 vpi_put_userdata(vpiHandle ref, void*data)
+PLI_INT32 vpi_put_userdata(vpiHandle ref, शून्य*data)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
-      if (rfp == 0)
-	    return 0;
+      संरचना __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      जर (rfp == 0)
+	    परत 0;
 
       rfp->userdata = data;
-      return 1;
+      परत 1;
 }
 
-void* vpi_get_userdata(vpiHandle ref)
+शून्य* vpi_get_userdata(vpiHandle ref)
 {
-      struct __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
-      assert(rfp);
+      संरचना __vpiSysTaskCall*rfp = dynamic_cast<__vpiSysTaskCall*>(ref);
+      प्रतिज्ञा(rfp);
 
-      return rfp->userdata;
+      परत rfp->userdata;
 }

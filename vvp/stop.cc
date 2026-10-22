@@ -41,128 +41,128 @@
 # include  "ivl_alloc.h"
 
 __vpiScope*stop_current_scope = 0;
-bool stop_is_finish = false;  /* When set, $stop acts like $finish (set in main.cc). */
-int  stop_is_finish_exit_code = 0;
+तार्किक stop_is_finish = असत्य;  /* When set, $stop acts like $finish (set in main.cc). */
+पूर्णांक  stop_is_finish_exit_code = 0;
 
 #ifndef USE_READLINE
-static char* readline_stub(const char*prompt)
+स्थिर अक्षर* readline_stub(स्थिरांक अक्षर*prompt)
 {
-      char buf[256];
+      अक्षर buf[256];
 
-      if (prompt && prompt[0]) {
-	    fputs(prompt, stdout);
-	    fflush(stdout);
+      जर (prompt && prompt[0]) {
+	    ख_माला_दो(prompt, मानक_निकास);
+	    ख_साफ(मानक_निकास);
       }
 
-      if (fgets(buf, sizeof(buf), stdin)) {
-	    char*nl = buf + strlen(buf);
-	    while (nl > buf && isspace(nl[-1])) {
+      जर (ख_माला_लो(buf, आकार(buf), मानक_निवेश)) {
+	    अक्षर*nl = buf + म_माप(buf);
+	    पर्यंत (nl > buf && है_खाली(nl[-1])) {
 		  nl -= 1;
 		  nl[0] = 0;
 	    }
 
-	    return strdup(buf);
+	    परत strdup(buf);
       }
 
-      return 0;
+      परत 0;
 }
 #define readline(x) readline_stub(x)
 #endif
 
 
-static bool interact_flag = true;
+स्थिर तार्किक interact_flag = सत्य;
 
-static void cmd_call(unsigned argc, const char*argv[])
+स्थिर शून्य cmd_call(अचिन्हित argc, स्थिरांक अक्षर*argv[])
 {
       __vpiHandle**table;
-      unsigned ntable;
+      अचिन्हित ntable;
 
-      if (stop_current_scope == 0) {
-	    vpip_make_root_iterator(table, ntable);
+      जर (stop_current_scope == 0) {
+	    vpip_make_मूळ_iterator(table, ntable);
 
-      } else {
+      } अन्यथा {
 	    table = &stop_current_scope->intern[0];
 	    ntable = stop_current_scope->intern.size();
       }
 
 	/* This is an array of vpiHandles, for passing to the created
 	   command. */
-      unsigned vpi_argc = argc - 1;
-      vpiHandle*vpi_argv = static_cast<vpiHandle*>(calloc(vpi_argc, sizeof(vpiHandle)));
-      vpiHandle*vpi_free = static_cast<vpiHandle*>(calloc(vpi_argc, sizeof(vpiHandle)));
+      अचिन्हित vpi_argc = argc - 1;
+      vpiHandle*vpi_argv = static_cast<vpiHandle*>(सुस्मृति(vpi_argc, आकार(vpiHandle)));
+      vpiHandle*vpi_free = static_cast<vpiHandle*>(सुस्मृति(vpi_argc, आकार(vpiHandle)));
 
-      unsigned errors = 0;
+      अचिन्हित errors = 0;
 
-      for (unsigned idx = 0 ;  idx < vpi_argc ;  idx += 1) {
+      साठी (अचिन्हित idx = 0 ;  idx < vpi_argc ;  idx += 1) {
 	    vpiHandle handle = 0;
-	    bool add_to_free_list = false;
+	    तार्किक add_to_free_list = असत्य;
 
 	      /* Detect the special case that the argument is the
 		 .(dot) string. This represents the handle for the
 		 current scope. */
-	    if (stop_current_scope && (strcmp(argv[idx+1], ".") == 0))
+	    जर (stop_current_scope && (म_भेद(argv[idx+1], ".") == 0))
 		  handle = stop_current_scope;
 
 	      /* Is the argument a quoted string? */
-	    if (handle == 0 && argv[idx+1][0] == '"') {
-		  char*tmp = strdup(argv[idx+1]);
-		  tmp[strlen(tmp)-1] = 0;
+	    जर (handle == 0 && argv[idx+1][0] == '"') {
+		  अक्षर*tmp = strdup(argv[idx+1]);
+		  tmp[म_माप(tmp)-1] = 0;
 
 		    /* Create a temporary vpiStringConst to pass as a
 		       handle. Make it temporary so that memory is
 		       reclaimed after the call is completed. */
-		  handle = vpip_make_string_const(strdup(tmp+1), false);
-		  add_to_free_list = true;
-		  free(tmp);
+		  handle = vpip_make_string_const(strdup(tmp+1), असत्य);
+		  add_to_free_list = सत्य;
+		  मुक्त(tmp);
 	    }
 
 	      /* Is the argument a decimal constant? */
-	    if (handle == 0
-		&& strspn(argv[idx+1],"0123456789") == strlen(argv[idx+1])) {
-		  handle = new __vpiDecConst(strtol(argv[idx+1],0,10));
-		  add_to_free_list = true;
+	    जर (handle == 0
+		&& म_अखोज(argv[idx+1],"0123456789") == म_माप(argv[idx+1])) {
+		  handle = नवीन __vpiDecConst(म_से_दीर्घ(argv[idx+1],0,10));
+		  add_to_free_list = सत्य;
 	    }
 
 	      /* Try to find the vpiHandle within this scope that has
 		 the name in argv[idx+2]. Look in the current scope. */
 
-	    for (unsigned tmp = 0 ;  (tmp < ntable)&& !handle ;  tmp += 1) {
-		  const __vpiScope*scope;
-		  const char*name;
+	    साठी (अचिन्हित tmp = 0 ;  (tmp < ntable)&& !handle ;  tmp += 1) {
+		  स्थिरांक __vpiScope*scope;
+		  स्थिरांक अक्षर*name;
 
-		  switch (table[tmp]->get_type_code()) {
+		  निवड (table[tmp]->get_type_code()) {
 
-		      case vpiModule:
-		      case vpiGenScope:
-		      case vpiFunction:
-		      case vpiTask:
-		      case vpiNamedBegin:
-		      case vpiNamedFork:
+		      स्थिती vpiModule:
+		      स्थिती vpiGenScope:
+		      स्थिती vpiFunction:
+		      स्थिती vpiTask:
+		      स्थिती vpiNamedBegin:
+		      स्थिती vpiNamedFork:
 			scope = dynamic_cast<__vpiScope*>(table[tmp]);
-			if (strcmp(scope->scope_name(), argv[idx+1]) == 0)
+			जर (म_भेद(scope->scope_name(), argv[idx+1]) == 0)
 			      handle = table[tmp];
-			break;
+			थांबा;
 
-		      case vpiReg:
-		      case vpiNet:
-		      case vpiParameter:
+		      स्थिती vpiReg:
+		      स्थिती vpiNet:
+		      स्थिती vpiParameter:
 			name = vpi_get_str(vpiName,table[tmp]);
-			if (strcmp(argv[idx+1], name) == 0)
+			जर (म_भेद(argv[idx+1], name) == 0)
 			      handle = table[tmp];
-			break;
+			थांबा;
 		  }
 	    }
 
-	    if (handle == 0) {
-		  printf("call error: I don't know how to"
+	    जर (handle == 0) {
+		  म_लिखो("call error: I don't know how to"
 			 " pass %s to %s\n", argv[idx+1], argv[0]);
 		  errors += 1;
 	    }
 
 	    vpi_argv[idx] = handle;
-	    if (add_to_free_list)
+	    जर (add_to_free_list)
 		  vpi_free[idx] = handle;
-	    else
+	    अन्यथा
 		  vpi_free[idx] = 0;
 
       }
@@ -170,273 +170,273 @@ static void cmd_call(unsigned argc, const char*argv[])
 	/* If there are no errors so far, then make up a call to the
 	   vpi task and execute that call. Free the call structure
 	   when we finish. */
-      if (errors == 0) {
+      जर (errors == 0) {
 	    vpiHandle call_handle = vpip_build_vpi_call(argv[0], 0, 0, 0,
-	                                                true, false,
+	                                                सत्य, असत्य,
 	                                                vpi_argc, vpi_argv,
 							0, 0, 0,
 	                                                1, 0);
-	    if (call_handle == 0)
-		  goto out;
+	    जर (call_handle == 0)
+		  जा out;
 
 	    vpip_execute_vpi_call(0, call_handle);
 	    vpi_free_object(call_handle);
       }
 
  out:
-      for (unsigned idx = 0 ;  idx < vpi_argc ;  idx += 1) {
-	    if (vpi_free[idx])
+      साठी (अचिन्हित idx = 0 ;  idx < vpi_argc ;  idx += 1) {
+	    जर (vpi_free[idx])
 		  vpi_free_object(vpi_free[idx]);
       }
 
-      free(vpi_argv);
-      free(vpi_free);
+      मुक्त(vpi_argv);
+      मुक्त(vpi_free);
 }
 
-static void cmd_cont(unsigned, const char*[])
+स्थिर शून्य cmd_cont(अचिन्हित, स्थिरांक अक्षर*[])
 {
-      interact_flag = false;
+      interact_flag = असत्य;
 }
 
-static void cmd_step(unsigned, const char*[])
+स्थिर शून्य cmd_step(अचिन्हित, स्थिरांक अक्षर*[])
 {
-      interact_flag = false;
+      interact_flag = असत्य;
       schedule_single_step(0);
 }
 
-static void cmd_finish(unsigned, const char*[])
+स्थिर शून्य cmd_finish(अचिन्हित, स्थिरांक अक्षर*[])
 {
-      interact_flag = false;
+      interact_flag = असत्य;
       schedule_finish(0);
 }
 
-static void cmd_help(unsigned, const char*[]);
+स्थिर शून्य cmd_help(अचिन्हित, स्थिरांक अक्षर*[]);
 
-static void cmd_list(unsigned, const char*[])
+स्थिर शून्य cmd_list(अचिन्हित, स्थिरांक अक्षर*[])
 {
       __vpiHandle**table;
-      unsigned ntable;
+      अचिन्हित ntable;
 
-      if (stop_current_scope == 0) {
-	    vpip_make_root_iterator(table, ntable);
+      जर (stop_current_scope == 0) {
+	    vpip_make_मूळ_iterator(table, ntable);
 
-      } else {
+      } अन्यथा {
 	    table = &stop_current_scope->intern[0];
 	    ntable = stop_current_scope->intern.size();
       }
 
-      printf("%u items in this scope:\n", ntable);
-      for (unsigned idx = 0 ;  idx < ntable ;  idx += 1) {
+      म_लिखो("%u items in this scope:\n", ntable);
+      साठी (अचिन्हित idx = 0 ;  idx < ntable ;  idx += 1) {
 
-	    const __vpiScope*scope;
-	    struct __vpiSignal*sig;
+	    स्थिरांक __vpiScope*scope;
+	    संरचना __vpiSignal*sig;
 
-	    switch (table[idx]->get_type_code()) {
-		case vpiPackage:
+	    निवड (table[idx]->get_type_code()) {
+		स्थिती vpiPackage:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
-		  printf("package : %s\n", scope->scope_name());
-		  break;
+		  म_लिखो("package : %s\n", scope->scope_name());
+		  थांबा;
 
-		case vpiModule:
+		स्थिती vpiModule:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
-		  printf("module  : %s\n", scope->scope_name());
-		  break;
+		  म_लिखो("module  : %s\n", scope->scope_name());
+		  थांबा;
 
-		case vpiGenScope:
+		स्थिती vpiGenScope:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
-		  printf("generate: %s\n", scope->scope_name());
-		  break;
+		  म_लिखो("generate: %s\n", scope->scope_name());
+		  थांबा;
 
-		case vpiTask:
+		स्थिती vpiTask:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
-		  printf("task    : %s\n", scope->scope_name());
-		  break;
+		  म_लिखो("task    : %s\n", scope->scope_name());
+		  थांबा;
 
-		case vpiFunction:
+		स्थिती vpiFunction:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
-		  printf("function: %s\n", scope->scope_name());
-		  break;
+		  म_लिखो("function: %s\n", scope->scope_name());
+		  थांबा;
 
-		case vpiNamedBegin:
+		स्थिती vpiNamedBegin:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
-		  printf("block   : %s\n", scope->scope_name());
-		  break;
+		  म_लिखो("block   : %s\n", scope->scope_name());
+		  थांबा;
 
-		case vpiNamedFork:
+		स्थिती vpiNamedFork:
 		  scope = dynamic_cast<__vpiScope*>(table[idx]);
-		  printf("fork    : %s\n", scope->scope_name());
-		  break;
+		  म_लिखो("fork    : %s\n", scope->scope_name());
+		  थांबा;
 
-		case vpiParameter:
-		  printf("param   : %s\n", vpi_get_str(vpiName, table[idx]));
-		  break;
+		स्थिती vpiParameter:
+		  म_लिखो("param   : %s\n", vpi_get_str(vpiName, table[idx]));
+		  थांबा;
 
-		case vpiReg:
+		स्थिती vpiReg:
 		  sig = dynamic_cast<__vpiSignal*>(table[idx]);
-		  if ((sig->msb.get_value() == 0) && (sig->lsb.get_value() == 0))
-			printf("reg     : %s%s\n",
+		  जर ((sig->msb.get_मूल्य() == 0) && (sig->lsb.get_मूल्य() == 0))
+			म_लिखो("reg     : %s%s\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "");
-		  else
-			printf("reg     : %s%s[%d:%d]\n",
+		  अन्यथा
+			म_लिखो("reg     : %s%s[%d:%d]\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "",
-			       sig->msb.get_value(), sig->lsb.get_value());
-		  break;
+			       sig->msb.get_मूल्य(), sig->lsb.get_मूल्य());
+		  थांबा;
 
-		case vpiNet:
+		स्थिती vpiNet:
 		  sig = dynamic_cast<__vpiSignal*>(table[idx]);
-		  if ((sig->msb.get_value() == 0) && (sig->lsb.get_value() == 0))
-			printf("net     : %s%s\n",
+		  जर ((sig->msb.get_मूल्य() == 0) && (sig->lsb.get_मूल्य() == 0))
+			म_लिखो("net     : %s%s\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "");
-		  else
-			printf("net     : %s%s[%d:%d]\n",
+		  अन्यथा
+			म_लिखो("net     : %s%s[%d:%d]\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "",
-			       sig->msb.get_value(), sig->lsb.get_value());
-		  break;
+			       sig->msb.get_मूल्य(), sig->lsb.get_मूल्य());
+		  थांबा;
 
-		case vpiPort:
-		  printf("port    : %s -- %s\n",
+		स्थिती vpiPort:
+		  म_लिखो("port    : %s -- %s\n",
 			 vpi_get_str(vpiName, table[idx]),
 			 direction_as_string(vpi_get(vpiDirection, table[idx])));
-		  break;
+		  थांबा;
 
-		default:
-		  printf("%8s: <vpi handle>\n",
+		पूर्वनिर्धारित:
+		  म_लिखो("%8s: <vpi handle>\n",
 			 vpi_type_as_string(table[idx]->get_type_code()));
-		  break;
+		  थांबा;
 	    }
 
       }
 }
 
-static void cmd_load(unsigned argc, const char*argv[])
+स्थिर शून्य cmd_load(अचिन्हित argc, स्थिरांक अक्षर*argv[])
 {
-      unsigned idx;
+      अचिन्हित idx;
 
-      for (idx = 1 ;  idx < argc ;  idx += 1) {
-	    printf("Loading module %s...\n", argv[idx]);
+      साठी (idx = 1 ;  idx < argc ;  idx += 1) {
+	    म_लिखो("Loading module %s...\n", argv[idx]);
 	    vpip_load_module(argv[idx]);
       }
 }
 
-static void cmd_pop(unsigned, const char*[])
+स्थिर शून्य cmd_काढा(अचिन्हित, स्थिरांक अक्षर*[])
 {
-      if (stop_current_scope != 0)
+      जर (stop_current_scope != 0)
 	    stop_current_scope = stop_current_scope->scope;
 }
 
-static void cmd_push(unsigned argc, const char* argv[])
+स्थिर शून्य cmd_ढकला(अचिन्हित argc, स्थिरांक अक्षर* argv[])
 {
-      for (unsigned idx = 1 ;  idx < argc ;  idx += 1) {
+      साठी (अचिन्हित idx = 1 ;  idx < argc ;  idx += 1) {
 	    __vpiHandle**table;
-	    unsigned ntable;
+	    अचिन्हित ntable;
 
-	    if (stop_current_scope) {
+	    जर (stop_current_scope) {
 		  table = &stop_current_scope->intern[0];
 		  ntable = stop_current_scope->intern.size();
-	    } else {
-		  vpip_make_root_iterator(table, ntable);
+	    } अन्यथा {
+		  vpip_make_मूळ_iterator(table, ntable);
 	    }
 
 	    __vpiScope*child = 0;
-	    for (unsigned tmp = 0 ;  tmp < ntable ;  tmp += 1) {
+	    साठी (अचिन्हित tmp = 0 ;  tmp < ntable ;  tmp += 1) {
 		  // Try to convert this item to a scope. If this is not a
 		  // scope, then continue.
 		  __vpiScope*scope = dynamic_cast<__vpiScope*>(table[tmp]);
-		  if (scope == 0)
-			continue;
+		  जर (scope == 0)
+			सुरूठेवा;
 
 		  // This is a scope, and the name matches, then
 		  // report that I found the child.
-		  if (strcmp(scope->scope_name(), argv[idx]) == 0) {
+		  जर (म_भेद(scope->scope_name(), argv[idx]) == 0) {
 			child = scope;
-			break;
+			थांबा;
 		  }
 	    }
 
-	    if (child == 0) {
-		  printf("Scope %s not found.\n", argv[idx]);
-		  return;
+	    जर (child == 0) {
+		  म_लिखो("Scope %s not found.\n", argv[idx]);
+		  परत;
 	    }
 
 	    stop_current_scope = child;
       }
 }
 
-static void cmd_time(unsigned, const char*[])
+स्थिर शून्य cmd_time(अचिन्हित, स्थिरांक अक्षर*[])
 {
       vvp_time64_t ticks = schedule_simtime();
-      printf("%" TIME_FMT_U " ticks\n", ticks);
+      म_लिखो("%" TIME_FMT_U " ticks\n", ticks);
 }
 
-static void cmd_trace(unsigned argc, const char*argv[])
+स्थिर शून्य cmd_trace(अचिन्हित argc, स्थिरांक अक्षर*argv[])
 {
-      assert(argc);
-      switch (argc) {
-	case 1:
-	    show_file_line = true;
-	    break;
-	default:
-	    printf("Only using the first argument to trace.\n");
+      प्रतिज्ञा(argc);
+      निवड (argc) {
+	स्थिती 1:
+	    show_file_ओळ = सत्य;
+	    थांबा;
+	पूर्वनिर्धारित:
+	    म_लिखो("Only using the first argument to trace.\n");
 	    // fallthrough
-	case 2:
-	    if ((strcmp(argv[1], "on") == 0) || (strcmp(argv[1], "1") == 0)) {
-		  show_file_line = true;
-	    } else show_file_line = false;
-	    break;
+	स्थिती 2:
+	    जर ((म_भेद(argv[1], "on") == 0) || (म_भेद(argv[1], "1") == 0)) {
+		  show_file_ओळ = सत्य;
+	    } अन्यथा show_file_ओळ = असत्य;
+	    थांबा;
       }
 
 	/* You can't trace a file if the compiler didn't insert the
 	 * %file_line opcodes. */
-      if (!code_is_instrumented) {
-	    printf("The vvp input must be instrumented before tracing is "
+      जर (!code_is_instrumented) {
+	    म_लिखो("The vvp input must be instrumented before tracing is "
 	           "available.\n");
-	    printf("Recompile with the -pfileline=1 flag to instrument "
+	    म_लिखो("Recompile with the -pfileline=1 flag to instrument "
 	           "the input.\n");
-	    show_file_line = false;
-      } else {
-	    printf("Turning statement tracing %s.\n",
-	           show_file_line ? "on" : "off");
+	    show_file_ओळ = असत्य;
+      } अन्यथा {
+	    म_लिखो("Turning statement tracing %s.\n",
+	           show_file_ओळ ? "on" : "off");
       }
 }
 
-static void cmd_where(unsigned, const char*[])
+स्थिर शून्य cmd_where(अचिन्हित, स्थिरांक अक्षर*[])
 {
-      const __vpiScope*cur = stop_current_scope;
+      स्थिरांक __vpiScope*cur = stop_current_scope;
 
-      while (cur) {
-	    switch (cur->get_type_code()) {
-		case vpiModule:
-		  printf("module %s\n", cur->scope_name());
-		  break;
-		case vpiGenScope:
-		  printf("generate %s\n", cur->scope_name());
-		  break;
-		default:
-		  printf("scope (%d) %s;\n", cur->get_type_code(), cur->scope_name());
-		  break;
+      पर्यंत (cur) {
+	    निवड (cur->get_type_code()) {
+		स्थिती vpiModule:
+		  म_लिखो("module %s\n", cur->scope_name());
+		  थांबा;
+		स्थिती vpiGenScope:
+		  म_लिखो("generate %s\n", cur->scope_name());
+		  थांबा;
+		पूर्वनिर्धारित:
+		  म_लिखो("scope (%d) %s;\n", cur->get_type_code(), cur->scope_name());
+		  थांबा;
 	    }
 
 	    cur = cur->scope;
       }
 }
 
-static void cmd_unknown(unsigned, const char*argv[])
+स्थिर शून्य cmd_unknown(अचिन्हित, स्थिरांक अक्षर*argv[])
 {
-      printf("Unknown command: %s\n", argv[0]);
-      printf("Try the help command to get a summary\n"
+      म_लिखो("Unknown command: %s\n", argv[0]);
+      म_लिखो("Try the help command to get a summary\n"
 	     "of available commands.\n");
 }
 
-static struct {
-      const char*name;
-      void (*proc)(unsigned argc, const char*argv[]);
-      const char*summary;
+स्थिर संरचना {
+      स्थिरांक अक्षर*name;
+      शून्य (*proc)(अचिन्हित argc, स्थिरांक अक्षर*argv[]);
+      स्थिरांक अक्षर*summary;
 } cmd_table[] = {
-      { "cd",     &cmd_push,
+      { "cd",     &cmd_ढकला,
         "Synonym for push."},
       { "cont",   &cmd_cont,
         "Resume (continue) the simulation"},
@@ -452,9 +452,9 @@ static struct {
         "Load a VPI module, a la vvp -m."},
       { "ls",     &cmd_list,
         "Shorthand for \"list\"."},
-      { "pop",    &cmd_pop,
+      { "pop",    &cmd_काढा,
         "Pop one scope from the scope stack."},
-      { "push",   &cmd_push,
+      { "push",   &cmd_ढकला,
         "Descend into the named scope."},
       { "step",   &cmd_step,
         "Single-step the scheduler for 1 event."},
@@ -467,67 +467,67 @@ static struct {
       { 0,        &cmd_unknown, 0}
 };
 
-static void cmd_help(unsigned, const char*[])
+स्थिर शून्य cmd_help(अचिन्हित, स्थिरांक अक्षर*[])
 {
-      printf("Commands can be from the following table of base commands,\n"
+      म_लिखो("Commands can be from the following table of base commands,\n"
 	     "or can be invocations of system tasks/functions.\n\n");
-      for (unsigned idx = 0 ;  cmd_table[idx].name != 0 ;  idx += 1) {
-	    printf("%-8s - %s\n", cmd_table[idx].name, cmd_table[idx].summary);
+      साठी (अचिन्हित idx = 0 ;  cmd_table[idx].name != 0 ;  idx += 1) {
+	    म_लिखो("%-8s - %s\n", cmd_table[idx].name, cmd_table[idx].summary);
       }
 
-      printf("\nIf the command name starts with a '$' character, it\n"
+      म_लिखो("\nIf the command name starts with a '$' character, it\n"
 	     "is taken to be the name of a system task, and a call is\n"
 	     "built up and executed. For example, \"$display foo\" will\n"
 	     "call the function as $display(foo).\n");
 }
 
 
-static void invoke_command(char*txt)
+स्थिर शून्य invoke_command(अक्षर*txt)
 {
-      unsigned argc = 0;
-      const char**argv = const_cast<const char**>(new char*[strlen(txt)/2]);
+      अचिन्हित argc = 0;
+      स्थिरांक अक्षर**argv = const_cast<स्थिरांक अक्षर**>(नवीन अक्षर*[म_माप(txt)/2]);
 
 	/* Chop the line into words. */
-      for (char*cp = txt+strspn(txt, " ")
-		 ; *cp; cp += strspn(cp, " ")) {
+      साठी (अक्षर*cp = txt+म_अखोज(txt, " ")
+		 ; *cp; cp += म_अखोज(cp, " ")) {
 	    argv[argc] = cp;
 
-	    if (cp[0] == '"') {
-		  char*tmp = strchr(cp+1, '"');
-		  if (tmp == 0) {
-			printf("Missing close-quote: %s\n", cp);
+	    जर (cp[0] == '"') {
+		  अक्षर*tmp = म_अक्षर(cp+1, '"');
+		  जर (tmp == 0) {
+			म_लिखो("Missing close-quote: %s\n", cp);
 			delete[]argv;
-			return;
+			परत;
 		  }
 
 		  cp = tmp + 1;
 
-	    } else {
-		  cp += strcspn(cp, " ");
+	    } अन्यथा {
+		  cp += म_खोज(cp, " ");
 	    }
 
-	    if (*cp) *cp++ = 0;
+	    जर (*cp) *cp++ = 0;
 
 	    argc += 1;
       }
 
 
 	/* Look up the command, using argv[0] as the key. */
-      if (argc > 0) {
+      जर (argc > 0) {
 
-	    if (argv[0][0] == '$') {
-		  if (strcmp(argv[0], "$stop") == 0) {
-			printf("The simulator is already stopped!\n");
-		  } else if (strcmp(argv[0], "$finish") == 0){
+	    जर (argv[0][0] == '$') {
+		  जर (म_भेद(argv[0], "$stop") == 0) {
+			म_लिखो("The simulator is already stopped!\n");
+		  } अन्यथा जर (म_भेद(argv[0], "$finish") == 0){
 			cmd_finish(argc, argv);
-		  } else {
+		  } अन्यथा {
 			cmd_call(argc, argv);
 		  }
-	    } else {
-		  unsigned idx;
-		  for (idx = 0 ;  cmd_table[idx].name ;  idx += 1)
-			if (strcmp(cmd_table[idx].name, argv[0]) == 0)
-			      break;
+	    } अन्यथा {
+		  अचिन्हित idx;
+		  साठी (idx = 0 ;  cmd_table[idx].name ;  idx += 1)
+			जर (म_भेद(cmd_table[idx].name, argv[0]) == 0)
+			      थांबा;
 
 		  cmd_table[idx].proc (argc, argv);
 	    }
@@ -537,21 +537,21 @@ static void invoke_command(char*txt)
       delete[]argv;
 }
 
-static void invoke_command_const(const char*txt)
+स्थिर शून्य invoke_command_const(स्थिरांक अक्षर*txt)
 {
-      char *vtxt = strdup(txt);
+      अक्षर *vtxt = strdup(txt);
       invoke_command(vtxt);
-      free(vtxt);
+      मुक्त(vtxt);
 }
 
-void stop_handler(int rc)
+शून्य stop_handler(पूर्णांक rc)
 {
         /* The user may be running in a non-interactive environment, so
          * they want $stop and <Control-C> to be the same as $finish. */
-      if (stop_is_finish) {
-	    vpip_set_return_value(stop_is_finish_exit_code);
+      जर (stop_is_finish) {
+	    vpip_set_return_मूल्य(stop_is_finish_exit_code);
 	    schedule_finish(0);
-	    return;
+	    परत;
       }
 
       vpi_mcd_printf(1,"** VVP Stop(%d) **\n", rc);
@@ -561,26 +561,26 @@ void stop_handler(int rc)
       vpi_mcd_printf(1,"** Current simulation time is %" TIME_FMT_U " ticks.\n",
 		     schedule_simtime());
 
-      interact_flag = true;
-      while (interact_flag) {
-	    char*input = readline("> ");
-	    if (input == 0)
-		  break;
+      interact_flag = सत्य;
+      पर्यंत (interact_flag) {
+	    अक्षर*आदान = readline("> ");
+	    जर (आदान == 0)
+		  थांबा;
 
 
 	      /* Advance to the first input character. */
-	    char*first = input;
-	    while (*first && isspace(*first))
+	    अक्षर*first = आदान;
+	    पर्यंत (*first && है_खाली(*first))
 		  first += 1;
 
-	    if (first[0] != 0) {
+	    जर (first[0] != 0) {
 #ifdef USE_HISTORY
 		  add_history(first);
 #endif
 		  invoke_command(first);
 	    }
 
-	    free(input);
+	    मुक्त(आदान);
       }
 
       vpi_mcd_printf(1,"** Continue **\n");

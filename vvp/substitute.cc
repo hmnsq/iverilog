@@ -24,29 +24,29 @@
 # include  <cassert>
 
 
-class vvp_fun_substitute : public vvp_net_fun_t {
+वर्ग vvp_fun_substitute : सार्वजनिक vvp_net_fun_t {
 
-    public:
-      vvp_fun_substitute(unsigned wid, unsigned soff, unsigned swid);
+    सार्वजनिक:
+      vvp_fun_substitute(अचिन्हित wid, अचिन्हित soff, अचिन्हित swid);
       ~vvp_fun_substitute() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit, vvp_context_t) override;
+      शून्य recv_vec4(vvp_net_ptr_t port, स्थिरांक vvp_vector4_t&bit, vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      शून्य recv_vec4_pv(vvp_net_ptr_t ptr, स्थिरांक vvp_vector4_t&bit,
+			अचिन्हित base, अचिन्हित vwid, vvp_context_t ctx) override;
 
-    private:
-      unsigned wid_;
-      unsigned soff_;
-      unsigned swid_;
+    खाजगी:
+      अचिन्हित wid_;
+      अचिन्हित soff_;
+      अचिन्हित swid_;
 
       vvp_vector4_t val_;
 };
 
-vvp_fun_substitute::vvp_fun_substitute(unsigned wid, unsigned soff, unsigned swid)
+vvp_fun_substitute::vvp_fun_substitute(अचिन्हित wid, अचिन्हित soff, अचिन्हित swid)
 : wid_(wid), soff_(soff), swid_(swid), val_(wid)
 {
-      for (unsigned idx = 0 ; idx < val_.size() ; idx += 1)
+      साठी (अचिन्हित idx = 0 ; idx < val_.size() ; idx += 1)
 	    val_.set_bit(idx, BIT4_Z);
 }
 
@@ -54,50 +54,50 @@ vvp_fun_substitute::~vvp_fun_substitute()
 {
 }
 
-void vvp_fun_substitute::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+शून्य vvp_fun_substitute::recv_vec4(vvp_net_ptr_t port, स्थिरांक vvp_vector4_t&bit,
 				   vvp_context_t)
 {
-      unsigned pdx = port.port();
-      assert(pdx <= 1);
+      अचिन्हित pdx = port.port();
+      प्रतिज्ञा(pdx <= 1);
 
-      if (pdx == 0) {
-	    assert(bit.size() == wid_);
+      जर (pdx == 0) {
+	    प्रतिज्ञा(bit.size() == wid_);
 
-	    for (unsigned idx = 0 ; idx < wid_ ; idx += 1) {
-		  if (idx >= soff_ && idx < (soff_+swid_))
-			continue;
+	    साठी (अचिन्हित idx = 0 ; idx < wid_ ; idx += 1) {
+		  जर (idx >= soff_ && idx < (soff_+swid_))
+			सुरूठेवा;
 
 		  val_.set_bit(idx, bit.value(idx));
 	    }
 
-      } else {
-	    assert(bit.size() == swid_);
+      } अन्यथा {
+	    प्रतिज्ञा(bit.size() == swid_);
 
-	    for (unsigned idx = 0 ; idx < swid_ ; idx += 1)
+	    साठी (अचिन्हित idx = 0 ; idx < swid_ ; idx += 1)
 		  val_.set_bit(idx+soff_, bit.value(idx));
       }
 
       port.ptr()->send_vec4(val_, 0);
 }
 
-void vvp_fun_substitute::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				      unsigned base, unsigned vwid, vvp_context_t ctx)
+शून्य vvp_fun_substitute::recv_vec4_pv(vvp_net_ptr_t ptr, स्थिरांक vvp_vector4_t&bit,
+				      अचिन्हित base, अचिन्हित vwid, vvp_context_t ctx)
 {
       recv_vec4_pv_(ptr, bit, base, vwid, ctx);
 }
 
-void compile_substitute(char*label, unsigned width,
-			unsigned soff, unsigned swidth,
-			unsigned argc, struct symb_s*argv)
+शून्य compile_substitute(अक्षर*label, अचिन्हित width,
+			अचिन्हित soff, अचिन्हित swidth,
+			अचिन्हित argc, संरचना symb_s*argv)
 {
-      vvp_fun_substitute*fun = new vvp_fun_substitute(width, soff, swidth);
+      vvp_fun_substitute*fun = नवीन vvp_fun_substitute(width, soff, swidth);
 
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = नवीन vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_चिन्ह(label, net);
+      मुक्त(label);
 
       inputs_connect(net, argc, argv);
-      free(argv);
+      मुक्त(argv);
 }

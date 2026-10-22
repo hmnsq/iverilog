@@ -23,7 +23,7 @@
 # include  <iostream>
 # include  <cassert>
 
-vvp_fun_extend_signed::vvp_fun_extend_signed(unsigned wid)
+vvp_fun_extend_signed::vvp_fun_extend_signed(अचिन्हित wid)
 : width_(wid)
 {
 }
@@ -32,28 +32,28 @@ vvp_fun_extend_signed::~vvp_fun_extend_signed()
 {
 }
 
-void vvp_fun_extend_signed::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+शून्य vvp_fun_extend_signed::recv_vec4(vvp_net_ptr_t port, स्थिरांक vvp_vector4_t&bit,
                                       vvp_context_t)
 {
-      if (bit.size() >= width_) {
+      जर (bit.size() >= width_) {
 	    port.ptr()->send_vec4(bit, 0);
-	    return;
+	    परत;
       }
 
       vvp_vector4_t res (width_);
 
-      for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1)
+      साठी (अचिन्हित idx = 0 ;  idx < bit.size() ;  idx += 1)
 	    res.set_bit(idx, bit.value(idx));
 
       vvp_bit4_t pad = bit.size() > 0? bit.value(bit.size()-1) : BIT4_0;
-      for (unsigned idx = bit.size() ;  idx < res.size() ;  idx += 1)
+      साठी (अचिन्हित idx = bit.size() ;  idx < res.size() ;  idx += 1)
 	    res.set_bit(idx, pad);
 
       port.ptr()->send_vec4(res, 0);
 }
 
-void vvp_fun_extend_signed::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-					 unsigned base, unsigned vwid, vvp_context_t ctx)
+शून्य vvp_fun_extend_signed::recv_vec4_pv(vvp_net_ptr_t ptr, स्थिरांक vvp_vector4_t&bit,
+					 अचिन्हित base, अचिन्हित vwid, vvp_context_t ctx)
 {
       recv_vec4_pv_(ptr, bit, base, vwid, ctx);
 }

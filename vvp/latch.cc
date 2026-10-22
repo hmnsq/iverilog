@@ -30,7 +30,7 @@
    achieved by scheduling an initial value to be sent to port 3. Any
    value received on port 3 will propagate an initial value of 'bx. */
 
-vvp_latch::vvp_latch(unsigned width)
+vvp_latch::vvp_latch(अचिन्हित width)
 : en_(BIT4_X), d_(width, BIT4_X)
 {
 }
@@ -39,55 +39,55 @@ vvp_latch::~vvp_latch()
 {
 }
 
-void vvp_latch::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+शून्य vvp_latch::recv_vec4(vvp_net_ptr_t port, स्थिरांक vvp_vector4_t&bit,
                           vvp_context_t)
 {
       vvp_bit4_t tmp;
 
-      switch (port.port()) {
+      निवड (port.port()) {
 
-	  case 0: // D
+	  स्थिती 0: // D
 	    d_ = bit;
-	    if (en_ == BIT4_1)
+	    जर (en_ == BIT4_1)
 		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	    थांबा;
 
-	  case 1: // EN
-	    assert(bit.size() == 1);
+	  स्थिती 1: // EN
+	    प्रतिज्ञा(bit.size() == 1);
 	    tmp = en_;
 	    en_ = bit.value(0);
-	    if (en_ == BIT4_1 && tmp != BIT4_1)
+	    जर (en_ == BIT4_1 && tmp != BIT4_1)
 		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	    थांबा;
 
-	  case 2:
-	    assert(0);
-	    break;
+	  स्थिती 2:
+	    प्रतिज्ञा(0);
+	    थांबा;
 
-	  case 3:
+	  स्थिती 3:
 	    port.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
-	    break;
+	    थांबा;
       }
 }
 
-void vvp_latch::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			     unsigned base, unsigned vwid, vvp_context_t ctx)
+शून्य vvp_latch::recv_vec4_pv(vvp_net_ptr_t ptr, स्थिरांक vvp_vector4_t&bit,
+			     अचिन्हित base, अचिन्हित vwid, vvp_context_t ctx)
 {
       recv_vec4_pv_(ptr, bit, base, vwid, ctx);
 }
 
-void compile_latch(char*label, unsigned width,
-		   struct symb_s arg_d,
-		   struct symb_s arg_e)
+शून्य compile_latch(अक्षर*label, अचिन्हित width,
+		   संरचना symb_s arg_d,
+		   संरचना symb_s arg_e)
 {
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_latch*fun = new vvp_latch(width);
+      vvp_net_t*ptr = नवीन vvp_net_t;
+      vvp_latch*fun = नवीन vvp_latch(width);
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_e.text);
+      define_functor_चिन्ह(label, ptr);
+      मुक्त(label);
+      आदान_connect(ptr, 0, arg_d.text);
+      आदान_connect(ptr, 1, arg_e.text);
 
       vvp_vector4_t init_val = vvp_vector4_t(1, BIT4_1);
       schedule_init_vector(vvp_net_ptr_t(ptr,3), init_val);

@@ -35,67 +35,67 @@
  *
  * The base vvp_dff does not implement an asynchronous set/clear.
  */
-class vvp_dff : public vvp_net_fun_t {
+class vvp_dff : सार्वजनिक vvp_net_fun_t {
 
-    public:
-      explicit vvp_dff(unsigned width, bool negedge);
+    सार्वजनिक:
+      explicit vvp_dff(अचिन्हित width, bool negedge);
       ~vvp_dff() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      शून्य recv_vec4(vvp_net_ptr_t port, स्थिरांक vvp_vector4_t&bit,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      शून्य recv_vec4_pv(vvp_net_ptr_t ptr, स्थिरांक vvp_vector4_t&bit,
+			अचिन्हित base, अचिन्हित vwid, vvp_context_t ctx) override;
 
-    private:
-      virtual void recv_async(vvp_net_ptr_t port);
+    खाजगी:
+      आभासी शून्य recv_async(vvp_net_ptr_t port);
 
       vvp_bit4_t clk_active_ : 8;
       vvp_bit4_t clk_        : 8;
       vvp_bit4_t ena_        : 8;
       vvp_bit4_t asc_        : 8;
 
-    protected:
+    संरक्षित:
       vvp_vector4_t d_;
 };
 
 /*
  * This variant implements an asynchronous clear to all zeros.
  */
-class vvp_dff_aclr : public vvp_dff {
+class vvp_dff_aclr : सार्वजनिक vvp_dff {
 
-    public:
-      explicit vvp_dff_aclr(unsigned width, bool negedge);
+    सार्वजनिक:
+      explicit vvp_dff_aclr(अचिन्हित width, bool negedge);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    खाजगी:
+      शून्य recv_async(vvp_net_ptr_t port) override;
 };
 
 /*
  * This variant implements an asynchronous set to all ones.
  */
-class vvp_dff_aset : public vvp_dff {
+class vvp_dff_aset : सार्वजनिक vvp_dff {
 
-    public:
-      explicit vvp_dff_aset(unsigned width, bool negedge);
+    सार्वजनिक:
+      explicit vvp_dff_aset(अचिन्हित width, bool negedge);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    खाजगी:
+      शून्य recv_async(vvp_net_ptr_t port) override;
 };
 
 /*
  * This variant implements an asynchronous set to a specified constant
  * vector value.
  */
-class vvp_dff_asc : public vvp_dff {
+class vvp_dff_asc : सार्वजनिक vvp_dff {
 
-    public:
-      explicit vvp_dff_asc(unsigned width, bool negedge, const char*asc_value);
+    सार्वजनिक:
+      explicit vvp_dff_asc(अचिन्हित width, bool negedge, स्थिरांक अक्षर*asc_मूल्य);
 
-    private:
-      void recv_async(vvp_net_ptr_t port) override;
+    खाजगी:
+      शून्य recv_async(vvp_net_ptr_t port) override;
 
-      vvp_vector4_t asc_value_;
+      vvp_vector4_t asc_मूल्य_2;
 };
 
 #endif /* IVL_dff_H */
