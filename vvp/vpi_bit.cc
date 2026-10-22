@@ -27,134 +27,134 @@
 # include <cassert>
 
 
-static const __vpiBit*bit_from_handle(const __vpiHandle*ref)
+स्थिर अचर __vpiBit*bit_from_handle(अचर __vpiHandle*ref)
 {
-      if (ref == NULL) return NULL;
-      const __vpiBit::as_bit_t*ptr = dynamic_cast<const __vpiBit::as_bit_t*> (ref);
-      if (ptr == NULL) return NULL;
-      return reinterpret_cast<const struct __vpiBit*>(ref);
+      यदि (ref == रिक्त) फर्काऊ रिक्त;
+      अचर __vpiBit::as_bit_t*ptr = dynamic_cast<अचर __vpiBit::as_bit_t*> (ref);
+      यदि (ptr == रिक्त) फर्काऊ रिक्त;
+      फर्काऊ reinterpret_cast<अचर संरचना __vpiBit*>(ref);
 }
 
-static __vpiBit*bit_from_handle(__vpiHandle*ref)
+स्थिर __vpiBit*bit_from_handle(__vpiHandle*ref)
 {
-      if (ref == NULL) return NULL;
-      const __vpiBit::as_bit_t*ptr = dynamic_cast<__vpiBit::as_bit_t*> (ref);
-      if (ptr == NULL) return NULL;
-      return reinterpret_cast<struct __vpiBit*>(ref);
+      यदि (ref == रिक्त) फर्काऊ रिक्त;
+      अचर __vpiBit::as_bit_t*ptr = dynamic_cast<__vpiBit::as_bit_t*> (ref);
+      यदि (ptr == रिक्त) फर्काऊ रिक्त;
+      फर्काऊ reinterpret_cast<संरचना __vpiBit*>(ref);
 }
 
-static int bit_get_type(const __vpiBit*rfp)
+स्थिर पूर्णाङ्क bit_get_type(अचर __vpiBit*rfp)
 {
-      assert(rfp);
+      प्रतिज्ञा(rfp);
 
-      const struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      अचर संरचना __vpiSignal*parent = rfp->get_parent();
+      प्रतिज्ञा(parent);
 
-      switch (parent->get_type_code()) {
-	case vpiNet:
-	    return vpiNetBit;
-	case vpiReg:
-	    return vpiRegBit;
+      विकल्प (parent->get_type_code()) {
+	पक्ष vpiNet:
+	    फर्काऊ vpiNetBit;
+	पक्ष vpiReg:
+	    फर्काऊ vpiRegBit;
       }
-      assert(0);
-      return 0;
+      प्रतिज्ञा(0);
+      फर्काऊ 0;
 }
 
-static int bit_get(int code, vpiHandle ref)
+स्थिर पूर्णाङ्क bit_get(पूर्णाङ्क code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      संरचना __vpiBit*rfp = bit_from_handle(ref);
+      प्रतिज्ञा(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      संरचना __vpiSignal*parent = rfp->get_parent();
+      प्रतिज्ञा(parent);
 
-      switch (code) {
-	case vpiArray:  // A bit is not an array
-	    return 0;
+      विकल्प (code) {
+	पक्ष vpiArray:  // A bit is not an array
+	    फर्काऊ 0;
 
-	case vpiAutomatic:
-	    return vpi_get(vpiAutomatic, parent);
+	पक्ष vpiAutomatic:
+	    फर्काऊ vpi_get(vpiAutomatic, parent);
 
-	case vpiIndex:
+	पक्ष vpiIndex:
 	    {
-		  s_vpi_value vp;
+		  s_vpi_मान vp;
 		  vp.format = vpiIntVal;
-		  vpi_get_value(rfp->index, &vp);
-		  return vp.value.integer;
+		  vpi_get_मान(rfp->index, &vp);
+		  फर्काऊ vp.value.integer;
 	    }
 
-	case vpiLineNo:
-	    return vpi_get(vpiLineNo, parent);
+	पक्ष vpi_पङ्क्ति_No:
+	    फर्काऊ vpi_get(vpi_पङ्क्ति_No, parent);
 
-	case vpiScalar:  // A bit is a scalar
-	    return 1;
+	पक्ष vpiScalar:  // A bit is a scalar
+	    फर्काऊ 1;
 
-	case vpiSigned:  // A bit is unsigned
-	    return 0;
+	पक्ष vpiSigned:  // A bit is unsigned
+	    फर्काऊ 0;
 
-	case vpiSize:  // A bit has a width of 1
-	    return 1;
+	पक्ष vpiSize:  // A bit has a width of 1
+	    फर्काऊ 1;
 
-	case vpiVector:  // A bit is not a vector
-	    return 0;
+	पक्ष vpiVector:  // A bit is not a vector
+	    फर्काऊ 0;
 
-	default:
-	    fprintf(stderr, "VPI error: unknown bit_get property %d.\n",
+	स्वभाव:
+	    ख_लिखो(मानक_त्रुटि, "VPI error: unknown bit_get property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    फर्काऊ vpiUndefined;
       }
 }
 
-static char* bit_get_str(int code, vpiHandle ref)
+स्थिर वर्ण* bit_get_str(पूर्णाङ्क code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      संरचना __vpiBit*rfp = bit_from_handle(ref);
+      प्रतिज्ञा(rfp);
 
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      यदि (code == vpiFile) {  // Not implemented for now!
+            फर्काऊ simple_set_rbuf_str(file_names[0]);
       }
 
-      if ((code != vpiName) && (code != vpiFullName)) return NULL;
+      यदि ((code != vpiName) && (code != vpiFullName)) फर्काऊ रिक्त;
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      संरचना __vpiSignal*parent = rfp->get_parent();
+      प्रतिज्ञा(parent);
 
-      char *nm;
-      const char *ixs;
+      वर्ण *nm;
+      अचर वर्ण *ixs;
       nm = strdup(vpi_get_str(vpiName, parent));
-      s_vpi_value vp;
+      s_vpi_मान vp;
       vp.format = vpiDecStrVal;
-      vpi_get_value(rfp->index, &vp);
+      vpi_get_मान(rfp->index, &vp);
       ixs = vp.value.str;
 
-      char *rbuf = generic_get_str(code, vpip_scope(parent), nm, ixs);
-      free(nm);
-      return rbuf;
+      वर्ण *rbuf = generic_get_str(code, vpip_scope(parent), nm, ixs);
+      मुक्त(nm);
+      फर्काऊ rbuf;
 }
 
-static vpiHandle bit_get_handle(int code, vpiHandle ref)
+स्थिर vpiHandle bit_get_handle(पूर्णाङ्क code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      संरचना __vpiBit*rfp = bit_from_handle(ref);
+      प्रतिज्ञा(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      संरचना __vpiSignal*parent = rfp->get_parent();
+      प्रतिज्ञा(parent);
 
-      switch (code) {
-	case vpiIndex:
-	    return rfp->index;
+      विकल्प (code) {
+	पक्ष vpiIndex:
+	    फर्काऊ rfp->index;
 
-	case vpiParent:
-	    return parent;
+	पक्ष vpiParent:
+	    फर्काऊ parent;
 
-	case vpiScope:
-	    return vpi_handle(vpiScope, parent);
+	पक्ष vpiScope:
+	    फर्काऊ vpi_handle(vpiScope, parent);
 
-	case vpiModule:
-	    return vpi_handle(vpiModule, parent);
+	पक्ष vpiModule:
+	    फर्काऊ vpi_handle(vpiModule, parent);
       }
 
-    return 0;
+    फर्काऊ 0;
 }
 
 /*
@@ -177,54 +177,54 @@ static vpiHandle bit_index(int idx, vpiHandle ref)
 }
 */
 
-static void bit_get_value(vpiHandle ref, s_vpi_value*vp)
+स्थिर शून्य bit_get_मान(vpiHandle ref, s_vpi_मान*vp)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      संरचना __vpiBit*rfp = bit_from_handle(ref);
+      प्रतिज्ञा(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      संरचना __vpiSignal*parent = rfp->get_parent();
+      प्रतिज्ञा(parent);
 
-      parent->get_bit_value(rfp, vp);
+      parent->get_bit_मान(rfp, vp);
 }
 
-static vpiHandle bit_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
+स्थिर vpiHandle bit_put_मान(vpiHandle ref, s_vpi_मान*vp, पूर्णाङ्क flags)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      संरचना __vpiBit*rfp = bit_from_handle(ref);
+      प्रतिज्ञा(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      संरचना __vpiSignal*parent = rfp->get_parent();
+      प्रतिज्ञा(parent);
 
-      return parent->put_bit_value(rfp, vp, flags);
+      फर्काऊ parent->put_bit_मान(rfp, vp, flags);
 }
 
 
-int __vpiBit::get_index(void) const
+पूर्णाङ्क __vpiBit::get_index(शून्य) अचर
 {
-      s_vpi_value vp;
+      s_vpi_मान vp;
       vp.format = vpiIntVal;
-      vpi_get_value(index, &vp);
-      return vp.value.integer;
+      vpi_get_मान(index, &vp);
+      फर्काऊ vp.value.integer;
 }
 
-int __vpiBit::as_bit_t::get_type_code(void) const
-{ return bit_get_type(bit_from_handle(this)); }
+पूर्णाङ्क __vpiBit::as_bit_t::get_type_code(शून्य) अचर
+{ फर्काऊ bit_get_type(bit_from_handle(एतत्)); }
 
-int __vpiBit::as_bit_t::vpi_get(int code)
-{ return bit_get(code, this); }
+पूर्णाङ्क __vpiBit::as_bit_t::vpi_get(पूर्णाङ्क code)
+{ फर्काऊ bit_get(code, एतत्); }
 
-char* __vpiBit::as_bit_t::vpi_get_str(int code)
-{ return bit_get_str(code, this); }
+वर्ण* __vpiBit::as_bit_t::vpi_get_str(पूर्णाङ्क code)
+{ फर्काऊ bit_get_str(code, एतत्); }
 
-void __vpiBit::as_bit_t::vpi_get_value(p_vpi_value val)
-{ bit_get_value(this, val); }
+शून्य __vpiBit::as_bit_t::vpi_get_मान(p_vpi_मान val)
+{ bit_get_मान(एतत्, val); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_put_value(p_vpi_value val, int flags)
-{ return bit_put_value(this, val, flags); }
+vpiHandle __vpiBit::as_bit_t::vpi_put_मान(p_vpi_मान val, पूर्णाङ्क flags)
+{ फर्काऊ bit_put_मान(एतत्, val, flags); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_handle(int code)
-{ return bit_get_handle(code, this); }
+vpiHandle __vpiBit::as_bit_t::vpi_handle(पूर्णाङ्क code)
+{ फर्काऊ bit_get_handle(code, एतत्); }
 
 // FIXME: How are delayed put values handled?
 //vpiHandle __vpiBit::as_bit_t::vpi_iterate(int code) // FIXME: Is this needed?

@@ -25,145 +25,145 @@
 # include  <cstdlib>
 # include  <cassert>
 
-extern const char hex_digits[256];
+बाह्य अचर वर्ण hex_digits[256];
 
-void vpip_hex_str_to_vec4(vvp_vector4_t&val, const char*str)
+शून्य vpip_hex_str_to_vec4(vvp_vector4_t&val, अचर वर्ण*str)
 {
-      unsigned str_len = strlen(str);
-      unsigned skip_chars = 0;
-      const char*tstr = str;
+      अचिन्हित str_len = म_माप(str);
+      अचिन्हित skip_chars = 0;
+      अचर वर्ण*tstr = str;
 	/* Find the number of non-numeric characters. */
-      while ((tstr = strpbrk(tstr, "-_"))) {
+      जबसम्म ((tstr = strpbrk(tstr, "-_"))) {
 	    skip_chars += 1;
 	    tstr += 1;
       }
       vvp_vector4_t tval(4*(str_len-skip_chars));
       skip_chars = 0;
-      for (unsigned idx = 0 ;  idx < tval.size() ;  idx += 1) {
-	    unsigned tmp;
-	    unsigned bit_off = idx%4;
-	    unsigned str_off = idx/4;
-	    char ch;
+      लागि (अचिन्हित idx = 0 ;  idx < tval.size() ;  idx += 1) {
+	    अचिन्हित tmp;
+	    अचिन्हित bit_off = idx%4;
+	    अचिन्हित str_off = idx/4;
+	    वर्ण ch;
 
-	    assert (str_off+skip_chars < str_len);
+	    प्रतिज्ञा (str_off+skip_chars < str_len);
 	      /* Skip any "_" characters in the string. */
-	    while((ch = str[str_len-str_off-1-skip_chars]) == '_') {
+	    जबसम्म((ch = str[str_len-str_off-1-skip_chars]) == '_') {
 		  skip_chars += 1;
-		  assert (str_off+skip_chars < str_len);
+		  प्रतिज्ञा (str_off+skip_chars < str_len);
 	    }
 
 	      /* If we find a "-" it must be at the head of the string. */
-	    if (ch == '-') assert(0);
+	    यदि (ch == '-') प्रतिज्ञा(0);
 
-	    switch (ch) {
-		case '0':
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-		case '6':
-		case '7':
-		case '8':
-		case '9':
+	    विकल्प (ch) {
+		पक्ष '0':
+		पक्ष '1':
+		पक्ष '2':
+		पक्ष '3':
+		पक्ष '4':
+		पक्ष '5':
+		पक्ष '6':
+		पक्ष '7':
+		पक्ष '8':
+		पक्ष '9':
 		  tmp = ch - '0';
 		  tval.set_bit(idx, ((tmp>>bit_off)&1)? BIT4_1 : BIT4_0);
-		  break;
-		case 'a':
-		case 'b':
-		case 'c':
-		case 'd':
-		case 'e':
-		case 'f':
+		  रोक;
+		पक्ष 'a':
+		पक्ष 'b':
+		पक्ष 'c':
+		पक्ष 'd':
+		पक्ष 'e':
+		पक्ष 'f':
 		  tmp = ch - 'a' + 10;
 		  tval.set_bit(idx, ((tmp>>bit_off)&1)? BIT4_1 : BIT4_0);
-		  break;
-		case 'A':
-		case 'B':
-		case 'C':
-		case 'D':
-		case 'E':
-		case 'F':
+		  रोक;
+		पक्ष 'A':
+		पक्ष 'B':
+		पक्ष 'C':
+		पक्ष 'D':
+		पक्ष 'E':
+		पक्ष 'F':
 		  tmp = ch - 'A' + 10;
 		  tval.set_bit(idx, ((tmp>>bit_off)&1)? BIT4_1 : BIT4_0);
-		  break;
-		case 'x':
-		case 'X':
+		  रोक;
+		पक्ष 'x':
+		पक्ष 'X':
 		  tval.set_bit(idx, BIT4_X);
-		  break;
-		case 'z':
-		case 'Z':
+		  रोक;
+		पक्ष 'z':
+		पक्ष 'Z':
 		  tval.set_bit(idx, BIT4_Z);
-		  break;
-		default:
+		  रोक;
+		स्वभाव:
 		    /* Return "x" if there are invalid digits in the string. */
-		  fprintf(stderr, "Warning: Invalid hex digit %c(%d) in "
+		  ख_लिखो(मानक_त्रुटि, "Warning: Invalid hex digit %c(%d) in "
 		          "\"%s\".\n", ch, ch, str);
-		  for (unsigned jdx = 0 ;  jdx < val.size() ;  jdx += 1) {
+		  लागि (अचिन्हित jdx = 0 ;  jdx < val.size() ;  jdx += 1) {
 			val.set_bit(jdx, BIT4_X);
 		  }
-		  return;
+		  फर्काऊ;
 	    }
       }
 
 	/* Make a negative value when needed. */
-      if (str[0] == '-') {
+      यदि (str[0] == '-') {
 	    tval.invert();
 	    tval += (int64_t) 1;
       }
 
 	/* Find the correct padding value. */
       vvp_bit4_t pad;
-      switch (tval.value(tval.size()-1)) {
-	  case BIT4_X:  // Pad MSB 'x' with 'x'.
+      विकल्प (tval.value(tval.size()-1)) {
+	  पक्ष BIT4_X:  // Pad MSB 'x' with 'x'.
 	    pad = BIT4_X;
-	    break;
-	  case BIT4_Z:  // Pad MSB 'z' with 'z'.
+	    रोक;
+	  पक्ष BIT4_Z:  // Pad MSB 'z' with 'z'.
 	    pad = BIT4_Z;
-	    break;
-	  case BIT4_1:  // If negative pad MSB '1' with '1'.
-	    if (str[0] == '-') {
+	    रोक;
+	  पक्ष BIT4_1:  // If negative pad MSB '1' with '1'.
+	    यदि (str[0] == '-') {
 		  pad = BIT4_1;
-		  break;
+		  रोक;
 	    }
 	    // fallthrough
-	  default:  // Everything else gets '0' padded.
+	  स्वभाव:  // Everything else gets '0' padded.
 	    pad = BIT4_0;
-	    break;
+	    रोक;
       }
 
 	/* Copy the temporary value to the real value, padding if needed. */
-      for (unsigned idx = 0 ;  idx < val.size() ;  idx += 1) {
-	    if (idx < tval.size()) val.set_bit(idx, tval.value(idx));
-	    else val.set_bit(idx, pad);
+      लागि (अचिन्हित idx = 0 ;  idx < val.size() ;  idx += 1) {
+	    यदि (idx < tval.size()) val.set_bit(idx, tval.value(idx));
+	    अन्यथा val.set_bit(idx, pad);
       }
 }
 
-void vpip_vec4_to_hex_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
+शून्य vpip_vec4_to_hex_str(अचर vvp_vector4_t&bits, वर्ण*buf, अचिन्हित nbuf)
 {
-      unsigned slen = (bits.size() + 3) / 4;
-      assert(slen < nbuf);
+      अचिन्हित slen = (bits.size() + 3) / 4;
+      प्रतिज्ञा(slen < nbuf);
 
       buf[slen] = 0;
 
-      unsigned val = 0;
-      for (unsigned idx = 0 ;  idx < bits.size() ;  idx += 1) {
-	    unsigned vs = (idx%4) * 2;
+      अचिन्हित val = 0;
+      लागि (अचिन्हित idx = 0 ;  idx < bits.size() ;  idx += 1) {
+	    अचिन्हित vs = (idx%4) * 2;
 
-	    switch (bits.value(idx)) {
-		case BIT4_0:
-		  break;
-		case BIT4_1:
+	    विकल्प (bits.value(idx)) {
+		पक्ष BIT4_0:
+		  रोक;
+		पक्ष BIT4_1:
 		  val |= 1 << vs;
-		  break;
-		case BIT4_X:
+		  रोक;
+		पक्ष BIT4_X:
 		  val |= 2 << vs;
-		  break;
-		case BIT4_Z:
+		  रोक;
+		पक्ष BIT4_Z:
 		  val |= 3 << vs;
 	    }
 
-	    if (vs == 6) {
+	    यदि (vs == 6) {
 		  slen -= 1;
 		  buf[slen] = hex_digits[val];
 		  val = 0;
@@ -171,22 +171,22 @@ void vpip_vec4_to_hex_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
       }
 
 	/* Fill in X or Z if they are the only thing in the value. */
-      switch (bits.size() % 4) {
-	  case 1:
-	    if (val == 2) val = 170;
-	    else if (val == 3) val = 255;
-	    break;
-	  case 2:
-	    if (val == 10) val = 170;
-	    else if (val == 15) val = 255;
-	    break;
-	  case 3:
-	    if (val == 42) val = 170;
-	    else if (val == 63) val = 255;
-	    break;
+      विकल्प (bits.size() % 4) {
+	  पक्ष 1:
+	    यदि (val == 2) val = 170;
+	    अन्यथा यदि (val == 3) val = 255;
+	    रोक;
+	  पक्ष 2:
+	    यदि (val == 10) val = 170;
+	    अन्यथा यदि (val == 15) val = 255;
+	    रोक;
+	  पक्ष 3:
+	    यदि (val == 42) val = 170;
+	    अन्यथा यदि (val == 63) val = 255;
+	    रोक;
       }
 
-      if (slen > 0) {
+      यदि (slen > 0) {
 	    slen -= 1;
 	    buf[slen] = hex_digits[val];
       }

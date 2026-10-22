@@ -31,27 +31,27 @@
  * The key_strdup() function below allocates the strings from this
  * buffer, possibly making a new buffer if needed.
  */
-struct key_strings {
-      struct key_strings*next;
-      char data[64*1024 - sizeof(struct key_strings*)];
+संरचना साँचो_strings {
+      संरचना साँचो_strings*next;
+      वर्ण data[64*1024 - परिमाण(संरचना साँचो_strings*)];
 };
 
-char*symbol_table_s::key_strdup_(const char*str)
+वर्ण*चिह्न_table_s::साँचो_strdup(अचर वर्ण*str)
 {
-      unsigned len = strlen(str);
-      assert( (len+1) <= sizeof str_chunk->data );
+      अचिन्हित len = म_माप(str);
+      प्रतिज्ञा( (len+1) <= परिमाण str_chunk->data );
 
-      if ( (len+1) > (sizeof str_chunk->data - str_used) ) {
-	    key_strings*tmp = new key_strings;
+      यदि ( (len+1) > (परिमाण str_chunk->data - str_used) ) {
+	    साँचो_strings*tmp = नूतन साँचो_strings;
 	    tmp->next = str_chunk;
 	    str_chunk = tmp;
 	    str_used = 0;
       }
 
-      char*res = str_chunk->data + str_used;
+      वर्ण*res = str_chunk->data + str_used;
       str_used += len + 1;
-      strcpy(res, str);
-      return res;
+      म_नकल(res, str);
+      फर्काऊ res;
 }
 
 /*
@@ -67,32 +67,32 @@ char*symbol_table_s::key_strdup_(const char*str)
  * simple binary search to find an item. Each key represents an item.
  */
 
-const unsigned leaf_width = 254;
-const unsigned node_width = 508;
+अचर अचिन्हित leaf_width = 254;
+अचर अचिन्हित गाँठो_width = 508;
 
-struct tree_data_ {
-      char*key;
-      symbol_value_t val;
+संरचना रूख_data {
+      वर्ण*साँचो;
+      चिह्न_मान_t val;
 };
 
-struct tree_node_ {
-      bool leaf_flag;
-      unsigned count;
-      struct tree_node_*parent;
+संरचना रूख_गाँठो {
+      तार्किक leaf_flag;
+      अचिन्हित गन्ती;
+      संरचना रूख_गाँठो*parent;
 
-      union {
-	    struct tree_data_ leaf[leaf_width];
-	    struct tree_node_ *child[node_width];
+      सङ्घ {
+	    संरचना रूख_data leaf[leaf_width];
+	    संरचना रूख_गाँठो *child[गाँठो_width];
       };
 
 };
 
-static inline char* node_last_key(struct tree_node_*node)
+स्थिर अन्तःस्थ वर्ण* गाँठो_last_साँचो(संरचना रूख_गाँठो*गाँठो)
 {
-      while (node->leaf_flag == false)
-	    node = node->child[node->count-1];
+      जबसम्म (गाँठो->leaf_flag == असत्य)
+	    गाँठो = गाँठो->child[गाँठो->गन्ती-1];
 
-      return node->leaf[node->count-1].key;
+      फर्काऊ गाँठो->leaf[गाँठो->गन्ती-1].साँचो;
 }
 
 /*
@@ -100,94 +100,94 @@ static inline char* node_last_key(struct tree_node_*node)
  * a root node, and initializing the pointers and members of the root
  * node.
  */
-symbol_table_s::symbol_table_s()
+चिह्न_table_s::चिह्न_table_s()
 {
-      root = new struct tree_node_;
-      root->leaf_flag = false;
-      root->count = 0;
-      root->parent = 0;
+      जरा = नूतन संरचना रूख_गाँठो;
+      जरा->leaf_flag = असत्य;
+      जरा->गन्ती = 0;
+      जरा->parent = 0;
 
-      str_chunk = new key_strings;
+      str_chunk = नूतन साँचो_strings;
       str_chunk->next = 0;
       str_used = 0;
 }
 
-static void delete_symbol_node(struct tree_node_*cur)
+स्थिर शून्य delete_चिह्न_गाँठो(संरचना रूख_गाँठो*cur)
 {
-      if (! cur->leaf_flag) {
-	    for (unsigned idx = 0 ;  idx < cur->count ;  idx += 1)
-		  delete_symbol_node(cur->child[idx]);
+      यदि (! cur->leaf_flag) {
+	    लागि (अचिन्हित idx = 0 ;  idx < cur->गन्ती ;  idx += 1)
+		  delete_चिह्न_गाँठो(cur->child[idx]);
       }
 
       delete cur;
 }
 
 /* Do as split_leaf_ does, but for nodes. */
-static void split_node_(struct tree_node_*cur)
+स्थिर शून्य split_गाँठो(संरचना रूख_गाँठो*cur)
 {
-      assert(!cur->leaf_flag);
-      if (cur->parent) assert(! cur->parent->leaf_flag);
+      प्रतिज्ञा(!cur->leaf_flag);
+      यदि (cur->parent) प्रतिज्ञा(! cur->parent->leaf_flag);
 
-      while (cur->count == node_width) {
+      जबसम्म (cur->गन्ती == गाँठो_width) {
 	      /* Create a new node to hold half the data from cur. */
-	    struct tree_node_ *new_node = new struct tree_node_;
-	    new_node->leaf_flag = false;
-	    new_node->count = cur->count / 2;
+	    संरचना रूख_गाँठो *new_गाँठो = नूतन संरचना रूख_गाँठो;
+	    new_गाँठो->leaf_flag = असत्य;
+	    new_गाँठो->गन्ती = cur->गन्ती / 2;
 	      /* cur is not root; new_node becomes sibling. */
-	    if (cur->parent) new_node->parent = cur->parent;
+	    यदि (cur->parent) new_गाँठो->parent = cur->parent;
 
 	      /* Move the last half of the data from the end of the old node
 	       * to the beginning of the new node. At the same time, reduce
 	       * the size of the old node. */
-	    unsigned idx1 = new_node->count;
-	    unsigned idx2 = cur->count;
-	    while (idx1 > 0) {
+	    अचिन्हित idx1 = new_गाँठो->गन्ती;
+	    अचिन्हित idx2 = cur->गन्ती;
+	    जबसम्म (idx1 > 0) {
 		  idx1 -= 1;
 		  idx2 -= 1;
-		  new_node->child[idx1] = cur->child[idx2];
-		  new_node->child[idx1]->parent = new_node;
-		  cur->count -= 1;
+		  new_गाँठो->child[idx1] = cur->child[idx2];
+		  new_गाँठो->child[idx1]->parent = new_गाँठो;
+		  cur->गन्ती -= 1;
 	    }
 
-	    assert(new_node->count > 0);
-	    assert(cur->count > 0);
+	    प्रतिज्ञा(new_गाँठो->गन्ती > 0);
+	    प्रतिज्ञा(cur->गन्ती > 0);
 
-	    if (cur->parent == 0) {
+	    यदि (cur->parent == 0) {
 		    /* cur is root. Move first half of children to another
 		     * new node, and put the two new nodes in cur. The plan
 		     * here is to make cur into the new root and split its
 		     * contents into 2 children. */
 
-		  new_node->parent = cur;
-		  struct tree_node_*new2_node = new struct tree_node_;
-		  new2_node->leaf_flag = false;
-		  new2_node->count = cur->count;
-		  new2_node->parent = cur;
-		  for (unsigned idx = 0; idx < cur->count; idx += 1) {
-			new2_node->child[idx] = cur->child[idx];
-			new2_node->child[idx]->parent = new2_node;
+		  new_गाँठो->parent = cur;
+		  संरचना रूख_गाँठो*new2_गाँठो = नूतन संरचना रूख_गाँठो;
+		  new2_गाँठो->leaf_flag = असत्य;
+		  new2_गाँठो->गन्ती = cur->गन्ती;
+		  new2_गाँठो->parent = cur;
+		  लागि (अचिन्हित idx = 0; idx < cur->गन्ती; idx += 1) {
+			new2_गाँठो->child[idx] = cur->child[idx];
+			new2_गाँठो->child[idx]->parent = new2_गाँठो;
 		  }
-		  cur->child[0] = new2_node;
-		  cur->child[1] = new_node;
-		  cur->count = 2;
+		  cur->child[0] = new2_गाँठो;
+		  cur->child[1] = new_गाँठो;
+		  cur->गन्ती = 2;
 		    /* no more ancestors, stop the while loop */
-		  break;
+		  रोक;
 	    }
 
 	      /* cur is not root. hook new_node to cur->parent. */
-	    unsigned idx = 0;
-	    while (cur->parent->child[idx] != cur) {
-		  assert(idx < cur->parent->count);
+	    अचिन्हित idx = 0;
+	    जबसम्म (cur->parent->child[idx] != cur) {
+		  प्रतिज्ञा(idx < cur->parent->गन्ती);
 		  idx += 1;
 	    }
 	    idx += 1;
 
-	    for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1) {
+	    लागि (अचिन्हित tmp = cur->parent->गन्ती ;  tmp > idx ;  tmp -= 1) {
 		  cur->parent->child[tmp] = cur->parent->child[tmp-1];
 	    }
 
-	    cur->parent->child[idx] = new_node;
-	    cur->parent->count += 1;
+	    cur->parent->child[idx] = new_गाँठो;
+	    cur->parent->गन्ती += 1;
 
 	      /* check the ancestor */
 	    cur = cur->parent;
@@ -199,51 +199,51 @@ static void split_node_(struct tree_node_*cur)
  * the leaf keys into the new node, and add the new leaf into the
  * parent node.
  */
-static struct tree_node_* split_leaf_(struct tree_node_*cur)
+स्थिर संरचना रूख_गाँठो* split_leaf_(संरचना रूख_गाँठो*cur)
 {
-      assert(cur->leaf_flag);
-      assert(cur->parent);
-      assert(! cur->parent->leaf_flag);
+      प्रतिज्ञा(cur->leaf_flag);
+      प्रतिज्ञा(cur->parent);
+      प्रतिज्ञा(! cur->parent->leaf_flag);
 
 	/* Create a new leaf to hold half the data from the old leaf. */
-      struct tree_node_*new_leaf = new struct tree_node_;
-      new_leaf->leaf_flag = true;
-      new_leaf->count = cur->count / 2;
+      संरचना रूख_गाँठो*new_leaf = नूतन संरचना रूख_गाँठो;
+      new_leaf->leaf_flag = सत्य;
+      new_leaf->गन्ती = cur->गन्ती / 2;
       new_leaf->parent = cur->parent;
 
 	/* Move the last half of the data from the end of the old leaf
 	   to the beginning of the new leaf. At the same time, reduce
 	   the size of the old leaf. */
-      unsigned idx1 = new_leaf->count;
-      unsigned idx2 = cur->count;
-      while (idx1 > 0) {
+      अचिन्हित idx1 = new_leaf->गन्ती;
+      अचिन्हित idx2 = cur->गन्ती;
+      जबसम्म (idx1 > 0) {
 	    idx1 -= 1;
 	    idx2 -= 1;
 	    new_leaf->leaf[idx1] = cur->leaf[idx2];
-	    cur->count -= 1;
+	    cur->गन्ती -= 1;
       }
 
-      assert(new_leaf->count > 0);
-      assert(cur->count > 0);
+      प्रतिज्ञा(new_leaf->गन्ती > 0);
+      प्रतिज्ञा(cur->गन्ती > 0);
 
-      unsigned idx = 0;
-      while (cur->parent->child[idx] != cur) {
-	    assert(idx < cur->parent->count);
+      अचिन्हित idx = 0;
+      जबसम्म (cur->parent->child[idx] != cur) {
+	    प्रतिज्ञा(idx < cur->parent->गन्ती);
 	    idx += 1;
       }
 
       idx += 1;
 
-      for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1)
+      लागि (अचिन्हित tmp = cur->parent->गन्ती ;  tmp > idx ;  tmp -= 1)
 	    cur->parent->child[tmp] = cur->parent->child[tmp-1];
 
       cur->parent->child[idx] = new_leaf;
-      cur->parent->count += 1;
+      cur->parent->गन्ती += 1;
 
-      if (cur->parent->count == node_width)
-	    split_node_(cur->parent);
+      यदि (cur->parent->गन्ती == गाँठो_width)
+	    split_गाँठो(cur->parent);
 
-      return new_leaf;
+      फर्काऊ new_leaf;
 }
 
 
@@ -254,144 +254,144 @@ static struct tree_node_* split_leaf_(struct tree_node_*cur)
  * true.
  */
 
-symbol_value_t symbol_table_s::find_value_(struct tree_node_*cur,
-					   const char*key, symbol_value_t val,
-					   bool force_flag)
+चिह्न_मान_t चिह्न_table_s::find_मान(संरचना रूख_गाँठो*cur,
+					   अचर वर्ण*साँचो, चिह्न_मान_t val,
+					   तार्किक force_flag)
 {
-      if (cur->leaf_flag) {
+      यदि (cur->leaf_flag) {
 
-	    unsigned idx = 0;
-	    for (;;) {
+	    अचिन्हित idx = 0;
+	    लागि (;;) {
 		    /* If we run out of keys in the leaf, then add
 		       this at the end of the leaf. */
-		  if (idx == cur->count) {
-			cur->leaf[idx].key = key_strdup_(key);
+		  यदि (idx == cur->गन्ती) {
+			cur->leaf[idx].साँचो = साँचो_strdup(साँचो);
 			cur->leaf[idx].val = val;
-			cur->count += 1;
-			if (cur->count == leaf_width)
+			cur->गन्ती += 1;
+			यदि (cur->गन्ती == leaf_width)
 			      split_leaf_(cur);
 
-			return val;
+			फर्काऊ val;
 		  }
 
-		  int rc = strcmp(key, cur->leaf[idx].key);
+		  पूर्णाङ्क rc = म_भेद(साँचो, cur->leaf[idx].साँचो);
 
 		    /* If we found the key already in the table, then
 		       set the new value and break. */
-		  if (rc == 0) {
-			if (force_flag)
+		  यदि (rc == 0) {
+			यदि (force_flag)
 			      cur->leaf[idx].val = val;
-			return cur->leaf[idx].val;
+			फर्काऊ cur->leaf[idx].val;
 		  }
 
 		    /* If this key goes before the current key, then
 		       push all the following entries back and add
 		       this key here. */
-		  if (rc < 0) {
-			for (unsigned tmp = cur->count; tmp > idx; tmp -= 1)
+		  यदि (rc < 0) {
+			लागि (अचिन्हित tmp = cur->गन्ती; tmp > idx; tmp -= 1)
 			      cur->leaf[tmp] = cur->leaf[tmp-1];
 
-			cur->leaf[idx].key = key_strdup_(key);
+			cur->leaf[idx].साँचो = साँचो_strdup(साँचो);
 			cur->leaf[idx].val = val;
-			cur->count += 1;
-			if (cur->count == leaf_width)
+			cur->गन्ती += 1;
+			यदि (cur->गन्ती == leaf_width)
 			      split_leaf_(cur);
 
-			return val;
+			फर्काऊ val;
 		  }
 
 		  idx += 1;
 	    }
 
-      } else {
+      } अन्यथा {
 	      /* Do a binary search within the inner node. */
-	    unsigned min = 0;
-	    unsigned max = cur->count;
-	    unsigned idx = max/2;
-	    for (;;) {
-		  int rc = strcmp(key, node_last_key(cur->child[idx]));
-		  if (rc == 0) {
-			return find_value_(cur->child[idx],
-					   key, val, force_flag);
+	    अचिन्हित min = 0;
+	    अचिन्हित max = cur->गन्ती;
+	    अचिन्हित idx = max/2;
+	    लागि (;;) {
+		  पूर्णाङ्क rc = म_भेद(साँचो, गाँठो_last_साँचो(cur->child[idx]));
+		  यदि (rc == 0) {
+			फर्काऊ find_मान(cur->child[idx],
+					   साँचो, val, force_flag);
 		  }
 
-		  if (rc > 0) {
+		  यदि (rc > 0) {
 			min = idx + 1;
-			if (min == cur->count)
-			      return find_value_(cur->child[idx],
-						 key, val, force_flag);
-			if (min == max)
-			      return find_value_(cur->child[max],
-						 key, val, force_flag);
+			यदि (min == cur->गन्ती)
+			      फर्काऊ find_मान(cur->child[idx],
+						 साँचो, val, force_flag);
+			यदि (min == max)
+			      फर्काऊ find_मान(cur->child[max],
+						 साँचो, val, force_flag);
 
 			idx = min + (max-min)/2;
 
-		  } else  {
+		  } अन्यथा  {
 			max = idx;
-			if (idx == min)
-			      return find_value_(cur->child[idx],
-						 key, val, force_flag);
+			यदि (idx == min)
+			      फर्काऊ find_मान(cur->child[idx],
+						 साँचो, val, force_flag);
 			idx = min + (max-min)/2;
 		  }
 	    }
       }
 
-      assert(0);
-      { symbol_value_t tmp;
+      प्रतिज्ञा(0);
+      { चिह्न_मान_t tmp;
         tmp.ptr = 0;
-        return tmp;
+        फर्काऊ tmp;
       }
 }
 
-void symbol_table_s::sym_set_value(const char*key, symbol_value_t val)
+शून्य चिह्न_table_s::sym_set_मान(अचर वर्ण*साँचो, चिह्न_मान_t val)
 {
-      if (root->count == 0) {
+      यदि (जरा->गन्ती == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
-	    cur->leaf_flag = true;
-	    cur->parent = root;
-	    cur->count = 1;
-	    cur->leaf[0].key = key_strdup_(key);
+	    संरचना रूख_गाँठो*cur = नूतन संरचना रूख_गाँठो;
+	    cur->leaf_flag = सत्य;
+	    cur->parent = जरा;
+	    cur->गन्ती = 1;
+	    cur->leaf[0].साँचो = साँचो_strdup(साँचो);
 	    cur->leaf[0].val = val;
 
-	    root->count = 1;
-	    root->child[0] = cur;
-      } else {
-	    find_value_(root, key, val, true);
+	    जरा->गन्ती = 1;
+	    जरा->child[0] = cur;
+      } अन्यथा {
+	    find_मान(जरा, साँचो, val, सत्य);
       }
 }
 
-symbol_value_t symbol_table_s::sym_get_value(const char*key)
+चिह्न_मान_t चिह्न_table_s::sym_get_मान(अचर वर्ण*साँचो)
 {
-      symbol_value_t def;
+      चिह्न_मान_t def;
       def.ptr = 0;
 
-      if (root->count == 0) {
+      यदि (जरा->गन्ती == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
-	    cur->leaf_flag = true;
-	    cur->parent = root;
-	    cur->count = 1;
-	    cur->leaf[0].key = key_strdup_(key);
+	    संरचना रूख_गाँठो*cur = नूतन संरचना रूख_गाँठो;
+	    cur->leaf_flag = सत्य;
+	    cur->parent = जरा;
+	    cur->गन्ती = 1;
+	    cur->leaf[0].साँचो = साँचो_strdup(साँचो);
 	    cur->leaf[0].val = def;
 
-	    root->count = 1;
-	    root->child[0] = cur;
-	    return cur->leaf[0].val;
-      } else {
-	    return find_value_(root, key, def, false);
+	    जरा->गन्ती = 1;
+	    जरा->child[0] = cur;
+	    फर्काऊ cur->leaf[0].val;
+      } अन्यथा {
+	    फर्काऊ find_मान(जरा, साँचो, def, असत्य);
       }
 }
 
-symbol_table_s::~symbol_table_s()
+चिह्न_table_s::~चिह्न_table_s()
 {
-      delete_symbol_node(root);
-      while (str_chunk) {
-	    key_strings*tmp = str_chunk;
+      delete_चिह्न_गाँठो(जरा);
+      जबसम्म (str_chunk) {
+	    साँचो_strings*tmp = str_chunk;
 	    str_chunk = tmp->next;
 	    delete tmp;
       }

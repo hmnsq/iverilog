@@ -43,41 +43,41 @@
  * try to look inside. The actual implementation is given in the
  * symbols.cc source file.
  */
-typedef class symbol_table_s *symbol_table_t;
+प्रकारनिर्देश class चिह्न_table_s *चिह्न_table_t;
 
-typedef struct symbol_value_s {
-      union {
+प्रकारनिर्देश संरचना चिह्न_मान_s {
+      सङ्घ {
 	    vvp_net_t*net;
-	    void*ptr;
+	    शून्य*ptr;
       };
-} symbol_value_t;
+} चिह्न_मान_t;
 
 
-class symbol_table_s {
-    public:
-      explicit symbol_table_s();
-      virtual ~symbol_table_s();
-      symbol_table_s(const symbol_table_s&) = delete;
-      symbol_table_s& operator=(const symbol_table_s&) = delete;
+class चिह्न_table_s {
+    सार्वजनिक:
+      explicit चिह्न_table_s();
+      आभास ~चिह्न_table_s();
+      चिह्न_table_s(अचर चिह्न_table_s&) = delete;
+      चिह्न_table_s& चालक=(अचर चिह्न_table_s&) = delete;
 
 	// This method locates the value in the symbol table and sets its
 	// value. If the key doesn't yet exist, create it.
-      void sym_set_value(const char*key, symbol_value_t val);
+      शून्य sym_set_मान(अचर वर्ण*साँचो, चिह्न_मान_t val);
 
 	// This method locates the value in the symbol table and returns
 	// it. If the value does not exist, create it, initialize it with
 	// zero and return the zero value.
-      symbol_value_t sym_get_value(const char*key);
+      चिह्न_मान_t sym_get_मान(अचर वर्ण*साँचो);
 
-    private:
-      struct tree_node_*root;
-      struct key_strings*str_chunk;
-      unsigned str_used;
+    गुप्त:
+      संरचना रूख_गाँठो*जरा;
+      संरचना साँचो_strings*str_chunk;
+      अचिन्हित str_used;
 
-      symbol_value_t find_value_(struct tree_node_*cur,
-				 const char*key, symbol_value_t val,
+      चिह्न_मान_t find_मान(संरचना रूख_गाँठो*cur,
+				 अचर वर्ण*साँचो, चिह्न_मान_t val,
 				 bool force_flag);
-      char*key_strdup_(const char*str);
+      वर्ण*साँचो_strdup(अचर वर्ण*str);
 };
 
 /*
@@ -87,31 +87,31 @@ class symbol_table_s {
  * the delete_symbol_table method will delete the table, including all
  * the space for the keys.
  */
-inline symbol_table_t new_symbol_table(void) { return new symbol_table_s; }
-inline void delete_symbol_table(symbol_table_t tbl) { delete tbl; }
+अन्तःस्थ चिह्न_table_t new_चिह्न_table(शून्य) { फर्काऊ new चिह्न_table_s; }
+अन्तःस्थ शून्य delete_चिह्न_table(चिह्न_table_t tbl) { delete tbl; }
 
 // These are obsolete, and here only to support older code.
-inline void sym_set_value(symbol_table_t tbl, const char*key, symbol_value_t val)
-{ tbl->sym_set_value(key, val); }
+अन्तःस्थ शून्य sym_set_मान(चिह्न_table_t tbl, अचर वर्ण*साँचो, चिह्न_मान_t val)
+{ tbl->sym_set_मान(साँचो, val); }
 
-inline symbol_value_t sym_get_value(symbol_table_t tbl, const char*key)
-{ return tbl->sym_get_value(key); }
+अन्तःस्थ चिह्न_मान_t sym_get_मान(चिह्न_table_t tbl, अचर वर्ण*साँचो)
+{ फर्काऊ tbl->sym_get_मान(साँचो); }
 
 /*
  * This template is a type-safe interface to the symbol table.
  */
-template <class T> class symbol_map_s : private symbol_table_s {
+ढाँचा <class T> class चिह्न_map_s : गुप्त चिह्न_table_s {
 
-    public:
-      void sym_set_value(const char*key, T*val)
-      { symbol_value_t tmp;
+    सार्वजनिक:
+      शून्य sym_set_मान(अचर वर्ण*साँचो, T*val)
+      { चिह्न_मान_t tmp;
 	tmp.ptr = val;
-	symbol_table_s::sym_set_value(key, tmp);
+	चिह्न_table_s::sym_set_मान(साँचो, tmp);
       }
 
-      T* sym_get_value(const char*key)
-      { symbol_value_t val = symbol_table_s::sym_get_value(key);
-	return reinterpret_cast<T*>(val.ptr);
+      T* sym_get_मान(अचर वर्ण*साँचो)
+      { चिह्न_मान_t val = चिह्न_table_s::sym_get_मान(साँचो);
+	फर्काऊ reinterpret_cast<T*>(val.ptr);
       }
 };
 

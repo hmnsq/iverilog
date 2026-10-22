@@ -23,77 +23,77 @@
 
 # include  "config.h"
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT> class slab_t {
+ढाँचा <माप_प्रकार SLAB_SIZE, माप_प्रकार CHUNK_गन्ती> class slab_t {
 
-      union item_cell_u {
+      सङ्घ item_cell_u {
 	    item_cell_u*next;
-	    char space[SLAB_SIZE];
+	    वर्ण space[SLAB_SIZE];
       };
 
-    public:
+    सार्वजनिक:
       slab_t();
 
-      void* alloc_slab();
-      void  free_slab(void*);
+      शून्य* alloc_slab();
+      शून्य  free_slab(शून्य*);
 #ifdef CHECK_WITH_VALGRIND
 	// If we have allocated memory then we need to delete it to make
 	// valgrind happy.
-      void delete_pool(void);
+      शून्य delete_pool(शून्य);
 #endif
 
-      unsigned long pool;
+      अचिन्हित दीर्घ pool;
 
-    private:
+    गुप्त:
       item_cell_u*heap_;
-      item_cell_u initial_chunk_[CHUNK_COUNT];
+      item_cell_u initial_chunk_[CHUNK_गन्ती];
 #ifdef CHECK_WITH_VALGRIND
 	// Each slab needs a pointer to the allocated space.
       item_cell_u**slab_pool;
-      unsigned slab_pool_count;
+      अचिन्हित slab_pool_गन्ती;
 #endif
 };
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-slab_t<SLAB_SIZE,CHUNK_COUNT>::slab_t()
+ढाँचा <माप_प्रकार SLAB_SIZE, माप_प्रकार CHUNK_गन्ती>
+slab_t<SLAB_SIZE,CHUNK_गन्ती>::slab_t()
 {
-      pool = CHUNK_COUNT;
+      pool = CHUNK_गन्ती;
       heap_ = initial_chunk_;
-      for (unsigned idx = 0 ; idx < CHUNK_COUNT-1 ; idx += 1)
+      लागि (अचिन्हित idx = 0 ; idx < CHUNK_गन्ती-1 ; idx += 1)
 	    initial_chunk_[idx].next = initial_chunk_+idx+1;
 
-      initial_chunk_[CHUNK_COUNT-1].next = 0;
+      initial_chunk_[CHUNK_गन्ती-1].next = 0;
 #ifdef CHECK_WITH_VALGRIND
 	// Initially we have no allocated space.
-      slab_pool = NULL;
-      slab_pool_count = 0;
+      slab_pool = रिक्त;
+      slab_pool_गन्ती = 0;
 #endif
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void* slab_t<SLAB_SIZE,CHUNK_COUNT>::alloc_slab()
+ढाँचा <माप_प्रकार SLAB_SIZE, माप_प्रकार CHUNK_गन्ती>
+अन्तःस्थ शून्य* slab_t<SLAB_SIZE,CHUNK_गन्ती>::alloc_slab()
 {
-      if (heap_ == 0) {
-	    item_cell_u*chunk = new item_cell_u[CHUNK_COUNT];
+      यदि (heap_ == 0) {
+	    item_cell_u*chunk = new item_cell_u[CHUNK_गन्ती];
 #ifdef CHECK_WITH_VALGRIND
-	    slab_pool_count += 1;
-	    slab_pool = static_cast<item_cell_u **>(realloc(slab_pool,
-	                slab_pool_count*sizeof(item_cell_u **)));
-	    slab_pool[slab_pool_count-1] = chunk;
+	    slab_pool_गन्ती += 1;
+	    slab_pool = static_cast<item_cell_u **>(पुनः_स्मृति(slab_pool,
+	                slab_pool_गन्ती*परिमाण(item_cell_u **)));
+	    slab_pool[slab_pool_गन्ती-1] = chunk;
 #endif
-	    for (unsigned idx = 0 ; idx < CHUNK_COUNT ; idx += 1) {
+	    लागि (अचिन्हित idx = 0 ; idx < CHUNK_गन्ती ; idx += 1) {
 		  chunk[idx].next = heap_;
 		  heap_ = chunk+idx;
 	    }
-	    pool += CHUNK_COUNT;
+	    pool += CHUNK_गन्ती;
       }
 
       item_cell_u*cur = heap_;
       heap_ = heap_->next;
-      return cur;
+      फर्काऊ cur;
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::free_slab(void*ptr)
+ढाँचा <माप_प्रकार SLAB_SIZE, माप_प्रकार CHUNK_गन्ती>
+अन्तःस्थ शून्य slab_t<SLAB_SIZE,CHUNK_गन्ती>::free_slab(शून्य*ptr)
 {
       item_cell_u*cur = reinterpret_cast<item_cell_u*> (ptr);
       cur->next = heap_;
@@ -101,15 +101,15 @@ inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::free_slab(void*ptr)
 }
 
 #ifdef CHECK_WITH_VALGRIND
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::delete_pool(void)
+ढाँचा <माप_प्रकार SLAB_SIZE, माप_प्रकार CHUNK_गन्ती>
+अन्तःस्थ शून्य slab_t<SLAB_SIZE,CHUNK_गन्ती>::delete_pool(शून्य)
 {
-      for (unsigned idx = 0; idx < slab_pool_count; idx += 1) {
+      लागि (अचिन्हित idx = 0; idx < slab_pool_गन्ती; idx += 1) {
 	    delete [] slab_pool[idx];
       }
-      free(slab_pool);
-      slab_pool = NULL;
-      slab_pool_count = 0;
+      मुक्त(slab_pool);
+      slab_pool = रिक्त;
+      slab_pool_गन्ती = 0;
 }
 #endif
 

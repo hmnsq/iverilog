@@ -26,38 +26,38 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-static int iterator_free_object(vpiHandle ref)
+स्थिर पूर्णाङ्क iterator_free_object(vpiHandle ref)
 {
-      struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
-      assert(hp);
+      संरचना __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
+      प्रतिज्ञा(hp);
 
-      if (hp->free_args_flag)
-	    free(hp->args);
+      यदि (hp->free_args_flag)
+	    मुक्त(hp->args);
 
       delete hp;
-      return 1;
+      फर्काऊ 1;
 }
 
-inline __vpiIterator::__vpiIterator()
+अन्तःस्थ __vpiIterator::__vpiIterator()
 { }
 
-int __vpiIterator::get_type_code(void) const
-{ return vpiIterator; }
+पूर्णाङ्क __vpiIterator::get_type_code(शून्य) अचर
+{ फर्काऊ vpiIterator; }
 
-__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(void)
-{ return &iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(शून्य)
+{ फर्काऊ &iterator_free_object; }
 
-vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
-			     bool free_args_flag)
+vpiHandle vpip_make_iterator(अचिन्हित nargs, vpiHandle*args,
+			     तार्किक free_args_flag)
 {
-      struct __vpiIterator*res = new __vpiIterator;
+      संरचना __vpiIterator*res = नूतन __vpiIterator;
       res->args = args;
       res->nargs = nargs;
       res->next  = 0;
 
       res->free_args_flag = free_args_flag;
 
-      return res;
+      फर्काऊ res;
 }
 
 /*
@@ -66,20 +66,20 @@ vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
  */
 vpiHandle vpi_scan(vpiHandle ref)
 {
-      if (ref == 0) {
-	    fprintf(stderr, "ERROR: NULL handle passed to vpi_scan.\n");
-	    assert(0);
-	    return 0;
+      यदि (ref == 0) {
+	    ख_लिखो(मानक_त्रुटि, "ERROR: NULL handle passed to vpi_scan.\n");
+	    प्रतिज्ञा(0);
+	    फर्काऊ 0;
       }
 
-      if (struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
-	    if (hp->next == hp->nargs) {
+      यदि (संरचना __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
+	    यदि (hp->next == hp->nargs) {
 		  vpi_free_object(ref);
-		  return 0;
+		  फर्काऊ 0;
 	    }
 
-	    return hp->args[hp->next++];
+	    फर्काऊ hp->args[hp->next++];
       }
 
-      return ref->vpi_index(0);
+      फर्काऊ ref->vpi_index(0);
 }

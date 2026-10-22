@@ -23,72 +23,72 @@
 # include  <iostream>
 # include  <cassert>
 
-vvp_fun_bufif::vvp_fun_bufif(bool en_invert, bool out_invert,
-			     unsigned str0, unsigned str1)
+vvp_fun_bufif::vvp_fun_bufif(तार्किक en_invert, तार्किक out_invert,
+			     अचिन्हित str0, अचिन्हित str1)
 : pol_(en_invert? 1 : 0), inv_(out_invert? 1 : 0)
 {
       drive0_ = str0;
       drive1_ = str1;
-      count_functors_bufif += 1;
+      गन्ती_functors_bufif += 1;
 }
 
-void vvp_fun_bufif::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+शून्य vvp_fun_bufif::recv_vec4(vvp_net_ptr_t ptr, अचर vvp_vector4_t&bit,
                               vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0:
+      विकल्प (ptr.port()) {
+	  पक्ष 0:
 	    bit_ = inv_? ~bit : bit;
-	    break;
-	  case 1:
+	    रोक;
+	  पक्ष 1:
 	    en_ = pol_? ~bit : bit;
-	    break;
-	  default:
-	    return;
+	    रोक;
+	  स्वभाव:
+	    फर्काऊ;
       }
 
       vvp_vector8_t out (bit.size());
 
-      for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
+      लागि (अचिन्हित idx = 0 ;  idx < bit.size() ;  idx += 1) {
 	    vvp_bit4_t b_en  = en_.value(idx);
 	    vvp_bit4_t b_bit = bit_.value(idx);
 
-	    switch (b_en) {
-		case BIT4_0:
+	    विकल्प (b_en) {
+		पक्ष BIT4_0:
 		  out.set_bit(idx, vvp_scalar_t(BIT4_Z,drive0_,drive1_));
-		  break;
-		case BIT4_1:
-		  if (bit4_is_xz(b_bit))
+		  रोक;
+		पक्ष BIT4_1:
+		  यदि (bit4_is_xz(b_bit))
 			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
-		  else
+		  अन्यथा
 			out.set_bit(idx, vvp_scalar_t(b_bit,drive0_,drive1_));
-		  break;
+		  रोक;
 
-		default:
-		  switch (b_bit) {
-		      case BIT4_0:
+		स्वभाव:
+		  विकल्प (b_bit) {
+		      पक्ष BIT4_0:
 			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,0));
-			break;
-		      case BIT4_1:
+			रोक;
+		      पक्ष BIT4_1:
 			out.set_bit(idx, vvp_scalar_t(BIT4_X,0,drive1_));
-			break;
-		      default:
+			रोक;
+		      स्वभाव:
 			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
-			break;
+			रोक;
 		  }
-		  break;
+		  रोक;
 	    }
       }
 
       ptr.ptr()->send_vec8(out);
 }
 
-void vvp_fun_bufif::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			         unsigned base, unsigned vwid, vvp_context_t ctx)
+शून्य vvp_fun_bufif::recv_vec4_pv(vvp_net_ptr_t ptr, अचर vvp_vector4_t&bit,
+			         अचिन्हित base, अचिन्हित vwid, vvp_context_t ctx)
 {
       recv_vec4_pv_(ptr, bit, base, vwid, ctx);
 }
 
-void vvp_fun_bufif::recv_real(vvp_net_ptr_t ptr, double real,
+शून्य vvp_fun_bufif::recv_real(vvp_net_ptr_t ptr, द्विगुण real,
                               vvp_context_t ctx)
 {
       recv_vec4(ptr, double_to_vector4_LSB(real), ctx);

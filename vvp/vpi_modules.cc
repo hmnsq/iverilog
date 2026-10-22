@@ -27,61 +27,61 @@
 # include  <sys/stat.h>
 # include  "ivl_alloc.h"
 
-static ivl_dll_t*dll_list = 0;
-static unsigned dll_list_cnt = 0;
+स्थिर ivl_dll_t*dll_list = 0;
+स्थिर अचिन्हित dll_list_cnt = 0;
 
-#if defined(__MINGW32__) || defined (__CYGWIN__)
-typedef PLI_UINT32 (*vpip_set_callback_t)(vpip_routines_s*, PLI_UINT32);
+#यदि defined(__MINGW32__) || defined (__CYGWIN__)
+प्रकारनिर्देश PLI_UINT32 (*vpip_set_callback_t)(vpip_routines_s*, PLI_UINT32);
 #endif
-typedef void (*vlog_startup_routines_t)(void);
+प्रकारनिर्देश शून्य (*vlog_startup_routines_t)(शून्य);
 
 # define VPIP_MODULE_PATH_MAX 64
 
-static const char* vpip_module_path[VPIP_MODULE_PATH_MAX] = {0};
+स्थिर अचर वर्ण* vpip_module_path[VPIP_MODULE_PATH_MAX] = {0};
 
-static unsigned vpip_module_path_cnt = 0;
+स्थिर अचिन्हित vpip_module_path_cnt = 0;
 
-static bool disable_default_paths = false;
+स्थिर तार्किक disable_default_paths = असत्य;
 
-void vpip_clear_module_paths()
+शून्य vpip_clear_module_paths()
 {
       vpip_module_path_cnt = 0;
       vpip_module_path[0] = 0;
-      disable_default_paths = true;
+      disable_default_paths = सत्य;
 }
 
-void vpip_add_module_path(const char*path)
+शून्य vpip_add_module_path(अचर वर्ण*path)
 {
-      if (vpip_module_path_cnt >= VPIP_MODULE_PATH_MAX) {
-	    fprintf(stderr, "Too many module paths specified\n");
-	    exit(1);
+      यदि (vpip_module_path_cnt >= VPIP_MODULE_PATH_MAX) {
+	    ख_लिखो(मानक_त्रुटि, "Too many module paths specified\n");
+	    निकास(1);
       }
       vpip_module_path[vpip_module_path_cnt++] = path;
 }
 
-void vpip_add_env_and_default_module_paths()
+शून्य vpip_add_env_and_default_module_paths()
 {
-      if (disable_default_paths)
-	    return;
+      यदि (disable_default_paths)
+	    फर्काऊ;
 
 #ifdef __MINGW32__
-      const char path_sep = ';';
-#else
-      const char path_sep = ':';
+      अचर वर्ण path_sep = ';';
+#अन्यथा
+      अचर वर्ण path_sep = ':';
 #endif
 
-      if (char *var = ::getenv("IVERILOG_VPI_MODULE_PATH")) {
-            char *ptr = var;
-            const char *end = var+strlen(var);
-            int len = 0;
-            while (ptr <= end) {
-                  if (*ptr == 0 || *ptr == path_sep) {
-                        if (len > 0) {
+      यदि (वर्ण *var = ::दो_पर्या("IVERILOG_VPI_MODULE_PATH")) {
+            वर्ण *ptr = var;
+            अचर वर्ण *end = var+म_माप(var);
+            पूर्णाङ्क len = 0;
+            जबसम्म (ptr <= end) {
+                  यदि (*ptr == 0 || *ptr == path_sep) {
+                        यदि (len > 0) {
                               vpip_add_module_path(strndup(var, len));
                         }
                         len = 0;
                         var = ptr+1;
-                  } else {
+                  } अन्यथा {
                         len++;
                   }
                   ptr++;
@@ -103,26 +103,26 @@ void vpip_add_env_and_default_module_paths()
 	   so we chop the file name and the last directory by
 	   turning the last two \ characters to null. Then we append
 	   the lib\ivl$(suffix) to finish. */
-      char *s;
-      char basepath[4096], tmp[4096];
-      GetModuleFileName(NULL, tmp, sizeof tmp);
+      वर्ण *s;
+      वर्ण basepath[4096], tmp[4096];
+      GetModuleFileName(रिक्त, tmp, परिमाण tmp);
 	/* Convert to a short name to remove any embedded spaces. */
-      GetShortPathName(tmp, basepath, sizeof basepath);
-      s = strrchr(basepath, '\\');
-      if (s) *s = 0;
-      else {
-	    fprintf(stderr, "%s: Missing first \\ in exe path!\n", tmp);
-	    exit(1);
+      GetShortPathName(tmp, basepath, परिमाण basepath);
+      s = म_खोजप(basepath, '\\');
+      यदि (s) *s = 0;
+      अन्यथा {
+	    ख_लिखो(मानक_त्रुटि, "%s: Missing first \\ in exe path!\n", tmp);
+	    निकास(1);
       }
-      s = strrchr(basepath, '\\');
-      if (s) *s = 0;
-      else {
-	    fprintf(stderr, "%s: Missing second \\ in exe path!\n", tmp);
-	    exit(1);
+      s = म_खोजप(basepath, '\\');
+      यदि (s) *s = 0;
+      अन्यथा {
+	    ख_लिखो(मानक_त्रुटि, "%s: Missing second \\ in exe path!\n", tmp);
+	    निकास(1);
       }
-      strcat(s, "\\lib\\ivl" IVL_SUFFIX);
+      म_जोड़ो(s, "\\lib\\ivl" IVL_SUFFIX);
       vpip_add_module_path(strdup(basepath));
-#else
+#अन्यथा
 #ifdef MODULE_DIR1
       vpip_add_module_path(MODULE_DIR1);
 #endif
@@ -132,87 +132,87 @@ void vpip_add_env_and_default_module_paths()
 #endif
 }
 
-void load_module_delete(void)
+शून्य load_module_delete(शून्य)
 {
-      for (unsigned idx = 0; idx < dll_list_cnt; idx += 1) {
+      लागि (अचिन्हित idx = 0; idx < dll_list_cnt; idx += 1) {
 	    ivl_dlclose(dll_list[idx]);
       }
-      free(dll_list);
+      मुक्त(dll_list);
       dll_list = 0;
       dll_list_cnt = 0;
 }
 
-void vpip_load_module(const char*name)
+शून्य vpip_load_module(अचर वर्ण*name)
 {
-      struct stat sb;
-      int rc;
-      bool export_flag = false;
-      char buf[4096];
+      संरचना stat sb;
+      पूर्णाङ्क rc;
+      तार्किक export_flag = असत्य;
+      वर्ण buf[4096];
 
 #ifdef __MINGW32__
-      const char sep = '\\';
-#else
-      const char sep = '/';
+      अचर वर्ण sep = '\\';
+#अन्यथा
+      अचर वर्ण sep = '/';
 #endif
 
       ivl_dll_t dll = 0;
       buf[0] = 0;                     /* terminate the string */
 #ifdef __MINGW32__
-      if (strchr(name, '\\') || strchr(name, '/')) {
-#else
-      if (strchr(name, sep)) {
+      यदि (म_अक्षर(name, '\\') || म_अक्षर(name, '/')) {
+#अन्यथा
+      यदि (म_अक्षर(name, sep)) {
 #endif
 	      /* If the name has at least one directory character in
 		 it, then assume it is a complete name, maybe including any
 		 possible .vpi suffix. */
-	    export_flag = false;
+	    export_flag = असत्य;
 	    rc = stat(name, &sb);
 
-	    if (rc != 0) {            /* did we find a file? */
+	    यदि (rc != 0) {            /* did we find a file? */
 	          /* no, try with a .vpi suffix too */
-		  export_flag = false;
-		  snprintf(buf, sizeof(buf), "%s.vpi", name);
+		  export_flag = असत्य;
+		  snprintf(buf, परिमाण(buf), "%s.vpi", name);
 		  rc = stat(buf, &sb);
 
 		    /* Try also with the .vpl suffix. */
-		  if (rc != 0) {
-			export_flag = true;
-			snprintf(buf, sizeof(buf), "%s.vpl", name);
+		  यदि (rc != 0) {
+			export_flag = सत्य;
+			snprintf(buf, परिमाण(buf), "%s.vpl", name);
 			rc = stat(buf, &sb);
 		  }
 
-		  if (rc != 0) {
-			fprintf(stderr, "%s: Unable to find module file `%s' "
+		  यदि (rc != 0) {
+			ख_लिखो(मानक_त्रुटि, "%s: Unable to find module file `%s' "
 				"or `%s.vpi'.\n", name, name, name);
-			return;
+			फर्काऊ;
 		  }
-	    } else {
-	      strcpy(buf,name);   /* yes copy the name into the buffer */
+	    } अन्यथा {
+	      म_नकल(buf,name);   /* yes copy the name into the buffer */
 	    }
 
-      } else {
+      } अन्यथा {
 	    rc = -1;
-	    for (unsigned idx = 0
+	    लागि (अचिन्हित idx = 0
 		       ; (rc != 0) && (idx < vpip_module_path_cnt)
 		       ;  idx += 1) {
-		  export_flag = false;
-		  snprintf(buf, sizeof(buf), "%s%c%s.vpi",
+		  export_flag = असत्य;
+		  snprintf(buf, परिमाण(buf), "%s%c%s.vpi",
 			   vpip_module_path[idx], sep, name);
 		  rc = stat(buf,&sb);
 
-		  if (rc != 0) {
-			export_flag = true;
-			snprintf(buf, sizeof(buf), "%s%c%s.vpl",
+		  यदि (rc != 0) {
+			export_flag = सत्य;
+			snprintf(buf, परिमाण(buf), "%s%c%s.vpl",
 				 vpip_module_path[idx], sep, name);
 			rc = stat(buf,&sb);
 		  }
 	    }
 
-	    if (rc != 0) {
-		  fprintf(stderr, "%s: Unable to find a "
+	    यदि (rc != 0) {
+		  ख_लिखो(मानक_त्रुटि, "%s: Unable to find a "
 			  "`%s.vpi' module on the search path.\n",
 			  name, name);
-		  return;
+		  फर्काऊ;
 	    }
 
       }
@@ -221,42 +221,42 @@ void vpip_load_module(const char*name)
        * try to open it as a shared object.
        */
       dll = ivl_dlopen(buf, export_flag);
-      if(dll==0) {
+      यदि(dll==0) {
 	/* hmm, this failed, let the user know what has really gone wrong */
-	fprintf(stderr,"%s:`%s' failed to open using dlopen() because:\n"
+	ख_लिखो(मानक_त्रुटि,"%s:`%s' failed to open using dlopen() because:\n"
 		"    %s.\n",name,buf,dlerror());
 
-	return;
+	फर्काऊ;
       }
 
-#if defined(__MINGW32__) || defined (__CYGWIN__)
-      void*function = ivl_dlsym(dll, "vpip_set_callback");
-      if (function) {
+#यदि defined(__MINGW32__) || defined (__CYGWIN__)
+      शून्य*function = ivl_dlsym(dll, "vpip_set_callback");
+      यदि (function) {
             vpip_set_callback_t set_callback = reinterpret_cast<vpip_set_callback_t>(function);
-            if (!set_callback(&vpi_routines, vpip_routines_version)) {
-	          fprintf(stderr, "Failed to link VPI module %s. Try rebuilding it with iverilog-vpi.\n", name);
+            यदि (!set_callback(&vpi_routines, vpip_routines_version)) {
+	          ख_लिखो(मानक_त्रुटि, "Failed to link VPI module %s. Try rebuilding it with iverilog-vpi.\n", name);
 	          ivl_dlclose(dll);
-	          return;
+	          फर्काऊ;
             }
       }
 #endif
 
-      void*table = ivl_dlsym(dll, LU "vlog_startup_routines" TU);
-      if (table == 0) {
-	    fprintf(stderr, "%s: no vlog_startup_routines\n", name);
+      शून्य*table = ivl_dlsym(dll, LU "vlog_startup_routines" TU);
+      यदि (table == 0) {
+	    ख_लिखो(मानक_त्रुटि, "%s: no vlog_startup_routines\n", name);
 	    ivl_dlclose(dll);
-	    return;
+	    फर्काऊ;
       }
 
 	/* Add the dll to the list so it can be closed when we are done. */
       dll_list_cnt += 1;
       dll_list = static_cast<ivl_dll_t*>
-                 (realloc(dll_list, dll_list_cnt*sizeof(ivl_dll_t)));
+                 (पुनः_स्मृति(dll_list, dll_list_cnt*परिमाण(ivl_dll_t)));
       dll_list[dll_list_cnt-1] = dll;
 
       vpi_mode_flag = VPI_MODE_REGISTER;
       vlog_startup_routines_t*routines = (vlog_startup_routines_t*)table;
-      for (unsigned tmp = 0 ;  routines[tmp] ;  tmp += 1)
+      लागि (अचिन्हित tmp = 0 ;  routines[tmp] ;  tmp += 1)
 	    (routines[tmp])();
       vpi_mode_flag = VPI_MODE_NONE;
 }

@@ -30,7 +30,7 @@
 
 
 sfunc_core::sfunc_core(vvp_net_t*net, vpiHandle sys,
-		       unsigned argc, vpiHandle*argv)
+		       अचिन्हित argc, vpiHandle*argv)
 : vvp_wide_fun_core(net, argc)
 {
       sys_  = sys;
@@ -42,7 +42,7 @@ sfunc_core::~sfunc_core()
 {
       delete sys_;
 #ifdef CHECK_WITH_VALGRIND
-      for (unsigned i = 0; i < argc_; i += 1) {
+      लागि (अचिन्हित i = 0; i < argc_; i += 1) {
 	    constant_delete(argv_[i]);
       }
 #endif
@@ -53,137 +53,137 @@ sfunc_core::~sfunc_core()
  * This method is only called when a trigger event occurs. Just arrange for
  * the function to be called.
  */
-void sfunc_core::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&/*bit*/,
+शून्य sfunc_core::recv_vec4(vvp_net_ptr_t, अचर vvp_vector4_t&/*bit*/,
                            vvp_context_t)
 {
-      schedule_functor(this);
+      schedule_functor(एतत्);
 }
 
-void sfunc_core::recv_vec4_from_inputs(unsigned port)
+शून्य sfunc_core::recv_vec4_from_inputs(अचिन्हित port)
 {
       vpiHandle vpi = argv_[port];
-      struct __vpiBinaryConst*obj = dynamic_cast<__vpiBinaryConst*>(vpi);
-      assert(obj);
+      संरचना __vpiBinaryConst*obj = dynamic_cast<__vpiBinaryConst*>(vpi);
+      प्रतिज्ञा(obj);
 
       obj->bits = value(port);
 
         /* Schedule the actual call after this finishes. */
-      schedule_functor(this);
+      schedule_functor(एतत्);
 }
 
-void sfunc_core::recv_real_from_inputs(unsigned port)
+शून्य sfunc_core::recv_real_from_inputs(अचिन्हित port)
 {
       vpiHandle vpi = argv_[port];
       __vpiRealConst*obj = dynamic_cast<__vpiRealConst*>(vpi);
-      assert(obj);
+      प्रतिज्ञा(obj);
 
-      obj->value = value_r(port);
+      obj->value = मान_r(port);
 
         /* Schedule the actual call after this finishes. */
-      schedule_functor(this);
+      schedule_functor(एतत्);
 }
 
-void sfunc_core::run_run()
+शून्य sfunc_core::run_run()
 {
       vpip_execute_vpi_call(0, sys_);
 }
 
-static int make_vpi_argv(unsigned argc, vpiHandle*vpi_argv,
-			const char*arg_string)
+स्थिर पूर्णाङ्क make_vpi_argv(अचिन्हित argc, vpiHandle*vpi_argv,
+			अचर वर्ण*arg_string)
 {
-      unsigned idx = 0;
-      const char*cp = arg_string;
-      int return_type = 0;
+      अचिन्हित idx = 0;
+      अचर वर्ण*cp = arg_string;
+      पूर्णाङ्क return_type = 0;
 
-      switch (*cp) {
-	  case 'r': // real result
+      विकल्प (*cp) {
+	  पक्ष 'r': // real result
 	    cp += 1;
 	    return_type = -vpiRealVal;
-	    break;
+	    रोक;
 
-	  case 'v': // vector4_t
+	  पक्ष 'v': // vector4_t
 	    cp += 1;
-	    return_type = strtoul(cp, 0, 10);
-	    cp += strspn(cp, "0123456789");
-	    break;
+	    return_type = म_से_अदीर्घ(cp, 0, 10);
+	    cp += म_अखोज(cp, "0123456789");
+	    रोक;
 
-	  default:
-	    fprintf(stderr, "Unsupported type %c(%d).\n", *cp, *cp);
-	    assert(0);
-	    break;
+	  स्वभाव:
+	    ख_लिखो(मानक_त्रुटि, "Unsupported type %c(%d).\n", *cp, *cp);
+	    प्रतिज्ञा(0);
+	    रोक;
       }
 
-      while (*cp) {
-	    assert(idx < argc);
+      जबसम्म (*cp) {
+	    प्रतिज्ञा(idx < argc);
 
-	    switch (*cp) {
-		case 'r': // real
+	    विकल्प (*cp) {
+		पक्ष 'r': // real
 		  cp += 1;
 		  vpi_argv[idx] = vpip_make_real_const(0.0);
-		  break;
+		  रोक;
 
-		case 'v': { // vector4_t (v<n>)
+		पक्ष 'v': { // vector4_t (v<n>)
 		      cp += 1;
-		      unsigned wid = strtoul(cp, 0, 10);
-		      cp += strspn(cp, "0123456789");
-		      vpi_argv[idx] = vpip_make_binary_const(wid, "x");
-		      break;
+		      अचिन्हित wid = म_से_अदीर्घ(cp, 0, 10);
+		      cp += म_अखोज(cp, "0123456789");
+		      vpi_argv[idx] = vpip_make_द्विआधारी_const(wid, "x");
+		      रोक;
 		}
 
-		default:
-		  fprintf(stderr, "Unsupported type %c(%d).\n", *cp, *cp);
-		  assert(0);
+		स्वभाव:
+		  ख_लिखो(मानक_त्रुटि, "Unsupported type %c(%d).\n", *cp, *cp);
+		  प्रतिज्ञा(0);
 	    }
 	    idx += 1;
       }
 
-      assert(idx == argc);
-      return return_type;
+      प्रतिज्ञा(idx == argc);
+      फर्काऊ return_type;
 }
 
 
-void compile_sfunc(char*label, char*name,  char*format_string,
-		   long file_idx, long lineno,
-		   unsigned argc, struct symb_s*argv,
-                   char*trigger_label)
+शून्य compile_sfunc(वर्ण*label, वर्ण*name,  वर्ण*format_string,
+		   दीर्घ file_idx, दीर्घ lineno,
+		   अचिन्हित argc, संरचना symb_s*argv,
+                   वर्ण*trigger_label)
 {
-      unsigned vec4_stack = 0;
-      unsigned real_stack = 0;
-      unsigned string_stack = 0;
-      vpiHandle*vpi_argv = new vpiHandle[argc];
-      int val_code = make_vpi_argv(argc, vpi_argv, format_string);
-      unsigned val_width = 0;
+      अचिन्हित vec4_थाक = 0;
+      अचिन्हित real_थाक = 0;
+      अचिन्हित string_थाक = 0;
+      vpiHandle*vpi_argv = नूतन vpiHandle[argc];
+      पूर्णाङ्क val_code = make_vpi_argv(argc, vpi_argv, format_string);
+      अचिन्हित val_width = 0;
       delete[] format_string;
 
 	// The make_vpi_argv returns for the function return value a
 	// >0 value for the vector width if this is a vector. Convert
 	// it to the form that the vpip_build_vpi_call uses.
-      if (val_code > 0) {
+      यदि (val_code > 0) {
 	    val_width = val_code;
 	    val_code = -vpiVectorVal;
       }
 
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_net_t*ptr = नूतन vvp_net_t;
 
       vpiHandle sys = vpip_build_vpi_call(name, val_code, val_width, ptr,
-                                          true, false, argc, vpi_argv,
-					  vec4_stack, real_stack, string_stack,
+                                          सत्य, असत्य, argc, vpi_argv,
+					  vec4_थाक, real_थाक, string_थाक,
                                           file_idx, lineno);
-      assert(sys);
+      प्रतिज्ञा(sys);
 
 	/* Create and connect the functor to the label. */
-      sfunc_core*score = new sfunc_core(ptr, sys, argc, vpi_argv);
+      sfunc_core*score = नूतन sfunc_core(ptr, sys, argc, vpi_argv);
       ptr->fun = score;
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_चिह्न(label, ptr);
+      मुक्त(label);
 
 	/* Link the inputs to the functor. */
       wide_inputs_connect(score, argc, argv);
-      free(argv);
+      मुक्त(argv);
 
         /* If this function has a trigger event, connect the functor to
            that event. */
-      if (trigger_label)
-            input_connect(ptr, 0, trigger_label);
+      यदि (trigger_label)
+            आगत_connect(ptr, 0, trigger_label);
       delete[] name;
 }

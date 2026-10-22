@@ -31,263 +31,263 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+using नामाकाश std;
 
-static vector<vpiHandle> vpip_root_table;
+स्थिर vector<vpiHandle> vpip_जरा_table;
 
-static vpiHandle make_subset_iterator_(int type_code, const vector<vpiHandle>&table);
+स्थिर vpiHandle make_subset_iterator_(पूर्णाङ्क type_code, अचर vector<vpiHandle>&table);
 
-vpiHandle vpip_make_root_iterator(int type_code)
+vpiHandle vpip_make_जरा_iterator(पूर्णाङ्क type_code)
 {
-      return make_subset_iterator_(type_code, vpip_root_table);
+      फर्काऊ make_subset_iterator_(type_code, vpip_जरा_table);
 }
 
-void vpip_make_root_iterator(__vpiHandle**&table, unsigned&ntable)
+शून्य vpip_make_जरा_iterator(__vpiHandle**&table, अचिन्हित&ntable)
 {
-      table = &vpip_root_table[0];
-      ntable = vpip_root_table.size();
+      table = &vpip_जरा_table[0];
+      ntable = vpip_जरा_table.size();
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void port_delete(__vpiHandle*handle);
-void port_bit_delete(__vpiHandle*handle);
+शून्य port_delete(__vpiHandle*handle);
+शून्य port_bit_delete(__vpiHandle*handle);
 
 /* Class definitions need to be cleaned up at the end. */
-static class_type **class_list = 0;
-static unsigned class_list_count = 0;
+स्थिर class_type **class_list = 0;
+स्थिर अचिन्हित class_list_गन्ती = 0;
 
-static void delete_sub_scopes(__vpiScope *scope)
+स्थिर शून्य delete_sub_scopes(__vpiScope *scope)
 {
-      for (unsigned idx = 0; idx < scope->intern.size(); idx += 1) {
+      लागि (अचिन्हित idx = 0; idx < scope->intern.size(); idx += 1) {
 	    vpiHandle item = (scope->intern)[idx];
 	    __vpiScope*lscope = static_cast<__vpiScope*>(item);
-	    switch(item->get_type_code()) {
-		case vpiFunction:
-		case vpiTask:
+	    विकल्प(item->get_type_code()) {
+		पक्ष vpiFunction:
+		पक्ष vpiTask:
 		  contexts_delete(lscope);
 		  // fallthrough
-		case vpiModule:
-		case vpiGenScope:
-		case vpiNamedBegin:
-		case vpiNamedFork:
-		case vpiClassTypespec:
+		पक्ष vpiModule:
+		पक्ष vpiGenScope:
+		पक्ष vpiNamedBegin:
+		पक्ष vpiNamedFork:
+		पक्ष vpiClassTypespec:
 		  delete_sub_scopes(lscope);
 		  vthreads_delete(lscope);
 		  delete item;
-		  break;
-		case vpiMemory:
-		case vpiNetArray:
+		  रोक;
+		पक्ष vpiMemory:
+		पक्ष vpiNetArray:
 		  memory_delete(item);
-		  break;
-		case vpiModPath:
+		  रोक;
+		पक्ष vpiModPath:
 		    /* The destination ModPath is cleaned up later. */
 		  delete item;
-		  break;
-		case vpiInterModPath:
+		  रोक;
+		पक्ष vpiInterModPath:
 		  delete item;
-		  break;
-		case vpiNamedEvent:
+		  रोक;
+		पक्ष vpiNamedEvent:
 		  named_event_delete(item);
-		  break;
-		case vpiNet:
-		case vpiReg:
-		case vpiIntegerVar:
-		case vpiLongIntVar:
-		case vpiShortIntVar:
-		case vpiIntVar:
-		case vpiByteVar:
-		case vpiBitVar:
+		  रोक;
+		पक्ष vpiNet:
+		पक्ष vpiReg:
+		पक्ष vpiIntegerVar:
+		पक्ष vpiLongIntVar:
+		पक्ष vpiShortIntVar:
+		पक्ष vpiIntVar:
+		पक्ष vpiByteVar:
+		पक्ष vpiBitVar:
 		  signal_delete(item);
-		  break;
-		case vpiParameter:
+		  रोक;
+		पक्ष vpiParameter:
 		  parameter_delete(item);
-		  break;
-		case vpiRealVar:
+		  रोक;
+		पक्ष vpiRealVar:
 		  real_delete(item);
-		  break;
-		case vpiEnumTypespec:
+		  रोक;
+		पक्ष vpiEnumTypespec:
 		  enum_delete(item);
-		  break;
-		case vpiPort:
+		  रोक;
+		पक्ष vpiPort:
 		  port_delete(item);
-		  break;
-		case vpiPortBit:
+		  रोक;
+		पक्ष vpiPortBit:
 		  port_bit_delete(item);
-		  break;
-		case vpiStringVar:
+		  रोक;
+		पक्ष vpiStringVar:
 		  string_delete(item);
-		  break;
-		case vpiClassVar:
+		  रोक;
+		पक्ष vpiClassVar:
 		  class_delete(item);
-		  break;
-		case vpiArrayVar:
+		  रोक;
+		पक्ष vpiArrayVar:
 		  array_delete(item);
-		  break;
-		default:
-		  fprintf(stderr, "Need support for type: %d\n",
+		  रोक;
+		स्वभाव:
+		  ख_लिखो(मानक_त्रुटि, "Need support for type: %d\n",
 		          item->get_type_code());
-		  assert(0);
-		  break;
+		  प्रतिज्ञा(0);
+		  रोक;
 	    }
       }
       scope->intern.clear();
 
 	/* Save any class definitions to clean up later. */
       map<std::string, class_type*>::iterator citer;
-      for (citer = scope->classes.begin();
+      लागि (citer = scope->classes.begin();
            citer != scope->classes.end(); ++ citer ) {
-	    class_list_count += 1;
+	    class_list_गन्ती += 1;
 	    class_list = static_cast<class_type **>
-	                 (realloc(class_list,
-	                  class_list_count*sizeof(class_type **)));
-	    class_list[class_list_count-1] = citer->second;
+	                 (पुनः_स्मृति(class_list,
+	                  class_list_गन्ती*परिमाण(class_type **)));
+	    class_list[class_list_गन्ती-1] = citer->second;
       }
 }
 
-void root_table_delete(void)
+शून्य जरा_table_delete(शून्य)
 {
-      for (unsigned idx = 0; idx < vpip_root_table.size(); idx += 1) {
+      लागि (अचिन्हित idx = 0; idx < vpip_जरा_table.size(); idx += 1) {
 	    __vpiScope *scope = static_cast<__vpiScope *>
-	          (vpip_root_table[idx]);
+	          (vpip_जरा_table[idx]);
 	    vthreads_delete(scope);
 	    delete_sub_scopes(scope);
 	    delete scope;
       }
-      vpip_root_table.clear();
+      vpip_जरा_table.clear();
 
 	/* Clean up all the class definitions. */
-      for (unsigned idx = 0; idx < class_list_count; idx += 1) {
+      लागि (अचिन्हित idx = 0; idx < class_list_गन्ती; idx += 1) {
             class_def_delete(class_list[idx]);
       }
-      free(class_list);
+      मुक्त(class_list);
       class_list = 0;
-      class_list_count = 0;
+      class_list_गन्ती = 0;
 }
 #endif
 
-static void construct_scope_fullname(__vpiScope*ref, char*buf)
+स्थिर शून्य construct_scope_fullname(__vpiScope*ref, वर्ण*buf)
 {
-      if (ref->scope) {
+      यदि (ref->scope) {
 	    construct_scope_fullname(ref->scope, buf);
 	      // Add a "." separator, unless this is for a package
-	    if (ref->scope->get_type_code() != vpiPackage) {
-		  strcat(buf, ".");
+	    यदि (ref->scope->get_type_code() != vpiPackage) {
+		  म_जोड़ो(buf, ".");
 	    }
       }
 
-      strcat(buf, ref->scope_name());
+      म_जोड़ो(buf, ref->scope_name());
 	// For a package, add a "::" to the end
-      if (ref->get_type_code() == vpiPackage) strcat(buf, "::");
+      यदि (ref->get_type_code() == vpiPackage) म_जोड़ो(buf, "::");
 }
 
-static const char* scope_get_type(int code)
+स्थिर अचर वर्ण* scope_get_type(पूर्णाङ्क code)
 {
-      switch (code) {
-          case vpiModule:
-            return "vpiModule";
-          case vpiGenScope:
-            return "vpiGenScope";
-          case vpiFunction:
-            return "vpiFunction";
-          case vpiTask:
-            return "vpiTask";
-          case vpiNamedBegin:
-            return "vpiNamedBegin";
-          case vpiNamedFork:
-            return "vpiNamedFork";
-          default:
-            fprintf(stderr, "VPI error: invalid scope type code %d.\n", code);
-            return NULL;
+      विकल्प (code) {
+          पक्ष vpiModule:
+            फर्काऊ "vpiModule";
+          पक्ष vpiGenScope:
+            फर्काऊ "vpiGenScope";
+          पक्ष vpiFunction:
+            फर्काऊ "vpiFunction";
+          पक्ष vpiTask:
+            फर्काऊ "vpiTask";
+          पक्ष vpiNamedBegin:
+            फर्काऊ "vpiNamedBegin";
+          पक्ष vpiNamedFork:
+            फर्काऊ "vpiNamedFork";
+          स्वभाव:
+            ख_लिखो(मानक_त्रुटि, "VPI error: invalid scope type code %d.\n", code);
+            फर्काऊ रिक्त;
       }
 }
 
-static char* scope_get_str(int code, vpiHandle obj)
+स्थिर वर्ण* scope_get_str(पूर्णाङ्क code, vpiHandle obj)
 {
       __vpiScope*ref = dynamic_cast<__vpiScope*>(obj);
-      assert(ref);
+      प्रतिज्ञा(ref);
 
-      char buf[4096];  // XXX is a fixed buffer size really reliable?
-      const char *p=0;
-      switch (code) {
-	  case vpiDefFile:
+      वर्ण buf[4096];  // XXX is a fixed buffer size really reliable?
+      अचर वर्ण *p=0;
+      विकल्प (code) {
+	  पक्ष vpiDefFile:
 	    p = file_names[ref->def_file_idx];
-	    break;
+	    रोक;
 
-	  case vpiFile:
+	  पक्ष vpiFile:
 	    p = file_names[ref->file_idx];
-	    break;
+	    रोक;
 
-	  case vpiFullName:
+	  पक्ष vpiFullName:
 	    buf[0] = 0;
 	    construct_scope_fullname(ref, buf);
 	    p = buf;
-	    break;
+	    रोक;
 
-	  case vpiName:
+	  पक्ष vpiName:
 	    p = ref->scope_name();
-	    break;
+	    रोक;
 
-	  case vpiDefName:
+	  पक्ष vpiDefName:
 	    p = ref->scope_def_name();
-	    break;
+	    रोक;
 
-	  case vpiType:
+	  पक्ष vpiType:
 	    p = scope_get_type(code);
-	    break;
+	    रोक;
 
-	  default:
-	    fprintf(stderr, "VPI error: invalid scope string code %d.\n", code);
-	    return NULL;
+	  स्वभाव:
+	    ख_लिखो(मानक_त्रुटि, "VPI error: invalid scope string code %d.\n", code);
+	    फर्काऊ रिक्त;
       }
-      return simple_set_rbuf_str(p);
+      फर्काऊ simple_set_rbuf_str(p);
 }
 
-static vpiHandle scope_get_handle(int code, vpiHandle obj)
+स्थिर vpiHandle scope_get_handle(पूर्णाङ्क code, vpiHandle obj)
 {
       __vpiScope*rfp = dynamic_cast<__vpiScope*>(obj);
-      assert(rfp);
+      प्रतिज्ञा(rfp);
 
-      switch (code) {
+      विकल्प (code) {
 
-	  case vpiScope:
-	    return rfp->scope;
+	  पक्ष vpiScope:
+	    फर्काऊ rfp->scope;
 
-	  case vpiModule:
-	    return rfp->scope;
+	  पक्ष vpiModule:
+	    फर्काऊ rfp->scope;
       }
 
-      return 0;
+      फर्काऊ 0;
 }
 
 /* compares vpiType's considering object classes */
-static int compare_types(int code, int type)
+स्थिर पूर्णाङ्क compare_types(पूर्णाङ्क code, पूर्णाङ्क type)
 {
 	/* NOTE: The Verilog VPI does not for any object support
 	   vpiScope as an iterator parameter, so it is used here as a
 	   means to scan everything in the *current* scope. */
-      if (code == vpiScope)
-	    return 1;
+      यदि (code == vpiScope)
+	    फर्काऊ 1;
 
-      if (code == type)
-	    return 1;
+      यदि (code == type)
+	    फर्काऊ 1;
 
-      if ( code == vpiInternalScope &&
+      यदि ( code == vpiInternalScope &&
 	     (type == vpiModule ||
 	     type == vpiGenScope ||
 	     type == vpiFunction ||
 	     type == vpiTask ||
 	     type == vpiNamedBegin ||
 	     type == vpiNamedFork) )
-	    return 1;
+	    फर्काऊ 1;
 
-      if ( code == vpiInstance &&
+      यदि ( code == vpiInstance &&
 	    (type == vpiModule ||
 	     type == vpiProgram ||
 	     type == vpiInterface ||
 	     type == vpiPackage) )
-	    return 1;
+	    फर्काऊ 1;
 
-      if ( code == vpiVariables &&
+      यदि ( code == vpiVariables &&
 	     (type == vpiIntegerVar  ||
 	      type == vpiBitVar      ||
 	      type == vpiByteVar     ||
@@ -296,31 +296,31 @@ static int compare_types(int code, int type)
 	      type == vpiLongIntVar  ||
 	      type == vpiTimeVar     ||
 	      type == vpiRealVar))
-	    return 1;
+	    फर्काऊ 1;
 
-      return 0;
+      फर्काऊ 0;
 }
 
-static vpiHandle make_subset_iterator_(int type_code, const vector<vpiHandle>&table)
+स्थिर vpiHandle make_subset_iterator_(पूर्णाङ्क type_code, अचर vector<vpiHandle>&table)
 {
-      unsigned mcnt = 0, ncnt = 0;
+      अचिन्हित mcnt = 0, ncnt = 0;
       vpiHandle*args;
 
-      for (unsigned idx = 0; idx < table.size(); idx += 1)
-	    if (compare_types(type_code, table[idx]->get_type_code()))
+      लागि (अचिन्हित idx = 0; idx < table.size(); idx += 1)
+	    यदि (compare_types(type_code, table[idx]->get_type_code()))
 		  mcnt += 1;
 
-      if (mcnt == 0)
-	    return 0;
+      यदि (mcnt == 0)
+	    फर्काऊ 0;
 
-      args = static_cast<vpiHandle*>(calloc(mcnt, sizeof(vpiHandle)));
-      for (unsigned idx = 0; idx < table.size(); idx += 1)
-	    if (compare_types(type_code, table[idx]->get_type_code()))
+      args = static_cast<vpiHandle*>(सुस्मृति(mcnt, परिमाण(vpiHandle)));
+      लागि (अचिन्हित idx = 0; idx < table.size(); idx += 1)
+	    यदि (compare_types(type_code, table[idx]->get_type_code()))
 		  args[ncnt++] = table[idx];
 
-      assert(ncnt == mcnt);
+      प्रतिज्ञा(ncnt == mcnt);
 
-      return vpip_make_iterator(mcnt, args, true);
+      फर्काऊ vpip_make_iterator(mcnt, args, सत्य);
 }
 
 /*
@@ -329,122 +329,122 @@ static vpiHandle make_subset_iterator_(int type_code, const vector<vpiHandle>&ta
  * things that are contained in the scope object, by generating an
  * iterator for the requested set of items.
  */
-static vpiHandle module_iter(int code, vpiHandle obj)
+स्थिर vpiHandle module_iter(पूर्णाङ्क code, vpiHandle obj)
 {
       __vpiScope*ref = dynamic_cast<__vpiScope*>(obj);
-      assert(ref);
+      प्रतिज्ञा(ref);
 
-      return make_subset_iterator_(code, ref->intern);
+      फर्काऊ make_subset_iterator_(code, ref->intern);
 }
 
 
-__vpiScope::__vpiScope(const char*nam, const char*tnam, bool auto_flag)
+__vpiScope::__vpiScope(अचर वर्ण*nam, अचर वर्ण*tnam, तार्किक auto_flag)
 : is_automatic_(auto_flag)
 {
       name_ = vpip_name_string(nam);
       tname_ = vpip_name_string(tnam? tnam : "");
 }
 
-int __vpiScope::vpi_get(int code)
+पूर्णाङ्क __vpiScope::vpi_get(पूर्णाङ्क code)
 {
-      switch (code) {
-	  case vpiCellInstance:
-	    return is_cell? 1 : 0;
+      विकल्प (code) {
+	  पक्ष vpiCellInstance:
+	    फर्काऊ is_cell? 1 : 0;
 
-	  case vpiDefLineNo:
-	    return def_lineno;
+	  पक्ष vpi_Def_पङ्क्ति_No:
+	    फर्काऊ def_lineno;
 
-	  case vpiLineNo:
-	    return lineno;
+	  पक्ष vpi_पङ्क्ति_No:
+	    फर्काऊ lineno;
 
-	  case vpiTimeUnit:
-	    return time_units;
+	  पक्ष vpiTimeUnit:
+	    फर्काऊ time_units;
 
-	  case vpiTimePrecision:
-	    return time_precision;
+	  पक्ष vpiTimePrecision:
+	    फर्काऊ time_precision;
 
-	  case vpiTopModule:
-	    return 0x0 == scope;
+	  पक्ष vpi_शीर्ष_Module:
+	    फर्काऊ 0x0 == scope;
 
-          case vpiAutomatic:
-	    return is_automatic_? 1 : 0;
+          पक्ष vpiAutomatic:
+	    फर्काऊ is_automatic_? 1 : 0;
       }
 
-      return vpiUndefined;
+      फर्काऊ vpiUndefined;
 }
 
 
-char*__vpiScope::vpi_get_str(int code)
-{ return scope_get_str(code, this); }
+वर्ण*__vpiScope::vpi_get_str(पूर्णाङ्क code)
+{ फर्काऊ scope_get_str(code, एतत्); }
 
-vpiHandle __vpiScope::vpi_handle(int code)
-{ return scope_get_handle(code, this); }
+vpiHandle __vpiScope::vpi_handle(पूर्णाङ्क code)
+{ फर्काऊ scope_get_handle(code, एतत्); }
 
-vpiHandle __vpiScope::vpi_iterate(int code)
-{ return module_iter(code, this); }
+vpiHandle __vpiScope::vpi_iterate(पूर्णाङ्क code)
+{ फर्काऊ module_iter(code, एतत्); }
 
 
-class vpiScopeModule  : public __vpiScope {
-    public:
-      inline vpiScopeModule(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,false) { }
-      int get_type_code(void) const override { return vpiModule; }
+वर्ग vpiScopeModule  : सार्वजनिक __vpiScope {
+    सार्वजनिक:
+      अन्तःस्थ vpiScopeModule(अचर वर्ण*nam, अचर वर्ण*tnam)
+      : __vpiScope(nam,tnam,असत्य) { }
+      पूर्णाङ्क get_type_code(शून्य) अचर override { फर्काऊ vpiModule; }
 };
 
-struct vpiScopePackage  : public __vpiScope {
-      inline vpiScopePackage(const char*nam, const char*tnam)
+संरचना vpiScopePackage  : सार्वजनिक __vpiScope {
+      अन्तःस्थ vpiScopePackage(अचर वर्ण*nam, अचर वर्ण*tnam)
       : __vpiScope(nam,tnam) { }
-      int get_type_code(void) const override { return vpiPackage; }
+      पूर्णाङ्क get_type_code(शून्य) अचर override { फर्काऊ vpiPackage; }
 };
 
-struct vpiScopeTask  : public __vpiScope {
-      inline vpiScopeTask(const char*nam, const char*tnam)
+संरचना vpiScopeTask  : सार्वजनिक __vpiScope {
+      अन्तःस्थ vpiScopeTask(अचर वर्ण*nam, अचर वर्ण*tnam)
       : __vpiScope(nam,tnam) { }
-      int get_type_code(void) const override { return vpiTask; }
+      पूर्णाङ्क get_type_code(शून्य) अचर override { फर्काऊ vpiTask; }
 };
 
-struct vpiScopeTaskAuto  : public __vpiScope {
-      inline vpiScopeTaskAuto(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,true) {  }
-      int get_type_code(void) const override { return vpiTask; }
+संरचना vpiScopeTaskAuto  : सार्वजनिक __vpiScope {
+      अन्तःस्थ vpiScopeTaskAuto(अचर वर्ण*nam, अचर वर्ण*tnam)
+      : __vpiScope(nam,tnam,सत्य) {  }
+      पूर्णाङ्क get_type_code(शून्य) अचर override { फर्काऊ vpiTask; }
 };
 
-struct vpiScopeBegin  : public __vpiScope {
-      inline vpiScopeBegin(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,false) { }
-      int get_type_code(void) const override { return vpiNamedBegin; }
+संरचना vpiScopeBegin  : सार्वजनिक __vpiScope {
+      अन्तःस्थ vpiScopeBegin(अचर वर्ण*nam, अचर वर्ण*tnam)
+      : __vpiScope(nam,tnam,असत्य) { }
+      पूर्णाङ्क get_type_code(शून्य) अचर override { फर्काऊ vpiNamedBegin; }
 };
 
-class vpiScopeBeginAuto  : public __vpiScope {
-    public:
-      inline vpiScopeBeginAuto(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,true) {  }
-      int get_type_code(void) const override { return vpiNamedBegin; }
+वर्ग vpiScopeBeginAuto  : सार्वजनिक __vpiScope {
+    सार्वजनिक:
+      अन्तःस्थ vpiScopeBeginAuto(अचर वर्ण*nam, अचर वर्ण*tnam)
+      : __vpiScope(nam,tnam,सत्य) {  }
+      पूर्णाङ्क get_type_code(शून्य) अचर override { फर्काऊ vpiNamedBegin; }
 };
 
-struct vpiScopeGenerate  : public __vpiScope {
-      inline vpiScopeGenerate(const char*nam, const char*tnam)
+संरचना vpiScopeGenerate  : सार्वजनिक __vpiScope {
+      अन्तःस्थ vpiScopeGenerate(अचर वर्ण*nam, अचर वर्ण*tnam)
       : __vpiScope(nam,tnam) { }
-      int get_type_code(void) const override { return vpiGenScope; }
+      पूर्णाङ्क get_type_code(शून्य) अचर override { फर्काऊ vpiGenScope; }
 };
 
-struct vpiScopeFork  : public __vpiScope {
-      inline vpiScopeFork(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,false) { }
-      int get_type_code(void) const override { return vpiNamedFork; }
+संरचना vpiScopeFork  : सार्वजनिक __vpiScope {
+      अन्तःस्थ vpiScopeFork(अचर वर्ण*nam, अचर वर्ण*tnam)
+      : __vpiScope(nam,tnam,असत्य) { }
+      पूर्णाङ्क get_type_code(शून्य) अचर override { फर्काऊ vpiNamedFork; }
 };
 
-class vpiScopeForkAuto  : public __vpiScope {
-    public:
-      inline vpiScopeForkAuto(const char*nam, const char*tnam)
-      : __vpiScope(nam,tnam,true) {  }
-      int get_type_code(void) const override { return vpiNamedFork; }
+वर्ग vpiScopeForkAuto  : सार्वजनिक __vpiScope {
+    सार्वजनिक:
+      अन्तःस्थ vpiScopeForkAuto(अचर वर्ण*nam, अचर वर्ण*tnam)
+      : __vpiScope(nam,tnam,सत्य) {  }
+      पूर्णाङ्क get_type_code(शून्य) अचर override { फर्काऊ vpiNamedFork; }
 };
 
-struct vpiScopeClass  : public __vpiScope {
-      inline vpiScopeClass(const char*nam, const char*tnam)
+संरचना vpiScopeClass  : सार्वजनिक __vpiScope {
+      अन्तःस्थ vpiScopeClass(अचर वर्ण*nam, अचर वर्ण*tnam)
       : __vpiScope(nam,tnam) { }
-      int get_type_code(void) const override { return vpiClassTypespec; }
+      पूर्णाङ्क get_type_code(शून्य) अचर override { फर्काऊ vpiClassTypespec; }
 };
 
 /*
@@ -452,11 +452,11 @@ struct vpiScopeClass  : public __vpiScope {
  * compiled, items that have scope are placed in the current
  * scope. The ".scope" directives select the scope that is current.
  */
-static __vpiScope*current_scope = 0;
+स्थिर __vpiScope*current_scope = 0;
 
-void vpip_attach_to_scope(__vpiScope*scope, vpiHandle obj)
+शून्य vpip_attach_to_scope(__vpiScope*scope, vpiHandle obj)
 {
-      assert(scope);
+      प्रतिज्ञा(scope);
       scope->intern.push_back(obj);
 }
 
@@ -466,115 +466,115 @@ void vpip_attach_to_scope(__vpiScope*scope, vpiHandle obj)
  * and within the addressed parent. The label is used as a key in the
  * symbol table and the name is used to construct the actual object.
  */
-void
-compile_scope_decl(char*label, char*type, char*name, char*tname,
-                   char*parent, long file_idx, long lineno,
-                   long def_file_idx, long def_lineno, long is_cell)
+शून्य
+compile_scope_decl(वर्ण*label, वर्ण*type, वर्ण*name, वर्ण*tname,
+                   वर्ण*parent, दीर्घ file_idx, दीर्घ lineno,
+                   दीर्घ def_file_idx, दीर्घ def_lineno, दीर्घ is_cell)
 {
-      count_vpi_scopes += 1;
-      char vec_type;
-      char sign_flag;
-      unsigned wid;
+      गन्ती_vpi_scopes += 1;
+      वर्ण vec_type;
+      वर्ण sign_flag;
+      अचिन्हित wid;
 
       __vpiScope*scope;
-      if (strcmp(type,"module") == 0) {
-	    scope = new vpiScopeModule(name, tname);
-      } else if ( sscanf(type, "function.vec%c.%c%u", &vec_type, &sign_flag, &wid) == 3 ) {
-	    int type_code;
-	    if (sign_flag=='s') {
+      यदि (म_भेद(type,"module") == 0) {
+	    scope = नूतन vpiScopeModule(name, tname);
+      } अन्यथा यदि ( माला_पूछो(type, "function.vec%c.%c%u", &vec_type, &sign_flag, &wid) == 3 ) {
+	    पूर्णाङ्क type_code;
+	    यदि (sign_flag=='s') {
 		  type_code = vpiSizedSignedFunc;
-	    } else if (sign_flag=='u') {
+	    } अन्यथा यदि (sign_flag=='u') {
 		  type_code = vpiSizedFunc;
-	    } else if (sign_flag=='i') {
+	    } अन्यथा यदि (sign_flag=='i') {
 		  type_code = vpiIntFunc;
-	    } else {
-		  assert(0);
+	    } अन्यथा {
+		  प्रतिज्ञा(0);
 		  type_code = vpiSizedFunc;
 	    }
 	    vvp_bit4_t init_val = vec_type == '4' ? BIT4_X : BIT4_0;
-	    scope = new vpiScopeFunction(name, tname, false, type_code, wid, init_val);
+	    scope = नूतन vpiScopeFunction(name, tname, असत्य, type_code, wid, init_val);
 
-      } else if ( sscanf(type, "autofunction.vec%c.%c%u", &vec_type, &sign_flag, &wid) == 3 ) {
-	    int type_code;
-	    switch (sign_flag) {
-		case 's':
+      } अन्यथा यदि ( माला_पूछो(type, "autofunction.vec%c.%c%u", &vec_type, &sign_flag, &wid) == 3 ) {
+	    पूर्णाङ्क type_code;
+	    विकल्प (sign_flag) {
+		पक्ष 's':
 		  type_code = vpiSizedSignedFunc;
-		  break;
-		case 'u':
+		  रोक;
+		पक्ष 'u':
 		  type_code = vpiSizedFunc;
-		  break;
-		default:
-		  assert(0);
+		  रोक;
+		स्वभाव:
+		  प्रतिज्ञा(0);
 		  type_code = vpiSizedFunc;
-		  break;
+		  रोक;
 	    }
 	    vvp_bit4_t init_val = vec_type == '4' ? BIT4_X : BIT4_0;
-	    scope = new vpiScopeFunction(name, tname, true, type_code, wid, init_val);
+	    scope = नूतन vpiScopeFunction(name, tname, सत्य, type_code, wid, init_val);
 
-      } else if (strcmp(type,"function.obj") == 0) {
-	    scope = new vpiScopeFunction(name, tname, false, vpiSizedFunc, 0, BIT4_0);
-      } else if (strcmp(type,"autofunction.obj") == 0) {
-	    scope = new vpiScopeFunction(name, tname, true, vpiSizedFunc, 0, BIT4_0);
-      } else if (strcmp(type,"function.real") == 0) {
-	    scope = new vpiScopeFunction(name, tname, false, vpiRealFunc, 0, BIT4_0);
-      } else if (strcmp(type,"autofunction.real") == 0) {
-	    scope = new vpiScopeFunction(name, tname, true, vpiRealFunc, 0, BIT4_0);
-      } else if (strcmp(type,"function.str") == 0) {
-	    scope = new vpiScopeFunction(name, tname, false, vpiOtherFunc, 0, BIT4_0);
-      } else if (strcmp(type,"autofunction.str") == 0) {
-	    scope = new vpiScopeFunction(name, tname, true, vpiOtherFunc, 0, BIT4_0);
-      } else if (strcmp(type,"function.void") == 0) {
-	    scope = new vpiScopeFunction(name, tname, false, vpiOtherFunc, 0, BIT4_0);
-      } else if (strcmp(type,"autofunction.void") == 0) {
-	    scope = new vpiScopeFunction(name, tname, true, vpiOtherFunc, 0, BIT4_0);
-      } else if (strcmp(type,"task") == 0) {
-	    scope = new vpiScopeTask(name, tname);
-      } else if (strcmp(type,"autotask") == 0) {
-	    scope = new vpiScopeTaskAuto(name, tname);
-      } else if (strcmp(type,"fork") == 0) {
-	    scope = new vpiScopeFork(name, tname);
-      } else if (strcmp(type,"autofork") == 0) {
-	    scope = new vpiScopeForkAuto(name, tname);
-      } else if (strcmp(type,"begin") == 0) {
-	    scope = new vpiScopeBegin(name, tname);
-      } else if (strcmp(type,"autobegin") == 0) {
-	    scope = new vpiScopeBeginAuto(name, tname);
-      } else if (strcmp(type,"generate") == 0) {
-	    scope = new vpiScopeGenerate(name, tname);
-      } else if (strcmp(type,"package") == 0) {
-	    scope = new vpiScopePackage(name, tname);
-      } else if (strcmp(type,"class") == 0) {
-	    scope = new vpiScopeClass(name, tname);
-      } else {
-	    scope = new vpiScopeModule(name, tname);
-	    assert(0);
+      } अन्यथा यदि (म_भेद(type,"function.obj") == 0) {
+	    scope = नूतन vpiScopeFunction(name, tname, असत्य, vpiSizedFunc, 0, BIT4_0);
+      } अन्यथा यदि (म_भेद(type,"autofunction.obj") == 0) {
+	    scope = नूतन vpiScopeFunction(name, tname, सत्य, vpiSizedFunc, 0, BIT4_0);
+      } अन्यथा यदि (म_भेद(type,"function.real") == 0) {
+	    scope = नूतन vpiScopeFunction(name, tname, असत्य, vpiRealFunc, 0, BIT4_0);
+      } अन्यथा यदि (म_भेद(type,"autofunction.real") == 0) {
+	    scope = नूतन vpiScopeFunction(name, tname, सत्य, vpiRealFunc, 0, BIT4_0);
+      } अन्यथा यदि (म_भेद(type,"function.str") == 0) {
+	    scope = नूतन vpiScopeFunction(name, tname, असत्य, vpiOtherFunc, 0, BIT4_0);
+      } अन्यथा यदि (म_भेद(type,"autofunction.str") == 0) {
+	    scope = नूतन vpiScopeFunction(name, tname, सत्य, vpiOtherFunc, 0, BIT4_0);
+      } अन्यथा यदि (म_भेद(type,"function.void") == 0) {
+	    scope = नूतन vpiScopeFunction(name, tname, असत्य, vpiOtherFunc, 0, BIT4_0);
+      } अन्यथा यदि (म_भेद(type,"autofunction.void") == 0) {
+	    scope = नूतन vpiScopeFunction(name, tname, सत्य, vpiOtherFunc, 0, BIT4_0);
+      } अन्यथा यदि (म_भेद(type,"task") == 0) {
+	    scope = नूतन vpiScopeTask(name, tname);
+      } अन्यथा यदि (म_भेद(type,"autotask") == 0) {
+	    scope = नूतन vpiScopeTaskAuto(name, tname);
+      } अन्यथा यदि (म_भेद(type,"fork") == 0) {
+	    scope = नूतन vpiScopeFork(name, tname);
+      } अन्यथा यदि (म_भेद(type,"autofork") == 0) {
+	    scope = नूतन vpiScopeForkAuto(name, tname);
+      } अन्यथा यदि (म_भेद(type,"begin") == 0) {
+	    scope = नूतन vpiScopeBegin(name, tname);
+      } अन्यथा यदि (म_भेद(type,"autobegin") == 0) {
+	    scope = नूतन vpiScopeBeginAuto(name, tname);
+      } अन्यथा यदि (म_भेद(type,"generate") == 0) {
+	    scope = नूतन vpiScopeGenerate(name, tname);
+      } अन्यथा यदि (म_भेद(type,"package") == 0) {
+	    scope = नूतन vpiScopePackage(name, tname);
+      } अन्यथा यदि (म_भेद(type,"class") == 0) {
+	    scope = नूतन vpiScopeClass(name, tname);
+      } अन्यथा {
+	    scope = नूतन vpiScopeModule(name, tname);
+	    प्रतिज्ञा(0);
       }
 
-      scope->file_idx = (unsigned) file_idx;
-      scope->lineno  = (unsigned) lineno;
-      scope->def_file_idx = (unsigned) def_file_idx;
-      scope->def_lineno  = (unsigned) def_lineno;
+      scope->file_idx = (अचिन्हित) file_idx;
+      scope->lineno  = (अचिन्हित) lineno;
+      scope->def_file_idx = (अचिन्हित) def_file_idx;
+      scope->def_lineno  = (अचिन्हित) def_lineno;
       scope->item = 0;
       scope->nitem = 0;
       scope->live_contexts = 0;
       scope->free_contexts = 0;
 
-      if (is_cell) scope->is_cell = true;
-      else scope->is_cell = false;
+      यदि (is_cell) scope->is_cell = सत्य;
+      अन्यथा scope->is_cell = असत्य;
 
       current_scope = scope;
 
-      compile_vpi_symbol(label, scope);
+      compile_vpi_चिह्न(label, scope);
 
-      free(label);
-      free(type);
+      मुक्त(label);
+      मुक्त(type);
       delete[] name;
       delete[] tname;
 
-      if (parent) {
-	    static vpiHandle obj;
+      यदि (parent) {
+	    स्थिर vpiHandle obj;
 	    compile_vpi_lookup(&obj, parent);
-	    assert(obj);
+	    प्रतिज्ञा(obj);
 	    __vpiScope*sp = dynamic_cast<__vpiScope*>(obj);
 	    vpip_attach_to_scope(sp, scope);
 	    scope->scope = dynamic_cast<__vpiScope*>(obj);
@@ -583,10 +583,10 @@ compile_scope_decl(char*label, char*type, char*name, char*tname,
 	    scope->time_units = sp->time_units;
 	    scope->time_precision = sp->time_precision;
 
-      } else {
+      } अन्यथा {
 	    scope->scope = 0x0;
 
-	    vpip_root_table.push_back(scope);
+	    vpip_जरा_table.push_back(scope);
 
 	      /* Root scopes inherit time_units and precision from the
 	         system precision. */
@@ -595,86 +595,86 @@ compile_scope_decl(char*label, char*type, char*name, char*tname,
       }
 }
 
-void compile_scope_recall(char*symbol)
+शून्य compile_scope_recall(वर्ण*चिह्न)
 {
 	/* A __vpiScope starts with a __vpiHandle structure so this is
 	   a safe cast. We need the (void*) to avoid a dereferenced
 	   type punned pointer warning from some gcc compilers. */
-      compile_vpi_lookup((vpiHandle*)(void*)&current_scope, symbol);
-      assert(current_scope);
+      compile_vpi_lookup((vpiHandle*)(शून्य*)&current_scope, चिह्न);
+      प्रतिज्ञा(current_scope);
 }
 
 /*
  * This function handles the ".timescale" directive in the vvp
  * source. It sets in the current scope the specified units value.
  */
-void compile_timescale(long units, long precision)
+शून्य compile_timescale(दीर्घ units, दीर्घ precision)
 {
-      assert(current_scope);
+      प्रतिज्ञा(current_scope);
       current_scope->time_units = units;
       current_scope->time_precision = precision;
 }
 
-__vpiScope* vpip_peek_current_scope(void)
+__vpiScope* vpip_peek_current_scope(शून्य)
 {
-      return current_scope;
+      फर्काऊ current_scope;
 }
 
-void vpip_attach_to_current_scope(vpiHandle obj)
+शून्य vpip_attach_to_current_scope(vpiHandle obj)
 {
       vpip_attach_to_scope(current_scope, obj);
 }
 
-__vpiScope* vpip_peek_context_scope(void)
+__vpiScope* vpip_peek_context_scope(शून्य)
 {
       __vpiScope*scope = current_scope;
 
         /* A context is allocated for each automatic task or function.
            Storage for nested scopes (named blocks) is allocated in
            the parent context. */
-      while (scope->scope && scope->scope->is_automatic())
+      जबसम्म (scope->scope && scope->scope->is_automatic())
             scope = scope->scope;
 
-      return scope;
+      फर्काऊ scope;
 }
 
-unsigned vpip_add_item_to_context(automatic_hooks_s*item,
+अचिन्हित vpip_add_item_to_context(automatic_hooks_s*item,
                                   __vpiScope*scope)
 {
-      assert(scope);
-      assert(scope->is_automatic());
+      प्रतिज्ञा(scope);
+      प्रतिज्ञा(scope->is_automatic());
 
-      unsigned idx = scope->nitem++;
+      अचिन्हित idx = scope->nitem++;
 
-      if (scope->item == 0)
+      यदि (scope->item == 0)
 	    scope->item = static_cast<automatic_hooks_s**>
-	                  (malloc(sizeof(automatic_hooks_s*)));
-      else
+	                  (दो_स्मृति(परिमाण(automatic_hooks_s*)));
+      अन्यथा
 	    scope->item = static_cast<automatic_hooks_s**>
-	                  (realloc(scope->item,
-	                   sizeof(automatic_hooks_s*)*scope->nitem));
+	                  (पुनः_स्मृति(scope->item,
+	                   परिमाण(automatic_hooks_s*)*scope->nitem));
 
       scope->item[idx] = item;
 
         /* Offset the context index by 2 to leave space for the list links. */
-      return 2 + idx;
+      फर्काऊ 2 + idx;
 }
 
 
 vpiPortInfo::vpiPortInfo( __vpiScope *parent,
-              unsigned index,
-              int vpi_direction,
-              unsigned width,
-              const char *name,
-              char* buffer) :
+              अचिन्हित index,
+              पूर्णाङ्क vpi_direction,
+              अचिन्हित width,
+              अचर वर्ण *name,
+              वर्ण* buffer) :
       parent_(parent),
       index_(index),
       direction_(vpi_direction),
       width_(width),
       name_(name)
 {
-      if (buffer != nullptr) functor_ref_lookup(&ref_, buffer);
-      else ref_ = nullptr;
+      यदि (buffer != nullptr) functor_ref_lookup(&ref_, buffer);
+      अन्यथा ref_ = nullptr;
 }
 
 vpiPortInfo::~vpiPortInfo()
@@ -683,85 +683,85 @@ vpiPortInfo::~vpiPortInfo()
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void port_delete(__vpiHandle *handle)
+शून्य port_delete(__vpiHandle *handle)
 {
       delete dynamic_cast<vpiPortInfo *>(handle);
 }
 #endif
 
-int vpiPortInfo::vpi_get(int code)
+पूर्णाङ्क vpiPortInfo::vpi_get(पूर्णाङ्क code)
 {
-      switch( code ) {
+      विकल्प( code ) {
 
-        case vpiDirection :
-          return direction_;
-        case vpiPortIndex :
-          return index_;
-        case vpiSize :
-          return width_;
-        default :
-          return vpiUndefined;
+        पक्ष vpiDirection :
+          फर्काऊ direction_;
+        पक्ष vpiPortIndex :
+          फर्काऊ index_;
+        पक्ष vpiSize :
+          फर्काऊ width_;
+        स्वभाव :
+          फर्काऊ vpiUndefined;
       }
 
 }
 
 
-char *vpiPortInfo::vpi_get_str(int code)
+वर्ण *vpiPortInfo::vpi_get_str(पूर्णाङ्क code)
 {
-      switch( code ) {
-        case vpiName :
-          return simple_set_rbuf_str(name_);
-        default :
-          return NULL;
+      विकल्प( code ) {
+        पक्ष vpiName :
+          फर्काऊ simple_set_rbuf_str(name_);
+        स्वभाव :
+          फर्काऊ रिक्त;
       }
 
 }
 
 
-vpiHandle vpiPortInfo::vpi_handle(int code)
+vpiHandle vpiPortInfo::vpi_handle(पूर्णाङ्क code)
 {
 
-      switch (code) {
+      विकल्प (code) {
 
-          case vpiParent:
-          case vpiScope:
-          case vpiModule:
-            return parent_;
-          default :
-            break;
+          पक्ष vpiParent:
+          पक्ष vpiScope:
+          पक्ष vpiModule:
+            फर्काऊ parent_;
+          स्वभाव :
+            रोक;
       }
 
-      return 0;
+      फर्काऊ 0;
 }
 
-static vpiHandle portinfo_iterate(int code, vpiHandle ref)
+स्थिर vpiHandle portinfo_iterate(पूर्णाङ्क code, vpiHandle ref)
 {
       vpiPortInfo*rfp = dynamic_cast<vpiPortInfo*>(ref);
-      assert(rfp);
-      unsigned width = rfp->get_width();
+      प्रतिज्ञा(rfp);
+      अचिन्हित width = rfp->get_width();
 
-      switch (code) {
-	  case vpiBit: {
-	    vpiHandle*args = static_cast<vpiHandle*>(calloc(width, sizeof(vpiHandle*)));
+      विकल्प (code) {
+	  पक्ष vpiBit: {
+	    vpiHandle*args = static_cast<vpiHandle*>(सुस्मृति(width, परिमाण(vpiHandle*)));
 
-	    for (unsigned i = 0; i<rfp->port_bits_.size(); i++) {
+	    लागि (अचिन्हित i = 0; i<rfp->port_bits_.size(); i++) {
 		  args[i] = rfp->port_bits_[i];
 	    }
 
-	    return vpip_make_iterator(width, args, true);
+	    फर्काऊ vpip_make_iterator(width, args, सत्य);
 	  }
       }
-      return 0;
+      फर्काऊ 0;
 }
 
-vpiHandle vpiPortInfo::vpi_iterate(int code)
+vpiHandle vpiPortInfo::vpi_iterate(पूर्णाङ्क code)
 {
-      return portinfo_iterate(code, this);
+      फर्काऊ portinfo_iterate(code, एतत्);
 }
 
 
 vpiPortBitInfo::vpiPortBitInfo(vpiPortInfo *parent,
-                               unsigned bit) :
+                               अचिन्हित bit) :
       parent_(parent),
       bit_(bit)
 {
@@ -772,50 +772,50 @@ vpiPortBitInfo::~vpiPortBitInfo()
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void port_bit_delete(__vpiHandle *handle)
+शून्य port_bit_delete(__vpiHandle *handle)
 {
       delete dynamic_cast<vpiPortBitInfo *>(handle);
 }
 #endif
 
-vpiHandle vpiPortBitInfo::vpi_handle(int code)
+vpiHandle vpiPortBitInfo::vpi_handle(पूर्णाङ्क code)
 {
 
-      switch (code) {
-          case vpiParent:
-            return parent_;
-          default :
-            break;
+      विकल्प (code) {
+          पक्ष vpiParent:
+            फर्काऊ parent_;
+          स्वभाव :
+            रोक;
       }
 
-      return 0;
+      फर्काऊ 0;
 }
 
-int vpiPortBitInfo::vpi_get(int code)
+पूर्णाङ्क vpiPortBitInfo::vpi_get(पूर्णाङ्क code)
 {
-      switch( code ) {
-        case vpiBit :
-          return bit_;
-        default :
-          break;
+      विकल्प( code ) {
+        पक्ष vpiBit :
+          फर्काऊ bit_;
+        स्वभाव :
+          रोक;
       }
 
-      return 0;
+      फर्काऊ 0;
 }
 
 /* Port info is meta-data to allow vpi queries of the port signature of modules for
  * code-generators etc.  There are no actual nets corresponding to instances of module ports
  * as elaboration directly connects nets connected through module ports.
  */
-void compile_port_info( unsigned index, int vpi_direction, unsigned width, const char *name, char* buffer )
+शून्य compile_port_info( अचिन्हित index, पूर्णाङ्क vpi_direction, अचिन्हित width, अचर वर्ण *name, वर्ण* buffer )
 {
-      vpiPortInfo* obj = new vpiPortInfo( vpip_peek_current_scope(),
+      vpiPortInfo* obj = नूतन vpiPortInfo( vpip_peek_current_scope(),
                                           index, vpi_direction, width, name, buffer );
       vpip_attach_to_current_scope(obj);
 
 	// Create vpiPortBit objects
-      for (unsigned i=0; i<width; i++) {
-	    vpiPortBitInfo* obj_bit = new vpiPortBitInfo(obj, i);
+      लागि (अचिन्हित i=0; i<width; i++) {
+	    vpiPortBitInfo* obj_bit = नूतन vpiPortBitInfo(obj, i);
 	    obj->add_port_bit(obj_bit);
 	    vpip_attach_to_current_scope(obj_bit);
       }
