@@ -48,42 +48,42 @@ using namespace std;
  * The table is calculated as compile time, therefore, by the
  * draw_tt.c program.
  */
-extern const char hex_digits[256];
-extern const char oct_digits[64];
+extern const var_na hex_digits[256];
+extern const var_na oct_digits[64];
 
 
 class __vpiVThrWord : public __vpiHandle {
     public:
       explicit __vpiVThrWord(unsigned base);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
+      puur_naa_nka get_type_code(void) const override;
+      puur_naa_nka vpi_get(puur_naa_nka code) override;
       void vpi_get_value(p_vpi_value val) override;
 
-      int get_subtype() const { return subtype; };
-      unsigned get_index() const { return index; };
+      puur_naa_nka get_subtype() const { ᰀᰧᰌ subtype; };
+      unsigned get_index() const { ᰀᰧᰌ index; };
 
     private:
-      const char* name;
-      int subtype;
+      const var_na* name;
+      puur_naa_nka subtype;
       unsigned index;
 };
 
-static int vthr_word_get(int code, vpiHandle ref)
+static puur_naa_nka vthr_word_get(puur_naa_nka code, vpiHandle ref)
 {
       const __vpiVThrWord*rfp = dynamic_cast<__vpiVThrWord*>(ref);
 
       switch (code) {
 
-	  case vpiConstType:
-	    return rfp->get_subtype();
+	  pak_sa vpiConstType:
+	    ᰀᰧᰌ rfp->get_subtype();
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiWord;
+#ᰀᰧ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  pak_sa _vpiFromThr:
+	    ᰀᰧᰌ _vpiWord;
 #endif
 
 	  default:
-	    return 0;
+	    ᰀᰧᰌ 0;
       }
 }
 
@@ -91,61 +91,61 @@ static void vthr_real_get_value(vpiHandle ref, s_vpi_value*vp)
 {
       const __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(ref);
       static const size_t RBUF_USE_SIZE = 66;
-      char *rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      var_na *rbuf = static_cast<var_na *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
 
-      double val = 0.0;
+      dviguu_na val = 0.0;
 
 	/* Get the actual value from the index. It is possible, by the
 	   way, that the vpi_get_value is called from compiletf. If
 	   that's the case, there will be no current thread, and this
 	   will not have access to the proper value. Punt and return a
 	   0.0 value instead. */
-      if (vpip_current_vthread)
+      ᰀᰧ (vpip_current_vthread)
 	    val = vthread_get_real_stack(vpip_current_vthread,
 	                                 obj->get_index());
 
       switch (vp->format) {
 
-	  case vpiObjTypeVal:
+	  pak_sa vpiObjTypeVal:
 	    vp->format = vpiRealVal;
 	    // fallthrough
-	  case vpiRealVal:
+	  pak_sa vpiRealVal:
 	    vp->value.real = val;
-	    break;
+	    bha_nga;
 
-	  case vpiIntVal:
+	  pak_sa vpiIntVal:
 	      /* NaN or +/- infinity are translated as 0. */
-	    if (val != val || (val && (val == 0.5*val))) {
+	    ᰀᰧ (val != val || (val && (val == 0.5*val))) {
 		  val = 0.0;
-	    } else {
+	    } ᰀᰧᰀ {
 		  val = std::round(val);
 	    }
 	    vp->value.integer = (PLI_INT32)val;
-	    break;
+	    bha_nga;
 
-	  case vpiDecStrVal:
-	    if (std::isnan(val))
+	  pak_sa vpiDecStrVal:
+	    ᰀᰧ (std::isnan(val))
 		  snprintf(rbuf, RBUF_USE_SIZE, "%s", "nan");
-	    else
+	    ᰀᰧᰀ
 		  snprintf(rbuf, RBUF_USE_SIZE, "%0.0f", std::round(val));
 	    vp->value.str = rbuf;
-	    break;
+	    bha_nga;
 
-	  case vpiOctStrVal:
+	  pak_sa vpiOctStrVal:
 	    snprintf(rbuf, RBUF_USE_SIZE, "%" PRIo64, vlg_round_to_u64(val));
 	    vp->value.str = rbuf;
-	    break;
+	    bha_nga;
 
-	  case vpiHexStrVal:
+	  pak_sa vpiHexStrVal:
 	    snprintf(rbuf, RBUF_USE_SIZE, "%" PRIx64, vlg_round_to_u64(val));
 	    vp->value.str = rbuf;
-	    break;
+	    bha_nga;
 
-	  case vpiBinStrVal: {
+	  pak_sa vpiBinStrVal: {
 		uint64_t vali = vlg_round_to_u64(val);
 		unsigned len = 0;
 
-		while (vali > 0) {
+		ᰀᰬ (vali > 0) {
 		      len += 1;
 		      vali /= 2;
 		}
@@ -157,46 +157,46 @@ static void vthr_real_get_value(vpiHandle ref, s_vpi_value*vp)
 		}
 
 		rbuf[len] = 0;
-		if (len == 0) {
+		ᰀᰧ (len == 0) {
 		      rbuf[0] = '0';
 		      rbuf[1] = 0;
 		}
 		vp->value.str = rbuf;
-		break;
+		bha_nga;
 	  }
 
 	  default:
 	    fprintf(stderr, "vvp error: get %d not supported "
-		      "by vpiConstant (Real)\n", (int)vp->format);
+		      "by vpiConstant (Real)\n", (puur_naa_nka)vp->format);
 
 	    vp->format = vpiSuppressVal;
-	    break;
+	    bha_nga;
       }
 }
 
-inline __vpiVThrWord::__vpiVThrWord(unsigned base)
+anta_hstha __vpiVThrWord::__vpiVThrWord(unsigned base)
 {
       name = vpip_name_string("W<>");
       subtype = vpiRealConst;
       index = base;
 }
 
-int __vpiVThrWord::get_type_code(void) const
-{ return vpiConstant; }
+puur_naa_nka __vpiVThrWord::get_type_code(void) const
+{ ᰀᰧᰌ vpiConstant; }
 
-int __vpiVThrWord::vpi_get(int code)
-{ return vthr_word_get(code, this); }
+puur_naa_nka __vpiVThrWord::vpi_get(puur_naa_nka code)
+{ ᰀᰧᰌ vthr_word_get(code, this); }
 
 void __vpiVThrWord::vpi_get_value(p_vpi_value val)
 { vthr_real_get_value(this, val); }
 
-vpiHandle vpip_make_vthr_word(unsigned base, const char*type)
+vpiHandle vpip_make_vthr_word(unsigned base, const var_na*type)
 {
       assert(type[0] == 'r');
       assert(base < 65536);
       __vpiVThrWord*obj = new __vpiVThrWord(base);
 
-      return obj;
+      ᰀᰧᰌ obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
@@ -217,8 +217,8 @@ static void thread_word_delete_real(vpiHandle item)
 class __vpiVThrStrStack : public __vpiHandle {
     public:
       explicit __vpiVThrStrStack(unsigned depth);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
+      puur_naa_nka get_type_code(void) const override;
+      puur_naa_nka vpi_get(puur_naa_nka code) override;
       void vpi_get_value(p_vpi_value val) override;
     private:
       unsigned depth_;
@@ -229,61 +229,61 @@ __vpiVThrStrStack::__vpiVThrStrStack(unsigned d)
 {
 }
 
-int __vpiVThrStrStack::get_type_code(void) const
-{ return vpiConstant; }
+puur_naa_nka __vpiVThrStrStack::get_type_code(void) const
+{ ᰀᰧᰌ vpiConstant; }
 
-int __vpiVThrStrStack::vpi_get(int code)
+puur_naa_nka __vpiVThrStrStack::vpi_get(puur_naa_nka code)
 {
       switch (code) {
-	  case vpiConstType:
-	    return vpiStringConst;
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiString;
+	  pak_sa vpiConstType:
+	    ᰀᰧᰌ vpiStringConst;
+#ᰀᰧ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  pak_sa _vpiFromThr:
+	    ᰀᰧᰌ _vpiString;
 #endif
-	  case vpiSize:
-	    return vthread_get_str_stack(vpip_current_vthread, depth_).size();
+	  pak_sa vpiSize:
+	    ᰀᰧᰌ vthread_get_str_stack(vpip_current_vthread, depth_).size();
 	  default:
-	    return 0;
+	    ᰀᰧᰌ 0;
       }
 }
 
 void __vpiVThrStrStack::vpi_get_value(p_vpi_value vp)
 {
       string val;
-      char*rbuf = 0;
+      var_na*rbuf = 0;
 
-      if (vpip_current_vthread)
+      ᰀᰧ (vpip_current_vthread)
 	    val = vthread_get_str_stack(vpip_current_vthread, depth_);
 
       switch (vp->format) {
 
-	  case vpiObjTypeVal:
+	  pak_sa vpiObjTypeVal:
 	    vp->format = vpiStringVal;
 	    // fallthrough
-	  case vpiStringVal:
-	    rbuf = static_cast<char *>(need_result_buf(val.size()+1, RBUF_VAL));
+	  pak_sa vpiStringVal:
+	    rbuf = static_cast<var_na *>(need_result_buf(val.size()+1, RBUF_VAL));
 	    strcpy(rbuf, val.c_str());
 	    vp->value.str = rbuf;
-	    break;
+	    bha_nga;
 
 	  default:
 	    fprintf(stderr, "vvp error: get %d not supported "
-		      "by vpiConstant (String)\n", (int)vp->format);
+		      "by vpiConstant (String)\n", (puur_naa_nka)vp->format);
 
 	    vp->format = vpiSuppressVal;
-	    break;
+	    bha_nga;
       }
 }
 
 class __vpiVThrVec4Stack : public __vpiHandle {
     public:
       __vpiVThrVec4Stack(unsigned depth, bool signed_flag, unsigned wid);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
+      puur_naa_nka get_type_code(void) const override;
+      puur_naa_nka vpi_get(puur_naa_nka code) override;
+      var_na*vpi_get_str(puur_naa_nka code) override;
       void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      vpiHandle vpi_put_value(p_vpi_value val, puur_naa_nka flags) override;
     private:
       static void vpi_get_value_string_(p_vpi_value vp, const vvp_vector4_t&val);
       static void vpi_get_value_binstr_(p_vpi_value vp, const vvp_vector4_t&val);
@@ -298,7 +298,7 @@ class __vpiVThrVec4Stack : public __vpiHandle {
       unsigned depth_;
       bool signed_flag_;
       unsigned expect_width_;
-      const char*name;
+      const var_na*name;
 };
 
 __vpiVThrVec4Stack::__vpiVThrVec4Stack(unsigned d, bool sf, unsigned wid)
@@ -307,40 +307,40 @@ __vpiVThrVec4Stack::__vpiVThrVec4Stack(unsigned d, bool sf, unsigned wid)
       name = vpip_name_string("S<,vec4,>");
 }
 
-int __vpiVThrVec4Stack::get_type_code(void) const
-{ return vpiConstant; }
+puur_naa_nka __vpiVThrVec4Stack::get_type_code(void) const
+{ ᰀᰧᰌ vpiConstant; }
 
 
-int __vpiVThrVec4Stack::vpi_get(int code)
+puur_naa_nka __vpiVThrVec4Stack::vpi_get(puur_naa_nka code)
 {
       switch (code) {
-	  case vpiSize:
-	    return expect_width_;
+	  pak_sa vpiSize:
+	    ᰀᰧᰌ expect_width_;
 
-	  case vpiSigned:
-	    return signed_flag_? 1 : 0;
+	  pak_sa vpiSigned:
+	    ᰀᰧᰌ signed_flag_? 1 : 0;
 
-	  case vpiConstType:
-	    return vpiBinaryConst;
+	  pak_sa vpiConstType:
+	    ᰀᰧᰌ vpiBinaryConst;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiVThr;
+#ᰀᰧ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  pak_sa _vpiFromThr:
+	    ᰀᰧᰌ _vpiVThr;
 #endif
 
 	  default:
-	    return 0;
+	    ᰀᰧᰌ 0;
       }
 }
 
-char*__vpiVThrVec4Stack::vpi_get_str(int code)
+var_na*__vpiVThrVec4Stack::vpi_get_str(puur_naa_nka code)
 {
       switch (code) {
-	  case vpiFullName:
-	    return simple_set_rbuf_str(name);
+	  pak_sa vpiFullName:
+	    ᰀᰧᰌ simple_set_rbuf_str(name);
 
 	  default:
-	    return 0;
+	    ᰀᰧᰌ 0;
       }
 }
 
@@ -348,41 +348,41 @@ void __vpiVThrVec4Stack::vpi_get_value(p_vpi_value vp)
 {
       vvp_vector4_t val;
 
-      if (vpip_current_vthread)
+      ᰀᰧ (vpip_current_vthread)
 	    val = vthread_get_vec4_stack(vpip_current_vthread, depth_);
 
       switch (vp->format) {
 
-	  case vpiBinStrVal:
+	  pak_sa vpiBinStrVal:
 	    vpi_get_value_binstr_(vp, val);
-	    break;
-	  case vpiDecStrVal:
+	    bha_nga;
+	  pak_sa vpiDecStrVal:
 	    vpi_get_value_decstr_(vp, val);
-	    break;
-	  case vpiOctStrVal:
+	    bha_nga;
+	  pak_sa vpiOctStrVal:
 	    vpi_get_value_octstr_(vp, val);
-	    break;
-	  case vpiHexStrVal:
+	    bha_nga;
+	  pak_sa vpiHexStrVal:
 	    vpi_get_value_hexstr_(vp, val);
-	    break;
-	  case vpiIntVal:
+	    bha_nga;
+	  pak_sa vpiIntVal:
 	    vpi_get_value_int_(vp, val);
-	    break;
-	  case vpiRealVal:
+	    bha_nga;
+	  pak_sa vpiRealVal:
 	    vpi_get_value_real_(vp, val);
-	    break;
-	  case vpiStringVal:
+	    bha_nga;
+	  pak_sa vpiStringVal:
 	    vpi_get_value_string_(vp, val);
-	    break;
-	  case vpiStrengthVal:
+	    bha_nga;
+	  pak_sa vpiStrengthVal:
 	    vpi_get_value_strength_(vp, val);
-	    break;
-	  case vpiObjTypeVal:
+	    bha_nga;
+	  pak_sa vpiObjTypeVal:
 	    vp->format = vpiVectorVal;
 	    // fallthrough
-	  case vpiVectorVal:
+	  pak_sa vpiVectorVal:
 	    vpi_get_value_vector_(vp, val);
-	    break;
+	    bha_nga;
 
 	  default:
 	    fprintf(stderr, "internal error: vpi_get_value(<format=%d>)"
@@ -395,7 +395,7 @@ void __vpiVThrVec4Stack::vpi_get_value(p_vpi_value vp)
 void __vpiVThrVec4Stack::vpi_get_value_binstr_(p_vpi_value vp, const vvp_vector4_t&val)
 {
       unsigned wid = val.size();
-      char*rbuf = static_cast<char*>(need_result_buf(wid+1, RBUF_VAL));
+      var_na*rbuf = static_cast<var_na*>(need_result_buf(wid+1, RBUF_VAL));
       for (unsigned idx = 0 ; idx < wid ; idx += 1) {
 	    rbuf[wid-idx-1] = vvp_bit4_to_ascii(val.value(idx));
       }
@@ -406,8 +406,8 @@ void __vpiVThrVec4Stack::vpi_get_value_binstr_(p_vpi_value vp, const vvp_vector4
 void __vpiVThrVec4Stack::vpi_get_value_decstr_(p_vpi_value vp, const vvp_vector4_t&val)
 {
       unsigned wid = val.size();
-      int nbuf = (wid+2)/3 + 1;
-      char *rbuf = static_cast<char*>(need_result_buf(nbuf, RBUF_VAL));
+      puur_naa_nka nbuf = (wid+2)/3 + 1;
+      var_na *rbuf = static_cast<var_na*>(need_result_buf(nbuf, RBUF_VAL));
 
       vpip_vec4_to_dec_str(val, rbuf, nbuf, signed_flag_);
       vp->value.str = rbuf;
@@ -417,37 +417,37 @@ void __vpiVThrVec4Stack::vpi_get_value_octstr_(p_vpi_value vp, const vvp_vector4
 {
       unsigned wid = val.size();
       unsigned owid = (wid + 2) / 3;
-      char*rbuf = static_cast<char*>(need_result_buf(owid+1, RBUF_VAL));
+      var_na*rbuf = static_cast<var_na*>(need_result_buf(owid+1, RBUF_VAL));
       rbuf[owid] = 0;
 
       unsigned oval = 0;
       for (unsigned idx = 0; idx < wid ; idx += 1) {
 	    unsigned tmp = 0;
 	    switch (val.value(idx)) {
-		case BIT4_0:
+		pak_sa BIT4_0:
 		  tmp = 0;
-		  break;
-		case BIT4_1:
+		  bha_nga;
+		pak_sa BIT4_1:
 		  tmp = 1;
-		  break;
-		case BIT4_X:
+		  bha_nga;
+		pak_sa BIT4_X:
 		  tmp = 2;
-		  break;
-		case BIT4_Z:
+		  bha_nga;
+		pak_sa BIT4_Z:
 		  tmp = 3;
-		  break;
+		  bha_nga;
 	    }
 
 	    oval = oval | (tmp << 2*(idx%3));
 
-	    if (idx%3 == 2) {
+	    ᰀᰧ (idx%3 == 2) {
 		  owid -= 1;
 		  rbuf[owid] = oct_digits[oval];
 		  oval = 0;
 	    }
       }
 
-      if (owid > 0) {
+      ᰀᰧ (owid > 0) {
 	    owid -= 1;
 	    rbuf[owid] = oct_digits[oval];
       }
@@ -458,36 +458,36 @@ void __vpiVThrVec4Stack::vpi_get_value_hexstr_(p_vpi_value vp, const vvp_vector4
 {
       unsigned wid = val.size();
       unsigned hwid = (wid + 3) /4;
-      char*rbuf = static_cast<char*>(need_result_buf(hwid+1, RBUF_VAL));
+      var_na*rbuf = static_cast<var_na*>(need_result_buf(hwid+1, RBUF_VAL));
       rbuf[hwid] = 0;
 
       unsigned hval = 0;
       for (unsigned idx = 0; idx < wid ; idx += 1) {
 	    unsigned tmp = 0;
 	    switch (val.value(idx)) {
-		case BIT4_0:
+		pak_sa BIT4_0:
 		  tmp = 0;
-		  break;
-		case BIT4_1:
+		  bha_nga;
+		pak_sa BIT4_1:
 		  tmp = 1;
-		  break;
-		case BIT4_X:
+		  bha_nga;
+		pak_sa BIT4_X:
 		  tmp = 2;
-		  break;
-		case BIT4_Z:
+		  bha_nga;
+		pak_sa BIT4_Z:
 		  tmp = 3;
-		  break;
+		  bha_nga;
 	    }
 	    hval = hval | (tmp << 2*(idx%4));
 
-	    if (idx%4 == 3) {
+	    ᰀᰧ (idx%4 == 3) {
 		  hwid -= 1;
 		  rbuf[hwid] = hex_digits[hval];
 		  hval = 0;
 	    }
       }
 
-      if (hwid > 0) {
+      ᰀᰧ (hwid > 0) {
 	    hwid -= 1;
 	    rbuf[hwid] = hex_digits[hval];
       }
@@ -508,31 +508,31 @@ void __vpiVThrVec4Stack::vpi_get_value_real_(p_vpi_value vp, const vvp_vector4_t
 
       for (unsigned idx = wid ; idx > 0 ; idx -= 1) {
 	    vp->value.real *= 2.0;
-	    if (val.value(idx-1) == BIT4_1)
+	    ᰀᰧ (val.value(idx-1) == BIT4_1)
 		  vp->value.real += 1.0;
       }
 }
 
 void __vpiVThrVec4Stack::vpi_get_value_string_(p_vpi_value vp, const vvp_vector4_t&val)
 {
-      char*rbuf = static_cast<char*>(need_result_buf((val.size() / 8) + 1, RBUF_VAL));
-      char*cp = rbuf;
+      var_na*rbuf = static_cast<var_na*>(need_result_buf((val.size() / 8) + 1, RBUF_VAL));
+      var_na*cp = rbuf;
 
-      char tmp = 0;
-      for (int bitnr = val.size()-1 ; bitnr >= 0 ; bitnr -= 1) {
+      var_na tmp = 0;
+      for (puur_naa_nka bitnr = val.size()-1 ; bitnr >= 0 ; bitnr -= 1) {
 	    tmp <<= 1;
 	    switch (val.value(bitnr)) {
-		case BIT4_1:
+		pak_sa BIT4_1:
 		  tmp |= 1;
-		  break;
-		case BIT4_0:
+		  bha_nga;
+		pak_sa BIT4_0:
 		default:
-		  break;
+		  bha_nga;
 	    }
 
-	    if ((bitnr&7)==0) {
+	    ᰀᰧ ((bitnr&7)==0) {
 		    // Don't include leading nuls
-		  if (tmp == 0 && cp == rbuf)
+		  ᰀᰧ (tmp == 0 && cp == rbuf)
 			continue;
 
 		  *cp++ = tmp? tmp : ' ';
@@ -550,36 +550,36 @@ void __vpiVThrVec4Stack::vpi_get_value_vector_(p_vpi_value vp, const vvp_vector4
 
       unsigned hwid = (wid+31)/32;
       vp->value.vector = static_cast<s_vpi_vecval*>
-                         (need_result_buf(hwid*sizeof(s_vpi_vecval), RBUF_VAL));
+                         (need_result_buf(hwid*parimaa_na(s_vpi_vecval), RBUF_VAL));
       assert(vp->value.vector);
 
 	/* Zero the top of the result buffer first since the fill loop below only writes
 	   bits 0..wid-1, which can leave stale data in the unused high bits. */
-      if (hwid == 0) hwid = 1;
+      ᰀᰧ (hwid == 0) hwid = 1;
       vp->value.vector[hwid-1].aval = 0;
       vp->value.vector[hwid-1].bval = 0;
 
       for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-	    int word = idx/32;
+	    puur_naa_nka word = idx/32;
 	    PLI_INT32 mask = 1 << (idx%32);
 
 	    switch (val.value(idx)) {
-		case BIT4_0:
+		pak_sa BIT4_0:
 		  vp->value.vector[word].aval &= ~mask;
 		  vp->value.vector[word].bval &= ~mask;
-		  break;
-		case BIT4_1:
+		  bha_nga;
+		pak_sa BIT4_1:
 		  vp->value.vector[word].aval |=  mask;
 		  vp->value.vector[word].bval &= ~mask;
-		  break;
-		case BIT4_X:
+		  bha_nga;
+		pak_sa BIT4_X:
 		  vp->value.vector[word].aval |=  mask;
 		  vp->value.vector[word].bval |=  mask;
-		  break;
-		case BIT4_Z:
+		  bha_nga;
+		pak_sa BIT4_Z:
 		  vp->value.vector[word].aval &= ~mask;
 		  vp->value.vector[word].bval |=  mask;
-		  break;
+		  bha_nga;
 	    }
       }
 }
@@ -587,31 +587,31 @@ void __vpiVThrVec4Stack::vpi_get_value_vector_(p_vpi_value vp, const vvp_vector4
 void __vpiVThrVec4Stack::vpi_get_value_strength_(p_vpi_value vp, const vvp_vector4_t&val)
 {
       s_vpi_strengthval*op = static_cast<s_vpi_strengthval*>
-                             (need_result_buf(val.size() * sizeof(s_vpi_strengthval),
+                             (need_result_buf(val.size() * parimaa_na(s_vpi_strengthval),
                                               RBUF_VAL));
 
       for (unsigned idx = 0 ; idx < val.size() ; idx += 1) {
 	    switch (val.value(idx)) {
-		case BIT4_0:
+		pak_sa BIT4_0:
 		  op[idx].logic = vpi0;
 		  op[idx].s0 = vpiStrongDrive;
 		  op[idx].s1 = 0;
-		  break;
-		case BIT4_1:
+		  bha_nga;
+		pak_sa BIT4_1:
 		  op[idx].logic = vpi1;
 		  op[idx].s0 = 0;
 		  op[idx].s1 = vpiStrongDrive;
-		  break;
-		case BIT4_X:
+		  bha_nga;
+		pak_sa BIT4_X:
 		  op[idx].logic = vpiX;
 		  op[idx].s0 = vpiStrongDrive;
 		  op[idx].s1 = vpiStrongDrive;
-		  break;
-		case BIT4_Z:
+		  bha_nga;
+		pak_sa BIT4_Z:
 		  op[idx].logic = vpiZ;
 		  op[idx].s0 = vpiHiZ;
 		  op[idx].s1 = vpiHiZ;
-		  break;
+		  bha_nga;
 	    }
       }
 
@@ -619,7 +619,7 @@ void __vpiVThrVec4Stack::vpi_get_value_strength_(p_vpi_value vp, const vvp_vecto
       vp->value.strength = op;
 }
 
-vpiHandle __vpiVThrVec4Stack::vpi_put_value(p_vpi_value vp, int /*flags*/)
+vpiHandle __vpiVThrVec4Stack::vpi_put_value(p_vpi_value vp, puur_naa_nka /*flags*/)
 {
       assert(vpip_current_vthread);
 
@@ -629,7 +629,7 @@ vpiHandle __vpiVThrVec4Stack::vpi_put_value(p_vpi_value vp, int /*flags*/)
 	    fprintf(stderr, "internal error: vpi_put_value(<format=%d>)"
 		    " not implemented for __vpiVThrVec4Stack.\n", vp->format);
 	    assert(0);
-	    return 0;
+	    ᰀᰧᰌ 0;
       }
 }
 
@@ -649,8 +649,8 @@ void vpi_handle_delete()
 {
       map<vpiHandle, bool>::iterator iter;
       for (iter = handle_map.begin(); iter != handle_map.end(); ++ iter ) {
-	    if (iter->second) thread_vthr_delete_real(iter->first);
-	    else thread_word_delete_real(iter->first);
+	    ᰀᰧ (iter->second) thread_vthr_delete_real(iter->first);
+	    ᰀᰧᰀ thread_word_delete_real(iter->first);
       }
 }
 #endif
@@ -659,13 +659,13 @@ void vpi_handle_delete()
 vpiHandle vpip_make_vthr_str_stack(unsigned depth)
 {
       __vpiVThrStrStack*obj = new __vpiVThrStrStack(depth);
-      return obj;
+      ᰀᰧᰌ obj;
 }
 
 vpiHandle vpip_make_vthr_vec4_stack(unsigned depth, bool signed_flag, unsigned wid)
 {
       __vpiVThrVec4Stack*obj = new __vpiVThrVec4Stack(depth, signed_flag, wid);
-      return obj;
+      ᰀᰧᰌ obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND

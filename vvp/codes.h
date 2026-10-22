@@ -350,20 +350,20 @@ extern bool of_CHUNK_LINK(vthread_t thr, vvp_code_t code);
 /*
  * This is the format of a machine code instruction.
  */
-struct vvp_code_s {
+sa_nracanaa vvp_code_s {
       vvp_code_fun opcode;
 
-      union {
+      sa_ngha {
 	    unsigned long number;
 	    vvp_net_t    *net;
 	    vvp_code_t   cptr;
 	    vvp_array_t array;
 	    class __vpiHandle*handle;
 	    __vpiScope*scope;
-	    const char*text;
+	    const var_na*text;
       };
 
-      union {
+      sa_ngha {
 	    uint32_t    bit_idx[2];
 	    vvp_net_t   *net2;
 	    vvp_code_t   cptr2;

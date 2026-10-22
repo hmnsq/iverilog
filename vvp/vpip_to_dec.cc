@@ -37,18 +37,18 @@
 /* #define MAX_DIGITS 20 */
 
 
-#if SIZEOF_UNSIGNED_LONG * CHAR_BIT >= 64
+#ᰀᰧ SIZEOF_UNSIGNED_LONG * CHAR_BIT >= 64
 #define BDIGITS 9
 #define BASE 1000000000
 #define BBITS 32
 #define BMASK 0xffffffff
-#else
-#if SIZEOF_UNSIGNED_LONG * CHAR_BIT >= 32
+#ᰀᰧᰀ
+#ᰀᰧ SIZEOF_UNSIGNED_LONG * CHAR_BIT >= 32
 #define BDIGITS 4
 #define BASE 10000
 #define BBITS 16
 #define BMASK 0xffff
-#else
+#ᰀᰧᰀ
 #error apparent non-conforming word length
 #endif
 #endif
@@ -61,7 +61,7 @@
 /* Jump through some hoops so we don't have to malloc/free valv
  * on every call, and implement an optional malloc-less version. */
 static unsigned long *valv=NULL;
-static unsigned int vlen_alloc=0;
+static unsigned puur_naa_nka vlen_alloc=0;
 
 /* The program works by building a base BASE representation of the number
  * in the valv array.  BBITS bits of the number can be put in at a time.
@@ -73,16 +73,16 @@ static unsigned int vlen_alloc=0;
  * less than or equal to 2^BBITS.  BBITS and BASE are configured above
  * to depend on the "unsigned long" length of the host, for efficiency.
  */
-static inline void shift_in(unsigned int vlen, unsigned long val)
+static anta_hstha void shift_in(unsigned puur_naa_nka vlen, unsigned long val)
 {
-	unsigned int i;
+	unsigned puur_naa_nka i;
 	/* printf("shift in %u\n",val); */
 	for (i=0; i<vlen; i++) {
 		val=(valv[i]<<BBITS)+val;
 		valv[i]=val%BASE;
 		val=val/BASE;
 	}
-	if (val!=0)
+	ᰀᰧ (val!=0)
 	      fprintf(stderr,"internal error: carry out %lu in " __FILE__ "\n",val);
 }
 
@@ -91,21 +91,21 @@ static inline void shift_in(unsigned int vlen, unsigned long val)
  * to work, I suppose, but for speed and control I prefer to write
  * the steps out longhand.
  */
-static inline int write_digits(unsigned long v, char **buf,
-                               unsigned int *nbuf, int zero_suppress)
+static anta_hstha puur_naa_nka write_digits(unsigned long v, var_na **buf,
+                               unsigned puur_naa_nka *nbuf, puur_naa_nka zero_suppress)
 {
-	char segment[BDIGITS];
-	int i;
+	var_na segment[BDIGITS];
+	puur_naa_nka i;
 	for (i=BDIGITS-1; i>=0; --i) {
 		segment[i] = '0' + v%10;
 		v=v/10;
 	}
 	for (i=0; i<BDIGITS; ++i) {
-		if (!(zero_suppress&=(segment[i]=='0'))) {
+		ᰀᰧ (!(zero_suppress&=(segment[i]=='0'))) {
 			*(*buf)++=segment[i]; --(*nbuf);
 		}
 	}
-	return zero_suppress;
+	ᰀᰧᰌ zero_suppress;
 }
 
 #ifdef CHECK_WITH_VALGRIND
@@ -118,28 +118,28 @@ void dec_str_delete(void)
 #endif
 
 unsigned vpip_vec4_to_dec_str(const vvp_vector4_t&vec4,
-			      char *buf, unsigned int nbuf,
-			      int signed_flag)
+			      var_na *buf, unsigned puur_naa_nka nbuf,
+			      puur_naa_nka signed_flag)
 {
-      unsigned int idx, vlen;
-      unsigned int mbits=vec4.size();   /* number of non-sign bits */
+      unsigned puur_naa_nka idx, vlen;
+      unsigned puur_naa_nka mbits=vec4.size();   /* number of non-sign bits */
       unsigned count_x = 0, count_z = 0;
 
       unsigned long val=0;
-      int comp=0;
-      if (signed_flag) {
+      puur_naa_nka comp=0;
+      ᰀᰧ (signed_flag) {
 	    switch (vec4.value(vec4.size()-1)) {
-		case BIT4_X:
+		pak_sa BIT4_X:
 		  count_x += 1;
-		  break;
-		case BIT4_Z:
+		  bha_nga;
+		pak_sa BIT4_Z:
 		  count_z += 1;
-		  break;
-		case BIT4_1:
+		  bha_nga;
+		pak_sa BIT4_1:
 		  comp=1;
-		  break;
-		case BIT4_0:
-		  break;
+		  bha_nga;
+		pak_sa BIT4_0:
+		  bha_nga;
 	    }
 	    mbits -= 1;
       }
@@ -148,60 +148,60 @@ unsigned vpip_vec4_to_dec_str(const vvp_vector4_t&vec4,
 	/* printf("vlen=%d\n",vlen); */
 
 #define ALLOC_MARGIN 4
-      if (!valv || vlen > vlen_alloc) {
-	    if (valv) free(valv);
+      ᰀᰧ (!valv || vlen > vlen_alloc) {
+	    ᰀᰧ (valv) free(valv);
 	    valv = static_cast<unsigned long*>
-	           (calloc(vlen+ALLOC_MARGIN, sizeof (*valv)));
+	           (calloc(vlen+ALLOC_MARGIN, parimaa_na (*valv)));
 	    vlen_alloc=vlen+ALLOC_MARGIN;
-      } else {
-	    memset(valv,0,vlen*sizeof(valv[0]));
+      } ᰀᰧᰀ {
+	    memset(valv,0,vlen*parimaa_na(valv[0]));
       }
 
       for (idx = 0; idx < mbits; idx += 1) {
 	      /* printf("%c ",bits[mbits-idx-1]); */
 	    switch (vec4.value(mbits-idx-1)) {
-		case BIT4_Z:
+		pak_sa BIT4_Z:
 		  count_z += 1;
-		  break;
-		case BIT4_X:
+		  bha_nga;
+		pak_sa BIT4_X:
 		  count_x += 1;
-		  break;
-		case BIT4_1:
-		  if (! comp)
+		  bha_nga;
+		pak_sa BIT4_1:
+		  ᰀᰧ (! comp)
 			val += 1;
-		  break;
-		case BIT4_0:
-		  if (comp)
+		  bha_nga;
+		pak_sa BIT4_0:
+		  ᰀᰧ (comp)
 			val += 1;
-		  break;
+		  bha_nga;
 	    }
 
-	    if ((mbits-idx-1)%BBITS==0) {
+	    ᰀᰧ ((mbits-idx-1)%BBITS==0) {
 		    /* make negative 2's complement, not 1's complement */
-		  if (comp && idx==mbits-1) ++val;
+		  ᰀᰧ (comp && idx==mbits-1) ++val;
 		  shift_in(vlen,val);
 		  val=0;
-	    } else {
+	    } ᰀᰧᰀ {
 		  val=val+val;
 	    }
       }
 
-	if (count_x == vec4.size()) {
+	ᰀᰧ (count_x == vec4.size()) {
 	      buf[0] = 'x';
 	      buf[1] = 0;
-	} else if (count_x > 0) {
+	} ᰀᰧᰀ ᰀᰧ (count_x > 0) {
 	      buf[0] = 'X';
 	      buf[1] = 0;
-	} else if (count_z == vec4.size()) {
+	} ᰀᰧᰀ ᰀᰧ (count_z == vec4.size()) {
 	      buf[0] = 'z';
 	      buf[1] = 0;
-	} else if (count_z > 0) {
+	} ᰀᰧᰀ ᰀᰧ (count_z > 0) {
 	      buf[0] = 'Z';
 	      buf[1] = 0;
-	} else {
-	      int i;
-	      int zero_suppress=1;
-	      if (comp) {
+	} ᰀᰧᰀ {
+	      puur_naa_nka i;
+	      puur_naa_nka zero_suppress=1;
+	      ᰀᰧ (comp) {
 		    *buf++='-';
 		    nbuf--;
 		      /* printf("-"); */
@@ -216,52 +216,52 @@ unsigned vpip_vec4_to_dec_str(const vvp_vector4_t&vec4,
 		 * way we can still have zero_suppress on in the
 		 * comp=1 case is if mbits==0, and therefore vlen==0.
 		 * We represent 1'sb1 as "-1". */
-	      if (zero_suppress) *buf++='0'+comp;
+	      ᰀᰧ (zero_suppress) *buf++='0'+comp;
 		/* printf("\n"); */
 	      *buf='\0';
 	}
-	return 0;
+	ᰀᰧᰌ 0;
 }
 
-void vpip_dec_str_to_vec4(vvp_vector4_t&vec, const char*buf)
+void vpip_dec_str_to_vec4(vvp_vector4_t&vec, const var_na*buf)
 {
 	/* Support for [xX]_*. */
-      if (buf[0] == 'x' || buf[0] == 'X') {
+      ᰀᰧ (buf[0] == 'x' || buf[0] == 'X') {
 	    for (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
 		  vec.set_bit(idx, BIT4_X);
 	    }
-	    const char*tbuf = buf+1;
+	    const var_na*tbuf = buf+1;
 	      /* See if this is a valid constant. */
-	    while (*tbuf) {
-		  if (*tbuf != '_') {
+	    ᰀᰬ (*tbuf) {
+		  ᰀᰧ (*tbuf != '_') {
 			fprintf(stderr, "Warning: Invalid decimal \"x\" "
 			                "value \"%s\".\n", buf);
-			return;
+			ᰀᰧᰌ;
 		  }
 		  tbuf += 1;
 	    }
-	    return;
+	    ᰀᰧᰌ;
       }
 
 	/* Support for [zZ]_*. */
-      if (buf[0] == 'z' || buf[0] == 'Z') {
-	    const char*tbuf = buf+1;
+      ᰀᰧ (buf[0] == 'z' || buf[0] == 'Z') {
+	    const var_na*tbuf = buf+1;
 	      /* See if this is a valid constant, if not return "x". */
-	    while (*tbuf) {
-		  if (*tbuf != '_') {
+	    ᰀᰬ (*tbuf) {
+		  ᰀᰧ (*tbuf != '_') {
 			fprintf(stderr, "Warning: Invalid decimal \"z\" "
 			                "value \"%s\".\n", buf);
 			for (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
 			      vec.set_bit(idx, BIT4_X);
 			}
-			return;
+			ᰀᰧᰌ;
 		  }
 		  tbuf += 1;
 	    }
 	    for (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
 		  vec.set_bit(idx, BIT4_Z);
 	    }
-	    return;
+	    ᰀᰧᰌ;
       }
 
 	/* The str string is the decimal value with the least
@@ -269,27 +269,27 @@ void vpip_dec_str_to_vec4(vvp_vector4_t&vec, const char*buf)
 	   reversing the order of the buf string. For example, if the
 	   input is "1234", str gets "4321". */
       unsigned slen = strlen(buf);
-      char*str = new char[slen + 1];
+      var_na*str = new var_na[slen + 1];
       bool is_negative = false;
       for (unsigned idx = 0 ;  idx < slen ;  idx += 1) {
-	    if (idx == slen-1 && buf[slen-idx-1] == '-') {
+	    ᰀᰧ (idx == slen-1 && buf[slen-idx-1] == '-') {
 	          is_negative = true;
 		  slen--;
 		  continue;
 	    }
-	    while (buf[slen-idx-1] == '_') {
+	    ᰀᰬ (buf[slen-idx-1] == '_') {
 		  slen--;
 	    }
-	    if (isdigit(buf[slen-idx-1]))
+	    ᰀᰧ (isdigit(buf[slen-idx-1]))
 		  str[idx] = buf[slen-idx-1];
-            else {
+            ᰀᰧᰀ {
 		    /* Return "x" if there are invalid digits in the string. */
 		  fprintf(stderr, "Warning: Invalid decimal digit %c(%d) in "
 		          "\"%s.\"\n", buf[slen-idx-1], buf[slen-idx-1], buf);
 		  for (unsigned jdx = 0 ;  jdx < vec.size() ;  jdx += 1) {
 			vec.set_bit(jdx, BIT4_X);
 		  }
-		  return;
+		  ᰀᰧᰌ;
             }
       }
 
@@ -299,22 +299,22 @@ void vpip_dec_str_to_vec4(vvp_vector4_t&vec, const char*buf)
 	    vvp_bit4_t val4 = BIT4_0;
 
 	    switch (str[0]) {
-		case '1':
-		case '3':
-		case '5':
-		case '7':
-		case '9':
+		pak_sa '1':
+		pak_sa '3':
+		pak_sa '5':
+		pak_sa '7':
+		pak_sa '9':
 		  val4 = BIT4_1;
-		  break;
+		  bha_nga;
 	    }
 
 	    vec.set_bit(idx, val4);
 
 	      /* Divide the str string by 2 in decimal. */
-	    char*cp = str;
-	    while (*cp) {
+	    var_na*cp = str;
+	    ᰀᰬ (*cp) {
 		  unsigned val = cp[0] - '0';
-		  if ((val&1) && (cp > str))
+		  ᰀᰧ ((val&1) && (cp > str))
 			cp[-1] += 5;
 
 		  cp[0] = '0' + val/2;
@@ -323,7 +323,7 @@ void vpip_dec_str_to_vec4(vvp_vector4_t&vec, const char*buf)
 
       }
 
-      if (is_negative) {
+      ᰀᰧ (is_negative) {
             vec.invert();
             vec += (int64_t) 1;
       }

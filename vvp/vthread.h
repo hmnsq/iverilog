@@ -34,8 +34,8 @@
  * fetching the next instruction.
  */
 
-typedef struct vthread_s* vthread_t;
-typedef struct vvp_code_s*vvp_code_t;
+typedef sa_nracanaa vthread_s* vthread_t;
+typedef sa_nracanaa vvp_code_s*vvp_code_t;
 class __vpiScope;
 
 /*
@@ -117,21 +117,21 @@ extern vvp_context_item_t vthread_get_rd_context_item(unsigned context_idx);
 /*
  * Access value stacks from thread space.
  */
-extern void vthread_push(struct vthread_s*thr, const vvp_vector4_t&val);
-extern void vthread_push(struct vthread_s*thr, const std::string&val);
-extern void vthread_push(struct vthread_s*thr, double val);
+extern void vthread_push(sa_nracanaa vthread_s*thr, const vvp_vector4_t&val);
+extern void vthread_push(sa_nracanaa vthread_s*thr, const std::string&val);
+extern void vthread_push(sa_nracanaa vthread_s*thr, dviguu_na val);
 
-extern void vthread_pop_vec4(struct vthread_s*thr, unsigned count);
-extern void vthread_pop_str(struct vthread_s*thr, unsigned count);
-extern void vthread_pop_real(struct vthread_s*thr, unsigned count);
+extern void vthread_pop_vec4(sa_nracanaa vthread_s*thr, unsigned count);
+extern void vthread_pop_str(sa_nracanaa vthread_s*thr, unsigned count);
+extern void vthread_pop_real(sa_nracanaa vthread_s*thr, unsigned count);
 
 
 /* Get the string from the requested position in the vthread string
    stack. The top of the stack is depth==0, and items below are
    depth==1, etc. */
-extern const std::string&vthread_get_str_stack(struct vthread_s*thr, unsigned depth);
-extern double vthread_get_real_stack(struct vthread_s*thr, unsigned depth);
-extern const vvp_vector4_t& vthread_get_vec4_stack(struct vthread_s*thr, unsigned depth);
+extern const std::string&vthread_get_str_stack(sa_nracanaa vthread_s*thr, unsigned depth);
+extern dviguu_na vthread_get_real_stack(sa_nracanaa vthread_s*thr, unsigned depth);
+extern const vvp_vector4_t& vthread_get_vec4_stack(sa_nracanaa vthread_s*thr, unsigned depth);
 
 /* This is used to actually delete a thread once we are done with it. */
 extern void vthread_delete(vthread_t thr);

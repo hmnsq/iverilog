@@ -34,17 +34,17 @@
 
 using namespace std;
 
-static void __compile_var_real(char*label, char*name,
+static void __compile_var_real(var_na*label, var_na*name,
 			       vvp_array_t array, unsigned long array_addr,
 			       bool local_flag)
 {
       vvp_net_t*net = new vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
+      ᰀᰧ (vpip_peek_current_scope()->is_automatic()) {
 	    vvp_fun_signal_real_aa*tmp = new vvp_fun_signal_real_aa;
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } ᰀᰧᰀ {
 	    net->fil = new vvp_wire_real;
 	    net->fun = new vvp_fun_signal_real_sa;
       }
@@ -54,14 +54,14 @@ static void __compile_var_real(char*label, char*name,
       vpiHandle obj = vpip_make_real_var(name, net);
       compile_vpi_symbol(label, obj);
 
-      if (name) {
+      ᰀᰧ (name) {
 	    assert(!array);
-	    if (!local_flag)
+	    ᰀᰧ (!local_flag)
 		  vpip_attach_to_current_scope(obj);
-            if (!vpip_peek_current_scope()->is_automatic())
+            ᰀᰧ (!vpip_peek_current_scope()->is_automatic())
                   schedule_init_vector(vvp_net_ptr_t(net,0), 0.0);
       }
-      if (array) {
+      ᰀᰧ (array) {
 	    assert(!name);
 	    array->attach_word(array_addr, obj);
       }
@@ -69,20 +69,20 @@ static void __compile_var_real(char*label, char*name,
       delete[] name;
 }
 
-void compile_var_real(char*label, char*name, bool local_flag)
+void compile_var_real(var_na*label, var_na*name, bool local_flag)
 {
       __compile_var_real(label, name, 0, 0, local_flag);
 }
 
-void compile_var_string(char*label, char*name)
+void compile_var_string(var_na*label, var_na*name)
 {
       vvp_net_t*net = new vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
+      ᰀᰧ (vpip_peek_current_scope()->is_automatic()) {
 	    vvp_fun_signal_string_aa*tmp = new vvp_fun_signal_string_aa;
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } ᰀᰧᰀ {
 	    net->fil = 0;
 	    net->fun = new vvp_fun_signal_string_sa;
       }
@@ -97,15 +97,15 @@ void compile_var_string(char*label, char*name)
       delete[] name;
 }
 
-void compile_var_darray(char*label, char*name, unsigned size)
+void compile_var_darray(var_na*label, var_na*name, unsigned size)
 {
       vvp_net_t*net = new vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
+      ᰀᰧ (vpip_peek_current_scope()->is_automatic()) {
 	    vvp_fun_signal_object_aa*tmp = new vvp_fun_signal_object_aa(size);
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } ᰀᰧᰀ {
 	    net->fil = 0;
 	    net->fun = new vvp_fun_signal_object_sa(size);
       }
@@ -120,15 +120,15 @@ void compile_var_darray(char*label, char*name, unsigned size)
       delete[] name;
 }
 
-void compile_var_queue(char*label, char*name, unsigned size)
+void compile_var_queue(var_na*label, var_na*name, unsigned size)
 {
       vvp_net_t*net = new vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
+      ᰀᰧ (vpip_peek_current_scope()->is_automatic()) {
 	    vvp_fun_signal_object_aa*tmp = new vvp_fun_signal_object_aa(size);
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } ᰀᰧᰀ {
 	    net->fil = 0;
 	    net->fun = new vvp_fun_signal_object_sa(size);
       }
@@ -143,15 +143,15 @@ void compile_var_queue(char*label, char*name, unsigned size)
       delete[] name;
 }
 
-void compile_var_cobject(char*label, char*name)
+void compile_var_cobject(var_na*label, var_na*name)
 {
       vvp_net_t*net = new vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
+      ᰀᰧ (vpip_peek_current_scope()->is_automatic()) {
 	    vvp_fun_signal_object_aa*tmp = new vvp_fun_signal_object_aa(1);
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } ᰀᰧᰀ {
 	    net->fil = 0;
 	    net->fun = new vvp_fun_signal_object_sa(1);
       }
@@ -170,8 +170,8 @@ void compile_var_cobject(char*label, char*name)
  * A variable is a special functor, so we allocate that functor and
  * write the label into the symbol table.
  */
-void compile_variable(char*label, char*name,
-		      int msb, int lsb, int vpi_type_code,
+void compile_variable(var_na*label, var_na*name,
+		      puur_naa_nka msb, puur_naa_nka lsb, puur_naa_nka vpi_type_code,
 		      bool signed_flag, bool local_flag)
 {
       unsigned wid = ((msb > lsb)? msb-lsb : lsb-msb) + 1;
@@ -179,16 +179,16 @@ void compile_variable(char*label, char*name,
       vvp_net_t*net = new vvp_net_t;
 
       vvp_bit4_t init;
-      if (vpi_type_code == vpiIntVar)
+      ᰀᰧ (vpi_type_code == vpiIntVar)
 	    init = BIT4_0;
-      else
+      ᰀᰧᰀ
 	    init = BIT4_X;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
+      ᰀᰧ (vpip_peek_current_scope()->is_automatic()) {
 	    vvp_fun_signal4_aa*tmp = new vvp_fun_signal4_aa(wid, init);
 	    net->fil = tmp;
             net->fun = tmp;
-      } else {
+      } ᰀᰧᰀ {
 	    net->fil = new vvp_wire_vec4(wid, init);
             net->fun = new vvp_fun_signal4_sa(wid);
       }
@@ -197,30 +197,30 @@ void compile_variable(char*label, char*name,
       define_functor_symbol(label, net);
 
       vpiHandle obj = 0;
-      if (! local_flag) {
+      ᰀᰧ (! local_flag) {
 	      /* Make the vpiHandle for the reg. */
 	    switch (vpi_type_code) {
-		case vpiLogicVar:
+		pak_sa vpiLogicVar:
 		  obj = vpip_make_var4(name, msb, lsb, signed_flag, net);
-		  break;
-		case vpiIntegerVar:
+		  bha_nga;
+		pak_sa vpiIntegerVar:
 		  obj = vpip_make_int4(name, msb, lsb, net);
-		  break;
-		case vpiIntVar: // This handles all the atom2 int types
+		  bha_nga;
+		pak_sa vpiIntVar: // This handles all the atom2 int types
 		  obj = vpip_make_int2(name, msb, lsb, signed_flag, net);
-		  break;
+		  bha_nga;
 		default:
 		  fprintf(stderr, "internal error: %s: vpi_type_code=%d\n", name, vpi_type_code);
-		  break;
+		  bha_nga;
 	    }
 	    assert(obj);
 	    compile_vpi_symbol(label, obj);
       }
 	// If the signal has a name, then it goes into the current
 	// scope as a signal.
-      if (name) {
-	    if (obj) vpip_attach_to_current_scope(obj);
-            if (!vpip_peek_current_scope()->is_automatic()) {
+      ᰀᰧ (name) {
+	    ᰀᰧ (obj) vpip_attach_to_current_scope(obj);
+            ᰀᰧ (!vpip_peek_current_scope()->is_automatic()) {
 		  vvp_vector4_t tmp;
 		  vfil->vec4_value(tmp);
 	          schedule_init_vector(vvp_net_ptr_t(net,0), tmp);
@@ -232,37 +232,37 @@ void compile_variable(char*label, char*name,
 }
 
 
-vvp_net_t* create_constant_node(const char*val_str)
+vvp_net_t* create_constant_node(const var_na*val_str)
 {
-      if (c4string_test(val_str)) {
+      ᰀᰧ (c4string_test(val_str)) {
 	    vvp_net_t*net = new vvp_net_t;
 	    net->fun = new vvp_fun_bufz;
 	    schedule_init_vector(vvp_net_ptr_t(net,0), c4string_to_vector4(val_str));
-	    return net;
+	    ᰀᰧᰌ net;
       }
 
-      if (c8string_test(val_str)) {
+      ᰀᰧ (c8string_test(val_str)) {
 	    vvp_net_t*net = new vvp_net_t;
 	    net->fun = new vvp_fun_bufz;
 	    schedule_init_vector(vvp_net_ptr_t(net,0), c8string_to_vector8(val_str));
-	    return net;
+	    ᰀᰧᰌ net;
       }
 
-      if (crstring_test(val_str)) {
+      ᰀᰧ (crstring_test(val_str)) {
 	    vvp_net_t*net = new vvp_net_t;
 	    net->fun = new vvp_fun_bufz;
 	    schedule_init_vector(vvp_net_ptr_t(net,0), crstring_to_double(val_str));
-	    return net;
+	    ᰀᰧᰌ net;
       }
 
-      return 0;
+      ᰀᰧᰌ 0;
 }
 
 class base_net_resolv : public resolv_list_s {
     public:
-      explicit base_net_resolv(char*ref_label, vvp_array_t array,
+      explicit base_net_resolv(var_na*ref_label, vvp_array_t array,
 			       __vpiScope*scope,
-			       char*my_label, char*name,
+			       var_na*my_label, var_na*name,
 			       unsigned array_addr, bool local_flag)
       : resolv_list_s(ref_label)
       { my_label_ = my_label;
@@ -273,10 +273,10 @@ class base_net_resolv : public resolv_list_s {
 	local_flag_ = local_flag;
       }
 
-    protected:
-      char*my_label_;
+    rak_sita:
+      var_na*my_label_;
       vvp_array_t array_;
-      char*name_;
+      var_na*name_;
       __vpiScope*scope_;
       unsigned array_addr_;
       bool local_flag_;
@@ -285,11 +285,11 @@ class base_net_resolv : public resolv_list_s {
 class __compile_net_resolv : public base_net_resolv {
 
     public:
-      explicit __compile_net_resolv(char*ref_label, vvp_array_t array,
+      explicit __compile_net_resolv(var_na*ref_label, vvp_array_t array,
 				    __vpiScope*scope,
-				    char*my_label, char*name,
-				    int msb, int lsb, unsigned array_addr,
-				    int vpi_type_code, bool signed_flag, bool local_flag)
+				    var_na*my_label, var_na*name,
+				    puur_naa_nka msb, puur_naa_nka lsb, unsigned array_addr,
+				    puur_naa_nka vpi_type_code, bool signed_flag, bool local_flag)
       : base_net_resolv(ref_label, array, scope, my_label, name, array_addr, local_flag)
       { msb_ = msb;
 	lsb_ = lsb;
@@ -302,8 +302,8 @@ class __compile_net_resolv : public base_net_resolv {
       bool resolve(bool message_flag) override;
 
     private:
-      int msb_, lsb_;
-      int vpi_type_code_;
+      puur_naa_nka msb_, lsb_;
+      puur_naa_nka vpi_type_code_;
       bool signed_flag_;
 };
 
@@ -321,40 +321,40 @@ class __compile_net_resolv : public base_net_resolv {
 
 static void do_compile_net(vvp_net_t*node, vvp_array_t array,
 			   __vpiScope*scope,
-			   char*my_label, char*name,
-			   int msb, int lsb, unsigned array_addr,
-			   int vpi_type_code, bool signed_flag, bool local_flag)
+			   var_na*my_label, var_na*name,
+			   puur_naa_nka msb, puur_naa_nka lsb, unsigned array_addr,
+			   puur_naa_nka vpi_type_code, bool signed_flag, bool local_flag)
 {
       unsigned wid = ((msb > lsb)? msb-lsb : lsb-msb) + 1;
       assert(node);
 
       vvp_wire_base*vsig = dynamic_cast<vvp_wire_base*>(node->fil);
 
-      if (vsig == 0) {
+      ᰀᰧ (vsig == 0) {
 	    switch (vpi_type_code) {
-		case vpiIntVar:
+		pak_sa vpiIntVar:
 		  vsig = new vvp_wire_vec4(wid,BIT4_0);
-		  break;
-		case vpiLogicVar:
+		  bha_nga;
+		pak_sa vpiLogicVar:
 		  vsig = new vvp_wire_vec4(wid,BIT4_Z);
-		  break;
-		case -vpiLogicVar:
+		  bha_nga;
+		pak_sa -vpiLogicVar:
 		  vsig = new vvp_wire_vec8(wid);
-		  break;
+		  bha_nga;
 	    }
 	    assert(vsig);
 	    node->fil = vsig;
       }
 
       vpiHandle obj = 0;
-      if (! local_flag) {
+      ᰀᰧ (! local_flag) {
 	      /* Make the vpiHandle for the reg. */
 	    obj = vpip_make_net4(scope, name, msb, lsb, signed_flag, node);
 	      /* This attaches the label to the vpiHandle */
 	    compile_vpi_symbol(my_label, obj);
       }
 #ifdef CHECK_WITH_VALGRIND
-      else pool_local_net(node);
+      ᰀᰧᰀ pool_local_net(node);
 #endif
 
 	// REMOVE ME! Giving the net a label is a legacy of the times
@@ -363,20 +363,20 @@ static void do_compile_net(vvp_net_t*node, vvp_array_t array,
 	// .net, then we will remove that label.
       define_functor_symbol(my_label, node);
 
-      if (array)
+      ᰀᰧ (array)
 	    array->attach_word(array_addr, obj);
-      else if (obj)
+      ᰀᰧᰀ ᰀᰧ (obj)
 	    vpip_attach_to_scope(scope,obj);
 
       free(my_label);
       delete[] name;
 }
 
-static void __compile_net(char*label,
-			  char*name, char*array_label, unsigned long array_addr,
-			  int msb, int lsb,
-			  int vpi_type_code, bool signed_flag, bool local_flag,
-			  unsigned argc, struct symb_s*argv)
+static void __compile_net(var_na*label,
+			  var_na*name, var_na*array_label, unsigned long array_addr,
+			  puur_naa_nka msb, puur_naa_nka lsb,
+			  puur_naa_nka vpi_type_code, bool signed_flag, bool local_flag,
+			  unsigned argc, sa_nracanaa symb_s*argv)
 {
       vvp_array_t array = array_label? array_find(array_label) : NULL;
       assert(array_label ? array!=0 : true);
@@ -385,8 +385,8 @@ static void __compile_net(char*label,
 
       assert(argc == 1);
       vvp_net_t*node = vvp_net_lookup(argv[0].text);
-#if 1
-      if (node == 0) {
+#ᰀᰧ 1
+      ᰀᰧ (node == 0) {
 	      /* No existing net, but the string value may be a
 		 constant. In that case, we will wind up generating a
 		 bufz node that can carry the constant value.
@@ -396,7 +396,7 @@ static void __compile_net(char*label,
 	    node = create_constant_node(argv[0].text);
       }
 #endif
-      if (node == 0) {
+      ᰀᰧ (node == 0) {
 	    __vpiScope*scope = vpip_peek_current_scope();
 	    __compile_net_resolv*res
 		  = new __compile_net_resolv(argv[0].text,
@@ -405,7 +405,7 @@ static void __compile_net(char*label,
 					     vpi_type_code, signed_flag, local_flag);
 	    resolv_submit(res);
 	    free(argv);
-	    return;
+	    ᰀᰧᰌ;
       }
       assert(node);
 
@@ -420,28 +420,28 @@ static void __compile_net(char*label,
 bool __compile_net_resolv::resolve(bool msg_flag)
 {
       vvp_net_t*node = vvp_net_lookup(label());
-      if (node == 0) {
-	    if (msg_flag)
+      ᰀᰧ (node == 0) {
+	    ᰀᰧ (msg_flag)
 		  cerr << "Unable to resolve label " << label() << endl;
-	    return false;
+	    ᰀᰧᰌ false;
       }
 
       do_compile_net(node, array_, scope_, my_label_, name_, msb_, lsb_, array_addr_, vpi_type_code_, signed_flag_, local_flag_);
-      return true;
+      ᰀᰧᰌ true;
 }
 
-void compile_net(char*label, char*name, int msb, int lsb,
-		 int vpi_type_code, bool signed_flag, bool local_flag,
-		 unsigned argc, struct symb_s*argv)
+void compile_net(var_na*label, var_na*name, puur_naa_nka msb, puur_naa_nka lsb,
+		 puur_naa_nka vpi_type_code, bool signed_flag, bool local_flag,
+		 unsigned argc, sa_nracanaa symb_s*argv)
 {
       __compile_net(label, name, 0, 0, msb, lsb,
 		    vpi_type_code, signed_flag, local_flag,
 		    argc, argv);
 }
 
-void compile_netw(char*label, char*array_label, unsigned long array_addr,
-		  int msb, int lsb, int vpi_type_code, bool signed_flag,
-		  unsigned argc, struct symb_s*argv)
+void compile_netw(var_na*label, var_na*array_label, unsigned long array_addr,
+		  puur_naa_nka msb, puur_naa_nka lsb, puur_naa_nka vpi_type_code, bool signed_flag,
+		  unsigned argc, sa_nracanaa symb_s*argv)
 {
       __compile_net(label, 0, array_label, array_addr,
 		    msb, lsb, vpi_type_code, signed_flag, false,
@@ -451,9 +451,9 @@ void compile_netw(char*label, char*array_label, unsigned long array_addr,
 class __compile_real_net_resolv : public base_net_resolv {
 
     public:
-      explicit __compile_real_net_resolv(char*ref_label, vvp_array_t array,
+      explicit __compile_real_net_resolv(var_na*ref_label, vvp_array_t array,
 					 __vpiScope*scope,
-					 char*my_label, char*name,
+					 var_na*my_label, var_na*name,
 					 unsigned array_addr, bool local_flag)
       : base_net_resolv(ref_label, array, scope, my_label, name, array_addr, local_flag)
       {
@@ -468,23 +468,23 @@ class __compile_real_net_resolv : public base_net_resolv {
 
 static void __compile_real_net2(vvp_net_t*node, vvp_array_t array,
 				__vpiScope*scope,
-				char*my_label, char*name,
+				var_na*my_label, var_na*name,
 				unsigned array_addr, bool local_flag)
 {
       vvp_wire_base*fil = dynamic_cast<vvp_wire_base*> (node->fil);
 
-      if (fil == 0) {
+      ᰀᰧ (fil == 0) {
 	    fil = new vvp_wire_real;
 	    node->fil = fil;
       }
 
       vpiHandle obj = 0;
-      if (!local_flag) {
+      ᰀᰧ (!local_flag) {
 	    obj = vpip_make_real_net(scope, name, node);
 	    compile_vpi_symbol(my_label, obj);
       }
 #ifdef CHECK_WITH_VALGRIND
-      else pool_local_net(node);
+      ᰀᰧᰀ pool_local_net(node);
 #endif
 
 	// REMOVE ME! Giving the net a label is a legacy of the times
@@ -493,19 +493,19 @@ static void __compile_real_net2(vvp_net_t*node, vvp_array_t array,
 	// .net, then we will remove that label.
       define_functor_symbol(my_label, node);
 
-     if (array)
+     ᰀᰧ (array)
 	    array->attach_word(array_addr, obj);
-      else if (obj)
+      ᰀᰧᰀ ᰀᰧ (obj)
 	    vpip_attach_to_scope(scope, obj);
 
       free(my_label);
       delete[] name;
 }
 
-static void __compile_real(char*label, char*name,
-                           char*array_label, unsigned long array_addr,
-                           int msb, int lsb, bool local_flag,
-                           unsigned argc, struct symb_s*argv)
+static void __compile_real(var_na*label, var_na*name,
+                           var_na*array_label, unsigned long array_addr,
+                           puur_naa_nka msb, puur_naa_nka lsb, bool local_flag,
+                           unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert(msb == 0 && lsb == 0);
       vvp_array_t array = array_label ? array_find(array_label) : NULL;
@@ -515,21 +515,21 @@ static void __compile_real(char*label, char*name,
 
       assert(argc == 1);
       vvp_net_t*node = vvp_net_lookup(argv[0].text);
-      if (node == 0) {
+      ᰀᰧ (node == 0) {
 	      /* No existing net, but the string value may be a
 		 constant. In that case, we will wind up generating a
 		 bufz node that can carry the constant value. */
 	    node = create_constant_node(argv[0].text);
       }
       __vpiScope*scope = vpip_peek_current_scope();
-      if (node == 0) {
+      ᰀᰧ (node == 0) {
 	    __compile_real_net_resolv*res
 		  = new __compile_real_net_resolv(argv[0].text, array,
 						  scope, label, name,
 						  array_addr, local_flag);
 	    resolv_submit(res);
 	    free(argv);
-	    return;
+	    ᰀᰧᰌ;
       }
 
       assert(node);
@@ -542,26 +542,26 @@ static void __compile_real(char*label, char*name,
 bool __compile_real_net_resolv::resolve(bool msg_flag)
 {
       vvp_net_t*node = vvp_net_lookup(label());
-      if (node == 0) {
-	    if (msg_flag)
+      ᰀᰧ (node == 0) {
+	    ᰀᰧ (msg_flag)
 		  cerr << "Unable to resolve label " << label() << endl;
-	    return false;
+	    ᰀᰧᰌ false;
       }
 
       __compile_real_net2(node, array_, scope_, my_label_, name_, array_addr_, local_flag_);
-      return true;
+      ᰀᰧᰌ true;
 }
 
-void compile_net_real(char*label, char*name, int msb, int lsb, bool local_flag,
-		      unsigned argc, struct symb_s*argv)
+void compile_net_real(var_na*label, var_na*name, puur_naa_nka msb, puur_naa_nka lsb, bool local_flag,
+		      unsigned argc, sa_nracanaa symb_s*argv)
 {
       __compile_real(label, name, 0, 0,
                      msb, lsb, local_flag, argc, argv);
 }
 
-void compile_netw_real(char*label, char*array_label, unsigned long array_addr,
-                       int msb, int lsb,
-                       unsigned argc, struct symb_s*argv)
+void compile_netw_real(var_na*label, var_na*array_label, unsigned long array_addr,
+                       puur_naa_nka msb, puur_naa_nka lsb,
+                       unsigned argc, sa_nracanaa symb_s*argv)
 {
       __compile_real(label, 0, array_label, array_addr,
                      msb, lsb, false, argc, argv);

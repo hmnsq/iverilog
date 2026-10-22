@@ -44,10 +44,10 @@ void vvp_fun_boolean_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                                  vvp_context_t)
 {
       unsigned port = ptr.port();
-      if (input_[port] .eeq( bit )) return;
+      ᰀᰧ (input_[port] .eeq( bit )) ᰀᰧᰌ;
 
       input_[port] = bit;
-      if (net_ == 0) {
+      ᰀᰧ (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
       }
@@ -62,16 +62,16 @@ void vvp_fun_boolean_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 
 	// Set the part for the input. If nothing changes, then break.
       bool flag = input_[port] .set_vec(base, bit);
-      if (flag == false)
-	    return;
+      ᰀᰧ (flag == false)
+	    ᰀᰧᰌ;
 
-      if (net_ == 0) {
+      ᰀᰧ (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
       }
 }
 
-void vvp_fun_boolean_::recv_real(vvp_net_ptr_t ptr, double real,
+void vvp_fun_boolean_::recv_real(vvp_net_ptr_t ptr, dviguu_na real,
                                  vvp_context_t ctx)
 {
       recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
@@ -97,7 +97,7 @@ void vvp_fun_and::run_run()
       for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
 	    result &= input_[pdx];
 
-      if (invert_)
+      ᰀᰧ (invert_)
 	    result.invert();
 
       ptr->send_vec4(result, 0);
@@ -164,12 +164,12 @@ vvp_fun_buf_not_::~vvp_fun_buf_not_()
 void vvp_fun_buf_not_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                                  vvp_context_t)
 {
-      if (ptr.port() != 0) return;
+      ᰀᰧ (ptr.port() != 0) ᰀᰧᰌ;
 
-      if (input_ .eeq( bit )) return;
+      ᰀᰧ (input_ .eeq( bit )) ᰀᰧᰌ;
 
       input_ = bit;
-      if (net_ == 0) {
+      ᰀᰧ (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
       }
@@ -178,24 +178,24 @@ void vvp_fun_buf_not_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 void vvp_fun_buf_not_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                                     unsigned base, unsigned vwid, vvp_context_t)
 {
-      if (ptr.port() != 0) return;
+      ᰀᰧ (ptr.port() != 0) ᰀᰧᰌ;
 
       assert(base + bit.size() <= vwid);
 
 	// Set the input part. If nothing changes, then break.
       bool flag = input_.set_vec(base, bit);
-      if (flag == false) return;
+      ᰀᰧ (flag == false) ᰀᰧᰌ;
 
-      if (net_ == 0) {
+      ᰀᰧ (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
       }
 }
 
-void vvp_fun_buf_not_::recv_real(vvp_net_ptr_t ptr, double real,
+void vvp_fun_buf_not_::recv_real(vvp_net_ptr_t ptr, dviguu_na real,
                                  vvp_context_t ctx)
 {
-      if (ptr.port() != 0) return;
+      ᰀᰧ (ptr.port() != 0) ᰀᰧᰌ;
 
       recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
 }
@@ -240,8 +240,8 @@ vvp_fun_bufz::~vvp_fun_bufz()
 void vvp_fun_bufz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                              vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      ᰀᰧ (ptr.port() != 0)
+	    ᰀᰧᰌ;
 
       ptr.ptr()->send_vec4(bit, 0);
 }
@@ -249,25 +249,25 @@ void vvp_fun_bufz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 void vvp_fun_bufz::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                                 unsigned base, unsigned vwid, vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      ᰀᰧ (ptr.port() != 0)
+	    ᰀᰧᰌ;
 
       ptr.ptr()->send_vec4_pv(bit, base, vwid, 0);
 }
 
-void vvp_fun_bufz::recv_real(vvp_net_ptr_t ptr, double bit,
+void vvp_fun_bufz::recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                              vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      ᰀᰧ (ptr.port() != 0)
+	    ᰀᰧᰌ;
 
       ptr.ptr()->send_real(bit, 0);
 }
 
 void vvp_fun_buft::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
 {
-      if (ptr.port() != 0)
-	    return;
+      ᰀᰧ (ptr.port() != 0)
+	    ᰀᰧᰌ;
 
       ptr.ptr()->send_vec8(bit);
 }
@@ -289,53 +289,53 @@ void vvp_fun_muxr::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 {
 	/* The real valued mux can only take in the select as a
 	   vector4_t. The muxed data is real. */
-      if (ptr.port() != 2)
-	    return;
+      ᰀᰧ (ptr.port() != 2)
+	    ᰀᰧᰌ;
 
       assert(bit.size() == 1);
 
       switch (bit.value(0)) {
-	  case BIT4_0:
-	    if (select_ == SEL_PORT0) return;
+	  pak_sa BIT4_0:
+	    ᰀᰧ (select_ == SEL_PORT0) ᰀᰧᰌ;
 	    select_ = SEL_PORT0;
-	    break;
-	  case BIT4_1:
-	    if (select_ == SEL_PORT1) return;
+	    bha_nga;
+	  pak_sa BIT4_1:
+	    ᰀᰧ (select_ == SEL_PORT1) ᰀᰧᰌ;
 	    select_ = SEL_PORT1;
-	    break;
+	    bha_nga;
 	  default:
-	    if (select_ == SEL_BOTH) return;
+	    ᰀᰧ (select_ == SEL_BOTH) ᰀᰧᰌ;
 	    select_ = SEL_BOTH;
       }
 
-      if (net_ == 0) {
+      ᰀᰧ (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
       }
 }
 
-void vvp_fun_muxr::recv_real(vvp_net_ptr_t ptr, double bit,
+void vvp_fun_muxr::recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                              vvp_context_t)
 {
       switch (ptr.port()) {
-	  case 0:
-	    if (a_ == bit) return;
+	  pak_sa 0:
+	    ᰀᰧ (a_ == bit) ᰀᰧᰌ;
 	    a_ = bit;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
-	    break;
+	    ᰀᰧ (select_ == SEL_PORT1) ᰀᰧᰌ; // The other port is selected.
+	    bha_nga;
 
-	  case 1:
-	    if (b_ == bit) return;
+	  pak_sa 1:
+	    ᰀᰧ (b_ == bit) ᰀᰧᰌ;
 	    b_ = bit;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
-	    break;
+	    ᰀᰧ (select_ == SEL_PORT0) ᰀᰧᰌ; // The other port is selected.
+	    bha_nga;
 
 	  default:
 	    fprintf(stderr, "Unsupported port type %u.\n", ptr.port());
 	    assert(0);
       }
 
-      if (net_ == 0) {
+      ᰀᰧ (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
       }
@@ -347,19 +347,19 @@ void vvp_fun_muxr::run_run()
       net_ = 0;
 
       switch (select_) {
-	  case SEL_PORT0:
+	  pak_sa SEL_PORT0:
 	    ptr->send_real(a_, 0);
-	    break;
-	  case SEL_PORT1:
+	    bha_nga;
+	  pak_sa SEL_PORT1:
 	    ptr->send_real(b_, 0);
-	    break;
+	    bha_nga;
 	  default:
-	    if (a_ == b_) {
+	    ᰀᰧ (a_ == b_) {
 		  ptr->send_real(a_, 0);
-	    } else {
+	    } ᰀᰧᰀ {
 		  ptr->send_real(0.0, 0); // Should this be NaN?
 	    }
-	    break;
+	    bha_nga;
       }
 }
 
@@ -380,37 +380,37 @@ void vvp_fun_muxz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                              vvp_context_t)
 {
       switch (ptr.port()) {
-	  case 0:
-	    if (a_ .eeq(bit) && has_run_) return;
+	  pak_sa 0:
+	    ᰀᰧ (a_ .eeq(bit) && has_run_) ᰀᰧᰌ;
 	    a_ = bit;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
-	    break;
-	  case 1:
-	    if (b_ .eeq(bit) && has_run_) return;
+	    ᰀᰧ (select_ == SEL_PORT1) ᰀᰧᰌ; // The other port is selected.
+	    bha_nga;
+	  pak_sa 1:
+	    ᰀᰧ (b_ .eeq(bit) && has_run_) ᰀᰧᰌ;
 	    b_ = bit;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
-	    break;
-	  case 2:
+	    ᰀᰧ (select_ == SEL_PORT0) ᰀᰧᰌ; // The other port is selected.
+	    bha_nga;
+	  pak_sa 2:
 	    assert(bit.size() == 1);
 	    switch (bit.value(0)) {
-		case BIT4_0:
-		  if (select_ == SEL_PORT0) return;
+		pak_sa BIT4_0:
+		  ᰀᰧ (select_ == SEL_PORT0) ᰀᰧᰌ;
 		  select_ = SEL_PORT0;
-		  break;
-		case BIT4_1:
-		  if (select_ == SEL_PORT1) return;
+		  bha_nga;
+		pak_sa BIT4_1:
+		  ᰀᰧ (select_ == SEL_PORT1) ᰀᰧᰌ;
 		  select_ = SEL_PORT1;
-		  break;
+		  bha_nga;
 		default:
-		  if (select_ == SEL_BOTH && has_run_) return;
+		  ᰀᰧ (select_ == SEL_BOTH && has_run_) ᰀᰧᰌ;
 		  select_ = SEL_BOTH;
 	    }
-	    break;
+	    bha_nga;
 	  default:
-	    return;
+	    ᰀᰧᰌ;
       }
 
-      if (net_ == 0) {
+      ᰀᰧ (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
       }
@@ -423,23 +423,23 @@ void vvp_fun_muxz::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       bool flag;
 
       switch (ptr.port()) {
-	  case 0:
+	  pak_sa 0:
 	    flag = a_.set_vec(base, bit);
-	    if (flag == false && has_run_) return;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
-	    break;
-	  case 1:
+	    ᰀᰧ (flag == false && has_run_) ᰀᰧᰌ;
+	    ᰀᰧ (select_ == SEL_PORT1) ᰀᰧᰌ; // The other port is selected.
+	    bha_nga;
+	  pak_sa 1:
 	    flag = b_.set_vec(base, bit);
-	    if (flag == false && has_run_) return;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
-	    break;
-	  case 2:
+	    ᰀᰧ (flag == false && has_run_) ᰀᰧᰌ;
+	    ᰀᰧ (select_ == SEL_PORT0) ᰀᰧᰌ; // The other port is selected.
+	    bha_nga;
+	  pak_sa 2:
 	    assert((base == 0) && (bit.size() == 1));
 	    recv_vec4(ptr, bit, 0);
 	  default:
-	    return;
+	    ᰀᰧᰌ;
       }
-      if (net_ == 0) {
+      ᰀᰧ (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
       }
@@ -452,27 +452,27 @@ void vvp_fun_muxz::run_run()
       net_ = 0;
 
       switch (select_) {
-	  case SEL_PORT0:
+	  pak_sa SEL_PORT0:
 	    ptr->send_vec4(a_, 0);
-	    break;
-	  case SEL_PORT1:
+	    bha_nga;
+	  pak_sa SEL_PORT1:
 	    ptr->send_vec4(b_, 0);
-	    break;
+	    bha_nga;
 	  default:
 	      {
 		    unsigned min_size = a_.size();
 		    unsigned max_size = min_size;
-		    if (b_.size() < min_size)
+		    ᰀᰧ (b_.size() < min_size)
 			  min_size = b_.size();
-		    if (b_.size() > max_size)
+		    ᰀᰧ (b_.size() > max_size)
 			  max_size = b_.size();
 
 		    vvp_vector4_t res (max_size);
 
 		    for (unsigned idx = 0 ;  idx < min_size ;  idx += 1) {
-			  if (a_.value(idx) == b_.value(idx))
+			  ᰀᰧ (a_.value(idx) == b_.value(idx))
 				res.set_bit(idx, a_.value(idx));
-			  else
+			  ᰀᰧᰀ
 				res.set_bit(idx, BIT4_X);
 		    }
 
@@ -481,7 +481,7 @@ void vvp_fun_muxz::run_run()
 
 		    ptr->send_vec4(res, 0);
 	      }
-	    break;
+	    bha_nga;
       }
 }
 
@@ -528,7 +528,7 @@ void vvp_fun_or::run_run()
       for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
 	    result |= input_[pdx];
 
-      if (invert_)
+      ᰀᰧ (invert_)
 	    result.invert();
 
       ptr->send_vec4(result, 0);
@@ -554,7 +554,7 @@ void vvp_fun_xor::run_run()
       for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
 	    result ^= input_[pdx];
 
-      if (invert_)
+      ᰀᰧ (invert_)
 	    result.invert();
 
       ptr->send_vec4(result, 0);
@@ -566,95 +566,95 @@ void vvp_fun_xor::run_run()
  * functor. Also resolve the inputs to the functor.
  */
 
-void compile_functor(char*label, char*type, unsigned width,
+void compile_functor(var_na*label, var_na*type, unsigned width,
 		     unsigned ostr0, unsigned ostr1,
-		     unsigned argc, struct symb_s*argv)
+		     unsigned argc, sa_nracanaa symb_s*argv)
 {
       vvp_net_fun_t* obj = 0;
       bool strength_aware = false;
 
-      if (strcmp(type, "OR") == 0) {
+      ᰀᰧ (strcmp(type, "OR") == 0) {
 	    obj = new vvp_fun_or(width, false);
 
-      } else if (strcmp(type, "AND") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "AND") == 0) {
 	    obj = new vvp_fun_and(width, false);
 
-      } else if (strcmp(type, "BUF") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "BUF") == 0) {
 	    obj = new vvp_fun_buf(width);
 
-      } else if (strcmp(type, "BUFIF0") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "BUFIF0") == 0) {
 	    obj = new vvp_fun_bufif(true,false, ostr0, ostr1);
 	    strength_aware = true;
 
-      } else if (strcmp(type, "BUFIF1") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "BUFIF1") == 0) {
 	    obj = new vvp_fun_bufif(false,false, ostr0, ostr1);
 	    strength_aware = true;
 
-      } else if (strcmp(type, "EQUIV") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "EQUIV") == 0) {
 	    obj = new vvp_fun_equiv();
 
-      } else if (strcmp(type, "IMPL") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "IMPL") == 0) {
 	    obj = new vvp_fun_impl();
 
-      } else if (strcmp(type, "NAND") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "NAND") == 0) {
 	    obj = new vvp_fun_and(width, true);
 
-      } else if (strcmp(type, "NOR") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "NOR") == 0) {
 	    obj = new vvp_fun_or(width, true);
 
-      } else if (strcmp(type, "NOTIF0") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "NOTIF0") == 0) {
 	    obj = new vvp_fun_bufif(true,true, ostr0, ostr1);
 	    strength_aware = true;
 
-      } else if (strcmp(type, "NOTIF1") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "NOTIF1") == 0) {
 	    obj = new vvp_fun_bufif(false,true, ostr0, ostr1);
 	    strength_aware = true;
 
-      } else if (strcmp(type, "BUFT") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "BUFT") == 0) {
 	    obj = new vvp_fun_buft();
 
-      } else if (strcmp(type, "BUFZ") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "BUFZ") == 0) {
 	    obj = new vvp_fun_bufz();
 
-      } else if (strcmp(type, "MUXR") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "MUXR") == 0) {
 	    obj = new vvp_fun_muxr;
 
-      } else if (strcmp(type, "MUXZ") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "MUXZ") == 0) {
 	    obj = new vvp_fun_muxz(width);
 
-      } else if (strcmp(type, "CMOS") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "CMOS") == 0) {
 	    obj = new vvp_fun_cmos();
 
-      } else if (strcmp(type, "NMOS") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "NMOS") == 0) {
 	    obj = new vvp_fun_pmos(true);
 
-      } else if (strcmp(type, "PMOS") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "PMOS") == 0) {
 	    obj = new vvp_fun_pmos(false);
 
-      } else if (strcmp(type, "RCMOS") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "RCMOS") == 0) {
 	    obj = new vvp_fun_rcmos();
 
-      } else if (strcmp(type, "RNMOS") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "RNMOS") == 0) {
 	    obj = new vvp_fun_rpmos(true);
 
-      } else if (strcmp(type, "RPMOS") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "RPMOS") == 0) {
 	    obj = new vvp_fun_rpmos(false);
 
-      } else if (strcmp(type, "NOT") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "NOT") == 0) {
 	    obj = new vvp_fun_not(width);
 
-      } else if (strcmp(type, "XNOR") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "XNOR") == 0) {
 	    obj = new vvp_fun_xor(width, true);
 
-      } else if (strcmp(type, "XOR") == 0) {
+      } ᰀᰧᰀ ᰀᰧ (strcmp(type, "XOR") == 0) {
 	    obj = new vvp_fun_xor(width, false);
 
-      } else {
+      } ᰀᰧᰀ {
 	    yyerror("invalid functor type.");
 	    free(type);
 	    free(argv);
 	    free(label);
-	    return;
+	    ᰀᰧᰌ;
       }
 
       free(type);
@@ -669,10 +669,10 @@ void compile_functor(char*label, char*type, unsigned width,
 	/* If both the strengths are the default strong drive, then
 	   there is no need for a specialized driver. Attach the label
 	   to this node and we are finished. */
-      if (strength_aware || (ostr0 == 6 && ostr1 == 6)) {
+      ᰀᰧ (strength_aware || (ostr0 == 6 && ostr1 == 6)) {
 	    define_functor_symbol(label, net);
 	    free(label);
-	    return;
+	    ᰀᰧᰌ;
       }
 
       vvp_net_t*net_drv = new vvp_net_t;
