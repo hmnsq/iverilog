@@ -1,5 +1,5 @@
-#ifndef IVL_symbols_H
-#define IVL_symbols_H
+#که_نه_تعریف_شوی IVL_symbols_H
+#تعریف_کړه IVL_symbols_H
 /*
  * Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)
  *
@@ -43,41 +43,41 @@
  * try to look inside. The actual implementation is given in the
  * symbols.cc source file.
  */
-typedef class symbol_table_s *symbol_table_t;
+تعريفنوع class نښه_جدول_s *نښه_جدول_t;
 
-typedef struct symbol_value_s {
-      union {
+تعريفنوع بنية نښه_ارزښت_s {
+      اتحاد {
 	    vvp_net_t*net;
-	    void*ptr;
+	    فراغ*ptr;
       };
-} symbol_value_t;
+} نښه_ارزښت_t;
 
 
-class symbol_table_s {
-    public:
-      explicit symbol_table_s();
-      virtual ~symbol_table_s();
-      symbol_table_s(const symbol_table_s&) = delete;
-      symbol_table_s& operator=(const symbol_table_s&) = delete;
+class نښه_جدول_s {
+    عام:
+      explicit نښه_جدول_s();
+      مجازي ~نښه_جدول_s();
+      نښه_جدول_s(ثابت نښه_جدول_s&) = delete;
+      نښه_جدول_s& چلوونکی=(ثابت نښه_جدول_s&) = delete;
 
 	// This method locates the value in the symbol table and sets its
 	// value. If the key doesn't yet exist, create it.
-      void sym_set_value(const char*key, symbol_value_t val);
+      فراغ sym_سېټ_ارزښت(ثابت حرف*کلی, نښه_ارزښت_t val);
 
 	// This method locates the value in the symbol table and returns
 	// it. If the value does not exist, create it, initialize it with
 	// zero and return the zero value.
-      symbol_value_t sym_get_value(const char*key);
+      نښه_ارزښت_t sym_get_ارزښت(ثابت حرف*کلی);
 
-    private:
-      struct tree_node_*root;
-      struct key_strings*str_chunk;
-      unsigned str_used;
+    خاص:
+      بنية ونې_غوټه*ریښه;
+      بنية کلی_مزي_ګانې*str_chunk;
+      بینښه str_کارول_شوی;
 
-      symbol_value_t find_value_(struct tree_node_*cur,
-				 const char*key, symbol_value_t val,
+      نښه_ارزښت_t پیدا_کړه_ارزښت(بنية ونې_غوټه*cur,
+				 ثابت حرف*کلی, نښه_ارزښت_t val,
 				 bool force_flag);
-      char*key_strdup_(const char*str);
+      حرف*کلی_strdup(ثابت حرف*str);
 };
 
 /*
@@ -87,32 +87,32 @@ class symbol_table_s {
  * the delete_symbol_table method will delete the table, including all
  * the space for the keys.
  */
-inline symbol_table_t new_symbol_table(void) { return new symbol_table_s; }
-inline void delete_symbol_table(symbol_table_t tbl) { delete tbl; }
+مضمن نښه_جدول_t new_نښه_جدول(فراغ) { أرجع new نښه_جدول_s; }
+مضمن فراغ delete_نښه_جدول(نښه_جدول_t tbl) { delete tbl; }
 
 // These are obsolete, and here only to support older code.
-inline void sym_set_value(symbol_table_t tbl, const char*key, symbol_value_t val)
-{ tbl->sym_set_value(key, val); }
+مضمن فراغ sym_سېټ_ارزښت(نښه_جدول_t tbl, ثابت حرف*کلی, نښه_ارزښت_t val)
+{ tbl->sym_سېټ_ارزښت(کلی, val); }
 
-inline symbol_value_t sym_get_value(symbol_table_t tbl, const char*key)
-{ return tbl->sym_get_value(key); }
+مضمن نښه_ارزښت_t sym_get_ارزښت(نښه_جدول_t tbl, ثابت حرف*کلی)
+{ أرجع tbl->sym_get_ارزښت(کلی); }
 
 /*
  * This template is a type-safe interface to the symbol table.
  */
-template <class T> class symbol_map_s : private symbol_table_s {
+کينډۍ <class T> class نښه_map_s : خاص نښه_جدول_s {
 
-    public:
-      void sym_set_value(const char*key, T*val)
-      { symbol_value_t tmp;
+    عام:
+      فراغ sym_سېټ_ارزښت(ثابت حرف*کلی, T*val)
+      { نښه_ارزښت_t tmp;
 	tmp.ptr = val;
-	symbol_table_s::sym_set_value(key, tmp);
+	نښه_جدول_s::sym_سېټ_ارزښت(کلی, tmp);
       }
 
-      T* sym_get_value(const char*key)
-      { symbol_value_t val = symbol_table_s::sym_get_value(key);
-	return reinterpret_cast<T*>(val.ptr);
+      T* sym_get_ارزښت(ثابت حرف*کلی)
+      { نښه_ارزښت_t val = نښه_جدول_s::sym_get_ارزښت(کلی);
+	أرجع reinterpret_cast<T*>(val.ptr);
       }
 };
 
-#endif /* IVL_symbols_H */
+#د_که_پای /* IVL_symbols_H */

@@ -30,7 +30,7 @@
    achieved by scheduling an initial value to be sent to port 3. Any
    value received on port 3 will propagate an initial value of 'bx. */
 
-vvp_latch::vvp_latch(unsigned width)
+vvp_latch::vvp_latch(بینښه width)
 : en_(BIT4_X), d_(width, BIT4_X)
 {
 }
@@ -39,56 +39,56 @@ vvp_latch::~vvp_latch()
 {
 }
 
-void vvp_latch::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+فراغ vvp_latch::recv_vec4(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
                           vvp_context_t)
 {
       vvp_bit4_t tmp;
 
-      switch (port.port()) {
+      بدل (پورټ.پورټ()) {
 
-	  case 0: // D
-	    d_ = bit;
-	    if (en_ == BIT4_1)
-		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	  حالة 0: // D
+	    d_ = بټ;
+	    إذا (en_ == BIT4_1)
+		  مهالوېش_propagate_ویکټور(پورټ.ptr(), 0, d_);
+	    اكسر;
 
-	  case 1: // EN
-	    assert(bit.size() == 1);
+	  حالة 1: // EN
+	    أكد(بټ.size() == 1);
 	    tmp = en_;
-	    en_ = bit.value(0);
-	    if (en_ == BIT4_1 && tmp != BIT4_1)
-		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	    en_ = بټ.value(0);
+	    إذا (en_ == BIT4_1 && tmp != BIT4_1)
+		  مهالوېش_propagate_ویکټور(پورټ.ptr(), 0, d_);
+	    اكسر;
 
-	  case 2:
-	    assert(0);
-	    break;
+	  حالة 2:
+	    أكد(0);
+	    اكسر;
 
-	  case 3:
-	    port.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
-	    break;
+	  حالة 3:
+	    پورټ.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
+	    اكسر;
       }
 }
 
-void vvp_latch::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			     unsigned base, unsigned vwid, vvp_context_t ctx)
+فراغ vvp_latch::recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بټ,
+			     بینښه بنسټ, بینښه vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, بټ, بنسټ, vwid, ctx);
 }
 
-void compile_latch(char*label, unsigned width,
-		   struct symb_s arg_d,
-		   struct symb_s arg_e)
+فراغ compile_latch(حرف*label, بینښه width,
+		   بنية symb_s arg_d,
+		   بنية symb_s arg_e)
 {
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_latch*fun = new vvp_latch(width);
+      vvp_net_t*ptr = جديد vvp_net_t;
+      vvp_latch*fun = جديد vvp_latch(width);
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_e.text);
+      define_functor_نښه(label, ptr);
+      حرر(label);
+      ننوت_connect(ptr, 0, arg_d.متن);
+      ننوت_connect(ptr, 1, arg_e.متن);
 
       vvp_vector4_t init_val = vvp_vector4_t(1, BIT4_1);
-      schedule_init_vector(vvp_net_ptr_t(ptr,3), init_val);
+      مهالوېش_init_ویکټور(vvp_net_ptr_t(ptr,3), init_val);
 }

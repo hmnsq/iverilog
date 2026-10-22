@@ -1,5 +1,5 @@
-#ifndef IVL_slab_H
-#define IVL_slab_H
+#که_نه_تعریف_شوی IVL_slab_H
+#تعریف_کړه IVL_slab_H
 /*
  * Copyright (c) 2008-2015 Picture Elements, Inc.
  *    Stephen Williams (steve@icarus.com)
@@ -23,95 +23,95 @@
 
 # include  "config.h"
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT> class slab_t {
+کينډۍ <size_t SLAB_اندازه, size_t CHUNK_شمېر> class slab_t {
 
-      union item_cell_u {
-	    item_cell_u*next;
-	    char space[SLAB_SIZE];
+      اتحاد توکی_cell_u {
+	    توکی_cell_u*بل_2;
+	    حرف space[SLAB_اندازه];
       };
 
-    public:
+    عام:
       slab_t();
 
-      void* alloc_slab();
-      void  free_slab(void*);
-#ifdef CHECK_WITH_VALGRIND
+      فراغ* alloc_slab();
+      فراغ  free_slab(فراغ*);
+#که_تعریف_شوی CHECK_WITH_VALGRIND
 	// If we have allocated memory then we need to delete it to make
 	// valgrind happy.
-      void delete_pool(void);
-#endif
+      فراغ delete_pool(فراغ);
+#د_که_پای
 
-      unsigned long pool;
+      بینښه اوږد pool;
 
-    private:
-      item_cell_u*heap_;
-      item_cell_u initial_chunk_[CHUNK_COUNT];
-#ifdef CHECK_WITH_VALGRIND
+    خاص:
+      توکی_cell_u*ډېرۍ;
+      توکی_cell_u initial_chunk_[CHUNK_شمېر];
+#که_تعریف_شوی CHECK_WITH_VALGRIND
 	// Each slab needs a pointer to the allocated space.
-      item_cell_u**slab_pool;
-      unsigned slab_pool_count;
-#endif
+      توکی_cell_u**slab_pool;
+      بینښه slab_pool_شمېر;
+#د_که_پای
 };
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-slab_t<SLAB_SIZE,CHUNK_COUNT>::slab_t()
+کينډۍ <size_t SLAB_اندازه, size_t CHUNK_شمېر>
+slab_t<SLAB_اندازه,CHUNK_شمېر>::slab_t()
 {
-      pool = CHUNK_COUNT;
-      heap_ = initial_chunk_;
-      for (unsigned idx = 0 ; idx < CHUNK_COUNT-1 ; idx += 1)
-	    initial_chunk_[idx].next = initial_chunk_+idx+1;
+      pool = CHUNK_شمېر;
+      ډېرۍ = initial_chunk_;
+      لكل (بینښه idx = 0 ; idx < CHUNK_شمېر-1 ; idx += 1)
+	    initial_chunk_[idx].بل_2 = initial_chunk_+idx+1;
 
-      initial_chunk_[CHUNK_COUNT-1].next = 0;
-#ifdef CHECK_WITH_VALGRIND
+      initial_chunk_[CHUNK_شمېر-1].بل_2 = 0;
+#که_تعریف_شوی CHECK_WITH_VALGRIND
 	// Initially we have no allocated space.
-      slab_pool = NULL;
-      slab_pool_count = 0;
-#endif
+      slab_pool = عدم;
+      slab_pool_شمېر = 0;
+#د_که_پای
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void* slab_t<SLAB_SIZE,CHUNK_COUNT>::alloc_slab()
+کينډۍ <size_t SLAB_اندازه, size_t CHUNK_شمېر>
+مضمن فراغ* slab_t<SLAB_اندازه,CHUNK_شمېر>::alloc_slab()
 {
-      if (heap_ == 0) {
-	    item_cell_u*chunk = new item_cell_u[CHUNK_COUNT];
-#ifdef CHECK_WITH_VALGRIND
-	    slab_pool_count += 1;
-	    slab_pool = static_cast<item_cell_u **>(realloc(slab_pool,
-	                slab_pool_count*sizeof(item_cell_u **)));
-	    slab_pool[slab_pool_count-1] = chunk;
-#endif
-	    for (unsigned idx = 0 ; idx < CHUNK_COUNT ; idx += 1) {
-		  chunk[idx].next = heap_;
-		  heap_ = chunk+idx;
+      إذا (ډېرۍ == 0) {
+	    توکی_cell_u*chunk = new توکی_cell_u[CHUNK_شمېر];
+#که_تعریف_شوی CHECK_WITH_VALGRIND
+	    slab_pool_شمېر += 1;
+	    slab_pool = static_cast<توکی_cell_u **>(realloc(slab_pool,
+	                slab_pool_شمېر*حجم(توکی_cell_u **)));
+	    slab_pool[slab_pool_شمېر-1] = chunk;
+#د_که_پای
+	    لكل (بینښه idx = 0 ; idx < CHUNK_شمېر ; idx += 1) {
+		  chunk[idx].بل_2 = ډېرۍ;
+		  ډېرۍ = chunk+idx;
 	    }
-	    pool += CHUNK_COUNT;
+	    pool += CHUNK_شمېر;
       }
 
-      item_cell_u*cur = heap_;
-      heap_ = heap_->next;
-      return cur;
+      توکی_cell_u*cur = ډېرۍ;
+      ډېرۍ = ډېرۍ->بل_2;
+      أرجع cur;
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::free_slab(void*ptr)
+کينډۍ <size_t SLAB_اندازه, size_t CHUNK_شمېر>
+مضمن فراغ slab_t<SLAB_اندازه,CHUNK_شمېر>::free_slab(فراغ*ptr)
 {
-      item_cell_u*cur = reinterpret_cast<item_cell_u*> (ptr);
-      cur->next = heap_;
-      heap_ = cur;
+      توکی_cell_u*cur = reinterpret_cast<توکی_cell_u*> (ptr);
+      cur->بل_2 = ډېرۍ;
+      ډېرۍ = cur;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::delete_pool(void)
+#که_تعریف_شوی CHECK_WITH_VALGRIND
+کينډۍ <size_t SLAB_اندازه, size_t CHUNK_شمېر>
+مضمن فراغ slab_t<SLAB_اندازه,CHUNK_شمېر>::delete_pool(فراغ)
 {
-      for (unsigned idx = 0; idx < slab_pool_count; idx += 1) {
+      لكل (بینښه idx = 0; idx < slab_pool_شمېر; idx += 1) {
 	    delete [] slab_pool[idx];
       }
-      free(slab_pool);
-      slab_pool = NULL;
-      slab_pool_count = 0;
+      حرر(slab_pool);
+      slab_pool = عدم;
+      slab_pool_شمېر = 0;
 }
-#endif
+#د_که_پای
 
 
-#endif /* IVL_slab_H */
+#د_که_پای /* IVL_slab_H */

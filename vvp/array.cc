@@ -25,9 +25,9 @@
 # include  "vvp_net_sig.h"
 # include  "vvp_darray.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
-#include  "vvp_cleanup.h"
-#endif
+#که_تعریف_شوی CHECK_WITH_VALGRIND
+#ضمن  "vvp_cleanup.h"
+#د_که_پای
 # include  <cstdlib>
 # include  <cstring>
 # include  <climits>
@@ -36,1041 +36,1041 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+کارول نطاق std;
 
-unsigned long count_net_arrays = 0;
-unsigned long count_net_array_words = 0;
-unsigned long count_var_arrays = 0;
-unsigned long count_var_array_words = 0;
-unsigned long count_real_arrays = 0;
-unsigned long count_real_array_words = 0;
+بینښه اوږد شمېر_net_arrays = 0;
+بینښه اوږد شمېر_net_array_ټکي = 0;
+بینښه اوږد شمېر_var_arrays = 0;
+بینښه اوږد شمېر_var_array_ټکي = 0;
+بینښه اوږد شمېر_real_arrays = 0;
+بینښه اوږد شمېر_real_array_ټکي = 0;
 
-static symbol_map_s<struct __vpiArray>* array_table =0;
+ساكن نښه_map_s<بنية __vpiArray>* array_جدول =0;
 
-class vvp_fun_arrayport;
-static void array_attach_port(vvp_array_t, vvp_fun_arrayport*);
+صنف vvp_fun_arrayport;
+ساكن فراغ array_attach_پورټ(vvp_array_t, vvp_fun_arrayport*);
 
-vvp_array_t array_find(const char*label)
+vvp_array_t array_پیدا_کړه(ثابت حرف*label)
 {
-      if (array_table == 0)
-	    return 0;
+      إذا (array_جدول == 0)
+	    أرجع 0;
 
-      vvp_array_t v = array_table->sym_get_value(label);
-      return v;
+      vvp_array_t v = array_جدول->sym_get_ارزښت(label);
+      أرجع v;
 }
 
-struct __vpiArrayVthrA : public __vpiHandle {
-      int get_type_code(void) const override { return vpiMemoryWord; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
+بنية __vpiArrayVthrA : عام __vpiHandle {
+      صحيح get_type_کوډ(فراغ) ثابت override { أرجع vpi_حافظه_کلمه; }
+      صحيح vpi_get(صحيح code) override;
+      حرف* vpi_get_str(صحيح code) override;
+      فراغ vpi_get_ارزښت(p_vpi_ارزښت val) override;
+      vpiHandle vpi_put_ارزښت(p_vpi_ارزښت val, صحيح flags) override;
+      vpiHandle vpi_handle(صحيح code) override;
 
-      struct __vpiArray*array;
+      بنية __vpiArray*array;
 	// If this is set, then use it to get the index value.
-      vpiHandle address_handle;
+      vpiHandle پته_handle;
 	// If wid==0, then address is the address into the array.
-      unsigned address;
+      بینښه پته;
 
-      unsigned get_address() const
+      بینښه get_پته() ثابت
       {
-	    if (address_handle) {
-		  s_vpi_value vp;
+	    إذا (پته_handle) {
+		  s_vpi_ارزښت vp;
 		    /* Check to see if the value is defined. */
-		  vp.format = vpiVectorVal;
-		  address_handle->vpi_get_value(&vp);
-		  int words = (address_handle->vpi_get(vpiSize)-1)/32 + 1;
-		  for(int idx = 0; idx < words; idx += 1) {
+		  vp.format = vpi_ویکټور_Val;
+		  پته_handle->vpi_get_ارزښت(&vp);
+		  صحيح ټکي = (پته_handle->vpi_get(vpi_اندازه)-1)/32 + 1;
+		  لكل(صحيح idx = 0; idx < ټکي; idx += 1) {
 			  /* Return UINT_MAX to indicate an X base. */
-			if (vp.value.vector[idx].bval != 0) return UINT_MAX;
+			إذا (vp.value.vector[idx].bval != 0) أرجع UINT_MAX;
 		  }
 		    /* The value is defined so get and return it. */
 		  vp.format = vpiIntVal;
-		  address_handle->vpi_get_value(&vp);
-		  return vp.value.integer;
+		  پته_handle->vpi_get_ارزښت(&vp);
+		  أرجع vp.value.integer;
 	    }
 
-	    return address;
+	    أرجع پته;
       }
 };
 
 
-struct __vpiArrayVthrAPV : public __vpiHandle {
-      int get_type_code(void) const override { return vpiPartSelect; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_handle(int code) override;
+بنية __vpiArrayVthrAPV : عام __vpiHandle {
+      صحيح get_type_کوډ(فراغ) ثابت override { أرجع vpiPartSelect; }
+      صحيح vpi_get(صحيح code) override;
+      حرف* vpi_get_str(صحيح code) override;
+      فراغ vpi_get_ارزښت(p_vpi_ارزښت val) override;
+      vpiHandle vpi_handle(صحيح code) override;
 
-      struct __vpiArray*array;
-      unsigned word_sel;
-      unsigned part_bit;
-      unsigned part_wid;
+      بنية __vpiArray*array;
+      بینښه کلمه_sel;
+      بینښه part_بټ;
+      بینښه part_wid;
 };
 
-bool is_net_array(vpiHandle obj)
+منطقي is_net_array(vpiHandle obj)
 {
-      struct __vpiArray*rfp = dynamic_cast<__vpiArray*> (obj);
-      assert(rfp);
+      بنية __vpiArray*rfp = dynamic_cast<__vpiArray*> (obj);
+      أكد(rfp);
 
-      if (rfp->nets != 0) return true;
-      return false;
+      إذا (rfp->nets != 0) أرجع ریښتیا;
+      أرجع خطأ;
 }
 
 // This function return true if the underlying array words are real.
-static bool vpi_array_is_real(const vvp_array_t arr)
+ساكن منطقي vpi_array_is_real(ثابت vvp_array_t arr)
 {
 	// Check to see if this is a variable/register array.
-      if (arr->vals4 != 0)  // A bit based variable/register array.
-	    return false;
+      إذا (arr->vals4 != 0)  // A bit based variable/register array.
+	    أرجع خطأ;
 
-      if (dynamic_cast<vvp_darray_real*> (arr->vals))
-	    return true;
+      إذا (dynamic_cast<vvp_darray_real*> (arr->vals))
+	    أرجع ریښتیا;
 
-      if (arr->vals != 0)
-	    return false;
+      إذا (arr->vals != 0)
+	    أرجع خطأ;
 
 	// This must be a net array so look at element 0 to find the type.
-      assert(arr->nets != 0);
-      assert(arr->get_size() > 0);
-      const struct __vpiRealVar*rsig = dynamic_cast<__vpiRealVar*>(arr->nets[0]);
-      if (rsig) {
-	    return true;
+      أكد(arr->nets != 0);
+      أكد(arr->get_اندازه() > 0);
+      ثابت بنية __vpiRealVar*rsig = dynamic_cast<__vpiRealVar*>(arr->nets[0]);
+      إذا (rsig) {
+	    أرجع ریښتیا;
       }
 
-      return false;
+      أرجع خطأ;
 }
 
-static bool vpi_array_is_string(const vvp_array_t arr)
+ساكن منطقي vpi_array_is_string(ثابت vvp_array_t arr)
 {
 	// Check to see if this is a variable/register array.
-      if (arr->vals4 != 0)  // A bit based variable/register array.
-	    return false;
+      إذا (arr->vals4 != 0)  // A bit based variable/register array.
+	    أرجع خطأ;
 
-      if (dynamic_cast<vvp_darray_string*> (arr->vals))
-	    return true;
+      إذا (dynamic_cast<vvp_darray_string*> (arr->vals))
+	    أرجع ریښتیا;
 
-      return false;
+      أرجع خطأ;
 }
 
-int __vpiArray::get_word_size() const
+صحيح __vpiArray::get_کلمه_اندازه() ثابت
 {
-      unsigned width;
+      بینښه width;
 
-      assert(get_size() > 0);
+      أكد(get_اندازه() > 0);
 	/* For a net array we need to get the width from the first element. */
-      if (nets) {
-	    assert(vals4 == 0 && vals == 0);
-	    const struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(nets[0]);
-	    assert(vsig);
-	    width = vpip_size(vsig);
+      إذا (nets) {
+	    أكد(vals4 == 0 && vals == 0);
+	    ثابت بنية __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(nets[0]);
+	    أكد(vsig);
+	    width = vpip_اندازه(vsig);
 	/* For a variable array we can get the width from vals_width. */
-      } else {
-	    assert(vals4 || vals);
-	    width = vals_width;
+      } وإلا {
+	    أكد(vals4 || vals);
+	    width = vals_پلنوالی;
       }
 
-      return width;
+      أرجع width;
 }
 
-char*__vpiArray::get_word_str(struct __vpiArrayWord*word, int code)
+حرف*__vpiArray::get_کلمه_str(بنية __vpiArrayWord*کلمه, صحيح code)
 {
-      unsigned index = word->get_index();
+      بینښه شاخص = کلمه->get_شاخص();
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      إذا (code == vpiFile) {  // Not implemented for now!
+	    أرجع simple_سېټ_rbuf_str(file_نومونه[0]);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%d", (int)index + first_addr.get_value());
-      return generic_get_str(code, get_scope(), name, sidx);
+      حرف sidx [64];
+      snprintf(sidx, 63, "%d", (صحيح)شاخص + لومړی_addr.get_ارزښت());
+      أرجع generic_get_str(code, get_scope(), name, sidx);
 }
 
-void __vpiArray::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
+فراغ __vpiArray::get_کلمه_ارزښت(بنية __vpiArrayWord*کلمه, p_vpi_ارزښت vp)
 {
-      unsigned index = word->get_index();
+      بینښه شاخص = کلمه->get_شاخص();
 
     // Determine the appropriate format (The Verilog PLI Handbook 5.2.10)
-      if(vp->format == vpiObjTypeVal) {
-          if(vpi_array_is_real(this))
+      إذا(vp->format == vpiObjTypeVal) {
+          إذا(vpi_array_is_real(هذا))
               vp->format = vpiRealVal;
-          else if(vpi_array_is_string(this))
+          وإلا إذا(vpi_array_is_string(هذا))
               vp->format = vpiStringVal;
-          else
+          وإلا
               vp->format = vpiIntVal;
       }
 
-      if(vals4) {
-          vpip_vec4_get_value(vals4->get_word(index),
+      إذا(vals4) {
+          vpip_vec4_get_ارزښت(vals4->get_کلمه(شاخص),
                               vals4->width(), signed_flag, vp);
-      } else if(vals) {
-          switch(vp->format) {
-            case vpiBinStrVal:
-            case vpiOctStrVal:
-            case vpiDecStrVal:
-            case vpiHexStrVal:
-            case vpiScalarVal:
-            case vpiIntVal:
-            case vpiVectorVal:
+      } وإلا إذا(vals) {
+          بدل(vp->format) {
+            حالة vpiBinStrVal:
+            حالة vpiOctStrVal:
+            حالة vpiDecStrVal:
+            حالة vpiHexStrVal:
+            حالة vpiScalarVal:
+            حالة vpiIntVal:
+            حالة vpi_ویکټور_Val:
             {
                 vvp_vector4_t v;
-                vals->get_word(index, v);
-                vpip_vec4_get_value(v, vals_width, signed_flag, vp);
+                vals->get_کلمه(شاخص, v);
+                vpip_vec4_get_ارزښت(v, vals_پلنوالی, signed_flag, vp);
             }
-            break;
+            اكسر;
 
-            case vpiRealVal:
+            حالة vpiRealVal:
             {
-                double d;
-                vals->get_word(index, d);
-                vpip_real_get_value(d, vp);
+                مزدوج d;
+                vals->get_کلمه(شاخص, d);
+                vpip_real_get_ارزښت(d, vp);
             }
-            break;
+            اكسر;
 
-            case vpiStringVal:
+            حالة vpiStringVal:
             {
                 string s;
-                vals->get_word(index, s);
-                vpip_string_get_value(s, vp);
+                vals->get_کلمه(شاخص, s);
+                vpip_string_get_ارزښت(s, vp);
             }
-            break;
+            اكسر;
 
-            default:
+            افتراضي:
                 fprintf(stderr, "vpi sorry: format is not implemented\n");
-                assert(false);
+                أكد(خطأ);
           }
       }
 }
 
-void __vpiArray::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int)
+فراغ __vpiArray::put_کلمه_ارزښت(بنية __vpiArrayWord*کلمه, p_vpi_ارزښت vp, صحيح)
 {
-      unsigned index = word->get_index();
-      vvp_vector4_t val = vec4_from_vpi_value(vp, vals_width);
-      set_word(index, 0, val);
+      بینښه شاخص = کلمه->get_شاخص();
+      vvp_vector4_t val = vec4_from_vpi_ارزښت(vp, vals_پلنوالی);
+      سېټ_کلمه(شاخص, 0, val);
 }
 
-vpiHandle __vpiArray::get_iter_index(struct __vpiArrayIterator*, int idx)
+vpiHandle __vpiArray::get_iter_شاخص(بنية __vpiArrayIterator*, صحيح idx)
 {
-      if (nets) return nets[idx];
+      إذا (nets) أرجع nets[idx];
 
-      assert(vals4 || vals);
+      أكد(vals4 || vals);
 
-      if (vals_words == 0) make_vals_words();
+      إذا (vals_ټکي == 0) make_vals_ټکي();
 
-      return &(vals_words[idx].as_word);
+      أرجع &(vals_ټکي[idx].as_کلمه);
 }
 
-int __vpiArray::vpi_get(int code)
+صحيح __vpiArray::vpi_get(صحيح code)
 {
-      switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+      بدل (code) {
+	  حالة vpi_کرښه_No:
+	    أرجع 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return get_size();
+	  حالة vpi_اندازه:
+	    أرجع get_اندازه();
 
-	  case vpiAutomatic:
-	    return scope->is_automatic()? 1 : 0;
+	  حالة vpiAutomatic:
+	    أرجع scope->is_automatic()? 1 : 0;
 
-	  default:
-	    return 0;
+	  افتراضي:
+	    أرجع 0;
       }
 }
 
-char* __vpiArray::vpi_get_str(int code)
+حرف* __vpiArray::vpi_get_str(صحيح code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      إذا (code == vpiFile) {  // Not implemented for now!
+            أرجع simple_سېټ_rbuf_str(file_نومونه[0]);
       }
 
-      return generic_get_str(code, scope, name, NULL);
+      أرجع generic_get_str(code, scope, name, عدم);
 }
 
-vpiHandle __vpiArray::vpi_handle(int code)
+vpiHandle __vpiArray::vpi_handle(صحيح code)
 {
-      switch (code) {
-          case vpiLeftRange:
-            if (swap_addr) return &last_addr;
-            else return &first_addr;
+      بدل (code) {
+          حالة vpi_کیڼ_Range:
+            إذا (بدلون_addr) أرجع &وروستی_addr;
+            وإلا أرجع &لومړی_addr;
 
-          case vpiRightRange:
-            if (swap_addr) return &first_addr;
-            else return &last_addr;
+          حالة vpi_ښی_Range:
+            إذا (بدلون_addr) أرجع &لومړی_addr;
+            وإلا أرجع &وروستی_addr;
 
-	  case vpiScope:
-	    return scope;
+	  حالة vpiScope:
+	    أرجع scope;
 
-	  case vpiModule:
-	    return vpip_module(scope);
+	  حالة vpiModule:
+	    أرجع vpip_module(scope);
       }
 
-      return 0;
+      أرجع 0;
 }
 
 /*
 * VPI code passes indices that are not yet converted to canonical
 * form, so this index function does it here.
 */
-vpiHandle __vpiArray::vpi_index(int index)
+vpiHandle __vpiArray::vpi_شاخص(صحيح شاخص)
 {
-      index -= first_addr.get_value();
-      if (index >= (long) get_size())
-	    return 0;
-      if (index < 0)
-	    return 0;
+      شاخص -= لومړی_addr.get_ارزښت();
+      إذا (شاخص >= (اوږد) get_اندازه())
+	    أرجع 0;
+      إذا (شاخص < 0)
+	    أرجع 0;
 
-      if (nets != 0) {
-	    return nets[index];
+      إذا (nets != 0) {
+	    أرجع nets[شاخص];
       }
 
-      if (vals_words == 0)
-	    make_vals_words();
+      إذا (vals_ټکي == 0)
+	    make_vals_ټکي();
 
-      return &(vals_words[index].as_word);
+      أرجع &(vals_ټکي[شاخص].as_کلمه);
 }
 
-int __vpiArrayWord::as_word_t::vpi_get(int code)
+صحيح __vpiArrayWord::as_کلمه_t::vpi_get(صحيح code)
 {
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
-      assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
-      t_vpi_value val;
+      بنية __vpiArrayWord*obj = array_var_کلمه_from_handle(هذا);
+      أكد(obj);
+      بنية __vpiArrayBase*my_پلار = obj->get_پلار();
+      t_vpi_ارزښت val;
 
-      switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+      بدل (code) {
+	  حالة vpi_کرښه_No:
+	    أرجع 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return my_parent->get_word_size();
+	  حالة vpi_اندازه:
+	    أرجع my_پلار->get_کلمه_اندازه();
 
-	  case vpiLeftRange:
+	  حالة vpi_کیڼ_Range:
             val.format = vpiIntVal;
-	    my_parent->get_left_range()->vpi_get_value(&val);
-            assert(val.format == vpiIntVal);
-            return val.value.integer;
+	    my_پلار->get_کیڼ_range()->vpi_get_ارزښت(&val);
+            أكد(val.format == vpiIntVal);
+            أرجع val.value.integer;
 
-	  case vpiRightRange:
+	  حالة vpi_ښی_Range:
             val.format = vpiIntVal;
-	    my_parent->get_right_range()->vpi_get_value(&val);
-            assert(val.format == vpiIntVal);
-            return val.value.integer;
+	    my_پلار->get_ښی_range()->vpi_get_ارزښت(&val);
+            أكد(val.format == vpiIntVal);
+            أرجع val.value.integer;
 
-	  case vpiIndex:
+	  حالة vpi_شاخص_2:
 	    {
-		  int base_offset = 0;
-		  struct __vpiArray*base = dynamic_cast<__vpiArray*> (my_parent);
-		  if (base) {
+		  صحيح بنسټ_دننه_واټن = 0;
+		  بنية __vpiArray*بنسټ = dynamic_cast<__vpiArray*> (my_پلار);
+		  إذا (بنسټ) {
 			val.format = vpiIntVal;
-			base->first_addr.vpi_get_value(&val);
-			base_offset += val.value.integer;
+			بنسټ->لومړی_addr.vpi_get_ارزښت(&val);
+			بنسټ_دننه_واټن += val.value.integer;
 		  }
 		  val.format = vpiIntVal;
-		  obj->as_index.vpi_get_value(&val);
-		  assert(val.format == vpiIntVal);
-		  return val.value.integer + base_offset;
+		  obj->as_شاخص.vpi_get_ارزښت(&val);
+		  أكد(val.format == vpiIntVal);
+		  أرجع val.value.integer + بنسټ_دننه_واټن;
 	    }
 
-	  case vpiAutomatic:
-	    return my_parent->get_scope()->is_automatic()? 1 : 0;
+	  حالة vpiAutomatic:
+	    أرجع my_پلار->get_scope()->is_automatic()? 1 : 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiNoThr;
-#endif
+#إذا defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  حالة _vpiFromThr:
+	    أرجع _vpiNoThr;
+#د_که_پای
 
-	  default:
-	    return 0;
+	  افتراضي:
+	    أرجع 0;
       }
 }
 
 
-int __vpiArrayVthrA::vpi_get(int code)
+صحيح __vpiArrayVthrA::vpi_get(صحيح code)
 {
-      switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+      بدل (code) {
+	  حالة vpi_کرښه_No:
+	    أرجع 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return array->get_word_size();
+	  حالة vpi_اندازه:
+	    أرجع array->get_کلمه_اندازه();
 
-	  case vpiLeftRange:
-	    return array->msb.get_value();
+	  حالة vpi_کیڼ_Range:
+	    أرجع array->msb.get_ارزښت();
 
-	  case vpiRightRange:
-	    return array->lsb.get_value();
+	  حالة vpi_ښی_Range:
+	    أرجع array->lsb.get_ارزښت();
 
-	  case vpiIndex:
-	    return (int)get_address() + array->first_addr.get_value();
+	  حالة vpi_شاخص_2:
+	    أرجع (صحيح)get_پته() + array->لومړی_addr.get_ارزښت();
 
-	  case vpiAutomatic:
-	    return array->get_scope()->is_automatic() ? 1 : 0;
+	  حالة vpiAutomatic:
+	    أرجع array->get_scope()->is_automatic() ? 1 : 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpi_at_A;
-#endif
+#إذا defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  حالة _vpiFromThr:
+	    أرجع _vpi_at_A;
+#د_که_پای
 
 	  // If address_handle is not zero we definitely have a
 	  // variable.
-	  case vpiConstantSelect:
-	    return address_handle == 0;
+	  حالة vpiConstantSelect:
+	    أرجع پته_handle == 0;
 
-	  default:
-	    return 0;
+	  افتراضي:
+	    أرجع 0;
       }
 }
 
-char* __vpiArrayVthrA::vpi_get_str(int code)
+حرف* __vpiArrayVthrA::vpi_get_str(صحيح code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      إذا (code == vpiFile) {  // Not implemented for now!
+            أرجع simple_سېټ_rbuf_str(file_نومونه[0]);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%d", (int)get_address() + array->first_addr.get_value());
-      return generic_get_str(code, array->get_scope(), array->name, sidx);
+      حرف sidx [64];
+      snprintf(sidx, 63, "%d", (صحيح)get_پته() + array->لومړی_addr.get_ارزښت());
+      أرجع generic_get_str(code, array->get_scope(), array->name, sidx);
 }
 
-void __vpiArrayVthrA::vpi_get_value(p_vpi_value vp)
+فراغ __vpiArrayVthrA::vpi_get_ارزښت(p_vpi_ارزښت vp)
 {
-      assert(array);
+      أكد(array);
 
-      unsigned index = get_address();
-      if (vpi_array_is_real(array)) {
-	    double tmp = array->get_word_r(index);
-	    vpip_real_get_value(tmp, vp);
-      } else if (vpi_array_is_string(array)) {
-	    string tmp = array->get_word_str(index);
-	    vpip_string_get_value(tmp, vp);
-      } else {
-	    vvp_vector4_t tmp = array->get_word(index);
-	    unsigned width = array->get_word_size();
-	    vpip_vec4_get_value(tmp, width, array->signed_flag, vp);
-      }
-}
-
-vpiHandle __vpiArrayVthrA::vpi_put_value(p_vpi_value vp, int)
-{
-      unsigned index = get_address();
-
-      assert(array);
-      assert(index < array->get_size());
-
-      if (vpi_array_is_real(array)) {
-	    double val = real_from_vpi_value(vp);
-	    array->set_word(index, val);
-      } else {
-	    unsigned width = array->get_word_size();
-	    vvp_vector4_t val = vec4_from_vpi_value(vp, width);
-	    array->set_word(index, 0, val);
-      }
-
-      return this;
-}
-
-vpiHandle __vpiArrayVthrA::vpi_handle(int code)
-{
-      switch (code) {
-	  case vpiIndex:
-	    break;  // Not implemented!
-
-	  case vpiLeftRange:
-	    return &array->msb;
-
-	  case vpiRightRange:
-	    return &array->lsb;
-
-	  case vpiParent:
-	  case vpiArray:
-	    return array;
-
-	  case vpiScope:
-	    return array->get_scope();
-
-	  case vpiModule:
-	    return vpip_module(array->get_scope());
-      }
-
-      return 0;
-}
-
-
-int __vpiArrayVthrAPV::vpi_get(int code)
-{
-      switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
-
-	  case vpiSize:
-	    return part_wid;
-
-	  case vpiLeftRange:
-	    return part_bit + part_wid - 1;
-
-	  case vpiRightRange:
-	    return part_bit;
-
-	  case vpiAutomatic:
-	    return array->get_scope()->is_automatic() ? 1 : 0;
-
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpi_at_APV;
-#endif
-
-	  case vpiConstantSelect:
-	    return 1;
-
-	  default:
-	    return 0;
+      بینښه شاخص = get_پته();
+      إذا (vpi_array_is_real(array)) {
+	    مزدوج tmp = array->get_کلمه_r(شاخص);
+	    vpip_real_get_ارزښت(tmp, vp);
+      } وإلا إذا (vpi_array_is_string(array)) {
+	    string tmp = array->get_کلمه_str(شاخص);
+	    vpip_string_get_ارزښت(tmp, vp);
+      } وإلا {
+	    vvp_vector4_t tmp = array->get_کلمه(شاخص);
+	    بینښه width = array->get_کلمه_اندازه();
+	    vpip_vec4_get_ارزښت(tmp, width, array->signed_flag, vp);
       }
 }
 
-char* __vpiArrayVthrAPV::vpi_get_str(int code)
+vpiHandle __vpiArrayVthrA::vpi_put_ارزښت(p_vpi_ارزښت vp, صحيح)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      بینښه شاخص = get_پته();
+
+      أكد(array);
+      أكد(شاخص < array->get_اندازه());
+
+      إذا (vpi_array_is_real(array)) {
+	    مزدوج val = real_from_vpi_ارزښت(vp);
+	    array->سېټ_کلمه(شاخص, val);
+      } وإلا {
+	    بینښه width = array->get_کلمه_اندازه();
+	    vvp_vector4_t val = vec4_from_vpi_ارزښت(vp, width);
+	    array->سېټ_کلمه(شاخص, 0, val);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%u", word_sel + array->first_addr.get_value());
-      return generic_get_str(code, array->get_scope(), array->name, sidx);
+      أرجع هذا;
 }
 
-void __vpiArrayVthrAPV::vpi_get_value(p_vpi_value vp)
+vpiHandle __vpiArrayVthrA::vpi_handle(صحيح code)
 {
-      assert(array);
+      بدل (code) {
+	  حالة vpi_شاخص_2:
+	    اكسر;  // Not implemented!
 
-      unsigned index = word_sel;
-      if (vpi_array_is_real(array)) {
-	    double tmp = array->get_word_r(index);
-	    vpip_real_get_value(tmp, vp);
-      } else {
-	    vvp_vector4_t tmp = array->get_word(index);
-	    tmp = tmp.subvalue(part_bit, part_wid);
-	    vpip_vec4_get_value(tmp, part_wid, false, vp);
+	  حالة vpi_کیڼ_Range:
+	    أرجع &array->msb;
+
+	  حالة vpi_ښی_Range:
+	    أرجع &array->lsb;
+
+	  حالة vpi_پلار:
+	  حالة vpiArray:
+	    أرجع array;
+
+	  حالة vpiScope:
+	    أرجع array->get_scope();
+
+	  حالة vpiModule:
+	    أرجع vpip_module(array->get_scope());
+      }
+
+      أرجع 0;
+}
+
+
+صحيح __vpiArrayVthrAPV::vpi_get(صحيح code)
+{
+      بدل (code) {
+	  حالة vpi_کرښه_No:
+	    أرجع 0; // Not implemented for now!
+
+	  حالة vpi_اندازه:
+	    أرجع part_wid;
+
+	  حالة vpi_کیڼ_Range:
+	    أرجع part_بټ + part_wid - 1;
+
+	  حالة vpi_ښی_Range:
+	    أرجع part_بټ;
+
+	  حالة vpiAutomatic:
+	    أرجع array->get_scope()->is_automatic() ? 1 : 0;
+
+#إذا defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  حالة _vpiFromThr:
+	    أرجع _vpi_at_APV;
+#د_که_پای
+
+	  حالة vpiConstantSelect:
+	    أرجع 1;
+
+	  افتراضي:
+	    أرجع 0;
       }
 }
 
-vpiHandle __vpiArrayVthrAPV::vpi_handle(int code)
+حرف* __vpiArrayVthrAPV::vpi_get_str(صحيح code)
 {
-      switch (code) {
+      إذا (code == vpiFile) {  // Not implemented for now!
+            أرجع simple_سېټ_rbuf_str(file_نومونه[0]);
+      }
+
+      حرف sidx [64];
+      snprintf(sidx, 63, "%u", کلمه_sel + array->لومړی_addr.get_ارزښت());
+      أرجع generic_get_str(code, array->get_scope(), array->name, sidx);
+}
+
+فراغ __vpiArrayVthrAPV::vpi_get_ارزښت(p_vpi_ارزښت vp)
+{
+      أكد(array);
+
+      بینښه شاخص = کلمه_sel;
+      إذا (vpi_array_is_real(array)) {
+	    مزدوج tmp = array->get_کلمه_r(شاخص);
+	    vpip_real_get_ارزښت(tmp, vp);
+      } وإلا {
+	    vvp_vector4_t tmp = array->get_کلمه(شاخص);
+	    tmp = tmp.subvalue(part_بټ, part_wid);
+	    vpip_vec4_get_ارزښت(tmp, part_wid, خطأ, vp);
+      }
+}
+
+vpiHandle __vpiArrayVthrAPV::vpi_handle(صحيح code)
+{
+      بدل (code) {
             // Not currently implemented. We would need to create a VPI
             // object for the memory word.
-	  case vpiParent:
-	    return 0;
+	  حالة vpi_پلار:
+	    أرجع 0;
 
             // Not part of the Verilog standard. We use this internally.
-	  case vpiArray:
-	    return array;
+	  حالة vpiArray:
+	    أرجع array;
 
-	  case vpiScope:
-	    return array->get_scope();
+	  حالة vpiScope:
+	    أرجع array->get_scope();
 
-	  case vpiModule:
-	    return vpip_module(array->get_scope());
+	  حالة vpiModule:
+	    أرجع vpip_module(array->get_scope());
       }
 
-      return 0;
+      أرجع 0;
 }
 
-void __vpiArray::set_word(unsigned address, unsigned part_off, const vvp_vector4_t&val)
+فراغ __vpiArray::سېټ_کلمه(بینښه پته, بینښه part_off, ثابت vvp_vector4_t&val)
 {
-      if (address >= get_size())
-	    return;
+      إذا (پته >= get_اندازه())
+	    أرجع;
 
-      if (vals4) {
-	    assert(nets == 0);
-	    if (part_off != 0 || val.size() != vals_width) {
-		  vvp_vector4_t tmp = vals4->get_word(address);
-		  if ((part_off + val.size()) > tmp.size()) {
+      إذا (vals4) {
+	    أكد(nets == 0);
+	    إذا (part_off != 0 || val.size() != vals_پلنوالی) {
+		  vvp_vector4_t tmp = vals4->get_کلمه(پته);
+		  إذا ((part_off + val.size()) > tmp.size()) {
 			cerr << "part_off=" << part_off
 			     << " val.size()=" << val.size()
 			     << " vals[address].size()=" << tmp.size()
-			     << " vals_width=" << vals_width << endl;
-			assert(0);
+			     << " vals_width=" << vals_پلنوالی << کرښه_پای;
+			أكد(0);
 		  }
-		  tmp.set_vec(part_off, val);
-		  vals4->set_word(address, tmp);
-	    } else {
-		  vals4->set_word(address, val);
+		  tmp.سېټ_vec(part_off, val);
+		  vals4->سېټ_کلمه(پته, tmp);
+	    } وإلا {
+		  vals4->سېټ_کلمه(پته, val);
 	    }
-	    word_change(address);
-	    return;
+	    کلمه_change(پته);
+	    أرجع;
       }
 
-      if (vals) {
-	    assert(nets == 0);
-	    if (part_off != 0 || val.size() != vals_width) {
+      إذا (vals) {
+	    أكد(nets == 0);
+	    إذا (part_off != 0 || val.size() != vals_پلنوالی) {
 		  vvp_vector4_t tmp;
-		  vals->get_word(address, tmp);
-		  if ((part_off + val.size()) > tmp.size()) {
+		  vals->get_کلمه(پته, tmp);
+		  إذا ((part_off + val.size()) > tmp.size()) {
 			cerr << "part_off=" << part_off
 			     << " val.size()=" << val.size()
 			     << " vals[address].size()=" << tmp.size()
-			     << " vals_width=" << vals_width << endl;
-			assert(0);
+			     << " vals_width=" << vals_پلنوالی << کرښه_پای;
+			أكد(0);
 		  }
-		  tmp.set_vec(part_off, val);
-		  vals->set_word(address, tmp);
-	    } else {
-		  vals->set_word(address, val);
+		  tmp.سېټ_vec(part_off, val);
+		  vals->سېټ_کلمه(پته, tmp);
+	    } وإلا {
+		  vals->سېټ_کلمه(پته, val);
 	    }
-	    word_change(address);
-	    return;
+	    کلمه_change(پته);
+	    أرجع;
       }
 
-      assert(nets != 0);
+      أكد(nets != 0);
 
 	// Select the word of the array that we affect.
-      vpiHandle word = nets[address];
-      const struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
-      assert(vsig);
+      vpiHandle کلمه = nets[پته];
+      ثابت بنية __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(کلمه);
+      أكد(vsig);
 
-      vsig->node->send_vec4_pv(val, part_off, vpip_size(vsig), 0);
-      word_change(address);
+      vsig->غوټه->send_vec4_pv(val, part_off, vpip_اندازه(vsig), 0);
+      کلمه_change(پته);
 }
 
-void __vpiArray::set_word(unsigned address, double val)
+فراغ __vpiArray::سېټ_کلمه(بینښه پته, مزدوج val)
 {
-      assert(vals != 0);
-      assert(nets == 0);
+      أكد(vals != 0);
+      أكد(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      إذا (پته >= vals->get_اندازه())
+	    أرجع;
 
-      vals->set_word(address, val);
-      word_change(address);
+      vals->سېټ_کلمه(پته, val);
+      کلمه_change(پته);
 }
 
-void __vpiArray::set_word(unsigned address, const string&val)
+فراغ __vpiArray::سېټ_کلمه(بینښه پته, ثابت string&val)
 {
-      assert(vals != 0);
-      assert(nets == 0);
+      أكد(vals != 0);
+      أكد(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      إذا (پته >= vals->get_اندازه())
+	    أرجع;
 
-      vals->set_word(address, val);
-      word_change(address);
+      vals->سېټ_کلمه(پته, val);
+      کلمه_change(پته);
 }
 
-void __vpiArray::set_word(unsigned address, const vvp_object_t&val)
+فراغ __vpiArray::سېټ_کلمه(بینښه پته, ثابت vvp_object_t&val)
 {
-      assert(vals != 0);
-      assert(nets == 0);
+      أكد(vals != 0);
+      أكد(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      إذا (پته >= vals->get_اندازه())
+	    أرجع;
 
-      vals->set_word(address, val);
-      word_change(address);
+      vals->سېټ_کلمه(پته, val);
+      کلمه_change(پته);
 }
 
-vvp_vector4_t __vpiArray::get_word(unsigned address)
+vvp_vector4_t __vpiArray::get_کلمه(بینښه پته)
 {
-      if (vals4) {
-	    assert(nets == 0);
-	    assert(vals == 0);
-	    return vals4->get_word(address);
+      إذا (vals4) {
+	    أكد(nets == 0);
+	    أكد(vals == 0);
+	    أرجع vals4->get_کلمه(پته);
       }
 
-      if (vals) {
-	    assert(nets == 0);
-	    assert(vals4== 0);
-	    if (address >= vals->get_size())
-		  return vvp_vector4_t(vals_width, BIT4_X);
+      إذا (vals) {
+	    أكد(nets == 0);
+	    أكد(vals4== 0);
+	    إذا (پته >= vals->get_اندازه())
+		  أرجع vvp_vector4_t(vals_پلنوالی, BIT4_X);
 
 	    vvp_vector4_t val;
-	    vals->get_word(address, val);
-	    return val;
+	    vals->get_کلمه(پته, val);
+	    أرجع val;
       }
 
-      assert(vals4 == 0);
-      assert(vals == 0);
-      assert(nets != 0);
+      أكد(vals4 == 0);
+      أكد(vals == 0);
+      أكد(nets != 0);
 
-      if (address >= get_size()) {
+      إذا (پته >= get_اندازه()) {
 	      // Reading outside the array. Return X's but get the
 	      // width by looking at a word that we know is present.
-	    assert(get_size() > 0);
-	    vpiHandle word = nets[0];
-	    assert(word);
-	    struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
-	    assert(vsig);
-	    vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->node->fil);
-	    assert(sig);
-	    return vvp_vector4_t(sig->value_size(), BIT4_X);
+	    أكد(get_اندازه() > 0);
+	    vpiHandle کلمه = nets[0];
+	    أكد(کلمه);
+	    بنية __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(کلمه);
+	    أكد(vsig);
+	    vvp_signal_ارزښت*sig = dynamic_cast<vvp_signal_ارزښت*> (vsig->غوټه->fil);
+	    أكد(sig);
+	    أرجع vvp_vector4_t(sig->ارزښت_اندازه(), BIT4_X);
       }
 
-      vpiHandle word = nets[address];
-      struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
-      assert(vsig);
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->node->fil);
-      assert(sig);
+      vpiHandle کلمه = nets[پته];
+      بنية __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(کلمه);
+      أكد(vsig);
+      vvp_signal_ارزښت*sig = dynamic_cast<vvp_signal_ارزښت*> (vsig->غوټه->fil);
+      أكد(sig);
 
       vvp_vector4_t val;
-      sig->vec4_value(val);
-      return val;
+      sig->vec4_ارزښت(val);
+      أرجع val;
 }
 
-double __vpiArray::get_word_r(unsigned address)
+مزدوج __vpiArray::get_کلمه_r(بینښه پته)
 {
-      if (vals) {
-	    assert(vals4 == 0);
-	    assert(nets  == 0);
+      إذا (vals) {
+	    أكد(vals4 == 0);
+	    أكد(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size())
-		  return 0.0;
+	    إذا (پته >= vals->get_اندازه())
+		  أرجع 0.0;
 
-	    double val;
-	    vals->get_word(address, val);
-	    return val;
+	    مزدوج val;
+	    vals->get_کلمه(پته, val);
+	    أرجع val;
       }
 
-      if (address >= get_size())
-	    return 0.0;
+      إذا (پته >= get_اندازه())
+	    أرجع 0.0;
 
-      assert(nets);
-      vpiHandle word = nets[address];
-      struct __vpiRealVar*vsig = dynamic_cast<__vpiRealVar*>(word);
-      assert(vsig);
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->net->fil);
-      assert(sig);
+      أكد(nets);
+      vpiHandle کلمه = nets[پته];
+      بنية __vpiRealVar*vsig = dynamic_cast<__vpiRealVar*>(کلمه);
+      أكد(vsig);
+      vvp_signal_ارزښت*sig = dynamic_cast<vvp_signal_ارزښت*> (vsig->net->fil);
+      أكد(sig);
 
-      double val = sig->real_value();
-      return val;
+      مزدوج val = sig->real_ارزښت();
+      أرجع val;
 }
 
-void __vpiArray::get_word_obj(unsigned address, vvp_object_t&val)
+فراغ __vpiArray::get_کلمه_obj(بینښه پته, vvp_object_t&val)
 {
-      if (vals) {
-	    assert(vals4 == 0);
-	    assert(nets  == 0);
+      إذا (vals) {
+	    أكد(vals4 == 0);
+	    أكد(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size()) {
+	    إذا (پته >= vals->get_اندازه()) {
 		  val = vvp_object_t();
-		  return;
+		  أرجع;
 	    }
 
-	    vals->get_word(address, val);
-	    return;
+	    vals->get_کلمه(پته, val);
+	    أرجع;
       }
 
-      assert(nets);
+      أكد(nets);
 	// Arrays of string nets not implemented!
-      assert(0);
-      return;
+      أكد(0);
+      أرجع;
 }
 
-string __vpiArray::get_word_str(unsigned address)
+string __vpiArray::get_کلمه_str(بینښه پته)
 {
-      if (vals) {
-	    assert(vals4 == 0);
-	    assert(nets  == 0);
+      إذا (vals) {
+	    أكد(vals4 == 0);
+	    أكد(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size())
-		  return "";
+	    إذا (پته >= vals->get_اندازه())
+		  أرجع "";
 
 	    string val;
-	    vals->get_word(address, val);
-	    return val;
+	    vals->get_کلمه(پته, val);
+	    أرجع val;
       }
 
-      assert(nets);
+      أكد(nets);
 	// Arrays of string nets not implemented!
-      assert(0);
-      return "";
+      أكد(0);
+      أرجع "";
 }
 
-vpiHandle vpip_make_array(const char*label, const char*name,
-                          int first_addr, int last_addr,
-                          bool signed_flag)
+vpiHandle vpip_make_array(ثابت حرف*label, ثابت حرف*name,
+                          صحيح لومړی_addr, صحيح وروستی_addr,
+                          منطقي signed_flag)
 {
-      struct __vpiArray*obj = new __vpiArray;
+      بنية __vpiArray*obj = جديد __vpiArray;
 
       obj->signed_flag = signed_flag;
 
 	// Assume increasing addresses.
-      if (last_addr >= first_addr) {
-	    obj->swap_addr = false;
-      } else {
-	    obj->swap_addr = true;
-	    int tmp = last_addr;
-	    last_addr = first_addr;
-	    first_addr = tmp;
+      إذا (وروستی_addr >= لومړی_addr) {
+	    obj->بدلون_addr = خطأ;
+      } وإلا {
+	    obj->بدلون_addr = ریښتیا;
+	    صحيح tmp = وروستی_addr;
+	    وروستی_addr = لومړی_addr;
+	    لومړی_addr = tmp;
       }
-      assert(last_addr >= first_addr);
-      unsigned array_count = last_addr+1-first_addr;
+      أكد(وروستی_addr >= لومړی_addr);
+      بینښه array_شمېر = وروستی_addr+1-لومړی_addr;
 
 	// For now, treat all arrays as memories. This is not quite
 	// correct, as arrays are arrays with memories a special case.
       obj->scope = vpip_peek_current_scope();
       obj->name  = vpip_name_string(name);
-      obj->array_count = array_count;
+      obj->array_شمېر = array_شمېر;
 
-      obj->first_addr.set_value(first_addr);
-      obj->last_addr .set_value(last_addr);
+      obj->لومړی_addr.سېټ_ارزښت(لومړی_addr);
+      obj->وروستی_addr .سېټ_ارزښت(وروستی_addr);
 
 	// Start off now knowing if we are nets or variables.
       obj->nets = 0;
       obj->vals4 = 0;
       obj->vals  = 0;
-      obj->vals_width = 0;
-      obj->vals_words = 0;
+      obj->vals_پلنوالی = 0;
+      obj->vals_ټکي = 0;
 
 	// Initialize (clear) the read-ports list.
       obj->ports_ = 0;
       obj->vpi_callbacks = 0;
 
 	/* Add this symbol to the array_symbols table for later lookup. */
-      if (!array_table)
-	    array_table = new symbol_map_s<struct __vpiArray>;
+      إذا (!array_جدول)
+	    array_جدول = جديد نښه_map_s<بنية __vpiArray>;
 
-      assert(!array_find(label));
-      array_table->sym_set_value(label, obj);
+      أكد(!array_پیدا_کړه(label));
+      array_جدول->sym_سېټ_ارزښت(label, obj);
 
 	/* Add this into the table of VPI objects. This is used for
 	   contexts that try to look up VPI objects in
 	   general. (i.e. arguments to vpi_task calls.) */
-      compile_vpi_symbol(label, obj);
+      compile_vpi_نښه(label, obj);
 
 	/* Blindly attach to the scope as an object. */
-      vpip_attach_to_current_scope(obj);
+      vpip_attach_منزل_current_scope(obj);
 
-      return obj;
+      أرجع obj;
 }
 
-void __vpiArray::alias_word(unsigned long addr, vpiHandle word, int msb_, int lsb_)
+فراغ __vpiArray::alias_کلمه(بینښه اوږد addr, vpiHandle کلمه, صحيح msb_, صحيح lsb_)
 {
-      assert(msb.get_value() == msb_);
-      assert(lsb.get_value() == lsb_);
-      assert(addr < get_size());
-      assert(nets);
-      nets[addr] = word;
+      أكد(msb.get_ارزښت() == msb_);
+      أكد(lsb.get_ارزښت() == lsb_);
+      أكد(addr < get_اندازه());
+      أكد(nets);
+      nets[addr] = کلمه;
 }
 
-void __vpiArray::attach_word(unsigned addr, vpiHandle word)
+فراغ __vpiArray::attach_کلمه(بینښه addr, vpiHandle کلمه)
 {
-      assert(addr < get_size());
-      assert(nets);
-      nets[addr] = word;
+      أكد(addr < get_اندازه());
+      أكد(nets);
+      nets[addr] = کلمه;
 
-      if (struct __vpiSignal*sig = dynamic_cast<__vpiSignal*>(word)) {
-	    vvp_net_t*net = sig->node;
-	    assert(net);
+      إذا (بنية __vpiSignal*sig = dynamic_cast<__vpiSignal*>(کلمه)) {
+	    vvp_net_t*net = sig->غوټه;
+	    أكد(net);
 	    vvp_vpi_callback*fun = dynamic_cast<vvp_vpi_callback*>(net->fil);
-	    assert(fun);
-	    fun->attach_as_word(this, addr);
+	    أكد(fun);
+	    fun->attach_as_کلمه(هذا, addr);
 	    sig->is_netarray = 1;
-	    sig->within.parent = this;
-	    sig->id.index = new __vpiDecConst(addr + first_addr.get_value());
+	    sig->within.پلار = هذا;
+	    sig->id.شاخص = جديد __vpiDecConst(addr + لومړی_addr.get_ارزښت());
 	      // Now we know the data type, update the array signed_flag.
 	    signed_flag = sig->signed_flag;
-	    return;
+	    أرجع;
       }
 
-      if (struct __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(word)) {
+      إذا (بنية __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(کلمه)) {
 	    vvp_net_t*net = sig->net;
-	    assert(net);
+	    أكد(net);
 	    vvp_vpi_callback*fun = dynamic_cast<vvp_vpi_callback*>(net->fil);
-	    assert(fun);
-	    fun->attach_as_word(this, addr);
+	    أكد(fun);
+	    fun->attach_as_کلمه(هذا, addr);
 	    sig->is_netarray = 1;
-	    sig->within.parent = this;
-	    sig->id.index = new __vpiDecConst(addr + first_addr.get_value());
+	    sig->within.پلار = هذا;
+	    sig->id.شاخص = جديد __vpiDecConst(addr + لومړی_addr.get_ارزښت());
 	      // Now we know the data type, update the array signed_flag.
-	    signed_flag = true;
-	    return;
+	    signed_flag = ریښتیا;
+	    أرجع;
       }
 }
 
-void compile_var_array(char*label, char*name, int last, int first,
-		   int msb, int lsb, char signed_flag)
+فراغ compile_var_array(حرف*label, حرف*name, صحيح وروستی, صحيح لومړی,
+		   صحيح msb, صحيح lsb, حرف signed_flag)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last,
+      vpiHandle obj = vpip_make_array(label, name, لومړی, وروستی,
                                       signed_flag != 0);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      بنية __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->vals_width = labs(msb-lsb) + 1;
-      if (vpip_peek_current_scope()->is_automatic()) {
-            arr->vals4 = new vvp_vector4array_aa(arr->vals_width,
-						 arr->get_size());
-      } else {
-            arr->vals4 = new vvp_vector4array_sa(arr->vals_width,
-						 arr->get_size());
+      arr->vals_پلنوالی = labs(msb-lsb) + 1;
+      إذا (vpip_peek_current_scope()->is_automatic()) {
+            arr->vals4 = جديد vvp_vector4array_aa(arr->vals_پلنوالی,
+						 arr->get_اندازه());
+      } وإلا {
+            arr->vals4 = جديد vvp_vector4array_sa(arr->vals_پلنوالی,
+						 arr->get_اندازه());
       }
-      arr->msb.set_value(msb);
-      arr->lsb.set_value(lsb);
+      arr->msb.سېټ_ارزښت(msb);
+      arr->lsb.سېټ_ارزښت(lsb);
 
-      count_var_arrays += 1;
-      count_var_array_words += arr->get_size();
+      شمېر_var_arrays += 1;
+      شمېر_var_array_ټکي += arr->get_اندازه();
 
-      free(label);
-      delete[] name;
+      حرر(label);
+      ړنګول[] name;
 }
 
-void compile_var2_array(char*label, char*name, int last, int first,
-		   int msb, int lsb, bool signed_flag)
+فراغ compile_var2_array(حرف*label, حرف*name, صحيح وروستی, صحيح لومړی,
+		   صحيح msb, صحيح lsb, منطقي signed_flag)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last, signed_flag);
+      vpiHandle obj = vpip_make_array(label, name, لومړی, وروستی, signed_flag);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      بنية __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->msb.set_value(msb);
-      arr->lsb.set_value(lsb);
-      arr->vals_width = labs(msb-lsb) + 1;
+      arr->msb.سېټ_ارزښت(msb);
+      arr->lsb.سېټ_ارزښت(lsb);
+      arr->vals_پلنوالی = labs(msb-lsb) + 1;
 
-      assert(! arr->nets);
-      if (lsb == 0 && msb == 7 && signed_flag) {
-	    arr->vals = new vvp_darray_atom<int8_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 7 && !signed_flag) {
-	    arr->vals = new vvp_darray_atom<uint8_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 15 && signed_flag) {
-	    arr->vals = new vvp_darray_atom<int16_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 15 && !signed_flag) {
-	    arr->vals = new vvp_darray_atom<uint16_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 31 && signed_flag) {
-	    arr->vals = new vvp_darray_atom<int32_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 31 && !signed_flag) {
-	    arr->vals = new vvp_darray_atom<uint32_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 63 && signed_flag) {
-	    arr->vals = new vvp_darray_atom<int64_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 63 && !signed_flag) {
-	    arr->vals = new vvp_darray_atom<uint64_t>(arr->get_size());
-      } else {
-	    arr->vals = new vvp_darray_vec2(arr->get_size(), arr->vals_width);
+      أكد(! arr->nets);
+      إذا (lsb == 0 && msb == 7 && signed_flag) {
+	    arr->vals = جديد vvp_darray_atom<int8_t>(arr->get_اندازه());
+      } وإلا إذا (lsb == 0 && msb == 7 && !signed_flag) {
+	    arr->vals = جديد vvp_darray_atom<uint8_t>(arr->get_اندازه());
+      } وإلا إذا (lsb == 0 && msb == 15 && signed_flag) {
+	    arr->vals = جديد vvp_darray_atom<int16_t>(arr->get_اندازه());
+      } وإلا إذا (lsb == 0 && msb == 15 && !signed_flag) {
+	    arr->vals = جديد vvp_darray_atom<uint16_t>(arr->get_اندازه());
+      } وإلا إذا (lsb == 0 && msb == 31 && signed_flag) {
+	    arr->vals = جديد vvp_darray_atom<int32_t>(arr->get_اندازه());
+      } وإلا إذا (lsb == 0 && msb == 31 && !signed_flag) {
+	    arr->vals = جديد vvp_darray_atom<uint32_t>(arr->get_اندازه());
+      } وإلا إذا (lsb == 0 && msb == 63 && signed_flag) {
+	    arr->vals = جديد vvp_darray_atom<int64_t>(arr->get_اندازه());
+      } وإلا إذا (lsb == 0 && msb == 63 && !signed_flag) {
+	    arr->vals = جديد vvp_darray_atom<uint64_t>(arr->get_اندازه());
+      } وإلا {
+	    arr->vals = جديد vvp_darray_vec2(arr->get_اندازه(), arr->vals_پلنوالی);
       }
-      count_var_arrays += 1;
-      count_var_array_words += arr->get_size();
+      شمېر_var_arrays += 1;
+      شمېر_var_array_ټکي += arr->get_اندازه();
 
-      free(label);
-      delete[] name;
+      حرر(label);
+      ړنګول[] name;
 }
 
-void compile_real_array(char*label, char*name, int last, int first)
+فراغ compile_real_array(حرف*label, حرف*name, صحيح وروستی, صحيح لومړی)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last, true);
+      vpiHandle obj = vpip_make_array(label, name, لومړی, وروستی, ریښتیا);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      بنية __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->vals = new vvp_darray_real(arr->get_size());
-      arr->vals_width = 1;
+      arr->vals = جديد vvp_darray_real(arr->get_اندازه());
+      arr->vals_پلنوالی = 1;
 
-      count_real_arrays += 1;
-      count_real_array_words += arr->get_size();
+      شمېر_real_arrays += 1;
+      شمېر_real_array_ټکي += arr->get_اندازه();
 
-      free(label);
-      delete[] name;
+      حرر(label);
+      ړنګول[] name;
 }
 
-void compile_string_array(char*label, char*name, int last, int first)
+فراغ compile_string_array(حرف*label, حرف*name, صحيح وروستی, صحيح لومړی)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last, true);
+      vpiHandle obj = vpip_make_array(label, name, لومړی, وروستی, ریښتیا);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      بنية __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->vals = new vvp_darray_string(arr->get_size());
-      arr->vals_width = 1;
+      arr->vals = جديد vvp_darray_string(arr->get_اندازه());
+      arr->vals_پلنوالی = 1;
 
-      count_real_arrays += 1;
-      count_real_array_words += arr->get_size();
+      شمېر_real_arrays += 1;
+      شمېر_real_array_ټکي += arr->get_اندازه();
 
-      free(label);
-      delete[] name;
+      حرر(label);
+      ړنګول[] name;
 }
 
-void compile_object_array(char*label, char*name, int last, int first)
+فراغ compile_object_array(حرف*label, حرف*name, صحيح وروستی, صحيح لومړی)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last, true);
+      vpiHandle obj = vpip_make_array(label, name, لومړی, وروستی, ریښتیا);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      بنية __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->vals = new vvp_darray_object(arr->get_size());
-      arr->vals_width = 1;
+      arr->vals = جديد vvp_darray_object(arr->get_اندازه());
+      arr->vals_پلنوالی = 1;
 
-      count_real_arrays += 1;
-      count_real_array_words += arr->get_size();
+      شمېر_real_arrays += 1;
+      شمېر_real_array_ټکي += arr->get_اندازه();
 
-      free(label);
-      delete[] name;
+      حرر(label);
+      ړنګول[] name;
 }
 
-void compile_net_array(char*label, char*name, int last, int first)
+فراغ compile_net_array(حرف*label, حرف*name, صحيح وروستی, صحيح لومړی)
 {
 	// At this point we don't know the array data type, so we
 	// initialise signed_flag to false. This will be corrected
 	// (if necessary) when we attach words to the array.
-      vpiHandle obj = vpip_make_array(label, name, first, last, false);
+      vpiHandle obj = vpip_make_array(label, name, لومړی, وروستی, خطأ);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
-      arr->nets = static_cast<vpiHandle*>(calloc(arr->get_size(), sizeof(vpiHandle)));
+      بنية __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      arr->nets = static_cast<vpiHandle*>(حافظه_صفر_ورکړه(arr->get_اندازه(), حجم(vpiHandle)));
 
-      count_net_arrays += 1;
-      count_net_array_words += arr->get_size();
+      شمېر_net_arrays += 1;
+      شمېر_net_array_ټکي += arr->get_اندازه();
 
-      free(label);
-      delete[] name;
+      حرر(label);
+      ړنګول[] name;
 }
 
-class vvp_fun_arrayport  : public vvp_net_fun_t {
+صنف vvp_fun_arrayport  : عام vvp_net_fun_t {
 
-    public:
-      explicit vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net);
-      explicit vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net, long addr);
+    عام:
+      څرګند vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net);
+      څرګند vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net, اوږد addr);
       ~vvp_fun_arrayport() override;
 
-      virtual void check_word_change(unsigned long addr) = 0;
+      مجازي فراغ check_کلمه_change(بینښه اوږد addr) = 0;
 
-    protected:
+    محمي:
       vvp_array_t arr_;
       vvp_net_t  *net_;
-      unsigned long addr_;
+      بینښه اوږد addr_;
 
-      friend void array_attach_port(vvp_array_t, vvp_fun_arrayport*);
-      friend void __vpiArray::word_change(unsigned long);
-      vvp_fun_arrayport*next_;
+      ملګری فراغ array_attach_پورټ(vvp_array_t, vvp_fun_arrayport*);
+      ملګری فراغ __vpiArray::کلمه_change(بینښه اوږد);
+      vvp_fun_arrayport*بل;
 };
 
 vvp_fun_arrayport::vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net)
 : arr_(mem), net_(net), addr_(0)
 {
-      next_ = 0;
+      بل = 0;
 }
 
-vvp_fun_arrayport::vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net, long addr)
+vvp_fun_arrayport::vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net, اوږد addr)
 : arr_(mem), net_(net), addr_(addr)
 {
-      next_ = 0;
+      بل = 0;
 }
 
 vvp_fun_arrayport::~vvp_fun_arrayport()
 {
 }
 
-class vvp_fun_arrayport_sa  : public vvp_fun_arrayport {
+صنف vvp_fun_arrayport_sa  : عام vvp_fun_arrayport {
 
-    public:
-      explicit vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net);
-      explicit vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net, long addr);
+    عام:
+      څرګند vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net);
+      څرګند vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net, اوږد addr);
       ~vvp_fun_arrayport_sa() override;
 
-      void check_word_change(unsigned long addr) override;
+      فراغ check_کلمه_change(بینښه اوږد addr) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
                      vvp_context_t) override;
 
-    private:
+    خاص:
 };
 
 vvp_fun_arrayport_sa::vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net)
@@ -1078,7 +1078,7 @@ vvp_fun_arrayport_sa::vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net)
 {
 }
 
-vvp_fun_arrayport_sa::vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net, long addr)
+vvp_fun_arrayport_sa::vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net, اوږد addr)
 : vvp_fun_arrayport(mem, net, addr)
 {
 }
@@ -1087,244 +1087,244 @@ vvp_fun_arrayport_sa::~vvp_fun_arrayport_sa()
 {
 }
 
-void vvp_fun_arrayport_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+فراغ vvp_fun_arrayport_sa::recv_vec4(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
                                      vvp_context_t)
 {
-      bool addr_valid_flag;
+      منطقي addr_valid_flag;
 
-      switch (port.port()) {
+      بدل (پورټ.پورټ()) {
 
-	  case 0: // Address input
-	    addr_valid_flag = vector4_to_value(bit, addr_);
-	    if (! addr_valid_flag)
-		  addr_ = arr_->get_size();
-	    if (vpi_array_is_real(arr_))
-		  port.ptr()->send_real(arr_->get_word_r(addr_), 0);
-	    else
-		  port.ptr()->send_vec4(arr_->get_word(addr_), 0);
+	  حالة 0: // Address input
+	    addr_valid_flag = vector4_منزل_ارزښت(بټ, addr_);
+	    إذا (! addr_valid_flag)
+		  addr_ = arr_->get_اندازه();
+	    إذا (vpi_array_is_real(arr_))
+		  پورټ.ptr()->send_real(arr_->get_کلمه_r(addr_), 0);
+	    وإلا
+		  پورټ.ptr()->send_vec4(arr_->get_کلمه(addr_), 0);
 
-	    break;
+	    اكسر;
 
-	  default:
+	  افتراضي:
 	    fprintf(stdout, "XXXX write ports not implemented.\n");
-	    assert(0);
+	    أكد(0);
       }
 }
 
-void vvp_fun_arrayport_sa::check_word_change(unsigned long addr)
+فراغ vvp_fun_arrayport_sa::check_کلمه_change(بینښه اوږد addr)
 {
-      if (addr != addr_) return;
+      إذا (addr != addr_) أرجع;
 
-      if (vpi_array_is_real(arr_)) {
-	    net_->send_real(arr_->get_word_r(addr_), 0);
-      } else {
-	    net_->send_vec4(arr_->get_word(addr_), 0);
+      إذا (vpi_array_is_real(arr_)) {
+	    net_->send_real(arr_->get_کلمه_r(addr_), 0);
+      } وإلا {
+	    net_->send_vec4(arr_->get_کلمه(addr_), 0);
       }
 }
 
-class vvp_fun_arrayport_aa  : public vvp_fun_arrayport, public automatic_hooks_s {
+صنف vvp_fun_arrayport_aa  : عام vvp_fun_arrayport, عام automatic_hooks_s {
 
-    public:
-      explicit vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net);
-      explicit vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net, long addr);
+    عام:
+      څرګند vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net);
+      څرګند vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net, اوږد addr);
       ~vvp_fun_arrayport_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+      فراغ alloc_instance(vvp_context_t context) override;
+      فراغ reset_instance(vvp_context_t context) override;
+#که_تعریف_شوی CHECK_WITH_VALGRIND
+      فراغ free_instance(vvp_context_t context) override;
+#د_که_پای
 
-      void check_word_change(unsigned long addr) override;
+      فراغ check_کلمه_change(بینښه اوږد addr) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
                      vvp_context_t context) override;
 
-    private:
-      void check_word_change_(unsigned long addr, vvp_context_t context);
+    خاص:
+      فراغ check_کلمه_change_2(بینښه اوږد addr, vvp_context_t context);
 
       __vpiScope*context_scope_;
-      unsigned context_idx_;
+      بینښه context_idx_;
 };
 
 vvp_fun_arrayport_aa::vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net)
 : vvp_fun_arrayport(mem, net), context_scope_(context_scope)
 {
-      context_idx_ = vpip_add_item_to_context(this, context_scope);
+      context_idx_ = vpip_جمع_کړه_توکی_منزل_context(هذا, context_scope);
 }
 
-vvp_fun_arrayport_aa::vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net, long addr)
+vvp_fun_arrayport_aa::vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net, اوږد addr)
 : vvp_fun_arrayport(mem, net, addr), context_scope_(context_scope)
 {
-      context_idx_ = vpip_add_item_to_context(this, context_scope);
+      context_idx_ = vpip_جمع_کړه_توکی_منزل_context(هذا, context_scope);
 }
 
 vvp_fun_arrayport_aa::~vvp_fun_arrayport_aa()
 {
 }
 
-void vvp_fun_arrayport_aa::alloc_instance(vvp_context_t context)
+فراغ vvp_fun_arrayport_aa::alloc_instance(vvp_context_t context)
 {
-      unsigned long*addr = new unsigned long;
-      vvp_set_context_item(context, context_idx_, addr);
+      بینښه اوږد*addr = جديد بینښه اوږد;
+      vvp_سېټ_context_توکی(context, context_idx_, addr);
 
       *addr = addr_;
 }
 
-void vvp_fun_arrayport_aa::reset_instance(vvp_context_t context)
+فراغ vvp_fun_arrayport_aa::reset_instance(vvp_context_t context)
 {
-      unsigned long*addr = static_cast<unsigned long*>
-            (vvp_get_context_item(context, context_idx_));
+      بینښه اوږد*addr = static_cast<بینښه اوږد*>
+            (vvp_get_context_توکی(context, context_idx_));
 
       *addr = addr_;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_fun_arrayport_aa::free_instance(vvp_context_t context)
+#که_تعریف_شوی CHECK_WITH_VALGRIND
+فراغ vvp_fun_arrayport_aa::free_instance(vvp_context_t context)
 {
-      unsigned long*addr = static_cast<unsigned long*>
-            (vvp_get_context_item(context, context_idx_));
-      delete addr;
+      بینښه اوږد*addr = static_cast<بینښه اوږد*>
+            (vvp_get_context_توکی(context, context_idx_));
+      ړنګول addr;
 }
-#endif
+#د_که_پای
 
-void vvp_fun_arrayport_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+فراغ vvp_fun_arrayport_aa::recv_vec4(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
                                      vvp_context_t context)
 {
-      if (context) {
-            unsigned long*addr = static_cast<unsigned long*>
-                  (vvp_get_context_item(context, context_idx_));
+      إذا (context) {
+            بینښه اوږد*addr = static_cast<بینښه اوږد*>
+                  (vvp_get_context_توکی(context, context_idx_));
 
-            bool addr_valid_flag;
+            منطقي addr_valid_flag;
 
-            switch (port.port()) {
+            بدل (پورټ.پورټ()) {
 
-                case 0: // Address input
-                  addr_valid_flag = vector4_to_value(bit, *addr);
-                  if (! addr_valid_flag) *addr = arr_->get_size();
-                  if (vpi_array_is_real(arr_)) {
-			port.ptr()->send_real(arr_->get_word_r(*addr),
+                حالة 0: // Address input
+                  addr_valid_flag = vector4_منزل_ارزښت(بټ, *addr);
+                  إذا (! addr_valid_flag) *addr = arr_->get_اندازه();
+                  إذا (vpi_array_is_real(arr_)) {
+			پورټ.ptr()->send_real(arr_->get_کلمه_r(*addr),
 					      context);
-                  } else {
-			port.ptr()->send_vec4(arr_->get_word(*addr),
+                  } وإلا {
+			پورټ.ptr()->send_vec4(arr_->get_کلمه(*addr),
 					      context);
                   }
-                  break;
+                  اكسر;
 
-                default:
+                افتراضي:
                   fprintf(stdout, "XXXX write ports not implemented.\n");
-                  assert(0);
+                  أكد(0);
             }
-      } else {
-            context = context_scope_->live_contexts;
-            while (context) {
-                  recv_vec4(port, bit, context);
-                  context = vvp_get_next_context(context);
+      } وإلا {
+            context = context_scope_->ژوندی_contexts;
+            طالما (context) {
+                  recv_vec4(پورټ, بټ, context);
+                  context = vvp_get_بل_context(context);
             }
       }
 }
 
-void vvp_fun_arrayport_aa::check_word_change_(unsigned long addr,
+فراغ vvp_fun_arrayport_aa::check_کلمه_change_2(بینښه اوږد addr,
                                               vvp_context_t context)
 {
-      const unsigned long*port_addr = static_cast<unsigned long*>
-            (vvp_get_context_item(context, context_idx_));
+      ثابت بینښه اوږد*پورټ_addr = static_cast<بینښه اوږد*>
+            (vvp_get_context_توکی(context, context_idx_));
 
-      if (addr != *port_addr)
-	    return;
+      إذا (addr != *پورټ_addr)
+	    أرجع;
 
-      if (vpi_array_is_real(arr_)) {
-	    net_->send_real(arr_->get_word_r(addr), context);
-      } else {
-	    net_->send_vec4(arr_->get_word(addr), context);
+      إذا (vpi_array_is_real(arr_)) {
+	    net_->send_real(arr_->get_کلمه_r(addr), context);
+      } وإلا {
+	    net_->send_vec4(arr_->get_کلمه(addr), context);
       }
 }
 
-void vvp_fun_arrayport_aa::check_word_change(unsigned long addr)
+فراغ vvp_fun_arrayport_aa::check_کلمه_change(بینښه اوږد addr)
 {
-      if (arr_->get_scope()->is_automatic()) {
-            assert(vthread_get_wt_context());
-            check_word_change_(addr, vthread_get_wt_context());
-      } else {
-            vvp_context_t context = context_scope_->live_contexts;
-            while (context) {
-                  check_word_change_(addr, context);
-                  context = vvp_get_next_context(context);
+      إذا (arr_->get_scope()->is_automatic()) {
+            أكد(vthread_get_wt_context());
+            check_کلمه_change_2(addr, vthread_get_wt_context());
+      } وإلا {
+            vvp_context_t context = context_scope_->ژوندی_contexts;
+            طالما (context) {
+                  check_کلمه_change_2(addr, context);
+                  context = vvp_get_بل_context(context);
             }
       }
 }
 
-static void array_attach_port(vvp_array_t array, vvp_fun_arrayport*fun)
+ساكن فراغ array_attach_پورټ(vvp_array_t array, vvp_fun_arrayport*fun)
 {
-      assert(fun->next_ == 0);
-      fun->next_ = array->ports_;
+      أكد(fun->بل == 0);
+      fun->بل = array->ports_;
       array->ports_ = fun;
-      if (!array->get_scope()->is_automatic() &&
+      إذا (!array->get_scope()->is_automatic() &&
           (array->vals4 || array->vals)) {
               /* propagate initial values for variable arrays */
-            if (!vpi_array_is_real(array)) {
+            إذا (!vpi_array_is_real(array)) {
                   vvp_bit4_t init;
-                  if (array->vals4)
+                  إذا (array->vals4)
                       init = BIT4_X;
-                  else
+                  وإلا
                       init = BIT4_0;
-                  vvp_vector4_t tmp(array->vals_width, init);
-                  schedule_init_propagate(fun->net_, tmp);
-            } else {
-                  schedule_init_propagate(fun->net_, 0.0);
+                  vvp_vector4_t tmp(array->vals_پلنوالی, init);
+                  مهالوېش_init_propagate(fun->net_, tmp);
+            } وإلا {
+                  مهالوېش_init_propagate(fun->net_, 0.0);
             }
       }
 }
 
-class array_word_value_callback : public value_callback {
-    public:
-      inline explicit array_word_value_callback(p_cb_data data, long addr)
-      : value_callback(data), word_addr(addr)
+صنف array_کلمه_ارزښت_callback : عام ارزښت_callback {
+    عام:
+      مضمن څرګند array_کلمه_ارزښت_callback(p_cb_معلومات معلومات, اوږد addr)
+      : ارزښت_callback(معلومات), کلمه_addr(addr)
       { }
 
-    public:
-      long word_addr;
+    عام:
+      اوږد کلمه_addr;
 };
 
-void __vpiArray::word_change(unsigned long addr)
+فراغ __vpiArray::کلمه_change(بینښه اوږد addr)
 {
-      for (vvp_fun_arrayport*cur = ports_; cur; cur = cur->next_)
-	    cur->check_word_change(addr);
+      لكل (vvp_fun_arrayport*cur = ports_; cur; cur = cur->بل)
+	    cur->check_کلمه_change(addr);
 
 	// Run callbacks attached to the array itself.
-      struct __vpiCallback *next = vpi_callbacks;
-      struct __vpiCallback *prev = 0;
+      بنية __vpiCallback *بل_2 = vpi_callbacks;
+      بنية __vpiCallback *prev = 0;
 
-      while (next) {
-	    array_word_value_callback*cur = dynamic_cast<array_word_value_callback*>(next);
-	    next = cur->next;
+      طالما (بل_2) {
+	    array_کلمه_ارزښت_callback*cur = dynamic_cast<array_کلمه_ارزښت_callback*>(بل_2);
+	    بل_2 = cur->بل_2;
 
 	      // Skip callbacks that are not for me. -1 is for every element.
-	    if (cur->word_addr != (long)addr && cur->word_addr != -1) {
+	    إذا (cur->کلمه_addr != (اوږد)addr && cur->کلمه_addr != -1) {
 		  prev = cur;
-		  continue;
+		  استمر;
 	    }
 
 	      // For whole array callbacks we need to set the index.
-	    if (cur->word_addr == -1) {
-		  cur->cb_data.index = (PLI_INT32) ((int)addr +
-						    first_addr.get_value());
+	    إذا (cur->کلمه_addr == -1) {
+		  cur->cb_معلومات.شاخص = (PLI_INT32) ((صحيح)addr +
+						    لومړی_addr.get_ارزښت());
 	    }
 
-	    if (cur->cb_data.cb_rtn != 0) {
-		  if (cur->test_value_callback_ready()) {
-			if (cur->cb_data.value) {
-			      if (vpi_array_is_real(this)) {
-				    double val = 0.0;
-				    if (addr < vals->get_size())
-					  vals->get_word(addr, val);
-				    vpip_real_get_value(val, cur->cb_data.value);
-			      } else if (vals4) {
-				    vpip_vec4_get_value(vals4->get_word(addr),
-							vals_width,
+	    إذا (cur->cb_معلومات.cb_rtn != 0) {
+		  إذا (cur->test_ارزښت_callback_ready()) {
+			إذا (cur->cb_معلومات.value) {
+			      إذا (vpi_array_is_real(هذا)) {
+				    مزدوج val = 0.0;
+				    إذا (addr < vals->get_اندازه())
+					  vals->get_کلمه(addr, val);
+				    vpip_real_get_ارزښت(val, cur->cb_معلومات.value);
+			      } وإلا إذا (vals4) {
+				    vpip_vec4_get_ارزښت(vals4->get_کلمه(addr),
+							vals_پلنوالی,
 							signed_flag,
-							cur->cb_data.value);
-			      } else if (dynamic_cast<vvp_darray_atom<int8_t>*>(vals)
+							cur->cb_معلومات.value);
+			      } وإلا إذا (dynamic_cast<vvp_darray_atom<int8_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int16_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int32_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int64_t>*>(vals)
@@ -1334,14 +1334,14 @@ void __vpiArray::word_change(unsigned long addr)
 				      || dynamic_cast<vvp_darray_atom<uint64_t>*>(vals)
 				      || dynamic_cast<vvp_darray_vec2*>(vals)) {
 				    vvp_vector4_t val;
-				    if (addr < vals->get_size())
-					  vals->get_word(addr, val);
-				    vpip_vec4_get_value(val,
-							vals_width,
+				    إذا (addr < vals->get_اندازه())
+					  vals->get_کلمه(addr, val);
+				    vpip_vec4_get_ارزښت(val,
+							vals_پلنوالی,
 							signed_flag,
-							cur->cb_data.value);
-			      } else {
-			            assert(0);
+							cur->cb_معلومات.value);
+			      } وإلا {
+			            أكد(0);
 			      }
 			}
 
@@ -1350,226 +1350,226 @@ void __vpiArray::word_change(unsigned long addr)
 
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } وإلا إذا (prev == 0) {
 
-		  vpi_callbacks = next;
-		  cur->next = 0;
-		  delete cur;
+		  vpi_callbacks = بل_2;
+		  cur->بل_2 = 0;
+		  ړنګول cur;
 
-	    } else {
-		  assert(prev->next == cur);
-		  prev->next = next;
-		  cur->next = 0;
-		  delete cur;
+	    } وإلا {
+		  أكد(prev->بل_2 == cur);
+		  prev->بل_2 = بل_2;
+		  cur->بل_2 = 0;
+		  ړنګول cur;
 	    }
       }
 }
 
-class array_resolv_list_t : public resolv_list_s {
+صنف array_resolv_list_t : عام resolv_list_s {
 
-    public:
-      explicit array_resolv_list_t(char*lab) : resolv_list_s(lab) {
+    عام:
+      څرګند array_resolv_list_t(حرف*lab) : resolv_list_s(lab) {
 	    array = 0;
       }
 
       vvp_array_t*array;
-      bool resolve(bool mes) override;
+      منطقي resolve(منطقي mes) override;
 
-    private:
+    خاص:
 };
 
-bool array_resolv_list_t::resolve(bool mes)
+منطقي array_resolv_list_t::resolve(منطقي mes)
 {
-      *array = array_find(label());
-      if (*array == 0) {
-	    assert(!mes);
-	    return false;
+      *array = array_پیدا_کړه(label());
+      إذا (*array == 0) {
+	    أكد(!mes);
+	    أرجع خطأ;
       }
-      return true;
+      أرجع ریښتیا;
 }
 
-class array_port_resolv_list_t : public resolv_list_s {
+صنف array_پورټ_resolv_list_t : عام resolv_list_s {
 
-    public:
-      explicit array_port_resolv_list_t(char* lab, bool use_addr__,
-                                        long addr__);
+    عام:
+      څرګند array_پورټ_resolv_list_t(حرف* lab, منطقي use_addr__,
+                                        اوږد addr__);
 
       __vpiScope*context_scope;
       vvp_net_t*ptr;
-      bool use_addr;
-      long addr;
-      bool resolve(bool mes) override;
+      منطقي use_addr;
+      اوږد addr;
+      منطقي resolve(منطقي mes) override;
 
-    private:
+    خاص:
 };
 
-array_port_resolv_list_t::array_port_resolv_list_t(char *lab, bool use_addr__,
-                                                   long addr__)
+array_پورټ_resolv_list_t::array_پورټ_resolv_list_t(حرف *lab, منطقي use_addr__,
+                                                   اوږد addr__)
 : resolv_list_s(lab), use_addr(use_addr__), addr(addr__)
 {
-      if (vpip_peek_current_scope()->is_automatic())
+      إذا (vpip_peek_current_scope()->is_automatic())
             context_scope = vpip_peek_context_scope();
-      else
+      وإلا
             context_scope = 0;
-      ptr = new vvp_net_t;
+      ptr = جديد vvp_net_t;
 }
 
-bool array_port_resolv_list_t::resolve(bool mes)
+منطقي array_پورټ_resolv_list_t::resolve(منطقي mes)
 {
-      vvp_array_t mem = array_find(label());
-      if (mem == 0) {
-	    assert(mem || !mes);
-	    return false;
+      vvp_array_t mem = array_پیدا_کړه(label());
+      إذا (mem == 0) {
+	    أكد(mem || !mes);
+	    أرجع خطأ;
       }
 
       vvp_fun_arrayport*fun;
-      if (use_addr)
-            if (context_scope)
-                  fun = new vvp_fun_arrayport_aa(context_scope, mem, ptr, addr);
-            else
-                  fun = new vvp_fun_arrayport_sa(mem, ptr, addr);
-      else
-            if (context_scope)
-                  fun = new vvp_fun_arrayport_aa(context_scope, mem, ptr);
-            else
-                  fun = new vvp_fun_arrayport_sa(mem, ptr);
+      إذا (use_addr)
+            إذا (context_scope)
+                  fun = جديد vvp_fun_arrayport_aa(context_scope, mem, ptr, addr);
+            وإلا
+                  fun = جديد vvp_fun_arrayport_sa(mem, ptr, addr);
+      وإلا
+            إذا (context_scope)
+                  fun = جديد vvp_fun_arrayport_aa(context_scope, mem, ptr);
+            وإلا
+                  fun = جديد vvp_fun_arrayport_sa(mem, ptr);
       ptr->fun = fun;
 
-      array_attach_port(mem, fun);
+      array_attach_پورټ(mem, fun);
 
-      return true;
+      أرجع ریښتیا;
 }
 
-class array_word_part_callback : public array_word_value_callback {
-    public:
-      explicit array_word_part_callback(p_cb_data data, long addr);
-      ~array_word_part_callback() override;
+صنف array_کلمه_part_callback : عام array_کلمه_ارزښت_callback {
+    عام:
+      څرګند array_کلمه_part_callback(p_cb_معلومات معلومات, اوږد addr);
+      ~array_کلمه_part_callback() override;
 
-      array_word_part_callback(const array_word_part_callback&) = delete;
-      array_word_part_callback& operator=(const array_word_part_callback&) = delete;
+      array_کلمه_part_callback(ثابت array_کلمه_part_callback&) = ړنګول;
+      array_کلمه_part_callback& چلوونکی=(ثابت array_کلمه_part_callback&) = ړنګول;
 
-      bool test_value_callback_ready(void) override;
+      منطقي test_ارزښت_callback_ready(فراغ) override;
 
-    private:
-      char*value_bits_;
+    خاص:
+      حرف*ارزښت_بټونه;
 };
 
-array_word_part_callback::array_word_part_callback(p_cb_data data, long addr)
-: array_word_value_callback(data, addr)
+array_کلمه_part_callback::array_کلمه_part_callback(p_cb_معلومات معلومات, اوږد addr)
+: array_کلمه_ارزښت_callback(معلومات, addr)
 {
 	// Get the initial value of the part, to use as a reference.
-      struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj);
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      apvword->vpi_get_value(&tmp_value);
+      بنية __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(معلومات->obj);
+      s_vpi_ارزښت tmp_ارزښت;
+      tmp_ارزښت.format = vpiBinStrVal;
+      apvword->vpi_get_ارزښت(&tmp_ارزښت);
 
-      value_bits_ = new char[apvword->part_wid+1];
+      ارزښت_بټونه = جديد حرف[apvword->part_wid+1];
 
-      memcpy(value_bits_, tmp_value.value.str, apvword->part_wid);
-      value_bits_[apvword->part_wid] = 0;
+      حافظه_نقل(ارزښت_بټونه, tmp_ارزښت.value.str, apvword->part_wid);
+      ارزښت_بټونه[apvword->part_wid] = 0;
 }
 
-array_word_part_callback::~array_word_part_callback()
+array_کلمه_part_callback::~array_کلمه_part_callback()
 {
-      delete[]value_bits_;
+      ړنګول[]ارزښت_بټونه;
 }
 
-bool array_word_part_callback::test_value_callback_ready(void)
+منطقي array_کلمه_part_callback::test_ارزښت_callback_ready(فراغ)
 {
-      struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(cb_data.obj);
-      assert(apvword);
+      بنية __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(cb_معلومات.obj);
+      أكد(apvword);
 
 	// Get a reference value that can be used to compare with an
 	// updated value.
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      apvword->vpi_get_value(&tmp_value);
+      s_vpi_ارزښت tmp_ارزښت;
+      tmp_ارزښت.format = vpiBinStrVal;
+      apvword->vpi_get_ارزښت(&tmp_ارزښت);
 
-      if (memcmp(value_bits_, tmp_value.value.str, apvword->part_wid) == 0)
-	    return false;
+      إذا (memcmp(ارزښت_بټونه, tmp_ارزښت.value.str, apvword->part_wid) == 0)
+	    أرجع خطأ;
 
-      memcpy(value_bits_, tmp_value.value.str, apvword->part_wid);
-      return true;
+      حافظه_نقل(ارزښت_بټونه, tmp_ارزښت.value.str, apvword->part_wid);
+      أرجع ریښتیا;
 
 }
 
-value_callback*vpip_array_word_change(p_cb_data data)
+ارزښت_callback*vpip_array_کلمه_change(p_cb_معلومات معلومات)
 {
-      struct __vpiArray*parent = 0;
-      array_word_value_callback*cbh = 0;
-      if (const struct __vpiArrayWord*word = array_var_word_from_handle(data->obj)) {
-	    parent = static_cast<__vpiArray*>(word->get_parent());
-	    unsigned addr = word->get_index();
-	    cbh = new array_word_value_callback(data, addr);
+      بنية __vpiArray*پلار = 0;
+      array_کلمه_ارزښت_callback*cbh = 0;
+      إذا (ثابت بنية __vpiArrayWord*کلمه = array_var_کلمه_from_handle(معلومات->obj)) {
+	    پلار = static_cast<__vpiArray*>(کلمه->get_پلار());
+	    بینښه addr = کلمه->get_شاخص();
+	    cbh = جديد array_کلمه_ارزښت_callback(معلومات, addr);
 
-      } else if (struct __vpiArrayVthrA*tword = dynamic_cast<__vpiArrayVthrA*>(data->obj)) {
-	    parent = tword->array;
-	    cbh = new array_word_value_callback(data, tword->address);
+      } وإلا إذا (بنية __vpiArrayVthrA*tword = dynamic_cast<__vpiArrayVthrA*>(معلومات->obj)) {
+	    پلار = tword->array;
+	    cbh = جديد array_کلمه_ارزښت_callback(معلومات, tword->پته);
 
-      } else if (struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj)) {
-	    parent = apvword->array;
-	    cbh = new array_word_part_callback(data, apvword->word_sel);
+      } وإلا إذا (بنية __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(معلومات->obj)) {
+	    پلار = apvword->array;
+	    cbh = جديد array_کلمه_part_callback(معلومات, apvword->کلمه_sel);
       }
 
-      assert(cbh);
-      assert(parent);
-      cbh->next = parent->vpi_callbacks;
-      parent->vpi_callbacks = cbh;
+      أكد(cbh);
+      أكد(پلار);
+      cbh->بل_2 = پلار->vpi_callbacks;
+      پلار->vpi_callbacks = cbh;
 
-      return cbh;
+      أرجع cbh;
 }
 
-value_callback* vpip_array_change(p_cb_data data)
+ارزښت_callback* vpip_array_change(p_cb_معلومات معلومات)
 {
-      array_word_value_callback*cbh = new array_word_value_callback(data, -1);
-      assert(data->obj);
+      array_کلمه_ارزښت_callback*cbh = جديد array_کلمه_ارزښت_callback(معلومات, -1);
+      أكد(معلومات->obj);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(data->obj);
-      cbh->next = arr->vpi_callbacks;
+      بنية __vpiArray*arr = dynamic_cast<__vpiArray*>(معلومات->obj);
+      cbh->بل_2 = arr->vpi_callbacks;
       arr->vpi_callbacks = cbh;
-      return cbh;
+      أرجع cbh;
 }
 
-void compile_array_port(char*label, char*array, char*addr)
+فراغ compile_array_پورټ(حرف*label, حرف*array, حرف*addr)
 {
-      array_port_resolv_list_t*resolv_mem
-	    = new array_port_resolv_list_t(array, false, 0);
+      array_پورټ_resolv_list_t*resolv_mem
+	    = جديد array_پورټ_resolv_list_t(array, خطأ, 0);
 
-      define_functor_symbol(label, resolv_mem->ptr);
-      free(label);
+      define_functor_نښه(label, resolv_mem->ptr);
+      حرر(label);
 	// Connect the port-0 input as the address.
-      input_connect(resolv_mem->ptr, 0, addr);
+      ننوت_connect(resolv_mem->ptr, 0, addr);
 
       resolv_submit(resolv_mem);
 }
 
-void compile_array_port(char*label, char*array, long addr)
+فراغ compile_array_پورټ(حرف*label, حرف*array, اوږد addr)
 {
-      array_port_resolv_list_t*resolv_mem
-	    = new array_port_resolv_list_t(array, true, addr);
+      array_پورټ_resolv_list_t*resolv_mem
+	    = جديد array_پورټ_resolv_list_t(array, ریښتیا, addr);
 
-      define_functor_symbol(label, resolv_mem->ptr);
-      free(label);
+      define_functor_نښه(label, resolv_mem->ptr);
+      حرر(label);
 
       resolv_submit(resolv_mem);
 }
 
-void compile_array_alias(char*label, char*name, char*src)
+فراغ compile_array_alias(حرف*label, حرف*name, حرف*src)
 {
-      vvp_array_t mem = array_find(src);
-      assert(mem);
+      vvp_array_t mem = array_پیدا_کړه(src);
+      أكد(mem);
 
-      struct __vpiArray*obj = new __vpiArray;
+      بنية __vpiArray*obj = جديد __vpiArray;
 
       obj->scope = vpip_peek_current_scope();
       obj->name  = vpip_name_string(name);
-      obj->array_count = mem->array_count;
+      obj->array_شمېر = mem->array_شمېر;
       obj->signed_flag = mem->signed_flag;
 
 	// Need to set an accurate range of addresses.
-      obj->first_addr = mem->first_addr;
-      obj->last_addr  = mem->last_addr;
-      obj->swap_addr = mem->swap_addr;
+      obj->لومړی_addr = mem->لومړی_addr;
+      obj->وروستی_addr  = mem->وروستی_addr;
+      obj->بدلون_addr = mem->بدلون_addr;
 
       obj->msb = mem->msb;
       obj->lsb = mem->lsb;
@@ -1578,22 +1578,22 @@ void compile_array_alias(char*label, char*name, char*src)
       obj->nets = mem->nets;
       obj->vals4 = mem->vals4;
       obj->vals  = mem->vals;
-      obj->vals_width = mem->vals_width;
-      obj->vals_words = mem->vals_words;
+      obj->vals_پلنوالی = mem->vals_پلنوالی;
+      obj->vals_ټکي = mem->vals_ټکي;
 
       obj->ports_ = 0;
       obj->vpi_callbacks = 0;
 
-      assert(array_table);
-      assert(!array_find(label));
-      array_table->sym_set_value(label, obj);
+      أكد(array_جدول);
+      أكد(!array_پیدا_کړه(label));
+      array_جدول->sym_سېټ_ارزښت(label, obj);
 
-      compile_vpi_symbol(label, obj);
-      vpip_attach_to_current_scope(obj);
+      compile_vpi_نښه(label, obj);
+      vpip_attach_منزل_current_scope(obj);
 
-      free(label);
-      free(name);
-      free(src);
+      حرر(label);
+      حرر(name);
+      حرر(src);
 }
 
 /*
@@ -1602,20 +1602,20 @@ void compile_array_alias(char*label, char*name, char*src)
  * from expressions like "label[addr]" where "label" is the array and
  * "addr" is the canonical address of the desired word.
  */
-vpiHandle vpip_make_vthr_A(char*label, unsigned addr)
+vpiHandle vpip_make_vthr_A(حرف*label, بینښه addr)
 {
-      struct __vpiArrayVthrA*obj = new __vpiArrayVthrA;
+      بنية __vpiArrayVthrA*obj = جديد __vpiArrayVthrA;
 
       array_resolv_list_t*resolv_mem
-	    = new array_resolv_list_t(label);
+	    = جديد array_resolv_list_t(label);
 
       resolv_mem->array = &obj->array;
       resolv_submit(resolv_mem);
 
-      obj->address_handle = 0;
-      obj->address = addr;
+      obj->پته_handle = 0;
+      obj->پته = addr;
 
-      return obj;
+      أرجع obj;
 }
 
 /*
@@ -1624,131 +1624,131 @@ vpiHandle vpip_make_vthr_A(char*label, unsigned addr)
  * word address is calculated from the VPI object that symbol
  * represents. The expression that leads to this looks like label[symbol].
  */
-vpiHandle vpip_make_vthr_A(char*label, char*symbol)
+vpiHandle vpip_make_vthr_A(حرف*label, حرف*نښه)
 {
-      struct __vpiArrayVthrA*obj = new __vpiArrayVthrA;
+      بنية __vpiArrayVthrA*obj = جديد __vpiArrayVthrA;
 
       array_resolv_list_t*resolv_mem
-	    = new array_resolv_list_t(label);
+	    = جديد array_resolv_list_t(label);
 
       resolv_mem->array = &obj->array;
       resolv_submit(resolv_mem);
 
-      obj->address_handle = 0;
-      compile_vpi_lookup(&obj->address_handle, symbol);
-      obj->address = 0;
+      obj->پته_handle = 0;
+      compile_vpi_lookup(&obj->پته_handle, نښه);
+      obj->پته = 0;
 
-      return obj;
+      أرجع obj;
 }
 
-vpiHandle vpip_make_vthr_A(char*label, vpiHandle handle)
+vpiHandle vpip_make_vthr_A(حرف*label, vpiHandle handle)
 {
-      struct __vpiArrayVthrA*obj = new __vpiArrayVthrA;
+      بنية __vpiArrayVthrA*obj = جديد __vpiArrayVthrA;
 
       array_resolv_list_t*resolv_mem
-	    = new array_resolv_list_t(label);
+	    = جديد array_resolv_list_t(label);
 
       resolv_mem->array = &obj->array;
       resolv_submit(resolv_mem);
 
-      obj->address_handle = handle;
-      obj->address = 0;
+      obj->پته_handle = handle;
+      obj->پته = 0;
 
-      return obj;
+      أرجع obj;
 }
 
-vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned wid)
+vpiHandle vpip_make_vthr_APV(حرف*label, بینښه شاخص, بینښه بټ, بینښه wid)
 {
-      struct __vpiArrayVthrAPV*obj = new __vpiArrayVthrAPV;
+      بنية __vpiArrayVthrAPV*obj = جديد __vpiArrayVthrAPV;
 
       array_resolv_list_t*resolv_mem
-	    = new array_resolv_list_t(label);
+	    = جديد array_resolv_list_t(label);
 
       resolv_mem->array = &obj->array;
       resolv_submit(resolv_mem);
 
-      obj->word_sel = index;
-      obj->part_bit = bit;
+      obj->کلمه_sel = شاخص;
+      obj->part_بټ = بټ;
       obj->part_wid = wid;
 
-      return obj;
+      أرجع obj;
 }
 
-void compile_array_cleanup(void)
+فراغ compile_array_cleanup(فراغ)
 {
-      delete array_table;
-      array_table = 0;
+      ړنګول array_جدول;
+      array_جدول = 0;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void memory_delete(vpiHandle item)
+#که_تعریف_شوی CHECK_WITH_VALGRIND
+فراغ حافظه_delete(vpiHandle توکی)
 {
-      struct __vpiArray*arr = static_cast<struct __vpiArray*>(item);
-      if (arr->vals_words) delete [] (arr->vals_words-1);
+      بنية __vpiArray*arr = static_cast<بنية __vpiArray*>(توکی);
+      إذا (arr->vals_ټکي) ړنګول [] (arr->vals_ټکي-1);
 
 //      if (arr->vals4) {}
 // Delete the individual words?
 // constant_delete(handle)?
-      delete arr->vals4;
+      ړنګول arr->vals4;
 
 //      if (arr->vals) {}
 // Delete the individual words?
 // constant_delete(handle)?
-      delete arr->vals;
+      ړنګول arr->vals;
 
-      if (arr->nets) {
-	    for (unsigned idx = 0; idx < arr->get_size(); idx += 1) {
-		  if (struct __vpiSignal*sig =
+      إذا (arr->nets) {
+	    لكل (بینښه idx = 0; idx < arr->get_اندازه(); idx += 1) {
+		  إذا (بنية __vpiSignal*sig =
 		      dynamic_cast<__vpiSignal*>(arr->nets[idx])) {
 // Delete the individual words?
-			constant_delete(sig->id.index);
+			constant_delete(sig->id.شاخص);
 		    /* These should only be the real words. */
-		  } else {
-			assert(arr->nets[idx]->get_type_code() ==
+		  } وإلا {
+			أكد(arr->nets[idx]->get_type_کوډ() ==
 			       vpiRealVar);
-			struct __vpiRealVar *sigr = static_cast<struct __vpiRealVar *>
+			بنية __vpiRealVar *sigr = static_cast<بنية __vpiRealVar *>
 			                            (arr->nets[idx]);
-			constant_delete(sigr->id.index);
+			constant_delete(sigr->id.شاخص);
 // Why are only the real words still here?
-			delete arr->nets[idx];
+			ړنګول arr->nets[idx];
 		  }
 	    }
-	    free(arr->nets);
+	    حرر(arr->nets);
       }
 
-      while (arr->vpi_callbacks) {
-	    struct __vpiCallback*tmp = arr->vpi_callbacks->next;
-	    delete arr->vpi_callbacks;
+      طالما (arr->vpi_callbacks) {
+	    بنية __vpiCallback*tmp = arr->vpi_callbacks->بل_2;
+	    ړنګول arr->vpi_callbacks;
 	    arr->vpi_callbacks = tmp;
       }
 
-      delete arr;
+      ړنګول arr;
 }
 
-void A_delete(vpiHandle item)
+فراغ A_delete(vpiHandle توکی)
 {
-      struct __vpiArrayVthrA*obj = static_cast<struct __vpiArrayVthrA*>(item);
-      if (obj->address_handle) {
-	    switch (obj->address_handle->get_type_code()) {
-		case vpiMemoryWord:
-		  if (vpi_get(_vpiFromThr, obj->address_handle) == _vpi_at_A) {
-			A_delete(obj->address_handle);
+      بنية __vpiArrayVthrA*obj = static_cast<بنية __vpiArrayVthrA*>(توکی);
+      إذا (obj->پته_handle) {
+	    بدل (obj->پته_handle->get_type_کوډ()) {
+		حالة vpi_حافظه_کلمه:
+		  إذا (vpi_get(_vpiFromThr, obj->پته_handle) == _vpi_at_A) {
+			A_delete(obj->پته_handle);
 		  }
-		  break;
-		case vpiPartSelect:
-		  assert(vpi_get(_vpiFromThr, obj->address_handle) ==
+		  اكسر;
+		حالة vpiPartSelect:
+		  أكد(vpi_get(_vpiFromThr, obj->پته_handle) ==
 		         _vpi_at_PV);
-		  PV_delete(obj->address_handle);
-		  break;
+		  PV_delete(obj->پته_handle);
+		  اكسر;
 	    }
       }
 
-      delete obj;
+      ړنګول obj;
 }
 
-void APV_delete(vpiHandle item)
+فراغ APV_delete(vpiHandle توکی)
 {
-      struct __vpiArrayVthrAPV*obj = static_cast<struct __vpiArrayVthrAPV*>(item);
-      delete obj;
+      بنية __vpiArrayVthrAPV*obj = static_cast<بنية __vpiArrayVthrAPV*>(توکی);
+      ړنګول obj;
 }
-#endif
+#د_که_پای

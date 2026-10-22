@@ -1,5 +1,5 @@
-#ifndef IVL_statistics_H
-#define IVL_statistics_H
+#که_نه_تعریف_شوی IVL_statistics_H
+#تعریف_کړه IVL_statistics_H
 /*
  * Copyright (c) 2002-2014 Stephen Williams (steve@icarus.com)
  *
@@ -20,46 +20,46 @@
  */
 
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
-#ifdef __SUNPRO_CC
+#که_تعریف_شوی __SUNPRO_CC
 # include  <stddef.h>
-#else
+#وإلا
 # include  <cstddef>
-#endif
+#د_که_پای
 
-extern unsigned long count_opcodes;
-extern unsigned long count_functors;
-extern unsigned long count_functors_logic;
-extern unsigned long count_functors_bufif;
-extern unsigned long count_functors_resolv;
-extern unsigned long count_functors_sig;
-extern unsigned long count_filters;
-extern unsigned long count_vvp_nets;
-extern unsigned long count_vpi_nets;
-extern unsigned long count_vpi_scopes;
+خارجي بینښه اوږد شمېر_opcodes;
+خارجي بینښه اوږد شمېر_functors;
+خارجي بینښه اوږد شمېر_functors_logic;
+خارجي بینښه اوږد شمېر_functors_bufif;
+خارجي بینښه اوږد شمېر_functors_resolv;
+خارجي بینښه اوږد شمېر_functors_sig;
+خارجي بینښه اوږد شمېر_filters;
+خارجي بینښه اوږد شمېر_vvp_nets;
+خارجي بینښه اوږد شمېر_vpi_nets;
+خارجي بینښه اوږد شمېر_vpi_scopes;
 
-extern unsigned long count_net_arrays;
-extern unsigned long count_net_array_words;
-extern unsigned long count_var_arrays;
-extern unsigned long count_var_array_words;
-extern unsigned long count_real_arrays;
-extern unsigned long count_real_array_words;
+خارجي بینښه اوږد شمېر_net_arrays;
+خارجي بینښه اوږد شمېر_net_array_ټکي;
+خارجي بینښه اوږد شمېر_var_arrays;
+خارجي بینښه اوږد شمېر_var_array_ټکي;
+خارجي بینښه اوږد شمېر_real_arrays;
+خارجي بینښه اوږد شمېر_real_array_ټکي;
 
 
-extern unsigned long count_time_events;
-extern unsigned long count_time_pool(void);
+خارجي بینښه اوږد شمېر_وخت_events;
+خارجي بینښه اوږد شمېر_وخت_pool(فراغ);
 
-extern unsigned long count_assign_events;
-extern unsigned long count_assign4_pool(void);
-extern unsigned long count_assign8_pool(void);
-extern unsigned long count_assign_real_pool(void);
-extern unsigned long count_assign_aword_pool(void);
-extern unsigned long count_assign_arword_pool(void);
+خارجي بینښه اوږد شمېر_ټاکل_events;
+خارجي بینښه اوږد شمېر_assign4_pool(فراغ);
+خارجي بینښه اوږد شمېر_assign8_pool(فراغ);
+خارجي بینښه اوږد شمېر_ټاکل_real_pool(فراغ);
+خارجي بینښه اوږد شمېر_ټاکل_aword_pool(فراغ);
+خارجي بینښه اوږد شمېر_ټاکل_arword_pool(فراغ);
 
-extern unsigned long count_gen_events;
-extern unsigned long count_gen_pool(void);
+خارجي بینښه اوږد شمېر_gen_events;
+خارجي بینښه اوږد شمېر_gen_pool(فراغ);
 
-extern size_t size_opcodes;
-extern size_t size_vvp_nets;
-extern size_t size_vvp_net_funs;
+خارجي size_t اندازه_opcodes;
+خارجي size_t اندازه_vvp_nets;
+خارجي size_t اندازه_vvp_net_funs;
 
-#endif /* IVL_statistics_H */
+#د_که_پای /* IVL_statistics_H */

@@ -1,5 +1,5 @@
-#ifndef IVL_vvp_vpi_callback_H
-#define IVL_vvp_vpi_callback_H
+#که_نه_تعریف_شوی IVL_vvp_vpi_callback_H
+#تعریف_کړه IVL_vvp_vpi_callback_H
 /*
  * Copyright (c) 2009-2014 Stephen Williams (steve@icarus.com)
  *
@@ -22,7 +22,7 @@
 # include  "config.h"
 # include  "vpi_user.h"
 
-class value_callback;
+class ارزښت_callback;
 
 /*
  * Things derived from vvp_vpi_callback may have callbacks
@@ -34,31 +34,31 @@ class value_callback;
  */
 class vvp_vpi_callback {
 
-    public:
+    عام:
       vvp_vpi_callback();
-      virtual ~vvp_vpi_callback();
+      مجازي ~vvp_vpi_callback();
 
-      void attach_as_word(struct __vpiArray* arr, unsigned long addr);
+      فراغ attach_as_کلمه(بنية __vpiArray* arr, بینښه اوږد addr);
 
-      void add_vpi_callback(value_callback*);
-#ifdef CHECK_WITH_VALGRIND
+      فراغ جمع_کړه_vpi_callback(ارزښت_callback*);
+#که_تعریف_شوی CHECK_WITH_VALGRIND
 	/* This has only been tested at EOS. */
-      void clear_all_callbacks(void);
-#endif
+      فراغ clear_all_callbacks(فراغ);
+#د_که_پای
 
 	// Derived classes implement this method to provide a way for
 	// vpi to get at the vvp value of the object.
-      virtual void get_value(struct t_vpi_value*value) =0;
+      مجازي فراغ get_ارزښت(بنية t_vpi_ارزښت*ارزښت) =0;
 
-    protected:
+    محمي:
 	// Derived classes call this method to indicate that it is
 	// time to call the callback.
-      void run_vpi_callbacks();
+      فراغ پرلپسې_vpi_callbacks();
 
-    private:
-      value_callback*vpi_callbacks_;
-      struct __vpi_array_word*array_words_;
+    خاص:
+      ارزښت_callback*vpi_callbacks_;
+      بنية __vpi_array_word*array_ټکي;
 };
 
 
-#endif /* IVL_vvp_vpi_callback_H */
+#د_که_پای /* IVL_vvp_vpi_callback_H */

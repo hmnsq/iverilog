@@ -23,10 +23,10 @@
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+کارول نطاق std;
 
-vvp_fun_concat::vvp_fun_concat(unsigned w0, unsigned w1,
-			       unsigned w2, unsigned w3)
+vvp_fun_concat::vvp_fun_concat(بینښه w0, بینښه w1,
+			       بینښه w2, بینښه w3)
 : val_(w0+w1+w2+w3, BIT4_Z)
 {
       wid_[0] = w0;
@@ -39,64 +39,64 @@ vvp_fun_concat::~vvp_fun_concat()
 {
 }
 
-void vvp_fun_concat::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+فراغ vvp_fun_concat::recv_vec4(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
                                vvp_context_t context)
 {
-      recv_vec4_pv(port, bit, 0, bit.size(), context);
+      recv_vec4_pv(پورټ, بټ, 0, بټ.size(), context);
 }
 
-void vvp_fun_concat::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-                                  unsigned base, unsigned vwid, vvp_context_t)
+فراغ vvp_fun_concat::recv_vec4_pv(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
+                                  بینښه بنسټ, بینښه vwid, vvp_context_t)
 {
-      unsigned pdx = port.port();
+      بینښه pdx = پورټ.پورټ();
 
-      if (vwid != wid_[pdx]) {
+      إذا (vwid != wid_[pdx]) {
 	    cerr << "internal error: port " << pdx
 		 << " expects wid=" << wid_[pdx]
-		 << ", got wid=" << vwid << endl;
-	    assert(0);
+		 << ", got wid=" << vwid << کرښه_پای;
+	    أكد(0);
       }
 
-      unsigned off = base;
-      for (unsigned idx = 0 ;  idx < pdx ;  idx += 1)
+      بینښه off = بنسټ;
+      لكل (بینښه idx = 0 ;  idx < pdx ;  idx += 1)
 	    off += wid_[idx];
 
-      if (!val_.set_vec(off, bit))
-	    return;
+      إذا (!val_.سېټ_vec(off, بټ))
+	    أرجع;
 
-      if (net_)
-	    return;
+      إذا (net_)
+	    أرجع;
 
-      net_ = port.ptr();
-      schedule_functor(this);
+      net_ = پورټ.ptr();
+      مهالوېش_functor(هذا);
 }
 
-void vvp_fun_concat::run_run()
+فراغ vvp_fun_concat::پرلپسې_پرلپسې()
 {
       vvp_net_t *ptr = net_;
-      net_ = nullptr;
+      net_ = تش_اشاره;
       ptr->send_vec4(val_, 0);
 }
 
-void compile_concat(char*label, unsigned w0, unsigned w1,
-		    unsigned w2, unsigned w3,
-		    unsigned argc, struct symb_s*argv)
+فراغ compile_concat(حرف*label, بینښه w0, بینښه w1,
+		    بینښه w2, بینښه w3,
+		    بینښه argc, بنية symb_s*argv)
 {
-      vvp_fun_concat*fun = new vvp_fun_concat(w0, w1, w2, w3);
+      vvp_fun_concat*fun = جديد vvp_fun_concat(w0, w1, w2, w3);
 
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = جديد vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_نښه(label, net);
+      حرر(label);
 
       inputs_connect(net, argc, argv);
-      free(argv);
+      حرر(argv);
 }
 
 
-vvp_fun_concat8::vvp_fun_concat8(unsigned w0, unsigned w1,
-			       unsigned w2, unsigned w3)
+vvp_fun_concat8::vvp_fun_concat8(بینښه w0, بینښه w1,
+			       بینښه w2, بینښه w3)
 : val_(w0+w1+w2+w3)
 {
       wid_[0] = w0;
@@ -109,74 +109,74 @@ vvp_fun_concat8::~vvp_fun_concat8()
 {
 }
 
-void vvp_fun_concat8::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+فراغ vvp_fun_concat8::recv_vec4(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
 				vvp_context_t)
 {
-      vvp_vector8_t bit8 (bit, 6, 6);
-      recv_vec8_pv(port, bit8, 0, bit8.size());
+      vvp_vector8_t bit8 (بټ, 6, 6);
+      recv_vec8_pv(پورټ, bit8, 0, bit8.size());
 }
 
-void vvp_fun_concat8::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-				   unsigned base, unsigned vwid, vvp_context_t)
+فراغ vvp_fun_concat8::recv_vec4_pv(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
+				   بینښه بنسټ, بینښه vwid, vvp_context_t)
 {
-      vvp_vector8_t bit8 (bit, 6, 6);
-      recv_vec8_pv(port, bit8, base, vwid);
+      vvp_vector8_t bit8 (بټ, 6, 6);
+      recv_vec8_pv(پورټ, bit8, بنسټ, vwid);
 }
 
-void vvp_fun_concat8::recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit)
+فراغ vvp_fun_concat8::recv_vec8(vvp_net_ptr_t پورټ, ثابت vvp_vector8_t&بټ)
 {
-      recv_vec8_pv(port, bit, 0, bit.size());
+      recv_vec8_pv(پورټ, بټ, 0, بټ.size());
 }
 
-void vvp_fun_concat8::recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
-				   unsigned base, unsigned vwid)
+فراغ vvp_fun_concat8::recv_vec8_pv(vvp_net_ptr_t پورټ, ثابت vvp_vector8_t&بټ,
+				   بینښه بنسټ, بینښه vwid)
 {
-      unsigned pdx = port.port();
+      بینښه pdx = پورټ.پورټ();
 
-      if (vwid != wid_[pdx]) {
+      إذا (vwid != wid_[pdx]) {
 	    cerr << "internal error: port " << pdx
 		 << " expects wid=" << wid_[pdx]
-		 << ", got wid=" << vwid << endl;
-	    assert(0);
+		 << ", got wid=" << vwid << کرښه_پای;
+	    أكد(0);
       }
 
-      unsigned off = base;
-      for (unsigned idx = 0 ;  idx < pdx ;  idx += 1)
+      بینښه off = بنسټ;
+      لكل (بینښه idx = 0 ;  idx < pdx ;  idx += 1)
 	    off += wid_[idx];
 
-      val_.set_vec(off, bit);
+      val_.سېټ_vec(off, بټ);
 
-      if (net_)
-	    return;
+      إذا (net_)
+	    أرجع;
 
-      net_ = port.ptr();
-      schedule_functor(this);
+      net_ = پورټ.ptr();
+      مهالوېش_functor(هذا);
 }
 
-void vvp_fun_concat8::run_run()
+فراغ vvp_fun_concat8::پرلپسې_پرلپسې()
 {
       vvp_net_t *ptr = net_;
-      net_ = nullptr;
+      net_ = تش_اشاره;
       ptr->send_vec8(val_);
 }
 
-void compile_concat8(char*label, unsigned w0, unsigned w1,
-		     unsigned w2, unsigned w3,
-		     unsigned argc, struct symb_s*argv)
+فراغ compile_concat8(حرف*label, بینښه w0, بینښه w1,
+		     بینښه w2, بینښه w3,
+		     بینښه argc, بنية symb_s*argv)
 {
-      vvp_fun_concat8*fun = new vvp_fun_concat8(w0, w1, w2, w3);
+      vvp_fun_concat8*fun = جديد vvp_fun_concat8(w0, w1, w2, w3);
 
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = جديد vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_نښه(label, net);
+      حرر(label);
 
       inputs_connect(net, argc, argv);
-      free(argv);
+      حرر(argv);
 }
 
-vvp_fun_repeat::vvp_fun_repeat(unsigned width, unsigned repeat)
+vvp_fun_repeat::vvp_fun_repeat(بینښه width, بینښه repeat)
 : wid_(width), rep_(repeat)
 {
 }
@@ -185,38 +185,38 @@ vvp_fun_repeat::~vvp_fun_repeat()
 {
 }
 
-void vvp_fun_repeat::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+فراغ vvp_fun_repeat::recv_vec4(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
                                vvp_context_t)
 {
-      assert(bit.size() == wid_/rep_);
+      أكد(بټ.size() == wid_/rep_);
 
       vvp_vector4_t val (wid_);
 
-      for (unsigned rdx = 0 ;  rdx < rep_ ;  rdx += 1) {
-	    unsigned off = rdx * bit.size();
+      لكل (بینښه rdx = 0 ;  rdx < rep_ ;  rdx += 1) {
+	    بینښه off = rdx * بټ.size();
 
-	    val.set_vec(off, bit);
+	    val.سېټ_vec(off, بټ);
       }
 
-      port.ptr()->send_vec4(val, 0);
+      پورټ.ptr()->send_vec4(val, 0);
 }
 
-void vvp_fun_repeat::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t &bit,
-			          unsigned base, unsigned vwid,
+فراغ vvp_fun_repeat::recv_vec4_pv(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t &بټ,
+			          بینښه بنسټ, بینښه vwid,
 				  vvp_context_t context)
 {
-      recv_vec4_pv_(port, bit, base, vwid, context);
+      recv_vec4_pv_(پورټ, بټ, بنسټ, vwid, context);
 }
 
-void compile_repeat(char*label, long width, long repeat, struct symb_s arg)
+فراغ compile_repeat(حرف*label, اوږد width, اوږد repeat, بنية symb_s arg)
 {
-      vvp_fun_repeat*fun = new vvp_fun_repeat(width, repeat);
+      vvp_fun_repeat*fun = جديد vvp_fun_repeat(width, repeat);
 
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = جديد vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_نښه(label, net);
+      حرر(label);
 
-      input_connect(net, 0, arg.text);
+      ننوت_connect(net, 0, arg.متن);
 }

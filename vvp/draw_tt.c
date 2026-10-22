@@ -25,101 +25,101 @@
  * map of a 4-vbit value to a hex digit. The table handles the display
  * of x, X, z, Z, etc.
  */
-static void draw_hex_table(void)
+ساكن فراغ draw_hex_جدول(فراغ)
 {
-      unsigned idx;
+      بینښه idx;
 
-      printf("extern const char hex_digits[256] = {\n");
-      for (idx = 0 ;  idx < 256 ;  idx += 1) {
-	    unsigned cnt_z = 0, cnt_x = 0;
-	    unsigned bv = 0, bdx;
+      چاپ_کړه("extern const char hex_digits[256] = {\n");
+      لكل (idx = 0 ;  idx < 256 ;  idx += 1) {
+	    بینښه cnt_z = 0, cnt_x = 0;
+	    بینښه bv = 0, bdx;
 
-	    for (bdx = 0 ;  bdx < 4 ;  bdx += 1) {
-		  switch ((idx >> (bdx * 2)) & 3) {
-		      case 0:
-			break;
-		      case 1:
+	    لكل (bdx = 0 ;  bdx < 4 ;  bdx += 1) {
+		  بدل ((idx >> (bdx * 2)) & 3) {
+		      حالة 0:
+			اكسر;
+		      حالة 1:
 			bv |= 1<<bdx;
-			break;
-		      case 2:
+			اكسر;
+		      حالة 2:
 			cnt_x += 1;
-			break;
-		      case 3:
+			اكسر;
+		      حالة 3:
 			cnt_z += 1;
-			break;
+			اكسر;
 		  }
 	    }
 
-	    if (cnt_z == 4)
-		  printf(" 'z',");
+	    إذا (cnt_z == 4)
+		  چاپ_کړه(" 'z',");
 
-	    else if (cnt_x == 4)
-		  printf(" 'x',");
+	    وإلا إذا (cnt_x == 4)
+		  چاپ_کړه(" 'x',");
 
-	    else if ((cnt_z > 0) && (cnt_x == 0))
-		  printf(" 'Z',");
+	    وإلا إذا ((cnt_z > 0) && (cnt_x == 0))
+		  چاپ_کړه(" 'Z',");
 
-	    else if (cnt_x > 0)
-		  printf(" 'X',");
+	    وإلا إذا (cnt_x > 0)
+		  چاپ_کړه(" 'X',");
 
-	    else
-		  printf(" '%c',", (unsigned)"0123456789abcdef"[bv]);
+	    وإلا
+		  چاپ_کړه(" '%c',", (بینښه)"0123456789abcdef"[bv]);
 
-	    if (((idx+1) % 8) == 0)
-		  printf("\n");
+	    إذا (((idx+1) % 8) == 0)
+		  چاپ_کړه("\n");
       }
-      printf("};\n");
+      چاپ_کړه("};\n");
 }
 
-static void draw_oct_table(void)
+ساكن فراغ draw_oct_جدول(فراغ)
 {
-      unsigned idx;
+      بینښه idx;
 
-      printf("extern const char oct_digits[64] = {\n");
-      for (idx = 0 ;  idx < 64 ;  idx += 1) {
-	    unsigned cnt_z = 0, cnt_x = 0;
-	    unsigned bv = 0, bdx;
+      چاپ_کړه("extern const char oct_digits[64] = {\n");
+      لكل (idx = 0 ;  idx < 64 ;  idx += 1) {
+	    بینښه cnt_z = 0, cnt_x = 0;
+	    بینښه bv = 0, bdx;
 
-	    for (bdx = 0 ;  bdx < 3 ;  bdx += 1) {
-		  switch ((idx >> (bdx * 2)) & 3) {
-		      case 0:
-			break;
-		      case 1:
+	    لكل (bdx = 0 ;  bdx < 3 ;  bdx += 1) {
+		  بدل ((idx >> (bdx * 2)) & 3) {
+		      حالة 0:
+			اكسر;
+		      حالة 1:
 			bv |= 1<<bdx;
-			break;
-		      case 2:
+			اكسر;
+		      حالة 2:
 			cnt_x += 1;
-			break;
-		      case 3:
+			اكسر;
+		      حالة 3:
 			cnt_z += 1;
-			break;
+			اكسر;
 		  }
 	    }
 
-	    if (cnt_z == 3)
-		  printf(" 'z',");
+	    إذا (cnt_z == 3)
+		  چاپ_کړه(" 'z',");
 
-	    else if (cnt_x == 3)
-		  printf(" 'x',");
+	    وإلا إذا (cnt_x == 3)
+		  چاپ_کړه(" 'x',");
 
-	    else if ((cnt_z > 0) && (cnt_x == 0))
-		  printf(" 'Z',");
+	    وإلا إذا ((cnt_z > 0) && (cnt_x == 0))
+		  چاپ_کړه(" 'Z',");
 
-	    else if (cnt_x > 0)
-		  printf(" 'X',");
+	    وإلا إذا (cnt_x > 0)
+		  چاپ_کړه(" 'X',");
 
-	    else
-		  printf(" '%c',", (unsigned)"01234567"[bv]);
+	    وإلا
+		  چاپ_کړه(" '%c',", (بینښه)"01234567"[bv]);
 
-	    if (((idx+1) % 8) == 0)
-		  printf("\n");
+	    إذا (((idx+1) % 8) == 0)
+		  چاپ_کړه("\n");
       }
-      printf("};\n");
+      چاپ_کړه("};\n");
 }
 
-int main(void)
+صحيح اصلي(فراغ)
 {
-      draw_hex_table();
-      draw_oct_table();
-      return 0;
+      draw_hex_جدول();
+      draw_oct_جدول();
+      أرجع 0;
 }

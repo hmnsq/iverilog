@@ -24,14 +24,14 @@
 # include  "vpi_priv.h"
 # include  <vector>
 # include  <cassert>
-#ifdef CHECK_WITH_VALGRIND
+#که_تعریف_شوی CHECK_WITH_VALGRIND
 # include  <valgrind/memcheck.h>
 # include  <map>
-#endif
+#د_که_پای
 
 # include  <iostream>
 
-using namespace std;
+کارول نطاق std;
 
 /*
  * The filter_mask_ method takes as an input the value to propagate,
@@ -44,114 +44,114 @@ using namespace std;
  * The "force" vector in the value being force, with the force_mask_
  * member a bit mask of which parts of the force vector really apply.
  */
-template <class T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_mask_(const T&val, const T&force, T&filter, unsigned base)
+کينډۍ <صنف T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_ماسک(ثابت T&val, ثابت T&force, T&filter, بینښه بنسټ)
 {
-      if (!test_force_mask_is_zero()) {
+      إذا (!test_force_ماسک_is_zero()) {
 	      // Some bits are being forced. Go through the
 	      // force_mask_ and force value to see which bits are
 	      // propagated and which are kept from the forced
 	      // value. Update the filter with the filtered result and
 	      // return REPL to indicate that some bits have changed,
 	      // or STOP if no bits change.
-	    bool propagate_flag = force_propagate_;
-	    force_propagate_ = false;
-	    assert(force_mask_.size() == force.size());
-	    assert((base+val.size()) <= force_mask_.size());
+	    منطقي propagate_flag = force_propagate_;
+	    force_propagate_ = خطأ;
+	    أكد(force_ماسک_2.size() == force.size());
+	    أكد((بنسټ+val.size()) <= force_ماسک_2.size());
 
 	    filter = val;
-	    for (unsigned idx = 0 ; idx < val.size() ; idx += 1) {
-		  if (force_mask_.value(base+idx))
-			filter.set_bit(idx, force.value(base+idx));
-		  else
-			propagate_flag = true;
+	    لكل (بینښه idx = 0 ; idx < val.size() ; idx += 1) {
+		  إذا (force_ماسک_2.value(بنسټ+idx))
+			filter.سېټ_بټ(idx, force.value(بنسټ+idx));
+		  وإلا
+			propagate_flag = ریښتیا;
 	    }
 
-	    if (propagate_flag) {
-		  run_vpi_callbacks();
-		  return REPL;
-	    } else {
-		  return STOP;
+	    إذا (propagate_flag) {
+		  پرلپسې_vpi_callbacks();
+		  أرجع REPL;
+	    } وإلا {
+		  أرجع STOP;
 	    }
 
-      } else {
-	    run_vpi_callbacks();
-	    return PROP;
+      } وإلا {
+	    پرلپسې_vpi_callbacks();
+	    أرجع PROP;
       }
 }
 
-template <class T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_mask_(T&val, T force)
+کينډۍ <صنف T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_ماسک(T&val, T force)
 {
 
-      if (test_force_mask(0)) {
+      إذا (test_force_ماسک(0)) {
 	    val = force;
-	    run_vpi_callbacks();
-	    return REPL;
+	    پرلپسې_vpi_callbacks();
+	    أرجع REPL;
       }
-      run_vpi_callbacks();
-      return PROP;
+      پرلپسې_vpi_callbacks();
+      أرجع PROP;
 }
 
-template <class T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_input_mask_(const T&val, const T&force, T&rep) const
+کينډۍ <صنف T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_ننوت_ماسک(ثابت T&val, ثابت T&force, T&rep) ثابت
 {
-      if (test_force_mask_is_zero())
-	    return PROP;
+      إذا (test_force_ماسک_is_zero())
+	    أرجع PROP;
 
-      assert(force_mask_.size() == force.size());
+      أكد(force_ماسک_2.size() == force.size());
 
       rep = val;
-      for (unsigned idx = 0 ; idx < val.size() ; idx += 1) {
-	    if (force_mask_.value(idx))
-		  rep.set_bit(idx, force.value(idx));
+      لكل (بینښه idx = 0 ; idx < val.size() ; idx += 1) {
+	    إذا (force_ماسک_2.value(idx))
+		  rep.سېټ_بټ(idx, force.value(idx));
       }
 
-      return REPL;
+      أرجع REPL;
 }
 
-vvp_signal_value::~vvp_signal_value()
+vvp_signal_ارزښت::~vvp_signal_ارزښت()
 {
 }
 
-double vvp_signal_value::real_value() const
+مزدوج vvp_signal_ارزښت::real_ارزښت() ثابت
 {
-      assert(0);
-      return 0;
+      أكد(0);
+      أرجع 0;
 }
 
-void vvp_net_t::force_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask)
+فراغ vvp_net_t::force_vec4(ثابت vvp_vector4_t&val, ثابت vvp_vector2_t&ماسک)
 {
-      assert(fil);
-      fil->force_fil_vec4(val, mask);
-      fun->force_flag(false);
-      vvp_send_vec4(out_, val, 0);
+      أكد(fil);
+      fil->force_fil_vec4(val, ماسک);
+      fun->force_flag(خطأ);
+      vvp_send_vec4(بهر_2, val, 0);
 }
 
-void vvp_net_t::force_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask)
+فراغ vvp_net_t::force_vec8(ثابت vvp_vector8_t&val, ثابت vvp_vector2_t&ماسک)
 {
-      assert(fil);
-      fil->force_fil_vec8(val, mask);
-      fun->force_flag(false);
-      vvp_send_vec8(out_, val);
+      أكد(fil);
+      fil->force_fil_vec8(val, ماسک);
+      fun->force_flag(خطأ);
+      vvp_send_vec8(بهر_2, val);
 }
 
-void vvp_net_t::force_real(double val, const vvp_vector2_t&mask)
+فراغ vvp_net_t::force_real(مزدوج val, ثابت vvp_vector2_t&ماسک)
 {
-      assert(fil);
-      fil->force_fil_real(val, mask);
-      fun->force_flag(false);
-      vvp_send_real(out_, val, 0);
+      أكد(fil);
+      fil->force_fil_real(val, ماسک);
+      fun->force_flag(خطأ);
+      vvp_send_real(بهر_2, val, 0);
 }
 
 /* **** vvp_fun_signal methods **** */
 
-vvp_fun_signal_base::vvp_fun_signal_base()
+vvp_fun_signal_بنسټ::vvp_fun_signal_بنسټ()
 {
-      continuous_assign_active_ = false;
-      needs_init_ = true;
+      continuous_ټاکل_فعال = خطأ;
+      needs_init_ = ریښتیا;
       cassign_link = 0;
-      count_functors_sig += 1;
+      شمېر_functors_sig += 1;
 }
 
-vvp_fun_signal4_sa::vvp_fun_signal4_sa(unsigned wid, vvp_bit4_t init)
+vvp_fun_signal4_sa::vvp_fun_signal4_sa(بینښه wid, vvp_bit4_t init)
 : bits4_(wid, init)
 {
 }
@@ -168,280 +168,280 @@ vvp_fun_signal4_sa::vvp_fun_signal4_sa(unsigned wid, vvp_bit4_t init)
  * the first propagation, and forces the first propagation to happen
  * even if it matches the initial value.
  */
-void vvp_fun_signal4_sa::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+فراغ vvp_fun_signal4_sa::recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بټ,
                                    vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0: // Normal input (feed from net, or set from process)
+      بدل (ptr.پورټ()) {
+	  حالة 0: // Normal input (feed from net, or set from process)
 	      /* If we don't have a continuous assign mask then just
 		 copy the bits, otherwise we need to see if there are
 		 any holes in the mask so we can set those bits. */
-	    if (assign_mask_.size() == 0) {
-                  if (needs_init_ || !bits4_.eeq(bit)) {
-			assert(bit.size() == bits4_.size());
-			bits4_ = bit;
-			needs_init_ = false;
+	    إذا (ټاکل_ماسک.size() == 0) {
+                  إذا (needs_init_ || !bits4_.eeq(بټ)) {
+			أكد(بټ.size() == bits4_.size());
+			bits4_ = بټ;
+			needs_init_ = خطأ;
 			ptr.ptr()->send_vec4(bits4_, 0);
 		  }
-	    } else {
-		  bool changed = false;
-		  assert(bits4_.size() == assign_mask_.size());
-		  for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
-			if (idx >= bits4_.size()) break;
-			if (assign_mask_.value(idx)) continue;
-			bits4_.set_bit(idx, bit.value(idx));
-			changed = true;
+	    } وإلا {
+		  منطقي بدل_شوی = خطأ;
+		  أكد(bits4_.size() == ټاکل_ماسک.size());
+		  لكل (بینښه idx = 0 ;  idx < بټ.size() ;  idx += 1) {
+			إذا (idx >= bits4_.size()) اكسر;
+			إذا (ټاکل_ماسک.value(idx)) استمر;
+			bits4_.سېټ_بټ(idx, بټ.value(idx));
+			بدل_شوی = ریښتیا;
 		  }
-		  if (changed) {
-			needs_init_ = false;
+		  إذا (بدل_شوی) {
+			needs_init_ = خطأ;
 			ptr.ptr()->send_vec4(bits4_, 0);
 		  }
 	    }
-	    break;
+	    اكسر;
 
-	  case 1: // Continuous assign value
+	  حالة 1: // Continuous assign value
 	      // Handle the simple case of the linked source being wider
 	      // than this signal. Note we don't yet support the case of
 	      // the linked source being narrower than this signal, or
 	      // the case of an expression being assigned.
-	    bits4_ = coerce_to_width(bit, bits4_.size());
-	    assign_mask_ = vvp_vector2_t(vvp_vector2_t::FILL1, bits4_.size());
+	    bits4_ = coerce_منزل_پلنوالی(بټ, bits4_.size());
+	    ټاکل_ماسک = vvp_vector2_t(vvp_vector2_t::FILL1, bits4_.size());
 	    ptr.ptr()->send_vec4(bits4_, 0);
-	    break;
+	    اكسر;
 
-	  default:
-	    fprintf(stderr, "Unsupported port type %u.\n", ptr.port());
-	    assert(0);
-	    break;
+	  افتراضي:
+	    fprintf(stderr, "Unsupported port type %u.\n", ptr.پورټ());
+	    أكد(0);
+	    اكسر;
       }
 }
 
-void vvp_fun_signal4_sa::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+فراغ vvp_fun_signal4_sa::recv_vec8(vvp_net_ptr_t ptr, ثابت vvp_vector8_t&بټ)
 {
-      recv_vec4(ptr, reduce4(bit), 0);
+      recv_vec4(ptr, reduce4(بټ), 0);
 }
 
-void vvp_fun_signal4_sa::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				      unsigned base, unsigned vwid, vvp_context_t)
+فراغ vvp_fun_signal4_sa::recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بټ,
+				      بینښه بنسټ, بینښه vwid, vvp_context_t)
 {
-      assert(bits4_.size() == vwid);
-      unsigned wid = bit.size();
+      أكد(bits4_.size() == vwid);
+      بینښه wid = بټ.size();
 
-      switch (ptr.port()) {
-	  case 0: // Normal input
-	    if (assign_mask_.size() == 0) {
-                  for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-			if (base+idx >= bits4_.size()) break;
-			bits4_.set_bit(base+idx, bit.value(idx));
+      بدل (ptr.پورټ()) {
+	  حالة 0: // Normal input
+	    إذا (ټاکل_ماسک.size() == 0) {
+                  لكل (بینښه idx = 0 ;  idx < wid ;  idx += 1) {
+			إذا (بنسټ+idx >= bits4_.size()) اكسر;
+			bits4_.سېټ_بټ(بنسټ+idx, بټ.value(idx));
 		  }
-		  needs_init_ = false;
+		  needs_init_ = خطأ;
 		  ptr.ptr()->send_vec4(bits4_,0);
-	    } else {
-		  bool changed = false;
-		  assert(bits4_.size() == assign_mask_.size());
-		  for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-			if (base+idx >= bits4_.size()) break;
-			if (assign_mask_.value(base+idx)) continue;
-			bits4_.set_bit(base+idx, bit.value(idx));
-			changed = true;
+	    } وإلا {
+		  منطقي بدل_شوی = خطأ;
+		  أكد(bits4_.size() == ټاکل_ماسک.size());
+		  لكل (بینښه idx = 0 ;  idx < wid ;  idx += 1) {
+			إذا (بنسټ+idx >= bits4_.size()) اكسر;
+			إذا (ټاکل_ماسک.value(بنسټ+idx)) استمر;
+			bits4_.سېټ_بټ(بنسټ+idx, بټ.value(idx));
+			بدل_شوی = ریښتیا;
 		  }
-		  if (changed) {
-			needs_init_ = false;
+		  إذا (بدل_شوی) {
+			needs_init_ = خطأ;
 			ptr.ptr()->send_vec4(bits4_,0);
 		  }
 	    }
-	    break;
+	    اكسر;
 
-	  case 1: // Continuous assign value
-	    if (assign_mask_.size() == 0)
-		  assign_mask_ = vvp_vector2_t(vvp_vector2_t::FILL0, bits4_.size());
-	    for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-		  if (base+idx >= bits4_.size())
-			break;
-		  bits4_.set_bit(base+idx, bit.value(idx));
-		  assign_mask_.set_bit(base+idx, 1);
+	  حالة 1: // Continuous assign value
+	    إذا (ټاکل_ماسک.size() == 0)
+		  ټاکل_ماسک = vvp_vector2_t(vvp_vector2_t::FILL0, bits4_.size());
+	    لكل (بینښه idx = 0 ;  idx < wid ;  idx += 1) {
+		  إذا (بنسټ+idx >= bits4_.size())
+			اكسر;
+		  bits4_.سېټ_بټ(بنسټ+idx, بټ.value(idx));
+		  ټاکل_ماسک.سېټ_بټ(بنسټ+idx, 1);
 	    }
 	    ptr.ptr()->send_vec4(bits4_,0);
-	    break;
+	    اكسر;
 
-	  default:
-	    fprintf(stderr, "Unsupported port type %u.\n", ptr.port());
-	    assert(0);
-	    break;
+	  افتراضي:
+	    fprintf(stderr, "Unsupported port type %u.\n", ptr.پورټ());
+	    أكد(0);
+	    اكسر;
       }
 }
 
-void vvp_fun_signal4_sa::recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-				      unsigned base, unsigned vwid)
+فراغ vvp_fun_signal4_sa::recv_vec8_pv(vvp_net_ptr_t ptr, ثابت vvp_vector8_t&بټ,
+				      بینښه بنسټ, بینښه vwid)
 {
-      recv_vec4_pv(ptr, reduce4(bit), base, vwid, 0);
+      recv_vec4_pv(ptr, reduce4(بټ), بنسټ, vwid, 0);
 }
 
-void vvp_fun_signal_base::deassign()
+فراغ vvp_fun_signal_بنسټ::deassign()
 {
-      continuous_assign_active_ = false;
-      assign_mask_ = vvp_vector2_t();
+      continuous_ټاکل_فعال = خطأ;
+      ټاکل_ماسک = vvp_vector2_t();
 }
 
-void vvp_fun_signal_base::deassign_pv(unsigned base, unsigned wid)
+فراغ vvp_fun_signal_بنسټ::deassign_pv(بینښه بنسټ, بینښه wid)
 {
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-	    assign_mask_.set_bit(base+idx, 0);
+      لكل (بینښه idx = 0 ;  idx < wid ;  idx += 1) {
+	    ټاکل_ماسک.سېټ_بټ(بنسټ+idx, 0);
       }
 
-      if (assign_mask_.is_zero()) {
-	    assign_mask_ = vvp_vector2_t();
+      إذا (ټاکل_ماسک.is_zero()) {
+	    ټاکل_ماسک = vvp_vector2_t();
       }
 }
 
-void automatic_signal_base::release(vvp_net_ptr_t,bool)
+فراغ automatic_signal_بنسټ::release(vvp_net_ptr_t,منطقي)
 {
-      assert(0);
+      أكد(0);
 }
 
-void automatic_signal_base::release_pv(vvp_net_ptr_t,unsigned,unsigned,bool)
+فراغ automatic_signal_بنسټ::release_pv(vvp_net_ptr_t,بینښه,بینښه,منطقي)
 {
-      assert(0);
+      أكد(0);
 }
 
-unsigned automatic_signal_base::filter_size() const
+بینښه automatic_signal_بنسټ::filter_اندازه() ثابت
 {
-      assert(0);
-      return(0);
+      أكد(0);
+      أرجع(0);
 }
-void automatic_signal_base::force_fil_vec4(const vvp_vector4_t&, const vvp_vector2_t&)
+فراغ automatic_signal_بنسټ::force_fil_vec4(ثابت vvp_vector4_t&, ثابت vvp_vector2_t&)
 {
-      assert(0);
+      أكد(0);
 }
-void automatic_signal_base::force_fil_vec8(const vvp_vector8_t&, const vvp_vector2_t&)
+فراغ automatic_signal_بنسټ::force_fil_vec8(ثابت vvp_vector8_t&, ثابت vvp_vector2_t&)
 {
-      assert(0);
+      أكد(0);
 }
-void automatic_signal_base::force_fil_real(double, const vvp_vector2_t&)
+فراغ automatic_signal_بنسټ::force_fil_real(مزدوج, ثابت vvp_vector2_t&)
 {
-      assert(0);
+      أكد(0);
 }
-void automatic_signal_base::get_value(struct t_vpi_value*)
+فراغ automatic_signal_بنسټ::get_ارزښت(بنية t_vpi_ارزښت*)
 {
-      assert(0);
-}
-
-const vvp_vector4_t& vvp_fun_signal4_sa::vec4_unfiltered_value() const
-{
-      return bits4_;
+      أكد(0);
 }
 
-vvp_fun_signal4_aa::vvp_fun_signal4_aa(unsigned wid, vvp_bit4_t init)
+ثابت vvp_vector4_t& vvp_fun_signal4_sa::vec4_unfiltered_ارزښت() ثابت
 {
-      context_idx_ = vpip_add_item_to_context(this, vpip_peek_context_scope());
-      size_ = wid;
+      أرجع bits4_;
+}
+
+vvp_fun_signal4_aa::vvp_fun_signal4_aa(بینښه wid, vvp_bit4_t init)
+{
+      context_idx_ = vpip_جمع_کړه_توکی_منزل_context(هذا, vpip_peek_context_scope());
+      اندازه_2 = wid;
       init_ = init;
 }
 
 vvp_fun_signal4_aa::~vvp_fun_signal4_aa()
 {
-      assert(0);
+      أكد(0);
 }
 
-void vvp_fun_signal4_aa::alloc_instance(vvp_context_t context)
+فراغ vvp_fun_signal4_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new vvp_vector4_t(size_, init_));
+      vvp_سېټ_context_توکی(context, context_idx_, جديد vvp_vector4_t(اندازه_2, init_));
 }
 
-void vvp_fun_signal4_aa::reset_instance(vvp_context_t context)
+فراغ vvp_fun_signal4_aa::reset_instance(vvp_context_t context)
 {
-      vvp_vector4_t*bits = static_cast<vvp_vector4_t*>
-            (vvp_get_context_item(context, context_idx_));
+      vvp_vector4_t*بټونه = static_cast<vvp_vector4_t*>
+            (vvp_get_context_توکی(context, context_idx_));
 
-      bits->fill_bits(init_);
+      بټونه->fill_بټونه(init_);
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_fun_signal4_aa::free_instance(vvp_context_t context)
+#که_تعریف_شوی CHECK_WITH_VALGRIND
+فراغ vvp_fun_signal4_aa::free_instance(vvp_context_t context)
 {
-      vvp_vector4_t*bits = static_cast<vvp_vector4_t*>
-            (vvp_get_context_item(context, context_idx_));
-      delete bits;
+      vvp_vector4_t*بټونه = static_cast<vvp_vector4_t*>
+            (vvp_get_context_توکی(context, context_idx_));
+      ړنګول بټونه;
 }
-#endif
+#د_که_پای
 
 /*
  * Continuous and forced assignments are not permitted on automatic
  * variables. So we only expect to receive on port 0.
  */
-void vvp_fun_signal4_aa::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+فراغ vvp_fun_signal4_aa::recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بټ,
                                    vvp_context_t context)
 {
-      assert(ptr.port() == 0);
-      assert(context);
+      أكد(ptr.پورټ() == 0);
+      أكد(context);
 
       vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
-            (vvp_get_context_item(context, context_idx_));
+            (vvp_get_context_توکی(context, context_idx_));
 
-      if (!bits4->eeq(bit)) {
-            *bits4 = bit;
+      إذا (!bits4->eeq(بټ)) {
+            *bits4 = بټ;
             ptr.ptr()->send_vec4(*bits4, context);
       }
 }
 
-void vvp_fun_signal4_aa::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				      unsigned base, unsigned vwid, vvp_context_t context)
+فراغ vvp_fun_signal4_aa::recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بټ,
+				      بینښه بنسټ, بینښه vwid, vvp_context_t context)
 {
-      assert(ptr.port() == 0);
-      assert(size_ == vwid);
-      assert(context);
+      أكد(ptr.پورټ() == 0);
+      أكد(اندازه_2 == vwid);
+      أكد(context);
 
       vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
-            (vvp_get_context_item(context, context_idx_));
+            (vvp_get_context_توکی(context, context_idx_));
 
-      unsigned wid = bit.size();
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-            if (base+idx >= bits4->size()) break;
-            bits4->set_bit(base+idx, bit.value(idx));
+      بینښه wid = بټ.size();
+      لكل (بینښه idx = 0 ;  idx < wid ;  idx += 1) {
+            إذا (بنسټ+idx >= bits4->size()) اكسر;
+            bits4->سېټ_بټ(بنسټ+idx, بټ.value(idx));
       }
       ptr.ptr()->send_vec4(*bits4, context);
 }
 
-unsigned vvp_fun_signal4_aa::value_size() const
+بینښه vvp_fun_signal4_aa::ارزښت_اندازه() ثابت
 {
-      return size_;
+      أرجع اندازه_2;
 }
 
-vvp_bit4_t vvp_fun_signal4_aa::value(unsigned idx) const
+vvp_bit4_t vvp_fun_signal4_aa::value(بینښه idx) ثابت
 {
-      const vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
-            (vthread_get_rd_context_item(context_idx_));
+      ثابت vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
+            (vthread_get_rd_context_توکی(context_idx_));
 
-      return bits4->value(idx);
+      أرجع bits4->value(idx);
 }
 
-vvp_scalar_t vvp_fun_signal4_aa::scalar_value(unsigned idx) const
+vvp_scalar_t vvp_fun_signal4_aa::scalar_ارزښت(بینښه idx) ثابت
 {
-      const vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
-            (vthread_get_rd_context_item(context_idx_));
+      ثابت vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
+            (vthread_get_rd_context_توکی(context_idx_));
 
-      return vvp_scalar_t(bits4->value(idx), 6, 6);
+      أرجع vvp_scalar_t(bits4->value(idx), 6, 6);
 }
 
-void vvp_fun_signal4_aa::vec4_value(vvp_vector4_t&val) const
+فراغ vvp_fun_signal4_aa::vec4_ارزښت(vvp_vector4_t&val) ثابت
 {
-      const vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
-            (vthread_get_rd_context_item(context_idx_));
+      ثابت vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
+            (vthread_get_rd_context_توکی(context_idx_));
 
       val = *bits4;
 }
 
-const vvp_vector4_t&vvp_fun_signal4_aa::vec4_unfiltered_value() const
+ثابت vvp_vector4_t&vvp_fun_signal4_aa::vec4_unfiltered_ارزښت() ثابت
 {
-      const vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
-            (vthread_get_rd_context_item(context_idx_));
+      ثابت vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
+            (vthread_get_rd_context_توکی(context_idx_));
 
-      return *bits4;
+      أرجع *bits4;
 }
 
-void vvp_fun_signal4_aa::operator delete(void*)
+فراغ vvp_fun_signal4_aa::چلوونکی ړنګول(فراغ*)
 {
-      assert(0);
+      أكد(0);
 }
 
 /*
@@ -449,142 +449,142 @@ void vvp_fun_signal4_aa::operator delete(void*)
  * arithmetic test because we want to treat for example -0 different
  * from +0.
  */
-bool bits_equal(double a, double b)
+منطقي بټونه_equal(مزدوج a, مزدوج b)
 {
-      return memcmp(&a, &b, sizeof a) == 0;
+      أرجع memcmp(&a, &b, حجم a) == 0;
 }
 
 vvp_fun_signal_real_sa::vvp_fun_signal_real_sa()
 {
-      bits_ = 0.0;
+      بټونه_2 = 0.0;
 }
 
-double vvp_fun_signal_real_sa::real_unfiltered_value() const
+مزدوج vvp_fun_signal_real_sa::real_unfiltered_ارزښت() ثابت
 {
-      return bits_;
+      أرجع بټونه_2;
 }
 
-void vvp_fun_signal_real_sa::recv_real(vvp_net_ptr_t ptr, double bit,
+فراغ vvp_fun_signal_real_sa::recv_real(vvp_net_ptr_t ptr, مزدوج بټ,
                                        vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0:
-	    if (!continuous_assign_active_) {
-                  if (needs_init_ || !bits_equal(bits_, bit)) {
-			bits_ = bit;
-			needs_init_ = false;
-			ptr.ptr()->send_real(bit, 0);
+      بدل (ptr.پورټ()) {
+	  حالة 0:
+	    إذا (!continuous_ټاکل_فعال) {
+                  إذا (needs_init_ || !بټونه_equal(بټونه_2, بټ)) {
+			بټونه_2 = بټ;
+			needs_init_ = خطأ;
+			ptr.ptr()->send_real(بټ, 0);
 		  }
 	    }
-	    break;
+	    اكسر;
 
-	  case 1: // Continuous assign value
-	    continuous_assign_active_ = true;
-	    bits_ = bit;
-	    ptr.ptr()->send_real(bit, 0);
-	    break;
+	  حالة 1: // Continuous assign value
+	    continuous_ټاکل_فعال = ریښتیا;
+	    بټونه_2 = بټ;
+	    ptr.ptr()->send_real(بټ, 0);
+	    اكسر;
 
-	  default:
-	    fprintf(stderr, "Unsupported port type %u.\n", ptr.port());
-	    assert(0);
-	    break;
+	  افتراضي:
+	    fprintf(stderr, "Unsupported port type %u.\n", ptr.پورټ());
+	    أكد(0);
+	    اكسر;
       }
 }
 
 vvp_fun_signal_real_aa::vvp_fun_signal_real_aa()
 {
-      context_idx_ = vpip_add_item_to_context(this, vpip_peek_context_scope());
+      context_idx_ = vpip_جمع_کړه_توکی_منزل_context(هذا, vpip_peek_context_scope());
 }
 
 vvp_fun_signal_real_aa::~vvp_fun_signal_real_aa()
 {
-      assert(0);
+      أكد(0);
 }
 
-void vvp_fun_signal_real_aa::alloc_instance(vvp_context_t context)
+فراغ vvp_fun_signal_real_aa::alloc_instance(vvp_context_t context)
 {
-      double*bits = new double;
-      vvp_set_context_item(context, context_idx_, bits);
+      مزدوج*بټونه = جديد مزدوج;
+      vvp_سېټ_context_توکی(context, context_idx_, بټونه);
 
-      *bits = 0.0;
+      *بټونه = 0.0;
 }
 
-void vvp_fun_signal_real_aa::reset_instance(vvp_context_t context)
+فراغ vvp_fun_signal_real_aa::reset_instance(vvp_context_t context)
 {
-      double*bits = static_cast<double*>
-            (vvp_get_context_item(context, context_idx_));
+      مزدوج*بټونه = static_cast<مزدوج*>
+            (vvp_get_context_توکی(context, context_idx_));
 
-      *bits = 0.0;
+      *بټونه = 0.0;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_fun_signal_real_aa::free_instance(vvp_context_t context)
+#که_تعریف_شوی CHECK_WITH_VALGRIND
+فراغ vvp_fun_signal_real_aa::free_instance(vvp_context_t context)
 {
-      double*bits = static_cast<double*>
-            (vvp_get_context_item(context, context_idx_));
-      delete bits;
+      مزدوج*بټونه = static_cast<مزدوج*>
+            (vvp_get_context_توکی(context, context_idx_));
+      ړنګول بټونه;
 }
-#endif
+#د_که_پای
 
-double vvp_fun_signal_real_aa::real_unfiltered_value() const
+مزدوج vvp_fun_signal_real_aa::real_unfiltered_ارزښت() ثابت
 {
-      const double*bits = static_cast<double*>
-            (vthread_get_rd_context_item(context_idx_));
+      ثابت مزدوج*بټونه = static_cast<مزدوج*>
+            (vthread_get_rd_context_توکی(context_idx_));
 
-      return *bits;
+      أرجع *بټونه;
 }
 
-double vvp_fun_signal_real_aa::real_value() const
+مزدوج vvp_fun_signal_real_aa::real_ارزښت() ثابت
 {
-      return real_unfiltered_value();
+      أرجع real_unfiltered_ارزښت();
 }
 
-void vvp_fun_signal_real_aa::recv_real(vvp_net_ptr_t ptr, double bit,
+فراغ vvp_fun_signal_real_aa::recv_real(vvp_net_ptr_t ptr, مزدوج بټ,
                                        vvp_context_t context)
 {
-      assert(ptr.port() == 0);
-      assert(context);
+      أكد(ptr.پورټ() == 0);
+      أكد(context);
 
-      double*bits = static_cast<double*>
-            (vvp_get_context_item(context, context_idx_));
+      مزدوج*بټونه = static_cast<مزدوج*>
+            (vvp_get_context_توکی(context, context_idx_));
 
-      if (!bits_equal(*bits,bit)) {
-            *bits = bit;
-            ptr.ptr()->send_real(bit, context);
+      إذا (!بټونه_equal(*بټونه,بټ)) {
+            *بټونه = بټ;
+            ptr.ptr()->send_real(بټ, context);
       }
 }
 
-unsigned vvp_fun_signal_real_aa::value_size() const
+بینښه vvp_fun_signal_real_aa::ارزښت_اندازه() ثابت
 {
-      assert(0);
-      return 1;
+      أكد(0);
+      أرجع 1;
 }
 
-vvp_bit4_t vvp_fun_signal_real_aa::value(unsigned) const
+vvp_bit4_t vvp_fun_signal_real_aa::value(بینښه) ثابت
 {
-      assert(0);
-      return BIT4_X;
+      أكد(0);
+      أرجع BIT4_X;
 }
 
-vvp_scalar_t vvp_fun_signal_real_aa::scalar_value(unsigned) const
+vvp_scalar_t vvp_fun_signal_real_aa::scalar_ارزښت(بینښه) ثابت
 {
-      assert(0);
-      return vvp_scalar_t();
+      أكد(0);
+      أرجع vvp_scalar_t();
 }
 
-void vvp_fun_signal_real_aa::vec4_value(vvp_vector4_t&) const
+فراغ vvp_fun_signal_real_aa::vec4_ارزښت(vvp_vector4_t&) ثابت
 {
-      assert(0);
+      أكد(0);
 }
 
-void* vvp_fun_signal_real_aa::operator new(std::size_t size)
+فراغ* vvp_fun_signal_real_aa::چلوونکی جديد(std::size_t size)
 {
-      return vvp_net_fun_t::heap_.alloc(size);
+      أرجع vvp_net_fun_t::ډېرۍ.alloc(size);
 }
 
-void vvp_fun_signal_real_aa::operator delete(void*)
+فراغ vvp_fun_signal_real_aa::چلوونکی ړنګول(فراغ*)
 {
-      assert(0);
+      أكد(0);
 }
 
 
@@ -592,229 +592,229 @@ vvp_fun_signal_string_sa::vvp_fun_signal_string_sa()
 {
 }
 
-void vvp_fun_signal_string_sa::recv_string(vvp_net_ptr_t ptr, const std::string&bit,
+فراغ vvp_fun_signal_string_sa::recv_string(vvp_net_ptr_t ptr, ثابت std::string&بټ,
 					   vvp_context_t)
 {
-      assert(ptr.port() == 0);
+      أكد(ptr.پورټ() == 0);
 
-      if (needs_init_ || value_ != bit) {
-	    value_ = bit;
-	    needs_init_ = false;
+      إذا (needs_init_ || ارزښت_2 != بټ) {
+	    ارزښت_2 = بټ;
+	    needs_init_ = خطأ;
 
-	    ptr.ptr()->send_string(bit, 0);
+	    ptr.ptr()->send_string(بټ, 0);
       }
 }
 
-const string& vvp_fun_signal_string_sa::get_string() const
+ثابت string& vvp_fun_signal_string_sa::get_string() ثابت
 {
-      return value_;
+      أرجع ارزښت_2;
 }
 
 vvp_fun_signal_string_aa::vvp_fun_signal_string_aa()
 {
-      context_idx_ = vpip_add_item_to_context(this, vpip_peek_context_scope());
+      context_idx_ = vpip_جمع_کړه_توکی_منزل_context(هذا, vpip_peek_context_scope());
 }
 
 vvp_fun_signal_string_aa::~vvp_fun_signal_string_aa()
 {
-      assert(0);
+      أكد(0);
 }
 
-void vvp_fun_signal_string_aa::alloc_instance(vvp_context_t context)
+فراغ vvp_fun_signal_string_aa::alloc_instance(vvp_context_t context)
 {
-      string*bits = new std::string;
-      vvp_set_context_item(context, context_idx_, bits);
-      *bits = "";
+      string*بټونه = جديد std::string;
+      vvp_سېټ_context_توکی(context, context_idx_, بټونه);
+      *بټونه = "";
 }
 
-void vvp_fun_signal_string_aa::reset_instance(vvp_context_t context)
+فراغ vvp_fun_signal_string_aa::reset_instance(vvp_context_t context)
 {
-      string*bits = static_cast<std::string*>
-	    (vvp_get_context_item(context, context_idx_));
-      *bits = "";
+      string*بټونه = static_cast<std::string*>
+	    (vvp_get_context_توکی(context, context_idx_));
+      *بټونه = "";
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_fun_signal_string_aa::free_instance(vvp_context_t context)
+#که_تعریف_شوی CHECK_WITH_VALGRIND
+فراغ vvp_fun_signal_string_aa::free_instance(vvp_context_t context)
 {
-      string*bits = static_cast<std::string*>
-            (vvp_get_context_item(context, context_idx_));
-      delete bits;
+      string*بټونه = static_cast<std::string*>
+            (vvp_get_context_توکی(context, context_idx_));
+      ړنګول بټونه;
 }
-#endif
+#د_که_پای
 
-void vvp_fun_signal_string_aa::recv_string(vvp_net_ptr_t ptr, const std::string&bit, vvp_context_t context)
+فراغ vvp_fun_signal_string_aa::recv_string(vvp_net_ptr_t ptr, ثابت std::string&بټ, vvp_context_t context)
 {
-      assert(ptr.port() == 0);
-      assert(context);
+      أكد(ptr.پورټ() == 0);
+      أكد(context);
 
-      string*bits = static_cast<std::string*>
-	    (vvp_get_context_item(context, context_idx_));
+      string*بټونه = static_cast<std::string*>
+	    (vvp_get_context_توکی(context, context_idx_));
 
-      if (*bits != bit) {
-	    *bits = bit;
-	    ptr.ptr()->send_string(bit, context);
+      إذا (*بټونه != بټ) {
+	    *بټونه = بټ;
+	    ptr.ptr()->send_string(بټ, context);
       }
 }
 
-unsigned vvp_fun_signal_string_aa::value_size() const
+بینښه vvp_fun_signal_string_aa::ارزښت_اندازه() ثابت
 {
-      assert(0);
-      return 1;
+      أكد(0);
+      أرجع 1;
 }
 
-vvp_bit4_t vvp_fun_signal_string_aa::value(unsigned) const
+vvp_bit4_t vvp_fun_signal_string_aa::value(بینښه) ثابت
 {
-      assert(0);
-      return BIT4_X;
+      أكد(0);
+      أرجع BIT4_X;
 }
 
-vvp_scalar_t vvp_fun_signal_string_aa::scalar_value(unsigned) const
+vvp_scalar_t vvp_fun_signal_string_aa::scalar_ارزښت(بینښه) ثابت
 {
-      assert(0);
-      return vvp_scalar_t();
+      أكد(0);
+      أرجع vvp_scalar_t();
 }
 
-void vvp_fun_signal_string_aa::vec4_value(vvp_vector4_t&) const
+فراغ vvp_fun_signal_string_aa::vec4_ارزښت(vvp_vector4_t&) ثابت
 {
-      assert(0);
+      أكد(0);
 }
 
-double vvp_fun_signal_string_aa::real_value() const
+مزدوج vvp_fun_signal_string_aa::real_ارزښت() ثابت
 {
-      assert(0);
-      return 0.0;
+      أكد(0);
+      أرجع 0.0;
 }
 
-const std::string& vvp_fun_signal_string_aa::get_string() const
+ثابت std::string& vvp_fun_signal_string_aa::get_string() ثابت
 {
-      const string*bits = static_cast<std::string*>
-            (vthread_get_rd_context_item(context_idx_));
+      ثابت string*بټونه = static_cast<std::string*>
+            (vthread_get_rd_context_توکی(context_idx_));
 
-      return *bits;
+      أرجع *بټونه;
 }
 
-void* vvp_fun_signal_string_aa::operator new(std::size_t size)
+فراغ* vvp_fun_signal_string_aa::چلوونکی جديد(std::size_t size)
 {
-      return vvp_net_fun_t::heap_.alloc(size);
+      أرجع vvp_net_fun_t::ډېرۍ.alloc(size);
 }
 
-void vvp_fun_signal_string_aa::operator delete(void*)
+فراغ vvp_fun_signal_string_aa::چلوونکی ړنګول(فراغ*)
 {
-      assert(0);
+      أكد(0);
 }
 
   /* OBJECT signals */
 
-vvp_fun_signal_object_sa::vvp_fun_signal_object_sa(unsigned size)
+vvp_fun_signal_object_sa::vvp_fun_signal_object_sa(بینښه size)
 : vvp_fun_signal_object(size)
 {
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_fun_signal_object_aa::free_instance(vvp_context_t context)
+#که_تعریف_شوی CHECK_WITH_VALGRIND
+فراغ vvp_fun_signal_object_aa::free_instance(vvp_context_t context)
 {
-      vvp_object_t*bits = static_cast<vvp_object_t*>
-            (vvp_get_context_item(context, context_idx_));
-      delete bits;
+      vvp_object_t*بټونه = static_cast<vvp_object_t*>
+            (vvp_get_context_توکی(context, context_idx_));
+      ړنګول بټونه;
 }
-#endif
+#د_که_پای
 
-void vvp_fun_signal_object_sa::recv_object(vvp_net_ptr_t ptr, vvp_object_t bit,
+فراغ vvp_fun_signal_object_sa::recv_object(vvp_net_ptr_t ptr, vvp_object_t بټ,
 					   vvp_context_t)
 {
-      assert(ptr.port() == 0);
+      أكد(ptr.پورټ() == 0);
 
-      if (needs_init_ || value_ != bit) {
-	    value_ = bit;
-	    needs_init_ = false;
+      إذا (needs_init_ || ارزښت_2 != بټ) {
+	    ارزښت_2 = بټ;
+	    needs_init_ = خطأ;
 
-	    ptr.ptr()->send_object(bit, 0);
+	    ptr.ptr()->send_object(بټ, 0);
       }
 }
 
-vvp_object_t vvp_fun_signal_object_sa::get_object() const
+vvp_object_t vvp_fun_signal_object_sa::get_object() ثابت
 {
-      return value_;
+      أرجع ارزښت_2;
 }
 
-vvp_fun_signal_object_aa::vvp_fun_signal_object_aa(unsigned size)
+vvp_fun_signal_object_aa::vvp_fun_signal_object_aa(بینښه size)
 : vvp_fun_signal_object(size)
 {
-      context_idx_ = vpip_add_item_to_context(this, vpip_peek_context_scope());
+      context_idx_ = vpip_جمع_کړه_توکی_منزل_context(هذا, vpip_peek_context_scope());
 }
 
 vvp_fun_signal_object_aa::~vvp_fun_signal_object_aa()
 {
-      assert(0);
+      أكد(0);
 }
 
-void vvp_fun_signal_object_aa::alloc_instance(vvp_context_t context)
+فراغ vvp_fun_signal_object_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_object_t*bits = new vvp_object_t;
-      vvp_set_context_item(context, context_idx_, bits);
-      bits->reset();
+      vvp_object_t*بټونه = جديد vvp_object_t;
+      vvp_سېټ_context_توکی(context, context_idx_, بټونه);
+      بټونه->reset();
 }
 
-void vvp_fun_signal_object_aa::reset_instance(vvp_context_t context)
+فراغ vvp_fun_signal_object_aa::reset_instance(vvp_context_t context)
 {
-      vvp_object_t*bits = static_cast<vvp_object_t*>
-	    (vvp_get_context_item(context, context_idx_));
-      bits->reset();
+      vvp_object_t*بټونه = static_cast<vvp_object_t*>
+	    (vvp_get_context_توکی(context, context_idx_));
+      بټونه->reset();
 }
 
-vvp_object_t vvp_fun_signal_object_aa::get_object() const
+vvp_object_t vvp_fun_signal_object_aa::get_object() ثابت
 {
-      const vvp_object_t*bits = static_cast<vvp_object_t*>
-	    (vthread_get_rd_context_item(context_idx_));
-      return *bits;
+      ثابت vvp_object_t*بټونه = static_cast<vvp_object_t*>
+	    (vthread_get_rd_context_توکی(context_idx_));
+      أرجع *بټونه;
 }
 
-void vvp_fun_signal_object_aa::recv_object(vvp_net_ptr_t ptr, vvp_object_t bit,
+فراغ vvp_fun_signal_object_aa::recv_object(vvp_net_ptr_t ptr, vvp_object_t بټ,
 					   vvp_context_t context)
 {
-      assert(ptr.port() == 0);
-      assert(context);
+      أكد(ptr.پورټ() == 0);
+      أكد(context);
 
-      vvp_object_t*bits = static_cast<vvp_object_t*>
-	    (vvp_get_context_item(context, context_idx_));
+      vvp_object_t*بټونه = static_cast<vvp_object_t*>
+	    (vvp_get_context_توکی(context, context_idx_));
 
-      if (*bits != bit) {
-	    *bits = bit;
-	    ptr.ptr()->send_object(bit, context);
+      إذا (*بټونه != بټ) {
+	    *بټونه = بټ;
+	    ptr.ptr()->send_object(بټ, context);
       }
 }
 
-unsigned vvp_fun_signal_object_aa::value_size() const
+بینښه vvp_fun_signal_object_aa::ارزښت_اندازه() ثابت
 {
-      return 1;
+      أرجع 1;
 }
 
-vvp_bit4_t vvp_fun_signal_object_aa::value(unsigned) const
+vvp_bit4_t vvp_fun_signal_object_aa::value(بینښه) ثابت
 {
-      assert(0);
-      return BIT4_X;
+      أكد(0);
+      أرجع BIT4_X;
 }
 
-vvp_scalar_t vvp_fun_signal_object_aa::scalar_value(unsigned) const
+vvp_scalar_t vvp_fun_signal_object_aa::scalar_ارزښت(بینښه) ثابت
 {
-      assert(0);
-      return vvp_scalar_t();
+      أكد(0);
+      أرجع vvp_scalar_t();
 }
 
-void vvp_fun_signal_object_aa::vec4_value(vvp_vector4_t&) const
+فراغ vvp_fun_signal_object_aa::vec4_ارزښت(vvp_vector4_t&) ثابت
 {
-      assert(0);
+      أكد(0);
 }
 
-void* vvp_fun_signal_object_aa::operator new(std::size_t size)
+فراغ* vvp_fun_signal_object_aa::چلوونکی جديد(std::size_t size)
 {
-      return vvp_net_fun_t::heap_.alloc(size);
+      أرجع vvp_net_fun_t::ډېرۍ.alloc(size);
 }
 
-void vvp_fun_signal_object_aa::operator delete(void*)
+فراغ vvp_fun_signal_object_aa::چلوونکی ړنګول(فراغ*)
 {
-      assert(0);
+      أكد(0);
 }
 
   /* **** */
@@ -827,572 +827,572 @@ vvp_fun_force::~vvp_fun_force()
 {
 }
 
-void vvp_fun_force::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+فراغ vvp_fun_force::recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بټ,
 			      vvp_context_t)
 {
-      assert(ptr.port() == 0);
+      أكد(ptr.پورټ() == 0);
       vvp_net_t*net = ptr.ptr();
 
-      vvp_net_t*dst = net->port[3].ptr();
-      assert(dst->fil);
+      vvp_net_t*dst = net->پورټ[3].ptr();
+      أكد(dst->fil);
 
-      dst->force_vec4(coerce_to_width(bit, dst->fil->filter_size()), vvp_vector2_t(vvp_vector2_t::FILL1, dst->fil->filter_size()));
+      dst->force_vec4(coerce_منزل_پلنوالی(بټ, dst->fil->filter_اندازه()), vvp_vector2_t(vvp_vector2_t::FILL1, dst->fil->filter_اندازه()));
 }
 
-void vvp_fun_force::recv_real(vvp_net_ptr_t ptr, double bit, vvp_context_t)
+فراغ vvp_fun_force::recv_real(vvp_net_ptr_t ptr, مزدوج بټ, vvp_context_t)
 {
-      assert(ptr.port() == 0);
+      أكد(ptr.پورټ() == 0);
       vvp_net_t*net = ptr.ptr();
-      vvp_net_t*dst = net->port[3].ptr();
-      dst->force_real(bit, vvp_vector2_t(vvp_vector2_t::FILL1, 1));
+      vvp_net_t*dst = net->پورټ[3].ptr();
+      dst->force_real(بټ, vvp_vector2_t(vvp_vector2_t::FILL1, 1));
 }
 
-vvp_wire_base::vvp_wire_base()
+vvp_wire_بنسټ::vvp_wire_بنسټ()
 {
 }
 
-vvp_wire_base::~vvp_wire_base()
+vvp_wire_بنسټ::~vvp_wire_بنسټ()
 {
 }
 
-vvp_bit4_t vvp_wire_base::driven_value(unsigned) const
+vvp_bit4_t vvp_wire_بنسټ::driven_ارزښت(بینښه) ثابت
 {
-      assert(0);
-      return BIT4_X;
+      أكد(0);
+      أرجع BIT4_X;
 }
 
-bool vvp_wire_base::is_forced(unsigned) const
+منطقي vvp_wire_بنسټ::is_forced(بینښه) ثابت
 {
-      assert(0);
-      return false;
+      أكد(0);
+      أرجع خطأ;
 }
 
-vvp_wire_vec4::vvp_wire_vec4(unsigned wid, vvp_bit4_t init)
+vvp_wire_vec4::vvp_wire_vec4(بینښه wid, vvp_bit4_t init)
 : bits4_(wid, init)
 {
-      needs_init_ = true;
+      needs_init_ = ریښتیا;
 }
 
-vvp_net_fil_t::prop_t vvp_wire_vec4::filter_vec4(const vvp_vector4_t&bit, vvp_vector4_t&rep,
-						 unsigned base, unsigned vwid)
+vvp_net_fil_t::prop_t vvp_wire_vec4::filter_vec4(ثابت vvp_vector4_t&بټ, vvp_vector4_t&rep,
+						 بینښه بنسټ, بینښه vwid)
 {
 	// Special case! the input bit is 0 wid. Interpret this as a
 	// vector of BIT4_X to match the width of the bits4_ vector.
 	// FIXME! This is a hack to work around some buggy gate
 	// implementations! This should be removed!
-      if (base==0 && vwid==0) {
+      إذا (بنسټ==0 && vwid==0) {
 	    vvp_vector4_t tmp (bits4_.size(), BIT4_X);
-	    if (bits4_ .eeq(tmp) && !needs_init_) return STOP;
+	    إذا (bits4_ .eeq(tmp) && !needs_init_) أرجع STOP;
 	    bits4_ = tmp;
-	    needs_init_ = false;
-	    return filter_mask_(tmp, force4_, rep, 0);
+	    needs_init_ = خطأ;
+	    أرجع filter_ماسک(tmp, force4_, rep, 0);
       }
 
-      if (vwid != bits4_.size()) {
+      إذا (vwid != bits4_.size()) {
 	    cerr << "Internal error: Input vector expected width="
 		 << bits4_.size() << ", got "
-		 << "bit=" << bit << ", base=" << base << ", vwid=" << vwid
-		 << endl;
+		 << "bit=" << بټ << ", base=" << بنسټ << ", vwid=" << vwid
+		 << کرښه_پای;
       }
-      assert(bits4_.size() == vwid);
+      أكد(bits4_.size() == vwid);
 
 	// Keep track of the value being driven from this net, even if
 	// it is not ultimately what survives the force filter.
-      if (base==0 && bit.size()==vwid) {
-	    if (bits4_ .eeq( bit ) && !needs_init_) return STOP;
-	    bits4_ = bit;
-      } else {
-	    bool rc = bits4_.set_vec(base, bit);
-	    if (rc == false && !needs_init_) return STOP;
+      إذا (بنسټ==0 && بټ.size()==vwid) {
+	    إذا (bits4_ .eeq( بټ ) && !needs_init_) أرجع STOP;
+	    bits4_ = بټ;
+      } وإلا {
+	    منطقي rc = bits4_.سېټ_vec(بنسټ, بټ);
+	    إذا (rc == خطأ && !needs_init_) أرجع STOP;
       }
 
-      needs_init_ = false;
-      return filter_mask_(bit, force4_, rep, base);
+      needs_init_ = خطأ;
+      أرجع filter_ماسک(بټ, force4_, rep, بنسټ);
 }
 
-vvp_net_fil_t::prop_t vvp_wire_vec4::filter_vec8(const vvp_vector8_t&bit,
+vvp_net_fil_t::prop_t vvp_wire_vec4::filter_vec8(ثابت vvp_vector8_t&بټ,
                                                  vvp_vector8_t&rep,
-                                                 unsigned base,
-                                                 unsigned vwid)
+                                                 بینښه بنسټ,
+                                                 بینښه vwid)
 {
-      assert(bits4_.size() == vwid);
+      أكد(bits4_.size() == vwid);
 
 	// Keep track of the value being driven from this net, even if
 	// it is not ultimately what survives the force filter.
-      vvp_vector4_t bit4 (reduce4(bit));
-      if (base==0 && bit4.size()==vwid) {
-	    if (bits4_ .eeq( bit4 ) && !needs_init_) return STOP;
+      vvp_vector4_t bit4 (reduce4(بټ));
+      إذا (بنسټ==0 && bit4.size()==vwid) {
+	    إذا (bits4_ .eeq( bit4 ) && !needs_init_) أرجع STOP;
 	    bits4_ = bit4;
-      } else {
-	    bool rc = bits4_.set_vec(base, bit4);
-	    if (rc == false && !needs_init_) return STOP;
+      } وإلا {
+	    منطقي rc = bits4_.سېټ_vec(بنسټ, bit4);
+	    إذا (rc == خطأ && !needs_init_) أرجع STOP;
       }
 
-      needs_init_ = false;
-      return filter_mask_(bit, vvp_vector8_t(force4_,6,6), rep, base);
+      needs_init_ = خطأ;
+      أرجع filter_ماسک(بټ, vvp_vector8_t(force4_,6,6), rep, بنسټ);
 }
 
-unsigned vvp_wire_vec4::filter_size() const
+بینښه vvp_wire_vec4::filter_اندازه() ثابت
 {
-      return bits4_.size();
+      أرجع bits4_.size();
 }
 
-void vvp_wire_vec4::force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask)
+فراغ vvp_wire_vec4::force_fil_vec4(ثابت vvp_vector4_t&val, ثابت vvp_vector2_t&ماسک)
 {
-      force_mask(mask);
+      force_ماسک(ماسک);
 
-      if (force4_.size() == 0) {
+      إذا (force4_.size() == 0) {
 	    force4_ = val;
-      } else {
-	    for (unsigned idx = 0; idx < mask.size() ; idx += 1) {
-		  if (mask.value(idx) == 0)
-			continue;
+      } وإلا {
+	    لكل (بینښه idx = 0; idx < ماسک.size() ; idx += 1) {
+		  إذا (ماسک.value(idx) == 0)
+			استمر;
 
-		  force4_.set_bit(idx, val.value(idx));
+		  force4_.سېټ_بټ(idx, val.value(idx));
 	    }
       }
-      run_vpi_callbacks();
+      پرلپسې_vpi_callbacks();
 }
 
-void vvp_wire_vec4::force_fil_vec8(const vvp_vector8_t&, const vvp_vector2_t&)
+فراغ vvp_wire_vec4::force_fil_vec8(ثابت vvp_vector8_t&, ثابت vvp_vector2_t&)
 {
-      assert(0);
+      أكد(0);
 }
 
-void vvp_wire_vec4::force_fil_real(double, const vvp_vector2_t&)
+فراغ vvp_wire_vec4::force_fil_real(مزدوج, ثابت vvp_vector2_t&)
 {
-      assert(0);
+      أكد(0);
 }
 
-void vvp_wire_vec4::release(vvp_net_ptr_t ptr, bool net_flag)
+فراغ vvp_wire_vec4::release(vvp_net_ptr_t ptr, منطقي net_flag)
 {
-      vvp_vector2_t mask (vvp_vector2_t::FILL1, bits4_.size());
-      if (net_flag) {
+      vvp_vector2_t ماسک (vvp_vector2_t::FILL1, bits4_.size());
+      إذا (net_flag) {
 	      // Wires revert to their unforced value after release.
-            release_mask(mask);
+            release_ماسک(ماسک);
 	    needs_init_ = ! force4_ .eeq(bits4_);
 	    ptr.ptr()->send_vec4(bits4_, 0);
-	    run_vpi_callbacks();
-      } else {
+	    پرلپسې_vpi_callbacks();
+      } وإلا {
 	      // Variables keep the current value.
 	    vvp_vector4_t res (bits4_.size());
-	    for (unsigned idx=0; idx<bits4_.size(); idx += 1)
-		  res.set_bit(idx,value(idx));
-            release_mask(mask);
+	    لكل (بینښه idx=0; idx<bits4_.size(); idx += 1)
+		  res.سېټ_بټ(idx,value(idx));
+            release_ماسک(ماسک);
 	    ptr.ptr()->fun->recv_vec4(ptr, res, 0);
       }
 }
 
-void vvp_wire_vec4::release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag)
+فراغ vvp_wire_vec4::release_pv(vvp_net_ptr_t ptr, بینښه بنسټ, بینښه wid, منطقي net_flag)
 {
-      assert(bits4_.size() >= base + wid);
+      أكد(bits4_.size() >= بنسټ + wid);
 
-      vvp_vector2_t mask (vvp_vector2_t::FILL0, bits4_.size());
-      for (unsigned idx = 0 ; idx < wid ; idx += 1)
-	    mask.set_bit(base+idx, 1);
+      vvp_vector2_t ماسک (vvp_vector2_t::FILL0, bits4_.size());
+      لكل (بینښه idx = 0 ; idx < wid ; idx += 1)
+	    ماسک.سېټ_بټ(بنسټ+idx, 1);
 
-      if (net_flag) {
+      إذا (net_flag) {
 	      // Wires revert to their unforced value after release.
-	    release_mask(mask);
-	    needs_init_ = ! force4_.subvalue(base,wid) .eeq(bits4_.subvalue(base,wid));
-	    ptr.ptr()->send_vec4_pv(bits4_.subvalue(base,wid),
-				    base, bits4_.size(), 0);
-	    run_vpi_callbacks();
-      } else {
+	    release_ماسک(ماسک);
+	    needs_init_ = ! force4_.subvalue(بنسټ,wid) .eeq(bits4_.subvalue(بنسټ,wid));
+	    ptr.ptr()->send_vec4_pv(bits4_.subvalue(بنسټ,wid),
+				    بنسټ, bits4_.size(), 0);
+	    پرلپسې_vpi_callbacks();
+      } وإلا {
 	      // Variables keep the current value.
 	    vvp_vector4_t res (wid);
-	    for (unsigned idx=0; idx<wid; idx += 1)
-		  res.set_bit(idx,value(base+idx));
-	    release_mask(mask);
-	    ptr.ptr()->fun->recv_vec4_pv(ptr, res, base, bits4_.size(), 0);
+	    لكل (بینښه idx=0; idx<wid; idx += 1)
+		  res.سېټ_بټ(idx,value(بنسټ+idx));
+	    release_ماسک(ماسک);
+	    ptr.ptr()->fun->recv_vec4_pv(ptr, res, بنسټ, bits4_.size(), 0);
       }
 }
 
-unsigned vvp_wire_vec4::value_size() const
+بینښه vvp_wire_vec4::ارزښت_اندازه() ثابت
 {
-      return bits4_.size();
+      أرجع bits4_.size();
 }
 
-vvp_bit4_t vvp_wire_vec4::filtered_value_(unsigned idx) const
+vvp_bit4_t vvp_wire_vec4::filtered_ارزښت(بینښه idx) ثابت
 {
-      if (test_force_mask(idx))
-	    return force4_.value(idx);
-      else
-	    return bits4_.value(idx);
+      إذا (test_force_ماسک(idx))
+	    أرجع force4_.value(idx);
+      وإلا
+	    أرجع bits4_.value(idx);
 }
 
-vvp_bit4_t vvp_wire_vec4::value(unsigned idx) const
+vvp_bit4_t vvp_wire_vec4::value(بینښه idx) ثابت
 {
-      return filtered_value_(idx);
+      أرجع filtered_ارزښت(idx);
 }
 
-vvp_scalar_t vvp_wire_vec4::scalar_value(unsigned idx) const
+vvp_scalar_t vvp_wire_vec4::scalar_ارزښت(بینښه idx) ثابت
 {
-      return vvp_scalar_t(value(idx),6,6);
+      أرجع vvp_scalar_t(value(idx),6,6);
 }
 
-void vvp_wire_vec4::vec4_value(vvp_vector4_t&val) const
+فراغ vvp_wire_vec4::vec4_ارزښت(vvp_vector4_t&val) ثابت
 {
       val = bits4_;
-      if (test_force_mask_is_zero())
-	    return;
+      إذا (test_force_ماسک_is_zero())
+	    أرجع;
 
-      for (unsigned idx = 0 ; idx < bits4_.size() ; idx += 1)
-	    val.set_bit(idx, filtered_value_(idx));
+      لكل (بینښه idx = 0 ; idx < bits4_.size() ; idx += 1)
+	    val.سېټ_بټ(idx, filtered_ارزښت(idx));
 }
 
-vvp_bit4_t vvp_wire_vec4::driven_value(unsigned idx) const
+vvp_bit4_t vvp_wire_vec4::driven_ارزښت(بینښه idx) ثابت
 {
-      return bits4_.value(idx);
+      أرجع bits4_.value(idx);
 }
 
-bool vvp_wire_vec4::is_forced(unsigned idx) const
+منطقي vvp_wire_vec4::is_forced(بینښه idx) ثابت
 {
-      return test_force_mask(idx);
+      أرجع test_force_ماسک(idx);
 }
 
-vvp_wire_vec8::vvp_wire_vec8(unsigned wid)
+vvp_wire_vec8::vvp_wire_vec8(بینښه wid)
 : bits8_(wid)
 {
-      needs_init_ = true;
+      needs_init_ = ریښتیا;
 }
 
-vvp_net_fil_t::prop_t vvp_wire_vec8::filter_vec4(const vvp_vector4_t&bit,
+vvp_net_fil_t::prop_t vvp_wire_vec8::filter_vec4(ثابت vvp_vector4_t&بټ,
                                                  vvp_vector4_t&rep,
-                                                 unsigned base,
-                                                 unsigned vwid)
+                                                 بینښه بنسټ,
+                                                 بینښه vwid)
 {
 	// For now there is no support for a non-zero base.
-      assert(0 == base);
-      assert(bits8_.size() == vwid);
-      assert(bits8_.size() == bit.size());
+      أكد(0 == بنسټ);
+      أكد(bits8_.size() == vwid);
+      أكد(bits8_.size() == بټ.size());
 	// QUESTION: Is it really correct to propagate a vec4 if this
 	// is a vec8 node? In fact, it is really possible for a vec4
 	// value to get through to a vec8 filter?
       vvp_vector8_t rep8;
-      prop_t rc = filter_vec8(vvp_vector8_t(bit,6,6), rep8, 0, vwid);
-      if (rc == REPL)
+      prop_t rc = filter_vec8(vvp_vector8_t(بټ,6,6), rep8, 0, vwid);
+      إذا (rc == REPL)
 	    rep = reduce4(rep8);
 
-      needs_init_ = false;
-      return rc;
+      needs_init_ = خطأ;
+      أرجع rc;
 }
 
-vvp_net_fil_t::prop_t vvp_wire_vec8::filter_vec8(const vvp_vector8_t&bit, vvp_vector8_t&rep, unsigned base, unsigned vwid)
+vvp_net_fil_t::prop_t vvp_wire_vec8::filter_vec8(ثابت vvp_vector8_t&بټ, vvp_vector8_t&rep, بینښه بنسټ, بینښه vwid)
 {
-      assert(vwid == bits8_.size());
+      أكد(vwid == bits8_.size());
 	// Keep track of the value being driven from this net, even if
 	// it is not ultimately what survives the force filter.
-      if (base==0 && bit.size()==vwid) {
-	    if (bits8_.eeq(bit) && !needs_init_) return STOP;
-	    bits8_ = bit;
-      } else {
-	    if (bits8_.subvalue(base, bit.size()).eeq(bit) &&
+      إذا (بنسټ==0 && بټ.size()==vwid) {
+	    إذا (bits8_.eeq(بټ) && !needs_init_) أرجع STOP;
+	    bits8_ = بټ;
+      } وإلا {
+	    إذا (bits8_.subvalue(بنسټ, بټ.size()).eeq(بټ) &&
 		!needs_init_) {
-		  return STOP;
+		  أرجع STOP;
 	    }
-	    if (bits8_.size() == 0)
+	    إذا (bits8_.size() == 0)
 		  bits8_ = vvp_vector8_t(vwid);
-	    assert(bits8_.size() == vwid);
-	    bits8_.set_vec(base, bit);
+	    أكد(bits8_.size() == vwid);
+	    bits8_.سېټ_vec(بنسټ, بټ);
       }
-      needs_init_ = false;
-      return filter_mask_(bit, force8_, rep, base);
+      needs_init_ = خطأ;
+      أرجع filter_ماسک(بټ, force8_, rep, بنسټ);
 }
 
-vvp_net_fil_t::prop_t vvp_wire_vec8::filter_input_vec8(const vvp_vector8_t&bit, vvp_vector8_t&rep) const
+vvp_net_fil_t::prop_t vvp_wire_vec8::filter_ننوت_vec8(ثابت vvp_vector8_t&بټ, vvp_vector8_t&rep) ثابت
 {
-      return filter_input_mask_(bit, force8_, rep);
+      أرجع filter_ننوت_ماسک(بټ, force8_, rep);
 }
 
-unsigned vvp_wire_vec8::filter_size() const
+بینښه vvp_wire_vec8::filter_اندازه() ثابت
 {
-      return bits8_.size();
+      أرجع bits8_.size();
 }
 
-void vvp_wire_vec8::force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask)
+فراغ vvp_wire_vec8::force_fil_vec4(ثابت vvp_vector4_t&val, ثابت vvp_vector2_t&ماسک)
 {
-      force_fil_vec8(vvp_vector8_t(val,6,6), mask);
+      force_fil_vec8(vvp_vector8_t(val,6,6), ماسک);
 }
 
-void vvp_wire_vec8::force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask)
+فراغ vvp_wire_vec8::force_fil_vec8(ثابت vvp_vector8_t&val, ثابت vvp_vector2_t&ماسک)
 {
-      force_mask(mask);
+      force_ماسک(ماسک);
 
-      if (force8_.size() == 0) {
+      إذا (force8_.size() == 0) {
 	    force8_ = val;
-      } else {
-	    for (unsigned idx = 0; idx < mask.size() ; idx += 1) {
-		  if (mask.value(idx) == 0)
-			continue;
+      } وإلا {
+	    لكل (بینښه idx = 0; idx < ماسک.size() ; idx += 1) {
+		  إذا (ماسک.value(idx) == 0)
+			استمر;
 
-		  force8_.set_bit(idx, val.value(idx));
+		  force8_.سېټ_بټ(idx, val.value(idx));
 	    }
       }
-      run_vpi_callbacks();
+      پرلپسې_vpi_callbacks();
 }
 
-void vvp_wire_vec8::force_fil_real(double, const vvp_vector2_t&)
+فراغ vvp_wire_vec8::force_fil_real(مزدوج, ثابت vvp_vector2_t&)
 {
-      assert(0);
+      أكد(0);
 }
 
-void vvp_wire_vec8::release(vvp_net_ptr_t ptr, bool net_flag)
+فراغ vvp_wire_vec8::release(vvp_net_ptr_t ptr, منطقي net_flag)
 {
 	// Wires revert to their unforced value after release.
-      vvp_vector2_t mask (vvp_vector2_t::FILL1, bits8_.size());
-      release_mask(mask);
-      if (net_flag) {
+      vvp_vector2_t ماسک (vvp_vector2_t::FILL1, bits8_.size());
+      release_ماسک(ماسک);
+      إذا (net_flag) {
 	    needs_init_ = !force8_ .eeq(bits8_);
 	    ptr.ptr()->send_vec8(bits8_);
-      } else {
+      } وإلا {
 	// Variable do not know about strength so this should not be able
 	// to happen. If for some reason it can then it should not be too
 	// hard to fix this code like was done for vvp_wire_vec4 above.
-	    assert(0);
+	    أكد(0);
 //	    ptr.ptr()->fun->recv_vec8(ptr, force8_);
       }
 }
 
-void vvp_wire_vec8::release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag)
+فراغ vvp_wire_vec8::release_pv(vvp_net_ptr_t ptr, بینښه بنسټ, بینښه wid, منطقي net_flag)
 {
-      assert(bits8_.size() >= base + wid);
+      أكد(bits8_.size() >= بنسټ + wid);
 
-      vvp_vector2_t mask (vvp_vector2_t::FILL0, bits8_.size());
-      for (unsigned idx = 0 ; idx < wid ; idx += 1)
-	    mask.set_bit(base+idx, 1);
+      vvp_vector2_t ماسک (vvp_vector2_t::FILL0, bits8_.size());
+      لكل (بینښه idx = 0 ; idx < wid ; idx += 1)
+	    ماسک.سېټ_بټ(بنسټ+idx, 1);
 
-      release_mask(mask);
+      release_ماسک(ماسک);
 
-      if (net_flag) {
-	    needs_init_ = !force8_.subvalue(base,wid) .eeq((bits8_.subvalue(base,wid)));
-	    ptr.ptr()->send_vec8_pv(bits8_.subvalue(base,wid),
-				    base, bits8_.size());
-	    run_vpi_callbacks();
-      } else {
+      إذا (net_flag) {
+	    needs_init_ = !force8_.subvalue(بنسټ,wid) .eeq((bits8_.subvalue(بنسټ,wid)));
+	    ptr.ptr()->send_vec8_pv(bits8_.subvalue(بنسټ,wid),
+				    بنسټ, bits8_.size());
+	    پرلپسې_vpi_callbacks();
+      } وإلا {
 	// Variable do not know about strength so this should not be able
 	// to happen. If for some reason it can then it should not be too
 	// hard to fix this code like was done for vvp_wire_vec4 above.
-	    assert(0);
+	    أكد(0);
 //	    ptr.ptr()->fun->recv_vec8_pv(ptr, force8_.subvalue(base,wid),
 //					 base, force8_.size());
       }
 }
 
-unsigned vvp_wire_vec8::value_size() const
+بینښه vvp_wire_vec8::ارزښت_اندازه() ثابت
 {
-      return bits8_.size();
+      أرجع bits8_.size();
 }
 
-vvp_scalar_t vvp_wire_vec8::filtered_value_(unsigned idx) const
+vvp_scalar_t vvp_wire_vec8::filtered_ارزښت(بینښه idx) ثابت
 {
-      if (test_force_mask(idx))
-	    return force8_.value(idx);
-      else
-	    return bits8_.value(idx);
+      إذا (test_force_ماسک(idx))
+	    أرجع force8_.value(idx);
+      وإلا
+	    أرجع bits8_.value(idx);
 }
 
-vvp_bit4_t vvp_wire_vec8::value(unsigned idx) const
+vvp_bit4_t vvp_wire_vec8::value(بینښه idx) ثابت
 {
-      return filtered_value_(idx).value();
+      أرجع filtered_ارزښت(idx).value();
 }
 
-vvp_scalar_t vvp_wire_vec8::scalar_value(unsigned idx) const
+vvp_scalar_t vvp_wire_vec8::scalar_ارزښت(بینښه idx) ثابت
 {
-      return filtered_value_(idx);
+      أرجع filtered_ارزښت(idx);
 }
 
-vvp_vector8_t vvp_wire_vec8::vec8_value() const
+vvp_vector8_t vvp_wire_vec8::vec8_ارزښت() ثابت
 {
       vvp_vector8_t tmp = bits8_;
-      for (unsigned idx = 0 ; idx < bits8_.size() ; idx += 1)
-	    tmp.set_bit(idx, filtered_value_(idx));
-      return tmp;
+      لكل (بینښه idx = 0 ; idx < bits8_.size() ; idx += 1)
+	    tmp.سېټ_بټ(idx, filtered_ارزښت(idx));
+      أرجع tmp;
 }
 
-void vvp_wire_vec8::vec4_value(vvp_vector4_t&val) const
+فراغ vvp_wire_vec8::vec4_ارزښت(vvp_vector4_t&val) ثابت
 {
-      val = reduce4(vec8_value());
+      val = reduce4(vec8_ارزښت());
 }
 
-vvp_bit4_t vvp_wire_vec8::driven_value(unsigned idx) const
+vvp_bit4_t vvp_wire_vec8::driven_ارزښت(بینښه idx) ثابت
 {
-      return bits8_.value(idx).value();
+      أرجع bits8_.value(idx).value();
 }
 
-bool vvp_wire_vec8::is_forced(unsigned idx) const
+منطقي vvp_wire_vec8::is_forced(بینښه idx) ثابت
 {
-      return test_force_mask(idx);
+      أرجع test_force_ماسک(idx);
 }
 
 vvp_wire_real::vvp_wire_real()
-: bit_(0.0), force_(0.0)
+: بټ_2(0.0), force_(0.0)
 {
 }
 
-vvp_net_fil_t::prop_t vvp_wire_real::filter_real(double&bit)
+vvp_net_fil_t::prop_t vvp_wire_real::filter_real(مزدوج&بټ)
 {
-      if (bits_equal(bit_, bit) && !needs_init_) return STOP;
-      bit_ = bit;
-      needs_init_ = false;
-      return filter_mask_(bit, force_);
+      إذا (بټونه_equal(بټ_2, بټ) && !needs_init_) أرجع STOP;
+      بټ_2 = بټ;
+      needs_init_ = خطأ;
+      أرجع filter_ماسک(بټ, force_);
 }
 
-unsigned vvp_wire_real::filter_size() const
+بینښه vvp_wire_real::filter_اندازه() ثابت
 {
-      assert(0);
-      return 0;
+      أكد(0);
+      أرجع 0;
 }
 
-void vvp_wire_real::force_fil_vec4(const vvp_vector4_t&, const vvp_vector2_t&)
+فراغ vvp_wire_real::force_fil_vec4(ثابت vvp_vector4_t&, ثابت vvp_vector2_t&)
 {
-      assert(0);
+      أكد(0);
 }
 
-void vvp_wire_real::force_fil_vec8(const vvp_vector8_t&, const vvp_vector2_t&)
+فراغ vvp_wire_real::force_fil_vec8(ثابت vvp_vector8_t&, ثابت vvp_vector2_t&)
 {
-      assert(0);
+      أكد(0);
 }
 
-void vvp_wire_real::force_fil_real(double val, const vvp_vector2_t&mask)
+فراغ vvp_wire_real::force_fil_real(مزدوج val, ثابت vvp_vector2_t&ماسک)
 {
-      force_mask(mask);
-      if (mask.value(0))
+      force_ماسک(ماسک);
+      إذا (ماسک.value(0))
 	    force_ = val;
 
-      run_vpi_callbacks();
+      پرلپسې_vpi_callbacks();
 }
 
-void vvp_wire_real::release(vvp_net_ptr_t ptr, bool net_flag)
+فراغ vvp_wire_real::release(vvp_net_ptr_t ptr, منطقي net_flag)
 {
-      vvp_vector2_t mask (vvp_vector2_t::FILL1, 1);
-      if (net_flag) {
+      vvp_vector2_t ماسک (vvp_vector2_t::FILL1, 1);
+      إذا (net_flag) {
 	      // Wires revert to their unforced value after release.
-	    release_mask(mask);
-	    needs_init_ = !bits_equal(force_, bit_);
-	    ptr.ptr()->send_real(bit_, 0);
-      } else {
+	    release_ماسک(ماسک);
+	    needs_init_ = !بټونه_equal(force_, بټ_2);
+	    ptr.ptr()->send_real(بټ_2, 0);
+      } وإلا {
 	      // Variables keep the current value.
-	    double res =  real_value();
-	    release_mask(mask);
+	    مزدوج res =  real_ارزښت();
+	    release_ماسک(ماسک);
 	    ptr.ptr()->fun->recv_real(ptr, res, 0);
       }
 }
 
-void vvp_wire_real::release_pv(vvp_net_ptr_t, unsigned, unsigned, bool)
+فراغ vvp_wire_real::release_pv(vvp_net_ptr_t, بینښه, بینښه, منطقي)
 {
-      assert(0);
-#if 0
+      أكد(0);
+#إذا 0
 	// A real is a single value. If for some reason this part release
 	// can happen the following code should work correctly (requires
 	// a base of 0 and a width of 1).
-      vvp_vector2_t mask (vvp_vector2_t::FILL1, 1);
-      assert(base == 0 && wid == 1);
+      vvp_vector2_t ماسک (vvp_vector2_t::FILL1, 1);
+      أكد(بنسټ == 0 && wid == 1);
 
-      if (net_flag) {
+      إذا (net_flag) {
 	      // Wires revert to their unforced value after release.
-	    release_mask(mask);
-	    ptr.ptr()->send_real(bit_, 0);
-      } else {
+	    release_ماسک(ماسک);
+	    ptr.ptr()->send_real(بټ_2, 0);
+      } وإلا {
 	      // Variables keep the current value.
-	    double res =  real_value();
-	    release_mask(mask);
+	    مزدوج res =  real_ارزښت();
+	    release_ماسک(ماسک);
 	    ptr.ptr()->fun->recv_real(ptr, res, 0);
       }
-#endif
+#د_که_پای
 }
 
-unsigned vvp_wire_real::value_size() const
+بینښه vvp_wire_real::ارزښت_اندازه() ثابت
 {
-      assert(0);
-      return 1;
+      أكد(0);
+      أرجع 1;
 }
 
-vvp_bit4_t vvp_wire_real::value(unsigned) const
+vvp_bit4_t vvp_wire_real::value(بینښه) ثابت
 {
-      assert(0);
-      return BIT4_X;
+      أكد(0);
+      أرجع BIT4_X;
 }
 
-vvp_scalar_t vvp_wire_real::scalar_value(unsigned) const
+vvp_scalar_t vvp_wire_real::scalar_ارزښت(بینښه) ثابت
 {
-      assert(0);
-      return vvp_scalar_t();
+      أكد(0);
+      أرجع vvp_scalar_t();
 }
 
-void vvp_wire_real::vec4_value(vvp_vector4_t&) const
+فراغ vvp_wire_real::vec4_ارزښت(vvp_vector4_t&) ثابت
 {
-      assert(0);
+      أكد(0);
 }
 
-double vvp_wire_real::real_value() const
+مزدوج vvp_wire_real::real_ارزښت() ثابت
 {
-      if (test_force_mask(0))
-	    return force_;
-      else
-	    return bit_;
+      إذا (test_force_ماسک(0))
+	    أرجع force_;
+      وإلا
+	    أرجع بټ_2;
 }
 
-#if 0
+#إذا 0
 vvp_wire_string::vvp_wire_string()
 {
 }
 
-unsigned vvp_wire_string::filter_size() const
+بینښه vvp_wire_string::filter_اندازه() ثابت
 {
-      assert(0);
-      return 0;
+      أكد(0);
+      أرجع 0;
 }
 
-void vvp_wire_string::force_fil_vec4(const vvp_vector4_t&, const vvp_vector2_t&)
+فراغ vvp_wire_string::force_fil_vec4(ثابت vvp_vector4_t&, ثابت vvp_vector2_t&)
 {
-      assert(0);
+      أكد(0);
 }
-void vvp_wire_string::force_fil_vec8(const vvp_vector8_t&, const vvp_vector2_t&)
+فراغ vvp_wire_string::force_fil_vec8(ثابت vvp_vector8_t&, ثابت vvp_vector2_t&)
 {
-      assert(0);
+      أكد(0);
 }
-void vvp_wire_string::force_fil_real(double, const vvp_vector2_t&)
+فراغ vvp_wire_string::force_fil_real(مزدوج, ثابت vvp_vector2_t&)
 {
-      assert(0);
-}
-
-void vvp_wire_string::release(vvp_net_ptr_t ptr, bool net_flag)
-{
-      assert(0);
+      أكد(0);
 }
 
-void vvp_wire_string::release_pv(vvp_net_ptr_t, unsigned, unsigned, bool)
+فراغ vvp_wire_string::release(vvp_net_ptr_t ptr, منطقي net_flag)
 {
-      assert(0);
+      أكد(0);
 }
 
-unsigned vvp_wire_string::value_size() const
+فراغ vvp_wire_string::release_pv(vvp_net_ptr_t, بینښه, بینښه, منطقي)
 {
-      assert(0);
-      return 1;
+      أكد(0);
 }
 
-vvp_bit4_t vvp_wire_string::value(unsigned) const
+بینښه vvp_wire_string::ارزښت_اندازه() ثابت
 {
-      assert(0);
-      return BIT4_X;
+      أكد(0);
+      أرجع 1;
 }
 
-vvp_scalar_t vvp_wire_string::scalar_value(unsigned) const
+vvp_bit4_t vvp_wire_string::value(بینښه) ثابت
 {
-      assert(0);
-      return vvp_scalar_t();
+      أكد(0);
+      أرجع BIT4_X;
 }
 
-void vvp_wire_string::vec4_value(vvp_vector4_t&) const
+vvp_scalar_t vvp_wire_string::scalar_ارزښت(بینښه) ثابت
 {
-      assert(0);
+      أكد(0);
+      أرجع vvp_scalar_t();
 }
 
-double vvp_wire_string::real_value() const
+فراغ vvp_wire_string::vec4_ارزښت(vvp_vector4_t&) ثابت
 {
-      assert(0);
-      return 0.0;
+      أكد(0);
 }
-#endif
+
+مزدوج vvp_wire_string::real_ارزښت() ثابت
+{
+      أكد(0);
+      أرجع 0.0;
+}
+#د_که_پای

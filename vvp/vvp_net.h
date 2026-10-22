@@ -1,5 +1,5 @@
-#ifndef IVL_vvp_net_H
-#define IVL_vvp_net_H
+#که_نه_تعریف_شوی IVL_vvp_net_H
+#تعریف_کړه IVL_vvp_net_H
 /*
  * Copyright (c) 2004-2026 Stephen Williams (steve@icarus.com)
  *
@@ -31,11 +31,11 @@
 # include  <new>
 # include  <cassert>
 
-#ifdef HAVE_IOSFWD
+#که_تعریف_شوی HAVE_IOSFWD
 # include  <iosfwd>
-#else
+#وإلا
 # include  <iostream>
-#endif
+#د_که_پای
 
 # include  "ivl_alloc.h"
 
@@ -63,45 +63,45 @@ class  vvp_delay_t;
  * linking to other contexts. The function that adds items to a context knows
  * this, and allocates context indices accordingly.
  */
-typedef void**vvp_context_t;
+تعريفنوع فراغ**vvp_context_t;
 
-typedef void*vvp_context_item_t;
+تعريفنوع فراغ*vvp_context_توکی_t;
 
-inline vvp_context_t vvp_allocate_context(unsigned nitem)
+مضمن vvp_context_t vvp_allocate_context(بینښه nitem)
 {
-      return (vvp_context_t)malloc((2 + nitem) * sizeof(void*));
+      أرجع (vvp_context_t)حافظه_ورکړه((2 + nitem) * حجم(فراغ*));
 }
 
-inline vvp_context_t vvp_get_next_context(vvp_context_t context)
+مضمن vvp_context_t vvp_get_بل_context(vvp_context_t context)
 {
-      return (vvp_context_t)context[0];
+      أرجع (vvp_context_t)context[0];
 }
 
-inline void vvp_set_next_context(vvp_context_t context, vvp_context_t next)
+مضمن فراغ vvp_سېټ_بل_context(vvp_context_t context, vvp_context_t بل_2)
 {
-      context[0] = next;
+      context[0] = بل_2;
 }
 
-inline vvp_context_t vvp_get_stacked_context(vvp_context_t context)
+مضمن vvp_context_t vvp_get_stacked_context(vvp_context_t context)
 {
-      return (vvp_context_t)context[1];
+      أرجع (vvp_context_t)context[1];
 }
 
-inline void vvp_set_stacked_context(vvp_context_t context, vvp_context_t stack)
+مضمن فراغ vvp_سېټ_stacked_context(vvp_context_t context, vvp_context_t ډېری)
 {
-      context[1] = stack;
+      context[1] = ډېری;
 }
 
-inline vvp_context_item_t vvp_get_context_item(vvp_context_t context,
-                                               unsigned item_idx)
+مضمن vvp_context_توکی_t vvp_get_context_توکی(vvp_context_t context,
+                                               بینښه توکی_idx)
 {
-      return (vvp_context_item_t)context[item_idx];
+      أرجع (vvp_context_توکی_t)context[توکی_idx];
 }
 
-inline void vvp_set_context_item(vvp_context_t context, unsigned item_idx,
-                                 vvp_context_item_t item)
+مضمن فراغ vvp_سېټ_context_توکی(vvp_context_t context, بینښه توکی_idx,
+                                 vvp_context_توکی_t توکی)
 {
-      context[item_idx] = item;
+      context[توکی_idx] = توکی;
 }
 
 /*
@@ -109,16 +109,16 @@ inline void vvp_set_context_item(vvp_context_t context, unsigned item_idx,
  * allocated scope item. This provides the infrastructure needed to allocate
  * the state information for individual instances of the item.
  */
-struct automatic_hooks_s {
+بنية automatic_hooks_s {
 
       automatic_hooks_s() {}
-      virtual ~automatic_hooks_s() {}
+      مجازي ~automatic_hooks_s() {}
 
-      virtual void alloc_instance(vvp_context_t context) = 0;
-      virtual void reset_instance(vvp_context_t context) = 0;
-#ifdef CHECK_WITH_VALGRIND
-      virtual void free_instance(vvp_context_t context) = 0;
-#endif
+      مجازي فراغ alloc_instance(vvp_context_t context) = 0;
+      مجازي فراغ reset_instance(vvp_context_t context) = 0;
+#که_تعریف_شوی CHECK_WITH_VALGRIND
+      مجازي فراغ free_instance(vvp_context_t context) = 0;
+#د_که_پای
 };
 
 /*
@@ -131,7 +131,7 @@ struct automatic_hooks_s {
  * WARNING: Many things rely on this encoding for the BIT4_* enumeration
  * values, so accept that these values are cast in stone.
  */
-enum vvp_bit4_t {
+تعداد vvp_bit4_t {
       BIT4_0 = 0,
       BIT4_1 = 1,
       BIT4_X = 3,
@@ -139,21 +139,21 @@ enum vvp_bit4_t {
 };
 
   /* Return an ASCII character that represents the vvp_bit4_t value. */
-inline char vvp_bit4_to_ascii(vvp_bit4_t a) { return "01zx"[a]; }
+مضمن حرف vvp_bit4_منزل_ascii(vvp_bit4_t a) { أرجع "01zx"[a]; }
 
-extern vvp_bit4_t add_with_carry(vvp_bit4_t a, vvp_bit4_t b, vvp_bit4_t&c);
+خارجي vvp_bit4_t جمع_کړه_with_لېږد(vvp_bit4_t a, vvp_bit4_t b, vvp_bit4_t&c);
 
-extern vvp_bit4_t scalar_to_bit4(PLI_INT32 scalar);
+خارجي vvp_bit4_t scalar_منزل_bit4(PLI_INT32 scalar);
 
   /* Return TRUE if the bit is BIT4_X or BIT4_Z. The fast
      implementation here relies on the encoding of vvp_bit4_t values. */
-inline bool bit4_is_xz(vvp_bit4_t a) { return a >= 2; }
+مضمن bool bit4_is_xz(vvp_bit4_t a) { أرجع a >= 2; }
 
   /* This function converts BIT4_Z to BIT4_X, but passes other values
      unchanged. This fast implementation relies of the encoding of the
      vvp_bit4_t values. In particular, the BIT4_X==3 and BIT4_Z==2 */
-inline vvp_bit4_t bit4_z2x(vvp_bit4_t a)
-{ return (vvp_bit4_t) ( (int)a | ((int)a >> 1) ); }
+مضمن vvp_bit4_t bit4_z2x(vvp_bit4_t a)
+{ أرجع (vvp_bit4_t) ( (صحيح)a | ((صحيح)a >> 1) ); }
 
   /* Some common boolean operators. These implement the Verilog rules
      for 4-value bit operations. The fast implementations here rely
@@ -163,46 +163,46 @@ inline vvp_bit4_t bit4_z2x(vvp_bit4_t a)
   // ~BIT4_1 --> BIT4_0
   // ~BIT4_X --> BIT4_X
   // ~BIT4_Z --> BIT4_X
-inline vvp_bit4_t operator ~ (vvp_bit4_t a)
-{ return bit4_z2x((vvp_bit4_t) (((int)a) ^ 1)); }
+مضمن vvp_bit4_t چلوونکی ~ (vvp_bit4_t a)
+{ أرجع bit4_z2x((vvp_bit4_t) (((صحيح)a) ^ 1)); }
 
-inline vvp_bit4_t operator | (vvp_bit4_t a, vvp_bit4_t b)
+مضمن vvp_bit4_t چلوونکی | (vvp_bit4_t a, vvp_bit4_t b)
 {
-      if (a==BIT4_1 || b==BIT4_1)
-	    return BIT4_1;
-      return bit4_z2x( (vvp_bit4_t) ((int)a | (int)b) );
+      إذا (a==BIT4_1 || b==BIT4_1)
+	    أرجع BIT4_1;
+      أرجع bit4_z2x( (vvp_bit4_t) ((صحيح)a | (صحيح)b) );
 }
 
-inline vvp_bit4_t operator & (vvp_bit4_t a, vvp_bit4_t b)
+مضمن vvp_bit4_t چلوونکی & (vvp_bit4_t a, vvp_bit4_t b)
 {
-      if (a==BIT4_0 || b==BIT4_0)
-	    return BIT4_0;
-      return bit4_z2x( (vvp_bit4_t) ((int)a | (int)b) );
+      إذا (a==BIT4_0 || b==BIT4_0)
+	    أرجع BIT4_0;
+      أرجع bit4_z2x( (vvp_bit4_t) ((صحيح)a | (صحيح)b) );
 }
 
 
-extern vvp_bit4_t operator ^ (vvp_bit4_t a, vvp_bit4_t b);
-extern std::ostream& operator<< (std::ostream&o, vvp_bit4_t a);
+خارجي vvp_bit4_t چلوونکی ^ (vvp_bit4_t a, vvp_bit4_t b);
+خارجي std::ostream& چلوونکی<< (std::ostream&o, vvp_bit4_t a);
 
   /* Return >0, ==0 or <0 if the from-to transition represents a
      posedge, no edge, or negedge. */
-extern int edge(vvp_bit4_t from, vvp_bit4_t to);
+خارجي صحيح څنډه(vvp_bit4_t from, vvp_bit4_t منزل);
 
   /* Support for $countdrivers. */
-inline void update_driver_counts(vvp_bit4_t bit, unsigned counts[3])
+مضمن فراغ update_driver_counts(vvp_bit4_t بټ, بینښه counts[3])
 {
-      switch (bit) {
-          case BIT4_0:
+      بدل (بټ) {
+          حالة BIT4_0:
             counts[0] += 1;
-            break;
-          case BIT4_1:
+            اكسر;
+          حالة BIT4_1:
             counts[1] += 1;
-            break;
-          case BIT4_X:
+            اكسر;
+          حالة BIT4_X:
             counts[2] += 1;
-            break;
-          default:
-            break;
+            اكسر;
+          افتراضي:
+            اكسر;
       }
 }
 
@@ -210,23 +210,23 @@ inline void update_driver_counts(vvp_bit4_t bit, unsigned counts[3])
  * Some of the instructions do wide addition to arrays of long. They
  * use this add_with_carry function to help.
  */
-static inline unsigned long add_with_carry(unsigned long a, unsigned long b,
-					   unsigned long&carry)
+ساكن مضمن بینښه اوږد جمع_کړه_with_لېږد(بینښه اوږد a, بینښه اوږد b,
+					   بینښه اوږد&لېږد)
 {
-      unsigned long tmp = b + carry;
-      unsigned long sum = a + tmp;
-      carry = 0;
-      if (tmp < b)
-	    carry = 1;
-      if (sum < tmp)
-	    carry = 1;
-      if (sum < a)
-	    carry = 1;
-      return sum;
+      بینښه اوږد tmp = b + لېږد;
+      بینښه اوږد مجموعه = a + tmp;
+      لېږد = 0;
+      إذا (tmp < b)
+	    لېږد = 1;
+      إذا (مجموعه < tmp)
+	    لېږد = 1;
+      إذا (مجموعه < a)
+	    لېږد = 1;
+      أرجع مجموعه;
 }
 
-extern unsigned long multiply_with_carry(unsigned long a, unsigned long b,
-					 unsigned long&carry);
+خارجي بینښه اوږد multiply_with_لېږد(بینښه اوږد a, بینښه اوږد b,
+					 بینښه اوږد&لېږد);
 
 /*
  * This class represents scalar values collected into vectors. The
@@ -239,127 +239,127 @@ extern unsigned long multiply_with_carry(unsigned long a, unsigned long b,
  */
 class vvp_vector4_t {
 
-      friend vvp_vector4_t operator ~(const vvp_vector4_t&that);
-      friend class vvp_vector4array_t;
-      friend class vvp_vector4array_sa;
-      friend class vvp_vector4array_aa;
+      ملګری vvp_vector4_t چلوونکی ~(ثابت vvp_vector4_t&that);
+      ملګری class vvp_vector4array_t;
+      ملګری class vvp_vector4array_sa;
+      ملګری class vvp_vector4array_aa;
 
-    public:
-      static const vvp_vector4_t nil;
+    عام:
+      ساكن ثابت vvp_vector4_t nil;
 
-    public:
-      explicit vvp_vector4_t(unsigned size =0, vvp_bit4_t bits =BIT4_X);
+    عام:
+      explicit vvp_vector4_t(بینښه اندازه =0, vvp_bit4_t بټونه =BIT4_X);
 
-      explicit vvp_vector4_t(unsigned size, double val);
+      explicit vvp_vector4_t(بینښه اندازه, مزدوج val);
 
 	// Construct a vector4 from the subvalue of another
 	// vector4. The width of the result is 'wid', and the bits are
 	// pulled from 'that' to implement the Verilog part select
 	// semantics. This means that part select beyond 'that'
 	// returns X bits.
-      explicit vvp_vector4_t(const vvp_vector4_t&that,
-			     unsigned adr, unsigned wid);
+      explicit vvp_vector4_t(ثابت vvp_vector4_t&that,
+			     بینښه adr, بینښه wid);
 
-      vvp_vector4_t(const vvp_vector4_t&that);
-      vvp_vector4_t(const vvp_vector4_t&that, bool invert_flag);
-      vvp_vector4_t& operator= (const vvp_vector4_t&that);
+      vvp_vector4_t(ثابت vvp_vector4_t&that);
+      vvp_vector4_t(ثابت vvp_vector4_t&that, bool invert_flag);
+      vvp_vector4_t& چلوونکی= (ثابت vvp_vector4_t&that);
 
       ~vvp_vector4_t();
 
-      inline unsigned size() const { return size_; }
-      void resize(unsigned new_size, vvp_bit4_t pad_bit = BIT4_X);
+      مضمن بینښه اندازه() ثابت { أرجع اندازه_2; }
+      فراغ resize(بینښه new_اندازه, vvp_bit4_t pad_بټ = BIT4_X);
 
 	// Get the bit at the specified address
-      vvp_bit4_t value(unsigned idx) const;
+      vvp_bit4_t ارزښت(بینښه idx) ثابت;
 	// Get the vector4 subvector starting at the address
-      vvp_vector4_t subvalue(unsigned idx, unsigned size) const;
+      vvp_vector4_t subvalue(بینښه idx, بینښه اندازه) ثابت;
 	// Get the 2-value bits for the subvector. This returns a new
 	// array of longs, or a nil pointer if an XZ bit was detected
 	// in the array.
-      unsigned long*subarray(unsigned idx, unsigned size, bool xz_to_0 =false) const;
-      void setarray(unsigned idx, unsigned size, const unsigned long*val);
+      بینښه اوږد*subarray(بینښه idx, بینښه اندازه, bool xz_منزل_0 =false) ثابت;
+      فراغ setarray(بینښه idx, بینښه اندازه, ثابت بینښه اوږد*val);
 
 	// Set a 4-value bit or subvector into the vector. Return true
 	// if any bits of the vector change as a result of this operation.
-      void set_bit(unsigned idx, vvp_bit4_t val);
-      bool set_vec(unsigned idx, const vvp_vector4_t&that);
+      فراغ سېټ_بټ(بینښه idx, vvp_bit4_t val);
+      bool سېټ_vec(بینښه idx, ثابت vvp_vector4_t&that);
 
         // Get the bits from another vector, but keep my size.
-      void copy_bits(const vvp_vector4_t&that);
+      فراغ copy_بټونه(ثابت vvp_vector4_t&that);
 
 	// Move bits within this vector.
-      void mov(unsigned dst, unsigned src, unsigned cnt);
+      فراغ mov(بینښه dst, بینښه src, بینښه cnt);
 
 	// Add that to this in the Verilog way.
-      void add(const vvp_vector4_t&that);
+      فراغ جمع_کړه(ثابت vvp_vector4_t&that);
 
 	// Subtract that from this in the Verilog way.
-      void sub(const vvp_vector4_t&that);
+      فراغ sub(ثابت vvp_vector4_t&that);
 
 	// Multiply this by that in the Verilog way.
-      void mul(const vvp_vector4_t&that);
+      فراغ mul(ثابت vvp_vector4_t&that);
 
 	// Test that the vectors are exactly equal
-      bool eeq(const vvp_vector4_t&that) const;
+      bool eeq(ثابت vvp_vector4_t&that) ثابت;
 
 	// Test that the vectors are equal, with xz comparing as equal.
-      bool eq_xz(const vvp_vector4_t&that) const;
+      bool eq_xz(ثابت vvp_vector4_t&that) ثابت;
 
 	// Return true if there is an X or Z anywhere in the vector.
-      bool has_xz() const;
+      bool has_xz() ثابت;
 
 	// Change all Z bits to X bits.
-      void change_z2x();
+      فراغ change_z2x();
 
 	// Set all bits to the specified value.
-      void fill_bits(vvp_bit4_t bit);
+      فراغ fill_بټونه(vvp_bit4_t بټ);
 
 	// Change all bits to X bits.
-      void set_to_x() { fill_bits(BIT4_X); }
+      فراغ سېټ_منزل_x() { fill_بټونه(BIT4_X); }
 
 	// Display the value into the buf as a string.
-      char*as_string(char*buf, size_t buf_len) const;
+      حرف*as_string(حرف*buf, size_t buf_len) ثابت;
 
-      void invert();
-      vvp_vector4_t& operator &= (const vvp_vector4_t&that);
-      vvp_vector4_t& operator |= (const vvp_vector4_t&that);
-      vvp_vector4_t& operator ^= (const vvp_vector4_t&that);
-      vvp_vector4_t& operator += (int64_t);
+      فراغ invert();
+      vvp_vector4_t& چلوونکی &= (ثابت vvp_vector4_t&that);
+      vvp_vector4_t& چلوونکی |= (ثابت vvp_vector4_t&that);
+      vvp_vector4_t& چلوونکی ^= (ثابت vvp_vector4_t&that);
+      vvp_vector4_t& چلوونکی += (int64_t);
 
-      vvp_bit4_t reduce_or() const;
-      vvp_bit4_t reduce_and() const;
-      vvp_bit4_t reduce_xor() const;
+      vvp_bit4_t reduce_or() ثابت;
+      vvp_bit4_t reduce_and() ثابت;
+      vvp_bit4_t reduce_xor() ثابت;
 
-    private:
+    خاص:
 	// Number of vvp_bit4_t bits that can be shoved into a word.
-      enum { BITS_PER_WORD = 8*sizeof(unsigned long) };
+      تعداد { بټونه_فی_کلمه = 8*حجم(بینښه اوږد) };
 	// The double value constructor requires that WORD_0_BBITS
 	// and WORD_1_BBITS have the same value!
-#if SIZEOF_UNSIGNED_LONG == 8
-      enum { WORD_0_ABITS = 0x0000000000000000UL,
-	     WORD_0_BBITS = 0x0000000000000000UL };
-      enum { WORD_1_ABITS = 0xFFFFFFFFFFFFFFFFUL,
-	     WORD_1_BBITS = 0x0000000000000000UL };
-      enum { WORD_X_ABITS = 0xFFFFFFFFFFFFFFFFUL,
-	     WORD_X_BBITS = 0xFFFFFFFFFFFFFFFFUL };
-      enum { WORD_Z_ABITS = 0x0000000000000000UL,
-             WORD_Z_BBITS = 0xFFFFFFFFFFFFFFFFUL };
-#elif SIZEOF_UNSIGNED_LONG == 4
-      enum { WORD_0_ABITS = 0x00000000UL, WORD_0_BBITS = 0x00000000UL };
-      enum { WORD_1_ABITS = 0xFFFFFFFFUL, WORD_1_BBITS = 0x00000000UL };
-      enum { WORD_X_ABITS = 0xFFFFFFFFUL, WORD_X_BBITS = 0xFFFFFFFFUL };
-      enum { WORD_Z_ABITS = 0x00000000UL, WORD_Z_BBITS = 0xFFFFFFFFUL };
-#else
-#error "WORD_X_xBITS not defined for this architecture?"
-#endif
+#إذا SIZEOF_UNSIGNED_LONG == 8
+      تعداد { کلمه_0_ABITS = 0x0000000000000000UL,
+	     کلمه_0_BBITS = 0x0000000000000000UL };
+      تعداد { کلمه_1_ABITS = 0xFFFFFFFFFFFFFFFFUL,
+	     کلمه_1_BBITS = 0x0000000000000000UL };
+      تعداد { کلمه_X_ABITS = 0xFFFFFFFFFFFFFFFFUL,
+	     کلمه_X_BBITS = 0xFFFFFFFFFFFFFFFFUL };
+      تعداد { کلمه_Z_ABITS = 0x0000000000000000UL,
+             کلمه_Z_BBITS = 0xFFFFFFFFFFFFFFFFUL };
+#وإلاإذا SIZEOF_UNSIGNED_LONG == 4
+      تعداد { کلمه_0_ABITS = 0x00000000UL, کلمه_0_BBITS = 0x00000000UL };
+      تعداد { کلمه_1_ABITS = 0xFFFFFFFFUL, کلمه_1_BBITS = 0x00000000UL };
+      تعداد { کلمه_X_ABITS = 0xFFFFFFFFUL, کلمه_X_BBITS = 0xFFFFFFFFUL };
+      تعداد { کلمه_Z_ABITS = 0x00000000UL, کلمه_Z_BBITS = 0xFFFFFFFFUL };
+#وإلا
+#تېروتنه "WORD_X_xBITS not defined for this architecture?"
+#د_که_پای
 
 	// Initialize and operator= use this private method to copy
 	// the data from that object into this object.
-      void copy_from_(const vvp_vector4_t&that);
-      void copy_from_big_(const vvp_vector4_t&that);
-      void copy_inverted_from_(const vvp_vector4_t&that);
+      فراغ copy_from_(ثابت vvp_vector4_t&that);
+      فراغ copy_from_big_(ثابت vvp_vector4_t&that);
+      فراغ copy_inverted_from_(ثابت vvp_vector4_t&that);
 
-      void allocate_words_(unsigned long inita, unsigned long initb);
+      فراغ allocate_ټکي(بینښه اوږد inita, بینښه اوږد initb);
 
 	// Values in the vvp_vector4_t are stored split across two
 	// arrays. For each bit in the vector, there is an abit and a
@@ -372,95 +372,95 @@ class vvp_vector4_t {
 	// BIT4_X    1    1
 	// BIT4_Z    0    1
 
-      unsigned size_;
-      union {
-	    unsigned long abits_val_;
-	    unsigned long*abits_ptr_;
+      بینښه اندازه_2;
+      اتحاد {
+	    بینښه اوږد abits_val_;
+	    بینښه اوږد*abits_ptr_;
       };
-      union {
-	    unsigned long bbits_val_;
-	    unsigned long*bbits_ptr_;
+      اتحاد {
+	    بینښه اوږد bbits_val_;
+	    بینښه اوږد*bbits_ptr_;
       };
 };
 
-inline vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that)
+مضمن vvp_vector4_t::vvp_vector4_t(ثابت vvp_vector4_t&that)
 {
       copy_from_(that);
 }
 
-inline vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that, bool invert_flag)
+مضمن vvp_vector4_t::vvp_vector4_t(ثابت vvp_vector4_t&that, bool invert_flag)
 {
-      if (invert_flag)
+      إذا (invert_flag)
 	    copy_inverted_from_(that);
-      else
+      وإلا
 	    copy_from_(that);
 }
 
-inline vvp_vector4_t::vvp_vector4_t(unsigned size__, vvp_bit4_t val)
-: size_(size__)
+مضمن vvp_vector4_t::vvp_vector4_t(بینښه اندازه_3, vvp_bit4_t val)
+: اندازه_2(اندازه_3)
 {
 	/* note: this relies on the bit encoding for the vvp_bit4_t. */
-      static const unsigned long init_atable[4] = {
-	    WORD_0_ABITS,
-	    WORD_1_ABITS,
-	    WORD_Z_ABITS,
-	    WORD_X_ABITS };
-      static const unsigned long init_btable[4] = {
-	    WORD_0_BBITS,
-	    WORD_1_BBITS,
-	    WORD_Z_BBITS,
-	    WORD_X_BBITS };
+      ساكن ثابت بینښه اوږد init_atable[4] = {
+	    کلمه_0_ABITS,
+	    کلمه_1_ABITS,
+	    کلمه_Z_ABITS,
+	    کلمه_X_ABITS };
+      ساكن ثابت بینښه اوږد init_btable[4] = {
+	    کلمه_0_BBITS,
+	    کلمه_1_BBITS,
+	    کلمه_Z_BBITS,
+	    کلمه_X_BBITS };
 
-      allocate_words_(init_atable[val], init_btable[val]);
+      allocate_ټکي(init_atable[val], init_btable[val]);
 }
 
-inline vvp_vector4_t::~vvp_vector4_t()
+مضمن vvp_vector4_t::~vvp_vector4_t()
 {
-      if (size_ > BITS_PER_WORD) {
+      إذا (اندازه_2 > بټونه_فی_کلمه) {
 	    delete[] abits_ptr_;
 	      // bbits_ptr_ actually points half-way into a
 	      // double-length array started at abits_ptr_
       }
 }
 
-inline vvp_vector4_t& vvp_vector4_t::operator= (const vvp_vector4_t&that)
+مضمن vvp_vector4_t& vvp_vector4_t::چلوونکی= (ثابت vvp_vector4_t&that)
 {
-      if (this == &that)
-	    return *this;
+      إذا (this == &that)
+	    أرجع *this;
 
-      if (size_ > BITS_PER_WORD)
+      إذا (اندازه_2 > بټونه_فی_کلمه)
 	    delete[] abits_ptr_;
 
       copy_from_(that);
 
-      return *this;
+      أرجع *this;
 }
 
-inline void vvp_vector4_t::copy_from_(const vvp_vector4_t&that)
+مضمن فراغ vvp_vector4_t::copy_from_(ثابت vvp_vector4_t&that)
 {
-      size_ = that.size_;
-      if (size_ <= BITS_PER_WORD) {
+      اندازه_2 = that.اندازه_2;
+      إذا (اندازه_2 <= بټونه_فی_کلمه) {
 	    abits_val_ = that.abits_val_;
 	    bbits_val_ = that.bbits_val_;
-      } else {
+      } وإلا {
 	    copy_from_big_(that);
       }
 }
 
-inline vvp_bit4_t vvp_vector4_t::value(unsigned idx) const
+مضمن vvp_bit4_t vvp_vector4_t::ارزښت(بینښه idx) ثابت
 {
-      if (idx >= size_)
-	    return BIT4_X;
+      إذا (idx >= اندازه_2)
+	    أرجع BIT4_X;
 
-      unsigned off;
+      بینښه off;
 
-      unsigned long abits, bbits;
-      if (size_ > BITS_PER_WORD) {
-	    unsigned wdx = idx / BITS_PER_WORD;
-	    off = idx % BITS_PER_WORD;
+      بینښه اوږد abits, bbits;
+      إذا (اندازه_2 > بټونه_فی_کلمه) {
+	    بینښه wdx = idx / بټونه_فی_کلمه;
+	    off = idx % بټونه_فی_کلمه;
 	    abits = abits_ptr_[wdx];
 	    bbits = bbits_ptr_[wdx];
-      } else {
+      } وإلا {
 	    off = idx;
 	    abits = abits_val_;
 	    bbits = bbits_val_;
@@ -468,80 +468,80 @@ inline vvp_bit4_t vvp_vector4_t::value(unsigned idx) const
 
       abits >>= off;
       bbits >>= off;
-      int tmp = ((bbits&1) << 1) + (abits&1);
+      صحيح tmp = ((bbits&1) << 1) + (abits&1);
 	// This cast works since b==1,a==1 is X and b==1,a==0 is Z.
-      return (vvp_bit4_t)tmp;
+      أرجع (vvp_bit4_t)tmp;
 }
 
-inline vvp_vector4_t vvp_vector4_t::subvalue(unsigned adr, unsigned wid) const
+مضمن vvp_vector4_t vvp_vector4_t::subvalue(بینښه adr, بینښه wid) ثابت
 {
-      return vvp_vector4_t(*this, adr, wid);
+      أرجع vvp_vector4_t(*this, adr, wid);
 }
 
-inline void vvp_vector4_t::set_bit(unsigned idx, vvp_bit4_t val)
+مضمن فراغ vvp_vector4_t::سېټ_بټ(بینښه idx, vvp_bit4_t val)
 {
-      assert(idx < size_);
+      أكد(idx < اندازه_2);
 
-      unsigned long off = idx % BITS_PER_WORD;
-      unsigned long mask = 1UL << off;
+      بینښه اوږد off = idx % بټونه_فی_کلمه;
+      بینښه اوږد ماسک = 1UL << off;
 
-      if (size_ > BITS_PER_WORD) {
-	    unsigned wdx = idx / BITS_PER_WORD;
-	    switch (val) {
-		case BIT4_0:
-		  abits_ptr_[wdx] &= ~mask;
-		  bbits_ptr_[wdx] &= ~mask;
-		  break;
-		case BIT4_1:
-		  abits_ptr_[wdx] |=  mask;
-		  bbits_ptr_[wdx] &= ~mask;
-		  break;
-		case BIT4_X:
-		  abits_ptr_[wdx] |=  mask;
-		  bbits_ptr_[wdx] |=  mask;
-		  break;
-		case BIT4_Z:
-		  abits_ptr_[wdx] &= ~mask;
-		  bbits_ptr_[wdx] |=  mask;
-		  break;
+      إذا (اندازه_2 > بټونه_فی_کلمه) {
+	    بینښه wdx = idx / بټونه_فی_کلمه;
+	    بدل (val) {
+		حالة BIT4_0:
+		  abits_ptr_[wdx] &= ~ماسک;
+		  bbits_ptr_[wdx] &= ~ماسک;
+		  اكسر;
+		حالة BIT4_1:
+		  abits_ptr_[wdx] |=  ماسک;
+		  bbits_ptr_[wdx] &= ~ماسک;
+		  اكسر;
+		حالة BIT4_X:
+		  abits_ptr_[wdx] |=  ماسک;
+		  bbits_ptr_[wdx] |=  ماسک;
+		  اكسر;
+		حالة BIT4_Z:
+		  abits_ptr_[wdx] &= ~ماسک;
+		  bbits_ptr_[wdx] |=  ماسک;
+		  اكسر;
 	    }
-      } else {
-	    switch (val) {
-		case BIT4_0:
-		  abits_val_ &= ~mask;
-		  bbits_val_ &= ~mask;
-		  break;
-		case BIT4_1:
-		  abits_val_ |=  mask;
-		  bbits_val_ &= ~mask;
-		  break;
-		case BIT4_X:
-		  abits_val_ |=  mask;
-		  bbits_val_ |=  mask;
-		  break;
-		case BIT4_Z:
-		  abits_val_ &= ~mask;
-		  bbits_val_ |=  mask;
-		  break;
+      } وإلا {
+	    بدل (val) {
+		حالة BIT4_0:
+		  abits_val_ &= ~ماسک;
+		  bbits_val_ &= ~ماسک;
+		  اكسر;
+		حالة BIT4_1:
+		  abits_val_ |=  ماسک;
+		  bbits_val_ &= ~ماسک;
+		  اكسر;
+		حالة BIT4_X:
+		  abits_val_ |=  ماسک;
+		  bbits_val_ |=  ماسک;
+		  اكسر;
+		حالة BIT4_Z:
+		  abits_val_ &= ~ماسک;
+		  bbits_val_ |=  ماسک;
+		  اكسر;
 	    }
       }
 }
 
-inline vvp_vector4_t operator ~ (const vvp_vector4_t&that)
+مضمن vvp_vector4_t چلوونکی ~ (ثابت vvp_vector4_t&that)
 {
       vvp_vector4_t res (that, true);
-      return res;
+      أرجع res;
 }
 
-extern std::ostream& operator << (std::ostream&, const vvp_vector4_t&);
+خارجي std::ostream& چلوونکی << (std::ostream&, ثابت vvp_vector4_t&);
 
-extern vvp_bit4_t compare_gtge(const vvp_vector4_t&a,
-			       const vvp_vector4_t&b,
+خارجي vvp_bit4_t compare_gtge(ثابت vvp_vector4_t&a,
+			       ثابت vvp_vector4_t&b,
 			       vvp_bit4_t val_if_equal);
-extern vvp_bit4_t compare_gtge_signed(const vvp_vector4_t&a,
-				      const vvp_vector4_t&b,
+خارجي vvp_bit4_t compare_gtge_signed(ثابت vvp_vector4_t&a,
+				      ثابت vvp_vector4_t&b,
 				      vvp_bit4_t val_if_equal);
-template <class T> extern T coerce_to_width(const T&that, unsigned width);
+کينډۍ <class T> خارجي T coerce_منزل_پلنوالی(ثابت T&that, بینښه پلنوالی);
 
 /*
  * These functions extract the value of the vector as a native type,
@@ -558,33 +558,33 @@ template <class T> extern T coerce_to_width(const T&that, unsigned width);
  * value will be "false", but the other bits will be transferred. This
  * is what you want if you are doing "vpi_get_value", for example.
  */
-template <class T> extern bool vector4_to_value(const vvp_vector4_t&a, T&val,
+کينډۍ <class T> خارجي bool vector4_منزل_ارزښت(ثابت vvp_vector4_t&a, T&val,
 						bool is_signed,
 						bool is_arithmetic =true);
 
-template <class T> extern bool vector4_to_value(const vvp_vector4_t&a,
-                                                bool&overflow_flag, T&val);
+کينډۍ <class T> خارجي bool vector4_منزل_ارزښت(ثابت vvp_vector4_t&a,
+                                                bool&ډکېدنه_flag, T&val);
 
-template <class T> inline bool vector4_to_value(const vvp_vector4_t&a, T&val)
+کينډۍ <class T> مضمن bool vector4_منزل_ارزښت(ثابت vvp_vector4_t&a, T&val)
 {
-      bool overflow_flag;
-      return vector4_to_value(a, overflow_flag, val);
+      bool ډکېدنه_flag;
+      أرجع vector4_منزل_ارزښت(a, ډکېدنه_flag, val);
 }
 
-extern bool vector4_to_value(const vvp_vector4_t&a, double&val, bool is_signed);
+خارجي bool vector4_منزل_ارزښت(ثابت vvp_vector4_t&a, مزدوج&val, bool is_signed);
 
-extern bool vector2_to_value(const vvp_vector2_t&a, int32_t&val, bool is_signed);
+خارجي bool vector2_منزل_ارزښت(ثابت vvp_vector2_t&a, int32_t&val, bool is_signed);
 
-extern vvp_vector4_t vector4_from_text(const char*bits, unsigned wid);
+خارجي vvp_vector4_t vector4_from_متن(ثابت حرف*بټونه, بینښه wid);
 
-inline vvp_vector4_t double_to_vector4_LSB(double real)
+مضمن vvp_vector4_t double_منزل_vector4_LSB(مزدوج real)
 {
       // Convert the double to a bit vector and then use the LSB.
       // You can use very large real values and break the 64-bit
       // size, but that's really horrible code so don't do that!
-      vvp_vector4_t bit = vvp_vector4_t(64, real);
-      bit.resize(1);
-      return bit;
+      vvp_vector4_t بټ = vvp_vector4_t(64, real);
+      بټ.resize(1);
+      أرجع بټ;
 }
 
 /*
@@ -592,205 +592,205 @@ inline vvp_vector4_t double_to_vector4_LSB(double real)
  */
 class vvp_vector4array_t {
 
-    public:
-      vvp_vector4array_t(unsigned width, unsigned words);
-      virtual ~vvp_vector4array_t();
+    عام:
+      vvp_vector4array_t(بینښه پلنوالی, بینښه ټکي);
+      مجازي ~vvp_vector4array_t();
 
-      unsigned width() const { return width_; }
-      unsigned words() const { return words_; }
+      بینښه پلنوالی() ثابت { أرجع پلنوالی_2; }
+      بینښه ټکي() ثابت { أرجع ټکي_3; }
 
-      virtual vvp_vector4_t get_word(unsigned idx) const = 0;
-      virtual void set_word(unsigned idx, const vvp_vector4_t&that) = 0;
+      مجازي vvp_vector4_t get_کلمه(بینښه idx) ثابت = 0;
+      مجازي فراغ سېټ_کلمه(بینښه idx, ثابت vvp_vector4_t&that) = 0;
 
-    protected:
-      struct v4cell {
-	    union {
-		  unsigned long abits_val_;
-		  unsigned long*abits_ptr_;
+    محمي:
+      بنية v4cell {
+	    اتحاد {
+		  بینښه اوږد abits_val_;
+		  بینښه اوږد*abits_ptr_;
 	    };
-	    union {
-		  unsigned long bbits_val_;
-		  unsigned long*bbits_ptr_;
+	    اتحاد {
+		  بینښه اوږد bbits_val_;
+		  بینښه اوږد*bbits_ptr_;
 	    };
       };
 
-      vvp_vector4_t get_word_(v4cell*cell) const;
-      void set_word_(v4cell*cell, const vvp_vector4_t&that);
+      vvp_vector4_t get_کلمه_2(v4cell*cell) ثابت;
+      فراغ سېټ_کلمه_2(v4cell*cell, ثابت vvp_vector4_t&that);
 
-      unsigned width_;
-      unsigned words_;
+      بینښه پلنوالی_2;
+      بینښه ټکي_3;
 
-    private: // Not implemented
-      vvp_vector4array_t(const vvp_vector4array_t&);
-      vvp_vector4array_t& operator = (const vvp_vector4array_t&);
+    خاص: // Not implemented
+      vvp_vector4array_t(ثابت vvp_vector4array_t&);
+      vvp_vector4array_t& چلوونکی = (ثابت vvp_vector4array_t&);
 };
 
 /*
  * Statically allocated vvp_vector4array_t
  */
-class vvp_vector4array_sa : public vvp_vector4array_t {
+class vvp_vector4array_sa : عام vvp_vector4array_t {
 
-    public:
-      vvp_vector4array_sa(unsigned width, unsigned words);
+    عام:
+      vvp_vector4array_sa(بینښه پلنوالی, بینښه ټکي);
       ~vvp_vector4array_sa() override;
 
-      vvp_vector4_t get_word(unsigned idx) const override;
-      void set_word(unsigned idx, const vvp_vector4_t&that) override;
+      vvp_vector4_t get_کلمه(بینښه idx) ثابت override;
+      فراغ سېټ_کلمه(بینښه idx, ثابت vvp_vector4_t&that) override;
 
-    private:
+    خاص:
       v4cell* array_;
 };
 
 /*
  * Automatically allocated vvp_vector4array_t
  */
-class vvp_vector4array_aa : public vvp_vector4array_t, public automatic_hooks_s {
+class vvp_vector4array_aa : عام vvp_vector4array_t, عام automatic_hooks_s {
 
-    public:
-      vvp_vector4array_aa(unsigned width, unsigned words);
+    عام:
+      vvp_vector4array_aa(بینښه پلنوالی, بینښه ټکي);
       ~vvp_vector4array_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+      فراغ alloc_instance(vvp_context_t context) override;
+      فراغ reset_instance(vvp_context_t context) override;
+#که_تعریف_شوی CHECK_WITH_VALGRIND
+      فراغ free_instance(vvp_context_t context) override;
+#د_که_پای
 
-      vvp_vector4_t get_word(unsigned idx) const override;
-      void set_word(unsigned idx, const vvp_vector4_t&that) override;
+      vvp_vector4_t get_کلمه(بینښه idx) ثابت override;
+      فراغ سېټ_کلمه(بینښه idx, ثابت vvp_vector4_t&that) override;
 
-    private:
-      unsigned context_idx_;
+    خاص:
+      بینښه context_idx_;
 };
 
 /* vvp_vector2_t
  */
 class vvp_vector2_t {
 
-      friend vvp_vector2_t operator - (const vvp_vector2_t&);
-      friend vvp_vector2_t operator + (const vvp_vector2_t&,
-				       const vvp_vector2_t&);
-      friend vvp_vector2_t operator * (const vvp_vector2_t&,
-				       const vvp_vector2_t&);
-      friend bool operator >  (const vvp_vector2_t&, const vvp_vector2_t&);
-      friend bool operator >= (const vvp_vector2_t&, const vvp_vector2_t&);
-      friend bool operator <  (const vvp_vector2_t&, const vvp_vector2_t&);
-      friend bool operator <= (const vvp_vector2_t&, const vvp_vector2_t&);
-      friend bool operator == (const vvp_vector2_t&, const vvp_vector2_t&);
+      ملګری vvp_vector2_t چلوونکی - (ثابت vvp_vector2_t&);
+      ملګری vvp_vector2_t چلوونکی + (ثابت vvp_vector2_t&,
+				       ثابت vvp_vector2_t&);
+      ملګری vvp_vector2_t چلوونکی * (ثابت vvp_vector2_t&,
+				       ثابت vvp_vector2_t&);
+      ملګری bool چلوونکی >  (ثابت vvp_vector2_t&, ثابت vvp_vector2_t&);
+      ملګری bool چلوونکی >= (ثابت vvp_vector2_t&, ثابت vvp_vector2_t&);
+      ملګری bool چلوونکی <  (ثابت vvp_vector2_t&, ثابت vvp_vector2_t&);
+      ملګری bool چلوونکی <= (ثابت vvp_vector2_t&, ثابت vvp_vector2_t&);
+      ملګری bool چلوونکی == (ثابت vvp_vector2_t&, ثابت vvp_vector2_t&);
 
-    public:
+    عام:
       vvp_vector2_t();
-      vvp_vector2_t(const vvp_vector2_t&);
-      vvp_vector2_t(const vvp_vector2_t&, unsigned newsize);
-      vvp_vector2_t(const vvp_vector2_t&, unsigned base, unsigned wid);
+      vvp_vector2_t(ثابت vvp_vector2_t&);
+      vvp_vector2_t(ثابت vvp_vector2_t&, بینښه newsize);
+      vvp_vector2_t(ثابت vvp_vector2_t&, بینښه بنسټ, بینښه wid);
 	// Make a vvp_vector2_t from a vvp_vector4_t. If enable_NaN
 	// is true and there are X or Z bits, then the result becomes
 	// a NaN value. If enable_NaN is false then X or Z bits are
 	// converted to 0 as per the standard Verilog rules.
-      explicit vvp_vector2_t(const vvp_vector4_t&that, bool allow_NaN = false);
+      explicit vvp_vector2_t(ثابت vvp_vector4_t&that, bool allow_NaN = false);
 	// Make from a 64-bit value and a specified width.
-      vvp_vector2_t(uint64_t val, unsigned wid);
+      vvp_vector2_t(uint64_t val, بینښه wid);
 	// Make with the width, and filled with 1 or 0 bits.
-      enum fill_t {FILL0, FILL1};
-      vvp_vector2_t(fill_t fill, unsigned wid);
+      تعداد fill_t {FILL0, FILL1};
+      vvp_vector2_t(fill_t fill, بینښه wid);
       ~vvp_vector2_t();
 
-      vvp_vector2_t&operator += (const vvp_vector2_t&that);
-      vvp_vector2_t&operator -= (const vvp_vector2_t&that);
-      vvp_vector2_t&operator <<= (unsigned shift);
-      vvp_vector2_t&operator >>= (unsigned shift);
-      vvp_vector2_t&operator = (const vvp_vector2_t&);
+      vvp_vector2_t&چلوونکی += (ثابت vvp_vector2_t&that);
+      vvp_vector2_t&چلوونکی -= (ثابت vvp_vector2_t&that);
+      vvp_vector2_t&چلوونکی <<= (بینښه ښويدنه);
+      vvp_vector2_t&چلوونکی >>= (بینښه ښويدنه);
+      vvp_vector2_t&چلوونکی = (ثابت vvp_vector2_t&);
 
 	// Assign a vec4 to a vec2, using Verilog rules for converting
 	// XZ values to 0.
-      vvp_vector2_t&operator = (const vvp_vector4_t&);
+      vvp_vector2_t&چلوونکی = (ثابت vvp_vector4_t&);
 
-      bool is_NaN() const;
-      bool is_zero() const;
-      unsigned size() const;
-      int value(unsigned idx) const;
-      vvp_bit4_t value4(unsigned idx) const;
+      bool is_NaN() ثابت;
+      bool is_zero() ثابت;
+      بینښه اندازه() ثابت;
+      صحيح ارزښت(بینښه idx) ثابت;
+      vvp_bit4_t value4(بینښه idx) ثابت;
 	// Get the vector2 subvector starting at the address
-      vvp_vector2_t subvalue(unsigned idx, unsigned size) const;
-      void set_bit(unsigned idx, int bit);
-      void set_vec(unsigned idx, const vvp_vector2_t&that);
+      vvp_vector2_t subvalue(بینښه idx, بینښه اندازه) ثابت;
+      فراغ سېټ_بټ(بینښه idx, صحيح بټ);
+      فراغ سېټ_vec(بینښه idx, ثابت vvp_vector2_t&that);
 	// Make the size just big enough to hold the first 1 bit.
-      void trim();
+      فراغ trim();
 	// Trim off extra 1 bit since this is representing a negative value.
 	// Always keep at least 32 bits.
-      void trim_neg();
+      فراغ trim_neg();
 
-    private:
-      enum { BITS_PER_WORD = 8 * sizeof(unsigned long) };
-      unsigned long*vec_;
-      unsigned wid_;
+    خاص:
+      تعداد { بټونه_فی_کلمه = 8 * حجم(بینښه اوږد) };
+      بینښه اوږد*vec_;
+      بینښه wid_;
 
-    private:
-      void copy_from_that_(const vvp_vector2_t&that);
-      void copy_from_that_(const vvp_vector4_t&that);
+    خاص:
+      فراغ copy_from_that_(ثابت vvp_vector2_t&that);
+      فراغ copy_from_that_(ثابت vvp_vector4_t&that);
 };
 
-extern bool operator >  (const vvp_vector2_t&, const vvp_vector2_t&);
-extern bool operator >= (const vvp_vector2_t&, const vvp_vector2_t&);
-extern bool operator <  (const vvp_vector2_t&, const vvp_vector2_t&);
-extern bool operator <= (const vvp_vector2_t&, const vvp_vector2_t&);
-extern bool operator == (const vvp_vector2_t&, const vvp_vector2_t&);
-extern vvp_vector2_t operator - (const vvp_vector2_t&);
-extern vvp_vector2_t operator + (const vvp_vector2_t&, const vvp_vector2_t&);
-extern vvp_vector2_t operator * (const vvp_vector2_t&, const vvp_vector2_t&);
-extern vvp_vector2_t operator / (const vvp_vector2_t&, const vvp_vector2_t&);
-extern vvp_vector2_t operator % (const vvp_vector2_t&, const vvp_vector2_t&);
+خارجي bool چلوونکی >  (ثابت vvp_vector2_t&, ثابت vvp_vector2_t&);
+خارجي bool چلوونکی >= (ثابت vvp_vector2_t&, ثابت vvp_vector2_t&);
+خارجي bool چلوونکی <  (ثابت vvp_vector2_t&, ثابت vvp_vector2_t&);
+خارجي bool چلوونکی <= (ثابت vvp_vector2_t&, ثابت vvp_vector2_t&);
+خارجي bool چلوونکی == (ثابت vvp_vector2_t&, ثابت vvp_vector2_t&);
+خارجي vvp_vector2_t چلوونکی - (ثابت vvp_vector2_t&);
+خارجي vvp_vector2_t چلوونکی + (ثابت vvp_vector2_t&, ثابت vvp_vector2_t&);
+خارجي vvp_vector2_t چلوونکی * (ثابت vvp_vector2_t&, ثابت vvp_vector2_t&);
+خارجي vvp_vector2_t چلوونکی / (ثابت vvp_vector2_t&, ثابت vvp_vector2_t&);
+خارجي vvp_vector2_t چلوونکی % (ثابت vvp_vector2_t&, ثابت vvp_vector2_t&);
 
-vvp_vector2_t pow(const vvp_vector2_t&, vvp_vector2_t&);
-extern vvp_vector4_t vector2_to_vector4(const vvp_vector2_t&, unsigned wid);
+vvp_vector2_t توان(ثابت vvp_vector2_t&, vvp_vector2_t&);
+خارجي vvp_vector4_t vector2_منزل_vector4(ثابت vvp_vector2_t&, بینښه wid);
 
 /* A c4string is of the form C4<...> where ... are bits. */
-extern bool c4string_test(const char*str);
-extern vvp_vector4_t c4string_to_vector4(const char*str);
+خارجي bool c4string_test(ثابت حرف*str);
+خارجي vvp_vector4_t c4string_منزل_vector4(ثابت حرف*str);
 
 /* A crstring is of the form Cr<...> where ... defines are real. */
-extern bool crstring_test(const char*str);
-extern double crstring_to_double(const char*str);
+خارجي bool crstring_test(ثابت حرف*str);
+خارجي مزدوج crstring_منزل_double(ثابت حرف*str);
 
-extern std::ostream& operator<< (std::ostream&, const vvp_vector2_t&);
+خارجي std::ostream& چلوونکی<< (std::ostream&, ثابت vvp_vector2_t&);
 
-inline vvp_vector2_t::vvp_vector2_t(const vvp_vector2_t&that)
+مضمن vvp_vector2_t::vvp_vector2_t(ثابت vvp_vector2_t&that)
 {
       copy_from_that_(that);
 }
 
-inline vvp_vector2_t::vvp_vector2_t(const vvp_vector4_t&that, bool enable_NaN)
+مضمن vvp_vector2_t::vvp_vector2_t(ثابت vvp_vector4_t&that, bool enable_NaN)
 {
-      if (enable_NaN && that.has_xz()) {
+      إذا (enable_NaN && that.has_xz()) {
 	    vec_ = 0;
 	    wid_ = 0;
-	    return;
+	    أرجع;
       }
       copy_from_that_(that);
 }
 
-inline vvp_vector2_t::~vvp_vector2_t()
+مضمن vvp_vector2_t::~vvp_vector2_t()
 {
       delete[] vec_;
 }
 
 /* Inline some of the vector2_t methods. */
-inline unsigned vvp_vector2_t::size() const
+مضمن بینښه vvp_vector2_t::اندازه() ثابت
 {
-      return wid_;
+      أرجع wid_;
 }
 
-inline vvp_bit4_t vvp_vector2_t::value4(unsigned idx) const
+مضمن vvp_bit4_t vvp_vector2_t::value4(بینښه idx) ثابت
 {
-      if (value(idx))
-	    return BIT4_1;
-      else
-	    return BIT4_0;
+      إذا (ارزښت(idx))
+	    أرجع BIT4_1;
+      وإلا
+	    أرجع BIT4_0;
 }
 
-inline vvp_vector2_t vvp_vector2_t::subvalue(unsigned base, unsigned wid) const
+مضمن vvp_vector2_t vvp_vector2_t::subvalue(بینښه بنسټ, بینښه wid) ثابت
 {
-      return vvp_vector2_t(*this, base, wid);
+      أرجع vvp_vector2_t(*this, بنسټ, wid);
 }
 
 /*
@@ -815,97 +815,97 @@ inline vvp_vector2_t vvp_vector2_t::subvalue(unsigned base, unsigned wid) const
  */
 class vvp_scalar_t {
 
-      friend vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b);
+      ملګری vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b);
 
-    public:
+    عام:
 	// Make a HiZ value.
       explicit vvp_scalar_t();
 
 	// Make an unambiguous value.
-      explicit vvp_scalar_t(vvp_bit4_t val, unsigned str0, unsigned str1);
+      explicit vvp_scalar_t(vvp_bit4_t val, بینښه str0, بینښه str1);
 
 	// Get the vvp_bit4_t version of the value
-      vvp_bit4_t value() const;
-      unsigned strength0() const;
-      unsigned strength1() const;
+      vvp_bit4_t ارزښت() ثابت;
+      بینښه strength0() ثابت;
+      بینښه strength1() ثابت;
 
-      bool eeq(vvp_scalar_t that) const { return value_ == that.value_; }
-      bool is_hiz() const { return (value_ & 0x77) == 0; }
+      bool eeq(vvp_scalar_t that) ثابت { أرجع ارزښت_2 == that.ارزښت_2; }
+      bool is_hiz() ثابت { أرجع (ارزښت_2 & 0x77) == 0; }
 
-    private:
+    خاص:
 	// This class and the vvp_vector8_t class are closely related,
 	// so allow vvp_vector8_t access to the raw encoding so that
 	// it can do compact vectoring of vvp_scalar_t objects.
-      friend class vvp_vector8_t;
-      explicit vvp_scalar_t(unsigned char val) : value_(val) { }
-      unsigned char raw() const { return value_; }
+      ملګری class vvp_vector8_t;
+      explicit vvp_scalar_t(بینښه حرف val) : ارزښت_2(val) { }
+      بینښه حرف raw() ثابت { أرجع ارزښت_2; }
 
-    private:
-      unsigned char value_;
+    خاص:
+      بینښه حرف ارزښت_2;
 };
 
-inline vvp_scalar_t::vvp_scalar_t()
+مضمن vvp_scalar_t::vvp_scalar_t()
 {
-      value_ = 0;
+      ارزښت_2 = 0;
 }
 
-inline vvp_scalar_t::vvp_scalar_t(vvp_bit4_t val, unsigned str0, unsigned str1)
+مضمن vvp_scalar_t::vvp_scalar_t(vvp_bit4_t val, بینښه str0, بینښه str1)
 {
-      assert(str0 <= 7);
-      assert(str1 <= 7);
+      أكد(str0 <= 7);
+      أكد(str1 <= 7);
 
-      if (str0 == 0 && str1 == 0) {
-	    value_ = 0x00;
-      } else switch (val) {
-	  case BIT4_0:
-	    value_ = str0 | (str0<<4);
-	    break;
-	  case BIT4_1:
-	    value_ = str1 | (str1<<4) | 0x88;
-	    break;
-	  case BIT4_X:
-	    value_ = str0 | (str1<<4) | 0x80;
-	    break;
-	  case BIT4_Z:
-	    value_ = 0x00;
-	    break;
+      إذا (str0 == 0 && str1 == 0) {
+	    ارزښت_2 = 0x00;
+      } وإلا بدل (val) {
+	  حالة BIT4_0:
+	    ارزښت_2 = str0 | (str0<<4);
+	    اكسر;
+	  حالة BIT4_1:
+	    ارزښت_2 = str1 | (str1<<4) | 0x88;
+	    اكسر;
+	  حالة BIT4_X:
+	    ارزښت_2 = str0 | (str1<<4) | 0x80;
+	    اكسر;
+	  حالة BIT4_Z:
+	    ارزښت_2 = 0x00;
+	    اكسر;
       }
 }
 
-inline vvp_bit4_t vvp_scalar_t::value() const
+مضمن vvp_bit4_t vvp_scalar_t::ارزښت() ثابت
 {
-      if ((value_ & 0x77) == 0) {
-	    return BIT4_Z;
-      } else switch (value_ & 0x88) {
-	  case 0x00:
-	    return BIT4_0;
-	  case 0x88:
-	    return BIT4_1;
-	  default:
-	    return BIT4_X;
+      إذا ((ارزښت_2 & 0x77) == 0) {
+	    أرجع BIT4_Z;
+      } وإلا بدل (ارزښت_2 & 0x88) {
+	  حالة 0x00:
+	    أرجع BIT4_0;
+	  حالة 0x88:
+	    أرجع BIT4_1;
+	  افتراضي:
+	    أرجع BIT4_X;
       }
 }
 
 
-inline vvp_scalar_t resolve(vvp_scalar_t a, vvp_scalar_t b)
+مضمن vvp_scalar_t resolve(vvp_scalar_t a, vvp_scalar_t b)
 {
-      extern vvp_scalar_t fully_featured_resolv_(vvp_scalar_t, vvp_scalar_t);
+      خارجي vvp_scalar_t fully_featured_resolv_(vvp_scalar_t, vvp_scalar_t);
 
 	// If the value is HiZ, resolution is simply a matter of
 	// returning the *other* value.
-      if (a.is_hiz())
-	    return b;
-      if (b.is_hiz())
-	    return a;
+      إذا (a.is_hiz())
+	    أرجع b;
+      إذا (b.is_hiz())
+	    أرجع a;
 	// If the values are the identical, then resolution is simply
 	// returning *either* value.
-      if (a .eeq( b ))
-	    return a;
+      إذا (a .eeq( b ))
+	    أرجع a;
 
-      return fully_featured_resolv_(a,b);
+      أرجع fully_featured_resolv_(a,b);
 }
 
-extern std::ostream& operator<< (std::ostream&, vvp_scalar_t);
+خارجي std::ostream& چلوونکی<< (std::ostream&, vvp_scalar_t);
 
 /*
  * This class is a way to carry vectors of strength modeled
@@ -921,125 +921,125 @@ extern std::ostream& operator<< (std::ostream&, vvp_scalar_t);
  */
 class vvp_vector8_t {
 
-      friend vvp_vector8_t part_expand(const vvp_vector8_t&, unsigned, unsigned);
+      ملګری vvp_vector8_t part_expand(ثابت vvp_vector8_t&, بینښه, بینښه);
 
-    public:
-      explicit vvp_vector8_t(unsigned size =0);
+    عام:
+      explicit vvp_vector8_t(بینښه اندازه =0);
 	// Make a vvp_vector8_t from a vector4 and a specified
 	// strength.
-      explicit vvp_vector8_t(const vvp_vector4_t&that,
-			     unsigned str0,
-			     unsigned str1);
-      explicit vvp_vector8_t(const vvp_vector2_t&that,
-			     unsigned str0,
-			     unsigned str1);
+      explicit vvp_vector8_t(ثابت vvp_vector4_t&that,
+			     بینښه str0,
+			     بینښه str1);
+      explicit vvp_vector8_t(ثابت vvp_vector2_t&that,
+			     بینښه str0,
+			     بینښه str1);
 
       ~vvp_vector8_t();
 
-      static const vvp_vector8_t nil;
+      ساكن ثابت vvp_vector8_t nil;
 
-    public:
+    عام:
 
-      unsigned size() const { return size_; }
-      vvp_scalar_t value(unsigned idx) const;
-      vvp_vector8_t subvalue(unsigned adr, unsigned width) const;
-      void set_bit(unsigned idx, vvp_scalar_t val);
-      void set_vec(unsigned idx, const vvp_vector8_t&that);
+      بینښه اندازه() ثابت { أرجع اندازه_2; }
+      vvp_scalar_t ارزښت(بینښه idx) ثابت;
+      vvp_vector8_t subvalue(بینښه adr, بینښه پلنوالی) ثابت;
+      فراغ سېټ_بټ(بینښه idx, vvp_scalar_t val);
+      فراغ سېټ_vec(بینښه idx, ثابت vvp_vector8_t&that);
 
 	// Test that the vectors are exactly equal
-      bool eeq(const vvp_vector8_t&that) const;
+      bool eeq(ثابت vvp_vector8_t&that) ثابت;
 
-      vvp_vector8_t(const vvp_vector8_t&that);
-      vvp_vector8_t& operator= (const vvp_vector8_t&that);
+      vvp_vector8_t(ثابت vvp_vector8_t&that);
+      vvp_vector8_t& چلوونکی= (ثابت vvp_vector8_t&that);
 
-    private:
-      unsigned size_;
-      union {
-	    unsigned char*ptr_;
-	    unsigned char val_[sizeof(void*)];
+    خاص:
+      بینښه اندازه_2;
+      اتحاد {
+	    بینښه حرف*ptr_;
+	    بینښه حرف val_[حجم(فراغ*)];
       };
 };
 
   /* Resolve uses the default Verilog resolver algorithm to resolve
      two drive vectors to a single output. */
-inline vvp_vector8_t resolve(const vvp_vector8_t&a, const vvp_vector8_t&b)
+مضمن vvp_vector8_t resolve(ثابت vvp_vector8_t&a, ثابت vvp_vector8_t&b)
 {
-      assert(a.size() == b.size());
-      vvp_vector8_t out (a.size());
+      أكد(a.اندازه() == b.اندازه());
+      vvp_vector8_t بهر (a.اندازه());
 
-      for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
-	    out.set_bit(idx, resolve(a.value(idx), b.value(idx)));
+      لكل (بینښه idx = 0 ;  idx < بهر.اندازه() ;  idx += 1) {
+	    بهر.سېټ_بټ(idx, resolve(a.ارزښت(idx), b.ارزښت(idx)));
       }
 
-      return out;
+      أرجع بهر;
 }
 
   /* This lookup tabke implements the strength reduction implied by
      Verilog standard switch devices. The major dimension selects
      between non-resistive and resistive devices. */
-extern unsigned vvp_switch_strength_map[2][8];
+خارجي بینښه vvp_switch_strength_map[2][8];
 
   /* The reduce4 function converts a vector8 to a vector4, losing
      strength information in the process. */
-extern vvp_vector4_t reduce4(const vvp_vector8_t&that);
-extern vvp_vector8_t part_expand(const vvp_vector8_t&a, unsigned wid, unsigned off);
+خارجي vvp_vector4_t reduce4(ثابت vvp_vector8_t&that);
+خارجي vvp_vector8_t part_expand(ثابت vvp_vector8_t&a, بینښه wid, بینښه off);
 
   /* A c8string is of the form C8<...> where ... are bits. */
-extern bool c8string_test(const char*str);
-extern vvp_vector8_t c8string_to_vector8(const char*str);
+خارجي bool c8string_test(ثابت حرف*str);
+خارجي vvp_vector8_t c8string_منزل_vector8(ثابت حرف*str);
 
   /* Print a vector8 value to a stream. */
-extern std::ostream& operator<< (std::ostream&, const vvp_vector8_t&);
+خارجي std::ostream& چلوونکی<< (std::ostream&, ثابت vvp_vector8_t&);
 
-inline vvp_vector8_t::vvp_vector8_t(unsigned size__)
-: size_(size__)
+مضمن vvp_vector8_t::vvp_vector8_t(بینښه اندازه_3)
+: اندازه_2(اندازه_3)
 {
-      if (size_ <= sizeof(val_)) {
-	    memset(val_, 0, sizeof(val_));
-      } else {
-	    ptr_ = new unsigned char[size_];
-	    memset(ptr_, 0, size_);
+      إذا (اندازه_2 <= حجم(val_)) {
+	    memset(val_, 0, حجم(val_));
+      } وإلا {
+	    ptr_ = new بینښه حرف[اندازه_2];
+	    memset(ptr_, 0, اندازه_2);
       }
 }
 
-inline vvp_vector8_t::~vvp_vector8_t()
+مضمن vvp_vector8_t::~vvp_vector8_t()
 {
-      if (size_ > sizeof(val_))
+      إذا (اندازه_2 > حجم(val_))
 	    delete[]ptr_;
 }
 
-inline vvp_scalar_t vvp_vector8_t::value(unsigned idx) const
+مضمن vvp_scalar_t vvp_vector8_t::ارزښت(بینښه idx) ثابت
 {
-      assert(idx < size_);
-      if (size_ <= sizeof(val_))
-	    return vvp_scalar_t(val_[idx]);
-      else
-	    return vvp_scalar_t(ptr_[idx]);
+      أكد(idx < اندازه_2);
+      إذا (اندازه_2 <= حجم(val_))
+	    أرجع vvp_scalar_t(val_[idx]);
+      وإلا
+	    أرجع vvp_scalar_t(ptr_[idx]);
 }
 
-inline void vvp_vector8_t::set_bit(unsigned idx, vvp_scalar_t val)
+مضمن فراغ vvp_vector8_t::سېټ_بټ(بینښه idx, vvp_scalar_t val)
 {
-      assert(idx < size_);
-      if (size_ <= sizeof(val_))
+      أكد(idx < اندازه_2);
+      إذا (اندازه_2 <= حجم(val_))
 	    val_[idx] = val.raw();
-      else
+      وإلا
 	    ptr_[idx] = val.raw();
 }
 
   // Exactly-equal for vvp_vector8_t is common and should be as tight
   // as possible.
-inline bool vvp_vector8_t::eeq(const vvp_vector8_t&that) const
+مضمن bool vvp_vector8_t::eeq(ثابت vvp_vector8_t&that) ثابت
 {
-      if (size_ != that.size_)
-	    return false;
-      if (size_ == 0)
-	    return true;
+      إذا (اندازه_2 != that.اندازه_2)
+	    أرجع false;
+      إذا (اندازه_2 == 0)
+	    أرجع true;
 
-      if (size_ <= sizeof(val_))
+      إذا (اندازه_2 <= حجم(val_))
 	      // This is equivalent to memcmp(val_, that.val_, sizeof val_)==0
-	    return ptr_ == that.ptr_;
-      else
-	    return memcmp(ptr_, that.ptr_, size_) == 0;
+	    أرجع ptr_ == that.ptr_;
+      وإلا
+	    أرجع memcmp(ptr_, that.ptr_, اندازه_2) == 0;
 }
 
 /*
@@ -1055,41 +1055,41 @@ inline bool vvp_vector8_t::eeq(const vvp_vector8_t&that) const
  * port identifier into an unsigned long. This works only if vvp_net_t*
  * values are always aligned on 4-byte boundaries.
  */
-template <class T> class vvp_sub_pointer_t {
+کينډۍ <class T> class vvp_sub_اشاره_ګر_t {
 
-    public:
-      vvp_sub_pointer_t() : bits_(0) { }
+    عام:
+      vvp_sub_اشاره_ګر_t() : بټونه_2(0) { }
 
-      vvp_sub_pointer_t(T*ptr__, unsigned port__)
+      vvp_sub_اشاره_ګر_t(T*ptr__, بینښه پورټ_2)
       {
-	    bits_ = reinterpret_cast<uintptr_t> (ptr__);
-	    assert( (bits_  &  UINTPTR_C(3)) == 0 );
-	    assert( (port__ & ~UINTPTR_C(3)) == 0 );
-	    bits_ |= port__;
+	    بټونه_2 = reinterpret_cast<uintptr_t> (ptr__);
+	    أكد( (بټونه_2  &  UINTPTR_C(3)) == 0 );
+	    أكد( (پورټ_2 & ~UINTPTR_C(3)) == 0 );
+	    بټونه_2 |= پورټ_2;
       }
 
-      ~vvp_sub_pointer_t() = default;
+      ~vvp_sub_اشاره_ګر_t() = افتراضي;
 
       T* ptr()
-      { return reinterpret_cast<T*> (bits_ & ~UINTPTR_C(3)); }
+      { أرجع reinterpret_cast<T*> (بټونه_2 & ~UINTPTR_C(3)); }
 
-      const T* ptr() const
-      { return reinterpret_cast<const T*> (bits_ & ~UINTPTR_C(3)); }
+      ثابت T* ptr() ثابت
+      { أرجع reinterpret_cast<ثابت T*> (بټونه_2 & ~UINTPTR_C(3)); }
 
-      unsigned  port() const { return bits_ & UINTPTR_C(3); }
+      بینښه  پورټ() ثابت { أرجع بټونه_2 & UINTPTR_C(3); }
 
-      bool nil() const { return bits_ == 0; }
+      bool nil() ثابت { أرجع بټونه_2 == 0; }
 
-      bool operator == (vvp_sub_pointer_t that) const { return bits_ == that.bits_; }
-      bool operator != (vvp_sub_pointer_t that) const { return bits_ != that.bits_; }
+      bool چلوونکی == (vvp_sub_اشاره_ګر_t that) ثابت { أرجع بټونه_2 == that.بټونه_2; }
+      bool چلوونکی != (vvp_sub_اشاره_ګر_t that) ثابت { أرجع بټونه_2 != that.بټونه_2; }
 
-    private:
-      uintptr_t bits_;
+    خاص:
+      uintptr_t بټونه_2;
 };
 
-typedef vvp_sub_pointer_t<vvp_net_t> vvp_net_ptr_t;
-template <class T> std::ostream& operator << (std::ostream&out, vvp_sub_pointer_t<T> val)
-{ out << val.ptr() << "[" << val.port() << "]"; return out; }
+تعريفنوع vvp_sub_اشاره_ګر_t<vvp_net_t> vvp_net_ptr_t;
+کينډۍ <class T> std::ostream& چلوونکی << (std::ostream&بهر, vvp_sub_اشاره_ګر_t<T> val)
+{ بهر << val.ptr() << "[" << val.پورټ() << "]"; أرجع بهر; }
 
 /*
  * This is the basic unit of netlist connectivity. It is a fan-in of
@@ -1130,60 +1130,60 @@ template <class T> std::ostream& operator << (std::ostream&out, vvp_sub_pointer_
  * output, possibly filtered, from the vvp_net_t.
  */
 class vvp_net_t {
-    public:
+    عام:
       vvp_net_t();
 
-#ifdef CHECK_WITH_VALGRIND
+#که_تعریف_شوی CHECK_WITH_VALGRIND
       vvp_net_t *pool;
-#endif
-      vvp_net_ptr_t port[4];
+#د_که_پای
+      vvp_net_ptr_t پورټ[4];
       vvp_net_fun_t*fun;
       vvp_net_fil_t*fil;
 
-    public:
+    عام:
 	// Connect the port to the output from this net.
-      void link(vvp_net_ptr_t port);
+      فراغ link(vvp_net_ptr_t پورټ);
 	// Disconnect the port from the output of this net.
-      void unlink(vvp_net_ptr_t port);
+      فراغ unlink(vvp_net_ptr_t پورټ);
 
-    public: // Methods to propagate output from this node.
-      void send_vec4(const vvp_vector4_t&val, vvp_context_t context);
-      void send_vec8(const vvp_vector8_t&val);
-      void send_real(double val, vvp_context_t context);
-      void send_string(const std::string&val, vvp_context_t context);
-      void send_object(vvp_object_t val, vvp_context_t context);
+    عام: // Methods to propagate output from this node.
+      فراغ send_vec4(ثابت vvp_vector4_t&val, vvp_context_t context);
+      فراغ send_vec8(ثابت vvp_vector8_t&val);
+      فراغ send_real(مزدوج val, vvp_context_t context);
+      فراغ send_string(ثابت std::string&val, vvp_context_t context);
+      فراغ send_object(vvp_object_t val, vvp_context_t context);
 
-      void send_vec4_pv(const vvp_vector4_t&val,
-			unsigned base, unsigned vwid, vvp_context_t context);
-      void send_vec8_pv(const vvp_vector8_t&val,
-			unsigned base, unsigned vwid);
+      فراغ send_vec4_pv(ثابت vvp_vector4_t&val,
+			بینښه بنسټ, بینښه vwid, vvp_context_t context);
+      فراغ send_vec8_pv(ثابت vvp_vector8_t&val,
+			بینښه بنسټ, بینښه vwid);
 
 
-    public: // Methods to arrange for the output of this net to be forced.
+    عام: // Methods to arrange for the output of this net to be forced.
 
 	// The intent is that all efforts at force are directed to
 	// operate only on the vvp_net_t whose output is to be
 	// forced. These methods then communicate the force to the
 	// attached filter to set up the actual force.
-      void force_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask);
-      void force_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask);
-      void force_real(double val, const vvp_vector2_t&mask);
+      فراغ force_vec4(ثابت vvp_vector4_t&val, ثابت vvp_vector2_t&ماسک);
+      فراغ force_vec8(ثابت vvp_vector8_t&val, ثابت vvp_vector2_t&ماسک);
+      فراغ force_real(مزدوج val, ثابت vvp_vector2_t&ماسک);
 
-    public: // Method to support $countdrivers
-      void count_drivers(unsigned idx, unsigned counts[4]);
+    عام: // Method to support $countdrivers
+      فراغ شمېر_drivers(بینښه idx, بینښه counts[4]);
 
     // This needs to be public so that SDF interconnects can be inserted
-    public:
-      vvp_net_ptr_t out_;
+    عام:
+      vvp_net_ptr_t بهر_2;
 
-    public: // Need a better new for these objects.
-      static void* operator new(std::size_t size);
-      static void operator delete(void*); // not implemented
-    private: // not implemented
-      static void* operator new[](std::size_t size);
-#if defined(__GNUC__)
-      static void operator delete[](void*);
-#endif
+    عام: // Need a better new for these objects.
+      ساكن فراغ* چلوونکی new(std::size_t اندازه);
+      ساكن فراغ چلوونکی delete(فراغ*); // not implemented
+    خاص: // not implemented
+      ساكن فراغ* چلوونکی new[](std::size_t اندازه);
+#إذا defined(__GNUC__)
+      ساكن فراغ چلوونکی delete[](فراغ*);
+#د_که_پای
 };
 
 /*
@@ -1221,52 +1221,52 @@ class vvp_net_t {
  */
 class vvp_net_fun_t {
 
-    public:
+    عام:
       vvp_net_fun_t();
-      virtual ~vvp_net_fun_t();
+      مجازي ~vvp_net_fun_t();
 
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      مجازي فراغ recv_vec4(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
                              vvp_context_t context);
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit);
-      virtual void recv_real(vvp_net_ptr_t port, double bit,
+      مجازي فراغ recv_vec8(vvp_net_ptr_t پورټ, ثابت vvp_vector8_t&بټ);
+      مجازي فراغ recv_real(vvp_net_ptr_t پورټ, مزدوج بټ,
                              vvp_context_t context);
-      virtual void recv_string(vvp_net_ptr_t port, const std::string&bit,
+      مجازي فراغ recv_string(vvp_net_ptr_t پورټ, ثابت std::string&بټ,
 			       vvp_context_t context);
-      virtual void recv_object(vvp_net_ptr_t port, vvp_object_t bit,
+      مجازي فراغ recv_object(vvp_net_ptr_t پورټ, vvp_object_t بټ,
 			       vvp_context_t context);
 
 	// Part select variants of above
-      virtual void recv_vec4_pv(vvp_net_ptr_t p, const vvp_vector4_t&bit,
-				unsigned base, unsigned vwid, vvp_context_t context);
-      virtual void recv_vec8_pv(vvp_net_ptr_t p, const vvp_vector8_t&bit,
-				unsigned base, unsigned vwid);
+      مجازي فراغ recv_vec4_pv(vvp_net_ptr_t p, ثابت vvp_vector4_t&بټ,
+				بینښه بنسټ, بینښه vwid, vvp_context_t context);
+      مجازي فراغ recv_vec8_pv(vvp_net_ptr_t p, ثابت vvp_vector8_t&بټ,
+				بینښه بنسټ, بینښه vwid);
 
 	// This method is called when the net is forced or
 	// released. This is very rarely needed; island ports use it
 	// to know that the net is being forced and that it needs to
 	// do something about it.
-      virtual void force_flag(bool run_now);
+      مجازي فراغ force_flag(bool پرلپسې_now);
 
-   protected:
-      void recv_vec4_pv_(vvp_net_ptr_t p, const vvp_vector4_t&bit,
-			 unsigned base, unsigned vwid, vvp_context_t context);
-      void recv_vec8_pv_(vvp_net_ptr_t p, const vvp_vector8_t&bit,
-			 unsigned base, unsigned vwid);
+   محمي:
+      فراغ recv_vec4_pv_(vvp_net_ptr_t p, ثابت vvp_vector4_t&بټ,
+			 بینښه بنسټ, بینښه vwid, vvp_context_t context);
+      فراغ recv_vec8_pv_(vvp_net_ptr_t p, ثابت vvp_vector8_t&بټ,
+			 بینښه بنسټ, بینښه vwid);
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size) { return heap_.alloc(size); }
-      static void operator delete(void*); // not implemented
+    عام: // These objects are only permallocated.
+      ساكن فراغ* چلوونکی new(std::size_t اندازه) { أرجع ډېرۍ.alloc(اندازه); }
+      ساكن فراغ چلوونکی delete(فراغ*); // not implemented
 
-      static std::size_t heap_total() { return heap_.heap_total(); }
+      ساكن std::size_t ډېرۍ_ټول() { أرجع ډېرۍ.ډېرۍ_ټول(); }
 
-    protected:
-      static permaheap heap_;
+    محمي:
+      ساكن permaheap ډېرۍ;
 
-    private: // not implemented
-      vvp_net_fun_t(const vvp_net_fun_t&);
-      vvp_net_fun_t& operator= (const vvp_net_fun_t&);
-      static void* operator new[](std::size_t size);
-      static void operator delete[](void*);
+    خاص: // not implemented
+      vvp_net_fun_t(ثابت vvp_net_fun_t&);
+      vvp_net_fun_t& چلوونکی= (ثابت vvp_net_fun_t&);
+      ساكن فراغ* چلوونکی new[](std::size_t اندازه);
+      ساكن فراغ چلوونکی delete[](فراغ*);
 };
 
 /*
@@ -1279,14 +1279,14 @@ class vvp_net_fun_t {
  * The filter object also provides an implementation hooks for
  * force/release.
  */
-class vvp_net_fil_t  : public vvp_vpi_callback {
+class vvp_net_fil_t  : عام vvp_vpi_callback {
 
-    public:
+    عام:
       vvp_net_fil_t();
-      virtual ~vvp_net_fil_t() override;
+      مجازي ~vvp_net_fil_t() override;
 
-    public:
-      enum prop_t { STOP=0, PROP, REPL };
+    عام:
+      تعداد prop_t { STOP=0, PROP, REPL };
 
 
 	// These filter methods are used by the vvp_net_t::send_*()
@@ -1298,56 +1298,56 @@ class vvp_net_fil_t  : public vvp_vpi_callback {
 	// value instead. If the function returns STOP, then all the
 	// output bits are filtered by the force mask and there is
 	// nothing to propagate.
-      virtual prop_t filter_vec4(const vvp_vector4_t&bit, vvp_vector4_t&rep,
-				 unsigned base, unsigned vwid);
-      virtual prop_t filter_vec8(const vvp_vector8_t&val, vvp_vector8_t&rep,
-				 unsigned base, unsigned vwid);
-      virtual prop_t filter_real(double&val);
-      virtual prop_t filter_object(vvp_object_t&val);
-      virtual prop_t filter_string(const std::string&val);
+      مجازي prop_t filter_vec4(ثابت vvp_vector4_t&بټ, vvp_vector4_t&rep,
+				 بینښه بنسټ, بینښه vwid);
+      مجازي prop_t filter_vec8(ثابت vvp_vector8_t&val, vvp_vector8_t&rep,
+				 بینښه بنسټ, بینښه vwid);
+      مجازي prop_t filter_real(مزدوج&val);
+      مجازي prop_t filter_object(vvp_object_t&val);
+      مجازي prop_t filter_string(ثابت std::string&val);
 
-      virtual void release(vvp_net_ptr_t ptr, bool net_flag) =0;
-      virtual void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) =0;
+      مجازي فراغ release(vvp_net_ptr_t ptr, bool net_flag) =0;
+      مجازي فراغ release_pv(vvp_net_ptr_t ptr, بینښه بنسټ, بینښه wid, bool net_flag) =0;
 
 	// The %force/link instruction needs a place to write the
 	// source node of the force, so that subsequent %force and
 	// %release instructions can undo the link as needed. */
-      void force_link(vvp_net_t*dst, vvp_net_t*src);
-      void force_unlink(void);
+      فراغ force_link(vvp_net_t*dst, vvp_net_t*src);
+      فراغ force_unlink(فراغ);
 
-      virtual unsigned filter_size() const =0;
+      مجازي بینښه filter_اندازه() ثابت =0;
 
-    public:
+    عام:
 	// Support for force methods. These are called by the
 	// vvp_net_t::force_* methods to set the force value and mask
 	// for the filter.
-      virtual void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) =0;
-      virtual void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) =0;
-      virtual void force_fil_real(double val, const vvp_vector2_t&mask) =0;
+      مجازي فراغ force_fil_vec4(ثابت vvp_vector4_t&val, ثابت vvp_vector2_t&ماسک) =0;
+      مجازي فراغ force_fil_vec8(ثابت vvp_vector8_t&val, ثابت vvp_vector2_t&ماسک) =0;
+      مجازي فراغ force_fil_real(مزدوج val, ثابت vvp_vector2_t&ماسک) =0;
 
-    public: // These objects are only permallocated.
-      static void* operator new(std::size_t size) { return heap_.alloc(size); }
-      static void operator delete(void*); // not implemented
+    عام: // These objects are only permallocated.
+      ساكن فراغ* چلوونکی new(std::size_t اندازه) { أرجع ډېرۍ.alloc(اندازه); }
+      ساكن فراغ چلوونکی delete(فراغ*); // not implemented
 
-      static size_t heap_total() { return heap_.heap_total(); }
+      ساكن size_t ډېرۍ_ټول() { أرجع ډېرۍ.ډېرۍ_ټول(); }
 
-    private:
-      static permaheap heap_;
+    خاص:
+      ساكن permaheap ډېرۍ;
 
-    private: // not implemented
-      vvp_net_fil_t(const vvp_net_fil_t&);
-      vvp_net_fil_t& operator= (const vvp_net_fil_t&);
-      static void* operator new[](std::size_t size);
-      static void operator delete[](void*);
+    خاص: // not implemented
+      vvp_net_fil_t(ثابت vvp_net_fil_t&);
+      vvp_net_fil_t& چلوونکی= (ثابت vvp_net_fil_t&);
+      ساكن فراغ* چلوونکی new[](std::size_t اندازه);
+      ساكن فراغ چلوونکی delete[](فراغ*);
 
-    protected:
+    محمي:
 	// Set bits of the filter force mask
-      void force_mask(const vvp_vector2_t&mask);
+      فراغ force_ماسک(ثابت vvp_vector2_t&ماسک);
 	// Release the force on the bits set in the mask.
-      void release_mask(const vvp_vector2_t&mask);
+      فراغ release_ماسک(ثابت vvp_vector2_t&ماسک);
 	// Test bits of the filter force mask;
-      bool test_force_mask(unsigned bit) const;
-      bool test_force_mask_is_zero() const;
+      bool test_force_ماسک(بینښه بټ) ثابت;
+      bool test_force_ماسک_is_zero() ثابت;
 
 	// This template method is used by derived classes to process
 	// the val through the force mask. The force value is the
@@ -1356,20 +1356,20 @@ class vvp_net_fil_t  : public vvp_vpi_callback {
 	// method returns the replacement value into the "rep"
 	// argument and returns a code indicating whether any changes
 	// were made.
-      template <class T> prop_t filter_mask_(const T&val, const T&force, T&rep, unsigned addr);
+      کينډۍ <class T> prop_t filter_ماسک(ثابت T&val, ثابت T&force, T&rep, بینښه addr);
 	// This template method is similar to the above, but works for
 	// native types that are not so expensive to edit in place.
-      template <class T> prop_t filter_mask_(T&val, T force);
+      کينډۍ <class T> prop_t filter_ماسک(T&val, T force);
 
 	// These templates are similar to filter_mask_, but are
 	// idempotent. Then do not trigger callbacks or otherwise
 	// cause any local changes. These methods are used to test
 	// arbitrary values against the force mask.
-      template <class T> prop_t filter_input_mask_(const T&val, const T&force, T&rep) const;
+      کينډۍ <class T> prop_t filter_ننوت_ماسک(ثابت T&val, ثابت T&force, T&rep) ثابت;
 
-    private:
+    خاص:
 	// Mask of forced bits
-      vvp_vector2_t force_mask_;
+      vvp_vector2_t force_ماسک_2;
 	// True if the next filter must propagate. Need this to allow
 	// the forced value to get through.
       bool force_propagate_;
@@ -1389,15 +1389,15 @@ class vvp_net_fil_t  : public vvp_vpi_callback {
  * implementation of vvp_filter_wire_base::force_link in
  * vvp_net_sig.cc for details.
  */
-class vvp_fun_force : public vvp_net_fun_t {
+class vvp_fun_force : عام vvp_net_fun_t {
 
-    public:
+    عام:
       vvp_fun_force();
       ~vvp_fun_force() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
 		     vvp_context_t context) override;
-      void recv_real(vvp_net_ptr_t port, double bit, vvp_context_t) override;
+      فراغ recv_real(vvp_net_ptr_t پورټ, مزدوج بټ, vvp_context_t) override;
 };
 
 /* vvp_fun_drive
@@ -1411,20 +1411,20 @@ class vvp_fun_force : public vvp_net_fun_t {
  *
  * This functor only propagates vvp_vector8_t values.
  */
-class vvp_fun_drive  : public vvp_net_fun_t {
+class vvp_fun_drive  : عام vvp_net_fun_t {
 
-    public:
-      explicit vvp_fun_drive(unsigned str0 =6, unsigned str1 =6);
+    عام:
+      explicit vvp_fun_drive(بینښه str0 =6, بینښه str1 =6);
       ~vvp_fun_drive() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override;
-    private:
-      unsigned char drive0_;
-      unsigned char drive1_;
+      فراغ recv_vec4_pv(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
+			بینښه بنسټ, بینښه vwid, vvp_context_t) override;
+    خاص:
+      بینښه حرف drive0_;
+      بینښه حرف drive1_;
 };
 
 /*
@@ -1433,19 +1433,19 @@ class vvp_fun_drive  : public vvp_net_fun_t {
  * input is already wider than the desired output, then it is passed
  * unmodified.
  */
-class vvp_fun_extend_signed  : public vvp_net_fun_t {
+class vvp_fun_extend_signed  : عام vvp_net_fun_t {
 
-    public:
-      explicit vvp_fun_extend_signed(unsigned wid);
+    عام:
+      explicit vvp_fun_extend_signed(بینښه wid);
       ~vvp_fun_extend_signed() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override;
-    private:
-      unsigned width_;
+      فراغ recv_vec4_pv(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
+			بینښه بنسټ, بینښه vwid, vvp_context_t) override;
+    خاص:
+      بینښه پلنوالی_2;
 };
 
 /*
@@ -1472,40 +1472,40 @@ class vvp_fun_extend_signed  : public vvp_net_fun_t {
  * does the processing.
  */
 
-class vvp_wide_fun_core : public vvp_net_fun_t {
+class vvp_wide_fun_core : عام vvp_net_fun_t {
 
-    public:
-      vvp_wide_fun_core(vvp_net_t*net, unsigned nports);
-      virtual ~vvp_wide_fun_core() override;
+    عام:
+      vvp_wide_fun_core(vvp_net_t*net, بینښه nports);
+      مجازي ~vvp_wide_fun_core() override;
 	// These objects are not perm allocated.
-      static void* operator new(std::size_t size) { return ::new char[size]; }
-      static void operator delete(void* ptr) { ::delete[](static_cast<char*>(ptr)); }
+      ساكن فراغ* چلوونکی new(std::size_t اندازه) { أرجع ::new حرف[اندازه]; }
+      ساكن فراغ چلوونکی delete(فراغ* ptr) { ::delete[](static_cast<حرف*>(ptr)); }
 
-    protected:
-      void propagate_vec4(const vvp_vector4_t&bit, vvp_time64_t delay =0);
-      void propagate_real(double bit, vvp_time64_t delay =0);
-      unsigned port_count() const;
+    محمي:
+      فراغ propagate_vec4(ثابت vvp_vector4_t&بټ, vvp_time64_t delay =0);
+      فراغ propagate_real(مزدوج بټ, vvp_time64_t delay =0);
+      بینښه پورټ_شمېر() ثابت;
 
-      vvp_vector4_t& value(unsigned);
-      double value_r(unsigned);
+      vvp_vector4_t& ارزښت(بینښه);
+      مزدوج ارزښت_r(بینښه);
 
-    private:
+    خاص:
 	// the derived class implements this to receive an indication
 	// that one of the port input values changed.
-      virtual void recv_vec4_from_inputs(unsigned port) =0;
-      virtual void recv_real_from_inputs(unsigned port);
+      مجازي فراغ recv_vec4_from_inputs(بینښه پورټ) =0;
+      مجازي فراغ recv_real_from_inputs(بینښه پورټ);
 
-      friend class vvp_wide_fun_t;
-      void dispatch_vec4_from_input_(unsigned port, const vvp_vector4_t&bit);
-      void dispatch_real_from_input_(unsigned port, double bit);
+      ملګری class vvp_wide_fun_t;
+      فراغ dispatch_vec4_from_ننوت(بینښه پورټ, ثابت vvp_vector4_t&بټ);
+      فراغ dispatch_real_from_ننوت(بینښه پورټ, مزدوج بټ);
 
-    private:
+    خاص:
 	// Back-point to the vvp_net_t that points to me.
       vvp_net_t*ptr_;
 	// Structure to track the input values from the input functors.
-      unsigned nports_;
-      vvp_vector4_t*port_values_;
-      double*port_rvalues_;
+      بینښه nports_;
+      vvp_vector4_t*پورټ_ارزښتونه;
+      مزدوج*پورټ_rvalues;
 };
 
 /*
@@ -1514,63 +1514,63 @@ class vvp_wide_fun_core : public vvp_net_fun_t {
  * up to 4 inputs, with the base the port number for the first
  * function input that this functor represents.
  */
-class vvp_wide_fun_t : public vvp_net_fun_t {
+class vvp_wide_fun_t : عام vvp_net_fun_t {
 
-    public:
-      vvp_wide_fun_t(vvp_wide_fun_core*c, unsigned base);
+    عام:
+      vvp_wide_fun_t(vvp_wide_fun_core*c, بینښه بنسټ);
       ~vvp_wide_fun_t() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورټ, ثابت vvp_vector4_t&بټ,
                      vvp_context_t context) override;
-      void recv_real(vvp_net_ptr_t port, double bit,
+      فراغ recv_real(vvp_net_ptr_t پورټ, مزدوج بټ,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t p, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t context) override;
+      فراغ recv_vec4_pv(vvp_net_ptr_t p, ثابت vvp_vector4_t&بټ,
+			بینښه بنسټ, بینښه vwid, vvp_context_t context) override;
 
-    private:
+    خاص:
       vvp_wide_fun_core*core_;
-      unsigned port_base_;
+      بینښه پورټ_بنسټ_2;
 };
 
 
-inline void vvp_send_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&val, vvp_context_t context)
+مضمن فراغ vvp_send_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&val, vvp_context_t context)
 {
-      while (class vvp_net_t*cur = ptr.ptr()) {
-	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
+      طالما (class vvp_net_t*cur = ptr.ptr()) {
+	    vvp_net_ptr_t بل_val = cur->پورټ[ptr.پورټ()];
 
-	    if (cur->fun)
+	    إذا (cur->fun)
 		  cur->fun->recv_vec4(ptr, val, context);
 
-	    ptr = next_val;
+	    ptr = بل_val;
       }
 }
 
-extern void vvp_send_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&val);
-extern void vvp_send_real(vvp_net_ptr_t ptr, double val,
+خارجي فراغ vvp_send_vec8(vvp_net_ptr_t ptr, ثابت vvp_vector8_t&val);
+خارجي فراغ vvp_send_real(vvp_net_ptr_t ptr, مزدوج val,
                           vvp_context_t context);
 
-inline void vvp_send_string(vvp_net_ptr_t ptr, const std::string&val, vvp_context_t context)
+مضمن فراغ vvp_send_string(vvp_net_ptr_t ptr, ثابت std::string&val, vvp_context_t context)
 {
-      while (vvp_net_t*cur = ptr.ptr()) {
-	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
+      طالما (vvp_net_t*cur = ptr.ptr()) {
+	    vvp_net_ptr_t بل_val = cur->پورټ[ptr.پورټ()];
 
-	    if (cur->fun)
+	    إذا (cur->fun)
 		  cur->fun->recv_string(ptr, val, context);
 
-	    ptr = next_val;
+	    ptr = بل_val;
       }
 }
 
-inline void vvp_send_object(vvp_net_ptr_t ptr, vvp_object_t val, vvp_context_t context)
+مضمن فراغ vvp_send_object(vvp_net_ptr_t ptr, vvp_object_t val, vvp_context_t context)
 {
-      while (vvp_net_t*cur = ptr.ptr()) {
-	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
+      طالما (vvp_net_t*cur = ptr.ptr()) {
+	    vvp_net_ptr_t بل_val = cur->پورټ[ptr.پورټ()];
 
-	    if (cur->fun)
+	    إذا (cur->fun)
 		  cur->fun->recv_object(ptr, val, context);
 
-	    ptr = next_val;
+	    ptr = بل_val;
       }
 }
 
@@ -1592,168 +1592,168 @@ inline void vvp_send_object(vvp_net_ptr_t ptr, vvp_object_t val, vvp_context_t c
  * know how wide to pad with Z, if it needs to transform the part to a
  * mirror of the destination vector.
  */
-inline void vvp_send_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&val,
-			     unsigned base, unsigned vwid,
+مضمن فراغ vvp_send_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&val,
+			     بینښه بنسټ, بینښه vwid,
 			     vvp_context_t context)
 {
-      while (class vvp_net_t*cur = ptr.ptr()) {
-	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
+      طالما (class vvp_net_t*cur = ptr.ptr()) {
+	    vvp_net_ptr_t بل_val = cur->پورټ[ptr.پورټ()];
 
-	    if (cur->fun)
-		  cur->fun->recv_vec4_pv(ptr, val, base, vwid, context);
+	    إذا (cur->fun)
+		  cur->fun->recv_vec4_pv(ptr, val, بنسټ, vwid, context);
 
-	    ptr = next_val;
+	    ptr = بل_val;
       }
 }
 
-inline void vvp_send_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&val,
-			     unsigned base, unsigned vwid)
+مضمن فراغ vvp_send_vec8_pv(vvp_net_ptr_t ptr, ثابت vvp_vector8_t&val,
+			     بینښه بنسټ, بینښه vwid)
 {
-      while (class vvp_net_t*cur = ptr.ptr()) {
-	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
+      طالما (class vvp_net_t*cur = ptr.ptr()) {
+	    vvp_net_ptr_t بل_val = cur->پورټ[ptr.پورټ()];
 
-	    if (cur->fun)
-		  cur->fun->recv_vec8_pv(ptr, val, base, vwid);
+	    إذا (cur->fun)
+		  cur->fun->recv_vec8_pv(ptr, val, بنسټ, vwid);
 
-	    ptr = next_val;
+	    ptr = بل_val;
       }
 }
 
-inline void vvp_net_t::send_vec4(const vvp_vector4_t&val, vvp_context_t context)
+مضمن فراغ vvp_net_t::send_vec4(ثابت vvp_vector4_t&val, vvp_context_t context)
 {
-      if (fil == 0) {
-	    vvp_send_vec4(out_, val, context);
-	    return;
+      إذا (fil == 0) {
+	    vvp_send_vec4(بهر_2, val, context);
+	    أرجع;
       }
 
       vvp_vector4_t rep;
-      switch (fil->filter_vec4(val, rep, 0, val.size())) {
-	  case vvp_net_fil_t::STOP:
-	    break;
-	  case vvp_net_fil_t::PROP:
-	    vvp_send_vec4(out_, val, context);
-	    break;
-	  case vvp_net_fil_t::REPL:
-	    vvp_send_vec4(out_, rep, context);
-	    break;
+      بدل (fil->filter_vec4(val, rep, 0, val.اندازه())) {
+	  حالة vvp_net_fil_t::STOP:
+	    اكسر;
+	  حالة vvp_net_fil_t::PROP:
+	    vvp_send_vec4(بهر_2, val, context);
+	    اكسر;
+	  حالة vvp_net_fil_t::REPL:
+	    vvp_send_vec4(بهر_2, rep, context);
+	    اكسر;
       }
 }
 
-inline void vvp_net_t::send_vec4_pv(const vvp_vector4_t&val,
-				    unsigned base, unsigned vwid,
+مضمن فراغ vvp_net_t::send_vec4_pv(ثابت vvp_vector4_t&val,
+				    بینښه بنسټ, بینښه vwid,
 				    vvp_context_t context)
 {
-      if (fil == 0) {
-	    vvp_send_vec4_pv(out_, val, base, vwid, context);
-	    return;
+      إذا (fil == 0) {
+	    vvp_send_vec4_pv(بهر_2, val, بنسټ, vwid, context);
+	    أرجع;
       }
 
       vvp_vector4_t rep;
-      switch (fil->filter_vec4(val, rep, base, vwid)) {
-	  case vvp_net_fil_t::STOP:
-	    break;
-	  case vvp_net_fil_t::PROP:
-	    vvp_send_vec4_pv(out_, val, base, vwid, context);
-	    break;
-	  case vvp_net_fil_t::REPL:
-	    vvp_send_vec4_pv(out_, rep, base, vwid, context);
-	    break;
+      بدل (fil->filter_vec4(val, rep, بنسټ, vwid)) {
+	  حالة vvp_net_fil_t::STOP:
+	    اكسر;
+	  حالة vvp_net_fil_t::PROP:
+	    vvp_send_vec4_pv(بهر_2, val, بنسټ, vwid, context);
+	    اكسر;
+	  حالة vvp_net_fil_t::REPL:
+	    vvp_send_vec4_pv(بهر_2, rep, بنسټ, vwid, context);
+	    اكسر;
       }
 }
 
-inline void vvp_net_t::send_vec8(const vvp_vector8_t&val)
+مضمن فراغ vvp_net_t::send_vec8(ثابت vvp_vector8_t&val)
 {
-      if (fil == 0) {
-	    vvp_send_vec8(out_, val);
-	    return;
-      }
-
-      vvp_vector8_t rep;
-      switch (fil->filter_vec8(val, rep, 0, val.size())) {
-	  case vvp_net_fil_t::STOP:
-	    break;
-	  case vvp_net_fil_t::PROP:
-	    vvp_send_vec8(out_, val);
-	    break;
-	  case vvp_net_fil_t::REPL:
-	    vvp_send_vec8(out_, rep);
-	    break;
-      }
-}
-
-inline void vvp_net_t::send_vec8_pv(const vvp_vector8_t&val,
-				    unsigned base, unsigned vwid)
-{
-      if (fil == 0) {
-	    vvp_send_vec8_pv(out_, val, base, vwid);
-	    return;
+      إذا (fil == 0) {
+	    vvp_send_vec8(بهر_2, val);
+	    أرجع;
       }
 
       vvp_vector8_t rep;
-      switch (fil->filter_vec8(val, rep, base, vwid)) {
-	  case vvp_net_fil_t::STOP:
-	    break;
-	  case vvp_net_fil_t::PROP:
-	    vvp_send_vec8_pv(out_, val, base, vwid);
-	    break;
-	  case vvp_net_fil_t::REPL:
-	    vvp_send_vec8_pv(out_, rep, base, vwid);
-	    break;
+      بدل (fil->filter_vec8(val, rep, 0, val.اندازه())) {
+	  حالة vvp_net_fil_t::STOP:
+	    اكسر;
+	  حالة vvp_net_fil_t::PROP:
+	    vvp_send_vec8(بهر_2, val);
+	    اكسر;
+	  حالة vvp_net_fil_t::REPL:
+	    vvp_send_vec8(بهر_2, rep);
+	    اكسر;
       }
 }
 
-inline void vvp_net_t::send_real(double val, vvp_context_t context)
+مضمن فراغ vvp_net_t::send_vec8_pv(ثابت vvp_vector8_t&val,
+				    بینښه بنسټ, بینښه vwid)
 {
-      if (fil && ! fil->filter_real(val))
-	    return;
+      إذا (fil == 0) {
+	    vvp_send_vec8_pv(بهر_2, val, بنسټ, vwid);
+	    أرجع;
+      }
 
-      vvp_send_real(out_, val, context);
+      vvp_vector8_t rep;
+      بدل (fil->filter_vec8(val, rep, بنسټ, vwid)) {
+	  حالة vvp_net_fil_t::STOP:
+	    اكسر;
+	  حالة vvp_net_fil_t::PROP:
+	    vvp_send_vec8_pv(بهر_2, val, بنسټ, vwid);
+	    اكسر;
+	  حالة vvp_net_fil_t::REPL:
+	    vvp_send_vec8_pv(بهر_2, rep, بنسټ, vwid);
+	    اكسر;
+      }
+}
+
+مضمن فراغ vvp_net_t::send_real(مزدوج val, vvp_context_t context)
+{
+      إذا (fil && ! fil->filter_real(val))
+	    أرجع;
+
+      vvp_send_real(بهر_2, val, context);
 }
 
 
-inline void vvp_net_t::send_string(const std::string&val, vvp_context_t context)
+مضمن فراغ vvp_net_t::send_string(ثابت std::string&val, vvp_context_t context)
 {
-      if (fil && !fil->filter_string(val))
-	    return;
+      إذا (fil && !fil->filter_string(val))
+	    أرجع;
 
-      vvp_send_string(out_, val, context);
+      vvp_send_string(بهر_2, val, context);
 }
 
 
-inline void vvp_net_t::send_object(vvp_object_t val, vvp_context_t context)
+مضمن فراغ vvp_net_t::send_object(vvp_object_t val, vvp_context_t context)
 {
-      if (fil && ! fil->filter_object(val))
-	    return;
+      إذا (fil && ! fil->filter_object(val))
+	    أرجع;
 
-      vvp_send_object(out_, val, context);
+      vvp_send_object(بهر_2, val, context);
 }
 
 
-inline bool vvp_net_fil_t::test_force_mask(unsigned bit) const
+مضمن bool vvp_net_fil_t::test_force_ماسک(بینښه بټ) ثابت
 {
-      if (bit >= force_mask_.size())
-	    return false;
-      if (force_mask_.value(bit))
-	    return true;
-      else
-	    return false;
+      إذا (بټ >= force_ماسک_2.اندازه())
+	    أرجع false;
+      إذا (force_ماسک_2.ارزښت(بټ))
+	    أرجع true;
+      وإلا
+	    أرجع false;
 }
 
-inline bool vvp_net_fil_t::test_force_mask_is_zero(void) const
+مضمن bool vvp_net_fil_t::test_force_ماسک_is_zero(فراغ) ثابت
 {
-      if (force_mask_.size() == 0)
-	    return true;
-      if (force_mask_.is_zero())
-	    return true;
-      return false;
+      إذا (force_ماسک_2.اندازه() == 0)
+	    أرجع true;
+      إذا (force_ماسک_2.is_zero())
+	    أرجع true;
+      أرجع false;
 }
 
 /*
  * Undefine the ivl_alloc.h definitions so they don't leak out of this file.
  */
-#undef malloc
-#undef realloc
-#undef calloc
-#undef __ivl_alloc_H
+#تعریف_لغوه حافظه_ورکړه
+#تعریف_لغوه realloc
+#تعریف_لغوه حافظه_صفر_ورکړه
+#تعریف_لغوه __ivl_alloc_H
 
-#endif /* IVL_vvp_net_H */
+#د_که_پای /* IVL_vvp_net_H */

@@ -26,16 +26,16 @@
 # include  "vpi_priv.h"
 # include  "vthread.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
+#که_تعریف_شوی CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
 # include <map>
-#endif
+#د_که_پای
 # include  <cstdio>
 # include  <cstdlib>
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+کارول نطاق std;
 
 /*
  * Hex digits that represent 4-value bits of Verilog are not as
@@ -48,492 +48,492 @@ using namespace std;
  * The table is calculated as compile time, therefore, by the
  * draw_tt.c program.
  */
-extern const char hex_digits[256];
-extern const char oct_digits[64];
+خارجي ثابت حرف hex_digits[256];
+خارجي ثابت حرف oct_digits[64];
 
 
-class __vpiVThrWord : public __vpiHandle {
-    public:
-      explicit __vpiVThrWord(unsigned base);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+صنف __vpiVThrWord : عام __vpiHandle {
+    عام:
+      څرګند __vpiVThrWord(بینښه بنسټ);
+      صحيح get_type_کوډ(فراغ) ثابت override;
+      صحيح vpi_get(صحيح code) override;
+      فراغ vpi_get_ارزښت(p_vpi_ارزښت val) override;
 
-      int get_subtype() const { return subtype; };
-      unsigned get_index() const { return index; };
+      صحيح get_subtype() ثابت { أرجع subtype; };
+      بینښه get_شاخص() ثابت { أرجع شاخص; };
 
-    private:
-      const char* name;
-      int subtype;
-      unsigned index;
+    خاص:
+      ثابت حرف* name;
+      صحيح subtype;
+      بینښه شاخص;
 };
 
-static int vthr_word_get(int code, vpiHandle ref)
+ساكن صحيح vthr_کلمه_get(صحيح code, vpiHandle ref)
 {
-      const __vpiVThrWord*rfp = dynamic_cast<__vpiVThrWord*>(ref);
+      ثابت __vpiVThrWord*rfp = dynamic_cast<__vpiVThrWord*>(ref);
 
-      switch (code) {
+      بدل (code) {
 
-	  case vpiConstType:
-	    return rfp->get_subtype();
+	  حالة vpiConstType:
+	    أرجع rfp->get_subtype();
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiWord;
-#endif
+#إذا defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  حالة _vpiFromThr:
+	    أرجع vpi_کلمه;
+#د_که_پای
 
-	  default:
-	    return 0;
+	  افتراضي:
+	    أرجع 0;
       }
 }
 
-static void vthr_real_get_value(vpiHandle ref, s_vpi_value*vp)
+ساكن فراغ vthr_real_get_ارزښت(vpiHandle ref, s_vpi_ارزښت*vp)
 {
-      const __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(ref);
-      static const size_t RBUF_USE_SIZE = 66;
-      char *rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      ثابت __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(ref);
+      ساكن ثابت size_t RBUF_USE_اندازه = 66;
+      حرف *rbuf = static_cast<حرف *>(need_پایله_buf(RBUF_USE_اندازه, RBUF_VAL));
 
-      double val = 0.0;
+      مزدوج val = 0.0;
 
 	/* Get the actual value from the index. It is possible, by the
 	   way, that the vpi_get_value is called from compiletf. If
 	   that's the case, there will be no current thread, and this
 	   will not have access to the proper value. Punt and return a
 	   0.0 value instead. */
-      if (vpip_current_vthread)
-	    val = vthread_get_real_stack(vpip_current_vthread,
-	                                 obj->get_index());
+      إذا (vpip_current_vthread)
+	    val = vthread_get_real_ډېری(vpip_current_vthread,
+	                                 obj->get_شاخص());
 
-      switch (vp->format) {
+      بدل (vp->format) {
 
-	  case vpiObjTypeVal:
+	  حالة vpiObjTypeVal:
 	    vp->format = vpiRealVal;
 	    // fallthrough
-	  case vpiRealVal:
+	  حالة vpiRealVal:
 	    vp->value.real = val;
-	    break;
+	    اكسر;
 
-	  case vpiIntVal:
+	  حالة vpiIntVal:
 	      /* NaN or +/- infinity are translated as 0. */
-	    if (val != val || (val && (val == 0.5*val))) {
+	    إذا (val != val || (val && (val == 0.5*val))) {
 		  val = 0.0;
-	    } else {
-		  val = std::round(val);
+	    } وإلا {
+		  val = std::پړاو_2(val);
 	    }
 	    vp->value.integer = (PLI_INT32)val;
-	    break;
+	    اكسر;
 
-	  case vpiDecStrVal:
-	    if (std::isnan(val))
-		  snprintf(rbuf, RBUF_USE_SIZE, "%s", "nan");
-	    else
-		  snprintf(rbuf, RBUF_USE_SIZE, "%0.0f", std::round(val));
+	  حالة vpiDecStrVal:
+	    إذا (std::isnan(val))
+		  snprintf(rbuf, RBUF_USE_اندازه, "%s", "nan");
+	    وإلا
+		  snprintf(rbuf, RBUF_USE_اندازه, "%0.0f", std::پړاو_2(val));
 	    vp->value.str = rbuf;
-	    break;
+	    اكسر;
 
-	  case vpiOctStrVal:
-	    snprintf(rbuf, RBUF_USE_SIZE, "%" PRIo64, vlg_round_to_u64(val));
+	  حالة vpiOctStrVal:
+	    snprintf(rbuf, RBUF_USE_اندازه, "%" PRIo64, vlg_پړاو_منزل_u64(val));
 	    vp->value.str = rbuf;
-	    break;
+	    اكسر;
 
-	  case vpiHexStrVal:
-	    snprintf(rbuf, RBUF_USE_SIZE, "%" PRIx64, vlg_round_to_u64(val));
+	  حالة vpiHexStrVal:
+	    snprintf(rbuf, RBUF_USE_اندازه, "%" PRIx64, vlg_پړاو_منزل_u64(val));
 	    vp->value.str = rbuf;
-	    break;
+	    اكسر;
 
-	  case vpiBinStrVal: {
-		uint64_t vali = vlg_round_to_u64(val);
-		unsigned len = 0;
+	  حالة vpiBinStrVal: {
+		uint64_t vali = vlg_پړاو_منزل_u64(val);
+		بینښه len = 0;
 
-		while (vali > 0) {
+		طالما (vali > 0) {
 		      len += 1;
 		      vali /= 2;
 		}
 
-		vali = vlg_round_to_u64(val);
-		for (unsigned idx = 0 ;  idx < len ;  idx += 1) {
+		vali = vlg_پړاو_منزل_u64(val);
+		لكل (بینښه idx = 0 ;  idx < len ;  idx += 1) {
 		      rbuf[len-idx-1] = (vali & 1)? '1' : '0';
 		      vali /= 2;
 		}
 
 		rbuf[len] = 0;
-		if (len == 0) {
+		إذا (len == 0) {
 		      rbuf[0] = '0';
 		      rbuf[1] = 0;
 		}
 		vp->value.str = rbuf;
-		break;
+		اكسر;
 	  }
 
-	  default:
+	  افتراضي:
 	    fprintf(stderr, "vvp error: get %d not supported "
-		      "by vpiConstant (Real)\n", (int)vp->format);
+		      "by vpiConstant (Real)\n", (صحيح)vp->format);
 
 	    vp->format = vpiSuppressVal;
-	    break;
+	    اكسر;
       }
 }
 
-inline __vpiVThrWord::__vpiVThrWord(unsigned base)
+مضمن __vpiVThrWord::__vpiVThrWord(بینښه بنسټ)
 {
       name = vpip_name_string("W<>");
       subtype = vpiRealConst;
-      index = base;
+      شاخص = بنسټ;
 }
 
-int __vpiVThrWord::get_type_code(void) const
-{ return vpiConstant; }
+صحيح __vpiVThrWord::get_type_کوډ(فراغ) ثابت
+{ أرجع vpiConstant; }
 
-int __vpiVThrWord::vpi_get(int code)
-{ return vthr_word_get(code, this); }
+صحيح __vpiVThrWord::vpi_get(صحيح code)
+{ أرجع vthr_کلمه_get(code, هذا); }
 
-void __vpiVThrWord::vpi_get_value(p_vpi_value val)
-{ vthr_real_get_value(this, val); }
+فراغ __vpiVThrWord::vpi_get_ارزښت(p_vpi_ارزښت val)
+{ vthr_real_get_ارزښت(هذا, val); }
 
-vpiHandle vpip_make_vthr_word(unsigned base, const char*type)
+vpiHandle vpip_make_vthr_کلمه(بینښه بنسټ, ثابت حرف*type)
 {
-      assert(type[0] == 'r');
-      assert(base < 65536);
-      __vpiVThrWord*obj = new __vpiVThrWord(base);
+      أكد(type[0] == 'r');
+      أكد(بنسټ < 65536);
+      __vpiVThrWord*obj = جديد __vpiVThrWord(بنسټ);
 
-      return obj;
+      أرجع obj;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-static map<vpiHandle, bool> handle_map;
+#که_تعریف_شوی CHECK_WITH_VALGRIND
+ساكن map<vpiHandle, منطقي> handle_map;
 
-void thread_word_delete(vpiHandle item)
+فراغ thread_کلمه_delete(vpiHandle توکی)
 {
-      handle_map[item] = false;
+      handle_map[توکی] = خطأ;
 }
 
-static void thread_word_delete_real(vpiHandle item)
+ساكن فراغ thread_کلمه_delete_real(vpiHandle توکی)
 {
-      class __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(item);
-      delete obj;
+      صنف __vpiVThrWord*obj = dynamic_cast<__vpiVThrWord*>(توکی);
+      ړنګول obj;
 }
-#endif
+#د_که_پای
 
-class __vpiVThrStrStack : public __vpiHandle {
-    public:
-      explicit __vpiVThrStrStack(unsigned depth);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-    private:
-      unsigned depth_;
+صنف __vpiVThrStrStack : عام __vpiHandle {
+    عام:
+      څرګند __vpiVThrStrStack(بینښه ژوروالی);
+      صحيح get_type_کوډ(فراغ) ثابت override;
+      صحيح vpi_get(صحيح code) override;
+      فراغ vpi_get_ارزښت(p_vpi_ارزښت val) override;
+    خاص:
+      بینښه ژوروالی_2;
 };
 
-__vpiVThrStrStack::__vpiVThrStrStack(unsigned d)
-: depth_(d)
+__vpiVThrStrStack::__vpiVThrStrStack(بینښه d)
+: ژوروالی_2(d)
 {
 }
 
-int __vpiVThrStrStack::get_type_code(void) const
-{ return vpiConstant; }
+صحيح __vpiVThrStrStack::get_type_کوډ(فراغ) ثابت
+{ أرجع vpiConstant; }
 
-int __vpiVThrStrStack::vpi_get(int code)
+صحيح __vpiVThrStrStack::vpi_get(صحيح code)
 {
-      switch (code) {
-	  case vpiConstType:
-	    return vpiStringConst;
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiString;
-#endif
-	  case vpiSize:
-	    return vthread_get_str_stack(vpip_current_vthread, depth_).size();
-	  default:
-	    return 0;
+      بدل (code) {
+	  حالة vpiConstType:
+	    أرجع vpiStringConst;
+#إذا defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  حالة _vpiFromThr:
+	    أرجع _vpiString;
+#د_که_پای
+	  حالة vpi_اندازه:
+	    أرجع vthread_get_str_ډېری(vpip_current_vthread, ژوروالی_2).size();
+	  افتراضي:
+	    أرجع 0;
       }
 }
 
-void __vpiVThrStrStack::vpi_get_value(p_vpi_value vp)
+فراغ __vpiVThrStrStack::vpi_get_ارزښت(p_vpi_ارزښت vp)
 {
       string val;
-      char*rbuf = 0;
+      حرف*rbuf = 0;
 
-      if (vpip_current_vthread)
-	    val = vthread_get_str_stack(vpip_current_vthread, depth_);
+      إذا (vpip_current_vthread)
+	    val = vthread_get_str_ډېری(vpip_current_vthread, ژوروالی_2);
 
-      switch (vp->format) {
+      بدل (vp->format) {
 
-	  case vpiObjTypeVal:
+	  حالة vpiObjTypeVal:
 	    vp->format = vpiStringVal;
 	    // fallthrough
-	  case vpiStringVal:
-	    rbuf = static_cast<char *>(need_result_buf(val.size()+1, RBUF_VAL));
+	  حالة vpiStringVal:
+	    rbuf = static_cast<حرف *>(need_پایله_buf(val.size()+1, RBUF_VAL));
 	    strcpy(rbuf, val.c_str());
 	    vp->value.str = rbuf;
-	    break;
+	    اكسر;
 
-	  default:
+	  افتراضي:
 	    fprintf(stderr, "vvp error: get %d not supported "
-		      "by vpiConstant (String)\n", (int)vp->format);
+		      "by vpiConstant (String)\n", (صحيح)vp->format);
 
 	    vp->format = vpiSuppressVal;
-	    break;
+	    اكسر;
       }
 }
 
-class __vpiVThrVec4Stack : public __vpiHandle {
-    public:
-      __vpiVThrVec4Stack(unsigned depth, bool signed_flag, unsigned wid);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-    private:
-      static void vpi_get_value_string_(p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_binstr_(p_vpi_value vp, const vvp_vector4_t&val);
-      void vpi_get_value_decstr_(p_vpi_value vp, const vvp_vector4_t&val);
-      void vpi_get_value_int_   (p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_real_  (p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_strength_(p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_octstr_(p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_hexstr_(p_vpi_value vp, const vvp_vector4_t&val);
-      static void vpi_get_value_vector_(p_vpi_value vp, const vvp_vector4_t&val);
-    private:
-      unsigned depth_;
-      bool signed_flag_;
-      unsigned expect_width_;
-      const char*name;
+صنف __vpiVThrVec4Stack : عام __vpiHandle {
+    عام:
+      __vpiVThrVec4Stack(بینښه ژوروالی, منطقي signed_flag, بینښه wid);
+      صحيح get_type_کوډ(فراغ) ثابت override;
+      صحيح vpi_get(صحيح code) override;
+      حرف*vpi_get_str(صحيح code) override;
+      فراغ vpi_get_ارزښت(p_vpi_ارزښت val) override;
+      vpiHandle vpi_put_ارزښت(p_vpi_ارزښت val, صحيح flags) override;
+    خاص:
+      ساكن فراغ vpi_get_ارزښت_string(p_vpi_ارزښت vp, ثابت vvp_vector4_t&val);
+      ساكن فراغ vpi_get_ارزښت_binstr(p_vpi_ارزښت vp, ثابت vvp_vector4_t&val);
+      فراغ vpi_get_ارزښت_decstr(p_vpi_ارزښت vp, ثابت vvp_vector4_t&val);
+      فراغ vpi_get_ارزښت_int   (p_vpi_ارزښت vp, ثابت vvp_vector4_t&val);
+      ساكن فراغ vpi_get_ارزښت_real  (p_vpi_ارزښت vp, ثابت vvp_vector4_t&val);
+      ساكن فراغ vpi_get_ارزښت_strength(p_vpi_ارزښت vp, ثابت vvp_vector4_t&val);
+      ساكن فراغ vpi_get_ارزښت_octstr(p_vpi_ارزښت vp, ثابت vvp_vector4_t&val);
+      ساكن فراغ vpi_get_ارزښت_hexstr(p_vpi_ارزښت vp, ثابت vvp_vector4_t&val);
+      ساكن فراغ vpi_get_ارزښت_ویکټور(p_vpi_ارزښت vp, ثابت vvp_vector4_t&val);
+    خاص:
+      بینښه ژوروالی_2;
+      منطقي signed_flag_;
+      بینښه expect_پلنوالی;
+      ثابت حرف*name;
 };
 
-__vpiVThrVec4Stack::__vpiVThrVec4Stack(unsigned d, bool sf, unsigned wid)
-: depth_(d), signed_flag_(sf), expect_width_(wid)
+__vpiVThrVec4Stack::__vpiVThrVec4Stack(بینښه d, منطقي sf, بینښه wid)
+: ژوروالی_2(d), signed_flag_(sf), expect_پلنوالی(wid)
 {
       name = vpip_name_string("S<,vec4,>");
 }
 
-int __vpiVThrVec4Stack::get_type_code(void) const
-{ return vpiConstant; }
+صحيح __vpiVThrVec4Stack::get_type_کوډ(فراغ) ثابت
+{ أرجع vpiConstant; }
 
 
-int __vpiVThrVec4Stack::vpi_get(int code)
+صحيح __vpiVThrVec4Stack::vpi_get(صحيح code)
 {
-      switch (code) {
-	  case vpiSize:
-	    return expect_width_;
+      بدل (code) {
+	  حالة vpi_اندازه:
+	    أرجع expect_پلنوالی;
 
-	  case vpiSigned:
-	    return signed_flag_? 1 : 0;
+	  حالة vpiSigned:
+	    أرجع signed_flag_? 1 : 0;
 
-	  case vpiConstType:
-	    return vpiBinaryConst;
+	  حالة vpiConstType:
+	    أرجع vpi_دوګونی_Const;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiVThr;
-#endif
+#إذا defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  حالة _vpiFromThr:
+	    أرجع _vpiVThr;
+#د_که_پای
 
-	  default:
-	    return 0;
+	  افتراضي:
+	    أرجع 0;
       }
 }
 
-char*__vpiVThrVec4Stack::vpi_get_str(int code)
+حرف*__vpiVThrVec4Stack::vpi_get_str(صحيح code)
 {
-      switch (code) {
-	  case vpiFullName:
-	    return simple_set_rbuf_str(name);
+      بدل (code) {
+	  حالة vpi_ډک_Name:
+	    أرجع simple_سېټ_rbuf_str(name);
 
-	  default:
-	    return 0;
+	  افتراضي:
+	    أرجع 0;
       }
 }
 
-void __vpiVThrVec4Stack::vpi_get_value(p_vpi_value vp)
+فراغ __vpiVThrVec4Stack::vpi_get_ارزښت(p_vpi_ارزښت vp)
 {
       vvp_vector4_t val;
 
-      if (vpip_current_vthread)
-	    val = vthread_get_vec4_stack(vpip_current_vthread, depth_);
+      إذا (vpip_current_vthread)
+	    val = vthread_get_vec4_ډېری(vpip_current_vthread, ژوروالی_2);
 
-      switch (vp->format) {
+      بدل (vp->format) {
 
-	  case vpiBinStrVal:
-	    vpi_get_value_binstr_(vp, val);
-	    break;
-	  case vpiDecStrVal:
-	    vpi_get_value_decstr_(vp, val);
-	    break;
-	  case vpiOctStrVal:
-	    vpi_get_value_octstr_(vp, val);
-	    break;
-	  case vpiHexStrVal:
-	    vpi_get_value_hexstr_(vp, val);
-	    break;
-	  case vpiIntVal:
-	    vpi_get_value_int_(vp, val);
-	    break;
-	  case vpiRealVal:
-	    vpi_get_value_real_(vp, val);
-	    break;
-	  case vpiStringVal:
-	    vpi_get_value_string_(vp, val);
-	    break;
-	  case vpiStrengthVal:
-	    vpi_get_value_strength_(vp, val);
-	    break;
-	  case vpiObjTypeVal:
-	    vp->format = vpiVectorVal;
+	  حالة vpiBinStrVal:
+	    vpi_get_ارزښت_binstr(vp, val);
+	    اكسر;
+	  حالة vpiDecStrVal:
+	    vpi_get_ارزښت_decstr(vp, val);
+	    اكسر;
+	  حالة vpiOctStrVal:
+	    vpi_get_ارزښت_octstr(vp, val);
+	    اكسر;
+	  حالة vpiHexStrVal:
+	    vpi_get_ارزښت_hexstr(vp, val);
+	    اكسر;
+	  حالة vpiIntVal:
+	    vpi_get_ارزښت_int(vp, val);
+	    اكسر;
+	  حالة vpiRealVal:
+	    vpi_get_ارزښت_real(vp, val);
+	    اكسر;
+	  حالة vpiStringVal:
+	    vpi_get_ارزښت_string(vp, val);
+	    اكسر;
+	  حالة vpiStrengthVal:
+	    vpi_get_ارزښت_strength(vp, val);
+	    اكسر;
+	  حالة vpiObjTypeVal:
+	    vp->format = vpi_ویکټور_Val;
 	    // fallthrough
-	  case vpiVectorVal:
-	    vpi_get_value_vector_(vp, val);
-	    break;
+	  حالة vpi_ویکټور_Val:
+	    vpi_get_ارزښت_ویکټور(vp, val);
+	    اكسر;
 
-	  default:
+	  افتراضي:
 	    fprintf(stderr, "internal error: vpi_get_value(<format=%d>)"
 		    " not implemented for __vpiVThrVec4Stack.\n", vp->format);
-	    assert(0);
+	    أكد(0);
       }
 
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_binstr_(p_vpi_value vp, const vvp_vector4_t&val)
+فراغ __vpiVThrVec4Stack::vpi_get_ارزښت_binstr(p_vpi_ارزښت vp, ثابت vvp_vector4_t&val)
 {
-      unsigned wid = val.size();
-      char*rbuf = static_cast<char*>(need_result_buf(wid+1, RBUF_VAL));
-      for (unsigned idx = 0 ; idx < wid ; idx += 1) {
-	    rbuf[wid-idx-1] = vvp_bit4_to_ascii(val.value(idx));
+      بینښه wid = val.size();
+      حرف*rbuf = static_cast<حرف*>(need_پایله_buf(wid+1, RBUF_VAL));
+      لكل (بینښه idx = 0 ; idx < wid ; idx += 1) {
+	    rbuf[wid-idx-1] = vvp_bit4_منزل_ascii(val.value(idx));
       }
       rbuf[wid] = 0;
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_decstr_(p_vpi_value vp, const vvp_vector4_t&val)
+فراغ __vpiVThrVec4Stack::vpi_get_ارزښت_decstr(p_vpi_ارزښت vp, ثابت vvp_vector4_t&val)
 {
-      unsigned wid = val.size();
-      int nbuf = (wid+2)/3 + 1;
-      char *rbuf = static_cast<char*>(need_result_buf(nbuf, RBUF_VAL));
+      بینښه wid = val.size();
+      صحيح nbuf = (wid+2)/3 + 1;
+      حرف *rbuf = static_cast<حرف*>(need_پایله_buf(nbuf, RBUF_VAL));
 
-      vpip_vec4_to_dec_str(val, rbuf, nbuf, signed_flag_);
+      vpip_vec4_منزل_dec_str(val, rbuf, nbuf, signed_flag_);
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_octstr_(p_vpi_value vp, const vvp_vector4_t&val)
+فراغ __vpiVThrVec4Stack::vpi_get_ارزښت_octstr(p_vpi_ارزښت vp, ثابت vvp_vector4_t&val)
 {
-      unsigned wid = val.size();
-      unsigned owid = (wid + 2) / 3;
-      char*rbuf = static_cast<char*>(need_result_buf(owid+1, RBUF_VAL));
+      بینښه wid = val.size();
+      بینښه owid = (wid + 2) / 3;
+      حرف*rbuf = static_cast<حرف*>(need_پایله_buf(owid+1, RBUF_VAL));
       rbuf[owid] = 0;
 
-      unsigned oval = 0;
-      for (unsigned idx = 0; idx < wid ; idx += 1) {
-	    unsigned tmp = 0;
-	    switch (val.value(idx)) {
-		case BIT4_0:
+      بینښه oval = 0;
+      لكل (بینښه idx = 0; idx < wid ; idx += 1) {
+	    بینښه tmp = 0;
+	    بدل (val.value(idx)) {
+		حالة BIT4_0:
 		  tmp = 0;
-		  break;
-		case BIT4_1:
+		  اكسر;
+		حالة BIT4_1:
 		  tmp = 1;
-		  break;
-		case BIT4_X:
+		  اكسر;
+		حالة BIT4_X:
 		  tmp = 2;
-		  break;
-		case BIT4_Z:
+		  اكسر;
+		حالة BIT4_Z:
 		  tmp = 3;
-		  break;
+		  اكسر;
 	    }
 
 	    oval = oval | (tmp << 2*(idx%3));
 
-	    if (idx%3 == 2) {
+	    إذا (idx%3 == 2) {
 		  owid -= 1;
 		  rbuf[owid] = oct_digits[oval];
 		  oval = 0;
 	    }
       }
 
-      if (owid > 0) {
+      إذا (owid > 0) {
 	    owid -= 1;
 	    rbuf[owid] = oct_digits[oval];
       }
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_hexstr_(p_vpi_value vp, const vvp_vector4_t&val)
+فراغ __vpiVThrVec4Stack::vpi_get_ارزښت_hexstr(p_vpi_ارزښت vp, ثابت vvp_vector4_t&val)
 {
-      unsigned wid = val.size();
-      unsigned hwid = (wid + 3) /4;
-      char*rbuf = static_cast<char*>(need_result_buf(hwid+1, RBUF_VAL));
+      بینښه wid = val.size();
+      بینښه hwid = (wid + 3) /4;
+      حرف*rbuf = static_cast<حرف*>(need_پایله_buf(hwid+1, RBUF_VAL));
       rbuf[hwid] = 0;
 
-      unsigned hval = 0;
-      for (unsigned idx = 0; idx < wid ; idx += 1) {
-	    unsigned tmp = 0;
-	    switch (val.value(idx)) {
-		case BIT4_0:
+      بینښه hval = 0;
+      لكل (بینښه idx = 0; idx < wid ; idx += 1) {
+	    بینښه tmp = 0;
+	    بدل (val.value(idx)) {
+		حالة BIT4_0:
 		  tmp = 0;
-		  break;
-		case BIT4_1:
+		  اكسر;
+		حالة BIT4_1:
 		  tmp = 1;
-		  break;
-		case BIT4_X:
+		  اكسر;
+		حالة BIT4_X:
 		  tmp = 2;
-		  break;
-		case BIT4_Z:
+		  اكسر;
+		حالة BIT4_Z:
 		  tmp = 3;
-		  break;
+		  اكسر;
 	    }
 	    hval = hval | (tmp << 2*(idx%4));
 
-	    if (idx%4 == 3) {
+	    إذا (idx%4 == 3) {
 		  hwid -= 1;
 		  rbuf[hwid] = hex_digits[hval];
 		  hval = 0;
 	    }
       }
 
-      if (hwid > 0) {
+      إذا (hwid > 0) {
 	    hwid -= 1;
 	    rbuf[hwid] = hex_digits[hval];
       }
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_int_(p_vpi_value vp, const vvp_vector4_t&val)
+فراغ __vpiVThrVec4Stack::vpi_get_ارزښت_int(p_vpi_ارزښت vp, ثابت vvp_vector4_t&val)
 {
       int32_t vali = 0;
-      vector4_to_value(val, vali, signed_flag_, false);
+      vector4_منزل_ارزښت(val, vali, signed_flag_, خطأ);
       vp->value.integer = vali;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_real_(p_vpi_value vp, const vvp_vector4_t&val)
+فراغ __vpiVThrVec4Stack::vpi_get_ارزښت_real(p_vpi_ارزښت vp, ثابت vvp_vector4_t&val)
 {
-      unsigned wid = val.size();
+      بینښه wid = val.size();
       vp->value.real = 0.0;
 
-      for (unsigned idx = wid ; idx > 0 ; idx -= 1) {
+      لكل (بینښه idx = wid ; idx > 0 ; idx -= 1) {
 	    vp->value.real *= 2.0;
-	    if (val.value(idx-1) == BIT4_1)
+	    إذا (val.value(idx-1) == BIT4_1)
 		  vp->value.real += 1.0;
       }
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_string_(p_vpi_value vp, const vvp_vector4_t&val)
+فراغ __vpiVThrVec4Stack::vpi_get_ارزښت_string(p_vpi_ارزښت vp, ثابت vvp_vector4_t&val)
 {
-      char*rbuf = static_cast<char*>(need_result_buf((val.size() / 8) + 1, RBUF_VAL));
-      char*cp = rbuf;
+      حرف*rbuf = static_cast<حرف*>(need_پایله_buf((val.size() / 8) + 1, RBUF_VAL));
+      حرف*cp = rbuf;
 
-      char tmp = 0;
-      for (int bitnr = val.size()-1 ; bitnr >= 0 ; bitnr -= 1) {
+      حرف tmp = 0;
+      لكل (صحيح bitnr = val.size()-1 ; bitnr >= 0 ; bitnr -= 1) {
 	    tmp <<= 1;
-	    switch (val.value(bitnr)) {
-		case BIT4_1:
+	    بدل (val.value(bitnr)) {
+		حالة BIT4_1:
 		  tmp |= 1;
-		  break;
-		case BIT4_0:
-		default:
-		  break;
+		  اكسر;
+		حالة BIT4_0:
+		افتراضي:
+		  اكسر;
 	    }
 
-	    if ((bitnr&7)==0) {
+	    إذا ((bitnr&7)==0) {
 		    // Don't include leading nuls
-		  if (tmp == 0 && cp == rbuf)
-			continue;
+		  إذا (tmp == 0 && cp == rbuf)
+			استمر;
 
 		  *cp++ = tmp? tmp : ' ';
 		  tmp = 0;
@@ -544,74 +544,74 @@ void __vpiVThrVec4Stack::vpi_get_value_string_(p_vpi_value vp, const vvp_vector4
       vp->value.str = rbuf;
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_vector_(p_vpi_value vp, const vvp_vector4_t&val)
+فراغ __vpiVThrVec4Stack::vpi_get_ارزښت_ویکټور(p_vpi_ارزښت vp, ثابت vvp_vector4_t&val)
 {
-      unsigned wid = val.size();
+      بینښه wid = val.size();
 
-      unsigned hwid = (wid+31)/32;
+      بینښه hwid = (wid+31)/32;
       vp->value.vector = static_cast<s_vpi_vecval*>
-                         (need_result_buf(hwid*sizeof(s_vpi_vecval), RBUF_VAL));
-      assert(vp->value.vector);
+                         (need_پایله_buf(hwid*حجم(s_vpi_vecval), RBUF_VAL));
+      أكد(vp->value.vector);
 
 	/* Zero the top of the result buffer first since the fill loop below only writes
 	   bits 0..wid-1, which can leave stale data in the unused high bits. */
-      if (hwid == 0) hwid = 1;
+      إذا (hwid == 0) hwid = 1;
       vp->value.vector[hwid-1].aval = 0;
       vp->value.vector[hwid-1].bval = 0;
 
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
-	    int word = idx/32;
-	    PLI_INT32 mask = 1 << (idx%32);
+      لكل (بینښه idx = 0 ;  idx < wid ;  idx += 1) {
+	    صحيح کلمه = idx/32;
+	    PLI_INT32 ماسک = 1 << (idx%32);
 
-	    switch (val.value(idx)) {
-		case BIT4_0:
-		  vp->value.vector[word].aval &= ~mask;
-		  vp->value.vector[word].bval &= ~mask;
-		  break;
-		case BIT4_1:
-		  vp->value.vector[word].aval |=  mask;
-		  vp->value.vector[word].bval &= ~mask;
-		  break;
-		case BIT4_X:
-		  vp->value.vector[word].aval |=  mask;
-		  vp->value.vector[word].bval |=  mask;
-		  break;
-		case BIT4_Z:
-		  vp->value.vector[word].aval &= ~mask;
-		  vp->value.vector[word].bval |=  mask;
-		  break;
+	    بدل (val.value(idx)) {
+		حالة BIT4_0:
+		  vp->value.vector[کلمه].aval &= ~ماسک;
+		  vp->value.vector[کلمه].bval &= ~ماسک;
+		  اكسر;
+		حالة BIT4_1:
+		  vp->value.vector[کلمه].aval |=  ماسک;
+		  vp->value.vector[کلمه].bval &= ~ماسک;
+		  اكسر;
+		حالة BIT4_X:
+		  vp->value.vector[کلمه].aval |=  ماسک;
+		  vp->value.vector[کلمه].bval |=  ماسک;
+		  اكسر;
+		حالة BIT4_Z:
+		  vp->value.vector[کلمه].aval &= ~ماسک;
+		  vp->value.vector[کلمه].bval |=  ماسک;
+		  اكسر;
 	    }
       }
 }
 
-void __vpiVThrVec4Stack::vpi_get_value_strength_(p_vpi_value vp, const vvp_vector4_t&val)
+فراغ __vpiVThrVec4Stack::vpi_get_ارزښت_strength(p_vpi_ارزښت vp, ثابت vvp_vector4_t&val)
 {
       s_vpi_strengthval*op = static_cast<s_vpi_strengthval*>
-                             (need_result_buf(val.size() * sizeof(s_vpi_strengthval),
+                             (need_پایله_buf(val.size() * حجم(s_vpi_strengthval),
                                               RBUF_VAL));
 
-      for (unsigned idx = 0 ; idx < val.size() ; idx += 1) {
-	    switch (val.value(idx)) {
-		case BIT4_0:
+      لكل (بینښه idx = 0 ; idx < val.size() ; idx += 1) {
+	    بدل (val.value(idx)) {
+		حالة BIT4_0:
 		  op[idx].logic = vpi0;
 		  op[idx].s0 = vpiStrongDrive;
 		  op[idx].s1 = 0;
-		  break;
-		case BIT4_1:
+		  اكسر;
+		حالة BIT4_1:
 		  op[idx].logic = vpi1;
 		  op[idx].s0 = 0;
 		  op[idx].s1 = vpiStrongDrive;
-		  break;
-		case BIT4_X:
+		  اكسر;
+		حالة BIT4_X:
 		  op[idx].logic = vpiX;
 		  op[idx].s0 = vpiStrongDrive;
 		  op[idx].s1 = vpiStrongDrive;
-		  break;
-		case BIT4_Z:
+		  اكسر;
+		حالة BIT4_Z:
 		  op[idx].logic = vpiZ;
 		  op[idx].s0 = vpiHiZ;
 		  op[idx].s1 = vpiHiZ;
-		  break;
+		  اكسر;
 	    }
       }
 
@@ -619,74 +619,74 @@ void __vpiVThrVec4Stack::vpi_get_value_strength_(p_vpi_value vp, const vvp_vecto
       vp->value.strength = op;
 }
 
-vpiHandle __vpiVThrVec4Stack::vpi_put_value(p_vpi_value vp, int /*flags*/)
+vpiHandle __vpiVThrVec4Stack::vpi_put_ارزښت(p_vpi_ارزښت vp, صحيح /*flags*/)
 {
-      assert(vpip_current_vthread);
+      أكد(vpip_current_vthread);
 
-      switch (vp->format) {
+      بدل (vp->format) {
 
-	  default:
+	  افتراضي:
 	    fprintf(stderr, "internal error: vpi_put_value(<format=%d>)"
 		    " not implemented for __vpiVThrVec4Stack.\n", vp->format);
-	    assert(0);
-	    return 0;
+	    أكد(0);
+	    أرجع 0;
       }
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void thread_vthr_delete(vpiHandle item)
+#که_تعریف_شوی CHECK_WITH_VALGRIND
+فراغ thread_vthr_delete(vpiHandle توکی)
 {
-      handle_map[item] = true;
+      handle_map[توکی] = ریښتیا;
 }
 
-static void thread_vthr_delete_real(vpiHandle item)
+ساكن فراغ thread_vthr_delete_real(vpiHandle توکی)
 {
-      __vpiVThrVec4Stack*obj = dynamic_cast<__vpiVThrVec4Stack*>(item);
-      delete obj;
+      __vpiVThrVec4Stack*obj = dynamic_cast<__vpiVThrVec4Stack*>(توکی);
+      ړنګول obj;
 }
 
-void vpi_handle_delete()
+فراغ vpi_handle_delete()
 {
-      map<vpiHandle, bool>::iterator iter;
-      for (iter = handle_map.begin(); iter != handle_map.end(); ++ iter ) {
-	    if (iter->second) thread_vthr_delete_real(iter->first);
-	    else thread_word_delete_real(iter->first);
+      map<vpiHandle, منطقي>::iterator iter;
+      لكل (iter = handle_map.begin(); iter != handle_map.پای_ټکی(); ++ iter ) {
+	    إذا (iter->second) thread_vthr_delete_real(iter->لومړی);
+	    وإلا thread_کلمه_delete_real(iter->لومړی);
       }
 }
-#endif
+#د_که_پای
 
 
-vpiHandle vpip_make_vthr_str_stack(unsigned depth)
+vpiHandle vpip_make_vthr_str_ډېری(بینښه ژوروالی)
 {
-      __vpiVThrStrStack*obj = new __vpiVThrStrStack(depth);
-      return obj;
+      __vpiVThrStrStack*obj = جديد __vpiVThrStrStack(ژوروالی);
+      أرجع obj;
 }
 
-vpiHandle vpip_make_vthr_vec4_stack(unsigned depth, bool signed_flag, unsigned wid)
+vpiHandle vpip_make_vthr_vec4_ډېری(بینښه ژوروالی, منطقي signed_flag, بینښه wid)
 {
-      __vpiVThrVec4Stack*obj = new __vpiVThrVec4Stack(depth, signed_flag, wid);
-      return obj;
+      __vpiVThrVec4Stack*obj = جديد __vpiVThrVec4Stack(ژوروالی, signed_flag, wid);
+      أرجع obj;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-static map<vpiHandle, bool> stack_map;
+#که_تعریف_شوی CHECK_WITH_VALGRIND
+ساكن map<vpiHandle, منطقي> ډېری_map;
 
-void thread_string_delete(vpiHandle item)
+فراغ thread_string_delete(vpiHandle توکی)
 {
-      stack_map[item] = false;
+      ډېری_map[توکی] = خطأ;
 }
 
-static void thread_string_delete_real(vpiHandle item)
+ساكن فراغ thread_string_delete_real(vpiHandle توکی)
 {
-      __vpiVThrStrStack*obj = dynamic_cast<__vpiVThrStrStack*>(item);
-      delete obj;
+      __vpiVThrStrStack*obj = dynamic_cast<__vpiVThrStrStack*>(توکی);
+      ړنګول obj;
 }
 
-void vpi_stack_delete()
+فراغ vpi_ډېری_delete()
 {
-      map<vpiHandle, bool>::iterator iter;
-      for (iter = stack_map.begin(); iter != stack_map.end(); ++ iter ) {
-	    thread_string_delete_real(iter->first);
+      map<vpiHandle, منطقي>::iterator iter;
+      لكل (iter = ډېری_map.begin(); iter != ډېری_map.پای_ټکی(); ++ iter ) {
+	    thread_string_delete_real(iter->لومړی);
       }
 }
-#endif
+#د_که_پای

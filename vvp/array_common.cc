@@ -19,185 +19,185 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "array_common.h"
+#ضمن "array_common.h"
 
-vpiHandle __vpiArrayBase::vpi_array_base_iterate(int code)
+vpiHandle __vpiArrayBase::vpi_array_بنسټ_iterate(صحيح code)
 {
-    switch (code) {
-        case vpiReg:
-        case vpiMemoryWord: {
-                struct __vpiArrayIterator*res;
-                res = new __vpiArrayIterator;
-                res->array = this;
-                res->next = 0;
-                return res;
+    بدل (code) {
+        حالة vpiReg:
+        حالة vpi_حافظه_کلمه: {
+                بنية __vpiArrayIterator*res;
+                res = جديد __vpiArrayIterator;
+                res->array = هذا;
+                res->بل_2 = 0;
+                أرجع res;
         }
     }
 
-    return 0;
+    أرجع 0;
 }
 
-void __vpiArrayBase::make_vals_words()
+فراغ __vpiArrayBase::make_vals_ټکي()
 {
-    assert(vals_words == 0);
-    vals_words = new struct __vpiArrayWord[get_size() + 1];
+    أكد(vals_ټکي == 0);
+    vals_ټکي = جديد بنية __vpiArrayWord[get_اندازه() + 1];
 
     // Make word[-1] point to the parent.
-    vals_words->parent = this;
+    vals_ټکي->پلار = هذا;
     // Now point to word-0
-    vals_words += 1;
+    vals_ټکي += 1;
 
-    struct __vpiArrayWord*words = vals_words;
-    for (unsigned idx = 0 ; idx < get_size() ; idx += 1) {
-            words[idx].word0 = words;
+    بنية __vpiArrayWord*ټکي = vals_ټکي;
+    لكل (بینښه idx = 0 ; idx < get_اندازه() ; idx += 1) {
+            ټکي[idx].word0 = ټکي;
     }
 }
 
-vpiHandle __vpiArrayIterator::vpi_index(int)
+vpiHandle __vpiArrayIterator::vpi_شاخص(صحيح)
 {
-      if (next >= array->get_size()) {
-	    vpi_free_object(this);
-	    return 0;
+      إذا (بل_2 >= array->get_اندازه()) {
+	    vpi_free_object(هذا);
+	    أرجع 0;
       }
 
-      unsigned use_index = next;
-      next += 1;
+      بینښه use_شاخص = بل_2;
+      بل_2 += 1;
 
-      return array->get_iter_index(this, use_index);
+      أرجع array->get_iter_شاخص(هذا, use_شاخص);
 }
 
-static int array_iterator_free_object(vpiHandle ref)
+ساكن صحيح array_iterator_free_object(vpiHandle ref)
 {
-      struct __vpiArrayIterator*obj = dynamic_cast<__vpiArrayIterator*>(ref);
-      delete obj;
-      return 1;
+      بنية __vpiArrayIterator*obj = dynamic_cast<__vpiArrayIterator*>(ref);
+      ړنګول obj;
+      أرجع 1;
 }
 
-__vpiHandle::free_object_fun_t __vpiArrayIterator::free_object_fun(void)
-{ return &array_iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiArrayIterator::free_object_fun(فراغ)
+{ أرجع &array_iterator_free_object; }
 
-vpiHandle __vpiArrayIndex::vpi_iterate(int code)
+vpiHandle __vpiArrayIndex::vpi_iterate(صحيح code)
 {
     // TODO originally, __vpiArrayIndex is casted to __vpiDecConst and assigned
     // to res->index - seems like a bug to me
 
-      if (code == vpiIndex) {
-	    struct __vpiArrayIndex*res;
-	    res = new __vpiArrayIndex;
-	    res->index = index;         // see the comment above
-	    res->done = 0;
-	    return res;
+      إذا (code == vpi_شاخص_2) {
+	    بنية __vpiArrayIndex*res;
+	    res = جديد __vpiArrayIndex;
+	    res->شاخص = شاخص;         // see the comment above
+	    res->بشپړ = 0;
+	    أرجع res;
       }
-      return 0;
+      أرجع 0;
 }
 
-vpiHandle __vpiArrayIndex::vpi_index(int)
+vpiHandle __vpiArrayIndex::vpi_شاخص(صحيح)
 {
-      if (done == 0) {
-            done = 1;
-            return index;
-      }
-
-      vpi_free_object(this);
-      return 0;
-}
-
-static int array_index_free_object(vpiHandle ref)
-{
-      struct __vpiArrayIndex*obj = dynamic_cast<__vpiArrayIndex*>(ref);
-      delete obj;
-      return 1;
-}
-
-__vpiHandle::free_object_fun_t __vpiArrayIndex::free_object_fun(void)
-{ return &array_index_free_object; }
-
-char* __vpiArrayWord::as_word_t::vpi_get_str(int code)
-{
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
-      assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
-      return my_parent->get_word_str(obj, code);
-}
-
-void __vpiArrayWord::as_word_t::vpi_get_value(p_vpi_value vp)
-{
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
-      assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
-      return my_parent->get_word_value(obj, vp);
-}
-
-vpiHandle __vpiArrayWord::as_word_t::vpi_put_value(p_vpi_value vp, int flags)
-{
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
-      assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
-      my_parent->put_word_value(obj, vp, flags);
-      return this;
-}
-
-vpiHandle __vpiArrayWord::as_word_t::vpi_handle(int code)
-{
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
-      assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
-
-      switch (code) {
-
-	  case vpiIndex:
-	    return &(obj->as_index);
-
-	  case vpiLeftRange:
-	    return my_parent->get_left_range();
-
-	  case vpiRightRange:
-	    return my_parent->get_right_range();
-
-	  case vpiParent:
-	    return dynamic_cast<vpiHandle>(my_parent);
-
-	  case vpiScope:
-	    return my_parent->get_scope();
-
-	  case vpiModule:
-	    return vpip_module(my_parent->get_scope());
+      إذا (بشپړ == 0) {
+            بشپړ = 1;
+            أرجع شاخص;
       }
 
-      return 0;
+      vpi_free_object(هذا);
+      أرجع 0;
 }
 
-void __vpiArrayWord::as_index_t::vpi_get_value(p_vpi_value vp)
+ساكن صحيح array_شاخص_free_object(vpiHandle ref)
 {
-      struct __vpiArrayWord*obj = array_var_index_from_handle(this);
-      assert(obj);
-      unsigned index = obj->get_index();
-
-      assert(vp->format == vpiIntVal);
-      vp->value.integer = index;
+      بنية __vpiArrayIndex*obj = dynamic_cast<__vpiArrayIndex*>(ref);
+      ړنګول obj;
+      أرجع 1;
 }
 
-struct __vpiArrayWord*array_var_word_from_handle(vpiHandle ref)
-{
-      if (ref == 0)
-	    return 0;
-      const __vpiArrayWord::as_word_t*ptr = dynamic_cast<__vpiArrayWord::as_word_t*> (ref);
-      if (ptr == 0)
-	    return 0;
+__vpiHandle::free_object_fun_t __vpiArrayIndex::free_object_fun(فراغ)
+{ أرجع &array_شاخص_free_object; }
 
-      return (struct __vpiArrayWord*)(ref);
+حرف* __vpiArrayWord::as_کلمه_t::vpi_get_str(صحيح code)
+{
+      بنية __vpiArrayWord*obj = array_var_کلمه_from_handle(هذا);
+      أكد(obj);
+      بنية __vpiArrayBase*my_پلار = obj->get_پلار();
+      أرجع my_پلار->get_کلمه_str(obj, code);
 }
 
-struct __vpiArrayWord* array_var_index_from_handle(vpiHandle ref)
+فراغ __vpiArrayWord::as_کلمه_t::vpi_get_ارزښت(p_vpi_ارزښت vp)
 {
-      if (ref == 0)
-	    return 0;
-      const __vpiArrayWord::as_index_t*ptr = dynamic_cast<__vpiArrayWord::as_index_t*> (ref);
-      if (ptr == 0)
-	    return 0;
+      بنية __vpiArrayWord*obj = array_var_کلمه_from_handle(هذا);
+      أكد(obj);
+      بنية __vpiArrayBase*my_پلار = obj->get_پلار();
+      أرجع my_پلار->get_کلمه_ارزښت(obj, vp);
+}
 
-      assert(sizeof(__vpiHandle) == sizeof(__vpiArrayWord::as_index_t));
-      assert(sizeof(__vpiHandle) == sizeof(__vpiArrayWord::as_word_t));
-      return (struct __vpiArrayWord*)(ref-1);
+vpiHandle __vpiArrayWord::as_کلمه_t::vpi_put_ارزښت(p_vpi_ارزښت vp, صحيح flags)
+{
+      بنية __vpiArrayWord*obj = array_var_کلمه_from_handle(هذا);
+      أكد(obj);
+      بنية __vpiArrayBase*my_پلار = obj->get_پلار();
+      my_پلار->put_کلمه_ارزښت(obj, vp, flags);
+      أرجع هذا;
+}
+
+vpiHandle __vpiArrayWord::as_کلمه_t::vpi_handle(صحيح code)
+{
+      بنية __vpiArrayWord*obj = array_var_کلمه_from_handle(هذا);
+      أكد(obj);
+      بنية __vpiArrayBase*my_پلار = obj->get_پلار();
+
+      بدل (code) {
+
+	  حالة vpi_شاخص_2:
+	    أرجع &(obj->as_شاخص);
+
+	  حالة vpi_کیڼ_Range:
+	    أرجع my_پلار->get_کیڼ_range();
+
+	  حالة vpi_ښی_Range:
+	    أرجع my_پلار->get_ښی_range();
+
+	  حالة vpi_پلار:
+	    أرجع dynamic_cast<vpiHandle>(my_پلار);
+
+	  حالة vpiScope:
+	    أرجع my_پلار->get_scope();
+
+	  حالة vpiModule:
+	    أرجع vpip_module(my_پلار->get_scope());
+      }
+
+      أرجع 0;
+}
+
+فراغ __vpiArrayWord::as_شاخص_t::vpi_get_ارزښت(p_vpi_ارزښت vp)
+{
+      بنية __vpiArrayWord*obj = array_var_شاخص_from_handle(هذا);
+      أكد(obj);
+      بینښه شاخص = obj->get_شاخص();
+
+      أكد(vp->format == vpiIntVal);
+      vp->value.integer = شاخص;
+}
+
+بنية __vpiArrayWord*array_var_کلمه_from_handle(vpiHandle ref)
+{
+      إذا (ref == 0)
+	    أرجع 0;
+      ثابت __vpiArrayWord::as_کلمه_t*ptr = dynamic_cast<__vpiArrayWord::as_کلمه_t*> (ref);
+      إذا (ptr == 0)
+	    أرجع 0;
+
+      أرجع (بنية __vpiArrayWord*)(ref);
+}
+
+بنية __vpiArrayWord* array_var_شاخص_from_handle(vpiHandle ref)
+{
+      إذا (ref == 0)
+	    أرجع 0;
+      ثابت __vpiArrayWord::as_شاخص_t*ptr = dynamic_cast<__vpiArrayWord::as_شاخص_t*> (ref);
+      إذا (ptr == 0)
+	    أرجع 0;
+
+      أكد(حجم(__vpiHandle) == حجم(__vpiArrayWord::as_شاخص_t));
+      أكد(حجم(__vpiHandle) == حجم(__vpiArrayWord::as_کلمه_t));
+      أرجع (بنية __vpiArrayWord*)(ref-1);
 }
 
