@@ -25,10 +25,10 @@
 #include "vpi_priv.h"
 
 struct __vpiArrayIterator : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+      số_nguyên get_type_code(void) const override
+      { trả_về vpiIterator; }
 
-      vpiHandle vpi_index(int idx) override;
+      vpiHandle vpi_index(số_nguyên idx) override;
       free_object_fun_t free_object_fun(void) override;
 
       struct __vpiArrayBase*array;
@@ -36,11 +36,11 @@ struct __vpiArrayIterator : public __vpiHandle {
 };
 
 struct __vpiArrayIndex : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+      số_nguyên get_type_code(void) const override
+      { trả_về vpiIterator; }
 
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
+      vpiHandle vpi_iterate(số_nguyên code) override;
+      vpiHandle vpi_index(số_nguyên idx) override;
       free_object_fun_t free_object_fun(void) override;
 
       __vpiDecConst *index;
@@ -70,16 +70,16 @@ struct __vpiArrayIndex : public __vpiHandle {
  */
 struct __vpiArrayWord {
       struct as_word_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiMemoryWord; }
-	    int vpi_get(int code) override;
-	    char*vpi_get_str(int code) override;
+	    số_nguyên get_type_code(void) const override { trả_về vpiMemoryWord; }
+	    số_nguyên vpi_get(số_nguyên code) override;
+	    char*vpi_get_str(số_nguyên code) override;
 	    void vpi_get_value(p_vpi_value vp) override;
-	    vpiHandle vpi_put_value(p_vpi_value vp, int flags) override;
-	    vpiHandle vpi_handle(int code) override;
+	    vpiHandle vpi_put_value(p_vpi_value vp, số_nguyên flags) override;
+	    vpiHandle vpi_handle(số_nguyên code) override;
       } as_word;
 
       struct as_index_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiIndex; }
+	    số_nguyên get_type_code(void) const override { trả_về vpiIndex; }
 	    void vpi_get_value(p_vpi_value val) override;
       } as_index;
 
@@ -88,8 +88,8 @@ struct __vpiArrayWord {
 	    struct __vpiArrayWord*word0;
       };
 
-      inline unsigned get_index() const { return this - word0; }
-      inline struct __vpiArrayBase*get_parent() const { return (word0 - 1)->parent; }
+      inline unsigned get_index() const { trả_về this - word0; }
+      inline struct __vpiArrayBase*get_parent() const { trả_về (word0 - 1)->parent; }
 };
 
 struct __vpiArrayWord*array_var_word_from_handle(vpiHandle ref);

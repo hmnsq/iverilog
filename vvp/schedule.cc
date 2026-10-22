@@ -64,7 +64,7 @@ struct event_s {
       virtual void single_step_display(void);
 
 	// Fallback new/delete
-      static void*operator new (size_t size) { return ::new char[size]; }
+      static void*operator new (size_t size) { trả_về ::new char[size]; }
       static void operator delete(void*ptr)  { ::delete[]( static_cast<char*>(ptr) ); }
 };
 
@@ -143,7 +143,7 @@ static slab_t<sizeof(vthread_event_s),VTHR_CHUNK_COUNT> vthread_event_heap;
 inline void* vthread_event_s::operator new(size_t size)
 {
       assert(size == sizeof(vthread_event_s));
-      return vthread_event_heap.alloc_slab();
+      trả_về vthread_event_heap.alloc_slab();
 }
 
 void vthread_event_s::operator delete(void*dptr)
@@ -195,9 +195,9 @@ struct assign_vector4_event_s  : public event_s {
 void assign_vector4_event_s::run_run(void)
 {
       count_assign_events += 1;
-      if (vwid > 0)
+      nếu (vwid > 0)
 	    vvp_send_vec4_pv(ptr, val, base, vwid, 0);
-      else
+      không_thì
 	    vvp_send_vec4(ptr, val, 0);
 }
 
@@ -213,7 +213,7 @@ static slab_t<sizeof(assign_vector4_event_s),ASSIGN4_CHUNK_COUNT> assign4_heap;
 inline void* assign_vector4_event_s::operator new(size_t size)
 {
       assert(size == sizeof(assign_vector4_event_s));
-      return assign4_heap.alloc_slab();
+      trả_về assign4_heap.alloc_slab();
 }
 
 void assign_vector4_event_s::operator delete(void*dptr)
@@ -221,7 +221,7 @@ void assign_vector4_event_s::operator delete(void*dptr)
       assign4_heap.free_slab(dptr);
 }
 
-unsigned long count_assign4_pool(void) { return assign4_heap.pool; }
+unsigned long count_assign4_pool(void) { trả_về assign4_heap.pool; }
 
 struct assign_vector8_event_s  : public event_s {
       vvp_net_ptr_t ptr;
@@ -250,7 +250,7 @@ static slab_t<sizeof(assign_vector8_event_s),ASSIGN8_CHUNK_COUNT> assign8_heap;
 inline void* assign_vector8_event_s::operator new(size_t size)
 {
       assert(size == sizeof(assign_vector8_event_s));
-      return assign8_heap.alloc_slab();
+      trả_về assign8_heap.alloc_slab();
 }
 
 void assign_vector8_event_s::operator delete(void*dptr)
@@ -258,7 +258,7 @@ void assign_vector8_event_s::operator delete(void*dptr)
       assign8_heap.free_slab(dptr);
 }
 
-unsigned long count_assign8_pool() { return assign8_heap.pool; }
+unsigned long count_assign8_pool() { trả_về assign8_heap.pool; }
 
 struct assign_real_event_s  : public event_s {
       vvp_net_ptr_t ptr;
@@ -287,7 +287,7 @@ static slab_t<sizeof(assign_real_event_s),ASSIGNR_CHUNK_COUNT> assignr_heap;
 inline void* assign_real_event_s::operator new (size_t size)
 {
       assert(size == sizeof(assign_real_event_s));
-      return assignr_heap.alloc_slab();
+      trả_về assignr_heap.alloc_slab();
 }
 
 void assign_real_event_s::operator delete(void*dptr)
@@ -295,7 +295,7 @@ void assign_real_event_s::operator delete(void*dptr)
       assignr_heap.free_slab(dptr);
 }
 
-unsigned long count_assign_real_pool(void) { return assignr_heap.pool; }
+unsigned long count_assign_real_pool(void) { trả_về assignr_heap.pool; }
 
 struct assign_array_word_s  : public event_s {
       vvp_array_t mem;
@@ -320,7 +320,7 @@ static slab_t<sizeof(assign_array_word_s),ARRAY_W_CHUNK_COUNT> array_w_heap;
 inline void* assign_array_word_s::operator new (size_t size)
 {
       assert(size == sizeof(assign_array_word_s));
-      return array_w_heap.alloc_slab();
+      trả_về array_w_heap.alloc_slab();
 }
 
 void assign_array_word_s::operator delete(void*ptr)
@@ -328,7 +328,7 @@ void assign_array_word_s::operator delete(void*ptr)
       array_w_heap.free_slab(ptr);
 }
 
-unsigned long count_assign_aword_pool(void) { return array_w_heap.pool; }
+unsigned long count_assign_aword_pool(void) { trả_về array_w_heap.pool; }
 
 struct force_vector4_event_s  : public event_s {
 	/* The default constructor. */
@@ -359,13 +359,13 @@ void force_vector4_event_s::run_run(void)
       count_assign_events += 1;
 
       unsigned wid = val.size();
-      if ((base + wid) > vwid)
+      nếu ((base + wid) > vwid)
 	    wid = vwid - base;
 
 	// Make a mask of which bits are to be forced, 0 for unforced
 	// bits and 1 for forced bits.
       vvp_vector2_t mask (vvp_vector2_t::FILL0, vwid);
-      for (unsigned idx = 0 ; idx < wid ; idx += 1)
+      cho (unsigned idx = 0 ; idx < wid ; idx += 1)
 	    mask.set_bit(base+idx, 1);
 
       vvp_vector4_t tmp (vwid, BIT4_Z);
@@ -393,7 +393,7 @@ static slab_t<sizeof(force_vector4_event_s),FORCE4_CHUNK_COUNT> force4_heap;
 inline void* force_vector4_event_s::operator new(size_t size)
 {
       assert(size == sizeof(force_vector4_event_s));
-      return force4_heap.alloc_slab();
+      trả_về force4_heap.alloc_slab();
 }
 
 void force_vector4_event_s::operator delete(void*dptr)
@@ -401,7 +401,7 @@ void force_vector4_event_s::operator delete(void*dptr)
       force4_heap.free_slab(dptr);
 }
 
-unsigned long count_force4_pool(void) { return force4_heap.pool; }
+unsigned long count_force4_pool(void) { trả_về force4_heap.pool; }
 
 /*
  * This class supports the propagation of vec4 outputs from a
@@ -484,7 +484,7 @@ static slab_t<sizeof(assign_array_r_word_s),ARRAY_R_W_CHUNK_COUNT> array_r_w_hea
 inline void* assign_array_r_word_s::operator new(size_t size)
 {
       assert(size == sizeof(assign_array_r_word_s));
-      return array_r_w_heap.alloc_slab();
+      trả_về array_r_w_heap.alloc_slab();
 }
 
 void assign_array_r_word_s::operator delete(void*ptr)
@@ -492,7 +492,7 @@ void assign_array_r_word_s::operator delete(void*ptr)
       array_r_w_heap.free_slab(ptr);
 }
 
-unsigned long count_assign_arword_pool(void) { return array_r_w_heap.pool; }
+unsigned long count_assign_arword_pool(void) { trả_về array_r_w_heap.pool; }
 
 struct generic_event_s : public event_s {
       vvp_gen_event_t obj;
@@ -507,9 +507,9 @@ struct generic_event_s : public event_s {
 void generic_event_s::run_run(void)
 {
       count_gen_events += 1;
-      if (obj) {
+      nếu (obj) {
 	    obj->run_run();
-	    if (delete_obj_when_done)
+	    nếu (delete_obj_when_done)
 		  delete obj;
       }
 }
@@ -525,7 +525,7 @@ static slab_t<sizeof(generic_event_s),GENERIC_CHUNK_COUNT> generic_event_heap;
 inline void* generic_event_s::operator new(size_t size)
 {
       assert(size == sizeof(generic_event_s));
-      return generic_event_heap.alloc_slab();
+      trả_về generic_event_heap.alloc_slab();
 }
 
 void generic_event_s::operator delete(void*ptr)
@@ -533,7 +533,7 @@ void generic_event_s::operator delete(void*ptr)
       generic_event_heap.free_slab(ptr);
 }
 
-unsigned long count_gen_pool(void) { return generic_event_heap.pool; }
+unsigned long count_gen_pool(void) { trả_về generic_event_heap.pool; }
 
 /*
 ** These event_time_s will be required a lot, at high frequency.
@@ -548,7 +548,7 @@ inline void* event_time_s::operator new (size_t size)
 {
       assert(size == sizeof(struct event_time_s));
       void*ptr = event_time_heap.alloc_slab();
-      return ptr;
+      trả_về ptr;
 }
 
 inline void event_time_s::operator delete(void*ptr, size_t)
@@ -556,7 +556,7 @@ inline void event_time_s::operator delete(void*ptr, size_t)
       event_time_heap.free_slab(ptr);
 }
 
-unsigned long count_time_pool(void) { return event_time_heap.pool; }
+unsigned long count_time_pool(void) { trả_về event_time_heap.pool; }
 
 /*
  * This is the head of the list of pending events. This includes all
@@ -587,29 +587,29 @@ static bool schedule_stopped_flag  = false;
 static bool schedule_single_step_flag = false;
 static bool no_signals_flag = false;
 
-void schedule_finish(int)
+void schedule_finish(số_nguyên)
 {
       schedule_runnable = false;
 }
 
-void schedule_stop(int)
+void schedule_stop(số_nguyên)
 {
       schedule_stopped_flag = true;
 }
 
-void schedule_single_step(int)
+void schedule_single_step(số_nguyên)
 {
       schedule_single_step_flag = true;
 }
 
 bool schedule_finished(void)
 {
-      return !schedule_runnable;
+      trả_về !schedule_runnable;
 }
 
 bool schedule_stopped(void)
 {
-      return schedule_stopped_flag;
+      trả_về schedule_stopped_flag;
 }
 
 extern "C" void vvp_no_signals(void)
@@ -624,7 +624,7 @@ extern "C" void vvp_no_signals(void)
  */
 extern bool stop_is_finish;
 
-extern "C" void signals_handler(int signum)
+extern "C" void signals_handler(số_nguyên signum)
 {
 #ifdef __MINGW32__
 	// Windows implements the original UNIX semantics for signal,
@@ -632,15 +632,15 @@ extern "C" void signals_handler(int signum)
 	// signal is caught.
       signal(signum, &signals_handler);
 #endif
-      if (signum != SIGINT)
+      nếu (signum != SIGINT)
 	    stop_is_finish = true;
       schedule_stopped_flag = true;
 }
 
 static void signals_capture(void)
 {
-      if (no_signals_flag)
-	   return;
+      nếu (no_signals_flag)
+	   trả_về;
 #ifndef __MINGW32__
       signal(SIGHUP,  &signals_handler);
 #endif
@@ -650,8 +650,8 @@ static void signals_capture(void)
 
 static void signals_revert(void)
 {
-      if (no_signals_flag)
-	   return;
+      nếu (no_signals_flag)
+	   trả_về;
 #ifndef __MINGW32__
       signal(SIGHUP,  SIG_DFL);
 #endif
@@ -664,9 +664,9 @@ static void signals_revert(void)
  */
 static void schedule_init_event(struct event_s*cur)
 {
-      if (schedule_init_list == 0) {
+      nếu (schedule_init_list == 0) {
             cur->next = cur;
-      } else {
+      } không_thì {
             cur->next = schedule_init_list->next;
             schedule_init_list->next = cur;
       }
@@ -678,9 +678,9 @@ static void schedule_init_event(struct event_s*cur)
  */
 static void schedule_final_event(struct event_s*cur)
 {
-      if (schedule_final_list == 0) {
+      nếu (schedule_final_list == 0) {
             cur->next = cur;
-      } else {
+      } không_thì {
             cur->next = schedule_final_list->next;
             schedule_final_list->next = cur;
       }
@@ -702,7 +702,7 @@ static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
       cur->next = cur;
       struct event_time_s*ctim = sched_list;
 
-      if (sched_list == 0) {
+      nếu (sched_list == 0) {
 	      /* Is the event_time list completely empty? Create the
 		 first event_time object. */
 	    ctim = new struct event_time_s;
@@ -710,7 +710,7 @@ static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
 	    ctim->next  = 0;
 	    sched_list = ctim;
 
-      } else if (sched_list->delay > delay) {
+      } không_thì nếu (sched_list->delay > delay) {
 
 	      /* Am I looking for an event before the first event_time?
 		 If so, create a new event_time to go in front. */
@@ -721,16 +721,16 @@ static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
 	    ctim = tmp;
 	    sched_list = ctim;
 
-      } else {
+      } không_thì {
 	    struct event_time_s*prev = 0;
 
-	    while (ctim->next && (ctim->delay < delay)) {
+	    trong_khi (ctim->next && (ctim->delay < delay)) {
 		  delay -= ctim->delay;
 		  prev = ctim;
 		  ctim = ctim->next;
 	    }
 
-	    if (ctim->delay > delay) {
+	    nếu (ctim->delay > delay) {
 		  struct event_time_s*tmp = new struct event_time_s;
 		  tmp->delay = delay;
 		  tmp->next  = prev->next;
@@ -739,9 +739,9 @@ static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
 		  tmp->next->delay -= delay;
 		  ctim = tmp;
 
-	    } else if (ctim->delay == delay) {
+	    } không_thì nếu (ctim->delay == delay) {
 
-	    } else {
+	    } không_thì {
 		  assert(ctim->next == 0);
 		  struct event_time_s*tmp = new struct event_time_s;
 		  tmp->delay = delay - ctim->delay;
@@ -789,8 +789,8 @@ static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
 	    break;
       }
 
-      if (q) {
-	    if (*q) {
+      nếu (q) {
+	    nếu (*q) {
 		  /* Put the cur event on the end of the queue. */
 		  cur->next = (*q)->next;
 		  (*q)->next = cur;
@@ -801,17 +801,17 @@ static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
 
 static void schedule_event_push_(struct event_s*cur)
 {
-      if ((sched_list == 0) || (sched_list->delay > 0)) {
+      nếu ((sched_list == 0) || (sched_list->delay > 0)) {
 	    schedule_event_(cur, 0, SEQ_ACTIVE);
-	    return;
+	    trả_về;
       }
 
       struct event_time_s*ctim = sched_list;
 
-      if (ctim->active == 0) {
+      nếu (ctim->active == 0) {
 	    cur->next = cur;
 	    ctim->active = cur;
-	    return;
+	    trả_về;
       }
 
       cur->next = ctim->active->next;
@@ -825,14 +825,14 @@ void schedule_vthread(vthread_t thr, vvp_time64_t delay, bool push_flag)
       cur->thr = thr;
       vthread_mark_scheduled(thr);
 
-      if (push_flag && (delay == 0)) {
+      nếu (push_flag && (delay == 0)) {
 	      /* Special case: If the delay is 0, the push_flag means
 		 I can push this event in front of everything. This is
 		 used by the %fork statement, for example, to perform
 		 task calls. */
 	    schedule_event_push_(cur);
 
-      } else {
+      } không_thì {
 	    schedule_event_(cur, delay, SEQ_ACTIVE);
       }
 }
@@ -1032,7 +1032,7 @@ void schedule_generic(vvp_gen_event_t obj, vvp_time64_t delay,
       schedule_event_(cur, delay,
 		      sync_flag? (ro_flag?SEQ_ROSYNC:SEQ_RWSYNC) : SEQ_ACTIVE);
 
-      if (sync_flag)
+      nếu (sync_flag)
 	    vthread_delay_delete();
 }
 
@@ -1044,9 +1044,9 @@ void schedule_functor(vvp_gen_event_t obj)
 
       cur->obj = obj;
       cur->delete_obj_when_done = false;
-      if (!sim_started) {
+      nếu (!sim_started) {
             schedule_init_event(cur);
-      } else {
+      } không_thì {
             schedule_event_(cur, 0, SEQ_ACTIVE);
       }
 }
@@ -1076,11 +1076,11 @@ void schedule_at_end_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
 
 static vvp_time64_t schedule_time;
 vvp_time64_t schedule_simtime(void)
-{ return schedule_time; }
+{ trả_về schedule_time; }
 
 static bool sim_at_rosync = false;
 bool schedule_at_rosync(void)
-{ return sim_at_rosync; }
+{ trả_về sim_at_rosync; }
 
 /*
  * The scheduler uses this function to drain the rosync events of the
@@ -1095,11 +1095,11 @@ bool schedule_at_rosync(void)
 static void run_rosync(struct event_time_s*ctim)
 {
       sim_at_rosync = true;
-      while (ctim->rosync) {
+      trong_khi (ctim->rosync) {
 	    struct event_s*cur = ctim->rosync->next;
-	    if (cur->next == cur) {
+	    nếu (cur->next == cur) {
 		  ctim->rosync = 0;
-	    } else {
+	    } không_thì {
 		  ctim->rosync->next = cur->next;
 	    }
 
@@ -1108,11 +1108,11 @@ static void run_rosync(struct event_time_s*ctim)
       }
       sim_at_rosync = false;
 
-      while (ctim->del_thr) {
+      trong_khi (ctim->del_thr) {
 	    struct event_s*cur = ctim->del_thr->next;
-	    if (cur->next == cur) {
+	    nếu (cur->next == cur) {
 		  ctim->del_thr = 0;
-	    } else {
+	    } không_thì {
 		  ctim->del_thr->next = cur->next;
 	    }
 
@@ -1120,7 +1120,7 @@ static void run_rosync(struct event_time_s*ctim)
 	    delete cur;
       }
 
-      if (ctim->active || ctim->inactive || ctim->nbassign || ctim->rwsync) {
+      nếu (ctim->active || ctim->inactive || ctim->nbassign || ctim->rwsync) {
 	    cerr << "SCHEDULER ERROR: read-only sync events "
 		 << "created RW events!" << endl;
       }
@@ -1133,23 +1133,23 @@ void schedule_simulate(void)
 
       schedule_time = 0;
 
-      if (verbose_flag) {
+      nếu (verbose_flag) {
 	    vpi_mcd_printf(1, " ...execute EndOfCompile callbacks\n");
       }
 
       // Execute end of compile callbacks
       vpiEndOfCompile();
 
-      if (verbose_flag) {
+      nếu (verbose_flag) {
 	    vpi_mcd_printf(1, " ...propagate initialization events\n");
       }
 
 	// Execute initialization events.
-      while (schedule_init_list) {
+      trong_khi (schedule_init_list) {
 	    struct event_s*cur = schedule_init_list->next;
-	    if (cur->next == cur) {
+	    nếu (cur->next == cur) {
 		  schedule_init_list = 0;
-	    } else {
+	    } không_thì {
 		  schedule_init_list->next = cur->next;
 	    }
 	    cur->run_run();
@@ -1158,7 +1158,7 @@ void schedule_simulate(void)
 
       sim_started = true;
 
-      if (verbose_flag) {
+      nếu (verbose_flag) {
 	    vpi_mcd_printf(1, " ...execute StartOfSim callbacks\n");
       }
 
@@ -1167,7 +1167,7 @@ void schedule_simulate(void)
 
       signals_capture();
 
-      if (verbose_flag) {
+      nếu (verbose_flag) {
 	    vpi_mcd_printf(1, " ...run scheduler\n");
       }
 
@@ -1175,13 +1175,13 @@ void schedule_simulate(void)
       // process events and when done run the final blocks.
       run_finals = schedule_runnable;
 
-      if (schedule_runnable) while (sched_list) {
+      nếu (schedule_runnable) trong_khi (sched_list) {
 
-	    if (schedule_stopped_flag) {
+	    nếu (schedule_stopped_flag) {
 		  schedule_stopped_flag = false;
 		  stop_handler(0);
 		  // You can finish from the debugger without a time change.
-		  if (!schedule_runnable) break;
+		  nếu (!schedule_runnable) break;
 		  continue;
 	    }
 
@@ -1190,13 +1190,13 @@ void schedule_simulate(void)
 
 	      /* If the time is advancing, then first run the
 		 postponed sync events. Run them all. */
-	    if (ctim->delay > 0) {
+	    nếu (ctim->delay > 0) {
 
-		  if (!schedule_runnable) break;
+		  nếu (!schedule_runnable) break;
 		  schedule_time += ctim->delay;
 		    /* When the design is being traced (we are emitting
 		     * file/line information) also print any time changes. */
-		  if (show_file_line) {
+		  nếu (show_file_line) {
 			cerr << "Advancing to simulation time: "
 			     << schedule_time << endl;
 		  }
@@ -1204,11 +1204,11 @@ void schedule_simulate(void)
 
 		  vpiNextSimTime();
 		    // Process the cbAtStartOfSimTime callbacks.
-		  while (ctim->start) {
+		  trong_khi (ctim->start) {
 			struct event_s*cur = ctim->start->next;
-			if (cur->next == cur) {
+			nếu (cur->next == cur) {
 			      ctim->start = 0;
-			} else {
+			} không_thì {
 			      ctim->start->next = cur->next;
 			}
 			cur->run_run();
@@ -1220,22 +1220,22 @@ void schedule_simulate(void)
 	      /* If there are no more active events, advance the event
 		 queues. If there are not events at all, then release
 		 the event_time object. */
-	    if (ctim->active == 0) {
+	    nếu (ctim->active == 0) {
 		  ctim->active = ctim->inactive;
 		  ctim->inactive = 0;
 
-		  if (ctim->active == 0) {
+		  nếu (ctim->active == 0) {
 			ctim->active = ctim->nbassign;
 			ctim->nbassign = 0;
 
-			if (ctim->active == 0) {
+			nếu (ctim->active == 0) {
 			      ctim->active = ctim->rwsync;
 			      ctim->rwsync = 0;
 
 				/* If out of rw events, then run the rosync
 				   events and delete this time step. This also
 				   deletes threads as needed. */
-			      if (ctim->active == 0) {
+			      nếu (ctim->active == 0) {
 				    run_rosync(ctim);
 				    sched_list = ctim->next;
 				    delete ctim;
@@ -1249,13 +1249,13 @@ void schedule_simulate(void)
 		 cell in the list, then clear the list. Execute that
 		 event type, and delete it. */
 	    struct event_s*cur = ctim->active->next;
-	    if (cur->next == cur) {
+	    nếu (cur->next == cur) {
 		  ctim->active = 0;
-	    } else {
+	    } không_thì {
 		  ctim->active->next = cur->next;
 	    }
 
-	    if (schedule_single_step_flag) {
+	    nếu (schedule_single_step_flag) {
 		  cur->single_step_display();
 		  schedule_stopped_flag = true;
 		  schedule_single_step_flag = false;
@@ -1268,11 +1268,11 @@ void schedule_simulate(void)
 
 	// Execute final events.
       schedule_runnable = run_finals;
-      while (schedule_runnable && schedule_final_list) {
+      trong_khi (schedule_runnable && schedule_final_list) {
 	    struct event_s*cur = schedule_final_list->next;
-	    if (cur->next == cur) {
+	    nếu (cur->next == cur) {
 		  schedule_final_list = 0;
-	    } else {
+	    } không_thì {
 		  schedule_final_list->next = cur->next;
 	    }
 	    cur->run_run();
@@ -1281,7 +1281,7 @@ void schedule_simulate(void)
 
       signals_revert();
 
-      if (verbose_flag) {
+      nếu (verbose_flag) {
 	    vpi_mcd_printf(1, " ...execute Postsim callbacks\n");
       }
 

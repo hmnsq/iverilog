@@ -32,22 +32,22 @@ void vpip_bin_str_to_vec4(vvp_vector4_t&vec4, const char*buf)
       unsigned skip_chars = 0;
       const char*tbuf = buf;
 	/* Find the number of non-numeric characters. */
-      while ((tbuf = strpbrk(tbuf, "-_"))) {
+      trong_khi ((tbuf = strpbrk(tbuf, "-_"))) {
 	    skip_chars += 1;
 	    tbuf += 1;
       }
       vvp_vector4_t tval(strlen(buf)-skip_chars);
-      while (ebuf > buf) {
+      trong_khi (ebuf > buf) {
 	    ebuf -= 1;
 	      /* Skip any "_" characters in the string. */
-	    while (*ebuf == '_') {
+	    trong_khi (*ebuf == '_') {
 		  ebuf -= 1;
 		  assert(ebuf > buf);
 	    }
 
 	      /*  If we find a "-" it must be at the head of the string. */
-	    if (*ebuf == '-') {
-		  if (ebuf != buf) assert(0);
+	    nếu (*ebuf == '-') {
+		  nếu (ebuf != buf) assert(0);
 		  break;
 	    }
 
@@ -71,17 +71,17 @@ void vpip_bin_str_to_vec4(vvp_vector4_t&vec4, const char*buf)
 		    /* Return "x" if there are invalid digits in the string. */
 		  fprintf(stderr, "Warning: Invalid binary digit %c(%d) in "
 		          "\"%s\".\n", *ebuf, *ebuf, buf);
-		  for (unsigned jdx = 0 ;  jdx < vec4.size() ;  jdx += 1) {
+		  cho (unsigned jdx = 0 ;  jdx < vec4.size() ;  jdx += 1) {
 			vec4.set_bit(jdx, BIT4_X);
 		  }
-		  return;
+		  trả_về;
 	    }
 
 	    idx += 1;
       }
 
 	/* Make a negative value when needed. */
-      if (buf[0] == '-') {
+      nếu (buf[0] == '-') {
 	    tval.invert();
 	    tval += (int64_t) 1;
       }
@@ -96,7 +96,7 @@ void vpip_bin_str_to_vec4(vvp_vector4_t&vec4, const char*buf)
 	    pad = BIT4_Z;
 	    break;
 	  case BIT4_1:  // If negative pad MSB '1' with '1'
-	    if (buf[0] == '-') {
+	    nếu (buf[0] == '-') {
 		  pad = BIT4_1;
 		  break;
 	    }
@@ -106,8 +106,8 @@ void vpip_bin_str_to_vec4(vvp_vector4_t&vec4, const char*buf)
 	    break;
       }
 
-      for (unsigned jdx = 0 ;  jdx < vec4.size() ; jdx += 1) {
-	    if (jdx < tval.size()) vec4.set_bit(jdx, tval.value(jdx));
-	    else vec4.set_bit(jdx, pad);
+      cho (unsigned jdx = 0 ;  jdx < vec4.size() ; jdx += 1) {
+	    nếu (jdx < tval.size()) vec4.set_bit(jdx, tval.value(jdx));
+	    không_thì vec4.set_bit(jdx, pad);
       }
 }

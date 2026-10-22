@@ -90,10 +90,10 @@ void argv_sym_add(struct argv_s*obj, char *item)
 
 void argv_sym_lookup(struct argv_s*obj)
 {
-      if (!obj->syms)
-	    return;
-      for (unsigned i=0; i < obj->argc; i++)
-	    if (!obj->argv[i])
+      nếu (!obj->syms)
+	    trả_về;
+      cho (unsigned i=0; i < obj->argc; i++)
+	    nếu (!obj->argv[i])
 		  compile_vpi_lookup(&obj->argv[i], obj->syms[i]);
       free(obj->syms);
 }

@@ -35,7 +35,7 @@ void* permaheap::alloc(size_t size)
 {
       assert(size <= CHUNK_SIZE);
 
-      if (size > chunk_remaining_) {
+      nếu (size > chunk_remaining_) {
 	    chunk_ptr_ = ::new char[CHUNK_SIZE];
 	    chunk_remaining_ = CHUNK_SIZE;
 	    heap_total_ += CHUNK_SIZE;
@@ -47,5 +47,5 @@ void* permaheap::alloc(size_t size)
       chunk_ptr_ += size;
       chunk_remaining_ -= size;
 
-      return res;
+      trả_về res;
 }

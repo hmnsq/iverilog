@@ -32,7 +32,7 @@
 vvp_fun_boolean_::vvp_fun_boolean_(unsigned wid)
 {
       net_ = 0;
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+      cho (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
 	    input_[idx] = vvp_vector4_t(wid, BIT4_Z);
 }
 
@@ -44,10 +44,10 @@ void vvp_fun_boolean_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                                  vvp_context_t)
 {
       unsigned port = ptr.port();
-      if (input_[port] .eeq( bit )) return;
+      nếu (input_[port] .eeq( bit )) trả_về;
 
       input_[port] = bit;
-      if (net_ == 0) {
+      nếu (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
       }
@@ -62,10 +62,10 @@ void vvp_fun_boolean_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 
 	// Set the part for the input. If nothing changes, then break.
       bool flag = input_[port] .set_vec(base, bit);
-      if (flag == false)
-	    return;
+      nếu (flag == false)
+	    trả_về;
 
-      if (net_ == 0) {
+      nếu (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
       }
@@ -94,10 +94,10 @@ void vvp_fun_and::run_run()
 
       vvp_vector4_t result (input_[0]);
 
-      for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
+      cho (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
 	    result &= input_[pdx];
 
-      if (invert_)
+      nếu (invert_)
 	    result.invert();
 
       ptr->send_vec4(result, 0);
@@ -164,12 +164,12 @@ vvp_fun_buf_not_::~vvp_fun_buf_not_()
 void vvp_fun_buf_not_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                                  vvp_context_t)
 {
-      if (ptr.port() != 0) return;
+      nếu (ptr.port() != 0) trả_về;
 
-      if (input_ .eeq( bit )) return;
+      nếu (input_ .eeq( bit )) trả_về;
 
       input_ = bit;
-      if (net_ == 0) {
+      nếu (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
       }
@@ -178,15 +178,15 @@ void vvp_fun_buf_not_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 void vvp_fun_buf_not_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                                     unsigned base, unsigned vwid, vvp_context_t)
 {
-      if (ptr.port() != 0) return;
+      nếu (ptr.port() != 0) trả_về;
 
       assert(base + bit.size() <= vwid);
 
 	// Set the input part. If nothing changes, then break.
       bool flag = input_.set_vec(base, bit);
-      if (flag == false) return;
+      nếu (flag == false) trả_về;
 
-      if (net_ == 0) {
+      nếu (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
       }
@@ -195,7 +195,7 @@ void vvp_fun_buf_not_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 void vvp_fun_buf_not_::recv_real(vvp_net_ptr_t ptr, double real,
                                  vvp_context_t ctx)
 {
-      if (ptr.port() != 0) return;
+      nếu (ptr.port() != 0) trả_về;
 
       recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
 }
@@ -240,8 +240,8 @@ vvp_fun_bufz::~vvp_fun_bufz()
 void vvp_fun_bufz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                              vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      nếu (ptr.port() != 0)
+	    trả_về;
 
       ptr.ptr()->send_vec4(bit, 0);
 }
@@ -249,8 +249,8 @@ void vvp_fun_bufz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 void vvp_fun_bufz::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                                 unsigned base, unsigned vwid, vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      nếu (ptr.port() != 0)
+	    trả_về;
 
       ptr.ptr()->send_vec4_pv(bit, base, vwid, 0);
 }
@@ -258,16 +258,16 @@ void vvp_fun_bufz::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 void vvp_fun_bufz::recv_real(vvp_net_ptr_t ptr, double bit,
                              vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      nếu (ptr.port() != 0)
+	    trả_về;
 
       ptr.ptr()->send_real(bit, 0);
 }
 
 void vvp_fun_buft::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
 {
-      if (ptr.port() != 0)
-	    return;
+      nếu (ptr.port() != 0)
+	    trả_về;
 
       ptr.ptr()->send_vec8(bit);
 }
@@ -289,26 +289,26 @@ void vvp_fun_muxr::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 {
 	/* The real valued mux can only take in the select as a
 	   vector4_t. The muxed data is real. */
-      if (ptr.port() != 2)
-	    return;
+      nếu (ptr.port() != 2)
+	    trả_về;
 
       assert(bit.size() == 1);
 
       switch (bit.value(0)) {
 	  case BIT4_0:
-	    if (select_ == SEL_PORT0) return;
+	    nếu (select_ == SEL_PORT0) trả_về;
 	    select_ = SEL_PORT0;
 	    break;
 	  case BIT4_1:
-	    if (select_ == SEL_PORT1) return;
+	    nếu (select_ == SEL_PORT1) trả_về;
 	    select_ = SEL_PORT1;
 	    break;
 	  default:
-	    if (select_ == SEL_BOTH) return;
+	    nếu (select_ == SEL_BOTH) trả_về;
 	    select_ = SEL_BOTH;
       }
 
-      if (net_ == 0) {
+      nếu (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
       }
@@ -319,15 +319,15 @@ void vvp_fun_muxr::recv_real(vvp_net_ptr_t ptr, double bit,
 {
       switch (ptr.port()) {
 	  case 0:
-	    if (a_ == bit) return;
+	    nếu (a_ == bit) trả_về;
 	    a_ = bit;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
+	    nếu (select_ == SEL_PORT1) trả_về; // The other port is selected.
 	    break;
 
 	  case 1:
-	    if (b_ == bit) return;
+	    nếu (b_ == bit) trả_về;
 	    b_ = bit;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
+	    nếu (select_ == SEL_PORT0) trả_về; // The other port is selected.
 	    break;
 
 	  default:
@@ -335,7 +335,7 @@ void vvp_fun_muxr::recv_real(vvp_net_ptr_t ptr, double bit,
 	    assert(0);
       }
 
-      if (net_ == 0) {
+      nếu (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
       }
@@ -354,9 +354,9 @@ void vvp_fun_muxr::run_run()
 	    ptr->send_real(b_, 0);
 	    break;
 	  default:
-	    if (a_ == b_) {
+	    nếu (a_ == b_) {
 		  ptr->send_real(a_, 0);
-	    } else {
+	    } không_thì {
 		  ptr->send_real(0.0, 0); // Should this be NaN?
 	    }
 	    break;
@@ -381,36 +381,36 @@ void vvp_fun_muxz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 {
       switch (ptr.port()) {
 	  case 0:
-	    if (a_ .eeq(bit) && has_run_) return;
+	    nếu (a_ .eeq(bit) && has_run_) trả_về;
 	    a_ = bit;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
+	    nếu (select_ == SEL_PORT1) trả_về; // The other port is selected.
 	    break;
 	  case 1:
-	    if (b_ .eeq(bit) && has_run_) return;
+	    nếu (b_ .eeq(bit) && has_run_) trả_về;
 	    b_ = bit;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
+	    nếu (select_ == SEL_PORT0) trả_về; // The other port is selected.
 	    break;
 	  case 2:
 	    assert(bit.size() == 1);
 	    switch (bit.value(0)) {
 		case BIT4_0:
-		  if (select_ == SEL_PORT0) return;
+		  nếu (select_ == SEL_PORT0) trả_về;
 		  select_ = SEL_PORT0;
 		  break;
 		case BIT4_1:
-		  if (select_ == SEL_PORT1) return;
+		  nếu (select_ == SEL_PORT1) trả_về;
 		  select_ = SEL_PORT1;
 		  break;
 		default:
-		  if (select_ == SEL_BOTH && has_run_) return;
+		  nếu (select_ == SEL_BOTH && has_run_) trả_về;
 		  select_ = SEL_BOTH;
 	    }
 	    break;
 	  default:
-	    return;
+	    trả_về;
       }
 
-      if (net_ == 0) {
+      nếu (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
       }
@@ -425,21 +425,21 @@ void vvp_fun_muxz::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       switch (ptr.port()) {
 	  case 0:
 	    flag = a_.set_vec(base, bit);
-	    if (flag == false && has_run_) return;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
+	    nếu (flag == false && has_run_) trả_về;
+	    nếu (select_ == SEL_PORT1) trả_về; // The other port is selected.
 	    break;
 	  case 1:
 	    flag = b_.set_vec(base, bit);
-	    if (flag == false && has_run_) return;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
+	    nếu (flag == false && has_run_) trả_về;
+	    nếu (select_ == SEL_PORT0) trả_về; // The other port is selected.
 	    break;
 	  case 2:
 	    assert((base == 0) && (bit.size() == 1));
 	    recv_vec4(ptr, bit, 0);
 	  default:
-	    return;
+	    trả_về;
       }
-      if (net_ == 0) {
+      nếu (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
       }
@@ -462,21 +462,21 @@ void vvp_fun_muxz::run_run()
 	      {
 		    unsigned min_size = a_.size();
 		    unsigned max_size = min_size;
-		    if (b_.size() < min_size)
+		    nếu (b_.size() < min_size)
 			  min_size = b_.size();
-		    if (b_.size() > max_size)
+		    nếu (b_.size() > max_size)
 			  max_size = b_.size();
 
 		    vvp_vector4_t res (max_size);
 
-		    for (unsigned idx = 0 ;  idx < min_size ;  idx += 1) {
-			  if (a_.value(idx) == b_.value(idx))
+		    cho (unsigned idx = 0 ;  idx < min_size ;  idx += 1) {
+			  nếu (a_.value(idx) == b_.value(idx))
 				res.set_bit(idx, a_.value(idx));
-			  else
+			  không_thì
 				res.set_bit(idx, BIT4_X);
 		    }
 
-		    for (unsigned idx = min_size ;  idx < max_size ;  idx += 1)
+		    cho (unsigned idx = min_size ;  idx < max_size ;  idx += 1)
 			  res.set_bit(idx, BIT4_X);
 
 		    ptr->send_vec4(res, 0);
@@ -525,10 +525,10 @@ void vvp_fun_or::run_run()
 
       vvp_vector4_t result (input_[0]);
 
-      for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
+      cho (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
 	    result |= input_[pdx];
 
-      if (invert_)
+      nếu (invert_)
 	    result.invert();
 
       ptr->send_vec4(result, 0);
@@ -551,10 +551,10 @@ void vvp_fun_xor::run_run()
 
       vvp_vector4_t result (input_[0]);
 
-      for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
+      cho (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
 	    result ^= input_[pdx];
 
-      if (invert_)
+      nếu (invert_)
 	    result.invert();
 
       ptr->send_vec4(result, 0);
@@ -573,88 +573,88 @@ void compile_functor(char*label, char*type, unsigned width,
       vvp_net_fun_t* obj = 0;
       bool strength_aware = false;
 
-      if (strcmp(type, "OR") == 0) {
+      nếu (strcmp(type, "OR") == 0) {
 	    obj = new vvp_fun_or(width, false);
 
-      } else if (strcmp(type, "AND") == 0) {
+      } không_thì nếu (strcmp(type, "AND") == 0) {
 	    obj = new vvp_fun_and(width, false);
 
-      } else if (strcmp(type, "BUF") == 0) {
+      } không_thì nếu (strcmp(type, "BUF") == 0) {
 	    obj = new vvp_fun_buf(width);
 
-      } else if (strcmp(type, "BUFIF0") == 0) {
+      } không_thì nếu (strcmp(type, "BUFIF0") == 0) {
 	    obj = new vvp_fun_bufif(true,false, ostr0, ostr1);
 	    strength_aware = true;
 
-      } else if (strcmp(type, "BUFIF1") == 0) {
+      } không_thì nếu (strcmp(type, "BUFIF1") == 0) {
 	    obj = new vvp_fun_bufif(false,false, ostr0, ostr1);
 	    strength_aware = true;
 
-      } else if (strcmp(type, "EQUIV") == 0) {
+      } không_thì nếu (strcmp(type, "EQUIV") == 0) {
 	    obj = new vvp_fun_equiv();
 
-      } else if (strcmp(type, "IMPL") == 0) {
+      } không_thì nếu (strcmp(type, "IMPL") == 0) {
 	    obj = new vvp_fun_impl();
 
-      } else if (strcmp(type, "NAND") == 0) {
+      } không_thì nếu (strcmp(type, "NAND") == 0) {
 	    obj = new vvp_fun_and(width, true);
 
-      } else if (strcmp(type, "NOR") == 0) {
+      } không_thì nếu (strcmp(type, "NOR") == 0) {
 	    obj = new vvp_fun_or(width, true);
 
-      } else if (strcmp(type, "NOTIF0") == 0) {
+      } không_thì nếu (strcmp(type, "NOTIF0") == 0) {
 	    obj = new vvp_fun_bufif(true,true, ostr0, ostr1);
 	    strength_aware = true;
 
-      } else if (strcmp(type, "NOTIF1") == 0) {
+      } không_thì nếu (strcmp(type, "NOTIF1") == 0) {
 	    obj = new vvp_fun_bufif(false,true, ostr0, ostr1);
 	    strength_aware = true;
 
-      } else if (strcmp(type, "BUFT") == 0) {
+      } không_thì nếu (strcmp(type, "BUFT") == 0) {
 	    obj = new vvp_fun_buft();
 
-      } else if (strcmp(type, "BUFZ") == 0) {
+      } không_thì nếu (strcmp(type, "BUFZ") == 0) {
 	    obj = new vvp_fun_bufz();
 
-      } else if (strcmp(type, "MUXR") == 0) {
+      } không_thì nếu (strcmp(type, "MUXR") == 0) {
 	    obj = new vvp_fun_muxr;
 
-      } else if (strcmp(type, "MUXZ") == 0) {
+      } không_thì nếu (strcmp(type, "MUXZ") == 0) {
 	    obj = new vvp_fun_muxz(width);
 
-      } else if (strcmp(type, "CMOS") == 0) {
+      } không_thì nếu (strcmp(type, "CMOS") == 0) {
 	    obj = new vvp_fun_cmos();
 
-      } else if (strcmp(type, "NMOS") == 0) {
+      } không_thì nếu (strcmp(type, "NMOS") == 0) {
 	    obj = new vvp_fun_pmos(true);
 
-      } else if (strcmp(type, "PMOS") == 0) {
+      } không_thì nếu (strcmp(type, "PMOS") == 0) {
 	    obj = new vvp_fun_pmos(false);
 
-      } else if (strcmp(type, "RCMOS") == 0) {
+      } không_thì nếu (strcmp(type, "RCMOS") == 0) {
 	    obj = new vvp_fun_rcmos();
 
-      } else if (strcmp(type, "RNMOS") == 0) {
+      } không_thì nếu (strcmp(type, "RNMOS") == 0) {
 	    obj = new vvp_fun_rpmos(true);
 
-      } else if (strcmp(type, "RPMOS") == 0) {
+      } không_thì nếu (strcmp(type, "RPMOS") == 0) {
 	    obj = new vvp_fun_rpmos(false);
 
-      } else if (strcmp(type, "NOT") == 0) {
+      } không_thì nếu (strcmp(type, "NOT") == 0) {
 	    obj = new vvp_fun_not(width);
 
-      } else if (strcmp(type, "XNOR") == 0) {
+      } không_thì nếu (strcmp(type, "XNOR") == 0) {
 	    obj = new vvp_fun_xor(width, true);
 
-      } else if (strcmp(type, "XOR") == 0) {
+      } không_thì nếu (strcmp(type, "XOR") == 0) {
 	    obj = new vvp_fun_xor(width, false);
 
-      } else {
+      } không_thì {
 	    yyerror("invalid functor type.");
 	    free(type);
 	    free(argv);
 	    free(label);
-	    return;
+	    trả_về;
       }
 
       free(type);
@@ -669,10 +669,10 @@ void compile_functor(char*label, char*type, unsigned width,
 	/* If both the strengths are the default strong drive, then
 	   there is no need for a specialized driver. Attach the label
 	   to this node and we are finished. */
-      if (strength_aware || (ostr0 == 6 && ostr1 == 6)) {
+      nếu (strength_aware || (ostr0 == 6 && ostr1 == 6)) {
 	    define_functor_symbol(label, net);
 	    free(label);
-	    return;
+	    trả_về;
       }
 
       vvp_net_t*net_drv = new vvp_net_t;

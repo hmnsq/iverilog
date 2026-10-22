@@ -44,71 +44,71 @@ static const char*cb_reason_name(PLI_INT32 reason)
 {
       switch (reason) {
 	  case cbValueChange:
-	    return "cbValueChange";
+	    trả_về "cbValueChange";
 	  case cbStmt:
-	    return "cbStmt";
+	    trả_về "cbStmt";
 	  case cbForce:
-	    return "cbForce";
+	    trả_về "cbForce";
 	  case cbRelease:
-	    return "cbRelease";
+	    trả_về "cbRelease";
 	  case cbAtStartOfSimTime:
-	    return "cbAtStartOfSimTime";
+	    trả_về "cbAtStartOfSimTime";
 	  case cbReadWriteSynch:
-	    return "cbReadWriteSynch";
+	    trả_về "cbReadWriteSynch";
 	  case cbReadOnlySynch:
-	    return "cbReadOnlySynch";
+	    trả_về "cbReadOnlySynch";
 	  case cbNextSimTime:
-	    return "cbNextSimTime";
+	    trả_về "cbNextSimTime";
 	  case cbAfterDelay:
-	    return "cbAfterDelay";
+	    trả_về "cbAfterDelay";
 	  case cbEndOfCompile:
-	    return "cbEndOfCompile";
+	    trả_về "cbEndOfCompile";
 	  case cbStartOfSimulation:
-	    return "cbStartOfSimulation";
+	    trả_về "cbStartOfSimulation";
 	  case cbEndOfSimulation:
-	    return "cbEndOfSimulation";
+	    trả_về "cbEndOfSimulation";
 	  case cbError:
-	    return "cbError";
+	    trả_về "cbError";
 	  case cbTchkViolation:
-	    return "cbTchkViolation";
+	    trả_về "cbTchkViolation";
 	  case cbStartOfSave:
-	    return "cbStartOfSave";
+	    trả_về "cbStartOfSave";
 	  case cbEndOfSave:
-	    return "cbEndOfSave";
+	    trả_về "cbEndOfSave";
 	  case cbStartOfRestart:
-	    return "cbStartOfRestart";
+	    trả_về "cbStartOfRestart";
 	  case cbEndOfRestart:
-	    return "cbEndOfRestart";
+	    trả_về "cbEndOfRestart";
 	  case cbStartOfReset:
-	    return "cbStartOfReset";
+	    trả_về "cbStartOfReset";
 	  case cbEndOfReset:
-	    return "cbEndOfReset";
+	    trả_về "cbEndOfReset";
 	  case cbEnterInteractive:
-	    return "cbEnterInteractive";
+	    trả_về "cbEnterInteractive";
 	  case cbExitInteractive:
-	    return "cbExitInteractive";
+	    trả_về "cbExitInteractive";
 	  case cbInteractiveScopeChange:
-	    return "cbInteractiveScopeChange";
+	    trả_về "cbInteractiveScopeChange";
 	  case cbUnresolvedSystf:
-	    return "cbUnresolvedSystf";
+	    trả_về "cbUnresolvedSystf";
 	  case cbAtEndOfSimTime:
-	    return "cbAtEndOfSimTime";
+	    trả_về "cbAtEndOfSimTime";
 	  default:
-	    return "unrecognised";
+	    trả_về "unrecognised";
       }
 }
 
 static bool check_callback_time(p_cb_data data, bool allow_suppress)
 {
       assert(data);
-      if (!data->time) {
-	    if (!allow_suppress) {
+      nếu (!data->time) {
+	    nếu (!allow_suppress) {
 		  fprintf(stderr, "VPI error: null value passed in cb_data.time "
 				  "when registering %s callback\n.",
 				  cb_reason_name(data->reason));
-		  return false;
+		  trả_về false;
 	    }
-	    return true;
+	    trả_về true;
       }
       switch (data->time->type) {
 	  case vpiSimTime:
@@ -116,20 +116,20 @@ static bool check_callback_time(p_cb_data data, bool allow_suppress)
 	  case vpiScaledRealTime:
 	    break;
 	  case vpiSuppressTime:
-	    if (!allow_suppress) {
+	    nếu (!allow_suppress) {
 		  fprintf(stderr, "VPI error: vpiSuppressTime is not valid "
 				  "when registering %s callback\n.",
 				  cb_reason_name(data->reason));
-		  return false;
+		  trả_về false;
 	    }
 	    break;
 	  default:
 	    fprintf(stderr, "VPI error: invalid type passed in cb_data time "
 			    "structure when registering %s callback\n.",
 			    cb_reason_name(data->reason));
-	    return false;
+	    trả_về false;
       }
-      return true;
+      trả_về true;
 }
 
 static void set_callback_time(p_cb_data data)
@@ -188,22 +188,22 @@ __vpiCallback::~__vpiCallback()
 {
 }
 
-int __vpiCallback::get_type_code(void) const
-{ return vpiCallback; }
+số_nguyên __vpiCallback::get_type_code(void) const
+{ trả_về vpiCallback; }
 
 
 value_callback::value_callback(p_cb_data data)
 {
       cb_data = *data;
-      if (data->time) {
+      nếu (data->time) {
 	    cb_time = *(data->time);
-      } else {
+      } không_thì {
 	    cb_time.type = vpiSuppressTime;
       }
       cb_data.time = &cb_time;
-      if (data->value) {
+      nếu (data->value) {
 	    cb_value = *(data->value);
-      } else {
+      } không_thì {
 	    cb_value.format = vpiSuppressVal;
       }
       cb_data.value = &cb_value;
@@ -215,7 +215,7 @@ value_callback::value_callback(p_cb_data data)
  */
 bool value_callback::test_value_callback_ready(void)
 {
-      return true;
+      trả_về true;
 }
 
 static void vpip_real_value_change(value_callback*cbh, vpiHandle ref)
@@ -290,11 +290,11 @@ bool value_part_callback::test_value_callback_ready(void)
       tmp_value.format = vpiBinStrVal;
       sig_fil->get_value(&tmp_value);
 
-      if (memcmp(value_bits_, tmp_value.value.str + value_off_, pobj->width) == 0)
-	    return false;
+      nếu (memcmp(value_bits_, tmp_value.value.str + value_off_, pobj->width) == 0)
+	    trả_về false;
 
       memcpy(value_bits_, tmp_value.value.str + value_off_, pobj->width);
-      return true;
+      trả_về true;
 }
 
 /*
@@ -307,7 +307,7 @@ static value_callback*make_value_change_part(p_cb_data data)
 {
 	/* Attach the __vpiCallback object to the signal. */
       value_callback*cbh = new value_part_callback(data);
-      return cbh;
+      trả_về cbh;
 }
 
 /*
@@ -319,30 +319,30 @@ static value_callback*make_value_change_part(p_cb_data data)
  */
 static value_callback* make_value_change(p_cb_data data)
 {
-      if (!check_callback_time(data, true))
-	    return 0;
+      nếu (!check_callback_time(data, true))
+	    trả_về 0;
 
-      if (vpi_get(vpiAutomatic, data->obj)) {
+      nếu (vpi_get(vpiAutomatic, data->obj)) {
             fprintf(stderr, "vpi error: cannot place value change "
                             "callback on automatically allocated "
                             "variable '%s'\n",
                             vpi_get_str(vpiName, data->obj));
-            return 0;
+            trả_về 0;
       }
 
 	// Special case: the target object is a vpiPartSelect
-      if (data->obj->get_type_code() == vpiPartSelect) {
-            if (data->obj->vpi_handle(vpiArray))
-	        return vpip_array_word_change(data);
-            else
-	        return make_value_change_part(data);
+      nếu (data->obj->get_type_code() == vpiPartSelect) {
+            nếu (data->obj->vpi_handle(vpiArray))
+	        trả_về vpip_array_word_change(data);
+            không_thì
+	        trả_về make_value_change_part(data);
       }
 
-      if (data->obj->get_type_code() == vpiMemoryWord)
-	    return vpip_array_word_change(data);
+      nếu (data->obj->get_type_code() == vpiMemoryWord)
+	    trả_về vpip_array_word_change(data);
 
-      if (data->obj->get_type_code() == vpiMemory)
-	    return vpip_array_change(data);
+      nếu (data->obj->get_type_code() == vpiMemory)
+	    trả_về vpip_array_change(data);
 
       value_callback*obj = new value_callback(data);
 
@@ -392,10 +392,10 @@ static value_callback* make_value_change(p_cb_data data)
 		    "values on type code=%d\n",
 		    data->obj->get_type_code());
 	    delete obj;
-	    return 0;
+	    trả_về 0;
       }
 
-      return obj;
+      trả_về obj;
 }
 
 class sync_callback : public __vpiCallback {
@@ -432,15 +432,15 @@ sync_callback::~sync_callback()
 
 void sync_cb::run_run()
 {
-      if (handle == 0)
-	    return;
+      nếu (handle == 0)
+	    trả_về;
 
       sync_callback*cur = handle;
 
 	/* Run the callback. If the cb_rtn function pointer is set to
 	   null, then just skip the whole thing and free it. This is
 	   the usual way to cancel one-time callbacks of this sort. */
-      if (cur->cb_data.cb_rtn != 0) {
+      nếu (cur->cb_data.cb_rtn != 0) {
 	    set_callback_time(&cur->cb_data);
 	    assert(vpi_mode_flag == VPI_MODE_NONE);
 	    vpi_mode_flag = sync_flag? VPI_MODE_ROSYNC : VPI_MODE_RWSYNC;
@@ -466,17 +466,17 @@ static vvp_time64_t get_sync_cb_time(sync_callback*obj)
 
 	  default:
 	    fprintf(stderr, "get_sync_cb_time: Unsupported time type %d.\n",
-	            (int)obj->cb_time.type);
+	            (số_nguyên)obj->cb_time.type);
 	    assert(0);
 	    break;
       }
-      return tv;
+      trả_về tv;
 }
 
 static sync_callback* make_sync(p_cb_data data, bool readonly_flag)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      nếu (!check_callback_time(data, false))
+	    trả_về 0;
 
       sync_callback*obj = new sync_callback(data);
 
@@ -488,13 +488,13 @@ static sync_callback* make_sync(p_cb_data data, bool readonly_flag)
       vvp_time64_t tv = get_sync_cb_time(obj);
       schedule_generic(cb, tv, true, readonly_flag);
 
-      return obj;
+      trả_về obj;
 }
 
 static struct __vpiCallback* make_afterdelay(p_cb_data data)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      nếu (!check_callback_time(data, false))
+	    trả_về 0;
 
       sync_callback*obj = new sync_callback(data);
       struct sync_cb*cb = new sync_cb;
@@ -505,13 +505,13 @@ static struct __vpiCallback* make_afterdelay(p_cb_data data)
       vvp_time64_t tv = get_sync_cb_time(obj);
       schedule_generic(cb, tv, false);
 
-      return obj;
+      trả_về obj;
 }
 
 static struct __vpiCallback* make_at_start_of_sim_time(p_cb_data data)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      nếu (!check_callback_time(data, false))
+	    trả_về 0;
 
       sync_callback*obj = new sync_callback(data);
       struct sync_cb*cb = new sync_cb;
@@ -521,23 +521,23 @@ static struct __vpiCallback* make_at_start_of_sim_time(p_cb_data data)
 
       vvp_time64_t tv = get_sync_cb_time(obj);
       vvp_time64_t cur = schedule_simtime();
-      if (cur > tv) {
+      nếu (cur > tv) {
 	    tv = 0;
 	    assert(0);
-      } else if (cur == tv) {
+      } không_thì nếu (cur == tv) {
 	    tv = 0;
-      } else {
+      } không_thì {
 	    tv -= cur;
       }
       schedule_at_start_of_simtime(cb, tv);
 
-      return obj;
+      trả_về obj;
 }
 
 static struct __vpiCallback* make_at_end_of_sim_time(p_cb_data data)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      nếu (!check_callback_time(data, false))
+	    trả_về 0;
 
       sync_callback*obj = new sync_callback(data);
       struct sync_cb*cb = new sync_cb;
@@ -547,17 +547,17 @@ static struct __vpiCallback* make_at_end_of_sim_time(p_cb_data data)
 
       vvp_time64_t tv = get_sync_cb_time(obj);
       vvp_time64_t cur = schedule_simtime();
-      if (cur > tv) {
+      nếu (cur > tv) {
 	    tv = 0;
 	    assert(0);
-      } else if (cur == tv) {
+      } không_thì nếu (cur == tv) {
 	    tv = 0;
-      } else {
+      } không_thì {
 	    tv -= cur;
       }
       schedule_at_end_of_simtime(cb, tv);
 
-      return obj;
+      trả_về obj;
 }
 
 /*
@@ -576,11 +576,11 @@ class simulator_callback : public __vpiCallback {
 inline simulator_callback::simulator_callback(const struct t_cb_data*data)
 {
       cb_data = *data;
-      if ((data->reason == cbNextSimTime) && data->time) {
+      nếu ((data->reason == cbNextSimTime) && data->time) {
 	    cb_time = *(data->time);
-      } else if (data->reason == cbEndOfSimulation) {
+      } không_thì nếu (data->reason == cbEndOfSimulation) {
 	    cb_time.type = vpiSimTime;
-      } else {
+      } không_thì {
 	    cb_time.type = vpiSuppressTime;
       }
       cb_data.time = &cb_time;
@@ -599,21 +599,21 @@ void simulator_cb_delete(void)
       simulator_callback* cur;
 
 	/* Delete all the end of compile callbacks. */
-      while (EndOfCompile) {
+      trong_khi (EndOfCompile) {
 	    cur = EndOfCompile;
 	    EndOfCompile = dynamic_cast<simulator_callback*>(cur->next);
 	    delete cur;
       }
 
 	/* Delete all the start of simulation callbacks. */
-      while (StartOfSimulation) {
+      trong_khi (StartOfSimulation) {
 	    cur = StartOfSimulation;
 	    StartOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
 	    delete cur;
       }
 
 	/* Delete all the end of simulation callbacks. */
-      while (EndOfSimulation) {
+      trong_khi (EndOfSimulation) {
 	    cur = EndOfSimulation;
 	    EndOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
 	    delete cur;
@@ -631,10 +631,10 @@ void vpiEndOfCompile(void) {
       assert(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      while (EndOfCompile) {
+      trong_khi (EndOfCompile) {
 	    cur = EndOfCompile;
 	    EndOfCompile = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
+	    nếu (cur->cb_data.cb_rtn != 0) {
 		  (cur->cb_data.cb_rtn)(&cur->cb_data);
 	    }
 	    delete cur;
@@ -653,10 +653,10 @@ void vpiStartOfSim(void) {
       assert(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      while (StartOfSimulation) {
+      trong_khi (StartOfSimulation) {
 	    cur = StartOfSimulation;
 	    StartOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
+	    nếu (cur->cb_data.cb_rtn != 0) {
 		  (cur->cb_data.cb_rtn)(&cur->cb_data);
 	    }
 	    delete cur;
@@ -674,10 +674,10 @@ void vpiPostsim(void) {
       assert(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_ROSYNC;
 
-      while (EndOfSimulation) {
+      trong_khi (EndOfSimulation) {
 	    cur = EndOfSimulation;
 	    EndOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
+	    nếu (cur->cb_data.cb_rtn != 0) {
 		  set_callback_time(&cur->cb_data);
 		  (cur->cb_data.cb_rtn)(&cur->cb_data);
 	    }
@@ -700,10 +700,10 @@ void vpiNextSimTime(void)
       assert(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      while (next) {
+      trong_khi (next) {
             cur = next;
             next = dynamic_cast<simulator_callback*>(cur->next);
-            if (cur->cb_data.cb_rtn != 0) {
+            nếu (cur->cb_data.cb_rtn != 0) {
                   set_callback_time(&cur->cb_data);
                   (cur->cb_data.cb_rtn)(&cur->cb_data);
             }
@@ -715,8 +715,8 @@ void vpiNextSimTime(void)
 
 static simulator_callback* make_prepost(p_cb_data data)
 {
-      if ((data->reason == cbNextSimTime) && !check_callback_time(data, true))
-	    return 0;
+      nếu ((data->reason == cbNextSimTime) && !check_callback_time(data, true))
+	    trả_về 0;
 
       simulator_callback*obj = new simulator_callback(data);
 
@@ -740,7 +740,7 @@ static simulator_callback* make_prepost(p_cb_data data)
 	    break;
       }
 
-      return obj;
+      trả_về obj;
 }
 
 vpiHandle vpi_register_cb(p_cb_data data)
@@ -784,11 +784,11 @@ vpiHandle vpi_register_cb(p_cb_data data)
 	  default:
 	    fprintf(stderr, "vpi error: vpi_register_cb invalid or "
 		    "unsupported callback reason: %d\n",
-		    (int)data->reason);
+		    (số_nguyên)data->reason);
 	    break;
       }
 
-      return obj;
+      trả_về obj;
 }
 
 /*
@@ -802,7 +802,7 @@ PLI_INT32 vpi_remove_cb(vpiHandle ref)
       assert(obj);
       obj->cb_data.cb_rtn = 0;
 
-      return 1;
+      trả_về 1;
 }
 
 void callback_execute(struct __vpiCallback*cur)
@@ -859,13 +859,13 @@ void vvp_vpi_callback::add_vpi_callback(value_callback*cb)
 #ifdef CHECK_WITH_VALGRIND
 void vvp_vpi_callback::clear_all_callbacks()
 {
-      while (vpi_callbacks_) {
+      trong_khi (vpi_callbacks_) {
 	    value_callback *tmp = dynamic_cast<value_callback*>
 	                            (vpi_callbacks_->next);
 	    delete vpi_callbacks_;
 	    vpi_callbacks_ = tmp;
       }
-      while (array_words_) {
+      trong_khi (array_words_) {
 	    struct __vpi_array_word*tmp = array_words_->next;
 	    delete array_words_;
 	    array_words_ = tmp;
@@ -882,7 +882,7 @@ void vvp_vpi_callback::clear_all_callbacks()
 void vvp_vpi_callback::run_vpi_callbacks()
 {
       struct __vpi_array_word*array_word = array_words_;
-      while (array_word) {
+      trong_khi (array_word) {
 	    array_word->array->word_change(array_word->word);
 	    array_word = array_word->next;
       }
@@ -890,26 +890,26 @@ void vvp_vpi_callback::run_vpi_callbacks()
       value_callback *next = vpi_callbacks_;
       value_callback *prev = 0;
 
-      while (next) {
+      trong_khi (next) {
 	    value_callback*cur = next;
 	    next = dynamic_cast<value_callback*>(cur->next);
 
-	    if (cur->cb_data.cb_rtn != 0) {
-		  if (cur->test_value_callback_ready()) {
-			if (cur->cb_data.value)
+	    nếu (cur->cb_data.cb_rtn != 0) {
+		  nếu (cur->test_value_callback_ready()) {
+			nếu (cur->cb_data.value)
 			      get_value(cur->cb_data.value);
 
 			callback_execute(cur);
 		  }
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } không_thì nếu (prev == 0) {
 
 		  vpi_callbacks_ = next;
 		  cur->next = 0;
 		  delete cur;
 
-	    } else {
+	    } không_thì {
 		  assert(prev->next == cur);
 		  prev->next = next;
 		  cur->next = 0;
@@ -938,7 +938,7 @@ void vvp_signal_value::get_signal_value(struct t_vpi_value*vp)
 	  case vpiRealVal: {
 	    unsigned wid = value_size();
 	    vvp_vector4_t vec4(wid);
-	    for (unsigned idx = 0; idx < wid; idx += 1) {
+	    cho (unsigned idx = 0; idx < wid; idx += 1) {
 		  vec4.set_bit(idx, value(idx));
 	    }
 	    vpip_vec4_get_value(vec4, wid, false, vp);
@@ -951,7 +951,7 @@ void vvp_signal_value::get_signal_value(struct t_vpi_value*vp)
 	  default:
 	    fprintf(stderr, "vpi_callback: value "
 		    "format %d not supported (fun_signal)\n",
-		    (int)vp->format);
+		    (số_nguyên)vp->format);
       }
 }
 
@@ -970,18 +970,18 @@ static void real_signal_value(struct t_vpi_value*vp, double rval)
 
 	  case vpiIntVal:
 	      /* NaN or +/- infinity are translated as 0. */
-	    if (rval != rval || (rval && (rval == 0.5*rval))) {
+	    nếu (rval != rval || (rval && (rval == 0.5*rval))) {
 		  rval = 0.0;
-	    } else {
+	    } không_thì {
 		  rval = std::round(rval);
 	    }
 	    vp->value.integer = (PLI_INT32)rval;
 	    break;
 
 	  case vpiDecStrVal:
-	    if (std::isnan(rval))
+	    nếu (std::isnan(rval))
 		  snprintf(rbuf, RBUF_SIZE, "%s", "nan");
-	    else
+	    không_thì
 		  snprintf(rbuf, RBUF_SIZE, "%0.0f", std::round(rval));
 	    vp->value.str = rbuf;
 	    break;
@@ -995,19 +995,19 @@ static void real_signal_value(struct t_vpi_value*vp, double rval)
 		uint64_t val = vlg_round_to_u64(rval);
 		unsigned len = 0;
 
-		while (val > 0) {
+		trong_khi (val > 0) {
 		      len += 1;
 		      val /= 2;
 		}
 
 		val = vlg_round_to_u64(rval);
-		for (unsigned idx = 0 ;  idx < len ;  idx += 1) {
+		cho (unsigned idx = 0 ;  idx < len ;  idx += 1) {
 		      rbuf[len-idx-1] = (val & 1)? '1' : '0';
 		      val /= 2;
 		}
 
 		rbuf[len] = 0;
-		if (len == 0) {
+		nếu (len == 0) {
 		      rbuf[0] = '0';
 		      rbuf[1] = 0;
 		}
@@ -1021,7 +1021,7 @@ static void real_signal_value(struct t_vpi_value*vp, double rval)
 	  default:
 	    fprintf(stderr, "vpi_callback: value "
 		    "format %d not supported (fun_signal_real)\n",
-		    (int)vp->format);
+		    (số_nguyên)vp->format);
       }
 }
 
@@ -1039,7 +1039,7 @@ void vvp_fun_signal_string_aa::get_signal_value(struct t_vpi_value*)
 {
       assert(0);
 }
-#if 0
+#nếu 0
 void vvp_wire_string::get_signal_value(struct t_vpi_value*vp)
 {
       assert(0);
@@ -1059,7 +1059,7 @@ void vvp_wire_real::get_value(struct t_vpi_value*val)
 {
       get_signal_value(val);
 }
-#if 0
+#nếu 0
 void vvp_wire_string::get_value(struct t_vpi_value*val)
 {
       assert(0);

@@ -96,7 +96,7 @@ void class_property_t::set_real(char*, double)
 double class_property_t::get_real(char*)
 {
       assert(0);
-      return 0.0;
+      trả_về 0.0;
 }
 
 void class_property_t::set_string(char*, const string&)
@@ -107,7 +107,7 @@ void class_property_t::set_string(char*, const string&)
 string class_property_t::get_string(char*)
 {
       assert(0);
-      return "";
+      trả_về "";
 }
 
 void class_property_t::set_object(char*, const vvp_object_t&, uint64_t)
@@ -127,7 +127,7 @@ template <class T> class property_atom : public class_property_t {
       inline explicit property_atom(void) { }
       ~property_atom() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_size() const override { trả_về sizeof(T); }
 
     public:
       void construct(char*buf) const override
@@ -146,7 +146,7 @@ class property_bit : public class_property_t {
       explicit inline property_bit(size_t wid): wid_(wid) { }
       ~property_bit() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector2_t); }
+      size_t instance_size() const override { trả_về sizeof(vvp_vector2_t); }
 
     public:
       void construct(char*buf) const override
@@ -171,7 +171,7 @@ class property_logic : public class_property_t {
       explicit inline property_logic(size_t wid): wid_(wid) { }
       ~property_logic() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector4_t); }
+      size_t instance_size() const override { trả_về sizeof(vvp_vector4_t); }
 
     public:
       void construct(char*buf) const override
@@ -196,7 +196,7 @@ template <class T> class property_real : public class_property_t {
       inline explicit property_real(void) { }
       ~property_real() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_size() const override { trả_về sizeof(T); }
 
     public:
       void construct(char*buf) const override
@@ -215,7 +215,7 @@ class property_string : public class_property_t {
       inline explicit property_string(void) { }
       ~property_string() override { }
 
-      size_t instance_size() const override { return sizeof(std::string); }
+      size_t instance_size() const override { trả_về sizeof(std::string); }
 
     public:
       void construct(char*buf) const override
@@ -237,7 +237,7 @@ class property_object : public class_property_t {
       inline explicit property_object(uint64_t as): array_size_(as==0? 1 : as) { }
       ~property_object() override { }
 
-      size_t instance_size() const override { return array_size_ * sizeof(vvp_object_t); }
+      size_t instance_size() const override { trả_về array_size_ * sizeof(vvp_object_t); }
 
     public:
       void construct(char*buf) const override;
@@ -269,7 +269,7 @@ template <class T> void property_atom<T>::get_vec4(char*buf, vvp_vector4_t&val)
       unsigned long tmp[tmp_cnt];
       tmp[0] = src[0];
 
-      for (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
+      cho (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
 	    tmp[idx] = src[0] >> idx * 8 * sizeof(tmp[0]);
 
       val.resize(8*sizeof(T));
@@ -330,7 +330,7 @@ template <class T> void property_real<T>::set_real(char*buf, double val)
 template <class T> double property_real<T>::get_real(char*buf)
 {
       T*tmp = reinterpret_cast<T*>(buf+offset_);
-      return *tmp;
+      trả_về *tmp;
 }
 
 template <class T> void property_real<T>::copy(char*dst, char*src)
@@ -349,7 +349,7 @@ void property_string::set_string(char*buf, const string&val)
 string property_string::get_string(char*buf)
 {
       const string*tmp = reinterpret_cast<string*>(buf+offset_);
-      return *tmp;
+      trả_về *tmp;
 }
 
 void property_string::copy(char*dst, char*src)
@@ -361,14 +361,14 @@ void property_string::copy(char*dst, char*src)
 
 void property_object::construct(char*buf) const
 {
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      cho (size_t idx = 0 ; idx < array_size_ ; idx += 1)
 	    new (buf+offset_ + idx*sizeof(vvp_object_t)) vvp_object_t;
 }
 
 void property_object::destruct(char*buf) const
 {
       vvp_object_t*tmp = reinterpret_cast<vvp_object_t*> (buf+offset_);
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      cho (size_t idx = 0 ; idx < array_size_ ; idx += 1)
 	    (tmp+idx)->~vvp_object_t();
 }
 
@@ -390,7 +390,7 @@ void property_object::copy(char*dst, char*src)
 {
       vvp_object_t*dst_obj = reinterpret_cast<vvp_object_t*>(dst+offset_);
       const vvp_object_t*src_obj = reinterpret_cast<vvp_object_t*>(src+offset_);
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      cho (size_t idx = 0 ; idx < array_size_ ; idx += 1)
 	    dst_obj[idx] = src_obj[idx];
 }
 
@@ -404,7 +404,7 @@ class_type::class_type(const string&nam, size_t nprop)
 
 class_type::~class_type()
 {
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      cho (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    delete properties_[idx].type;
 }
 
@@ -413,38 +413,38 @@ void class_type::set_property(size_t idx, const string&name, const string&type, 
       assert(idx < properties_.size());
       properties_[idx].name = name;
 
-      if (type == "b8")
+      nếu (type == "b8")
 	    properties_[idx].type = new property_atom<uint8_t>;
-      else if (type == "b16")
+      không_thì nếu (type == "b16")
 	    properties_[idx].type = new property_atom<uint16_t>;
-      else if (type == "b32")
+      không_thì nếu (type == "b32")
 	    properties_[idx].type = new property_atom<uint32_t>;
-      else if (type == "b64")
+      không_thì nếu (type == "b64")
 	    properties_[idx].type = new property_atom<uint64_t>;
-      else if (type == "sb8")
+      không_thì nếu (type == "sb8")
 	    properties_[idx].type = new property_atom<int8_t>;
-      else if (type == "sb16")
+      không_thì nếu (type == "sb16")
 	    properties_[idx].type = new property_atom<int16_t>;
-      else if (type == "sb32")
+      không_thì nếu (type == "sb32")
 	    properties_[idx].type = new property_atom<int32_t>;
-      else if (type == "sb64")
+      không_thì nếu (type == "sb64")
 	    properties_[idx].type = new property_atom<int64_t>;
-      else if (type == "r")
+      không_thì nếu (type == "r")
 	    properties_[idx].type = new property_real<double>;
-      else if (type == "S")
+      không_thì nếu (type == "S")
 	    properties_[idx].type = new property_string;
-      else if (type == "o")
+      không_thì nếu (type == "o")
 	    properties_[idx].type = new property_object(array_size);
-      else if (type[0] == 'b') {
+      không_thì nếu (type[0] == 'b') {
 	    size_t wid = strtoul(type.c_str()+1, 0, 0);
 	    properties_[idx].type = new property_bit(wid);
-      } else if (type[0] == 'L') {
+      } không_thì nếu (type[0] == 'L') {
 	    size_t wid = strtoul(type.c_str()+1,0,0);
 	    properties_[idx].type = new property_logic(wid);
-      } else if (type[0] == 's' && type[1] == 'L') {
+      } không_thì nếu (type[0] == 's' && type[1] == 'L') {
 	    size_t wid = strtoul(type.c_str()+2,0,0);
 	    properties_[idx].type = new property_logic(wid);
-      } else {
+      } không_thì {
 	    properties_[idx].type = 0;
       }
 }
@@ -455,7 +455,7 @@ void class_type::finish_setup(void)
 	// Add up all the sizes to get a total instance size. This
 	// figures out how much memory a complete instance will need.
       size_t accum = 0;
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1) {
+      cho (size_t idx = 0 ; idx < properties_.size() ; idx += 1) {
 	    assert(properties_[idx].type);
 	    size_t instance_size = properties_[idx].type->instance_size();
 	    accum += instance_size;
@@ -468,9 +468,9 @@ void class_type::finish_setup(void)
 	// space. Allocate the properties largest objects first so
 	// that they are assured better alignment.
       accum = 0;
-      for (map<size_t, vector<size_t> >::reverse_iterator cur = size_map.rbegin()
+      cho (map<size_t, vector<size_t> >::reverse_iterator cur = size_map.rbegin()
 		 ; cur != size_map.rend() ; ++ cur) {
-	    for (size_t idx = 0 ; idx < cur->second.size() ; idx += 1) {
+	    cho (size_t idx = 0 ; idx < cur->second.size() ; idx += 1) {
 		  size_t pid = cur->second[idx];
 		  class_property_t*ptype = properties_[pid].type;
 		  assert(ptype->instance_size() == cur->first);
@@ -484,17 +484,17 @@ class_type::inst_t class_type::instance_new() const
 {
       char*buf = new char [instance_size_];
 
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      cho (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->construct(buf);
 
-      return reinterpret_cast<inst_t> (buf);
+      trả_về reinterpret_cast<inst_t> (buf);
 }
 
 void class_type::instance_delete(class_type::inst_t obj) const
 {
       char*buf = reinterpret_cast<char*> (obj);
 
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      cho (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->destruct(buf);
 
       delete[]buf;
@@ -528,7 +528,7 @@ double class_type::get_real(class_type::inst_t obj, size_t pid) const
 {
       char*buf = reinterpret_cast<char*> (obj);
       assert(pid < properties_.size());
-      return properties_[pid].type->get_real(buf);
+      trả_về properties_[pid].type->get_real(buf);
 }
 
 void class_type::set_string(class_type::inst_t obj, size_t pid,
@@ -543,7 +543,7 @@ string class_type::get_string(class_type::inst_t obj, size_t pid) const
 {
       char*buf = reinterpret_cast<char*> (obj);
       assert(pid < properties_.size());
-      return properties_[pid].type->get_string(buf);
+      trả_về properties_[pid].type->get_string(buf);
 }
 
 void class_type::set_object(class_type::inst_t obj, size_t pid,
@@ -572,9 +572,9 @@ void class_type::copy_property(class_type::inst_t dst, size_t pid, class_type::i
       properties_[pid].type->copy(dst_buf, src_buf);
 }
 
-int class_type::get_type_code(void) const
+số_nguyên class_type::get_type_code(void) const
 {
-      return vpiClassDefn;
+      trả_về vpiClassDefn;
 }
 
 static class_type*compile_class = 0;
