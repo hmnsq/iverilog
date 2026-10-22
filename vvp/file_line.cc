@@ -22,13 +22,13 @@
 class __vpiFileLine : public __vpiHandle {
     public:
       explicit __vpiFileLine(const char*desc_, long file_idx_, long lineno_);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+      整数 get_type_code(void) const override;
+      整数 vpi_get(整数 code) override;
+      char* vpi_get_str(整数 code) override;
 
-      const char* get_description() const { return description; };
-      unsigned get_file_idx() const { return file_idx; };
-      unsigned get_lineno() const { return lineno; };
+      const char* get_description() const { 返回 description; };
+      unsigned get_file_idx() const { 返回 file_idx; };
+      unsigned get_lineno() const { 返回 lineno; };
 
     private:
       const char *description;
@@ -39,20 +39,20 @@ class __vpiFileLine : public __vpiHandle {
 bool show_file_line = false;
 bool code_is_instrumented = false;
 
-static int file_line_get(int type, vpiHandle ref)
+static 整数 file_line_get(整数 type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
       assert(rfp);
 
       switch (type) {
 	case vpiLineNo:
-	    return rfp->get_lineno();
+	    返回 rfp->get_lineno();
 	default:
-	    return vpiUndefined;
+	    返回 vpiUndefined;
       }
 }
 
-static char *file_line_get_str(int type, vpiHandle ref)
+static char *file_line_get_str(整数 type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
       assert(rfp);
@@ -60,33 +60,33 @@ static char *file_line_get_str(int type, vpiHandle ref)
       switch (type) {
 	case vpiFile:
 	    assert(rfp->get_file_idx() < file_names.size());
-	    return simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
+	    返回 simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
 	case _vpiDescription:
-	    if (rfp->get_description()) {
-		  return simple_set_rbuf_str(rfp->get_description());
-	    } else return simple_set_rbuf_str("Procedural tracing.");
+	    如果 (rfp->get_description()) {
+		  返回 simple_set_rbuf_str(rfp->get_description());
+	    } 否则 返回 simple_set_rbuf_str("Procedural tracing.");
 	default:
-	    return 0;
+	    返回 0;
       }
 }
 
 inline __vpiFileLine::__vpiFileLine(const char*desc_, long file_idx_,
                                     long lineno_)
 {
-      if (desc_) description = vpip_name_string(desc_);
-      else description = 0;
+      如果 (desc_) description = vpip_name_string(desc_);
+      否则 description = 0;
       file_idx = (unsigned) file_idx_;
       lineno = (unsigned) lineno_;
 }
 
-int __vpiFileLine::get_type_code(void) const
-{ return _vpiFileLine; }
+整数 __vpiFileLine::get_type_code(void) const
+{ 返回 _vpiFileLine; }
 
-int __vpiFileLine::vpi_get(int code)
-{ return file_line_get(code, this); }
+整数 __vpiFileLine::vpi_get(整数 code)
+{ 返回 file_line_get(code, this); }
 
-char* __vpiFileLine::vpi_get_str(int code)
-{ return file_line_get_str(code, this); }
+char* __vpiFileLine::vpi_get_str(整数 code)
+{ 返回 file_line_get_str(code, this); }
 
 
 vpiHandle vpip_build_file_line(const char*description, long file_idx, long lineno)
@@ -96,5 +96,5 @@ vpiHandle vpip_build_file_line(const char*description, long file_idx, long linen
 	/* You can turn on the diagnostic output if we find a %file_line. */
       code_is_instrumented = true;
 
-      return obj;
+      返回 obj;
 }

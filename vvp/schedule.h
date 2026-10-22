@@ -195,9 +195,9 @@ extern bool schedule_at_rosync(void);
  * The schedule_finished() function will return true if the
  * schedule_finish() function has been called.
  */
-extern void schedule_finish(int rc);
-extern void schedule_stop(int rc);
-extern void schedule_single_step(int flag);
+extern void schedule_finish(整数 rc);
+extern void schedule_stop(整数 rc);
+extern void schedule_single_step(整数 flag);
 extern bool schedule_finished(void);
 extern bool schedule_stopped(void);
 
@@ -205,7 +205,7 @@ extern bool schedule_stopped(void);
  * The scheduler calls this function to process stop events. When this
  * function returns, the simulation resumes.
  */
-extern void stop_handler(int rc);
+extern void stop_handler(整数 rc);
 
 /*
  * These are event counters for the sake of performance measurements.

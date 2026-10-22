@@ -25,7 +25,7 @@
  * This method is called to compile the design file. The input is read
  * and a list of statements is created.
  */
-extern int compile_design(const char*path);
+extern 整数 compile_design(const char*path);
 
 /*
  * This routine is called to check that the input file has a compatible
@@ -41,7 +41,7 @@ extern void set_delay_selection(const char* sel);
 /*
  * various functions shared by the lexor and the parser.
  */
-extern int yylex(void);
+extern 整数 yylex(void);
 extern void yyerror(const char*msg);
 
 extern void destroy_lexor();

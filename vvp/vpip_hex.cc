@@ -33,13 +33,13 @@ void vpip_hex_str_to_vec4(vvp_vector4_t&val, const char*str)
       unsigned skip_chars = 0;
       const char*tstr = str;
 	/* Find the number of non-numeric characters. */
-      while ((tstr = strpbrk(tstr, "-_"))) {
+      当 ((tstr = strpbrk(tstr, "-_"))) {
 	    skip_chars += 1;
 	    tstr += 1;
       }
       vvp_vector4_t tval(4*(str_len-skip_chars));
       skip_chars = 0;
-      for (unsigned idx = 0 ;  idx < tval.size() ;  idx += 1) {
+      为 (unsigned idx = 0 ;  idx < tval.size() ;  idx += 1) {
 	    unsigned tmp;
 	    unsigned bit_off = idx%4;
 	    unsigned str_off = idx/4;
@@ -47,13 +47,13 @@ void vpip_hex_str_to_vec4(vvp_vector4_t&val, const char*str)
 
 	    assert (str_off+skip_chars < str_len);
 	      /* Skip any "_" characters in the string. */
-	    while((ch = str[str_len-str_off-1-skip_chars]) == '_') {
+	    当((ch = str[str_len-str_off-1-skip_chars]) == '_') {
 		  skip_chars += 1;
 		  assert (str_off+skip_chars < str_len);
 	    }
 
 	      /* If we find a "-" it must be at the head of the string. */
-	    if (ch == '-') assert(0);
+	    如果 (ch == '-') assert(0);
 
 	    switch (ch) {
 		case '0':
@@ -99,15 +99,15 @@ void vpip_hex_str_to_vec4(vvp_vector4_t&val, const char*str)
 		    /* Return "x" if there are invalid digits in the string. */
 		  fprintf(stderr, "Warning: Invalid hex digit %c(%d) in "
 		          "\"%s\".\n", ch, ch, str);
-		  for (unsigned jdx = 0 ;  jdx < val.size() ;  jdx += 1) {
+		  为 (unsigned jdx = 0 ;  jdx < val.size() ;  jdx += 1) {
 			val.set_bit(jdx, BIT4_X);
 		  }
-		  return;
+		  返回;
 	    }
       }
 
 	/* Make a negative value when needed. */
-      if (str[0] == '-') {
+      如果 (str[0] == '-') {
 	    tval.invert();
 	    tval += (int64_t) 1;
       }
@@ -122,7 +122,7 @@ void vpip_hex_str_to_vec4(vvp_vector4_t&val, const char*str)
 	    pad = BIT4_Z;
 	    break;
 	  case BIT4_1:  // If negative pad MSB '1' with '1'.
-	    if (str[0] == '-') {
+	    如果 (str[0] == '-') {
 		  pad = BIT4_1;
 		  break;
 	    }
@@ -133,9 +133,9 @@ void vpip_hex_str_to_vec4(vvp_vector4_t&val, const char*str)
       }
 
 	/* Copy the temporary value to the real value, padding if needed. */
-      for (unsigned idx = 0 ;  idx < val.size() ;  idx += 1) {
-	    if (idx < tval.size()) val.set_bit(idx, tval.value(idx));
-	    else val.set_bit(idx, pad);
+      为 (unsigned idx = 0 ;  idx < val.size() ;  idx += 1) {
+	    如果 (idx < tval.size()) val.set_bit(idx, tval.value(idx));
+	    否则 val.set_bit(idx, pad);
       }
 }
 
@@ -147,7 +147,7 @@ void vpip_vec4_to_hex_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
       buf[slen] = 0;
 
       unsigned val = 0;
-      for (unsigned idx = 0 ;  idx < bits.size() ;  idx += 1) {
+      为 (unsigned idx = 0 ;  idx < bits.size() ;  idx += 1) {
 	    unsigned vs = (idx%4) * 2;
 
 	    switch (bits.value(idx)) {
@@ -163,7 +163,7 @@ void vpip_vec4_to_hex_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
 		  val |= 3 << vs;
 	    }
 
-	    if (vs == 6) {
+	    如果 (vs == 6) {
 		  slen -= 1;
 		  buf[slen] = hex_digits[val];
 		  val = 0;
@@ -173,20 +173,20 @@ void vpip_vec4_to_hex_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
 	/* Fill in X or Z if they are the only thing in the value. */
       switch (bits.size() % 4) {
 	  case 1:
-	    if (val == 2) val = 170;
-	    else if (val == 3) val = 255;
+	    如果 (val == 2) val = 170;
+	    否则 如果 (val == 3) val = 255;
 	    break;
 	  case 2:
-	    if (val == 10) val = 170;
-	    else if (val == 15) val = 255;
+	    如果 (val == 10) val = 170;
+	    否则 如果 (val == 15) val = 255;
 	    break;
 	  case 3:
-	    if (val == 42) val = 170;
-	    else if (val == 63) val = 255;
+	    如果 (val == 42) val = 170;
+	    否则 如果 (val == 63) val = 255;
 	    break;
       }
 
-      if (slen > 0) {
+      如果 (slen > 0) {
 	    slen -= 1;
 	    buf[slen] = hex_digits[val];
       }
