@@ -21,17 +21,17 @@
 
 class __vpiFileLine : public __vpiHandle {
     public:
-      explicit __vpiFileLine(const char*desc_, long file_idx_, long lineno_);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+      explicit __vpiFileLine(const var_na*desc_, long file_idx_, long lineno_);
+      ຈຳນວນເຕັມ get_type_code(void) const override;
+      ຈຳນວນເຕັມ vpi_get(ຈຳນວນເຕັມ code) override;
+      var_na* vpi_get_str(ຈຳນວນເຕັມ code) override;
 
-      const char* get_description() const { return description; };
-      unsigned get_file_idx() const { return file_idx; };
-      unsigned get_lineno() const { return lineno; };
+      const var_na* get_description() const { ສົ່ງຄືນ description; };
+      unsigned get_file_idx() const { ສົ່ງຄືນ file_idx; };
+      unsigned get_lineno() const { ສົ່ງຄືນ lineno; };
 
     private:
-      const char *description;
+      const var_na *description;
       unsigned file_idx;
       unsigned lineno;
 };
@@ -39,62 +39,62 @@ class __vpiFileLine : public __vpiHandle {
 bool show_file_line = false;
 bool code_is_instrumented = false;
 
-static int file_line_get(int type, vpiHandle ref)
+static ຈຳນວນເຕັມ file_line_get(ຈຳນວນເຕັມ type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
       assert(rfp);
 
       switch (type) {
-	case vpiLineNo:
-	    return rfp->get_lineno();
+	pak_sa vpiLineNo:
+	    ສົ່ງຄືນ rfp->get_lineno();
 	default:
-	    return vpiUndefined;
+	    ສົ່ງຄືນ vpiUndefined;
       }
 }
 
-static char *file_line_get_str(int type, vpiHandle ref)
+static var_na *file_line_get_str(ຈຳນວນເຕັມ type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
       assert(rfp);
 
       switch (type) {
-	case vpiFile:
+	pak_sa vpiFile:
 	    assert(rfp->get_file_idx() < file_names.size());
-	    return simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
-	case _vpiDescription:
-	    if (rfp->get_description()) {
-		  return simple_set_rbuf_str(rfp->get_description());
-	    } else return simple_set_rbuf_str("Procedural tracing.");
+	    ສົ່ງຄືນ simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
+	pak_sa _vpiDescription:
+	    ຖ້າ (rfp->get_description()) {
+		  ສົ່ງຄືນ simple_set_rbuf_str(rfp->get_description());
+	    } ບໍ່ດັ່ງນັ້ນ ສົ່ງຄືນ simple_set_rbuf_str("Procedural tracing.");
 	default:
-	    return 0;
+	    ສົ່ງຄືນ 0;
       }
 }
 
-inline __vpiFileLine::__vpiFileLine(const char*desc_, long file_idx_,
+anta_hstha __vpiFileLine::__vpiFileLine(const var_na*desc_, long file_idx_,
                                     long lineno_)
 {
-      if (desc_) description = vpip_name_string(desc_);
-      else description = 0;
+      ຖ້າ (desc_) description = vpip_name_string(desc_);
+      ບໍ່ດັ່ງນັ້ນ description = 0;
       file_idx = (unsigned) file_idx_;
       lineno = (unsigned) lineno_;
 }
 
-int __vpiFileLine::get_type_code(void) const
-{ return _vpiFileLine; }
+ຈຳນວນເຕັມ __vpiFileLine::get_type_code(void) const
+{ ສົ່ງຄືນ _vpiFileLine; }
 
-int __vpiFileLine::vpi_get(int code)
-{ return file_line_get(code, this); }
+ຈຳນວນເຕັມ __vpiFileLine::vpi_get(ຈຳນວນເຕັມ code)
+{ ສົ່ງຄືນ file_line_get(code, this); }
 
-char* __vpiFileLine::vpi_get_str(int code)
-{ return file_line_get_str(code, this); }
+var_na* __vpiFileLine::vpi_get_str(ຈຳນວນເຕັມ code)
+{ ສົ່ງຄືນ file_line_get_str(code, this); }
 
 
-vpiHandle vpip_build_file_line(const char*description, long file_idx, long lineno)
+vpiHandle vpip_build_file_line(const var_na*description, long file_idx, long lineno)
 {
       __vpiFileLine*obj = new __vpiFileLine(description, file_idx, lineno);
 
 	/* You can turn on the diagnostic output if we find a %file_line. */
       code_is_instrumented = true;
 
-      return obj;
+      ສົ່ງຄືນ obj;
 }

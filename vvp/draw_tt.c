@@ -30,42 +30,42 @@ static void draw_hex_table(void)
       unsigned idx;
 
       printf("extern const char hex_digits[256] = {\n");
-      for (idx = 0 ;  idx < 256 ;  idx += 1) {
+      ສຳລັບ (idx = 0 ;  idx < 256 ;  idx += 1) {
 	    unsigned cnt_z = 0, cnt_x = 0;
 	    unsigned bv = 0, bdx;
 
-	    for (bdx = 0 ;  bdx < 4 ;  bdx += 1) {
+	    ສຳລັບ (bdx = 0 ;  bdx < 4 ;  bdx += 1) {
 		  switch ((idx >> (bdx * 2)) & 3) {
-		      case 0:
-			break;
-		      case 1:
+		      pak_sa 0:
+			bha_nga;
+		      pak_sa 1:
 			bv |= 1<<bdx;
-			break;
-		      case 2:
+			bha_nga;
+		      pak_sa 2:
 			cnt_x += 1;
-			break;
-		      case 3:
+			bha_nga;
+		      pak_sa 3:
 			cnt_z += 1;
-			break;
+			bha_nga;
 		  }
 	    }
 
-	    if (cnt_z == 4)
+	    ຖ້າ (cnt_z == 4)
 		  printf(" 'z',");
 
-	    else if (cnt_x == 4)
+	    ບໍ່ດັ່ງນັ້ນ ຖ້າ (cnt_x == 4)
 		  printf(" 'x',");
 
-	    else if ((cnt_z > 0) && (cnt_x == 0))
+	    ບໍ່ດັ່ງນັ້ນ ຖ້າ ((cnt_z > 0) && (cnt_x == 0))
 		  printf(" 'Z',");
 
-	    else if (cnt_x > 0)
+	    ບໍ່ດັ່ງນັ້ນ ຖ້າ (cnt_x > 0)
 		  printf(" 'X',");
 
-	    else
+	    ບໍ່ດັ່ງນັ້ນ
 		  printf(" '%c',", (unsigned)"0123456789abcdef"[bv]);
 
-	    if (((idx+1) % 8) == 0)
+	    ຖ້າ (((idx+1) % 8) == 0)
 		  printf("\n");
       }
       printf("};\n");
@@ -76,50 +76,50 @@ static void draw_oct_table(void)
       unsigned idx;
 
       printf("extern const char oct_digits[64] = {\n");
-      for (idx = 0 ;  idx < 64 ;  idx += 1) {
+      ສຳລັບ (idx = 0 ;  idx < 64 ;  idx += 1) {
 	    unsigned cnt_z = 0, cnt_x = 0;
 	    unsigned bv = 0, bdx;
 
-	    for (bdx = 0 ;  bdx < 3 ;  bdx += 1) {
+	    ສຳລັບ (bdx = 0 ;  bdx < 3 ;  bdx += 1) {
 		  switch ((idx >> (bdx * 2)) & 3) {
-		      case 0:
-			break;
-		      case 1:
+		      pak_sa 0:
+			bha_nga;
+		      pak_sa 1:
 			bv |= 1<<bdx;
-			break;
-		      case 2:
+			bha_nga;
+		      pak_sa 2:
 			cnt_x += 1;
-			break;
-		      case 3:
+			bha_nga;
+		      pak_sa 3:
 			cnt_z += 1;
-			break;
+			bha_nga;
 		  }
 	    }
 
-	    if (cnt_z == 3)
+	    ຖ້າ (cnt_z == 3)
 		  printf(" 'z',");
 
-	    else if (cnt_x == 3)
+	    ບໍ່ດັ່ງນັ້ນ ຖ້າ (cnt_x == 3)
 		  printf(" 'x',");
 
-	    else if ((cnt_z > 0) && (cnt_x == 0))
+	    ບໍ່ດັ່ງນັ້ນ ຖ້າ ((cnt_z > 0) && (cnt_x == 0))
 		  printf(" 'Z',");
 
-	    else if (cnt_x > 0)
+	    ບໍ່ດັ່ງນັ້ນ ຖ້າ (cnt_x > 0)
 		  printf(" 'X',");
 
-	    else
+	    ບໍ່ດັ່ງນັ້ນ
 		  printf(" '%c',", (unsigned)"01234567"[bv]);
 
-	    if (((idx+1) % 8) == 0)
+	    ຖ້າ (((idx+1) % 8) == 0)
 		  printf("\n");
       }
       printf("};\n");
 }
 
-int main(void)
+ຈຳນວນເຕັມ main(void)
 {
       draw_hex_table();
       draw_oct_table();
-      return 0;
+      ສົ່ງຄືນ 0;
 }

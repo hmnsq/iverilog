@@ -36,7 +36,7 @@
 
 using namespace std;
 
-__vpiDarrayVar::__vpiDarrayVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
+__vpiDarrayVar::__vpiDarrayVar(__vpiScope*sc, const var_na*na, vvp_net_t*ne)
 : __vpiBaseVar(sc, na, ne)
 {
 }
@@ -44,95 +44,95 @@ __vpiDarrayVar::__vpiDarrayVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
 unsigned __vpiDarrayVar::get_size() const
 {
       const vvp_fun_signal_object*fun = dynamic_cast<vvp_fun_signal_object*> (get_net()->fun);
-      if(!fun)
-        return 0;
+      ຖ້າ(!fun)
+        ສົ່ງຄືນ 0;
 
       vvp_object_t val = fun->get_object();
       const vvp_darray*aval = val.peek<vvp_darray>();
 
-      if(!aval)
-        return 0;
+      ຖ້າ(!aval)
+        ສົ່ງຄືນ 0;
 
-      return aval->get_size();
+      ສົ່ງຄືນ aval->get_size();
 }
 
 vpiHandle __vpiDarrayVar::get_left_range()
 {
       left_range_.set_value(0);
-      return &left_range_;
+      ສົ່ງຄືນ &left_range_;
 }
 
 vpiHandle __vpiDarrayVar::get_right_range()
 {
       right_range_.set_value(get_size() - 1);
-      return &right_range_;
+      ສົ່ງຄືນ &right_range_;
 }
 
-int __vpiDarrayVar::get_word_size() const
+ຈຳນວນເຕັມ __vpiDarrayVar::get_word_size() const
 {
       vvp_vector4_t new_vec;
       vvp_darray*aobj = get_vvp_darray();
       aobj->get_word(0, new_vec);
-      return new_vec.size();
+      ສົ່ງຄືນ new_vec.size();
 }
 
-char*__vpiDarrayVar::get_word_str(struct __vpiArrayWord*word, int code)
+var_na*__vpiDarrayVar::get_word_str(sa_nracanaa __vpiArrayWord*word, ຈຳນວນເຕັມ code)
 {
       unsigned index = word->get_index();
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      ຖ້າ (code == vpiFile) {  // Not implemented for now!
+	    ສົ່ງຄືນ simple_set_rbuf_str(file_names[0]);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%d", (int)index);
-      return generic_get_str(code, scope_, name_, sidx);
+      var_na sidx [64];
+      snprintf(sidx, 63, "%d", (ຈຳນວນເຕັມ)index);
+      ສົ່ງຄືນ generic_get_str(code, scope_, name_, sidx);
 }
 
-void __vpiDarrayVar::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
+void __vpiDarrayVar::get_word_value(sa_nracanaa __vpiArrayWord*word, p_vpi_value vp)
 {
       unsigned index = word->get_index();
       vvp_darray*aobj = get_vvp_darray();
 
-      if(vp->format == vpiObjTypeVal) {
-          if(dynamic_cast<vvp_darray_real*>(aobj))
+      ຖ້າ(vp->format == vpiObjTypeVal) {
+          ຖ້າ(dynamic_cast<vvp_darray_real*>(aobj))
               vp->format = vpiRealVal;
-          else if(dynamic_cast<vvp_darray_string*>(aobj))
+          ບໍ່ດັ່ງນັ້ນ ຖ້າ(dynamic_cast<vvp_darray_string*>(aobj))
               vp->format = vpiStringVal;
-          else
+          ບໍ່ດັ່ງນັ້ນ
               vp->format = vpiVectorVal;
       }
 
       switch(vp->format) {
-      case vpiBinStrVal:
-      case vpiOctStrVal:
-      case vpiDecStrVal:
-      case vpiHexStrVal:
-      case vpiScalarVal:
-      case vpiIntVal:
-      case vpiVectorVal:
+      pak_sa vpiBinStrVal:
+      pak_sa vpiOctStrVal:
+      pak_sa vpiDecStrVal:
+      pak_sa vpiHexStrVal:
+      pak_sa vpiScalarVal:
+      pak_sa vpiIntVal:
+      pak_sa vpiVectorVal:
       {
           vvp_vector4_t v;
           aobj->get_word(index, v);
           vpip_vec4_get_value(v, v.size(), false, vp);  // TODO sign?
       }
-      break;
+      bha_nga;
 
-      case vpiRealVal:
+      pak_sa vpiRealVal:
       {
-          double d;
+          dviguu_na d;
           aobj->get_word(index, d);
           vpip_real_get_value(d, vp);
       }
-      break;
+      bha_nga;
 
-      case vpiStringVal:
+      pak_sa vpiStringVal:
       {
           string s;
           aobj->get_word(index, s);
           vpip_string_get_value(s, vp);
       }
-      break;
+      bha_nga;
 
       default:
           fprintf(stderr, "vpi sorry: format is not implemented\n");
@@ -140,27 +140,27 @@ void __vpiDarrayVar::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
       }
 }
 
-void __vpiDarrayVar::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int)
+void __vpiDarrayVar::put_word_value(sa_nracanaa __vpiArrayWord*word, p_vpi_value vp, ຈຳນວນເຕັມ)
 {
       unsigned index = word->get_index();
       vvp_darray*aobj = get_vvp_darray();
 
       switch(vp->format) {
-      case vpiScalarVal:
-      case vpiIntVal:
-      case vpiVectorVal: {
+      pak_sa vpiScalarVal:
+      pak_sa vpiIntVal:
+      pak_sa vpiVectorVal: {
 	    vvp_vector4_t vec = vec4_from_vpi_value(vp, get_word_size());
 	    aobj->set_word(index, vec);
       }
-      break;
+      bha_nga;
 
-      case vpiRealVal:
+      pak_sa vpiRealVal:
         aobj->set_word(index, vp->value.real);
-        break;
+        bha_nga;
 
-      case vpiStringVal:
+      pak_sa vpiStringVal:
         aobj->set_word(index, std::string(vp->value.str));
-        break;
+        bha_nga;
 
       default:
           fprintf(stderr, "vpi sorry: format is not implemented");
@@ -168,71 +168,71 @@ void __vpiDarrayVar::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, 
       }
 }
 
-vpiHandle __vpiDarrayVar::get_iter_index(struct __vpiArrayIterator*, int idx)
+vpiHandle __vpiDarrayVar::get_iter_index(sa_nracanaa __vpiArrayIterator*, ຈຳນວນເຕັມ idx)
 {
-      if (vals_words == 0) make_vals_words();
+      ຖ້າ (vals_words == 0) make_vals_words();
 
-      return &(vals_words[idx].as_word);
+      ສົ່ງຄືນ &(vals_words[idx].as_word);
 }
 
-int __vpiDarrayVar::vpi_get(int code)
+ຈຳນວນເຕັມ __vpiDarrayVar::vpi_get(ຈຳນວນເຕັມ code)
 {
       switch (code) {
-	  case vpiArrayType:
-	    return vpiDynamicArray;
-	  case vpiLeftRange:
-	    return 0;
-	  case vpiRightRange:
-	    return get_size() - 1;
-	  case vpiSize:
-            return get_size();
+	  pak_sa vpiArrayType:
+	    ສົ່ງຄືນ vpiDynamicArray;
+	  pak_sa vpiLeftRange:
+	    ສົ່ງຄືນ 0;
+	  pak_sa vpiRightRange:
+	    ສົ່ງຄືນ get_size() - 1;
+	  pak_sa vpiSize:
+            ສົ່ງຄືນ get_size();
 
 	  default:
 	    fprintf(stderr, "vpi sorry: property is not implemented");
 	    assert(false);
-	    return 0;
+	    ສົ່ງຄືນ 0;
       }
 }
 
-char* __vpiDarrayVar::vpi_get_str(int code)
+var_na* __vpiDarrayVar::vpi_get_str(ຈຳນວນເຕັມ code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      ຖ້າ (code == vpiFile) {  // Not implemented for now!
+            ສົ່ງຄືນ simple_set_rbuf_str(file_names[0]);
       }
 
-      return generic_get_str(code, scope_, name_, NULL);
+      ສົ່ງຄືນ generic_get_str(code, scope_, name_, NULL);
 }
 
-vpiHandle __vpiDarrayVar::vpi_handle(int code)
+vpiHandle __vpiDarrayVar::vpi_handle(ຈຳນວນເຕັມ code)
 {
       switch (code) {
-          case vpiLeftRange:
-            return get_left_range();
+          pak_sa vpiLeftRange:
+            ສົ່ງຄືນ get_left_range();
 
-          case vpiRightRange:
-            return get_right_range();
+          pak_sa vpiRightRange:
+            ສົ່ງຄືນ get_right_range();
 
-          case vpiScope:
-            return scope_;
+          pak_sa vpiScope:
+            ສົ່ງຄືນ scope_;
 
-          case vpiModule:
-            return vpip_module(scope_);
+          pak_sa vpiModule:
+            ສົ່ງຄືນ vpip_module(scope_);
       }
 
-      return 0;
+      ສົ່ງຄືນ 0;
 }
 
-vpiHandle __vpiDarrayVar::vpi_index(int index)
+vpiHandle __vpiDarrayVar::vpi_index(ຈຳນວນເຕັມ index)
 {
-      if (index >= (long) get_size())
-	    return 0;
-      if (index < 0)
-	    return 0;
+      ຖ້າ (index >= (long) get_size())
+	    ສົ່ງຄືນ 0;
+      ຖ້າ (index < 0)
+	    ສົ່ງຄືນ 0;
 
-      if (vals_words == 0)
+      ຖ້າ (vals_words == 0)
 	    make_vals_words();
 
-      return &(vals_words[index].as_word);
+      ສົ່ງຄືນ &(vals_words[index].as_word);
 }
 
 void __vpiDarrayVar::vpi_get_value(p_vpi_value val)
@@ -246,42 +246,42 @@ vvp_darray*__vpiDarrayVar::get_vvp_darray() const
       assert(fun);
       vvp_object_t obj = fun->get_object();
 
-      return obj.peek<vvp_darray>();
+      ສົ່ງຄືນ obj.peek<vvp_darray>();
 }
 
-vpiHandle vpip_make_darray_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_darray_var(const var_na*name, vvp_net_t*net)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      const char*use_name = name ? vpip_name_string(name) : NULL;
+      const var_na*use_name = name ? vpip_name_string(name) : NULL;
 
       __vpiDarrayVar*obj = new __vpiDarrayVar(scope, use_name, net);
 
-      return obj;
+      ສົ່ງຄືນ obj;
 }
 
-__vpiQueueVar::__vpiQueueVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
+__vpiQueueVar::__vpiQueueVar(__vpiScope*sc, const var_na*na, vvp_net_t*ne)
 : __vpiDarrayVar(sc, na, ne)
 {
 }
 
-int __vpiQueueVar::vpi_get(int code)
+ຈຳນວນເຕັມ __vpiQueueVar::vpi_get(ຈຳນວນເຕັມ code)
 {
       switch (code) {
-	  case vpiArrayType:
-	    return vpiQueueArray;
+	  pak_sa vpiArrayType:
+	    ສົ່ງຄືນ vpiQueueArray;
 	  default:
-	    return __vpiDarrayVar::vpi_get(code);
+	    ສົ່ງຄືນ __vpiDarrayVar::vpi_get(code);
       }
 }
 
-vpiHandle vpip_make_queue_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_queue_var(const var_na*name, vvp_net_t*net)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      const char*use_name = name ? vpip_name_string(name) : NULL;
+      const var_na*use_name = name ? vpip_name_string(name) : NULL;
 
       __vpiQueueVar*obj = new __vpiQueueVar(scope, use_name, net);
 
-      return obj;
+      ສົ່ງຄືນ obj;
 }
 
 __vpiPropQueueRef::__vpiPropQueueRef(__vpiScope*scope, unsigned pidx,
@@ -290,45 +290,45 @@ __vpiPropQueueRef::__vpiPropQueueRef(__vpiScope*scope, unsigned pidx,
 {
 }
 
-int __vpiPropQueueRef::get_type_code(void) const
-{ return vpiArrayVar; }
+ຈຳນວນເຕັມ __vpiPropQueueRef::get_type_code(void) const
+{ ສົ່ງຄືນ vpiArrayVar; }
 
 static vvp_darray* get_live_darray_from_prop(vvp_net_t* class_net, unsigned pid)
 {
-      if (!class_net) return 0;
+      ຖ້າ (!class_net) ສົ່ງຄືນ 0;
       const vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(class_net->fun);
-      if (!fun) return 0;
+      ຖ້າ (!fun) ສົ່ງຄືນ 0;
       vvp_object_t obj = fun->get_object();
       vvp_cobject* cobj = obj.peek<vvp_cobject>();
-      if (!cobj) return 0;
+      ຖ້າ (!cobj) ສົ່ງຄືນ 0;
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      return qobj.peek<vvp_darray>();
+      ສົ່ງຄືນ qobj.peek<vvp_darray>();
 }
 
-int __vpiPropQueueRef::vpi_get(int code)
+ຈຳນວນເຕັມ __vpiPropQueueRef::vpi_get(ຈຳນວນເຕັມ code)
 {
       const vvp_darray* aobj = get_live_darray_from_prop(class_net_, prop_idx_);
       switch (code) {
-	  case vpiArrayType:
-	    return is_queue_ ? vpiQueueArray : vpiDynamicArray;
-	  case vpiLeftRange:
-	    return 0;
-	  case vpiRightRange:
-	    return aobj ? (int) (aobj->get_size() - 1) : 0;
-	  case vpiSize:
-	    return aobj ? (int) aobj->get_size() : 0;
+	  pak_sa vpiArrayType:
+	    ສົ່ງຄືນ is_queue_ ? vpiQueueArray : vpiDynamicArray;
+	  pak_sa vpiLeftRange:
+	    ສົ່ງຄືນ 0;
+	  pak_sa vpiRightRange:
+	    ສົ່ງຄືນ aobj ? (ຈຳນວນເຕັມ) (aobj->get_size() - 1) : 0;
+	  pak_sa vpiSize:
+	    ສົ່ງຄືນ aobj ? (ຈຳນວນເຕັມ) aobj->get_size() : 0;
 	  default:
-	    return 0;
+	    ສົ່ງຄືນ 0;
       }
 }
 
-char* __vpiPropQueueRef::vpi_get_str(int code)
+var_na* __vpiPropQueueRef::vpi_get_str(ຈຳນວນເຕັມ code)
 {
-      if (code == vpiFile) {
-	    return simple_set_rbuf_str(file_names[0]);
+      ຖ້າ (code == vpiFile) {
+	    ສົ່ງຄືນ simple_set_rbuf_str(file_names[0]);
       }
-      return generic_get_str(code, scope_, "prop_darray", NULL);
+      ສົ່ງຄືນ generic_get_str(code, scope_, "prop_darray", NULL);
 }
 
 void __vpiPropQueueRef::vpi_get_value(p_vpi_value val)
@@ -336,47 +336,47 @@ void __vpiPropQueueRef::vpi_get_value(p_vpi_value val)
       val->format = vpiSuppressVal;
 }
 
-vpiHandle vpip_make_prop_queue_ref(char* class_label, unsigned prop_idx,
+vpiHandle vpip_make_prop_queue_ref(var_na* class_label, unsigned prop_idx,
 				   unsigned is_queue_flag)
 {
       __vpiPropQueueRef* obj = new __vpiPropQueueRef(vpip_peek_current_scope(),
 						     prop_idx,
 						     is_queue_flag != 0);
       functor_ref_lookup(&obj->class_net_, class_label);
-      return obj;
+      ສົ່ງຄືນ obj;
 }
 
 vvp_darray* vpip_vpi_darray_from_handle(vpiHandle ref)
 {
-      if (!ref) return 0;
+      ຖ້າ (!ref) ສົ່ງຄືນ 0;
 
-      if (__vpiPropQueueRef* pr = dynamic_cast<__vpiPropQueueRef*>(ref)) {
-	    return get_live_darray_from_prop(pr->class_net_, pr->prop_idx_);
+      ຖ້າ (__vpiPropQueueRef* pr = dynamic_cast<__vpiPropQueueRef*>(ref)) {
+	    ສົ່ງຄືນ get_live_darray_from_prop(pr->class_net_, pr->prop_idx_);
       }
 
-      if (const __vpiDarrayVar* dv = dynamic_cast<__vpiDarrayVar*>(ref)) {
+      ຖ້າ (const __vpiDarrayVar* dv = dynamic_cast<__vpiDarrayVar*>(ref)) {
 	    const vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(dv->get_net()->fun);
-	    if (!fun) return 0;
+	    ຖ້າ (!fun) ສົ່ງຄືນ 0;
 	    vvp_object_t obj = fun->get_object();
-	    return obj.peek<vvp_darray>();
+	    ສົ່ງຄືນ obj.peek<vvp_darray>();
       }
 
-      return 0;
+      ສົ່ງຄືນ 0;
 }
 
 #ifdef CHECK_WITH_VALGRIND
 void array_delete(vpiHandle item)
 {
-      if (__vpiPropQueueRef* pq = dynamic_cast<__vpiPropQueueRef*>(item)) {
+      ຖ້າ (__vpiPropQueueRef* pq = dynamic_cast<__vpiPropQueueRef*>(item)) {
 	    delete pq;
-	    return;
+	    ສົ່ງຄືນ;
       }
 
       __vpiDarrayVar*dobj = dynamic_cast<__vpiDarrayVar*>(item);
-      if (dobj) {
-	    if (dobj->vals_words) delete [] (dobj->vals_words-1);
+      ຖ້າ (dobj) {
+	    ຖ້າ (dobj->vals_words) delete [] (dobj->vals_words-1);
 	    delete dobj;
-	    return;
+	    ສົ່ງຄືນ;
       }
 
       fprintf(stderr, "Need support for deleting array type: %d\n", item->vpi_get(vpiArrayType));

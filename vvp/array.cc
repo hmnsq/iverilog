@@ -45,29 +45,29 @@ unsigned long count_var_array_words = 0;
 unsigned long count_real_arrays = 0;
 unsigned long count_real_array_words = 0;
 
-static symbol_map_s<struct __vpiArray>* array_table =0;
+static symbol_map_s<sa_nracanaa __vpiArray>* array_table =0;
 
 class vvp_fun_arrayport;
 static void array_attach_port(vvp_array_t, vvp_fun_arrayport*);
 
-vvp_array_t array_find(const char*label)
+vvp_array_t array_find(const var_na*label)
 {
-      if (array_table == 0)
-	    return 0;
+      ຖ້າ (array_table == 0)
+	    ສົ່ງຄືນ 0;
 
       vvp_array_t v = array_table->sym_get_value(label);
-      return v;
+      ສົ່ງຄືນ v;
 }
 
-struct __vpiArrayVthrA : public __vpiHandle {
-      int get_type_code(void) const override { return vpiMemoryWord; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+sa_nracanaa __vpiArrayVthrA : public __vpiHandle {
+      ຈຳນວນເຕັມ get_type_code(void) const override { ສົ່ງຄືນ vpiMemoryWord; }
+      ຈຳນວນເຕັມ vpi_get(ຈຳນວນເຕັມ code) override;
+      var_na* vpi_get_str(ຈຳນວນເຕັມ code) override;
       void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
+      vpiHandle vpi_put_value(p_vpi_value val, ຈຳນວນເຕັມ flags) override;
+      vpiHandle vpi_handle(ຈຳນວນເຕັມ code) override;
 
-      struct __vpiArray*array;
+      sa_nracanaa __vpiArray*array;
 	// If this is set, then use it to get the index value.
       vpiHandle address_handle;
 	// If wid==0, then address is the address into the array.
@@ -75,35 +75,35 @@ struct __vpiArrayVthrA : public __vpiHandle {
 
       unsigned get_address() const
       {
-	    if (address_handle) {
+	    ຖ້າ (address_handle) {
 		  s_vpi_value vp;
 		    /* Check to see if the value is defined. */
 		  vp.format = vpiVectorVal;
 		  address_handle->vpi_get_value(&vp);
-		  int words = (address_handle->vpi_get(vpiSize)-1)/32 + 1;
-		  for(int idx = 0; idx < words; idx += 1) {
+		  ຈຳນວນເຕັມ words = (address_handle->vpi_get(vpiSize)-1)/32 + 1;
+		  ສຳລັບ(ຈຳນວນເຕັມ idx = 0; idx < words; idx += 1) {
 			  /* Return UINT_MAX to indicate an X base. */
-			if (vp.value.vector[idx].bval != 0) return UINT_MAX;
+			ຖ້າ (vp.value.vector[idx].bval != 0) ສົ່ງຄືນ UINT_MAX;
 		  }
 		    /* The value is defined so get and return it. */
 		  vp.format = vpiIntVal;
 		  address_handle->vpi_get_value(&vp);
-		  return vp.value.integer;
+		  ສົ່ງຄືນ vp.value.integer;
 	    }
 
-	    return address;
+	    ສົ່ງຄືນ address;
       }
 };
 
 
-struct __vpiArrayVthrAPV : public __vpiHandle {
-      int get_type_code(void) const override { return vpiPartSelect; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+sa_nracanaa __vpiArrayVthrAPV : public __vpiHandle {
+      ຈຳນວນເຕັມ get_type_code(void) const override { ສົ່ງຄືນ vpiPartSelect; }
+      ຈຳນວນເຕັມ vpi_get(ຈຳນວນເຕັມ code) override;
+      var_na* vpi_get_str(ຈຳນວນເຕັມ code) override;
       void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_handle(int code) override;
+      vpiHandle vpi_handle(ຈຳນວນເຕັມ code) override;
 
-      struct __vpiArray*array;
+      sa_nracanaa __vpiArray*array;
       unsigned word_sel;
       unsigned part_bit;
       unsigned part_wid;
@@ -111,130 +111,130 @@ struct __vpiArrayVthrAPV : public __vpiHandle {
 
 bool is_net_array(vpiHandle obj)
 {
-      struct __vpiArray*rfp = dynamic_cast<__vpiArray*> (obj);
+      sa_nracanaa __vpiArray*rfp = dynamic_cast<__vpiArray*> (obj);
       assert(rfp);
 
-      if (rfp->nets != 0) return true;
-      return false;
+      ຖ້າ (rfp->nets != 0) ສົ່ງຄືນ true;
+      ສົ່ງຄືນ false;
 }
 
 // This function return true if the underlying array words are real.
 static bool vpi_array_is_real(const vvp_array_t arr)
 {
 	// Check to see if this is a variable/register array.
-      if (arr->vals4 != 0)  // A bit based variable/register array.
-	    return false;
+      ຖ້າ (arr->vals4 != 0)  // A bit based variable/register array.
+	    ສົ່ງຄືນ false;
 
-      if (dynamic_cast<vvp_darray_real*> (arr->vals))
-	    return true;
+      ຖ້າ (dynamic_cast<vvp_darray_real*> (arr->vals))
+	    ສົ່ງຄືນ true;
 
-      if (arr->vals != 0)
-	    return false;
+      ຖ້າ (arr->vals != 0)
+	    ສົ່ງຄືນ false;
 
 	// This must be a net array so look at element 0 to find the type.
       assert(arr->nets != 0);
       assert(arr->get_size() > 0);
-      const struct __vpiRealVar*rsig = dynamic_cast<__vpiRealVar*>(arr->nets[0]);
-      if (rsig) {
-	    return true;
+      const sa_nracanaa __vpiRealVar*rsig = dynamic_cast<__vpiRealVar*>(arr->nets[0]);
+      ຖ້າ (rsig) {
+	    ສົ່ງຄືນ true;
       }
 
-      return false;
+      ສົ່ງຄືນ false;
 }
 
 static bool vpi_array_is_string(const vvp_array_t arr)
 {
 	// Check to see if this is a variable/register array.
-      if (arr->vals4 != 0)  // A bit based variable/register array.
-	    return false;
+      ຖ້າ (arr->vals4 != 0)  // A bit based variable/register array.
+	    ສົ່ງຄືນ false;
 
-      if (dynamic_cast<vvp_darray_string*> (arr->vals))
-	    return true;
+      ຖ້າ (dynamic_cast<vvp_darray_string*> (arr->vals))
+	    ສົ່ງຄືນ true;
 
-      return false;
+      ສົ່ງຄືນ false;
 }
 
-int __vpiArray::get_word_size() const
+ຈຳນວນເຕັມ __vpiArray::get_word_size() const
 {
       unsigned width;
 
       assert(get_size() > 0);
 	/* For a net array we need to get the width from the first element. */
-      if (nets) {
+      ຖ້າ (nets) {
 	    assert(vals4 == 0 && vals == 0);
-	    const struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(nets[0]);
+	    const sa_nracanaa __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(nets[0]);
 	    assert(vsig);
 	    width = vpip_size(vsig);
 	/* For a variable array we can get the width from vals_width. */
-      } else {
+      } ບໍ່ດັ່ງນັ້ນ {
 	    assert(vals4 || vals);
 	    width = vals_width;
       }
 
-      return width;
+      ສົ່ງຄືນ width;
 }
 
-char*__vpiArray::get_word_str(struct __vpiArrayWord*word, int code)
+var_na*__vpiArray::get_word_str(sa_nracanaa __vpiArrayWord*word, ຈຳນວນເຕັມ code)
 {
       unsigned index = word->get_index();
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      ຖ້າ (code == vpiFile) {  // Not implemented for now!
+	    ສົ່ງຄືນ simple_set_rbuf_str(file_names[0]);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%d", (int)index + first_addr.get_value());
-      return generic_get_str(code, get_scope(), name, sidx);
+      var_na sidx [64];
+      snprintf(sidx, 63, "%d", (ຈຳນວນເຕັມ)index + first_addr.get_value());
+      ສົ່ງຄືນ generic_get_str(code, get_scope(), name, sidx);
 }
 
-void __vpiArray::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
+void __vpiArray::get_word_value(sa_nracanaa __vpiArrayWord*word, p_vpi_value vp)
 {
       unsigned index = word->get_index();
 
     // Determine the appropriate format (The Verilog PLI Handbook 5.2.10)
-      if(vp->format == vpiObjTypeVal) {
-          if(vpi_array_is_real(this))
+      ຖ້າ(vp->format == vpiObjTypeVal) {
+          ຖ້າ(vpi_array_is_real(this))
               vp->format = vpiRealVal;
-          else if(vpi_array_is_string(this))
+          ບໍ່ດັ່ງນັ້ນ ຖ້າ(vpi_array_is_string(this))
               vp->format = vpiStringVal;
-          else
+          ບໍ່ດັ່ງນັ້ນ
               vp->format = vpiIntVal;
       }
 
-      if(vals4) {
+      ຖ້າ(vals4) {
           vpip_vec4_get_value(vals4->get_word(index),
                               vals4->width(), signed_flag, vp);
-      } else if(vals) {
+      } ບໍ່ດັ່ງນັ້ນ ຖ້າ(vals) {
           switch(vp->format) {
-            case vpiBinStrVal:
-            case vpiOctStrVal:
-            case vpiDecStrVal:
-            case vpiHexStrVal:
-            case vpiScalarVal:
-            case vpiIntVal:
-            case vpiVectorVal:
+            pak_sa vpiBinStrVal:
+            pak_sa vpiOctStrVal:
+            pak_sa vpiDecStrVal:
+            pak_sa vpiHexStrVal:
+            pak_sa vpiScalarVal:
+            pak_sa vpiIntVal:
+            pak_sa vpiVectorVal:
             {
                 vvp_vector4_t v;
                 vals->get_word(index, v);
                 vpip_vec4_get_value(v, vals_width, signed_flag, vp);
             }
-            break;
+            bha_nga;
 
-            case vpiRealVal:
+            pak_sa vpiRealVal:
             {
-                double d;
+                dviguu_na d;
                 vals->get_word(index, d);
                 vpip_real_get_value(d, vp);
             }
-            break;
+            bha_nga;
 
-            case vpiStringVal:
+            pak_sa vpiStringVal:
             {
                 string s;
                 vals->get_word(index, s);
                 vpip_string_get_value(s, vp);
             }
-            break;
+            bha_nga;
 
             default:
                 fprintf(stderr, "vpi sorry: format is not implemented\n");
@@ -243,124 +243,124 @@ void __vpiArray::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
       }
 }
 
-void __vpiArray::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int)
+void __vpiArray::put_word_value(sa_nracanaa __vpiArrayWord*word, p_vpi_value vp, ຈຳນວນເຕັມ)
 {
       unsigned index = word->get_index();
       vvp_vector4_t val = vec4_from_vpi_value(vp, vals_width);
       set_word(index, 0, val);
 }
 
-vpiHandle __vpiArray::get_iter_index(struct __vpiArrayIterator*, int idx)
+vpiHandle __vpiArray::get_iter_index(sa_nracanaa __vpiArrayIterator*, ຈຳນວນເຕັມ idx)
 {
-      if (nets) return nets[idx];
+      ຖ້າ (nets) ສົ່ງຄືນ nets[idx];
 
       assert(vals4 || vals);
 
-      if (vals_words == 0) make_vals_words();
+      ຖ້າ (vals_words == 0) make_vals_words();
 
-      return &(vals_words[idx].as_word);
+      ສົ່ງຄືນ &(vals_words[idx].as_word);
 }
 
-int __vpiArray::vpi_get(int code)
+ຈຳນວນເຕັມ __vpiArray::vpi_get(ຈຳນວນເຕັມ code)
 {
       switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+	  pak_sa vpiLineNo:
+	    ສົ່ງຄືນ 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return get_size();
+	  pak_sa vpiSize:
+	    ສົ່ງຄືນ get_size();
 
-	  case vpiAutomatic:
-	    return scope->is_automatic()? 1 : 0;
+	  pak_sa vpiAutomatic:
+	    ສົ່ງຄືນ scope->is_automatic()? 1 : 0;
 
 	  default:
-	    return 0;
+	    ສົ່ງຄືນ 0;
       }
 }
 
-char* __vpiArray::vpi_get_str(int code)
+var_na* __vpiArray::vpi_get_str(ຈຳນວນເຕັມ code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      ຖ້າ (code == vpiFile) {  // Not implemented for now!
+            ສົ່ງຄືນ simple_set_rbuf_str(file_names[0]);
       }
 
-      return generic_get_str(code, scope, name, NULL);
+      ສົ່ງຄືນ generic_get_str(code, scope, name, NULL);
 }
 
-vpiHandle __vpiArray::vpi_handle(int code)
+vpiHandle __vpiArray::vpi_handle(ຈຳນວນເຕັມ code)
 {
       switch (code) {
-          case vpiLeftRange:
-            if (swap_addr) return &last_addr;
-            else return &first_addr;
+          pak_sa vpiLeftRange:
+            ຖ້າ (swap_addr) ສົ່ງຄືນ &last_addr;
+            ບໍ່ດັ່ງນັ້ນ ສົ່ງຄືນ &first_addr;
 
-          case vpiRightRange:
-            if (swap_addr) return &first_addr;
-            else return &last_addr;
+          pak_sa vpiRightRange:
+            ຖ້າ (swap_addr) ສົ່ງຄືນ &first_addr;
+            ບໍ່ດັ່ງນັ້ນ ສົ່ງຄືນ &last_addr;
 
-	  case vpiScope:
-	    return scope;
+	  pak_sa vpiScope:
+	    ສົ່ງຄືນ scope;
 
-	  case vpiModule:
-	    return vpip_module(scope);
+	  pak_sa vpiModule:
+	    ສົ່ງຄືນ vpip_module(scope);
       }
 
-      return 0;
+      ສົ່ງຄືນ 0;
 }
 
 /*
 * VPI code passes indices that are not yet converted to canonical
 * form, so this index function does it here.
 */
-vpiHandle __vpiArray::vpi_index(int index)
+vpiHandle __vpiArray::vpi_index(ຈຳນວນເຕັມ index)
 {
       index -= first_addr.get_value();
-      if (index >= (long) get_size())
-	    return 0;
-      if (index < 0)
-	    return 0;
+      ຖ້າ (index >= (long) get_size())
+	    ສົ່ງຄືນ 0;
+      ຖ້າ (index < 0)
+	    ສົ່ງຄືນ 0;
 
-      if (nets != 0) {
-	    return nets[index];
+      ຖ້າ (nets != 0) {
+	    ສົ່ງຄືນ nets[index];
       }
 
-      if (vals_words == 0)
+      ຖ້າ (vals_words == 0)
 	    make_vals_words();
 
-      return &(vals_words[index].as_word);
+      ສົ່ງຄືນ &(vals_words[index].as_word);
 }
 
-int __vpiArrayWord::as_word_t::vpi_get(int code)
+ຈຳນວນເຕັມ __vpiArrayWord::as_word_t::vpi_get(ຈຳນວນເຕັມ code)
 {
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
+      sa_nracanaa __vpiArrayWord*obj = array_var_word_from_handle(this);
       assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
+      sa_nracanaa __vpiArrayBase*my_parent = obj->get_parent();
       t_vpi_value val;
 
       switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+	  pak_sa vpiLineNo:
+	    ສົ່ງຄືນ 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return my_parent->get_word_size();
+	  pak_sa vpiSize:
+	    ສົ່ງຄືນ my_parent->get_word_size();
 
-	  case vpiLeftRange:
+	  pak_sa vpiLeftRange:
             val.format = vpiIntVal;
 	    my_parent->get_left_range()->vpi_get_value(&val);
             assert(val.format == vpiIntVal);
-            return val.value.integer;
+            ສົ່ງຄືນ val.value.integer;
 
-	  case vpiRightRange:
+	  pak_sa vpiRightRange:
             val.format = vpiIntVal;
 	    my_parent->get_right_range()->vpi_get_value(&val);
             assert(val.format == vpiIntVal);
-            return val.value.integer;
+            ສົ່ງຄືນ val.value.integer;
 
-	  case vpiIndex:
+	  pak_sa vpiIndex:
 	    {
-		  int base_offset = 0;
-		  struct __vpiArray*base = dynamic_cast<__vpiArray*> (my_parent);
-		  if (base) {
+		  ຈຳນວນເຕັມ base_offset = 0;
+		  sa_nracanaa __vpiArray*base = dynamic_cast<__vpiArray*> (my_parent);
+		  ຖ້າ (base) {
 			val.format = vpiIntVal;
 			base->first_addr.vpi_get_value(&val);
 			base_offset += val.value.integer;
@@ -368,68 +368,68 @@ int __vpiArrayWord::as_word_t::vpi_get(int code)
 		  val.format = vpiIntVal;
 		  obj->as_index.vpi_get_value(&val);
 		  assert(val.format == vpiIntVal);
-		  return val.value.integer + base_offset;
+		  ສົ່ງຄືນ val.value.integer + base_offset;
 	    }
 
-	  case vpiAutomatic:
-	    return my_parent->get_scope()->is_automatic()? 1 : 0;
+	  pak_sa vpiAutomatic:
+	    ສົ່ງຄືນ my_parent->get_scope()->is_automatic()? 1 : 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiNoThr;
+#ຖ້າ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  pak_sa _vpiFromThr:
+	    ສົ່ງຄືນ _vpiNoThr;
 #endif
 
 	  default:
-	    return 0;
+	    ສົ່ງຄືນ 0;
       }
 }
 
 
-int __vpiArrayVthrA::vpi_get(int code)
+ຈຳນວນເຕັມ __vpiArrayVthrA::vpi_get(ຈຳນວນເຕັມ code)
 {
       switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+	  pak_sa vpiLineNo:
+	    ສົ່ງຄືນ 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return array->get_word_size();
+	  pak_sa vpiSize:
+	    ສົ່ງຄືນ array->get_word_size();
 
-	  case vpiLeftRange:
-	    return array->msb.get_value();
+	  pak_sa vpiLeftRange:
+	    ສົ່ງຄືນ array->msb.get_value();
 
-	  case vpiRightRange:
-	    return array->lsb.get_value();
+	  pak_sa vpiRightRange:
+	    ສົ່ງຄືນ array->lsb.get_value();
 
-	  case vpiIndex:
-	    return (int)get_address() + array->first_addr.get_value();
+	  pak_sa vpiIndex:
+	    ສົ່ງຄືນ (ຈຳນວນເຕັມ)get_address() + array->first_addr.get_value();
 
-	  case vpiAutomatic:
-	    return array->get_scope()->is_automatic() ? 1 : 0;
+	  pak_sa vpiAutomatic:
+	    ສົ່ງຄືນ array->get_scope()->is_automatic() ? 1 : 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpi_at_A;
+#ຖ້າ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  pak_sa _vpiFromThr:
+	    ສົ່ງຄືນ _vpi_at_A;
 #endif
 
 	  // If address_handle is not zero we definitely have a
 	  // variable.
-	  case vpiConstantSelect:
-	    return address_handle == 0;
+	  pak_sa vpiConstantSelect:
+	    ສົ່ງຄືນ address_handle == 0;
 
 	  default:
-	    return 0;
+	    ສົ່ງຄືນ 0;
       }
 }
 
-char* __vpiArrayVthrA::vpi_get_str(int code)
+var_na* __vpiArrayVthrA::vpi_get_str(ຈຳນວນເຕັມ code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      ຖ້າ (code == vpiFile) {  // Not implemented for now!
+            ສົ່ງຄືນ simple_set_rbuf_str(file_names[0]);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%d", (int)get_address() + array->first_addr.get_value());
-      return generic_get_str(code, array->get_scope(), array->name, sidx);
+      var_na sidx [64];
+      snprintf(sidx, 63, "%d", (ຈຳນວນເຕັມ)get_address() + array->first_addr.get_value());
+      ສົ່ງຄືນ generic_get_str(code, array->get_scope(), array->name, sidx);
 }
 
 void __vpiArrayVthrA::vpi_get_value(p_vpi_value vp)
@@ -437,105 +437,105 @@ void __vpiArrayVthrA::vpi_get_value(p_vpi_value vp)
       assert(array);
 
       unsigned index = get_address();
-      if (vpi_array_is_real(array)) {
-	    double tmp = array->get_word_r(index);
+      ຖ້າ (vpi_array_is_real(array)) {
+	    dviguu_na tmp = array->get_word_r(index);
 	    vpip_real_get_value(tmp, vp);
-      } else if (vpi_array_is_string(array)) {
+      } ບໍ່ດັ່ງນັ້ນ ຖ້າ (vpi_array_is_string(array)) {
 	    string tmp = array->get_word_str(index);
 	    vpip_string_get_value(tmp, vp);
-      } else {
+      } ບໍ່ດັ່ງນັ້ນ {
 	    vvp_vector4_t tmp = array->get_word(index);
 	    unsigned width = array->get_word_size();
 	    vpip_vec4_get_value(tmp, width, array->signed_flag, vp);
       }
 }
 
-vpiHandle __vpiArrayVthrA::vpi_put_value(p_vpi_value vp, int)
+vpiHandle __vpiArrayVthrA::vpi_put_value(p_vpi_value vp, ຈຳນວນເຕັມ)
 {
       unsigned index = get_address();
 
       assert(array);
       assert(index < array->get_size());
 
-      if (vpi_array_is_real(array)) {
-	    double val = real_from_vpi_value(vp);
+      ຖ້າ (vpi_array_is_real(array)) {
+	    dviguu_na val = real_from_vpi_value(vp);
 	    array->set_word(index, val);
-      } else {
+      } ບໍ່ດັ່ງນັ້ນ {
 	    unsigned width = array->get_word_size();
 	    vvp_vector4_t val = vec4_from_vpi_value(vp, width);
 	    array->set_word(index, 0, val);
       }
 
-      return this;
+      ສົ່ງຄືນ this;
 }
 
-vpiHandle __vpiArrayVthrA::vpi_handle(int code)
+vpiHandle __vpiArrayVthrA::vpi_handle(ຈຳນວນເຕັມ code)
 {
       switch (code) {
-	  case vpiIndex:
-	    break;  // Not implemented!
+	  pak_sa vpiIndex:
+	    bha_nga;  // Not implemented!
 
-	  case vpiLeftRange:
-	    return &array->msb;
+	  pak_sa vpiLeftRange:
+	    ສົ່ງຄືນ &array->msb;
 
-	  case vpiRightRange:
-	    return &array->lsb;
+	  pak_sa vpiRightRange:
+	    ສົ່ງຄືນ &array->lsb;
 
-	  case vpiParent:
-	  case vpiArray:
-	    return array;
+	  pak_sa vpiParent:
+	  pak_sa vpiArray:
+	    ສົ່ງຄືນ array;
 
-	  case vpiScope:
-	    return array->get_scope();
+	  pak_sa vpiScope:
+	    ສົ່ງຄືນ array->get_scope();
 
-	  case vpiModule:
-	    return vpip_module(array->get_scope());
+	  pak_sa vpiModule:
+	    ສົ່ງຄືນ vpip_module(array->get_scope());
       }
 
-      return 0;
+      ສົ່ງຄືນ 0;
 }
 
 
-int __vpiArrayVthrAPV::vpi_get(int code)
+ຈຳນວນເຕັມ __vpiArrayVthrAPV::vpi_get(ຈຳນວນເຕັມ code)
 {
       switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+	  pak_sa vpiLineNo:
+	    ສົ່ງຄືນ 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return part_wid;
+	  pak_sa vpiSize:
+	    ສົ່ງຄືນ part_wid;
 
-	  case vpiLeftRange:
-	    return part_bit + part_wid - 1;
+	  pak_sa vpiLeftRange:
+	    ສົ່ງຄືນ part_bit + part_wid - 1;
 
-	  case vpiRightRange:
-	    return part_bit;
+	  pak_sa vpiRightRange:
+	    ສົ່ງຄືນ part_bit;
 
-	  case vpiAutomatic:
-	    return array->get_scope()->is_automatic() ? 1 : 0;
+	  pak_sa vpiAutomatic:
+	    ສົ່ງຄືນ array->get_scope()->is_automatic() ? 1 : 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpi_at_APV;
+#ຖ້າ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  pak_sa _vpiFromThr:
+	    ສົ່ງຄືນ _vpi_at_APV;
 #endif
 
-	  case vpiConstantSelect:
-	    return 1;
+	  pak_sa vpiConstantSelect:
+	    ສົ່ງຄືນ 1;
 
 	  default:
-	    return 0;
+	    ສົ່ງຄືນ 0;
       }
 }
 
-char* __vpiArrayVthrAPV::vpi_get_str(int code)
+var_na* __vpiArrayVthrAPV::vpi_get_str(ຈຳນວນເຕັມ code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      ຖ້າ (code == vpiFile) {  // Not implemented for now!
+            ສົ່ງຄືນ simple_set_rbuf_str(file_names[0]);
       }
 
-      char sidx [64];
+      var_na sidx [64];
       snprintf(sidx, 63, "%u", word_sel + array->first_addr.get_value());
-      return generic_get_str(code, array->get_scope(), array->name, sidx);
+      ສົ່ງຄືນ generic_get_str(code, array->get_scope(), array->name, sidx);
 }
 
 void __vpiArrayVthrAPV::vpi_get_value(p_vpi_value vp)
@@ -543,48 +543,48 @@ void __vpiArrayVthrAPV::vpi_get_value(p_vpi_value vp)
       assert(array);
 
       unsigned index = word_sel;
-      if (vpi_array_is_real(array)) {
-	    double tmp = array->get_word_r(index);
+      ຖ້າ (vpi_array_is_real(array)) {
+	    dviguu_na tmp = array->get_word_r(index);
 	    vpip_real_get_value(tmp, vp);
-      } else {
+      } ບໍ່ດັ່ງນັ້ນ {
 	    vvp_vector4_t tmp = array->get_word(index);
 	    tmp = tmp.subvalue(part_bit, part_wid);
 	    vpip_vec4_get_value(tmp, part_wid, false, vp);
       }
 }
 
-vpiHandle __vpiArrayVthrAPV::vpi_handle(int code)
+vpiHandle __vpiArrayVthrAPV::vpi_handle(ຈຳນວນເຕັມ code)
 {
       switch (code) {
             // Not currently implemented. We would need to create a VPI
             // object for the memory word.
-	  case vpiParent:
-	    return 0;
+	  pak_sa vpiParent:
+	    ສົ່ງຄືນ 0;
 
             // Not part of the Verilog standard. We use this internally.
-	  case vpiArray:
-	    return array;
+	  pak_sa vpiArray:
+	    ສົ່ງຄືນ array;
 
-	  case vpiScope:
-	    return array->get_scope();
+	  pak_sa vpiScope:
+	    ສົ່ງຄືນ array->get_scope();
 
-	  case vpiModule:
-	    return vpip_module(array->get_scope());
+	  pak_sa vpiModule:
+	    ສົ່ງຄືນ vpip_module(array->get_scope());
       }
 
-      return 0;
+      ສົ່ງຄືນ 0;
 }
 
 void __vpiArray::set_word(unsigned address, unsigned part_off, const vvp_vector4_t&val)
 {
-      if (address >= get_size())
-	    return;
+      ຖ້າ (address >= get_size())
+	    ສົ່ງຄືນ;
 
-      if (vals4) {
+      ຖ້າ (vals4) {
 	    assert(nets == 0);
-	    if (part_off != 0 || val.size() != vals_width) {
+	    ຖ້າ (part_off != 0 || val.size() != vals_width) {
 		  vvp_vector4_t tmp = vals4->get_word(address);
-		  if ((part_off + val.size()) > tmp.size()) {
+		  ຖ້າ ((part_off + val.size()) > tmp.size()) {
 			cerr << "part_off=" << part_off
 			     << " val.size()=" << val.size()
 			     << " vals[address].size()=" << tmp.size()
@@ -593,19 +593,19 @@ void __vpiArray::set_word(unsigned address, unsigned part_off, const vvp_vector4
 		  }
 		  tmp.set_vec(part_off, val);
 		  vals4->set_word(address, tmp);
-	    } else {
+	    } ບໍ່ດັ່ງນັ້ນ {
 		  vals4->set_word(address, val);
 	    }
 	    word_change(address);
-	    return;
+	    ສົ່ງຄືນ;
       }
 
-      if (vals) {
+      ຖ້າ (vals) {
 	    assert(nets == 0);
-	    if (part_off != 0 || val.size() != vals_width) {
+	    ຖ້າ (part_off != 0 || val.size() != vals_width) {
 		  vvp_vector4_t tmp;
 		  vals->get_word(address, tmp);
-		  if ((part_off + val.size()) > tmp.size()) {
+		  ຖ້າ ((part_off + val.size()) > tmp.size()) {
 			cerr << "part_off=" << part_off
 			     << " val.size()=" << val.size()
 			     << " vals[address].size()=" << tmp.size()
@@ -614,31 +614,31 @@ void __vpiArray::set_word(unsigned address, unsigned part_off, const vvp_vector4
 		  }
 		  tmp.set_vec(part_off, val);
 		  vals->set_word(address, tmp);
-	    } else {
+	    } ບໍ່ດັ່ງນັ້ນ {
 		  vals->set_word(address, val);
 	    }
 	    word_change(address);
-	    return;
+	    ສົ່ງຄືນ;
       }
 
       assert(nets != 0);
 
 	// Select the word of the array that we affect.
       vpiHandle word = nets[address];
-      const struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
+      const sa_nracanaa __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
       assert(vsig);
 
       vsig->node->send_vec4_pv(val, part_off, vpip_size(vsig), 0);
       word_change(address);
 }
 
-void __vpiArray::set_word(unsigned address, double val)
+void __vpiArray::set_word(unsigned address, dviguu_na val)
 {
       assert(vals != 0);
       assert(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      ຖ້າ (address >= vals->get_size())
+	    ສົ່ງຄືນ;
 
       vals->set_word(address, val);
       word_change(address);
@@ -649,8 +649,8 @@ void __vpiArray::set_word(unsigned address, const string&val)
       assert(vals != 0);
       assert(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      ຖ້າ (address >= vals->get_size())
+	    ສົ່ງຄືນ;
 
       vals->set_word(address, val);
       word_change(address);
@@ -661,8 +661,8 @@ void __vpiArray::set_word(unsigned address, const vvp_object_t&val)
       assert(vals != 0);
       assert(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      ຖ້າ (address >= vals->get_size())
+	    ສົ່ງຄືນ;
 
       vals->set_word(address, val);
       word_change(address);
@@ -670,137 +670,137 @@ void __vpiArray::set_word(unsigned address, const vvp_object_t&val)
 
 vvp_vector4_t __vpiArray::get_word(unsigned address)
 {
-      if (vals4) {
+      ຖ້າ (vals4) {
 	    assert(nets == 0);
 	    assert(vals == 0);
-	    return vals4->get_word(address);
+	    ສົ່ງຄືນ vals4->get_word(address);
       }
 
-      if (vals) {
+      ຖ້າ (vals) {
 	    assert(nets == 0);
 	    assert(vals4== 0);
-	    if (address >= vals->get_size())
-		  return vvp_vector4_t(vals_width, BIT4_X);
+	    ຖ້າ (address >= vals->get_size())
+		  ສົ່ງຄືນ vvp_vector4_t(vals_width, BIT4_X);
 
 	    vvp_vector4_t val;
 	    vals->get_word(address, val);
-	    return val;
+	    ສົ່ງຄືນ val;
       }
 
       assert(vals4 == 0);
       assert(vals == 0);
       assert(nets != 0);
 
-      if (address >= get_size()) {
+      ຖ້າ (address >= get_size()) {
 	      // Reading outside the array. Return X's but get the
 	      // width by looking at a word that we know is present.
 	    assert(get_size() > 0);
 	    vpiHandle word = nets[0];
 	    assert(word);
-	    struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
+	    sa_nracanaa __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
 	    assert(vsig);
 	    vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->node->fil);
 	    assert(sig);
-	    return vvp_vector4_t(sig->value_size(), BIT4_X);
+	    ສົ່ງຄືນ vvp_vector4_t(sig->value_size(), BIT4_X);
       }
 
       vpiHandle word = nets[address];
-      struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
+      sa_nracanaa __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
       assert(vsig);
       vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->node->fil);
       assert(sig);
 
       vvp_vector4_t val;
       sig->vec4_value(val);
-      return val;
+      ສົ່ງຄືນ val;
 }
 
-double __vpiArray::get_word_r(unsigned address)
+dviguu_na __vpiArray::get_word_r(unsigned address)
 {
-      if (vals) {
+      ຖ້າ (vals) {
 	    assert(vals4 == 0);
 	    assert(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size())
-		  return 0.0;
+	    ຖ້າ (address >= vals->get_size())
+		  ສົ່ງຄືນ 0.0;
 
-	    double val;
+	    dviguu_na val;
 	    vals->get_word(address, val);
-	    return val;
+	    ສົ່ງຄືນ val;
       }
 
-      if (address >= get_size())
-	    return 0.0;
+      ຖ້າ (address >= get_size())
+	    ສົ່ງຄືນ 0.0;
 
       assert(nets);
       vpiHandle word = nets[address];
-      struct __vpiRealVar*vsig = dynamic_cast<__vpiRealVar*>(word);
+      sa_nracanaa __vpiRealVar*vsig = dynamic_cast<__vpiRealVar*>(word);
       assert(vsig);
       vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->net->fil);
       assert(sig);
 
-      double val = sig->real_value();
-      return val;
+      dviguu_na val = sig->real_value();
+      ສົ່ງຄືນ val;
 }
 
 void __vpiArray::get_word_obj(unsigned address, vvp_object_t&val)
 {
-      if (vals) {
+      ຖ້າ (vals) {
 	    assert(vals4 == 0);
 	    assert(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size()) {
+	    ຖ້າ (address >= vals->get_size()) {
 		  val = vvp_object_t();
-		  return;
+		  ສົ່ງຄືນ;
 	    }
 
 	    vals->get_word(address, val);
-	    return;
+	    ສົ່ງຄືນ;
       }
 
       assert(nets);
 	// Arrays of string nets not implemented!
       assert(0);
-      return;
+      ສົ່ງຄືນ;
 }
 
 string __vpiArray::get_word_str(unsigned address)
 {
-      if (vals) {
+      ຖ້າ (vals) {
 	    assert(vals4 == 0);
 	    assert(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size())
-		  return "";
+	    ຖ້າ (address >= vals->get_size())
+		  ສົ່ງຄືນ "";
 
 	    string val;
 	    vals->get_word(address, val);
-	    return val;
+	    ສົ່ງຄືນ val;
       }
 
       assert(nets);
 	// Arrays of string nets not implemented!
       assert(0);
-      return "";
+      ສົ່ງຄືນ "";
 }
 
-vpiHandle vpip_make_array(const char*label, const char*name,
-                          int first_addr, int last_addr,
+vpiHandle vpip_make_array(const var_na*label, const var_na*name,
+                          ຈຳນວນເຕັມ first_addr, ຈຳນວນເຕັມ last_addr,
                           bool signed_flag)
 {
-      struct __vpiArray*obj = new __vpiArray;
+      sa_nracanaa __vpiArray*obj = new __vpiArray;
 
       obj->signed_flag = signed_flag;
 
 	// Assume increasing addresses.
-      if (last_addr >= first_addr) {
+      ຖ້າ (last_addr >= first_addr) {
 	    obj->swap_addr = false;
-      } else {
+      } ບໍ່ດັ່ງນັ້ນ {
 	    obj->swap_addr = true;
-	    int tmp = last_addr;
+	    ຈຳນວນເຕັມ tmp = last_addr;
 	    last_addr = first_addr;
 	    first_addr = tmp;
       }
@@ -828,8 +828,8 @@ vpiHandle vpip_make_array(const char*label, const char*name,
       obj->vpi_callbacks = 0;
 
 	/* Add this symbol to the array_symbols table for later lookup. */
-      if (!array_table)
-	    array_table = new symbol_map_s<struct __vpiArray>;
+      ຖ້າ (!array_table)
+	    array_table = new symbol_map_s<sa_nracanaa __vpiArray>;
 
       assert(!array_find(label));
       array_table->sym_set_value(label, obj);
@@ -842,10 +842,10 @@ vpiHandle vpip_make_array(const char*label, const char*name,
 	/* Blindly attach to the scope as an object. */
       vpip_attach_to_current_scope(obj);
 
-      return obj;
+      ສົ່ງຄືນ obj;
 }
 
-void __vpiArray::alias_word(unsigned long addr, vpiHandle word, int msb_, int lsb_)
+void __vpiArray::alias_word(unsigned long addr, vpiHandle word, ຈຳນວນເຕັມ msb_, ຈຳນວນເຕັມ lsb_)
 {
       assert(msb.get_value() == msb_);
       assert(lsb.get_value() == lsb_);
@@ -860,7 +860,7 @@ void __vpiArray::attach_word(unsigned addr, vpiHandle word)
       assert(nets);
       nets[addr] = word;
 
-      if (struct __vpiSignal*sig = dynamic_cast<__vpiSignal*>(word)) {
+      ຖ້າ (sa_nracanaa __vpiSignal*sig = dynamic_cast<__vpiSignal*>(word)) {
 	    vvp_net_t*net = sig->node;
 	    assert(net);
 	    vvp_vpi_callback*fun = dynamic_cast<vvp_vpi_callback*>(net->fil);
@@ -871,10 +871,10 @@ void __vpiArray::attach_word(unsigned addr, vpiHandle word)
 	    sig->id.index = new __vpiDecConst(addr + first_addr.get_value());
 	      // Now we know the data type, update the array signed_flag.
 	    signed_flag = sig->signed_flag;
-	    return;
+	    ສົ່ງຄືນ;
       }
 
-      if (struct __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(word)) {
+      ຖ້າ (sa_nracanaa __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(word)) {
 	    vvp_net_t*net = sig->net;
 	    assert(net);
 	    vvp_vpi_callback*fun = dynamic_cast<vvp_vpi_callback*>(net->fil);
@@ -885,24 +885,24 @@ void __vpiArray::attach_word(unsigned addr, vpiHandle word)
 	    sig->id.index = new __vpiDecConst(addr + first_addr.get_value());
 	      // Now we know the data type, update the array signed_flag.
 	    signed_flag = true;
-	    return;
+	    ສົ່ງຄືນ;
       }
 }
 
-void compile_var_array(char*label, char*name, int last, int first,
-		   int msb, int lsb, char signed_flag)
+void compile_var_array(var_na*label, var_na*name, ຈຳນວນເຕັມ last, ຈຳນວນເຕັມ first,
+		   ຈຳນວນເຕັມ msb, ຈຳນວນເຕັມ lsb, var_na signed_flag)
 {
       vpiHandle obj = vpip_make_array(label, name, first, last,
                                       signed_flag != 0);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      sa_nracanaa __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
       arr->vals_width = labs(msb-lsb) + 1;
-      if (vpip_peek_current_scope()->is_automatic()) {
+      ຖ້າ (vpip_peek_current_scope()->is_automatic()) {
             arr->vals4 = new vvp_vector4array_aa(arr->vals_width,
 						 arr->get_size());
-      } else {
+      } ບໍ່ດັ່ງນັ້ນ {
             arr->vals4 = new vvp_vector4array_sa(arr->vals_width,
 						 arr->get_size());
       }
@@ -916,12 +916,12 @@ void compile_var_array(char*label, char*name, int last, int first,
       delete[] name;
 }
 
-void compile_var2_array(char*label, char*name, int last, int first,
-		   int msb, int lsb, bool signed_flag)
+void compile_var2_array(var_na*label, var_na*name, ຈຳນວນເຕັມ last, ຈຳນວນເຕັມ first,
+		   ຈຳນວນເຕັມ msb, ຈຳນວນເຕັມ lsb, bool signed_flag)
 {
       vpiHandle obj = vpip_make_array(label, name, first, last, signed_flag);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      sa_nracanaa __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
       arr->msb.set_value(msb);
@@ -929,23 +929,23 @@ void compile_var2_array(char*label, char*name, int last, int first,
       arr->vals_width = labs(msb-lsb) + 1;
 
       assert(! arr->nets);
-      if (lsb == 0 && msb == 7 && signed_flag) {
+      ຖ້າ (lsb == 0 && msb == 7 && signed_flag) {
 	    arr->vals = new vvp_darray_atom<int8_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 7 && !signed_flag) {
+      } ບໍ່ດັ່ງນັ້ນ ຖ້າ (lsb == 0 && msb == 7 && !signed_flag) {
 	    arr->vals = new vvp_darray_atom<uint8_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 15 && signed_flag) {
+      } ບໍ່ດັ່ງນັ້ນ ຖ້າ (lsb == 0 && msb == 15 && signed_flag) {
 	    arr->vals = new vvp_darray_atom<int16_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 15 && !signed_flag) {
+      } ບໍ່ດັ່ງນັ້ນ ຖ້າ (lsb == 0 && msb == 15 && !signed_flag) {
 	    arr->vals = new vvp_darray_atom<uint16_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 31 && signed_flag) {
+      } ບໍ່ດັ່ງນັ້ນ ຖ້າ (lsb == 0 && msb == 31 && signed_flag) {
 	    arr->vals = new vvp_darray_atom<int32_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 31 && !signed_flag) {
+      } ບໍ່ດັ່ງນັ້ນ ຖ້າ (lsb == 0 && msb == 31 && !signed_flag) {
 	    arr->vals = new vvp_darray_atom<uint32_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 63 && signed_flag) {
+      } ບໍ່ດັ່ງນັ້ນ ຖ້າ (lsb == 0 && msb == 63 && signed_flag) {
 	    arr->vals = new vvp_darray_atom<int64_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 63 && !signed_flag) {
+      } ບໍ່ດັ່ງນັ້ນ ຖ້າ (lsb == 0 && msb == 63 && !signed_flag) {
 	    arr->vals = new vvp_darray_atom<uint64_t>(arr->get_size());
-      } else {
+      } ບໍ່ດັ່ງນັ້ນ {
 	    arr->vals = new vvp_darray_vec2(arr->get_size(), arr->vals_width);
       }
       count_var_arrays += 1;
@@ -955,11 +955,11 @@ void compile_var2_array(char*label, char*name, int last, int first,
       delete[] name;
 }
 
-void compile_real_array(char*label, char*name, int last, int first)
+void compile_real_array(var_na*label, var_na*name, ຈຳນວນເຕັມ last, ຈຳນວນເຕັມ first)
 {
       vpiHandle obj = vpip_make_array(label, name, first, last, true);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      sa_nracanaa __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
       arr->vals = new vvp_darray_real(arr->get_size());
@@ -972,11 +972,11 @@ void compile_real_array(char*label, char*name, int last, int first)
       delete[] name;
 }
 
-void compile_string_array(char*label, char*name, int last, int first)
+void compile_string_array(var_na*label, var_na*name, ຈຳນວນເຕັມ last, ຈຳນວນເຕັມ first)
 {
       vpiHandle obj = vpip_make_array(label, name, first, last, true);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      sa_nracanaa __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
       arr->vals = new vvp_darray_string(arr->get_size());
@@ -989,11 +989,11 @@ void compile_string_array(char*label, char*name, int last, int first)
       delete[] name;
 }
 
-void compile_object_array(char*label, char*name, int last, int first)
+void compile_object_array(var_na*label, var_na*name, ຈຳນວນເຕັມ last, ຈຳນວນເຕັມ first)
 {
       vpiHandle obj = vpip_make_array(label, name, first, last, true);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      sa_nracanaa __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
       arr->vals = new vvp_darray_object(arr->get_size());
@@ -1006,15 +1006,15 @@ void compile_object_array(char*label, char*name, int last, int first)
       delete[] name;
 }
 
-void compile_net_array(char*label, char*name, int last, int first)
+void compile_net_array(var_na*label, var_na*name, ຈຳນວນເຕັມ last, ຈຳນວນເຕັມ first)
 {
 	// At this point we don't know the array data type, so we
 	// initialise signed_flag to false. This will be corrected
 	// (if necessary) when we attach words to the array.
       vpiHandle obj = vpip_make_array(label, name, first, last, false);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
-      arr->nets = static_cast<vpiHandle*>(calloc(arr->get_size(), sizeof(vpiHandle)));
+      sa_nracanaa __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      arr->nets = static_cast<vpiHandle*>(calloc(arr->get_size(), parimaa_na(vpiHandle)));
 
       count_net_arrays += 1;
       count_net_array_words += arr->get_size();
@@ -1032,7 +1032,7 @@ class vvp_fun_arrayport  : public vvp_net_fun_t {
 
       virtual void check_word_change(unsigned long addr) = 0;
 
-    protected:
+    rak_sita:
       vvp_array_t arr_;
       vvp_net_t  *net_;
       unsigned long addr_;
@@ -1094,16 +1094,16 @@ void vvp_fun_arrayport_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit
 
       switch (port.port()) {
 
-	  case 0: // Address input
+	  pak_sa 0: // Address input
 	    addr_valid_flag = vector4_to_value(bit, addr_);
-	    if (! addr_valid_flag)
+	    ຖ້າ (! addr_valid_flag)
 		  addr_ = arr_->get_size();
-	    if (vpi_array_is_real(arr_))
+	    ຖ້າ (vpi_array_is_real(arr_))
 		  port.ptr()->send_real(arr_->get_word_r(addr_), 0);
-	    else
+	    ບໍ່ດັ່ງນັ້ນ
 		  port.ptr()->send_vec4(arr_->get_word(addr_), 0);
 
-	    break;
+	    bha_nga;
 
 	  default:
 	    fprintf(stdout, "XXXX write ports not implemented.\n");
@@ -1113,11 +1113,11 @@ void vvp_fun_arrayport_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit
 
 void vvp_fun_arrayport_sa::check_word_change(unsigned long addr)
 {
-      if (addr != addr_) return;
+      ຖ້າ (addr != addr_) ສົ່ງຄືນ;
 
-      if (vpi_array_is_real(arr_)) {
+      ຖ້າ (vpi_array_is_real(arr_)) {
 	    net_->send_real(arr_->get_word_r(addr_), 0);
-      } else {
+      } ບໍ່ດັ່ງນັ້ນ {
 	    net_->send_vec4(arr_->get_word(addr_), 0);
       }
 }
@@ -1191,7 +1191,7 @@ void vvp_fun_arrayport_aa::free_instance(vvp_context_t context)
 void vvp_fun_arrayport_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                                      vvp_context_t context)
 {
-      if (context) {
+      ຖ້າ (context) {
             unsigned long*addr = static_cast<unsigned long*>
                   (vvp_get_context_item(context, context_idx_));
 
@@ -1199,25 +1199,25 @@ void vvp_fun_arrayport_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit
 
             switch (port.port()) {
 
-                case 0: // Address input
+                pak_sa 0: // Address input
                   addr_valid_flag = vector4_to_value(bit, *addr);
-                  if (! addr_valid_flag) *addr = arr_->get_size();
-                  if (vpi_array_is_real(arr_)) {
+                  ຖ້າ (! addr_valid_flag) *addr = arr_->get_size();
+                  ຖ້າ (vpi_array_is_real(arr_)) {
 			port.ptr()->send_real(arr_->get_word_r(*addr),
 					      context);
-                  } else {
+                  } ບໍ່ດັ່ງນັ້ນ {
 			port.ptr()->send_vec4(arr_->get_word(*addr),
 					      context);
                   }
-                  break;
+                  bha_nga;
 
                 default:
                   fprintf(stdout, "XXXX write ports not implemented.\n");
                   assert(0);
             }
-      } else {
+      } ບໍ່ດັ່ງນັ້ນ {
             context = context_scope_->live_contexts;
-            while (context) {
+            ໃນຂະນະທີ່ (context) {
                   recv_vec4(port, bit, context);
                   context = vvp_get_next_context(context);
             }
@@ -1230,24 +1230,24 @@ void vvp_fun_arrayport_aa::check_word_change_(unsigned long addr,
       const unsigned long*port_addr = static_cast<unsigned long*>
             (vvp_get_context_item(context, context_idx_));
 
-      if (addr != *port_addr)
-	    return;
+      ຖ້າ (addr != *port_addr)
+	    ສົ່ງຄືນ;
 
-      if (vpi_array_is_real(arr_)) {
+      ຖ້າ (vpi_array_is_real(arr_)) {
 	    net_->send_real(arr_->get_word_r(addr), context);
-      } else {
+      } ບໍ່ດັ່ງນັ້ນ {
 	    net_->send_vec4(arr_->get_word(addr), context);
       }
 }
 
 void vvp_fun_arrayport_aa::check_word_change(unsigned long addr)
 {
-      if (arr_->get_scope()->is_automatic()) {
+      ຖ້າ (arr_->get_scope()->is_automatic()) {
             assert(vthread_get_wt_context());
             check_word_change_(addr, vthread_get_wt_context());
-      } else {
+      } ບໍ່ດັ່ງນັ້ນ {
             vvp_context_t context = context_scope_->live_contexts;
-            while (context) {
+            ໃນຂະນະທີ່ (context) {
                   check_word_change_(addr, context);
                   context = vvp_get_next_context(context);
             }
@@ -1259,18 +1259,18 @@ static void array_attach_port(vvp_array_t array, vvp_fun_arrayport*fun)
       assert(fun->next_ == 0);
       fun->next_ = array->ports_;
       array->ports_ = fun;
-      if (!array->get_scope()->is_automatic() &&
+      ຖ້າ (!array->get_scope()->is_automatic() &&
           (array->vals4 || array->vals)) {
               /* propagate initial values for variable arrays */
-            if (!vpi_array_is_real(array)) {
+            ຖ້າ (!vpi_array_is_real(array)) {
                   vvp_bit4_t init;
-                  if (array->vals4)
+                  ຖ້າ (array->vals4)
                       init = BIT4_X;
-                  else
+                  ບໍ່ດັ່ງນັ້ນ
                       init = BIT4_0;
                   vvp_vector4_t tmp(array->vals_width, init);
                   schedule_init_propagate(fun->net_, tmp);
-            } else {
+            } ບໍ່ດັ່ງນັ້ນ {
                   schedule_init_propagate(fun->net_, 0.0);
             }
       }
@@ -1278,7 +1278,7 @@ static void array_attach_port(vvp_array_t array, vvp_fun_arrayport*fun)
 
 class array_word_value_callback : public value_callback {
     public:
-      inline explicit array_word_value_callback(p_cb_data data, long addr)
+      anta_hstha explicit array_word_value_callback(p_cb_data data, long addr)
       : value_callback(data), word_addr(addr)
       { }
 
@@ -1288,43 +1288,43 @@ class array_word_value_callback : public value_callback {
 
 void __vpiArray::word_change(unsigned long addr)
 {
-      for (vvp_fun_arrayport*cur = ports_; cur; cur = cur->next_)
+      ສຳລັບ (vvp_fun_arrayport*cur = ports_; cur; cur = cur->next_)
 	    cur->check_word_change(addr);
 
 	// Run callbacks attached to the array itself.
-      struct __vpiCallback *next = vpi_callbacks;
-      struct __vpiCallback *prev = 0;
+      sa_nracanaa __vpiCallback *next = vpi_callbacks;
+      sa_nracanaa __vpiCallback *prev = 0;
 
-      while (next) {
+      ໃນຂະນະທີ່ (next) {
 	    array_word_value_callback*cur = dynamic_cast<array_word_value_callback*>(next);
 	    next = cur->next;
 
 	      // Skip callbacks that are not for me. -1 is for every element.
-	    if (cur->word_addr != (long)addr && cur->word_addr != -1) {
+	    ຖ້າ (cur->word_addr != (long)addr && cur->word_addr != -1) {
 		  prev = cur;
 		  continue;
 	    }
 
 	      // For whole array callbacks we need to set the index.
-	    if (cur->word_addr == -1) {
-		  cur->cb_data.index = (PLI_INT32) ((int)addr +
+	    ຖ້າ (cur->word_addr == -1) {
+		  cur->cb_data.index = (PLI_INT32) ((ຈຳນວນເຕັມ)addr +
 						    first_addr.get_value());
 	    }
 
-	    if (cur->cb_data.cb_rtn != 0) {
-		  if (cur->test_value_callback_ready()) {
-			if (cur->cb_data.value) {
-			      if (vpi_array_is_real(this)) {
-				    double val = 0.0;
-				    if (addr < vals->get_size())
+	    ຖ້າ (cur->cb_data.cb_rtn != 0) {
+		  ຖ້າ (cur->test_value_callback_ready()) {
+			ຖ້າ (cur->cb_data.value) {
+			      ຖ້າ (vpi_array_is_real(this)) {
+				    dviguu_na val = 0.0;
+				    ຖ້າ (addr < vals->get_size())
 					  vals->get_word(addr, val);
 				    vpip_real_get_value(val, cur->cb_data.value);
-			      } else if (vals4) {
+			      } ບໍ່ດັ່ງນັ້ນ ຖ້າ (vals4) {
 				    vpip_vec4_get_value(vals4->get_word(addr),
 							vals_width,
 							signed_flag,
 							cur->cb_data.value);
-			      } else if (dynamic_cast<vvp_darray_atom<int8_t>*>(vals)
+			      } ບໍ່ດັ່ງນັ້ນ ຖ້າ (dynamic_cast<vvp_darray_atom<int8_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int16_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int32_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int64_t>*>(vals)
@@ -1334,13 +1334,13 @@ void __vpiArray::word_change(unsigned long addr)
 				      || dynamic_cast<vvp_darray_atom<uint64_t>*>(vals)
 				      || dynamic_cast<vvp_darray_vec2*>(vals)) {
 				    vvp_vector4_t val;
-				    if (addr < vals->get_size())
+				    ຖ້າ (addr < vals->get_size())
 					  vals->get_word(addr, val);
 				    vpip_vec4_get_value(val,
 							vals_width,
 							signed_flag,
 							cur->cb_data.value);
-			      } else {
+			      } ບໍ່ດັ່ງນັ້ນ {
 			            assert(0);
 			      }
 			}
@@ -1350,13 +1350,13 @@ void __vpiArray::word_change(unsigned long addr)
 
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } ບໍ່ດັ່ງນັ້ນ ຖ້າ (prev == 0) {
 
 		  vpi_callbacks = next;
 		  cur->next = 0;
 		  delete cur;
 
-	    } else {
+	    } ບໍ່ດັ່ງນັ້ນ {
 		  assert(prev->next == cur);
 		  prev->next = next;
 		  cur->next = 0;
@@ -1368,7 +1368,7 @@ void __vpiArray::word_change(unsigned long addr)
 class array_resolv_list_t : public resolv_list_s {
 
     public:
-      explicit array_resolv_list_t(char*lab) : resolv_list_s(lab) {
+      explicit array_resolv_list_t(var_na*lab) : resolv_list_s(lab) {
 	    array = 0;
       }
 
@@ -1381,17 +1381,17 @@ class array_resolv_list_t : public resolv_list_s {
 bool array_resolv_list_t::resolve(bool mes)
 {
       *array = array_find(label());
-      if (*array == 0) {
+      ຖ້າ (*array == 0) {
 	    assert(!mes);
-	    return false;
+	    ສົ່ງຄືນ false;
       }
-      return true;
+      ສົ່ງຄືນ true;
 }
 
 class array_port_resolv_list_t : public resolv_list_s {
 
     public:
-      explicit array_port_resolv_list_t(char* lab, bool use_addr__,
+      explicit array_port_resolv_list_t(var_na* lab, bool use_addr__,
                                         long addr__);
 
       __vpiScope*context_scope;
@@ -1403,13 +1403,13 @@ class array_port_resolv_list_t : public resolv_list_s {
     private:
 };
 
-array_port_resolv_list_t::array_port_resolv_list_t(char *lab, bool use_addr__,
+array_port_resolv_list_t::array_port_resolv_list_t(var_na *lab, bool use_addr__,
                                                    long addr__)
 : resolv_list_s(lab), use_addr(use_addr__), addr(addr__)
 {
-      if (vpip_peek_current_scope()->is_automatic())
+      ຖ້າ (vpip_peek_current_scope()->is_automatic())
             context_scope = vpip_peek_context_scope();
-      else
+      ບໍ່ດັ່ງນັ້ນ
             context_scope = 0;
       ptr = new vvp_net_t;
 }
@@ -1417,27 +1417,27 @@ array_port_resolv_list_t::array_port_resolv_list_t(char *lab, bool use_addr__,
 bool array_port_resolv_list_t::resolve(bool mes)
 {
       vvp_array_t mem = array_find(label());
-      if (mem == 0) {
+      ຖ້າ (mem == 0) {
 	    assert(mem || !mes);
-	    return false;
+	    ສົ່ງຄືນ false;
       }
 
       vvp_fun_arrayport*fun;
-      if (use_addr)
-            if (context_scope)
+      ຖ້າ (use_addr)
+            ຖ້າ (context_scope)
                   fun = new vvp_fun_arrayport_aa(context_scope, mem, ptr, addr);
-            else
+            ບໍ່ດັ່ງນັ້ນ
                   fun = new vvp_fun_arrayport_sa(mem, ptr, addr);
-      else
-            if (context_scope)
+      ບໍ່ດັ່ງນັ້ນ
+            ຖ້າ (context_scope)
                   fun = new vvp_fun_arrayport_aa(context_scope, mem, ptr);
-            else
+            ບໍ່ດັ່ງນັ້ນ
                   fun = new vvp_fun_arrayport_sa(mem, ptr);
       ptr->fun = fun;
 
       array_attach_port(mem, fun);
 
-      return true;
+      ສົ່ງຄືນ true;
 }
 
 class array_word_part_callback : public array_word_value_callback {
@@ -1451,19 +1451,19 @@ class array_word_part_callback : public array_word_value_callback {
       bool test_value_callback_ready(void) override;
 
     private:
-      char*value_bits_;
+      var_na*value_bits_;
 };
 
 array_word_part_callback::array_word_part_callback(p_cb_data data, long addr)
 : array_word_value_callback(data, addr)
 {
 	// Get the initial value of the part, to use as a reference.
-      struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj);
+      sa_nracanaa __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj);
       s_vpi_value tmp_value;
       tmp_value.format = vpiBinStrVal;
       apvword->vpi_get_value(&tmp_value);
 
-      value_bits_ = new char[apvword->part_wid+1];
+      value_bits_ = new var_na[apvword->part_wid+1];
 
       memcpy(value_bits_, tmp_value.value.str, apvword->part_wid);
       value_bits_[apvword->part_wid] = 0;
@@ -1476,7 +1476,7 @@ array_word_part_callback::~array_word_part_callback()
 
 bool array_word_part_callback::test_value_callback_ready(void)
 {
-      struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(cb_data.obj);
+      sa_nracanaa __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(cb_data.obj);
       assert(apvword);
 
 	// Get a reference value that can be used to compare with an
@@ -1485,28 +1485,28 @@ bool array_word_part_callback::test_value_callback_ready(void)
       tmp_value.format = vpiBinStrVal;
       apvword->vpi_get_value(&tmp_value);
 
-      if (memcmp(value_bits_, tmp_value.value.str, apvword->part_wid) == 0)
-	    return false;
+      ຖ້າ (memcmp(value_bits_, tmp_value.value.str, apvword->part_wid) == 0)
+	    ສົ່ງຄືນ false;
 
       memcpy(value_bits_, tmp_value.value.str, apvword->part_wid);
-      return true;
+      ສົ່ງຄືນ true;
 
 }
 
 value_callback*vpip_array_word_change(p_cb_data data)
 {
-      struct __vpiArray*parent = 0;
+      sa_nracanaa __vpiArray*parent = 0;
       array_word_value_callback*cbh = 0;
-      if (const struct __vpiArrayWord*word = array_var_word_from_handle(data->obj)) {
+      ຖ້າ (const sa_nracanaa __vpiArrayWord*word = array_var_word_from_handle(data->obj)) {
 	    parent = static_cast<__vpiArray*>(word->get_parent());
 	    unsigned addr = word->get_index();
 	    cbh = new array_word_value_callback(data, addr);
 
-      } else if (struct __vpiArrayVthrA*tword = dynamic_cast<__vpiArrayVthrA*>(data->obj)) {
+      } ບໍ່ດັ່ງນັ້ນ ຖ້າ (sa_nracanaa __vpiArrayVthrA*tword = dynamic_cast<__vpiArrayVthrA*>(data->obj)) {
 	    parent = tword->array;
 	    cbh = new array_word_value_callback(data, tword->address);
 
-      } else if (struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj)) {
+      } ບໍ່ດັ່ງນັ້ນ ຖ້າ (sa_nracanaa __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj)) {
 	    parent = apvword->array;
 	    cbh = new array_word_part_callback(data, apvword->word_sel);
       }
@@ -1516,7 +1516,7 @@ value_callback*vpip_array_word_change(p_cb_data data)
       cbh->next = parent->vpi_callbacks;
       parent->vpi_callbacks = cbh;
 
-      return cbh;
+      ສົ່ງຄືນ cbh;
 }
 
 value_callback* vpip_array_change(p_cb_data data)
@@ -1524,13 +1524,13 @@ value_callback* vpip_array_change(p_cb_data data)
       array_word_value_callback*cbh = new array_word_value_callback(data, -1);
       assert(data->obj);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(data->obj);
+      sa_nracanaa __vpiArray*arr = dynamic_cast<__vpiArray*>(data->obj);
       cbh->next = arr->vpi_callbacks;
       arr->vpi_callbacks = cbh;
-      return cbh;
+      ສົ່ງຄືນ cbh;
 }
 
-void compile_array_port(char*label, char*array, char*addr)
+void compile_array_port(var_na*label, var_na*array, var_na*addr)
 {
       array_port_resolv_list_t*resolv_mem
 	    = new array_port_resolv_list_t(array, false, 0);
@@ -1543,7 +1543,7 @@ void compile_array_port(char*label, char*array, char*addr)
       resolv_submit(resolv_mem);
 }
 
-void compile_array_port(char*label, char*array, long addr)
+void compile_array_port(var_na*label, var_na*array, long addr)
 {
       array_port_resolv_list_t*resolv_mem
 	    = new array_port_resolv_list_t(array, true, addr);
@@ -1554,12 +1554,12 @@ void compile_array_port(char*label, char*array, long addr)
       resolv_submit(resolv_mem);
 }
 
-void compile_array_alias(char*label, char*name, char*src)
+void compile_array_alias(var_na*label, var_na*name, var_na*src)
 {
       vvp_array_t mem = array_find(src);
       assert(mem);
 
-      struct __vpiArray*obj = new __vpiArray;
+      sa_nracanaa __vpiArray*obj = new __vpiArray;
 
       obj->scope = vpip_peek_current_scope();
       obj->name  = vpip_name_string(name);
@@ -1602,9 +1602,9 @@ void compile_array_alias(char*label, char*name, char*src)
  * from expressions like "label[addr]" where "label" is the array and
  * "addr" is the canonical address of the desired word.
  */
-vpiHandle vpip_make_vthr_A(char*label, unsigned addr)
+vpiHandle vpip_make_vthr_A(var_na*label, unsigned addr)
 {
-      struct __vpiArrayVthrA*obj = new __vpiArrayVthrA;
+      sa_nracanaa __vpiArrayVthrA*obj = new __vpiArrayVthrA;
 
       array_resolv_list_t*resolv_mem
 	    = new array_resolv_list_t(label);
@@ -1615,7 +1615,7 @@ vpiHandle vpip_make_vthr_A(char*label, unsigned addr)
       obj->address_handle = 0;
       obj->address = addr;
 
-      return obj;
+      ສົ່ງຄືນ obj;
 }
 
 /*
@@ -1624,9 +1624,9 @@ vpiHandle vpip_make_vthr_A(char*label, unsigned addr)
  * word address is calculated from the VPI object that symbol
  * represents. The expression that leads to this looks like label[symbol].
  */
-vpiHandle vpip_make_vthr_A(char*label, char*symbol)
+vpiHandle vpip_make_vthr_A(var_na*label, var_na*symbol)
 {
-      struct __vpiArrayVthrA*obj = new __vpiArrayVthrA;
+      sa_nracanaa __vpiArrayVthrA*obj = new __vpiArrayVthrA;
 
       array_resolv_list_t*resolv_mem
 	    = new array_resolv_list_t(label);
@@ -1638,12 +1638,12 @@ vpiHandle vpip_make_vthr_A(char*label, char*symbol)
       compile_vpi_lookup(&obj->address_handle, symbol);
       obj->address = 0;
 
-      return obj;
+      ສົ່ງຄືນ obj;
 }
 
-vpiHandle vpip_make_vthr_A(char*label, vpiHandle handle)
+vpiHandle vpip_make_vthr_A(var_na*label, vpiHandle handle)
 {
-      struct __vpiArrayVthrA*obj = new __vpiArrayVthrA;
+      sa_nracanaa __vpiArrayVthrA*obj = new __vpiArrayVthrA;
 
       array_resolv_list_t*resolv_mem
 	    = new array_resolv_list_t(label);
@@ -1654,12 +1654,12 @@ vpiHandle vpip_make_vthr_A(char*label, vpiHandle handle)
       obj->address_handle = handle;
       obj->address = 0;
 
-      return obj;
+      ສົ່ງຄືນ obj;
 }
 
-vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned wid)
+vpiHandle vpip_make_vthr_APV(var_na*label, unsigned index, unsigned bit, unsigned wid)
 {
-      struct __vpiArrayVthrAPV*obj = new __vpiArrayVthrAPV;
+      sa_nracanaa __vpiArrayVthrAPV*obj = new __vpiArrayVthrAPV;
 
       array_resolv_list_t*resolv_mem
 	    = new array_resolv_list_t(label);
@@ -1671,7 +1671,7 @@ vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned 
       obj->part_bit = bit;
       obj->part_wid = wid;
 
-      return obj;
+      ສົ່ງຄືນ obj;
 }
 
 void compile_array_cleanup(void)
@@ -1683,8 +1683,8 @@ void compile_array_cleanup(void)
 #ifdef CHECK_WITH_VALGRIND
 void memory_delete(vpiHandle item)
 {
-      struct __vpiArray*arr = static_cast<struct __vpiArray*>(item);
-      if (arr->vals_words) delete [] (arr->vals_words-1);
+      sa_nracanaa __vpiArray*arr = static_cast<sa_nracanaa __vpiArray*>(item);
+      ຖ້າ (arr->vals_words) delete [] (arr->vals_words-1);
 
 //      if (arr->vals4) {}
 // Delete the individual words?
@@ -1696,17 +1696,17 @@ void memory_delete(vpiHandle item)
 // constant_delete(handle)?
       delete arr->vals;
 
-      if (arr->nets) {
-	    for (unsigned idx = 0; idx < arr->get_size(); idx += 1) {
-		  if (struct __vpiSignal*sig =
+      ຖ້າ (arr->nets) {
+	    ສຳລັບ (unsigned idx = 0; idx < arr->get_size(); idx += 1) {
+		  ຖ້າ (sa_nracanaa __vpiSignal*sig =
 		      dynamic_cast<__vpiSignal*>(arr->nets[idx])) {
 // Delete the individual words?
 			constant_delete(sig->id.index);
 		    /* These should only be the real words. */
-		  } else {
+		  } ບໍ່ດັ່ງນັ້ນ {
 			assert(arr->nets[idx]->get_type_code() ==
 			       vpiRealVar);
-			struct __vpiRealVar *sigr = static_cast<struct __vpiRealVar *>
+			sa_nracanaa __vpiRealVar *sigr = static_cast<sa_nracanaa __vpiRealVar *>
 			                            (arr->nets[idx]);
 			constant_delete(sigr->id.index);
 // Why are only the real words still here?
@@ -1716,8 +1716,8 @@ void memory_delete(vpiHandle item)
 	    free(arr->nets);
       }
 
-      while (arr->vpi_callbacks) {
-	    struct __vpiCallback*tmp = arr->vpi_callbacks->next;
+      ໃນຂະນະທີ່ (arr->vpi_callbacks) {
+	    sa_nracanaa __vpiCallback*tmp = arr->vpi_callbacks->next;
 	    delete arr->vpi_callbacks;
 	    arr->vpi_callbacks = tmp;
       }
@@ -1727,19 +1727,19 @@ void memory_delete(vpiHandle item)
 
 void A_delete(vpiHandle item)
 {
-      struct __vpiArrayVthrA*obj = static_cast<struct __vpiArrayVthrA*>(item);
-      if (obj->address_handle) {
+      sa_nracanaa __vpiArrayVthrA*obj = static_cast<sa_nracanaa __vpiArrayVthrA*>(item);
+      ຖ້າ (obj->address_handle) {
 	    switch (obj->address_handle->get_type_code()) {
-		case vpiMemoryWord:
-		  if (vpi_get(_vpiFromThr, obj->address_handle) == _vpi_at_A) {
+		pak_sa vpiMemoryWord:
+		  ຖ້າ (vpi_get(_vpiFromThr, obj->address_handle) == _vpi_at_A) {
 			A_delete(obj->address_handle);
 		  }
-		  break;
-		case vpiPartSelect:
+		  bha_nga;
+		pak_sa vpiPartSelect:
 		  assert(vpi_get(_vpiFromThr, obj->address_handle) ==
 		         _vpi_at_PV);
 		  PV_delete(obj->address_handle);
-		  break;
+		  bha_nga;
 	    }
       }
 
@@ -1748,7 +1748,7 @@ void A_delete(vpiHandle item)
 
 void APV_delete(vpiHandle item)
 {
-      struct __vpiArrayVthrAPV*obj = static_cast<struct __vpiArrayVthrAPV*>(item);
+      sa_nracanaa __vpiArrayVthrAPV*obj = static_cast<sa_nracanaa __vpiArrayVthrAPV*>(item);
       delete obj;
 }
 #endif
