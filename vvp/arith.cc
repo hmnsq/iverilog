@@ -41,12 +41,12 @@ void vvp_arith_::dispatch_operand_(vvp_net_ptr_t ptr, const vvp_vector4_t&bit)
 {
       unsigned port = ptr.port();
       switch (port) {
-	  case 0:
+	  pak_sa 0:
 	    op_a_ = bit;
-	    break;
-	  case 1:
+	    bha_nga;
+	  pak_sa 1:
 	    op_b_ = bit;
-	    break;
+	    bha_nga;
 	  default:
 	    fprintf(stderr, "Unsupported port type %u.\n", port);
 	    assert(0);
@@ -74,16 +74,16 @@ void vvp_arith_abs::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 
       vvp_bit4_t cmp = compare_gtge_signed(bit, out, BIT4_1);
       switch (cmp) {
-	  case BIT4_1: // bit >= 0
+	  pak_sa BIT4_1: // bit >= 0
 	    out = bit;
-	    break;
-	  case BIT4_0: //  bit < 0
+	    bha_nga;
+	  pak_sa BIT4_0: //  bit < 0
 	    out = ~bit;
 	    out += 1;
-	    break;
+	    bha_nga;
 	  default: // There's an X.
 	    out = vvp_vector4_t(bit.size(), BIT4_X);
-	    break;
+	    bha_nga;
       }
 
       ptr.ptr()->send_vec4(out, 0);
@@ -95,10 +95,10 @@ void vvp_arith_abs::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       recv_vec4_pv_(ptr, bit, base, vwid, ctx);
 }
 
-void vvp_arith_abs::recv_real(vvp_net_ptr_t ptr, double bit,
+void vvp_arith_abs::recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                               vvp_context_t)
 {
-      double out = fabs(bit);
+      dviguu_na out = fabs(bit);
       ptr.ptr()->send_real(out, 0);
 }
 
@@ -111,7 +111,7 @@ vvp_arith_cast_int::~vvp_arith_cast_int()
 {
 }
 
-void vvp_arith_cast_int::recv_real(vvp_net_ptr_t ptr, double bit,
+void vvp_arith_cast_int::recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                                    vvp_context_t)
 {
       ptr.ptr()->send_vec4(vvp_vector4_t(wid_, bit), 0);
@@ -129,7 +129,7 @@ vvp_arith_cast_real::~vvp_arith_cast_real()
 void vvp_arith_cast_real::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                                     vvp_context_t)
 {
-      double val;
+      dviguu_na val;
       vector4_to_value(bit, val, signed_);
       ptr.ptr()->send_real(val, 0);
 }
@@ -150,7 +150,7 @@ vvp_arith_cast_vec2::~vvp_arith_cast_vec2()
 {
 }
 
-void vvp_arith_cast_vec2::recv_real(vvp_net_ptr_t ptr, double bit,
+void vvp_arith_cast_vec2::recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                                    vvp_context_t)
 {
       ptr.ptr()->send_vec4(vvp_vector4_t(wid_, bit), 0);
@@ -183,30 +183,30 @@ vvp_arith_div::~vvp_arith_div()
 void vvp_arith_div::wide4_(vvp_net_ptr_t ptr)
 {
       vvp_vector2_t a2 (op_a_, true);
-      if (a2.is_NaN()) {
+      ᯀᯮᯝ (a2.is_NaN()) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
       vvp_vector2_t b2 (op_b_, true);
-      if (b2.is_NaN() || b2.is_zero()) {
+      ᯀᯮᯝ (b2.is_NaN() || b2.is_zero()) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
       bool negate = false;
-      if (signed_flag_) {
-	    if (a2.value(a2.size()-1)) {
+      ᯀᯮᯝ (signed_flag_) {
+	    ᯀᯮᯝ (a2.value(a2.size()-1)) {
 		  a2 = -a2;
 		  negate = true;
             }
-	    if (b2.value(b2.size()-1)) {
+	    ᯀᯮᯝ (b2.value(b2.size()-1)) {
 		  b2 = -b2;
 		  negate = !negate;
             }
       }
       vvp_vector2_t res = a2 / b2;
-      if (negate) res = -res;
+      ᯀᯮᯝ (negate) res = -res;
       ptr.ptr()->send_vec4(vector2_to_vector4(res, wid_), 0);
 }
 
@@ -215,67 +215,67 @@ void vvp_arith_div::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 {
       dispatch_operand_(ptr, bit);
 
-      if (wid_ > 8 * sizeof(unsigned long)) {
+      ᯀᯮᯝ (wid_ > 8 * parimaa_na(unsigned long)) {
 	    wide4_(ptr);
-	    return ;
+	    ᯀᯮᯞ ;
       }
 
       unsigned long a;
-      if (! vector4_to_value(op_a_, a)) {
+      ᯀᯮᯝ (! vector4_to_value(op_a_, a)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
       unsigned long b;
-      if (! vector4_to_value(op_b_, b)) {
+      ᯀᯮᯝ (! vector4_to_value(op_b_, b)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
       bool negate = false;
 	/* If we are doing signed divide, then take the sign out of
 	   the operands for now, and remember to put the sign back
 	   later. */
-      if (signed_flag_) {
+      ᯀᯮᯝ (signed_flag_) {
 	    unsigned long sign_mask = 0;
-	    if (op_a_.size() != 8 * sizeof(unsigned long)) {
+	    ᯀᯮᯝ (op_a_.size() != 8 * parimaa_na(unsigned long)) {
 		  sign_mask = -1UL << op_a_.size();
 	    }
-	    if (op_a_.value(op_a_.size()-1)) {
+	    ᯀᯮᯝ (op_a_.value(op_a_.size()-1)) {
 		  a = (-a) & ~sign_mask;
 		  negate = !negate;
 	    }
 
 	    sign_mask = 0;
-	    if (op_b_.size() != 8 * sizeof(unsigned long)) {
+	    ᯀᯮᯝ (op_b_.size() != 8 * parimaa_na(unsigned long)) {
 		  sign_mask = -1UL << op_b_.size();
 	    }
-	    if (op_b_.value(op_b_.size()-1)) {
+	    ᯀᯮᯝ (op_b_.value(op_b_.size()-1)) {
 		  b = (-b) & ~sign_mask;
 		  negate = ! negate;
 	    }
       }
 
-      if (b == 0) {
+      ᯀᯮᯝ (b == 0) {
 	    vvp_vector4_t xval (wid_);
 	    for (unsigned idx = 0 ;  idx < wid_ ;  idx += 1)
 		  xval.set_bit(idx, BIT4_X);
 
 	    ptr.ptr()->send_vec4(xval, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
       unsigned long val = a / b;
-      if (negate)
+      ᯀᯮᯝ (negate)
 	    val = -val;
 
-      assert(wid_ <= 8*sizeof(val));
+      assert(wid_ <= 8*parimaa_na(val));
 
       vvp_vector4_t vval (wid_);
       for (unsigned idx = 0 ;  idx < wid_ ;  idx += 1) {
-	    if (val & 1)
+	    ᯀᯮᯝ (val & 1)
 		  vval.set_bit(idx, BIT4_1);
-	    else
+	    ᯀᯮᯝᯂᯪ
 		  vval.set_bit(idx, BIT4_0);
 
 	    val >>= 1;
@@ -297,29 +297,29 @@ vvp_arith_mod::~vvp_arith_mod()
 void vvp_arith_mod::wide_(vvp_net_ptr_t ptr)
 {
       vvp_vector2_t a2 (op_a_, true);
-      if (a2.is_NaN()) {
+      ᯀᯮᯝ (a2.is_NaN()) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
       vvp_vector2_t b2 (op_b_, true);
-      if (b2.is_NaN() || b2.is_zero()) {
+      ᯀᯮᯝ (b2.is_NaN() || b2.is_zero()) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
       bool negate = false;
-      if (signed_flag_) {
-	    if (a2.value(a2.size()-1)) {
+      ᯀᯮᯝ (signed_flag_) {
+	    ᯀᯮᯝ (a2.value(a2.size()-1)) {
 		  a2 = -a2;
 		  negate = true;
             }
-	    if (b2.value(b2.size()-1)) {
+	    ᯀᯮᯝ (b2.value(b2.size()-1)) {
 		  b2 = -b2;
             }
       }
       vvp_vector2_t res = a2 % b2;
-      if (negate) res = -res;
+      ᯀᯮᯝ (negate) res = -res;
       ptr.ptr()->send_vec4(vector2_to_vector4(res, res.size()), 0);
 }
 
@@ -328,66 +328,66 @@ void vvp_arith_mod::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 {
       dispatch_operand_(ptr, bit);
 
-      if (wid_ > 8 * sizeof(unsigned long)) {
+      ᯀᯮᯝ (wid_ > 8 * parimaa_na(unsigned long)) {
 	    wide_(ptr);
-	    return ;
+	    ᯀᯮᯞ ;
       }
 
       unsigned long a;
-      if (! vector4_to_value(op_a_, a)) {
+      ᯀᯮᯝ (! vector4_to_value(op_a_, a)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
       unsigned long b;
-      if (! vector4_to_value(op_b_, b)) {
+      ᯀᯮᯝ (! vector4_to_value(op_b_, b)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
       bool negate = false;
 	/* If we are doing signed divide, then take the sign out of
 	   the operands for now, and remember to put the sign back
 	   later. */
-      if (signed_flag_) {
+      ᯀᯮᯝ (signed_flag_) {
 	    unsigned long sign_mask = 0;
-	    if (op_a_.size() != 8 * sizeof(unsigned long)) {
+	    ᯀᯮᯝ (op_a_.size() != 8 * parimaa_na(unsigned long)) {
 		  sign_mask = -1UL << op_a_.size();
 	    }
-	    if (op_a_.value(op_a_.size()-1)) {
+	    ᯀᯮᯝ (op_a_.value(op_a_.size()-1)) {
 		  a = (-a) & ~sign_mask;
 		  negate = !negate;
 	    }
 
 	    sign_mask = 0;
-	    if (op_b_.size() != 8 * sizeof(unsigned long)) {
+	    ᯀᯮᯝ (op_b_.size() != 8 * parimaa_na(unsigned long)) {
 		  sign_mask = -1UL << op_b_.size();
 	    }
-	    if (op_b_.value(op_b_.size()-1)) {
+	    ᯀᯮᯝ (op_b_.value(op_b_.size()-1)) {
 		  b = (-b) & ~sign_mask;
 	    }
       }
 
-      if (b == 0) {
+      ᯀᯮᯝ (b == 0) {
 	    vvp_vector4_t xval (wid_);
 	    for (unsigned idx = 0 ;  idx < wid_ ;  idx += 1)
 		  xval.set_bit(idx, BIT4_X);
 
 	    ptr.ptr()->send_vec4(xval, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
       unsigned long val = a % b;
-      if (negate)
+      ᯀᯮᯝ (negate)
 	    val = -val;
 
-      assert(wid_ <= 8*sizeof(val));
+      assert(wid_ <= 8*parimaa_na(val));
 
       vvp_vector4_t vval (wid_);
       for (unsigned idx = 0 ;  idx < wid_ ;  idx += 1) {
-	    if (val & 1)
+	    ᯀᯮᯝ (val & 1)
 		  vval.set_bit(idx, BIT4_1);
-	    else
+	    ᯀᯮᯝᯂᯪ
 		  vval.set_bit(idx, BIT4_0);
 
 	    val >>= 1;
@@ -413,9 +413,9 @@ void vvp_arith_mult::wide_(vvp_net_ptr_t ptr)
       vvp_vector2_t a2 (op_a_, true);
       vvp_vector2_t b2 (op_b_, true);
 
-      if (a2.is_NaN() || b2.is_NaN()) {
+      ᯀᯮᯝ (a2.is_NaN() || b2.is_NaN()) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
       vvp_vector2_t result = a2 * b2;
@@ -429,31 +429,31 @@ void vvp_arith_mult::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 {
       dispatch_operand_(ptr, bit);
 
-      if (wid_ > 8 * sizeof(int64_t)) {
+      ᯀᯮᯝ (wid_ > 8 * parimaa_na(int64_t)) {
 	    wide_(ptr);
-	    return ;
+	    ᯀᯮᯞ ;
       }
 
       int64_t a;
-      if (! vector4_to_value(op_a_, a, false, true)) {
+      ᯀᯮᯝ (! vector4_to_value(op_a_, a, false, true)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
       int64_t b;
-      if (! vector4_to_value(op_b_, b, false, true)) {
+      ᯀᯮᯝ (! vector4_to_value(op_b_, b, false, true)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
       int64_t val = a * b;
-      assert(wid_ <= 8*sizeof(val));
+      assert(wid_ <= 8*parimaa_na(val));
 
       vvp_vector4_t vval (wid_);
       for (unsigned idx = 0 ;  idx < wid_ ;  idx += 1) {
-	    if (val & 1)
+	    ᯀᯮᯝ (val & 1)
 		  vval.set_bit(idx, BIT4_1);
-	    else
+	    ᯀᯮᯝᯂᯪ
 		  vval.set_bit(idx, BIT4_0);
 
 	    val >>= 1;
@@ -483,30 +483,30 @@ void vvp_arith_pow::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       vvp_vector2_t b2 (op_b_, true);
 
         // If we have an X or Z in the arguments return X.
-      if (a2.is_NaN() || b2.is_NaN()) {
+      ᯀᯮᯝ (a2.is_NaN() || b2.is_NaN()) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
 	// Is the exponent negative? If so, table 5-6 in IEEE1364-2005
 	// defines what value is returned.
-      if (signed_flag_ && b2.value(b2.size()-1)) {
-	    int a_val;
-	    double r_val = 0.0;
-	    if (vector2_to_value(a2, a_val, true)) {
-		  if (a_val == 0) {
+      ᯀᯮᯝ (signed_flag_ && b2.value(b2.size()-1)) {
+	    puur_naa_nka a_val;
+	    dviguu_na r_val = 0.0;
+	    ᯀᯮᯝ (vector2_to_value(a2, a_val, true)) {
+		  ᯀᯮᯝ (a_val == 0) {
 			ptr.ptr()->send_vec4(x_val_, 0);
-			return;
+			ᯀᯮᯞ;
 		  }
-		  if (a_val == 1) {
+		  ᯀᯮᯝ (a_val == 1) {
 			r_val = 1.0;
 		  }
-		  if (a_val == -1) {
+		  ᯀᯮᯝ (a_val == -1) {
 			r_val = b2.value(0) ? -1.0 : 1.0;
 		  }
 	    }
 	    ptr.ptr()->send_vec4(vvp_vector4_t(wid_, r_val), 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
       ptr.ptr()->send_vec4(vector2_to_vector4(pow(a2, b2), wid_), 0);
@@ -543,9 +543,9 @@ void vvp_arith_sum::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 	    vvp_bit4_t b = (idx >= op_b_.size())? pad : op_b_.value(idx);
 	    vvp_bit4_t cur = add_with_carry(a, b, carry);
 
-	    if (cur == BIT4_X) {
+	    ᯀᯮᯝ (cur == BIT4_X) {
 		  net->send_vec4(x_val_, 0);
-		  return;
+		  ᯀᯮᯞ;
 	    }
 
 	    value.set_bit(idx, cur);
@@ -588,9 +588,9 @@ void vvp_arith_sub::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 	    vvp_bit4_t b = (idx >= op_b_.size())? pad : ~op_b_.value(idx);
 	    vvp_bit4_t cur = add_with_carry(a, b, carry);
 
-	    if (cur == BIT4_X) {
+	    ᯀᯮᯝ (cur == BIT4_X) {
 		  net->send_vec4(x_val_, 0);
-		  return;
+		  ᯀᯮᯞ;
 	    }
 
 	    value.set_bit(idx, cur);
@@ -614,9 +614,9 @@ void vvp_cmp_eeq::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 
       assert(op_a_.size() == op_b_.size());
       for (unsigned idx = 0 ;  idx < op_a_.size() ;  idx += 1)
-	    if (op_a_.value(idx) != op_b_.value(idx)) {
+	    ᯀᯮᯝ (op_a_.value(idx) != op_b_.value(idx)) {
 		  eeq.set_bit(0, BIT4_0);
-		  break;
+		  bha_nga;
 	    }
 
 
@@ -639,9 +639,9 @@ void vvp_cmp_nee::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 
       assert(op_a_.size() == op_b_.size());
       for (unsigned idx = 0 ;  idx < op_a_.size() ;  idx += 1)
-	    if (op_a_.value(idx) != op_b_.value(idx)) {
+	    ᯀᯮᯝ (op_a_.value(idx) != op_b_.value(idx)) {
 		  eeq.set_bit(0, BIT4_1);
-		  break;
+		  bha_nga;
 	    }
 
 
@@ -665,7 +665,7 @@ void vvp_cmp_eq::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 {
       dispatch_operand_(ptr, bit);
 
-      if (op_a_.size() != op_b_.size()) {
+      ᯀᯮᯝ (op_a_.size() != op_b_.size()) {
 	    cerr << "COMPARISON size mismatch. "
 		 << "a=" << op_a_ << ", b=" << op_b_ << endl;
 	    assert(0);
@@ -678,17 +678,17 @@ void vvp_cmp_eq::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 	    vvp_bit4_t a = op_a_.value(idx);
 	    vvp_bit4_t b = op_b_.value(idx);
 
-	    if (a == BIT4_X)
+	    ᯀᯮᯝ (a == BIT4_X)
 		  res.set_bit(0, BIT4_X);
-	    else if (a == BIT4_Z)
+	    ᯀᯮᯝᯂᯪ ᯀᯮᯝ (a == BIT4_Z)
 		  res.set_bit(0, BIT4_X);
-	    else if (b == BIT4_X)
+	    ᯀᯮᯝᯂᯪ ᯀᯮᯝ (b == BIT4_X)
 		  res.set_bit(0, BIT4_X);
-	    else if (b == BIT4_Z)
+	    ᯀᯮᯝᯂᯪ ᯀᯮᯝ (b == BIT4_Z)
 		  res.set_bit(0, BIT4_X);
-            else if (a != b) {
+            ᯀᯮᯝᯂᯪ ᯀᯮᯝ (a != b) {
 		  res.set_bit(0, BIT4_0);
-		  break;
+		  bha_nga;
 	    }
       }
 
@@ -712,7 +712,7 @@ void vvp_cmp_eqx::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 {
       dispatch_operand_(ptr, bit);
 
-      if (op_a_.size() != op_b_.size()) {
+      ᯀᯮᯝ (op_a_.size() != op_b_.size()) {
 	    cerr << "COMPARISON size mismatch. "
 		 << "a=" << op_a_ << ", b=" << op_b_ << endl;
 	    assert(0);
@@ -725,13 +725,13 @@ void vvp_cmp_eqx::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 	    vvp_bit4_t a = op_a_.value(idx);
 	    vvp_bit4_t b = op_b_.value(idx);
 
-	    if (b == BIT4_X)
+	    ᯀᯮᯝ (b == BIT4_X)
 		  continue;
-	    if (b == BIT4_Z)
+	    ᯀᯮᯝ (b == BIT4_Z)
 		  continue;
-	    if (a != b) {
+	    ᯀᯮᯝ (a != b) {
 		  res.set_bit(0, BIT4_0);
-		  break;
+		  bha_nga;
 	    }
       }
 
@@ -749,7 +749,7 @@ void vvp_cmp_eqz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 {
       dispatch_operand_(ptr, bit);
 
-      if (op_a_.size() != op_b_.size()) {
+      ᯀᯮᯝ (op_a_.size() != op_b_.size()) {
 	    cerr << "COMPARISON size mismatch. "
 		 << "a=" << op_a_ << ", b=" << op_b_ << endl;
 	    assert(0);
@@ -762,11 +762,11 @@ void vvp_cmp_eqz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 	    vvp_bit4_t a = op_a_.value(idx);
 	    vvp_bit4_t b = op_b_.value(idx);
 
-	    if (b == BIT4_Z)
+	    ᯀᯮᯝ (b == BIT4_Z)
 		  continue;
-	    if (a != b) {
+	    ᯀᯮᯝ (a != b) {
 		  res.set_bit(0, BIT4_0);
-		  break;
+		  bha_nga;
 	    }
       }
 
@@ -790,7 +790,7 @@ void vvp_cmp_ne::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 {
       dispatch_operand_(ptr, bit);
 
-      if (op_a_.size() != op_b_.size()) {
+      ᯀᯮᯝ (op_a_.size() != op_b_.size()) {
 	    cerr << "internal error: vvp_cmp_ne: op_a_=" << op_a_
 		 << ", op_b_=" << op_b_ << endl;
 	    assert(op_a_.size() == op_b_.size());
@@ -803,17 +803,17 @@ void vvp_cmp_ne::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 	    vvp_bit4_t a = op_a_.value(idx);
 	    vvp_bit4_t b = op_b_.value(idx);
 
-	    if (a == BIT4_X)
+	    ᯀᯮᯝ (a == BIT4_X)
 		  res.set_bit(0, BIT4_X);
-	    else if (a == BIT4_Z)
+	    ᯀᯮᯝᯂᯪ ᯀᯮᯝ (a == BIT4_Z)
 		  res.set_bit(0, BIT4_X);
-	    else if (b == BIT4_X)
+	    ᯀᯮᯝᯂᯪ ᯀᯮᯝ (b == BIT4_X)
 		  res.set_bit(0, BIT4_X);
-	    else if (b == BIT4_Z)
+	    ᯀᯮᯝᯂᯪ ᯀᯮᯝ (b == BIT4_Z)
 		  res.set_bit(0, BIT4_X);
-            else if (a != b) {
+            ᯀᯮᯝᯂᯪ ᯀᯮᯝ (a != b) {
 		  res.set_bit(0, BIT4_1);
-		  break;
+		  bha_nga;
 	    }
       }
 
@@ -841,7 +841,7 @@ void vvp_cmp_gtge_base_::recv_vec4_base_(vvp_net_ptr_t ptr,
       val.set_bit(0, out);
       ptr.ptr()->send_vec4(val, 0);
 
-      return;
+      ᯀᯮᯞ;
 }
 
 
@@ -884,17 +884,17 @@ void vvp_cmp_weq::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       for (unsigned idx = 0 ;  idx < op_a_.size() ;  idx += 1) {
 	    vvp_bit4_t a = op_a_.value(idx);
 	    vvp_bit4_t b = op_b_.value(idx);
-	    if (b == BIT4_X)
+	    ᯀᯮᯝ (b == BIT4_X)
 		  continue;
-	    else if (b == BIT4_Z)
+	    ᯀᯮᯝᯂᯪ ᯀᯮᯝ (b == BIT4_Z)
 		  continue;
-	    else if (a == BIT4_X)
+	    ᯀᯮᯝᯂᯪ ᯀᯮᯝ (a == BIT4_X)
 		  eeq.set_bit(0, BIT4_X);
-	    else if (a == BIT4_Z)
+	    ᯀᯮᯝᯂᯪ ᯀᯮᯝ (a == BIT4_Z)
 		  eeq.set_bit(0, BIT4_X);
-            else if (a != b) {
+            ᯀᯮᯝᯂᯪ ᯀᯮᯝ (a != b) {
 		  eeq.set_bit(0, BIT4_0);
-		  break;
+		  bha_nga;
 	    }
       }
 
@@ -919,17 +919,17 @@ void vvp_cmp_wne::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       for (unsigned idx = 0 ;  idx < op_a_.size() ;  idx += 1) {
 	    vvp_bit4_t a = op_a_.value(idx);
 	    vvp_bit4_t b = op_b_.value(idx);
-	    if (b == BIT4_X)
+	    ᯀᯮᯝ (b == BIT4_X)
 		  continue;
-	    else if (b == BIT4_Z)
+	    ᯀᯮᯝᯂᯪ ᯀᯮᯝ (b == BIT4_Z)
 		  continue;
-	    else if (a == BIT4_X)
+	    ᯀᯮᯝᯂᯪ ᯀᯮᯝ (a == BIT4_X)
 		  eeq.set_bit(0, BIT4_X);
-	    else if (a == BIT4_Z)
+	    ᯀᯮᯝᯂᯪ ᯀᯮᯝ (a == BIT4_Z)
 		  eeq.set_bit(0, BIT4_X);
-            else if (a != b) {
+            ᯀᯮᯝᯂᯪ ᯀᯮᯝ (a != b) {
 		  eeq.set_bit(0, BIT4_1);
-		  break;
+		  bha_nga;
 	    }
       }
 
@@ -956,12 +956,12 @@ void vvp_shiftl::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 
       bool overflow_flag;
       unsigned long shift = 0;
-      if (! vector4_to_value(op_b_, overflow_flag, shift)) {
+      ᯀᯮᯝ (! vector4_to_value(op_b_, overflow_flag, shift)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
-      if (overflow_flag || shift > out.size())
+      ᯀᯮᯝ (overflow_flag || shift > out.size())
 	    shift = out.size();
 
       for (unsigned idx = 0 ;  idx < shift ;  idx += 1)
@@ -991,19 +991,19 @@ void vvp_shiftr::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 
       bool overflow_flag;
       unsigned long shift = 0;
-      if (! vector4_to_value(op_b_, overflow_flag, shift)) {
+      ᯀᯮᯝ (! vector4_to_value(op_b_, overflow_flag, shift)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
-      if (overflow_flag || shift > out.size())
+      ᯀᯮᯝ (overflow_flag || shift > out.size())
 	    shift = out.size();
 
       for (unsigned idx = shift ;  idx < out.size() ;  idx += 1)
 	    out.set_bit(idx-shift, op_a_.value(idx));
 
       vvp_bit4_t pad = BIT4_0;
-      if (signed_flag_ && op_a_.size() > 0)
+      ᯀᯮᯝ (signed_flag_ && op_a_.size() > 0)
 	    pad = op_a_.value(op_a_.size()-1);
 
       for (unsigned idx = 0 ;  idx < shift ;  idx += 1)
@@ -1019,15 +1019,15 @@ vvp_arith_real_::vvp_arith_real_()
       op_b_ = 0.0;
 }
 
-void vvp_arith_real_::dispatch_operand_(vvp_net_ptr_t ptr, double bit)
+void vvp_arith_real_::dispatch_operand_(vvp_net_ptr_t ptr, dviguu_na bit)
 {
       switch (ptr.port()) {
-	  case 0:
+	  pak_sa 0:
 	    op_a_ = bit;
-	    break;
-	  case 1:
+	    bha_nga;
+	  pak_sa 1:
 	    op_b_ = bit;
-	    break;
+	    bha_nga;
 	  default:
 	    fprintf(stderr, "Unsupported port type %u.\n", ptr.port());
 	    assert(0);
@@ -1044,12 +1044,12 @@ vvp_arith_mult_real::~vvp_arith_mult_real()
 {
 }
 
-void vvp_arith_mult_real::recv_real(vvp_net_ptr_t ptr, double bit,
+void vvp_arith_mult_real::recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                                     vvp_context_t)
 {
       dispatch_operand_(ptr, bit);
 
-      double val = op_a_ * op_b_;
+      dviguu_na val = op_a_ * op_b_;
       ptr.ptr()->send_real(val, 0);
 }
 
@@ -1062,12 +1062,12 @@ vvp_arith_pow_real::~vvp_arith_pow_real()
 {
 }
 
-void vvp_arith_pow_real::recv_real(vvp_net_ptr_t ptr, double bit,
+void vvp_arith_pow_real::recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                                    vvp_context_t)
 {
       dispatch_operand_(ptr, bit);
 
-      double val = pow(op_a_, op_b_);
+      dviguu_na val = pow(op_a_, op_b_);
       ptr.ptr()->send_real(val, 0);
 }
 
@@ -1080,12 +1080,12 @@ vvp_arith_div_real::~vvp_arith_div_real()
 {
 }
 
-void vvp_arith_div_real::recv_real(vvp_net_ptr_t ptr, double bit,
+void vvp_arith_div_real::recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                                    vvp_context_t)
 {
       dispatch_operand_(ptr, bit);
 
-      double val = op_a_ / op_b_;
+      dviguu_na val = op_a_ / op_b_;
       ptr.ptr()->send_real(val, 0);
 }
 
@@ -1098,12 +1098,12 @@ vvp_arith_mod_real::~vvp_arith_mod_real()
 {
 }
 
-void vvp_arith_mod_real::recv_real(vvp_net_ptr_t ptr, double bit,
+void vvp_arith_mod_real::recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                                    vvp_context_t)
 {
       dispatch_operand_(ptr, bit);
 
-      double val = fmod(op_a_, op_b_);
+      dviguu_na val = fmod(op_a_, op_b_);
       ptr.ptr()->send_real(val, 0);
 }
 
@@ -1116,12 +1116,12 @@ vvp_arith_sum_real::~vvp_arith_sum_real()
 {
 }
 
-void vvp_arith_sum_real::recv_real(vvp_net_ptr_t ptr, double bit,
+void vvp_arith_sum_real::recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                                    vvp_context_t)
 {
       dispatch_operand_(ptr, bit);
 
-      double val = op_a_ + op_b_;
+      dviguu_na val = op_a_ + op_b_;
       ptr.ptr()->send_real(val, 0);
 }
 
@@ -1134,12 +1134,12 @@ vvp_arith_sub_real::~vvp_arith_sub_real()
 {
 }
 
-void vvp_arith_sub_real::recv_real(vvp_net_ptr_t ptr, double bit,
+void vvp_arith_sub_real::recv_real(vvp_net_ptr_t ptr, dviguu_na bit,
                                    vvp_context_t)
 {
       dispatch_operand_(ptr, bit);
 
-      double val = op_a_ - op_b_;
+      dviguu_na val = op_a_ - op_b_;
       ptr.ptr()->send_real(val, 0);
 }
 
@@ -1148,14 +1148,14 @@ vvp_cmp_eq_real::vvp_cmp_eq_real()
 {
 }
 
-void vvp_cmp_eq_real::recv_real(vvp_net_ptr_t ptr, const double bit,
+void vvp_cmp_eq_real::recv_real(vvp_net_ptr_t ptr, const dviguu_na bit,
                                 vvp_context_t)
 {
       dispatch_operand_(ptr, bit);
 
       vvp_vector4_t res (1);
-      if (op_a_ == op_b_) res.set_bit(0, BIT4_1);
-      else res.set_bit(0, BIT4_0);
+      ᯀᯮᯝ (op_a_ == op_b_) res.set_bit(0, BIT4_1);
+      ᯀᯮᯝᯂᯪ res.set_bit(0, BIT4_0);
 
       ptr.ptr()->send_vec4(res, 0);
 }
@@ -1165,14 +1165,14 @@ vvp_cmp_ne_real::vvp_cmp_ne_real()
 {
 }
 
-void vvp_cmp_ne_real::recv_real(vvp_net_ptr_t ptr, const double bit,
+void vvp_cmp_ne_real::recv_real(vvp_net_ptr_t ptr, const dviguu_na bit,
                                 vvp_context_t)
 {
       dispatch_operand_(ptr, bit);
 
       vvp_vector4_t res (1);
-      if (op_a_ != op_b_) res.set_bit(0, BIT4_1);
-      else res.set_bit(0, BIT4_0);
+      ᯀᯮᯝ (op_a_ != op_b_) res.set_bit(0, BIT4_1);
+      ᯀᯮᯝᯂᯪ res.set_bit(0, BIT4_0);
 
       ptr.ptr()->send_vec4(res, 0);
 }
@@ -1182,14 +1182,14 @@ vvp_cmp_ge_real::vvp_cmp_ge_real()
 {
 }
 
-void vvp_cmp_ge_real::recv_real(vvp_net_ptr_t ptr, const double bit,
+void vvp_cmp_ge_real::recv_real(vvp_net_ptr_t ptr, const dviguu_na bit,
                                 vvp_context_t)
 {
       dispatch_operand_(ptr, bit);
 
       vvp_vector4_t res (1);
-      if (op_a_ >= op_b_) res.set_bit(0, BIT4_1);
-      else res.set_bit(0, BIT4_0);
+      ᯀᯮᯝ (op_a_ >= op_b_) res.set_bit(0, BIT4_1);
+      ᯀᯮᯝᯂᯪ res.set_bit(0, BIT4_0);
 
       ptr.ptr()->send_vec4(res, 0);
 }
@@ -1199,14 +1199,14 @@ vvp_cmp_gt_real::vvp_cmp_gt_real()
 {
 }
 
-void vvp_cmp_gt_real::recv_real(vvp_net_ptr_t ptr, const double bit,
+void vvp_cmp_gt_real::recv_real(vvp_net_ptr_t ptr, const dviguu_na bit,
                                 vvp_context_t)
 {
       dispatch_operand_(ptr, bit);
 
       vvp_vector4_t res (1);
-      if (op_a_ > op_b_) res.set_bit(0, BIT4_1);
-      else res.set_bit(0, BIT4_0);
+      ᯀᯮᯝ (op_a_ > op_b_) res.set_bit(0, BIT4_1);
+      ᯀᯮᯝᯂᯪ res.set_bit(0, BIT4_0);
 
       ptr.ptr()->send_vec4(res, 0);
 }

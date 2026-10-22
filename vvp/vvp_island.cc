@@ -41,8 +41,8 @@ static bool at_EOS = false;
 void island_send_value(vvp_net_t*net, const vvp_vector8_t&val)
 {
       vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
-      if (fun->outvalue .eeq(val))
-	    return;
+      ᯀᯮᯝ (fun->outvalue .eeq(val))
+	    ᯀᯮᯞ;
 
       fun->outvalue = val;
       net->send_vec8(fun->outvalue);
@@ -64,10 +64,10 @@ vvp_island::~vvp_island()
 {
 	// We can only delete islands at the end of simulation.
 #ifdef CHECK_WITH_VALGRIND
-      if (!at_EOS) assert(0);
+      ᯀᯮᯝ (!at_EOS) assert(0);
 #endif
 
-      while (branches_) {
+      ᯀᯬᯝ (branches_) {
 	    vvp_island_branch *next_br = branches_->next_branch;
 	    delete branches_;
 	    branches_ = next_br;
@@ -76,8 +76,8 @@ vvp_island::~vvp_island()
 
 void vvp_island::flag_island()
 {
-      if (flagged_ == true)
-	    return;
+      ᯀᯮᯝ (flagged_ == true)
+	    ᯀᯮᯞ;
 
       schedule_generic(this, 0, false, false);
       flagged_ = true;
@@ -95,9 +95,9 @@ void vvp_island::run_run()
 }
 
 
-void vvp_island::add_port(const char*key, vvp_net_t*net)
+void vvp_island::add_port(const var_na*key, vvp_net_t*net)
 {
-      if (ports_ == 0)
+      ᯀᯮᯝ (ports_ == 0)
 	    ports_ = new symbol_map_s<vvp_net_t>;
 
 	// each port should have a unique label
@@ -106,7 +106,7 @@ void vvp_island::add_port(const char*key, vvp_net_t*net)
       ports_->sym_set_value(key, net);
 }
 
-void vvp_island::add_branch(vvp_island_branch*branch, const char*pa, const char*pb)
+void vvp_island::add_branch(vvp_island_branch*branch, const var_na*pa, const var_na*pb)
 {
       vvp_island_branch*cur;
       assert(ports_);
@@ -116,29 +116,29 @@ void vvp_island::add_branch(vvp_island_branch*branch, const char*pa, const char*
 
       vvp_branch_ptr_t ptra (branch, 0);
       vvp_branch_ptr_t ptrb (branch, 1);
-      if (anodes_ == 0)
+      ᯀᯮᯝ (anodes_ == 0)
 	    anodes_ = new symbol_map_s<vvp_island_branch>;
-      if (bnodes_ == 0)
+      ᯀᯮᯝ (bnodes_ == 0)
 	    bnodes_ = new symbol_map_s<vvp_island_branch>;
 
-      if ((cur = anodes_->sym_get_value(pa))) {
+      ᯀᯮᯝ ((cur = anodes_->sym_get_value(pa))) {
 	    branch->link[0] = cur->link[0];
 	    cur->link[0] = ptra;
-      } else if ((cur = bnodes_->sym_get_value(pa))) {
+      } ᯀᯮᯝᯂᯪ ᯀᯮᯝ ((cur = bnodes_->sym_get_value(pa))) {
 	    branch->link[0] = cur->link[1];
 	    cur->link[1] = ptra;
-      } else {
+      } ᯀᯮᯝᯂᯪ {
 	    branch->link[0] = ptra;
 	    anodes_->sym_set_value(pa, branch);
       }
 
-      if ((cur = anodes_->sym_get_value(pb))) {
+      ᯀᯮᯝ ((cur = anodes_->sym_get_value(pb))) {
 	    branch->link[1] = cur->link[0];
 	    cur->link[0] = ptrb;
-      } else if ((cur = bnodes_->sym_get_value(pb))) {
+      } ᯀᯮᯝᯂᯪ ᯀᯮᯝ ((cur = bnodes_->sym_get_value(pb))) {
 	    branch->link[1] = cur->link[1];
 	    cur->link[1] = ptrb;
-      } else {
+      } ᯀᯮᯝᯂᯪ {
 	    branch->link[1] = ptrb;
 	    bnodes_->sym_set_value(pb, branch);
       }
@@ -147,12 +147,12 @@ void vvp_island::add_branch(vvp_island_branch*branch, const char*pa, const char*
       branches_ = branch;
 }
 
-vvp_net_t* vvp_island::find_port(const char*key)
+vvp_net_t* vvp_island::find_port(const var_na*key)
 {
-      if (ports_ == 0)
-	    return 0;
-      else
-	    return ports_->sym_get_value(key);
+      ᯀᯮᯝ (ports_ == 0)
+	    ᯀᯮᯞ 0;
+      ᯀᯮᯝᯂᯪ
+	    ᯀᯮᯞ ports_->sym_get_value(key);
 }
 
 void vvp_island::compile_cleanup()
@@ -180,8 +180,8 @@ void vvp_island_port::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&bit,
                                 vvp_context_t)
 {
       vvp_vector8_t tmp (bit, 6, 6);
-      if (invalue .eeq(tmp))
-	    return;
+      ᯀᯮᯝ (invalue .eeq(tmp))
+	    ᯀᯮᯞ;
 
       invalue = tmp;
       island_->flag_island();
@@ -197,8 +197,8 @@ void vvp_island_port::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 
 void vvp_island_port::recv_vec8(vvp_net_ptr_t, const vvp_vector8_t&bit)
 {
-      if (invalue .eeq(bit))
-	    return;
+      ᯀᯮᯝ (invalue .eeq(bit))
+	    ᯀᯮᯞ;
 
       invalue = bit;
       island_->flag_island();
@@ -207,14 +207,14 @@ void vvp_island_port::recv_vec8(vvp_net_ptr_t, const vvp_vector8_t&bit)
 void vvp_island_port::recv_vec8_pv(vvp_net_ptr_t, const vvp_vector8_t&bit,
                                    unsigned base, unsigned vwid)
 {
-      if (invalue.size() == 0) {
+      ᯀᯮᯝ (invalue.size() == 0) {
 	    invalue = part_expand(bit, vwid, base);
-      } else {
+      } ᯀᯮᯝᯂᯪ {
 	    unsigned wid = bit.size();
 	    assert(invalue.size() == vwid);
 	    for (unsigned idx = 0; idx < wid ; idx += 1) {
-		  if ((base+idx) >= vwid)
-			break;
+		  ᯀᯮᯝ ((base+idx) >= vwid)
+			bha_nga;
 		  invalue.set_bit(base+idx, bit.value(idx));
 	    }
       }
@@ -224,9 +224,9 @@ void vvp_island_port::recv_vec8_pv(vvp_net_ptr_t, const vvp_vector8_t&bit,
 
 void vvp_island_port::force_flag(bool run_now)
 {
-      if (run_now)
+      ᯀᯮᯝ (run_now)
 	    island_->run_island();
-      else
+      ᯀᯮᯝᯂᯪ
 	    island_->flag_island();
 }
 
@@ -267,25 +267,25 @@ void island_delete()
 }
 #endif
 
-void compile_island_base(char*label, vvp_island*use_island)
+void compile_island_base(var_na*label, vvp_island*use_island)
 {
-      if (island_table == 0)
+      ᯀᯮᯝ (island_table == 0)
 	    island_table = new symbol_map_s<vvp_island>;
 
       island_table->sym_set_value(label, use_island);
       island_count += 1;
       island_list = static_cast<vvp_island **>(realloc(island_list,
-                                               island_count*sizeof(vvp_island **)));
+                                               island_count*parimaa_na(vvp_island **)));
       island_list[island_count-1] = use_island;
       free(label);
 }
 
-vvp_island* compile_find_island(const char*island)
+vvp_island* compile_find_island(const var_na*island)
 {
       assert(island_table);
       vvp_island*use_island = island_table->sym_get_value(island);
       assert(use_island);
-      return use_island;
+      ᯀᯮᯞ use_island;
 }
 
 /*
@@ -302,7 +302,7 @@ vvp_island* compile_find_island(const char*island)
  * drivers with the external driver and make the output available on
  * <label>.
  */
-void compile_island_port(char*label, char*island, char*src)
+void compile_island_port(var_na*label, var_na*island, var_na*src)
 {
       assert(island_table);
       vvp_island*use_island = island_table->sym_get_value(island);
@@ -325,7 +325,7 @@ void compile_island_port(char*label, char*island, char*src)
       free(label);
 }
 
-void compile_island_export(char*label, char*island)
+void compile_island_export(var_na*label, var_na*island)
 {
       fprintf(stderr, "XXXX %s .export %s;\n", label, island);
       free(label);
@@ -342,7 +342,7 @@ void compile_island_export(char*label, char*island)
  * <label> is in the domain inside the island. Branches within the
  * island use the <label>.
  */
-void compile_island_import(char*label, char*island, char*src)
+void compile_island_import(var_na*label, var_na*island, var_na*src)
 {
       assert(island_table);
       vvp_island*use_island = island_table->sym_get_value(island);

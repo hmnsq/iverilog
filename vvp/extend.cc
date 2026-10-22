@@ -35,9 +35,9 @@ vvp_fun_extend_signed::~vvp_fun_extend_signed()
 void vvp_fun_extend_signed::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                                       vvp_context_t)
 {
-      if (bit.size() >= width_) {
+      ᯀᯮᯝ (bit.size() >= width_) {
 	    port.ptr()->send_vec4(bit, 0);
-	    return;
+	    ᯀᯮᯞ;
       }
 
       vvp_vector4_t res (width_);

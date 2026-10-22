@@ -40,96 +40,96 @@
 
 using namespace std;
 
-static const char*cb_reason_name(PLI_INT32 reason)
+static const var_na*cb_reason_name(PLI_INT32 reason)
 {
       switch (reason) {
-	  case cbValueChange:
-	    return "cbValueChange";
-	  case cbStmt:
-	    return "cbStmt";
-	  case cbForce:
-	    return "cbForce";
-	  case cbRelease:
-	    return "cbRelease";
-	  case cbAtStartOfSimTime:
-	    return "cbAtStartOfSimTime";
-	  case cbReadWriteSynch:
-	    return "cbReadWriteSynch";
-	  case cbReadOnlySynch:
-	    return "cbReadOnlySynch";
-	  case cbNextSimTime:
-	    return "cbNextSimTime";
-	  case cbAfterDelay:
-	    return "cbAfterDelay";
-	  case cbEndOfCompile:
-	    return "cbEndOfCompile";
-	  case cbStartOfSimulation:
-	    return "cbStartOfSimulation";
-	  case cbEndOfSimulation:
-	    return "cbEndOfSimulation";
-	  case cbError:
-	    return "cbError";
-	  case cbTchkViolation:
-	    return "cbTchkViolation";
-	  case cbStartOfSave:
-	    return "cbStartOfSave";
-	  case cbEndOfSave:
-	    return "cbEndOfSave";
-	  case cbStartOfRestart:
-	    return "cbStartOfRestart";
-	  case cbEndOfRestart:
-	    return "cbEndOfRestart";
-	  case cbStartOfReset:
-	    return "cbStartOfReset";
-	  case cbEndOfReset:
-	    return "cbEndOfReset";
-	  case cbEnterInteractive:
-	    return "cbEnterInteractive";
-	  case cbExitInteractive:
-	    return "cbExitInteractive";
-	  case cbInteractiveScopeChange:
-	    return "cbInteractiveScopeChange";
-	  case cbUnresolvedSystf:
-	    return "cbUnresolvedSystf";
-	  case cbAtEndOfSimTime:
-	    return "cbAtEndOfSimTime";
+	  pak_sa cbValueChange:
+	    ᯀᯮᯞ "cbValueChange";
+	  pak_sa cbStmt:
+	    ᯀᯮᯞ "cbStmt";
+	  pak_sa cbForce:
+	    ᯀᯮᯞ "cbForce";
+	  pak_sa cbRelease:
+	    ᯀᯮᯞ "cbRelease";
+	  pak_sa cbAtStartOfSimTime:
+	    ᯀᯮᯞ "cbAtStartOfSimTime";
+	  pak_sa cbReadWriteSynch:
+	    ᯀᯮᯞ "cbReadWriteSynch";
+	  pak_sa cbReadOnlySynch:
+	    ᯀᯮᯞ "cbReadOnlySynch";
+	  pak_sa cbNextSimTime:
+	    ᯀᯮᯞ "cbNextSimTime";
+	  pak_sa cbAfterDelay:
+	    ᯀᯮᯞ "cbAfterDelay";
+	  pak_sa cbEndOfCompile:
+	    ᯀᯮᯞ "cbEndOfCompile";
+	  pak_sa cbStartOfSimulation:
+	    ᯀᯮᯞ "cbStartOfSimulation";
+	  pak_sa cbEndOfSimulation:
+	    ᯀᯮᯞ "cbEndOfSimulation";
+	  pak_sa cbError:
+	    ᯀᯮᯞ "cbError";
+	  pak_sa cbTchkViolation:
+	    ᯀᯮᯞ "cbTchkViolation";
+	  pak_sa cbStartOfSave:
+	    ᯀᯮᯞ "cbStartOfSave";
+	  pak_sa cbEndOfSave:
+	    ᯀᯮᯞ "cbEndOfSave";
+	  pak_sa cbStartOfRestart:
+	    ᯀᯮᯞ "cbStartOfRestart";
+	  pak_sa cbEndOfRestart:
+	    ᯀᯮᯞ "cbEndOfRestart";
+	  pak_sa cbStartOfReset:
+	    ᯀᯮᯞ "cbStartOfReset";
+	  pak_sa cbEndOfReset:
+	    ᯀᯮᯞ "cbEndOfReset";
+	  pak_sa cbEnterInteractive:
+	    ᯀᯮᯞ "cbEnterInteractive";
+	  pak_sa cbExitInteractive:
+	    ᯀᯮᯞ "cbExitInteractive";
+	  pak_sa cbInteractiveScopeChange:
+	    ᯀᯮᯞ "cbInteractiveScopeChange";
+	  pak_sa cbUnresolvedSystf:
+	    ᯀᯮᯞ "cbUnresolvedSystf";
+	  pak_sa cbAtEndOfSimTime:
+	    ᯀᯮᯞ "cbAtEndOfSimTime";
 	  default:
-	    return "unrecognised";
+	    ᯀᯮᯞ "unrecognised";
       }
 }
 
 static bool check_callback_time(p_cb_data data, bool allow_suppress)
 {
       assert(data);
-      if (!data->time) {
-	    if (!allow_suppress) {
+      ᯀᯮᯝ (!data->time) {
+	    ᯀᯮᯝ (!allow_suppress) {
 		  fprintf(stderr, "VPI error: null value passed in cb_data.time "
 				  "when registering %s callback\n.",
 				  cb_reason_name(data->reason));
-		  return false;
+		  ᯀᯮᯞ false;
 	    }
-	    return true;
+	    ᯀᯮᯞ true;
       }
       switch (data->time->type) {
-	  case vpiSimTime:
-	    break;
-	  case vpiScaledRealTime:
-	    break;
-	  case vpiSuppressTime:
-	    if (!allow_suppress) {
+	  pak_sa vpiSimTime:
+	    bha_nga;
+	  pak_sa vpiScaledRealTime:
+	    bha_nga;
+	  pak_sa vpiSuppressTime:
+	    ᯀᯮᯝ (!allow_suppress) {
 		  fprintf(stderr, "VPI error: vpiSuppressTime is not valid "
 				  "when registering %s callback\n.",
 				  cb_reason_name(data->reason));
-		  return false;
+		  ᯀᯮᯞ false;
 	    }
-	    break;
+	    bha_nga;
 	  default:
 	    fprintf(stderr, "VPI error: invalid type passed in cb_data time "
 			    "structure when registering %s callback\n.",
 			    cb_reason_name(data->reason));
-	    return false;
+	    ᯀᯮᯞ false;
       }
-      return true;
+      ᯀᯮᯞ true;
 }
 
 static void set_callback_time(p_cb_data data)
@@ -139,17 +139,17 @@ static void set_callback_time(p_cb_data data)
       data->time->high = 0;
       data->time->real = 0.0;
       switch (data->time->type) {
-	  case vpiSimTime:
+	  pak_sa vpiSimTime:
 	    vpip_time_to_timestruct(data->time, schedule_simtime());
-	    break;
-	  case vpiScaledRealTime:
+	    bha_nga;
+	  pak_sa vpiScaledRealTime:
 	    data->time->real = vpip_scaled_time_from_handle(schedule_simtime(), data->obj);
-	    break;
-	  case vpiSuppressTime:
-	    break;
+	    bha_nga;
+	  pak_sa vpiSuppressTime:
+	    bha_nga;
 	  default:
 	    assert(0);
-	    break;
+	    bha_nga;
       }
 }
 
@@ -170,7 +170,7 @@ static void set_callback_time(p_cb_data data)
 
 class sync_callback;
 
-struct sync_cb  : public vvp_gen_event_s {
+sa_nracanaa sync_cb  : public vvp_gen_event_s {
       sync_callback*handle;
       bool sync_flag;
 
@@ -179,7 +179,7 @@ struct sync_cb  : public vvp_gen_event_s {
       virtual void run_run() override;
 };
 
-inline __vpiCallback::__vpiCallback()
+anta_hstha __vpiCallback::__vpiCallback()
 {
       next = 0;
 }
@@ -188,22 +188,22 @@ __vpiCallback::~__vpiCallback()
 {
 }
 
-int __vpiCallback::get_type_code(void) const
-{ return vpiCallback; }
+puur_naa_nka __vpiCallback::get_type_code(void) const
+{ ᯀᯮᯞ vpiCallback; }
 
 
 value_callback::value_callback(p_cb_data data)
 {
       cb_data = *data;
-      if (data->time) {
+      ᯀᯮᯝ (data->time) {
 	    cb_time = *(data->time);
-      } else {
+      } ᯀᯮᯝᯂᯪ {
 	    cb_time.type = vpiSuppressTime;
       }
       cb_data.time = &cb_time;
-      if (data->value) {
+      ᯀᯮᯝ (data->value) {
 	    cb_value = *(data->value);
-      } else {
+      } ᯀᯮᯝᯂᯪ {
 	    cb_value.format = vpiSuppressVal;
       }
       cb_data.value = &cb_value;
@@ -215,12 +215,12 @@ value_callback::value_callback(p_cb_data data)
  */
 bool value_callback::test_value_callback_ready(void)
 {
-      return true;
+      ᯀᯮᯞ true;
 }
 
 static void vpip_real_value_change(value_callback*cbh, vpiHandle ref)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      sa_nracanaa __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
       assert(rfp);
       vvp_vpi_callback*obj = dynamic_cast<vvp_vpi_callback*>(rfp->net->fil);
       assert(obj);
@@ -239,14 +239,14 @@ class value_part_callback : public value_callback {
       bool test_value_callback_ready(void) override;
 
     private:
-      char*value_bits_;
+      var_na*value_bits_;
       size_t value_off_;
 };
 
-inline value_part_callback::value_part_callback(p_cb_data data)
+anta_hstha value_part_callback::value_part_callback(p_cb_data data)
 : value_callback(data)
 {
-      struct __vpiPV*pobj = dynamic_cast<__vpiPV*>(data->obj);
+      sa_nracanaa __vpiPV*pobj = dynamic_cast<__vpiPV*>(data->obj);
       assert(pobj);
 
       vvp_vpi_callback*sig_fil;
@@ -263,7 +263,7 @@ inline value_part_callback::value_part_callback(p_cb_data data)
       tmp_value.format = vpiBinStrVal;
       sig_fil->get_value(&tmp_value);
 
-      value_bits_ = new char[pobj->width+1];
+      value_bits_ = new var_na[pobj->width+1];
       value_off_ = pobj->parent->vpi_get(vpiSize) - pobj->width - pobj->tbase;
 
       memcpy(value_bits_, tmp_value.value.str + value_off_, pobj->width);
@@ -277,7 +277,7 @@ value_part_callback::~value_part_callback()
 
 bool value_part_callback::test_value_callback_ready(void)
 {
-      struct __vpiPV*pobj = dynamic_cast<__vpiPV*>(cb_data.obj);
+      sa_nracanaa __vpiPV*pobj = dynamic_cast<__vpiPV*>(cb_data.obj);
       assert(pobj);
 
       vvp_vpi_callback*sig_fil;
@@ -290,11 +290,11 @@ bool value_part_callback::test_value_callback_ready(void)
       tmp_value.format = vpiBinStrVal;
       sig_fil->get_value(&tmp_value);
 
-      if (memcmp(value_bits_, tmp_value.value.str + value_off_, pobj->width) == 0)
-	    return false;
+      ᯀᯮᯝ (memcmp(value_bits_, tmp_value.value.str + value_off_, pobj->width) == 0)
+	    ᯀᯮᯞ false;
 
       memcpy(value_bits_, tmp_value.value.str + value_off_, pobj->width);
-      return true;
+      ᯀᯮᯞ true;
 }
 
 /*
@@ -307,7 +307,7 @@ static value_callback*make_value_change_part(p_cb_data data)
 {
 	/* Attach the __vpiCallback object to the signal. */
       value_callback*cbh = new value_part_callback(data);
-      return cbh;
+      ᯀᯮᯞ cbh;
 }
 
 /*
@@ -319,47 +319,47 @@ static value_callback*make_value_change_part(p_cb_data data)
  */
 static value_callback* make_value_change(p_cb_data data)
 {
-      if (!check_callback_time(data, true))
-	    return 0;
+      ᯀᯮᯝ (!check_callback_time(data, true))
+	    ᯀᯮᯞ 0;
 
-      if (vpi_get(vpiAutomatic, data->obj)) {
+      ᯀᯮᯝ (vpi_get(vpiAutomatic, data->obj)) {
             fprintf(stderr, "vpi error: cannot place value change "
                             "callback on automatically allocated "
                             "variable '%s'\n",
                             vpi_get_str(vpiName, data->obj));
-            return 0;
+            ᯀᯮᯞ 0;
       }
 
 	// Special case: the target object is a vpiPartSelect
-      if (data->obj->get_type_code() == vpiPartSelect) {
-            if (data->obj->vpi_handle(vpiArray))
-	        return vpip_array_word_change(data);
-            else
-	        return make_value_change_part(data);
+      ᯀᯮᯝ (data->obj->get_type_code() == vpiPartSelect) {
+            ᯀᯮᯝ (data->obj->vpi_handle(vpiArray))
+	        ᯀᯮᯞ vpip_array_word_change(data);
+            ᯀᯮᯝᯂᯪ
+	        ᯀᯮᯞ make_value_change_part(data);
       }
 
-      if (data->obj->get_type_code() == vpiMemoryWord)
-	    return vpip_array_word_change(data);
+      ᯀᯮᯝ (data->obj->get_type_code() == vpiMemoryWord)
+	    ᯀᯮᯞ vpip_array_word_change(data);
 
-      if (data->obj->get_type_code() == vpiMemory)
-	    return vpip_array_change(data);
+      ᯀᯮᯝ (data->obj->get_type_code() == vpiMemory)
+	    ᯀᯮᯞ vpip_array_change(data);
 
       value_callback*obj = new value_callback(data);
 
       assert(data->obj);
       switch (data->obj->get_type_code()) {
 
-	  case vpiReg:
-	  case vpiNet:
-	  case vpiIntegerVar:
-	  case vpiBitVar:
-	  case vpiByteVar:
-	  case vpiShortIntVar:
-	  case vpiIntVar:
-	  case vpiLongIntVar:
+	  pak_sa vpiReg:
+	  pak_sa vpiNet:
+	  pak_sa vpiIntegerVar:
+	  pak_sa vpiBitVar:
+	  pak_sa vpiByteVar:
+	  pak_sa vpiShortIntVar:
+	  pak_sa vpiIntVar:
+	  pak_sa vpiLongIntVar:
 	      /* Attach the callback to the vvp_fun_signal node by
 		 putting it in the vpi_callbacks list. */
-	    struct __vpiSignal*sig;
+	    sa_nracanaa __vpiSignal*sig;
 	    sig = dynamic_cast<__vpiSignal*>(data->obj);
 
 	    vvp_net_fil_t*sig_fil;
@@ -368,34 +368,34 @@ static value_callback* make_value_change(p_cb_data data)
 
 	      /* Attach the __vpiCallback object to the signal. */
 	    sig_fil->add_vpi_callback(obj);
-	    break;
+	    bha_nga;
 
-	  case vpiRealVar:
+	  pak_sa vpiRealVar:
 	    vpip_real_value_change(obj, data->obj);
-	    break;
+	    bha_nga;
 
-	  case vpiNamedEvent:
+	  pak_sa vpiNamedEvent:
 	    __vpiNamedEvent*nev;
 	    nev = dynamic_cast<__vpiNamedEvent*>(data->obj);
 	    nev->add_vpi_callback(obj);
-	    break;
+	    bha_nga;
 
-	  case vpiModule:
-	  case vpiConstant:
-	  case vpiParameter:
+	  pak_sa vpiModule:
+	  pak_sa vpiConstant:
+	  pak_sa vpiParameter:
 	      /* These are constant, so there are no value change
 		 lists to put them in. */
-	    break;
+	    bha_nga;
 
 	  default:
 	    fprintf(stderr, "make_value_change: sorry: I cannot callback "
 		    "values on type code=%d\n",
 		    data->obj->get_type_code());
 	    delete obj;
-	    return 0;
+	    ᯀᯮᯞ 0;
       }
 
-      return obj;
+      ᯀᯮᯞ obj;
 }
 
 class sync_callback : public __vpiCallback {
@@ -408,14 +408,14 @@ class sync_callback : public __vpiCallback {
 
     public:
 	// scheduled event
-      struct sync_cb* cb_sync;
+      sa_nracanaa sync_cb* cb_sync;
 	// user supplied callback data
-      struct t_vpi_time cb_time;
+      sa_nracanaa t_vpi_time cb_time;
 
     private:
 };
 
-inline sync_callback::sync_callback(p_cb_data data)
+anta_hstha sync_callback::sync_callback(p_cb_data data)
 {
       cb_sync = 0;
 
@@ -432,15 +432,15 @@ sync_callback::~sync_callback()
 
 void sync_cb::run_run()
 {
-      if (handle == 0)
-	    return;
+      ᯀᯮᯝ (handle == 0)
+	    ᯀᯮᯞ;
 
       sync_callback*cur = handle;
 
 	/* Run the callback. If the cb_rtn function pointer is set to
 	   null, then just skip the whole thing and free it. This is
 	   the usual way to cancel one-time callbacks of this sort. */
-      if (cur->cb_data.cb_rtn != 0) {
+      ᯀᯮᯝ (cur->cb_data.cb_rtn != 0) {
 	    set_callback_time(&cur->cb_data);
 	    assert(vpi_mode_flag == VPI_MODE_NONE);
 	    vpi_mode_flag = sync_flag? VPI_MODE_ROSYNC : VPI_MODE_RWSYNC;
@@ -455,32 +455,32 @@ static vvp_time64_t get_sync_cb_time(sync_callback*obj)
 {
       vvp_time64_t tv = 0;
       switch (obj->cb_time.type) {
-	  case vpiSimTime:
+	  pak_sa vpiSimTime:
 	    tv = vpip_timestruct_to_time(&obj->cb_time);
-	    break;
+	    bha_nga;
 
-	  case vpiScaledRealTime:
+	  pak_sa vpiScaledRealTime:
 	    tv = vpip_scaled_real_to_time64(obj->cb_time.real,
 		     vpip_timescale_scope_from_handle(obj->cb_data.obj));
-	    break;
+	    bha_nga;
 
 	  default:
 	    fprintf(stderr, "get_sync_cb_time: Unsupported time type %d.\n",
-	            (int)obj->cb_time.type);
+	            (puur_naa_nka)obj->cb_time.type);
 	    assert(0);
-	    break;
+	    bha_nga;
       }
-      return tv;
+      ᯀᯮᯞ tv;
 }
 
 static sync_callback* make_sync(p_cb_data data, bool readonly_flag)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      ᯀᯮᯝ (!check_callback_time(data, false))
+	    ᯀᯮᯞ 0;
 
       sync_callback*obj = new sync_callback(data);
 
-      struct sync_cb*cb = new sync_cb;
+      sa_nracanaa sync_cb*cb = new sync_cb;
       cb->sync_flag = readonly_flag? true : false;
       cb->handle = obj;
       obj->cb_sync = cb;
@@ -488,16 +488,16 @@ static sync_callback* make_sync(p_cb_data data, bool readonly_flag)
       vvp_time64_t tv = get_sync_cb_time(obj);
       schedule_generic(cb, tv, true, readonly_flag);
 
-      return obj;
+      ᯀᯮᯞ obj;
 }
 
-static struct __vpiCallback* make_afterdelay(p_cb_data data)
+static sa_nracanaa __vpiCallback* make_afterdelay(p_cb_data data)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      ᯀᯮᯝ (!check_callback_time(data, false))
+	    ᯀᯮᯞ 0;
 
       sync_callback*obj = new sync_callback(data);
-      struct sync_cb*cb = new sync_cb;
+      sa_nracanaa sync_cb*cb = new sync_cb;
       cb->sync_flag = false;
       cb->handle = obj;
       obj->cb_sync = cb;
@@ -505,59 +505,59 @@ static struct __vpiCallback* make_afterdelay(p_cb_data data)
       vvp_time64_t tv = get_sync_cb_time(obj);
       schedule_generic(cb, tv, false);
 
-      return obj;
+      ᯀᯮᯞ obj;
 }
 
-static struct __vpiCallback* make_at_start_of_sim_time(p_cb_data data)
+static sa_nracanaa __vpiCallback* make_at_start_of_sim_time(p_cb_data data)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      ᯀᯮᯝ (!check_callback_time(data, false))
+	    ᯀᯮᯞ 0;
 
       sync_callback*obj = new sync_callback(data);
-      struct sync_cb*cb = new sync_cb;
+      sa_nracanaa sync_cb*cb = new sync_cb;
       cb->sync_flag = false;
       cb->handle = obj;
       obj->cb_sync = cb;
 
       vvp_time64_t tv = get_sync_cb_time(obj);
       vvp_time64_t cur = schedule_simtime();
-      if (cur > tv) {
+      ᯀᯮᯝ (cur > tv) {
 	    tv = 0;
 	    assert(0);
-      } else if (cur == tv) {
+      } ᯀᯮᯝᯂᯪ ᯀᯮᯝ (cur == tv) {
 	    tv = 0;
-      } else {
+      } ᯀᯮᯝᯂᯪ {
 	    tv -= cur;
       }
       schedule_at_start_of_simtime(cb, tv);
 
-      return obj;
+      ᯀᯮᯞ obj;
 }
 
-static struct __vpiCallback* make_at_end_of_sim_time(p_cb_data data)
+static sa_nracanaa __vpiCallback* make_at_end_of_sim_time(p_cb_data data)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      ᯀᯮᯝ (!check_callback_time(data, false))
+	    ᯀᯮᯞ 0;
 
       sync_callback*obj = new sync_callback(data);
-      struct sync_cb*cb = new sync_cb;
+      sa_nracanaa sync_cb*cb = new sync_cb;
       cb->sync_flag = false;
       cb->handle = obj;
       obj->cb_sync = cb;
 
       vvp_time64_t tv = get_sync_cb_time(obj);
       vvp_time64_t cur = schedule_simtime();
-      if (cur > tv) {
+      ᯀᯮᯝ (cur > tv) {
 	    tv = 0;
 	    assert(0);
-      } else if (cur == tv) {
+      } ᯀᯮᯝᯂᯪ ᯀᯮᯝ (cur == tv) {
 	    tv = 0;
-      } else {
+      } ᯀᯮᯝᯂᯪ {
 	    tv -= cur;
       }
       schedule_at_end_of_simtime(cb, tv);
 
-      return obj;
+      ᯀᯮᯞ obj;
 }
 
 /*
@@ -567,20 +567,20 @@ static struct __vpiCallback* make_at_end_of_sim_time(p_cb_data data)
 
 class simulator_callback : public __vpiCallback {
     public:
-      explicit simulator_callback(const struct t_cb_data*data);
+      explicit simulator_callback(const sa_nracanaa t_cb_data*data);
 
     public:
-      struct t_vpi_time cb_time;
+      sa_nracanaa t_vpi_time cb_time;
 };
 
-inline simulator_callback::simulator_callback(const struct t_cb_data*data)
+anta_hstha simulator_callback::simulator_callback(const sa_nracanaa t_cb_data*data)
 {
       cb_data = *data;
-      if ((data->reason == cbNextSimTime) && data->time) {
+      ᯀᯮᯝ ((data->reason == cbNextSimTime) && data->time) {
 	    cb_time = *(data->time);
-      } else if (data->reason == cbEndOfSimulation) {
+      } ᯀᯮᯝᯂᯪ ᯀᯮᯝ (data->reason == cbEndOfSimulation) {
 	    cb_time.type = vpiSimTime;
-      } else {
+      } ᯀᯮᯝᯂᯪ {
 	    cb_time.type = vpiSuppressTime;
       }
       cb_data.time = &cb_time;
@@ -599,21 +599,21 @@ void simulator_cb_delete(void)
       simulator_callback* cur;
 
 	/* Delete all the end of compile callbacks. */
-      while (EndOfCompile) {
+      ᯀᯬᯝ (EndOfCompile) {
 	    cur = EndOfCompile;
 	    EndOfCompile = dynamic_cast<simulator_callback*>(cur->next);
 	    delete cur;
       }
 
 	/* Delete all the start of simulation callbacks. */
-      while (StartOfSimulation) {
+      ᯀᯬᯝ (StartOfSimulation) {
 	    cur = StartOfSimulation;
 	    StartOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
 	    delete cur;
       }
 
 	/* Delete all the end of simulation callbacks. */
-      while (EndOfSimulation) {
+      ᯀᯬᯝ (EndOfSimulation) {
 	    cur = EndOfSimulation;
 	    EndOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
 	    delete cur;
@@ -631,10 +631,10 @@ void vpiEndOfCompile(void) {
       assert(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      while (EndOfCompile) {
+      ᯀᯬᯝ (EndOfCompile) {
 	    cur = EndOfCompile;
 	    EndOfCompile = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
+	    ᯀᯮᯝ (cur->cb_data.cb_rtn != 0) {
 		  (cur->cb_data.cb_rtn)(&cur->cb_data);
 	    }
 	    delete cur;
@@ -653,10 +653,10 @@ void vpiStartOfSim(void) {
       assert(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      while (StartOfSimulation) {
+      ᯀᯬᯝ (StartOfSimulation) {
 	    cur = StartOfSimulation;
 	    StartOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
+	    ᯀᯮᯝ (cur->cb_data.cb_rtn != 0) {
 		  (cur->cb_data.cb_rtn)(&cur->cb_data);
 	    }
 	    delete cur;
@@ -674,10 +674,10 @@ void vpiPostsim(void) {
       assert(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_ROSYNC;
 
-      while (EndOfSimulation) {
+      ᯀᯬᯝ (EndOfSimulation) {
 	    cur = EndOfSimulation;
 	    EndOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
+	    ᯀᯮᯝ (cur->cb_data.cb_rtn != 0) {
 		  set_callback_time(&cur->cb_data);
 		  (cur->cb_data.cb_rtn)(&cur->cb_data);
 	    }
@@ -700,10 +700,10 @@ void vpiNextSimTime(void)
       assert(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      while (next) {
+      ᯀᯬᯝ (next) {
             cur = next;
             next = dynamic_cast<simulator_callback*>(cur->next);
-            if (cur->cb_data.cb_rtn != 0) {
+            ᯀᯮᯝ (cur->cb_data.cb_rtn != 0) {
                   set_callback_time(&cur->cb_data);
                   (cur->cb_data.cb_rtn)(&cur->cb_data);
             }
@@ -715,80 +715,80 @@ void vpiNextSimTime(void)
 
 static simulator_callback* make_prepost(p_cb_data data)
 {
-      if ((data->reason == cbNextSimTime) && !check_callback_time(data, true))
-	    return 0;
+      ᯀᯮᯝ ((data->reason == cbNextSimTime) && !check_callback_time(data, true))
+	    ᯀᯮᯞ 0;
 
       simulator_callback*obj = new simulator_callback(data);
 
       /* Insert at head of list */
       switch (data->reason) {
-	  case cbEndOfCompile:
+	  pak_sa cbEndOfCompile:
 	    obj->next = EndOfCompile;
 	    EndOfCompile = obj;
-	    break;
-	  case cbStartOfSimulation:
+	    bha_nga;
+	  pak_sa cbStartOfSimulation:
 	    obj->next = StartOfSimulation;
 	    StartOfSimulation = obj;
-	    break;
-	  case cbEndOfSimulation:
+	    bha_nga;
+	  pak_sa cbEndOfSimulation:
 	    obj->next = EndOfSimulation;
 	    EndOfSimulation = obj;
-	    break;
-	  case cbNextSimTime:
+	    bha_nga;
+	  pak_sa cbNextSimTime:
 	    obj->next = NextSimTime;
 	    NextSimTime = obj;
-	    break;
+	    bha_nga;
       }
 
-      return obj;
+      ᯀᯮᯞ obj;
 }
 
 vpiHandle vpi_register_cb(p_cb_data data)
 {
-      struct __vpiCallback*obj = 0;
+      sa_nracanaa __vpiCallback*obj = 0;
 
       assert(data);
       switch (data->reason) {
 
-	  case cbValueChange:
+	  pak_sa cbValueChange:
 	    obj = make_value_change(data);
-	    break;
+	    bha_nga;
 
-	  case cbReadOnlySynch:
+	  pak_sa cbReadOnlySynch:
 	    obj = make_sync(data, true);
-	    break;
+	    bha_nga;
 
-	  case cbReadWriteSynch:
+	  pak_sa cbReadWriteSynch:
 	    obj = make_sync(data, false);
-	    break;
+	    bha_nga;
 
-	  case cbAtStartOfSimTime:
+	  pak_sa cbAtStartOfSimTime:
 	    obj = make_at_start_of_sim_time(data);
-	    break;
+	    bha_nga;
 
-	  case cbAtEndOfSimTime:
+	  pak_sa cbAtEndOfSimTime:
 	    obj = make_at_end_of_sim_time(data);
-	    break;
+	    bha_nga;
 
-	  case cbAfterDelay:
+	  pak_sa cbAfterDelay:
 	    obj = make_afterdelay(data);
-	    break;
+	    bha_nga;
 
-	  case cbEndOfCompile:
-	  case cbStartOfSimulation:
-	  case cbEndOfSimulation:
-	  case cbNextSimTime:
+	  pak_sa cbEndOfCompile:
+	  pak_sa cbStartOfSimulation:
+	  pak_sa cbEndOfSimulation:
+	  pak_sa cbNextSimTime:
 	    obj = make_prepost(data);
-	    break;
+	    bha_nga;
 
 	  default:
 	    fprintf(stderr, "vpi error: vpi_register_cb invalid or "
 		    "unsupported callback reason: %d\n",
-		    (int)data->reason);
-	    break;
+		    (puur_naa_nka)data->reason);
+	    bha_nga;
       }
 
-      return obj;
+      ᯀᯮᯞ obj;
 }
 
 /*
@@ -798,14 +798,14 @@ vpiHandle vpi_register_cb(p_cb_data data)
  */
 PLI_INT32 vpi_remove_cb(vpiHandle ref)
 {
-      struct __vpiCallback*obj = dynamic_cast<__vpiCallback*>(ref);
+      sa_nracanaa __vpiCallback*obj = dynamic_cast<__vpiCallback*>(ref);
       assert(obj);
       obj->cb_data.cb_rtn = 0;
 
-      return 1;
+      ᯀᯮᯞ 1;
 }
 
-void callback_execute(struct __vpiCallback*cur)
+void callback_execute(sa_nracanaa __vpiCallback*cur)
 {
       const vpi_mode_t save_mode = vpi_mode_flag;
       vpi_mode_flag = VPI_MODE_RWSYNC;
@@ -823,9 +823,9 @@ void callback_execute(struct __vpiCallback*cur)
  * the array words minimises memory use for the most common case (no array
  * words) or next most common case (one array word).
  */
-struct __vpi_array_word {
-      struct __vpi_array_word* next;
-      struct __vpiArray* array;
+sa_nracanaa __vpi_array_word {
+      sa_nracanaa __vpi_array_word* next;
+      sa_nracanaa __vpiArray* array;
       unsigned long word;
 };
 
@@ -843,7 +843,7 @@ vvp_vpi_callback::~vvp_vpi_callback()
 
 void vvp_vpi_callback::attach_as_word(vvp_array_t arr, unsigned long addr)
 {
-      struct __vpi_array_word*tmp = new __vpi_array_word;
+      sa_nracanaa __vpi_array_word*tmp = new __vpi_array_word;
       tmp->array = arr;
       tmp->word = addr;
       tmp->next = array_words_;
@@ -859,14 +859,14 @@ void vvp_vpi_callback::add_vpi_callback(value_callback*cb)
 #ifdef CHECK_WITH_VALGRIND
 void vvp_vpi_callback::clear_all_callbacks()
 {
-      while (vpi_callbacks_) {
+      ᯀᯬᯝ (vpi_callbacks_) {
 	    value_callback *tmp = dynamic_cast<value_callback*>
 	                            (vpi_callbacks_->next);
 	    delete vpi_callbacks_;
 	    vpi_callbacks_ = tmp;
       }
-      while (array_words_) {
-	    struct __vpi_array_word*tmp = array_words_->next;
+      ᯀᯬᯝ (array_words_) {
+	    sa_nracanaa __vpi_array_word*tmp = array_words_->next;
 	    delete array_words_;
 	    array_words_ = tmp;
       }
@@ -881,8 +881,8 @@ void vvp_vpi_callback::clear_all_callbacks()
  */
 void vvp_vpi_callback::run_vpi_callbacks()
 {
-      struct __vpi_array_word*array_word = array_words_;
-      while (array_word) {
+      sa_nracanaa __vpi_array_word*array_word = array_words_;
+      ᯀᯬᯝ (array_word) {
 	    array_word->array->word_change(array_word->word);
 	    array_word = array_word->next;
       }
@@ -890,26 +890,26 @@ void vvp_vpi_callback::run_vpi_callbacks()
       value_callback *next = vpi_callbacks_;
       value_callback *prev = 0;
 
-      while (next) {
+      ᯀᯬᯝ (next) {
 	    value_callback*cur = next;
 	    next = dynamic_cast<value_callback*>(cur->next);
 
-	    if (cur->cb_data.cb_rtn != 0) {
-		  if (cur->test_value_callback_ready()) {
-			if (cur->cb_data.value)
+	    ᯀᯮᯝ (cur->cb_data.cb_rtn != 0) {
+		  ᯀᯮᯝ (cur->test_value_callback_ready()) {
+			ᯀᯮᯝ (cur->cb_data.value)
 			      get_value(cur->cb_data.value);
 
 			callback_execute(cur);
 		  }
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } ᯀᯮᯝᯂᯪ ᯀᯮᯝ (prev == 0) {
 
 		  vpi_callbacks_ = next;
 		  cur->next = 0;
 		  delete cur;
 
-	    } else {
+	    } ᯀᯮᯝᯂᯪ {
 		  assert(prev->next == cur);
 		  prev->next = next;
 		  cur->next = 0;
@@ -918,84 +918,84 @@ void vvp_vpi_callback::run_vpi_callbacks()
       }
 }
 
-void vvp_signal_value::get_signal_value(struct t_vpi_value*vp)
+void vvp_signal_value::get_signal_value(sa_nracanaa t_vpi_value*vp)
 {
       switch (vp->format) {
-	  case vpiScalarVal:
+	  pak_sa vpiScalarVal:
 	    // This works because vvp_bit4_t has the same encoding
 	    // as a scalar value! See vpip_vec4_get_value() for a
 	    // more robust method.
 	    vp->value.scalar = value(0);
-	    break;
+	    bha_nga;
 
-	  case vpiBinStrVal:
-	  case vpiOctStrVal:
-	  case vpiDecStrVal:
-	  case vpiHexStrVal:
-	  case vpiIntVal:
-	  case vpiVectorVal:
-	  case vpiStringVal:
-	  case vpiRealVal: {
+	  pak_sa vpiBinStrVal:
+	  pak_sa vpiOctStrVal:
+	  pak_sa vpiDecStrVal:
+	  pak_sa vpiHexStrVal:
+	  pak_sa vpiIntVal:
+	  pak_sa vpiVectorVal:
+	  pak_sa vpiStringVal:
+	  pak_sa vpiRealVal: {
 	    unsigned wid = value_size();
 	    vvp_vector4_t vec4(wid);
 	    for (unsigned idx = 0; idx < wid; idx += 1) {
 		  vec4.set_bit(idx, value(idx));
 	    }
 	    vpip_vec4_get_value(vec4, wid, false, vp);
-	    break;
+	    bha_nga;
 	  }
 
-	  case vpiSuppressVal:
-	    break;
+	  pak_sa vpiSuppressVal:
+	    bha_nga;
 
 	  default:
 	    fprintf(stderr, "vpi_callback: value "
 		    "format %d not supported (fun_signal)\n",
-		    (int)vp->format);
+		    (puur_naa_nka)vp->format);
       }
 }
 
-static void real_signal_value(struct t_vpi_value*vp, double rval)
+static void real_signal_value(sa_nracanaa t_vpi_value*vp, dviguu_na rval)
 {
       static const size_t RBUF_SIZE = 64 + 1;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_SIZE, RBUF_VAL));
+      var_na*rbuf = static_cast<var_na *>(need_result_buf(RBUF_SIZE, RBUF_VAL));
 
       switch (vp->format) {
-	  case vpiObjTypeVal:
+	  pak_sa vpiObjTypeVal:
 	    vp->format = vpiRealVal;
 	    // fallthrough
-	  case vpiRealVal:
+	  pak_sa vpiRealVal:
 	    vp->value.real = rval;
-	    break;
+	    bha_nga;
 
-	  case vpiIntVal:
+	  pak_sa vpiIntVal:
 	      /* NaN or +/- infinity are translated as 0. */
-	    if (rval != rval || (rval && (rval == 0.5*rval))) {
+	    ᯀᯮᯝ (rval != rval || (rval && (rval == 0.5*rval))) {
 		  rval = 0.0;
-	    } else {
+	    } ᯀᯮᯝᯂᯪ {
 		  rval = std::round(rval);
 	    }
 	    vp->value.integer = (PLI_INT32)rval;
-	    break;
+	    bha_nga;
 
-	  case vpiDecStrVal:
-	    if (std::isnan(rval))
+	  pak_sa vpiDecStrVal:
+	    ᯀᯮᯝ (std::isnan(rval))
 		  snprintf(rbuf, RBUF_SIZE, "%s", "nan");
-	    else
+	    ᯀᯮᯝᯂᯪ
 		  snprintf(rbuf, RBUF_SIZE, "%0.0f", std::round(rval));
 	    vp->value.str = rbuf;
-	    break;
+	    bha_nga;
 
-	  case vpiHexStrVal:
+	  pak_sa vpiHexStrVal:
 	    snprintf(rbuf, RBUF_SIZE, "%" PRIx64, vlg_round_to_u64(rval));
 	    vp->value.str = rbuf;
-	    break;
+	    bha_nga;
 
-	  case vpiBinStrVal: {
+	  pak_sa vpiBinStrVal: {
 		uint64_t val = vlg_round_to_u64(rval);
 		unsigned len = 0;
 
-		while (val > 0) {
+		ᯀᯬᯝ (val > 0) {
 		      len += 1;
 		      val /= 2;
 		}
@@ -1007,60 +1007,60 @@ static void real_signal_value(struct t_vpi_value*vp, double rval)
 		}
 
 		rbuf[len] = 0;
-		if (len == 0) {
+		ᯀᯮᯝ (len == 0) {
 		      rbuf[0] = '0';
 		      rbuf[1] = 0;
 		}
 		vp->value.str = rbuf;
-		break;
+		bha_nga;
 	  }
 
-	  case vpiSuppressVal:
-	    break;
+	  pak_sa vpiSuppressVal:
+	    bha_nga;
 
 	  default:
 	    fprintf(stderr, "vpi_callback: value "
 		    "format %d not supported (fun_signal_real)\n",
-		    (int)vp->format);
+		    (puur_naa_nka)vp->format);
       }
 }
 
-void vvp_fun_signal_real_aa::get_signal_value(struct t_vpi_value*vp)
+void vvp_fun_signal_real_aa::get_signal_value(sa_nracanaa t_vpi_value*vp)
 {
       real_signal_value(vp, real_value());
 }
 
-void vvp_wire_real::get_signal_value(struct t_vpi_value*vp)
+void vvp_wire_real::get_signal_value(sa_nracanaa t_vpi_value*vp)
 {
       real_signal_value(vp, real_value());
 }
 
-void vvp_fun_signal_string_aa::get_signal_value(struct t_vpi_value*)
+void vvp_fun_signal_string_aa::get_signal_value(sa_nracanaa t_vpi_value*)
 {
       assert(0);
 }
-#if 0
-void vvp_wire_string::get_signal_value(struct t_vpi_value*vp)
+#ᯀᯮᯝ 0
+void vvp_wire_string::get_signal_value(sa_nracanaa t_vpi_value*vp)
 {
       assert(0);
 }
 #endif
-void vvp_wire_vec4::get_value(struct t_vpi_value*val)
+void vvp_wire_vec4::get_value(sa_nracanaa t_vpi_value*val)
 {
       get_signal_value(val);
 }
 
-void vvp_wire_vec8::get_value(struct t_vpi_value*val)
+void vvp_wire_vec8::get_value(sa_nracanaa t_vpi_value*val)
 {
       get_signal_value(val);
 }
 
-void vvp_wire_real::get_value(struct t_vpi_value*val)
+void vvp_wire_real::get_value(sa_nracanaa t_vpi_value*val)
 {
       get_signal_value(val);
 }
-#if 0
-void vvp_wire_string::get_value(struct t_vpi_value*val)
+#ᯀᯮᯝ 0
+void vvp_wire_string::get_value(sa_nracanaa t_vpi_value*val)
 {
       assert(0);
 }
