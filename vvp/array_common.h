@@ -22,28 +22,28 @@
 #ifndef ARRAY_COMMON_H
 #define ARRAY_COMMON_H
 
-#include "vpi_priv.h"
+#অন্তর্ভাব "vpi_priv.h"
 
-struct __vpiArrayIterator : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+কাঠামো __vpiArrayIterator : সর্বজনীন __vpiHandle {
+      পূর্ণসংখ্যা get_type_code(শূন্য) ধ্রুবক override
+      { ফেরত vpiIterator; }
 
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+      vpiHandle vpi_সূচক(পূর্ণসংখ্যা idx) override;
+      free_object_fun_t free_object_fun(শূন্য) override;
 
-      struct __vpiArrayBase*array;
-      unsigned next;
+      কাঠামো __vpiArrayBase*array;
+      unsigned পরবর্তী_2;
 };
 
-struct __vpiArrayIndex : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+কাঠামো __vpiArrayIndex : সর্বজনীন __vpiHandle {
+      পূর্ণসংখ্যা get_type_code(শূন্য) ধ্রুবক override
+      { ফেরত vpiIterator; }
 
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+      vpiHandle vpi_iterate(পূর্ণসংখ্যা code) override;
+      vpiHandle vpi_সূচক(পূর্ণসংখ্যা idx) override;
+      free_object_fun_t free_object_fun(শূন্য) override;
 
-      __vpiDecConst *index;
+      __vpiDecConst *সূচক;
       unsigned done;
 };
 
@@ -68,31 +68,31 @@ struct __vpiArrayIndex : public __vpiHandle {
  * of vpi functions is bound to the same structure. All the details
  * for the word also apply when treating this as an index.
  */
-struct __vpiArrayWord {
-      struct as_word_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiMemoryWord; }
-	    int vpi_get(int code) override;
-	    char*vpi_get_str(int code) override;
-	    void vpi_get_value(p_vpi_value vp) override;
-	    vpiHandle vpi_put_value(p_vpi_value vp, int flags) override;
-	    vpiHandle vpi_handle(int code) override;
+কাঠামো __vpiArrayWord {
+      কাঠামো as_word_t : সর্বজনীন __vpiHandle {
+	    পূর্ণসংখ্যা get_type_code(শূন্য) ধ্রুবক override { ফেরত vpiMemoryWord; }
+	    পূর্ণসংখ্যা vpi_get(পূর্ণসংখ্যা code) override;
+	    অক্ষর*vpi_get_str(পূর্ণসংখ্যা code) override;
+	    শূন্য vpi_get_মান(p_vpi_মান vp) override;
+	    vpiHandle vpi_put_মান(p_vpi_মান vp, পূর্ণসংখ্যা flags) override;
+	    vpiHandle vpi_handle(পূর্ণসংখ্যা code) override;
       } as_word;
 
-      struct as_index_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiIndex; }
-	    void vpi_get_value(p_vpi_value val) override;
-      } as_index;
+      কাঠামো as_সূচক_t : সর্বজনীন __vpiHandle {
+	    পূর্ণসংখ্যা get_type_code(শূন্য) ধ্রুবক override { ফেরত vpi_সূচক_2; }
+	    শূন্য vpi_get_মান(p_vpi_মান val) override;
+      } as_সূচক;
 
-      union {
-	    struct __vpiArrayBase*parent;
-	    struct __vpiArrayWord*word0;
+      সংঘ {
+	    কাঠামো __vpiArrayBase*parent;
+	    কাঠামো __vpiArrayWord*word0;
       };
 
-      inline unsigned get_index() const { return this - word0; }
-      inline struct __vpiArrayBase*get_parent() const { return (word0 - 1)->parent; }
+      অন্তঃরেখ unsigned get_সূচক() ধ্রুবক { ফেরত this - word0; }
+      অন্তঃরেখ কাঠামো __vpiArrayBase*get_parent() ধ্রুবক { ফেরত (word0 - 1)->parent; }
 };
 
-struct __vpiArrayWord*array_var_word_from_handle(vpiHandle ref);
-struct __vpiArrayWord*array_var_index_from_handle(vpiHandle ref);
+কাঠামো __vpiArrayWord*array_var_word_from_handle(vpiHandle ref);
+কাঠামো __vpiArrayWord*array_var_সূচক_from_handle(vpiHandle ref);
 
 #endif /* ARRAY_COMMON_H */

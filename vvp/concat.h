@@ -32,44 +32,44 @@
  * output vector) can be worked out. The input vectors must match the
  * expected width.
  */
-class vvp_fun_concat  : public vvp_net_fun_t, protected vvp_gen_event_s  {
+class vvp_fun_concat  : সর্বজনীন vvp_net_fun_t, সুরক্ষিত vvp_gen_event_s  {
 
-    public:
+    সর্বজনীন:
       vvp_fun_concat(unsigned w0, unsigned w1,
 		     unsigned w2, unsigned w3);
       ~vvp_fun_concat() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t port, ধ্রুবক vvp_vector4_t&bit,
                      vvp_context_t context) final;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      শূন্য recv_vec4_pv(vvp_net_ptr_t port, ধ্রুবক vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t) final;
-    private:
-      void run_run() final;
+    ব্যক্তিগত:
+      শূন্য run_run() final;
 
       unsigned wid_[4];
       vvp_vector4_t val_;
       vvp_net_t *net_ = nullptr;
 };
 
-class vvp_fun_concat8  : public vvp_net_fun_t, protected vvp_gen_event_s {
+class vvp_fun_concat8  : সর্বজনীন vvp_net_fun_t, সুরক্ষিত vvp_gen_event_s {
 
-    public:
+    সর্বজনীন:
       vvp_fun_concat8(unsigned w0, unsigned w1,
 		     unsigned w2, unsigned w3);
       ~vvp_fun_concat8() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t port, ধ্রুবক vvp_vector4_t&bit,
                      vvp_context_t context) final;
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) final;
+      শূন্য recv_vec8(vvp_net_ptr_t port, ধ্রুবক vvp_vector8_t&bit) final;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      শূন্য recv_vec4_pv(vvp_net_ptr_t port, ধ্রুবক vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t) final;
-      void recv_vec8_pv(vvp_net_ptr_t p, const vvp_vector8_t&bit,
+      শূন্য recv_vec8_pv(vvp_net_ptr_t p, ধ্রুবক vvp_vector8_t&bit,
 			unsigned base, unsigned vwid) final;
 
-    private:
-      void run_run() final;
+    ব্যক্তিগত:
+      শূন্য run_run() final;
 
       unsigned wid_[4];
       vvp_vector8_t val_;
@@ -82,19 +82,19 @@ class vvp_fun_concat8  : public vvp_net_fun_t, protected vvp_gen_event_s {
  * times to repeat the input. The width of the input vector is
  * implicit from these values.
  */
-class vvp_fun_repeat  : public vvp_net_fun_t {
+class vvp_fun_repeat  : সর্বজনীন vvp_net_fun_t {
 
-    public:
+    সর্বজনীন:
       vvp_fun_repeat(unsigned width, unsigned repeat);
       ~vvp_fun_repeat() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t port, ধ্রুবক vvp_vector4_t&bit,
                      vvp_context_t context) override;
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned int base, unsigned int vwid,
+      শূন্য recv_vec4_pv(vvp_net_ptr_t port, ধ্রুবক vvp_vector4_t&bit,
+			unsigned পূর্ণসংখ্যা base, unsigned পূর্ণসংখ্যা vwid,
 			vvp_context_t context) final;
 
-    private:
+    ব্যক্তিগত:
       unsigned wid_;
       unsigned rep_;
 };

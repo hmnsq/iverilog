@@ -42,7 +42,7 @@ sfunc_core::~sfunc_core()
 {
       delete sys_;
 #ifdef CHECK_WITH_VALGRIND
-      for (unsigned i = 0; i < argc_; i += 1) {
+      জন্য (unsigned i = 0; i < argc_; i += 1) {
 	    constant_delete(argv_[i]);
       }
 #endif
@@ -53,137 +53,137 @@ sfunc_core::~sfunc_core()
  * This method is only called when a trigger event occurs. Just arrange for
  * the function to be called.
  */
-void sfunc_core::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&/*bit*/,
+শূন্য sfunc_core::recv_vec4(vvp_net_ptr_t, ধ্রুবক vvp_vector4_t&/*bit*/,
                            vvp_context_t)
 {
-      schedule_functor(this);
+      schedule_functor(এই);
 }
 
-void sfunc_core::recv_vec4_from_inputs(unsigned port)
+শূন্য sfunc_core::recv_vec4_from_inputs(unsigned port)
 {
       vpiHandle vpi = argv_[port];
-      struct __vpiBinaryConst*obj = dynamic_cast<__vpiBinaryConst*>(vpi);
-      assert(obj);
+      কাঠামো __vpiBinaryConst*obj = dynamic_cast<__vpiBinaryConst*>(vpi);
+      প্রতিজ্ঞা(obj);
 
       obj->bits = value(port);
 
         /* Schedule the actual call after this finishes. */
-      schedule_functor(this);
+      schedule_functor(এই);
 }
 
-void sfunc_core::recv_real_from_inputs(unsigned port)
+শূন্য sfunc_core::recv_real_from_inputs(unsigned port)
 {
       vpiHandle vpi = argv_[port];
       __vpiRealConst*obj = dynamic_cast<__vpiRealConst*>(vpi);
-      assert(obj);
+      প্রতিজ্ঞা(obj);
 
-      obj->value = value_r(port);
+      obj->value = মান_r(port);
 
         /* Schedule the actual call after this finishes. */
-      schedule_functor(this);
+      schedule_functor(এই);
 }
 
-void sfunc_core::run_run()
+শূন্য sfunc_core::run_run()
 {
       vpip_execute_vpi_call(0, sys_);
 }
 
-static int make_vpi_argv(unsigned argc, vpiHandle*vpi_argv,
-			const char*arg_string)
+স্থির পূর্ণসংখ্যা make_vpi_argv(unsigned argc, vpiHandle*vpi_argv,
+			ধ্রুবক অক্ষর*arg_string)
 {
       unsigned idx = 0;
-      const char*cp = arg_string;
-      int return_type = 0;
+      ধ্রুবক অক্ষর*cp = arg_string;
+      পূর্ণসংখ্যা return_type = 0;
 
-      switch (*cp) {
-	  case 'r': // real result
+      নির্বাচন (*cp) {
+	  ক্ষেত্র 'r': // real result
 	    cp += 1;
 	    return_type = -vpiRealVal;
-	    break;
+	    বিরতি;
 
-	  case 'v': // vector4_t
+	  ক্ষেত্র 'v': // vector4_t
 	    cp += 1;
 	    return_type = strtoul(cp, 0, 10);
 	    cp += strspn(cp, "0123456789");
-	    break;
+	    বিরতি;
 
-	  default:
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "Unsupported type %c(%d).\n", *cp, *cp);
-	    assert(0);
-	    break;
+	    প্রতিজ্ঞা(0);
+	    বিরতি;
       }
 
-      while (*cp) {
-	    assert(idx < argc);
+      যখন (*cp) {
+	    প্রতিজ্ঞা(idx < argc);
 
-	    switch (*cp) {
-		case 'r': // real
+	    নির্বাচন (*cp) {
+		ক্ষেত্র 'r': // real
 		  cp += 1;
 		  vpi_argv[idx] = vpip_make_real_const(0.0);
-		  break;
+		  বিরতি;
 
-		case 'v': { // vector4_t (v<n>)
+		ক্ষেত্র 'v': { // vector4_t (v<n>)
 		      cp += 1;
 		      unsigned wid = strtoul(cp, 0, 10);
 		      cp += strspn(cp, "0123456789");
-		      vpi_argv[idx] = vpip_make_binary_const(wid, "x");
-		      break;
+		      vpi_argv[idx] = vpip_make_দ্বিমিক_const(wid, "x");
+		      বিরতি;
 		}
 
-		default:
+		পূর্বনির্ধারিত:
 		  fprintf(stderr, "Unsupported type %c(%d).\n", *cp, *cp);
-		  assert(0);
+		  প্রতিজ্ঞা(0);
 	    }
 	    idx += 1;
       }
 
-      assert(idx == argc);
-      return return_type;
+      প্রতিজ্ঞা(idx == argc);
+      ফেরত return_type;
 }
 
 
-void compile_sfunc(char*label, char*name,  char*format_string,
+শূন্য compile_sfunc(অক্ষর*label, অক্ষর*name,  অক্ষর*format_string,
 		   long file_idx, long lineno,
-		   unsigned argc, struct symb_s*argv,
-                   char*trigger_label)
+		   unsigned argc, কাঠামো symb_s*argv,
+                   অক্ষর*trigger_label)
 {
-      unsigned vec4_stack = 0;
-      unsigned real_stack = 0;
-      unsigned string_stack = 0;
-      vpiHandle*vpi_argv = new vpiHandle[argc];
-      int val_code = make_vpi_argv(argc, vpi_argv, format_string);
+      unsigned vec4_স্তূপ = 0;
+      unsigned real_স্তূপ = 0;
+      unsigned string_স্তূপ = 0;
+      vpiHandle*vpi_argv = নতুন vpiHandle[argc];
+      পূর্ণসংখ্যা val_code = make_vpi_argv(argc, vpi_argv, format_string);
       unsigned val_width = 0;
       delete[] format_string;
 
 	// The make_vpi_argv returns for the function return value a
 	// >0 value for the vector width if this is a vector. Convert
 	// it to the form that the vpip_build_vpi_call uses.
-      if (val_code > 0) {
+      যদি (val_code > 0) {
 	    val_width = val_code;
 	    val_code = -vpiVectorVal;
       }
 
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_net_t*ptr = নতুন vvp_net_t;
 
       vpiHandle sys = vpip_build_vpi_call(name, val_code, val_width, ptr,
-                                          true, false, argc, vpi_argv,
-					  vec4_stack, real_stack, string_stack,
+                                          সত্য, মিথ্যা, argc, vpi_argv,
+					  vec4_স্তূপ, real_স্তূপ, string_স্তূপ,
                                           file_idx, lineno);
-      assert(sys);
+      প্রতিজ্ঞা(sys);
 
 	/* Create and connect the functor to the label. */
-      sfunc_core*score = new sfunc_core(ptr, sys, argc, vpi_argv);
+      sfunc_core*score = নতুন sfunc_core(ptr, sys, argc, vpi_argv);
       ptr->fun = score;
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_প্রতীক(label, ptr);
+      মুক্ত(label);
 
 	/* Link the inputs to the functor. */
       wide_inputs_connect(score, argc, argv);
-      free(argv);
+      মুক্ত(argv);
 
         /* If this function has a trigger event, connect the functor to
            that event. */
-      if (trigger_label)
-            input_connect(ptr, 0, trigger_label);
+      যদি (trigger_label)
+            প্রবেশ_connect(ptr, 0, trigger_label);
       delete[] name;
 }

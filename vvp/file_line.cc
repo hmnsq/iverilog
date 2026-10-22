@@ -19,82 +19,82 @@
 # include "compile.h"
 # include "vpi_priv.h"
 
-class __vpiFileLine : public __vpiHandle {
-    public:
-      explicit __vpiFileLine(const char*desc_, long file_idx_, long lineno_);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+শ্রেণী __vpiFileLine : সর্বজনীন __vpiHandle {
+    সর্বজনীন:
+      explicit __vpiFileLine(ধ্রুবক অক্ষর*desc_, long file_idx_, long lineno_);
+      পূর্ণসংখ্যা get_type_code(শূন্য) ধ্রুবক override;
+      পূর্ণসংখ্যা vpi_get(পূর্ণসংখ্যা code) override;
+      অক্ষর* vpi_get_str(পূর্ণসংখ্যা code) override;
 
-      const char* get_description() const { return description; };
-      unsigned get_file_idx() const { return file_idx; };
-      unsigned get_lineno() const { return lineno; };
+      ধ্রুবক অক্ষর* get_description() ধ্রুবক { ফেরত description; };
+      unsigned get_file_idx() ধ্রুবক { ফেরত file_idx; };
+      unsigned get_lineno() ধ্রুবক { ফেরত lineno; };
 
-    private:
-      const char *description;
+    ব্যক্তিগত:
+      ধ্রুবক অক্ষর *description;
       unsigned file_idx;
       unsigned lineno;
 };
 
-bool show_file_line = false;
-bool code_is_instrumented = false;
+যৌক্তিক show_file_সারি = মিথ্যা;
+যৌক্তিক code_is_instrumented = মিথ্যা;
 
-static int file_line_get(int type, vpiHandle ref)
+স্থির পূর্ণসংখ্যা file_সারি_get(পূর্ণসংখ্যা type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      প্রতিজ্ঞা(rfp);
 
-      switch (type) {
-	case vpiLineNo:
-	    return rfp->get_lineno();
-	default:
-	    return vpiUndefined;
+      নির্বাচন (type) {
+	ক্ষেত্র vpi_সারি_No:
+	    ফেরত rfp->get_lineno();
+	পূর্বনির্ধারিত:
+	    ফেরত vpiUndefined;
       }
 }
 
-static char *file_line_get_str(int type, vpiHandle ref)
+স্থির অক্ষর *file_সারি_get_str(পূর্ণসংখ্যা type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      প্রতিজ্ঞা(rfp);
 
-      switch (type) {
-	case vpiFile:
-	    assert(rfp->get_file_idx() < file_names.size());
-	    return simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
-	case _vpiDescription:
-	    if (rfp->get_description()) {
-		  return simple_set_rbuf_str(rfp->get_description());
-	    } else return simple_set_rbuf_str("Procedural tracing.");
-	default:
-	    return 0;
+      নির্বাচন (type) {
+	ক্ষেত্র vpiFile:
+	    প্রতিজ্ঞা(rfp->get_file_idx() < file_names.size());
+	    ফেরত simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
+	ক্ষেত্র _vpiDescription:
+	    যদি (rfp->get_description()) {
+		  ফেরত simple_set_rbuf_str(rfp->get_description());
+	    } অন্যথা ফেরত simple_set_rbuf_str("Procedural tracing.");
+	পূর্বনির্ধারিত:
+	    ফেরত 0;
       }
 }
 
-inline __vpiFileLine::__vpiFileLine(const char*desc_, long file_idx_,
+অন্তঃরেখ __vpiFileLine::__vpiFileLine(ধ্রুবক অক্ষর*desc_, long file_idx_,
                                     long lineno_)
 {
-      if (desc_) description = vpip_name_string(desc_);
-      else description = 0;
+      যদি (desc_) description = vpip_name_string(desc_);
+      অন্যথা description = 0;
       file_idx = (unsigned) file_idx_;
       lineno = (unsigned) lineno_;
 }
 
-int __vpiFileLine::get_type_code(void) const
-{ return _vpiFileLine; }
+পূর্ণসংখ্যা __vpiFileLine::get_type_code(শূন্য) ধ্রুবক
+{ ফেরত vpi_File_সারি; }
 
-int __vpiFileLine::vpi_get(int code)
-{ return file_line_get(code, this); }
+পূর্ণসংখ্যা __vpiFileLine::vpi_get(পূর্ণসংখ্যা code)
+{ ফেরত file_সারি_get(code, এই); }
 
-char* __vpiFileLine::vpi_get_str(int code)
-{ return file_line_get_str(code, this); }
+অক্ষর* __vpiFileLine::vpi_get_str(পূর্ণসংখ্যা code)
+{ ফেরত file_সারি_get_str(code, এই); }
 
 
-vpiHandle vpip_build_file_line(const char*description, long file_idx, long lineno)
+vpiHandle vpip_build_file_সারি(ধ্রুবক অক্ষর*description, long file_idx, long lineno)
 {
-      __vpiFileLine*obj = new __vpiFileLine(description, file_idx, lineno);
+      __vpiFileLine*obj = নতুন __vpiFileLine(description, file_idx, lineno);
 
 	/* You can turn on the diagnostic output if we find a %file_line. */
-      code_is_instrumented = true;
+      code_is_instrumented = সত্য;
 
-      return obj;
+      ফেরত obj;
 }

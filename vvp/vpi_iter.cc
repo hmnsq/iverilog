@@ -26,38 +26,38 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-static int iterator_free_object(vpiHandle ref)
+স্থির পূর্ণসংখ্যা iterator_free_object(vpiHandle ref)
 {
-      struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
-      assert(hp);
+      কাঠামো __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
+      প্রতিজ্ঞা(hp);
 
-      if (hp->free_args_flag)
-	    free(hp->args);
+      যদি (hp->free_args_flag)
+	    মুক্ত(hp->args);
 
       delete hp;
-      return 1;
+      ফেরত 1;
 }
 
-inline __vpiIterator::__vpiIterator()
+অন্তঃরেখ __vpiIterator::__vpiIterator()
 { }
 
-int __vpiIterator::get_type_code(void) const
-{ return vpiIterator; }
+পূর্ণসংখ্যা __vpiIterator::get_type_code(শূন্য) ধ্রুবক
+{ ফেরত vpiIterator; }
 
-__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(void)
-{ return &iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(শূন্য)
+{ ফেরত &iterator_free_object; }
 
 vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
-			     bool free_args_flag)
+			     যৌক্তিক free_args_flag)
 {
-      struct __vpiIterator*res = new __vpiIterator;
+      কাঠামো __vpiIterator*res = নতুন __vpiIterator;
       res->args = args;
       res->nargs = nargs;
-      res->next  = 0;
+      res->পরবর্তী_2  = 0;
 
       res->free_args_flag = free_args_flag;
 
-      return res;
+      ফেরত res;
 }
 
 /*
@@ -66,20 +66,20 @@ vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
  */
 vpiHandle vpi_scan(vpiHandle ref)
 {
-      if (ref == 0) {
+      যদি (ref == 0) {
 	    fprintf(stderr, "ERROR: NULL handle passed to vpi_scan.\n");
-	    assert(0);
-	    return 0;
+	    প্রতিজ্ঞা(0);
+	    ফেরত 0;
       }
 
-      if (struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
-	    if (hp->next == hp->nargs) {
+      যদি (কাঠামো __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
+	    যদি (hp->পরবর্তী_2 == hp->nargs) {
 		  vpi_free_object(ref);
-		  return 0;
+		  ফেরত 0;
 	    }
 
-	    return hp->args[hp->next++];
+	    ফেরত hp->args[hp->পরবর্তী_2++];
       }
 
-      return ref->vpi_index(0);
+      ফেরত ref->vpi_সূচক(0);
 }

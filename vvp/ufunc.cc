@@ -35,37 +35,37 @@
 # include  <map>
 
 #ifdef __MINGW32__
-#include <windows.h>
+#অন্তর্ভাব <windows.h>
 #endif
 
-class ufunc_real : public ufunc_core {
-   public:
+শ্রেণী ufunc_real : সর্বজনীন ufunc_core {
+   সর্বজনীন:
       ufunc_real(unsigned ow, vvp_net_t*ptr,
 		 unsigned nports, vvp_net_t**ports,
 		 vvp_code_t start_address,
 		 __vpiScope*call_scope,
-		 char*scope_label);
+		 অক্ষর*scope_label);
       ~ufunc_real() override;
 
-      void finish_thread() override;
+      শূন্য finish_thread() override;
 };
 
-class ufunc_vec4 : public ufunc_core {
-   public:
+শ্রেণী ufunc_vec4 : সর্বজনীন ufunc_core {
+   সর্বজনীন:
       ufunc_vec4(unsigned ow, vvp_net_t*ptr,
 		 unsigned nports, vvp_net_t**ports,
 		 vvp_code_t start_address,
 		 __vpiScope*call_scope,
-		 char*scope_label);
+		 অক্ষর*scope_label);
       ~ufunc_vec4() override;
 
-      void finish_thread() override;
+      শূন্য finish_thread() override;
 };
 
 ufunc_core::ufunc_core(unsigned owid, vvp_net_t*ptr,
 		       unsigned nports, vvp_net_t**ports,
 		       vvp_code_t sa, __vpiScope*call_scope__,
-		       char*scope_label)
+		       অক্ষর*scope_label)
 : vvp_wide_fun_core(ptr, nports)
 {
       owid_ = owid;
@@ -77,7 +77,7 @@ ufunc_core::ufunc_core(unsigned owid, vvp_net_t*ptr,
 	/* A __vpiScope starts with a __vpiHandle structure so this is
 	   a safe cast. We need the (void*) to avoid a dereferenced
 	   type punned pointer warning from some gcc compilers. */
-      compile_vpi_lookup((vpiHandle*)(void*)(&func_scope_), scope_label);
+      compile_vpi_lookup((vpiHandle*)(শূন্য*)(&func_scope_), scope_label);
 }
 
 ufunc_core::~ufunc_core()
@@ -90,16 +90,16 @@ ufunc_core::~ufunc_core()
  * input variables of the function for execution. The method copies
  * the input values collected by the core to the variables.
  */
-void ufunc_core::assign_bits_to_ports(vvp_context_t context)
+শূন্য ufunc_core::assign_bits_to_ports(vvp_context_t context)
 {
-      for (unsigned idx = 0 ; idx < port_count() ;  idx += 1) {
+      জন্য (unsigned idx = 0 ; idx < port_গুনতি() ;  idx += 1) {
 	    vvp_net_t*net = ports_[idx];
 	    vvp_net_ptr_t pp (net, 0);
 
 	      // If the port is a real variable, then simply copy the
 	      // propagated input to the port variable.
-	    if (vvp_fun_signal_real*tmp = dynamic_cast<vvp_fun_signal_real*>(net->fun))
-		  tmp->recv_real(pp, value_r(idx), context);
+	    যদি (vvp_fun_signal_real*tmp = dynamic_cast<vvp_fun_signal_real*>(net->fun))
+		  tmp->recv_real(pp, মান_r(idx), context);
 
 	      // If the port is a bit4 vector, then copy the
 	      // propagated input to the port variable. Detect the
@@ -108,13 +108,13 @@ void ufunc_core::assign_bits_to_ports(vvp_context_t context)
 	      // of the port variable. This is to handle the uncommon
 	      // startup case where the input values have not
 	      // propagated useful values yet.
-	    if (vvp_fun_signal_vec*tmp = dynamic_cast<vvp_fun_signal_vec*>(net->fun)) {
-		  const vvp_vector4_t&tmp_val = value(idx);
-		  if (tmp_val.size() == 0) {
-			const vvp_vector4_t&ref = tmp->vec4_unfiltered_value();
+	    যদি (vvp_fun_signal_vec*tmp = dynamic_cast<vvp_fun_signal_vec*>(net->fun)) {
+		  ধ্রুবক vvp_vector4_t&tmp_val = value(idx);
+		  যদি (tmp_val.size() == 0) {
+			ধ্রুবক vvp_vector4_t&ref = tmp->vec4_unfiltered_মান();
 			vvp_vector4_t xxx (ref.size(), BIT4_X);
 			tmp->recv_vec4(pp, xxx, context);
-		  } else {
+		  } অন্যথা {
 			tmp->recv_vec4(pp, tmp_val, context);
 		  }
 	    }
@@ -126,24 +126,24 @@ void ufunc_core::assign_bits_to_ports(vvp_context_t context)
  * result from the return code variable and deliver it to the output
  * of the functor, back into the netlist.
  */
-void ufunc_core::finish_thread_real_()
+শূন্য ufunc_core::finish_thread_real_()
 {
-      assert(thread_);
+      প্রতিজ্ঞা(thread_);
 
-      double val = vthread_get_real_stack(thread_, 0);
-      vthread_pop_real(thread_, 1);
+      দ্বিগুণ val = vthread_get_real_স্তূপ(thread_, 0);
+      vthread_বের_করো_real(thread_, 1);
 
       propagate_real(val);
 
       thread_ = 0;
 }
 
-void ufunc_core::finish_thread_vec4_()
+শূন্য ufunc_core::finish_thread_vec4_()
 {
-      assert(thread_);
+      প্রতিজ্ঞা(thread_);
 
-      vvp_vector4_t val = vthread_get_vec4_stack(thread_, 0);
-      vthread_pop_vec4(thread_, 1);
+      vvp_vector4_t val = vthread_get_vec4_স্তূপ(thread_, 0);
+      vthread_বের_করো_vec4(thread_, 1);
 
       propagate_vec4(val);
 
@@ -154,7 +154,7 @@ void ufunc_core::finish_thread_vec4_()
  * This method is only called when a trigger event occurs. Just arrange for
  * the function to be called.
  */
-void ufunc_core::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&,
+শূন্য ufunc_core::recv_vec4(vvp_net_ptr_t, ধ্রুবক vvp_vector4_t&,
                            vvp_context_t)
 {
       invoke_thread_();
@@ -165,19 +165,19 @@ void ufunc_core::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&,
  * input value to the port of the functor. I save the input value and
  * arrange for the function to be called.
  */
-void ufunc_core::recv_vec4_from_inputs(unsigned)
+শূন্য ufunc_core::recv_vec4_from_inputs(unsigned)
 {
       invoke_thread_();
 }
 
-void ufunc_core::recv_real_from_inputs(unsigned)
+শূন্য ufunc_core::recv_real_from_inputs(unsigned)
 {
       invoke_thread_();
 }
 
-void ufunc_core::invoke_thread_()
+শূন্য ufunc_core::invoke_thread_()
 {
-      if (thread_ == 0) {
+      যদি (thread_ == 0) {
 	    thread_ = vthread_new(code_, call_scope_);
 	    schedule_vthread(thread_, 0);
       }
@@ -187,7 +187,7 @@ ufunc_vec4::ufunc_vec4(unsigned ow, vvp_net_t*ptr,
 		       unsigned nports, vvp_net_t**ports,
 		       vvp_code_t start_address,
 		       __vpiScope*call_scope_in,
-		       char*scope_label)
+		       অক্ষর*scope_label)
 : ufunc_core(ow, ptr, nports, ports, start_address, call_scope_in, scope_label)
 {
 }
@@ -196,7 +196,7 @@ ufunc_vec4::~ufunc_vec4()
 {
 }
 
-void ufunc_vec4::finish_thread()
+শূন্য ufunc_vec4::finish_thread()
 {
       finish_thread_vec4_();
 }
@@ -205,7 +205,7 @@ ufunc_real::ufunc_real(unsigned ow, vvp_net_t*ptr,
 		       unsigned nports, vvp_net_t**ports,
 		       vvp_code_t start_address,
 		       __vpiScope*call_scope_in,
-		       char*scope_label)
+		       অক্ষর*scope_label)
 : ufunc_core(ow, ptr, nports, ports, start_address, call_scope_in, scope_label)
 {
 }
@@ -214,7 +214,7 @@ ufunc_real::~ufunc_real()
 {
 }
 
-void ufunc_real::finish_thread()
+শূন্য ufunc_real::finish_thread()
 {
       finish_thread_real_();
 }
@@ -229,18 +229,18 @@ void ufunc_real::finish_thread()
  * The portv list is a list of variables that the function reads as
  * inputs. The core assigns values to these nets as part of the startup.
  */
-void compile_ufunc_real(char*label, char*code, unsigned wid,
-		   unsigned argc,  struct symb_s*argv,
-		   unsigned portc, struct symb_s*portv,
-		   char*scope_label, char*trigger_label)
+শূন্য compile_ufunc_real(অক্ষর*label, অক্ষর*code, unsigned wid,
+		   unsigned argc,  কাঠামো symb_s*argv,
+		   unsigned portc, কাঠামো symb_s*portv,
+		   অক্ষর*scope_label, অক্ষর*trigger_label)
 {
 	/* The input argument list and port list must have the same
 	   sizes, since internally we will be mapping the inputs list
 	   to the ports list. */
-      assert(argc == portc);
+      প্রতিজ্ঞা(argc == portc);
 
       __vpiScope*call_scope = vpip_peek_current_scope();
-      assert(call_scope);
+      প্রতিজ্ঞা(call_scope);
 
 	/* Construct some phantom code that is the thread of the
 	   function call. The first instruction, at the start_address
@@ -259,7 +259,7 @@ void compile_ufunc_real(char*label, char*code, unsigned wid,
 
       vvp_code_t exec_code = codespace_allocate();
       exec_code->opcode = of_EXEC_UFUNC_REAL;
-      code_label_lookup(exec_code, code, false);
+      code_label_lookup(exec_code, code, মিথ্যা);
 
       vvp_code_t reap_code = codespace_allocate();
       reap_code->opcode = of_REAP_UFUNC;
@@ -270,21 +270,21 @@ void compile_ufunc_real(char*label, char*code, unsigned wid,
 	/* Run through the function ports (which are related to but
 	   not the same as the input ports) and arrange for their
 	   binding. */
-      vvp_net_t**ports = new vvp_net_t*[portc];
-      for (unsigned idx = 0 ;  idx < portc ;  idx += 1) {
+      vvp_net_t**ports = নতুন vvp_net_t*[portc];
+      জন্য (unsigned idx = 0 ;  idx < portc ;  idx += 1) {
 	    functor_ref_lookup(&ports[idx], portv[idx].text);
       }
 
 	/* Create the output functor and attach it to the label. Tell
 	   it about the start address of the code stub, and the scope
 	   that will contain the execution. */
-      vvp_net_t*ptr = new vvp_net_t;
-      ufunc_core*fcore = new ufunc_real(wid, ptr, portc, ports,
+      vvp_net_t*ptr = নতুন vvp_net_t;
+      ufunc_core*fcore = নতুন ufunc_real(wid, ptr, portc, ports,
 					exec_code, call_scope,
 					scope_label);
       ptr->fun = fcore;
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_প্রতীক(label, ptr);
+      মুক্ত(label);
 
       exec_code->ufunc_core_ptr = fcore;
       reap_code->ufunc_core_ptr = fcore;
@@ -293,25 +293,25 @@ void compile_ufunc_real(char*label, char*code, unsigned wid,
 
         /* If this function has a trigger event, connect the functor to
            that event. */
-      if (trigger_label)
-            input_connect(ptr, 0, trigger_label);
+      যদি (trigger_label)
+            প্রবেশ_connect(ptr, 0, trigger_label);
 
-      free(argv);
-      free(portv);
+      মুক্ত(argv);
+      মুক্ত(portv);
 }
 
-void compile_ufunc_vec4(char*label, char*code, unsigned wid,
-		   unsigned argc,  struct symb_s*argv,
-		   unsigned portc, struct symb_s*portv,
-		   char*scope_label, char*trigger_label)
+শূন্য compile_ufunc_vec4(অক্ষর*label, অক্ষর*code, unsigned wid,
+		   unsigned argc,  কাঠামো symb_s*argv,
+		   unsigned portc, কাঠামো symb_s*portv,
+		   অক্ষর*scope_label, অক্ষর*trigger_label)
 {
 	/* The input argument list and port list must have the same
 	   sizes, since internally we will be mapping the inputs list
 	   to the ports list. */
-      assert(argc == portc);
+      প্রতিজ্ঞা(argc == portc);
 
       __vpiScope*call_scope = vpip_peek_current_scope();
-      assert(call_scope);
+      প্রতিজ্ঞা(call_scope);
 
 	/* Construct some phantom code that is the thread of the
 	   function call. The first instruction, at the start_address
@@ -330,7 +330,7 @@ void compile_ufunc_vec4(char*label, char*code, unsigned wid,
 
       vvp_code_t exec_code = codespace_allocate();
       exec_code->opcode = of_EXEC_UFUNC_VEC4;
-      code_label_lookup(exec_code, code, false);
+      code_label_lookup(exec_code, code, মিথ্যা);
 
       vvp_code_t reap_code = codespace_allocate();
       reap_code->opcode = of_REAP_UFUNC;
@@ -341,21 +341,21 @@ void compile_ufunc_vec4(char*label, char*code, unsigned wid,
 	/* Run through the function ports (which are related to but
 	   not the same as the input ports) and arrange for their
 	   binding. */
-      vvp_net_t**ports = new vvp_net_t*[portc];
-      for (unsigned idx = 0 ;  idx < portc ;  idx += 1) {
+      vvp_net_t**ports = নতুন vvp_net_t*[portc];
+      জন্য (unsigned idx = 0 ;  idx < portc ;  idx += 1) {
 	    functor_ref_lookup(&ports[idx], portv[idx].text);
       }
 
 	/* Create the output functor and attach it to the label. Tell
 	   it about the start address of the code stub, and the scope
 	   that will contain the execution. */
-      vvp_net_t*ptr = new vvp_net_t;
-      ufunc_core*fcore = new ufunc_vec4(wid, ptr, portc, ports,
+      vvp_net_t*ptr = নতুন vvp_net_t;
+      ufunc_core*fcore = নতুন ufunc_vec4(wid, ptr, portc, ports,
 					exec_code, call_scope,
 					scope_label);
       ptr->fun = fcore;
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_প্রতীক(label, ptr);
+      মুক্ত(label);
 
       exec_code->ufunc_core_ptr = fcore;
       reap_code->ufunc_core_ptr = fcore;
@@ -364,24 +364,24 @@ void compile_ufunc_vec4(char*label, char*code, unsigned wid,
 
         /* If this function has a trigger event, connect the functor to
            that event. */
-      if (trigger_label)
-            input_connect(ptr, 0, trigger_label);
+      যদি (trigger_label)
+            প্রবেশ_connect(ptr, 0, trigger_label);
 
-      free(argv);
-      free(portv);
+      মুক্ত(argv);
+      মুক্ত(portv);
 }
 #ifdef CHECK_WITH_VALGRIND
-static std::map<ufunc_core*, bool> ufunc_map;
+স্থির std::map<ufunc_core*, যৌক্তিক> ufunc_map;
 
-void exec_ufunc_delete(vvp_code_t euf_code)
+শূন্য exec_ufunc_delete(vvp_code_t euf_code)
 {
-      ufunc_map[euf_code->ufunc_core_ptr] = true;
+      ufunc_map[euf_code->ufunc_core_ptr] = সত্য;
 }
 
-void ufunc_pool_delete(void)
+শূন্য ufunc_pool_delete(শূন্য)
 {
-      std::map<ufunc_core*, bool>::iterator iter;
-      for (iter = ufunc_map.begin(); iter != ufunc_map.end(); ++ iter ) {
+      std::map<ufunc_core*, যৌক্তিক>::iterator iter;
+      জন্য (iter = ufunc_map.begin(); iter != ufunc_map.end(); ++ iter ) {
 	    delete iter->first;
       }
 }

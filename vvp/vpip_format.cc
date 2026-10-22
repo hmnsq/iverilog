@@ -28,7 +28,7 @@
 # include  <string>
 # include  "ivl_alloc.h"
 
-static const char str_char1_table[257] = {
+স্থির ধ্রুবক অক্ষর str_char1_table[257] = {
       ".HS1M222" "W3333333" /* 00 0F */ "L4444444" "44444444" /* 10 1F */
       "P5555555" "55555555" /* 20 2F */ "55555555" "55555555" /* 30 3F */
       "S6666666" "66666666" /* 40 4F */ "66666666" "66666666" /* 50 5F */
@@ -38,7 +38,7 @@ static const char str_char1_table[257] = {
       "77777777" "77777777" /* C0 CF */ "77777777" "77777777" /* D0 DF */
       "77777777" "77777777" /* E0 EF */ "77777777" "77777777" /* F0 FF */ };
 
-static const char str_char2_table[257] = {
+স্থির ধ্রুবক অক্ষর str_char2_table[257] = {
       ".im0e010" "e0102010" /* 00 0F */ "a0102010" "30102010" /* 10 1F */
       "u0102010" "30102010" /* 20 2F */ "40102010" "30102010" /* 30 3F */
       "t0102010" "30102010" /* 40 4F */ "40102010" "30102010" /* 50 5F */
@@ -49,123 +49,123 @@ static const char str_char2_table[257] = {
       "50102010" "30102010" /* E0 EF */ "40102010" "30102010" /* F0 FF */ };
 
 
-extern "C" void vpip_format_strength(char*str, s_vpi_value*value, unsigned bit)
+বাহ্যিক "C" শূন্য vpip_format_strength(অক্ষর*str, s_vpi_মান*value, unsigned bit)
 {
       str[0] = '.';
       str[1] = '.';
       str[2] = '.';
       str[3] = 0;
 
-      assert(value->format == vpiStrengthVal);
+      প্রতিজ্ঞা(value->format == vpiStrengthVal);
 
-      switch (value->value.strength[bit].logic) {
-	  case vpi0:
+      নির্বাচন (value->value.strength[bit].logic) {
+	  ক্ষেত্র vpi0:
 	    str[0] = str_char1_table[value->value.strength[bit].s0];
 	    str[1] = str_char2_table[value->value.strength[bit].s0];
 	    str[2] = '0';
-	    break;
-	  case vpi1:
+	    বিরতি;
+	  ক্ষেত্র vpi1:
 	    str[0] = str_char1_table[value->value.strength[bit].s1];
 	    str[1] = str_char2_table[value->value.strength[bit].s1];
 	    str[2] = '1';
-	    break;
-	  case vpiX:
-	    if (value->value.strength[bit].s0 == 1) {
+	    বিরতি;
+	  ক্ষেত্র vpiX:
+	    যদি (value->value.strength[bit].s0 == 1) {
 		  str[0] = str_char1_table[value->value.strength[bit].s1];
 		  str[1] = str_char2_table[value->value.strength[bit].s1];
 		  str[2] = 'H';
-	    } else if (value->value.strength[bit].s1 == 1) {
+	    } অন্যথা যদি (value->value.strength[bit].s1 == 1) {
 		  str[0] = str_char1_table[value->value.strength[bit].s0];
 		  str[1] = str_char2_table[value->value.strength[bit].s0];
 		  str[2] = 'L';
-	    } else if (value->value.strength[bit].s1 ==
+	    } অন্যথা যদি (value->value.strength[bit].s1 ==
 		       value->value.strength[bit].s0) {
 		  str[0] = str_char1_table[value->value.strength[bit].s0];
 		  str[1] = str_char2_table[value->value.strength[bit].s0];
 		  str[2] = 'X';
-	    } else {
-		  int ss;
+	    } অন্যথা {
+		  পূর্ণসংখ্যা ss;
 
 		  str[0] = '0';
 		  ss = value->value.strength[bit].s0;
-		  while (ss > 1) {
+		  যখন (ss > 1) {
 			str[0] += 1;
 			ss >>= 1;
 		  }
 		  str[1] = '0';
 		  ss = value->value.strength[bit].s1;
-		  while (ss > 1) {
+		  যখন (ss > 1) {
 			str[1] += 1;
 			ss >>= 1;
 		  }
 		  str[2] = 'X';
 	    }
-	    break;
-	  case vpiZ:
+	    বিরতি;
+	  ক্ষেত্র vpiZ:
 	    str[0] = 'H';
 	    str[1] = 'i';
 	    str[2] = 'Z';
-	    break;
-	  default:
+	    বিরতি;
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "Unsupported type %d.\n",
-	            (int)value->value.strength[bit].logic);
-	    assert(0);
+	            (পূর্ণসংখ্যা)value->value.strength[bit].logic);
+	    প্রতিজ্ঞা(0);
       }
 }
 
-static char* vpip_format_pretty_string(const char*msg)
+স্থির অক্ষর* vpip_format_pretty_string(ধ্রুবক অক্ষর*বার্তা)
 {
-      return strdup(msg);
+      ফেরত strdup(বার্তা);
 }
 
-static char* format_darray_pretty(vvp_darray* aobj)
+স্থির অক্ষর* format_darray_pretty(vvp_darray* aobj)
 {
-      if (!aobj || aobj->get_size() == 0) return strdup("{}");
+      যদি (!aobj || aobj->get_আকার() == 0) ফেরত strdup("{}");
 
       std::string out = "{";
 
-      for (size_t i = 0; i < aobj->get_size(); i += 1) {
-	    if (i > 0) out += ", ";
-	    if (dynamic_cast<vvp_darray_real*>(aobj)) {
-		  double d;
+      জন্য (size_t i = 0; i < aobj->get_আকার(); i += 1) {
+	    যদি (i > 0) out += ", ";
+	    যদি (dynamic_cast<vvp_darray_real*>(aobj)) {
+		  দ্বিগুণ d;
 		  aobj->get_word((unsigned) i, d);
-		  char buf[256];
-		  snprintf(buf, sizeof buf, "%g", d);
+		  অক্ষর buf[256];
+		  snprintf(buf, আকার buf, "%g", d);
 		  out += buf;
-	    } else if (dynamic_cast<vvp_darray_string*>(aobj)) {
+	    } অন্যথা যদি (dynamic_cast<vvp_darray_string*>(aobj)) {
 		  std::string s;
 		  aobj->get_word((unsigned) i, s);
 		  out += "\"";
 		  out += s;
 		  out += "\"";
-	    } else {
+	    } অন্যথা {
 		  vvp_vector4_t v;
 		  aobj->get_word((unsigned) i, v);
-		  s_vpi_value val;
+		  s_vpi_মান val;
 		  val.format = vpiDecStrVal;
-		  vpip_vec4_get_value(v, v.size(), false, &val);
+		  vpip_vec4_get_মান(v, v.size(), মিথ্যা, &val);
 		  out += val.value.str;
 	    }
       }
 
       out += "}";
-      return strdup(out.c_str());
+      ফেরত strdup(out.c_str());
 }
 
-extern "C" char* vpip_format_pretty(vpiHandle ref)
+বাহ্যিক "C" অক্ষর* vpip_format_pretty(vpiHandle ref)
 {
-      if (!ref) {
-	    return vpip_format_pretty_string("Handle is NULL");
+      যদি (!ref) {
+	    ফেরত vpip_format_pretty_string("Handle is NULL");
 	  }
 
-      if (dynamic_cast<__vpiPropQueueRef*>(ref) ||
+      যদি (dynamic_cast<__vpiPropQueueRef*>(ref) ||
           dynamic_cast<__vpiDarrayVar*>(ref)) {
 	    vvp_darray* aobj = vpip_vpi_darray_from_handle(ref);
-	    if (!aobj) {
-		  return vpip_format_pretty_string("Object not found");
+	    যদি (!aobj) {
+		  ফেরত vpip_format_pretty_string("Object not found");
 		}
-	    return format_darray_pretty(aobj);
+	    ফেরত format_darray_pretty(aobj);
       }
 
-      return vpip_format_pretty_string("Unsupported object type");
+      ফেরত vpip_format_pretty_string("Unsupported object type");
 }

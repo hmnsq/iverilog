@@ -33,102 +33,102 @@
  * instruction to branch to the next chunk. This handles the case
  * where the program counter steps off the end of a chunk.
  */
-const unsigned code_chunk_size = 1024;
+ধ্রুবক unsigned code_chunk_আকার = 1024;
 
-static struct vvp_code_s *first_chunk = 0;
-static struct vvp_code_s *current_chunk = 0;
-static unsigned current_within_chunk = 0;
+স্থির কাঠামো vvp_code_s *first_chunk = 0;
+স্থির কাঠামো vvp_code_s *current_chunk = 0;
+স্থির unsigned current_within_chunk = 0;
 
 /*
  * This initializes the code space. It sets up the first code chunk,
  * and places at address 0 a ZOMBIE instruction.
  */
-void codespace_init(void)
+শূন্য codespace_init(শূন্য)
 {
-      assert(current_chunk == 0);
-      first_chunk = new struct vvp_code_s [code_chunk_size];
+      প্রতিজ্ঞা(current_chunk == 0);
+      first_chunk = নতুন কাঠামো vvp_code_s [code_chunk_আকার];
       current_chunk = first_chunk;
 
       current_chunk[0].opcode = &of_ZOMBIE;
 
-      current_chunk[code_chunk_size-1].opcode = &of_CHUNK_LINK;
-      current_chunk[code_chunk_size-1].cptr = 0;
+      current_chunk[code_chunk_আকার-1].opcode = &of_CHUNK_LINK;
+      current_chunk[code_chunk_আকার-1].cptr = 0;
 
       current_within_chunk = 1;
 
-      count_opcodes = 0;
-      size_opcodes += code_chunk_size * sizeof (struct vvp_code_s);
+      গুনতি_opcodes = 0;
+      আকার_opcodes += code_chunk_আকার * আকার (কাঠামো vvp_code_s);
 }
 
-vvp_code_t codespace_next(void)
+vvp_code_t codespace_পরবর্তী(শূন্য)
 {
-      if (current_within_chunk == (code_chunk_size-1)) {
-	    current_chunk[code_chunk_size-1].cptr
-		  = new struct vvp_code_s [code_chunk_size];
-	    current_chunk = current_chunk[code_chunk_size-1].cptr;
+      যদি (current_within_chunk == (code_chunk_আকার-1)) {
+	    current_chunk[code_chunk_আকার-1].cptr
+		  = নতুন কাঠামো vvp_code_s [code_chunk_আকার];
+	    current_chunk = current_chunk[code_chunk_আকার-1].cptr;
 
 	      /* Put a link opcode on the end of the chunk. */
-	    current_chunk[code_chunk_size-1].opcode = &of_CHUNK_LINK;
-	    current_chunk[code_chunk_size-1].cptr   = 0;
+	    current_chunk[code_chunk_আকার-1].opcode = &of_CHUNK_LINK;
+	    current_chunk[code_chunk_আকার-1].cptr   = 0;
 
 	    current_within_chunk = 0;
 
-	    size_opcodes += code_chunk_size * sizeof (struct vvp_code_s);
+	    আকার_opcodes += code_chunk_আকার * আকার (কাঠামো vvp_code_s);
       }
 
       vvp_code_t res = current_chunk + current_within_chunk;
-      return res;
+      ফেরত res;
 }
 
-vvp_code_t codespace_allocate(void)
+vvp_code_t codespace_allocate(শূন্য)
 {
-      vvp_code_t res = codespace_next();
+      vvp_code_t res = codespace_পরবর্তী();
       current_within_chunk += 1;
-      count_opcodes += 1;
+      গুনতি_opcodes += 1;
 
-      memset(res, 0, sizeof(*res));
+      memset(res, 0, আকার(*res));
 
-      return res;
+      ফেরত res;
 }
 
-vvp_code_t codespace_null(void)
+vvp_code_t codespace_null(শূন্য)
 {
-      return first_chunk + 0;
+      ফেরত first_chunk + 0;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void codespace_delete(void)
+শূন্য codespace_delete(শূন্য)
 {
       vvp_code_t cur = first_chunk;
 
 	/* If there are no opcodes then just delete the code space. */
-      if (count_opcodes == 0) {
+      যদি (গুনতি_opcodes == 0) {
 	    delete [] cur;
-	    return;
+	    ফেরত;
       }
 
-      do {
-	    vvp_code_t next = cur[code_chunk_size-1].cptr;
-	    for (unsigned idx = 0 ; idx < code_chunk_size; idx += 1) {
-		  count_opcodes -= 1;
-		  if ((cur+idx)->opcode == &of_VPI_CALL) {
+      করো {
+	    vvp_code_t পরবর্তী_2 = cur[code_chunk_আকার-1].cptr;
+	    জন্য (unsigned idx = 0 ; idx < code_chunk_আকার; idx += 1) {
+		  গুনতি_opcodes -= 1;
+		  যদি ((cur+idx)->opcode == &of_VPI_CALL) {
 			vpi_call_delete((cur+idx)->handle);
-		  } else if (((cur+idx)->opcode == &of_EXEC_UFUNC_REAL) ||
+		  } অন্যথা যদি (((cur+idx)->opcode == &of_EXEC_UFUNC_REAL) ||
 		             ((cur+idx)->opcode == &of_EXEC_UFUNC_VEC4)) {
 			exec_ufunc_delete((cur+idx));
-		  } else if ((cur+idx)->opcode == &of_FILE_LINE) {
+		  } অন্যথা যদি ((cur+idx)->opcode == &of_FILE_সারি) {
 			delete((cur+idx)->handle);
-		  } else if (((cur+idx)->opcode == &of_CONCATI_STR) ||
+		  } অন্যথা যদি (((cur+idx)->opcode == &of_CONCATI_STR) ||
 		             ((cur+idx)->opcode == &of_NEW_DARRAY) ||
 		             ((cur+idx)->opcode == &of_PUSHI_STR)) {
 			delete [] ((cur+idx)->text);
 		  }
-		  if (count_opcodes == 0) break;
+		  যদি (গুনতি_opcodes == 0) বিরতি;
 	    }
 	      /* Don't count the &of_CHUNK_LINK opcode. */
-	    if (count_opcodes != 0) count_opcodes += 1;
+	    যদি (গুনতি_opcodes != 0) গুনতি_opcodes += 1;
 	    delete [] cur;
-	    cur = next;
-      } while (cur != 0);
+	    cur = পরবর্তী_2;
+      } যখন (cur != 0);
 }
 #endif

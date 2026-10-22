@@ -37,7 +37,7 @@
    BIT4_1) or will propagate an initial value of 'bx. From then on
    the flip-flop operates normally. */
 
-vvp_dff::vvp_dff(unsigned width, bool negedge)
+vvp_dff::vvp_dff(unsigned width, যৌক্তিক negedge)
 : clk_(BIT4_X), ena_(BIT4_X), asc_(BIT4_Z), d_(width, BIT4_X)
 {
       clk_active_ = negedge ? BIT4_0 : BIT4_1;
@@ -47,62 +47,62 @@ vvp_dff::~vvp_dff()
 {
 }
 
-vvp_dff_aclr::vvp_dff_aclr(unsigned width, bool negedge)
+vvp_dff_aclr::vvp_dff_aclr(unsigned width, যৌক্তিক negedge)
 : vvp_dff(width, negedge)
 {
 }
 
-vvp_dff_aset::vvp_dff_aset(unsigned width, bool negedge)
+vvp_dff_aset::vvp_dff_aset(unsigned width, যৌক্তিক negedge)
 : vvp_dff(width, negedge)
 {
 }
 
-vvp_dff_asc::vvp_dff_asc(unsigned width, bool negedge, const char*asc_value)
-: vvp_dff(width, negedge), asc_value_(c4string_to_vector4(asc_value))
+vvp_dff_asc::vvp_dff_asc(unsigned width, যৌক্তিক negedge, ধ্রুবক অক্ষর*asc_মান)
+: vvp_dff(width, negedge), asc_মান_2(c4string_to_vector4(asc_মান))
 {
 }
 
-void vvp_dff::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+শূন্য vvp_dff::recv_vec4(vvp_net_ptr_t port, ধ্রুবক vvp_vector4_t&bit,
                         vvp_context_t)
 {
       vvp_bit4_t tmp;
 
-      switch (port.port()) {
+      নির্বাচন (port.port()) {
 
-	  case 0: // D
+	  ক্ষেত্র 0: // D
 	    d_ = bit;
-	    break;
+	    বিরতি;
 
-	  case 1: // CLK
-	    assert(bit.size() == 1);
-	    if (asc_ != BIT4_0)
-		  break;
-	    if (ena_ != BIT4_1)
-		  break;
+	  ক্ষেত্র 1: // CLK
+	    প্রতিজ্ঞা(bit.size() == 1);
+	    যদি (asc_ != BIT4_0)
+		  বিরতি;
+	    যদি (ena_ != BIT4_1)
+		  বিরতি;
 	    tmp = clk_;
 	    clk_ = bit.value(0);
-	    if (clk_ == clk_active_ && tmp != clk_active_)
+	    যদি (clk_ == clk_active_ && tmp != clk_active_)
 		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	    বিরতি;
 
-	  case 2: // CE
-	    assert(bit.size() == 1);
+	  ক্ষেত্র 2: // CE
+	    প্রতিজ্ঞা(bit.size() == 1);
 	    ena_ = bit.value(0);
-	    break;
+	    বিরতি;
 
-	  case 3: // asynch SET/CLR
-	    assert(bit.size() == 1);
+	  ক্ষেত্র 3: // asynch SET/CLR
+	    প্রতিজ্ঞা(bit.size() == 1);
 	    tmp = asc_;
 	    asc_ = bit.value(0);
-	    if (asc_ == BIT4_1 && tmp != BIT4_1)
+	    যদি (asc_ == BIT4_1 && tmp != BIT4_1)
 		  recv_async(port);
-	    else if (tmp == BIT4_Z)
+	    অন্যথা যদি (tmp == BIT4_Z)
 		  port.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
-	    break;
+	    বিরতি;
       }
 }
 
-void vvp_dff::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+শূন্য vvp_dff::recv_vec4_pv(vvp_net_ptr_t ptr, ধ্রুবক vvp_vector4_t&bit,
 			   unsigned base, unsigned vwid, vvp_context_t ctx)
 {
       recv_vec4_pv_(ptr, bit, base, vwid, ctx);
@@ -115,86 +115,86 @@ void vvp_dff::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
  * NOTE: Don't touch the d_ value, because that tracks the D input,
  * which may be needed when the device is clocked afterwards.
  */
-void vvp_dff::recv_async(vvp_net_ptr_t)
+শূন্য vvp_dff::recv_async(vvp_net_ptr_t)
 {
 	// The base dff does not have an asynchronous set/clr input.
-      assert(0);
+      প্রতিজ্ঞা(0);
 }
 
-void vvp_dff_aclr::recv_async(vvp_net_ptr_t port)
+শূন্য vvp_dff_aclr::recv_async(vvp_net_ptr_t port)
 {
       schedule_propagate_vector(port.ptr(), 0, vvp_vector4_t(d_.size(), BIT4_0));
 }
 
-void vvp_dff_aset::recv_async(vvp_net_ptr_t port)
+শূন্য vvp_dff_aset::recv_async(vvp_net_ptr_t port)
 {
       schedule_propagate_vector(port.ptr(), 0, vvp_vector4_t(d_.size(), BIT4_1));
 }
 
-void vvp_dff_asc::recv_async(vvp_net_ptr_t port)
+শূন্য vvp_dff_asc::recv_async(vvp_net_ptr_t port)
 {
-      schedule_propagate_vector(port.ptr(), 0, asc_value_);
+      schedule_propagate_vector(port.ptr(), 0, asc_মান_2);
 }
 
-void compile_dff(char*label, unsigned width, bool negedge,
-		 struct symb_s arg_d,
-		 struct symb_s arg_c,
-		 struct symb_s arg_e)
+শূন্য compile_dff(অক্ষর*label, unsigned width, যৌক্তিক negedge,
+		 কাঠামো symb_s arg_d,
+		 কাঠামো symb_s arg_c,
+		 কাঠামো symb_s arg_e)
 {
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_dff*fun = new vvp_dff(width, negedge);
+      vvp_net_t*ptr = নতুন vvp_net_t;
+      vvp_dff*fun = নতুন vvp_dff(width, negedge);
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_c.text);
-      input_connect(ptr, 2, arg_e.text);
+      define_functor_প্রতীক(label, ptr);
+      মুক্ত(label);
+      প্রবেশ_connect(ptr, 0, arg_d.text);
+      প্রবেশ_connect(ptr, 1, arg_c.text);
+      প্রবেশ_connect(ptr, 2, arg_e.text);
 
       vvp_vector4_t init_val = vvp_vector4_t(1, BIT4_0);
       schedule_init_vector(vvp_net_ptr_t(ptr,3), init_val);
 }
 
-void compile_dff_aclr(char*label, unsigned width, bool negedge,
-		      struct symb_s arg_d,
-		      struct symb_s arg_c,
-		      struct symb_s arg_e,
-		      struct symb_s arg_a)
+শূন্য compile_dff_aclr(অক্ষর*label, unsigned width, যৌক্তিক negedge,
+		      কাঠামো symb_s arg_d,
+		      কাঠামো symb_s arg_c,
+		      কাঠামো symb_s arg_e,
+		      কাঠামো symb_s arg_a)
 {
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_dff*fun = new vvp_dff_aclr(width, negedge);
+      vvp_net_t*ptr = নতুন vvp_net_t;
+      vvp_dff*fun = নতুন vvp_dff_aclr(width, negedge);
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_c.text);
-      input_connect(ptr, 2, arg_e.text);
-      input_connect(ptr, 3, arg_a.text);
+      define_functor_প্রতীক(label, ptr);
+      মুক্ত(label);
+      প্রবেশ_connect(ptr, 0, arg_d.text);
+      প্রবেশ_connect(ptr, 1, arg_c.text);
+      প্রবেশ_connect(ptr, 2, arg_e.text);
+      প্রবেশ_connect(ptr, 3, arg_a.text);
 }
 
-void compile_dff_aset(char*label, unsigned width, bool negedge,
-		      struct symb_s arg_d,
-		      struct symb_s arg_c,
-		      struct symb_s arg_e,
-		      struct symb_s arg_a,
-		      char*asc_value)
+শূন্য compile_dff_aset(অক্ষর*label, unsigned width, যৌক্তিক negedge,
+		      কাঠামো symb_s arg_d,
+		      কাঠামো symb_s arg_c,
+		      কাঠামো symb_s arg_e,
+		      কাঠামো symb_s arg_a,
+		      অক্ষর*asc_মান)
 {
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_net_t*ptr = নতুন vvp_net_t;
       vvp_dff*fun;
-      if (asc_value) {
-	    assert(c4string_test(asc_value));
-	    fun = new vvp_dff_asc(width, negedge, asc_value);
-	    free(asc_value);
-      } else {
-	    fun = new vvp_dff_aset(width, negedge);
+      যদি (asc_মান) {
+	    প্রতিজ্ঞা(c4string_test(asc_মান));
+	    fun = নতুন vvp_dff_asc(width, negedge, asc_মান);
+	    মুক্ত(asc_মান);
+      } অন্যথা {
+	    fun = নতুন vvp_dff_aset(width, negedge);
       }
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
-      free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_c.text);
-      input_connect(ptr, 2, arg_e.text);
-      input_connect(ptr, 3, arg_a.text);
+      define_functor_প্রতীক(label, ptr);
+      মুক্ত(label);
+      প্রবেশ_connect(ptr, 0, arg_d.text);
+      প্রবেশ_connect(ptr, 1, arg_c.text);
+      প্রবেশ_connect(ptr, 2, arg_e.text);
+      প্রবেশ_connect(ptr, 3, arg_a.text);
 }

@@ -32,127 +32,127 @@
 vvp_fun_boolean_::vvp_fun_boolean_(unsigned wid)
 {
       net_ = 0;
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-	    input_[idx] = vvp_vector4_t(wid, BIT4_Z);
+      জন্য (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+	    প্রবেশ_2[idx] = vvp_vector4_t(wid, BIT4_Z);
 }
 
 vvp_fun_boolean_::~vvp_fun_boolean_()
 {
 }
 
-void vvp_fun_boolean_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+শূন্য vvp_fun_boolean_::recv_vec4(vvp_net_ptr_t ptr, ধ্রুবক vvp_vector4_t&bit,
                                  vvp_context_t)
 {
       unsigned port = ptr.port();
-      if (input_[port] .eeq( bit )) return;
+      যদি (প্রবেশ_2[port] .eeq( bit )) ফেরত;
 
-      input_[port] = bit;
-      if (net_ == 0) {
+      প্রবেশ_2[port] = bit;
+      যদি (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    schedule_functor(এই);
       }
 }
 
-void vvp_fun_boolean_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+শূন্য vvp_fun_boolean_::recv_vec4_pv(vvp_net_ptr_t ptr, ধ্রুবক vvp_vector4_t&bit,
 				    unsigned base, unsigned vwid, vvp_context_t)
 {
       unsigned port = ptr.port();
 
-      assert(base + bit.size() <= vwid);
+      প্রতিজ্ঞা(base + bit.size() <= vwid);
 
 	// Set the part for the input. If nothing changes, then break.
-      bool flag = input_[port] .set_vec(base, bit);
-      if (flag == false)
-	    return;
+      যৌক্তিক flag = প্রবেশ_2[port] .set_vec(base, bit);
+      যদি (flag == মিথ্যা)
+	    ফেরত;
 
-      if (net_ == 0) {
+      যদি (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    schedule_functor(এই);
       }
 }
 
-void vvp_fun_boolean_::recv_real(vvp_net_ptr_t ptr, double real,
+শূন্য vvp_fun_boolean_::recv_real(vvp_net_ptr_t ptr, দ্বিগুণ real,
                                  vvp_context_t ctx)
 {
       recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
 }
 
-vvp_fun_and::vvp_fun_and(unsigned wid, bool invert)
+vvp_fun_and::vvp_fun_and(unsigned wid, যৌক্তিক invert)
 : vvp_fun_boolean_(wid), invert_(invert)
 {
-      count_functors_logic += 1;
+      গুনতি_functors_logic += 1;
 }
 
 vvp_fun_and::~vvp_fun_and()
 {
 }
 
-void vvp_fun_and::run_run()
+শূন্য vvp_fun_and::run_run()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_[0]);
+      vvp_vector4_t ফলাফল (প্রবেশ_2[0]);
 
-      for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
-	    result &= input_[pdx];
+      জন্য (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
+	    ফলাফল &= প্রবেশ_2[pdx];
 
-      if (invert_)
-	    result.invert();
+      যদি (invert_)
+	    ফলাফল.invert();
 
-      ptr->send_vec4(result, 0);
+      ptr->send_vec4(ফলাফল, 0);
 }
 
 vvp_fun_equiv::vvp_fun_equiv()
 : vvp_fun_boolean_(1)
 {
-      count_functors_logic += 1;
+      গুনতি_functors_logic += 1;
 }
 
 vvp_fun_equiv::~vvp_fun_equiv()
 {
 }
 
-void vvp_fun_equiv::run_run()
+শূন্য vvp_fun_equiv::run_run()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      assert(input_[0].size() == 1);
-      assert(input_[1].size() == 1);
+      প্রতিজ্ঞা(প্রবেশ_2[0].size() == 1);
+      প্রতিজ্ঞা(প্রবেশ_2[1].size() == 1);
 
-      vvp_bit4_t bit = ~(input_[0].value(0) ^ input_[1].value(0));
-      vvp_vector4_t result (1, bit);
+      vvp_bit4_t bit = ~(প্রবেশ_2[0].value(0) ^ প্রবেশ_2[1].value(0));
+      vvp_vector4_t ফলাফল (1, bit);
 
-      ptr->send_vec4(result, 0);
+      ptr->send_vec4(ফলাফল, 0);
 }
 
 vvp_fun_impl::vvp_fun_impl()
 : vvp_fun_boolean_(1)
 {
-      count_functors_logic += 1;
+      গুনতি_functors_logic += 1;
 }
 
 vvp_fun_impl::~vvp_fun_impl()
 {
 }
 
-void vvp_fun_impl::run_run()
+শূন্য vvp_fun_impl::run_run()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      assert(input_[0].size() == 1);
-      assert(input_[1].size() == 1);
+      প্রতিজ্ঞা(প্রবেশ_2[0].size() == 1);
+      প্রতিজ্ঞা(প্রবেশ_2[1].size() == 1);
 
-      vvp_bit4_t bit = ~input_[0].value(0) | input_[1].value(0);
-      vvp_vector4_t result (1, bit);
+      vvp_bit4_t bit = ~প্রবেশ_2[0].value(0) | প্রবেশ_2[1].value(0);
+      vvp_vector4_t ফলাফল (1, bit);
 
-      ptr->send_vec4(result, 0);
+      ptr->send_vec4(ফলাফল, 0);
 }
 
 vvp_fun_buf_not_::vvp_fun_buf_not_(unsigned wid)
-: input_(wid, BIT4_Z)
+: প্রবেশ_2(wid, BIT4_Z)
 {
       net_ = 0;
 }
@@ -161,41 +161,41 @@ vvp_fun_buf_not_::~vvp_fun_buf_not_()
 {
 }
 
-void vvp_fun_buf_not_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+শূন্য vvp_fun_buf_not_::recv_vec4(vvp_net_ptr_t ptr, ধ্রুবক vvp_vector4_t&bit,
                                  vvp_context_t)
 {
-      if (ptr.port() != 0) return;
+      যদি (ptr.port() != 0) ফেরত;
 
-      if (input_ .eeq( bit )) return;
+      যদি (প্রবেশ_2 .eeq( bit )) ফেরত;
 
-      input_ = bit;
-      if (net_ == 0) {
+      প্রবেশ_2 = bit;
+      যদি (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    schedule_functor(এই);
       }
 }
 
-void vvp_fun_buf_not_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+শূন্য vvp_fun_buf_not_::recv_vec4_pv(vvp_net_ptr_t ptr, ধ্রুবক vvp_vector4_t&bit,
                                     unsigned base, unsigned vwid, vvp_context_t)
 {
-      if (ptr.port() != 0) return;
+      যদি (ptr.port() != 0) ফেরত;
 
-      assert(base + bit.size() <= vwid);
+      প্রতিজ্ঞা(base + bit.size() <= vwid);
 
 	// Set the input part. If nothing changes, then break.
-      bool flag = input_.set_vec(base, bit);
-      if (flag == false) return;
+      যৌক্তিক flag = প্রবেশ_2.set_vec(base, bit);
+      যদি (flag == মিথ্যা) ফেরত;
 
-      if (net_ == 0) {
+      যদি (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    schedule_functor(এই);
       }
 }
 
-void vvp_fun_buf_not_::recv_real(vvp_net_ptr_t ptr, double real,
+শূন্য vvp_fun_buf_not_::recv_real(vvp_net_ptr_t ptr, দ্বিগুণ real,
                                  vvp_context_t ctx)
 {
-      if (ptr.port() != 0) return;
+      যদি (ptr.port() != 0) ফেরত;
 
       recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
 }
@@ -203,7 +203,7 @@ void vvp_fun_buf_not_::recv_real(vvp_net_ptr_t ptr, double real,
 vvp_fun_buf::vvp_fun_buf(unsigned wid)
 : vvp_fun_buf_not_(wid)
 {
-      count_functors_logic += 1;
+      গুনতি_functors_logic += 1;
 }
 
 vvp_fun_buf::~vvp_fun_buf()
@@ -214,19 +214,19 @@ vvp_fun_buf::~vvp_fun_buf()
  * The buf functor is very simple--change the z bits to x bits in the
  * vector it passes, and propagate the result.
  */
-void vvp_fun_buf::run_run()
+শূন্য vvp_fun_buf::run_run()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t tmp (input_);
+      vvp_vector4_t tmp (প্রবেশ_2);
       tmp.change_z2x();
       ptr->send_vec4(tmp, 0);
 }
 
 vvp_fun_bufz::vvp_fun_bufz()
 {
-      count_functors_logic += 1;
+      গুনতি_functors_logic += 1;
 }
 
 vvp_fun_bufz::~vvp_fun_bufz()
@@ -237,37 +237,37 @@ vvp_fun_bufz::~vvp_fun_bufz()
  * The bufz is similar to the buf device, except that it does not
  * bother translating z bits to x.
  */
-void vvp_fun_bufz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+শূন্য vvp_fun_bufz::recv_vec4(vvp_net_ptr_t ptr, ধ্রুবক vvp_vector4_t&bit,
                              vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      যদি (ptr.port() != 0)
+	    ফেরত;
 
       ptr.ptr()->send_vec4(bit, 0);
 }
 
-void vvp_fun_bufz::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+শূন্য vvp_fun_bufz::recv_vec4_pv(vvp_net_ptr_t ptr, ধ্রুবক vvp_vector4_t&bit,
                                 unsigned base, unsigned vwid, vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      যদি (ptr.port() != 0)
+	    ফেরত;
 
       ptr.ptr()->send_vec4_pv(bit, base, vwid, 0);
 }
 
-void vvp_fun_bufz::recv_real(vvp_net_ptr_t ptr, double bit,
+শূন্য vvp_fun_bufz::recv_real(vvp_net_ptr_t ptr, দ্বিগুণ bit,
                              vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      যদি (ptr.port() != 0)
+	    ফেরত;
 
       ptr.ptr()->send_real(bit, 0);
 }
 
-void vvp_fun_buft::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+শূন্য vvp_fun_buft::recv_vec8(vvp_net_ptr_t ptr, ধ্রুবক vvp_vector8_t&bit)
 {
-      if (ptr.port() != 0)
-	    return;
+      যদি (ptr.port() != 0)
+	    ফেরত;
 
       ptr.ptr()->send_vec8(bit);
 }
@@ -276,7 +276,7 @@ vvp_fun_muxr::vvp_fun_muxr()
 : a_(0.0), b_(0.0)
 {
       net_ = 0;
-      count_functors_logic += 1;
+      গুনতি_functors_logic += 1;
       select_ = SEL_BOTH;
 }
 
@@ -284,82 +284,82 @@ vvp_fun_muxr::~vvp_fun_muxr()
 {
 }
 
-void vvp_fun_muxr::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+শূন্য vvp_fun_muxr::recv_vec4(vvp_net_ptr_t ptr, ধ্রুবক vvp_vector4_t&bit,
                              vvp_context_t)
 {
 	/* The real valued mux can only take in the select as a
 	   vector4_t. The muxed data is real. */
-      if (ptr.port() != 2)
-	    return;
+      যদি (ptr.port() != 2)
+	    ফেরত;
 
-      assert(bit.size() == 1);
+      প্রতিজ্ঞা(bit.size() == 1);
 
-      switch (bit.value(0)) {
-	  case BIT4_0:
-	    if (select_ == SEL_PORT0) return;
+      নির্বাচন (bit.value(0)) {
+	  ক্ষেত্র BIT4_0:
+	    যদি (select_ == SEL_PORT0) ফেরত;
 	    select_ = SEL_PORT0;
-	    break;
-	  case BIT4_1:
-	    if (select_ == SEL_PORT1) return;
+	    বিরতি;
+	  ক্ষেত্র BIT4_1:
+	    যদি (select_ == SEL_PORT1) ফেরত;
 	    select_ = SEL_PORT1;
-	    break;
-	  default:
-	    if (select_ == SEL_BOTH) return;
+	    বিরতি;
+	  পূর্বনির্ধারিত:
+	    যদি (select_ == SEL_BOTH) ফেরত;
 	    select_ = SEL_BOTH;
       }
 
-      if (net_ == 0) {
+      যদি (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    schedule_functor(এই);
       }
 }
 
-void vvp_fun_muxr::recv_real(vvp_net_ptr_t ptr, double bit,
+শূন্য vvp_fun_muxr::recv_real(vvp_net_ptr_t ptr, দ্বিগুণ bit,
                              vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0:
-	    if (a_ == bit) return;
+      নির্বাচন (ptr.port()) {
+	  ক্ষেত্র 0:
+	    যদি (a_ == bit) ফেরত;
 	    a_ = bit;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
-	    break;
+	    যদি (select_ == SEL_PORT1) ফেরত; // The other port is selected.
+	    বিরতি;
 
-	  case 1:
-	    if (b_ == bit) return;
+	  ক্ষেত্র 1:
+	    যদি (b_ == bit) ফেরত;
 	    b_ = bit;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
-	    break;
+	    যদি (select_ == SEL_PORT0) ফেরত; // The other port is selected.
+	    বিরতি;
 
-	  default:
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "Unsupported port type %u.\n", ptr.port());
-	    assert(0);
+	    প্রতিজ্ঞা(0);
       }
 
-      if (net_ == 0) {
+      যদি (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    schedule_functor(এই);
       }
 }
 
-void vvp_fun_muxr::run_run()
+শূন্য vvp_fun_muxr::run_run()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      switch (select_) {
-	  case SEL_PORT0:
+      নির্বাচন (select_) {
+	  ক্ষেত্র SEL_PORT0:
 	    ptr->send_real(a_, 0);
-	    break;
-	  case SEL_PORT1:
+	    বিরতি;
+	  ক্ষেত্র SEL_PORT1:
 	    ptr->send_real(b_, 0);
-	    break;
-	  default:
-	    if (a_ == b_) {
+	    বিরতি;
+	  পূর্বনির্ধারিত:
+	    যদি (a_ == b_) {
 		  ptr->send_real(a_, 0);
-	    } else {
+	    } অন্যথা {
 		  ptr->send_real(0.0, 0); // Should this be NaN?
 	    }
-	    break;
+	    বিরতি;
       }
 }
 
@@ -367,128 +367,128 @@ vvp_fun_muxz::vvp_fun_muxz(unsigned wid)
 : a_(wid, BIT4_Z), b_(wid, BIT4_Z)
 {
       net_ = 0;
-      count_functors_logic += 1;
+      গুনতি_functors_logic += 1;
       select_ = SEL_BOTH;
-      has_run_ = false;
+      has_run_ = মিথ্যা;
 }
 
 vvp_fun_muxz::~vvp_fun_muxz()
 {
 }
 
-void vvp_fun_muxz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+শূন্য vvp_fun_muxz::recv_vec4(vvp_net_ptr_t ptr, ধ্রুবক vvp_vector4_t&bit,
                              vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0:
-	    if (a_ .eeq(bit) && has_run_) return;
+      নির্বাচন (ptr.port()) {
+	  ক্ষেত্র 0:
+	    যদি (a_ .eeq(bit) && has_run_) ফেরত;
 	    a_ = bit;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
-	    break;
-	  case 1:
-	    if (b_ .eeq(bit) && has_run_) return;
+	    যদি (select_ == SEL_PORT1) ফেরত; // The other port is selected.
+	    বিরতি;
+	  ক্ষেত্র 1:
+	    যদি (b_ .eeq(bit) && has_run_) ফেরত;
 	    b_ = bit;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
-	    break;
-	  case 2:
-	    assert(bit.size() == 1);
-	    switch (bit.value(0)) {
-		case BIT4_0:
-		  if (select_ == SEL_PORT0) return;
+	    যদি (select_ == SEL_PORT0) ফেরত; // The other port is selected.
+	    বিরতি;
+	  ক্ষেত্র 2:
+	    প্রতিজ্ঞা(bit.size() == 1);
+	    নির্বাচন (bit.value(0)) {
+		ক্ষেত্র BIT4_0:
+		  যদি (select_ == SEL_PORT0) ফেরত;
 		  select_ = SEL_PORT0;
-		  break;
-		case BIT4_1:
-		  if (select_ == SEL_PORT1) return;
+		  বিরতি;
+		ক্ষেত্র BIT4_1:
+		  যদি (select_ == SEL_PORT1) ফেরত;
 		  select_ = SEL_PORT1;
-		  break;
-		default:
-		  if (select_ == SEL_BOTH && has_run_) return;
+		  বিরতি;
+		পূর্বনির্ধারিত:
+		  যদি (select_ == SEL_BOTH && has_run_) ফেরত;
 		  select_ = SEL_BOTH;
 	    }
-	    break;
-	  default:
-	    return;
+	    বিরতি;
+	  পূর্বনির্ধারিত:
+	    ফেরত;
       }
 
-      if (net_ == 0) {
+      যদি (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    schedule_functor(এই);
       }
 }
 
-void vvp_fun_muxz::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+শূন্য vvp_fun_muxz::recv_vec4_pv(vvp_net_ptr_t ptr, ধ্রুবক vvp_vector4_t&bit,
 				unsigned base, unsigned vwid, vvp_context_t)
 {
-      assert(base + bit.size() <= vwid);
-      bool flag;
+      প্রতিজ্ঞা(base + bit.size() <= vwid);
+      যৌক্তিক flag;
 
-      switch (ptr.port()) {
-	  case 0:
+      নির্বাচন (ptr.port()) {
+	  ক্ষেত্র 0:
 	    flag = a_.set_vec(base, bit);
-	    if (flag == false && has_run_) return;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
-	    break;
-	  case 1:
+	    যদি (flag == মিথ্যা && has_run_) ফেরত;
+	    যদি (select_ == SEL_PORT1) ফেরত; // The other port is selected.
+	    বিরতি;
+	  ক্ষেত্র 1:
 	    flag = b_.set_vec(base, bit);
-	    if (flag == false && has_run_) return;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
-	    break;
-	  case 2:
-	    assert((base == 0) && (bit.size() == 1));
+	    যদি (flag == মিথ্যা && has_run_) ফেরত;
+	    যদি (select_ == SEL_PORT0) ফেরত; // The other port is selected.
+	    বিরতি;
+	  ক্ষেত্র 2:
+	    প্রতিজ্ঞা((base == 0) && (bit.size() == 1));
 	    recv_vec4(ptr, bit, 0);
-	  default:
-	    return;
+	  পূর্বনির্ধারিত:
+	    ফেরত;
       }
-      if (net_ == 0) {
+      যদি (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    schedule_functor(এই);
       }
 }
 
-void vvp_fun_muxz::run_run()
+শূন্য vvp_fun_muxz::run_run()
 {
-      has_run_ = true;
+      has_run_ = সত্য;
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      switch (select_) {
-	  case SEL_PORT0:
+      নির্বাচন (select_) {
+	  ক্ষেত্র SEL_PORT0:
 	    ptr->send_vec4(a_, 0);
-	    break;
-	  case SEL_PORT1:
+	    বিরতি;
+	  ক্ষেত্র SEL_PORT1:
 	    ptr->send_vec4(b_, 0);
-	    break;
-	  default:
+	    বিরতি;
+	  পূর্বনির্ধারিত:
 	      {
-		    unsigned min_size = a_.size();
-		    unsigned max_size = min_size;
-		    if (b_.size() < min_size)
-			  min_size = b_.size();
-		    if (b_.size() > max_size)
-			  max_size = b_.size();
+		    unsigned min_আকার = a_.size();
+		    unsigned max_আকার = min_আকার;
+		    যদি (b_.size() < min_আকার)
+			  min_আকার = b_.size();
+		    যদি (b_.size() > max_আকার)
+			  max_আকার = b_.size();
 
-		    vvp_vector4_t res (max_size);
+		    vvp_vector4_t res (max_আকার);
 
-		    for (unsigned idx = 0 ;  idx < min_size ;  idx += 1) {
-			  if (a_.value(idx) == b_.value(idx))
+		    জন্য (unsigned idx = 0 ;  idx < min_আকার ;  idx += 1) {
+			  যদি (a_.value(idx) == b_.value(idx))
 				res.set_bit(idx, a_.value(idx));
-			  else
+			  অন্যথা
 				res.set_bit(idx, BIT4_X);
 		    }
 
-		    for (unsigned idx = min_size ;  idx < max_size ;  idx += 1)
+		    জন্য (unsigned idx = min_আকার ;  idx < max_আকার ;  idx += 1)
 			  res.set_bit(idx, BIT4_X);
 
 		    ptr->send_vec4(res, 0);
 	      }
-	    break;
+	    বিরতি;
       }
 }
 
 vvp_fun_not::vvp_fun_not(unsigned wid)
 : vvp_fun_buf_not_(wid)
 {
-      count_functors_logic += 1;
+      গুনতি_functors_logic += 1;
 }
 
 vvp_fun_not::~vvp_fun_not()
@@ -499,65 +499,65 @@ vvp_fun_not::~vvp_fun_not()
  * The not functor is very simple--change the z bits to x bits in the
  * vector it passes, and propagate the inverted result.
  */
-void vvp_fun_not::run_run()
+শূন্য vvp_fun_not::run_run()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_, true /* invert */);
-      ptr->send_vec4(result, 0);
+      vvp_vector4_t ফলাফল (প্রবেশ_2, সত্য /* invert */);
+      ptr->send_vec4(ফলাফল, 0);
 }
 
-vvp_fun_or::vvp_fun_or(unsigned wid, bool invert)
+vvp_fun_or::vvp_fun_or(unsigned wid, যৌক্তিক invert)
 : vvp_fun_boolean_(wid), invert_(invert)
 {
-      count_functors_logic += 1;
+      গুনতি_functors_logic += 1;
 }
 
 vvp_fun_or::~vvp_fun_or()
 {
 }
 
-void vvp_fun_or::run_run()
+শূন্য vvp_fun_or::run_run()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_[0]);
+      vvp_vector4_t ফলাফল (প্রবেশ_2[0]);
 
-      for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
-	    result |= input_[pdx];
+      জন্য (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
+	    ফলাফল |= প্রবেশ_2[pdx];
 
-      if (invert_)
-	    result.invert();
+      যদি (invert_)
+	    ফলাফল.invert();
 
-      ptr->send_vec4(result, 0);
+      ptr->send_vec4(ফলাফল, 0);
 }
 
-vvp_fun_xor::vvp_fun_xor(unsigned wid, bool invert)
+vvp_fun_xor::vvp_fun_xor(unsigned wid, যৌক্তিক invert)
 : vvp_fun_boolean_(wid), invert_(invert)
 {
-      count_functors_logic += 1;
+      গুনতি_functors_logic += 1;
 }
 
 vvp_fun_xor::~vvp_fun_xor()
 {
 }
 
-void vvp_fun_xor::run_run()
+শূন্য vvp_fun_xor::run_run()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_[0]);
+      vvp_vector4_t ফলাফল (প্রবেশ_2[0]);
 
-      for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
-	    result ^= input_[pdx];
+      জন্য (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
+	    ফলাফল ^= প্রবেশ_2[pdx];
 
-      if (invert_)
-	    result.invert();
+      যদি (invert_)
+	    ফলাফল.invert();
 
-      ptr->send_vec4(result, 0);
+      ptr->send_vec4(ফলাফল, 0);
 }
 
 /*
@@ -566,122 +566,122 @@ void vvp_fun_xor::run_run()
  * functor. Also resolve the inputs to the functor.
  */
 
-void compile_functor(char*label, char*type, unsigned width,
+শূন্য compile_functor(অক্ষর*label, অক্ষর*type, unsigned width,
 		     unsigned ostr0, unsigned ostr1,
-		     unsigned argc, struct symb_s*argv)
+		     unsigned argc, কাঠামো symb_s*argv)
 {
       vvp_net_fun_t* obj = 0;
-      bool strength_aware = false;
+      যৌক্তিক strength_aware = মিথ্যা;
 
-      if (strcmp(type, "OR") == 0) {
-	    obj = new vvp_fun_or(width, false);
+      যদি (strcmp(type, "OR") == 0) {
+	    obj = নতুন vvp_fun_or(width, মিথ্যা);
 
-      } else if (strcmp(type, "AND") == 0) {
-	    obj = new vvp_fun_and(width, false);
+      } অন্যথা যদি (strcmp(type, "AND") == 0) {
+	    obj = নতুন vvp_fun_and(width, মিথ্যা);
 
-      } else if (strcmp(type, "BUF") == 0) {
-	    obj = new vvp_fun_buf(width);
+      } অন্যথা যদি (strcmp(type, "BUF") == 0) {
+	    obj = নতুন vvp_fun_buf(width);
 
-      } else if (strcmp(type, "BUFIF0") == 0) {
-	    obj = new vvp_fun_bufif(true,false, ostr0, ostr1);
-	    strength_aware = true;
+      } অন্যথা যদি (strcmp(type, "BUFIF0") == 0) {
+	    obj = নতুন vvp_fun_bufif(সত্য,মিথ্যা, ostr0, ostr1);
+	    strength_aware = সত্য;
 
-      } else if (strcmp(type, "BUFIF1") == 0) {
-	    obj = new vvp_fun_bufif(false,false, ostr0, ostr1);
-	    strength_aware = true;
+      } অন্যথা যদি (strcmp(type, "BUFIF1") == 0) {
+	    obj = নতুন vvp_fun_bufif(মিথ্যা,মিথ্যা, ostr0, ostr1);
+	    strength_aware = সত্য;
 
-      } else if (strcmp(type, "EQUIV") == 0) {
-	    obj = new vvp_fun_equiv();
+      } অন্যথা যদি (strcmp(type, "EQUIV") == 0) {
+	    obj = নতুন vvp_fun_equiv();
 
-      } else if (strcmp(type, "IMPL") == 0) {
-	    obj = new vvp_fun_impl();
+      } অন্যথা যদি (strcmp(type, "IMPL") == 0) {
+	    obj = নতুন vvp_fun_impl();
 
-      } else if (strcmp(type, "NAND") == 0) {
-	    obj = new vvp_fun_and(width, true);
+      } অন্যথা যদি (strcmp(type, "NAND") == 0) {
+	    obj = নতুন vvp_fun_and(width, সত্য);
 
-      } else if (strcmp(type, "NOR") == 0) {
-	    obj = new vvp_fun_or(width, true);
+      } অন্যথা যদি (strcmp(type, "NOR") == 0) {
+	    obj = নতুন vvp_fun_or(width, সত্য);
 
-      } else if (strcmp(type, "NOTIF0") == 0) {
-	    obj = new vvp_fun_bufif(true,true, ostr0, ostr1);
-	    strength_aware = true;
+      } অন্যথা যদি (strcmp(type, "NOTIF0") == 0) {
+	    obj = নতুন vvp_fun_bufif(সত্য,সত্য, ostr0, ostr1);
+	    strength_aware = সত্য;
 
-      } else if (strcmp(type, "NOTIF1") == 0) {
-	    obj = new vvp_fun_bufif(false,true, ostr0, ostr1);
-	    strength_aware = true;
+      } অন্যথা যদি (strcmp(type, "NOTIF1") == 0) {
+	    obj = নতুন vvp_fun_bufif(মিথ্যা,সত্য, ostr0, ostr1);
+	    strength_aware = সত্য;
 
-      } else if (strcmp(type, "BUFT") == 0) {
-	    obj = new vvp_fun_buft();
+      } অন্যথা যদি (strcmp(type, "BUFT") == 0) {
+	    obj = নতুন vvp_fun_buft();
 
-      } else if (strcmp(type, "BUFZ") == 0) {
-	    obj = new vvp_fun_bufz();
+      } অন্যথা যদি (strcmp(type, "BUFZ") == 0) {
+	    obj = নতুন vvp_fun_bufz();
 
-      } else if (strcmp(type, "MUXR") == 0) {
-	    obj = new vvp_fun_muxr;
+      } অন্যথা যদি (strcmp(type, "MUXR") == 0) {
+	    obj = নতুন vvp_fun_muxr;
 
-      } else if (strcmp(type, "MUXZ") == 0) {
-	    obj = new vvp_fun_muxz(width);
+      } অন্যথা যদি (strcmp(type, "MUXZ") == 0) {
+	    obj = নতুন vvp_fun_muxz(width);
 
-      } else if (strcmp(type, "CMOS") == 0) {
-	    obj = new vvp_fun_cmos();
+      } অন্যথা যদি (strcmp(type, "CMOS") == 0) {
+	    obj = নতুন vvp_fun_cmos();
 
-      } else if (strcmp(type, "NMOS") == 0) {
-	    obj = new vvp_fun_pmos(true);
+      } অন্যথা যদি (strcmp(type, "NMOS") == 0) {
+	    obj = নতুন vvp_fun_pmos(সত্য);
 
-      } else if (strcmp(type, "PMOS") == 0) {
-	    obj = new vvp_fun_pmos(false);
+      } অন্যথা যদি (strcmp(type, "PMOS") == 0) {
+	    obj = নতুন vvp_fun_pmos(মিথ্যা);
 
-      } else if (strcmp(type, "RCMOS") == 0) {
-	    obj = new vvp_fun_rcmos();
+      } অন্যথা যদি (strcmp(type, "RCMOS") == 0) {
+	    obj = নতুন vvp_fun_rcmos();
 
-      } else if (strcmp(type, "RNMOS") == 0) {
-	    obj = new vvp_fun_rpmos(true);
+      } অন্যথা যদি (strcmp(type, "RNMOS") == 0) {
+	    obj = নতুন vvp_fun_rpmos(সত্য);
 
-      } else if (strcmp(type, "RPMOS") == 0) {
-	    obj = new vvp_fun_rpmos(false);
+      } অন্যথা যদি (strcmp(type, "RPMOS") == 0) {
+	    obj = নতুন vvp_fun_rpmos(মিথ্যা);
 
-      } else if (strcmp(type, "NOT") == 0) {
-	    obj = new vvp_fun_not(width);
+      } অন্যথা যদি (strcmp(type, "NOT") == 0) {
+	    obj = নতুন vvp_fun_not(width);
 
-      } else if (strcmp(type, "XNOR") == 0) {
-	    obj = new vvp_fun_xor(width, true);
+      } অন্যথা যদি (strcmp(type, "XNOR") == 0) {
+	    obj = নতুন vvp_fun_xor(width, সত্য);
 
-      } else if (strcmp(type, "XOR") == 0) {
-	    obj = new vvp_fun_xor(width, false);
+      } অন্যথা যদি (strcmp(type, "XOR") == 0) {
+	    obj = নতুন vvp_fun_xor(width, মিথ্যা);
 
-      } else {
+      } অন্যথা {
 	    yyerror("invalid functor type.");
-	    free(type);
-	    free(argv);
-	    free(label);
-	    return;
+	    মুক্ত(type);
+	    মুক্ত(argv);
+	    মুক্ত(label);
+	    ফেরত;
       }
 
-      free(type);
+      মুক্ত(type);
 
-      assert(argc <= 4);
-      vvp_net_t*net = new vvp_net_t;
+      প্রতিজ্ঞা(argc <= 4);
+      vvp_net_t*net = নতুন vvp_net_t;
       net->fun = obj;
 
       inputs_connect(net, argc, argv);
-      free(argv);
+      মুক্ত(argv);
 
 	/* If both the strengths are the default strong drive, then
 	   there is no need for a specialized driver. Attach the label
 	   to this node and we are finished. */
-      if (strength_aware || (ostr0 == 6 && ostr1 == 6)) {
-	    define_functor_symbol(label, net);
-	    free(label);
-	    return;
+      যদি (strength_aware || (ostr0 == 6 && ostr1 == 6)) {
+	    define_functor_প্রতীক(label, net);
+	    মুক্ত(label);
+	    ফেরত;
       }
 
-      vvp_net_t*net_drv = new vvp_net_t;
-      vvp_net_fun_t*obj_drv = new vvp_fun_drive(ostr0, ostr1);
+      vvp_net_t*net_drv = নতুন vvp_net_t;
+      vvp_net_fun_t*obj_drv = নতুন vvp_fun_drive(ostr0, ostr1);
       net_drv->fun = obj_drv;
 
 	/* Point the gate to the drive node. */
       net->link(vvp_net_ptr_t(net_drv, 0));
 
-      define_functor_symbol(label, net_drv);
-      free(label);
+      define_functor_প্রতীক(label, net_drv);
+      মুক্ত(label);
 }

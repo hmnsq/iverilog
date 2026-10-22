@@ -30,23 +30,23 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-class __vpiStringConst : public __vpiHandle {
-    public:
-      explicit __vpiStringConst(char*val);
+শ্রেণী __vpiStringConst : সর্বজনীন __vpiHandle {
+    সর্বজনীন:
+      explicit __vpiStringConst(অক্ষর*val);
       ~__vpiStringConst() override;
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      পূর্ণসংখ্যা get_type_code(শূন্য) ধ্রুবক override;
+      পূর্ণসংখ্যা vpi_get(পূর্ণসংখ্যা code) override;
+      শূন্য vpi_get_মান(p_vpi_মান val) override;
 
-    private:
-      void process_string_();
-    private:
-      char*value_;
-      size_t value_len_;
+    ব্যক্তিগত:
+      শূন্য process_string_();
+    ব্যক্তিগত:
+      অক্ষর*মান_2;
+      size_t মান_len;
 };
 
-inline __vpiStringConst::__vpiStringConst(char*v)
-: value_(v)
+অন্তঃরেখ __vpiStringConst::__vpiStringConst(অক্ষর*v)
+: মান_2(v)
 {
       process_string_();
 }
@@ -57,246 +57,246 @@ inline __vpiStringConst::__vpiStringConst(char*v)
  * included, they are processed already by the compiler that generated
  * the vvp source.
  */
-void __vpiStringConst::process_string_(void)
+শূন্য __vpiStringConst::process_string_(শূন্য)
 {
-      char*chr = value_;
-      char*dp = value_;
+      অক্ষর*chr = মান_2;
+      অক্ষর*dp = মান_2;
 
-      while (*chr) {
-	    char next_char = *chr;
+      যখন (*chr) {
+	    অক্ষর পরবর্তী_char = *chr;
 
 	      /* Process octal escapes that I might find. */
-	    if (*chr == '\\') {
-		  for (int idx = 1 ;  idx <= 3 ;  idx += 1) {
-			assert(chr[idx] != 0);
-			assert(chr[idx] < '8');
-			assert(chr[idx] >= '0');
-			next_char = next_char*8 + chr[idx] - '0';
+	    যদি (*chr == '\\') {
+		  জন্য (পূর্ণসংখ্যা idx = 1 ;  idx <= 3 ;  idx += 1) {
+			প্রতিজ্ঞা(chr[idx] != 0);
+			প্রতিজ্ঞা(chr[idx] < '8');
+			প্রতিজ্ঞা(chr[idx] >= '0');
+			পরবর্তী_char = পরবর্তী_char*8 + chr[idx] - '0';
 		  }
 		  chr += 3;
 	    }
-	    *dp++ = next_char;
+	    *dp++ = পরবর্তী_char;
 	    chr += 1;
       }
       *dp = 0;
-      value_len_ = dp - value_;
+      মান_len = dp - মান_2;
 }
 
 __vpiStringConst::~__vpiStringConst()
 {
-      delete[] value_;
+      delete[] মান_2;
 }
 
-int __vpiStringConst::get_type_code(void) const
-{ return vpiConstant; }
+পূর্ণসংখ্যা __vpiStringConst::get_type_code(শূন্য) ধ্রুবক
+{ ফেরত vpiConstant; }
 
-int __vpiStringConst::vpi_get(int code)
+পূর্ণসংখ্যা __vpiStringConst::vpi_get(পূর্ণসংখ্যা code)
 {
-      switch (code) {
-          case vpiSize:
-	    return value_len_ * 8;
+      নির্বাচন (code) {
+          ক্ষেত্র vpi_আকার:
+	    ফেরত মান_len * 8;
 
-          case vpiSigned:
-	      return 0;
+          ক্ষেত্র vpiSigned:
+	      ফেরত 0;
 
-	  case vpiConstType:
-	      return vpiStringConst;
+	  ক্ষেত্র vpiConstType:
+	      ফেরত vpiStringConst;
 
-          case vpiAutomatic:
-	      return 0;
+          ক্ষেত্র vpiAutomatic:
+	      ফেরত 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-          case _vpiFromThr:
-	      return _vpiNoThr;
+#যদি defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+          ক্ষেত্র _vpiFromThr:
+	      ফেরত _vpiNoThr;
 #endif
 
-	  default:
+	  পূর্বনির্ধারিত:
 	      fprintf(stderr, "vvp error: get %d not supported "
 		      "by vpiStringConst\n", code);
-	      assert(0);
-	      return 0;
+	      প্রতিজ্ঞা(0);
+	      ফেরত 0;
       }
 }
 
-void __vpiStringConst::vpi_get_value(p_vpi_value vp)
+শূন্য __vpiStringConst::vpi_get_মান(p_vpi_মান vp)
 {
-      unsigned uint_value;
+      unsigned uint_মান;
       p_vpi_vecval vecp;
-      unsigned size = value_len_;
-      char*rbuf = 0;
-      char*cp;
+      unsigned size = মান_len;
+      অক্ষর*rbuf = 0;
+      অক্ষর*cp;
 
-      switch (vp->format) {
-	  case vpiObjTypeVal:
+      নির্বাচন (vp->format) {
+	  ক্ষেত্র vpiObjTypeVal:
 	      /* String parameters by default have vpiStringVal values. */
 	    vp->format = vpiStringVal;
 	    // fallthrough
-	  case vpiStringVal:
-	    cp = value_;
-	    rbuf = static_cast<char *>(need_result_buf(size + 1, RBUF_VAL));
+	  ক্ষেত্র vpiStringVal:
+	    cp = মান_2;
+	    rbuf = static_cast<অক্ষর *>(need_ফলাফল_buf(size + 1, RBUF_VAL));
 	    vp->value.str = rbuf;
 
-	    for (unsigned int i = 0; i < size; i++) {
+	    জন্য (unsigned পূর্ণসংখ্যা i = 0; i < size; i++) {
 		  // Ignore leading null-bytes and replace other null-bytes with space.
 		  // The LRM is not entirely clear on how null bytes should be handled.
 		  // This is the implementation chosen for iverilog.
-		  if (*cp)
+		  যদি (*cp)
 			*rbuf++ = *cp;
-		  else if (rbuf != vp->value.str)
+		  অন্যথা যদি (rbuf != vp->value.str)
 			*rbuf++ = ' ';
 
 		  cp++;
 	    }
 	    *rbuf = '\0';
-	    break;
+	    বিরতি;
 
-          case vpiDecStrVal:
+          ক্ষেত্র vpiDecStrVal:
 	    // Take the (up to 4) characters of the text, convert the characters
 	    // to a numerical value, and convert that value to a decimal string.
 	    // For example, the string "A" is ASCII 65, so the resulting string
 	    // will be "65". and the string "AB" is 65*256 + 66 == 16706, so
 	    // the resulting string is "16706". The "size" is the number of
 	    // characters of input text to put to work.
-	    if (size > 4){
+	    যদি (size > 4){
 		  // We only support standard integers. Ignore other bytes...
 		  size = 4;
 		  fprintf(stderr, "Warning (vpi_const.cc): %%d on constant strings only looks "
 			  "at first 4 bytes!\n");
 	    }
-	    static const size_t RBUF_USE_SIZE = 12;
-	    rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
-	    uint_value = 0;
-	    for(unsigned i=0; i<size; i += 1){
-		  uint_value <<=8;
-		  uint_value += (unsigned char)(value_[i]);
+	    স্থির ধ্রুবক size_t RBUF_USE_আকার = 12;
+	    rbuf = static_cast<অক্ষর *>(need_ফলাফল_buf(RBUF_USE_আকার, RBUF_VAL));
+	    uint_মান = 0;
+	    জন্য(unsigned i=0; i<size; i += 1){
+		  uint_মান <<=8;
+		  uint_মান += (unsigned অক্ষর)(মান_2[i]);
 	    }
-	    snprintf(rbuf, RBUF_USE_SIZE, "%u", uint_value);
+	    snprintf(rbuf, RBUF_USE_আকার, "%u", uint_মান);
 	    vp->value.str = rbuf;
-	    break;
+	    বিরতি;
 
-          case vpiBinStrVal:
-	      rbuf = static_cast<char *>(need_result_buf(8 * size + 1, RBUF_VAL));
+          ক্ষেত্র vpiBinStrVal:
+	      rbuf = static_cast<অক্ষর *>(need_ফলাফল_buf(8 * size + 1, RBUF_VAL));
 	      cp = rbuf;
-	      for(unsigned i=0; i<size; i += 1){
-		  for(int bit=7; bit>=0; bit -= 1){
-		      *cp++ = "01"[ (value_[i]>>bit)&1 ];
+	      জন্য(unsigned i=0; i<size; i += 1){
+		  জন্য(পূর্ণসংখ্যা bit=7; bit>=0; bit -= 1){
+		      *cp++ = "01"[ (মান_2[i]>>bit)&1 ];
 		  }
 	      }
 	      *cp = 0;
 	      vp->value.str = rbuf;
-	      break;
+	      বিরতি;
 
-          case vpiHexStrVal:
-	      rbuf = static_cast<char *>(need_result_buf(2 * size + 1, RBUF_VAL));
+          ক্ষেত্র vpiHexStrVal:
+	      rbuf = static_cast<অক্ষর *>(need_ফলাফল_buf(2 * size + 1, RBUF_VAL));
 	      cp = rbuf;
-	      for(unsigned i=0; i<size; i += 1){
-		  for(int nibble=1; nibble>=0; nibble -= 1){
-		      *cp++ = "0123456789abcdef"[ (value_[i]>>(nibble*4))&15 ];
+	      জন্য(unsigned i=0; i<size; i += 1){
+		  জন্য(পূর্ণসংখ্যা nibble=1; nibble>=0; nibble -= 1){
+		      *cp++ = "0123456789abcdef"[ (মান_2[i]>>(nibble*4))&15 ];
 		  }
 	      }
 	      *cp = 0;
 	      vp->value.str = rbuf;
-	      break;
+	      বিরতি;
 
-          case vpiOctStrVal:
+          ক্ষেত্র vpiOctStrVal:
 	      fprintf(stderr, "ERROR (vpi_const.cc): %%o display of constant strings not yet implemented\n");
-	      assert(0);
-	      break;
+	      প্রতিজ্ঞা(0);
+	      বিরতি;
 
-          case vpiIntVal:
+          ক্ষেত্র vpiIntVal:
 	      vp->value.integer = 0;
-	      for(unsigned i=0; i<size; i += 1){
-		  for(int bit=7; bit>=0; bit -= 1){
+	      জন্য(unsigned i=0; i<size; i += 1){
+		  জন্য(পূর্ণসংখ্যা bit=7; bit>=0; bit -= 1){
 		      vp->value.integer <<= 1;
-		      vp->value.integer += (value_[i]>>bit)&1;
+		      vp->value.integer += (মান_2[i]>>bit)&1;
 		  }
 	      }
-	      break;
+	      বিরতি;
 
-          case vpiVectorVal:
+          ক্ষেত্র vpiVectorVal:
               vp->value.vector = static_cast<p_vpi_vecval>
-                                 (need_result_buf((size+3)/4*
-                                                   sizeof(s_vpi_vecval),
+                                 (need_ফলাফল_buf((size+3)/4*
+                                                   আকার(s_vpi_vecval),
                                                   RBUF_VAL));
-              uint_value = 0;
+              uint_মান = 0;
               vecp = vp->value.vector;
               vecp->aval = vecp->bval = 0;
-	      for(unsigned i=0; i<size; i += 1){
-		  vecp->aval |= value_[i] << uint_value*8;
-		  uint_value += 1;
-		  if (uint_value > 3) {
-		      uint_value = 0;
+	      জন্য(unsigned i=0; i<size; i += 1){
+		  vecp->aval |= মান_2[i] << uint_মান*8;
+		  uint_মান += 1;
+		  যদি (uint_মান > 3) {
+		      uint_মান = 0;
 		      vecp += 1;
 		      vecp->aval = vecp->bval = 0;
 		  }
 	      }
-	      break;
+	      বিরতি;
 
 
-	  default:
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "ERROR (vpi_const.cc): vp->format: %d\n",
-	            (int)vp->format);
-	    assert(0);
+	            (পূর্ণসংখ্যা)vp->format);
+	    প্রতিজ্ঞা(0);
 
 	    vp->format = vpiSuppressVal;
-	    break;
+	    বিরতি;
       }
 }
 
 
-struct __vpiStringConstTEMP : public __vpiStringConst {
-      explicit inline __vpiStringConstTEMP(char*v) : __vpiStringConst(v) { }
-      free_object_fun_t free_object_fun(void) override;
+কাঠামো __vpiStringConstTEMP : সর্বজনীন __vpiStringConst {
+      explicit অন্তঃরেখ __vpiStringConstTEMP(অক্ষর*v) : __vpiStringConst(v) { }
+      free_object_fun_t free_object_fun(শূন্য) override;
 };
 
-static int free_temp_string(vpiHandle obj)
+স্থির পূর্ণসংখ্যা free_অস্থায়ী_string(vpiHandle obj)
 {
-      struct __vpiStringConstTEMP*rfp = dynamic_cast<__vpiStringConstTEMP*>(obj);
+      কাঠামো __vpiStringConstTEMP*rfp = dynamic_cast<__vpiStringConstTEMP*>(obj);
       delete rfp;
-      return 1;
+      ফেরত 1;
 }
 
-__vpiHandle::free_object_fun_t __vpiStringConstTEMP::free_object_fun(void)
-{ return &free_temp_string; }
+__vpiHandle::free_object_fun_t __vpiStringConstTEMP::free_object_fun(শূন্য)
+{ ফেরত &free_অস্থায়ী_string; }
 
-vpiHandle vpip_make_string_const(char*text, bool persistent_flag)
+vpiHandle vpip_make_string_const(অক্ষর*text, যৌক্তিক persistent_flag)
 {
       __vpiStringConst*obj;
 
-      obj = persistent_flag? new __vpiStringConst(text) : new __vpiStringConstTEMP(text);
+      obj = persistent_flag? নতুন __vpiStringConst(text) : নতুন __vpiStringConstTEMP(text);
 
-      return obj;
+      ফেরত obj;
 }
 
 
-class __vpiStringParam  : public __vpiStringConst {
-    public:
-      __vpiStringParam(__vpiScope* scope, char*txt, const char*name,
-                       bool local_flag, long file_idx, long lineno);
+শ্রেণী __vpiStringParam  : সর্বজনীন __vpiStringConst {
+    সর্বজনীন:
+      __vpiStringParam(__vpiScope* scope, অক্ষর*txt, ধ্রুবক অক্ষর*name,
+                       যৌক্তিক local_flag, long file_idx, long lineno);
       ~__vpiStringParam() override;
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      পূর্ণসংখ্যা get_type_code(শূন্য) ধ্রুবক override;
+      পূর্ণসংখ্যা vpi_get(পূর্ণসংখ্যা code) override;
+      অক্ষর*vpi_get_str(পূর্ণসংখ্যা code) override;
+      vpiHandle vpi_handle(পূর্ণসংখ্যা code) override;
 
-    private:
+    ব্যক্তিগত:
       __vpiScope* scope_;
-      const char*basename_;
-      bool       local_flag_;
+      ধ্রুবক অক্ষর*basename_;
+      যৌক্তিক       local_flag_;
       unsigned   file_idx_;
       unsigned   lineno_;
 };
 
-inline __vpiStringParam::__vpiStringParam(__vpiScope* scope, char*txt, const char*nam,
-                                          bool local_flag, long file_idx, long lineno)
+অন্তঃরেখ __vpiStringParam::__vpiStringParam(__vpiScope* scope, অক্ষর*txt, ধ্রুবক অক্ষর*nam,
+                                          যৌক্তিক local_flag, long file_idx, long lineno)
 : __vpiStringConst(txt)
 {
       scope_ = scope;
       basename_ = nam;
       local_flag_ = local_flag;
-      assert(file_idx >= 0 && file_idx <= INT_MAX);
+      প্রতিজ্ঞা(file_idx >= 0 && file_idx <= INT_MAX);
       file_idx_ = (unsigned) file_idx;
-      assert(lineno >= 0 && lineno <= INT_MAX);
+      প্রতিজ্ঞা(lineno >= 0 && lineno <= INT_MAX);
       lineno_ = (unsigned) lineno;
 }
 
@@ -305,120 +305,120 @@ __vpiStringParam::~__vpiStringParam()
       delete[]basename_;
 }
 
-int __vpiStringParam::get_type_code(void) const
-{ return vpiParameter; }
+পূর্ণসংখ্যা __vpiStringParam::get_type_code(শূন্য) ধ্রুবক
+{ ফেরত vpiParameter; }
 
-int __vpiStringParam::vpi_get(int code)
+পূর্ণসংখ্যা __vpiStringParam::vpi_get(পূর্ণসংখ্যা code)
 {
-    switch (code) {
-       case vpiLineNo :
-         return lineno_;
+    নির্বাচন (code) {
+       ক্ষেত্র vpi_সারি_No :
+         ফেরত lineno_;
 
-       case vpiLocalParam :
-         return local_flag_;
+       ক্ষেত্র vpiLocalParam :
+         ফেরত local_flag_;
 
-       default :
-         return __vpiStringConst::vpi_get(code);
+       পূর্বনির্ধারিত :
+         ফেরত __vpiStringConst::vpi_get(code);
     }
 }
 
 
-char*__vpiStringParam::vpi_get_str(int code)
+অক্ষর*__vpiStringParam::vpi_get_str(পূর্ণসংখ্যা code)
 {
-      if (code == vpiFile) {
-	    return simple_set_rbuf_str(file_names[file_idx_]);
+      যদি (code == vpiFile) {
+	    ফেরত simple_set_rbuf_str(file_names[file_idx_]);
       }
 
-      return generic_get_str(code, scope_, basename_, NULL);
+      ফেরত generic_get_str(code, scope_, basename_, ফাঁকা);
 }
 
 
-vpiHandle __vpiStringParam::vpi_handle(int code)
+vpiHandle __vpiStringParam::vpi_handle(পূর্ণসংখ্যা code)
 {
-      switch (code) {
-	  case vpiScope:
-	    return scope_;
+      নির্বাচন (code) {
+	  ক্ষেত্র vpiScope:
+	    ফেরত scope_;
 
-	  case vpiModule:
-	    return vpip_module(scope_);
+	  ক্ষেত্র vpiModule:
+	    ফেরত vpip_module(scope_);
 
-	  default:
-	    return 0;
+	  পূর্বনির্ধারিত:
+	    ফেরত 0;
       }
 }
 
-vpiHandle vpip_make_string_param(const char*name, char*text,
-                                 bool local_flag, long file_idx, long lineno)
+vpiHandle vpip_make_string_param(ধ্রুবক অক্ষর*name, অক্ষর*text,
+                                 যৌক্তিক local_flag, long file_idx, long lineno)
 {
-      __vpiStringParam*obj = new __vpiStringParam(vpip_peek_current_scope(), text, name,
+      __vpiStringParam*obj = নতুন __vpiStringParam(vpip_peek_current_scope(), text, name,
                                                   local_flag, file_idx, lineno);
 
-      return obj;
+      ফেরত obj;
 }
 
 
 
-inline __vpiBinaryConst::__vpiBinaryConst()
+অন্তঃরেখ __vpiBinaryConst::__vpiBinaryConst()
 : signed_flag(0), sized_flag(0)
 { }
 
-int __vpiBinaryConst::get_type_code(void) const
-{ return vpiConstant; }
+পূর্ণসংখ্যা __vpiBinaryConst::get_type_code(শূন্য) ধ্রুবক
+{ ফেরত vpiConstant; }
 
-int __vpiBinaryConst::vpi_get(int code)
+পূর্ণসংখ্যা __vpiBinaryConst::vpi_get(পূর্ণসংখ্যা code)
 {
-      switch (code) {
-	  case vpiConstType:
-	    return vpiBinaryConst;
+      নির্বাচন (code) {
+	  ক্ষেত্র vpiConstType:
+	    ফেরত vpi_দ্বিমিক_Const;
 
-	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+	  ক্ষেত্র vpi_সারি_No:
+	    ফেরত 0;  // Not implemented for now!
 
-	  case vpiSigned:
-	    return signed_flag? 1 : 0;
+	  ক্ষেত্র vpiSigned:
+	    ফেরত signed_flag? 1 : 0;
 
-	  case vpiSize:
-	    return bits.size();
+	  ক্ষেত্র vpi_আকার:
+	    ফেরত bits.size();
 
-          case vpiAutomatic:
-	    return 0;
+          ক্ষেত্র vpiAutomatic:
+	    ফেরত 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-          case _vpiFromThr:
-	      return _vpiNoThr;
+#যদি defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+          ক্ষেত্র _vpiFromThr:
+	      ফেরত _vpiNoThr;
 #endif
 
-	  default:
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by vpiBinaryConst\n", code);
-	    assert(0);
-	    return 0;
+	    প্রতিজ্ঞা(0);
+	    ফেরত 0;
       }
 }
 
 
-void __vpiBinaryConst::vpi_get_value(p_vpi_value val)
+শূন্য __vpiBinaryConst::vpi_get_মান(p_vpi_মান val)
 {
-      switch (val->format) {
+      নির্বাচন (val->format) {
 
-	  case vpiObjTypeVal:
-	  case vpiBinStrVal:
-	  case vpiDecStrVal:
-	  case vpiOctStrVal:
-	  case vpiHexStrVal:
-          case vpiScalarVal:
-	  case vpiIntVal:
-	  case vpiVectorVal:
-	  case vpiStringVal:
-	  case vpiRealVal:
-	    vpip_vec4_get_value(bits, bits.size(), signed_flag, val);
-	    break;
+	  ক্ষেত্র vpiObjTypeVal:
+	  ক্ষেত্র vpiBinStrVal:
+	  ক্ষেত্র vpiDecStrVal:
+	  ক্ষেত্র vpiOctStrVal:
+	  ক্ষেত্র vpiHexStrVal:
+          ক্ষেত্র vpiScalarVal:
+	  ক্ষেত্র vpiIntVal:
+	  ক্ষেত্র vpiVectorVal:
+	  ক্ষেত্র vpiStringVal:
+	  ক্ষেত্র vpiRealVal:
+	    vpip_vec4_get_মান(bits, bits.size(), signed_flag, val);
+	    বিরতি;
 
-	  default:
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "vvp error: format %d not supported "
-		    "by vpiBinaryConst\n", (int)val->format);
+		    "by vpiBinaryConst\n", (পূর্ণসংখ্যা)val->format);
 	    val->format = vpiSuppressVal;
-	    break;
+	    বিরতি;
       }
 }
 
@@ -427,68 +427,68 @@ void __vpiBinaryConst::vpi_get_value(p_vpi_value val)
  * ASCII string, with each letter a 4-value bit. The first character
  * may be an 's' if the vector is signed.
  */
-vpiHandle vpip_make_binary_const(unsigned wid, const char*bits)
+vpiHandle vpip_make_দ্বিমিক_const(unsigned wid, ধ্রুবক অক্ষর*bits)
 {
-      struct __vpiBinaryConst*obj = new __vpiBinaryConst;
+      কাঠামো __vpiBinaryConst*obj = নতুন __vpiBinaryConst;
 
-      const char*bp = bits;
-      if (*bp == 's') {
+      ধ্রুবক অক্ষর*bp = bits;
+      যদি (*bp == 's') {
 	    bp += 1;
 	    obj->signed_flag = 1;
       }
 
       obj->bits = vector4_from_text(bp, wid);
 
-      return obj;
+      ফেরত obj;
 }
 
-vvp_vector4_t vector4_from_text(const char*bits, unsigned wid)
+vvp_vector4_t vector4_from_text(ধ্রুবক অক্ষর*bits, unsigned wid)
 {
       vvp_vector4_t res (wid);
 
-      for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+      জন্য (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 	    vvp_bit4_t val = BIT4_0;
-	    switch (bits[wid-idx-1]) {
-		case '0':
+	    নির্বাচন (bits[wid-idx-1]) {
+		ক্ষেত্র '0':
 		  val = BIT4_0;
-		  break;
-		case '1':
+		  বিরতি;
+		ক্ষেত্র '1':
 		  val = BIT4_1;
-		  break;
-		case 'x':
+		  বিরতি;
+		ক্ষেত্র 'x':
 		  val = BIT4_X;
-		  break;
-		case 'z':
+		  বিরতি;
+		ক্ষেত্র 'z':
 		  val = BIT4_Z;
-		  break;
+		  বিরতি;
 	    }
 
 	    res.set_bit(idx, val);
       }
 
-      return res;
+      ফেরত res;
 }
 
-struct __vpiBinaryParam  : public __vpiBinaryConst {
-      __vpiBinaryParam(__vpiScope*scope, const vvp_vector4_t&b, bool is_signed,
-                       const char*name, bool local_flag, long file_idx, long lineno);
+কাঠামো __vpiBinaryParam  : সর্বজনীন __vpiBinaryConst {
+      __vpiBinaryParam(__vpiScope*scope, ধ্রুবক vvp_vector4_t&b, যৌক্তিক is_signed,
+                       ধ্রুবক অক্ষর*name, যৌক্তিক local_flag, long file_idx, long lineno);
       ~__vpiBinaryParam() override;
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      পূর্ণসংখ্যা get_type_code(শূন্য) ধ্রুবক override;
+      পূর্ণসংখ্যা vpi_get(পূর্ণসংখ্যা code) override;
+      অক্ষর*vpi_get_str(পূর্ণসংখ্যা code) override;
+      vpiHandle vpi_handle(পূর্ণসংখ্যা code) override;
 
-    private:
+    ব্যক্তিগত:
       __vpiScope*scope_;
-      const char*basename_;
-      bool     local_flag_;
+      ধ্রুবক অক্ষর*basename_;
+      যৌক্তিক     local_flag_;
       unsigned file_idx_;
       unsigned lineno_;
 };
 
-inline __vpiBinaryParam::__vpiBinaryParam(__vpiScope*scope, const vvp_vector4_t&b,
-                                          bool is_signed, const char*nam,
-                                          bool local_flag, long file_idx, long lineno)
+অন্তঃরেখ __vpiBinaryParam::__vpiBinaryParam(__vpiScope*scope, ধ্রুবক vvp_vector4_t&b,
+                                          যৌক্তিক is_signed, ধ্রুবক অক্ষর*nam,
+                                          যৌক্তিক local_flag, long file_idx, long lineno)
 {
       scope_ = scope;
       bits = b;
@@ -496,9 +496,9 @@ inline __vpiBinaryParam::__vpiBinaryParam(__vpiScope*scope, const vvp_vector4_t&
       sized_flag = 0;
       basename_ = nam;
       local_flag_ = local_flag;
-      assert(file_idx >= 0 && file_idx <= INT_MAX);
+      প্রতিজ্ঞা(file_idx >= 0 && file_idx <= INT_MAX);
       file_idx_ = (unsigned) file_idx;
-      assert(lineno >= 0 && lineno <= INT_MAX);
+      প্রতিজ্ঞা(lineno >= 0 && lineno <= INT_MAX);
       lineno_ = (unsigned) lineno;
 }
 
@@ -507,229 +507,229 @@ __vpiBinaryParam::~__vpiBinaryParam()
       delete[]basename_;
 }
 
-int __vpiBinaryParam::get_type_code(void) const
-{ return vpiParameter; }
+পূর্ণসংখ্যা __vpiBinaryParam::get_type_code(শূন্য) ধ্রুবক
+{ ফেরত vpiParameter; }
 
-int __vpiBinaryParam::vpi_get(int code)
+পূর্ণসংখ্যা __vpiBinaryParam::vpi_get(পূর্ণসংখ্যা code)
 {
-    switch (code) {
-      case vpiLineNo :
-        return lineno_;
+    নির্বাচন (code) {
+      ক্ষেত্র vpi_সারি_No :
+        ফেরত lineno_;
 
-      case vpiLocalParam :
-        return local_flag_;
+      ক্ষেত্র vpiLocalParam :
+        ফেরত local_flag_;
 
-      default :
-        return __vpiBinaryConst::vpi_get(code);
+      পূর্বনির্ধারিত :
+        ফেরত __vpiBinaryConst::vpi_get(code);
     }
 }
 
-char*__vpiBinaryParam::vpi_get_str(int code)
+অক্ষর*__vpiBinaryParam::vpi_get_str(পূর্ণসংখ্যা code)
 {
-      if (code == vpiFile)
-	    return simple_set_rbuf_str(file_names[file_idx_]);
+      যদি (code == vpiFile)
+	    ফেরত simple_set_rbuf_str(file_names[file_idx_]);
 
-      return generic_get_str(code, scope_, basename_, NULL);
+      ফেরত generic_get_str(code, scope_, basename_, ফাঁকা);
 }
 
 
-vpiHandle __vpiBinaryParam::vpi_handle(int code)
+vpiHandle __vpiBinaryParam::vpi_handle(পূর্ণসংখ্যা code)
 {
-      switch (code) {
-	  case vpiScope:
-	    return scope_;
+      নির্বাচন (code) {
+	  ক্ষেত্র vpiScope:
+	    ফেরত scope_;
 
-	  case vpiModule:
-	    return vpip_module(scope_);
+	  ক্ষেত্র vpiModule:
+	    ফেরত vpip_module(scope_);
 
-	  default:
-	    return 0;
+	  পূর্বনির্ধারিত:
+	    ফেরত 0;
       }
 }
 
 
-vpiHandle vpip_make_binary_param(const char*name, const vvp_vector4_t&bits,
-				 bool signed_flag, bool local_flag,
+vpiHandle vpip_make_দ্বিমিক_param(ধ্রুবক অক্ষর*name, ধ্রুবক vvp_vector4_t&bits,
+				 যৌক্তিক signed_flag, যৌক্তিক local_flag,
 				 long file_idx, long lineno)
 {
-      struct __vpiBinaryParam*obj = new __vpiBinaryParam(vpip_peek_current_scope(),
+      কাঠামো __vpiBinaryParam*obj = নতুন __vpiBinaryParam(vpip_peek_current_scope(),
                                                          bits, signed_flag, name,
                                                          local_flag, file_idx, lineno);
 
-      return obj;
+      ফেরত obj;
 }
 
 
 
-__vpiDecConst::__vpiDecConst(int val)
+__vpiDecConst::__vpiDecConst(পূর্ণসংখ্যা val)
 {
       value = val;
 }
 
-__vpiDecConst::__vpiDecConst(const __vpiDecConst&that)
+__vpiDecConst::__vpiDecConst(ধ্রুবক __vpiDecConst&that)
 : __vpiHandle(), value(that.value)
 {
 }
 
 
-int __vpiDecConst::get_type_code(void) const
-{ return vpiConstant; }
+পূর্ণসংখ্যা __vpiDecConst::get_type_code(শূন্য) ধ্রুবক
+{ ফেরত vpiConstant; }
 
-int __vpiDecConst::vpi_get(int code)
+পূর্ণসংখ্যা __vpiDecConst::vpi_get(পূর্ণসংখ্যা code)
 {
-      switch (code) {
-	  case vpiConstType:
-	    return vpiDecConst;
+      নির্বাচন (code) {
+	  ক্ষেত্র vpiConstType:
+	    ফেরত vpiDecConst;
 
-	  case vpiSigned:
-	    return 1;
+	  ক্ষেত্র vpiSigned:
+	    ফেরত 1;
 
-	  case vpiSize:
-	    return 32;
+	  ক্ষেত্র vpi_আকার:
+	    ফেরত 32;
 
-          case vpiAutomatic:
-	    return 0;
+          ক্ষেত্র vpiAutomatic:
+	    ফেরত 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-          case _vpiFromThr:
-	      return _vpiNoThr;
+#যদি defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+          ক্ষেত্র _vpiFromThr:
+	      ফেরত _vpiNoThr;
 #endif
 
-	  default:
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by vpiDecConst\n", code);
-	    assert(0);
-	    return 0;
+	    প্রতিজ্ঞা(0);
+	    ফেরত 0;
       }
 }
 
 
-void __vpiDecConst::vpi_get_value(p_vpi_value vp)
+শূন্য __vpiDecConst::vpi_get_মান(p_vpi_মান vp)
 {
-      static const size_t RBUF_USE_SIZE = 64 + 1;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
-      char*cp = rbuf;
+      স্থির ধ্রুবক size_t RBUF_USE_আকার = 64 + 1;
+      অক্ষর*rbuf = static_cast<অক্ষর *>(need_ফলাফল_buf(RBUF_USE_আকার, RBUF_VAL));
+      অক্ষর*cp = rbuf;
 
-      switch (vp->format) {
+      নির্বাচন (vp->format) {
 
-	  case vpiObjTypeVal:
-	  case vpiIntVal: {
+	  ক্ষেত্র vpiObjTypeVal:
+	  ক্ষেত্র vpiIntVal: {
 		vp->value.integer = value;
-		break;
+		বিরতি;
 	  }
 
-          case vpiDecStrVal:
-	      snprintf(rbuf, RBUF_USE_SIZE, "%d", value);
+          ক্ষেত্র vpiDecStrVal:
+	      snprintf(rbuf, RBUF_USE_আকার, "%d", value);
 	      vp->value.str = rbuf;
-	      break;
+	      বিরতি;
 
-          case vpiBinStrVal:
-	      for(int bit=31; bit>=0;bit--){
+          ক্ষেত্র vpiBinStrVal:
+	      জন্য(পূর্ণসংখ্যা bit=31; bit>=0;bit--){
 		  *cp++ = "01"[ (static_cast<unsigned>(value)>>bit)&1 ];
 	      }
 	      *cp = 0;
 
 	      vp->value.str = rbuf;
-	      break;
+	      বিরতি;
 
-          case vpiHexStrVal:
-	      snprintf(rbuf, RBUF_USE_SIZE, "%08x", value);
+          ক্ষেত্র vpiHexStrVal:
+	      snprintf(rbuf, RBUF_USE_আকার, "%08x", value);
 	      vp->value.str = rbuf;
-	      break;
+	      বিরতি;
 
-          case vpiOctStrVal:
-	      snprintf(rbuf, RBUF_USE_SIZE, "%011x", value);
+          ক্ষেত্র vpiOctStrVal:
+	      snprintf(rbuf, RBUF_USE_আকার, "%011x", value);
 	      vp->value.str = rbuf;
-	      break;
+	      বিরতি;
 
-	  default:
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "vvp error (vpi_const.cc): format %d not supported "
-		    "by vpiDecConst\n", (int)vp->format);
+		    "by vpiDecConst\n", (পূর্ণসংখ্যা)vp->format);
 	    vp->format = vpiSuppressVal;
-	    break;
+	    বিরতি;
       }
 }
 
 
-inline __vpiRealConst::__vpiRealConst(double val)
+অন্তঃরেখ __vpiRealConst::__vpiRealConst(দ্বিগুণ val)
 : value(val)
 { }
 
-int __vpiRealConst::get_type_code(void) const
-{ return vpiConstant; }
+পূর্ণসংখ্যা __vpiRealConst::get_type_code(শূন্য) ধ্রুবক
+{ ফেরত vpiConstant; }
 
-int __vpiRealConst::vpi_get(int code)
+পূর্ণসংখ্যা __vpiRealConst::vpi_get(পূর্ণসংখ্যা code)
 {
-      switch (code) {
-	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      নির্বাচন (code) {
+	  ক্ষেত্র vpi_সারি_No:
+	    ফেরত 0;  // Not implemented for now!
 
-	  case vpiSize:
-	    return 1;
+	  ক্ষেত্র vpi_আকার:
+	    ফেরত 1;
 
-	  case vpiConstType:
-	    return vpiRealConst;
+	  ক্ষেত্র vpiConstType:
+	    ফেরত vpiRealConst;
 
-	  case vpiSigned:
-	    return 1;
+	  ক্ষেত্র vpiSigned:
+	    ফেরত 1;
 
-          case vpiAutomatic:
-	    return 0;
+          ক্ষেত্র vpiAutomatic:
+	    ফেরত 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-          case _vpiFromThr:
-	      return _vpiNoThr;
+#যদি defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+          ক্ষেত্র _vpiFromThr:
+	      ফেরত _vpiNoThr;
 #endif
 
-	  default:
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by vpiRealConst\n", code);
-	    assert(0);
-	    return 0;
+	    প্রতিজ্ঞা(0);
+	    ফেরত 0;
       }
 }
 
 
-void __vpiRealConst::vpi_get_value(p_vpi_value val)
+শূন্য __vpiRealConst::vpi_get_মান(p_vpi_মান val)
 {
-      vpip_real_get_value(value, val);
+      vpip_real_get_মান(value, val);
 }
 
 
-vpiHandle vpip_make_real_const(double value)
+vpiHandle vpip_make_real_const(দ্বিগুণ value)
 {
-      __vpiRealConst*obj = new __vpiRealConst(value);
-      return obj;
+      __vpiRealConst*obj = নতুন __vpiRealConst(value);
+      ফেরত obj;
 }
 
-struct __vpiRealParam  : public __vpiRealConst {
-      __vpiRealParam(__vpiScope* scope, double val, const char*name,
-                     bool local_flag, long file_idx, long lineno);
+কাঠামো __vpiRealParam  : সর্বজনীন __vpiRealConst {
+      __vpiRealParam(__vpiScope* scope, দ্বিগুণ val, ধ্রুবক অক্ষর*name,
+                     যৌক্তিক local_flag, long file_idx, long lineno);
       ~__vpiRealParam() override;
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      পূর্ণসংখ্যা get_type_code(শূন্য) ধ্রুবক override;
+      পূর্ণসংখ্যা vpi_get(পূর্ণসংখ্যা code) override;
+      অক্ষর*vpi_get_str(পূর্ণসংখ্যা code) override;
+      vpiHandle vpi_handle(পূর্ণসংখ্যা code) override;
 
-    private:
+    ব্যক্তিগত:
       __vpiScope* scope_;
-      const char*basename_;
-      bool local_flag_;
+      ধ্রুবক অক্ষর*basename_;
+      যৌক্তিক local_flag_;
       unsigned file_idx_;
       unsigned lineno_;
 };
 
 
-inline __vpiRealParam::__vpiRealParam(__vpiScope* scope, double val, const char*name,
-                                      bool local_flag, long file_idx, long lineno)
+অন্তঃরেখ __vpiRealParam::__vpiRealParam(__vpiScope* scope, দ্বিগুণ val, ধ্রুবক অক্ষর*name,
+                                      যৌক্তিক local_flag, long file_idx, long lineno)
 : __vpiRealConst(val)
 {
       scope_ = scope;
       basename_ = name;
       local_flag_ = local_flag;
-      assert(file_idx >= 0 && file_idx <= INT_MAX);
+      প্রতিজ্ঞা(file_idx >= 0 && file_idx <= INT_MAX);
       file_idx_ = (unsigned) file_idx;
-      assert(lineno >= 0 && lineno <= INT_MAX);
+      প্রতিজ্ঞা(lineno >= 0 && lineno <= INT_MAX);
       lineno_ = (unsigned) lineno;
 }
 
@@ -739,192 +739,192 @@ __vpiRealParam::~__vpiRealParam()
 }
 
 
-int __vpiRealParam::get_type_code(void) const
-{ return vpiParameter; }
+পূর্ণসংখ্যা __vpiRealParam::get_type_code(শূন্য) ধ্রুবক
+{ ফেরত vpiParameter; }
 
-int __vpiRealParam::vpi_get(int code)
+পূর্ণসংখ্যা __vpiRealParam::vpi_get(পূর্ণসংখ্যা code)
 {
-    switch (code) {
-      case vpiLineNo :
-        return lineno_;
+    নির্বাচন (code) {
+      ক্ষেত্র vpi_সারি_No :
+        ফেরত lineno_;
 
-      case vpiLocalParam :
-        return local_flag_;
+      ক্ষেত্র vpiLocalParam :
+        ফেরত local_flag_;
 
-      default :
-           return __vpiRealConst::vpi_get(code);
+      পূর্বনির্ধারিত :
+           ফেরত __vpiRealConst::vpi_get(code);
     }
 }
 
-char* __vpiRealParam::vpi_get_str(int code)
+অক্ষর* __vpiRealParam::vpi_get_str(পূর্ণসংখ্যা code)
 {
-      if (code == vpiFile)
-            return simple_set_rbuf_str(file_names[file_idx_]);
+      যদি (code == vpiFile)
+            ফেরত simple_set_rbuf_str(file_names[file_idx_]);
 
-      return generic_get_str(code, scope_, basename_, NULL);
+      ফেরত generic_get_str(code, scope_, basename_, ফাঁকা);
 }
 
-vpiHandle __vpiRealParam::vpi_handle(int code)
+vpiHandle __vpiRealParam::vpi_handle(পূর্ণসংখ্যা code)
 {
-      switch (code) {
-          case vpiScope:
-            return scope_;
+      নির্বাচন (code) {
+          ক্ষেত্র vpiScope:
+            ফেরত scope_;
 
-	  case vpiModule:
-	    return vpip_module(scope_);
+	  ক্ষেত্র vpiModule:
+	    ফেরত vpip_module(scope_);
 
-          default:
-            return 0;
+          পূর্বনির্ধারিত:
+            ফেরত 0;
       }
 }
 
 
-vpiHandle vpip_make_real_param(const char*name, double value,
-                               bool local_flag, long file_idx, long lineno)
+vpiHandle vpip_make_real_param(ধ্রুবক অক্ষর*name, দ্বিগুণ value,
+                               যৌক্তিক local_flag, long file_idx, long lineno)
 {
-      struct __vpiRealParam*obj = new __vpiRealParam(vpip_peek_current_scope(),
+      কাঠামো __vpiRealParam*obj = নতুন __vpiRealParam(vpip_peek_current_scope(),
                                                      value, name, local_flag,
                                                      file_idx, lineno);
-      return obj;
+      ফেরত obj;
 }
 
 /*
  * Make a VPI null constant
  */
-inline __vpiNullConst::__vpiNullConst()
+অন্তঃরেখ __vpiNullConst::__vpiNullConst()
 { }
 
-int __vpiNullConst::get_type_code(void) const
-{ return vpiConstant; }
+পূর্ণসংখ্যা __vpiNullConst::get_type_code(শূন্য) ধ্রুবক
+{ ফেরত vpiConstant; }
 
-int __vpiNullConst::vpi_get(int code)
+পূর্ণসংখ্যা __vpiNullConst::vpi_get(পূর্ণসংখ্যা code)
 {
-      switch (code) {
-	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      নির্বাচন (code) {
+	  ক্ষেত্র vpi_সারি_No:
+	    ফেরত 0;  // Not implemented for now!
 
-	  case vpiSize:
-	    return 32;
+	  ক্ষেত্র vpi_আকার:
+	    ফেরত 32;
 
-	  case vpiConstType:
-	    return vpiNullConst;
+	  ক্ষেত্র vpiConstType:
+	    ফেরত vpiNullConst;
 
-	  case vpiSigned:
-	    return 0;
+	  ক্ষেত্র vpiSigned:
+	    ফেরত 0;
 
-          case vpiAutomatic:
-	    return 0;
+          ক্ষেত্র vpiAutomatic:
+	    ফেরত 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-          case _vpiFromThr:
-	      return _vpiNoThr;
+#যদি defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+          ক্ষেত্র _vpiFromThr:
+	      ফেরত _vpiNoThr;
 #endif
 
-	  default:
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "vvp error: get %d not supported "
 		    "by vpiNullConst\n", code);
-	    assert(0);
-	    return 0;
+	    প্রতিজ্ঞা(0);
+	    ফেরত 0;
       }
 }
 
-void __vpiNullConst::vpi_get_value(p_vpi_value val)
+শূন্য __vpiNullConst::vpi_get_মান(p_vpi_মান val)
 {
-      static const size_t RBUF_USE_SIZE = 64 + 1;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      স্থির ধ্রুবক size_t RBUF_USE_আকার = 64 + 1;
+      অক্ষর*rbuf = static_cast<অক্ষর *>(need_ফলাফল_buf(RBUF_USE_আকার, RBUF_VAL));
 
-      switch (val->format) {
+      নির্বাচন (val->format) {
 
-	  case vpiObjTypeVal:
+	  ক্ষেত্র vpiObjTypeVal:
 	    val->format = vpiStringVal;
 	    // fall through
-	  case vpiBinStrVal:
-	  case vpiDecStrVal:
-	  case vpiOctStrVal:
-	  case vpiHexStrVal:
-	  case vpiStringVal:
-	    snprintf(rbuf, RBUF_USE_SIZE, "null");
+	  ক্ষেত্র vpiBinStrVal:
+	  ক্ষেত্র vpiDecStrVal:
+	  ক্ষেত্র vpiOctStrVal:
+	  ক্ষেত্র vpiHexStrVal:
+	  ক্ষেত্র vpiStringVal:
+	    snprintf(rbuf, RBUF_USE_আকার, "null");
 	    val->value.str = rbuf;
-	    break;
+	    বিরতি;
 
-          case vpiScalarVal:
+          ক্ষেত্র vpiScalarVal:
 	    val->value.scalar = vpi0;
-	    break;
+	    বিরতি;
 
-	  case vpiIntVal:
+	  ক্ষেত্র vpiIntVal:
 	    val->value.integer = 0;
-	    break;
+	    বিরতি;
 
-	  case vpiVectorVal:
+	  ক্ষেত্র vpiVectorVal:
 	    val->value.vector = static_cast<p_vpi_vecval>
-	                        (need_result_buf(2*sizeof(s_vpi_vecval),
+	                        (need_ফলাফল_buf(2*আকার(s_vpi_vecval),
 	                                         RBUF_VAL));
-	    for (unsigned idx = 0; idx < 2; idx += 1) {
+	    জন্য (unsigned idx = 0; idx < 2; idx += 1) {
 		  val->value.vector[idx].aval = 0;
 		  val->value.vector[idx].bval = 0;
 	    }
-	    break;
+	    বিরতি;
 
-	  case vpiRealVal:
+	  ক্ষেত্র vpiRealVal:
 	    val->value.real = 0.0;
-	    break;
+	    বিরতি;
 
-	  default:
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "vvp error: format %d not supported "
-		    "by vpiNullConst\n", (int)val->format);
+		    "by vpiNullConst\n", (পূর্ণসংখ্যা)val->format);
 	    val->format = vpiSuppressVal;
-	    break;
+	    বিরতি;
       }
 }
 
 vpiHandle vpip_make_null_const()
 {
-      __vpiNullConst*obj = new __vpiNullConst;
-      return obj;
+      __vpiNullConst*obj = নতুন __vpiNullConst;
+      ফেরত obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void constant_delete(vpiHandle item)
+শূন্য constant_delete(vpiHandle item)
 {
-      assert(item->get_type_code() == vpiConstant);
-      switch(vpi_get(vpiConstType, item)) {
-	  case vpiStringConst:
+      প্রতিজ্ঞা(item->get_type_code() == vpiConstant);
+      নির্বাচন(vpi_get(vpiConstType, item)) {
+	  ক্ষেত্র vpiStringConst:
 	    delete dynamic_cast<__vpiStringConst*>(item);
-	    break;
-	  case vpiDecConst:
+	    বিরতি;
+	  ক্ষেত্র vpiDecConst:
 	    delete dynamic_cast<__vpiDecConst*>(item);
-	    break;
-	  case vpiBinaryConst:
+	    বিরতি;
+	  ক্ষেত্র vpi_দ্বিমিক_Const:
 	    delete dynamic_cast<__vpiBinaryConst*>(item);
-	    break;
-	  case vpiRealConst:
+	    বিরতি;
+	  ক্ষেত্র vpiRealConst:
 	    delete dynamic_cast<__vpiRealConst*>(item);
-	    break;
-	  case vpiNullConst:
+	    বিরতি;
+	  ক্ষেত্র vpiNullConst:
 	    delete dynamic_cast<__vpiNullConst*>(item);
-	    break;
-	  default:
-	    assert(0);
+	    বিরতি;
+	  পূর্বনির্ধারিত:
+	    প্রতিজ্ঞা(0);
       }
 }
 
-void parameter_delete(vpiHandle item)
+শূন্য parameter_delete(vpiHandle item)
 {
-      switch(vpi_get(vpiConstType, item)) {
-	  case vpiStringConst: {
-	    class __vpiStringParam*rfp = dynamic_cast<__vpiStringParam*>(item);
+      নির্বাচন(vpi_get(vpiConstType, item)) {
+	  ক্ষেত্র vpiStringConst: {
+	    শ্রেণী __vpiStringParam*rfp = dynamic_cast<__vpiStringParam*>(item);
 	    delete rfp;
-	    break; }
-	  case vpiBinaryConst: {
-	    struct __vpiBinaryParam*rfp = dynamic_cast<__vpiBinaryParam*>(item);
+	    বিরতি; }
+	  ক্ষেত্র vpi_দ্বিমিক_Const: {
+	    কাঠামো __vpiBinaryParam*rfp = dynamic_cast<__vpiBinaryParam*>(item);
 	    delete rfp;
-	    break; }
-	  case vpiRealConst: {
-	    struct __vpiRealParam*rfp = dynamic_cast<__vpiRealParam*>(item);
+	    বিরতি; }
+	  ক্ষেত্র vpiRealConst: {
+	    কাঠামো __vpiRealParam*rfp = dynamic_cast<__vpiRealParam*>(item);
 	    delete rfp;
-	    break; }
-	  default:
-	    assert(0);
+	    বিরতি; }
+	  পূর্বনির্ধারিত:
+	    প্রতিজ্ঞা(0);
       }
 }
 #endif

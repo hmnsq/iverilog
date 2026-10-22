@@ -22,9 +22,9 @@
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+using নামাকাশ std;
 
-vvp_cobject::vvp_cobject(const class_type*defn)
+vvp_cobject::vvp_cobject(ধ্রুবক class_type*defn)
 : defn_(defn), properties_(defn->instance_new())
 {
 }
@@ -35,54 +35,54 @@ vvp_cobject::~vvp_cobject()
       properties_ = 0;
 }
 
-void vvp_cobject::set_vec4(size_t pid, const vvp_vector4_t&val)
+শূন্য vvp_cobject::set_vec4(size_t pid, ধ্রুবক vvp_vector4_t&val)
 {
       defn_->set_vec4(properties_, pid, val);
 }
 
-void vvp_cobject::get_vec4(size_t pid, vvp_vector4_t&val)
+শূন্য vvp_cobject::get_vec4(size_t pid, vvp_vector4_t&val)
 {
       defn_->get_vec4(properties_, pid, val);
 }
 
-void vvp_cobject::set_real(size_t pid, double val)
+শূন্য vvp_cobject::set_real(size_t pid, দ্বিগুণ val)
 {
       defn_->set_real(properties_, pid, val);
 }
 
-double vvp_cobject::get_real(size_t pid)
+দ্বিগুণ vvp_cobject::get_real(size_t pid)
 {
-      return defn_->get_real(properties_, pid);
+      ফেরত defn_->get_real(properties_, pid);
 }
 
-void vvp_cobject::set_string(size_t pid, const string&val)
+শূন্য vvp_cobject::set_string(size_t pid, ধ্রুবক string&val)
 {
       defn_->set_string(properties_, pid, val);
 }
 
 string vvp_cobject::get_string(size_t pid)
 {
-      return defn_->get_string(properties_, pid);
+      ফেরত defn_->get_string(properties_, pid);
 }
 
-void vvp_cobject::set_object(size_t pid, const vvp_object_t&val, size_t idx)
+শূন্য vvp_cobject::set_object(size_t pid, ধ্রুবক vvp_object_t&val, size_t idx)
 {
       defn_->set_object(properties_, pid, val, idx);
 }
 
-void vvp_cobject::get_object(size_t pid, vvp_object_t&val, size_t idx)
+শূন্য vvp_cobject::get_object(size_t pid, vvp_object_t&val, size_t idx)
 {
-      return defn_->get_object(properties_, pid, val, idx);
+      ফেরত defn_->get_object(properties_, pid, val, idx);
 }
 
-void vvp_cobject::shallow_copy(const vvp_object*obj)
+শূন্য vvp_cobject::shallow_copy(ধ্রুবক vvp_object*obj)
 {
-      const vvp_cobject*that = dynamic_cast<const vvp_cobject*>(obj);
-      assert(that);
+      ধ্রুবক vvp_cobject*that = dynamic_cast<ধ্রুবক vvp_cobject*>(obj);
+      প্রতিজ্ঞা(that);
 
-      assert(defn_ == that->defn_);
+      প্রতিজ্ঞা(defn_ == that->defn_);
 
-      for (size_t idx = 0 ; idx < defn_->property_count() ; idx += 1)
+      জন্য (size_t idx = 0 ; idx < defn_->property_গুনতি() ; idx += 1)
 	    defn_->copy_property(properties_, idx, that->properties_);
 
 }

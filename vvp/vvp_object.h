@@ -29,70 +29,70 @@
  * smart pointer. This makes garbage collection automatic.
  */
 class vvp_object {
-    public:
-      inline vvp_object() { ref_cnt_ = 0; total_active_cnt_ += 1; }
-      virtual ~vvp_object() =0;
+    সর্বজনীন:
+      অন্তঃরেখ vvp_object() { ref_cnt_ = 0; যোগ_active_cnt += 1; }
+      আভাসী ~vvp_object() =0;
 
-      virtual void shallow_copy(const vvp_object*that);
-      virtual vvp_object* duplicate(void) const;
+      আভাসী শূন্য shallow_copy(ধ্রুবক vvp_object*that);
+      আভাসী vvp_object* duplicate(শূন্য) ধ্রুবক;
 
-      static void cleanup(void);
+      স্থির শূন্য cleanup(শূন্য);
 
-    private:
+    ব্যক্তিগত:
       friend class vvp_object_t;
-      int ref_cnt_;
+      পূর্ণসংখ্যা ref_cnt_;
 
-      static int total_active_cnt_;
+      স্থির পূর্ণসংখ্যা যোগ_active_cnt;
 };
 
 class vvp_object_t {
-    public:
-      inline vvp_object_t() : ref_(0) { }
-      vvp_object_t(const vvp_object_t&that);
+    সর্বজনীন:
+      অন্তঃরেখ vvp_object_t() : ref_(0) { }
+      vvp_object_t(ধ্রুবক vvp_object_t&that);
       explicit vvp_object_t(class vvp_object*that);
       ~vvp_object_t();
 
-      vvp_object_t& operator = (const vvp_object_t&that);
+      vvp_object_t& operator = (ধ্রুবক vvp_object_t&that);
       vvp_object_t& operator = (class vvp_object*that);
 
-      void reset(vvp_object*tgt = 0);
+      শূন্য reset(vvp_object*tgt = 0);
 
-      bool test_nil() const { return ref_ == 0; }
-      inline bool operator == (const vvp_object_t&that) const
-          { return ref_ == that.ref_; }
-      inline bool operator != (const vvp_object_t&that) const
-          { return ref_ != that.ref_; }
+      bool test_nil() ধ্রুবক { ফেরত ref_ == 0; }
+      অন্তঃরেখ bool operator == (ধ্রুবক vvp_object_t&that) ধ্রুবক
+          { ফেরত ref_ == that.ref_; }
+      অন্তঃরেখ bool operator != (ধ্রুবক vvp_object_t&that) ধ্রুবক
+          { ফেরত ref_ != that.ref_; }
 
-      inline void shallow_copy(const vvp_object_t&that)
+      অন্তঃরেখ শূন্য shallow_copy(ধ্রুবক vvp_object_t&that)
           { ref_->shallow_copy(that.ref_); }
-      inline vvp_object_t duplicate(void) const
-          { return vvp_object_t(ref_->duplicate()); }
+      অন্তঃরেখ vvp_object_t duplicate(শূন্য) ধ্রুবক
+          { ফেরত vvp_object_t(ref_->duplicate()); }
 
-      template <class T> T*peek(void) const;
+      template <class T> T*peek(শূন্য) ধ্রুবক;
 
 	/* Stable ordering for array-of-handle sort (object identity). */
-      uintptr_t sort_order_key(void) const
+      uintptr_t sort_order_চাবি(শূন্য) ধ্রুবক
       {
-	    return reinterpret_cast<uintptr_t>(ref_);
+	    ফেরত reinterpret_cast<uintptr_t>(ref_);
       }
 
-    private:
+    ব্যক্তিগত:
       class vvp_object*ref_;
 };
 
-inline vvp_object_t::vvp_object_t(const vvp_object_t&that)
+অন্তঃরেখ vvp_object_t::vvp_object_t(ধ্রুবক vvp_object_t&that)
 {
       ref_ = that.ref_;
-      if (ref_) ref_->ref_cnt_ += 1;
+      যদি (ref_) ref_->ref_cnt_ += 1;
 }
 
-inline vvp_object_t::vvp_object_t(class vvp_object*tgt)
+অন্তঃরেখ vvp_object_t::vvp_object_t(class vvp_object*tgt)
 {
-      if (tgt) tgt->ref_cnt_ += 1;
+      যদি (tgt) tgt->ref_cnt_ += 1;
       ref_ = tgt;
 }
 
-inline vvp_object_t::~vvp_object_t()
+অন্তঃরেখ vvp_object_t::~vvp_object_t()
 {
       reset(0);
 }
@@ -101,28 +101,28 @@ inline vvp_object_t::~vvp_object_t()
  * This is the workhorse of the vvp_object_t class. It manages the
  * pointer to the referenced object.
  */
-inline void vvp_object_t::reset(class vvp_object*tgt)
+অন্তঃরেখ শূন্য vvp_object_t::reset(class vvp_object*tgt)
 {
-      if (tgt) tgt->ref_cnt_ += 1;
-      if (ref_) {
+      যদি (tgt) tgt->ref_cnt_ += 1;
+      যদি (ref_) {
 	    ref_->ref_cnt_ -= 1;
-	    if (ref_->ref_cnt_ <= 0) delete ref_;
+	    যদি (ref_->ref_cnt_ <= 0) delete ref_;
 	    ref_ = 0;
       }
       ref_ = tgt;
 }
 
-inline vvp_object_t& vvp_object_t::operator = (const vvp_object_t&that)
+অন্তঃরেখ vvp_object_t& vvp_object_t::operator = (ধ্রুবক vvp_object_t&that)
 {
-      if (this == &that) return *this;
+      যদি (this == &that) ফেরত *this;
       reset(that.ref_);
-      return *this;
+      ফেরত *this;
 }
 
-inline vvp_object_t& vvp_object_t::operator = (class vvp_object*that)
+অন্তঃরেখ vvp_object_t& vvp_object_t::operator = (class vvp_object*that)
 {
       reset(that);
-      return *this;
+      ফেরত *this;
 }
 
 /*
@@ -132,9 +132,9 @@ inline vvp_object_t& vvp_object_t::operator = (class vvp_object*that)
  *
  * NOTE: The vvp_object_t object retains ownership of the pointer!
  */
-template <class T> inline T*vvp_object_t::peek(void) const
+template <class T> অন্তঃরেখ T*vvp_object_t::peek(শূন্য) ধ্রুবক
 {
-      return dynamic_cast<T*> (ref_);
+      ফেরত dynamic_cast<T*> (ref_);
 }
 
 #endif /* IVL_vvp_object_H */

@@ -34,352 +34,352 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+using নামাকাশ std;
 
-__vpiDarrayVar::__vpiDarrayVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
+__vpiDarrayVar::__vpiDarrayVar(__vpiScope*sc, ধ্রুবক অক্ষর*na, vvp_net_t*ne)
 : __vpiBaseVar(sc, na, ne)
 {
 }
 
-unsigned __vpiDarrayVar::get_size() const
+unsigned __vpiDarrayVar::get_আকার() ধ্রুবক
 {
-      const vvp_fun_signal_object*fun = dynamic_cast<vvp_fun_signal_object*> (get_net()->fun);
-      if(!fun)
-        return 0;
+      ধ্রুবক vvp_fun_signal_object*fun = dynamic_cast<vvp_fun_signal_object*> (get_net()->fun);
+      যদি(!fun)
+        ফেরত 0;
 
       vvp_object_t val = fun->get_object();
-      const vvp_darray*aval = val.peek<vvp_darray>();
+      ধ্রুবক vvp_darray*aval = val.peek<vvp_darray>();
 
-      if(!aval)
-        return 0;
+      যদি(!aval)
+        ফেরত 0;
 
-      return aval->get_size();
+      ফেরত aval->get_আকার();
 }
 
-vpiHandle __vpiDarrayVar::get_left_range()
+vpiHandle __vpiDarrayVar::get_বাম_range()
 {
-      left_range_.set_value(0);
-      return &left_range_;
+      বাম_range.set_মান(0);
+      ফেরত &বাম_range;
 }
 
-vpiHandle __vpiDarrayVar::get_right_range()
+vpiHandle __vpiDarrayVar::get_ডান_range()
 {
-      right_range_.set_value(get_size() - 1);
-      return &right_range_;
+      ডান_range.set_মান(get_আকার() - 1);
+      ফেরত &ডান_range;
 }
 
-int __vpiDarrayVar::get_word_size() const
+পূর্ণসংখ্যা __vpiDarrayVar::get_word_আকার() ধ্রুবক
 {
       vvp_vector4_t new_vec;
       vvp_darray*aobj = get_vvp_darray();
       aobj->get_word(0, new_vec);
-      return new_vec.size();
+      ফেরত new_vec.size();
 }
 
-char*__vpiDarrayVar::get_word_str(struct __vpiArrayWord*word, int code)
+অক্ষর*__vpiDarrayVar::get_word_str(কাঠামো __vpiArrayWord*word, পূর্ণসংখ্যা code)
 {
-      unsigned index = word->get_index();
+      unsigned সূচক = word->get_সূচক();
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      যদি (code == vpiFile) {  // Not implemented for now!
+	    ফেরত simple_set_rbuf_str(file_names[0]);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%d", (int)index);
-      return generic_get_str(code, scope_, name_, sidx);
+      অক্ষর sidx [64];
+      snprintf(sidx, 63, "%d", (পূর্ণসংখ্যা)সূচক);
+      ফেরত generic_get_str(code, scope_, name_, sidx);
 }
 
-void __vpiDarrayVar::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
+শূন্য __vpiDarrayVar::get_word_মান(কাঠামো __vpiArrayWord*word, p_vpi_মান vp)
 {
-      unsigned index = word->get_index();
+      unsigned সূচক = word->get_সূচক();
       vvp_darray*aobj = get_vvp_darray();
 
-      if(vp->format == vpiObjTypeVal) {
-          if(dynamic_cast<vvp_darray_real*>(aobj))
+      যদি(vp->format == vpiObjTypeVal) {
+          যদি(dynamic_cast<vvp_darray_real*>(aobj))
               vp->format = vpiRealVal;
-          else if(dynamic_cast<vvp_darray_string*>(aobj))
+          অন্যথা যদি(dynamic_cast<vvp_darray_string*>(aobj))
               vp->format = vpiStringVal;
-          else
+          অন্যথা
               vp->format = vpiVectorVal;
       }
 
-      switch(vp->format) {
-      case vpiBinStrVal:
-      case vpiOctStrVal:
-      case vpiDecStrVal:
-      case vpiHexStrVal:
-      case vpiScalarVal:
-      case vpiIntVal:
-      case vpiVectorVal:
+      নির্বাচন(vp->format) {
+      ক্ষেত্র vpiBinStrVal:
+      ক্ষেত্র vpiOctStrVal:
+      ক্ষেত্র vpiDecStrVal:
+      ক্ষেত্র vpiHexStrVal:
+      ক্ষেত্র vpiScalarVal:
+      ক্ষেত্র vpiIntVal:
+      ক্ষেত্র vpiVectorVal:
       {
           vvp_vector4_t v;
-          aobj->get_word(index, v);
-          vpip_vec4_get_value(v, v.size(), false, vp);  // TODO sign?
+          aobj->get_word(সূচক, v);
+          vpip_vec4_get_মান(v, v.size(), মিথ্যা, vp);  // TODO sign?
       }
-      break;
+      বিরতি;
 
-      case vpiRealVal:
+      ক্ষেত্র vpiRealVal:
       {
-          double d;
-          aobj->get_word(index, d);
-          vpip_real_get_value(d, vp);
+          দ্বিগুণ d;
+          aobj->get_word(সূচক, d);
+          vpip_real_get_মান(d, vp);
       }
-      break;
+      বিরতি;
 
-      case vpiStringVal:
+      ক্ষেত্র vpiStringVal:
       {
           string s;
-          aobj->get_word(index, s);
-          vpip_string_get_value(s, vp);
+          aobj->get_word(সূচক, s);
+          vpip_string_get_মান(s, vp);
       }
-      break;
+      বিরতি;
 
-      default:
+      পূর্বনির্ধারিত:
           fprintf(stderr, "vpi sorry: format is not implemented\n");
-          assert(false);
+          প্রতিজ্ঞা(মিথ্যা);
       }
 }
 
-void __vpiDarrayVar::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int)
+শূন্য __vpiDarrayVar::put_word_মান(কাঠামো __vpiArrayWord*word, p_vpi_মান vp, পূর্ণসংখ্যা)
 {
-      unsigned index = word->get_index();
+      unsigned সূচক = word->get_সূচক();
       vvp_darray*aobj = get_vvp_darray();
 
-      switch(vp->format) {
-      case vpiScalarVal:
-      case vpiIntVal:
-      case vpiVectorVal: {
-	    vvp_vector4_t vec = vec4_from_vpi_value(vp, get_word_size());
-	    aobj->set_word(index, vec);
+      নির্বাচন(vp->format) {
+      ক্ষেত্র vpiScalarVal:
+      ক্ষেত্র vpiIntVal:
+      ক্ষেত্র vpiVectorVal: {
+	    vvp_vector4_t vec = vec4_from_vpi_মান(vp, get_word_আকার());
+	    aobj->set_word(সূচক, vec);
       }
-      break;
+      বিরতি;
 
-      case vpiRealVal:
-        aobj->set_word(index, vp->value.real);
-        break;
+      ক্ষেত্র vpiRealVal:
+        aobj->set_word(সূচক, vp->value.real);
+        বিরতি;
 
-      case vpiStringVal:
-        aobj->set_word(index, std::string(vp->value.str));
-        break;
+      ক্ষেত্র vpiStringVal:
+        aobj->set_word(সূচক, std::string(vp->value.str));
+        বিরতি;
 
-      default:
+      পূর্বনির্ধারিত:
           fprintf(stderr, "vpi sorry: format is not implemented");
-          assert(false);
+          প্রতিজ্ঞা(মিথ্যা);
       }
 }
 
-vpiHandle __vpiDarrayVar::get_iter_index(struct __vpiArrayIterator*, int idx)
+vpiHandle __vpiDarrayVar::get_iter_সূচক(কাঠামো __vpiArrayIterator*, পূর্ণসংখ্যা idx)
 {
-      if (vals_words == 0) make_vals_words();
+      যদি (vals_শব্দগুলি == 0) make_vals_শব্দগুলি();
 
-      return &(vals_words[idx].as_word);
+      ফেরত &(vals_শব্দগুলি[idx].as_word);
 }
 
-int __vpiDarrayVar::vpi_get(int code)
+পূর্ণসংখ্যা __vpiDarrayVar::vpi_get(পূর্ণসংখ্যা code)
 {
-      switch (code) {
-	  case vpiArrayType:
-	    return vpiDynamicArray;
-	  case vpiLeftRange:
-	    return 0;
-	  case vpiRightRange:
-	    return get_size() - 1;
-	  case vpiSize:
-            return get_size();
+      নির্বাচন (code) {
+	  ক্ষেত্র vpiArrayType:
+	    ফেরত vpiDynamicArray;
+	  ক্ষেত্র vpi_বাম_Range:
+	    ফেরত 0;
+	  ক্ষেত্র vpi_ডান_Range:
+	    ফেরত get_আকার() - 1;
+	  ক্ষেত্র vpi_আকার:
+            ফেরত get_আকার();
 
-	  default:
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "vpi sorry: property is not implemented");
-	    assert(false);
-	    return 0;
+	    প্রতিজ্ঞা(মিথ্যা);
+	    ফেরত 0;
       }
 }
 
-char* __vpiDarrayVar::vpi_get_str(int code)
+অক্ষর* __vpiDarrayVar::vpi_get_str(পূর্ণসংখ্যা code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      যদি (code == vpiFile) {  // Not implemented for now!
+            ফেরত simple_set_rbuf_str(file_names[0]);
       }
 
-      return generic_get_str(code, scope_, name_, NULL);
+      ফেরত generic_get_str(code, scope_, name_, ফাঁকা);
 }
 
-vpiHandle __vpiDarrayVar::vpi_handle(int code)
+vpiHandle __vpiDarrayVar::vpi_handle(পূর্ণসংখ্যা code)
 {
-      switch (code) {
-          case vpiLeftRange:
-            return get_left_range();
+      নির্বাচন (code) {
+          ক্ষেত্র vpi_বাম_Range:
+            ফেরত get_বাম_range();
 
-          case vpiRightRange:
-            return get_right_range();
+          ক্ষেত্র vpi_ডান_Range:
+            ফেরত get_ডান_range();
 
-          case vpiScope:
-            return scope_;
+          ক্ষেত্র vpiScope:
+            ফেরত scope_;
 
-          case vpiModule:
-            return vpip_module(scope_);
+          ক্ষেত্র vpiModule:
+            ফেরত vpip_module(scope_);
       }
 
-      return 0;
+      ফেরত 0;
 }
 
-vpiHandle __vpiDarrayVar::vpi_index(int index)
+vpiHandle __vpiDarrayVar::vpi_সূচক(পূর্ণসংখ্যা সূচক)
 {
-      if (index >= (long) get_size())
-	    return 0;
-      if (index < 0)
-	    return 0;
+      যদি (সূচক >= (long) get_আকার())
+	    ফেরত 0;
+      যদি (সূচক < 0)
+	    ফেরত 0;
 
-      if (vals_words == 0)
-	    make_vals_words();
+      যদি (vals_শব্দগুলি == 0)
+	    make_vals_শব্দগুলি();
 
-      return &(vals_words[index].as_word);
+      ফেরত &(vals_শব্দগুলি[সূচক].as_word);
 }
 
-void __vpiDarrayVar::vpi_get_value(p_vpi_value val)
+শূন্য __vpiDarrayVar::vpi_get_মান(p_vpi_মান val)
 {
       val->format = vpiSuppressVal;
 }
 
-vvp_darray*__vpiDarrayVar::get_vvp_darray() const
+vvp_darray*__vpiDarrayVar::get_vvp_darray() ধ্রুবক
 {
       vvp_fun_signal_object*fun = dynamic_cast<vvp_fun_signal_object*> (get_net()->fun);
-      assert(fun);
+      প্রতিজ্ঞা(fun);
       vvp_object_t obj = fun->get_object();
 
-      return obj.peek<vvp_darray>();
+      ফেরত obj.peek<vvp_darray>();
 }
 
-vpiHandle vpip_make_darray_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_darray_var(ধ্রুবক অক্ষর*name, vvp_net_t*net)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      const char*use_name = name ? vpip_name_string(name) : NULL;
+      ধ্রুবক অক্ষর*use_name = name ? vpip_name_string(name) : ফাঁকা;
 
-      __vpiDarrayVar*obj = new __vpiDarrayVar(scope, use_name, net);
+      __vpiDarrayVar*obj = নতুন __vpiDarrayVar(scope, use_name, net);
 
-      return obj;
+      ফেরত obj;
 }
 
-__vpiQueueVar::__vpiQueueVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
+__vpiQueueVar::__vpiQueueVar(__vpiScope*sc, ধ্রুবক অক্ষর*na, vvp_net_t*ne)
 : __vpiDarrayVar(sc, na, ne)
 {
 }
 
-int __vpiQueueVar::vpi_get(int code)
+পূর্ণসংখ্যা __vpiQueueVar::vpi_get(পূর্ণসংখ্যা code)
 {
-      switch (code) {
-	  case vpiArrayType:
-	    return vpiQueueArray;
-	  default:
-	    return __vpiDarrayVar::vpi_get(code);
+      নির্বাচন (code) {
+	  ক্ষেত্র vpiArrayType:
+	    ফেরত vpiQueueArray;
+	  পূর্বনির্ধারিত:
+	    ফেরত __vpiDarrayVar::vpi_get(code);
       }
 }
 
-vpiHandle vpip_make_queue_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_queue_var(ধ্রুবক অক্ষর*name, vvp_net_t*net)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      const char*use_name = name ? vpip_name_string(name) : NULL;
+      ধ্রুবক অক্ষর*use_name = name ? vpip_name_string(name) : ফাঁকা;
 
-      __vpiQueueVar*obj = new __vpiQueueVar(scope, use_name, net);
+      __vpiQueueVar*obj = নতুন __vpiQueueVar(scope, use_name, net);
 
-      return obj;
+      ফেরত obj;
 }
 
 __vpiPropQueueRef::__vpiPropQueueRef(__vpiScope*scope, unsigned pidx,
-				     bool is_queue)
+				     যৌক্তিক is_queue)
 : class_net_(0), prop_idx_(pidx), is_queue_(is_queue), scope_(scope)
 {
 }
 
-int __vpiPropQueueRef::get_type_code(void) const
-{ return vpiArrayVar; }
+পূর্ণসংখ্যা __vpiPropQueueRef::get_type_code(শূন্য) ধ্রুবক
+{ ফেরত vpiArrayVar; }
 
-static vvp_darray* get_live_darray_from_prop(vvp_net_t* class_net, unsigned pid)
+স্থির vvp_darray* get_live_darray_from_prop(vvp_net_t* class_net, unsigned pid)
 {
-      if (!class_net) return 0;
-      const vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(class_net->fun);
-      if (!fun) return 0;
+      যদি (!class_net) ফেরত 0;
+      ধ্রুবক vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(class_net->fun);
+      যদি (!fun) ফেরত 0;
       vvp_object_t obj = fun->get_object();
       vvp_cobject* cobj = obj.peek<vvp_cobject>();
-      if (!cobj) return 0;
+      যদি (!cobj) ফেরত 0;
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      return qobj.peek<vvp_darray>();
+      ফেরত qobj.peek<vvp_darray>();
 }
 
-int __vpiPropQueueRef::vpi_get(int code)
+পূর্ণসংখ্যা __vpiPropQueueRef::vpi_get(পূর্ণসংখ্যা code)
 {
-      const vvp_darray* aobj = get_live_darray_from_prop(class_net_, prop_idx_);
-      switch (code) {
-	  case vpiArrayType:
-	    return is_queue_ ? vpiQueueArray : vpiDynamicArray;
-	  case vpiLeftRange:
-	    return 0;
-	  case vpiRightRange:
-	    return aobj ? (int) (aobj->get_size() - 1) : 0;
-	  case vpiSize:
-	    return aobj ? (int) aobj->get_size() : 0;
-	  default:
-	    return 0;
+      ধ্রুবক vvp_darray* aobj = get_live_darray_from_prop(class_net_, prop_idx_);
+      নির্বাচন (code) {
+	  ক্ষেত্র vpiArrayType:
+	    ফেরত is_queue_ ? vpiQueueArray : vpiDynamicArray;
+	  ক্ষেত্র vpi_বাম_Range:
+	    ফেরত 0;
+	  ক্ষেত্র vpi_ডান_Range:
+	    ফেরত aobj ? (পূর্ণসংখ্যা) (aobj->get_আকার() - 1) : 0;
+	  ক্ষেত্র vpi_আকার:
+	    ফেরত aobj ? (পূর্ণসংখ্যা) aobj->get_আকার() : 0;
+	  পূর্বনির্ধারিত:
+	    ফেরত 0;
       }
 }
 
-char* __vpiPropQueueRef::vpi_get_str(int code)
+অক্ষর* __vpiPropQueueRef::vpi_get_str(পূর্ণসংখ্যা code)
 {
-      if (code == vpiFile) {
-	    return simple_set_rbuf_str(file_names[0]);
+      যদি (code == vpiFile) {
+	    ফেরত simple_set_rbuf_str(file_names[0]);
       }
-      return generic_get_str(code, scope_, "prop_darray", NULL);
+      ফেরত generic_get_str(code, scope_, "prop_darray", ফাঁকা);
 }
 
-void __vpiPropQueueRef::vpi_get_value(p_vpi_value val)
+শূন্য __vpiPropQueueRef::vpi_get_মান(p_vpi_মান val)
 {
       val->format = vpiSuppressVal;
 }
 
-vpiHandle vpip_make_prop_queue_ref(char* class_label, unsigned prop_idx,
+vpiHandle vpip_make_prop_queue_ref(অক্ষর* class_label, unsigned prop_idx,
 				   unsigned is_queue_flag)
 {
-      __vpiPropQueueRef* obj = new __vpiPropQueueRef(vpip_peek_current_scope(),
+      __vpiPropQueueRef* obj = নতুন __vpiPropQueueRef(vpip_peek_current_scope(),
 						     prop_idx,
 						     is_queue_flag != 0);
       functor_ref_lookup(&obj->class_net_, class_label);
-      return obj;
+      ফেরত obj;
 }
 
 vvp_darray* vpip_vpi_darray_from_handle(vpiHandle ref)
 {
-      if (!ref) return 0;
+      যদি (!ref) ফেরত 0;
 
-      if (__vpiPropQueueRef* pr = dynamic_cast<__vpiPropQueueRef*>(ref)) {
-	    return get_live_darray_from_prop(pr->class_net_, pr->prop_idx_);
+      যদি (__vpiPropQueueRef* pr = dynamic_cast<__vpiPropQueueRef*>(ref)) {
+	    ফেরত get_live_darray_from_prop(pr->class_net_, pr->prop_idx_);
       }
 
-      if (const __vpiDarrayVar* dv = dynamic_cast<__vpiDarrayVar*>(ref)) {
-	    const vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(dv->get_net()->fun);
-	    if (!fun) return 0;
+      যদি (ধ্রুবক __vpiDarrayVar* dv = dynamic_cast<__vpiDarrayVar*>(ref)) {
+	    ধ্রুবক vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(dv->get_net()->fun);
+	    যদি (!fun) ফেরত 0;
 	    vvp_object_t obj = fun->get_object();
-	    return obj.peek<vvp_darray>();
+	    ফেরত obj.peek<vvp_darray>();
       }
 
-      return 0;
+      ফেরত 0;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void array_delete(vpiHandle item)
+শূন্য array_delete(vpiHandle item)
 {
-      if (__vpiPropQueueRef* pq = dynamic_cast<__vpiPropQueueRef*>(item)) {
+      যদি (__vpiPropQueueRef* pq = dynamic_cast<__vpiPropQueueRef*>(item)) {
 	    delete pq;
-	    return;
+	    ফেরত;
       }
 
       __vpiDarrayVar*dobj = dynamic_cast<__vpiDarrayVar*>(item);
-      if (dobj) {
-	    if (dobj->vals_words) delete [] (dobj->vals_words-1);
+      যদি (dobj) {
+	    যদি (dobj->vals_শব্দগুলি) delete [] (dobj->vals_শব্দগুলি-1);
 	    delete dobj;
-	    return;
+	    ফেরত;
       }
 
       fprintf(stderr, "Need support for deleting array type: %d\n", item->vpi_get(vpiArrayType));
-      assert(0);
+      প্রতিজ্ঞা(0);
 }
 #endif

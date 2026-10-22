@@ -32,124 +32,124 @@
 # include  "vvp_net_sig.h"
 # include  "config.h"
 #ifdef CHECK_WITH_VALGRIND
-#include  "vvp_cleanup.h"
+#অন্তর্ভাব  "vvp_cleanup.h"
 #endif
 # include  <cstdio>
 # include  <cassert>
 # include  <cstdlib>
 
-using namespace std;
+using নামাকাশ std;
 
-static const char*cb_reason_name(PLI_INT32 reason)
+স্থির ধ্রুবক অক্ষর*cb_reason_name(PLI_INT32 reason)
 {
-      switch (reason) {
-	  case cbValueChange:
-	    return "cbValueChange";
-	  case cbStmt:
-	    return "cbStmt";
-	  case cbForce:
-	    return "cbForce";
-	  case cbRelease:
-	    return "cbRelease";
-	  case cbAtStartOfSimTime:
-	    return "cbAtStartOfSimTime";
-	  case cbReadWriteSynch:
-	    return "cbReadWriteSynch";
-	  case cbReadOnlySynch:
-	    return "cbReadOnlySynch";
-	  case cbNextSimTime:
-	    return "cbNextSimTime";
-	  case cbAfterDelay:
-	    return "cbAfterDelay";
-	  case cbEndOfCompile:
-	    return "cbEndOfCompile";
-	  case cbStartOfSimulation:
-	    return "cbStartOfSimulation";
-	  case cbEndOfSimulation:
-	    return "cbEndOfSimulation";
-	  case cbError:
-	    return "cbError";
-	  case cbTchkViolation:
-	    return "cbTchkViolation";
-	  case cbStartOfSave:
-	    return "cbStartOfSave";
-	  case cbEndOfSave:
-	    return "cbEndOfSave";
-	  case cbStartOfRestart:
-	    return "cbStartOfRestart";
-	  case cbEndOfRestart:
-	    return "cbEndOfRestart";
-	  case cbStartOfReset:
-	    return "cbStartOfReset";
-	  case cbEndOfReset:
-	    return "cbEndOfReset";
-	  case cbEnterInteractive:
-	    return "cbEnterInteractive";
-	  case cbExitInteractive:
-	    return "cbExitInteractive";
-	  case cbInteractiveScopeChange:
-	    return "cbInteractiveScopeChange";
-	  case cbUnresolvedSystf:
-	    return "cbUnresolvedSystf";
-	  case cbAtEndOfSimTime:
-	    return "cbAtEndOfSimTime";
-	  default:
-	    return "unrecognised";
+      নির্বাচন (reason) {
+	  ক্ষেত্র cb_মান_Change:
+	    ফেরত "cbValueChange";
+	  ক্ষেত্র cbStmt:
+	    ফেরত "cbStmt";
+	  ক্ষেত্র cbForce:
+	    ফেরত "cbForce";
+	  ক্ষেত্র cbRelease:
+	    ফেরত "cbRelease";
+	  ক্ষেত্র cbAtStartOfSimTime:
+	    ফেরত "cbAtStartOfSimTime";
+	  ক্ষেত্র cbReadWriteSynch:
+	    ফেরত "cbReadWriteSynch";
+	  ক্ষেত্র cbReadOnlySynch:
+	    ফেরত "cbReadOnlySynch";
+	  ক্ষেত্র cb_পরবর্তী_Sim_Time:
+	    ফেরত "cbNextSimTime";
+	  ক্ষেত্র cbAfterDelay:
+	    ফেরত "cbAfterDelay";
+	  ক্ষেত্র cbEndOfCompile:
+	    ফেরত "cbEndOfCompile";
+	  ক্ষেত্র cbStartOfSimulation:
+	    ফেরত "cbStartOfSimulation";
+	  ক্ষেত্র cbEndOfSimulation:
+	    ফেরত "cbEndOfSimulation";
+	  ক্ষেত্র cbError:
+	    ফেরত "cbError";
+	  ক্ষেত্র cbTchkViolation:
+	    ফেরত "cbTchkViolation";
+	  ক্ষেত্র cbStartOfSave:
+	    ফেরত "cbStartOfSave";
+	  ক্ষেত্র cbEndOfSave:
+	    ফেরত "cbEndOfSave";
+	  ক্ষেত্র cbStartOfRestart:
+	    ফেরত "cbStartOfRestart";
+	  ক্ষেত্র cbEndOfRestart:
+	    ফেরত "cbEndOfRestart";
+	  ক্ষেত্র cbStartOfReset:
+	    ফেরত "cbStartOfReset";
+	  ক্ষেত্র cbEndOfReset:
+	    ফেরত "cbEndOfReset";
+	  ক্ষেত্র cbEnterInteractive:
+	    ফেরত "cbEnterInteractive";
+	  ক্ষেত্র cbExitInteractive:
+	    ফেরত "cbExitInteractive";
+	  ক্ষেত্র cbInteractiveScopeChange:
+	    ফেরত "cbInteractiveScopeChange";
+	  ক্ষেত্র cbUnresolvedSystf:
+	    ফেরত "cbUnresolvedSystf";
+	  ক্ষেত্র cbAtEndOfSimTime:
+	    ফেরত "cbAtEndOfSimTime";
+	  পূর্বনির্ধারিত:
+	    ফেরত "unrecognised";
       }
 }
 
-static bool check_callback_time(p_cb_data data, bool allow_suppress)
+স্থির যৌক্তিক check_callback_time(p_cb_তথ্য তথ্য, যৌক্তিক allow_suppress)
 {
-      assert(data);
-      if (!data->time) {
-	    if (!allow_suppress) {
+      প্রতিজ্ঞা(তথ্য);
+      যদি (!তথ্য->time) {
+	    যদি (!allow_suppress) {
 		  fprintf(stderr, "VPI error: null value passed in cb_data.time "
 				  "when registering %s callback\n.",
-				  cb_reason_name(data->reason));
-		  return false;
+				  cb_reason_name(তথ্য->reason));
+		  ফেরত মিথ্যা;
 	    }
-	    return true;
+	    ফেরত সত্য;
       }
-      switch (data->time->type) {
-	  case vpiSimTime:
-	    break;
-	  case vpiScaledRealTime:
-	    break;
-	  case vpiSuppressTime:
-	    if (!allow_suppress) {
+      নির্বাচন (তথ্য->time->type) {
+	  ক্ষেত্র vpiSimTime:
+	    বিরতি;
+	  ক্ষেত্র vpiScaledRealTime:
+	    বিরতি;
+	  ক্ষেত্র vpiSuppressTime:
+	    যদি (!allow_suppress) {
 		  fprintf(stderr, "VPI error: vpiSuppressTime is not valid "
 				  "when registering %s callback\n.",
-				  cb_reason_name(data->reason));
-		  return false;
+				  cb_reason_name(তথ্য->reason));
+		  ফেরত মিথ্যা;
 	    }
-	    break;
-	  default:
+	    বিরতি;
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "VPI error: invalid type passed in cb_data time "
 			    "structure when registering %s callback\n.",
-			    cb_reason_name(data->reason));
-	    return false;
+			    cb_reason_name(তথ্য->reason));
+	    ফেরত মিথ্যা;
       }
-      return true;
+      ফেরত সত্য;
 }
 
-static void set_callback_time(p_cb_data data)
+স্থির শূন্য set_callback_time(p_cb_তথ্য তথ্য)
 {
-      assert(data && data->time);
-      data->time->low  = 0;
-      data->time->high = 0;
-      data->time->real = 0.0;
-      switch (data->time->type) {
-	  case vpiSimTime:
-	    vpip_time_to_timestruct(data->time, schedule_simtime());
-	    break;
-	  case vpiScaledRealTime:
-	    data->time->real = vpip_scaled_time_from_handle(schedule_simtime(), data->obj);
-	    break;
-	  case vpiSuppressTime:
-	    break;
-	  default:
-	    assert(0);
-	    break;
+      প্রতিজ্ঞা(তথ্য && তথ্য->time);
+      তথ্য->time->নিচের  = 0;
+      তথ্য->time->উপরের = 0;
+      তথ্য->time->real = 0.0;
+      নির্বাচন (তথ্য->time->type) {
+	  ক্ষেত্র vpiSimTime:
+	    vpip_time_to_timestruct(তথ্য->time, schedule_simtime());
+	    বিরতি;
+	  ক্ষেত্র vpiScaledRealTime:
+	    তথ্য->time->real = vpip_scaled_time_from_handle(schedule_simtime(), তথ্য->obj);
+	    বিরতি;
+	  ক্ষেত্র vpiSuppressTime:
+	    বিরতি;
+	  পূর্বনির্ধারিত:
+	    প্রতিজ্ঞা(0);
+	    বিরতি;
       }
 }
 
@@ -168,133 +168,133 @@ static void set_callback_time(p_cb_data data)
  * event. This member is only used for things like cbReadOnlySync.
  */
 
-class sync_callback;
+শ্রেণী sync_callback;
 
-struct sync_cb  : public vvp_gen_event_s {
+কাঠামো sync_cb  : সর্বজনীন vvp_gen_event_s {
       sync_callback*handle;
-      bool sync_flag;
+      যৌক্তিক sync_flag;
 
       ~sync_cb () override { }
 
-      virtual void run_run() override;
+      আভাসী শূন্য run_run() override;
 };
 
-inline __vpiCallback::__vpiCallback()
+অন্তঃরেখ __vpiCallback::__vpiCallback()
 {
-      next = 0;
+      পরবর্তী_2 = 0;
 }
 
 __vpiCallback::~__vpiCallback()
 {
 }
 
-int __vpiCallback::get_type_code(void) const
-{ return vpiCallback; }
+পূর্ণসংখ্যা __vpiCallback::get_type_code(শূন্য) ধ্রুবক
+{ ফেরত vpiCallback; }
 
 
-value_callback::value_callback(p_cb_data data)
+মান_callback::মান_callback(p_cb_তথ্য তথ্য)
 {
-      cb_data = *data;
-      if (data->time) {
-	    cb_time = *(data->time);
-      } else {
+      cb_তথ্য = *তথ্য;
+      যদি (তথ্য->time) {
+	    cb_time = *(তথ্য->time);
+      } অন্যথা {
 	    cb_time.type = vpiSuppressTime;
       }
-      cb_data.time = &cb_time;
-      if (data->value) {
-	    cb_value = *(data->value);
-      } else {
-	    cb_value.format = vpiSuppressVal;
+      cb_তথ্য.time = &cb_time;
+      যদি (তথ্য->value) {
+	    cb_মান = *(তথ্য->value);
+      } অন্যথা {
+	    cb_মান.format = vpiSuppressVal;
       }
-      cb_data.value = &cb_value;
+      cb_তথ্য.value = &cb_মান;
 }
 
 /*
  * Normally, any assign to a value triggers a value change callback,
  * so return a constant true here. This is a stub.
  */
-bool value_callback::test_value_callback_ready(void)
+যৌক্তিক মান_callback::test_মান_callback_ready(শূন্য)
 {
-      return true;
+      ফেরত সত্য;
 }
 
-static void vpip_real_value_change(value_callback*cbh, vpiHandle ref)
+স্থির শূন্য vpip_real_মান_change(মান_callback*cbh, vpiHandle ref)
 {
-      struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
-      assert(rfp);
+      কাঠামো __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
+      প্রতিজ্ঞা(rfp);
       vvp_vpi_callback*obj = dynamic_cast<vvp_vpi_callback*>(rfp->net->fil);
-      assert(obj);
+      প্রতিজ্ঞা(obj);
 
       obj->add_vpi_callback(cbh);
 }
 
-class value_part_callback : public value_callback {
-    public:
-      explicit value_part_callback(p_cb_data data);
-      ~value_part_callback() override;
+শ্রেণী মান_part_callback : সর্বজনীন মান_callback {
+    সর্বজনীন:
+      explicit মান_part_callback(p_cb_তথ্য তথ্য);
+      ~মান_part_callback() override;
 
-      value_part_callback(const value_part_callback&) = delete;
-      value_part_callback& operator=(const value_part_callback&) = delete;
+      মান_part_callback(ধ্রুবক মান_part_callback&) = delete;
+      মান_part_callback& operator=(ধ্রুবক মান_part_callback&) = delete;
 
-      bool test_value_callback_ready(void) override;
+      যৌক্তিক test_মান_callback_ready(শূন্য) override;
 
-    private:
-      char*value_bits_;
-      size_t value_off_;
+    ব্যক্তিগত:
+      অক্ষর*মান_bits;
+      size_t মান_off;
 };
 
-inline value_part_callback::value_part_callback(p_cb_data data)
-: value_callback(data)
+অন্তঃরেখ মান_part_callback::মান_part_callback(p_cb_তথ্য তথ্য)
+: মান_callback(তথ্য)
 {
-      struct __vpiPV*pobj = dynamic_cast<__vpiPV*>(data->obj);
-      assert(pobj);
+      কাঠামো __vpiPV*pobj = dynamic_cast<__vpiPV*>(তথ্য->obj);
+      প্রতিজ্ঞা(pobj);
 
       vvp_vpi_callback*sig_fil;
       sig_fil = dynamic_cast<vvp_vpi_callback*>(pobj->net->fil);
-      assert(sig_fil);
+      প্রতিজ্ঞা(sig_fil);
 
-      sig_fil->add_vpi_callback(this);
+      sig_fil->add_vpi_callback(এই);
 	// Get a reference value that can be used to compare with an
 	// updated value. Use the filter get_value to get the value,
 	// and get it in BinStr form so that compares are easy. Note
 	// that the vpiBinStr format has the MSB first, but the tbase
 	// is lsb first.
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      sig_fil->get_value(&tmp_value);
+      s_vpi_মান tmp_মান;
+      tmp_মান.format = vpiBinStrVal;
+      sig_fil->get_মান(&tmp_মান);
 
-      value_bits_ = new char[pobj->width+1];
-      value_off_ = pobj->parent->vpi_get(vpiSize) - pobj->width - pobj->tbase;
+      মান_bits = নতুন অক্ষর[pobj->width+1];
+      মান_off = pobj->parent->vpi_get(vpi_আকার) - pobj->width - pobj->tbase;
 
-      memcpy(value_bits_, tmp_value.value.str + value_off_, pobj->width);
-      value_bits_[pobj->width] = 0;
+      memcpy(মান_bits, tmp_মান.value.str + মান_off, pobj->width);
+      মান_bits[pobj->width] = 0;
 }
 
-value_part_callback::~value_part_callback()
+মান_part_callback::~মান_part_callback()
 {
-      delete[]value_bits_;
+      delete[]মান_bits;
 }
 
-bool value_part_callback::test_value_callback_ready(void)
+যৌক্তিক মান_part_callback::test_মান_callback_ready(শূন্য)
 {
-      struct __vpiPV*pobj = dynamic_cast<__vpiPV*>(cb_data.obj);
-      assert(pobj);
+      কাঠামো __vpiPV*pobj = dynamic_cast<__vpiPV*>(cb_তথ্য.obj);
+      প্রতিজ্ঞা(pobj);
 
       vvp_vpi_callback*sig_fil;
       sig_fil = dynamic_cast<vvp_vpi_callback*>(pobj->net->fil);
-      assert(sig_fil);
+      প্রতিজ্ঞা(sig_fil);
 
 	// Get a reference value that can be used to compare with an
 	// updated value.
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      sig_fil->get_value(&tmp_value);
+      s_vpi_মান tmp_মান;
+      tmp_মান.format = vpiBinStrVal;
+      sig_fil->get_মান(&tmp_মান);
 
-      if (memcmp(value_bits_, tmp_value.value.str + value_off_, pobj->width) == 0)
-	    return false;
+      যদি (memcmp(মান_bits, tmp_মান.value.str + মান_off, pobj->width) == 0)
+	    ফেরত মিথ্যা;
 
-      memcpy(value_bits_, tmp_value.value.str + value_off_, pobj->width);
-      return true;
+      memcpy(মান_bits, tmp_মান.value.str + মান_off, pobj->width);
+      ফেরত সত্য;
 }
 
 /*
@@ -303,11 +303,11 @@ bool value_part_callback::test_value_callback_ready(void)
  * object, but it refers to a net that is a vvp_vpi_callback, so
  * add the callback to that object.
  */
-static value_callback*make_value_change_part(p_cb_data data)
+স্থির মান_callback*make_মান_change_part(p_cb_তথ্য তথ্য)
 {
 	/* Attach the __vpiCallback object to the signal. */
-      value_callback*cbh = new value_part_callback(data);
-      return cbh;
+      মান_callback*cbh = নতুন মান_part_callback(তথ্য);
+      ফেরত cbh;
 }
 
 /*
@@ -317,112 +317,112 @@ static value_callback*make_value_change_part(p_cb_data data)
  * does not already have them, create some callback functors to do the
  * actual value change detection.
  */
-static value_callback* make_value_change(p_cb_data data)
+স্থির মান_callback* make_মান_change(p_cb_তথ্য তথ্য)
 {
-      if (!check_callback_time(data, true))
-	    return 0;
+      যদি (!check_callback_time(তথ্য, সত্য))
+	    ফেরত 0;
 
-      if (vpi_get(vpiAutomatic, data->obj)) {
+      যদি (vpi_get(vpiAutomatic, তথ্য->obj)) {
             fprintf(stderr, "vpi error: cannot place value change "
                             "callback on automatically allocated "
                             "variable '%s'\n",
-                            vpi_get_str(vpiName, data->obj));
-            return 0;
+                            vpi_get_str(vpiName, তথ্য->obj));
+            ফেরত 0;
       }
 
 	// Special case: the target object is a vpiPartSelect
-      if (data->obj->get_type_code() == vpiPartSelect) {
-            if (data->obj->vpi_handle(vpiArray))
-	        return vpip_array_word_change(data);
-            else
-	        return make_value_change_part(data);
+      যদি (তথ্য->obj->get_type_code() == vpiPartSelect) {
+            যদি (তথ্য->obj->vpi_handle(vpiArray))
+	        ফেরত vpip_array_word_change(তথ্য);
+            অন্যথা
+	        ফেরত make_মান_change_part(তথ্য);
       }
 
-      if (data->obj->get_type_code() == vpiMemoryWord)
-	    return vpip_array_word_change(data);
+      যদি (তথ্য->obj->get_type_code() == vpiMemoryWord)
+	    ফেরত vpip_array_word_change(তথ্য);
 
-      if (data->obj->get_type_code() == vpiMemory)
-	    return vpip_array_change(data);
+      যদি (তথ্য->obj->get_type_code() == vpiMemory)
+	    ফেরত vpip_array_change(তথ্য);
 
-      value_callback*obj = new value_callback(data);
+      মান_callback*obj = নতুন মান_callback(তথ্য);
 
-      assert(data->obj);
-      switch (data->obj->get_type_code()) {
+      প্রতিজ্ঞা(তথ্য->obj);
+      নির্বাচন (তথ্য->obj->get_type_code()) {
 
-	  case vpiReg:
-	  case vpiNet:
-	  case vpiIntegerVar:
-	  case vpiBitVar:
-	  case vpiByteVar:
-	  case vpiShortIntVar:
-	  case vpiIntVar:
-	  case vpiLongIntVar:
+	  ক্ষেত্র vpiReg:
+	  ক্ষেত্র vpiNet:
+	  ক্ষেত্র vpiIntegerVar:
+	  ক্ষেত্র vpiBitVar:
+	  ক্ষেত্র vpiByteVar:
+	  ক্ষেত্র vpiShortIntVar:
+	  ক্ষেত্র vpiIntVar:
+	  ক্ষেত্র vpiLongIntVar:
 	      /* Attach the callback to the vvp_fun_signal node by
 		 putting it in the vpi_callbacks list. */
-	    struct __vpiSignal*sig;
-	    sig = dynamic_cast<__vpiSignal*>(data->obj);
+	    কাঠামো __vpiSignal*sig;
+	    sig = dynamic_cast<__vpiSignal*>(তথ্য->obj);
 
 	    vvp_net_fil_t*sig_fil;
-	    sig_fil = dynamic_cast<vvp_net_fil_t*>(sig->node->fil);
-	    assert(sig_fil);
+	    sig_fil = dynamic_cast<vvp_net_fil_t*>(sig->গ্রন্থি->fil);
+	    প্রতিজ্ঞা(sig_fil);
 
 	      /* Attach the __vpiCallback object to the signal. */
 	    sig_fil->add_vpi_callback(obj);
-	    break;
+	    বিরতি;
 
-	  case vpiRealVar:
-	    vpip_real_value_change(obj, data->obj);
-	    break;
+	  ক্ষেত্র vpiRealVar:
+	    vpip_real_মান_change(obj, তথ্য->obj);
+	    বিরতি;
 
-	  case vpiNamedEvent:
+	  ক্ষেত্র vpiNamedEvent:
 	    __vpiNamedEvent*nev;
-	    nev = dynamic_cast<__vpiNamedEvent*>(data->obj);
+	    nev = dynamic_cast<__vpiNamedEvent*>(তথ্য->obj);
 	    nev->add_vpi_callback(obj);
-	    break;
+	    বিরতি;
 
-	  case vpiModule:
-	  case vpiConstant:
-	  case vpiParameter:
+	  ক্ষেত্র vpiModule:
+	  ক্ষেত্র vpiConstant:
+	  ক্ষেত্র vpiParameter:
 	      /* These are constant, so there are no value change
 		 lists to put them in. */
-	    break;
+	    বিরতি;
 
-	  default:
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "make_value_change: sorry: I cannot callback "
 		    "values on type code=%d\n",
-		    data->obj->get_type_code());
+		    তথ্য->obj->get_type_code());
 	    delete obj;
-	    return 0;
+	    ফেরত 0;
       }
 
-      return obj;
+      ফেরত obj;
 }
 
-class sync_callback : public __vpiCallback {
-    public:
-      explicit sync_callback(p_cb_data data);
+শ্রেণী sync_callback : সর্বজনীন __vpiCallback {
+    সর্বজনীন:
+      explicit sync_callback(p_cb_তথ্য তথ্য);
       ~sync_callback() override;
 
-      sync_callback(const sync_callback&) = delete;
-      sync_callback& operator=(const sync_callback&) = delete;
+      sync_callback(ধ্রুবক sync_callback&) = delete;
+      sync_callback& operator=(ধ্রুবক sync_callback&) = delete;
 
-    public:
+    সর্বজনীন:
 	// scheduled event
-      struct sync_cb* cb_sync;
+      কাঠামো sync_cb* cb_sync;
 	// user supplied callback data
-      struct t_vpi_time cb_time;
+      কাঠামো t_vpi_time cb_time;
 
-    private:
+    ব্যক্তিগত:
 };
 
-inline sync_callback::sync_callback(p_cb_data data)
+অন্তঃরেখ sync_callback::sync_callback(p_cb_তথ্য তথ্য)
 {
       cb_sync = 0;
 
-      cb_data = *data;
-      assert(data->time);
-      cb_time = *(data->time);
-      cb_data.time = &cb_time;
+      cb_তথ্য = *তথ্য;
+      প্রতিজ্ঞা(তথ্য->time);
+      cb_time = *(তথ্য->time);
+      cb_তথ্য.time = &cb_time;
 }
 
 sync_callback::~sync_callback()
@@ -430,134 +430,134 @@ sync_callback::~sync_callback()
       delete cb_sync;
 }
 
-void sync_cb::run_run()
+শূন্য sync_cb::run_run()
 {
-      if (handle == 0)
-	    return;
+      যদি (handle == 0)
+	    ফেরত;
 
       sync_callback*cur = handle;
 
 	/* Run the callback. If the cb_rtn function pointer is set to
 	   null, then just skip the whole thing and free it. This is
 	   the usual way to cancel one-time callbacks of this sort. */
-      if (cur->cb_data.cb_rtn != 0) {
-	    set_callback_time(&cur->cb_data);
-	    assert(vpi_mode_flag == VPI_MODE_NONE);
+      যদি (cur->cb_তথ্য.cb_rtn != 0) {
+	    set_callback_time(&cur->cb_তথ্য);
+	    প্রতিজ্ঞা(vpi_mode_flag == VPI_MODE_NONE);
 	    vpi_mode_flag = sync_flag? VPI_MODE_ROSYNC : VPI_MODE_RWSYNC;
-	    (cur->cb_data.cb_rtn)(&cur->cb_data);
+	    (cur->cb_তথ্য.cb_rtn)(&cur->cb_তথ্য);
 	    vpi_mode_flag = VPI_MODE_NONE;
       }
 
       delete cur;
 }
 
-static vvp_time64_t get_sync_cb_time(sync_callback*obj)
+স্থির vvp_time64_t get_sync_cb_time(sync_callback*obj)
 {
       vvp_time64_t tv = 0;
-      switch (obj->cb_time.type) {
-	  case vpiSimTime:
+      নির্বাচন (obj->cb_time.type) {
+	  ক্ষেত্র vpiSimTime:
 	    tv = vpip_timestruct_to_time(&obj->cb_time);
-	    break;
+	    বিরতি;
 
-	  case vpiScaledRealTime:
+	  ক্ষেত্র vpiScaledRealTime:
 	    tv = vpip_scaled_real_to_time64(obj->cb_time.real,
-		     vpip_timescale_scope_from_handle(obj->cb_data.obj));
-	    break;
+		     vpip_timescale_scope_from_handle(obj->cb_তথ্য.obj));
+	    বিরতি;
 
-	  default:
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "get_sync_cb_time: Unsupported time type %d.\n",
-	            (int)obj->cb_time.type);
-	    assert(0);
-	    break;
+	            (পূর্ণসংখ্যা)obj->cb_time.type);
+	    প্রতিজ্ঞা(0);
+	    বিরতি;
       }
-      return tv;
+      ফেরত tv;
 }
 
-static sync_callback* make_sync(p_cb_data data, bool readonly_flag)
+স্থির sync_callback* make_sync(p_cb_তথ্য তথ্য, যৌক্তিক readonly_flag)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      যদি (!check_callback_time(তথ্য, মিথ্যা))
+	    ফেরত 0;
 
-      sync_callback*obj = new sync_callback(data);
+      sync_callback*obj = নতুন sync_callback(তথ্য);
 
-      struct sync_cb*cb = new sync_cb;
-      cb->sync_flag = readonly_flag? true : false;
+      কাঠামো sync_cb*cb = নতুন sync_cb;
+      cb->sync_flag = readonly_flag? সত্য : মিথ্যা;
       cb->handle = obj;
       obj->cb_sync = cb;
 
       vvp_time64_t tv = get_sync_cb_time(obj);
-      schedule_generic(cb, tv, true, readonly_flag);
+      schedule_generic(cb, tv, সত্য, readonly_flag);
 
-      return obj;
+      ফেরত obj;
 }
 
-static struct __vpiCallback* make_afterdelay(p_cb_data data)
+স্থির কাঠামো __vpiCallback* make_afterdelay(p_cb_তথ্য তথ্য)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      যদি (!check_callback_time(তথ্য, মিথ্যা))
+	    ফেরত 0;
 
-      sync_callback*obj = new sync_callback(data);
-      struct sync_cb*cb = new sync_cb;
-      cb->sync_flag = false;
+      sync_callback*obj = নতুন sync_callback(তথ্য);
+      কাঠামো sync_cb*cb = নতুন sync_cb;
+      cb->sync_flag = মিথ্যা;
       cb->handle = obj;
       obj->cb_sync = cb;
 
       vvp_time64_t tv = get_sync_cb_time(obj);
-      schedule_generic(cb, tv, false);
+      schedule_generic(cb, tv, মিথ্যা);
 
-      return obj;
+      ফেরত obj;
 }
 
-static struct __vpiCallback* make_at_start_of_sim_time(p_cb_data data)
+স্থির কাঠামো __vpiCallback* make_at_start_of_sim_time(p_cb_তথ্য তথ্য)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      যদি (!check_callback_time(তথ্য, মিথ্যা))
+	    ফেরত 0;
 
-      sync_callback*obj = new sync_callback(data);
-      struct sync_cb*cb = new sync_cb;
-      cb->sync_flag = false;
+      sync_callback*obj = নতুন sync_callback(তথ্য);
+      কাঠামো sync_cb*cb = নতুন sync_cb;
+      cb->sync_flag = মিথ্যা;
       cb->handle = obj;
       obj->cb_sync = cb;
 
       vvp_time64_t tv = get_sync_cb_time(obj);
       vvp_time64_t cur = schedule_simtime();
-      if (cur > tv) {
+      যদি (cur > tv) {
 	    tv = 0;
-	    assert(0);
-      } else if (cur == tv) {
+	    প্রতিজ্ঞা(0);
+      } অন্যথা যদি (cur == tv) {
 	    tv = 0;
-      } else {
+      } অন্যথা {
 	    tv -= cur;
       }
       schedule_at_start_of_simtime(cb, tv);
 
-      return obj;
+      ফেরত obj;
 }
 
-static struct __vpiCallback* make_at_end_of_sim_time(p_cb_data data)
+স্থির কাঠামো __vpiCallback* make_at_end_of_sim_time(p_cb_তথ্য তথ্য)
 {
-      if (!check_callback_time(data, false))
-	    return 0;
+      যদি (!check_callback_time(তথ্য, মিথ্যা))
+	    ফেরত 0;
 
-      sync_callback*obj = new sync_callback(data);
-      struct sync_cb*cb = new sync_cb;
-      cb->sync_flag = false;
+      sync_callback*obj = নতুন sync_callback(তথ্য);
+      কাঠামো sync_cb*cb = নতুন sync_cb;
+      cb->sync_flag = মিথ্যা;
       cb->handle = obj;
       obj->cb_sync = cb;
 
       vvp_time64_t tv = get_sync_cb_time(obj);
       vvp_time64_t cur = schedule_simtime();
-      if (cur > tv) {
+      যদি (cur > tv) {
 	    tv = 0;
-	    assert(0);
-      } else if (cur == tv) {
+	    প্রতিজ্ঞা(0);
+      } অন্যথা যদি (cur == tv) {
 	    tv = 0;
-      } else {
+      } অন্যথা {
 	    tv -= cur;
       }
       schedule_at_end_of_simtime(cb, tv);
 
-      return obj;
+      ফেরত obj;
 }
 
 /*
@@ -565,77 +565,77 @@ static struct __vpiCallback* make_at_end_of_sim_time(p_cb_data data)
  * callbacks.
  */
 
-class simulator_callback : public __vpiCallback {
-    public:
-      explicit simulator_callback(const struct t_cb_data*data);
+শ্রেণী simulator_callback : সর্বজনীন __vpiCallback {
+    সর্বজনীন:
+      explicit simulator_callback(ধ্রুবক কাঠামো t_cb_তথ্য*তথ্য);
 
-    public:
-      struct t_vpi_time cb_time;
+    সর্বজনীন:
+      কাঠামো t_vpi_time cb_time;
 };
 
-inline simulator_callback::simulator_callback(const struct t_cb_data*data)
+অন্তঃরেখ simulator_callback::simulator_callback(ধ্রুবক কাঠামো t_cb_তথ্য*তথ্য)
 {
-      cb_data = *data;
-      if ((data->reason == cbNextSimTime) && data->time) {
-	    cb_time = *(data->time);
-      } else if (data->reason == cbEndOfSimulation) {
+      cb_তথ্য = *তথ্য;
+      যদি ((তথ্য->reason == cb_পরবর্তী_Sim_Time) && তথ্য->time) {
+	    cb_time = *(তথ্য->time);
+      } অন্যথা যদি (তথ্য->reason == cbEndOfSimulation) {
 	    cb_time.type = vpiSimTime;
-      } else {
+      } অন্যথা {
 	    cb_time.type = vpiSuppressTime;
       }
-      cb_data.time = &cb_time;
+      cb_তথ্য.time = &cb_time;
 }
 
-static simulator_callback*NextSimTime = 0;
-static simulator_callback*EndOfCompile = 0;
-static simulator_callback*StartOfSimulation = 0;
-static simulator_callback*EndOfSimulation = 0;
+স্থির simulator_callback*পরবর্তী_Sim_Time = 0;
+স্থির simulator_callback*EndOfCompile = 0;
+স্থির simulator_callback*StartOfSimulation = 0;
+স্থির simulator_callback*EndOfSimulation = 0;
 
 #ifdef CHECK_WITH_VALGRIND
 /* This is really only needed if the simulator aborts before starting the
  * main event loop. For that reason we can skip the next sim time queue. */
-void simulator_cb_delete(void)
+শূন্য simulator_cb_delete(শূন্য)
 {
       simulator_callback* cur;
 
 	/* Delete all the end of compile callbacks. */
-      while (EndOfCompile) {
+      যখন (EndOfCompile) {
 	    cur = EndOfCompile;
-	    EndOfCompile = dynamic_cast<simulator_callback*>(cur->next);
+	    EndOfCompile = dynamic_cast<simulator_callback*>(cur->পরবর্তী_2);
 	    delete cur;
       }
 
 	/* Delete all the start of simulation callbacks. */
-      while (StartOfSimulation) {
+      যখন (StartOfSimulation) {
 	    cur = StartOfSimulation;
-	    StartOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
+	    StartOfSimulation = dynamic_cast<simulator_callback*>(cur->পরবর্তী_2);
 	    delete cur;
       }
 
 	/* Delete all the end of simulation callbacks. */
-      while (EndOfSimulation) {
+      যখন (EndOfSimulation) {
 	    cur = EndOfSimulation;
-	    EndOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
+	    EndOfSimulation = dynamic_cast<simulator_callback*>(cur->পরবর্তী_2);
 	    delete cur;
       }
 }
 #endif
 
-void vpiEndOfCompile(void) {
+শূন্য vpiEndOfCompile(শূন্য) {
       simulator_callback* cur;
 
       /*
        * Walk the list of register callbacks, executing them and
        * freeing them when done.
        */
-      assert(vpi_mode_flag == VPI_MODE_NONE);
+      প্রতিজ্ঞা(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      while (EndOfCompile) {
+      যখন (EndOfCompile) {
 	    cur = EndOfCompile;
-	    EndOfCompile = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
-		  (cur->cb_data.cb_rtn)(&cur->cb_data);
+	    EndOfCompile = dynamic_cast<simulator_callback*>(cur->পরবর্তী_2);
+	    যদি (cur->cb_তথ্য.cb_rtn != 0) {
+		  (cur->cb_তথ্য.cb_rtn)(&cur->cb_তথ্য);
 	    }
 	    delete cur;
       }
@@ -643,21 +643,21 @@ void vpiEndOfCompile(void) {
       vpi_mode_flag = VPI_MODE_NONE;
 }
 
-void vpiStartOfSim(void) {
+শূন্য vpiStartOfSim(শূন্য) {
       simulator_callback* cur;
 
       /*
        * Walk the list of register callbacks, executing them and
        * freeing them when done.
        */
-      assert(vpi_mode_flag == VPI_MODE_NONE);
+      প্রতিজ্ঞা(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      while (StartOfSimulation) {
+      যখন (StartOfSimulation) {
 	    cur = StartOfSimulation;
-	    StartOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
-		  (cur->cb_data.cb_rtn)(&cur->cb_data);
+	    StartOfSimulation = dynamic_cast<simulator_callback*>(cur->পরবর্তী_2);
+	    যদি (cur->cb_তথ্য.cb_rtn != 0) {
+		  (cur->cb_তথ্য.cb_rtn)(&cur->cb_তথ্য);
 	    }
 	    delete cur;
       }
@@ -665,21 +665,21 @@ void vpiStartOfSim(void) {
       vpi_mode_flag = VPI_MODE_NONE;
 }
 
-void vpiPostsim(void) {
+শূন্য vpiPostsim(শূন্য) {
       simulator_callback* cur;
 
       /*
        * Walk the list of register callbacks
        */
-      assert(vpi_mode_flag == VPI_MODE_NONE);
+      প্রতিজ্ঞা(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_ROSYNC;
 
-      while (EndOfSimulation) {
+      যখন (EndOfSimulation) {
 	    cur = EndOfSimulation;
-	    EndOfSimulation = dynamic_cast<simulator_callback*>(cur->next);
-	    if (cur->cb_data.cb_rtn != 0) {
-		  set_callback_time(&cur->cb_data);
-		  (cur->cb_data.cb_rtn)(&cur->cb_data);
+	    EndOfSimulation = dynamic_cast<simulator_callback*>(cur->পরবর্তী_2);
+	    যদি (cur->cb_তথ্য.cb_rtn != 0) {
+		  set_callback_time(&cur->cb_তথ্য);
+		  (cur->cb_তথ্য.cb_rtn)(&cur->cb_তথ্য);
 	    }
 	    delete cur;
       }
@@ -691,21 +691,21 @@ void vpiPostsim(void) {
  * The scheduler invokes this to clear out callbacks for the next
  * simulation time.
  */
-void vpiNextSimTime(void)
+শূন্য vpi_পরবর্তী_Sim_Time(শূন্য)
 {
       simulator_callback* cur;
-      simulator_callback* next = NextSimTime;
-      NextSimTime = 0;
+      simulator_callback* পরবর্তী_2 = পরবর্তী_Sim_Time;
+      পরবর্তী_Sim_Time = 0;
 
-      assert(vpi_mode_flag == VPI_MODE_NONE);
+      প্রতিজ্ঞা(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      while (next) {
-            cur = next;
-            next = dynamic_cast<simulator_callback*>(cur->next);
-            if (cur->cb_data.cb_rtn != 0) {
-                  set_callback_time(&cur->cb_data);
-                  (cur->cb_data.cb_rtn)(&cur->cb_data);
+      যখন (পরবর্তী_2) {
+            cur = পরবর্তী_2;
+            পরবর্তী_2 = dynamic_cast<simulator_callback*>(cur->পরবর্তী_2);
+            যদি (cur->cb_তথ্য.cb_rtn != 0) {
+                  set_callback_time(&cur->cb_তথ্য);
+                  (cur->cb_তথ্য.cb_rtn)(&cur->cb_তথ্য);
             }
             delete cur;
       }
@@ -713,82 +713,82 @@ void vpiNextSimTime(void)
       vpi_mode_flag = VPI_MODE_NONE;
 }
 
-static simulator_callback* make_prepost(p_cb_data data)
+স্থির simulator_callback* make_prepost(p_cb_তথ্য তথ্য)
 {
-      if ((data->reason == cbNextSimTime) && !check_callback_time(data, true))
-	    return 0;
+      যদি ((তথ্য->reason == cb_পরবর্তী_Sim_Time) && !check_callback_time(তথ্য, সত্য))
+	    ফেরত 0;
 
-      simulator_callback*obj = new simulator_callback(data);
+      simulator_callback*obj = নতুন simulator_callback(তথ্য);
 
       /* Insert at head of list */
-      switch (data->reason) {
-	  case cbEndOfCompile:
-	    obj->next = EndOfCompile;
+      নির্বাচন (তথ্য->reason) {
+	  ক্ষেত্র cbEndOfCompile:
+	    obj->পরবর্তী_2 = EndOfCompile;
 	    EndOfCompile = obj;
-	    break;
-	  case cbStartOfSimulation:
-	    obj->next = StartOfSimulation;
+	    বিরতি;
+	  ক্ষেত্র cbStartOfSimulation:
+	    obj->পরবর্তী_2 = StartOfSimulation;
 	    StartOfSimulation = obj;
-	    break;
-	  case cbEndOfSimulation:
-	    obj->next = EndOfSimulation;
+	    বিরতি;
+	  ক্ষেত্র cbEndOfSimulation:
+	    obj->পরবর্তী_2 = EndOfSimulation;
 	    EndOfSimulation = obj;
-	    break;
-	  case cbNextSimTime:
-	    obj->next = NextSimTime;
-	    NextSimTime = obj;
-	    break;
+	    বিরতি;
+	  ক্ষেত্র cb_পরবর্তী_Sim_Time:
+	    obj->পরবর্তী_2 = পরবর্তী_Sim_Time;
+	    পরবর্তী_Sim_Time = obj;
+	    বিরতি;
       }
 
-      return obj;
+      ফেরত obj;
 }
 
-vpiHandle vpi_register_cb(p_cb_data data)
+vpiHandle vpi_register_cb(p_cb_তথ্য তথ্য)
 {
-      struct __vpiCallback*obj = 0;
+      কাঠামো __vpiCallback*obj = 0;
 
-      assert(data);
-      switch (data->reason) {
+      প্রতিজ্ঞা(তথ্য);
+      নির্বাচন (তথ্য->reason) {
 
-	  case cbValueChange:
-	    obj = make_value_change(data);
-	    break;
+	  ক্ষেত্র cb_মান_Change:
+	    obj = make_মান_change(তথ্য);
+	    বিরতি;
 
-	  case cbReadOnlySynch:
-	    obj = make_sync(data, true);
-	    break;
+	  ক্ষেত্র cbReadOnlySynch:
+	    obj = make_sync(তথ্য, সত্য);
+	    বিরতি;
 
-	  case cbReadWriteSynch:
-	    obj = make_sync(data, false);
-	    break;
+	  ক্ষেত্র cbReadWriteSynch:
+	    obj = make_sync(তথ্য, মিথ্যা);
+	    বিরতি;
 
-	  case cbAtStartOfSimTime:
-	    obj = make_at_start_of_sim_time(data);
-	    break;
+	  ক্ষেত্র cbAtStartOfSimTime:
+	    obj = make_at_start_of_sim_time(তথ্য);
+	    বিরতি;
 
-	  case cbAtEndOfSimTime:
-	    obj = make_at_end_of_sim_time(data);
-	    break;
+	  ক্ষেত্র cbAtEndOfSimTime:
+	    obj = make_at_end_of_sim_time(তথ্য);
+	    বিরতি;
 
-	  case cbAfterDelay:
-	    obj = make_afterdelay(data);
-	    break;
+	  ক্ষেত্র cbAfterDelay:
+	    obj = make_afterdelay(তথ্য);
+	    বিরতি;
 
-	  case cbEndOfCompile:
-	  case cbStartOfSimulation:
-	  case cbEndOfSimulation:
-	  case cbNextSimTime:
-	    obj = make_prepost(data);
-	    break;
+	  ক্ষেত্র cbEndOfCompile:
+	  ক্ষেত্র cbStartOfSimulation:
+	  ক্ষেত্র cbEndOfSimulation:
+	  ক্ষেত্র cb_পরবর্তী_Sim_Time:
+	    obj = make_prepost(তথ্য);
+	    বিরতি;
 
-	  default:
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "vpi error: vpi_register_cb invalid or "
 		    "unsupported callback reason: %d\n",
-		    (int)data->reason);
-	    break;
+		    (পূর্ণসংখ্যা)তথ্য->reason);
+	    বিরতি;
       }
 
-      return obj;
+      ফেরত obj;
 }
 
 /*
@@ -798,21 +798,21 @@ vpiHandle vpi_register_cb(p_cb_data data)
  */
 PLI_INT32 vpi_remove_cb(vpiHandle ref)
 {
-      struct __vpiCallback*obj = dynamic_cast<__vpiCallback*>(ref);
-      assert(obj);
-      obj->cb_data.cb_rtn = 0;
+      কাঠামো __vpiCallback*obj = dynamic_cast<__vpiCallback*>(ref);
+      প্রতিজ্ঞা(obj);
+      obj->cb_তথ্য.cb_rtn = 0;
 
-      return 1;
+      ফেরত 1;
 }
 
-void callback_execute(struct __vpiCallback*cur)
+শূন্য callback_execute(কাঠামো __vpiCallback*cur)
 {
-      const vpi_mode_t save_mode = vpi_mode_flag;
+      ধ্রুবক vpi_mode_t save_mode = vpi_mode_flag;
       vpi_mode_flag = VPI_MODE_RWSYNC;
 
-      assert(cur->cb_data.cb_rtn);
-      set_callback_time(&cur->cb_data);
-      (cur->cb_data.cb_rtn)(&cur->cb_data);
+      প্রতিজ্ঞা(cur->cb_তথ্য.cb_rtn);
+      set_callback_time(&cur->cb_তথ্য);
+      (cur->cb_তথ্য.cb_rtn)(&cur->cb_তথ্য);
 
       vpi_mode_flag = save_mode;
 }
@@ -823,52 +823,52 @@ void callback_execute(struct __vpiCallback*cur)
  * the array words minimises memory use for the most common case (no array
  * words) or next most common case (one array word).
  */
-struct __vpi_array_word {
-      struct __vpi_array_word* next;
-      struct __vpiArray* array;
+কাঠামো __vpi_array_word {
+      কাঠামো __vpi_array_word* পরবর্তী_2;
+      কাঠামো __vpiArray* array;
       unsigned long word;
 };
 
 vvp_vpi_callback::vvp_vpi_callback()
 {
       vpi_callbacks_ = 0;
-      array_words_ = 0;
+      array_শব্দগুলি = 0;
 }
 
 vvp_vpi_callback::~vvp_vpi_callback()
 {
-      assert(vpi_callbacks_ == 0);
-      assert(array_words_ == 0);
+      প্রতিজ্ঞা(vpi_callbacks_ == 0);
+      প্রতিজ্ঞা(array_শব্দগুলি == 0);
 }
 
-void vvp_vpi_callback::attach_as_word(vvp_array_t arr, unsigned long addr)
+শূন্য vvp_vpi_callback::attach_as_word(vvp_array_t arr, unsigned long addr)
 {
-      struct __vpi_array_word*tmp = new __vpi_array_word;
+      কাঠামো __vpi_array_word*tmp = নতুন __vpi_array_word;
       tmp->array = arr;
       tmp->word = addr;
-      tmp->next = array_words_;
-      array_words_ = tmp;
+      tmp->পরবর্তী_2 = array_শব্দগুলি;
+      array_শব্দগুলি = tmp;
 }
 
-void vvp_vpi_callback::add_vpi_callback(value_callback*cb)
+শূন্য vvp_vpi_callback::add_vpi_callback(মান_callback*cb)
 {
-      cb->next = vpi_callbacks_;
+      cb->পরবর্তী_2 = vpi_callbacks_;
       vpi_callbacks_ = cb;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vvp_vpi_callback::clear_all_callbacks()
+শূন্য vvp_vpi_callback::clear_all_callbacks()
 {
-      while (vpi_callbacks_) {
-	    value_callback *tmp = dynamic_cast<value_callback*>
-	                            (vpi_callbacks_->next);
+      যখন (vpi_callbacks_) {
+	    মান_callback *tmp = dynamic_cast<মান_callback*>
+	                            (vpi_callbacks_->পরবর্তী_2);
 	    delete vpi_callbacks_;
 	    vpi_callbacks_ = tmp;
       }
-      while (array_words_) {
-	    struct __vpi_array_word*tmp = array_words_->next;
-	    delete array_words_;
-	    array_words_ = tmp;
+      যখন (array_শব্দগুলি) {
+	    কাঠামো __vpi_array_word*tmp = array_শব্দগুলি->পরবর্তী_2;
+	    delete array_শব্দগুলি;
+	    array_শব্দগুলি = tmp;
       }
 }
 #endif
@@ -879,189 +879,189 @@ void vvp_vpi_callback::clear_all_callbacks()
  * callback function. If the cb_rtn pointer is nil, then the object
  * has been marked for deletion. Free it.
  */
-void vvp_vpi_callback::run_vpi_callbacks()
+শূন্য vvp_vpi_callback::run_vpi_callbacks()
 {
-      struct __vpi_array_word*array_word = array_words_;
-      while (array_word) {
+      কাঠামো __vpi_array_word*array_word = array_শব্দগুলি;
+      যখন (array_word) {
 	    array_word->array->word_change(array_word->word);
-	    array_word = array_word->next;
+	    array_word = array_word->পরবর্তী_2;
       }
 
-      value_callback *next = vpi_callbacks_;
-      value_callback *prev = 0;
+      মান_callback *পরবর্তী_2 = vpi_callbacks_;
+      মান_callback *prev = 0;
 
-      while (next) {
-	    value_callback*cur = next;
-	    next = dynamic_cast<value_callback*>(cur->next);
+      যখন (পরবর্তী_2) {
+	    মান_callback*cur = পরবর্তী_2;
+	    পরবর্তী_2 = dynamic_cast<মান_callback*>(cur->পরবর্তী_2);
 
-	    if (cur->cb_data.cb_rtn != 0) {
-		  if (cur->test_value_callback_ready()) {
-			if (cur->cb_data.value)
-			      get_value(cur->cb_data.value);
+	    যদি (cur->cb_তথ্য.cb_rtn != 0) {
+		  যদি (cur->test_মান_callback_ready()) {
+			যদি (cur->cb_তথ্য.value)
+			      get_মান(cur->cb_তথ্য.value);
 
 			callback_execute(cur);
 		  }
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } অন্যথা যদি (prev == 0) {
 
-		  vpi_callbacks_ = next;
-		  cur->next = 0;
+		  vpi_callbacks_ = পরবর্তী_2;
+		  cur->পরবর্তী_2 = 0;
 		  delete cur;
 
-	    } else {
-		  assert(prev->next == cur);
-		  prev->next = next;
-		  cur->next = 0;
+	    } অন্যথা {
+		  প্রতিজ্ঞা(prev->পরবর্তী_2 == cur);
+		  prev->পরবর্তী_2 = পরবর্তী_2;
+		  cur->পরবর্তী_2 = 0;
 		  delete cur;
 	    }
       }
 }
 
-void vvp_signal_value::get_signal_value(struct t_vpi_value*vp)
+শূন্য vvp_signal_মান::get_signal_মান(কাঠামো t_vpi_মান*vp)
 {
-      switch (vp->format) {
-	  case vpiScalarVal:
+      নির্বাচন (vp->format) {
+	  ক্ষেত্র vpiScalarVal:
 	    // This works because vvp_bit4_t has the same encoding
 	    // as a scalar value! See vpip_vec4_get_value() for a
 	    // more robust method.
 	    vp->value.scalar = value(0);
-	    break;
+	    বিরতি;
 
-	  case vpiBinStrVal:
-	  case vpiOctStrVal:
-	  case vpiDecStrVal:
-	  case vpiHexStrVal:
-	  case vpiIntVal:
-	  case vpiVectorVal:
-	  case vpiStringVal:
-	  case vpiRealVal: {
-	    unsigned wid = value_size();
+	  ক্ষেত্র vpiBinStrVal:
+	  ক্ষেত্র vpiOctStrVal:
+	  ক্ষেত্র vpiDecStrVal:
+	  ক্ষেত্র vpiHexStrVal:
+	  ক্ষেত্র vpiIntVal:
+	  ক্ষেত্র vpiVectorVal:
+	  ক্ষেত্র vpiStringVal:
+	  ক্ষেত্র vpiRealVal: {
+	    unsigned wid = মান_আকার();
 	    vvp_vector4_t vec4(wid);
-	    for (unsigned idx = 0; idx < wid; idx += 1) {
+	    জন্য (unsigned idx = 0; idx < wid; idx += 1) {
 		  vec4.set_bit(idx, value(idx));
 	    }
-	    vpip_vec4_get_value(vec4, wid, false, vp);
-	    break;
+	    vpip_vec4_get_মান(vec4, wid, মিথ্যা, vp);
+	    বিরতি;
 	  }
 
-	  case vpiSuppressVal:
-	    break;
+	  ক্ষেত্র vpiSuppressVal:
+	    বিরতি;
 
-	  default:
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "vpi_callback: value "
 		    "format %d not supported (fun_signal)\n",
-		    (int)vp->format);
+		    (পূর্ণসংখ্যা)vp->format);
       }
 }
 
-static void real_signal_value(struct t_vpi_value*vp, double rval)
+স্থির শূন্য real_signal_মান(কাঠামো t_vpi_মান*vp, দ্বিগুণ rval)
 {
-      static const size_t RBUF_SIZE = 64 + 1;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_SIZE, RBUF_VAL));
+      স্থির ধ্রুবক size_t RBUF_আকার = 64 + 1;
+      অক্ষর*rbuf = static_cast<অক্ষর *>(need_ফলাফল_buf(RBUF_আকার, RBUF_VAL));
 
-      switch (vp->format) {
-	  case vpiObjTypeVal:
+      নির্বাচন (vp->format) {
+	  ক্ষেত্র vpiObjTypeVal:
 	    vp->format = vpiRealVal;
 	    // fallthrough
-	  case vpiRealVal:
+	  ক্ষেত্র vpiRealVal:
 	    vp->value.real = rval;
-	    break;
+	    বিরতি;
 
-	  case vpiIntVal:
+	  ক্ষেত্র vpiIntVal:
 	      /* NaN or +/- infinity are translated as 0. */
-	    if (rval != rval || (rval && (rval == 0.5*rval))) {
+	    যদি (rval != rval || (rval && (rval == 0.5*rval))) {
 		  rval = 0.0;
-	    } else {
+	    } অন্যথা {
 		  rval = std::round(rval);
 	    }
 	    vp->value.integer = (PLI_INT32)rval;
-	    break;
+	    বিরতি;
 
-	  case vpiDecStrVal:
-	    if (std::isnan(rval))
-		  snprintf(rbuf, RBUF_SIZE, "%s", "nan");
-	    else
-		  snprintf(rbuf, RBUF_SIZE, "%0.0f", std::round(rval));
+	  ক্ষেত্র vpiDecStrVal:
+	    যদি (std::isnan(rval))
+		  snprintf(rbuf, RBUF_আকার, "%s", "nan");
+	    অন্যথা
+		  snprintf(rbuf, RBUF_আকার, "%0.0f", std::round(rval));
 	    vp->value.str = rbuf;
-	    break;
+	    বিরতি;
 
-	  case vpiHexStrVal:
-	    snprintf(rbuf, RBUF_SIZE, "%" PRIx64, vlg_round_to_u64(rval));
+	  ক্ষেত্র vpiHexStrVal:
+	    snprintf(rbuf, RBUF_আকার, "%" PRIx64, vlg_round_to_u64(rval));
 	    vp->value.str = rbuf;
-	    break;
+	    বিরতি;
 
-	  case vpiBinStrVal: {
+	  ক্ষেত্র vpiBinStrVal: {
 		uint64_t val = vlg_round_to_u64(rval);
 		unsigned len = 0;
 
-		while (val > 0) {
+		যখন (val > 0) {
 		      len += 1;
 		      val /= 2;
 		}
 
 		val = vlg_round_to_u64(rval);
-		for (unsigned idx = 0 ;  idx < len ;  idx += 1) {
+		জন্য (unsigned idx = 0 ;  idx < len ;  idx += 1) {
 		      rbuf[len-idx-1] = (val & 1)? '1' : '0';
 		      val /= 2;
 		}
 
 		rbuf[len] = 0;
-		if (len == 0) {
+		যদি (len == 0) {
 		      rbuf[0] = '0';
 		      rbuf[1] = 0;
 		}
 		vp->value.str = rbuf;
-		break;
+		বিরতি;
 	  }
 
-	  case vpiSuppressVal:
-	    break;
+	  ক্ষেত্র vpiSuppressVal:
+	    বিরতি;
 
-	  default:
+	  পূর্বনির্ধারিত:
 	    fprintf(stderr, "vpi_callback: value "
 		    "format %d not supported (fun_signal_real)\n",
-		    (int)vp->format);
+		    (পূর্ণসংখ্যা)vp->format);
       }
 }
 
-void vvp_fun_signal_real_aa::get_signal_value(struct t_vpi_value*vp)
+শূন্য vvp_fun_signal_real_aa::get_signal_মান(কাঠামো t_vpi_মান*vp)
 {
-      real_signal_value(vp, real_value());
+      real_signal_মান(vp, real_মান());
 }
 
-void vvp_wire_real::get_signal_value(struct t_vpi_value*vp)
+শূন্য vvp_wire_real::get_signal_মান(কাঠামো t_vpi_মান*vp)
 {
-      real_signal_value(vp, real_value());
+      real_signal_মান(vp, real_মান());
 }
 
-void vvp_fun_signal_string_aa::get_signal_value(struct t_vpi_value*)
+শূন্য vvp_fun_signal_string_aa::get_signal_মান(কাঠামো t_vpi_মান*)
 {
-      assert(0);
+      প্রতিজ্ঞা(0);
 }
-#if 0
-void vvp_wire_string::get_signal_value(struct t_vpi_value*vp)
+#যদি 0
+শূন্য vvp_wire_string::get_signal_মান(কাঠামো t_vpi_মান*vp)
 {
-      assert(0);
+      প্রতিজ্ঞা(0);
 }
 #endif
-void vvp_wire_vec4::get_value(struct t_vpi_value*val)
+শূন্য vvp_wire_vec4::get_মান(কাঠামো t_vpi_মান*val)
 {
-      get_signal_value(val);
+      get_signal_মান(val);
 }
 
-void vvp_wire_vec8::get_value(struct t_vpi_value*val)
+শূন্য vvp_wire_vec8::get_মান(কাঠামো t_vpi_মান*val)
 {
-      get_signal_value(val);
+      get_signal_মান(val);
 }
 
-void vvp_wire_real::get_value(struct t_vpi_value*val)
+শূন্য vvp_wire_real::get_মান(কাঠামো t_vpi_মান*val)
 {
-      get_signal_value(val);
+      get_signal_মান(val);
 }
-#if 0
-void vvp_wire_string::get_value(struct t_vpi_value*val)
+#যদি 0
+শূন্য vvp_wire_string::get_মান(কাঠামো t_vpi_মান*val)
 {
-      assert(0);
+      প্রতিজ্ঞা(0);
 }
 #endif

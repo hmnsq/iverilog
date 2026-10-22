@@ -31,20 +31,20 @@
  * strengths to the buffered value, and sends H/L in response to
  * unknown enable bits.
  */
-class vvp_fun_bufif  : public vvp_net_fun_t {
+class vvp_fun_bufif  : সর্বজনীন vvp_net_fun_t {
 
-    public:
+    সর্বজনীন:
       vvp_fun_bufif(bool en_invert, bool out_invert,
 		    unsigned str0, unsigned str1);
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t port, ধ্রুবক vvp_vector4_t&bit,
                      vvp_context_t) override;
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4_pv(vvp_net_ptr_t ptr, ধ্রুবক vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      void recv_real(vvp_net_ptr_t port, double real,
+      শূন্য recv_real(vvp_net_ptr_t port, দ্বিগুণ real,
                      vvp_context_t ctx) override;
 
-    private:
+    ব্যক্তিগত:
       vvp_vector4_t bit_;
       vvp_vector4_t en_;
       unsigned pol_ : 1;

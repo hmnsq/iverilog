@@ -25,7 +25,7 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-inline __vpiNamedEvent::__vpiNamedEvent(__vpiScope*sc, const char*nam)
+অন্তঃরেখ __vpiNamedEvent::__vpiNamedEvent(__vpiScope*sc, ধ্রুবক অক্ষর*nam)
 {
       scope_ = sc;
       name_ = vpip_name_string(nam);
@@ -34,36 +34,36 @@ inline __vpiNamedEvent::__vpiNamedEvent(__vpiScope*sc, const char*nam)
 
 __vpiNamedEvent::~__vpiNamedEvent()
 {
-      while (callbacks_) {
-	    struct __vpiCallback *tmp = callbacks_->next;
+      যখন (callbacks_) {
+	    কাঠামো __vpiCallback *tmp = callbacks_->পরবর্তী_2;
 	    delete callbacks_;
 	    callbacks_ = tmp;
       }
 }
 
-int __vpiNamedEvent::get_type_code(void) const
-{ return vpiNamedEvent; }
+পূর্ণসংখ্যা __vpiNamedEvent::get_type_code(শূন্য) ধ্রুবক
+{ ফেরত vpiNamedEvent; }
 
-int __vpiNamedEvent::vpi_get(int code)
+পূর্ণসংখ্যা __vpiNamedEvent::vpi_get(পূর্ণসংখ্যা code)
 {
-      switch (code) {
+      নির্বাচন (code) {
 
-	  case vpiAutomatic:
-	    return scope_->is_automatic()? 1 : 0;
+	  ক্ষেত্র vpiAutomatic:
+	    ফেরত scope_->is_automatic()? 1 : 0;
       }
 
-      return 0;
+      ফেরত 0;
 }
 
-char* __vpiNamedEvent::vpi_get_str(int code)
+অক্ষর* __vpiNamedEvent::vpi_get_str(পূর্ণসংখ্যা code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      যদি (code == vpiFile) {  // Not implemented for now!
+	    ফেরত simple_set_rbuf_str(file_names[0]);
       }
-      return generic_get_str(code, scope_, name_, NULL);
+      ফেরত generic_get_str(code, scope_, name_, ফাঁকা);
 }
 
-vpiHandle __vpiNamedEvent::vpi_put_value(p_vpi_value, int)
+vpiHandle __vpiNamedEvent::vpi_put_মান(p_vpi_মান, পূর্ণসংখ্যা)
 {
 	// p_vpi_value may be NULL, and an event doesn't care
 	// what the value is
@@ -71,30 +71,30 @@ vpiHandle __vpiNamedEvent::vpi_put_value(p_vpi_value, int)
       vvp_net_ptr_t dest(funct, 0);
       vvp_send_vec4(dest, val, vthread_get_wt_context());
 
-      return this;
+      ফেরত এই;
 }
 
-vpiHandle __vpiNamedEvent::vpi_handle(int code)
+vpiHandle __vpiNamedEvent::vpi_handle(পূর্ণসংখ্যা code)
 {
-      switch (code) {
-	  case vpiScope:
-	    return scope_;
+      নির্বাচন (code) {
+	  ক্ষেত্র vpiScope:
+	    ফেরত scope_;
 
-	  case vpiModule:
-	    return vpip_module(scope_);
+	  ক্ষেত্র vpiModule:
+	    ফেরত vpip_module(scope_);
       }
 
-      return 0;
+      ফেরত 0;
 }
 
 
-vpiHandle vpip_make_named_event(const char*name, vvp_net_t*funct)
+vpiHandle vpip_make_named_event(ধ্রুবক অক্ষর*name, vvp_net_t*funct)
 {
-      __vpiNamedEvent*obj = new __vpiNamedEvent(vpip_peek_current_scope(), name);
+      __vpiNamedEvent*obj = নতুন __vpiNamedEvent(vpip_peek_current_scope(), name);
 
       obj->funct = funct;
 
-      return obj;
+      ফেরত obj;
 }
 
 /*
@@ -110,27 +110,27 @@ vpiHandle vpip_make_named_event(const char*name, vvp_net_t*funct)
  * We can not use vpi_free_object() here since it does not really
  * delete the callback.
  */
-void __vpiNamedEvent::run_vpi_callbacks()
+শূন্য __vpiNamedEvent::run_vpi_callbacks()
 {
-      struct __vpiCallback*next = callbacks_;
-      struct __vpiCallback*prev = 0;
-      while (next) {
-	    struct __vpiCallback*cur = next;
-	    next = cur->next;
+      কাঠামো __vpiCallback*পরবর্তী_2 = callbacks_;
+      কাঠামো __vpiCallback*prev = 0;
+      যখন (পরবর্তী_2) {
+	    কাঠামো __vpiCallback*cur = পরবর্তী_2;
+	    পরবর্তী_2 = cur->পরবর্তী_2;
 
-	    if (cur->cb_data.cb_rtn != 0) {
+	    যদি (cur->cb_তথ্য.cb_rtn != 0) {
 		  callback_execute(cur);
 		  prev = cur;
 
-	    } else if (prev == 0) {
-		  callbacks_ = next;
-		  cur->next = 0;
+	    } অন্যথা যদি (prev == 0) {
+		  callbacks_ = পরবর্তী_2;
+		  cur->পরবর্তী_2 = 0;
 		  delete cur;
 
-	    } else {
-		  assert(prev->next == cur);
-		  prev->next = next;
-		  cur->next = 0;
+	    } অন্যথা {
+		  প্রতিজ্ঞা(prev->পরবর্তী_2 == cur);
+		  prev->পরবর্তী_2 = পরবর্তী_2;
+		  cur->পরবর্তী_2 = 0;
 		  delete cur;
 	    }
       }

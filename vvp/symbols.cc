@@ -31,27 +31,27 @@
  * The key_strdup() function below allocates the strings from this
  * buffer, possibly making a new buffer if needed.
  */
-struct key_strings {
-      struct key_strings*next;
-      char data[64*1024 - sizeof(struct key_strings*)];
+কাঠামো চাবি_strings {
+      কাঠামো চাবি_strings*পরবর্তী_2;
+      অক্ষর তথ্য[64*1024 - আকার(কাঠামো চাবি_strings*)];
 };
 
-char*symbol_table_s::key_strdup_(const char*str)
+অক্ষর*প্রতীক_table_s::চাবি_strdup(ধ্রুবক অক্ষর*str)
 {
       unsigned len = strlen(str);
-      assert( (len+1) <= sizeof str_chunk->data );
+      প্রতিজ্ঞা( (len+1) <= আকার str_chunk->তথ্য );
 
-      if ( (len+1) > (sizeof str_chunk->data - str_used) ) {
-	    key_strings*tmp = new key_strings;
-	    tmp->next = str_chunk;
+      যদি ( (len+1) > (আকার str_chunk->তথ্য - str_used) ) {
+	    চাবি_strings*tmp = নতুন চাবি_strings;
+	    tmp->পরবর্তী_2 = str_chunk;
 	    str_chunk = tmp;
 	    str_used = 0;
       }
 
-      char*res = str_chunk->data + str_used;
+      অক্ষর*res = str_chunk->তথ্য + str_used;
       str_used += len + 1;
       strcpy(res, str);
-      return res;
+      ফেরত res;
 }
 
 /*
@@ -67,32 +67,32 @@ char*symbol_table_s::key_strdup_(const char*str)
  * simple binary search to find an item. Each key represents an item.
  */
 
-const unsigned leaf_width = 254;
-const unsigned node_width = 508;
+ধ্রুবক unsigned leaf_width = 254;
+ধ্রুবক unsigned গ্রন্থি_width = 508;
 
-struct tree_data_ {
-      char*key;
-      symbol_value_t val;
+কাঠামো বৃক্ষ_তথ্য {
+      অক্ষর*চাবি;
+      প্রতীক_মান_t val;
 };
 
-struct tree_node_ {
-      bool leaf_flag;
-      unsigned count;
-      struct tree_node_*parent;
+কাঠামো বৃক্ষ_গ্রন্থি {
+      যৌক্তিক leaf_flag;
+      unsigned গুনতি;
+      কাঠামো বৃক্ষ_গ্রন্থি*parent;
 
-      union {
-	    struct tree_data_ leaf[leaf_width];
-	    struct tree_node_ *child[node_width];
+      সংঘ {
+	    কাঠামো বৃক্ষ_তথ্য leaf[leaf_width];
+	    কাঠামো বৃক্ষ_গ্রন্থি *child[গ্রন্থি_width];
       };
 
 };
 
-static inline char* node_last_key(struct tree_node_*node)
+স্থির অন্তঃরেখ অক্ষর* গ্রন্থি_last_চাবি(কাঠামো বৃক্ষ_গ্রন্থি*গ্রন্থি)
 {
-      while (node->leaf_flag == false)
-	    node = node->child[node->count-1];
+      যখন (গ্রন্থি->leaf_flag == মিথ্যা)
+	    গ্রন্থি = গ্রন্থি->child[গ্রন্থি->গুনতি-1];
 
-      return node->leaf[node->count-1].key;
+      ফেরত গ্রন্থি->leaf[গ্রন্থি->গুনতি-1].চাবি;
 }
 
 /*
@@ -100,94 +100,94 @@ static inline char* node_last_key(struct tree_node_*node)
  * a root node, and initializing the pointers and members of the root
  * node.
  */
-symbol_table_s::symbol_table_s()
+প্রতীক_table_s::প্রতীক_table_s()
 {
-      root = new struct tree_node_;
-      root->leaf_flag = false;
-      root->count = 0;
-      root->parent = 0;
+      মূল = নতুন কাঠামো বৃক্ষ_গ্রন্থি;
+      মূল->leaf_flag = মিথ্যা;
+      মূল->গুনতি = 0;
+      মূল->parent = 0;
 
-      str_chunk = new key_strings;
-      str_chunk->next = 0;
+      str_chunk = নতুন চাবি_strings;
+      str_chunk->পরবর্তী_2 = 0;
       str_used = 0;
 }
 
-static void delete_symbol_node(struct tree_node_*cur)
+স্থির শূন্য delete_প্রতীক_গ্রন্থি(কাঠামো বৃক্ষ_গ্রন্থি*cur)
 {
-      if (! cur->leaf_flag) {
-	    for (unsigned idx = 0 ;  idx < cur->count ;  idx += 1)
-		  delete_symbol_node(cur->child[idx]);
+      যদি (! cur->leaf_flag) {
+	    জন্য (unsigned idx = 0 ;  idx < cur->গুনতি ;  idx += 1)
+		  delete_প্রতীক_গ্রন্থি(cur->child[idx]);
       }
 
       delete cur;
 }
 
 /* Do as split_leaf_ does, but for nodes. */
-static void split_node_(struct tree_node_*cur)
+স্থির শূন্য split_গ্রন্থি(কাঠামো বৃক্ষ_গ্রন্থি*cur)
 {
-      assert(!cur->leaf_flag);
-      if (cur->parent) assert(! cur->parent->leaf_flag);
+      প্রতিজ্ঞা(!cur->leaf_flag);
+      যদি (cur->parent) প্রতিজ্ঞা(! cur->parent->leaf_flag);
 
-      while (cur->count == node_width) {
+      যখন (cur->গুনতি == গ্রন্থি_width) {
 	      /* Create a new node to hold half the data from cur. */
-	    struct tree_node_ *new_node = new struct tree_node_;
-	    new_node->leaf_flag = false;
-	    new_node->count = cur->count / 2;
+	    কাঠামো বৃক্ষ_গ্রন্থি *new_গ্রন্থি = নতুন কাঠামো বৃক্ষ_গ্রন্থি;
+	    new_গ্রন্থি->leaf_flag = মিথ্যা;
+	    new_গ্রন্থি->গুনতি = cur->গুনতি / 2;
 	      /* cur is not root; new_node becomes sibling. */
-	    if (cur->parent) new_node->parent = cur->parent;
+	    যদি (cur->parent) new_গ্রন্থি->parent = cur->parent;
 
 	      /* Move the last half of the data from the end of the old node
 	       * to the beginning of the new node. At the same time, reduce
 	       * the size of the old node. */
-	    unsigned idx1 = new_node->count;
-	    unsigned idx2 = cur->count;
-	    while (idx1 > 0) {
+	    unsigned idx1 = new_গ্রন্থি->গুনতি;
+	    unsigned idx2 = cur->গুনতি;
+	    যখন (idx1 > 0) {
 		  idx1 -= 1;
 		  idx2 -= 1;
-		  new_node->child[idx1] = cur->child[idx2];
-		  new_node->child[idx1]->parent = new_node;
-		  cur->count -= 1;
+		  new_গ্রন্থি->child[idx1] = cur->child[idx2];
+		  new_গ্রন্থি->child[idx1]->parent = new_গ্রন্থি;
+		  cur->গুনতি -= 1;
 	    }
 
-	    assert(new_node->count > 0);
-	    assert(cur->count > 0);
+	    প্রতিজ্ঞা(new_গ্রন্থি->গুনতি > 0);
+	    প্রতিজ্ঞা(cur->গুনতি > 0);
 
-	    if (cur->parent == 0) {
+	    যদি (cur->parent == 0) {
 		    /* cur is root. Move first half of children to another
 		     * new node, and put the two new nodes in cur. The plan
 		     * here is to make cur into the new root and split its
 		     * contents into 2 children. */
 
-		  new_node->parent = cur;
-		  struct tree_node_*new2_node = new struct tree_node_;
-		  new2_node->leaf_flag = false;
-		  new2_node->count = cur->count;
-		  new2_node->parent = cur;
-		  for (unsigned idx = 0; idx < cur->count; idx += 1) {
-			new2_node->child[idx] = cur->child[idx];
-			new2_node->child[idx]->parent = new2_node;
+		  new_গ্রন্থি->parent = cur;
+		  কাঠামো বৃক্ষ_গ্রন্থি*new2_গ্রন্থি = নতুন কাঠামো বৃক্ষ_গ্রন্থি;
+		  new2_গ্রন্থি->leaf_flag = মিথ্যা;
+		  new2_গ্রন্থি->গুনতি = cur->গুনতি;
+		  new2_গ্রন্থি->parent = cur;
+		  জন্য (unsigned idx = 0; idx < cur->গুনতি; idx += 1) {
+			new2_গ্রন্থি->child[idx] = cur->child[idx];
+			new2_গ্রন্থি->child[idx]->parent = new2_গ্রন্থি;
 		  }
-		  cur->child[0] = new2_node;
-		  cur->child[1] = new_node;
-		  cur->count = 2;
+		  cur->child[0] = new2_গ্রন্থি;
+		  cur->child[1] = new_গ্রন্থি;
+		  cur->গুনতি = 2;
 		    /* no more ancestors, stop the while loop */
-		  break;
+		  বিরতি;
 	    }
 
 	      /* cur is not root. hook new_node to cur->parent. */
 	    unsigned idx = 0;
-	    while (cur->parent->child[idx] != cur) {
-		  assert(idx < cur->parent->count);
+	    যখন (cur->parent->child[idx] != cur) {
+		  প্রতিজ্ঞা(idx < cur->parent->গুনতি);
 		  idx += 1;
 	    }
 	    idx += 1;
 
-	    for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1) {
+	    জন্য (unsigned tmp = cur->parent->গুনতি ;  tmp > idx ;  tmp -= 1) {
 		  cur->parent->child[tmp] = cur->parent->child[tmp-1];
 	    }
 
-	    cur->parent->child[idx] = new_node;
-	    cur->parent->count += 1;
+	    cur->parent->child[idx] = new_গ্রন্থি;
+	    cur->parent->গুনতি += 1;
 
 	      /* check the ancestor */
 	    cur = cur->parent;
@@ -199,51 +199,51 @@ static void split_node_(struct tree_node_*cur)
  * the leaf keys into the new node, and add the new leaf into the
  * parent node.
  */
-static struct tree_node_* split_leaf_(struct tree_node_*cur)
+স্থির কাঠামো বৃক্ষ_গ্রন্থি* split_leaf_(কাঠামো বৃক্ষ_গ্রন্থি*cur)
 {
-      assert(cur->leaf_flag);
-      assert(cur->parent);
-      assert(! cur->parent->leaf_flag);
+      প্রতিজ্ঞা(cur->leaf_flag);
+      প্রতিজ্ঞা(cur->parent);
+      প্রতিজ্ঞা(! cur->parent->leaf_flag);
 
 	/* Create a new leaf to hold half the data from the old leaf. */
-      struct tree_node_*new_leaf = new struct tree_node_;
-      new_leaf->leaf_flag = true;
-      new_leaf->count = cur->count / 2;
+      কাঠামো বৃক্ষ_গ্রন্থি*new_leaf = নতুন কাঠামো বৃক্ষ_গ্রন্থি;
+      new_leaf->leaf_flag = সত্য;
+      new_leaf->গুনতি = cur->গুনতি / 2;
       new_leaf->parent = cur->parent;
 
 	/* Move the last half of the data from the end of the old leaf
 	   to the beginning of the new leaf. At the same time, reduce
 	   the size of the old leaf. */
-      unsigned idx1 = new_leaf->count;
-      unsigned idx2 = cur->count;
-      while (idx1 > 0) {
+      unsigned idx1 = new_leaf->গুনতি;
+      unsigned idx2 = cur->গুনতি;
+      যখন (idx1 > 0) {
 	    idx1 -= 1;
 	    idx2 -= 1;
 	    new_leaf->leaf[idx1] = cur->leaf[idx2];
-	    cur->count -= 1;
+	    cur->গুনতি -= 1;
       }
 
-      assert(new_leaf->count > 0);
-      assert(cur->count > 0);
+      প্রতিজ্ঞা(new_leaf->গুনতি > 0);
+      প্রতিজ্ঞা(cur->গুনতি > 0);
 
       unsigned idx = 0;
-      while (cur->parent->child[idx] != cur) {
-	    assert(idx < cur->parent->count);
+      যখন (cur->parent->child[idx] != cur) {
+	    প্রতিজ্ঞা(idx < cur->parent->গুনতি);
 	    idx += 1;
       }
 
       idx += 1;
 
-      for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1)
+      জন্য (unsigned tmp = cur->parent->গুনতি ;  tmp > idx ;  tmp -= 1)
 	    cur->parent->child[tmp] = cur->parent->child[tmp-1];
 
       cur->parent->child[idx] = new_leaf;
-      cur->parent->count += 1;
+      cur->parent->গুনতি += 1;
 
-      if (cur->parent->count == node_width)
-	    split_node_(cur->parent);
+      যদি (cur->parent->গুনতি == গ্রন্থি_width)
+	    split_গ্রন্থি(cur->parent);
 
-      return new_leaf;
+      ফেরত new_leaf;
 }
 
 
@@ -254,145 +254,145 @@ static struct tree_node_* split_leaf_(struct tree_node_*cur)
  * true.
  */
 
-symbol_value_t symbol_table_s::find_value_(struct tree_node_*cur,
-					   const char*key, symbol_value_t val,
-					   bool force_flag)
+প্রতীক_মান_t প্রতীক_table_s::find_মান(কাঠামো বৃক্ষ_গ্রন্থি*cur,
+					   ধ্রুবক অক্ষর*চাবি, প্রতীক_মান_t val,
+					   যৌক্তিক force_flag)
 {
-      if (cur->leaf_flag) {
+      যদি (cur->leaf_flag) {
 
 	    unsigned idx = 0;
-	    for (;;) {
+	    জন্য (;;) {
 		    /* If we run out of keys in the leaf, then add
 		       this at the end of the leaf. */
-		  if (idx == cur->count) {
-			cur->leaf[idx].key = key_strdup_(key);
+		  যদি (idx == cur->গুনতি) {
+			cur->leaf[idx].চাবি = চাবি_strdup(চাবি);
 			cur->leaf[idx].val = val;
-			cur->count += 1;
-			if (cur->count == leaf_width)
+			cur->গুনতি += 1;
+			যদি (cur->গুনতি == leaf_width)
 			      split_leaf_(cur);
 
-			return val;
+			ফেরত val;
 		  }
 
-		  int rc = strcmp(key, cur->leaf[idx].key);
+		  পূর্ণসংখ্যা rc = strcmp(চাবি, cur->leaf[idx].চাবি);
 
 		    /* If we found the key already in the table, then
 		       set the new value and break. */
-		  if (rc == 0) {
-			if (force_flag)
+		  যদি (rc == 0) {
+			যদি (force_flag)
 			      cur->leaf[idx].val = val;
-			return cur->leaf[idx].val;
+			ফেরত cur->leaf[idx].val;
 		  }
 
 		    /* If this key goes before the current key, then
 		       push all the following entries back and add
 		       this key here. */
-		  if (rc < 0) {
-			for (unsigned tmp = cur->count; tmp > idx; tmp -= 1)
+		  যদি (rc < 0) {
+			জন্য (unsigned tmp = cur->গুনতি; tmp > idx; tmp -= 1)
 			      cur->leaf[tmp] = cur->leaf[tmp-1];
 
-			cur->leaf[idx].key = key_strdup_(key);
+			cur->leaf[idx].চাবি = চাবি_strdup(চাবি);
 			cur->leaf[idx].val = val;
-			cur->count += 1;
-			if (cur->count == leaf_width)
+			cur->গুনতি += 1;
+			যদি (cur->গুনতি == leaf_width)
 			      split_leaf_(cur);
 
-			return val;
+			ফেরত val;
 		  }
 
 		  idx += 1;
 	    }
 
-      } else {
+      } অন্যথা {
 	      /* Do a binary search within the inner node. */
 	    unsigned min = 0;
-	    unsigned max = cur->count;
+	    unsigned max = cur->গুনতি;
 	    unsigned idx = max/2;
-	    for (;;) {
-		  int rc = strcmp(key, node_last_key(cur->child[idx]));
-		  if (rc == 0) {
-			return find_value_(cur->child[idx],
-					   key, val, force_flag);
+	    জন্য (;;) {
+		  পূর্ণসংখ্যা rc = strcmp(চাবি, গ্রন্থি_last_চাবি(cur->child[idx]));
+		  যদি (rc == 0) {
+			ফেরত find_মান(cur->child[idx],
+					   চাবি, val, force_flag);
 		  }
 
-		  if (rc > 0) {
+		  যদি (rc > 0) {
 			min = idx + 1;
-			if (min == cur->count)
-			      return find_value_(cur->child[idx],
-						 key, val, force_flag);
-			if (min == max)
-			      return find_value_(cur->child[max],
-						 key, val, force_flag);
+			যদি (min == cur->গুনতি)
+			      ফেরত find_মান(cur->child[idx],
+						 চাবি, val, force_flag);
+			যদি (min == max)
+			      ফেরত find_মান(cur->child[max],
+						 চাবি, val, force_flag);
 
 			idx = min + (max-min)/2;
 
-		  } else  {
+		  } অন্যথা  {
 			max = idx;
-			if (idx == min)
-			      return find_value_(cur->child[idx],
-						 key, val, force_flag);
+			যদি (idx == min)
+			      ফেরত find_মান(cur->child[idx],
+						 চাবি, val, force_flag);
 			idx = min + (max-min)/2;
 		  }
 	    }
       }
 
-      assert(0);
-      { symbol_value_t tmp;
+      প্রতিজ্ঞা(0);
+      { প্রতীক_মান_t tmp;
         tmp.ptr = 0;
-        return tmp;
+        ফেরত tmp;
       }
 }
 
-void symbol_table_s::sym_set_value(const char*key, symbol_value_t val)
+শূন্য প্রতীক_table_s::sym_set_মান(ধ্রুবক অক্ষর*চাবি, প্রতীক_মান_t val)
 {
-      if (root->count == 0) {
+      যদি (মূল->গুনতি == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
-	    cur->leaf_flag = true;
-	    cur->parent = root;
-	    cur->count = 1;
-	    cur->leaf[0].key = key_strdup_(key);
+	    কাঠামো বৃক্ষ_গ্রন্থি*cur = নতুন কাঠামো বৃক্ষ_গ্রন্থি;
+	    cur->leaf_flag = সত্য;
+	    cur->parent = মূল;
+	    cur->গুনতি = 1;
+	    cur->leaf[0].চাবি = চাবি_strdup(চাবি);
 	    cur->leaf[0].val = val;
 
-	    root->count = 1;
-	    root->child[0] = cur;
-      } else {
-	    find_value_(root, key, val, true);
+	    মূল->গুনতি = 1;
+	    মূল->child[0] = cur;
+      } অন্যথা {
+	    find_মান(মূল, চাবি, val, সত্য);
       }
 }
 
-symbol_value_t symbol_table_s::sym_get_value(const char*key)
+প্রতীক_মান_t প্রতীক_table_s::sym_get_মান(ধ্রুবক অক্ষর*চাবি)
 {
-      symbol_value_t def;
+      প্রতীক_মান_t def;
       def.ptr = 0;
 
-      if (root->count == 0) {
+      যদি (মূল->গুনতি == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
-	    cur->leaf_flag = true;
-	    cur->parent = root;
-	    cur->count = 1;
-	    cur->leaf[0].key = key_strdup_(key);
+	    কাঠামো বৃক্ষ_গ্রন্থি*cur = নতুন কাঠামো বৃক্ষ_গ্রন্থি;
+	    cur->leaf_flag = সত্য;
+	    cur->parent = মূল;
+	    cur->গুনতি = 1;
+	    cur->leaf[0].চাবি = চাবি_strdup(চাবি);
 	    cur->leaf[0].val = def;
 
-	    root->count = 1;
-	    root->child[0] = cur;
-	    return cur->leaf[0].val;
-      } else {
-	    return find_value_(root, key, def, false);
+	    মূল->গুনতি = 1;
+	    মূল->child[0] = cur;
+	    ফেরত cur->leaf[0].val;
+      } অন্যথা {
+	    ফেরত find_মান(মূল, চাবি, def, মিথ্যা);
       }
 }
 
-symbol_table_s::~symbol_table_s()
+প্রতীক_table_s::~প্রতীক_table_s()
 {
-      delete_symbol_node(root);
-      while (str_chunk) {
-	    key_strings*tmp = str_chunk;
-	    str_chunk = tmp->next;
+      delete_প্রতীক_গ্রন্থি(মূল);
+      যখন (str_chunk) {
+	    চাবি_strings*tmp = str_chunk;
+	    str_chunk = tmp->পরবর্তী_2;
 	    delete tmp;
       }
 }

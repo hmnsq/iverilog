@@ -49,37 +49,37 @@ class __vpiScope;
  * This class relies to the vvp_wide_fun_* classes in vvp_net.h.
  */
 
-class ufunc_core : public vvp_wide_fun_core {
+class ufunc_core : সর্বজনীন vvp_wide_fun_core {
 
-    public:
+    সর্বজনীন:
       ufunc_core(unsigned ow, vvp_net_t*ptr,
 		 unsigned nports, vvp_net_t**ports,
 		 vvp_code_t start_address,
 		 __vpiScope*call_scope,
-		 char*scope_label);
-      virtual ~ufunc_core() override =0;
+		 অক্ষর*scope_label);
+      আভাসী ~ufunc_core() override =0;
 
-      __vpiScope*call_scope() { return call_scope_; }
-      __vpiScope*func_scope() { return func_scope_; }
+      __vpiScope*call_scope() { ফেরত call_scope_; }
+      __vpiScope*func_scope() { ফেরত func_scope_; }
 
-      void assign_bits_to_ports(vvp_context_t context);
-      virtual void finish_thread() =0;
+      শূন্য assign_bits_to_ports(vvp_context_t context);
+      আভাসী শূন্য finish_thread() =0;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t port, ধ্রুবক vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-    protected:
-      void finish_thread_real_();
-      void finish_thread_vec4_();
+    সুরক্ষিত:
+      শূন্য finish_thread_real_();
+      শূন্য finish_thread_vec4_();
 
-    private:
-      void recv_vec4_from_inputs(unsigned port) override;
-      void recv_real_from_inputs(unsigned port) override;
+    ব্যক্তিগত:
+      শূন্য recv_vec4_from_inputs(unsigned port) override;
+      শূন্য recv_real_from_inputs(unsigned port) override;
 
-      void invoke_thread_(void);
+      শূন্য invoke_thread_(শূন্য);
 
 
-    private:
+    ব্যক্তিগত:
 	// output width of the function node.
       unsigned owid_;
 	// The vvp_net_t* objects for the function input ports. We use

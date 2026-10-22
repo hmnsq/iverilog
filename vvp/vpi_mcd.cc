@@ -29,7 +29,7 @@
 # include  <cstring>
 # include  "ivl_alloc.h"
 
-extern FILE* vpi_trace;
+বাহ্যিক FILE* vpi_trace;
 
 /*
  * This table keeps track of the MCD files. Note that there may be
@@ -45,28 +45,28 @@ extern FILE* vpi_trace;
 #define FD_IDX(fd)	((fd)&~(1U<<31))
 #define FD_INCR		32
 
-typedef struct mcd_entry {
+প্রকারলেখ কাঠামো mcd_entry {
 	FILE *fp;
-	char *filename;
+	অক্ষর *filename;
 } mcd_entry_s;
-static mcd_entry_s mcd_table[31];
-static mcd_entry_s *fd_table = NULL;
-static unsigned fd_table_len = 0;
+স্থির mcd_entry_s mcd_table[31];
+স্থির mcd_entry_s *fd_table = ফাঁকা;
+স্থির unsigned fd_table_len = 0;
 
-static FILE* logfile;
+স্থির FILE* logfile;
 
-bool vpip_mcd0_disable = false;
+যৌক্তিক vpip_mcd0_disable = মিথ্যা;
 
 /* Initialize mcd portion of vpi.  Must be called before
  * any vpi_mcd routines can be used.
  */
-void vpip_mcd_init(FILE *log)
+শূন্য vpip_mcd_init(FILE *log)
 {
       fd_table_len = FD_INCR;
-      fd_table = static_cast<mcd_entry_s *>(malloc(fd_table_len*sizeof(mcd_entry_s)));
-      for (unsigned idx = 0; idx < fd_table_len; idx += 1) {
-	    fd_table[idx].fp = NULL;
-	    fd_table[idx].filename = NULL;
+      fd_table = static_cast<mcd_entry_s *>(malloc(fd_table_len*আকার(mcd_entry_s)));
+      জন্য (unsigned idx = 0; idx < fd_table_len; idx += 1) {
+	    fd_table[idx].fp = ফাঁকা;
+	    fd_table[idx].filename = ফাঁকা;
       }
 
       mcd_table[0].fp = stdout;
@@ -83,26 +83,26 @@ void vpip_mcd_init(FILE *log)
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vpi_mcd_delete(void)
+শূন্য vpi_mcd_delete(শূন্য)
 {
-      free(mcd_table[0].filename);
-      mcd_table[0].filename = NULL;
-      mcd_table[0].fp = NULL;
+      মুক্ত(mcd_table[0].filename);
+      mcd_table[0].filename = ফাঁকা;
+      mcd_table[0].fp = ফাঁকা;
 
-      free(fd_table[0].filename);
-      fd_table[0].filename = NULL;
-      fd_table[0].fp = NULL;
+      মুক্ত(fd_table[0].filename);
+      fd_table[0].filename = ফাঁকা;
+      fd_table[0].fp = ফাঁকা;
 
-      free(fd_table[1].filename);
-      fd_table[1].filename = NULL;
-      fd_table[1].fp = NULL;
+      মুক্ত(fd_table[1].filename);
+      fd_table[1].filename = ফাঁকা;
+      fd_table[1].fp = ফাঁকা;
 
-      free(fd_table[2].filename);
-      fd_table[2].filename = NULL;
-      fd_table[2].fp = NULL;
+      মুক্ত(fd_table[2].filename);
+      fd_table[2].filename = ফাঁকা;
+      fd_table[2].fp = ফাঁকা;
 
-      free(fd_table);
-      fd_table = NULL;
+      মুক্ত(fd_table);
+      fd_table = ফাঁকা;
       fd_table_len = 0;
 }
 #endif
@@ -110,183 +110,183 @@ void vpi_mcd_delete(void)
 /*
  * Close one or more channels. We refuse to close the preopened ones.
  */
-extern "C" PLI_UINT32 vpi_mcd_close(PLI_UINT32 mcd)
+বাহ্যিক "C" PLI_UINT32 vpi_mcd_close(PLI_UINT32 mcd)
 {
-      int rc = 0;
+      পূর্ণসংখ্যা rc = 0;
 
-      if (IS_MCD(mcd)) {
-	    if (mcd & 1) rc |= 1;
-	    for(int i = 1; i < 31; i++) {
-		  if ((mcd>>i) & 1) {
-			if (mcd_table[i].fp) {
-			      if (fclose(mcd_table[i].fp)) rc |= 1<<i;
-			      free(mcd_table[i].filename);
-			      mcd_table[i].fp = NULL;
-			      mcd_table[i].filename = NULL;
-			} else {
+      যদি (IS_MCD(mcd)) {
+	    যদি (mcd & 1) rc |= 1;
+	    জন্য(পূর্ণসংখ্যা i = 1; i < 31; i++) {
+		  যদি ((mcd>>i) & 1) {
+			যদি (mcd_table[i].fp) {
+			      যদি (fclose(mcd_table[i].fp)) rc |= 1<<i;
+			      মুক্ত(mcd_table[i].filename);
+			      mcd_table[i].fp = ফাঁকা;
+			      mcd_table[i].filename = ফাঁকা;
+			} অন্যথা {
 			      rc |= 1<<i;
 			}
 		  }
 	    }
-      } else {
+      } অন্যথা {
 	    unsigned idx = FD_IDX(mcd);
-	    if (idx > 2 && idx < fd_table_len && fd_table[idx].fp) {
-		  if (fclose(fd_table[idx].fp)) rc = mcd;
-		  free(fd_table[idx].filename);
-		  fd_table[idx].fp = NULL;
-		  fd_table[idx].filename = NULL;
-	    } else rc = mcd;
+	    যদি (idx > 2 && idx < fd_table_len && fd_table[idx].fp) {
+		  যদি (fclose(fd_table[idx].fp)) rc = mcd;
+		  মুক্ত(fd_table[idx].filename);
+		  fd_table[idx].fp = ফাঁকা;
+		  fd_table[idx].filename = ফাঁকা;
+	    } অন্যথা rc = mcd;
       }
-      return rc;
+      ফেরত rc;
 }
 
-extern "C" char *vpi_mcd_name(PLI_UINT32 mcd)
+বাহ্যিক "C" অক্ষর *vpi_mcd_name(PLI_UINT32 mcd)
 {
-	if (IS_MCD(mcd)) {
-		for(int i = 0; i < 31; i++) {
-			if((mcd>>i) & 1)
-				return mcd_table[i].filename;
+	যদি (IS_MCD(mcd)) {
+		জন্য(পূর্ণসংখ্যা i = 0; i < 31; i++) {
+			যদি((mcd>>i) & 1)
+				ফেরত mcd_table[i].filename;
 		}
-	} else {
+	} অন্যথা {
 		unsigned idx = FD_IDX(mcd);
-		if (idx < fd_table_len)
-			return fd_table[idx].filename;
+		যদি (idx < fd_table_len)
+			ফেরত fd_table[idx].filename;
 	}
-	return NULL;
+	ফেরত ফাঁকা;
 }
 
-extern "C" PLI_UINT32 vpi_mcd_open(char *name)
+বাহ্যিক "C" PLI_UINT32 vpi_mcd_open(অক্ষর *name)
 {
-	int i;
+	পূর্ণসংখ্যা i;
 
-	for(i = 0; i < 31; i++) {
-		if(mcd_table[i].filename == NULL)
-			goto got_entry;
+	জন্য(i = 0; i < 31; i++) {
+		যদি(mcd_table[i].filename == ফাঁকা)
+			যাও got_entry;
 	}
-	return 0;  /* too many open mcd's */
+	ফেরত 0;  /* too many open mcd's */
 
 got_entry:
-#if defined(__GNUC__)
+#যদি defined(__GNUC__)
 	mcd_table[i].fp = fopen(name, "w");
-#else
-	if (strcmp(name, "/dev/null") != 0)
+#অন্যথা
+	যদি (strcmp(name, "/dev/null") != 0)
 		mcd_table[i].fp = fopen(name, "w");
-	else
+	অন্যথা
 		mcd_table[i].fp = fopen("nul", "w");
 #endif
-	if(mcd_table[i].fp == NULL)
-		return 0;
+	যদি(mcd_table[i].fp == ফাঁকা)
+		ফেরত 0;
 	mcd_table[i].filename = strdup(name);
 
-	if (vpi_trace) {
+	যদি (vpi_trace) {
 	      fprintf(vpi_trace, "vpi_mcd_open(%s) --> 0x%08x\n",
 		      name, 1 << i);
 	}
 
-	return 1<<i;
+	ফেরত 1<<i;
 }
 
-extern "C" PLI_INT32
-vpi_mcd_vprintf(PLI_UINT32 mcd, const char*fmt, va_list ap)
+বাহ্যিক "C" PLI_INT32
+vpi_mcd_vprintf(PLI_UINT32 mcd, ধ্রুবক অক্ষর*fmt, va_list ap)
 {
-      char buffer[4096];
-      char *buf_ptr = buffer;
-      int rc = 0;
-      bool need_free = false;
+      অক্ষর বাফার[4096];
+      অক্ষর *buf_ptr = বাফার;
+      পূর্ণসংখ্যা rc = 0;
+      যৌক্তিক need_free = মিথ্যা;
       va_list saved_ap;
 
-      if (!IS_MCD(mcd)) return EOF;
+      যদি (!IS_MCD(mcd)) ফেরত EOF;
 
-      if (vpi_trace) {
+      যদি (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_mcd_vprintf(0x%08x, %s, ...);\n",
-		    (unsigned int)mcd, fmt);
+		    (unsigned পূর্ণসংখ্যা)mcd, fmt);
       }
 
       va_copy(saved_ap, ap);
-      rc = vsnprintf(buffer, sizeof buffer, fmt, ap);
-      assert(rc >= 0);
+      rc = vsnprintf(বাফার, আকার বাফার, fmt, ap);
+      প্রতিজ্ঞা(rc >= 0);
 	/*
 	 * If rc is greater than sizeof buffer then the result was truncated
 	 * so the print needs to be redone with a larger buffer (very rare).
 	 */
-      if ((unsigned) rc >= sizeof buffer) {
-	    buf_ptr = static_cast<char *>(malloc(rc + 1));
-	    need_free = true;
+      যদি ((unsigned) rc >= আকার বাফার) {
+	    buf_ptr = static_cast<অক্ষর *>(malloc(rc + 1));
+	    need_free = সত্য;
 	    rc = vsnprintf(buf_ptr, rc+1, fmt, saved_ap);
       }
       va_end(saved_ap);
 
-      for(int i = 0; i < 31; i++) {
-	    if((mcd>>i) & 1) {
-		  if(mcd_table[i].fp) {
-			if (i == 0) {
-			      if (logfile)
+      জন্য(পূর্ণসংখ্যা i = 0; i < 31; i++) {
+	    যদি((mcd>>i) & 1) {
+		  যদি(mcd_table[i].fp) {
+			যদি (i == 0) {
+			      যদি (logfile)
 				    fputs(buf_ptr, logfile);
-			      if (vpip_mcd0_disable)
-				    continue;
+			      যদি (vpip_mcd0_disable)
+				    চালু;
 			}
 			fputs(buf_ptr, mcd_table[i].fp);
-		  } else {
+		  } অন্যথা {
 			rc = EOF;
 		  }
 	    }
       }
-      if (need_free) free(buf_ptr);
+      যদি (need_free) মুক্ত(buf_ptr);
 
-      return rc;
+      ফেরত rc;
 }
 
-extern "C" PLI_INT32 vpi_mcd_printf(PLI_UINT32 mcd, const char *fmt, ...)
+বাহ্যিক "C" PLI_INT32 vpi_mcd_printf(PLI_UINT32 mcd, ধ্রুবক অক্ষর *fmt, ...)
 {
       va_list ap;
       va_start(ap, fmt);
-      int r = vpi_mcd_vprintf(mcd,fmt,ap);
+      পূর্ণসংখ্যা r = vpi_mcd_vprintf(mcd,fmt,ap);
       va_end(ap);
-      return r;
+      ফেরত r;
 }
 
-extern "C" void vpip_mcd_rawwrite(PLI_UINT32 mcd, const char*buf, size_t cnt)
+বাহ্যিক "C" শূন্য vpip_mcd_rawwrite(PLI_UINT32 mcd, ধ্রুবক অক্ষর*buf, size_t cnt)
 {
-      if (!IS_MCD(mcd)) return;
+      যদি (!IS_MCD(mcd)) ফেরত;
 
-      for(int idx = 0; idx < 31; idx += 1) {
-	    if (((mcd>>idx) & 1) == 0)
-		  continue;
+      জন্য(পূর্ণসংখ্যা idx = 0; idx < 31; idx += 1) {
+	    যদি (((mcd>>idx) & 1) == 0)
+		  চালু;
 
-	    if (mcd_table[idx].fp == 0)
-		  continue;
+	    যদি (mcd_table[idx].fp == 0)
+		  চালু;
 
-	    if (idx == 0) {
-		  if (logfile)
+	    যদি (idx == 0) {
+		  যদি (logfile)
 			fwrite(buf, 1, cnt, logfile);
-		  if (vpip_mcd0_disable)
-			continue;
+		  যদি (vpip_mcd0_disable)
+			চালু;
 	    }
 	    fwrite(buf, 1, cnt, mcd_table[idx].fp);
       }
 }
 
-extern "C" PLI_INT32 vpi_mcd_flush(PLI_UINT32 mcd)
+বাহ্যিক "C" PLI_INT32 vpi_mcd_flush(PLI_UINT32 mcd)
 {
-	int rc = 0;
+	পূর্ণসংখ্যা rc = 0;
 
-	if (IS_MCD(mcd)) {
-		for(int i = 0; i < 31; i++) {
-			if((mcd>>i) & 1) {
-				if (i == 0) {
-				      if (logfile)
+	যদি (IS_MCD(mcd)) {
+		জন্য(পূর্ণসংখ্যা i = 0; i < 31; i++) {
+			যদি((mcd>>i) & 1) {
+				যদি (i == 0) {
+				      যদি (logfile)
 					    fflush(logfile);
-				      if (vpip_mcd0_disable)
-					    continue;
+				      যদি (vpip_mcd0_disable)
+					    চালু;
 				}
-				if (fflush(mcd_table[i].fp)) rc |= 1<<i;
+				যদি (fflush(mcd_table[i].fp)) rc |= 1<<i;
 			}
 		}
-	} else {
+	} অন্যথা {
 		unsigned idx = FD_IDX(mcd);
-		if (idx < fd_table_len) rc = fflush(fd_table[idx].fp);
+		যদি (idx < fd_table_len) rc = fflush(fd_table[idx].fp);
 	}
-	return rc;
+	ফেরত rc;
 }
 
 /*
@@ -300,47 +300,47 @@ extern "C" PLI_INT32 vpi_mcd_flush(PLI_UINT32 mcd)
  * descriptors are distinct from the mcd descriptors, so uses a
  * different fd table.
  */
-extern "C" PLI_INT32 vpi_fopen(const char*name, const char*mode)
+বাহ্যিক "C" PLI_INT32 vpi_fopen(ধ্রুবক অক্ষর*name, ধ্রুবক অক্ষর*mode)
 {
       unsigned i;
-      for (i = 0; i < fd_table_len; i += 1) {
-	    if (fd_table[i].filename == NULL) goto got_entry;
+      জন্য (i = 0; i < fd_table_len; i += 1) {
+	    যদি (fd_table[i].filename == ফাঁকা) যাও got_entry;
       }
 	/* We need to allocate more table entries, but to keep things */
 	/* sane we'll hard limit this to 1024 file descriptors total. */
-      if (fd_table_len >= 1024) {
+      যদি (fd_table_len >= 1024) {
 	    vpi_printf("WARNING: Icarus only supports 1024 open files!\n");
-	    return 0;
+	    ফেরত 0;
       }
       fd_table_len += FD_INCR;
       fd_table = static_cast<mcd_entry_s *>
-                 (realloc(fd_table, fd_table_len*sizeof(mcd_entry_s)));
-      for (unsigned idx = i; idx < fd_table_len; idx += 1) {
-	    fd_table[idx].fp = NULL;
-	    fd_table[idx].filename = NULL;
+                 (realloc(fd_table, fd_table_len*আকার(mcd_entry_s)));
+      জন্য (unsigned idx = i; idx < fd_table_len; idx += 1) {
+	    fd_table[idx].fp = ফাঁকা;
+	    fd_table[idx].filename = ফাঁকা;
       }
 
 got_entry:
 #ifndef _MSC_VER
 	  fd_table[i].fp = fopen(name, mode);
-#else // Changed for MSVC++ so vpi/pr723.v will pass.
-	  if(strcmp(name, "/dev/null") != 0)
+#অন্যথা // Changed for MSVC++ so vpi/pr723.v will pass.
+	  যদি(strcmp(name, "/dev/null") != 0)
 		fd_table[i].fp = fopen(name, mode);
-	  else
+	  অন্যথা
 		fd_table[i].fp = fopen("nul", mode);
 #endif
-      if (fd_table[i].fp == NULL) return 0;
+      যদি (fd_table[i].fp == ফাঁকা) ফেরত 0;
       fd_table[i].filename = strdup(name);
-      return ((1U<<31)|i);
+      ফেরত ((1U<<31)|i);
 }
 
-extern "C" FILE *vpi_get_file(PLI_INT32 fd)
+বাহ্যিক "C" FILE *vpi_get_file(PLI_INT32 fd)
 {
 	// Only deal with FD's
-      if (IS_MCD(fd)) return NULL;
+      যদি (IS_MCD(fd)) ফেরত ফাঁকা;
 
 	// Only know about fd_table_len indices
-      if (FD_IDX(fd) >= fd_table_len) return NULL;
+      যদি (FD_IDX(fd) >= fd_table_len) ফেরত ফাঁকা;
 
-      return fd_table[FD_IDX(fd)].fp;
+      ফেরত fd_table[FD_IDX(fd)].fp;
 }
