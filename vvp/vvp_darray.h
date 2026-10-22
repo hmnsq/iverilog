@@ -25,256 +25,256 @@
 # include  <string>
 # include  <vector>
 
-class vvp_darray : public vvp_object {
+class vvp_darray : সার্বজনিক vvp_object {
 
-    public:
-      inline vvp_darray() { }
-      virtual ~vvp_darray() override;
+    সার্বজনিক:
+      অন্তঃস্থ vvp_darray() { }
+      আভাস ~vvp_darray() override;
 
-      virtual size_t get_size(void) const =0;
+      আভাস size_t get_size(শূন্য) ধ্রুব =0;
 
-      virtual void set_word(unsigned adr, const vvp_vector4_t&value);
-      virtual void get_word(unsigned adr, vvp_vector4_t&value);
+      আভাস শূন্য set_word(unsigned adr, ধ্রুব vvp_vector4_t&মান);
+      আভাস শূন্য get_word(unsigned adr, vvp_vector4_t&মান);
 
-      virtual void set_word(unsigned adr, double value);
-      virtual void get_word(unsigned adr, double&value);
+      আভাস শূন্য set_word(unsigned adr, দ্বিগুণ মান);
+      আভাস শূন্য get_word(unsigned adr, দ্বিগুণ&মান);
 
-      virtual void set_word(unsigned adr, const std::string&value);
-      virtual void get_word(unsigned adr, std::string&value);
+      আভাস শূন্য set_word(unsigned adr, ধ্রুব std::string&মান);
+      আভাস শূন্য get_word(unsigned adr, std::string&মান);
 
-      virtual void set_word(unsigned adr, const vvp_object_t&value);
-      virtual void get_word(unsigned adr, vvp_object_t&value);
+      আভাস শূন্য set_word(unsigned adr, ধ্রুব vvp_object_t&মান);
+      আভাস শূন্য get_word(unsigned adr, vvp_object_t&মান);
 
-      virtual vvp_vector4_t get_bitstream(bool as_vec4);
+      আভাস vvp_vector4_t get_bitstream(bool as_vec4);
 
 	/* In-place element order reversal (dynamic arrays and queues). */
-      virtual void reverse_elems(void);
+      আভাস শূন্য reverse_elems(শূন্য);
 
 	/* sort: ascending if true, descending if false; shuffle randomizes. */
-      virtual void sort_elems(bool ascending);
-      virtual void shuffle_elems(void);
+      আভাস শূন্য sort_elems(bool ascending);
+      আভাস শূন্য shuffle_elems(শূন্য);
 };
 
-template <class TYPE> class vvp_darray_atom : public vvp_darray {
+template <class TYPE> class vvp_darray_atom : সার্বজনিক vvp_darray {
 
-    public:
-      explicit inline vvp_darray_atom(size_t siz) : array_(siz) { }
+    সার্বজনিক:
+      explicit অন্তঃস্থ vvp_darray_atom(size_t siz) : array_(siz) { }
       ~vvp_darray_atom() override;
 
-      size_t get_size(void) const override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
-      void set_word(unsigned adr, const vvp_vector4_t&value) override;
-      void get_word(unsigned adr, vvp_vector4_t&value) override;
-      void shallow_copy(const vvp_object*obj) override;
-      vvp_object* duplicate(void) const override;
+      size_t get_size(শূন্য) ধ্রুব override;
+      শূন্য reverse_elems(শূন্য) override;
+      শূন্য sort_elems(bool ascending) override;
+      শূন্য shuffle_elems(শূন্য) override;
+      শূন্য set_word(unsigned adr, ধ্রুব vvp_vector4_t&মান) override;
+      শূন্য get_word(unsigned adr, vvp_vector4_t&মান) override;
+      শূন্য shallow_copy(ধ্রুব vvp_object*obj) override;
+      vvp_object* duplicate(শূন্য) ধ্রুব override;
       vvp_vector4_t get_bitstream(bool as_vec4) override;
 
-    private:
+    গুপ্ত:
       std::vector<TYPE> array_;
 };
 
-class vvp_darray_vec4 : public vvp_darray {
+class vvp_darray_vec4 : সার্বজনিক vvp_darray {
 
-    public:
-      inline vvp_darray_vec4(size_t siz, unsigned word_wid) :
+    সার্বজনিক:
+      অন্তঃস্থ vvp_darray_vec4(size_t siz, unsigned word_wid) :
                              array_(siz), word_wid_(word_wid) { }
       ~vvp_darray_vec4() override;
 
-      size_t get_size(void) const override;
-      void set_word(unsigned adr, const vvp_vector4_t&value) override;
-      void get_word(unsigned adr, vvp_vector4_t&value) override;
-      void shallow_copy(const vvp_object*obj) override;
-      vvp_object* duplicate(void) const override;
+      size_t get_size(শূন্য) ধ্রুব override;
+      শূন্য set_word(unsigned adr, ধ্রুব vvp_vector4_t&মান) override;
+      শূন্য get_word(unsigned adr, vvp_vector4_t&মান) override;
+      শূন্য shallow_copy(ধ্রুব vvp_object*obj) override;
+      vvp_object* duplicate(শূন্য) ধ্রুব override;
       vvp_vector4_t get_bitstream(bool as_vec4) override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+      শূন্য reverse_elems(শূন্য) override;
+      শূন্য sort_elems(bool ascending) override;
+      শূন্য shuffle_elems(শূন্য) override;
 
-    private:
+    গুপ্ত:
       std::vector<vvp_vector4_t> array_;
       unsigned word_wid_;
 };
 
-class vvp_darray_vec2 : public vvp_darray {
+class vvp_darray_vec2 : সার্বজনিক vvp_darray {
 
-    public:
-      inline vvp_darray_vec2(size_t siz, unsigned word_wid) :
+    সার্বজনিক:
+      অন্তঃস্থ vvp_darray_vec2(size_t siz, unsigned word_wid) :
                              array_(siz), word_wid_(word_wid) { }
       ~vvp_darray_vec2() override;
 
-      size_t get_size(void) const override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
-      void set_word(unsigned adr, const vvp_vector4_t&value) override;
-      void get_word(unsigned adr, vvp_vector4_t&value) override;
-      void shallow_copy(const vvp_object*obj) override;
+      size_t get_size(শূন্য) ধ্রুব override;
+      শূন্য reverse_elems(শূন্য) override;
+      শূন্য sort_elems(bool ascending) override;
+      শূন্য shuffle_elems(শূন্য) override;
+      শূন্য set_word(unsigned adr, ধ্রুব vvp_vector4_t&মান) override;
+      শূন্য get_word(unsigned adr, vvp_vector4_t&মান) override;
+      শূন্য shallow_copy(ধ্রুব vvp_object*obj) override;
       vvp_vector4_t get_bitstream(bool as_vec4) override;
 
-    private:
+    গুপ্ত:
       std::vector<vvp_vector2_t> array_;
       unsigned word_wid_;
 };
 
-class vvp_darray_real : public vvp_darray {
+class vvp_darray_real : সার্বজনিক vvp_darray {
 
-    public:
-      explicit inline vvp_darray_real(size_t siz) : array_(siz) { }
+    সার্বজনিক:
+      explicit অন্তঃস্থ vvp_darray_real(size_t siz) : array_(siz) { }
       ~vvp_darray_real() override;
 
-      size_t get_size(void) const override;
-      void set_word(unsigned adr, double value) override;
-      void get_word(unsigned adr, double&value) override;
-      void shallow_copy(const vvp_object*obj) override;
-      vvp_object* duplicate(void) const override;
+      size_t get_size(শূন্য) ধ্রুব override;
+      শূন্য set_word(unsigned adr, দ্বিগুণ মান) override;
+      শূন্য get_word(unsigned adr, দ্বিগুণ&মান) override;
+      শূন্য shallow_copy(ধ্রুব vvp_object*obj) override;
+      vvp_object* duplicate(শূন্য) ধ্রুব override;
       vvp_vector4_t get_bitstream(bool as_vec4) override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+      শূন্য reverse_elems(শূন্য) override;
+      শূন্য sort_elems(bool ascending) override;
+      শূন্য shuffle_elems(শূন্য) override;
 
-    private:
-      std::vector<double> array_;
+    গুপ্ত:
+      std::vector<দ্বিগুণ> array_;
 };
 
-class vvp_darray_string : public vvp_darray {
+class vvp_darray_string : সার্বজনিক vvp_darray {
 
-    public:
-      explicit inline vvp_darray_string(size_t siz) : array_(siz) { }
+    সার্বজনিক:
+      explicit অন্তঃস্থ vvp_darray_string(size_t siz) : array_(siz) { }
       ~vvp_darray_string() override;
 
-      size_t get_size(void) const override;
-      void set_word(unsigned adr, const std::string&value) override;
-      void get_word(unsigned adr, std::string&value) override;
-      void shallow_copy(const vvp_object*obj) override;
-      vvp_object* duplicate(void) const override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+      size_t get_size(শূন্য) ধ্রুব override;
+      শূন্য set_word(unsigned adr, ধ্রুব std::string&মান) override;
+      শূন্য get_word(unsigned adr, std::string&মান) override;
+      শূন্য shallow_copy(ধ্রুব vvp_object*obj) override;
+      vvp_object* duplicate(শূন্য) ধ্রুব override;
+      শূন্য reverse_elems(শূন্য) override;
+      শূন্য sort_elems(bool ascending) override;
+      শূন্য shuffle_elems(শূন্য) override;
 
-    private:
+    গুপ্ত:
       std::vector<std::string> array_;
 };
 
-class vvp_darray_object : public vvp_darray {
+class vvp_darray_object : সার্বজনিক vvp_darray {
 
-    public:
-      explicit inline vvp_darray_object(size_t siz) : array_(siz) { }
+    সার্বজনিক:
+      explicit অন্তঃস্থ vvp_darray_object(size_t siz) : array_(siz) { }
       ~vvp_darray_object() override;
 
-      size_t get_size(void) const override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
-      void set_word(unsigned adr, const vvp_object_t&value) override;
-      void get_word(unsigned adr, vvp_object_t&value) override;
-      void shallow_copy(const vvp_object*obj) override;
+      size_t get_size(শূন্য) ধ্রুব override;
+      শূন্য reverse_elems(শূন্য) override;
+      শূন্য sort_elems(bool ascending) override;
+      শূন্য shuffle_elems(শূন্য) override;
+      শূন্য set_word(unsigned adr, ধ্রুব vvp_object_t&মান) override;
+      শূন্য get_word(unsigned adr, vvp_object_t&মান) override;
+      শূন্য shallow_copy(ধ্রুব vvp_object*obj) override;
       //virtual vvp_object* duplicate(void) const;
 
-    private:
+    গুপ্ত:
       std::vector<vvp_object_t> array_;
 };
 
-class vvp_queue : public vvp_darray {
+class vvp_queue : সার্বজনিক vvp_darray {
 
-    public:
-      inline vvp_queue(void) { }
+    সার্বজনিক:
+      অন্তঃস্থ vvp_queue(শূন্য) { }
       ~vvp_queue() override;
 
-      virtual size_t get_size(void) const override =0;
-      virtual void copy_elems(vvp_object_t src, unsigned max_size);
+      আভাস size_t get_size(শূন্য) ধ্রুব override =0;
+      আভাস শূন্য copy_elems(vvp_object_t src, unsigned max_size);
 
-      virtual void set_word_max(unsigned adr, const vvp_vector4_t&value, unsigned max_size);
-      virtual void insert(unsigned idx, const vvp_vector4_t&value, unsigned max_size);
-      virtual void push_back(const vvp_vector4_t&value, unsigned max_size);
-      virtual void push_front(const vvp_vector4_t&value, unsigned max_size);
+      আভাস শূন্য set_word_max(unsigned adr, ধ্রুব vvp_vector4_t&মান, unsigned max_size);
+      আভাস শূন্য ঢোকাও(unsigned idx, ধ্রুব vvp_vector4_t&মান, unsigned max_size);
+      আভাস শূন্য ঠেলো_back(ধ্রুব vvp_vector4_t&মান, unsigned max_size);
+      আভাস শূন্য ঠেলো_front(ধ্রুব vvp_vector4_t&মান, unsigned max_size);
 
-      virtual void set_word_max(unsigned adr, double value, unsigned max_size);
-      virtual void insert(unsigned idx, double value, unsigned max_size);
-      virtual void push_back(double value, unsigned max_size);
-      virtual void push_front(double value, unsigned max_size);
+      আভাস শূন্য set_word_max(unsigned adr, দ্বিগুণ মান, unsigned max_size);
+      আভাস শূন্য ঢোকাও(unsigned idx, দ্বিগুণ মান, unsigned max_size);
+      আভাস শূন্য ঠেলো_back(দ্বিগুণ মান, unsigned max_size);
+      আভাস শূন্য ঠেলো_front(দ্বিগুণ মান, unsigned max_size);
 
-      virtual void set_word_max(unsigned adr, const std::string&value, unsigned max_size);
-      virtual void insert(unsigned idx, const std::string&value, unsigned max_size);
-      virtual void push_back(const std::string&value, unsigned max_size);
-      virtual void push_front(const std::string&value, unsigned max_size);
+      আভাস শূন্য set_word_max(unsigned adr, ধ্রুব std::string&মান, unsigned max_size);
+      আভাস শূন্য ঢোকাও(unsigned idx, ধ্রুব std::string&মান, unsigned max_size);
+      আভাস শূন্য ঠেলো_back(ধ্রুব std::string&মান, unsigned max_size);
+      আভাস শূন্য ঠেলো_front(ধ্রুব std::string&মান, unsigned max_size);
 
-      virtual void pop_back(void) =0;
-      virtual void pop_front(void)=0;
-      virtual void erase(unsigned idx)=0;
-      virtual void erase_tail(unsigned idx)=0;
+      আভাস শূন্য বের_করো_back(শূন্য) =0;
+      আভাস শূন্য বের_করো_front(শূন্য)=0;
+      আভাস শূন্য erase(unsigned idx)=0;
+      আভাস শূন্য erase_tail(unsigned idx)=0;
 };
 
-class vvp_queue_real : public vvp_queue {
+class vvp_queue_real : সার্বজনিক vvp_queue {
 
-    public:
-      size_t get_size(void) const override { return queue.size(); };
-      void copy_elems(vvp_object_t src, unsigned max_size) override;
-      void set_word_max(unsigned adr, double value, unsigned max_size) override;
-      void set_word(unsigned adr, double value) override;
-      void get_word(unsigned adr, double&value) override;
-      void insert(unsigned idx, double value, unsigned max_size) override;
-      void push_back(double value, unsigned max_size) override;
-      void push_front(double value, unsigned max_size) override;
-      void pop_back(void) override { queue.pop_back(); };
-      void pop_front(void) override { queue.pop_front(); };
-      void erase(unsigned idx) override;
-      void erase_tail(unsigned idx) override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+    সার্বজনিক:
+      size_t get_size(শূন্য) ধ্রুব override { প্রত্যাগম queue.size(); };
+      শূন্য copy_elems(vvp_object_t src, unsigned max_size) override;
+      শূন্য set_word_max(unsigned adr, দ্বিগুণ মান, unsigned max_size) override;
+      শূন্য set_word(unsigned adr, দ্বিগুণ মান) override;
+      শূন্য get_word(unsigned adr, দ্বিগুণ&মান) override;
+      শূন্য ঢোকাও(unsigned idx, দ্বিগুণ মান, unsigned max_size) override;
+      শূন্য ঠেলো_back(দ্বিগুণ মান, unsigned max_size) override;
+      শূন্য ঠেলো_front(দ্বিগুণ মান, unsigned max_size) override;
+      শূন্য বের_করো_back(শূন্য) override { queue.বের_করো_back(); };
+      শূন্য বের_করো_front(শূন্য) override { queue.বের_করো_front(); };
+      শূন্য erase(unsigned idx) override;
+      শূন্য erase_tail(unsigned idx) override;
+      শূন্য reverse_elems(শূন্য) override;
+      শূন্য sort_elems(bool ascending) override;
+      শূন্য shuffle_elems(শূন্য) override;
 
-    private:
-      std::deque<double> queue;
+    গুপ্ত:
+      std::deque<দ্বিগুণ> queue;
 };
 
-class vvp_queue_string : public vvp_queue {
+class vvp_queue_string : সার্বজনিক vvp_queue {
 
-    public:
-      size_t get_size(void) const override { return queue.size(); };
-      void copy_elems(vvp_object_t src, unsigned max_size) override;
-      void set_word_max(unsigned adr, const std::string&value, unsigned max_size) override;
-      void set_word(unsigned adr, const std::string&value) override;
-      void get_word(unsigned adr, std::string&value) override;
-      void insert(unsigned idx, const std::string&value, unsigned max_size) override;
-      void push_back(const std::string&value, unsigned max_size) override;
-      void push_front(const std::string&value, unsigned max_size) override;
-      void pop_back(void) override { queue.pop_back(); };
-      void pop_front(void) override { queue.pop_front(); };
-      void erase(unsigned idx) override;
-      void erase_tail(unsigned idx) override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+    সার্বজনিক:
+      size_t get_size(শূন্য) ধ্রুব override { প্রত্যাগম queue.size(); };
+      শূন্য copy_elems(vvp_object_t src, unsigned max_size) override;
+      শূন্য set_word_max(unsigned adr, ধ্রুব std::string&মান, unsigned max_size) override;
+      শূন্য set_word(unsigned adr, ধ্রুব std::string&মান) override;
+      শূন্য get_word(unsigned adr, std::string&মান) override;
+      শূন্য ঢোকাও(unsigned idx, ধ্রুব std::string&মান, unsigned max_size) override;
+      শূন্য ঠেলো_back(ধ্রুব std::string&মান, unsigned max_size) override;
+      শূন্য ঠেলো_front(ধ্রুব std::string&মান, unsigned max_size) override;
+      শূন্য বের_করো_back(শূন্য) override { queue.বের_করো_back(); };
+      শূন্য বের_করো_front(শূন্য) override { queue.বের_করো_front(); };
+      শূন্য erase(unsigned idx) override;
+      শূন্য erase_tail(unsigned idx) override;
+      শূন্য reverse_elems(শূন্য) override;
+      শূন্য sort_elems(bool ascending) override;
+      শূন্য shuffle_elems(শূন্য) override;
 
-    private:
+    গুপ্ত:
       std::deque<std::string> queue;
 };
 
-class vvp_queue_vec4 : public vvp_queue {
+class vvp_queue_vec4 : সার্বজনিক vvp_queue {
 
-    public:
-      size_t get_size(void) const override { return queue.size(); };
-      void copy_elems(vvp_object_t src, unsigned max_size) override;
-      void set_word_max(unsigned adr, const vvp_vector4_t&value, unsigned max_size) override;
-      void set_word(unsigned adr, const vvp_vector4_t&value) override;
-      void get_word(unsigned adr, vvp_vector4_t&value) override;
-      void insert(unsigned idx, const vvp_vector4_t&value, unsigned max_size) override;
-      void push_back(const vvp_vector4_t&value, unsigned max_size) override;
-      void push_front(const vvp_vector4_t&value, unsigned max_size) override;
-      void pop_back(void) override { queue.pop_back(); };
-      void pop_front(void) override { queue.pop_front(); };
-      void erase(unsigned idx) override;
-      void erase_tail(unsigned idx) override;
-      void reverse_elems(void) override;
-      void sort_elems(bool ascending) override;
-      void shuffle_elems(void) override;
+    সার্বজনিক:
+      size_t get_size(শূন্য) ধ্রুব override { প্রত্যাগম queue.size(); };
+      শূন্য copy_elems(vvp_object_t src, unsigned max_size) override;
+      শূন্য set_word_max(unsigned adr, ধ্রুব vvp_vector4_t&মান, unsigned max_size) override;
+      শূন্য set_word(unsigned adr, ধ্রুব vvp_vector4_t&মান) override;
+      শূন্য get_word(unsigned adr, vvp_vector4_t&মান) override;
+      শূন্য ঢোকাও(unsigned idx, ধ্রুব vvp_vector4_t&মান, unsigned max_size) override;
+      শূন্য ঠেলো_back(ধ্রুব vvp_vector4_t&মান, unsigned max_size) override;
+      শূন্য ঠেলো_front(ধ্রুব vvp_vector4_t&মান, unsigned max_size) override;
+      শূন্য বের_করো_back(শূন্য) override { queue.বের_করো_back(); };
+      শূন্য বের_করো_front(শূন্য) override { queue.বের_করো_front(); };
+      শূন্য erase(unsigned idx) override;
+      শূন্য erase_tail(unsigned idx) override;
+      শূন্য reverse_elems(শূন্য) override;
+      শূন্য sort_elems(bool ascending) override;
+      শূন্য shuffle_elems(শূন্য) override;
 
-    private:
+    গুপ্ত:
       std::deque<vvp_vector4_t> queue;
 };
 
-extern std::string get_fileline();
+বাহ্য std::string get_fileline();
 
 #endif /* IVL_vvp_darray_H */

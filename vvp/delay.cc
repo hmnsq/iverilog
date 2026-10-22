@@ -17,29 +17,29 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "delay.h"
-#include "schedule.h"
-#include "vpi_priv.h"
-#include "config.h"
+#অন্তর্ভাব "delay.h"
+#অন্তর্ভাব "schedule.h"
+#অন্তর্ভাব "vpi_priv.h"
+#অন্তর্ভাব "config.h"
 #ifdef CHECK_WITH_VALGRIND
-#include "vvp_cleanup.h"
+#অন্তর্ভাব "vvp_cleanup.h"
 #endif
-#include <iostream>
-#include <cstdlib>
-#include <list>
-#include <cassert>
-#include <cmath>
-#include "ivl_alloc.h"
+#অন্তর্ভাব <iostream>
+#অন্তর্ভাব <cstdlib>
+#অন্তর্ভাব <list>
+#অন্তর্ভাব <cassert>
+#অন্তর্ভাব <cmath>
+#অন্তর্ভাব "ivl_alloc.h"
 
-using namespace std;
+using নামাকাশ std;
 
-void vvp_delay_t::calculate_min_delay_()
+শূন্য vvp_delay_t::calculate_min_delay_()
 {
       min_delay_ = rise_;
-      if (fall_ < min_delay_)
+      যদি (fall_ < min_delay_)
 	    min_delay_ = fall_;
-      if (ignore_decay_) decay_ = min_delay_;
-      else if (decay_ < min_delay_)
+      যদি (ignore_decay_) decay_ = min_delay_;
+      অন্যথা যদি (decay_ < min_delay_)
 	    min_delay_ = decay_;
 }
 
@@ -49,7 +49,7 @@ vvp_delay_t::vvp_delay_t(vvp_time64_t rise, vvp_time64_t fall)
       fall_ = fall;
       decay_= fall < rise? fall : rise;
       min_delay_ = decay_;
-      ignore_decay_ = false;
+      ignore_decay_ = অসত্য;
 }
 
 vvp_delay_t::vvp_delay_t(vvp_time64_t rise, vvp_time64_t fall, vvp_time64_t decay)
@@ -57,14 +57,14 @@ vvp_delay_t::vvp_delay_t(vvp_time64_t rise, vvp_time64_t fall, vvp_time64_t deca
       rise_ = rise;
       fall_ = fall;
       decay_= decay;
-      ignore_decay_ = false;
+      ignore_decay_ = অসত্য;
 
       calculate_min_delay_();
 }
 
-void vvp_delay_t::set_ignore_decay()
+শূন্য vvp_delay_t::set_ignore_decay()
 {
-      ignore_decay_ = true;
+      ignore_decay_ = সত্য;
 
       calculate_min_delay_();
 }
@@ -75,171 +75,171 @@ vvp_delay_t::~vvp_delay_t()
 
 vvp_time64_t vvp_delay_t::get_delay(vvp_bit4_t from, vvp_bit4_t to)
 {
-      switch (from) {
-	  case BIT4_0:
-	    switch (to) {
-		case BIT4_0: return 0;
-		case BIT4_1: return rise_;
-		case BIT4_X: return min_delay_;
-		case BIT4_Z: return decay_;
+      বিকল্প (from) {
+	  পক্ষ BIT4_0:
+	    বিকল্প (to) {
+		পক্ষ BIT4_0: প্রত্যাগম 0;
+		পক্ষ BIT4_1: প্রত্যাগম rise_;
+		পক্ষ BIT4_X: প্রত্যাগম min_delay_;
+		পক্ষ BIT4_Z: প্রত্যাগম decay_;
 	    }
-	    break;
-	  case BIT4_1:
-	    switch (to) {
-		case BIT4_0: return fall_;
-		case BIT4_1: return 0;
-		case BIT4_X: return min_delay_;
-		case BIT4_Z: return decay_;
+	    ভঙ্গ;
+	  পক্ষ BIT4_1:
+	    বিকল্প (to) {
+		পক্ষ BIT4_0: প্রত্যাগম fall_;
+		পক্ষ BIT4_1: প্রত্যাগম 0;
+		পক্ষ BIT4_X: প্রত্যাগম min_delay_;
+		পক্ষ BIT4_Z: প্রত্যাগম decay_;
 	    }
-	    break;
-	  case BIT4_X:
-	    switch (to) {
-		case BIT4_0: return fall_;
-		case BIT4_1: return rise_;
-		case BIT4_X: return 0;
-		case BIT4_Z: return decay_;
+	    ভঙ্গ;
+	  পক্ষ BIT4_X:
+	    বিকল্প (to) {
+		পক্ষ BIT4_0: প্রত্যাগম fall_;
+		পক্ষ BIT4_1: প্রত্যাগম rise_;
+		পক্ষ BIT4_X: প্রত্যাগম 0;
+		পক্ষ BIT4_Z: প্রত্যাগম decay_;
 	    }
-	    break;
-	  case BIT4_Z:
-	    switch (to) {
-		case BIT4_0: return fall_;
-		case BIT4_1: return rise_;
-		case BIT4_X: return min_delay_;
-		case BIT4_Z: return 0;
+	    ভঙ্গ;
+	  পক্ষ BIT4_Z:
+	    বিকল্প (to) {
+		পক্ষ BIT4_0: প্রত্যাগম fall_;
+		পক্ষ BIT4_1: প্রত্যাগম rise_;
+		পক্ষ BIT4_X: প্রত্যাগম min_delay_;
+		পক্ষ BIT4_Z: প্রত্যাগম 0;
 	    }
-	    break;
+	    ভঙ্গ;
       }
 
-      assert(0);
-      return 0;
+      প্রতিজ্ঞা(0);
+      প্রত্যাগম 0;
 }
 
-vvp_time64_t vvp_delay_t::get_min_delay() const
+vvp_time64_t vvp_delay_t::get_min_delay() ধ্রুব
 {
-      return min_delay_;
+      প্রত্যাগম min_delay_;
 }
 
-void vvp_delay_t::set_rise(vvp_time64_t val)
+শূন্য vvp_delay_t::set_rise(vvp_time64_t val)
 {
       rise_ = val;
-      if (val < min_delay_) {
+      যদি (val < min_delay_) {
 	    min_delay_ = val;
-	    if (ignore_decay_) decay_ = val;
-      } else
+	    যদি (ignore_decay_) decay_ = val;
+      } অন্যথা
 	    calculate_min_delay_();
 }
 
-void vvp_delay_t::set_fall(vvp_time64_t val)
+শূন্য vvp_delay_t::set_fall(vvp_time64_t val)
 {
       fall_ = val;
-      if (val < min_delay_) {
+      যদি (val < min_delay_) {
 	    min_delay_ = val;
-	    if (ignore_decay_) decay_ = val;
-      } else
+	    যদি (ignore_decay_) decay_ = val;
+      } অন্যথা
 	    calculate_min_delay_();
 }
 
-void vvp_delay_t::set_decay(vvp_time64_t val)
+শূন্য vvp_delay_t::set_decay(vvp_time64_t val)
 {
-      assert(!ignore_decay_);
+      প্রতিজ্ঞা(!ignore_decay_);
 
       decay_ = val;
-      if (val < min_delay_)
+      যদি (val < min_delay_)
 	    min_delay_ = val;
-      else
+      অন্যথা
 	    calculate_min_delay_();
 }
 
-vvp_fun_delay::vvp_fun_delay(vvp_net_t*n, unsigned width, const vvp_delay_t&d)
+vvp_fun_delay::vvp_fun_delay(vvp_net_t*n, unsigned width, ধ্রুব vvp_delay_t&d)
 : net_(n), delay_(d)
 {
       cur_real_ = 0.0;
-      if (width > 0) {
+      যদি (width > 0) {
             cur_vec4_ = vvp_vector4_t(width, BIT4_X);
             cur_vec8_ = vvp_vector8_t(cur_vec4_, 6, 6);
             schedule_init_propagate(net_, cur_vec4_);
-      } else {
+      } অন্যথা {
             schedule_init_propagate(net_, cur_real_);
       }
       list_ = 0;
       type_ = UNKNOWN_DELAY;
-      initial_ = true;
+      initial_ = সত্য;
 	// Calculate the values used when converting variable delays
 	// to simulation time units.
-      const __vpiScope*scope = vpip_peek_current_scope();
+      ধ্রুব __vpiScope*scope = vpip_peek_current_scope();
 
-      int powr = scope->time_units - scope->time_precision;
+      পূর্ণাঙ্ক powr = scope->time_units - scope->time_precision;
       round_ = 1;
-      for (int lp = 0; lp < powr; lp += 1) round_ *= 10;
+      প্রতি (পূর্ণাঙ্ক lp = 0; lp < powr; lp += 1) round_ *= 10;
 
       powr = scope->time_precision - vpip_get_time_precision();
       scale_ = 1;
-      for (int lp = 0; lp < powr; lp += 1) scale_ *= 10;
+      প্রতি (পূর্ণাঙ্ক lp = 0; lp < powr; lp += 1) scale_ *= 10;
 }
 
 vvp_fun_delay::~vvp_fun_delay()
 {
-      while (struct event_*cur = dequeue_())
+      যাবত্ (সংরচনা event_*cur = dequeue_())
 	    delete cur;
 }
 
-bool vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay,
-                                        const vvp_vector4_t&bit)
+তার্কিক vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay,
+                                        ধ্রুব vvp_vector4_t&bit)
 {
-      if (list_ == 0) return false;
+      যদি (list_ == 0) প্রত্যাগম অসত্য;
 
 	/* If the most recent event and the new event have the same
 	 * value then we need to skip the new event. */
-      if (list_->next->ptr_vec4.eeq(bit)) return true;
+      যদি (list_->next->ptr_vec4.eeq(bit)) প্রত্যাগম সত্য;
 
       clean_pulse_events_(use_delay);
-      return false;
+      প্রত্যাগম অসত্য;
 }
 
-bool vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay,
-                                        const vvp_vector8_t&bit)
+তার্কিক vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay,
+                                        ধ্রুব vvp_vector8_t&bit)
 {
-      if (list_ == 0) return false;
+      যদি (list_ == 0) প্রত্যাগম অসত্য;
 
 	/* If the most recent event and the new event have the same
 	 * value then we need to skip the new event. */
-      if (list_->next->ptr_vec8.eeq(bit)) return true;
+      যদি (list_->next->ptr_vec8.eeq(bit)) প্রত্যাগম সত্য;
 
       clean_pulse_events_(use_delay);
-      return false;
+      প্রত্যাগম অসত্য;
 }
 
-bool vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay,
-                                        double bit)
+তার্কিক vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay,
+                                        দ্বিগুণ bit)
 {
-      if (list_ == 0) return false;
+      যদি (list_ == 0) প্রত্যাগম অসত্য;
 
 	/* If the most recent event and the new event have the same
 	 * value then we need to skip the new event. */
-      if (list_->next->ptr_real == bit) return true;
+      যদি (list_->next->ptr_real == bit) প্রত্যাগম সত্য;
 
       clean_pulse_events_(use_delay);
-      return false;
+      প্রত্যাগম অসত্য;
 }
 
-void vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay)
+শূন্য vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay)
 {
-      assert(list_ != 0);
+      প্রতিজ্ঞা(list_ != 0);
 
-      do {
-	    struct event_*cur = list_->next;
+      কুরু {
+	    সংরচনা event_*cur = list_->next;
 	      /* If this event is far enough from the event I'm about
 	         to create, then that scheduled event is not a pulse
 	         to be eliminated, so we're done. */
-	    if (cur->sim_time+use_delay <= use_delay+schedule_simtime())
-		  break;
+	    যদি (cur->sim_time+use_delay <= use_delay+schedule_simtime())
+		  ভঙ্গ;
 
-	    if (list_ == cur)
+	    যদি (list_ == cur)
 		  list_ = 0;
-	    else
+	    অন্যথা
 		  list_->next = cur->next;
 	    delete cur;
-      } while (list_);
+      } যাবত্ (list_);
 }
 
 /*
@@ -249,259 +249,259 @@ void vvp_fun_delay::clean_pulse_events_(vvp_time64_t use_delay)
  * wrong. What should happen is that if there are multiple changes,
  * multiple vectors approaching the result should be scheduled.
  */
-void vvp_fun_delay::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+শূন্য vvp_fun_delay::recv_vec4(vvp_net_ptr_t port, ধ্রুব vvp_vector4_t&bit,
                               vvp_context_t)
 {
-      if (port.port() > 0) {
+      যদি (port.port() > 0) {
 	      // Get the integer value of the bit vector, or 0 if
 	      // there are X or Z bits.
 	    vvp_time64_t bval = 0;
 	      // The following does not work correctly for negative values.
 	      // They should be sign extended to 64 bits (1364-2001 9.7.1).
-	    vector4_to_value(bit, bval);
+	    vector4_to_মান(bit, bval);
 	      // Integer values do not need to be rounded so just scale them.
 	    vvp_time64_t val = bval * round_ * scale_;
 
-	    switch (port.port()) {
-		case 1:
+	    বিকল্প (port.port()) {
+		পক্ষ 1:
 		  delay_.set_rise(val);
-		  return;
-		case 2:
+		  প্রত্যাগম;
+		পক্ষ 2:
 		  delay_.set_fall(val);
-		  return;
-		case 3:
+		  প্রত্যাগম;
+		পক্ষ 3:
 		  delay_.set_decay(val);
-		  return;
+		  প্রত্যাগম;
 	    }
-	    return;
+	    প্রত্যাগম;
       }
 
       vvp_time64_t use_delay;
 	/* This is an initial value so it needs to be compared to all the
 	   bits (the order the bits are changed is not deterministic). */
-      if (initial_) {
+      যদি (initial_) {
 	    type_ = VEC4_DELAY;
             cur_vec8_ = vvp_vector8_t(vvp_vector4_t(0, BIT4_X), 6, 6);
 	    vvp_bit4_t cur_val = cur_vec4_.value(0);
 	    use_delay = delay_.get_delay(cur_val, bit.value(0));
-	    for (unsigned idx = 1 ;  idx < bit.size() ;  idx += 1) {
+	    প্রতি (unsigned idx = 1 ;  idx < bit.size() ;  idx += 1) {
 		  vvp_time64_t tmp;
 		  tmp = delay_.get_delay(cur_val, bit.value(idx));
-		  if (tmp > use_delay) use_delay = tmp;
+		  যদি (tmp > use_delay) use_delay = tmp;
 	    }
-      } else {
-	    assert(type_ == VEC4_DELAY);
+      } অন্যথা {
+	    প্রতিজ্ঞা(type_ == VEC4_DELAY);
 
 	      // Use as a reference for calculating the delay the
 	      // current value of the output. Detect and handle the
 	      // special case that the event list contains the current
 	      // value as a zero-delay-remaining event.
-	    const vvp_vector4_t&use_vec4 = (list_ && list_->next->sim_time == schedule_simtime())? list_->next->ptr_vec4 : cur_vec4_;
+	    ধ্রুব vvp_vector4_t&use_vec4 = (list_ && list_->next->sim_time == schedule_simtime())? list_->next->ptr_vec4 : cur_vec4_;
 
 	      /* How many bits to compare? */
 	    unsigned use_wid = use_vec4.size();
-	    if (bit.size() < use_wid) use_wid = bit.size();
+	    যদি (bit.size() < use_wid) use_wid = bit.size();
 
 	      /* Scan the vectors looking for delays. Select the maximum
 	         delay encountered. */
 	    use_delay = delay_.get_delay(use_vec4.value(0), bit.value(0));
 
-	    for (unsigned idx = 1 ;  idx < use_wid ;  idx += 1) {
+	    প্রতি (unsigned idx = 1 ;  idx < use_wid ;  idx += 1) {
 		  vvp_time64_t tmp;
 		  tmp = delay_.get_delay(use_vec4.value(idx), bit.value(idx));
-		  if (tmp > use_delay) use_delay = tmp;
+		  যদি (tmp > use_delay) use_delay = tmp;
 	    }
       }
 
       /* what *should* happen here is we check to see if there is a
          transaction in the queue. This would be a pulse that needs to be
          eliminated. */
-      if (clean_pulse_events_(use_delay, bit)) return;
+      যদি (clean_pulse_events_(use_delay, bit)) প্রত্যাগম;
 
       vvp_time64_t use_simtime = schedule_simtime() + use_delay;
 
 	/* And propagate it. */
-      if (use_delay == 0 && list_ == 0) {
+      যদি (use_delay == 0 && list_ == 0) {
 	    cur_vec4_ = bit;
-	    initial_ = false;
+	    initial_ = অসত্য;
 	    net_->send_vec4(cur_vec4_, 0);
-      } else {
-	    struct event_*cur = new struct event_(use_simtime);
+      } অন্যথা {
+	    সংরচনা event_*cur = নূতন সংরচনা event_(use_simtime);
 	    cur->run_run_ptr = &vvp_fun_delay::run_run_vec4_;
 	    cur->ptr_vec4 = bit;
 	    enqueue_(cur);
-	    schedule_generic(this, use_delay, false);
+	    schedule_generic(এতত্, use_delay, অসত্য);
       }
 }
 
-void vvp_fun_delay::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+শূন্য vvp_fun_delay::recv_vec4_pv(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
 			         unsigned base, unsigned vwid, vvp_context_t ctx)
 {
       recv_vec4_pv_(ptr, bit, base, vwid, ctx);
 }
 
 /* See the recv_vec4 comment above. */
-void vvp_fun_delay::recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit)
+শূন্য vvp_fun_delay::recv_vec8(vvp_net_ptr_t port, ধ্রুব vvp_vector8_t&bit)
 {
-      assert(port.port() == 0);
+      প্রতিজ্ঞা(port.port() == 0);
 
       vvp_time64_t use_delay;
 	/* This is an initial value so it needs to be compared to all the
 	   bits (the order the bits are changed is not deterministic). */
-      if (initial_) {
+      যদি (initial_) {
 	    type_ = VEC8_DELAY;
             cur_vec4_ = vvp_vector4_t(0, BIT4_X);
 	    vvp_bit4_t cur_val = cur_vec8_.value(0).value();
 	    use_delay = delay_.get_delay(cur_val, bit.value(0).value());
-	    for (unsigned idx = 1 ;  idx < bit.size() ;  idx += 1) {
+	    প্রতি (unsigned idx = 1 ;  idx < bit.size() ;  idx += 1) {
 		  vvp_time64_t tmp;
 		  tmp = delay_.get_delay(cur_val, bit.value(idx).value());
-		  if (tmp > use_delay) use_delay = tmp;
+		  যদি (tmp > use_delay) use_delay = tmp;
 	    }
-      } else {
-	    assert(type_ == VEC8_DELAY);
+      } অন্যথা {
+	    প্রতিজ্ঞা(type_ == VEC8_DELAY);
 
 	      // Use as a reference for calculating the delay the
 	      // current value of the output. Detect and handle the
 	      // special case that the event list contains the current
 	      // value as a zero-delay-remaining event.
-	    const vvp_vector8_t&use_vec8 = (list_ && list_->next->sim_time == schedule_simtime())? list_->next->ptr_vec8 : cur_vec8_;
+	    ধ্রুব vvp_vector8_t&use_vec8 = (list_ && list_->next->sim_time == schedule_simtime())? list_->next->ptr_vec8 : cur_vec8_;
 
 	      /* How many bits to compare? */
 	    unsigned use_wid = use_vec8.size();
-	    if (bit.size() < use_wid) use_wid = bit.size();
+	    যদি (bit.size() < use_wid) use_wid = bit.size();
 
 	      /* Scan the vectors looking for delays. Select the maximum
 	         delay encountered. */
 	    use_delay = delay_.get_delay(use_vec8.value(0).value(),
 	                                 bit.value(0).value());
 
-	    for (unsigned idx = 1 ;  idx < use_wid ;  idx += 1) {
+	    প্রতি (unsigned idx = 1 ;  idx < use_wid ;  idx += 1) {
 		  vvp_time64_t tmp;
 		  tmp = delay_.get_delay(use_vec8.value(idx).value(),
 		                         bit.value(idx).value());
-		  if (tmp > use_delay) use_delay = tmp;
+		  যদি (tmp > use_delay) use_delay = tmp;
 	    }
       }
 
       /* what *should* happen here is we check to see if there is a
          transaction in the queue. This would be a pulse that needs to be
          eliminated. */
-      if (clean_pulse_events_(use_delay, bit)) return;
+      যদি (clean_pulse_events_(use_delay, bit)) প্রত্যাগম;
 
       vvp_time64_t use_simtime = schedule_simtime() + use_delay;
 
 	/* And propagate it. */
-      if (use_delay == 0 && list_ == 0) {
+      যদি (use_delay == 0 && list_ == 0) {
 	    cur_vec8_ = bit;
-	    initial_ = false;
+	    initial_ = অসত্য;
 	    net_->send_vec8(cur_vec8_);
-      } else {
-	    struct event_*cur = new struct event_(use_simtime);
+      } অন্যথা {
+	    সংরচনা event_*cur = নূতন সংরচনা event_(use_simtime);
 	    cur->ptr_vec8 = bit;
 	    cur->run_run_ptr = &vvp_fun_delay::run_run_vec8_;
 	    enqueue_(cur);
-	    schedule_generic(this, use_delay, false);
+	    schedule_generic(এতত্, use_delay, অসত্য);
       }
 }
 
-void vvp_fun_delay::recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
+শূন্য vvp_fun_delay::recv_vec8_pv(vvp_net_ptr_t ptr, ধ্রুব vvp_vector8_t&bit,
 			         unsigned base, unsigned vwid)
 {
       recv_vec8_pv_(ptr, bit, base, vwid);
 }
 
-void vvp_fun_delay::recv_real(vvp_net_ptr_t port, double bit,
+শূন্য vvp_fun_delay::recv_real(vvp_net_ptr_t port, দ্বিগুণ bit,
                               vvp_context_t)
 {
-      if (port.port() > 0) {
+      যদি (port.port() > 0) {
 	    /* If the port is not 0, then this is a delay value that
 	    should be rounded and converted to an integer delay. */
 	    vvp_time64_t val = 0;
-	    if (bit > -0.5) {
+	    যদি (bit > -0.5) {
 		  val = (vvp_time64_t) (bit * round_ + 0.5) * scale_;
-	    } else if (bit != bit) {
+	    } অন্যথা যদি (bit != bit) {
 		    // For a NaN we use the default (0).
-	    } else {
-		  vvp_vector4_t vec4(8*sizeof(vvp_time64_t),
+	    } অন্যথা {
+		  vvp_vector4_t vec4(8*পরিমাণ(vvp_time64_t),
 		                     floor(-bit * round_ + 0.5) * -1 * scale_);
-		  vector4_to_value(vec4, val);
+		  vector4_to_মান(vec4, val);
 	    }
 
-	    switch (port.port()) {
-		case 1:
+	    বিকল্প (port.port()) {
+		পক্ষ 1:
 		  delay_.set_rise(val);
-		  return;
-		case 2:
+		  প্রত্যাগম;
+		পক্ষ 2:
 		  delay_.set_fall(val);
-		  return;
-		case 3:
+		  প্রত্যাগম;
+		পক্ষ 3:
 		  delay_.set_decay(val);
-		  return;
+		  প্রত্যাগম;
 	    }
-	    return;
+	    প্রত্যাগম;
       }
 
-      if (initial_) {
+      যদি (initial_) {
 	    type_ = REAL_DELAY;
             cur_vec4_ = vvp_vector4_t(0, BIT4_X);
             cur_vec8_ = vvp_vector8_t(cur_vec4_, 6, 6);
-      } else assert(type_ == REAL_DELAY);
+      } অন্যথা প্রতিজ্ঞা(type_ == REAL_DELAY);
 
       vvp_time64_t use_delay;
       use_delay = delay_.get_min_delay();
 
       /* Eliminate glitches. */
-      if (clean_pulse_events_(use_delay, bit)) return;
+      যদি (clean_pulse_events_(use_delay, bit)) প্রত্যাগম;
 
       /* This must be done after cleaning pulses to avoid propagating
        * an incorrect value. */
-      if (cur_real_ == bit) return;
+      যদি (cur_real_ == bit) প্রত্যাগম;
 
       vvp_time64_t use_simtime = schedule_simtime() + use_delay;
 
-      if (use_delay == 0 && list_ == 0) {
+      যদি (use_delay == 0 && list_ == 0) {
 	    cur_real_ = bit;
-	    initial_ = false;
+	    initial_ = অসত্য;
 	    net_->send_real(cur_real_, 0);
-      } else {
-	    struct event_*cur = new struct event_(use_simtime);
+      } অন্যথা {
+	    সংরচনা event_*cur = নূতন সংরচনা event_(use_simtime);
 	    cur->run_run_ptr = &vvp_fun_delay::run_run_real_;
 	    cur->ptr_real = bit;
 	    enqueue_(cur);
 
-	    schedule_generic(this, use_delay, false);
+	    schedule_generic(এতত্, use_delay, অসত্য);
       }
 }
 
-void vvp_fun_delay::run_run()
+শূন্য vvp_fun_delay::run_run()
 {
       vvp_time64_t sim_time = schedule_simtime();
-      if (list_ == 0 || list_->next->sim_time > sim_time)
-	    return;
+      যদি (list_ == 0 || list_->next->sim_time > sim_time)
+	    প্রত্যাগম;
 
-      struct event_*cur = dequeue_();
-      if (cur == 0)
-	    return;
+      সংরচনা event_*cur = dequeue_();
+      যদি (cur == 0)
+	    প্রত্যাগম;
 
-      (this->*(cur->run_run_ptr))(cur);
-      initial_ = false;
+      (এতত্->*(cur->run_run_ptr))(cur);
+      initial_ = অসত্য;
       delete cur;
 }
 
-void vvp_fun_delay::run_run_vec4_(const struct event_*cur)
+শূন্য vvp_fun_delay::run_run_vec4_(ধ্রুব সংরচনা event_*cur)
 {
       cur_vec4_ = cur->ptr_vec4;
       net_->send_vec4(cur_vec4_, 0);
 }
 
-void vvp_fun_delay::run_run_vec8_(const struct vvp_fun_delay::event_*cur)
+শূন্য vvp_fun_delay::run_run_vec8_(ধ্রুব সংরচনা vvp_fun_delay::event_*cur)
 {
       cur_vec8_ = cur->ptr_vec8;
       net_->send_vec8(cur_vec8_);
 }
 
-void vvp_fun_delay::run_run_real_(const struct vvp_fun_delay::event_*cur)
+শূন্য vvp_fun_delay::run_run_real_(ধ্রুব সংরচনা vvp_fun_delay::event_*cur)
 {
       cur_real_ = cur->ptr_real;
       net_->send_real(cur_real_, 0);
@@ -517,92 +517,92 @@ vvp_fun_modpath::vvp_fun_modpath(vvp_net_t*net, unsigned width)
 vvp_fun_modpath::~vvp_fun_modpath()
 {
 	// Delete the source probes.
-      while (src_list_) {
+      যাবত্ (src_list_) {
 	    vvp_fun_modpath_src*tmp = src_list_;
 	    src_list_ = tmp->next_;
 	    delete tmp;
       }
-      while (ifnone_list_) {
+      যাবত্ (ifnone_list_) {
 	    vvp_fun_modpath_src*tmp = ifnone_list_;
 	    ifnone_list_ = tmp->next_;
 	    delete tmp;
       }
 }
 
-void vvp_fun_modpath::add_modpath_src(vvp_fun_modpath_src*that, bool ifnone)
+শূন্য vvp_fun_modpath::add_modpath_src(vvp_fun_modpath_src*that, তার্কিক ifnone)
 {
-      assert(that->next_ == 0);
-      if (ifnone) {
+      প্রতিজ্ঞা(that->next_ == 0);
+      যদি (ifnone) {
 	    that->next_ = ifnone_list_;
 	    ifnone_list_ = that;
-      } else {
+      } অন্যথা {
 	    that->next_ = src_list_;
 	    src_list_ = that;
       }
 }
 
-static vvp_time64_t delay_from_edge(vvp_bit4_t a, vvp_bit4_t b,
-                                           vvp_time64_t const array[12])
+স্থির vvp_time64_t delay_from_edge(vvp_bit4_t a, vvp_bit4_t b,
+                                           vvp_time64_t ধ্রুব array[12])
 {
-      typedef delay_edge_t bit4_table4[4];
-      static const bit4_table4 edge_table[4] = {
+      প্রকারনির্দেশ delay_edge_t bit4_table4[4];
+      স্থির ধ্রুব bit4_table4 edge_table[4] = {
 	    { DELAY_EDGE_01, DELAY_EDGE_01, DELAY_EDGE_0z, DELAY_EDGE_0x },
 	    { DELAY_EDGE_10, DELAY_EDGE_10, DELAY_EDGE_1z, DELAY_EDGE_1x },
 	    { DELAY_EDGE_z0, DELAY_EDGE_z1, DELAY_EDGE_z0, DELAY_EDGE_zx },
 	    { DELAY_EDGE_x0, DELAY_EDGE_x1, DELAY_EDGE_xz, DELAY_EDGE_x0 }
       };
 
-      return array[ edge_table[a][b] ];
+      প্রত্যাগম array[ edge_table[a][b] ];
 }
 
-void vvp_fun_modpath::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+শূন্য vvp_fun_modpath::recv_vec4(vvp_net_ptr_t port, ধ্রুব vvp_vector4_t&bit,
                                 vvp_context_t)
 {
 	/* Only the first port is used. */
-      if (port.port() > 0)
-	    return;
+      যদি (port.port() > 0)
+	    প্রত্যাগম;
 
-      if (cur_vec4_.eeq(bit))
-	    return;
+      যদি (cur_vec4_.eeq(bit))
+	    প্রত্যাগম;
 
 	/* Select a time delay source that applies. Notice that there
 	   may be multiple delay sources that apply, so collect all
 	   the candidates into a list first. */
       list<vvp_fun_modpath_src*>candidate_list;
       vvp_time64_t candidate_wake_time = 0;
-      for (vvp_fun_modpath_src*cur = src_list_ ;  cur ;  cur=cur->next_) {
+      প্রতি (vvp_fun_modpath_src*cur = src_list_ ;  cur ;  cur=cur->next_) {
 	      /* Skip paths that are disabled by conditions. */
-	    if (cur->condition_flag_ == false)
-		  continue;
+	    যদি (cur->condition_flag_ == অসত্য)
+		  অনুবর্ত;
 
-	    if (candidate_list.empty()) {
+	    যদি (candidate_list.empty()) {
 		  candidate_list.push_back(cur);
 		  candidate_wake_time = cur->wake_time_;
-	    } else if (cur->wake_time_ == candidate_wake_time) {
+	    } অন্যথা যদি (cur->wake_time_ == candidate_wake_time) {
 		  candidate_list.push_back(cur);
-	    } else if (cur->wake_time_ > candidate_wake_time) {
+	    } অন্যথা যদি (cur->wake_time_ > candidate_wake_time) {
 		  candidate_list.assign(1, cur);
 		  candidate_wake_time = cur->wake_time_;
-	    } else {
-		  continue; /* Skip this entry. */
+	    } অন্যথা {
+		  অনুবর্ত; /* Skip this entry. */
 	    }
       }
 
 	/* Only add the ifnone delay if it has a later wake_time_ or
 	 * if there are no normal delays. */
       vvp_time64_t ifnone_wake_time = candidate_wake_time;
-      for (vvp_fun_modpath_src*cur = ifnone_list_ ;  cur ;  cur=cur->next_) {
-	    if (candidate_list.empty()) {
+      প্রতি (vvp_fun_modpath_src*cur = ifnone_list_ ;  cur ;  cur=cur->next_) {
+	    যদি (candidate_list.empty()) {
 		  candidate_list.push_back(cur);
 		  ifnone_wake_time = cur->wake_time_;
-	    } else if (cur->wake_time_ == ifnone_wake_time &&
+	    } অন্যথা যদি (cur->wake_time_ == ifnone_wake_time &&
 	               ifnone_wake_time > candidate_wake_time) {
 		  candidate_list.push_back(cur);
-	    } else if (cur->wake_time_ > ifnone_wake_time) {
+	    } অন্যথা যদি (cur->wake_time_ > ifnone_wake_time) {
 		  candidate_list.assign(1, cur);
 		  ifnone_wake_time = cur->wake_time_;
-	    } else {
-		  continue; /* Skip this entry. */
+	    } অন্যথা {
+		  অনুবর্ত; /* Skip this entry. */
 	    }
       }
 
@@ -610,10 +610,10 @@ void vvp_fun_modpath::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 	   match. This may happen, for example, if the set of
 	   conditional delays is incomplete, leaving some cases
 	   uncovered. In that case, just pass the data without delay */
-      if (candidate_list.empty()) {
+      যদি (candidate_list.empty()) {
 	    cur_vec4_ = bit;
-	    schedule_generic(this, 0, false);
-	    return;
+	    schedule_generic(এতত্, 0, অসত্য);
+	    প্রত্যাগম;
       }
 
 	/* Now given that we have a list of candidate delays, find for
@@ -623,28 +623,28 @@ void vvp_fun_modpath::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
       vvp_time64_t out_at[12];
       vvp_time64_t now = schedule_simtime();
 
-      typedef list<vvp_fun_modpath_src*>::const_iterator iter_t;
+      প্রকারনির্দেশ list<vvp_fun_modpath_src*>::const_iterator iter_t;
 
       iter_t cur = candidate_list.begin();
-      const vvp_fun_modpath_src*src = *cur;
+      ধ্রুব vvp_fun_modpath_src*src = *cur;
 
-      for (unsigned idx = 0 ;  idx < 12 ;  idx += 1) {
+      প্রতি (unsigned idx = 0 ;  idx < 12 ;  idx += 1) {
 	    out_at[idx] = src->wake_time_ + src->delay_[idx];
-	    if (out_at[idx] <= now)
+	    যদি (out_at[idx] <= now)
 		  out_at[idx] = 0;
-	    else
+	    অন্যথা
 		  out_at[idx] -= now;
       }
 
-      for (++ cur ; cur != candidate_list.end() ; ++ cur ) {
+      প্রতি (++ cur ; cur != candidate_list.end() ; ++ cur ) {
 	    src = *cur;
-	    for (unsigned idx = 0 ;  idx < 12 ;  idx += 1) {
+	    প্রতি (unsigned idx = 0 ;  idx < 12 ;  idx += 1) {
 		  vvp_time64_t tmp = src->wake_time_ + src->delay_[idx];
-		  if (tmp <= now)
+		  যদি (tmp <= now)
 			tmp = 0;
-		  else
+		  অন্যথা
 			tmp -= now;
-		  if (tmp < out_at[idx])
+		  যদি (tmp < out_at[idx])
 			out_at[idx] = tmp;
 	    }
       }
@@ -657,96 +657,96 @@ void vvp_fun_modpath::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 	/* FIXME: This bases the edge delay on only the least
 	   bit. This is WRONG! I need to find all the possible delays,
 	   and schedule an event for each partial change. Hard! */
-      for (unsigned idx = 1 ;  idx < bit.size() ;  idx += 1) {
+      প্রতি (unsigned idx = 1 ;  idx < bit.size() ;  idx += 1) {
 	    vvp_time64_t tmp = delay_from_edge(cur_vec4_.value(idx),
 					       bit.value(idx),
 					       out_at);
 	      /* If the current and new bit values match then no delay
 	       * is needed for this bit. */
-	    if (cur_vec4_.value(idx) == bit.value(idx)) continue;
-	    if (tmp != use_delay) {
+	    যদি (cur_vec4_.value(idx) == bit.value(idx)) অনুবর্ত;
+	    যদি (tmp != use_delay) {
 		  fprintf(stderr, "sorry: multi-bit module path delays are "
 		                  "currently not fully supported.\n");
 		  fprintf(stderr, "     : using the LSB delay for all bits.\n");
-		  continue;
+		  অনুবর্ত;
             }
       }
 
       cur_vec4_ = bit;
-      schedule_generic(this, use_delay, false);
+      schedule_generic(এতত্, use_delay, অসত্য);
 }
 
-void vvp_fun_modpath::run_run()
+শূন্য vvp_fun_modpath::run_run()
 {
       net_->send_vec4(cur_vec4_, 0);
 }
 
-vvp_fun_modpath_src::vvp_fun_modpath_src(vvp_time64_t const del[12])
+vvp_fun_modpath_src::vvp_fun_modpath_src(vvp_time64_t ধ্রুব del[12])
 {
-      for (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
+      প্রতি (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
 	    delay_[idx] = del[idx];
 
       next_ = 0;
       wake_time_ = 0;
-      condition_flag_ = true;
+      condition_flag_ = সত্য;
 }
 
 vvp_fun_modpath_src::~vvp_fun_modpath_src()
 {
 }
 
-void vvp_fun_modpath_src::get_delay12(vvp_time64_t val[12]) const
+শূন্য vvp_fun_modpath_src::get_delay12(vvp_time64_t val[12]) ধ্রুব
 {
-      for (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
+      প্রতি (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
 	    val[idx] = delay_[idx];
 }
 
-void vvp_fun_modpath_src::put_delay12(const vvp_time64_t val[12])
+শূন্য vvp_fun_modpath_src::put_delay12(ধ্রুব vvp_time64_t val[12])
 {
-      for (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
+      প্রতি (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
 	    delay_[idx] = val[idx];
 }
 
-void vvp_fun_modpath_src::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+শূন্য vvp_fun_modpath_src::recv_vec4(vvp_net_ptr_t port, ধ্রুব vvp_vector4_t&bit,
                                     vvp_context_t)
 {
-      if (port.port() == 0) {
+      যদি (port.port() == 0) {
 	      // The modpath input...
-	    if (test_vec4(bit))
+	    যদি (test_vec4(bit))
 		  wake_time_ = schedule_simtime();
 
-      } else if (port.port() == 1) {
+      } অন্যথা যদি (port.port() == 1) {
 	      // The modpath condition input...
-	    if (bit.value(0) != BIT4_0)
-		  condition_flag_ = true;
-	    else
-		  condition_flag_ = false;
+	    যদি (bit.value(0) != BIT4_0)
+		  condition_flag_ = সত্য;
+	    অন্যথা
+		  condition_flag_ = অসত্য;
       }
 }
 
-bool vvp_fun_modpath_src::test_vec4(const vvp_vector4_t&)
+তার্কিক vvp_fun_modpath_src::test_vec4(ধ্রুব vvp_vector4_t&)
 {
-      return true;
+      প্রত্যাগম সত্য;
 }
 
 vvp_fun_modpath_edge::vvp_fun_modpath_edge(vvp_time64_t del[12],
-					   bool pos, bool neg)
+					   তার্কিক pos, তার্কিক neg)
 : vvp_fun_modpath_src(del)
 {
-      old_value_ = BIT4_X;
+      old_মান = BIT4_X;
       posedge_ = pos;
       negedge_ = neg;
 }
 
-bool vvp_fun_modpath_edge::test_vec4(const vvp_vector4_t&bit)
+তার্কিক vvp_fun_modpath_edge::test_vec4(ধ্রুব vvp_vector4_t&bit)
 {
-      vvp_bit4_t tmp = old_value_;
-      old_value_ = bit.value(0);
+      vvp_bit4_t tmp = old_মান;
+      old_মান = bit.value(0);
 
-      int edge_flag = edge(tmp, old_value_);
-      if (edge_flag > 0) return posedge_;
-      if (edge_flag < 0) return negedge_;
-      return false;
+      পূর্ণাঙ্ক edge_flag = edge(tmp, old_মান);
+      যদি (edge_flag > 0) প্রত্যাগম posedge_;
+      যদি (edge_flag < 0) প্রত্যাগম negedge_;
+      প্রত্যাগম অসত্য;
 }
 
 
@@ -757,43 +757,43 @@ bool vvp_fun_modpath_edge::test_vec4(const vvp_vector4_t&bit)
  * make some specific delays path operations
  *
  */
-static int modpath_src_get(int, vpiHandle ref)
+স্থির পূর্ণাঙ্ক modpath_src_get(পূর্ণাঙ্ক, vpiHandle ref)
 {
-      struct __vpiModPathSrc*obj =dynamic_cast<__vpiModPathSrc*>(ref);
-      assert(obj);
-      return 0;
+      সংরচনা __vpiModPathSrc*obj =dynamic_cast<__vpiModPathSrc*>(ref);
+      প্রতিজ্ঞা(obj);
+      প্রত্যাগম 0;
 }
 
-static void modpath_src_get_value(vpiHandle ref, p_vpi_value)
+স্থির শূন্য modpath_src_get_মান(vpiHandle ref, p_vpi_মান)
 {
-      struct __vpiModPathSrc* modpathsrc = dynamic_cast<__vpiModPathSrc*>(ref);
-      assert(modpathsrc);
-      return;
+      সংরচনা __vpiModPathSrc* modpathsrc = dynamic_cast<__vpiModPathSrc*>(ref);
+      প্রতিজ্ঞা(modpathsrc);
+      প্রত্যাগম;
 }
 
-static vpiHandle modpath_src_put_value(vpiHandle ref, s_vpi_value *, int )
+স্থির vpiHandle modpath_src_put_মান(vpiHandle ref, s_vpi_মান *, পূর্ণাঙ্ক )
 {
-      struct __vpiModPathSrc* modpathsrc = dynamic_cast<__vpiModPathSrc*>(ref);
-      assert(modpathsrc);
-      return 0;
+      সংরচনা __vpiModPathSrc* modpathsrc = dynamic_cast<__vpiModPathSrc*>(ref);
+      প্রতিজ্ঞা(modpathsrc);
+      প্রত্যাগম 0;
 }
 
-static vpiHandle modpath_src_get_handle(int code, vpiHandle ref)
+স্থির vpiHandle modpath_src_get_handle(পূর্ণাঙ্ক code, vpiHandle ref)
 {
-      struct __vpiModPathSrc*rfp = dynamic_cast<__vpiModPathSrc*>(ref);
-      assert(rfp);
+      সংরচনা __vpiModPathSrc*rfp = dynamic_cast<__vpiModPathSrc*>(ref);
+      প্রতিজ্ঞা(rfp);
 
-      switch (code) {
+      বিকল্প (code) {
 
-	case vpiScope:
-	  return rfp->dest->scope;
+	পক্ষ vpiScope:
+	  প্রত্যাগম rfp->dest->scope;
 
-	  case vpiModule:
+	  পক্ষ vpiModule:
 	      { __vpiScope*scope = rfp->dest->scope;
-		while (scope && scope->get_type_code() != vpiModule)
+		যাবত্ (scope && scope->get_type_code() != vpiModule)
 		      scope = scope->scope;
-		assert(scope);
-		return scope;
+		প্রতিজ্ঞা(scope);
+		প্রত্যাগম scope;
 	      }
 
 	    // Handles to path term objects should really be obtained via
@@ -801,43 +801,43 @@ static vpiHandle modpath_src_get_handle(int code, vpiHandle ref)
 	    // them to be obtained here for backwards compatibility with
 	    // older versions of Icarus Verilog.
 
-	  case vpiModPathIn:
-	    return &rfp->path_term_in;
+	  পক্ষ vpiModPathIn:
+	    প্রত্যাগম &rfp->path_term_in;
 
-	  case vpiModPathOut:
-	    return &rfp->dest->path_term_out;
+	  পক্ষ vpiModPathOut:
+	    প্রত্যাগম &rfp->dest->path_term_out;
       }
-      return 0;
+      প্রত্যাগম 0;
 }
 
-static vpiHandle modpath_src_iterate(int code, vpiHandle ref)
+স্থির vpiHandle modpath_src_iterate(পূর্ণাঙ্ক code, vpiHandle ref)
 {
-      struct __vpiModPathSrc*rfp = dynamic_cast<__vpiModPathSrc*>(ref);
-      assert(rfp);
+      সংরচনা __vpiModPathSrc*rfp = dynamic_cast<__vpiModPathSrc*>(ref);
+      প্রতিজ্ঞা(rfp);
 
 	// Module paths with multiple sources or destinations are
 	// currently represented by a separate modpath object for
 	// each source/destination combination, so there is only
 	// ever one input path term and one output path term.
-      switch (code) {
-	  case vpiModPathIn: {
-	    vpiHandle*args = static_cast<vpiHandle*>(calloc(1, sizeof(vpiHandle*)));
+      বিকল্প (code) {
+	  পক্ষ vpiModPathIn: {
+	    vpiHandle*args = static_cast<vpiHandle*>(calloc(1, পরিমাণ(vpiHandle*)));
 	    args[0] = &rfp->path_term_in;
-	    return vpip_make_iterator(1, args, true);
+	    প্রত্যাগম vpip_make_iterator(1, args, সত্য);
 	  }
-	  case vpiModPathOut: {
-	    vpiHandle*args = static_cast<vpiHandle*>(calloc(1, sizeof(vpiHandle*)));
+	  পক্ষ vpiModPathOut: {
+	    vpiHandle*args = static_cast<vpiHandle*>(calloc(1, পরিমাণ(vpiHandle*)));
 	    args[0] = &rfp->dest->path_term_out;
-	    return vpip_make_iterator(1, args, true);
+	    প্রত্যাগম vpip_make_iterator(1, args, সত্য);
 	  }
       }
-      return 0;
+      প্রত্যাগম 0;
 }
 
-static vpiHandle modpath_src_index ( vpiHandle ref, int)
+স্থির vpiHandle modpath_src_index ( vpiHandle ref, পূর্ণাঙ্ক)
 {
-      assert(ref->get_type_code() == vpiModPathIn);
-      return 0;
+      প্রতিজ্ঞা(ref->get_type_code() == vpiModPathIn);
+      প্রত্যাগম 0;
 }
 
 
@@ -847,64 +847,64 @@ static vpiHandle modpath_src_index ( vpiHandle ref, int)
  * specific delays values in a vpiModPathIn object
  *
  */
-static void modpath_src_put_delays (vpiHandle ref, p_vpi_delay delays)
+স্থির শূন্য modpath_src_put_delays (vpiHandle ref, p_vpi_delay delays)
 {
       vvp_time64_t tmp[12];
-      int idx;
-      struct __vpiModPathSrc * src = dynamic_cast<__vpiModPathSrc*>(ref) ;
-      assert(src) ;
+      পূর্ণাঙ্ক idx;
+      সংরচনা __vpiModPathSrc * src = dynamic_cast<__vpiModPathSrc*>(ref) ;
+      প্রতিজ্ঞা(src) ;
 
       vvp_fun_modpath_src *fun = dynamic_cast<vvp_fun_modpath_src*>(src->net->fun);
-      assert( fun );
+      প্রতিজ্ঞা( fun );
 
-      typedef unsigned char map_array_t[12];
+      প্রকারনির্দেশ unsigned বর্ণ map_array_t[12];
 	// Only the first six entries are used for the less than twelve maps.
-      static const map_array_t map_1 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-      static const map_array_t map_2 = {0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0};
-      static const map_array_t map_3 = {0, 1, 2, 0, 2, 1, 0, 0, 0, 0, 0, 0};
-      static const map_array_t map_6 = {0, 1, 2, 3, 4, 5, 0, 0, 0, 0, 0, 0};
-      static const map_array_t map12 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+      স্থির ধ্রুব map_array_t map_1 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+      স্থির ধ্রুব map_array_t map_2 = {0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0};
+      স্থির ধ্রুব map_array_t map_3 = {0, 1, 2, 0, 2, 1, 0, 0, 0, 0, 0, 0};
+      স্থির ধ্রুব map_array_t map_6 = {0, 1, 2, 3, 4, 5, 0, 0, 0, 0, 0, 0};
+      স্থির ধ্রুব map_array_t map12 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
-      const map_array_t*use_map = 0;
-      switch (delays->no_of_delays) {
-	  case 1:
+      ধ্রুব map_array_t*use_map = 0;
+      বিকল্প (delays->no_of_delays) {
+	  পক্ষ 1:
 	    use_map = &map_1;
-	    break;
-	  case 2:
+	    ভঙ্গ;
+	  পক্ষ 2:
 	    use_map = &map_2;
-	    break;
-	  case 3:
+	    ভঙ্গ;
+	  পক্ষ 3:
 	    use_map = &map_3;
-	    break;
-	  case 6:
+	    ভঙ্গ;
+	  পক্ষ 6:
 	    use_map = &map_6;
-	    break;
-	  case 12:
+	    ভঙ্গ;
+	  পক্ষ 12:
 	    use_map = &map12;
-	    break;
-	  default:
-	    assert(0);
-	    break;
+	    ভঙ্গ;
+	  স্বভাব:
+	    প্রতিজ্ঞা(0);
+	    ভঙ্গ;
       }
 
-      if (delays->time_type == vpiSimTime) {
-	    for (idx = 0 ; idx < 12 ; idx += 1) {
+      যদি (delays->time_type == vpiSimTime) {
+	    প্রতি (idx = 0 ; idx < 12 ; idx += 1) {
 		  tmp[idx] = vpip_timestruct_to_time(delays->da+use_map[0][idx]);
 	    }
-      } else {
+      } অন্যথা {
 	      // You cannot create a modpath with a negative delay so set it
 	      // to zero per 1364-2005 section 14.3.1.
-	    for (idx = 0 ; idx < delays->no_of_delays ; idx += 1) {
-		  if (delays->da[idx].real < 0.0) delays->da[idx].real = 0.0;
+	    প্রতি (idx = 0 ; idx < delays->no_of_delays ; idx += 1) {
+		  যদি (delays->da[idx].real < 0.0) delays->da[idx].real = 0.0;
 	    }
-	    for (idx = 0 ; idx < 12 ; idx += 1) {
+	    প্রতি (idx = 0 ; idx < 12 ; idx += 1) {
 		  tmp[idx] = vpip_scaled_real_to_time64(delays->da[use_map[0][idx]].real,
 							src->dest->scope);
 	    }
       }
 
       /* Now define the to-from-x delays if needed. */
-      if (delays->no_of_delays <= 6) {
+      যদি (delays->no_of_delays <= 6) {
 	      /* 0->x is the minimum of 0->z and 0->1. */
 	    tmp[DELAY_EDGE_0x] = tmp[DELAY_EDGE_0z] < tmp[DELAY_EDGE_01] ?
 	                           tmp[DELAY_EDGE_0z] : tmp[DELAY_EDGE_01];
@@ -936,65 +936,65 @@ static void modpath_src_put_delays (vpiHandle ref, p_vpi_delay delays)
  *
  */
 
-static void modpath_src_get_delays ( vpiHandle ref, p_vpi_delay delays )
+স্থির শূন্য modpath_src_get_delays ( vpiHandle ref, p_vpi_delay delays )
 {
-      struct __vpiModPathSrc*src = dynamic_cast<__vpiModPathSrc*>(ref) ;
-      assert(src);
+      সংরচনা __vpiModPathSrc*src = dynamic_cast<__vpiModPathSrc*>(ref) ;
+      প্রতিজ্ঞা(src);
 
       vvp_fun_modpath_src *fun = dynamic_cast<vvp_fun_modpath_src*>(src->net->fun);
-      assert(fun);
+      প্রতিজ্ঞা(fun);
 
-      int idx;
+      পূর্ণাঙ্ক idx;
       vvp_time64_t tmp[12];
       fun->get_delay12(tmp);
 
-      switch (delays->no_of_delays) {
-	  case 1:
-	  case 2:
-	  case 3:
-	  case 6:
-	  case 12:
-	    break;
+      বিকল্প (delays->no_of_delays) {
+	  পক্ষ 1:
+	  পক্ষ 2:
+	  পক্ষ 3:
+	  পক্ষ 6:
+	  পক্ষ 12:
+	    ভঙ্গ;
 
-	  default:
-	    assert(0);
-	    break;
+	  স্বভাব:
+	    প্রতিজ্ঞা(0);
+	    ভঙ্গ;
       }
 
-      if (delays->time_type == vpiSimTime) {
-	    for (idx = 0; idx < delays->no_of_delays; idx += 1) {
+      যদি (delays->time_type == vpiSimTime) {
+	    প্রতি (idx = 0; idx < delays->no_of_delays; idx += 1) {
 		  vpip_time_to_timestruct(delays->da+idx, tmp[idx]);
 	    }
-      } else {
-	    for (idx = 0; idx < delays->no_of_delays; idx += 1) {
+      } অন্যথা {
+	    প্রতি (idx = 0; idx < delays->no_of_delays; idx += 1) {
 		  delays->da[idx].real = vpip_time_to_scaled_real(tmp[idx], src->dest->scope);
 	    }
       }
 }
 
-static int pathterm_get(int code, vpiHandle ref)
+স্থির পূর্ণাঙ্ক pathterm_get(পূর্ণাঙ্ক code, vpiHandle ref)
 {
-      struct __vpiModPathTerm*obj = dynamic_cast<__vpiModPathTerm*>(ref);
-      assert(obj);
+      সংরচনা __vpiModPathTerm*obj = dynamic_cast<__vpiModPathTerm*>(ref);
+      প্রতিজ্ঞা(obj);
 
-      switch (code) {
-	  case vpiEdge:
-	    return obj->edge;
-	  default:
-	    return 0;
+      বিকল্প (code) {
+	  পক্ষ vpiEdge:
+	    প্রত্যাগম obj->edge;
+	  স্বভাব:
+	    প্রত্যাগম 0;
       }
 }
 
-static vpiHandle pathterm_get_handle(int code, vpiHandle ref)
+স্থির vpiHandle pathterm_get_handle(পূর্ণাঙ্ক code, vpiHandle ref)
 {
-      struct __vpiModPathTerm*obj = dynamic_cast<__vpiModPathTerm*>(ref);
-      assert(obj);
+      সংরচনা __vpiModPathTerm*obj = dynamic_cast<__vpiModPathTerm*>(ref);
+      প্রতিজ্ঞা(obj);
 
-      switch (code) {
-	  case vpiExpr:
-	    return obj->expr;
-	  default:
-	    return 0;
+      বিকল্প (code) {
+	  পক্ষ vpi_রাশিমালা:
+	    প্রত্যাগম obj->রাশিমালা;
+	  স্বভাব:
+	    প্রত্যাগম 0;
       }
 }
 
@@ -1003,61 +1003,61 @@ static vpiHandle pathterm_get_handle(int code, vpiHandle ref)
 * vpiModPath object. The __vpiModPath structure contains items that
 * are common to a bunch of modpaths, including the destination term.
 */
-inline __vpiModPathSrc::__vpiModPathSrc()
+অন্তঃস্থ __vpiModPathSrc::__vpiModPathSrc()
 { }
 
-int __vpiModPathSrc::get_type_code(void) const
-{ return vpiModPath; }
+পূর্ণাঙ্ক __vpiModPathSrc::get_type_code(শূন্য) ধ্রুব
+{ প্রত্যাগম vpiModPath; }
 
-int __vpiModPathSrc::vpi_get(int code)
-{ return modpath_src_get(code, this); }
+পূর্ণাঙ্ক __vpiModPathSrc::vpi_get(পূর্ণাঙ্ক code)
+{ প্রত্যাগম modpath_src_get(code, এতত্); }
 
-void __vpiModPathSrc::vpi_get_value(p_vpi_value val)
-{ modpath_src_get_value(this, val); }
+শূন্য __vpiModPathSrc::vpi_get_মান(p_vpi_মান val)
+{ modpath_src_get_মান(এতত্, val); }
 
-vpiHandle __vpiModPathSrc::vpi_put_value(p_vpi_value val, int flags)
-{ return modpath_src_put_value(this, val, flags); }
+vpiHandle __vpiModPathSrc::vpi_put_মান(p_vpi_মান val, পূর্ণাঙ্ক flags)
+{ প্রত্যাগম modpath_src_put_মান(এতত্, val, flags); }
 
-vpiHandle __vpiModPathSrc::vpi_handle(int code)
-{ return modpath_src_get_handle(code, this); }
+vpiHandle __vpiModPathSrc::vpi_handle(পূর্ণাঙ্ক code)
+{ প্রত্যাগম modpath_src_get_handle(code, এতত্); }
 
-vpiHandle __vpiModPathSrc::vpi_iterate(int code)
-{ return modpath_src_iterate(code, this); }
+vpiHandle __vpiModPathSrc::vpi_iterate(পূর্ণাঙ্ক code)
+{ প্রত্যাগম modpath_src_iterate(code, এতত্); }
 
-vpiHandle __vpiModPathSrc:: vpi_index(int idx)
-{ return modpath_src_index(this, idx); }
+vpiHandle __vpiModPathSrc:: vpi_index(পূর্ণাঙ্ক idx)
+{ প্রত্যাগম modpath_src_index(এতত্, idx); }
 
-void __vpiModPathSrc::vpi_get_delays(p_vpi_delay del)
-{ modpath_src_get_delays(this, del); }
+শূন্য __vpiModPathSrc::vpi_get_delays(p_vpi_delay del)
+{ modpath_src_get_delays(এতত্, del); }
 
-void __vpiModPathSrc::vpi_put_delays(p_vpi_delay del)
-{ modpath_src_put_delays(this, del); }
+শূন্য __vpiModPathSrc::vpi_put_delays(p_vpi_delay del)
+{ modpath_src_put_delays(এতত্, del); }
 
-static int modpath_src_free_object( vpiHandle ref )
+স্থির পূর্ণাঙ্ক modpath_src_free_object( vpiHandle ref )
 {
       delete ref;
-      return 1 ;
+      প্রত্যাগম 1 ;
 }
 
-__vpiHandle::free_object_fun_t __vpiModPathSrc::free_object_fun(void)
-{ return &modpath_src_free_object; }
+__vpiHandle::free_object_fun_t __vpiModPathSrc::free_object_fun(শূন্য)
+{ প্রত্যাগম &modpath_src_free_object; }
 
 
-inline __vpiModPathTerm::__vpiModPathTerm()
+অন্তঃস্থ __vpiModPathTerm::__vpiModPathTerm()
 { }
 
-int __vpiModPathTerm::get_type_code(void) const
-{ return vpiPathTerm; }
+পূর্ণাঙ্ক __vpiModPathTerm::get_type_code(শূন্য) ধ্রুব
+{ প্রত্যাগম vpiPathTerm; }
 
-int __vpiModPathTerm::vpi_get(int code)
-{ return pathterm_get(code, this); }
+পূর্ণাঙ্ক __vpiModPathTerm::vpi_get(পূর্ণাঙ্ক code)
+{ প্রত্যাগম pathterm_get(code, এতত্); }
 
-vpiHandle __vpiModPathTerm::vpi_handle(int code)
-{ return pathterm_get_handle(code, this); }
+vpiHandle __vpiModPathTerm::vpi_handle(পূর্ণাঙ্ক code)
+{ প্রত্যাগম pathterm_get_handle(code, এতত্); }
 
-static void initialize_path_term(struct __vpiModPathTerm&obj)
+স্থির শূন্য initialize_path_term(সংরচনা __vpiModPathTerm&obj)
 {
-      obj.expr = 0;
+      obj.রাশিমালা = 0;
       obj.edge = vpiNoEdge;
 }
 
@@ -1068,37 +1068,37 @@ static void initialize_path_term(struct __vpiModPathTerm&obj)
  */
 
 #ifdef CHECK_WITH_VALGRIND
-static struct __vpiModPath**mp_list = 0;
-static unsigned mp_count = 0;
+স্থির সংরচনা __vpiModPath**mp_list = 0;
+স্থির unsigned mp_গুনতি = 0;
 #endif
 
-struct __vpiModPath* vpip_make_modpath(vvp_net_t *net)
+সংরচনা __vpiModPath* vpip_make_modpath(vvp_net_t *net)
 {
-      struct __vpiModPath*obj = new __vpiModPath;
+      সংরচনা __vpiModPath*obj = নূতন __vpiModPath;
       obj->scope = vpip_peek_current_scope ( );
 
       initialize_path_term(obj->path_term_out);
-      obj->input_net = net ;
+      obj->প্রবেশ_net = net ;
 
 #ifdef CHECK_WITH_VALGRIND
-      mp_count += 1;
-      mp_list = static_cast<struct __vpiModPath **>
+      mp_গুনতি += 1;
+      mp_list = static_cast<সংরচনা __vpiModPath **>
                 (realloc(mp_list,
-                 mp_count*sizeof(struct __vpiModPath **)));
-      mp_list[mp_count-1] = obj;
+                 mp_গুনতি*পরিমাণ(সংরচনা __vpiModPath **)));
+      mp_list[mp_গুনতি-1] = obj;
 #endif
-      return obj;
+      প্রত্যাগম obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void modpath_delete()
+শূন্য modpath_delete()
 {
-      for (unsigned idx = 0; idx < mp_count; idx += 1) {
+      প্রতি (unsigned idx = 0; idx < mp_গুনতি; idx += 1) {
 	    delete mp_list[idx];
       }
-      free(mp_list);
+      মুক্ত(mp_list);
       mp_list = 0;
-      mp_count = 0;
+      mp_গুনতি = 0;
 }
 #endif
 
@@ -1109,23 +1109,23 @@ void modpath_delete()
  *
  */
 
-struct __vpiModPathSrc* vpip_make_modpath_src(struct __vpiModPath*path,
+সংরচনা __vpiModPathSrc* vpip_make_modpath_src(সংরচনা __vpiModPath*path,
                                               vvp_net_t *net)
 {
-      struct __vpiModPathSrc *obj = new __vpiModPathSrc;
+      সংরচনা __vpiModPathSrc *obj = নূতন __vpiModPathSrc;
 
       obj->dest = path;
       obj->type = 0;
       obj->net = net;
       initialize_path_term(obj->path_term_in);
 
-      return obj;
+      প্রত্যাগম obj;
 }
 
 vvp_fun_intermodpath::vvp_fun_intermodpath(vvp_net_t*net, unsigned width)
 : net_(net)
 {
-      for (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
+      প্রতি (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
 	    delay_[idx] = 0;
 
       cur_vec4_ = vvp_vector4_t(width, BIT4_X);
@@ -1136,15 +1136,15 @@ vvp_fun_intermodpath::~vvp_fun_intermodpath()
 {
 }
 
-void vvp_fun_intermodpath::get_delay12(vvp_time64_t val[12]) const
+শূন্য vvp_fun_intermodpath::get_delay12(vvp_time64_t val[12]) ধ্রুব
 {
-      for (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
+      প্রতি (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
 	    val[idx] = delay_[idx];
 }
 
-void vvp_fun_intermodpath::put_delay12(const vvp_time64_t val[12])
+শূন্য vvp_fun_intermodpath::put_delay12(ধ্রুব vvp_time64_t val[12])
 {
-      for (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
+      প্রতি (unsigned idx = 0 ;  idx < 12 ;  idx += 1)
 	    delay_[idx] = val[idx];
 }
 
@@ -1155,15 +1155,15 @@ void vvp_fun_intermodpath::put_delay12(const vvp_time64_t val[12])
  * wrong. What should happen is that if there are multiple changes,
  * multiple vectors approaching the result should be scheduled.
  */
-void vvp_fun_intermodpath::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+শূন্য vvp_fun_intermodpath::recv_vec4(vvp_net_ptr_t port, ধ্রুব vvp_vector4_t&bit,
                               vvp_context_t)
 {
 	/* Only the first port is used. */
-      if (port.port() > 0)
-	    return;
+      যদি (port.port() > 0)
+	    প্রত্যাগম;
 
-      if (cur_vec4_.eeq(bit))
-	    return;
+      যদি (cur_vec4_.eeq(bit))
+	    প্রত্যাগম;
 
 	/* Given the scheduled output time, create an output event. */
       vvp_time64_t use_delay = delay_from_edge(cur_vec4_.value(0),
@@ -1173,21 +1173,21 @@ void vvp_fun_intermodpath::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit
 	/* FIXME: This bases the edge delay on only the least
 	   bit. This is WRONG! I need to find all the possible delays,
 	   and schedule an event for each partial change. Hard! */
-      for (unsigned idx = 1 ;  idx < bit.size() ;  idx += 1) {
+      প্রতি (unsigned idx = 1 ;  idx < bit.size() ;  idx += 1) {
 	    vvp_time64_t tmp = delay_from_edge(cur_vec4_.value(idx),
 					       bit.value(idx),
 					       delay_);
 	      /* If the current and new bit values match then no delay
 	       * is needed for this bit. */
-	    if (cur_vec4_.value(idx) == bit.value(idx)) continue;
-	    assert(tmp == use_delay);
+	    যদি (cur_vec4_.value(idx) == bit.value(idx)) অনুবর্ত;
+	    প্রতিজ্ঞা(tmp == use_delay);
       }
 
       cur_vec4_ = bit;
-      schedule_generic(this, use_delay, false);
+      schedule_generic(এতত্, use_delay, অসত্য);
 }
 
-void vvp_fun_intermodpath::run_run()
+শূন্য vvp_fun_intermodpath::run_run()
 {
       net_->send_vec4(cur_vec4_, 0);
 }
@@ -1199,63 +1199,63 @@ void vvp_fun_intermodpath::run_run()
  * make some specific delays path operations
  *
  */
-static int intermodpath_get(int, vpiHandle ref)
+স্থির পূর্ণাঙ্ক intermodpath_get(পূর্ণাঙ্ক, vpiHandle ref)
 {
-      struct __vpiInterModPath*obj =dynamic_cast<__vpiInterModPath*>(ref);
-      assert(obj);
-      return 0;
+      সংরচনা __vpiInterModPath*obj =dynamic_cast<__vpiInterModPath*>(ref);
+      প্রতিজ্ঞা(obj);
+      প্রত্যাগম 0;
 }
 
-static void intermodpath_get_value(vpiHandle ref, p_vpi_value)
+স্থির শূন্য intermodpath_get_মান(vpiHandle ref, p_vpi_মান)
 {
-      struct __vpiInterModPath* intermodpath = dynamic_cast<__vpiInterModPath*>(ref);
-      assert(intermodpath);
-      return;
+      সংরচনা __vpiInterModPath* intermodpath = dynamic_cast<__vpiInterModPath*>(ref);
+      প্রতিজ্ঞা(intermodpath);
+      প্রত্যাগম;
 }
 
-static vpiHandle intermodpath_put_value(vpiHandle ref, s_vpi_value *, int )
+স্থির vpiHandle intermodpath_put_মান(vpiHandle ref, s_vpi_মান *, পূর্ণাঙ্ক )
 {
-      struct __vpiInterModPath* intermodpath = dynamic_cast<__vpiInterModPath*>(ref);
-      assert(intermodpath);
-      return 0;
+      সংরচনা __vpiInterModPath* intermodpath = dynamic_cast<__vpiInterModPath*>(ref);
+      প্রতিজ্ঞা(intermodpath);
+      প্রত্যাগম 0;
 }
 
-static vpiHandle intermodpath_get_handle(int code, vpiHandle ref)
+স্থির vpiHandle intermodpath_get_handle(পূর্ণাঙ্ক code, vpiHandle ref)
 {
-      struct __vpiInterModPath*rfp = dynamic_cast<__vpiInterModPath*>(ref);
-      assert(rfp);
+      সংরচনা __vpiInterModPath*rfp = dynamic_cast<__vpiInterModPath*>(ref);
+      প্রতিজ্ঞা(rfp);
 
-      switch (code) {
+      বিকল্প (code) {
 
-	case vpiScope:
-	  return rfp->scope;
+	পক্ষ vpiScope:
+	  প্রত্যাগম rfp->scope;
 
-	  case vpiModule:
+	  পক্ষ vpiModule:
 	      { __vpiScope*scope = rfp->scope;
-		while (scope && scope->get_type_code() != vpiModule)
+		যাবত্ (scope && scope->get_type_code() != vpiModule)
 		      scope = scope->scope;
-		assert(scope);
-		return scope;
+		প্রতিজ্ঞা(scope);
+		প্রত্যাগম scope;
 	      }
       }
-      return 0;
+      প্রত্যাগম 0;
 }
 
-static vpiHandle intermodpath_iterate(int code, vpiHandle ref)
+স্থির vpiHandle intermodpath_iterate(পূর্ণাঙ্ক code, vpiHandle ref)
 {
-      struct __vpiInterModPath*rfp = dynamic_cast<__vpiInterModPath*>(ref);
-      assert(rfp);
+      সংরচনা __vpiInterModPath*rfp = dynamic_cast<__vpiInterModPath*>(ref);
+      প্রতিজ্ঞা(rfp);
 
 	// For now intermodpaths only support exactly two ports
-      switch (code) {
-	  case vpiPort: {
-	    vpiHandle*args = static_cast<vpiHandle*>(calloc(2, sizeof(vpiHandle*)));
+      বিকল্প (code) {
+	  পক্ষ vpiPort: {
+	    vpiHandle*args = static_cast<vpiHandle*>(calloc(2, পরিমাণ(vpiHandle*)));
 	    args[0] = rfp->port1;
 	    args[1] = rfp->port2;
-	    return vpip_make_iterator(2, args, true);
+	    প্রত্যাগম vpip_make_iterator(2, args, সত্য);
 	  }
       }
-      return 0;
+      প্রত্যাগম 0;
 }
 
 /*
@@ -1264,64 +1264,64 @@ static vpiHandle intermodpath_iterate(int code, vpiHandle ref)
  * specific delays values in a vpiInterModPath object
  *
  */
-static void intermodpath_put_delays (vpiHandle ref, p_vpi_delay delays)
+স্থির শূন্য intermodpath_put_delays (vpiHandle ref, p_vpi_delay delays)
 {
       vvp_time64_t tmp[12];
-      int idx;
-      struct __vpiInterModPath * src = dynamic_cast<__vpiInterModPath*>(ref) ;
-      assert(src) ;
+      পূর্ণাঙ্ক idx;
+      সংরচনা __vpiInterModPath * src = dynamic_cast<__vpiInterModPath*>(ref) ;
+      প্রতিজ্ঞা(src) ;
 
       vvp_fun_intermodpath *fun = dynamic_cast<vvp_fun_intermodpath*>(src->net->fun);
-      assert( fun );
+      প্রতিজ্ঞা( fun );
 
-      typedef unsigned char map_array_t[12];
+      প্রকারনির্দেশ unsigned বর্ণ map_array_t[12];
 	// Only the first six entries are used for the less than twelve maps.
-      static const map_array_t map_1 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-      static const map_array_t map_2 = {0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0};
-      static const map_array_t map_3 = {0, 1, 2, 0, 2, 1, 0, 0, 0, 0, 0, 0};
-      static const map_array_t map_6 = {0, 1, 2, 3, 4, 5, 0, 0, 0, 0, 0, 0};
-      static const map_array_t map12 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+      স্থির ধ্রুব map_array_t map_1 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+      স্থির ধ্রুব map_array_t map_2 = {0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0};
+      স্থির ধ্রুব map_array_t map_3 = {0, 1, 2, 0, 2, 1, 0, 0, 0, 0, 0, 0};
+      স্থির ধ্রুব map_array_t map_6 = {0, 1, 2, 3, 4, 5, 0, 0, 0, 0, 0, 0};
+      স্থির ধ্রুব map_array_t map12 = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
-      const map_array_t*use_map = 0;
-      switch (delays->no_of_delays) {
-	  case 1:
+      ধ্রুব map_array_t*use_map = 0;
+      বিকল্প (delays->no_of_delays) {
+	  পক্ষ 1:
 	    use_map = &map_1;
-	    break;
-	  case 2:
+	    ভঙ্গ;
+	  পক্ষ 2:
 	    use_map = &map_2;
-	    break;
-	  case 3:
+	    ভঙ্গ;
+	  পক্ষ 3:
 	    use_map = &map_3;
-	    break;
-	  case 6:
+	    ভঙ্গ;
+	  পক্ষ 6:
 	    use_map = &map_6;
-	    break;
-	  case 12:
+	    ভঙ্গ;
+	  পক্ষ 12:
 	    use_map = &map12;
-	    break;
-	  default:
-	    assert(0);
-	    break;
+	    ভঙ্গ;
+	  স্বভাব:
+	    প্রতিজ্ঞা(0);
+	    ভঙ্গ;
       }
 
-      if (delays->time_type == vpiSimTime) {
-	    for (idx = 0 ; idx < 12 ; idx += 1) {
+      যদি (delays->time_type == vpiSimTime) {
+	    প্রতি (idx = 0 ; idx < 12 ; idx += 1) {
 		  tmp[idx] = vpip_timestruct_to_time(delays->da+use_map[0][idx]);
 	    }
-      } else {
+      } অন্যথা {
 	      // You cannot create a modpath with a negative delay so set it
 	      // to zero per 1364-2005 section 14.3.1.
-	    for (idx = 0 ; idx < delays->no_of_delays ; idx += 1) {
-		  if (delays->da[idx].real < 0.0) delays->da[idx].real = 0.0;
+	    প্রতি (idx = 0 ; idx < delays->no_of_delays ; idx += 1) {
+		  যদি (delays->da[idx].real < 0.0) delays->da[idx].real = 0.0;
 	    }
-	    for (idx = 0 ; idx < 12 ; idx += 1) {
+	    প্রতি (idx = 0 ; idx < 12 ; idx += 1) {
 		  tmp[idx] = vpip_scaled_real_to_time64(delays->da[use_map[0][idx]].real,
 							src->scope);
 	    }
       }
 
       /* Now define the to-from-x delays if needed. */
-      if (delays->no_of_delays <= 6) {
+      যদি (delays->no_of_delays <= 6) {
 	      /* 0->x is the minimum of 0->z and 0->1. */
 	    tmp[DELAY_EDGE_0x] = tmp[DELAY_EDGE_0z] < tmp[DELAY_EDGE_01] ?
 	                           tmp[DELAY_EDGE_0z] : tmp[DELAY_EDGE_01];
@@ -1353,37 +1353,37 @@ static void intermodpath_put_delays (vpiHandle ref, p_vpi_delay delays)
  *
  */
 
-static void intermodpath_get_delays ( vpiHandle ref, p_vpi_delay delays )
+স্থির শূন্য intermodpath_get_delays ( vpiHandle ref, p_vpi_delay delays )
 {
-      struct __vpiInterModPath*src = dynamic_cast<__vpiInterModPath*>(ref) ;
-      assert(src);
+      সংরচনা __vpiInterModPath*src = dynamic_cast<__vpiInterModPath*>(ref) ;
+      প্রতিজ্ঞা(src);
 
       vvp_fun_intermodpath *fun = dynamic_cast<vvp_fun_intermodpath*>(src->net->fun);
-      assert(fun);
+      প্রতিজ্ঞা(fun);
 
-      int idx;
+      পূর্ণাঙ্ক idx;
       vvp_time64_t tmp[12];
       fun->get_delay12(tmp);
 
-      switch (delays->no_of_delays) {
-	  case 1:
-	  case 2:
-	  case 3:
-	  case 6:
-	  case 12:
-	    break;
+      বিকল্প (delays->no_of_delays) {
+	  পক্ষ 1:
+	  পক্ষ 2:
+	  পক্ষ 3:
+	  পক্ষ 6:
+	  পক্ষ 12:
+	    ভঙ্গ;
 
-	  default:
-	    assert(0);
-	    break;
+	  স্বভাব:
+	    প্রতিজ্ঞা(0);
+	    ভঙ্গ;
       }
 
-      if (delays->time_type == vpiSimTime) {
-	    for (idx = 0; idx < delays->no_of_delays; idx += 1) {
+      যদি (delays->time_type == vpiSimTime) {
+	    প্রতি (idx = 0; idx < delays->no_of_delays; idx += 1) {
 		  vpip_time_to_timestruct(delays->da+idx, tmp[idx]);
 	    }
-      } else {
-	    for (idx = 0; idx < delays->no_of_delays; idx += 1) {
+      } অন্যথা {
+	    প্রতি (idx = 0; idx < delays->no_of_delays; idx += 1) {
 		  delays->da[idx].real = vpip_time_to_scaled_real(tmp[idx], src->scope);
 	    }
       }
@@ -1393,41 +1393,41 @@ static void intermodpath_get_delays ( vpiHandle ref, p_vpi_delay delays )
 * The __vpiInterModPath class is what the VPI client sees as a
 * vpiInterModPath object.
 */
-inline __vpiInterModPath::__vpiInterModPath()
+অন্তঃস্থ __vpiInterModPath::__vpiInterModPath()
 { }
 
-int __vpiInterModPath::get_type_code(void) const
-{ return vpiInterModPath; }
+পূর্ণাঙ্ক __vpiInterModPath::get_type_code(শূন্য) ধ্রুব
+{ প্রত্যাগম vpiInterModPath; }
 
-int __vpiInterModPath::vpi_get(int code)
-{ return intermodpath_get(code, this); }
+পূর্ণাঙ্ক __vpiInterModPath::vpi_get(পূর্ণাঙ্ক code)
+{ প্রত্যাগম intermodpath_get(code, এতত্); }
 
-void __vpiInterModPath::vpi_get_value(p_vpi_value val)
-{ intermodpath_get_value(this, val); }
+শূন্য __vpiInterModPath::vpi_get_মান(p_vpi_মান val)
+{ intermodpath_get_মান(এতত্, val); }
 
-vpiHandle __vpiInterModPath::vpi_put_value(p_vpi_value val, int flags)
-{ return intermodpath_put_value(this, val, flags); }
+vpiHandle __vpiInterModPath::vpi_put_মান(p_vpi_মান val, পূর্ণাঙ্ক flags)
+{ প্রত্যাগম intermodpath_put_মান(এতত্, val, flags); }
 
-vpiHandle __vpiInterModPath::vpi_handle(int code)
-{ return intermodpath_get_handle(code, this); }
+vpiHandle __vpiInterModPath::vpi_handle(পূর্ণাঙ্ক code)
+{ প্রত্যাগম intermodpath_get_handle(code, এতত্); }
 
-vpiHandle __vpiInterModPath::vpi_iterate(int code)
-{ return intermodpath_iterate(code, this); }
+vpiHandle __vpiInterModPath::vpi_iterate(পূর্ণাঙ্ক code)
+{ প্রত্যাগম intermodpath_iterate(code, এতত্); }
 
-void __vpiInterModPath::vpi_get_delays(p_vpi_delay del)
-{ intermodpath_get_delays(this, del); }
+শূন্য __vpiInterModPath::vpi_get_delays(p_vpi_delay del)
+{ intermodpath_get_delays(এতত্, del); }
 
-void __vpiInterModPath::vpi_put_delays(p_vpi_delay del)
-{ intermodpath_put_delays(this, del); }
+শূন্য __vpiInterModPath::vpi_put_delays(p_vpi_delay del)
+{ intermodpath_put_delays(এতত্, del); }
 
-static int intermodpath_free_object( vpiHandle ref )
+স্থির পূর্ণাঙ্ক intermodpath_free_object( vpiHandle ref )
 {
       delete ref;
-      return 1 ;
+      প্রত্যাগম 1 ;
 }
 
-__vpiHandle::free_object_fun_t __vpiInterModPath::free_object_fun(void)
-{ return &intermodpath_free_object; }
+__vpiHandle::free_object_fun_t __vpiInterModPath::free_object_fun(শূন্য)
+{ প্রত্যাগম &intermodpath_free_object; }
 
 /*
  * This function will construct a vpiInterModPath Object.
@@ -1436,13 +1436,13 @@ __vpiHandle::free_object_fun_t __vpiInterModPath::free_object_fun(void)
  */
 
 #ifdef CHECK_WITH_VALGRIND
-static struct __vpiInterModPath**imp_list = 0;
-static unsigned imp_count = 0;
+স্থির সংরচনা __vpiInterModPath**imp_list = 0;
+স্থির unsigned imp_গুনতি = 0;
 #endif
 
-struct __vpiInterModPath* vpip_make_intermodpath(vvp_net_t *net, vpiPortInfo* port1, vpiPortInfo* port2)
+সংরচনা __vpiInterModPath* vpip_make_intermodpath(vvp_net_t *net, vpiPortInfo* port1, vpiPortInfo* port2)
 {
-      struct __vpiInterModPath*obj = new __vpiInterModPath;
+      সংরচনা __vpiInterModPath*obj = নূতন __vpiInterModPath;
       obj->scope = vpip_peek_current_scope ( );
 
       obj->net = net;
@@ -1450,23 +1450,23 @@ struct __vpiInterModPath* vpip_make_intermodpath(vvp_net_t *net, vpiPortInfo* po
       obj->port2 = port2;
 
 #ifdef CHECK_WITH_VALGRIND
-      imp_count += 1;
-      imp_list = static_cast<struct __vpiInterModPath **>
+      imp_গুনতি += 1;
+      imp_list = static_cast<সংরচনা __vpiInterModPath **>
                  (realloc(imp_list,
-                  imp_count*sizeof(struct __vpiInterModPath **)));
-      imp_list[imp_count-1] = obj;
+                  imp_গুনতি*পরিমাণ(সংরচনা __vpiInterModPath **)));
+      imp_list[imp_গুনতি-1] = obj;
 #endif
-      return obj;
+      প্রত্যাগম obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void intermodpath_delete()
+শূন্য intermodpath_delete()
 {
-      for (unsigned idx = 0; idx < mp_count; idx += 1) {
+      প্রতি (unsigned idx = 0; idx < mp_গুনতি; idx += 1) {
 	    delete imp_list[idx];
       }
-      free(imp_list);
+      মুক্ত(imp_list);
       imp_list = 0;
-      imp_count = 0;
+      imp_গুনতি = 0;
 }
 #endif

@@ -32,18 +32,18 @@
  * inputs to match, and since only one input at a time changes, the
  * other will need to be initialized to X.
  */
-class vvp_arith_  : public vvp_net_fun_t {
+class vvp_arith_  : সার্বজনিক vvp_net_fun_t {
 
-    public:
+    সার্বজনিক:
       explicit vvp_arith_(unsigned wid);
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4_pv(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t ctx) override;
 
-    protected:
-      void dispatch_operand_(vvp_net_ptr_t ptr, const vvp_vector4_t&bit);
+    রক্ষিত:
+      শূন্য dispatch_operand_(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit);
 
-    protected:
+    রক্ষিত:
       unsigned wid_;
 
       vvp_vector4_t op_a_;
@@ -52,87 +52,87 @@ class vvp_arith_  : public vvp_net_fun_t {
       vvp_vector4_t x_val_;
 };
 
-class vvp_arith_abs : public vvp_net_fun_t {
-    public:
+class vvp_arith_abs : সার্বজনিক vvp_net_fun_t {
+    সার্বজনিক:
       explicit vvp_arith_abs();
       ~vvp_arith_abs() override;
 
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      শূন্য recv_real(vvp_net_ptr_t ptr, দ্বিগুণ bit,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4_pv(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t ctx) override;
 
-    private:
+    গুপ্ত:
 };
 
-class vvp_arith_cast_int : public vvp_net_fun_t {
-    public:
+class vvp_arith_cast_int : সার্বজনিক vvp_net_fun_t {
+    সার্বজনিক:
       explicit vvp_arith_cast_int(unsigned wid);
       ~vvp_arith_cast_int() override;
 
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      শূন্য recv_real(vvp_net_ptr_t ptr, দ্বিগুণ bit,
                      vvp_context_t) override;
 
-    private:
+    গুপ্ত:
       unsigned wid_;
 };
 
-class vvp_arith_cast_real : public vvp_net_fun_t {
-    public:
+class vvp_arith_cast_real : সার্বজনিক vvp_net_fun_t {
+    সার্বজনিক:
       explicit vvp_arith_cast_real(bool signed_flag);
       ~vvp_arith_cast_real() override;
 
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4_pv(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t ctx) override;
 
-    private:
+    গুপ্ত:
       bool signed_;
 };
 
-class vvp_arith_cast_vec2 : public vvp_net_fun_t {
-    public:
+class vvp_arith_cast_vec2 : সার্বজনিক vvp_net_fun_t {
+    সার্বজনিক:
       explicit vvp_arith_cast_vec2(unsigned wid);
       ~vvp_arith_cast_vec2() override;
 
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      শূন্য recv_real(vvp_net_ptr_t ptr, দ্বিগুণ bit,
                      vvp_context_t) override;
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4_pv(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t ctx) override;
 
-    private:
+    গুপ্ত:
       unsigned wid_;
 };
 
-class vvp_arith_div : public vvp_arith_ {
+class vvp_arith_div : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_arith_div(unsigned wid, bool signed_flag);
       ~vvp_arith_div() override;
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
-    private:
-      void wide4_(vvp_net_ptr_t ptr);
+    গুপ্ত:
+      শূন্য wide4_(vvp_net_ptr_t ptr);
       bool signed_flag_;
 };
 
-class vvp_arith_mod : public vvp_arith_ {
+class vvp_arith_mod : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_arith_mod(unsigned wid, bool signed_flag);
       ~vvp_arith_mod() override;
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
-    private:
-      void wide_(vvp_net_ptr_t ptr);
+    গুপ্ত:
+      শূন্য wide_(vvp_net_ptr_t ptr);
       bool signed_flag_;
 };
 
@@ -142,74 +142,74 @@ class vvp_arith_mod : public vvp_arith_ {
  * exactly 1 bit.
  */
 
-class vvp_cmp_eeq  : public vvp_arith_ {
+class vvp_cmp_eeq  : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_cmp_eeq(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_nee  : public vvp_arith_ {
+class vvp_cmp_nee  : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_cmp_nee(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_eq  : public vvp_arith_ {
+class vvp_cmp_eq  : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_cmp_eq(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_eqx  : public vvp_arith_ {
+class vvp_cmp_eqx  : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_cmp_eqx(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_eqz  : public vvp_arith_ {
+class vvp_cmp_eqz  : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_cmp_eqz(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_ne  : public vvp_arith_ {
+class vvp_cmp_ne  : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_cmp_ne(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_weq  : public vvp_arith_ {
+class vvp_cmp_weq  : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_cmp_weq(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_wne  : public vvp_arith_ {
+class vvp_cmp_wne  : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_cmp_wne(unsigned wid);
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
 
 };
@@ -220,34 +220,34 @@ class vvp_cmp_wne  : public vvp_arith_ {
  * GT and GE call the recv_vec4_base_ method with a different
  * out_if_equal argument that reflects the different expectations.
  */
-class vvp_cmp_gtge_base_ : public vvp_arith_ {
+class vvp_cmp_gtge_base_ : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_cmp_gtge_base_(unsigned wid, bool signed_flag);
 
-    protected:
-      void recv_vec4_base_(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+    রক্ষিত:
+      শূন্য recv_vec4_base_(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
 			   vvp_bit4_t out_if_equal);
-    private:
+    গুপ্ত:
       bool signed_flag_;
 };
 
-class vvp_cmp_ge  : public vvp_cmp_gtge_base_ {
+class vvp_cmp_ge  : সার্বজনিক vvp_cmp_gtge_base_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_cmp_ge(unsigned wid, bool signed_flag);
 
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
 
 };
 
-class vvp_cmp_gt  : public vvp_cmp_gtge_base_ {
+class vvp_cmp_gt  : সার্বজনিক vvp_cmp_gtge_base_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_cmp_gt(unsigned wid, bool signed_flag);
 
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
 };
 
@@ -256,66 +256,66 @@ class vvp_cmp_gt  : public vvp_cmp_gtge_base_ {
  * width as the output. This is different from the typical vvp_arith_
  * object. Perhaps that means this isn't quite a vvp_arith_ object?
  */
-class vvp_arith_mult  : public vvp_arith_ {
+class vvp_arith_mult  : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_arith_mult(unsigned wid);
       ~vvp_arith_mult() override;
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
-    private:
-      void wide_(vvp_net_ptr_t ptr);
+    গুপ্ত:
+      শূন্য wide_(vvp_net_ptr_t ptr);
 };
 
-class vvp_arith_pow  : public vvp_arith_ {
+class vvp_arith_pow  : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_arith_pow(unsigned wid, bool signed_flag);
       ~vvp_arith_pow() override;
-      void recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override;
-    private:
+    গুপ্ত:
       bool signed_flag_;
 };
 
-class vvp_arith_sub  : public vvp_arith_ {
+class vvp_arith_sub  : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_arith_sub(unsigned wid);
       ~vvp_arith_sub() override;
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      আভাস শূন্য recv_vec4(vvp_net_ptr_t port, ধ্রুব vvp_vector4_t&bit,
                              vvp_context_t) override;
 
 };
 
-class vvp_arith_sum  : public vvp_arith_ {
+class vvp_arith_sum  : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_arith_sum(unsigned wid);
       ~vvp_arith_sum() override;
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      আভাস শূন্য recv_vec4(vvp_net_ptr_t port, ধ্রুব vvp_vector4_t&bit,
                              vvp_context_t) override;
 
 };
 
-class vvp_shiftl  : public vvp_arith_ {
+class vvp_shiftl  : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_shiftl(unsigned wid);
       ~vvp_shiftl() override;
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      আভাস শূন্য recv_vec4(vvp_net_ptr_t port, ধ্রুব vvp_vector4_t&bit,
                              vvp_context_t) override;
 };
 
-class vvp_shiftr  : public vvp_arith_ {
+class vvp_shiftr  : সার্বজনিক vvp_arith_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_shiftr(unsigned wid, bool signed_flag);
       ~vvp_shiftr() override;
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      আভাস শূন্য recv_vec4(vvp_net_ptr_t port, ধ্রুব vvp_vector4_t&bit,
                              vvp_context_t) override;
 
-    private:
+    গুপ্ত:
       bool signed_flag_;
 };
 
@@ -324,103 +324,103 @@ class vvp_shiftr  : public vvp_arith_ {
  * vector expression classes, but the inputs are collected from the
  * recv_real method.
  */
-class vvp_arith_real_  : public vvp_net_fun_t {
+class vvp_arith_real_  : সার্বজনিক vvp_net_fun_t {
 
-    public:
+    সার্বজনিক:
       explicit vvp_arith_real_();
 
-    protected:
-      void dispatch_operand_(vvp_net_ptr_t ptr, double bit);
+    রক্ষিত:
+      শূন্য dispatch_operand_(vvp_net_ptr_t ptr, দ্বিগুণ bit);
 
-    protected:
-      double op_a_;
-      double op_b_;
+    রক্ষিত:
+      দ্বিগুণ op_a_;
+      দ্বিগুণ op_b_;
 };
 
 
-class vvp_arith_sum_real : public vvp_arith_real_ {
+class vvp_arith_sum_real : সার্বজনিক vvp_arith_real_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_arith_sum_real();
       ~vvp_arith_sum_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      শূন্য recv_real(vvp_net_ptr_t ptr, দ্বিগুণ bit,
                      vvp_context_t) override;
 };
 
-class vvp_arith_div_real : public vvp_arith_real_ {
+class vvp_arith_div_real : সার্বজনিক vvp_arith_real_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_arith_div_real();
       ~vvp_arith_div_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      শূন্য recv_real(vvp_net_ptr_t ptr, দ্বিগুণ bit,
                      vvp_context_t) override;
 };
 
-class vvp_arith_mod_real : public vvp_arith_real_ {
+class vvp_arith_mod_real : সার্বজনিক vvp_arith_real_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_arith_mod_real();
       ~vvp_arith_mod_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      শূন্য recv_real(vvp_net_ptr_t ptr, দ্বিগুণ bit,
                      vvp_context_t) override;
 };
 
-class vvp_arith_mult_real : public vvp_arith_real_ {
+class vvp_arith_mult_real : সার্বজনিক vvp_arith_real_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_arith_mult_real();
       ~vvp_arith_mult_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      শূন্য recv_real(vvp_net_ptr_t ptr, দ্বিগুণ bit,
                      vvp_context_t) override;
 };
 
-class vvp_arith_pow_real : public vvp_arith_real_ {
+class vvp_arith_pow_real : সার্বজনিক vvp_arith_real_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_arith_pow_real();
       ~vvp_arith_pow_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      শূন্য recv_real(vvp_net_ptr_t ptr, দ্বিগুণ bit,
                      vvp_context_t) override;
 };
 
-class vvp_arith_sub_real : public vvp_arith_real_ {
+class vvp_arith_sub_real : সার্বজনিক vvp_arith_real_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_arith_sub_real();
       ~vvp_arith_sub_real() override;
-      void recv_real(vvp_net_ptr_t ptr, double bit,
+      শূন্য recv_real(vvp_net_ptr_t ptr, দ্বিগুণ bit,
                      vvp_context_t) override;
 };
 
-class vvp_cmp_eq_real  : public vvp_arith_real_ {
+class vvp_cmp_eq_real  : সার্বজনিক vvp_arith_real_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_cmp_eq_real();
-      void recv_real(vvp_net_ptr_t ptr, const double bit,
+      শূন্য recv_real(vvp_net_ptr_t ptr, ধ্রুব দ্বিগুণ bit,
                      vvp_context_t) override;
 };
 
-class vvp_cmp_ne_real  : public vvp_arith_real_ {
+class vvp_cmp_ne_real  : সার্বজনিক vvp_arith_real_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_cmp_ne_real();
-      void recv_real(vvp_net_ptr_t ptr, const double bit,
+      শূন্য recv_real(vvp_net_ptr_t ptr, ধ্রুব দ্বিগুণ bit,
                      vvp_context_t) override;
 };
 
-class vvp_cmp_ge_real  : public vvp_arith_real_ {
+class vvp_cmp_ge_real  : সার্বজনিক vvp_arith_real_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_cmp_ge_real();
-      void recv_real(vvp_net_ptr_t ptr, const double bit,
+      শূন্য recv_real(vvp_net_ptr_t ptr, ধ্রুব দ্বিগুণ bit,
                      vvp_context_t) override;
 };
 
-class vvp_cmp_gt_real  : public vvp_arith_real_ {
+class vvp_cmp_gt_real  : সার্বজনিক vvp_arith_real_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_cmp_gt_real();
-      void recv_real(vvp_net_ptr_t ptr, const double bit,
+      শূন্য recv_real(vvp_net_ptr_t ptr, ধ্রুব দ্বিগুণ bit,
                      vvp_context_t) override;
 };
 

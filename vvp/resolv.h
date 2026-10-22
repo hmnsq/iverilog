@@ -30,68 +30,68 @@
  * actual functors.
  */
 
-class resolv_core : public vvp_net_fun_t {
+class resolv_core : সার্বজনিক vvp_net_fun_t {
 
-    public:
+    সার্বজনিক:
       explicit resolv_core(unsigned nports, vvp_net_t*net);
-      virtual ~resolv_core() override;
+      আভাস ~resolv_core() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t port, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override
             { recv_vec4_(port.port(), bit); }
 
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override
+      শূন্য recv_vec8(vvp_net_ptr_t port, ধ্রুব vvp_vector8_t&bit) override
             { recv_vec8_(port.port(), bit); }
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      শূন্য recv_vec4_pv(vvp_net_ptr_t port, ধ্রুব vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t) override
             { recv_vec4_pv_(port.port(), bit, base, vwid); }
 
-      void recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
+      শূন্য recv_vec8_pv(vvp_net_ptr_t port, ধ্রুব vvp_vector8_t&bit,
 			unsigned base, unsigned vwid) override
             { recv_vec8_pv_(port.port(), bit, base, vwid); }
 
-      virtual void count_drivers(unsigned bit_idx, unsigned counts[3]) =0;
+      আভাস শূন্য গুনতি_drivers(unsigned bit_idx, unsigned counts[3]) =0;
 
-    private:
+    গুপ্ত:
       friend class resolv_extend;
-      virtual void recv_vec4_(unsigned port, const vvp_vector4_t&bit) =0;
-      virtual void recv_vec8_(unsigned port, const vvp_vector8_t&bit) =0;
+      আভাস শূন্য recv_vec4_(unsigned port, ধ্রুব vvp_vector4_t&bit) =0;
+      আভাস শূন্য recv_vec8_(unsigned port, ধ্রুব vvp_vector8_t&bit) =0;
 
-      void recv_vec4_pv_(unsigned port, const vvp_vector4_t&bit,
+      শূন্য recv_vec4_pv_(unsigned port, ধ্রুব vvp_vector4_t&bit,
 			 unsigned base, unsigned vwid);
-      void recv_vec8_pv_(unsigned port, const vvp_vector8_t&bit,
+      শূন্য recv_vec8_pv_(unsigned port, ধ্রুব vvp_vector8_t&bit,
 			 unsigned base, unsigned vwid);
 
-    protected:
+    রক্ষিত:
       unsigned nports_;
       vvp_net_t*net_;
 };
 
-class resolv_extend : public vvp_net_fun_t {
+class resolv_extend : সার্বজনিক vvp_net_fun_t {
 
-    public:
+    সার্বজনিক:
       resolv_extend(resolv_core*core, unsigned port_base);
       ~resolv_extend() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t port, ধ্রুব vvp_vector4_t&bit,
                      vvp_context_t) override
             { core_->recv_vec4_(port_base_ + port.port(), bit); }
 
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override
+      শূন্য recv_vec8(vvp_net_ptr_t port, ধ্রুব vvp_vector8_t&bit) override
             { core_->recv_vec8_(port_base_ + port.port(), bit); }
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      শূন্য recv_vec4_pv(vvp_net_ptr_t port, ধ্রুব vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t) override
             { core_->recv_vec4_pv_(port_base_ + port.port(), bit,
                                    base, vwid); }
 
-      void recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
+      শূন্য recv_vec8_pv(vvp_net_ptr_t port, ধ্রুব vvp_vector8_t&bit,
 			unsigned base, unsigned vwid) override
             { core_->recv_vec8_pv_(port_base_ + port.port(), bit,
                                    base, vwid); }
 
-    private:
+    গুপ্ত:
       resolv_core*core_;
       unsigned port_base_;
 };
@@ -108,22 +108,22 @@ class resolv_extend : public vvp_net_fun_t {
  * strong values (or HiZ) for the sake of resolution. In any case, the
  * propagated value is a vvp_vector8_t value.
  */
-class resolv_tri : public resolv_core {
+class resolv_tri : সার্বজনিক resolv_core {
 
-    public:
+    সার্বজনিক:
       explicit resolv_tri(unsigned nports, vvp_net_t*net,
-                          vvp_scalar_t hiz_value);
+                          vvp_scalar_t hiz_মান);
       ~resolv_tri() override;
 
-      void count_drivers(unsigned bit_idx, unsigned counts[3]) override;
+      শূন্য গুনতি_drivers(unsigned bit_idx, unsigned counts[3]) override;
 
-    private:
-      void recv_vec4_(unsigned port, const vvp_vector4_t&bit) override;
-      void recv_vec8_(unsigned port, const vvp_vector8_t&bit) override;
+    গুপ্ত:
+      শূন্য recv_vec4_(unsigned port, ধ্রুব vvp_vector4_t&bit) override;
+      শূন্য recv_vec8_(unsigned port, ধ্রুব vvp_vector8_t&bit) override;
 
-    private:
+    গুপ্ত:
         // The puller value to be used when a bit is not driven.
-      vvp_scalar_t hiz_value_;
+      vvp_scalar_t hiz_মান_2;
         // The array of input values.
       vvp_vector8_t*val_;
 };
@@ -137,44 +137,44 @@ class resolv_tri : public resolv_core {
  * value. It also takes in vvp_vector8_t values, which it reduces to
  * 4-state values for the sake of resolution.
  */
-class resolv_wired_logic : public resolv_core {
+class resolv_wired_logic : সার্বজনিক resolv_core {
 
-    public:
+    সার্বজনিক:
       explicit resolv_wired_logic(unsigned nports, vvp_net_t*net);
-      virtual ~resolv_wired_logic() override;
+      আভাস ~resolv_wired_logic() override;
 
-      void count_drivers(unsigned bit_idx, unsigned counts[3]) override;
+      শূন্য গুনতি_drivers(unsigned bit_idx, unsigned counts[3]) override;
 
-    protected:
-      virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) =0;
+    রক্ষিত:
+      আভাস vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) =0;
 
-    private:
-      void recv_vec4_(unsigned port, const vvp_vector4_t&bit) override;
-      void recv_vec8_(unsigned port, const vvp_vector8_t&bit) override;
+    গুপ্ত:
+      শূন্য recv_vec4_(unsigned port, ধ্রুব vvp_vector4_t&bit) override;
+      শূন্য recv_vec8_(unsigned port, ধ্রুব vvp_vector8_t&bit) override;
 
-    private:
+    গুপ্ত:
         // The array of input values.
       vvp_vector4_t*val_;
 };
 
-class resolv_triand : public resolv_wired_logic {
+class resolv_triand : সার্বজনিক resolv_wired_logic {
 
-    public:
+    সার্বজনিক:
       explicit resolv_triand(unsigned nports, vvp_net_t*net);
       ~resolv_triand() override;
 
-    private:
-      virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
+    গুপ্ত:
+      আভাস vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
 };
 
-class resolv_trior : public resolv_wired_logic {
+class resolv_trior : সার্বজনিক resolv_wired_logic {
 
-    public:
+    সার্বজনিক:
       explicit resolv_trior(unsigned nports, vvp_net_t*net);
       ~resolv_trior() override;
 
-    private:
-      virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
+    গুপ্ত:
+      আভাস vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
 };
 
 #endif /* IVL_resolv_H */

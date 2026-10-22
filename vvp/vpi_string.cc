@@ -30,77 +30,77 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+using নামাকাশ std;
 
-__vpiStringVar::__vpiStringVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
+__vpiStringVar::__vpiStringVar(__vpiScope*sc, ধ্রুব বর্ণ*na, vvp_net_t*ne)
 : __vpiBaseVar(sc, na, ne)
 {
 }
 
-int __vpiStringVar::get_type_code(void) const
-{ return vpiStringVar; }
+পূর্ণাঙ্ক __vpiStringVar::get_type_code(শূন্য) ধ্রুব
+{ প্রত্যাগম vpiStringVar; }
 
-int __vpiStringVar::vpi_get(int code)
+পূর্ণাঙ্ক __vpiStringVar::vpi_get(পূর্ণাঙ্ক code)
 {
       vvp_fun_signal_string*fun = dynamic_cast<vvp_fun_signal_string*> (get_net()->fun);
-      assert(fun);
+      প্রতিজ্ঞা(fun);
       string str = fun->get_string();
 
-      switch (code) {
-	  case vpiSize:
+      বিকল্প (code) {
+	  পক্ষ vpiSize:
 	      // The vpiSize of a string variable is the number of
 	      // bytes (characters) in that string.
-	    return str.size();
-	  case vpiLeftRange:
-	    return 0;
-	  case vpiRightRange:
-            return str.size() - 1;
-	  default:
+	    প্রত্যাগম str.size();
+	  পক্ষ vpi_বাম_Range:
+	    প্রত্যাগম 0;
+	  পক্ষ vpi_ডান_Range:
+            প্রত্যাগম str.size() - 1;
+	  স্বভাব:
 	    fprintf(stderr, "vpi sorry: property is not implemented");
-	    assert(false);
-	    return 0;
+	    প্রতিজ্ঞা(অসত্য);
+	    প্রত্যাগম 0;
       }
 }
 
-void __vpiStringVar::vpi_get_value(p_vpi_value val)
+শূন্য __vpiStringVar::vpi_get_মান(p_vpi_মান val)
 {
       vvp_fun_signal_string*fun = dynamic_cast<vvp_fun_signal_string*> (get_net()->fun);
-      assert(fun);
+      প্রতিজ্ঞা(fun);
       string str = fun->get_string();
 
-      if (val->format == vpiStringVal || val->format == vpiObjTypeVal) {
-	    char*rbuf = static_cast<char *>(need_result_buf(str.size()+1, RBUF_VAL));
+      যদি (val->format == vpiStringVal || val->format == vpiObjTypeVal) {
+	    বর্ণ*rbuf = static_cast<বর্ণ *>(need_result_buf(str.size()+1, RBUF_VAL));
 	    strcpy(rbuf, str.c_str());
 	    val->format = vpiStringVal;
 	    val->value.str = rbuf;
-	    return;
+	    প্রত্যাগম;
       }
 
       val->format = vpiSuppressVal;
 }
 
-vpiHandle __vpiStringVar::vpi_put_value(p_vpi_value val, int)
+vpiHandle __vpiStringVar::vpi_put_মান(p_vpi_মান val, পূর্ণাঙ্ক)
 {
       vvp_fun_signal_string*fun = dynamic_cast<vvp_fun_signal_string*> (get_net()->fun);
-      assert(fun);
-      assert(val->format == vpiStringVal);
+      প্রতিজ্ঞা(fun);
+      প্রতিজ্ঞা(val->format == vpiStringVal);
       vvp_net_ptr_t dest (get_net(), 0);
       vvp_send_string(dest, val->value.str, vthread_get_wt_context());
-      return 0;
+      প্রত্যাগম 0;
 }
 
-vpiHandle vpip_make_string_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_string_var(ধ্রুব বর্ণ*name, vvp_net_t*net)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      const char*use_name = name ? vpip_name_string(name) : NULL;
+      ধ্রুব বর্ণ*use_name = name ? vpip_name_string(name) : রিক্ত;
 
-      __vpiStringVar*obj = new __vpiStringVar(scope, use_name, net);
+      __vpiStringVar*obj = নূতন __vpiStringVar(scope, use_name, net);
 
-      return obj;
+      প্রত্যাগম obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void string_delete(vpiHandle item)
+শূন্য string_delete(vpiHandle item)
 {
       __vpiStringVar*obj = dynamic_cast<__vpiStringVar*>(item);
       delete obj;

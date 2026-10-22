@@ -25,71 +25,71 @@
  * This method is called to compile the design file. The input is read
  * and a list of statements is created.
  */
-extern int compile_design(const char*path);
+বাহ্য পূর্ণাঙ্ক compile_design(ধ্রুব বর্ণ*path);
 
 /*
  * This routine is called to check that the input file has a compatible
  * version.
  */
-extern void verify_version(char *ivl_ver, char* commit);
+বাহ্য শূন্য verify_version(বর্ণ *ivl_ver, বর্ণ* commit);
 
 /*
  * Set the default delay type for the $sdf_annotate task (min/typ/max).
  */
-extern void set_delay_selection(const char* sel);
+বাহ্য শূন্য set_delay_selection(ধ্রুব বর্ণ* sel);
 
 /*
  * various functions shared by the lexor and the parser.
  */
-extern int yylex(void);
-extern void yyerror(const char*msg);
+বাহ্য পূর্ণাঙ্ক yylex(শূন্য);
+বাহ্য শূন্য yyerror(ধ্রুব বর্ণ*বার্তা);
 
-extern void destroy_lexor();
+বাহ্য শূন্য destroy_lexor();
 
 /*
  * This is the path of the current source file.
  */
-extern const char*yypath;
-extern unsigned yyline;
+বাহ্য ধ্রুব বর্ণ*yypath;
+বাহ্য unsigned yyline;
 
-struct symb_s {
-      char*text;
+সংরচনা symb_s {
+      বর্ণ*text;
       unsigned idx;
 };
 
-struct symbv_s {
+সংরচনা symbv_s {
       unsigned cnt;
-      struct symb_s*vect;
+      সংরচনা symb_s*vect;
 };
 
-extern void symbv_init(struct symbv_s*obj);
-extern void symbv_add(struct symbv_s*obj, struct symb_s item);
+বাহ্য শূন্য symbv_init(সংরচনা symbv_s*obj);
+বাহ্য শূন্য symbv_add(সংরচনা symbv_s*obj, সংরচনা symb_s item);
 
-struct numbv_s {
+সংরচনা numbv_s {
       unsigned cnt;
       long*nvec;
 };
 
-struct enum_name_s {
-      char*text;
+সংরচনা enum_name_s {
+      বর্ণ*text;
       uint64_t val2;
-      char*val4;
+      বর্ণ*val4;
 };
 
-extern void numbv_init(struct numbv_s*obj);
-extern void numbv_add(struct numbv_s*obj, long item);
-extern void numbv_clear(struct numbv_s*obj);
+বাহ্য শূন্য numbv_init(সংরচনা numbv_s*obj);
+বাহ্য শূন্য numbv_add(সংরচনা numbv_s*obj, long item);
+বাহ্য শূন্য numbv_clear(সংরচনা numbv_s*obj);
 
-struct argv_s {
+সংরচনা argv_s {
       unsigned  argc;
       vpiHandle*argv;
-      char    **syms;
+      বর্ণ    **syms;
 };
 
 
-extern void argv_init(struct argv_s*obj);
-extern void argv_add(struct argv_s*obj, vpiHandle);
-extern void argv_sym_add(struct argv_s*obj, char *);
-extern void argv_sym_lookup(struct argv_s*obj);
+বাহ্য শূন্য argv_init(সংরচনা argv_s*obj);
+বাহ্য শূন্য argv_add(সংরচনা argv_s*obj, vpiHandle);
+বাহ্য শূন্য argv_sym_add(সংরচনা argv_s*obj, বর্ণ *);
+বাহ্য শূন্য argv_sym_lookup(সংরচনা argv_s*obj);
 
 #endif /* IVL_parse_misc_H */

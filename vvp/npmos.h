@@ -43,34 +43,34 @@
  * flag to the constructor activates this inversion.
  */
 
-class vvp_fun_pmos_ : public vvp_net_fun_t {
+class vvp_fun_pmos_ : সার্বজনিক vvp_net_fun_t {
 
-    public:
+    সার্বজনিক:
       explicit vvp_fun_pmos_(bool enable_invert, bool resistive);
 
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      আভাস শূন্য recv_vec4(vvp_net_ptr_t port, ধ্রুব vvp_vector4_t&bit,
                              vvp_context_t) override;
-      virtual void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      আভাস শূন্য recv_vec4_pv(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
 		                unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      virtual void recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
+      আভাস শূন্য recv_vec8_pv(vvp_net_ptr_t ptr, ধ্রুব vvp_vector8_t&bit,
 		                unsigned base, unsigned vwid) override;
-      virtual void recv_real(vvp_net_ptr_t port, double real,
+      আভাস শূন্য recv_real(vvp_net_ptr_t port, দ্বিগুণ real,
                              vvp_context_t ctx) override;
 
-    protected:
-      void generate_output_(vvp_net_ptr_t port);
+    রক্ষিত:
+      শূন্য generate_output_(vvp_net_ptr_t port);
 
       vvp_vector8_t bit_;
       vvp_vector4_t en_;
       bool inv_en_, resistive_;
 };
 
-class vvp_fun_pmos  : public vvp_fun_pmos_ {
+class vvp_fun_pmos  : সার্বজনিক vvp_fun_pmos_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_fun_pmos(bool enable_invert);
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      আভাস শূন্য recv_vec8(vvp_net_ptr_t port, ধ্রুব vvp_vector8_t&bit) override;
 };
 
 /*
@@ -78,12 +78,12 @@ class vvp_fun_pmos  : public vvp_fun_pmos_ {
  * only difference is that the input strength is reduced as it passes
  * through the device.
  */
-class vvp_fun_rpmos  : public vvp_fun_pmos_ {
+class vvp_fun_rpmos  : সার্বজনিক vvp_fun_pmos_ {
 
-    public:
+    সার্বজনিক:
       explicit vvp_fun_rpmos(bool enable_invert);
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      আভাস শূন্য recv_vec8(vvp_net_ptr_t port, ধ্রুব vvp_vector8_t&bit) override;
 };
 
 /*
@@ -107,21 +107,21 @@ class vvp_fun_rpmos  : public vvp_fun_pmos_ {
  *    H | 1 x x
  */
 
-class vvp_fun_cmos_ : public vvp_net_fun_t {
-    public:
+class vvp_fun_cmos_ : সার্বজনিক vvp_net_fun_t {
+    সার্বজনিক:
       explicit vvp_fun_cmos_(bool resistive);
 
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      আভাস শূন্য recv_vec4(vvp_net_ptr_t port, ধ্রুব vvp_vector4_t&bit,
                              vvp_context_t) override;
-      virtual void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      আভাস শূন্য recv_vec4_pv(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                                 unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      virtual void recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
+      আভাস শূন্য recv_vec8_pv(vvp_net_ptr_t ptr, ধ্রুব vvp_vector8_t&bit,
                               unsigned base, unsigned vwid) override;
-      virtual void recv_real(vvp_net_ptr_t port, double real,
+      আভাস শূন্য recv_real(vvp_net_ptr_t port, দ্বিগুণ real,
                              vvp_context_t) override;
 
-    protected:
-      void generate_output_(vvp_net_ptr_t port);
+    রক্ষিত:
+      শূন্য generate_output_(vvp_net_ptr_t port);
 
       vvp_vector8_t bit_;
       vvp_vector4_t n_en_;
@@ -129,18 +129,18 @@ class vvp_fun_cmos_ : public vvp_net_fun_t {
       bool resistive_;
 };
 
-class vvp_fun_cmos : public vvp_fun_cmos_ {
-    public:
+class vvp_fun_cmos : সার্বজনিক vvp_fun_cmos_ {
+    সার্বজনিক:
       explicit vvp_fun_cmos();
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      আভাস শূন্য recv_vec8(vvp_net_ptr_t port, ধ্রুব vvp_vector8_t&bit) override;
 };
 
-class vvp_fun_rcmos : public vvp_fun_cmos_ {
-    public:
+class vvp_fun_rcmos : সার্বজনিক vvp_fun_cmos_ {
+    সার্বজনিক:
       explicit vvp_fun_rcmos();
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      আভাস শূন্য recv_vec8(vvp_net_ptr_t port, ধ্রুব vvp_vector8_t&bit) override;
 };
 
 #endif /* IVL_npmos_H */

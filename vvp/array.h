@@ -19,20 +19,20 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "vvp_net.h"
-#include "vpi_user.h"
+#অন্তর্ভাব "vvp_net.h"
+#অন্তর্ভাব "vpi_user.h"
 
-typedef struct __vpiArray* vvp_array_t;
-class value_callback;
+প্রকারনির্দেশ সংরচনা __vpiArray* vvp_array_t;
+class মান_callback;
 
 /*
  * This function tries to find the array (by label) in the global
  * table of all the arrays in the design.
  */
-extern vvp_array_t array_find(const char*label);
+বাহ্য vvp_array_t array_find(ধ্রুব বর্ণ*label);
 
 /* VPI hooks */
-extern value_callback* vpip_array_word_change(p_cb_data data);
-extern value_callback* vpip_array_change(p_cb_data data);
+বাহ্য মান_callback* vpip_array_word_change(p_cb_data data);
+বাহ্য মান_callback* vpip_array_change(p_cb_data data);
 
 #endif /* IVL_array_H */

@@ -25,145 +25,145 @@
 # include  <cstdlib>
 # include  <cassert>
 
-extern const char hex_digits[256];
+বাহ্য ধ্রুব বর্ণ hex_digits[256];
 
-void vpip_hex_str_to_vec4(vvp_vector4_t&val, const char*str)
+শূন্য vpip_hex_str_to_vec4(vvp_vector4_t&val, ধ্রুব বর্ণ*str)
 {
       unsigned str_len = strlen(str);
       unsigned skip_chars = 0;
-      const char*tstr = str;
+      ধ্রুব বর্ণ*tstr = str;
 	/* Find the number of non-numeric characters. */
-      while ((tstr = strpbrk(tstr, "-_"))) {
+      যাবত্ ((tstr = strpbrk(tstr, "-_"))) {
 	    skip_chars += 1;
 	    tstr += 1;
       }
       vvp_vector4_t tval(4*(str_len-skip_chars));
       skip_chars = 0;
-      for (unsigned idx = 0 ;  idx < tval.size() ;  idx += 1) {
+      প্রতি (unsigned idx = 0 ;  idx < tval.size() ;  idx += 1) {
 	    unsigned tmp;
 	    unsigned bit_off = idx%4;
 	    unsigned str_off = idx/4;
-	    char ch;
+	    বর্ণ ch;
 
-	    assert (str_off+skip_chars < str_len);
+	    প্রতিজ্ঞা (str_off+skip_chars < str_len);
 	      /* Skip any "_" characters in the string. */
-	    while((ch = str[str_len-str_off-1-skip_chars]) == '_') {
+	    যাবত্((ch = str[str_len-str_off-1-skip_chars]) == '_') {
 		  skip_chars += 1;
-		  assert (str_off+skip_chars < str_len);
+		  প্রতিজ্ঞা (str_off+skip_chars < str_len);
 	    }
 
 	      /* If we find a "-" it must be at the head of the string. */
-	    if (ch == '-') assert(0);
+	    যদি (ch == '-') প্রতিজ্ঞা(0);
 
-	    switch (ch) {
-		case '0':
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-		case '6':
-		case '7':
-		case '8':
-		case '9':
+	    বিকল্প (ch) {
+		পক্ষ '0':
+		পক্ষ '1':
+		পক্ষ '2':
+		পক্ষ '3':
+		পক্ষ '4':
+		পক্ষ '5':
+		পক্ষ '6':
+		পক্ষ '7':
+		পক্ষ '8':
+		পক্ষ '9':
 		  tmp = ch - '0';
 		  tval.set_bit(idx, ((tmp>>bit_off)&1)? BIT4_1 : BIT4_0);
-		  break;
-		case 'a':
-		case 'b':
-		case 'c':
-		case 'd':
-		case 'e':
-		case 'f':
+		  ভঙ্গ;
+		পক্ষ 'a':
+		পক্ষ 'b':
+		পক্ষ 'c':
+		পক্ষ 'd':
+		পক্ষ 'e':
+		পক্ষ 'f':
 		  tmp = ch - 'a' + 10;
 		  tval.set_bit(idx, ((tmp>>bit_off)&1)? BIT4_1 : BIT4_0);
-		  break;
-		case 'A':
-		case 'B':
-		case 'C':
-		case 'D':
-		case 'E':
-		case 'F':
+		  ভঙ্গ;
+		পক্ষ 'A':
+		পক্ষ 'B':
+		পক্ষ 'C':
+		পক্ষ 'D':
+		পক্ষ 'E':
+		পক্ষ 'F':
 		  tmp = ch - 'A' + 10;
 		  tval.set_bit(idx, ((tmp>>bit_off)&1)? BIT4_1 : BIT4_0);
-		  break;
-		case 'x':
-		case 'X':
+		  ভঙ্গ;
+		পক্ষ 'x':
+		পক্ষ 'X':
 		  tval.set_bit(idx, BIT4_X);
-		  break;
-		case 'z':
-		case 'Z':
+		  ভঙ্গ;
+		পক্ষ 'z':
+		পক্ষ 'Z':
 		  tval.set_bit(idx, BIT4_Z);
-		  break;
-		default:
+		  ভঙ্গ;
+		স্বভাব:
 		    /* Return "x" if there are invalid digits in the string. */
 		  fprintf(stderr, "Warning: Invalid hex digit %c(%d) in "
 		          "\"%s\".\n", ch, ch, str);
-		  for (unsigned jdx = 0 ;  jdx < val.size() ;  jdx += 1) {
+		  প্রতি (unsigned jdx = 0 ;  jdx < val.size() ;  jdx += 1) {
 			val.set_bit(jdx, BIT4_X);
 		  }
-		  return;
+		  প্রত্যাগম;
 	    }
       }
 
 	/* Make a negative value when needed. */
-      if (str[0] == '-') {
+      যদি (str[0] == '-') {
 	    tval.invert();
 	    tval += (int64_t) 1;
       }
 
 	/* Find the correct padding value. */
       vvp_bit4_t pad;
-      switch (tval.value(tval.size()-1)) {
-	  case BIT4_X:  // Pad MSB 'x' with 'x'.
+      বিকল্প (tval.value(tval.size()-1)) {
+	  পক্ষ BIT4_X:  // Pad MSB 'x' with 'x'.
 	    pad = BIT4_X;
-	    break;
-	  case BIT4_Z:  // Pad MSB 'z' with 'z'.
+	    ভঙ্গ;
+	  পক্ষ BIT4_Z:  // Pad MSB 'z' with 'z'.
 	    pad = BIT4_Z;
-	    break;
-	  case BIT4_1:  // If negative pad MSB '1' with '1'.
-	    if (str[0] == '-') {
+	    ভঙ্গ;
+	  পক্ষ BIT4_1:  // If negative pad MSB '1' with '1'.
+	    যদি (str[0] == '-') {
 		  pad = BIT4_1;
-		  break;
+		  ভঙ্গ;
 	    }
 	    // fallthrough
-	  default:  // Everything else gets '0' padded.
+	  স্বভাব:  // Everything else gets '0' padded.
 	    pad = BIT4_0;
-	    break;
+	    ভঙ্গ;
       }
 
 	/* Copy the temporary value to the real value, padding if needed. */
-      for (unsigned idx = 0 ;  idx < val.size() ;  idx += 1) {
-	    if (idx < tval.size()) val.set_bit(idx, tval.value(idx));
-	    else val.set_bit(idx, pad);
+      প্রতি (unsigned idx = 0 ;  idx < val.size() ;  idx += 1) {
+	    যদি (idx < tval.size()) val.set_bit(idx, tval.value(idx));
+	    অন্যথা val.set_bit(idx, pad);
       }
 }
 
-void vpip_vec4_to_hex_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
+শূন্য vpip_vec4_to_hex_str(ধ্রুব vvp_vector4_t&bits, বর্ণ*buf, unsigned nbuf)
 {
       unsigned slen = (bits.size() + 3) / 4;
-      assert(slen < nbuf);
+      প্রতিজ্ঞা(slen < nbuf);
 
       buf[slen] = 0;
 
       unsigned val = 0;
-      for (unsigned idx = 0 ;  idx < bits.size() ;  idx += 1) {
+      প্রতি (unsigned idx = 0 ;  idx < bits.size() ;  idx += 1) {
 	    unsigned vs = (idx%4) * 2;
 
-	    switch (bits.value(idx)) {
-		case BIT4_0:
-		  break;
-		case BIT4_1:
+	    বিকল্প (bits.value(idx)) {
+		পক্ষ BIT4_0:
+		  ভঙ্গ;
+		পক্ষ BIT4_1:
 		  val |= 1 << vs;
-		  break;
-		case BIT4_X:
+		  ভঙ্গ;
+		পক্ষ BIT4_X:
 		  val |= 2 << vs;
-		  break;
-		case BIT4_Z:
+		  ভঙ্গ;
+		পক্ষ BIT4_Z:
 		  val |= 3 << vs;
 	    }
 
-	    if (vs == 6) {
+	    যদি (vs == 6) {
 		  slen -= 1;
 		  buf[slen] = hex_digits[val];
 		  val = 0;
@@ -171,22 +171,22 @@ void vpip_vec4_to_hex_str(const vvp_vector4_t&bits, char*buf, unsigned nbuf)
       }
 
 	/* Fill in X or Z if they are the only thing in the value. */
-      switch (bits.size() % 4) {
-	  case 1:
-	    if (val == 2) val = 170;
-	    else if (val == 3) val = 255;
-	    break;
-	  case 2:
-	    if (val == 10) val = 170;
-	    else if (val == 15) val = 255;
-	    break;
-	  case 3:
-	    if (val == 42) val = 170;
-	    else if (val == 63) val = 255;
-	    break;
+      বিকল্প (bits.size() % 4) {
+	  পক্ষ 1:
+	    যদি (val == 2) val = 170;
+	    অন্যথা যদি (val == 3) val = 255;
+	    ভঙ্গ;
+	  পক্ষ 2:
+	    যদি (val == 10) val = 170;
+	    অন্যথা যদি (val == 15) val = 255;
+	    ভঙ্গ;
+	  পক্ষ 3:
+	    যদি (val == 42) val = 170;
+	    অন্যথা যদি (val == 63) val = 255;
+	    ভঙ্গ;
       }
 
-      if (slen > 0) {
+      যদি (slen > 0) {
 	    slen -= 1;
 	    buf[slen] = hex_digits[val];
       }

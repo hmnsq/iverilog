@@ -23,72 +23,72 @@
 # include  <iostream>
 # include  <cassert>
 
-vvp_fun_bufif::vvp_fun_bufif(bool en_invert, bool out_invert,
+vvp_fun_bufif::vvp_fun_bufif(তার্কিক en_invert, তার্কিক out_invert,
 			     unsigned str0, unsigned str1)
 : pol_(en_invert? 1 : 0), inv_(out_invert? 1 : 0)
 {
       drive0_ = str0;
       drive1_ = str1;
-      count_functors_bufif += 1;
+      গুনতি_functors_bufif += 1;
 }
 
-void vvp_fun_bufif::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+শূন্য vvp_fun_bufif::recv_vec4(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
                               vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0:
+      বিকল্প (ptr.port()) {
+	  পক্ষ 0:
 	    bit_ = inv_? ~bit : bit;
-	    break;
-	  case 1:
+	    ভঙ্গ;
+	  পক্ষ 1:
 	    en_ = pol_? ~bit : bit;
-	    break;
-	  default:
-	    return;
+	    ভঙ্গ;
+	  স্বভাব:
+	    প্রত্যাগম;
       }
 
       vvp_vector8_t out (bit.size());
 
-      for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
+      প্রতি (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
 	    vvp_bit4_t b_en  = en_.value(idx);
 	    vvp_bit4_t b_bit = bit_.value(idx);
 
-	    switch (b_en) {
-		case BIT4_0:
+	    বিকল্প (b_en) {
+		পক্ষ BIT4_0:
 		  out.set_bit(idx, vvp_scalar_t(BIT4_Z,drive0_,drive1_));
-		  break;
-		case BIT4_1:
-		  if (bit4_is_xz(b_bit))
+		  ভঙ্গ;
+		পক্ষ BIT4_1:
+		  যদি (bit4_is_xz(b_bit))
 			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
-		  else
+		  অন্যথা
 			out.set_bit(idx, vvp_scalar_t(b_bit,drive0_,drive1_));
-		  break;
+		  ভঙ্গ;
 
-		default:
-		  switch (b_bit) {
-		      case BIT4_0:
+		স্বভাব:
+		  বিকল্প (b_bit) {
+		      পক্ষ BIT4_0:
 			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,0));
-			break;
-		      case BIT4_1:
+			ভঙ্গ;
+		      পক্ষ BIT4_1:
 			out.set_bit(idx, vvp_scalar_t(BIT4_X,0,drive1_));
-			break;
-		      default:
+			ভঙ্গ;
+		      স্বভাব:
 			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
-			break;
+			ভঙ্গ;
 		  }
-		  break;
+		  ভঙ্গ;
 	    }
       }
 
       ptr.ptr()->send_vec8(out);
 }
 
-void vvp_fun_bufif::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+শূন্য vvp_fun_bufif::recv_vec4_pv(vvp_net_ptr_t ptr, ধ্রুব vvp_vector4_t&bit,
 			         unsigned base, unsigned vwid, vvp_context_t ctx)
 {
       recv_vec4_pv_(ptr, bit, base, vwid, ctx);
 }
 
-void vvp_fun_bufif::recv_real(vvp_net_ptr_t ptr, double real,
+শূন্য vvp_fun_bufif::recv_real(vvp_net_ptr_t ptr, দ্বিগুণ real,
                               vvp_context_t ctx)
 {
       recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
