@@ -25,7 +25,7 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-inline __vpiNamedEvent::__vpiNamedEvent(__vpiScope*sc, const char*nam)
+અંતઃરેખ __vpiNamedEvent::__vpiNamedEvent(__vpiScope*sc, અચલ અક્ષર*nam)
 {
       scope_ = sc;
       name_ = vpip_name_string(nam);
@@ -34,36 +34,36 @@ inline __vpiNamedEvent::__vpiNamedEvent(__vpiScope*sc, const char*nam)
 
 __vpiNamedEvent::~__vpiNamedEvent()
 {
-      while (callbacks_) {
-	    struct __vpiCallback *tmp = callbacks_->next;
+      જ્યારે (callbacks_) {
+	    સંરચના __vpiCallback *tmp = callbacks_->next;
 	    delete callbacks_;
 	    callbacks_ = tmp;
       }
 }
 
-int __vpiNamedEvent::get_type_code(void) const
-{ return vpiNamedEvent; }
+પૂર્ણાંક __vpiNamedEvent::get_type_code(શૂન્ય) અચલ
+{ પાછા vpiNamedEvent; }
 
-int __vpiNamedEvent::vpi_get(int code)
+પૂર્ણાંક __vpiNamedEvent::vpi_get(પૂર્ણાંક code)
 {
-      switch (code) {
+      પસંદગી (code) {
 
-	  case vpiAutomatic:
-	    return scope_->is_automatic()? 1 : 0;
+	  સ્થિતિ vpiAutomatic:
+	    પાછા scope_->is_automatic()? 1 : 0;
       }
 
-      return 0;
+      પાછા 0;
 }
 
-char* __vpiNamedEvent::vpi_get_str(int code)
+અક્ષર* __vpiNamedEvent::vpi_get_str(પૂર્ણાંક code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      જો (code == vpiFile) {  // Not implemented for now!
+	    પાછા simple_set_rbuf_str(file_names[0]);
       }
-      return generic_get_str(code, scope_, name_, NULL);
+      પાછા generic_get_str(code, scope_, name_, ખાલી);
 }
 
-vpiHandle __vpiNamedEvent::vpi_put_value(p_vpi_value, int)
+vpiHandle __vpiNamedEvent::vpi_put_કિંમત(p_vpi_કિંમત, પૂર્ણાંક)
 {
 	// p_vpi_value may be NULL, and an event doesn't care
 	// what the value is
@@ -71,30 +71,30 @@ vpiHandle __vpiNamedEvent::vpi_put_value(p_vpi_value, int)
       vvp_net_ptr_t dest(funct, 0);
       vvp_send_vec4(dest, val, vthread_get_wt_context());
 
-      return this;
+      પાછા આ;
 }
 
-vpiHandle __vpiNamedEvent::vpi_handle(int code)
+vpiHandle __vpiNamedEvent::vpi_handle(પૂર્ણાંક code)
 {
-      switch (code) {
-	  case vpiScope:
-	    return scope_;
+      પસંદગી (code) {
+	  સ્થિતિ vpiScope:
+	    પાછા scope_;
 
-	  case vpiModule:
-	    return vpip_module(scope_);
+	  સ્થિતિ vpiModule:
+	    પાછા vpip_module(scope_);
       }
 
-      return 0;
+      પાછા 0;
 }
 
 
-vpiHandle vpip_make_named_event(const char*name, vvp_net_t*funct)
+vpiHandle vpip_make_named_event(અચલ અક્ષર*name, vvp_net_t*funct)
 {
-      __vpiNamedEvent*obj = new __vpiNamedEvent(vpip_peek_current_scope(), name);
+      __vpiNamedEvent*obj = નવું __vpiNamedEvent(vpip_peek_current_scope(), name);
 
       obj->funct = funct;
 
-      return obj;
+      પાછા obj;
 }
 
 /*
@@ -110,25 +110,25 @@ vpiHandle vpip_make_named_event(const char*name, vvp_net_t*funct)
  * We can not use vpi_free_object() here since it does not really
  * delete the callback.
  */
-void __vpiNamedEvent::run_vpi_callbacks()
+શૂન્ય __vpiNamedEvent::run_vpi_callbacks()
 {
-      struct __vpiCallback*next = callbacks_;
-      struct __vpiCallback*prev = 0;
-      while (next) {
-	    struct __vpiCallback*cur = next;
+      સંરચના __vpiCallback*next = callbacks_;
+      સંરચના __vpiCallback*prev = 0;
+      જ્યારે (next) {
+	    સંરચના __vpiCallback*cur = next;
 	    next = cur->next;
 
-	    if (cur->cb_data.cb_rtn != 0) {
+	    જો (cur->cb_data.cb_rtn != 0) {
 		  callback_execute(cur);
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } નહીંતર જો (prev == 0) {
 		  callbacks_ = next;
 		  cur->next = 0;
 		  delete cur;
 
-	    } else {
-		  assert(prev->next == cur);
+	    } નહીંતર {
+		  પ્રતિજ્ઞા(prev->next == cur);
 		  prev->next = next;
 		  cur->next = 0;
 		  delete cur;

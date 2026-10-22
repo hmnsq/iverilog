@@ -19,82 +19,82 @@
 # include "compile.h"
 # include "vpi_priv.h"
 
-class __vpiFileLine : public __vpiHandle {
-    public:
-      explicit __vpiFileLine(const char*desc_, long file_idx_, long lineno_);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+વર્ગ __vpiFileLine : જાહેર __vpiHandle {
+    જાહેર:
+      explicit __vpiFileLine(અચલ અક્ષર*desc_, long file_idx_, long lineno_);
+      પૂર્ણાંક get_type_code(શૂન્ય) અચલ override;
+      પૂર્ણાંક vpi_get(પૂર્ણાંક code) override;
+      અક્ષર* vpi_get_str(પૂર્ણાંક code) override;
 
-      const char* get_description() const { return description; };
-      unsigned get_file_idx() const { return file_idx; };
-      unsigned get_lineno() const { return lineno; };
+      અચલ અક્ષર* get_description() અચલ { પાછા description; };
+      unsigned get_file_idx() અચલ { પાછા file_idx; };
+      unsigned get_lineno() અચલ { પાછા lineno; };
 
-    private:
-      const char *description;
+    ખાનગી:
+      અચલ અક્ષર *description;
       unsigned file_idx;
       unsigned lineno;
 };
 
-bool show_file_line = false;
-bool code_is_instrumented = false;
+તાર્કિક show_file_લીટી = ખોટું;
+તાર્કિક code_is_instrumented = ખોટું;
 
-static int file_line_get(int type, vpiHandle ref)
+સ્થિર પૂર્ણાંક file_લીટી_get(પૂર્ણાંક type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      પ્રતિજ્ઞા(rfp);
 
-      switch (type) {
-	case vpiLineNo:
-	    return rfp->get_lineno();
-	default:
-	    return vpiUndefined;
+      પસંદગી (type) {
+	સ્થિતિ vpi_લીટી_No:
+	    પાછા rfp->get_lineno();
+	મૂળભૂત:
+	    પાછા vpiUndefined;
       }
 }
 
-static char *file_line_get_str(int type, vpiHandle ref)
+સ્થિર અક્ષર *file_લીટી_get_str(પૂર્ણાંક type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
-      assert(rfp);
+      પ્રતિજ્ઞા(rfp);
 
-      switch (type) {
-	case vpiFile:
-	    assert(rfp->get_file_idx() < file_names.size());
-	    return simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
-	case _vpiDescription:
-	    if (rfp->get_description()) {
-		  return simple_set_rbuf_str(rfp->get_description());
-	    } else return simple_set_rbuf_str("Procedural tracing.");
-	default:
-	    return 0;
+      પસંદગી (type) {
+	સ્થિતિ vpiFile:
+	    પ્રતિજ્ઞા(rfp->get_file_idx() < file_names.size());
+	    પાછા simple_set_rbuf_str(file_names[rfp->get_file_idx()]);
+	સ્થિતિ _vpiDescription:
+	    જો (rfp->get_description()) {
+		  પાછા simple_set_rbuf_str(rfp->get_description());
+	    } નહીંતર પાછા simple_set_rbuf_str("Procedural tracing.");
+	મૂળભૂત:
+	    પાછા 0;
       }
 }
 
-inline __vpiFileLine::__vpiFileLine(const char*desc_, long file_idx_,
+અંતઃરેખ __vpiFileLine::__vpiFileLine(અચલ અક્ષર*desc_, long file_idx_,
                                     long lineno_)
 {
-      if (desc_) description = vpip_name_string(desc_);
-      else description = 0;
+      જો (desc_) description = vpip_name_string(desc_);
+      નહીંતર description = 0;
       file_idx = (unsigned) file_idx_;
       lineno = (unsigned) lineno_;
 }
 
-int __vpiFileLine::get_type_code(void) const
-{ return _vpiFileLine; }
+પૂર્ણાંક __vpiFileLine::get_type_code(શૂન્ય) અચલ
+{ પાછા vpi_File_લીટી; }
 
-int __vpiFileLine::vpi_get(int code)
-{ return file_line_get(code, this); }
+પૂર્ણાંક __vpiFileLine::vpi_get(પૂર્ણાંક code)
+{ પાછા file_લીટી_get(code, આ); }
 
-char* __vpiFileLine::vpi_get_str(int code)
-{ return file_line_get_str(code, this); }
+અક્ષર* __vpiFileLine::vpi_get_str(પૂર્ણાંક code)
+{ પાછા file_લીટી_get_str(code, આ); }
 
 
-vpiHandle vpip_build_file_line(const char*description, long file_idx, long lineno)
+vpiHandle vpip_build_file_લીટી(અચલ અક્ષર*description, long file_idx, long lineno)
 {
-      __vpiFileLine*obj = new __vpiFileLine(description, file_idx, lineno);
+      __vpiFileLine*obj = નવું __vpiFileLine(description, file_idx, lineno);
 
 	/* You can turn on the diagnostic output if we find a %file_line. */
-      code_is_instrumented = true;
+      code_is_instrumented = સાચું;
 
-      return obj;
+      પાછા obj;
 }

@@ -32,137 +32,137 @@
 # include  <iostream>
 # include  <cassert>
 
-using namespace std;
+using નામાકાશ std;
 
-static void __compile_var_real(char*label, char*name,
+સ્થિર શૂન્ય __compile_var_real(અક્ષર*label, અક્ષર*name,
 			       vvp_array_t array, unsigned long array_addr,
-			       bool local_flag)
+			       તાર્કિક local_flag)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = નવું vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal_real_aa*tmp = new vvp_fun_signal_real_aa;
+      જો (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal_real_aa*tmp = નવું vvp_fun_signal_real_aa;
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
-	    net->fil = new vvp_wire_real;
-	    net->fun = new vvp_fun_signal_real_sa;
+      } નહીંતર {
+	    net->fil = નવું vvp_wire_real;
+	    net->fun = નવું vvp_fun_signal_real_sa;
       }
 
-      define_functor_symbol(label, net);
+      define_functor_પ્રતીક(label, net);
 
       vpiHandle obj = vpip_make_real_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_પ્રતીક(label, obj);
 
-      if (name) {
-	    assert(!array);
-	    if (!local_flag)
+      જો (name) {
+	    પ્રતિજ્ઞા(!array);
+	    જો (!local_flag)
 		  vpip_attach_to_current_scope(obj);
-            if (!vpip_peek_current_scope()->is_automatic())
+            જો (!vpip_peek_current_scope()->is_automatic())
                   schedule_init_vector(vvp_net_ptr_t(net,0), 0.0);
       }
-      if (array) {
-	    assert(!name);
+      જો (array) {
+	    પ્રતિજ્ઞા(!name);
 	    array->attach_word(array_addr, obj);
       }
-      free(label);
+      મુક્ત(label);
       delete[] name;
 }
 
-void compile_var_real(char*label, char*name, bool local_flag)
+શૂન્ય compile_var_real(અક્ષર*label, અક્ષર*name, તાર્કિક local_flag)
 {
       __compile_var_real(label, name, 0, 0, local_flag);
 }
 
-void compile_var_string(char*label, char*name)
+શૂન્ય compile_var_string(અક્ષર*label, અક્ષર*name)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = નવું vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal_string_aa*tmp = new vvp_fun_signal_string_aa;
+      જો (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal_string_aa*tmp = નવું vvp_fun_signal_string_aa;
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } નહીંતર {
 	    net->fil = 0;
-	    net->fun = new vvp_fun_signal_string_sa;
+	    net->fun = નવું vvp_fun_signal_string_sa;
       }
 
-      define_functor_symbol(label, net);
+      define_functor_પ્રતીક(label, net);
 
       vpiHandle obj = vpip_make_string_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_પ્રતીક(label, obj);
 
       vpip_attach_to_current_scope(obj);
-      free(label);
+      મુક્ત(label);
       delete[] name;
 }
 
-void compile_var_darray(char*label, char*name, unsigned size)
+શૂન્ય compile_var_darray(અક્ષર*label, અક્ષર*name, unsigned size)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = નવું vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal_object_aa*tmp = new vvp_fun_signal_object_aa(size);
+      જો (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal_object_aa*tmp = નવું vvp_fun_signal_object_aa(size);
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } નહીંતર {
 	    net->fil = 0;
-	    net->fun = new vvp_fun_signal_object_sa(size);
+	    net->fun = નવું vvp_fun_signal_object_sa(size);
       }
 
-      define_functor_symbol(label, net);
+      define_functor_પ્રતીક(label, net);
 
       vpiHandle obj = vpip_make_darray_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_પ્રતીક(label, obj);
 
       vpip_attach_to_current_scope(obj);
-      free(label);
+      મુક્ત(label);
       delete[] name;
 }
 
-void compile_var_queue(char*label, char*name, unsigned size)
+શૂન્ય compile_var_queue(અક્ષર*label, અક્ષર*name, unsigned size)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = નવું vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal_object_aa*tmp = new vvp_fun_signal_object_aa(size);
+      જો (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal_object_aa*tmp = નવું vvp_fun_signal_object_aa(size);
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } નહીંતર {
 	    net->fil = 0;
-	    net->fun = new vvp_fun_signal_object_sa(size);
+	    net->fun = નવું vvp_fun_signal_object_sa(size);
       }
 
-      define_functor_symbol(label, net);
+      define_functor_પ્રતીક(label, net);
 
       vpiHandle obj = vpip_make_queue_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_પ્રતીક(label, obj);
 
       vpip_attach_to_current_scope(obj);
-      free(label);
+      મુક્ત(label);
       delete[] name;
 }
 
-void compile_var_cobject(char*label, char*name)
+શૂન્ય compile_var_cobject(અક્ષર*label, અક્ષર*name)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = નવું vvp_net_t;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal_object_aa*tmp = new vvp_fun_signal_object_aa(1);
+      જો (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal_object_aa*tmp = નવું vvp_fun_signal_object_aa(1);
 	    net->fil = tmp;
 	    net->fun = tmp;
-      } else {
+      } નહીંતર {
 	    net->fil = 0;
-	    net->fun = new vvp_fun_signal_object_sa(1);
+	    net->fun = નવું vvp_fun_signal_object_sa(1);
       }
 
-      define_functor_symbol(label, net);
+      define_functor_પ્રતીક(label, net);
 
       vpiHandle obj = vpip_make_cobject_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_પ્રતીક(label, obj);
 
       vpip_attach_to_current_scope(obj);
-      free(label);
+      મુક્ત(label);
       delete[] name;
 }
 
@@ -170,100 +170,100 @@ void compile_var_cobject(char*label, char*name)
  * A variable is a special functor, so we allocate that functor and
  * write the label into the symbol table.
  */
-void compile_variable(char*label, char*name,
-		      int msb, int lsb, int vpi_type_code,
-		      bool signed_flag, bool local_flag)
+શૂન્ય compile_variable(અક્ષર*label, અક્ષર*name,
+		      પૂર્ણાંક msb, પૂર્ણાંક lsb, પૂર્ણાંક vpi_type_code,
+		      તાર્કિક signed_flag, તાર્કિક local_flag)
 {
       unsigned wid = ((msb > lsb)? msb-lsb : lsb-msb) + 1;
 
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = નવું vvp_net_t;
 
       vvp_bit4_t init;
-      if (vpi_type_code == vpiIntVar)
+      જો (vpi_type_code == vpiIntVar)
 	    init = BIT4_0;
-      else
+      નહીંતર
 	    init = BIT4_X;
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-	    vvp_fun_signal4_aa*tmp = new vvp_fun_signal4_aa(wid, init);
+      જો (vpip_peek_current_scope()->is_automatic()) {
+	    vvp_fun_signal4_aa*tmp = નવું vvp_fun_signal4_aa(wid, init);
 	    net->fil = tmp;
             net->fun = tmp;
-      } else {
-	    net->fil = new vvp_wire_vec4(wid, init);
-            net->fun = new vvp_fun_signal4_sa(wid);
+      } નહીંતર {
+	    net->fil = નવું vvp_wire_vec4(wid, init);
+            net->fun = નવું vvp_fun_signal4_sa(wid);
       }
-      const vvp_signal_value*vfil = dynamic_cast<vvp_signal_value*>(net->fil);
+      અચલ vvp_signal_કિંમત*vfil = dynamic_cast<vvp_signal_કિંમત*>(net->fil);
 
-      define_functor_symbol(label, net);
+      define_functor_પ્રતીક(label, net);
 
       vpiHandle obj = 0;
-      if (! local_flag) {
+      જો (! local_flag) {
 	      /* Make the vpiHandle for the reg. */
-	    switch (vpi_type_code) {
-		case vpiLogicVar:
+	    પસંદગી (vpi_type_code) {
+		સ્થિતિ vpiLogicVar:
 		  obj = vpip_make_var4(name, msb, lsb, signed_flag, net);
-		  break;
-		case vpiIntegerVar:
+		  તોડો;
+		સ્થિતિ vpiIntegerVar:
 		  obj = vpip_make_int4(name, msb, lsb, net);
-		  break;
-		case vpiIntVar: // This handles all the atom2 int types
+		  તોડો;
+		સ્થિતિ vpiIntVar: // This handles all the atom2 int types
 		  obj = vpip_make_int2(name, msb, lsb, signed_flag, net);
-		  break;
-		default:
+		  તોડો;
+		મૂળભૂત:
 		  fprintf(stderr, "internal error: %s: vpi_type_code=%d\n", name, vpi_type_code);
-		  break;
+		  તોડો;
 	    }
-	    assert(obj);
-	    compile_vpi_symbol(label, obj);
+	    પ્રતિજ્ઞા(obj);
+	    compile_vpi_પ્રતીક(label, obj);
       }
 	// If the signal has a name, then it goes into the current
 	// scope as a signal.
-      if (name) {
-	    if (obj) vpip_attach_to_current_scope(obj);
-            if (!vpip_peek_current_scope()->is_automatic()) {
+      જો (name) {
+	    જો (obj) vpip_attach_to_current_scope(obj);
+            જો (!vpip_peek_current_scope()->is_automatic()) {
 		  vvp_vector4_t tmp;
-		  vfil->vec4_value(tmp);
+		  vfil->vec4_કિંમત(tmp);
 	          schedule_init_vector(vvp_net_ptr_t(net,0), tmp);
 	    }
       }
 
-      free(label);
+      મુક્ત(label);
       delete[] name;
 }
 
 
-vvp_net_t* create_constant_node(const char*val_str)
+vvp_net_t* create_constant_ગાંઠ(અચલ અક્ષર*val_str)
 {
-      if (c4string_test(val_str)) {
-	    vvp_net_t*net = new vvp_net_t;
-	    net->fun = new vvp_fun_bufz;
+      જો (c4string_test(val_str)) {
+	    vvp_net_t*net = નવું vvp_net_t;
+	    net->fun = નવું vvp_fun_bufz;
 	    schedule_init_vector(vvp_net_ptr_t(net,0), c4string_to_vector4(val_str));
-	    return net;
+	    પાછા net;
       }
 
-      if (c8string_test(val_str)) {
-	    vvp_net_t*net = new vvp_net_t;
-	    net->fun = new vvp_fun_bufz;
+      જો (c8string_test(val_str)) {
+	    vvp_net_t*net = નવું vvp_net_t;
+	    net->fun = નવું vvp_fun_bufz;
 	    schedule_init_vector(vvp_net_ptr_t(net,0), c8string_to_vector8(val_str));
-	    return net;
+	    પાછા net;
       }
 
-      if (crstring_test(val_str)) {
-	    vvp_net_t*net = new vvp_net_t;
-	    net->fun = new vvp_fun_bufz;
+      જો (crstring_test(val_str)) {
+	    vvp_net_t*net = નવું vvp_net_t;
+	    net->fun = નવું vvp_fun_bufz;
 	    schedule_init_vector(vvp_net_ptr_t(net,0), crstring_to_double(val_str));
-	    return net;
+	    પાછા net;
       }
 
-      return 0;
+      પાછા 0;
 }
 
-class base_net_resolv : public resolv_list_s {
-    public:
-      explicit base_net_resolv(char*ref_label, vvp_array_t array,
+વર્ગ base_net_resolv : જાહેર resolv_list_s {
+    જાહેર:
+      explicit base_net_resolv(અક્ષર*ref_label, vvp_array_t array,
 			       __vpiScope*scope,
-			       char*my_label, char*name,
-			       unsigned array_addr, bool local_flag)
+			       અક્ષર*my_label, અક્ષર*name,
+			       unsigned array_addr, તાર્કિક local_flag)
       : resolv_list_s(ref_label)
       { my_label_ = my_label;
 	array_ = array;
@@ -273,23 +273,23 @@ class base_net_resolv : public resolv_list_s {
 	local_flag_ = local_flag;
       }
 
-    protected:
-      char*my_label_;
+    સુરક્ષિત:
+      અક્ષર*my_label_;
       vvp_array_t array_;
-      char*name_;
+      અક્ષર*name_;
       __vpiScope*scope_;
       unsigned array_addr_;
-      bool local_flag_;
+      તાર્કિક local_flag_;
 };
 
-class __compile_net_resolv : public base_net_resolv {
+વર્ગ __compile_net_resolv : જાહેર base_net_resolv {
 
-    public:
-      explicit __compile_net_resolv(char*ref_label, vvp_array_t array,
+    જાહેર:
+      explicit __compile_net_resolv(અક્ષર*ref_label, vvp_array_t array,
 				    __vpiScope*scope,
-				    char*my_label, char*name,
-				    int msb, int lsb, unsigned array_addr,
-				    int vpi_type_code, bool signed_flag, bool local_flag)
+				    અક્ષર*my_label, અક્ષર*name,
+				    પૂર્ણાંક msb, પૂર્ણાંક lsb, unsigned array_addr,
+				    પૂર્ણાંક vpi_type_code, તાર્કિક signed_flag, તાર્કિક local_flag)
       : base_net_resolv(ref_label, array, scope, my_label, name, array_addr, local_flag)
       { msb_ = msb;
 	lsb_ = lsb;
@@ -299,12 +299,12 @@ class __compile_net_resolv : public base_net_resolv {
 
       ~__compile_net_resolv() override { }
 
-      bool resolve(bool message_flag) override;
+      તાર્કિક resolve(તાર્કિક message_flag) override;
 
-    private:
-      int msb_, lsb_;
-      int vpi_type_code_;
-      bool signed_flag_;
+    ખાનગી:
+      પૂર્ણાંક msb_, lsb_;
+      પૂર્ણાંક vpi_type_code_;
+      તાર્કિક signed_flag_;
 };
 
 /*
@@ -319,250 +319,250 @@ class __compile_net_resolv : public base_net_resolv {
  * references into the net.
  */
 
-static void do_compile_net(vvp_net_t*node, vvp_array_t array,
+સ્થિર શૂન્ય do_compile_net(vvp_net_t*ગાંઠ, vvp_array_t array,
 			   __vpiScope*scope,
-			   char*my_label, char*name,
-			   int msb, int lsb, unsigned array_addr,
-			   int vpi_type_code, bool signed_flag, bool local_flag)
+			   અક્ષર*my_label, અક્ષર*name,
+			   પૂર્ણાંક msb, પૂર્ણાંક lsb, unsigned array_addr,
+			   પૂર્ણાંક vpi_type_code, તાર્કિક signed_flag, તાર્કિક local_flag)
 {
       unsigned wid = ((msb > lsb)? msb-lsb : lsb-msb) + 1;
-      assert(node);
+      પ્રતિજ્ઞા(ગાંઠ);
 
-      vvp_wire_base*vsig = dynamic_cast<vvp_wire_base*>(node->fil);
+      vvp_wire_base*vsig = dynamic_cast<vvp_wire_base*>(ગાંઠ->fil);
 
-      if (vsig == 0) {
-	    switch (vpi_type_code) {
-		case vpiIntVar:
-		  vsig = new vvp_wire_vec4(wid,BIT4_0);
-		  break;
-		case vpiLogicVar:
-		  vsig = new vvp_wire_vec4(wid,BIT4_Z);
-		  break;
-		case -vpiLogicVar:
-		  vsig = new vvp_wire_vec8(wid);
-		  break;
+      જો (vsig == 0) {
+	    પસંદગી (vpi_type_code) {
+		સ્થિતિ vpiIntVar:
+		  vsig = નવું vvp_wire_vec4(wid,BIT4_0);
+		  તોડો;
+		સ્થિતિ vpiLogicVar:
+		  vsig = નવું vvp_wire_vec4(wid,BIT4_Z);
+		  તોડો;
+		સ્થિતિ -vpiLogicVar:
+		  vsig = નવું vvp_wire_vec8(wid);
+		  તોડો;
 	    }
-	    assert(vsig);
-	    node->fil = vsig;
+	    પ્રતિજ્ઞા(vsig);
+	    ગાંઠ->fil = vsig;
       }
 
       vpiHandle obj = 0;
-      if (! local_flag) {
+      જો (! local_flag) {
 	      /* Make the vpiHandle for the reg. */
-	    obj = vpip_make_net4(scope, name, msb, lsb, signed_flag, node);
+	    obj = vpip_make_net4(scope, name, msb, lsb, signed_flag, ગાંઠ);
 	      /* This attaches the label to the vpiHandle */
-	    compile_vpi_symbol(my_label, obj);
+	    compile_vpi_પ્રતીક(my_label, obj);
       }
 #ifdef CHECK_WITH_VALGRIND
-      else pool_local_net(node);
+      નહીંતર pool_local_net(ગાંઠ);
 #endif
 
 	// REMOVE ME! Giving the net a label is a legacy of the times
 	// when the .net was a functor of its own. In the long run, we
 	// must fix the code generator to not rely on the label of the
 	// .net, then we will remove that label.
-      define_functor_symbol(my_label, node);
+      define_functor_પ્રતીક(my_label, ગાંઠ);
 
-      if (array)
+      જો (array)
 	    array->attach_word(array_addr, obj);
-      else if (obj)
+      નહીંતર જો (obj)
 	    vpip_attach_to_scope(scope,obj);
 
-      free(my_label);
+      મુક્ત(my_label);
       delete[] name;
 }
 
-static void __compile_net(char*label,
-			  char*name, char*array_label, unsigned long array_addr,
-			  int msb, int lsb,
-			  int vpi_type_code, bool signed_flag, bool local_flag,
-			  unsigned argc, struct symb_s*argv)
+સ્થિર શૂન્ય __compile_net(અક્ષર*label,
+			  અક્ષર*name, અક્ષર*array_label, unsigned long array_addr,
+			  પૂર્ણાંક msb, પૂર્ણાંક lsb,
+			  પૂર્ણાંક vpi_type_code, તાર્કિક signed_flag, તાર્કિક local_flag,
+			  unsigned argc, સંરચના symb_s*argv)
 {
-      vvp_array_t array = array_label? array_find(array_label) : NULL;
-      assert(array_label ? array!=0 : true);
+      vvp_array_t array = array_label? array_find(array_label) : ખાલી;
+      પ્રતિજ્ઞા(array_label ? array!=0 : સાચું);
 
-      free(array_label);
+      મુક્ત(array_label);
 
-      assert(argc == 1);
-      vvp_net_t*node = vvp_net_lookup(argv[0].text);
-#if 1
-      if (node == 0) {
+      પ્રતિજ્ઞા(argc == 1);
+      vvp_net_t*ગાંઠ = vvp_net_lookup(argv[0].text);
+#જો 1
+      જો (ગાંઠ == 0) {
 	      /* No existing net, but the string value may be a
 		 constant. In that case, we will wind up generating a
 		 bufz node that can carry the constant value.
 
 	         NOTE: This is a hack! The code generator should be
 	         fixed so that this is no longer needed. */
-	    node = create_constant_node(argv[0].text);
+	    ગાંઠ = create_constant_ગાંઠ(argv[0].text);
       }
 #endif
-      if (node == 0) {
+      જો (ગાંઠ == 0) {
 	    __vpiScope*scope = vpip_peek_current_scope();
 	    __compile_net_resolv*res
-		  = new __compile_net_resolv(argv[0].text,
+		  = નવું __compile_net_resolv(argv[0].text,
 					     array, scope, label, name,
 					     msb, lsb, array_addr,
 					     vpi_type_code, signed_flag, local_flag);
 	    resolv_submit(res);
-	    free(argv);
-	    return;
+	    મુક્ત(argv);
+	    પાછા;
       }
-      assert(node);
+      પ્રતિજ્ઞા(ગાંઠ);
 
       __vpiScope*scope = vpip_peek_current_scope();
-      do_compile_net(node, array, scope, label, name, msb, lsb, array_addr,
+      do_compile_net(ગાંઠ, array, scope, label, name, msb, lsb, array_addr,
 		     vpi_type_code, signed_flag, local_flag);
 
-      free(argv[0].text);
-      free(argv);
+      મુક્ત(argv[0].text);
+      મુક્ત(argv);
 }
 
-bool __compile_net_resolv::resolve(bool msg_flag)
+તાર્કિક __compile_net_resolv::resolve(તાર્કિક સંદેશ_flag)
 {
-      vvp_net_t*node = vvp_net_lookup(label());
-      if (node == 0) {
-	    if (msg_flag)
+      vvp_net_t*ગાંઠ = vvp_net_lookup(label());
+      જો (ગાંઠ == 0) {
+	    જો (સંદેશ_flag)
 		  cerr << "Unable to resolve label " << label() << endl;
-	    return false;
+	    પાછા ખોટું;
       }
 
-      do_compile_net(node, array_, scope_, my_label_, name_, msb_, lsb_, array_addr_, vpi_type_code_, signed_flag_, local_flag_);
-      return true;
+      do_compile_net(ગાંઠ, array_, scope_, my_label_, name_, msb_, lsb_, array_addr_, vpi_type_code_, signed_flag_, local_flag_);
+      પાછા સાચું;
 }
 
-void compile_net(char*label, char*name, int msb, int lsb,
-		 int vpi_type_code, bool signed_flag, bool local_flag,
-		 unsigned argc, struct symb_s*argv)
+શૂન્ય compile_net(અક્ષર*label, અક્ષર*name, પૂર્ણાંક msb, પૂર્ણાંક lsb,
+		 પૂર્ણાંક vpi_type_code, તાર્કિક signed_flag, તાર્કિક local_flag,
+		 unsigned argc, સંરચના symb_s*argv)
 {
       __compile_net(label, name, 0, 0, msb, lsb,
 		    vpi_type_code, signed_flag, local_flag,
 		    argc, argv);
 }
 
-void compile_netw(char*label, char*array_label, unsigned long array_addr,
-		  int msb, int lsb, int vpi_type_code, bool signed_flag,
-		  unsigned argc, struct symb_s*argv)
+શૂન્ય compile_netw(અક્ષર*label, અક્ષર*array_label, unsigned long array_addr,
+		  પૂર્ણાંક msb, પૂર્ણાંક lsb, પૂર્ણાંક vpi_type_code, તાર્કિક signed_flag,
+		  unsigned argc, સંરચના symb_s*argv)
 {
       __compile_net(label, 0, array_label, array_addr,
-		    msb, lsb, vpi_type_code, signed_flag, false,
+		    msb, lsb, vpi_type_code, signed_flag, ખોટું,
 		    argc, argv);
 }
 
-class __compile_real_net_resolv : public base_net_resolv {
+વર્ગ __compile_real_net_resolv : જાહેર base_net_resolv {
 
-    public:
-      explicit __compile_real_net_resolv(char*ref_label, vvp_array_t array,
+    જાહેર:
+      explicit __compile_real_net_resolv(અક્ષર*ref_label, vvp_array_t array,
 					 __vpiScope*scope,
-					 char*my_label, char*name,
-					 unsigned array_addr, bool local_flag)
+					 અક્ષર*my_label, અક્ષર*name,
+					 unsigned array_addr, તાર્કિક local_flag)
       : base_net_resolv(ref_label, array, scope, my_label, name, array_addr, local_flag)
       {
       }
 
       ~__compile_real_net_resolv() override { }
 
-      bool resolve(bool message_flag) override;
+      તાર્કિક resolve(તાર્કિક message_flag) override;
 
-    private:
+    ખાનગી:
 };
 
-static void __compile_real_net2(vvp_net_t*node, vvp_array_t array,
+સ્થિર શૂન્ય __compile_real_net2(vvp_net_t*ગાંઠ, vvp_array_t array,
 				__vpiScope*scope,
-				char*my_label, char*name,
-				unsigned array_addr, bool local_flag)
+				અક્ષર*my_label, અક્ષર*name,
+				unsigned array_addr, તાર્કિક local_flag)
 {
-      vvp_wire_base*fil = dynamic_cast<vvp_wire_base*> (node->fil);
+      vvp_wire_base*fil = dynamic_cast<vvp_wire_base*> (ગાંઠ->fil);
 
-      if (fil == 0) {
-	    fil = new vvp_wire_real;
-	    node->fil = fil;
+      જો (fil == 0) {
+	    fil = નવું vvp_wire_real;
+	    ગાંઠ->fil = fil;
       }
 
       vpiHandle obj = 0;
-      if (!local_flag) {
-	    obj = vpip_make_real_net(scope, name, node);
-	    compile_vpi_symbol(my_label, obj);
+      જો (!local_flag) {
+	    obj = vpip_make_real_net(scope, name, ગાંઠ);
+	    compile_vpi_પ્રતીક(my_label, obj);
       }
 #ifdef CHECK_WITH_VALGRIND
-      else pool_local_net(node);
+      નહીંતર pool_local_net(ગાંઠ);
 #endif
 
 	// REMOVE ME! Giving the net a label is a legacy of the times
 	// when the .net was a functor of its own. In the long run, we
 	// must fix the code generator to not rely on the label of the
 	// .net, then we will remove that label.
-      define_functor_symbol(my_label, node);
+      define_functor_પ્રતીક(my_label, ગાંઠ);
 
-     if (array)
+     જો (array)
 	    array->attach_word(array_addr, obj);
-      else if (obj)
+      નહીંતર જો (obj)
 	    vpip_attach_to_scope(scope, obj);
 
-      free(my_label);
+      મુક્ત(my_label);
       delete[] name;
 }
 
-static void __compile_real(char*label, char*name,
-                           char*array_label, unsigned long array_addr,
-                           int msb, int lsb, bool local_flag,
-                           unsigned argc, struct symb_s*argv)
+સ્થિર શૂન્ય __compile_real(અક્ષર*label, અક્ષર*name,
+                           અક્ષર*array_label, unsigned long array_addr,
+                           પૂર્ણાંક msb, પૂર્ણાંક lsb, તાર્કિક local_flag,
+                           unsigned argc, સંરચના symb_s*argv)
 {
-      assert(msb == 0 && lsb == 0);
-      vvp_array_t array = array_label ? array_find(array_label) : NULL;
-      assert(array_label ? array!=0 : true);
+      પ્રતિજ્ઞા(msb == 0 && lsb == 0);
+      vvp_array_t array = array_label ? array_find(array_label) : ખાલી;
+      પ્રતિજ્ઞા(array_label ? array!=0 : સાચું);
 
-      free(array_label);
+      મુક્ત(array_label);
 
-      assert(argc == 1);
-      vvp_net_t*node = vvp_net_lookup(argv[0].text);
-      if (node == 0) {
+      પ્રતિજ્ઞા(argc == 1);
+      vvp_net_t*ગાંઠ = vvp_net_lookup(argv[0].text);
+      જો (ગાંઠ == 0) {
 	      /* No existing net, but the string value may be a
 		 constant. In that case, we will wind up generating a
 		 bufz node that can carry the constant value. */
-	    node = create_constant_node(argv[0].text);
+	    ગાંઠ = create_constant_ગાંઠ(argv[0].text);
       }
       __vpiScope*scope = vpip_peek_current_scope();
-      if (node == 0) {
+      જો (ગાંઠ == 0) {
 	    __compile_real_net_resolv*res
-		  = new __compile_real_net_resolv(argv[0].text, array,
+		  = નવું __compile_real_net_resolv(argv[0].text, array,
 						  scope, label, name,
 						  array_addr, local_flag);
 	    resolv_submit(res);
-	    free(argv);
-	    return;
+	    મુક્ત(argv);
+	    પાછા;
       }
 
-      assert(node);
-      __compile_real_net2(node, array, scope, label, name, array_addr,
+      પ્રતિજ્ઞા(ગાંઠ);
+      __compile_real_net2(ગાંઠ, array, scope, label, name, array_addr,
                           local_flag);
-      free(argv[0].text);
-      free(argv);
+      મુક્ત(argv[0].text);
+      મુક્ત(argv);
 }
 
-bool __compile_real_net_resolv::resolve(bool msg_flag)
+તાર્કિક __compile_real_net_resolv::resolve(તાર્કિક સંદેશ_flag)
 {
-      vvp_net_t*node = vvp_net_lookup(label());
-      if (node == 0) {
-	    if (msg_flag)
+      vvp_net_t*ગાંઠ = vvp_net_lookup(label());
+      જો (ગાંઠ == 0) {
+	    જો (સંદેશ_flag)
 		  cerr << "Unable to resolve label " << label() << endl;
-	    return false;
+	    પાછા ખોટું;
       }
 
-      __compile_real_net2(node, array_, scope_, my_label_, name_, array_addr_, local_flag_);
-      return true;
+      __compile_real_net2(ગાંઠ, array_, scope_, my_label_, name_, array_addr_, local_flag_);
+      પાછા સાચું;
 }
 
-void compile_net_real(char*label, char*name, int msb, int lsb, bool local_flag,
-		      unsigned argc, struct symb_s*argv)
+શૂન્ય compile_net_real(અક્ષર*label, અક્ષર*name, પૂર્ણાંક msb, પૂર્ણાંક lsb, તાર્કિક local_flag,
+		      unsigned argc, સંરચના symb_s*argv)
 {
       __compile_real(label, name, 0, 0,
                      msb, lsb, local_flag, argc, argv);
 }
 
-void compile_netw_real(char*label, char*array_label, unsigned long array_addr,
-                       int msb, int lsb,
-                       unsigned argc, struct symb_s*argv)
+શૂન્ય compile_netw_real(અક્ષર*label, અક્ષર*array_label, unsigned long array_addr,
+                       પૂર્ણાંક msb, પૂર્ણાંક lsb,
+                       unsigned argc, સંરચના symb_s*argv)
 {
       __compile_real(label, 0, array_label, array_addr,
-                     msb, lsb, false, argc, argv);
+                     msb, lsb, ખોટું, argc, argv);
 }

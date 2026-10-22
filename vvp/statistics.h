@@ -22,44 +22,44 @@
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
 #ifdef __SUNPRO_CC
 # include  <stddef.h>
-#else
+#નહીંતર
 # include  <cstddef>
 #endif
 
-extern unsigned long count_opcodes;
-extern unsigned long count_functors;
-extern unsigned long count_functors_logic;
-extern unsigned long count_functors_bufif;
-extern unsigned long count_functors_resolv;
-extern unsigned long count_functors_sig;
-extern unsigned long count_filters;
-extern unsigned long count_vvp_nets;
-extern unsigned long count_vpi_nets;
-extern unsigned long count_vpi_scopes;
+બાહ્ય unsigned long ગણતરી_opcodes;
+બાહ્ય unsigned long ગણતરી_functors;
+બાહ્ય unsigned long ગણતરી_functors_logic;
+બાહ્ય unsigned long ગણતરી_functors_bufif;
+બાહ્ય unsigned long ગણતરી_functors_resolv;
+બાહ્ય unsigned long ગણતરી_functors_sig;
+બાહ્ય unsigned long ગણતરી_filters;
+બાહ્ય unsigned long ગણતરી_vvp_nets;
+બાહ્ય unsigned long ગણતરી_vpi_nets;
+બાહ્ય unsigned long ગણતરી_vpi_scopes;
 
-extern unsigned long count_net_arrays;
-extern unsigned long count_net_array_words;
-extern unsigned long count_var_arrays;
-extern unsigned long count_var_array_words;
-extern unsigned long count_real_arrays;
-extern unsigned long count_real_array_words;
+બાહ્ય unsigned long ગણતરી_net_arrays;
+બાહ્ય unsigned long ગણતરી_net_array_શબ્દો;
+બાહ્ય unsigned long ગણતરી_var_arrays;
+બાહ્ય unsigned long ગણતરી_var_array_શબ્દો;
+બાહ્ય unsigned long ગણતરી_real_arrays;
+બાહ્ય unsigned long ગણતરી_real_array_શબ્દો;
 
 
-extern unsigned long count_time_events;
-extern unsigned long count_time_pool(void);
+બાહ્ય unsigned long ગણતરી_time_events;
+બાહ્ય unsigned long ગણતરી_time_pool(શૂન્ય);
 
-extern unsigned long count_assign_events;
-extern unsigned long count_assign4_pool(void);
-extern unsigned long count_assign8_pool(void);
-extern unsigned long count_assign_real_pool(void);
-extern unsigned long count_assign_aword_pool(void);
-extern unsigned long count_assign_arword_pool(void);
+બાહ્ય unsigned long ગણતરી_assign_events;
+બાહ્ય unsigned long ગણતરી_assign4_pool(શૂન્ય);
+બાહ્ય unsigned long ગણતરી_assign8_pool(શૂન્ય);
+બાહ્ય unsigned long ગણતરી_assign_real_pool(શૂન્ય);
+બાહ્ય unsigned long ગણતરી_assign_aword_pool(શૂન્ય);
+બાહ્ય unsigned long ગણતરી_assign_arword_pool(શૂન્ય);
 
-extern unsigned long count_gen_events;
-extern unsigned long count_gen_pool(void);
+બાહ્ય unsigned long ગણતરી_gen_events;
+બાહ્ય unsigned long ગણતરી_gen_pool(શૂન્ય);
 
-extern size_t size_opcodes;
-extern size_t size_vvp_nets;
-extern size_t size_vvp_net_funs;
+બાહ્ય size_t size_opcodes;
+બાહ્ય size_t size_vvp_nets;
+બાહ્ય size_t size_vvp_net_funs;
 
 #endif /* IVL_statistics_H */

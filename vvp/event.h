@@ -26,88 +26,88 @@
 
 class evctl {
 
-    public:
+    જાહેર:
       explicit evctl(uint64_t ecount);
       bool dec_and_run();
-      virtual void run_run() = 0;
-      virtual ~evctl() {}
+      આભાસી શૂન્ય run_run() = 0;
+      આભાસી ~evctl() {}
       evctl*next;
 
-    private:
+    ખાનગી:
       uint64_t ecount_;
 };
 
-class evctl_real : public evctl {
+class evctl_real : જાહેર evctl {
 
-    public:
-      explicit evctl_real(class __vpiHandle*handle, double value,
+    જાહેર:
+      explicit evctl_real(class __vpiHandle*handle, દ્વિગુણ કિંમત,
                           uint64_t ecount);
-      virtual ~evctl_real() override {}
-      void run_run() override;
+      આભાસી ~evctl_real() override {}
+      શૂન્ય run_run() override;
 
-    private:
+    ખાનગી:
       class __vpiHandle*handle_;
-      double value_;
+      દ્વિગુણ કિંમત_2;
 };
 
-class evctl_vector : public evctl {
+class evctl_vector : જાહેર evctl {
 
-    public:
-      explicit evctl_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
+    જાહેર:
+      explicit evctl_vector(vvp_net_ptr_t ptr, અચલ vvp_vector4_t&કિંમત,
                             unsigned off, unsigned wid, uint64_t ecount);
-      virtual ~evctl_vector() override {}
-      void run_run() override;
+      આભાસી ~evctl_vector() override {}
+      શૂન્ય run_run() override;
 
-    private:
+    ખાનગી:
       vvp_net_ptr_t ptr_;
-      vvp_vector4_t value_;
+      vvp_vector4_t કિંમત_2;
       unsigned off_;
       unsigned wid_;
 };
 
-class evctl_array : public evctl {
+class evctl_array : જાહેર evctl {
 
-    public:
+    જાહેર:
       explicit evctl_array(vvp_array_t memory, unsigned index,
-                           const vvp_vector4_t&value, unsigned off,
+                           અચલ vvp_vector4_t&કિંમત, unsigned off,
                            uint64_t ecount);
-      virtual ~evctl_array() override {}
-      virtual void run_run() override;
+      આભાસી ~evctl_array() override {}
+      આભાસી શૂન્ય run_run() override;
 
-    private:
+    ખાનગી:
       vvp_array_t mem_;
       unsigned idx_;
-      vvp_vector4_t value_;
+      vvp_vector4_t કિંમત_2;
       unsigned off_;
 };
 
-class evctl_array_r : public evctl {
+class evctl_array_r : જાહેર evctl {
 
-    public:
+    જાહેર:
       explicit evctl_array_r(vvp_array_t memory, unsigned index,
-                           double value, uint64_t ecount);
-      virtual ~evctl_array_r() override {}
-      virtual void run_run() override;
+                           દ્વિગુણ કિંમત, uint64_t ecount);
+      આભાસી ~evctl_array_r() override {}
+      આભાસી શૂન્ય run_run() override;
 
-    private:
+    ખાનગી:
       vvp_array_t mem_;
       unsigned idx_;
-      double value_;
+      દ્વિગુણ કિંમત_2;
 };
 
-extern void schedule_evctl(class __vpiHandle*handle, double value,
+બાહ્ય શૂન્ય schedule_evctl(class __vpiHandle*handle, દ્વિગુણ કિંમત,
                            vvp_net_t*event, uint64_t ecount);
 
-extern void schedule_evctl(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
+બાહ્ય શૂન્ય schedule_evctl(vvp_net_ptr_t ptr, અચલ vvp_vector4_t&કિંમત,
                            unsigned offset, unsigned wid,
                            vvp_net_t*event, uint64_t ecount);
 
-extern void schedule_evctl(vvp_array_t memory, unsigned index,
-                           const vvp_vector4_t&value, unsigned offset,
+બાહ્ય શૂન્ય schedule_evctl(vvp_array_t memory, unsigned index,
+                           અચલ vvp_vector4_t&કિંમત, unsigned offset,
                            vvp_net_t*event, uint64_t ecount);
 
-extern void schedule_evctl(vvp_array_t memory, unsigned index,
-                           double value,
+બાહ્ય શૂન્ય schedule_evctl(vvp_array_t memory, unsigned index,
+                           દ્વિગુણ કિંમત,
                            vvp_net_t*event, uint64_t ecount);
 
 /*
@@ -118,19 +118,19 @@ extern void schedule_evctl(vvp_array_t memory, unsigned index,
  * A "waitable" functor is one that the %wait instruction can wait
  * on. This includes the infrastructure needed to hold threads.
  */
-struct waitable_hooks_s {
+સંરચના waitable_hooks_s {
 
-    public:
+    જાહેર:
       waitable_hooks_s() : event_ctls(0) { last = &event_ctls; }
-      virtual ~waitable_hooks_s() {}
+      આભાસી ~waitable_hooks_s() {}
 
-      virtual vthread_t add_waiting_thread(vthread_t thread) = 0;
+      આભાસી vthread_t add_waiting_thread(vthread_t thread) = 0;
 
       evctl*event_ctls;
       evctl**last;
 
-    protected:
-      void run_waiting_threads_(vthread_t&threads);
+    સુરક્ષિત:
+      શૂન્ય run_waiting_threads_(vthread_t&threads);
 };
 
 /*
@@ -138,7 +138,7 @@ struct waitable_hooks_s {
  * of an automatically allocated event. In the general case, all that is
  * needed is the list of threads waiting on that instance.
  */
-struct waitable_state_s {
+સંરચના waitable_state_s {
       waitable_state_s() : threads(0) {}
 
       vthread_t threads;
@@ -149,69 +149,69 @@ struct waitable_state_s {
  * types. This should be hooked to a vvp_net_t that is connected to
  * the output of a signal that we wish to watch for edges.
  */
-class vvp_fun_edge : public vvp_net_fun_t, public waitable_hooks_s {
+class vvp_fun_edge : જાહેર vvp_net_fun_t, જાહેર waitable_hooks_s {
 
-    public:
-      typedef unsigned short edge_t;
+    જાહેર:
+      પ્રકારવ્યાખ્યા unsigned short edge_t;
       explicit vvp_fun_edge(edge_t e);
-      virtual ~vvp_fun_edge() override;
+      આભાસી ~vvp_fun_edge() override;
 
-    protected:
-      bool recv_vec4_(const vvp_vector4_t&bit,
+    સુરક્ષિત:
+      bool recv_vec4_(અચલ vvp_vector4_t&bit,
                       vvp_bit4_t&old_bit, vthread_t&threads);
 
       vvp_bit4_t bits_[4];
 
-    private:
+    ખાનગી:
       edge_t edge_;
 };
 
-extern const vvp_fun_edge::edge_t vvp_edge_edge;
-extern const vvp_fun_edge::edge_t vvp_edge_posedge;
-extern const vvp_fun_edge::edge_t vvp_edge_negedge;
-extern const vvp_fun_edge::edge_t vvp_edge_none;
+બાહ્ય અચલ vvp_fun_edge::edge_t vvp_edge_edge;
+બાહ્ય અચલ vvp_fun_edge::edge_t vvp_edge_posedge;
+બાહ્ય અચલ vvp_fun_edge::edge_t vvp_edge_negedge;
+બાહ્ય અચલ vvp_fun_edge::edge_t vvp_edge_none;
 
 /*
  * Statically allocated vvp_fun_edge.
  */
-class vvp_fun_edge_sa : public vvp_fun_edge {
+class vvp_fun_edge_sa : જાહેર vvp_fun_edge {
 
-    public:
+    જાહેર:
       explicit vvp_fun_edge_sa(edge_t e);
-      virtual ~vvp_fun_edge_sa() override;
+      આભાસી ~vvp_fun_edge_sa() override;
 
       vthread_t add_waiting_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      શૂન્ય recv_vec4(vvp_net_ptr_t port, અચલ vvp_vector4_t&bit,
                      vvp_context_t context) override;
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      શૂન્ય recv_vec4_pv(vvp_net_ptr_t port, અચલ vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t context) override;
 
-    private:
+    ખાનગી:
       vthread_t threads_;
 };
 
 /*
  * Automatically allocated vvp_fun_edge.
  */
-class vvp_fun_edge_aa : public vvp_fun_edge, public automatic_hooks_s {
+class vvp_fun_edge_aa : જાહેર vvp_fun_edge, જાહેર automatic_hooks_s {
 
-    public:
+    જાહેર:
       explicit vvp_fun_edge_aa(edge_t e);
-      virtual ~vvp_fun_edge_aa() override;
+      આભાસી ~vvp_fun_edge_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
+      શૂન્ય alloc_instance(vvp_context_t context) override;
+      શૂન્ય reset_instance(vvp_context_t context) override;
 #ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
+      શૂન્ય free_instance(vvp_context_t context) override;
 #endif
 
       vthread_t add_waiting_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      શૂન્ય recv_vec4(vvp_net_ptr_t port, અચલ vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-    private:
+    ખાનગી:
       __vpiScope*context_scope_;
       unsigned context_idx_;
 };
@@ -220,7 +220,7 @@ class vvp_fun_edge_aa : public vvp_fun_edge, public automatic_hooks_s {
  * This is the base object for storing the last received values for a
  * vvp_fun_anyedge functor.
  */
-class anyedge_value;
+class anyedge_કિંમત;
 
 /*
  * The vvp_fun_anyedge functor checks to see if any value in an input
@@ -232,71 +232,71 @@ class anyedge_value;
  * values. In this case, any detectable change in the real value leads
  * to an event trigger.
  */
-class vvp_fun_anyedge : public vvp_net_fun_t, public waitable_hooks_s {
+class vvp_fun_anyedge : જાહેર vvp_net_fun_t, જાહેર waitable_hooks_s {
 
-    public:
+    જાહેર:
       explicit vvp_fun_anyedge();
-      virtual ~vvp_fun_anyedge() override;
+      આભાસી ~vvp_fun_anyedge() override;
 
-    protected:
-      anyedge_value*last_value_[4];
+    સુરક્ષિત:
+      anyedge_કિંમત*last_કિંમત[4];
 };
 
 /*
  * Statically allocated vvp_fun_anyedge.
  */
-class vvp_fun_anyedge_sa : public vvp_fun_anyedge {
+class vvp_fun_anyedge_sa : જાહેર vvp_fun_anyedge {
 
-    public:
+    જાહેર:
       explicit vvp_fun_anyedge_sa();
-      virtual ~vvp_fun_anyedge_sa() override;
+      આભાસી ~vvp_fun_anyedge_sa() override;
 
       vthread_t add_waiting_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      શૂન્ય recv_vec4(vvp_net_ptr_t port, અચલ vvp_vector4_t&bit,
                      vvp_context_t context) override;
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      શૂન્ય recv_vec4_pv(vvp_net_ptr_t port, અચલ vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t context) override;
 
-      void recv_real(vvp_net_ptr_t port, double bit,
+      શૂન્ય recv_real(vvp_net_ptr_t port, દ્વિગુણ bit,
                      vvp_context_t context) override;
 
-      void recv_string(vvp_net_ptr_t port, const std::string&bit,
+      શૂન્ય recv_string(vvp_net_ptr_t port, અચલ std::string&bit,
 		       vvp_context_t context) override;
-      void recv_object(vvp_net_ptr_t port, vvp_object_t bit,
+      શૂન્ય recv_object(vvp_net_ptr_t port, vvp_object_t bit,
 		       vvp_context_t context) override;
 
-    private:
+    ખાનગી:
       vthread_t threads_;
 };
 
 /*
  * Automatically allocated vvp_fun_anyedge.
  */
-class vvp_fun_anyedge_aa : public vvp_fun_anyedge, public automatic_hooks_s {
+class vvp_fun_anyedge_aa : જાહેર vvp_fun_anyedge, જાહેર automatic_hooks_s {
 
-    public:
+    જાહેર:
       explicit vvp_fun_anyedge_aa();
-      virtual ~vvp_fun_anyedge_aa() override;
+      આભાસી ~vvp_fun_anyedge_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
+      શૂન્ય alloc_instance(vvp_context_t context) override;
+      શૂન્ય reset_instance(vvp_context_t context) override;
 #ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
+      શૂન્ય free_instance(vvp_context_t context) override;
 #endif
 
       vthread_t add_waiting_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      શૂન્ય recv_vec4(vvp_net_ptr_t port, અચલ vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-      void recv_real(vvp_net_ptr_t port, double bit,
+      શૂન્ય recv_real(vvp_net_ptr_t port, દ્વિગુણ bit,
                      vvp_context_t context) override;
 
-      void recv_string(vvp_net_ptr_t port, const std::string&bit,
+      શૂન્ય recv_string(vvp_net_ptr_t port, અચલ std::string&bit,
 		       vvp_context_t context) override;
 
-    private:
+    ખાનગી:
       __vpiScope*context_scope_;
       unsigned context_idx_;
 };
@@ -307,55 +307,55 @@ class vvp_fun_anyedge_aa : public vvp_fun_anyedge, public automatic_hooks_s {
  * supports wide (more than 4) inputs, so needs a pointer to the base
  * net that is used for output.
  */
-class vvp_fun_event_or : public vvp_net_fun_t, public waitable_hooks_s {
+class vvp_fun_event_or : જાહેર vvp_net_fun_t, જાહેર waitable_hooks_s {
 
-    public:
+    જાહેર:
       explicit vvp_fun_event_or(vvp_net_t*base_net);
       ~vvp_fun_event_or() override;
 
-    protected:
+    સુરક્ષિત:
       vvp_net_t*base_net_;
 };
 
 /*
  * Statically allocated vvp_fun_event_or.
  */
-class vvp_fun_event_or_sa : public vvp_fun_event_or {
+class vvp_fun_event_or_sa : જાહેર vvp_fun_event_or {
 
-    public:
+    જાહેર:
       explicit vvp_fun_event_or_sa(vvp_net_t*base_net);
       ~vvp_fun_event_or_sa() override;
 
       vthread_t add_waiting_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      શૂન્ય recv_vec4(vvp_net_ptr_t port, અચલ vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-    private:
+    ખાનગી:
       vthread_t threads_;
 };
 
 /*
  * Automatically allocated vvp_fun_event_or.
  */
-class vvp_fun_event_or_aa : public vvp_fun_event_or, public automatic_hooks_s {
+class vvp_fun_event_or_aa : જાહેર vvp_fun_event_or, જાહેર automatic_hooks_s {
 
-    public:
+    જાહેર:
       explicit vvp_fun_event_or_aa(vvp_net_t*base_net);
       ~vvp_fun_event_or_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
+      શૂન્ય alloc_instance(vvp_context_t context) override;
+      શૂન્ય reset_instance(vvp_context_t context) override;
 #ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
+      શૂન્ય free_instance(vvp_context_t context) override;
 #endif
 
       vthread_t add_waiting_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      શૂન્ય recv_vec4(vvp_net_ptr_t port, અચલ vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-    private:
+    ખાનગી:
       __vpiScope*context_scope_;
       unsigned context_idx_;
 };
@@ -365,55 +365,55 @@ class vvp_fun_event_or_aa : public vvp_fun_event_or, public automatic_hooks_s {
  * any input at all to port-0. The idea here is that behavioral code
  * can use a %set/v instruction to trigger the event.
  */
-class vvp_named_event : public vvp_net_fun_t, public waitable_hooks_s {
+class vvp_named_event : જાહેર vvp_net_fun_t, જાહેર waitable_hooks_s {
 
-    public:
+    જાહેર:
       explicit vvp_named_event(class __vpiHandle*eh);
       ~vvp_named_event() override;
 
-    protected:
+    સુરક્ષિત:
       class __vpiHandle*handle_;
 };
 
 /*
  * Statically allocated vvp_named_event.
  */
-class vvp_named_event_sa : public vvp_named_event {
+class vvp_named_event_sa : જાહેર vvp_named_event {
 
-    public:
+    જાહેર:
       explicit vvp_named_event_sa(class __vpiHandle*eh);
       ~vvp_named_event_sa() override;
 
       vthread_t add_waiting_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      શૂન્ય recv_vec4(vvp_net_ptr_t port, અચલ vvp_vector4_t&bit,
                      vvp_context_t) override;
 
-    private:
+    ખાનગી:
       vthread_t threads_;
 };
 
 /*
  * Automatically allocated vvp_named_event.
  */
-class vvp_named_event_aa : public vvp_named_event, public automatic_hooks_s {
+class vvp_named_event_aa : જાહેર vvp_named_event, જાહેર automatic_hooks_s {
 
-    public:
+    જાહેર:
       explicit vvp_named_event_aa(class __vpiHandle*eh);
       ~vvp_named_event_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
+      શૂન્ય alloc_instance(vvp_context_t context) override;
+      શૂન્ય reset_instance(vvp_context_t context) override;
 #ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
+      શૂન્ય free_instance(vvp_context_t context) override;
 #endif
 
       vthread_t add_waiting_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      શૂન્ય recv_vec4(vvp_net_ptr_t port, અચલ vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-    private:
+    ખાનગી:
       unsigned context_idx_;
 };
 

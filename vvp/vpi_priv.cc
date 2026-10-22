@@ -36,65 +36,65 @@
 # include  <cmath>
 # include  <iostream>
 
-using namespace std;
+using નામાકાશ std;
 vpi_mode_t vpi_mode_flag = VPI_MODE_NONE;
 FILE*vpi_trace = 0;
 
-static s_vpi_vlog_info  vpi_vlog_info;
-static s_vpi_error_info vpip_last_error = { 0, 0, 0, 0, 0, 0, 0 };
+સ્થિર s_vpi_vlog_info  vpi_vlog_info;
+સ્થિર s_vpi_error_info vpip_last_error = { 0, 0, 0, 0, 0, 0, 0 };
 
-const char* direction_as_string(int dir)
+અચલ અક્ષર* direction_as_string(પૂર્ણાંક dir)
 {
-      switch (dir) {
-	  case vpiInput:
-	    return "input";
-	  case vpiOutput:
-	    return "output";
-	  case vpiInout:
-	    return "inout";
-	  case vpiMixedIO:
-	    return "mixed io";
-	  case vpiNoDirection:
-	    return "no direction";
-	  default:
-	    return "INVALID-DIRECTION";
+      પસંદગી (dir) {
+	  સ્થિતિ vpi_આગત:
+	    પાછા "input";
+	  સ્થિતિ vpiOutput:
+	    પાછા "output";
+	  સ્થિતિ vpiInout:
+	    પાછા "inout";
+	  સ્થિતિ vpiMixedIO:
+	    પાછા "mixed io";
+	  સ્થિતિ vpiNoDirection:
+	    પાછા "no direction";
+	  મૂળભૂત:
+	    પાછા "INVALID-DIRECTION";
       }
 }
 
 __vpiHandle::~__vpiHandle()
 { }
 
-int __vpiHandle::vpi_get(int)
-{ return vpiUndefined; }
+પૂર્ણાંક __vpiHandle::vpi_get(પૂર્ણાંક)
+{ પાછા vpiUndefined; }
 
-int64_t __vpiHandle::vpi_get64(int code)
-{ return (code == _vpiNexusId) ? 0 : vpiUndefined; }
+int64_t __vpiHandle::vpi_get64(પૂર્ણાંક code)
+{ પાછા (code == _vpiNexusId) ? 0 : vpiUndefined; }
 
-char* __vpiHandle::vpi_get_str(int)
-{ return 0; }
+અક્ષર* __vpiHandle::vpi_get_str(પૂર્ણાંક)
+{ પાછા 0; }
 
-void __vpiHandle::vpi_get_value(p_vpi_value)
+શૂન્ય __vpiHandle::vpi_get_કિંમત(p_vpi_કિંમત)
 { }
 
-vpiHandle __vpiHandle::vpi_put_value(p_vpi_value, int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_put_કિંમત(p_vpi_કિંમત, પૂર્ણાંક)
+{ પાછા 0; }
 
-vpiHandle __vpiHandle::vpi_handle(int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_handle(પૂર્ણાંક)
+{ પાછા 0; }
 
-vpiHandle __vpiHandle::vpi_iterate(int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_iterate(પૂર્ણાંક)
+{ પાછા 0; }
 
-vpiHandle __vpiHandle::vpi_index(int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_index(પૂર્ણાંક)
+{ પાછા 0; }
 
-void __vpiHandle::vpi_get_delays(p_vpi_delay)
+શૂન્ય __vpiHandle::vpi_get_delays(p_vpi_delay)
 { }
 
-void __vpiHandle::vpi_put_delays(p_vpi_delay)
+શૂન્ય __vpiHandle::vpi_put_delays(p_vpi_delay)
 { }
 
-__vpiBaseVar::__vpiBaseVar(__vpiScope*scope, const char*name, vvp_net_t*net)
+__vpiBaseVar::__vpiBaseVar(__vpiScope*scope, અચલ અક્ષર*name, vvp_net_t*net)
 : scope_(scope), name_(name), net_(net)
 {
 }
@@ -113,134 +113,134 @@ __vpiBaseVar::~__vpiBaseVar()
  * objects will override the free_object_fun method to return an
  * appropriately effective function.
  */
-static int suppress_free(vpiHandle)
-{ return 1; }
-__vpiHandle::free_object_fun_t __vpiHandle::free_object_fun(void)
-{ return &suppress_free; }
+સ્થિર પૂર્ણાંક suppress_free(vpiHandle)
+{ પાછા 1; }
+__vpiHandle::free_object_fun_t __vpiHandle::free_object_fun(શૂન્ય)
+{ પાછા &suppress_free; }
 
 /*
  * The vpip_string function creates a constant string from the pass
  * input. This constant string is permanently allocated from an
  * efficient string buffer store.
  */
-struct vpip_string_chunk {
-      struct vpip_string_chunk*next;
-      char data[64*1024 - sizeof (struct vpip_string_chunk*)];
+સંરચના vpip_string_chunk {
+      સંરચના vpip_string_chunk*next;
+      અક્ષર data[64*1024 - કદ (સંરચના vpip_string_chunk*)];
 };
 
-unsigned vpip_size(const __vpiSignal *sig)
+unsigned vpip_size(અચલ __vpiSignal *sig)
 {
-      return abs(sig->msb.get_value() - sig->lsb.get_value()) + 1;
+      પાછા abs(sig->msb.get_કિંમત() - sig->lsb.get_કિંમત()) + 1;
 }
 
 __vpiScope* vpip_scope(__vpiSignal*sig)
 {
-      if (sig->is_netarray)
-	    return static_cast<__vpiScope*>(vpi_handle(vpiScope,
+      જો (sig->is_netarray)
+	    પાછા static_cast<__vpiScope*>(vpi_handle(vpiScope,
 	                                               sig->within.parent));
-      else
-	    return sig->within.scope;
+      નહીંતર
+	    પાછા sig->within.scope;
 }
 
 __vpiScope* vpip_scope(__vpiRealVar*sig)
 {
-      if (sig->is_netarray)
-	    return static_cast<__vpiScope*>(vpi_handle(vpiScope,
+      જો (sig->is_netarray)
+	    પાછા static_cast<__vpiScope*>(vpi_handle(vpiScope,
 	                                               sig->within.parent));
-      else
-	    return sig->within.scope;
+      નહીંતર
+	    પાછા sig->within.scope;
 }
 
 vpiHandle vpip_module(__vpiScope*scope)
 {
-      while(scope && scope->get_type_code() != vpiModule) {
+      જ્યારે(scope && scope->get_type_code() != vpiModule) {
 	    scope = scope->scope;
       }
-      assert(scope);
-      return scope;
+      પ્રતિજ્ઞા(scope);
+      પાછા scope;
 }
 
-const char *vpip_string(const char*str)
+અચલ અક્ષર *vpip_string(અચલ અક્ષર*str)
 {
-      static vpip_string_chunk first_chunk = {0, {0}};
-      static vpip_string_chunk*chunk_list = &first_chunk;
-      static unsigned chunk_fill = 0;
+      સ્થિર vpip_string_chunk first_chunk = {0, {0}};
+      સ્થિર vpip_string_chunk*chunk_list = &first_chunk;
+      સ્થિર unsigned chunk_fill = 0;
 
       unsigned len = strlen(str);
-      assert( (len+1) <= sizeof chunk_list->data );
+      પ્રતિજ્ઞા( (len+1) <= કદ chunk_list->data );
 
-      if ( (len+1) > (sizeof chunk_list->data - chunk_fill) ) {
-	    vpip_string_chunk*tmp = new vpip_string_chunk;
+      જો ( (len+1) > (કદ chunk_list->data - chunk_fill) ) {
+	    vpip_string_chunk*tmp = નવું vpip_string_chunk;
 	    tmp->next = chunk_list;
 	    chunk_list = tmp;
 	    chunk_fill = 0;
       }
 
-      char*res = chunk_list->data + chunk_fill;
+      અક્ષર*res = chunk_list->data + chunk_fill;
       chunk_fill += len + 1;
 
       strcpy(res, str);
-      return res;
+      પાછા res;
 }
 
-static unsigned hash_string(const char*text)
+સ્થિર unsigned hash_string(અચલ અક્ષર*text)
 {
       unsigned h = 0;
 
-      while (*text) {
+      જ્યારે (*text) {
 	    h = (h << 4) ^ (h >> 28) ^ (unsigned)*text;
 	    text += 1;
       }
-      return h;
+      પાછા h;
 }
 
-const char* vpip_name_string(const char*text)
+અચલ અક્ષર* vpip_name_string(અચલ અક્ષર*text)
 {
-      const unsigned HASH_SIZE = 4096;
-      static const char*hash_table[HASH_SIZE] = {0};
+      અચલ unsigned HASH_SIZE = 4096;
+      સ્થિર અચલ અક્ષર*hash_table[HASH_SIZE] = {0};
 
-      unsigned hash_value = hash_string(text) % HASH_SIZE;
+      unsigned hash_કિંમત = hash_string(text) % HASH_SIZE;
 
 	/* If we easily find the string in the hash table, then return
 	   that and be done. */
-      if (hash_table[hash_value]
-	  && (strcmp(hash_table[hash_value], text) == 0)) {
-	    return hash_table[hash_value];
+      જો (hash_table[hash_કિંમત]
+	  && (strcmp(hash_table[hash_કિંમત], text) == 0)) {
+	    પાછા hash_table[hash_કિંમત];
       }
 
 	/* The existing hash entry is not a match. Replace it with the
 	   newly allocated value, and return the new pointer as the
 	   result to the add. */
-      const char*res = vpip_string(text);
-      hash_table[hash_value] = res;
+      અચલ અક્ષર*res = vpip_string(text);
+      hash_table[hash_કિંમત] = res;
 
-      return res;
+      પાછા res;
 }
 
 PLI_INT32 vpi_chk_error(p_vpi_error_info info)
 {
-      if (vpip_last_error.state == 0)
-	    return 0;
+      જો (vpip_last_error.state == 0)
+	    પાછા 0;
 
       info->state = vpip_last_error.state;
       info->level = vpip_last_error.level;
       info->message = vpip_last_error.message;
       info->product = vpi_vlog_info.product;
-      info->code = (char *)"";
+      info->code = (અક્ષર *)"";
       info->file = 0;
-      info->line = 0;
+      info->લીટી = 0;
 
-      return info->level;
+      પાછા info->level;
 }
 
 PLI_INT32 vpi_compare_objects(vpiHandle obj1, vpiHandle obj2)
 {
-      assert(obj1);
-      assert(obj2);
+      પ્રતિજ્ઞા(obj1);
+      પ્રતિજ્ઞા(obj2);
 
 	// Does this actually work for all cases?
-      if (obj1 != obj2) return 0;
-      else return 1;
+      જો (obj1 != obj2) પાછા 0;
+      નહીંતર પાછા 1;
 }
 
 /*
@@ -249,17 +249,17 @@ PLI_INT32 vpi_compare_objects(vpiHandle obj1, vpiHandle obj2)
  * string/data values. We also support passing a task or function handle
  * instead of just a handle to a vpiUserSystf.
  */
-void vpi_get_systf_info(vpiHandle ref, p_vpi_systf_data data)
+શૂન્ય vpi_get_systf_info(vpiHandle ref, p_vpi_systf_data data)
 {
-      struct __vpiUserSystf* rfp = dynamic_cast<__vpiUserSystf*>(ref);
-      if (rfp == 0) {
-	    struct __vpiSysTaskCall*call = dynamic_cast<__vpiSysTaskCall*>(ref);
-	    assert(call);
+      સંરચના __vpiUserSystf* rfp = dynamic_cast<__vpiUserSystf*>(ref);
+      જો (rfp == 0) {
+	    સંરચના __vpiSysTaskCall*call = dynamic_cast<__vpiSysTaskCall*>(ref);
+	    પ્રતિજ્ઞા(call);
 	    rfp = call->defn;
       }
 
 	/* Assert that vpiUserDefn is true! */
-      assert(rfp->is_user_defn);
+      પ્રતિજ્ઞા(rfp->is_user_defn);
 
       data->type = rfp->info.type;
       data->sysfunctype = rfp->info.sysfunctype;
@@ -274,25 +274,25 @@ void vpi_get_systf_info(vpiHandle ref, p_vpi_systf_data data)
  * When a task is called, this value is set so that vpi_handle can
  * fathom the vpi_handle(vpiSysTfCall,0) function.
  */
-struct __vpiSysTaskCall*vpip_cur_task = 0;
+સંરચના __vpiSysTaskCall*vpip_cur_task = 0;
 
 PLI_INT32 vpi_free_object(vpiHandle ref)
 {
-      int rtn;
+      પૂર્ણાંક rtn;
 
-      if (vpi_trace) {
+      જો (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_free_object(%p)", ref);
 	    fflush(vpi_trace);
       }
 
-      assert(ref);
+      પ્રતિજ્ઞા(ref);
       __vpiHandle::free_object_fun_t fun = ref->free_object_fun();
       rtn = fun (ref);
 
-      if (vpi_trace)
+      જો (vpi_trace)
 	    fprintf(vpi_trace, " --> %d\n", rtn);
 
-      return rtn;
+      પાછા rtn;
 }
 
 PLI_INT32 vpi_release_handle(vpiHandle ref)
@@ -300,402 +300,402 @@ PLI_INT32 vpi_release_handle(vpiHandle ref)
 	// Since SystemVerilog vpi_free_object() has been
 	// renamed vpi_release_handle(), and thus
 	// vpi_free_object() has been deprecated.
-      return vpi_free_object(ref);
+      પાછા vpi_free_object(ref);
 }
 
-static int vpip_get_global(int property)
+સ્થિર પૂર્ણાંક vpip_get_global(પૂર્ણાંક property)
 {
-      switch (property) {
+      પસંદગી (property) {
 
-	  case vpiTimeUnit:
-	  case vpiTimePrecision:
-	    return vpip_get_time_precision();
+	  સ્થિતિ vpiTimeUnit:
+	  સ્થિતિ vpiTimePrecision:
+	    પાછા vpip_get_time_precision();
 
-	  default:
+	  મૂળભૂત:
 	    fprintf(stderr, "vpi error: bad global property: %d\n", property);
-	    assert(0);
-	    return vpiUndefined;
+	    પ્રતિજ્ઞા(0);
+	    પાછા vpiUndefined;
       }
 }
 
-static const char* vpi_property_str(PLI_INT32 code)
+સ્થિર અચલ અક્ષર* vpi_property_str(PLI_INT32 code)
 {
-      static char buf[32];
-      switch (code) {
-	  case vpiConstType:
-	    return "vpiConstType";
-	  case vpiName:
-	    return "vpiName";
-	  case vpiFullName:
-	    return "vpiFullName";
-	  case vpiTimeUnit:
-	    return "vpiTimeUnit";
-	  case vpiTimePrecision:
-	    return "vpiTimePrecision";
-          case vpiSize:
-	    return "vpiSize";
-          case _vpiNexusId:
-	    return "_vpiNexusId";
-	  default:
-	    snprintf(buf, sizeof(buf), "%d", (int)code);
+      સ્થિર અક્ષર buf[32];
+      પસંદગી (code) {
+	  સ્થિતિ vpiConstType:
+	    પાછા "vpiConstType";
+	  સ્થિતિ vpiName:
+	    પાછા "vpiName";
+	  સ્થિતિ vpiFullName:
+	    પાછા "vpiFullName";
+	  સ્થિતિ vpiTimeUnit:
+	    પાછા "vpiTimeUnit";
+	  સ્થિતિ vpiTimePrecision:
+	    પાછા "vpiTimePrecision";
+          સ્થિતિ vpiSize:
+	    પાછા "vpiSize";
+          સ્થિતિ _vpiNexusId:
+	    પાછા "_vpiNexusId";
+	  મૂળભૂત:
+	    snprintf(buf, કદ(buf), "%d", (પૂર્ણાંક)code);
       }
-      return buf;
+      પાછા buf;
 }
 
-const char* vpi_type_as_string(PLI_INT32 code)
+અચલ અક્ષર* vpi_type_as_string(PLI_INT32 code)
 {
-      static char buf[32];
-      switch (code) {
-	  case vpiArrayType:
-	    return "vpiArrayType";
-	  case vpiBitVar:
-	    return "vpiBitVar";
-	  case vpiByteVar:
-	    return "vpiByteVar";
-	  case vpiClassVar:
-	    return "vpiClassVar";
-	  case vpiConstant:
-	    return "vpiConstant";
-	  case vpiEnumTypespec:
-	    return "vpiEnumTypespec";
-	  case vpiFunction:
-	    return "vpiFunction";
-	  case vpiGenScope:
-	    return "vpiGenScope";
-	  case vpiIntVar:
-	    return "vpiIntVar";
-	  case vpiIntegerVar:
-	    return "vpiIntegerVar";
-	  case vpiIterator:
-	    return "vpiIterator";
-	  case vpiLongIntVar:
-	    return "vpiLongIntVar";
-	  case vpiMemory:
-	    return "vpiMemory";
-	  case vpiMemoryWord:
-	    return "vpiMemoryWord";
-	  case vpiModule:
-	    return "vpiModule";
-	  case vpiNamedBegin:
-	    return "vpiNamedBegin";
-	  case vpiNamedEvent:
-	    return "vpiNamedEvent";
-	  case vpiNamedFork:
-	    return "vpiNamedFork";
-	  case vpiPackage:
-	    return "vpiPackage";
-	  case vpiPathTerm:
-	    return "vpiPathTerm";
-	  case vpiPort:
-	    return "vpiPort";
-	  case vpiNet:
-	    return "vpiNet";
-	  case vpiNetArray:
-	    return "vpiNetArray";
-	  case vpiNetBit:
-	    return "vpiNetBit";
-	  case vpiParameter:
-	    return "vpiParameter";
-	  case vpiPartSelect:
-	    return "vpiPartSelect";
-	  case vpiRealVar:
-	    return "vpiRealVar";
-	  case vpiReg:
-	    return "vpiReg";
-	  case vpiRegBit:
-	    return "vpiRegBit";
-	  case vpiShortIntVar:
-	    return "vpiShortIntVar";
-	  case vpiStringVar:
-	    return "vpiStringVar";
-	  case vpiSysFuncCall:
-	    return "vpiSysFuncCall";
-	  case vpiSysTaskCall:
-	    return "vpiSysTaskCall";
-	  case vpiTask:
-	    return "vpiTask";
-	  case vpiTimeVar:
-	    return "vpiTimeVar";
-	  case vpiUserSystf:
-	    return "vpiUserSystf";
-	  default:
-	    snprintf(buf, sizeof(buf), "%d", (int)code);
+      સ્થિર અક્ષર buf[32];
+      પસંદગી (code) {
+	  સ્થિતિ vpiArrayType:
+	    પાછા "vpiArrayType";
+	  સ્થિતિ vpiBitVar:
+	    પાછા "vpiBitVar";
+	  સ્થિતિ vpiByteVar:
+	    પાછા "vpiByteVar";
+	  સ્થિતિ vpiClassVar:
+	    પાછા "vpiClassVar";
+	  સ્થિતિ vpiConstant:
+	    પાછા "vpiConstant";
+	  સ્થિતિ vpiEnumTypespec:
+	    પાછા "vpiEnumTypespec";
+	  સ્થિતિ vpiFunction:
+	    પાછા "vpiFunction";
+	  સ્થિતિ vpiGenScope:
+	    પાછા "vpiGenScope";
+	  સ્થિતિ vpiIntVar:
+	    પાછા "vpiIntVar";
+	  સ્થિતિ vpiIntegerVar:
+	    પાછા "vpiIntegerVar";
+	  સ્થિતિ vpiIterator:
+	    પાછા "vpiIterator";
+	  સ્થિતિ vpiLongIntVar:
+	    પાછા "vpiLongIntVar";
+	  સ્થિતિ vpiMemory:
+	    પાછા "vpiMemory";
+	  સ્થિતિ vpiMemoryWord:
+	    પાછા "vpiMemoryWord";
+	  સ્થિતિ vpiModule:
+	    પાછા "vpiModule";
+	  સ્થિતિ vpiNamedBegin:
+	    પાછા "vpiNamedBegin";
+	  સ્થિતિ vpiNamedEvent:
+	    પાછા "vpiNamedEvent";
+	  સ્થિતિ vpiNamedFork:
+	    પાછા "vpiNamedFork";
+	  સ્થિતિ vpiPackage:
+	    પાછા "vpiPackage";
+	  સ્થિતિ vpiPathTerm:
+	    પાછા "vpiPathTerm";
+	  સ્થિતિ vpiPort:
+	    પાછા "vpiPort";
+	  સ્થિતિ vpiNet:
+	    પાછા "vpiNet";
+	  સ્થિતિ vpiNetArray:
+	    પાછા "vpiNetArray";
+	  સ્થિતિ vpiNetBit:
+	    પાછા "vpiNetBit";
+	  સ્થિતિ vpiParameter:
+	    પાછા "vpiParameter";
+	  સ્થિતિ vpiPartSelect:
+	    પાછા "vpiPartSelect";
+	  સ્થિતિ vpiRealVar:
+	    પાછા "vpiRealVar";
+	  સ્થિતિ vpiReg:
+	    પાછા "vpiReg";
+	  સ્થિતિ vpiRegBit:
+	    પાછા "vpiRegBit";
+	  સ્થિતિ vpiShortIntVar:
+	    પાછા "vpiShortIntVar";
+	  સ્થિતિ vpiStringVar:
+	    પાછા "vpiStringVar";
+	  સ્થિતિ vpiSysFuncCall:
+	    પાછા "vpiSysFuncCall";
+	  સ્થિતિ vpiSysTaskCall:
+	    પાછા "vpiSysTaskCall";
+	  સ્થિતિ vpiTask:
+	    પાછા "vpiTask";
+	  સ્થિતિ vpiTimeVar:
+	    પાછા "vpiTimeVar";
+	  સ્થિતિ vpiUserSystf:
+	    પાછા "vpiUserSystf";
+	  મૂળભૂત:
+	    snprintf(buf, કદ(buf), "%d", (પૂર્ણાંક)code);
       }
-      return buf;
+      પાછા buf;
 }
 
-PLI_INT32 vpi_get(int property, vpiHandle ref)
+PLI_INT32 vpi_get(પૂર્ણાંક property, vpiHandle ref)
 {
 	/* We don't care what the ref is there is only one delay selection. */
-      if (property == _vpiDelaySelection) return vpip_delay_selection;
+      જો (property == _vpiDelaySelection) પાછા vpip_delay_selection;
 
-      if (ref == 0)
-	    return vpip_get_global(property);
+      જો (ref == 0)
+	    પાછા vpip_get_global(property);
 
-      if (property == vpiType) {
-	    if (vpi_trace) {
+      જો (property == vpiType) {
+	    જો (vpi_trace) {
 		  fprintf(vpi_trace, "vpi_get(vpiType, %p) --> %s\n",
 			  ref, vpi_type_as_string(ref->get_type_code()));
 	    }
 
-	    if (ref->get_type_code() == vpiMemory && is_net_array(ref))
-		  return vpiNetArray;
-	    else
-		  return ref->get_type_code();
+	    જો (ref->get_type_code() == vpiMemory && is_net_array(ref))
+		  પાછા vpiNetArray;
+	    નહીંતર
+		  પાછા ref->get_type_code();
       }
 
-      int res = ref->vpi_get(property);
+      પૂર્ણાંક res = ref->vpi_get(property);
 
-      if (vpi_trace) {
+      જો (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_get(%s, %p) --> %d\n",
 		    vpi_property_str(property), ref, res);
       }
 
-      return res;
+      પાછા res;
 }
 
-PLI_INT64 vpi_get64(int property, vpiHandle ref)
+PLI_INT64 vpi_get64(પૂર્ણાંક property, vpiHandle ref)
 {
 	// For now we only support getting the nexus id.
-      if ((ref == 0) || (property != _vpiNexusId)) {
+      જો ((ref == 0) || (property != _vpiNexusId)) {
 	    fprintf(vpi_trace, "vpi_get64(%s, %p) is not currently supported.\n",
 		    vpi_property_str(property), ref);
-	    return vpiUndefined;
+	    પાછા vpiUndefined;
       }
 
       int64_t res = ref->vpi_get64(property);
 
-      if (vpi_trace) {
+      જો (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_get64(%s, %p) --> %" PRId64 "\n",
 		    vpi_property_str(property), ref, res);
       }
 
-      return res;
+      પાછા res;
 }
 
-char* vpi_get_str(PLI_INT32 property, vpiHandle ref)
+અક્ષર* vpi_get_str(PLI_INT32 property, vpiHandle ref)
 {
 	/* We don't care what the ref is there is only one delay selection. */
-      if (property == _vpiDelaySelection) {
-	    switch (vpip_delay_selection) {
-		case _vpiDelaySelMinimum:
-		  return simple_set_rbuf_str("MINIMUM");
-		case _vpiDelaySelTypical:
-		  return simple_set_rbuf_str("TYPICAL");
-		case _vpiDelaySelMaximum:
-		  return simple_set_rbuf_str("MAXIMUM");
-		default:
-		  assert(0);
+      જો (property == _vpiDelaySelection) {
+	    પસંદગી (vpip_delay_selection) {
+		સ્થિતિ _vpiDelaySelMinimum:
+		  પાછા simple_set_rbuf_str("MINIMUM");
+		સ્થિતિ _vpiDelaySelTypical:
+		  પાછા simple_set_rbuf_str("TYPICAL");
+		સ્થિતિ _vpiDelaySelMaximum:
+		  પાછા simple_set_rbuf_str("MAXIMUM");
+		મૂળભૂત:
+		  પ્રતિજ્ઞા(0);
 	    }
       }
 
-      if (ref == 0) {
+      જો (ref == 0) {
 	    fprintf(stderr, "vpi error: vpi_get_str(%s, 0) called "
 		    "with null vpiHandle.\n", vpi_property_str(property));
-	    return 0;
+	    પાછા 0;
       }
 
-      if (property == vpiType) {
-	    if (vpi_trace) {
+      જો (property == vpiType) {
+	    જો (vpi_trace) {
 		  fprintf(vpi_trace, "vpi_get(vpiType, %p) --> %s\n",
 			  ref, vpi_type_as_string(ref->get_type_code()));
 	    }
 
             PLI_INT32 type;
-	    if (ref->get_type_code() == vpiMemory && is_net_array(ref))
+	    જો (ref->get_type_code() == vpiMemory && is_net_array(ref))
 		  type = vpiNetArray;
-	    else
+	    નહીંતર
 		  type = ref->get_type_code();
-	    return (char *)vpi_type_as_string(type);
+	    પાછા (અક્ષર *)vpi_type_as_string(type);
       }
 
-      char*res = ref->vpi_get_str(property);
+      અક્ષર*res = ref->vpi_get_str(property);
 
-      if (vpi_trace) {
+      જો (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_get_str(%s, %p) --> %s\n",
 		    vpi_property_str(property), ref, res? res : "<NULL>");
       }
 
-      return res;
+      પાછા res;
 }
 
 __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj)
 {
-      const struct __vpiSysTaskCall*task;
-      struct __vpiSignal*signal;
-      struct __vpiRealVar*real;
-      const __vpiNamedEvent*event;
+      અચલ સંરચના __vpiSysTaskCall*task;
+      સંરચના __vpiSignal*સંકેત;
+      સંરચના __vpiRealVar*real;
+      અચલ __vpiNamedEvent*event;
 
-      switch (obj->get_type_code()) {
-	  case vpiSysTaskCall:
+      પસંદગી (obj->get_type_code()) {
+	  સ્થિતિ vpiSysTaskCall:
 	    task = dynamic_cast<__vpiSysTaskCall*>(obj);
-	    return task->scope;
+	    પાછા task->scope;
 
-	  case vpiModule:
-	    return dynamic_cast<__vpiScope*>(obj);
+	  સ્થિતિ vpiModule:
+	    પાછા dynamic_cast<__vpiScope*>(obj);
 
-	  case vpiNet:
-	  case vpiReg:
-	  case vpiIntegerVar:
-	  case vpiBitVar:
-	  case vpiByteVar:
-	  case vpiShortIntVar:
-	  case vpiIntVar:
-	  case vpiLongIntVar:
-	    signal = dynamic_cast<__vpiSignal*>(obj);
-	    return vpip_scope(signal);
+	  સ્થિતિ vpiNet:
+	  સ્થિતિ vpiReg:
+	  સ્થિતિ vpiIntegerVar:
+	  સ્થિતિ vpiBitVar:
+	  સ્થિતિ vpiByteVar:
+	  સ્થિતિ vpiShortIntVar:
+	  સ્થિતિ vpiIntVar:
+	  સ્થિતિ vpiLongIntVar:
+	    સંકેત = dynamic_cast<__vpiSignal*>(obj);
+	    પાછા vpip_scope(સંકેત);
 
-	  case vpiRealVar:
+	  સ્થિતિ vpiRealVar:
 	    real = dynamic_cast<__vpiRealVar*>(obj);
-	    return vpip_scope(real);
+	    પાછા vpip_scope(real);
 
-	  case vpiNamedEvent:
+	  સ્થિતિ vpiNamedEvent:
 	    event = dynamic_cast<__vpiNamedEvent*>(obj);
-	    return event->get_scope();
+	    પાછા event->get_scope();
 
-	  case vpiMemory:
-	  case vpiMemoryWord:
-	  case vpiPartSelect:
-	    return dynamic_cast<__vpiScope*>(obj->vpi_handle(vpiScope));
+	  સ્થિતિ vpiMemory:
+	  સ્થિતિ vpiMemoryWord:
+	  સ્થિતિ vpiPartSelect:
+	    પાછા dynamic_cast<__vpiScope*>(obj->vpi_handle(vpiScope));
 
-	  default:
+	  મૂળભૂત:
 	    fprintf(stderr, "ERROR: vpip_scope_from_handle called with "
 		    "object handle type=%d\n", obj->get_type_code());
-	    assert(0);
-	    return 0;
+	    પ્રતિજ્ઞા(0);
+	    પાછા 0;
       }
 }
 
-int vpip_time_units_from_handle(vpiHandle obj)
+પૂર્ણાંક vpip_time_units_from_handle(vpiHandle obj)
 {
-      if (obj == 0)
-	    return vpip_get_time_precision();
+      જો (obj == 0)
+	    પાછા vpip_get_time_precision();
 
-      const __vpiScope*scope = vpip_timescale_scope_from_handle(obj);
-      if (scope == 0)
-	    return vpip_get_time_precision();
+      અચલ __vpiScope*scope = vpip_timescale_scope_from_handle(obj);
+      જો (scope == 0)
+	    પાછા vpip_get_time_precision();
 
-      return scope->time_units;
+      પાછા scope->time_units;
 }
 
-int vpip_time_precision_from_handle(vpiHandle obj)
+પૂર્ણાંક vpip_time_precision_from_handle(vpiHandle obj)
 {
-      if (obj == 0)
-	    return vpip_get_time_precision();
+      જો (obj == 0)
+	    પાછા vpip_get_time_precision();
 
-      const __vpiScope*scope = vpip_timescale_scope_from_handle(obj);
-      if (scope == 0)
-	    return vpip_get_time_precision();
+      અચલ __vpiScope*scope = vpip_timescale_scope_from_handle(obj);
+      જો (scope == 0)
+	    પાછા vpip_get_time_precision();
 
-      return scope->time_precision;
+      પાછા scope->time_precision;
 }
 
-double vpip_scaled_time_from_handle(vvp_time64_t time, vpiHandle obj)
+દ્વિગુણ vpip_scaled_time_from_handle(vvp_time64_t time, vpiHandle obj)
 {
-      int scale = vpip_get_time_precision() -
+      પૂર્ણાંક scale = vpip_get_time_precision() -
 	          vpip_time_units_from_handle(obj);
-      if (scale >= 0)
-	    return (double)time * pow(10.0, scale);
-      else
-	    return (double)time / pow(10.0, -scale);
+      જો (scale >= 0)
+	    પાછા (દ્વિગુણ)time * pow(10.0, scale);
+      નહીંતર
+	    પાછા (દ્વિગુણ)time / pow(10.0, -scale);
 }
 
-void vpi_get_time(vpiHandle obj, s_vpi_time*vp)
+શૂન્ય vpi_get_time(vpiHandle obj, s_vpi_time*vp)
 {
       vvp_time64_t time;
 
-      assert(vp);
+      પ્રતિજ્ઞા(vp);
 
       time = schedule_simtime();
 
-      switch (vp->type) {
-          case vpiSimTime:
-	    vp->high = (time >> 32) & 0xffffffff;
-	    vp->low = time & 0xffffffff;
-	    break;
+      પસંદગી (vp->type) {
+          સ્થિતિ vpiSimTime:
+	    vp->ઉપલું = (time >> 32) & 0xffffffff;
+	    vp->નીચલું = time & 0xffffffff;
+	    તોડો;
 
-          case vpiScaledRealTime:
+          સ્થિતિ vpiScaledRealTime:
 	    vp->real = vpip_scaled_time_from_handle(time, obj);
-	    break;
+	    તોડો;
 
-          default:
-            fprintf(stderr, "vpi_get_time: unknown type: %d\n", (int)vp->type);
-            assert(0);
-	    break;
+          મૂળભૂત:
+            fprintf(stderr, "vpi_get_time: unknown type: %d\n", (પૂર્ણાંક)vp->type);
+            પ્રતિજ્ઞા(0);
+	    તોડો;
       }
 }
 
 PLI_INT32 vpi_get_vlog_info(p_vpi_vlog_info vlog_info_p)
 {
-    if (vlog_info_p != 0) {
+    જો (vlog_info_p != 0) {
 	  *vlog_info_p = vpi_vlog_info;
-	  return 1;
-    } else {
-	  return 0;
+	  પાછા 1;
+    } નહીંતર {
+	  પાછા 0;
     }
 }
 
-void vpi_set_vlog_info(int argc, char** argv)
+શૂન્ય vpi_set_vlog_info(પૂર્ણાંક argc, અક્ષર** argv)
 {
-    static char icarus_product[] = "Icarus Verilog";
-    static char icarus_version[] = VERSION;
+    સ્થિર અક્ષર icarus_product[] = "Icarus Verilog";
+    સ્થિર અક્ષર icarus_version[] = VERSION;
     vpi_vlog_info.product = icarus_product;
     vpi_vlog_info.version = icarus_version;
     vpi_vlog_info.argc    = argc;
     vpi_vlog_info.argv    = argv;
 
-    static char trace_buf[1024];
-    if (const char*path = getenv("VPI_TRACE"))  {
-	  if (!strcmp(path,"-"))
+    સ્થિર અક્ષર trace_buf[1024];
+    જો (અચલ અક્ષર*path = getenv("VPI_TRACE"))  {
+	  જો (!strcmp(path,"-"))
 		vpi_trace = stdout;
-	  else {
+	  નહીંતર {
 		vpi_trace = fopen(path, "w");
-		if (!vpi_trace) {
+		જો (!vpi_trace) {
 		      perror(path);
 		      exit(1);
 		}
-		setvbuf(vpi_trace, trace_buf, _IOLBF, sizeof(trace_buf));
+		setvbuf(vpi_trace, trace_buf, _IOLBF, કદ(trace_buf));
 	  }
     }
 }
 
-static void vec4_get_value_string(const vvp_vector4_t&word_val, unsigned width,
-				  s_vpi_value*vp)
+સ્થિર શૂન્ય vec4_get_કિંમત_string(અચલ vvp_vector4_t&word_val, unsigned width,
+				  s_vpi_કિંમત*vp)
 {
       unsigned nchar = width / 8;
       unsigned tail = width % 8;
 
-      char*rbuf = static_cast<char *>(need_result_buf(nchar + 1, RBUF_VAL));
-      char*cp = rbuf;
+      અક્ષર*rbuf = static_cast<અક્ષર *>(need_result_buf(nchar + 1, RBUF_VAL));
+      અક્ષર*cp = rbuf;
 
-      if (tail > 0) {
-	    char char_val = 0;
-	    for (unsigned idx = width-tail; idx < width ;  idx += 1) {
+      જો (tail > 0) {
+	    અક્ષર char_val = 0;
+	    માટે (unsigned idx = width-tail; idx < width ;  idx += 1) {
 		  vvp_bit4_t val = word_val.value(idx);
-		  if (val == BIT4_1)
+		  જો (val == BIT4_1)
 			char_val |= 1 << idx;
 	    }
 
-	    if (char_val != 0)
+	    જો (char_val != 0)
 		  *cp++ = char_val;
-	    else if (cp != rbuf)
+	    નહીંતર જો (cp != rbuf)
 		  *cp++ = ' ';
       }
 
-      for (unsigned idx = 0 ;  idx < nchar ;  idx += 1) {
+      માટે (unsigned idx = 0 ;  idx < nchar ;  idx += 1) {
 	    unsigned bit = (nchar - idx - 1) * 8;
-	    char char_val = 0;
-	    for (unsigned bdx = 0 ;  bdx < 8 ;  bdx += 1) {
+	    અક્ષર char_val = 0;
+	    માટે (unsigned bdx = 0 ;  bdx < 8 ;  bdx += 1) {
 		  vvp_bit4_t val = word_val.value(bit+bdx);
-		  if (val == BIT4_1)
+		  જો (val == BIT4_1)
 			char_val |= 1 << bdx;
 	    }
 	    // Ignore leading null-bytes and replace other null-bytes with space.
 	    // The LRM is not entirely clear on how null bytes should be handled.
 	    // This is the implementation chosen for iverilog.
-	    if (char_val != 0)
+	    જો (char_val != 0)
 		  *cp++ = char_val;
-	    else if (cp != rbuf)
+	    નહીંતર જો (cp != rbuf)
 		  *cp++ = ' ';
       }
 
@@ -709,182 +709,182 @@ static void vec4_get_value_string(const vvp_vector4_t&word_val, unsigned width,
  * value pointer. The width is the real width of the word, in case the
  * word_val width is not accurate.
  */
-void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
-			 bool signed_flag, s_vpi_value*vp)
+શૂન્ય vpip_vec4_get_કિંમત(અચલ vvp_vector4_t&word_val, unsigned width,
+			 તાર્કિક signed_flag, s_vpi_કિંમત*vp)
 {
-      char *rbuf = 0;
+      અક્ષર *rbuf = 0;
 
-      switch (vp->format) {
-	  default:
+      પસંદગી (vp->format) {
+	  મૂળભૂત:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting vector values.\n", (int)vp->format);
-	    assert(0);
+	                    "getting vector values.\n", (પૂર્ણાંક)vp->format);
+	    પ્રતિજ્ઞા(0);
 
-	  case vpiSuppressVal:
-	    break;
+	  સ્થિતિ vpiSuppressVal:
+	    તોડો;
 
-	  case vpiBinStrVal:
-	    rbuf = static_cast<char *>(need_result_buf(width+1, RBUF_VAL));
-	    for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
+	  સ્થિતિ vpiBinStrVal:
+	    rbuf = static_cast<અક્ષર *>(need_result_buf(width+1, RBUF_VAL));
+	    માટે (unsigned idx = 0 ;  idx < width ;  idx += 1) {
 		  vvp_bit4_t bit = word_val.value(idx);
 		  rbuf[width-idx-1] = vvp_bit4_to_ascii(bit);
 	    }
 	    rbuf[width] = 0;
 	    vp->value.str = rbuf;
-	    break;
+	    તોડો;
 
-	  case vpiOctStrVal: {
+	  સ્થિતિ vpiOctStrVal: {
 		unsigned hwid = ((width+2) / 3) + 1;
-		rbuf = static_cast<char *>(need_result_buf(hwid, RBUF_VAL));
+		rbuf = static_cast<અક્ષર *>(need_result_buf(hwid, RBUF_VAL));
 		vpip_vec4_to_oct_str(word_val, rbuf, hwid);
 		vp->value.str = rbuf;
-		break;
+		તોડો;
 	  }
 
-	  case vpiDecStrVal: {
+	  સ્થિતિ vpiDecStrVal: {
 // HERE need a better estimate.
-		rbuf = static_cast<char *>(need_result_buf(width+1, RBUF_VAL));
+		rbuf = static_cast<અક્ષર *>(need_result_buf(width+1, RBUF_VAL));
 		vpip_vec4_to_dec_str(word_val, rbuf, width+1, signed_flag);
 		vp->value.str = rbuf;
-		break;
+		તોડો;
 	  }
 
-	  case vpiHexStrVal: {
+	  સ્થિતિ vpiHexStrVal: {
 		unsigned  hwid = ((width + 3) / 4) + 1;
-		rbuf = static_cast<char *>(need_result_buf(hwid, RBUF_VAL));
+		rbuf = static_cast<અક્ષર *>(need_result_buf(hwid, RBUF_VAL));
 		vpip_vec4_to_hex_str(word_val, rbuf, hwid);
 		vp->value.str = rbuf;
-		break;
+		તોડો;
 	  }
 
-          case vpiScalarVal: {
+          સ્થિતિ vpiScalarVal: {
 	        // scalars should be of size 1
-	        assert(width == 1);
-	        switch(word_val.value(0)) {
-		    case BIT4_0:
+	        પ્રતિજ્ઞા(width == 1);
+	        પસંદગી(word_val.value(0)) {
+		    સ્થિતિ BIT4_0:
 		      vp->value.scalar = vpi0;
-		      break;
-	            case BIT4_1:
+		      તોડો;
+	            સ્થિતિ BIT4_1:
                       vp->value.scalar = vpi1;
-                      break;
-	            case BIT4_X:
+                      તોડો;
+	            સ્થિતિ BIT4_X:
                       vp->value.scalar = vpiX;
-                      break;
-	            case BIT4_Z:
+                      તોડો;
+	            સ્થિતિ BIT4_Z:
                       vp->value.scalar = vpiZ;
-                      break;
+                      તોડો;
 		}
-                break;
+                તોડો;
           }
 
-	  case vpiIntVal: {
+	  સ્થિતિ vpiIntVal: {
 		long val = 0;
 		vvp_bit4_t pad = BIT4_0;
-		if (signed_flag && word_val.size() > 0)
+		જો (signed_flag && word_val.size() > 0)
 		      pad = word_val.value(word_val.size()-1);
 
-		for (unsigned idx = 0 ; idx < 8*sizeof(val) ;  idx += 1) {
+		માટે (unsigned idx = 0 ; idx < 8*કદ(val) ;  idx += 1) {
 		      vvp_bit4_t val4 = pad;
-		      if (idx < word_val.size())
+		      જો (idx < word_val.size())
 			    val4 = word_val.value(idx);
-		      if (val4 == BIT4_1)
+		      જો (val4 == BIT4_1)
 			    val |= 1L << idx;
 		}
 
 		vp->value.integer = val;
-		break;
+		તોડો;
 	  }
 
-	  case vpiObjTypeVal:
+	  સ્થિતિ vpiObjTypeVal:
 	    // Use the following case to actually set the value!
 	    vp->format = vpiVectorVal;
 	    // fallthrough
-	  case vpiVectorVal: {
+	  સ્થિતિ vpiVectorVal: {
 		unsigned hwid = (width + 31)/32;
 
 		s_vpi_vecval *op = static_cast<p_vpi_vecval>
-		                   (need_result_buf(hwid * sizeof(s_vpi_vecval), RBUF_VAL));
+		                   (need_result_buf(hwid * કદ(s_vpi_vecval), RBUF_VAL));
 		vp->value.vector = op;
 
 		op->aval = op->bval = 0;
-		for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
-		      switch (word_val.value(idx)) {
-			  case BIT4_0:
+		માટે (unsigned idx = 0 ;  idx < width ;  idx += 1) {
+		      પસંદગી (word_val.value(idx)) {
+			  સ્થિતિ BIT4_0:
 			    op->aval &= ~(1 << idx % 32);
 			    op->bval &= ~(1 << idx % 32);
-			    break;
-			  case BIT4_1:
+			    તોડો;
+			  સ્થિતિ BIT4_1:
 			    op->aval |=  (1 << idx % 32);
 			    op->bval &= ~(1 << idx % 32);
-			    break;
-			  case BIT4_X:
+			    તોડો;
+			  સ્થિતિ BIT4_X:
 			    op->aval |= (1 << idx % 32);
 			    op->bval |= (1 << idx % 32);
-			    break;
-			  case BIT4_Z:
+			    તોડો;
+			  સ્થિતિ BIT4_Z:
 			    op->aval &= ~(1 << idx % 32);
 			    op->bval |=  (1 << idx % 32);
-			    break;
+			    તોડો;
 		      }
-		      if (!((idx+1) % 32) && (idx+1 < width)) {
+		      જો (!((idx+1) % 32) && (idx+1 < width)) {
 			    op++;
 			    op->aval = op->bval = 0;
 		      }
 		}
-		break;
+		તોડો;
 	  }
 
-	  case vpiStringVal:
-		vec4_get_value_string(word_val, width, vp);
-		break;
+	  સ્થિતિ vpiStringVal:
+		vec4_get_કિંમત_string(word_val, width, vp);
+		તોડો;
 
-	  case vpiRealVal:
-		vector4_to_value(word_val, vp->value.real, signed_flag);
-		break;
+	  સ્થિતિ vpiRealVal:
+		vector4_to_કિંમત(word_val, vp->value.real, signed_flag);
+		તોડો;
       }
 }
 
-void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
-			 bool signed_flag, s_vpi_value*vp)
+શૂન્ય vpip_vec2_get_કિંમત(અચલ vvp_vector2_t&word_val, unsigned width,
+			 તાર્કિક signed_flag, s_vpi_કિંમત*vp)
 {
-      switch (vp->format) {
-	  default:
+      પસંદગી (vp->format) {
+	  મૂળભૂત:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting vector2 values.\n", (int)vp->format);
-	    assert(0);
+	                    "getting vector2 values.\n", (પૂર્ણાંક)vp->format);
+	    પ્રતિજ્ઞા(0);
 
-	  case vpiSuppressVal:
-	    break;
+	  સ્થિતિ vpiSuppressVal:
+	    તોડો;
 
-	  case vpiIntVal:
-	    vector2_to_value(word_val, vp->value.integer, signed_flag);
-	    break;
+	  સ્થિતિ vpiIntVal:
+	    vector2_to_કિંમત(word_val, vp->value.integer, signed_flag);
+	    તોડો;
 
-	  case vpiObjTypeVal:
+	  સ્થિતિ vpiObjTypeVal:
 	    vp->format = vpiVectorVal;
 	    // fallthrough
-	  case vpiVectorVal: {
+	  સ્થિતિ vpiVectorVal: {
 		unsigned hwid = (width + 31)/32;
 
 		s_vpi_vecval *op = static_cast<p_vpi_vecval>
-		                   (need_result_buf(hwid * sizeof(s_vpi_vecval), RBUF_VAL));
+		                   (need_result_buf(hwid * કદ(s_vpi_vecval), RBUF_VAL));
 		vp->value.vector = op;
 
 		op->aval = op->bval = 0;
-		for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
-		      if (word_val.value(idx)) {
+		માટે (unsigned idx = 0 ;  idx < width ;  idx += 1) {
+		      જો (word_val.value(idx)) {
 			    op->aval |=  (1 << idx % 32);
 			    op->bval &= ~(1 << idx % 32);
-		      } else {
+		      } નહીંતર {
 			    op->aval &= ~(1 << idx % 32);
 			    op->bval &= ~(1 << idx % 32);
 		      }
-		      if (!((idx+1) % 32) && (idx+1 < width)) {
+		      જો (!((idx+1) % 32) && (idx+1 < width)) {
 			    op++;
 			    op->aval = op->bval = 0;
 		      }
 		}
-		break;
+		તોડો;
 	  }
       }
 
@@ -893,20 +893,20 @@ void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
 /*
  * Convert a real value to the appropriate integer.
  */
-static PLI_INT32 get_real_as_int(double real)
+સ્થિર PLI_INT32 get_real_as_int(દ્વિગુણ real)
 {
-      double rtn;
+      દ્વિગુણ rtn;
 
 	/* We would normally want to return 'bx for a NaN or
 	 * +/- infinity, but for an integer the standard says
 	 * to convert 'bx to 0, so we just return 0. */
-      if (real != real || (real && (real == 0.5*real))) {
-	    return 0;
+      જો (real != real || (real && (real == 0.5*real))) {
+	    પાછા 0;
       }
 
       rtn = std::round(real);
 
-      return (PLI_INT32) rtn;
+      પાછા (PLI_INT32) rtn;
 }
 
 /*
@@ -914,383 +914,383 @@ static PLI_INT32 get_real_as_int(double real)
  * vpi_value structure. The format is selected by the format of the
  * value pointer.
  */
-void vpip_real_get_value(double real, s_vpi_value*vp)
+શૂન્ય vpip_real_get_કિંમત(દ્વિગુણ real, s_vpi_કિંમત*vp)
 {
-      char *rbuf = 0;
+      અક્ષર *rbuf = 0;
 
-      switch (vp->format) {
-	  default:
+      પસંદગી (vp->format) {
+	  મૂળભૂત:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting real values.\n", (int)vp->format);
-	    assert(0);
+	                    "getting real values.\n", (પૂર્ણાંક)vp->format);
+	    પ્રતિજ્ઞા(0);
 
-	  case vpiSuppressVal:
-	    break;
+	  સ્થિતિ vpiSuppressVal:
+	    તોડો;
 
-	  case vpiObjTypeVal:
+	  સ્થિતિ vpiObjTypeVal:
 	    // Use the following case to actually set the value!
 	    vp->format = vpiRealVal;
 	    // fallthrough
-	  case vpiRealVal:
+	  સ્થિતિ vpiRealVal:
 	    vp->value.real = real;
-	    break;
+	    તોડો;
 
-	  case vpiIntVal:
+	  સ્થિતિ vpiIntVal:
 	    vp->value.integer = get_real_as_int(real);
-	    break;
+	    તોડો;
 
-	  case vpiDecStrVal:
-	    rbuf = static_cast<char *>(need_result_buf(1025, RBUF_VAL));
-	    vpip_vec4_to_dec_str(vvp_vector4_t(1024, real), rbuf, 1025, true);
+	  સ્થિતિ vpiDecStrVal:
+	    rbuf = static_cast<અક્ષર *>(need_result_buf(1025, RBUF_VAL));
+	    vpip_vec4_to_dec_str(vvp_vector4_t(1024, real), rbuf, 1025, સાચું);
 	    vp->value.str = rbuf;
-	    break;
+	    તોડો;
       }
 }
 
-double real_from_vpi_value(s_vpi_value*vp)
+દ્વિગુણ real_from_vpi_કિંમત(s_vpi_કિંમત*vp)
 {
       vvp_vector4_t vec4(1024);
-      double result;
-      bool is_signed = false;
+      દ્વિગુણ result;
+      તાર્કિક is_signed = ખોટું;
 
-      switch (vp->format) {
-	  default:
+      પસંદગી (vp->format) {
+	  મૂળભૂત:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "putting real values.\n", (int)vp->format);
-	    assert(0);
+	                    "putting real values.\n", (પૂર્ણાંક)vp->format);
+	    પ્રતિજ્ઞા(0);
 
-	  case vpiRealVal:
+	  સ્થિતિ vpiRealVal:
 	    result = vp->value.real;
-	    break;
+	    તોડો;
 
-	  case vpiIntVal:
-	    result = (double) vp->value.integer;
-	    break;
+	  સ્થિતિ vpiIntVal:
+	    result = (દ્વિગુણ) vp->value.integer;
+	    તોડો;
 
-	  case vpiBinStrVal:
+	  સ્થિતિ vpiBinStrVal:
 	    vpip_bin_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
-	    vector4_to_value(vec4, result, is_signed);
-	    break;
+	    જો (vp->value.str[0] == '-') is_signed = સાચું;
+	    vector4_to_કિંમત(vec4, result, is_signed);
+	    તોડો;
 
-	  case vpiOctStrVal:
+	  સ્થિતિ vpiOctStrVal:
 	    vpip_oct_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
-	    vector4_to_value(vec4, result, is_signed);
-	    break;
+	    જો (vp->value.str[0] == '-') is_signed = સાચું;
+	    vector4_to_કિંમત(vec4, result, is_signed);
+	    તોડો;
 
-	  case vpiDecStrVal:
+	  સ્થિતિ vpiDecStrVal:
 	    vpip_dec_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
-	    vector4_to_value(vec4, result, is_signed);
-	    break;
+	    જો (vp->value.str[0] == '-') is_signed = સાચું;
+	    vector4_to_કિંમત(vec4, result, is_signed);
+	    તોડો;
 
-	  case vpiHexStrVal:
+	  સ્થિતિ vpiHexStrVal:
 	    vpip_hex_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
-	    vector4_to_value(vec4, result, is_signed);
-	    break;
+	    જો (vp->value.str[0] == '-') is_signed = સાચું;
+	    vector4_to_કિંમત(vec4, result, is_signed);
+	    તોડો;
 
       }
 
-      return result;
+      પાછા result;
 }
 
-void vpip_string_get_value(const string&val, s_vpi_value*vp)
+શૂન્ય vpip_string_get_કિંમત(અચલ string&val, s_vpi_કિંમત*vp)
 {
-      char *rbuf = 0;
+      અક્ષર *rbuf = 0;
 
-      switch (vp->format) {
-	  default:
+      પસંદગી (vp->format) {
+	  મૂળભૂત:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting string values.\n", (int)vp->format);
-	    assert(0);
+	                    "getting string values.\n", (પૂર્ણાંક)vp->format);
+	    પ્રતિજ્ઞા(0);
 
-	  case vpiSuppressVal:
-	    break;
+	  સ્થિતિ vpiSuppressVal:
+	    તોડો;
 
-	  case vpiObjTypeVal:
+	  સ્થિતિ vpiObjTypeVal:
 	    // Use the following case to actually set the value!
 	    vp->format = vpiStringVal;
 	    // fallthrough
-	  case vpiStringVal:
-	    rbuf = static_cast<char *>(need_result_buf(val.size() + 1, RBUF_VAL));
+	  સ્થિતિ vpiStringVal:
+	    rbuf = static_cast<અક્ષર *>(need_result_buf(val.size() + 1, RBUF_VAL));
 	    strcpy(rbuf, val.c_str());
 	    vp->value.str = rbuf;
-	    break;
+	    તોડો;
       }
 }
 
 
-void vpi_get_value(vpiHandle expr, s_vpi_value*vp)
+શૂન્ય vpi_get_કિંમત(vpiHandle પદાવલિ, s_vpi_કિંમત*vp)
 {
-      assert(expr);
-      assert(vp);
+      પ્રતિજ્ઞા(પદાવલિ);
+      પ્રતિજ્ઞા(vp);
 
 	// Never bother with suppressed values. All the derived
 	// classes can ignore this type.
-      if (vp->format == vpiSuppressVal)
-	    return;
+      જો (vp->format == vpiSuppressVal)
+	    પાછા;
 
-      expr->vpi_get_value(vp);
+      પદાવલિ->vpi_get_કિંમત(vp);
 
-      if (vpi_trace) switch (vp->format) {
-		case vpiStringVal:
+      જો (vpi_trace) પસંદગી (vp->format) {
+		સ્થિતિ vpiStringVal:
 		  fprintf(vpi_trace,"vpi_get_value(%p=<%d>) -> string=\"%s\"\n",
-			  expr, expr->get_type_code(), vp->value.str);
-		  break;
+			  પદાવલિ, પદાવલિ->get_type_code(), vp->value.str);
+		  તોડો;
 
-		case vpiBinStrVal:
+		સ્થિતિ vpiBinStrVal:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> binstr=%s\n",
-			  expr->get_type_code(), vp->value.str);
-		  break;
+			  પદાવલિ->get_type_code(), vp->value.str);
+		  તોડો;
 
-		case vpiIntVal:
+		સ્થિતિ vpiIntVal:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> int=%d\n",
-			  expr->get_type_code(), (int)vp->value.integer);
-		  break;
+			  પદાવલિ->get_type_code(), (પૂર્ણાંક)vp->value.integer);
+		  તોડો;
 
-		case vpiSuppressVal:
+		સ્થિતિ vpiSuppressVal:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> <suppress>\n",
-			  expr->get_type_code());
-		  break;
+			  પદાવલિ->get_type_code());
+		  તોડો;
 
-		default:
+		મૂળભૂત:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> <%d>=?\n",
-			  expr->get_type_code(), (int)vp->format);
+			  પદાવલિ->get_type_code(), (પૂર્ણાંક)vp->format);
 	    }
 }
 
-struct vpip_put_value_event : vvp_gen_event_s {
+સંરચના vpip_put_કિંમત_event : vvp_gen_event_s {
       vpiHandle handle;
-      s_vpi_value value;
-      int flags;
-      virtual void run_run() override;
-      ~vpip_put_value_event() override { }
+      s_vpi_કિંમત value;
+      પૂર્ણાંક flags;
+      આભાસી શૂન્ય run_run() override;
+      ~vpip_put_કિંમત_event() override { }
 };
 
-void vpip_put_value_event::run_run()
+શૂન્ય vpip_put_કિંમત_event::run_run()
 {
-      handle->vpi_put_value(&value, flags);
-      switch (value.format) {
+      handle->vpi_put_કિંમત(&value, flags);
+      પસંદગી (value.format) {
 	    /* Free the copied string. */
-	  case vpiBinStrVal:
-	  case vpiOctStrVal:
-	  case vpiDecStrVal:
-	  case vpiHexStrVal:
-	  case vpiStringVal:
-	    free(value.value.str);
-	    break;
+	  સ્થિતિ vpiBinStrVal:
+	  સ્થિતિ vpiOctStrVal:
+	  સ્થિતિ vpiDecStrVal:
+	  સ્થિતિ vpiHexStrVal:
+	  સ્થિતિ vpiStringVal:
+	    મુક્ત(value.value.str);
+	    તોડો;
 	    /* Free the copied time structure. */
-	  case vpiTimeVal:
-	    free(value.value.time);
-	    break;
+	  સ્થિતિ vpiTimeVal:
+	    મુક્ત(value.value.time);
+	    તોડો;
 	    /* Free the copied vector structure. */
-	  case vpiVectorVal:
-	    free(value.value.vector);
-	    break;
+	  સ્થિતિ vpiVectorVal:
+	    મુક્ત(value.value.vector);
+	    તોડો;
 	    /* Free the copied strength structure. */
-	  case vpiStrengthVal:
-	    free(value.value.strength);
-	    break;
+	  સ્થિતિ vpiStrengthVal:
+	    મુક્ત(value.value.strength);
+	    તોડો;
 	    /* Everything else is static in the structure. */
-	  default:
-	    break;
+	  મૂળભૂત:
+	    તોડો;
       }
 }
 
 /* Make a copy of a pointer to a time structure. */
-static t_vpi_time *timedup(const t_vpi_time *val)
+સ્થિર t_vpi_time *timedup(અચલ t_vpi_time *val)
 {
       t_vpi_time *rtn;
-      rtn = static_cast<t_vpi_time *> (malloc(sizeof(t_vpi_time)));
+      rtn = static_cast<t_vpi_time *> (malloc(કદ(t_vpi_time)));
       *rtn = *val;
-      return rtn;
+      પાછા rtn;
 }
 
 /* Make a copy of a pointer to a vector value structure. */
-static t_vpi_vecval *vectordup(const t_vpi_vecval *val, PLI_INT32 size)
+સ્થિર t_vpi_vecval *vectordup(અચલ t_vpi_vecval *val, PLI_INT32 size)
 {
-      unsigned num_bytes;
+      unsigned અંક_bytes;
       t_vpi_vecval *rtn;
-      assert(size > 0);
-      num_bytes = ((size + 31)/32)*sizeof(t_vpi_vecval);
-      rtn = static_cast<t_vpi_vecval *> (malloc(num_bytes));
-      memcpy(rtn, val, num_bytes);
-      return rtn;
+      પ્રતિજ્ઞા(size > 0);
+      અંક_bytes = ((size + 31)/32)*કદ(t_vpi_vecval);
+      rtn = static_cast<t_vpi_vecval *> (malloc(અંક_bytes));
+      memcpy(rtn, val, અંક_bytes);
+      પાછા rtn;
 }
 
 /* Make a copy of a pointer to a strength structure. */
-static t_vpi_strengthval *strengthdup(const t_vpi_strengthval *val)
+સ્થિર t_vpi_strengthval *strengthdup(અચલ t_vpi_strengthval *val)
 {
       t_vpi_strengthval *rtn;
       rtn = static_cast<t_vpi_strengthval *>
-            (malloc(sizeof(t_vpi_strengthval)));
+            (malloc(કદ(t_vpi_strengthval)));
       *rtn = *val;
-      return rtn;
+      પાછા rtn;
 }
 
-vpiHandle vpi_put_value(vpiHandle obj, s_vpi_value*vp,
+vpiHandle vpi_put_કિંમત(vpiHandle obj, s_vpi_કિંમત*vp,
 			s_vpi_time*when, PLI_INT32 flags)
 {
-      assert(obj);
+      પ્રતિજ્ઞા(obj);
 
       flags &= ~vpiReturnEvent;
 
-      if (flags!=vpiNoDelay && flags!=vpiForceFlag && flags!=vpiReleaseFlag) {
+      જો (flags!=vpiNoDelay && flags!=vpiForceFlag && flags!=vpiReleaseFlag) {
 	    vvp_time64_t dly;
-	    int scale;
+	    પૂર્ણાંક scale;
 
-	    if (vpi_get(vpiAutomatic, obj)) {
+	    જો (vpi_get(vpiAutomatic, obj)) {
 		  fprintf(stderr, "VPI error: cannot put a value with "
 				  "a delay on automatically allocated "
 				  "variable '%s'.\n",
 				  vpi_get_str(vpiName, obj));
-		  return 0;
+		  પાછા 0;
 	    }
 
-	    assert(when != 0);
+	    પ્રતિજ્ઞા(when != 0);
 
-	    switch (when->type) {
-		case vpiScaledRealTime:
+	    પસંદગી (when->type) {
+		સ્થિતિ vpiScaledRealTime:
 		  scale = vpip_time_units_from_handle(obj) -
 		          vpip_get_time_precision();
-		  if (scale >= 0) {
+		  જો (scale >= 0) {
 			dly = (vvp_time64_t)(when->real * pow(10.0, scale));
-		  } else {
+		  } નહીંતર {
 			dly = (vvp_time64_t)(when->real / pow(10.0, -scale));
 		  }
-		  break;
-		case vpiSimTime:
+		  તોડો;
+		સ્થિતિ vpiSimTime:
 		  dly = vpip_timestruct_to_time(when);
-		  break;
-		default:
+		  તોડો;
+		મૂળભૂત:
 		  dly = 0;
-		  break;
+		  તોડો;
 	    }
 
-	    if ((dly == 0) && schedule_at_rosync()) {
+	    જો ((dly == 0) && schedule_at_rosync()) {
 		  fprintf(stderr, "VPI error: attempted to put a value to "
 				  "variable '%s' during a read-only synch "
 				  "callback.\n", vpi_get_str(vpiName, obj));
-		  return 0;
+		  પાછા 0;
 	    }
 
-	    vpip_put_value_event*put = new vpip_put_value_event;
+	    vpip_put_કિંમત_event*put = નવું vpip_put_કિંમત_event;
 	    put->handle = obj;
-	    if (dynamic_cast<__vpiNamedEvent*>(obj)) {
+	    જો (dynamic_cast<__vpiNamedEvent*>(obj)) {
 		  put->value.format = vpiIntVal;
 		  put->value.value.integer = 0;
-	    } else {
-		  assert(vp);
+	    } નહીંતર {
+		  પ્રતિજ્ઞા(vp);
 		  put->value = *vp;
 	    }
 	      /* Since this is a scheduled put event we must copy any pointer
 	       * data to keep it available until the event is actually run. */
-	    switch (put->value.format) {
+	    પસંદગી (put->value.format) {
 		  /* Copy the string items. */
-		case vpiBinStrVal:
-		case vpiOctStrVal:
-		case vpiDecStrVal:
-		case vpiHexStrVal:
-		case vpiStringVal:
+		સ્થિતિ vpiBinStrVal:
+		સ્થિતિ vpiOctStrVal:
+		સ્થિતિ vpiDecStrVal:
+		સ્થિતિ vpiHexStrVal:
+		સ્થિતિ vpiStringVal:
 		  put->value.value.str = strdup(put->value.value.str);
-		  break;
+		  તોડો;
 		  /* Copy a time pointer item. */
-		case vpiTimeVal:
+		સ્થિતિ vpiTimeVal:
 		  put->value.value.time = timedup(put->value.value.time);
-		  break;
+		  તોડો;
 		  /* Copy a vector pointer item. */
-		case vpiVectorVal:
+		સ્થિતિ vpiVectorVal:
 		  put->value.value.vector = vectordup(put->value.value.vector,
 		                                      vpi_get(vpiSize, obj));
-		  break;
+		  તોડો;
 		  /* Copy a strength pointer item. */
-		case vpiStrengthVal:
+		સ્થિતિ vpiStrengthVal:
 		  put->value.value.strength =
 		      strengthdup(put->value.value.strength);
-		  break;
+		  તોડો;
 		  /* Everything thing else is already in the structure. */
-		default:
-		  break;
+		મૂળભૂત:
+		  તોડો;
 	    }
 	    put->flags = flags;
-	    schedule_generic(put, dly, false, true, true);
-	    return 0;
+	    schedule_generic(put, dly, ખોટું, સાચું, સાચું);
+	    પાછા 0;
       }
 
-      if (schedule_at_rosync()) {
+      જો (schedule_at_rosync()) {
             fprintf(stderr, "VPI error: attempted to put a value to "
 			    "variable '%s' during a read-only synch "
 			    "callback.\n", vpi_get_str(vpiName, obj));
-            return 0;
+            પાછા 0;
       }
 
-      obj->vpi_put_value(vp, flags);
+      obj->vpi_put_કિંમત(vp, flags);
 
-      return 0;
+      પાછા 0;
 }
 
 vpiHandle vpi_handle(PLI_INT32 type, vpiHandle ref)
 {
       vpiHandle res = 0;
 
-      if (ref == 0) {
+      જો (ref == 0) {
 	      // A few types can apply to a nil handle. These are ways
 	      // that the current function can get started finding things.
-	    switch (type) {
+	    પસંદગી (type) {
 
-		case vpiScope:
+		સ્થિતિ vpiScope:
 		    // The IEEE1364-2005 doesn't seem to allow this,
 		    // but some users seem to think it's handy, so
 		    // return the scope that contains this SysTfCall.
-		  assert(vpip_cur_task);
+		  પ્રતિજ્ઞા(vpip_cur_task);
 		  res = vpip_cur_task->vpi_handle(vpiScope);
-		  break;
+		  તોડો;
 
-		case vpiSysTfCall:
+		સ્થિતિ vpiSysTfCall:
 		    // This is how VPI users get a first handle into
 		    // the system. This is the handle of the system
 		    // task/function call currently being executed.
-		  if (vpi_trace) {
+		  જો (vpi_trace) {
 			fprintf(vpi_trace, "vpi_handle(vpiSysTfCall, 0) "
 				"-> %p (%s)\n", vpip_cur_task,
 				vpip_cur_task->defn->info.tfname);
 		  }
-		  return vpip_cur_task;
+		  પાછા vpip_cur_task;
 
-		default:
+		મૂળભૂત:
 		  fprintf(stderr, "VPI error: vpi_handle(type=%d, ref=0).\n",
-			  (int)type);
+			  (પૂર્ણાંક)type);
 		  res = 0;
-		  break;
+		  તોડો;
 	    }
 
-      } else {
+      } નહીંતર {
 
-	    if (type == vpiSysTfCall) {
+	    જો (type == vpiSysTfCall) {
 		  fprintf(stderr, "VPI error: vpi_handle(vpiSysTfCall, "
 			  "ref!=0).\n");
-		  return 0;
+		  પાછા 0;
 	    }
 
 	    res = ref->vpi_handle(type);
       }
 
 
-      if (vpi_trace) {
+      જો (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle(vpiScope, ref=%p) "
 		    "-> %p\n", vpip_cur_task, ref);
       }
 
-      return res;
+      પાછા res;
 }
 
-static vpiHandle vpip_make_udp_iterator()
+સ્થિર vpiHandle vpip_make_udp_iterator()
 {
 // HERE: Add support for iterating over UDP definitions.
 //       See 26.6.16 (page 400 in 1364-2005).
-      return 0;
+      પાછા 0;
 }
 
 /*
@@ -1298,180 +1298,180 @@ static vpiHandle vpip_make_udp_iterator()
  * the specified reference. It is up to the iterate_ method to
  * allocate a properly formed iterator.
  */
-static vpiHandle vpi_iterate_global(int type)
+સ્થિર vpiHandle vpi_iterate_global(પૂર્ણાંક type)
 {
-      switch (type) {
-	  case vpiInstance:
+      પસંદગી (type) {
+	  સ્થિતિ vpiInstance:
 	    // fallthrough
-	  case vpiModule:
+	  સ્થિતિ vpiModule:
 	    // fallthrough
-	  case vpiProgram:
+	  સ્થિતિ vpiProgram:
 	    // fallthrough
-	  case vpiInterface:
+	  સ્થિતિ vpiInterface:
 	    // fallthrough
-	  case vpiPackage:
-	    return vpip_make_root_iterator(type);
+	  સ્થિતિ vpiPackage:
+	    પાછા vpip_make_મૂળ_iterator(type);
 
-	  case vpiUdpDefn:
-	    return vpip_make_udp_iterator();
+	  સ્થિતિ vpiUdpDefn:
+	    પાછા vpip_make_udp_iterator();
 
-	  case vpiUserSystf:
-	    return vpip_make_systf_iterator();
+	  સ્થિતિ vpiUserSystf:
+	    પાછા vpip_make_systf_iterator();
       }
 
-      return 0;
+      પાછા 0;
 }
 
 vpiHandle vpi_iterate(PLI_INT32 type, vpiHandle ref)
 {
       vpiHandle rtn = 0;
 
-      assert(vpi_mode_flag != VPI_MODE_NONE);
-      if (vpi_mode_flag == VPI_MODE_REGISTER) {
+      પ્રતિજ્ઞા(vpi_mode_flag != VPI_MODE_NONE);
+      જો (vpi_mode_flag == VPI_MODE_REGISTER) {
 	    fprintf(stderr, "vpi error: vpi_iterate called during "
 		    "vpi_register_systf. You can't do that!\n");
-	    return 0;
+	    પાછા 0;
       }
 
-      if (ref == 0)
+      જો (ref == 0)
 	    rtn = vpi_iterate_global(type);
-      else
+      નહીંતર
 	    rtn = ref->vpi_iterate(type);
 
-      if (vpi_trace) {
+      જો (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_iterate(%d, %p) ->%s\n",
-	    (int)type, ref, rtn ? "" : " (null)");
+	    (પૂર્ણાંક)type, ref, rtn ? "" : " (null)");
       }
 
-      return rtn;
+      પાછા rtn;
 }
 
 vpiHandle vpi_handle_by_index(vpiHandle ref, PLI_INT32 idx)
 {
-      assert(ref);
-      return ref->vpi_index(idx);
+      પ્રતિજ્ઞા(ref);
+      પાછા ref->vpi_index(idx);
 }
 
-static vpiHandle find_name(const char *name, vpiHandle handle)
+સ્થિર vpiHandle find_name(અચલ અક્ષર *name, vpiHandle handle)
 {
       vpiHandle rtn = 0;
       __vpiScope*ref = dynamic_cast<__vpiScope*>(handle);
 
       /* check module names */
-      if (!strcmp(name, vpi_get_str(vpiName, handle)))
+      જો (!strcmp(name, vpi_get_str(vpiName, handle)))
 	    rtn = handle;
 
       /* brute force search for the name in all objects in this scope */
-      for (unsigned i = 0 ;  i < ref->intern.size() ;  i += 1) {
+      માટે (unsigned i = 0 ;  i < ref->intern.size() ;  i += 1) {
 	      /* The standard says that since a port does not have a full
 	       * name it cannot be found by name. Because of this we need
 	       * to skip ports here so the correct handle can be located. */
-	    if (vpi_get(vpiType, ref->intern[i]) == vpiPort) continue;
-	    const char *nm = vpi_get_str(vpiName, ref->intern[i]);
-	    if (nm && !strcmp(name, nm)) {
+	    જો (vpi_get(vpiType, ref->intern[i]) == vpiPort) ચાલુ;
+	    અચલ અક્ષર *nm = vpi_get_str(vpiName, ref->intern[i]);
+	    જો (nm && !strcmp(name, nm)) {
 		  rtn = ref->intern[i];
-		  break;
-	    } else if (vpi_get(vpiType, ref->intern[i]) == vpiMemory ||
+		  તોડો;
+	    } નહીંતર જો (vpi_get(vpiType, ref->intern[i]) == vpiMemory ||
 	               vpi_get(vpiType, ref->intern[i]) == vpiNetArray) {
 		  /* We need to iterate on the words */
 		  vpiHandle word_i, word_h;
 		  word_i = vpi_iterate(vpiMemoryWord, ref->intern[i]);
-		  while (word_i && (word_h = vpi_scan(word_i))) {
+		  જ્યારે (word_i && (word_h = vpi_scan(word_i))) {
 			nm = vpi_get_str(vpiName, word_h);
-			if (nm && !strcmp(name, nm)) {
+			જો (nm && !strcmp(name, nm)) {
 			      rtn = word_h;
 			      vpi_free_object(word_i);
-			      break;
+			      તોડો;
 			}
 		  }
 	    }
 	    /* found it yet? */
-	    if (rtn) break;
+	    જો (rtn) તોડો;
       }
 
-      return rtn;
+      પાછા rtn;
 }
 
 // Find the end of the escaped identifier or simple identifier
-static char * find_rest(char *name)
+સ્થિર અક્ષર * find_rest(અક્ષર *name)
 {
-      char *rest;
-      if (*name == '\\') {
+      અક્ષર *rest;
+      જો (*name == '\\') {
 	    rest = strchr(name, ' ');
-	    if (rest) {
+	    જો (rest) {
 		  *rest++ = 0; // The space is not part of the string
 		    // There should be a '.' after the escaped ID if there is
 		    // anything more. If it is missing add it to avoid a crash
-		  if ((*rest != '.') && (*rest != 0)) {
+		  જો ((*rest != '.') && (*rest != 0)) {
 			*--rest = '.';
 			fprintf(stderr, "ERROR: Malformed scope string: \"%s\"", name);
 		  }
-		  if (*rest == 0) {
+		  જો (*rest == 0) {
 			rest = 0;
 		  }
 	    }
-      } else {
+      } નહીંતર {
 	    rest = strchr(name, '.');
       }
-      return rest;
+      પાછા rest;
 }
 
-static vpiHandle find_scope(const char *name, vpiHandle handle, int depth)
+સ્થિર vpiHandle find_scope(અચલ અક્ષર *name, vpiHandle handle, પૂર્ણાંક depth)
 {
 
       vpiHandle iter = handle==0
-	    ? vpi_iterate(vpiModule, NULL)
+	    ? vpi_iterate(vpiModule, ખાલી)
 	    : vpi_iterate(vpiInternalScope, handle);
 
-      vector<char> name_buf (strlen(name)+1);
+      vector<અક્ષર> name_buf (strlen(name)+1);
       strcpy(&name_buf[0], name);
-      char*nm_first = &name_buf[0];
-      char*nm_rest = find_rest(nm_first);
-      if (*nm_first == '\\') ++nm_first;
-      if (nm_rest) {
+      અક્ષર*nm_first = &name_buf[0];
+      અક્ષર*nm_rest = find_rest(nm_first);
+      જો (*nm_first == '\\') ++nm_first;
+      જો (nm_rest) {
 	    *nm_rest++ = 0;
       }
 
       vpiHandle rtn = 0;
       vpiHandle hand;
-      while (iter && (hand = vpi_scan(iter))) {
-	    const char *nm = vpi_get_str(vpiName, hand);
+      જ્યારે (iter && (hand = vpi_scan(iter))) {
+	    અચલ અક્ષર *nm = vpi_get_str(vpiName, hand);
 
-	    if (strcmp(nm_first,nm)==0) {
-		  if (nm_rest)
+	    જો (strcmp(nm_first,nm)==0) {
+		  જો (nm_rest)
 			rtn=find_scope(nm_rest, hand, depth+1);
-		  else
+		  નહીંતર
 			rtn = hand;
 	    }
 
 	    /* found it yet ? */
-	    if (rtn) {
+	    જો (rtn) {
 		  vpi_free_object(iter);
-		  break;
+		  તોડો;
 	    }
       }
 
-      return rtn;
+      પાછા rtn;
 }
 
 // Find the end of the first escaped identifier or simple identifier
-static char * find_next(char *name)
+સ્થિર અક્ષર * find_next(અક્ષર *name)
 {
-      char *next;
-      if (*name == '\\') {
+      અક્ષર *next;
+      જો (*name == '\\') {
 	    next = strchr(name, ' ');
-	    if (next && *++next == 0) next = 0;
-      } else {
+	    જો (next && *++next == 0) next = 0;
+      } નહીંતર {
 	    next = strchr(name, '.');
       }
-      return next;
+      પાછા next;
 }
 
-vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
+vpiHandle vpi_handle_by_name(અચલ અક્ષર *name, vpiHandle scope)
 {
       vpiHandle hand;
 
-      if (vpi_trace) {
+      જો (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle_by_name(%s, %p) -->\n",
 		    name, scope);
       }
@@ -1479,31 +1479,31 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 	// Chop the name into path and base. For example, if the name
 	// is "a.b.c", then nm_path becomes "a.b" and nm_base becomes
 	// "c". If the name is "c" then nm_path is nil and nm_base is "c".
-      vector<char> name_buf (strlen(name)+1);
+      vector<અક્ષર> name_buf (strlen(name)+1);
       strcpy(&name_buf[0], name);
-      char*nm_path = &name_buf[0];
-      char*nm_base;
+      અક્ષર*nm_path = &name_buf[0];
+      અક્ષર*nm_base;
 
 	// Check to see if we have an escaped identifier and if so search
 	// the long way because a '.' could be in the escaped name.
-      if (strchr(nm_path, '\\')) {
-	    char *next;
+      જો (strchr(nm_path, '\\')) {
+	    અક્ષર *next;
 	    nm_base = nm_path;
-	    while ((next = find_next(nm_base))) {
+	    જ્યારે ((next = find_next(nm_base))) {
 		  nm_base = ++next;
 	    }
-	    if (nm_path == nm_base) {
+	    જો (nm_path == nm_base) {
 		  nm_path = 0;
-	    } else {
+	    } નહીંતર {
 		  *(nm_base-1) = 0;
 	    }
 
 	// If there is no escaped identifier then just look for the last '.'
-      } else {
+      } નહીંતર {
 	    nm_base = strrchr(nm_path, '.');
-	    if (nm_base) {
+	    જો (nm_base) {
 		  *nm_base++ = 0;
-	    } else {
+	    } નહીંતર {
 		  nm_base = nm_path;
 		  nm_path = 0;
 	    }
@@ -1513,56 +1513,56 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
        * traverse the hierarchy specified in name to find the leaf module
        * and try finding it there.
        */
-      if (scope) {
+      જો (scope) {
 	    /* Some implementations support either a module or a scope. */
-	    switch (vpi_get(vpiType, scope)) {
-		case vpiScope:
+	    પસંદગી (vpi_get(vpiType, scope)) {
+		સ્થિતિ vpiScope:
 	          hand = vpi_handle(vpiModule, scope);
-	          break;
-		case vpiModule:
+	          તોડો;
+		સ્થિતિ vpiModule:
 	          hand = scope;
-	          break;
-		default:
-		  if (vpi_trace) {
+	          તોડો;
+		મૂળભૂત:
+		  જો (vpi_trace) {
 			fprintf(vpi_trace, "vpi_handle_by_name: "
 				"Scope is not a vpiScope or vpiModule\n");
 		  }
 	          // Use vpi_chk_error() here when it is implemented.
-	          return 0;
+	          પાછા 0;
 	    }
 
-      } else if (nm_path) {
+      } નહીંતર જો (nm_path) {
 	      // The name has a path, and no other scope handle was
 	      // passed in. That suggests we are looking for "a.b.c"
 	      // in the root scope. So convert "a.b" to a scope and
 	      // start there to look for "c".
-	    hand = find_scope(nm_path, NULL, 0);
+	    hand = find_scope(nm_path, ખાલી, 0);
 	    nm_path = 0;
 
-      } else {
+      } નહીંતર {
 	      // Special case: scope==<nil>, meaning we are looking in
 	      // the root, and there is no path to the name, i.e. the
 	      // string is "c" instead of "top.c". Try to find "c" as
 	      // a scope and return that.
-	    hand = find_scope(nm_base, NULL, 0);
+	    hand = find_scope(nm_base, ખાલી, 0);
       }
 
-      if (hand == 0) {
-	    if (vpi_trace) {
+      જો (hand == 0) {
+	    જો (vpi_trace) {
 		  fprintf(vpi_trace, "vpi_handle_by_name: "
 			  "Scope does not exist. Giving up.\n");
 	    }
 
-	    return 0;
+	    પાછા 0;
       }
 
 	// If there is a path part, then use it to find the
 	// scope. For example, if the full name is a.b.c, then
 	// the nm_path string is a.b and we search for that
 	// scope. If we find it, then set hand to that scope.
-      if (nm_path) {
+      જો (nm_path) {
 	    vpiHandle tmp = find_scope(nm_path, hand, 0);
-	    while (tmp == 0 && hand != 0) {
+	    જ્યારે (tmp == 0 && hand != 0) {
 		  hand = vpi_handle(vpiScope, hand);
 		  tmp = find_scope(nm_path, hand, 0);
 	    }
@@ -1570,13 +1570,13 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
       }
 
 	// find_name() expects escaped identifiers to be stripped
-      if (*nm_base == '\\') {
+      જો (*nm_base == '\\') {
 	    // Skip the \ at the beginning
 	    ++nm_base;
 
 	    // Drop the space at the end if it exists
-	    char *next;
-	    if ((next = strchr(nm_base, ' '))) {
+	    અક્ષર *next;
+	    જો ((next = strchr(nm_base, ' '))) {
 		  *next = 0;
 	    }
       }
@@ -1584,29 +1584,29 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 	// Now we have the correct scope, look for the item.
       vpiHandle out = find_name(nm_base, hand);
 
-      if (vpi_trace) {
+      જો (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle_by_name: DONE\n");
       }
 
-      return out;
+      પાછા out;
 }
 
 // Return tuple {x1, x2, x3} with:
 // x1: True when cur and net2 are connected
 // x2: Ptr to previous node
 // x3: True when net is connected to output of previous node
-tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8_and_part_sa(vvp_net_ptr_t cur, vvp_net_t* net2, vvp_net_ptr_t parent) {
+tuple<તાર્કિક, vvp_net_ptr_t, તાર્કિક> check_connected_to_concat8_and_part_sa(vvp_net_ptr_t cur, vvp_net_t* net2, vvp_net_ptr_t parent) {
 
       vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr, 0);
 
-      while (cur.ptr()) {
-	    if (cur.ptr() == net2 && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
+      જ્યારે (cur.ptr()) {
+	    જો (cur.ptr() == net2 && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
 		    // Pass on the return value if found
-		  return {true, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
-	    } else if (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
+		  પાછા {સાચું, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
+	    } નહીંતર જો (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
 		  auto res = check_connected_to_concat8_and_part_sa(cur.ptr()->out_, net2, cur);
-		  if (get<0>(res)) {
-			return res;
+		  જો (get<0>(res)) {
+			પાછા res;
 		  }
 	    }
 
@@ -1616,7 +1616,7 @@ tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8_and_part_sa(vvp_net_
       }
 
 	// net2 is not connected to this concat8
-      return {false, vvp_net_ptr_t(nullptr, 0), false};
+      પાછા {ખોટું, vvp_net_ptr_t(nullptr, 0), ખોટું};
 }
 
 // Check if net2 is connected to current_net through a net of vvp_fun_concat8s
@@ -1624,23 +1624,23 @@ tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8_and_part_sa(vvp_net_
 // x1: True when cur and net2 are connected with concats and part_sas
 // x2: Ptr to previous node
 // x3: True when net is connected to output of x2
-tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8(vvp_net_ptr_t cur, vvp_net_t* net2, vvp_net_ptr_t parent)
+tuple<તાર્કિક, vvp_net_ptr_t, તાર્કિક> check_connected_to_concat8(vvp_net_ptr_t cur, vvp_net_t* net2, vvp_net_ptr_t parent)
 {
       vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr, 0);
 	// For everything connected
-      while (cur.ptr()) {
+      જ્યારે (cur.ptr()) {
 	      // Check if it's a concat8
-	    if (cur.ptr() == net2) {
-		  return {true, vvp_net_ptr_t(nullptr, 0), false};
-	    } else if (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
+	    જો (cur.ptr() == net2) {
+		  પાછા {સાચું, vvp_net_ptr_t(nullptr, 0), ખોટું};
+	    } નહીંતર જો (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
 		  auto res = check_connected_to_concat8(cur.ptr()->out_, net2, cur);
-		  if (get<0>(res)) {
-			if (!get<1>(res).ptr() && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
+		  જો (get<0>(res)) {
+			જો (!get<1>(res).ptr() && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
 			      // `parent` is the last part_sa node in front of our destination
 			      // We want to place the intermod node here
-			      return {true, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
+			      પાછા {સાચું, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
 			}
-			return res;
+			પાછા res;
 		  }
 	    }
 
@@ -1650,7 +1650,7 @@ tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8(vvp_net_ptr_t cur, v
       }
 
 	// net2 is not connected to this concat8
-      return {false, vvp_net_ptr_t(nullptr, 0), false};
+      પાછા {ખોટું, vvp_net_ptr_t(nullptr, 0), ખોટું};
 }
 
 // Used to get intermodpath for two ports
@@ -1658,38 +1658,38 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
                            vpiHandle ref1,
                            vpiHandle ref2)
 {
-      if (vpi_trace) {
+      જો (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle_multi(%d, %p, %p) -->\n",
 	            type, ref1, ref2);
       }
 
-      if (type != vpiInterModPath) {
+      જો (type != vpiInterModPath) {
 	    fprintf(stderr, "sorry: vpi_handle_multi currently supports"
 	            "only vpiInterModPath\n");
-	    return nullptr;
+	    પાછા nullptr;
       }
 
 	// Indicates whether port1 refers to a single bit
-      bool port1_has_index = false;
-      int port1_bit_index = 0;
+      તાર્કિક port1_has_index = ખોટું;
+      પૂર્ણાંક port1_bit_index = 0;
       vpiPortBitInfo* port1_bit = dynamic_cast<vpiPortBitInfo*>(ref1);
 
-      if (port1_bit) {
+      જો (port1_bit) {
 	      // Get the bit index
-	    port1_has_index = true;
+	    port1_has_index = સાચું;
 	    port1_bit_index = vpi_get(vpiBit, port1_bit);
 	      // Update the ref1 to point to the base port
 	    ref1 = vpi_handle(vpiParent, port1_bit);
       }
 
 	// Indicates whether port2 refers to a single bit
-      bool port2_has_index = false;
-      int port2_bit_index = 0;
+      તાર્કિક port2_has_index = ખોટું;
+      પૂર્ણાંક port2_bit_index = 0;
       vpiPortBitInfo* port2_bit = dynamic_cast<vpiPortBitInfo*>(ref2);
 
-      if (port2_bit) {
+      જો (port2_bit) {
 	      // Get the bit index
-	    port2_has_index = true;
+	    port2_has_index = સાચું;
 	    port2_bit_index = vpi_get(vpiBit, port2_bit);
 	      // Update the ref1 to point to the base port
 	    ref2 = vpi_handle(vpiParent, port2_bit);
@@ -1697,18 +1697,18 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 
       vpiPortInfo* port1 = dynamic_cast<vpiPortInfo*>(ref1);
 
-      if (!port1) {
+      જો (!port1) {
 	    fprintf(stderr, "sorry: second argument of vpi_handle_multi"
 		    "must be a vpiPort\n");
-	    return nullptr;
+	    પાછા nullptr;
       }
 
       vpiPortInfo* port2 = dynamic_cast<vpiPortInfo*>(ref2);
 
-      if (!port2) {
+      જો (!port2) {
 	    fprintf(stderr, "sorry: third argument of vpi_handle_multi"
 		    "must be a vpiPort\n");
-	    return nullptr;
+	    પાછા nullptr;
       }
 
 	// Get the names of both ports
@@ -1720,19 +1720,19 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 	// even tho the intermodpath is correctly inserted
       __vpiSignal* output_signal = nullptr;
 
-      if (port1->get_direction() == vpiOutput && port2->get_direction() == vpiOutput) {
+      જો (port1->get_direction() == vpiOutput && port2->get_direction() == vpiOutput) {
 	    vpiHandle scope_port2 = vpi_handle(vpiScope, ref2);
-	    assert(scope_port2);
+	    પ્રતિજ્ઞા(scope_port2);
 
 	      // Iterate over nets in the scope of port2
 	    vpiHandle net_i = vpi_iterate(vpiNet, scope_port2) ;
 	    vpiHandle net;
 
-	    while ((net = vpi_scan(net_i)) != NULL) {
+	    જ્યારે ((net = vpi_scan(net_i)) != ખાલી) {
 		  std::string net_name(vpi_get_str(vpiName, net));
 
 		    // Compare whether the net matches with the port name
-		  if (net_name == port2_name) {
+		  જો (net_name == port2_name) {
 			output_signal = dynamic_cast<__vpiSignal*>(net);
 		  }
 	    }
@@ -1741,48 +1741,48 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
       vvp_net_t* net1 = port1->get_port();
       vvp_net_t* net2 = port2->get_port();
 
-      if (net1 == nullptr || net2 == nullptr) {
+      જો (net1 == nullptr || net2 == nullptr) {
 	    fprintf(stderr, "Error: Could not find net. "
 		    "Did you run iverilog with '-ginterconnect'?\n");
-	    return nullptr;
+	    પાછા nullptr;
       }
 
-      if (net1 == net2) {
+      જો (net1 == net2) {
 	    fprintf(stderr, "Error: Net for both ports is the same. "
 		    "Did you pass the same port twice?\n");
-	    return nullptr;
+	    પાછા nullptr;
       }
 
-      if (!dynamic_cast<vvp_fun_buft*>(net1->fun)) {
+      જો (!dynamic_cast<vvp_fun_buft*>(net1->fun)) {
 	    fprintf(stderr, "Error: functor of net1 must be"
 		    "vvp_fun_buft\n");
-	    return nullptr;
+	    પાછા nullptr;
       }
 
-      if (!dynamic_cast<vvp_fun_buft*>(net2->fun)) {
+      જો (!dynamic_cast<vvp_fun_buft*>(net2->fun)) {
 	    fprintf(stderr, "Error: functor of net2 must be"
 		    "vvp_fun_buft\n");
-	    return nullptr;
+	    પાછા nullptr;
       }
 
 	// If port1 is actually a port bit, we have to get to the correct vvp_fun_part
 	// after which we insert the intermodpath delay
-      if (port1_has_index) {
+      જો (port1_has_index) {
 	    vvp_net_ptr_t* net1_ptr = &net1->out_;
 
 	      // Search for part selects connected to port1
 	    vvp_net_t* current_net = net1_ptr->ptr();
 
-	    while (current_net) {
-		  const vvp_fun_part* part = dynamic_cast<vvp_fun_part*>(current_net->fun);
+	    જ્યારે (current_net) {
+		  અચલ vvp_fun_part* part = dynamic_cast<vvp_fun_part*>(current_net->fun);
 
 		    // Its a part select!
-		  if (part) {
+		  જો (part) {
 			  // Is it the correct part select?
-			if (part->get_base() == (unsigned)port1_bit_index) {
-			      assert(part->get_wid() == 1);
+			જો (part->get_base() == (unsigned)port1_bit_index) {
+			      પ્રતિજ્ઞા(part->get_wid() == 1);
 			      net1 = current_net; // Replace net1 as this is our new start point
-			      break;
+			      તોડો;
 			}
 		  }
 
@@ -1794,31 +1794,31 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
       vvp_net_ptr_t cur = net1->out_;
       vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr, 0);
 
-      while (cur.ptr()) {
+      જ્યારે (cur.ptr()) {
 	      // Either port2 is directly connected to port1
 	      // Or in the second case port2 is indirectly connected
 	      // to port1 through a net of concat8s
-	    bool is_connected, is_output;
-	    vvp_net_ptr_t previous_node;
-	    tie(is_connected, previous_node, is_output) = port2_has_index
+	    તાર્કિક is_connected, is_output;
+	    vvp_net_ptr_t previous_ગાંઠ;
+	    tie(is_connected, previous_ગાંઠ, is_output) = port2_has_index
 		  ? check_connected_to_concat8(cur, net2, vvp_net_ptr_t(net1, 0))
 		  : check_connected_to_concat8_and_part_sa(cur, net2, vvp_net_ptr_t(net1, 0));
-	    if ( (!port2_has_index && cur.ptr() == net2) || is_connected ) {
-		  vvp_net_t*new_net = new vvp_net_t;
+	    જો ( (!port2_has_index && cur.ptr() == net2) || is_connected ) {
+		  vvp_net_t*new_net = નવું vvp_net_t;
 
 		    // Create new node with intermodpath and connect port2 to it
-		  int width = 1; // TODO
-		  vvp_fun_intermodpath*obj = new vvp_fun_intermodpath(new_net, width);
+		  પૂર્ણાંક width = 1; // TODO
+		  vvp_fun_intermodpath*obj = નવું vvp_fun_intermodpath(new_net, width);
 
 		  vvp_net_t* output_net = net1;
-		  if (is_connected) {
-			if (is_output) {
-			      output_net = previous_node.ptr(); // net2 is direct output of part_sa
+		  જો (is_connected) {
+			જો (is_output) {
+			      output_net = previous_ગાંઠ.ptr(); // net2 is direct output of part_sa
 			      cur = output_net->out_;
 			      prev = vvp_net_ptr_t(nullptr, 0);
-			} else {
-			      prev = previous_node;
-			      if (prev.ptr()) {
+			} નહીંતર {
+			      prev = previous_ગાંઠ;
+			      જો (prev.ptr()) {
 				    cur = prev.ptr()->port[prev.port()];
 			      }
 			}
@@ -1829,13 +1829,13 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 
 		    // Port2 is in the middle of the list
 		    // Insert intermodpath before port2 and keep everything else intact
-		  if (prev.ptr()) {
+		  જો (prev.ptr()) {
 			prev.ptr()->port[prev.port()] = vvp_net_ptr_t(new_net, 0); // Point to port 0 of vvp_fun_intermodpath
 			new_net->port[0] = cur.ptr()->port[cur.port()]; // Connect the next net in list
 			cur.ptr()->port[cur.port()] = vvp_net_ptr_t(nullptr, 0); // Only port2 is connected to intermodpath
 		    // Port2 is first in list
 		    // Insert intermodpath before port2 and keep everything else intact
-		  } else {
+		  } નહીંતર {
 			output_net->out_ = vvp_net_ptr_t(new_net, 0); // Point to port 0 of vvp_fun_intermodpath
 			new_net->port[0] = cur.ptr()->port[cur.port()]; //  Connect the next net in list
 			cur.ptr()->port[cur.port()] = vvp_net_ptr_t(nullptr, 0); // Only port2 is connected to intermodpath
@@ -1844,10 +1844,10 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 		    // If both ports are vpiOutput and port2 is not a vector,
 		    // we have to reassign the __vpiSignal so that the delayed
 		    // values get dumped
-		  if (output_signal && !port2_has_index) {
+		  જો (output_signal && !port2_has_index) {
 			net2->fil = net1->fil;
 			net1->fil = nullptr;
-			output_signal->node = net2;
+			output_signal->ગાંઠ = net2;
 		  }
 
 		    // Create the VPI intermodpath object
@@ -1855,7 +1855,7 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 		  intermodpath->intermodpath = obj;
 
 		    // Finally done, return the intermodpath object
-		  return intermodpath;
+		  પાછા intermodpath;
 	    }
 
 	    prev = cur;
@@ -1865,7 +1865,7 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
       fprintf(stderr, "VPI error: Could not insert intermodpath!\n");
       fprintf(stderr, "\tport1 = %s, port1_has_index = %d, port1_bit_index = %d\n", port1_name.c_str(), port1_has_index, port1_bit_index);
       fprintf(stderr, "\tport2 = %s, port2_has_index = %d, port2_bit_index = %d\n", port2_name.c_str(), port2_has_index, port2_bit_index);
-      return nullptr;
+      પાછા nullptr;
 }
 
 /*
@@ -1889,30 +1889,30 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 
 
 
-void vpi_get_delays(vpiHandle expr, p_vpi_delay delays)
+શૂન્ય vpi_get_delays(vpiHandle પદાવલિ, p_vpi_delay delays)
 {
-      assert(expr);
-      assert(delays);
+      પ્રતિજ્ઞા(પદાવલિ);
+      પ્રતિજ્ઞા(delays);
 
-      expr->vpi_get_delays(delays);
+      પદાવલિ->vpi_get_delays(delays);
 
-      if (vpi_trace) {
+      જો (vpi_trace) {
 	    fprintf(vpi_trace,
-		    "vpi_get_delays(%p, %p) -->\n", expr, delays);
+		    "vpi_get_delays(%p, %p) -->\n", પદાવલિ, delays);
       }
 }
 
 
-void vpi_put_delays(vpiHandle expr, p_vpi_delay delays)
+શૂન્ય vpi_put_delays(vpiHandle પદાવલિ, p_vpi_delay delays)
 {
-      assert(expr  );
-      assert(delays );
+      પ્રતિજ્ઞા(પદાવલિ  );
+      પ્રતિજ્ઞા(delays );
 
-      expr->vpi_put_delays(delays);
+      પદાવલિ->vpi_put_delays(delays);
 
-      if (vpi_trace) {
+      જો (vpi_trace) {
 	    fprintf(vpi_trace,
-		    "vpi_put_delays(%p, %p) -->\n", expr, delays);
+		    "vpi_put_delays(%p, %p) -->\n", પદાવલિ, delays);
       }
 }
 
@@ -1923,118 +1923,118 @@ void vpi_put_delays(vpiHandle expr, p_vpi_delay delays)
 
 
 
-extern "C" PLI_INT32 vpi_vprintf(const char*fmt, va_list ap)
+બાહ્ય "C" PLI_INT32 vpi_vprintf(અચલ અક્ષર*fmt, va_list ap)
 {
-      return vpi_mcd_vprintf(1, fmt, ap);
+      પાછા vpi_mcd_vprintf(1, fmt, ap);
 }
 
-extern "C" PLI_INT32 vpi_printf(const char *fmt, ...)
+બાહ્ય "C" PLI_INT32 vpi_printf(અચલ અક્ષર *fmt, ...)
 {
       va_list ap;
       va_start(ap, fmt);
-      int r = vpi_mcd_vprintf(1, fmt, ap);
+      પૂર્ણાંક r = vpi_mcd_vprintf(1, fmt, ap);
       va_end(ap);
-      return r;
+      પાછા r;
 }
 
-extern "C" PLI_INT32 vpi_flush(void)
+બાહ્ય "C" PLI_INT32 vpi_flush(શૂન્ય)
 {
-      return vpi_mcd_flush(1);
+      પાછા vpi_mcd_flush(1);
 }
 
 
-extern "C" PLI_INT32 vpi_sim_vcontrol(int operation, va_list ap)
+બાહ્ય "C" PLI_INT32 vpi_sim_vcontrol(પૂર્ણાંક operation, va_list ap)
 {
-      long diag_msg;
+      long diag_સંદેશ;
 
-      switch (operation) {
-	  case vpiFinish:
-	  case __ivl_legacy_vpiFinish:
-            diag_msg = va_arg(ap, PLI_INT32);
-	    schedule_finish(diag_msg);
-	    break;
+      પસંદગી (operation) {
+	  સ્થિતિ vpiFinish:
+	  સ્થિતિ __ivl_legacy_vpiFinish:
+            diag_સંદેશ = va_arg(ap, PLI_INT32);
+	    schedule_finish(diag_સંદેશ);
+	    તોડો;
 
-	  case vpiStop:
-	  case __ivl_legacy_vpiStop:
-            diag_msg = va_arg(ap, PLI_INT32);
-	    schedule_stop(diag_msg);
-	    break;
+	  સ્થિતિ vpiStop:
+	  સ્થિતિ __ivl_legacy_vpiStop:
+            diag_સંદેશ = va_arg(ap, PLI_INT32);
+	    schedule_stop(diag_સંદેશ);
+	    તોડો;
 
-	  default:
+	  મૂળભૂત:
 	    fprintf(stderr, "Unsupported VPI control operation %d.\n", operation);
-	    return 0;
+	    પાછા 0;
       }
-      return 1;
+      પાછા 1;
 }
 
-extern "C" PLI_INT32 vpi_sim_control(PLI_INT32 operation, ...)
+બાહ્ય "C" PLI_INT32 vpi_sim_control(PLI_INT32 operation, ...)
 {
       va_list ap;
       va_start(ap, operation);
-      int r = vpi_sim_vcontrol(operation, ap);
+      પૂર્ણાંક r = vpi_sim_vcontrol(operation, ap);
       va_end(ap);
-      return r;
+      પાછા r;
 }
 
-extern "C" PLI_INT32 vpi_control(PLI_INT32 operation, ...)
+બાહ્ય "C" PLI_INT32 vpi_control(PLI_INT32 operation, ...)
 {
       va_list ap;
       va_start(ap, operation);
-      int r = vpi_sim_vcontrol(operation, ap);
+      પૂર્ણાંક r = vpi_sim_vcontrol(operation, ap);
       va_end(ap);
-      return r;
+      પાછા r;
 }
 
 /*
  * This routine calculated the return value for $clog2.
  * It is easier to do it here vs trying to to use the VPI interface.
  */
-extern "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
+બાહ્ય "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
 {
       s_vpi_vecval rtn;
-      s_vpi_value val;
+      s_vpi_કિંમત val;
       vvp_vector4_t vec4;
-      bool is_neg = false;  // At this point only a real can be negative.
+      તાર્કિક is_neg = ખોટું;  // At this point only a real can be negative.
 
 	/* Get the value as a vvp_vector4_t. */
       val.format = vpiObjTypeVal;
-      vpi_get_value(arg, &val);
-      if (val.format == vpiRealVal) {
-	    vpi_get_value(arg, &val);
+      vpi_get_કિંમત(arg, &val);
+      જો (val.format == vpiRealVal) {
+	    vpi_get_કિંમત(arg, &val);
 	      /* All double values can be represented in 1024 bits. */
 	    vec4 = vvp_vector4_t(1024, val.value.real);
-	    if (val.value.real < 0) is_neg = true;
-      } else {
+	    જો (val.value.real < 0) is_neg = સાચું;
+      } નહીંતર {
 	    val.format = vpiVectorVal;
-	    vpi_get_value(arg, &val);
+	    vpi_get_કિંમત(arg, &val);
 	    unsigned wid = vpi_get(vpiSize, arg);
 	    vec4 = vvp_vector4_t(wid, BIT4_0);
-	    for (unsigned idx=0; idx < wid; idx += 1) {
+	    માટે (unsigned idx=0; idx < wid; idx += 1) {
 		PLI_INT32 aval = val.value.vector[idx/32].aval;
 		PLI_INT32 bval = val.value.vector[idx/32].bval;
 		aval >>= idx % 32;
 		bval >>= idx % 32;
-		int bitmask = (aval&1) | ((bval<<1)&2);
+		પૂર્ણાંક bitmask = (aval&1) | ((bval<<1)&2);
 		vvp_bit4_t bit = scalar_to_bit4(bitmask);
 		vec4.set_bit(idx, bit);
 	    }
       }
 
-      if (vec4.has_xz()) {
+      જો (vec4.has_xz()) {
 	    rtn.aval = rtn.bval = 0xFFFFFFFFU;  /* Set to 'bx. */
-	    return rtn;
+	    પાછા rtn;
       }
 
       vvp_vector2_t vec2(vec4);
 
-      if (is_neg) vec2.trim_neg(); /* This is a special trim! */
-      else vec2.trim(); /* This makes less work shifting. */
+      જો (is_neg) vec2.trim_neg(); /* This is a special trim! */
+      નહીંતર vec2.trim(); /* This makes less work shifting. */
 
 	/* Calculate the clog2 result. */
       PLI_INT32 res = 0;
-      if (!vec2.is_zero()) {
+      જો (!vec2.is_zero()) {
 	    vec2 -= vvp_vector2_t(1, vec2.size());
-	    while(!vec2.is_zero()) {
+	    જ્યારે(!vec2.is_zero()) {
 		  res += 1;
 		  vec2 >>= 1;
 	    }
@@ -2042,7 +2042,7 @@ extern "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
 
       rtn.aval = res;
       rtn.bval = 0;
-      return rtn;
+      પાછા rtn;
 }
 
 /*
@@ -2050,15 +2050,15 @@ extern "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
  * It is done here for performance reasons - interrogating the drivers
  * individually via the VPI interface would be much slower.
  */
-extern "C" void vpip_count_drivers(vpiHandle ref, unsigned idx,
+બાહ્ય "C" શૂન્ય vpip_ગણતરી_drivers(vpiHandle ref, unsigned idx,
                                    unsigned counts[4])
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
-      rfp->node->count_drivers(idx, counts);
+      સંરચના __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      પ્રતિજ્ઞા(rfp);
+      rfp->ગાંઠ->ગણતરી_drivers(idx, counts);
 }
 
-#if defined(__MINGW32__) || defined (__CYGWIN__)
+#જો defined(__MINGW32__) || defined (__CYGWIN__)
 vpip_routines_s vpi_routines = {
     .register_cb                = vpi_register_cb,
     .remove_cb                  = vpi_remove_cb,
@@ -2075,8 +2075,8 @@ vpip_routines_s vpi_routines = {
     .get_str                    = vpi_get_str,
     .get_delays                 = vpi_get_delays,
     .put_delays                 = vpi_put_delays,
-    .get_value                  = vpi_get_value,
-    .put_value                  = vpi_put_value,
+    .get_કિંમત                  = vpi_get_કિંમત,
+    .put_કિંમત                  = vpi_put_કિંમત,
     .get_time                   = vpi_get_time,
     .get_userdata               = vpi_get_userdata,
     .put_userdata               = vpi_put_userdata,
@@ -2096,11 +2096,11 @@ vpip_routines_s vpi_routines = {
     .fopen                      = vpi_fopen,
     .get_file                   = vpi_get_file,
     .calc_clog2                 = vpip_calc_clog2,
-    .count_drivers              = vpip_count_drivers,
+    .ગણતરી_drivers              = vpip_ગણતરી_drivers,
     .format_strength            = vpip_format_strength,
     .format_pretty              = vpip_format_pretty,
     .make_systf_system_defined  = vpip_make_systf_system_defined,
     .mcd_rawwrite               = vpip_mcd_rawwrite,
-    .set_return_value           = vpip_set_return_value,
+    .set_return_કિંમત           = vpip_set_return_કિંમત,
 };
 #endif

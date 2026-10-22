@@ -26,38 +26,38 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-static int iterator_free_object(vpiHandle ref)
+સ્થિર પૂર્ણાંક iterator_free_object(vpiHandle ref)
 {
-      struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
-      assert(hp);
+      સંરચના __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
+      પ્રતિજ્ઞા(hp);
 
-      if (hp->free_args_flag)
-	    free(hp->args);
+      જો (hp->free_args_flag)
+	    મુક્ત(hp->args);
 
       delete hp;
-      return 1;
+      પાછા 1;
 }
 
-inline __vpiIterator::__vpiIterator()
+અંતઃરેખ __vpiIterator::__vpiIterator()
 { }
 
-int __vpiIterator::get_type_code(void) const
-{ return vpiIterator; }
+પૂર્ણાંક __vpiIterator::get_type_code(શૂન્ય) અચલ
+{ પાછા vpiIterator; }
 
-__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(void)
-{ return &iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(શૂન્ય)
+{ પાછા &iterator_free_object; }
 
 vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
-			     bool free_args_flag)
+			     તાર્કિક free_args_flag)
 {
-      struct __vpiIterator*res = new __vpiIterator;
+      સંરચના __vpiIterator*res = નવું __vpiIterator;
       res->args = args;
       res->nargs = nargs;
       res->next  = 0;
 
       res->free_args_flag = free_args_flag;
 
-      return res;
+      પાછા res;
 }
 
 /*
@@ -66,20 +66,20 @@ vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
  */
 vpiHandle vpi_scan(vpiHandle ref)
 {
-      if (ref == 0) {
+      જો (ref == 0) {
 	    fprintf(stderr, "ERROR: NULL handle passed to vpi_scan.\n");
-	    assert(0);
-	    return 0;
+	    પ્રતિજ્ઞા(0);
+	    પાછા 0;
       }
 
-      if (struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
-	    if (hp->next == hp->nargs) {
+      જો (સંરચના __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
+	    જો (hp->next == hp->nargs) {
 		  vpi_free_object(ref);
-		  return 0;
+		  પાછા 0;
 	    }
 
-	    return hp->args[hp->next++];
+	    પાછા hp->args[hp->next++];
       }
 
-      return ref->vpi_index(0);
+      પાછા ref->vpi_index(0);
 }

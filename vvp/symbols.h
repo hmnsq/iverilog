@@ -43,41 +43,41 @@
  * try to look inside. The actual implementation is given in the
  * symbols.cc source file.
  */
-typedef class symbol_table_s *symbol_table_t;
+પ્રકારવ્યાખ્યા class પ્રતીક_table_s *પ્રતીક_table_t;
 
-typedef struct symbol_value_s {
-      union {
+પ્રકારવ્યાખ્યા સંરચના પ્રતીક_કિંમત_s {
+      સંઘ {
 	    vvp_net_t*net;
-	    void*ptr;
+	    શૂન્ય*ptr;
       };
-} symbol_value_t;
+} પ્રતીક_કિંમત_t;
 
 
-class symbol_table_s {
-    public:
-      explicit symbol_table_s();
-      virtual ~symbol_table_s();
-      symbol_table_s(const symbol_table_s&) = delete;
-      symbol_table_s& operator=(const symbol_table_s&) = delete;
+class પ્રતીક_table_s {
+    જાહેર:
+      explicit પ્રતીક_table_s();
+      આભાસી ~પ્રતીક_table_s();
+      પ્રતીક_table_s(અચલ પ્રતીક_table_s&) = delete;
+      પ્રતીક_table_s& operator=(અચલ પ્રતીક_table_s&) = delete;
 
 	// This method locates the value in the symbol table and sets its
 	// value. If the key doesn't yet exist, create it.
-      void sym_set_value(const char*key, symbol_value_t val);
+      શૂન્ય sym_set_કિંમત(અચલ અક્ષર*ચાવી, પ્રતીક_કિંમત_t val);
 
 	// This method locates the value in the symbol table and returns
 	// it. If the value does not exist, create it, initialize it with
 	// zero and return the zero value.
-      symbol_value_t sym_get_value(const char*key);
+      પ્રતીક_કિંમત_t sym_get_કિંમત(અચલ અક્ષર*ચાવી);
 
-    private:
-      struct tree_node_*root;
-      struct key_strings*str_chunk;
+    ખાનગી:
+      સંરચના વૃક્ષ_ગાંઠ*મૂળ;
+      સંરચના ચાવી_strings*str_chunk;
       unsigned str_used;
 
-      symbol_value_t find_value_(struct tree_node_*cur,
-				 const char*key, symbol_value_t val,
+      પ્રતીક_કિંમત_t find_કિંમત(સંરચના વૃક્ષ_ગાંઠ*cur,
+				 અચલ અક્ષર*ચાવી, પ્રતીક_કિંમત_t val,
 				 bool force_flag);
-      char*key_strdup_(const char*str);
+      અક્ષર*ચાવી_strdup(અચલ અક્ષર*str);
 };
 
 /*
@@ -87,31 +87,31 @@ class symbol_table_s {
  * the delete_symbol_table method will delete the table, including all
  * the space for the keys.
  */
-inline symbol_table_t new_symbol_table(void) { return new symbol_table_s; }
-inline void delete_symbol_table(symbol_table_t tbl) { delete tbl; }
+અંતઃરેખ પ્રતીક_table_t new_પ્રતીક_table(શૂન્ય) { પાછા new પ્રતીક_table_s; }
+અંતઃરેખ શૂન્ય delete_પ્રતીક_table(પ્રતીક_table_t tbl) { delete tbl; }
 
 // These are obsolete, and here only to support older code.
-inline void sym_set_value(symbol_table_t tbl, const char*key, symbol_value_t val)
-{ tbl->sym_set_value(key, val); }
+અંતઃરેખ શૂન્ય sym_set_કિંમત(પ્રતીક_table_t tbl, અચલ અક્ષર*ચાવી, પ્રતીક_કિંમત_t val)
+{ tbl->sym_set_કિંમત(ચાવી, val); }
 
-inline symbol_value_t sym_get_value(symbol_table_t tbl, const char*key)
-{ return tbl->sym_get_value(key); }
+અંતઃરેખ પ્રતીક_કિંમત_t sym_get_કિંમત(પ્રતીક_table_t tbl, અચલ અક્ષર*ચાવી)
+{ પાછા tbl->sym_get_કિંમત(ચાવી); }
 
 /*
  * This template is a type-safe interface to the symbol table.
  */
-template <class T> class symbol_map_s : private symbol_table_s {
+template <class T> class પ્રતીક_map_s : ખાનગી પ્રતીક_table_s {
 
-    public:
-      void sym_set_value(const char*key, T*val)
-      { symbol_value_t tmp;
+    જાહેર:
+      શૂન્ય sym_set_કિંમત(અચલ અક્ષર*ચાવી, T*val)
+      { પ્રતીક_કિંમત_t tmp;
 	tmp.ptr = val;
-	symbol_table_s::sym_set_value(key, tmp);
+	પ્રતીક_table_s::sym_set_કિંમત(ચાવી, tmp);
       }
 
-      T* sym_get_value(const char*key)
-      { symbol_value_t val = symbol_table_s::sym_get_value(key);
-	return reinterpret_cast<T*>(val.ptr);
+      T* sym_get_કિંમત(અચલ અક્ષર*ચાવી)
+      { પ્રતીક_કિંમત_t val = પ્રતીક_table_s::sym_get_કિંમત(ચાવી);
+	પાછા reinterpret_cast<T*>(val.ptr);
       }
 };
 

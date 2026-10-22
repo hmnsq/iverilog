@@ -21,23 +21,23 @@
 
 # include  "config.h"
 
-class sfunc_core : public vvp_wide_fun_core, protected vvp_gen_event_s {
+class sfunc_core : જાહેર vvp_wide_fun_core, સુરક્ષિત vvp_gen_event_s {
 
-    public:
+    જાહેર:
       sfunc_core(vvp_net_t*ptr, vpiHandle sys, unsigned argc, vpiHandle*argv);
       ~sfunc_core() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      શૂન્ય recv_vec4(vvp_net_ptr_t port, અચલ vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-    private:
-      void recv_vec4_from_inputs(unsigned port) override;
-      void recv_real_from_inputs(unsigned port) override;
+    ખાનગી:
+      શૂન્ય recv_vec4_from_inputs(unsigned port) override;
+      શૂન્ય recv_real_from_inputs(unsigned port) override;
 
-      void run_run() override;
+      શૂન્ય run_run() override;
 
 
-    private:
+    ખાનગી:
       vpiHandle sys_;
       unsigned  argc_;
       vpiHandle*argv_;
