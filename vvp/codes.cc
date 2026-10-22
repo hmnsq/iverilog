@@ -20,9 +20,9 @@
 # include  "codes.h"
 # include  "statistics.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#پایان_اگر
 # include  <cstring>
 # include  <cassert>
 
@@ -33,102 +33,102 @@
  * instruction to branch to the next chunk. This handles the case
  * where the program counter steps off the end of a chunk.
  */
-const unsigned code_chunk_size = 1024;
+ثابت بیعلامت کد_chunk_اندازه = 1024;
 
-static struct vvp_code_s *first_chunk = 0;
-static struct vvp_code_s *current_chunk = 0;
-static unsigned current_within_chunk = 0;
+ساكن بنية vvp_کد_s *اولی_chunk = 0;
+ساكن بنية vvp_کد_s *current_chunk = 0;
+ساكن بیعلامت current_within_chunk = 0;
 
 /*
  * This initializes the code space. It sets up the first code chunk,
  * and places at address 0 a ZOMBIE instruction.
  */
-void codespace_init(void)
+فراغ codespace_init(فراغ)
 {
-      assert(current_chunk == 0);
-      first_chunk = new struct vvp_code_s [code_chunk_size];
-      current_chunk = first_chunk;
+      أكد(current_chunk == 0);
+      اولی_chunk = جديد بنية vvp_کد_s [کد_chunk_اندازه];
+      current_chunk = اولی_chunk;
 
-      current_chunk[0].opcode = &of_ZOMBIE;
+      current_chunk[0].opcode = &از_ZOMBIE;
 
-      current_chunk[code_chunk_size-1].opcode = &of_CHUNK_LINK;
-      current_chunk[code_chunk_size-1].cptr = 0;
+      current_chunk[کد_chunk_اندازه-1].opcode = &از_CHUNK_LINK;
+      current_chunk[کد_chunk_اندازه-1].cptr = 0;
 
       current_within_chunk = 1;
 
-      count_opcodes = 0;
-      size_opcodes += code_chunk_size * sizeof (struct vvp_code_s);
+      شمار_opcodes = 0;
+      اندازه_opcodes += کد_chunk_اندازه * حجم (بنية vvp_کد_s);
 }
 
-vvp_code_t codespace_next(void)
+vvp_کد_t codespace_بعدی(فراغ)
 {
-      if (current_within_chunk == (code_chunk_size-1)) {
-	    current_chunk[code_chunk_size-1].cptr
-		  = new struct vvp_code_s [code_chunk_size];
-	    current_chunk = current_chunk[code_chunk_size-1].cptr;
+      إذا (current_within_chunk == (کد_chunk_اندازه-1)) {
+	    current_chunk[کد_chunk_اندازه-1].cptr
+		  = جديد بنية vvp_کد_s [کد_chunk_اندازه];
+	    current_chunk = current_chunk[کد_chunk_اندازه-1].cptr;
 
 	      /* Put a link opcode on the end of the chunk. */
-	    current_chunk[code_chunk_size-1].opcode = &of_CHUNK_LINK;
-	    current_chunk[code_chunk_size-1].cptr   = 0;
+	    current_chunk[کد_chunk_اندازه-1].opcode = &از_CHUNK_LINK;
+	    current_chunk[کد_chunk_اندازه-1].cptr   = 0;
 
 	    current_within_chunk = 0;
 
-	    size_opcodes += code_chunk_size * sizeof (struct vvp_code_s);
+	    اندازه_opcodes += کد_chunk_اندازه * حجم (بنية vvp_کد_s);
       }
 
-      vvp_code_t res = current_chunk + current_within_chunk;
-      return res;
+      vvp_کد_t res = current_chunk + current_within_chunk;
+      أرجع res;
 }
 
-vvp_code_t codespace_allocate(void)
+vvp_کد_t codespace_allocate(فراغ)
 {
-      vvp_code_t res = codespace_next();
+      vvp_کد_t res = codespace_بعدی();
       current_within_chunk += 1;
-      count_opcodes += 1;
+      شمار_opcodes += 1;
 
-      memset(res, 0, sizeof(*res));
+      memset(res, 0, حجم(*res));
 
-      return res;
+      أرجع res;
 }
 
-vvp_code_t codespace_null(void)
+vvp_کد_t codespace_null(فراغ)
 {
-      return first_chunk + 0;
+      أرجع اولی_chunk + 0;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void codespace_delete(void)
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
+فراغ codespace_delete(فراغ)
 {
-      vvp_code_t cur = first_chunk;
+      vvp_کد_t cur = اولی_chunk;
 
 	/* If there are no opcodes then just delete the code space. */
-      if (count_opcodes == 0) {
-	    delete [] cur;
-	    return;
+      إذا (شمار_opcodes == 0) {
+	    حذف [] cur;
+	    أرجع;
       }
 
-      do {
-	    vvp_code_t next = cur[code_chunk_size-1].cptr;
-	    for (unsigned idx = 0 ; idx < code_chunk_size; idx += 1) {
-		  count_opcodes -= 1;
-		  if ((cur+idx)->opcode == &of_VPI_CALL) {
+      افعل {
+	    vvp_کد_t بعدی_2 = cur[کد_chunk_اندازه-1].cptr;
+	    لكل (بیعلامت idx = 0 ; idx < کد_chunk_اندازه; idx += 1) {
+		  شمار_opcodes -= 1;
+		  إذا ((cur+idx)->opcode == &از_VPI_CALL) {
 			vpi_call_delete((cur+idx)->handle);
-		  } else if (((cur+idx)->opcode == &of_EXEC_UFUNC_REAL) ||
-		             ((cur+idx)->opcode == &of_EXEC_UFUNC_VEC4)) {
+		  } وإلا إذا (((cur+idx)->opcode == &از_EXEC_UFUNC_REAL) ||
+		             ((cur+idx)->opcode == &از_EXEC_UFUNC_VEC4)) {
 			exec_ufunc_delete((cur+idx));
-		  } else if ((cur+idx)->opcode == &of_FILE_LINE) {
-			delete((cur+idx)->handle);
-		  } else if (((cur+idx)->opcode == &of_CONCATI_STR) ||
-		             ((cur+idx)->opcode == &of_NEW_DARRAY) ||
-		             ((cur+idx)->opcode == &of_PUSHI_STR)) {
-			delete [] ((cur+idx)->text);
+		  } وإلا إذا ((cur+idx)->opcode == &از_FILE_سطر) {
+			حذف((cur+idx)->handle);
+		  } وإلا إذا (((cur+idx)->opcode == &از_CONCATI_STR) ||
+		             ((cur+idx)->opcode == &از_NEW_DARRAY) ||
+		             ((cur+idx)->opcode == &از_PUSHI_STR)) {
+			حذف [] ((cur+idx)->متن);
 		  }
-		  if (count_opcodes == 0) break;
+		  إذا (شمار_opcodes == 0) اكسر;
 	    }
 	      /* Don't count the &of_CHUNK_LINK opcode. */
-	    if (count_opcodes != 0) count_opcodes += 1;
-	    delete [] cur;
-	    cur = next;
-      } while (cur != 0);
+	    إذا (شمار_opcodes != 0) شمار_opcodes += 1;
+	    حذف [] cur;
+	    cur = بعدی_2;
+      } طالما (cur != 0);
 }
-#endif
+#پایان_اگر

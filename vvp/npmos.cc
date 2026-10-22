@@ -19,126 +19,126 @@
 
 # include  "npmos.h"
 
-vvp_fun_pmos_::vvp_fun_pmos_(bool enable_invert, bool resistive)
+vvp_fun_pmos_::vvp_fun_pmos_(منطقي enable_invert, منطقي resistive)
 {
       inv_en_ = enable_invert;
       resistive_ = resistive;
 }
 
 
-void vvp_fun_pmos_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+فراغ vvp_fun_pmos_::recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت,
                               vvp_context_t)
 {
 	/* Data input is processed through eh recv_vec8 method,
 	   because the strength must be preserved. */
-      if (ptr.port() == 0) {
-	    vvp_vector8_t tmp = vvp_vector8_t(bit,6,6);
+      إذا (ptr.پورت() == 0) {
+	    vvp_vector8_t tmp = vvp_vector8_t(بیت,6,6);
 	    recv_vec8(ptr, tmp);
-	    return;
+	    أرجع;
       }
 
-      if (ptr.port() != 1)
-	    return;
+      إذا (ptr.پورت() != 1)
+	    أرجع;
 
-      en_ = inv_en_? ~bit : bit;
+      en_ = inv_en_? ~بیت : بیت;
       generate_output_(ptr);
 }
 
-void vvp_fun_pmos_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			         unsigned base, unsigned vwid, vvp_context_t ctx)
+فراغ vvp_fun_pmos_::recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت,
+			         بیعلامت پایه, بیعلامت vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, بیت, پایه, vwid, ctx);
 }
 
-void vvp_fun_pmos_::recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-			         unsigned base, unsigned vwid)
+فراغ vvp_fun_pmos_::recv_vec8_pv(vvp_net_ptr_t ptr, ثابت vvp_vector8_t&بیت,
+			         بیعلامت پایه, بیعلامت vwid)
 {
-      recv_vec8_pv_(ptr, bit, base, vwid);
+      recv_vec8_pv_(ptr, بیت, پایه, vwid);
 }
 
-void vvp_fun_pmos_::recv_real(vvp_net_ptr_t ptr, double real,
+فراغ vvp_fun_pmos_::recv_real(vvp_net_ptr_t ptr, مزدوج real,
                               vvp_context_t ctx)
 {
-      recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
+      recv_vec4(ptr, double_مقصد_vector4_LSB(real), ctx);
 }
 
-void vvp_fun_pmos_::generate_output_(vvp_net_ptr_t ptr)
+فراغ vvp_fun_pmos_::generate_output_(vvp_net_ptr_t ptr)
 {
-      const unsigned*strength_map = vvp_switch_strength_map[resistive_];
+      ثابت بیعلامت*strength_map = vvp_switch_strength_map[resistive_];
 
-      vvp_vector8_t out (bit_.size());
+      vvp_vector8_t out (بیت_2.size());
 
-      for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
+      لكل (بیعلامت idx = 0 ;  idx < out.size() ;  idx += 1) {
 	    vvp_bit4_t   b_en  = en_.value(idx);
-	    vvp_scalar_t b_bit = bit_.value(idx);
+	    vvp_scalar_t b_بیت = بیت_2.value(idx);
 
-            b_bit = vvp_scalar_t(b_bit.value(),
-                                 strength_map[b_bit.strength0()],
-                                 strength_map[b_bit.strength1()]);
+            b_بیت = vvp_scalar_t(b_بیت.value(),
+                                 strength_map[b_بیت.strength0()],
+                                 strength_map[b_بیت.strength1()]);
 
-	    switch (b_en) {
-		case BIT4_0:
-		  out.set_bit(idx, b_bit);
-		  break;
-		case BIT4_1:
-		  out.set_bit(idx, vvp_scalar_t(BIT4_Z,0,0));
-		  break;
-		default:
-		  switch (b_bit.value()) {
-		      case BIT4_0:
-			b_bit = vvp_scalar_t(BIT4_X,b_bit.strength0(),0);
-			break;
-		      case BIT4_1:
-			b_bit = vvp_scalar_t(BIT4_X,0,b_bit.strength1());
-			break;
-		      default:
-			break;
+	    بدل (b_en) {
+		حالة BIT4_0:
+		  out.مجموعه_بیت(idx, b_بیت);
+		  اكسر;
+		حالة BIT4_1:
+		  out.مجموعه_بیت(idx, vvp_scalar_t(BIT4_Z,0,0));
+		  اكسر;
+		افتراضي:
+		  بدل (b_بیت.value()) {
+		      حالة BIT4_0:
+			b_بیت = vvp_scalar_t(BIT4_X,b_بیت.strength0(),0);
+			اكسر;
+		      حالة BIT4_1:
+			b_بیت = vvp_scalar_t(BIT4_X,0,b_بیت.strength1());
+			اكسر;
+		      افتراضي:
+			اكسر;
 		  }
-		  out.set_bit(idx, b_bit);
-		  break;
+		  out.مجموعه_بیت(idx, b_بیت);
+		  اكسر;
 	    }
       }
 
-      if (out.size() > 0)
+      إذا (out.size() > 0)
 	    ptr.ptr()->send_vec8(out);
 }
 
 
-vvp_fun_pmos::vvp_fun_pmos(bool enable_invert)
-: vvp_fun_pmos_(enable_invert, false)
+vvp_fun_pmos::vvp_fun_pmos(منطقي enable_invert)
+: vvp_fun_pmos_(enable_invert, خطأ)
 {
 }
 
-void vvp_fun_pmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+فراغ vvp_fun_pmos::recv_vec8(vvp_net_ptr_t ptr, ثابت vvp_vector8_t&بیت)
 {
-      if (ptr.port() == 1) {
-	    recv_vec4(ptr, reduce4(bit), 0);
-	    return;
+      إذا (ptr.پورت() == 1) {
+	    recv_vec4(ptr, reduce4(بیت), 0);
+	    أرجع;
       }
 
-      if (ptr.port() != 0)
-	    return;
+      إذا (ptr.پورت() != 0)
+	    أرجع;
 
-      bit_ = bit;
+      بیت_2 = بیت;
       generate_output_(ptr);
 }
 
-vvp_fun_rpmos::vvp_fun_rpmos(bool enable_invert)
-: vvp_fun_pmos_(enable_invert, true)
+vvp_fun_rpmos::vvp_fun_rpmos(منطقي enable_invert)
+: vvp_fun_pmos_(enable_invert, درست)
 {
 }
 
-void vvp_fun_rpmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+فراغ vvp_fun_rpmos::recv_vec8(vvp_net_ptr_t ptr, ثابت vvp_vector8_t&بیت)
 {
-      if (ptr.port() == 1) {
-	    recv_vec4(ptr, reduce4(bit), 0);
-	    return;
+      إذا (ptr.پورت() == 1) {
+	    recv_vec4(ptr, reduce4(بیت), 0);
+	    أرجع;
       }
 
-      if (ptr.port() != 0)
-	    return;
+      إذا (ptr.پورت() != 0)
+	    أرجع;
 
-      bit_ = bit;
+      بیت_2 = بیت;
       generate_output_(ptr);
 }
 
@@ -147,122 +147,122 @@ void vvp_fun_rpmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
  * CMOS primitive.
  */
 
-vvp_fun_cmos_::vvp_fun_cmos_(bool resistive)
+vvp_fun_cmos_::vvp_fun_cmos_(منطقي resistive)
 {
       resistive_ = resistive;
 }
 
-void vvp_fun_cmos_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t &bit,
+فراغ vvp_fun_cmos_::recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t &بیت,
                               vvp_context_t)
 {
 	/* Data input is processed through the recv_vec8 method,
 	   because the strength must be preserved. */
-      if (ptr.port() == 0) {
-	    vvp_vector8_t tmp = vvp_vector8_t(bit,6,6);
+      إذا (ptr.پورت() == 0) {
+	    vvp_vector8_t tmp = vvp_vector8_t(بیت,6,6);
 	    recv_vec8(ptr, tmp);
-	    return;
+	    أرجع;
       }
 
-      if (ptr.port() != 1 && ptr.port() != 2)
-	    return;
+      إذا (ptr.پورت() != 1 && ptr.پورت() != 2)
+	    أرجع;
 
-      if (ptr.port() == 1)
-	    n_en_ = bit;
-      else
-	    p_en_ = bit;
+      إذا (ptr.پورت() == 1)
+	    n_en_ = بیت;
+      وإلا
+	    p_en_ = بیت;
       generate_output_(ptr);
 }
 
-void vvp_fun_cmos_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			         unsigned base, unsigned vwid, vvp_context_t ctx)
+فراغ vvp_fun_cmos_::recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت,
+			         بیعلامت پایه, بیعلامت vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, بیت, پایه, vwid, ctx);
 }
 
-void vvp_fun_cmos_::recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-			         unsigned base, unsigned vwid)
+فراغ vvp_fun_cmos_::recv_vec8_pv(vvp_net_ptr_t ptr, ثابت vvp_vector8_t&بیت,
+			         بیعلامت پایه, بیعلامت vwid)
 {
-      recv_vec8_pv_(ptr, bit, base, vwid);
+      recv_vec8_pv_(ptr, بیت, پایه, vwid);
 }
 
-void vvp_fun_cmos_::recv_real(vvp_net_ptr_t ptr, double real,
+فراغ vvp_fun_cmos_::recv_real(vvp_net_ptr_t ptr, مزدوج real,
                               vvp_context_t ctx)
 {
-      recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
+      recv_vec4(ptr, double_مقصد_vector4_LSB(real), ctx);
 }
 
-void vvp_fun_cmos_::generate_output_(vvp_net_ptr_t ptr)
+فراغ vvp_fun_cmos_::generate_output_(vvp_net_ptr_t ptr)
 {
-      const unsigned*strength_map = vvp_switch_strength_map[resistive_];
+      ثابت بیعلامت*strength_map = vvp_switch_strength_map[resistive_];
 
-      vvp_vector8_t out (bit_.size());
+      vvp_vector8_t out (بیت_2.size());
 
-      for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
+      لكل (بیعلامت idx = 0 ;  idx < out.size() ;  idx += 1) {
 	    vvp_bit4_t   b_n_en  = n_en_.value(idx);
 	    vvp_bit4_t   b_p_en  = p_en_.value(idx);
-	    vvp_scalar_t b_bit = bit_.value(idx);
+	    vvp_scalar_t b_بیت = بیت_2.value(idx);
 
-            b_bit = vvp_scalar_t(b_bit.value(),
-                                 strength_map[b_bit.strength0()],
-                                 strength_map[b_bit.strength1()]);
+            b_بیت = vvp_scalar_t(b_بیت.value(),
+                                 strength_map[b_بیت.strength0()],
+                                 strength_map[b_بیت.strength1()]);
 
-	    if (b_n_en == BIT4_1 || b_p_en == BIT4_0) {
-		  out.set_bit(idx, b_bit);
-	    } else if (b_n_en == BIT4_0 && b_p_en == BIT4_1) {
-		  out.set_bit(idx, vvp_scalar_t(BIT4_Z,0,0));
-	    } else {
-		  switch (b_bit.value()) {
-		      case BIT4_0:
-			b_bit = vvp_scalar_t(BIT4_X,b_bit.strength0(),0);
-			break;
-		      case BIT4_1:
-			b_bit = vvp_scalar_t(BIT4_X,0,b_bit.strength1());
-			break;
-		      default:
-			break;
+	    إذا (b_n_en == BIT4_1 || b_p_en == BIT4_0) {
+		  out.مجموعه_بیت(idx, b_بیت);
+	    } وإلا إذا (b_n_en == BIT4_0 && b_p_en == BIT4_1) {
+		  out.مجموعه_بیت(idx, vvp_scalar_t(BIT4_Z,0,0));
+	    } وإلا {
+		  بدل (b_بیت.value()) {
+		      حالة BIT4_0:
+			b_بیت = vvp_scalar_t(BIT4_X,b_بیت.strength0(),0);
+			اكسر;
+		      حالة BIT4_1:
+			b_بیت = vvp_scalar_t(BIT4_X,0,b_بیت.strength1());
+			اكسر;
+		      افتراضي:
+			اكسر;
 		  }
-		  out.set_bit(idx, b_bit);
+		  out.مجموعه_بیت(idx, b_بیت);
 	    }
       }
 
-      if (out.size() > 0)
+      إذا (out.size() > 0)
 	    ptr.ptr()->send_vec8(out);
 }
 
 vvp_fun_cmos::vvp_fun_cmos()
-: vvp_fun_cmos_(false)
+: vvp_fun_cmos_(خطأ)
 {
 }
 
-void vvp_fun_cmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+فراغ vvp_fun_cmos::recv_vec8(vvp_net_ptr_t ptr, ثابت vvp_vector8_t&بیت)
 {
-      if (ptr.port() == 1 || ptr.port() == 2) {
-	    recv_vec4(ptr, reduce4(bit), 0);
-	    return;
+      إذا (ptr.پورت() == 1 || ptr.پورت() == 2) {
+	    recv_vec4(ptr, reduce4(بیت), 0);
+	    أرجع;
       }
 
-      if (ptr.port() != 0)
-	    return;
+      إذا (ptr.پورت() != 0)
+	    أرجع;
 
-      bit_ = bit;
+      بیت_2 = بیت;
       generate_output_(ptr);
 }
 
 vvp_fun_rcmos::vvp_fun_rcmos()
-: vvp_fun_cmos_(true)
+: vvp_fun_cmos_(درست)
 {
 }
 
-void vvp_fun_rcmos::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+فراغ vvp_fun_rcmos::recv_vec8(vvp_net_ptr_t ptr, ثابت vvp_vector8_t&بیت)
 {
-      if (ptr.port() == 1) {
-	    recv_vec4(ptr, reduce4(bit), 0);
-	    return;
+      إذا (ptr.پورت() == 1) {
+	    recv_vec4(ptr, reduce4(بیت), 0);
+	    أرجع;
       }
 
-      if (ptr.port() != 0)
-	    return;
+      إذا (ptr.پورت() != 0)
+	    أرجع;
 
-      bit_ = bit;
+      بیت_2 = بیت;
       generate_output_(ptr);
 }

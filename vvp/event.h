@@ -1,5 +1,5 @@
-#ifndef IVL_event_H
-#define IVL_event_H
+#اگر_تعریف_نشده IVL_event_H
+#تعریف_کن IVL_event_H
 /*
  * Copyright (c) 2004-2025 Stephen Williams (steve@icarus.com)
  *
@@ -26,88 +26,88 @@
 
 class evctl {
 
-    public:
+    عام:
       explicit evctl(uint64_t ecount);
-      bool dec_and_run();
-      virtual void run_run() = 0;
-      virtual ~evctl() {}
-      evctl*next;
+      bool dec_and_پیاپی();
+      مجازی فراغ پیاپی_پیاپی() = 0;
+      مجازی ~evctl() {}
+      evctl*بعدی_2;
 
-    private:
+    خاص:
       uint64_t ecount_;
 };
 
-class evctl_real : public evctl {
+class evctl_real : عام evctl {
 
-    public:
-      explicit evctl_real(class __vpiHandle*handle, double value,
+    عام:
+      explicit evctl_real(class __vpiHandle*handle, مزدوج مقدار,
                           uint64_t ecount);
-      virtual ~evctl_real() override {}
-      void run_run() override;
+      مجازی ~evctl_real() override {}
+      فراغ پیاپی_پیاپی() override;
 
-    private:
+    خاص:
       class __vpiHandle*handle_;
-      double value_;
+      مزدوج مقدار_2;
 };
 
-class evctl_vector : public evctl {
+class evctl_وکتور : عام evctl {
 
-    public:
-      explicit evctl_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
-                            unsigned off, unsigned wid, uint64_t ecount);
-      virtual ~evctl_vector() override {}
-      void run_run() override;
+    عام:
+      explicit evctl_وکتور(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&مقدار,
+                            بیعلامت off, بیعلامت wid, uint64_t ecount);
+      مجازی ~evctl_وکتور() override {}
+      فراغ پیاپی_پیاپی() override;
 
-    private:
+    خاص:
       vvp_net_ptr_t ptr_;
-      vvp_vector4_t value_;
-      unsigned off_;
-      unsigned wid_;
+      vvp_vector4_t مقدار_2;
+      بیعلامت off_;
+      بیعلامت wid_;
 };
 
-class evctl_array : public evctl {
+class evctl_array : عام evctl {
 
-    public:
-      explicit evctl_array(vvp_array_t memory, unsigned index,
-                           const vvp_vector4_t&value, unsigned off,
+    عام:
+      explicit evctl_array(vvp_array_t حافظه, بیعلامت شاخص,
+                           ثابت vvp_vector4_t&مقدار, بیعلامت off,
                            uint64_t ecount);
-      virtual ~evctl_array() override {}
-      virtual void run_run() override;
+      مجازی ~evctl_array() override {}
+      مجازی فراغ پیاپی_پیاپی() override;
 
-    private:
+    خاص:
       vvp_array_t mem_;
-      unsigned idx_;
-      vvp_vector4_t value_;
-      unsigned off_;
+      بیعلامت idx_;
+      vvp_vector4_t مقدار_2;
+      بیعلامت off_;
 };
 
-class evctl_array_r : public evctl {
+class evctl_array_r : عام evctl {
 
-    public:
-      explicit evctl_array_r(vvp_array_t memory, unsigned index,
-                           double value, uint64_t ecount);
-      virtual ~evctl_array_r() override {}
-      virtual void run_run() override;
+    عام:
+      explicit evctl_array_r(vvp_array_t حافظه, بیعلامت شاخص,
+                           مزدوج مقدار, uint64_t ecount);
+      مجازی ~evctl_array_r() override {}
+      مجازی فراغ پیاپی_پیاپی() override;
 
-    private:
+    خاص:
       vvp_array_t mem_;
-      unsigned idx_;
-      double value_;
+      بیعلامت idx_;
+      مزدوج مقدار_2;
 };
 
-extern void schedule_evctl(class __vpiHandle*handle, double value,
+خارجي فراغ زمانبندی_evctl(class __vpiHandle*handle, مزدوج مقدار,
                            vvp_net_t*event, uint64_t ecount);
 
-extern void schedule_evctl(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
-                           unsigned offset, unsigned wid,
+خارجي فراغ زمانبندی_evctl(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&مقدار,
+                           بیعلامت جابه_جایی_2, بیعلامت wid,
                            vvp_net_t*event, uint64_t ecount);
 
-extern void schedule_evctl(vvp_array_t memory, unsigned index,
-                           const vvp_vector4_t&value, unsigned offset,
+خارجي فراغ زمانبندی_evctl(vvp_array_t حافظه, بیعلامت شاخص,
+                           ثابت vvp_vector4_t&مقدار, بیعلامت جابه_جایی_2,
                            vvp_net_t*event, uint64_t ecount);
 
-extern void schedule_evctl(vvp_array_t memory, unsigned index,
-                           double value,
+خارجي فراغ زمانبندی_evctl(vvp_array_t حافظه, بیعلامت شاخص,
+                           مزدوج مقدار,
                            vvp_net_t*event, uint64_t ecount);
 
 /*
@@ -118,19 +118,19 @@ extern void schedule_evctl(vvp_array_t memory, unsigned index,
  * A "waitable" functor is one that the %wait instruction can wait
  * on. This includes the infrastructure needed to hold threads.
  */
-struct waitable_hooks_s {
+بنية waitable_hooks_s {
 
-    public:
-      waitable_hooks_s() : event_ctls(0) { last = &event_ctls; }
-      virtual ~waitable_hooks_s() {}
+    عام:
+      waitable_hooks_s() : event_ctls(0) { آخرین = &event_ctls; }
+      مجازی ~waitable_hooks_s() {}
 
-      virtual vthread_t add_waiting_thread(vthread_t thread) = 0;
+      مجازی vthread_t جمع_کن_انتظار_thread(vthread_t thread) = 0;
 
       evctl*event_ctls;
-      evctl**last;
+      evctl**آخرین;
 
-    protected:
-      void run_waiting_threads_(vthread_t&threads);
+    محمي:
+      فراغ پیاپی_انتظار_نخها(vthread_t&نخها);
 };
 
 /*
@@ -138,10 +138,10 @@ struct waitable_hooks_s {
  * of an automatically allocated event. In the general case, all that is
  * needed is the list of threads waiting on that instance.
  */
-struct waitable_state_s {
-      waitable_state_s() : threads(0) {}
+بنية waitable_state_s {
+      waitable_state_s() : نخها(0) {}
 
-      vthread_t threads;
+      vthread_t نخها;
 };
 
 /*
@@ -149,78 +149,78 @@ struct waitable_state_s {
  * types. This should be hooked to a vvp_net_t that is connected to
  * the output of a signal that we wish to watch for edges.
  */
-class vvp_fun_edge : public vvp_net_fun_t, public waitable_hooks_s {
+class vvp_fun_یال : عام vvp_net_fun_t, عام waitable_hooks_s {
 
-    public:
-      typedef unsigned short edge_t;
-      explicit vvp_fun_edge(edge_t e);
-      virtual ~vvp_fun_edge() override;
+    عام:
+      تعريفنوع بیعلامت کوتاه یال_t;
+      explicit vvp_fun_یال(یال_t e);
+      مجازی ~vvp_fun_یال() override;
 
-    protected:
-      bool recv_vec4_(const vvp_vector4_t&bit,
-                      vvp_bit4_t&old_bit, vthread_t&threads);
+    محمي:
+      bool recv_vec4_(ثابت vvp_vector4_t&بیت,
+                      vvp_bit4_t&old_بیت, vthread_t&نخها);
 
-      vvp_bit4_t bits_[4];
+      vvp_bit4_t بیتها_2[4];
 
-    private:
-      edge_t edge_;
+    خاص:
+      یال_t یال_2;
 };
 
-extern const vvp_fun_edge::edge_t vvp_edge_edge;
-extern const vvp_fun_edge::edge_t vvp_edge_posedge;
-extern const vvp_fun_edge::edge_t vvp_edge_negedge;
-extern const vvp_fun_edge::edge_t vvp_edge_none;
+خارجي ثابت vvp_fun_یال::یال_t vvp_یال_یال;
+خارجي ثابت vvp_fun_یال::یال_t vvp_یال_posedge;
+خارجي ثابت vvp_fun_یال::یال_t vvp_یال_negedge;
+خارجي ثابت vvp_fun_یال::یال_t vvp_یال_none;
 
 /*
  * Statically allocated vvp_fun_edge.
  */
-class vvp_fun_edge_sa : public vvp_fun_edge {
+class vvp_fun_یال_sa : عام vvp_fun_یال {
 
-    public:
-      explicit vvp_fun_edge_sa(edge_t e);
-      virtual ~vvp_fun_edge_sa() override;
+    عام:
+      explicit vvp_fun_یال_sa(یال_t e);
+      مجازی ~vvp_fun_یال_sa() override;
 
-      vthread_t add_waiting_thread(vthread_t thread) override;
+      vthread_t جمع_کن_انتظار_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t context) override;
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t context) override;
+      فراغ recv_vec4_pv(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
+			بیعلامت پایه, بیعلامت vwid, vvp_context_t context) override;
 
-    private:
-      vthread_t threads_;
+    خاص:
+      vthread_t نخها_2;
 };
 
 /*
  * Automatically allocated vvp_fun_edge.
  */
-class vvp_fun_edge_aa : public vvp_fun_edge, public automatic_hooks_s {
+class vvp_fun_یال_aa : عام vvp_fun_یال, عام automatic_hooks_s {
 
-    public:
-      explicit vvp_fun_edge_aa(edge_t e);
-      virtual ~vvp_fun_edge_aa() override;
+    عام:
+      explicit vvp_fun_یال_aa(یال_t e);
+      مجازی ~vvp_fun_یال_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+      فراغ alloc_instance(vvp_context_t context) override;
+      فراغ reset_instance(vvp_context_t context) override;
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
+      فراغ free_instance(vvp_context_t context) override;
+#پایان_اگر
 
-      vthread_t add_waiting_thread(vthread_t thread) override;
+      vthread_t جمع_کن_انتظار_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t context) override;
 
-    private:
+    خاص:
       __vpiScope*context_scope_;
-      unsigned context_idx_;
+      بیعلامت context_idx_;
 };
 
 /*
  * This is the base object for storing the last received values for a
  * vvp_fun_anyedge functor.
  */
-class anyedge_value;
+class anyedge_مقدار;
 
 /*
  * The vvp_fun_anyedge functor checks to see if any value in an input
@@ -232,73 +232,73 @@ class anyedge_value;
  * values. In this case, any detectable change in the real value leads
  * to an event trigger.
  */
-class vvp_fun_anyedge : public vvp_net_fun_t, public waitable_hooks_s {
+class vvp_fun_anyedge : عام vvp_net_fun_t, عام waitable_hooks_s {
 
-    public:
+    عام:
       explicit vvp_fun_anyedge();
-      virtual ~vvp_fun_anyedge() override;
+      مجازی ~vvp_fun_anyedge() override;
 
-    protected:
-      anyedge_value*last_value_[4];
+    محمي:
+      anyedge_مقدار*آخرین_مقدار[4];
 };
 
 /*
  * Statically allocated vvp_fun_anyedge.
  */
-class vvp_fun_anyedge_sa : public vvp_fun_anyedge {
+class vvp_fun_anyedge_sa : عام vvp_fun_anyedge {
 
-    public:
+    عام:
       explicit vvp_fun_anyedge_sa();
-      virtual ~vvp_fun_anyedge_sa() override;
+      مجازی ~vvp_fun_anyedge_sa() override;
 
-      vthread_t add_waiting_thread(vthread_t thread) override;
+      vthread_t جمع_کن_انتظار_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t context) override;
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t context) override;
+      فراغ recv_vec4_pv(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
+			بیعلامت پایه, بیعلامت vwid, vvp_context_t context) override;
 
-      void recv_real(vvp_net_ptr_t port, double bit,
+      فراغ recv_real(vvp_net_ptr_t پورت, مزدوج بیت,
                      vvp_context_t context) override;
 
-      void recv_string(vvp_net_ptr_t port, const std::string&bit,
+      فراغ recv_string(vvp_net_ptr_t پورت, ثابت std::string&بیت,
 		       vvp_context_t context) override;
-      void recv_object(vvp_net_ptr_t port, vvp_object_t bit,
+      فراغ recv_object(vvp_net_ptr_t پورت, vvp_object_t بیت,
 		       vvp_context_t context) override;
 
-    private:
-      vthread_t threads_;
+    خاص:
+      vthread_t نخها_2;
 };
 
 /*
  * Automatically allocated vvp_fun_anyedge.
  */
-class vvp_fun_anyedge_aa : public vvp_fun_anyedge, public automatic_hooks_s {
+class vvp_fun_anyedge_aa : عام vvp_fun_anyedge, عام automatic_hooks_s {
 
-    public:
+    عام:
       explicit vvp_fun_anyedge_aa();
-      virtual ~vvp_fun_anyedge_aa() override;
+      مجازی ~vvp_fun_anyedge_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+      فراغ alloc_instance(vvp_context_t context) override;
+      فراغ reset_instance(vvp_context_t context) override;
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
+      فراغ free_instance(vvp_context_t context) override;
+#پایان_اگر
 
-      vthread_t add_waiting_thread(vthread_t thread) override;
+      vthread_t جمع_کن_انتظار_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t context) override;
 
-      void recv_real(vvp_net_ptr_t port, double bit,
+      فراغ recv_real(vvp_net_ptr_t پورت, مزدوج بیت,
                      vvp_context_t context) override;
 
-      void recv_string(vvp_net_ptr_t port, const std::string&bit,
+      فراغ recv_string(vvp_net_ptr_t پورت, ثابت std::string&بیت,
 		       vvp_context_t context) override;
 
-    private:
+    خاص:
       __vpiScope*context_scope_;
-      unsigned context_idx_;
+      بیعلامت context_idx_;
 };
 
 /*
@@ -307,57 +307,57 @@ class vvp_fun_anyedge_aa : public vvp_fun_anyedge, public automatic_hooks_s {
  * supports wide (more than 4) inputs, so needs a pointer to the base
  * net that is used for output.
  */
-class vvp_fun_event_or : public vvp_net_fun_t, public waitable_hooks_s {
+class vvp_fun_event_or : عام vvp_net_fun_t, عام waitable_hooks_s {
 
-    public:
-      explicit vvp_fun_event_or(vvp_net_t*base_net);
+    عام:
+      explicit vvp_fun_event_or(vvp_net_t*پایه_net);
       ~vvp_fun_event_or() override;
 
-    protected:
-      vvp_net_t*base_net_;
+    محمي:
+      vvp_net_t*پایه_net_2;
 };
 
 /*
  * Statically allocated vvp_fun_event_or.
  */
-class vvp_fun_event_or_sa : public vvp_fun_event_or {
+class vvp_fun_event_or_sa : عام vvp_fun_event_or {
 
-    public:
-      explicit vvp_fun_event_or_sa(vvp_net_t*base_net);
+    عام:
+      explicit vvp_fun_event_or_sa(vvp_net_t*پایه_net);
       ~vvp_fun_event_or_sa() override;
 
-      vthread_t add_waiting_thread(vthread_t thread) override;
+      vthread_t جمع_کن_انتظار_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t context) override;
 
-    private:
-      vthread_t threads_;
+    خاص:
+      vthread_t نخها_2;
 };
 
 /*
  * Automatically allocated vvp_fun_event_or.
  */
-class vvp_fun_event_or_aa : public vvp_fun_event_or, public automatic_hooks_s {
+class vvp_fun_event_or_aa : عام vvp_fun_event_or, عام automatic_hooks_s {
 
-    public:
-      explicit vvp_fun_event_or_aa(vvp_net_t*base_net);
+    عام:
+      explicit vvp_fun_event_or_aa(vvp_net_t*پایه_net);
       ~vvp_fun_event_or_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+      فراغ alloc_instance(vvp_context_t context) override;
+      فراغ reset_instance(vvp_context_t context) override;
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
+      فراغ free_instance(vvp_context_t context) override;
+#پایان_اگر
 
-      vthread_t add_waiting_thread(vthread_t thread) override;
+      vthread_t جمع_کن_انتظار_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t context) override;
 
-    private:
+    خاص:
       __vpiScope*context_scope_;
-      unsigned context_idx_;
+      بیعلامت context_idx_;
 };
 
 /*
@@ -365,56 +365,56 @@ class vvp_fun_event_or_aa : public vvp_fun_event_or, public automatic_hooks_s {
  * any input at all to port-0. The idea here is that behavioral code
  * can use a %set/v instruction to trigger the event.
  */
-class vvp_named_event : public vvp_net_fun_t, public waitable_hooks_s {
+class vvp_named_event : عام vvp_net_fun_t, عام waitable_hooks_s {
 
-    public:
+    عام:
       explicit vvp_named_event(class __vpiHandle*eh);
       ~vvp_named_event() override;
 
-    protected:
+    محمي:
       class __vpiHandle*handle_;
 };
 
 /*
  * Statically allocated vvp_named_event.
  */
-class vvp_named_event_sa : public vvp_named_event {
+class vvp_named_event_sa : عام vvp_named_event {
 
-    public:
+    عام:
       explicit vvp_named_event_sa(class __vpiHandle*eh);
       ~vvp_named_event_sa() override;
 
-      vthread_t add_waiting_thread(vthread_t thread) override;
+      vthread_t جمع_کن_انتظار_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t) override;
 
-    private:
-      vthread_t threads_;
+    خاص:
+      vthread_t نخها_2;
 };
 
 /*
  * Automatically allocated vvp_named_event.
  */
-class vvp_named_event_aa : public vvp_named_event, public automatic_hooks_s {
+class vvp_named_event_aa : عام vvp_named_event, عام automatic_hooks_s {
 
-    public:
+    عام:
       explicit vvp_named_event_aa(class __vpiHandle*eh);
       ~vvp_named_event_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+      فراغ alloc_instance(vvp_context_t context) override;
+      فراغ reset_instance(vvp_context_t context) override;
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
+      فراغ free_instance(vvp_context_t context) override;
+#پایان_اگر
 
-      vthread_t add_waiting_thread(vthread_t thread) override;
+      vthread_t جمع_کن_انتظار_thread(vthread_t thread) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t context) override;
 
-    private:
-      unsigned context_idx_;
+    خاص:
+      بیعلامت context_idx_;
 };
 
-#endif /* IVL_event_H */
+#پایان_اگر /* IVL_event_H */

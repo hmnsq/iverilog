@@ -19,32 +19,32 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef ARRAY_COMMON_H
-#define ARRAY_COMMON_H
+#اگر_تعریف_نشده ARRAY_COMMON_H
+#تعریف_کن ARRAY_COMMON_H
 
-#include "vpi_priv.h"
+#ضمن "vpi_priv.h"
 
-struct __vpiArrayIterator : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+بنية __vpiArrayIterator : عام __vpiHandle {
+      صحيح get_type_کد(فراغ) ثابت override
+      { أرجع vpiIterator; }
 
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+      vpiHandle vpi_شاخص(صحيح idx) override;
+      free_object_fun_t free_object_fun(فراغ) override;
 
-      struct __vpiArrayBase*array;
-      unsigned next;
+      بنية __vpiArrayBase*array;
+      بیعلامت بعدی_2;
 };
 
-struct __vpiArrayIndex : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+بنية __vpiArrayIndex : عام __vpiHandle {
+      صحيح get_type_کد(فراغ) ثابت override
+      { أرجع vpiIterator; }
 
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+      vpiHandle vpi_iterate(صحيح کد) override;
+      vpiHandle vpi_شاخص(صحيح idx) override;
+      free_object_fun_t free_object_fun(فراغ) override;
 
-      __vpiDecConst *index;
-      unsigned done;
+      __vpiDecConst *شاخص;
+      بیعلامت انجامشده;
 };
 
 /*
@@ -68,31 +68,31 @@ struct __vpiArrayIndex : public __vpiHandle {
  * of vpi functions is bound to the same structure. All the details
  * for the word also apply when treating this as an index.
  */
-struct __vpiArrayWord {
-      struct as_word_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiMemoryWord; }
-	    int vpi_get(int code) override;
-	    char*vpi_get_str(int code) override;
-	    void vpi_get_value(p_vpi_value vp) override;
-	    vpiHandle vpi_put_value(p_vpi_value vp, int flags) override;
-	    vpiHandle vpi_handle(int code) override;
-      } as_word;
+بنية __vpiArrayWord {
+      بنية as_کلمه_t : عام __vpiHandle {
+	    صحيح get_type_کد(فراغ) ثابت override { أرجع vpi_حافظه_کلمه; }
+	    صحيح vpi_get(صحيح کد) override;
+	    حرف*vpi_get_str(صحيح کد) override;
+	    فراغ vpi_get_مقدار(p_vpi_مقدار vp) override;
+	    vpiHandle vpi_put_مقدار(p_vpi_مقدار vp, صحيح flags) override;
+	    vpiHandle vpi_handle(صحيح کد) override;
+      } as_کلمه;
 
-      struct as_index_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiIndex; }
-	    void vpi_get_value(p_vpi_value val) override;
-      } as_index;
+      بنية as_شاخص_t : عام __vpiHandle {
+	    صحيح get_type_کد(فراغ) ثابت override { أرجع vpi_شاخص_2; }
+	    فراغ vpi_get_مقدار(p_vpi_مقدار val) override;
+      } as_شاخص;
 
-      union {
-	    struct __vpiArrayBase*parent;
-	    struct __vpiArrayWord*word0;
+      اتحاد {
+	    بنية __vpiArrayBase*والد;
+	    بنية __vpiArrayWord*word0;
       };
 
-      inline unsigned get_index() const { return this - word0; }
-      inline struct __vpiArrayBase*get_parent() const { return (word0 - 1)->parent; }
+      مضمن بیعلامت get_شاخص() ثابت { أرجع this - word0; }
+      مضمن بنية __vpiArrayBase*get_والد() ثابت { أرجع (word0 - 1)->والد; }
 };
 
-struct __vpiArrayWord*array_var_word_from_handle(vpiHandle ref);
-struct __vpiArrayWord*array_var_index_from_handle(vpiHandle ref);
+بنية __vpiArrayWord*array_var_کلمه_from_handle(vpiHandle ref);
+بنية __vpiArrayWord*array_var_شاخص_from_handle(vpiHandle ref);
 
-#endif /* ARRAY_COMMON_H */
+#پایان_اگر /* ARRAY_COMMON_H */

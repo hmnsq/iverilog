@@ -30,18 +30,18 @@
 # include  <cstdlib>
 # include  <cassert>
 # include  <iostream>
-#ifdef CHECK_WITH_VALGRIND
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
 # include  "ivl_alloc.h"
-#endif
+#پایان_اگر
 
-using namespace std;
+استفاده نطاق std;
 
-unsigned long count_assign_events = 0;
-unsigned long count_gen_events = 0;
-unsigned long count_thread_events = 0;
+بیعلامت دراز شمار_تخصیص_بده_events = 0;
+بیعلامت دراز شمار_gen_events = 0;
+بیعلامت دراز شمار_thread_events = 0;
   // Count the time events (A time cell created)
-unsigned long count_time_events = 0;
+بیعلامت دراز شمار_زمان_events = 0;
 
 
 
@@ -55,126 +55,126 @@ unsigned long count_time_events = 0;
  * The event_s objects are base classes for the more specific sort of
  * event.
  */
-struct event_s {
-      struct event_s*next;
-      virtual ~event_s() { }
-      virtual void run_run(void) =0;
+بنية event_s {
+      بنية event_s*بعدی_2;
+      مجازی ~event_s() { }
+      مجازی فراغ پیاپی_پیاپی(فراغ) =0;
 
 	// Write something about the event to stderr
-      virtual void single_step_display(void);
+      مجازی فراغ single_گام_display(فراغ);
 
 	// Fallback new/delete
-      static void*operator new (size_t size) { return ::new char[size]; }
-      static void operator delete(void*ptr)  { ::delete[]( static_cast<char*>(ptr) ); }
+      ساكن فراغ*عملگر جديد (size_t size) { أرجع ::جديد حرف[size]; }
+      ساكن فراغ عملگر حذف(فراغ*ptr)  { ::حذف[]( static_cast<حرف*>(ptr) ); }
 };
 
-void event_s::single_step_display(void)
+فراغ event_s::single_گام_display(فراغ)
 {
-      std::cerr << "event_s: Step into event " << typeid(*this).name() << std::endl;
+      std::cerr << "event_s: Step into event " << typeid(*هذا).name() << std::پایان_سطر;
 }
 
-struct event_time_s {
-      event_time_s() {
-	    count_time_events += 1;
+بنية event_زمان_s {
+      event_زمان_s() {
+	    شمار_زمان_events += 1;
 	    delay = 0;
-	    start = 0;
-	    active = 0;
+	    شروع = 0;
+	    فعال = 0;
 	    inactive = 0;
 	    nbassign = 0;
 	    rwsync = 0;
 	    rosync = 0;
 	    del_thr = 0;
-	    next = NULL;
+	    بعدی_2 = عدم;
       }
       vvp_time64_t delay;
 
-      struct event_s*start;
-      struct event_s*active;
-      struct event_s*inactive;
-      struct event_s*nbassign;
-      struct event_s*rwsync;
-      struct event_s*rosync;
-      struct event_s*del_thr;
+      بنية event_s*شروع;
+      بنية event_s*فعال;
+      بنية event_s*inactive;
+      بنية event_s*nbassign;
+      بنية event_s*rwsync;
+      بنية event_s*rosync;
+      بنية event_s*del_thr;
 
-      struct event_time_s*next;
+      بنية event_زمان_s*بعدی_2;
 
-      static void* operator new (size_t);
-      static void operator delete(void*obj, size_t s);
+      ساكن فراغ* عملگر جديد (size_t);
+      ساكن فراغ عملگر حذف(فراغ*obj, size_t s);
 };
 
 vvp_gen_event_s::~vvp_gen_event_s()
 {
 }
 
-void vvp_gen_event_s::single_step_display(void)
+فراغ vvp_gen_event_s::single_گام_display(فراغ)
 {
-      cerr << "vvp_gen_event_s: Step into event " << typeid(*this).name() << endl;
+      cerr << "vvp_gen_event_s: Step into event " << typeid(*هذا).name() << پایان_سطر;
 }
 
 /*
  * Derived event types
  */
-struct vthread_event_s : public event_s {
+بنية vthread_event_s : عام event_s {
       vthread_t thr;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      فراغ پیاپی_پیاپی(فراغ) override;
+      فراغ single_گام_display(فراغ) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      ساكن فراغ* عملگر جديد(size_t);
+      ساكن فراغ عملگر حذف(فراغ*);
 };
 
-void vthread_event_s::run_run(void)
+فراغ vthread_event_s::پیاپی_پیاپی(فراغ)
 {
-      count_thread_events += 1;
-      vthread_run(thr);
+      شمار_thread_events += 1;
+      vthread_پیاپی(thr);
 }
 
-void vthread_event_s::single_step_display(void)
+فراغ vthread_event_s::single_گام_display(فراغ)
 {
       __vpiScope*scope = vthread_scope(thr);
       cerr << "vthread_event: Resume thread"
-	   << " scope=" << scope->vpi_get_str(vpiFullName)
-	   << endl;
+	   << " scope=" << scope->vpi_get_str(vpi_پر_Name)
+	   << پایان_سطر;
 }
 
-static const size_t VTHR_CHUNK_COUNT = 8192 / sizeof(struct vthread_event_s);
-static slab_t<sizeof(vthread_event_s),VTHR_CHUNK_COUNT> vthread_event_heap;
+ساكن ثابت size_t VTHR_CHUNK_شمار = 8192 / حجم(بنية vthread_event_s);
+ساكن slab_t<حجم(vthread_event_s),VTHR_CHUNK_شمار> vthread_event_انباشته;
 
-inline void* vthread_event_s::operator new(size_t size)
+مضمن فراغ* vthread_event_s::عملگر جديد(size_t size)
 {
-      assert(size == sizeof(vthread_event_s));
-      return vthread_event_heap.alloc_slab();
+      أكد(size == حجم(vthread_event_s));
+      أرجع vthread_event_انباشته.alloc_slab();
 }
 
-void vthread_event_s::operator delete(void*dptr)
+فراغ vthread_event_s::عملگر حذف(فراغ*dptr)
 {
-      vthread_event_heap.free_slab(dptr);
+      vthread_event_انباشته.free_slab(dptr);
 }
 
-struct del_thr_event_s : public event_s {
+بنية del_thr_event_s : عام event_s {
       vthread_t thr;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      فراغ پیاپی_پیاپی(فراغ) override;
+      فراغ single_گام_display(فراغ) override;
 };
 
-void del_thr_event_s::run_run(void)
+فراغ del_thr_event_s::پیاپی_پیاپی(فراغ)
 {
       vthread_delete(thr);
 }
 
-void del_thr_event_s::single_step_display(void)
+فراغ del_thr_event_s::single_گام_display(فراغ)
 {
       __vpiScope*scope = vthread_scope(thr);
       cerr << "del_thr_event: Reap completed thread"
-	   << " scope=" << scope->vpi_get_str(vpiFullName) << endl;
+	   << " scope=" << scope->vpi_get_str(vpi_پر_Name) << پایان_سطر;
 }
 
-struct assign_vector4_event_s  : public event_s {
+بنية تخصیص_بده_vector4_event_s  : عام event_s {
 	/* The default constructor. */
-      explicit assign_vector4_event_s(const vvp_vector4_t&that) : val(that) {
-	    base = 0;
+      صریح تخصیص_بده_vector4_event_s(ثابت vvp_vector4_t&that) : val(that) {
+	    پایه = 0;
 	    vwid = 0;
-	    next = NULL;
+	    بعدی_2 = عدم;
       }
 
 	/* Where to do the assign. */
@@ -182,242 +182,242 @@ struct assign_vector4_event_s  : public event_s {
 	/* Value to assign. */
       vvp_vector4_t val;
 	/* Offset of the part into the destination. */
-      unsigned base;
+      بیعلامت پایه;
 	/* Width of the destination vector. */
-      unsigned vwid;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      بیعلامت vwid;
+      فراغ پیاپی_پیاپی(فراغ) override;
+      فراغ single_گام_display(فراغ) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      ساكن فراغ* عملگر جديد(size_t);
+      ساكن فراغ عملگر حذف(فراغ*);
 };
 
-void assign_vector4_event_s::run_run(void)
+فراغ تخصیص_بده_vector4_event_s::پیاپی_پیاپی(فراغ)
 {
-      count_assign_events += 1;
-      if (vwid > 0)
-	    vvp_send_vec4_pv(ptr, val, base, vwid, 0);
-      else
+      شمار_تخصیص_بده_events += 1;
+      إذا (vwid > 0)
+	    vvp_send_vec4_pv(ptr, val, پایه, vwid, 0);
+      وإلا
 	    vvp_send_vec4(ptr, val, 0);
 }
 
-void assign_vector4_event_s::single_step_display(void)
+فراغ تخصیص_بده_vector4_event_s::single_گام_display(فراغ)
 {
       cerr << "assign_vector4_event: Propagate val=" << val
-	   << ", vwid=" << vwid << ", base=" << base << endl;
+	   << ", vwid=" << vwid << ", base=" << پایه << پایان_سطر;
 }
 
-static const size_t ASSIGN4_CHUNK_COUNT = 524288 / sizeof(struct assign_vector4_event_s);
-static slab_t<sizeof(assign_vector4_event_s),ASSIGN4_CHUNK_COUNT> assign4_heap;
+ساكن ثابت size_t ASSIGN4_CHUNK_شمار = 524288 / حجم(بنية تخصیص_بده_vector4_event_s);
+ساكن slab_t<حجم(تخصیص_بده_vector4_event_s),ASSIGN4_CHUNK_شمار> assign4_انباشته;
 
-inline void* assign_vector4_event_s::operator new(size_t size)
+مضمن فراغ* تخصیص_بده_vector4_event_s::عملگر جديد(size_t size)
 {
-      assert(size == sizeof(assign_vector4_event_s));
-      return assign4_heap.alloc_slab();
+      أكد(size == حجم(تخصیص_بده_vector4_event_s));
+      أرجع assign4_انباشته.alloc_slab();
 }
 
-void assign_vector4_event_s::operator delete(void*dptr)
+فراغ تخصیص_بده_vector4_event_s::عملگر حذف(فراغ*dptr)
 {
-      assign4_heap.free_slab(dptr);
+      assign4_انباشته.free_slab(dptr);
 }
 
-unsigned long count_assign4_pool(void) { return assign4_heap.pool; }
+بیعلامت دراز شمار_assign4_pool(فراغ) { أرجع assign4_انباشته.pool; }
 
-struct assign_vector8_event_s  : public event_s {
+بنية تخصیص_بده_vector8_event_s  : عام event_s {
       vvp_net_ptr_t ptr;
       vvp_vector8_t val;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      فراغ پیاپی_پیاپی(فراغ) override;
+      فراغ single_گام_display(فراغ) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      ساكن فراغ* عملگر جديد(size_t);
+      ساكن فراغ عملگر حذف(فراغ*);
 };
 
-void assign_vector8_event_s::run_run(void)
+فراغ تخصیص_بده_vector8_event_s::پیاپی_پیاپی(فراغ)
 {
-      count_assign_events += 1;
+      شمار_تخصیص_بده_events += 1;
       vvp_send_vec8(ptr, val);
 }
 
-void assign_vector8_event_s::single_step_display(void)
+فراغ تخصیص_بده_vector8_event_s::single_گام_display(فراغ)
 {
-      cerr << "assign_vector8_event: Propagate val=" << val << endl;
+      cerr << "assign_vector8_event: Propagate val=" << val << پایان_سطر;
 }
 
-static const size_t ASSIGN8_CHUNK_COUNT = 8192 / sizeof(struct assign_vector8_event_s);
-static slab_t<sizeof(assign_vector8_event_s),ASSIGN8_CHUNK_COUNT> assign8_heap;
+ساكن ثابت size_t ASSIGN8_CHUNK_شمار = 8192 / حجم(بنية تخصیص_بده_vector8_event_s);
+ساكن slab_t<حجم(تخصیص_بده_vector8_event_s),ASSIGN8_CHUNK_شمار> assign8_انباشته;
 
-inline void* assign_vector8_event_s::operator new(size_t size)
+مضمن فراغ* تخصیص_بده_vector8_event_s::عملگر جديد(size_t size)
 {
-      assert(size == sizeof(assign_vector8_event_s));
-      return assign8_heap.alloc_slab();
+      أكد(size == حجم(تخصیص_بده_vector8_event_s));
+      أرجع assign8_انباشته.alloc_slab();
 }
 
-void assign_vector8_event_s::operator delete(void*dptr)
+فراغ تخصیص_بده_vector8_event_s::عملگر حذف(فراغ*dptr)
 {
-      assign8_heap.free_slab(dptr);
+      assign8_انباشته.free_slab(dptr);
 }
 
-unsigned long count_assign8_pool() { return assign8_heap.pool; }
+بیعلامت دراز شمار_assign8_pool() { أرجع assign8_انباشته.pool; }
 
-struct assign_real_event_s  : public event_s {
+بنية تخصیص_بده_real_event_s  : عام event_s {
       vvp_net_ptr_t ptr;
-      double val;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      مزدوج val;
+      فراغ پیاپی_پیاپی(فراغ) override;
+      فراغ single_گام_display(فراغ) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      ساكن فراغ* عملگر جديد(size_t);
+      ساكن فراغ عملگر حذف(فراغ*);
 };
 
-void assign_real_event_s::run_run(void)
+فراغ تخصیص_بده_real_event_s::پیاپی_پیاپی(فراغ)
 {
-      count_assign_events += 1;
+      شمار_تخصیص_بده_events += 1;
       vvp_send_real(ptr, val, 0);
 }
 
-void assign_real_event_s::single_step_display(void)
+فراغ تخصیص_بده_real_event_s::single_گام_display(فراغ)
 {
-      cerr << "assign_real_event: Propagate val=" << val << endl;
+      cerr << "assign_real_event: Propagate val=" << val << پایان_سطر;
 }
 
-static const size_t ASSIGNR_CHUNK_COUNT = 8192 / sizeof(struct assign_real_event_s);
-static slab_t<sizeof(assign_real_event_s),ASSIGNR_CHUNK_COUNT> assignr_heap;
+ساكن ثابت size_t ASSIGNR_CHUNK_شمار = 8192 / حجم(بنية تخصیص_بده_real_event_s);
+ساكن slab_t<حجم(تخصیص_بده_real_event_s),ASSIGNR_CHUNK_شمار> assignr_انباشته;
 
-inline void* assign_real_event_s::operator new (size_t size)
+مضمن فراغ* تخصیص_بده_real_event_s::عملگر جديد (size_t size)
 {
-      assert(size == sizeof(assign_real_event_s));
-      return assignr_heap.alloc_slab();
+      أكد(size == حجم(تخصیص_بده_real_event_s));
+      أرجع assignr_انباشته.alloc_slab();
 }
 
-void assign_real_event_s::operator delete(void*dptr)
+فراغ تخصیص_بده_real_event_s::عملگر حذف(فراغ*dptr)
 {
-      assignr_heap.free_slab(dptr);
+      assignr_انباشته.free_slab(dptr);
 }
 
-unsigned long count_assign_real_pool(void) { return assignr_heap.pool; }
+بیعلامت دراز شمار_تخصیص_بده_real_pool(فراغ) { أرجع assignr_انباشته.pool; }
 
-struct assign_array_word_s  : public event_s {
+بنية تخصیص_بده_array_کلمه_s  : عام event_s {
       vvp_array_t mem;
-      unsigned adr;
+      بیعلامت adr;
       vvp_vector4_t val;
-      unsigned off;
-      void run_run(void) override;
+      بیعلامت off;
+      فراغ پیاپی_پیاپی(فراغ) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      ساكن فراغ* عملگر جديد(size_t);
+      ساكن فراغ عملگر حذف(فراغ*);
 };
 
-void assign_array_word_s::run_run(void)
+فراغ تخصیص_بده_array_کلمه_s::پیاپی_پیاپی(فراغ)
 {
-      count_assign_events += 1;
-      mem->set_word(adr, off, val);
+      شمار_تخصیص_بده_events += 1;
+      mem->مجموعه_کلمه(adr, off, val);
 }
 
-static const size_t ARRAY_W_CHUNK_COUNT = 8192 / sizeof(struct assign_array_word_s);
-static slab_t<sizeof(assign_array_word_s),ARRAY_W_CHUNK_COUNT> array_w_heap;
+ساكن ثابت size_t ARRAY_W_CHUNK_شمار = 8192 / حجم(بنية تخصیص_بده_array_کلمه_s);
+ساكن slab_t<حجم(تخصیص_بده_array_کلمه_s),ARRAY_W_CHUNK_شمار> array_w_انباشته;
 
-inline void* assign_array_word_s::operator new (size_t size)
+مضمن فراغ* تخصیص_بده_array_کلمه_s::عملگر جديد (size_t size)
 {
-      assert(size == sizeof(assign_array_word_s));
-      return array_w_heap.alloc_slab();
+      أكد(size == حجم(تخصیص_بده_array_کلمه_s));
+      أرجع array_w_انباشته.alloc_slab();
 }
 
-void assign_array_word_s::operator delete(void*ptr)
+فراغ تخصیص_بده_array_کلمه_s::عملگر حذف(فراغ*ptr)
 {
-      array_w_heap.free_slab(ptr);
+      array_w_انباشته.free_slab(ptr);
 }
 
-unsigned long count_assign_aword_pool(void) { return array_w_heap.pool; }
+بیعلامت دراز شمار_تخصیص_بده_aword_pool(فراغ) { أرجع array_w_انباشته.pool; }
 
-struct force_vector4_event_s  : public event_s {
+بنية force_vector4_event_s  : عام event_s {
 	/* The default constructor. */
-      explicit force_vector4_event_s(const vvp_vector4_t&that): val(that) {
-	    net = NULL;
-	    base = 0;
+      صریح force_vector4_event_s(ثابت vvp_vector4_t&that): val(that) {
+	    net = عدم;
+	    پایه = 0;
 	    vwid = 0;
-	    next = NULL;
+	    بعدی_2 = عدم;
       }
 	/* Where to do the force. */
       vvp_net_t*net;
 	/* Value to force. */
       vvp_vector4_t val;
 	/* Offset of the part into the destination. */
-      unsigned base;
+      بیعلامت پایه;
 	/* Width of the destination vector. */
-      unsigned vwid;
+      بیعلامت vwid;
 
-      void run_run(void) override;
-      void single_step_display(void) override;
+      فراغ پیاپی_پیاپی(فراغ) override;
+      فراغ single_گام_display(فراغ) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      ساكن فراغ* عملگر جديد(size_t);
+      ساكن فراغ عملگر حذف(فراغ*);
 };
 
-void force_vector4_event_s::run_run(void)
+فراغ force_vector4_event_s::پیاپی_پیاپی(فراغ)
 {
-      count_assign_events += 1;
+      شمار_تخصیص_بده_events += 1;
 
-      unsigned wid = val.size();
-      if ((base + wid) > vwid)
-	    wid = vwid - base;
+      بیعلامت wid = val.size();
+      إذا ((پایه + wid) > vwid)
+	    wid = vwid - پایه;
 
 	// Make a mask of which bits are to be forced, 0 for unforced
 	// bits and 1 for forced bits.
-      vvp_vector2_t mask (vvp_vector2_t::FILL0, vwid);
-      for (unsigned idx = 0 ; idx < wid ; idx += 1)
-	    mask.set_bit(base+idx, 1);
+      vvp_vector2_t ماسک (vvp_vector2_t::FILL0, vwid);
+      لكل (بیعلامت idx = 0 ; idx < wid ; idx += 1)
+	    ماسک.مجموعه_بیت(پایه+idx, 1);
 
       vvp_vector4_t tmp (vwid, BIT4_Z);
 
 	// vvp_net_t::force_vec4 propagates all the bits of the
 	// forced vector value, regardless of the mask. This
 	// ensures the unforced bits retain their current value.
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(net->fil);
-      assert(sig);
-      sig->vec4_value(tmp);
+      vvp_signal_مقدار*sig = dynamic_cast<vvp_signal_مقدار*>(net->fil);
+      أكد(sig);
+      sig->vec4_مقدار(tmp);
 
-      tmp.set_vec(base, val);
-      net->force_vec4(tmp, mask);
+      tmp.مجموعه_vec(پایه, val);
+      net->force_vec4(tmp, ماسک);
 }
 
-void force_vector4_event_s::single_step_display(void)
+فراغ force_vector4_event_s::single_گام_display(فراغ)
 {
       cerr << "force_vector4_event: Force val=" << val
-	   << ", vwid=" << vwid << ", base=" << base << endl;
+	   << ", vwid=" << vwid << ", base=" << پایه << پایان_سطر;
 }
 
-static const size_t FORCE4_CHUNK_COUNT = 8192 / sizeof(struct force_vector4_event_s);
-static slab_t<sizeof(force_vector4_event_s),FORCE4_CHUNK_COUNT> force4_heap;
+ساكن ثابت size_t FORCE4_CHUNK_شمار = 8192 / حجم(بنية force_vector4_event_s);
+ساكن slab_t<حجم(force_vector4_event_s),FORCE4_CHUNK_شمار> force4_انباشته;
 
-inline void* force_vector4_event_s::operator new(size_t size)
+مضمن فراغ* force_vector4_event_s::عملگر جديد(size_t size)
 {
-      assert(size == sizeof(force_vector4_event_s));
-      return force4_heap.alloc_slab();
+      أكد(size == حجم(force_vector4_event_s));
+      أرجع force4_انباشته.alloc_slab();
 }
 
-void force_vector4_event_s::operator delete(void*dptr)
+فراغ force_vector4_event_s::عملگر حذف(فراغ*dptr)
 {
-      force4_heap.free_slab(dptr);
+      force4_انباشته.free_slab(dptr);
 }
 
-unsigned long count_force4_pool(void) { return force4_heap.pool; }
+بیعلامت دراز شمار_force4_pool(فراغ) { أرجع force4_انباشته.pool; }
 
 /*
  * This class supports the propagation of vec4 outputs from a
  * vvp_net_t object.
  */
-struct propagate_vector4_event_s : public event_s {
+بنية propagate_vector4_event_s : عام event_s {
 	/* The default constructor. */
-      explicit propagate_vector4_event_s(const vvp_vector4_t&that) : val(that) {
-	    net = NULL;
-	    next = NULL;
+      صریح propagate_vector4_event_s(ثابت vvp_vector4_t&that) : val(that) {
+	    net = عدم;
+	    بعدی_2 = عدم;
       }
 	/* A constructor that makes the val directly. */
-      propagate_vector4_event_s(const vvp_vector4_t&that, unsigned adr, unsigned wid)
+      propagate_vector4_event_s(ثابت vvp_vector4_t&that, بیعلامت adr, بیعلامت wid)
       : val(that,adr,wid) {
-	    net = NULL;
-	    next = NULL;
+	    net = عدم;
+	    بعدی_2 = عدم;
       }
 
 	/* Propagate the output of this net. */
@@ -425,115 +425,115 @@ struct propagate_vector4_event_s : public event_s {
 	/* value to propagate */
       vvp_vector4_t val;
 	/* Action */
-      void run_run(void) override;
-      void single_step_display(void) override;
+      فراغ پیاپی_پیاپی(فراغ) override;
+      فراغ single_گام_display(فراغ) override;
 };
 
-void propagate_vector4_event_s::run_run(void)
+فراغ propagate_vector4_event_s::پیاپی_پیاپی(فراغ)
 {
       net->send_vec4(val, 0);
 }
 
-void propagate_vector4_event_s::single_step_display(void)
+فراغ propagate_vector4_event_s::single_گام_display(فراغ)
 {
-      cerr << "propagate_vector4_event: Propagate val=" << val << endl;
+      cerr << "propagate_vector4_event: Propagate val=" << val << پایان_سطر;
 }
 
 /*
  * This class supports the propagation of real outputs from a
  * vvp_net_t object.
  */
-struct propagate_real_event_s : public event_s {
+بنية propagate_real_event_s : عام event_s {
 	/* Propagate the output of this net. */
       vvp_net_t*net;
 	/* value to propagate */
-      double val;
+      مزدوج val;
 	/* Action */
-      void run_run(void) override;
-      void single_step_display(void) override;
+      فراغ پیاپی_پیاپی(فراغ) override;
+      فراغ single_گام_display(فراغ) override;
 };
 
-void propagate_real_event_s::run_run(void)
+فراغ propagate_real_event_s::پیاپی_پیاپی(فراغ)
 {
       net->send_real(val, 0);
 }
 
-void propagate_real_event_s::single_step_display(void)
+فراغ propagate_real_event_s::single_گام_display(فراغ)
 {
-      cerr << "propagate_real_event: Propagate val=" << val << endl;
+      cerr << "propagate_real_event: Propagate val=" << val << پایان_سطر;
 }
 
-struct assign_array_r_word_s  : public event_s {
+بنية تخصیص_بده_array_r_کلمه_s  : عام event_s {
       vvp_array_t mem;
-      unsigned adr;
-      double val;
-      void run_run(void) override;
+      بیعلامت adr;
+      مزدوج val;
+      فراغ پیاپی_پیاپی(فراغ) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      ساكن فراغ* عملگر جديد(size_t);
+      ساكن فراغ عملگر حذف(فراغ*);
 };
 
-void assign_array_r_word_s::run_run(void)
+فراغ تخصیص_بده_array_r_کلمه_s::پیاپی_پیاپی(فراغ)
 {
-      count_assign_events += 1;
-      mem->set_word(adr, val);
+      شمار_تخصیص_بده_events += 1;
+      mem->مجموعه_کلمه(adr, val);
 }
-static const size_t ARRAY_R_W_CHUNK_COUNT = 8192 / sizeof(struct assign_array_r_word_s);
-static slab_t<sizeof(assign_array_r_word_s),ARRAY_R_W_CHUNK_COUNT> array_r_w_heap;
+ساكن ثابت size_t ARRAY_R_W_CHUNK_شمار = 8192 / حجم(بنية تخصیص_بده_array_r_کلمه_s);
+ساكن slab_t<حجم(تخصیص_بده_array_r_کلمه_s),ARRAY_R_W_CHUNK_شمار> array_r_w_انباشته;
 
-inline void* assign_array_r_word_s::operator new(size_t size)
+مضمن فراغ* تخصیص_بده_array_r_کلمه_s::عملگر جديد(size_t size)
 {
-      assert(size == sizeof(assign_array_r_word_s));
-      return array_r_w_heap.alloc_slab();
-}
-
-void assign_array_r_word_s::operator delete(void*ptr)
-{
-      array_r_w_heap.free_slab(ptr);
+      أكد(size == حجم(تخصیص_بده_array_r_کلمه_s));
+      أرجع array_r_w_انباشته.alloc_slab();
 }
 
-unsigned long count_assign_arword_pool(void) { return array_r_w_heap.pool; }
+فراغ تخصیص_بده_array_r_کلمه_s::عملگر حذف(فراغ*ptr)
+{
+      array_r_w_انباشته.free_slab(ptr);
+}
 
-struct generic_event_s : public event_s {
+بیعلامت دراز شمار_تخصیص_بده_arword_pool(فراغ) { أرجع array_r_w_انباشته.pool; }
+
+بنية generic_event_s : عام event_s {
       vvp_gen_event_t obj;
-      bool delete_obj_when_done;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      منطقي delete_obj_when_انجامشده;
+      فراغ پیاپی_پیاپی(فراغ) override;
+      فراغ single_گام_display(فراغ) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      ساكن فراغ* عملگر جديد(size_t);
+      ساكن فراغ عملگر حذف(فراغ*);
 };
 
-void generic_event_s::run_run(void)
+فراغ generic_event_s::پیاپی_پیاپی(فراغ)
 {
-      count_gen_events += 1;
-      if (obj) {
-	    obj->run_run();
-	    if (delete_obj_when_done)
-		  delete obj;
+      شمار_gen_events += 1;
+      إذا (obj) {
+	    obj->پیاپی_پیاپی();
+	    إذا (delete_obj_when_انجامشده)
+		  حذف obj;
       }
 }
 
-void generic_event_s::single_step_display(void)
+فراغ generic_event_s::single_گام_display(فراغ)
 {
-      obj->single_step_display();
+      obj->single_گام_display();
 }
 
-static const size_t GENERIC_CHUNK_COUNT = 131072 / sizeof(struct generic_event_s);
-static slab_t<sizeof(generic_event_s),GENERIC_CHUNK_COUNT> generic_event_heap;
+ساكن ثابت size_t GENERIC_CHUNK_شمار = 131072 / حجم(بنية generic_event_s);
+ساكن slab_t<حجم(generic_event_s),GENERIC_CHUNK_شمار> generic_event_انباشته;
 
-inline void* generic_event_s::operator new(size_t size)
+مضمن فراغ* generic_event_s::عملگر جديد(size_t size)
 {
-      assert(size == sizeof(generic_event_s));
-      return generic_event_heap.alloc_slab();
+      أكد(size == حجم(generic_event_s));
+      أرجع generic_event_انباشته.alloc_slab();
 }
 
-void generic_event_s::operator delete(void*ptr)
+فراغ generic_event_s::عملگر حذف(فراغ*ptr)
 {
-      generic_event_heap.free_slab(ptr);
+      generic_event_انباشته.free_slab(ptr);
 }
 
-unsigned long count_gen_pool(void) { return generic_event_heap.pool; }
+بیعلامت دراز شمار_gen_pool(فراغ) { أرجع generic_event_انباشته.pool; }
 
 /*
 ** These event_time_s will be required a lot, at high frequency.
@@ -541,29 +541,29 @@ unsigned long count_gen_pool(void) { return generic_event_heap.pool; }
 */
 
 
-static const size_t TIME_CHUNK_COUNT = 8192 / sizeof(struct event_time_s);
-static slab_t<sizeof(event_time_s),TIME_CHUNK_COUNT> event_time_heap;
+ساكن ثابت size_t زمان_CHUNK_شمار = 8192 / حجم(بنية event_زمان_s);
+ساكن slab_t<حجم(event_زمان_s),زمان_CHUNK_شمار> event_زمان_انباشته;
 
-inline void* event_time_s::operator new (size_t size)
+مضمن فراغ* event_زمان_s::عملگر جديد (size_t size)
 {
-      assert(size == sizeof(struct event_time_s));
-      void*ptr = event_time_heap.alloc_slab();
-      return ptr;
+      أكد(size == حجم(بنية event_زمان_s));
+      فراغ*ptr = event_زمان_انباشته.alloc_slab();
+      أرجع ptr;
 }
 
-inline void event_time_s::operator delete(void*ptr, size_t)
+مضمن فراغ event_زمان_s::عملگر حذف(فراغ*ptr, size_t)
 {
-      event_time_heap.free_slab(ptr);
+      event_زمان_انباشته.free_slab(ptr);
 }
 
-unsigned long count_time_pool(void) { return event_time_heap.pool; }
+بیعلامت دراز شمار_زمان_pool(فراغ) { أرجع event_زمان_انباشته.pool; }
 
 /*
  * This is the head of the list of pending events. This includes all
  * the events that have not been executed yet, and reaches into the
  * future.
  */
-static struct event_time_s* sched_list = 0;
+ساكن بنية event_زمان_s* sched_list = 0;
 
 /*
  * This is a list of initialization events. The setup puts
@@ -571,50 +571,50 @@ static struct event_time_s* sched_list = 0;
  * simulation as a whole starts. This prevents time-0 triggers of
  * certain events.
  */
-static struct event_s* schedule_init_list = 0;
+ساكن بنية event_s* زمانبندی_init_list = 0;
 
 /*
  * This is the head of the list of final events.
  */
-static struct event_s* schedule_final_list = 0;
+ساكن بنية event_s* زمانبندی_final_list = 0;
 
 /*
  * This flag is true until a VPI task or function finishes the
  * simulation.
  */
-static bool schedule_runnable = true;
-static bool schedule_stopped_flag  = false;
-static bool schedule_single_step_flag = false;
-static bool no_signals_flag = false;
+ساكن منطقي زمانبندی_runnable = درست;
+ساكن منطقي زمانبندی_stopped_flag  = خطأ;
+ساكن منطقي زمانبندی_single_گام_flag = خطأ;
+ساكن منطقي no_سیگنالها_flag = خطأ;
 
-void schedule_finish(int)
+فراغ زمانبندی_پایان(صحيح)
 {
-      schedule_runnable = false;
+      زمانبندی_runnable = خطأ;
 }
 
-void schedule_stop(int)
+فراغ زمانبندی_stop(صحيح)
 {
-      schedule_stopped_flag = true;
+      زمانبندی_stopped_flag = درست;
 }
 
-void schedule_single_step(int)
+فراغ زمانبندی_single_گام(صحيح)
 {
-      schedule_single_step_flag = true;
+      زمانبندی_single_گام_flag = درست;
 }
 
-bool schedule_finished(void)
+منطقي زمانبندی_پایانیافته(فراغ)
 {
-      return !schedule_runnable;
+      أرجع !زمانبندی_runnable;
 }
 
-bool schedule_stopped(void)
+منطقي زمانبندی_stopped(فراغ)
 {
-      return schedule_stopped_flag;
+      أرجع زمانبندی_stopped_flag;
 }
 
-extern "C" void vvp_no_signals(void)
+خارجي "C" فراغ vvp_no_سیگنالها(فراغ)
 {
-      no_signals_flag = true;
+      no_سیگنالها_flag = درست;
 }
 
 /*
@@ -622,69 +622,69 @@ extern "C" void vvp_no_signals(void)
  * leads to an implicit $stop. The SIGHUP and SIGTERM signals lead
  * to an implicit $finish.
  */
-extern bool stop_is_finish;
+خارجي منطقي stop_is_پایان;
 
-extern "C" void signals_handler(int signum)
+خارجي "C" فراغ سیگنالها_handler(صحيح signum)
 {
-#ifdef __MINGW32__
+#اگر_تعریف_شده __MINGW32__
 	// Windows implements the original UNIX semantics for signal,
 	// so we have to re-establish the signal handler each time a
 	// signal is caught.
-      signal(signum, &signals_handler);
-#endif
-      if (signum != SIGINT)
-	    stop_is_finish = true;
-      schedule_stopped_flag = true;
+      إشارة(signum, &سیگنالها_handler);
+#پایان_اگر
+      إذا (signum != SIGINT)
+	    stop_is_پایان = درست;
+      زمانبندی_stopped_flag = درست;
 }
 
-static void signals_capture(void)
+ساكن فراغ سیگنالها_capture(فراغ)
 {
-      if (no_signals_flag)
-	   return;
-#ifndef __MINGW32__
-      signal(SIGHUP,  &signals_handler);
-#endif
-      signal(SIGINT,  &signals_handler);
-      signal(SIGTERM, &signals_handler);
+      إذا (no_سیگنالها_flag)
+	   أرجع;
+#اگر_تعریف_نشده __MINGW32__
+      إشارة(SIGHUP,  &سیگنالها_handler);
+#پایان_اگر
+      إشارة(SIGINT,  &سیگنالها_handler);
+      إشارة(SIGTERM, &سیگنالها_handler);
 }
 
-static void signals_revert(void)
+ساكن فراغ سیگنالها_revert(فراغ)
 {
-      if (no_signals_flag)
-	   return;
-#ifndef __MINGW32__
-      signal(SIGHUP,  SIG_DFL);
-#endif
-      signal(SIGINT,  SIG_DFL);
-      signal(SIGTERM, SIG_DFL);
+      إذا (no_سیگنالها_flag)
+	   أرجع;
+#اگر_تعریف_نشده __MINGW32__
+      إشارة(SIGHUP,  SIG_DFL);
+#پایان_اگر
+      إشارة(SIGINT,  SIG_DFL);
+      إشارة(SIGTERM, SIG_DFL);
 }
 
 /*
  * This function puts an event on the end of the pre-simulation event queue.
  */
-static void schedule_init_event(struct event_s*cur)
+ساكن فراغ زمانبندی_init_event(بنية event_s*cur)
 {
-      if (schedule_init_list == 0) {
-            cur->next = cur;
-      } else {
-            cur->next = schedule_init_list->next;
-            schedule_init_list->next = cur;
+      إذا (زمانبندی_init_list == 0) {
+            cur->بعدی_2 = cur;
+      } وإلا {
+            cur->بعدی_2 = زمانبندی_init_list->بعدی_2;
+            زمانبندی_init_list->بعدی_2 = cur;
       }
-      schedule_init_list = cur;
+      زمانبندی_init_list = cur;
 }
 
 /*
  * This function puts an event on the end of the post-simulation event queue.
  */
-static void schedule_final_event(struct event_s*cur)
+ساكن فراغ زمانبندی_final_event(بنية event_s*cur)
 {
-      if (schedule_final_list == 0) {
-            cur->next = cur;
-      } else {
-            cur->next = schedule_final_list->next;
-            schedule_final_list->next = cur;
+      إذا (زمانبندی_final_list == 0) {
+            cur->بعدی_2 = cur;
+      } وإلا {
+            cur->بعدی_2 = زمانبندی_final_list->بعدی_2;
+            زمانبندی_final_list->بعدی_2 = cur;
       }
-      schedule_final_list = cur;
+      زمانبندی_final_list = cur;
 }
 
 /*
@@ -693,60 +693,60 @@ static void schedule_final_event(struct event_s*cur)
  * itself, and the structure is placed in the right place in the
  * queue.
  */
-typedef enum event_queue_e { SEQ_START, SEQ_ACTIVE, SEQ_INACTIVE, SEQ_NBASSIGN,
-			     SEQ_RWSYNC, SEQ_ROSYNC, DEL_THREAD } event_queue_t;
+تعريفنوع تعداد event_صف_e { SEQ_شروع, SEQ_فعال, SEQ_INACTIVE, SEQ_NBASSIGN,
+			     SEQ_RWSYNC, SEQ_ROSYNC, DEL_THREAD } event_صف_t;
 
-static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
-			    event_queue_t select_queue)
+ساكن فراغ زمانبندی_event(بنية event_s*cur, vvp_time64_t delay,
+			    event_صف_t select_صف)
 {
-      cur->next = cur;
-      struct event_time_s*ctim = sched_list;
+      cur->بعدی_2 = cur;
+      بنية event_زمان_s*ctim = sched_list;
 
-      if (sched_list == 0) {
+      إذا (sched_list == 0) {
 	      /* Is the event_time list completely empty? Create the
 		 first event_time object. */
-	    ctim = new struct event_time_s;
+	    ctim = جديد بنية event_زمان_s;
 	    ctim->delay = delay;
-	    ctim->next  = 0;
+	    ctim->بعدی_2  = 0;
 	    sched_list = ctim;
 
-      } else if (sched_list->delay > delay) {
+      } وإلا إذا (sched_list->delay > delay) {
 
 	      /* Am I looking for an event before the first event_time?
 		 If so, create a new event_time to go in front. */
-	    struct event_time_s*tmp = new struct event_time_s;
+	    بنية event_زمان_s*tmp = جديد بنية event_زمان_s;
 	    tmp->delay = delay;
-	    tmp->next = ctim;
+	    tmp->بعدی_2 = ctim;
 	    ctim->delay -= delay;
 	    ctim = tmp;
 	    sched_list = ctim;
 
-      } else {
-	    struct event_time_s*prev = 0;
+      } وإلا {
+	    بنية event_زمان_s*prev = 0;
 
-	    while (ctim->next && (ctim->delay < delay)) {
+	    طالما (ctim->بعدی_2 && (ctim->delay < delay)) {
 		  delay -= ctim->delay;
 		  prev = ctim;
-		  ctim = ctim->next;
+		  ctim = ctim->بعدی_2;
 	    }
 
-	    if (ctim->delay > delay) {
-		  struct event_time_s*tmp = new struct event_time_s;
+	    إذا (ctim->delay > delay) {
+		  بنية event_زمان_s*tmp = جديد بنية event_زمان_s;
 		  tmp->delay = delay;
-		  tmp->next  = prev->next;
-		  prev->next = tmp;
+		  tmp->بعدی_2  = prev->بعدی_2;
+		  prev->بعدی_2 = tmp;
 
-		  tmp->next->delay -= delay;
+		  tmp->بعدی_2->delay -= delay;
 		  ctim = tmp;
 
-	    } else if (ctim->delay == delay) {
+	    } وإلا إذا (ctim->delay == delay) {
 
-	    } else {
-		  assert(ctim->next == 0);
-		  struct event_time_s*tmp = new struct event_time_s;
+	    } وإلا {
+		  أكد(ctim->بعدی_2 == 0);
+		  بنية event_زمان_s*tmp = جديد بنية event_زمان_s;
 		  tmp->delay = delay - ctim->delay;
-		  tmp->next = 0;
-		  ctim->next = tmp;
+		  tmp->بعدی_2 = 0;
+		  ctim->بعدی_2 = tmp;
 
 		  ctim = tmp;
 	    }
@@ -756,308 +756,308 @@ static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
 	   receive the event at hand. Put the event in to the
 	   appropriate list for the kind of assign we have at hand. */
 
-      struct event_s** q = 0;
+      بنية event_s** q = 0;
 
-      switch (select_queue) {
-	  case SEQ_START:
-	    q = &ctim->start;
-	    break;
+      بدل (select_صف) {
+	  حالة SEQ_شروع:
+	    q = &ctim->شروع;
+	    اكسر;
 
-	  case SEQ_ACTIVE:
-	    q = &ctim->active;
-	    break;
+	  حالة SEQ_فعال:
+	    q = &ctim->فعال;
+	    اكسر;
 
-	  case SEQ_INACTIVE:
-	    assert(delay == 0);
+	  حالة SEQ_INACTIVE:
+	    أكد(delay == 0);
 	    q = &ctim->inactive;
-	    break;
+	    اكسر;
 
-	  case SEQ_NBASSIGN:
+	  حالة SEQ_NBASSIGN:
 	    q = &ctim->nbassign;
-	    break;
+	    اكسر;
 
-	  case SEQ_RWSYNC:
+	  حالة SEQ_RWSYNC:
 	    q = &ctim->rwsync;
-	    break;
+	    اكسر;
 
-	  case SEQ_ROSYNC:
+	  حالة SEQ_ROSYNC:
 	    q = &ctim->rosync;
-	    break;
+	    اكسر;
 
-	  case DEL_THREAD:
+	  حالة DEL_THREAD:
 	    q = &ctim->del_thr;
-	    break;
+	    اكسر;
       }
 
-      if (q) {
-	    if (*q) {
+      إذا (q) {
+	    إذا (*q) {
 		  /* Put the cur event on the end of the queue. */
-		  cur->next = (*q)->next;
-		  (*q)->next = cur;
+		  cur->بعدی_2 = (*q)->بعدی_2;
+		  (*q)->بعدی_2 = cur;
 	    }
 	    *q = cur;
       }
 }
 
-static void schedule_event_push_(struct event_s*cur)
+ساكن فراغ زمانبندی_event_افزودن(بنية event_s*cur)
 {
-      if ((sched_list == 0) || (sched_list->delay > 0)) {
-	    schedule_event_(cur, 0, SEQ_ACTIVE);
-	    return;
+      إذا ((sched_list == 0) || (sched_list->delay > 0)) {
+	    زمانبندی_event(cur, 0, SEQ_فعال);
+	    أرجع;
       }
 
-      struct event_time_s*ctim = sched_list;
+      بنية event_زمان_s*ctim = sched_list;
 
-      if (ctim->active == 0) {
-	    cur->next = cur;
-	    ctim->active = cur;
-	    return;
+      إذا (ctim->فعال == 0) {
+	    cur->بعدی_2 = cur;
+	    ctim->فعال = cur;
+	    أرجع;
       }
 
-      cur->next = ctim->active->next;
-      ctim->active->next = cur;
+      cur->بعدی_2 = ctim->فعال->بعدی_2;
+      ctim->فعال->بعدی_2 = cur;
 }
 
-void schedule_vthread(vthread_t thr, vvp_time64_t delay, bool push_flag)
+فراغ زمانبندی_vthread(vthread_t thr, vvp_time64_t delay, منطقي افزودن_flag)
 {
-      struct vthread_event_s*cur = new vthread_event_s;
+      بنية vthread_event_s*cur = جديد vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_scheduled(thr);
 
-      if (push_flag && (delay == 0)) {
+      إذا (افزودن_flag && (delay == 0)) {
 	      /* Special case: If the delay is 0, the push_flag means
 		 I can push this event in front of everything. This is
 		 used by the %fork statement, for example, to perform
 		 task calls. */
-	    schedule_event_push_(cur);
+	    زمانبندی_event_افزودن(cur);
 
-      } else {
-	    schedule_event_(cur, delay, SEQ_ACTIVE);
+      } وإلا {
+	    زمانبندی_event(cur, delay, SEQ_فعال);
       }
 }
 
-void schedule_t0_trigger(vvp_net_ptr_t ptr)
+فراغ زمانبندی_t0_trigger(vvp_net_ptr_t ptr)
 {
-      vvp_vector4_t bit (1, BIT4_X);
-      struct assign_vector4_event_s*cur = new struct assign_vector4_event_s(bit);
+      vvp_vector4_t بیت (1, BIT4_X);
+      بنية تخصیص_بده_vector4_event_s*cur = جديد بنية تخصیص_بده_vector4_event_s(بیت);
       cur->ptr = ptr;
-      schedule_event_(cur, 0, SEQ_INACTIVE);
+      زمانبندی_event(cur, 0, SEQ_INACTIVE);
 }
 
-void schedule_inactive(vthread_t thr)
+فراغ زمانبندی_inactive(vthread_t thr)
 {
-      struct vthread_event_s*cur = new vthread_event_s;
+      بنية vthread_event_s*cur = جديد vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_scheduled(thr);
-      schedule_event_(cur, 0, SEQ_INACTIVE);
+      زمانبندی_event(cur, 0, SEQ_INACTIVE);
 }
 
-void schedule_init_vthread(vthread_t thr)
+فراغ زمانبندی_init_vthread(vthread_t thr)
 {
-      struct vthread_event_s*cur = new vthread_event_s;
+      بنية vthread_event_s*cur = جديد vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_scheduled(thr);
 
-      schedule_init_event(cur);
+      زمانبندی_init_event(cur);
 }
 
-void schedule_final_vthread(vthread_t thr)
+فراغ زمانبندی_final_vthread(vthread_t thr)
 {
-      struct vthread_event_s*cur = new vthread_event_s;
+      بنية vthread_event_s*cur = جديد vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_final(thr);
       vthread_mark_scheduled(thr);
 
-      schedule_final_event(cur);
+      زمانبندی_final_event(cur);
 }
 
-void schedule_assign_vector(vvp_net_ptr_t ptr,
-			    unsigned base, unsigned vwid,
-			    const vvp_vector4_t&bit,
+فراغ زمانبندی_تخصیص_بده_وکتور(vvp_net_ptr_t ptr,
+			    بیعلامت پایه, بیعلامت vwid,
+			    ثابت vvp_vector4_t&بیت,
 			    vvp_time64_t delay)
 {
-      struct assign_vector4_event_s*cur = new struct assign_vector4_event_s(bit);
+      بنية تخصیص_بده_vector4_event_s*cur = جديد بنية تخصیص_بده_vector4_event_s(بیت);
       cur->ptr = ptr;
-      cur->base = base;
+      cur->پایه = پایه;
       cur->vwid = vwid;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      زمانبندی_event(cur, delay, SEQ_NBASSIGN);
 }
 
-void schedule_force_vector(vvp_net_t*net,
-			    unsigned base, unsigned vwid,
-			    const vvp_vector4_t&bit,
+فراغ زمانبندی_force_وکتور(vvp_net_t*net,
+			    بیعلامت پایه, بیعلامت vwid,
+			    ثابت vvp_vector4_t&بیت,
 			    vvp_time64_t delay)
 {
-      struct force_vector4_event_s*cur = new struct force_vector4_event_s(bit);
+      بنية force_vector4_event_s*cur = جديد بنية force_vector4_event_s(بیت);
       cur->net = net;
-      cur->base = base;
+      cur->پایه = پایه;
       cur->vwid = vwid;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      زمانبندی_event(cur, delay, SEQ_NBASSIGN);
 }
 
-void schedule_propagate_vector(vvp_net_t*net,
+فراغ زمانبندی_propagate_وکتور(vvp_net_t*net,
 			       vvp_time64_t delay,
-			       const vvp_vector4_t&src)
+			       ثابت vvp_vector4_t&src)
 {
-      struct propagate_vector4_event_s*cur
-	    = new struct propagate_vector4_event_s(src);
+      بنية propagate_vector4_event_s*cur
+	    = جديد بنية propagate_vector4_event_s(src);
       cur->net = net;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      زمانبندی_event(cur, delay, SEQ_NBASSIGN);
 }
 
 // FIXME: This needs to create a non-blocking event, but only one per time slot.
 //        Is schedule_event_ or execution actually filtering since the net is
 //        already X because this is not triggering?
-void schedule_propagate_event(vvp_net_t*net,
+فراغ زمانبندی_propagate_event(vvp_net_t*net,
                               vvp_time64_t delay)
 {
       vvp_vector4_t tmp (1, BIT4_X);
-      struct propagate_vector4_event_s*cur
-	    = new struct propagate_vector4_event_s(tmp);
+      بنية propagate_vector4_event_s*cur
+	    = جديد بنية propagate_vector4_event_s(tmp);
       cur->net = net;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      زمانبندی_event(cur, delay, SEQ_NBASSIGN);
 }
 
-void schedule_assign_array_word(vvp_array_t mem,
-				unsigned word_addr,
-				unsigned off,
-				const vvp_vector4_t&val,
+فراغ زمانبندی_تخصیص_بده_array_کلمه(vvp_array_t mem,
+				بیعلامت کلمه_addr,
+				بیعلامت off,
+				ثابت vvp_vector4_t&val,
 				vvp_time64_t delay)
 {
-      struct assign_array_word_s*cur = new struct assign_array_word_s;
+      بنية تخصیص_بده_array_کلمه_s*cur = جديد بنية تخصیص_بده_array_کلمه_s;
       cur->mem = mem;
-      cur->adr = word_addr;
+      cur->adr = کلمه_addr;
       cur->off = off;
       cur->val = val;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      زمانبندی_event(cur, delay, SEQ_NBASSIGN);
 }
 
-void schedule_assign_array_word(vvp_array_t mem,
-				unsigned word_addr,
-				double val,
+فراغ زمانبندی_تخصیص_بده_array_کلمه(vvp_array_t mem,
+				بیعلامت کلمه_addr,
+				مزدوج val,
 				vvp_time64_t delay)
 {
-      struct assign_array_r_word_s*cur = new struct assign_array_r_word_s;
+      بنية تخصیص_بده_array_r_کلمه_s*cur = جديد بنية تخصیص_بده_array_r_کلمه_s;
       cur->mem = mem;
-      cur->adr = word_addr;
+      cur->adr = کلمه_addr;
       cur->val = val;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      زمانبندی_event(cur, delay, SEQ_NBASSIGN);
 }
 
-void schedule_set_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&bit)
+فراغ زمانبندی_مجموعه_وکتور(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت)
 {
-      struct assign_vector4_event_s*cur = new struct assign_vector4_event_s(bit);
+      بنية تخصیص_بده_vector4_event_s*cur = جديد بنية تخصیص_بده_vector4_event_s(بیت);
       cur->ptr = ptr;
-      cur->base = 0;
+      cur->پایه = 0;
       cur->vwid = 0;
-      schedule_event_(cur, 0, SEQ_ACTIVE);
+      زمانبندی_event(cur, 0, SEQ_فعال);
 }
 
-void schedule_set_vector(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+فراغ زمانبندی_مجموعه_وکتور(vvp_net_ptr_t ptr, ثابت vvp_vector8_t&بیت)
 {
-      struct assign_vector8_event_s*cur = new struct assign_vector8_event_s;
+      بنية تخصیص_بده_vector8_event_s*cur = جديد بنية تخصیص_بده_vector8_event_s;
       cur->ptr = ptr;
-      cur->val = bit;
-      schedule_event_(cur, 0, SEQ_ACTIVE);
+      cur->val = بیت;
+      زمانبندی_event(cur, 0, SEQ_فعال);
 }
 
-void schedule_set_vector(vvp_net_ptr_t ptr, double bit)
+فراغ زمانبندی_مجموعه_وکتور(vvp_net_ptr_t ptr, مزدوج بیت)
 {
-      struct assign_real_event_s*cur = new struct assign_real_event_s;
+      بنية تخصیص_بده_real_event_s*cur = جديد بنية تخصیص_بده_real_event_s;
       cur->ptr = ptr;
-      cur->val = bit;
-      schedule_event_(cur, 0, SEQ_ACTIVE);
+      cur->val = بیت;
+      زمانبندی_event(cur, 0, SEQ_فعال);
 }
 
-void schedule_init_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&bit)
+فراغ زمانبندی_init_وکتور(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت)
 {
-      struct assign_vector4_event_s*cur = new struct assign_vector4_event_s(bit);
+      بنية تخصیص_بده_vector4_event_s*cur = جديد بنية تخصیص_بده_vector4_event_s(بیت);
       cur->ptr = ptr;
-      cur->base = 0;
+      cur->پایه = 0;
       cur->vwid = 0;
-      schedule_init_event(cur);
+      زمانبندی_init_event(cur);
 }
 
-void schedule_init_vector(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+فراغ زمانبندی_init_وکتور(vvp_net_ptr_t ptr, ثابت vvp_vector8_t&بیت)
 {
-      struct assign_vector8_event_s*cur = new struct assign_vector8_event_s;
+      بنية تخصیص_بده_vector8_event_s*cur = جديد بنية تخصیص_بده_vector8_event_s;
       cur->ptr = ptr;
-      cur->val = bit;
-      schedule_init_event(cur);
+      cur->val = بیت;
+      زمانبندی_init_event(cur);
 }
 
-void schedule_init_vector(vvp_net_ptr_t ptr, double bit)
+فراغ زمانبندی_init_وکتور(vvp_net_ptr_t ptr, مزدوج بیت)
 {
-      struct assign_real_event_s*cur = new struct assign_real_event_s;
+      بنية تخصیص_بده_real_event_s*cur = جديد بنية تخصیص_بده_real_event_s;
       cur->ptr = ptr;
-      cur->val = bit;
-      schedule_init_event(cur);
+      cur->val = بیت;
+      زمانبندی_init_event(cur);
 }
 
-void schedule_init_propagate(vvp_net_t*net, vvp_vector4_t bit)
+فراغ زمانبندی_init_propagate(vvp_net_t*net, vvp_vector4_t بیت)
 {
-      struct propagate_vector4_event_s*cur = new struct propagate_vector4_event_s(bit);
+      بنية propagate_vector4_event_s*cur = جديد بنية propagate_vector4_event_s(بیت);
       cur->net = net;
-      schedule_init_event(cur);
+      زمانبندی_init_event(cur);
 }
 
-void schedule_init_propagate(vvp_net_t*net, double bit)
+فراغ زمانبندی_init_propagate(vvp_net_t*net, مزدوج بیت)
 {
-      struct propagate_real_event_s*cur = new struct propagate_real_event_s;
+      بنية propagate_real_event_s*cur = جديد بنية propagate_real_event_s;
       cur->net = net;
-      cur->val = bit;
-      schedule_init_event(cur);
+      cur->val = بیت;
+      زمانبندی_init_event(cur);
 }
 
-void schedule_del_thr(vthread_t thr)
+فراغ زمانبندی_del_thr(vthread_t thr)
 {
-      struct del_thr_event_s*cur = new del_thr_event_s;
+      بنية del_thr_event_s*cur = جديد del_thr_event_s;
 
       cur->thr = thr;
 
-      schedule_event_(cur, 0, DEL_THREAD);
+      زمانبندی_event(cur, 0, DEL_THREAD);
 }
 
-void schedule_generic(vvp_gen_event_t obj, vvp_time64_t delay,
-		      bool sync_flag, bool ro_flag, bool delete_when_done)
+فراغ زمانبندی_generic(vvp_gen_event_t obj, vvp_time64_t delay,
+		      منطقي sync_flag, منطقي ro_flag, منطقي delete_when_انجامشده)
 {
-      struct generic_event_s*cur = new generic_event_s;
+      بنية generic_event_s*cur = جديد generic_event_s;
 
       cur->obj = obj;
-      cur->delete_obj_when_done = delete_when_done;
-      schedule_event_(cur, delay,
-		      sync_flag? (ro_flag?SEQ_ROSYNC:SEQ_RWSYNC) : SEQ_ACTIVE);
+      cur->delete_obj_when_انجامشده = delete_when_انجامشده;
+      زمانبندی_event(cur, delay,
+		      sync_flag? (ro_flag?SEQ_ROSYNC:SEQ_RWSYNC) : SEQ_فعال);
 
-      if (sync_flag)
+      إذا (sync_flag)
 	    vthread_delay_delete();
 }
 
-static bool sim_started;
+ساكن منطقي sim_started;
 
-void schedule_functor(vvp_gen_event_t obj)
+فراغ زمانبندی_functor(vvp_gen_event_t obj)
 {
-      struct generic_event_s*cur = new generic_event_s;
+      بنية generic_event_s*cur = جديد generic_event_s;
 
       cur->obj = obj;
-      cur->delete_obj_when_done = false;
-      if (!sim_started) {
-            schedule_init_event(cur);
-      } else {
-            schedule_event_(cur, 0, SEQ_ACTIVE);
+      cur->delete_obj_when_انجامشده = خطأ;
+      إذا (!sim_started) {
+            زمانبندی_init_event(cur);
+      } وإلا {
+            زمانبندی_event(cur, 0, SEQ_فعال);
       }
 }
 
-void schedule_at_start_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
+فراغ زمانبندی_at_شروع_از_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
 {
-      struct generic_event_s*cur = new generic_event_s;
+      بنية generic_event_s*cur = جديد generic_event_s;
 
       cur->obj = obj;
-      cur->delete_obj_when_done = false;
-      schedule_event_(cur, delay, SEQ_START);
+      cur->delete_obj_when_انجامشده = خطأ;
+      زمانبندی_event(cur, delay, SEQ_شروع);
 }
 
 /*
@@ -1065,22 +1065,22 @@ void schedule_at_start_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
  * after all of the non-blocking assignments, so is effectively the
  * same as the ReadWriteSync time.
  */
-void schedule_at_end_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
+فراغ زمانبندی_at_انتها_از_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
 {
-      struct generic_event_s*cur = new generic_event_s;
+      بنية generic_event_s*cur = جديد generic_event_s;
 
       cur->obj = obj;
-      cur->delete_obj_when_done = false;
-      schedule_event_(cur, delay, SEQ_RWSYNC);
+      cur->delete_obj_when_انجامشده = خطأ;
+      زمانبندی_event(cur, delay, SEQ_RWSYNC);
 }
 
-static vvp_time64_t schedule_time;
-vvp_time64_t schedule_simtime(void)
-{ return schedule_time; }
+ساكن vvp_time64_t زمانبندی_زمان;
+vvp_time64_t زمانبندی_simtime(فراغ)
+{ أرجع زمانبندی_زمان; }
 
-static bool sim_at_rosync = false;
-bool schedule_at_rosync(void)
-{ return sim_at_rosync; }
+ساكن منطقي sim_at_rosync = خطأ;
+منطقي زمانبندی_at_rosync(فراغ)
+{ أرجع sim_at_rosync; }
 
 /*
  * The scheduler uses this function to drain the rosync events of the
@@ -1092,127 +1092,127 @@ bool schedule_at_rosync(void)
  * Once all the rosync callbacks are done we can safely delete any
  * threads that finished during this time step.
  */
-static void run_rosync(struct event_time_s*ctim)
+ساكن فراغ پیاپی_rosync(بنية event_زمان_s*ctim)
 {
-      sim_at_rosync = true;
-      while (ctim->rosync) {
-	    struct event_s*cur = ctim->rosync->next;
-	    if (cur->next == cur) {
+      sim_at_rosync = درست;
+      طالما (ctim->rosync) {
+	    بنية event_s*cur = ctim->rosync->بعدی_2;
+	    إذا (cur->بعدی_2 == cur) {
 		  ctim->rosync = 0;
-	    } else {
-		  ctim->rosync->next = cur->next;
+	    } وإلا {
+		  ctim->rosync->بعدی_2 = cur->بعدی_2;
 	    }
 
-	    cur->run_run();
-	    delete cur;
+	    cur->پیاپی_پیاپی();
+	    حذف cur;
       }
-      sim_at_rosync = false;
+      sim_at_rosync = خطأ;
 
-      while (ctim->del_thr) {
-	    struct event_s*cur = ctim->del_thr->next;
-	    if (cur->next == cur) {
+      طالما (ctim->del_thr) {
+	    بنية event_s*cur = ctim->del_thr->بعدی_2;
+	    إذا (cur->بعدی_2 == cur) {
 		  ctim->del_thr = 0;
-	    } else {
-		  ctim->del_thr->next = cur->next;
+	    } وإلا {
+		  ctim->del_thr->بعدی_2 = cur->بعدی_2;
 	    }
 
-	    cur->run_run();
-	    delete cur;
+	    cur->پیاپی_پیاپی();
+	    حذف cur;
       }
 
-      if (ctim->active || ctim->inactive || ctim->nbassign || ctim->rwsync) {
+      إذا (ctim->فعال || ctim->inactive || ctim->nbassign || ctim->rwsync) {
 	    cerr << "SCHEDULER ERROR: read-only sync events "
-		 << "created RW events!" << endl;
+		 << "created RW events!" << پایان_سطر;
       }
 }
 
-void schedule_simulate(void)
+فراغ زمانبندی_simulate(فراغ)
 {
-      bool run_finals;
-      sim_started = false;
+      منطقي پیاپی_finals;
+      sim_started = خطأ;
 
-      schedule_time = 0;
+      زمانبندی_زمان = 0;
 
-      if (verbose_flag) {
+      إذا (verbose_flag) {
 	    vpi_mcd_printf(1, " ...execute EndOfCompile callbacks\n");
       }
 
       // Execute end of compile callbacks
-      vpiEndOfCompile();
+      vpi_انتها_از_Compile();
 
-      if (verbose_flag) {
+      إذا (verbose_flag) {
 	    vpi_mcd_printf(1, " ...propagate initialization events\n");
       }
 
 	// Execute initialization events.
-      while (schedule_init_list) {
-	    struct event_s*cur = schedule_init_list->next;
-	    if (cur->next == cur) {
-		  schedule_init_list = 0;
-	    } else {
-		  schedule_init_list->next = cur->next;
+      طالما (زمانبندی_init_list) {
+	    بنية event_s*cur = زمانبندی_init_list->بعدی_2;
+	    إذا (cur->بعدی_2 == cur) {
+		  زمانبندی_init_list = 0;
+	    } وإلا {
+		  زمانبندی_init_list->بعدی_2 = cur->بعدی_2;
 	    }
-	    cur->run_run();
-	    delete cur;
+	    cur->پیاپی_پیاپی();
+	    حذف cur;
       }
 
-      sim_started = true;
+      sim_started = درست;
 
-      if (verbose_flag) {
+      إذا (verbose_flag) {
 	    vpi_mcd_printf(1, " ...execute StartOfSim callbacks\n");
       }
 
       // Execute start of simulation callbacks
-      vpiStartOfSim();
+      vpi_شروع_از_Sim();
 
-      signals_capture();
+      سیگنالها_capture();
 
-      if (verbose_flag) {
+      إذا (verbose_flag) {
 	    vpi_mcd_printf(1, " ...run scheduler\n");
       }
 
       // If there were no compiletf, etc. errors then we are going to
       // process events and when done run the final blocks.
-      run_finals = schedule_runnable;
+      پیاپی_finals = زمانبندی_runnable;
 
-      if (schedule_runnable) while (sched_list) {
+      إذا (زمانبندی_runnable) طالما (sched_list) {
 
-	    if (schedule_stopped_flag) {
-		  schedule_stopped_flag = false;
+	    إذا (زمانبندی_stopped_flag) {
+		  زمانبندی_stopped_flag = خطأ;
 		  stop_handler(0);
 		  // You can finish from the debugger without a time change.
-		  if (!schedule_runnable) break;
-		  continue;
+		  إذا (!زمانبندی_runnable) اكسر;
+		  استمر;
 	    }
 
 	      /* ctim is the current time step. */
-	    struct event_time_s* ctim = sched_list;
+	    بنية event_زمان_s* ctim = sched_list;
 
 	      /* If the time is advancing, then first run the
 		 postponed sync events. Run them all. */
-	    if (ctim->delay > 0) {
+	    إذا (ctim->delay > 0) {
 
-		  if (!schedule_runnable) break;
-		  schedule_time += ctim->delay;
+		  إذا (!زمانبندی_runnable) اكسر;
+		  زمانبندی_زمان += ctim->delay;
 		    /* When the design is being traced (we are emitting
 		     * file/line information) also print any time changes. */
-		  if (show_file_line) {
+		  إذا (show_file_سطر) {
 			cerr << "Advancing to simulation time: "
-			     << schedule_time << endl;
+			     << زمانبندی_زمان << پایان_سطر;
 		  }
 		  ctim->delay = 0;
 
-		  vpiNextSimTime();
+		  vpi_بعدی_Sim_زمان();
 		    // Process the cbAtStartOfSimTime callbacks.
-		  while (ctim->start) {
-			struct event_s*cur = ctim->start->next;
-			if (cur->next == cur) {
-			      ctim->start = 0;
-			} else {
-			      ctim->start->next = cur->next;
+		  طالما (ctim->شروع) {
+			بنية event_s*cur = ctim->شروع->بعدی_2;
+			إذا (cur->بعدی_2 == cur) {
+			      ctim->شروع = 0;
+			} وإلا {
+			      ctim->شروع->بعدی_2 = cur->بعدی_2;
 			}
-			cur->run_run();
-			delete (cur);
+			cur->پیاپی_پیاپی();
+			حذف (cur);
 		  }
 	    }
 
@@ -1220,26 +1220,26 @@ void schedule_simulate(void)
 	      /* If there are no more active events, advance the event
 		 queues. If there are not events at all, then release
 		 the event_time object. */
-	    if (ctim->active == 0) {
-		  ctim->active = ctim->inactive;
+	    إذا (ctim->فعال == 0) {
+		  ctim->فعال = ctim->inactive;
 		  ctim->inactive = 0;
 
-		  if (ctim->active == 0) {
-			ctim->active = ctim->nbassign;
+		  إذا (ctim->فعال == 0) {
+			ctim->فعال = ctim->nbassign;
 			ctim->nbassign = 0;
 
-			if (ctim->active == 0) {
-			      ctim->active = ctim->rwsync;
+			إذا (ctim->فعال == 0) {
+			      ctim->فعال = ctim->rwsync;
 			      ctim->rwsync = 0;
 
 				/* If out of rw events, then run the rosync
 				   events and delete this time step. This also
 				   deletes threads as needed. */
-			      if (ctim->active == 0) {
-				    run_rosync(ctim);
-				    sched_list = ctim->next;
-				    delete ctim;
-				    continue;
+			      إذا (ctim->فعال == 0) {
+				    پیاپی_rosync(ctim);
+				    sched_list = ctim->بعدی_2;
+				    حذف ctim;
+				    استمر;
 			      }
 			}
 		  }
@@ -1248,60 +1248,60 @@ void schedule_simulate(void)
 	      /* Pull the first item off the list. If this is the last
 		 cell in the list, then clear the list. Execute that
 		 event type, and delete it. */
-	    struct event_s*cur = ctim->active->next;
-	    if (cur->next == cur) {
-		  ctim->active = 0;
-	    } else {
-		  ctim->active->next = cur->next;
+	    بنية event_s*cur = ctim->فعال->بعدی_2;
+	    إذا (cur->بعدی_2 == cur) {
+		  ctim->فعال = 0;
+	    } وإلا {
+		  ctim->فعال->بعدی_2 = cur->بعدی_2;
 	    }
 
-	    if (schedule_single_step_flag) {
-		  cur->single_step_display();
-		  schedule_stopped_flag = true;
-		  schedule_single_step_flag = false;
+	    إذا (زمانبندی_single_گام_flag) {
+		  cur->single_گام_display();
+		  زمانبندی_stopped_flag = درست;
+		  زمانبندی_single_گام_flag = خطأ;
 	    }
 
-	    cur->run_run();
+	    cur->پیاپی_پیاپی();
 
-	    delete (cur);
+	    حذف (cur);
       }
 
 	// Execute final events.
-      schedule_runnable = run_finals;
-      while (schedule_runnable && schedule_final_list) {
-	    struct event_s*cur = schedule_final_list->next;
-	    if (cur->next == cur) {
-		  schedule_final_list = 0;
-	    } else {
-		  schedule_final_list->next = cur->next;
+      زمانبندی_runnable = پیاپی_finals;
+      طالما (زمانبندی_runnable && زمانبندی_final_list) {
+	    بنية event_s*cur = زمانبندی_final_list->بعدی_2;
+	    إذا (cur->بعدی_2 == cur) {
+		  زمانبندی_final_list = 0;
+	    } وإلا {
+		  زمانبندی_final_list->بعدی_2 = cur->بعدی_2;
 	    }
-	    cur->run_run();
-	    delete cur;
+	    cur->پیاپی_پیاپی();
+	    حذف cur;
       }
 
-      signals_revert();
+      سیگنالها_revert();
 
-      if (verbose_flag) {
+      إذا (verbose_flag) {
 	    vpi_mcd_printf(1, " ...execute Postsim callbacks\n");
       }
 
       // Execute post-simulation callbacks
       vpiPostsim();
-#ifdef CHECK_WITH_VALGRIND
-      schedule_delete();
-#endif
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
+      زمانبندی_delete();
+#پایان_اگر
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void schedule_delete(void)
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
+فراغ زمانبندی_delete(فراغ)
 {
-      vthread_event_heap.delete_pool();
-      assign4_heap.delete_pool();
-      assign8_heap.delete_pool();
-      assignr_heap.delete_pool();
-      array_w_heap.delete_pool();
-      array_r_w_heap.delete_pool();
-      generic_event_heap.delete_pool();
-      event_time_heap.delete_pool();
+      vthread_event_انباشته.delete_pool();
+      assign4_انباشته.delete_pool();
+      assign8_انباشته.delete_pool();
+      assignr_انباشته.delete_pool();
+      array_w_انباشته.delete_pool();
+      array_r_w_انباشته.delete_pool();
+      generic_event_انباشته.delete_pool();
+      event_زمان_انباشته.delete_pool();
 }
-#endif
+#پایان_اگر

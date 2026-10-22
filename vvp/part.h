@@ -1,5 +1,5 @@
-#ifndef IVL_part_H
-#define IVL_part_H
+#اگر_تعریف_نشده IVL_part_H
+#تعریف_کن IVL_part_H
 /*
  * Copyright (c) 2005-2025 Stephen Williams (steve@icarus.com)
  *
@@ -28,40 +28,40 @@
  * select starts. Input 2, which is typically constant, is the width
  * of the result.
  */
-class vvp_fun_part  : public vvp_net_fun_t {
+class vvp_fun_part  : عام vvp_net_fun_t {
 
-    public:
-      vvp_fun_part(unsigned base, unsigned wid);
+    عام:
+      vvp_fun_part(بیعلامت پایه, بیعلامت wid);
       ~vvp_fun_part() override;
 
-      unsigned get_base() const { return base_; }
-      unsigned get_wid() const { return wid_; }
+      بیعلامت get_پایه() ثابت { أرجع پایه_2; }
+      بیعلامت get_wid() ثابت { أرجع wid_; }
 
-    protected:
-      unsigned base_;
-      unsigned wid_;
+    محمي:
+      بیعلامت پایه_2;
+      بیعلامت wid_;
 };
 
 /*
  * Statically allocated vvp_fun_part.
  */
-class vvp_fun_part_sa  : public vvp_fun_part, public vvp_gen_event_s {
+class vvp_fun_part_sa  : عام vvp_fun_part, عام vvp_gen_event_s {
 
-    public:
-      vvp_fun_part_sa(unsigned base, unsigned wid);
+    عام:
+      vvp_fun_part_sa(بیعلامت پایه, بیعلامت wid);
       ~vvp_fun_part_sa() override;
 
-    public:
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    عام:
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override;
+      فراغ recv_vec4_pv(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
+			بیعلامت پایه, بیعلامت vwid, vvp_context_t) override;
 
-    private:
-      void run_run() override;
+    خاص:
+      فراغ پیاپی_پیاپی() override;
 
-    private:
+    خاص:
       vvp_vector4_t val_;
       vvp_net_t*net_;
 };
@@ -69,28 +69,28 @@ class vvp_fun_part_sa  : public vvp_fun_part, public vvp_gen_event_s {
 /*
  * Automatically allocated vvp_fun_part.
  */
-class vvp_fun_part_aa  : public vvp_fun_part, public automatic_hooks_s {
+class vvp_fun_part_aa  : عام vvp_fun_part, عام automatic_hooks_s {
 
-    public:
-      vvp_fun_part_aa(unsigned base, unsigned wid);
+    عام:
+      vvp_fun_part_aa(بیعلامت پایه, بیعلامت wid);
       ~vvp_fun_part_aa() override;
 
-    public:
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+    عام:
+      فراغ alloc_instance(vvp_context_t context) override;
+      فراغ reset_instance(vvp_context_t context) override;
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
+      فراغ free_instance(vvp_context_t context) override;
+#پایان_اگر
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t context) override;
+      فراغ recv_vec4_pv(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
+			بیعلامت پایه, بیعلامت vwid, vvp_context_t context) override;
 
-    private:
+    خاص:
       __vpiScope*context_scope_;
-      unsigned context_idx_;
+      بیعلامت context_idx_;
 };
 
 /* vvp_fun_part_pv
@@ -100,25 +100,25 @@ class vvp_fun_part_aa  : public vvp_fun_part, public automatic_hooks_s {
  * both statically and automatically allocated scopes, as it has no
  * dynamic state.
  */
-class vvp_fun_part_pv  : public vvp_net_fun_t {
+class vvp_fun_part_pv  : عام vvp_net_fun_t {
 
-    public:
-      vvp_fun_part_pv(unsigned base, unsigned wid, unsigned vec_wid);
+    عام:
+      vvp_fun_part_pv(بیعلامت پایه, بیعلامت wid, بیعلامت vec_wid);
       ~vvp_fun_part_pv() override;
 
-    public:
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    عام:
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-                        unsigned base, unsigned vwid, vvp_context_t) override;
+      فراغ recv_vec4_pv(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
+                        بیعلامت پایه, بیعلامت vwid, vvp_context_t) override;
 
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      فراغ recv_vec8(vvp_net_ptr_t پورت, ثابت vvp_vector8_t&بیت) override;
 
-    private:
-      unsigned base_;
-      unsigned wid_;
-      unsigned vwid_;
+    خاص:
+      بیعلامت پایه_2;
+      بیعلامت wid_;
+      بیعلامت vwid_;
 };
 
 /*
@@ -126,40 +126,40 @@ class vvp_fun_part_pv  : public vvp_net_fun_t {
  * part in port 0, and the base of the part in port 1. The width of
  * the part to take out is fixed.
  */
-class vvp_fun_part_var  : public vvp_net_fun_t {
+class vvp_fun_part_var  : عام vvp_net_fun_t {
 
-    public:
-      explicit vvp_fun_part_var(unsigned wid, bool is_signed);
+    عام:
+      explicit vvp_fun_part_var(بیعلامت wid, bool is_signed);
       ~vvp_fun_part_var() override;
 
-    protected:
-      bool recv_vec4_(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-                      int&base, vvp_vector4_t&source,
+    محمي:
+      bool recv_vec4_(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
+                      صحيح&پایه, vvp_vector4_t&منبع,
                       vvp_vector4_t&ref);
 
-      unsigned wid_;
+      بیعلامت wid_;
       bool is_signed_;
 };
 
 /*
  * Statically allocated vvp_fun_part_var.
  */
-class vvp_fun_part_var_sa  : public vvp_fun_part_var {
+class vvp_fun_part_var_sa  : عام vvp_fun_part_var {
 
-    public:
-      explicit vvp_fun_part_var_sa(unsigned wid, bool is_signed);
+    عام:
+      explicit vvp_fun_part_var_sa(بیعلامت wid, bool is_signed);
       ~vvp_fun_part_var_sa() override;
 
-    public:
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+    عام:
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override;
+      فراغ recv_vec4_pv(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
+			بیعلامت پایه, بیعلامت vwid, vvp_context_t) override;
 
-    private:
-      int base_;
-      vvp_vector4_t source_;
+    خاص:
+      صحيح پایه_2;
+      vvp_vector4_t منبع_2;
 	// Save the last output, for detecting change.
       vvp_vector4_t ref_;
 };
@@ -167,28 +167,28 @@ class vvp_fun_part_var_sa  : public vvp_fun_part_var {
 /*
  * Automatically allocated vvp_fun_part_var.
  */
-class vvp_fun_part_var_aa  : public vvp_fun_part_var, public automatic_hooks_s {
+class vvp_fun_part_var_aa  : عام vvp_fun_part_var, عام automatic_hooks_s {
 
-    public:
-      explicit vvp_fun_part_var_aa(unsigned wid, bool is_signed);
+    عام:
+      explicit vvp_fun_part_var_aa(بیعلامت wid, bool is_signed);
       ~vvp_fun_part_var_aa() override;
 
-    public:
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+    عام:
+      فراغ alloc_instance(vvp_context_t context) override;
+      فراغ reset_instance(vvp_context_t context) override;
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
+      فراغ free_instance(vvp_context_t context) override;
+#پایان_اگر
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t context) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t context) override;
+      فراغ recv_vec4_pv(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
+			بیعلامت پایه, بیعلامت vwid, vvp_context_t context) override;
 
-    private:
+    خاص:
       __vpiScope*context_scope_;
-      unsigned context_idx_;
+      بیعلامت context_idx_;
 };
 
-#endif /* IVL_part_H */
+#پایان_اگر /* IVL_part_H */

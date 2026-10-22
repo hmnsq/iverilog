@@ -1,5 +1,5 @@
-#ifndef IVL_enum_type_H
-#define IVL_enum_type_H
+#اگر_تعریف_نشده IVL_enum_type_H
+#تعریف_کن IVL_enum_type_H
 /*
  * Copyright (c) 2010-2014 Stephen Williams (steve@icarus.com)
  *
@@ -19,4 +19,4 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#endif /* IVL_enum_type_H */
+#پایان_اگر /* IVL_enum_type_H */

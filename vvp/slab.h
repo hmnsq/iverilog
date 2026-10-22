@@ -1,5 +1,5 @@
-#ifndef IVL_slab_H
-#define IVL_slab_H
+#اگر_تعریف_نشده IVL_slab_H
+#تعریف_کن IVL_slab_H
 /*
  * Copyright (c) 2008-2015 Picture Elements, Inc.
  *    Stephen Williams (steve@icarus.com)
@@ -23,95 +23,95 @@
 
 # include  "config.h"
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT> class slab_t {
+قالب <size_t SLAB_اندازه, size_t CHUNK_شمار> class slab_t {
 
-      union item_cell_u {
-	    item_cell_u*next;
-	    char space[SLAB_SIZE];
+      اتحاد قلم_cell_u {
+	    قلم_cell_u*بعدی_2;
+	    حرف space[SLAB_اندازه];
       };
 
-    public:
+    عام:
       slab_t();
 
-      void* alloc_slab();
-      void  free_slab(void*);
-#ifdef CHECK_WITH_VALGRIND
+      فراغ* alloc_slab();
+      فراغ  free_slab(فراغ*);
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
 	// If we have allocated memory then we need to delete it to make
 	// valgrind happy.
-      void delete_pool(void);
-#endif
+      فراغ delete_pool(فراغ);
+#پایان_اگر
 
-      unsigned long pool;
+      بیعلامت دراز pool;
 
-    private:
-      item_cell_u*heap_;
-      item_cell_u initial_chunk_[CHUNK_COUNT];
-#ifdef CHECK_WITH_VALGRIND
+    خاص:
+      قلم_cell_u*انباشته;
+      قلم_cell_u initial_chunk_[CHUNK_شمار];
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
 	// Each slab needs a pointer to the allocated space.
-      item_cell_u**slab_pool;
-      unsigned slab_pool_count;
-#endif
+      قلم_cell_u**slab_pool;
+      بیعلامت slab_pool_شمار;
+#پایان_اگر
 };
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-slab_t<SLAB_SIZE,CHUNK_COUNT>::slab_t()
+قالب <size_t SLAB_اندازه, size_t CHUNK_شمار>
+slab_t<SLAB_اندازه,CHUNK_شمار>::slab_t()
 {
-      pool = CHUNK_COUNT;
-      heap_ = initial_chunk_;
-      for (unsigned idx = 0 ; idx < CHUNK_COUNT-1 ; idx += 1)
-	    initial_chunk_[idx].next = initial_chunk_+idx+1;
+      pool = CHUNK_شمار;
+      انباشته = initial_chunk_;
+      لكل (بیعلامت idx = 0 ; idx < CHUNK_شمار-1 ; idx += 1)
+	    initial_chunk_[idx].بعدی_2 = initial_chunk_+idx+1;
 
-      initial_chunk_[CHUNK_COUNT-1].next = 0;
-#ifdef CHECK_WITH_VALGRIND
+      initial_chunk_[CHUNK_شمار-1].بعدی_2 = 0;
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
 	// Initially we have no allocated space.
-      slab_pool = NULL;
-      slab_pool_count = 0;
-#endif
+      slab_pool = عدم;
+      slab_pool_شمار = 0;
+#پایان_اگر
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void* slab_t<SLAB_SIZE,CHUNK_COUNT>::alloc_slab()
+قالب <size_t SLAB_اندازه, size_t CHUNK_شمار>
+مضمن فراغ* slab_t<SLAB_اندازه,CHUNK_شمار>::alloc_slab()
 {
-      if (heap_ == 0) {
-	    item_cell_u*chunk = new item_cell_u[CHUNK_COUNT];
-#ifdef CHECK_WITH_VALGRIND
-	    slab_pool_count += 1;
-	    slab_pool = static_cast<item_cell_u **>(realloc(slab_pool,
-	                slab_pool_count*sizeof(item_cell_u **)));
-	    slab_pool[slab_pool_count-1] = chunk;
-#endif
-	    for (unsigned idx = 0 ; idx < CHUNK_COUNT ; idx += 1) {
-		  chunk[idx].next = heap_;
-		  heap_ = chunk+idx;
+      إذا (انباشته == 0) {
+	    قلم_cell_u*chunk = new قلم_cell_u[CHUNK_شمار];
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
+	    slab_pool_شمار += 1;
+	    slab_pool = static_cast<قلم_cell_u **>(realloc(slab_pool,
+	                slab_pool_شمار*حجم(قلم_cell_u **)));
+	    slab_pool[slab_pool_شمار-1] = chunk;
+#پایان_اگر
+	    لكل (بیعلامت idx = 0 ; idx < CHUNK_شمار ; idx += 1) {
+		  chunk[idx].بعدی_2 = انباشته;
+		  انباشته = chunk+idx;
 	    }
-	    pool += CHUNK_COUNT;
+	    pool += CHUNK_شمار;
       }
 
-      item_cell_u*cur = heap_;
-      heap_ = heap_->next;
-      return cur;
+      قلم_cell_u*cur = انباشته;
+      انباشته = انباشته->بعدی_2;
+      أرجع cur;
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::free_slab(void*ptr)
+قالب <size_t SLAB_اندازه, size_t CHUNK_شمار>
+مضمن فراغ slab_t<SLAB_اندازه,CHUNK_شمار>::free_slab(فراغ*ptr)
 {
-      item_cell_u*cur = reinterpret_cast<item_cell_u*> (ptr);
-      cur->next = heap_;
-      heap_ = cur;
+      قلم_cell_u*cur = reinterpret_cast<قلم_cell_u*> (ptr);
+      cur->بعدی_2 = انباشته;
+      انباشته = cur;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::delete_pool(void)
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
+قالب <size_t SLAB_اندازه, size_t CHUNK_شمار>
+مضمن فراغ slab_t<SLAB_اندازه,CHUNK_شمار>::delete_pool(فراغ)
 {
-      for (unsigned idx = 0; idx < slab_pool_count; idx += 1) {
+      لكل (بیعلامت idx = 0; idx < slab_pool_شمار; idx += 1) {
 	    delete [] slab_pool[idx];
       }
-      free(slab_pool);
-      slab_pool = NULL;
-      slab_pool_count = 0;
+      حرر(slab_pool);
+      slab_pool = عدم;
+      slab_pool_شمار = 0;
 }
-#endif
+#پایان_اگر
 
 
-#endif /* IVL_slab_H */
+#پایان_اگر /* IVL_slab_H */

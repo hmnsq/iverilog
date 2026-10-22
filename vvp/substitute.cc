@@ -24,80 +24,80 @@
 # include  <cassert>
 
 
-class vvp_fun_substitute : public vvp_net_fun_t {
+صنف vvp_fun_substitute : عام vvp_net_fun_t {
 
-    public:
-      vvp_fun_substitute(unsigned wid, unsigned soff, unsigned swid);
+    عام:
+      vvp_fun_substitute(بیعلامت wid, بیعلامت soff, بیعلامت swid);
       ~vvp_fun_substitute() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit, vvp_context_t) override;
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت, vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t ctx) override;
+      فراغ recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت,
+			بیعلامت پایه, بیعلامت vwid, vvp_context_t ctx) override;
 
-    private:
-      unsigned wid_;
-      unsigned soff_;
-      unsigned swid_;
+    خاص:
+      بیعلامت wid_;
+      بیعلامت soff_;
+      بیعلامت swid_;
 
       vvp_vector4_t val_;
 };
 
-vvp_fun_substitute::vvp_fun_substitute(unsigned wid, unsigned soff, unsigned swid)
+vvp_fun_substitute::vvp_fun_substitute(بیعلامت wid, بیعلامت soff, بیعلامت swid)
 : wid_(wid), soff_(soff), swid_(swid), val_(wid)
 {
-      for (unsigned idx = 0 ; idx < val_.size() ; idx += 1)
-	    val_.set_bit(idx, BIT4_Z);
+      لكل (بیعلامت idx = 0 ; idx < val_.size() ; idx += 1)
+	    val_.مجموعه_بیت(idx, BIT4_Z);
 }
 
 vvp_fun_substitute::~vvp_fun_substitute()
 {
 }
 
-void vvp_fun_substitute::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+فراغ vvp_fun_substitute::recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
 				   vvp_context_t)
 {
-      unsigned pdx = port.port();
-      assert(pdx <= 1);
+      بیعلامت pdx = پورت.پورت();
+      أكد(pdx <= 1);
 
-      if (pdx == 0) {
-	    assert(bit.size() == wid_);
+      إذا (pdx == 0) {
+	    أكد(بیت.size() == wid_);
 
-	    for (unsigned idx = 0 ; idx < wid_ ; idx += 1) {
-		  if (idx >= soff_ && idx < (soff_+swid_))
-			continue;
+	    لكل (بیعلامت idx = 0 ; idx < wid_ ; idx += 1) {
+		  إذا (idx >= soff_ && idx < (soff_+swid_))
+			استمر;
 
-		  val_.set_bit(idx, bit.value(idx));
+		  val_.مجموعه_بیت(idx, بیت.value(idx));
 	    }
 
-      } else {
-	    assert(bit.size() == swid_);
+      } وإلا {
+	    أكد(بیت.size() == swid_);
 
-	    for (unsigned idx = 0 ; idx < swid_ ; idx += 1)
-		  val_.set_bit(idx+soff_, bit.value(idx));
+	    لكل (بیعلامت idx = 0 ; idx < swid_ ; idx += 1)
+		  val_.مجموعه_بیت(idx+soff_, بیت.value(idx));
       }
 
-      port.ptr()->send_vec4(val_, 0);
+      پورت.ptr()->send_vec4(val_, 0);
 }
 
-void vvp_fun_substitute::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				      unsigned base, unsigned vwid, vvp_context_t ctx)
+فراغ vvp_fun_substitute::recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت,
+				      بیعلامت پایه, بیعلامت vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, بیت, پایه, vwid, ctx);
 }
 
-void compile_substitute(char*label, unsigned width,
-			unsigned soff, unsigned swidth,
-			unsigned argc, struct symb_s*argv)
+فراغ compile_substitute(حرف*label, بیعلامت width,
+			بیعلامت soff, بیعلامت swidth,
+			بیعلامت argc, بنية symb_s*argv)
 {
-      vvp_fun_substitute*fun = new vvp_fun_substitute(width, soff, swidth);
+      vvp_fun_substitute*fun = جديد vvp_fun_substitute(width, soff, swidth);
 
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = جديد vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_نماد(label, net);
+      حرر(label);
 
       inputs_connect(net, argc, argv);
-      free(argv);
+      حرر(argv);
 }

@@ -1,5 +1,5 @@
-#ifndef IVL_resolv_H
-#define IVL_resolv_H
+#اگر_تعریف_نشده IVL_resolv_H
+#تعریف_کن IVL_resolv_H
 /*
  * Copyright (c) 2001-2025 Stephen Williams (steve@icarus.com)
  *
@@ -30,70 +30,70 @@
  * actual functors.
  */
 
-class resolv_core : public vvp_net_fun_t {
+class resolv_core : عام vvp_net_fun_t {
 
-    public:
-      explicit resolv_core(unsigned nports, vvp_net_t*net);
-      virtual ~resolv_core() override;
+    عام:
+      explicit resolv_core(بیعلامت nports, vvp_net_t*net);
+      مجازی ~resolv_core() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t) override
-            { recv_vec4_(port.port(), bit); }
+            { recv_vec4_(پورت.پورت(), بیت); }
 
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override
-            { recv_vec8_(port.port(), bit); }
+      فراغ recv_vec8(vvp_net_ptr_t پورت, ثابت vvp_vector8_t&بیت) override
+            { recv_vec8_(پورت.پورت(), بیت); }
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override
-            { recv_vec4_pv_(port.port(), bit, base, vwid); }
+      فراغ recv_vec4_pv(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
+			بیعلامت پایه, بیعلامت vwid, vvp_context_t) override
+            { recv_vec4_pv_(پورت.پورت(), بیت, پایه, vwid); }
 
-      void recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
-			unsigned base, unsigned vwid) override
-            { recv_vec8_pv_(port.port(), bit, base, vwid); }
+      فراغ recv_vec8_pv(vvp_net_ptr_t پورت, ثابت vvp_vector8_t&بیت,
+			بیعلامت پایه, بیعلامت vwid) override
+            { recv_vec8_pv_(پورت.پورت(), بیت, پایه, vwid); }
 
-      virtual void count_drivers(unsigned bit_idx, unsigned counts[3]) =0;
+      مجازی فراغ شمار_drivers(بیعلامت بیت_idx, بیعلامت counts[3]) =0;
 
-    private:
-      friend class resolv_extend;
-      virtual void recv_vec4_(unsigned port, const vvp_vector4_t&bit) =0;
-      virtual void recv_vec8_(unsigned port, const vvp_vector8_t&bit) =0;
+    خاص:
+      دوست class resolv_extend;
+      مجازی فراغ recv_vec4_(بیعلامت پورت, ثابت vvp_vector4_t&بیت) =0;
+      مجازی فراغ recv_vec8_(بیعلامت پورت, ثابت vvp_vector8_t&بیت) =0;
 
-      void recv_vec4_pv_(unsigned port, const vvp_vector4_t&bit,
-			 unsigned base, unsigned vwid);
-      void recv_vec8_pv_(unsigned port, const vvp_vector8_t&bit,
-			 unsigned base, unsigned vwid);
+      فراغ recv_vec4_pv_(بیعلامت پورت, ثابت vvp_vector4_t&بیت,
+			 بیعلامت پایه, بیعلامت vwid);
+      فراغ recv_vec8_pv_(بیعلامت پورت, ثابت vvp_vector8_t&بیت,
+			 بیعلامت پایه, بیعلامت vwid);
 
-    protected:
-      unsigned nports_;
+    محمي:
+      بیعلامت nports_;
       vvp_net_t*net_;
 };
 
-class resolv_extend : public vvp_net_fun_t {
+class resolv_extend : عام vvp_net_fun_t {
 
-    public:
-      resolv_extend(resolv_core*core, unsigned port_base);
+    عام:
+      resolv_extend(resolv_core*core, بیعلامت پورت_پایه);
       ~resolv_extend() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t) override
-            { core_->recv_vec4_(port_base_ + port.port(), bit); }
+            { core_->recv_vec4_(پورت_پایه_2 + پورت.پورت(), بیت); }
 
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override
-            { core_->recv_vec8_(port_base_ + port.port(), bit); }
+      فراغ recv_vec8(vvp_net_ptr_t پورت, ثابت vvp_vector8_t&بیت) override
+            { core_->recv_vec8_(پورت_پایه_2 + پورت.پورت(), بیت); }
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) override
-            { core_->recv_vec4_pv_(port_base_ + port.port(), bit,
-                                   base, vwid); }
+      فراغ recv_vec4_pv(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
+			بیعلامت پایه, بیعلامت vwid, vvp_context_t) override
+            { core_->recv_vec4_pv_(پورت_پایه_2 + پورت.پورت(), بیت,
+                                   پایه, vwid); }
 
-      void recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
-			unsigned base, unsigned vwid) override
-            { core_->recv_vec8_pv_(port_base_ + port.port(), bit,
-                                   base, vwid); }
+      فراغ recv_vec8_pv(vvp_net_ptr_t پورت, ثابت vvp_vector8_t&بیت,
+			بیعلامت پایه, بیعلامت vwid) override
+            { core_->recv_vec8_pv_(پورت_پایه_2 + پورت.پورت(), بیت,
+                                   پایه, vwid); }
 
-    private:
+    خاص:
       resolv_core*core_;
-      unsigned port_base_;
+      بیعلامت پورت_پایه_2;
 };
 
 /*
@@ -108,22 +108,22 @@ class resolv_extend : public vvp_net_fun_t {
  * strong values (or HiZ) for the sake of resolution. In any case, the
  * propagated value is a vvp_vector8_t value.
  */
-class resolv_tri : public resolv_core {
+class resolv_tri : عام resolv_core {
 
-    public:
-      explicit resolv_tri(unsigned nports, vvp_net_t*net,
-                          vvp_scalar_t hiz_value);
+    عام:
+      explicit resolv_tri(بیعلامت nports, vvp_net_t*net,
+                          vvp_scalar_t hiz_مقدار);
       ~resolv_tri() override;
 
-      void count_drivers(unsigned bit_idx, unsigned counts[3]) override;
+      فراغ شمار_drivers(بیعلامت بیت_idx, بیعلامت counts[3]) override;
 
-    private:
-      void recv_vec4_(unsigned port, const vvp_vector4_t&bit) override;
-      void recv_vec8_(unsigned port, const vvp_vector8_t&bit) override;
+    خاص:
+      فراغ recv_vec4_(بیعلامت پورت, ثابت vvp_vector4_t&بیت) override;
+      فراغ recv_vec8_(بیعلامت پورت, ثابت vvp_vector8_t&بیت) override;
 
-    private:
+    خاص:
         // The puller value to be used when a bit is not driven.
-      vvp_scalar_t hiz_value_;
+      vvp_scalar_t hiz_مقدار_2;
         // The array of input values.
       vvp_vector8_t*val_;
 };
@@ -137,44 +137,44 @@ class resolv_tri : public resolv_core {
  * value. It also takes in vvp_vector8_t values, which it reduces to
  * 4-state values for the sake of resolution.
  */
-class resolv_wired_logic : public resolv_core {
+class resolv_wired_logic : عام resolv_core {
 
-    public:
-      explicit resolv_wired_logic(unsigned nports, vvp_net_t*net);
-      virtual ~resolv_wired_logic() override;
+    عام:
+      explicit resolv_wired_logic(بیعلامت nports, vvp_net_t*net);
+      مجازی ~resolv_wired_logic() override;
 
-      void count_drivers(unsigned bit_idx, unsigned counts[3]) override;
+      فراغ شمار_drivers(بیعلامت بیت_idx, بیعلامت counts[3]) override;
 
-    protected:
-      virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) =0;
+    محمي:
+      مجازی vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) =0;
 
-    private:
-      void recv_vec4_(unsigned port, const vvp_vector4_t&bit) override;
-      void recv_vec8_(unsigned port, const vvp_vector8_t&bit) override;
+    خاص:
+      فراغ recv_vec4_(بیعلامت پورت, ثابت vvp_vector4_t&بیت) override;
+      فراغ recv_vec8_(بیعلامت پورت, ثابت vvp_vector8_t&بیت) override;
 
-    private:
+    خاص:
         // The array of input values.
       vvp_vector4_t*val_;
 };
 
-class resolv_triand : public resolv_wired_logic {
+class resolv_triand : عام resolv_wired_logic {
 
-    public:
-      explicit resolv_triand(unsigned nports, vvp_net_t*net);
+    عام:
+      explicit resolv_triand(بیعلامت nports, vvp_net_t*net);
       ~resolv_triand() override;
 
-    private:
-      virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
+    خاص:
+      مجازی vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
 };
 
-class resolv_trior : public resolv_wired_logic {
+class resolv_trior : عام resolv_wired_logic {
 
-    public:
-      explicit resolv_trior(unsigned nports, vvp_net_t*net);
+    عام:
+      explicit resolv_trior(بیعلامت nports, vvp_net_t*net);
       ~resolv_trior() override;
 
-    private:
-      virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
+    خاص:
+      مجازی vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) override;
 };
 
-#endif /* IVL_resolv_H */
+#پایان_اگر /* IVL_resolv_H */

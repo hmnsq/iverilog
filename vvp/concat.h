@@ -1,5 +1,5 @@
-#ifndef IVL_concat_H
-#define IVL_concat_H
+#اگر_تعریف_نشده IVL_concat_H
+#تعریف_کن IVL_concat_H
 /*
  * Copyright (c) 2004-2025 Stephen Williams (steve@icarus.com)
  *
@@ -32,46 +32,46 @@
  * output vector) can be worked out. The input vectors must match the
  * expected width.
  */
-class vvp_fun_concat  : public vvp_net_fun_t, protected vvp_gen_event_s  {
+class vvp_fun_concat  : عام vvp_net_fun_t, محمي vvp_gen_event_s  {
 
-    public:
-      vvp_fun_concat(unsigned w0, unsigned w1,
-		     unsigned w2, unsigned w3);
+    عام:
+      vvp_fun_concat(بیعلامت w0, بیعلامت w1,
+		     بیعلامت w2, بیعلامت w3);
       ~vvp_fun_concat() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t context) final;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) final;
-    private:
-      void run_run() final;
+      فراغ recv_vec4_pv(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
+			بیعلامت پایه, بیعلامت vwid, vvp_context_t) final;
+    خاص:
+      فراغ پیاپی_پیاپی() final;
 
-      unsigned wid_[4];
+      بیعلامت wid_[4];
       vvp_vector4_t val_;
       vvp_net_t *net_ = nullptr;
 };
 
-class vvp_fun_concat8  : public vvp_net_fun_t, protected vvp_gen_event_s {
+class vvp_fun_concat8  : عام vvp_net_fun_t, محمي vvp_gen_event_s {
 
-    public:
-      vvp_fun_concat8(unsigned w0, unsigned w1,
-		     unsigned w2, unsigned w3);
+    عام:
+      vvp_fun_concat8(بیعلامت w0, بیعلامت w1,
+		     بیعلامت w2, بیعلامت w3);
       ~vvp_fun_concat8() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t context) final;
-      void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) final;
+      فراغ recv_vec8(vvp_net_ptr_t پورت, ثابت vvp_vector8_t&بیت) final;
 
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t) final;
-      void recv_vec8_pv(vvp_net_ptr_t p, const vvp_vector8_t&bit,
-			unsigned base, unsigned vwid) final;
+      فراغ recv_vec4_pv(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
+			بیعلامت پایه, بیعلامت vwid, vvp_context_t) final;
+      فراغ recv_vec8_pv(vvp_net_ptr_t p, ثابت vvp_vector8_t&بیت,
+			بیعلامت پایه, بیعلامت vwid) final;
 
-    private:
-      void run_run() final;
+    خاص:
+      فراغ پیاپی_پیاپی() final;
 
-      unsigned wid_[4];
+      بیعلامت wid_[4];
       vvp_vector8_t val_;
       vvp_net_t *net_ = nullptr;
 };
@@ -82,21 +82,21 @@ class vvp_fun_concat8  : public vvp_net_fun_t, protected vvp_gen_event_s {
  * times to repeat the input. The width of the input vector is
  * implicit from these values.
  */
-class vvp_fun_repeat  : public vvp_net_fun_t {
+class vvp_fun_repeat  : عام vvp_net_fun_t {
 
-    public:
-      vvp_fun_repeat(unsigned width, unsigned repeat);
+    عام:
+      vvp_fun_repeat(بیعلامت عرض, بیعلامت repeat);
       ~vvp_fun_repeat() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      فراغ recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                      vvp_context_t context) override;
-      void recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-			unsigned int base, unsigned int vwid,
+      فراغ recv_vec4_pv(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
+			بیعلامت صحيح پایه, بیعلامت صحيح vwid,
 			vvp_context_t context) final;
 
-    private:
-      unsigned wid_;
-      unsigned rep_;
+    خاص:
+      بیعلامت wid_;
+      بیعلامت rep_;
 };
 
-#endif
+#پایان_اگر

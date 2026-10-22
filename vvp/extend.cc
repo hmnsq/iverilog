@@ -23,8 +23,8 @@
 # include  <iostream>
 # include  <cassert>
 
-vvp_fun_extend_signed::vvp_fun_extend_signed(unsigned wid)
-: width_(wid)
+vvp_fun_extend_signed::vvp_fun_extend_signed(بیعلامت wid)
+: عرض_2(wid)
 {
 }
 
@@ -32,28 +32,28 @@ vvp_fun_extend_signed::~vvp_fun_extend_signed()
 {
 }
 
-void vvp_fun_extend_signed::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+فراغ vvp_fun_extend_signed::recv_vec4(vvp_net_ptr_t پورت, ثابت vvp_vector4_t&بیت,
                                       vvp_context_t)
 {
-      if (bit.size() >= width_) {
-	    port.ptr()->send_vec4(bit, 0);
-	    return;
+      إذا (بیت.size() >= عرض_2) {
+	    پورت.ptr()->send_vec4(بیت, 0);
+	    أرجع;
       }
 
-      vvp_vector4_t res (width_);
+      vvp_vector4_t res (عرض_2);
 
-      for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1)
-	    res.set_bit(idx, bit.value(idx));
+      لكل (بیعلامت idx = 0 ;  idx < بیت.size() ;  idx += 1)
+	    res.مجموعه_بیت(idx, بیت.value(idx));
 
-      vvp_bit4_t pad = bit.size() > 0? bit.value(bit.size()-1) : BIT4_0;
-      for (unsigned idx = bit.size() ;  idx < res.size() ;  idx += 1)
-	    res.set_bit(idx, pad);
+      vvp_bit4_t pad = بیت.size() > 0? بیت.value(بیت.size()-1) : BIT4_0;
+      لكل (بیعلامت idx = بیت.size() ;  idx < res.size() ;  idx += 1)
+	    res.مجموعه_بیت(idx, pad);
 
-      port.ptr()->send_vec4(res, 0);
+      پورت.ptr()->send_vec4(res, 0);
 }
 
-void vvp_fun_extend_signed::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-					 unsigned base, unsigned vwid, vvp_context_t ctx)
+فراغ vvp_fun_extend_signed::recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت,
+					 بیعلامت پایه, بیعلامت vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, بیت, پایه, vwid, ctx);
 }

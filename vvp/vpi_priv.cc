@@ -24,9 +24,9 @@
 # include  "logic.h"
 # include  "part.h"
 # include  "concat.h"
-#ifdef CHECK_WITH_VALGRIND
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#پایان_اگر
 # include  <vector>
 # include  <cstdio>
 # include  <cstdarg>
@@ -36,75 +36,75 @@
 # include  <cmath>
 # include  <iostream>
 
-using namespace std;
-vpi_mode_t vpi_mode_flag = VPI_MODE_NONE;
+استفاده نطاق std;
+vpi_نما_t vpi_نما_flag = VPI_نما_NONE;
 FILE*vpi_trace = 0;
 
-static s_vpi_vlog_info  vpi_vlog_info;
-static s_vpi_error_info vpip_last_error = { 0, 0, 0, 0, 0, 0, 0 };
+ساكن s_vpi_vlog_info  vpi_vlog_info;
+ساكن s_vpi_error_info vpip_آخرین_error = { 0, 0, 0, 0, 0, 0, 0 };
 
-const char* direction_as_string(int dir)
+ثابت حرف* direction_as_string(صحيح dir)
 {
-      switch (dir) {
-	  case vpiInput:
-	    return "input";
-	  case vpiOutput:
-	    return "output";
-	  case vpiInout:
-	    return "inout";
-	  case vpiMixedIO:
-	    return "mixed io";
-	  case vpiNoDirection:
-	    return "no direction";
-	  default:
-	    return "INVALID-DIRECTION";
+      بدل (dir) {
+	  حالة vpi_درون_داد:
+	    أرجع "input";
+	  حالة vpiOutput:
+	    أرجع "output";
+	  حالة vpiInout:
+	    أرجع "inout";
+	  حالة vpiMixedIO:
+	    أرجع "mixed io";
+	  حالة vpiNoDirection:
+	    أرجع "no direction";
+	  افتراضي:
+	    أرجع "INVALID-DIRECTION";
       }
 }
 
 __vpiHandle::~__vpiHandle()
 { }
 
-int __vpiHandle::vpi_get(int)
-{ return vpiUndefined; }
+صحيح __vpiHandle::vpi_get(صحيح)
+{ أرجع vpiUndefined; }
 
-int64_t __vpiHandle::vpi_get64(int code)
-{ return (code == _vpiNexusId) ? 0 : vpiUndefined; }
+int64_t __vpiHandle::vpi_get64(صحيح code)
+{ أرجع (code == _vpiNexusId) ? 0 : vpiUndefined; }
 
-char* __vpiHandle::vpi_get_str(int)
-{ return 0; }
+حرف* __vpiHandle::vpi_get_str(صحيح)
+{ أرجع 0; }
 
-void __vpiHandle::vpi_get_value(p_vpi_value)
+فراغ __vpiHandle::vpi_get_مقدار(p_vpi_مقدار)
 { }
 
-vpiHandle __vpiHandle::vpi_put_value(p_vpi_value, int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_put_مقدار(p_vpi_مقدار, صحيح)
+{ أرجع 0; }
 
-vpiHandle __vpiHandle::vpi_handle(int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_handle(صحيح)
+{ أرجع 0; }
 
-vpiHandle __vpiHandle::vpi_iterate(int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_iterate(صحيح)
+{ أرجع 0; }
 
-vpiHandle __vpiHandle::vpi_index(int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_شاخص(صحيح)
+{ أرجع 0; }
 
-void __vpiHandle::vpi_get_delays(p_vpi_delay)
+فراغ __vpiHandle::vpi_get_delays(p_vpi_delay)
 { }
 
-void __vpiHandle::vpi_put_delays(p_vpi_delay)
+فراغ __vpiHandle::vpi_put_delays(p_vpi_delay)
 { }
 
-__vpiBaseVar::__vpiBaseVar(__vpiScope*scope, const char*name, vvp_net_t*net)
+__vpiBaseVar::__vpiBaseVar(__vpiScope*scope, ثابت حرف*name, vvp_net_t*net)
 : scope_(scope), name_(name), net_(net)
 {
 }
 
-#ifdef CHECK_WITH_VALGRIND
+#اگر_تعریف_شده CHECK_WITH_VALGRIND
 __vpiBaseVar::~__vpiBaseVar()
 {
       vvp_net_delete(net_);
 }
-#endif
+#پایان_اگر
 
 /*
  * The default behavior for the vpi_free_object to an object is to
@@ -113,134 +113,134 @@ __vpiBaseVar::~__vpiBaseVar()
  * objects will override the free_object_fun method to return an
  * appropriately effective function.
  */
-static int suppress_free(vpiHandle)
-{ return 1; }
-__vpiHandle::free_object_fun_t __vpiHandle::free_object_fun(void)
-{ return &suppress_free; }
+ساكن صحيح suppress_free(vpiHandle)
+{ أرجع 1; }
+__vpiHandle::free_object_fun_t __vpiHandle::free_object_fun(فراغ)
+{ أرجع &suppress_free; }
 
 /*
  * The vpip_string function creates a constant string from the pass
  * input. This constant string is permanently allocated from an
  * efficient string buffer store.
  */
-struct vpip_string_chunk {
-      struct vpip_string_chunk*next;
-      char data[64*1024 - sizeof (struct vpip_string_chunk*)];
+بنية vpip_string_chunk {
+      بنية vpip_string_chunk*بعدی_2;
+      حرف داده[64*1024 - حجم (بنية vpip_string_chunk*)];
 };
 
-unsigned vpip_size(const __vpiSignal *sig)
+بیعلامت vpip_اندازه(ثابت __vpiSignal *sig)
 {
-      return abs(sig->msb.get_value() - sig->lsb.get_value()) + 1;
+      أرجع قدر_مطلق(sig->msb.get_مقدار() - sig->lsb.get_مقدار()) + 1;
 }
 
 __vpiScope* vpip_scope(__vpiSignal*sig)
 {
-      if (sig->is_netarray)
-	    return static_cast<__vpiScope*>(vpi_handle(vpiScope,
-	                                               sig->within.parent));
-      else
-	    return sig->within.scope;
+      إذا (sig->is_netarray)
+	    أرجع static_cast<__vpiScope*>(vpi_handle(vpiScope,
+	                                               sig->within.والد));
+      وإلا
+	    أرجع sig->within.scope;
 }
 
 __vpiScope* vpip_scope(__vpiRealVar*sig)
 {
-      if (sig->is_netarray)
-	    return static_cast<__vpiScope*>(vpi_handle(vpiScope,
-	                                               sig->within.parent));
-      else
-	    return sig->within.scope;
+      إذا (sig->is_netarray)
+	    أرجع static_cast<__vpiScope*>(vpi_handle(vpiScope,
+	                                               sig->within.والد));
+      وإلا
+	    أرجع sig->within.scope;
 }
 
 vpiHandle vpip_module(__vpiScope*scope)
 {
-      while(scope && scope->get_type_code() != vpiModule) {
+      طالما(scope && scope->get_type_کد() != vpiModule) {
 	    scope = scope->scope;
       }
-      assert(scope);
-      return scope;
+      أكد(scope);
+      أرجع scope;
 }
 
-const char *vpip_string(const char*str)
+ثابت حرف *vpip_string(ثابت حرف*str)
 {
-      static vpip_string_chunk first_chunk = {0, {0}};
-      static vpip_string_chunk*chunk_list = &first_chunk;
-      static unsigned chunk_fill = 0;
+      ساكن vpip_string_chunk اولی_chunk = {0, {0}};
+      ساكن vpip_string_chunk*chunk_list = &اولی_chunk;
+      ساكن بیعلامت chunk_fill = 0;
 
-      unsigned len = strlen(str);
-      assert( (len+1) <= sizeof chunk_list->data );
+      بیعلامت len = طول_رشته(str);
+      أكد( (len+1) <= حجم chunk_list->داده );
 
-      if ( (len+1) > (sizeof chunk_list->data - chunk_fill) ) {
-	    vpip_string_chunk*tmp = new vpip_string_chunk;
-	    tmp->next = chunk_list;
+      إذا ( (len+1) > (حجم chunk_list->داده - chunk_fill) ) {
+	    vpip_string_chunk*tmp = جديد vpip_string_chunk;
+	    tmp->بعدی_2 = chunk_list;
 	    chunk_list = tmp;
 	    chunk_fill = 0;
       }
 
-      char*res = chunk_list->data + chunk_fill;
+      حرف*res = chunk_list->داده + chunk_fill;
       chunk_fill += len + 1;
 
       strcpy(res, str);
-      return res;
+      أرجع res;
 }
 
-static unsigned hash_string(const char*text)
+ساكن بیعلامت hash_string(ثابت حرف*متن)
 {
-      unsigned h = 0;
+      بیعلامت h = 0;
 
-      while (*text) {
-	    h = (h << 4) ^ (h >> 28) ^ (unsigned)*text;
-	    text += 1;
+      طالما (*متن) {
+	    h = (h << 4) ^ (h >> 28) ^ (بیعلامت)*متن;
+	    متن += 1;
       }
-      return h;
+      أرجع h;
 }
 
-const char* vpip_name_string(const char*text)
+ثابت حرف* vpip_name_string(ثابت حرف*متن)
 {
-      const unsigned HASH_SIZE = 4096;
-      static const char*hash_table[HASH_SIZE] = {0};
+      ثابت بیعلامت HASH_اندازه = 4096;
+      ساكن ثابت حرف*hash_جدول[HASH_اندازه] = {0};
 
-      unsigned hash_value = hash_string(text) % HASH_SIZE;
+      بیعلامت hash_مقدار = hash_string(متن) % HASH_اندازه;
 
 	/* If we easily find the string in the hash table, then return
 	   that and be done. */
-      if (hash_table[hash_value]
-	  && (strcmp(hash_table[hash_value], text) == 0)) {
-	    return hash_table[hash_value];
+      إذا (hash_جدول[hash_مقدار]
+	  && (strcmp(hash_جدول[hash_مقدار], متن) == 0)) {
+	    أرجع hash_جدول[hash_مقدار];
       }
 
 	/* The existing hash entry is not a match. Replace it with the
 	   newly allocated value, and return the new pointer as the
 	   result to the add. */
-      const char*res = vpip_string(text);
-      hash_table[hash_value] = res;
+      ثابت حرف*res = vpip_string(متن);
+      hash_جدول[hash_مقدار] = res;
 
-      return res;
+      أرجع res;
 }
 
 PLI_INT32 vpi_chk_error(p_vpi_error_info info)
 {
-      if (vpip_last_error.state == 0)
-	    return 0;
+      إذا (vpip_آخرین_error.state == 0)
+	    أرجع 0;
 
-      info->state = vpip_last_error.state;
-      info->level = vpip_last_error.level;
-      info->message = vpip_last_error.message;
-      info->product = vpi_vlog_info.product;
-      info->code = (char *)"";
+      info->state = vpip_آخرین_error.state;
+      info->level = vpip_آخرین_error.level;
+      info->message = vpip_آخرین_error.message;
+      info->حاصلضرب = vpi_vlog_info.حاصلضرب;
+      info->code = (حرف *)"";
       info->file = 0;
-      info->line = 0;
+      info->سطر = 0;
 
-      return info->level;
+      أرجع info->level;
 }
 
 PLI_INT32 vpi_compare_objects(vpiHandle obj1, vpiHandle obj2)
 {
-      assert(obj1);
-      assert(obj2);
+      أكد(obj1);
+      أكد(obj2);
 
 	// Does this actually work for all cases?
-      if (obj1 != obj2) return 0;
-      else return 1;
+      إذا (obj1 != obj2) أرجع 0;
+      وإلا أرجع 1;
 }
 
 /*
@@ -249,50 +249,50 @@ PLI_INT32 vpi_compare_objects(vpiHandle obj1, vpiHandle obj2)
  * string/data values. We also support passing a task or function handle
  * instead of just a handle to a vpiUserSystf.
  */
-void vpi_get_systf_info(vpiHandle ref, p_vpi_systf_data data)
+فراغ vpi_get_systf_info(vpiHandle ref, p_vpi_systf_داده داده)
 {
-      struct __vpiUserSystf* rfp = dynamic_cast<__vpiUserSystf*>(ref);
-      if (rfp == 0) {
-	    struct __vpiSysTaskCall*call = dynamic_cast<__vpiSysTaskCall*>(ref);
-	    assert(call);
+      بنية __vpiUserSystf* rfp = dynamic_cast<__vpiUserSystf*>(ref);
+      إذا (rfp == 0) {
+	    بنية __vpiSysTaskCall*call = dynamic_cast<__vpiSysTaskCall*>(ref);
+	    أكد(call);
 	    rfp = call->defn;
       }
 
 	/* Assert that vpiUserDefn is true! */
-      assert(rfp->is_user_defn);
+      أكد(rfp->is_user_defn);
 
-      data->type = rfp->info.type;
-      data->sysfunctype = rfp->info.sysfunctype;
-      data->tfname = rfp->info.tfname;
-      data->calltf = rfp->info.calltf;
-      data->compiletf = rfp->info.compiletf;
-      data->sizetf = rfp->info.sizetf;
-      data->user_data = rfp->info.user_data;
+      داده->type = rfp->info.type;
+      داده->sysfunctype = rfp->info.sysfunctype;
+      داده->tfname = rfp->info.tfname;
+      داده->calltf = rfp->info.calltf;
+      داده->compiletf = rfp->info.compiletf;
+      داده->sizetf = rfp->info.sizetf;
+      داده->user_داده = rfp->info.user_داده;
 }
 
 /*
  * When a task is called, this value is set so that vpi_handle can
  * fathom the vpi_handle(vpiSysTfCall,0) function.
  */
-struct __vpiSysTaskCall*vpip_cur_task = 0;
+بنية __vpiSysTaskCall*vpip_cur_task = 0;
 
 PLI_INT32 vpi_free_object(vpiHandle ref)
 {
-      int rtn;
+      صحيح rtn;
 
-      if (vpi_trace) {
+      إذا (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_free_object(%p)", ref);
 	    fflush(vpi_trace);
       }
 
-      assert(ref);
+      أكد(ref);
       __vpiHandle::free_object_fun_t fun = ref->free_object_fun();
       rtn = fun (ref);
 
-      if (vpi_trace)
+      إذا (vpi_trace)
 	    fprintf(vpi_trace, " --> %d\n", rtn);
 
-      return rtn;
+      أرجع rtn;
 }
 
 PLI_INT32 vpi_release_handle(vpiHandle ref)
@@ -300,402 +300,402 @@ PLI_INT32 vpi_release_handle(vpiHandle ref)
 	// Since SystemVerilog vpi_free_object() has been
 	// renamed vpi_release_handle(), and thus
 	// vpi_free_object() has been deprecated.
-      return vpi_free_object(ref);
+      أرجع vpi_free_object(ref);
 }
 
-static int vpip_get_global(int property)
+ساكن صحيح vpip_get_global(صحيح property)
 {
-      switch (property) {
+      بدل (property) {
 
-	  case vpiTimeUnit:
-	  case vpiTimePrecision:
-	    return vpip_get_time_precision();
+	  حالة vpi_زمان_Unit:
+	  حالة vpi_زمان_Precision:
+	    أرجع vpip_get_زمان_precision();
 
-	  default:
+	  افتراضي:
 	    fprintf(stderr, "vpi error: bad global property: %d\n", property);
-	    assert(0);
-	    return vpiUndefined;
+	    أكد(0);
+	    أرجع vpiUndefined;
       }
 }
 
-static const char* vpi_property_str(PLI_INT32 code)
+ساكن ثابت حرف* vpi_property_str(PLI_INT32 code)
 {
-      static char buf[32];
-      switch (code) {
-	  case vpiConstType:
-	    return "vpiConstType";
-	  case vpiName:
-	    return "vpiName";
-	  case vpiFullName:
-	    return "vpiFullName";
-	  case vpiTimeUnit:
-	    return "vpiTimeUnit";
-	  case vpiTimePrecision:
-	    return "vpiTimePrecision";
-          case vpiSize:
-	    return "vpiSize";
-          case _vpiNexusId:
-	    return "_vpiNexusId";
-	  default:
-	    snprintf(buf, sizeof(buf), "%d", (int)code);
+      ساكن حرف buf[32];
+      بدل (code) {
+	  حالة vpiConstType:
+	    أرجع "vpiConstType";
+	  حالة vpiName:
+	    أرجع "vpiName";
+	  حالة vpi_پر_Name:
+	    أرجع "vpiFullName";
+	  حالة vpi_زمان_Unit:
+	    أرجع "vpiTimeUnit";
+	  حالة vpi_زمان_Precision:
+	    أرجع "vpiTimePrecision";
+          حالة vpi_اندازه:
+	    أرجع "vpiSize";
+          حالة _vpiNexusId:
+	    أرجع "_vpiNexusId";
+	  افتراضي:
+	    snprintf(buf, حجم(buf), "%d", (صحيح)code);
       }
-      return buf;
+      أرجع buf;
 }
 
-const char* vpi_type_as_string(PLI_INT32 code)
+ثابت حرف* vpi_type_as_string(PLI_INT32 code)
 {
-      static char buf[32];
-      switch (code) {
-	  case vpiArrayType:
-	    return "vpiArrayType";
-	  case vpiBitVar:
-	    return "vpiBitVar";
-	  case vpiByteVar:
-	    return "vpiByteVar";
-	  case vpiClassVar:
-	    return "vpiClassVar";
-	  case vpiConstant:
-	    return "vpiConstant";
-	  case vpiEnumTypespec:
-	    return "vpiEnumTypespec";
-	  case vpiFunction:
-	    return "vpiFunction";
-	  case vpiGenScope:
-	    return "vpiGenScope";
-	  case vpiIntVar:
-	    return "vpiIntVar";
-	  case vpiIntegerVar:
-	    return "vpiIntegerVar";
-	  case vpiIterator:
-	    return "vpiIterator";
-	  case vpiLongIntVar:
-	    return "vpiLongIntVar";
-	  case vpiMemory:
-	    return "vpiMemory";
-	  case vpiMemoryWord:
-	    return "vpiMemoryWord";
-	  case vpiModule:
-	    return "vpiModule";
-	  case vpiNamedBegin:
-	    return "vpiNamedBegin";
-	  case vpiNamedEvent:
-	    return "vpiNamedEvent";
-	  case vpiNamedFork:
-	    return "vpiNamedFork";
-	  case vpiPackage:
-	    return "vpiPackage";
-	  case vpiPathTerm:
-	    return "vpiPathTerm";
-	  case vpiPort:
-	    return "vpiPort";
-	  case vpiNet:
-	    return "vpiNet";
-	  case vpiNetArray:
-	    return "vpiNetArray";
-	  case vpiNetBit:
-	    return "vpiNetBit";
-	  case vpiParameter:
-	    return "vpiParameter";
-	  case vpiPartSelect:
-	    return "vpiPartSelect";
-	  case vpiRealVar:
-	    return "vpiRealVar";
-	  case vpiReg:
-	    return "vpiReg";
-	  case vpiRegBit:
-	    return "vpiRegBit";
-	  case vpiShortIntVar:
-	    return "vpiShortIntVar";
-	  case vpiStringVar:
-	    return "vpiStringVar";
-	  case vpiSysFuncCall:
-	    return "vpiSysFuncCall";
-	  case vpiSysTaskCall:
-	    return "vpiSysTaskCall";
-	  case vpiTask:
-	    return "vpiTask";
-	  case vpiTimeVar:
-	    return "vpiTimeVar";
-	  case vpiUserSystf:
-	    return "vpiUserSystf";
-	  default:
-	    snprintf(buf, sizeof(buf), "%d", (int)code);
+      ساكن حرف buf[32];
+      بدل (code) {
+	  حالة vpiArrayType:
+	    أرجع "vpiArrayType";
+	  حالة vpi_بیت_Var:
+	    أرجع "vpiBitVar";
+	  حالة vpiByteVar:
+	    أرجع "vpiByteVar";
+	  حالة vpiClassVar:
+	    أرجع "vpiClassVar";
+	  حالة vpiConstant:
+	    أرجع "vpiConstant";
+	  حالة vpiEnumTypespec:
+	    أرجع "vpiEnumTypespec";
+	  حالة vpiFunction:
+	    أرجع "vpiFunction";
+	  حالة vpiGenScope:
+	    أرجع "vpiGenScope";
+	  حالة vpiIntVar:
+	    أرجع "vpiIntVar";
+	  حالة vpiIntegerVar:
+	    أرجع "vpiIntegerVar";
+	  حالة vpiIterator:
+	    أرجع "vpiIterator";
+	  حالة vpiLongIntVar:
+	    أرجع "vpiLongIntVar";
+	  حالة vpi_حافظه:
+	    أرجع "vpiMemory";
+	  حالة vpi_حافظه_کلمه:
+	    أرجع "vpiMemoryWord";
+	  حالة vpiModule:
+	    أرجع "vpiModule";
+	  حالة vpiNamedBegin:
+	    أرجع "vpiNamedBegin";
+	  حالة vpiNamedEvent:
+	    أرجع "vpiNamedEvent";
+	  حالة vpiNamedFork:
+	    أرجع "vpiNamedFork";
+	  حالة vpiPackage:
+	    أرجع "vpiPackage";
+	  حالة vpi_مسیر_جمله:
+	    أرجع "vpiPathTerm";
+	  حالة vpi_پورت:
+	    أرجع "vpiPort";
+	  حالة vpiNet:
+	    أرجع "vpiNet";
+	  حالة vpiNetArray:
+	    أرجع "vpiNetArray";
+	  حالة vpi_Net_بیت:
+	    أرجع "vpiNetBit";
+	  حالة vpiParameter:
+	    أرجع "vpiParameter";
+	  حالة vpiPartSelect:
+	    أرجع "vpiPartSelect";
+	  حالة vpiRealVar:
+	    أرجع "vpiRealVar";
+	  حالة vpiReg:
+	    أرجع "vpiReg";
+	  حالة vpi_Reg_بیت:
+	    أرجع "vpiRegBit";
+	  حالة vpiShortIntVar:
+	    أرجع "vpiShortIntVar";
+	  حالة vpiStringVar:
+	    أرجع "vpiStringVar";
+	  حالة vpiSysFuncCall:
+	    أرجع "vpiSysFuncCall";
+	  حالة vpiSysTaskCall:
+	    أرجع "vpiSysTaskCall";
+	  حالة vpiTask:
+	    أرجع "vpiTask";
+	  حالة vpi_زمان_Var:
+	    أرجع "vpiTimeVar";
+	  حالة vpiUserSystf:
+	    أرجع "vpiUserSystf";
+	  افتراضي:
+	    snprintf(buf, حجم(buf), "%d", (صحيح)code);
       }
-      return buf;
+      أرجع buf;
 }
 
-PLI_INT32 vpi_get(int property, vpiHandle ref)
+PLI_INT32 vpi_get(صحيح property, vpiHandle ref)
 {
 	/* We don't care what the ref is there is only one delay selection. */
-      if (property == _vpiDelaySelection) return vpip_delay_selection;
+      إذا (property == _vpiDelaySelection) أرجع vpip_delay_selection;
 
-      if (ref == 0)
-	    return vpip_get_global(property);
+      إذا (ref == 0)
+	    أرجع vpip_get_global(property);
 
-      if (property == vpiType) {
-	    if (vpi_trace) {
+      إذا (property == vpiType) {
+	    إذا (vpi_trace) {
 		  fprintf(vpi_trace, "vpi_get(vpiType, %p) --> %s\n",
-			  ref, vpi_type_as_string(ref->get_type_code()));
+			  ref, vpi_type_as_string(ref->get_type_کد()));
 	    }
 
-	    if (ref->get_type_code() == vpiMemory && is_net_array(ref))
-		  return vpiNetArray;
-	    else
-		  return ref->get_type_code();
+	    إذا (ref->get_type_کد() == vpi_حافظه && is_net_array(ref))
+		  أرجع vpiNetArray;
+	    وإلا
+		  أرجع ref->get_type_کد();
       }
 
-      int res = ref->vpi_get(property);
+      صحيح res = ref->vpi_get(property);
 
-      if (vpi_trace) {
+      إذا (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_get(%s, %p) --> %d\n",
 		    vpi_property_str(property), ref, res);
       }
 
-      return res;
+      أرجع res;
 }
 
-PLI_INT64 vpi_get64(int property, vpiHandle ref)
+PLI_INT64 vpi_get64(صحيح property, vpiHandle ref)
 {
 	// For now we only support getting the nexus id.
-      if ((ref == 0) || (property != _vpiNexusId)) {
+      إذا ((ref == 0) || (property != _vpiNexusId)) {
 	    fprintf(vpi_trace, "vpi_get64(%s, %p) is not currently supported.\n",
 		    vpi_property_str(property), ref);
-	    return vpiUndefined;
+	    أرجع vpiUndefined;
       }
 
       int64_t res = ref->vpi_get64(property);
 
-      if (vpi_trace) {
+      إذا (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_get64(%s, %p) --> %" PRId64 "\n",
 		    vpi_property_str(property), ref, res);
       }
 
-      return res;
+      أرجع res;
 }
 
-char* vpi_get_str(PLI_INT32 property, vpiHandle ref)
+حرف* vpi_get_str(PLI_INT32 property, vpiHandle ref)
 {
 	/* We don't care what the ref is there is only one delay selection. */
-      if (property == _vpiDelaySelection) {
-	    switch (vpip_delay_selection) {
-		case _vpiDelaySelMinimum:
-		  return simple_set_rbuf_str("MINIMUM");
-		case _vpiDelaySelTypical:
-		  return simple_set_rbuf_str("TYPICAL");
-		case _vpiDelaySelMaximum:
-		  return simple_set_rbuf_str("MAXIMUM");
-		default:
-		  assert(0);
+      إذا (property == _vpiDelaySelection) {
+	    بدل (vpip_delay_selection) {
+		حالة _vpiDelaySelMinimum:
+		  أرجع simple_مجموعه_rbuf_str("MINIMUM");
+		حالة _vpiDelaySelTypical:
+		  أرجع simple_مجموعه_rbuf_str("TYPICAL");
+		حالة vpi_Delay_Sel_بیشینه:
+		  أرجع simple_مجموعه_rbuf_str("MAXIMUM");
+		افتراضي:
+		  أكد(0);
 	    }
       }
 
-      if (ref == 0) {
+      إذا (ref == 0) {
 	    fprintf(stderr, "vpi error: vpi_get_str(%s, 0) called "
 		    "with null vpiHandle.\n", vpi_property_str(property));
-	    return 0;
+	    أرجع 0;
       }
 
-      if (property == vpiType) {
-	    if (vpi_trace) {
+      إذا (property == vpiType) {
+	    إذا (vpi_trace) {
 		  fprintf(vpi_trace, "vpi_get(vpiType, %p) --> %s\n",
-			  ref, vpi_type_as_string(ref->get_type_code()));
+			  ref, vpi_type_as_string(ref->get_type_کد()));
 	    }
 
             PLI_INT32 type;
-	    if (ref->get_type_code() == vpiMemory && is_net_array(ref))
+	    إذا (ref->get_type_کد() == vpi_حافظه && is_net_array(ref))
 		  type = vpiNetArray;
-	    else
-		  type = ref->get_type_code();
-	    return (char *)vpi_type_as_string(type);
+	    وإلا
+		  type = ref->get_type_کد();
+	    أرجع (حرف *)vpi_type_as_string(type);
       }
 
-      char*res = ref->vpi_get_str(property);
+      حرف*res = ref->vpi_get_str(property);
 
-      if (vpi_trace) {
+      إذا (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_get_str(%s, %p) --> %s\n",
 		    vpi_property_str(property), ref, res? res : "<NULL>");
       }
 
-      return res;
+      أرجع res;
 }
 
 __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj)
 {
-      const struct __vpiSysTaskCall*task;
-      struct __vpiSignal*signal;
-      struct __vpiRealVar*real;
-      const __vpiNamedEvent*event;
+      ثابت بنية __vpiSysTaskCall*task;
+      بنية __vpiSignal*إشارة;
+      بنية __vpiRealVar*real;
+      ثابت __vpiNamedEvent*event;
 
-      switch (obj->get_type_code()) {
-	  case vpiSysTaskCall:
+      بدل (obj->get_type_کد()) {
+	  حالة vpiSysTaskCall:
 	    task = dynamic_cast<__vpiSysTaskCall*>(obj);
-	    return task->scope;
+	    أرجع task->scope;
 
-	  case vpiModule:
-	    return dynamic_cast<__vpiScope*>(obj);
+	  حالة vpiModule:
+	    أرجع dynamic_cast<__vpiScope*>(obj);
 
-	  case vpiNet:
-	  case vpiReg:
-	  case vpiIntegerVar:
-	  case vpiBitVar:
-	  case vpiByteVar:
-	  case vpiShortIntVar:
-	  case vpiIntVar:
-	  case vpiLongIntVar:
-	    signal = dynamic_cast<__vpiSignal*>(obj);
-	    return vpip_scope(signal);
+	  حالة vpiNet:
+	  حالة vpiReg:
+	  حالة vpiIntegerVar:
+	  حالة vpi_بیت_Var:
+	  حالة vpiByteVar:
+	  حالة vpiShortIntVar:
+	  حالة vpiIntVar:
+	  حالة vpiLongIntVar:
+	    إشارة = dynamic_cast<__vpiSignal*>(obj);
+	    أرجع vpip_scope(إشارة);
 
-	  case vpiRealVar:
+	  حالة vpiRealVar:
 	    real = dynamic_cast<__vpiRealVar*>(obj);
-	    return vpip_scope(real);
+	    أرجع vpip_scope(real);
 
-	  case vpiNamedEvent:
+	  حالة vpiNamedEvent:
 	    event = dynamic_cast<__vpiNamedEvent*>(obj);
-	    return event->get_scope();
+	    أرجع event->get_scope();
 
-	  case vpiMemory:
-	  case vpiMemoryWord:
-	  case vpiPartSelect:
-	    return dynamic_cast<__vpiScope*>(obj->vpi_handle(vpiScope));
+	  حالة vpi_حافظه:
+	  حالة vpi_حافظه_کلمه:
+	  حالة vpiPartSelect:
+	    أرجع dynamic_cast<__vpiScope*>(obj->vpi_handle(vpiScope));
 
-	  default:
+	  افتراضي:
 	    fprintf(stderr, "ERROR: vpip_scope_from_handle called with "
-		    "object handle type=%d\n", obj->get_type_code());
-	    assert(0);
-	    return 0;
+		    "object handle type=%d\n", obj->get_type_کد());
+	    أكد(0);
+	    أرجع 0;
       }
 }
 
-int vpip_time_units_from_handle(vpiHandle obj)
+صحيح vpip_زمان_units_from_handle(vpiHandle obj)
 {
-      if (obj == 0)
-	    return vpip_get_time_precision();
+      إذا (obj == 0)
+	    أرجع vpip_get_زمان_precision();
 
-      const __vpiScope*scope = vpip_timescale_scope_from_handle(obj);
-      if (scope == 0)
-	    return vpip_get_time_precision();
+      ثابت __vpiScope*scope = vpip_timescale_scope_from_handle(obj);
+      إذا (scope == 0)
+	    أرجع vpip_get_زمان_precision();
 
-      return scope->time_units;
+      أرجع scope->زمان_units;
 }
 
-int vpip_time_precision_from_handle(vpiHandle obj)
+صحيح vpip_زمان_precision_from_handle(vpiHandle obj)
 {
-      if (obj == 0)
-	    return vpip_get_time_precision();
+      إذا (obj == 0)
+	    أرجع vpip_get_زمان_precision();
 
-      const __vpiScope*scope = vpip_timescale_scope_from_handle(obj);
-      if (scope == 0)
-	    return vpip_get_time_precision();
+      ثابت __vpiScope*scope = vpip_timescale_scope_from_handle(obj);
+      إذا (scope == 0)
+	    أرجع vpip_get_زمان_precision();
 
-      return scope->time_precision;
+      أرجع scope->زمان_precision;
 }
 
-double vpip_scaled_time_from_handle(vvp_time64_t time, vpiHandle obj)
+مزدوج vpip_scaled_زمان_from_handle(vvp_time64_t time, vpiHandle obj)
 {
-      int scale = vpip_get_time_precision() -
-	          vpip_time_units_from_handle(obj);
-      if (scale >= 0)
-	    return (double)time * pow(10.0, scale);
-      else
-	    return (double)time / pow(10.0, -scale);
+      صحيح scale = vpip_get_زمان_precision() -
+	          vpip_زمان_units_from_handle(obj);
+      إذا (scale >= 0)
+	    أرجع (مزدوج)time * توان(10.0, scale);
+      وإلا
+	    أرجع (مزدوج)time / توان(10.0, -scale);
 }
 
-void vpi_get_time(vpiHandle obj, s_vpi_time*vp)
+فراغ vpi_get_زمان(vpiHandle obj, s_vpi_زمان*vp)
 {
       vvp_time64_t time;
 
-      assert(vp);
+      أكد(vp);
 
-      time = schedule_simtime();
+      time = زمانبندی_simtime();
 
-      switch (vp->type) {
-          case vpiSimTime:
-	    vp->high = (time >> 32) & 0xffffffff;
-	    vp->low = time & 0xffffffff;
-	    break;
+      بدل (vp->type) {
+          حالة vpi_Sim_زمان:
+	    vp->بالا = (time >> 32) & 0xffffffff;
+	    vp->کم = time & 0xffffffff;
+	    اكسر;
 
-          case vpiScaledRealTime:
-	    vp->real = vpip_scaled_time_from_handle(time, obj);
-	    break;
+          حالة vpi_Scaled_Real_زمان:
+	    vp->real = vpip_scaled_زمان_from_handle(time, obj);
+	    اكسر;
 
-          default:
-            fprintf(stderr, "vpi_get_time: unknown type: %d\n", (int)vp->type);
-            assert(0);
-	    break;
+          افتراضي:
+            fprintf(stderr, "vpi_get_time: unknown type: %d\n", (صحيح)vp->type);
+            أكد(0);
+	    اكسر;
       }
 }
 
 PLI_INT32 vpi_get_vlog_info(p_vpi_vlog_info vlog_info_p)
 {
-    if (vlog_info_p != 0) {
+    إذا (vlog_info_p != 0) {
 	  *vlog_info_p = vpi_vlog_info;
-	  return 1;
-    } else {
-	  return 0;
+	  أرجع 1;
+    } وإلا {
+	  أرجع 0;
     }
 }
 
-void vpi_set_vlog_info(int argc, char** argv)
+فراغ vpi_مجموعه_vlog_info(صحيح argc, حرف** argv)
 {
-    static char icarus_product[] = "Icarus Verilog";
-    static char icarus_version[] = VERSION;
-    vpi_vlog_info.product = icarus_product;
-    vpi_vlog_info.version = icarus_version;
+    ساكن حرف icarus_حاصلضرب[] = "Icarus Verilog";
+    ساكن حرف icarus_نسخه[] = نسخه;
+    vpi_vlog_info.حاصلضرب = icarus_حاصلضرب;
+    vpi_vlog_info.نسخه_2 = icarus_نسخه;
     vpi_vlog_info.argc    = argc;
     vpi_vlog_info.argv    = argv;
 
-    static char trace_buf[1024];
-    if (const char*path = getenv("VPI_TRACE"))  {
-	  if (!strcmp(path,"-"))
+    ساكن حرف trace_buf[1024];
+    إذا (ثابت حرف*مسیر = getenv("VPI_TRACE"))  {
+	  إذا (!strcmp(مسیر,"-"))
 		vpi_trace = stdout;
-	  else {
-		vpi_trace = fopen(path, "w");
-		if (!vpi_trace) {
-		      perror(path);
-		      exit(1);
+	  وإلا {
+		vpi_trace = fopen(مسیر, "w");
+		إذا (!vpi_trace) {
+		      perror(مسیر);
+		      خروج(1);
 		}
-		setvbuf(vpi_trace, trace_buf, _IOLBF, sizeof(trace_buf));
+		setvbuf(vpi_trace, trace_buf, _IOLBF, حجم(trace_buf));
 	  }
     }
 }
 
-static void vec4_get_value_string(const vvp_vector4_t&word_val, unsigned width,
-				  s_vpi_value*vp)
+ساكن فراغ vec4_get_مقدار_string(ثابت vvp_vector4_t&کلمه_val, بیعلامت width,
+				  s_vpi_مقدار*vp)
 {
-      unsigned nchar = width / 8;
-      unsigned tail = width % 8;
+      بیعلامت nchar = width / 8;
+      بیعلامت دم = width % 8;
 
-      char*rbuf = static_cast<char *>(need_result_buf(nchar + 1, RBUF_VAL));
-      char*cp = rbuf;
+      حرف*rbuf = static_cast<حرف *>(need_نتیجه_buf(nchar + 1, RBUF_VAL));
+      حرف*cp = rbuf;
 
-      if (tail > 0) {
-	    char char_val = 0;
-	    for (unsigned idx = width-tail; idx < width ;  idx += 1) {
-		  vvp_bit4_t val = word_val.value(idx);
-		  if (val == BIT4_1)
+      إذا (دم > 0) {
+	    حرف char_val = 0;
+	    لكل (بیعلامت idx = width-دم; idx < width ;  idx += 1) {
+		  vvp_bit4_t val = کلمه_val.value(idx);
+		  إذا (val == BIT4_1)
 			char_val |= 1 << idx;
 	    }
 
-	    if (char_val != 0)
+	    إذا (char_val != 0)
 		  *cp++ = char_val;
-	    else if (cp != rbuf)
+	    وإلا إذا (cp != rbuf)
 		  *cp++ = ' ';
       }
 
-      for (unsigned idx = 0 ;  idx < nchar ;  idx += 1) {
-	    unsigned bit = (nchar - idx - 1) * 8;
-	    char char_val = 0;
-	    for (unsigned bdx = 0 ;  bdx < 8 ;  bdx += 1) {
-		  vvp_bit4_t val = word_val.value(bit+bdx);
-		  if (val == BIT4_1)
+      لكل (بیعلامت idx = 0 ;  idx < nchar ;  idx += 1) {
+	    بیعلامت بیت = (nchar - idx - 1) * 8;
+	    حرف char_val = 0;
+	    لكل (بیعلامت bdx = 0 ;  bdx < 8 ;  bdx += 1) {
+		  vvp_bit4_t val = کلمه_val.value(بیت+bdx);
+		  إذا (val == BIT4_1)
 			char_val |= 1 << bdx;
 	    }
 	    // Ignore leading null-bytes and replace other null-bytes with space.
 	    // The LRM is not entirely clear on how null bytes should be handled.
 	    // This is the implementation chosen for iverilog.
-	    if (char_val != 0)
+	    إذا (char_val != 0)
 		  *cp++ = char_val;
-	    else if (cp != rbuf)
+	    وإلا إذا (cp != rbuf)
 		  *cp++ = ' ';
       }
 
@@ -709,182 +709,182 @@ static void vec4_get_value_string(const vvp_vector4_t&word_val, unsigned width,
  * value pointer. The width is the real width of the word, in case the
  * word_val width is not accurate.
  */
-void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
-			 bool signed_flag, s_vpi_value*vp)
+فراغ vpip_vec4_get_مقدار(ثابت vvp_vector4_t&کلمه_val, بیعلامت width,
+			 منطقي signed_flag, s_vpi_مقدار*vp)
 {
-      char *rbuf = 0;
+      حرف *rbuf = 0;
 
-      switch (vp->format) {
-	  default:
+      بدل (vp->format) {
+	  افتراضي:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting vector values.\n", (int)vp->format);
-	    assert(0);
+	                    "getting vector values.\n", (صحيح)vp->format);
+	    أكد(0);
 
-	  case vpiSuppressVal:
-	    break;
+	  حالة vpiSuppressVal:
+	    اكسر;
 
-	  case vpiBinStrVal:
-	    rbuf = static_cast<char *>(need_result_buf(width+1, RBUF_VAL));
-	    for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
-		  vvp_bit4_t bit = word_val.value(idx);
-		  rbuf[width-idx-1] = vvp_bit4_to_ascii(bit);
+	  حالة vpiBinStrVal:
+	    rbuf = static_cast<حرف *>(need_نتیجه_buf(width+1, RBUF_VAL));
+	    لكل (بیعلامت idx = 0 ;  idx < width ;  idx += 1) {
+		  vvp_bit4_t بیت = کلمه_val.value(idx);
+		  rbuf[width-idx-1] = vvp_bit4_مقصد_ascii(بیت);
 	    }
 	    rbuf[width] = 0;
 	    vp->value.str = rbuf;
-	    break;
+	    اكسر;
 
-	  case vpiOctStrVal: {
-		unsigned hwid = ((width+2) / 3) + 1;
-		rbuf = static_cast<char *>(need_result_buf(hwid, RBUF_VAL));
-		vpip_vec4_to_oct_str(word_val, rbuf, hwid);
+	  حالة vpiOctStrVal: {
+		بیعلامت hwid = ((width+2) / 3) + 1;
+		rbuf = static_cast<حرف *>(need_نتیجه_buf(hwid, RBUF_VAL));
+		vpip_vec4_مقصد_oct_str(کلمه_val, rbuf, hwid);
 		vp->value.str = rbuf;
-		break;
+		اكسر;
 	  }
 
-	  case vpiDecStrVal: {
+	  حالة vpiDecStrVal: {
 // HERE need a better estimate.
-		rbuf = static_cast<char *>(need_result_buf(width+1, RBUF_VAL));
-		vpip_vec4_to_dec_str(word_val, rbuf, width+1, signed_flag);
+		rbuf = static_cast<حرف *>(need_نتیجه_buf(width+1, RBUF_VAL));
+		vpip_vec4_مقصد_dec_str(کلمه_val, rbuf, width+1, signed_flag);
 		vp->value.str = rbuf;
-		break;
+		اكسر;
 	  }
 
-	  case vpiHexStrVal: {
-		unsigned  hwid = ((width + 3) / 4) + 1;
-		rbuf = static_cast<char *>(need_result_buf(hwid, RBUF_VAL));
-		vpip_vec4_to_hex_str(word_val, rbuf, hwid);
+	  حالة vpiHexStrVal: {
+		بیعلامت  hwid = ((width + 3) / 4) + 1;
+		rbuf = static_cast<حرف *>(need_نتیجه_buf(hwid, RBUF_VAL));
+		vpip_vec4_مقصد_hex_str(کلمه_val, rbuf, hwid);
 		vp->value.str = rbuf;
-		break;
+		اكسر;
 	  }
 
-          case vpiScalarVal: {
+          حالة vpiScalarVal: {
 	        // scalars should be of size 1
-	        assert(width == 1);
-	        switch(word_val.value(0)) {
-		    case BIT4_0:
+	        أكد(width == 1);
+	        بدل(کلمه_val.value(0)) {
+		    حالة BIT4_0:
 		      vp->value.scalar = vpi0;
-		      break;
-	            case BIT4_1:
+		      اكسر;
+	            حالة BIT4_1:
                       vp->value.scalar = vpi1;
-                      break;
-	            case BIT4_X:
+                      اكسر;
+	            حالة BIT4_X:
                       vp->value.scalar = vpiX;
-                      break;
-	            case BIT4_Z:
+                      اكسر;
+	            حالة BIT4_Z:
                       vp->value.scalar = vpiZ;
-                      break;
+                      اكسر;
 		}
-                break;
+                اكسر;
           }
 
-	  case vpiIntVal: {
-		long val = 0;
+	  حالة vpiIntVal: {
+		دراز val = 0;
 		vvp_bit4_t pad = BIT4_0;
-		if (signed_flag && word_val.size() > 0)
-		      pad = word_val.value(word_val.size()-1);
+		إذا (signed_flag && کلمه_val.size() > 0)
+		      pad = کلمه_val.value(کلمه_val.size()-1);
 
-		for (unsigned idx = 0 ; idx < 8*sizeof(val) ;  idx += 1) {
+		لكل (بیعلامت idx = 0 ; idx < 8*حجم(val) ;  idx += 1) {
 		      vvp_bit4_t val4 = pad;
-		      if (idx < word_val.size())
-			    val4 = word_val.value(idx);
-		      if (val4 == BIT4_1)
+		      إذا (idx < کلمه_val.size())
+			    val4 = کلمه_val.value(idx);
+		      إذا (val4 == BIT4_1)
 			    val |= 1L << idx;
 		}
 
 		vp->value.integer = val;
-		break;
+		اكسر;
 	  }
 
-	  case vpiObjTypeVal:
+	  حالة vpiObjTypeVal:
 	    // Use the following case to actually set the value!
-	    vp->format = vpiVectorVal;
+	    vp->format = vpi_وکتور_Val;
 	    // fallthrough
-	  case vpiVectorVal: {
-		unsigned hwid = (width + 31)/32;
+	  حالة vpi_وکتور_Val: {
+		بیعلامت hwid = (width + 31)/32;
 
 		s_vpi_vecval *op = static_cast<p_vpi_vecval>
-		                   (need_result_buf(hwid * sizeof(s_vpi_vecval), RBUF_VAL));
+		                   (need_نتیجه_buf(hwid * حجم(s_vpi_vecval), RBUF_VAL));
 		vp->value.vector = op;
 
 		op->aval = op->bval = 0;
-		for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
-		      switch (word_val.value(idx)) {
-			  case BIT4_0:
+		لكل (بیعلامت idx = 0 ;  idx < width ;  idx += 1) {
+		      بدل (کلمه_val.value(idx)) {
+			  حالة BIT4_0:
 			    op->aval &= ~(1 << idx % 32);
 			    op->bval &= ~(1 << idx % 32);
-			    break;
-			  case BIT4_1:
+			    اكسر;
+			  حالة BIT4_1:
 			    op->aval |=  (1 << idx % 32);
 			    op->bval &= ~(1 << idx % 32);
-			    break;
-			  case BIT4_X:
+			    اكسر;
+			  حالة BIT4_X:
 			    op->aval |= (1 << idx % 32);
 			    op->bval |= (1 << idx % 32);
-			    break;
-			  case BIT4_Z:
+			    اكسر;
+			  حالة BIT4_Z:
 			    op->aval &= ~(1 << idx % 32);
 			    op->bval |=  (1 << idx % 32);
-			    break;
+			    اكسر;
 		      }
-		      if (!((idx+1) % 32) && (idx+1 < width)) {
+		      إذا (!((idx+1) % 32) && (idx+1 < width)) {
 			    op++;
 			    op->aval = op->bval = 0;
 		      }
 		}
-		break;
+		اكسر;
 	  }
 
-	  case vpiStringVal:
-		vec4_get_value_string(word_val, width, vp);
-		break;
+	  حالة vpiStringVal:
+		vec4_get_مقدار_string(کلمه_val, width, vp);
+		اكسر;
 
-	  case vpiRealVal:
-		vector4_to_value(word_val, vp->value.real, signed_flag);
-		break;
+	  حالة vpiRealVal:
+		vector4_مقصد_مقدار(کلمه_val, vp->value.real, signed_flag);
+		اكسر;
       }
 }
 
-void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
-			 bool signed_flag, s_vpi_value*vp)
+فراغ vpip_vec2_get_مقدار(ثابت vvp_vector2_t&کلمه_val, بیعلامت width,
+			 منطقي signed_flag, s_vpi_مقدار*vp)
 {
-      switch (vp->format) {
-	  default:
+      بدل (vp->format) {
+	  افتراضي:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting vector2 values.\n", (int)vp->format);
-	    assert(0);
+	                    "getting vector2 values.\n", (صحيح)vp->format);
+	    أكد(0);
 
-	  case vpiSuppressVal:
-	    break;
+	  حالة vpiSuppressVal:
+	    اكسر;
 
-	  case vpiIntVal:
-	    vector2_to_value(word_val, vp->value.integer, signed_flag);
-	    break;
+	  حالة vpiIntVal:
+	    vector2_مقصد_مقدار(کلمه_val, vp->value.integer, signed_flag);
+	    اكسر;
 
-	  case vpiObjTypeVal:
-	    vp->format = vpiVectorVal;
+	  حالة vpiObjTypeVal:
+	    vp->format = vpi_وکتور_Val;
 	    // fallthrough
-	  case vpiVectorVal: {
-		unsigned hwid = (width + 31)/32;
+	  حالة vpi_وکتور_Val: {
+		بیعلامت hwid = (width + 31)/32;
 
 		s_vpi_vecval *op = static_cast<p_vpi_vecval>
-		                   (need_result_buf(hwid * sizeof(s_vpi_vecval), RBUF_VAL));
+		                   (need_نتیجه_buf(hwid * حجم(s_vpi_vecval), RBUF_VAL));
 		vp->value.vector = op;
 
 		op->aval = op->bval = 0;
-		for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
-		      if (word_val.value(idx)) {
+		لكل (بیعلامت idx = 0 ;  idx < width ;  idx += 1) {
+		      إذا (کلمه_val.value(idx)) {
 			    op->aval |=  (1 << idx % 32);
 			    op->bval &= ~(1 << idx % 32);
-		      } else {
+		      } وإلا {
 			    op->aval &= ~(1 << idx % 32);
 			    op->bval &= ~(1 << idx % 32);
 		      }
-		      if (!((idx+1) % 32) && (idx+1 < width)) {
+		      إذا (!((idx+1) % 32) && (idx+1 < width)) {
 			    op++;
 			    op->aval = op->bval = 0;
 		      }
 		}
-		break;
+		اكسر;
 	  }
       }
 
@@ -893,20 +893,20 @@ void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
 /*
  * Convert a real value to the appropriate integer.
  */
-static PLI_INT32 get_real_as_int(double real)
+ساكن PLI_INT32 get_real_as_int(مزدوج real)
 {
-      double rtn;
+      مزدوج rtn;
 
 	/* We would normally want to return 'bx for a NaN or
 	 * +/- infinity, but for an integer the standard says
 	 * to convert 'bx to 0, so we just return 0. */
-      if (real != real || (real && (real == 0.5*real))) {
-	    return 0;
+      إذا (real != real || (real && (real == 0.5*real))) {
+	    أرجع 0;
       }
 
-      rtn = std::round(real);
+      rtn = std::دور_2(real);
 
-      return (PLI_INT32) rtn;
+      أرجع (PLI_INT32) rtn;
 }
 
 /*
@@ -914,383 +914,383 @@ static PLI_INT32 get_real_as_int(double real)
  * vpi_value structure. The format is selected by the format of the
  * value pointer.
  */
-void vpip_real_get_value(double real, s_vpi_value*vp)
+فراغ vpip_real_get_مقدار(مزدوج real, s_vpi_مقدار*vp)
 {
-      char *rbuf = 0;
+      حرف *rbuf = 0;
 
-      switch (vp->format) {
-	  default:
+      بدل (vp->format) {
+	  افتراضي:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting real values.\n", (int)vp->format);
-	    assert(0);
+	                    "getting real values.\n", (صحيح)vp->format);
+	    أكد(0);
 
-	  case vpiSuppressVal:
-	    break;
+	  حالة vpiSuppressVal:
+	    اكسر;
 
-	  case vpiObjTypeVal:
+	  حالة vpiObjTypeVal:
 	    // Use the following case to actually set the value!
 	    vp->format = vpiRealVal;
 	    // fallthrough
-	  case vpiRealVal:
+	  حالة vpiRealVal:
 	    vp->value.real = real;
-	    break;
+	    اكسر;
 
-	  case vpiIntVal:
+	  حالة vpiIntVal:
 	    vp->value.integer = get_real_as_int(real);
-	    break;
+	    اكسر;
 
-	  case vpiDecStrVal:
-	    rbuf = static_cast<char *>(need_result_buf(1025, RBUF_VAL));
-	    vpip_vec4_to_dec_str(vvp_vector4_t(1024, real), rbuf, 1025, true);
+	  حالة vpiDecStrVal:
+	    rbuf = static_cast<حرف *>(need_نتیجه_buf(1025, RBUF_VAL));
+	    vpip_vec4_مقصد_dec_str(vvp_vector4_t(1024, real), rbuf, 1025, درست);
 	    vp->value.str = rbuf;
-	    break;
+	    اكسر;
       }
 }
 
-double real_from_vpi_value(s_vpi_value*vp)
+مزدوج real_from_vpi_مقدار(s_vpi_مقدار*vp)
 {
       vvp_vector4_t vec4(1024);
-      double result;
-      bool is_signed = false;
+      مزدوج نتیجه;
+      منطقي is_signed = خطأ;
 
-      switch (vp->format) {
-	  default:
+      بدل (vp->format) {
+	  افتراضي:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "putting real values.\n", (int)vp->format);
-	    assert(0);
+	                    "putting real values.\n", (صحيح)vp->format);
+	    أكد(0);
 
-	  case vpiRealVal:
-	    result = vp->value.real;
-	    break;
+	  حالة vpiRealVal:
+	    نتیجه = vp->value.real;
+	    اكسر;
 
-	  case vpiIntVal:
-	    result = (double) vp->value.integer;
-	    break;
+	  حالة vpiIntVal:
+	    نتیجه = (مزدوج) vp->value.integer;
+	    اكسر;
 
-	  case vpiBinStrVal:
-	    vpip_bin_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
-	    vector4_to_value(vec4, result, is_signed);
-	    break;
+	  حالة vpiBinStrVal:
+	    vpip_bin_str_مقصد_vec4(vec4, vp->value.str);
+	    إذا (vp->value.str[0] == '-') is_signed = درست;
+	    vector4_مقصد_مقدار(vec4, نتیجه, is_signed);
+	    اكسر;
 
-	  case vpiOctStrVal:
-	    vpip_oct_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
-	    vector4_to_value(vec4, result, is_signed);
-	    break;
+	  حالة vpiOctStrVal:
+	    vpip_oct_str_مقصد_vec4(vec4, vp->value.str);
+	    إذا (vp->value.str[0] == '-') is_signed = درست;
+	    vector4_مقصد_مقدار(vec4, نتیجه, is_signed);
+	    اكسر;
 
-	  case vpiDecStrVal:
-	    vpip_dec_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
-	    vector4_to_value(vec4, result, is_signed);
-	    break;
+	  حالة vpiDecStrVal:
+	    vpip_dec_str_مقصد_vec4(vec4, vp->value.str);
+	    إذا (vp->value.str[0] == '-') is_signed = درست;
+	    vector4_مقصد_مقدار(vec4, نتیجه, is_signed);
+	    اكسر;
 
-	  case vpiHexStrVal:
-	    vpip_hex_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
-	    vector4_to_value(vec4, result, is_signed);
-	    break;
+	  حالة vpiHexStrVal:
+	    vpip_hex_str_مقصد_vec4(vec4, vp->value.str);
+	    إذا (vp->value.str[0] == '-') is_signed = درست;
+	    vector4_مقصد_مقدار(vec4, نتیجه, is_signed);
+	    اكسر;
 
       }
 
-      return result;
+      أرجع نتیجه;
 }
 
-void vpip_string_get_value(const string&val, s_vpi_value*vp)
+فراغ vpip_string_get_مقدار(ثابت string&val, s_vpi_مقدار*vp)
 {
-      char *rbuf = 0;
+      حرف *rbuf = 0;
 
-      switch (vp->format) {
-	  default:
+      بدل (vp->format) {
+	  افتراضي:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting string values.\n", (int)vp->format);
-	    assert(0);
+	                    "getting string values.\n", (صحيح)vp->format);
+	    أكد(0);
 
-	  case vpiSuppressVal:
-	    break;
+	  حالة vpiSuppressVal:
+	    اكسر;
 
-	  case vpiObjTypeVal:
+	  حالة vpiObjTypeVal:
 	    // Use the following case to actually set the value!
 	    vp->format = vpiStringVal;
 	    // fallthrough
-	  case vpiStringVal:
-	    rbuf = static_cast<char *>(need_result_buf(val.size() + 1, RBUF_VAL));
+	  حالة vpiStringVal:
+	    rbuf = static_cast<حرف *>(need_نتیجه_buf(val.size() + 1, RBUF_VAL));
 	    strcpy(rbuf, val.c_str());
 	    vp->value.str = rbuf;
-	    break;
+	    اكسر;
       }
 }
 
 
-void vpi_get_value(vpiHandle expr, s_vpi_value*vp)
+فراغ vpi_get_مقدار(vpiHandle عبارت, s_vpi_مقدار*vp)
 {
-      assert(expr);
-      assert(vp);
+      أكد(عبارت);
+      أكد(vp);
 
 	// Never bother with suppressed values. All the derived
 	// classes can ignore this type.
-      if (vp->format == vpiSuppressVal)
-	    return;
+      إذا (vp->format == vpiSuppressVal)
+	    أرجع;
 
-      expr->vpi_get_value(vp);
+      عبارت->vpi_get_مقدار(vp);
 
-      if (vpi_trace) switch (vp->format) {
-		case vpiStringVal:
+      إذا (vpi_trace) بدل (vp->format) {
+		حالة vpiStringVal:
 		  fprintf(vpi_trace,"vpi_get_value(%p=<%d>) -> string=\"%s\"\n",
-			  expr, expr->get_type_code(), vp->value.str);
-		  break;
+			  عبارت, عبارت->get_type_کد(), vp->value.str);
+		  اكسر;
 
-		case vpiBinStrVal:
+		حالة vpiBinStrVal:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> binstr=%s\n",
-			  expr->get_type_code(), vp->value.str);
-		  break;
+			  عبارت->get_type_کد(), vp->value.str);
+		  اكسر;
 
-		case vpiIntVal:
+		حالة vpiIntVal:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> int=%d\n",
-			  expr->get_type_code(), (int)vp->value.integer);
-		  break;
+			  عبارت->get_type_کد(), (صحيح)vp->value.integer);
+		  اكسر;
 
-		case vpiSuppressVal:
+		حالة vpiSuppressVal:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> <suppress>\n",
-			  expr->get_type_code());
-		  break;
+			  عبارت->get_type_کد());
+		  اكسر;
 
-		default:
+		افتراضي:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> <%d>=?\n",
-			  expr->get_type_code(), (int)vp->format);
+			  عبارت->get_type_کد(), (صحيح)vp->format);
 	    }
 }
 
-struct vpip_put_value_event : vvp_gen_event_s {
+بنية vpip_put_مقدار_event : vvp_gen_event_s {
       vpiHandle handle;
-      s_vpi_value value;
-      int flags;
-      virtual void run_run() override;
-      ~vpip_put_value_event() override { }
+      s_vpi_مقدار value;
+      صحيح flags;
+      مجازی فراغ پیاپی_پیاپی() override;
+      ~vpip_put_مقدار_event() override { }
 };
 
-void vpip_put_value_event::run_run()
+فراغ vpip_put_مقدار_event::پیاپی_پیاپی()
 {
-      handle->vpi_put_value(&value, flags);
-      switch (value.format) {
+      handle->vpi_put_مقدار(&value, flags);
+      بدل (value.format) {
 	    /* Free the copied string. */
-	  case vpiBinStrVal:
-	  case vpiOctStrVal:
-	  case vpiDecStrVal:
-	  case vpiHexStrVal:
-	  case vpiStringVal:
-	    free(value.value.str);
-	    break;
+	  حالة vpiBinStrVal:
+	  حالة vpiOctStrVal:
+	  حالة vpiDecStrVal:
+	  حالة vpiHexStrVal:
+	  حالة vpiStringVal:
+	    حرر(value.value.str);
+	    اكسر;
 	    /* Free the copied time structure. */
-	  case vpiTimeVal:
-	    free(value.value.time);
-	    break;
+	  حالة vpi_زمان_Val:
+	    حرر(value.value.time);
+	    اكسر;
 	    /* Free the copied vector structure. */
-	  case vpiVectorVal:
-	    free(value.value.vector);
-	    break;
+	  حالة vpi_وکتور_Val:
+	    حرر(value.value.vector);
+	    اكسر;
 	    /* Free the copied strength structure. */
-	  case vpiStrengthVal:
-	    free(value.value.strength);
-	    break;
+	  حالة vpiStrengthVal:
+	    حرر(value.value.strength);
+	    اكسر;
 	    /* Everything else is static in the structure. */
-	  default:
-	    break;
+	  افتراضي:
+	    اكسر;
       }
 }
 
 /* Make a copy of a pointer to a time structure. */
-static t_vpi_time *timedup(const t_vpi_time *val)
+ساكن t_vpi_زمان *timedup(ثابت t_vpi_زمان *val)
 {
-      t_vpi_time *rtn;
-      rtn = static_cast<t_vpi_time *> (malloc(sizeof(t_vpi_time)));
+      t_vpi_زمان *rtn;
+      rtn = static_cast<t_vpi_زمان *> (حافظه_بده(حجم(t_vpi_زمان)));
       *rtn = *val;
-      return rtn;
+      أرجع rtn;
 }
 
 /* Make a copy of a pointer to a vector value structure. */
-static t_vpi_vecval *vectordup(const t_vpi_vecval *val, PLI_INT32 size)
+ساكن t_vpi_vecval *vectordup(ثابت t_vpi_vecval *val, PLI_INT32 size)
 {
-      unsigned num_bytes;
+      بیعلامت رقم_بایتها;
       t_vpi_vecval *rtn;
-      assert(size > 0);
-      num_bytes = ((size + 31)/32)*sizeof(t_vpi_vecval);
-      rtn = static_cast<t_vpi_vecval *> (malloc(num_bytes));
-      memcpy(rtn, val, num_bytes);
-      return rtn;
+      أكد(size > 0);
+      رقم_بایتها = ((size + 31)/32)*حجم(t_vpi_vecval);
+      rtn = static_cast<t_vpi_vecval *> (حافظه_بده(رقم_بایتها));
+      کپی_حافظه(rtn, val, رقم_بایتها);
+      أرجع rtn;
 }
 
 /* Make a copy of a pointer to a strength structure. */
-static t_vpi_strengthval *strengthdup(const t_vpi_strengthval *val)
+ساكن t_vpi_strengthval *strengthdup(ثابت t_vpi_strengthval *val)
 {
       t_vpi_strengthval *rtn;
       rtn = static_cast<t_vpi_strengthval *>
-            (malloc(sizeof(t_vpi_strengthval)));
+            (حافظه_بده(حجم(t_vpi_strengthval)));
       *rtn = *val;
-      return rtn;
+      أرجع rtn;
 }
 
-vpiHandle vpi_put_value(vpiHandle obj, s_vpi_value*vp,
-			s_vpi_time*when, PLI_INT32 flags)
+vpiHandle vpi_put_مقدار(vpiHandle obj, s_vpi_مقدار*vp,
+			s_vpi_زمان*when, PLI_INT32 flags)
 {
-      assert(obj);
+      أكد(obj);
 
       flags &= ~vpiReturnEvent;
 
-      if (flags!=vpiNoDelay && flags!=vpiForceFlag && flags!=vpiReleaseFlag) {
+      إذا (flags!=vpiNoDelay && flags!=vpiForceFlag && flags!=vpiReleaseFlag) {
 	    vvp_time64_t dly;
-	    int scale;
+	    صحيح scale;
 
-	    if (vpi_get(vpiAutomatic, obj)) {
+	    إذا (vpi_get(vpiAutomatic, obj)) {
 		  fprintf(stderr, "VPI error: cannot put a value with "
 				  "a delay on automatically allocated "
 				  "variable '%s'.\n",
 				  vpi_get_str(vpiName, obj));
-		  return 0;
+		  أرجع 0;
 	    }
 
-	    assert(when != 0);
+	    أكد(when != 0);
 
-	    switch (when->type) {
-		case vpiScaledRealTime:
-		  scale = vpip_time_units_from_handle(obj) -
-		          vpip_get_time_precision();
-		  if (scale >= 0) {
-			dly = (vvp_time64_t)(when->real * pow(10.0, scale));
-		  } else {
-			dly = (vvp_time64_t)(when->real / pow(10.0, -scale));
+	    بدل (when->type) {
+		حالة vpi_Scaled_Real_زمان:
+		  scale = vpip_زمان_units_from_handle(obj) -
+		          vpip_get_زمان_precision();
+		  إذا (scale >= 0) {
+			dly = (vvp_time64_t)(when->real * توان(10.0, scale));
+		  } وإلا {
+			dly = (vvp_time64_t)(when->real / توان(10.0, -scale));
 		  }
-		  break;
-		case vpiSimTime:
-		  dly = vpip_timestruct_to_time(when);
-		  break;
-		default:
+		  اكسر;
+		حالة vpi_Sim_زمان:
+		  dly = vpip_timestruct_مقصد_زمان(when);
+		  اكسر;
+		افتراضي:
 		  dly = 0;
-		  break;
+		  اكسر;
 	    }
 
-	    if ((dly == 0) && schedule_at_rosync()) {
+	    إذا ((dly == 0) && زمانبندی_at_rosync()) {
 		  fprintf(stderr, "VPI error: attempted to put a value to "
 				  "variable '%s' during a read-only synch "
 				  "callback.\n", vpi_get_str(vpiName, obj));
-		  return 0;
+		  أرجع 0;
 	    }
 
-	    vpip_put_value_event*put = new vpip_put_value_event;
+	    vpip_put_مقدار_event*put = جديد vpip_put_مقدار_event;
 	    put->handle = obj;
-	    if (dynamic_cast<__vpiNamedEvent*>(obj)) {
+	    إذا (dynamic_cast<__vpiNamedEvent*>(obj)) {
 		  put->value.format = vpiIntVal;
 		  put->value.value.integer = 0;
-	    } else {
-		  assert(vp);
+	    } وإلا {
+		  أكد(vp);
 		  put->value = *vp;
 	    }
 	      /* Since this is a scheduled put event we must copy any pointer
 	       * data to keep it available until the event is actually run. */
-	    switch (put->value.format) {
+	    بدل (put->value.format) {
 		  /* Copy the string items. */
-		case vpiBinStrVal:
-		case vpiOctStrVal:
-		case vpiDecStrVal:
-		case vpiHexStrVal:
-		case vpiStringVal:
+		حالة vpiBinStrVal:
+		حالة vpiOctStrVal:
+		حالة vpiDecStrVal:
+		حالة vpiHexStrVal:
+		حالة vpiStringVal:
 		  put->value.value.str = strdup(put->value.value.str);
-		  break;
+		  اكسر;
 		  /* Copy a time pointer item. */
-		case vpiTimeVal:
+		حالة vpi_زمان_Val:
 		  put->value.value.time = timedup(put->value.value.time);
-		  break;
+		  اكسر;
 		  /* Copy a vector pointer item. */
-		case vpiVectorVal:
+		حالة vpi_وکتور_Val:
 		  put->value.value.vector = vectordup(put->value.value.vector,
-		                                      vpi_get(vpiSize, obj));
-		  break;
+		                                      vpi_get(vpi_اندازه, obj));
+		  اكسر;
 		  /* Copy a strength pointer item. */
-		case vpiStrengthVal:
+		حالة vpiStrengthVal:
 		  put->value.value.strength =
 		      strengthdup(put->value.value.strength);
-		  break;
+		  اكسر;
 		  /* Everything thing else is already in the structure. */
-		default:
-		  break;
+		افتراضي:
+		  اكسر;
 	    }
 	    put->flags = flags;
-	    schedule_generic(put, dly, false, true, true);
-	    return 0;
+	    زمانبندی_generic(put, dly, خطأ, درست, درست);
+	    أرجع 0;
       }
 
-      if (schedule_at_rosync()) {
+      إذا (زمانبندی_at_rosync()) {
             fprintf(stderr, "VPI error: attempted to put a value to "
 			    "variable '%s' during a read-only synch "
 			    "callback.\n", vpi_get_str(vpiName, obj));
-            return 0;
+            أرجع 0;
       }
 
-      obj->vpi_put_value(vp, flags);
+      obj->vpi_put_مقدار(vp, flags);
 
-      return 0;
+      أرجع 0;
 }
 
 vpiHandle vpi_handle(PLI_INT32 type, vpiHandle ref)
 {
       vpiHandle res = 0;
 
-      if (ref == 0) {
+      إذا (ref == 0) {
 	      // A few types can apply to a nil handle. These are ways
 	      // that the current function can get started finding things.
-	    switch (type) {
+	    بدل (type) {
 
-		case vpiScope:
+		حالة vpiScope:
 		    // The IEEE1364-2005 doesn't seem to allow this,
 		    // but some users seem to think it's handy, so
 		    // return the scope that contains this SysTfCall.
-		  assert(vpip_cur_task);
+		  أكد(vpip_cur_task);
 		  res = vpip_cur_task->vpi_handle(vpiScope);
-		  break;
+		  اكسر;
 
-		case vpiSysTfCall:
+		حالة vpiSysTfCall:
 		    // This is how VPI users get a first handle into
 		    // the system. This is the handle of the system
 		    // task/function call currently being executed.
-		  if (vpi_trace) {
+		  إذا (vpi_trace) {
 			fprintf(vpi_trace, "vpi_handle(vpiSysTfCall, 0) "
 				"-> %p (%s)\n", vpip_cur_task,
 				vpip_cur_task->defn->info.tfname);
 		  }
-		  return vpip_cur_task;
+		  أرجع vpip_cur_task;
 
-		default:
+		افتراضي:
 		  fprintf(stderr, "VPI error: vpi_handle(type=%d, ref=0).\n",
-			  (int)type);
+			  (صحيح)type);
 		  res = 0;
-		  break;
+		  اكسر;
 	    }
 
-      } else {
+      } وإلا {
 
-	    if (type == vpiSysTfCall) {
+	    إذا (type == vpiSysTfCall) {
 		  fprintf(stderr, "VPI error: vpi_handle(vpiSysTfCall, "
 			  "ref!=0).\n");
-		  return 0;
+		  أرجع 0;
 	    }
 
 	    res = ref->vpi_handle(type);
       }
 
 
-      if (vpi_trace) {
+      إذا (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle(vpiScope, ref=%p) "
 		    "-> %p\n", vpip_cur_task, ref);
       }
 
-      return res;
+      أرجع res;
 }
 
-static vpiHandle vpip_make_udp_iterator()
+ساكن vpiHandle vpip_make_udp_iterator()
 {
 // HERE: Add support for iterating over UDP definitions.
 //       See 26.6.16 (page 400 in 1364-2005).
-      return 0;
+      أرجع 0;
 }
 
 /*
@@ -1298,180 +1298,180 @@ static vpiHandle vpip_make_udp_iterator()
  * the specified reference. It is up to the iterate_ method to
  * allocate a properly formed iterator.
  */
-static vpiHandle vpi_iterate_global(int type)
+ساكن vpiHandle vpi_iterate_global(صحيح type)
 {
-      switch (type) {
-	  case vpiInstance:
+      بدل (type) {
+	  حالة vpiInstance:
 	    // fallthrough
-	  case vpiModule:
+	  حالة vpiModule:
 	    // fallthrough
-	  case vpiProgram:
+	  حالة vpi_برنامه:
 	    // fallthrough
-	  case vpiInterface:
+	  حالة vpiInterface:
 	    // fallthrough
-	  case vpiPackage:
-	    return vpip_make_root_iterator(type);
+	  حالة vpiPackage:
+	    أرجع vpip_make_ریشه_iterator(type);
 
-	  case vpiUdpDefn:
-	    return vpip_make_udp_iterator();
+	  حالة vpiUdpDefn:
+	    أرجع vpip_make_udp_iterator();
 
-	  case vpiUserSystf:
-	    return vpip_make_systf_iterator();
+	  حالة vpiUserSystf:
+	    أرجع vpip_make_systf_iterator();
       }
 
-      return 0;
+      أرجع 0;
 }
 
 vpiHandle vpi_iterate(PLI_INT32 type, vpiHandle ref)
 {
       vpiHandle rtn = 0;
 
-      assert(vpi_mode_flag != VPI_MODE_NONE);
-      if (vpi_mode_flag == VPI_MODE_REGISTER) {
+      أكد(vpi_نما_flag != VPI_نما_NONE);
+      إذا (vpi_نما_flag == VPI_نما_ثبات) {
 	    fprintf(stderr, "vpi error: vpi_iterate called during "
 		    "vpi_register_systf. You can't do that!\n");
-	    return 0;
+	    أرجع 0;
       }
 
-      if (ref == 0)
+      إذا (ref == 0)
 	    rtn = vpi_iterate_global(type);
-      else
+      وإلا
 	    rtn = ref->vpi_iterate(type);
 
-      if (vpi_trace) {
+      إذا (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_iterate(%d, %p) ->%s\n",
-	    (int)type, ref, rtn ? "" : " (null)");
+	    (صحيح)type, ref, rtn ? "" : " (null)");
       }
 
-      return rtn;
+      أرجع rtn;
 }
 
-vpiHandle vpi_handle_by_index(vpiHandle ref, PLI_INT32 idx)
+vpiHandle vpi_handle_by_شاخص(vpiHandle ref, PLI_INT32 idx)
 {
-      assert(ref);
-      return ref->vpi_index(idx);
+      أكد(ref);
+      أرجع ref->vpi_شاخص(idx);
 }
 
-static vpiHandle find_name(const char *name, vpiHandle handle)
+ساكن vpiHandle پیدا_کن_name(ثابت حرف *name, vpiHandle handle)
 {
       vpiHandle rtn = 0;
       __vpiScope*ref = dynamic_cast<__vpiScope*>(handle);
 
       /* check module names */
-      if (!strcmp(name, vpi_get_str(vpiName, handle)))
+      إذا (!strcmp(name, vpi_get_str(vpiName, handle)))
 	    rtn = handle;
 
       /* brute force search for the name in all objects in this scope */
-      for (unsigned i = 0 ;  i < ref->intern.size() ;  i += 1) {
+      لكل (بیعلامت i = 0 ;  i < ref->intern.size() ;  i += 1) {
 	      /* The standard says that since a port does not have a full
 	       * name it cannot be found by name. Because of this we need
 	       * to skip ports here so the correct handle can be located. */
-	    if (vpi_get(vpiType, ref->intern[i]) == vpiPort) continue;
-	    const char *nm = vpi_get_str(vpiName, ref->intern[i]);
-	    if (nm && !strcmp(name, nm)) {
+	    إذا (vpi_get(vpiType, ref->intern[i]) == vpi_پورت) استمر;
+	    ثابت حرف *nm = vpi_get_str(vpiName, ref->intern[i]);
+	    إذا (nm && !strcmp(name, nm)) {
 		  rtn = ref->intern[i];
-		  break;
-	    } else if (vpi_get(vpiType, ref->intern[i]) == vpiMemory ||
+		  اكسر;
+	    } وإلا إذا (vpi_get(vpiType, ref->intern[i]) == vpi_حافظه ||
 	               vpi_get(vpiType, ref->intern[i]) == vpiNetArray) {
 		  /* We need to iterate on the words */
-		  vpiHandle word_i, word_h;
-		  word_i = vpi_iterate(vpiMemoryWord, ref->intern[i]);
-		  while (word_i && (word_h = vpi_scan(word_i))) {
-			nm = vpi_get_str(vpiName, word_h);
-			if (nm && !strcmp(name, nm)) {
-			      rtn = word_h;
-			      vpi_free_object(word_i);
-			      break;
+		  vpiHandle کلمه_i, کلمه_h;
+		  کلمه_i = vpi_iterate(vpi_حافظه_کلمه, ref->intern[i]);
+		  طالما (کلمه_i && (کلمه_h = vpi_پیمایش(کلمه_i))) {
+			nm = vpi_get_str(vpiName, کلمه_h);
+			إذا (nm && !strcmp(name, nm)) {
+			      rtn = کلمه_h;
+			      vpi_free_object(کلمه_i);
+			      اكسر;
 			}
 		  }
 	    }
 	    /* found it yet? */
-	    if (rtn) break;
+	    إذا (rtn) اكسر;
       }
 
-      return rtn;
+      أرجع rtn;
 }
 
 // Find the end of the escaped identifier or simple identifier
-static char * find_rest(char *name)
+ساكن حرف * پیدا_کن_rest(حرف *name)
 {
-      char *rest;
-      if (*name == '\\') {
+      حرف *rest;
+      إذا (*name == '\\') {
 	    rest = strchr(name, ' ');
-	    if (rest) {
+	    إذا (rest) {
 		  *rest++ = 0; // The space is not part of the string
 		    // There should be a '.' after the escaped ID if there is
 		    // anything more. If it is missing add it to avoid a crash
-		  if ((*rest != '.') && (*rest != 0)) {
+		  إذا ((*rest != '.') && (*rest != 0)) {
 			*--rest = '.';
 			fprintf(stderr, "ERROR: Malformed scope string: \"%s\"", name);
 		  }
-		  if (*rest == 0) {
+		  إذا (*rest == 0) {
 			rest = 0;
 		  }
 	    }
-      } else {
+      } وإلا {
 	    rest = strchr(name, '.');
       }
-      return rest;
+      أرجع rest;
 }
 
-static vpiHandle find_scope(const char *name, vpiHandle handle, int depth)
+ساكن vpiHandle پیدا_کن_scope(ثابت حرف *name, vpiHandle handle, صحيح عمق)
 {
 
       vpiHandle iter = handle==0
-	    ? vpi_iterate(vpiModule, NULL)
-	    : vpi_iterate(vpiInternalScope, handle);
+	    ? vpi_iterate(vpiModule, عدم)
+	    : vpi_iterate(vpi_داخلی_Scope, handle);
 
-      vector<char> name_buf (strlen(name)+1);
+      vector<حرف> name_buf (طول_رشته(name)+1);
       strcpy(&name_buf[0], name);
-      char*nm_first = &name_buf[0];
-      char*nm_rest = find_rest(nm_first);
-      if (*nm_first == '\\') ++nm_first;
-      if (nm_rest) {
+      حرف*nm_اولی = &name_buf[0];
+      حرف*nm_rest = پیدا_کن_rest(nm_اولی);
+      إذا (*nm_اولی == '\\') ++nm_اولی;
+      إذا (nm_rest) {
 	    *nm_rest++ = 0;
       }
 
       vpiHandle rtn = 0;
       vpiHandle hand;
-      while (iter && (hand = vpi_scan(iter))) {
-	    const char *nm = vpi_get_str(vpiName, hand);
+      طالما (iter && (hand = vpi_پیمایش(iter))) {
+	    ثابت حرف *nm = vpi_get_str(vpiName, hand);
 
-	    if (strcmp(nm_first,nm)==0) {
-		  if (nm_rest)
-			rtn=find_scope(nm_rest, hand, depth+1);
-		  else
+	    إذا (strcmp(nm_اولی,nm)==0) {
+		  إذا (nm_rest)
+			rtn=پیدا_کن_scope(nm_rest, hand, عمق+1);
+		  وإلا
 			rtn = hand;
 	    }
 
 	    /* found it yet ? */
-	    if (rtn) {
+	    إذا (rtn) {
 		  vpi_free_object(iter);
-		  break;
+		  اكسر;
 	    }
       }
 
-      return rtn;
+      أرجع rtn;
 }
 
 // Find the end of the first escaped identifier or simple identifier
-static char * find_next(char *name)
+ساكن حرف * پیدا_کن_بعدی(حرف *name)
 {
-      char *next;
-      if (*name == '\\') {
-	    next = strchr(name, ' ');
-	    if (next && *++next == 0) next = 0;
-      } else {
-	    next = strchr(name, '.');
+      حرف *بعدی_2;
+      إذا (*name == '\\') {
+	    بعدی_2 = strchr(name, ' ');
+	    إذا (بعدی_2 && *++بعدی_2 == 0) بعدی_2 = 0;
+      } وإلا {
+	    بعدی_2 = strchr(name, '.');
       }
-      return next;
+      أرجع بعدی_2;
 }
 
-vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
+vpiHandle vpi_handle_by_name(ثابت حرف *name, vpiHandle scope)
 {
       vpiHandle hand;
 
-      if (vpi_trace) {
+      إذا (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle_by_name(%s, %p) -->\n",
 		    name, scope);
       }
@@ -1479,33 +1479,33 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 	// Chop the name into path and base. For example, if the name
 	// is "a.b.c", then nm_path becomes "a.b" and nm_base becomes
 	// "c". If the name is "c" then nm_path is nil and nm_base is "c".
-      vector<char> name_buf (strlen(name)+1);
+      vector<حرف> name_buf (طول_رشته(name)+1);
       strcpy(&name_buf[0], name);
-      char*nm_path = &name_buf[0];
-      char*nm_base;
+      حرف*nm_مسیر = &name_buf[0];
+      حرف*nm_پایه;
 
 	// Check to see if we have an escaped identifier and if so search
 	// the long way because a '.' could be in the escaped name.
-      if (strchr(nm_path, '\\')) {
-	    char *next;
-	    nm_base = nm_path;
-	    while ((next = find_next(nm_base))) {
-		  nm_base = ++next;
+      إذا (strchr(nm_مسیر, '\\')) {
+	    حرف *بعدی_2;
+	    nm_پایه = nm_مسیر;
+	    طالما ((بعدی_2 = پیدا_کن_بعدی(nm_پایه))) {
+		  nm_پایه = ++بعدی_2;
 	    }
-	    if (nm_path == nm_base) {
-		  nm_path = 0;
-	    } else {
-		  *(nm_base-1) = 0;
+	    إذا (nm_مسیر == nm_پایه) {
+		  nm_مسیر = 0;
+	    } وإلا {
+		  *(nm_پایه-1) = 0;
 	    }
 
 	// If there is no escaped identifier then just look for the last '.'
-      } else {
-	    nm_base = strrchr(nm_path, '.');
-	    if (nm_base) {
-		  *nm_base++ = 0;
-	    } else {
-		  nm_base = nm_path;
-		  nm_path = 0;
+      } وإلا {
+	    nm_پایه = strrchr(nm_مسیر, '.');
+	    إذا (nm_پایه) {
+		  *nm_پایه++ = 0;
+	    } وإلا {
+		  nm_پایه = nm_مسیر;
+		  nm_مسیر = 0;
 	    }
       }
 
@@ -1513,110 +1513,110 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
        * traverse the hierarchy specified in name to find the leaf module
        * and try finding it there.
        */
-      if (scope) {
+      إذا (scope) {
 	    /* Some implementations support either a module or a scope. */
-	    switch (vpi_get(vpiType, scope)) {
-		case vpiScope:
+	    بدل (vpi_get(vpiType, scope)) {
+		حالة vpiScope:
 	          hand = vpi_handle(vpiModule, scope);
-	          break;
-		case vpiModule:
+	          اكسر;
+		حالة vpiModule:
 	          hand = scope;
-	          break;
-		default:
-		  if (vpi_trace) {
+	          اكسر;
+		افتراضي:
+		  إذا (vpi_trace) {
 			fprintf(vpi_trace, "vpi_handle_by_name: "
 				"Scope is not a vpiScope or vpiModule\n");
 		  }
 	          // Use vpi_chk_error() here when it is implemented.
-	          return 0;
+	          أرجع 0;
 	    }
 
-      } else if (nm_path) {
+      } وإلا إذا (nm_مسیر) {
 	      // The name has a path, and no other scope handle was
 	      // passed in. That suggests we are looking for "a.b.c"
 	      // in the root scope. So convert "a.b" to a scope and
 	      // start there to look for "c".
-	    hand = find_scope(nm_path, NULL, 0);
-	    nm_path = 0;
+	    hand = پیدا_کن_scope(nm_مسیر, عدم, 0);
+	    nm_مسیر = 0;
 
-      } else {
+      } وإلا {
 	      // Special case: scope==<nil>, meaning we are looking in
 	      // the root, and there is no path to the name, i.e. the
 	      // string is "c" instead of "top.c". Try to find "c" as
 	      // a scope and return that.
-	    hand = find_scope(nm_base, NULL, 0);
+	    hand = پیدا_کن_scope(nm_پایه, عدم, 0);
       }
 
-      if (hand == 0) {
-	    if (vpi_trace) {
+      إذا (hand == 0) {
+	    إذا (vpi_trace) {
 		  fprintf(vpi_trace, "vpi_handle_by_name: "
 			  "Scope does not exist. Giving up.\n");
 	    }
 
-	    return 0;
+	    أرجع 0;
       }
 
 	// If there is a path part, then use it to find the
 	// scope. For example, if the full name is a.b.c, then
 	// the nm_path string is a.b and we search for that
 	// scope. If we find it, then set hand to that scope.
-      if (nm_path) {
-	    vpiHandle tmp = find_scope(nm_path, hand, 0);
-	    while (tmp == 0 && hand != 0) {
+      إذا (nm_مسیر) {
+	    vpiHandle tmp = پیدا_کن_scope(nm_مسیر, hand, 0);
+	    طالما (tmp == 0 && hand != 0) {
 		  hand = vpi_handle(vpiScope, hand);
-		  tmp = find_scope(nm_path, hand, 0);
+		  tmp = پیدا_کن_scope(nm_مسیر, hand, 0);
 	    }
 	    hand = tmp;
       }
 
 	// find_name() expects escaped identifiers to be stripped
-      if (*nm_base == '\\') {
+      إذا (*nm_پایه == '\\') {
 	    // Skip the \ at the beginning
-	    ++nm_base;
+	    ++nm_پایه;
 
 	    // Drop the space at the end if it exists
-	    char *next;
-	    if ((next = strchr(nm_base, ' '))) {
-		  *next = 0;
+	    حرف *بعدی_2;
+	    إذا ((بعدی_2 = strchr(nm_پایه, ' '))) {
+		  *بعدی_2 = 0;
 	    }
       }
 
 	// Now we have the correct scope, look for the item.
-      vpiHandle out = find_name(nm_base, hand);
+      vpiHandle out = پیدا_کن_name(nm_پایه, hand);
 
-      if (vpi_trace) {
+      إذا (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle_by_name: DONE\n");
       }
 
-      return out;
+      أرجع out;
 }
 
 // Return tuple {x1, x2, x3} with:
 // x1: True when cur and net2 are connected
 // x2: Ptr to previous node
 // x3: True when net is connected to output of previous node
-tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8_and_part_sa(vvp_net_ptr_t cur, vvp_net_t* net2, vvp_net_ptr_t parent) {
+tuple<منطقي, vvp_net_ptr_t, منطقي> check_connected_مقصد_concat8_and_part_sa(vvp_net_ptr_t cur, vvp_net_t* net2, vvp_net_ptr_t والد) {
 
-      vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr, 0);
+      vvp_net_ptr_t prev = vvp_net_ptr_t(اشاره_تهی, 0);
 
-      while (cur.ptr()) {
-	    if (cur.ptr() == net2 && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
+      طالما (cur.ptr()) {
+	    إذا (cur.ptr() == net2 && dynamic_cast<vvp_fun_part_sa*>(والد.ptr()->fun)) {
 		    // Pass on the return value if found
-		  return {true, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
-	    } else if (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
-		  auto res = check_connected_to_concat8_and_part_sa(cur.ptr()->out_, net2, cur);
-		  if (get<0>(res)) {
-			return res;
+		  أرجع {درست, prev.ptr() ? prev : والد, prev.ptr() == اشاره_تهی};
+	    } وإلا إذا (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
+		  خودکار res = check_connected_مقصد_concat8_and_part_sa(cur.ptr()->بیرون_2, net2, cur);
+		  إذا (get<0>(res)) {
+			أرجع res;
 		  }
 	    }
 
 	      // Next net in linked list
 	    prev = cur;
-	    cur = cur.ptr()->port[cur.port()];
+	    cur = cur.ptr()->پورت[cur.پورت()];
       }
 
 	// net2 is not connected to this concat8
-      return {false, vvp_net_ptr_t(nullptr, 0), false};
+      أرجع {خطأ, vvp_net_ptr_t(اشاره_تهی, 0), خطأ};
 }
 
 // Check if net2 is connected to current_net through a net of vvp_fun_concat8s
@@ -1624,33 +1624,33 @@ tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8_and_part_sa(vvp_net_
 // x1: True when cur and net2 are connected with concats and part_sas
 // x2: Ptr to previous node
 // x3: True when net is connected to output of x2
-tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8(vvp_net_ptr_t cur, vvp_net_t* net2, vvp_net_ptr_t parent)
+tuple<منطقي, vvp_net_ptr_t, منطقي> check_connected_مقصد_concat8(vvp_net_ptr_t cur, vvp_net_t* net2, vvp_net_ptr_t والد)
 {
-      vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr, 0);
+      vvp_net_ptr_t prev = vvp_net_ptr_t(اشاره_تهی, 0);
 	// For everything connected
-      while (cur.ptr()) {
+      طالما (cur.ptr()) {
 	      // Check if it's a concat8
-	    if (cur.ptr() == net2) {
-		  return {true, vvp_net_ptr_t(nullptr, 0), false};
-	    } else if (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
-		  auto res = check_connected_to_concat8(cur.ptr()->out_, net2, cur);
-		  if (get<0>(res)) {
-			if (!get<1>(res).ptr() && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
+	    إذا (cur.ptr() == net2) {
+		  أرجع {درست, vvp_net_ptr_t(اشاره_تهی, 0), خطأ};
+	    } وإلا إذا (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
+		  خودکار res = check_connected_مقصد_concat8(cur.ptr()->بیرون_2, net2, cur);
+		  إذا (get<0>(res)) {
+			إذا (!get<1>(res).ptr() && dynamic_cast<vvp_fun_part_sa*>(والد.ptr()->fun)) {
 			      // `parent` is the last part_sa node in front of our destination
 			      // We want to place the intermod node here
-			      return {true, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
+			      أرجع {درست, prev.ptr() ? prev : والد, prev.ptr() == اشاره_تهی};
 			}
-			return res;
+			أرجع res;
 		  }
 	    }
 
 	      // Next net in linked list
 	    prev = cur;
-	    cur = cur.ptr()->port[cur.port()];
+	    cur = cur.ptr()->پورت[cur.پورت()];
       }
 
 	// net2 is not connected to this concat8
-      return {false, vvp_net_ptr_t(nullptr, 0), false};
+      أرجع {خطأ, vvp_net_ptr_t(اشاره_تهی, 0), خطأ};
 }
 
 // Used to get intermodpath for two ports
@@ -1658,57 +1658,57 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
                            vpiHandle ref1,
                            vpiHandle ref2)
 {
-      if (vpi_trace) {
+      إذا (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle_multi(%d, %p, %p) -->\n",
 	            type, ref1, ref2);
       }
 
-      if (type != vpiInterModPath) {
+      إذا (type != vpi_Inter_Mod_مسیر) {
 	    fprintf(stderr, "sorry: vpi_handle_multi currently supports"
 	            "only vpiInterModPath\n");
-	    return nullptr;
+	    أرجع اشاره_تهی;
       }
 
 	// Indicates whether port1 refers to a single bit
-      bool port1_has_index = false;
-      int port1_bit_index = 0;
-      vpiPortBitInfo* port1_bit = dynamic_cast<vpiPortBitInfo*>(ref1);
+      منطقي port1_has_شاخص = خطأ;
+      صحيح port1_بیت_شاخص = 0;
+      vpi_پورت_بیت_Info* port1_بیت = dynamic_cast<vpi_پورت_بیت_Info*>(ref1);
 
-      if (port1_bit) {
+      إذا (port1_بیت) {
 	      // Get the bit index
-	    port1_has_index = true;
-	    port1_bit_index = vpi_get(vpiBit, port1_bit);
+	    port1_has_شاخص = درست;
+	    port1_بیت_شاخص = vpi_get(vpi_بیت, port1_بیت);
 	      // Update the ref1 to point to the base port
-	    ref1 = vpi_handle(vpiParent, port1_bit);
+	    ref1 = vpi_handle(vpi_والد, port1_بیت);
       }
 
 	// Indicates whether port2 refers to a single bit
-      bool port2_has_index = false;
-      int port2_bit_index = 0;
-      vpiPortBitInfo* port2_bit = dynamic_cast<vpiPortBitInfo*>(ref2);
+      منطقي port2_has_شاخص = خطأ;
+      صحيح port2_بیت_شاخص = 0;
+      vpi_پورت_بیت_Info* port2_بیت = dynamic_cast<vpi_پورت_بیت_Info*>(ref2);
 
-      if (port2_bit) {
+      إذا (port2_بیت) {
 	      // Get the bit index
-	    port2_has_index = true;
-	    port2_bit_index = vpi_get(vpiBit, port2_bit);
+	    port2_has_شاخص = درست;
+	    port2_بیت_شاخص = vpi_get(vpi_بیت, port2_بیت);
 	      // Update the ref1 to point to the base port
-	    ref2 = vpi_handle(vpiParent, port2_bit);
+	    ref2 = vpi_handle(vpi_والد, port2_بیت);
       }
 
-      vpiPortInfo* port1 = dynamic_cast<vpiPortInfo*>(ref1);
+      vpi_پورت_Info* port1 = dynamic_cast<vpi_پورت_Info*>(ref1);
 
-      if (!port1) {
+      إذا (!port1) {
 	    fprintf(stderr, "sorry: second argument of vpi_handle_multi"
 		    "must be a vpiPort\n");
-	    return nullptr;
+	    أرجع اشاره_تهی;
       }
 
-      vpiPortInfo* port2 = dynamic_cast<vpiPortInfo*>(ref2);
+      vpi_پورت_Info* port2 = dynamic_cast<vpi_پورت_Info*>(ref2);
 
-      if (!port2) {
+      إذا (!port2) {
 	    fprintf(stderr, "sorry: third argument of vpi_handle_multi"
 		    "must be a vpiPort\n");
-	    return nullptr;
+	    أرجع اشاره_تهی;
       }
 
 	// Get the names of both ports
@@ -1718,136 +1718,136 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 	// If both ports are vpiOutput, we have to reassign the __vpiSignal from port1
 	// to port2 because otherwise the non-delayed version of the signal is dumped
 	// even tho the intermodpath is correctly inserted
-      __vpiSignal* output_signal = nullptr;
+      __vpiSignal* output_signal = اشاره_تهی;
 
-      if (port1->get_direction() == vpiOutput && port2->get_direction() == vpiOutput) {
+      إذا (port1->get_direction() == vpiOutput && port2->get_direction() == vpiOutput) {
 	    vpiHandle scope_port2 = vpi_handle(vpiScope, ref2);
-	    assert(scope_port2);
+	    أكد(scope_port2);
 
 	      // Iterate over nets in the scope of port2
 	    vpiHandle net_i = vpi_iterate(vpiNet, scope_port2) ;
 	    vpiHandle net;
 
-	    while ((net = vpi_scan(net_i)) != NULL) {
+	    طالما ((net = vpi_پیمایش(net_i)) != عدم) {
 		  std::string net_name(vpi_get_str(vpiName, net));
 
 		    // Compare whether the net matches with the port name
-		  if (net_name == port2_name) {
+		  إذا (net_name == port2_name) {
 			output_signal = dynamic_cast<__vpiSignal*>(net);
 		  }
 	    }
       }
 
-      vvp_net_t* net1 = port1->get_port();
-      vvp_net_t* net2 = port2->get_port();
+      vvp_net_t* net1 = port1->get_پورت();
+      vvp_net_t* net2 = port2->get_پورت();
 
-      if (net1 == nullptr || net2 == nullptr) {
+      إذا (net1 == اشاره_تهی || net2 == اشاره_تهی) {
 	    fprintf(stderr, "Error: Could not find net. "
 		    "Did you run iverilog with '-ginterconnect'?\n");
-	    return nullptr;
+	    أرجع اشاره_تهی;
       }
 
-      if (net1 == net2) {
+      إذا (net1 == net2) {
 	    fprintf(stderr, "Error: Net for both ports is the same. "
 		    "Did you pass the same port twice?\n");
-	    return nullptr;
+	    أرجع اشاره_تهی;
       }
 
-      if (!dynamic_cast<vvp_fun_buft*>(net1->fun)) {
+      إذا (!dynamic_cast<vvp_fun_buft*>(net1->fun)) {
 	    fprintf(stderr, "Error: functor of net1 must be"
 		    "vvp_fun_buft\n");
-	    return nullptr;
+	    أرجع اشاره_تهی;
       }
 
-      if (!dynamic_cast<vvp_fun_buft*>(net2->fun)) {
+      إذا (!dynamic_cast<vvp_fun_buft*>(net2->fun)) {
 	    fprintf(stderr, "Error: functor of net2 must be"
 		    "vvp_fun_buft\n");
-	    return nullptr;
+	    أرجع اشاره_تهی;
       }
 
 	// If port1 is actually a port bit, we have to get to the correct vvp_fun_part
 	// after which we insert the intermodpath delay
-      if (port1_has_index) {
-	    vvp_net_ptr_t* net1_ptr = &net1->out_;
+      إذا (port1_has_شاخص) {
+	    vvp_net_ptr_t* net1_ptr = &net1->بیرون_2;
 
 	      // Search for part selects connected to port1
 	    vvp_net_t* current_net = net1_ptr->ptr();
 
-	    while (current_net) {
-		  const vvp_fun_part* part = dynamic_cast<vvp_fun_part*>(current_net->fun);
+	    طالما (current_net) {
+		  ثابت vvp_fun_part* part = dynamic_cast<vvp_fun_part*>(current_net->fun);
 
 		    // Its a part select!
-		  if (part) {
+		  إذا (part) {
 			  // Is it the correct part select?
-			if (part->get_base() == (unsigned)port1_bit_index) {
-			      assert(part->get_wid() == 1);
+			إذا (part->get_پایه() == (بیعلامت)port1_بیت_شاخص) {
+			      أكد(part->get_wid() == 1);
 			      net1 = current_net; // Replace net1 as this is our new start point
-			      break;
+			      اكسر;
 			}
 		  }
 
-		  current_net = current_net->port[0].ptr(); // BUFT has only one input, index 0
+		  current_net = current_net->پورت[0].ptr(); // BUFT has only one input, index 0
 	    }
       }
 
 	// Iterate over all nodes connected to port1
-      vvp_net_ptr_t cur = net1->out_;
-      vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr, 0);
+      vvp_net_ptr_t cur = net1->بیرون_2;
+      vvp_net_ptr_t prev = vvp_net_ptr_t(اشاره_تهی, 0);
 
-      while (cur.ptr()) {
+      طالما (cur.ptr()) {
 	      // Either port2 is directly connected to port1
 	      // Or in the second case port2 is indirectly connected
 	      // to port1 through a net of concat8s
-	    bool is_connected, is_output;
-	    vvp_net_ptr_t previous_node;
-	    tie(is_connected, previous_node, is_output) = port2_has_index
-		  ? check_connected_to_concat8(cur, net2, vvp_net_ptr_t(net1, 0))
-		  : check_connected_to_concat8_and_part_sa(cur, net2, vvp_net_ptr_t(net1, 0));
-	    if ( (!port2_has_index && cur.ptr() == net2) || is_connected ) {
-		  vvp_net_t*new_net = new vvp_net_t;
+	    منطقي is_connected, is_output;
+	    vvp_net_ptr_t قبلی_گره;
+	    tie(is_connected, قبلی_گره, is_output) = port2_has_شاخص
+		  ? check_connected_مقصد_concat8(cur, net2, vvp_net_ptr_t(net1, 0))
+		  : check_connected_مقصد_concat8_and_part_sa(cur, net2, vvp_net_ptr_t(net1, 0));
+	    إذا ( (!port2_has_شاخص && cur.ptr() == net2) || is_connected ) {
+		  vvp_net_t*new_net = جديد vvp_net_t;
 
 		    // Create new node with intermodpath and connect port2 to it
-		  int width = 1; // TODO
-		  vvp_fun_intermodpath*obj = new vvp_fun_intermodpath(new_net, width);
+		  صحيح width = 1; // TODO
+		  vvp_fun_intermodpath*obj = جديد vvp_fun_intermodpath(new_net, width);
 
 		  vvp_net_t* output_net = net1;
-		  if (is_connected) {
-			if (is_output) {
-			      output_net = previous_node.ptr(); // net2 is direct output of part_sa
-			      cur = output_net->out_;
-			      prev = vvp_net_ptr_t(nullptr, 0);
-			} else {
-			      prev = previous_node;
-			      if (prev.ptr()) {
-				    cur = prev.ptr()->port[prev.port()];
+		  إذا (is_connected) {
+			إذا (is_output) {
+			      output_net = قبلی_گره.ptr(); // net2 is direct output of part_sa
+			      cur = output_net->بیرون_2;
+			      prev = vvp_net_ptr_t(اشاره_تهی, 0);
+			} وإلا {
+			      prev = قبلی_گره;
+			      إذا (prev.ptr()) {
+				    cur = prev.ptr()->پورت[prev.پورت()];
 			      }
 			}
 		  }
 
 		  new_net->fun = obj;
-		  new_net->out_ = cur;
+		  new_net->بیرون_2 = cur;
 
 		    // Port2 is in the middle of the list
 		    // Insert intermodpath before port2 and keep everything else intact
-		  if (prev.ptr()) {
-			prev.ptr()->port[prev.port()] = vvp_net_ptr_t(new_net, 0); // Point to port 0 of vvp_fun_intermodpath
-			new_net->port[0] = cur.ptr()->port[cur.port()]; // Connect the next net in list
-			cur.ptr()->port[cur.port()] = vvp_net_ptr_t(nullptr, 0); // Only port2 is connected to intermodpath
+		  إذا (prev.ptr()) {
+			prev.ptr()->پورت[prev.پورت()] = vvp_net_ptr_t(new_net, 0); // Point to port 0 of vvp_fun_intermodpath
+			new_net->پورت[0] = cur.ptr()->پورت[cur.پورت()]; // Connect the next net in list
+			cur.ptr()->پورت[cur.پورت()] = vvp_net_ptr_t(اشاره_تهی, 0); // Only port2 is connected to intermodpath
 		    // Port2 is first in list
 		    // Insert intermodpath before port2 and keep everything else intact
-		  } else {
-			output_net->out_ = vvp_net_ptr_t(new_net, 0); // Point to port 0 of vvp_fun_intermodpath
-			new_net->port[0] = cur.ptr()->port[cur.port()]; //  Connect the next net in list
-			cur.ptr()->port[cur.port()] = vvp_net_ptr_t(nullptr, 0); // Only port2 is connected to intermodpath
+		  } وإلا {
+			output_net->بیرون_2 = vvp_net_ptr_t(new_net, 0); // Point to port 0 of vvp_fun_intermodpath
+			new_net->پورت[0] = cur.ptr()->پورت[cur.پورت()]; //  Connect the next net in list
+			cur.ptr()->پورت[cur.پورت()] = vvp_net_ptr_t(اشاره_تهی, 0); // Only port2 is connected to intermodpath
 		  }
 
 		    // If both ports are vpiOutput and port2 is not a vector,
 		    // we have to reassign the __vpiSignal so that the delayed
 		    // values get dumped
-		  if (output_signal && !port2_has_index) {
+		  إذا (output_signal && !port2_has_شاخص) {
 			net2->fil = net1->fil;
-			net1->fil = nullptr;
-			output_signal->node = net2;
+			net1->fil = اشاره_تهی;
+			output_signal->گره = net2;
 		  }
 
 		    // Create the VPI intermodpath object
@@ -1855,17 +1855,17 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 		  intermodpath->intermodpath = obj;
 
 		    // Finally done, return the intermodpath object
-		  return intermodpath;
+		  أرجع intermodpath;
 	    }
 
 	    prev = cur;
-	    cur = cur.ptr()->port[cur.port()]; // Next net in linked list
+	    cur = cur.ptr()->پورت[cur.پورت()]; // Next net in linked list
       }
 
       fprintf(stderr, "VPI error: Could not insert intermodpath!\n");
-      fprintf(stderr, "\tport1 = %s, port1_has_index = %d, port1_bit_index = %d\n", port1_name.c_str(), port1_has_index, port1_bit_index);
-      fprintf(stderr, "\tport2 = %s, port2_has_index = %d, port2_bit_index = %d\n", port2_name.c_str(), port2_has_index, port2_bit_index);
-      return nullptr;
+      fprintf(stderr, "\tport1 = %s, port1_has_index = %d, port1_bit_index = %d\n", port1_name.c_str(), port1_has_شاخص, port1_بیت_شاخص);
+      fprintf(stderr, "\tport2 = %s, port2_has_index = %d, port2_bit_index = %d\n", port2_name.c_str(), port2_has_شاخص, port2_بیت_شاخص);
+      أرجع اشاره_تهی;
 }
 
 /*
@@ -1889,30 +1889,30 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 
 
 
-void vpi_get_delays(vpiHandle expr, p_vpi_delay delays)
+فراغ vpi_get_delays(vpiHandle عبارت, p_vpi_delay delays)
 {
-      assert(expr);
-      assert(delays);
+      أكد(عبارت);
+      أكد(delays);
 
-      expr->vpi_get_delays(delays);
+      عبارت->vpi_get_delays(delays);
 
-      if (vpi_trace) {
+      إذا (vpi_trace) {
 	    fprintf(vpi_trace,
-		    "vpi_get_delays(%p, %p) -->\n", expr, delays);
+		    "vpi_get_delays(%p, %p) -->\n", عبارت, delays);
       }
 }
 
 
-void vpi_put_delays(vpiHandle expr, p_vpi_delay delays)
+فراغ vpi_put_delays(vpiHandle عبارت, p_vpi_delay delays)
 {
-      assert(expr  );
-      assert(delays );
+      أكد(عبارت  );
+      أكد(delays );
 
-      expr->vpi_put_delays(delays);
+      عبارت->vpi_put_delays(delays);
 
-      if (vpi_trace) {
+      إذا (vpi_trace) {
 	    fprintf(vpi_trace,
-		    "vpi_put_delays(%p, %p) -->\n", expr, delays);
+		    "vpi_put_delays(%p, %p) -->\n", عبارت, delays);
       }
 }
 
@@ -1923,118 +1923,118 @@ void vpi_put_delays(vpiHandle expr, p_vpi_delay delays)
 
 
 
-extern "C" PLI_INT32 vpi_vprintf(const char*fmt, va_list ap)
+خارجي "C" PLI_INT32 vpi_vprintf(ثابت حرف*fmt, va_list ap)
 {
-      return vpi_mcd_vprintf(1, fmt, ap);
+      أرجع vpi_mcd_vprintf(1, fmt, ap);
 }
 
-extern "C" PLI_INT32 vpi_printf(const char *fmt, ...)
+خارجي "C" PLI_INT32 vpi_printf(ثابت حرف *fmt, ...)
 {
       va_list ap;
       va_start(ap, fmt);
-      int r = vpi_mcd_vprintf(1, fmt, ap);
+      صحيح r = vpi_mcd_vprintf(1, fmt, ap);
       va_end(ap);
-      return r;
+      أرجع r;
 }
 
-extern "C" PLI_INT32 vpi_flush(void)
+خارجي "C" PLI_INT32 vpi_flush(فراغ)
 {
-      return vpi_mcd_flush(1);
+      أرجع vpi_mcd_flush(1);
 }
 
 
-extern "C" PLI_INT32 vpi_sim_vcontrol(int operation, va_list ap)
+خارجي "C" PLI_INT32 vpi_sim_vcontrol(صحيح operation, va_list ap)
 {
-      long diag_msg;
+      دراز diag_پیام;
 
-      switch (operation) {
-	  case vpiFinish:
-	  case __ivl_legacy_vpiFinish:
-            diag_msg = va_arg(ap, PLI_INT32);
-	    schedule_finish(diag_msg);
-	    break;
+      بدل (operation) {
+	  حالة vpi_پایان:
+	  حالة __ivl_legacy_vpiFinish:
+            diag_پیام = va_arg(ap, PLI_INT32);
+	    زمانبندی_پایان(diag_پیام);
+	    اكسر;
 
-	  case vpiStop:
-	  case __ivl_legacy_vpiStop:
-            diag_msg = va_arg(ap, PLI_INT32);
-	    schedule_stop(diag_msg);
-	    break;
+	  حالة vpiStop:
+	  حالة __ivl_legacy_vpiStop:
+            diag_پیام = va_arg(ap, PLI_INT32);
+	    زمانبندی_stop(diag_پیام);
+	    اكسر;
 
-	  default:
+	  افتراضي:
 	    fprintf(stderr, "Unsupported VPI control operation %d.\n", operation);
-	    return 0;
+	    أرجع 0;
       }
-      return 1;
+      أرجع 1;
 }
 
-extern "C" PLI_INT32 vpi_sim_control(PLI_INT32 operation, ...)
+خارجي "C" PLI_INT32 vpi_sim_control(PLI_INT32 operation, ...)
 {
       va_list ap;
       va_start(ap, operation);
-      int r = vpi_sim_vcontrol(operation, ap);
+      صحيح r = vpi_sim_vcontrol(operation, ap);
       va_end(ap);
-      return r;
+      أرجع r;
 }
 
-extern "C" PLI_INT32 vpi_control(PLI_INT32 operation, ...)
+خارجي "C" PLI_INT32 vpi_control(PLI_INT32 operation, ...)
 {
       va_list ap;
       va_start(ap, operation);
-      int r = vpi_sim_vcontrol(operation, ap);
+      صحيح r = vpi_sim_vcontrol(operation, ap);
       va_end(ap);
-      return r;
+      أرجع r;
 }
 
 /*
  * This routine calculated the return value for $clog2.
  * It is easier to do it here vs trying to to use the VPI interface.
  */
-extern "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
+خارجي "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
 {
       s_vpi_vecval rtn;
-      s_vpi_value val;
+      s_vpi_مقدار val;
       vvp_vector4_t vec4;
-      bool is_neg = false;  // At this point only a real can be negative.
+      منطقي is_neg = خطأ;  // At this point only a real can be negative.
 
 	/* Get the value as a vvp_vector4_t. */
       val.format = vpiObjTypeVal;
-      vpi_get_value(arg, &val);
-      if (val.format == vpiRealVal) {
-	    vpi_get_value(arg, &val);
+      vpi_get_مقدار(arg, &val);
+      إذا (val.format == vpiRealVal) {
+	    vpi_get_مقدار(arg, &val);
 	      /* All double values can be represented in 1024 bits. */
 	    vec4 = vvp_vector4_t(1024, val.value.real);
-	    if (val.value.real < 0) is_neg = true;
-      } else {
-	    val.format = vpiVectorVal;
-	    vpi_get_value(arg, &val);
-	    unsigned wid = vpi_get(vpiSize, arg);
+	    إذا (val.value.real < 0) is_neg = درست;
+      } وإلا {
+	    val.format = vpi_وکتور_Val;
+	    vpi_get_مقدار(arg, &val);
+	    بیعلامت wid = vpi_get(vpi_اندازه, arg);
 	    vec4 = vvp_vector4_t(wid, BIT4_0);
-	    for (unsigned idx=0; idx < wid; idx += 1) {
+	    لكل (بیعلامت idx=0; idx < wid; idx += 1) {
 		PLI_INT32 aval = val.value.vector[idx/32].aval;
 		PLI_INT32 bval = val.value.vector[idx/32].bval;
 		aval >>= idx % 32;
 		bval >>= idx % 32;
-		int bitmask = (aval&1) | ((bval<<1)&2);
-		vvp_bit4_t bit = scalar_to_bit4(bitmask);
-		vec4.set_bit(idx, bit);
+		صحيح bitmask = (aval&1) | ((bval<<1)&2);
+		vvp_bit4_t بیت = scalar_مقصد_bit4(bitmask);
+		vec4.مجموعه_بیت(idx, بیت);
 	    }
       }
 
-      if (vec4.has_xz()) {
+      إذا (vec4.has_xz()) {
 	    rtn.aval = rtn.bval = 0xFFFFFFFFU;  /* Set to 'bx. */
-	    return rtn;
+	    أرجع rtn;
       }
 
       vvp_vector2_t vec2(vec4);
 
-      if (is_neg) vec2.trim_neg(); /* This is a special trim! */
-      else vec2.trim(); /* This makes less work shifting. */
+      إذا (is_neg) vec2.trim_neg(); /* This is a special trim! */
+      وإلا vec2.trim(); /* This makes less work shifting. */
 
 	/* Calculate the clog2 result. */
       PLI_INT32 res = 0;
-      if (!vec2.is_zero()) {
+      إذا (!vec2.is_zero()) {
 	    vec2 -= vvp_vector2_t(1, vec2.size());
-	    while(!vec2.is_zero()) {
+	    طالما(!vec2.is_zero()) {
 		  res += 1;
 		  vec2 >>= 1;
 	    }
@@ -2042,7 +2042,7 @@ extern "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
 
       rtn.aval = res;
       rtn.bval = 0;
-      return rtn;
+      أرجع rtn;
 }
 
 /*
@@ -2050,34 +2050,34 @@ extern "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
  * It is done here for performance reasons - interrogating the drivers
  * individually via the VPI interface would be much slower.
  */
-extern "C" void vpip_count_drivers(vpiHandle ref, unsigned idx,
-                                   unsigned counts[4])
+خارجي "C" فراغ vpip_شمار_drivers(vpiHandle ref, بیعلامت idx,
+                                   بیعلامت counts[4])
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
-      rfp->node->count_drivers(idx, counts);
+      بنية __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      أكد(rfp);
+      rfp->گره->شمار_drivers(idx, counts);
 }
 
-#if defined(__MINGW32__) || defined (__CYGWIN__)
+#إذا defined(__MINGW32__) || defined (__CYGWIN__)
 vpip_routines_s vpi_routines = {
-    .register_cb                = vpi_register_cb,
+    .ثبات_cb                = vpi_ثبات_cb,
     .remove_cb                  = vpi_remove_cb,
-    .register_systf             = vpi_register_systf,
+    .ثبات_systf             = vpi_ثبات_systf,
     .get_systf_info             = vpi_get_systf_info,
     .handle_by_name             = vpi_handle_by_name,
-    .handle_by_index            = vpi_handle_by_index,
+    .handle_by_شاخص            = vpi_handle_by_شاخص,
     .handle_multi               = vpi_handle_multi,
     .handle                     = vpi_handle,
     .iterate                    = vpi_iterate,
-    .scan                       = vpi_scan,
+    .پیمایش                       = vpi_پیمایش,
     .get                        = vpi_get,
     .get64                      = vpi_get64,
     .get_str                    = vpi_get_str,
     .get_delays                 = vpi_get_delays,
     .put_delays                 = vpi_put_delays,
-    .get_value                  = vpi_get_value,
-    .put_value                  = vpi_put_value,
-    .get_time                   = vpi_get_time,
+    .get_مقدار                  = vpi_get_مقدار,
+    .put_مقدار                  = vpi_put_مقدار,
+    .get_زمان                   = vpi_get_زمان,
     .get_userdata               = vpi_get_userdata,
     .put_userdata               = vpi_put_userdata,
     .mcd_open                   = vpi_mcd_open,
@@ -2096,11 +2096,11 @@ vpip_routines_s vpi_routines = {
     .fopen                      = vpi_fopen,
     .get_file                   = vpi_get_file,
     .calc_clog2                 = vpip_calc_clog2,
-    .count_drivers              = vpip_count_drivers,
+    .شمار_drivers              = vpip_شمار_drivers,
     .format_strength            = vpip_format_strength,
     .format_pretty              = vpip_format_pretty,
     .make_systf_system_defined  = vpip_make_systf_system_defined,
     .mcd_rawwrite               = vpip_mcd_rawwrite,
-    .set_return_value           = vpip_set_return_value,
+    .مجموعه_return_مقدار           = vpip_مجموعه_return_مقدار,
 };
-#endif
+#پایان_اگر

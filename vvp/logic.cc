@@ -29,130 +29,130 @@
 # include  <cassert>
 # include  <cstdlib>
 
-vvp_fun_boolean_::vvp_fun_boolean_(unsigned wid)
+vvp_fun_boolean_::vvp_fun_boolean_(بیعلامت wid)
 {
       net_ = 0;
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-	    input_[idx] = vvp_vector4_t(wid, BIT4_Z);
+      لكل (بیعلامت idx = 0 ;  idx < 4 ;  idx += 1)
+	    درون_داد_2[idx] = vvp_vector4_t(wid, BIT4_Z);
 }
 
 vvp_fun_boolean_::~vvp_fun_boolean_()
 {
 }
 
-void vvp_fun_boolean_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+فراغ vvp_fun_boolean_::recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت,
                                  vvp_context_t)
 {
-      unsigned port = ptr.port();
-      if (input_[port] .eeq( bit )) return;
+      بیعلامت پورت = ptr.پورت();
+      إذا (درون_داد_2[پورت] .eeq( بیت )) أرجع;
 
-      input_[port] = bit;
-      if (net_ == 0) {
+      درون_داد_2[پورت] = بیت;
+      إذا (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    زمانبندی_functor(هذا);
       }
 }
 
-void vvp_fun_boolean_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				    unsigned base, unsigned vwid, vvp_context_t)
+فراغ vvp_fun_boolean_::recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت,
+				    بیعلامت پایه, بیعلامت vwid, vvp_context_t)
 {
-      unsigned port = ptr.port();
+      بیعلامت پورت = ptr.پورت();
 
-      assert(base + bit.size() <= vwid);
+      أكد(پایه + بیت.size() <= vwid);
 
 	// Set the part for the input. If nothing changes, then break.
-      bool flag = input_[port] .set_vec(base, bit);
-      if (flag == false)
-	    return;
+      منطقي flag = درون_داد_2[پورت] .مجموعه_vec(پایه, بیت);
+      إذا (flag == خطأ)
+	    أرجع;
 
-      if (net_ == 0) {
+      إذا (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    زمانبندی_functor(هذا);
       }
 }
 
-void vvp_fun_boolean_::recv_real(vvp_net_ptr_t ptr, double real,
+فراغ vvp_fun_boolean_::recv_real(vvp_net_ptr_t ptr, مزدوج real,
                                  vvp_context_t ctx)
 {
-      recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
+      recv_vec4(ptr, double_مقصد_vector4_LSB(real), ctx);
 }
 
-vvp_fun_and::vvp_fun_and(unsigned wid, bool invert)
+vvp_fun_and::vvp_fun_and(بیعلامت wid, منطقي invert)
 : vvp_fun_boolean_(wid), invert_(invert)
 {
-      count_functors_logic += 1;
+      شمار_functors_logic += 1;
 }
 
 vvp_fun_and::~vvp_fun_and()
 {
 }
 
-void vvp_fun_and::run_run()
+فراغ vvp_fun_and::پیاپی_پیاپی()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_[0]);
+      vvp_vector4_t نتیجه (درون_داد_2[0]);
 
-      for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
-	    result &= input_[pdx];
+      لكل (بیعلامت pdx = 1 ; pdx < 4 ; pdx += 1)
+	    نتیجه &= درون_داد_2[pdx];
 
-      if (invert_)
-	    result.invert();
+      إذا (invert_)
+	    نتیجه.invert();
 
-      ptr->send_vec4(result, 0);
+      ptr->send_vec4(نتیجه, 0);
 }
 
 vvp_fun_equiv::vvp_fun_equiv()
 : vvp_fun_boolean_(1)
 {
-      count_functors_logic += 1;
+      شمار_functors_logic += 1;
 }
 
 vvp_fun_equiv::~vvp_fun_equiv()
 {
 }
 
-void vvp_fun_equiv::run_run()
+فراغ vvp_fun_equiv::پیاپی_پیاپی()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      assert(input_[0].size() == 1);
-      assert(input_[1].size() == 1);
+      أكد(درون_داد_2[0].size() == 1);
+      أكد(درون_داد_2[1].size() == 1);
 
-      vvp_bit4_t bit = ~(input_[0].value(0) ^ input_[1].value(0));
-      vvp_vector4_t result (1, bit);
+      vvp_bit4_t بیت = ~(درون_داد_2[0].value(0) ^ درون_داد_2[1].value(0));
+      vvp_vector4_t نتیجه (1, بیت);
 
-      ptr->send_vec4(result, 0);
+      ptr->send_vec4(نتیجه, 0);
 }
 
 vvp_fun_impl::vvp_fun_impl()
 : vvp_fun_boolean_(1)
 {
-      count_functors_logic += 1;
+      شمار_functors_logic += 1;
 }
 
 vvp_fun_impl::~vvp_fun_impl()
 {
 }
 
-void vvp_fun_impl::run_run()
+فراغ vvp_fun_impl::پیاپی_پیاپی()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      assert(input_[0].size() == 1);
-      assert(input_[1].size() == 1);
+      أكد(درون_داد_2[0].size() == 1);
+      أكد(درون_داد_2[1].size() == 1);
 
-      vvp_bit4_t bit = ~input_[0].value(0) | input_[1].value(0);
-      vvp_vector4_t result (1, bit);
+      vvp_bit4_t بیت = ~درون_داد_2[0].value(0) | درون_داد_2[1].value(0);
+      vvp_vector4_t نتیجه (1, بیت);
 
-      ptr->send_vec4(result, 0);
+      ptr->send_vec4(نتیجه, 0);
 }
 
-vvp_fun_buf_not_::vvp_fun_buf_not_(unsigned wid)
-: input_(wid, BIT4_Z)
+vvp_fun_buf_not_::vvp_fun_buf_not_(بیعلامت wid)
+: درون_داد_2(wid, BIT4_Z)
 {
       net_ = 0;
 }
@@ -161,49 +161,49 @@ vvp_fun_buf_not_::~vvp_fun_buf_not_()
 {
 }
 
-void vvp_fun_buf_not_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+فراغ vvp_fun_buf_not_::recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت,
                                  vvp_context_t)
 {
-      if (ptr.port() != 0) return;
+      إذا (ptr.پورت() != 0) أرجع;
 
-      if (input_ .eeq( bit )) return;
+      إذا (درون_داد_2 .eeq( بیت )) أرجع;
 
-      input_ = bit;
-      if (net_ == 0) {
+      درون_داد_2 = بیت;
+      إذا (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    زمانبندی_functor(هذا);
       }
 }
 
-void vvp_fun_buf_not_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-                                    unsigned base, unsigned vwid, vvp_context_t)
+فراغ vvp_fun_buf_not_::recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت,
+                                    بیعلامت پایه, بیعلامت vwid, vvp_context_t)
 {
-      if (ptr.port() != 0) return;
+      إذا (ptr.پورت() != 0) أرجع;
 
-      assert(base + bit.size() <= vwid);
+      أكد(پایه + بیت.size() <= vwid);
 
 	// Set the input part. If nothing changes, then break.
-      bool flag = input_.set_vec(base, bit);
-      if (flag == false) return;
+      منطقي flag = درون_داد_2.مجموعه_vec(پایه, بیت);
+      إذا (flag == خطأ) أرجع;
 
-      if (net_ == 0) {
+      إذا (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    زمانبندی_functor(هذا);
       }
 }
 
-void vvp_fun_buf_not_::recv_real(vvp_net_ptr_t ptr, double real,
+فراغ vvp_fun_buf_not_::recv_real(vvp_net_ptr_t ptr, مزدوج real,
                                  vvp_context_t ctx)
 {
-      if (ptr.port() != 0) return;
+      إذا (ptr.پورت() != 0) أرجع;
 
-      recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
+      recv_vec4(ptr, double_مقصد_vector4_LSB(real), ctx);
 }
 
-vvp_fun_buf::vvp_fun_buf(unsigned wid)
+vvp_fun_buf::vvp_fun_buf(بیعلامت wid)
 : vvp_fun_buf_not_(wid)
 {
-      count_functors_logic += 1;
+      شمار_functors_logic += 1;
 }
 
 vvp_fun_buf::~vvp_fun_buf()
@@ -214,19 +214,19 @@ vvp_fun_buf::~vvp_fun_buf()
  * The buf functor is very simple--change the z bits to x bits in the
  * vector it passes, and propagate the result.
  */
-void vvp_fun_buf::run_run()
+فراغ vvp_fun_buf::پیاپی_پیاپی()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t tmp (input_);
+      vvp_vector4_t tmp (درون_داد_2);
       tmp.change_z2x();
       ptr->send_vec4(tmp, 0);
 }
 
 vvp_fun_bufz::vvp_fun_bufz()
 {
-      count_functors_logic += 1;
+      شمار_functors_logic += 1;
 }
 
 vvp_fun_bufz::~vvp_fun_bufz()
@@ -237,46 +237,46 @@ vvp_fun_bufz::~vvp_fun_bufz()
  * The bufz is similar to the buf device, except that it does not
  * bother translating z bits to x.
  */
-void vvp_fun_bufz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+فراغ vvp_fun_bufz::recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت,
                              vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      إذا (ptr.پورت() != 0)
+	    أرجع;
 
-      ptr.ptr()->send_vec4(bit, 0);
+      ptr.ptr()->send_vec4(بیت, 0);
 }
 
-void vvp_fun_bufz::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-                                unsigned base, unsigned vwid, vvp_context_t)
+فراغ vvp_fun_bufz::recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت,
+                                بیعلامت پایه, بیعلامت vwid, vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      إذا (ptr.پورت() != 0)
+	    أرجع;
 
-      ptr.ptr()->send_vec4_pv(bit, base, vwid, 0);
+      ptr.ptr()->send_vec4_pv(بیت, پایه, vwid, 0);
 }
 
-void vvp_fun_bufz::recv_real(vvp_net_ptr_t ptr, double bit,
+فراغ vvp_fun_bufz::recv_real(vvp_net_ptr_t ptr, مزدوج بیت,
                              vvp_context_t)
 {
-      if (ptr.port() != 0)
-	    return;
+      إذا (ptr.پورت() != 0)
+	    أرجع;
 
-      ptr.ptr()->send_real(bit, 0);
+      ptr.ptr()->send_real(بیت, 0);
 }
 
-void vvp_fun_buft::recv_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+فراغ vvp_fun_buft::recv_vec8(vvp_net_ptr_t ptr, ثابت vvp_vector8_t&بیت)
 {
-      if (ptr.port() != 0)
-	    return;
+      إذا (ptr.پورت() != 0)
+	    أرجع;
 
-      ptr.ptr()->send_vec8(bit);
+      ptr.ptr()->send_vec8(بیت);
 }
 
 vvp_fun_muxr::vvp_fun_muxr()
 : a_(0.0), b_(0.0)
 {
       net_ = 0;
-      count_functors_logic += 1;
+      شمار_functors_logic += 1;
       select_ = SEL_BOTH;
 }
 
@@ -284,211 +284,211 @@ vvp_fun_muxr::~vvp_fun_muxr()
 {
 }
 
-void vvp_fun_muxr::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+فراغ vvp_fun_muxr::recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت,
                              vvp_context_t)
 {
 	/* The real valued mux can only take in the select as a
 	   vector4_t. The muxed data is real. */
-      if (ptr.port() != 2)
-	    return;
+      إذا (ptr.پورت() != 2)
+	    أرجع;
 
-      assert(bit.size() == 1);
+      أكد(بیت.size() == 1);
 
-      switch (bit.value(0)) {
-	  case BIT4_0:
-	    if (select_ == SEL_PORT0) return;
+      بدل (بیت.value(0)) {
+	  حالة BIT4_0:
+	    إذا (select_ == SEL_PORT0) أرجع;
 	    select_ = SEL_PORT0;
-	    break;
-	  case BIT4_1:
-	    if (select_ == SEL_PORT1) return;
+	    اكسر;
+	  حالة BIT4_1:
+	    إذا (select_ == SEL_PORT1) أرجع;
 	    select_ = SEL_PORT1;
-	    break;
-	  default:
-	    if (select_ == SEL_BOTH) return;
+	    اكسر;
+	  افتراضي:
+	    إذا (select_ == SEL_BOTH) أرجع;
 	    select_ = SEL_BOTH;
       }
 
-      if (net_ == 0) {
+      إذا (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    زمانبندی_functor(هذا);
       }
 }
 
-void vvp_fun_muxr::recv_real(vvp_net_ptr_t ptr, double bit,
+فراغ vvp_fun_muxr::recv_real(vvp_net_ptr_t ptr, مزدوج بیت,
                              vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0:
-	    if (a_ == bit) return;
-	    a_ = bit;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
-	    break;
+      بدل (ptr.پورت()) {
+	  حالة 0:
+	    إذا (a_ == بیت) أرجع;
+	    a_ = بیت;
+	    إذا (select_ == SEL_PORT1) أرجع; // The other port is selected.
+	    اكسر;
 
-	  case 1:
-	    if (b_ == bit) return;
-	    b_ = bit;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
-	    break;
+	  حالة 1:
+	    إذا (b_ == بیت) أرجع;
+	    b_ = بیت;
+	    إذا (select_ == SEL_PORT0) أرجع; // The other port is selected.
+	    اكسر;
 
-	  default:
-	    fprintf(stderr, "Unsupported port type %u.\n", ptr.port());
-	    assert(0);
+	  افتراضي:
+	    fprintf(stderr, "Unsupported port type %u.\n", ptr.پورت());
+	    أكد(0);
       }
 
-      if (net_ == 0) {
+      إذا (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    زمانبندی_functor(هذا);
       }
 }
 
-void vvp_fun_muxr::run_run()
+فراغ vvp_fun_muxr::پیاپی_پیاپی()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      switch (select_) {
-	  case SEL_PORT0:
+      بدل (select_) {
+	  حالة SEL_PORT0:
 	    ptr->send_real(a_, 0);
-	    break;
-	  case SEL_PORT1:
+	    اكسر;
+	  حالة SEL_PORT1:
 	    ptr->send_real(b_, 0);
-	    break;
-	  default:
-	    if (a_ == b_) {
+	    اكسر;
+	  افتراضي:
+	    إذا (a_ == b_) {
 		  ptr->send_real(a_, 0);
-	    } else {
+	    } وإلا {
 		  ptr->send_real(0.0, 0); // Should this be NaN?
 	    }
-	    break;
+	    اكسر;
       }
 }
 
-vvp_fun_muxz::vvp_fun_muxz(unsigned wid)
+vvp_fun_muxz::vvp_fun_muxz(بیعلامت wid)
 : a_(wid, BIT4_Z), b_(wid, BIT4_Z)
 {
       net_ = 0;
-      count_functors_logic += 1;
+      شمار_functors_logic += 1;
       select_ = SEL_BOTH;
-      has_run_ = false;
+      has_پیاپی = خطأ;
 }
 
 vvp_fun_muxz::~vvp_fun_muxz()
 {
 }
 
-void vvp_fun_muxz::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+فراغ vvp_fun_muxz::recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت,
                              vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0:
-	    if (a_ .eeq(bit) && has_run_) return;
-	    a_ = bit;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
-	    break;
-	  case 1:
-	    if (b_ .eeq(bit) && has_run_) return;
-	    b_ = bit;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
-	    break;
-	  case 2:
-	    assert(bit.size() == 1);
-	    switch (bit.value(0)) {
-		case BIT4_0:
-		  if (select_ == SEL_PORT0) return;
+      بدل (ptr.پورت()) {
+	  حالة 0:
+	    إذا (a_ .eeq(بیت) && has_پیاپی) أرجع;
+	    a_ = بیت;
+	    إذا (select_ == SEL_PORT1) أرجع; // The other port is selected.
+	    اكسر;
+	  حالة 1:
+	    إذا (b_ .eeq(بیت) && has_پیاپی) أرجع;
+	    b_ = بیت;
+	    إذا (select_ == SEL_PORT0) أرجع; // The other port is selected.
+	    اكسر;
+	  حالة 2:
+	    أكد(بیت.size() == 1);
+	    بدل (بیت.value(0)) {
+		حالة BIT4_0:
+		  إذا (select_ == SEL_PORT0) أرجع;
 		  select_ = SEL_PORT0;
-		  break;
-		case BIT4_1:
-		  if (select_ == SEL_PORT1) return;
+		  اكسر;
+		حالة BIT4_1:
+		  إذا (select_ == SEL_PORT1) أرجع;
 		  select_ = SEL_PORT1;
-		  break;
-		default:
-		  if (select_ == SEL_BOTH && has_run_) return;
+		  اكسر;
+		افتراضي:
+		  إذا (select_ == SEL_BOTH && has_پیاپی) أرجع;
 		  select_ = SEL_BOTH;
 	    }
-	    break;
-	  default:
-	    return;
+	    اكسر;
+	  افتراضي:
+	    أرجع;
       }
 
-      if (net_ == 0) {
+      إذا (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    زمانبندی_functor(هذا);
       }
 }
 
-void vvp_fun_muxz::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-				unsigned base, unsigned vwid, vvp_context_t)
+فراغ vvp_fun_muxz::recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&بیت,
+				بیعلامت پایه, بیعلامت vwid, vvp_context_t)
 {
-      assert(base + bit.size() <= vwid);
-      bool flag;
+      أكد(پایه + بیت.size() <= vwid);
+      منطقي flag;
 
-      switch (ptr.port()) {
-	  case 0:
-	    flag = a_.set_vec(base, bit);
-	    if (flag == false && has_run_) return;
-	    if (select_ == SEL_PORT1) return; // The other port is selected.
-	    break;
-	  case 1:
-	    flag = b_.set_vec(base, bit);
-	    if (flag == false && has_run_) return;
-	    if (select_ == SEL_PORT0) return; // The other port is selected.
-	    break;
-	  case 2:
-	    assert((base == 0) && (bit.size() == 1));
-	    recv_vec4(ptr, bit, 0);
-	  default:
-	    return;
+      بدل (ptr.پورت()) {
+	  حالة 0:
+	    flag = a_.مجموعه_vec(پایه, بیت);
+	    إذا (flag == خطأ && has_پیاپی) أرجع;
+	    إذا (select_ == SEL_PORT1) أرجع; // The other port is selected.
+	    اكسر;
+	  حالة 1:
+	    flag = b_.مجموعه_vec(پایه, بیت);
+	    إذا (flag == خطأ && has_پیاپی) أرجع;
+	    إذا (select_ == SEL_PORT0) أرجع; // The other port is selected.
+	    اكسر;
+	  حالة 2:
+	    أكد((پایه == 0) && (بیت.size() == 1));
+	    recv_vec4(ptr, بیت, 0);
+	  افتراضي:
+	    أرجع;
       }
-      if (net_ == 0) {
+      إذا (net_ == 0) {
 	    net_ = ptr.ptr();
-	    schedule_functor(this);
+	    زمانبندی_functor(هذا);
       }
 }
 
-void vvp_fun_muxz::run_run()
+فراغ vvp_fun_muxz::پیاپی_پیاپی()
 {
-      has_run_ = true;
+      has_پیاپی = درست;
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      switch (select_) {
-	  case SEL_PORT0:
+      بدل (select_) {
+	  حالة SEL_PORT0:
 	    ptr->send_vec4(a_, 0);
-	    break;
-	  case SEL_PORT1:
+	    اكسر;
+	  حالة SEL_PORT1:
 	    ptr->send_vec4(b_, 0);
-	    break;
-	  default:
+	    اكسر;
+	  افتراضي:
 	      {
-		    unsigned min_size = a_.size();
-		    unsigned max_size = min_size;
-		    if (b_.size() < min_size)
-			  min_size = b_.size();
-		    if (b_.size() > max_size)
-			  max_size = b_.size();
+		    بیعلامت min_اندازه = a_.size();
+		    بیعلامت max_اندازه = min_اندازه;
+		    إذا (b_.size() < min_اندازه)
+			  min_اندازه = b_.size();
+		    إذا (b_.size() > max_اندازه)
+			  max_اندازه = b_.size();
 
-		    vvp_vector4_t res (max_size);
+		    vvp_vector4_t res (max_اندازه);
 
-		    for (unsigned idx = 0 ;  idx < min_size ;  idx += 1) {
-			  if (a_.value(idx) == b_.value(idx))
-				res.set_bit(idx, a_.value(idx));
-			  else
-				res.set_bit(idx, BIT4_X);
+		    لكل (بیعلامت idx = 0 ;  idx < min_اندازه ;  idx += 1) {
+			  إذا (a_.value(idx) == b_.value(idx))
+				res.مجموعه_بیت(idx, a_.value(idx));
+			  وإلا
+				res.مجموعه_بیت(idx, BIT4_X);
 		    }
 
-		    for (unsigned idx = min_size ;  idx < max_size ;  idx += 1)
-			  res.set_bit(idx, BIT4_X);
+		    لكل (بیعلامت idx = min_اندازه ;  idx < max_اندازه ;  idx += 1)
+			  res.مجموعه_بیت(idx, BIT4_X);
 
 		    ptr->send_vec4(res, 0);
 	      }
-	    break;
+	    اكسر;
       }
 }
 
-vvp_fun_not::vvp_fun_not(unsigned wid)
+vvp_fun_not::vvp_fun_not(بیعلامت wid)
 : vvp_fun_buf_not_(wid)
 {
-      count_functors_logic += 1;
+      شمار_functors_logic += 1;
 }
 
 vvp_fun_not::~vvp_fun_not()
@@ -499,65 +499,65 @@ vvp_fun_not::~vvp_fun_not()
  * The not functor is very simple--change the z bits to x bits in the
  * vector it passes, and propagate the inverted result.
  */
-void vvp_fun_not::run_run()
+فراغ vvp_fun_not::پیاپی_پیاپی()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_, true /* invert */);
-      ptr->send_vec4(result, 0);
+      vvp_vector4_t نتیجه (درون_داد_2, درست /* invert */);
+      ptr->send_vec4(نتیجه, 0);
 }
 
-vvp_fun_or::vvp_fun_or(unsigned wid, bool invert)
+vvp_fun_or::vvp_fun_or(بیعلامت wid, منطقي invert)
 : vvp_fun_boolean_(wid), invert_(invert)
 {
-      count_functors_logic += 1;
+      شمار_functors_logic += 1;
 }
 
 vvp_fun_or::~vvp_fun_or()
 {
 }
 
-void vvp_fun_or::run_run()
+فراغ vvp_fun_or::پیاپی_پیاپی()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_[0]);
+      vvp_vector4_t نتیجه (درون_داد_2[0]);
 
-      for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
-	    result |= input_[pdx];
+      لكل (بیعلامت pdx = 1 ; pdx < 4 ; pdx += 1)
+	    نتیجه |= درون_داد_2[pdx];
 
-      if (invert_)
-	    result.invert();
+      إذا (invert_)
+	    نتیجه.invert();
 
-      ptr->send_vec4(result, 0);
+      ptr->send_vec4(نتیجه, 0);
 }
 
-vvp_fun_xor::vvp_fun_xor(unsigned wid, bool invert)
+vvp_fun_xor::vvp_fun_xor(بیعلامت wid, منطقي invert)
 : vvp_fun_boolean_(wid), invert_(invert)
 {
-      count_functors_logic += 1;
+      شمار_functors_logic += 1;
 }
 
 vvp_fun_xor::~vvp_fun_xor()
 {
 }
 
-void vvp_fun_xor::run_run()
+فراغ vvp_fun_xor::پیاپی_پیاپی()
 {
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_[0]);
+      vvp_vector4_t نتیجه (درون_داد_2[0]);
 
-      for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
-	    result ^= input_[pdx];
+      لكل (بیعلامت pdx = 1 ; pdx < 4 ; pdx += 1)
+	    نتیجه ^= درون_داد_2[pdx];
 
-      if (invert_)
-	    result.invert();
+      إذا (invert_)
+	    نتیجه.invert();
 
-      ptr->send_vec4(result, 0);
+      ptr->send_vec4(نتیجه, 0);
 }
 
 /*
@@ -566,122 +566,122 @@ void vvp_fun_xor::run_run()
  * functor. Also resolve the inputs to the functor.
  */
 
-void compile_functor(char*label, char*type, unsigned width,
-		     unsigned ostr0, unsigned ostr1,
-		     unsigned argc, struct symb_s*argv)
+فراغ compile_functor(حرف*label, حرف*type, بیعلامت width,
+		     بیعلامت ostr0, بیعلامت ostr1,
+		     بیعلامت argc, بنية symb_s*argv)
 {
       vvp_net_fun_t* obj = 0;
-      bool strength_aware = false;
+      منطقي strength_aware = خطأ;
 
-      if (strcmp(type, "OR") == 0) {
-	    obj = new vvp_fun_or(width, false);
+      إذا (strcmp(type, "OR") == 0) {
+	    obj = جديد vvp_fun_or(width, خطأ);
 
-      } else if (strcmp(type, "AND") == 0) {
-	    obj = new vvp_fun_and(width, false);
+      } وإلا إذا (strcmp(type, "AND") == 0) {
+	    obj = جديد vvp_fun_and(width, خطأ);
 
-      } else if (strcmp(type, "BUF") == 0) {
-	    obj = new vvp_fun_buf(width);
+      } وإلا إذا (strcmp(type, "BUF") == 0) {
+	    obj = جديد vvp_fun_buf(width);
 
-      } else if (strcmp(type, "BUFIF0") == 0) {
-	    obj = new vvp_fun_bufif(true,false, ostr0, ostr1);
-	    strength_aware = true;
+      } وإلا إذا (strcmp(type, "BUFIF0") == 0) {
+	    obj = جديد vvp_fun_bufif(درست,خطأ, ostr0, ostr1);
+	    strength_aware = درست;
 
-      } else if (strcmp(type, "BUFIF1") == 0) {
-	    obj = new vvp_fun_bufif(false,false, ostr0, ostr1);
-	    strength_aware = true;
+      } وإلا إذا (strcmp(type, "BUFIF1") == 0) {
+	    obj = جديد vvp_fun_bufif(خطأ,خطأ, ostr0, ostr1);
+	    strength_aware = درست;
 
-      } else if (strcmp(type, "EQUIV") == 0) {
-	    obj = new vvp_fun_equiv();
+      } وإلا إذا (strcmp(type, "EQUIV") == 0) {
+	    obj = جديد vvp_fun_equiv();
 
-      } else if (strcmp(type, "IMPL") == 0) {
-	    obj = new vvp_fun_impl();
+      } وإلا إذا (strcmp(type, "IMPL") == 0) {
+	    obj = جديد vvp_fun_impl();
 
-      } else if (strcmp(type, "NAND") == 0) {
-	    obj = new vvp_fun_and(width, true);
+      } وإلا إذا (strcmp(type, "NAND") == 0) {
+	    obj = جديد vvp_fun_and(width, درست);
 
-      } else if (strcmp(type, "NOR") == 0) {
-	    obj = new vvp_fun_or(width, true);
+      } وإلا إذا (strcmp(type, "NOR") == 0) {
+	    obj = جديد vvp_fun_or(width, درست);
 
-      } else if (strcmp(type, "NOTIF0") == 0) {
-	    obj = new vvp_fun_bufif(true,true, ostr0, ostr1);
-	    strength_aware = true;
+      } وإلا إذا (strcmp(type, "NOTIF0") == 0) {
+	    obj = جديد vvp_fun_bufif(درست,درست, ostr0, ostr1);
+	    strength_aware = درست;
 
-      } else if (strcmp(type, "NOTIF1") == 0) {
-	    obj = new vvp_fun_bufif(false,true, ostr0, ostr1);
-	    strength_aware = true;
+      } وإلا إذا (strcmp(type, "NOTIF1") == 0) {
+	    obj = جديد vvp_fun_bufif(خطأ,درست, ostr0, ostr1);
+	    strength_aware = درست;
 
-      } else if (strcmp(type, "BUFT") == 0) {
-	    obj = new vvp_fun_buft();
+      } وإلا إذا (strcmp(type, "BUFT") == 0) {
+	    obj = جديد vvp_fun_buft();
 
-      } else if (strcmp(type, "BUFZ") == 0) {
-	    obj = new vvp_fun_bufz();
+      } وإلا إذا (strcmp(type, "BUFZ") == 0) {
+	    obj = جديد vvp_fun_bufz();
 
-      } else if (strcmp(type, "MUXR") == 0) {
-	    obj = new vvp_fun_muxr;
+      } وإلا إذا (strcmp(type, "MUXR") == 0) {
+	    obj = جديد vvp_fun_muxr;
 
-      } else if (strcmp(type, "MUXZ") == 0) {
-	    obj = new vvp_fun_muxz(width);
+      } وإلا إذا (strcmp(type, "MUXZ") == 0) {
+	    obj = جديد vvp_fun_muxz(width);
 
-      } else if (strcmp(type, "CMOS") == 0) {
-	    obj = new vvp_fun_cmos();
+      } وإلا إذا (strcmp(type, "CMOS") == 0) {
+	    obj = جديد vvp_fun_cmos();
 
-      } else if (strcmp(type, "NMOS") == 0) {
-	    obj = new vvp_fun_pmos(true);
+      } وإلا إذا (strcmp(type, "NMOS") == 0) {
+	    obj = جديد vvp_fun_pmos(درست);
 
-      } else if (strcmp(type, "PMOS") == 0) {
-	    obj = new vvp_fun_pmos(false);
+      } وإلا إذا (strcmp(type, "PMOS") == 0) {
+	    obj = جديد vvp_fun_pmos(خطأ);
 
-      } else if (strcmp(type, "RCMOS") == 0) {
-	    obj = new vvp_fun_rcmos();
+      } وإلا إذا (strcmp(type, "RCMOS") == 0) {
+	    obj = جديد vvp_fun_rcmos();
 
-      } else if (strcmp(type, "RNMOS") == 0) {
-	    obj = new vvp_fun_rpmos(true);
+      } وإلا إذا (strcmp(type, "RNMOS") == 0) {
+	    obj = جديد vvp_fun_rpmos(درست);
 
-      } else if (strcmp(type, "RPMOS") == 0) {
-	    obj = new vvp_fun_rpmos(false);
+      } وإلا إذا (strcmp(type, "RPMOS") == 0) {
+	    obj = جديد vvp_fun_rpmos(خطأ);
 
-      } else if (strcmp(type, "NOT") == 0) {
-	    obj = new vvp_fun_not(width);
+      } وإلا إذا (strcmp(type, "NOT") == 0) {
+	    obj = جديد vvp_fun_not(width);
 
-      } else if (strcmp(type, "XNOR") == 0) {
-	    obj = new vvp_fun_xor(width, true);
+      } وإلا إذا (strcmp(type, "XNOR") == 0) {
+	    obj = جديد vvp_fun_xor(width, درست);
 
-      } else if (strcmp(type, "XOR") == 0) {
-	    obj = new vvp_fun_xor(width, false);
+      } وإلا إذا (strcmp(type, "XOR") == 0) {
+	    obj = جديد vvp_fun_xor(width, خطأ);
 
-      } else {
+      } وإلا {
 	    yyerror("invalid functor type.");
-	    free(type);
-	    free(argv);
-	    free(label);
-	    return;
+	    حرر(type);
+	    حرر(argv);
+	    حرر(label);
+	    أرجع;
       }
 
-      free(type);
+      حرر(type);
 
-      assert(argc <= 4);
-      vvp_net_t*net = new vvp_net_t;
+      أكد(argc <= 4);
+      vvp_net_t*net = جديد vvp_net_t;
       net->fun = obj;
 
       inputs_connect(net, argc, argv);
-      free(argv);
+      حرر(argv);
 
 	/* If both the strengths are the default strong drive, then
 	   there is no need for a specialized driver. Attach the label
 	   to this node and we are finished. */
-      if (strength_aware || (ostr0 == 6 && ostr1 == 6)) {
-	    define_functor_symbol(label, net);
-	    free(label);
-	    return;
+      إذا (strength_aware || (ostr0 == 6 && ostr1 == 6)) {
+	    define_functor_نماد(label, net);
+	    حرر(label);
+	    أرجع;
       }
 
-      vvp_net_t*net_drv = new vvp_net_t;
-      vvp_net_fun_t*obj_drv = new vvp_fun_drive(ostr0, ostr1);
+      vvp_net_t*net_drv = جديد vvp_net_t;
+      vvp_net_fun_t*obj_drv = جديد vvp_fun_drive(ostr0, ostr1);
       net_drv->fun = obj_drv;
 
 	/* Point the gate to the drive node. */
       net->link(vvp_net_ptr_t(net_drv, 0));
 
-      define_functor_symbol(label, net_drv);
-      free(label);
+      define_functor_نماد(label, net_drv);
+      حرر(label);
 }
