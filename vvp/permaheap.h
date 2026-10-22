@@ -22,29 +22,29 @@
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
 #ifdef __SUNPRO_CC
 # include  <stddef.h>
-#else
+#अण्णहा
 # include  <cstddef>
 #endif
 
 class permaheap {
 
-    public:
+    सार्वजनिक:
       explicit permaheap();
       ~permaheap();
 
-      void* alloc(size_t size);
+      शून्य* alloc(size_t size);
 
-      size_t heap_total() const { return heap_total_; }
+      size_t heap_total() ध्रुव { प्रत्यागम heap_total_; }
 
-    private:
-      enum { INITIAL_CHUNK_SIZE = 512*1024, CHUNK_SIZE=256*1024 };
+    गुप्त:
+      गणना { INITIAL_CHUNK_SIZE = 512*1024, CHUNK_SIZE=256*1024 };
 
-      union {
-	    void*align;
-	    char bytes[INITIAL_CHUNK_SIZE];
+      सङ्घ {
+	    शून्य*align;
+	    वर्ण bytes[INITIAL_CHUNK_SIZE];
       } initial_chunk_;
 
-      char*chunk_ptr_;
+      वर्ण*chunk_ptr_;
       size_t chunk_remaining_;
       size_t heap_total_;
 };

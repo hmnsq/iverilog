@@ -30,77 +30,77 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+using नामाकाश std;
 
-__vpiStringVar::__vpiStringVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
+__vpiStringVar::__vpiStringVar(__vpiScope*sc, ध्रुव वर्ण*na, vvp_net_t*ne)
 : __vpiBaseVar(sc, na, ne)
 {
 }
 
-int __vpiStringVar::get_type_code(void) const
-{ return vpiStringVar; }
+पूर्णाङ्क __vpiStringVar::get_type_code(शून्य) ध्रुव
+{ प्रत्यागम vpiStringVar; }
 
-int __vpiStringVar::vpi_get(int code)
+पूर्णाङ्क __vpiStringVar::vpi_get(पूर्णाङ्क code)
 {
       vvp_fun_signal_string*fun = dynamic_cast<vvp_fun_signal_string*> (get_net()->fun);
-      assert(fun);
+      प्रतिज्ञा(fun);
       string str = fun->get_string();
 
-      switch (code) {
-	  case vpiSize:
+      विकल्प (code) {
+	  पक्ष vpiSize:
 	      // The vpiSize of a string variable is the number of
 	      // bytes (characters) in that string.
-	    return str.size();
-	  case vpiLeftRange:
-	    return 0;
-	  case vpiRightRange:
-            return str.size() - 1;
-	  default:
+	    प्रत्यागम str.size();
+	  पक्ष vpi_वामः_Range:
+	    प्रत्यागम 0;
+	  पक्ष vpi_दक्षिणः_Range:
+            प्रत्यागम str.size() - 1;
+	  स्वभाव:
 	    fprintf(stderr, "vpi sorry: property is not implemented");
-	    assert(false);
-	    return 0;
+	    प्रतिज्ञा(मिच्छ);
+	    प्रत्यागम 0;
       }
 }
 
-void __vpiStringVar::vpi_get_value(p_vpi_value val)
+शून्य __vpiStringVar::vpi_get_मानम्(p_vpi_मानम् val)
 {
       vvp_fun_signal_string*fun = dynamic_cast<vvp_fun_signal_string*> (get_net()->fun);
-      assert(fun);
+      प्रतिज्ञा(fun);
       string str = fun->get_string();
 
-      if (val->format == vpiStringVal || val->format == vpiObjTypeVal) {
-	    char*rbuf = static_cast<char *>(need_result_buf(str.size()+1, RBUF_VAL));
+      जइ (val->format == vpiStringVal || val->format == vpiObjTypeVal) {
+	    वर्ण*rbuf = static_cast<वर्ण *>(need_result_buf(str.size()+1, RBUF_VAL));
 	    strcpy(rbuf, str.c_str());
 	    val->format = vpiStringVal;
 	    val->value.str = rbuf;
-	    return;
+	    प्रत्यागम;
       }
 
       val->format = vpiSuppressVal;
 }
 
-vpiHandle __vpiStringVar::vpi_put_value(p_vpi_value val, int)
+vpiHandle __vpiStringVar::vpi_put_मानम्(p_vpi_मानम् val, पूर्णाङ्क)
 {
       vvp_fun_signal_string*fun = dynamic_cast<vvp_fun_signal_string*> (get_net()->fun);
-      assert(fun);
-      assert(val->format == vpiStringVal);
+      प्रतिज्ञा(fun);
+      प्रतिज्ञा(val->format == vpiStringVal);
       vvp_net_ptr_t dest (get_net(), 0);
       vvp_send_string(dest, val->value.str, vthread_get_wt_context());
-      return 0;
+      प्रत्यागम 0;
 }
 
-vpiHandle vpip_make_string_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_string_var(ध्रुव वर्ण*name, vvp_net_t*net)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      const char*use_name = name ? vpip_name_string(name) : NULL;
+      ध्रुव वर्ण*use_name = name ? vpip_name_string(name) : रिक्त;
 
-      __vpiStringVar*obj = new __vpiStringVar(scope, use_name, net);
+      __vpiStringVar*obj = नूतन __vpiStringVar(scope, use_name, net);
 
-      return obj;
+      प्रत्यागम obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void string_delete(vpiHandle item)
+शून्य string_delete(vpiHandle item)
 {
       __vpiStringVar*obj = dynamic_cast<__vpiStringVar*>(item);
       delete obj;

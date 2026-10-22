@@ -25,7 +25,7 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-inline __vpiNamedEvent::__vpiNamedEvent(__vpiScope*sc, const char*nam)
+अन्तःस्थ __vpiNamedEvent::__vpiNamedEvent(__vpiScope*sc, ध्रुव वर्ण*nam)
 {
       scope_ = sc;
       name_ = vpip_name_string(nam);
@@ -34,36 +34,36 @@ inline __vpiNamedEvent::__vpiNamedEvent(__vpiScope*sc, const char*nam)
 
 __vpiNamedEvent::~__vpiNamedEvent()
 {
-      while (callbacks_) {
-	    struct __vpiCallback *tmp = callbacks_->next;
+      जाव (callbacks_) {
+	    संरचना __vpiCallback *tmp = callbacks_->next;
 	    delete callbacks_;
 	    callbacks_ = tmp;
       }
 }
 
-int __vpiNamedEvent::get_type_code(void) const
-{ return vpiNamedEvent; }
+पूर्णाङ्क __vpiNamedEvent::get_type_code(शून्य) ध्रुव
+{ प्रत्यागम vpiNamedEvent; }
 
-int __vpiNamedEvent::vpi_get(int code)
+पूर्णाङ्क __vpiNamedEvent::vpi_get(पूर्णाङ्क code)
 {
-      switch (code) {
+      विकल्प (code) {
 
-	  case vpiAutomatic:
-	    return scope_->is_automatic()? 1 : 0;
+	  पक्ष vpiAutomatic:
+	    प्रत्यागम scope_->is_automatic()? 1 : 0;
       }
 
-      return 0;
+      प्रत्यागम 0;
 }
 
-char* __vpiNamedEvent::vpi_get_str(int code)
+वर्ण* __vpiNamedEvent::vpi_get_str(पूर्णाङ्क code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      जइ (code == vpiFile) {  // Not implemented for now!
+	    प्रत्यागम simple_set_rbuf_str(file_names[0]);
       }
-      return generic_get_str(code, scope_, name_, NULL);
+      प्रत्यागम generic_get_str(code, scope_, name_, रिक्त);
 }
 
-vpiHandle __vpiNamedEvent::vpi_put_value(p_vpi_value, int)
+vpiHandle __vpiNamedEvent::vpi_put_मानम्(p_vpi_मानम्, पूर्णाङ्क)
 {
 	// p_vpi_value may be NULL, and an event doesn't care
 	// what the value is
@@ -71,30 +71,30 @@ vpiHandle __vpiNamedEvent::vpi_put_value(p_vpi_value, int)
       vvp_net_ptr_t dest(funct, 0);
       vvp_send_vec4(dest, val, vthread_get_wt_context());
 
-      return this;
+      प्रत्यागम एतत्;
 }
 
-vpiHandle __vpiNamedEvent::vpi_handle(int code)
+vpiHandle __vpiNamedEvent::vpi_handle(पूर्णाङ्क code)
 {
-      switch (code) {
-	  case vpiScope:
-	    return scope_;
+      विकल्प (code) {
+	  पक्ष vpiScope:
+	    प्रत्यागम scope_;
 
-	  case vpiModule:
-	    return vpip_module(scope_);
+	  पक्ष vpiModule:
+	    प्रत्यागम vpip_module(scope_);
       }
 
-      return 0;
+      प्रत्यागम 0;
 }
 
 
-vpiHandle vpip_make_named_event(const char*name, vvp_net_t*funct)
+vpiHandle vpip_make_named_event(ध्रुव वर्ण*name, vvp_net_t*funct)
 {
-      __vpiNamedEvent*obj = new __vpiNamedEvent(vpip_peek_current_scope(), name);
+      __vpiNamedEvent*obj = नूतन __vpiNamedEvent(vpip_peek_current_scope(), name);
 
       obj->funct = funct;
 
-      return obj;
+      प्रत्यागम obj;
 }
 
 /*
@@ -110,25 +110,25 @@ vpiHandle vpip_make_named_event(const char*name, vvp_net_t*funct)
  * We can not use vpi_free_object() here since it does not really
  * delete the callback.
  */
-void __vpiNamedEvent::run_vpi_callbacks()
+शून्य __vpiNamedEvent::run_vpi_callbacks()
 {
-      struct __vpiCallback*next = callbacks_;
-      struct __vpiCallback*prev = 0;
-      while (next) {
-	    struct __vpiCallback*cur = next;
+      संरचना __vpiCallback*next = callbacks_;
+      संरचना __vpiCallback*prev = 0;
+      जाव (next) {
+	    संरचना __vpiCallback*cur = next;
 	    next = cur->next;
 
-	    if (cur->cb_data.cb_rtn != 0) {
+	    जइ (cur->cb_data.cb_rtn != 0) {
 		  callback_execute(cur);
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } अण्णहा जइ (prev == 0) {
 		  callbacks_ = next;
 		  cur->next = 0;
 		  delete cur;
 
-	    } else {
-		  assert(prev->next == cur);
+	    } अण्णहा {
+		  प्रतिज्ञा(prev->next == cur);
 		  prev->next = next;
 		  cur->next = 0;
 		  delete cur;
