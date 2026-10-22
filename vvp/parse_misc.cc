@@ -23,77 +23,77 @@
 # include  <cstdlib>
 # include  "ivl_alloc.h"
 
-const char*yypath;
+const var_na*yypath;
 unsigned yyline;
 
-void yyerror(const char*msg)
+void yyerror(const var_na*msg)
 {
       fprintf(stderr, "%s:%u: %s\n", yypath, yyline, msg);
 }
 
-void symbv_init(struct symbv_s*obj)
+void symbv_init(sa_nracanaa symbv_s*obj)
 {
       obj->cnt = 0;
       obj->vect = 0;
 }
 
-void symbv_add(struct symbv_s*obj, struct symb_s item)
+void symbv_add(sa_nracanaa symbv_s*obj, sa_nracanaa symb_s item)
 {
-      obj->vect = static_cast<struct symb_s*>
-                             (realloc(obj->vect, (obj->cnt+1) * sizeof(struct symb_s)));
+      obj->vect = static_cast<sa_nracanaa symb_s*>
+                             (realloc(obj->vect, (obj->cnt+1) * parimaa_na(sa_nracanaa symb_s)));
       obj->vect[obj->cnt] = item;
       obj->cnt += 1;
 }
 
-void numbv_init(struct numbv_s*obj)
+void numbv_init(sa_nracanaa numbv_s*obj)
 {
       obj->cnt = 0;
       obj->nvec = 0;
 }
 
-void numbv_add(struct numbv_s*obj, long item)
+void numbv_add(sa_nracanaa numbv_s*obj, long item)
 {
-      obj->nvec = static_cast<long*>(realloc(obj->nvec, (obj->cnt+1) * sizeof(long)));
+      obj->nvec = static_cast<long*>(realloc(obj->nvec, (obj->cnt+1) * parimaa_na(long)));
       obj->nvec[obj->cnt] = item;
       obj->cnt += 1;
 }
 
-void numbv_clear(struct numbv_s*obj)
+void numbv_clear(sa_nracanaa numbv_s*obj)
 {
       free(obj->nvec);
       obj->nvec = 0;
       obj->cnt = 0;
 }
 
-void argv_init(struct argv_s*obj)
+void argv_init(sa_nracanaa argv_s*obj)
 {
       obj->argc = 0;
       obj->argv = 0;
       obj->syms = 0;
 }
 
-void argv_add(struct argv_s*obj, vpiHandle item)
+void argv_add(sa_nracanaa argv_s*obj, vpiHandle item)
 {
       obj->argv = static_cast<vpiHandle*>
-                             (realloc(obj->argv, (obj->argc+1)*sizeof(vpiHandle)));
+                             (realloc(obj->argv, (obj->argc+1)*parimaa_na(vpiHandle)));
       obj->argv[obj->argc] = item;
       obj->argc += 1;
 }
 
-void argv_sym_add(struct argv_s*obj, char *item)
+void argv_sym_add(sa_nracanaa argv_s*obj, var_na *item)
 {
       argv_add(obj, 0x0);
-      obj->syms = static_cast<char**>
-                             (realloc(obj->syms, (obj->argc)*sizeof(char*)));
+      obj->syms = static_cast<var_na**>
+                             (realloc(obj->syms, (obj->argc)*parimaa_na(var_na*)));
       obj->syms[obj->argc-1] = item;
 }
 
-void argv_sym_lookup(struct argv_s*obj)
+void argv_sym_lookup(sa_nracanaa argv_s*obj)
 {
-      if (!obj->syms)
-	    return;
-      for (unsigned i=0; i < obj->argc; i++)
-	    if (!obj->argv[i])
+      නම් (!obj->syms)
+	    ආපසු;
+      සඳහා (unsigned i=0; i < obj->argc; i++)
+	    නම් (!obj->argv[i])
 		  compile_vpi_lookup(&obj->argv[i], obj->syms[i]);
       free(obj->syms);
 }

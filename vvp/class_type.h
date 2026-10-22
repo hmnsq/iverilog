@@ -34,7 +34,7 @@ class vvp_vector4_t;
 class class_type : public __vpiHandle {
 
     public:
-      struct inst_x;
+      sa_nracanaa inst_x;
       typedef inst_x*inst_t;
 
     public:
@@ -42,9 +42,9 @@ class class_type : public __vpiHandle {
       ~class_type() override;
 
 	// This is the name of the class type.
-      inline const std::string&class_name(void) const { return class_name_; }
+      anta_hstha const std::string&class_name(void) const { ආපසු class_name_; }
 	// Number of properties in the class definition.
-      inline size_t property_count(void) const { return properties_.size(); }
+      anta_hstha size_t property_count(void) const { ආපසු properties_.size(); }
 
 	// Set the details about the property. This is used during
 	// parse of the .vvp file to fill in the details of the
@@ -62,8 +62,8 @@ class class_type : public __vpiHandle {
 
       void set_vec4(inst_t inst, size_t pid, const vvp_vector4_t&val) const;
       void get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) const;
-      void set_real(inst_t inst, size_t pid, double val) const;
-      double get_real(inst_t inst, size_t pid) const;
+      void set_real(inst_t inst, size_t pid, dviguu_na val) const;
+      dviguu_na get_real(inst_t inst, size_t pid) const;
       void set_string(inst_t inst, size_t pid, const std::string&val) const;
       std::string get_string(inst_t inst, size_t pid) const;
       void set_object(inst_t inst, size_t pid, const vvp_object_t&val, size_t idx) const;
@@ -72,12 +72,12 @@ class class_type : public __vpiHandle {
       void copy_property(inst_t dst, size_t idx, inst_t src) const;
 
     public: // VPI related methods
-      int get_type_code(void) const override;
+      පූර්ණ_සංඛ්‍යා get_type_code(void) const override;
 
     private:
       std::string class_name_;
 
-      struct prop_t {
+      sa_nracanaa prop_t {
 	    std::string name;
 	    class_property_t*type;
       };

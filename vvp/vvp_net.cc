@@ -45,14 +45,14 @@ using namespace std;
 
 /* This is the size of an unsigned long in bits. This is just a
    convenience macro. */
-# define CPU_WORD_BITS (8*sizeof(unsigned long))
+# define CPU_WORD_BITS (8*parimaa_na(unsigned long))
 # define TOP_BIT (1UL << (CPU_WORD_BITS-1))
 
 permaheap vvp_net_fun_t::heap_;
 permaheap vvp_net_fil_t::heap_;
 
 // Allocate around 1Megabyte/chunk.
-static const size_t VVP_NET_CHUNK = 1024*1024/sizeof(vvp_net_t);
+static const size_t VVP_NET_CHUNK = 1024*1024/parimaa_na(vvp_net_t);
 static vvp_net_t*vvp_net_alloc_table = NULL;
 #ifdef CHECK_WITH_VALGRIND
 static vvp_net_t **vvp_net_pool = NULL;
@@ -66,8 +66,8 @@ size_t size_vvp_nets = 0;
 
 void* vvp_net_t::operator new (size_t size)
 {
-      assert(size == sizeof(vvp_net_t));
-      if (vvp_net_alloc_remaining == 0) {
+      assert(size == parimaa_na(vvp_net_t));
+      නම් (vvp_net_alloc_remaining == 0) {
 	    vvp_net_alloc_table = ::new vvp_net_t[VVP_NET_CHUNK];
 	    vvp_net_alloc_remaining = VVP_NET_CHUNK;
 	    size_vvp_nets += size*VVP_NET_CHUNK;
@@ -76,7 +76,7 @@ void* vvp_net_t::operator new (size_t size)
 	    VALGRIND_CREATE_MEMPOOL(vvp_net_alloc_table, 0, 0);
 	    vvp_net_pool_count += 1;
 	    vvp_net_pool = static_cast<vvp_net_t **>(realloc(vvp_net_pool,
-	                   vvp_net_pool_count*sizeof(vvp_net_t **)));
+	                   vvp_net_pool_count*parimaa_na(vvp_net_t **)));
 	    vvp_net_pool[vvp_net_pool_count-1] = vvp_net_alloc_table;
 #endif
       }
@@ -90,7 +90,7 @@ void* vvp_net_t::operator new (size_t size)
       vvp_net_alloc_table += 1;
       vvp_net_alloc_remaining -= 1;
       count_vvp_nets += 1;
-      return return_this;
+      ආපසු return_this;
 }
 
 #ifdef CHECK_WITH_VALGRIND
@@ -105,28 +105,28 @@ void pool_local_net(vvp_net_t*net)
 {
       local_net_pool_count += 1;
       local_net_pool = static_cast<vvp_net_t **>(realloc(local_net_pool,
-                       local_net_pool_count*sizeof(vvp_net_t **)));
+                       local_net_pool_count*parimaa_na(vvp_net_t **)));
       local_net_pool[local_net_pool_count-1] = net;
 }
 
 void vvp_net_delete(vvp_net_t *item)
 {
       vvp_net_map[item] = true;
-      if (sfunc_core*tmp = dynamic_cast<sfunc_core*> (item->fun)) {
+      නම් (sfunc_core*tmp = dynamic_cast<sfunc_core*> (item->fun)) {
 	    sfunc_map[tmp] = true;
       }
-      if (vvp_udp_fun_core*tmp = dynamic_cast<vvp_udp_fun_core*> (item->fun)) {
+      නම් (vvp_udp_fun_core*tmp = dynamic_cast<vvp_udp_fun_core*> (item->fun)) {
 	    udp_map[tmp] = true;
       }
-      if (resolv_core*tmp = dynamic_cast<resolv_core*> (item->fun)) {
+      නම් (resolv_core*tmp = dynamic_cast<resolv_core*> (item->fun)) {
 	    resolv_map[tmp] = true;
       }
 	/* Only delete static object variables. */
-      if (vvp_fun_signal_object_sa*tmp = dynamic_cast<vvp_fun_signal_object_sa*> (item->fun)) {
+      නම් (vvp_fun_signal_object_sa*tmp = dynamic_cast<vvp_fun_signal_object_sa*> (item->fun)) {
 	    delete tmp;
       }
 	/* Only delete static string variables. */
-      if (vvp_fun_signal_string_sa*tmp = dynamic_cast<vvp_fun_signal_string_sa*> (item->fun)) {
+      නම් (vvp_fun_signal_string_sa*tmp = dynamic_cast<vvp_fun_signal_string_sa*> (item->fun)) {
 	    delete tmp;
       }
 }
@@ -135,7 +135,7 @@ void vvp_net_pool_delete()
 {
       unsigned long vvp_nets_del = 0;
 
-      for (unsigned idx = 0; idx < local_net_pool_count; idx += 1) {
+      සඳහා (unsigned idx = 0; idx < local_net_pool_count; idx += 1) {
 	    vvp_net_delete(local_net_pool[idx]);
       }
       free(local_net_pool);
@@ -143,38 +143,38 @@ void vvp_net_pool_delete()
       local_net_pool_count = 0;
 
       map<vvp_net_t*, bool>::iterator iter;
-      for (iter = vvp_net_map.begin(); iter != vvp_net_map.end(); ++ iter ) {
+      සඳහා (iter = vvp_net_map.begin(); iter != vvp_net_map.end(); ++ iter ) {
 	    vvp_nets_del += 1;
 	    VALGRIND_MEMPOOL_FREE(iter->first->pool, iter->first);
       }
       vvp_net_map.clear();
 
       map<sfunc_core*, bool>::iterator siter;
-      for (siter = sfunc_map.begin(); siter != sfunc_map.end(); ++ siter ) {
+      සඳහා (siter = sfunc_map.begin(); siter != sfunc_map.end(); ++ siter ) {
 	    delete siter->first;
       }
       sfunc_map.clear();
 
       map<vvp_udp_fun_core*, bool>::iterator uiter;
-      for (uiter = udp_map.begin(); uiter != udp_map.end(); ++ uiter ) {
+      සඳහා (uiter = udp_map.begin(); uiter != udp_map.end(); ++ uiter ) {
 	    delete uiter->first;
       }
       udp_map.clear();
 
       map<resolv_core*, bool>::iterator riter;
-      for (riter = resolv_map.begin(); riter != resolv_map.end(); ++ riter ) {
+      සඳහා (riter = resolv_map.begin(); riter != resolv_map.end(); ++ riter ) {
 	    delete riter->first;
       }
       resolv_map.clear();
 
-      if (RUNNING_ON_VALGRIND && (vvp_nets_del != count_vvp_nets)) {
+      නම් (RUNNING_ON_VALGRIND && (vvp_nets_del != count_vvp_nets)) {
 	    fflush(NULL);
 	    VALGRIND_PRINTF("Error: vvp missed deleting %ld of %lu net(s).",
 	                    (long) count_vvp_nets - vvp_nets_del,
 	                    count_vvp_nets);
       }
 
-      for (unsigned idx = 0; idx < vvp_net_pool_count; idx += 1) {
+      සඳහා (unsigned idx = 0; idx < vvp_net_pool_count; idx += 1) {
 	    VALGRIND_DESTROY_MEMPOOL(vvp_net_pool[idx]);
 	    ::delete [] vvp_net_pool[idx];
       }
@@ -203,27 +203,27 @@ void vvp_net_t::link(vvp_net_ptr_t port_to_link)
 	// Connect nodes with vvp_fun_modpath_src to the head of the
 	// linked list, so that vvp_fun_modpath_src are always evaluated
 	// before their respective vvp_fun_modpath
-      if (dynamic_cast<vvp_fun_modpath_src*>(net->fun)) {
+      නම් (dynamic_cast<vvp_fun_modpath_src*>(net->fun)) {
 	    net->port[port_to_link.port()] = out_;
 	    out_ = port_to_link;
 	// All other nodes connect after the last vvp_fun_modpath_src
-      } else {
+      } නැතහොත් {
 	      // List is empty or first node has no vvp_fun_modpath_src
 	      // then just insert the node into the head of linked list
-	    if (out_.ptr() == nullptr || ! dynamic_cast<vvp_fun_modpath_src*>(out_.ptr()->fun)) {
+	    නම් (out_.ptr() == nullptr || ! dynamic_cast<vvp_fun_modpath_src*>(out_.ptr()->fun)) {
 		  net->port[port_to_link.port()] = out_;
 		  out_ = port_to_link;
-		  return;
+		  ආපසු;
 	    }
 
 	    vvp_net_ptr_t cur = out_;
 	    vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr,0);
 
 	      // Traverse through linked list
-	    while (dynamic_cast<vvp_fun_modpath_src*>(cur.ptr()->fun)) {
+	    අතරතුර (dynamic_cast<vvp_fun_modpath_src*>(cur.ptr()->fun)) {
 		  prev = cur;
 		  cur = cur.ptr()->port[cur.port()];
-		  if (! cur.ptr()) break; // End of list
+		  නම් (! cur.ptr()) bha_nga; // End of list
 	    }
 
 	    assert(prev.ptr());
@@ -245,24 +245,24 @@ void vvp_net_t::unlink(vvp_net_ptr_t dst_ptr)
       vvp_net_t*net = dst_ptr.ptr();
       unsigned net_port = dst_ptr.port();
 
-      if (out_ == dst_ptr) {
+      නම් (out_ == dst_ptr) {
 	      /* If the drive fan-out list starts with this pointer,
 		 then the unlink is easy. Pull the list forward. */
 	    out_ = net->port[net_port];
-      } else if (! out_.nil()) {
+      } නැතහොත් නම් (! out_.nil()) {
 	      /* Scan the linked list, looking for the net_ptr_t
 		 pointer *before* the one we wish to remove. */
 	    vvp_net_ptr_t cur = out_;
 	    assert(!cur.nil());
 	    vvp_net_t*cur_net = cur.ptr();
 	    unsigned cur_port = cur.port();
-	    while (cur_net && cur_net->port[cur_port] != dst_ptr) {
+	    අතරතුර (cur_net && cur_net->port[cur_port] != dst_ptr) {
 		  cur = cur_net->port[cur_port];
 		  cur_net = cur.ptr();
 		  cur_port = cur.port();
 	    }
 	      /* Unlink. */
-	    if (cur_net) cur_net->port[cur_port] = net->port[net_port];
+	    නම් (cur_net) cur_net->port[cur_port] = net->port[net_port];
       }
 
       net->port[net_port] = vvp_net_ptr_t(0,0);
@@ -279,18 +279,18 @@ void vvp_net_t::count_drivers(unsigned idx, unsigned counts[4])
       vvp_wire_base*wire=dynamic_cast<vvp_wire_base*>(fil);
       assert(wire);
 
-      if (wire->is_forced(idx))
+      නම් (wire->is_forced(idx))
             counts[3] = 1;
 
         /* If the net has multiple drivers, we need to interrogate the
            resolver network to get the driven values. */
-      if (resolv_core*resolver = dynamic_cast<resolv_core*>(fun)) {
+      නම් (resolv_core*resolver = dynamic_cast<resolv_core*>(fun)) {
             resolver->count_drivers(idx, counts);
-            return;
+            ආපසු;
       }
-      if (vvp_island_port*resolver = dynamic_cast<vvp_island_port*>(fun)) {
+      නම් (vvp_island_port*resolver = dynamic_cast<vvp_island_port*>(fun)) {
             resolver->count_drivers(idx, counts);
-            return;
+            ආපසු;
       }
 
         /* If the functor is not a resolver, there is only one driver, so
@@ -322,39 +322,39 @@ vvp_net_fil_t::prop_t vvp_net_fil_t::filter_vec4(const vvp_vector4_t&,
                                                  vvp_vector4_t&,
                                                  unsigned, unsigned)
 {
-      return PROP;
+      ආපසු PROP;
 }
 
 vvp_net_fil_t::prop_t vvp_net_fil_t::filter_vec8(const vvp_vector8_t&,
                                                  vvp_vector8_t&,
                                                  unsigned, unsigned)
 {
-      return PROP;
+      ආපසු PROP;
 }
 
-vvp_net_fil_t::prop_t vvp_net_fil_t::filter_real(double&)
+vvp_net_fil_t::prop_t vvp_net_fil_t::filter_real(dviguu_na&)
 {
-      return PROP;
+      ආපසු PROP;
 }
 
 vvp_net_fil_t::prop_t vvp_net_fil_t::filter_string(const string&)
 {
-      return PROP;
+      ආපසු PROP;
 }
 
 vvp_net_fil_t::prop_t vvp_net_fil_t::filter_object(vvp_object_t&)
 {
-      return PROP;
+      ආපසු PROP;
 }
 
 void vvp_net_fil_t::force_mask(const vvp_vector2_t&mask)
 {
-      if (force_mask_.size() == 0)
+      නම් (force_mask_.size() == 0)
 	    force_mask_ = vvp_vector2_t(vvp_vector2_t::FILL0, mask.size());
 
       assert(force_mask_.size() == mask.size());
-      for (unsigned idx = 0 ; idx < mask.size() ; idx += 1) {
-	    if (mask.value(idx) == 0)
+      සඳහා (unsigned idx = 0 ; idx < mask.size() ; idx += 1) {
+	    නම් (mask.value(idx) == 0)
 		  continue;
 
 	    force_mask_.set_bit(idx, 1);
@@ -364,16 +364,16 @@ void vvp_net_fil_t::force_mask(const vvp_vector2_t&mask)
 
 void vvp_net_fil_t::release_mask(const vvp_vector2_t&mask)
 {
-      if (force_mask_.size() == 0)
-	    return;
+      නම් (force_mask_.size() == 0)
+	    ආපසු;
 
       assert(force_mask_.size() == mask.size());
-      for (unsigned idx = 0 ; idx < mask.size() ; idx += 1) {
-	    if (mask.value(idx))
+      සඳහා (unsigned idx = 0 ; idx < mask.size() ; idx += 1) {
+	    නම් (mask.value(idx))
 		  force_mask_.set_bit(idx, 0);
       }
 
-      if (force_mask_.is_zero())
+      නම් (force_mask_.is_zero())
 	    force_mask_ = vvp_vector2_t();
 }
 
@@ -394,7 +394,7 @@ void vvp_net_fil_t::force_link(vvp_net_t*dst, vvp_net_t*src)
 {
       assert(dst->fil == this);
 
-      if (force_link_ == 0) {
+      නම් (force_link_ == 0) {
 	    force_link_ = new vvp_net_t;
 	      // Use port[3] to hold the force destination.
 	    force_link_->port[3] = vvp_net_ptr_t(dst, 0);
@@ -419,9 +419,9 @@ void vvp_net_fil_t::operator delete(void*)
 
 void vvp_net_fil_t::force_unlink(void)
 {
-      if (force_link_ == 0) return;
+      නම් (force_link_ == 0) ආපසු;
       vvp_net_t*src = force_link_->port[2].ptr();
-      if (src == 0) return;
+      නම් (src == 0) ආපසු;
 
       src->unlink(vvp_net_ptr_t(force_link_,0));
       force_link_->port[2] = vvp_net_ptr_t(0,0);
@@ -430,91 +430,91 @@ void vvp_net_fil_t::force_unlink(void)
 /* *** BIT operations *** */
 vvp_bit4_t add_with_carry(vvp_bit4_t a, vvp_bit4_t b, vvp_bit4_t&c)
 {
-      if (bit4_is_xz(a) || bit4_is_xz(b) || bit4_is_xz(c)) {
+      නම් (bit4_is_xz(a) || bit4_is_xz(b) || bit4_is_xz(c)) {
 	    c = BIT4_X;
-	    return BIT4_X;
+	    ආපසු BIT4_X;
       }
 
 	// NOTE: This relies on the facts that XZ values have been
 	// weeded out, and that BIT4_1 is 1 and BIT4_0 is 0.
-      int sum = (int)a + (int)b + (int)c;
+      පූර්ණ_සංඛ්‍යා sum = (පූර්ණ_සංඛ්‍යා)a + (පූර්ණ_සංඛ්‍යා)b + (පූර්ණ_සංඛ්‍යා)c;
 
       switch (sum) {
-	  case 0:
+	  pak_sa 0:
 	      // c must already be 0.
-	    return BIT4_0;
-	  case 1:
+	    ආපසු BIT4_0;
+	  pak_sa 1:
 	    c = BIT4_0;
-	    return BIT4_1;
-	  case 2:
+	    ආපසු BIT4_1;
+	  pak_sa 2:
 	    c = BIT4_1;
-	    return BIT4_0;
-	  case 3:
+	    ආපසු BIT4_0;
+	  pak_sa 3:
 	    c = BIT4_1;
-	    return BIT4_1;
+	    ආපසු BIT4_1;
       }
       fprintf(stderr, "Incorrect result %d.\n", sum);
       assert(0);
-      return BIT4_X;
+      ආපසු BIT4_X;
 }
 
 vvp_bit4_t scalar_to_bit4(PLI_INT32 scalar)
 {
       switch(scalar) {
-	  case vpi0:
-	    return BIT4_0;
-	  case vpi1:
-	    return BIT4_1;
-	  case vpiX:
-	    return BIT4_X;
-	  case vpiZ:
-	    return BIT4_Z;
+	  pak_sa vpi0:
+	    ආපසු BIT4_0;
+	  pak_sa vpi1:
+	    ආපසු BIT4_1;
+	  pak_sa vpiX:
+	    ආපසු BIT4_X;
+	  pak_sa vpiZ:
+	    ආපසු BIT4_Z;
       }
-      fprintf(stderr, "Unsupported scalar value %d.\n", (int)scalar);
+      fprintf(stderr, "Unsupported scalar value %d.\n", (පූර්ණ_සංඛ්‍යා)scalar);
       assert(0);
-      return BIT4_X;
+      ආපසු BIT4_X;
 }
 
 vvp_bit4_t operator ^ (vvp_bit4_t a, vvp_bit4_t b)
 {
-      if (bit4_is_xz(a))
-	    return BIT4_X;
-      if (bit4_is_xz(b))
-	    return BIT4_X;
-      if (a == BIT4_0)
-	    return b;
-      if (b == BIT4_0)
-	    return a;
-      return BIT4_0;
+      නම් (bit4_is_xz(a))
+	    ආපසු BIT4_X;
+      නම් (bit4_is_xz(b))
+	    ආපසු BIT4_X;
+      නම් (a == BIT4_0)
+	    ආපසු b;
+      නම් (b == BIT4_0)
+	    ආපසු a;
+      ආපසු BIT4_0;
 }
 
 ostream& operator<<(ostream&out, vvp_bit4_t bit)
 {
       switch (bit) {
-	  case BIT4_0:
+	  pak_sa BIT4_0:
 	    out << "0";
-	    break;
-	  case BIT4_1:
+	    bha_nga;
+	  pak_sa BIT4_1:
 	    out << "1";
-	    break;
-	  case BIT4_X:
+	    bha_nga;
+	  pak_sa BIT4_X:
 	    out << "X";
-	    break;
-	  case BIT4_Z:
+	    bha_nga;
+	  pak_sa BIT4_Z:
 	    out << "Z";
-	    break;
+	    bha_nga;
 	  default:
 	    out << "?";
-	    break;
+	    bha_nga;
       }
-      return out;
+      ආපසු out;
 }
 
 typedef unsigned short edge_t;
 
-inline edge_t VVP_EDGE(vvp_bit4_t from, vvp_bit4_t to)
+anta_hstha edge_t VVP_EDGE(vvp_bit4_t from, vvp_bit4_t to)
 {
-      return 1 << ((from << 2) | to);
+      ආපසු 1 << ((from << 2) | to);
 }
 
 const edge_t vvp_edge_posedge
@@ -533,14 +533,14 @@ const edge_t vvp_edge_negedge
       | VVP_EDGE(BIT4_Z,BIT4_0)
       ;
 
-int edge(vvp_bit4_t from, vvp_bit4_t to)
+පූර්ණ_සංඛ්‍යා edge(vvp_bit4_t from, vvp_bit4_t to)
 {
       edge_t mask = VVP_EDGE(from, to);
-      if (mask & vvp_edge_posedge)
-	    return 1;
-      if (mask & vvp_edge_negedge)
-	    return -1;
-      return 0;
+      නම් (mask & vvp_edge_posedge)
+	    ආපසු 1;
+      නම් (mask & vvp_edge_negedge)
+	    ආපසු -1;
+      ආපසු 0;
 }
 
 unsigned long multiply_with_carry(unsigned long a, unsigned long b,
@@ -582,28 +582,28 @@ unsigned long multiply_with_carry(unsigned long a, unsigned long b,
       r3 &= mask;
 
       carry = (r3 << (CPU_WORD_BITS/2)) + r2;
-      return (r1 << (CPU_WORD_BITS/2)) + r00;
+      ආපසු (r1 << (CPU_WORD_BITS/2)) + r00;
 }
 
 
 void vvp_send_vec8(vvp_net_ptr_t ptr, const vvp_vector8_t&val)
 {
-      while (vvp_net_t*cur = ptr.ptr()) {
+      අතරතුර (vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    නම් (cur->fun)
 		  cur->fun->recv_vec8(ptr, val);
 
 	    ptr = next_val;
       }
 }
 
-void vvp_send_real(vvp_net_ptr_t ptr, double val, vvp_context_t context)
+void vvp_send_real(vvp_net_ptr_t ptr, dviguu_na val, vvp_context_t context)
 {
-      while (vvp_net_t*cur = ptr.ptr()) {
+      අතරතුර (vvp_net_t*cur = ptr.ptr()) {
 	    vvp_net_ptr_t next_val = cur->port[ptr.port()];
 
-	    if (cur->fun)
+	    නම් (cur->fun)
 		  cur->fun->recv_real(ptr, val, context);
 
 	    ptr = next_val;
@@ -615,18 +615,18 @@ const vvp_vector4_t vvp_vector4_t::nil;
 void vvp_vector4_t::copy_bits(const vvp_vector4_t&that)
 {
 
-      if (size_ == that.size_) {
-	    if (size_ > BITS_PER_WORD) {
+      නම් (size_ == that.size_) {
+	    නම් (size_ > BITS_PER_WORD) {
 		  unsigned words = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
-		  for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+		  සඳහා (unsigned idx = 0 ;  idx < words ;  idx += 1)
 			abits_ptr_[idx] = that.abits_ptr_[idx];
-		  for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+		  සඳහා (unsigned idx = 0 ;  idx < words ;  idx += 1)
 			bbits_ptr_[idx] = that.bbits_ptr_[idx];
-	    } else {
+	    } නැතහොත් {
 		  abits_val_ = that.abits_val_;
 		  bbits_val_ = that.bbits_val_;
 	    }
-	    return;
+	    ආපසු;
       }
 
 	/* Now we know that the sizes of this and that are definitely
@@ -635,7 +635,7 @@ void vvp_vector4_t::copy_bits(const vvp_vector4_t&that)
 
 	/* If source and destination are both short, then mask/copy
 	   the bit values. */
-      if (size_ <= BITS_PER_WORD && that.size_ <= BITS_PER_WORD) {
+      නම් (size_ <= BITS_PER_WORD && that.size_ <= BITS_PER_WORD) {
 	    unsigned bits_to_copy = (that.size_ < size_) ? that.size_ : size_;
 	    unsigned long mask = ((bits_to_copy < BITS_PER_WORD) ? (1UL << bits_to_copy) :
 	                                                           (0UL)) - 1UL;
@@ -643,50 +643,50 @@ void vvp_vector4_t::copy_bits(const vvp_vector4_t&that)
 	    bbits_val_ &= ~mask;
 	    abits_val_ |= that.abits_val_&mask;
 	    bbits_val_ |= that.bbits_val_&mask;
-	    return;
+	    ආපසු;
       }
 
 	/* Now we know that either source or destination are long. If
 	   the destination is short, then mask/copy from the low word
 	   of the long source. */
-      if (size_ <= BITS_PER_WORD) {
+      නම් (size_ <= BITS_PER_WORD) {
 	    abits_val_ = that.abits_ptr_[0];
 	    bbits_val_ = that.bbits_ptr_[0];
-	    if (size_ < BITS_PER_WORD) {
+	    නම් (size_ < BITS_PER_WORD) {
 		  unsigned long mask = (1UL << size_) - 1UL;
 		  abits_val_ &= mask;
 		  bbits_val_ &= mask;
 	    }
-	    return;
+	    ආපසු;
       }
 
 	/* Now we know that the destination must be long. If the
 	   source is short, then mask/copy from its value. */
-      if (that.size_ <= BITS_PER_WORD) {
+      නම් (that.size_ <= BITS_PER_WORD) {
 	    unsigned long mask;
-	    if (that.size_ < BITS_PER_WORD) {
+	    නම් (that.size_ < BITS_PER_WORD) {
 		  mask = (1UL << that.size_) - 1UL;
 		  abits_ptr_[0] &= ~mask;
 		  bbits_ptr_[0] &= ~mask;
-	    } else {
+	    } නැතහොත් {
 		  mask = -1UL;
 	    }
 	    abits_ptr_[0] |= that.abits_val_&mask;
 	    bbits_ptr_[0] |= that.bbits_val_&mask;
-	    return;
+	    ආපසු;
       }
 
 	/* Finally, we know that source and destination are long. copy
 	   words until we get to the last. */
       unsigned bits_to_copy = (that.size_ < size_) ? that.size_ : size_;
       unsigned word = 0;
-      while (bits_to_copy >= BITS_PER_WORD) {
+      අතරතුර (bits_to_copy >= BITS_PER_WORD) {
 	    abits_ptr_[word] = that.abits_ptr_[word];
 	    bbits_ptr_[word] = that.bbits_ptr_[word];
 	    bits_to_copy -= BITS_PER_WORD;
 	    word += 1;
       }
-      if (bits_to_copy > 0) {
+      නම් (bits_to_copy > 0) {
 	    unsigned long mask = (1UL << bits_to_copy) - 1UL;
 	    abits_ptr_[word] &= ~mask;
 	    bbits_ptr_[word] &= ~mask;
@@ -705,9 +705,9 @@ void vvp_vector4_t::copy_from_big_(const vvp_vector4_t&that)
       abits_ptr_ = new unsigned long[2*words];
       bbits_ptr_ = abits_ptr_ + words;
 
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      සඳහා (unsigned idx = 0 ;  idx < words ;  idx += 1)
 	    abits_ptr_[idx] = that.abits_ptr_[idx];
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      සඳහා (unsigned idx = 0 ;  idx < words ;  idx += 1)
 	    bbits_ptr_[idx] = that.bbits_ptr_[idx];
 }
 
@@ -719,27 +719,27 @@ void vvp_vector4_t::copy_from_big_(const vvp_vector4_t&that)
 void vvp_vector4_t::copy_inverted_from_(const vvp_vector4_t&that)
 {
       size_ = that.size_;
-      if (size_ > BITS_PER_WORD) {
+      නම් (size_ > BITS_PER_WORD) {
 	    unsigned words = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
 	    abits_ptr_ = new unsigned long[2*words];
 	    bbits_ptr_ = abits_ptr_ + words;
 
 	    unsigned remaining = size_;
 	    unsigned idx = 0;
-	    while (remaining >= BITS_PER_WORD) {
+	    අතරතුර (remaining >= BITS_PER_WORD) {
 		  abits_ptr_[idx] = that.bbits_ptr_[idx] | ~that.abits_ptr_[idx];
 		  idx += 1;
 		  remaining -= BITS_PER_WORD;
 	    }
-	    if (remaining > 0) {
+	    නම් (remaining > 0) {
 		  unsigned long mask = (1UL<<remaining) - 1UL;
 		  abits_ptr_[idx] = mask & (that.bbits_ptr_[idx] | ~that.abits_ptr_[idx]);
 	    }
 
-	    for (idx = 0 ;  idx < words ;  idx += 1)
+	    සඳහා (idx = 0 ;  idx < words ;  idx += 1)
 		  bbits_ptr_[idx] = that.bbits_ptr_[idx];
 
-      } else {
+      } නැතහොත් {
 	    unsigned long mask = (size_<BITS_PER_WORD)? (1UL<<size_)-1UL : -1UL;
 	    abits_val_ = mask & (that.bbits_val_ | ~that.abits_val_);
 	    bbits_val_ = that.bbits_val_;
@@ -749,36 +749,36 @@ void vvp_vector4_t::copy_inverted_from_(const vvp_vector4_t&that)
 /* Make sure to set size_ before calling this routine. */
 void vvp_vector4_t::allocate_words_(unsigned long inita, unsigned long initb)
 {
-      if (size_ > BITS_PER_WORD) {
+      නම් (size_ > BITS_PER_WORD) {
 	    unsigned cnt = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
 	    abits_ptr_ = new unsigned long[2*cnt];
 	    bbits_ptr_ = abits_ptr_ + cnt;
-	    for (unsigned idx = 0 ;  idx < cnt ;  idx += 1)
+	    සඳහා (unsigned idx = 0 ;  idx < cnt ;  idx += 1)
 		  abits_ptr_[idx] = inita;
-	    for (unsigned idx = 0 ;  idx < cnt ;  idx += 1)
+	    සඳහා (unsigned idx = 0 ;  idx < cnt ;  idx += 1)
 		  bbits_ptr_[idx] = initb;
 
-      } else {
+      } නැතහොත් {
 	    abits_val_ = inita;
 	    bbits_val_ = initb;
       }
 }
 
-vvp_vector4_t::vvp_vector4_t(unsigned size__, double val)
+vvp_vector4_t::vvp_vector4_t(unsigned size__, dviguu_na val)
 : size_(size__)
 {
       bool is_neg = false;
-      double fraction;
-      int exponent;
+      dviguu_na fraction;
+      පූර්ණ_සංඛ්‍යා exponent;
 
 	/* We return 'bx for a NaN or +/- infinity. */
-      if (val != val || (val && (val == 0.5*val)))  {
+      නම් (val != val || (val && (val == 0.5*val)))  {
 	    allocate_words_(WORD_X_ABITS, WORD_X_BBITS);
-	    return;
+	    ආපසු;
       }
 
 	/* Convert to a positive result. */
-      if (val < 0.0) {
+      නම් (val < 0.0) {
 	    is_neg = true;
 	    val = -val;
       }
@@ -788,17 +788,17 @@ vvp_vector4_t::vvp_vector4_t(unsigned size__, double val)
       fraction = frexp(val, &exponent);
 
 	/* If the value is small enough just use lround(). */
-      if (exponent < BITS_PER_WORD-2) {
-	    if (is_neg) this->invert();  // Invert the bits if negative.
+      නම් (exponent < BITS_PER_WORD-2) {
+	    නම් (is_neg) this->invert();  // Invert the bits if negative.
 	    long sval = lround(val);
-	    if (is_neg) sval = -sval;
+	    නම් (is_neg) sval = -sval;
 	      /* This requires that 0 and 1 have the same bbit value. */
-	    if (size_ > BITS_PER_WORD) {
+	    නම් (size_ > BITS_PER_WORD) {
 		  abits_ptr_[0] = sval;
-	    } else {
+	    } නැතහොත් {
 		  abits_val_ = sval;
 	    }
-	    return;
+	    ආපසු;
       }
 
       unsigned nwords = (exponent-1) / BITS_PER_WORD;
@@ -807,33 +807,33 @@ vvp_vector4_t::vvp_vector4_t(unsigned size__, double val)
       fraction = ldexp(fraction, (exponent-1) % BITS_PER_WORD + 1);
 
 	/* Skip any leading bits. */
-      for (int idx = (signed) nwords; idx > (signed) my_words; idx -=1) {
+      සඳහා (පූර්ණ_සංඛ්‍යා idx = (signed) nwords; idx > (signed) my_words; idx -=1) {
 	    unsigned long bits = (unsigned long) fraction;
-	    fraction = fraction - (double) bits;
+	    fraction = fraction - (dviguu_na) bits;
 	    fraction = ldexp(fraction, BITS_PER_WORD);
       }
 
 	/* Convert the remaining bits as appropriate. */
-      if (my_words == 0) {
+      නම් (my_words == 0) {
 		  unsigned long bits = (unsigned long) fraction;
 		  abits_val_ = bits;
-		  fraction = fraction - (double) bits;
+		  fraction = fraction - (dviguu_na) bits;
 		    /* Round any fractional part up. */
-		  if (fraction >= 0.5) *this += (int64_t) 1;
-      } else {
-	    if (nwords < my_words) my_words = nwords;
-	    for (int idx = (signed)my_words; idx >= 0; idx -= 1) {
+		  නම් (fraction >= 0.5) *this += (int64_t) 1;
+      } නැතහොත් {
+	    නම් (nwords < my_words) my_words = nwords;
+	    සඳහා (පූර්ණ_සංඛ්‍යා idx = (signed)my_words; idx >= 0; idx -= 1) {
 		  unsigned long bits = (unsigned long) fraction;
 		  abits_ptr_[idx] = bits;
-		  fraction = fraction - (double) bits;
+		  fraction = fraction - (dviguu_na) bits;
 		  fraction = ldexp(fraction, BITS_PER_WORD);
 	    }
 	      /* Round any fractional part up. */
-	    if (fraction >= ldexp(0.5, BITS_PER_WORD)) *this += (int64_t) 1;
+	    නම් (fraction >= ldexp(0.5, BITS_PER_WORD)) *this += (int64_t) 1;
        }
 
 	/* Convert to a negative number if needed. */
-      if (is_neg) {
+      නම් (is_neg) {
 	    this->invert();
 	    *this += (int64_t) 1;
       }
@@ -848,25 +848,25 @@ vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that,
 
 	// Special case: selecting from far beyond the source vector,
 	// to the result is all X bits. We're done.
-      if (adr >= that.size_)
-	    return;
+      නම් (adr >= that.size_)
+	    ආපසු;
 
 	// Special case: The source is not quite big enough to supply
 	// all bits, so get the bits that we can. The remainder will
 	// be left at BIT4_X.
-      if ((adr + wid) > that.size_) {
+      නම් ((adr + wid) > that.size_) {
 	    unsigned use_wid = that.size_ - adr;
-	    for (unsigned idx = 0 ; idx < use_wid ; idx += 1)
+	    සඳහා (unsigned idx = 0 ; idx < use_wid ; idx += 1)
 		  set_bit(idx, that.value(adr+idx));
 
-	    return;
+	    ආපසු;
       }
 
 	// At the point, we know that the source part is entirely
 	// contained in the source vector.
 	// assert((adr + wid) <= that.size_);
 
-      if (wid > BITS_PER_WORD) {
+      නම් (wid > BITS_PER_WORD) {
 	      /* In this case, the subvector and the source vector are
 		 long. Do the transfer reasonably efficiently. */
 	    unsigned ptr = adr / BITS_PER_WORD;
@@ -875,20 +875,20 @@ vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that,
 	    unsigned long lmask = (1UL << off) - 1UL;
 	    unsigned trans = 0;
 	    unsigned dst = 0;
-	    while (trans < wid) {
+	    අතරතුර (trans < wid) {
 		    // The low bits of the result.
 		  abits_ptr_[dst] = (that.abits_ptr_[ptr] & ~lmask) >> off;
 		  bbits_ptr_[dst] = (that.bbits_ptr_[ptr] & ~lmask) >> off;
 		  trans += noff;
 
-		  if (trans >= wid)
-			break;
+		  නම් (trans >= wid)
+			bha_nga;
 
 		  ptr += 1;
 
 		    // The high bits of the result. Skip this if the
 		    // source and destination are perfectly aligned.
-		  if (noff != BITS_PER_WORD) {
+		  නම් (noff != BITS_PER_WORD) {
 			abits_ptr_[dst] |= (that.abits_ptr_[ptr]&lmask) << noff;
 			bbits_ptr_[dst] |= (that.bbits_ptr_[ptr]&lmask) << noff;
 			trans += off;
@@ -897,22 +897,22 @@ vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that,
 		  dst += 1;
 	    }
 
-      } else if (that.size_ > BITS_PER_WORD) {
+      } නැතහොත් නම් (that.size_ > BITS_PER_WORD) {
 	      /* In this case, the subvector fits in a single word,
 		 but the source is large. */
 	    unsigned ptr = adr / BITS_PER_WORD;
 	    unsigned long off = adr % BITS_PER_WORD;
 	    unsigned trans = BITS_PER_WORD - off;
-	    if (trans > wid)
+	    නම් (trans > wid)
 		  trans = wid;
 
-	    if (trans == BITS_PER_WORD) {
+	    නම් (trans == BITS_PER_WORD) {
 		    // Very special case: Copy exactly 1 perfectly
 		    // aligned word.
 		  abits_val_ = that.abits_ptr_[ptr];
 		  bbits_val_ = that.bbits_ptr_[ptr];
 
-	    } else {
+	    } නැතහොත් {
 		    // lmask is the low bits of the destination,
 		    // masked into the source.
 		  unsigned long lmask = (1UL<<trans) - 1UL;
@@ -922,7 +922,7 @@ vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that,
 		  abits_val_ = (that.abits_ptr_[ptr] & lmask) >> off;
 		  bbits_val_ = (that.bbits_ptr_[ptr] & lmask) >> off;
 
-		  if (trans < wid) {
+		  නම් (trans < wid) {
 			  // If there are more bits, then get them
 			  // from the bottom of the next word of the
 			  // source.
@@ -934,14 +934,14 @@ vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that,
 		  }
 	    }
 
-      } else if (size_ == BITS_PER_WORD) {
+      } නැතහොත් නම් (size_ == BITS_PER_WORD) {
 	      /* We know that source and destination are short. If the
 		 destination is a full word, then we know the copy is
 		 aligned and complete. */
 	    abits_val_ = that.abits_val_;
 	    bbits_val_ = that.bbits_val_;
 
-      } else {
+      } නැතහොත් {
 	      /* Finally, the source and destination vectors are both
 		 short, so there is a single mask/shift/copy. */
 	    unsigned long mask = (1UL << size_) - 1UL;
@@ -959,38 +959,38 @@ vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that,
  */
 void vvp_vector4_t::resize(unsigned newsize, vvp_bit4_t pad_bit)
 {
-      if (size_ == newsize)
-	    return;
+      නම් (size_ == newsize)
+	    ආපසු;
 
       unsigned cnt = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
       unsigned long word_pad_abits = 0;
       unsigned long word_pad_bbits = 0;
       switch (pad_bit) {
-	  case BIT4_0:
+	  pak_sa BIT4_0:
 	    word_pad_abits = WORD_0_ABITS;
 	    word_pad_bbits = WORD_0_BBITS;
-	    break;
-	  case BIT4_1:
+	    bha_nga;
+	  pak_sa BIT4_1:
 	    word_pad_abits = WORD_1_ABITS;
 	    word_pad_bbits = WORD_1_BBITS;
-	    break;
-	  case BIT4_X:
+	    bha_nga;
+	  pak_sa BIT4_X:
 	    word_pad_abits = WORD_X_ABITS;
 	    word_pad_bbits = WORD_X_BBITS;
-	    break;
-	  case BIT4_Z:
+	    bha_nga;
+	  pak_sa BIT4_Z:
 	    word_pad_abits = WORD_Z_ABITS;
 	    word_pad_bbits = WORD_Z_BBITS;
-	    break;
+	    bha_nga;
       }
 
-      if (newsize > BITS_PER_WORD) {
+      නම් (newsize > BITS_PER_WORD) {
 	    unsigned newcnt = (newsize + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    if (newcnt == cnt) {
+	    නම් (newcnt == cnt) {
 		    // If the word count doesn't change, then there is
 		    // no need for re-allocation so we are done now.
-		  if (newsize > size_) {
-			if (unsigned fill = size_ % BITS_PER_WORD) {
+		  නම් (newsize > size_) {
+			නම් (unsigned fill = size_ % BITS_PER_WORD) {
 			      abits_ptr_[cnt-1] &= ~((-1UL) << fill);
 			      bbits_ptr_[cnt-1] &= ~((-1UL) << fill);
 			      abits_ptr_[cnt-1] |= word_pad_abits << fill;
@@ -998,38 +998,38 @@ void vvp_vector4_t::resize(unsigned newsize, vvp_bit4_t pad_bit)
 			}
 		  }
 		  size_ = newsize;
-		  return;
+		  ආපසු;
 	    }
 
 	    unsigned long*newbits = new unsigned long[2*newcnt];
 
-	    if (cnt > 1) {
+	    නම් (cnt > 1) {
 		  unsigned trans = cnt;
-		  if (trans > newcnt)
+		  නම් (trans > newcnt)
 			trans = newcnt;
 
-		  for (unsigned idx = 0 ;  idx < trans ;  idx += 1)
+		  සඳහා (unsigned idx = 0 ;  idx < trans ;  idx += 1)
 			newbits[idx] = abits_ptr_[idx];
-		  for (unsigned idx = 0 ;  idx < trans ;  idx += 1)
+		  සඳහා (unsigned idx = 0 ;  idx < trans ;  idx += 1)
 			newbits[newcnt+idx] = bbits_ptr_[idx];
 
 		  delete[]abits_ptr_;
 
-	    } else {
+	    } නැතහොත් {
 		  newbits[0] = abits_val_;
 		  newbits[newcnt] = bbits_val_;
 	    }
 
-	    if (newsize > size_) {
-		  if (unsigned fill = size_ % BITS_PER_WORD) {
+	    නම් (newsize > size_) {
+		  නම් (unsigned fill = size_ % BITS_PER_WORD) {
 			newbits[cnt-1] &= ~((-1UL) << fill);
 			newbits[cnt-1] |= word_pad_abits << fill;
 			newbits[newcnt+cnt-1] &= ~((-1UL) << fill);
 			newbits[newcnt+cnt-1] |= word_pad_bbits << fill;
 		  }
-		  for (unsigned idx = cnt ;  idx < newcnt ;  idx += 1)
+		  සඳහා (unsigned idx = cnt ;  idx < newcnt ;  idx += 1)
 			newbits[idx] = word_pad_abits;
-		  for (unsigned idx = cnt ;  idx < newcnt ;  idx += 1)
+		  සඳහා (unsigned idx = cnt ;  idx < newcnt ;  idx += 1)
 			newbits[newcnt+idx] = word_pad_bbits;
 	    }
 
@@ -1037,8 +1037,8 @@ void vvp_vector4_t::resize(unsigned newsize, vvp_bit4_t pad_bit)
 	    abits_ptr_ = newbits;
 	    bbits_ptr_ = newbits + newcnt;
 
-      } else {
-	    if (cnt > 1) {
+      } නැතහොත් {
+	    නම් (cnt > 1) {
 		  unsigned long newvala = abits_ptr_[0];
 		  unsigned long newvalb = bbits_ptr_[0];
 		  delete[]abits_ptr_;
@@ -1046,7 +1046,7 @@ void vvp_vector4_t::resize(unsigned newsize, vvp_bit4_t pad_bit)
 		  bbits_val_ = newvalb;
 	    }
 
-	    if (newsize > size_) {
+	    නම් (newsize > size_) {
 		  abits_val_ &= ~((-1UL) << size_);
 		  bbits_val_ &= ~((-1UL) << size_);
 		  abits_val_ |= word_pad_abits << size_;
@@ -1060,14 +1060,14 @@ void vvp_vector4_t::resize(unsigned newsize, vvp_bit4_t pad_bit)
 
 unsigned long* vvp_vector4_t::subarray(unsigned adr, unsigned wid, bool xz_to_0) const
 {
-      const unsigned BIT2_PER_WORD = 8*sizeof(unsigned long);
+      const unsigned BIT2_PER_WORD = 8*parimaa_na(unsigned long);
       unsigned awid = (wid + BIT2_PER_WORD - 1) / (BIT2_PER_WORD);
       unsigned long*val = new unsigned long[awid];
 
-      for (unsigned idx = 0 ;  idx < awid ;  idx += 1)
+      සඳහා (unsigned idx = 0 ;  idx < awid ;  idx += 1)
 	    val[idx] = 0;
 
-      if (size_ <= BITS_PER_WORD) {
+      නම් (size_ <= BITS_PER_WORD) {
 	      /* Handle the special case that the array is small. The
 		 entire value of the vector4 is within the xbits_val_
 		 so we know that the result is a single word, the
@@ -1075,27 +1075,27 @@ unsigned long* vvp_vector4_t::subarray(unsigned adr, unsigned wid, bool xz_to_0)
 		 through that word. */
 	    unsigned long atmp = abits_val_ >> adr;
 	    unsigned long btmp = bbits_val_ >> adr;
-	    if (wid < BIT2_PER_WORD) {
+	    නම් (wid < BIT2_PER_WORD) {
 		  atmp &= (1UL << wid) - 1;
 		  btmp &= (1UL << wid) - 1;
 	    }
-	    if (btmp) {
-		  if (xz_to_0)
+	    නම් (btmp) {
+		  නම් (xz_to_0)
 			atmp &= ~btmp;
-		  else
+		  නැතහොත්
 			goto x_out;
 	    }
 
 	    val[0] = atmp;
 
-      } else {
+      } නැතහොත් {
 
 	    unsigned val_ptr = 0;
 	    unsigned val_off = 0;
 
 	      /* Get the first word we are scanning. We may in fact be
 		 somewhere in the middle of that word. */
-	    while (wid > 0) {
+	    අතරතුර (wid > 0) {
 		  unsigned long atmp = abits_ptr_[adr/BITS_PER_WORD];
 		  unsigned long btmp = bbits_ptr_[adr/BITS_PER_WORD];
 		  unsigned long off = adr%BITS_PER_WORD;
@@ -1103,18 +1103,18 @@ unsigned long* vvp_vector4_t::subarray(unsigned adr, unsigned wid, bool xz_to_0)
 		  btmp >>= off;
 
 		  unsigned long trans = BITS_PER_WORD - off;
-		  if (trans > (BIT2_PER_WORD - val_off))
+		  නම් (trans > (BIT2_PER_WORD - val_off))
 			trans = BIT2_PER_WORD - val_off;
-		  if (wid < trans)
+		  නම් (wid < trans)
 			trans = wid;
-		  if (trans < BIT2_PER_WORD) {
+		  නම් (trans < BIT2_PER_WORD) {
 			atmp &= (1UL << trans) - 1;
 			btmp &= (1UL << trans) - 1;
 		  }
-		  if (btmp) {
-			if (xz_to_0)
+		  නම් (btmp) {
+			නම් (xz_to_0)
 			      atmp &= ~btmp;
-			else
+			නැතහොත්
 			      goto x_out;
 		  }
 
@@ -1122,27 +1122,27 @@ unsigned long* vvp_vector4_t::subarray(unsigned adr, unsigned wid, bool xz_to_0)
 		  adr += trans;
 		  wid -= trans;
 		  val_off += trans;
-		  if (val_off == BIT2_PER_WORD) {
+		  නම් (val_off == BIT2_PER_WORD) {
 			val_ptr += 1;
 			val_off = 0;
 		  }
 	    }
       }
 
-      return val;
+      ආපසු val;
 
  x_out:
       delete[]val;
-      return 0;
+      ආපසු 0;
 }
 
 void vvp_vector4_t::setarray(unsigned adr, unsigned wid, const unsigned long*val)
 {
       assert(adr+wid <= size_);
 
-      const unsigned BIT2_PER_WORD = 8*sizeof(unsigned long);
+      const unsigned BIT2_PER_WORD = 8*parimaa_na(unsigned long);
 
-      if (size_ <= BITS_PER_WORD) {
+      නම් (size_ <= BITS_PER_WORD) {
 	      // We know here that both the source and the target are
 	      // within a single word. Write the bits into the
 	      // abits_val_ directly.
@@ -1159,7 +1159,7 @@ void vvp_vector4_t::setarray(unsigned adr, unsigned wid, const unsigned long*val
 
 	    abits_val_ |= mask & (val[0] << adr);
 
-      } else {
+      } නැතහොත් {
 	      // The general case, there are multiple words of
 	      // destination, and possibly multiple words of source
 	      // data. Shift and mask as we go.
@@ -1167,11 +1167,11 @@ void vvp_vector4_t::setarray(unsigned adr, unsigned wid, const unsigned long*val
 	    unsigned ptr = adr / BITS_PER_WORD;
 	    unsigned val_off = 0;
 	    unsigned val_ptr = 0;
-	    while (wid > 0) {
+	    අතරතුර (wid > 0) {
 		  unsigned trans = wid;
-		  if (trans > (BIT2_PER_WORD-val_off))
+		  නම් (trans > (BIT2_PER_WORD-val_off))
 			trans = BIT2_PER_WORD-val_off;
-		  if (trans > (BITS_PER_WORD-off))
+		  නම් (trans > (BITS_PER_WORD-off))
 			trans = BITS_PER_WORD-off;
 
 		  unsigned long lmask = (1UL << off) - 1UL;
@@ -1182,19 +1182,19 @@ void vvp_vector4_t::setarray(unsigned adr, unsigned wid, const unsigned long*val
 
 		  abits_ptr_[ptr] &= ~mask;
 		  bbits_ptr_[ptr] &= ~mask;
-		  if (val_off >= off)
+		  නම් (val_off >= off)
 			abits_ptr_[ptr] |= mask & (val[val_ptr] >> (val_off-off));
-		  else
+		  නැතහොත්
 			abits_ptr_[ptr] |= mask & (val[val_ptr] << (off-val_off));
 
 		  wid -= trans;
 		  val_off += trans;
-		  if (val_off == BIT2_PER_WORD) {
+		  නම් (val_off == BIT2_PER_WORD) {
 			val_off = 0;
 			val_ptr += 1;
 		  }
 		  off += trans;
-		  if (off == BITS_PER_WORD) {
+		  නම් (off == BITS_PER_WORD) {
 			off = 0;
 			ptr += 1;
 		  }
@@ -1212,7 +1212,7 @@ bool vvp_vector4_t::set_vec(unsigned adr, const vvp_vector4_t&that)
       assert(adr+that.size_  <= size_);
       bool diff_flag = false;
 
-      if (size_ <= BITS_PER_WORD) {
+      නම් (size_ <= BITS_PER_WORD) {
 
 	      /* The destination vector (me!) is within a bits_val_
 		 word, so the subvector is certainly within a
@@ -1225,24 +1225,24 @@ bool vvp_vector4_t::set_vec(unsigned adr, const vvp_vector4_t&that)
 	    unsigned long lmask = (1UL << adr) - 1;
 	    unsigned long hmask;
 	    unsigned long hshift = adr+that.size_;
-	    if (hshift >= BITS_PER_WORD)
+	    නම් (hshift >= BITS_PER_WORD)
 		  hmask = -1UL;
-	    else
+	    නැතහොත්
 		  hmask = (1UL << (adr+that.size_)) - 1;
 	    unsigned long mask = hmask & ~lmask;
 
 	    unsigned long tmp = (that.abits_val_<<adr)&mask;
-	    if ((abits_val_&mask) != tmp) {
+	    නම් ((abits_val_&mask) != tmp) {
 		  diff_flag = true;
 		  abits_val_ = (abits_val_ & ~mask) | tmp;
 	    }
 	    tmp = (that.bbits_val_<<adr) & mask;
-	    if ((bbits_val_&mask) != tmp) {
+	    නම් ((bbits_val_&mask) != tmp) {
 		  diff_flag = true;
 		  bbits_val_ = (bbits_val_ & ~mask) | tmp;
 	    }
 
-      } else if (that.size_ <= BITS_PER_WORD) {
+      } නැතහොත් නම් (that.size_ <= BITS_PER_WORD) {
 
 	      /* This vector is more than a word, but that vector is
 		 still small. Write into the destination, possibly
@@ -1254,43 +1254,43 @@ bool vvp_vector4_t::set_vec(unsigned adr, const vvp_vector4_t&that)
 	    unsigned long lmask = (1UL << doff) - 1;
 	    unsigned long hshift = doff+that.size_;
 	    unsigned long hmask;
-	    if (hshift >= BITS_PER_WORD)
+	    නම් (hshift >= BITS_PER_WORD)
 		  hmask = -1UL;
-	    else
+	    නැතහොත්
 		  hmask = (1UL << hshift) - 1UL;
 
 	    unsigned long mask = hmask & ~lmask;
 	    unsigned long tmp;
 
 	    tmp = (that.abits_val_ << doff) & mask;
-	    if ((abits_ptr_[dptr] & mask) != tmp) {
+	    නම් ((abits_ptr_[dptr] & mask) != tmp) {
 		  diff_flag = true;
 		  abits_ptr_[dptr] = (abits_ptr_[dptr] & ~mask) | tmp;
 	    }
 	    tmp = (that.bbits_val_ << doff) & mask;
-	    if ((bbits_ptr_[dptr] & mask) != tmp) {
+	    නම් ((bbits_ptr_[dptr] & mask) != tmp) {
 		  diff_flag = true;
 		  bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~mask) | tmp;
 	    }
 
-	    if ((doff + that.size_) > BITS_PER_WORD) {
+	    නම් ((doff + that.size_) > BITS_PER_WORD) {
 		  unsigned tail = doff + that.size_ - BITS_PER_WORD;
 		  mask = (1UL << tail) - 1;
 
 		  dptr += 1;
 		  tmp = (that.abits_val_ >> (that.size_-tail)) & mask;
-		  if ((abits_ptr_[dptr] & mask) != tmp) {
+		  නම් ((abits_ptr_[dptr] & mask) != tmp) {
 			diff_flag = true;
 			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~mask) | tmp;
 		  }
 		  tmp = (that.bbits_val_ >> (that.size_-tail)) & mask;
-		  if ((bbits_ptr_[dptr] & mask) != tmp) {
+		  නම් ((bbits_ptr_[dptr] & mask) != tmp) {
 			diff_flag = true;
 			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~mask) | tmp;
 		  }
 	    }
 
-      } else if (adr%BITS_PER_WORD == 0) {
+      } නැතහොත් නම් (adr%BITS_PER_WORD == 0) {
 
 	      /* In this case, both vectors are long, but the
 		 destination is neatly aligned. That means all but the
@@ -1299,12 +1299,12 @@ bool vvp_vector4_t::set_vec(unsigned adr, const vvp_vector4_t&that)
 	    unsigned remain = that.size_;
 	    unsigned sptr = 0;
 	    unsigned dptr = adr / BITS_PER_WORD;
-	    while (remain >= BITS_PER_WORD) {
-		  if (abits_ptr_[dptr] != that.abits_ptr_[sptr]) {
+	    අතරතුර (remain >= BITS_PER_WORD) {
+		  නම් (abits_ptr_[dptr] != that.abits_ptr_[sptr]) {
 			diff_flag = true;
 			abits_ptr_[dptr] = that.abits_ptr_[sptr];
 		  }
-		  if (bbits_ptr_[dptr] != that.bbits_ptr_[sptr]) {
+		  නම් (bbits_ptr_[dptr] != that.bbits_ptr_[sptr]) {
 			diff_flag = true;
 			bbits_ptr_[dptr] = that.bbits_ptr_[sptr];
 		  }
@@ -1313,23 +1313,23 @@ bool vvp_vector4_t::set_vec(unsigned adr, const vvp_vector4_t&that)
 		  remain -= BITS_PER_WORD;
 	    }
 
-	    if (remain > 0) {
+	    නම් (remain > 0) {
 		  unsigned long mask = (1UL << remain) - 1;
 		  unsigned long tmp;
 
 		  tmp = that.abits_ptr_[sptr] & mask;
-		  if ((abits_ptr_[dptr] & mask) != tmp) {
+		  නම් ((abits_ptr_[dptr] & mask) != tmp) {
 			diff_flag = true;
 			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~mask) | tmp;
 		  }
 		  tmp = that.bbits_ptr_[sptr] & mask;
-		  if ((bbits_ptr_[dptr] & mask) != tmp) {
+		  නම් ((bbits_ptr_[dptr] & mask) != tmp) {
 			diff_flag = true;
 			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~mask) | tmp;
 		  }
 	    }
 
-      } else {
+      } නැතහොත් {
 
 	      /* We know that there are two long vectors, and we know
 		 that the destination is definitely NOT aligned. */
@@ -1340,28 +1340,28 @@ bool vvp_vector4_t::set_vec(unsigned adr, const vvp_vector4_t&that)
 	    unsigned doff = adr % BITS_PER_WORD;
 	    unsigned long lmask = (1UL << doff) - 1;
 	    unsigned ndoff = BITS_PER_WORD - doff;
-	    while (remain >= BITS_PER_WORD) {
+	    අතරතුර (remain >= BITS_PER_WORD) {
 		  unsigned long tmp;
 
 		  tmp = (that.abits_ptr_[sptr] << doff) & ~lmask;
-		  if ((abits_ptr_[dptr] & ~lmask) != tmp) {
+		  නම් ((abits_ptr_[dptr] & ~lmask) != tmp) {
 			diff_flag = true;
 			abits_ptr_[dptr] = (abits_ptr_[dptr] & lmask) | tmp;
 		  }
 		  tmp = (that.bbits_ptr_[sptr] << doff) & ~lmask;
-		  if ((bbits_ptr_[dptr] & ~lmask) != tmp) {
+		  නම් ((bbits_ptr_[dptr] & ~lmask) != tmp) {
 			diff_flag = true;
 			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & lmask) | tmp;
 		  }
 		  dptr += 1;
 
 		  tmp = (that.abits_ptr_[sptr] >> ndoff) & lmask;
-		  if ((abits_ptr_[dptr] & lmask) != tmp) {
+		  නම් ((abits_ptr_[dptr] & lmask) != tmp) {
 			diff_flag = true;
 			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~lmask) | tmp;
 		  }
 		  tmp = (that.bbits_ptr_[sptr] >> ndoff) & lmask;
-		  if ((bbits_ptr_[dptr] & lmask) != tmp) {
+		  නම් ((bbits_ptr_[dptr] & lmask) != tmp) {
 			diff_flag = true;
 			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~lmask) | tmp;
 		  }
@@ -1370,44 +1370,44 @@ bool vvp_vector4_t::set_vec(unsigned adr, const vvp_vector4_t&that)
 		  sptr += 1;
 	    }
 
-	    if (remain > 0) {
+	    නම් (remain > 0) {
 		  unsigned long hshift = doff+remain;
 		  unsigned long hmask;
-		  if (hshift >= BITS_PER_WORD)
+		  නම් (hshift >= BITS_PER_WORD)
 			hmask = -1UL;
-		  else
+		  නැතහොත්
 			hmask = (1UL << (doff+remain)) - 1;
 
 		  unsigned long mask = hmask & ~lmask;
 		  unsigned long tmp;
 
 		  tmp = (that.abits_ptr_[sptr] << doff) & mask;
-		  if ((abits_ptr_[dptr] & mask) != tmp) {
+		  නම් ((abits_ptr_[dptr] & mask) != tmp) {
 			diff_flag = true;
 			abits_ptr_[dptr] = (abits_ptr_[dptr] & ~mask) | tmp;
 		  }
 		  tmp = (that.bbits_ptr_[sptr] << doff) & mask;
-		  if ((bbits_ptr_[dptr] & mask) != tmp) {
+		  නම් ((bbits_ptr_[dptr] & mask) != tmp) {
 			diff_flag = true;
 			bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~mask) | tmp;
 		  }
 
-		  if ((doff + remain) > BITS_PER_WORD) {
+		  නම් ((doff + remain) > BITS_PER_WORD) {
 			unsigned tail = doff + remain - BITS_PER_WORD;
-			if (tail >= BITS_PER_WORD)
+			නම් (tail >= BITS_PER_WORD)
 			      mask = -1UL;
-			else
+			නැතහොත්
 			      mask = (1UL << tail) - 1;
 
 			dptr += 1;
 
 			tmp = (that.abits_ptr_[sptr] >> (remain-tail))&mask;
-			if ((abits_ptr_[dptr] & mask) != tmp) {
+			නම් ((abits_ptr_[dptr] & mask) != tmp) {
 			      diff_flag = true;
 			      abits_ptr_[dptr] = (abits_ptr_[dptr] & ~mask) | tmp;
 			}
 			tmp = (that.bbits_ptr_[sptr] >> (remain-tail))&mask;
-			if ((bbits_ptr_[dptr] & mask) != tmp) {
+			නම් ((bbits_ptr_[dptr] & mask) != tmp) {
 			      diff_flag = true;
 			      bbits_ptr_[dptr] = (bbits_ptr_[dptr] & ~mask) | tmp;
 			}
@@ -1415,7 +1415,7 @@ bool vvp_vector4_t::set_vec(unsigned adr, const vvp_vector4_t&that)
 	    }
       }
 
-      return diff_flag;
+      ආපසු diff_flag;
 }
 
 /*
@@ -1429,55 +1429,55 @@ void vvp_vector4_t::add(const vvp_vector4_t&that)
 {
       assert(size_ == that.size_);
 
-      if (size_ < BITS_PER_WORD) {
+      නම් (size_ < BITS_PER_WORD) {
 	    unsigned long mask = ~(-1UL << size_);
-	    if ((bbits_val_|that.bbits_val_) & mask) {
+	    නම් ((bbits_val_|that.bbits_val_) & mask) {
 		  abits_val_ |= mask;
 		  bbits_val_ |= mask;
-		  return;
+		  ආපසු;
 	    }
 
 	    abits_val_ += that.abits_val_;
 	    abits_val_ &= mask;
-	    return;
+	    ආපසු;
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    if (bbits_val_ | that.bbits_val_) {
+      නම් (size_ == BITS_PER_WORD) {
+	    නම් (bbits_val_ | that.bbits_val_) {
 		  abits_val_ = WORD_X_ABITS;
 		  bbits_val_ = WORD_X_BBITS;
-	    } else {
+	    } නැතහොත් {
 		  abits_val_ += that.abits_val_;
 	    }
-	    return;
+	    ආපසු;
       }
 
-      int cnt = size_ / BITS_PER_WORD;
+      පූර්ණ_සංඛ්‍යා cnt = size_ / BITS_PER_WORD;
       unsigned long carry = 0;
-      for (int idx = 0 ; idx < cnt ; idx += 1) {
-	    if (bbits_ptr_[idx] | that.bbits_ptr_[idx])
+      සඳහා (පූර්ණ_සංඛ්‍යා idx = 0 ; idx < cnt ; idx += 1) {
+	    නම් (bbits_ptr_[idx] | that.bbits_ptr_[idx])
 		  goto x_out;
 
 	    abits_ptr_[idx] = add_with_carry(abits_ptr_[idx], that.abits_ptr_[idx], carry);
       }
 
-      if (unsigned tail = size_ % BITS_PER_WORD) {
+      නම් (unsigned tail = size_ % BITS_PER_WORD) {
 	    unsigned long mask = ~( -1UL << tail );
-	    if ((bbits_ptr_[cnt] | that.bbits_ptr_[cnt])&mask)
+	    නම් ((bbits_ptr_[cnt] | that.bbits_ptr_[cnt])&mask)
 		  goto x_out;
 
 	    abits_ptr_[cnt] = add_with_carry(abits_ptr_[cnt], that.abits_ptr_[cnt], carry);
 	    abits_ptr_[cnt] &= mask;
       }
 
-      return;
+      ආපසු;
 
  x_out:
-      for (int idx = 0 ; idx < cnt ; idx += 1) {
+      සඳහා (පූර්ණ_සංඛ්‍යා idx = 0 ; idx < cnt ; idx += 1) {
 	    abits_ptr_[idx] = WORD_X_ABITS;
 	    bbits_ptr_[idx] = WORD_X_BBITS;
       }
-      if (unsigned tail = size_%BITS_PER_WORD) {
+      නම් (unsigned tail = size_%BITS_PER_WORD) {
 	    unsigned long mask = ~( -1UL << tail );
 	    abits_ptr_[cnt] = WORD_X_ABITS&mask;
 	    bbits_ptr_[cnt] = WORD_X_BBITS&mask;
@@ -1488,55 +1488,55 @@ void vvp_vector4_t::sub(const vvp_vector4_t&that)
 {
       assert(size_ == that.size_);
 
-      if (size_ < BITS_PER_WORD) {
+      නම් (size_ < BITS_PER_WORD) {
 	    unsigned long mask = ~(-1UL << size_);
-	    if ((bbits_val_|that.bbits_val_) & mask) {
+	    නම් ((bbits_val_|that.bbits_val_) & mask) {
 		  abits_val_ |= mask;
 		  bbits_val_ |= mask;
-		  return;
+		  ආපසු;
 	    }
 
 	    abits_val_ -= that.abits_val_;
 	    abits_val_ &= mask;
-	    return;
+	    ආපසු;
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    if (bbits_val_ | that.bbits_val_) {
+      නම් (size_ == BITS_PER_WORD) {
+	    නම් (bbits_val_ | that.bbits_val_) {
 		  abits_val_ = WORD_X_ABITS;
 		  bbits_val_ = WORD_X_BBITS;
-	    } else {
+	    } නැතහොත් {
 		  abits_val_ -= that.abits_val_;
 	    }
-	    return;
+	    ආපසු;
       }
 
-      int cnt = size_ / BITS_PER_WORD;
+      පූර්ණ_සංඛ්‍යා cnt = size_ / BITS_PER_WORD;
       unsigned long carry = 1;
-      for (int idx = 0 ; idx < cnt ; idx += 1) {
-	    if (bbits_ptr_[idx] | that.bbits_ptr_[idx])
+      සඳහා (පූර්ණ_සංඛ්‍යා idx = 0 ; idx < cnt ; idx += 1) {
+	    නම් (bbits_ptr_[idx] | that.bbits_ptr_[idx])
 		  goto x_out;
 
 	    abits_ptr_[idx] = add_with_carry(abits_ptr_[idx], ~that.abits_ptr_[idx], carry);
       }
 
-      if (unsigned tail = size_ % BITS_PER_WORD) {
+      නම් (unsigned tail = size_ % BITS_PER_WORD) {
 	    unsigned long mask = ~( -1UL << tail );
-	    if ((bbits_ptr_[cnt] | that.bbits_ptr_[cnt])&mask)
+	    නම් ((bbits_ptr_[cnt] | that.bbits_ptr_[cnt])&mask)
 		  goto x_out;
 
 	    abits_ptr_[cnt] = add_with_carry(abits_ptr_[cnt], ~that.abits_ptr_[cnt], carry);
 	    abits_ptr_[cnt] &= mask;
       }
 
-      return;
+      ආපසු;
 
  x_out:
-      for (int idx = 0 ; idx < cnt ; idx += 1) {
+      සඳහා (පූර්ණ_සංඛ්‍යා idx = 0 ; idx < cnt ; idx += 1) {
 	    abits_ptr_[idx] = WORD_X_ABITS;
 	    bbits_ptr_[idx] = WORD_X_BBITS;
       }
-      if (unsigned tail = size_%BITS_PER_WORD) {
+      නම් (unsigned tail = size_%BITS_PER_WORD) {
 	    unsigned long mask = ~( -1UL << tail );
 	    abits_ptr_[cnt] = WORD_X_ABITS&mask;
 	    bbits_ptr_[cnt] = WORD_X_BBITS&mask;
@@ -1549,7 +1549,7 @@ void vvp_vector4_t::mov(unsigned dst, unsigned src, unsigned cnt)
       assert(dst+cnt <= size_);
       assert(src+cnt <= size_);
 
-      if (size_ <= BITS_PER_WORD) {
+      නම් (size_ <= BITS_PER_WORD) {
 	    unsigned long vmask = (1UL << cnt) - 1;
 	    unsigned long tmp;
 
@@ -1561,21 +1561,21 @@ void vvp_vector4_t::mov(unsigned dst, unsigned src, unsigned cnt)
 	    bbits_val_ &= ~ (vmask << dst);
 	    bbits_val_ |= tmp << dst;
 
-      } else {
+      } නැතහොත් {
 	    unsigned sptr = src / BITS_PER_WORD;
 	    unsigned dptr = dst / BITS_PER_WORD;
 	    unsigned soff = src % BITS_PER_WORD;
 	    unsigned doff = dst % BITS_PER_WORD;
 
-	    while (cnt > 0) {
+	    අතරතුර (cnt > 0) {
 		  unsigned trans = cnt;
-		  if ((soff+trans) > BITS_PER_WORD)
+		  නම් ((soff+trans) > BITS_PER_WORD)
 			trans = BITS_PER_WORD - soff;
 
-		  if ((doff+trans) > BITS_PER_WORD)
+		  නම් ((doff+trans) > BITS_PER_WORD)
 			trans = BITS_PER_WORD - doff;
 
-		  if (trans == BITS_PER_WORD) {
+		  නම් (trans == BITS_PER_WORD) {
 			  // Special case: the transfer count is
 			  // exactly an entire word. For this to be
 			  // true, it must also be true that the
@@ -1604,12 +1604,12 @@ void vvp_vector4_t::mov(unsigned dst, unsigned src, unsigned cnt)
 
 		  cnt -= trans;
 		  soff += trans;
-		  if (soff >= BITS_PER_WORD) {
+		  නම් (soff >= BITS_PER_WORD) {
 			soff = 0;
 			sptr += 1;
 		  }
 		  doff += trans;
-		  if (doff >= BITS_PER_WORD) {
+		  නම් (doff >= BITS_PER_WORD) {
 			doff = 0;
 			dptr += 1;
 		  }
@@ -1621,56 +1621,56 @@ void vvp_vector4_t::mul(const vvp_vector4_t&that)
 {
       assert(size_ == that.size_);
 
-      if (size_ < BITS_PER_WORD) {
+      නම් (size_ < BITS_PER_WORD) {
 	    unsigned long mask = ~(-1UL << size_);
-	    if ((bbits_val_|that.bbits_val_) & mask) {
+	    නම් ((bbits_val_|that.bbits_val_) & mask) {
 		  abits_val_ |= mask;
 		  bbits_val_ |= mask;
-		  return;
+		  ආපසු;
 	    }
 
 	    abits_val_ *= that.abits_val_;
 	    abits_val_ &= mask;
-	    return;
+	    ආපසු;
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    if (bbits_val_ || that.bbits_val_) {
+      නම් (size_ == BITS_PER_WORD) {
+	    නම් (bbits_val_ || that.bbits_val_) {
 		  abits_val_ = WORD_X_ABITS;
 		  bbits_val_ = WORD_X_BBITS;
-	    } else {
+	    } නැතහොත් {
 		  abits_val_ *= that.abits_val_;
 	    }
-	    return;
+	    ආපසු;
       }
 
-      const int cnt = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
+      const පූර්ණ_සංඛ්‍යා cnt = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
 
       unsigned long mask;
-      if (unsigned tail = size_%BITS_PER_WORD) {
+      නම් (unsigned tail = size_%BITS_PER_WORD) {
 	    mask = ~( -1UL << tail );
-      } else {
+      } නැතහොත් {
 	    mask = ~0UL;
       }
 
 	// Check for any XZ values ahead of time in a first pass. If
 	// we find any, then force the entire result to be X and be
 	// done.
-      for (int idx = 0 ; idx < cnt ; idx += 1) {
+      සඳහා (පූර්ණ_සංඛ්‍යා idx = 0 ; idx < cnt ; idx += 1) {
 	    unsigned long lval = bbits_ptr_[idx];
 	    unsigned long rval = that.bbits_ptr_[idx];
-	    if (idx == (cnt-1)) {
+	    නම් (idx == (cnt-1)) {
 		  lval &= mask;
 		  rval &= mask;
 	    }
-	    if (lval || rval) {
-		  for (int xdx = 0 ; xdx < cnt-1 ; xdx += 1) {
+	    නම් (lval || rval) {
+		  සඳහා (පූර්ණ_සංඛ්‍යා xdx = 0 ; xdx < cnt-1 ; xdx += 1) {
 			abits_ptr_[xdx] = WORD_X_ABITS;
 			bbits_ptr_[xdx] = WORD_X_BBITS;
 		  }
 		  abits_ptr_[cnt-1] = WORD_X_ABITS & mask;
 		  bbits_ptr_[cnt-1] = WORD_X_BBITS & mask;
-		  return;
+		  ආපසු;
 	    }
       }
 
@@ -1678,25 +1678,25 @@ void vvp_vector4_t::mul(const vvp_vector4_t&that)
 	// separate from the "this" array because we are making
 	// multiple passes.
       unsigned long*res = new unsigned long[cnt];
-      for (int idx = 0 ; idx < cnt ; idx += 1)
+      සඳහා (පූර්ණ_සංඛ්‍යා idx = 0 ; idx < cnt ; idx += 1)
 	    res[idx] = 0;
 
-      for (int mul_a = 0 ; mul_a < cnt ; mul_a += 1) {
+      සඳහා (පූර්ණ_සංඛ්‍යා mul_a = 0 ; mul_a < cnt ; mul_a += 1) {
 	    unsigned long lval = abits_ptr_[mul_a];
-	    if (mul_a == (cnt-1))
+	    නම් (mul_a == (cnt-1))
 		  lval &= mask;
 
-	    for (int mul_b = 0 ; mul_b < (cnt-mul_a) ; mul_b += 1) {
+	    සඳහා (පූර්ණ_සංඛ්‍යා mul_b = 0 ; mul_b < (cnt-mul_a) ; mul_b += 1) {
 		  unsigned long rval = that.abits_ptr_[mul_b];
-		  if (mul_b == (cnt-1))
+		  නම් (mul_b == (cnt-1))
 			rval &= mask;
 
 		  unsigned long sum;
 		  unsigned long tmp = multiply_with_carry(lval, rval, sum);
-		  int base = mul_a + mul_b;
+		  පූර්ණ_සංඛ්‍යා base = mul_a + mul_b;
 		  unsigned long carry = 0;
 		  res[base] = add_with_carry(res[base], tmp, carry);
-		  for (int add_idx = base+1 ; add_idx < cnt ; add_idx += 1) {
+		  සඳහා (පූර්ණ_සංඛ්‍යා add_idx = base+1 ; add_idx < cnt ; add_idx += 1) {
 			res[add_idx] = add_with_carry(res[add_idx], sum, carry);
 			sum = 0;
 		  }
@@ -1706,107 +1706,107 @@ void vvp_vector4_t::mul(const vvp_vector4_t&that)
 	// Replace the "this" value with the calculated result. We
 	// know a-priori that the bbits are zero and unchanged.
       res[cnt-1] &= mask;
-      for (int idx = 0 ; idx < cnt ; idx += 1)
+      සඳහා (පූර්ණ_සංඛ්‍යා idx = 0 ; idx < cnt ; idx += 1)
 	    abits_ptr_[idx] = res[idx];
 
       delete[]res;
-      return;
+      ආපසු;
 
 
 }
 
 bool vvp_vector4_t::eeq(const vvp_vector4_t&that) const
 {
-      if (size_ != that.size_)
-	    return false;
+      නම් (size_ != that.size_)
+	    ආපසු false;
 
-      if (size_ < BITS_PER_WORD) {
+      නම් (size_ < BITS_PER_WORD) {
 	    unsigned long mask = (1UL << size_) - 1;
-	    return (abits_val_&mask) == (that.abits_val_&mask)
+	    ආපසු (abits_val_&mask) == (that.abits_val_&mask)
 		  && (bbits_val_&mask) == (that.bbits_val_&mask);
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    return (abits_val_ == that.abits_val_)
+      නම් (size_ == BITS_PER_WORD) {
+	    ආපසු (abits_val_ == that.abits_val_)
 		  && (bbits_val_ == that.bbits_val_);
       }
 
       unsigned words = size_ / BITS_PER_WORD;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
-	    if (abits_ptr_[idx] != that.abits_ptr_[idx])
-		  return false;
-	    if (bbits_ptr_[idx] != that.bbits_ptr_[idx])
-		  return false;
+      සඳහා (unsigned idx = 0 ;  idx < words ;  idx += 1) {
+	    නම් (abits_ptr_[idx] != that.abits_ptr_[idx])
+		  ආපසු false;
+	    නම් (bbits_ptr_[idx] != that.bbits_ptr_[idx])
+		  ආපසු false;
       }
 
       unsigned long mask = size_%BITS_PER_WORD;
-      if (mask > 0) {
+      නම් (mask > 0) {
 	    mask = (1UL << mask) - 1;
-	    return (abits_ptr_[words]&mask) == (that.abits_ptr_[words]&mask)
+	    ආපසු (abits_ptr_[words]&mask) == (that.abits_ptr_[words]&mask)
 		  && (bbits_ptr_[words]&mask) == (that.bbits_ptr_[words]&mask);
       }
 
-      return true;
+      ආපසු true;
 }
 
 bool vvp_vector4_t::eq_xz(const vvp_vector4_t&that) const
 {
-      if (size_ != that.size_)
-	    return false;
+      නම් (size_ != that.size_)
+	    ආපසු false;
 
-      if (size_ < BITS_PER_WORD) {
+      නම් (size_ < BITS_PER_WORD) {
 	    unsigned long mask = (1UL << size_) - 1;
-	    return ((abits_val_|bbits_val_)&mask) == ((that.abits_val_|that.bbits_val_)&mask)
+	    ආපසු ((abits_val_|bbits_val_)&mask) == ((that.abits_val_|that.bbits_val_)&mask)
 		  && (bbits_val_&mask) == (that.bbits_val_&mask);
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    return ((abits_val_|bbits_val_) == (that.abits_val_|that.bbits_val_))
+      නම් (size_ == BITS_PER_WORD) {
+	    ආපසු ((abits_val_|bbits_val_) == (that.abits_val_|that.bbits_val_))
 		  && (bbits_val_ == that.bbits_val_);
       }
 
       unsigned words = size_ / BITS_PER_WORD;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
-	    if ((abits_ptr_[idx]|bbits_ptr_[idx]) != (that.abits_ptr_[idx]|that.bbits_ptr_[idx]))
-		  return false;
-	    if (bbits_ptr_[idx] != that.bbits_ptr_[idx])
-		  return false;
+      සඳහා (unsigned idx = 0 ;  idx < words ;  idx += 1) {
+	    නම් ((abits_ptr_[idx]|bbits_ptr_[idx]) != (that.abits_ptr_[idx]|that.bbits_ptr_[idx]))
+		  ආපසු false;
+	    නම් (bbits_ptr_[idx] != that.bbits_ptr_[idx])
+		  ආපසු false;
       }
 
       unsigned long mask = size_%BITS_PER_WORD;
-      if (mask > 0) {
+      නම් (mask > 0) {
 	    mask = (1UL << mask) - 1;
-	    return ((abits_ptr_[words]|bbits_ptr_[words])&mask) == ((that.abits_ptr_[words]|that.bbits_ptr_[words])&mask)
+	    ආපසු ((abits_ptr_[words]|bbits_ptr_[words])&mask) == ((that.abits_ptr_[words]|that.bbits_ptr_[words])&mask)
 		  && (bbits_ptr_[words]&mask) == (that.bbits_ptr_[words]&mask);
       }
 
-      return true;
+      ආපසු true;
 }
 
 bool vvp_vector4_t::has_xz() const
 {
-      if (size_ < BITS_PER_WORD) {
+      නම් (size_ < BITS_PER_WORD) {
 	    unsigned long mask = -1UL >> (BITS_PER_WORD - size_);
-	    return bbits_val_&mask;
+	    ආපසු bbits_val_&mask;
       }
 
-      if (size_ == BITS_PER_WORD) {
-	    return bbits_val_;
+      නම් (size_ == BITS_PER_WORD) {
+	    ආපසු bbits_val_;
       }
 
       unsigned words = size_ / BITS_PER_WORD;
-      for (unsigned idx = 0 ; idx < words ; idx += 1) {
-	    if (bbits_ptr_[idx])
-		  return true;
+      සඳහා (unsigned idx = 0 ; idx < words ; idx += 1) {
+	    නම් (bbits_ptr_[idx])
+		  ආපසු true;
       }
 
       unsigned long mask = size_%BITS_PER_WORD;
-      if (mask > 0) {
+      නම් (mask > 0) {
 	    mask = -1UL >> (BITS_PER_WORD - mask);
-	    return bbits_ptr_[words]&mask;
+	    ආපසු bbits_ptr_[words]&mask;
       }
 
-      return false;
+      ආපසු false;
 }
 
 void vvp_vector4_t::change_z2x()
@@ -1817,11 +1817,11 @@ void vvp_vector4_t::change_z2x()
 	// or-ing the bbit into the abit, BIT4_X and BIT4_Z both
 	// become BIT4_X.
 
-      if (size_ <= BITS_PER_WORD) {
+      නම් (size_ <= BITS_PER_WORD) {
 	    abits_val_ |= bbits_val_;
-      } else {
+      } නැතහොත් {
 	    unsigned words = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
-	    for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+	    සඳහා (unsigned idx = 0 ;  idx < words ;  idx += 1)
 		  abits_ptr_[idx] |= bbits_ptr_[idx];
       }
 }
@@ -1840,38 +1840,38 @@ void vvp_vector4_t::fill_bits(vvp_bit4_t bit)
 	    WORD_Z_BBITS,
 	    WORD_X_BBITS };
 
-      if (size_ <= BITS_PER_WORD) {
+      නම් (size_ <= BITS_PER_WORD) {
 	    abits_val_ = init_atable[bit];
 	    bbits_val_ = init_btable[bit];
-      } else {
+      } නැතහොත් {
 	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    for (unsigned idx = 0; idx < words; idx += 1) {
+	    සඳහා (unsigned idx = 0; idx < words; idx += 1) {
 		  abits_ptr_[idx] = init_atable[bit];
 		  bbits_ptr_[idx] = init_btable[bit];
 	    }
       }
 }
 
-char* vvp_vector4_t::as_string(char*buf, size_t buf_len) const
+var_na* vvp_vector4_t::as_string(var_na*buf, size_t buf_len) const
 {
-      char*res = buf;
+      var_na*res = buf;
       *buf++ = 'C';
       *buf++ = '4';
       *buf++ = '<';
       buf_len -= 3;
 
-      for (unsigned idx = 0 ;  idx < size() && buf_len >= 2 ;  idx += 1) {
+      සඳහා (unsigned idx = 0 ;  idx < size() && buf_len >= 2 ;  idx += 1) {
 	    switch (value(size()-idx-1)) {
-		case BIT4_0:
+		pak_sa BIT4_0:
 		  *buf++ = '0';
-		  break;
-		case BIT4_1:
+		  bha_nga;
+		pak_sa BIT4_1:
 		  *buf++ = '1';
-		  break;
-		case BIT4_X:
+		  bha_nga;
+		pak_sa BIT4_X:
 		  *buf++ = 'x';
-		  break;
-		case BIT4_Z:
+		  bha_nga;
+		pak_sa BIT4_Z:
 		  *buf++ = 'z';
 	    }
 	    buf_len -= 1;
@@ -1879,25 +1879,25 @@ char* vvp_vector4_t::as_string(char*buf, size_t buf_len) const
 
       *buf++ = '>';
       *buf++ = 0;
-      return res;
+      ආපසු res;
 }
 
 void vvp_vector4_t::invert()
 {
-      if (size_ <= BITS_PER_WORD) {
+      නම් (size_ <= BITS_PER_WORD) {
 	    unsigned long mask = (size_<BITS_PER_WORD)? (1UL<<size_)-1UL : -1UL;
 	    abits_val_ = mask & ~abits_val_;
 	    abits_val_ |= bbits_val_;
-      } else {
+      } නැතහොත් {
 	    unsigned remaining = size_;
 	    unsigned idx = 0;
-	    while (remaining >= BITS_PER_WORD) {
+	    අතරතුර (remaining >= BITS_PER_WORD) {
 		  abits_ptr_[idx] = ~abits_ptr_[idx];
 		  abits_ptr_[idx] |= bbits_ptr_[idx];
 		  idx += 1;
 		  remaining -= BITS_PER_WORD;
 	    }
-	    if (remaining > 0) {
+	    නම් (remaining > 0) {
 		  unsigned long mask = (1UL<<remaining) - 1UL;
 		  abits_ptr_[idx] = mask & ~abits_ptr_[idx];
 		  abits_ptr_[idx] |= bbits_ptr_[idx];
@@ -1912,27 +1912,27 @@ vvp_bit4_t vvp_vector4_t::reduce_or() const
       unsigned long mask = BIT_MASK(size_ % BITS_PER_WORD);
       vvp_bit4_t res = BIT4_0;
 
-      if (size_ <= BITS_PER_WORD) {
-	    if ((abits_val_ & ~bbits_val_ & mask) != 0UL)
-		  return BIT4_1;
-	    if ((bbits_val_ & mask) != 0UL)
-		  return BIT4_X;
-      } else {
+      නම් (size_ <= BITS_PER_WORD) {
+	    නම් ((abits_val_ & ~bbits_val_ & mask) != 0UL)
+		  ආපසු BIT4_1;
+	    නම් ((bbits_val_ & mask) != 0UL)
+		  ආපසු BIT4_X;
+      } නැතහොත් {
 	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
 	    unsigned idx;
-	    for (idx = 0; idx < words - 1; idx += 1) {
-		  if ((abits_ptr_[idx] & ~bbits_ptr_[idx]) != 0UL)
-			return BIT4_1;
-		  if (bbits_ptr_[idx] != 0UL)
+	    සඳහා (idx = 0; idx < words - 1; idx += 1) {
+		  නම් ((abits_ptr_[idx] & ~bbits_ptr_[idx]) != 0UL)
+			ආපසු BIT4_1;
+		  නම් (bbits_ptr_[idx] != 0UL)
 			res = BIT4_X;
 	    }
-	    if ((abits_ptr_[idx] & ~bbits_ptr_[idx] & mask) != 0UL)
-		  return BIT4_1;
-	    if ((bbits_ptr_[idx] & mask) != 0UL)
+	    නම් ((abits_ptr_[idx] & ~bbits_ptr_[idx] & mask) != 0UL)
+		  ආපසු BIT4_1;
+	    නම් ((bbits_ptr_[idx] & mask) != 0UL)
 		  res = BIT4_X;
       }
 
-      return res;
+      ආපසු res;
 }
 
 vvp_bit4_t vvp_vector4_t::reduce_and() const
@@ -1940,43 +1940,43 @@ vvp_bit4_t vvp_vector4_t::reduce_and() const
       unsigned long mask = BIT_MASK(size_ % BITS_PER_WORD);
       vvp_bit4_t res = BIT4_1;
 
-      if (size_ <= BITS_PER_WORD) {
-	    if ((abits_val_ | bbits_val_ | ~mask) != ~0UL)
-		  return BIT4_0;
-	    if ((bbits_val_ & mask) != 0UL)
-		  return BIT4_X;
-	} else {
+      නම් (size_ <= BITS_PER_WORD) {
+	    නම් ((abits_val_ | bbits_val_ | ~mask) != ~0UL)
+		  ආපසු BIT4_0;
+	    නම් ((bbits_val_ & mask) != 0UL)
+		  ආපසු BIT4_X;
+	} නැතහොත් {
 	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
 	    unsigned idx;
-	    for (idx = 0; idx < words - 1; idx += 1) {
-		  if ((abits_ptr_[idx] | bbits_ptr_[idx]) != ~0UL)
-			return BIT4_0;
-		  if (bbits_ptr_[idx] != 0UL)
+	    සඳහා (idx = 0; idx < words - 1; idx += 1) {
+		  නම් ((abits_ptr_[idx] | bbits_ptr_[idx]) != ~0UL)
+			ආපසු BIT4_0;
+		  නම් (bbits_ptr_[idx] != 0UL)
 			res = BIT4_X;
 	    }
-	    if ((abits_ptr_[idx] | bbits_ptr_[idx] | ~mask) != ~0UL)
-		  return BIT4_0;
-	    if ((bbits_ptr_[idx] & mask) != 0UL)
+	    නම් ((abits_ptr_[idx] | bbits_ptr_[idx] | ~mask) != ~0UL)
+		  ආපසු BIT4_0;
+	    නම් ((bbits_ptr_[idx] & mask) != 0UL)
 		  res = BIT4_X;
       }
 
-      return res;
+      ආපසු res;
 }
 
 static unsigned long parity(unsigned long val)
 {
-#if defined(__GNUC__)
+#නම් defined(__GNUC__)
       // The compiler builtin can use target-specific CPU instructions.
-      return __builtin_parityl(val);
-#else
-#if ULONG_MAX > 0xffffffffUL
+      ආපසු __builtin_parityl(val);
+#නැතහොත්
+#නම් ULONG_MAX > 0xffffffffUL
 	val ^= val >> 32;
 #endif
 	val ^= val >> 16;
 	val ^= val >> 8;
 	val ^= val >> 4;
 
-      return (0x6996 >> (val & 0xf)) & 1;
+      ආපසු (0x6996 >> (val & 0xf)) & 1;
 #endif
 }
 
@@ -1984,23 +1984,23 @@ vvp_bit4_t vvp_vector4_t::reduce_xor() const
 {
       unsigned long mask = BIT_MASK(size_ % BITS_PER_WORD);
 
-      if (size_ <= BITS_PER_WORD) {
-	    if ((bbits_val_ & mask) != 0UL)
-		  return BIT4_X;
-	    return parity(abits_val_ & mask) ? BIT4_1 : BIT4_0;
-      } else {
+      නම් (size_ <= BITS_PER_WORD) {
+	    නම් ((bbits_val_ & mask) != 0UL)
+		  ආපසු BIT4_X;
+	    ආපසු parity(abits_val_ & mask) ? BIT4_1 : BIT4_0;
+      } නැතහොත් {
 	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
 	    unsigned long val_a = 0UL;
 	    unsigned idx;
-	    for (idx = 0; idx < words - 1; idx += 1) {
-		  if (bbits_ptr_[idx] != 0UL)
-			return BIT4_X;
+	    සඳහා (idx = 0; idx < words - 1; idx += 1) {
+		  නම් (bbits_ptr_[idx] != 0UL)
+			ආපසු BIT4_X;
 		  val_a ^= abits_ptr_[idx];
 	    }
-	    if ((bbits_ptr_[idx] & mask) != 0UL)
-		  return BIT4_X;
+	    නම් ((bbits_ptr_[idx] & mask) != 0UL)
+		  ආපසු BIT4_X;
 	    val_a ^= abits_ptr_[idx] & mask;
-	    return parity(val_a) ? BIT4_1 : BIT4_0;
+	    ආපසු parity(val_a) ? BIT4_1 : BIT4_0;
       }
 }
 
@@ -2012,14 +2012,14 @@ vvp_vector4_t& vvp_vector4_t::operator &= (const vvp_vector4_t&that)
 	//  01 00 01 11 11
 	//  11 00 11 11 11
 	//  10 00 11 11 11
-      if (size_ <= BITS_PER_WORD) {
+      නම් (size_ <= BITS_PER_WORD) {
 	    unsigned long tmp1 = abits_val_ | bbits_val_;
 	    unsigned long tmp2 = that.abits_val_ | that.bbits_val_;
 	    abits_val_ = tmp1 & tmp2;
 	    bbits_val_ = (tmp1 & that.bbits_val_) | (tmp2 & bbits_val_);
-      } else {
+      } නැතහොත් {
 	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    for (unsigned idx = 0; idx < words ; idx += 1) {
+	    සඳහා (unsigned idx = 0; idx < words ; idx += 1) {
 		  unsigned long tmp1 = abits_ptr_[idx] | bbits_ptr_[idx];
 		  unsigned long tmp2 = that.abits_ptr_[idx] |
 		                       that.bbits_ptr_[idx];
@@ -2029,7 +2029,7 @@ vvp_vector4_t& vvp_vector4_t::operator &= (const vvp_vector4_t&that)
 	    }
       }
 
-      return *this;
+      ආපසු *this;
 }
 
 vvp_vector4_t& vvp_vector4_t::operator |= (const vvp_vector4_t&that)
@@ -2040,16 +2040,16 @@ vvp_vector4_t& vvp_vector4_t::operator |= (const vvp_vector4_t&that)
 	//  01 01 01 01 01
 	//  11 11 01 11 11
 	//  10 11 01 11 11
-      if (size_ <= BITS_PER_WORD) {
+      නම් (size_ <= BITS_PER_WORD) {
 	    unsigned long tmp = abits_val_ | bbits_val_ |
 	                        that.abits_val_ | that.bbits_val_;
 	    bbits_val_ = ((~abits_val_ | bbits_val_) & that.bbits_val_) |
 	                 ((~that.abits_val_ | that.bbits_val_) & bbits_val_);
 	    abits_val_ = tmp;
 
-      } else {
+      } නැතහොත් {
 	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    for (unsigned idx = 0; idx < words ; idx += 1) {
+	    සඳහා (unsigned idx = 0; idx < words ; idx += 1) {
 		  unsigned long tmp = abits_ptr_[idx] | bbits_ptr_[idx] |
 	                        that.abits_ptr_[idx] | that.bbits_ptr_[idx];
 		  bbits_ptr_[idx] = ((~abits_ptr_[idx] | bbits_ptr_[idx]) &
@@ -2060,7 +2060,7 @@ vvp_vector4_t& vvp_vector4_t::operator |= (const vvp_vector4_t&that)
 	    }
       }
 
-      return *this;
+      ආපසු *this;
 }
 
 vvp_vector4_t& vvp_vector4_t::operator ^= (const vvp_vector4_t&that)
@@ -2071,20 +2071,20 @@ vvp_vector4_t& vvp_vector4_t::operator ^= (const vvp_vector4_t&that)
 	//  01 01 00 11 11
 	//  11 11 11 11 11
 	//  10 11 11 11 11
-      if (size_ <= BITS_PER_WORD) {
+      නම් (size_ <= BITS_PER_WORD) {
 	    unsigned long bval = bbits_val_ | that.bbits_val_;
 	    bbits_val_ = bval;
 	    abits_val_ = (abits_val_ ^ that.abits_val_) | bval;
-      } else {
+      } නැතහොත් {
 	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    for (unsigned idx = 0; idx < words ; idx += 1) {
+	    සඳහා (unsigned idx = 0; idx < words ; idx += 1) {
 		  unsigned long bval = bbits_ptr_[idx] | that.bbits_ptr_[idx];
 		  bbits_ptr_[idx] = bval;
 		  abits_ptr_[idx] = (abits_ptr_[idx] ^ that.abits_ptr_[idx]) | bval;
 	    }
       }
 
-      return *this;
+      ආපසු *this;
 }
 
 /*
@@ -2096,20 +2096,20 @@ vvp_vector4_t& vvp_vector4_t::operator += (int64_t that)
       vvp_bit4_t carry = BIT4_0;
       unsigned idx;
 
-      if (has_xz()) {
+      නම් (has_xz()) {
 	    vvp_vector4_t xxx (size(), BIT4_X);
 	    *this = xxx;
-	    return *this;
+	    ආපසු *this;
       }
 
-      for (idx = 0 ; idx < size() ; idx += 1) {
-	    if (that == 0 && carry==BIT4_0)
-		  break;
+      සඳහා (idx = 0 ; idx < size() ; idx += 1) {
+	    නම් (that == 0 && carry==BIT4_0)
+		  bha_nga;
 
 	    vvp_bit4_t that_bit = (that&1)? BIT4_1 : BIT4_0;
 	    that >>= 1;
 
-	    if (that_bit==BIT4_0 && carry==BIT4_0)
+	    නම් (that_bit==BIT4_0 && carry==BIT4_0)
 		  continue;
 
 	    vvp_bit4_t bit = value(idx);
@@ -2118,15 +2118,15 @@ vvp_vector4_t& vvp_vector4_t::operator += (int64_t that)
 	    set_bit(idx, bit);
       }
 
-      return *this;
+      ආපසු *this;
 }
 
 ostream& operator<< (ostream&out, const vvp_vector4_t&that)
 {
       out << that.size() << "'b";
-      for (unsigned idx = 0 ;  idx < that.size() ;  idx += 1)
+      සඳහා (unsigned idx = 0 ;  idx < that.size() ;  idx += 1)
 	    out << that.value(that.size()-idx-1);
-      return out;
+      ආපසු out;
 }
 
 template <class INT>bool vector4_to_value(const vvp_vector4_t&vec, INT&val,
@@ -2137,31 +2137,31 @@ template <class INT>bool vector4_to_value(const vvp_vector4_t&vec, INT&val,
       bool rc_flag = true;
 
       unsigned size = vec.size();
-      if (size > 8*sizeof(val)) size = 8*sizeof(val);
-      for (unsigned idx = 0 ;  idx < size ;  idx += 1) {
+      නම් (size > 8*parimaa_na(val)) size = 8*parimaa_na(val);
+      සඳහා (unsigned idx = 0 ;  idx < size ;  idx += 1) {
 	    switch (vec.value(idx)) {
-		case BIT4_0:
-		  break;
-		case BIT4_1:
+		pak_sa BIT4_0:
+		  bha_nga;
+		pak_sa BIT4_1:
 		  res |= msk;
-		  break;
+		  bha_nga;
 		default:
-		  if (is_arithmetic)
-			return false;
-		  else
+		  නම් (is_arithmetic)
+			ආපසු false;
+		  නැතහොත්
 			rc_flag = false;
 	    }
 
 	    msk <<= 1;
       }
 
-      if (is_signed && vec.value(vec.size()-1) == BIT4_1) {
-	    if (vec.size() < 8*sizeof(val))
+      නම් (is_signed && vec.value(vec.size()-1) == BIT4_1) {
+	    නම් (vec.size() < 8*parimaa_na(val))
 		  res |= static_cast<INT>(-1ULL << vec.size());
       }
 
       val = res;
-      return rc_flag;
+      ආපසු rc_flag;
 }
 
 template bool vector4_to_value(const vvp_vector4_t&vec, int8_t&val,
@@ -2189,25 +2189,25 @@ template <class T> bool vector4_to_value(const vvp_vector4_t&vec,
 
       overflow_flag = false;
       unsigned size = vec.size();
-      for (unsigned idx = 0 ;  idx < size ;  idx += 1) {
+      සඳහා (unsigned idx = 0 ;  idx < size ;  idx += 1) {
 	    switch (vec.value(idx)) {
-		case BIT4_0:
-		  break;
-		case BIT4_1:
-		  if (msk == 0)
+		pak_sa BIT4_0:
+		  bha_nga;
+		pak_sa BIT4_1:
+		  නම් (msk == 0)
 			overflow_flag = true;
-		  else
+		  නැතහොත්
 			res |= msk;
-		  break;
+		  bha_nga;
 		default:
-		  return false;
+		  ආපසු false;
 	    }
 
 	    msk <<= static_cast<T>(1);
       }
 
       val = res;
-      return true;
+      ආපසු true;
 }
 
 template bool vector4_to_value(const vvp_vector4_t&vec, bool&overflow_flag,
@@ -2217,52 +2217,52 @@ template bool vector4_to_value(const vvp_vector4_t&vec, bool&overflow_flag,
                                vvp_time64_t&val);
 #endif
 
-bool vector4_to_value(const vvp_vector4_t&vec, double&val, bool signed_flag)
+bool vector4_to_value(const vvp_vector4_t&vec, dviguu_na&val, bool signed_flag)
 {
 
-      if (vec.size() == 0) {
+      නම් (vec.size() == 0) {
 	    val = 0.0;
-	    return true;
+	    ආපසු true;
       }
 
       bool flag = true;
 
-      if (vec.value(vec.size()-1) != BIT4_1) {
+      නම් (vec.value(vec.size()-1) != BIT4_1) {
 	    signed_flag = false;
       }
 
-      double res = 0.0;
-      if (signed_flag) {
+      dviguu_na res = 0.0;
+      නම් (signed_flag) {
 	    vvp_bit4_t carry = BIT4_1;
-	    for (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
+	    සඳහා (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
 		  vvp_bit4_t a = ~vec.value(idx);
 		  vvp_bit4_t x = add_with_carry(a, BIT4_0, carry);
 		  switch (x) {
-		      case BIT4_0:
-			break;
-		      case BIT4_1:
-			res += pow(2.0, (int)idx);
-			break;
+		      pak_sa BIT4_0:
+			bha_nga;
+		      pak_sa BIT4_1:
+			res += pow(2.0, (පූර්ණ_සංඛ්‍යා)idx);
+			bha_nga;
 		      default:
 			flag = false;
 		  }
 	    }
 	    res *= -1.0;
-      } else {
-	    for (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
+      } නැතහොත් {
+	    සඳහා (unsigned idx = 0 ;  idx < vec.size() ;  idx += 1) {
 		  switch (vec.value(idx)) {
-		      case BIT4_0:
-			break;
-		      case BIT4_1:
-			res += pow(2.0, (int)idx);
-			break;
+		      pak_sa BIT4_0:
+			bha_nga;
+		      pak_sa BIT4_1:
+			res += pow(2.0, (පූර්ණ_සංඛ්‍යා)idx);
+			bha_nga;
 		      default:
 			flag = false;
 		  }
 	    }
       }
       val = res;
-      return flag;
+      ආපසු flag;
 }
 
 bool vector2_to_value(const vvp_vector2_t&a, int32_t&val, bool is_signed)
@@ -2270,17 +2270,17 @@ bool vector2_to_value(const vvp_vector2_t&a, int32_t&val, bool is_signed)
       val = 0;
       unsigned idx;
       uint32_t mask;
-      for (idx = 0, mask = 1 ; idx < a.size() && idx < 32 ; idx += 1, mask <<= 1) {
-	    if (a.value(idx)) val |= mask;
+      සඳහා (idx = 0, mask = 1 ; idx < a.size() && idx < 32 ; idx += 1, mask <<= 1) {
+	    නම් (a.value(idx)) val |= mask;
       }
 
-      if (is_signed && a.size() < 32 && a.value(a.size()-1)) {
+      නම් (is_signed && a.size() < 32 && a.value(a.size()-1)) {
 	    mask = -1;
 	    mask <<= a.size();
 	    val |= mask;
       }
 
-      return a.size() <= 32;
+      ආපසු a.size() <= 32;
 }
 
 vvp_vector4array_t::vvp_vector4array_t(unsigned width__, unsigned words__)
@@ -2296,47 +2296,47 @@ void vvp_vector4array_t::set_word_(v4cell*cell, const vvp_vector4_t&that)
 {
       assert(that.size_ == width_);
 
-      if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
+      නම් (width_ <= vvp_vector4_t::BITS_PER_WORD) {
 	    cell->abits_val_ = that.abits_val_;
 	    cell->bbits_val_ = that.bbits_val_;
-	    return;
+	    ආපසු;
       }
 
       unsigned cnt = (width_ + vvp_vector4_t::BITS_PER_WORD-1)/vvp_vector4_t::BITS_PER_WORD;
 
-      if (cell->abits_ptr_ == 0) {
+      නම් (cell->abits_ptr_ == 0) {
 	    cell->abits_ptr_ = new unsigned long[2*cnt];
 	    cell->bbits_ptr_ = cell->abits_ptr_ + cnt;
       }
 
-      for (unsigned idx = 0 ; idx < cnt ; idx += 1)
+      සඳහා (unsigned idx = 0 ; idx < cnt ; idx += 1)
 	    cell->abits_ptr_[idx] = that.abits_ptr_[idx];
-      for (unsigned idx = 0 ; idx < cnt ; idx += 1)
+      සඳහා (unsigned idx = 0 ; idx < cnt ; idx += 1)
 	    cell->bbits_ptr_[idx] = that.bbits_ptr_[idx];
 }
 
 vvp_vector4_t vvp_vector4array_t::get_word_(v4cell*cell) const
 {
-      if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
+      නම් (width_ <= vvp_vector4_t::BITS_PER_WORD) {
 	    vvp_vector4_t res;
 	    res.size_ = width_;
 	    res.abits_val_ = cell->abits_val_;
 	    res.bbits_val_ = cell->bbits_val_;
-	    return res;
+	    ආපසු res;
       }
 
       vvp_vector4_t res (width_, BIT4_X);
-      if (cell->abits_ptr_ == 0)
-	    return res;
+      නම් (cell->abits_ptr_ == 0)
+	    ආපසු res;
 
       unsigned cnt = (width_ + vvp_vector4_t::BITS_PER_WORD-1)/vvp_vector4_t::BITS_PER_WORD;
 
-      for (unsigned idx = 0 ; idx < cnt ; idx += 1)
+      සඳහා (unsigned idx = 0 ; idx < cnt ; idx += 1)
 	    res.abits_ptr_[idx] = cell->abits_ptr_[idx];
-      for (unsigned idx = 0 ; idx < cnt ; idx += 1)
+      සඳහා (unsigned idx = 0 ; idx < cnt ; idx += 1)
 	    res.bbits_ptr_[idx] = cell->bbits_ptr_[idx];
 
-      return res;
+      ආපසු res;
 }
 
 vvp_vector4array_sa::vvp_vector4array_sa(unsigned width__, unsigned words__)
@@ -2344,13 +2344,13 @@ vvp_vector4array_sa::vvp_vector4array_sa(unsigned width__, unsigned words__)
 {
       array_ = new v4cell[words_];
 
-      if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
+      නම් (width_ <= vvp_vector4_t::BITS_PER_WORD) {
+	    සඳහා (unsigned idx = 0 ; idx < words_ ; idx += 1) {
 		  array_[idx].abits_val_ = vvp_vector4_t::WORD_X_ABITS;
 		  array_[idx].bbits_val_ = vvp_vector4_t::WORD_X_BBITS;
 	    }
-      } else {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
+      } නැතහොත් {
+	    සඳහා (unsigned idx = 0 ; idx < words_ ; idx += 1) {
 		  array_[idx].abits_ptr_ = 0;
 		  array_[idx].bbits_ptr_ = 0;
 	    }
@@ -2359,10 +2359,10 @@ vvp_vector4array_sa::vvp_vector4array_sa(unsigned width__, unsigned words__)
 
 vvp_vector4array_sa::~vvp_vector4array_sa()
 {
-      if (array_) {
-	    if (width_ > vvp_vector4_t::BITS_PER_WORD) {
-		  for (unsigned idx = 0 ; idx < words_ ; idx += 1)
-			if (array_[idx].abits_ptr_)
+      නම් (array_) {
+	    නම් (width_ > vvp_vector4_t::BITS_PER_WORD) {
+		  සඳහා (unsigned idx = 0 ; idx < words_ ; idx += 1)
+			නම් (array_[idx].abits_ptr_)
 			      delete[]array_[idx].abits_ptr_;
 	    }
 	    delete[]array_;
@@ -2380,14 +2380,14 @@ void vvp_vector4array_sa::set_word(unsigned index, const vvp_vector4_t&that)
 
 vvp_vector4_t vvp_vector4array_sa::get_word(unsigned index) const
 {
-      if (index >= words_)
-	    return vvp_vector4_t(width_, BIT4_X);
+      නම් (index >= words_)
+	    ආපසු vvp_vector4_t(width_, BIT4_X);
 
       assert(index < words_);
 
       v4cell*cell = &array_[index];
 
-      return get_word_(cell);
+      ආපසු get_word_(cell);
 }
 
 vvp_vector4array_aa::vvp_vector4array_aa(unsigned width__, unsigned words__)
@@ -2404,13 +2404,13 @@ void vvp_vector4array_aa::alloc_instance(vvp_context_t context)
 {
       v4cell*array = new v4cell[words_];
 
-      if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
+      නම් (width_ <= vvp_vector4_t::BITS_PER_WORD) {
+	    සඳහා (unsigned idx = 0 ; idx < words_ ; idx += 1) {
 		  array[idx].abits_val_ = vvp_vector4_t::WORD_X_ABITS;
 		  array[idx].bbits_val_ = vvp_vector4_t::WORD_X_BBITS;
 	    }
-      } else {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
+      } නැතහොත් {
+	    සඳහා (unsigned idx = 0 ; idx < words_ ; idx += 1) {
 		  array[idx].abits_ptr_ = 0;
 		  array[idx].bbits_ptr_ = 0;
 	    }
@@ -2424,17 +2424,17 @@ void vvp_vector4array_aa::reset_instance(vvp_context_t context)
       v4cell*cell = static_cast<v4cell*>
             (vvp_get_context_item(context, context_idx_));
 
-      if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
+      නම් (width_ <= vvp_vector4_t::BITS_PER_WORD) {
+	    සඳහා (unsigned idx = 0 ; idx < words_ ; idx += 1) {
 		  cell->abits_val_ = vvp_vector4_t::WORD_X_ABITS;
 		  cell->bbits_val_ = vvp_vector4_t::WORD_X_BBITS;
                   cell++;
 	    }
-      } else {
+      } නැතහොත් {
             unsigned cnt = (width_ + vvp_vector4_t::BITS_PER_WORD-1)/vvp_vector4_t::BITS_PER_WORD;
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
-		  if (cell->abits_ptr_) {
-                        for (unsigned n = 0 ; n < cnt ; n += 1) {
+	    සඳහා (unsigned idx = 0 ; idx < words_ ; idx += 1) {
+		  නම් (cell->abits_ptr_) {
+                        සඳහා (unsigned n = 0 ; n < cnt ; n += 1) {
 			      cell->abits_ptr_[n] = vvp_vector4_t::WORD_X_ABITS;
 			      cell->bbits_ptr_[n] = vvp_vector4_t::WORD_X_BBITS;
                         }
@@ -2465,15 +2465,15 @@ void vvp_vector4array_aa::set_word(unsigned index, const vvp_vector4_t&that)
 
 vvp_vector4_t vvp_vector4array_aa::get_word(unsigned index) const
 {
-      if (index >= words_)
-	    return vvp_vector4_t(width_, BIT4_X);
+      නම් (index >= words_)
+	    ආපසු vvp_vector4_t(width_, BIT4_X);
 
       assert(index < words_);
 
       v4cell*cell = static_cast<v4cell*>
             (vthread_get_rd_context_item(context_idx_)) + index;
 
-      return get_word_(cell);
+      ආපසු get_word_(cell);
 }
 
 vvp_vector2_t::vvp_vector2_t()
@@ -2485,11 +2485,11 @@ vvp_vector2_t::vvp_vector2_t()
 vvp_vector2_t::vvp_vector2_t(uint64_t v, unsigned wid)
 {
       wid_ = wid;
-      const unsigned bits_per_word = 8 * sizeof(vec_[0]);
+      const unsigned bits_per_word = 8 * parimaa_na(vec_[0]);
       const unsigned words = (wid_ + bits_per_word-1) / bits_per_word;
 
       vec_ = new unsigned long[words];
-      for (unsigned idx = 0 ; idx < words ; idx += 1) {
+      සඳහා (unsigned idx = 0 ; idx < words ; idx += 1) {
 	    const unsigned shift = idx * bits_per_word;
 	    vec_[idx] = shift < 64 ? v >> shift : 0;
       }
@@ -2498,11 +2498,11 @@ vvp_vector2_t::vvp_vector2_t(uint64_t v, unsigned wid)
 vvp_vector2_t::vvp_vector2_t(vvp_vector2_t::fill_t fill, unsigned wid)
 {
       wid_ = wid;
-      const unsigned bits_per_word = 8 * sizeof(vec_[0]);
+      const unsigned bits_per_word = 8 * parimaa_na(vec_[0]);
       const unsigned words = (wid_ + bits_per_word-1) / bits_per_word;
 
       vec_ = new unsigned long[words];
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      සඳහා (unsigned idx = 0 ;  idx < words ;  idx += 1)
 	    vec_[idx] = fill? -1 : 0;
 }
 
@@ -2513,9 +2513,9 @@ vvp_vector2_t::vvp_vector2_t(const vvp_vector2_t&that, unsigned base, unsigned w
 
       vec_ = new unsigned long[words];
 
-      for (unsigned idx = 0 ; idx < wid ; idx += 1) {
-	    int bit = that.value(base+idx);
-	    if (bit == 0)
+      සඳහා (unsigned idx = 0 ; idx < wid ; idx += 1) {
+	    පූර්ණ_සංඛ්‍යා bit = that.value(base+idx);
+	    නම් (bit == 0)
 		  continue;
 	    unsigned word = idx / BITS_PER_WORD;
 	    unsigned long mask = 1UL << (idx % BITS_PER_WORD);
@@ -2528,10 +2528,10 @@ void vvp_vector2_t::copy_from_that_(const vvp_vector4_t&that)
       wid_ = that.size();
       const unsigned words = (that.size() + BITS_PER_WORD-1) / BITS_PER_WORD;
 
-      if (words == 0) {
+      නම් (words == 0) {
 	    vec_ = 0;
 	    wid_ = 0;
-	    return;
+	    ආපසු;
       }
 
 	// Use the subarray method with the xz_to_0 flag set so that
@@ -2544,47 +2544,47 @@ void vvp_vector2_t::copy_from_that_(const vvp_vector2_t&that)
       wid_ = that.wid_;
       const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
 
-      if (words == 0) {
+      නම් (words == 0) {
 	    vec_ = 0;
 	    wid_ = 0;
-	    return;
+	    ආපසු;
       }
 
       vec_ = new unsigned long[words];
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      සඳහා (unsigned idx = 0 ;  idx < words ;  idx += 1)
 	    vec_[idx] = that.vec_[idx];
 }
 
 vvp_vector2_t::vvp_vector2_t(const vvp_vector2_t&that, unsigned newsize)
 {
       wid_ = newsize;
-      if (newsize == 0) {
+      නම් (newsize == 0) {
 	    vec_ = 0;
-	    return;
+	    ආපසු;
       }
 
       const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
       const unsigned twords = (that.wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
 
       vec_ = new unsigned long[words];
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
-	    if (idx < twords)
+      සඳහා (unsigned idx = 0 ;  idx < words ;  idx += 1) {
+	    නම් (idx < twords)
 		  vec_[idx] = that.vec_[idx];
-	    else
+	    නැතහොත්
 		  vec_[idx] = 0;
       }
 }
 
 vvp_vector2_t& vvp_vector2_t::operator= (const vvp_vector2_t&that)
 {
-      if (this == &that)
-	    return *this;
+      නම් (this == &that)
+	    ආපසු *this;
 
       delete[] vec_;
       vec_ = 0;
 
       copy_from_that_(that);
-      return *this;
+      ආපසු *this;
 }
 
 vvp_vector2_t& vvp_vector2_t::operator= (const vvp_vector4_t&that)
@@ -2592,13 +2592,13 @@ vvp_vector2_t& vvp_vector2_t::operator= (const vvp_vector4_t&that)
       delete[]vec_;
       vec_ = 0;
       copy_from_that_(that);
-      return *this;
+      ආපසු *this;
 }
 
-vvp_vector2_t& vvp_vector2_t::operator <<= (unsigned int shift)
+vvp_vector2_t& vvp_vector2_t::operator <<= (unsigned පූර්ණ_සංඛ්‍යා shift)
 {
-      if (wid_ == 0)
-	    return *this;
+      නම් (wid_ == 0)
+	    ආපසු *this;
 
       const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
 
@@ -2608,28 +2608,28 @@ vvp_vector2_t& vvp_vector2_t::operator <<= (unsigned int shift)
       const unsigned long oshift = shift % BITS_PER_WORD;
 
 	// If shifting the entire value away, then return zeros.
-      if (wshift >= words) {
-	    for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      නම් (wshift >= words) {
+	    සඳහා (unsigned idx = 0 ;  idx < words ;  idx += 1)
 		  vec_[idx] = 0;
 
-	    return *this;
+	    ආපසු *this;
       }
 
 	// Do the word shift first.
-      if (wshift > 0) {
-	    for (unsigned idx = 0 ;  idx < words-wshift ;  idx += 1) {
+      නම් (wshift > 0) {
+	    සඳහා (unsigned idx = 0 ;  idx < words-wshift ;  idx += 1) {
 		  unsigned sel = words - idx - 1;
 		  vec_[sel] = vec_[sel-wshift];
 	    }
 
-	    for (unsigned idx = 0 ;  idx < wshift ;  idx += 1)
+	    සඳහා (unsigned idx = 0 ;  idx < wshift ;  idx += 1)
 		  vec_[idx] = 0;
       }
 
 	// Do the fine shift.
-      if (oshift != 0) {
+      නම් (oshift != 0) {
 	    unsigned long pad = 0;
-	    for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
+	    සඳහා (unsigned idx = 0 ;  idx < words ;  idx += 1) {
 		  unsigned long next_pad = vec_[idx] >> (BITS_PER_WORD-oshift);
 		  vec_[idx] = (vec_[idx] << oshift) | pad;
 		  pad = next_pad;
@@ -2640,13 +2640,13 @@ vvp_vector2_t& vvp_vector2_t::operator <<= (unsigned int shift)
 	    vec_[words-1] &= mask;
       }
 
-      return *this;
+      ආපසු *this;
 }
 
 vvp_vector2_t& vvp_vector2_t::operator >>= (unsigned shift)
 {
-      if (wid_ == 0)
-	    return *this;
+      නම් (wid_ == 0)
+	    ආපසු *this;
 
       const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
 
@@ -2656,24 +2656,24 @@ vvp_vector2_t& vvp_vector2_t::operator >>= (unsigned shift)
       const unsigned long oshift = shift % BITS_PER_WORD;
 
 	// If shifting the entire value away, then return zeros.
-      if (wshift >= words) {
-	    for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      නම් (wshift >= words) {
+	    සඳහා (unsigned idx = 0 ;  idx < words ;  idx += 1)
 		  vec_[idx] = 0;
 
-	    return *this;
+	    ආපසු *this;
       }
 
-      if (wshift > 0) {
-	    for (unsigned idx = 0 ;  idx < words-wshift ;  idx += 1)
+      නම් (wshift > 0) {
+	    සඳහා (unsigned idx = 0 ;  idx < words-wshift ;  idx += 1)
 		  vec_[idx] = vec_[idx+wshift];
 
-	    for (unsigned idx = words-wshift ;  idx < words ;  idx += 1)
+	    සඳහා (unsigned idx = words-wshift ;  idx < words ;  idx += 1)
 		  vec_[idx] = 0;
       }
 
-      if (oshift > 0) {
+      නම් (oshift > 0) {
 	    unsigned long pad = 0;
-	    for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
+	    සඳහා (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
 		  unsigned long new_pad = vec_[idx-1] <<(BITS_PER_WORD-oshift);
 		  vec_[idx-1] = pad | (vec_[idx-1] >> oshift);
 		  pad = new_pad;
@@ -2690,19 +2690,19 @@ vvp_vector2_t& vvp_vector2_t::operator >>= (unsigned shift)
 	    unsigned long mask_shift = BITS_PER_WORD - wid_%BITS_PER_WORD;
 	    mask_shift %= BITS_PER_WORD;
 	    mask_shift += oshift;
-	    while (mask_shift >= BITS_PER_WORD) {
+	    අතරතුර (mask_shift >= BITS_PER_WORD) {
 		  vec_[use_words-1] = 0;
 		  use_words -= 1;
 		  mask_shift -= BITS_PER_WORD;
 	    }
-	    if (mask_shift > 0) {
+	    නම් (mask_shift > 0) {
 		  assert(use_words > 0);
 		  unsigned long mask = -1UL >> mask_shift;
 		  vec_[use_words-1] &= mask;
 	    }
       }
 
-      return *this;
+      ආපසු *this;
 }
 
 static unsigned long add_carry(unsigned long a, unsigned long b,
@@ -2711,27 +2711,27 @@ static unsigned long add_carry(unsigned long a, unsigned long b,
       unsigned long out = carry;
       carry = 0;
 
-      if ((ULONG_MAX - out) < a)
+      නම් ((ULONG_MAX - out) < a)
 	    carry += 1;
       out += a;
 
-      if ((ULONG_MAX - out) < b)
+      නම් ((ULONG_MAX - out) < b)
 	    carry += 1;
       out += b;
 
-      return out;
+      ආපසු out;
 }
 
 vvp_vector2_t& vvp_vector2_t::operator += (const vvp_vector2_t&that)
 {
       assert(wid_ == that.wid_);
-      if (wid_ == 0)
-	    return *this;
+      නම් (wid_ == 0)
+	    ආපසු *this;
 
       const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
 
       unsigned long carry = 0;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
+      සඳහා (unsigned idx = 0 ;  idx < words ;  idx += 1) {
 	    vec_[idx] = add_carry(vec_[idx], that.vec_[idx], carry);
       }
 
@@ -2740,65 +2740,65 @@ vvp_vector2_t& vvp_vector2_t::operator += (const vvp_vector2_t&that)
       unsigned long mask = -1UL >> (BITS_PER_WORD - wid_%BITS_PER_WORD);
       vec_[words-1] &= mask;
 
-      return *this;
+      ආපසු *this;
 }
 
 vvp_vector2_t& vvp_vector2_t::operator -= (const vvp_vector2_t&that)
 {
       assert(wid_ == that.wid_);
-      if (wid_ == 0)
-	    return *this;
+      නම් (wid_ == 0)
+	    ආපසු *this;
 
       const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
 
       unsigned long carry = 1;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
+      සඳහා (unsigned idx = 0 ;  idx < words ;  idx += 1) {
 	    vec_[idx] = add_carry(vec_[idx], ~that.vec_[idx], carry);
       }
 
-      return *this;
+      ආපසු *this;
 }
 
 void vvp_vector2_t::trim()
 {
-      while (value(wid_-1) == 0 && wid_ > 1) wid_ -= 1;
+      අතරතුර (value(wid_-1) == 0 && wid_ > 1) wid_ -= 1;
 }
 
 /* This is a special trim that is used on numbers we know represent a
  * negative signed value (they came from a negative real value). */
 void vvp_vector2_t::trim_neg()
 {
-      if (value(wid_-1) == 1 && wid_ > 32) {
-	    while (value(wid_-2) == 1 && wid_ > 32) wid_ -= 1;
+      නම් (value(wid_-1) == 1 && wid_ > 32) {
+	    අතරතුර (value(wid_-2) == 1 && wid_ > 32) wid_ -= 1;
       }
 }
 
-int vvp_vector2_t::value(unsigned idx) const
+පූර්ණ_සංඛ්‍යා vvp_vector2_t::value(unsigned idx) const
 {
-      if (idx >= wid_)
-	    return 0;
+      නම් (idx >= wid_)
+	    ආපසු 0;
 
-      const unsigned bits_per_word = 8 * sizeof(vec_[0]);
+      const unsigned bits_per_word = 8 * parimaa_na(vec_[0]);
       unsigned addr = idx/bits_per_word;
       unsigned mask = idx%bits_per_word;
 
-      if (vec_[addr] & (1UL<<mask))
-	    return 1;
-      else
-	    return 0;
+      නම් (vec_[addr] & (1UL<<mask))
+	    ආපසු 1;
+      නැතහොත්
+	    ආපසු 0;
 }
 
-void vvp_vector2_t::set_bit(unsigned idx, int bit)
+void vvp_vector2_t::set_bit(unsigned idx, පූර්ණ_සංඛ්‍යා bit)
 {
       assert(idx < wid_);
 
-      const unsigned bits_per_word = 8 * sizeof(vec_[0]);
+      const unsigned bits_per_word = 8 * parimaa_na(vec_[0]);
       unsigned addr = idx/bits_per_word;
       unsigned long mask = idx%bits_per_word;
 
-      if (bit)
+      නම් (bit)
 	    vec_[addr] |= 1UL << mask;
-      else
+      නැතහොත්
 	    vec_[addr] &= ~(1UL << mask);
 }
 
@@ -2806,25 +2806,25 @@ void vvp_vector2_t::set_vec(unsigned adr, const vvp_vector2_t&that)
 {
       assert((adr + that.wid_) <= wid_);
 
-      for (unsigned idx = 0 ; idx < that.wid_ ; idx += 1)
+      සඳහා (unsigned idx = 0 ; idx < that.wid_ ; idx += 1)
 	    set_bit(adr+idx, that.value(idx));
 }
 
 bool vvp_vector2_t::is_NaN() const
 {
-      return wid_ == 0;
+      ආපසු wid_ == 0;
 }
 
 bool vvp_vector2_t::is_zero() const
 {
       const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
 
-      for (unsigned idx = 0; idx < words; idx += 1) {
-	    if (vec_[idx] == 0) continue;
-	    return false;
+      සඳහා (unsigned idx = 0; idx < words; idx += 1) {
+	    නම් (vec_[idx] == 0) continue;
+	    ආපසු false;
       }
 
-      return true;
+      ආපසු true;
 }
 
 /*
@@ -2835,29 +2835,29 @@ bool vvp_vector2_t::is_zero() const
 vvp_vector2_t pow(const vvp_vector2_t&x, vvp_vector2_t&y)
 {
         /* If we have a zero exponent just return 1. */
-      if (y == vvp_vector2_t(0L, 1)) {
-	    return vvp_vector2_t(1L, x.size());
+      නම් (y == vvp_vector2_t(0L, 1)) {
+	    ආපසු vvp_vector2_t(1L, x.size());
       }
 
         /* Is the value odd? */
-      if (y.value(0) == 1) {
+      නම් (y.value(0) == 1) {
 	    y.set_bit(0, 0);  // A quick subtract by 1.
 	    vvp_vector2_t res = x * pow(x, y);
-	    return res;
+	    ආපසු res;
       }
 
       y >>= 1;  // A fast divide by two. We know the LSB is zero.
       vvp_vector2_t z = pow(x, y);
       vvp_vector2_t res = z * z;
-      return res;
+      ආපසු res;
 }
 
 static void multiply_long(unsigned long a, unsigned long b,
 			  unsigned long&low, unsigned long&high)
 {
-      assert(sizeof(unsigned long) %2 == 0);
+      assert(parimaa_na(unsigned long) %2 == 0);
 
-      const unsigned long word_mask = (1UL << 4UL*sizeof(a)) - 1UL;
+      const unsigned long word_mask = (1UL << 4UL*parimaa_na(a)) - 1UL;
       unsigned long tmpa;
       unsigned long tmpb;
       unsigned long res[4];
@@ -2865,34 +2865,34 @@ static void multiply_long(unsigned long a, unsigned long b,
       tmpa = a & word_mask;
       tmpb = b & word_mask;
       res[0] = tmpa * tmpb;
-      res[1] = res[0] >> 4UL*sizeof(unsigned long);
+      res[1] = res[0] >> 4UL*parimaa_na(unsigned long);
       res[0] &= word_mask;
 
-      tmpa = (a >> 4UL*sizeof(unsigned long)) & word_mask;
+      tmpa = (a >> 4UL*parimaa_na(unsigned long)) & word_mask;
       res[1] += tmpa * tmpb;
-      res[2] = res[1] >> 4UL*sizeof(unsigned long);
+      res[2] = res[1] >> 4UL*parimaa_na(unsigned long);
       res[1] &= word_mask;
 
       tmpa = a & word_mask;
-      tmpb = (b >> 4UL*sizeof(unsigned long)) & word_mask;
+      tmpb = (b >> 4UL*parimaa_na(unsigned long)) & word_mask;
       res[1] += tmpa * tmpb;
-      res[2] += res[1] >> 4UL*sizeof(unsigned long);
-      res[3]  = res[2] >> 4UL*sizeof(unsigned long);
+      res[2] += res[1] >> 4UL*parimaa_na(unsigned long);
+      res[3]  = res[2] >> 4UL*parimaa_na(unsigned long);
       res[1] &= word_mask;
       res[2] &= word_mask;
 
-      tmpa = (a >> 4UL*sizeof(unsigned long)) & word_mask;
+      tmpa = (a >> 4UL*parimaa_na(unsigned long)) & word_mask;
       res[2] += tmpa * tmpb;
-      res[3] += res[2] >> 4UL*sizeof(unsigned long);
+      res[3] += res[2] >> 4UL*parimaa_na(unsigned long);
       res[2] &= word_mask;
 
-      high = (res[3] << 4UL*sizeof(unsigned long)) | res[2];
-      low  = (res[1] << 4UL*sizeof(unsigned long)) | res[0];
+      high = (res[3] << 4UL*parimaa_na(unsigned long)) | res[2];
+      low  = (res[1] << 4UL*parimaa_na(unsigned long)) | res[0];
 }
 
 vvp_vector2_t operator * (const vvp_vector2_t&a, const vvp_vector2_t&b)
 {
-      const unsigned bits_per_word = 8 * sizeof(a.vec_[0]);
+      const unsigned bits_per_word = 8 * parimaa_na(a.vec_[0]);
 
 	// The compiler ensures that the two operands are of equal size.
       assert(a.size() == b.size());
@@ -2900,21 +2900,21 @@ vvp_vector2_t operator * (const vvp_vector2_t&a, const vvp_vector2_t&b)
 
       unsigned words = (r.wid_ + bits_per_word - 1) / bits_per_word;
 
-      for (unsigned bdx = 0 ;  bdx < words ;  bdx += 1) {
+      සඳහා (unsigned bdx = 0 ;  bdx < words ;  bdx += 1) {
 	    unsigned long tmpb = b.vec_[bdx];
-	    if (tmpb == 0)
+	    නම් (tmpb == 0)
 		  continue;
 
-	    for (unsigned adx = 0 ;  adx < words ;  adx += 1) {
+	    සඳහා (unsigned adx = 0 ;  adx < words ;  adx += 1) {
 		  unsigned long tmpa = a.vec_[adx];
-		  if (tmpa == 0)
+		  නම් (tmpa == 0)
 			continue;
 
 		  unsigned long low, hig;
 		  multiply_long(tmpa, tmpb, low, hig);
 
 		  unsigned long carry = 0;
-		  for (unsigned sdx = 0
+		  සඳහා (unsigned sdx = 0
 			     ; (adx+bdx+sdx) < words
 			     ;  sdx += 1) {
 
@@ -2926,7 +2926,7 @@ vvp_vector2_t operator * (const vvp_vector2_t&a, const vvp_vector2_t&b)
 	    }
       }
 
-      return r;
+      ආපසු r;
 }
 
 static void div_mod (vvp_vector2_t dividend, vvp_vector2_t divisor,
@@ -2935,14 +2935,14 @@ static void div_mod (vvp_vector2_t dividend, vvp_vector2_t divisor,
 
       quotient = vvp_vector2_t(0, dividend.size());
 
-      if (divisor == quotient) {
+      නම් (divisor == quotient) {
 	    cerr << "ERROR: division by zero, exiting." << endl;
 	    exit(255);
       }
 
-      if (dividend < divisor) {
+      නම් (dividend < divisor) {
 	    remainder = dividend;
-	    return;
+	    ආපසු;
       }
 
       vvp_vector2_t mask (1, dividend.size());
@@ -2952,13 +2952,13 @@ static void div_mod (vvp_vector2_t dividend, vvp_vector2_t divisor,
       dividend = vvp_vector2_t(dividend, dividend.size()+1);
       vvp_vector2_t divtmp (divisor, dividend.size());
 
-      while (divtmp < dividend) {
+      අතරතුර (divtmp < dividend) {
 	    divtmp <<= 1;
 	    mask <<= 1;
       }
 
-      while (dividend >= divisor) {
-	    if (divtmp <= dividend) {
+      අතරතුර (dividend >= divisor) {
+	    නම් (divtmp <= dividend) {
 		  dividend -= divtmp;
 		  quotient += mask;
 	    }
@@ -2973,16 +2973,16 @@ static void div_mod (vvp_vector2_t dividend, vvp_vector2_t divisor,
 vvp_vector2_t operator - (const vvp_vector2_t&that)
 {
       vvp_vector2_t neg(that);
-      if (neg.wid_ == 0) return neg;
+      නම් (neg.wid_ == 0) ආපසු neg;
 
       const unsigned words = (neg.wid_ + neg.BITS_PER_WORD-1) /
                                          neg.BITS_PER_WORD;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
+      සඳහා (unsigned idx = 0 ;  idx < words ;  idx += 1) {
 	    neg.vec_[idx] = ~neg.vec_[idx];
       }
       neg += vvp_vector2_t(1, neg.wid_);
 
-      return neg;
+      ආපසු neg;
 }
 
 vvp_vector2_t operator / (const vvp_vector2_t&dividend,
@@ -2990,7 +2990,7 @@ vvp_vector2_t operator / (const vvp_vector2_t&dividend,
 {
       vvp_vector2_t quot, rem;
       div_mod(dividend, divisor, quot, rem);
-      return quot;
+      ආපසු quot;
 }
 
 vvp_vector2_t operator % (const vvp_vector2_t&dividend,
@@ -2998,7 +2998,7 @@ vvp_vector2_t operator % (const vvp_vector2_t&dividend,
 {
       vvp_vector2_t quot, rem;
       div_mod(dividend, divisor, quot, rem);
-      return rem;
+      ආපසු rem;
 }
 
 bool operator > (const vvp_vector2_t&a, const vvp_vector2_t&b)
@@ -3008,18 +3008,18 @@ bool operator > (const vvp_vector2_t&a, const vvp_vector2_t&b)
 
       const unsigned words = awords > bwords? awords : bwords;
 
-      for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
+      සඳහා (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
 	    unsigned long aw = (idx <= awords)? a.vec_[idx-1] : 0;
 	    unsigned long bw = (idx <= bwords)? b.vec_[idx-1] : 0;
 
-	    if (aw > bw)
-		  return true;
-	    if (aw < bw)
-		  return false;
+	    නම් (aw > bw)
+		  ආපසු true;
+	    නම් (aw < bw)
+		  ආපසු false;
       }
 
 	// If the above loop finishes, then the vectors are equal.
-      return false;
+      ආපසු false;
 }
 
 bool operator >= (const vvp_vector2_t&a, const vvp_vector2_t&b)
@@ -3029,18 +3029,18 @@ bool operator >= (const vvp_vector2_t&a, const vvp_vector2_t&b)
 
       const unsigned words = awords > bwords? awords : bwords;
 
-      for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
+      සඳහා (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
 	    unsigned long aw = (idx <= awords)? a.vec_[idx-1] : 0;
 	    unsigned long bw = (idx <= bwords)? b.vec_[idx-1] : 0;
 
-	    if (aw > bw)
-		  return true;
-	    if (aw < bw)
-		  return false;
+	    නම් (aw > bw)
+		  ආපසු true;
+	    නම් (aw < bw)
+		  ආපසු false;
       }
 
 	// If the above loop finishes, then the vectors are equal.
-      return true;
+      ආපසු true;
 }
 
 bool operator < (const vvp_vector2_t&a, const vvp_vector2_t&b)
@@ -3049,21 +3049,21 @@ bool operator < (const vvp_vector2_t&a, const vvp_vector2_t&b)
       const unsigned bwords = (b.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
 
       unsigned words = awords;
-      if (bwords > words)
+      නම් (bwords > words)
 	    words = bwords;
 
-      for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
+      සඳහා (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
 	    unsigned long aw = (idx <= awords)? a.vec_[idx-1] : 0;
 	    unsigned long bw = (idx <= bwords)? b.vec_[idx-1] : 0;
 
-	    if (aw < bw)
-		  return true;
-	    if (aw > bw)
-		  return false;
+	    නම් (aw < bw)
+		  ආපසු true;
+	    නම් (aw > bw)
+		  ආපසු false;
       }
 
 	// If the above loop finishes, then the vectors are equal.
-      return false;
+      ආපසු false;
 }
 
 bool operator <= (const vvp_vector2_t&a, const vvp_vector2_t&b)
@@ -3073,15 +3073,15 @@ bool operator <= (const vvp_vector2_t&a, const vvp_vector2_t&b)
 
       const unsigned awords = (a.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
 
-      for (unsigned idx = awords ;  idx > 0 ;  idx -= 1) {
-	    if (a.vec_[idx-1] < b.vec_[idx-1])
-		  return true;
-	    if (a.vec_[idx-1] > b.vec_[idx-1])
-		  return false;
+      සඳහා (unsigned idx = awords ;  idx > 0 ;  idx -= 1) {
+	    නම් (a.vec_[idx-1] < b.vec_[idx-1])
+		  ආපසු true;
+	    නම් (a.vec_[idx-1] > b.vec_[idx-1])
+		  ආපසු false;
       }
 
 	// If the above loop finishes, then the vectors are equal.
-      return true;
+      ආපසු true;
 }
 
 bool operator == (const vvp_vector2_t&a, const vvp_vector2_t&b)
@@ -3091,18 +3091,18 @@ bool operator == (const vvp_vector2_t&a, const vvp_vector2_t&b)
 
       const unsigned words = awords > bwords? awords : bwords;
 
-      for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
+      සඳහා (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
 	    unsigned long aw = (idx <= awords)? a.vec_[idx-1] : 0;
 	    unsigned long bw = (idx <= bwords)? b.vec_[idx-1] : 0;
 
-	    if (aw > bw)
-		  return false;
-	    if (aw < bw)
-		  return false;
+	    නම් (aw > bw)
+		  ආපසු false;
+	    නම් (aw < bw)
+		  ආපසු false;
       }
 
 	// If the above loop finishes, then the vectors are equal.
-      return true;
+      ආපසු true;
 }
 
 
@@ -3110,96 +3110,96 @@ vvp_vector4_t vector2_to_vector4(const vvp_vector2_t&that, unsigned wid)
 {
       vvp_vector4_t res (wid);
 
-      for (unsigned idx = 0 ;  idx < res.size() ;  idx += 1) {
+      සඳහා (unsigned idx = 0 ;  idx < res.size() ;  idx += 1) {
 	    vvp_bit4_t bit = BIT4_0;
 
-	    if (that.value(idx))
+	    නම් (that.value(idx))
 		  bit = BIT4_1;
 
 	    res.set_bit(idx, bit);
       }
 
-      return res;
+      ආපසු res;
 }
 
-static bool c4string_header_test(const char*str)
+static bool c4string_header_test(const var_na*str)
 {
-      if ((str[0] != 'C') && (str[0] != 'c'))
-	    return false;
-      if ((str[1] != '4') || (str[2] != '<'))
-	    return false;
-      return true;
+      නම් ((str[0] != 'C') && (str[0] != 'c'))
+	    ආපසු false;
+      නම් ((str[1] != '4') || (str[2] != '<'))
+	    ආපසු false;
+      ආපසු true;
 }
 
-bool c4string_test(const char*str)
+bool c4string_test(const var_na*str)
 {
-      if (!c4string_header_test(str))
-	    return false;
+      නම් (!c4string_header_test(str))
+	    ආපසු false;
       size_t value_size = strspn(str+3, "01xz");
-      if (str[3+value_size] != '>')
-	    return false;
-      if (str[3+value_size+1] != 0)
-	    return false;
+      නම් (str[3+value_size] != '>')
+	    ආපසු false;
+      නම් (str[3+value_size+1] != 0)
+	    ආපසු false;
 
-      return true;
+      ආපසු true;
 }
 
-vvp_vector4_t c4string_to_vector4(const char*str)
+vvp_vector4_t c4string_to_vector4(const var_na*str)
 {
       assert(c4string_header_test(str));
 
       str += 3;
-      const char*tp = str + strspn(str,"01xz");
+      const var_na*tp = str + strspn(str,"01xz");
       assert(tp[0] == '>');
 
       vvp_vector4_t tmp (tp-str);
 
-      for (unsigned idx = 0 ;  idx < tmp.size() ;  idx += 1) {
+      සඳහා (unsigned idx = 0 ;  idx < tmp.size() ;  idx += 1) {
 	    vvp_bit4_t bit;
 	    switch (str[idx]) {
-		case '0':
+		pak_sa '0':
 		  bit = BIT4_0;
-		  break;
-		case '1':
+		  bha_nga;
+		pak_sa '1':
 		  bit = BIT4_1;
-		  break;
-		case 'x':
+		  bha_nga;
+		pak_sa 'x':
 		  bit = BIT4_X;
-		  break;
-		case 'z':
+		  bha_nga;
+		pak_sa 'z':
 		  bit = BIT4_Z;
-		  break;
+		  bha_nga;
 		default:
 		  fprintf(stderr, "Unsupported bit value %c(%d).\n", str[idx],
 		          str[idx]);
 		  assert(0);
 		  bit = BIT4_0;
-		  break;
+		  bha_nga;
 	    }
 	    tmp.set_bit(tmp.size()-idx-1, bit);
       }
 
-      return tmp;
+      ආපසු tmp;
 }
 
 ostream& operator<< (ostream&out, const vvp_vector2_t&that)
 {
-      if (that.is_NaN()) {
+      නම් (that.is_NaN()) {
 	    out << "NaN";
 
-      } else {
+      } නැතහොත් {
 	    out << vector2_to_vector4(that, that.size());
       }
-      return out;
+      ආපසු out;
 }
 
 vvp_vector8_t::vvp_vector8_t(const vvp_vector8_t&that)
 {
       size_ = that.size_;
-      if (size_ <= sizeof(val_)) {
-	    memcpy(val_, that.val_, sizeof val_);
-      } else {
-	    ptr_ = new unsigned char[size_];
+      නම් (size_ <= parimaa_na(val_)) {
+	    memcpy(val_, that.val_, parimaa_na val_);
+      } නැතහොත් {
+	    ptr_ = new unsigned var_na[size_];
 	    memcpy(ptr_, that.ptr_, size_);
       }
 }
@@ -3208,16 +3208,16 @@ vvp_vector8_t::vvp_vector8_t(const vvp_vector4_t&that,
 			     unsigned str0, unsigned str1)
 : size_(that.size())
 {
-      if (size_ == 0)
-	    return;
+      නම් (size_ == 0)
+	    ආපසු;
 
-      if (size_ <= sizeof(val_)) {
+      නම් (size_ <= parimaa_na(val_)) {
 	    ptr_ = 0; // Prefill all val_ bytes
-	    for (unsigned idx = 0 ; idx < size_ ; idx += 1)
+	    සඳහා (unsigned idx = 0 ; idx < size_ ; idx += 1)
 		  val_[idx] = vvp_scalar_t(that.value(idx),str0, str1).raw();
-      } else {
-	    ptr_ = new unsigned char[size_];
-	    for (unsigned idx = 0 ;  idx < size_ ;  idx += 1)
+      } නැතහොත් {
+	    ptr_ = new unsigned var_na[size_];
+	    සඳහා (unsigned idx = 0 ;  idx < size_ ;  idx += 1)
 		  ptr_[idx] = vvp_scalar_t(that.value(idx), str0, str1).raw();
       }
 }
@@ -3226,16 +3226,16 @@ vvp_vector8_t::vvp_vector8_t(const vvp_vector2_t&that,
 			     unsigned str0, unsigned str1)
 : size_(that.size())
 {
-      if (size_ == 0)
-	    return;
+      නම් (size_ == 0)
+	    ආපසු;
 
-      if (size_ <= sizeof(val_)) {
+      නම් (size_ <= parimaa_na(val_)) {
 	    ptr_ = 0;
-	    for (unsigned idx = 0 ; idx < size_ ; idx += 1)
+	    සඳහා (unsigned idx = 0 ; idx < size_ ; idx += 1)
 		  val_[idx] = vvp_scalar_t(that.value(idx)? BIT4_1:BIT4_0, str0, str1).raw();
-      } else {
-	    ptr_ = new unsigned char[size_];
-	    for (unsigned idx = 0 ; idx < size_ ; idx += 1)
+      } නැතහොත් {
+	    ptr_ = new unsigned var_na[size_];
+	    සඳහා (unsigned idx = 0 ; idx < size_ ; idx += 1)
 		  ptr_[idx] = vvp_scalar_t(that.value(idx)? BIT4_1:BIT4_0, str0, str1).raw();
       }
 }
@@ -3245,56 +3245,56 @@ const vvp_vector8_t vvp_vector8_t::nil;
 vvp_vector8_t& vvp_vector8_t::operator= (const vvp_vector8_t&that)
 {
 	// Assign to self.
-      if (this == &that)
-	    return *this;
+      නම් (this == &that)
+	    ආපසු *this;
 
-      if (size_ != that.size_) {
-	    if (size_ > sizeof(val_))
+      නම් (size_ != that.size_) {
+	    නම් (size_ > parimaa_na(val_))
 		  delete[]ptr_;
 	    size_ = 0;
       }
 
-      if (that.size_ == 0) {
+      නම් (that.size_ == 0) {
 	    assert(size_ == 0);
-	    return *this;
+	    ආපසු *this;
       }
 
-      if (that.size_ <= sizeof(val_)) {
+      නම් (that.size_ <= parimaa_na(val_)) {
 	    size_ = that.size_;
-	    memcpy(val_, that.val_, sizeof(val_));
-	    return *this;
+	    memcpy(val_, that.val_, parimaa_na(val_));
+	    ආපසු *this;
       }
 
-      if (size_ == 0) {
+      නම් (size_ == 0) {
 	    size_ = that.size_;
-	    ptr_ = new unsigned char[size_];
+	    ptr_ = new unsigned var_na[size_];
       }
 
       memcpy(ptr_, that.ptr_, size_);
 
-      return *this;
+      ආපසු *this;
 }
 
 vvp_vector8_t vvp_vector8_t::subvalue(unsigned base, unsigned wid) const
 {
       vvp_vector8_t tmp (wid);
 
-      unsigned char*tmp_ptr = tmp.size_ <= sizeof(val_) ? tmp.val_ : tmp.ptr_;
-      const unsigned char*use_ptr = size_ <= sizeof(val_) ? val_ : ptr_;
+      unsigned var_na*tmp_ptr = tmp.size_ <= parimaa_na(val_) ? tmp.val_ : tmp.ptr_;
+      const unsigned var_na*use_ptr = size_ <= parimaa_na(val_) ? val_ : ptr_;
 
       unsigned idx = 0;
-      while ((idx < wid) && (base+idx < size_)) {
+      අතරතුර ((idx < wid) && (base+idx < size_)) {
 	    tmp_ptr[idx] = use_ptr[base+idx];
 	    idx += 1;
       }
 
-      return tmp;
+      ආපසු tmp;
 }
 
 void vvp_vector8_t::set_vec(unsigned base, const vvp_vector8_t&that)
 {
       assert((base+that.size()) <= size());
-      for (unsigned idx = 0 ; idx < that.size() ; idx += 1)
+      සඳහා (unsigned idx = 0 ; idx < that.size() ; idx += 1)
 	    set_bit(base+idx, that.value(idx));
 }
 
@@ -3303,51 +3303,51 @@ vvp_vector8_t part_expand(const vvp_vector8_t&that, unsigned wid, unsigned off)
       assert(off < wid);
       vvp_vector8_t tmp (wid);
 
-      unsigned char* tmp_ptr = tmp.size_<= sizeof(tmp.val_) ?
+      unsigned var_na* tmp_ptr = tmp.size_<= parimaa_na(tmp.val_) ?
                                tmp.val_ : tmp.ptr_;
-      const unsigned char* that_ptr = that.size_<= sizeof(that.val_) ?
+      const unsigned var_na* that_ptr = that.size_<= parimaa_na(that.val_) ?
                                       that.val_ : that.ptr_;
 
       unsigned idx = off;
 
-      while (idx < wid && that.size_ > (idx-off)) {
+      අතරතුර (idx < wid && that.size_ > (idx-off)) {
 	    tmp_ptr[idx] = that_ptr[idx-off];
 	    idx += 1;
       }
 
-      return tmp;
+      ආපසු tmp;
 }
 
-static bool c8string_header_test(const char*str)
+static bool c8string_header_test(const var_na*str)
 {
-      if ((str[0] != 'C') && (str[0] != 'c'))
-	    return false;
-      if ((str[1] != '8') || (str[2] != '<'))
-	    return false;
-      return true;
+      නම් ((str[0] != 'C') && (str[0] != 'c'))
+	    ආපසු false;
+      නම් ((str[1] != '8') || (str[2] != '<'))
+	    ආපසු false;
+      ආපසු true;
 }
 
-bool c8string_test(const char*str)
+bool c8string_test(const var_na*str)
 {
-      if (!c8string_header_test(str))
-	    return false;
+      නම් (!c8string_header_test(str))
+	    ආපසු false;
 
-      const char*cp = str+3;
-      for (;; cp += 1) {
-	    if (cp[0] == '>' && cp[1] == 0) return true;
-	    if (cp[0] >= '0' && cp[0] <= '9') continue;
-	    if (cp[0] == 'x') continue;
-	    if (cp[0] == 'z') continue;
-	    return false;
+      const var_na*cp = str+3;
+      සඳහා (;; cp += 1) {
+	    නම් (cp[0] == '>' && cp[1] == 0) ආපසු true;
+	    නම් (cp[0] >= '0' && cp[0] <= '9') continue;
+	    නම් (cp[0] == 'x') continue;
+	    නම් (cp[0] == 'z') continue;
+	    ආපසු false;
       }
-      return false;
+      ආපසු false;
 }
 /*
  * The format of a C8<> string is:
  *   C8<aaabbbccc...>
  * where aaa... is a 3 character bit descriptor.
  */
-vvp_vector8_t c8string_to_vector8(const char*str)
+vvp_vector8_t c8string_to_vector8(const var_na*str)
 {
       assert(c8string_header_test(str));
 
@@ -3356,39 +3356,39 @@ vvp_vector8_t c8string_to_vector8(const char*str)
       vsize /= 3;
       vvp_vector8_t tmp (vsize);
 
-      for (size_t idx = 0 ; idx < vsize ; idx += 1) {
-	    const char*cp = str+3+3*idx;
+      සඳහා (size_t idx = 0 ; idx < vsize ; idx += 1) {
+	    const var_na*cp = str+3+3*idx;
 	    vvp_bit4_t bit = BIT4_X;
 	    unsigned dr0 = cp[0]-'0';
 	    unsigned dr1 = cp[1]-'0';
 	    switch (cp[2]) {
-		case '0':
+		pak_sa '0':
 		  bit = BIT4_0;
-		  break;
-		case '1':
+		  bha_nga;
+		pak_sa '1':
 		  bit = BIT4_1;
-		  break;
-		case 'x':
+		  bha_nga;
+		pak_sa 'x':
 		  bit = BIT4_X;
-		  break;
-		case 'z':
+		  bha_nga;
+		pak_sa 'z':
 		  bit = BIT4_Z;
-		  break;
+		  bha_nga;
 	    }
 	    tmp.set_bit(vsize-idx-1, vvp_scalar_t(bit, dr0, dr1));
       }
 
-      return tmp;
+      ආපසු tmp;
 }
 
 ostream& operator<<(ostream&out, const vvp_vector8_t&that)
 {
       out << "C8<";
-      for (unsigned idx = 0 ;  idx < that.size() ; idx += 1)
+      සඳහා (unsigned idx = 0 ;  idx < that.size() ; idx += 1)
 	    out << that.value(that.size()-idx-1);
 
       out << ">";
-      return out;
+      ආපසු out;
 }
 
 vvp_net_fun_t::vvp_net_fun_t()
@@ -3463,7 +3463,7 @@ void vvp_net_fun_t::recv_vec8_pv(vvp_net_ptr_t port, const vvp_vector8_t&bit,
       recv_vec4_pv(port, reduce4(bit), base, vwid, 0);
 }
 
-void vvp_net_fun_t::recv_real(vvp_net_ptr_t, double bit, vvp_context_t)
+void vvp_net_fun_t::recv_real(vvp_net_ptr_t, dviguu_na bit, vvp_context_t)
 {
       fprintf(stderr, "internal error: %s: recv_real(%f) not implemented\n",
 	      typeid(*this).name(), bit);
@@ -3535,19 +3535,19 @@ vvp_wide_fun_core::~vvp_wide_fun_core()
 void vvp_wide_fun_core::propagate_vec4(const vvp_vector4_t&bit,
 				       vvp_time64_t delay)
 {
-      if (delay)
+      නම් (delay)
 	    schedule_propagate_vector(ptr_, delay, bit);
-      else
+      නැතහොත්
 	    ptr_->send_vec4(bit, 0);
 }
 
-void vvp_wide_fun_core::propagate_real(double bit,
+void vvp_wide_fun_core::propagate_real(dviguu_na bit,
 				       vvp_time64_t delay)
 {
-      if (delay) {
+      නම් (delay) {
 	      // schedule_assign_vector(ptr_->out, bit, delay);
 	    assert(0); // Need a real-value version of assign_vector.
-      } else {
+      } නැතහොත් {
 	    ptr_->send_real(bit, 0);
       }
 }
@@ -3555,21 +3555,21 @@ void vvp_wide_fun_core::propagate_real(double bit,
 
 unsigned vvp_wide_fun_core::port_count() const
 {
-      return nports_;
+      ආපසු nports_;
 }
 
 vvp_vector4_t& vvp_wide_fun_core::value(unsigned idx)
 {
       assert(idx < nports_);
-      if (port_values_ == 0)
+      නම් (port_values_ == 0)
 	    port_values_ = new vvp_vector4_t [nports_];
-      return port_values_[idx];
+      ආපසු port_values_[idx];
 }
 
-double vvp_wide_fun_core::value_r(unsigned idx)
+dviguu_na vvp_wide_fun_core::value_r(unsigned idx)
 {
       assert(idx < nports_);
-      return port_rvalues_? port_rvalues_[idx] : 0.0;
+      ආපසු port_rvalues_? port_rvalues_[idx] : 0.0;
 }
 
 void vvp_wide_fun_core::recv_real_from_inputs(unsigned)
@@ -3581,16 +3581,16 @@ void vvp_wide_fun_core::dispatch_vec4_from_input_(unsigned port,
 						  const vvp_vector4_t&bit)
 {
       assert(port < nports_);
-      if (port_values_ == 0) port_values_ = new vvp_vector4_t [nports_];
+      නම් (port_values_ == 0) port_values_ = new vvp_vector4_t [nports_];
       port_values_[port] = bit;
       recv_vec4_from_inputs(port);
 }
 
 void vvp_wide_fun_core::dispatch_real_from_input_(unsigned port,
-						  double bit)
+						  dviguu_na bit)
 {
       assert(port < nports_);
-      if (port_rvalues_ == 0) port_rvalues_ = new double[nports_];
+      නම් (port_rvalues_ == 0) port_rvalues_ = new dviguu_na[nports_];
       port_rvalues_[port] = bit;
       recv_real_from_inputs(port);
 }
@@ -3617,7 +3617,7 @@ void vvp_wide_fun_t::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       recv_vec4_pv_(ptr, bit, base, vwid, ctx);
 }
 
-void vvp_wide_fun_t::recv_real(vvp_net_ptr_t port, double bit,
+void vvp_wide_fun_t::recv_real(vvp_net_ptr_t port, dviguu_na bit,
                                vvp_context_t)
 {
       unsigned pidx = port_base_ + port.port();
@@ -3669,32 +3669,32 @@ void vvp_wide_fun_t::recv_real(vvp_net_ptr_t port, double bit,
 
 unsigned vvp_scalar_t::strength0() const
 {
-      return STREN0(value_);
+      ආපසු STREN0(value_);
 }
 
 unsigned vvp_scalar_t::strength1() const
 {
-      return STREN1(value_);
+      ආපසු STREN1(value_);
 }
 
 ostream& operator <<(ostream&out, vvp_scalar_t a)
 {
       out << a.strength0() << a.strength1();
       switch (a.value()) {
-	  case BIT4_0:
+	  pak_sa BIT4_0:
 	    out << "0";
-	    break;
-	  case BIT4_1:
+	    bha_nga;
+	  pak_sa BIT4_1:
 	    out << "1";
-	    break;
-	  case BIT4_X:
+	    bha_nga;
+	  pak_sa BIT4_X:
 	    out << "X";
-	    break;
-	  case BIT4_Z:
+	    bha_nga;
+	  pak_sa BIT4_Z:
 	    out << "Z";
-	    break;
+	    bha_nga;
       }
-      return out;
+      ආපසු out;
 }
 
 /*
@@ -3705,31 +3705,31 @@ ostream& operator <<(ostream&out, vvp_scalar_t a)
 vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b)
 {
 
-      if (UNAMBIG(a.value_) && UNAMBIG(b.value_)) {
+      නම් (UNAMBIG(a.value_) && UNAMBIG(b.value_)) {
 
 	      /* If both signals are unambiguous, simply choose
 		 the stronger. If they have the same strength
 		 but different values, then this becomes
 		 ambiguous. */
 
-	    if ((b.value_&0x07) > (a.value_&0x07)) {
+	    නම් ((b.value_&0x07) > (a.value_&0x07)) {
 
 		    /* b value is stronger. Take it. */
-		  return b;
+		  ආපසු b;
 
-	    } else if ((b.value_&0x77) == (a.value_&0x77)) {
+	    } නැතහොත් නම් ((b.value_&0x77) == (a.value_&0x77)) {
 
 		    // Strengths are the same. Since we know already
 		    // that the values are not the same, Make value
 		    // into "x".
 		  vvp_scalar_t tmp (a);
 		  tmp.value_ = (tmp.value_&0x77) | 0x80;
-		  return tmp;
+		  ආපසු tmp;
 
-	    } else {
+	    } නැතහොත් {
 
 		    /* Must be "a" is the stronger one. */
-		  return a;
+		  ආපසු a;
 	    }
 
       }
@@ -3738,36 +3738,36 @@ vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b)
 	   will sweep up the weaker parts of the ambiguous
 	   signal. The result may be ambiguous, or maybe not. */
 
-      if (UNAMBIG(a.value_)) {
+      නම් (UNAMBIG(a.value_)) {
 	    vvp_scalar_t res;
 
-	    if ((a.value_&0x70) > (b.value_&0x70))
+	    නම් ((a.value_&0x70) > (b.value_&0x70))
 		  res.value_ |= a.value_&0xf0;
-	    else
+	    නැතහොත්
 		  res.value_ |= b.value_&0xf0;
 
-	    if ((a.value_&0x07) > (b.value_&0x07))
+	    නම් ((a.value_&0x07) > (b.value_&0x07))
 		  res.value_ |= a.value_&0x0f;
-	    else
+	    නැතහොත්
 		  res.value_ |= b.value_&0x0f;
 
-	    return res;
+	    ආපසු res;
 
-      } else if (UNAMBIG(b.value_)) {
+      } නැතහොත් නම් (UNAMBIG(b.value_)) {
 
 	    vvp_scalar_t res;
 
-	    if ((b.value_&0x70) > (a.value_&0x70))
+	    නම් ((b.value_&0x70) > (a.value_&0x70))
 		  res.value_ |= b.value_&0xf0;
-	    else
+	    නැතහොත්
 		  res.value_ |= a.value_&0xf0;
 
-	    if ((b.value_&0x07) > (a.value_&0x07))
+	    නම් ((b.value_&0x07) > (a.value_&0x07))
 		  res.value_ |= b.value_&0x0f;
-	    else
+	    නැතහොත්
 		  res.value_ |= a.value_&0x0f;
 
-	    return res;
+	    ආපසු res;
 
       }
 
@@ -3776,42 +3776,42 @@ vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b)
 	   has an even wider ambiguity. */
 
       unsigned tmp = 0;
-      int sv1a = (a.value_ & 0x80) ? STREN1(a.value_) : - STREN1(a.value_);
-      int sv0a = (a.value_ & 0x08) ? STREN0(a.value_) : - STREN0(a.value_);
-      int sv1b = (b.value_ & 0x80) ? STREN1(b.value_) : - STREN1(b.value_);
-      int sv0b = (b.value_ & 0x08) ? STREN0(b.value_) : - STREN0(b.value_);
+      පූර්ණ_සංඛ්‍යා sv1a = (a.value_ & 0x80) ? STREN1(a.value_) : - STREN1(a.value_);
+      පූර්ණ_සංඛ්‍යා sv0a = (a.value_ & 0x08) ? STREN0(a.value_) : - STREN0(a.value_);
+      පූර්ණ_සංඛ්‍යා sv1b = (b.value_ & 0x80) ? STREN1(b.value_) : - STREN1(b.value_);
+      පූර්ණ_සංඛ්‍යා sv0b = (b.value_ & 0x08) ? STREN0(b.value_) : - STREN0(b.value_);
 
-      int sv1 = sv1a;
-      int sv0 = sv0a;
+      පූර්ණ_සංඛ්‍යා sv1 = sv1a;
+      පූර්ණ_සංඛ්‍යා sv0 = sv0a;
 
-      if (sv0a > sv1)
+      නම් (sv0a > sv1)
 	    sv1 = sv0a;
-      if (sv1b > sv1)
+      නම් (sv1b > sv1)
 	    sv1 = sv1b;
-      if (sv0b > sv1)
+      නම් (sv0b > sv1)
 	    sv1 = sv0b;
 
-      if (sv1a < sv0)
+      නම් (sv1a < sv0)
 	    sv0 = sv1a;
-      if (sv1b < sv0)
+      නම් (sv1b < sv0)
 	    sv0 = sv1b;
-      if (sv0b < sv0)
+      නම් (sv0b < sv0)
 	    sv0 = sv0b;
 
-      if (sv1 > 0) {
+      නම් (sv1 > 0) {
 	    tmp |= 0x80;
 	    tmp |= sv1 << 4;
-      } else {
+      } නැතහොත් {
 	      /* Set the MSB when both arguments MSBs are set. This
 		 can only happen if both one strengths are zero. */
 	    tmp |= (a.value_&b.value_)&0x80;
 	    tmp |= (-sv1) << 4;
       }
 
-      if (sv0 > 0) {
+      නම් (sv0 > 0) {
 	    tmp |= 0x08;
 	    tmp |= sv0;
-      } else {
+      } නැතහොත් {
 	    tmp |= (-sv0);
       }
 
@@ -3819,10 +3819,10 @@ vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b)
       res.value_ = tmp;
 
 	/* Canonicalize the HiZ value. */
-      if ((res.value_&0x77) == 0)
+      නම් ((res.value_&0x77) == 0)
 	    res.value_ = 0;
 
-      return res;
+      ආපසු res;
 }
 
 unsigned vvp_switch_strength_map[2][8] = {
@@ -3851,60 +3851,60 @@ unsigned vvp_switch_strength_map[2][8] = {
 vvp_vector4_t reduce4(const vvp_vector8_t&that)
 {
       vvp_vector4_t out (that.size());
-      for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1)
+      සඳහා (unsigned idx = 0 ;  idx < out.size() ;  idx += 1)
 	    out.set_bit(idx, that.value(idx).value());
 
-      return out;
+      ආපසු out;
 }
 
 vvp_bit4_t compare_gtge(const vvp_vector4_t&lef, const vvp_vector4_t&rig,
 			vvp_bit4_t out_if_equal)
 {
       unsigned min_size = lef.size();
-      if (rig.size() < min_size)
+      නම් (rig.size() < min_size)
 	    min_size = rig.size();
 
 	// If one of the inputs is nil, treat is as all X values, and
 	// that makes the result BIT4_X.
-      if (min_size == 0)
-	    return BIT4_X;
+      නම් (min_size == 0)
+	    ආපසු BIT4_X;
 
 	// As per the IEEE1364 definition of >, >=, < and <=, if there
 	// are any X or Z values in either of the operand vectors,
 	// then the result of the compare is BIT4_X.
 
 	// Check for X/Z in the left operand
-      if (lef.has_xz())
-	    return BIT4_X;
+      නම් (lef.has_xz())
+	    ආපසු BIT4_X;
 
 	// Check for X/Z in the right operand
-      if (rig.has_xz())
-	    return BIT4_X;
+      නම් (rig.has_xz())
+	    ආපසු BIT4_X;
 
-      for (unsigned idx = lef.size() ; idx > rig.size() ;  idx -= 1) {
-	    if (lef.value(idx-1) == BIT4_1)
-		  return BIT4_1;
+      සඳහා (unsigned idx = lef.size() ; idx > rig.size() ;  idx -= 1) {
+	    නම් (lef.value(idx-1) == BIT4_1)
+		  ආපසු BIT4_1;
       }
 
-      for (unsigned idx = rig.size() ; idx > lef.size() ;  idx -= 1) {
-	    if (rig.value(idx-1) == BIT4_1)
-		  return BIT4_0;
+      සඳහා (unsigned idx = rig.size() ; idx > lef.size() ;  idx -= 1) {
+	    නම් (rig.value(idx-1) == BIT4_1)
+		  ආපසු BIT4_0;
       }
 
-      for (unsigned idx = min_size ; idx > 0 ;  idx -= 1) {
+      සඳහා (unsigned idx = min_size ; idx > 0 ;  idx -= 1) {
 	    vvp_bit4_t lv = lef.value(idx-1);
 	    vvp_bit4_t rv = rig.value(idx-1);
 
-	    if (lv == rv)
+	    නම් (lv == rv)
 		  continue;
 
-	    if (lv == BIT4_1)
-		  return BIT4_1;
-	    else
-		  return BIT4_0;
+	    නම් (lv == BIT4_1)
+		  ආපසු BIT4_1;
+	    නැතහොත්
+		  ආපසු BIT4_0;
       }
 
-      return out_if_equal;
+      ආපසු out_if_equal;
 }
 
 vvp_bit4_t compare_gtge_signed(const vvp_vector4_t&a,
@@ -3917,22 +3917,22 @@ vvp_bit4_t compare_gtge_signed(const vvp_vector4_t&a,
       vvp_bit4_t a_sign = a.value(sign_idx);
       vvp_bit4_t b_sign = b.value(sign_idx);
 
-      if (bit4_is_xz(a_sign))
-	    return BIT4_X;
-      if (bit4_is_xz(b_sign))
-	    return BIT4_X;
+      නම් (bit4_is_xz(a_sign))
+	    ආපසු BIT4_X;
+      නම් (bit4_is_xz(b_sign))
+	    ආපසු BIT4_X;
 
-      if (a_sign == b_sign)
-	    return compare_gtge(a, b, out_if_equal);
+      නම් (a_sign == b_sign)
+	    ආපසු compare_gtge(a, b, out_if_equal);
 
-      if (a.has_xz())
-	    return BIT4_X;
+      නම් (a.has_xz())
+	    ආපසු BIT4_X;
 
-      if (b.has_xz())
-	    return BIT4_X;
+      නම් (b.has_xz())
+	    ආපසු BIT4_X;
 
-      if(a_sign == BIT4_0)
-	    return BIT4_1;
-      else
-	    return BIT4_0;
+      නම්(a_sign == BIT4_0)
+	    ආපසු BIT4_1;
+      නැතහොත්
+	    ආපසු BIT4_0;
 }

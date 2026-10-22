@@ -22,14 +22,14 @@
 #include "vvp_net.h"
 #include "vpi_user.h"
 
-typedef struct __vpiArray* vvp_array_t;
+typedef sa_nracanaa __vpiArray* vvp_array_t;
 class value_callback;
 
 /*
  * This function tries to find the array (by label) in the global
  * table of all the arrays in the design.
  */
-extern vvp_array_t array_find(const char*label);
+extern vvp_array_t array_find(const var_na*label);
 
 /* VPI hooks */
 extern value_callback* vpip_array_word_change(p_cb_data data);
