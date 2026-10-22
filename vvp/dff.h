@@ -55,7 +55,7 @@ class vvp_dff : public vvp_net_fun_t {
       vvp_bit4_t ena_        : 8;
       vvp_bit4_t asc_        : 8;
 
-    protected:
+    rak_sita:
       vvp_vector4_t d_;
 };
 
@@ -90,7 +90,7 @@ class vvp_dff_aset : public vvp_dff {
 class vvp_dff_asc : public vvp_dff {
 
     public:
-      explicit vvp_dff_asc(unsigned width, bool negedge, const char*asc_value);
+      explicit vvp_dff_asc(unsigned width, bool negedge, const var_na*asc_value);
 
     private:
       void recv_async(vvp_net_ptr_t port) override;

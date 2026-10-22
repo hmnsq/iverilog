@@ -60,17 +60,17 @@ void vvp_fun_substitute::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
       unsigned pdx = port.port();
       assert(pdx <= 1);
 
-      if (pdx == 0) {
+      ᱡᱩᱫᱤ (pdx == 0) {
 	    assert(bit.size() == wid_);
 
 	    for (unsigned idx = 0 ; idx < wid_ ; idx += 1) {
-		  if (idx >= soff_ && idx < (soff_+swid_))
+		  ᱡᱩᱫᱤ (idx >= soff_ && idx < (soff_+swid_))
 			continue;
 
 		  val_.set_bit(idx, bit.value(idx));
 	    }
 
-      } else {
+      } ᱵᱟᱝ {
 	    assert(bit.size() == swid_);
 
 	    for (unsigned idx = 0 ; idx < swid_ ; idx += 1)
@@ -86,9 +86,9 @@ void vvp_fun_substitute::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit
       recv_vec4_pv_(ptr, bit, base, vwid, ctx);
 }
 
-void compile_substitute(char*label, unsigned width,
+void compile_substitute(var_na*label, unsigned width,
 			unsigned soff, unsigned swidth,
-			unsigned argc, struct symb_s*argv)
+			unsigned argc, sa_nracanaa symb_s*argv)
 {
       vvp_fun_substitute*fun = new vvp_fun_substitute(width, soff, swidth);
 

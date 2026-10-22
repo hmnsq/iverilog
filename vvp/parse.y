@@ -36,7 +36,7 @@ using namespace std;
  */
 extern FILE*yyin;
 
-vector <const char*> file_names;
+vector <const var_na*> file_names;
 
 /*
  * Local variables.
@@ -46,33 +46,33 @@ vector <const char*> file_names;
  * When parsing a modpath list, this is the processed destination that
  * the source items will attach themselves to.
  */
-static struct __vpiModPath*modpath_dst = 0;
+static sa_nracanaa __vpiModPath*modpath_dst = 0;
 %}
 
-%union {
-      char*text;
-      char **table;
+%sa_ngha {
+      var_na*text;
+      var_na **table;
       uint64_t numb;
       bool flag;
 
       comp_operands_t opa;
 
-      struct symb_s  symb;
-      struct symbv_s symbv;
+      sa_nracanaa symb_s  symb;
+      sa_nracanaa symbv_s symbv;
 
-      struct numbv_s numbv;
+      sa_nracanaa numbv_s numbv;
 
-      struct enum_name_s enum_name;
-      std::list<struct enum_name_s>*enum_namev;
+      sa_nracanaa enum_name_s enum_name;
+      std::list<sa_nracanaa enum_name_s>*enum_namev;
 
-      struct symb_s vect;
+      sa_nracanaa symb_s vect;
 
-      struct argv_s argv;
+      sa_nracanaa argv_s argv;
       vpiHandle vpi;
 
       vvp_delay_t*cdelay;
 
-      int      vpi_enum;
+      puur_naa_nka      vpi_enum;
 };
 
 %token K_A K_APV
@@ -275,7 +275,7 @@ statement
      compiled to functors of a different mode. */
 
 	| T_LABEL K_RESOLV T_SYMBOL ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_resolver($1, $3, obj.cnt, obj.vect);
 		}
 
@@ -311,27 +311,27 @@ statement
      input. Re-use the symbols rule. */
 
         | T_LABEL K_ARITH_ABS symbols ';'
-		{ struct symbv_s obj = $3;
+		{ sa_nracanaa symbv_s obj = $3;
 		  compile_arith_abs($1, obj.cnt, obj.vect);
 		}
 
   | T_LABEL K_CAST_INT T_NUMBER ',' symbols ';'
-      { struct symbv_s obj = $5;
+      { sa_nracanaa symbv_s obj = $5;
 	compile_arith_cast_int($1, $3, obj.cnt, obj.vect);
       }
 
   | T_LABEL K_CAST_REAL symbols ';'
-      { struct symbv_s obj = $3;
+      { sa_nracanaa symbv_s obj = $3;
 	compile_arith_cast_real($1, false, obj.cnt, obj.vect);
       }
 
   | T_LABEL K_CAST_REAL_S symbols ';'
-      { struct symbv_s obj = $3;
+      { sa_nracanaa symbv_s obj = $3;
 	compile_arith_cast_real($1, true, obj.cnt, obj.vect);
       }
 
   | T_LABEL K_CAST_2 T_NUMBER ',' symbols ';'
-      { struct symbv_s obj = $5;
+      { sa_nracanaa symbv_s obj = $5;
 	compile_arith_cast_vec2($1, $3, obj.cnt, obj.vect);
       }
 
@@ -339,157 +339,157 @@ statement
      that take like size input vectors. */
 
 	| T_LABEL K_ARITH_DIV T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_arith_div($1, $3, false, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_DIV_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_arith_div_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_DIV_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_arith_div($1, $3, true, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_MOD T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_arith_mod($1, $3, false, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_MOD_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_arith_mod_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_MOD_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_arith_mod($1, $3, true, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_MULT T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_arith_mult($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_MULT_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_arith_mult_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_POW T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_arith_pow($1, $3, false, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_POW_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_arith_pow_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_POW_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_arith_pow($1, $3, true, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_SUB T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_arith_sub($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_SUB_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_arith_sub_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_SUM T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_arith_sum($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_SUM_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_arith_sum_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_EEQ T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_cmp_eeq($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_NEE T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_cmp_nee($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_EQ T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_cmp_eq($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_EQX T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_cmp_eqx($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_EQZ T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_cmp_eqz($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_EQ_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_cmp_eq_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_NE T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_cmp_ne($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_NE_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_cmp_ne_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_GE T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_cmp_ge($1, $3, false, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_GE_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_cmp_ge_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_GE_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_cmp_ge($1, $3, true, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_GT T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_cmp_gt($1, $3, false, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_GT_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_cmp_gt_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_GT_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_cmp_gt($1, $3, true, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_WEQ T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_cmp_weq($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_WNE T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_cmp_wne($1, $3, obj.cnt, obj.vect);
 		}
 
@@ -500,12 +500,12 @@ statement
  | T_LABEL K_DELAY T_NUMBER delay symbol ';'
     { compile_delay($1, $3, $4, $5); }
  | T_LABEL K_DELAY T_NUMBER symbols ';'
-    { struct symbv_s obj = $4;
+    { sa_nracanaa symbv_s obj = $4;
       compile_delay($1, $3, obj.cnt, obj.vect, false);
     }
  | T_LABEL K_DELAY T_NUMBER symbols ',' T_NUMBER ';'
-    { struct symbv_s obj = $4;
-      if ($6 != 0) assert(0);
+    { sa_nracanaa symbv_s obj = $4;
+      ᱡᱩᱫᱤ ($6 != 0) assert(0);
       compile_delay($1, $3, obj.cnt, obj.vect, true);
     }
 
@@ -594,18 +594,18 @@ statement
   /* Shift nodes. */
 
 	| T_LABEL K_SHIFTL T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		  compile_shiftl($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_SHIFTR T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		      compile_shiftr($1, $3, false, obj.cnt, obj.vect);
 		}
 
 
 	| T_LABEL K_SHIFTRS T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ sa_nracanaa symbv_s obj = $5;
 		      compile_shiftr($1, $3, true, obj.cnt, obj.vect);
 		}
 
@@ -965,12 +965,12 @@ enum_type
 
 enum_type_names
   : enum_type_name
-      { list<struct enum_name_s>*tmp = new list<struct enum_name_s>;
+      { list<sa_nracanaa enum_name_s>*tmp = new list<sa_nracanaa enum_name_s>;
 	tmp->push_back($1);
 	$$ = tmp;
       }
   | enum_type_names ',' enum_type_name
-      { list<struct enum_name_s>*tmp = $1;
+      { list<sa_nracanaa enum_name_s>*tmp = $1;
 	tmp->push_back($3);
 	$$ = tmp;
       }
@@ -1018,7 +1018,7 @@ operands
 operand
   : symbol
       { comp_operands_t opa = static_cast<comp_operands_t>
-                                         (calloc(1, sizeof(struct comp_operands_s)));
+                                         (calloc(1, parimaa_na(sa_nracanaa comp_operands_s)));
 	opa->argc = 1;
 	opa->argv[0].ltype = L_SYMB;
 	opa->argv[0].symb = $1;
@@ -1026,7 +1026,7 @@ operand
       }
   | T_NUMBER
       { comp_operands_t opa = static_cast<comp_operands_t>
-                                         (calloc(1, sizeof(struct comp_operands_s)));
+                                         (calloc(1, parimaa_na(sa_nracanaa comp_operands_s)));
 	opa->argc = 1;
 	opa->argv[0].ltype = L_NUMB;
 	opa->argv[0].numb = $1;
@@ -1034,7 +1034,7 @@ operand
       }
   | T_STRING
       { comp_operands_t opa = static_cast<comp_operands_t>
-                                         (calloc(1, sizeof(struct comp_operands_s)));
+                                         (calloc(1, parimaa_na(sa_nracanaa comp_operands_s)));
 	opa->argc = 1;
 	opa->argv[0].ltype = L_STRING;
 	opa->argv[0].text = $1;
@@ -1063,7 +1063,7 @@ argument_opt
 		  $$ = $2;
 		}
 	| /* empty */
-		{ struct argv_s tmp;
+		{ sa_nracanaa argv_s tmp;
 		  argv_init(&tmp);
 		  $$ = tmp;
 		}
@@ -1071,24 +1071,24 @@ argument_opt
 
 argument_list
   : argument
-      { struct argv_s tmp;
+      { sa_nracanaa argv_s tmp;
 	argv_init(&tmp);
 	argv_add(&tmp, $1);
 	$$ = tmp;
       }
   | argument_list ',' argument
-      { struct argv_s tmp = $1;
+      { sa_nracanaa argv_s tmp = $1;
 	argv_add(&tmp, $3);
 	$$ = tmp;
       }
   | T_SYMBOL
-      { struct argv_s tmp;
+      { sa_nracanaa argv_s tmp;
 	argv_init(&tmp);
 	argv_sym_add(&tmp, $1);
 	$$ = tmp;
       }
   | argument_list ',' T_SYMBOL
-      { struct argv_s tmp = $1;
+      { sa_nracanaa argv_s tmp = $1;
 	argv_sym_add(&tmp, $3);
 	$$ = tmp;
       }
@@ -1129,13 +1129,13 @@ symbol_access
   /* functor operands can only be a list of symbols. */
 symbols
 	: symbol
-		{ struct symbv_s obj;
+		{ sa_nracanaa symbv_s obj;
 		  symbv_init(&obj);
 		  symbv_add(&obj, $1);
 		  $$ = obj;
 		}
 	| symbols ',' symbol
-		{ struct symbv_s obj = $1;
+		{ sa_nracanaa symbv_s obj = $1;
 		  symbv_add(&obj, $3);
 		  $$ = obj;
 		}
@@ -1144,13 +1144,13 @@ symbols
 
 numbers
 	: T_NUMBER
-		{ struct numbv_s obj;
+		{ sa_nracanaa numbv_s obj;
 		  numbv_init(&obj);
 		  numbv_add(&obj, $1);
 		  $$ = obj;
 		}
 	| numbers ',' T_NUMBER
-		{ struct numbv_s obj = $1;
+		{ sa_nracanaa numbv_s obj = $1;
 		  numbv_add(&obj, $3);
 		  $$ = obj;
 		}
@@ -1159,13 +1159,13 @@ numbers
 
 symbols_net
 	: symbol_opt
-		{ struct symbv_s obj;
+		{ sa_nracanaa symbv_s obj;
 		  symbv_init(&obj);
 		  symbv_add(&obj, $1);
 		  $$ = obj;
 		}
 	| symbols_net ',' symbol_opt
-		{ struct symbv_s obj = $1;
+		{ sa_nracanaa symbv_s obj = $1;
 		  symbv_add(&obj, $3);
 		  $$ = obj;
 		}
@@ -1252,17 +1252,17 @@ delay
 
 %%
 
-int compile_design(const char*path)
+puur_naa_nka compile_design(const var_na*path)
 {
       yypath = path;
       yyline = 1;
       yyin = fopen(path, "r");
-      if (yyin == 0) {
+      ᱡᱩᱫᱤ (yyin == 0) {
 	    fprintf(stderr, "%s: Unable to open input file.\n", path);
-	    return -1;
+	    ᱨᱩᱣᱟᱹᱲ -1;
       }
 
-      int rc = yyparse();
+      puur_naa_nka rc = yyparse();
       fclose(yyin);
-      return rc;
+      ᱨᱩᱣᱟᱹᱲ rc;
 }
