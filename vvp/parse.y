@@ -34,9 +34,9 @@ using namespace std;
 /*
  * These are bits in the lexor.
  */
-extern FILE*yyin;
+خارجي FILE*yyin;
 
-vector <const char*> file_names;
+vector <ثابت حرف*> file_names;
 
 /*
  * Local variables.
@@ -46,33 +46,33 @@ vector <const char*> file_names;
  * When parsing a modpath list, this is the processed destination that
  * the source items will attach themselves to.
  */
-static struct __vpiModPath*modpath_dst = 0;
+ساكن بنية __vpiModPath*modpath_dst = 0;
 %}
 
-%union {
-      char*text;
-      char **table;
+%اتحاد {
+      حرف*text;
+      حرف **table;
       uint64_t numb;
       bool flag;
 
       comp_operands_t opa;
 
-      struct symb_s  symb;
-      struct symbv_s symbv;
+      بنية symb_s  symb;
+      بنية symbv_s symbv;
 
-      struct numbv_s numbv;
+      بنية numbv_s numbv;
 
-      struct enum_name_s enum_name;
-      std::list<struct enum_name_s>*enum_namev;
+      بنية enum_name_s enum_name;
+      std::list<بنية enum_name_s>*enum_namev;
 
-      struct symb_s vect;
+      بنية symb_s vect;
 
-      struct argv_s argv;
+      بنية argv_s argv;
       vpiHandle vpi;
 
       vvp_delay_t*cdelay;
 
-      int      vpi_enum;
+      صحيح      vpi_enum;
 };
 
 %token K_A K_APV
@@ -116,23 +116,23 @@ static struct __vpiModPath*modpath_dst = 0;
 %token <text> T_SYMBOL
 %token <vect> T_VECTOR
 
-%type <flag>  local_flag
-%type <vpi_enum> port_type
-%type <numb>  signed_t_number
-%type <numb>  dimension dimensions dimensions_opt
-%type <symb>  symbol symbol_opt
-%type <symbv> symbols symbols_net
-%type <numbv> numbers
-%type <text> label_opt
-%type <opa>  operand operands operands_opt
-%type <table> udp_table
+%نوع <flag>  local_flag
+%نوع <vpi_enum> port_type
+%نوع <numb>  signed_t_number
+%نوع <numb>  dimension dimensions dimensions_opt
+%نوع <symb>  symbol symbol_opt
+%نوع <symbv> symbols symbols_net
+%نوع <numbv> numbers
+%نوع <text> label_opt
+%نوع <opa>  operand operands operands_opt
+%نوع <table> udp_table
 
-%type <argv> argument_opt argument_list
-%type <vpi>  argument symbol_access
-%type <cdelay> delay
+%نوع <argv> argument_opt argument_list
+%نوع <vpi>  argument symbol_access
+%نوع <cdelay> delay
 
-%type <enum_name> enum_type_name
-%type <enum_namev> enum_type_names
+%نوع <enum_name> enum_type_name
+%نوع <enum_namev> enum_type_names
 
 %%
 
@@ -148,7 +148,7 @@ header_lines
 
 header_line
 	: K_ivl_version T_STRING ';'
-		{ verify_version($2, NULL); }
+		{ verify_version($2, عدم); }
 	| K_ivl_version T_STRING T_STRING ';'
 		{ verify_version($2, $3); }
 	| K_ivl_delay_selection T_STRING ';'
@@ -275,7 +275,7 @@ statement
      compiled to functors of a different mode. */
 
 	| T_LABEL K_RESOLV T_SYMBOL ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_resolver($1, $3, obj.cnt, obj.vect);
 		}
 
@@ -311,27 +311,27 @@ statement
      input. Re-use the symbols rule. */
 
         | T_LABEL K_ARITH_ABS symbols ';'
-		{ struct symbv_s obj = $3;
+		{ بنية symbv_s obj = $3;
 		  compile_arith_abs($1, obj.cnt, obj.vect);
 		}
 
   | T_LABEL K_CAST_INT T_NUMBER ',' symbols ';'
-      { struct symbv_s obj = $5;
+      { بنية symbv_s obj = $5;
 	compile_arith_cast_int($1, $3, obj.cnt, obj.vect);
       }
 
   | T_LABEL K_CAST_REAL symbols ';'
-      { struct symbv_s obj = $3;
+      { بنية symbv_s obj = $3;
 	compile_arith_cast_real($1, false, obj.cnt, obj.vect);
       }
 
   | T_LABEL K_CAST_REAL_S symbols ';'
-      { struct symbv_s obj = $3;
+      { بنية symbv_s obj = $3;
 	compile_arith_cast_real($1, true, obj.cnt, obj.vect);
       }
 
   | T_LABEL K_CAST_2 T_NUMBER ',' symbols ';'
-      { struct symbv_s obj = $5;
+      { بنية symbv_s obj = $5;
 	compile_arith_cast_vec2($1, $3, obj.cnt, obj.vect);
       }
 
@@ -339,157 +339,157 @@ statement
      that take like size input vectors. */
 
 	| T_LABEL K_ARITH_DIV T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_arith_div($1, $3, false, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_DIV_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_arith_div_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_DIV_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_arith_div($1, $3, true, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_MOD T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_arith_mod($1, $3, false, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_MOD_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_arith_mod_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_MOD_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_arith_mod($1, $3, true, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_MULT T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_arith_mult($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_MULT_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_arith_mult_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_POW T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_arith_pow($1, $3, false, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_POW_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_arith_pow_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_POW_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_arith_pow($1, $3, true, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_SUB T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_arith_sub($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_SUB_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_arith_sub_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_SUM T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_arith_sum($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_ARITH_SUM_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_arith_sum_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_EEQ T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_cmp_eeq($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_NEE T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_cmp_nee($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_EQ T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_cmp_eq($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_EQX T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_cmp_eqx($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_EQZ T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_cmp_eqz($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_EQ_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_cmp_eq_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_NE T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_cmp_ne($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_NE_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_cmp_ne_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_GE T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_cmp_ge($1, $3, false, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_GE_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_cmp_ge_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_GE_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_cmp_ge($1, $3, true, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_GT T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_cmp_gt($1, $3, false, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_GT_R T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_cmp_gt_r($1, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_GT_S T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_cmp_gt($1, $3, true, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_WEQ T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_cmp_weq($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_CMP_WNE T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_cmp_wne($1, $3, obj.cnt, obj.vect);
 		}
 
@@ -500,12 +500,12 @@ statement
  | T_LABEL K_DELAY T_NUMBER delay symbol ';'
     { compile_delay($1, $3, $4, $5); }
  | T_LABEL K_DELAY T_NUMBER symbols ';'
-    { struct symbv_s obj = $4;
+    { بنية symbv_s obj = $4;
       compile_delay($1, $3, obj.cnt, obj.vect, false);
     }
  | T_LABEL K_DELAY T_NUMBER symbols ',' T_NUMBER ';'
-    { struct symbv_s obj = $4;
-      if ($6 != 0) assert(0);
+    { بنية symbv_s obj = $4;
+      𐤀𐤌 ($6 != 0) أكد(0);
       compile_delay($1, $3, obj.cnt, obj.vect, true);
     }
 
@@ -594,18 +594,18 @@ statement
   /* Shift nodes. */
 
 	| T_LABEL K_SHIFTL T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		  compile_shiftl($1, $3, obj.cnt, obj.vect);
 		}
 
 	| T_LABEL K_SHIFTR T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		      compile_shiftr($1, $3, false, obj.cnt, obj.vect);
 		}
 
 
 	| T_LABEL K_SHIFTRS T_NUMBER ',' symbols ';'
-		{ struct symbv_s obj = $5;
+		{ بنية symbv_s obj = $5;
 		      compile_shiftr($1, $3, true, obj.cnt, obj.vect);
 		}
 
@@ -643,7 +643,7 @@ statement
 		{ compile_file_line($1, $3, $4, $5); }
 
 	| label_opt K_file_line T_NUMBER T_NUMBER T_NUMBER ';'
-		{ assert($5 == 0);
+		{ أكد($5 == 0);
 		  compile_file_line($1, $3, $4, 0); }
 
   /* %vpi_call statements are instructions that have unusual operand
@@ -965,12 +965,12 @@ enum_type
 
 enum_type_names
   : enum_type_name
-      { list<struct enum_name_s>*tmp = new list<struct enum_name_s>;
+      { list<بنية enum_name_s>*tmp = new list<بنية enum_name_s>;
 	tmp->push_back($1);
 	$$ = tmp;
       }
   | enum_type_names ',' enum_type_name
-      { list<struct enum_name_s>*tmp = $1;
+      { list<بنية enum_name_s>*tmp = $1;
 	tmp->push_back($3);
 	$$ = tmp;
       }
@@ -1004,11 +1004,11 @@ operands_opt
 operands
 	: operands ',' operand
 		{ comp_operands_t opa = $1;
-		  assert(opa->argc < 3);
-		  assert($3->argc == 1);
+		  أكد(opa->argc < 3);
+		  أكد($3->argc == 1);
 		  opa->argv[opa->argc] = $3->argv[0];
 		  opa->argc += 1;
-		  free($3);
+		  حرر($3);
 		  $$ =  opa;
 		}
 	| operand
@@ -1018,7 +1018,7 @@ operands
 operand
   : symbol
       { comp_operands_t opa = static_cast<comp_operands_t>
-                                         (calloc(1, sizeof(struct comp_operands_s)));
+                                         (calloc(1, حجم(بنية comp_operands_s)));
 	opa->argc = 1;
 	opa->argv[0].ltype = L_SYMB;
 	opa->argv[0].symb = $1;
@@ -1026,7 +1026,7 @@ operand
       }
   | T_NUMBER
       { comp_operands_t opa = static_cast<comp_operands_t>
-                                         (calloc(1, sizeof(struct comp_operands_s)));
+                                         (calloc(1, حجم(بنية comp_operands_s)));
 	opa->argc = 1;
 	opa->argv[0].ltype = L_NUMB;
 	opa->argv[0].numb = $1;
@@ -1034,7 +1034,7 @@ operand
       }
   | T_STRING
       { comp_operands_t opa = static_cast<comp_operands_t>
-                                         (calloc(1, sizeof(struct comp_operands_s)));
+                                         (calloc(1, حجم(بنية comp_operands_s)));
 	opa->argc = 1;
 	opa->argv[0].ltype = L_STRING;
 	opa->argv[0].text = $1;
@@ -1063,7 +1063,7 @@ argument_opt
 		  $$ = $2;
 		}
 	| /* empty */
-		{ struct argv_s tmp;
+		{ بنية argv_s tmp;
 		  argv_init(&tmp);
 		  $$ = tmp;
 		}
@@ -1071,24 +1071,24 @@ argument_opt
 
 argument_list
   : argument
-      { struct argv_s tmp;
+      { بنية argv_s tmp;
 	argv_init(&tmp);
 	argv_add(&tmp, $1);
 	$$ = tmp;
       }
   | argument_list ',' argument
-      { struct argv_s tmp = $1;
+      { بنية argv_s tmp = $1;
 	argv_add(&tmp, $3);
 	$$ = tmp;
       }
   | T_SYMBOL
-      { struct argv_s tmp;
+      { بنية argv_s tmp;
 	argv_init(&tmp);
 	argv_sym_add(&tmp, $1);
 	$$ = tmp;
       }
   | argument_list ',' T_SYMBOL
-      { struct argv_s tmp = $1;
+      { بنية argv_s tmp = $1;
 	argv_sym_add(&tmp, $3);
 	$$ = tmp;
       }
@@ -1099,7 +1099,7 @@ argument
       { $$ = vpip_make_string_const($1); }
   | T_VECTOR
       { $$ = vpip_make_binary_const($1.idx, $1.text);
-	free($1.text);
+	حرر($1.text);
       }
   | symbol_access
       { $$ = $1; }
@@ -1129,13 +1129,13 @@ symbol_access
   /* functor operands can only be a list of symbols. */
 symbols
 	: symbol
-		{ struct symbv_s obj;
+		{ بنية symbv_s obj;
 		  symbv_init(&obj);
 		  symbv_add(&obj, $1);
 		  $$ = obj;
 		}
 	| symbols ',' symbol
-		{ struct symbv_s obj = $1;
+		{ بنية symbv_s obj = $1;
 		  symbv_add(&obj, $3);
 		  $$ = obj;
 		}
@@ -1144,13 +1144,13 @@ symbols
 
 numbers
 	: T_NUMBER
-		{ struct numbv_s obj;
+		{ بنية numbv_s obj;
 		  numbv_init(&obj);
 		  numbv_add(&obj, $1);
 		  $$ = obj;
 		}
 	| numbers ',' T_NUMBER
-		{ struct numbv_s obj = $1;
+		{ بنية numbv_s obj = $1;
 		  numbv_add(&obj, $3);
 		  $$ = obj;
 		}
@@ -1159,13 +1159,13 @@ numbers
 
 symbols_net
 	: symbol_opt
-		{ struct symbv_s obj;
+		{ بنية symbv_s obj;
 		  symbv_init(&obj);
 		  symbv_add(&obj, $1);
 		  $$ = obj;
 		}
 	| symbols_net ',' symbol_opt
-		{ struct symbv_s obj = $1;
+		{ بنية symbv_s obj = $1;
 		  symbv_add(&obj, $3);
 		  $$ = obj;
 		}
@@ -1252,17 +1252,17 @@ delay
 
 %%
 
-int compile_design(const char*path)
+صحيح compile_design(ثابت حرف*path)
 {
       yypath = path;
       yyline = 1;
       yyin = fopen(path, "r");
-      if (yyin == 0) {
+      𐤀𐤌 (yyin == 0) {
 	    fprintf(stderr, "%s: Unable to open input file.\n", path);
-	    return -1;
+	    أرجع -1;
       }
 
-      int rc = yyparse();
+      صحيح rc = yyparse();
       fclose(yyin);
-      return rc;
+      أرجع rc;
 }

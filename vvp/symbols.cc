@@ -31,27 +31,27 @@
  * The key_strdup() function below allocates the strings from this
  * buffer, possibly making a new buffer if needed.
  */
-struct key_strings {
-      struct key_strings*next;
-      char data[64*1024 - sizeof(struct key_strings*)];
+بنية key_strings {
+      بنية key_strings*next;
+      حرف data[64*1024 - حجم(بنية key_strings*)];
 };
 
-char*symbol_table_s::key_strdup_(const char*str)
+حرف*symbol_table_s::key_strdup_(ثابت حرف*str)
 {
       unsigned len = strlen(str);
-      assert( (len+1) <= sizeof str_chunk->data );
+      أكد( (len+1) <= حجم str_chunk->data );
 
-      if ( (len+1) > (sizeof str_chunk->data - str_used) ) {
-	    key_strings*tmp = new key_strings;
+      𐤀𐤌 ( (len+1) > (حجم str_chunk->data - str_used) ) {
+	    key_strings*tmp = جديد key_strings;
 	    tmp->next = str_chunk;
 	    str_chunk = tmp;
 	    str_used = 0;
       }
 
-      char*res = str_chunk->data + str_used;
+      حرف*res = str_chunk->data + str_used;
       str_used += len + 1;
       strcpy(res, str);
-      return res;
+      أرجع res;
 }
 
 /*
@@ -67,32 +67,32 @@ char*symbol_table_s::key_strdup_(const char*str)
  * simple binary search to find an item. Each key represents an item.
  */
 
-const unsigned leaf_width = 254;
-const unsigned node_width = 508;
+ثابت unsigned leaf_width = 254;
+ثابت unsigned node_width = 508;
 
-struct tree_data_ {
-      char*key;
+بنية tree_data_ {
+      حرف*key;
       symbol_value_t val;
 };
 
-struct tree_node_ {
-      bool leaf_flag;
+بنية tree_node_ {
+      منطقي leaf_flag;
       unsigned count;
-      struct tree_node_*parent;
+      بنية tree_node_*parent;
 
-      union {
-	    struct tree_data_ leaf[leaf_width];
-	    struct tree_node_ *child[node_width];
+      اتحاد {
+	    بنية tree_data_ leaf[leaf_width];
+	    بنية tree_node_ *child[node_width];
       };
 
 };
 
-static inline char* node_last_key(struct tree_node_*node)
+ساكن مضمن حرف* node_last_key(بنية tree_node_*node)
 {
-      while (node->leaf_flag == false)
+      طالما (node->leaf_flag == خطأ)
 	    node = node->child[node->count-1];
 
-      return node->leaf[node->count-1].key;
+      أرجع node->leaf[node->count-1].key;
 }
 
 /*
@@ -102,20 +102,20 @@ static inline char* node_last_key(struct tree_node_*node)
  */
 symbol_table_s::symbol_table_s()
 {
-      root = new struct tree_node_;
-      root->leaf_flag = false;
+      root = جديد بنية tree_node_;
+      root->leaf_flag = خطأ;
       root->count = 0;
       root->parent = 0;
 
-      str_chunk = new key_strings;
+      str_chunk = جديد key_strings;
       str_chunk->next = 0;
       str_used = 0;
 }
 
-static void delete_symbol_node(struct tree_node_*cur)
+ساكن فراغ delete_symbol_node(بنية tree_node_*cur)
 {
-      if (! cur->leaf_flag) {
-	    for (unsigned idx = 0 ;  idx < cur->count ;  idx += 1)
+      𐤀𐤌 (! cur->leaf_flag) {
+	    لكل (unsigned idx = 0 ;  idx < cur->count ;  idx += 1)
 		  delete_symbol_node(cur->child[idx]);
       }
 
@@ -123,25 +123,25 @@ static void delete_symbol_node(struct tree_node_*cur)
 }
 
 /* Do as split_leaf_ does, but for nodes. */
-static void split_node_(struct tree_node_*cur)
+ساكن فراغ split_node_(بنية tree_node_*cur)
 {
-      assert(!cur->leaf_flag);
-      if (cur->parent) assert(! cur->parent->leaf_flag);
+      أكد(!cur->leaf_flag);
+      𐤀𐤌 (cur->parent) أكد(! cur->parent->leaf_flag);
 
-      while (cur->count == node_width) {
+      طالما (cur->count == node_width) {
 	      /* Create a new node to hold half the data from cur. */
-	    struct tree_node_ *new_node = new struct tree_node_;
-	    new_node->leaf_flag = false;
+	    بنية tree_node_ *new_node = جديد بنية tree_node_;
+	    new_node->leaf_flag = خطأ;
 	    new_node->count = cur->count / 2;
 	      /* cur is not root; new_node becomes sibling. */
-	    if (cur->parent) new_node->parent = cur->parent;
+	    𐤀𐤌 (cur->parent) new_node->parent = cur->parent;
 
 	      /* Move the last half of the data from the end of the old node
 	       * to the beginning of the new node. At the same time, reduce
 	       * the size of the old node. */
 	    unsigned idx1 = new_node->count;
 	    unsigned idx2 = cur->count;
-	    while (idx1 > 0) {
+	    طالما (idx1 > 0) {
 		  idx1 -= 1;
 		  idx2 -= 1;
 		  new_node->child[idx1] = cur->child[idx2];
@@ -149,21 +149,21 @@ static void split_node_(struct tree_node_*cur)
 		  cur->count -= 1;
 	    }
 
-	    assert(new_node->count > 0);
-	    assert(cur->count > 0);
+	    أكد(new_node->count > 0);
+	    أكد(cur->count > 0);
 
-	    if (cur->parent == 0) {
+	    𐤀𐤌 (cur->parent == 0) {
 		    /* cur is root. Move first half of children to another
 		     * new node, and put the two new nodes in cur. The plan
 		     * here is to make cur into the new root and split its
 		     * contents into 2 children. */
 
 		  new_node->parent = cur;
-		  struct tree_node_*new2_node = new struct tree_node_;
-		  new2_node->leaf_flag = false;
+		  بنية tree_node_*new2_node = جديد بنية tree_node_;
+		  new2_node->leaf_flag = خطأ;
 		  new2_node->count = cur->count;
 		  new2_node->parent = cur;
-		  for (unsigned idx = 0; idx < cur->count; idx += 1) {
+		  لكل (unsigned idx = 0; idx < cur->count; idx += 1) {
 			new2_node->child[idx] = cur->child[idx];
 			new2_node->child[idx]->parent = new2_node;
 		  }
@@ -171,18 +171,18 @@ static void split_node_(struct tree_node_*cur)
 		  cur->child[1] = new_node;
 		  cur->count = 2;
 		    /* no more ancestors, stop the while loop */
-		  break;
+		  اكسر;
 	    }
 
 	      /* cur is not root. hook new_node to cur->parent. */
 	    unsigned idx = 0;
-	    while (cur->parent->child[idx] != cur) {
-		  assert(idx < cur->parent->count);
+	    طالما (cur->parent->child[idx] != cur) {
+		  أكد(idx < cur->parent->count);
 		  idx += 1;
 	    }
 	    idx += 1;
 
-	    for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1) {
+	    لكل (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1) {
 		  cur->parent->child[tmp] = cur->parent->child[tmp-1];
 	    }
 
@@ -199,14 +199,14 @@ static void split_node_(struct tree_node_*cur)
  * the leaf keys into the new node, and add the new leaf into the
  * parent node.
  */
-static struct tree_node_* split_leaf_(struct tree_node_*cur)
+ساكن بنية tree_node_* split_leaf_(بنية tree_node_*cur)
 {
-      assert(cur->leaf_flag);
-      assert(cur->parent);
-      assert(! cur->parent->leaf_flag);
+      أكد(cur->leaf_flag);
+      أكد(cur->parent);
+      أكد(! cur->parent->leaf_flag);
 
 	/* Create a new leaf to hold half the data from the old leaf. */
-      struct tree_node_*new_leaf = new struct tree_node_;
+      بنية tree_node_*new_leaf = جديد بنية tree_node_;
       new_leaf->leaf_flag = true;
       new_leaf->count = cur->count / 2;
       new_leaf->parent = cur->parent;
@@ -216,34 +216,34 @@ static struct tree_node_* split_leaf_(struct tree_node_*cur)
 	   the size of the old leaf. */
       unsigned idx1 = new_leaf->count;
       unsigned idx2 = cur->count;
-      while (idx1 > 0) {
+      طالما (idx1 > 0) {
 	    idx1 -= 1;
 	    idx2 -= 1;
 	    new_leaf->leaf[idx1] = cur->leaf[idx2];
 	    cur->count -= 1;
       }
 
-      assert(new_leaf->count > 0);
-      assert(cur->count > 0);
+      أكد(new_leaf->count > 0);
+      أكد(cur->count > 0);
 
       unsigned idx = 0;
-      while (cur->parent->child[idx] != cur) {
-	    assert(idx < cur->parent->count);
+      طالما (cur->parent->child[idx] != cur) {
+	    أكد(idx < cur->parent->count);
 	    idx += 1;
       }
 
       idx += 1;
 
-      for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1)
+      لكل (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1)
 	    cur->parent->child[tmp] = cur->parent->child[tmp-1];
 
       cur->parent->child[idx] = new_leaf;
       cur->parent->count += 1;
 
-      if (cur->parent->count == node_width)
+      𐤀𐤌 (cur->parent->count == node_width)
 	    split_node_(cur->parent);
 
-      return new_leaf;
+      أرجع new_leaf;
 }
 
 
@@ -254,102 +254,102 @@ static struct tree_node_* split_leaf_(struct tree_node_*cur)
  * true.
  */
 
-symbol_value_t symbol_table_s::find_value_(struct tree_node_*cur,
-					   const char*key, symbol_value_t val,
-					   bool force_flag)
+symbol_value_t symbol_table_s::find_value_(بنية tree_node_*cur,
+					   ثابت حرف*key, symbol_value_t val,
+					   منطقي force_flag)
 {
-      if (cur->leaf_flag) {
+      𐤀𐤌 (cur->leaf_flag) {
 
 	    unsigned idx = 0;
-	    for (;;) {
+	    لكل (;;) {
 		    /* If we run out of keys in the leaf, then add
 		       this at the end of the leaf. */
-		  if (idx == cur->count) {
+		  𐤀𐤌 (idx == cur->count) {
 			cur->leaf[idx].key = key_strdup_(key);
 			cur->leaf[idx].val = val;
 			cur->count += 1;
-			if (cur->count == leaf_width)
+			𐤀𐤌 (cur->count == leaf_width)
 			      split_leaf_(cur);
 
-			return val;
+			أرجع val;
 		  }
 
-		  int rc = strcmp(key, cur->leaf[idx].key);
+		  صحيح rc = strcmp(key, cur->leaf[idx].key);
 
 		    /* If we found the key already in the table, then
 		       set the new value and break. */
-		  if (rc == 0) {
-			if (force_flag)
+		  𐤀𐤌 (rc == 0) {
+			𐤀𐤌 (force_flag)
 			      cur->leaf[idx].val = val;
-			return cur->leaf[idx].val;
+			أرجع cur->leaf[idx].val;
 		  }
 
 		    /* If this key goes before the current key, then
 		       push all the following entries back and add
 		       this key here. */
-		  if (rc < 0) {
-			for (unsigned tmp = cur->count; tmp > idx; tmp -= 1)
+		  𐤀𐤌 (rc < 0) {
+			لكل (unsigned tmp = cur->count; tmp > idx; tmp -= 1)
 			      cur->leaf[tmp] = cur->leaf[tmp-1];
 
 			cur->leaf[idx].key = key_strdup_(key);
 			cur->leaf[idx].val = val;
 			cur->count += 1;
-			if (cur->count == leaf_width)
+			𐤀𐤌 (cur->count == leaf_width)
 			      split_leaf_(cur);
 
-			return val;
+			أرجع val;
 		  }
 
 		  idx += 1;
 	    }
 
-      } else {
+      } وإلا {
 	      /* Do a binary search within the inner node. */
 	    unsigned min = 0;
 	    unsigned max = cur->count;
 	    unsigned idx = max/2;
-	    for (;;) {
-		  int rc = strcmp(key, node_last_key(cur->child[idx]));
-		  if (rc == 0) {
-			return find_value_(cur->child[idx],
+	    لكل (;;) {
+		  صحيح rc = strcmp(key, node_last_key(cur->child[idx]));
+		  𐤀𐤌 (rc == 0) {
+			أرجع find_value_(cur->child[idx],
 					   key, val, force_flag);
 		  }
 
-		  if (rc > 0) {
+		  𐤀𐤌 (rc > 0) {
 			min = idx + 1;
-			if (min == cur->count)
-			      return find_value_(cur->child[idx],
+			𐤀𐤌 (min == cur->count)
+			      أرجع find_value_(cur->child[idx],
 						 key, val, force_flag);
-			if (min == max)
-			      return find_value_(cur->child[max],
+			𐤀𐤌 (min == max)
+			      أرجع find_value_(cur->child[max],
 						 key, val, force_flag);
 
 			idx = min + (max-min)/2;
 
-		  } else  {
+		  } وإلا  {
 			max = idx;
-			if (idx == min)
-			      return find_value_(cur->child[idx],
+			𐤀𐤌 (idx == min)
+			      أرجع find_value_(cur->child[idx],
 						 key, val, force_flag);
 			idx = min + (max-min)/2;
 		  }
 	    }
       }
 
-      assert(0);
+      أكد(0);
       { symbol_value_t tmp;
         tmp.ptr = 0;
-        return tmp;
+        أرجع tmp;
       }
 }
 
-void symbol_table_s::sym_set_value(const char*key, symbol_value_t val)
+فراغ symbol_table_s::sym_set_value(ثابت حرف*key, symbol_value_t val)
 {
-      if (root->count == 0) {
+      𐤀𐤌 (root->count == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
+	    بنية tree_node_*cur = جديد بنية tree_node_;
 	    cur->leaf_flag = true;
 	    cur->parent = root;
 	    cur->count = 1;
@@ -358,21 +358,21 @@ void symbol_table_s::sym_set_value(const char*key, symbol_value_t val)
 
 	    root->count = 1;
 	    root->child[0] = cur;
-      } else {
+      } وإلا {
 	    find_value_(root, key, val, true);
       }
 }
 
-symbol_value_t symbol_table_s::sym_get_value(const char*key)
+symbol_value_t symbol_table_s::sym_get_value(ثابت حرف*key)
 {
       symbol_value_t def;
       def.ptr = 0;
 
-      if (root->count == 0) {
+      𐤀𐤌 (root->count == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
+	    بنية tree_node_*cur = جديد بنية tree_node_;
 	    cur->leaf_flag = true;
 	    cur->parent = root;
 	    cur->count = 1;
@@ -381,16 +381,16 @@ symbol_value_t symbol_table_s::sym_get_value(const char*key)
 
 	    root->count = 1;
 	    root->child[0] = cur;
-	    return cur->leaf[0].val;
-      } else {
-	    return find_value_(root, key, def, false);
+	    أرجع cur->leaf[0].val;
+      } وإلا {
+	    أرجع find_value_(root, key, def, خطأ);
       }
 }
 
 symbol_table_s::~symbol_table_s()
 {
       delete_symbol_node(root);
-      while (str_chunk) {
+      طالما (str_chunk) {
 	    key_strings*tmp = str_chunk;
 	    str_chunk = tmp->next;
 	    delete tmp;

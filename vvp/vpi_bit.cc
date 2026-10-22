@@ -27,134 +27,134 @@
 # include <cassert>
 
 
-static const __vpiBit*bit_from_handle(const __vpiHandle*ref)
+ساكن ثابت __vpiBit*bit_from_handle(ثابت __vpiHandle*ref)
 {
-      if (ref == NULL) return NULL;
-      const __vpiBit::as_bit_t*ptr = dynamic_cast<const __vpiBit::as_bit_t*> (ref);
-      if (ptr == NULL) return NULL;
-      return reinterpret_cast<const struct __vpiBit*>(ref);
+      𐤀𐤌 (ref == عدم) أرجع عدم;
+      ثابت __vpiBit::as_bit_t*ptr = dynamic_cast<ثابت __vpiBit::as_bit_t*> (ref);
+      𐤀𐤌 (ptr == عدم) أرجع عدم;
+      أرجع reinterpret_cast<ثابت بنية __vpiBit*>(ref);
 }
 
-static __vpiBit*bit_from_handle(__vpiHandle*ref)
+ساكن __vpiBit*bit_from_handle(__vpiHandle*ref)
 {
-      if (ref == NULL) return NULL;
-      const __vpiBit::as_bit_t*ptr = dynamic_cast<__vpiBit::as_bit_t*> (ref);
-      if (ptr == NULL) return NULL;
-      return reinterpret_cast<struct __vpiBit*>(ref);
+      𐤀𐤌 (ref == عدم) أرجع عدم;
+      ثابت __vpiBit::as_bit_t*ptr = dynamic_cast<__vpiBit::as_bit_t*> (ref);
+      𐤀𐤌 (ptr == عدم) أرجع عدم;
+      أرجع reinterpret_cast<بنية __vpiBit*>(ref);
 }
 
-static int bit_get_type(const __vpiBit*rfp)
+ساكن صحيح bit_get_type(ثابت __vpiBit*rfp)
 {
-      assert(rfp);
+      أكد(rfp);
 
-      const struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      ثابت بنية __vpiSignal*parent = rfp->get_parent();
+      أكد(parent);
 
-      switch (parent->get_type_code()) {
-	case vpiNet:
-	    return vpiNetBit;
-	case vpiReg:
-	    return vpiRegBit;
+      بدل (parent->get_type_code()) {
+	حالة vpiNet:
+	    أرجع vpiNetBit;
+	حالة vpiReg:
+	    أرجع vpiRegBit;
       }
-      assert(0);
-      return 0;
+      أكد(0);
+      أرجع 0;
 }
 
-static int bit_get(int code, vpiHandle ref)
+ساكن صحيح bit_get(صحيح code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      بنية __vpiBit*rfp = bit_from_handle(ref);
+      أكد(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      بنية __vpiSignal*parent = rfp->get_parent();
+      أكد(parent);
 
-      switch (code) {
-	case vpiArray:  // A bit is not an array
-	    return 0;
+      بدل (code) {
+	حالة vpiArray:  // A bit is not an array
+	    أرجع 0;
 
-	case vpiAutomatic:
-	    return vpi_get(vpiAutomatic, parent);
+	حالة vpiAutomatic:
+	    أرجع vpi_get(vpiAutomatic, parent);
 
-	case vpiIndex:
+	حالة vpiIndex:
 	    {
 		  s_vpi_value vp;
 		  vp.format = vpiIntVal;
 		  vpi_get_value(rfp->index, &vp);
-		  return vp.value.integer;
+		  أرجع vp.value.integer;
 	    }
 
-	case vpiLineNo:
-	    return vpi_get(vpiLineNo, parent);
+	حالة vpiLineNo:
+	    أرجع vpi_get(vpiLineNo, parent);
 
-	case vpiScalar:  // A bit is a scalar
-	    return 1;
+	حالة vpiScalar:  // A bit is a scalar
+	    أرجع 1;
 
-	case vpiSigned:  // A bit is unsigned
-	    return 0;
+	حالة vpiSigned:  // A bit is unsigned
+	    أرجع 0;
 
-	case vpiSize:  // A bit has a width of 1
-	    return 1;
+	حالة vpiSize:  // A bit has a width of 1
+	    أرجع 1;
 
-	case vpiVector:  // A bit is not a vector
-	    return 0;
+	حالة vpiVector:  // A bit is not a vector
+	    أرجع 0;
 
-	default:
+	افتراضي:
 	    fprintf(stderr, "VPI error: unknown bit_get property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    أرجع vpiUndefined;
       }
 }
 
-static char* bit_get_str(int code, vpiHandle ref)
+ساكن حرف* bit_get_str(صحيح code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      بنية __vpiBit*rfp = bit_from_handle(ref);
+      أكد(rfp);
 
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      𐤀𐤌 (code == vpiFile) {  // Not implemented for now!
+            أرجع simple_set_rbuf_str(file_names[0]);
       }
 
-      if ((code != vpiName) && (code != vpiFullName)) return NULL;
+      𐤀𐤌 ((code != vpiName) && (code != vpiFullName)) أرجع عدم;
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      بنية __vpiSignal*parent = rfp->get_parent();
+      أكد(parent);
 
-      char *nm;
-      const char *ixs;
+      حرف *nm;
+      ثابت حرف *ixs;
       nm = strdup(vpi_get_str(vpiName, parent));
       s_vpi_value vp;
       vp.format = vpiDecStrVal;
       vpi_get_value(rfp->index, &vp);
       ixs = vp.value.str;
 
-      char *rbuf = generic_get_str(code, vpip_scope(parent), nm, ixs);
-      free(nm);
-      return rbuf;
+      حرف *rbuf = generic_get_str(code, vpip_scope(parent), nm, ixs);
+      حرر(nm);
+      أرجع rbuf;
 }
 
-static vpiHandle bit_get_handle(int code, vpiHandle ref)
+ساكن vpiHandle bit_get_handle(صحيح code, vpiHandle ref)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      بنية __vpiBit*rfp = bit_from_handle(ref);
+      أكد(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      بنية __vpiSignal*parent = rfp->get_parent();
+      أكد(parent);
 
-      switch (code) {
-	case vpiIndex:
-	    return rfp->index;
+      بدل (code) {
+	حالة vpiIndex:
+	    أرجع rfp->index;
 
-	case vpiParent:
-	    return parent;
+	حالة vpiParent:
+	    أرجع parent;
 
-	case vpiScope:
-	    return vpi_handle(vpiScope, parent);
+	حالة vpiScope:
+	    أرجع vpi_handle(vpiScope, parent);
 
-	case vpiModule:
-	    return vpi_handle(vpiModule, parent);
+	حالة vpiModule:
+	    أرجع vpi_handle(vpiModule, parent);
       }
 
-    return 0;
+    أرجع 0;
 }
 
 /*
@@ -177,54 +177,54 @@ static vpiHandle bit_index(int idx, vpiHandle ref)
 }
 */
 
-static void bit_get_value(vpiHandle ref, s_vpi_value*vp)
+ساكن فراغ bit_get_value(vpiHandle ref, s_vpi_value*vp)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      بنية __vpiBit*rfp = bit_from_handle(ref);
+      أكد(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      بنية __vpiSignal*parent = rfp->get_parent();
+      أكد(parent);
 
       parent->get_bit_value(rfp, vp);
 }
 
-static vpiHandle bit_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
+ساكن vpiHandle bit_put_value(vpiHandle ref, s_vpi_value*vp, صحيح flags)
 {
-      struct __vpiBit*rfp = bit_from_handle(ref);
-      assert(rfp);
+      بنية __vpiBit*rfp = bit_from_handle(ref);
+      أكد(rfp);
 
-      struct __vpiSignal*parent = rfp->get_parent();
-      assert(parent);
+      بنية __vpiSignal*parent = rfp->get_parent();
+      أكد(parent);
 
-      return parent->put_bit_value(rfp, vp, flags);
+      أرجع parent->put_bit_value(rfp, vp, flags);
 }
 
 
-int __vpiBit::get_index(void) const
+صحيح __vpiBit::get_index(فراغ) ثابت
 {
       s_vpi_value vp;
       vp.format = vpiIntVal;
       vpi_get_value(index, &vp);
-      return vp.value.integer;
+      أرجع vp.value.integer;
 }
 
-int __vpiBit::as_bit_t::get_type_code(void) const
-{ return bit_get_type(bit_from_handle(this)); }
+صحيح __vpiBit::as_bit_t::get_type_code(فراغ) ثابت
+{ أرجع bit_get_type(bit_from_handle(هذا)); }
 
-int __vpiBit::as_bit_t::vpi_get(int code)
-{ return bit_get(code, this); }
+صحيح __vpiBit::as_bit_t::vpi_get(صحيح code)
+{ أرجع bit_get(code, هذا); }
 
-char* __vpiBit::as_bit_t::vpi_get_str(int code)
-{ return bit_get_str(code, this); }
+حرف* __vpiBit::as_bit_t::vpi_get_str(صحيح code)
+{ أرجع bit_get_str(code, هذا); }
 
-void __vpiBit::as_bit_t::vpi_get_value(p_vpi_value val)
-{ bit_get_value(this, val); }
+فراغ __vpiBit::as_bit_t::vpi_get_value(p_vpi_value val)
+{ bit_get_value(هذا, val); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_put_value(p_vpi_value val, int flags)
-{ return bit_put_value(this, val, flags); }
+vpiHandle __vpiBit::as_bit_t::vpi_put_value(p_vpi_value val, صحيح flags)
+{ أرجع bit_put_value(هذا, val, flags); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_handle(int code)
-{ return bit_get_handle(code, this); }
+vpiHandle __vpiBit::as_bit_t::vpi_handle(صحيح code)
+{ أرجع bit_get_handle(code, هذا); }
 
 // FIXME: How are delayed put values handled?
 //vpiHandle __vpiBit::as_bit_t::vpi_iterate(int code) // FIXME: Is this needed?

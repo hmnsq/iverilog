@@ -39,7 +39,7 @@
 # include  <cassert>
 
 #ifdef __MINGW32__
-#include <windows.h>
+#ضمن <windows.h>
 #endif
 
 # include  "ivl_alloc.h"
@@ -57,7 +57,7 @@ unsigned compile_errors = 0;
  * The opcode_compare function is a helper for that lookup.
  */
 
-enum operand_e {
+تعداد operand_e {
 	/* Place holder for unused operand */
       OA_NONE,
 	/* The operand is a number, an immediate unsigned integer */
@@ -80,15 +80,15 @@ enum operand_e {
       OA_STRING
 };
 
-struct opcode_table_s {
-      const char*mnemonic;
+بنية opcode_table_s {
+      ثابت حرف*mnemonic;
       vvp_code_fun opcode;
 
       unsigned argc;
-      enum operand_e argt[OPERAND_MAX];
+      تعداد operand_e argt[OPERAND_MAX];
 };
 
-static const struct opcode_table_s opcode_table[] = {
+ساكن ثابت بنية opcode_table_s opcode_table[] = {
       { "%abs/wr", of_ABS_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%add",    of_ADD,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%add/wr", of_ADD_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
@@ -397,34 +397,34 @@ static const struct opcode_table_s opcode_table[] = {
       { 0, of_NOOP, 0, {OA_NONE, OA_NONE, OA_NONE} }
 };
 
-static const unsigned opcode_count =
-                    sizeof(opcode_table)/sizeof(*opcode_table) - 1;
+ساكن ثابت unsigned opcode_count =
+                    حجم(opcode_table)/حجم(*opcode_table) - 1;
 
-static int opcode_compare(const void*k, const void*r)
+ساكن صحيح opcode_compare(ثابت فراغ*k, ثابت فراغ*r)
 {
-      const char*kp = static_cast<const char*>(k);
-      const struct opcode_table_s*rp = static_cast<const struct opcode_table_s*>(r);
-      return strcmp(kp, rp->mnemonic);
+      ثابت حرف*kp = static_cast<ثابت حرف*>(k);
+      ثابت بنية opcode_table_s*rp = static_cast<ثابت بنية opcode_table_s*>(r);
+      أرجع strcmp(kp, rp->mnemonic);
 }
 
 /*
  * Keep a symbol table of addresses within code space. Labels on
  * executable opcodes are mapped to their address here.
  */
-static symbol_table_t sym_codespace = 0;
+ساكن symbol_table_t sym_codespace = 0;
 
 /*
  * Keep a symbol table of functors mentioned in the source. This table
  * is used to resolve references as they come.
  */
-static symbol_table_t sym_functors = 0;
+ساكن symbol_table_t sym_functors = 0;
 
 /*
  * VPI objects are indexed during compile time so that they can be
  * linked together as they are created. This symbol table matches
  * labels to vpiHandles.
  */
-static symbol_table_t sym_vpi = 0;
+ساكن symbol_table_t sym_vpi = 0;
 
 
 /*
@@ -444,71 +444,71 @@ static symbol_table_t sym_vpi = 0;
  *  Add a functor to the symbol table
  */
 
-void define_functor_symbol(const char*label, vvp_net_t*net)
+فراغ define_functor_symbol(ثابت حرف*label, vvp_net_t*net)
 {
       symbol_value_t val;
       val.net = net;
       sym_set_value(sym_functors, label, val);
 }
 
-static vvp_net_t*lookup_functor_symbol(const char*label)
+ساكن vvp_net_t*lookup_functor_symbol(ثابت حرف*label)
 {
-      assert(sym_functors);
+      أكد(sym_functors);
       symbol_value_t val = sym_get_value(sym_functors, label);
-      return val.net;
+      أرجع val.net;
 }
 
-vpiHandle vvp_lookup_handle(const char*label)
+vpiHandle vvp_lookup_handle(ثابت حرف*label)
 {
       symbol_value_t val = sym_get_value(sym_vpi, label);
-      if (val.ptr) return (vpiHandle) val.ptr;
-      return 0;
+      𐤀𐤌 (val.ptr) أرجع (vpiHandle) val.ptr;
+      أرجع 0;
 }
 
-vvp_net_t* vvp_net_lookup(const char*label)
+vvp_net_t* vvp_net_lookup(ثابت حرف*label)
 {
-      static bool t0_trigger_generated = false;
+      ساكن منطقي t0_trigger_generated = خطأ;
 
         /* First, look to see if the symbol is a vpi object of some
 	   sort. If it is, then get the vvp_ipoint_t pointer out of
 	   the vpiHandle. */
       symbol_value_t val = sym_get_value(sym_vpi, label);
-      if (val.ptr) {
+      𐤀𐤌 (val.ptr) {
 	    vpiHandle vpi = static_cast<vpiHandle>(val.ptr);
-	    switch (vpi->get_type_code()) {
-		case vpiNet:
-		case vpiReg:
-		case vpiBitVar:
-		case vpiByteVar:
-		case vpiShortIntVar:
-		case vpiIntVar:
-		case vpiLongIntVar:
-		case vpiIntegerVar: {
-		      const __vpiSignal*sig = dynamic_cast<__vpiSignal*>(vpi);
-		      return sig->node;
+	    بدل (vpi->get_type_code()) {
+		حالة vpiNet:
+		حالة vpiReg:
+		حالة vpiBitVar:
+		حالة vpiByteVar:
+		حالة vpiShortIntVar:
+		حالة vpiIntVar:
+		حالة vpiLongIntVar:
+		حالة vpiIntegerVar: {
+		      ثابت __vpiSignal*sig = dynamic_cast<__vpiSignal*>(vpi);
+		      أرجع sig->node;
 		}
 
-		case vpiRealVar: {
-		      const __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(vpi);
-		      return sig->net;
+		حالة vpiRealVar: {
+		      ثابت __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(vpi);
+		      أرجع sig->net;
 		}
 
-		case vpiStringVar:
-		case vpiArrayVar:
-		case vpiClassVar: {
-		      const __vpiBaseVar*sig = dynamic_cast<__vpiBaseVar*>(vpi);
-		      return sig->get_net();
+		حالة vpiStringVar:
+		حالة vpiArrayVar:
+		حالة vpiClassVar: {
+		      ثابت __vpiBaseVar*sig = dynamic_cast<__vpiBaseVar*>(vpi);
+		      أرجع sig->get_net();
 		}
 
-		case vpiNamedEvent: {
-		      const __vpiNamedEvent*tmp = dynamic_cast<__vpiNamedEvent*>(vpi);
-		      return tmp->funct;
+		حالة vpiNamedEvent: {
+		      ثابت __vpiNamedEvent*tmp = dynamic_cast<__vpiNamedEvent*>(vpi);
+		      أرجع tmp->funct;
 		}
 
-		default:
+		افتراضي:
 		  fprintf(stderr, "Unsupported type %d.\n",
 		          vpi->get_type_code());
-		  assert(0);
+		  أكد(0);
 	    }
       }
 
@@ -518,22 +518,22 @@ vvp_net_t* vvp_net_lookup(const char*label)
 
 	// This is a special label used to create a T0 trigger for the
 	// always_comb/latch processes.
-     if (! t0_trigger_generated && (strcmp(label, "E_0x0") == 0)) {
+     𐤀𐤌 (! t0_trigger_generated && (strcmp(label, "E_0x0") == 0)) {
 	      // This should never happen, but if it does then the E_0x0
 	      // event generation may need to be explicitly generated in
 	      // the compiler output instead of implicitly in this code.
-	    assert(! vpip_peek_current_scope()->is_automatic());
+	    أكد(! vpip_peek_current_scope()->is_automatic());
 	    t0_trigger_generated = true;
 	      // Create a local event with no name for the T0 trigger
-	    compile_named_event(strdup(label), strcpy(new char [1],""), true);
+	    compile_named_event(strdup(label), strcpy(جديد حرف [1],""), true);
 	    tmp = vvp_net_lookup(label);
-	    assert(tmp);
+	    أكد(tmp);
 	      // Create a trigger for the T0 event.
 	    vvp_net_ptr_t ptr (tmp, 0);
 	    schedule_t0_trigger(ptr);
      }
 
-      return tmp;
+      أرجع tmp;
 }
 
 /*
@@ -554,18 +554,18 @@ vvp_net_t* vvp_net_lookup(const char*label)
  * this call is its last chance. If it cannot complete the operation,
  * it must print an error message and return false.
  */
-static resolv_list_s*resolv_list = 0;
+ساكن resolv_list_s*resolv_list = 0;
 
 resolv_list_s::~resolv_list_s()
 {
-      free(label_);
+      حرر(label_);
 }
 
-void resolv_submit(resolv_list_s*cur)
+فراغ resolv_submit(resolv_list_s*cur)
 {
-      if (cur->resolve()) {
+      𐤀𐤌 (cur->resolve()) {
 	    delete cur;
-	    return;
+	    أرجع;
       }
 
       cur->next = resolv_list;
@@ -579,34 +579,34 @@ void resolv_submit(resolv_list_s*cur)
  * input that I want that node to feed into. When the name is found,
  * put net->port[port] into the fan-out list for that node.
  */
-struct vvp_net_resolv_list_s: public resolv_list_s {
+بنية vvp_net_resolv_list_s: عام resolv_list_s {
 
-      explicit vvp_net_resolv_list_s(char*l) : resolv_list_s(l) { }
+      explicit vvp_net_resolv_list_s(حرف*l) : resolv_list_s(l) { }
 	// port to be driven by the located node.
       vvp_net_ptr_t port;
-      virtual bool resolve(bool mes) override;
+      virtual منطقي resolve(منطقي mes) override;
 };
 
-bool vvp_net_resolv_list_s::resolve(bool mes)
+منطقي vvp_net_resolv_list_s::resolve(منطقي mes)
 {
       vvp_net_t*tmp = vvp_net_lookup(label());
 
-      if (tmp) {
+      𐤀𐤌 (tmp) {
 	      // Link the input port to the located output.
 	    tmp->link(port);
-	    return true;
+	    أرجع true;
       }
 
-      if (mes)
+      𐤀𐤌 (mes)
 	    fprintf(stderr, "unresolved vvp_net reference: %s\n", label());
 
-      return false;
+      أرجع خطأ;
 }
 
-inline static
-void postpone_functor_input(vvp_net_ptr_t port, char*lab)
+مضمن ساكن
+فراغ postpone_functor_input(vvp_net_ptr_t port, حرف*lab)
 {
-      struct vvp_net_resolv_list_s*res = new struct vvp_net_resolv_list_s(lab);
+      بنية vvp_net_resolv_list_s*res = جديد بنية vvp_net_resolv_list_s(lab);
       res->port   = port;
 
       resolv_submit(res);
@@ -617,33 +617,33 @@ void postpone_functor_input(vvp_net_ptr_t port, char*lab)
  *  Generic functor reference lookup.
  */
 
-struct functor_gen_resolv_list_s: public resolv_list_s {
-      explicit functor_gen_resolv_list_s(char*txt) : resolv_list_s(txt) {
+بنية functor_gen_resolv_list_s: عام resolv_list_s {
+      explicit functor_gen_resolv_list_s(حرف*txt) : resolv_list_s(txt) {
 	    ref = 0;
       }
       vvp_net_t**ref;
-      virtual bool resolve(bool mes) override;
+      virtual منطقي resolve(منطقي mes) override;
 };
 
-bool functor_gen_resolv_list_s::resolve(bool mes)
+منطقي functor_gen_resolv_list_s::resolve(منطقي mes)
 {
       vvp_net_t*tmp = vvp_net_lookup(label());
 
-      if (tmp) {
+      𐤀𐤌 (tmp) {
 	    *ref = tmp;
-	    return true;
+	    أرجع true;
       }
 
-      if (mes)
+      𐤀𐤌 (mes)
 	    fprintf(stderr, "unresolved functor reference: %s\n", label());
 
-      return false;
+      أرجع خطأ;
 }
 
-void functor_ref_lookup(vvp_net_t**ref, char*lab)
+فراغ functor_ref_lookup(vvp_net_t**ref, حرف*lab)
 {
-      struct functor_gen_resolv_list_s*res =
-	    new struct functor_gen_resolv_list_s(lab);
+      بنية functor_gen_resolv_list_s*res =
+	    جديد بنية functor_gen_resolv_list_s(lab);
 
       res->ref    = ref;
 
@@ -654,47 +654,47 @@ void functor_ref_lookup(vvp_net_t**ref, char*lab)
  *  vpiHandle lookup
  */
 
-struct vpi_handle_resolv_list_s: public resolv_list_s {
-      explicit vpi_handle_resolv_list_s(char*lab) : resolv_list_s(lab) {
-	    handle = NULL;
+بنية vpi_handle_resolv_list_s: عام resolv_list_s {
+      explicit vpi_handle_resolv_list_s(حرف*lab) : resolv_list_s(lab) {
+	    handle = عدم;
       }
-      virtual bool resolve(bool mes) override;
+      virtual منطقي resolve(منطقي mes) override;
       vpiHandle *handle;
 };
 
-bool vpi_handle_resolv_list_s::resolve(bool mes)
+منطقي vpi_handle_resolv_list_s::resolve(منطقي mes)
 {
       symbol_value_t val = sym_get_value(sym_vpi, label());
-      if (!val.ptr) {
+      𐤀𐤌 (!val.ptr) {
 	    // check for thread access symbols
 	    unsigned base, wid;
 	    size_t n = 0;
-	    char ss[32];
-	    if (2 == sscanf(label(), "W<%u,%31[r]>%zn", &base, ss, &n)
+	    حرف ss[32];
+	    𐤀𐤌 (2 == sscanf(label(), "W<%u,%31[r]>%zn", &base, ss, &n)
 		       && n == strlen(label())) {
 
 		  val.ptr = vpip_make_vthr_word(base, ss);
 		  sym_set_value(sym_vpi, label(), val);
 
-	    } else if (1 == sscanf(label(), "S<%u,str>%zn", &base, &n)
+	    } وإلا 𐤀𐤌 (1 == sscanf(label(), "S<%u,str>%zn", &base, &n)
 		       && n == strlen(label())) {
 
 		  val.ptr = vpip_make_vthr_str_stack(base);
 		  sym_set_value(sym_vpi, label(), val);
 
-	    } else if (3 == sscanf(label(), "S<%u,vec4,%31[su]%u>%zn", &base, ss, &wid, &n)
+	    } وإلا 𐤀𐤌 (3 == sscanf(label(), "S<%u,vec4,%31[su]%u>%zn", &base, ss, &wid, &n)
 		       && n == strlen(label())) {
 
-		  bool signed_flag = false;
-		  for (char*fp = ss ;  *fp ;  fp += 1) switch (*fp) {
-		      case 's':
+		  منطقي signed_flag = خطأ;
+		  لكل (حرف*fp = ss ;  *fp ;  fp += 1) بدل (*fp) {
+		      حالة 's':
 			signed_flag = true;
-			break;
-		      case 'u':
-			signed_flag = false;
-			break;
-		      default:
-			break;
+			اكسر;
+		      حالة 'u':
+			signed_flag = خطأ;
+			اكسر;
+		      افتراضي:
+			اكسر;
 		  }
 		  val.ptr = vpip_make_vthr_vec4_stack(base, signed_flag, wid);
 		  sym_set_value(sym_vpi, label(), val);
@@ -702,54 +702,54 @@ bool vpi_handle_resolv_list_s::resolve(bool mes)
 
       }
 
-      if (!val.ptr) {
+      𐤀𐤌 (!val.ptr) {
 	    // check for memory word  M<mem,base,wid>
       }
 
-      if (strcmp(label(), "null") == 0) {
+      𐤀𐤌 (strcmp(label(), "null") == 0) {
 	    val.ptr = vpip_make_null_const();
 	    sym_set_value(sym_vpi, label(), val);
       }
 
-      if (val.ptr) {
+      𐤀𐤌 (val.ptr) {
 	    *handle = static_cast<vpiHandle>(val.ptr);
-	    return true;
+	    أرجع true;
       }
 
-      if (mes)
+      𐤀𐤌 (mes)
 	    fprintf(stderr, "unresolved vpi name lookup: %s\n", label());
 
-      return false;
+      أرجع خطأ;
 }
 
-void compile_vpi_lookup(vpiHandle *handle, char*label)
+فراغ compile_vpi_lookup(vpiHandle *handle, حرف*label)
 {
-      if (strcmp(label, "$time") == 0) {
-	    *handle = vpip_sim_time(vpip_peek_current_scope(), false);
-	    free(label);
-	    return;
+      𐤀𐤌 (strcmp(label, "$time") == 0) {
+	    *handle = vpip_sim_time(vpip_peek_current_scope(), خطأ);
+	    حرر(label);
+	    أرجع;
       }
 
-      if (strcmp(label, "$stime") == 0) {
+      𐤀𐤌 (strcmp(label, "$stime") == 0) {
 	    *handle = vpip_sim_time(vpip_peek_current_scope(), true);
-	    free(label);
-	    return;
+	    حرر(label);
+	    أرجع;
       }
 
-      if (strcmp(label, "$realtime") == 0) {
+      𐤀𐤌 (strcmp(label, "$realtime") == 0) {
 	    *handle = vpip_sim_realtime(vpip_peek_current_scope());
-	    free(label);
-	    return;
+	    حرر(label);
+	    أرجع;
       }
 
-      if (strcmp(label, "$simtime") == 0) {
-	    *handle = vpip_sim_time(0, false);
-	    free(label);
-	    return;
+      𐤀𐤌 (strcmp(label, "$simtime") == 0) {
+	    *handle = vpip_sim_time(0, خطأ);
+	    حرر(label);
+	    أرجع;
       }
 
-      struct vpi_handle_resolv_list_s*res
-	    = new struct vpi_handle_resolv_list_s(label);
+      بنية vpi_handle_resolv_list_s*res
+	    = جديد بنية vpi_handle_resolv_list_s(label);
 
       res->handle = handle;
       resolv_submit(res);
@@ -759,80 +759,80 @@ void compile_vpi_lookup(vpiHandle *handle, char*label)
  * Code Label lookup
  */
 
-struct code_label_resolv_list_s: public resolv_list_s {
-      explicit code_label_resolv_list_s(char*lab, bool cptr2) : resolv_list_s(lab) {
-	    code = NULL;
+بنية code_label_resolv_list_s: عام resolv_list_s {
+      explicit code_label_resolv_list_s(حرف*lab, منطقي cptr2) : resolv_list_s(lab) {
+	    code = عدم;
 	    cptr2_flag = cptr2;
       }
-      struct vvp_code_s *code;
-      bool cptr2_flag;
-      virtual bool resolve(bool mes) override;
+      بنية vvp_code_s *code;
+      منطقي cptr2_flag;
+      virtual منطقي resolve(منطقي mes) override;
 };
 
-bool code_label_resolv_list_s::resolve(bool mes)
+منطقي code_label_resolv_list_s::resolve(منطقي mes)
 {
       symbol_value_t val = sym_get_value(sym_codespace, label());
-      if (val.ptr) {
-	    if (cptr2_flag)
+      𐤀𐤌 (val.ptr) {
+	    𐤀𐤌 (cptr2_flag)
 		  code->cptr2 = reinterpret_cast<vvp_code_t>(val.ptr);
-	    else
+	    وإلا
 		  code->cptr = reinterpret_cast<vvp_code_t>(val.ptr);
-	    return true;
+	    أرجع true;
       }
 
-      if (mes)
+      𐤀𐤌 (mes)
 	    fprintf(stderr, "unresolved code label: %s\n", label());
 
-      return false;
+      أرجع خطأ;
 }
 
-void code_label_lookup(struct vvp_code_s *code, char *label, bool cptr2)
+فراغ code_label_lookup(بنية vvp_code_s *code, حرف *label, منطقي cptr2)
 {
-      struct code_label_resolv_list_s *res
-	    = new struct code_label_resolv_list_s(label, cptr2);
+      بنية code_label_resolv_list_s *res
+	    = جديد بنية code_label_resolv_list_s(label, cptr2);
 
       res->code  = code;
 
       resolv_submit(res);
 }
 
-struct code_array_resolv_list_s: public resolv_list_s {
-      explicit code_array_resolv_list_s(char*lab) : resolv_list_s(lab) {
-	    code = NULL;
+بنية code_array_resolv_list_s: عام resolv_list_s {
+      explicit code_array_resolv_list_s(حرف*lab) : resolv_list_s(lab) {
+	    code = عدم;
       }
-      struct vvp_code_s *code;
-      virtual bool resolve(bool mes) override;
+      بنية vvp_code_s *code;
+      virtual منطقي resolve(منطقي mes) override;
 };
 
-bool code_array_resolv_list_s::resolve(bool mes)
+منطقي code_array_resolv_list_s::resolve(منطقي mes)
 {
       code->array = array_find(label());
-      if (code->array != 0) {
-	    return true;
+      𐤀𐤌 (code->array != 0) {
+	    أرجع true;
       }
 
-      if (mes)
+      𐤀𐤌 (mes)
 	    fprintf(stderr, "Array unresolved: %s\n", label());
 
-      return false;
+      أرجع خطأ;
 }
 
-static void compile_array_lookup(struct vvp_code_s*code, char*label)
+ساكن فراغ compile_array_lookup(بنية vvp_code_s*code, حرف*label)
 {
-      struct code_array_resolv_list_s *res
-	    = new struct code_array_resolv_list_s(label);
+      بنية code_array_resolv_list_s *res
+	    = جديد بنية code_array_resolv_list_s(label);
 
       res->code  = code;
 
       resolv_submit(res);
 }
 
-static std::list<struct __vpiSysTaskCall*> scheduled_compiletf;
+ساكن std::list<بنية __vpiSysTaskCall*> scheduled_compiletf;
 
-void compile_compiletf(struct __vpiSysTaskCall*obj)
+فراغ compile_compiletf(بنية __vpiSysTaskCall*obj)
 {
-      if (obj->defn->info.compiletf == 0)
-	    return;
+      𐤀𐤌 (obj->defn->info.compiletf == 0)
+	    أرجع;
 
       scheduled_compiletf.push_back(obj);
 }
@@ -842,43 +842,43 @@ void compile_compiletf(struct __vpiSysTaskCall*obj)
  * the final stuff. Clean up deferred linking here.
  */
 
-void compile_cleanup(void)
+فراغ compile_cleanup(فراغ)
 {
-      int lnerrs = -1;
-      int nerrs = 0;
-      int last;
+      صحيح lnerrs = -1;
+      صحيح nerrs = 0;
+      صحيح last;
 
-      if (verbose_flag) {
+      𐤀𐤌 (verbose_flag) {
 	    fprintf(stderr, " ... Linking\n");
 	    fflush(stderr);
       }
 
-      do {
+      𐤐𐤏𐤋 {
 	    resolv_list_s *res = resolv_list;
 	    resolv_list = 0x0;
 	    last = nerrs == lnerrs;
 	    lnerrs = nerrs;
 	    nerrs = 0;
-	    while (res) {
+	    طالما (res) {
 		  resolv_list_s *cur = res;
 		  res = res->next;
-		  if (cur->resolve(last))
+		  𐤀𐤌 (cur->resolve(last))
 			delete cur;
-		  else {
+		  وإلا {
 			nerrs++;
 			cur->next = resolv_list;
 			resolv_list = cur;
 		  }
 	    }
-	    if (nerrs && last)
+	    𐤀𐤌 (nerrs && last)
 		  fprintf(stderr,
 			  "compile_cleanup: %d unresolved items\n",
 			  nerrs);
-      } while (nerrs && !last);
+      } طالما (nerrs && !last);
 
       compile_errors += nerrs;
 
-      if (verbose_flag) {
+      𐤀𐤌 (verbose_flag) {
 	    fprintf(stderr, " ... Removing symbol tables\n");
 	    fflush(stderr);
       }
@@ -902,16 +902,16 @@ void compile_cleanup(void)
       compile_island_cleanup();
       compile_array_cleanup();
 
-      if (verbose_flag) {
+      𐤀𐤌 (verbose_flag) {
 	    fprintf(stderr, " ... Compiletf functions\n");
 	    fflush(stderr);
       }
 
-      assert(vpi_mode_flag == VPI_MODE_NONE);
+      أكد(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_COMPILETF;
 
-      while (! scheduled_compiletf.empty()) {
-	    struct __vpiSysTaskCall*obj = scheduled_compiletf.front();
+      طالما (! scheduled_compiletf.empty()) {
+	    بنية __vpiSysTaskCall*obj = scheduled_compiletf.front();
 	    scheduled_compiletf.pop_front();
 	    vpip_cur_task = obj;
 	    obj->defn->info.compiletf (obj->defn->info.user_data);
@@ -921,7 +921,7 @@ void compile_cleanup(void)
       vpi_mode_flag = VPI_MODE_NONE;
 }
 
-void compile_vpi_symbol(const char*label, vpiHandle obj)
+فراغ compile_vpi_symbol(ثابت حرف*label, vpiHandle obj)
 {
       symbol_value_t val;
       val.ptr = obj;
@@ -932,7 +932,7 @@ void compile_vpi_symbol(const char*label, vpiHandle obj)
  * Initialize the compiler by allocation empty symbol tables and
  * initializing the various address spaces.
  */
-void compile_init(void)
+فراغ compile_init(فراغ)
 {
       sym_vpi = new_symbol_table();
 
@@ -942,13 +942,13 @@ void compile_init(void)
       codespace_init();
 }
 
-void compile_load_vpi_module(char*name)
+فراغ compile_load_vpi_module(حرف*name)
 {
       vpip_load_module(name);
       delete[] name;
 }
 
-void compile_vpi_time_precision(long pre)
+فراغ compile_vpi_time_precision(long pre)
 {
       vpip_set_time_precision(pre);
 }
@@ -967,59 +967,59 @@ void compile_vpi_time_precision(long pre)
  *
  * The real value is sign * (mant ** exp).
  */
-static bool crstring_header_test(const char*str)
+ساكن منطقي crstring_header_test(ثابت حرف*str)
 {
-      if ((str[0] != 'C') && (str[0] != 'c'))
-	    return false;
-      if ((str[1] != 'r') || (str[2] != '<'))
-	    return false;
+      𐤀𐤌 ((str[0] != 'C') && (str[0] != 'c'))
+	    أرجع خطأ;
+      𐤀𐤌 ((str[1] != 'r') || (str[2] != '<'))
+	    أرجع خطأ;
 
-      return true;
+      أرجع true;
 }
 
-bool crstring_test(const char*str)
+منطقي crstring_test(ثابت حرف*str)
 {
-      if (!crstring_header_test(str))
-	    return false;
-      const char*tp = strchr(str, '>');
-      if (tp == 0) return false;
-      if (tp[1] != 0) return false;
+      𐤀𐤌 (!crstring_header_test(str))
+	    أرجع خطأ;
+      ثابت حرف*tp = strchr(str, '>');
+      𐤀𐤌 (tp == 0) أرجع خطأ;
+      𐤀𐤌 (tp[1] != 0) أرجع خطأ;
 
-      if ((strspn(str+3, "0123456789abcdefmg")+3) != (size_t)(tp - str))
-	  return false;
+      𐤀𐤌 ((strspn(str+3, "0123456789abcdefmg")+3) != (size_t)(tp - str))
+	  أرجع خطأ;
 
-      return true;
+      أرجع true;
 }
 
-double crstring_to_double(const char*label)
+مزدوج crstring_to_double(ثابت حرف*label)
 {
-      assert(crstring_header_test(label));
+      أكد(crstring_header_test(label));
 
-      const char*cp = label+3;
-      assert(*cp == 'm');
+      ثابت حرف*cp = label+3;
+      أكد(*cp == 'm');
       cp += 1;
-      char*ep;
+      حرف*ep;
       uint64_t mant = strtoull(cp, &ep, 16);
       cp = ep;
-      assert(*cp == 'g');
+      أكد(*cp == 'g');
       cp += 1;
-      int exp = strtoul(cp, 0, 16);
+      صحيح exp = strtoul(cp, 0, 16);
 
-      double tmp;
-      if (mant == 0 && exp == 0x3fff) {
+      مزدوج tmp;
+      𐤀𐤌 (mant == 0 && exp == 0x3fff) {
 	    tmp = INFINITY;
-      } else if (mant == 0 && exp == 0x7fff) {
+      } وإلا 𐤀𐤌 (mant == 0 && exp == 0x7fff) {
 	    tmp = -INFINITY;
-      } else if (exp == 0x3fff) {
+      } وإلا 𐤀𐤌 (exp == 0x3fff) {
 	    tmp = nan("");
-      } else {
-	    double sign = (exp & 0x4000)? -1.0 : 1.0;
+      } وإلا {
+	    مزدوج sign = (exp & 0x4000)? -1.0 : 1.0;
 	    exp &= 0x1fff;
 
-	    tmp = sign * ldexp((double)mant, exp - 0x1000);
+	    tmp = sign * ldexp((مزدوج)mant, exp - 0x1000);
       }
 
-      return tmp;
+      أرجع tmp;
 }
 
 /*
@@ -1036,12 +1036,12 @@ double crstring_to_double(const char*label)
  * and skip the symbol lookup.
  */
 
-void input_connect(vvp_net_t*fdx, unsigned port, char*label)
+فراغ input_connect(vvp_net_t*fdx, unsigned port, حرف*label)
 {
       vvp_net_ptr_t ifdx = vvp_net_ptr_t(fdx, port);
 
 	/* Is this a vvp_vector4_t constant value? */
-      if (c4string_test(label)) {
+      𐤀𐤌 (c4string_test(label)) {
 
 	    vvp_vector4_t tmp = c4string_to_vector4(label);
 
@@ -1056,40 +1056,40 @@ void input_connect(vvp_net_t*fdx, unsigned port, char*label)
 	      // schedule execution before time 0, to make sure it
 	      // occurs before any sensitive processes are started
 	      // or VPI callbacks are executed.
-	    if (label[0] == 'c')
+	    𐤀𐤌 (label[0] == 'c')
 		  schedule_init_vector(ifdx, tmp);
-	    else
+	    وإلا
 		  schedule_set_vector(ifdx, tmp);
 
-	    free(label);
-	    return;
+	    حرر(label);
+	    أرجع;
       }
 
 	/* Is this a vvp_vector8_t constant value? */
-      if (c8string_test(label)) {
+      𐤀𐤌 (c8string_test(label)) {
 
 	    vvp_vector8_t tmp = c8string_to_vector8(label);
-	    if (label[0] == 'c')
+	    𐤀𐤌 (label[0] == 'c')
 		  schedule_init_vector(ifdx, tmp);
-	    else
+	    وإلا
 		  schedule_set_vector(ifdx, tmp);
 
-	    free(label);
-	    return;
+	    حرر(label);
+	    أرجع;
       }
 
 	/* Handle the Cr<> constant driver, which is a real-value
 	   driver. */
-      if (crstring_test(label)) {
+      𐤀𐤌 (crstring_test(label)) {
 
-	    double tmp = crstring_to_double(label);
+	    مزدوج tmp = crstring_to_double(label);
 
-	    if (label[0] == 'c')
+	    𐤀𐤌 (label[0] == 'c')
 		  schedule_init_vector(ifdx, tmp);
-	    else
+	    وإلا
 		  schedule_set_vector(ifdx, tmp);
-	    free(label);
-	    return;
+	    حرر(label);
+	    أرجع;
       }
 
 	/* Handle the general case that this is a label for a node in
@@ -1099,491 +1099,491 @@ void input_connect(vvp_net_t*fdx, unsigned port, char*label)
       postpone_functor_input(ifdx, label);
 }
 
-void inputs_connect(vvp_net_t*fdx, unsigned argc, struct symb_s*argv)
+فراغ inputs_connect(vvp_net_t*fdx, unsigned argc, بنية symb_s*argv)
 {
-      if (argc > 4) {
+      𐤀𐤌 (argc > 4) {
 	    std::cerr << "XXXX argv[0] = " << argv[0].text << std::endl;
       }
-      assert(argc <= 4);
+      أكد(argc <= 4);
 
-      for (unsigned idx = 0;  idx < argc;  idx += 1) {
+      لكل (unsigned idx = 0;  idx < argc;  idx += 1) {
 
 	    input_connect(fdx, idx, argv[idx].text);
       }
 }
 
-void wide_inputs_connect(vvp_wide_fun_core*core,
-			 unsigned argc, struct symb_s*argv)
+فراغ wide_inputs_connect(vvp_wide_fun_core*core,
+			 unsigned argc, بنية symb_s*argv)
 {
 	/* Create input functors to receive values from the
 	   network. These functors pass the data to the core. */
       unsigned input_functors = (argc+3) / 4;
-      for (unsigned idx = 0 ;  idx < input_functors ;  idx += 1) {
+      لكل (unsigned idx = 0 ;  idx < input_functors ;  idx += 1) {
 	    unsigned base = idx*4;
 	    unsigned trans = 4;
-	    if (base+trans > argc)
+	    𐤀𐤌 (base+trans > argc)
 		  trans = argc - base;
 
-	    vvp_wide_fun_t*cur = new vvp_wide_fun_t(core, base);
-	    vvp_net_t*ptr = new vvp_net_t;
+	    vvp_wide_fun_t*cur = جديد vvp_wide_fun_t(core, base);
+	    vvp_net_t*ptr = جديد vvp_net_t;
 	    ptr->fun = cur;
 
 	    inputs_connect(ptr, trans, argv+base);
       }
 }
 
-template <class T_> void make_arith(T_ *arith, char*label,
-				    unsigned argc, struct symb_s*argv)
+template <صنف T_> فراغ make_arith(T_ *arith, حرف*label,
+				    unsigned argc, بنية symb_s*argv)
 {
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = جديد vvp_net_t;
       ptr->fun = arith;
 
       define_functor_symbol(label, ptr);
-      free(label);
+      حرر(label);
 
-      assert(argc == 2);
+      أكد(argc == 2);
       inputs_connect(ptr, argc, argv);
 
-      free(argv);
+      حرر(argv);
 }
 
-void compile_arith_cast_int(char*label, long width,
-                            unsigned argc, struct symb_s*argv)
+فراغ compile_arith_cast_int(حرف*label, long width,
+                            unsigned argc, بنية symb_s*argv)
 {
-      vvp_arith_cast_int*arith = new vvp_arith_cast_int((unsigned) width);
+      vvp_arith_cast_int*arith = جديد vvp_arith_cast_int((unsigned) width);
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = جديد vvp_net_t;
       ptr->fun = arith;
 
       define_functor_symbol(label, ptr);
-      free(label);
+      حرر(label);
 
-      assert(argc == 1);
+      أكد(argc == 1);
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      حرر(argv);
 }
 
-void compile_arith_cast_vec2(char*label, long width,
-			     unsigned argc, struct symb_s*argv)
+فراغ compile_arith_cast_vec2(حرف*label, long width,
+			     unsigned argc, بنية symb_s*argv)
 {
-      vvp_arith_cast_vec2*arith = new vvp_arith_cast_vec2((unsigned) width);
+      vvp_arith_cast_vec2*arith = جديد vvp_arith_cast_vec2((unsigned) width);
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = جديد vvp_net_t;
       ptr->fun = arith;
 
       define_functor_symbol(label, ptr);
-      free(label);
+      حرر(label);
 
-      assert(argc == 1);
+      أكد(argc == 1);
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      حرر(argv);
 }
 
-void compile_arith_cast_real(char*label, bool signed_flag,
-                             unsigned argc, struct symb_s*argv)
+فراغ compile_arith_cast_real(حرف*label, منطقي signed_flag,
+                             unsigned argc, بنية symb_s*argv)
 {
-      vvp_arith_cast_real*arith = new vvp_arith_cast_real(signed_flag);
+      vvp_arith_cast_real*arith = جديد vvp_arith_cast_real(signed_flag);
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = جديد vvp_net_t;
       ptr->fun = arith;
 
       define_functor_symbol(label, ptr);
-      free(label);
+      حرر(label);
 
-      assert(argc == 1);
+      أكد(argc == 1);
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      حرر(argv);
 }
 
-void compile_arith_abs(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_abs(حرف*label, unsigned argc, بنية symb_s*argv)
 {
-      vvp_arith_abs*arith = new vvp_arith_abs;
+      vvp_arith_abs*arith = جديد vvp_arith_abs;
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = جديد vvp_net_t;
       ptr->fun = arith;
 
       define_functor_symbol(label, ptr);
-      free(label);
+      حرر(label);
 
-      assert(argc == 1);
+      أكد(argc == 1);
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      حرر(argv);
 }
 
-void compile_arith_div(char*label, long wid, bool signed_flag,
-		       unsigned argc, struct symb_s*argv)
+فراغ compile_arith_div(حرف*label, long wid, منطقي signed_flag,
+		       unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
-	    const char *suffix = "";
-	    if (signed_flag) suffix = ".s";
+      𐤀𐤌 (argc != 2) {
+	    ثابت حرف *suffix = "";
+	    𐤀𐤌 (signed_flag) suffix = ".s";
 	    fprintf(stderr, "%s; .arith/div%s has wrong number of "
 	                    "symbols\n", label, suffix);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_arith_div(wid, signed_flag);
+      vvp_arith_ *arith = جديد vvp_arith_div(wid, signed_flag);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_div_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_div_r(حرف*label, unsigned argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s; .arith/divr has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_div_real;
+      vvp_arith_real_ *arith = جديد vvp_arith_div_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mod(char*label, long wid, bool signed_flag,
-		       unsigned argc, struct symb_s*argv)
+فراغ compile_arith_mod(حرف*label, long wid, منطقي signed_flag,
+		       unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .arith/mod has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_arith_mod(wid, signed_flag);
+      vvp_arith_ *arith = جديد vvp_arith_mod(wid, signed_flag);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mod_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_mod_r(حرف*label, unsigned argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .arith/mod.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_mod_real;
+      vvp_arith_real_ *arith = جديد vvp_arith_mod_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mult(char*label, long wid,
-			unsigned argc, struct symb_s*argv)
+فراغ compile_arith_mult(حرف*label, long wid,
+			unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .arith/mult has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_arith_mult(wid);
+      vvp_arith_ *arith = جديد vvp_arith_mult(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mult_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_mult_r(حرف*label, unsigned argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .arith/mult.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_mult_real;
+      vvp_arith_real_ *arith = جديد vvp_arith_mult_real;
       make_arith(arith, label, argc, argv);
 }
 
 
-void compile_arith_pow(char*label, long wid, bool signed_flag,
-		       unsigned argc, struct symb_s*argv)
+فراغ compile_arith_pow(حرف*label, long wid, منطقي signed_flag,
+		       unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
-	    const char *suffix = "";
-	    if (signed_flag) suffix = ".s";
+      𐤀𐤌 (argc != 2) {
+	    ثابت حرف *suffix = "";
+	    𐤀𐤌 (signed_flag) suffix = ".s";
 	    fprintf(stderr, "%s .arith/pow%s has wrong number of "
 	                    "symbols\n", label, suffix);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_arith_pow(wid, signed_flag);
+      vvp_arith_ *arith = جديد vvp_arith_pow(wid, signed_flag);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_pow_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_pow_r(حرف*label, unsigned argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .arith/pow.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_pow_real;
+      vvp_arith_real_ *arith = جديد vvp_arith_pow_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sub(char*label, long wid, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_sub(حرف*label, long wid, unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .arith/sub has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_arith_sub(wid);
+      vvp_arith_ *arith = جديد vvp_arith_sub(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sub_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_sub_r(حرف*label, unsigned argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s; .arith/sub.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_sub_real;
+      vvp_arith_real_ *arith = جديد vvp_arith_sub_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sum(char*label, long wid, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_sum(حرف*label, long wid, unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .arith/sum has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_arith_sum(wid);
+      vvp_arith_ *arith = جديد vvp_arith_sum(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sum_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_sum_r(حرف*label, unsigned argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .arith/sum.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_sum_real;
+      vvp_arith_real_ *arith = جديد vvp_arith_sum_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eeq(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_eeq(حرف*label, long wid,
+		     unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eeq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_eeq(wid);
+      vvp_arith_ *arith = جديد vvp_cmp_eeq(wid);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_nee(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_nee(حرف*label, long wid,
+		     unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eeq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_nee(wid);
+      vvp_arith_ *arith = جديد vvp_cmp_nee(wid);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eq(char*label, long wid, unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_eq(حرف*label, long wid, unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_eq(wid);
+      vvp_arith_ *arith = جديد vvp_cmp_eq(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eqx(char*label, long wid, unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_eqx(حرف*label, long wid, unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eqx has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_eqx(wid);
+      vvp_arith_ *arith = جديد vvp_cmp_eqx(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eqz(char*label, long wid, unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_eqz(حرف*label, long wid, unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eqz has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_eqz(wid);
+      vvp_arith_ *arith = جديد vvp_cmp_eqz(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eq_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_eq_r(حرف*label, unsigned argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eq.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_cmp_eq_real;
+      vvp_arith_real_ *arith = جديد vvp_cmp_eq_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ne(char*label, long wid, unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_ne(حرف*label, long wid, unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ne has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_ne(wid);
+      vvp_arith_ *arith = جديد vvp_cmp_ne(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ne_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_ne_r(حرف*label, unsigned argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ne.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_cmp_ne_real;
+      vvp_arith_real_ *arith = جديد vvp_cmp_ne_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ge(char*label, long wid, bool signed_flag,
-		    unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_ge(حرف*label, long wid, منطقي signed_flag,
+		    unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ge has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_ge(wid, signed_flag);
+      vvp_arith_ *arith = جديد vvp_cmp_ge(wid, signed_flag);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ge_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_ge_r(حرف*label, unsigned argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ge.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_cmp_ge_real;
+      vvp_arith_real_ *arith = جديد vvp_cmp_ge_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_gt(char*label, long wid, bool signed_flag,
-		    unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_gt(حرف*label, long wid, منطقي signed_flag,
+		    unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .cmp/gt has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_gt(wid, signed_flag);
+      vvp_arith_ *arith = جديد vvp_cmp_gt(wid, signed_flag);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_gt_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_gt_r(حرف*label, unsigned argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .cmp/gt.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_cmp_gt_real;
+      vvp_arith_real_ *arith = جديد vvp_cmp_gt_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_weq(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_weq(حرف*label, long wid,
+		     unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .cmp/weq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_weq(wid);
+      vvp_arith_ *arith = جديد vvp_cmp_weq(wid);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_wne(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_wne(حرف*label, long wid,
+		     unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      𐤀𐤌 (argc != 2) {
 	    fprintf(stderr, "%s .cmp/wne has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_wne(wid);
+      vvp_arith_ *arith = جديد vvp_cmp_wne(wid);
 
       make_arith(arith, label, argc, argv);
 }
 
 
-void compile_delay(char*label, unsigned width,
-                   vvp_delay_t*delay, struct symb_s arg)
+فراغ compile_delay(حرف*label, unsigned width,
+                   vvp_delay_t*delay, بنية symb_s arg)
 {
-      vvp_net_t*net = new vvp_net_t;
-      vvp_fun_delay*obj = new vvp_fun_delay(net, width, *delay);
+      vvp_net_t*net = جديد vvp_net_t;
+      vvp_fun_delay*obj = جديد vvp_fun_delay(net, width, *delay);
       net->fun = obj;
 
       delete delay;
@@ -1591,47 +1591,47 @@ void compile_delay(char*label, unsigned width,
       input_connect(net, 0, arg.text);
 
       define_functor_symbol(label, net);
-      free(label);
+      حرر(label);
 }
 
-void compile_delay(char*label, unsigned width,
-                   unsigned argc, struct symb_s*argv, bool ignore_decay)
+فراغ compile_delay(حرف*label, unsigned width,
+                   unsigned argc, بنية symb_s*argv, منطقي ignore_decay)
 {
       vvp_delay_t stub (0, 0, 0);
-      if (ignore_decay) stub.set_ignore_decay();
-      vvp_net_t*net = new vvp_net_t;
-      vvp_fun_delay*obj = new vvp_fun_delay(net, width, stub);
+      𐤀𐤌 (ignore_decay) stub.set_ignore_decay();
+      vvp_net_t*net = جديد vvp_net_t;
+      vvp_fun_delay*obj = جديد vvp_fun_delay(net, width, stub);
       net->fun = obj;
 
       inputs_connect(net, argc, argv);
-      free(argv);
+      حرر(argv);
 
       define_functor_symbol(label, net);
-      free(label);
+      حرر(label);
 }
 
 /*
  * Extend nodes.
  */
-void compile_extend_signed(char*label, long wid, struct symb_s arg)
+فراغ compile_extend_signed(حرف*label, long wid, بنية symb_s arg)
 {
-      assert(wid >= 0);
+      أكد(wid >= 0);
 
-      vvp_fun_extend_signed*fun = new vvp_fun_extend_signed(wid);
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_fun_extend_signed*fun = جديد vvp_fun_extend_signed(wid);
+      vvp_net_t*ptr = جديد vvp_net_t;
       ptr->fun = fun;
 
       define_functor_symbol(label, ptr);
-      free(label);
+      حرر(label);
 
       input_connect(ptr, 0, arg.text);
 }
 
-struct __vpiModPath* compile_modpath(char*label, unsigned width,
-                                     struct symb_s drv, struct symb_s dest)
+بنية __vpiModPath* compile_modpath(حرف*label, unsigned width,
+                                     بنية symb_s drv, بنية symb_s dest)
 {
-      vvp_net_t*net = new vvp_net_t;
-      vvp_fun_modpath*obj = new vvp_fun_modpath(net, width);
+      vvp_net_t*net = جديد vvp_net_t;
+      vvp_fun_modpath*obj = جديد vvp_fun_modpath(net, width);
       net->fun = obj;
 
       input_connect(net, 0, drv.text);
@@ -1642,23 +1642,23 @@ struct __vpiModPath* compile_modpath(char*label, unsigned width,
 
       compile_vpi_lookup(&modpath->path_term_out.expr, dest.text);
 
-      free(label);
+      حرر(label);
 
       modpath->modpath = obj;
-      return modpath;
+      أرجع modpath;
 }
 
-static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
-					       char edge_c,
-					       const struct symb_s&src,
-					       struct numbv_s&vals,
-					       bool ifnone)
+ساكن بنية __vpiModPathSrc*make_modpath_src(بنية __vpiModPath*path,
+					       حرف edge_c,
+					       ثابت بنية symb_s&src,
+					       بنية numbv_s&vals,
+					       منطقي ifnone)
 {
       vvp_fun_modpath*dst = path->modpath;
 
       vvp_time64_t use_delay[12];
-      assert(vals.cnt == 12);
-      for (unsigned idx = 0 ; idx < vals.cnt ;  idx += 1) {
+      أكد(vals.cnt == 12);
+      لكل (unsigned idx = 0 ; idx < vals.cnt ;  idx += 1) {
 	    use_delay[idx] = vals.nvec[idx];
       }
 
@@ -1666,41 +1666,41 @@ static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
 
       vvp_fun_modpath_src*obj = 0;
 
-      int vpi_edge = vpiNoEdge;
-      if (edge_c == 0) {
-	    obj = new vvp_fun_modpath_src(use_delay);
+      صحيح vpi_edge = vpiNoEdge;
+      𐤀𐤌 (edge_c == 0) {
+	    obj = جديد vvp_fun_modpath_src(use_delay);
 
-      } else {
-	    bool posedge, negedge;
-	    switch (edge_c) {
-		case '+':
+      } وإلا {
+	    منطقي posedge, negedge;
+	    بدل (edge_c) {
+		حالة '+':
 		  vpi_edge = vpiPosedge;
 		  posedge = true;
-		  negedge = false;
-		  break;
-		case '-':
+		  negedge = خطأ;
+		  اكسر;
+		حالة '-':
 		  vpi_edge = vpiNegedge;
-		  posedge = false;
+		  posedge = خطأ;
 		  negedge = true;
-		  break;
-#if 0
-		case '*':
+		  اكسر;
+#𐤀𐤌 0
+		حالة '*':
 		  posedge = true;
 		  negedge = true;
-		  break;
+		  اكسر;
 #endif
-		default:
-		  posedge = false;
-		  negedge = false;
+		افتراضي:
+		  posedge = خطأ;
+		  negedge = خطأ;
 		  fprintf(stderr, "Unknown edge identifier %c(%d).\n", edge_c,
 		          edge_c);
-		  assert(0);
+		  أكد(0);
 	    }
-	    obj = new vvp_fun_modpath_edge(use_delay, posedge, negedge);
+	    obj = جديد vvp_fun_modpath_edge(use_delay, posedge, negedge);
       }
 
-      vvp_net_t*net = new vvp_net_t;
-      struct __vpiModPathSrc* srcobj = vpip_make_modpath_src(path, net) ;
+      vvp_net_t*net = جديد vvp_net_t;
+      بنية __vpiModPathSrc* srcobj = vpip_make_modpath_src(path, net) ;
       vpip_attach_to_current_scope(srcobj);
       net->fun = obj;
 
@@ -1709,30 +1709,30 @@ static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
       input_connect(net, 0, src.text);
       dst->add_modpath_src(obj, ifnone);
 
-      return srcobj;
+      أرجع srcobj;
 }
 
-void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
-			 const struct symb_s&src,
-			 struct numbv_s&vals,
-			 const struct symb_s&condit_src,
-			 const struct symb_s&path_term_in)
+فراغ compile_modpath_src(بنية __vpiModPath*dst, حرف edge_c,
+			 ثابت بنية symb_s&src,
+			 بنية numbv_s&vals,
+			 ثابت بنية symb_s&condit_src,
+			 ثابت بنية symb_s&path_term_in)
 {
-      struct __vpiModPathSrc*obj =
-	    make_modpath_src(dst, edge_c, src, vals, false);
+      بنية __vpiModPathSrc*obj =
+	    make_modpath_src(dst, edge_c, src, vals, خطأ);
       input_connect(obj->net, 1, condit_src.text);
       compile_vpi_lookup(&obj->path_term_in.expr, path_term_in.text);
 }
 
-void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
-			 const struct symb_s&src,
-			 struct numbv_s&vals,
-			 int condit_src,
-			 const struct symb_s&path_term_in,
-			 bool ifnone)
+فراغ compile_modpath_src(بنية __vpiModPath*dst, حرف edge_c,
+			 ثابت بنية symb_s&src,
+			 بنية numbv_s&vals,
+			 صحيح condit_src,
+			 ثابت بنية symb_s&path_term_in,
+			 منطقي ifnone)
 {
-      assert(condit_src == 0);
-      struct __vpiModPathSrc*obj =
+      أكد(condit_src == 0);
+      بنية __vpiModPathSrc*obj =
 	    make_modpath_src(dst, edge_c, src, vals, ifnone);
       compile_vpi_lookup(&obj->path_term_in.expr, path_term_in.text);
 }
@@ -1742,106 +1742,106 @@ void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
  * width. The 0 input is the data vector to be shifted and the 1 input
  * is the amount of the shift. An unconnected shift amount is set to 0.
  */
-void compile_shiftl(char*label, long wid, unsigned argc, struct symb_s*argv)
+فراغ compile_shiftl(حرف*label, long wid, unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      vvp_arith_ *arith = new vvp_shiftl(wid);
+      vvp_arith_ *arith = جديد vvp_shiftl(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_shiftr(char*label, long wid, bool signed_flag,
-		    unsigned argc, struct symb_s*argv)
+فراغ compile_shiftr(حرف*label, long wid, منطقي signed_flag,
+		    unsigned argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      vvp_arith_ *arith = new vvp_shiftr(wid, signed_flag);
+      vvp_arith_ *arith = جديد vvp_shiftr(wid, signed_flag);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_resolver(char*label, char*type, unsigned argc, struct symb_s*argv)
+فراغ compile_resolver(حرف*label, حرف*type, unsigned argc, بنية symb_s*argv)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = جديد vvp_net_t;
 
       resolv_core*core = 0;
 
-      if (strcmp(type,"tri") == 0) {
-	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_Z, 0,0));
+      𐤀𐤌 (strcmp(type,"tri") == 0) {
+	    core = جديد resolv_tri(argc, net, vvp_scalar_t(BIT4_Z, 0,0));
 
-      } else if (strcmp(type,"tri0") == 0) {
-	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_0, 5,5));
+      } وإلا 𐤀𐤌 (strcmp(type,"tri0") == 0) {
+	    core = جديد resolv_tri(argc, net, vvp_scalar_t(BIT4_0, 5,5));
 
-      } else if (strcmp(type,"tri1") == 0) {
-	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_1, 5,5));
+      } وإلا 𐤀𐤌 (strcmp(type,"tri1") == 0) {
+	    core = جديد resolv_tri(argc, net, vvp_scalar_t(BIT4_1, 5,5));
 
-      } else if (strcmp(type,"triand") == 0) {
-	    core = new resolv_triand(argc, net);
+      } وإلا 𐤀𐤌 (strcmp(type,"triand") == 0) {
+	    core = جديد resolv_triand(argc, net);
 
-      } else if (strcmp(type,"trior") == 0) {
-	    core = new resolv_trior(argc, net);
+      } وإلا 𐤀𐤌 (strcmp(type,"trior") == 0) {
+	    core = جديد resolv_trior(argc, net);
 
-      } else {
+      } وإلا {
 	    fprintf(stderr, "invalid resolver type: %s\n", type);
 	    compile_errors += 1;
             delete net;
       }
 
-      if (core) {
+      𐤀𐤌 (core) {
 	    net->fun = core;
 	    define_functor_symbol(label, net);
 
-            for (unsigned base = 0 ;  base < argc ;  base += 4) {
+            لكل (unsigned base = 0 ;  base < argc ;  base += 4) {
 	          unsigned nports = argc - base;
-                  if (nports > 4)
+                  𐤀𐤌 (nports > 4)
                         nports = 4;
 
-                  if (base > 0) {
-                        net = new vvp_net_t;
-                        net->fun = new resolv_extend(core, base);
+                  𐤀𐤌 (base > 0) {
+                        net = جديد vvp_net_t;
+                        net->fun = جديد resolv_extend(core, base);
                   }
                   inputs_connect(net, nports, argv+base);
             }
       }
-      free(type);
-      free(label);
-      free(argv);
+      حرر(type);
+      حرر(label);
+      حرر(argv);
 }
 
-void compile_udp_def(int sequ, char *label, char *name,
-		     unsigned nin, unsigned init, char **table)
+فراغ compile_udp_def(صحيح sequ, حرف *label, حرف *name,
+		     unsigned nin, unsigned init, حرف **table)
 {
-      if (sequ) {
+      𐤀𐤌 (sequ) {
 	    vvp_bit4_t init4;
-	    if (init == 0)
+	    𐤀𐤌 (init == 0)
 		  init4 = BIT4_0;
-	    else if (init == 1)
+	    وإلا 𐤀𐤌 (init == 1)
 		  init4 = BIT4_1;
-	    else
+	    وإلا
 		  init4 = BIT4_X;
 
-	    vvp_udp_seq_s *u = new vvp_udp_seq_s(label, name, nin, init4);
+	    vvp_udp_seq_s *u = جديد vvp_udp_seq_s(label, name, nin, init4);
 	    u->compile_table(table);
-      } else {
-	    vvp_udp_comb_s *u = new vvp_udp_comb_s(label, name, nin);
+      } وإلا {
+	    vvp_udp_comb_s *u = جديد vvp_udp_comb_s(label, name, nin);
 	    u->compile_table(table);
       }
-      free(label);
+      حرر(label);
 }
 
-char **compile_udp_table(char **table, char *row)
+حرف **compile_udp_table(حرف **table, حرف *row)
 {
-  if (table)
-    assert(strlen(*table)==strlen(row));
+  𐤀𐤌 (table)
+    أكد(strlen(*table)==strlen(row));
 
-  char **tt;
-  for (tt = table; tt && *tt; tt++) { }
-  int n = (tt-table) + 2;
+  حرف **tt;
+  لكل (tt = table; tt && *tt; tt++) { }
+  صحيح n = (tt-table) + 2;
 
-  table = static_cast<char**>(realloc(table, n*sizeof(char*)));
+  table = static_cast<حرف**>(realloc(table, n*حجم(حرف*)));
   table[n-2] = row;
   table[n-1] = 0x0;
 
-  return table;
+  أرجع table;
 }
 
 
@@ -1851,146 +1851,146 @@ char **compile_udp_table(char **table, char *row)
  * table gives the operand structure that is acceptable, so I can
  * process the operands here as well.
  */
-void compile_code(char*label, char*mnem, comp_operands_t opa)
+فراغ compile_code(حرف*label, حرف*mnem, comp_operands_t opa)
 {
 	/* First, I can give the label a value that is the current
 	   codespace pointer. Don't need the text of the label after
 	   this is done. */
-      if (label)
+      𐤀𐤌 (label)
 	    compile_codelabel(label);
 
 	/* Lookup the opcode in the opcode table. */
-      struct opcode_table_s*op = static_cast<struct opcode_table_s*>
+      بنية opcode_table_s*op = static_cast<بنية opcode_table_s*>
                                             (bsearch(mnem, opcode_table, opcode_count,
-                                                     sizeof(struct opcode_table_s),
+                                                     حجم(بنية opcode_table_s),
                                                      &opcode_compare));
-      if (op == 0) {
+      𐤀𐤌 (op == 0) {
 	    yyerror("Invalid opcode");
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      assert(op);
+      أكد(op);
 
 	/* Build up the code from the information about the opcode and
 	   the information from the compiler. */
       vvp_code_t code = codespace_allocate();
       code->opcode = op->opcode;
 
-      if (op->argc != (opa? opa->argc : 0)) {
+      𐤀𐤌 (op->argc != (opa? opa->argc : 0)) {
 	    yyerror("operand count");
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
 	/* Pull the operands that the instruction expects from the
 	   list that the parser supplied. */
 
-      for (unsigned idx = 0 ;  idx < op->argc ;  idx += 1) {
+      لكل (unsigned idx = 0 ;  idx < op->argc ;  idx += 1) {
 
-	    switch (op->argt[idx]) {
-		case OA_NONE:
-		  break;
+	    بدل (op->argt[idx]) {
+		حالة OA_NONE:
+		  اكسر;
 
-		case OA_ARR_PTR:
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		حالة OA_ARR_PTR:
+		  𐤀𐤌 (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
 
 		  compile_array_lookup(code, opa->argv[idx].symb.text);
-		  break;
+		  اكسر;
 
-		case OA_BIT1:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		حالة OA_BIT1:
+		  𐤀𐤌 (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
 		  code->bit_idx[0] = opa->argv[idx].numb;
-		  break;
+		  اكسر;
 
-		case OA_BIT2:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		حالة OA_BIT2:
+		  𐤀𐤌 (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
 		  code->bit_idx[1] = opa->argv[idx].numb;
-		  break;
+		  اكسر;
 
-		case OA_CODE_PTR:
-		case OA_CODE_PTR2:
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		حالة OA_CODE_PTR:
+		حالة OA_CODE_PTR2:
+		  𐤀𐤌 (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
 
-		  assert(opa->argv[idx].symb.idx == 0);
+		  أكد(opa->argv[idx].symb.idx == 0);
 		  code_label_lookup(code, opa->argv[idx].symb.text,
 				    op->argt[idx]==OA_CODE_PTR2);
-		  break;
+		  اكسر;
 
-		case OA_FUNC_PTR:
+		حالة OA_FUNC_PTR:
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  𐤀𐤌 (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
 
 		  functor_ref_lookup(&code->net, opa->argv[idx].symb.text);
-		  break;
+		  اكسر;
 
-		case OA_FUNC_PTR2:
+		حالة OA_FUNC_PTR2:
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  𐤀𐤌 (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
 
 		  functor_ref_lookup(&code->net2, opa->argv[idx].symb.text);
-		  break;
+		  اكسر;
 
-		case OA_NUMBER:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		حالة OA_NUMBER:
+		  𐤀𐤌 (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
 
 		  code->number = opa->argv[idx].numb;
-		  break;
+		  اكسر;
 
-		case OA_VPI_PTR:
+		حالة OA_VPI_PTR:
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  𐤀𐤌 (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
 
 		  compile_vpi_lookup(&code->handle, opa->argv[idx].symb.text);
-		  break;
+		  اكسر;
 
-		case OA_STRING:
-		  if (opa->argv[idx].ltype != L_STRING) {
+		حالة OA_STRING:
+		  𐤀𐤌 (opa->argv[idx].ltype != L_STRING) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
 
 		  code->text = opa->argv[idx].text;
-		  break;
+		  اكسر;
 	    }
       }
 
-      free(opa);
+      حرر(opa);
 
-      free(mnem);
+      حرر(mnem);
 }
 
-void compile_codelabel(char*label)
+فراغ compile_codelabel(حرف*label)
 {
       symbol_value_t val;
       vvp_code_t ptr = codespace_next();
@@ -1998,13 +1998,13 @@ void compile_codelabel(char*label)
       val.ptr = ptr;
       sym_set_value(sym_codespace, label, val);
 
-      free(label);
+      حرر(label);
 }
 
-void compile_file_line(char*label, long file_idx, long lineno,
-                       char*description)
+فراغ compile_file_line(حرف*label, long file_idx, long lineno,
+                       حرف*description)
 {
-      if (label) compile_codelabel(label);
+      𐤀𐤌 (label) compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
       vvp_code_t code = codespace_allocate();
@@ -2012,19 +2012,19 @@ void compile_file_line(char*label, long file_idx, long lineno,
 
 	/* Create a vpiHandle that contains the information. */
       code->handle = vpip_build_file_line(description, file_idx, lineno);
-      assert(code->handle);
+      أكد(code->handle);
 
 	/* Done with the lexor-allocated name string. */
       delete[] description;
 }
 
-void compile_vpi_call(char*label, char*name,
-                      bool func_as_task_err, bool func_as_task_warn,
+فراغ compile_vpi_call(حرف*label, حرف*name,
+                      منطقي func_as_task_err, منطقي func_as_task_warn,
                       long file_idx, long lineno,
                       unsigned argc, vpiHandle*argv,
 		      unsigned vec4_stack, unsigned real_stack, unsigned string_stack)
 {
-      if (label)
+      𐤀𐤌 (label)
 	    compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
@@ -2037,22 +2037,22 @@ void compile_vpi_call(char*label, char*name,
 					 0, func_as_task_err, func_as_task_warn,
                                          argc, argv, vec4_stack, real_stack, string_stack,
 					 file_idx, lineno);
-      if (code->handle == 0)
+      𐤀𐤌 (code->handle == 0)
 	    compile_errors += 1;
 
 	/* Done with the lexor-allocated name string. */
       delete[] name;
 }
 
-void compile_vpi_func_call(char*label, char*name,
-			   int val_type, unsigned val_wid,
+فراغ compile_vpi_func_call(حرف*label, حرف*name,
+			   صحيح val_type, unsigned val_wid,
 			   long file_idx, long lineno,
 			   unsigned argc, vpiHandle*argv,
 			   unsigned vec4_stack,
 			   unsigned real_stack,
 			   unsigned string_stack)
 {
-      if (label)
+      𐤀𐤌 (label)
 	    compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
@@ -2062,10 +2062,10 @@ void compile_vpi_func_call(char*label, char*name,
 	/* Create a vpiHandle that bundles the call information, and
 	   store that handle in the instruction. */
       code->handle = vpip_build_vpi_call(name, val_type, val_wid,
-					 0, true, false,
+					 0, true, خطأ,
                                          argc, argv, vec4_stack, real_stack, string_stack,
 					 file_idx, lineno);
-      if (code->handle == 0)
+      𐤀𐤌 (code->handle == 0)
 	    compile_errors += 1;
 
 	/* Done with the lexor-allocated name string. */
@@ -2077,35 +2077,35 @@ void compile_vpi_func_call(char*label, char*name,
  * with the start address referenced by the program symbol passed to
  * me.
  */
-void compile_thread(char*start_sym, char*flag)
+فراغ compile_thread(حرف*start_sym, حرف*flag)
 {
-      bool push_flag = false;
+      منطقي push_flag = خطأ;
 
       symbol_value_t tmp = sym_get_value(sym_codespace, start_sym);
       vvp_code_t pc = reinterpret_cast<vvp_code_t>(tmp.ptr);
-      if (pc == 0) {
+      𐤀𐤌 (pc == 0) {
 	    yyerror("unresolved address");
-	    return;
+	    أرجع;
       }
 
-      if (flag && (strcmp(flag,"$push") == 0))
+      𐤀𐤌 (flag && (strcmp(flag,"$push") == 0))
 	    push_flag = true;
 
       vthread_t thr = vthread_new(pc, vpip_peek_current_scope());
 
-      if (flag && (strcmp(flag,"$init") == 0))
+      𐤀𐤌 (flag && (strcmp(flag,"$init") == 0))
 	    schedule_init_vthread(thr);
-      else if (flag && (strcmp(flag,"$final") == 0))
+      وإلا 𐤀𐤌 (flag && (strcmp(flag,"$final") == 0))
 	    schedule_final_vthread(thr);
-      else
+      وإلا
 	    schedule_vthread(thr, 0, push_flag);
 
-      free(start_sym);
-      free(flag);
+      حرر(start_sym);
+      حرر(flag);
 }
 
-void compile_param_logic(char*label, const char*name, char*value, bool signed_flag,
-                         bool local_flag,
+فراغ compile_param_logic(حرف*label, ثابت حرف*name, حرف*value, منطقي signed_flag,
+                         منطقي local_flag,
                          long file_idx, long lineno)
 {
       vvp_vector4_t value4 = c4string_to_vector4(value);
@@ -2114,12 +2114,12 @@ void compile_param_logic(char*label, const char*name, char*value, bool signed_fl
       compile_vpi_symbol(label, obj);
       vpip_attach_to_current_scope(obj);
 
-      free(label);
-      free(value);
+      حرر(label);
+      حرر(value);
 }
 
-void compile_param_string(char*label, const char*name, char*value,
-                          bool local_flag,
+فراغ compile_param_string(حرف*label, ثابت حرف*name, حرف*value,
+                          منطقي local_flag,
                           long file_idx, long lineno)
 {
 	// name and value become owned by vpip_make_string_param
@@ -2127,28 +2127,28 @@ void compile_param_string(char*label, const char*name, char*value,
       compile_vpi_symbol(label, obj);
       vpip_attach_to_current_scope(obj);
 
-      free(label);
+      حرر(label);
 }
 
-void compile_param_real(char*label, const char*name, char*value,
-                        bool local_flag,
+فراغ compile_param_real(حرف*label, ثابت حرف*name, حرف*value,
+                        منطقي local_flag,
                         long file_idx, long lineno)
 {
-      double dvalue = crstring_to_double(value);
+      مزدوج dvalue = crstring_to_double(value);
       vpiHandle obj = vpip_make_real_param(name, dvalue, local_flag, file_idx, lineno);
       compile_vpi_symbol(label, obj);
       vpip_attach_to_current_scope(obj);
 
-      free(label);
-      free(value);
+      حرر(label);
+      حرر(value);
 }
 
-void compile_island(char*label, char*type)
+فراغ compile_island(حرف*label, حرف*type)
 {
-      if (strcmp(type,"tran") == 0)
+      𐤀𐤌 (strcmp(type,"tran") == 0)
 	    compile_island_tran(label);
-      else
-	    assert(0);
+      وإلا
+	    أكد(0);
 
-      free(type);
+      حرر(type);
 }
