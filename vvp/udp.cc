@@ -20,88 +20,88 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "udp.h"
-#include "schedule.h"
-#include "symbols.h"
-#include "compile.h"
-#include "config.h"
-#include <cassert>
-#include <cstdlib>
-#include <cstring>
-#include <cstdio>
-#include <iostream>
+#ضمن "udp.h"
+#ضمن "schedule.h"
+#ضمن "symbols.h"
+#ضمن "compile.h"
+#ضمن "config.h"
+#ضمن <cassert>
+#ضمن <cstdlib>
+#ضمن <cstring>
+#ضمن <cstdio>
+#ضمن <iostream>
 #ifdef CHECK_WITH_VALGRIND
-#include "vvp_cleanup.h"
-#include "ivl_alloc.h"
+#ضمن "vvp_cleanup.h"
+#ضمن "ivl_alloc.h"
 #endif
 
-using namespace std;
+using نطاق std;
 
 // We may need these later when we build the VPI interface to
 // UDP definitions.
 #ifdef CHECK_WITH_VALGRIND
-static vvp_udp_s **udp_defns = 0;
-static unsigned udp_defns_count = 0;
+ساكن vvp_udp_s **udp_defns = 0;
+ساكن unsigned udp_defns_count = 0;
 
-void udp_defns_delete()
+فراغ udp_defns_delete()
 {
-      for (unsigned idx = 0; idx < udp_defns_count; idx += 1) {
-	    if (udp_defns[idx]->is_sequential()) {
+      لكل (unsigned idx = 0; idx < udp_defns_count; idx += 1) {
+	    ܐܢ (udp_defns[idx]->is_sequential()) {
 		  vvp_udp_seq_s *obj = static_cast<vvp_udp_seq_s *>
 		                       (udp_defns[idx]);
 		  delete obj;
-	    } else {
+	    } ܐܚܪܢܐ {
 		  vvp_udp_comb_s *obj = static_cast<vvp_udp_comb_s *>
 		                        (udp_defns[idx]);
 		  delete obj;
 	    }
       }
-      free(udp_defns);
+      حرر(udp_defns);
       udp_defns = 0;
       udp_defns_count = 0;
 }
 #endif
 
-static symbol_table_t udp_table;
+ساكن symbol_table_t udp_table;
 
-void delete_udp_symbols()
+فراغ delete_udp_symbols()
 {
       delete_symbol_table(udp_table);
       udp_table = 0;
 }
 
-struct vvp_udp_s *udp_find(const char *label)
+بنية vvp_udp_s *udp_find(ثابت حرف *label)
 {
       symbol_value_t v = sym_get_value(udp_table, label);
-      return (struct vvp_udp_s *)v.ptr;
+      ܦܢܐ (بنية vvp_udp_s *)v.ptr;
 }
 
-ostream& operator <<(ostream&o, const struct udp_levels_table&table)
+ostream& operator <<(ostream&o, ثابت بنية udp_levels_table&table)
 {
       o << "[" << hex << table.mask0
 	<< "/" << hex << table.mask1
 	<< "/" << hex << table.maskx << "]";
-      return o;
+      ܦܢܐ o;
 }
 
-vvp_udp_s::vvp_udp_s(const char*label, char*name__, unsigned ports,
-                     vvp_bit4_t init, bool type)
+vvp_udp_s::vvp_udp_s(ثابت حرف*label, حرف*name__, unsigned ports,
+                     vvp_bit4_t init, منطقي type)
 : name_(name__), ports_(ports), init_(init), seq_(type)
 {
-      if (!udp_table)
+      ܐܢ (!udp_table)
 	    udp_table = new_symbol_table();
 
-      assert( !udp_find(label) );
+      أكد( !udp_find(label) );
 
       symbol_value_t v;
-      v.ptr = this;
+      v.ptr = هذا;
       sym_set_value(udp_table, label, v);
 
 #ifdef CHECK_WITH_VALGRIND
       udp_defns_count += 1;
       udp_defns = static_cast<vvp_udp_s **>(realloc(udp_defns,
-                  udp_defns_count*sizeof(vvp_udp_s **)));
-      udp_defns[udp_defns_count-1] = this;
+                  udp_defns_count*حجم(vvp_udp_s **)));
+      udp_defns[udp_defns_count-1] = هذا;
 #endif
 }
 
@@ -110,18 +110,18 @@ vvp_udp_s::~vvp_udp_s()
       delete[] name_;
 }
 
-unsigned vvp_udp_s::port_count() const
+unsigned vvp_udp_s::port_count() ثابت
 {
-      return ports_;
+      ܦܢܐ ports_;
 }
 
-vvp_bit4_t vvp_udp_s::get_init() const
+vvp_bit4_t vvp_udp_s::get_init() ثابت
 {
-      return init_;
+      ܦܢܐ init_;
 }
 
-vvp_udp_comb_s::vvp_udp_comb_s(const char*label, char*name__, unsigned ports)
-: vvp_udp_s(label, name__, ports, BIT4_X, false)
+vvp_udp_comb_s::vvp_udp_comb_s(ثابت حرف*label, حرف*name__, unsigned ports)
+: vvp_udp_s(label, name__, ports, BIT4_X, ܕܓܠܐ)
 {
       levels0_ = 0;
       levels1_ = 0;
@@ -153,7 +153,7 @@ vvp_udp_comb_s::~vvp_udp_comb_s()
  * the three bit positions is set in the cur input table, the bit
  * position will generate a match.
  */
-vvp_bit4_t vvp_udp_comb_s::test_levels(const udp_levels_table&cur)
+vvp_bit4_t vvp_udp_comb_s::test_levels(ثابت udp_levels_table&cur)
 {
 	/* To test for a row match, test that the mask0, mask1 and
 	   maskx vectors all have bits set where the matching
@@ -161,142 +161,142 @@ vvp_bit4_t vvp_udp_comb_s::test_levels(const udp_levels_table&cur)
 	   levels0_[idx] vector has more bits set then the cur mask,
 	   but this is OK and these bits are to be ignored. */
 
-      for (unsigned idx = 0 ;  idx < nlevels0_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levels0_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levels0_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levels0_[idx].maskx))
-		  continue;
+      لكل (unsigned idx = 0 ;  idx < nlevels0_ ;  idx += 1) {
+	    ܐܢ (cur.mask0 != (cur.mask0 & levels0_[idx].mask0))
+		  استمر;
+	    ܐܢ (cur.mask1 != (cur.mask1 & levels0_[idx].mask1))
+		  استمر;
+	    ܐܢ (cur.maskx != (cur.maskx & levels0_[idx].maskx))
+		  استمر;
 
-	    return BIT4_0;
+	    ܦܢܐ BIT4_0;
       }
 
-      for (unsigned idx = 0 ;  idx < nlevels1_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levels1_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levels1_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levels1_[idx].maskx))
-		  continue;
+      لكل (unsigned idx = 0 ;  idx < nlevels1_ ;  idx += 1) {
+	    ܐܢ (cur.mask0 != (cur.mask0 & levels1_[idx].mask0))
+		  استمر;
+	    ܐܢ (cur.mask1 != (cur.mask1 & levels1_[idx].mask1))
+		  استمر;
+	    ܐܢ (cur.maskx != (cur.maskx & levels1_[idx].maskx))
+		  استمر;
 
-	    return BIT4_1;
+	    ܦܢܐ BIT4_1;
       }
 
-      return BIT4_X;
+      ܦܢܐ BIT4_X;
 }
 
-vvp_bit4_t vvp_udp_comb_s::calculate_output(const udp_levels_table&cur,
-					    const udp_levels_table&,
+vvp_bit4_t vvp_udp_comb_s::calculate_output(ثابت udp_levels_table&cur,
+					    ثابت udp_levels_table&,
 					    vvp_bit4_t)
 {
-      return test_levels(cur);
+      ܦܢܐ test_levels(cur);
 }
 
-static void or_based_on_char(udp_levels_table&cur, char flag,
+ساكن فراغ or_based_on_char(udp_levels_table&cur, حرف flag,
 			     unsigned long mask_bit)
 {
-      switch (flag) {
-	  case '0':
+      بدل (flag) {
+	  حالة '0':
 	    cur.mask0 |= mask_bit;
-	    break;
-	  case '1':
+	    اكسر;
+	  حالة '1':
 	    cur.mask1 |= mask_bit;
-	    break;
-	  case 'x':
+	    اكسر;
+	  حالة 'x':
 	    cur.maskx |= mask_bit;
-	    break;
-	  case 'b':
+	    اكسر;
+	  حالة 'b':
 	    cur.mask0 |= mask_bit;
 	    cur.mask1 |= mask_bit;
-	    break;
-	  case 'l':
-	    cur.mask0 |= mask_bit;
-	    cur.maskx |= mask_bit;
-	    break;
-	  case 'h':
-	    cur.maskx |= mask_bit;
-	    cur.mask1 |= mask_bit;
-	    break;
-	  case '?':
+	    اكسر;
+	  حالة 'l':
 	    cur.mask0 |= mask_bit;
 	    cur.maskx |= mask_bit;
+	    اكسر;
+	  حالة 'h':
+	    cur.maskx |= mask_bit;
 	    cur.mask1 |= mask_bit;
-	    break;
-	  default:
+	    اكسر;
+	  حالة '?':
+	    cur.mask0 |= mask_bit;
+	    cur.maskx |= mask_bit;
+	    cur.mask1 |= mask_bit;
+	    اكسر;
+	  افتراضي:
 	    fprintf(stderr, "Unsupported flag %c(%d).\n", flag, flag);
-	    assert(0);
+	    أكد(0);
       }
 }
 
-void vvp_udp_comb_s::compile_table(char**tab)
+فراغ vvp_udp_comb_s::compile_table(حرف**tab)
 {
       unsigned nrows0 = 0, nrows1 = 0;
 
 	/* First run through the table to figure out the number of
 	   rows I need for each kind of table. */
-      for (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
-	    assert(strlen(tab[idx]) == port_count() + 1);
-	    switch (tab[idx][port_count()]) {
-		case '0':
+      لكل (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
+	    أكد(strlen(tab[idx]) == port_count() + 1);
+	    بدل (tab[idx][port_count()]) {
+		حالة '0':
 		  nrows0 += 1;
-		  break;
-		case '1':
+		  اكسر;
+		حالة '1':
 		  nrows1 += 1;
-		  break;
-		case 'x':
-		  break;
-		default:
+		  اكسر;
+		حالة 'x':
+		  اكسر;
+		افتراضي:
 		  fprintf(stderr, "Unsupported entry %c(%d).\n",
 		          tab[idx][port_count()], tab[idx][port_count()]);
-		  assert(0);
+		  أكد(0);
 	    }
       }
 
       nlevels0_ = nrows0;
-      levels0_ = new udp_levels_table[nlevels0_];
+      levels0_ = جديد udp_levels_table[nlevels0_];
 
       nlevels1_ = nrows1;
-      levels1_ = new udp_levels_table[nlevels1_];
+      levels1_ = جديد udp_levels_table[nlevels1_];
 
       nrows0 = 0;
       nrows1 = 0;
-      for (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
-	    struct udp_levels_table cur;
+      لكل (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
+	    بنية udp_levels_table cur;
 	    cur.mask0 = 0;
 	    cur.mask1 = 0;
 	    cur.maskx = 0;
-	    if (port_count() > 8*sizeof(cur.mask0)) {
+	    ܐܢ (port_count() > 8*حجم(cur.mask0)) {
 		  fprintf(stderr, "internal error: primitive port count=%u "
-			  " > %zu\n", port_count(), sizeof(cur.mask0));
-		  assert(port_count() <= 8*sizeof(cur.mask0));
+			  " > %zu\n", port_count(), حجم(cur.mask0));
+		  أكد(port_count() <= 8*حجم(cur.mask0));
 	    }
-	    for (unsigned pp = 0 ;  pp < port_count() ;  pp += 1) {
+	    لكل (unsigned pp = 0 ;  pp < port_count() ;  pp += 1) {
 		  unsigned long mask_bit = 1UL << pp;
 		  or_based_on_char(cur, tab[idx][pp], mask_bit);
 	    }
 
-	    switch (tab[idx][port_count()]) {
-		case '0':
+	    بدل (tab[idx][port_count()]) {
+		حالة '0':
 		  levels0_[nrows0++] = cur;
-		  break;
-		case '1':
+		  اكسر;
+		حالة '1':
 		  levels1_[nrows1++] = cur;
-		  break;
-		default:
-		  break;
+		  اكسر;
+		افتراضي:
+		  اكسر;
 	    }
 	    delete[] tab[idx];
       }
-      free(tab);
+      حرر(tab);
 
-      assert(nrows0 == nlevels0_);
-      assert(nrows1 == nlevels1_);
+      أكد(nrows0 == nlevels0_);
+      أكد(nrows1 == nlevels1_);
 }
 
-vvp_udp_seq_s::vvp_udp_seq_s(const char*label, char*name__,
+vvp_udp_seq_s::vvp_udp_seq_s(ثابت حرف*label, حرف*name__,
 			     unsigned ports, vvp_bit4_t init)
-: vvp_udp_s(label, name__, ports, init, true)
+: vvp_udp_s(label, name__, ports, init, ܫܪܪܐ)
 {
       levels0_ = 0;
       levels1_ = 0;
@@ -328,206 +328,206 @@ vvp_udp_seq_s::~vvp_udp_seq_s()
       delete[] edgesL_;
 }
 
-void edge_based_on_char(struct udp_edges_table&cur, char chr, unsigned pos)
+فراغ edge_based_on_char(بنية udp_edges_table&cur, حرف chr, unsigned pos)
 {
       unsigned long mask_bit = 1UL << pos;
 
-      switch (chr) {
-	  case '0':
+      بدل (chr) {
+	  حالة '0':
 	    cur.mask0 |= mask_bit;
-	    break;
-	  case '1':
+	    اكسر;
+	  حالة '1':
 	    cur.mask1 |= mask_bit;
-	    break;
-	  case 'x':
+	    اكسر;
+	  حالة 'x':
 	    cur.maskx |= mask_bit;
-	    break;
-	  case 'b':
+	    اكسر;
+	  حالة 'b':
 	    cur.mask0 |= mask_bit;
 	    cur.mask1 |= mask_bit;
-	    break;
-	  case 'l':
-	    cur.mask0 |= mask_bit;
-	    cur.maskx |= mask_bit;
-	    break;
-	  case 'h':
-	    cur.maskx |= mask_bit;
-	    cur.mask1 |= mask_bit;
-	    break;
-	  case '?':
+	    اكسر;
+	  حالة 'l':
 	    cur.mask0 |= mask_bit;
 	    cur.maskx |= mask_bit;
+	    اكسر;
+	  حالة 'h':
+	    cur.maskx |= mask_bit;
 	    cur.mask1 |= mask_bit;
-	    break;
+	    اكسر;
+	  حالة '?':
+	    cur.mask0 |= mask_bit;
+	    cur.maskx |= mask_bit;
+	    cur.mask1 |= mask_bit;
+	    اكسر;
 
-	  case 'B': // (x?) edge
+	  حالة 'B': // (x?) edge
 	    cur.mask0 |= mask_bit;
 	    cur.mask1 |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 0;
 	    cur.edge_maskx = 1;
 	    cur.edge_mask1 = 0;
-	    break;
-	  case 'f': // (10) edge
+	    اكسر;
+	  حالة 'f': // (10) edge
 	    cur.mask0 |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 0;
 	    cur.edge_maskx = 0;
 	    cur.edge_mask1 = 1;
-	    break;
-	  case 'F': // (x0) edge
+	    اكسر;
+	  حالة 'F': // (x0) edge
 	    cur.mask0 |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 0;
 	    cur.edge_maskx = 1;
 	    cur.edge_mask1 = 0;
-	    break;
-	  case 'M': // (1x) edge
+	    اكسر;
+	  حالة 'M': // (1x) edge
 	    cur.maskx |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 0;
 	    cur.edge_maskx = 0;
 	    cur.edge_mask1 = 1;
-	    break;
-	  case 'N': // (1x) and (10) edge
+	    اكسر;
+	  حالة 'N': // (1x) and (10) edge
 	    cur.mask0 |= mask_bit;
 	    cur.maskx |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 0;
 	    cur.edge_maskx = 0;
 	    cur.edge_mask1 = 1;
-	    break;
-	  case 'P': // (0x) and (01) edge
+	    اكسر;
+	  حالة 'P': // (0x) and (01) edge
 	    cur.maskx |= mask_bit;
 	    cur.mask1 |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 1;
 	    cur.edge_maskx = 0;
 	    cur.edge_mask1 = 0;
-	    break;
-	  case 'q': // (bx) edge
+	    اكسر;
+	  حالة 'q': // (bx) edge
 	    cur.maskx |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 1;
 	    cur.edge_maskx = 0;
 	    cur.edge_mask1 = 1;
-	    break;
-	  case 'Q': // (0x) edge
+	    اكسر;
+	  حالة 'Q': // (0x) edge
 	    cur.maskx |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 1;
 	    cur.edge_maskx = 0;
 	    cur.edge_mask1 = 0;
-	    break;
-	  case 'r': // (01) edge
+	    اكسر;
+	  حالة 'r': // (01) edge
 	    cur.mask1 |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 1;
 	    cur.edge_maskx = 0;
 	    cur.edge_mask1 = 0;
-	    break;
-	  case 'R': // (x1) edge
+	    اكسر;
+	  حالة 'R': // (x1) edge
 	    cur.mask1 |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 0;
 	    cur.edge_maskx = 1;
 	    cur.edge_mask1 = 0;
-	    break;
-	  case '%': // (?x) edge
+	    اكسر;
+	  حالة '%': // (?x) edge
 	    cur.maskx |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 1;
 	    cur.edge_maskx = 0;
 	    cur.edge_mask1 = 1;
-	    break;
-	  case '+': // (?1) edge
+	    اكسر;
+	  حالة '+': // (?1) edge
 	    cur.mask1 |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 1;
 	    cur.edge_maskx = 1;
 	    cur.edge_mask1 = 0;
-	    break;
-	  case '_': // (?0) edge
+	    اكسر;
+	  حالة '_': // (?0) edge
 	    cur.mask0 |= mask_bit;
 	    cur.edge_position = pos;
 	    cur.edge_mask0 = 0;
 	    cur.edge_maskx = 1;
 	    cur.edge_mask1 = 1;
-	    break;
-	  default:
+	    اكسر;
+	  افتراضي:
 	    fprintf(stderr, "internal error: unknown edge code: %c\n", chr);
-	    assert(0);
+	    أكد(0);
       }
 }
 
-void vvp_udp_seq_s::compile_table(char**tab)
+فراغ vvp_udp_seq_s::compile_table(حرف**tab)
 {
 
-      for (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
-	    const char*row = tab[idx];
-	    assert(strlen(row) == port_count() + 2);
+      لكل (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
+	    ثابت حرف*row = tab[idx];
+	    أكد(strlen(row) == port_count() + 2);
 
-	    if (strspn(row, "01xblh?") >= port_count()+1) {
+	    ܐܢ (strspn(row, "01xblh?") >= port_count()+1) {
 
-		  switch (row[port_count()+1]) {
-		      case '0':
+		  بدل (row[port_count()+1]) {
+		      حالة '0':
 			nlevels0_ += 1;
-			break;
-		      case '1':
+			اكسر;
+		      حالة '1':
 			nlevels1_ += 1;
-			break;
-		      case 'x':
+			اكسر;
+		      حالة 'x':
 			nlevelsx_ += 1;
-			break;
-		      case '-':
+			اكسر;
+		      حالة '-':
 			nlevelsL_ += 1;
-			break;
-		      default:
+			اكسر;
+		      افتراضي:
 			fprintf(stderr, "Unsupported entry %c(%d).\n",
 			        row[port_count()+1], row[port_count()+1]);
-			assert(0);
-			break;
+			أكد(0);
+			اكسر;
 		  }
 
-	    } else {
+	    } ܐܚܪܢܐ {
 		    /* Rows that have n or p edges will need to be
 		       expanded into 2 rows. */
 		  unsigned extra = 0;
-		  if (strchr(row,'n'))
+		  ܐܢ (strchr(row,'n'))
 			extra = 1;
-		  if (strchr(row,'p'))
+		  ܐܢ (strchr(row,'p'))
 			extra = 1;
-		  if (strchr(row,'*'))
+		  ܐܢ (strchr(row,'*'))
 			extra = 2;
 
-		  switch (row[port_count()+1]) {
-		      case '0':
+		  بدل (row[port_count()+1]) {
+		      حالة '0':
 			nedges0_ += 1 + extra;
-			break;
-		      case '1':
+			اكسر;
+		      حالة '1':
 			nedges1_ += 1 + extra;
-			break;
-		      case 'x':
-			break;
-		      case '-':
+			اكسر;
+		      حالة 'x':
+			اكسر;
+		      حالة '-':
 			nedgesL_ += 1 + extra;
-			break;
-		      default:
+			اكسر;
+		      افتراضي:
 			fprintf(stderr, "Unsupported entry %c(%d).\n",
 			        row[port_count()+1], row[port_count()+1]);
-			assert(0);
-			break;
+			أكد(0);
+			اكسر;
 		  }
 	    }
       }
 
-      levels0_ = new udp_levels_table[nlevels0_];
-      levels1_ = new udp_levels_table[nlevels1_];
-      levelsx_ = new udp_levels_table[nlevelsx_];
-      levelsL_ = new udp_levels_table[nlevelsL_];
-      edges0_ = new udp_edges_table[nedges0_];
-      edges1_ = new udp_edges_table[nedges1_];
-      edgesL_ = new udp_edges_table[nedgesL_];
+      levels0_ = جديد udp_levels_table[nlevels0_];
+      levels1_ = جديد udp_levels_table[nlevels1_];
+      levelsx_ = جديد udp_levels_table[nlevelsx_];
+      levelsL_ = جديد udp_levels_table[nlevelsL_];
+      edges0_ = جديد udp_edges_table[nedges0_];
+      edges1_ = جديد udp_edges_table[nedges1_];
+      edgesL_ = جديد udp_edges_table[nedgesL_];
 
       unsigned idx_lev0 = 0;
       unsigned idx_lev1 = 0;
@@ -537,43 +537,43 @@ void vvp_udp_seq_s::compile_table(char**tab)
       unsigned idx_edg1 = 0;
       unsigned idx_edgL = 0;
 
-      for (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
-	    const char*row = tab[idx];
+      لكل (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
+	    ثابت حرف*row = tab[idx];
 
-	    if (strspn(row, "01xblh?") >= port_count()+1) {
-		  struct udp_levels_table cur;
+	    ܐܢ (strspn(row, "01xblh?") >= port_count()+1) {
+		  بنية udp_levels_table cur;
 		  cur.mask0 = 0;
 		  cur.mask1 = 0;
 		  cur.maskx = 0;
-		  for (unsigned pp = 0 ;  pp < port_count() ;  pp += 1) {
+		  لكل (unsigned pp = 0 ;  pp < port_count() ;  pp += 1) {
 			unsigned long mask_bit = 1UL << pp;
 			or_based_on_char(cur, row[pp+1], mask_bit);
 		  }
 
 		  or_based_on_char(cur, row[0], 1UL << port_count());
 
-		  switch (row[port_count()+1]) {
-		      case '0':
+		  بدل (row[port_count()+1]) {
+		      حالة '0':
 			levels0_[idx_lev0++] = cur;
-			break;
-		      case '1':
+			اكسر;
+		      حالة '1':
 			levels1_[idx_lev1++] = cur;
-			break;
-		      case 'x':
+			اكسر;
+		      حالة 'x':
 			levelsx_[idx_levx++] = cur;
-			break;
-		      case '-':
+			اكسر;
+		      حالة '-':
 			levelsL_[idx_levL++] = cur;
-			break;
-		      default:
+			اكسر;
+		      افتراضي:
 			fprintf(stderr, "Unsupported entry %c(%d).\n",
 			        row[port_count()+1], row[port_count()+1]);
-			assert(0);
-			break;
+			أكد(0);
+			اكسر;
 		  }
 
-	    } else {
-		  struct udp_edges_table cur;
+	    } ܐܚܪܢܐ {
+		  بنية udp_edges_table cur;
 		  cur.mask0 = 0;
 		  cur.mask1 = 0;
 		  cur.maskx = 0;
@@ -582,8 +582,8 @@ void vvp_udp_seq_s::compile_table(char**tab)
 		  cur.edge_mask1 = 0;
 		  cur.edge_maskx = 0;
 
-		  bool need_ext0_table = false;
-		  struct udp_edges_table ext0;
+		  منطقي need_ext0_table = ܕܓܠܐ;
+		  بنية udp_edges_table ext0;
 		  ext0.mask0 = 0;
 		  ext0.mask1 = 0;
 		  ext0.maskx = 0;
@@ -592,8 +592,8 @@ void vvp_udp_seq_s::compile_table(char**tab)
 		  ext0.edge_mask1 = 0;
 		  ext0.edge_maskx = 0;
 
-		  bool need_ext1_table = false;
-		  struct udp_edges_table ext1;
+		  منطقي need_ext1_table = ܕܓܠܐ;
+		  بنية udp_edges_table ext1;
 		  ext1.mask0 = 0;
 		  ext1.mask1 = 0;
 		  ext1.maskx = 0;
@@ -602,117 +602,117 @@ void vvp_udp_seq_s::compile_table(char**tab)
 		  ext1.edge_mask1 = 0;
 		  ext1.edge_maskx = 0;
 
-		  for (unsigned pp = 0 ;  pp < port_count() ; pp += 1) {
-			switch (row[pp+1]) {
-			    case 'n':
+		  لكل (unsigned pp = 0 ;  pp < port_count() ; pp += 1) {
+			بدل (row[pp+1]) {
+			    حالة 'n':
 			      edge_based_on_char(cur, 'N', pp);
 			      edge_based_on_char(ext0, '_', pp);
-			      need_ext0_table = true;
-			      break;
-			    case 'p':
+			      need_ext0_table = ܫܪܪܐ;
+			      اكسر;
+			    حالة 'p':
 			      edge_based_on_char(cur, 'P', pp);
 			      edge_based_on_char(ext0, '+', pp);
-			      need_ext0_table = true;
-			      break;
-			    case '*':
+			      need_ext0_table = ܫܪܪܐ;
+			      اكسر;
+			    حالة '*':
 			      edge_based_on_char(cur, 'P', pp);
 			      edge_based_on_char(ext0, 'N', pp);
 			      edge_based_on_char(ext1, 'B', pp);
-			      need_ext0_table = true;
-			      need_ext1_table = true;
-			      break;
-			    default:
+			      need_ext0_table = ܫܪܪܐ;
+			      need_ext1_table = ܫܪܪܐ;
+			      اكسر;
+			    افتراضي:
 			      edge_based_on_char(cur, row[pp+1], pp);
 			      edge_based_on_char(ext0, row[pp+1], pp);
 			      edge_based_on_char(ext1, row[pp+1], pp);
-			      break;
+			      اكسر;
 			}
 		  }
 		  edge_based_on_char(cur, row[0], port_count());
 		  edge_based_on_char(ext0, row[0], port_count());
 		  edge_based_on_char(ext1, row[0], port_count());
 
-		  switch (row[port_count()+1]) {
-		      case '0':
+		  بدل (row[port_count()+1]) {
+		      حالة '0':
 			edges0_[idx_edg0++] = cur;
-			if (need_ext0_table)
+			ܐܢ (need_ext0_table)
 			      edges0_[idx_edg0++] = ext0;
-			if (need_ext1_table)
+			ܐܢ (need_ext1_table)
 			      edges0_[idx_edg0++] = ext1;
-			break;
-		      case '1':
+			اكسر;
+		      حالة '1':
 			edges1_[idx_edg1++] = cur;
-			if (need_ext0_table)
+			ܐܢ (need_ext0_table)
 			      edges1_[idx_edg1++] = ext0;
-			if (need_ext1_table)
+			ܐܢ (need_ext1_table)
 			      edges1_[idx_edg1++] = ext1;
-			break;
-		      case 'x':
-			break;
-		      case '-':
+			اكسر;
+		      حالة 'x':
+			اكسر;
+		      حالة '-':
 			edgesL_[idx_edgL++] = cur;
-			if (need_ext0_table)
+			ܐܢ (need_ext0_table)
 			      edgesL_[idx_edgL++] = ext0;
-			if (need_ext1_table)
+			ܐܢ (need_ext1_table)
 			      edgesL_[idx_edgL++] = ext1;
-			break;
-		      default:
+			اكسر;
+		      افتراضي:
 			fprintf(stderr, "Unsupported entry %c(%d).\n",
 			        row[port_count()+1], row[port_count()+1]);
-			assert(0);
-			break;
+			أكد(0);
+			اكسر;
 		  }
 
 	    }
 	    delete[] tab[idx];
       }
-      free(tab);
+      حرر(tab);
 
-      assert(idx_edg0 == nedges0_);
-      assert(idx_edg1 == nedges1_);
-      assert(idx_edgL == nedgesL_);
+      أكد(idx_edg0 == nedges0_);
+      أكد(idx_edg1 == nedges1_);
+      أكد(idx_edgL == nedgesL_);
 
 }
 
-bool operator == (const udp_levels_table&a, const udp_levels_table&b)
+منطقي operator == (ثابت udp_levels_table&a, ثابت udp_levels_table&b)
 {
-      if (a.mask0 != b.mask0)
-	    return false;
-      if (a.mask1 != b.mask1)
-	    return false;
-      if (a.maskx != b.maskx)
-	    return false;
-      return true;
+      ܐܢ (a.mask0 != b.mask0)
+	    ܦܢܐ ܕܓܠܐ;
+      ܐܢ (a.mask1 != b.mask1)
+	    ܦܢܐ ܕܓܠܐ;
+      ܐܢ (a.maskx != b.maskx)
+	    ܦܢܐ ܕܓܠܐ;
+      ܦܢܐ ܫܪܪܐ;
 }
 
-vvp_bit4_t vvp_udp_seq_s::calculate_output(const udp_levels_table&cur,
-					   const udp_levels_table&prev,
+vvp_bit4_t vvp_udp_seq_s::calculate_output(ثابت udp_levels_table&cur,
+					   ثابت udp_levels_table&prev,
 					   vvp_bit4_t cur_out)
 {
-      if (cur == prev)
-	    return cur_out;
+      ܐܢ (cur == prev)
+	    ܦܢܐ cur_out;
 
       udp_levels_table cur_tmp = cur;
 
       unsigned long mask_out = 1UL << port_count();
-      switch (cur_out) {
-	  case BIT4_0:
+      بدل (cur_out) {
+	  حالة BIT4_0:
 	    cur_tmp.mask0 |= mask_out;
-	    break;
-	  case BIT4_1:
+	    اكسر;
+	  حالة BIT4_1:
 	    cur_tmp.mask1 |= mask_out;
-	    break;
-	  default:
+	    اكسر;
+	  افتراضي:
 	    cur_tmp.maskx |= mask_out;
-	    break;
+	    اكسر;
       }
 
       vvp_bit4_t lev = test_levels_(cur_tmp);
-      if (lev == BIT4_Z) {
+      ܐܢ (lev == BIT4_Z) {
 	    lev = test_edges_(cur_tmp, prev);
       }
 
-      return lev;
+      ܦܢܐ lev;
 }
 
 /*
@@ -724,72 +724,72 @@ vvp_bit4_t vvp_udp_seq_s::calculate_output(const udp_levels_table&cur,
  * set the mask bit in bit position [port_count()] to reflect the
  * current output.
  */
-vvp_bit4_t vvp_udp_seq_s::test_levels_(const udp_levels_table&cur)
+vvp_bit4_t vvp_udp_seq_s::test_levels_(ثابت udp_levels_table&cur)
 {
-      for (unsigned idx = 0 ;  idx < nlevels0_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levels0_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levels0_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levels0_[idx].maskx))
-		  continue;
+      لكل (unsigned idx = 0 ;  idx < nlevels0_ ;  idx += 1) {
+	    ܐܢ (cur.mask0 != (cur.mask0 & levels0_[idx].mask0))
+		  استمر;
+	    ܐܢ (cur.mask1 != (cur.mask1 & levels0_[idx].mask1))
+		  استمر;
+	    ܐܢ (cur.maskx != (cur.maskx & levels0_[idx].maskx))
+		  استمر;
 
-	    return BIT4_0;
+	    ܦܢܐ BIT4_0;
       }
 
-      for (unsigned idx = 0 ;  idx < nlevels1_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levels1_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levels1_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levels1_[idx].maskx))
-		  continue;
+      لكل (unsigned idx = 0 ;  idx < nlevels1_ ;  idx += 1) {
+	    ܐܢ (cur.mask0 != (cur.mask0 & levels1_[idx].mask0))
+		  استمر;
+	    ܐܢ (cur.mask1 != (cur.mask1 & levels1_[idx].mask1))
+		  استمر;
+	    ܐܢ (cur.maskx != (cur.maskx & levels1_[idx].maskx))
+		  استمر;
 
-	    return BIT4_1;
+	    ܦܢܐ BIT4_1;
       }
 
 	/* We need to test against an explicit X-output table, since
 	   we need to distinguish from an X output and no match. */
-      for (unsigned idx = 0 ;  idx < nlevelsx_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levelsx_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levelsx_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levelsx_[idx].maskx))
-		  continue;
+      لكل (unsigned idx = 0 ;  idx < nlevelsx_ ;  idx += 1) {
+	    ܐܢ (cur.mask0 != (cur.mask0 & levelsx_[idx].mask0))
+		  استمر;
+	    ܐܢ (cur.mask1 != (cur.mask1 & levelsx_[idx].mask1))
+		  استمر;
+	    ܐܢ (cur.maskx != (cur.maskx & levelsx_[idx].maskx))
+		  استمر;
 
-	    return BIT4_X;
+	    ܦܢܐ BIT4_X;
       }
 
 	/* Test the table that requests the next output be the same as
 	   the current output. This gets the current output from the
 	   levels table that was passed in. */
-      for (unsigned idx = 0 ;  idx < nlevelsL_ ;  idx += 1) {
-	    if (cur.mask0 != (cur.mask0 & levelsL_[idx].mask0))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & levelsL_[idx].mask1))
-		  continue;
-	    if (cur.maskx != (cur.maskx & levelsL_[idx].maskx))
-		  continue;
+      لكل (unsigned idx = 0 ;  idx < nlevelsL_ ;  idx += 1) {
+	    ܐܢ (cur.mask0 != (cur.mask0 & levelsL_[idx].mask0))
+		  استمر;
+	    ܐܢ (cur.mask1 != (cur.mask1 & levelsL_[idx].mask1))
+		  استمر;
+	    ܐܢ (cur.maskx != (cur.maskx & levelsL_[idx].maskx))
+		  استمر;
 
-	    if (cur.mask0 & (1 << port_count()))
-		  return BIT4_0;
-	    if (cur.mask1 & (1 << port_count()))
-		  return BIT4_1;
-	    if (cur.maskx & (1 << port_count()))
-		  return BIT4_X;
+	    ܐܢ (cur.mask0 & (1 << port_count()))
+		  ܦܢܐ BIT4_0;
+	    ܐܢ (cur.mask1 & (1 << port_count()))
+		  ܦܢܐ BIT4_1;
+	    ܐܢ (cur.maskx & (1 << port_count()))
+		  ܦܢܐ BIT4_X;
 
-	    assert(0);
-	    return BIT4_X;
+	    أكد(0);
+	    ܦܢܐ BIT4_X;
       }
 
 	/* No explicit levels entry match. Return a Z to signal that
 	   further testing is needed. */
-      return BIT4_Z;
+      ܦܢܐ BIT4_Z;
 }
 
-vvp_bit4_t vvp_udp_seq_s::test_edges_(const udp_levels_table&cur,
-				      const udp_levels_table&prev)
+vvp_bit4_t vvp_udp_seq_s::test_edges_(ثابت udp_levels_table&cur,
+				      ثابت udp_levels_table&prev)
 {
 	/* The edge_mask is true for all bits that are different in
 	   the cur and prev tables. */
@@ -802,17 +802,17 @@ vvp_bit4_t vvp_udp_seq_s::test_edges_(const udp_levels_table&cur,
 
 	/* If there are no differences, then there are no edges. Give
 	   up now. */
-      if (edge_mask == 0)
-	    return BIT4_X;
+      ܐܢ (edge_mask == 0)
+	    ܦܢܐ BIT4_X;
 
       unsigned edge_position = 0;
-      while ((edge_mask&1) == 0) {
+      ܟܡܐ ((edge_mask&1) == 0) {
 	    edge_mask >>= 1;
 	    edge_position += 1;
       }
 
 	/* We expect that there is exactly one edge in here. */
-      assert(edge_mask == 1);
+      أكد(edge_mask == 1);
 
       edge_mask = 1UL << edge_position;
 
@@ -825,78 +825,78 @@ vvp_bit4_t vvp_udp_seq_s::test_edges_(const udp_levels_table&cur,
 	   values we use to test the applicability of the edge_table
 	   entries. */
 
-      for (unsigned idx = 0 ;  idx < nedges0_ ;  idx += 1) {
-	    const struct udp_edges_table*row = edges0_ + idx;
+      لكل (unsigned idx = 0 ;  idx < nedges0_ ;  idx += 1) {
+	    ثابت بنية udp_edges_table*row = edges0_ + idx;
 
-	    if (row->edge_position != edge_position)
-		  continue;
-	    if (edge_mask0 && !row->edge_mask0)
-		  continue;
-	    if (edge_maskx && !row->edge_maskx)
-		  continue;
-	    if (edge_mask1 && !row->edge_mask1)
-		  continue;
-	    if (cur.mask0 != (cur.mask0 & row->mask0))
-		  continue;
-	    if (cur.maskx != (cur.maskx & row->maskx))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & row->mask1))
-		  continue;
+	    ܐܢ (row->edge_position != edge_position)
+		  استمر;
+	    ܐܢ (edge_mask0 && !row->edge_mask0)
+		  استمر;
+	    ܐܢ (edge_maskx && !row->edge_maskx)
+		  استمر;
+	    ܐܢ (edge_mask1 && !row->edge_mask1)
+		  استمر;
+	    ܐܢ (cur.mask0 != (cur.mask0 & row->mask0))
+		  استمر;
+	    ܐܢ (cur.maskx != (cur.maskx & row->maskx))
+		  استمر;
+	    ܐܢ (cur.mask1 != (cur.mask1 & row->mask1))
+		  استمر;
 
-	    return BIT4_0;
+	    ܦܢܐ BIT4_0;
       }
 
-      for (unsigned idx = 0 ;  idx < nedges1_ ;  idx += 1) {
-	    const struct udp_edges_table*row = edges1_ + idx;
+      لكل (unsigned idx = 0 ;  idx < nedges1_ ;  idx += 1) {
+	    ثابت بنية udp_edges_table*row = edges1_ + idx;
 
-	    if (row->edge_position != edge_position)
-		  continue;
-	    if (edge_mask0 && !row->edge_mask0)
-		  continue;
-	    if (edge_maskx && !row->edge_maskx)
-		  continue;
-	    if (edge_mask1 && !row->edge_mask1)
-		  continue;
-	    if (cur.mask0 != (cur.mask0 & row->mask0))
-		  continue;
-	    if (cur.maskx != (cur.maskx & row->maskx))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & row->mask1))
-		  continue;
+	    ܐܢ (row->edge_position != edge_position)
+		  استمر;
+	    ܐܢ (edge_mask0 && !row->edge_mask0)
+		  استمر;
+	    ܐܢ (edge_maskx && !row->edge_maskx)
+		  استمر;
+	    ܐܢ (edge_mask1 && !row->edge_mask1)
+		  استمر;
+	    ܐܢ (cur.mask0 != (cur.mask0 & row->mask0))
+		  استمر;
+	    ܐܢ (cur.maskx != (cur.maskx & row->maskx))
+		  استمر;
+	    ܐܢ (cur.mask1 != (cur.mask1 & row->mask1))
+		  استمر;
 
-	    return BIT4_1;
+	    ܦܢܐ BIT4_1;
       }
 
-      for (unsigned idx = 0 ;  idx < nedgesL_ ;  idx += 1) {
-	    const struct udp_edges_table*row = edgesL_ + idx;
+      لكل (unsigned idx = 0 ;  idx < nedgesL_ ;  idx += 1) {
+	    ثابت بنية udp_edges_table*row = edgesL_ + idx;
 
-	    if (row->edge_position != edge_position)
-		  continue;
-	    if (edge_mask0 && !row->edge_mask0)
-		  continue;
-	    if (edge_maskx && !row->edge_maskx)
-		  continue;
-	    if (edge_mask1 && !row->edge_mask1)
-		  continue;
-	    if (cur.mask0 != (cur.mask0 & row->mask0))
-		  continue;
-	    if (cur.maskx != (cur.maskx & row->maskx))
-		  continue;
-	    if (cur.mask1 != (cur.mask1 & row->mask1))
-		  continue;
+	    ܐܢ (row->edge_position != edge_position)
+		  استمر;
+	    ܐܢ (edge_mask0 && !row->edge_mask0)
+		  استمر;
+	    ܐܢ (edge_maskx && !row->edge_maskx)
+		  استمر;
+	    ܐܢ (edge_mask1 && !row->edge_mask1)
+		  استمر;
+	    ܐܢ (cur.mask0 != (cur.mask0 & row->mask0))
+		  استمر;
+	    ܐܢ (cur.maskx != (cur.maskx & row->maskx))
+		  استمر;
+	    ܐܢ (cur.mask1 != (cur.mask1 & row->mask1))
+		  استمر;
 
-	    if (cur.mask0 & (1 << port_count()))
-		  return BIT4_0;
-	    if (cur.mask1 & (1 << port_count()))
-		  return BIT4_1;
-	    if (cur.maskx & (1 << port_count()))
-		  return BIT4_X;
+	    ܐܢ (cur.mask0 & (1 << port_count()))
+		  ܦܢܐ BIT4_0;
+	    ܐܢ (cur.mask1 & (1 << port_count()))
+		  ܦܢܐ BIT4_1;
+	    ܐܢ (cur.maskx & (1 << port_count()))
+		  ܦܢܐ BIT4_X;
 
-	    assert(0);
-	    return BIT4_X;
+	    أكد(0);
+	    ܦܢܐ BIT4_X;
       }
 
-      return BIT4_X;
+      ܦܢܐ BIT4_X;
 }
 
 vvp_udp_fun_core::vvp_udp_fun_core(vvp_net_t*net, vvp_udp_s*def)
@@ -912,10 +912,10 @@ vvp_udp_fun_core::vvp_udp_fun_core(vvp_net_t*net, vvp_udp_s*def)
         // If the initial value is 0 or 1, schedule the initial assignment
         // normally, so that any sensitive always processes can be started
         // first.
-      if (cur_out_ != BIT4_X)
-	    schedule_generic(this, 0, false);
-      else
-	    schedule_functor(this);
+      ܐܢ (cur_out_ != BIT4_X)
+	    schedule_generic(هذا, 0, ܕܓܠܐ);
+      ܐܚܪܢܐ
+	    schedule_functor(هذا);
 }
 
 vvp_udp_fun_core::~vvp_udp_fun_core()
@@ -925,49 +925,49 @@ vvp_udp_fun_core::~vvp_udp_fun_core()
 /*
  * This method is used to propagate the initial value on startup.
  */
-void vvp_udp_fun_core::run_run()
+فراغ vvp_udp_fun_core::run_run()
 {
       vvp_vector4_t tmp (1);
       tmp.set_bit(0, cur_out_);
       propagate_vec4(tmp);
 }
 
-void vvp_udp_fun_core::recv_vec4_from_inputs(unsigned port)
+فراغ vvp_udp_fun_core::recv_vec4_from_inputs(unsigned port)
 {
 	/* For now, assume udps are 1-bit wide. */
       unsigned port_width = value(port).size();
-      assert(port_width == 1);
+      أكد(port_width == 1);
 
       unsigned long mask = 1UL << port;
 
       udp_levels_table prev = current_;
 
-      switch (value(port).value(0)) {
+      بدل (value(port).value(0)) {
 
-	  case BIT4_0:
+	  حالة BIT4_0:
 	    current_.mask0 |= mask;
 	    current_.mask1 &= ~mask;
 	    current_.maskx &= ~mask;
-	    break;
-	  case BIT4_1:
+	    اكسر;
+	  حالة BIT4_1:
 	    current_.mask0 &= ~mask;
 	    current_.mask1 |= mask;
 	    current_.maskx &= ~mask;
-	    break;
-	  default:
+	    اكسر;
+	  افتراضي:
 	    current_.mask0 &= ~mask;
 	    current_.mask1 &= ~mask;
 	    current_.maskx |= mask;
-	    break;
+	    اكسر;
       }
 
       vvp_bit4_t out_bit = def_->calculate_output(current_, prev, cur_out_);
 
-      if (out_bit == cur_out_)
-	    return;
+      ܐܢ (out_bit == cur_out_)
+	    ܦܢܐ;
 
       cur_out_ = out_bit;
-      schedule_functor(this);
+      schedule_functor(هذا);
 }
 
 
@@ -976,20 +976,20 @@ void vvp_udp_fun_core::recv_vec4_from_inputs(unsigned port)
  * node. We create the nodes needed to integrate the UDP into the
  * netlist. The definition should be parsed already.
  */
-void compile_udp_functor(char*label, char*type,
-			 unsigned argc, struct symb_s*argv)
+فراغ compile_udp_functor(حرف*label, حرف*type,
+			 unsigned argc, بنية symb_s*argv)
 {
-      struct vvp_udp_s *def = udp_find(type);
-      assert(def);
-      free(type);
+      بنية vvp_udp_s *def = udp_find(type);
+      أكد(def);
+      حرر(type);
 
-      vvp_net_t*ptr = new vvp_net_t;
-      vvp_udp_fun_core*core = new vvp_udp_fun_core(ptr, def);
+      vvp_net_t*ptr = جديد vvp_net_t;
+      vvp_udp_fun_core*core = جديد vvp_udp_fun_core(ptr, def);
       ptr->fun = core;
 
       define_functor_symbol(label, ptr);
-      free(label);
+      حرر(label);
 
       wide_inputs_connect(core, argc, argv);
-      free(argv);
+      حرر(argv);
 }

@@ -26,38 +26,38 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-static int iterator_free_object(vpiHandle ref)
+ساكن صحيح iterator_free_object(vpiHandle ref)
 {
-      struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
-      assert(hp);
+      بنية __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
+      أكد(hp);
 
-      if (hp->free_args_flag)
-	    free(hp->args);
+      ܐܢ (hp->free_args_flag)
+	    حرر(hp->args);
 
       delete hp;
-      return 1;
+      ܦܢܐ 1;
 }
 
-inline __vpiIterator::__vpiIterator()
+مضمن __vpiIterator::__vpiIterator()
 { }
 
-int __vpiIterator::get_type_code(void) const
-{ return vpiIterator; }
+صحيح __vpiIterator::get_type_code(فراغ) ثابت
+{ ܦܢܐ vpiIterator; }
 
-__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(void)
-{ return &iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(فراغ)
+{ ܦܢܐ &iterator_free_object; }
 
 vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
-			     bool free_args_flag)
+			     منطقي free_args_flag)
 {
-      struct __vpiIterator*res = new __vpiIterator;
+      بنية __vpiIterator*res = جديد __vpiIterator;
       res->args = args;
       res->nargs = nargs;
       res->next  = 0;
 
       res->free_args_flag = free_args_flag;
 
-      return res;
+      ܦܢܐ res;
 }
 
 /*
@@ -66,20 +66,20 @@ vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
  */
 vpiHandle vpi_scan(vpiHandle ref)
 {
-      if (ref == 0) {
+      ܐܢ (ref == 0) {
 	    fprintf(stderr, "ERROR: NULL handle passed to vpi_scan.\n");
-	    assert(0);
-	    return 0;
+	    أكد(0);
+	    ܦܢܐ 0;
       }
 
-      if (struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
-	    if (hp->next == hp->nargs) {
+      ܐܢ (بنية __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
+	    ܐܢ (hp->next == hp->nargs) {
 		  vpi_free_object(ref);
-		  return 0;
+		  ܦܢܐ 0;
 	    }
 
-	    return hp->args[hp->next++];
+	    ܦܢܐ hp->args[hp->next++];
       }
 
-      return ref->vpi_index(0);
+      ܦܢܐ ref->vpi_index(0);
 }
