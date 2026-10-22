@@ -1,5 +1,5 @@
-#ifndef IVL_compile_H
-#define IVL_compile_H
+#جيڪڏهن_وصف_نه_ٿيل IVL_compile_H
+#وصف_ڪريو IVL_compile_H
 /*
  * Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)
  *
@@ -31,7 +31,7 @@
  * The file names are kept in this vector. Entry 0 is "N/A" and 1 is
  * for interactive commands.
  */
-extern std::vector<const char*> file_names;
+خارجي std::ويڪٽر<ثابت حرف*> file_نالا;
 
 /*
  * The functions described here are the compile time support
@@ -42,24 +42,24 @@ extern std::vector<const char*> file_names;
  * called once to set stuff up.
  */
 
-extern void compile_init(void);
+خارجي فراغ compile_init(فراغ);
 
-extern void compile_cleanup(void);
+خارجي فراغ compile_cleanup(فراغ);
 
-extern bool verbose_flag;
+خارجي bool verbose_flag;
 
 /*
  * If this file opened, then write debug information to this
  * file. This is used for debugging the VVP runtime itself.
  */
-extern std::ofstream debug_file;
+خارجي std::ofstream debug_file;
 
 /*
  *  Connect a list of symbols to a contiguous set of ipoints.
  *  Constants C<?> are handled by setting the ival of the ipoint.
  */
-extern void inputs_connect(vvp_net_t*fdx, unsigned argc, struct symb_s*argv);
-extern void input_connect(vvp_net_t*fdx, unsigned port, char*label);
+خارجي فراغ inputs_connect(vvp_net_t*fdx, بنانشان argc, بنية symb_s*argv);
+خارجي فراغ داخلا_connect(vvp_net_t*fdx, بنانشان پورٽ, حرف*label);
 
 /*
  * This function is an expansion of the inputs_connect function. It
@@ -67,28 +67,28 @@ extern void input_connect(vvp_net_t*fdx, unsigned port, char*label);
  * nodes to handle arbitrary width nodes, and connects those nodes to
  * the vvp_wide_fun_core object passed in.
  */
-extern void wide_inputs_connect(vvp_wide_fun_core*core,
-				unsigned argc, struct symb_s*argv);
+خارجي فراغ wide_inputs_connect(vvp_wide_fun_core*core,
+				بنانشان argc, بنية symb_s*argv);
 
-extern vvp_net_t* vvp_net_lookup(const char*label);
-extern vpiHandle vvp_lookup_handle(const char*label);
+خارجي vvp_net_t* vvp_net_lookup(ثابت حرف*label);
+خارجي vpiHandle vvp_lookup_handle(ثابت حرف*label);
 
 /*
  *  Add a functor to the symbol table
  */
-extern void define_functor_symbol(const char*label, vvp_net_t*ipt);
+خارجي فراغ define_functor_نشان(ثابت حرف*label, vvp_net_t*ipt);
 
 
 /*
  * This is a count of errors encountered during compilation. If this
  * is non-zero, then simulation is not recommended.
  */
-extern unsigned compile_errors;
+خارجي بنانشان compile_errors;
 
-extern const char* module_path;
-extern void compile_load_vpi_module(char*name);
+خارجي ثابت حرف* module_رستو;
+خارجي فراغ compile_ڀريو_vpi_module(حرف*name);
 
-extern void compile_vpi_time_precision(long pre);
+خارجي فراغ compile_vpi_وقت_precision(ڊگهو pre);
 
 /*
  * This function is called by the parser to compile a functor
@@ -100,9 +100,9 @@ extern void compile_vpi_time_precision(long pre);
  * of the functor. The compile should match those port parameters up
  * to existing functors to manage the linking.
  */
-extern void compile_functor(char*label, char*type, unsigned width,
-			    unsigned ostr0, unsigned ostr1,
-			    unsigned argc, struct symb_s*argv);
+خارجي فراغ compile_functor(حرف*label, حرف*type, بنانشان ويڪر,
+			    بنانشان ostr0, بنانشان ostr1,
+			    بنانشان argc, بنية symb_s*argv);
 
 
 /*
@@ -111,186 +111,186 @@ extern void compile_functor(char*label, char*type, unsigned width,
  * that are blended to make a resolved output. The type string selects
  * a resolution algorithm.
  */
-extern void compile_resolver(char*label, char*type,
-			     unsigned argc, struct symb_s*argv);
+خارجي فراغ compile_resolver(حرف*label, حرف*type,
+			     بنانشان argc, بنية symb_s*argv);
 
-extern void compile_concat(char*label, unsigned w0, unsigned w1,
-			   unsigned w2, unsigned w3,
-			   unsigned argc, struct symb_s*argv);
+خارجي فراغ compile_concat(حرف*label, بنانشان w0, بنانشان w1,
+			   بنانشان w2, بنانشان w3,
+			   بنانشان argc, بنية symb_s*argv);
 
-extern void compile_concat8(char*label, unsigned w0, unsigned w1,
-			    unsigned w2, unsigned w3,
-			    unsigned argc, struct symb_s*argv);
+خارجي فراغ compile_concat8(حرف*label, بنانشان w0, بنانشان w1,
+			    بنانشان w2, بنانشان w3,
+			    بنانشان argc, بنية symb_s*argv);
 
-extern void compile_substitute(char*label, unsigned width,
-			       unsigned soff, unsigned swidth,
-			       unsigned argc, struct symb_s*argv);
+خارجي فراغ compile_substitute(حرف*label, بنانشان ويڪر,
+			       بنانشان soff, بنانشان swidth,
+			       بنانشان argc, بنية symb_s*argv);
 
 /*
  * Arrange for the system task/function call to have its compiletf
  * function called.
  */
-extern void compile_compiletf(struct __vpiSysTaskCall*);
+خارجي فراغ compile_compiletf(بنية __vpiSysTaskCall*);
 
 /*
  * Compile delay nodes of various form.
  */
-extern void compile_delay(char*label, unsigned width,
-                          vvp_delay_t*del, struct symb_s input);
-extern void compile_delay(char*label, unsigned width,
-                          unsigned argc, struct symb_s*argv,
+خارجي فراغ compile_delay(حرف*label, بنانشان ويڪر,
+                          vvp_delay_t*del, بنية symb_s داخلا);
+خارجي فراغ compile_delay(حرف*label, بنانشان ويڪر,
+                          بنانشان argc, بنية symb_s*argv,
                           bool ignore_decay);
 
 /*
  * This is called by the parser to create a part select node.
  * See the PART SELECT STATEMENT section in the README.txt
  */
-extern void compile_part_select(char*label, char*src,
-				unsigned base, unsigned wid);
-extern void compile_part_select_pv(char*label, char*src,
-				   unsigned base, unsigned wid,
-				   unsigned vec_wid);
-extern void compile_part_select_var(char*label, char*src,
-                                    char*var, unsigned wid, bool is_signed);
+خارجي فراغ compile_part_select(حرف*label, حرف*src,
+				بنانشان بنياد, بنانشان wid);
+خارجي فراغ compile_part_select_pv(حرف*label, حرف*src,
+				   بنانشان بنياد, بنانشان wid,
+				   بنانشان vec_wid);
+خارجي فراغ compile_part_select_var(حرف*label, حرف*src,
+                                    حرف*var, بنانشان wid, bool is_signed);
 
 /*
  * This is called by the parser to make the various arithmetic and
  * comparison functors.
  */
-extern void compile_arith_pow(char*label, long width, bool signed_flag,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_arith_abs(char*label,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_arith_cast_int(char*label, long width,
-			           unsigned argc, struct symb_s*argv);
-extern void compile_arith_cast_real(char*label, bool signed_flag,
-			            unsigned argc, struct symb_s*argv);
-extern void compile_arith_cast_vec2(char*label, long width,
-				    unsigned argc, struct symb_s*argv);
-extern void compile_arith_div(char*label, long width, bool signed_flag,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_arith_mod(char*label, long width, bool signed_flag,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_arith_mult(char*label, long width,
-			       unsigned argc, struct symb_s*argv);
-extern void compile_arith_sum(char*label, long width,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_arith_sub(char*label, long width,
-			      unsigned argc, struct symb_s*argv);
-extern void compile_cmp_eeq(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_nee(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_eq(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_eqx(char*label, long width,
-			    unsigned argc, struct symb_s*argv);
-extern void compile_cmp_eqz(char*label, long width,
-			    unsigned argc, struct symb_s*argv);
-extern void compile_cmp_ne(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_ge(char*label, long width, bool signed_flag,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_gt(char*label, long width, bool signed_flag,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_weq(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_cmp_wne(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
+خارجي فراغ compile_arith_pow(حرف*label, ڊگهو ويڪر, bool signed_flag,
+			      بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_arith_abs(حرف*label,
+			      بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_arith_cast_int(حرف*label, ڊگهو ويڪر,
+			           بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_arith_cast_real(حرف*label, bool signed_flag,
+			            بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_arith_cast_vec2(حرف*label, ڊگهو ويڪر,
+				    بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_arith_div(حرف*label, ڊگهو ويڪر, bool signed_flag,
+			      بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_arith_mod(حرف*label, ڊگهو ويڪر, bool signed_flag,
+			      بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_arith_mult(حرف*label, ڊگهو ويڪر,
+			       بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_arith_جوڙ(حرف*label, ڊگهو ويڪر,
+			      بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_arith_sub(حرف*label, ڊگهو ويڪر,
+			      بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_cmp_eeq(حرف*label, ڊگهو ويڪر,
+			   بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_cmp_nee(حرف*label, ڊگهو ويڪر,
+			   بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_cmp_eq(حرف*label, ڊگهو ويڪر,
+			   بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_cmp_eqx(حرف*label, ڊگهو ويڪر,
+			    بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_cmp_eqz(حرف*label, ڊگهو ويڪر,
+			    بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_cmp_ne(حرف*label, ڊگهو ويڪر,
+			   بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_cmp_ge(حرف*label, ڊگهو ويڪر, bool signed_flag,
+			   بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_cmp_gt(حرف*label, ڊگهو ويڪر, bool signed_flag,
+			   بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_cmp_weq(حرف*label, ڊگهو ويڪر,
+			   بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_cmp_wne(حرف*label, ڊگهو ويڪر,
+			   بنانشان argc, بنية symb_s*argv);
 
-extern void compile_arith_mult_r(char*label, unsigned argc,
-                                 struct symb_s*argv);
-extern void compile_arith_pow_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_arith_div_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_arith_mod_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_arith_sum_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_arith_sub_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_cmp_eq_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_cmp_ne_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_cmp_ge_r(char*label, unsigned argc, struct symb_s*argv);
-extern void compile_cmp_gt_r(char*label, unsigned argc, struct symb_s*argv);
+خارجي فراغ compile_arith_mult_r(حرف*label, بنانشان argc,
+                                 بنية symb_s*argv);
+خارجي فراغ compile_arith_pow_r(حرف*label, بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_arith_div_r(حرف*label, بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_arith_mod_r(حرف*label, بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_arith_جوڙ_r(حرف*label, بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_arith_sub_r(حرف*label, بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_cmp_eq_r(حرف*label, بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_cmp_ne_r(حرف*label, بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_cmp_ge_r(حرف*label, بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_cmp_gt_r(حرف*label, بنانشان argc, بنية symb_s*argv);
 
-extern void compile_dff(char*label, unsigned width, bool negedge,
-			struct symb_s arg_d,
-			struct symb_s arg_c,
-			struct symb_s arg_e);
+خارجي فراغ compile_dff(حرف*label, بنانشان ويڪر, bool negedge,
+			بنية symb_s arg_d,
+			بنية symb_s arg_c,
+			بنية symb_s arg_e);
 
-extern void compile_dff_aclr(char*label, unsigned width, bool negedge,
-			     struct symb_s arg_d,
-			     struct symb_s arg_c,
-			     struct symb_s arg_e,
-			     struct symb_s arg_a);
-extern void compile_dff_aset(char*label, unsigned width, bool negedge,
-			     struct symb_s arg_d,
-			     struct symb_s arg_c,
-			     struct symb_s arg_e,
-			     struct symb_s arg_a,
-			     char*asc_value);
+خارجي فراغ compile_dff_aclr(حرف*label, بنانشان ويڪر, bool negedge,
+			     بنية symb_s arg_d,
+			     بنية symb_s arg_c,
+			     بنية symb_s arg_e,
+			     بنية symb_s arg_a);
+خارجي فراغ compile_dff_aset(حرف*label, بنانشان ويڪر, bool negedge,
+			     بنية symb_s arg_d,
+			     بنية symb_s arg_c,
+			     بنية symb_s arg_e,
+			     بنية symb_s arg_a,
+			     حرف*asc_قدر);
 
-extern void compile_latch(char*label, unsigned width,
-			  struct symb_s arg_d,
-			  struct symb_s arg_e);
+خارجي فراغ compile_latch(حرف*label, بنانشان ويڪر,
+			  بنية symb_s arg_d,
+			  بنية symb_s arg_e);
 
-extern void compile_enum2_type(char*label, long width, bool signed_flag,
-			      std::list<struct enum_name_s>*names);
-extern void compile_enum4_type(char*label, long width, bool signed_flag,
-			      std::list<struct enum_name_s>*names);
+خارجي فراغ compile_enum2_type(حرف*label, ڊگهو ويڪر, bool signed_flag,
+			      std::list<بنية enum_name_s>*نالا);
+خارجي فراغ compile_enum4_type(حرف*label, ڊگهو ويڪر, bool signed_flag,
+			      std::list<بنية enum_name_s>*نالا);
 
-struct __vpiModPath;
-extern __vpiModPath* compile_modpath(char*label,
-                                     unsigned width,
-				     struct symb_s drv,
-				     struct symb_s dest);
-extern void compile_modpath_src(__vpiModPath*dst,
-				char edge_c,
-				const struct symb_s&src,
-				struct numbv_s&vals,
-				const struct symb_s&condit_src,
-				const struct symb_s&path_term_in);
-extern void compile_modpath_src(__vpiModPath*dst,
-				char edge_c,
-				const struct symb_s&src,
-				struct numbv_s&vals,
-				int condit_src, /* match with '0' */
-				const struct symb_s&path_term_in,
+بنية __vpiModPath;
+خارجي __vpiModPath* compile_modpath(حرف*label,
+                                     بنانشان ويڪر,
+				     بنية symb_s drv,
+				     بنية symb_s dest);
+خارجي فراغ compile_modpath_src(__vpiModPath*dst,
+				حرف ڪنارو_c,
+				ثابت بنية symb_s&src,
+				بنية numbv_s&vals,
+				ثابت بنية symb_s&condit_src,
+				ثابت بنية symb_s&رستو_رڪن_اندريون);
+خارجي فراغ compile_modpath_src(__vpiModPath*dst,
+				حرف ڪنارو_c,
+				ثابت بنية symb_s&src,
+				بنية numbv_s&vals,
+				صحيح condit_src, /* match with '0' */
+				ثابت بنية symb_s&رستو_رڪن_اندريون,
 				bool ifnone);
 
-extern void compile_reduce_and(char*label, const struct symb_s&arg);
-extern void compile_reduce_or(char*label, const struct symb_s&arg);
-extern void compile_reduce_xor(char*label, const struct symb_s&arg);
-extern void compile_reduce_nand(char*label, const struct symb_s&arg);
-extern void compile_reduce_nor(char*label, const struct symb_s&arg);
-extern void compile_reduce_xnor(char*label, const struct symb_s&arg);
+خارجي فراغ compile_reduce_and(حرف*label, ثابت بنية symb_s&arg);
+خارجي فراغ compile_reduce_or(حرف*label, ثابت بنية symb_s&arg);
+خارجي فراغ compile_reduce_xor(حرف*label, ثابت بنية symb_s&arg);
+خارجي فراغ compile_reduce_nand(حرف*label, ثابت بنية symb_s&arg);
+خارجي فراغ compile_reduce_nor(حرف*label, ثابت بنية symb_s&arg);
+خارجي فراغ compile_reduce_xnor(حرف*label, ثابت بنية symb_s&arg);
 
-extern void compile_extend_signed(char*label, long width, struct symb_s arg);
+خارجي فراغ compile_extend_signed(حرف*label, ڊگهو ويڪر, بنية symb_s arg);
 
-extern void compile_sfunc(char*label, char*name, char*format_string,
-			  long file_idx, long lineno,
-			  unsigned argc, struct symb_s*argv,
-                          char*trigger_label);
+خارجي فراغ compile_sfunc(حرف*label, حرف*name, حرف*format_string,
+			  ڊگهو file_idx, ڊگهو lineno,
+			  بنانشان argc, بنية symb_s*argv,
+                          حرف*trigger_label);
 
-extern void compile_repeat(char*label, long width, long repeat,
-			   struct symb_s arg);
+خارجي فراغ compile_repeat(حرف*label, ڊگهو ويڪر, ڊگهو repeat,
+			   بنية symb_s arg);
 
-extern void compile_shiftl(char*label, long width,
-			   unsigned argc, struct symb_s*argv);
-extern void compile_shiftr(char*label, long width, bool signed_flag,
-			   unsigned argc, struct symb_s*argv);
+خارجي فراغ compile_shiftl(حرف*label, ڊگهو ويڪر,
+			   بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_shiftr(حرف*label, ڊگهو ويڪر, bool signed_flag,
+			   بنانشان argc, بنية symb_s*argv);
 
-extern void compile_timescale(long units, long precision);
+خارجي فراغ compile_timescale(ڊگهو units, ڊگهو precision);
 
-extern void compile_vpi_symbol(const char*label, vpiHandle obj);
-extern void compile_vpi_lookup(vpiHandle *objref, char*label);
+خارجي فراغ compile_vpi_نشان(ثابت حرف*label, vpiHandle obj);
+خارجي فراغ compile_vpi_lookup(vpiHandle *objref, حرف*label);
 
-extern void compile_param_string(char*label, const char*name, char*value,
+خارجي فراغ compile_param_string(حرف*label, ثابت حرف*name, حرف*قدر,
                                  bool local_flag,
-                                 long file_idx, long lineno);
-extern void compile_param_logic(char*label, const char*name, char*value,
+                                 ڊگهو file_idx, ڊگهو lineno);
+خارجي فراغ compile_param_logic(حرف*label, ثابت حرف*name, حرف*قدر,
 				bool signed_flag, bool local_flag,
-                                long file_idx, long lineno);
-extern void compile_param_real(char*label, const char*name, char*value,
+                                ڊگهو file_idx, ڊگهو lineno);
+خارجي فراغ compile_param_real(حرف*label, ثابت حرف*name, حرف*قدر,
                                bool local_flag,
-                               long file_idx, long lineno);
+                               ڊگهو file_idx, ڊگهو lineno);
 
 /*
  * The resolv_list_s is the base class for a symbol resolve
@@ -311,26 +311,26 @@ extern void compile_param_real(char*label, const char*name, char*value,
  */
 class resolv_list_s {
 
-    public:
-      explicit resolv_list_s(char*lab) : label_(lab) {
-	    next = NULL;
+    عام:
+      explicit resolv_list_s(حرف*lab) : label_(lab) {
+	    ايندڙ_2 = عدم;
       }
-      virtual ~resolv_list_s();
+      مجازي ~resolv_list_s();
 
-      resolv_list_s(const resolv_list_s&) = delete;
-      resolv_list_s& operator=(const resolv_list_s&) = delete;
+      resolv_list_s(ثابت resolv_list_s&) = delete;
+      resolv_list_s& عامل=(ثابت resolv_list_s&) = delete;
 
-      virtual bool resolve(bool mes = false) = 0;
+      مجازي bool resolve(bool mes = false) = 0;
 
-    protected:
-      const char*label() const { return label_; }
+    محمي:
+      ثابت حرف*label() ثابت { أرجع label_; }
 
-    private:
-      friend void resolv_submit(class resolv_list_s*cur);
-      friend void compile_cleanup(void);
+    خاص:
+      دوست فراغ resolv_submit(class resolv_list_s*cur);
+      دوست فراغ compile_cleanup(فراغ);
 
-      char*label_;
-      class resolv_list_s*next;
+      حرف*label_;
+      class resolv_list_s*ايندڙ_2;
 };
 
 /*
@@ -342,11 +342,11 @@ class resolv_list_s {
  * The text for the label will be deleted by this function, or the
  * cleanup that completes the binding.
  */
-extern void functor_ref_lookup(vvp_net_t**ref, char*lab);
+خارجي فراغ functor_ref_lookup(vvp_net_t**ref, حرف*lab);
 
-extern vpiHandle vpip_make_prop_queue_ref(char* class_label,
-                                          unsigned prop_idx,
-                                          unsigned is_queue_flag);
+خارجي vpiHandle vpip_make_prop_قطار_ref(حرف* class_label,
+                                          بنانشان prop_idx,
+                                          بنانشان is_قطار_flag);
 
 /*
  * This function schedules a lookup of the labeled instruction. The
@@ -357,7 +357,7 @@ extern vpiHandle vpip_make_prop_queue_ref(char* class_label,
  * The cptr2 flag tells the lookup to write the code pointer into the
  * cptr2 member of the code, instead of the cptr member.
  */
-extern void code_label_lookup(struct vvp_code_s *code, char *label, bool cptr2);
+خارجي فراغ ڪوڊ_label_lookup(بنية vvp_ڪوڊ_s *ڪوڊ, حرف *label, bool cptr2);
 
 /*
  * The `compile_udp_def' function creates a UDP.  The `table' is a
@@ -369,52 +369,52 @@ extern void code_label_lookup(struct vvp_code_s *code, char *label, bool cptr2);
  * labeled UDP.
  */
 
-extern void compile_udp_def(int sequ, char*label, char *name,
-			    unsigned nin, unsigned init, char **table);
+خارجي فراغ compile_udp_def(صحيح sequ, حرف*label, حرف *name,
+			    بنانشان nin, بنانشان init, حرف **جدول);
 
-extern void compile_udp_functor(char*label, char*type,
-				unsigned argc, struct symb_s*argv);
+خارجي فراغ compile_udp_functor(حرف*label, حرف*type,
+				بنانشان argc, بنية symb_s*argv);
 
-extern char **compile_udp_table(char **table, char *row);
+خارجي حرف **compile_udp_جدول(حرف **جدول, حرف *صف);
 
 /*
  * Memory Instances, Ports, and Initialization
  */
 
-extern void compile_var_array(char*label, char*name,
-			      int last, int first,
-			      int msb, int lsb, char signed_flag);
-extern void compile_var2_array(char*label, char*name,
-			      int last, int first,
-			      int msb, int lsb, bool signed_flag);
-extern void compile_real_array(char*label, char*name,
-			       int last, int first);
-extern void compile_string_array(char*label, char*name,
-				 int last, int first);
-extern void compile_object_array(char*label, char*name,
-				 int last, int first);
-extern void compile_net_array(char*label, char*name,
-			      int last, int first);
-extern void compile_array_alias(char*label, char*name, char*src);
+خارجي فراغ compile_var_array(حرف*label, حرف*name,
+			      صحيح آخري, صحيح پهريون,
+			      صحيح msb, صحيح lsb, حرف signed_flag);
+خارجي فراغ compile_var2_array(حرف*label, حرف*name,
+			      صحيح آخري, صحيح پهريون,
+			      صحيح msb, صحيح lsb, bool signed_flag);
+خارجي فراغ compile_real_array(حرف*label, حرف*name,
+			       صحيح آخري, صحيح پهريون);
+خارجي فراغ compile_string_array(حرف*label, حرف*name,
+				 صحيح آخري, صحيح پهريون);
+خارجي فراغ compile_object_array(حرف*label, حرف*name,
+				 صحيح آخري, صحيح پهريون);
+خارجي فراغ compile_net_array(حرف*label, حرف*name,
+			      صحيح آخري, صحيح پهريون);
+خارجي فراغ compile_array_alias(حرف*label, حرف*name, حرف*src);
 
   /* Index is a net. */
-extern void compile_array_port(char*label, char*name, char*addr);
+خارجي فراغ compile_array_پورٽ(حرف*label, حرف*name, حرف*addr);
   /* Index is a constant address */
-extern void compile_array_port(char*label, char*name, long addr);
+خارجي فراغ compile_array_پورٽ(حرف*label, حرف*name, ڊگهو addr);
 
-extern void compile_array_cleanup(void);
+خارجي فراغ compile_array_cleanup(فراغ);
 
 /*
  * Compile the .ufunc statement.
  */
-extern void compile_ufunc_real(char*label, char*code, unsigned wid,
-			  unsigned argc, struct symb_s*argv,
-			  unsigned portc, struct symb_s*portv,
-			  char*scope_label, char*trigger_label);
-extern void compile_ufunc_vec4(char*label, char*code, unsigned wid,
-			  unsigned argc, struct symb_s*argv,
-			  unsigned portc, struct symb_s*portv,
-			  char*scope_label, char*trigger_label);
+خارجي فراغ compile_ufunc_real(حرف*label, حرف*ڪوڊ, بنانشان wid,
+			  بنانشان argc, بنية symb_s*argv,
+			  بنانشان portc, بنية symb_s*portv,
+			  حرف*scope_label, حرف*trigger_label);
+خارجي فراغ compile_ufunc_vec4(حرف*label, حرف*ڪوڊ, بنانشان wid,
+			  بنانشان argc, بنية symb_s*argv,
+			  بنانشان portc, بنية symb_s*portv,
+			  حرف*scope_label, حرف*trigger_label);
 
 /*
  * The compile_event function takes the parts of the event statement
@@ -422,9 +422,9 @@ extern void compile_ufunc_vec4(char*label, char*code, unsigned wid,
  * the functor that receives the signals and the event_t that holds
  * the threads.
  */
-extern void compile_event(char*label, char*type,
-			  unsigned argc, struct symb_s*argv);
-extern void compile_named_event(char*label, char*type, bool local_flag=false);
+خارجي فراغ compile_event(حرف*label, حرف*type,
+			  بنانشان argc, بنية symb_s*argv);
+خارجي فراغ compile_named_event(حرف*label, حرف*type, bool local_flag=false);
 
 
 /*
@@ -436,66 +436,66 @@ extern void compile_named_event(char*label, char*type, bool local_flag=false);
  * symbol table with the address of the instruction.
  */
 
-#define OPERAND_MAX 3
-enum ltype_e { L_NUMB, L_SYMB, L_STRING };
+#وصف_ڪريو عمليو_MAX 3
+تعداد ltype_e { L_NUMB, L_SYMB, L_STRING };
 
-struct comp_operands_s {
-      unsigned argc;
-      struct {
-	    enum ltype_e ltype;
-	    union {
-		  unsigned long numb;
-		  struct symb_s symb;
-		  const char   *text;
+بنية comp_operands_s {
+      بنانشان argc;
+      بنية {
+	    تعداد ltype_e ltype;
+	    اتحاد {
+		  بنانشان ڊگهو numb;
+		  بنية symb_s symb;
+		  ثابت حرف   *متن;
 	    };
-      } argv[OPERAND_MAX];
+      } argv[عمليو_MAX];
 };
 
-typedef struct comp_operands_s*comp_operands_t;
+تعريفنوع بنية comp_operands_s*comp_operands_t;
 
-extern void compile_code(char*label, char*mnem, comp_operands_t opa);
+خارجي فراغ compile_ڪوڊ(حرف*label, حرف*mnem, comp_operands_t opa);
 
-extern void compile_file_line(char*label, long file_idx, long lineno,
-                              char*description);
+خارجي فراغ compile_file_سٽ(حرف*label, ڊگهو file_idx, ڊگهو lineno,
+                              حرف*description);
 
-extern void compile_vpi_call(char*label, char*name,
+خارجي فراغ compile_vpi_call(حرف*label, حرف*name,
 			     bool func_as_task_err, bool func_as_task_warn,
-			     long file_idx, long lineno,
-			     unsigned argc, vpiHandle*argv,
-			     unsigned vec4_stack,
-			     unsigned real_stack,
-			     unsigned string_stack);
+			     ڊگهو file_idx, ڊگهو lineno,
+			     بنانشان argc, vpiHandle*argv,
+			     بنانشان vec4_ڍير,
+			     بنانشان real_ڍير,
+			     بنانشان string_ڍير);
 
 /* Compile a function call. The vbit and vwid encode the return
    type. If the vwid >0, the return type is a vector. If the vwid is
    <0, the return type is -vpiRealConst or some other constant subtype
    code that represents the function type. */
-extern void compile_vpi_func_call(char*label, char*name,
-				  int val_type, unsigned val_wid,
-				  long file_idx, long lineno,
-				  unsigned argc, vpiHandle*argv,
-				  unsigned vec4_stack,
-				  unsigned real_stack,
-				  unsigned string_stack);
-extern void print_vpi_call_errors();
+خارجي فراغ compile_vpi_func_call(حرف*label, حرف*name,
+				  صحيح val_type, بنانشان val_wid,
+				  ڊگهو file_idx, ڊگهو lineno,
+				  بنانشان argc, vpiHandle*argv,
+				  بنانشان vec4_ڍير,
+				  بنانشان real_ڍير,
+				  بنانشان string_ڍير);
+خارجي فراغ print_vpi_call_errors();
 
-extern void compile_codelabel(char*label);
+خارجي فراغ compile_codelabel(حرف*label);
 
 /*
  * The parser uses these functions to compile .scope statements.
  * The implementations of these live in the vpi_scope.cc file.
  */
-extern void compile_scope_decl(char*typ, char*lab, char*nam, char*tnam,
-                               char*par, long file_idx, long lineno,
-                               long def_file_idx, long def_lineno,
-                               long is_cell);
-extern void compile_scope_recall(char*sym);
+خارجي فراغ compile_scope_decl(حرف*typ, حرف*lab, حرف*nam, حرف*tnam,
+                               حرف*par, ڊگهو file_idx, ڊگهو lineno,
+                               ڊگهو def_file_idx, ڊگهو def_lineno,
+                               ڊگهو is_cell);
+خارجي فراغ compile_scope_recall(حرف*sym);
 
 /*
  * The parser uses this function to declare a thread. The start_sym is
  * the start instruction, and must already be defined.
  */
-extern void compile_thread(char*start_sym, char*flag);
+خارجي فراغ compile_thread(حرف*شروعات_sym, حرف*flag);
 
 /*
  * This function is called to create a var vector with the given name.
@@ -504,15 +504,15 @@ extern void compile_thread(char*start_sym, char*flag);
  * object codes that identify the type: vpiReg, vpiIntegerVar,
  * vpiIntVar, etc.
  */
-extern void compile_variable(char*label, char*name,
-			     int msb, int lsb, int vpi_type_code,
+خارجي فراغ compile_variable(حرف*label, حرف*name,
+			     صحيح msb, صحيح lsb, صحيح vpi_type_ڪوڊ,
 			     bool signed_flag, bool local_flag);
 
-extern void compile_var_real(char*label, char*name, bool local_flag);
-extern void compile_var_string(char*label, char*name);
-extern void compile_var_darray(char*label, char*name, unsigned size);
-extern void compile_var_cobject(char*label, char*name);
-extern void compile_var_queue(char*label, char*name, unsigned size);
+خارجي فراغ compile_var_real(حرف*label, حرف*name, bool local_flag);
+خارجي فراغ compile_var_string(حرف*label, حرف*name);
+خارجي فراغ compile_var_darray(حرف*label, حرف*name, بنانشان سائيز);
+خارجي فراغ compile_var_cobject(حرف*label, حرف*name);
+خارجي فراغ compile_var_قطار(حرف*label, حرف*name, بنانشان سائيز);
 
 /*
  * This function is used to create a scope port
@@ -522,7 +522,7 @@ extern void compile_var_queue(char*label, char*name, unsigned size);
  * nets connected through module ports.
  */
 
-extern void compile_port_info( unsigned index, int vpi_port_type, unsigned width, const char *name, char* buffer );
+خارجي فراغ compile_پورٽ_info( بنانشان اشاريو, صحيح vpi_پورٽ_type, بنانشان ويڪر, ثابت حرف *name, حرف* بفر );
 
 
 /*
@@ -536,40 +536,40 @@ extern void compile_port_info( unsigned index, int vpi_port_type, unsigned width
  *   vpiIntVar -- 2-value logic
  *  -vpiLogic  -- 8-value (i.e. strength aware) logic
  */
-extern void compile_net(char*label, char*name, int msb, int lsb,
-			int vpi_type_code, bool signed_flag, bool local_flag,
-			unsigned argc, struct symb_s*argv);
+خارجي فراغ compile_net(حرف*label, حرف*name, صحيح msb, صحيح lsb,
+			صحيح vpi_type_ڪوڊ, bool signed_flag, bool local_flag,
+			بنانشان argc, بنية symb_s*argv);
 
-extern void compile_net_real(char*label, char*name,
-			     int msb, int lsb, bool local_flag,
-			     unsigned argc, struct symb_s*argv);
+خارجي فراغ compile_net_real(حرف*label, حرف*name,
+			     صحيح msb, صحيح lsb, bool local_flag,
+			     بنانشان argc, بنية symb_s*argv);
 
-extern void compile_netw(char*label, char*array_label, unsigned long array_addr,
-			 int msb, int lsb, int vpi_type_code, bool signed_flag,
-			 unsigned argc, struct symb_s*argv);
+خارجي فراغ compile_netw(حرف*label, حرف*array_label, بنانشان ڊگهو array_addr,
+			 صحيح msb, صحيح lsb, صحيح vpi_type_ڪوڊ, bool signed_flag,
+			 بنانشان argc, بنية symb_s*argv);
 
-extern void compile_netw_real(char*label, char*array_symbol,
-			      unsigned long array_addr,
-			      int msb, int lsb,
-			      unsigned argc, struct symb_s*argv);
+خارجي فراغ compile_netw_real(حرف*label, حرف*array_نشان,
+			      بنانشان ڊگهو array_addr,
+			      صحيح msb, صحيح lsb,
+			      بنانشان argc, بنية symb_s*argv);
 
 
-extern void compile_island(char*label, char*type);
-extern void compile_island_port(char*label, char*island, char*src);
-extern void compile_island_import(char*label, char*island, char*src);
-extern void compile_island_export(char*label, char*island);
-extern void compile_island_cleanup(void);
+خارجي فراغ compile_island(حرف*label, حرف*type);
+خارجي فراغ compile_island_پورٽ(حرف*label, حرف*island, حرف*src);
+خارجي فراغ compile_island_import(حرف*label, حرف*island, حرف*src);
+خارجي فراغ compile_island_export(حرف*label, حرف*island);
+خارجي فراغ compile_island_cleanup(فراغ);
 
-extern void compile_island_tran(char*label);
-extern void compile_island_tranif(int sense, char*island,
-				  char*ba, char*bb, char*src, bool resistive);
-extern void compile_island_tranvp(char*island, char*ba, char*bb,
-				  unsigned width, unsigned part, unsigned off);
+خارجي فراغ compile_island_tran(حرف*label);
+خارجي فراغ compile_island_tranif(صحيح sense, حرف*island,
+				  حرف*ba, حرف*bb, حرف*src, bool resistive);
+خارجي فراغ compile_island_tranvp(حرف*island, حرف*ba, حرف*bb,
+				  بنانشان ويڪر, بنانشان part, بنانشان off);
 
-extern void delete_udp_symbols(void);
+خارجي فراغ delete_udp_symbols(فراغ);
 
-extern void compile_class_start(char*lab, char*nam, unsigned nprop);
-extern void compile_class_property(unsigned idx, char*nam, char*typ, uint64_t array_size);
-extern void compile_class_done(void);
+خارجي فراغ compile_class_شروعات(حرف*lab, حرف*nam, بنانشان nprop);
+خارجي فراغ compile_class_property(بنانشان idx, حرف*nam, حرف*typ, uint64_t array_سائيز_2);
+خارجي فراغ compile_class_پورو(فراغ);
 
-#endif /* IVL_compile_H */
+#جيڪڏهن_پورو /* IVL_compile_H */

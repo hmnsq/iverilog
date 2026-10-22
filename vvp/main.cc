@@ -1,4 +1,4 @@
-const char COPYRIGHT[] =
+ثابت حرف COPYRIGHT[] =
   "Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)";
 /*
  *    This source code is free software; you can redistribute it
@@ -24,37 +24,37 @@ const char COPYRIGHT[] =
 # include  <cstdio>
 # include  <cstdlib>
 
-#if defined(HAVE_GETOPT_H)
+#إذا defined(HAVE_GETOPT_H)
 # include  <getopt.h>
-#endif
+#جيڪڏهن_پورو
 
-#if defined(__MINGW32__)
+#إذا defined(__MINGW32__)
 # include  <windows.h>
-#endif
+#جيڪڏهن_پورو
 
-#include "libvvp.h"
+#ضمن "libvvp.h"
 
-using namespace std;
+استعمال نطاق std;
 
-#if defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
-extern "C" int getopt(int argc, char*argv[], const char*fmt);
-extern "C" int optind;
-extern "C" const char*optarg;
-#endif
+#إذا defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
+خارجي "C" صحيح getopt(صحيح argc, حرف*argv[], ثابت حرف*fmt);
+خارجي "C" صحيح optind;
+خارجي "C" ثابت حرف*optarg;
+#جيڪڏهن_پورو
 
-bool version_flag = false;
+منطقي نسخو_flag = خطأ;
 
-unsigned module_cnt = 0;
-const char*module_tab[64];
+بنانشان module_cnt = 0;
+ثابت حرف*module_tab[64];
 
-int main(int argc, char*argv[])
+صحيح مکيه(صحيح argc, حرف*argv[])
 {
-      int opt;
-      unsigned flag_errors = 0;
-      const char *logfile_name = 0x0;
+      صحيح opt;
+      بنانشان flag_errors = 0;
+      ثابت حرف *logfile_name = 0x0;
 
-      while ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) switch (opt) {
-         case 'h':
+      طالما ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) بدل (opt) {
+         حالة 'h':
            fprintf(stderr,
                    "Usage: vvp [options] input-file [+plusargs...]\n"
                    "Options:\n"
@@ -70,51 +70,51 @@ int main(int argc, char*argv[])
 		   " -s             $stop right away.\n"
                    " -v             Verbose progress messages.\n"
                    " -V             Print the version information.\n" );
-           exit(0);
-	  case 'i':
+           ٻاهر_نڪرو(0);
+	  حالة 'i':
 	    setvbuf(stdout, 0, _IONBF, 0);
-	    break;
-	  case 'l':
+	    اكسر;
+	  حالة 'l':
 	    logfile_name = optarg;
-	    break;
-	  case 'M':
-	    if (strcmp(optarg,"-") == 0) {
+	    اكسر;
+	  حالة 'M':
+	    إذا (strcmp(optarg,"-") == 0) {
 		  vpip_clear_module_paths();
-	    } else {
-		  vpip_add_module_path(optarg);
+	    } وإلا {
+		  vpip_جوڙيو_module_رستو(optarg);
 	    }
-	    break;
-	  case 'm':
+	    اكسر;
+	  حالة 'm':
 	    module_tab[module_cnt++] = optarg;
-	    break;
-	  case 'n':
-	    vvp_set_stop_is_finish(true, 0);
-	    break;
-          case 'N':
-            vvp_set_stop_is_finish(true, 1);
-            break;
-	  case 'q':
-	    vvp_set_quiet_flag(true);
-	    break;
-	  case 's':
-	    schedule_stop(0);
-	    break;
-	  case 'v':
-	    vvp_set_verbose_flag(true);
-	    break;
-	  case 'V':
-	    version_flag = true;
-	    break;
-	  default:
+	    اكسر;
+	  حالة 'n':
+	    vvp_سيٽ_stop_is_پڄاڻي(سچ, 0);
+	    اكسر;
+          حالة 'N':
+            vvp_سيٽ_stop_is_پڄاڻي(سچ, 1);
+            اكسر;
+	  حالة 'q':
+	    vvp_سيٽ_quiet_flag(سچ);
+	    اكسر;
+	  حالة 's':
+	    وقت_جدول_stop(0);
+	    اكسر;
+	  حالة 'v':
+	    vvp_سيٽ_verbose_flag(سچ);
+	    اكسر;
+	  حالة 'V':
+	    نسخو_flag = سچ;
+	    اكسر;
+	  افتراضي:
 	    flag_errors += 1;
       }
 
-      if (flag_errors)
-	    return flag_errors;
+      إذا (flag_errors)
+	    أرجع flag_errors;
 
-      if (version_flag) {
-	    fprintf(stderr, "Icarus Verilog runtime version " VERSION " ("
-	                    VERSION_TAG ")\n\n");
+      إذا (نسخو_flag) {
+	    fprintf(stderr, "Icarus Verilog runtime version " نسخو " ("
+	                    نسخو_ٽيگ ")\n\n");
 	    fprintf(stderr, "%s\n\n", COPYRIGHT);
 	    fprintf(stderr,
 "  This program is free software; you can redistribute it and/or modify\n"
@@ -131,18 +131,18 @@ int main(int argc, char*argv[])
 "  with this program; if not, write to the Free Software Foundation, Inc.,\n"
 "  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n"
 );
-	    return 0;
+	    أرجع 0;
       }
 
-      if (optind == argc) {
+      إذا (optind == argc) {
 	    fprintf(stderr, "%s: no input file.\n", argv[0]);
-	    return -1;
+	    أرجع -1;
       }
 
       vvp_init(logfile_name, argc - optind, argv + optind);
 
-      for (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
-	    vpip_load_module(module_tab[idx]);
+      لكل (بنانشان idx = 0 ;  idx < module_cnt ;  idx += 1)
+	    vpip_ڀريو_module(module_tab[idx]);
 
-      return vvp_run(argv[optind]);
+      أرجع vvp_لاڳيتو(argv[optind]);
 }

@@ -1,5 +1,5 @@
-#ifndef IVL_class_type_H
-#define IVL_class_type_H
+#جيڪڏهن_وصف_نه_ٿيل IVL_class_type_H
+#وصف_ڪريو IVL_class_type_H
 /*
  * Copyright (c) 2012-2025 Stephen Williams (steve@icarus.com)
  *
@@ -31,58 +31,58 @@ class vvp_vector4_t;
  * uses this information to figure out how to construct an actual
  * instance.
  */
-class class_type : public __vpiHandle {
+class class_type : عام __vpiHandle {
 
-    public:
-      struct inst_x;
-      typedef inst_x*inst_t;
+    عام:
+      بنية inst_x;
+      تعريفنوع inst_x*inst_t;
 
-    public:
-      explicit class_type(const std::string&nam, size_t nprop);
+    عام:
+      explicit class_type(ثابت std::string&nam, size_t nprop);
       ~class_type() override;
 
 	// This is the name of the class type.
-      inline const std::string&class_name(void) const { return class_name_; }
+      مضمن ثابت std::string&class_name(فراغ) ثابت { أرجع class_name_; }
 	// Number of properties in the class definition.
-      inline size_t property_count(void) const { return properties_.size(); }
+      مضمن size_t property_ڳڻپ(فراغ) ثابت { أرجع properties_.سائيز(); }
 
 	// Set the details about the property. This is used during
 	// parse of the .vvp file to fill in the details of the
 	// property for the class definition.
-      void set_property(size_t idx, const std::string&name, const std::string&type, uint64_t array_size);
+      فراغ سيٽ_property(size_t idx, ثابت std::string&name, ثابت std::string&type, uint64_t array_سائيز_2);
 
 	// This method is called after all the properties are
 	// defined. This calculates information about the definition.
-      void finish_setup(void);
+      فراغ پڄاڻي_تياري(فراغ);
 
-    public:
+    عام:
 	// Constructors and destructors for making instances.
-      inst_t instance_new() const;
-      void instance_delete(inst_t) const;
+      inst_t instance_new() ثابت;
+      فراغ instance_delete(inst_t) ثابت;
 
-      void set_vec4(inst_t inst, size_t pid, const vvp_vector4_t&val) const;
-      void get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) const;
-      void set_real(inst_t inst, size_t pid, double val) const;
-      double get_real(inst_t inst, size_t pid) const;
-      void set_string(inst_t inst, size_t pid, const std::string&val) const;
-      std::string get_string(inst_t inst, size_t pid) const;
-      void set_object(inst_t inst, size_t pid, const vvp_object_t&val, size_t idx) const;
-      void get_object(inst_t inst, size_t pid, vvp_object_t&val, size_t idx) const;
+      فراغ سيٽ_vec4(inst_t inst, size_t pid, ثابت vvp_vector4_t&val) ثابت;
+      فراغ get_vec4(inst_t inst, size_t pid, vvp_vector4_t&val) ثابت;
+      فراغ سيٽ_real(inst_t inst, size_t pid, مزدوج val) ثابت;
+      مزدوج get_real(inst_t inst, size_t pid) ثابت;
+      فراغ سيٽ_string(inst_t inst, size_t pid, ثابت std::string&val) ثابت;
+      std::string get_string(inst_t inst, size_t pid) ثابت;
+      فراغ سيٽ_object(inst_t inst, size_t pid, ثابت vvp_object_t&val, size_t idx) ثابت;
+      فراغ get_object(inst_t inst, size_t pid, vvp_object_t&val, size_t idx) ثابت;
 
-      void copy_property(inst_t dst, size_t idx, inst_t src) const;
+      فراغ copy_property(inst_t dst, size_t idx, inst_t src) ثابت;
 
-    public: // VPI related methods
-      int get_type_code(void) const override;
+    عام: // VPI related methods
+      صحيح get_type_ڪوڊ(فراغ) ثابت override;
 
-    private:
+    خاص:
       std::string class_name_;
 
-      struct prop_t {
+      بنية prop_t {
 	    std::string name;
 	    class_property_t*type;
       };
-      std::vector<prop_t> properties_;
-      size_t instance_size_;
+      std::ويڪٽر<prop_t> properties_;
+      size_t instance_سائيز_2;
 };
 
-#endif /* IVL_class_type_H */
+#جيڪڏهن_پورو /* IVL_class_type_H */

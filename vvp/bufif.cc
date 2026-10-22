@@ -23,73 +23,73 @@
 # include  <iostream>
 # include  <cassert>
 
-vvp_fun_bufif::vvp_fun_bufif(bool en_invert, bool out_invert,
-			     unsigned str0, unsigned str1)
-: pol_(en_invert? 1 : 0), inv_(out_invert? 1 : 0)
+vvp_fun_bufif::vvp_fun_bufif(منطقي en_invert, منطقي ٻاهريون_invert,
+			     بنانشان str0, بنانشان str1)
+: pol_(en_invert? 1 : 0), inv_(ٻاهريون_invert? 1 : 0)
 {
       drive0_ = str0;
       drive1_ = str1;
-      count_functors_bufif += 1;
+      ڳڻپ_functors_bufif += 1;
 }
 
-void vvp_fun_bufif::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+فراغ vvp_fun_bufif::recv_vec4(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ٻٽو_انگ,
                               vvp_context_t)
 {
-      switch (ptr.port()) {
-	  case 0:
-	    bit_ = inv_? ~bit : bit;
-	    break;
-	  case 1:
-	    en_ = pol_? ~bit : bit;
-	    break;
-	  default:
-	    return;
+      بدل (ptr.پورٽ()) {
+	  حالة 0:
+	    ٻٽو_انگ_2 = inv_? ~ٻٽو_انگ : ٻٽو_انگ;
+	    اكسر;
+	  حالة 1:
+	    en_ = pol_? ~ٻٽو_انگ : ٻٽو_انگ;
+	    اكسر;
+	  افتراضي:
+	    أرجع;
       }
 
-      vvp_vector8_t out (bit.size());
+      vvp_vector8_t out (ٻٽو_انگ.size());
 
-      for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
+      لكل (بنانشان idx = 0 ;  idx < ٻٽو_انگ.size() ;  idx += 1) {
 	    vvp_bit4_t b_en  = en_.value(idx);
-	    vvp_bit4_t b_bit = bit_.value(idx);
+	    vvp_bit4_t b_ٻٽو_انگ = ٻٽو_انگ_2.value(idx);
 
-	    switch (b_en) {
-		case BIT4_0:
-		  out.set_bit(idx, vvp_scalar_t(BIT4_Z,drive0_,drive1_));
-		  break;
-		case BIT4_1:
-		  if (bit4_is_xz(b_bit))
-			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
-		  else
-			out.set_bit(idx, vvp_scalar_t(b_bit,drive0_,drive1_));
-		  break;
+	    بدل (b_en) {
+		حالة BIT4_0:
+		  out.سيٽ_ٻٽو_انگ(idx, vvp_scalar_t(BIT4_Z,drive0_,drive1_));
+		  اكسر;
+		حالة BIT4_1:
+		  إذا (bit4_is_xz(b_ٻٽو_انگ))
+			out.سيٽ_ٻٽو_انگ(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
+		  وإلا
+			out.سيٽ_ٻٽو_انگ(idx, vvp_scalar_t(b_ٻٽو_انگ,drive0_,drive1_));
+		  اكسر;
 
-		default:
-		  switch (b_bit) {
-		      case BIT4_0:
-			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,0));
-			break;
-		      case BIT4_1:
-			out.set_bit(idx, vvp_scalar_t(BIT4_X,0,drive1_));
-			break;
-		      default:
-			out.set_bit(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
-			break;
+		افتراضي:
+		  بدل (b_ٻٽو_انگ) {
+		      حالة BIT4_0:
+			out.سيٽ_ٻٽو_انگ(idx, vvp_scalar_t(BIT4_X,drive0_,0));
+			اكسر;
+		      حالة BIT4_1:
+			out.سيٽ_ٻٽو_انگ(idx, vvp_scalar_t(BIT4_X,0,drive1_));
+			اكسر;
+		      افتراضي:
+			out.سيٽ_ٻٽو_انگ(idx, vvp_scalar_t(BIT4_X,drive0_,drive1_));
+			اكسر;
 		  }
-		  break;
+		  اكسر;
 	    }
       }
 
       ptr.ptr()->send_vec8(out);
 }
 
-void vvp_fun_bufif::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			         unsigned base, unsigned vwid, vvp_context_t ctx)
+فراغ vvp_fun_bufif::recv_vec4_pv(vvp_net_ptr_t ptr, ثابت vvp_vector4_t&ٻٽو_انگ,
+			         بنانشان بنياد, بنانشان vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, ٻٽو_انگ, بنياد, vwid, ctx);
 }
 
-void vvp_fun_bufif::recv_real(vvp_net_ptr_t ptr, double real,
+فراغ vvp_fun_bufif::recv_real(vvp_net_ptr_t ptr, مزدوج real,
                               vvp_context_t ctx)
 {
-      recv_vec4(ptr, double_to_vector4_LSB(real), ctx);
+      recv_vec4(ptr, double_منزل_vector4_LSB(real), ctx);
 }

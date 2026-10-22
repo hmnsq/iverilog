@@ -38,13 +38,13 @@
 # include  <cstring>
 # include  <cassert>
 
-#ifdef __MINGW32__
-#include <windows.h>
-#endif
+#جيڪڏهن_وصف_ٿيل __MINGW32__
+#ضمن <windows.h>
+#جيڪڏهن_پورو
 
 # include  "ivl_alloc.h"
 
-unsigned compile_errors = 0;
+بنانشان compile_errors = 0;
 
 /*
  * The opcode table lists all the code mnemonics, along with their
@@ -57,19 +57,19 @@ unsigned compile_errors = 0;
  * The opcode_compare function is a helper for that lookup.
  */
 
-enum operand_e {
+تعداد عمليو_e {
 	/* Place holder for unused operand */
       OA_NONE,
 	/* The operand is a number, an immediate unsigned integer */
-      OA_NUMBER,
+      OA_عدد,
 	/* The operand is a pointer to an array. */
       OA_ARR_PTR,
 	/* The operand is a thread bit index or short integer */
       OA_BIT1,
       OA_BIT2,
 	/* The operand is a pointer to code space */
-      OA_CODE_PTR,
-      OA_CODE_PTR2,
+      OA_ڪوڊ_PTR,
+      OA_ڪوڊ_PTR2,
 	/* The operand is a variable or net pointer */
       OA_FUNC_PTR,
 	/* The operand is a second functor pointer */
@@ -80,351 +80,351 @@ enum operand_e {
       OA_STRING
 };
 
-struct opcode_table_s {
-      const char*mnemonic;
-      vvp_code_fun opcode;
+بنية opcode_جدول_s {
+      ثابت حرف*mnemonic;
+      vvp_ڪوڊ_fun opcode;
 
-      unsigned argc;
-      enum operand_e argt[OPERAND_MAX];
+      بنانشان argc;
+      تعداد عمليو_e argt[عمليو_MAX];
 };
 
-static const struct opcode_table_s opcode_table[] = {
-      { "%abs/wr", of_ABS_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%add",    of_ADD,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%add/wr", of_ADD_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%addi",   of_ADDI,   3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%alloc",  of_ALLOC,  1,  {OA_VPI_PTR,  OA_NONE,     OA_NONE} },
-      { "%and",    of_AND,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%and/r",  of_ANDR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%assign/ar",of_ASSIGN_AR,2,{OA_ARR_PTR,OA_BIT1,     OA_NONE} },
-      { "%assign/ar/d",of_ASSIGN_ARD,2,{OA_ARR_PTR,OA_BIT1,  OA_NONE} },
-      { "%assign/ar/e",of_ASSIGN_ARE,1,{OA_ARR_PTR,OA_NONE,  OA_NONE} },
-      { "%assign/vec4",      of_ASSIGN_VEC4,       2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%assign/vec4/a/d",  of_ASSIGN_VEC4_A_D,   3, {OA_ARR_PTR,  OA_BIT1, OA_BIT2} },
-      { "%assign/vec4/a/e",  of_ASSIGN_VEC4_A_E,   2, {OA_ARR_PTR,  OA_BIT1, OA_NONE} },
-      { "%assign/vec4/d",    of_ASSIGN_VEC4D,      2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%assign/vec4/e",    of_ASSIGN_VEC4E,      1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%assign/vec4/off/d",of_ASSIGN_VEC4_OFF_D, 3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
-      { "%assign/vec4/off/e",of_ASSIGN_VEC4_OFF_E, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%assign/wr",  of_ASSIGN_WR, 2,{OA_VPI_PTR, OA_BIT1, OA_NONE} },
-      { "%assign/wr/d",of_ASSIGN_WRD,2,{OA_VPI_PTR, OA_BIT1, OA_NONE} },
-      { "%assign/wr/e",of_ASSIGN_WRE,1,{OA_VPI_PTR, OA_NONE, OA_NONE} },
-      { "%blend",     of_BLEND,     0, {OA_NONE, OA_NONE, OA_NONE} },
-      { "%blend/str", of_BLEND_STR, 0, {OA_NONE, OA_NONE, OA_NONE} },
-      { "%blend/wr",  of_BLEND_WR,  0, {OA_NONE, OA_NONE, OA_NONE} },
-      { "%breakpoint", of_BREAKPOINT, 0,  {OA_NONE, OA_NONE, OA_NONE} },
-      { "%callf/obj",       of_CALLF_OBJ,       2,{OA_CODE_PTR2,OA_VPI_PTR, OA_NONE} },
-      { "%callf/real",      of_CALLF_REAL,      2,{OA_CODE_PTR2,OA_VPI_PTR, OA_NONE} },
-      { "%callf/str",       of_CALLF_STR,       2,{OA_CODE_PTR2,OA_VPI_PTR, OA_NONE} },
-      { "%callf/vec4",      of_CALLF_VEC4,      2,{OA_CODE_PTR2,OA_VPI_PTR, OA_NONE} },
-      { "%callf/void",      of_CALLF_VOID,      2,{OA_CODE_PTR2,OA_VPI_PTR, OA_NONE} },
-      { "%cassign/link",    of_CASSIGN_LINK,    2,{OA_FUNC_PTR,OA_FUNC_PTR2,OA_NONE} },
-      { "%cassign/vec4",    of_CASSIGN_VEC4,    1,{OA_FUNC_PTR,OA_NONE,     OA_NONE} },
-      { "%cassign/vec4/off",of_CASSIGN_VEC4_OFF,2,{OA_FUNC_PTR,OA_BIT1,     OA_NONE} },
-      { "%cassign/wr",  of_CASSIGN_WR,  1,{OA_FUNC_PTR,OA_NONE,     OA_NONE} },
-      { "%cast/vec2/dar", of_CAST_VEC2_DAR, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%cast/vec4/dar", of_CAST_VEC4_DAR, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%cast/vec4/str", of_CAST_VEC4_STR, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%cast2",   of_CAST2,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/e",   of_CMPE,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/ne",  of_CMPNE,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/s",   of_CMPS,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/str", of_CMPSTR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/u",   of_CMPU,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/we",  of_CMPWE,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/wne", of_CMPWNE, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/wr",  of_CMPWR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/x",   of_CMPX,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/z",   of_CMPZ,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmpi/e",  of_CMPIE,  3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%cmpi/ne", of_CMPINE, 3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%cmpi/s",  of_CMPIS,  3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%cmpi/u",  of_CMPIU,  3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%cmpix/ltu", of_CMPIX_LTU, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%cmpix/slt0", of_CMPIX_SLT0, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%concat/str",  of_CONCAT_STR,  0,{OA_NONE,  OA_NONE,  OA_NONE} },
-      { "%concat/vec4", of_CONCAT_VEC4, 0,{OA_NONE,  OA_NONE,  OA_NONE} },
-      { "%concati/str", of_CONCATI_STR, 1,{OA_STRING,OA_NONE,  OA_NONE} },
-      { "%concati/vec4",of_CONCATI_VEC4,3,{OA_BIT1,  OA_BIT2,  OA_NUMBER} },
-      { "%cvt/rv",   of_CVT_RV,  0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%cvt/rv/s", of_CVT_RV_S,0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%cvt/sr", of_CVT_SR, 1,  {OA_BIT1,     OA_NONE,     OA_NONE} },
-      { "%cvt/ur", of_CVT_UR, 1,  {OA_BIT1,     OA_NONE,     OA_NONE} },
-      { "%cvt/vr", of_CVT_VR, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%deassign",of_DEASSIGN,3,{OA_FUNC_PTR, OA_BIT1,     OA_BIT2} },
-      { "%deassign/wr",of_DEASSIGN_WR,1,{OA_FUNC_PTR, OA_NONE,     OA_NONE} },
-      { "%debug/thr",  of_DEBUG_THR,  1,{OA_STRING,   OA_NONE,     OA_NONE} },
-      { "%delay",  of_DELAY,  2,  {OA_BIT1,     OA_BIT2,     OA_NONE} },
-      { "%delayx", of_DELAYX, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%delete/elem",of_DELETE_ELEM,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
-      { "%delete/obj",of_DELETE_OBJ,1,{OA_FUNC_PTR,OA_NONE,  OA_NONE} },
-      { "%delete/prop/elem", of_DELETE_PROP_ELEM, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%delete/prop/obj",  of_DELETE_PROP_OBJ,  1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%delete/tail",of_DELETE_TAIL,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%disable",  of_DISABLE, 1, {OA_VPI_PTR,OA_NONE,     OA_NONE} },
-      { "%disable/flow", of_DISABLE_FLOW, 1, {OA_VPI_PTR,OA_NONE, OA_NONE} },
-      { "%disable/fork",of_DISABLE_FORK,0,{OA_NONE,OA_NONE,  OA_NONE} },
-      { "%div",      of_DIV,     0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%div/s",    of_DIV_S,   0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%div/wr",   of_DIV_WR,  0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%dup/obj",  of_DUP_OBJ, 0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%dup/real", of_DUP_REAL,0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%dup/vec4", of_DUP_VEC4,0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%end",    of_END,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%evctl",  of_EVCTL,  2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
-      { "%evctl/c",of_EVCTLC, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%evctl/i",of_EVCTLI, 2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
-      { "%evctl/s",of_EVCTLS, 2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
-      { "%event",    of_EVENT,    1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%event/nb", of_EVENT_NB, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%flag_get/vec4", of_FLAG_GET_VEC4, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%flag_inv",      of_FLAG_INV,      1, {OA_BIT1,   OA_NONE, OA_NONE} },
-      { "%flag_mov",      of_FLAG_MOV,      2, {OA_BIT1,   OA_BIT2, OA_NONE} },
-      { "%flag_or",       of_FLAG_OR,       2, {OA_BIT1,   OA_BIT2, OA_NONE} },
-      { "%flag_set/imm",  of_FLAG_SET_IMM,  2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%flag_set/vec4", of_FLAG_SET_VEC4, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%force/link",    of_FORCE_LINK,2,{OA_FUNC_PTR, OA_FUNC_PTR2, OA_NONE} },
-      { "%force/vec4",    of_FORCE_VEC4,    1,{OA_FUNC_PTR, OA_NONE,      OA_NONE} },
-      { "%force/vec4/off",of_FORCE_VEC4_OFF,2,{OA_FUNC_PTR, OA_BIT1,      OA_NONE} },
-      { "%force/vec4/off/d",of_FORCE_VEC4_OFF_D,3,{OA_FUNC_PTR, OA_BIT1,  OA_BIT2} },
-      { "%force/wr",      of_FORCE_WR,      1,{OA_FUNC_PTR, OA_NONE,      OA_NONE} },
-      { "%fork",   of_FORK,   2,  {OA_CODE_PTR2,OA_VPI_PTR,  OA_NONE} },
-      { "%free",   of_FREE,   1,  {OA_VPI_PTR,  OA_NONE,     OA_NONE} },
-      { "%inv",    of_INV,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%ix/add", of_IX_ADD, 3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%ix/getv",of_IX_GETV,2,  {OA_BIT1,     OA_FUNC_PTR, OA_NONE} },
-      { "%ix/getv/s",of_IX_GETV_S,2, {OA_BIT1,   OA_FUNC_PTR, OA_NONE} },
-      { "%ix/load",of_IX_LOAD,3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%ix/mov", of_IX_MOV, 2,  {OA_BIT1,     OA_BIT2,     OA_NONE} },
-      { "%ix/mul", of_IX_MUL, 3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%ix/sub", of_IX_SUB, 3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%ix/vec4",  of_IX_VEC4,  1,  {OA_NUMBER,   OA_NONE, OA_NONE} },
-      { "%ix/vec4/s",of_IX_VEC4_S,1,  {OA_NUMBER,   OA_NONE, OA_NONE} },
-      { "%jmp",    of_JMP,    1,  {OA_CODE_PTR, OA_NONE,     OA_NONE} },
-      { "%jmp/0",  of_JMP0,   2,  {OA_CODE_PTR, OA_BIT1,     OA_NONE} },
-      { "%jmp/0xz",of_JMP0XZ, 2,  {OA_CODE_PTR, OA_BIT1,     OA_NONE} },
-      { "%jmp/1",  of_JMP1,   2,  {OA_CODE_PTR, OA_BIT1,     OA_NONE} },
-      { "%jmp/1xz",of_JMP1XZ, 2,  {OA_CODE_PTR, OA_BIT1,     OA_NONE} },
-      { "%join",   of_JOIN,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%join/detach",of_JOIN_DETACH,1,{OA_NUMBER,OA_NONE,  OA_NONE} },
-      { "%load/ar",of_LOAD_AR,2,  {OA_ARR_PTR,  OA_BIT1,     OA_NONE} },
-      { "%load/dar/r",  of_LOAD_DAR_R,    1, {OA_FUNC_PTR, OA_NONE, OA_NONE}},
-      { "%load/dar/str",of_LOAD_DAR_STR,  1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%load/dar/vec4",of_LOAD_DAR_VEC4,1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%load/obj",   of_LOAD_OBJ,  1,{OA_FUNC_PTR,OA_NONE, OA_NONE} },
-      { "%load/obja",  of_LOAD_OBJA, 2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%load/prop/dar/vec4", of_LOAD_PROP_DAR_VEC4, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%load/real",  of_LOAD_REAL, 1,{OA_VPI_PTR, OA_NONE, OA_NONE} },
-      { "%load/str",   of_LOAD_STR,  1,{OA_FUNC_PTR,OA_NONE, OA_NONE} },
-      { "%load/stra",  of_LOAD_STRA, 2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%load/vec4",  of_LOAD_VEC4, 1,{OA_FUNC_PTR,OA_NONE,  OA_NONE} },
-      { "%load/vec4a", of_LOAD_VEC4A,2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%max/wr", of_MAX_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%min/wr", of_MIN_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%mod",    of_MOD,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%mod/s",  of_MOD_S,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%mod/wr", of_MOD_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%mul",    of_MUL,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%mul/wr", of_MUL_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%muli",   of_MULI,   3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%nand",   of_NAND,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%nand/r", of_NANDR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%neg/wr", of_NEG_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%new/cobj",  of_NEW_COBJ,  1, {OA_VPI_PTR,OA_NONE,  OA_NONE} },
-      { "%new/darray",of_NEW_DARRAY,2, {OA_BIT1,   OA_STRING,OA_NONE} },
-      { "%noop",   of_NOOP,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%nor",    of_NOR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%nor/r",  of_NORR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%null",   of_NULL,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%or",     of_OR,     0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%or/r",   of_ORR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%pad/s",  of_PAD_S,  1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%pad/u",  of_PAD_U,  1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%part/s", of_PART_S, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%part/u", of_PART_U, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%parti/s",of_PARTI_S,3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%parti/u",of_PARTI_U,3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%pop/obj", of_POP_OBJ, 2, {OA_BIT1,    OA_BIT2,     OA_NONE} },
-      { "%pop/real",of_POP_REAL,1, {OA_NUMBER,  OA_NONE,     OA_NONE} },
-      { "%pop/str", of_POP_STR, 1, {OA_NUMBER,  OA_NONE,     OA_NONE} },
-      { "%pop/vec4",of_POP_VEC4,1, {OA_NUMBER,  OA_NONE,     OA_NONE} },
-      { "%pow",     of_POW,     0,  {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%pow/s",   of_POW_S,   0,  {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%pow/wr",  of_POW_WR,  0,  {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%prop/obj",of_PROP_OBJ,2,  {OA_NUMBER,   OA_BIT1,     OA_NONE} },
-      { "%prop/queue/size", of_PROP_QUEUE_SIZE,  1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%prop/r",  of_PROP_R,  1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%prop/str",of_PROP_STR,1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%prop/v",  of_PROP_V,  1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%push/ix/vec4", of_PUSH_IX_VEC4, 3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%pushi/real",of_PUSHI_REAL,2,{OA_BIT1,   OA_BIT2,   OA_NONE} },
-      { "%pushi/str", of_PUSHI_STR, 1,{OA_STRING, OA_NONE,   OA_NONE} },
-      { "%pushi/vec4",of_PUSHI_VEC4,3,{OA_BIT1,   OA_BIT2,   OA_NUMBER} },
-      { "%pushv/str", of_PUSHV_STR, 0,{OA_NONE,   OA_NONE,   OA_NONE} },
-      { "%putc/str/vec4",of_PUTC_STR_VEC4,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qinsert/prop/r",   of_QINSERT_PROP_R,   2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%qinsert/prop/str", of_QINSERT_PROP_STR, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%qinsert/prop/v",   of_QINSERT_PROP_V,   3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%qinsert/real",of_QINSERT_REAL,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qinsert/str", of_QINSERT_STR, 2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qinsert/v",   of_QINSERT_V,   3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
-      { "%qpop/b/real",of_QPOP_B_REAL,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
-      { "%qpop/b/str", of_QPOP_B_STR, 1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
-      { "%qpop/b/v",   of_QPOP_B_V,   2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qpop/f/real",of_QPOP_F_REAL,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
-      { "%qpop/f/str", of_QPOP_F_STR, 1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
-      { "%qpop/f/v",   of_QPOP_F_V,   2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qpop/prop/b/r",   of_QPOP_PROP_B_REAL, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%qpop/prop/b/str", of_QPOP_PROP_B_STR, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%qpop/prop/b/v",   of_QPOP_PROP_B_V,    2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%qpop/prop/f/r",   of_QPOP_PROP_F_REAL, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%qpop/prop/f/str", of_QPOP_PROP_F_STR, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%qpop/prop/f/v",   of_QPOP_PROP_F_V,    2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/append_word/v", of_QUEUE_APPEND_WORD_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/find/index/prop/v", of_QUEUE_FIND_INDEX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find/index/v", of_QUEUE_FIND_INDEX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find/prop/v", of_QUEUE_FIND_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find/v", of_QUEUE_FIND_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find_first/index/prop/v", of_QUEUE_FIND_FIRST_INDEX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find_first/index/v", of_QUEUE_FIND_FIRST_INDEX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find_first/prop/v", of_QUEUE_FIND_FIRST_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find_first/v", of_QUEUE_FIND_FIRST_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find_last/index/prop/v", of_QUEUE_FIND_LAST_INDEX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find_last/index/v", of_QUEUE_FIND_LAST_INDEX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find_last/prop/v", of_QUEUE_FIND_LAST_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find_last/v", of_QUEUE_FIND_LAST_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/max/obj/v", of_QUEUE_MAX_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/max/prop/v", of_QUEUE_MAX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/max/v", of_QUEUE_MAX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/min/obj/v", of_QUEUE_MIN_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/min/prop/v", of_QUEUE_MIN_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/min/v", of_QUEUE_MIN_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/new_empty/v", of_QUEUE_NEW_EMPTY_V, 0, {OA_NONE, OA_NONE, OA_NONE} },
-      { "%queue/size/v", of_QUEUE_SIZE_V, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%queue/unique/index/obj/v", of_QUEUE_UNIQUE_INDEX_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/unique/index/prop/v", of_QUEUE_UNIQUE_INDEX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/unique/index/v", of_QUEUE_UNIQUE_INDEX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/unique/obj/v", of_QUEUE_UNIQUE_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/unique/prop/v", of_QUEUE_UNIQUE_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/unique/v", of_QUEUE_UNIQUE_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/word/prop/v", of_QUEUE_WORD_PROP_V, 3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%queue/word/v", of_QUEUE_WORD_V, 3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
-      { "%release/net",of_RELEASE_NET,3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
-      { "%release/reg",of_RELEASE_REG,3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
-      { "%release/wr", of_RELEASE_WR, 2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%replicate", of_REPLICATE,   1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%ret/real",  of_RET_REAL,    1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%ret/str",   of_RET_STR,     1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%ret/vec4",  of_RET_VEC4,    3,{OA_NUMBER,  OA_BIT1,OA_BIT2} },
-      { "%retload/real",of_RETLOAD_REAL,1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%retload/str", of_RETLOAD_STR, 1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%retload/vec4",of_RETLOAD_VEC4,1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%reverse/obj", of_REVERSE_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%reverse/prop/obj", of_REVERSE_PROP_OBJ, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%rsort/obj", of_RSORT_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%rsort/prop/obj", of_RSORT_PROP_OBJ, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%scopy",  of_SCOPY,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%set/dar/obj/real",of_SET_DAR_OBJ_REAL,1,{OA_NUMBER,OA_NONE,OA_NONE} },
-      { "%set/dar/obj/str", of_SET_DAR_OBJ_STR, 1,{OA_NUMBER,OA_NONE,OA_NONE} },
-      { "%set/dar/obj/vec4",of_SET_DAR_OBJ_VEC4,1,{OA_NUMBER,OA_NONE,OA_NONE} },
-      { "%shiftl",   of_SHIFTL,   1, {OA_NUMBER, OA_NONE,   OA_NONE} },
-      { "%shiftr",   of_SHIFTR,   1, {OA_NUMBER, OA_NONE,   OA_NONE} },
-      { "%shiftr/s", of_SHIFTR_S, 1, {OA_NUMBER, OA_NONE,   OA_NONE} },
-      { "%shuffle/obj", of_SHUFFLE_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%shuffle/prop/obj", of_SHUFFLE_PROP_OBJ, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%sort/obj", of_SORT_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%sort/prop/obj", of_SORT_PROP_OBJ, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%split/vec4",    of_SPLIT_VEC4,    1,{OA_NUMBER,   OA_NONE, OA_NONE} },
-      { "%store/dar/r",   of_STORE_DAR_R,   1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%store/dar/str", of_STORE_DAR_STR, 1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%store/dar/vec4",of_STORE_DAR_VEC4,1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%store/obj",   of_STORE_OBJ,   1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
-      { "%store/obja",  of_STORE_OBJA,  2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%store/prop/obj",of_STORE_PROP_OBJ,2, {OA_NUMBER,  OA_BIT1, OA_NONE} },
-      { "%store/prop/qb/r",   of_STORE_PROP_QB_R,   2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%store/prop/qb/str", of_STORE_PROP_QB_STR, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%store/prop/qb/v",   of_STORE_PROP_QB_V,   3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%store/prop/qf/r",   of_STORE_PROP_QF_R,   2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%store/prop/qf/str", of_STORE_PROP_QF_STR, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%store/prop/qf/v",   of_STORE_PROP_QF_V,   3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%store/prop/r",  of_STORE_PROP_R,  1, {OA_NUMBER,  OA_NONE, OA_NONE} },
-      { "%store/prop/str",of_STORE_PROP_STR,1, {OA_NUMBER,  OA_NONE, OA_NONE} },
-      { "%store/prop/v",  of_STORE_PROP_V,  2, {OA_NUMBER,  OA_BIT1, OA_NONE} },
-      { "%store/qb/r",   of_STORE_QB_R,    2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qb/str", of_STORE_QB_STR,  2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qb/v",   of_STORE_QB_V,    3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
-      { "%store/qdar/r",  of_STORE_QDAR_R,  2,{OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qdar/str",of_STORE_QDAR_STR,2,{OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qdar/v",  of_STORE_QDAR_V,  3,{OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
-      { "%store/qf/r",   of_STORE_QF_R,    2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qf/str", of_STORE_QF_STR,  2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qf/v",   of_STORE_QF_V,    3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
-      { "%store/qobj/r",  of_STORE_QOBJ_R,  2, {OA_FUNC_PTR,OA_BIT1, OA_NONE} },
-      { "%store/qobj/str",of_STORE_QOBJ_STR,2, {OA_FUNC_PTR,OA_BIT1, OA_NONE} },
-      { "%store/qobj/v",  of_STORE_QOBJ_V,  3, {OA_FUNC_PTR,OA_BIT1, OA_BIT2} },
-      { "%store/real",    of_STORE_REAL,    1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
-      { "%store/reala",   of_STORE_REALA,   2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%store/str",     of_STORE_STR,     1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
-      { "%store/stra",    of_STORE_STRA,    2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%store/vec4",    of_STORE_VEC4,    3, {OA_FUNC_PTR,OA_BIT1, OA_BIT2} },
-      { "%store/vec4a",   of_STORE_VEC4A,   3, {OA_ARR_PTR, OA_BIT1, OA_BIT2} },
-      { "%sub",    of_SUB,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%sub/wr", of_SUB_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%subi",   of_SUBI,   3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%substr",     of_SUBSTR,     2,{OA_BIT1,    OA_BIT2, OA_NONE} },
-      { "%substr/vec4",of_SUBSTR_VEC4,2,{OA_BIT1,    OA_BIT2, OA_NONE} },
-      { "%test_nul",     of_TEST_NUL,     1,{OA_FUNC_PTR,OA_NONE,    OA_NONE} },
-      { "%test_nul/a",   of_TEST_NUL_A,   2,{OA_ARR_PTR, OA_BIT1,    OA_NONE} },
-      { "%test_nul/obj", of_TEST_NUL_OBJ, 0,{OA_NONE,    OA_NONE,    OA_NONE} },
-      { "%test_nul/prop",of_TEST_NUL_PROP,2,{OA_NUMBER,  OA_BIT1,    OA_NONE} },
-      { "%uparr/and/v",          of_UPARR_AND_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%uparr/or/v",           of_UPARR_OR_V,           2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%uparr/product/obj/v",  of_UPARR_PRODUCT_OBJ_V,  1, {OA_BIT1,     OA_NONE, OA_NONE} },
-      { "%uparr/product/prop/v", of_UPARR_PRODUCT_PROP_V, 2, {OA_NUMBER,   OA_BIT1, OA_NONE} },
-      { "%uparr/product/r",      of_UPARR_PRODUCT_REAL,   1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%uparr/product/v",      of_UPARR_PRODUCT_V,      2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%uparr/sum/obj/v",      of_UPARR_SUM_OBJ_V,      1, {OA_BIT1,     OA_NONE, OA_NONE} },
-      { "%uparr/sum/prop/v",     of_UPARR_SUM_PROP_V,     2, {OA_NUMBER,   OA_BIT1, OA_NONE} },
-      { "%uparr/sum/r",          of_UPARR_SUM_REAL,       1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%uparr/sum/v",          of_UPARR_SUM_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%uparr/xor/v",          of_UPARR_XOR_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%wait",   of_WAIT,   1,  {OA_FUNC_PTR, OA_NONE,     OA_NONE} },
-      { "%wait/fork",of_WAIT_FORK,0,{OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%xnor",   of_XNOR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%xnor/r", of_XNORR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%xor",    of_XOR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%xor/r",  of_XORR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { 0, of_NOOP, 0, {OA_NONE, OA_NONE, OA_NONE} }
+ساكن ثابت بنية opcode_جدول_s opcode_جدول[] = {
+      { "%abs/wr", جو_ABS_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%add",    جو_جوڙيو,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%add/wr", جو_جوڙيو_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%addi",   جو_ADDI,   3,  {OA_BIT1,     OA_BIT2,     OA_عدد} },
+      { "%alloc",  جو_ALLOC,  1,  {OA_VPI_PTR,  OA_NONE,     OA_NONE} },
+      { "%and",    جو_AND,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%and/r",  جو_ANDR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%assign/ar",جو_سونپيو_AR,2,{OA_ARR_PTR,OA_BIT1,     OA_NONE} },
+      { "%assign/ar/d",جو_سونپيو_ARD,2,{OA_ARR_PTR,OA_BIT1,  OA_NONE} },
+      { "%assign/ar/e",جو_سونپيو_ARE,1,{OA_ARR_PTR,OA_NONE,  OA_NONE} },
+      { "%assign/vec4",      جو_سونپيو_VEC4,       2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%assign/vec4/a/d",  جو_سونپيو_VEC4_A_D,   3, {OA_ARR_PTR,  OA_BIT1, OA_BIT2} },
+      { "%assign/vec4/a/e",  جو_سونپيو_VEC4_A_E,   2, {OA_ARR_PTR,  OA_BIT1, OA_NONE} },
+      { "%assign/vec4/d",    جو_سونپيو_VEC4_D,      2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%assign/vec4/e",    جو_سونپيو_VEC4_E,      1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%assign/vec4/off/d",جو_سونپيو_VEC4_OFF_D, 3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
+      { "%assign/vec4/off/e",جو_سونپيو_VEC4_OFF_E, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%assign/wr",  جو_سونپيو_WR, 2,{OA_VPI_PTR, OA_BIT1, OA_NONE} },
+      { "%assign/wr/d",جو_سونپيو_WRD,2,{OA_VPI_PTR, OA_BIT1, OA_NONE} },
+      { "%assign/wr/e",جو_سونپيو_WRE,1,{OA_VPI_PTR, OA_NONE, OA_NONE} },
+      { "%blend",     جو_BLEND,     0, {OA_NONE, OA_NONE, OA_NONE} },
+      { "%blend/str", جو_BLEND_STR, 0, {OA_NONE, OA_NONE, OA_NONE} },
+      { "%blend/wr",  جو_BLEND_WR,  0, {OA_NONE, OA_NONE, OA_NONE} },
+      { "%breakpoint", جو_BREAKPOINT, 0,  {OA_NONE, OA_NONE, OA_NONE} },
+      { "%callf/obj",       جو_CALLF_OBJ,       2,{OA_ڪوڊ_PTR2,OA_VPI_PTR, OA_NONE} },
+      { "%callf/real",      جو_CALLF_REAL,      2,{OA_ڪوڊ_PTR2,OA_VPI_PTR, OA_NONE} },
+      { "%callf/str",       جو_CALLF_STR,       2,{OA_ڪوڊ_PTR2,OA_VPI_PTR, OA_NONE} },
+      { "%callf/vec4",      جو_CALLF_VEC4,      2,{OA_ڪوڊ_PTR2,OA_VPI_PTR, OA_NONE} },
+      { "%callf/void",      جو_CALLF_VOID,      2,{OA_ڪوڊ_PTR2,OA_VPI_PTR, OA_NONE} },
+      { "%cassign/link",    جو_CASSIGN_LINK,    2,{OA_FUNC_PTR,OA_FUNC_PTR2,OA_NONE} },
+      { "%cassign/vec4",    جو_CASSIGN_VEC4,    1,{OA_FUNC_PTR,OA_NONE,     OA_NONE} },
+      { "%cassign/vec4/off",جو_CASSIGN_VEC4_OFF,2,{OA_FUNC_PTR,OA_BIT1,     OA_NONE} },
+      { "%cassign/wr",  جو_CASSIGN_WR,  1,{OA_FUNC_PTR,OA_NONE,     OA_NONE} },
+      { "%cast/vec2/dar", جو_CAST_VEC2_DAR, 1,  {OA_عدد,   OA_NONE,     OA_NONE} },
+      { "%cast/vec4/dar", جو_CAST_VEC4_DAR, 1,  {OA_عدد,   OA_NONE,     OA_NONE} },
+      { "%cast/vec4/str", جو_CAST_VEC4_STR, 1,  {OA_عدد,   OA_NONE,     OA_NONE} },
+      { "%cast2",   جو_CAST2,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/e",   جو_CMPE,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/ne",  جو_CMPNE,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/s",   جو_CMPS,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/str", جو_CMPSTR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/u",   جو_CMPU,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/we",  جو_CMPWE,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/wne", جو_CMPWNE, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/wr",  جو_CMPWR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/x",   جو_CMPX,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/z",   جو_CMPZ,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmpi/e",  جو_CMPIE,  3,  {OA_BIT1,     OA_BIT2,     OA_عدد} },
+      { "%cmpi/ne", جو_CMPINE, 3,  {OA_BIT1,     OA_BIT2,     OA_عدد} },
+      { "%cmpi/s",  جو_CMPIS,  3,  {OA_BIT1,     OA_BIT2,     OA_عدد} },
+      { "%cmpi/u",  جو_CMPIU,  3,  {OA_BIT1,     OA_BIT2,     OA_عدد} },
+      { "%cmpix/ltu", جو_CMPIX_LTU, 2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%cmpix/slt0", جو_CMPIX_SLT0, 1, {OA_عدد, OA_NONE, OA_NONE} },
+      { "%concat/str",  جو_CONCAT_STR,  0,{OA_NONE,  OA_NONE,  OA_NONE} },
+      { "%concat/vec4", جو_CONCAT_VEC4, 0,{OA_NONE,  OA_NONE,  OA_NONE} },
+      { "%concati/str", جو_CONCATI_STR, 1,{OA_STRING,OA_NONE,  OA_NONE} },
+      { "%concati/vec4",جو_CONCATI_VEC4,3,{OA_BIT1,  OA_BIT2,  OA_عدد} },
+      { "%cvt/rv",   جو_CVT_RV,  0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%cvt/rv/s", جو_CVT_RV_S,0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%cvt/sr", جو_CVT_SR, 1,  {OA_BIT1,     OA_NONE,     OA_NONE} },
+      { "%cvt/ur", جو_CVT_UR, 1,  {OA_BIT1,     OA_NONE,     OA_NONE} },
+      { "%cvt/vr", جو_CVT_VR, 1,  {OA_عدد,   OA_NONE,     OA_NONE} },
+      { "%deassign",جو_DEASSIGN,3,{OA_FUNC_PTR, OA_BIT1,     OA_BIT2} },
+      { "%deassign/wr",جو_DEASSIGN_WR,1,{OA_FUNC_PTR, OA_NONE,     OA_NONE} },
+      { "%debug/thr",  جو_DEBUG_THR,  1,{OA_STRING,   OA_NONE,     OA_NONE} },
+      { "%delay",  جو_DELAY,  2,  {OA_BIT1,     OA_BIT2,     OA_NONE} },
+      { "%delayx", جو_DELAYX, 1,  {OA_عدد,   OA_NONE,     OA_NONE} },
+      { "%delete/elem",جو_DELETE_ELEM,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
+      { "%delete/obj",جو_DELETE_OBJ,1,{OA_FUNC_PTR,OA_NONE,  OA_NONE} },
+      { "%delete/prop/elem", جو_DELETE_PROP_ELEM, 1, {OA_عدد, OA_NONE, OA_NONE} },
+      { "%delete/prop/obj",  جو_DELETE_PROP_OBJ,  1, {OA_عدد, OA_NONE, OA_NONE} },
+      { "%delete/tail",جو_DELETE_پڇ,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%disable",  جو_DISABLE, 1, {OA_VPI_PTR,OA_NONE,     OA_NONE} },
+      { "%disable/flow", جو_DISABLE_FLOW, 1, {OA_VPI_PTR,OA_NONE, OA_NONE} },
+      { "%disable/fork",جو_DISABLE_FORK,0,{OA_NONE,OA_NONE,  OA_NONE} },
+      { "%div",      جو_DIV,     0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%div/s",    جو_DIV_S,   0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%div/wr",   جو_DIV_WR,  0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%dup/obj",  جو_DUP_OBJ, 0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%dup/real", جو_DUP_REAL,0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%dup/vec4", جو_DUP_VEC4,0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%end",    جو_پڇاڙي,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%evctl",  جو_EVCTL,  2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
+      { "%evctl/c",جو_EVCTLC, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%evctl/i",جو_EVCTLI, 2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
+      { "%evctl/s",جو_EVCTLS, 2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
+      { "%event",    جو_EVENT,    1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%event/nb", جو_EVENT_NB, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%flag_get/vec4", جو_FLAG_GET_VEC4, 1, {OA_عدد, OA_NONE, OA_NONE} },
+      { "%flag_inv",      جو_FLAG_INV,      1, {OA_BIT1,   OA_NONE, OA_NONE} },
+      { "%flag_mov",      جو_FLAG_MOV,      2, {OA_BIT1,   OA_BIT2, OA_NONE} },
+      { "%flag_or",       جو_FLAG_OR,       2, {OA_BIT1,   OA_BIT2, OA_NONE} },
+      { "%flag_set/imm",  جو_FLAG_سيٽ_IMM,  2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%flag_set/vec4", جو_FLAG_سيٽ_VEC4, 1, {OA_عدد, OA_NONE, OA_NONE} },
+      { "%force/link",    جو_FORCE_LINK,2,{OA_FUNC_PTR, OA_FUNC_PTR2, OA_NONE} },
+      { "%force/vec4",    جو_FORCE_VEC4,    1,{OA_FUNC_PTR, OA_NONE,      OA_NONE} },
+      { "%force/vec4/off",جو_FORCE_VEC4_OFF,2,{OA_FUNC_PTR, OA_BIT1,      OA_NONE} },
+      { "%force/vec4/off/d",جو_FORCE_VEC4_OFF_D,3,{OA_FUNC_PTR, OA_BIT1,  OA_BIT2} },
+      { "%force/wr",      جو_FORCE_WR,      1,{OA_FUNC_PTR, OA_NONE,      OA_NONE} },
+      { "%fork",   جو_FORK,   2,  {OA_ڪوڊ_PTR2,OA_VPI_PTR,  OA_NONE} },
+      { "%free",   جو_FREE,   1,  {OA_VPI_PTR,  OA_NONE,     OA_NONE} },
+      { "%inv",    جو_INV,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%ix/add", جو_IX_جوڙيو, 3,  {OA_عدد,   OA_BIT1,     OA_BIT2} },
+      { "%ix/getv",جو_IX_GETV,2,  {OA_BIT1,     OA_FUNC_PTR, OA_NONE} },
+      { "%ix/getv/s",جو_IX_GETV_S,2, {OA_BIT1,   OA_FUNC_PTR, OA_NONE} },
+      { "%ix/load",جو_IX_ڀريو,3,  {OA_عدد,   OA_BIT1,     OA_BIT2} },
+      { "%ix/mov", جو_IX_MOV, 2,  {OA_BIT1,     OA_BIT2,     OA_NONE} },
+      { "%ix/mul", جو_IX_MUL, 3,  {OA_عدد,   OA_BIT1,     OA_BIT2} },
+      { "%ix/sub", جو_IX_SUB, 3,  {OA_عدد,   OA_BIT1,     OA_BIT2} },
+      { "%ix/vec4",  جو_IX_VEC4,  1,  {OA_عدد,   OA_NONE, OA_NONE} },
+      { "%ix/vec4/s",جو_IX_VEC4_S,1,  {OA_عدد,   OA_NONE, OA_NONE} },
+      { "%jmp",    جو_JMP,    1,  {OA_ڪوڊ_PTR, OA_NONE,     OA_NONE} },
+      { "%jmp/0",  جو_JMP0,   2,  {OA_ڪوڊ_PTR, OA_BIT1,     OA_NONE} },
+      { "%jmp/0xz",جو_JMP0_XZ, 2,  {OA_ڪوڊ_PTR, OA_BIT1,     OA_NONE} },
+      { "%jmp/1",  جو_JMP1,   2,  {OA_ڪوڊ_PTR, OA_BIT1,     OA_NONE} },
+      { "%jmp/1xz",جو_JMP1_XZ, 2,  {OA_ڪوڊ_PTR, OA_BIT1,     OA_NONE} },
+      { "%join",   جو_JOIN,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%join/detach",جو_JOIN_DETACH,1,{OA_عدد,OA_NONE,  OA_NONE} },
+      { "%load/ar",جو_ڀريو_AR,2,  {OA_ARR_PTR,  OA_BIT1,     OA_NONE} },
+      { "%load/dar/r",  جو_ڀريو_DAR_R,    1, {OA_FUNC_PTR, OA_NONE, OA_NONE}},
+      { "%load/dar/str",جو_ڀريو_DAR_STR,  1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%load/dar/vec4",جو_ڀريو_DAR_VEC4,1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%load/obj",   جو_ڀريو_OBJ,  1,{OA_FUNC_PTR,OA_NONE, OA_NONE} },
+      { "%load/obja",  جو_ڀريو_OBJA, 2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%load/prop/dar/vec4", جو_ڀريو_PROP_DAR_VEC4, 2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%load/real",  جو_ڀريو_REAL, 1,{OA_VPI_PTR, OA_NONE, OA_NONE} },
+      { "%load/str",   جو_ڀريو_STR,  1,{OA_FUNC_PTR,OA_NONE, OA_NONE} },
+      { "%load/stra",  جو_ڀريو_STRA, 2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%load/vec4",  جو_ڀريو_VEC4, 1,{OA_FUNC_PTR,OA_NONE,  OA_NONE} },
+      { "%load/vec4a", جو_ڀريو_VEC4_A,2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%max/wr", جو_MAX_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%min/wr", جو_MIN_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%mod",    جو_MOD,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%mod/s",  جو_MOD_S,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%mod/wr", جو_MOD_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%mul",    جو_MUL,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%mul/wr", جو_MUL_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%muli",   جو_MULI,   3,  {OA_BIT1,     OA_BIT2,     OA_عدد} },
+      { "%nand",   جو_NAND,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%nand/r", جو_NANDR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%neg/wr", جو_NEG_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%new/cobj",  جو_NEW_COBJ,  1, {OA_VPI_PTR,OA_NONE,  OA_NONE} },
+      { "%new/darray",جو_NEW_DARRAY,2, {OA_BIT1,   OA_STRING,OA_NONE} },
+      { "%noop",   جو_NOOP,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%nor",    جو_NOR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%nor/r",  جو_NORR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%null",   جو_NULL,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%or",     جو_OR,     0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%or/r",   جو_ORR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%pad/s",  جو_PAD_S,  1,  {OA_عدد,   OA_NONE,     OA_NONE} },
+      { "%pad/u",  جو_PAD_U,  1,  {OA_عدد,   OA_NONE,     OA_NONE} },
+      { "%part/s", جو_PART_S, 1,  {OA_عدد,   OA_NONE,     OA_NONE} },
+      { "%part/u", جو_PART_U, 1,  {OA_عدد,   OA_NONE,     OA_NONE} },
+      { "%parti/s",جو_PARTI_S,3,  {OA_عدد,   OA_BIT1,     OA_BIT2} },
+      { "%parti/u",جو_PARTI_U,3,  {OA_عدد,   OA_BIT1,     OA_BIT2} },
+      { "%pop/obj", جو_ڪڍو_OBJ, 2, {OA_BIT1,    OA_BIT2,     OA_NONE} },
+      { "%pop/real",جو_ڪڍو_REAL,1, {OA_عدد,  OA_NONE,     OA_NONE} },
+      { "%pop/str", جو_ڪڍو_STR, 1, {OA_عدد,  OA_NONE,     OA_NONE} },
+      { "%pop/vec4",جو_ڪڍو_VEC4,1, {OA_عدد,  OA_NONE,     OA_NONE} },
+      { "%pow",     جو_POW,     0,  {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%pow/s",   جو_POW_S,   0,  {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%pow/wr",  جو_POW_WR,  0,  {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%prop/obj",جو_PROP_OBJ,2,  {OA_عدد,   OA_BIT1,     OA_NONE} },
+      { "%prop/queue/size", جو_PROP_قطار_سائيز,  1, {OA_عدد, OA_NONE, OA_NONE} },
+      { "%prop/r",  جو_PROP_R,  1,  {OA_عدد,   OA_NONE,     OA_NONE} },
+      { "%prop/str",جو_PROP_STR,1,  {OA_عدد,   OA_NONE,     OA_NONE} },
+      { "%prop/v",  جو_PROP_V,  1,  {OA_عدد,   OA_NONE,     OA_NONE} },
+      { "%push/ix/vec4", جو_ڌڪو_IX_VEC4, 3, {OA_عدد, OA_BIT1, OA_BIT2} },
+      { "%pushi/real",جو_PUSHI_REAL,2,{OA_BIT1,   OA_BIT2,   OA_NONE} },
+      { "%pushi/str", جو_PUSHI_STR, 1,{OA_STRING, OA_NONE,   OA_NONE} },
+      { "%pushi/vec4",جو_PUSHI_VEC4,3,{OA_BIT1,   OA_BIT2,   OA_عدد} },
+      { "%pushv/str", جو_PUSHV_STR, 0,{OA_NONE,   OA_NONE,   OA_NONE} },
+      { "%putc/str/vec4",جو_PUTC_STR_VEC4,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%qinsert/prop/r",   جو_QINSERT_PROP_R,   2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%qinsert/prop/str", جو_QINSERT_PROP_STR, 2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%qinsert/prop/v",   جو_QINSERT_PROP_V,   3, {OA_عدد, OA_BIT1, OA_BIT2} },
+      { "%qinsert/real",جو_QINSERT_REAL,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%qinsert/str", جو_QINSERT_STR, 2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%qinsert/v",   جو_QINSERT_V,   3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
+      { "%qpop/b/real",جو_QPOP_B_REAL,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
+      { "%qpop/b/str", جو_QPOP_B_STR, 1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
+      { "%qpop/b/v",   جو_QPOP_B_V,   2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%qpop/f/real",جو_QPOP_F_REAL,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
+      { "%qpop/f/str", جو_QPOP_F_STR, 1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
+      { "%qpop/f/v",   جو_QPOP_F_V,   2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%qpop/prop/b/r",   جو_QPOP_PROP_B_REAL, 1, {OA_عدد, OA_NONE, OA_NONE} },
+      { "%qpop/prop/b/str", جو_QPOP_PROP_B_STR, 1, {OA_عدد, OA_NONE, OA_NONE} },
+      { "%qpop/prop/b/v",   جو_QPOP_PROP_B_V,    2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%qpop/prop/f/r",   جو_QPOP_PROP_F_REAL, 1, {OA_عدد, OA_NONE, OA_NONE} },
+      { "%qpop/prop/f/str", جو_QPOP_PROP_F_STR, 1, {OA_عدد, OA_NONE, OA_NONE} },
+      { "%qpop/prop/f/v",   جو_QPOP_PROP_F_V,    2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%queue/append_word/v", جو_قطار_APPEND_لفظ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
+      { "%queue/find/index/prop/v", جو_قطار_ڳوليو_اشاريو_PROP_V, 2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%queue/find/index/v", جو_قطار_ڳوليو_اشاريو_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/find/prop/v", جو_قطار_ڳوليو_PROP_V, 2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%queue/find/v", جو_قطار_ڳوليو_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/find_first/index/prop/v", جو_قطار_ڳوليو_پهريون_اشاريو_PROP_V, 2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%queue/find_first/index/v", جو_قطار_ڳوليو_پهريون_اشاريو_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/find_first/prop/v", جو_قطار_ڳوليو_پهريون_PROP_V, 2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%queue/find_first/v", جو_قطار_ڳوليو_پهريون_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/find_last/index/prop/v", جو_قطار_ڳوليو_آخري_اشاريو_PROP_V, 2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%queue/find_last/index/v", جو_قطار_ڳوليو_آخري_اشاريو_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/find_last/prop/v", جو_قطار_ڳوليو_آخري_PROP_V, 2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%queue/find_last/v", جو_قطار_ڳوليو_آخري_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/max/obj/v", جو_قطار_MAX_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
+      { "%queue/max/prop/v", جو_قطار_MAX_PROP_V, 2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%queue/max/v", جو_قطار_MAX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/min/obj/v", جو_قطار_MIN_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
+      { "%queue/min/prop/v", جو_قطار_MIN_PROP_V, 2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%queue/min/v", جو_قطار_MIN_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/new_empty/v", جو_قطار_NEW_خالي_جايون_V, 0, {OA_NONE, OA_NONE, OA_NONE} },
+      { "%queue/size/v", جو_قطار_سائيز_V, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%queue/unique/index/obj/v", جو_قطار_UNIQUE_اشاريو_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
+      { "%queue/unique/index/prop/v", جو_قطار_UNIQUE_اشاريو_PROP_V, 2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%queue/unique/index/v", جو_قطار_UNIQUE_اشاريو_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/unique/obj/v", جو_قطار_UNIQUE_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
+      { "%queue/unique/prop/v", جو_قطار_UNIQUE_PROP_V, 2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%queue/unique/v", جو_قطار_UNIQUE_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/word/prop/v", جو_قطار_لفظ_PROP_V, 3, {OA_عدد, OA_BIT1, OA_BIT2} },
+      { "%queue/word/v", جو_قطار_لفظ_V, 3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
+      { "%release/net",جو_RELEASE_NET,3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
+      { "%release/reg",جو_RELEASE_REG,3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
+      { "%release/wr", جو_RELEASE_WR, 2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%replicate", جو_REPLICATE,   1,{OA_عدد,  OA_NONE,OA_NONE} },
+      { "%ret/real",  جو_RET_REAL,    1,{OA_عدد,  OA_NONE,OA_NONE} },
+      { "%ret/str",   جو_RET_STR,     1,{OA_عدد,  OA_NONE,OA_NONE} },
+      { "%ret/vec4",  جو_RET_VEC4,    3,{OA_عدد,  OA_BIT1,OA_BIT2} },
+      { "%retload/real",جو_RETLOAD_REAL,1,{OA_عدد,  OA_NONE,OA_NONE} },
+      { "%retload/str", جو_RETLOAD_STR, 1,{OA_عدد,  OA_NONE,OA_NONE} },
+      { "%retload/vec4",جو_RETLOAD_VEC4,1,{OA_عدد,  OA_NONE,OA_NONE} },
+      { "%reverse/obj", جو_ابتو_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%reverse/prop/obj", جو_ابتو_PROP_OBJ, 1, {OA_عدد, OA_NONE, OA_NONE} },
+      { "%rsort/obj", جو_RSORT_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%rsort/prop/obj", جو_RSORT_PROP_OBJ, 1, {OA_عدد, OA_NONE, OA_NONE} },
+      { "%scopy",  جو_SCOPY,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%set/dar/obj/real",جو_سيٽ_DAR_OBJ_REAL,1,{OA_عدد,OA_NONE,OA_NONE} },
+      { "%set/dar/obj/str", جو_سيٽ_DAR_OBJ_STR, 1,{OA_عدد,OA_NONE,OA_NONE} },
+      { "%set/dar/obj/vec4",جو_سيٽ_DAR_OBJ_VEC4,1,{OA_عدد,OA_NONE,OA_NONE} },
+      { "%shiftl",   جو_SHIFTL,   1, {OA_عدد, OA_NONE,   OA_NONE} },
+      { "%shiftr",   جو_SHIFTR,   1, {OA_عدد, OA_NONE,   OA_NONE} },
+      { "%shiftr/s", جو_SHIFTR_S, 1, {OA_عدد, OA_NONE,   OA_NONE} },
+      { "%shuffle/obj", جو_SHUFFLE_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%shuffle/prop/obj", جو_SHUFFLE_PROP_OBJ, 1, {OA_عدد, OA_NONE, OA_NONE} },
+      { "%sort/obj", جو_ترتيب_ڏيو_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%sort/prop/obj", جو_ترتيب_ڏيو_PROP_OBJ, 1, {OA_عدد, OA_NONE, OA_NONE} },
+      { "%split/vec4",    جو_ورهايو_VEC4,    1,{OA_عدد,   OA_NONE, OA_NONE} },
+      { "%store/dar/r",   جو_STORE_DAR_R,   1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%store/dar/str", جو_STORE_DAR_STR, 1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%store/dar/vec4",جو_STORE_DAR_VEC4,1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%store/obj",   جو_STORE_OBJ,   1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
+      { "%store/obja",  جو_STORE_OBJA,  2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%store/prop/obj",جو_STORE_PROP_OBJ,2, {OA_عدد,  OA_BIT1, OA_NONE} },
+      { "%store/prop/qb/r",   جو_STORE_PROP_QB_R,   2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%store/prop/qb/str", جو_STORE_PROP_QB_STR, 2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%store/prop/qb/v",   جو_STORE_PROP_QB_V,   3, {OA_عدد, OA_BIT1, OA_BIT2} },
+      { "%store/prop/qf/r",   جو_STORE_PROP_QF_R,   2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%store/prop/qf/str", جو_STORE_PROP_QF_STR, 2, {OA_عدد, OA_BIT1, OA_NONE} },
+      { "%store/prop/qf/v",   جو_STORE_PROP_QF_V,   3, {OA_عدد, OA_BIT1, OA_BIT2} },
+      { "%store/prop/r",  جو_STORE_PROP_R,  1, {OA_عدد,  OA_NONE, OA_NONE} },
+      { "%store/prop/str",جو_STORE_PROP_STR,1, {OA_عدد,  OA_NONE, OA_NONE} },
+      { "%store/prop/v",  جو_STORE_PROP_V,  2, {OA_عدد,  OA_BIT1, OA_NONE} },
+      { "%store/qb/r",   جو_STORE_QB_R,    2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qb/str", جو_STORE_QB_STR,  2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qb/v",   جو_STORE_QB_V,    3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
+      { "%store/qdar/r",  جو_STORE_QDAR_R,  2,{OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qdar/str",جو_STORE_QDAR_STR,2,{OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qdar/v",  جو_STORE_QDAR_V,  3,{OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
+      { "%store/qf/r",   جو_STORE_QF_R,    2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qf/str", جو_STORE_QF_STR,  2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qf/v",   جو_STORE_QF_V,    3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
+      { "%store/qobj/r",  جو_STORE_QOBJ_R,  2, {OA_FUNC_PTR,OA_BIT1, OA_NONE} },
+      { "%store/qobj/str",جو_STORE_QOBJ_STR,2, {OA_FUNC_PTR,OA_BIT1, OA_NONE} },
+      { "%store/qobj/v",  جو_STORE_QOBJ_V,  3, {OA_FUNC_PTR,OA_BIT1, OA_BIT2} },
+      { "%store/real",    جو_STORE_REAL,    1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
+      { "%store/reala",   جو_STORE_REALA,   2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%store/str",     جو_STORE_STR,     1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
+      { "%store/stra",    جو_STORE_STRA,    2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%store/vec4",    جو_STORE_VEC4,    3, {OA_FUNC_PTR,OA_BIT1, OA_BIT2} },
+      { "%store/vec4a",   جو_STORE_VEC4_A,   3, {OA_ARR_PTR, OA_BIT1, OA_BIT2} },
+      { "%sub",    جو_SUB,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%sub/wr", جو_SUB_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%subi",   جو_SUBI,   3,  {OA_BIT1,     OA_BIT2,     OA_عدد} },
+      { "%substr",     جو_SUBSTR,     2,{OA_BIT1,    OA_BIT2, OA_NONE} },
+      { "%substr/vec4",جو_SUBSTR_VEC4,2,{OA_BIT1,    OA_BIT2, OA_NONE} },
+      { "%test_nul",     جو_TEST_NUL,     1,{OA_FUNC_PTR,OA_NONE,    OA_NONE} },
+      { "%test_nul/a",   جو_TEST_NUL_A,   2,{OA_ARR_PTR, OA_BIT1,    OA_NONE} },
+      { "%test_nul/obj", جو_TEST_NUL_OBJ, 0,{OA_NONE,    OA_NONE,    OA_NONE} },
+      { "%test_nul/prop",جو_TEST_NUL_PROP,2,{OA_عدد,  OA_BIT1,    OA_NONE} },
+      { "%uparr/and/v",          جو_UPARR_AND_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%uparr/or/v",           جو_UPARR_OR_V,           2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%uparr/product/obj/v",  جو_UPARR_حاصل_ضرب_OBJ_V,  1, {OA_BIT1,     OA_NONE, OA_NONE} },
+      { "%uparr/product/prop/v", جو_UPARR_حاصل_ضرب_PROP_V, 2, {OA_عدد,   OA_BIT1, OA_NONE} },
+      { "%uparr/product/r",      جو_UPARR_حاصل_ضرب_REAL,   1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%uparr/product/v",      جو_UPARR_حاصل_ضرب_V,      2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%uparr/sum/obj/v",      جو_UPARR_جوڙ_OBJ_V,      1, {OA_BIT1,     OA_NONE, OA_NONE} },
+      { "%uparr/sum/prop/v",     جو_UPARR_جوڙ_PROP_V,     2, {OA_عدد,   OA_BIT1, OA_NONE} },
+      { "%uparr/sum/r",          جو_UPARR_جوڙ_REAL,       1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%uparr/sum/v",          جو_UPARR_جوڙ_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%uparr/xor/v",          جو_UPARR_XOR_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%wait",   جو_WAIT,   1,  {OA_FUNC_PTR, OA_NONE,     OA_NONE} },
+      { "%wait/fork",جو_WAIT_FORK,0,{OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%xnor",   جو_XNOR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%xnor/r", جو_XNORR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%xor",    جو_XOR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%xor/r",  جو_XORR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { 0, جو_NOOP, 0, {OA_NONE, OA_NONE, OA_NONE} }
 };
 
-static const unsigned opcode_count =
-                    sizeof(opcode_table)/sizeof(*opcode_table) - 1;
+ساكن ثابت بنانشان opcode_ڳڻپ =
+                    حجم(opcode_جدول)/حجم(*opcode_جدول) - 1;
 
-static int opcode_compare(const void*k, const void*r)
+ساكن صحيح opcode_compare(ثابت فراغ*k, ثابت فراغ*r)
 {
-      const char*kp = static_cast<const char*>(k);
-      const struct opcode_table_s*rp = static_cast<const struct opcode_table_s*>(r);
-      return strcmp(kp, rp->mnemonic);
+      ثابت حرف*kp = static_cast<ثابت حرف*>(k);
+      ثابت بنية opcode_جدول_s*rp = static_cast<ثابت بنية opcode_جدول_s*>(r);
+      أرجع strcmp(kp, rp->mnemonic);
 }
 
 /*
  * Keep a symbol table of addresses within code space. Labels on
  * executable opcodes are mapped to their address here.
  */
-static symbol_table_t sym_codespace = 0;
+ساكن نشان_جدول_t sym_codespace = 0;
 
 /*
  * Keep a symbol table of functors mentioned in the source. This table
  * is used to resolve references as they come.
  */
-static symbol_table_t sym_functors = 0;
+ساكن نشان_جدول_t sym_functors = 0;
 
 /*
  * VPI objects are indexed during compile time so that they can be
  * linked together as they are created. This symbol table matches
  * labels to vpiHandles.
  */
-static symbol_table_t sym_vpi = 0;
+ساكن نشان_جدول_t sym_vpi = 0;
 
 
 /*
@@ -444,96 +444,96 @@ static symbol_table_t sym_vpi = 0;
  *  Add a functor to the symbol table
  */
 
-void define_functor_symbol(const char*label, vvp_net_t*net)
+فراغ define_functor_نشان(ثابت حرف*label, vvp_net_t*net)
 {
-      symbol_value_t val;
+      نشان_قدر_t val;
       val.net = net;
-      sym_set_value(sym_functors, label, val);
+      sym_سيٽ_قدر(sym_functors, label, val);
 }
 
-static vvp_net_t*lookup_functor_symbol(const char*label)
+ساكن vvp_net_t*lookup_functor_نشان(ثابت حرف*label)
 {
-      assert(sym_functors);
-      symbol_value_t val = sym_get_value(sym_functors, label);
-      return val.net;
+      أكد(sym_functors);
+      نشان_قدر_t val = sym_get_قدر(sym_functors, label);
+      أرجع val.net;
 }
 
-vpiHandle vvp_lookup_handle(const char*label)
+vpiHandle vvp_lookup_handle(ثابت حرف*label)
 {
-      symbol_value_t val = sym_get_value(sym_vpi, label);
-      if (val.ptr) return (vpiHandle) val.ptr;
-      return 0;
+      نشان_قدر_t val = sym_get_قدر(sym_vpi, label);
+      إذا (val.ptr) أرجع (vpiHandle) val.ptr;
+      أرجع 0;
 }
 
-vvp_net_t* vvp_net_lookup(const char*label)
+vvp_net_t* vvp_net_lookup(ثابت حرف*label)
 {
-      static bool t0_trigger_generated = false;
+      ساكن منطقي t0_trigger_generated = خطأ;
 
         /* First, look to see if the symbol is a vpi object of some
 	   sort. If it is, then get the vvp_ipoint_t pointer out of
 	   the vpiHandle. */
-      symbol_value_t val = sym_get_value(sym_vpi, label);
-      if (val.ptr) {
+      نشان_قدر_t val = sym_get_قدر(sym_vpi, label);
+      إذا (val.ptr) {
 	    vpiHandle vpi = static_cast<vpiHandle>(val.ptr);
-	    switch (vpi->get_type_code()) {
-		case vpiNet:
-		case vpiReg:
-		case vpiBitVar:
-		case vpiByteVar:
-		case vpiShortIntVar:
-		case vpiIntVar:
-		case vpiLongIntVar:
-		case vpiIntegerVar: {
-		      const __vpiSignal*sig = dynamic_cast<__vpiSignal*>(vpi);
-		      return sig->node;
+	    بدل (vpi->get_type_ڪوڊ()) {
+		حالة vpiNet:
+		حالة vpiReg:
+		حالة vpi_ٻٽو_انگ_Var:
+		حالة vpiByteVar:
+		حالة vpiShortIntVar:
+		حالة vpiIntVar:
+		حالة vpiLongIntVar:
+		حالة vpiIntegerVar: {
+		      ثابت __vpiSignal*sig = dynamic_cast<__vpiSignal*>(vpi);
+		      أرجع sig->ڳنڍ;
 		}
 
-		case vpiRealVar: {
-		      const __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(vpi);
-		      return sig->net;
+		حالة vpiRealVar: {
+		      ثابت __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(vpi);
+		      أرجع sig->net;
 		}
 
-		case vpiStringVar:
-		case vpiArrayVar:
-		case vpiClassVar: {
-		      const __vpiBaseVar*sig = dynamic_cast<__vpiBaseVar*>(vpi);
-		      return sig->get_net();
+		حالة vpiStringVar:
+		حالة vpiArrayVar:
+		حالة vpiClassVar: {
+		      ثابت __vpiBaseVar*sig = dynamic_cast<__vpiBaseVar*>(vpi);
+		      أرجع sig->get_net();
 		}
 
-		case vpiNamedEvent: {
-		      const __vpiNamedEvent*tmp = dynamic_cast<__vpiNamedEvent*>(vpi);
-		      return tmp->funct;
+		حالة vpiNamedEvent: {
+		      ثابت __vpiNamedEvent*tmp = dynamic_cast<__vpiNamedEvent*>(vpi);
+		      أرجع tmp->funct;
 		}
 
-		default:
+		افتراضي:
 		  fprintf(stderr, "Unsupported type %d.\n",
-		          vpi->get_type_code());
-		  assert(0);
+		          vpi->get_type_ڪوڊ());
+		  أكد(0);
 	    }
       }
 
 
 	/* Failing that, look for a general functor. */
-      vvp_net_t*tmp = lookup_functor_symbol(label);
+      vvp_net_t*tmp = lookup_functor_نشان(label);
 
 	// This is a special label used to create a T0 trigger for the
 	// always_comb/latch processes.
-     if (! t0_trigger_generated && (strcmp(label, "E_0x0") == 0)) {
+     إذا (! t0_trigger_generated && (strcmp(label, "E_0x0") == 0)) {
 	      // This should never happen, but if it does then the E_0x0
 	      // event generation may need to be explicitly generated in
 	      // the compiler output instead of implicitly in this code.
-	    assert(! vpip_peek_current_scope()->is_automatic());
-	    t0_trigger_generated = true;
+	    أكد(! vpip_peek_current_scope()->is_automatic());
+	    t0_trigger_generated = سچ;
 	      // Create a local event with no name for the T0 trigger
-	    compile_named_event(strdup(label), strcpy(new char [1],""), true);
+	    compile_named_event(strdup(label), strcpy(جديد حرف [1],""), سچ);
 	    tmp = vvp_net_lookup(label);
-	    assert(tmp);
+	    أكد(tmp);
 	      // Create a trigger for the T0 event.
 	    vvp_net_ptr_t ptr (tmp, 0);
-	    schedule_t0_trigger(ptr);
+	    وقت_جدول_t0_trigger(ptr);
      }
 
-      return tmp;
+      أرجع tmp;
 }
 
 /*
@@ -554,21 +554,21 @@ vvp_net_t* vvp_net_lookup(const char*label)
  * this call is its last chance. If it cannot complete the operation,
  * it must print an error message and return false.
  */
-static resolv_list_s*resolv_list = 0;
+ساكن resolv_list_s*resolv_list = 0;
 
 resolv_list_s::~resolv_list_s()
 {
-      free(label_);
+      حرر(label_);
 }
 
-void resolv_submit(resolv_list_s*cur)
+فراغ resolv_submit(resolv_list_s*cur)
 {
-      if (cur->resolve()) {
-	    delete cur;
-	    return;
+      إذا (cur->resolve()) {
+	    ميٽيو cur;
+	    أرجع;
       }
 
-      cur->next = resolv_list;
+      cur->ايندڙ_2 = resolv_list;
       resolv_list = cur;
 }
 
@@ -579,35 +579,35 @@ void resolv_submit(resolv_list_s*cur)
  * input that I want that node to feed into. When the name is found,
  * put net->port[port] into the fan-out list for that node.
  */
-struct vvp_net_resolv_list_s: public resolv_list_s {
+بنية vvp_net_resolv_list_s: عام resolv_list_s {
 
-      explicit vvp_net_resolv_list_s(char*l) : resolv_list_s(l) { }
+      واضح vvp_net_resolv_list_s(حرف*l) : resolv_list_s(l) { }
 	// port to be driven by the located node.
-      vvp_net_ptr_t port;
-      virtual bool resolve(bool mes) override;
+      vvp_net_ptr_t پورٽ;
+      مجازي منطقي resolve(منطقي mes) override;
 };
 
-bool vvp_net_resolv_list_s::resolve(bool mes)
+منطقي vvp_net_resolv_list_s::resolve(منطقي mes)
 {
       vvp_net_t*tmp = vvp_net_lookup(label());
 
-      if (tmp) {
+      إذا (tmp) {
 	      // Link the input port to the located output.
-	    tmp->link(port);
-	    return true;
+	    tmp->link(پورٽ);
+	    أرجع سچ;
       }
 
-      if (mes)
+      إذا (mes)
 	    fprintf(stderr, "unresolved vvp_net reference: %s\n", label());
 
-      return false;
+      أرجع خطأ;
 }
 
-inline static
-void postpone_functor_input(vvp_net_ptr_t port, char*lab)
+مضمن ساكن
+فراغ postpone_functor_داخلا(vvp_net_ptr_t پورٽ, حرف*lab)
 {
-      struct vvp_net_resolv_list_s*res = new struct vvp_net_resolv_list_s(lab);
-      res->port   = port;
+      بنية vvp_net_resolv_list_s*res = جديد بنية vvp_net_resolv_list_s(lab);
+      res->پورٽ   = پورٽ;
 
       resolv_submit(res);
 }
@@ -617,33 +617,33 @@ void postpone_functor_input(vvp_net_ptr_t port, char*lab)
  *  Generic functor reference lookup.
  */
 
-struct functor_gen_resolv_list_s: public resolv_list_s {
-      explicit functor_gen_resolv_list_s(char*txt) : resolv_list_s(txt) {
+بنية functor_gen_resolv_list_s: عام resolv_list_s {
+      واضح functor_gen_resolv_list_s(حرف*txt) : resolv_list_s(txt) {
 	    ref = 0;
       }
       vvp_net_t**ref;
-      virtual bool resolve(bool mes) override;
+      مجازي منطقي resolve(منطقي mes) override;
 };
 
-bool functor_gen_resolv_list_s::resolve(bool mes)
+منطقي functor_gen_resolv_list_s::resolve(منطقي mes)
 {
       vvp_net_t*tmp = vvp_net_lookup(label());
 
-      if (tmp) {
+      إذا (tmp) {
 	    *ref = tmp;
-	    return true;
+	    أرجع سچ;
       }
 
-      if (mes)
+      إذا (mes)
 	    fprintf(stderr, "unresolved functor reference: %s\n", label());
 
-      return false;
+      أرجع خطأ;
 }
 
-void functor_ref_lookup(vvp_net_t**ref, char*lab)
+فراغ functor_ref_lookup(vvp_net_t**ref, حرف*lab)
 {
-      struct functor_gen_resolv_list_s*res =
-	    new struct functor_gen_resolv_list_s(lab);
+      بنية functor_gen_resolv_list_s*res =
+	    جديد بنية functor_gen_resolv_list_s(lab);
 
       res->ref    = ref;
 
@@ -654,102 +654,102 @@ void functor_ref_lookup(vvp_net_t**ref, char*lab)
  *  vpiHandle lookup
  */
 
-struct vpi_handle_resolv_list_s: public resolv_list_s {
-      explicit vpi_handle_resolv_list_s(char*lab) : resolv_list_s(lab) {
-	    handle = NULL;
+بنية vpi_handle_resolv_list_s: عام resolv_list_s {
+      واضح vpi_handle_resolv_list_s(حرف*lab) : resolv_list_s(lab) {
+	    handle = عدم;
       }
-      virtual bool resolve(bool mes) override;
+      مجازي منطقي resolve(منطقي mes) override;
       vpiHandle *handle;
 };
 
-bool vpi_handle_resolv_list_s::resolve(bool mes)
+منطقي vpi_handle_resolv_list_s::resolve(منطقي mes)
 {
-      symbol_value_t val = sym_get_value(sym_vpi, label());
-      if (!val.ptr) {
+      نشان_قدر_t val = sym_get_قدر(sym_vpi, label());
+      إذا (!val.ptr) {
 	    // check for thread access symbols
-	    unsigned base, wid;
+	    بنانشان بنياد, wid;
 	    size_t n = 0;
-	    char ss[32];
-	    if (2 == sscanf(label(), "W<%u,%31[r]>%zn", &base, ss, &n)
-		       && n == strlen(label())) {
+	    حرف ss[32];
+	    إذا (2 == لڙي_مان_پڙهو(label(), "W<%u,%31[r]>%zn", &بنياد, ss, &n)
+		       && n == لڙي_ڊيگهه(label())) {
 
-		  val.ptr = vpip_make_vthr_word(base, ss);
-		  sym_set_value(sym_vpi, label(), val);
+		  val.ptr = vpip_make_vthr_لفظ(بنياد, ss);
+		  sym_سيٽ_قدر(sym_vpi, label(), val);
 
-	    } else if (1 == sscanf(label(), "S<%u,str>%zn", &base, &n)
-		       && n == strlen(label())) {
+	    } وإلا إذا (1 == لڙي_مان_پڙهو(label(), "S<%u,str>%zn", &بنياد, &n)
+		       && n == لڙي_ڊيگهه(label())) {
 
-		  val.ptr = vpip_make_vthr_str_stack(base);
-		  sym_set_value(sym_vpi, label(), val);
+		  val.ptr = vpip_make_vthr_str_ڍير(بنياد);
+		  sym_سيٽ_قدر(sym_vpi, label(), val);
 
-	    } else if (3 == sscanf(label(), "S<%u,vec4,%31[su]%u>%zn", &base, ss, &wid, &n)
-		       && n == strlen(label())) {
+	    } وإلا إذا (3 == لڙي_مان_پڙهو(label(), "S<%u,vec4,%31[su]%u>%zn", &بنياد, ss, &wid, &n)
+		       && n == لڙي_ڊيگهه(label())) {
 
-		  bool signed_flag = false;
-		  for (char*fp = ss ;  *fp ;  fp += 1) switch (*fp) {
-		      case 's':
-			signed_flag = true;
-			break;
-		      case 'u':
-			signed_flag = false;
-			break;
-		      default:
-			break;
+		  منطقي signed_flag = خطأ;
+		  لكل (حرف*fp = ss ;  *fp ;  fp += 1) بدل (*fp) {
+		      حالة 's':
+			signed_flag = سچ;
+			اكسر;
+		      حالة 'u':
+			signed_flag = خطأ;
+			اكسر;
+		      افتراضي:
+			اكسر;
 		  }
-		  val.ptr = vpip_make_vthr_vec4_stack(base, signed_flag, wid);
-		  sym_set_value(sym_vpi, label(), val);
+		  val.ptr = vpip_make_vthr_vec4_ڍير(بنياد, signed_flag, wid);
+		  sym_سيٽ_قدر(sym_vpi, label(), val);
 	    }
 
       }
 
-      if (!val.ptr) {
+      إذا (!val.ptr) {
 	    // check for memory word  M<mem,base,wid>
       }
 
-      if (strcmp(label(), "null") == 0) {
+      إذا (strcmp(label(), "null") == 0) {
 	    val.ptr = vpip_make_null_const();
-	    sym_set_value(sym_vpi, label(), val);
+	    sym_سيٽ_قدر(sym_vpi, label(), val);
       }
 
-      if (val.ptr) {
+      إذا (val.ptr) {
 	    *handle = static_cast<vpiHandle>(val.ptr);
-	    return true;
+	    أرجع سچ;
       }
 
-      if (mes)
+      إذا (mes)
 	    fprintf(stderr, "unresolved vpi name lookup: %s\n", label());
 
-      return false;
+      أرجع خطأ;
 }
 
-void compile_vpi_lookup(vpiHandle *handle, char*label)
+فراغ compile_vpi_lookup(vpiHandle *handle, حرف*label)
 {
-      if (strcmp(label, "$time") == 0) {
-	    *handle = vpip_sim_time(vpip_peek_current_scope(), false);
-	    free(label);
-	    return;
+      إذا (strcmp(label, "$time") == 0) {
+	    *handle = vpip_sim_وقت(vpip_peek_current_scope(), خطأ);
+	    حرر(label);
+	    أرجع;
       }
 
-      if (strcmp(label, "$stime") == 0) {
-	    *handle = vpip_sim_time(vpip_peek_current_scope(), true);
-	    free(label);
-	    return;
+      إذا (strcmp(label, "$stime") == 0) {
+	    *handle = vpip_sim_وقت(vpip_peek_current_scope(), سچ);
+	    حرر(label);
+	    أرجع;
       }
 
-      if (strcmp(label, "$realtime") == 0) {
+      إذا (strcmp(label, "$realtime") == 0) {
 	    *handle = vpip_sim_realtime(vpip_peek_current_scope());
-	    free(label);
-	    return;
+	    حرر(label);
+	    أرجع;
       }
 
-      if (strcmp(label, "$simtime") == 0) {
-	    *handle = vpip_sim_time(0, false);
-	    free(label);
-	    return;
+      إذا (strcmp(label, "$simtime") == 0) {
+	    *handle = vpip_sim_وقت(0, خطأ);
+	    حرر(label);
+	    أرجع;
       }
 
-      struct vpi_handle_resolv_list_s*res
-	    = new struct vpi_handle_resolv_list_s(label);
+      بنية vpi_handle_resolv_list_s*res
+	    = جديد بنية vpi_handle_resolv_list_s(label);
 
       res->handle = handle;
       resolv_submit(res);
@@ -759,80 +759,80 @@ void compile_vpi_lookup(vpiHandle *handle, char*label)
  * Code Label lookup
  */
 
-struct code_label_resolv_list_s: public resolv_list_s {
-      explicit code_label_resolv_list_s(char*lab, bool cptr2) : resolv_list_s(lab) {
-	    code = NULL;
+بنية ڪوڊ_label_resolv_list_s: عام resolv_list_s {
+      واضح ڪوڊ_label_resolv_list_s(حرف*lab, منطقي cptr2) : resolv_list_s(lab) {
+	    code = عدم;
 	    cptr2_flag = cptr2;
       }
-      struct vvp_code_s *code;
-      bool cptr2_flag;
-      virtual bool resolve(bool mes) override;
+      بنية vvp_ڪوڊ_s *code;
+      منطقي cptr2_flag;
+      مجازي منطقي resolve(منطقي mes) override;
 };
 
-bool code_label_resolv_list_s::resolve(bool mes)
+منطقي ڪوڊ_label_resolv_list_s::resolve(منطقي mes)
 {
-      symbol_value_t val = sym_get_value(sym_codespace, label());
-      if (val.ptr) {
-	    if (cptr2_flag)
-		  code->cptr2 = reinterpret_cast<vvp_code_t>(val.ptr);
-	    else
-		  code->cptr = reinterpret_cast<vvp_code_t>(val.ptr);
-	    return true;
+      نشان_قدر_t val = sym_get_قدر(sym_codespace, label());
+      إذا (val.ptr) {
+	    إذا (cptr2_flag)
+		  code->cptr2 = reinterpret_cast<vvp_ڪوڊ_t>(val.ptr);
+	    وإلا
+		  code->cptr = reinterpret_cast<vvp_ڪوڊ_t>(val.ptr);
+	    أرجع سچ;
       }
 
-      if (mes)
+      إذا (mes)
 	    fprintf(stderr, "unresolved code label: %s\n", label());
 
-      return false;
+      أرجع خطأ;
 }
 
-void code_label_lookup(struct vvp_code_s *code, char *label, bool cptr2)
+فراغ ڪوڊ_label_lookup(بنية vvp_ڪوڊ_s *code, حرف *label, منطقي cptr2)
 {
-      struct code_label_resolv_list_s *res
-	    = new struct code_label_resolv_list_s(label, cptr2);
+      بنية ڪوڊ_label_resolv_list_s *res
+	    = جديد بنية ڪوڊ_label_resolv_list_s(label, cptr2);
 
       res->code  = code;
 
       resolv_submit(res);
 }
 
-struct code_array_resolv_list_s: public resolv_list_s {
-      explicit code_array_resolv_list_s(char*lab) : resolv_list_s(lab) {
-	    code = NULL;
+بنية ڪوڊ_array_resolv_list_s: عام resolv_list_s {
+      واضح ڪوڊ_array_resolv_list_s(حرف*lab) : resolv_list_s(lab) {
+	    code = عدم;
       }
-      struct vvp_code_s *code;
-      virtual bool resolve(bool mes) override;
+      بنية vvp_ڪوڊ_s *code;
+      مجازي منطقي resolve(منطقي mes) override;
 };
 
-bool code_array_resolv_list_s::resolve(bool mes)
+منطقي ڪوڊ_array_resolv_list_s::resolve(منطقي mes)
 {
-      code->array = array_find(label());
-      if (code->array != 0) {
-	    return true;
+      code->array = array_ڳوليو(label());
+      إذا (code->array != 0) {
+	    أرجع سچ;
       }
 
-      if (mes)
+      إذا (mes)
 	    fprintf(stderr, "Array unresolved: %s\n", label());
 
-      return false;
+      أرجع خطأ;
 }
 
-static void compile_array_lookup(struct vvp_code_s*code, char*label)
+ساكن فراغ compile_array_lookup(بنية vvp_ڪوڊ_s*code, حرف*label)
 {
-      struct code_array_resolv_list_s *res
-	    = new struct code_array_resolv_list_s(label);
+      بنية ڪوڊ_array_resolv_list_s *res
+	    = جديد بنية ڪوڊ_array_resolv_list_s(label);
 
       res->code  = code;
 
       resolv_submit(res);
 }
 
-static std::list<struct __vpiSysTaskCall*> scheduled_compiletf;
+ساكن std::list<بنية __vpiSysTaskCall*> scheduled_compiletf;
 
-void compile_compiletf(struct __vpiSysTaskCall*obj)
+فراغ compile_compiletf(بنية __vpiSysTaskCall*obj)
 {
-      if (obj->defn->info.compiletf == 0)
-	    return;
+      إذا (obj->defn->info.compiletf == 0)
+	    أرجع;
 
       scheduled_compiletf.push_back(obj);
 }
@@ -842,43 +842,43 @@ void compile_compiletf(struct __vpiSysTaskCall*obj)
  * the final stuff. Clean up deferred linking here.
  */
 
-void compile_cleanup(void)
+فراغ compile_cleanup(فراغ)
 {
-      int lnerrs = -1;
-      int nerrs = 0;
-      int last;
+      صحيح lnerrs = -1;
+      صحيح nerrs = 0;
+      صحيح آخري;
 
-      if (verbose_flag) {
+      إذا (verbose_flag) {
 	    fprintf(stderr, " ... Linking\n");
 	    fflush(stderr);
       }
 
-      do {
+      افعل {
 	    resolv_list_s *res = resolv_list;
 	    resolv_list = 0x0;
-	    last = nerrs == lnerrs;
+	    آخري = nerrs == lnerrs;
 	    lnerrs = nerrs;
 	    nerrs = 0;
-	    while (res) {
+	    طالما (res) {
 		  resolv_list_s *cur = res;
-		  res = res->next;
-		  if (cur->resolve(last))
-			delete cur;
-		  else {
+		  res = res->ايندڙ_2;
+		  إذا (cur->resolve(آخري))
+			ميٽيو cur;
+		  وإلا {
 			nerrs++;
-			cur->next = resolv_list;
+			cur->ايندڙ_2 = resolv_list;
 			resolv_list = cur;
 		  }
 	    }
-	    if (nerrs && last)
+	    إذا (nerrs && آخري)
 		  fprintf(stderr,
 			  "compile_cleanup: %d unresolved items\n",
 			  nerrs);
-      } while (nerrs && !last);
+      } طالما (nerrs && !آخري);
 
       compile_errors += nerrs;
 
-      if (verbose_flag) {
+      إذا (verbose_flag) {
 	    fprintf(stderr, " ... Removing symbol tables\n");
 	    fflush(stderr);
       }
@@ -886,15 +886,15 @@ void compile_cleanup(void)
 	/* After compile is complete, the vpi symbol table is no
 	   longer needed. VPI objects are located by following
 	   scopes. */
-      delete_symbol_table(sym_vpi);
+      delete_نشان_جدول(sym_vpi);
       sym_vpi = 0;
 
 	/* Don't need the code labels. The instructions have numeric
 	   pointers in them, the symbol table is no longer needed. */
-      delete_symbol_table(sym_codespace);
+      delete_نشان_جدول(sym_codespace);
       sym_codespace = 0;
 
-      delete_symbol_table(sym_functors);
+      delete_نشان_جدول(sym_functors);
       sym_functors = 0;
 
       delete_udp_symbols();
@@ -902,55 +902,55 @@ void compile_cleanup(void)
       compile_island_cleanup();
       compile_array_cleanup();
 
-      if (verbose_flag) {
+      إذا (verbose_flag) {
 	    fprintf(stderr, " ... Compiletf functions\n");
 	    fflush(stderr);
       }
 
-      assert(vpi_mode_flag == VPI_MODE_NONE);
-      vpi_mode_flag = VPI_MODE_COMPILETF;
+      أكد(vpi_گهڻائي_flag == VPI_گهڻائي_NONE);
+      vpi_گهڻائي_flag = VPI_گهڻائي_COMPILETF;
 
-      while (! scheduled_compiletf.empty()) {
-	    struct __vpiSysTaskCall*obj = scheduled_compiletf.front();
+      طالما (! scheduled_compiletf.empty()) {
+	    بنية __vpiSysTaskCall*obj = scheduled_compiletf.front();
 	    scheduled_compiletf.pop_front();
 	    vpip_cur_task = obj;
-	    obj->defn->info.compiletf (obj->defn->info.user_data);
+	    obj->defn->info.compiletf (obj->defn->info.user_معلومات);
 	    vpip_cur_task = 0;
       }
 
-      vpi_mode_flag = VPI_MODE_NONE;
+      vpi_گهڻائي_flag = VPI_گهڻائي_NONE;
 }
 
-void compile_vpi_symbol(const char*label, vpiHandle obj)
+فراغ compile_vpi_نشان(ثابت حرف*label, vpiHandle obj)
 {
-      symbol_value_t val;
+      نشان_قدر_t val;
       val.ptr = obj;
-      sym_set_value(sym_vpi, label, val);
+      sym_سيٽ_قدر(sym_vpi, label, val);
 }
 
 /*
  * Initialize the compiler by allocation empty symbol tables and
  * initializing the various address spaces.
  */
-void compile_init(void)
+فراغ compile_init(فراغ)
 {
-      sym_vpi = new_symbol_table();
+      sym_vpi = new_نشان_جدول();
 
-      sym_functors = new_symbol_table();
+      sym_functors = new_نشان_جدول();
 
-      sym_codespace = new_symbol_table();
+      sym_codespace = new_نشان_جدول();
       codespace_init();
 }
 
-void compile_load_vpi_module(char*name)
+فراغ compile_ڀريو_vpi_module(حرف*name)
 {
-      vpip_load_module(name);
-      delete[] name;
+      vpip_ڀريو_module(name);
+      ميٽيو[] name;
 }
 
-void compile_vpi_time_precision(long pre)
+فراغ compile_vpi_وقت_precision(ڊگهو pre)
 {
-      vpip_set_time_precision(pre);
+      vpip_سيٽ_وقت_precision(pre);
 }
 
 /*
@@ -967,59 +967,59 @@ void compile_vpi_time_precision(long pre)
  *
  * The real value is sign * (mant ** exp).
  */
-static bool crstring_header_test(const char*str)
+ساكن منطقي crstring_سرو_test(ثابت حرف*str)
 {
-      if ((str[0] != 'C') && (str[0] != 'c'))
-	    return false;
-      if ((str[1] != 'r') || (str[2] != '<'))
-	    return false;
+      إذا ((str[0] != 'C') && (str[0] != 'c'))
+	    أرجع خطأ;
+      إذا ((str[1] != 'r') || (str[2] != '<'))
+	    أرجع خطأ;
 
-      return true;
+      أرجع سچ;
 }
 
-bool crstring_test(const char*str)
+منطقي crstring_test(ثابت حرف*str)
 {
-      if (!crstring_header_test(str))
-	    return false;
-      const char*tp = strchr(str, '>');
-      if (tp == 0) return false;
-      if (tp[1] != 0) return false;
+      إذا (!crstring_سرو_test(str))
+	    أرجع خطأ;
+      ثابت حرف*tp = strchr(str, '>');
+      إذا (tp == 0) أرجع خطأ;
+      إذا (tp[1] != 0) أرجع خطأ;
 
-      if ((strspn(str+3, "0123456789abcdefmg")+3) != (size_t)(tp - str))
-	  return false;
+      إذا ((strspn(str+3, "0123456789abcdefmg")+3) != (size_t)(tp - str))
+	  أرجع خطأ;
 
-      return true;
+      أرجع سچ;
 }
 
-double crstring_to_double(const char*label)
+مزدوج crstring_منزل_double(ثابت حرف*label)
 {
-      assert(crstring_header_test(label));
+      أكد(crstring_سرو_test(label));
 
-      const char*cp = label+3;
-      assert(*cp == 'm');
+      ثابت حرف*cp = label+3;
+      أكد(*cp == 'm');
       cp += 1;
-      char*ep;
+      حرف*ep;
       uint64_t mant = strtoull(cp, &ep, 16);
       cp = ep;
-      assert(*cp == 'g');
+      أكد(*cp == 'g');
       cp += 1;
-      int exp = strtoul(cp, 0, 16);
+      صحيح قوت_نما = strtoul(cp, 0, 16);
 
-      double tmp;
-      if (mant == 0 && exp == 0x3fff) {
+      مزدوج tmp;
+      إذا (mant == 0 && قوت_نما == 0x3fff) {
 	    tmp = INFINITY;
-      } else if (mant == 0 && exp == 0x7fff) {
+      } وإلا إذا (mant == 0 && قوت_نما == 0x7fff) {
 	    tmp = -INFINITY;
-      } else if (exp == 0x3fff) {
+      } وإلا إذا (قوت_نما == 0x3fff) {
 	    tmp = nan("");
-      } else {
-	    double sign = (exp & 0x4000)? -1.0 : 1.0;
-	    exp &= 0x1fff;
+      } وإلا {
+	    مزدوج sign = (قوت_نما & 0x4000)? -1.0 : 1.0;
+	    قوت_نما &= 0x1fff;
 
-	    tmp = sign * ldexp((double)mant, exp - 0x1000);
+	    tmp = sign * ldexp((مزدوج)mant, قوت_نما - 0x1000);
       }
 
-      return tmp;
+      أرجع tmp;
 }
 
 /*
@@ -1036,14 +1036,14 @@ double crstring_to_double(const char*label)
  * and skip the symbol lookup.
  */
 
-void input_connect(vvp_net_t*fdx, unsigned port, char*label)
+فراغ داخلا_connect(vvp_net_t*fdx, بنانشان پورٽ, حرف*label)
 {
-      vvp_net_ptr_t ifdx = vvp_net_ptr_t(fdx, port);
+      vvp_net_ptr_t ifdx = vvp_net_ptr_t(fdx, پورٽ);
 
 	/* Is this a vvp_vector4_t constant value? */
-      if (c4string_test(label)) {
+      إذا (c4string_test(label)) {
 
-	    vvp_vector4_t tmp = c4string_to_vector4(label);
+	    vvp_vector4_t tmp = c4string_منزل_vector4(label);
 
 	      // Inputs that are constants are scheduled to execute as
 	      // soon at the simulation starts. In Verilog, constants
@@ -1056,609 +1056,609 @@ void input_connect(vvp_net_t*fdx, unsigned port, char*label)
 	      // schedule execution before time 0, to make sure it
 	      // occurs before any sensitive processes are started
 	      // or VPI callbacks are executed.
-	    if (label[0] == 'c')
-		  schedule_init_vector(ifdx, tmp);
-	    else
-		  schedule_set_vector(ifdx, tmp);
+	    إذا (label[0] == 'c')
+		  وقت_جدول_init_ويڪٽر(ifdx, tmp);
+	    وإلا
+		  وقت_جدول_سيٽ_ويڪٽر(ifdx, tmp);
 
-	    free(label);
-	    return;
+	    حرر(label);
+	    أرجع;
       }
 
 	/* Is this a vvp_vector8_t constant value? */
-      if (c8string_test(label)) {
+      إذا (c8string_test(label)) {
 
-	    vvp_vector8_t tmp = c8string_to_vector8(label);
-	    if (label[0] == 'c')
-		  schedule_init_vector(ifdx, tmp);
-	    else
-		  schedule_set_vector(ifdx, tmp);
+	    vvp_vector8_t tmp = c8string_منزل_vector8(label);
+	    إذا (label[0] == 'c')
+		  وقت_جدول_init_ويڪٽر(ifdx, tmp);
+	    وإلا
+		  وقت_جدول_سيٽ_ويڪٽر(ifdx, tmp);
 
-	    free(label);
-	    return;
+	    حرر(label);
+	    أرجع;
       }
 
 	/* Handle the Cr<> constant driver, which is a real-value
 	   driver. */
-      if (crstring_test(label)) {
+      إذا (crstring_test(label)) {
 
-	    double tmp = crstring_to_double(label);
+	    مزدوج tmp = crstring_منزل_double(label);
 
-	    if (label[0] == 'c')
-		  schedule_init_vector(ifdx, tmp);
-	    else
-		  schedule_set_vector(ifdx, tmp);
-	    free(label);
-	    return;
+	    إذا (label[0] == 'c')
+		  وقت_جدول_init_ويڪٽر(ifdx, tmp);
+	    وإلا
+		  وقت_جدول_سيٽ_ويڪٽر(ifdx, tmp);
+	    حرر(label);
+	    أرجع;
       }
 
 	/* Handle the general case that this is a label for a node in
 	   the vvp net. This arranges for the label to be preserved in
 	   a linker list, and linked when the symbol table is
 	   complete. */
-      postpone_functor_input(ifdx, label);
+      postpone_functor_داخلا(ifdx, label);
 }
 
-void inputs_connect(vvp_net_t*fdx, unsigned argc, struct symb_s*argv)
+فراغ inputs_connect(vvp_net_t*fdx, بنانشان argc, بنية symb_s*argv)
 {
-      if (argc > 4) {
-	    std::cerr << "XXXX argv[0] = " << argv[0].text << std::endl;
+      إذا (argc > 4) {
+	    std::cerr << "XXXX argv[0] = " << argv[0].متن << std::سٽ_پڄاڻي;
       }
-      assert(argc <= 4);
+      أكد(argc <= 4);
 
-      for (unsigned idx = 0;  idx < argc;  idx += 1) {
+      لكل (بنانشان idx = 0;  idx < argc;  idx += 1) {
 
-	    input_connect(fdx, idx, argv[idx].text);
+	    داخلا_connect(fdx, idx, argv[idx].متن);
       }
 }
 
-void wide_inputs_connect(vvp_wide_fun_core*core,
-			 unsigned argc, struct symb_s*argv)
+فراغ wide_inputs_connect(vvp_wide_fun_core*core,
+			 بنانشان argc, بنية symb_s*argv)
 {
 	/* Create input functors to receive values from the
 	   network. These functors pass the data to the core. */
-      unsigned input_functors = (argc+3) / 4;
-      for (unsigned idx = 0 ;  idx < input_functors ;  idx += 1) {
-	    unsigned base = idx*4;
-	    unsigned trans = 4;
-	    if (base+trans > argc)
-		  trans = argc - base;
+      بنانشان داخلا_functors = (argc+3) / 4;
+      لكل (بنانشان idx = 0 ;  idx < داخلا_functors ;  idx += 1) {
+	    بنانشان بنياد = idx*4;
+	    بنانشان trans = 4;
+	    إذا (بنياد+trans > argc)
+		  trans = argc - بنياد;
 
-	    vvp_wide_fun_t*cur = new vvp_wide_fun_t(core, base);
-	    vvp_net_t*ptr = new vvp_net_t;
+	    vvp_wide_fun_t*cur = جديد vvp_wide_fun_t(core, بنياد);
+	    vvp_net_t*ptr = جديد vvp_net_t;
 	    ptr->fun = cur;
 
-	    inputs_connect(ptr, trans, argv+base);
+	    inputs_connect(ptr, trans, argv+بنياد);
       }
 }
 
-template <class T_> void make_arith(T_ *arith, char*label,
-				    unsigned argc, struct symb_s*argv)
+سانچو <صنف T_> فراغ make_arith(T_ *arith, حرف*label,
+				    بنانشان argc, بنية symb_s*argv)
 {
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = جديد vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_نشان(label, ptr);
+      حرر(label);
 
-      assert(argc == 2);
+      أكد(argc == 2);
       inputs_connect(ptr, argc, argv);
 
-      free(argv);
+      حرر(argv);
 }
 
-void compile_arith_cast_int(char*label, long width,
-                            unsigned argc, struct symb_s*argv)
+فراغ compile_arith_cast_int(حرف*label, ڊگهو width,
+                            بنانشان argc, بنية symb_s*argv)
 {
-      vvp_arith_cast_int*arith = new vvp_arith_cast_int((unsigned) width);
+      vvp_arith_cast_int*arith = جديد vvp_arith_cast_int((بنانشان) width);
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = جديد vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_نشان(label, ptr);
+      حرر(label);
 
-      assert(argc == 1);
+      أكد(argc == 1);
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      حرر(argv);
 }
 
-void compile_arith_cast_vec2(char*label, long width,
-			     unsigned argc, struct symb_s*argv)
+فراغ compile_arith_cast_vec2(حرف*label, ڊگهو width,
+			     بنانشان argc, بنية symb_s*argv)
 {
-      vvp_arith_cast_vec2*arith = new vvp_arith_cast_vec2((unsigned) width);
+      vvp_arith_cast_vec2*arith = جديد vvp_arith_cast_vec2((بنانشان) width);
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = جديد vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_نشان(label, ptr);
+      حرر(label);
 
-      assert(argc == 1);
+      أكد(argc == 1);
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      حرر(argv);
 }
 
-void compile_arith_cast_real(char*label, bool signed_flag,
-                             unsigned argc, struct symb_s*argv)
+فراغ compile_arith_cast_real(حرف*label, منطقي signed_flag,
+                             بنانشان argc, بنية symb_s*argv)
 {
-      vvp_arith_cast_real*arith = new vvp_arith_cast_real(signed_flag);
+      vvp_arith_cast_real*arith = جديد vvp_arith_cast_real(signed_flag);
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = جديد vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_نشان(label, ptr);
+      حرر(label);
 
-      assert(argc == 1);
+      أكد(argc == 1);
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      حرر(argv);
 }
 
-void compile_arith_abs(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_abs(حرف*label, بنانشان argc, بنية symb_s*argv)
 {
-      vvp_arith_abs*arith = new vvp_arith_abs;
+      vvp_arith_abs*arith = جديد vvp_arith_abs;
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = جديد vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_نشان(label, ptr);
+      حرر(label);
 
-      assert(argc == 1);
+      أكد(argc == 1);
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      حرر(argv);
 }
 
-void compile_arith_div(char*label, long wid, bool signed_flag,
-		       unsigned argc, struct symb_s*argv)
+فراغ compile_arith_div(حرف*label, ڊگهو wid, منطقي signed_flag,
+		       بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
-	    const char *suffix = "";
-	    if (signed_flag) suffix = ".s";
+      إذا (argc != 2) {
+	    ثابت حرف *suffix = "";
+	    إذا (signed_flag) suffix = ".s";
 	    fprintf(stderr, "%s; .arith/div%s has wrong number of "
 	                    "symbols\n", label, suffix);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_arith_div(wid, signed_flag);
+      vvp_arith_ *arith = جديد vvp_arith_div(wid, signed_flag);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_div_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_div_r(حرف*label, بنانشان argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s; .arith/divr has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_div_real;
+      vvp_arith_real_ *arith = جديد vvp_arith_div_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mod(char*label, long wid, bool signed_flag,
-		       unsigned argc, struct symb_s*argv)
+فراغ compile_arith_mod(حرف*label, ڊگهو wid, منطقي signed_flag,
+		       بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .arith/mod has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_arith_mod(wid, signed_flag);
+      vvp_arith_ *arith = جديد vvp_arith_mod(wid, signed_flag);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mod_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_mod_r(حرف*label, بنانشان argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .arith/mod.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_mod_real;
+      vvp_arith_real_ *arith = جديد vvp_arith_mod_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mult(char*label, long wid,
-			unsigned argc, struct symb_s*argv)
+فراغ compile_arith_mult(حرف*label, ڊگهو wid,
+			بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .arith/mult has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_arith_mult(wid);
+      vvp_arith_ *arith = جديد vvp_arith_mult(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mult_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_mult_r(حرف*label, بنانشان argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .arith/mult.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_mult_real;
+      vvp_arith_real_ *arith = جديد vvp_arith_mult_real;
       make_arith(arith, label, argc, argv);
 }
 
 
-void compile_arith_pow(char*label, long wid, bool signed_flag,
-		       unsigned argc, struct symb_s*argv)
+فراغ compile_arith_pow(حرف*label, ڊگهو wid, منطقي signed_flag,
+		       بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
-	    const char *suffix = "";
-	    if (signed_flag) suffix = ".s";
+      إذا (argc != 2) {
+	    ثابت حرف *suffix = "";
+	    إذا (signed_flag) suffix = ".s";
 	    fprintf(stderr, "%s .arith/pow%s has wrong number of "
 	                    "symbols\n", label, suffix);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_arith_pow(wid, signed_flag);
+      vvp_arith_ *arith = جديد vvp_arith_pow(wid, signed_flag);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_pow_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_pow_r(حرف*label, بنانشان argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .arith/pow.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_pow_real;
+      vvp_arith_real_ *arith = جديد vvp_arith_pow_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sub(char*label, long wid, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_sub(حرف*label, ڊگهو wid, بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .arith/sub has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_arith_sub(wid);
+      vvp_arith_ *arith = جديد vvp_arith_sub(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sub_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_sub_r(حرف*label, بنانشان argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s; .arith/sub.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_sub_real;
+      vvp_arith_real_ *arith = جديد vvp_arith_sub_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sum(char*label, long wid, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_جوڙ(حرف*label, ڊگهو wid, بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .arith/sum has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_arith_sum(wid);
+      vvp_arith_ *arith = جديد vvp_arith_جوڙ(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sum_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_arith_جوڙ_r(حرف*label, بنانشان argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .arith/sum.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_sum_real;
+      vvp_arith_real_ *arith = جديد vvp_arith_جوڙ_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eeq(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_eeq(حرف*label, ڊگهو wid,
+		     بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eeq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_eeq(wid);
+      vvp_arith_ *arith = جديد vvp_cmp_eeq(wid);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_nee(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_nee(حرف*label, ڊگهو wid,
+		     بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eeq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_nee(wid);
+      vvp_arith_ *arith = جديد vvp_cmp_nee(wid);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eq(char*label, long wid, unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_eq(حرف*label, ڊگهو wid, بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_eq(wid);
+      vvp_arith_ *arith = جديد vvp_cmp_eq(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eqx(char*label, long wid, unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_eqx(حرف*label, ڊگهو wid, بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eqx has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_eqx(wid);
+      vvp_arith_ *arith = جديد vvp_cmp_eqx(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eqz(char*label, long wid, unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_eqz(حرف*label, ڊگهو wid, بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eqz has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_eqz(wid);
+      vvp_arith_ *arith = جديد vvp_cmp_eqz(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eq_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_eq_r(حرف*label, بنانشان argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eq.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_cmp_eq_real;
+      vvp_arith_real_ *arith = جديد vvp_cmp_eq_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ne(char*label, long wid, unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_ne(حرف*label, ڊگهو wid, بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ne has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_ne(wid);
+      vvp_arith_ *arith = جديد vvp_cmp_ne(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ne_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_ne_r(حرف*label, بنانشان argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ne.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_cmp_ne_real;
+      vvp_arith_real_ *arith = جديد vvp_cmp_ne_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ge(char*label, long wid, bool signed_flag,
-		    unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_ge(حرف*label, ڊگهو wid, منطقي signed_flag,
+		    بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ge has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_ge(wid, signed_flag);
+      vvp_arith_ *arith = جديد vvp_cmp_ge(wid, signed_flag);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ge_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_ge_r(حرف*label, بنانشان argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ge.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_cmp_ge_real;
+      vvp_arith_real_ *arith = جديد vvp_cmp_ge_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_gt(char*label, long wid, bool signed_flag,
-		    unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_gt(حرف*label, ڊگهو wid, منطقي signed_flag,
+		    بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .cmp/gt has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_gt(wid, signed_flag);
+      vvp_arith_ *arith = جديد vvp_cmp_gt(wid, signed_flag);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_gt_r(char*label, unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_gt_r(حرف*label, بنانشان argc, بنية symb_s*argv)
 {
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .cmp/gt.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_real_ *arith = new vvp_cmp_gt_real;
+      vvp_arith_real_ *arith = جديد vvp_cmp_gt_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_weq(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_weq(حرف*label, ڊگهو wid,
+		     بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .cmp/weq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_weq(wid);
+      vvp_arith_ *arith = جديد vvp_cmp_weq(wid);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_wne(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+فراغ compile_cmp_wne(حرف*label, ڊگهو wid,
+		     بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      if (argc != 2) {
+      إذا (argc != 2) {
 	    fprintf(stderr, "%s .cmp/wne has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_wne(wid);
+      vvp_arith_ *arith = جديد vvp_cmp_wne(wid);
 
       make_arith(arith, label, argc, argv);
 }
 
 
-void compile_delay(char*label, unsigned width,
-                   vvp_delay_t*delay, struct symb_s arg)
+فراغ compile_delay(حرف*label, بنانشان width,
+                   vvp_delay_t*delay, بنية symb_s arg)
 {
-      vvp_net_t*net = new vvp_net_t;
-      vvp_fun_delay*obj = new vvp_fun_delay(net, width, *delay);
+      vvp_net_t*net = جديد vvp_net_t;
+      vvp_fun_delay*obj = جديد vvp_fun_delay(net, width, *delay);
       net->fun = obj;
 
-      delete delay;
+      ميٽيو delay;
 
-      input_connect(net, 0, arg.text);
+      داخلا_connect(net, 0, arg.متن);
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_نشان(label, net);
+      حرر(label);
 }
 
-void compile_delay(char*label, unsigned width,
-                   unsigned argc, struct symb_s*argv, bool ignore_decay)
+فراغ compile_delay(حرف*label, بنانشان width,
+                   بنانشان argc, بنية symb_s*argv, منطقي ignore_decay)
 {
       vvp_delay_t stub (0, 0, 0);
-      if (ignore_decay) stub.set_ignore_decay();
-      vvp_net_t*net = new vvp_net_t;
-      vvp_fun_delay*obj = new vvp_fun_delay(net, width, stub);
+      إذا (ignore_decay) stub.سيٽ_ignore_decay();
+      vvp_net_t*net = جديد vvp_net_t;
+      vvp_fun_delay*obj = جديد vvp_fun_delay(net, width, stub);
       net->fun = obj;
 
       inputs_connect(net, argc, argv);
-      free(argv);
+      حرر(argv);
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_نشان(label, net);
+      حرر(label);
 }
 
 /*
  * Extend nodes.
  */
-void compile_extend_signed(char*label, long wid, struct symb_s arg)
+فراغ compile_extend_signed(حرف*label, ڊگهو wid, بنية symb_s arg)
 {
-      assert(wid >= 0);
+      أكد(wid >= 0);
 
-      vvp_fun_extend_signed*fun = new vvp_fun_extend_signed(wid);
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_fun_extend_signed*fun = جديد vvp_fun_extend_signed(wid);
+      vvp_net_t*ptr = جديد vvp_net_t;
       ptr->fun = fun;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_نشان(label, ptr);
+      حرر(label);
 
-      input_connect(ptr, 0, arg.text);
+      داخلا_connect(ptr, 0, arg.متن);
 }
 
-struct __vpiModPath* compile_modpath(char*label, unsigned width,
-                                     struct symb_s drv, struct symb_s dest)
+بنية __vpiModPath* compile_modpath(حرف*label, بنانشان width,
+                                     بنية symb_s drv, بنية symb_s dest)
 {
-      vvp_net_t*net = new vvp_net_t;
-      vvp_fun_modpath*obj = new vvp_fun_modpath(net, width);
+      vvp_net_t*net = جديد vvp_net_t;
+      vvp_fun_modpath*obj = جديد vvp_fun_modpath(net, width);
       net->fun = obj;
 
-      input_connect(net, 0, drv.text);
+      داخلا_connect(net, 0, drv.متن);
 
-      define_functor_symbol(label, net);
+      define_functor_نشان(label, net);
 
       __vpiModPath*modpath = vpip_make_modpath(net);
 
-      compile_vpi_lookup(&modpath->path_term_out.expr, dest.text);
+      compile_vpi_lookup(&modpath->رستو_رڪن_ٻاهريون.اظهار, dest.متن);
 
-      free(label);
+      حرر(label);
 
       modpath->modpath = obj;
-      return modpath;
+      أرجع modpath;
 }
 
-static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
-					       char edge_c,
-					       const struct symb_s&src,
-					       struct numbv_s&vals,
-					       bool ifnone)
+ساكن بنية __vpiModPathSrc*make_modpath_src(بنية __vpiModPath*رستو,
+					       حرف ڪنارو_c,
+					       ثابت بنية symb_s&src,
+					       بنية numbv_s&vals,
+					       منطقي ifnone)
 {
-      vvp_fun_modpath*dst = path->modpath;
+      vvp_fun_modpath*dst = رستو->modpath;
 
       vvp_time64_t use_delay[12];
-      assert(vals.cnt == 12);
-      for (unsigned idx = 0 ; idx < vals.cnt ;  idx += 1) {
+      أكد(vals.cnt == 12);
+      لكل (بنانشان idx = 0 ; idx < vals.cnt ;  idx += 1) {
 	    use_delay[idx] = vals.nvec[idx];
       }
 
@@ -1666,75 +1666,75 @@ static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
 
       vvp_fun_modpath_src*obj = 0;
 
-      int vpi_edge = vpiNoEdge;
-      if (edge_c == 0) {
-	    obj = new vvp_fun_modpath_src(use_delay);
+      صحيح vpi_ڪنارو = vpi_No_ڪنارو;
+      إذا (ڪنارو_c == 0) {
+	    obj = جديد vvp_fun_modpath_src(use_delay);
 
-      } else {
-	    bool posedge, negedge;
-	    switch (edge_c) {
-		case '+':
-		  vpi_edge = vpiPosedge;
-		  posedge = true;
-		  negedge = false;
-		  break;
-		case '-':
-		  vpi_edge = vpiNegedge;
-		  posedge = false;
-		  negedge = true;
-		  break;
-#if 0
-		case '*':
-		  posedge = true;
-		  negedge = true;
-		  break;
-#endif
-		default:
-		  posedge = false;
-		  negedge = false;
-		  fprintf(stderr, "Unknown edge identifier %c(%d).\n", edge_c,
-		          edge_c);
-		  assert(0);
+      } وإلا {
+	    منطقي posedge, negedge;
+	    بدل (ڪنارو_c) {
+		حالة '+':
+		  vpi_ڪنارو = vpiPosedge;
+		  posedge = سچ;
+		  negedge = خطأ;
+		  اكسر;
+		حالة '-':
+		  vpi_ڪنارو = vpiNegedge;
+		  posedge = خطأ;
+		  negedge = سچ;
+		  اكسر;
+#إذا 0
+		حالة '*':
+		  posedge = سچ;
+		  negedge = سچ;
+		  اكسر;
+#جيڪڏهن_پورو
+		افتراضي:
+		  posedge = خطأ;
+		  negedge = خطأ;
+		  fprintf(stderr, "Unknown edge identifier %c(%d).\n", ڪنارو_c,
+		          ڪنارو_c);
+		  أكد(0);
 	    }
-	    obj = new vvp_fun_modpath_edge(use_delay, posedge, negedge);
+	    obj = جديد vvp_fun_modpath_ڪنارو(use_delay, posedge, negedge);
       }
 
-      vvp_net_t*net = new vvp_net_t;
-      struct __vpiModPathSrc* srcobj = vpip_make_modpath_src(path, net) ;
-      vpip_attach_to_current_scope(srcobj);
+      vvp_net_t*net = جديد vvp_net_t;
+      بنية __vpiModPathSrc* srcobj = vpip_make_modpath_src(رستو, net) ;
+      vpip_attach_منزل_current_scope(srcobj);
       net->fun = obj;
 
 	/* Save the vpiEdge directory into the input path term. */
-      srcobj->path_term_in.edge = vpi_edge;
-      input_connect(net, 0, src.text);
-      dst->add_modpath_src(obj, ifnone);
+      srcobj->رستو_رڪن_اندريون.ڪنارو = vpi_ڪنارو;
+      داخلا_connect(net, 0, src.متن);
+      dst->جوڙيو_modpath_src(obj, ifnone);
 
-      return srcobj;
+      أرجع srcobj;
 }
 
-void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
-			 const struct symb_s&src,
-			 struct numbv_s&vals,
-			 const struct symb_s&condit_src,
-			 const struct symb_s&path_term_in)
+فراغ compile_modpath_src(بنية __vpiModPath*dst, حرف ڪنارو_c,
+			 ثابت بنية symb_s&src,
+			 بنية numbv_s&vals,
+			 ثابت بنية symb_s&condit_src,
+			 ثابت بنية symb_s&رستو_رڪن_اندريون)
 {
-      struct __vpiModPathSrc*obj =
-	    make_modpath_src(dst, edge_c, src, vals, false);
-      input_connect(obj->net, 1, condit_src.text);
-      compile_vpi_lookup(&obj->path_term_in.expr, path_term_in.text);
+      بنية __vpiModPathSrc*obj =
+	    make_modpath_src(dst, ڪنارو_c, src, vals, خطأ);
+      داخلا_connect(obj->net, 1, condit_src.متن);
+      compile_vpi_lookup(&obj->رستو_رڪن_اندريون.اظهار, رستو_رڪن_اندريون.متن);
 }
 
-void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
-			 const struct symb_s&src,
-			 struct numbv_s&vals,
-			 int condit_src,
-			 const struct symb_s&path_term_in,
-			 bool ifnone)
+فراغ compile_modpath_src(بنية __vpiModPath*dst, حرف ڪنارو_c,
+			 ثابت بنية symb_s&src,
+			 بنية numbv_s&vals,
+			 صحيح condit_src,
+			 ثابت بنية symb_s&رستو_رڪن_اندريون,
+			 منطقي ifnone)
 {
-      assert(condit_src == 0);
-      struct __vpiModPathSrc*obj =
-	    make_modpath_src(dst, edge_c, src, vals, ifnone);
-      compile_vpi_lookup(&obj->path_term_in.expr, path_term_in.text);
+      أكد(condit_src == 0);
+      بنية __vpiModPathSrc*obj =
+	    make_modpath_src(dst, ڪنارو_c, src, vals, ifnone);
+      compile_vpi_lookup(&obj->رستو_رڪن_اندريون.اظهار, رستو_رڪن_اندريون.متن);
 }
 
 /*
@@ -1742,106 +1742,106 @@ void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
  * width. The 0 input is the data vector to be shifted and the 1 input
  * is the amount of the shift. An unconnected shift amount is set to 0.
  */
-void compile_shiftl(char*label, long wid, unsigned argc, struct symb_s*argv)
+فراغ compile_shiftl(حرف*label, ڊگهو wid, بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      vvp_arith_ *arith = new vvp_shiftl(wid);
+      vvp_arith_ *arith = جديد vvp_shiftl(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_shiftr(char*label, long wid, bool signed_flag,
-		    unsigned argc, struct symb_s*argv)
+فراغ compile_shiftr(حرف*label, ڊگهو wid, منطقي signed_flag,
+		    بنانشان argc, بنية symb_s*argv)
 {
-      assert( wid > 0 );
+      أكد( wid > 0 );
 
-      vvp_arith_ *arith = new vvp_shiftr(wid, signed_flag);
+      vvp_arith_ *arith = جديد vvp_shiftr(wid, signed_flag);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_resolver(char*label, char*type, unsigned argc, struct symb_s*argv)
+فراغ compile_resolver(حرف*label, حرف*type, بنانشان argc, بنية symb_s*argv)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = جديد vvp_net_t;
 
       resolv_core*core = 0;
 
-      if (strcmp(type,"tri") == 0) {
-	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_Z, 0,0));
+      إذا (strcmp(type,"tri") == 0) {
+	    core = جديد resolv_tri(argc, net, vvp_scalar_t(BIT4_Z, 0,0));
 
-      } else if (strcmp(type,"tri0") == 0) {
-	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_0, 5,5));
+      } وإلا إذا (strcmp(type,"tri0") == 0) {
+	    core = جديد resolv_tri(argc, net, vvp_scalar_t(BIT4_0, 5,5));
 
-      } else if (strcmp(type,"tri1") == 0) {
-	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_1, 5,5));
+      } وإلا إذا (strcmp(type,"tri1") == 0) {
+	    core = جديد resolv_tri(argc, net, vvp_scalar_t(BIT4_1, 5,5));
 
-      } else if (strcmp(type,"triand") == 0) {
-	    core = new resolv_triand(argc, net);
+      } وإلا إذا (strcmp(type,"triand") == 0) {
+	    core = جديد resolv_triand(argc, net);
 
-      } else if (strcmp(type,"trior") == 0) {
-	    core = new resolv_trior(argc, net);
+      } وإلا إذا (strcmp(type,"trior") == 0) {
+	    core = جديد resolv_trior(argc, net);
 
-      } else {
+      } وإلا {
 	    fprintf(stderr, "invalid resolver type: %s\n", type);
 	    compile_errors += 1;
-            delete net;
+            ميٽيو net;
       }
 
-      if (core) {
+      إذا (core) {
 	    net->fun = core;
-	    define_functor_symbol(label, net);
+	    define_functor_نشان(label, net);
 
-            for (unsigned base = 0 ;  base < argc ;  base += 4) {
-	          unsigned nports = argc - base;
-                  if (nports > 4)
+            لكل (بنانشان بنياد = 0 ;  بنياد < argc ;  بنياد += 4) {
+	          بنانشان nports = argc - بنياد;
+                  إذا (nports > 4)
                         nports = 4;
 
-                  if (base > 0) {
-                        net = new vvp_net_t;
-                        net->fun = new resolv_extend(core, base);
+                  إذا (بنياد > 0) {
+                        net = جديد vvp_net_t;
+                        net->fun = جديد resolv_extend(core, بنياد);
                   }
-                  inputs_connect(net, nports, argv+base);
+                  inputs_connect(net, nports, argv+بنياد);
             }
       }
-      free(type);
-      free(label);
-      free(argv);
+      حرر(type);
+      حرر(label);
+      حرر(argv);
 }
 
-void compile_udp_def(int sequ, char *label, char *name,
-		     unsigned nin, unsigned init, char **table)
+فراغ compile_udp_def(صحيح sequ, حرف *label, حرف *name,
+		     بنانشان nin, بنانشان init, حرف **جدول)
 {
-      if (sequ) {
+      إذا (sequ) {
 	    vvp_bit4_t init4;
-	    if (init == 0)
+	    إذا (init == 0)
 		  init4 = BIT4_0;
-	    else if (init == 1)
+	    وإلا إذا (init == 1)
 		  init4 = BIT4_1;
-	    else
+	    وإلا
 		  init4 = BIT4_X;
 
-	    vvp_udp_seq_s *u = new vvp_udp_seq_s(label, name, nin, init4);
-	    u->compile_table(table);
-      } else {
-	    vvp_udp_comb_s *u = new vvp_udp_comb_s(label, name, nin);
-	    u->compile_table(table);
+	    vvp_udp_seq_s *u = جديد vvp_udp_seq_s(label, name, nin, init4);
+	    u->compile_جدول(جدول);
+      } وإلا {
+	    vvp_udp_comb_s *u = جديد vvp_udp_comb_s(label, name, nin);
+	    u->compile_جدول(جدول);
       }
-      free(label);
+      حرر(label);
 }
 
-char **compile_udp_table(char **table, char *row)
+حرف **compile_udp_جدول(حرف **جدول, حرف *صف)
 {
-  if (table)
-    assert(strlen(*table)==strlen(row));
+  إذا (جدول)
+    أكد(لڙي_ڊيگهه(*جدول)==لڙي_ڊيگهه(صف));
 
-  char **tt;
-  for (tt = table; tt && *tt; tt++) { }
-  int n = (tt-table) + 2;
+  حرف **tt;
+  لكل (tt = جدول; tt && *tt; tt++) { }
+  صحيح n = (tt-جدول) + 2;
 
-  table = static_cast<char**>(realloc(table, n*sizeof(char*)));
-  table[n-2] = row;
-  table[n-1] = 0x0;
+  جدول = static_cast<حرف**>(realloc(جدول, n*حجم(حرف*)));
+  جدول[n-2] = صف;
+  جدول[n-1] = 0x0;
 
-  return table;
+  أرجع جدول;
 }
 
 
@@ -1851,225 +1851,225 @@ char **compile_udp_table(char **table, char *row)
  * table gives the operand structure that is acceptable, so I can
  * process the operands here as well.
  */
-void compile_code(char*label, char*mnem, comp_operands_t opa)
+فراغ compile_ڪوڊ(حرف*label, حرف*mnem, comp_operands_t opa)
 {
 	/* First, I can give the label a value that is the current
 	   codespace pointer. Don't need the text of the label after
 	   this is done. */
-      if (label)
+      إذا (label)
 	    compile_codelabel(label);
 
 	/* Lookup the opcode in the opcode table. */
-      struct opcode_table_s*op = static_cast<struct opcode_table_s*>
-                                            (bsearch(mnem, opcode_table, opcode_count,
-                                                     sizeof(struct opcode_table_s),
+      بنية opcode_جدول_s*op = static_cast<بنية opcode_جدول_s*>
+                                            (bsearch(mnem, opcode_جدول, opcode_ڳڻپ,
+                                                     حجم(بنية opcode_جدول_s),
                                                      &opcode_compare));
-      if (op == 0) {
+      إذا (op == 0) {
 	    yyerror("Invalid opcode");
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
-      assert(op);
+      أكد(op);
 
 	/* Build up the code from the information about the opcode and
 	   the information from the compiler. */
-      vvp_code_t code = codespace_allocate();
+      vvp_ڪوڊ_t code = codespace_allocate();
       code->opcode = op->opcode;
 
-      if (op->argc != (opa? opa->argc : 0)) {
+      إذا (op->argc != (opa? opa->argc : 0)) {
 	    yyerror("operand count");
 	    compile_errors += 1;
-	    return;
+	    أرجع;
       }
 
 	/* Pull the operands that the instruction expects from the
 	   list that the parser supplied. */
 
-      for (unsigned idx = 0 ;  idx < op->argc ;  idx += 1) {
+      لكل (بنانشان idx = 0 ;  idx < op->argc ;  idx += 1) {
 
-	    switch (op->argt[idx]) {
-		case OA_NONE:
-		  break;
+	    بدل (op->argt[idx]) {
+		حالة OA_NONE:
+		  اكسر;
 
-		case OA_ARR_PTR:
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		حالة OA_ARR_PTR:
+		  إذا (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
 
-		  compile_array_lookup(code, opa->argv[idx].symb.text);
-		  break;
+		  compile_array_lookup(code, opa->argv[idx].symb.متن);
+		  اكسر;
 
-		case OA_BIT1:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		حالة OA_BIT1:
+		  إذا (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
-		  code->bit_idx[0] = opa->argv[idx].numb;
-		  break;
+		  code->ٻٽو_انگ_idx[0] = opa->argv[idx].numb;
+		  اكسر;
 
-		case OA_BIT2:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		حالة OA_BIT2:
+		  إذا (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
-		  code->bit_idx[1] = opa->argv[idx].numb;
-		  break;
+		  code->ٻٽو_انگ_idx[1] = opa->argv[idx].numb;
+		  اكسر;
 
-		case OA_CODE_PTR:
-		case OA_CODE_PTR2:
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		حالة OA_ڪوڊ_PTR:
+		حالة OA_ڪوڊ_PTR2:
+		  إذا (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
 
-		  assert(opa->argv[idx].symb.idx == 0);
-		  code_label_lookup(code, opa->argv[idx].symb.text,
-				    op->argt[idx]==OA_CODE_PTR2);
-		  break;
+		  أكد(opa->argv[idx].symb.idx == 0);
+		  ڪوڊ_label_lookup(code, opa->argv[idx].symb.متن,
+				    op->argt[idx]==OA_ڪوڊ_PTR2);
+		  اكسر;
 
-		case OA_FUNC_PTR:
+		حالة OA_FUNC_PTR:
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  إذا (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
 
-		  functor_ref_lookup(&code->net, opa->argv[idx].symb.text);
-		  break;
+		  functor_ref_lookup(&code->net, opa->argv[idx].symb.متن);
+		  اكسر;
 
-		case OA_FUNC_PTR2:
+		حالة OA_FUNC_PTR2:
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  إذا (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
 
-		  functor_ref_lookup(&code->net2, opa->argv[idx].symb.text);
-		  break;
+		  functor_ref_lookup(&code->net2, opa->argv[idx].symb.متن);
+		  اكسر;
 
-		case OA_NUMBER:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		حالة OA_عدد:
+		  إذا (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
 
-		  code->number = opa->argv[idx].numb;
-		  break;
+		  code->عدد = opa->argv[idx].numb;
+		  اكسر;
 
-		case OA_VPI_PTR:
+		حالة OA_VPI_PTR:
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  إذا (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
 
-		  compile_vpi_lookup(&code->handle, opa->argv[idx].symb.text);
-		  break;
+		  compile_vpi_lookup(&code->handle, opa->argv[idx].symb.متن);
+		  اكسر;
 
-		case OA_STRING:
-		  if (opa->argv[idx].ltype != L_STRING) {
+		حالة OA_STRING:
+		  إذا (opa->argv[idx].ltype != L_STRING) {
 			yyerror("operand format");
-			break;
+			اكسر;
 		  }
 
-		  code->text = opa->argv[idx].text;
-		  break;
+		  code->متن = opa->argv[idx].متن;
+		  اكسر;
 	    }
       }
 
-      free(opa);
+      حرر(opa);
 
-      free(mnem);
+      حرر(mnem);
 }
 
-void compile_codelabel(char*label)
+فراغ compile_codelabel(حرف*label)
 {
-      symbol_value_t val;
-      vvp_code_t ptr = codespace_next();
+      نشان_قدر_t val;
+      vvp_ڪوڊ_t ptr = codespace_ايندڙ();
 
       val.ptr = ptr;
-      sym_set_value(sym_codespace, label, val);
+      sym_سيٽ_قدر(sym_codespace, label, val);
 
-      free(label);
+      حرر(label);
 }
 
-void compile_file_line(char*label, long file_idx, long lineno,
-                       char*description)
+فراغ compile_file_سٽ(حرف*label, ڊگهو file_idx, ڊگهو lineno,
+                       حرف*description)
 {
-      if (label) compile_codelabel(label);
+      إذا (label) compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
-      vvp_code_t code = codespace_allocate();
-      code->opcode = &of_FILE_LINE;
+      vvp_ڪوڊ_t code = codespace_allocate();
+      code->opcode = &جو_FILE_سٽ;
 
 	/* Create a vpiHandle that contains the information. */
-      code->handle = vpip_build_file_line(description, file_idx, lineno);
-      assert(code->handle);
+      code->handle = vpip_build_file_سٽ(description, file_idx, lineno);
+      أكد(code->handle);
 
 	/* Done with the lexor-allocated name string. */
-      delete[] description;
+      ميٽيو[] description;
 }
 
-void compile_vpi_call(char*label, char*name,
-                      bool func_as_task_err, bool func_as_task_warn,
-                      long file_idx, long lineno,
-                      unsigned argc, vpiHandle*argv,
-		      unsigned vec4_stack, unsigned real_stack, unsigned string_stack)
+فراغ compile_vpi_call(حرف*label, حرف*name,
+                      منطقي func_as_task_err, منطقي func_as_task_warn,
+                      ڊگهو file_idx, ڊگهو lineno,
+                      بنانشان argc, vpiHandle*argv,
+		      بنانشان vec4_ڍير, بنانشان real_ڍير, بنانشان string_ڍير)
 {
-      if (label)
+      إذا (label)
 	    compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
-      vvp_code_t code = codespace_allocate();
-      code->opcode = &of_VPI_CALL;
+      vvp_ڪوڊ_t code = codespace_allocate();
+      code->opcode = &جو_VPI_CALL;
 
 	/* Create a vpiHandle that bundles the call information, and
 	   store that handle in the instruction. */
       code->handle = vpip_build_vpi_call(name, 0, 0,
 					 0, func_as_task_err, func_as_task_warn,
-                                         argc, argv, vec4_stack, real_stack, string_stack,
+                                         argc, argv, vec4_ڍير, real_ڍير, string_ڍير,
 					 file_idx, lineno);
-      if (code->handle == 0)
+      إذا (code->handle == 0)
 	    compile_errors += 1;
 
 	/* Done with the lexor-allocated name string. */
-      delete[] name;
+      ميٽيو[] name;
 }
 
-void compile_vpi_func_call(char*label, char*name,
-			   int val_type, unsigned val_wid,
-			   long file_idx, long lineno,
-			   unsigned argc, vpiHandle*argv,
-			   unsigned vec4_stack,
-			   unsigned real_stack,
-			   unsigned string_stack)
+فراغ compile_vpi_func_call(حرف*label, حرف*name,
+			   صحيح val_type, بنانشان val_wid,
+			   ڊگهو file_idx, ڊگهو lineno,
+			   بنانشان argc, vpiHandle*argv,
+			   بنانشان vec4_ڍير,
+			   بنانشان real_ڍير,
+			   بنانشان string_ڍير)
 {
-      if (label)
+      إذا (label)
 	    compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
-      vvp_code_t code = codespace_allocate();
-      code->opcode = &of_VPI_CALL;
+      vvp_ڪوڊ_t code = codespace_allocate();
+      code->opcode = &جو_VPI_CALL;
 
 	/* Create a vpiHandle that bundles the call information, and
 	   store that handle in the instruction. */
       code->handle = vpip_build_vpi_call(name, val_type, val_wid,
-					 0, true, false,
-                                         argc, argv, vec4_stack, real_stack, string_stack,
+					 0, سچ, خطأ,
+                                         argc, argv, vec4_ڍير, real_ڍير, string_ڍير,
 					 file_idx, lineno);
-      if (code->handle == 0)
+      إذا (code->handle == 0)
 	    compile_errors += 1;
 
 	/* Done with the lexor-allocated name string. */
-      delete[] name;
+      ميٽيو[] name;
 }
 
 /*
@@ -2077,78 +2077,78 @@ void compile_vpi_func_call(char*label, char*name,
  * with the start address referenced by the program symbol passed to
  * me.
  */
-void compile_thread(char*start_sym, char*flag)
+فراغ compile_thread(حرف*شروعات_sym, حرف*flag)
 {
-      bool push_flag = false;
+      منطقي ڌڪو_flag = خطأ;
 
-      symbol_value_t tmp = sym_get_value(sym_codespace, start_sym);
-      vvp_code_t pc = reinterpret_cast<vvp_code_t>(tmp.ptr);
-      if (pc == 0) {
+      نشان_قدر_t tmp = sym_get_قدر(sym_codespace, شروعات_sym);
+      vvp_ڪوڊ_t pc = reinterpret_cast<vvp_ڪوڊ_t>(tmp.ptr);
+      إذا (pc == 0) {
 	    yyerror("unresolved address");
-	    return;
+	    أرجع;
       }
 
-      if (flag && (strcmp(flag,"$push") == 0))
-	    push_flag = true;
+      إذا (flag && (strcmp(flag,"$push") == 0))
+	    ڌڪو_flag = سچ;
 
       vthread_t thr = vthread_new(pc, vpip_peek_current_scope());
 
-      if (flag && (strcmp(flag,"$init") == 0))
-	    schedule_init_vthread(thr);
-      else if (flag && (strcmp(flag,"$final") == 0))
-	    schedule_final_vthread(thr);
-      else
-	    schedule_vthread(thr, 0, push_flag);
+      إذا (flag && (strcmp(flag,"$init") == 0))
+	    وقت_جدول_init_vthread(thr);
+      وإلا إذا (flag && (strcmp(flag,"$final") == 0))
+	    وقت_جدول_final_vthread(thr);
+      وإلا
+	    وقت_جدول_vthread(thr, 0, ڌڪو_flag);
 
-      free(start_sym);
-      free(flag);
+      حرر(شروعات_sym);
+      حرر(flag);
 }
 
-void compile_param_logic(char*label, const char*name, char*value, bool signed_flag,
-                         bool local_flag,
-                         long file_idx, long lineno)
+فراغ compile_param_logic(حرف*label, ثابت حرف*name, حرف*value, منطقي signed_flag,
+                         منطقي local_flag,
+                         ڊگهو file_idx, ڊگهو lineno)
 {
-      vvp_vector4_t value4 = c4string_to_vector4(value);
-      vpiHandle obj = vpip_make_binary_param(name, value4, signed_flag,
+      vvp_vector4_t value4 = c4string_منزل_vector4(value);
+      vpiHandle obj = vpip_make_ٻٽو_param(name, value4, signed_flag,
                                              local_flag, file_idx, lineno);
-      compile_vpi_symbol(label, obj);
-      vpip_attach_to_current_scope(obj);
+      compile_vpi_نشان(label, obj);
+      vpip_attach_منزل_current_scope(obj);
 
-      free(label);
-      free(value);
+      حرر(label);
+      حرر(value);
 }
 
-void compile_param_string(char*label, const char*name, char*value,
-                          bool local_flag,
-                          long file_idx, long lineno)
+فراغ compile_param_string(حرف*label, ثابت حرف*name, حرف*value,
+                          منطقي local_flag,
+                          ڊگهو file_idx, ڊگهو lineno)
 {
 	// name and value become owned by vpip_make_string_param
       vpiHandle obj = vpip_make_string_param(name, value, local_flag, file_idx, lineno);
-      compile_vpi_symbol(label, obj);
-      vpip_attach_to_current_scope(obj);
+      compile_vpi_نشان(label, obj);
+      vpip_attach_منزل_current_scope(obj);
 
-      free(label);
+      حرر(label);
 }
 
-void compile_param_real(char*label, const char*name, char*value,
-                        bool local_flag,
-                        long file_idx, long lineno)
+فراغ compile_param_real(حرف*label, ثابت حرف*name, حرف*value,
+                        منطقي local_flag,
+                        ڊگهو file_idx, ڊگهو lineno)
 {
-      double dvalue = crstring_to_double(value);
+      مزدوج dvalue = crstring_منزل_double(value);
       vpiHandle obj = vpip_make_real_param(name, dvalue, local_flag, file_idx, lineno);
-      compile_vpi_symbol(label, obj);
-      vpip_attach_to_current_scope(obj);
+      compile_vpi_نشان(label, obj);
+      vpip_attach_منزل_current_scope(obj);
 
-      free(label);
-      free(value);
+      حرر(label);
+      حرر(value);
 }
 
-void compile_island(char*label, char*type)
+فراغ compile_island(حرف*label, حرف*type)
 {
-      if (strcmp(type,"tran") == 0)
+      إذا (strcmp(type,"tran") == 0)
 	    compile_island_tran(label);
-      else
-	    assert(0);
+      وإلا
+	    أكد(0);
 
-      free(type);
+      حرر(type);
 }

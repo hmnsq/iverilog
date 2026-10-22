@@ -35,34 +35,34 @@
  * vpi_time_precision is the precision of the simulation clock. It is
  * set by the :vpi_time_precision directive in the vvp source file.
  */
-static int vpi_time_precision = 0;
+ساكن صحيح vpi_وقت_precision = 0;
 
-static struct __vpiSystemTime global_simtime;
+ساكن بنية __vpiSystemTime global_simtime;
 
-void vpip_time_to_timestruct(struct t_vpi_time*ts, vvp_time64_t ti)
+فراغ vpip_وقت_منزل_timestruct(بنية t_vpi_وقت*ts, vvp_time64_t ti)
 {
-      ts->low  = ti & 0xFFFFFFFF;
-      ts->high = (ti >> 32) & 0xFFFFFFFF;
+      ts->هيٺيون  = ti & 0xFFFFFFFF;
+      ts->مٿاهون = (ti >> 32) & 0xFFFFFFFF;
 }
 
-vvp_time64_t vpip_timestruct_to_time(const struct t_vpi_time*ts)
+vvp_time64_t vpip_timestruct_منزل_وقت(ثابت بنية t_vpi_وقت*ts)
 {
-      vvp_time64_t ti = ts->high;
+      vvp_time64_t ti = ts->مٿاهون;
       ti <<= 32;
-      ti += ts->low & 0xffffffff;
-      return ti;
+      ti += ts->هيٺيون & 0xffffffff;
+      أرجع ti;
 }
 
-double vpip_time_to_scaled_real(vvp_time64_t ti, const __vpiScope*scope)
+مزدوج vpip_وقت_منزل_scaled_real(vvp_time64_t ti, ثابت __vpiScope*scope)
 {
-      double val;
-      int scale = 0;
-      if (scope) scale = vpi_time_precision - scope->time_units;
+      مزدوج val;
+      صحيح scale = 0;
+      إذا (scope) scale = vpi_وقت_precision - scope->وقت_units;
 
-      if (scale >= 0) val = (double)ti * pow(10.0, scale);
-      else val = (double)ti / pow(10.0, -scale);
+      إذا (scale >= 0) val = (مزدوج)ti * قوت(10.0, scale);
+      وإلا val = (مزدوج)ti / قوت(10.0, -scale);
 
-      return val;
+      أرجع val;
 }
 
 /*
@@ -70,239 +70,239 @@ double vpip_time_to_scaled_real(vvp_time64_t ti, const __vpiScope*scope)
  * does not check for overflow. It is only used for modpath delays and
  * they are required to be non-negative.
  */
-vvp_time64_t vpip_scaled_real_to_time64(double val, const __vpiScope*scope)
+vvp_time64_t vpip_scaled_real_منزل_time64(مزدوج val, ثابت __vpiScope*scope)
 {
-      int shift = 0;
-      if (scope) shift = scope->time_units - scope->time_precision;
-      assert(shift >= 0);
+      صحيح سرڪايو = 0;
+      إذا (scope) سرڪايو = scope->وقت_units - scope->وقت_precision;
+      أكد(سرڪايو >= 0);
 
-      assert(val >= 0);
+      أكد(val >= 0);
 
 	// Scale to the local precision and then round away from zero.
-      double scale = pow(10.0L, shift);
+      مزدوج scale = قوت(10.0L, سرڪايو);
       val *= scale;
 
       vvp_time64_t delay = (vvp_time64_t) (val + 0.5);
 
 	// If needed now scale the value to the simulator precision.
-      if (scope) {
-	    shift = scope->time_precision - vpi_time_precision;
-	    assert(shift >= 0);
-	    for (int lp = 0; lp <  shift; lp += 1) delay *= 10;
+      إذا (scope) {
+	    سرڪايو = scope->وقت_precision - vpi_وقت_precision;
+	    أكد(سرڪايو >= 0);
+	    لكل (صحيح lp = 0; lp <  سرڪايو; lp += 1) delay *= 10;
       }
 
-      return delay;
+      أرجع delay;
 }
 
-static void timevar_get_value(vpiHandle ref, s_vpi_value*vp, bool is_int_func,
-                              bool is_stime)
+ساكن فراغ timevar_get_قدر(vpiHandle ref, s_vpi_قدر*vp, منطقي is_int_func,
+                              منطقي is_stime)
 {
 	/* Keep a persistent structure for passing time values back to
 	   the caller. */
-      static struct t_vpi_time time_value;
+      ساكن بنية t_vpi_وقت وقت_قدر;
 
-      struct __vpiSystemTime*rfp = dynamic_cast<__vpiSystemTime*>(ref);
-      unsigned long num_bits;
-      vvp_time64_t x, simtime = schedule_simtime();
-      int units = rfp->scope? rfp->scope->time_units : vpi_time_precision;
+      بنية __vpiSystemTime*rfp = dynamic_cast<__vpiSystemTime*>(ref);
+      بنانشان ڊگهو انگ_بٽ;
+      vvp_time64_t x, simtime = وقت_جدول_simtime();
+      صحيح units = rfp->scope? rfp->scope->وقت_units : vpi_وقت_precision;
 
-      static const size_t RBUF_USE_SIZE = 128;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      ساكن ثابت size_t RBUF_USE_سائيز = 128;
+      حرف*rbuf = static_cast<حرف *>(need_نتيجو_buf(RBUF_USE_سائيز, RBUF_VAL));
 
 	/* Calculate the divisor needed to scale the simulation time
 	   (in time_precision units) to time units of the scope. */
-      vvp_time64_t divisor = 1;
-      while (units > vpi_time_precision) {
-	    divisor *= 10;
+      vvp_time64_t ورهائيندڙ = 1;
+      طالما (units > vpi_وقت_precision) {
+	    ورهائيندڙ *= 10;
 	    units -= 1;
       }
 
 	/* Scale the simtime, and use the modulus to round up if
 	   appropriate. */
-      vvp_time64_t simtime_fraction = simtime % divisor;
-      simtime /= divisor;
+      vvp_time64_t simtime_fraction = simtime % ورهائيندڙ;
+      simtime /= ورهائيندڙ;
 
-      if ((divisor >= 10) && (simtime_fraction >= (divisor/2)))
+      إذا ((ورهائيندڙ >= 10) && (simtime_fraction >= (ورهائيندڙ/2)))
 	    simtime += 1;
 
 	/* If this is a call to $stime only return the lower 32 bits. */
-      if (is_stime) simtime &= 0xffffffff;
+      إذا (is_stime) simtime &= 0xffffffff;
 
-      switch (vp->format) {
-	  case vpiObjTypeVal:
+      بدل (vp->format) {
+	  حالة vpiObjTypeVal:
 	      /* The default format is vpiTimeVal. */
-	    vp->format = vpiTimeVal;
+	    vp->format = vpi_وقت_Val;
 	    // fallthrough
-	  case vpiTimeVal:
-	    vp->value.time = &time_value;
-	    vp->value.time->type = vpiSimTime;
-	    vpip_time_to_timestruct(vp->value.time, simtime);
-	    break;
+	  حالة vpi_وقت_Val:
+	    vp->value.time = &وقت_قدر;
+	    vp->value.time->type = vpi_Sim_وقت;
+	    vpip_وقت_منزل_timestruct(vp->value.time, simtime);
+	    اكسر;
 
-	  case vpiRealVal:
+	  حالة vpiRealVal:
 	      /* If this is an integer based call (anything but $realtime)
 	       * just return the value as a double. */
-	    if (is_int_func)  vp->value.real = double (simtime);
+	    إذا (is_int_func)  vp->value.real = مزدوج (simtime);
 	      /* This is a call to $realtime to return a real value so
 	       * scale this using the scaled real rules. */
-	    else vp->value.real = vpip_time_to_scaled_real(schedule_simtime(),
+	    وإلا vp->value.real = vpip_وقت_منزل_scaled_real(وقت_جدول_simtime(),
 						           rfp->scope);
-	    break;
+	    اكسر;
 
-	  case vpiBinStrVal:
+	  حالة vpiBinStrVal:
 	    x = simtime;
-	    num_bits = 8 * sizeof(vvp_time64_t);
+	    انگ_بٽ = 8 * حجم(vvp_time64_t);
 
-	    rbuf[num_bits] = 0;
-	    for (unsigned i = 1; i <= num_bits; i++) {
-	      rbuf[num_bits-i] = (x  & 1) ? '1' : '0';
+	    rbuf[انگ_بٽ] = 0;
+	    لكل (بنانشان i = 1; i <= انگ_بٽ; i++) {
+	      rbuf[انگ_بٽ-i] = (x  & 1) ? '1' : '0';
 	      x = x >> 1;
 	    }
 
 	    vp->value.str = rbuf;
-	    break;
+	    اكسر;
 
-	  case vpiDecStrVal:
-	    snprintf(rbuf, RBUF_USE_SIZE, "%" TIME_FMT_U, simtime);
+	  حالة vpiDecStrVal:
+	    snprintf(rbuf, RBUF_USE_سائيز, "%" وقت_FMT_U, simtime);
 	    vp->value.str = rbuf;
-	    break;
+	    اكسر;
 
-	  case vpiOctStrVal:
-	    snprintf(rbuf, RBUF_USE_SIZE, "%" TIME_FMT_O, simtime);
+	  حالة vpiOctStrVal:
+	    snprintf(rbuf, RBUF_USE_سائيز, "%" وقت_FMT_O, simtime);
 	    vp->value.str = rbuf;
-	    break;
+	    اكسر;
 
-	  case vpiHexStrVal:
-	    snprintf(rbuf, RBUF_USE_SIZE, "%" TIME_FMT_X, simtime);
+	  حالة vpiHexStrVal:
+	    snprintf(rbuf, RBUF_USE_سائيز, "%" وقت_FMT_X, simtime);
 	    vp->value.str = rbuf;
-	    break;
+	    اكسر;
 
-	  default:
-	    fprintf(stderr, "vpi_time: unknown format: %d\n", (int)vp->format);
-	    assert(0);
+	  افتراضي:
+	    fprintf(stderr, "vpi_time: unknown format: %d\n", (صحيح)vp->format);
+	    أكد(0);
       }
 }
 
-static void timevar_get_ivalue(vpiHandle ref, s_vpi_value*vp)
+ساكن فراغ timevar_get_ivalue(vpiHandle ref, s_vpi_قدر*vp)
 {
-      timevar_get_value(ref, vp, true, false);
+      timevar_get_قدر(ref, vp, سچ, خطأ);
 }
 
-static void timevar_get_svalue(vpiHandle ref, s_vpi_value*vp)
+ساكن فراغ timevar_get_svalue(vpiHandle ref, s_vpi_قدر*vp)
 {
-      timevar_get_value(ref, vp, true, true);
+      timevar_get_قدر(ref, vp, سچ, سچ);
 }
 
-static void timevar_get_rvalue(vpiHandle ref, s_vpi_value*vp)
+ساكن فراغ timevar_get_rvalue(vpiHandle ref, s_vpi_قدر*vp)
 {
-      timevar_get_value(ref, vp, false, false);
+      timevar_get_قدر(ref, vp, خطأ, خطأ);
 }
 
 __vpiScopedTime::__vpiScopedTime()
 { }
 
-char* __vpiScopedTime::vpi_get_str(int code)
+حرف* __vpiScopedTime::vpi_get_str(صحيح code)
 {
-      switch (code) {
-	  case vpiName:
-	    return simple_set_rbuf_str("$time");
-	  default:
+      بدل (code) {
+	  حالة vpiName:
+	    أرجع simple_سيٽ_rbuf_str("$time");
+	  افتراضي:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    أكد(0);
+	    أرجع 0;
       }
 }
 
 
-void __vpiScopedTime::vpi_get_value(p_vpi_value val)
-{ timevar_get_ivalue(this, val); }
+فراغ __vpiScopedTime::vpi_get_قدر(p_vpi_قدر val)
+{ timevar_get_ivalue(هذا, val); }
 
 
 __vpiScopedSTime::__vpiScopedSTime()
 { }
 
-int __vpiScopedSTime::vpi_get(int code)
+صحيح __vpiScopedSTime::vpi_get(صحيح code)
 {
-      switch (code) {
-          case vpiSize:
-	    return 32;
+      بدل (code) {
+          حالة vpi_سائيز:
+	    أرجع 32;
 
-	  default:
-	    return __vpiSystemTime::vpi_get(code);
+	  افتراضي:
+	    أرجع __vpiSystemTime::vpi_get(code);
       }
 }
 
 
-char* __vpiScopedSTime::vpi_get_str(int code)
+حرف* __vpiScopedSTime::vpi_get_str(صحيح code)
 {
-      switch (code) {
-	  case vpiName:
-	    return simple_set_rbuf_str("$stime");
-	  default:
+      بدل (code) {
+	  حالة vpiName:
+	    أرجع simple_سيٽ_rbuf_str("$stime");
+	  افتراضي:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    أكد(0);
+	    أرجع 0;
       }
 }
 
 
-void __vpiScopedSTime::vpi_get_value(p_vpi_value val)
-{ timevar_get_svalue(this, val); }
+فراغ __vpiScopedSTime::vpi_get_قدر(p_vpi_قدر val)
+{ timevar_get_svalue(هذا, val); }
 
 __vpiSystemTime::__vpiSystemTime()
 {
       scope = 0;
 }
 
-int __vpiSystemTime::get_type_code(void) const
-{ return vpiSysFuncCall; }
+صحيح __vpiSystemTime::get_type_ڪوڊ(فراغ) ثابت
+{ أرجع vpiSysFuncCall; }
 
-int __vpiSystemTime::vpi_get(int code)
+صحيح __vpiSystemTime::vpi_get(صحيح code)
 {
-      switch (code) {
-          case vpiSize:
-	    return 64;
+      بدل (code) {
+          حالة vpi_سائيز:
+	    أرجع 64;
 
-          case vpiSigned:
-	    return 0;
+          حالة vpiSigned:
+	    أرجع 0;
 
-	  case vpiFuncType:
-	    return vpiTimeFunc;
+	  حالة vpiFuncType:
+	    أرجع vpi_وقت_Func;
 
-          case vpiAutomatic:
-	    return 0;
+          حالة vpiAutomatic:
+	    أرجع 0;
 
-	  default:
+	  افتراضي:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    أكد(0);
+	    أرجع 0;
       }
 }
 
 
-char* __vpiSystemTime::vpi_get_str(int code)
+حرف* __vpiSystemTime::vpi_get_str(صحيح code)
 {
-      switch (code) {
-	  case vpiName:
-	    return simple_set_rbuf_str("$simtime");
-	  default:
+      بدل (code) {
+	  حالة vpiName:
+	    أرجع simple_سيٽ_rbuf_str("$simtime");
+	  افتراضي:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    أكد(0);
+	    أرجع 0;
       }
 }
 
 
-void __vpiSystemTime::vpi_get_value(p_vpi_value val)
-{ timevar_get_ivalue(this, val); }
+فراغ __vpiSystemTime::vpi_get_قدر(p_vpi_قدر val)
+{ timevar_get_ivalue(هذا, val); }
 
-vpiHandle __vpiSystemTime::vpi_handle(int code)
+vpiHandle __vpiSystemTime::vpi_handle(صحيح code)
 {
-      switch (code) {
-	  case vpiScope:
-	    return scope;
-	  default:
-	    return 0;
+      بدل (code) {
+	  حالة vpiScope:
+	    أرجع scope;
+	  افتراضي:
+	    أرجع 0;
       }
 }
 
@@ -310,77 +310,77 @@ vpiHandle __vpiSystemTime::vpi_handle(int code)
 __vpiScopedRealtime::__vpiScopedRealtime()
 { }
 
-int __vpiScopedRealtime::vpi_get(int code)
+صحيح __vpiScopedRealtime::vpi_get(صحيح code)
 {
-      switch (code) {
-          case vpiSize:
-	    return 1;
+      بدل (code) {
+          حالة vpi_سائيز:
+	    أرجع 1;
 
-          case vpiSigned:
-	    return 0;
+          حالة vpiSigned:
+	    أرجع 0;
 
-	  case vpiFuncType:
-	    return vpiRealFunc;
+	  حالة vpiFuncType:
+	    أرجع vpiRealFunc;
 
-          case vpiAutomatic:
-	    return 0;
+          حالة vpiAutomatic:
+	    أرجع 0;
 
-	  default:
+	  افتراضي:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    أكد(0);
+	    أرجع 0;
       }
 }
 
 
-char* __vpiScopedRealtime::vpi_get_str(int code)
+حرف* __vpiScopedRealtime::vpi_get_str(صحيح code)
 {
-      switch (code) {
-	  case vpiName:
-	    return simple_set_rbuf_str("$realtime");
-	  default:
+      بدل (code) {
+	  حالة vpiName:
+	    أرجع simple_سيٽ_rbuf_str("$realtime");
+	  افتراضي:
 	    fprintf(stderr, "Code: %d\n", code);
-	    assert(0);
-	    return 0;
+	    أكد(0);
+	    أرجع 0;
       }
 }
 
 
-void __vpiScopedRealtime::vpi_get_value(p_vpi_value val)
-{ timevar_get_rvalue(this, val); }
+فراغ __vpiScopedRealtime::vpi_get_قدر(p_vpi_قدر val)
+{ timevar_get_rvalue(هذا, val); }
 
 /*
  * Create a handle to represent a call to $time/$stime/$simtime. The
  * $time and $stime system functions return a value scaled to a scope,
  * and the $simtime returns the unscaled time.
  */
-vpiHandle vpip_sim_time(__vpiScope*scope, bool is_stime)
+vpiHandle vpip_sim_وقت(__vpiScope*scope, منطقي is_stime)
 {
-      if (scope) {
-	    if (is_stime) {
+      إذا (scope) {
+	    إذا (is_stime) {
 		  scope->scoped_stime.scope = scope;
-		  return &scope->scoped_stime;
-	    } else {
-		  scope->scoped_time.scope = scope;
-		  return &scope->scoped_time;
+		  أرجع &scope->scoped_stime;
+	    } وإلا {
+		  scope->scoped_وقت.scope = scope;
+		  أرجع &scope->scoped_وقت;
 	    }
-      } else {
-	    return &global_simtime;
+      } وإلا {
+	    أرجع &global_simtime;
       }
 }
 
 vpiHandle vpip_sim_realtime(__vpiScope*scope)
 {
       scope->scoped_realtime.scope = scope;
-      return &scope->scoped_realtime;
+      أرجع &scope->scoped_realtime;
 }
 
-int vpip_get_time_precision(void)
+صحيح vpip_get_وقت_precision(فراغ)
 {
-      return vpi_time_precision;
+      أرجع vpi_وقت_precision;
 }
 
-void vpip_set_time_precision(int pre)
+فراغ vpip_سيٽ_وقت_precision(صحيح pre)
 {
-      vpi_time_precision = pre;
+      vpi_وقت_precision = pre;
 }

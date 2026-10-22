@@ -1,5 +1,5 @@
-#ifndef IVL_statistics_H
-#define IVL_statistics_H
+#جيڪڏهن_وصف_نه_ٿيل IVL_statistics_H
+#وصف_ڪريو IVL_statistics_H
 /*
  * Copyright (c) 2002-2014 Stephen Williams (steve@icarus.com)
  *
@@ -20,46 +20,46 @@
  */
 
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
-#ifdef __SUNPRO_CC
+#جيڪڏهن_وصف_ٿيل __SUNPRO_CC
 # include  <stddef.h>
-#else
+#وإلا
 # include  <cstddef>
-#endif
+#جيڪڏهن_پورو
 
-extern unsigned long count_opcodes;
-extern unsigned long count_functors;
-extern unsigned long count_functors_logic;
-extern unsigned long count_functors_bufif;
-extern unsigned long count_functors_resolv;
-extern unsigned long count_functors_sig;
-extern unsigned long count_filters;
-extern unsigned long count_vvp_nets;
-extern unsigned long count_vpi_nets;
-extern unsigned long count_vpi_scopes;
+خارجي بنانشان ڊگهو ڳڻپ_opcodes;
+خارجي بنانشان ڊگهو ڳڻپ_functors;
+خارجي بنانشان ڊگهو ڳڻپ_functors_logic;
+خارجي بنانشان ڊگهو ڳڻپ_functors_bufif;
+خارجي بنانشان ڊگهو ڳڻپ_functors_resolv;
+خارجي بنانشان ڊگهو ڳڻپ_functors_sig;
+خارجي بنانشان ڊگهو ڳڻپ_filters;
+خارجي بنانشان ڊگهو ڳڻپ_vvp_nets;
+خارجي بنانشان ڊگهو ڳڻپ_vpi_nets;
+خارجي بنانشان ڊگهو ڳڻپ_vpi_scopes;
 
-extern unsigned long count_net_arrays;
-extern unsigned long count_net_array_words;
-extern unsigned long count_var_arrays;
-extern unsigned long count_var_array_words;
-extern unsigned long count_real_arrays;
-extern unsigned long count_real_array_words;
+خارجي بنانشان ڊگهو ڳڻپ_net_arrays;
+خارجي بنانشان ڊگهو ڳڻپ_net_array_لفظ;
+خارجي بنانشان ڊگهو ڳڻپ_var_arrays;
+خارجي بنانشان ڊگهو ڳڻپ_var_array_لفظ;
+خارجي بنانشان ڊگهو ڳڻپ_real_arrays;
+خارجي بنانشان ڊگهو ڳڻپ_real_array_لفظ;
 
 
-extern unsigned long count_time_events;
-extern unsigned long count_time_pool(void);
+خارجي بنانشان ڊگهو ڳڻپ_وقت_events;
+خارجي بنانشان ڊگهو ڳڻپ_وقت_pool(فراغ);
 
-extern unsigned long count_assign_events;
-extern unsigned long count_assign4_pool(void);
-extern unsigned long count_assign8_pool(void);
-extern unsigned long count_assign_real_pool(void);
-extern unsigned long count_assign_aword_pool(void);
-extern unsigned long count_assign_arword_pool(void);
+خارجي بنانشان ڊگهو ڳڻپ_سونپيو_events;
+خارجي بنانشان ڊگهو ڳڻپ_assign4_pool(فراغ);
+خارجي بنانشان ڊگهو ڳڻپ_assign8_pool(فراغ);
+خارجي بنانشان ڊگهو ڳڻپ_سونپيو_real_pool(فراغ);
+خارجي بنانشان ڊگهو ڳڻپ_سونپيو_aword_pool(فراغ);
+خارجي بنانشان ڊگهو ڳڻپ_سونپيو_arword_pool(فراغ);
 
-extern unsigned long count_gen_events;
-extern unsigned long count_gen_pool(void);
+خارجي بنانشان ڊگهو ڳڻپ_gen_events;
+خارجي بنانشان ڊگهو ڳڻپ_gen_pool(فراغ);
 
-extern size_t size_opcodes;
-extern size_t size_vvp_nets;
-extern size_t size_vvp_net_funs;
+خارجي size_t سائيز_opcodes;
+خارجي size_t سائيز_vvp_nets;
+خارجي size_t سائيز_vvp_net_funs;
 
-#endif /* IVL_statistics_H */
+#جيڪڏهن_پورو /* IVL_statistics_H */

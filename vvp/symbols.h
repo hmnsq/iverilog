@@ -1,5 +1,5 @@
-#ifndef IVL_symbols_H
-#define IVL_symbols_H
+#جيڪڏهن_وصف_نه_ٿيل IVL_symbols_H
+#وصف_ڪريو IVL_symbols_H
 /*
  * Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)
  *
@@ -43,41 +43,41 @@
  * try to look inside. The actual implementation is given in the
  * symbols.cc source file.
  */
-typedef class symbol_table_s *symbol_table_t;
+تعريفنوع class نشان_جدول_s *نشان_جدول_t;
 
-typedef struct symbol_value_s {
-      union {
+تعريفنوع بنية نشان_قدر_s {
+      اتحاد {
 	    vvp_net_t*net;
-	    void*ptr;
+	    فراغ*ptr;
       };
-} symbol_value_t;
+} نشان_قدر_t;
 
 
-class symbol_table_s {
-    public:
-      explicit symbol_table_s();
-      virtual ~symbol_table_s();
-      symbol_table_s(const symbol_table_s&) = delete;
-      symbol_table_s& operator=(const symbol_table_s&) = delete;
+class نشان_جدول_s {
+    عام:
+      explicit نشان_جدول_s();
+      مجازي ~نشان_جدول_s();
+      نشان_جدول_s(ثابت نشان_جدول_s&) = delete;
+      نشان_جدول_s& عامل=(ثابت نشان_جدول_s&) = delete;
 
 	// This method locates the value in the symbol table and sets its
 	// value. If the key doesn't yet exist, create it.
-      void sym_set_value(const char*key, symbol_value_t val);
+      فراغ sym_سيٽ_قدر(ثابت حرف*ڪنجي, نشان_قدر_t val);
 
 	// This method locates the value in the symbol table and returns
 	// it. If the value does not exist, create it, initialize it with
 	// zero and return the zero value.
-      symbol_value_t sym_get_value(const char*key);
+      نشان_قدر_t sym_get_قدر(ثابت حرف*ڪنجي);
 
-    private:
-      struct tree_node_*root;
-      struct key_strings*str_chunk;
-      unsigned str_used;
+    خاص:
+      بنية وڻ_ڳنڍ*پاڙ;
+      بنية ڪنجي_لڙيون*str_chunk;
+      بنانشان str_استعمال_ٿيل;
 
-      symbol_value_t find_value_(struct tree_node_*cur,
-				 const char*key, symbol_value_t val,
+      نشان_قدر_t ڳوليو_قدر(بنية وڻ_ڳنڍ*cur,
+				 ثابت حرف*ڪنجي, نشان_قدر_t val,
 				 bool force_flag);
-      char*key_strdup_(const char*str);
+      حرف*ڪنجي_strdup(ثابت حرف*str);
 };
 
 /*
@@ -87,32 +87,32 @@ class symbol_table_s {
  * the delete_symbol_table method will delete the table, including all
  * the space for the keys.
  */
-inline symbol_table_t new_symbol_table(void) { return new symbol_table_s; }
-inline void delete_symbol_table(symbol_table_t tbl) { delete tbl; }
+مضمن نشان_جدول_t new_نشان_جدول(فراغ) { أرجع new نشان_جدول_s; }
+مضمن فراغ delete_نشان_جدول(نشان_جدول_t tbl) { delete tbl; }
 
 // These are obsolete, and here only to support older code.
-inline void sym_set_value(symbol_table_t tbl, const char*key, symbol_value_t val)
-{ tbl->sym_set_value(key, val); }
+مضمن فراغ sym_سيٽ_قدر(نشان_جدول_t tbl, ثابت حرف*ڪنجي, نشان_قدر_t val)
+{ tbl->sym_سيٽ_قدر(ڪنجي, val); }
 
-inline symbol_value_t sym_get_value(symbol_table_t tbl, const char*key)
-{ return tbl->sym_get_value(key); }
+مضمن نشان_قدر_t sym_get_قدر(نشان_جدول_t tbl, ثابت حرف*ڪنجي)
+{ أرجع tbl->sym_get_قدر(ڪنجي); }
 
 /*
  * This template is a type-safe interface to the symbol table.
  */
-template <class T> class symbol_map_s : private symbol_table_s {
+سانچو <class T> class نشان_map_s : خاص نشان_جدول_s {
 
-    public:
-      void sym_set_value(const char*key, T*val)
-      { symbol_value_t tmp;
+    عام:
+      فراغ sym_سيٽ_قدر(ثابت حرف*ڪنجي, T*val)
+      { نشان_قدر_t tmp;
 	tmp.ptr = val;
-	symbol_table_s::sym_set_value(key, tmp);
+	نشان_جدول_s::sym_سيٽ_قدر(ڪنجي, tmp);
       }
 
-      T* sym_get_value(const char*key)
-      { symbol_value_t val = symbol_table_s::sym_get_value(key);
-	return reinterpret_cast<T*>(val.ptr);
+      T* sym_get_قدر(ثابت حرف*ڪنجي)
+      { نشان_قدر_t val = نشان_جدول_s::sym_get_قدر(ڪنجي);
+	أرجع reinterpret_cast<T*>(val.ptr);
       }
 };
 
-#endif /* IVL_symbols_H */
+#جيڪڏهن_پورو /* IVL_symbols_H */

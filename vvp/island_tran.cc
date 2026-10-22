@@ -25,55 +25,55 @@
 
 # include  <iostream>
 
-using namespace std;
+استعمال نطاق std;
 
-class vvp_island_tran : public vvp_island {
+صنف vvp_island_tran : عام vvp_island {
 
-    public:
-      void run_island() override;
-      void count_drivers(vvp_island_port*port, unsigned bit_idx,
-                         unsigned counts[3]) override;
+    عام:
+      فراغ لاڳيتو_island() override;
+      فراغ ڳڻپ_drivers(vvp_island_پورٽ*پورٽ, بنانشان ٻٽو_انگ_idx,
+                         بنانشان counts[3]) override;
 };
 
-enum tran_state_t {
+تعداد tran_state_t {
       tran_disabled,
       tran_enabled,
       tran_unknown
 };
 
-struct vvp_island_branch_tran : public vvp_island_branch {
+بنية vvp_island_branch_tran : عام vvp_island_branch {
 
-      vvp_island_branch_tran(vvp_net_t*en__, bool active_high__,
-                             unsigned width__, unsigned part__,
-                             unsigned offset__, bool resistive__);
-      void run_test_enabled();
-      bool rerun_test_enabled();
-      void run_resolution();
-      void run_output();
+      vvp_island_branch_tran(vvp_net_t*en__, منطقي سرگرم_مٿاهون,
+                             بنانشان ويڪر_3, بنانشان part__,
+                             بنانشان وٿي_3, منطقي resistive__);
+      فراغ لاڳيتو_test_enabled();
+      منطقي rerun_test_enabled();
+      فراغ لاڳيتو_resolution();
+      فراغ لاڳيتو_output();
 
       vvp_net_t*en;
-      unsigned width, part, offset;
-      bool active_high, resistive;
+      بنانشان width, part, وٿي_2;
+      منطقي سرگرم_مٿاهون_2, resistive;
       tran_state_t state;
 };
 
 vvp_island_branch_tran::vvp_island_branch_tran(vvp_net_t*en__,
-                                               bool active_high__,
-                                               unsigned width__,
-                                               unsigned part__,
-                                               unsigned offset__,
-                                               bool resistive__)
-: en(en__), width(width__), part(part__), offset(offset__),
-  active_high(active_high__), resistive(resistive__)
+                                               منطقي سرگرم_مٿاهون,
+                                               بنانشان ويڪر_3,
+                                               بنانشان part__,
+                                               بنانشان وٿي_3,
+                                               منطقي resistive__)
+: en(en__), width(ويڪر_3), part(part__), وٿي_2(وٿي_3),
+  سرگرم_مٿاهون_2(سرگرم_مٿاهون), resistive(resistive__)
 {
       state = en__ ? tran_disabled : tran_enabled;
 }
 
-static inline vvp_island_branch_tran* BRANCH_TRAN(vvp_island_branch*tmp)
+ساكن مضمن vvp_island_branch_tran* BRANCH_TRAN(vvp_island_branch*tmp)
 {
       vvp_island_branch_tran*res = dynamic_cast<vvp_island_branch_tran*>(tmp);
-      assert(res);
-      return res;
+      أكد(res);
+      أرجع res;
 }
 
 /*
@@ -81,128 +81,128 @@ static inline vvp_island_branch_tran* BRANCH_TRAN(vvp_island_branch*tmp)
  * entire island. We run the island by calling run_resolution() for
  * all the branches in the island.
 */
-void vvp_island_tran::run_island()
+فراغ vvp_island_tran::لاڳيتو_island()
 {
 	// Test to see if any of the branches are enabled. This loop
 	// tests the enabled inputs for all the branches and caches
 	// the results in the state for each branch.
-      for (vvp_island_branch*cur = branches_ ; cur ; cur = cur->next_branch) {
+      لكل (vvp_island_branch*cur = branches_ ; cur ; cur = cur->ايندڙ_branch) {
 	    vvp_island_branch_tran*tmp = dynamic_cast<vvp_island_branch_tran*>(cur);
-	    assert(tmp);
-	    tmp->run_test_enabled();
+	    أكد(tmp);
+	    tmp->لاڳيتو_test_enabled();
       }
 
 rerun:
 	// Now resolve all the branches in the island.
-      for (vvp_island_branch*cur = branches_ ; cur ; cur = cur->next_branch) {
+      لكل (vvp_island_branch*cur = branches_ ; cur ; cur = cur->ايندڙ_branch) {
 	    vvp_island_branch_tran*tmp = dynamic_cast<vvp_island_branch_tran*>(cur);
-	    assert(tmp);
-	    tmp->run_resolution();
+	    أكد(tmp);
+	    tmp->لاڳيتو_resolution();
       }
 
 	// Now output the resolved values.
-      for (vvp_island_branch*cur = branches_ ; cur ; cur = cur->next_branch) {
+      لكل (vvp_island_branch*cur = branches_ ; cur ; cur = cur->ايندڙ_branch) {
 	    vvp_island_branch_tran*tmp = dynamic_cast<vvp_island_branch_tran*>(cur);
-	    assert(tmp);
-	    tmp->run_output();
+	    أكد(tmp);
+	    tmp->لاڳيتو_output();
       }
 
 	// Now check if the enable inputs have been affected by the resolution.
-      bool enable_changed = false;
-      for (vvp_island_branch*cur = branches_ ; cur ; cur = cur->next_branch) {
+      منطقي enable_بدليو = خطأ;
+      لكل (vvp_island_branch*cur = branches_ ; cur ; cur = cur->ايندڙ_branch) {
 	    vvp_island_branch_tran*tmp = dynamic_cast<vvp_island_branch_tran*>(cur);
-	    assert(tmp);
-	    enable_changed |= tmp->rerun_test_enabled();
+	    أكد(tmp);
+	    enable_بدليو |= tmp->rerun_test_enabled();
       }
-      if (enable_changed) goto rerun;
+      إذا (enable_بدليو) اذهب rerun;
 }
 
-static void count_drivers_(vvp_branch_ptr_t cur, bool other_side_visited,
-                           unsigned bit_idx, unsigned counts[3])
+ساكن فراغ ڳڻپ_drivers_2(vvp_branch_ptr_t cur, منطقي other_side_گهميل,
+                           بنانشان ٻٽو_انگ_idx, بنانشان counts[3])
 {
         // First count any value driven into the port associated with
         // the current endpoint.
-      vvp_net_t*net = cur.port() ? cur.ptr()->b : cur.ptr()->a;
-      vvp_scalar_t bit = island_get_value(net).value(bit_idx);
-      update_driver_counts(bit.value(), counts);
+      vvp_net_t*net = cur.پورٽ() ? cur.ptr()->b : cur.ptr()->a;
+      vvp_scalar_t ٻٽو_انگ = island_get_قدر(net).value(ٻٽو_انگ_idx);
+      update_driver_counts(ٻٽو_انگ.value(), counts);
 
         // Now handle all the branches attached to that port.
       vvp_branch_ptr_t idx = cur;
-      do {
+      افعل {
             vvp_island_branch_tran*tmp = BRANCH_TRAN(idx.ptr());
 
               // If this branch represents a tran gate, we count the
               // value on the other side of the tran (providing it is
               // enabled) as a single driver.
-            if (tmp->width == 0) {
-                  if (tmp->state == tran_enabled) {
-                        net = idx.port() ? idx.ptr()->a : idx.ptr()->b;
-                        bit = island_get_sent_value(net).value(bit_idx);
-                        update_driver_counts(bit.value(), counts);
+            إذا (tmp->width == 0) {
+                  إذا (tmp->state == tran_enabled) {
+                        net = idx.پورٽ() ? idx.ptr()->a : idx.ptr()->b;
+                        ٻٽو_انگ = island_get_موڪليل_قدر(net).value(ٻٽو_انگ_idx);
+                        update_driver_counts(ٻٽو_انگ.value(), counts);
                   }
-                  continue;
+                  استمر;
             }
 
               // If we get here, this branch is a part select. If we've
               // just come from the other end of the branch, we're done.
-            if ((idx == cur) && other_side_visited)
-                  continue;
+            إذا ((idx == cur) && other_side_گهميل)
+                  استمر;
 
               // If this is the narrow end of the part select, the other
               // end must include the bit we are interested in. Follow
               // the branch to collect any drivers on the other side.
-            if (idx.port() == 1) {
+            إذا (idx.پورٽ() == 1) {
                   vvp_branch_ptr_t a_side(tmp, 0);
-                  count_drivers_(a_side, true, tmp->offset + bit_idx, counts);
-                  continue;
+                  ڳڻپ_drivers_2(a_side, سچ, tmp->وٿي_2 + ٻٽو_انگ_idx, counts);
+                  استمر;
             }
 
               // If we get here, this branch is the wide end of a part
               // select. If the bit we are interested in is within the
               // selected part, follow the branch to collect any drivers
               // on the other side.
-            if ((bit_idx >= tmp->offset) && (bit_idx < tmp->offset+tmp->part)) {
+            إذا ((ٻٽو_انگ_idx >= tmp->وٿي_2) && (ٻٽو_انگ_idx < tmp->وٿي_2+tmp->part)) {
                   vvp_branch_ptr_t b_side(tmp, 1);
-                  count_drivers_(b_side, true, bit_idx - tmp->offset, counts);
-                  continue;
+                  ڳڻپ_drivers_2(b_side, سچ, ٻٽو_انگ_idx - tmp->وٿي_2, counts);
+                  استمر;
             }
-      } while ((idx = next(idx)) != cur);
+      } طالما ((idx = ايندڙ_2(idx)) != cur);
 }
 
-void vvp_island_tran::count_drivers(vvp_island_port*port, unsigned bit_idx,
-                                    unsigned counts[3])
+فراغ vvp_island_tran::ڳڻپ_drivers(vvp_island_پورٽ*پورٽ, بنانشان ٻٽو_انگ_idx,
+                                    بنانشان counts[3])
 {
         // First we need to find a branch that is attached to the specified
         // port. Unfortunately there's no quick way to do this.
       vvp_island_branch*branch = branches_;
-      unsigned side = 0;
-      while (branch) {
-            if (branch->a->fun == port) {
+      بنانشان side = 0;
+      طالما (branch) {
+            إذا (branch->a->fun == پورٽ) {
                   side = 0;
-                  break;
+                  اكسر;
             }
-            if (branch->b->fun == port) {
+            إذا (branch->b->fun == پورٽ) {
                   side = 1;
-                  break;
+                  اكسر;
             }
-            branch = branch->next_branch;
+            branch = branch->ايندڙ_branch;
       }
-      assert(branch);
+      أكد(branch);
 
         // Now count the drivers, pushing through the network as necessary.
       vvp_branch_ptr_t endpoint(branch, side);
-      count_drivers_(endpoint, false, bit_idx, counts);
+      ڳڻپ_drivers_2(endpoint, خطأ, ٻٽو_انگ_idx, counts);
 }
 
-void vvp_island_branch_tran::run_test_enabled()
+فراغ vvp_island_branch_tran::لاڳيتو_test_enabled()
 {
-      const vvp_island_port*ep = en? dynamic_cast<vvp_island_port*> (en->fun) : NULL;
+      ثابت vvp_island_پورٽ*ep = en? dynamic_cast<vvp_island_پورٽ*> (en->fun) : عدم;
 
 	// If there is no ep port (no "enabled" input) then this is a
 	// tran branch. Assume it is always enabled.
-      if (ep == 0) {
+      إذا (ep == 0) {
 	    state = tran_enabled;
-	    return;
+	    أرجع;
       }
 
 	// Get the input that is driving this enable.
@@ -221,158 +221,158 @@ void vvp_island_branch_tran::run_test_enabled()
 	// If the outvalue is nil, then we know that this port is a
 	// .import after all, so just read the invalue.
       vvp_bit4_t enable_val;
-      if (ep->outvalue.size() != 0)
+      إذا (ep->outvalue.size() != 0)
 	    enable_val = ep->outvalue.value(0).value();
-      else if (ep->invalue.size() == 0)
+      وإلا إذا (ep->invalue.size() == 0)
 	    enable_val = BIT4_Z;
-      else
+      وإلا
 	    enable_val = ep->invalue.value(0).value();
 
-      switch (enable_val) {
-	  case BIT4_0:
-	    state = active_high ? tran_disabled : tran_enabled;
-	    break;
-	  case BIT4_1:
-	    state = active_high ? tran_enabled : tran_disabled;
-	    break;
-	  default:
+      بدل (enable_val) {
+	  حالة BIT4_0:
+	    state = سرگرم_مٿاهون_2 ? tran_disabled : tran_enabled;
+	    اكسر;
+	  حالة BIT4_1:
+	    state = سرگرم_مٿاهون_2 ? tran_enabled : tran_disabled;
+	    اكسر;
+	  افتراضي:
 	    state = tran_unknown;
-	    break;
+	    اكسر;
       }
 }
 
-bool vvp_island_branch_tran::rerun_test_enabled()
+منطقي vvp_island_branch_tran::rerun_test_enabled()
 {
-      const vvp_island_port*ep = en? dynamic_cast<vvp_island_port*> (en->fun) : NULL;
+      ثابت vvp_island_پورٽ*ep = en? dynamic_cast<vvp_island_پورٽ*> (en->fun) : عدم;
 
-      if (ep == 0)
-	    return false;
+      إذا (ep == 0)
+	    أرجع خطأ;
 
 	// We are only looking for changes resulting from running the island
 	// resolution. If the outvalue is nil, we know that the enable port
 	// is an .import, so won't be affected.
-      if (ep->outvalue.size() == 0)
-	    return false;
+      إذا (ep->outvalue.size() == 0)
+	    أرجع خطأ;
 
       vvp_bit4_t enable_val = ep->outvalue.value(0).value();
 
       tran_state_t old_state = state;
 
-      switch (enable_val) {
-	  case BIT4_0:
-	    state = active_high ? tran_disabled : tran_enabled;
-	    break;
-	  case BIT4_1:
-	    state = active_high ? tran_enabled : tran_disabled;
-	    break;
-	  default:
+      بدل (enable_val) {
+	  حالة BIT4_0:
+	    state = سرگرم_مٿاهون_2 ? tran_disabled : tran_enabled;
+	    اكسر;
+	  حالة BIT4_1:
+	    state = سرگرم_مٿاهون_2 ? tran_enabled : tran_disabled;
+	    اكسر;
+	  افتراضي:
 	    state = tran_unknown;
-	    break;
+	    اكسر;
       }
 
-      return state != old_state;
+      أرجع state != old_state;
 }
 
 // The IEEE standard does not specify the behaviour when a tranif control
 // input is 'x' or 'z'. We use the rules that are given for MOS switches.
-inline vvp_vector8_t resolve_ambiguous(const vvp_vector8_t&a,
-                                       const vvp_vector8_t&b,
+مضمن vvp_vector8_t resolve_ambiguous(ثابت vvp_vector8_t&a,
+                                       ثابت vvp_vector8_t&b,
                                        tran_state_t state,
-                                       const unsigned str_map[8])
+                                       ثابت بنانشان str_map[8])
 {
-      assert(a.size() == b.size());
+      أكد(a.size() == b.size());
       vvp_vector8_t out (a.size());
 
-      for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
-	    vvp_scalar_t a_bit = a.value(idx);
-	    vvp_scalar_t b_bit = b.value(idx);
-            b_bit = vvp_scalar_t(b_bit.value(),
-                                 str_map[b_bit.strength0()],
-                                 str_map[b_bit.strength1()]);
-	    if (state == tran_unknown) {
-		  switch (b_bit.value()) {
-		      case BIT4_0:
-			b_bit = vvp_scalar_t(BIT4_X, b_bit.strength0(), 0);
-			break;
-		      case BIT4_1:
-			b_bit = vvp_scalar_t(BIT4_X, 0, b_bit.strength1());
-			break;
-		      default:
-			break;
+      لكل (بنانشان idx = 0 ;  idx < out.size() ;  idx += 1) {
+	    vvp_scalar_t a_ٻٽو_انگ = a.value(idx);
+	    vvp_scalar_t b_ٻٽو_انگ = b.value(idx);
+            b_ٻٽو_انگ = vvp_scalar_t(b_ٻٽو_انگ.value(),
+                                 str_map[b_ٻٽو_انگ.strength0()],
+                                 str_map[b_ٻٽو_انگ.strength1()]);
+	    إذا (state == tran_unknown) {
+		  بدل (b_ٻٽو_انگ.value()) {
+		      حالة BIT4_0:
+			b_ٻٽو_انگ = vvp_scalar_t(BIT4_X, b_ٻٽو_انگ.strength0(), 0);
+			اكسر;
+		      حالة BIT4_1:
+			b_ٻٽو_انگ = vvp_scalar_t(BIT4_X, 0, b_ٻٽو_انگ.strength1());
+			اكسر;
+		      افتراضي:
+			اكسر;
 		  }
 	    }
-	    out.set_bit(idx, resolve(a_bit, b_bit));
+	    out.سيٽ_ٻٽو_انگ(idx, resolve(a_ٻٽو_انگ, b_ٻٽو_انگ));
       }
-      return out;
+      أرجع out;
 }
 
-static void push_value_through_branches(const vvp_vector8_t&val,
-					const list<vvp_branch_ptr_t>&connections);
+ساكن فراغ ڌڪو_قدر_through_branches(ثابت vvp_vector8_t&val,
+					ثابت list<vvp_branch_ptr_t>&connections);
 
-static void push_value_through_branch(const vvp_vector8_t&val,
+ساكن فراغ ڌڪو_قدر_through_branch(ثابت vvp_vector8_t&val,
                                       vvp_branch_ptr_t cur)
 {
       vvp_island_branch_tran*branch = BRANCH_TRAN(cur.ptr());
 
         // If the branch is disabled, skip.
-      if (branch->state == tran_disabled)
-            return;
+      إذا (branch->state == tran_disabled)
+            أرجع;
 
-      unsigned src_ab = cur.port();
-      unsigned dst_ab = src_ab^1;
+      بنانشان src_ab = cur.پورٽ();
+      بنانشان dst_ab = src_ab^1;
 
       vvp_net_t*dst_net = dst_ab? branch->b : branch->a;
-      vvp_island_port*dst_port = dynamic_cast<vvp_island_port*>(dst_net->fun);
+      vvp_island_پورٽ*dst_پورٽ = dynamic_cast<vvp_island_پورٽ*>(dst_net->fun);
 
-      vvp_vector8_t old_val = dst_port->value;
+      vvp_vector8_t old_val = dst_پورٽ->value;
 
         // If the port on the other side has not yet been visited,
         // get its input value.
-      if (dst_port->value.size() == 0)
-            dst_port->value = island_get_value(dst_net);
+      إذا (dst_پورٽ->value.size() == 0)
+            dst_پورٽ->value = island_get_قدر(dst_net);
 
         // If we don't yet have an initial value for the port, skip.
-      if (dst_port->value.size() == 0)
-            return;
+      إذا (dst_پورٽ->value.size() == 0)
+            أرجع;
 
         // Now resolve the pushed value with whatever values we have
         // previously collected (and resolved) for the port.
-      if (branch->width == 0) {
+      إذا (branch->width == 0) {
               // There are no part selects.
-            dst_port->value = resolve_ambiguous(dst_port->value, val, branch->state,
+            dst_پورٽ->value = resolve_ambiguous(dst_پورٽ->value, val, branch->state,
                                                 vvp_switch_strength_map[branch->resistive]);
 
-      } else if (dst_ab == 1) {
+      } وإلا إذا (dst_ab == 1) {
               // The other side is a strict subset (part select)
               // of this side.
-            vvp_vector8_t tmp = val.subvalue(branch->offset, branch->part);
-            dst_port->value = resolve(dst_port->value, tmp);
+            vvp_vector8_t tmp = val.subvalue(branch->وٿي_2, branch->part);
+            dst_پورٽ->value = resolve(dst_پورٽ->value, tmp);
 
-      } else {
+      } وإلا {
               // The other side is a superset of this side.
-            vvp_vector8_t tmp = part_expand(val, branch->width, branch->offset);
-            dst_port->value = resolve(dst_port->value, tmp);
+            vvp_vector8_t tmp = part_expand(val, branch->width, branch->وٿي_2);
+            dst_پورٽ->value = resolve(dst_پورٽ->value, tmp);
       }
 
         // If the resolved value for the port has changed, push the new
         // value back into the network.
-      if (! dst_port->value.eeq(old_val)) {
+      إذا (! dst_پورٽ->value.eeq(old_val)) {
             list<vvp_branch_ptr_t> connections;
 
 	    vvp_branch_ptr_t dst_side(branch, dst_ab);
-	    island_collect_node(connections, dst_side);
+	    island_collect_ڳنڍ(connections, dst_side);
 
-	    push_value_through_branches(dst_port->value, connections);
+	    ڌڪو_قدر_through_branches(dst_پورٽ->value, connections);
       }
 }
 
-static void push_value_through_branches(const vvp_vector8_t&val,
-					const list<vvp_branch_ptr_t>&connections)
+ساكن فراغ ڌڪو_قدر_through_branches(ثابت vvp_vector8_t&val,
+					ثابت list<vvp_branch_ptr_t>&connections)
 {
-      for (list<vvp_branch_ptr_t>::const_iterator idx = connections.cbegin()
+      لكل (list<vvp_branch_ptr_t>::const_iterator idx = connections.cbegin()
 		 ; idx != connections.cend() ; ++ idx ) {
 
-            push_value_through_branch(val, *idx);
+            ڌڪو_قدر_through_branch(val, *idx);
       }
 }
 
@@ -381,21 +381,21 @@ static void push_value_through_branches(const vvp_vector8_t&val,
  * recursive descent to span the graph of branches, pushing values
  * through the network until a stable state is reached.
  */
-void vvp_island_branch_tran::run_resolution()
+فراغ vvp_island_branch_tran::لاڳيتو_resolution()
 {
       list<vvp_branch_ptr_t> connections;
-      vvp_island_port*port;
+      vvp_island_پورٽ*پورٽ;
 
 	// If the A side port hasn't already been visited, then push
         // its input value through all the branches connected to it.
-      port = dynamic_cast<vvp_island_port*>(a->fun);
-      if (port->value.size() == 0) {
-	    vvp_branch_ptr_t a_side(this, 0);
-	    island_collect_node(connections, a_side);
+      پورٽ = dynamic_cast<vvp_island_پورٽ*>(a->fun);
+      إذا (پورٽ->value.size() == 0) {
+	    vvp_branch_ptr_t a_side(هذا, 0);
+	    island_collect_ڳنڍ(connections, a_side);
 
-	    port->value = island_get_value(a);
-            if (port->value.size() != 0)
-	          push_value_through_branches(port->value, connections);
+	    پورٽ->value = island_get_قدر(a);
+            إذا (پورٽ->value.size() != 0)
+	          ڌڪو_قدر_through_branches(پورٽ->value, connections);
 
             connections.clear();
       }
@@ -403,84 +403,84 @@ void vvp_island_branch_tran::run_resolution()
 	// Do the same for the B side port. Note that if the branch
         // is enabled, the B side port will have already been visited
         // when we resolved the A side port.
-      port = dynamic_cast<vvp_island_port*>(b->fun);
-      if (port->value.size() == 0) {
-	    vvp_branch_ptr_t b_side(this, 1);
-	    island_collect_node(connections, b_side);
+      پورٽ = dynamic_cast<vvp_island_پورٽ*>(b->fun);
+      إذا (پورٽ->value.size() == 0) {
+	    vvp_branch_ptr_t b_side(هذا, 1);
+	    island_collect_ڳنڍ(connections, b_side);
 
-	    port->value = island_get_value(b);
-	    if (port->value.size() != 0)
-	          push_value_through_branches(port->value, connections);
+	    پورٽ->value = island_get_قدر(b);
+	    إذا (پورٽ->value.size() != 0)
+	          ڌڪو_قدر_through_branches(پورٽ->value, connections);
 
             connections.clear();
       }
 }
 
-void vvp_island_branch_tran::run_output()
+فراغ vvp_island_branch_tran::لاڳيتو_output()
 {
-      vvp_island_port*port;
+      vvp_island_پورٽ*پورٽ;
 
 	// If the A side port hasn't already been updated, send the
         // resolved value to the output.
-      port = dynamic_cast<vvp_island_port*>(a->fun);
-      if (port->value.size() != 0) {
-	    island_send_value(a, port->value);
-	    port->value = vvp_vector8_t::nil;
+      پورٽ = dynamic_cast<vvp_island_پورٽ*>(a->fun);
+      إذا (پورٽ->value.size() != 0) {
+	    island_send_قدر(a, پورٽ->value);
+	    پورٽ->value = vvp_vector8_t::nil;
       }
 
 	// Do the same for the B side port.
-      port = dynamic_cast<vvp_island_port*>(b->fun);
-      if (port->value.size() != 0) {
-	    island_send_value(b, port->value);
-	    port->value = vvp_vector8_t::nil;
+      پورٽ = dynamic_cast<vvp_island_پورٽ*>(b->fun);
+      إذا (پورٽ->value.size() != 0) {
+	    island_send_قدر(b, پورٽ->value);
+	    پورٽ->value = vvp_vector8_t::nil;
       }
 }
 
-void compile_island_tran(char*label)
+فراغ compile_island_tran(حرف*label)
 {
-      vvp_island*use_island = new vvp_island_tran;
-      compile_island_base(label, use_island);
+      vvp_island*use_island = جديد vvp_island_tran;
+      compile_island_بنياد(label, use_island);
 }
 
-void compile_island_tranif(int sense, char*island, char*pa, char*pb, char*pe,
-                           bool resistive)
+فراغ compile_island_tranif(صحيح sense, حرف*island, حرف*pa, حرف*pb, حرف*pe,
+                           منطقي resistive)
 {
-      vvp_island*use_island = compile_find_island(island);
-      assert(use_island);
-      free(island);
+      vvp_island*use_island = compile_ڳوليو_island(island);
+      أكد(use_island);
+      حرر(island);
 
-      vvp_net_t*en = NULL;
+      vvp_net_t*en = عدم;
 
-      if (pe) {
-	    en = use_island->find_port(pe);
-	    assert(en);
-	    free(pe);
+      إذا (pe) {
+	    en = use_island->ڳوليو_پورٽ(pe);
+	    أكد(en);
+	    حرر(pe);
       }
 
-      vvp_island_branch_tran*br = new vvp_island_branch_tran(en,
-                                                             sense ? true :
-                                                                     false,
+      vvp_island_branch_tran*br = جديد vvp_island_branch_tran(en,
+                                                             sense ? سچ :
+                                                                     خطأ,
                                                              0, 0, 0, resistive);
 
-      use_island->add_branch(br, pa, pb);
+      use_island->جوڙيو_branch(br, pa, pb);
 
-      free(pa);
-      free(pb);
+      حرر(pa);
+      حرر(pb);
 }
 
 
-void compile_island_tranvp(char*island, char*pa, char*pb,
-			   unsigned wid, unsigned par, unsigned off)
+فراغ compile_island_tranvp(حرف*island, حرف*pa, حرف*pb,
+			   بنانشان wid, بنانشان par, بنانشان off)
 {
-      vvp_island*use_island = compile_find_island(island);
-      assert(use_island);
-      free(island);
+      vvp_island*use_island = compile_ڳوليو_island(island);
+      أكد(use_island);
+      حرر(island);
 
-      vvp_island_branch_tran*br = new vvp_island_branch_tran(NULL, false,
-                                                             wid, par, off, false);
+      vvp_island_branch_tran*br = جديد vvp_island_branch_tran(عدم, خطأ,
+                                                             wid, par, off, خطأ);
 
-      use_island->add_branch(br, pa, pb);
+      use_island->جوڙيو_branch(br, pa, pb);
 
-      free(pa);
-      free(pb);
+      حرر(pa);
+      حرر(pb);
 }

@@ -19,9 +19,9 @@
 
 # include  "vpi_priv.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
+#جيڪڏهن_وصف_ٿيل CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
-#endif
+#جيڪڏهن_پورو
 # include  <cassert>
 # include  <cstdarg>
 # include  <cstdio>
@@ -29,7 +29,7 @@
 # include  <cstring>
 # include  "ivl_alloc.h"
 
-extern FILE* vpi_trace;
+خارجي FILE* vpi_trace;
 
 /*
  * This table keeps track of the MCD files. Note that there may be
@@ -41,252 +41,252 @@ extern FILE* vpi_trace;
 /*
  * MCD/FD manipulation macros
  */
-#define IS_MCD(mcd)	!(static_cast<unsigned>(mcd)>>31&1)
-#define FD_IDX(fd)	((fd)&~(1U<<31))
-#define FD_INCR		32
+#وصف_ڪريو IS_MCD(mcd)	!(static_cast<بنانشان>(mcd)>>31&1)
+#وصف_ڪريو FD_IDX(fd)	((fd)&~(1U<<31))
+#وصف_ڪريو FD_INCR		32
 
-typedef struct mcd_entry {
+تعريفنوع بنية mcd_داخلا {
 	FILE *fp;
-	char *filename;
-} mcd_entry_s;
-static mcd_entry_s mcd_table[31];
-static mcd_entry_s *fd_table = NULL;
-static unsigned fd_table_len = 0;
+	حرف *filename;
+} mcd_داخلا_s;
+ساكن mcd_داخلا_s mcd_جدول[31];
+ساكن mcd_داخلا_s *fd_جدول = عدم;
+ساكن بنانشان fd_جدول_len = 0;
 
-static FILE* logfile;
+ساكن FILE* logfile;
 
-bool vpip_mcd0_disable = false;
+منطقي vpip_mcd0_disable = خطأ;
 
 /* Initialize mcd portion of vpi.  Must be called before
  * any vpi_mcd routines can be used.
  */
-void vpip_mcd_init(FILE *log)
+فراغ vpip_mcd_init(FILE *لاگرٿم)
 {
-      fd_table_len = FD_INCR;
-      fd_table = static_cast<mcd_entry_s *>(malloc(fd_table_len*sizeof(mcd_entry_s)));
-      for (unsigned idx = 0; idx < fd_table_len; idx += 1) {
-	    fd_table[idx].fp = NULL;
-	    fd_table[idx].filename = NULL;
+      fd_جدول_len = FD_INCR;
+      fd_جدول = static_cast<mcd_داخلا_s *>(يادگيري_ڏيو(fd_جدول_len*حجم(mcd_داخلا_s)));
+      لكل (بنانشان idx = 0; idx < fd_جدول_len; idx += 1) {
+	    fd_جدول[idx].fp = عدم;
+	    fd_جدول[idx].filename = عدم;
       }
 
-      mcd_table[0].fp = stdout;
-      mcd_table[0].filename = strdup("stdout");
+      mcd_جدول[0].fp = stdout;
+      mcd_جدول[0].filename = strdup("stdout");
 
-      fd_table[0].fp = stdin;
-      fd_table[0].filename = strdup("stdin");
-      fd_table[1].fp = stdout;
-      fd_table[1].filename = strdup("stdout");
-      fd_table[2].fp = stderr;
-      fd_table[2].filename = strdup("stderr");
+      fd_جدول[0].fp = stdin;
+      fd_جدول[0].filename = strdup("stdin");
+      fd_جدول[1].fp = stdout;
+      fd_جدول[1].filename = strdup("stdout");
+      fd_جدول[2].fp = stderr;
+      fd_جدول[2].filename = strdup("stderr");
 
-      logfile = log;
+      logfile = لاگرٿم;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vpi_mcd_delete(void)
+#جيڪڏهن_وصف_ٿيل CHECK_WITH_VALGRIND
+فراغ vpi_mcd_delete(فراغ)
 {
-      free(mcd_table[0].filename);
-      mcd_table[0].filename = NULL;
-      mcd_table[0].fp = NULL;
+      حرر(mcd_جدول[0].filename);
+      mcd_جدول[0].filename = عدم;
+      mcd_جدول[0].fp = عدم;
 
-      free(fd_table[0].filename);
-      fd_table[0].filename = NULL;
-      fd_table[0].fp = NULL;
+      حرر(fd_جدول[0].filename);
+      fd_جدول[0].filename = عدم;
+      fd_جدول[0].fp = عدم;
 
-      free(fd_table[1].filename);
-      fd_table[1].filename = NULL;
-      fd_table[1].fp = NULL;
+      حرر(fd_جدول[1].filename);
+      fd_جدول[1].filename = عدم;
+      fd_جدول[1].fp = عدم;
 
-      free(fd_table[2].filename);
-      fd_table[2].filename = NULL;
-      fd_table[2].fp = NULL;
+      حرر(fd_جدول[2].filename);
+      fd_جدول[2].filename = عدم;
+      fd_جدول[2].fp = عدم;
 
-      free(fd_table);
-      fd_table = NULL;
-      fd_table_len = 0;
+      حرر(fd_جدول);
+      fd_جدول = عدم;
+      fd_جدول_len = 0;
 }
-#endif
+#جيڪڏهن_پورو
 
 /*
  * Close one or more channels. We refuse to close the preopened ones.
  */
-extern "C" PLI_UINT32 vpi_mcd_close(PLI_UINT32 mcd)
+خارجي "C" PLI_UINT32 vpi_mcd_close(PLI_UINT32 mcd)
 {
-      int rc = 0;
+      صحيح rc = 0;
 
-      if (IS_MCD(mcd)) {
-	    if (mcd & 1) rc |= 1;
-	    for(int i = 1; i < 31; i++) {
-		  if ((mcd>>i) & 1) {
-			if (mcd_table[i].fp) {
-			      if (fclose(mcd_table[i].fp)) rc |= 1<<i;
-			      free(mcd_table[i].filename);
-			      mcd_table[i].fp = NULL;
-			      mcd_table[i].filename = NULL;
-			} else {
+      إذا (IS_MCD(mcd)) {
+	    إذا (mcd & 1) rc |= 1;
+	    لكل(صحيح i = 1; i < 31; i++) {
+		  إذا ((mcd>>i) & 1) {
+			إذا (mcd_جدول[i].fp) {
+			      إذا (fclose(mcd_جدول[i].fp)) rc |= 1<<i;
+			      حرر(mcd_جدول[i].filename);
+			      mcd_جدول[i].fp = عدم;
+			      mcd_جدول[i].filename = عدم;
+			} وإلا {
 			      rc |= 1<<i;
 			}
 		  }
 	    }
-      } else {
-	    unsigned idx = FD_IDX(mcd);
-	    if (idx > 2 && idx < fd_table_len && fd_table[idx].fp) {
-		  if (fclose(fd_table[idx].fp)) rc = mcd;
-		  free(fd_table[idx].filename);
-		  fd_table[idx].fp = NULL;
-		  fd_table[idx].filename = NULL;
-	    } else rc = mcd;
+      } وإلا {
+	    بنانشان idx = FD_IDX(mcd);
+	    إذا (idx > 2 && idx < fd_جدول_len && fd_جدول[idx].fp) {
+		  إذا (fclose(fd_جدول[idx].fp)) rc = mcd;
+		  حرر(fd_جدول[idx].filename);
+		  fd_جدول[idx].fp = عدم;
+		  fd_جدول[idx].filename = عدم;
+	    } وإلا rc = mcd;
       }
-      return rc;
+      أرجع rc;
 }
 
-extern "C" char *vpi_mcd_name(PLI_UINT32 mcd)
+خارجي "C" حرف *vpi_mcd_name(PLI_UINT32 mcd)
 {
-	if (IS_MCD(mcd)) {
-		for(int i = 0; i < 31; i++) {
-			if((mcd>>i) & 1)
-				return mcd_table[i].filename;
+	إذا (IS_MCD(mcd)) {
+		لكل(صحيح i = 0; i < 31; i++) {
+			إذا((mcd>>i) & 1)
+				أرجع mcd_جدول[i].filename;
 		}
-	} else {
-		unsigned idx = FD_IDX(mcd);
-		if (idx < fd_table_len)
-			return fd_table[idx].filename;
+	} وإلا {
+		بنانشان idx = FD_IDX(mcd);
+		إذا (idx < fd_جدول_len)
+			أرجع fd_جدول[idx].filename;
 	}
-	return NULL;
+	أرجع عدم;
 }
 
-extern "C" PLI_UINT32 vpi_mcd_open(char *name)
+خارجي "C" PLI_UINT32 vpi_mcd_open(حرف *name)
 {
-	int i;
+	صحيح i;
 
-	for(i = 0; i < 31; i++) {
-		if(mcd_table[i].filename == NULL)
-			goto got_entry;
+	لكل(i = 0; i < 31; i++) {
+		إذا(mcd_جدول[i].filename == عدم)
+			اذهب got_داخلا;
 	}
-	return 0;  /* too many open mcd's */
+	أرجع 0;  /* too many open mcd's */
 
-got_entry:
-#if defined(__GNUC__)
-	mcd_table[i].fp = fopen(name, "w");
-#else
-	if (strcmp(name, "/dev/null") != 0)
-		mcd_table[i].fp = fopen(name, "w");
-	else
-		mcd_table[i].fp = fopen("nul", "w");
-#endif
-	if(mcd_table[i].fp == NULL)
-		return 0;
-	mcd_table[i].filename = strdup(name);
+got_داخلا:
+#إذا defined(__GNUC__)
+	mcd_جدول[i].fp = fopen(name, "w");
+#وإلا
+	إذا (strcmp(name, "/dev/null") != 0)
+		mcd_جدول[i].fp = fopen(name, "w");
+	وإلا
+		mcd_جدول[i].fp = fopen("nul", "w");
+#جيڪڏهن_پورو
+	إذا(mcd_جدول[i].fp == عدم)
+		أرجع 0;
+	mcd_جدول[i].filename = strdup(name);
 
-	if (vpi_trace) {
+	إذا (vpi_trace) {
 	      fprintf(vpi_trace, "vpi_mcd_open(%s) --> 0x%08x\n",
 		      name, 1 << i);
 	}
 
-	return 1<<i;
+	أرجع 1<<i;
 }
 
-extern "C" PLI_INT32
-vpi_mcd_vprintf(PLI_UINT32 mcd, const char*fmt, va_list ap)
+خارجي "C" PLI_INT32
+vpi_mcd_vprintf(PLI_UINT32 mcd, ثابت حرف*fmt, va_list ap)
 {
-      char buffer[4096];
-      char *buf_ptr = buffer;
-      int rc = 0;
-      bool need_free = false;
+      حرف بفر[4096];
+      حرف *buf_ptr = بفر;
+      صحيح rc = 0;
+      منطقي need_free = خطأ;
       va_list saved_ap;
 
-      if (!IS_MCD(mcd)) return EOF;
+      إذا (!IS_MCD(mcd)) أرجع EOF;
 
-      if (vpi_trace) {
+      إذا (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_mcd_vprintf(0x%08x, %s, ...);\n",
-		    (unsigned int)mcd, fmt);
+		    (بنانشان صحيح)mcd, fmt);
       }
 
       va_copy(saved_ap, ap);
-      rc = vsnprintf(buffer, sizeof buffer, fmt, ap);
-      assert(rc >= 0);
+      rc = vsnprintf(بفر, حجم بفر, fmt, ap);
+      أكد(rc >= 0);
 	/*
 	 * If rc is greater than sizeof buffer then the result was truncated
 	 * so the print needs to be redone with a larger buffer (very rare).
 	 */
-      if ((unsigned) rc >= sizeof buffer) {
-	    buf_ptr = static_cast<char *>(malloc(rc + 1));
-	    need_free = true;
+      إذا ((بنانشان) rc >= حجم بفر) {
+	    buf_ptr = static_cast<حرف *>(يادگيري_ڏيو(rc + 1));
+	    need_free = سچ;
 	    rc = vsnprintf(buf_ptr, rc+1, fmt, saved_ap);
       }
       va_end(saved_ap);
 
-      for(int i = 0; i < 31; i++) {
-	    if((mcd>>i) & 1) {
-		  if(mcd_table[i].fp) {
-			if (i == 0) {
-			      if (logfile)
+      لكل(صحيح i = 0; i < 31; i++) {
+	    إذا((mcd>>i) & 1) {
+		  إذا(mcd_جدول[i].fp) {
+			إذا (i == 0) {
+			      إذا (logfile)
 				    fputs(buf_ptr, logfile);
-			      if (vpip_mcd0_disable)
-				    continue;
+			      إذا (vpip_mcd0_disable)
+				    استمر;
 			}
-			fputs(buf_ptr, mcd_table[i].fp);
-		  } else {
+			fputs(buf_ptr, mcd_جدول[i].fp);
+		  } وإلا {
 			rc = EOF;
 		  }
 	    }
       }
-      if (need_free) free(buf_ptr);
+      إذا (need_free) حرر(buf_ptr);
 
-      return rc;
+      أرجع rc;
 }
 
-extern "C" PLI_INT32 vpi_mcd_printf(PLI_UINT32 mcd, const char *fmt, ...)
+خارجي "C" PLI_INT32 vpi_mcd_printf(PLI_UINT32 mcd, ثابت حرف *fmt, ...)
 {
       va_list ap;
       va_start(ap, fmt);
-      int r = vpi_mcd_vprintf(mcd,fmt,ap);
+      صحيح r = vpi_mcd_vprintf(mcd,fmt,ap);
       va_end(ap);
-      return r;
+      أرجع r;
 }
 
-extern "C" void vpip_mcd_rawwrite(PLI_UINT32 mcd, const char*buf, size_t cnt)
+خارجي "C" فراغ vpip_mcd_rawwrite(PLI_UINT32 mcd, ثابت حرف*buf, size_t cnt)
 {
-      if (!IS_MCD(mcd)) return;
+      إذا (!IS_MCD(mcd)) أرجع;
 
-      for(int idx = 0; idx < 31; idx += 1) {
-	    if (((mcd>>idx) & 1) == 0)
-		  continue;
+      لكل(صحيح idx = 0; idx < 31; idx += 1) {
+	    إذا (((mcd>>idx) & 1) == 0)
+		  استمر;
 
-	    if (mcd_table[idx].fp == 0)
-		  continue;
+	    إذا (mcd_جدول[idx].fp == 0)
+		  استمر;
 
-	    if (idx == 0) {
-		  if (logfile)
+	    إذا (idx == 0) {
+		  إذا (logfile)
 			fwrite(buf, 1, cnt, logfile);
-		  if (vpip_mcd0_disable)
-			continue;
+		  إذا (vpip_mcd0_disable)
+			استمر;
 	    }
-	    fwrite(buf, 1, cnt, mcd_table[idx].fp);
+	    fwrite(buf, 1, cnt, mcd_جدول[idx].fp);
       }
 }
 
-extern "C" PLI_INT32 vpi_mcd_flush(PLI_UINT32 mcd)
+خارجي "C" PLI_INT32 vpi_mcd_flush(PLI_UINT32 mcd)
 {
-	int rc = 0;
+	صحيح rc = 0;
 
-	if (IS_MCD(mcd)) {
-		for(int i = 0; i < 31; i++) {
-			if((mcd>>i) & 1) {
-				if (i == 0) {
-				      if (logfile)
+	إذا (IS_MCD(mcd)) {
+		لكل(صحيح i = 0; i < 31; i++) {
+			إذا((mcd>>i) & 1) {
+				إذا (i == 0) {
+				      إذا (logfile)
 					    fflush(logfile);
-				      if (vpip_mcd0_disable)
-					    continue;
+				      إذا (vpip_mcd0_disable)
+					    استمر;
 				}
-				if (fflush(mcd_table[i].fp)) rc |= 1<<i;
+				إذا (fflush(mcd_جدول[i].fp)) rc |= 1<<i;
 			}
 		}
-	} else {
-		unsigned idx = FD_IDX(mcd);
-		if (idx < fd_table_len) rc = fflush(fd_table[idx].fp);
+	} وإلا {
+		بنانشان idx = FD_IDX(mcd);
+		إذا (idx < fd_جدول_len) rc = fflush(fd_جدول[idx].fp);
 	}
-	return rc;
+	أرجع rc;
 }
 
 /*
@@ -300,47 +300,47 @@ extern "C" PLI_INT32 vpi_mcd_flush(PLI_UINT32 mcd)
  * descriptors are distinct from the mcd descriptors, so uses a
  * different fd table.
  */
-extern "C" PLI_INT32 vpi_fopen(const char*name, const char*mode)
+خارجي "C" PLI_INT32 vpi_fopen(ثابت حرف*name, ثابت حرف*گهڻائي)
 {
-      unsigned i;
-      for (i = 0; i < fd_table_len; i += 1) {
-	    if (fd_table[i].filename == NULL) goto got_entry;
+      بنانشان i;
+      لكل (i = 0; i < fd_جدول_len; i += 1) {
+	    إذا (fd_جدول[i].filename == عدم) اذهب got_داخلا;
       }
 	/* We need to allocate more table entries, but to keep things */
 	/* sane we'll hard limit this to 1024 file descriptors total. */
-      if (fd_table_len >= 1024) {
+      إذا (fd_جدول_len >= 1024) {
 	    vpi_printf("WARNING: Icarus only supports 1024 open files!\n");
-	    return 0;
+	    أرجع 0;
       }
-      fd_table_len += FD_INCR;
-      fd_table = static_cast<mcd_entry_s *>
-                 (realloc(fd_table, fd_table_len*sizeof(mcd_entry_s)));
-      for (unsigned idx = i; idx < fd_table_len; idx += 1) {
-	    fd_table[idx].fp = NULL;
-	    fd_table[idx].filename = NULL;
+      fd_جدول_len += FD_INCR;
+      fd_جدول = static_cast<mcd_داخلا_s *>
+                 (realloc(fd_جدول, fd_جدول_len*حجم(mcd_داخلا_s)));
+      لكل (بنانشان idx = i; idx < fd_جدول_len; idx += 1) {
+	    fd_جدول[idx].fp = عدم;
+	    fd_جدول[idx].filename = عدم;
       }
 
-got_entry:
-#ifndef _MSC_VER
-	  fd_table[i].fp = fopen(name, mode);
-#else // Changed for MSVC++ so vpi/pr723.v will pass.
-	  if(strcmp(name, "/dev/null") != 0)
-		fd_table[i].fp = fopen(name, mode);
-	  else
-		fd_table[i].fp = fopen("nul", mode);
-#endif
-      if (fd_table[i].fp == NULL) return 0;
-      fd_table[i].filename = strdup(name);
-      return ((1U<<31)|i);
+got_داخلا:
+#جيڪڏهن_وصف_نه_ٿيل _MSC_VER
+	  fd_جدول[i].fp = fopen(name, گهڻائي);
+#وإلا // Changed for MSVC++ so vpi/pr723.v will pass.
+	  إذا(strcmp(name, "/dev/null") != 0)
+		fd_جدول[i].fp = fopen(name, گهڻائي);
+	  وإلا
+		fd_جدول[i].fp = fopen("nul", گهڻائي);
+#جيڪڏهن_پورو
+      إذا (fd_جدول[i].fp == عدم) أرجع 0;
+      fd_جدول[i].filename = strdup(name);
+      أرجع ((1U<<31)|i);
 }
 
-extern "C" FILE *vpi_get_file(PLI_INT32 fd)
+خارجي "C" FILE *vpi_get_file(PLI_INT32 fd)
 {
 	// Only deal with FD's
-      if (IS_MCD(fd)) return NULL;
+      إذا (IS_MCD(fd)) أرجع عدم;
 
 	// Only know about fd_table_len indices
-      if (FD_IDX(fd) >= fd_table_len) return NULL;
+      إذا (FD_IDX(fd) >= fd_جدول_len) أرجع عدم;
 
-      return fd_table[FD_IDX(fd)].fp;
+      أرجع fd_جدول[FD_IDX(fd)].fp;
 }

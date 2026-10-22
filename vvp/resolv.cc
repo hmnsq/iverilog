@@ -25,7 +25,7 @@
 # include  <algorithm>
 # include  <cassert>
 
-using namespace std;
+استعمال نطاق std;
 
 /*
  * The core functor for a resolver node stores all the input values
@@ -41,55 +41,55 @@ using namespace std;
  */
 
 
-resolv_core::resolv_core(unsigned nports, vvp_net_t*net)
+resolv_core::resolv_core(بنانشان nports, vvp_net_t*net)
 : nports_(nports), net_(net)
 {
-      count_functors_resolv += 1;
+      ڳڻپ_functors_resolv += 1;
 }
 
 resolv_core::~resolv_core()
 {
 }
 
-void resolv_core::recv_vec4_pv_(unsigned port, const vvp_vector4_t&bit,
-				unsigned base, unsigned vwid)
+فراغ resolv_core::recv_vec4_pv_(بنانشان پورٽ, ثابت vvp_vector4_t&ٻٽو_انگ,
+				بنانشان بنياد, بنانشان vwid)
 {
-      unsigned wid = bit.size();
+      بنانشان wid = ٻٽو_انگ.size();
       vvp_vector4_t res (vwid);
 
-      for (unsigned idx = 0 ;  idx < base ;  idx += 1)
-	    res.set_bit(idx, BIT4_Z);
+      لكل (بنانشان idx = 0 ;  idx < بنياد ;  idx += 1)
+	    res.سيٽ_ٻٽو_انگ(idx, BIT4_Z);
 
-      for (unsigned idx = 0 ;  idx < wid && idx+base < vwid;  idx += 1)
-	    res.set_bit(idx+base, bit.value(idx));
+      لكل (بنانشان idx = 0 ;  idx < wid && idx+بنياد < vwid;  idx += 1)
+	    res.سيٽ_ٻٽو_انگ(idx+بنياد, ٻٽو_انگ.value(idx));
 
-      for (unsigned idx = base+wid ;  idx < vwid ;  idx += 1)
-	    res.set_bit(idx, BIT4_Z);
+      لكل (بنانشان idx = بنياد+wid ;  idx < vwid ;  idx += 1)
+	    res.سيٽ_ٻٽو_انگ(idx, BIT4_Z);
 
-      recv_vec4_(port, res);
+      recv_vec4_(پورٽ, res);
 }
 
-void resolv_core::recv_vec8_pv_(unsigned port, const vvp_vector8_t&bit,
-				unsigned base, unsigned vwid)
+فراغ resolv_core::recv_vec8_pv_(بنانشان پورٽ, ثابت vvp_vector8_t&ٻٽو_انگ,
+				بنانشان بنياد, بنانشان vwid)
 {
-      unsigned wid = bit.size();
+      بنانشان wid = ٻٽو_انگ.size();
       vvp_vector8_t res (vwid);
 
-      for (unsigned idx = 0 ;  idx < base ;  idx += 1)
-	    res.set_bit(idx, vvp_scalar_t());
+      لكل (بنانشان idx = 0 ;  idx < بنياد ;  idx += 1)
+	    res.سيٽ_ٻٽو_انگ(idx, vvp_scalar_t());
 
-      for (unsigned idx = 0 ;  idx < wid && idx+base < vwid;  idx += 1)
-	    res.set_bit(idx+base, bit.value(idx));
+      لكل (بنانشان idx = 0 ;  idx < wid && idx+بنياد < vwid;  idx += 1)
+	    res.سيٽ_ٻٽو_انگ(idx+بنياد, ٻٽو_انگ.value(idx));
 
-      for (unsigned idx = base+wid ;  idx < vwid ;  idx += 1)
-	    res.set_bit(idx, vvp_scalar_t());
+      لكل (بنانشان idx = بنياد+wid ;  idx < vwid ;  idx += 1)
+	    res.سيٽ_ٻٽو_انگ(idx, vvp_scalar_t());
 
-      recv_vec8_(port, res);
+      recv_vec8_(پورٽ, res);
 }
 
 
-resolv_extend::resolv_extend(resolv_core*core, unsigned port_base)
-: core_(core), port_base_(port_base)
+resolv_extend::resolv_extend(resolv_core*core, بنانشان پورٽ_بنياد)
+: core_(core), پورٽ_بنياد_2(پورٽ_بنياد)
 {
 }
 
@@ -98,43 +98,43 @@ resolv_extend::~resolv_extend()
 }
 
 
-resolv_tri::resolv_tri(unsigned nports, vvp_net_t*net, vvp_scalar_t hiz_value)
-: resolv_core(nports, net), hiz_value_(hiz_value)
+resolv_tri::resolv_tri(بنانشان nports, vvp_net_t*net, vvp_scalar_t hiz_قدر)
+: resolv_core(nports, net), hiz_قدر_2(hiz_قدر)
 {
         // count the input (leaf) nodes
-      unsigned nnodes = nports;
+      بنانشان nnodes = nports;
 
         // add in the intermediate branch nodes
-      while (nports > 4) {
+      طالما (nports > 4) {
             nports = (nports + 3) / 4;
             nnodes += nports;
       }
         // add one more node for storing the output value
         // (not needed if there is only one input)
-      if (nnodes > 1)
+      إذا (nnodes > 1)
             nnodes += 1;
 
-      val_ = new vvp_vector8_t [nnodes];
+      val_ = جديد vvp_vector8_t [nnodes];
 }
 
 resolv_tri::~resolv_tri()
 {
-      delete[] val_;
+      ميٽيو[] val_;
 }
 
-void resolv_tri::recv_vec4_(unsigned port, const vvp_vector4_t&bit)
+فراغ resolv_tri::recv_vec4_(بنانشان پورٽ, ثابت vvp_vector4_t&ٻٽو_انگ)
 {
-      recv_vec8_(port, vvp_vector8_t(bit, 6,6 /* STRONG */));
+      recv_vec8_(پورٽ, vvp_vector8_t(ٻٽو_انگ, 6,6 /* STRONG */));
 }
 
-void resolv_tri::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
+فراغ resolv_tri::recv_vec8_(بنانشان پورٽ, ثابت vvp_vector8_t&ٻٽو_انگ)
 {
-      assert(port < nports_);
+      أكد(پورٽ < nports_);
 
-      if (val_[port].eeq(bit))
-	    return;
+      إذا (val_[پورٽ].eeq(ٻٽو_انگ))
+	    أرجع;
 
-      val_[port] = bit;
+      val_[پورٽ] = ٻٽو_انگ;
 
         // Starting at the leaf level, work down the tree, resolving
         // the changed values. base is the first node in the current
@@ -143,85 +143,85 @@ void resolv_tri::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
         // that include the node that has changed, and op is the node
         // at the next level that stores the resolved value from that
         // group.
-      unsigned base = 0;
-      unsigned span = nports_;
-      while (span > 1) {
-            unsigned next_base = base + span;
-            unsigned ip = base + (port & ~0x3);
-            unsigned op = next_base + (port / 4);
-            unsigned ll = min(ip + 4, next_base);
+      بنانشان بنياد = 0;
+      بنانشان وسعت = nports_;
+      طالما (وسعت > 1) {
+            بنانشان ايندڙ_بنياد = بنياد + وسعت;
+            بنانشان ip = بنياد + (پورٽ & ~0x3);
+            بنانشان op = ايندڙ_بنياد + (پورٽ / 4);
+            بنانشان ll = min(ip + 4, ايندڙ_بنياد);
 
             vvp_vector8_t out = val_[ip];
-            for (ip = ip + 1; ip < ll; ip += 1) {
-                  if (val_[ip].size() == 0)
-                        continue;
-                  if (out.size() == 0)
+            لكل (ip = ip + 1; ip < ll; ip += 1) {
+                  إذا (val_[ip].size() == 0)
+                        استمر;
+                  إذا (out.size() == 0)
                         out = val_[ip];
-                  else
+                  وإلا
                         out = resolve(out, val_[ip]);
             }
-            if (val_[op].eeq(out))
-                  return;
+            إذا (val_[op].eeq(out))
+                  أرجع;
             val_[op] = out;
 
-            base = next_base;
-            span = (span + 3) / 4;
-            port = port / 4;
+            بنياد = ايندڙ_بنياد;
+            وسعت = (وسعت + 3) / 4;
+            پورٽ = پورٽ / 4;
       }
 
-      if (! hiz_value_.is_hiz()) {
-	    for (unsigned idx = 0 ;  idx < val_[base].size() ;  idx += 1) {
-		  val_[base].set_bit(idx, resolve(val_[base].value(idx),
-						  hiz_value_));
+      إذا (! hiz_قدر_2.is_hiz()) {
+	    لكل (بنانشان idx = 0 ;  idx < val_[بنياد].size() ;  idx += 1) {
+		  val_[بنياد].سيٽ_ٻٽو_انگ(idx, resolve(val_[بنياد].value(idx),
+						  hiz_قدر_2));
 	    }
       }
 
-      net_->send_vec8(val_[base]);
+      net_->send_vec8(val_[بنياد]);
 }
 
-void resolv_tri::count_drivers(unsigned bit_idx, unsigned counts[3])
+فراغ resolv_tri::ڳڻپ_drivers(بنانشان ٻٽو_انگ_idx, بنانشان counts[3])
 {
-      for (unsigned idx = 0 ; idx < nports_ ; idx += 1) {
-	    if (val_[idx].size() == 0)
-	          continue;
+      لكل (بنانشان idx = 0 ; idx < nports_ ; idx += 1) {
+	    إذا (val_[idx].size() == 0)
+	          استمر;
 
-            update_driver_counts(val_[idx].value(bit_idx).value(), counts);
+            update_driver_counts(val_[idx].value(ٻٽو_انگ_idx).value(), counts);
       }
 }
 
 
-resolv_wired_logic::resolv_wired_logic(unsigned nports, vvp_net_t*net)
+resolv_wired_logic::resolv_wired_logic(بنانشان nports, vvp_net_t*net)
 : resolv_core(nports, net)
 {
         // count the input (leaf) nodes
-      unsigned nnodes = nports;
+      بنانشان nnodes = nports;
 
         // add in the intermediate branch nodes
-      while (nports > 4) {
+      طالما (nports > 4) {
             nports = (nports + 3) / 4;
             nnodes += nports;
       }
         // add one more node for storing the output value
         // (not needed if there is only one input)
-      if (nnodes > 1)
+      إذا (nnodes > 1)
             nnodes += 1;
 
-      val_ = new vvp_vector4_t [nnodes];
+      val_ = جديد vvp_vector4_t [nnodes];
 }
 
 resolv_wired_logic::~resolv_wired_logic()
 {
-      delete[] val_;
+      ميٽيو[] val_;
 }
 
-void resolv_wired_logic::recv_vec4_(unsigned port, const vvp_vector4_t&bit)
+فراغ resolv_wired_logic::recv_vec4_(بنانشان پورٽ, ثابت vvp_vector4_t&ٻٽو_انگ)
 {
-      assert(port < nports_);
+      أكد(پورٽ < nports_);
 
-      if (val_[port].eeq(bit))
-	    return;
+      إذا (val_[پورٽ].eeq(ٻٽو_انگ))
+	    أرجع;
 
-      val_[port] = bit;
+      val_[پورٽ] = ٻٽو_انگ;
 
         // Starting at the leaf level, work down the tree, resolving
         // the changed values. base is the first node in the current
@@ -230,52 +230,52 @@ void resolv_wired_logic::recv_vec4_(unsigned port, const vvp_vector4_t&bit)
         // that include the node that has changed, and op is the node
         // at the next level that stores the resolved value from that
         // group.
-      unsigned base = 0;
-      unsigned span = nports_;
-      while (span > 1) {
-            unsigned next_base = base + span;
-            unsigned ip = base + (port & ~0x3);
-            unsigned op = next_base + (port / 4);
-            unsigned ll = min(ip + 4, next_base);
+      بنانشان بنياد = 0;
+      بنانشان وسعت = nports_;
+      طالما (وسعت > 1) {
+            بنانشان ايندڙ_بنياد = بنياد + وسعت;
+            بنانشان ip = بنياد + (پورٽ & ~0x3);
+            بنانشان op = ايندڙ_بنياد + (پورٽ / 4);
+            بنانشان ll = min(ip + 4, ايندڙ_بنياد);
 
             vvp_vector4_t out = val_[ip];
-            for (ip = ip + 1; ip < ll; ip += 1) {
-                  if (val_[ip].size() == 0)
-                        continue;
-                  if (out.size() == 0)
+            لكل (ip = ip + 1; ip < ll; ip += 1) {
+                  إذا (val_[ip].size() == 0)
+                        استمر;
+                  إذا (out.size() == 0)
                         out = val_[ip];
-                  else
+                  وإلا
                         out = wired_logic_math_(out, val_[ip]);
             }
-            if (val_[op].eeq(out))
-                  return;
+            إذا (val_[op].eeq(out))
+                  أرجع;
             val_[op] = out;
 
-            base = next_base;
-            span = (span + 3) / 4;
-            port = port / 4;
+            بنياد = ايندڙ_بنياد;
+            وسعت = (وسعت + 3) / 4;
+            پورٽ = پورٽ / 4;
       }
 
-      net_->send_vec4(val_[base], 0);
+      net_->send_vec4(val_[بنياد], 0);
 }
 
-void resolv_wired_logic::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
+فراغ resolv_wired_logic::recv_vec8_(بنانشان پورٽ, ثابت vvp_vector8_t&ٻٽو_انگ)
 {
-      recv_vec4_(port, reduce4(bit));
+      recv_vec4_(پورٽ, reduce4(ٻٽو_انگ));
 }
 
-void resolv_wired_logic::count_drivers(unsigned bit_idx, unsigned counts[3])
+فراغ resolv_wired_logic::ڳڻپ_drivers(بنانشان ٻٽو_انگ_idx, بنانشان counts[3])
 {
-      for (unsigned idx = 0 ; idx < nports_ ; idx += 1) {
-	    if (val_[idx].size() == 0)
-	          continue;
+      لكل (بنانشان idx = 0 ; idx < nports_ ; idx += 1) {
+	    إذا (val_[idx].size() == 0)
+	          استمر;
 
-            update_driver_counts(val_[idx].value(bit_idx), counts);
+            update_driver_counts(val_[idx].value(ٻٽو_انگ_idx), counts);
       }
 }
 
 
-resolv_triand::resolv_triand(unsigned nports, vvp_net_t*net)
+resolv_triand::resolv_triand(بنانشان nports, vvp_net_t*net)
 : resolv_wired_logic(nports, net)
 {
 }
@@ -286,31 +286,31 @@ resolv_triand::~resolv_triand()
 
 vvp_vector4_t resolv_triand::wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b)
 {
-      assert(a.size() == b.size());
+      أكد(a.size() == b.size());
 
       vvp_vector4_t out (a.size());
 
-      for (unsigned idx = 0 ; idx < out.size() ; idx += 1) {
+      لكل (بنانشان idx = 0 ; idx < out.size() ; idx += 1) {
 	    vvp_bit4_t abit = a.value(idx);
 	    vvp_bit4_t bbit = b.value(idx);
-	    if (abit == BIT4_Z) {
-		  out.set_bit(idx, bbit);
-	    } else if (bbit == BIT4_Z) {
-		  out.set_bit(idx, abit);
-	    } else if (abit == BIT4_0 || bbit == BIT4_0) {
-		  out.set_bit(idx, BIT4_0);
-	    } else if (abit == BIT4_X || bbit == BIT4_X) {
-		  out.set_bit(idx, BIT4_X);
-	    } else {
-		  out.set_bit(idx, BIT4_1);
+	    إذا (abit == BIT4_Z) {
+		  out.سيٽ_ٻٽو_انگ(idx, bbit);
+	    } وإلا إذا (bbit == BIT4_Z) {
+		  out.سيٽ_ٻٽو_انگ(idx, abit);
+	    } وإلا إذا (abit == BIT4_0 || bbit == BIT4_0) {
+		  out.سيٽ_ٻٽو_انگ(idx, BIT4_0);
+	    } وإلا إذا (abit == BIT4_X || bbit == BIT4_X) {
+		  out.سيٽ_ٻٽو_انگ(idx, BIT4_X);
+	    } وإلا {
+		  out.سيٽ_ٻٽو_انگ(idx, BIT4_1);
 	    }
       }
 
-      return out;
+      أرجع out;
 }
 
 
-resolv_trior::resolv_trior(unsigned nports, vvp_net_t*net)
+resolv_trior::resolv_trior(بنانشان nports, vvp_net_t*net)
 : resolv_wired_logic(nports, net)
 {
 }
@@ -321,25 +321,25 @@ resolv_trior::~resolv_trior()
 
 vvp_vector4_t resolv_trior::wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b)
 {
-      assert(a.size() == b.size());
+      أكد(a.size() == b.size());
 
       vvp_vector4_t out (a.size());
 
-      for (unsigned idx = 0 ; idx < out.size() ; idx += 1) {
+      لكل (بنانشان idx = 0 ; idx < out.size() ; idx += 1) {
 	    vvp_bit4_t abit = a.value(idx);
 	    vvp_bit4_t bbit = b.value(idx);
-	    if (abit == BIT4_Z) {
-		  out.set_bit(idx, bbit);
-	    } else if (bbit == BIT4_Z) {
-		  out.set_bit(idx, abit);
-	    } else if (abit == BIT4_1 || bbit == BIT4_1) {
-		  out.set_bit(idx, BIT4_1);
-	    } else if (abit == BIT4_X || bbit == BIT4_X) {
-		  out.set_bit(idx, BIT4_X);
-	    } else {
-		  out.set_bit(idx, BIT4_0);
+	    إذا (abit == BIT4_Z) {
+		  out.سيٽ_ٻٽو_انگ(idx, bbit);
+	    } وإلا إذا (bbit == BIT4_Z) {
+		  out.سيٽ_ٻٽو_انگ(idx, abit);
+	    } وإلا إذا (abit == BIT4_1 || bbit == BIT4_1) {
+		  out.سيٽ_ٻٽو_انگ(idx, BIT4_1);
+	    } وإلا إذا (abit == BIT4_X || bbit == BIT4_X) {
+		  out.سيٽ_ٻٽو_انگ(idx, BIT4_X);
+	    } وإلا {
+		  out.سيٽ_ٻٽو_انگ(idx, BIT4_0);
 	    }
       }
 
-      return out;
+      أرجع out;
 }
