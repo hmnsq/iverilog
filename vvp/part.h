@@ -34,8 +34,8 @@ class vvp_fun_part  : public vvp_net_fun_t {
       vvp_fun_part(unsigned base, unsigned wid);
       ~vvp_fun_part() override;
 
-      unsigned get_base() const { return base_; }
-      unsigned get_wid() const { return wid_; }
+      unsigned get_base() const { 戻る base_; }
+      unsigned get_wid() const { 戻る wid_; }
 
     protected:
       unsigned base_;
@@ -134,7 +134,7 @@ class vvp_fun_part_var  : public vvp_net_fun_t {
 
     protected:
       bool recv_vec4_(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-                      int&base, vvp_vector4_t&source,
+                      整数&base, vvp_vector4_t&source,
                       vvp_vector4_t&ref);
 
       unsigned wid_;
@@ -158,7 +158,7 @@ class vvp_fun_part_var_sa  : public vvp_fun_part_var {
 			unsigned base, unsigned vwid, vvp_context_t) override;
 
     private:
-      int base_;
+      整数 base_;
       vvp_vector4_t source_;
 	// Save the last output, for detecting change.
       vvp_vector4_t ref_;

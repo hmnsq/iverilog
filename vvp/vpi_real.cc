@@ -30,56 +30,56 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-static int real_var_get(int code, vpiHandle ref)
+static 整数 real_var_get(整数 code, vpiHandle ref)
 {
       struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
       assert(rfp);
 
       switch (code) {
 	case vpiArray:
-	    return rfp->is_netarray != 0;
+	    戻る rfp->is_netarray != 0;
 
 	case vpiSize:
-	    return 1;
+	    戻る 1;
 
 	case vpiLineNo:
-	    return 0; // Not implemented for now!
+	    戻る 0; // Not implemented for now!
 
 	case vpiAutomatic:
-	  return vpip_scope(rfp)->is_automatic()? 1 : 0;
+	  戻る vpip_scope(rfp)->is_automatic()? 1 : 0;
       }
 
-      return 0;
+      戻る 0;
 }
 
-static char* real_var_get_str(int code, vpiHandle ref)
+static char* real_var_get_str(整数 code, vpiHandle ref)
 {
       struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
       assert(rfp);
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      もし (code == vpiFile) {  // Not implemented for now!
+	    戻る simple_set_rbuf_str(file_names[0]);
       }
 
       char *nm;
       const char *ixs;
-      if (rfp->is_netarray) {
+      もし (rfp->is_netarray) {
 	    nm = strdup(vpi_get_str(vpiName, rfp->within.parent));
 	    s_vpi_value vp;
 	    vp.format = vpiDecStrVal;
 	    vpi_get_value(rfp->id.index, &vp);
 	    ixs = vp.value.str;  /* do I need to strdup() this? */
-      } else {
+      } 否则 {
 	    nm = strdup(rfp->id.name);
 	    ixs = NULL;
       }
 
       char *rbuf = generic_get_str(code, vpip_scope(rfp), nm, ixs);
       free(nm);
-      return rbuf;
+      戻る rbuf;
 }
 
-static vpiHandle real_var_get_handle(int code, vpiHandle ref)
+static vpiHandle real_var_get_handle(整数 code, vpiHandle ref)
 {
       struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
       assert(rfp);
@@ -87,31 +87,31 @@ static vpiHandle real_var_get_handle(int code, vpiHandle ref)
       switch (code) {
 
 	  case vpiParent:
-	    return rfp->is_netarray ? rfp->within.parent : NULL;
+	    戻る rfp->is_netarray ? rfp->within.parent : NULL;
 
 	  case vpiIndex:
-	    return rfp->is_netarray ? rfp->id.index : NULL;
+	    戻る rfp->is_netarray ? rfp->id.index : NULL;
 
 	  case vpiScope:
-	    return vpip_scope(rfp);
+	    戻る vpip_scope(rfp);
 
 	  case vpiModule:
-	    return vpip_module(vpip_scope(rfp));
+	    戻る vpip_module(vpip_scope(rfp));
       }
 
-      return 0;
+      戻る 0;
 }
 
-static vpiHandle real_var_iterate(int code, vpiHandle ref)
+static vpiHandle real_var_iterate(整数 code, vpiHandle ref)
 {
       struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
       assert(rfp);
 
-      if (code == vpiIndex) {
-	    return rfp->is_netarray ? rfp->id.index->vpi_iterate(code) : NULL;
+      もし (code == vpiIndex) {
+	    戻る rfp->is_netarray ? rfp->id.index->vpi_iterate(code) : NULL;
       }
 
-      return 0;
+      戻る 0;
 }
 
 static void real_var_get_value(vpiHandle ref, s_vpi_value*vp)
@@ -125,7 +125,7 @@ static void real_var_get_value(vpiHandle ref, s_vpi_value*vp)
       fil->get_signal_value(vp);
 }
 
-static vpiHandle real_var_put_value(vpiHandle ref, p_vpi_value vp, int flags)
+static vpiHandle real_var_put_value(vpiHandle ref, p_vpi_value vp, 整数 flags)
 {
       struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
       assert(rfp);
@@ -134,50 +134,50 @@ static vpiHandle real_var_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 	/* If this is a release, then we are not really putting a
 	   value. Instead, issue a release "command" to the signal
 	   node to cause it to release a forced value. */
-      if (flags == vpiReleaseFlag) {
+      もし (flags == vpiReleaseFlag) {
 	    assert(rfp->net->fil);
 	    rfp->net->fil->force_unlink();
 	    rfp->net->fil->release(destination, rfp->is_wire);
 	    real_var_get_value(ref, vp);
-	    return ref;
+	    戻る ref;
       }
 
       double result = real_from_vpi_value(vp);
 
-      if (flags == vpiForceFlag) {
+      もし (flags == vpiForceFlag) {
 	    vvp_vector2_t mask (vvp_vector2_t::FILL1, 1);
 	    rfp->net->force_real(result, mask);
-      } else if (rfp->is_wire) {
+      } 否则 もし (rfp->is_wire) {
 	    rfp->net->send_real(result, vthread_get_wt_context());
-      } else {
+      } 否则 {
 	    vvp_send_real(destination, result, vthread_get_wt_context());
       }
-      return 0;
+      戻る 0;
 }
 
 inline __vpiRealVar::__vpiRealVar()
 { }
 
-int __vpiRealVar::get_type_code(void) const
-{ return vpiRealVar; }
+整数 __vpiRealVar::get_type_code(void) const
+{ 戻る vpiRealVar; }
 
-int __vpiRealVar::vpi_get(int code)
-{ return real_var_get(code, this); }
+整数 __vpiRealVar::vpi_get(整数 code)
+{ 戻る real_var_get(code, this); }
 
-char* __vpiRealVar::vpi_get_str(int code)
-{ return real_var_get_str(code, this); }
+char* __vpiRealVar::vpi_get_str(整数 code)
+{ 戻る real_var_get_str(code, this); }
 
 void __vpiRealVar::vpi_get_value(p_vpi_value val)
 { real_var_get_value(this, val); }
 
-vpiHandle __vpiRealVar::vpi_put_value(p_vpi_value val, int flags)
-{ return real_var_put_value(this, val, flags); }
+vpiHandle __vpiRealVar::vpi_put_value(p_vpi_value val, 整数 flags)
+{ 戻る real_var_put_value(this, val, flags); }
 
-vpiHandle __vpiRealVar::vpi_handle(int code)
-{ return real_var_get_handle(code, this); }
+vpiHandle __vpiRealVar::vpi_handle(整数 code)
+{ 戻る real_var_get_handle(code, this); }
 
-vpiHandle __vpiRealVar::vpi_iterate(int code)
-{ return real_var_iterate(code, this); }
+vpiHandle __vpiRealVar::vpi_iterate(整数 code)
+{ 戻る real_var_iterate(code, this); }
 
 static vpiHandle vpip_make_real_(__vpiScope*scope, const char*name,
 				 vvp_net_t*net, bool is_wire)
@@ -191,18 +191,18 @@ static vpiHandle vpip_make_real_(__vpiScope*scope, const char*name,
 
       obj->within.scope = scope;
 
-      return obj;
+      戻る obj;
 }
 
 vpiHandle vpip_make_real_var(const char*name, vvp_net_t*net)
 {
-      return vpip_make_real_(vpip_peek_current_scope(), name, net, false);
+      戻る vpip_make_real_(vpip_peek_current_scope(), name, net, false);
 }
 
 vpiHandle vpip_make_real_net(__vpiScope*scope,
 			     const char*name, vvp_net_t*net)
 {
-      return vpip_make_real_(scope, name, net, true);
+      戻る vpip_make_real_(scope, name, net, true);
 }
 
 #ifdef CHECK_WITH_VALGRIND

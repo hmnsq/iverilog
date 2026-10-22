@@ -43,50 +43,50 @@ FILE*vpi_trace = 0;
 static s_vpi_vlog_info  vpi_vlog_info;
 static s_vpi_error_info vpip_last_error = { 0, 0, 0, 0, 0, 0, 0 };
 
-const char* direction_as_string(int dir)
+const char* direction_as_string(整数 dir)
 {
       switch (dir) {
 	  case vpiInput:
-	    return "input";
+	    戻る "input";
 	  case vpiOutput:
-	    return "output";
+	    戻る "output";
 	  case vpiInout:
-	    return "inout";
+	    戻る "inout";
 	  case vpiMixedIO:
-	    return "mixed io";
+	    戻る "mixed io";
 	  case vpiNoDirection:
-	    return "no direction";
+	    戻る "no direction";
 	  default:
-	    return "INVALID-DIRECTION";
+	    戻る "INVALID-DIRECTION";
       }
 }
 
 __vpiHandle::~__vpiHandle()
 { }
 
-int __vpiHandle::vpi_get(int)
-{ return vpiUndefined; }
+整数 __vpiHandle::vpi_get(整数)
+{ 戻る vpiUndefined; }
 
-int64_t __vpiHandle::vpi_get64(int code)
-{ return (code == _vpiNexusId) ? 0 : vpiUndefined; }
+int64_t __vpiHandle::vpi_get64(整数 code)
+{ 戻る (code == _vpiNexusId) ? 0 : vpiUndefined; }
 
-char* __vpiHandle::vpi_get_str(int)
-{ return 0; }
+char* __vpiHandle::vpi_get_str(整数)
+{ 戻る 0; }
 
 void __vpiHandle::vpi_get_value(p_vpi_value)
 { }
 
-vpiHandle __vpiHandle::vpi_put_value(p_vpi_value, int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_put_value(p_vpi_value, 整数)
+{ 戻る 0; }
 
-vpiHandle __vpiHandle::vpi_handle(int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_handle(整数)
+{ 戻る 0; }
 
-vpiHandle __vpiHandle::vpi_iterate(int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_iterate(整数)
+{ 戻る 0; }
 
-vpiHandle __vpiHandle::vpi_index(int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_index(整数)
+{ 戻る 0; }
 
 void __vpiHandle::vpi_get_delays(p_vpi_delay)
 { }
@@ -113,10 +113,10 @@ __vpiBaseVar::~__vpiBaseVar()
  * objects will override the free_object_fun method to return an
  * appropriately effective function.
  */
-static int suppress_free(vpiHandle)
-{ return 1; }
+static 整数 suppress_free(vpiHandle)
+{ 戻る 1; }
 __vpiHandle::free_object_fun_t __vpiHandle::free_object_fun(void)
-{ return &suppress_free; }
+{ 戻る &suppress_free; }
 
 /*
  * The vpip_string function creates a constant string from the pass
@@ -130,34 +130,34 @@ struct vpip_string_chunk {
 
 unsigned vpip_size(const __vpiSignal *sig)
 {
-      return abs(sig->msb.get_value() - sig->lsb.get_value()) + 1;
+      戻る abs(sig->msb.get_value() - sig->lsb.get_value()) + 1;
 }
 
 __vpiScope* vpip_scope(__vpiSignal*sig)
 {
-      if (sig->is_netarray)
-	    return static_cast<__vpiScope*>(vpi_handle(vpiScope,
+      もし (sig->is_netarray)
+	    戻る static_cast<__vpiScope*>(vpi_handle(vpiScope,
 	                                               sig->within.parent));
-      else
-	    return sig->within.scope;
+      否则
+	    戻る sig->within.scope;
 }
 
 __vpiScope* vpip_scope(__vpiRealVar*sig)
 {
-      if (sig->is_netarray)
-	    return static_cast<__vpiScope*>(vpi_handle(vpiScope,
+      もし (sig->is_netarray)
+	    戻る static_cast<__vpiScope*>(vpi_handle(vpiScope,
 	                                               sig->within.parent));
-      else
-	    return sig->within.scope;
+      否则
+	    戻る sig->within.scope;
 }
 
 vpiHandle vpip_module(__vpiScope*scope)
 {
-      while(scope && scope->get_type_code() != vpiModule) {
+      ながら(scope && scope->get_type_code() != vpiModule) {
 	    scope = scope->scope;
       }
       assert(scope);
-      return scope;
+      戻る scope;
 }
 
 const char *vpip_string(const char*str)
@@ -169,7 +169,7 @@ const char *vpip_string(const char*str)
       unsigned len = strlen(str);
       assert( (len+1) <= sizeof chunk_list->data );
 
-      if ( (len+1) > (sizeof chunk_list->data - chunk_fill) ) {
+      もし ( (len+1) > (sizeof chunk_list->data - chunk_fill) ) {
 	    vpip_string_chunk*tmp = new vpip_string_chunk;
 	    tmp->next = chunk_list;
 	    chunk_list = tmp;
@@ -180,18 +180,18 @@ const char *vpip_string(const char*str)
       chunk_fill += len + 1;
 
       strcpy(res, str);
-      return res;
+      戻る res;
 }
 
 static unsigned hash_string(const char*text)
 {
       unsigned h = 0;
 
-      while (*text) {
+      ながら (*text) {
 	    h = (h << 4) ^ (h >> 28) ^ (unsigned)*text;
 	    text += 1;
       }
-      return h;
+      戻る h;
 }
 
 const char* vpip_name_string(const char*text)
@@ -203,9 +203,9 @@ const char* vpip_name_string(const char*text)
 
 	/* If we easily find the string in the hash table, then return
 	   that and be done. */
-      if (hash_table[hash_value]
+      もし (hash_table[hash_value]
 	  && (strcmp(hash_table[hash_value], text) == 0)) {
-	    return hash_table[hash_value];
+	    戻る hash_table[hash_value];
       }
 
 	/* The existing hash entry is not a match. Replace it with the
@@ -214,13 +214,13 @@ const char* vpip_name_string(const char*text)
       const char*res = vpip_string(text);
       hash_table[hash_value] = res;
 
-      return res;
+      戻る res;
 }
 
 PLI_INT32 vpi_chk_error(p_vpi_error_info info)
 {
-      if (vpip_last_error.state == 0)
-	    return 0;
+      もし (vpip_last_error.state == 0)
+	    戻る 0;
 
       info->state = vpip_last_error.state;
       info->level = vpip_last_error.level;
@@ -230,7 +230,7 @@ PLI_INT32 vpi_chk_error(p_vpi_error_info info)
       info->file = 0;
       info->line = 0;
 
-      return info->level;
+      戻る info->level;
 }
 
 PLI_INT32 vpi_compare_objects(vpiHandle obj1, vpiHandle obj2)
@@ -239,8 +239,8 @@ PLI_INT32 vpi_compare_objects(vpiHandle obj1, vpiHandle obj2)
       assert(obj2);
 
 	// Does this actually work for all cases?
-      if (obj1 != obj2) return 0;
-      else return 1;
+      もし (obj1 != obj2) 戻る 0;
+      否则 戻る 1;
 }
 
 /*
@@ -252,7 +252,7 @@ PLI_INT32 vpi_compare_objects(vpiHandle obj1, vpiHandle obj2)
 void vpi_get_systf_info(vpiHandle ref, p_vpi_systf_data data)
 {
       struct __vpiUserSystf* rfp = dynamic_cast<__vpiUserSystf*>(ref);
-      if (rfp == 0) {
+      もし (rfp == 0) {
 	    struct __vpiSysTaskCall*call = dynamic_cast<__vpiSysTaskCall*>(ref);
 	    assert(call);
 	    rfp = call->defn;
@@ -278,9 +278,9 @@ struct __vpiSysTaskCall*vpip_cur_task = 0;
 
 PLI_INT32 vpi_free_object(vpiHandle ref)
 {
-      int rtn;
+      整数 rtn;
 
-      if (vpi_trace) {
+      もし (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_free_object(%p)", ref);
 	    fflush(vpi_trace);
       }
@@ -289,10 +289,10 @@ PLI_INT32 vpi_free_object(vpiHandle ref)
       __vpiHandle::free_object_fun_t fun = ref->free_object_fun();
       rtn = fun (ref);
 
-      if (vpi_trace)
+      もし (vpi_trace)
 	    fprintf(vpi_trace, " --> %d\n", rtn);
 
-      return rtn;
+      戻る rtn;
 }
 
 PLI_INT32 vpi_release_handle(vpiHandle ref)
@@ -300,21 +300,21 @@ PLI_INT32 vpi_release_handle(vpiHandle ref)
 	// Since SystemVerilog vpi_free_object() has been
 	// renamed vpi_release_handle(), and thus
 	// vpi_free_object() has been deprecated.
-      return vpi_free_object(ref);
+      戻る vpi_free_object(ref);
 }
 
-static int vpip_get_global(int property)
+static 整数 vpip_get_global(整数 property)
 {
       switch (property) {
 
 	  case vpiTimeUnit:
 	  case vpiTimePrecision:
-	    return vpip_get_time_precision();
+	    戻る vpip_get_time_precision();
 
 	  default:
 	    fprintf(stderr, "vpi error: bad global property: %d\n", property);
 	    assert(0);
-	    return vpiUndefined;
+	    戻る vpiUndefined;
       }
 }
 
@@ -323,23 +323,23 @@ static const char* vpi_property_str(PLI_INT32 code)
       static char buf[32];
       switch (code) {
 	  case vpiConstType:
-	    return "vpiConstType";
+	    戻る "vpiConstType";
 	  case vpiName:
-	    return "vpiName";
+	    戻る "vpiName";
 	  case vpiFullName:
-	    return "vpiFullName";
+	    戻る "vpiFullName";
 	  case vpiTimeUnit:
-	    return "vpiTimeUnit";
+	    戻る "vpiTimeUnit";
 	  case vpiTimePrecision:
-	    return "vpiTimePrecision";
+	    戻る "vpiTimePrecision";
           case vpiSize:
-	    return "vpiSize";
+	    戻る "vpiSize";
           case _vpiNexusId:
-	    return "_vpiNexusId";
+	    戻る "_vpiNexusId";
 	  default:
-	    snprintf(buf, sizeof(buf), "%d", (int)code);
+	    snprintf(buf, sizeof(buf), "%d", (整数)code);
       }
-      return buf;
+      戻る buf;
 }
 
 const char* vpi_type_as_string(PLI_INT32 code)
@@ -347,176 +347,176 @@ const char* vpi_type_as_string(PLI_INT32 code)
       static char buf[32];
       switch (code) {
 	  case vpiArrayType:
-	    return "vpiArrayType";
+	    戻る "vpiArrayType";
 	  case vpiBitVar:
-	    return "vpiBitVar";
+	    戻る "vpiBitVar";
 	  case vpiByteVar:
-	    return "vpiByteVar";
+	    戻る "vpiByteVar";
 	  case vpiClassVar:
-	    return "vpiClassVar";
+	    戻る "vpiClassVar";
 	  case vpiConstant:
-	    return "vpiConstant";
+	    戻る "vpiConstant";
 	  case vpiEnumTypespec:
-	    return "vpiEnumTypespec";
+	    戻る "vpiEnumTypespec";
 	  case vpiFunction:
-	    return "vpiFunction";
+	    戻る "vpiFunction";
 	  case vpiGenScope:
-	    return "vpiGenScope";
+	    戻る "vpiGenScope";
 	  case vpiIntVar:
-	    return "vpiIntVar";
+	    戻る "vpiIntVar";
 	  case vpiIntegerVar:
-	    return "vpiIntegerVar";
+	    戻る "vpiIntegerVar";
 	  case vpiIterator:
-	    return "vpiIterator";
+	    戻る "vpiIterator";
 	  case vpiLongIntVar:
-	    return "vpiLongIntVar";
+	    戻る "vpiLongIntVar";
 	  case vpiMemory:
-	    return "vpiMemory";
+	    戻る "vpiMemory";
 	  case vpiMemoryWord:
-	    return "vpiMemoryWord";
+	    戻る "vpiMemoryWord";
 	  case vpiModule:
-	    return "vpiModule";
+	    戻る "vpiModule";
 	  case vpiNamedBegin:
-	    return "vpiNamedBegin";
+	    戻る "vpiNamedBegin";
 	  case vpiNamedEvent:
-	    return "vpiNamedEvent";
+	    戻る "vpiNamedEvent";
 	  case vpiNamedFork:
-	    return "vpiNamedFork";
+	    戻る "vpiNamedFork";
 	  case vpiPackage:
-	    return "vpiPackage";
+	    戻る "vpiPackage";
 	  case vpiPathTerm:
-	    return "vpiPathTerm";
+	    戻る "vpiPathTerm";
 	  case vpiPort:
-	    return "vpiPort";
+	    戻る "vpiPort";
 	  case vpiNet:
-	    return "vpiNet";
+	    戻る "vpiNet";
 	  case vpiNetArray:
-	    return "vpiNetArray";
+	    戻る "vpiNetArray";
 	  case vpiNetBit:
-	    return "vpiNetBit";
+	    戻る "vpiNetBit";
 	  case vpiParameter:
-	    return "vpiParameter";
+	    戻る "vpiParameter";
 	  case vpiPartSelect:
-	    return "vpiPartSelect";
+	    戻る "vpiPartSelect";
 	  case vpiRealVar:
-	    return "vpiRealVar";
+	    戻る "vpiRealVar";
 	  case vpiReg:
-	    return "vpiReg";
+	    戻る "vpiReg";
 	  case vpiRegBit:
-	    return "vpiRegBit";
+	    戻る "vpiRegBit";
 	  case vpiShortIntVar:
-	    return "vpiShortIntVar";
+	    戻る "vpiShortIntVar";
 	  case vpiStringVar:
-	    return "vpiStringVar";
+	    戻る "vpiStringVar";
 	  case vpiSysFuncCall:
-	    return "vpiSysFuncCall";
+	    戻る "vpiSysFuncCall";
 	  case vpiSysTaskCall:
-	    return "vpiSysTaskCall";
+	    戻る "vpiSysTaskCall";
 	  case vpiTask:
-	    return "vpiTask";
+	    戻る "vpiTask";
 	  case vpiTimeVar:
-	    return "vpiTimeVar";
+	    戻る "vpiTimeVar";
 	  case vpiUserSystf:
-	    return "vpiUserSystf";
+	    戻る "vpiUserSystf";
 	  default:
-	    snprintf(buf, sizeof(buf), "%d", (int)code);
+	    snprintf(buf, sizeof(buf), "%d", (整数)code);
       }
-      return buf;
+      戻る buf;
 }
 
-PLI_INT32 vpi_get(int property, vpiHandle ref)
+PLI_INT32 vpi_get(整数 property, vpiHandle ref)
 {
 	/* We don't care what the ref is there is only one delay selection. */
-      if (property == _vpiDelaySelection) return vpip_delay_selection;
+      もし (property == _vpiDelaySelection) 戻る vpip_delay_selection;
 
-      if (ref == 0)
-	    return vpip_get_global(property);
+      もし (ref == 0)
+	    戻る vpip_get_global(property);
 
-      if (property == vpiType) {
-	    if (vpi_trace) {
+      もし (property == vpiType) {
+	    もし (vpi_trace) {
 		  fprintf(vpi_trace, "vpi_get(vpiType, %p) --> %s\n",
 			  ref, vpi_type_as_string(ref->get_type_code()));
 	    }
 
-	    if (ref->get_type_code() == vpiMemory && is_net_array(ref))
-		  return vpiNetArray;
-	    else
-		  return ref->get_type_code();
+	    もし (ref->get_type_code() == vpiMemory && is_net_array(ref))
+		  戻る vpiNetArray;
+	    否则
+		  戻る ref->get_type_code();
       }
 
-      int res = ref->vpi_get(property);
+      整数 res = ref->vpi_get(property);
 
-      if (vpi_trace) {
+      もし (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_get(%s, %p) --> %d\n",
 		    vpi_property_str(property), ref, res);
       }
 
-      return res;
+      戻る res;
 }
 
-PLI_INT64 vpi_get64(int property, vpiHandle ref)
+PLI_INT64 vpi_get64(整数 property, vpiHandle ref)
 {
 	// For now we only support getting the nexus id.
-      if ((ref == 0) || (property != _vpiNexusId)) {
+      もし ((ref == 0) || (property != _vpiNexusId)) {
 	    fprintf(vpi_trace, "vpi_get64(%s, %p) is not currently supported.\n",
 		    vpi_property_str(property), ref);
-	    return vpiUndefined;
+	    戻る vpiUndefined;
       }
 
       int64_t res = ref->vpi_get64(property);
 
-      if (vpi_trace) {
+      もし (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_get64(%s, %p) --> %" PRId64 "\n",
 		    vpi_property_str(property), ref, res);
       }
 
-      return res;
+      戻る res;
 }
 
 char* vpi_get_str(PLI_INT32 property, vpiHandle ref)
 {
 	/* We don't care what the ref is there is only one delay selection. */
-      if (property == _vpiDelaySelection) {
+      もし (property == _vpiDelaySelection) {
 	    switch (vpip_delay_selection) {
 		case _vpiDelaySelMinimum:
-		  return simple_set_rbuf_str("MINIMUM");
+		  戻る simple_set_rbuf_str("MINIMUM");
 		case _vpiDelaySelTypical:
-		  return simple_set_rbuf_str("TYPICAL");
+		  戻る simple_set_rbuf_str("TYPICAL");
 		case _vpiDelaySelMaximum:
-		  return simple_set_rbuf_str("MAXIMUM");
+		  戻る simple_set_rbuf_str("MAXIMUM");
 		default:
 		  assert(0);
 	    }
       }
 
-      if (ref == 0) {
+      もし (ref == 0) {
 	    fprintf(stderr, "vpi error: vpi_get_str(%s, 0) called "
 		    "with null vpiHandle.\n", vpi_property_str(property));
-	    return 0;
+	    戻る 0;
       }
 
-      if (property == vpiType) {
-	    if (vpi_trace) {
+      もし (property == vpiType) {
+	    もし (vpi_trace) {
 		  fprintf(vpi_trace, "vpi_get(vpiType, %p) --> %s\n",
 			  ref, vpi_type_as_string(ref->get_type_code()));
 	    }
 
             PLI_INT32 type;
-	    if (ref->get_type_code() == vpiMemory && is_net_array(ref))
+	    もし (ref->get_type_code() == vpiMemory && is_net_array(ref))
 		  type = vpiNetArray;
-	    else
+	    否则
 		  type = ref->get_type_code();
-	    return (char *)vpi_type_as_string(type);
+	    戻る (char *)vpi_type_as_string(type);
       }
 
       char*res = ref->vpi_get_str(property);
 
-      if (vpi_trace) {
+      もし (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_get_str(%s, %p) --> %s\n",
 		    vpi_property_str(property), ref, res? res : "<NULL>");
       }
 
-      return res;
+      戻る res;
 }
 
 __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj)
@@ -529,10 +529,10 @@ __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj)
       switch (obj->get_type_code()) {
 	  case vpiSysTaskCall:
 	    task = dynamic_cast<__vpiSysTaskCall*>(obj);
-	    return task->scope;
+	    戻る task->scope;
 
 	  case vpiModule:
-	    return dynamic_cast<__vpiScope*>(obj);
+	    戻る dynamic_cast<__vpiScope*>(obj);
 
 	  case vpiNet:
 	  case vpiReg:
@@ -543,61 +543,61 @@ __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj)
 	  case vpiIntVar:
 	  case vpiLongIntVar:
 	    signal = dynamic_cast<__vpiSignal*>(obj);
-	    return vpip_scope(signal);
+	    戻る vpip_scope(signal);
 
 	  case vpiRealVar:
 	    real = dynamic_cast<__vpiRealVar*>(obj);
-	    return vpip_scope(real);
+	    戻る vpip_scope(real);
 
 	  case vpiNamedEvent:
 	    event = dynamic_cast<__vpiNamedEvent*>(obj);
-	    return event->get_scope();
+	    戻る event->get_scope();
 
 	  case vpiMemory:
 	  case vpiMemoryWord:
 	  case vpiPartSelect:
-	    return dynamic_cast<__vpiScope*>(obj->vpi_handle(vpiScope));
+	    戻る dynamic_cast<__vpiScope*>(obj->vpi_handle(vpiScope));
 
 	  default:
 	    fprintf(stderr, "ERROR: vpip_scope_from_handle called with "
 		    "object handle type=%d\n", obj->get_type_code());
 	    assert(0);
-	    return 0;
+	    戻る 0;
       }
 }
 
-int vpip_time_units_from_handle(vpiHandle obj)
+整数 vpip_time_units_from_handle(vpiHandle obj)
 {
-      if (obj == 0)
-	    return vpip_get_time_precision();
+      もし (obj == 0)
+	    戻る vpip_get_time_precision();
 
       const __vpiScope*scope = vpip_timescale_scope_from_handle(obj);
-      if (scope == 0)
-	    return vpip_get_time_precision();
+      もし (scope == 0)
+	    戻る vpip_get_time_precision();
 
-      return scope->time_units;
+      戻る scope->time_units;
 }
 
-int vpip_time_precision_from_handle(vpiHandle obj)
+整数 vpip_time_precision_from_handle(vpiHandle obj)
 {
-      if (obj == 0)
-	    return vpip_get_time_precision();
+      もし (obj == 0)
+	    戻る vpip_get_time_precision();
 
       const __vpiScope*scope = vpip_timescale_scope_from_handle(obj);
-      if (scope == 0)
-	    return vpip_get_time_precision();
+      もし (scope == 0)
+	    戻る vpip_get_time_precision();
 
-      return scope->time_precision;
+      戻る scope->time_precision;
 }
 
 double vpip_scaled_time_from_handle(vvp_time64_t time, vpiHandle obj)
 {
-      int scale = vpip_get_time_precision() -
+      整数 scale = vpip_get_time_precision() -
 	          vpip_time_units_from_handle(obj);
-      if (scale >= 0)
-	    return (double)time * pow(10.0, scale);
-      else
-	    return (double)time / pow(10.0, -scale);
+      もし (scale >= 0)
+	    戻る (double)time * pow(10.0, scale);
+      否则
+	    戻る (double)time / pow(10.0, -scale);
 }
 
 void vpi_get_time(vpiHandle obj, s_vpi_time*vp)
@@ -619,7 +619,7 @@ void vpi_get_time(vpiHandle obj, s_vpi_time*vp)
 	    break;
 
           default:
-            fprintf(stderr, "vpi_get_time: unknown type: %d\n", (int)vp->type);
+            fprintf(stderr, "vpi_get_time: unknown type: %d\n", (整数)vp->type);
             assert(0);
 	    break;
       }
@@ -627,15 +627,15 @@ void vpi_get_time(vpiHandle obj, s_vpi_time*vp)
 
 PLI_INT32 vpi_get_vlog_info(p_vpi_vlog_info vlog_info_p)
 {
-    if (vlog_info_p != 0) {
+    もし (vlog_info_p != 0) {
 	  *vlog_info_p = vpi_vlog_info;
-	  return 1;
-    } else {
-	  return 0;
+	  戻る 1;
+    } 否则 {
+	  戻る 0;
     }
 }
 
-void vpi_set_vlog_info(int argc, char** argv)
+void vpi_set_vlog_info(整数 argc, char** argv)
 {
     static char icarus_product[] = "Icarus Verilog";
     static char icarus_version[] = VERSION;
@@ -645,12 +645,12 @@ void vpi_set_vlog_info(int argc, char** argv)
     vpi_vlog_info.argv    = argv;
 
     static char trace_buf[1024];
-    if (const char*path = getenv("VPI_TRACE"))  {
-	  if (!strcmp(path,"-"))
+    もし (const char*path = getenv("VPI_TRACE"))  {
+	  もし (!strcmp(path,"-"))
 		vpi_trace = stdout;
-	  else {
+	  否则 {
 		vpi_trace = fopen(path, "w");
-		if (!vpi_trace) {
+		もし (!vpi_trace) {
 		      perror(path);
 		      exit(1);
 		}
@@ -668,34 +668,34 @@ static void vec4_get_value_string(const vvp_vector4_t&word_val, unsigned width,
       char*rbuf = static_cast<char *>(need_result_buf(nchar + 1, RBUF_VAL));
       char*cp = rbuf;
 
-      if (tail > 0) {
+      もし (tail > 0) {
 	    char char_val = 0;
-	    for (unsigned idx = width-tail; idx < width ;  idx += 1) {
+	    ために (unsigned idx = width-tail; idx < width ;  idx += 1) {
 		  vvp_bit4_t val = word_val.value(idx);
-		  if (val == BIT4_1)
+		  もし (val == BIT4_1)
 			char_val |= 1 << idx;
 	    }
 
-	    if (char_val != 0)
+	    もし (char_val != 0)
 		  *cp++ = char_val;
-	    else if (cp != rbuf)
+	    否则 もし (cp != rbuf)
 		  *cp++ = ' ';
       }
 
-      for (unsigned idx = 0 ;  idx < nchar ;  idx += 1) {
+      ために (unsigned idx = 0 ;  idx < nchar ;  idx += 1) {
 	    unsigned bit = (nchar - idx - 1) * 8;
 	    char char_val = 0;
-	    for (unsigned bdx = 0 ;  bdx < 8 ;  bdx += 1) {
+	    ために (unsigned bdx = 0 ;  bdx < 8 ;  bdx += 1) {
 		  vvp_bit4_t val = word_val.value(bit+bdx);
-		  if (val == BIT4_1)
+		  もし (val == BIT4_1)
 			char_val |= 1 << bdx;
 	    }
 	    // Ignore leading null-bytes and replace other null-bytes with space.
 	    // The LRM is not entirely clear on how null bytes should be handled.
 	    // This is the implementation chosen for iverilog.
-	    if (char_val != 0)
+	    もし (char_val != 0)
 		  *cp++ = char_val;
-	    else if (cp != rbuf)
+	    否则 もし (cp != rbuf)
 		  *cp++ = ' ';
       }
 
@@ -717,7 +717,7 @@ void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
       switch (vp->format) {
 	  default:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting vector values.\n", (int)vp->format);
+	                    "getting vector values.\n", (整数)vp->format);
 	    assert(0);
 
 	  case vpiSuppressVal:
@@ -725,7 +725,7 @@ void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
 
 	  case vpiBinStrVal:
 	    rbuf = static_cast<char *>(need_result_buf(width+1, RBUF_VAL));
-	    for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
+	    ために (unsigned idx = 0 ;  idx < width ;  idx += 1) {
 		  vvp_bit4_t bit = word_val.value(idx);
 		  rbuf[width-idx-1] = vvp_bit4_to_ascii(bit);
 	    }
@@ -780,14 +780,14 @@ void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
 	  case vpiIntVal: {
 		long val = 0;
 		vvp_bit4_t pad = BIT4_0;
-		if (signed_flag && word_val.size() > 0)
+		もし (signed_flag && word_val.size() > 0)
 		      pad = word_val.value(word_val.size()-1);
 
-		for (unsigned idx = 0 ; idx < 8*sizeof(val) ;  idx += 1) {
+		ために (unsigned idx = 0 ; idx < 8*sizeof(val) ;  idx += 1) {
 		      vvp_bit4_t val4 = pad;
-		      if (idx < word_val.size())
+		      もし (idx < word_val.size())
 			    val4 = word_val.value(idx);
-		      if (val4 == BIT4_1)
+		      もし (val4 == BIT4_1)
 			    val |= 1L << idx;
 		}
 
@@ -807,7 +807,7 @@ void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
 		vp->value.vector = op;
 
 		op->aval = op->bval = 0;
-		for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
+		ために (unsigned idx = 0 ;  idx < width ;  idx += 1) {
 		      switch (word_val.value(idx)) {
 			  case BIT4_0:
 			    op->aval &= ~(1 << idx % 32);
@@ -826,7 +826,7 @@ void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
 			    op->bval |=  (1 << idx % 32);
 			    break;
 		      }
-		      if (!((idx+1) % 32) && (idx+1 < width)) {
+		      もし (!((idx+1) % 32) && (idx+1 < width)) {
 			    op++;
 			    op->aval = op->bval = 0;
 		      }
@@ -850,7 +850,7 @@ void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
       switch (vp->format) {
 	  default:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting vector2 values.\n", (int)vp->format);
+	                    "getting vector2 values.\n", (整数)vp->format);
 	    assert(0);
 
 	  case vpiSuppressVal:
@@ -871,15 +871,15 @@ void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
 		vp->value.vector = op;
 
 		op->aval = op->bval = 0;
-		for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
-		      if (word_val.value(idx)) {
+		ために (unsigned idx = 0 ;  idx < width ;  idx += 1) {
+		      もし (word_val.value(idx)) {
 			    op->aval |=  (1 << idx % 32);
 			    op->bval &= ~(1 << idx % 32);
-		      } else {
+		      } 否则 {
 			    op->aval &= ~(1 << idx % 32);
 			    op->bval &= ~(1 << idx % 32);
 		      }
-		      if (!((idx+1) % 32) && (idx+1 < width)) {
+		      もし (!((idx+1) % 32) && (idx+1 < width)) {
 			    op++;
 			    op->aval = op->bval = 0;
 		      }
@@ -900,13 +900,13 @@ static PLI_INT32 get_real_as_int(double real)
 	/* We would normally want to return 'bx for a NaN or
 	 * +/- infinity, but for an integer the standard says
 	 * to convert 'bx to 0, so we just return 0. */
-      if (real != real || (real && (real == 0.5*real))) {
-	    return 0;
+      もし (real != real || (real && (real == 0.5*real))) {
+	    戻る 0;
       }
 
       rtn = std::round(real);
 
-      return (PLI_INT32) rtn;
+      戻る (PLI_INT32) rtn;
 }
 
 /*
@@ -921,7 +921,7 @@ void vpip_real_get_value(double real, s_vpi_value*vp)
       switch (vp->format) {
 	  default:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting real values.\n", (int)vp->format);
+	                    "getting real values.\n", (整数)vp->format);
 	    assert(0);
 
 	  case vpiSuppressVal:
@@ -956,7 +956,7 @@ double real_from_vpi_value(s_vpi_value*vp)
       switch (vp->format) {
 	  default:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "putting real values.\n", (int)vp->format);
+	                    "putting real values.\n", (整数)vp->format);
 	    assert(0);
 
 	  case vpiRealVal:
@@ -969,31 +969,31 @@ double real_from_vpi_value(s_vpi_value*vp)
 
 	  case vpiBinStrVal:
 	    vpip_bin_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
+	    もし (vp->value.str[0] == '-') is_signed = true;
 	    vector4_to_value(vec4, result, is_signed);
 	    break;
 
 	  case vpiOctStrVal:
 	    vpip_oct_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
+	    もし (vp->value.str[0] == '-') is_signed = true;
 	    vector4_to_value(vec4, result, is_signed);
 	    break;
 
 	  case vpiDecStrVal:
 	    vpip_dec_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
+	    もし (vp->value.str[0] == '-') is_signed = true;
 	    vector4_to_value(vec4, result, is_signed);
 	    break;
 
 	  case vpiHexStrVal:
 	    vpip_hex_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
+	    もし (vp->value.str[0] == '-') is_signed = true;
 	    vector4_to_value(vec4, result, is_signed);
 	    break;
 
       }
 
-      return result;
+      戻る result;
 }
 
 void vpip_string_get_value(const string&val, s_vpi_value*vp)
@@ -1003,7 +1003,7 @@ void vpip_string_get_value(const string&val, s_vpi_value*vp)
       switch (vp->format) {
 	  default:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting string values.\n", (int)vp->format);
+	                    "getting string values.\n", (整数)vp->format);
 	    assert(0);
 
 	  case vpiSuppressVal:
@@ -1029,12 +1029,12 @@ void vpi_get_value(vpiHandle expr, s_vpi_value*vp)
 
 	// Never bother with suppressed values. All the derived
 	// classes can ignore this type.
-      if (vp->format == vpiSuppressVal)
-	    return;
+      もし (vp->format == vpiSuppressVal)
+	    戻る;
 
       expr->vpi_get_value(vp);
 
-      if (vpi_trace) switch (vp->format) {
+      もし (vpi_trace) switch (vp->format) {
 		case vpiStringVal:
 		  fprintf(vpi_trace,"vpi_get_value(%p=<%d>) -> string=\"%s\"\n",
 			  expr, expr->get_type_code(), vp->value.str);
@@ -1047,7 +1047,7 @@ void vpi_get_value(vpiHandle expr, s_vpi_value*vp)
 
 		case vpiIntVal:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> int=%d\n",
-			  expr->get_type_code(), (int)vp->value.integer);
+			  expr->get_type_code(), (整数)vp->value.integer);
 		  break;
 
 		case vpiSuppressVal:
@@ -1057,14 +1057,14 @@ void vpi_get_value(vpiHandle expr, s_vpi_value*vp)
 
 		default:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> <%d>=?\n",
-			  expr->get_type_code(), (int)vp->format);
+			  expr->get_type_code(), (整数)vp->format);
 	    }
 }
 
 struct vpip_put_value_event : vvp_gen_event_s {
       vpiHandle handle;
       s_vpi_value value;
-      int flags;
+      整数 flags;
       virtual void run_run() override;
       ~vpip_put_value_event() override { }
 };
@@ -1105,7 +1105,7 @@ static t_vpi_time *timedup(const t_vpi_time *val)
       t_vpi_time *rtn;
       rtn = static_cast<t_vpi_time *> (malloc(sizeof(t_vpi_time)));
       *rtn = *val;
-      return rtn;
+      戻る rtn;
 }
 
 /* Make a copy of a pointer to a vector value structure. */
@@ -1117,7 +1117,7 @@ static t_vpi_vecval *vectordup(const t_vpi_vecval *val, PLI_INT32 size)
       num_bytes = ((size + 31)/32)*sizeof(t_vpi_vecval);
       rtn = static_cast<t_vpi_vecval *> (malloc(num_bytes));
       memcpy(rtn, val, num_bytes);
-      return rtn;
+      戻る rtn;
 }
 
 /* Make a copy of a pointer to a strength structure. */
@@ -1127,7 +1127,7 @@ static t_vpi_strengthval *strengthdup(const t_vpi_strengthval *val)
       rtn = static_cast<t_vpi_strengthval *>
             (malloc(sizeof(t_vpi_strengthval)));
       *rtn = *val;
-      return rtn;
+      戻る rtn;
 }
 
 vpiHandle vpi_put_value(vpiHandle obj, s_vpi_value*vp,
@@ -1137,16 +1137,16 @@ vpiHandle vpi_put_value(vpiHandle obj, s_vpi_value*vp,
 
       flags &= ~vpiReturnEvent;
 
-      if (flags!=vpiNoDelay && flags!=vpiForceFlag && flags!=vpiReleaseFlag) {
+      もし (flags!=vpiNoDelay && flags!=vpiForceFlag && flags!=vpiReleaseFlag) {
 	    vvp_time64_t dly;
-	    int scale;
+	    整数 scale;
 
-	    if (vpi_get(vpiAutomatic, obj)) {
+	    もし (vpi_get(vpiAutomatic, obj)) {
 		  fprintf(stderr, "VPI error: cannot put a value with "
 				  "a delay on automatically allocated "
 				  "variable '%s'.\n",
 				  vpi_get_str(vpiName, obj));
-		  return 0;
+		  戻る 0;
 	    }
 
 	    assert(when != 0);
@@ -1155,9 +1155,9 @@ vpiHandle vpi_put_value(vpiHandle obj, s_vpi_value*vp,
 		case vpiScaledRealTime:
 		  scale = vpip_time_units_from_handle(obj) -
 		          vpip_get_time_precision();
-		  if (scale >= 0) {
+		  もし (scale >= 0) {
 			dly = (vvp_time64_t)(when->real * pow(10.0, scale));
-		  } else {
+		  } 否则 {
 			dly = (vvp_time64_t)(when->real / pow(10.0, -scale));
 		  }
 		  break;
@@ -1169,19 +1169,19 @@ vpiHandle vpi_put_value(vpiHandle obj, s_vpi_value*vp,
 		  break;
 	    }
 
-	    if ((dly == 0) && schedule_at_rosync()) {
+	    もし ((dly == 0) && schedule_at_rosync()) {
 		  fprintf(stderr, "VPI error: attempted to put a value to "
 				  "variable '%s' during a read-only synch "
 				  "callback.\n", vpi_get_str(vpiName, obj));
-		  return 0;
+		  戻る 0;
 	    }
 
 	    vpip_put_value_event*put = new vpip_put_value_event;
 	    put->handle = obj;
-	    if (dynamic_cast<__vpiNamedEvent*>(obj)) {
+	    もし (dynamic_cast<__vpiNamedEvent*>(obj)) {
 		  put->value.format = vpiIntVal;
 		  put->value.value.integer = 0;
-	    } else {
+	    } 否则 {
 		  assert(vp);
 		  put->value = *vp;
 	    }
@@ -1216,26 +1216,26 @@ vpiHandle vpi_put_value(vpiHandle obj, s_vpi_value*vp,
 	    }
 	    put->flags = flags;
 	    schedule_generic(put, dly, false, true, true);
-	    return 0;
+	    戻る 0;
       }
 
-      if (schedule_at_rosync()) {
+      もし (schedule_at_rosync()) {
             fprintf(stderr, "VPI error: attempted to put a value to "
 			    "variable '%s' during a read-only synch "
 			    "callback.\n", vpi_get_str(vpiName, obj));
-            return 0;
+            戻る 0;
       }
 
       obj->vpi_put_value(vp, flags);
 
-      return 0;
+      戻る 0;
 }
 
 vpiHandle vpi_handle(PLI_INT32 type, vpiHandle ref)
 {
       vpiHandle res = 0;
 
-      if (ref == 0) {
+      もし (ref == 0) {
 	      // A few types can apply to a nil handle. These are ways
 	      // that the current function can get started finding things.
 	    switch (type) {
@@ -1252,45 +1252,45 @@ vpiHandle vpi_handle(PLI_INT32 type, vpiHandle ref)
 		    // This is how VPI users get a first handle into
 		    // the system. This is the handle of the system
 		    // task/function call currently being executed.
-		  if (vpi_trace) {
+		  もし (vpi_trace) {
 			fprintf(vpi_trace, "vpi_handle(vpiSysTfCall, 0) "
 				"-> %p (%s)\n", vpip_cur_task,
 				vpip_cur_task->defn->info.tfname);
 		  }
-		  return vpip_cur_task;
+		  戻る vpip_cur_task;
 
 		default:
 		  fprintf(stderr, "VPI error: vpi_handle(type=%d, ref=0).\n",
-			  (int)type);
+			  (整数)type);
 		  res = 0;
 		  break;
 	    }
 
-      } else {
+      } 否则 {
 
-	    if (type == vpiSysTfCall) {
+	    もし (type == vpiSysTfCall) {
 		  fprintf(stderr, "VPI error: vpi_handle(vpiSysTfCall, "
 			  "ref!=0).\n");
-		  return 0;
+		  戻る 0;
 	    }
 
 	    res = ref->vpi_handle(type);
       }
 
 
-      if (vpi_trace) {
+      もし (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle(vpiScope, ref=%p) "
 		    "-> %p\n", vpip_cur_task, ref);
       }
 
-      return res;
+      戻る res;
 }
 
 static vpiHandle vpip_make_udp_iterator()
 {
 // HERE: Add support for iterating over UDP definitions.
 //       See 26.6.16 (page 400 in 1364-2005).
-      return 0;
+      戻る 0;
 }
 
 /*
@@ -1298,7 +1298,7 @@ static vpiHandle vpip_make_udp_iterator()
  * the specified reference. It is up to the iterate_ method to
  * allocate a properly formed iterator.
  */
-static vpiHandle vpi_iterate_global(int type)
+static vpiHandle vpi_iterate_global(整数 type)
 {
       switch (type) {
 	  case vpiInstance:
@@ -1310,16 +1310,16 @@ static vpiHandle vpi_iterate_global(int type)
 	  case vpiInterface:
 	    // fallthrough
 	  case vpiPackage:
-	    return vpip_make_root_iterator(type);
+	    戻る vpip_make_root_iterator(type);
 
 	  case vpiUdpDefn:
-	    return vpip_make_udp_iterator();
+	    戻る vpip_make_udp_iterator();
 
 	  case vpiUserSystf:
-	    return vpip_make_systf_iterator();
+	    戻る vpip_make_systf_iterator();
       }
 
-      return 0;
+      戻る 0;
 }
 
 vpiHandle vpi_iterate(PLI_INT32 type, vpiHandle ref)
@@ -1327,29 +1327,29 @@ vpiHandle vpi_iterate(PLI_INT32 type, vpiHandle ref)
       vpiHandle rtn = 0;
 
       assert(vpi_mode_flag != VPI_MODE_NONE);
-      if (vpi_mode_flag == VPI_MODE_REGISTER) {
+      もし (vpi_mode_flag == VPI_MODE_REGISTER) {
 	    fprintf(stderr, "vpi error: vpi_iterate called during "
 		    "vpi_register_systf. You can't do that!\n");
-	    return 0;
+	    戻る 0;
       }
 
-      if (ref == 0)
+      もし (ref == 0)
 	    rtn = vpi_iterate_global(type);
-      else
+      否则
 	    rtn = ref->vpi_iterate(type);
 
-      if (vpi_trace) {
+      もし (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_iterate(%d, %p) ->%s\n",
-	    (int)type, ref, rtn ? "" : " (null)");
+	    (整数)type, ref, rtn ? "" : " (null)");
       }
 
-      return rtn;
+      戻る rtn;
 }
 
 vpiHandle vpi_handle_by_index(vpiHandle ref, PLI_INT32 idx)
 {
       assert(ref);
-      return ref->vpi_index(idx);
+      戻る ref->vpi_index(idx);
 }
 
 static vpiHandle find_name(const char *name, vpiHandle handle)
@@ -1358,27 +1358,27 @@ static vpiHandle find_name(const char *name, vpiHandle handle)
       __vpiScope*ref = dynamic_cast<__vpiScope*>(handle);
 
       /* check module names */
-      if (!strcmp(name, vpi_get_str(vpiName, handle)))
+      もし (!strcmp(name, vpi_get_str(vpiName, handle)))
 	    rtn = handle;
 
       /* brute force search for the name in all objects in this scope */
-      for (unsigned i = 0 ;  i < ref->intern.size() ;  i += 1) {
+      ために (unsigned i = 0 ;  i < ref->intern.size() ;  i += 1) {
 	      /* The standard says that since a port does not have a full
 	       * name it cannot be found by name. Because of this we need
 	       * to skip ports here so the correct handle can be located. */
-	    if (vpi_get(vpiType, ref->intern[i]) == vpiPort) continue;
+	    もし (vpi_get(vpiType, ref->intern[i]) == vpiPort) continue;
 	    const char *nm = vpi_get_str(vpiName, ref->intern[i]);
-	    if (nm && !strcmp(name, nm)) {
+	    もし (nm && !strcmp(name, nm)) {
 		  rtn = ref->intern[i];
 		  break;
-	    } else if (vpi_get(vpiType, ref->intern[i]) == vpiMemory ||
+	    } 否则 もし (vpi_get(vpiType, ref->intern[i]) == vpiMemory ||
 	               vpi_get(vpiType, ref->intern[i]) == vpiNetArray) {
 		  /* We need to iterate on the words */
 		  vpiHandle word_i, word_h;
 		  word_i = vpi_iterate(vpiMemoryWord, ref->intern[i]);
-		  while (word_i && (word_h = vpi_scan(word_i))) {
+		  ながら (word_i && (word_h = vpi_scan(word_i))) {
 			nm = vpi_get_str(vpiName, word_h);
-			if (nm && !strcmp(name, nm)) {
+			もし (nm && !strcmp(name, nm)) {
 			      rtn = word_h;
 			      vpi_free_object(word_i);
 			      break;
@@ -1386,37 +1386,37 @@ static vpiHandle find_name(const char *name, vpiHandle handle)
 		  }
 	    }
 	    /* found it yet? */
-	    if (rtn) break;
+	    もし (rtn) break;
       }
 
-      return rtn;
+      戻る rtn;
 }
 
 // Find the end of the escaped identifier or simple identifier
 static char * find_rest(char *name)
 {
       char *rest;
-      if (*name == '\\') {
+      もし (*name == '\\') {
 	    rest = strchr(name, ' ');
-	    if (rest) {
+	    もし (rest) {
 		  *rest++ = 0; // The space is not part of the string
 		    // There should be a '.' after the escaped ID if there is
 		    // anything more. If it is missing add it to avoid a crash
-		  if ((*rest != '.') && (*rest != 0)) {
+		  もし ((*rest != '.') && (*rest != 0)) {
 			*--rest = '.';
 			fprintf(stderr, "ERROR: Malformed scope string: \"%s\"", name);
 		  }
-		  if (*rest == 0) {
+		  もし (*rest == 0) {
 			rest = 0;
 		  }
 	    }
-      } else {
+      } 否则 {
 	    rest = strchr(name, '.');
       }
-      return rest;
+      戻る rest;
 }
 
-static vpiHandle find_scope(const char *name, vpiHandle handle, int depth)
+static vpiHandle find_scope(const char *name, vpiHandle handle, 整数 depth)
 {
 
       vpiHandle iter = handle==0
@@ -1427,51 +1427,51 @@ static vpiHandle find_scope(const char *name, vpiHandle handle, int depth)
       strcpy(&name_buf[0], name);
       char*nm_first = &name_buf[0];
       char*nm_rest = find_rest(nm_first);
-      if (*nm_first == '\\') ++nm_first;
-      if (nm_rest) {
+      もし (*nm_first == '\\') ++nm_first;
+      もし (nm_rest) {
 	    *nm_rest++ = 0;
       }
 
       vpiHandle rtn = 0;
       vpiHandle hand;
-      while (iter && (hand = vpi_scan(iter))) {
+      ながら (iter && (hand = vpi_scan(iter))) {
 	    const char *nm = vpi_get_str(vpiName, hand);
 
-	    if (strcmp(nm_first,nm)==0) {
-		  if (nm_rest)
+	    もし (strcmp(nm_first,nm)==0) {
+		  もし (nm_rest)
 			rtn=find_scope(nm_rest, hand, depth+1);
-		  else
+		  否则
 			rtn = hand;
 	    }
 
 	    /* found it yet ? */
-	    if (rtn) {
+	    もし (rtn) {
 		  vpi_free_object(iter);
 		  break;
 	    }
       }
 
-      return rtn;
+      戻る rtn;
 }
 
 // Find the end of the first escaped identifier or simple identifier
 static char * find_next(char *name)
 {
       char *next;
-      if (*name == '\\') {
+      もし (*name == '\\') {
 	    next = strchr(name, ' ');
-	    if (next && *++next == 0) next = 0;
-      } else {
+	    もし (next && *++next == 0) next = 0;
+      } 否则 {
 	    next = strchr(name, '.');
       }
-      return next;
+      戻る next;
 }
 
 vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 {
       vpiHandle hand;
 
-      if (vpi_trace) {
+      もし (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle_by_name(%s, %p) -->\n",
 		    name, scope);
       }
@@ -1486,24 +1486,24 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 
 	// Check to see if we have an escaped identifier and if so search
 	// the long way because a '.' could be in the escaped name.
-      if (strchr(nm_path, '\\')) {
+      もし (strchr(nm_path, '\\')) {
 	    char *next;
 	    nm_base = nm_path;
-	    while ((next = find_next(nm_base))) {
+	    ながら ((next = find_next(nm_base))) {
 		  nm_base = ++next;
 	    }
-	    if (nm_path == nm_base) {
+	    もし (nm_path == nm_base) {
 		  nm_path = 0;
-	    } else {
+	    } 否则 {
 		  *(nm_base-1) = 0;
 	    }
 
 	// If there is no escaped identifier then just look for the last '.'
-      } else {
+      } 否则 {
 	    nm_base = strrchr(nm_path, '.');
-	    if (nm_base) {
+	    もし (nm_base) {
 		  *nm_base++ = 0;
-	    } else {
+	    } 否则 {
 		  nm_base = nm_path;
 		  nm_path = 0;
 	    }
@@ -1513,7 +1513,7 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
        * traverse the hierarchy specified in name to find the leaf module
        * and try finding it there.
        */
-      if (scope) {
+      もし (scope) {
 	    /* Some implementations support either a module or a scope. */
 	    switch (vpi_get(vpiType, scope)) {
 		case vpiScope:
@@ -1523,15 +1523,15 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 	          hand = scope;
 	          break;
 		default:
-		  if (vpi_trace) {
+		  もし (vpi_trace) {
 			fprintf(vpi_trace, "vpi_handle_by_name: "
 				"Scope is not a vpiScope or vpiModule\n");
 		  }
 	          // Use vpi_chk_error() here when it is implemented.
-	          return 0;
+	          戻る 0;
 	    }
 
-      } else if (nm_path) {
+      } 否则 もし (nm_path) {
 	      // The name has a path, and no other scope handle was
 	      // passed in. That suggests we are looking for "a.b.c"
 	      // in the root scope. So convert "a.b" to a scope and
@@ -1539,7 +1539,7 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 	    hand = find_scope(nm_path, NULL, 0);
 	    nm_path = 0;
 
-      } else {
+      } 否则 {
 	      // Special case: scope==<nil>, meaning we are looking in
 	      // the root, and there is no path to the name, i.e. the
 	      // string is "c" instead of "top.c". Try to find "c" as
@@ -1547,22 +1547,22 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 	    hand = find_scope(nm_base, NULL, 0);
       }
 
-      if (hand == 0) {
-	    if (vpi_trace) {
+      もし (hand == 0) {
+	    もし (vpi_trace) {
 		  fprintf(vpi_trace, "vpi_handle_by_name: "
 			  "Scope does not exist. Giving up.\n");
 	    }
 
-	    return 0;
+	    戻る 0;
       }
 
 	// If there is a path part, then use it to find the
 	// scope. For example, if the full name is a.b.c, then
 	// the nm_path string is a.b and we search for that
 	// scope. If we find it, then set hand to that scope.
-      if (nm_path) {
+      もし (nm_path) {
 	    vpiHandle tmp = find_scope(nm_path, hand, 0);
-	    while (tmp == 0 && hand != 0) {
+	    ながら (tmp == 0 && hand != 0) {
 		  hand = vpi_handle(vpiScope, hand);
 		  tmp = find_scope(nm_path, hand, 0);
 	    }
@@ -1570,13 +1570,13 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
       }
 
 	// find_name() expects escaped identifiers to be stripped
-      if (*nm_base == '\\') {
+      もし (*nm_base == '\\') {
 	    // Skip the \ at the beginning
 	    ++nm_base;
 
 	    // Drop the space at the end if it exists
 	    char *next;
-	    if ((next = strchr(nm_base, ' '))) {
+	    もし ((next = strchr(nm_base, ' '))) {
 		  *next = 0;
 	    }
       }
@@ -1584,11 +1584,11 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 	// Now we have the correct scope, look for the item.
       vpiHandle out = find_name(nm_base, hand);
 
-      if (vpi_trace) {
+      もし (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle_by_name: DONE\n");
       }
 
-      return out;
+      戻る out;
 }
 
 // Return tuple {x1, x2, x3} with:
@@ -1599,14 +1599,14 @@ tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8_and_part_sa(vvp_net_
 
       vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr, 0);
 
-      while (cur.ptr()) {
-	    if (cur.ptr() == net2 && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
+      ながら (cur.ptr()) {
+	    もし (cur.ptr() == net2 && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
 		    // Pass on the return value if found
-		  return {true, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
-	    } else if (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
+		  戻る {true, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
+	    } 否则 もし (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
 		  auto res = check_connected_to_concat8_and_part_sa(cur.ptr()->out_, net2, cur);
-		  if (get<0>(res)) {
-			return res;
+		  もし (get<0>(res)) {
+			戻る res;
 		  }
 	    }
 
@@ -1616,7 +1616,7 @@ tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8_and_part_sa(vvp_net_
       }
 
 	// net2 is not connected to this concat8
-      return {false, vvp_net_ptr_t(nullptr, 0), false};
+      戻る {false, vvp_net_ptr_t(nullptr, 0), false};
 }
 
 // Check if net2 is connected to current_net through a net of vvp_fun_concat8s
@@ -1628,19 +1628,19 @@ tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8(vvp_net_ptr_t cur, v
 {
       vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr, 0);
 	// For everything connected
-      while (cur.ptr()) {
+      ながら (cur.ptr()) {
 	      // Check if it's a concat8
-	    if (cur.ptr() == net2) {
-		  return {true, vvp_net_ptr_t(nullptr, 0), false};
-	    } else if (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
+	    もし (cur.ptr() == net2) {
+		  戻る {true, vvp_net_ptr_t(nullptr, 0), false};
+	    } 否则 もし (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
 		  auto res = check_connected_to_concat8(cur.ptr()->out_, net2, cur);
-		  if (get<0>(res)) {
-			if (!get<1>(res).ptr() && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
+		  もし (get<0>(res)) {
+			もし (!get<1>(res).ptr() && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
 			      // `parent` is the last part_sa node in front of our destination
 			      // We want to place the intermod node here
-			      return {true, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
+			      戻る {true, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
 			}
-			return res;
+			戻る res;
 		  }
 	    }
 
@@ -1650,7 +1650,7 @@ tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8(vvp_net_ptr_t cur, v
       }
 
 	// net2 is not connected to this concat8
-      return {false, vvp_net_ptr_t(nullptr, 0), false};
+      戻る {false, vvp_net_ptr_t(nullptr, 0), false};
 }
 
 // Used to get intermodpath for two ports
@@ -1658,23 +1658,23 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
                            vpiHandle ref1,
                            vpiHandle ref2)
 {
-      if (vpi_trace) {
+      もし (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle_multi(%d, %p, %p) -->\n",
 	            type, ref1, ref2);
       }
 
-      if (type != vpiInterModPath) {
+      もし (type != vpiInterModPath) {
 	    fprintf(stderr, "sorry: vpi_handle_multi currently supports"
 	            "only vpiInterModPath\n");
-	    return nullptr;
+	    戻る nullptr;
       }
 
 	// Indicates whether port1 refers to a single bit
       bool port1_has_index = false;
-      int port1_bit_index = 0;
+      整数 port1_bit_index = 0;
       vpiPortBitInfo* port1_bit = dynamic_cast<vpiPortBitInfo*>(ref1);
 
-      if (port1_bit) {
+      もし (port1_bit) {
 	      // Get the bit index
 	    port1_has_index = true;
 	    port1_bit_index = vpi_get(vpiBit, port1_bit);
@@ -1684,10 +1684,10 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 
 	// Indicates whether port2 refers to a single bit
       bool port2_has_index = false;
-      int port2_bit_index = 0;
+      整数 port2_bit_index = 0;
       vpiPortBitInfo* port2_bit = dynamic_cast<vpiPortBitInfo*>(ref2);
 
-      if (port2_bit) {
+      もし (port2_bit) {
 	      // Get the bit index
 	    port2_has_index = true;
 	    port2_bit_index = vpi_get(vpiBit, port2_bit);
@@ -1697,18 +1697,18 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 
       vpiPortInfo* port1 = dynamic_cast<vpiPortInfo*>(ref1);
 
-      if (!port1) {
+      もし (!port1) {
 	    fprintf(stderr, "sorry: second argument of vpi_handle_multi"
 		    "must be a vpiPort\n");
-	    return nullptr;
+	    戻る nullptr;
       }
 
       vpiPortInfo* port2 = dynamic_cast<vpiPortInfo*>(ref2);
 
-      if (!port2) {
+      もし (!port2) {
 	    fprintf(stderr, "sorry: third argument of vpi_handle_multi"
 		    "must be a vpiPort\n");
-	    return nullptr;
+	    戻る nullptr;
       }
 
 	// Get the names of both ports
@@ -1720,7 +1720,7 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 	// even tho the intermodpath is correctly inserted
       __vpiSignal* output_signal = nullptr;
 
-      if (port1->get_direction() == vpiOutput && port2->get_direction() == vpiOutput) {
+      もし (port1->get_direction() == vpiOutput && port2->get_direction() == vpiOutput) {
 	    vpiHandle scope_port2 = vpi_handle(vpiScope, ref2);
 	    assert(scope_port2);
 
@@ -1728,11 +1728,11 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 	    vpiHandle net_i = vpi_iterate(vpiNet, scope_port2) ;
 	    vpiHandle net;
 
-	    while ((net = vpi_scan(net_i)) != NULL) {
+	    ながら ((net = vpi_scan(net_i)) != NULL) {
 		  std::string net_name(vpi_get_str(vpiName, net));
 
 		    // Compare whether the net matches with the port name
-		  if (net_name == port2_name) {
+		  もし (net_name == port2_name) {
 			output_signal = dynamic_cast<__vpiSignal*>(net);
 		  }
 	    }
@@ -1741,45 +1741,45 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
       vvp_net_t* net1 = port1->get_port();
       vvp_net_t* net2 = port2->get_port();
 
-      if (net1 == nullptr || net2 == nullptr) {
+      もし (net1 == nullptr || net2 == nullptr) {
 	    fprintf(stderr, "Error: Could not find net. "
 		    "Did you run iverilog with '-ginterconnect'?\n");
-	    return nullptr;
+	    戻る nullptr;
       }
 
-      if (net1 == net2) {
+      もし (net1 == net2) {
 	    fprintf(stderr, "Error: Net for both ports is the same. "
 		    "Did you pass the same port twice?\n");
-	    return nullptr;
+	    戻る nullptr;
       }
 
-      if (!dynamic_cast<vvp_fun_buft*>(net1->fun)) {
+      もし (!dynamic_cast<vvp_fun_buft*>(net1->fun)) {
 	    fprintf(stderr, "Error: functor of net1 must be"
 		    "vvp_fun_buft\n");
-	    return nullptr;
+	    戻る nullptr;
       }
 
-      if (!dynamic_cast<vvp_fun_buft*>(net2->fun)) {
+      もし (!dynamic_cast<vvp_fun_buft*>(net2->fun)) {
 	    fprintf(stderr, "Error: functor of net2 must be"
 		    "vvp_fun_buft\n");
-	    return nullptr;
+	    戻る nullptr;
       }
 
 	// If port1 is actually a port bit, we have to get to the correct vvp_fun_part
 	// after which we insert the intermodpath delay
-      if (port1_has_index) {
+      もし (port1_has_index) {
 	    vvp_net_ptr_t* net1_ptr = &net1->out_;
 
 	      // Search for part selects connected to port1
 	    vvp_net_t* current_net = net1_ptr->ptr();
 
-	    while (current_net) {
+	    ながら (current_net) {
 		  const vvp_fun_part* part = dynamic_cast<vvp_fun_part*>(current_net->fun);
 
 		    // Its a part select!
-		  if (part) {
+		  もし (part) {
 			  // Is it the correct part select?
-			if (part->get_base() == (unsigned)port1_bit_index) {
+			もし (part->get_base() == (unsigned)port1_bit_index) {
 			      assert(part->get_wid() == 1);
 			      net1 = current_net; // Replace net1 as this is our new start point
 			      break;
@@ -1794,7 +1794,7 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
       vvp_net_ptr_t cur = net1->out_;
       vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr, 0);
 
-      while (cur.ptr()) {
+      ながら (cur.ptr()) {
 	      // Either port2 is directly connected to port1
 	      // Or in the second case port2 is indirectly connected
 	      // to port1 through a net of concat8s
@@ -1803,22 +1803,22 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 	    tie(is_connected, previous_node, is_output) = port2_has_index
 		  ? check_connected_to_concat8(cur, net2, vvp_net_ptr_t(net1, 0))
 		  : check_connected_to_concat8_and_part_sa(cur, net2, vvp_net_ptr_t(net1, 0));
-	    if ( (!port2_has_index && cur.ptr() == net2) || is_connected ) {
+	    もし ( (!port2_has_index && cur.ptr() == net2) || is_connected ) {
 		  vvp_net_t*new_net = new vvp_net_t;
 
 		    // Create new node with intermodpath and connect port2 to it
-		  int width = 1; // TODO
+		  整数 width = 1; // TODO
 		  vvp_fun_intermodpath*obj = new vvp_fun_intermodpath(new_net, width);
 
 		  vvp_net_t* output_net = net1;
-		  if (is_connected) {
-			if (is_output) {
+		  もし (is_connected) {
+			もし (is_output) {
 			      output_net = previous_node.ptr(); // net2 is direct output of part_sa
 			      cur = output_net->out_;
 			      prev = vvp_net_ptr_t(nullptr, 0);
-			} else {
+			} 否则 {
 			      prev = previous_node;
-			      if (prev.ptr()) {
+			      もし (prev.ptr()) {
 				    cur = prev.ptr()->port[prev.port()];
 			      }
 			}
@@ -1829,13 +1829,13 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 
 		    // Port2 is in the middle of the list
 		    // Insert intermodpath before port2 and keep everything else intact
-		  if (prev.ptr()) {
+		  もし (prev.ptr()) {
 			prev.ptr()->port[prev.port()] = vvp_net_ptr_t(new_net, 0); // Point to port 0 of vvp_fun_intermodpath
 			new_net->port[0] = cur.ptr()->port[cur.port()]; // Connect the next net in list
 			cur.ptr()->port[cur.port()] = vvp_net_ptr_t(nullptr, 0); // Only port2 is connected to intermodpath
 		    // Port2 is first in list
 		    // Insert intermodpath before port2 and keep everything else intact
-		  } else {
+		  } 否则 {
 			output_net->out_ = vvp_net_ptr_t(new_net, 0); // Point to port 0 of vvp_fun_intermodpath
 			new_net->port[0] = cur.ptr()->port[cur.port()]; //  Connect the next net in list
 			cur.ptr()->port[cur.port()] = vvp_net_ptr_t(nullptr, 0); // Only port2 is connected to intermodpath
@@ -1844,7 +1844,7 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 		    // If both ports are vpiOutput and port2 is not a vector,
 		    // we have to reassign the __vpiSignal so that the delayed
 		    // values get dumped
-		  if (output_signal && !port2_has_index) {
+		  もし (output_signal && !port2_has_index) {
 			net2->fil = net1->fil;
 			net1->fil = nullptr;
 			output_signal->node = net2;
@@ -1855,7 +1855,7 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 		  intermodpath->intermodpath = obj;
 
 		    // Finally done, return the intermodpath object
-		  return intermodpath;
+		  戻る intermodpath;
 	    }
 
 	    prev = cur;
@@ -1865,7 +1865,7 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
       fprintf(stderr, "VPI error: Could not insert intermodpath!\n");
       fprintf(stderr, "\tport1 = %s, port1_has_index = %d, port1_bit_index = %d\n", port1_name.c_str(), port1_has_index, port1_bit_index);
       fprintf(stderr, "\tport2 = %s, port2_has_index = %d, port2_bit_index = %d\n", port2_name.c_str(), port2_has_index, port2_bit_index);
-      return nullptr;
+      戻る nullptr;
 }
 
 /*
@@ -1896,7 +1896,7 @@ void vpi_get_delays(vpiHandle expr, p_vpi_delay delays)
 
       expr->vpi_get_delays(delays);
 
-      if (vpi_trace) {
+      もし (vpi_trace) {
 	    fprintf(vpi_trace,
 		    "vpi_get_delays(%p, %p) -->\n", expr, delays);
       }
@@ -1910,7 +1910,7 @@ void vpi_put_delays(vpiHandle expr, p_vpi_delay delays)
 
       expr->vpi_put_delays(delays);
 
-      if (vpi_trace) {
+      もし (vpi_trace) {
 	    fprintf(vpi_trace,
 		    "vpi_put_delays(%p, %p) -->\n", expr, delays);
       }
@@ -1925,25 +1925,25 @@ void vpi_put_delays(vpiHandle expr, p_vpi_delay delays)
 
 extern "C" PLI_INT32 vpi_vprintf(const char*fmt, va_list ap)
 {
-      return vpi_mcd_vprintf(1, fmt, ap);
+      戻る vpi_mcd_vprintf(1, fmt, ap);
 }
 
 extern "C" PLI_INT32 vpi_printf(const char *fmt, ...)
 {
       va_list ap;
       va_start(ap, fmt);
-      int r = vpi_mcd_vprintf(1, fmt, ap);
+      整数 r = vpi_mcd_vprintf(1, fmt, ap);
       va_end(ap);
-      return r;
+      戻る r;
 }
 
 extern "C" PLI_INT32 vpi_flush(void)
 {
-      return vpi_mcd_flush(1);
+      戻る vpi_mcd_flush(1);
 }
 
 
-extern "C" PLI_INT32 vpi_sim_vcontrol(int operation, va_list ap)
+extern "C" PLI_INT32 vpi_sim_vcontrol(整数 operation, va_list ap)
 {
       long diag_msg;
 
@@ -1962,27 +1962,27 @@ extern "C" PLI_INT32 vpi_sim_vcontrol(int operation, va_list ap)
 
 	  default:
 	    fprintf(stderr, "Unsupported VPI control operation %d.\n", operation);
-	    return 0;
+	    戻る 0;
       }
-      return 1;
+      戻る 1;
 }
 
 extern "C" PLI_INT32 vpi_sim_control(PLI_INT32 operation, ...)
 {
       va_list ap;
       va_start(ap, operation);
-      int r = vpi_sim_vcontrol(operation, ap);
+      整数 r = vpi_sim_vcontrol(operation, ap);
       va_end(ap);
-      return r;
+      戻る r;
 }
 
 extern "C" PLI_INT32 vpi_control(PLI_INT32 operation, ...)
 {
       va_list ap;
       va_start(ap, operation);
-      int r = vpi_sim_vcontrol(operation, ap);
+      整数 r = vpi_sim_vcontrol(operation, ap);
       va_end(ap);
-      return r;
+      戻る r;
 }
 
 /*
@@ -1999,42 +1999,42 @@ extern "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
 	/* Get the value as a vvp_vector4_t. */
       val.format = vpiObjTypeVal;
       vpi_get_value(arg, &val);
-      if (val.format == vpiRealVal) {
+      もし (val.format == vpiRealVal) {
 	    vpi_get_value(arg, &val);
 	      /* All double values can be represented in 1024 bits. */
 	    vec4 = vvp_vector4_t(1024, val.value.real);
-	    if (val.value.real < 0) is_neg = true;
-      } else {
+	    もし (val.value.real < 0) is_neg = true;
+      } 否则 {
 	    val.format = vpiVectorVal;
 	    vpi_get_value(arg, &val);
 	    unsigned wid = vpi_get(vpiSize, arg);
 	    vec4 = vvp_vector4_t(wid, BIT4_0);
-	    for (unsigned idx=0; idx < wid; idx += 1) {
+	    ために (unsigned idx=0; idx < wid; idx += 1) {
 		PLI_INT32 aval = val.value.vector[idx/32].aval;
 		PLI_INT32 bval = val.value.vector[idx/32].bval;
 		aval >>= idx % 32;
 		bval >>= idx % 32;
-		int bitmask = (aval&1) | ((bval<<1)&2);
+		整数 bitmask = (aval&1) | ((bval<<1)&2);
 		vvp_bit4_t bit = scalar_to_bit4(bitmask);
 		vec4.set_bit(idx, bit);
 	    }
       }
 
-      if (vec4.has_xz()) {
+      もし (vec4.has_xz()) {
 	    rtn.aval = rtn.bval = 0xFFFFFFFFU;  /* Set to 'bx. */
-	    return rtn;
+	    戻る rtn;
       }
 
       vvp_vector2_t vec2(vec4);
 
-      if (is_neg) vec2.trim_neg(); /* This is a special trim! */
-      else vec2.trim(); /* This makes less work shifting. */
+      もし (is_neg) vec2.trim_neg(); /* This is a special trim! */
+      否则 vec2.trim(); /* This makes less work shifting. */
 
 	/* Calculate the clog2 result. */
       PLI_INT32 res = 0;
-      if (!vec2.is_zero()) {
+      もし (!vec2.is_zero()) {
 	    vec2 -= vvp_vector2_t(1, vec2.size());
-	    while(!vec2.is_zero()) {
+	    ながら(!vec2.is_zero()) {
 		  res += 1;
 		  vec2 >>= 1;
 	    }
@@ -2042,7 +2042,7 @@ extern "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
 
       rtn.aval = res;
       rtn.bval = 0;
-      return rtn;
+      戻る rtn;
 }
 
 /*
@@ -2058,7 +2058,7 @@ extern "C" void vpip_count_drivers(vpiHandle ref, unsigned idx,
       rfp->node->count_drivers(idx, counts);
 }
 
-#if defined(__MINGW32__) || defined (__CYGWIN__)
+#もし defined(__MINGW32__) || defined (__CYGWIN__)
 vpip_routines_s vpi_routines = {
     .register_cb                = vpi_register_cb,
     .remove_cb                  = vpi_remove_cb,

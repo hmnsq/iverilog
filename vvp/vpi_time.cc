@@ -35,7 +35,7 @@
  * vpi_time_precision is the precision of the simulation clock. It is
  * set by the :vpi_time_precision directive in the vvp source file.
  */
-static int vpi_time_precision = 0;
+static 整数 vpi_time_precision = 0;
 
 static struct __vpiSystemTime global_simtime;
 
@@ -50,19 +50,19 @@ vvp_time64_t vpip_timestruct_to_time(const struct t_vpi_time*ts)
       vvp_time64_t ti = ts->high;
       ti <<= 32;
       ti += ts->low & 0xffffffff;
-      return ti;
+      戻る ti;
 }
 
 double vpip_time_to_scaled_real(vvp_time64_t ti, const __vpiScope*scope)
 {
       double val;
-      int scale = 0;
-      if (scope) scale = vpi_time_precision - scope->time_units;
+      整数 scale = 0;
+      もし (scope) scale = vpi_time_precision - scope->time_units;
 
-      if (scale >= 0) val = (double)ti * pow(10.0, scale);
-      else val = (double)ti / pow(10.0, -scale);
+      もし (scale >= 0) val = (double)ti * pow(10.0, scale);
+      否则 val = (double)ti / pow(10.0, -scale);
 
-      return val;
+      戻る val;
 }
 
 /*
@@ -72,8 +72,8 @@ double vpip_time_to_scaled_real(vvp_time64_t ti, const __vpiScope*scope)
  */
 vvp_time64_t vpip_scaled_real_to_time64(double val, const __vpiScope*scope)
 {
-      int shift = 0;
-      if (scope) shift = scope->time_units - scope->time_precision;
+      整数 shift = 0;
+      もし (scope) shift = scope->time_units - scope->time_precision;
       assert(shift >= 0);
 
       assert(val >= 0);
@@ -85,13 +85,13 @@ vvp_time64_t vpip_scaled_real_to_time64(double val, const __vpiScope*scope)
       vvp_time64_t delay = (vvp_time64_t) (val + 0.5);
 
 	// If needed now scale the value to the simulator precision.
-      if (scope) {
+      もし (scope) {
 	    shift = scope->time_precision - vpi_time_precision;
 	    assert(shift >= 0);
-	    for (int lp = 0; lp <  shift; lp += 1) delay *= 10;
+	    ために (整数 lp = 0; lp <  shift; lp += 1) delay *= 10;
       }
 
-      return delay;
+      戻る delay;
 }
 
 static void timevar_get_value(vpiHandle ref, s_vpi_value*vp, bool is_int_func,
@@ -104,7 +104,7 @@ static void timevar_get_value(vpiHandle ref, s_vpi_value*vp, bool is_int_func,
       struct __vpiSystemTime*rfp = dynamic_cast<__vpiSystemTime*>(ref);
       unsigned long num_bits;
       vvp_time64_t x, simtime = schedule_simtime();
-      int units = rfp->scope? rfp->scope->time_units : vpi_time_precision;
+      整数 units = rfp->scope? rfp->scope->time_units : vpi_time_precision;
 
       static const size_t RBUF_USE_SIZE = 128;
       char*rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
@@ -112,7 +112,7 @@ static void timevar_get_value(vpiHandle ref, s_vpi_value*vp, bool is_int_func,
 	/* Calculate the divisor needed to scale the simulation time
 	   (in time_precision units) to time units of the scope. */
       vvp_time64_t divisor = 1;
-      while (units > vpi_time_precision) {
+      ながら (units > vpi_time_precision) {
 	    divisor *= 10;
 	    units -= 1;
       }
@@ -122,11 +122,11 @@ static void timevar_get_value(vpiHandle ref, s_vpi_value*vp, bool is_int_func,
       vvp_time64_t simtime_fraction = simtime % divisor;
       simtime /= divisor;
 
-      if ((divisor >= 10) && (simtime_fraction >= (divisor/2)))
+      もし ((divisor >= 10) && (simtime_fraction >= (divisor/2)))
 	    simtime += 1;
 
 	/* If this is a call to $stime only return the lower 32 bits. */
-      if (is_stime) simtime &= 0xffffffff;
+      もし (is_stime) simtime &= 0xffffffff;
 
       switch (vp->format) {
 	  case vpiObjTypeVal:
@@ -142,10 +142,10 @@ static void timevar_get_value(vpiHandle ref, s_vpi_value*vp, bool is_int_func,
 	  case vpiRealVal:
 	      /* If this is an integer based call (anything but $realtime)
 	       * just return the value as a double. */
-	    if (is_int_func)  vp->value.real = double (simtime);
+	    もし (is_int_func)  vp->value.real = double (simtime);
 	      /* This is a call to $realtime to return a real value so
 	       * scale this using the scaled real rules. */
-	    else vp->value.real = vpip_time_to_scaled_real(schedule_simtime(),
+	    否则 vp->value.real = vpip_time_to_scaled_real(schedule_simtime(),
 						           rfp->scope);
 	    break;
 
@@ -154,7 +154,7 @@ static void timevar_get_value(vpiHandle ref, s_vpi_value*vp, bool is_int_func,
 	    num_bits = 8 * sizeof(vvp_time64_t);
 
 	    rbuf[num_bits] = 0;
-	    for (unsigned i = 1; i <= num_bits; i++) {
+	    ために (unsigned i = 1; i <= num_bits; i++) {
 	      rbuf[num_bits-i] = (x  & 1) ? '1' : '0';
 	      x = x >> 1;
 	    }
@@ -178,7 +178,7 @@ static void timevar_get_value(vpiHandle ref, s_vpi_value*vp, bool is_int_func,
 	    break;
 
 	  default:
-	    fprintf(stderr, "vpi_time: unknown format: %d\n", (int)vp->format);
+	    fprintf(stderr, "vpi_time: unknown format: %d\n", (整数)vp->format);
 	    assert(0);
       }
 }
@@ -201,15 +201,15 @@ static void timevar_get_rvalue(vpiHandle ref, s_vpi_value*vp)
 __vpiScopedTime::__vpiScopedTime()
 { }
 
-char* __vpiScopedTime::vpi_get_str(int code)
+char* __vpiScopedTime::vpi_get_str(整数 code)
 {
       switch (code) {
 	  case vpiName:
-	    return simple_set_rbuf_str("$time");
+	    戻る simple_set_rbuf_str("$time");
 	  default:
 	    fprintf(stderr, "Code: %d\n", code);
 	    assert(0);
-	    return 0;
+	    戻る 0;
       }
 }
 
@@ -221,27 +221,27 @@ void __vpiScopedTime::vpi_get_value(p_vpi_value val)
 __vpiScopedSTime::__vpiScopedSTime()
 { }
 
-int __vpiScopedSTime::vpi_get(int code)
+整数 __vpiScopedSTime::vpi_get(整数 code)
 {
       switch (code) {
           case vpiSize:
-	    return 32;
+	    戻る 32;
 
 	  default:
-	    return __vpiSystemTime::vpi_get(code);
+	    戻る __vpiSystemTime::vpi_get(code);
       }
 }
 
 
-char* __vpiScopedSTime::vpi_get_str(int code)
+char* __vpiScopedSTime::vpi_get_str(整数 code)
 {
       switch (code) {
 	  case vpiName:
-	    return simple_set_rbuf_str("$stime");
+	    戻る simple_set_rbuf_str("$stime");
 	  default:
 	    fprintf(stderr, "Code: %d\n", code);
 	    assert(0);
-	    return 0;
+	    戻る 0;
       }
 }
 
@@ -254,41 +254,41 @@ __vpiSystemTime::__vpiSystemTime()
       scope = 0;
 }
 
-int __vpiSystemTime::get_type_code(void) const
-{ return vpiSysFuncCall; }
+整数 __vpiSystemTime::get_type_code(void) const
+{ 戻る vpiSysFuncCall; }
 
-int __vpiSystemTime::vpi_get(int code)
+整数 __vpiSystemTime::vpi_get(整数 code)
 {
       switch (code) {
           case vpiSize:
-	    return 64;
+	    戻る 64;
 
           case vpiSigned:
-	    return 0;
+	    戻る 0;
 
 	  case vpiFuncType:
-	    return vpiTimeFunc;
+	    戻る vpiTimeFunc;
 
           case vpiAutomatic:
-	    return 0;
+	    戻る 0;
 
 	  default:
 	    fprintf(stderr, "Code: %d\n", code);
 	    assert(0);
-	    return 0;
+	    戻る 0;
       }
 }
 
 
-char* __vpiSystemTime::vpi_get_str(int code)
+char* __vpiSystemTime::vpi_get_str(整数 code)
 {
       switch (code) {
 	  case vpiName:
-	    return simple_set_rbuf_str("$simtime");
+	    戻る simple_set_rbuf_str("$simtime");
 	  default:
 	    fprintf(stderr, "Code: %d\n", code);
 	    assert(0);
-	    return 0;
+	    戻る 0;
       }
 }
 
@@ -296,13 +296,13 @@ char* __vpiSystemTime::vpi_get_str(int code)
 void __vpiSystemTime::vpi_get_value(p_vpi_value val)
 { timevar_get_ivalue(this, val); }
 
-vpiHandle __vpiSystemTime::vpi_handle(int code)
+vpiHandle __vpiSystemTime::vpi_handle(整数 code)
 {
       switch (code) {
 	  case vpiScope:
-	    return scope;
+	    戻る scope;
 	  default:
-	    return 0;
+	    戻る 0;
       }
 }
 
@@ -310,38 +310,38 @@ vpiHandle __vpiSystemTime::vpi_handle(int code)
 __vpiScopedRealtime::__vpiScopedRealtime()
 { }
 
-int __vpiScopedRealtime::vpi_get(int code)
+整数 __vpiScopedRealtime::vpi_get(整数 code)
 {
       switch (code) {
           case vpiSize:
-	    return 1;
+	    戻る 1;
 
           case vpiSigned:
-	    return 0;
+	    戻る 0;
 
 	  case vpiFuncType:
-	    return vpiRealFunc;
+	    戻る vpiRealFunc;
 
           case vpiAutomatic:
-	    return 0;
+	    戻る 0;
 
 	  default:
 	    fprintf(stderr, "Code: %d\n", code);
 	    assert(0);
-	    return 0;
+	    戻る 0;
       }
 }
 
 
-char* __vpiScopedRealtime::vpi_get_str(int code)
+char* __vpiScopedRealtime::vpi_get_str(整数 code)
 {
       switch (code) {
 	  case vpiName:
-	    return simple_set_rbuf_str("$realtime");
+	    戻る simple_set_rbuf_str("$realtime");
 	  default:
 	    fprintf(stderr, "Code: %d\n", code);
 	    assert(0);
-	    return 0;
+	    戻る 0;
       }
 }
 
@@ -356,31 +356,31 @@ void __vpiScopedRealtime::vpi_get_value(p_vpi_value val)
  */
 vpiHandle vpip_sim_time(__vpiScope*scope, bool is_stime)
 {
-      if (scope) {
-	    if (is_stime) {
+      もし (scope) {
+	    もし (is_stime) {
 		  scope->scoped_stime.scope = scope;
-		  return &scope->scoped_stime;
-	    } else {
+		  戻る &scope->scoped_stime;
+	    } 否则 {
 		  scope->scoped_time.scope = scope;
-		  return &scope->scoped_time;
+		  戻る &scope->scoped_time;
 	    }
-      } else {
-	    return &global_simtime;
+      } 否则 {
+	    戻る &global_simtime;
       }
 }
 
 vpiHandle vpip_sim_realtime(__vpiScope*scope)
 {
       scope->scoped_realtime.scope = scope;
-      return &scope->scoped_realtime;
+      戻る &scope->scoped_realtime;
 }
 
-int vpip_get_time_precision(void)
+整数 vpip_get_time_precision(void)
 {
-      return vpi_time_precision;
+      戻る vpi_time_precision;
 }
 
-void vpip_set_time_precision(int pre)
+void vpip_set_time_precision(整数 pre)
 {
       vpi_time_precision = pre;
 }

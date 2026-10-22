@@ -70,31 +70,31 @@ extern "C" void vpip_format_strength(char*str, s_vpi_value*value, unsigned bit)
 	    str[2] = '1';
 	    break;
 	  case vpiX:
-	    if (value->value.strength[bit].s0 == 1) {
+	    もし (value->value.strength[bit].s0 == 1) {
 		  str[0] = str_char1_table[value->value.strength[bit].s1];
 		  str[1] = str_char2_table[value->value.strength[bit].s1];
 		  str[2] = 'H';
-	    } else if (value->value.strength[bit].s1 == 1) {
+	    } 否则 もし (value->value.strength[bit].s1 == 1) {
 		  str[0] = str_char1_table[value->value.strength[bit].s0];
 		  str[1] = str_char2_table[value->value.strength[bit].s0];
 		  str[2] = 'L';
-	    } else if (value->value.strength[bit].s1 ==
+	    } 否则 もし (value->value.strength[bit].s1 ==
 		       value->value.strength[bit].s0) {
 		  str[0] = str_char1_table[value->value.strength[bit].s0];
 		  str[1] = str_char2_table[value->value.strength[bit].s0];
 		  str[2] = 'X';
-	    } else {
-		  int ss;
+	    } 否则 {
+		  整数 ss;
 
 		  str[0] = '0';
 		  ss = value->value.strength[bit].s0;
-		  while (ss > 1) {
+		  ながら (ss > 1) {
 			str[0] += 1;
 			ss >>= 1;
 		  }
 		  str[1] = '0';
 		  ss = value->value.strength[bit].s1;
-		  while (ss > 1) {
+		  ながら (ss > 1) {
 			str[1] += 1;
 			ss >>= 1;
 		  }
@@ -108,37 +108,37 @@ extern "C" void vpip_format_strength(char*str, s_vpi_value*value, unsigned bit)
 	    break;
 	  default:
 	    fprintf(stderr, "Unsupported type %d.\n",
-	            (int)value->value.strength[bit].logic);
+	            (整数)value->value.strength[bit].logic);
 	    assert(0);
       }
 }
 
 static char* vpip_format_pretty_string(const char*msg)
 {
-      return strdup(msg);
+      戻る strdup(msg);
 }
 
 static char* format_darray_pretty(vvp_darray* aobj)
 {
-      if (!aobj || aobj->get_size() == 0) return strdup("{}");
+      もし (!aobj || aobj->get_size() == 0) 戻る strdup("{}");
 
       std::string out = "{";
 
-      for (size_t i = 0; i < aobj->get_size(); i += 1) {
-	    if (i > 0) out += ", ";
-	    if (dynamic_cast<vvp_darray_real*>(aobj)) {
+      ために (size_t i = 0; i < aobj->get_size(); i += 1) {
+	    もし (i > 0) out += ", ";
+	    もし (dynamic_cast<vvp_darray_real*>(aobj)) {
 		  double d;
 		  aobj->get_word((unsigned) i, d);
 		  char buf[256];
 		  snprintf(buf, sizeof buf, "%g", d);
 		  out += buf;
-	    } else if (dynamic_cast<vvp_darray_string*>(aobj)) {
+	    } 否则 もし (dynamic_cast<vvp_darray_string*>(aobj)) {
 		  std::string s;
 		  aobj->get_word((unsigned) i, s);
 		  out += "\"";
 		  out += s;
 		  out += "\"";
-	    } else {
+	    } 否则 {
 		  vvp_vector4_t v;
 		  aobj->get_word((unsigned) i, v);
 		  s_vpi_value val;
@@ -149,23 +149,23 @@ static char* format_darray_pretty(vvp_darray* aobj)
       }
 
       out += "}";
-      return strdup(out.c_str());
+      戻る strdup(out.c_str());
 }
 
 extern "C" char* vpip_format_pretty(vpiHandle ref)
 {
-      if (!ref) {
-	    return vpip_format_pretty_string("Handle is NULL");
+      もし (!ref) {
+	    戻る vpip_format_pretty_string("Handle is NULL");
 	  }
 
-      if (dynamic_cast<__vpiPropQueueRef*>(ref) ||
+      もし (dynamic_cast<__vpiPropQueueRef*>(ref) ||
           dynamic_cast<__vpiDarrayVar*>(ref)) {
 	    vvp_darray* aobj = vpip_vpi_darray_from_handle(ref);
-	    if (!aobj) {
-		  return vpip_format_pretty_string("Object not found");
+	    もし (!aobj) {
+		  戻る vpip_format_pretty_string("Object not found");
 		}
-	    return format_darray_pretty(aobj);
+	    戻る format_darray_pretty(aobj);
       }
 
-      return vpip_format_pretty_string("Unsupported object type");
+      戻る vpip_format_pretty_string("Unsupported object type");
 }

@@ -24,7 +24,7 @@
 
 using namespace std;
 
-int vvp_object::total_active_cnt_ = 0;
+整数 vvp_object::total_active_cnt_ = 0;
 
 void vvp_object::cleanup(void)
 {
@@ -45,5 +45,5 @@ vvp_object* vvp_object::duplicate(void) const
 {
       cerr << "XXXX duplicate() not implemented for " << typeid(*this).name() << endl;
       assert(0);
-      return 0;
+      戻る 0;
 }

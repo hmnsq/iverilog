@@ -42,29 +42,29 @@
 
 __vpiScope*stop_current_scope = 0;
 bool stop_is_finish = false;  /* When set, $stop acts like $finish (set in main.cc). */
-int  stop_is_finish_exit_code = 0;
+整数  stop_is_finish_exit_code = 0;
 
 #ifndef USE_READLINE
 static char* readline_stub(const char*prompt)
 {
       char buf[256];
 
-      if (prompt && prompt[0]) {
+      もし (prompt && prompt[0]) {
 	    fputs(prompt, stdout);
 	    fflush(stdout);
       }
 
-      if (fgets(buf, sizeof(buf), stdin)) {
+      もし (fgets(buf, sizeof(buf), stdin)) {
 	    char*nl = buf + strlen(buf);
-	    while (nl > buf && isspace(nl[-1])) {
+	    ながら (nl > buf && isspace(nl[-1])) {
 		  nl -= 1;
 		  nl[0] = 0;
 	    }
 
-	    return strdup(buf);
+	    戻る strdup(buf);
       }
 
-      return 0;
+      戻る 0;
 }
 #define readline(x) readline_stub(x)
 #endif
@@ -77,10 +77,10 @@ static void cmd_call(unsigned argc, const char*argv[])
       __vpiHandle**table;
       unsigned ntable;
 
-      if (stop_current_scope == 0) {
+      もし (stop_current_scope == 0) {
 	    vpip_make_root_iterator(table, ntable);
 
-      } else {
+      } 否则 {
 	    table = &stop_current_scope->intern[0];
 	    ntable = stop_current_scope->intern.size();
       }
@@ -93,18 +93,18 @@ static void cmd_call(unsigned argc, const char*argv[])
 
       unsigned errors = 0;
 
-      for (unsigned idx = 0 ;  idx < vpi_argc ;  idx += 1) {
+      ために (unsigned idx = 0 ;  idx < vpi_argc ;  idx += 1) {
 	    vpiHandle handle = 0;
 	    bool add_to_free_list = false;
 
 	      /* Detect the special case that the argument is the
 		 .(dot) string. This represents the handle for the
 		 current scope. */
-	    if (stop_current_scope && (strcmp(argv[idx+1], ".") == 0))
+	    もし (stop_current_scope && (strcmp(argv[idx+1], ".") == 0))
 		  handle = stop_current_scope;
 
 	      /* Is the argument a quoted string? */
-	    if (handle == 0 && argv[idx+1][0] == '"') {
+	    もし (handle == 0 && argv[idx+1][0] == '"') {
 		  char*tmp = strdup(argv[idx+1]);
 		  tmp[strlen(tmp)-1] = 0;
 
@@ -117,7 +117,7 @@ static void cmd_call(unsigned argc, const char*argv[])
 	    }
 
 	      /* Is the argument a decimal constant? */
-	    if (handle == 0
+	    もし (handle == 0
 		&& strspn(argv[idx+1],"0123456789") == strlen(argv[idx+1])) {
 		  handle = new __vpiDecConst(strtol(argv[idx+1],0,10));
 		  add_to_free_list = true;
@@ -126,7 +126,7 @@ static void cmd_call(unsigned argc, const char*argv[])
 	      /* Try to find the vpiHandle within this scope that has
 		 the name in argv[idx+2]. Look in the current scope. */
 
-	    for (unsigned tmp = 0 ;  (tmp < ntable)&& !handle ;  tmp += 1) {
+	    ために (unsigned tmp = 0 ;  (tmp < ntable)&& !handle ;  tmp += 1) {
 		  const __vpiScope*scope;
 		  const char*name;
 
@@ -139,7 +139,7 @@ static void cmd_call(unsigned argc, const char*argv[])
 		      case vpiNamedBegin:
 		      case vpiNamedFork:
 			scope = dynamic_cast<__vpiScope*>(table[tmp]);
-			if (strcmp(scope->scope_name(), argv[idx+1]) == 0)
+			もし (strcmp(scope->scope_name(), argv[idx+1]) == 0)
 			      handle = table[tmp];
 			break;
 
@@ -147,22 +147,22 @@ static void cmd_call(unsigned argc, const char*argv[])
 		      case vpiNet:
 		      case vpiParameter:
 			name = vpi_get_str(vpiName,table[tmp]);
-			if (strcmp(argv[idx+1], name) == 0)
+			もし (strcmp(argv[idx+1], name) == 0)
 			      handle = table[tmp];
 			break;
 		  }
 	    }
 
-	    if (handle == 0) {
+	    もし (handle == 0) {
 		  printf("call error: I don't know how to"
 			 " pass %s to %s\n", argv[idx+1], argv[0]);
 		  errors += 1;
 	    }
 
 	    vpi_argv[idx] = handle;
-	    if (add_to_free_list)
+	    もし (add_to_free_list)
 		  vpi_free[idx] = handle;
-	    else
+	    否则
 		  vpi_free[idx] = 0;
 
       }
@@ -170,13 +170,13 @@ static void cmd_call(unsigned argc, const char*argv[])
 	/* If there are no errors so far, then make up a call to the
 	   vpi task and execute that call. Free the call structure
 	   when we finish. */
-      if (errors == 0) {
+      もし (errors == 0) {
 	    vpiHandle call_handle = vpip_build_vpi_call(argv[0], 0, 0, 0,
 	                                                true, false,
 	                                                vpi_argc, vpi_argv,
 							0, 0, 0,
 	                                                1, 0);
-	    if (call_handle == 0)
+	    もし (call_handle == 0)
 		  goto out;
 
 	    vpip_execute_vpi_call(0, call_handle);
@@ -184,8 +184,8 @@ static void cmd_call(unsigned argc, const char*argv[])
       }
 
  out:
-      for (unsigned idx = 0 ;  idx < vpi_argc ;  idx += 1) {
-	    if (vpi_free[idx])
+      ために (unsigned idx = 0 ;  idx < vpi_argc ;  idx += 1) {
+	    もし (vpi_free[idx])
 		  vpi_free_object(vpi_free[idx]);
       }
 
@@ -217,16 +217,16 @@ static void cmd_list(unsigned, const char*[])
       __vpiHandle**table;
       unsigned ntable;
 
-      if (stop_current_scope == 0) {
+      もし (stop_current_scope == 0) {
 	    vpip_make_root_iterator(table, ntable);
 
-      } else {
+      } 否则 {
 	    table = &stop_current_scope->intern[0];
 	    ntable = stop_current_scope->intern.size();
       }
 
       printf("%u items in this scope:\n", ntable);
-      for (unsigned idx = 0 ;  idx < ntable ;  idx += 1) {
+      ために (unsigned idx = 0 ;  idx < ntable ;  idx += 1) {
 
 	    const __vpiScope*scope;
 	    struct __vpiSignal*sig;
@@ -273,11 +273,11 @@ static void cmd_list(unsigned, const char*[])
 
 		case vpiReg:
 		  sig = dynamic_cast<__vpiSignal*>(table[idx]);
-		  if ((sig->msb.get_value() == 0) && (sig->lsb.get_value() == 0))
+		  もし ((sig->msb.get_value() == 0) && (sig->lsb.get_value() == 0))
 			printf("reg     : %s%s\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "");
-		  else
+		  否则
 			printf("reg     : %s%s[%d:%d]\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "",
@@ -286,11 +286,11 @@ static void cmd_list(unsigned, const char*[])
 
 		case vpiNet:
 		  sig = dynamic_cast<__vpiSignal*>(table[idx]);
-		  if ((sig->msb.get_value() == 0) && (sig->lsb.get_value() == 0))
+		  もし ((sig->msb.get_value() == 0) && (sig->lsb.get_value() == 0))
 			printf("net     : %s%s\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "");
-		  else
+		  否则
 			printf("net     : %s%s[%d:%d]\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "",
@@ -316,7 +316,7 @@ static void cmd_load(unsigned argc, const char*argv[])
 {
       unsigned idx;
 
-      for (idx = 1 ;  idx < argc ;  idx += 1) {
+      ために (idx = 1 ;  idx < argc ;  idx += 1) {
 	    printf("Loading module %s...\n", argv[idx]);
 	    vpip_load_module(argv[idx]);
       }
@@ -324,42 +324,42 @@ static void cmd_load(unsigned argc, const char*argv[])
 
 static void cmd_pop(unsigned, const char*[])
 {
-      if (stop_current_scope != 0)
+      もし (stop_current_scope != 0)
 	    stop_current_scope = stop_current_scope->scope;
 }
 
 static void cmd_push(unsigned argc, const char* argv[])
 {
-      for (unsigned idx = 1 ;  idx < argc ;  idx += 1) {
+      ために (unsigned idx = 1 ;  idx < argc ;  idx += 1) {
 	    __vpiHandle**table;
 	    unsigned ntable;
 
-	    if (stop_current_scope) {
+	    もし (stop_current_scope) {
 		  table = &stop_current_scope->intern[0];
 		  ntable = stop_current_scope->intern.size();
-	    } else {
+	    } 否则 {
 		  vpip_make_root_iterator(table, ntable);
 	    }
 
 	    __vpiScope*child = 0;
-	    for (unsigned tmp = 0 ;  tmp < ntable ;  tmp += 1) {
+	    ために (unsigned tmp = 0 ;  tmp < ntable ;  tmp += 1) {
 		  // Try to convert this item to a scope. If this is not a
 		  // scope, then continue.
 		  __vpiScope*scope = dynamic_cast<__vpiScope*>(table[tmp]);
-		  if (scope == 0)
+		  もし (scope == 0)
 			continue;
 
 		  // This is a scope, and the name matches, then
 		  // report that I found the child.
-		  if (strcmp(scope->scope_name(), argv[idx]) == 0) {
+		  もし (strcmp(scope->scope_name(), argv[idx]) == 0) {
 			child = scope;
 			break;
 		  }
 	    }
 
-	    if (child == 0) {
+	    もし (child == 0) {
 		  printf("Scope %s not found.\n", argv[idx]);
-		  return;
+		  戻る;
 	    }
 
 	    stop_current_scope = child;
@@ -383,21 +383,21 @@ static void cmd_trace(unsigned argc, const char*argv[])
 	    printf("Only using the first argument to trace.\n");
 	    // fallthrough
 	case 2:
-	    if ((strcmp(argv[1], "on") == 0) || (strcmp(argv[1], "1") == 0)) {
+	    もし ((strcmp(argv[1], "on") == 0) || (strcmp(argv[1], "1") == 0)) {
 		  show_file_line = true;
-	    } else show_file_line = false;
+	    } 否则 show_file_line = false;
 	    break;
       }
 
 	/* You can't trace a file if the compiler didn't insert the
 	 * %file_line opcodes. */
-      if (!code_is_instrumented) {
+      もし (!code_is_instrumented) {
 	    printf("The vvp input must be instrumented before tracing is "
 	           "available.\n");
 	    printf("Recompile with the -pfileline=1 flag to instrument "
 	           "the input.\n");
 	    show_file_line = false;
-      } else {
+      } 否则 {
 	    printf("Turning statement tracing %s.\n",
 	           show_file_line ? "on" : "off");
       }
@@ -407,7 +407,7 @@ static void cmd_where(unsigned, const char*[])
 {
       const __vpiScope*cur = stop_current_scope;
 
-      while (cur) {
+      ながら (cur) {
 	    switch (cur->get_type_code()) {
 		case vpiModule:
 		  printf("module %s\n", cur->scope_name());
@@ -471,7 +471,7 @@ static void cmd_help(unsigned, const char*[])
 {
       printf("Commands can be from the following table of base commands,\n"
 	     "or can be invocations of system tasks/functions.\n\n");
-      for (unsigned idx = 0 ;  cmd_table[idx].name != 0 ;  idx += 1) {
+      ために (unsigned idx = 0 ;  cmd_table[idx].name != 0 ;  idx += 1) {
 	    printf("%-8s - %s\n", cmd_table[idx].name, cmd_table[idx].summary);
       }
 
@@ -488,45 +488,45 @@ static void invoke_command(char*txt)
       const char**argv = const_cast<const char**>(new char*[strlen(txt)/2]);
 
 	/* Chop the line into words. */
-      for (char*cp = txt+strspn(txt, " ")
+      ために (char*cp = txt+strspn(txt, " ")
 		 ; *cp; cp += strspn(cp, " ")) {
 	    argv[argc] = cp;
 
-	    if (cp[0] == '"') {
+	    もし (cp[0] == '"') {
 		  char*tmp = strchr(cp+1, '"');
-		  if (tmp == 0) {
+		  もし (tmp == 0) {
 			printf("Missing close-quote: %s\n", cp);
 			delete[]argv;
-			return;
+			戻る;
 		  }
 
 		  cp = tmp + 1;
 
-	    } else {
+	    } 否则 {
 		  cp += strcspn(cp, " ");
 	    }
 
-	    if (*cp) *cp++ = 0;
+	    もし (*cp) *cp++ = 0;
 
 	    argc += 1;
       }
 
 
 	/* Look up the command, using argv[0] as the key. */
-      if (argc > 0) {
+      もし (argc > 0) {
 
-	    if (argv[0][0] == '$') {
-		  if (strcmp(argv[0], "$stop") == 0) {
+	    もし (argv[0][0] == '$') {
+		  もし (strcmp(argv[0], "$stop") == 0) {
 			printf("The simulator is already stopped!\n");
-		  } else if (strcmp(argv[0], "$finish") == 0){
+		  } 否则 もし (strcmp(argv[0], "$finish") == 0){
 			cmd_finish(argc, argv);
-		  } else {
+		  } 否则 {
 			cmd_call(argc, argv);
 		  }
-	    } else {
+	    } 否则 {
 		  unsigned idx;
-		  for (idx = 0 ;  cmd_table[idx].name ;  idx += 1)
-			if (strcmp(cmd_table[idx].name, argv[0]) == 0)
+		  ために (idx = 0 ;  cmd_table[idx].name ;  idx += 1)
+			もし (strcmp(cmd_table[idx].name, argv[0]) == 0)
 			      break;
 
 		  cmd_table[idx].proc (argc, argv);
@@ -544,14 +544,14 @@ static void invoke_command_const(const char*txt)
       free(vtxt);
 }
 
-void stop_handler(int rc)
+void stop_handler(整数 rc)
 {
         /* The user may be running in a non-interactive environment, so
          * they want $stop and <Control-C> to be the same as $finish. */
-      if (stop_is_finish) {
+      もし (stop_is_finish) {
 	    vpip_set_return_value(stop_is_finish_exit_code);
 	    schedule_finish(0);
-	    return;
+	    戻る;
       }
 
       vpi_mcd_printf(1,"** VVP Stop(%d) **\n", rc);
@@ -562,18 +562,18 @@ void stop_handler(int rc)
 		     schedule_simtime());
 
       interact_flag = true;
-      while (interact_flag) {
+      ながら (interact_flag) {
 	    char*input = readline("> ");
-	    if (input == 0)
+	    もし (input == 0)
 		  break;
 
 
 	      /* Advance to the first input character. */
 	    char*first = input;
-	    while (*first && isspace(*first))
+	    ながら (*first && isspace(*first))
 		  first += 1;
 
-	    if (first[0] != 0) {
+	    もし (first[0] != 0) {
 #ifdef USE_HISTORY
 		  add_history(first);
 #endif

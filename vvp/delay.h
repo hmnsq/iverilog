@@ -125,25 +125,25 @@ class vvp_fun_delay  : public vvp_net_fun_t, private vvp_gen_event_s {
       struct event_ *list_;
       void enqueue_(struct event_*cur)
       {
-	    if (list_) {
+	    もし (list_) {
 		  cur->next = list_->next;
 		  list_->next = cur;
 		  list_ = cur;
-	    } else {
+	    } 否则 {
 		  cur->next = cur;
 		  list_ = cur;
 	    }
       }
       struct event_* dequeue_(void)
       {
-	    if (list_ == 0)
-		  return 0;
+	    もし (list_ == 0)
+		  戻る 0;
 	    struct event_*cur = list_->next;
-	    if (list_ == cur)
+	    もし (list_ == cur)
 		  list_ = 0;
-	    else
+	    否则
 		  list_->next = cur->next;
-	    return cur;
+	    戻る cur;
       }
       bool clean_pulse_events_(vvp_time64_t use_delay, const vvp_vector4_t&bit);
       bool clean_pulse_events_(vvp_time64_t use_delay, const vvp_vector8_t&bit);
