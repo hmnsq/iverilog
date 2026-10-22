@@ -25,9 +25,9 @@
 # include  "vvp_net_sig.h"
 # include  "vvp_darray.h"
 # include  "config.h"
-#ifdef CHECK_WITH_VALGRIND
-#include  "vvp_cleanup.h"
-#endif
+#यदि_परिभाषितम् CHECK_WITH_VALGRIND
+#अन्तर्भाव  "vvp_cleanup.h"
+#यदि_अन्तः
 # include  <cstdlib>
 # include  <cstring>
 # include  <climits>
@@ -36,1041 +36,1041 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-using namespace std;
+उपयुज्य नामाकाश std;
 
-unsigned long count_net_arrays = 0;
-unsigned long count_net_array_words = 0;
-unsigned long count_var_arrays = 0;
-unsigned long count_var_array_words = 0;
-unsigned long count_real_arrays = 0;
-unsigned long count_real_array_words = 0;
+अचिह्नित दीर्घ गणनम्_net_arrays = 0;
+अचिह्नित दीर्घ गणनम्_net_array_शब्दाः = 0;
+अचिह्नित दीर्घ गणनम्_var_arrays = 0;
+अचिह्नित दीर्घ गणनम्_var_array_शब्दाः = 0;
+अचिह्नित दीर्घ गणनम्_real_arrays = 0;
+अचिह्नित दीर्घ गणनम्_real_array_शब्दाः = 0;
 
-static symbol_map_s<struct __vpiArray>* array_table =0;
+स्थिर चिह्नम्_map_s<संरचना __vpiArray>* array_सारणी =0;
 
-class vvp_fun_arrayport;
-static void array_attach_port(vvp_array_t, vvp_fun_arrayport*);
+वर्ग vvp_fun_arrayport;
+स्थिर शून्य array_attach_पत्तनम्(vvp_array_t, vvp_fun_arrayport*);
 
-vvp_array_t array_find(const char*label)
+vvp_array_t array_find(ध्रुव वर्ण*label)
 {
-      if (array_table == 0)
-	    return 0;
+      यदि (array_सारणी == 0)
+	    प्रत्यागम 0;
 
-      vvp_array_t v = array_table->sym_get_value(label);
-      return v;
+      vvp_array_t v = array_सारणी->sym_get_मानम्(label);
+      प्रत्यागम v;
 }
 
-struct __vpiArrayVthrA : public __vpiHandle {
-      int get_type_code(void) const override { return vpiMemoryWord; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
+संरचना __vpiArrayVthrA : सार्वजनिक __vpiHandle {
+      पूर्णाङ्क get_type_संहिता(शून्य) ध्रुव override { प्रत्यागम vpi_स्मृतिः_Word; }
+      पूर्णाङ्क vpi_get(पूर्णाङ्क code) override;
+      वर्ण* vpi_get_str(पूर्णाङ्क code) override;
+      शून्य vpi_get_मानम्(p_vpi_मानम् val) override;
+      vpiHandle vpi_put_मानम्(p_vpi_मानम् val, पूर्णाङ्क flags) override;
+      vpiHandle vpi_handle(पूर्णाङ्क code) override;
 
-      struct __vpiArray*array;
+      संरचना __vpiArray*array;
 	// If this is set, then use it to get the index value.
-      vpiHandle address_handle;
+      vpiHandle स्थानाङ्कः_handle;
 	// If wid==0, then address is the address into the array.
-      unsigned address;
+      अचिह्नित स्थानाङ्कः;
 
-      unsigned get_address() const
+      अचिह्नित get_स्थानाङ्कः() ध्रुव
       {
-	    if (address_handle) {
-		  s_vpi_value vp;
+	    यदि (स्थानाङ्कः_handle) {
+		  s_vpi_मानम् vp;
 		    /* Check to see if the value is defined. */
-		  vp.format = vpiVectorVal;
-		  address_handle->vpi_get_value(&vp);
-		  int words = (address_handle->vpi_get(vpiSize)-1)/32 + 1;
-		  for(int idx = 0; idx < words; idx += 1) {
+		  vp.format = vpi_सदिशम्_Val;
+		  स्थानाङ्कः_handle->vpi_get_मानम्(&vp);
+		  पूर्णाङ्क शब्दाः = (स्थानाङ्कः_handle->vpi_get(vpi_आकार)-1)/32 + 1;
+		  प्रति(पूर्णाङ्क idx = 0; idx < शब्दाः; idx += 1) {
 			  /* Return UINT_MAX to indicate an X base. */
-			if (vp.value.vector[idx].bval != 0) return UINT_MAX;
+			यदि (vp.value.vector[idx].bval != 0) प्रत्यागम UINT_MAX;
 		  }
 		    /* The value is defined so get and return it. */
 		  vp.format = vpiIntVal;
-		  address_handle->vpi_get_value(&vp);
-		  return vp.value.integer;
+		  स्थानाङ्कः_handle->vpi_get_मानम्(&vp);
+		  प्रत्यागम vp.value.integer;
 	    }
 
-	    return address;
+	    प्रत्यागम स्थानाङ्कः;
       }
 };
 
 
-struct __vpiArrayVthrAPV : public __vpiHandle {
-      int get_type_code(void) const override { return vpiPartSelect; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_handle(int code) override;
+संरचना __vpiArrayVthrAPV : सार्वजनिक __vpiHandle {
+      पूर्णाङ्क get_type_संहिता(शून्य) ध्रुव override { प्रत्यागम vpiPartSelect; }
+      पूर्णाङ्क vpi_get(पूर्णाङ्क code) override;
+      वर्ण* vpi_get_str(पूर्णाङ्क code) override;
+      शून्य vpi_get_मानम्(p_vpi_मानम् val) override;
+      vpiHandle vpi_handle(पूर्णाङ्क code) override;
 
-      struct __vpiArray*array;
-      unsigned word_sel;
-      unsigned part_bit;
-      unsigned part_wid;
+      संरचना __vpiArray*array;
+      अचिह्नित word_sel;
+      अचिह्नित part_bit;
+      अचिह्नित part_wid;
 };
 
-bool is_net_array(vpiHandle obj)
+तार्किक is_net_array(vpiHandle obj)
 {
-      struct __vpiArray*rfp = dynamic_cast<__vpiArray*> (obj);
-      assert(rfp);
+      संरचना __vpiArray*rfp = dynamic_cast<__vpiArray*> (obj);
+      प्रतिज्ञा(rfp);
 
-      if (rfp->nets != 0) return true;
-      return false;
+      यदि (rfp->nets != 0) प्रत्यागम सत्य;
+      प्रत्यागम असत्य;
 }
 
 // This function return true if the underlying array words are real.
-static bool vpi_array_is_real(const vvp_array_t arr)
+स्थिर तार्किक vpi_array_is_real(ध्रुव vvp_array_t arr)
 {
 	// Check to see if this is a variable/register array.
-      if (arr->vals4 != 0)  // A bit based variable/register array.
-	    return false;
+      यदि (arr->vals4 != 0)  // A bit based variable/register array.
+	    प्रत्यागम असत्य;
 
-      if (dynamic_cast<vvp_darray_real*> (arr->vals))
-	    return true;
+      यदि (dynamic_cast<vvp_darray_real*> (arr->vals))
+	    प्रत्यागम सत्य;
 
-      if (arr->vals != 0)
-	    return false;
+      यदि (arr->vals != 0)
+	    प्रत्यागम असत्य;
 
 	// This must be a net array so look at element 0 to find the type.
-      assert(arr->nets != 0);
-      assert(arr->get_size() > 0);
-      const struct __vpiRealVar*rsig = dynamic_cast<__vpiRealVar*>(arr->nets[0]);
-      if (rsig) {
-	    return true;
+      प्रतिज्ञा(arr->nets != 0);
+      प्रतिज्ञा(arr->get_आकार() > 0);
+      ध्रुव संरचना __vpiRealVar*rsig = dynamic_cast<__vpiRealVar*>(arr->nets[0]);
+      यदि (rsig) {
+	    प्रत्यागम सत्य;
       }
 
-      return false;
+      प्रत्यागम असत्य;
 }
 
-static bool vpi_array_is_string(const vvp_array_t arr)
+स्थिर तार्किक vpi_array_is_string(ध्रुव vvp_array_t arr)
 {
 	// Check to see if this is a variable/register array.
-      if (arr->vals4 != 0)  // A bit based variable/register array.
-	    return false;
+      यदि (arr->vals4 != 0)  // A bit based variable/register array.
+	    प्रत्यागम असत्य;
 
-      if (dynamic_cast<vvp_darray_string*> (arr->vals))
-	    return true;
+      यदि (dynamic_cast<vvp_darray_string*> (arr->vals))
+	    प्रत्यागम सत्य;
 
-      return false;
+      प्रत्यागम असत्य;
 }
 
-int __vpiArray::get_word_size() const
+पूर्णाङ्क __vpiArray::get_word_आकार() ध्रुव
 {
-      unsigned width;
+      अचिह्नित width;
 
-      assert(get_size() > 0);
+      प्रतिज्ञा(get_आकार() > 0);
 	/* For a net array we need to get the width from the first element. */
-      if (nets) {
-	    assert(vals4 == 0 && vals == 0);
-	    const struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(nets[0]);
-	    assert(vsig);
-	    width = vpip_size(vsig);
+      यदि (nets) {
+	    प्रतिज्ञा(vals4 == 0 && vals == 0);
+	    ध्रुव संरचना __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(nets[0]);
+	    प्रतिज्ञा(vsig);
+	    width = vpip_आकार(vsig);
 	/* For a variable array we can get the width from vals_width. */
-      } else {
-	    assert(vals4 || vals);
-	    width = vals_width;
+      } अन्यथा {
+	    प्रतिज्ञा(vals4 || vals);
+	    width = vals_विस्तारः;
       }
 
-      return width;
+      प्रत्यागम width;
 }
 
-char*__vpiArray::get_word_str(struct __vpiArrayWord*word, int code)
+वर्ण*__vpiArray::get_word_str(संरचना __vpiArrayWord*word, पूर्णाङ्क code)
 {
-      unsigned index = word->get_index();
+      अचिह्नित सूचकांक = word->get_सूचकांक();
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      यदि (code == vpiFile) {  // Not implemented for now!
+	    प्रत्यागम simple_समुच्चयः_rbuf_str(file_नामानि[0]);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%d", (int)index + first_addr.get_value());
-      return generic_get_str(code, get_scope(), name, sidx);
+      वर्ण sidx [64];
+      snprintf(sidx, 63, "%d", (पूर्णाङ्क)सूचकांक + first_addr.get_मानम्());
+      प्रत्यागम generic_get_str(code, get_scope(), name, sidx);
 }
 
-void __vpiArray::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
+शून्य __vpiArray::get_word_मानम्(संरचना __vpiArrayWord*word, p_vpi_मानम् vp)
 {
-      unsigned index = word->get_index();
+      अचिह्नित सूचकांक = word->get_सूचकांक();
 
     // Determine the appropriate format (The Verilog PLI Handbook 5.2.10)
-      if(vp->format == vpiObjTypeVal) {
-          if(vpi_array_is_real(this))
+      यदि(vp->format == vpiObjTypeVal) {
+          यदि(vpi_array_is_real(एतत्))
               vp->format = vpiRealVal;
-          else if(vpi_array_is_string(this))
+          अन्यथा यदि(vpi_array_is_string(एतत्))
               vp->format = vpiStringVal;
-          else
+          अन्यथा
               vp->format = vpiIntVal;
       }
 
-      if(vals4) {
-          vpip_vec4_get_value(vals4->get_word(index),
+      यदि(vals4) {
+          vpip_vec4_get_मानम्(vals4->get_word(सूचकांक),
                               vals4->width(), signed_flag, vp);
-      } else if(vals) {
-          switch(vp->format) {
-            case vpiBinStrVal:
-            case vpiOctStrVal:
-            case vpiDecStrVal:
-            case vpiHexStrVal:
-            case vpiScalarVal:
-            case vpiIntVal:
-            case vpiVectorVal:
+      } अन्यथा यदि(vals) {
+          विकल्प(vp->format) {
+            पक्ष vpiBinStrVal:
+            पक्ष vpiOctStrVal:
+            पक्ष vpiDecStrVal:
+            पक्ष vpiHexStrVal:
+            पक्ष vpiScalarVal:
+            पक्ष vpiIntVal:
+            पक्ष vpi_सदिशम्_Val:
             {
                 vvp_vector4_t v;
-                vals->get_word(index, v);
-                vpip_vec4_get_value(v, vals_width, signed_flag, vp);
+                vals->get_word(सूचकांक, v);
+                vpip_vec4_get_मानम्(v, vals_विस्तारः, signed_flag, vp);
             }
-            break;
+            भङ्ग;
 
-            case vpiRealVal:
+            पक्ष vpiRealVal:
             {
-                double d;
-                vals->get_word(index, d);
-                vpip_real_get_value(d, vp);
+                द्विगुण d;
+                vals->get_word(सूचकांक, d);
+                vpip_real_get_मानम्(d, vp);
             }
-            break;
+            भङ्ग;
 
-            case vpiStringVal:
+            पक्ष vpiStringVal:
             {
                 string s;
-                vals->get_word(index, s);
-                vpip_string_get_value(s, vp);
+                vals->get_word(सूचकांक, s);
+                vpip_string_get_मानम्(s, vp);
             }
-            break;
+            भङ्ग;
 
-            default:
+            स्वभाव:
                 fprintf(stderr, "vpi sorry: format is not implemented\n");
-                assert(false);
+                प्रतिज्ञा(असत्य);
           }
       }
 }
 
-void __vpiArray::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int)
+शून्य __vpiArray::put_word_मानम्(संरचना __vpiArrayWord*word, p_vpi_मानम् vp, पूर्णाङ्क)
 {
-      unsigned index = word->get_index();
-      vvp_vector4_t val = vec4_from_vpi_value(vp, vals_width);
-      set_word(index, 0, val);
+      अचिह्नित सूचकांक = word->get_सूचकांक();
+      vvp_vector4_t val = vec4_from_vpi_मानम्(vp, vals_विस्तारः);
+      समुच्चयः_word(सूचकांक, 0, val);
 }
 
-vpiHandle __vpiArray::get_iter_index(struct __vpiArrayIterator*, int idx)
+vpiHandle __vpiArray::get_iter_सूचकांक(संरचना __vpiArrayIterator*, पूर्णाङ्क idx)
 {
-      if (nets) return nets[idx];
+      यदि (nets) प्रत्यागम nets[idx];
 
-      assert(vals4 || vals);
+      प्रतिज्ञा(vals4 || vals);
 
-      if (vals_words == 0) make_vals_words();
+      यदि (vals_शब्दाः == 0) make_vals_शब्दाः();
 
-      return &(vals_words[idx].as_word);
+      प्रत्यागम &(vals_शब्दाः[idx].as_word);
 }
 
-int __vpiArray::vpi_get(int code)
+पूर्णाङ्क __vpiArray::vpi_get(पूर्णाङ्क code)
 {
-      switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+      विकल्प (code) {
+	  पक्ष vpi_पङ्क्तिः_No:
+	    प्रत्यागम 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return get_size();
+	  पक्ष vpi_आकार:
+	    प्रत्यागम get_आकार();
 
-	  case vpiAutomatic:
-	    return scope->is_automatic()? 1 : 0;
+	  पक्ष vpiAutomatic:
+	    प्रत्यागम scope->is_automatic()? 1 : 0;
 
-	  default:
-	    return 0;
+	  स्वभाव:
+	    प्रत्यागम 0;
       }
 }
 
-char* __vpiArray::vpi_get_str(int code)
+वर्ण* __vpiArray::vpi_get_str(पूर्णाङ्क code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      यदि (code == vpiFile) {  // Not implemented for now!
+            प्रत्यागम simple_समुच्चयः_rbuf_str(file_नामानि[0]);
       }
 
-      return generic_get_str(code, scope, name, NULL);
+      प्रत्यागम generic_get_str(code, scope, name, रिक्त);
 }
 
-vpiHandle __vpiArray::vpi_handle(int code)
+vpiHandle __vpiArray::vpi_handle(पूर्णाङ्क code)
 {
-      switch (code) {
-          case vpiLeftRange:
-            if (swap_addr) return &last_addr;
-            else return &first_addr;
+      विकल्प (code) {
+          पक्ष vpi_वामः_Range:
+            यदि (swap_addr) प्रत्यागम &चरमः_addr;
+            अन्यथा प्रत्यागम &first_addr;
 
-          case vpiRightRange:
-            if (swap_addr) return &first_addr;
-            else return &last_addr;
+          पक्ष vpi_दक्षिणः_Range:
+            यदि (swap_addr) प्रत्यागम &first_addr;
+            अन्यथा प्रत्यागम &चरमः_addr;
 
-	  case vpiScope:
-	    return scope;
+	  पक्ष vpiScope:
+	    प्रत्यागम scope;
 
-	  case vpiModule:
-	    return vpip_module(scope);
+	  पक्ष vpiModule:
+	    प्रत्यागम vpip_module(scope);
       }
 
-      return 0;
+      प्रत्यागम 0;
 }
 
 /*
 * VPI code passes indices that are not yet converted to canonical
 * form, so this index function does it here.
 */
-vpiHandle __vpiArray::vpi_index(int index)
+vpiHandle __vpiArray::vpi_सूचकांक(पूर्णाङ्क सूचकांक)
 {
-      index -= first_addr.get_value();
-      if (index >= (long) get_size())
-	    return 0;
-      if (index < 0)
-	    return 0;
+      सूचकांक -= first_addr.get_मानम्();
+      यदि (सूचकांक >= (दीर्घ) get_आकार())
+	    प्रत्यागम 0;
+      यदि (सूचकांक < 0)
+	    प्रत्यागम 0;
 
-      if (nets != 0) {
-	    return nets[index];
+      यदि (nets != 0) {
+	    प्रत्यागम nets[सूचकांक];
       }
 
-      if (vals_words == 0)
-	    make_vals_words();
+      यदि (vals_शब्दाः == 0)
+	    make_vals_शब्दाः();
 
-      return &(vals_words[index].as_word);
+      प्रत्यागम &(vals_शब्दाः[सूचकांक].as_word);
 }
 
-int __vpiArrayWord::as_word_t::vpi_get(int code)
+पूर्णाङ्क __vpiArrayWord::as_word_t::vpi_get(पूर्णाङ्क code)
 {
-      struct __vpiArrayWord*obj = array_var_word_from_handle(this);
-      assert(obj);
-      struct __vpiArrayBase*my_parent = obj->get_parent();
-      t_vpi_value val;
+      संरचना __vpiArrayWord*obj = array_var_word_from_handle(एतत्);
+      प्रतिज्ञा(obj);
+      संरचना __vpiArrayBase*my_parent = obj->get_parent();
+      t_vpi_मानम् val;
 
-      switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+      विकल्प (code) {
+	  पक्ष vpi_पङ्क्तिः_No:
+	    प्रत्यागम 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return my_parent->get_word_size();
+	  पक्ष vpi_आकार:
+	    प्रत्यागम my_parent->get_word_आकार();
 
-	  case vpiLeftRange:
+	  पक्ष vpi_वामः_Range:
             val.format = vpiIntVal;
-	    my_parent->get_left_range()->vpi_get_value(&val);
-            assert(val.format == vpiIntVal);
-            return val.value.integer;
+	    my_parent->get_वामः_range()->vpi_get_मानम्(&val);
+            प्रतिज्ञा(val.format == vpiIntVal);
+            प्रत्यागम val.value.integer;
 
-	  case vpiRightRange:
+	  पक्ष vpi_दक्षिणः_Range:
             val.format = vpiIntVal;
-	    my_parent->get_right_range()->vpi_get_value(&val);
-            assert(val.format == vpiIntVal);
-            return val.value.integer;
+	    my_parent->get_दक्षिणः_range()->vpi_get_मानम्(&val);
+            प्रतिज्ञा(val.format == vpiIntVal);
+            प्रत्यागम val.value.integer;
 
-	  case vpiIndex:
+	  पक्ष vpi_सूचकांक_2:
 	    {
-		  int base_offset = 0;
-		  struct __vpiArray*base = dynamic_cast<__vpiArray*> (my_parent);
-		  if (base) {
+		  पूर्णाङ्क आधारः_विस्थापनम् = 0;
+		  संरचना __vpiArray*आधारः = dynamic_cast<__vpiArray*> (my_parent);
+		  यदि (आधारः) {
 			val.format = vpiIntVal;
-			base->first_addr.vpi_get_value(&val);
-			base_offset += val.value.integer;
+			आधारः->first_addr.vpi_get_मानम्(&val);
+			आधारः_विस्थापनम् += val.value.integer;
 		  }
 		  val.format = vpiIntVal;
-		  obj->as_index.vpi_get_value(&val);
-		  assert(val.format == vpiIntVal);
-		  return val.value.integer + base_offset;
+		  obj->as_सूचकांक.vpi_get_मानम्(&val);
+		  प्रतिज्ञा(val.format == vpiIntVal);
+		  प्रत्यागम val.value.integer + आधारः_विस्थापनम्;
 	    }
 
-	  case vpiAutomatic:
-	    return my_parent->get_scope()->is_automatic()? 1 : 0;
+	  पक्ष vpiAutomatic:
+	    प्रत्यागम my_parent->get_scope()->is_automatic()? 1 : 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpiNoThr;
-#endif
+#यदि defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  पक्ष _vpiFromThr:
+	    प्रत्यागम _vpiNoThr;
+#यदि_अन्तः
 
-	  default:
-	    return 0;
+	  स्वभाव:
+	    प्रत्यागम 0;
       }
 }
 
 
-int __vpiArrayVthrA::vpi_get(int code)
+पूर्णाङ्क __vpiArrayVthrA::vpi_get(पूर्णाङ्क code)
 {
-      switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
+      विकल्प (code) {
+	  पक्ष vpi_पङ्क्तिः_No:
+	    प्रत्यागम 0; // Not implemented for now!
 
-	  case vpiSize:
-	    return array->get_word_size();
+	  पक्ष vpi_आकार:
+	    प्रत्यागम array->get_word_आकार();
 
-	  case vpiLeftRange:
-	    return array->msb.get_value();
+	  पक्ष vpi_वामः_Range:
+	    प्रत्यागम array->msb.get_मानम्();
 
-	  case vpiRightRange:
-	    return array->lsb.get_value();
+	  पक्ष vpi_दक्षिणः_Range:
+	    प्रत्यागम array->lsb.get_मानम्();
 
-	  case vpiIndex:
-	    return (int)get_address() + array->first_addr.get_value();
+	  पक्ष vpi_सूचकांक_2:
+	    प्रत्यागम (पूर्णाङ्क)get_स्थानाङ्कः() + array->first_addr.get_मानम्();
 
-	  case vpiAutomatic:
-	    return array->get_scope()->is_automatic() ? 1 : 0;
+	  पक्ष vpiAutomatic:
+	    प्रत्यागम array->get_scope()->is_automatic() ? 1 : 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpi_at_A;
-#endif
+#यदि defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  पक्ष _vpiFromThr:
+	    प्रत्यागम _vpi_at_A;
+#यदि_अन्तः
 
 	  // If address_handle is not zero we definitely have a
 	  // variable.
-	  case vpiConstantSelect:
-	    return address_handle == 0;
+	  पक्ष vpiConstantSelect:
+	    प्रत्यागम स्थानाङ्कः_handle == 0;
 
-	  default:
-	    return 0;
+	  स्वभाव:
+	    प्रत्यागम 0;
       }
 }
 
-char* __vpiArrayVthrA::vpi_get_str(int code)
+वर्ण* __vpiArrayVthrA::vpi_get_str(पूर्णाङ्क code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      यदि (code == vpiFile) {  // Not implemented for now!
+            प्रत्यागम simple_समुच्चयः_rbuf_str(file_नामानि[0]);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%d", (int)get_address() + array->first_addr.get_value());
-      return generic_get_str(code, array->get_scope(), array->name, sidx);
+      वर्ण sidx [64];
+      snprintf(sidx, 63, "%d", (पूर्णाङ्क)get_स्थानाङ्कः() + array->first_addr.get_मानम्());
+      प्रत्यागम generic_get_str(code, array->get_scope(), array->name, sidx);
 }
 
-void __vpiArrayVthrA::vpi_get_value(p_vpi_value vp)
+शून्य __vpiArrayVthrA::vpi_get_मानम्(p_vpi_मानम् vp)
 {
-      assert(array);
+      प्रतिज्ञा(array);
 
-      unsigned index = get_address();
-      if (vpi_array_is_real(array)) {
-	    double tmp = array->get_word_r(index);
-	    vpip_real_get_value(tmp, vp);
-      } else if (vpi_array_is_string(array)) {
-	    string tmp = array->get_word_str(index);
-	    vpip_string_get_value(tmp, vp);
-      } else {
-	    vvp_vector4_t tmp = array->get_word(index);
-	    unsigned width = array->get_word_size();
-	    vpip_vec4_get_value(tmp, width, array->signed_flag, vp);
-      }
-}
-
-vpiHandle __vpiArrayVthrA::vpi_put_value(p_vpi_value vp, int)
-{
-      unsigned index = get_address();
-
-      assert(array);
-      assert(index < array->get_size());
-
-      if (vpi_array_is_real(array)) {
-	    double val = real_from_vpi_value(vp);
-	    array->set_word(index, val);
-      } else {
-	    unsigned width = array->get_word_size();
-	    vvp_vector4_t val = vec4_from_vpi_value(vp, width);
-	    array->set_word(index, 0, val);
-      }
-
-      return this;
-}
-
-vpiHandle __vpiArrayVthrA::vpi_handle(int code)
-{
-      switch (code) {
-	  case vpiIndex:
-	    break;  // Not implemented!
-
-	  case vpiLeftRange:
-	    return &array->msb;
-
-	  case vpiRightRange:
-	    return &array->lsb;
-
-	  case vpiParent:
-	  case vpiArray:
-	    return array;
-
-	  case vpiScope:
-	    return array->get_scope();
-
-	  case vpiModule:
-	    return vpip_module(array->get_scope());
-      }
-
-      return 0;
-}
-
-
-int __vpiArrayVthrAPV::vpi_get(int code)
-{
-      switch (code) {
-	  case vpiLineNo:
-	    return 0; // Not implemented for now!
-
-	  case vpiSize:
-	    return part_wid;
-
-	  case vpiLeftRange:
-	    return part_bit + part_wid - 1;
-
-	  case vpiRightRange:
-	    return part_bit;
-
-	  case vpiAutomatic:
-	    return array->get_scope()->is_automatic() ? 1 : 0;
-
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	  case _vpiFromThr:
-	    return _vpi_at_APV;
-#endif
-
-	  case vpiConstantSelect:
-	    return 1;
-
-	  default:
-	    return 0;
+      अचिह्नित सूचकांक = get_स्थानाङ्कः();
+      यदि (vpi_array_is_real(array)) {
+	    द्विगुण tmp = array->get_word_r(सूचकांक);
+	    vpip_real_get_मानम्(tmp, vp);
+      } अन्यथा यदि (vpi_array_is_string(array)) {
+	    string tmp = array->get_word_str(सूचकांक);
+	    vpip_string_get_मानम्(tmp, vp);
+      } अन्यथा {
+	    vvp_vector4_t tmp = array->get_word(सूचकांक);
+	    अचिह्नित width = array->get_word_आकार();
+	    vpip_vec4_get_मानम्(tmp, width, array->signed_flag, vp);
       }
 }
 
-char* __vpiArrayVthrAPV::vpi_get_str(int code)
+vpiHandle __vpiArrayVthrA::vpi_put_मानम्(p_vpi_मानम् vp, पूर्णाङ्क)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      अचिह्नित सूचकांक = get_स्थानाङ्कः();
+
+      प्रतिज्ञा(array);
+      प्रतिज्ञा(सूचकांक < array->get_आकार());
+
+      यदि (vpi_array_is_real(array)) {
+	    द्विगुण val = real_from_vpi_मानम्(vp);
+	    array->समुच्चयः_word(सूचकांक, val);
+      } अन्यथा {
+	    अचिह्नित width = array->get_word_आकार();
+	    vvp_vector4_t val = vec4_from_vpi_मानम्(vp, width);
+	    array->समुच्चयः_word(सूचकांक, 0, val);
       }
 
-      char sidx [64];
-      snprintf(sidx, 63, "%u", word_sel + array->first_addr.get_value());
-      return generic_get_str(code, array->get_scope(), array->name, sidx);
+      प्रत्यागम एतत्;
 }
 
-void __vpiArrayVthrAPV::vpi_get_value(p_vpi_value vp)
+vpiHandle __vpiArrayVthrA::vpi_handle(पूर्णाङ्क code)
 {
-      assert(array);
+      विकल्प (code) {
+	  पक्ष vpi_सूचकांक_2:
+	    भङ्ग;  // Not implemented!
 
-      unsigned index = word_sel;
-      if (vpi_array_is_real(array)) {
-	    double tmp = array->get_word_r(index);
-	    vpip_real_get_value(tmp, vp);
-      } else {
-	    vvp_vector4_t tmp = array->get_word(index);
+	  पक्ष vpi_वामः_Range:
+	    प्रत्यागम &array->msb;
+
+	  पक्ष vpi_दक्षिणः_Range:
+	    प्रत्यागम &array->lsb;
+
+	  पक्ष vpiParent:
+	  पक्ष vpiArray:
+	    प्रत्यागम array;
+
+	  पक्ष vpiScope:
+	    प्रत्यागम array->get_scope();
+
+	  पक्ष vpiModule:
+	    प्रत्यागम vpip_module(array->get_scope());
+      }
+
+      प्रत्यागम 0;
+}
+
+
+पूर्णाङ्क __vpiArrayVthrAPV::vpi_get(पूर्णाङ्क code)
+{
+      विकल्प (code) {
+	  पक्ष vpi_पङ्क्तिः_No:
+	    प्रत्यागम 0; // Not implemented for now!
+
+	  पक्ष vpi_आकार:
+	    प्रत्यागम part_wid;
+
+	  पक्ष vpi_वामः_Range:
+	    प्रत्यागम part_bit + part_wid - 1;
+
+	  पक्ष vpi_दक्षिणः_Range:
+	    प्रत्यागम part_bit;
+
+	  पक्ष vpiAutomatic:
+	    प्रत्यागम array->get_scope()->is_automatic() ? 1 : 0;
+
+#यदि defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	  पक्ष _vpiFromThr:
+	    प्रत्यागम _vpi_at_APV;
+#यदि_अन्तः
+
+	  पक्ष vpiConstantSelect:
+	    प्रत्यागम 1;
+
+	  स्वभाव:
+	    प्रत्यागम 0;
+      }
+}
+
+वर्ण* __vpiArrayVthrAPV::vpi_get_str(पूर्णाङ्क code)
+{
+      यदि (code == vpiFile) {  // Not implemented for now!
+            प्रत्यागम simple_समुच्चयः_rbuf_str(file_नामानि[0]);
+      }
+
+      वर्ण sidx [64];
+      snprintf(sidx, 63, "%u", word_sel + array->first_addr.get_मानम्());
+      प्रत्यागम generic_get_str(code, array->get_scope(), array->name, sidx);
+}
+
+शून्य __vpiArrayVthrAPV::vpi_get_मानम्(p_vpi_मानम् vp)
+{
+      प्रतिज्ञा(array);
+
+      अचिह्नित सूचकांक = word_sel;
+      यदि (vpi_array_is_real(array)) {
+	    द्विगुण tmp = array->get_word_r(सूचकांक);
+	    vpip_real_get_मानम्(tmp, vp);
+      } अन्यथा {
+	    vvp_vector4_t tmp = array->get_word(सूचकांक);
 	    tmp = tmp.subvalue(part_bit, part_wid);
-	    vpip_vec4_get_value(tmp, part_wid, false, vp);
+	    vpip_vec4_get_मानम्(tmp, part_wid, असत्य, vp);
       }
 }
 
-vpiHandle __vpiArrayVthrAPV::vpi_handle(int code)
+vpiHandle __vpiArrayVthrAPV::vpi_handle(पूर्णाङ्क code)
 {
-      switch (code) {
+      विकल्प (code) {
             // Not currently implemented. We would need to create a VPI
             // object for the memory word.
-	  case vpiParent:
-	    return 0;
+	  पक्ष vpiParent:
+	    प्रत्यागम 0;
 
             // Not part of the Verilog standard. We use this internally.
-	  case vpiArray:
-	    return array;
+	  पक्ष vpiArray:
+	    प्रत्यागम array;
 
-	  case vpiScope:
-	    return array->get_scope();
+	  पक्ष vpiScope:
+	    प्रत्यागम array->get_scope();
 
-	  case vpiModule:
-	    return vpip_module(array->get_scope());
+	  पक्ष vpiModule:
+	    प्रत्यागम vpip_module(array->get_scope());
       }
 
-      return 0;
+      प्रत्यागम 0;
 }
 
-void __vpiArray::set_word(unsigned address, unsigned part_off, const vvp_vector4_t&val)
+शून्य __vpiArray::समुच्चयः_word(अचिह्नित स्थानाङ्कः, अचिह्नित part_off, ध्रुव vvp_vector4_t&val)
 {
-      if (address >= get_size())
-	    return;
+      यदि (स्थानाङ्कः >= get_आकार())
+	    प्रत्यागम;
 
-      if (vals4) {
-	    assert(nets == 0);
-	    if (part_off != 0 || val.size() != vals_width) {
-		  vvp_vector4_t tmp = vals4->get_word(address);
-		  if ((part_off + val.size()) > tmp.size()) {
+      यदि (vals4) {
+	    प्रतिज्ञा(nets == 0);
+	    यदि (part_off != 0 || val.size() != vals_विस्तारः) {
+		  vvp_vector4_t tmp = vals4->get_word(स्थानाङ्कः);
+		  यदि ((part_off + val.size()) > tmp.size()) {
 			cerr << "part_off=" << part_off
 			     << " val.size()=" << val.size()
 			     << " vals[address].size()=" << tmp.size()
-			     << " vals_width=" << vals_width << endl;
-			assert(0);
+			     << " vals_width=" << vals_विस्तारः << पङ्क्त्यन्तः;
+			प्रतिज्ञा(0);
 		  }
-		  tmp.set_vec(part_off, val);
-		  vals4->set_word(address, tmp);
-	    } else {
-		  vals4->set_word(address, val);
+		  tmp.समुच्चयः_vec(part_off, val);
+		  vals4->समुच्चयः_word(स्थानाङ्कः, tmp);
+	    } अन्यथा {
+		  vals4->समुच्चयः_word(स्थानाङ्कः, val);
 	    }
-	    word_change(address);
-	    return;
+	    word_change(स्थानाङ्कः);
+	    प्रत्यागम;
       }
 
-      if (vals) {
-	    assert(nets == 0);
-	    if (part_off != 0 || val.size() != vals_width) {
+      यदि (vals) {
+	    प्रतिज्ञा(nets == 0);
+	    यदि (part_off != 0 || val.size() != vals_विस्तारः) {
 		  vvp_vector4_t tmp;
-		  vals->get_word(address, tmp);
-		  if ((part_off + val.size()) > tmp.size()) {
+		  vals->get_word(स्थानाङ्कः, tmp);
+		  यदि ((part_off + val.size()) > tmp.size()) {
 			cerr << "part_off=" << part_off
 			     << " val.size()=" << val.size()
 			     << " vals[address].size()=" << tmp.size()
-			     << " vals_width=" << vals_width << endl;
-			assert(0);
+			     << " vals_width=" << vals_विस्तारः << पङ्क्त्यन्तः;
+			प्रतिज्ञा(0);
 		  }
-		  tmp.set_vec(part_off, val);
-		  vals->set_word(address, tmp);
-	    } else {
-		  vals->set_word(address, val);
+		  tmp.समुच्चयः_vec(part_off, val);
+		  vals->समुच्चयः_word(स्थानाङ्कः, tmp);
+	    } अन्यथा {
+		  vals->समुच्चयः_word(स्थानाङ्कः, val);
 	    }
-	    word_change(address);
-	    return;
+	    word_change(स्थानाङ्कः);
+	    प्रत्यागम;
       }
 
-      assert(nets != 0);
+      प्रतिज्ञा(nets != 0);
 
 	// Select the word of the array that we affect.
-      vpiHandle word = nets[address];
-      const struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
-      assert(vsig);
+      vpiHandle word = nets[स्थानाङ्कः];
+      ध्रुव संरचना __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
+      प्रतिज्ञा(vsig);
 
-      vsig->node->send_vec4_pv(val, part_off, vpip_size(vsig), 0);
-      word_change(address);
+      vsig->ग्रन्थिः->send_vec4_pv(val, part_off, vpip_आकार(vsig), 0);
+      word_change(स्थानाङ्कः);
 }
 
-void __vpiArray::set_word(unsigned address, double val)
+शून्य __vpiArray::समुच्चयः_word(अचिह्नित स्थानाङ्कः, द्विगुण val)
 {
-      assert(vals != 0);
-      assert(nets == 0);
+      प्रतिज्ञा(vals != 0);
+      प्रतिज्ञा(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      यदि (स्थानाङ्कः >= vals->get_आकार())
+	    प्रत्यागम;
 
-      vals->set_word(address, val);
-      word_change(address);
+      vals->समुच्चयः_word(स्थानाङ्कः, val);
+      word_change(स्थानाङ्कः);
 }
 
-void __vpiArray::set_word(unsigned address, const string&val)
+शून्य __vpiArray::समुच्चयः_word(अचिह्नित स्थानाङ्कः, ध्रुव string&val)
 {
-      assert(vals != 0);
-      assert(nets == 0);
+      प्रतिज्ञा(vals != 0);
+      प्रतिज्ञा(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      यदि (स्थानाङ्कः >= vals->get_आकार())
+	    प्रत्यागम;
 
-      vals->set_word(address, val);
-      word_change(address);
+      vals->समुच्चयः_word(स्थानाङ्कः, val);
+      word_change(स्थानाङ्कः);
 }
 
-void __vpiArray::set_word(unsigned address, const vvp_object_t&val)
+शून्य __vpiArray::समुच्चयः_word(अचिह्नित स्थानाङ्कः, ध्रुव vvp_object_t&val)
 {
-      assert(vals != 0);
-      assert(nets == 0);
+      प्रतिज्ञा(vals != 0);
+      प्रतिज्ञा(nets == 0);
 
-      if (address >= vals->get_size())
-	    return;
+      यदि (स्थानाङ्कः >= vals->get_आकार())
+	    प्रत्यागम;
 
-      vals->set_word(address, val);
-      word_change(address);
+      vals->समुच्चयः_word(स्थानाङ्कः, val);
+      word_change(स्थानाङ्कः);
 }
 
-vvp_vector4_t __vpiArray::get_word(unsigned address)
+vvp_vector4_t __vpiArray::get_word(अचिह्नित स्थानाङ्कः)
 {
-      if (vals4) {
-	    assert(nets == 0);
-	    assert(vals == 0);
-	    return vals4->get_word(address);
+      यदि (vals4) {
+	    प्रतिज्ञा(nets == 0);
+	    प्रतिज्ञा(vals == 0);
+	    प्रत्यागम vals4->get_word(स्थानाङ्कः);
       }
 
-      if (vals) {
-	    assert(nets == 0);
-	    assert(vals4== 0);
-	    if (address >= vals->get_size())
-		  return vvp_vector4_t(vals_width, BIT4_X);
+      यदि (vals) {
+	    प्रतिज्ञा(nets == 0);
+	    प्रतिज्ञा(vals4== 0);
+	    यदि (स्थानाङ्कः >= vals->get_आकार())
+		  प्रत्यागम vvp_vector4_t(vals_विस्तारः, BIT4_X);
 
 	    vvp_vector4_t val;
-	    vals->get_word(address, val);
-	    return val;
+	    vals->get_word(स्थानाङ्कः, val);
+	    प्रत्यागम val;
       }
 
-      assert(vals4 == 0);
-      assert(vals == 0);
-      assert(nets != 0);
+      प्रतिज्ञा(vals4 == 0);
+      प्रतिज्ञा(vals == 0);
+      प्रतिज्ञा(nets != 0);
 
-      if (address >= get_size()) {
+      यदि (स्थानाङ्कः >= get_आकार()) {
 	      // Reading outside the array. Return X's but get the
 	      // width by looking at a word that we know is present.
-	    assert(get_size() > 0);
+	    प्रतिज्ञा(get_आकार() > 0);
 	    vpiHandle word = nets[0];
-	    assert(word);
-	    struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
-	    assert(vsig);
-	    vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->node->fil);
-	    assert(sig);
-	    return vvp_vector4_t(sig->value_size(), BIT4_X);
+	    प्रतिज्ञा(word);
+	    संरचना __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
+	    प्रतिज्ञा(vsig);
+	    vvp_signal_मानम्*sig = dynamic_cast<vvp_signal_मानम्*> (vsig->ग्रन्थिः->fil);
+	    प्रतिज्ञा(sig);
+	    प्रत्यागम vvp_vector4_t(sig->मानम्_आकार(), BIT4_X);
       }
 
-      vpiHandle word = nets[address];
-      struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
-      assert(vsig);
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->node->fil);
-      assert(sig);
+      vpiHandle word = nets[स्थानाङ्कः];
+      संरचना __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
+      प्रतिज्ञा(vsig);
+      vvp_signal_मानम्*sig = dynamic_cast<vvp_signal_मानम्*> (vsig->ग्रन्थिः->fil);
+      प्रतिज्ञा(sig);
 
       vvp_vector4_t val;
-      sig->vec4_value(val);
-      return val;
+      sig->vec4_मानम्(val);
+      प्रत्यागम val;
 }
 
-double __vpiArray::get_word_r(unsigned address)
+द्विगुण __vpiArray::get_word_r(अचिह्नित स्थानाङ्कः)
 {
-      if (vals) {
-	    assert(vals4 == 0);
-	    assert(nets  == 0);
+      यदि (vals) {
+	    प्रतिज्ञा(vals4 == 0);
+	    प्रतिज्ञा(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size())
-		  return 0.0;
+	    यदि (स्थानाङ्कः >= vals->get_आकार())
+		  प्रत्यागम 0.0;
 
-	    double val;
-	    vals->get_word(address, val);
-	    return val;
+	    द्विगुण val;
+	    vals->get_word(स्थानाङ्कः, val);
+	    प्रत्यागम val;
       }
 
-      if (address >= get_size())
-	    return 0.0;
+      यदि (स्थानाङ्कः >= get_आकार())
+	    प्रत्यागम 0.0;
 
-      assert(nets);
-      vpiHandle word = nets[address];
-      struct __vpiRealVar*vsig = dynamic_cast<__vpiRealVar*>(word);
-      assert(vsig);
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->net->fil);
-      assert(sig);
+      प्रतिज्ञा(nets);
+      vpiHandle word = nets[स्थानाङ्कः];
+      संरचना __vpiRealVar*vsig = dynamic_cast<__vpiRealVar*>(word);
+      प्रतिज्ञा(vsig);
+      vvp_signal_मानम्*sig = dynamic_cast<vvp_signal_मानम्*> (vsig->net->fil);
+      प्रतिज्ञा(sig);
 
-      double val = sig->real_value();
-      return val;
+      द्विगुण val = sig->real_मानम्();
+      प्रत्यागम val;
 }
 
-void __vpiArray::get_word_obj(unsigned address, vvp_object_t&val)
+शून्य __vpiArray::get_word_obj(अचिह्नित स्थानाङ्कः, vvp_object_t&val)
 {
-      if (vals) {
-	    assert(vals4 == 0);
-	    assert(nets  == 0);
+      यदि (vals) {
+	    प्रतिज्ञा(vals4 == 0);
+	    प्रतिज्ञा(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size()) {
+	    यदि (स्थानाङ्कः >= vals->get_आकार()) {
 		  val = vvp_object_t();
-		  return;
+		  प्रत्यागम;
 	    }
 
-	    vals->get_word(address, val);
-	    return;
+	    vals->get_word(स्थानाङ्कः, val);
+	    प्रत्यागम;
       }
 
-      assert(nets);
+      प्रतिज्ञा(nets);
 	// Arrays of string nets not implemented!
-      assert(0);
-      return;
+      प्रतिज्ञा(0);
+      प्रत्यागम;
 }
 
-string __vpiArray::get_word_str(unsigned address)
+string __vpiArray::get_word_str(अचिह्नित स्थानाङ्कः)
 {
-      if (vals) {
-	    assert(vals4 == 0);
-	    assert(nets  == 0);
+      यदि (vals) {
+	    प्रतिज्ञा(vals4 == 0);
+	    प्रतिज्ञा(nets  == 0);
 	      // In this context, address out of bounds returns 0.0
 	      // instead of an error.
-	    if (address >= vals->get_size())
-		  return "";
+	    यदि (स्थानाङ्कः >= vals->get_आकार())
+		  प्रत्यागम "";
 
 	    string val;
-	    vals->get_word(address, val);
-	    return val;
+	    vals->get_word(स्थानाङ्कः, val);
+	    प्रत्यागम val;
       }
 
-      assert(nets);
+      प्रतिज्ञा(nets);
 	// Arrays of string nets not implemented!
-      assert(0);
-      return "";
+      प्रतिज्ञा(0);
+      प्रत्यागम "";
 }
 
-vpiHandle vpip_make_array(const char*label, const char*name,
-                          int first_addr, int last_addr,
-                          bool signed_flag)
+vpiHandle vpip_make_array(ध्रुव वर्ण*label, ध्रुव वर्ण*name,
+                          पूर्णाङ्क first_addr, पूर्णाङ्क चरमः_addr,
+                          तार्किक signed_flag)
 {
-      struct __vpiArray*obj = new __vpiArray;
+      संरचना __vpiArray*obj = नूतन __vpiArray;
 
       obj->signed_flag = signed_flag;
 
 	// Assume increasing addresses.
-      if (last_addr >= first_addr) {
-	    obj->swap_addr = false;
-      } else {
-	    obj->swap_addr = true;
-	    int tmp = last_addr;
-	    last_addr = first_addr;
+      यदि (चरमः_addr >= first_addr) {
+	    obj->swap_addr = असत्य;
+      } अन्यथा {
+	    obj->swap_addr = सत्य;
+	    पूर्णाङ्क tmp = चरमः_addr;
+	    चरमः_addr = first_addr;
 	    first_addr = tmp;
       }
-      assert(last_addr >= first_addr);
-      unsigned array_count = last_addr+1-first_addr;
+      प्रतिज्ञा(चरमः_addr >= first_addr);
+      अचिह्नित array_गणनम् = चरमः_addr+1-first_addr;
 
 	// For now, treat all arrays as memories. This is not quite
 	// correct, as arrays are arrays with memories a special case.
       obj->scope = vpip_peek_current_scope();
       obj->name  = vpip_name_string(name);
-      obj->array_count = array_count;
+      obj->array_गणनम् = array_गणनम्;
 
-      obj->first_addr.set_value(first_addr);
-      obj->last_addr .set_value(last_addr);
+      obj->first_addr.समुच्चयः_मानम्(first_addr);
+      obj->चरमः_addr .समुच्चयः_मानम्(चरमः_addr);
 
 	// Start off now knowing if we are nets or variables.
       obj->nets = 0;
       obj->vals4 = 0;
       obj->vals  = 0;
-      obj->vals_width = 0;
-      obj->vals_words = 0;
+      obj->vals_विस्तारः = 0;
+      obj->vals_शब्दाः = 0;
 
 	// Initialize (clear) the read-ports list.
       obj->ports_ = 0;
       obj->vpi_callbacks = 0;
 
 	/* Add this symbol to the array_symbols table for later lookup. */
-      if (!array_table)
-	    array_table = new symbol_map_s<struct __vpiArray>;
+      यदि (!array_सारणी)
+	    array_सारणी = नूतन चिह्नम्_map_s<संरचना __vpiArray>;
 
-      assert(!array_find(label));
-      array_table->sym_set_value(label, obj);
+      प्रतिज्ञा(!array_find(label));
+      array_सारणी->sym_समुच्चयः_मानम्(label, obj);
 
 	/* Add this into the table of VPI objects. This is used for
 	   contexts that try to look up VPI objects in
 	   general. (i.e. arguments to vpi_task calls.) */
-      compile_vpi_symbol(label, obj);
+      compile_vpi_चिह्नम्(label, obj);
 
 	/* Blindly attach to the scope as an object. */
-      vpip_attach_to_current_scope(obj);
+      vpip_attach_गन्तव्यम्_current_scope(obj);
 
-      return obj;
+      प्रत्यागम obj;
 }
 
-void __vpiArray::alias_word(unsigned long addr, vpiHandle word, int msb_, int lsb_)
+शून्य __vpiArray::alias_word(अचिह्नित दीर्घ addr, vpiHandle word, पूर्णाङ्क msb_, पूर्णाङ्क lsb_)
 {
-      assert(msb.get_value() == msb_);
-      assert(lsb.get_value() == lsb_);
-      assert(addr < get_size());
-      assert(nets);
+      प्रतिज्ञा(msb.get_मानम्() == msb_);
+      प्रतिज्ञा(lsb.get_मानम्() == lsb_);
+      प्रतिज्ञा(addr < get_आकार());
+      प्रतिज्ञा(nets);
       nets[addr] = word;
 }
 
-void __vpiArray::attach_word(unsigned addr, vpiHandle word)
+शून्य __vpiArray::attach_word(अचिह्नित addr, vpiHandle word)
 {
-      assert(addr < get_size());
-      assert(nets);
+      प्रतिज्ञा(addr < get_आकार());
+      प्रतिज्ञा(nets);
       nets[addr] = word;
 
-      if (struct __vpiSignal*sig = dynamic_cast<__vpiSignal*>(word)) {
-	    vvp_net_t*net = sig->node;
-	    assert(net);
+      यदि (संरचना __vpiSignal*sig = dynamic_cast<__vpiSignal*>(word)) {
+	    vvp_net_t*net = sig->ग्रन्थिः;
+	    प्रतिज्ञा(net);
 	    vvp_vpi_callback*fun = dynamic_cast<vvp_vpi_callback*>(net->fil);
-	    assert(fun);
-	    fun->attach_as_word(this, addr);
+	    प्रतिज्ञा(fun);
+	    fun->attach_as_word(एतत्, addr);
 	    sig->is_netarray = 1;
-	    sig->within.parent = this;
-	    sig->id.index = new __vpiDecConst(addr + first_addr.get_value());
+	    sig->within.parent = एतत्;
+	    sig->id.सूचकांक = नूतन __vpiDecConst(addr + first_addr.get_मानम्());
 	      // Now we know the data type, update the array signed_flag.
 	    signed_flag = sig->signed_flag;
-	    return;
+	    प्रत्यागम;
       }
 
-      if (struct __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(word)) {
+      यदि (संरचना __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(word)) {
 	    vvp_net_t*net = sig->net;
-	    assert(net);
+	    प्रतिज्ञा(net);
 	    vvp_vpi_callback*fun = dynamic_cast<vvp_vpi_callback*>(net->fil);
-	    assert(fun);
-	    fun->attach_as_word(this, addr);
+	    प्रतिज्ञा(fun);
+	    fun->attach_as_word(एतत्, addr);
 	    sig->is_netarray = 1;
-	    sig->within.parent = this;
-	    sig->id.index = new __vpiDecConst(addr + first_addr.get_value());
+	    sig->within.parent = एतत्;
+	    sig->id.सूचकांक = नूतन __vpiDecConst(addr + first_addr.get_मानम्());
 	      // Now we know the data type, update the array signed_flag.
-	    signed_flag = true;
-	    return;
+	    signed_flag = सत्य;
+	    प्रत्यागम;
       }
 }
 
-void compile_var_array(char*label, char*name, int last, int first,
-		   int msb, int lsb, char signed_flag)
+शून्य compile_var_array(वर्ण*label, वर्ण*name, पूर्णाङ्क चरमः, पूर्णाङ्क first,
+		   पूर्णाङ्क msb, पूर्णाङ्क lsb, वर्ण signed_flag)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last,
+      vpiHandle obj = vpip_make_array(label, name, first, चरमः,
                                       signed_flag != 0);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      संरचना __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->vals_width = labs(msb-lsb) + 1;
-      if (vpip_peek_current_scope()->is_automatic()) {
-            arr->vals4 = new vvp_vector4array_aa(arr->vals_width,
-						 arr->get_size());
-      } else {
-            arr->vals4 = new vvp_vector4array_sa(arr->vals_width,
-						 arr->get_size());
+      arr->vals_विस्तारः = labs(msb-lsb) + 1;
+      यदि (vpip_peek_current_scope()->is_automatic()) {
+            arr->vals4 = नूतन vvp_vector4array_aa(arr->vals_विस्तारः,
+						 arr->get_आकार());
+      } अन्यथा {
+            arr->vals4 = नूतन vvp_vector4array_sa(arr->vals_विस्तारः,
+						 arr->get_आकार());
       }
-      arr->msb.set_value(msb);
-      arr->lsb.set_value(lsb);
+      arr->msb.समुच्चयः_मानम्(msb);
+      arr->lsb.समुच्चयः_मानम्(lsb);
 
-      count_var_arrays += 1;
-      count_var_array_words += arr->get_size();
+      गणनम्_var_arrays += 1;
+      गणनम्_var_array_शब्दाः += arr->get_आकार();
 
-      free(label);
-      delete[] name;
+      मुक्त(label);
+      विलोपय[] name;
 }
 
-void compile_var2_array(char*label, char*name, int last, int first,
-		   int msb, int lsb, bool signed_flag)
+शून्य compile_var2_array(वर्ण*label, वर्ण*name, पूर्णाङ्क चरमः, पूर्णाङ्क first,
+		   पूर्णाङ्क msb, पूर्णाङ्क lsb, तार्किक signed_flag)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last, signed_flag);
+      vpiHandle obj = vpip_make_array(label, name, first, चरमः, signed_flag);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      संरचना __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->msb.set_value(msb);
-      arr->lsb.set_value(lsb);
-      arr->vals_width = labs(msb-lsb) + 1;
+      arr->msb.समुच्चयः_मानम्(msb);
+      arr->lsb.समुच्चयः_मानम्(lsb);
+      arr->vals_विस्तारः = labs(msb-lsb) + 1;
 
-      assert(! arr->nets);
-      if (lsb == 0 && msb == 7 && signed_flag) {
-	    arr->vals = new vvp_darray_atom<int8_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 7 && !signed_flag) {
-	    arr->vals = new vvp_darray_atom<uint8_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 15 && signed_flag) {
-	    arr->vals = new vvp_darray_atom<int16_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 15 && !signed_flag) {
-	    arr->vals = new vvp_darray_atom<uint16_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 31 && signed_flag) {
-	    arr->vals = new vvp_darray_atom<int32_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 31 && !signed_flag) {
-	    arr->vals = new vvp_darray_atom<uint32_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 63 && signed_flag) {
-	    arr->vals = new vvp_darray_atom<int64_t>(arr->get_size());
-      } else if (lsb == 0 && msb == 63 && !signed_flag) {
-	    arr->vals = new vvp_darray_atom<uint64_t>(arr->get_size());
-      } else {
-	    arr->vals = new vvp_darray_vec2(arr->get_size(), arr->vals_width);
+      प्रतिज्ञा(! arr->nets);
+      यदि (lsb == 0 && msb == 7 && signed_flag) {
+	    arr->vals = नूतन vvp_darray_atom<int8_t>(arr->get_आकार());
+      } अन्यथा यदि (lsb == 0 && msb == 7 && !signed_flag) {
+	    arr->vals = नूतन vvp_darray_atom<uint8_t>(arr->get_आकार());
+      } अन्यथा यदि (lsb == 0 && msb == 15 && signed_flag) {
+	    arr->vals = नूतन vvp_darray_atom<int16_t>(arr->get_आकार());
+      } अन्यथा यदि (lsb == 0 && msb == 15 && !signed_flag) {
+	    arr->vals = नूतन vvp_darray_atom<uint16_t>(arr->get_आकार());
+      } अन्यथा यदि (lsb == 0 && msb == 31 && signed_flag) {
+	    arr->vals = नूतन vvp_darray_atom<int32_t>(arr->get_आकार());
+      } अन्यथा यदि (lsb == 0 && msb == 31 && !signed_flag) {
+	    arr->vals = नूतन vvp_darray_atom<uint32_t>(arr->get_आकार());
+      } अन्यथा यदि (lsb == 0 && msb == 63 && signed_flag) {
+	    arr->vals = नूतन vvp_darray_atom<int64_t>(arr->get_आकार());
+      } अन्यथा यदि (lsb == 0 && msb == 63 && !signed_flag) {
+	    arr->vals = नूतन vvp_darray_atom<uint64_t>(arr->get_आकार());
+      } अन्यथा {
+	    arr->vals = नूतन vvp_darray_vec2(arr->get_आकार(), arr->vals_विस्तारः);
       }
-      count_var_arrays += 1;
-      count_var_array_words += arr->get_size();
+      गणनम्_var_arrays += 1;
+      गणनम्_var_array_शब्दाः += arr->get_आकार();
 
-      free(label);
-      delete[] name;
+      मुक्त(label);
+      विलोपय[] name;
 }
 
-void compile_real_array(char*label, char*name, int last, int first)
+शून्य compile_real_array(वर्ण*label, वर्ण*name, पूर्णाङ्क चरमः, पूर्णाङ्क first)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last, true);
+      vpiHandle obj = vpip_make_array(label, name, first, चरमः, सत्य);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      संरचना __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->vals = new vvp_darray_real(arr->get_size());
-      arr->vals_width = 1;
+      arr->vals = नूतन vvp_darray_real(arr->get_आकार());
+      arr->vals_विस्तारः = 1;
 
-      count_real_arrays += 1;
-      count_real_array_words += arr->get_size();
+      गणनम्_real_arrays += 1;
+      गणनम्_real_array_शब्दाः += arr->get_आकार();
 
-      free(label);
-      delete[] name;
+      मुक्त(label);
+      विलोपय[] name;
 }
 
-void compile_string_array(char*label, char*name, int last, int first)
+शून्य compile_string_array(वर्ण*label, वर्ण*name, पूर्णाङ्क चरमः, पूर्णाङ्क first)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last, true);
+      vpiHandle obj = vpip_make_array(label, name, first, चरमः, सत्य);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      संरचना __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->vals = new vvp_darray_string(arr->get_size());
-      arr->vals_width = 1;
+      arr->vals = नूतन vvp_darray_string(arr->get_आकार());
+      arr->vals_विस्तारः = 1;
 
-      count_real_arrays += 1;
-      count_real_array_words += arr->get_size();
+      गणनम्_real_arrays += 1;
+      गणनम्_real_array_शब्दाः += arr->get_आकार();
 
-      free(label);
-      delete[] name;
+      मुक्त(label);
+      विलोपय[] name;
 }
 
-void compile_object_array(char*label, char*name, int last, int first)
+शून्य compile_object_array(वर्ण*label, वर्ण*name, पूर्णाङ्क चरमः, पूर्णाङ्क first)
 {
-      vpiHandle obj = vpip_make_array(label, name, first, last, true);
+      vpiHandle obj = vpip_make_array(label, name, first, चरमः, सत्य);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      संरचना __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->vals = new vvp_darray_object(arr->get_size());
-      arr->vals_width = 1;
+      arr->vals = नूतन vvp_darray_object(arr->get_आकार());
+      arr->vals_विस्तारः = 1;
 
-      count_real_arrays += 1;
-      count_real_array_words += arr->get_size();
+      गणनम्_real_arrays += 1;
+      गणनम्_real_array_शब्दाः += arr->get_आकार();
 
-      free(label);
-      delete[] name;
+      मुक्त(label);
+      विलोपय[] name;
 }
 
-void compile_net_array(char*label, char*name, int last, int first)
+शून्य compile_net_array(वर्ण*label, वर्ण*name, पूर्णाङ्क चरमः, पूर्णाङ्क first)
 {
 	// At this point we don't know the array data type, so we
 	// initialise signed_flag to false. This will be corrected
 	// (if necessary) when we attach words to the array.
-      vpiHandle obj = vpip_make_array(label, name, first, last, false);
+      vpiHandle obj = vpip_make_array(label, name, first, चरमः, असत्य);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
-      arr->nets = static_cast<vpiHandle*>(calloc(arr->get_size(), sizeof(vpiHandle)));
+      संरचना __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
+      arr->nets = static_cast<vpiHandle*>(शून्यस्मृतिं_देहि(arr->get_आकार(), परिमाण(vpiHandle)));
 
-      count_net_arrays += 1;
-      count_net_array_words += arr->get_size();
+      गणनम्_net_arrays += 1;
+      गणनम्_net_array_शब्दाः += arr->get_आकार();
 
-      free(label);
-      delete[] name;
+      मुक्त(label);
+      विलोपय[] name;
 }
 
-class vvp_fun_arrayport  : public vvp_net_fun_t {
+वर्ग vvp_fun_arrayport  : सार्वजनिक vvp_net_fun_t {
 
-    public:
-      explicit vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net);
-      explicit vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net, long addr);
+    सार्वजनिक:
+      स्पष्ट vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net);
+      स्पष्ट vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net, दीर्घ addr);
       ~vvp_fun_arrayport() override;
 
-      virtual void check_word_change(unsigned long addr) = 0;
+      आभास शून्य check_word_change(अचिह्नित दीर्घ addr) = 0;
 
-    protected:
+    रक्षित:
       vvp_array_t arr_;
       vvp_net_t  *net_;
-      unsigned long addr_;
+      अचिह्नित दीर्घ addr_;
 
-      friend void array_attach_port(vvp_array_t, vvp_fun_arrayport*);
-      friend void __vpiArray::word_change(unsigned long);
-      vvp_fun_arrayport*next_;
+      मित्रम् शून्य array_attach_पत्तनम्(vvp_array_t, vvp_fun_arrayport*);
+      मित्रम् शून्य __vpiArray::word_change(अचिह्नित दीर्घ);
+      vvp_fun_arrayport*अग्र;
 };
 
 vvp_fun_arrayport::vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net)
 : arr_(mem), net_(net), addr_(0)
 {
-      next_ = 0;
+      अग्र = 0;
 }
 
-vvp_fun_arrayport::vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net, long addr)
+vvp_fun_arrayport::vvp_fun_arrayport(vvp_array_t mem, vvp_net_t*net, दीर्घ addr)
 : arr_(mem), net_(net), addr_(addr)
 {
-      next_ = 0;
+      अग्र = 0;
 }
 
 vvp_fun_arrayport::~vvp_fun_arrayport()
 {
 }
 
-class vvp_fun_arrayport_sa  : public vvp_fun_arrayport {
+वर्ग vvp_fun_arrayport_sa  : सार्वजनिक vvp_fun_arrayport {
 
-    public:
-      explicit vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net);
-      explicit vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net, long addr);
+    सार्वजनिक:
+      स्पष्ट vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net);
+      स्पष्ट vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net, दीर्घ addr);
       ~vvp_fun_arrayport_sa() override;
 
-      void check_word_change(unsigned long addr) override;
+      शून्य check_word_change(अचिह्नित दीर्घ addr) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      शून्य recv_vec4(vvp_net_ptr_t पत्तनम्, ध्रुव vvp_vector4_t&bit,
                      vvp_context_t) override;
 
-    private:
+    गुप्त:
 };
 
 vvp_fun_arrayport_sa::vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net)
@@ -1078,7 +1078,7 @@ vvp_fun_arrayport_sa::vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net)
 {
 }
 
-vvp_fun_arrayport_sa::vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net, long addr)
+vvp_fun_arrayport_sa::vvp_fun_arrayport_sa(vvp_array_t mem, vvp_net_t*net, दीर्घ addr)
 : vvp_fun_arrayport(mem, net, addr)
 {
 }
@@ -1087,244 +1087,244 @@ vvp_fun_arrayport_sa::~vvp_fun_arrayport_sa()
 {
 }
 
-void vvp_fun_arrayport_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+शून्य vvp_fun_arrayport_sa::recv_vec4(vvp_net_ptr_t पत्तनम्, ध्रुव vvp_vector4_t&bit,
                                      vvp_context_t)
 {
-      bool addr_valid_flag;
+      तार्किक addr_valid_flag;
 
-      switch (port.port()) {
+      विकल्प (पत्तनम्.पत्तनम्()) {
 
-	  case 0: // Address input
-	    addr_valid_flag = vector4_to_value(bit, addr_);
-	    if (! addr_valid_flag)
-		  addr_ = arr_->get_size();
-	    if (vpi_array_is_real(arr_))
-		  port.ptr()->send_real(arr_->get_word_r(addr_), 0);
-	    else
-		  port.ptr()->send_vec4(arr_->get_word(addr_), 0);
+	  पक्ष 0: // Address input
+	    addr_valid_flag = vector4_गन्तव्यम्_मानम्(bit, addr_);
+	    यदि (! addr_valid_flag)
+		  addr_ = arr_->get_आकार();
+	    यदि (vpi_array_is_real(arr_))
+		  पत्तनम्.ptr()->send_real(arr_->get_word_r(addr_), 0);
+	    अन्यथा
+		  पत्तनम्.ptr()->send_vec4(arr_->get_word(addr_), 0);
 
-	    break;
+	    भङ्ग;
 
-	  default:
+	  स्वभाव:
 	    fprintf(stdout, "XXXX write ports not implemented.\n");
-	    assert(0);
+	    प्रतिज्ञा(0);
       }
 }
 
-void vvp_fun_arrayport_sa::check_word_change(unsigned long addr)
+शून्य vvp_fun_arrayport_sa::check_word_change(अचिह्नित दीर्घ addr)
 {
-      if (addr != addr_) return;
+      यदि (addr != addr_) प्रत्यागम;
 
-      if (vpi_array_is_real(arr_)) {
+      यदि (vpi_array_is_real(arr_)) {
 	    net_->send_real(arr_->get_word_r(addr_), 0);
-      } else {
+      } अन्यथा {
 	    net_->send_vec4(arr_->get_word(addr_), 0);
       }
 }
 
-class vvp_fun_arrayport_aa  : public vvp_fun_arrayport, public automatic_hooks_s {
+वर्ग vvp_fun_arrayport_aa  : सार्वजनिक vvp_fun_arrayport, सार्वजनिक automatic_hooks_s {
 
-    public:
-      explicit vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net);
-      explicit vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net, long addr);
+    सार्वजनिक:
+      स्पष्ट vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net);
+      स्पष्ट vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net, दीर्घ addr);
       ~vvp_fun_arrayport_aa() override;
 
-      void alloc_instance(vvp_context_t context) override;
-      void reset_instance(vvp_context_t context) override;
-#ifdef CHECK_WITH_VALGRIND
-      void free_instance(vvp_context_t context) override;
-#endif
+      शून्य alloc_instance(vvp_context_t context) override;
+      शून्य reset_instance(vvp_context_t context) override;
+#यदि_परिभाषितम् CHECK_WITH_VALGRIND
+      शून्य free_instance(vvp_context_t context) override;
+#यदि_अन्तः
 
-      void check_word_change(unsigned long addr) override;
+      शून्य check_word_change(अचिह्नित दीर्घ addr) override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      शून्य recv_vec4(vvp_net_ptr_t पत्तनम्, ध्रुव vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-    private:
-      void check_word_change_(unsigned long addr, vvp_context_t context);
+    गुप्त:
+      शून्य check_word_change_(अचिह्नित दीर्घ addr, vvp_context_t context);
 
       __vpiScope*context_scope_;
-      unsigned context_idx_;
+      अचिह्नित context_idx_;
 };
 
 vvp_fun_arrayport_aa::vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net)
 : vvp_fun_arrayport(mem, net), context_scope_(context_scope)
 {
-      context_idx_ = vpip_add_item_to_context(this, context_scope);
+      context_idx_ = vpip_सङ्कलय_item_गन्तव्यम्_context(एतत्, context_scope);
 }
 
-vvp_fun_arrayport_aa::vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net, long addr)
+vvp_fun_arrayport_aa::vvp_fun_arrayport_aa(__vpiScope*context_scope, vvp_array_t mem, vvp_net_t*net, दीर्घ addr)
 : vvp_fun_arrayport(mem, net, addr), context_scope_(context_scope)
 {
-      context_idx_ = vpip_add_item_to_context(this, context_scope);
+      context_idx_ = vpip_सङ्कलय_item_गन्तव्यम्_context(एतत्, context_scope);
 }
 
 vvp_fun_arrayport_aa::~vvp_fun_arrayport_aa()
 {
 }
 
-void vvp_fun_arrayport_aa::alloc_instance(vvp_context_t context)
+शून्य vvp_fun_arrayport_aa::alloc_instance(vvp_context_t context)
 {
-      unsigned long*addr = new unsigned long;
-      vvp_set_context_item(context, context_idx_, addr);
+      अचिह्नित दीर्घ*addr = नूतन अचिह्नित दीर्घ;
+      vvp_समुच्चयः_context_item(context, context_idx_, addr);
 
       *addr = addr_;
 }
 
-void vvp_fun_arrayport_aa::reset_instance(vvp_context_t context)
+शून्य vvp_fun_arrayport_aa::reset_instance(vvp_context_t context)
 {
-      unsigned long*addr = static_cast<unsigned long*>
+      अचिह्नित दीर्घ*addr = static_cast<अचिह्नित दीर्घ*>
             (vvp_get_context_item(context, context_idx_));
 
       *addr = addr_;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void vvp_fun_arrayport_aa::free_instance(vvp_context_t context)
+#यदि_परिभाषितम् CHECK_WITH_VALGRIND
+शून्य vvp_fun_arrayport_aa::free_instance(vvp_context_t context)
 {
-      unsigned long*addr = static_cast<unsigned long*>
+      अचिह्नित दीर्घ*addr = static_cast<अचिह्नित दीर्घ*>
             (vvp_get_context_item(context, context_idx_));
-      delete addr;
+      विलोपय addr;
 }
-#endif
+#यदि_अन्तः
 
-void vvp_fun_arrayport_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+शून्य vvp_fun_arrayport_aa::recv_vec4(vvp_net_ptr_t पत्तनम्, ध्रुव vvp_vector4_t&bit,
                                      vvp_context_t context)
 {
-      if (context) {
-            unsigned long*addr = static_cast<unsigned long*>
+      यदि (context) {
+            अचिह्नित दीर्घ*addr = static_cast<अचिह्नित दीर्घ*>
                   (vvp_get_context_item(context, context_idx_));
 
-            bool addr_valid_flag;
+            तार्किक addr_valid_flag;
 
-            switch (port.port()) {
+            विकल्प (पत्तनम्.पत्तनम्()) {
 
-                case 0: // Address input
-                  addr_valid_flag = vector4_to_value(bit, *addr);
-                  if (! addr_valid_flag) *addr = arr_->get_size();
-                  if (vpi_array_is_real(arr_)) {
-			port.ptr()->send_real(arr_->get_word_r(*addr),
+                पक्ष 0: // Address input
+                  addr_valid_flag = vector4_गन्तव्यम्_मानम्(bit, *addr);
+                  यदि (! addr_valid_flag) *addr = arr_->get_आकार();
+                  यदि (vpi_array_is_real(arr_)) {
+			पत्तनम्.ptr()->send_real(arr_->get_word_r(*addr),
 					      context);
-                  } else {
-			port.ptr()->send_vec4(arr_->get_word(*addr),
+                  } अन्यथा {
+			पत्तनम्.ptr()->send_vec4(arr_->get_word(*addr),
 					      context);
                   }
-                  break;
+                  भङ्ग;
 
-                default:
+                स्वभाव:
                   fprintf(stdout, "XXXX write ports not implemented.\n");
-                  assert(0);
+                  प्रतिज्ञा(0);
             }
-      } else {
-            context = context_scope_->live_contexts;
-            while (context) {
-                  recv_vec4(port, bit, context);
-                  context = vvp_get_next_context(context);
+      } अन्यथा {
+            context = context_scope_->जीवितम्_contexts;
+            यावत् (context) {
+                  recv_vec4(पत्तनम्, bit, context);
+                  context = vvp_get_अग्र_context(context);
             }
       }
 }
 
-void vvp_fun_arrayport_aa::check_word_change_(unsigned long addr,
+शून्य vvp_fun_arrayport_aa::check_word_change_(अचिह्नित दीर्घ addr,
                                               vvp_context_t context)
 {
-      const unsigned long*port_addr = static_cast<unsigned long*>
+      ध्रुव अचिह्नित दीर्घ*पत्तनम्_addr = static_cast<अचिह्नित दीर्घ*>
             (vvp_get_context_item(context, context_idx_));
 
-      if (addr != *port_addr)
-	    return;
+      यदि (addr != *पत्तनम्_addr)
+	    प्रत्यागम;
 
-      if (vpi_array_is_real(arr_)) {
+      यदि (vpi_array_is_real(arr_)) {
 	    net_->send_real(arr_->get_word_r(addr), context);
-      } else {
+      } अन्यथा {
 	    net_->send_vec4(arr_->get_word(addr), context);
       }
 }
 
-void vvp_fun_arrayport_aa::check_word_change(unsigned long addr)
+शून्य vvp_fun_arrayport_aa::check_word_change(अचिह्नित दीर्घ addr)
 {
-      if (arr_->get_scope()->is_automatic()) {
-            assert(vthread_get_wt_context());
+      यदि (arr_->get_scope()->is_automatic()) {
+            प्रतिज्ञा(vthread_get_wt_context());
             check_word_change_(addr, vthread_get_wt_context());
-      } else {
-            vvp_context_t context = context_scope_->live_contexts;
-            while (context) {
+      } अन्यथा {
+            vvp_context_t context = context_scope_->जीवितम्_contexts;
+            यावत् (context) {
                   check_word_change_(addr, context);
-                  context = vvp_get_next_context(context);
+                  context = vvp_get_अग्र_context(context);
             }
       }
 }
 
-static void array_attach_port(vvp_array_t array, vvp_fun_arrayport*fun)
+स्थिर शून्य array_attach_पत्तनम्(vvp_array_t array, vvp_fun_arrayport*fun)
 {
-      assert(fun->next_ == 0);
-      fun->next_ = array->ports_;
+      प्रतिज्ञा(fun->अग्र == 0);
+      fun->अग्र = array->ports_;
       array->ports_ = fun;
-      if (!array->get_scope()->is_automatic() &&
+      यदि (!array->get_scope()->is_automatic() &&
           (array->vals4 || array->vals)) {
               /* propagate initial values for variable arrays */
-            if (!vpi_array_is_real(array)) {
+            यदि (!vpi_array_is_real(array)) {
                   vvp_bit4_t init;
-                  if (array->vals4)
+                  यदि (array->vals4)
                       init = BIT4_X;
-                  else
+                  अन्यथा
                       init = BIT4_0;
-                  vvp_vector4_t tmp(array->vals_width, init);
-                  schedule_init_propagate(fun->net_, tmp);
-            } else {
-                  schedule_init_propagate(fun->net_, 0.0);
+                  vvp_vector4_t tmp(array->vals_विस्तारः, init);
+                  कालसारणी_init_propagate(fun->net_, tmp);
+            } अन्यथा {
+                  कालसारणी_init_propagate(fun->net_, 0.0);
             }
       }
 }
 
-class array_word_value_callback : public value_callback {
-    public:
-      inline explicit array_word_value_callback(p_cb_data data, long addr)
-      : value_callback(data), word_addr(addr)
+वर्ग array_word_मानम्_callback : सार्वजनिक मानम्_callback {
+    सार्वजनिक:
+      अन्तःस्थ स्पष्ट array_word_मानम्_callback(p_cb_दत्त दत्त, दीर्घ addr)
+      : मानम्_callback(दत्त), word_addr(addr)
       { }
 
-    public:
-      long word_addr;
+    सार्वजनिक:
+      दीर्घ word_addr;
 };
 
-void __vpiArray::word_change(unsigned long addr)
+शून्य __vpiArray::word_change(अचिह्नित दीर्घ addr)
 {
-      for (vvp_fun_arrayport*cur = ports_; cur; cur = cur->next_)
+      प्रति (vvp_fun_arrayport*cur = ports_; cur; cur = cur->अग्र)
 	    cur->check_word_change(addr);
 
 	// Run callbacks attached to the array itself.
-      struct __vpiCallback *next = vpi_callbacks;
-      struct __vpiCallback *prev = 0;
+      संरचना __vpiCallback *अग्र_2 = vpi_callbacks;
+      संरचना __vpiCallback *prev = 0;
 
-      while (next) {
-	    array_word_value_callback*cur = dynamic_cast<array_word_value_callback*>(next);
-	    next = cur->next;
+      यावत् (अग्र_2) {
+	    array_word_मानम्_callback*cur = dynamic_cast<array_word_मानम्_callback*>(अग्र_2);
+	    अग्र_2 = cur->अग्र_2;
 
 	      // Skip callbacks that are not for me. -1 is for every element.
-	    if (cur->word_addr != (long)addr && cur->word_addr != -1) {
+	    यदि (cur->word_addr != (दीर्घ)addr && cur->word_addr != -1) {
 		  prev = cur;
-		  continue;
+		  अनुवर्त;
 	    }
 
 	      // For whole array callbacks we need to set the index.
-	    if (cur->word_addr == -1) {
-		  cur->cb_data.index = (PLI_INT32) ((int)addr +
-						    first_addr.get_value());
+	    यदि (cur->word_addr == -1) {
+		  cur->cb_दत्त.सूचकांक = (PLI_INT32) ((पूर्णाङ्क)addr +
+						    first_addr.get_मानम्());
 	    }
 
-	    if (cur->cb_data.cb_rtn != 0) {
-		  if (cur->test_value_callback_ready()) {
-			if (cur->cb_data.value) {
-			      if (vpi_array_is_real(this)) {
-				    double val = 0.0;
-				    if (addr < vals->get_size())
+	    यदि (cur->cb_दत्त.cb_rtn != 0) {
+		  यदि (cur->test_मानम्_callback_ready()) {
+			यदि (cur->cb_दत्त.value) {
+			      यदि (vpi_array_is_real(एतत्)) {
+				    द्विगुण val = 0.0;
+				    यदि (addr < vals->get_आकार())
 					  vals->get_word(addr, val);
-				    vpip_real_get_value(val, cur->cb_data.value);
-			      } else if (vals4) {
-				    vpip_vec4_get_value(vals4->get_word(addr),
-							vals_width,
+				    vpip_real_get_मानम्(val, cur->cb_दत्त.value);
+			      } अन्यथा यदि (vals4) {
+				    vpip_vec4_get_मानम्(vals4->get_word(addr),
+							vals_विस्तारः,
 							signed_flag,
-							cur->cb_data.value);
-			      } else if (dynamic_cast<vvp_darray_atom<int8_t>*>(vals)
+							cur->cb_दत्त.value);
+			      } अन्यथा यदि (dynamic_cast<vvp_darray_atom<int8_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int16_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int32_t>*>(vals)
 				      || dynamic_cast<vvp_darray_atom<int64_t>*>(vals)
@@ -1334,14 +1334,14 @@ void __vpiArray::word_change(unsigned long addr)
 				      || dynamic_cast<vvp_darray_atom<uint64_t>*>(vals)
 				      || dynamic_cast<vvp_darray_vec2*>(vals)) {
 				    vvp_vector4_t val;
-				    if (addr < vals->get_size())
+				    यदि (addr < vals->get_आकार())
 					  vals->get_word(addr, val);
-				    vpip_vec4_get_value(val,
-							vals_width,
+				    vpip_vec4_get_मानम्(val,
+							vals_विस्तारः,
 							signed_flag,
-							cur->cb_data.value);
-			      } else {
-			            assert(0);
+							cur->cb_दत्त.value);
+			      } अन्यथा {
+			            प्रतिज्ञा(0);
 			      }
 			}
 
@@ -1350,225 +1350,225 @@ void __vpiArray::word_change(unsigned long addr)
 
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } अन्यथा यदि (prev == 0) {
 
-		  vpi_callbacks = next;
-		  cur->next = 0;
-		  delete cur;
+		  vpi_callbacks = अग्र_2;
+		  cur->अग्र_2 = 0;
+		  विलोपय cur;
 
-	    } else {
-		  assert(prev->next == cur);
-		  prev->next = next;
-		  cur->next = 0;
-		  delete cur;
+	    } अन्यथा {
+		  प्रतिज्ञा(prev->अग्र_2 == cur);
+		  prev->अग्र_2 = अग्र_2;
+		  cur->अग्र_2 = 0;
+		  विलोपय cur;
 	    }
       }
 }
 
-class array_resolv_list_t : public resolv_list_s {
+वर्ग array_resolv_list_t : सार्वजनिक resolv_list_s {
 
-    public:
-      explicit array_resolv_list_t(char*lab) : resolv_list_s(lab) {
+    सार्वजनिक:
+      स्पष्ट array_resolv_list_t(वर्ण*lab) : resolv_list_s(lab) {
 	    array = 0;
       }
 
       vvp_array_t*array;
-      bool resolve(bool mes) override;
+      तार्किक resolve(तार्किक mes) override;
 
-    private:
+    गुप्त:
 };
 
-bool array_resolv_list_t::resolve(bool mes)
+तार्किक array_resolv_list_t::resolve(तार्किक mes)
 {
       *array = array_find(label());
-      if (*array == 0) {
-	    assert(!mes);
-	    return false;
+      यदि (*array == 0) {
+	    प्रतिज्ञा(!mes);
+	    प्रत्यागम असत्य;
       }
-      return true;
+      प्रत्यागम सत्य;
 }
 
-class array_port_resolv_list_t : public resolv_list_s {
+वर्ग array_पत्तनम्_resolv_list_t : सार्वजनिक resolv_list_s {
 
-    public:
-      explicit array_port_resolv_list_t(char* lab, bool use_addr__,
-                                        long addr__);
+    सार्वजनिक:
+      स्पष्ट array_पत्तनम्_resolv_list_t(वर्ण* lab, तार्किक use_addr__,
+                                        दीर्घ addr__);
 
       __vpiScope*context_scope;
       vvp_net_t*ptr;
-      bool use_addr;
-      long addr;
-      bool resolve(bool mes) override;
+      तार्किक use_addr;
+      दीर्घ addr;
+      तार्किक resolve(तार्किक mes) override;
 
-    private:
+    गुप्त:
 };
 
-array_port_resolv_list_t::array_port_resolv_list_t(char *lab, bool use_addr__,
-                                                   long addr__)
+array_पत्तनम्_resolv_list_t::array_पत्तनम्_resolv_list_t(वर्ण *lab, तार्किक use_addr__,
+                                                   दीर्घ addr__)
 : resolv_list_s(lab), use_addr(use_addr__), addr(addr__)
 {
-      if (vpip_peek_current_scope()->is_automatic())
+      यदि (vpip_peek_current_scope()->is_automatic())
             context_scope = vpip_peek_context_scope();
-      else
+      अन्यथा
             context_scope = 0;
-      ptr = new vvp_net_t;
+      ptr = नूतन vvp_net_t;
 }
 
-bool array_port_resolv_list_t::resolve(bool mes)
+तार्किक array_पत्तनम्_resolv_list_t::resolve(तार्किक mes)
 {
       vvp_array_t mem = array_find(label());
-      if (mem == 0) {
-	    assert(mem || !mes);
-	    return false;
+      यदि (mem == 0) {
+	    प्रतिज्ञा(mem || !mes);
+	    प्रत्यागम असत्य;
       }
 
       vvp_fun_arrayport*fun;
-      if (use_addr)
-            if (context_scope)
-                  fun = new vvp_fun_arrayport_aa(context_scope, mem, ptr, addr);
-            else
-                  fun = new vvp_fun_arrayport_sa(mem, ptr, addr);
-      else
-            if (context_scope)
-                  fun = new vvp_fun_arrayport_aa(context_scope, mem, ptr);
-            else
-                  fun = new vvp_fun_arrayport_sa(mem, ptr);
+      यदि (use_addr)
+            यदि (context_scope)
+                  fun = नूतन vvp_fun_arrayport_aa(context_scope, mem, ptr, addr);
+            अन्यथा
+                  fun = नूतन vvp_fun_arrayport_sa(mem, ptr, addr);
+      अन्यथा
+            यदि (context_scope)
+                  fun = नूतन vvp_fun_arrayport_aa(context_scope, mem, ptr);
+            अन्यथा
+                  fun = नूतन vvp_fun_arrayport_sa(mem, ptr);
       ptr->fun = fun;
 
-      array_attach_port(mem, fun);
+      array_attach_पत्तनम्(mem, fun);
 
-      return true;
+      प्रत्यागम सत्य;
 }
 
-class array_word_part_callback : public array_word_value_callback {
-    public:
-      explicit array_word_part_callback(p_cb_data data, long addr);
+वर्ग array_word_part_callback : सार्वजनिक array_word_मानम्_callback {
+    सार्वजनिक:
+      स्पष्ट array_word_part_callback(p_cb_दत्त दत्त, दीर्घ addr);
       ~array_word_part_callback() override;
 
-      array_word_part_callback(const array_word_part_callback&) = delete;
-      array_word_part_callback& operator=(const array_word_part_callback&) = delete;
+      array_word_part_callback(ध्रुव array_word_part_callback&) = विलोपय;
+      array_word_part_callback& संक्रियकः=(ध्रुव array_word_part_callback&) = विलोपय;
 
-      bool test_value_callback_ready(void) override;
+      तार्किक test_मानम्_callback_ready(शून्य) override;
 
-    private:
-      char*value_bits_;
+    गुप्त:
+      वर्ण*मानम्_द्वयङ्काः;
 };
 
-array_word_part_callback::array_word_part_callback(p_cb_data data, long addr)
-: array_word_value_callback(data, addr)
+array_word_part_callback::array_word_part_callback(p_cb_दत्त दत्त, दीर्घ addr)
+: array_word_मानम्_callback(दत्त, addr)
 {
 	// Get the initial value of the part, to use as a reference.
-      struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj);
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      apvword->vpi_get_value(&tmp_value);
+      संरचना __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(दत्त->obj);
+      s_vpi_मानम् tmp_मानम्;
+      tmp_मानम्.format = vpiBinStrVal;
+      apvword->vpi_get_मानम्(&tmp_मानम्);
 
-      value_bits_ = new char[apvword->part_wid+1];
+      मानम्_द्वयङ्काः = नूतन वर्ण[apvword->part_wid+1];
 
-      memcpy(value_bits_, tmp_value.value.str, apvword->part_wid);
-      value_bits_[apvword->part_wid] = 0;
+      स्मृतिं_प्रतिलिख(मानम्_द्वयङ्काः, tmp_मानम्.value.str, apvword->part_wid);
+      मानम्_द्वयङ्काः[apvword->part_wid] = 0;
 }
 
 array_word_part_callback::~array_word_part_callback()
 {
-      delete[]value_bits_;
+      विलोपय[]मानम्_द्वयङ्काः;
 }
 
-bool array_word_part_callback::test_value_callback_ready(void)
+तार्किक array_word_part_callback::test_मानम्_callback_ready(शून्य)
 {
-      struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(cb_data.obj);
-      assert(apvword);
+      संरचना __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(cb_दत्त.obj);
+      प्रतिज्ञा(apvword);
 
 	// Get a reference value that can be used to compare with an
 	// updated value.
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      apvword->vpi_get_value(&tmp_value);
+      s_vpi_मानम् tmp_मानम्;
+      tmp_मानम्.format = vpiBinStrVal;
+      apvword->vpi_get_मानम्(&tmp_मानम्);
 
-      if (memcmp(value_bits_, tmp_value.value.str, apvword->part_wid) == 0)
-	    return false;
+      यदि (memcmp(मानम्_द्वयङ्काः, tmp_मानम्.value.str, apvword->part_wid) == 0)
+	    प्रत्यागम असत्य;
 
-      memcpy(value_bits_, tmp_value.value.str, apvword->part_wid);
-      return true;
+      स्मृतिं_प्रतिलिख(मानम्_द्वयङ्काः, tmp_मानम्.value.str, apvword->part_wid);
+      प्रत्यागम सत्य;
 
 }
 
-value_callback*vpip_array_word_change(p_cb_data data)
+मानम्_callback*vpip_array_word_change(p_cb_दत्त दत्त)
 {
-      struct __vpiArray*parent = 0;
-      array_word_value_callback*cbh = 0;
-      if (const struct __vpiArrayWord*word = array_var_word_from_handle(data->obj)) {
+      संरचना __vpiArray*parent = 0;
+      array_word_मानम्_callback*cbh = 0;
+      यदि (ध्रुव संरचना __vpiArrayWord*word = array_var_word_from_handle(दत्त->obj)) {
 	    parent = static_cast<__vpiArray*>(word->get_parent());
-	    unsigned addr = word->get_index();
-	    cbh = new array_word_value_callback(data, addr);
+	    अचिह्नित addr = word->get_सूचकांक();
+	    cbh = नूतन array_word_मानम्_callback(दत्त, addr);
 
-      } else if (struct __vpiArrayVthrA*tword = dynamic_cast<__vpiArrayVthrA*>(data->obj)) {
+      } अन्यथा यदि (संरचना __vpiArrayVthrA*tword = dynamic_cast<__vpiArrayVthrA*>(दत्त->obj)) {
 	    parent = tword->array;
-	    cbh = new array_word_value_callback(data, tword->address);
+	    cbh = नूतन array_word_मानम्_callback(दत्त, tword->स्थानाङ्कः);
 
-      } else if (struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj)) {
+      } अन्यथा यदि (संरचना __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(दत्त->obj)) {
 	    parent = apvword->array;
-	    cbh = new array_word_part_callback(data, apvword->word_sel);
+	    cbh = नूतन array_word_part_callback(दत्त, apvword->word_sel);
       }
 
-      assert(cbh);
-      assert(parent);
-      cbh->next = parent->vpi_callbacks;
+      प्रतिज्ञा(cbh);
+      प्रतिज्ञा(parent);
+      cbh->अग्र_2 = parent->vpi_callbacks;
       parent->vpi_callbacks = cbh;
 
-      return cbh;
+      प्रत्यागम cbh;
 }
 
-value_callback* vpip_array_change(p_cb_data data)
+मानम्_callback* vpip_array_change(p_cb_दत्त दत्त)
 {
-      array_word_value_callback*cbh = new array_word_value_callback(data, -1);
-      assert(data->obj);
+      array_word_मानम्_callback*cbh = नूतन array_word_मानम्_callback(दत्त, -1);
+      प्रतिज्ञा(दत्त->obj);
 
-      struct __vpiArray*arr = dynamic_cast<__vpiArray*>(data->obj);
-      cbh->next = arr->vpi_callbacks;
+      संरचना __vpiArray*arr = dynamic_cast<__vpiArray*>(दत्त->obj);
+      cbh->अग्र_2 = arr->vpi_callbacks;
       arr->vpi_callbacks = cbh;
-      return cbh;
+      प्रत्यागम cbh;
 }
 
-void compile_array_port(char*label, char*array, char*addr)
+शून्य compile_array_पत्तनम्(वर्ण*label, वर्ण*array, वर्ण*addr)
 {
-      array_port_resolv_list_t*resolv_mem
-	    = new array_port_resolv_list_t(array, false, 0);
+      array_पत्तनम्_resolv_list_t*resolv_mem
+	    = नूतन array_पत्तनम्_resolv_list_t(array, असत्य, 0);
 
-      define_functor_symbol(label, resolv_mem->ptr);
-      free(label);
+      define_functor_चिह्नम्(label, resolv_mem->ptr);
+      मुक्त(label);
 	// Connect the port-0 input as the address.
-      input_connect(resolv_mem->ptr, 0, addr);
+      निवेशः_connect(resolv_mem->ptr, 0, addr);
 
       resolv_submit(resolv_mem);
 }
 
-void compile_array_port(char*label, char*array, long addr)
+शून्य compile_array_पत्तनम्(वर्ण*label, वर्ण*array, दीर्घ addr)
 {
-      array_port_resolv_list_t*resolv_mem
-	    = new array_port_resolv_list_t(array, true, addr);
+      array_पत्तनम्_resolv_list_t*resolv_mem
+	    = नूतन array_पत्तनम्_resolv_list_t(array, सत्य, addr);
 
-      define_functor_symbol(label, resolv_mem->ptr);
-      free(label);
+      define_functor_चिह्नम्(label, resolv_mem->ptr);
+      मुक्त(label);
 
       resolv_submit(resolv_mem);
 }
 
-void compile_array_alias(char*label, char*name, char*src)
+शून्य compile_array_alias(वर्ण*label, वर्ण*name, वर्ण*src)
 {
       vvp_array_t mem = array_find(src);
-      assert(mem);
+      प्रतिज्ञा(mem);
 
-      struct __vpiArray*obj = new __vpiArray;
+      संरचना __vpiArray*obj = नूतन __vpiArray;
 
       obj->scope = vpip_peek_current_scope();
       obj->name  = vpip_name_string(name);
-      obj->array_count = mem->array_count;
+      obj->array_गणनम् = mem->array_गणनम्;
       obj->signed_flag = mem->signed_flag;
 
 	// Need to set an accurate range of addresses.
       obj->first_addr = mem->first_addr;
-      obj->last_addr  = mem->last_addr;
+      obj->चरमः_addr  = mem->चरमः_addr;
       obj->swap_addr = mem->swap_addr;
 
       obj->msb = mem->msb;
@@ -1578,22 +1578,22 @@ void compile_array_alias(char*label, char*name, char*src)
       obj->nets = mem->nets;
       obj->vals4 = mem->vals4;
       obj->vals  = mem->vals;
-      obj->vals_width = mem->vals_width;
-      obj->vals_words = mem->vals_words;
+      obj->vals_विस्तारः = mem->vals_विस्तारः;
+      obj->vals_शब्दाः = mem->vals_शब्दाः;
 
       obj->ports_ = 0;
       obj->vpi_callbacks = 0;
 
-      assert(array_table);
-      assert(!array_find(label));
-      array_table->sym_set_value(label, obj);
+      प्रतिज्ञा(array_सारणी);
+      प्रतिज्ञा(!array_find(label));
+      array_सारणी->sym_समुच्चयः_मानम्(label, obj);
 
-      compile_vpi_symbol(label, obj);
-      vpip_attach_to_current_scope(obj);
+      compile_vpi_चिह्नम्(label, obj);
+      vpip_attach_गन्तव्यम्_current_scope(obj);
 
-      free(label);
-      free(name);
-      free(src);
+      मुक्त(label);
+      मुक्त(name);
+      मुक्त(src);
 }
 
 /*
@@ -1602,20 +1602,20 @@ void compile_array_alias(char*label, char*name, char*src)
  * from expressions like "label[addr]" where "label" is the array and
  * "addr" is the canonical address of the desired word.
  */
-vpiHandle vpip_make_vthr_A(char*label, unsigned addr)
+vpiHandle vpip_make_vthr_A(वर्ण*label, अचिह्नित addr)
 {
-      struct __vpiArrayVthrA*obj = new __vpiArrayVthrA;
+      संरचना __vpiArrayVthrA*obj = नूतन __vpiArrayVthrA;
 
       array_resolv_list_t*resolv_mem
-	    = new array_resolv_list_t(label);
+	    = नूतन array_resolv_list_t(label);
 
       resolv_mem->array = &obj->array;
       resolv_submit(resolv_mem);
 
-      obj->address_handle = 0;
-      obj->address = addr;
+      obj->स्थानाङ्कः_handle = 0;
+      obj->स्थानाङ्कः = addr;
 
-      return obj;
+      प्रत्यागम obj;
 }
 
 /*
@@ -1624,131 +1624,131 @@ vpiHandle vpip_make_vthr_A(char*label, unsigned addr)
  * word address is calculated from the VPI object that symbol
  * represents. The expression that leads to this looks like label[symbol].
  */
-vpiHandle vpip_make_vthr_A(char*label, char*symbol)
+vpiHandle vpip_make_vthr_A(वर्ण*label, वर्ण*चिह्नम्)
 {
-      struct __vpiArrayVthrA*obj = new __vpiArrayVthrA;
+      संरचना __vpiArrayVthrA*obj = नूतन __vpiArrayVthrA;
 
       array_resolv_list_t*resolv_mem
-	    = new array_resolv_list_t(label);
+	    = नूतन array_resolv_list_t(label);
 
       resolv_mem->array = &obj->array;
       resolv_submit(resolv_mem);
 
-      obj->address_handle = 0;
-      compile_vpi_lookup(&obj->address_handle, symbol);
-      obj->address = 0;
+      obj->स्थानाङ्कः_handle = 0;
+      compile_vpi_lookup(&obj->स्थानाङ्कः_handle, चिह्नम्);
+      obj->स्थानाङ्कः = 0;
 
-      return obj;
+      प्रत्यागम obj;
 }
 
-vpiHandle vpip_make_vthr_A(char*label, vpiHandle handle)
+vpiHandle vpip_make_vthr_A(वर्ण*label, vpiHandle handle)
 {
-      struct __vpiArrayVthrA*obj = new __vpiArrayVthrA;
+      संरचना __vpiArrayVthrA*obj = नूतन __vpiArrayVthrA;
 
       array_resolv_list_t*resolv_mem
-	    = new array_resolv_list_t(label);
+	    = नूतन array_resolv_list_t(label);
 
       resolv_mem->array = &obj->array;
       resolv_submit(resolv_mem);
 
-      obj->address_handle = handle;
-      obj->address = 0;
+      obj->स्थानाङ्कः_handle = handle;
+      obj->स्थानाङ्कः = 0;
 
-      return obj;
+      प्रत्यागम obj;
 }
 
-vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned wid)
+vpiHandle vpip_make_vthr_APV(वर्ण*label, अचिह्नित सूचकांक, अचिह्नित bit, अचिह्नित wid)
 {
-      struct __vpiArrayVthrAPV*obj = new __vpiArrayVthrAPV;
+      संरचना __vpiArrayVthrAPV*obj = नूतन __vpiArrayVthrAPV;
 
       array_resolv_list_t*resolv_mem
-	    = new array_resolv_list_t(label);
+	    = नूतन array_resolv_list_t(label);
 
       resolv_mem->array = &obj->array;
       resolv_submit(resolv_mem);
 
-      obj->word_sel = index;
+      obj->word_sel = सूचकांक;
       obj->part_bit = bit;
       obj->part_wid = wid;
 
-      return obj;
+      प्रत्यागम obj;
 }
 
-void compile_array_cleanup(void)
+शून्य compile_array_cleanup(शून्य)
 {
-      delete array_table;
-      array_table = 0;
+      विलोपय array_सारणी;
+      array_सारणी = 0;
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void memory_delete(vpiHandle item)
+#यदि_परिभाषितम् CHECK_WITH_VALGRIND
+शून्य स्मृतिः_delete(vpiHandle item)
 {
-      struct __vpiArray*arr = static_cast<struct __vpiArray*>(item);
-      if (arr->vals_words) delete [] (arr->vals_words-1);
+      संरचना __vpiArray*arr = static_cast<संरचना __vpiArray*>(item);
+      यदि (arr->vals_शब्दाः) विलोपय [] (arr->vals_शब्दाः-1);
 
 //      if (arr->vals4) {}
 // Delete the individual words?
 // constant_delete(handle)?
-      delete arr->vals4;
+      विलोपय arr->vals4;
 
 //      if (arr->vals) {}
 // Delete the individual words?
 // constant_delete(handle)?
-      delete arr->vals;
+      विलोपय arr->vals;
 
-      if (arr->nets) {
-	    for (unsigned idx = 0; idx < arr->get_size(); idx += 1) {
-		  if (struct __vpiSignal*sig =
+      यदि (arr->nets) {
+	    प्रति (अचिह्नित idx = 0; idx < arr->get_आकार(); idx += 1) {
+		  यदि (संरचना __vpiSignal*sig =
 		      dynamic_cast<__vpiSignal*>(arr->nets[idx])) {
 // Delete the individual words?
-			constant_delete(sig->id.index);
+			constant_delete(sig->id.सूचकांक);
 		    /* These should only be the real words. */
-		  } else {
-			assert(arr->nets[idx]->get_type_code() ==
+		  } अन्यथा {
+			प्रतिज्ञा(arr->nets[idx]->get_type_संहिता() ==
 			       vpiRealVar);
-			struct __vpiRealVar *sigr = static_cast<struct __vpiRealVar *>
+			संरचना __vpiRealVar *sigr = static_cast<संरचना __vpiRealVar *>
 			                            (arr->nets[idx]);
-			constant_delete(sigr->id.index);
+			constant_delete(sigr->id.सूचकांक);
 // Why are only the real words still here?
-			delete arr->nets[idx];
+			विलोपय arr->nets[idx];
 		  }
 	    }
-	    free(arr->nets);
+	    मुक्त(arr->nets);
       }
 
-      while (arr->vpi_callbacks) {
-	    struct __vpiCallback*tmp = arr->vpi_callbacks->next;
-	    delete arr->vpi_callbacks;
+      यावत् (arr->vpi_callbacks) {
+	    संरचना __vpiCallback*tmp = arr->vpi_callbacks->अग्र_2;
+	    विलोपय arr->vpi_callbacks;
 	    arr->vpi_callbacks = tmp;
       }
 
-      delete arr;
+      विलोपय arr;
 }
 
-void A_delete(vpiHandle item)
+शून्य A_delete(vpiHandle item)
 {
-      struct __vpiArrayVthrA*obj = static_cast<struct __vpiArrayVthrA*>(item);
-      if (obj->address_handle) {
-	    switch (obj->address_handle->get_type_code()) {
-		case vpiMemoryWord:
-		  if (vpi_get(_vpiFromThr, obj->address_handle) == _vpi_at_A) {
-			A_delete(obj->address_handle);
+      संरचना __vpiArrayVthrA*obj = static_cast<संरचना __vpiArrayVthrA*>(item);
+      यदि (obj->स्थानाङ्कः_handle) {
+	    विकल्प (obj->स्थानाङ्कः_handle->get_type_संहिता()) {
+		पक्ष vpi_स्मृतिः_Word:
+		  यदि (vpi_get(_vpiFromThr, obj->स्थानाङ्कः_handle) == _vpi_at_A) {
+			A_delete(obj->स्थानाङ्कः_handle);
 		  }
-		  break;
-		case vpiPartSelect:
-		  assert(vpi_get(_vpiFromThr, obj->address_handle) ==
+		  भङ्ग;
+		पक्ष vpiPartSelect:
+		  प्रतिज्ञा(vpi_get(_vpiFromThr, obj->स्थानाङ्कः_handle) ==
 		         _vpi_at_PV);
-		  PV_delete(obj->address_handle);
-		  break;
+		  PV_delete(obj->स्थानाङ्कः_handle);
+		  भङ्ग;
 	    }
       }
 
-      delete obj;
+      विलोपय obj;
 }
 
-void APV_delete(vpiHandle item)
+शून्य APV_delete(vpiHandle item)
 {
-      struct __vpiArrayVthrAPV*obj = static_cast<struct __vpiArrayVthrAPV*>(item);
-      delete obj;
+      संरचना __vpiArrayVthrAPV*obj = static_cast<संरचना __vpiArrayVthrAPV*>(item);
+      विलोपय obj;
 }
-#endif
+#यदि_अन्तः

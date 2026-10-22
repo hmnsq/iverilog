@@ -30,18 +30,18 @@
 # include  <cstdlib>
 # include  <cassert>
 # include  <iostream>
-#ifdef CHECK_WITH_VALGRIND
+#यदि_परिभाषितम् CHECK_WITH_VALGRIND
 # include  "vvp_cleanup.h"
 # include  "ivl_alloc.h"
-#endif
+#यदि_अन्तः
 
-using namespace std;
+उपयुज्य नामाकाश std;
 
-unsigned long count_assign_events = 0;
-unsigned long count_gen_events = 0;
-unsigned long count_thread_events = 0;
+अचिह्नित दीर्घ गणनम्_नियोजय_events = 0;
+अचिह्नित दीर्घ गणनम्_gen_events = 0;
+अचिह्नित दीर्घ गणनम्_thread_events = 0;
   // Count the time events (A time cell created)
-unsigned long count_time_events = 0;
+अचिह्नित दीर्घ गणनम्_time_events = 0;
 
 
 
@@ -55,126 +55,126 @@ unsigned long count_time_events = 0;
  * The event_s objects are base classes for the more specific sort of
  * event.
  */
-struct event_s {
-      struct event_s*next;
-      virtual ~event_s() { }
-      virtual void run_run(void) =0;
+संरचना event_s {
+      संरचना event_s*अग्र_2;
+      आभास ~event_s() { }
+      आभास शून्य सततम्_सततम्(शून्य) =0;
 
 	// Write something about the event to stderr
-      virtual void single_step_display(void);
+      आभास शून्य single_चरणः_display(शून्य);
 
 	// Fallback new/delete
-      static void*operator new (size_t size) { return ::new char[size]; }
-      static void operator delete(void*ptr)  { ::delete[]( static_cast<char*>(ptr) ); }
+      स्थिर शून्य*संक्रियकः नूतन (size_t size) { प्रत्यागम ::नूतन वर्ण[size]; }
+      स्थिर शून्य संक्रियकः विलोपय(शून्य*ptr)  { ::विलोपय[]( static_cast<वर्ण*>(ptr) ); }
 };
 
-void event_s::single_step_display(void)
+शून्य event_s::single_चरणः_display(शून्य)
 {
-      std::cerr << "event_s: Step into event " << typeid(*this).name() << std::endl;
+      std::cerr << "event_s: Step into event " << typeid(*एतत्).name() << std::पङ्क्त्यन्तः;
 }
 
-struct event_time_s {
+संरचना event_time_s {
       event_time_s() {
-	    count_time_events += 1;
+	    गणनम्_time_events += 1;
 	    delay = 0;
 	    start = 0;
-	    active = 0;
+	    सक्रिय = 0;
 	    inactive = 0;
 	    nbassign = 0;
 	    rwsync = 0;
 	    rosync = 0;
 	    del_thr = 0;
-	    next = NULL;
+	    अग्र_2 = रिक्त;
       }
       vvp_time64_t delay;
 
-      struct event_s*start;
-      struct event_s*active;
-      struct event_s*inactive;
-      struct event_s*nbassign;
-      struct event_s*rwsync;
-      struct event_s*rosync;
-      struct event_s*del_thr;
+      संरचना event_s*start;
+      संरचना event_s*सक्रिय;
+      संरचना event_s*inactive;
+      संरचना event_s*nbassign;
+      संरचना event_s*rwsync;
+      संरचना event_s*rosync;
+      संरचना event_s*del_thr;
 
-      struct event_time_s*next;
+      संरचना event_time_s*अग्र_2;
 
-      static void* operator new (size_t);
-      static void operator delete(void*obj, size_t s);
+      स्थिर शून्य* संक्रियकः नूतन (size_t);
+      स्थिर शून्य संक्रियकः विलोपय(शून्य*obj, size_t s);
 };
 
 vvp_gen_event_s::~vvp_gen_event_s()
 {
 }
 
-void vvp_gen_event_s::single_step_display(void)
+शून्य vvp_gen_event_s::single_चरणः_display(शून्य)
 {
-      cerr << "vvp_gen_event_s: Step into event " << typeid(*this).name() << endl;
+      cerr << "vvp_gen_event_s: Step into event " << typeid(*एतत्).name() << पङ्क्त्यन्तः;
 }
 
 /*
  * Derived event types
  */
-struct vthread_event_s : public event_s {
+संरचना vthread_event_s : सार्वजनिक event_s {
       vthread_t thr;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      शून्य सततम्_सततम्(शून्य) override;
+      शून्य single_चरणः_display(शून्य) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      स्थिर शून्य* संक्रियकः नूतन(size_t);
+      स्थिर शून्य संक्रियकः विलोपय(शून्य*);
 };
 
-void vthread_event_s::run_run(void)
+शून्य vthread_event_s::सततम्_सततम्(शून्य)
 {
-      count_thread_events += 1;
-      vthread_run(thr);
+      गणनम्_thread_events += 1;
+      vthread_सततम्(thr);
 }
 
-void vthread_event_s::single_step_display(void)
+शून्य vthread_event_s::single_चरणः_display(शून्य)
 {
       __vpiScope*scope = vthread_scope(thr);
       cerr << "vthread_event: Resume thread"
-	   << " scope=" << scope->vpi_get_str(vpiFullName)
-	   << endl;
+	   << " scope=" << scope->vpi_get_str(vpi_पूर्णम्_Name)
+	   << पङ्क्त्यन्तः;
 }
 
-static const size_t VTHR_CHUNK_COUNT = 8192 / sizeof(struct vthread_event_s);
-static slab_t<sizeof(vthread_event_s),VTHR_CHUNK_COUNT> vthread_event_heap;
+स्थिर ध्रुव size_t VTHR_CHUNK_गणनम् = 8192 / परिमाण(संरचना vthread_event_s);
+स्थिर slab_t<परिमाण(vthread_event_s),VTHR_CHUNK_गणनम्> vthread_event_heap;
 
-inline void* vthread_event_s::operator new(size_t size)
+अन्तःस्थ शून्य* vthread_event_s::संक्रियकः नूतन(size_t size)
 {
-      assert(size == sizeof(vthread_event_s));
-      return vthread_event_heap.alloc_slab();
+      प्रतिज्ञा(size == परिमाण(vthread_event_s));
+      प्रत्यागम vthread_event_heap.alloc_slab();
 }
 
-void vthread_event_s::operator delete(void*dptr)
+शून्य vthread_event_s::संक्रियकः विलोपय(शून्य*dptr)
 {
       vthread_event_heap.free_slab(dptr);
 }
 
-struct del_thr_event_s : public event_s {
+संरचना del_thr_event_s : सार्वजनिक event_s {
       vthread_t thr;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      शून्य सततम्_सततम्(शून्य) override;
+      शून्य single_चरणः_display(शून्य) override;
 };
 
-void del_thr_event_s::run_run(void)
+शून्य del_thr_event_s::सततम्_सततम्(शून्य)
 {
       vthread_delete(thr);
 }
 
-void del_thr_event_s::single_step_display(void)
+शून्य del_thr_event_s::single_चरणः_display(शून्य)
 {
       __vpiScope*scope = vthread_scope(thr);
       cerr << "del_thr_event: Reap completed thread"
-	   << " scope=" << scope->vpi_get_str(vpiFullName) << endl;
+	   << " scope=" << scope->vpi_get_str(vpi_पूर्णम्_Name) << पङ्क्त्यन्तः;
 }
 
-struct assign_vector4_event_s  : public event_s {
+संरचना नियोजय_vector4_event_s  : सार्वजनिक event_s {
 	/* The default constructor. */
-      explicit assign_vector4_event_s(const vvp_vector4_t&that) : val(that) {
-	    base = 0;
+      स्पष्ट नियोजय_vector4_event_s(ध्रुव vvp_vector4_t&that) : val(that) {
+	    आधारः = 0;
 	    vwid = 0;
-	    next = NULL;
+	    अग्र_2 = रिक्त;
       }
 
 	/* Where to do the assign. */
@@ -182,242 +182,242 @@ struct assign_vector4_event_s  : public event_s {
 	/* Value to assign. */
       vvp_vector4_t val;
 	/* Offset of the part into the destination. */
-      unsigned base;
+      अचिह्नित आधारः;
 	/* Width of the destination vector. */
-      unsigned vwid;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      अचिह्नित vwid;
+      शून्य सततम्_सततम्(शून्य) override;
+      शून्य single_चरणः_display(शून्य) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      स्थिर शून्य* संक्रियकः नूतन(size_t);
+      स्थिर शून्य संक्रियकः विलोपय(शून्य*);
 };
 
-void assign_vector4_event_s::run_run(void)
+शून्य नियोजय_vector4_event_s::सततम्_सततम्(शून्य)
 {
-      count_assign_events += 1;
-      if (vwid > 0)
-	    vvp_send_vec4_pv(ptr, val, base, vwid, 0);
-      else
+      गणनम्_नियोजय_events += 1;
+      यदि (vwid > 0)
+	    vvp_send_vec4_pv(ptr, val, आधारः, vwid, 0);
+      अन्यथा
 	    vvp_send_vec4(ptr, val, 0);
 }
 
-void assign_vector4_event_s::single_step_display(void)
+शून्य नियोजय_vector4_event_s::single_चरणः_display(शून्य)
 {
       cerr << "assign_vector4_event: Propagate val=" << val
-	   << ", vwid=" << vwid << ", base=" << base << endl;
+	   << ", vwid=" << vwid << ", base=" << आधारः << पङ्क्त्यन्तः;
 }
 
-static const size_t ASSIGN4_CHUNK_COUNT = 524288 / sizeof(struct assign_vector4_event_s);
-static slab_t<sizeof(assign_vector4_event_s),ASSIGN4_CHUNK_COUNT> assign4_heap;
+स्थिर ध्रुव size_t ASSIGN4_CHUNK_गणनम् = 524288 / परिमाण(संरचना नियोजय_vector4_event_s);
+स्थिर slab_t<परिमाण(नियोजय_vector4_event_s),ASSIGN4_CHUNK_गणनम्> assign4_heap;
 
-inline void* assign_vector4_event_s::operator new(size_t size)
+अन्तःस्थ शून्य* नियोजय_vector4_event_s::संक्रियकः नूतन(size_t size)
 {
-      assert(size == sizeof(assign_vector4_event_s));
-      return assign4_heap.alloc_slab();
+      प्रतिज्ञा(size == परिमाण(नियोजय_vector4_event_s));
+      प्रत्यागम assign4_heap.alloc_slab();
 }
 
-void assign_vector4_event_s::operator delete(void*dptr)
+शून्य नियोजय_vector4_event_s::संक्रियकः विलोपय(शून्य*dptr)
 {
       assign4_heap.free_slab(dptr);
 }
 
-unsigned long count_assign4_pool(void) { return assign4_heap.pool; }
+अचिह्नित दीर्घ गणनम्_assign4_pool(शून्य) { प्रत्यागम assign4_heap.pool; }
 
-struct assign_vector8_event_s  : public event_s {
+संरचना नियोजय_vector8_event_s  : सार्वजनिक event_s {
       vvp_net_ptr_t ptr;
       vvp_vector8_t val;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      शून्य सततम्_सततम्(शून्य) override;
+      शून्य single_चरणः_display(शून्य) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      स्थिर शून्य* संक्रियकः नूतन(size_t);
+      स्थिर शून्य संक्रियकः विलोपय(शून्य*);
 };
 
-void assign_vector8_event_s::run_run(void)
+शून्य नियोजय_vector8_event_s::सततम्_सततम्(शून्य)
 {
-      count_assign_events += 1;
+      गणनम्_नियोजय_events += 1;
       vvp_send_vec8(ptr, val);
 }
 
-void assign_vector8_event_s::single_step_display(void)
+शून्य नियोजय_vector8_event_s::single_चरणः_display(शून्य)
 {
-      cerr << "assign_vector8_event: Propagate val=" << val << endl;
+      cerr << "assign_vector8_event: Propagate val=" << val << पङ्क्त्यन्तः;
 }
 
-static const size_t ASSIGN8_CHUNK_COUNT = 8192 / sizeof(struct assign_vector8_event_s);
-static slab_t<sizeof(assign_vector8_event_s),ASSIGN8_CHUNK_COUNT> assign8_heap;
+स्थिर ध्रुव size_t ASSIGN8_CHUNK_गणनम् = 8192 / परिमाण(संरचना नियोजय_vector8_event_s);
+स्थिर slab_t<परिमाण(नियोजय_vector8_event_s),ASSIGN8_CHUNK_गणनम्> assign8_heap;
 
-inline void* assign_vector8_event_s::operator new(size_t size)
+अन्तःस्थ शून्य* नियोजय_vector8_event_s::संक्रियकः नूतन(size_t size)
 {
-      assert(size == sizeof(assign_vector8_event_s));
-      return assign8_heap.alloc_slab();
+      प्रतिज्ञा(size == परिमाण(नियोजय_vector8_event_s));
+      प्रत्यागम assign8_heap.alloc_slab();
 }
 
-void assign_vector8_event_s::operator delete(void*dptr)
+शून्य नियोजय_vector8_event_s::संक्रियकः विलोपय(शून्य*dptr)
 {
       assign8_heap.free_slab(dptr);
 }
 
-unsigned long count_assign8_pool() { return assign8_heap.pool; }
+अचिह्नित दीर्घ गणनम्_assign8_pool() { प्रत्यागम assign8_heap.pool; }
 
-struct assign_real_event_s  : public event_s {
+संरचना नियोजय_real_event_s  : सार्वजनिक event_s {
       vvp_net_ptr_t ptr;
-      double val;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      द्विगुण val;
+      शून्य सततम्_सततम्(शून्य) override;
+      शून्य single_चरणः_display(शून्य) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      स्थिर शून्य* संक्रियकः नूतन(size_t);
+      स्थिर शून्य संक्रियकः विलोपय(शून्य*);
 };
 
-void assign_real_event_s::run_run(void)
+शून्य नियोजय_real_event_s::सततम्_सततम्(शून्य)
 {
-      count_assign_events += 1;
+      गणनम्_नियोजय_events += 1;
       vvp_send_real(ptr, val, 0);
 }
 
-void assign_real_event_s::single_step_display(void)
+शून्य नियोजय_real_event_s::single_चरणः_display(शून्य)
 {
-      cerr << "assign_real_event: Propagate val=" << val << endl;
+      cerr << "assign_real_event: Propagate val=" << val << पङ्क्त्यन्तः;
 }
 
-static const size_t ASSIGNR_CHUNK_COUNT = 8192 / sizeof(struct assign_real_event_s);
-static slab_t<sizeof(assign_real_event_s),ASSIGNR_CHUNK_COUNT> assignr_heap;
+स्थिर ध्रुव size_t ASSIGNR_CHUNK_गणनम् = 8192 / परिमाण(संरचना नियोजय_real_event_s);
+स्थिर slab_t<परिमाण(नियोजय_real_event_s),ASSIGNR_CHUNK_गणनम्> assignr_heap;
 
-inline void* assign_real_event_s::operator new (size_t size)
+अन्तःस्थ शून्य* नियोजय_real_event_s::संक्रियकः नूतन (size_t size)
 {
-      assert(size == sizeof(assign_real_event_s));
-      return assignr_heap.alloc_slab();
+      प्रतिज्ञा(size == परिमाण(नियोजय_real_event_s));
+      प्रत्यागम assignr_heap.alloc_slab();
 }
 
-void assign_real_event_s::operator delete(void*dptr)
+शून्य नियोजय_real_event_s::संक्रियकः विलोपय(शून्य*dptr)
 {
       assignr_heap.free_slab(dptr);
 }
 
-unsigned long count_assign_real_pool(void) { return assignr_heap.pool; }
+अचिह्नित दीर्घ गणनम्_नियोजय_real_pool(शून्य) { प्रत्यागम assignr_heap.pool; }
 
-struct assign_array_word_s  : public event_s {
+संरचना नियोजय_array_word_s  : सार्वजनिक event_s {
       vvp_array_t mem;
-      unsigned adr;
+      अचिह्नित adr;
       vvp_vector4_t val;
-      unsigned off;
-      void run_run(void) override;
+      अचिह्नित off;
+      शून्य सततम्_सततम्(शून्य) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      स्थिर शून्य* संक्रियकः नूतन(size_t);
+      स्थिर शून्य संक्रियकः विलोपय(शून्य*);
 };
 
-void assign_array_word_s::run_run(void)
+शून्य नियोजय_array_word_s::सततम्_सततम्(शून्य)
 {
-      count_assign_events += 1;
-      mem->set_word(adr, off, val);
+      गणनम्_नियोजय_events += 1;
+      mem->समुच्चयः_word(adr, off, val);
 }
 
-static const size_t ARRAY_W_CHUNK_COUNT = 8192 / sizeof(struct assign_array_word_s);
-static slab_t<sizeof(assign_array_word_s),ARRAY_W_CHUNK_COUNT> array_w_heap;
+स्थिर ध्रुव size_t ARRAY_W_CHUNK_गणनम् = 8192 / परिमाण(संरचना नियोजय_array_word_s);
+स्थिर slab_t<परिमाण(नियोजय_array_word_s),ARRAY_W_CHUNK_गणनम्> array_w_heap;
 
-inline void* assign_array_word_s::operator new (size_t size)
+अन्तःस्थ शून्य* नियोजय_array_word_s::संक्रियकः नूतन (size_t size)
 {
-      assert(size == sizeof(assign_array_word_s));
-      return array_w_heap.alloc_slab();
+      प्रतिज्ञा(size == परिमाण(नियोजय_array_word_s));
+      प्रत्यागम array_w_heap.alloc_slab();
 }
 
-void assign_array_word_s::operator delete(void*ptr)
+शून्य नियोजय_array_word_s::संक्रियकः विलोपय(शून्य*ptr)
 {
       array_w_heap.free_slab(ptr);
 }
 
-unsigned long count_assign_aword_pool(void) { return array_w_heap.pool; }
+अचिह्नित दीर्घ गणनम्_नियोजय_aword_pool(शून्य) { प्रत्यागम array_w_heap.pool; }
 
-struct force_vector4_event_s  : public event_s {
+संरचना force_vector4_event_s  : सार्वजनिक event_s {
 	/* The default constructor. */
-      explicit force_vector4_event_s(const vvp_vector4_t&that): val(that) {
-	    net = NULL;
-	    base = 0;
+      स्पष्ट force_vector4_event_s(ध्रुव vvp_vector4_t&that): val(that) {
+	    net = रिक्त;
+	    आधारः = 0;
 	    vwid = 0;
-	    next = NULL;
+	    अग्र_2 = रिक्त;
       }
 	/* Where to do the force. */
       vvp_net_t*net;
 	/* Value to force. */
       vvp_vector4_t val;
 	/* Offset of the part into the destination. */
-      unsigned base;
+      अचिह्नित आधारः;
 	/* Width of the destination vector. */
-      unsigned vwid;
+      अचिह्नित vwid;
 
-      void run_run(void) override;
-      void single_step_display(void) override;
+      शून्य सततम्_सततम्(शून्य) override;
+      शून्य single_चरणः_display(शून्य) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      स्थिर शून्य* संक्रियकः नूतन(size_t);
+      स्थिर शून्य संक्रियकः विलोपय(शून्य*);
 };
 
-void force_vector4_event_s::run_run(void)
+शून्य force_vector4_event_s::सततम्_सततम्(शून्य)
 {
-      count_assign_events += 1;
+      गणनम्_नियोजय_events += 1;
 
-      unsigned wid = val.size();
-      if ((base + wid) > vwid)
-	    wid = vwid - base;
+      अचिह्नित wid = val.size();
+      यदि ((आधारः + wid) > vwid)
+	    wid = vwid - आधारः;
 
 	// Make a mask of which bits are to be forced, 0 for unforced
 	// bits and 1 for forced bits.
-      vvp_vector2_t mask (vvp_vector2_t::FILL0, vwid);
-      for (unsigned idx = 0 ; idx < wid ; idx += 1)
-	    mask.set_bit(base+idx, 1);
+      vvp_vector2_t आवरणम् (vvp_vector2_t::FILL0, vwid);
+      प्रति (अचिह्नित idx = 0 ; idx < wid ; idx += 1)
+	    आवरणम्.समुच्चयः_bit(आधारः+idx, 1);
 
       vvp_vector4_t tmp (vwid, BIT4_Z);
 
 	// vvp_net_t::force_vec4 propagates all the bits of the
 	// forced vector value, regardless of the mask. This
 	// ensures the unforced bits retain their current value.
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(net->fil);
-      assert(sig);
-      sig->vec4_value(tmp);
+      vvp_signal_मानम्*sig = dynamic_cast<vvp_signal_मानम्*>(net->fil);
+      प्रतिज्ञा(sig);
+      sig->vec4_मानम्(tmp);
 
-      tmp.set_vec(base, val);
-      net->force_vec4(tmp, mask);
+      tmp.समुच्चयः_vec(आधारः, val);
+      net->force_vec4(tmp, आवरणम्);
 }
 
-void force_vector4_event_s::single_step_display(void)
+शून्य force_vector4_event_s::single_चरणः_display(शून्य)
 {
       cerr << "force_vector4_event: Force val=" << val
-	   << ", vwid=" << vwid << ", base=" << base << endl;
+	   << ", vwid=" << vwid << ", base=" << आधारः << पङ्क्त्यन्तः;
 }
 
-static const size_t FORCE4_CHUNK_COUNT = 8192 / sizeof(struct force_vector4_event_s);
-static slab_t<sizeof(force_vector4_event_s),FORCE4_CHUNK_COUNT> force4_heap;
+स्थिर ध्रुव size_t FORCE4_CHUNK_गणनम् = 8192 / परिमाण(संरचना force_vector4_event_s);
+स्थिर slab_t<परिमाण(force_vector4_event_s),FORCE4_CHUNK_गणनम्> force4_heap;
 
-inline void* force_vector4_event_s::operator new(size_t size)
+अन्तःस्थ शून्य* force_vector4_event_s::संक्रियकः नूतन(size_t size)
 {
-      assert(size == sizeof(force_vector4_event_s));
-      return force4_heap.alloc_slab();
+      प्रतिज्ञा(size == परिमाण(force_vector4_event_s));
+      प्रत्यागम force4_heap.alloc_slab();
 }
 
-void force_vector4_event_s::operator delete(void*dptr)
+शून्य force_vector4_event_s::संक्रियकः विलोपय(शून्य*dptr)
 {
       force4_heap.free_slab(dptr);
 }
 
-unsigned long count_force4_pool(void) { return force4_heap.pool; }
+अचिह्नित दीर्घ गणनम्_force4_pool(शून्य) { प्रत्यागम force4_heap.pool; }
 
 /*
  * This class supports the propagation of vec4 outputs from a
  * vvp_net_t object.
  */
-struct propagate_vector4_event_s : public event_s {
+संरचना propagate_vector4_event_s : सार्वजनिक event_s {
 	/* The default constructor. */
-      explicit propagate_vector4_event_s(const vvp_vector4_t&that) : val(that) {
-	    net = NULL;
-	    next = NULL;
+      स्पष्ट propagate_vector4_event_s(ध्रुव vvp_vector4_t&that) : val(that) {
+	    net = रिक्त;
+	    अग्र_2 = रिक्त;
       }
 	/* A constructor that makes the val directly. */
-      propagate_vector4_event_s(const vvp_vector4_t&that, unsigned adr, unsigned wid)
+      propagate_vector4_event_s(ध्रुव vvp_vector4_t&that, अचिह्नित adr, अचिह्नित wid)
       : val(that,adr,wid) {
-	    net = NULL;
-	    next = NULL;
+	    net = रिक्त;
+	    अग्र_2 = रिक्त;
       }
 
 	/* Propagate the output of this net. */
@@ -425,115 +425,115 @@ struct propagate_vector4_event_s : public event_s {
 	/* value to propagate */
       vvp_vector4_t val;
 	/* Action */
-      void run_run(void) override;
-      void single_step_display(void) override;
+      शून्य सततम्_सततम्(शून्य) override;
+      शून्य single_चरणः_display(शून्य) override;
 };
 
-void propagate_vector4_event_s::run_run(void)
+शून्य propagate_vector4_event_s::सततम्_सततम्(शून्य)
 {
       net->send_vec4(val, 0);
 }
 
-void propagate_vector4_event_s::single_step_display(void)
+शून्य propagate_vector4_event_s::single_चरणः_display(शून्य)
 {
-      cerr << "propagate_vector4_event: Propagate val=" << val << endl;
+      cerr << "propagate_vector4_event: Propagate val=" << val << पङ्क्त्यन्तः;
 }
 
 /*
  * This class supports the propagation of real outputs from a
  * vvp_net_t object.
  */
-struct propagate_real_event_s : public event_s {
+संरचना propagate_real_event_s : सार्वजनिक event_s {
 	/* Propagate the output of this net. */
       vvp_net_t*net;
 	/* value to propagate */
-      double val;
+      द्विगुण val;
 	/* Action */
-      void run_run(void) override;
-      void single_step_display(void) override;
+      शून्य सततम्_सततम्(शून्य) override;
+      शून्य single_चरणः_display(शून्य) override;
 };
 
-void propagate_real_event_s::run_run(void)
+शून्य propagate_real_event_s::सततम्_सततम्(शून्य)
 {
       net->send_real(val, 0);
 }
 
-void propagate_real_event_s::single_step_display(void)
+शून्य propagate_real_event_s::single_चरणः_display(शून्य)
 {
-      cerr << "propagate_real_event: Propagate val=" << val << endl;
+      cerr << "propagate_real_event: Propagate val=" << val << पङ्क्त्यन्तः;
 }
 
-struct assign_array_r_word_s  : public event_s {
+संरचना नियोजय_array_r_word_s  : सार्वजनिक event_s {
       vvp_array_t mem;
-      unsigned adr;
-      double val;
-      void run_run(void) override;
+      अचिह्नित adr;
+      द्विगुण val;
+      शून्य सततम्_सततम्(शून्य) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      स्थिर शून्य* संक्रियकः नूतन(size_t);
+      स्थिर शून्य संक्रियकः विलोपय(शून्य*);
 };
 
-void assign_array_r_word_s::run_run(void)
+शून्य नियोजय_array_r_word_s::सततम्_सततम्(शून्य)
 {
-      count_assign_events += 1;
-      mem->set_word(adr, val);
+      गणनम्_नियोजय_events += 1;
+      mem->समुच्चयः_word(adr, val);
 }
-static const size_t ARRAY_R_W_CHUNK_COUNT = 8192 / sizeof(struct assign_array_r_word_s);
-static slab_t<sizeof(assign_array_r_word_s),ARRAY_R_W_CHUNK_COUNT> array_r_w_heap;
+स्थिर ध्रुव size_t ARRAY_R_W_CHUNK_गणनम् = 8192 / परिमाण(संरचना नियोजय_array_r_word_s);
+स्थिर slab_t<परिमाण(नियोजय_array_r_word_s),ARRAY_R_W_CHUNK_गणनम्> array_r_w_heap;
 
-inline void* assign_array_r_word_s::operator new(size_t size)
+अन्तःस्थ शून्य* नियोजय_array_r_word_s::संक्रियकः नूतन(size_t size)
 {
-      assert(size == sizeof(assign_array_r_word_s));
-      return array_r_w_heap.alloc_slab();
+      प्रतिज्ञा(size == परिमाण(नियोजय_array_r_word_s));
+      प्रत्यागम array_r_w_heap.alloc_slab();
 }
 
-void assign_array_r_word_s::operator delete(void*ptr)
+शून्य नियोजय_array_r_word_s::संक्रियकः विलोपय(शून्य*ptr)
 {
       array_r_w_heap.free_slab(ptr);
 }
 
-unsigned long count_assign_arword_pool(void) { return array_r_w_heap.pool; }
+अचिह्नित दीर्घ गणनम्_नियोजय_arword_pool(शून्य) { प्रत्यागम array_r_w_heap.pool; }
 
-struct generic_event_s : public event_s {
+संरचना generic_event_s : सार्वजनिक event_s {
       vvp_gen_event_t obj;
-      bool delete_obj_when_done;
-      void run_run(void) override;
-      void single_step_display(void) override;
+      तार्किक delete_obj_when_समाप्तम्;
+      शून्य सततम्_सततम्(शून्य) override;
+      शून्य single_चरणः_display(शून्य) override;
 
-      static void* operator new(size_t);
-      static void operator delete(void*);
+      स्थिर शून्य* संक्रियकः नूतन(size_t);
+      स्थिर शून्य संक्रियकः विलोपय(शून्य*);
 };
 
-void generic_event_s::run_run(void)
+शून्य generic_event_s::सततम्_सततम्(शून्य)
 {
-      count_gen_events += 1;
-      if (obj) {
-	    obj->run_run();
-	    if (delete_obj_when_done)
-		  delete obj;
+      गणनम्_gen_events += 1;
+      यदि (obj) {
+	    obj->सततम्_सततम्();
+	    यदि (delete_obj_when_समाप्तम्)
+		  विलोपय obj;
       }
 }
 
-void generic_event_s::single_step_display(void)
+शून्य generic_event_s::single_चरणः_display(शून्य)
 {
-      obj->single_step_display();
+      obj->single_चरणः_display();
 }
 
-static const size_t GENERIC_CHUNK_COUNT = 131072 / sizeof(struct generic_event_s);
-static slab_t<sizeof(generic_event_s),GENERIC_CHUNK_COUNT> generic_event_heap;
+स्थिर ध्रुव size_t GENERIC_CHUNK_गणनम् = 131072 / परिमाण(संरचना generic_event_s);
+स्थिर slab_t<परिमाण(generic_event_s),GENERIC_CHUNK_गणनम्> generic_event_heap;
 
-inline void* generic_event_s::operator new(size_t size)
+अन्तःस्थ शून्य* generic_event_s::संक्रियकः नूतन(size_t size)
 {
-      assert(size == sizeof(generic_event_s));
-      return generic_event_heap.alloc_slab();
+      प्रतिज्ञा(size == परिमाण(generic_event_s));
+      प्रत्यागम generic_event_heap.alloc_slab();
 }
 
-void generic_event_s::operator delete(void*ptr)
+शून्य generic_event_s::संक्रियकः विलोपय(शून्य*ptr)
 {
       generic_event_heap.free_slab(ptr);
 }
 
-unsigned long count_gen_pool(void) { return generic_event_heap.pool; }
+अचिह्नित दीर्घ गणनम्_gen_pool(शून्य) { प्रत्यागम generic_event_heap.pool; }
 
 /*
 ** These event_time_s will be required a lot, at high frequency.
@@ -541,29 +541,29 @@ unsigned long count_gen_pool(void) { return generic_event_heap.pool; }
 */
 
 
-static const size_t TIME_CHUNK_COUNT = 8192 / sizeof(struct event_time_s);
-static slab_t<sizeof(event_time_s),TIME_CHUNK_COUNT> event_time_heap;
+स्थिर ध्रुव size_t TIME_CHUNK_गणनम् = 8192 / परिमाण(संरचना event_time_s);
+स्थिर slab_t<परिमाण(event_time_s),TIME_CHUNK_गणनम्> event_time_heap;
 
-inline void* event_time_s::operator new (size_t size)
+अन्तःस्थ शून्य* event_time_s::संक्रियकः नूतन (size_t size)
 {
-      assert(size == sizeof(struct event_time_s));
-      void*ptr = event_time_heap.alloc_slab();
-      return ptr;
+      प्रतिज्ञा(size == परिमाण(संरचना event_time_s));
+      शून्य*ptr = event_time_heap.alloc_slab();
+      प्रत्यागम ptr;
 }
 
-inline void event_time_s::operator delete(void*ptr, size_t)
+अन्तःस्थ शून्य event_time_s::संक्रियकः विलोपय(शून्य*ptr, size_t)
 {
       event_time_heap.free_slab(ptr);
 }
 
-unsigned long count_time_pool(void) { return event_time_heap.pool; }
+अचिह्नित दीर्घ गणनम्_time_pool(शून्य) { प्रत्यागम event_time_heap.pool; }
 
 /*
  * This is the head of the list of pending events. This includes all
  * the events that have not been executed yet, and reaches into the
  * future.
  */
-static struct event_time_s* sched_list = 0;
+स्थिर संरचना event_time_s* sched_list = 0;
 
 /*
  * This is a list of initialization events. The setup puts
@@ -571,50 +571,50 @@ static struct event_time_s* sched_list = 0;
  * simulation as a whole starts. This prevents time-0 triggers of
  * certain events.
  */
-static struct event_s* schedule_init_list = 0;
+स्थिर संरचना event_s* कालसारणी_init_list = 0;
 
 /*
  * This is the head of the list of final events.
  */
-static struct event_s* schedule_final_list = 0;
+स्थिर संरचना event_s* कालसारणी_final_list = 0;
 
 /*
  * This flag is true until a VPI task or function finishes the
  * simulation.
  */
-static bool schedule_runnable = true;
-static bool schedule_stopped_flag  = false;
-static bool schedule_single_step_flag = false;
-static bool no_signals_flag = false;
+स्थिर तार्किक कालसारणी_runnable = सत्य;
+स्थिर तार्किक कालसारणी_stopped_flag  = असत्य;
+स्थिर तार्किक कालसारणी_single_चरणः_flag = असत्य;
+स्थिर तार्किक no_सङ्केताः_flag = असत्य;
 
-void schedule_finish(int)
+शून्य कालसारणी_finish(पूर्णाङ्क)
 {
-      schedule_runnable = false;
+      कालसारणी_runnable = असत्य;
 }
 
-void schedule_stop(int)
+शून्य कालसारणी_stop(पूर्णाङ्क)
 {
-      schedule_stopped_flag = true;
+      कालसारणी_stopped_flag = सत्य;
 }
 
-void schedule_single_step(int)
+शून्य कालसारणी_single_चरणः(पूर्णाङ्क)
 {
-      schedule_single_step_flag = true;
+      कालसारणी_single_चरणः_flag = सत्य;
 }
 
-bool schedule_finished(void)
+तार्किक कालसारणी_परिसमाप्तम्(शून्य)
 {
-      return !schedule_runnable;
+      प्रत्यागम !कालसारणी_runnable;
 }
 
-bool schedule_stopped(void)
+तार्किक कालसारणी_stopped(शून्य)
 {
-      return schedule_stopped_flag;
+      प्रत्यागम कालसारणी_stopped_flag;
 }
 
-extern "C" void vvp_no_signals(void)
+बाह्य "C" शून्य vvp_no_सङ्केताः(शून्य)
 {
-      no_signals_flag = true;
+      no_सङ्केताः_flag = सत्य;
 }
 
 /*
@@ -622,69 +622,69 @@ extern "C" void vvp_no_signals(void)
  * leads to an implicit $stop. The SIGHUP and SIGTERM signals lead
  * to an implicit $finish.
  */
-extern bool stop_is_finish;
+बाह्य तार्किक stop_is_finish;
 
-extern "C" void signals_handler(int signum)
+बाह्य "C" शून्य सङ्केताः_handler(पूर्णाङ्क signum)
 {
-#ifdef __MINGW32__
+#यदि_परिभाषितम् __MINGW32__
 	// Windows implements the original UNIX semantics for signal,
 	// so we have to re-establish the signal handler each time a
 	// signal is caught.
-      signal(signum, &signals_handler);
-#endif
-      if (signum != SIGINT)
-	    stop_is_finish = true;
-      schedule_stopped_flag = true;
+      सङ्केत(signum, &सङ्केताः_handler);
+#यदि_अन्तः
+      यदि (signum != SIGINT)
+	    stop_is_finish = सत्य;
+      कालसारणी_stopped_flag = सत्य;
 }
 
-static void signals_capture(void)
+स्थिर शून्य सङ्केताः_capture(शून्य)
 {
-      if (no_signals_flag)
-	   return;
-#ifndef __MINGW32__
-      signal(SIGHUP,  &signals_handler);
-#endif
-      signal(SIGINT,  &signals_handler);
-      signal(SIGTERM, &signals_handler);
+      यदि (no_सङ्केताः_flag)
+	   प्रत्यागम;
+#यदि_अपरिभाषितम् __MINGW32__
+      सङ्केत(SIGHUP,  &सङ्केताः_handler);
+#यदि_अन्तः
+      सङ्केत(SIGINT,  &सङ्केताः_handler);
+      सङ्केत(SIGTERM, &सङ्केताः_handler);
 }
 
-static void signals_revert(void)
+स्थिर शून्य सङ्केताः_revert(शून्य)
 {
-      if (no_signals_flag)
-	   return;
-#ifndef __MINGW32__
-      signal(SIGHUP,  SIG_DFL);
-#endif
-      signal(SIGINT,  SIG_DFL);
-      signal(SIGTERM, SIG_DFL);
+      यदि (no_सङ्केताः_flag)
+	   प्रत्यागम;
+#यदि_अपरिभाषितम् __MINGW32__
+      सङ्केत(SIGHUP,  SIG_DFL);
+#यदि_अन्तः
+      सङ्केत(SIGINT,  SIG_DFL);
+      सङ्केत(SIGTERM, SIG_DFL);
 }
 
 /*
  * This function puts an event on the end of the pre-simulation event queue.
  */
-static void schedule_init_event(struct event_s*cur)
+स्थिर शून्य कालसारणी_init_event(संरचना event_s*cur)
 {
-      if (schedule_init_list == 0) {
-            cur->next = cur;
-      } else {
-            cur->next = schedule_init_list->next;
-            schedule_init_list->next = cur;
+      यदि (कालसारणी_init_list == 0) {
+            cur->अग्र_2 = cur;
+      } अन्यथा {
+            cur->अग्र_2 = कालसारणी_init_list->अग्र_2;
+            कालसारणी_init_list->अग्र_2 = cur;
       }
-      schedule_init_list = cur;
+      कालसारणी_init_list = cur;
 }
 
 /*
  * This function puts an event on the end of the post-simulation event queue.
  */
-static void schedule_final_event(struct event_s*cur)
+स्थिर शून्य कालसारणी_final_event(संरचना event_s*cur)
 {
-      if (schedule_final_list == 0) {
-            cur->next = cur;
-      } else {
-            cur->next = schedule_final_list->next;
-            schedule_final_list->next = cur;
+      यदि (कालसारणी_final_list == 0) {
+            cur->अग्र_2 = cur;
+      } अन्यथा {
+            cur->अग्र_2 = कालसारणी_final_list->अग्र_2;
+            कालसारणी_final_list->अग्र_2 = cur;
       }
-      schedule_final_list = cur;
+      कालसारणी_final_list = cur;
 }
 
 /*
@@ -693,60 +693,60 @@ static void schedule_final_event(struct event_s*cur)
  * itself, and the structure is placed in the right place in the
  * queue.
  */
-typedef enum event_queue_e { SEQ_START, SEQ_ACTIVE, SEQ_INACTIVE, SEQ_NBASSIGN,
+प्रकारनिर्देश गणना event_queue_e { SEQ_START, SEQ_सक्रिय, SEQ_INACTIVE, SEQ_NBASSIGN,
 			     SEQ_RWSYNC, SEQ_ROSYNC, DEL_THREAD } event_queue_t;
 
-static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
+स्थिर शून्य कालसारणी_event(संरचना event_s*cur, vvp_time64_t delay,
 			    event_queue_t select_queue)
 {
-      cur->next = cur;
-      struct event_time_s*ctim = sched_list;
+      cur->अग्र_2 = cur;
+      संरचना event_time_s*ctim = sched_list;
 
-      if (sched_list == 0) {
+      यदि (sched_list == 0) {
 	      /* Is the event_time list completely empty? Create the
 		 first event_time object. */
-	    ctim = new struct event_time_s;
+	    ctim = नूतन संरचना event_time_s;
 	    ctim->delay = delay;
-	    ctim->next  = 0;
+	    ctim->अग्र_2  = 0;
 	    sched_list = ctim;
 
-      } else if (sched_list->delay > delay) {
+      } अन्यथा यदि (sched_list->delay > delay) {
 
 	      /* Am I looking for an event before the first event_time?
 		 If so, create a new event_time to go in front. */
-	    struct event_time_s*tmp = new struct event_time_s;
+	    संरचना event_time_s*tmp = नूतन संरचना event_time_s;
 	    tmp->delay = delay;
-	    tmp->next = ctim;
+	    tmp->अग्र_2 = ctim;
 	    ctim->delay -= delay;
 	    ctim = tmp;
 	    sched_list = ctim;
 
-      } else {
-	    struct event_time_s*prev = 0;
+      } अन्यथा {
+	    संरचना event_time_s*prev = 0;
 
-	    while (ctim->next && (ctim->delay < delay)) {
+	    यावत् (ctim->अग्र_2 && (ctim->delay < delay)) {
 		  delay -= ctim->delay;
 		  prev = ctim;
-		  ctim = ctim->next;
+		  ctim = ctim->अग्र_2;
 	    }
 
-	    if (ctim->delay > delay) {
-		  struct event_time_s*tmp = new struct event_time_s;
+	    यदि (ctim->delay > delay) {
+		  संरचना event_time_s*tmp = नूतन संरचना event_time_s;
 		  tmp->delay = delay;
-		  tmp->next  = prev->next;
-		  prev->next = tmp;
+		  tmp->अग्र_2  = prev->अग्र_2;
+		  prev->अग्र_2 = tmp;
 
-		  tmp->next->delay -= delay;
+		  tmp->अग्र_2->delay -= delay;
 		  ctim = tmp;
 
-	    } else if (ctim->delay == delay) {
+	    } अन्यथा यदि (ctim->delay == delay) {
 
-	    } else {
-		  assert(ctim->next == 0);
-		  struct event_time_s*tmp = new struct event_time_s;
+	    } अन्यथा {
+		  प्रतिज्ञा(ctim->अग्र_2 == 0);
+		  संरचना event_time_s*tmp = नूतन संरचना event_time_s;
 		  tmp->delay = delay - ctim->delay;
-		  tmp->next = 0;
-		  ctim->next = tmp;
+		  tmp->अग्र_2 = 0;
+		  ctim->अग्र_2 = tmp;
 
 		  ctim = tmp;
 	    }
@@ -756,308 +756,308 @@ static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
 	   receive the event at hand. Put the event in to the
 	   appropriate list for the kind of assign we have at hand. */
 
-      struct event_s** q = 0;
+      संरचना event_s** q = 0;
 
-      switch (select_queue) {
-	  case SEQ_START:
+      विकल्प (select_queue) {
+	  पक्ष SEQ_START:
 	    q = &ctim->start;
-	    break;
+	    भङ्ग;
 
-	  case SEQ_ACTIVE:
-	    q = &ctim->active;
-	    break;
+	  पक्ष SEQ_सक्रिय:
+	    q = &ctim->सक्रिय;
+	    भङ्ग;
 
-	  case SEQ_INACTIVE:
-	    assert(delay == 0);
+	  पक्ष SEQ_INACTIVE:
+	    प्रतिज्ञा(delay == 0);
 	    q = &ctim->inactive;
-	    break;
+	    भङ्ग;
 
-	  case SEQ_NBASSIGN:
+	  पक्ष SEQ_NBASSIGN:
 	    q = &ctim->nbassign;
-	    break;
+	    भङ्ग;
 
-	  case SEQ_RWSYNC:
+	  पक्ष SEQ_RWSYNC:
 	    q = &ctim->rwsync;
-	    break;
+	    भङ्ग;
 
-	  case SEQ_ROSYNC:
+	  पक्ष SEQ_ROSYNC:
 	    q = &ctim->rosync;
-	    break;
+	    भङ्ग;
 
-	  case DEL_THREAD:
+	  पक्ष DEL_THREAD:
 	    q = &ctim->del_thr;
-	    break;
+	    भङ्ग;
       }
 
-      if (q) {
-	    if (*q) {
+      यदि (q) {
+	    यदि (*q) {
 		  /* Put the cur event on the end of the queue. */
-		  cur->next = (*q)->next;
-		  (*q)->next = cur;
+		  cur->अग्र_2 = (*q)->अग्र_2;
+		  (*q)->अग्र_2 = cur;
 	    }
 	    *q = cur;
       }
 }
 
-static void schedule_event_push_(struct event_s*cur)
+स्थिर शून्य कालसारणी_event_प्रक्षिप(संरचना event_s*cur)
 {
-      if ((sched_list == 0) || (sched_list->delay > 0)) {
-	    schedule_event_(cur, 0, SEQ_ACTIVE);
-	    return;
+      यदि ((sched_list == 0) || (sched_list->delay > 0)) {
+	    कालसारणी_event(cur, 0, SEQ_सक्रिय);
+	    प्रत्यागम;
       }
 
-      struct event_time_s*ctim = sched_list;
+      संरचना event_time_s*ctim = sched_list;
 
-      if (ctim->active == 0) {
-	    cur->next = cur;
-	    ctim->active = cur;
-	    return;
+      यदि (ctim->सक्रिय == 0) {
+	    cur->अग्र_2 = cur;
+	    ctim->सक्रिय = cur;
+	    प्रत्यागम;
       }
 
-      cur->next = ctim->active->next;
-      ctim->active->next = cur;
+      cur->अग्र_2 = ctim->सक्रिय->अग्र_2;
+      ctim->सक्रिय->अग्र_2 = cur;
 }
 
-void schedule_vthread(vthread_t thr, vvp_time64_t delay, bool push_flag)
+शून्य कालसारणी_vthread(vthread_t thr, vvp_time64_t delay, तार्किक प्रक्षिप_flag)
 {
-      struct vthread_event_s*cur = new vthread_event_s;
+      संरचना vthread_event_s*cur = नूतन vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_scheduled(thr);
 
-      if (push_flag && (delay == 0)) {
+      यदि (प्रक्षिप_flag && (delay == 0)) {
 	      /* Special case: If the delay is 0, the push_flag means
 		 I can push this event in front of everything. This is
 		 used by the %fork statement, for example, to perform
 		 task calls. */
-	    schedule_event_push_(cur);
+	    कालसारणी_event_प्रक्षिप(cur);
 
-      } else {
-	    schedule_event_(cur, delay, SEQ_ACTIVE);
+      } अन्यथा {
+	    कालसारणी_event(cur, delay, SEQ_सक्रिय);
       }
 }
 
-void schedule_t0_trigger(vvp_net_ptr_t ptr)
+शून्य कालसारणी_t0_trigger(vvp_net_ptr_t ptr)
 {
       vvp_vector4_t bit (1, BIT4_X);
-      struct assign_vector4_event_s*cur = new struct assign_vector4_event_s(bit);
+      संरचना नियोजय_vector4_event_s*cur = नूतन संरचना नियोजय_vector4_event_s(bit);
       cur->ptr = ptr;
-      schedule_event_(cur, 0, SEQ_INACTIVE);
+      कालसारणी_event(cur, 0, SEQ_INACTIVE);
 }
 
-void schedule_inactive(vthread_t thr)
+शून्य कालसारणी_inactive(vthread_t thr)
 {
-      struct vthread_event_s*cur = new vthread_event_s;
+      संरचना vthread_event_s*cur = नूतन vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_scheduled(thr);
-      schedule_event_(cur, 0, SEQ_INACTIVE);
+      कालसारणी_event(cur, 0, SEQ_INACTIVE);
 }
 
-void schedule_init_vthread(vthread_t thr)
+शून्य कालसारणी_init_vthread(vthread_t thr)
 {
-      struct vthread_event_s*cur = new vthread_event_s;
+      संरचना vthread_event_s*cur = नूतन vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_scheduled(thr);
 
-      schedule_init_event(cur);
+      कालसारणी_init_event(cur);
 }
 
-void schedule_final_vthread(vthread_t thr)
+शून्य कालसारणी_final_vthread(vthread_t thr)
 {
-      struct vthread_event_s*cur = new vthread_event_s;
+      संरचना vthread_event_s*cur = नूतन vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_final(thr);
       vthread_mark_scheduled(thr);
 
-      schedule_final_event(cur);
+      कालसारणी_final_event(cur);
 }
 
-void schedule_assign_vector(vvp_net_ptr_t ptr,
-			    unsigned base, unsigned vwid,
-			    const vvp_vector4_t&bit,
+शून्य कालसारणी_नियोजय_सदिशम्(vvp_net_ptr_t ptr,
+			    अचिह्नित आधारः, अचिह्नित vwid,
+			    ध्रुव vvp_vector4_t&bit,
 			    vvp_time64_t delay)
 {
-      struct assign_vector4_event_s*cur = new struct assign_vector4_event_s(bit);
+      संरचना नियोजय_vector4_event_s*cur = नूतन संरचना नियोजय_vector4_event_s(bit);
       cur->ptr = ptr;
-      cur->base = base;
+      cur->आधारः = आधारः;
       cur->vwid = vwid;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      कालसारणी_event(cur, delay, SEQ_NBASSIGN);
 }
 
-void schedule_force_vector(vvp_net_t*net,
-			    unsigned base, unsigned vwid,
-			    const vvp_vector4_t&bit,
+शून्य कालसारणी_force_सदिशम्(vvp_net_t*net,
+			    अचिह्नित आधारः, अचिह्नित vwid,
+			    ध्रुव vvp_vector4_t&bit,
 			    vvp_time64_t delay)
 {
-      struct force_vector4_event_s*cur = new struct force_vector4_event_s(bit);
+      संरचना force_vector4_event_s*cur = नूतन संरचना force_vector4_event_s(bit);
       cur->net = net;
-      cur->base = base;
+      cur->आधारः = आधारः;
       cur->vwid = vwid;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      कालसारणी_event(cur, delay, SEQ_NBASSIGN);
 }
 
-void schedule_propagate_vector(vvp_net_t*net,
+शून्य कालसारणी_propagate_सदिशम्(vvp_net_t*net,
 			       vvp_time64_t delay,
-			       const vvp_vector4_t&src)
+			       ध्रुव vvp_vector4_t&src)
 {
-      struct propagate_vector4_event_s*cur
-	    = new struct propagate_vector4_event_s(src);
+      संरचना propagate_vector4_event_s*cur
+	    = नूतन संरचना propagate_vector4_event_s(src);
       cur->net = net;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      कालसारणी_event(cur, delay, SEQ_NBASSIGN);
 }
 
 // FIXME: This needs to create a non-blocking event, but only one per time slot.
 //        Is schedule_event_ or execution actually filtering since the net is
 //        already X because this is not triggering?
-void schedule_propagate_event(vvp_net_t*net,
+शून्य कालसारणी_propagate_event(vvp_net_t*net,
                               vvp_time64_t delay)
 {
       vvp_vector4_t tmp (1, BIT4_X);
-      struct propagate_vector4_event_s*cur
-	    = new struct propagate_vector4_event_s(tmp);
+      संरचना propagate_vector4_event_s*cur
+	    = नूतन संरचना propagate_vector4_event_s(tmp);
       cur->net = net;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      कालसारणी_event(cur, delay, SEQ_NBASSIGN);
 }
 
-void schedule_assign_array_word(vvp_array_t mem,
-				unsigned word_addr,
-				unsigned off,
-				const vvp_vector4_t&val,
+शून्य कालसारणी_नियोजय_array_word(vvp_array_t mem,
+				अचिह्नित word_addr,
+				अचिह्नित off,
+				ध्रुव vvp_vector4_t&val,
 				vvp_time64_t delay)
 {
-      struct assign_array_word_s*cur = new struct assign_array_word_s;
+      संरचना नियोजय_array_word_s*cur = नूतन संरचना नियोजय_array_word_s;
       cur->mem = mem;
       cur->adr = word_addr;
       cur->off = off;
       cur->val = val;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      कालसारणी_event(cur, delay, SEQ_NBASSIGN);
 }
 
-void schedule_assign_array_word(vvp_array_t mem,
-				unsigned word_addr,
-				double val,
+शून्य कालसारणी_नियोजय_array_word(vvp_array_t mem,
+				अचिह्नित word_addr,
+				द्विगुण val,
 				vvp_time64_t delay)
 {
-      struct assign_array_r_word_s*cur = new struct assign_array_r_word_s;
+      संरचना नियोजय_array_r_word_s*cur = नूतन संरचना नियोजय_array_r_word_s;
       cur->mem = mem;
       cur->adr = word_addr;
       cur->val = val;
-      schedule_event_(cur, delay, SEQ_NBASSIGN);
+      कालसारणी_event(cur, delay, SEQ_NBASSIGN);
 }
 
-void schedule_set_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&bit)
+शून्य कालसारणी_समुच्चयः_सदिशम्(vvp_net_ptr_t ptr, ध्रुव vvp_vector4_t&bit)
 {
-      struct assign_vector4_event_s*cur = new struct assign_vector4_event_s(bit);
+      संरचना नियोजय_vector4_event_s*cur = नूतन संरचना नियोजय_vector4_event_s(bit);
       cur->ptr = ptr;
-      cur->base = 0;
+      cur->आधारः = 0;
       cur->vwid = 0;
-      schedule_event_(cur, 0, SEQ_ACTIVE);
+      कालसारणी_event(cur, 0, SEQ_सक्रिय);
 }
 
-void schedule_set_vector(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+शून्य कालसारणी_समुच्चयः_सदिशम्(vvp_net_ptr_t ptr, ध्रुव vvp_vector8_t&bit)
 {
-      struct assign_vector8_event_s*cur = new struct assign_vector8_event_s;
+      संरचना नियोजय_vector8_event_s*cur = नूतन संरचना नियोजय_vector8_event_s;
       cur->ptr = ptr;
       cur->val = bit;
-      schedule_event_(cur, 0, SEQ_ACTIVE);
+      कालसारणी_event(cur, 0, SEQ_सक्रिय);
 }
 
-void schedule_set_vector(vvp_net_ptr_t ptr, double bit)
+शून्य कालसारणी_समुच्चयः_सदिशम्(vvp_net_ptr_t ptr, द्विगुण bit)
 {
-      struct assign_real_event_s*cur = new struct assign_real_event_s;
+      संरचना नियोजय_real_event_s*cur = नूतन संरचना नियोजय_real_event_s;
       cur->ptr = ptr;
       cur->val = bit;
-      schedule_event_(cur, 0, SEQ_ACTIVE);
+      कालसारणी_event(cur, 0, SEQ_सक्रिय);
 }
 
-void schedule_init_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&bit)
+शून्य कालसारणी_init_सदिशम्(vvp_net_ptr_t ptr, ध्रुव vvp_vector4_t&bit)
 {
-      struct assign_vector4_event_s*cur = new struct assign_vector4_event_s(bit);
+      संरचना नियोजय_vector4_event_s*cur = नूतन संरचना नियोजय_vector4_event_s(bit);
       cur->ptr = ptr;
-      cur->base = 0;
+      cur->आधारः = 0;
       cur->vwid = 0;
-      schedule_init_event(cur);
+      कालसारणी_init_event(cur);
 }
 
-void schedule_init_vector(vvp_net_ptr_t ptr, const vvp_vector8_t&bit)
+शून्य कालसारणी_init_सदिशम्(vvp_net_ptr_t ptr, ध्रुव vvp_vector8_t&bit)
 {
-      struct assign_vector8_event_s*cur = new struct assign_vector8_event_s;
+      संरचना नियोजय_vector8_event_s*cur = नूतन संरचना नियोजय_vector8_event_s;
       cur->ptr = ptr;
       cur->val = bit;
-      schedule_init_event(cur);
+      कालसारणी_init_event(cur);
 }
 
-void schedule_init_vector(vvp_net_ptr_t ptr, double bit)
+शून्य कालसारणी_init_सदिशम्(vvp_net_ptr_t ptr, द्विगुण bit)
 {
-      struct assign_real_event_s*cur = new struct assign_real_event_s;
+      संरचना नियोजय_real_event_s*cur = नूतन संरचना नियोजय_real_event_s;
       cur->ptr = ptr;
       cur->val = bit;
-      schedule_init_event(cur);
+      कालसारणी_init_event(cur);
 }
 
-void schedule_init_propagate(vvp_net_t*net, vvp_vector4_t bit)
+शून्य कालसारणी_init_propagate(vvp_net_t*net, vvp_vector4_t bit)
 {
-      struct propagate_vector4_event_s*cur = new struct propagate_vector4_event_s(bit);
+      संरचना propagate_vector4_event_s*cur = नूतन संरचना propagate_vector4_event_s(bit);
       cur->net = net;
-      schedule_init_event(cur);
+      कालसारणी_init_event(cur);
 }
 
-void schedule_init_propagate(vvp_net_t*net, double bit)
+शून्य कालसारणी_init_propagate(vvp_net_t*net, द्विगुण bit)
 {
-      struct propagate_real_event_s*cur = new struct propagate_real_event_s;
+      संरचना propagate_real_event_s*cur = नूतन संरचना propagate_real_event_s;
       cur->net = net;
       cur->val = bit;
-      schedule_init_event(cur);
+      कालसारणी_init_event(cur);
 }
 
-void schedule_del_thr(vthread_t thr)
+शून्य कालसारणी_del_thr(vthread_t thr)
 {
-      struct del_thr_event_s*cur = new del_thr_event_s;
+      संरचना del_thr_event_s*cur = नूतन del_thr_event_s;
 
       cur->thr = thr;
 
-      schedule_event_(cur, 0, DEL_THREAD);
+      कालसारणी_event(cur, 0, DEL_THREAD);
 }
 
-void schedule_generic(vvp_gen_event_t obj, vvp_time64_t delay,
-		      bool sync_flag, bool ro_flag, bool delete_when_done)
+शून्य कालसारणी_generic(vvp_gen_event_t obj, vvp_time64_t delay,
+		      तार्किक sync_flag, तार्किक ro_flag, तार्किक delete_when_समाप्तम्)
 {
-      struct generic_event_s*cur = new generic_event_s;
+      संरचना generic_event_s*cur = नूतन generic_event_s;
 
       cur->obj = obj;
-      cur->delete_obj_when_done = delete_when_done;
-      schedule_event_(cur, delay,
-		      sync_flag? (ro_flag?SEQ_ROSYNC:SEQ_RWSYNC) : SEQ_ACTIVE);
+      cur->delete_obj_when_समाप्तम् = delete_when_समाप्तम्;
+      कालसारणी_event(cur, delay,
+		      sync_flag? (ro_flag?SEQ_ROSYNC:SEQ_RWSYNC) : SEQ_सक्रिय);
 
-      if (sync_flag)
+      यदि (sync_flag)
 	    vthread_delay_delete();
 }
 
-static bool sim_started;
+स्थिर तार्किक sim_started;
 
-void schedule_functor(vvp_gen_event_t obj)
+शून्य कालसारणी_functor(vvp_gen_event_t obj)
 {
-      struct generic_event_s*cur = new generic_event_s;
+      संरचना generic_event_s*cur = नूतन generic_event_s;
 
       cur->obj = obj;
-      cur->delete_obj_when_done = false;
-      if (!sim_started) {
-            schedule_init_event(cur);
-      } else {
-            schedule_event_(cur, 0, SEQ_ACTIVE);
+      cur->delete_obj_when_समाप्तम् = असत्य;
+      यदि (!sim_started) {
+            कालसारणी_init_event(cur);
+      } अन्यथा {
+            कालसारणी_event(cur, 0, SEQ_सक्रिय);
       }
 }
 
-void schedule_at_start_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
+शून्य कालसारणी_at_start_सम्बन्धि_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
 {
-      struct generic_event_s*cur = new generic_event_s;
+      संरचना generic_event_s*cur = नूतन generic_event_s;
 
       cur->obj = obj;
-      cur->delete_obj_when_done = false;
-      schedule_event_(cur, delay, SEQ_START);
+      cur->delete_obj_when_समाप्तम् = असत्य;
+      कालसारणी_event(cur, delay, SEQ_START);
 }
 
 /*
@@ -1065,22 +1065,22 @@ void schedule_at_start_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
  * after all of the non-blocking assignments, so is effectively the
  * same as the ReadWriteSync time.
  */
-void schedule_at_end_of_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
+शून्य कालसारणी_at_अन्तः_सम्बन्धि_simtime(vvp_gen_event_t obj, vvp_time64_t delay)
 {
-      struct generic_event_s*cur = new generic_event_s;
+      संरचना generic_event_s*cur = नूतन generic_event_s;
 
       cur->obj = obj;
-      cur->delete_obj_when_done = false;
-      schedule_event_(cur, delay, SEQ_RWSYNC);
+      cur->delete_obj_when_समाप्तम् = असत्य;
+      कालसारणी_event(cur, delay, SEQ_RWSYNC);
 }
 
-static vvp_time64_t schedule_time;
-vvp_time64_t schedule_simtime(void)
-{ return schedule_time; }
+स्थिर vvp_time64_t कालसारणी_time;
+vvp_time64_t कालसारणी_simtime(शून्य)
+{ प्रत्यागम कालसारणी_time; }
 
-static bool sim_at_rosync = false;
-bool schedule_at_rosync(void)
-{ return sim_at_rosync; }
+स्थिर तार्किक sim_at_rosync = असत्य;
+तार्किक कालसारणी_at_rosync(शून्य)
+{ प्रत्यागम sim_at_rosync; }
 
 /*
  * The scheduler uses this function to drain the rosync events of the
@@ -1092,127 +1092,127 @@ bool schedule_at_rosync(void)
  * Once all the rosync callbacks are done we can safely delete any
  * threads that finished during this time step.
  */
-static void run_rosync(struct event_time_s*ctim)
+स्थिर शून्य सततम्_rosync(संरचना event_time_s*ctim)
 {
-      sim_at_rosync = true;
-      while (ctim->rosync) {
-	    struct event_s*cur = ctim->rosync->next;
-	    if (cur->next == cur) {
+      sim_at_rosync = सत्य;
+      यावत् (ctim->rosync) {
+	    संरचना event_s*cur = ctim->rosync->अग्र_2;
+	    यदि (cur->अग्र_2 == cur) {
 		  ctim->rosync = 0;
-	    } else {
-		  ctim->rosync->next = cur->next;
+	    } अन्यथा {
+		  ctim->rosync->अग्र_2 = cur->अग्र_2;
 	    }
 
-	    cur->run_run();
-	    delete cur;
+	    cur->सततम्_सततम्();
+	    विलोपय cur;
       }
-      sim_at_rosync = false;
+      sim_at_rosync = असत्य;
 
-      while (ctim->del_thr) {
-	    struct event_s*cur = ctim->del_thr->next;
-	    if (cur->next == cur) {
+      यावत् (ctim->del_thr) {
+	    संरचना event_s*cur = ctim->del_thr->अग्र_2;
+	    यदि (cur->अग्र_2 == cur) {
 		  ctim->del_thr = 0;
-	    } else {
-		  ctim->del_thr->next = cur->next;
+	    } अन्यथा {
+		  ctim->del_thr->अग्र_2 = cur->अग्र_2;
 	    }
 
-	    cur->run_run();
-	    delete cur;
+	    cur->सततम्_सततम्();
+	    विलोपय cur;
       }
 
-      if (ctim->active || ctim->inactive || ctim->nbassign || ctim->rwsync) {
+      यदि (ctim->सक्रिय || ctim->inactive || ctim->nbassign || ctim->rwsync) {
 	    cerr << "SCHEDULER ERROR: read-only sync events "
-		 << "created RW events!" << endl;
+		 << "created RW events!" << पङ्क्त्यन्तः;
       }
 }
 
-void schedule_simulate(void)
+शून्य कालसारणी_simulate(शून्य)
 {
-      bool run_finals;
-      sim_started = false;
+      तार्किक सततम्_finals;
+      sim_started = असत्य;
 
-      schedule_time = 0;
+      कालसारणी_time = 0;
 
-      if (verbose_flag) {
+      यदि (verbose_flag) {
 	    vpi_mcd_printf(1, " ...execute EndOfCompile callbacks\n");
       }
 
       // Execute end of compile callbacks
-      vpiEndOfCompile();
+      vpi_अन्तः_सम्बन्धि_Compile();
 
-      if (verbose_flag) {
+      यदि (verbose_flag) {
 	    vpi_mcd_printf(1, " ...propagate initialization events\n");
       }
 
 	// Execute initialization events.
-      while (schedule_init_list) {
-	    struct event_s*cur = schedule_init_list->next;
-	    if (cur->next == cur) {
-		  schedule_init_list = 0;
-	    } else {
-		  schedule_init_list->next = cur->next;
+      यावत् (कालसारणी_init_list) {
+	    संरचना event_s*cur = कालसारणी_init_list->अग्र_2;
+	    यदि (cur->अग्र_2 == cur) {
+		  कालसारणी_init_list = 0;
+	    } अन्यथा {
+		  कालसारणी_init_list->अग्र_2 = cur->अग्र_2;
 	    }
-	    cur->run_run();
-	    delete cur;
+	    cur->सततम्_सततम्();
+	    विलोपय cur;
       }
 
-      sim_started = true;
+      sim_started = सत्य;
 
-      if (verbose_flag) {
+      यदि (verbose_flag) {
 	    vpi_mcd_printf(1, " ...execute StartOfSim callbacks\n");
       }
 
       // Execute start of simulation callbacks
-      vpiStartOfSim();
+      vpi_Start_सम्बन्धि_Sim();
 
-      signals_capture();
+      सङ्केताः_capture();
 
-      if (verbose_flag) {
+      यदि (verbose_flag) {
 	    vpi_mcd_printf(1, " ...run scheduler\n");
       }
 
       // If there were no compiletf, etc. errors then we are going to
       // process events and when done run the final blocks.
-      run_finals = schedule_runnable;
+      सततम्_finals = कालसारणी_runnable;
 
-      if (schedule_runnable) while (sched_list) {
+      यदि (कालसारणी_runnable) यावत् (sched_list) {
 
-	    if (schedule_stopped_flag) {
-		  schedule_stopped_flag = false;
+	    यदि (कालसारणी_stopped_flag) {
+		  कालसारणी_stopped_flag = असत्य;
 		  stop_handler(0);
 		  // You can finish from the debugger without a time change.
-		  if (!schedule_runnable) break;
-		  continue;
+		  यदि (!कालसारणी_runnable) भङ्ग;
+		  अनुवर्त;
 	    }
 
 	      /* ctim is the current time step. */
-	    struct event_time_s* ctim = sched_list;
+	    संरचना event_time_s* ctim = sched_list;
 
 	      /* If the time is advancing, then first run the
 		 postponed sync events. Run them all. */
-	    if (ctim->delay > 0) {
+	    यदि (ctim->delay > 0) {
 
-		  if (!schedule_runnable) break;
-		  schedule_time += ctim->delay;
+		  यदि (!कालसारणी_runnable) भङ्ग;
+		  कालसारणी_time += ctim->delay;
 		    /* When the design is being traced (we are emitting
 		     * file/line information) also print any time changes. */
-		  if (show_file_line) {
+		  यदि (show_file_पङ्क्तिः) {
 			cerr << "Advancing to simulation time: "
-			     << schedule_time << endl;
+			     << कालसारणी_time << पङ्क्त्यन्तः;
 		  }
 		  ctim->delay = 0;
 
-		  vpiNextSimTime();
+		  vpi_अग्र_Sim_Time();
 		    // Process the cbAtStartOfSimTime callbacks.
-		  while (ctim->start) {
-			struct event_s*cur = ctim->start->next;
-			if (cur->next == cur) {
+		  यावत् (ctim->start) {
+			संरचना event_s*cur = ctim->start->अग्र_2;
+			यदि (cur->अग्र_2 == cur) {
 			      ctim->start = 0;
-			} else {
-			      ctim->start->next = cur->next;
+			} अन्यथा {
+			      ctim->start->अग्र_2 = cur->अग्र_2;
 			}
-			cur->run_run();
-			delete (cur);
+			cur->सततम्_सततम्();
+			विलोपय (cur);
 		  }
 	    }
 
@@ -1220,26 +1220,26 @@ void schedule_simulate(void)
 	      /* If there are no more active events, advance the event
 		 queues. If there are not events at all, then release
 		 the event_time object. */
-	    if (ctim->active == 0) {
-		  ctim->active = ctim->inactive;
+	    यदि (ctim->सक्रिय == 0) {
+		  ctim->सक्रिय = ctim->inactive;
 		  ctim->inactive = 0;
 
-		  if (ctim->active == 0) {
-			ctim->active = ctim->nbassign;
+		  यदि (ctim->सक्रिय == 0) {
+			ctim->सक्रिय = ctim->nbassign;
 			ctim->nbassign = 0;
 
-			if (ctim->active == 0) {
-			      ctim->active = ctim->rwsync;
+			यदि (ctim->सक्रिय == 0) {
+			      ctim->सक्रिय = ctim->rwsync;
 			      ctim->rwsync = 0;
 
 				/* If out of rw events, then run the rosync
 				   events and delete this time step. This also
 				   deletes threads as needed. */
-			      if (ctim->active == 0) {
-				    run_rosync(ctim);
-				    sched_list = ctim->next;
-				    delete ctim;
-				    continue;
+			      यदि (ctim->सक्रिय == 0) {
+				    सततम्_rosync(ctim);
+				    sched_list = ctim->अग्र_2;
+				    विलोपय ctim;
+				    अनुवर्त;
 			      }
 			}
 		  }
@@ -1248,52 +1248,52 @@ void schedule_simulate(void)
 	      /* Pull the first item off the list. If this is the last
 		 cell in the list, then clear the list. Execute that
 		 event type, and delete it. */
-	    struct event_s*cur = ctim->active->next;
-	    if (cur->next == cur) {
-		  ctim->active = 0;
-	    } else {
-		  ctim->active->next = cur->next;
+	    संरचना event_s*cur = ctim->सक्रिय->अग्र_2;
+	    यदि (cur->अग्र_2 == cur) {
+		  ctim->सक्रिय = 0;
+	    } अन्यथा {
+		  ctim->सक्रिय->अग्र_2 = cur->अग्र_2;
 	    }
 
-	    if (schedule_single_step_flag) {
-		  cur->single_step_display();
-		  schedule_stopped_flag = true;
-		  schedule_single_step_flag = false;
+	    यदि (कालसारणी_single_चरणः_flag) {
+		  cur->single_चरणः_display();
+		  कालसारणी_stopped_flag = सत्य;
+		  कालसारणी_single_चरणः_flag = असत्य;
 	    }
 
-	    cur->run_run();
+	    cur->सततम्_सततम्();
 
-	    delete (cur);
+	    विलोपय (cur);
       }
 
 	// Execute final events.
-      schedule_runnable = run_finals;
-      while (schedule_runnable && schedule_final_list) {
-	    struct event_s*cur = schedule_final_list->next;
-	    if (cur->next == cur) {
-		  schedule_final_list = 0;
-	    } else {
-		  schedule_final_list->next = cur->next;
+      कालसारणी_runnable = सततम्_finals;
+      यावत् (कालसारणी_runnable && कालसारणी_final_list) {
+	    संरचना event_s*cur = कालसारणी_final_list->अग्र_2;
+	    यदि (cur->अग्र_2 == cur) {
+		  कालसारणी_final_list = 0;
+	    } अन्यथा {
+		  कालसारणी_final_list->अग्र_2 = cur->अग्र_2;
 	    }
-	    cur->run_run();
-	    delete cur;
+	    cur->सततम्_सततम्();
+	    विलोपय cur;
       }
 
-      signals_revert();
+      सङ्केताः_revert();
 
-      if (verbose_flag) {
+      यदि (verbose_flag) {
 	    vpi_mcd_printf(1, " ...execute Postsim callbacks\n");
       }
 
       // Execute post-simulation callbacks
       vpiPostsim();
-#ifdef CHECK_WITH_VALGRIND
-      schedule_delete();
-#endif
+#यदि_परिभाषितम् CHECK_WITH_VALGRIND
+      कालसारणी_delete();
+#यदि_अन्तः
 }
 
-#ifdef CHECK_WITH_VALGRIND
-void schedule_delete(void)
+#यदि_परिभाषितम् CHECK_WITH_VALGRIND
+शून्य कालसारणी_delete(शून्य)
 {
       vthread_event_heap.delete_pool();
       assign4_heap.delete_pool();
@@ -1304,4 +1304,4 @@ void schedule_delete(void)
       generic_event_heap.delete_pool();
       event_time_heap.delete_pool();
 }
-#endif
+#यदि_अन्तः

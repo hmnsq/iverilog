@@ -1,5 +1,5 @@
-#ifndef IVL_statistics_H
-#define IVL_statistics_H
+#यदि_अपरिभाषितम् IVL_statistics_H
+#परिभाषय IVL_statistics_H
 /*
  * Copyright (c) 2002-2014 Stephen Williams (steve@icarus.com)
  *
@@ -20,46 +20,46 @@
  */
 
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
-#ifdef __SUNPRO_CC
+#यदि_परिभाषितम् __SUNPRO_CC
 # include  <stddef.h>
-#else
+#अन्यथा
 # include  <cstddef>
-#endif
+#यदि_अन्तः
 
-extern unsigned long count_opcodes;
-extern unsigned long count_functors;
-extern unsigned long count_functors_logic;
-extern unsigned long count_functors_bufif;
-extern unsigned long count_functors_resolv;
-extern unsigned long count_functors_sig;
-extern unsigned long count_filters;
-extern unsigned long count_vvp_nets;
-extern unsigned long count_vpi_nets;
-extern unsigned long count_vpi_scopes;
+बाह्य अचिह्नित दीर्घ गणनम्_opcodes;
+बाह्य अचिह्नित दीर्घ गणनम्_functors;
+बाह्य अचिह्नित दीर्घ गणनम्_functors_logic;
+बाह्य अचिह्नित दीर्घ गणनम्_functors_bufif;
+बाह्य अचिह्नित दीर्घ गणनम्_functors_resolv;
+बाह्य अचिह्नित दीर्घ गणनम्_functors_sig;
+बाह्य अचिह्नित दीर्घ गणनम्_filters;
+बाह्य अचिह्नित दीर्घ गणनम्_vvp_nets;
+बाह्य अचिह्नित दीर्घ गणनम्_vpi_nets;
+बाह्य अचिह्नित दीर्घ गणनम्_vpi_scopes;
 
-extern unsigned long count_net_arrays;
-extern unsigned long count_net_array_words;
-extern unsigned long count_var_arrays;
-extern unsigned long count_var_array_words;
-extern unsigned long count_real_arrays;
-extern unsigned long count_real_array_words;
+बाह्य अचिह्नित दीर्घ गणनम्_net_arrays;
+बाह्य अचिह्नित दीर्घ गणनम्_net_array_शब्दाः;
+बाह्य अचिह्नित दीर्घ गणनम्_var_arrays;
+बाह्य अचिह्नित दीर्घ गणनम्_var_array_शब्दाः;
+बाह्य अचिह्नित दीर्घ गणनम्_real_arrays;
+बाह्य अचिह्नित दीर्घ गणनम्_real_array_शब्दाः;
 
 
-extern unsigned long count_time_events;
-extern unsigned long count_time_pool(void);
+बाह्य अचिह्नित दीर्घ गणनम्_time_events;
+बाह्य अचिह्नित दीर्घ गणनम्_time_pool(शून्य);
 
-extern unsigned long count_assign_events;
-extern unsigned long count_assign4_pool(void);
-extern unsigned long count_assign8_pool(void);
-extern unsigned long count_assign_real_pool(void);
-extern unsigned long count_assign_aword_pool(void);
-extern unsigned long count_assign_arword_pool(void);
+बाह्य अचिह्नित दीर्घ गणनम्_नियोजय_events;
+बाह्य अचिह्नित दीर्घ गणनम्_assign4_pool(शून्य);
+बाह्य अचिह्नित दीर्घ गणनम्_assign8_pool(शून्य);
+बाह्य अचिह्नित दीर्घ गणनम्_नियोजय_real_pool(शून्य);
+बाह्य अचिह्नित दीर्घ गणनम्_नियोजय_aword_pool(शून्य);
+बाह्य अचिह्नित दीर्घ गणनम्_नियोजय_arword_pool(शून्य);
 
-extern unsigned long count_gen_events;
-extern unsigned long count_gen_pool(void);
+बाह्य अचिह्नित दीर्घ गणनम्_gen_events;
+बाह्य अचिह्नित दीर्घ गणनम्_gen_pool(शून्य);
 
-extern size_t size_opcodes;
-extern size_t size_vvp_nets;
-extern size_t size_vvp_net_funs;
+बाह्य size_t आकार_opcodes;
+बाह्य size_t आकार_vvp_nets;
+बाह्य size_t आकार_vvp_net_funs;
 
-#endif /* IVL_statistics_H */
+#यदि_अन्तः /* IVL_statistics_H */

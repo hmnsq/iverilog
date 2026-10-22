@@ -31,27 +31,27 @@
  * The key_strdup() function below allocates the strings from this
  * buffer, possibly making a new buffer if needed.
  */
-struct key_strings {
-      struct key_strings*next;
-      char data[64*1024 - sizeof(struct key_strings*)];
+संरचना कुञ्चिका_वाक्यानि {
+      संरचना कुञ्चिका_वाक्यानि*अग्र_2;
+      वर्ण दत्त[64*1024 - परिमाण(संरचना कुञ्चिका_वाक्यानि*)];
 };
 
-char*symbol_table_s::key_strdup_(const char*str)
+वर्ण*चिह्नम्_सारणी_s::कुञ्चिका_strdup(ध्रुव वर्ण*str)
 {
-      unsigned len = strlen(str);
-      assert( (len+1) <= sizeof str_chunk->data );
+      अचिह्नित len = वाक्यदैर्घ्यम्(str);
+      प्रतिज्ञा( (len+1) <= परिमाण str_chunk->दत्त );
 
-      if ( (len+1) > (sizeof str_chunk->data - str_used) ) {
-	    key_strings*tmp = new key_strings;
-	    tmp->next = str_chunk;
+      यदि ( (len+1) > (परिमाण str_chunk->दत्त - str_प्रयुक्तम्) ) {
+	    कुञ्चिका_वाक्यानि*tmp = नूतन कुञ्चिका_वाक्यानि;
+	    tmp->अग्र_2 = str_chunk;
 	    str_chunk = tmp;
-	    str_used = 0;
+	    str_प्रयुक्तम् = 0;
       }
 
-      char*res = str_chunk->data + str_used;
-      str_used += len + 1;
-      strcpy(res, str);
-      return res;
+      वर्ण*res = str_chunk->दत्त + str_प्रयुक्तम्;
+      str_प्रयुक्तम् += len + 1;
+      वाक्यं_प्रतिलिख(res, str);
+      प्रत्यागम res;
 }
 
 /*
@@ -67,32 +67,32 @@ char*symbol_table_s::key_strdup_(const char*str)
  * simple binary search to find an item. Each key represents an item.
  */
 
-const unsigned leaf_width = 254;
-const unsigned node_width = 508;
+ध्रुव अचिह्नित पर्णम्_विस्तारः = 254;
+ध्रुव अचिह्नित ग्रन्थिः_विस्तारः = 508;
 
-struct tree_data_ {
-      char*key;
-      symbol_value_t val;
+संरचना वृक्षः_दत्त {
+      वर्ण*कुञ्चिका;
+      चिह्नम्_मानम्_t val;
 };
 
-struct tree_node_ {
-      bool leaf_flag;
-      unsigned count;
-      struct tree_node_*parent;
+संरचना वृक्ष_ग्रन्थिः {
+      तार्किक पर्णम्_flag;
+      अचिह्नित गणनम्;
+      संरचना वृक्ष_ग्रन्थिः*parent;
 
-      union {
-	    struct tree_data_ leaf[leaf_width];
-	    struct tree_node_ *child[node_width];
+      सङ्घ {
+	    संरचना वृक्षः_दत्त पर्णम्[पर्णम्_विस्तारः];
+	    संरचना वृक्ष_ग्रन्थिः *child[ग्रन्थिः_विस्तारः];
       };
 
 };
 
-static inline char* node_last_key(struct tree_node_*node)
+स्थिर अन्तःस्थ वर्ण* ग्रन्थिः_चरमः_कुञ्चिका(संरचना वृक्ष_ग्रन्थिः*ग्रन्थिः)
 {
-      while (node->leaf_flag == false)
-	    node = node->child[node->count-1];
+      यावत् (ग्रन्थिः->पर्णम्_flag == असत्य)
+	    ग्रन्थिः = ग्रन्थिः->child[ग्रन्थिः->गणनम्-1];
 
-      return node->leaf[node->count-1].key;
+      प्रत्यागम ग्रन्थिः->पर्णम्[ग्रन्थिः->गणनम्-1].कुञ्चिका;
 }
 
 /*
@@ -100,94 +100,94 @@ static inline char* node_last_key(struct tree_node_*node)
  * a root node, and initializing the pointers and members of the root
  * node.
  */
-symbol_table_s::symbol_table_s()
+चिह्नम्_सारणी_s::चिह्नम्_सारणी_s()
 {
-      root = new struct tree_node_;
-      root->leaf_flag = false;
-      root->count = 0;
-      root->parent = 0;
+      मूलम् = नूतन संरचना वृक्ष_ग्रन्थिः;
+      मूलम्->पर्णम्_flag = असत्य;
+      मूलम्->गणनम् = 0;
+      मूलम्->parent = 0;
 
-      str_chunk = new key_strings;
-      str_chunk->next = 0;
-      str_used = 0;
+      str_chunk = नूतन कुञ्चिका_वाक्यानि;
+      str_chunk->अग्र_2 = 0;
+      str_प्रयुक्तम् = 0;
 }
 
-static void delete_symbol_node(struct tree_node_*cur)
+स्थिर शून्य delete_चिह्नम्_ग्रन्थिः(संरचना वृक्ष_ग्रन्थिः*cur)
 {
-      if (! cur->leaf_flag) {
-	    for (unsigned idx = 0 ;  idx < cur->count ;  idx += 1)
-		  delete_symbol_node(cur->child[idx]);
+      यदि (! cur->पर्णम्_flag) {
+	    प्रति (अचिह्नित idx = 0 ;  idx < cur->गणनम् ;  idx += 1)
+		  delete_चिह्नम्_ग्रन्थिः(cur->child[idx]);
       }
 
-      delete cur;
+      विलोपय cur;
 }
 
 /* Do as split_leaf_ does, but for nodes. */
-static void split_node_(struct tree_node_*cur)
+स्थिर शून्य विभज_ग्रन्थिः(संरचना वृक्ष_ग्रन्थिः*cur)
 {
-      assert(!cur->leaf_flag);
-      if (cur->parent) assert(! cur->parent->leaf_flag);
+      प्रतिज्ञा(!cur->पर्णम्_flag);
+      यदि (cur->parent) प्रतिज्ञा(! cur->parent->पर्णम्_flag);
 
-      while (cur->count == node_width) {
+      यावत् (cur->गणनम् == ग्रन्थिः_विस्तारः) {
 	      /* Create a new node to hold half the data from cur. */
-	    struct tree_node_ *new_node = new struct tree_node_;
-	    new_node->leaf_flag = false;
-	    new_node->count = cur->count / 2;
+	    संरचना वृक्ष_ग्रन्थिः *new_ग्रन्थिः = नूतन संरचना वृक्ष_ग्रन्थिः;
+	    new_ग्रन्थिः->पर्णम्_flag = असत्य;
+	    new_ग्रन्थिः->गणनम् = cur->गणनम् / 2;
 	      /* cur is not root; new_node becomes sibling. */
-	    if (cur->parent) new_node->parent = cur->parent;
+	    यदि (cur->parent) new_ग्रन्थिः->parent = cur->parent;
 
 	      /* Move the last half of the data from the end of the old node
 	       * to the beginning of the new node. At the same time, reduce
 	       * the size of the old node. */
-	    unsigned idx1 = new_node->count;
-	    unsigned idx2 = cur->count;
-	    while (idx1 > 0) {
+	    अचिह्नित idx1 = new_ग्रन्थिः->गणनम्;
+	    अचिह्नित idx2 = cur->गणनम्;
+	    यावत् (idx1 > 0) {
 		  idx1 -= 1;
 		  idx2 -= 1;
-		  new_node->child[idx1] = cur->child[idx2];
-		  new_node->child[idx1]->parent = new_node;
-		  cur->count -= 1;
+		  new_ग्रन्थिः->child[idx1] = cur->child[idx2];
+		  new_ग्रन्थिः->child[idx1]->parent = new_ग्रन्थिः;
+		  cur->गणनम् -= 1;
 	    }
 
-	    assert(new_node->count > 0);
-	    assert(cur->count > 0);
+	    प्रतिज्ञा(new_ग्रन्थिः->गणनम् > 0);
+	    प्रतिज्ञा(cur->गणनम् > 0);
 
-	    if (cur->parent == 0) {
+	    यदि (cur->parent == 0) {
 		    /* cur is root. Move first half of children to another
 		     * new node, and put the two new nodes in cur. The plan
 		     * here is to make cur into the new root and split its
 		     * contents into 2 children. */
 
-		  new_node->parent = cur;
-		  struct tree_node_*new2_node = new struct tree_node_;
-		  new2_node->leaf_flag = false;
-		  new2_node->count = cur->count;
-		  new2_node->parent = cur;
-		  for (unsigned idx = 0; idx < cur->count; idx += 1) {
-			new2_node->child[idx] = cur->child[idx];
-			new2_node->child[idx]->parent = new2_node;
+		  new_ग्रन्थिः->parent = cur;
+		  संरचना वृक्ष_ग्रन्थिः*new2_ग्रन्थिः = नूतन संरचना वृक्ष_ग्रन्थिः;
+		  new2_ग्रन्थिः->पर्णम्_flag = असत्य;
+		  new2_ग्रन्थिः->गणनम् = cur->गणनम्;
+		  new2_ग्रन्थिः->parent = cur;
+		  प्रति (अचिह्नित idx = 0; idx < cur->गणनम्; idx += 1) {
+			new2_ग्रन्थिः->child[idx] = cur->child[idx];
+			new2_ग्रन्थिः->child[idx]->parent = new2_ग्रन्थिः;
 		  }
-		  cur->child[0] = new2_node;
-		  cur->child[1] = new_node;
-		  cur->count = 2;
+		  cur->child[0] = new2_ग्रन्थिः;
+		  cur->child[1] = new_ग्रन्थिः;
+		  cur->गणनम् = 2;
 		    /* no more ancestors, stop the while loop */
-		  break;
+		  भङ्ग;
 	    }
 
 	      /* cur is not root. hook new_node to cur->parent. */
-	    unsigned idx = 0;
-	    while (cur->parent->child[idx] != cur) {
-		  assert(idx < cur->parent->count);
+	    अचिह्नित idx = 0;
+	    यावत् (cur->parent->child[idx] != cur) {
+		  प्रतिज्ञा(idx < cur->parent->गणनम्);
 		  idx += 1;
 	    }
 	    idx += 1;
 
-	    for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1) {
+	    प्रति (अचिह्नित tmp = cur->parent->गणनम् ;  tmp > idx ;  tmp -= 1) {
 		  cur->parent->child[tmp] = cur->parent->child[tmp-1];
 	    }
 
-	    cur->parent->child[idx] = new_node;
-	    cur->parent->count += 1;
+	    cur->parent->child[idx] = new_ग्रन्थिः;
+	    cur->parent->गणनम् += 1;
 
 	      /* check the ancestor */
 	    cur = cur->parent;
@@ -199,51 +199,51 @@ static void split_node_(struct tree_node_*cur)
  * the leaf keys into the new node, and add the new leaf into the
  * parent node.
  */
-static struct tree_node_* split_leaf_(struct tree_node_*cur)
+स्थिर संरचना वृक्ष_ग्रन्थिः* विभज_पर्णम्(संरचना वृक्ष_ग्रन्थिः*cur)
 {
-      assert(cur->leaf_flag);
-      assert(cur->parent);
-      assert(! cur->parent->leaf_flag);
+      प्रतिज्ञा(cur->पर्णम्_flag);
+      प्रतिज्ञा(cur->parent);
+      प्रतिज्ञा(! cur->parent->पर्णम्_flag);
 
 	/* Create a new leaf to hold half the data from the old leaf. */
-      struct tree_node_*new_leaf = new struct tree_node_;
-      new_leaf->leaf_flag = true;
-      new_leaf->count = cur->count / 2;
-      new_leaf->parent = cur->parent;
+      संरचना वृक्ष_ग्रन्थिः*new_पर्णम् = नूतन संरचना वृक्ष_ग्रन्थिः;
+      new_पर्णम्->पर्णम्_flag = सत्य;
+      new_पर्णम्->गणनम् = cur->गणनम् / 2;
+      new_पर्णम्->parent = cur->parent;
 
 	/* Move the last half of the data from the end of the old leaf
 	   to the beginning of the new leaf. At the same time, reduce
 	   the size of the old leaf. */
-      unsigned idx1 = new_leaf->count;
-      unsigned idx2 = cur->count;
-      while (idx1 > 0) {
+      अचिह्नित idx1 = new_पर्णम्->गणनम्;
+      अचिह्नित idx2 = cur->गणनम्;
+      यावत् (idx1 > 0) {
 	    idx1 -= 1;
 	    idx2 -= 1;
-	    new_leaf->leaf[idx1] = cur->leaf[idx2];
-	    cur->count -= 1;
+	    new_पर्णम्->पर्णम्[idx1] = cur->पर्णम्[idx2];
+	    cur->गणनम् -= 1;
       }
 
-      assert(new_leaf->count > 0);
-      assert(cur->count > 0);
+      प्रतिज्ञा(new_पर्णम्->गणनम् > 0);
+      प्रतिज्ञा(cur->गणनम् > 0);
 
-      unsigned idx = 0;
-      while (cur->parent->child[idx] != cur) {
-	    assert(idx < cur->parent->count);
+      अचिह्नित idx = 0;
+      यावत् (cur->parent->child[idx] != cur) {
+	    प्रतिज्ञा(idx < cur->parent->गणनम्);
 	    idx += 1;
       }
 
       idx += 1;
 
-      for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1)
+      प्रति (अचिह्नित tmp = cur->parent->गणनम् ;  tmp > idx ;  tmp -= 1)
 	    cur->parent->child[tmp] = cur->parent->child[tmp-1];
 
-      cur->parent->child[idx] = new_leaf;
-      cur->parent->count += 1;
+      cur->parent->child[idx] = new_पर्णम्;
+      cur->parent->गणनम् += 1;
 
-      if (cur->parent->count == node_width)
-	    split_node_(cur->parent);
+      यदि (cur->parent->गणनम् == ग्रन्थिः_विस्तारः)
+	    विभज_ग्रन्थिः(cur->parent);
 
-      return new_leaf;
+      प्रत्यागम new_पर्णम्;
 }
 
 
@@ -254,145 +254,145 @@ static struct tree_node_* split_leaf_(struct tree_node_*cur)
  * true.
  */
 
-symbol_value_t symbol_table_s::find_value_(struct tree_node_*cur,
-					   const char*key, symbol_value_t val,
-					   bool force_flag)
+चिह्नम्_मानम्_t चिह्नम्_सारणी_s::find_मानम्(संरचना वृक्ष_ग्रन्थिः*cur,
+					   ध्रुव वर्ण*कुञ्चिका, चिह्नम्_मानम्_t val,
+					   तार्किक force_flag)
 {
-      if (cur->leaf_flag) {
+      यदि (cur->पर्णम्_flag) {
 
-	    unsigned idx = 0;
-	    for (;;) {
+	    अचिह्नित idx = 0;
+	    प्रति (;;) {
 		    /* If we run out of keys in the leaf, then add
 		       this at the end of the leaf. */
-		  if (idx == cur->count) {
-			cur->leaf[idx].key = key_strdup_(key);
-			cur->leaf[idx].val = val;
-			cur->count += 1;
-			if (cur->count == leaf_width)
-			      split_leaf_(cur);
+		  यदि (idx == cur->गणनम्) {
+			cur->पर्णम्[idx].कुञ्चिका = कुञ्चिका_strdup(कुञ्चिका);
+			cur->पर्णम्[idx].val = val;
+			cur->गणनम् += 1;
+			यदि (cur->गणनम् == पर्णम्_विस्तारः)
+			      विभज_पर्णम्(cur);
 
-			return val;
+			प्रत्यागम val;
 		  }
 
-		  int rc = strcmp(key, cur->leaf[idx].key);
+		  पूर्णाङ्क rc = वाक्यं_तुलय(कुञ्चिका, cur->पर्णम्[idx].कुञ्चिका);
 
 		    /* If we found the key already in the table, then
 		       set the new value and break. */
-		  if (rc == 0) {
-			if (force_flag)
-			      cur->leaf[idx].val = val;
-			return cur->leaf[idx].val;
+		  यदि (rc == 0) {
+			यदि (force_flag)
+			      cur->पर्णम्[idx].val = val;
+			प्रत्यागम cur->पर्णम्[idx].val;
 		  }
 
 		    /* If this key goes before the current key, then
 		       push all the following entries back and add
 		       this key here. */
-		  if (rc < 0) {
-			for (unsigned tmp = cur->count; tmp > idx; tmp -= 1)
-			      cur->leaf[tmp] = cur->leaf[tmp-1];
+		  यदि (rc < 0) {
+			प्रति (अचिह्नित tmp = cur->गणनम्; tmp > idx; tmp -= 1)
+			      cur->पर्णम्[tmp] = cur->पर्णम्[tmp-1];
 
-			cur->leaf[idx].key = key_strdup_(key);
-			cur->leaf[idx].val = val;
-			cur->count += 1;
-			if (cur->count == leaf_width)
-			      split_leaf_(cur);
+			cur->पर्णम्[idx].कुञ्चिका = कुञ्चिका_strdup(कुञ्चिका);
+			cur->पर्णम्[idx].val = val;
+			cur->गणनम् += 1;
+			यदि (cur->गणनम् == पर्णम्_विस्तारः)
+			      विभज_पर्णम्(cur);
 
-			return val;
+			प्रत्यागम val;
 		  }
 
 		  idx += 1;
 	    }
 
-      } else {
+      } अन्यथा {
 	      /* Do a binary search within the inner node. */
-	    unsigned min = 0;
-	    unsigned max = cur->count;
-	    unsigned idx = max/2;
-	    for (;;) {
-		  int rc = strcmp(key, node_last_key(cur->child[idx]));
-		  if (rc == 0) {
-			return find_value_(cur->child[idx],
-					   key, val, force_flag);
+	    अचिह्नित min = 0;
+	    अचिह्नित max = cur->गणनम्;
+	    अचिह्नित idx = max/2;
+	    प्रति (;;) {
+		  पूर्णाङ्क rc = वाक्यं_तुलय(कुञ्चिका, ग्रन्थिः_चरमः_कुञ्चिका(cur->child[idx]));
+		  यदि (rc == 0) {
+			प्रत्यागम find_मानम्(cur->child[idx],
+					   कुञ्चिका, val, force_flag);
 		  }
 
-		  if (rc > 0) {
+		  यदि (rc > 0) {
 			min = idx + 1;
-			if (min == cur->count)
-			      return find_value_(cur->child[idx],
-						 key, val, force_flag);
-			if (min == max)
-			      return find_value_(cur->child[max],
-						 key, val, force_flag);
+			यदि (min == cur->गणनम्)
+			      प्रत्यागम find_मानम्(cur->child[idx],
+						 कुञ्चिका, val, force_flag);
+			यदि (min == max)
+			      प्रत्यागम find_मानम्(cur->child[max],
+						 कुञ्चिका, val, force_flag);
 
 			idx = min + (max-min)/2;
 
-		  } else  {
+		  } अन्यथा  {
 			max = idx;
-			if (idx == min)
-			      return find_value_(cur->child[idx],
-						 key, val, force_flag);
+			यदि (idx == min)
+			      प्रत्यागम find_मानम्(cur->child[idx],
+						 कुञ्चिका, val, force_flag);
 			idx = min + (max-min)/2;
 		  }
 	    }
       }
 
-      assert(0);
-      { symbol_value_t tmp;
+      प्रतिज्ञा(0);
+      { चिह्नम्_मानम्_t tmp;
         tmp.ptr = 0;
-        return tmp;
+        प्रत्यागम tmp;
       }
 }
 
-void symbol_table_s::sym_set_value(const char*key, symbol_value_t val)
+शून्य चिह्नम्_सारणी_s::sym_समुच्चयः_मानम्(ध्रुव वर्ण*कुञ्चिका, चिह्नम्_मानम्_t val)
 {
-      if (root->count == 0) {
+      यदि (मूलम्->गणनम् == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
-	    cur->leaf_flag = true;
-	    cur->parent = root;
-	    cur->count = 1;
-	    cur->leaf[0].key = key_strdup_(key);
-	    cur->leaf[0].val = val;
+	    संरचना वृक्ष_ग्रन्थिः*cur = नूतन संरचना वृक्ष_ग्रन्थिः;
+	    cur->पर्णम्_flag = सत्य;
+	    cur->parent = मूलम्;
+	    cur->गणनम् = 1;
+	    cur->पर्णम्[0].कुञ्चिका = कुञ्चिका_strdup(कुञ्चिका);
+	    cur->पर्णम्[0].val = val;
 
-	    root->count = 1;
-	    root->child[0] = cur;
-      } else {
-	    find_value_(root, key, val, true);
+	    मूलम्->गणनम् = 1;
+	    मूलम्->child[0] = cur;
+      } अन्यथा {
+	    find_मानम्(मूलम्, कुञ्चिका, val, सत्य);
       }
 }
 
-symbol_value_t symbol_table_s::sym_get_value(const char*key)
+चिह्नम्_मानम्_t चिह्नम्_सारणी_s::sym_get_मानम्(ध्रुव वर्ण*कुञ्चिका)
 {
-      symbol_value_t def;
+      चिह्नम्_मानम्_t def;
       def.ptr = 0;
 
-      if (root->count == 0) {
+      यदि (मूलम्->गणनम् == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
-	    cur->leaf_flag = true;
-	    cur->parent = root;
-	    cur->count = 1;
-	    cur->leaf[0].key = key_strdup_(key);
-	    cur->leaf[0].val = def;
+	    संरचना वृक्ष_ग्रन्थिः*cur = नूतन संरचना वृक्ष_ग्रन्थिः;
+	    cur->पर्णम्_flag = सत्य;
+	    cur->parent = मूलम्;
+	    cur->गणनम् = 1;
+	    cur->पर्णम्[0].कुञ्चिका = कुञ्चिका_strdup(कुञ्चिका);
+	    cur->पर्णम्[0].val = def;
 
-	    root->count = 1;
-	    root->child[0] = cur;
-	    return cur->leaf[0].val;
-      } else {
-	    return find_value_(root, key, def, false);
+	    मूलम्->गणनम् = 1;
+	    मूलम्->child[0] = cur;
+	    प्रत्यागम cur->पर्णम्[0].val;
+      } अन्यथा {
+	    प्रत्यागम find_मानम्(मूलम्, कुञ्चिका, def, असत्य);
       }
 }
 
-symbol_table_s::~symbol_table_s()
+चिह्नम्_सारणी_s::~चिह्नम्_सारणी_s()
 {
-      delete_symbol_node(root);
-      while (str_chunk) {
-	    key_strings*tmp = str_chunk;
-	    str_chunk = tmp->next;
-	    delete tmp;
+      delete_चिह्नम्_ग्रन्थिः(मूलम्);
+      यावत् (str_chunk) {
+	    कुञ्चिका_वाक्यानि*tmp = str_chunk;
+	    str_chunk = tmp->अग्र_2;
+	    विलोपय tmp;
       }
 }

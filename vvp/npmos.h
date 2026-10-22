@@ -1,5 +1,5 @@
-#ifndef IVL_npmos_H
-#define IVL_npmos_H
+#यदि_अपरिभाषितम् IVL_npmos_H
+#परिभाषय IVL_npmos_H
 /*
  * Copyright (c) 2005-2025 Stephen Williams (steve@icarus.com)
  *
@@ -43,34 +43,34 @@
  * flag to the constructor activates this inversion.
  */
 
-class vvp_fun_pmos_ : public vvp_net_fun_t {
+class vvp_fun_pmos_ : सार्वजनिक vvp_net_fun_t {
 
-    public:
+    सार्वजनिक:
       explicit vvp_fun_pmos_(bool enable_invert, bool resistive);
 
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      आभास शून्य recv_vec4(vvp_net_ptr_t पत्तनम्, ध्रुव vvp_vector4_t&bit,
                              vvp_context_t) override;
-      virtual void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-		                unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      virtual void recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-		                unsigned base, unsigned vwid) override;
-      virtual void recv_real(vvp_net_ptr_t port, double real,
+      आभास शून्य recv_vec4_pv(vvp_net_ptr_t ptr, ध्रुव vvp_vector4_t&bit,
+		                अचिह्नित आधारः, अचिह्नित vwid, vvp_context_t ctx) override;
+      आभास शून्य recv_vec8_pv(vvp_net_ptr_t ptr, ध्रुव vvp_vector8_t&bit,
+		                अचिह्नित आधारः, अचिह्नित vwid) override;
+      आभास शून्य recv_real(vvp_net_ptr_t पत्तनम्, द्विगुण real,
                              vvp_context_t ctx) override;
 
-    protected:
-      void generate_output_(vvp_net_ptr_t port);
+    रक्षित:
+      शून्य generate_output_(vvp_net_ptr_t पत्तनम्);
 
       vvp_vector8_t bit_;
       vvp_vector4_t en_;
       bool inv_en_, resistive_;
 };
 
-class vvp_fun_pmos  : public vvp_fun_pmos_ {
+class vvp_fun_pmos  : सार्वजनिक vvp_fun_pmos_ {
 
-    public:
+    सार्वजनिक:
       explicit vvp_fun_pmos(bool enable_invert);
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      आभास शून्य recv_vec8(vvp_net_ptr_t पत्तनम्, ध्रुव vvp_vector8_t&bit) override;
 };
 
 /*
@@ -78,12 +78,12 @@ class vvp_fun_pmos  : public vvp_fun_pmos_ {
  * only difference is that the input strength is reduced as it passes
  * through the device.
  */
-class vvp_fun_rpmos  : public vvp_fun_pmos_ {
+class vvp_fun_rpmos  : सार्वजनिक vvp_fun_pmos_ {
 
-    public:
+    सार्वजनिक:
       explicit vvp_fun_rpmos(bool enable_invert);
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      आभास शून्य recv_vec8(vvp_net_ptr_t पत्तनम्, ध्रुव vvp_vector8_t&bit) override;
 };
 
 /*
@@ -107,21 +107,21 @@ class vvp_fun_rpmos  : public vvp_fun_pmos_ {
  *    H | 1 x x
  */
 
-class vvp_fun_cmos_ : public vvp_net_fun_t {
-    public:
+class vvp_fun_cmos_ : सार्वजनिक vvp_net_fun_t {
+    सार्वजनिक:
       explicit vvp_fun_cmos_(bool resistive);
 
-      virtual void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      आभास शून्य recv_vec4(vvp_net_ptr_t पत्तनम्, ध्रुव vvp_vector4_t&bit,
                              vvp_context_t) override;
-      virtual void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-                                unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      virtual void recv_vec8_pv(vvp_net_ptr_t ptr, const vvp_vector8_t&bit,
-                              unsigned base, unsigned vwid) override;
-      virtual void recv_real(vvp_net_ptr_t port, double real,
+      आभास शून्य recv_vec4_pv(vvp_net_ptr_t ptr, ध्रुव vvp_vector4_t&bit,
+                                अचिह्नित आधारः, अचिह्नित vwid, vvp_context_t ctx) override;
+      आभास शून्य recv_vec8_pv(vvp_net_ptr_t ptr, ध्रुव vvp_vector8_t&bit,
+                              अचिह्नित आधारः, अचिह्नित vwid) override;
+      आभास शून्य recv_real(vvp_net_ptr_t पत्तनम्, द्विगुण real,
                              vvp_context_t) override;
 
-    protected:
-      void generate_output_(vvp_net_ptr_t port);
+    रक्षित:
+      शून्य generate_output_(vvp_net_ptr_t पत्तनम्);
 
       vvp_vector8_t bit_;
       vvp_vector4_t n_en_;
@@ -129,18 +129,18 @@ class vvp_fun_cmos_ : public vvp_net_fun_t {
       bool resistive_;
 };
 
-class vvp_fun_cmos : public vvp_fun_cmos_ {
-    public:
+class vvp_fun_cmos : सार्वजनिक vvp_fun_cmos_ {
+    सार्वजनिक:
       explicit vvp_fun_cmos();
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      आभास शून्य recv_vec8(vvp_net_ptr_t पत्तनम्, ध्रुव vvp_vector8_t&bit) override;
 };
 
-class vvp_fun_rcmos : public vvp_fun_cmos_ {
-    public:
+class vvp_fun_rcmos : सार्वजनिक vvp_fun_cmos_ {
+    सार्वजनिक:
       explicit vvp_fun_rcmos();
 
-      virtual void recv_vec8(vvp_net_ptr_t port, const vvp_vector8_t&bit) override;
+      आभास शून्य recv_vec8(vvp_net_ptr_t पत्तनम्, ध्रुव vvp_vector8_t&bit) override;
 };
 
-#endif /* IVL_npmos_H */
+#यदि_अन्तः /* IVL_npmos_H */

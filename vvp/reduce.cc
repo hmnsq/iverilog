@@ -31,60 +31,60 @@
  * base class. This can be used in both statically and automatically
  * allocated scopes, as bits_ is only used for temporary storage.
  */
-class vvp_reduce_base : public vvp_net_fun_t {
+वर्ग vvp_reduce_आधारः : सार्वजनिक vvp_net_fun_t {
 
-    public:
-      vvp_reduce_base();
-      virtual ~vvp_reduce_base() override;
+    सार्वजनिक:
+      vvp_reduce_आधारः();
+      आभास ~vvp_reduce_आधारः() override;
 
-      void recv_vec4(vvp_net_ptr_t prt, const vvp_vector4_t&bit,
+      शून्य recv_vec4(vvp_net_ptr_t prt, ध्रुव vvp_vector4_t&bit,
                      vvp_context_t context) override;
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-			unsigned base, unsigned vwid, vvp_context_t context) override;
+      शून्य recv_vec4_pv(vvp_net_ptr_t ptr, ध्रुव vvp_vector4_t&bit,
+			अचिह्नित आधारः, अचिह्नित vwid, vvp_context_t context) override;
 
-      virtual vvp_bit4_t calculate_result() const =0;
+      आभास vvp_bit4_t calculate_परिणाम() ध्रुव =0;
 
-    protected:
-      vvp_vector4_t bits_;
+    रक्षित:
+      vvp_vector4_t द्वयङ्काः_2;
 };
 
-vvp_reduce_base::vvp_reduce_base()
+vvp_reduce_आधारः::vvp_reduce_आधारः()
 {
 }
 
-vvp_reduce_base::~vvp_reduce_base()
+vvp_reduce_आधारः::~vvp_reduce_आधारः()
 {
 }
 
-void vvp_reduce_base::recv_vec4(vvp_net_ptr_t prt, const vvp_vector4_t&bit,
+शून्य vvp_reduce_आधारः::recv_vec4(vvp_net_ptr_t prt, ध्रुव vvp_vector4_t&bit,
                                 vvp_context_t context)
 {
-      bits_ = bit;
-      vvp_bit4_t res =  calculate_result();
+      द्वयङ्काः_2 = bit;
+      vvp_bit4_t res =  calculate_परिणाम();
       vvp_vector4_t rv (1, res);
       prt.ptr()->send_vec4(rv, context);
 }
 
-void vvp_reduce_base::recv_vec4_pv(vvp_net_ptr_t prt, const vvp_vector4_t&bit,
-				   unsigned base, unsigned vwid, vvp_context_t context)
+शून्य vvp_reduce_आधारः::recv_vec4_pv(vvp_net_ptr_t prt, ध्रुव vvp_vector4_t&bit,
+				   अचिह्नित आधारः, अचिह्नित vwid, vvp_context_t context)
 {
-      if (bits_.size() == 0) {
-	    bits_ = vvp_vector4_t(vwid);
+      यदि (द्वयङ्काः_2.size() == 0) {
+	    द्वयङ्काः_2 = vvp_vector4_t(vwid);
       }
-      assert(bits_.size() == vwid);
+      प्रतिज्ञा(द्वयङ्काः_2.size() == vwid);
 
-      bits_.set_vec(base, bit);
-      vvp_bit4_t res = calculate_result();
+      द्वयङ्काः_2.समुच्चयः_vec(आधारः, bit);
+      vvp_bit4_t res = calculate_परिणाम();
       vvp_vector4_t rv (1, res);
       prt.ptr()->send_vec4(rv, context);
 }
 
-class vvp_reduce_and  : public vvp_reduce_base {
+वर्ग vvp_reduce_and  : सार्वजनिक vvp_reduce_आधारः {
 
-    public:
+    सार्वजनिक:
       vvp_reduce_and();
       ~vvp_reduce_and() override;
-      vvp_bit4_t calculate_result() const override;
+      vvp_bit4_t calculate_परिणाम() ध्रुव override;
 };
 
 vvp_reduce_and::vvp_reduce_and()
@@ -95,17 +95,17 @@ vvp_reduce_and::~vvp_reduce_and()
 {
 }
 
-vvp_bit4_t vvp_reduce_and::calculate_result() const
+vvp_bit4_t vvp_reduce_and::calculate_परिणाम() ध्रुव
 {
-      return bits_.reduce_and();
+      प्रत्यागम द्वयङ्काः_2.reduce_and();
 }
 
-class vvp_reduce_or  : public vvp_reduce_base {
+वर्ग vvp_reduce_or  : सार्वजनिक vvp_reduce_आधारः {
 
-    public:
+    सार्वजनिक:
       vvp_reduce_or();
       ~vvp_reduce_or() override;
-      vvp_bit4_t calculate_result() const override;
+      vvp_bit4_t calculate_परिणाम() ध्रुव override;
 };
 
 vvp_reduce_or::vvp_reduce_or()
@@ -116,17 +116,17 @@ vvp_reduce_or::~vvp_reduce_or()
 {
 }
 
-vvp_bit4_t vvp_reduce_or::calculate_result() const
+vvp_bit4_t vvp_reduce_or::calculate_परिणाम() ध्रुव
 {
-      return bits_.reduce_or();
+      प्रत्यागम द्वयङ्काः_2.reduce_or();
 }
 
-class vvp_reduce_xor  : public vvp_reduce_base {
+वर्ग vvp_reduce_xor  : सार्वजनिक vvp_reduce_आधारः {
 
-    public:
+    सार्वजनिक:
       vvp_reduce_xor();
       ~vvp_reduce_xor() override;
-      vvp_bit4_t calculate_result() const override;
+      vvp_bit4_t calculate_परिणाम() ध्रुव override;
 };
 
 vvp_reduce_xor::vvp_reduce_xor()
@@ -137,17 +137,17 @@ vvp_reduce_xor::~vvp_reduce_xor()
 {
 }
 
-vvp_bit4_t vvp_reduce_xor::calculate_result() const
+vvp_bit4_t vvp_reduce_xor::calculate_परिणाम() ध्रुव
 {
-      return bits_.reduce_xor();
+      प्रत्यागम द्वयङ्काः_2.reduce_xor();
 }
 
-class vvp_reduce_nand  : public vvp_reduce_base {
+वर्ग vvp_reduce_nand  : सार्वजनिक vvp_reduce_आधारः {
 
-    public:
+    सार्वजनिक:
       vvp_reduce_nand();
       ~vvp_reduce_nand() override;
-      vvp_bit4_t calculate_result() const override;
+      vvp_bit4_t calculate_परिणाम() ध्रुव override;
 };
 
 vvp_reduce_nand::vvp_reduce_nand()
@@ -158,17 +158,17 @@ vvp_reduce_nand::~vvp_reduce_nand()
 {
 }
 
-vvp_bit4_t vvp_reduce_nand::calculate_result() const
+vvp_bit4_t vvp_reduce_nand::calculate_परिणाम() ध्रुव
 {
-      return ~bits_.reduce_and();
+      प्रत्यागम ~द्वयङ्काः_2.reduce_and();
 }
 
-class vvp_reduce_nor  : public vvp_reduce_base {
+वर्ग vvp_reduce_nor  : सार्वजनिक vvp_reduce_आधारः {
 
-    public:
+    सार्वजनिक:
       vvp_reduce_nor();
       ~vvp_reduce_nor() override;
-      vvp_bit4_t calculate_result() const override;
+      vvp_bit4_t calculate_परिणाम() ध्रुव override;
 };
 
 vvp_reduce_nor::vvp_reduce_nor()
@@ -179,17 +179,17 @@ vvp_reduce_nor::~vvp_reduce_nor()
 {
 }
 
-vvp_bit4_t vvp_reduce_nor::calculate_result() const
+vvp_bit4_t vvp_reduce_nor::calculate_परिणाम() ध्रुव
 {
-      return ~bits_.reduce_or();
+      प्रत्यागम ~द्वयङ्काः_2.reduce_or();
 }
 
-class vvp_reduce_xnor  : public vvp_reduce_base {
+वर्ग vvp_reduce_xnor  : सार्वजनिक vvp_reduce_आधारः {
 
-    public:
+    सार्वजनिक:
       vvp_reduce_xnor();
       ~vvp_reduce_xnor() override;
-      vvp_bit4_t calculate_result() const override;
+      vvp_bit4_t calculate_परिणाम() ध्रुव override;
 };
 
 vvp_reduce_xnor::vvp_reduce_xnor()
@@ -200,54 +200,54 @@ vvp_reduce_xnor::~vvp_reduce_xnor()
 {
 }
 
-vvp_bit4_t vvp_reduce_xnor::calculate_result() const
+vvp_bit4_t vvp_reduce_xnor::calculate_परिणाम() ध्रुव
 {
-      return ~bits_.reduce_xor();
+      प्रत्यागम ~द्वयङ्काः_2.reduce_xor();
 }
 
-static void make_reduce(char*label, vvp_net_fun_t*red, const struct symb_s&arg)
+स्थिर शून्य make_reduce(वर्ण*label, vvp_net_fun_t*red, ध्रुव संरचना symb_s&arg)
 {
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_net_t*ptr = नूतन vvp_net_t;
       ptr->fun = red;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_चिह्नम्(label, ptr);
+      मुक्त(label);
 
-      input_connect(ptr, 0, arg.text);
+      निवेशः_connect(ptr, 0, arg.text);
 }
 
-void compile_reduce_and(char*label, const struct symb_s&arg)
+शून्य compile_reduce_and(वर्ण*label, ध्रुव संरचना symb_s&arg)
 {
-      vvp_reduce_and* reduce = new vvp_reduce_and;
+      vvp_reduce_and* reduce = नूतन vvp_reduce_and;
       make_reduce(label, reduce, arg);
 }
 
-void compile_reduce_or(char*label, const struct symb_s&arg)
+शून्य compile_reduce_or(वर्ण*label, ध्रुव संरचना symb_s&arg)
 {
-      vvp_reduce_or* reduce = new vvp_reduce_or;
+      vvp_reduce_or* reduce = नूतन vvp_reduce_or;
       make_reduce(label, reduce, arg);
 }
 
-void compile_reduce_xor(char*label, const struct symb_s&arg)
+शून्य compile_reduce_xor(वर्ण*label, ध्रुव संरचना symb_s&arg)
 {
-      vvp_reduce_xor* reduce = new vvp_reduce_xor;
+      vvp_reduce_xor* reduce = नूतन vvp_reduce_xor;
       make_reduce(label, reduce, arg);
 }
 
-void compile_reduce_nand(char*label, const struct symb_s&arg)
+शून्य compile_reduce_nand(वर्ण*label, ध्रुव संरचना symb_s&arg)
 {
-      vvp_reduce_nand* reduce = new vvp_reduce_nand;
+      vvp_reduce_nand* reduce = नूतन vvp_reduce_nand;
       make_reduce(label, reduce, arg);
 }
 
-void compile_reduce_nor(char*label, const struct symb_s&arg)
+शून्य compile_reduce_nor(वर्ण*label, ध्रुव संरचना symb_s&arg)
 {
-      vvp_reduce_nor* reduce = new vvp_reduce_nor;
+      vvp_reduce_nor* reduce = नूतन vvp_reduce_nor;
       make_reduce(label, reduce, arg);
 }
 
-void compile_reduce_xnor(char*label, const struct symb_s&arg)
+शून्य compile_reduce_xnor(वर्ण*label, ध्रुव संरचना symb_s&arg)
 {
-      vvp_reduce_xnor* reduce = new vvp_reduce_xnor;
+      vvp_reduce_xnor* reduce = नूतन vvp_reduce_xnor;
       make_reduce(label, reduce, arg);
 }

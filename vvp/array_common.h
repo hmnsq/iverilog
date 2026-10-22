@@ -19,32 +19,32 @@
  *    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef ARRAY_COMMON_H
-#define ARRAY_COMMON_H
+#यदि_अपरिभाषितम् ARRAY_COMMON_H
+#परिभाषय ARRAY_COMMON_H
 
-#include "vpi_priv.h"
+#अन्तर्भाव "vpi_priv.h"
 
-struct __vpiArrayIterator : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+संरचना __vpiArrayIterator : सार्वजनिक __vpiHandle {
+      पूर्णाङ्क get_type_संहिता(शून्य) ध्रुव override
+      { प्रत्यागम vpiIterator; }
 
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+      vpiHandle vpi_सूचकांक(पूर्णाङ्क idx) override;
+      free_object_fun_t free_object_fun(शून्य) override;
 
-      struct __vpiArrayBase*array;
-      unsigned next;
+      संरचना __vpiArrayBase*array;
+      अचिह्नित अग्र_2;
 };
 
-struct __vpiArrayIndex : public __vpiHandle {
-      int get_type_code(void) const override
-      { return vpiIterator; }
+संरचना __vpiArrayIndex : सार्वजनिक __vpiHandle {
+      पूर्णाङ्क get_type_संहिता(शून्य) ध्रुव override
+      { प्रत्यागम vpiIterator; }
 
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
-      free_object_fun_t free_object_fun(void) override;
+      vpiHandle vpi_iterate(पूर्णाङ्क संहिता) override;
+      vpiHandle vpi_सूचकांक(पूर्णाङ्क idx) override;
+      free_object_fun_t free_object_fun(शून्य) override;
 
-      __vpiDecConst *index;
-      unsigned done;
+      __vpiDecConst *सूचकांक;
+      अचिह्नित समाप्तम्;
 };
 
 /*
@@ -68,31 +68,31 @@ struct __vpiArrayIndex : public __vpiHandle {
  * of vpi functions is bound to the same structure. All the details
  * for the word also apply when treating this as an index.
  */
-struct __vpiArrayWord {
-      struct as_word_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiMemoryWord; }
-	    int vpi_get(int code) override;
-	    char*vpi_get_str(int code) override;
-	    void vpi_get_value(p_vpi_value vp) override;
-	    vpiHandle vpi_put_value(p_vpi_value vp, int flags) override;
-	    vpiHandle vpi_handle(int code) override;
+संरचना __vpiArrayWord {
+      संरचना as_word_t : सार्वजनिक __vpiHandle {
+	    पूर्णाङ्क get_type_संहिता(शून्य) ध्रुव override { प्रत्यागम vpi_स्मृतिः_Word; }
+	    पूर्णाङ्क vpi_get(पूर्णाङ्क संहिता) override;
+	    वर्ण*vpi_get_str(पूर्णाङ्क संहिता) override;
+	    शून्य vpi_get_मानम्(p_vpi_मानम् vp) override;
+	    vpiHandle vpi_put_मानम्(p_vpi_मानम् vp, पूर्णाङ्क flags) override;
+	    vpiHandle vpi_handle(पूर्णाङ्क संहिता) override;
       } as_word;
 
-      struct as_index_t : public __vpiHandle {
-	    int get_type_code(void) const override { return vpiIndex; }
-	    void vpi_get_value(p_vpi_value val) override;
-      } as_index;
+      संरचना as_सूचकांक_t : सार्वजनिक __vpiHandle {
+	    पूर्णाङ्क get_type_संहिता(शून्य) ध्रुव override { प्रत्यागम vpi_सूचकांक_2; }
+	    शून्य vpi_get_मानम्(p_vpi_मानम् val) override;
+      } as_सूचकांक;
 
-      union {
-	    struct __vpiArrayBase*parent;
-	    struct __vpiArrayWord*word0;
+      सङ्घ {
+	    संरचना __vpiArrayBase*parent;
+	    संरचना __vpiArrayWord*word0;
       };
 
-      inline unsigned get_index() const { return this - word0; }
-      inline struct __vpiArrayBase*get_parent() const { return (word0 - 1)->parent; }
+      अन्तःस्थ अचिह्नित get_सूचकांक() ध्रुव { प्रत्यागम this - word0; }
+      अन्तःस्थ संरचना __vpiArrayBase*get_parent() ध्रुव { प्रत्यागम (word0 - 1)->parent; }
 };
 
-struct __vpiArrayWord*array_var_word_from_handle(vpiHandle ref);
-struct __vpiArrayWord*array_var_index_from_handle(vpiHandle ref);
+संरचना __vpiArrayWord*array_var_word_from_handle(vpiHandle ref);
+संरचना __vpiArrayWord*array_var_सूचकांक_from_handle(vpiHandle ref);
 
-#endif /* ARRAY_COMMON_H */
+#यदि_अन्तः /* ARRAY_COMMON_H */

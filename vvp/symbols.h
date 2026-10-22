@@ -1,5 +1,5 @@
-#ifndef IVL_symbols_H
-#define IVL_symbols_H
+#यदि_अपरिभाषितम् IVL_symbols_H
+#परिभाषय IVL_symbols_H
 /*
  * Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)
  *
@@ -43,41 +43,41 @@
  * try to look inside. The actual implementation is given in the
  * symbols.cc source file.
  */
-typedef class symbol_table_s *symbol_table_t;
+प्रकारनिर्देश class चिह्नम्_सारणी_s *चिह्नम्_सारणी_t;
 
-typedef struct symbol_value_s {
-      union {
+प्रकारनिर्देश संरचना चिह्नम्_मानम्_s {
+      सङ्घ {
 	    vvp_net_t*net;
-	    void*ptr;
+	    शून्य*ptr;
       };
-} symbol_value_t;
+} चिह्नम्_मानम्_t;
 
 
-class symbol_table_s {
-    public:
-      explicit symbol_table_s();
-      virtual ~symbol_table_s();
-      symbol_table_s(const symbol_table_s&) = delete;
-      symbol_table_s& operator=(const symbol_table_s&) = delete;
+class चिह्नम्_सारणी_s {
+    सार्वजनिक:
+      explicit चिह्नम्_सारणी_s();
+      आभास ~चिह्नम्_सारणी_s();
+      चिह्नम्_सारणी_s(ध्रुव चिह्नम्_सारणी_s&) = delete;
+      चिह्नम्_सारणी_s& संक्रियकः=(ध्रुव चिह्नम्_सारणी_s&) = delete;
 
 	// This method locates the value in the symbol table and sets its
 	// value. If the key doesn't yet exist, create it.
-      void sym_set_value(const char*key, symbol_value_t val);
+      शून्य sym_समुच्चयः_मानम्(ध्रुव वर्ण*कुञ्चिका, चिह्नम्_मानम्_t val);
 
 	// This method locates the value in the symbol table and returns
 	// it. If the value does not exist, create it, initialize it with
 	// zero and return the zero value.
-      symbol_value_t sym_get_value(const char*key);
+      चिह्नम्_मानम्_t sym_get_मानम्(ध्रुव वर्ण*कुञ्चिका);
 
-    private:
-      struct tree_node_*root;
-      struct key_strings*str_chunk;
-      unsigned str_used;
+    गुप्त:
+      संरचना वृक्ष_ग्रन्थिः*मूलम्;
+      संरचना कुञ्चिका_वाक्यानि*str_chunk;
+      अचिह्नित str_प्रयुक्तम्;
 
-      symbol_value_t find_value_(struct tree_node_*cur,
-				 const char*key, symbol_value_t val,
+      चिह्नम्_मानम्_t find_मानम्(संरचना वृक्ष_ग्रन्थिः*cur,
+				 ध्रुव वर्ण*कुञ्चिका, चिह्नम्_मानम्_t val,
 				 bool force_flag);
-      char*key_strdup_(const char*str);
+      वर्ण*कुञ्चिका_strdup(ध्रुव वर्ण*str);
 };
 
 /*
@@ -87,32 +87,32 @@ class symbol_table_s {
  * the delete_symbol_table method will delete the table, including all
  * the space for the keys.
  */
-inline symbol_table_t new_symbol_table(void) { return new symbol_table_s; }
-inline void delete_symbol_table(symbol_table_t tbl) { delete tbl; }
+अन्तःस्थ चिह्नम्_सारणी_t new_चिह्नम्_सारणी(शून्य) { प्रत्यागम new चिह्नम्_सारणी_s; }
+अन्तःस्थ शून्य delete_चिह्नम्_सारणी(चिह्नम्_सारणी_t tbl) { delete tbl; }
 
 // These are obsolete, and here only to support older code.
-inline void sym_set_value(symbol_table_t tbl, const char*key, symbol_value_t val)
-{ tbl->sym_set_value(key, val); }
+अन्तःस्थ शून्य sym_समुच्चयः_मानम्(चिह्नम्_सारणी_t tbl, ध्रुव वर्ण*कुञ्चिका, चिह्नम्_मानम्_t val)
+{ tbl->sym_समुच्चयः_मानम्(कुञ्चिका, val); }
 
-inline symbol_value_t sym_get_value(symbol_table_t tbl, const char*key)
-{ return tbl->sym_get_value(key); }
+अन्तःस्थ चिह्नम्_मानम्_t sym_get_मानम्(चिह्नम्_सारणी_t tbl, ध्रुव वर्ण*कुञ्चिका)
+{ प्रत्यागम tbl->sym_get_मानम्(कुञ्चिका); }
 
 /*
  * This template is a type-safe interface to the symbol table.
  */
-template <class T> class symbol_map_s : private symbol_table_s {
+प्रतिरूपम् <class T> class चिह्नम्_map_s : गुप्त चिह्नम्_सारणी_s {
 
-    public:
-      void sym_set_value(const char*key, T*val)
-      { symbol_value_t tmp;
+    सार्वजनिक:
+      शून्य sym_समुच्चयः_मानम्(ध्रुव वर्ण*कुञ्चिका, T*val)
+      { चिह्नम्_मानम्_t tmp;
 	tmp.ptr = val;
-	symbol_table_s::sym_set_value(key, tmp);
+	चिह्नम्_सारणी_s::sym_समुच्चयः_मानम्(कुञ्चिका, tmp);
       }
 
-      T* sym_get_value(const char*key)
-      { symbol_value_t val = symbol_table_s::sym_get_value(key);
-	return reinterpret_cast<T*>(val.ptr);
+      T* sym_get_मानम्(ध्रुव वर्ण*कुञ्चिका)
+      { चिह्नम्_मानम्_t val = चिह्नम्_सारणी_s::sym_get_मानम्(कुञ्चिका);
+	प्रत्यागम reinterpret_cast<T*>(val.ptr);
       }
 };
 
-#endif /* IVL_symbols_H */
+#यदि_अन्तः /* IVL_symbols_H */

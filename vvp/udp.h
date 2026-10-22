@@ -1,5 +1,5 @@
-#ifndef IVL_udp_H
-#define IVL_udp_H
+#यदि_अपरिभाषितम् IVL_udp_H
+#परिभाषय IVL_udp_H
 /*
  * Copyright (c) 2005-2025 Stephen Williams (steve@icarus.com)
  *
@@ -25,32 +25,32 @@
 # include  "vvp_net.h"
 # include  "schedule.h"
 
-struct udp_levels_table;
+संरचना udp_स्तराः_सारणी;
 
-struct vvp_udp_s {
+संरचना vvp_udp_s {
 
-    public:
-      explicit vvp_udp_s(const char*label, char*name, unsigned ports,
+    सार्वजनिक:
+      explicit vvp_udp_s(ध्रुव वर्ण*label, वर्ण*name, अचिह्नित ports,
                          vvp_bit4_t init, bool type);
-      virtual ~vvp_udp_s();
+      आभास ~vvp_udp_s();
 
 	// Return the number of input ports for the defined UDP. This
 	// does *not* include the current output value for a
 	// sequential UDP.
-      unsigned port_count() const;
-      bool is_sequential() const { return seq_; };
-      char *name() { return name_; }
+      अचिह्नित पत्तनम्_गणनम्() ध्रुव;
+      bool is_sequential() ध्रुव { प्रत्यागम seq_; };
+      वर्ण *name() { प्रत्यागम name_; }
 
 	// Return the initial output value.
-      vvp_bit4_t get_init() const;
+      vvp_bit4_t get_init() ध्रुव;
 
-      virtual vvp_bit4_t calculate_output(const udp_levels_table&cur,
-					  const udp_levels_table&prev,
-					  vvp_bit4_t cur_out) =0;
+      आभास vvp_bit4_t calculate_output(ध्रुव udp_स्तराः_सारणी&cur,
+					  ध्रुव udp_स्तराः_सारणी&पूर्व,
+					  vvp_bit4_t cur_बहिर्गमनम्) =0;
 
-    private:
-      char *name_;
-      unsigned ports_;
+    गुप्त:
+      वर्ण *name_;
+      अचिह्नित ports_;
       vvp_bit4_t init_;
       bool seq_;
 };
@@ -104,33 +104,33 @@ struct vvp_udp_s {
  * Only 0, 1 and x characters are allowed in the output position.
  */
 
-struct udp_levels_table {
-      unsigned long mask0;
-      unsigned long mask1;
-      unsigned long maskx;
+संरचना udp_स्तराः_सारणी {
+      अचिह्नित दीर्घ mask0;
+      अचिह्नित दीर्घ mask1;
+      अचिह्नित दीर्घ maskx;
 };
-extern std::ostream& operator<< (std::ostream&o, const struct udp_levels_table&t);
+बाह्य std::ostream& संक्रियकः<< (std::ostream&o, ध्रुव संरचना udp_स्तराः_सारणी&t);
 
-class vvp_udp_comb_s : public vvp_udp_s {
+class vvp_udp_comb_s : सार्वजनिक vvp_udp_s {
 
-    public:
-      vvp_udp_comb_s(const char*label, char*name__, unsigned ports);
+    सार्वजनिक:
+      vvp_udp_comb_s(ध्रुव वर्ण*label, वर्ण*name__, अचिह्नित ports);
       ~vvp_udp_comb_s() override;
-      void compile_table(char**tab);
+      शून्य compile_सारणी(वर्ण**tab);
 
 	// Test the cur table with the compiled rows, and return the
 	// bit value that matches.
-      vvp_bit4_t test_levels(const udp_levels_table&cur);
+      vvp_bit4_t test_स्तराः(ध्रुव udp_स्तराः_सारणी&cur);
 
-      vvp_bit4_t calculate_output(const udp_levels_table&cur,
-				  const udp_levels_table&prev,
-				  vvp_bit4_t cur_out) override;
+      vvp_bit4_t calculate_output(ध्रुव udp_स्तराः_सारणी&cur,
+				  ध्रुव udp_स्तराः_सारणी&पूर्व,
+				  vvp_bit4_t cur_बहिर्गमनम्) override;
 
-    private:
+    गुप्त:
 	// Level sensitive rows of the device.
-      struct udp_levels_table*levels0_;
-      struct udp_levels_table*levels1_;
-      unsigned nlevels0_, nlevels1_;
+      संरचना udp_स्तराः_सारणी*levels0_;
+      संरचना udp_स्तराः_सारणी*levels1_;
+      अचिह्नित nlevels0_, nlevels1_;
 };
 
 /*
@@ -167,53 +167,53 @@ class vvp_udp_comb_s : public vvp_udp_s {
  * edge case, the mask* members give the final position and the
  * edge_mask* bits the initial position of the bit.
  */
-struct udp_edges_table {
-      unsigned long edge_position : 8;
-      unsigned long edge_mask0 : 1;
-      unsigned long edge_mask1 : 1;
-      unsigned long edge_maskx : 1;
-      unsigned long mask0;
-      unsigned long mask1;
-      unsigned long maskx;
+संरचना udp_धाराः_सारणी {
+      अचिह्नित दीर्घ edge_position : 8;
+      अचिह्नित दीर्घ edge_mask0 : 1;
+      अचिह्नित दीर्घ edge_mask1 : 1;
+      अचिह्नित दीर्घ edge_maskx : 1;
+      अचिह्नित दीर्घ mask0;
+      अचिह्नित दीर्घ mask1;
+      अचिह्नित दीर्घ maskx;
 };
 
-class vvp_udp_seq_s : public vvp_udp_s {
+class vvp_udp_seq_s : सार्वजनिक vvp_udp_s {
 
-    public:
-      vvp_udp_seq_s(const char*label, char*name__, unsigned ports, vvp_bit4_t init);
+    सार्वजनिक:
+      vvp_udp_seq_s(ध्रुव वर्ण*label, वर्ण*name__, अचिह्नित ports, vvp_bit4_t init);
       ~vvp_udp_seq_s() override;
 
-      void compile_table(char**tab);
+      शून्य compile_सारणी(वर्ण**tab);
 
-      vvp_bit4_t calculate_output(const udp_levels_table&cur,
-				  const udp_levels_table&prev,
-				  vvp_bit4_t cur_out) override;
+      vvp_bit4_t calculate_output(ध्रुव udp_स्तराः_सारणी&cur,
+				  ध्रुव udp_स्तराः_सारणी&पूर्व,
+				  vvp_bit4_t cur_बहिर्गमनम्) override;
 
-    private:
-      vvp_bit4_t test_levels_(const udp_levels_table&cur);
+    गुप्त:
+      vvp_bit4_t test_स्तराः_2(ध्रुव udp_स्तराः_सारणी&cur);
 
 	// Level sensitive rows of the device.
-      struct udp_levels_table*levels0_;
-      struct udp_levels_table*levels1_;
-      struct udp_levels_table*levelsx_;
-      struct udp_levels_table*levelsL_;
-      unsigned nlevels0_, nlevels1_, nlevelsx_, nlevelsL_;
+      संरचना udp_स्तराः_सारणी*levels0_;
+      संरचना udp_स्तराः_सारणी*levels1_;
+      संरचना udp_स्तराः_सारणी*levelsx_;
+      संरचना udp_स्तराः_सारणी*स्तराः_L;
+      अचिह्नित nlevels0_, nlevels1_, nlevelsx_, nlevelsL_;
 
-      vvp_bit4_t test_edges_(const udp_levels_table&cur,
-			     const udp_levels_table&prev);
+      vvp_bit4_t test_धाराः(ध्रुव udp_स्तराः_सारणी&cur,
+			     ध्रुव udp_स्तराः_सारणी&पूर्व);
 
 	// Edge sensitive rows of the device
-      struct udp_edges_table*edges0_;
-      struct udp_edges_table*edges1_;
-      struct udp_edges_table*edgesL_;
-      unsigned nedges0_, nedges1_, nedgesL_;
+      संरचना udp_धाराः_सारणी*edges0_;
+      संरचना udp_धाराः_सारणी*edges1_;
+      संरचना udp_धाराः_सारणी*धाराः_L;
+      अचिह्नित nedges0_, nedges1_, nedgesL_;
 
 };
 
 /*
  * This looks up a UDP definition from its LABEL.
  */
-struct vvp_udp_s *udp_find(const char *label);
+संरचना vvp_udp_s *udp_find(ध्रुव वर्ण *label);
 
 /*
  * The udp_fun_core is the core of the udp instance in the
@@ -222,20 +222,20 @@ struct vvp_udp_s *udp_find(const char *label);
  * the vvp_wide_fun_t objects and processes them to generate the
  * output to be sent.
  */
-class vvp_udp_fun_core  : public vvp_wide_fun_core, private vvp_gen_event_s {
+class vvp_udp_fun_core  : सार्वजनिक vvp_wide_fun_core, गुप्त vvp_gen_event_s {
 
-    public:
+    सार्वजनिक:
       vvp_udp_fun_core(vvp_net_t*net, vvp_udp_s*def);
       ~vvp_udp_fun_core() override;
 
-      void recv_vec4_from_inputs(unsigned) override;
+      शून्य recv_vec4_from_inputs(अचिह्नित) override;
 
-    private:
-      void run_run() override;
+    गुप्त:
+      शून्य सततम्_सततम्() override;
 
       vvp_udp_s*def_;
-      vvp_bit4_t cur_out_;
-      udp_levels_table current_;
+      vvp_bit4_t cur_बहिर्गमनम्_2;
+      udp_स्तराः_सारणी current_;
 };
 
-#endif /* IVL_udp_H */
+#यदि_अन्तः /* IVL_udp_H */

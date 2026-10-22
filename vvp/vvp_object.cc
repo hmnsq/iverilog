@@ -22,28 +22,28 @@
 # include  <iostream>
 # include  <typeinfo>
 
-using namespace std;
+उपयुज्य नामाकाश std;
 
-int vvp_object::total_active_cnt_ = 0;
+पूर्णाङ्क vvp_object::योग_सक्रिय_cnt = 0;
 
-void vvp_object::cleanup(void)
+शून्य vvp_object::cleanup(शून्य)
 {
 }
 
 vvp_object::~vvp_object()
 {
-      total_active_cnt_ -= 1;
+      योग_सक्रिय_cnt -= 1;
 }
 
-void vvp_object::shallow_copy(const vvp_object*)
+शून्य vvp_object::shallow_copy(ध्रुव vvp_object*)
 {
-      cerr << "XXXX shallow_copy(vvp_object_t) not implemented for " << typeid(*this).name() << endl;
-      assert(0);
+      cerr << "XXXX shallow_copy(vvp_object_t) not implemented for " << typeid(*एतत्).name() << पङ्क्त्यन्तः;
+      प्रतिज्ञा(0);
 }
 
-vvp_object* vvp_object::duplicate(void) const
+vvp_object* vvp_object::duplicate(शून्य) ध्रुव
 {
-      cerr << "XXXX duplicate() not implemented for " << typeid(*this).name() << endl;
-      assert(0);
-      return 0;
+      cerr << "XXXX duplicate() not implemented for " << typeid(*एतत्).name() << पङ्क्त्यन्तः;
+      प्रतिज्ञा(0);
+      प्रत्यागम 0;
 }

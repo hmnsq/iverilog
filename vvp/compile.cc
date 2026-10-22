@@ -38,13 +38,13 @@
 # include  <cstring>
 # include  <cassert>
 
-#ifdef __MINGW32__
-#include <windows.h>
-#endif
+#यदि_परिभाषितम् __MINGW32__
+#अन्तर्भाव <windows.h>
+#यदि_अन्तः
 
 # include  "ivl_alloc.h"
 
-unsigned compile_errors = 0;
+अचिह्नित compile_errors = 0;
 
 /*
  * The opcode table lists all the code mnemonics, along with their
@@ -57,19 +57,19 @@ unsigned compile_errors = 0;
  * The opcode_compare function is a helper for that lookup.
  */
 
-enum operand_e {
+गणना सङ्कार्यम्_e {
 	/* Place holder for unused operand */
       OA_NONE,
 	/* The operand is a number, an immediate unsigned integer */
-      OA_NUMBER,
+      OA_सङ्ख्या,
 	/* The operand is a pointer to an array. */
       OA_ARR_PTR,
 	/* The operand is a thread bit index or short integer */
       OA_BIT1,
       OA_BIT2,
 	/* The operand is a pointer to code space */
-      OA_CODE_PTR,
-      OA_CODE_PTR2,
+      OA_संहिता_PTR,
+      OA_संहिता_PTR2,
 	/* The operand is a variable or net pointer */
       OA_FUNC_PTR,
 	/* The operand is a second functor pointer */
@@ -80,351 +80,351 @@ enum operand_e {
       OA_STRING
 };
 
-struct opcode_table_s {
-      const char*mnemonic;
-      vvp_code_fun opcode;
+संरचना opcode_सारणी_s {
+      ध्रुव वर्ण*mnemonic;
+      vvp_संहिता_fun opcode;
 
-      unsigned argc;
-      enum operand_e argt[OPERAND_MAX];
+      अचिह्नित argc;
+      गणना सङ्कार्यम्_e argt[सङ्कार्यम्_MAX];
 };
 
-static const struct opcode_table_s opcode_table[] = {
-      { "%abs/wr", of_ABS_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%add",    of_ADD,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%add/wr", of_ADD_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%addi",   of_ADDI,   3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%alloc",  of_ALLOC,  1,  {OA_VPI_PTR,  OA_NONE,     OA_NONE} },
-      { "%and",    of_AND,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%and/r",  of_ANDR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%assign/ar",of_ASSIGN_AR,2,{OA_ARR_PTR,OA_BIT1,     OA_NONE} },
-      { "%assign/ar/d",of_ASSIGN_ARD,2,{OA_ARR_PTR,OA_BIT1,  OA_NONE} },
-      { "%assign/ar/e",of_ASSIGN_ARE,1,{OA_ARR_PTR,OA_NONE,  OA_NONE} },
-      { "%assign/vec4",      of_ASSIGN_VEC4,       2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%assign/vec4/a/d",  of_ASSIGN_VEC4_A_D,   3, {OA_ARR_PTR,  OA_BIT1, OA_BIT2} },
-      { "%assign/vec4/a/e",  of_ASSIGN_VEC4_A_E,   2, {OA_ARR_PTR,  OA_BIT1, OA_NONE} },
-      { "%assign/vec4/d",    of_ASSIGN_VEC4D,      2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%assign/vec4/e",    of_ASSIGN_VEC4E,      1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%assign/vec4/off/d",of_ASSIGN_VEC4_OFF_D, 3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
-      { "%assign/vec4/off/e",of_ASSIGN_VEC4_OFF_E, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%assign/wr",  of_ASSIGN_WR, 2,{OA_VPI_PTR, OA_BIT1, OA_NONE} },
-      { "%assign/wr/d",of_ASSIGN_WRD,2,{OA_VPI_PTR, OA_BIT1, OA_NONE} },
-      { "%assign/wr/e",of_ASSIGN_WRE,1,{OA_VPI_PTR, OA_NONE, OA_NONE} },
-      { "%blend",     of_BLEND,     0, {OA_NONE, OA_NONE, OA_NONE} },
-      { "%blend/str", of_BLEND_STR, 0, {OA_NONE, OA_NONE, OA_NONE} },
-      { "%blend/wr",  of_BLEND_WR,  0, {OA_NONE, OA_NONE, OA_NONE} },
-      { "%breakpoint", of_BREAKPOINT, 0,  {OA_NONE, OA_NONE, OA_NONE} },
-      { "%callf/obj",       of_CALLF_OBJ,       2,{OA_CODE_PTR2,OA_VPI_PTR, OA_NONE} },
-      { "%callf/real",      of_CALLF_REAL,      2,{OA_CODE_PTR2,OA_VPI_PTR, OA_NONE} },
-      { "%callf/str",       of_CALLF_STR,       2,{OA_CODE_PTR2,OA_VPI_PTR, OA_NONE} },
-      { "%callf/vec4",      of_CALLF_VEC4,      2,{OA_CODE_PTR2,OA_VPI_PTR, OA_NONE} },
-      { "%callf/void",      of_CALLF_VOID,      2,{OA_CODE_PTR2,OA_VPI_PTR, OA_NONE} },
-      { "%cassign/link",    of_CASSIGN_LINK,    2,{OA_FUNC_PTR,OA_FUNC_PTR2,OA_NONE} },
-      { "%cassign/vec4",    of_CASSIGN_VEC4,    1,{OA_FUNC_PTR,OA_NONE,     OA_NONE} },
-      { "%cassign/vec4/off",of_CASSIGN_VEC4_OFF,2,{OA_FUNC_PTR,OA_BIT1,     OA_NONE} },
-      { "%cassign/wr",  of_CASSIGN_WR,  1,{OA_FUNC_PTR,OA_NONE,     OA_NONE} },
-      { "%cast/vec2/dar", of_CAST_VEC2_DAR, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%cast/vec4/dar", of_CAST_VEC4_DAR, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%cast/vec4/str", of_CAST_VEC4_STR, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%cast2",   of_CAST2,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/e",   of_CMPE,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/ne",  of_CMPNE,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/s",   of_CMPS,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/str", of_CMPSTR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/u",   of_CMPU,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/we",  of_CMPWE,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/wne", of_CMPWNE, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/wr",  of_CMPWR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/x",   of_CMPX,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmp/z",   of_CMPZ,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmpi/e",  of_CMPIE,  3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%cmpi/ne", of_CMPINE, 3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%cmpi/s",  of_CMPIS,  3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%cmpi/u",  of_CMPIU,  3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%cmpix/ltu", of_CMPIX_LTU, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%cmpix/slt0", of_CMPIX_SLT0, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%concat/str",  of_CONCAT_STR,  0,{OA_NONE,  OA_NONE,  OA_NONE} },
-      { "%concat/vec4", of_CONCAT_VEC4, 0,{OA_NONE,  OA_NONE,  OA_NONE} },
-      { "%concati/str", of_CONCATI_STR, 1,{OA_STRING,OA_NONE,  OA_NONE} },
-      { "%concati/vec4",of_CONCATI_VEC4,3,{OA_BIT1,  OA_BIT2,  OA_NUMBER} },
-      { "%cvt/rv",   of_CVT_RV,  0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%cvt/rv/s", of_CVT_RV_S,0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%cvt/sr", of_CVT_SR, 1,  {OA_BIT1,     OA_NONE,     OA_NONE} },
-      { "%cvt/ur", of_CVT_UR, 1,  {OA_BIT1,     OA_NONE,     OA_NONE} },
-      { "%cvt/vr", of_CVT_VR, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%deassign",of_DEASSIGN,3,{OA_FUNC_PTR, OA_BIT1,     OA_BIT2} },
-      { "%deassign/wr",of_DEASSIGN_WR,1,{OA_FUNC_PTR, OA_NONE,     OA_NONE} },
-      { "%debug/thr",  of_DEBUG_THR,  1,{OA_STRING,   OA_NONE,     OA_NONE} },
-      { "%delay",  of_DELAY,  2,  {OA_BIT1,     OA_BIT2,     OA_NONE} },
-      { "%delayx", of_DELAYX, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%delete/elem",of_DELETE_ELEM,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
-      { "%delete/obj",of_DELETE_OBJ,1,{OA_FUNC_PTR,OA_NONE,  OA_NONE} },
-      { "%delete/prop/elem", of_DELETE_PROP_ELEM, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%delete/prop/obj",  of_DELETE_PROP_OBJ,  1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%delete/tail",of_DELETE_TAIL,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%disable",  of_DISABLE, 1, {OA_VPI_PTR,OA_NONE,     OA_NONE} },
-      { "%disable/flow", of_DISABLE_FLOW, 1, {OA_VPI_PTR,OA_NONE, OA_NONE} },
-      { "%disable/fork",of_DISABLE_FORK,0,{OA_NONE,OA_NONE,  OA_NONE} },
-      { "%div",      of_DIV,     0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%div/s",    of_DIV_S,   0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%div/wr",   of_DIV_WR,  0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%dup/obj",  of_DUP_OBJ, 0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%dup/real", of_DUP_REAL,0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%dup/vec4", of_DUP_VEC4,0, {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%end",    of_END,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%evctl",  of_EVCTL,  2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
-      { "%evctl/c",of_EVCTLC, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%evctl/i",of_EVCTLI, 2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
-      { "%evctl/s",of_EVCTLS, 2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
-      { "%event",    of_EVENT,    1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%event/nb", of_EVENT_NB, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%flag_get/vec4", of_FLAG_GET_VEC4, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%flag_inv",      of_FLAG_INV,      1, {OA_BIT1,   OA_NONE, OA_NONE} },
-      { "%flag_mov",      of_FLAG_MOV,      2, {OA_BIT1,   OA_BIT2, OA_NONE} },
-      { "%flag_or",       of_FLAG_OR,       2, {OA_BIT1,   OA_BIT2, OA_NONE} },
-      { "%flag_set/imm",  of_FLAG_SET_IMM,  2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%flag_set/vec4", of_FLAG_SET_VEC4, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%force/link",    of_FORCE_LINK,2,{OA_FUNC_PTR, OA_FUNC_PTR2, OA_NONE} },
-      { "%force/vec4",    of_FORCE_VEC4,    1,{OA_FUNC_PTR, OA_NONE,      OA_NONE} },
-      { "%force/vec4/off",of_FORCE_VEC4_OFF,2,{OA_FUNC_PTR, OA_BIT1,      OA_NONE} },
-      { "%force/vec4/off/d",of_FORCE_VEC4_OFF_D,3,{OA_FUNC_PTR, OA_BIT1,  OA_BIT2} },
-      { "%force/wr",      of_FORCE_WR,      1,{OA_FUNC_PTR, OA_NONE,      OA_NONE} },
-      { "%fork",   of_FORK,   2,  {OA_CODE_PTR2,OA_VPI_PTR,  OA_NONE} },
-      { "%free",   of_FREE,   1,  {OA_VPI_PTR,  OA_NONE,     OA_NONE} },
-      { "%inv",    of_INV,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%ix/add", of_IX_ADD, 3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%ix/getv",of_IX_GETV,2,  {OA_BIT1,     OA_FUNC_PTR, OA_NONE} },
-      { "%ix/getv/s",of_IX_GETV_S,2, {OA_BIT1,   OA_FUNC_PTR, OA_NONE} },
-      { "%ix/load",of_IX_LOAD,3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%ix/mov", of_IX_MOV, 2,  {OA_BIT1,     OA_BIT2,     OA_NONE} },
-      { "%ix/mul", of_IX_MUL, 3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%ix/sub", of_IX_SUB, 3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%ix/vec4",  of_IX_VEC4,  1,  {OA_NUMBER,   OA_NONE, OA_NONE} },
-      { "%ix/vec4/s",of_IX_VEC4_S,1,  {OA_NUMBER,   OA_NONE, OA_NONE} },
-      { "%jmp",    of_JMP,    1,  {OA_CODE_PTR, OA_NONE,     OA_NONE} },
-      { "%jmp/0",  of_JMP0,   2,  {OA_CODE_PTR, OA_BIT1,     OA_NONE} },
-      { "%jmp/0xz",of_JMP0XZ, 2,  {OA_CODE_PTR, OA_BIT1,     OA_NONE} },
-      { "%jmp/1",  of_JMP1,   2,  {OA_CODE_PTR, OA_BIT1,     OA_NONE} },
-      { "%jmp/1xz",of_JMP1XZ, 2,  {OA_CODE_PTR, OA_BIT1,     OA_NONE} },
-      { "%join",   of_JOIN,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%join/detach",of_JOIN_DETACH,1,{OA_NUMBER,OA_NONE,  OA_NONE} },
-      { "%load/ar",of_LOAD_AR,2,  {OA_ARR_PTR,  OA_BIT1,     OA_NONE} },
-      { "%load/dar/r",  of_LOAD_DAR_R,    1, {OA_FUNC_PTR, OA_NONE, OA_NONE}},
-      { "%load/dar/str",of_LOAD_DAR_STR,  1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%load/dar/vec4",of_LOAD_DAR_VEC4,1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%load/obj",   of_LOAD_OBJ,  1,{OA_FUNC_PTR,OA_NONE, OA_NONE} },
-      { "%load/obja",  of_LOAD_OBJA, 2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%load/prop/dar/vec4", of_LOAD_PROP_DAR_VEC4, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%load/real",  of_LOAD_REAL, 1,{OA_VPI_PTR, OA_NONE, OA_NONE} },
-      { "%load/str",   of_LOAD_STR,  1,{OA_FUNC_PTR,OA_NONE, OA_NONE} },
-      { "%load/stra",  of_LOAD_STRA, 2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%load/vec4",  of_LOAD_VEC4, 1,{OA_FUNC_PTR,OA_NONE,  OA_NONE} },
-      { "%load/vec4a", of_LOAD_VEC4A,2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%max/wr", of_MAX_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%min/wr", of_MIN_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%mod",    of_MOD,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%mod/s",  of_MOD_S,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%mod/wr", of_MOD_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%mul",    of_MUL,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%mul/wr", of_MUL_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%muli",   of_MULI,   3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%nand",   of_NAND,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%nand/r", of_NANDR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%neg/wr", of_NEG_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%new/cobj",  of_NEW_COBJ,  1, {OA_VPI_PTR,OA_NONE,  OA_NONE} },
-      { "%new/darray",of_NEW_DARRAY,2, {OA_BIT1,   OA_STRING,OA_NONE} },
-      { "%noop",   of_NOOP,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%nor",    of_NOR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%nor/r",  of_NORR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%null",   of_NULL,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%or",     of_OR,     0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%or/r",   of_ORR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%pad/s",  of_PAD_S,  1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%pad/u",  of_PAD_U,  1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%part/s", of_PART_S, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%part/u", of_PART_U, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%parti/s",of_PARTI_S,3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%parti/u",of_PARTI_U,3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%pop/obj", of_POP_OBJ, 2, {OA_BIT1,    OA_BIT2,     OA_NONE} },
-      { "%pop/real",of_POP_REAL,1, {OA_NUMBER,  OA_NONE,     OA_NONE} },
-      { "%pop/str", of_POP_STR, 1, {OA_NUMBER,  OA_NONE,     OA_NONE} },
-      { "%pop/vec4",of_POP_VEC4,1, {OA_NUMBER,  OA_NONE,     OA_NONE} },
-      { "%pow",     of_POW,     0,  {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%pow/s",   of_POW_S,   0,  {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%pow/wr",  of_POW_WR,  0,  {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%prop/obj",of_PROP_OBJ,2,  {OA_NUMBER,   OA_BIT1,     OA_NONE} },
-      { "%prop/queue/size", of_PROP_QUEUE_SIZE,  1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%prop/r",  of_PROP_R,  1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%prop/str",of_PROP_STR,1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%prop/v",  of_PROP_V,  1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%push/ix/vec4", of_PUSH_IX_VEC4, 3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%pushi/real",of_PUSHI_REAL,2,{OA_BIT1,   OA_BIT2,   OA_NONE} },
-      { "%pushi/str", of_PUSHI_STR, 1,{OA_STRING, OA_NONE,   OA_NONE} },
-      { "%pushi/vec4",of_PUSHI_VEC4,3,{OA_BIT1,   OA_BIT2,   OA_NUMBER} },
-      { "%pushv/str", of_PUSHV_STR, 0,{OA_NONE,   OA_NONE,   OA_NONE} },
-      { "%putc/str/vec4",of_PUTC_STR_VEC4,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qinsert/prop/r",   of_QINSERT_PROP_R,   2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%qinsert/prop/str", of_QINSERT_PROP_STR, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%qinsert/prop/v",   of_QINSERT_PROP_V,   3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%qinsert/real",of_QINSERT_REAL,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qinsert/str", of_QINSERT_STR, 2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qinsert/v",   of_QINSERT_V,   3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
-      { "%qpop/b/real",of_QPOP_B_REAL,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
-      { "%qpop/b/str", of_QPOP_B_STR, 1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
-      { "%qpop/b/v",   of_QPOP_B_V,   2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qpop/f/real",of_QPOP_F_REAL,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
-      { "%qpop/f/str", of_QPOP_F_STR, 1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
-      { "%qpop/f/v",   of_QPOP_F_V,   2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qpop/prop/b/r",   of_QPOP_PROP_B_REAL, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%qpop/prop/b/str", of_QPOP_PROP_B_STR, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%qpop/prop/b/v",   of_QPOP_PROP_B_V,    2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%qpop/prop/f/r",   of_QPOP_PROP_F_REAL, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%qpop/prop/f/str", of_QPOP_PROP_F_STR, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%qpop/prop/f/v",   of_QPOP_PROP_F_V,    2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/append_word/v", of_QUEUE_APPEND_WORD_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/find/index/prop/v", of_QUEUE_FIND_INDEX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find/index/v", of_QUEUE_FIND_INDEX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find/prop/v", of_QUEUE_FIND_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find/v", of_QUEUE_FIND_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find_first/index/prop/v", of_QUEUE_FIND_FIRST_INDEX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find_first/index/v", of_QUEUE_FIND_FIRST_INDEX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find_first/prop/v", of_QUEUE_FIND_FIRST_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find_first/v", of_QUEUE_FIND_FIRST_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find_last/index/prop/v", of_QUEUE_FIND_LAST_INDEX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find_last/index/v", of_QUEUE_FIND_LAST_INDEX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find_last/prop/v", of_QUEUE_FIND_LAST_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/find_last/v", of_QUEUE_FIND_LAST_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/max/obj/v", of_QUEUE_MAX_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/max/prop/v", of_QUEUE_MAX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/max/v", of_QUEUE_MAX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/min/obj/v", of_QUEUE_MIN_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/min/prop/v", of_QUEUE_MIN_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/min/v", of_QUEUE_MIN_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/new_empty/v", of_QUEUE_NEW_EMPTY_V, 0, {OA_NONE, OA_NONE, OA_NONE} },
-      { "%queue/size/v", of_QUEUE_SIZE_V, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%queue/unique/index/obj/v", of_QUEUE_UNIQUE_INDEX_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/unique/index/prop/v", of_QUEUE_UNIQUE_INDEX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/unique/index/v", of_QUEUE_UNIQUE_INDEX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/unique/obj/v", of_QUEUE_UNIQUE_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/unique/prop/v", of_QUEUE_UNIQUE_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%queue/unique/v", of_QUEUE_UNIQUE_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/word/prop/v", of_QUEUE_WORD_PROP_V, 3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%queue/word/v", of_QUEUE_WORD_V, 3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
-      { "%release/net",of_RELEASE_NET,3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
-      { "%release/reg",of_RELEASE_REG,3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
-      { "%release/wr", of_RELEASE_WR, 2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%replicate", of_REPLICATE,   1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%ret/real",  of_RET_REAL,    1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%ret/str",   of_RET_STR,     1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%ret/vec4",  of_RET_VEC4,    3,{OA_NUMBER,  OA_BIT1,OA_BIT2} },
-      { "%retload/real",of_RETLOAD_REAL,1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%retload/str", of_RETLOAD_STR, 1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%retload/vec4",of_RETLOAD_VEC4,1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%reverse/obj", of_REVERSE_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%reverse/prop/obj", of_REVERSE_PROP_OBJ, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%rsort/obj", of_RSORT_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%rsort/prop/obj", of_RSORT_PROP_OBJ, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%scopy",  of_SCOPY,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%set/dar/obj/real",of_SET_DAR_OBJ_REAL,1,{OA_NUMBER,OA_NONE,OA_NONE} },
-      { "%set/dar/obj/str", of_SET_DAR_OBJ_STR, 1,{OA_NUMBER,OA_NONE,OA_NONE} },
-      { "%set/dar/obj/vec4",of_SET_DAR_OBJ_VEC4,1,{OA_NUMBER,OA_NONE,OA_NONE} },
-      { "%shiftl",   of_SHIFTL,   1, {OA_NUMBER, OA_NONE,   OA_NONE} },
-      { "%shiftr",   of_SHIFTR,   1, {OA_NUMBER, OA_NONE,   OA_NONE} },
-      { "%shiftr/s", of_SHIFTR_S, 1, {OA_NUMBER, OA_NONE,   OA_NONE} },
-      { "%shuffle/obj", of_SHUFFLE_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%shuffle/prop/obj", of_SHUFFLE_PROP_OBJ, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%sort/obj", of_SORT_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%sort/prop/obj", of_SORT_PROP_OBJ, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%split/vec4",    of_SPLIT_VEC4,    1,{OA_NUMBER,   OA_NONE, OA_NONE} },
-      { "%store/dar/r",   of_STORE_DAR_R,   1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%store/dar/str", of_STORE_DAR_STR, 1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%store/dar/vec4",of_STORE_DAR_VEC4,1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%store/obj",   of_STORE_OBJ,   1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
-      { "%store/obja",  of_STORE_OBJA,  2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%store/prop/obj",of_STORE_PROP_OBJ,2, {OA_NUMBER,  OA_BIT1, OA_NONE} },
-      { "%store/prop/qb/r",   of_STORE_PROP_QB_R,   2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%store/prop/qb/str", of_STORE_PROP_QB_STR, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%store/prop/qb/v",   of_STORE_PROP_QB_V,   3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%store/prop/qf/r",   of_STORE_PROP_QF_R,   2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%store/prop/qf/str", of_STORE_PROP_QF_STR, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%store/prop/qf/v",   of_STORE_PROP_QF_V,   3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%store/prop/r",  of_STORE_PROP_R,  1, {OA_NUMBER,  OA_NONE, OA_NONE} },
-      { "%store/prop/str",of_STORE_PROP_STR,1, {OA_NUMBER,  OA_NONE, OA_NONE} },
-      { "%store/prop/v",  of_STORE_PROP_V,  2, {OA_NUMBER,  OA_BIT1, OA_NONE} },
-      { "%store/qb/r",   of_STORE_QB_R,    2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qb/str", of_STORE_QB_STR,  2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qb/v",   of_STORE_QB_V,    3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
-      { "%store/qdar/r",  of_STORE_QDAR_R,  2,{OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qdar/str",of_STORE_QDAR_STR,2,{OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qdar/v",  of_STORE_QDAR_V,  3,{OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
-      { "%store/qf/r",   of_STORE_QF_R,    2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qf/str", of_STORE_QF_STR,  2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%store/qf/v",   of_STORE_QF_V,    3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
-      { "%store/qobj/r",  of_STORE_QOBJ_R,  2, {OA_FUNC_PTR,OA_BIT1, OA_NONE} },
-      { "%store/qobj/str",of_STORE_QOBJ_STR,2, {OA_FUNC_PTR,OA_BIT1, OA_NONE} },
-      { "%store/qobj/v",  of_STORE_QOBJ_V,  3, {OA_FUNC_PTR,OA_BIT1, OA_BIT2} },
-      { "%store/real",    of_STORE_REAL,    1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
-      { "%store/reala",   of_STORE_REALA,   2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%store/str",     of_STORE_STR,     1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
-      { "%store/stra",    of_STORE_STRA,    2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%store/vec4",    of_STORE_VEC4,    3, {OA_FUNC_PTR,OA_BIT1, OA_BIT2} },
-      { "%store/vec4a",   of_STORE_VEC4A,   3, {OA_ARR_PTR, OA_BIT1, OA_BIT2} },
-      { "%sub",    of_SUB,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%sub/wr", of_SUB_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%subi",   of_SUBI,   3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%substr",     of_SUBSTR,     2,{OA_BIT1,    OA_BIT2, OA_NONE} },
-      { "%substr/vec4",of_SUBSTR_VEC4,2,{OA_BIT1,    OA_BIT2, OA_NONE} },
-      { "%test_nul",     of_TEST_NUL,     1,{OA_FUNC_PTR,OA_NONE,    OA_NONE} },
-      { "%test_nul/a",   of_TEST_NUL_A,   2,{OA_ARR_PTR, OA_BIT1,    OA_NONE} },
-      { "%test_nul/obj", of_TEST_NUL_OBJ, 0,{OA_NONE,    OA_NONE,    OA_NONE} },
-      { "%test_nul/prop",of_TEST_NUL_PROP,2,{OA_NUMBER,  OA_BIT1,    OA_NONE} },
-      { "%uparr/and/v",          of_UPARR_AND_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%uparr/or/v",           of_UPARR_OR_V,           2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%uparr/product/obj/v",  of_UPARR_PRODUCT_OBJ_V,  1, {OA_BIT1,     OA_NONE, OA_NONE} },
-      { "%uparr/product/prop/v", of_UPARR_PRODUCT_PROP_V, 2, {OA_NUMBER,   OA_BIT1, OA_NONE} },
-      { "%uparr/product/r",      of_UPARR_PRODUCT_REAL,   1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%uparr/product/v",      of_UPARR_PRODUCT_V,      2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%uparr/sum/obj/v",      of_UPARR_SUM_OBJ_V,      1, {OA_BIT1,     OA_NONE, OA_NONE} },
-      { "%uparr/sum/prop/v",     of_UPARR_SUM_PROP_V,     2, {OA_NUMBER,   OA_BIT1, OA_NONE} },
-      { "%uparr/sum/r",          of_UPARR_SUM_REAL,       1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%uparr/sum/v",          of_UPARR_SUM_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%uparr/xor/v",          of_UPARR_XOR_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%wait",   of_WAIT,   1,  {OA_FUNC_PTR, OA_NONE,     OA_NONE} },
-      { "%wait/fork",of_WAIT_FORK,0,{OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%xnor",   of_XNOR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%xnor/r", of_XNORR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%xor",    of_XOR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%xor/r",  of_XORR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { 0, of_NOOP, 0, {OA_NONE, OA_NONE, OA_NONE} }
+स्थिर ध्रुव संरचना opcode_सारणी_s opcode_सारणी[] = {
+      { "%abs/wr", सम्बन्धि_ABS_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%add",    सम्बन्धि_सङ्कलय,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%add/wr", सम्बन्धि_सङ्कलय_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%addi",   सम्बन्धि_ADDI,   3,  {OA_BIT1,     OA_BIT2,     OA_सङ्ख्या} },
+      { "%alloc",  सम्बन्धि_ALLOC,  1,  {OA_VPI_PTR,  OA_NONE,     OA_NONE} },
+      { "%and",    सम्बन्धि_AND,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%and/r",  सम्बन्धि_ANDR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%assign/ar",सम्बन्धि_नियोजय_AR,2,{OA_ARR_PTR,OA_BIT1,     OA_NONE} },
+      { "%assign/ar/d",सम्बन्धि_नियोजय_ARD,2,{OA_ARR_PTR,OA_BIT1,  OA_NONE} },
+      { "%assign/ar/e",सम्बन्धि_नियोजय_ARE,1,{OA_ARR_PTR,OA_NONE,  OA_NONE} },
+      { "%assign/vec4",      सम्बन्धि_नियोजय_VEC4,       2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%assign/vec4/a/d",  सम्बन्धि_नियोजय_VEC4_A_D,   3, {OA_ARR_PTR,  OA_BIT1, OA_BIT2} },
+      { "%assign/vec4/a/e",  सम्बन्धि_नियोजय_VEC4_A_E,   2, {OA_ARR_PTR,  OA_BIT1, OA_NONE} },
+      { "%assign/vec4/d",    सम्बन्धि_नियोजय_VEC4_D,      2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%assign/vec4/e",    सम्बन्धि_नियोजय_VEC4_E,      1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%assign/vec4/off/d",सम्बन्धि_नियोजय_VEC4_OFF_D, 3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
+      { "%assign/vec4/off/e",सम्बन्धि_नियोजय_VEC4_OFF_E, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%assign/wr",  सम्बन्धि_नियोजय_WR, 2,{OA_VPI_PTR, OA_BIT1, OA_NONE} },
+      { "%assign/wr/d",सम्बन्धि_नियोजय_WRD,2,{OA_VPI_PTR, OA_BIT1, OA_NONE} },
+      { "%assign/wr/e",सम्बन्धि_नियोजय_WRE,1,{OA_VPI_PTR, OA_NONE, OA_NONE} },
+      { "%blend",     सम्बन्धि_BLEND,     0, {OA_NONE, OA_NONE, OA_NONE} },
+      { "%blend/str", सम्बन्धि_BLEND_STR, 0, {OA_NONE, OA_NONE, OA_NONE} },
+      { "%blend/wr",  सम्बन्धि_BLEND_WR,  0, {OA_NONE, OA_NONE, OA_NONE} },
+      { "%breakpoint", सम्बन्धि_BREAKPOINT, 0,  {OA_NONE, OA_NONE, OA_NONE} },
+      { "%callf/obj",       सम्बन्धि_CALLF_OBJ,       2,{OA_संहिता_PTR2,OA_VPI_PTR, OA_NONE} },
+      { "%callf/real",      सम्बन्धि_CALLF_REAL,      2,{OA_संहिता_PTR2,OA_VPI_PTR, OA_NONE} },
+      { "%callf/str",       सम्बन्धि_CALLF_STR,       2,{OA_संहिता_PTR2,OA_VPI_PTR, OA_NONE} },
+      { "%callf/vec4",      सम्बन्धि_CALLF_VEC4,      2,{OA_संहिता_PTR2,OA_VPI_PTR, OA_NONE} },
+      { "%callf/void",      सम्बन्धि_CALLF_VOID,      2,{OA_संहिता_PTR2,OA_VPI_PTR, OA_NONE} },
+      { "%cassign/link",    सम्बन्धि_CASSIGN_LINK,    2,{OA_FUNC_PTR,OA_FUNC_PTR2,OA_NONE} },
+      { "%cassign/vec4",    सम्बन्धि_CASSIGN_VEC4,    1,{OA_FUNC_PTR,OA_NONE,     OA_NONE} },
+      { "%cassign/vec4/off",सम्बन्धि_CASSIGN_VEC4_OFF,2,{OA_FUNC_PTR,OA_BIT1,     OA_NONE} },
+      { "%cassign/wr",  सम्बन्धि_CASSIGN_WR,  1,{OA_FUNC_PTR,OA_NONE,     OA_NONE} },
+      { "%cast/vec2/dar", सम्बन्धि_CAST_VEC2_DAR, 1,  {OA_सङ्ख्या,   OA_NONE,     OA_NONE} },
+      { "%cast/vec4/dar", सम्बन्धि_CAST_VEC4_DAR, 1,  {OA_सङ्ख्या,   OA_NONE,     OA_NONE} },
+      { "%cast/vec4/str", सम्बन्धि_CAST_VEC4_STR, 1,  {OA_सङ्ख्या,   OA_NONE,     OA_NONE} },
+      { "%cast2",   सम्बन्धि_CAST2,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/e",   सम्बन्धि_CMPE,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/ne",  सम्बन्धि_CMPNE,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/s",   सम्बन्धि_CMPS,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/str", सम्बन्धि_CMPSTR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/u",   सम्बन्धि_CMPU,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/we",  सम्बन्धि_CMPWE,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/wne", सम्बन्धि_CMPWNE, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/wr",  सम्बन्धि_CMPWR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/x",   सम्बन्धि_CMPX,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmp/z",   सम्बन्धि_CMPZ,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%cmpi/e",  सम्बन्धि_CMPIE,  3,  {OA_BIT1,     OA_BIT2,     OA_सङ्ख्या} },
+      { "%cmpi/ne", सम्बन्धि_CMPINE, 3,  {OA_BIT1,     OA_BIT2,     OA_सङ्ख्या} },
+      { "%cmpi/s",  सम्बन्धि_CMPIS,  3,  {OA_BIT1,     OA_BIT2,     OA_सङ्ख्या} },
+      { "%cmpi/u",  सम्बन्धि_CMPIU,  3,  {OA_BIT1,     OA_BIT2,     OA_सङ्ख्या} },
+      { "%cmpix/ltu", सम्बन्धि_CMPIX_LTU, 2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%cmpix/slt0", सम्बन्धि_CMPIX_SLT0, 1, {OA_सङ्ख्या, OA_NONE, OA_NONE} },
+      { "%concat/str",  सम्बन्धि_CONCAT_STR,  0,{OA_NONE,  OA_NONE,  OA_NONE} },
+      { "%concat/vec4", सम्बन्धि_CONCAT_VEC4, 0,{OA_NONE,  OA_NONE,  OA_NONE} },
+      { "%concati/str", सम्बन्धि_CONCATI_STR, 1,{OA_STRING,OA_NONE,  OA_NONE} },
+      { "%concati/vec4",सम्बन्धि_CONCATI_VEC4,3,{OA_BIT1,  OA_BIT2,  OA_सङ्ख्या} },
+      { "%cvt/rv",   सम्बन्धि_CVT_RV,  0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%cvt/rv/s", सम्बन्धि_CVT_RV_S,0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%cvt/sr", सम्बन्धि_CVT_SR, 1,  {OA_BIT1,     OA_NONE,     OA_NONE} },
+      { "%cvt/ur", सम्बन्धि_CVT_UR, 1,  {OA_BIT1,     OA_NONE,     OA_NONE} },
+      { "%cvt/vr", सम्बन्धि_CVT_VR, 1,  {OA_सङ्ख्या,   OA_NONE,     OA_NONE} },
+      { "%deassign",सम्बन्धि_DEASSIGN,3,{OA_FUNC_PTR, OA_BIT1,     OA_BIT2} },
+      { "%deassign/wr",सम्बन्धि_DEASSIGN_WR,1,{OA_FUNC_PTR, OA_NONE,     OA_NONE} },
+      { "%debug/thr",  सम्बन्धि_DEBUG_THR,  1,{OA_STRING,   OA_NONE,     OA_NONE} },
+      { "%delay",  सम्बन्धि_DELAY,  2,  {OA_BIT1,     OA_BIT2,     OA_NONE} },
+      { "%delayx", सम्बन्धि_DELAYX, 1,  {OA_सङ्ख्या,   OA_NONE,     OA_NONE} },
+      { "%delete/elem",सम्बन्धि_DELETE_ELEM,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
+      { "%delete/obj",सम्बन्धि_DELETE_OBJ,1,{OA_FUNC_PTR,OA_NONE,  OA_NONE} },
+      { "%delete/prop/elem", सम्बन्धि_DELETE_PROP_ELEM, 1, {OA_सङ्ख्या, OA_NONE, OA_NONE} },
+      { "%delete/prop/obj",  सम्बन्धि_DELETE_PROP_OBJ,  1, {OA_सङ्ख्या, OA_NONE, OA_NONE} },
+      { "%delete/tail",सम्बन्धि_DELETE_पुच्छ,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%disable",  सम्बन्धि_DISABLE, 1, {OA_VPI_PTR,OA_NONE,     OA_NONE} },
+      { "%disable/flow", सम्बन्धि_DISABLE_FLOW, 1, {OA_VPI_PTR,OA_NONE, OA_NONE} },
+      { "%disable/fork",सम्बन्धि_DISABLE_FORK,0,{OA_NONE,OA_NONE,  OA_NONE} },
+      { "%div",      सम्बन्धि_DIV,     0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%div/s",    सम्बन्धि_DIV_S,   0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%div/wr",   सम्बन्धि_DIV_WR,  0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%dup/obj",  सम्बन्धि_DUP_OBJ, 0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%dup/real", सम्बन्धि_DUP_REAL,0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%dup/vec4", सम्बन्धि_DUP_VEC4,0, {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%end",    सम्बन्धि_अन्तः,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%evctl",  सम्बन्धि_EVCTL,  2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
+      { "%evctl/c",सम्बन्धि_EVCTLC, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%evctl/i",सम्बन्धि_EVCTLI, 2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
+      { "%evctl/s",सम्बन्धि_EVCTLS, 2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
+      { "%event",    सम्बन्धि_EVENT,    1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%event/nb", सम्बन्धि_EVENT_NB, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%flag_get/vec4", सम्बन्धि_FLAG_GET_VEC4, 1, {OA_सङ्ख्या, OA_NONE, OA_NONE} },
+      { "%flag_inv",      सम्बन्धि_FLAG_INV,      1, {OA_BIT1,   OA_NONE, OA_NONE} },
+      { "%flag_mov",      सम्बन्धि_FLAG_MOV,      2, {OA_BIT1,   OA_BIT2, OA_NONE} },
+      { "%flag_or",       सम्बन्धि_FLAG_OR,       2, {OA_BIT1,   OA_BIT2, OA_NONE} },
+      { "%flag_set/imm",  सम्बन्धि_FLAG_समुच्चयः_IMM,  2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%flag_set/vec4", सम्बन्धि_FLAG_समुच्चयः_VEC4, 1, {OA_सङ्ख्या, OA_NONE, OA_NONE} },
+      { "%force/link",    सम्बन्धि_FORCE_LINK,2,{OA_FUNC_PTR, OA_FUNC_PTR2, OA_NONE} },
+      { "%force/vec4",    सम्बन्धि_FORCE_VEC4,    1,{OA_FUNC_PTR, OA_NONE,      OA_NONE} },
+      { "%force/vec4/off",सम्बन्धि_FORCE_VEC4_OFF,2,{OA_FUNC_PTR, OA_BIT1,      OA_NONE} },
+      { "%force/vec4/off/d",सम्बन्धि_FORCE_VEC4_OFF_D,3,{OA_FUNC_PTR, OA_BIT1,  OA_BIT2} },
+      { "%force/wr",      सम्बन्धि_FORCE_WR,      1,{OA_FUNC_PTR, OA_NONE,      OA_NONE} },
+      { "%fork",   सम्बन्धि_FORK,   2,  {OA_संहिता_PTR2,OA_VPI_PTR,  OA_NONE} },
+      { "%free",   सम्बन्धि_FREE,   1,  {OA_VPI_PTR,  OA_NONE,     OA_NONE} },
+      { "%inv",    सम्बन्धि_INV,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%ix/add", सम्बन्धि_IX_सङ्कलय, 3,  {OA_सङ्ख्या,   OA_BIT1,     OA_BIT2} },
+      { "%ix/getv",सम्बन्धि_IX_GETV,2,  {OA_BIT1,     OA_FUNC_PTR, OA_NONE} },
+      { "%ix/getv/s",सम्बन्धि_IX_GETV_S,2, {OA_BIT1,   OA_FUNC_PTR, OA_NONE} },
+      { "%ix/load",सम्बन्धि_IX_आरोपय,3,  {OA_सङ्ख्या,   OA_BIT1,     OA_BIT2} },
+      { "%ix/mov", सम्बन्धि_IX_MOV, 2,  {OA_BIT1,     OA_BIT2,     OA_NONE} },
+      { "%ix/mul", सम्बन्धि_IX_MUL, 3,  {OA_सङ्ख्या,   OA_BIT1,     OA_BIT2} },
+      { "%ix/sub", सम्बन्धि_IX_SUB, 3,  {OA_सङ्ख्या,   OA_BIT1,     OA_BIT2} },
+      { "%ix/vec4",  सम्बन्धि_IX_VEC4,  1,  {OA_सङ्ख्या,   OA_NONE, OA_NONE} },
+      { "%ix/vec4/s",सम्बन्धि_IX_VEC4_S,1,  {OA_सङ्ख्या,   OA_NONE, OA_NONE} },
+      { "%jmp",    सम्बन्धि_JMP,    1,  {OA_संहिता_PTR, OA_NONE,     OA_NONE} },
+      { "%jmp/0",  सम्बन्धि_JMP0,   2,  {OA_संहिता_PTR, OA_BIT1,     OA_NONE} },
+      { "%jmp/0xz",सम्बन्धि_JMP0_XZ, 2,  {OA_संहिता_PTR, OA_BIT1,     OA_NONE} },
+      { "%jmp/1",  सम्बन्धि_JMP1,   2,  {OA_संहिता_PTR, OA_BIT1,     OA_NONE} },
+      { "%jmp/1xz",सम्बन्धि_JMP1_XZ, 2,  {OA_संहिता_PTR, OA_BIT1,     OA_NONE} },
+      { "%join",   सम्बन्धि_JOIN,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%join/detach",सम्बन्धि_JOIN_DETACH,1,{OA_सङ्ख्या,OA_NONE,  OA_NONE} },
+      { "%load/ar",सम्बन्धि_आरोपय_AR,2,  {OA_ARR_PTR,  OA_BIT1,     OA_NONE} },
+      { "%load/dar/r",  सम्बन्धि_आरोपय_DAR_R,    1, {OA_FUNC_PTR, OA_NONE, OA_NONE}},
+      { "%load/dar/str",सम्बन्धि_आरोपय_DAR_STR,  1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%load/dar/vec4",सम्बन्धि_आरोपय_DAR_VEC4,1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%load/obj",   सम्बन्धि_आरोपय_OBJ,  1,{OA_FUNC_PTR,OA_NONE, OA_NONE} },
+      { "%load/obja",  सम्बन्धि_आरोपय_OBJA, 2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%load/prop/dar/vec4", सम्बन्धि_आरोपय_PROP_DAR_VEC4, 2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%load/real",  सम्बन्धि_आरोपय_REAL, 1,{OA_VPI_PTR, OA_NONE, OA_NONE} },
+      { "%load/str",   सम्बन्धि_आरोपय_STR,  1,{OA_FUNC_PTR,OA_NONE, OA_NONE} },
+      { "%load/stra",  सम्बन्धि_आरोपय_STRA, 2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%load/vec4",  सम्बन्धि_आरोपय_VEC4, 1,{OA_FUNC_PTR,OA_NONE,  OA_NONE} },
+      { "%load/vec4a", सम्बन्धि_आरोपय_VEC4_A,2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%max/wr", सम्बन्धि_MAX_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%min/wr", सम्बन्धि_MIN_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%mod",    सम्बन्धि_MOD,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%mod/s",  सम्बन्धि_MOD_S,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%mod/wr", सम्बन्धि_MOD_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%mul",    सम्बन्धि_MUL,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%mul/wr", सम्बन्धि_MUL_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%muli",   सम्बन्धि_MULI,   3,  {OA_BIT1,     OA_BIT2,     OA_सङ्ख्या} },
+      { "%nand",   सम्बन्धि_NAND,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%nand/r", सम्बन्धि_NANDR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%neg/wr", सम्बन्धि_NEG_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%new/cobj",  सम्बन्धि_NEW_COBJ,  1, {OA_VPI_PTR,OA_NONE,  OA_NONE} },
+      { "%new/darray",सम्बन्धि_NEW_DARRAY,2, {OA_BIT1,   OA_STRING,OA_NONE} },
+      { "%noop",   सम्बन्धि_NOOP,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%nor",    सम्बन्धि_NOR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%nor/r",  सम्बन्धि_NORR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%null",   सम्बन्धि_NULL,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%or",     सम्बन्धि_OR,     0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%or/r",   सम्बन्धि_ORR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%pad/s",  सम्बन्धि_PAD_S,  1,  {OA_सङ्ख्या,   OA_NONE,     OA_NONE} },
+      { "%pad/u",  सम्बन्धि_PAD_U,  1,  {OA_सङ्ख्या,   OA_NONE,     OA_NONE} },
+      { "%part/s", सम्बन्धि_PART_S, 1,  {OA_सङ्ख्या,   OA_NONE,     OA_NONE} },
+      { "%part/u", सम्बन्धि_PART_U, 1,  {OA_सङ्ख्या,   OA_NONE,     OA_NONE} },
+      { "%parti/s",सम्बन्धि_PARTI_S,3,  {OA_सङ्ख्या,   OA_BIT1,     OA_BIT2} },
+      { "%parti/u",सम्बन्धि_PARTI_U,3,  {OA_सङ्ख्या,   OA_BIT1,     OA_BIT2} },
+      { "%pop/obj", सम्बन्धि_निष्कासय_OBJ, 2, {OA_BIT1,    OA_BIT2,     OA_NONE} },
+      { "%pop/real",सम्बन्धि_निष्कासय_REAL,1, {OA_सङ्ख्या,  OA_NONE,     OA_NONE} },
+      { "%pop/str", सम्बन्धि_निष्कासय_STR, 1, {OA_सङ्ख्या,  OA_NONE,     OA_NONE} },
+      { "%pop/vec4",सम्बन्धि_निष्कासय_VEC4,1, {OA_सङ्ख्या,  OA_NONE,     OA_NONE} },
+      { "%pow",     सम्बन्धि_POW,     0,  {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%pow/s",   सम्बन्धि_POW_S,   0,  {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%pow/wr",  सम्बन्धि_POW_WR,  0,  {OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%prop/obj",सम्बन्धि_PROP_OBJ,2,  {OA_सङ्ख्या,   OA_BIT1,     OA_NONE} },
+      { "%prop/queue/size", सम्बन्धि_PROP_QUEUE_आकार,  1, {OA_सङ्ख्या, OA_NONE, OA_NONE} },
+      { "%prop/r",  सम्बन्धि_PROP_R,  1,  {OA_सङ्ख्या,   OA_NONE,     OA_NONE} },
+      { "%prop/str",सम्बन्धि_PROP_STR,1,  {OA_सङ्ख्या,   OA_NONE,     OA_NONE} },
+      { "%prop/v",  सम्बन्धि_PROP_V,  1,  {OA_सङ्ख्या,   OA_NONE,     OA_NONE} },
+      { "%push/ix/vec4", सम्बन्धि_प्रक्षिप_IX_VEC4, 3, {OA_सङ्ख्या, OA_BIT1, OA_BIT2} },
+      { "%pushi/real",सम्बन्धि_PUSHI_REAL,2,{OA_BIT1,   OA_BIT2,   OA_NONE} },
+      { "%pushi/str", सम्बन्धि_PUSHI_STR, 1,{OA_STRING, OA_NONE,   OA_NONE} },
+      { "%pushi/vec4",सम्बन्धि_PUSHI_VEC4,3,{OA_BIT1,   OA_BIT2,   OA_सङ्ख्या} },
+      { "%pushv/str", सम्बन्धि_PUSHV_STR, 0,{OA_NONE,   OA_NONE,   OA_NONE} },
+      { "%putc/str/vec4",सम्बन्धि_PUTC_STR_VEC4,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%qinsert/prop/r",   सम्बन्धि_QINSERT_PROP_R,   2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%qinsert/prop/str", सम्बन्धि_QINSERT_PROP_STR, 2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%qinsert/prop/v",   सम्बन्धि_QINSERT_PROP_V,   3, {OA_सङ्ख्या, OA_BIT1, OA_BIT2} },
+      { "%qinsert/real",सम्बन्धि_QINSERT_REAL,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%qinsert/str", सम्बन्धि_QINSERT_STR, 2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%qinsert/v",   सम्बन्धि_QINSERT_V,   3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
+      { "%qpop/b/real",सम्बन्धि_QPOP_B_REAL,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
+      { "%qpop/b/str", सम्बन्धि_QPOP_B_STR, 1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
+      { "%qpop/b/v",   सम्बन्धि_QPOP_B_V,   2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%qpop/f/real",सम्बन्धि_QPOP_F_REAL,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
+      { "%qpop/f/str", सम्बन्धि_QPOP_F_STR, 1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
+      { "%qpop/f/v",   सम्बन्धि_QPOP_F_V,   2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%qpop/prop/b/r",   सम्बन्धि_QPOP_PROP_B_REAL, 1, {OA_सङ्ख्या, OA_NONE, OA_NONE} },
+      { "%qpop/prop/b/str", सम्बन्धि_QPOP_PROP_B_STR, 1, {OA_सङ्ख्या, OA_NONE, OA_NONE} },
+      { "%qpop/prop/b/v",   सम्बन्धि_QPOP_PROP_B_V,    2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%qpop/prop/f/r",   सम्बन्धि_QPOP_PROP_F_REAL, 1, {OA_सङ्ख्या, OA_NONE, OA_NONE} },
+      { "%qpop/prop/f/str", सम्बन्धि_QPOP_PROP_F_STR, 1, {OA_सङ्ख्या, OA_NONE, OA_NONE} },
+      { "%qpop/prop/f/v",   सम्बन्धि_QPOP_PROP_F_V,    2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%queue/append_word/v", सम्बन्धि_QUEUE_APPEND_WORD_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
+      { "%queue/find/index/prop/v", सम्बन्धि_QUEUE_FIND_सूचकांक_PROP_V, 2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%queue/find/index/v", सम्बन्धि_QUEUE_FIND_सूचकांक_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/find/prop/v", सम्बन्धि_QUEUE_FIND_PROP_V, 2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%queue/find/v", सम्बन्धि_QUEUE_FIND_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/find_first/index/prop/v", सम्बन्धि_QUEUE_FIND_FIRST_सूचकांक_PROP_V, 2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%queue/find_first/index/v", सम्बन्धि_QUEUE_FIND_FIRST_सूचकांक_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/find_first/prop/v", सम्बन्धि_QUEUE_FIND_FIRST_PROP_V, 2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%queue/find_first/v", सम्बन्धि_QUEUE_FIND_FIRST_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/find_last/index/prop/v", सम्बन्धि_QUEUE_FIND_चरमः_सूचकांक_PROP_V, 2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%queue/find_last/index/v", सम्बन्धि_QUEUE_FIND_चरमः_सूचकांक_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/find_last/prop/v", सम्बन्धि_QUEUE_FIND_चरमः_PROP_V, 2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%queue/find_last/v", सम्बन्धि_QUEUE_FIND_चरमः_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/max/obj/v", सम्बन्धि_QUEUE_MAX_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
+      { "%queue/max/prop/v", सम्बन्धि_QUEUE_MAX_PROP_V, 2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%queue/max/v", सम्बन्धि_QUEUE_MAX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/min/obj/v", सम्बन्धि_QUEUE_MIN_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
+      { "%queue/min/prop/v", सम्बन्धि_QUEUE_MIN_PROP_V, 2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%queue/min/v", सम्बन्धि_QUEUE_MIN_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/new_empty/v", सम्बन्धि_QUEUE_NEW_रिक्तानि_V, 0, {OA_NONE, OA_NONE, OA_NONE} },
+      { "%queue/size/v", सम्बन्धि_QUEUE_आकार_V, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%queue/unique/index/obj/v", सम्बन्धि_QUEUE_UNIQUE_सूचकांक_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
+      { "%queue/unique/index/prop/v", सम्बन्धि_QUEUE_UNIQUE_सूचकांक_PROP_V, 2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%queue/unique/index/v", सम्बन्धि_QUEUE_UNIQUE_सूचकांक_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/unique/obj/v", सम्बन्धि_QUEUE_UNIQUE_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
+      { "%queue/unique/prop/v", सम्बन्धि_QUEUE_UNIQUE_PROP_V, 2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%queue/unique/v", सम्बन्धि_QUEUE_UNIQUE_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%queue/word/prop/v", सम्बन्धि_QUEUE_WORD_PROP_V, 3, {OA_सङ्ख्या, OA_BIT1, OA_BIT2} },
+      { "%queue/word/v", सम्बन्धि_QUEUE_WORD_V, 3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
+      { "%release/net",सम्बन्धि_RELEASE_NET,3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
+      { "%release/reg",सम्बन्धि_RELEASE_REG,3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
+      { "%release/wr", सम्बन्धि_RELEASE_WR, 2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
+      { "%replicate", सम्बन्धि_REPLICATE,   1,{OA_सङ्ख्या,  OA_NONE,OA_NONE} },
+      { "%ret/real",  सम्बन्धि_RET_REAL,    1,{OA_सङ्ख्या,  OA_NONE,OA_NONE} },
+      { "%ret/str",   सम्बन्धि_RET_STR,     1,{OA_सङ्ख्या,  OA_NONE,OA_NONE} },
+      { "%ret/vec4",  सम्बन्धि_RET_VEC4,    3,{OA_सङ्ख्या,  OA_BIT1,OA_BIT2} },
+      { "%retload/real",सम्बन्धि_RETLOAD_REAL,1,{OA_सङ्ख्या,  OA_NONE,OA_NONE} },
+      { "%retload/str", सम्बन्धि_RETLOAD_STR, 1,{OA_सङ्ख्या,  OA_NONE,OA_NONE} },
+      { "%retload/vec4",सम्बन्धि_RETLOAD_VEC4,1,{OA_सङ्ख्या,  OA_NONE,OA_NONE} },
+      { "%reverse/obj", सम्बन्धि_REVERSE_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%reverse/prop/obj", सम्बन्धि_REVERSE_PROP_OBJ, 1, {OA_सङ्ख्या, OA_NONE, OA_NONE} },
+      { "%rsort/obj", सम्बन्धि_RSORT_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%rsort/prop/obj", सम्बन्धि_RSORT_PROP_OBJ, 1, {OA_सङ्ख्या, OA_NONE, OA_NONE} },
+      { "%scopy",  सम्बन्धि_SCOPY,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%set/dar/obj/real",सम्बन्धि_समुच्चयः_DAR_OBJ_REAL,1,{OA_सङ्ख्या,OA_NONE,OA_NONE} },
+      { "%set/dar/obj/str", सम्बन्धि_समुच्चयः_DAR_OBJ_STR, 1,{OA_सङ्ख्या,OA_NONE,OA_NONE} },
+      { "%set/dar/obj/vec4",सम्बन्धि_समुच्चयः_DAR_OBJ_VEC4,1,{OA_सङ्ख्या,OA_NONE,OA_NONE} },
+      { "%shiftl",   सम्बन्धि_SHIFTL,   1, {OA_सङ्ख्या, OA_NONE,   OA_NONE} },
+      { "%shiftr",   सम्बन्धि_SHIFTR,   1, {OA_सङ्ख्या, OA_NONE,   OA_NONE} },
+      { "%shiftr/s", सम्बन्धि_SHIFTR_S, 1, {OA_सङ्ख्या, OA_NONE,   OA_NONE} },
+      { "%shuffle/obj", सम्बन्धि_SHUFFLE_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%shuffle/prop/obj", सम्बन्धि_SHUFFLE_PROP_OBJ, 1, {OA_सङ्ख्या, OA_NONE, OA_NONE} },
+      { "%sort/obj", सम्बन्धि_क्रमय_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%sort/prop/obj", सम्बन्धि_क्रमय_PROP_OBJ, 1, {OA_सङ्ख्या, OA_NONE, OA_NONE} },
+      { "%split/vec4",    सम्बन्धि_विभज_VEC4,    1,{OA_सङ्ख्या,   OA_NONE, OA_NONE} },
+      { "%store/dar/r",   सम्बन्धि_STORE_DAR_R,   1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%store/dar/str", सम्बन्धि_STORE_DAR_STR, 1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%store/dar/vec4",सम्बन्धि_STORE_DAR_VEC4,1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%store/obj",   सम्बन्धि_STORE_OBJ,   1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
+      { "%store/obja",  सम्बन्धि_STORE_OBJA,  2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%store/prop/obj",सम्बन्धि_STORE_PROP_OBJ,2, {OA_सङ्ख्या,  OA_BIT1, OA_NONE} },
+      { "%store/prop/qb/r",   सम्बन्धि_STORE_PROP_QB_R,   2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%store/prop/qb/str", सम्बन्धि_STORE_PROP_QB_STR, 2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%store/prop/qb/v",   सम्बन्धि_STORE_PROP_QB_V,   3, {OA_सङ्ख्या, OA_BIT1, OA_BIT2} },
+      { "%store/prop/qf/r",   सम्बन्धि_STORE_PROP_QF_R,   2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%store/prop/qf/str", सम्बन्धि_STORE_PROP_QF_STR, 2, {OA_सङ्ख्या, OA_BIT1, OA_NONE} },
+      { "%store/prop/qf/v",   सम्बन्धि_STORE_PROP_QF_V,   3, {OA_सङ्ख्या, OA_BIT1, OA_BIT2} },
+      { "%store/prop/r",  सम्बन्धि_STORE_PROP_R,  1, {OA_सङ्ख्या,  OA_NONE, OA_NONE} },
+      { "%store/prop/str",सम्बन्धि_STORE_PROP_STR,1, {OA_सङ्ख्या,  OA_NONE, OA_NONE} },
+      { "%store/prop/v",  सम्बन्धि_STORE_PROP_V,  2, {OA_सङ्ख्या,  OA_BIT1, OA_NONE} },
+      { "%store/qb/r",   सम्बन्धि_STORE_QB_R,    2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qb/str", सम्बन्धि_STORE_QB_STR,  2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qb/v",   सम्बन्धि_STORE_QB_V,    3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
+      { "%store/qdar/r",  सम्बन्धि_STORE_QDAR_R,  2,{OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qdar/str",सम्बन्धि_STORE_QDAR_STR,2,{OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qdar/v",  सम्बन्धि_STORE_QDAR_V,  3,{OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
+      { "%store/qf/r",   सम्बन्धि_STORE_QF_R,    2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qf/str", सम्बन्धि_STORE_QF_STR,  2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%store/qf/v",   सम्बन्धि_STORE_QF_V,    3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
+      { "%store/qobj/r",  सम्बन्धि_STORE_QOBJ_R,  2, {OA_FUNC_PTR,OA_BIT1, OA_NONE} },
+      { "%store/qobj/str",सम्बन्धि_STORE_QOBJ_STR,2, {OA_FUNC_PTR,OA_BIT1, OA_NONE} },
+      { "%store/qobj/v",  सम्बन्धि_STORE_QOBJ_V,  3, {OA_FUNC_PTR,OA_BIT1, OA_BIT2} },
+      { "%store/real",    सम्बन्धि_STORE_REAL,    1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
+      { "%store/reala",   सम्बन्धि_STORE_REALA,   2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%store/str",     सम्बन्धि_STORE_STR,     1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
+      { "%store/stra",    सम्बन्धि_STORE_STRA,    2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
+      { "%store/vec4",    सम्बन्धि_STORE_VEC4,    3, {OA_FUNC_PTR,OA_BIT1, OA_BIT2} },
+      { "%store/vec4a",   सम्बन्धि_STORE_VEC4_A,   3, {OA_ARR_PTR, OA_BIT1, OA_BIT2} },
+      { "%sub",    सम्बन्धि_SUB,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%sub/wr", सम्बन्धि_SUB_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%subi",   सम्बन्धि_SUBI,   3,  {OA_BIT1,     OA_BIT2,     OA_सङ्ख्या} },
+      { "%substr",     सम्बन्धि_SUBSTR,     2,{OA_BIT1,    OA_BIT2, OA_NONE} },
+      { "%substr/vec4",सम्बन्धि_SUBSTR_VEC4,2,{OA_BIT1,    OA_BIT2, OA_NONE} },
+      { "%test_nul",     सम्बन्धि_TEST_NUL,     1,{OA_FUNC_PTR,OA_NONE,    OA_NONE} },
+      { "%test_nul/a",   सम्बन्धि_TEST_NUL_A,   2,{OA_ARR_PTR, OA_BIT1,    OA_NONE} },
+      { "%test_nul/obj", सम्बन्धि_TEST_NUL_OBJ, 0,{OA_NONE,    OA_NONE,    OA_NONE} },
+      { "%test_nul/prop",सम्बन्धि_TEST_NUL_PROP,2,{OA_सङ्ख्या,  OA_BIT1,    OA_NONE} },
+      { "%uparr/and/v",          सम्बन्धि_UPARR_AND_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%uparr/or/v",           सम्बन्धि_UPARR_OR_V,           2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%uparr/product/obj/v",  सम्बन्धि_UPARR_गुणनफलम्_OBJ_V,  1, {OA_BIT1,     OA_NONE, OA_NONE} },
+      { "%uparr/product/prop/v", सम्बन्धि_UPARR_गुणनफलम्_PROP_V, 2, {OA_सङ्ख्या,   OA_BIT1, OA_NONE} },
+      { "%uparr/product/r",      सम्बन्धि_UPARR_गुणनफलम्_REAL,   1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%uparr/product/v",      सम्बन्धि_UPARR_गुणनफलम्_V,      2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%uparr/sum/obj/v",      सम्बन्धि_UPARR_योग_OBJ_V,      1, {OA_BIT1,     OA_NONE, OA_NONE} },
+      { "%uparr/sum/prop/v",     सम्बन्धि_UPARR_योग_PROP_V,     2, {OA_सङ्ख्या,   OA_BIT1, OA_NONE} },
+      { "%uparr/sum/r",          सम्बन्धि_UPARR_योग_REAL,       1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
+      { "%uparr/sum/v",          सम्बन्धि_UPARR_योग_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%uparr/xor/v",          सम्बन्धि_UPARR_XOR_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
+      { "%wait",   सम्बन्धि_WAIT,   1,  {OA_FUNC_PTR, OA_NONE,     OA_NONE} },
+      { "%wait/fork",सम्बन्धि_WAIT_FORK,0,{OA_NONE,   OA_NONE,     OA_NONE} },
+      { "%xnor",   सम्बन्धि_XNOR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%xnor/r", सम्बन्धि_XNORR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%xor",    सम्बन्धि_XOR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { "%xor/r",  सम्बन्धि_XORR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
+      { 0, सम्बन्धि_NOOP, 0, {OA_NONE, OA_NONE, OA_NONE} }
 };
 
-static const unsigned opcode_count =
-                    sizeof(opcode_table)/sizeof(*opcode_table) - 1;
+स्थिर ध्रुव अचिह्नित opcode_गणनम् =
+                    परिमाण(opcode_सारणी)/परिमाण(*opcode_सारणी) - 1;
 
-static int opcode_compare(const void*k, const void*r)
+स्थिर पूर्णाङ्क opcode_compare(ध्रुव शून्य*k, ध्रुव शून्य*r)
 {
-      const char*kp = static_cast<const char*>(k);
-      const struct opcode_table_s*rp = static_cast<const struct opcode_table_s*>(r);
-      return strcmp(kp, rp->mnemonic);
+      ध्रुव वर्ण*kp = static_cast<ध्रुव वर्ण*>(k);
+      ध्रुव संरचना opcode_सारणी_s*rp = static_cast<ध्रुव संरचना opcode_सारणी_s*>(r);
+      प्रत्यागम वाक्यं_तुलय(kp, rp->mnemonic);
 }
 
 /*
  * Keep a symbol table of addresses within code space. Labels on
  * executable opcodes are mapped to their address here.
  */
-static symbol_table_t sym_codespace = 0;
+स्थिर चिह्नम्_सारणी_t sym_codespace = 0;
 
 /*
  * Keep a symbol table of functors mentioned in the source. This table
  * is used to resolve references as they come.
  */
-static symbol_table_t sym_functors = 0;
+स्थिर चिह्नम्_सारणी_t sym_functors = 0;
 
 /*
  * VPI objects are indexed during compile time so that they can be
  * linked together as they are created. This symbol table matches
  * labels to vpiHandles.
  */
-static symbol_table_t sym_vpi = 0;
+स्थिर चिह्नम्_सारणी_t sym_vpi = 0;
 
 
 /*
@@ -444,96 +444,96 @@ static symbol_table_t sym_vpi = 0;
  *  Add a functor to the symbol table
  */
 
-void define_functor_symbol(const char*label, vvp_net_t*net)
+शून्य define_functor_चिह्नम्(ध्रुव वर्ण*label, vvp_net_t*net)
 {
-      symbol_value_t val;
+      चिह्नम्_मानम्_t val;
       val.net = net;
-      sym_set_value(sym_functors, label, val);
+      sym_समुच्चयः_मानम्(sym_functors, label, val);
 }
 
-static vvp_net_t*lookup_functor_symbol(const char*label)
+स्थिर vvp_net_t*lookup_functor_चिह्नम्(ध्रुव वर्ण*label)
 {
-      assert(sym_functors);
-      symbol_value_t val = sym_get_value(sym_functors, label);
-      return val.net;
+      प्रतिज्ञा(sym_functors);
+      चिह्नम्_मानम्_t val = sym_get_मानम्(sym_functors, label);
+      प्रत्यागम val.net;
 }
 
-vpiHandle vvp_lookup_handle(const char*label)
+vpiHandle vvp_lookup_handle(ध्रुव वर्ण*label)
 {
-      symbol_value_t val = sym_get_value(sym_vpi, label);
-      if (val.ptr) return (vpiHandle) val.ptr;
-      return 0;
+      चिह्नम्_मानम्_t val = sym_get_मानम्(sym_vpi, label);
+      यदि (val.ptr) प्रत्यागम (vpiHandle) val.ptr;
+      प्रत्यागम 0;
 }
 
-vvp_net_t* vvp_net_lookup(const char*label)
+vvp_net_t* vvp_net_lookup(ध्रुव वर्ण*label)
 {
-      static bool t0_trigger_generated = false;
+      स्थिर तार्किक t0_trigger_generated = असत्य;
 
         /* First, look to see if the symbol is a vpi object of some
 	   sort. If it is, then get the vvp_ipoint_t pointer out of
 	   the vpiHandle. */
-      symbol_value_t val = sym_get_value(sym_vpi, label);
-      if (val.ptr) {
+      चिह्नम्_मानम्_t val = sym_get_मानम्(sym_vpi, label);
+      यदि (val.ptr) {
 	    vpiHandle vpi = static_cast<vpiHandle>(val.ptr);
-	    switch (vpi->get_type_code()) {
-		case vpiNet:
-		case vpiReg:
-		case vpiBitVar:
-		case vpiByteVar:
-		case vpiShortIntVar:
-		case vpiIntVar:
-		case vpiLongIntVar:
-		case vpiIntegerVar: {
-		      const __vpiSignal*sig = dynamic_cast<__vpiSignal*>(vpi);
-		      return sig->node;
+	    विकल्प (vpi->get_type_संहिता()) {
+		पक्ष vpiNet:
+		पक्ष vpiReg:
+		पक्ष vpiBitVar:
+		पक्ष vpiByteVar:
+		पक्ष vpiShortIntVar:
+		पक्ष vpiIntVar:
+		पक्ष vpiLongIntVar:
+		पक्ष vpiIntegerVar: {
+		      ध्रुव __vpiSignal*sig = dynamic_cast<__vpiSignal*>(vpi);
+		      प्रत्यागम sig->ग्रन्थिः;
 		}
 
-		case vpiRealVar: {
-		      const __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(vpi);
-		      return sig->net;
+		पक्ष vpiRealVar: {
+		      ध्रुव __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(vpi);
+		      प्रत्यागम sig->net;
 		}
 
-		case vpiStringVar:
-		case vpiArrayVar:
-		case vpiClassVar: {
-		      const __vpiBaseVar*sig = dynamic_cast<__vpiBaseVar*>(vpi);
-		      return sig->get_net();
+		पक्ष vpiStringVar:
+		पक्ष vpiArrayVar:
+		पक्ष vpiClassVar: {
+		      ध्रुव __vpiBaseVar*sig = dynamic_cast<__vpiBaseVar*>(vpi);
+		      प्रत्यागम sig->get_net();
 		}
 
-		case vpiNamedEvent: {
-		      const __vpiNamedEvent*tmp = dynamic_cast<__vpiNamedEvent*>(vpi);
-		      return tmp->funct;
+		पक्ष vpiNamedEvent: {
+		      ध्रुव __vpiNamedEvent*tmp = dynamic_cast<__vpiNamedEvent*>(vpi);
+		      प्रत्यागम tmp->funct;
 		}
 
-		default:
+		स्वभाव:
 		  fprintf(stderr, "Unsupported type %d.\n",
-		          vpi->get_type_code());
-		  assert(0);
+		          vpi->get_type_संहिता());
+		  प्रतिज्ञा(0);
 	    }
       }
 
 
 	/* Failing that, look for a general functor. */
-      vvp_net_t*tmp = lookup_functor_symbol(label);
+      vvp_net_t*tmp = lookup_functor_चिह्नम्(label);
 
 	// This is a special label used to create a T0 trigger for the
 	// always_comb/latch processes.
-     if (! t0_trigger_generated && (strcmp(label, "E_0x0") == 0)) {
+     यदि (! t0_trigger_generated && (वाक्यं_तुलय(label, "E_0x0") == 0)) {
 	      // This should never happen, but if it does then the E_0x0
 	      // event generation may need to be explicitly generated in
 	      // the compiler output instead of implicitly in this code.
-	    assert(! vpip_peek_current_scope()->is_automatic());
-	    t0_trigger_generated = true;
+	    प्रतिज्ञा(! vpip_peek_current_scope()->is_automatic());
+	    t0_trigger_generated = सत्य;
 	      // Create a local event with no name for the T0 trigger
-	    compile_named_event(strdup(label), strcpy(new char [1],""), true);
+	    compile_named_event(strdup(label), वाक्यं_प्रतिलिख(नूतन वर्ण [1],""), सत्य);
 	    tmp = vvp_net_lookup(label);
-	    assert(tmp);
+	    प्रतिज्ञा(tmp);
 	      // Create a trigger for the T0 event.
 	    vvp_net_ptr_t ptr (tmp, 0);
-	    schedule_t0_trigger(ptr);
+	    कालसारणी_t0_trigger(ptr);
      }
 
-      return tmp;
+      प्रत्यागम tmp;
 }
 
 /*
@@ -554,21 +554,21 @@ vvp_net_t* vvp_net_lookup(const char*label)
  * this call is its last chance. If it cannot complete the operation,
  * it must print an error message and return false.
  */
-static resolv_list_s*resolv_list = 0;
+स्थिर resolv_list_s*resolv_list = 0;
 
 resolv_list_s::~resolv_list_s()
 {
-      free(label_);
+      मुक्त(label_);
 }
 
-void resolv_submit(resolv_list_s*cur)
+शून्य resolv_submit(resolv_list_s*cur)
 {
-      if (cur->resolve()) {
-	    delete cur;
-	    return;
+      यदि (cur->resolve()) {
+	    विलोपय cur;
+	    प्रत्यागम;
       }
 
-      cur->next = resolv_list;
+      cur->अग्र_2 = resolv_list;
       resolv_list = cur;
 }
 
@@ -579,35 +579,35 @@ void resolv_submit(resolv_list_s*cur)
  * input that I want that node to feed into. When the name is found,
  * put net->port[port] into the fan-out list for that node.
  */
-struct vvp_net_resolv_list_s: public resolv_list_s {
+संरचना vvp_net_resolv_list_s: सार्वजनिक resolv_list_s {
 
-      explicit vvp_net_resolv_list_s(char*l) : resolv_list_s(l) { }
+      स्पष्ट vvp_net_resolv_list_s(वर्ण*l) : resolv_list_s(l) { }
 	// port to be driven by the located node.
-      vvp_net_ptr_t port;
-      virtual bool resolve(bool mes) override;
+      vvp_net_ptr_t पत्तनम्;
+      आभास तार्किक resolve(तार्किक mes) override;
 };
 
-bool vvp_net_resolv_list_s::resolve(bool mes)
+तार्किक vvp_net_resolv_list_s::resolve(तार्किक mes)
 {
       vvp_net_t*tmp = vvp_net_lookup(label());
 
-      if (tmp) {
+      यदि (tmp) {
 	      // Link the input port to the located output.
-	    tmp->link(port);
-	    return true;
+	    tmp->link(पत्तनम्);
+	    प्रत्यागम सत्य;
       }
 
-      if (mes)
+      यदि (mes)
 	    fprintf(stderr, "unresolved vvp_net reference: %s\n", label());
 
-      return false;
+      प्रत्यागम असत्य;
 }
 
-inline static
-void postpone_functor_input(vvp_net_ptr_t port, char*lab)
+अन्तःस्थ स्थिर
+शून्य postpone_functor_निवेशः(vvp_net_ptr_t पत्तनम्, वर्ण*lab)
 {
-      struct vvp_net_resolv_list_s*res = new struct vvp_net_resolv_list_s(lab);
-      res->port   = port;
+      संरचना vvp_net_resolv_list_s*res = नूतन संरचना vvp_net_resolv_list_s(lab);
+      res->पत्तनम्   = पत्तनम्;
 
       resolv_submit(res);
 }
@@ -617,33 +617,33 @@ void postpone_functor_input(vvp_net_ptr_t port, char*lab)
  *  Generic functor reference lookup.
  */
 
-struct functor_gen_resolv_list_s: public resolv_list_s {
-      explicit functor_gen_resolv_list_s(char*txt) : resolv_list_s(txt) {
+संरचना functor_gen_resolv_list_s: सार्वजनिक resolv_list_s {
+      स्पष्ट functor_gen_resolv_list_s(वर्ण*txt) : resolv_list_s(txt) {
 	    ref = 0;
       }
       vvp_net_t**ref;
-      virtual bool resolve(bool mes) override;
+      आभास तार्किक resolve(तार्किक mes) override;
 };
 
-bool functor_gen_resolv_list_s::resolve(bool mes)
+तार्किक functor_gen_resolv_list_s::resolve(तार्किक mes)
 {
       vvp_net_t*tmp = vvp_net_lookup(label());
 
-      if (tmp) {
+      यदि (tmp) {
 	    *ref = tmp;
-	    return true;
+	    प्रत्यागम सत्य;
       }
 
-      if (mes)
+      यदि (mes)
 	    fprintf(stderr, "unresolved functor reference: %s\n", label());
 
-      return false;
+      प्रत्यागम असत्य;
 }
 
-void functor_ref_lookup(vvp_net_t**ref, char*lab)
+शून्य functor_ref_lookup(vvp_net_t**ref, वर्ण*lab)
 {
-      struct functor_gen_resolv_list_s*res =
-	    new struct functor_gen_resolv_list_s(lab);
+      संरचना functor_gen_resolv_list_s*res =
+	    नूतन संरचना functor_gen_resolv_list_s(lab);
 
       res->ref    = ref;
 
@@ -654,102 +654,102 @@ void functor_ref_lookup(vvp_net_t**ref, char*lab)
  *  vpiHandle lookup
  */
 
-struct vpi_handle_resolv_list_s: public resolv_list_s {
-      explicit vpi_handle_resolv_list_s(char*lab) : resolv_list_s(lab) {
-	    handle = NULL;
+संरचना vpi_handle_resolv_list_s: सार्वजनिक resolv_list_s {
+      स्पष्ट vpi_handle_resolv_list_s(वर्ण*lab) : resolv_list_s(lab) {
+	    handle = रिक्त;
       }
-      virtual bool resolve(bool mes) override;
+      आभास तार्किक resolve(तार्किक mes) override;
       vpiHandle *handle;
 };
 
-bool vpi_handle_resolv_list_s::resolve(bool mes)
+तार्किक vpi_handle_resolv_list_s::resolve(तार्किक mes)
 {
-      symbol_value_t val = sym_get_value(sym_vpi, label());
-      if (!val.ptr) {
+      चिह्नम्_मानम्_t val = sym_get_मानम्(sym_vpi, label());
+      यदि (!val.ptr) {
 	    // check for thread access symbols
-	    unsigned base, wid;
+	    अचिह्नित आधारः, wid;
 	    size_t n = 0;
-	    char ss[32];
-	    if (2 == sscanf(label(), "W<%u,%31[r]>%zn", &base, ss, &n)
-		       && n == strlen(label())) {
+	    वर्ण ss[32];
+	    यदि (2 == वाक्यात्_पठ(label(), "W<%u,%31[r]>%zn", &आधारः, ss, &n)
+		       && n == वाक्यदैर्घ्यम्(label())) {
 
-		  val.ptr = vpip_make_vthr_word(base, ss);
-		  sym_set_value(sym_vpi, label(), val);
+		  val.ptr = vpip_make_vthr_word(आधारः, ss);
+		  sym_समुच्चयः_मानम्(sym_vpi, label(), val);
 
-	    } else if (1 == sscanf(label(), "S<%u,str>%zn", &base, &n)
-		       && n == strlen(label())) {
+	    } अन्यथा यदि (1 == वाक्यात्_पठ(label(), "S<%u,str>%zn", &आधारः, &n)
+		       && n == वाक्यदैर्घ्यम्(label())) {
 
-		  val.ptr = vpip_make_vthr_str_stack(base);
-		  sym_set_value(sym_vpi, label(), val);
+		  val.ptr = vpip_make_vthr_str_राशिः(आधारः);
+		  sym_समुच्चयः_मानम्(sym_vpi, label(), val);
 
-	    } else if (3 == sscanf(label(), "S<%u,vec4,%31[su]%u>%zn", &base, ss, &wid, &n)
-		       && n == strlen(label())) {
+	    } अन्यथा यदि (3 == वाक्यात्_पठ(label(), "S<%u,vec4,%31[su]%u>%zn", &आधारः, ss, &wid, &n)
+		       && n == वाक्यदैर्घ्यम्(label())) {
 
-		  bool signed_flag = false;
-		  for (char*fp = ss ;  *fp ;  fp += 1) switch (*fp) {
-		      case 's':
-			signed_flag = true;
-			break;
-		      case 'u':
-			signed_flag = false;
-			break;
-		      default:
-			break;
+		  तार्किक signed_flag = असत्य;
+		  प्रति (वर्ण*fp = ss ;  *fp ;  fp += 1) विकल्प (*fp) {
+		      पक्ष 's':
+			signed_flag = सत्य;
+			भङ्ग;
+		      पक्ष 'u':
+			signed_flag = असत्य;
+			भङ्ग;
+		      स्वभाव:
+			भङ्ग;
 		  }
-		  val.ptr = vpip_make_vthr_vec4_stack(base, signed_flag, wid);
-		  sym_set_value(sym_vpi, label(), val);
+		  val.ptr = vpip_make_vthr_vec4_राशिः(आधारः, signed_flag, wid);
+		  sym_समुच्चयः_मानम्(sym_vpi, label(), val);
 	    }
 
       }
 
-      if (!val.ptr) {
+      यदि (!val.ptr) {
 	    // check for memory word  M<mem,base,wid>
       }
 
-      if (strcmp(label(), "null") == 0) {
+      यदि (वाक्यं_तुलय(label(), "null") == 0) {
 	    val.ptr = vpip_make_null_const();
-	    sym_set_value(sym_vpi, label(), val);
+	    sym_समुच्चयः_मानम्(sym_vpi, label(), val);
       }
 
-      if (val.ptr) {
+      यदि (val.ptr) {
 	    *handle = static_cast<vpiHandle>(val.ptr);
-	    return true;
+	    प्रत्यागम सत्य;
       }
 
-      if (mes)
+      यदि (mes)
 	    fprintf(stderr, "unresolved vpi name lookup: %s\n", label());
 
-      return false;
+      प्रत्यागम असत्य;
 }
 
-void compile_vpi_lookup(vpiHandle *handle, char*label)
+शून्य compile_vpi_lookup(vpiHandle *handle, वर्ण*label)
 {
-      if (strcmp(label, "$time") == 0) {
-	    *handle = vpip_sim_time(vpip_peek_current_scope(), false);
-	    free(label);
-	    return;
+      यदि (वाक्यं_तुलय(label, "$time") == 0) {
+	    *handle = vpip_sim_time(vpip_peek_current_scope(), असत्य);
+	    मुक्त(label);
+	    प्रत्यागम;
       }
 
-      if (strcmp(label, "$stime") == 0) {
-	    *handle = vpip_sim_time(vpip_peek_current_scope(), true);
-	    free(label);
-	    return;
+      यदि (वाक्यं_तुलय(label, "$stime") == 0) {
+	    *handle = vpip_sim_time(vpip_peek_current_scope(), सत्य);
+	    मुक्त(label);
+	    प्रत्यागम;
       }
 
-      if (strcmp(label, "$realtime") == 0) {
+      यदि (वाक्यं_तुलय(label, "$realtime") == 0) {
 	    *handle = vpip_sim_realtime(vpip_peek_current_scope());
-	    free(label);
-	    return;
+	    मुक्त(label);
+	    प्रत्यागम;
       }
 
-      if (strcmp(label, "$simtime") == 0) {
-	    *handle = vpip_sim_time(0, false);
-	    free(label);
-	    return;
+      यदि (वाक्यं_तुलय(label, "$simtime") == 0) {
+	    *handle = vpip_sim_time(0, असत्य);
+	    मुक्त(label);
+	    प्रत्यागम;
       }
 
-      struct vpi_handle_resolv_list_s*res
-	    = new struct vpi_handle_resolv_list_s(label);
+      संरचना vpi_handle_resolv_list_s*res
+	    = नूतन संरचना vpi_handle_resolv_list_s(label);
 
       res->handle = handle;
       resolv_submit(res);
@@ -759,80 +759,80 @@ void compile_vpi_lookup(vpiHandle *handle, char*label)
  * Code Label lookup
  */
 
-struct code_label_resolv_list_s: public resolv_list_s {
-      explicit code_label_resolv_list_s(char*lab, bool cptr2) : resolv_list_s(lab) {
-	    code = NULL;
+संरचना संहिता_label_resolv_list_s: सार्वजनिक resolv_list_s {
+      स्पष्ट संहिता_label_resolv_list_s(वर्ण*lab, तार्किक cptr2) : resolv_list_s(lab) {
+	    code = रिक्त;
 	    cptr2_flag = cptr2;
       }
-      struct vvp_code_s *code;
-      bool cptr2_flag;
-      virtual bool resolve(bool mes) override;
+      संरचना vvp_संहिता_s *code;
+      तार्किक cptr2_flag;
+      आभास तार्किक resolve(तार्किक mes) override;
 };
 
-bool code_label_resolv_list_s::resolve(bool mes)
+तार्किक संहिता_label_resolv_list_s::resolve(तार्किक mes)
 {
-      symbol_value_t val = sym_get_value(sym_codespace, label());
-      if (val.ptr) {
-	    if (cptr2_flag)
-		  code->cptr2 = reinterpret_cast<vvp_code_t>(val.ptr);
-	    else
-		  code->cptr = reinterpret_cast<vvp_code_t>(val.ptr);
-	    return true;
+      चिह्नम्_मानम्_t val = sym_get_मानम्(sym_codespace, label());
+      यदि (val.ptr) {
+	    यदि (cptr2_flag)
+		  code->cptr2 = reinterpret_cast<vvp_संहिता_t>(val.ptr);
+	    अन्यथा
+		  code->cptr = reinterpret_cast<vvp_संहिता_t>(val.ptr);
+	    प्रत्यागम सत्य;
       }
 
-      if (mes)
+      यदि (mes)
 	    fprintf(stderr, "unresolved code label: %s\n", label());
 
-      return false;
+      प्रत्यागम असत्य;
 }
 
-void code_label_lookup(struct vvp_code_s *code, char *label, bool cptr2)
+शून्य संहिता_label_lookup(संरचना vvp_संहिता_s *code, वर्ण *label, तार्किक cptr2)
 {
-      struct code_label_resolv_list_s *res
-	    = new struct code_label_resolv_list_s(label, cptr2);
+      संरचना संहिता_label_resolv_list_s *res
+	    = नूतन संरचना संहिता_label_resolv_list_s(label, cptr2);
 
       res->code  = code;
 
       resolv_submit(res);
 }
 
-struct code_array_resolv_list_s: public resolv_list_s {
-      explicit code_array_resolv_list_s(char*lab) : resolv_list_s(lab) {
-	    code = NULL;
+संरचना संहिता_array_resolv_list_s: सार्वजनिक resolv_list_s {
+      स्पष्ट संहिता_array_resolv_list_s(वर्ण*lab) : resolv_list_s(lab) {
+	    code = रिक्त;
       }
-      struct vvp_code_s *code;
-      virtual bool resolve(bool mes) override;
+      संरचना vvp_संहिता_s *code;
+      आभास तार्किक resolve(तार्किक mes) override;
 };
 
-bool code_array_resolv_list_s::resolve(bool mes)
+तार्किक संहिता_array_resolv_list_s::resolve(तार्किक mes)
 {
       code->array = array_find(label());
-      if (code->array != 0) {
-	    return true;
+      यदि (code->array != 0) {
+	    प्रत्यागम सत्य;
       }
 
-      if (mes)
+      यदि (mes)
 	    fprintf(stderr, "Array unresolved: %s\n", label());
 
-      return false;
+      प्रत्यागम असत्य;
 }
 
-static void compile_array_lookup(struct vvp_code_s*code, char*label)
+स्थिर शून्य compile_array_lookup(संरचना vvp_संहिता_s*code, वर्ण*label)
 {
-      struct code_array_resolv_list_s *res
-	    = new struct code_array_resolv_list_s(label);
+      संरचना संहिता_array_resolv_list_s *res
+	    = नूतन संरचना संहिता_array_resolv_list_s(label);
 
       res->code  = code;
 
       resolv_submit(res);
 }
 
-static std::list<struct __vpiSysTaskCall*> scheduled_compiletf;
+स्थिर std::list<संरचना __vpiSysTaskCall*> scheduled_compiletf;
 
-void compile_compiletf(struct __vpiSysTaskCall*obj)
+शून्य compile_compiletf(संरचना __vpiSysTaskCall*obj)
 {
-      if (obj->defn->info.compiletf == 0)
-	    return;
+      यदि (obj->defn->info.compiletf == 0)
+	    प्रत्यागम;
 
       scheduled_compiletf.push_back(obj);
 }
@@ -842,43 +842,43 @@ void compile_compiletf(struct __vpiSysTaskCall*obj)
  * the final stuff. Clean up deferred linking here.
  */
 
-void compile_cleanup(void)
+शून्य compile_cleanup(शून्य)
 {
-      int lnerrs = -1;
-      int nerrs = 0;
-      int last;
+      पूर्णाङ्क lnerrs = -1;
+      पूर्णाङ्क nerrs = 0;
+      पूर्णाङ्क चरमः;
 
-      if (verbose_flag) {
+      यदि (verbose_flag) {
 	    fprintf(stderr, " ... Linking\n");
 	    fflush(stderr);
       }
 
-      do {
+      कुरु {
 	    resolv_list_s *res = resolv_list;
 	    resolv_list = 0x0;
-	    last = nerrs == lnerrs;
+	    चरमः = nerrs == lnerrs;
 	    lnerrs = nerrs;
 	    nerrs = 0;
-	    while (res) {
+	    यावत् (res) {
 		  resolv_list_s *cur = res;
-		  res = res->next;
-		  if (cur->resolve(last))
-			delete cur;
-		  else {
+		  res = res->अग्र_2;
+		  यदि (cur->resolve(चरमः))
+			विलोपय cur;
+		  अन्यथा {
 			nerrs++;
-			cur->next = resolv_list;
+			cur->अग्र_2 = resolv_list;
 			resolv_list = cur;
 		  }
 	    }
-	    if (nerrs && last)
+	    यदि (nerrs && चरमः)
 		  fprintf(stderr,
 			  "compile_cleanup: %d unresolved items\n",
 			  nerrs);
-      } while (nerrs && !last);
+      } यावत् (nerrs && !चरमः);
 
       compile_errors += nerrs;
 
-      if (verbose_flag) {
+      यदि (verbose_flag) {
 	    fprintf(stderr, " ... Removing symbol tables\n");
 	    fflush(stderr);
       }
@@ -886,15 +886,15 @@ void compile_cleanup(void)
 	/* After compile is complete, the vpi symbol table is no
 	   longer needed. VPI objects are located by following
 	   scopes. */
-      delete_symbol_table(sym_vpi);
+      delete_चिह्नम्_सारणी(sym_vpi);
       sym_vpi = 0;
 
 	/* Don't need the code labels. The instructions have numeric
 	   pointers in them, the symbol table is no longer needed. */
-      delete_symbol_table(sym_codespace);
+      delete_चिह्नम्_सारणी(sym_codespace);
       sym_codespace = 0;
 
-      delete_symbol_table(sym_functors);
+      delete_चिह्नम्_सारणी(sym_functors);
       sym_functors = 0;
 
       delete_udp_symbols();
@@ -902,55 +902,55 @@ void compile_cleanup(void)
       compile_island_cleanup();
       compile_array_cleanup();
 
-      if (verbose_flag) {
+      यदि (verbose_flag) {
 	    fprintf(stderr, " ... Compiletf functions\n");
 	    fflush(stderr);
       }
 
-      assert(vpi_mode_flag == VPI_MODE_NONE);
-      vpi_mode_flag = VPI_MODE_COMPILETF;
+      प्रतिज्ञा(vpi_बहुलकम्_flag == VPI_बहुलकम्_NONE);
+      vpi_बहुलकम्_flag = VPI_बहुलकम्_COMPILETF;
 
-      while (! scheduled_compiletf.empty()) {
-	    struct __vpiSysTaskCall*obj = scheduled_compiletf.front();
+      यावत् (! scheduled_compiletf.empty()) {
+	    संरचना __vpiSysTaskCall*obj = scheduled_compiletf.front();
 	    scheduled_compiletf.pop_front();
 	    vpip_cur_task = obj;
-	    obj->defn->info.compiletf (obj->defn->info.user_data);
+	    obj->defn->info.compiletf (obj->defn->info.user_दत्त);
 	    vpip_cur_task = 0;
       }
 
-      vpi_mode_flag = VPI_MODE_NONE;
+      vpi_बहुलकम्_flag = VPI_बहुलकम्_NONE;
 }
 
-void compile_vpi_symbol(const char*label, vpiHandle obj)
+शून्य compile_vpi_चिह्नम्(ध्रुव वर्ण*label, vpiHandle obj)
 {
-      symbol_value_t val;
+      चिह्नम्_मानम्_t val;
       val.ptr = obj;
-      sym_set_value(sym_vpi, label, val);
+      sym_समुच्चयः_मानम्(sym_vpi, label, val);
 }
 
 /*
  * Initialize the compiler by allocation empty symbol tables and
  * initializing the various address spaces.
  */
-void compile_init(void)
+शून्य compile_init(शून्य)
 {
-      sym_vpi = new_symbol_table();
+      sym_vpi = new_चिह्नम्_सारणी();
 
-      sym_functors = new_symbol_table();
+      sym_functors = new_चिह्नम्_सारणी();
 
-      sym_codespace = new_symbol_table();
+      sym_codespace = new_चिह्नम्_सारणी();
       codespace_init();
 }
 
-void compile_load_vpi_module(char*name)
+शून्य compile_आरोपय_vpi_module(वर्ण*name)
 {
-      vpip_load_module(name);
-      delete[] name;
+      vpip_आरोपय_module(name);
+      विलोपय[] name;
 }
 
-void compile_vpi_time_precision(long pre)
+शून्य compile_vpi_time_precision(दीर्घ pre)
 {
-      vpip_set_time_precision(pre);
+      vpip_समुच्चयः_time_precision(pre);
 }
 
 /*
@@ -967,59 +967,59 @@ void compile_vpi_time_precision(long pre)
  *
  * The real value is sign * (mant ** exp).
  */
-static bool crstring_header_test(const char*str)
+स्थिर तार्किक crstring_शीर्षकम्_test(ध्रुव वर्ण*str)
 {
-      if ((str[0] != 'C') && (str[0] != 'c'))
-	    return false;
-      if ((str[1] != 'r') || (str[2] != '<'))
-	    return false;
+      यदि ((str[0] != 'C') && (str[0] != 'c'))
+	    प्रत्यागम असत्य;
+      यदि ((str[1] != 'r') || (str[2] != '<'))
+	    प्रत्यागम असत्य;
 
-      return true;
+      प्रत्यागम सत्य;
 }
 
-bool crstring_test(const char*str)
+तार्किक crstring_test(ध्रुव वर्ण*str)
 {
-      if (!crstring_header_test(str))
-	    return false;
-      const char*tp = strchr(str, '>');
-      if (tp == 0) return false;
-      if (tp[1] != 0) return false;
+      यदि (!crstring_शीर्षकम्_test(str))
+	    प्रत्यागम असत्य;
+      ध्रुव वर्ण*tp = strchr(str, '>');
+      यदि (tp == 0) प्रत्यागम असत्य;
+      यदि (tp[1] != 0) प्रत्यागम असत्य;
 
-      if ((strspn(str+3, "0123456789abcdefmg")+3) != (size_t)(tp - str))
-	  return false;
+      यदि ((strspn(str+3, "0123456789abcdefmg")+3) != (size_t)(tp - str))
+	  प्रत्यागम असत्य;
 
-      return true;
+      प्रत्यागम सत्य;
 }
 
-double crstring_to_double(const char*label)
+द्विगुण crstring_गन्तव्यम्_double(ध्रुव वर्ण*label)
 {
-      assert(crstring_header_test(label));
+      प्रतिज्ञा(crstring_शीर्षकम्_test(label));
 
-      const char*cp = label+3;
-      assert(*cp == 'm');
+      ध्रुव वर्ण*cp = label+3;
+      प्रतिज्ञा(*cp == 'm');
       cp += 1;
-      char*ep;
+      वर्ण*ep;
       uint64_t mant = strtoull(cp, &ep, 16);
       cp = ep;
-      assert(*cp == 'g');
+      प्रतिज्ञा(*cp == 'g');
       cp += 1;
-      int exp = strtoul(cp, 0, 16);
+      पूर्णाङ्क घातांकः = strtoul(cp, 0, 16);
 
-      double tmp;
-      if (mant == 0 && exp == 0x3fff) {
+      द्विगुण tmp;
+      यदि (mant == 0 && घातांकः == 0x3fff) {
 	    tmp = INFINITY;
-      } else if (mant == 0 && exp == 0x7fff) {
+      } अन्यथा यदि (mant == 0 && घातांकः == 0x7fff) {
 	    tmp = -INFINITY;
-      } else if (exp == 0x3fff) {
+      } अन्यथा यदि (घातांकः == 0x3fff) {
 	    tmp = nan("");
-      } else {
-	    double sign = (exp & 0x4000)? -1.0 : 1.0;
-	    exp &= 0x1fff;
+      } अन्यथा {
+	    द्विगुण sign = (घातांकः & 0x4000)? -1.0 : 1.0;
+	    घातांकः &= 0x1fff;
 
-	    tmp = sign * ldexp((double)mant, exp - 0x1000);
+	    tmp = sign * ldexp((द्विगुण)mant, घातांकः - 0x1000);
       }
 
-      return tmp;
+      प्रत्यागम tmp;
 }
 
 /*
@@ -1036,14 +1036,14 @@ double crstring_to_double(const char*label)
  * and skip the symbol lookup.
  */
 
-void input_connect(vvp_net_t*fdx, unsigned port, char*label)
+शून्य निवेशः_connect(vvp_net_t*fdx, अचिह्नित पत्तनम्, वर्ण*label)
 {
-      vvp_net_ptr_t ifdx = vvp_net_ptr_t(fdx, port);
+      vvp_net_ptr_t ifdx = vvp_net_ptr_t(fdx, पत्तनम्);
 
 	/* Is this a vvp_vector4_t constant value? */
-      if (c4string_test(label)) {
+      यदि (c4string_test(label)) {
 
-	    vvp_vector4_t tmp = c4string_to_vector4(label);
+	    vvp_vector4_t tmp = c4string_गन्तव्यम्_vector4(label);
 
 	      // Inputs that are constants are scheduled to execute as
 	      // soon at the simulation starts. In Verilog, constants
@@ -1056,609 +1056,609 @@ void input_connect(vvp_net_t*fdx, unsigned port, char*label)
 	      // schedule execution before time 0, to make sure it
 	      // occurs before any sensitive processes are started
 	      // or VPI callbacks are executed.
-	    if (label[0] == 'c')
-		  schedule_init_vector(ifdx, tmp);
-	    else
-		  schedule_set_vector(ifdx, tmp);
+	    यदि (label[0] == 'c')
+		  कालसारणी_init_सदिशम्(ifdx, tmp);
+	    अन्यथा
+		  कालसारणी_समुच्चयः_सदिशम्(ifdx, tmp);
 
-	    free(label);
-	    return;
+	    मुक्त(label);
+	    प्रत्यागम;
       }
 
 	/* Is this a vvp_vector8_t constant value? */
-      if (c8string_test(label)) {
+      यदि (c8string_test(label)) {
 
-	    vvp_vector8_t tmp = c8string_to_vector8(label);
-	    if (label[0] == 'c')
-		  schedule_init_vector(ifdx, tmp);
-	    else
-		  schedule_set_vector(ifdx, tmp);
+	    vvp_vector8_t tmp = c8string_गन्तव्यम्_vector8(label);
+	    यदि (label[0] == 'c')
+		  कालसारणी_init_सदिशम्(ifdx, tmp);
+	    अन्यथा
+		  कालसारणी_समुच्चयः_सदिशम्(ifdx, tmp);
 
-	    free(label);
-	    return;
+	    मुक्त(label);
+	    प्रत्यागम;
       }
 
 	/* Handle the Cr<> constant driver, which is a real-value
 	   driver. */
-      if (crstring_test(label)) {
+      यदि (crstring_test(label)) {
 
-	    double tmp = crstring_to_double(label);
+	    द्विगुण tmp = crstring_गन्तव्यम्_double(label);
 
-	    if (label[0] == 'c')
-		  schedule_init_vector(ifdx, tmp);
-	    else
-		  schedule_set_vector(ifdx, tmp);
-	    free(label);
-	    return;
+	    यदि (label[0] == 'c')
+		  कालसारणी_init_सदिशम्(ifdx, tmp);
+	    अन्यथा
+		  कालसारणी_समुच्चयः_सदिशम्(ifdx, tmp);
+	    मुक्त(label);
+	    प्रत्यागम;
       }
 
 	/* Handle the general case that this is a label for a node in
 	   the vvp net. This arranges for the label to be preserved in
 	   a linker list, and linked when the symbol table is
 	   complete. */
-      postpone_functor_input(ifdx, label);
+      postpone_functor_निवेशः(ifdx, label);
 }
 
-void inputs_connect(vvp_net_t*fdx, unsigned argc, struct symb_s*argv)
+शून्य inputs_connect(vvp_net_t*fdx, अचिह्नित argc, संरचना symb_s*argv)
 {
-      if (argc > 4) {
-	    std::cerr << "XXXX argv[0] = " << argv[0].text << std::endl;
+      यदि (argc > 4) {
+	    std::cerr << "XXXX argv[0] = " << argv[0].text << std::पङ्क्त्यन्तः;
       }
-      assert(argc <= 4);
+      प्रतिज्ञा(argc <= 4);
 
-      for (unsigned idx = 0;  idx < argc;  idx += 1) {
+      प्रति (अचिह्नित idx = 0;  idx < argc;  idx += 1) {
 
-	    input_connect(fdx, idx, argv[idx].text);
+	    निवेशः_connect(fdx, idx, argv[idx].text);
       }
 }
 
-void wide_inputs_connect(vvp_wide_fun_core*core,
-			 unsigned argc, struct symb_s*argv)
+शून्य wide_inputs_connect(vvp_wide_fun_core*core,
+			 अचिह्नित argc, संरचना symb_s*argv)
 {
 	/* Create input functors to receive values from the
 	   network. These functors pass the data to the core. */
-      unsigned input_functors = (argc+3) / 4;
-      for (unsigned idx = 0 ;  idx < input_functors ;  idx += 1) {
-	    unsigned base = idx*4;
-	    unsigned trans = 4;
-	    if (base+trans > argc)
-		  trans = argc - base;
+      अचिह्नित निवेशः_functors = (argc+3) / 4;
+      प्रति (अचिह्नित idx = 0 ;  idx < निवेशः_functors ;  idx += 1) {
+	    अचिह्नित आधारः = idx*4;
+	    अचिह्नित trans = 4;
+	    यदि (आधारः+trans > argc)
+		  trans = argc - आधारः;
 
-	    vvp_wide_fun_t*cur = new vvp_wide_fun_t(core, base);
-	    vvp_net_t*ptr = new vvp_net_t;
+	    vvp_wide_fun_t*cur = नूतन vvp_wide_fun_t(core, आधारः);
+	    vvp_net_t*ptr = नूतन vvp_net_t;
 	    ptr->fun = cur;
 
-	    inputs_connect(ptr, trans, argv+base);
+	    inputs_connect(ptr, trans, argv+आधारः);
       }
 }
 
-template <class T_> void make_arith(T_ *arith, char*label,
-				    unsigned argc, struct symb_s*argv)
+प्रतिरूपम् <वर्ग T_> शून्य make_arith(T_ *arith, वर्ण*label,
+				    अचिह्नित argc, संरचना symb_s*argv)
 {
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = नूतन vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_चिह्नम्(label, ptr);
+      मुक्त(label);
 
-      assert(argc == 2);
+      प्रतिज्ञा(argc == 2);
       inputs_connect(ptr, argc, argv);
 
-      free(argv);
+      मुक्त(argv);
 }
 
-void compile_arith_cast_int(char*label, long width,
-                            unsigned argc, struct symb_s*argv)
+शून्य compile_arith_cast_int(वर्ण*label, दीर्घ width,
+                            अचिह्नित argc, संरचना symb_s*argv)
 {
-      vvp_arith_cast_int*arith = new vvp_arith_cast_int((unsigned) width);
+      vvp_arith_cast_int*arith = नूतन vvp_arith_cast_int((अचिह्नित) width);
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = नूतन vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_चिह्नम्(label, ptr);
+      मुक्त(label);
 
-      assert(argc == 1);
+      प्रतिज्ञा(argc == 1);
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      मुक्त(argv);
 }
 
-void compile_arith_cast_vec2(char*label, long width,
-			     unsigned argc, struct symb_s*argv)
+शून्य compile_arith_cast_vec2(वर्ण*label, दीर्घ width,
+			     अचिह्नित argc, संरचना symb_s*argv)
 {
-      vvp_arith_cast_vec2*arith = new vvp_arith_cast_vec2((unsigned) width);
+      vvp_arith_cast_vec2*arith = नूतन vvp_arith_cast_vec2((अचिह्नित) width);
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = नूतन vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_चिह्नम्(label, ptr);
+      मुक्त(label);
 
-      assert(argc == 1);
+      प्रतिज्ञा(argc == 1);
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      मुक्त(argv);
 }
 
-void compile_arith_cast_real(char*label, bool signed_flag,
-                             unsigned argc, struct symb_s*argv)
+शून्य compile_arith_cast_real(वर्ण*label, तार्किक signed_flag,
+                             अचिह्नित argc, संरचना symb_s*argv)
 {
-      vvp_arith_cast_real*arith = new vvp_arith_cast_real(signed_flag);
+      vvp_arith_cast_real*arith = नूतन vvp_arith_cast_real(signed_flag);
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = नूतन vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_चिह्नम्(label, ptr);
+      मुक्त(label);
 
-      assert(argc == 1);
+      प्रतिज्ञा(argc == 1);
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      मुक्त(argv);
 }
 
-void compile_arith_abs(char*label, unsigned argc, struct symb_s*argv)
+शून्य compile_arith_abs(वर्ण*label, अचिह्नित argc, संरचना symb_s*argv)
 {
-      vvp_arith_abs*arith = new vvp_arith_abs;
+      vvp_arith_abs*arith = नूतन vvp_arith_abs;
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = नूतन vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_चिह्नम्(label, ptr);
+      मुक्त(label);
 
-      assert(argc == 1);
+      प्रतिज्ञा(argc == 1);
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      मुक्त(argv);
 }
 
-void compile_arith_div(char*label, long wid, bool signed_flag,
-		       unsigned argc, struct symb_s*argv)
+शून्य compile_arith_div(वर्ण*label, दीर्घ wid, तार्किक signed_flag,
+		       अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      if (argc != 2) {
-	    const char *suffix = "";
-	    if (signed_flag) suffix = ".s";
+      यदि (argc != 2) {
+	    ध्रुव वर्ण *suffix = "";
+	    यदि (signed_flag) suffix = ".s";
 	    fprintf(stderr, "%s; .arith/div%s has wrong number of "
 	                    "symbols\n", label, suffix);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_ *arith = new vvp_arith_div(wid, signed_flag);
+      vvp_arith_ *arith = नूतन vvp_arith_div(wid, signed_flag);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_div_r(char*label, unsigned argc, struct symb_s*argv)
+शून्य compile_arith_div_r(वर्ण*label, अचिह्नित argc, संरचना symb_s*argv)
 {
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s; .arith/divr has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_div_real;
+      vvp_arith_real_ *arith = नूतन vvp_arith_div_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mod(char*label, long wid, bool signed_flag,
-		       unsigned argc, struct symb_s*argv)
+शून्य compile_arith_mod(वर्ण*label, दीर्घ wid, तार्किक signed_flag,
+		       अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .arith/mod has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_ *arith = new vvp_arith_mod(wid, signed_flag);
+      vvp_arith_ *arith = नूतन vvp_arith_mod(wid, signed_flag);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mod_r(char*label, unsigned argc, struct symb_s*argv)
+शून्य compile_arith_mod_r(वर्ण*label, अचिह्नित argc, संरचना symb_s*argv)
 {
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .arith/mod.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_mod_real;
+      vvp_arith_real_ *arith = नूतन vvp_arith_mod_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mult(char*label, long wid,
-			unsigned argc, struct symb_s*argv)
+शून्य compile_arith_mult(वर्ण*label, दीर्घ wid,
+			अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .arith/mult has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_ *arith = new vvp_arith_mult(wid);
+      vvp_arith_ *arith = नूतन vvp_arith_mult(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mult_r(char*label, unsigned argc, struct symb_s*argv)
+शून्य compile_arith_mult_r(वर्ण*label, अचिह्नित argc, संरचना symb_s*argv)
 {
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .arith/mult.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_mult_real;
+      vvp_arith_real_ *arith = नूतन vvp_arith_mult_real;
       make_arith(arith, label, argc, argv);
 }
 
 
-void compile_arith_pow(char*label, long wid, bool signed_flag,
-		       unsigned argc, struct symb_s*argv)
+शून्य compile_arith_pow(वर्ण*label, दीर्घ wid, तार्किक signed_flag,
+		       अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      if (argc != 2) {
-	    const char *suffix = "";
-	    if (signed_flag) suffix = ".s";
+      यदि (argc != 2) {
+	    ध्रुव वर्ण *suffix = "";
+	    यदि (signed_flag) suffix = ".s";
 	    fprintf(stderr, "%s .arith/pow%s has wrong number of "
 	                    "symbols\n", label, suffix);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_ *arith = new vvp_arith_pow(wid, signed_flag);
+      vvp_arith_ *arith = नूतन vvp_arith_pow(wid, signed_flag);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_pow_r(char*label, unsigned argc, struct symb_s*argv)
+शून्य compile_arith_pow_r(वर्ण*label, अचिह्नित argc, संरचना symb_s*argv)
 {
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .arith/pow.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_pow_real;
+      vvp_arith_real_ *arith = नूतन vvp_arith_pow_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sub(char*label, long wid, unsigned argc, struct symb_s*argv)
+शून्य compile_arith_sub(वर्ण*label, दीर्घ wid, अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .arith/sub has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_ *arith = new vvp_arith_sub(wid);
+      vvp_arith_ *arith = नूतन vvp_arith_sub(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sub_r(char*label, unsigned argc, struct symb_s*argv)
+शून्य compile_arith_sub_r(वर्ण*label, अचिह्नित argc, संरचना symb_s*argv)
 {
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s; .arith/sub.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_sub_real;
+      vvp_arith_real_ *arith = नूतन vvp_arith_sub_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sum(char*label, long wid, unsigned argc, struct symb_s*argv)
+शून्य compile_arith_योग(वर्ण*label, दीर्घ wid, अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .arith/sum has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_ *arith = new vvp_arith_sum(wid);
+      vvp_arith_ *arith = नूतन vvp_arith_योग(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sum_r(char*label, unsigned argc, struct symb_s*argv)
+शून्य compile_arith_योग_r(वर्ण*label, अचिह्नित argc, संरचना symb_s*argv)
 {
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .arith/sum.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_real_ *arith = new vvp_arith_sum_real;
+      vvp_arith_real_ *arith = नूतन vvp_arith_योग_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eeq(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+शून्य compile_cmp_eeq(वर्ण*label, दीर्घ wid,
+		     अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eeq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_eeq(wid);
+      vvp_arith_ *arith = नूतन vvp_cmp_eeq(wid);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_nee(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+शून्य compile_cmp_nee(वर्ण*label, दीर्घ wid,
+		     अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eeq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_nee(wid);
+      vvp_arith_ *arith = नूतन vvp_cmp_nee(wid);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eq(char*label, long wid, unsigned argc, struct symb_s*argv)
+शून्य compile_cmp_eq(वर्ण*label, दीर्घ wid, अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_eq(wid);
+      vvp_arith_ *arith = नूतन vvp_cmp_eq(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eqx(char*label, long wid, unsigned argc, struct symb_s*argv)
+शून्य compile_cmp_eqx(वर्ण*label, दीर्घ wid, अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eqx has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_eqx(wid);
+      vvp_arith_ *arith = नूतन vvp_cmp_eqx(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eqz(char*label, long wid, unsigned argc, struct symb_s*argv)
+शून्य compile_cmp_eqz(वर्ण*label, दीर्घ wid, अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eqz has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_eqz(wid);
+      vvp_arith_ *arith = नूतन vvp_cmp_eqz(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eq_r(char*label, unsigned argc, struct symb_s*argv)
+शून्य compile_cmp_eq_r(वर्ण*label, अचिह्नित argc, संरचना symb_s*argv)
 {
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eq.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_real_ *arith = new vvp_cmp_eq_real;
+      vvp_arith_real_ *arith = नूतन vvp_cmp_eq_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ne(char*label, long wid, unsigned argc, struct symb_s*argv)
+शून्य compile_cmp_ne(वर्ण*label, दीर्घ wid, अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ne has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_ne(wid);
+      vvp_arith_ *arith = नूतन vvp_cmp_ne(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ne_r(char*label, unsigned argc, struct symb_s*argv)
+शून्य compile_cmp_ne_r(वर्ण*label, अचिह्नित argc, संरचना symb_s*argv)
 {
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ne.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_real_ *arith = new vvp_cmp_ne_real;
+      vvp_arith_real_ *arith = नूतन vvp_cmp_ne_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ge(char*label, long wid, bool signed_flag,
-		    unsigned argc, struct symb_s*argv)
+शून्य compile_cmp_ge(वर्ण*label, दीर्घ wid, तार्किक signed_flag,
+		    अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ge has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_ge(wid, signed_flag);
+      vvp_arith_ *arith = नूतन vvp_cmp_ge(wid, signed_flag);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ge_r(char*label, unsigned argc, struct symb_s*argv)
+शून्य compile_cmp_ge_r(वर्ण*label, अचिह्नित argc, संरचना symb_s*argv)
 {
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ge.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_real_ *arith = new vvp_cmp_ge_real;
+      vvp_arith_real_ *arith = नूतन vvp_cmp_ge_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_gt(char*label, long wid, bool signed_flag,
-		    unsigned argc, struct symb_s*argv)
+शून्य compile_cmp_gt(वर्ण*label, दीर्घ wid, तार्किक signed_flag,
+		    अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .cmp/gt has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_gt(wid, signed_flag);
+      vvp_arith_ *arith = नूतन vvp_cmp_gt(wid, signed_flag);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_gt_r(char*label, unsigned argc, struct symb_s*argv)
+शून्य compile_cmp_gt_r(वर्ण*label, अचिह्नित argc, संरचना symb_s*argv)
 {
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .cmp/gt.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_real_ *arith = new vvp_cmp_gt_real;
+      vvp_arith_real_ *arith = नूतन vvp_cmp_gt_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_weq(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+शून्य compile_cmp_weq(वर्ण*label, दीर्घ wid,
+		     अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .cmp/weq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_weq(wid);
+      vvp_arith_ *arith = नूतन vvp_cmp_weq(wid);
 
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_wne(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+शून्य compile_cmp_wne(वर्ण*label, दीर्घ wid,
+		     अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      if (argc != 2) {
+      यदि (argc != 2) {
 	    fprintf(stderr, "%s .cmp/wne has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      vvp_arith_ *arith = new vvp_cmp_wne(wid);
+      vvp_arith_ *arith = नूतन vvp_cmp_wne(wid);
 
       make_arith(arith, label, argc, argv);
 }
 
 
-void compile_delay(char*label, unsigned width,
-                   vvp_delay_t*delay, struct symb_s arg)
+शून्य compile_delay(वर्ण*label, अचिह्नित width,
+                   vvp_delay_t*delay, संरचना symb_s arg)
 {
-      vvp_net_t*net = new vvp_net_t;
-      vvp_fun_delay*obj = new vvp_fun_delay(net, width, *delay);
+      vvp_net_t*net = नूतन vvp_net_t;
+      vvp_fun_delay*obj = नूतन vvp_fun_delay(net, width, *delay);
       net->fun = obj;
 
-      delete delay;
+      विलोपय delay;
 
-      input_connect(net, 0, arg.text);
+      निवेशः_connect(net, 0, arg.text);
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_चिह्नम्(label, net);
+      मुक्त(label);
 }
 
-void compile_delay(char*label, unsigned width,
-                   unsigned argc, struct symb_s*argv, bool ignore_decay)
+शून्य compile_delay(वर्ण*label, अचिह्नित width,
+                   अचिह्नित argc, संरचना symb_s*argv, तार्किक ignore_decay)
 {
       vvp_delay_t stub (0, 0, 0);
-      if (ignore_decay) stub.set_ignore_decay();
-      vvp_net_t*net = new vvp_net_t;
-      vvp_fun_delay*obj = new vvp_fun_delay(net, width, stub);
+      यदि (ignore_decay) stub.समुच्चयः_ignore_decay();
+      vvp_net_t*net = नूतन vvp_net_t;
+      vvp_fun_delay*obj = नूतन vvp_fun_delay(net, width, stub);
       net->fun = obj;
 
       inputs_connect(net, argc, argv);
-      free(argv);
+      मुक्त(argv);
 
-      define_functor_symbol(label, net);
-      free(label);
+      define_functor_चिह्नम्(label, net);
+      मुक्त(label);
 }
 
 /*
  * Extend nodes.
  */
-void compile_extend_signed(char*label, long wid, struct symb_s arg)
+शून्य compile_extend_signed(वर्ण*label, दीर्घ wid, संरचना symb_s arg)
 {
-      assert(wid >= 0);
+      प्रतिज्ञा(wid >= 0);
 
-      vvp_fun_extend_signed*fun = new vvp_fun_extend_signed(wid);
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_fun_extend_signed*fun = नूतन vvp_fun_extend_signed(wid);
+      vvp_net_t*ptr = नूतन vvp_net_t;
       ptr->fun = fun;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_चिह्नम्(label, ptr);
+      मुक्त(label);
 
-      input_connect(ptr, 0, arg.text);
+      निवेशः_connect(ptr, 0, arg.text);
 }
 
-struct __vpiModPath* compile_modpath(char*label, unsigned width,
-                                     struct symb_s drv, struct symb_s dest)
+संरचना __vpiModPath* compile_modpath(वर्ण*label, अचिह्नित width,
+                                     संरचना symb_s drv, संरचना symb_s dest)
 {
-      vvp_net_t*net = new vvp_net_t;
-      vvp_fun_modpath*obj = new vvp_fun_modpath(net, width);
+      vvp_net_t*net = नूतन vvp_net_t;
+      vvp_fun_modpath*obj = नूतन vvp_fun_modpath(net, width);
       net->fun = obj;
 
-      input_connect(net, 0, drv.text);
+      निवेशः_connect(net, 0, drv.text);
 
-      define_functor_symbol(label, net);
+      define_functor_चिह्नम्(label, net);
 
       __vpiModPath*modpath = vpip_make_modpath(net);
 
-      compile_vpi_lookup(&modpath->path_term_out.expr, dest.text);
+      compile_vpi_lookup(&modpath->मार्गः_पदांशः_बहिर्गमनम्.व्यञ्जकम्, dest.text);
 
-      free(label);
+      मुक्त(label);
 
       modpath->modpath = obj;
-      return modpath;
+      प्रत्यागम modpath;
 }
 
-static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
-					       char edge_c,
-					       const struct symb_s&src,
-					       struct numbv_s&vals,
-					       bool ifnone)
+स्थिर संरचना __vpiModPathSrc*make_modpath_src(संरचना __vpiModPath*मार्गः,
+					       वर्ण edge_c,
+					       ध्रुव संरचना symb_s&src,
+					       संरचना numbv_s&vals,
+					       तार्किक ifnone)
 {
-      vvp_fun_modpath*dst = path->modpath;
+      vvp_fun_modpath*dst = मार्गः->modpath;
 
       vvp_time64_t use_delay[12];
-      assert(vals.cnt == 12);
-      for (unsigned idx = 0 ; idx < vals.cnt ;  idx += 1) {
+      प्रतिज्ञा(vals.cnt == 12);
+      प्रति (अचिह्नित idx = 0 ; idx < vals.cnt ;  idx += 1) {
 	    use_delay[idx] = vals.nvec[idx];
       }
 
@@ -1666,75 +1666,75 @@ static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
 
       vvp_fun_modpath_src*obj = 0;
 
-      int vpi_edge = vpiNoEdge;
-      if (edge_c == 0) {
-	    obj = new vvp_fun_modpath_src(use_delay);
+      पूर्णाङ्क vpi_edge = vpiNoEdge;
+      यदि (edge_c == 0) {
+	    obj = नूतन vvp_fun_modpath_src(use_delay);
 
-      } else {
-	    bool posedge, negedge;
-	    switch (edge_c) {
-		case '+':
+      } अन्यथा {
+	    तार्किक posedge, negedge;
+	    विकल्प (edge_c) {
+		पक्ष '+':
 		  vpi_edge = vpiPosedge;
-		  posedge = true;
-		  negedge = false;
-		  break;
-		case '-':
+		  posedge = सत्य;
+		  negedge = असत्य;
+		  भङ्ग;
+		पक्ष '-':
 		  vpi_edge = vpiNegedge;
-		  posedge = false;
-		  negedge = true;
-		  break;
-#if 0
-		case '*':
-		  posedge = true;
-		  negedge = true;
-		  break;
-#endif
-		default:
-		  posedge = false;
-		  negedge = false;
+		  posedge = असत्य;
+		  negedge = सत्य;
+		  भङ्ग;
+#यदि 0
+		पक्ष '*':
+		  posedge = सत्य;
+		  negedge = सत्य;
+		  भङ्ग;
+#यदि_अन्तः
+		स्वभाव:
+		  posedge = असत्य;
+		  negedge = असत्य;
 		  fprintf(stderr, "Unknown edge identifier %c(%d).\n", edge_c,
 		          edge_c);
-		  assert(0);
+		  प्रतिज्ञा(0);
 	    }
-	    obj = new vvp_fun_modpath_edge(use_delay, posedge, negedge);
+	    obj = नूतन vvp_fun_modpath_edge(use_delay, posedge, negedge);
       }
 
-      vvp_net_t*net = new vvp_net_t;
-      struct __vpiModPathSrc* srcobj = vpip_make_modpath_src(path, net) ;
-      vpip_attach_to_current_scope(srcobj);
+      vvp_net_t*net = नूतन vvp_net_t;
+      संरचना __vpiModPathSrc* srcobj = vpip_make_modpath_src(मार्गः, net) ;
+      vpip_attach_गन्तव्यम्_current_scope(srcobj);
       net->fun = obj;
 
 	/* Save the vpiEdge directory into the input path term. */
-      srcobj->path_term_in.edge = vpi_edge;
-      input_connect(net, 0, src.text);
-      dst->add_modpath_src(obj, ifnone);
+      srcobj->मार्गः_पदांशः_अन्तर्.edge = vpi_edge;
+      निवेशः_connect(net, 0, src.text);
+      dst->सङ्कलय_modpath_src(obj, ifnone);
 
-      return srcobj;
+      प्रत्यागम srcobj;
 }
 
-void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
-			 const struct symb_s&src,
-			 struct numbv_s&vals,
-			 const struct symb_s&condit_src,
-			 const struct symb_s&path_term_in)
+शून्य compile_modpath_src(संरचना __vpiModPath*dst, वर्ण edge_c,
+			 ध्रुव संरचना symb_s&src,
+			 संरचना numbv_s&vals,
+			 ध्रुव संरचना symb_s&condit_src,
+			 ध्रुव संरचना symb_s&मार्गः_पदांशः_अन्तर्)
 {
-      struct __vpiModPathSrc*obj =
-	    make_modpath_src(dst, edge_c, src, vals, false);
-      input_connect(obj->net, 1, condit_src.text);
-      compile_vpi_lookup(&obj->path_term_in.expr, path_term_in.text);
+      संरचना __vpiModPathSrc*obj =
+	    make_modpath_src(dst, edge_c, src, vals, असत्य);
+      निवेशः_connect(obj->net, 1, condit_src.text);
+      compile_vpi_lookup(&obj->मार्गः_पदांशः_अन्तर्.व्यञ्जकम्, मार्गः_पदांशः_अन्तर्.text);
 }
 
-void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
-			 const struct symb_s&src,
-			 struct numbv_s&vals,
-			 int condit_src,
-			 const struct symb_s&path_term_in,
-			 bool ifnone)
+शून्य compile_modpath_src(संरचना __vpiModPath*dst, वर्ण edge_c,
+			 ध्रुव संरचना symb_s&src,
+			 संरचना numbv_s&vals,
+			 पूर्णाङ्क condit_src,
+			 ध्रुव संरचना symb_s&मार्गः_पदांशः_अन्तर्,
+			 तार्किक ifnone)
 {
-      assert(condit_src == 0);
-      struct __vpiModPathSrc*obj =
+      प्रतिज्ञा(condit_src == 0);
+      संरचना __vpiModPathSrc*obj =
 	    make_modpath_src(dst, edge_c, src, vals, ifnone);
-      compile_vpi_lookup(&obj->path_term_in.expr, path_term_in.text);
+      compile_vpi_lookup(&obj->मार्गः_पदांशः_अन्तर्.व्यञ्जकम्, मार्गः_पदांशः_अन्तर्.text);
 }
 
 /*
@@ -1742,106 +1742,106 @@ void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
  * width. The 0 input is the data vector to be shifted and the 1 input
  * is the amount of the shift. An unconnected shift amount is set to 0.
  */
-void compile_shiftl(char*label, long wid, unsigned argc, struct symb_s*argv)
+शून्य compile_shiftl(वर्ण*label, दीर्घ wid, अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      vvp_arith_ *arith = new vvp_shiftl(wid);
+      vvp_arith_ *arith = नूतन vvp_shiftl(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_shiftr(char*label, long wid, bool signed_flag,
-		    unsigned argc, struct symb_s*argv)
+शून्य compile_shiftr(वर्ण*label, दीर्घ wid, तार्किक signed_flag,
+		    अचिह्नित argc, संरचना symb_s*argv)
 {
-      assert( wid > 0 );
+      प्रतिज्ञा( wid > 0 );
 
-      vvp_arith_ *arith = new vvp_shiftr(wid, signed_flag);
+      vvp_arith_ *arith = नूतन vvp_shiftr(wid, signed_flag);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_resolver(char*label, char*type, unsigned argc, struct symb_s*argv)
+शून्य compile_resolver(वर्ण*label, वर्ण*type, अचिह्नित argc, संरचना symb_s*argv)
 {
-      vvp_net_t*net = new vvp_net_t;
+      vvp_net_t*net = नूतन vvp_net_t;
 
       resolv_core*core = 0;
 
-      if (strcmp(type,"tri") == 0) {
-	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_Z, 0,0));
+      यदि (वाक्यं_तुलय(type,"tri") == 0) {
+	    core = नूतन resolv_tri(argc, net, vvp_scalar_t(BIT4_Z, 0,0));
 
-      } else if (strcmp(type,"tri0") == 0) {
-	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_0, 5,5));
+      } अन्यथा यदि (वाक्यं_तुलय(type,"tri0") == 0) {
+	    core = नूतन resolv_tri(argc, net, vvp_scalar_t(BIT4_0, 5,5));
 
-      } else if (strcmp(type,"tri1") == 0) {
-	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_1, 5,5));
+      } अन्यथा यदि (वाक्यं_तुलय(type,"tri1") == 0) {
+	    core = नूतन resolv_tri(argc, net, vvp_scalar_t(BIT4_1, 5,5));
 
-      } else if (strcmp(type,"triand") == 0) {
-	    core = new resolv_triand(argc, net);
+      } अन्यथा यदि (वाक्यं_तुलय(type,"triand") == 0) {
+	    core = नूतन resolv_triand(argc, net);
 
-      } else if (strcmp(type,"trior") == 0) {
-	    core = new resolv_trior(argc, net);
+      } अन्यथा यदि (वाक्यं_तुलय(type,"trior") == 0) {
+	    core = नूतन resolv_trior(argc, net);
 
-      } else {
+      } अन्यथा {
 	    fprintf(stderr, "invalid resolver type: %s\n", type);
 	    compile_errors += 1;
-            delete net;
+            विलोपय net;
       }
 
-      if (core) {
+      यदि (core) {
 	    net->fun = core;
-	    define_functor_symbol(label, net);
+	    define_functor_चिह्नम्(label, net);
 
-            for (unsigned base = 0 ;  base < argc ;  base += 4) {
-	          unsigned nports = argc - base;
-                  if (nports > 4)
+            प्रति (अचिह्नित आधारः = 0 ;  आधारः < argc ;  आधारः += 4) {
+	          अचिह्नित nports = argc - आधारः;
+                  यदि (nports > 4)
                         nports = 4;
 
-                  if (base > 0) {
-                        net = new vvp_net_t;
-                        net->fun = new resolv_extend(core, base);
+                  यदि (आधारः > 0) {
+                        net = नूतन vvp_net_t;
+                        net->fun = नूतन resolv_extend(core, आधारः);
                   }
-                  inputs_connect(net, nports, argv+base);
+                  inputs_connect(net, nports, argv+आधारः);
             }
       }
-      free(type);
-      free(label);
-      free(argv);
+      मुक्त(type);
+      मुक्त(label);
+      मुक्त(argv);
 }
 
-void compile_udp_def(int sequ, char *label, char *name,
-		     unsigned nin, unsigned init, char **table)
+शून्य compile_udp_def(पूर्णाङ्क sequ, वर्ण *label, वर्ण *name,
+		     अचिह्नित nin, अचिह्नित init, वर्ण **सारणी)
 {
-      if (sequ) {
+      यदि (sequ) {
 	    vvp_bit4_t init4;
-	    if (init == 0)
+	    यदि (init == 0)
 		  init4 = BIT4_0;
-	    else if (init == 1)
+	    अन्यथा यदि (init == 1)
 		  init4 = BIT4_1;
-	    else
+	    अन्यथा
 		  init4 = BIT4_X;
 
-	    vvp_udp_seq_s *u = new vvp_udp_seq_s(label, name, nin, init4);
-	    u->compile_table(table);
-      } else {
-	    vvp_udp_comb_s *u = new vvp_udp_comb_s(label, name, nin);
-	    u->compile_table(table);
+	    vvp_udp_seq_s *u = नूतन vvp_udp_seq_s(label, name, nin, init4);
+	    u->compile_सारणी(सारणी);
+      } अन्यथा {
+	    vvp_udp_comb_s *u = नूतन vvp_udp_comb_s(label, name, nin);
+	    u->compile_सारणी(सारणी);
       }
-      free(label);
+      मुक्त(label);
 }
 
-char **compile_udp_table(char **table, char *row)
+वर्ण **compile_udp_सारणी(वर्ण **सारणी, वर्ण *row)
 {
-  if (table)
-    assert(strlen(*table)==strlen(row));
+  यदि (सारणी)
+    प्रतिज्ञा(वाक्यदैर्घ्यम्(*सारणी)==वाक्यदैर्घ्यम्(row));
 
-  char **tt;
-  for (tt = table; tt && *tt; tt++) { }
-  int n = (tt-table) + 2;
+  वर्ण **tt;
+  प्रति (tt = सारणी; tt && *tt; tt++) { }
+  पूर्णाङ्क n = (tt-सारणी) + 2;
 
-  table = static_cast<char**>(realloc(table, n*sizeof(char*)));
-  table[n-2] = row;
-  table[n-1] = 0x0;
+  सारणी = static_cast<वर्ण**>(realloc(सारणी, n*परिमाण(वर्ण*)));
+  सारणी[n-2] = row;
+  सारणी[n-1] = 0x0;
 
-  return table;
+  प्रत्यागम सारणी;
 }
 
 
@@ -1851,225 +1851,225 @@ char **compile_udp_table(char **table, char *row)
  * table gives the operand structure that is acceptable, so I can
  * process the operands here as well.
  */
-void compile_code(char*label, char*mnem, comp_operands_t opa)
+शून्य compile_संहिता(वर्ण*label, वर्ण*mnem, comp_operands_t opa)
 {
 	/* First, I can give the label a value that is the current
 	   codespace pointer. Don't need the text of the label after
 	   this is done. */
-      if (label)
+      यदि (label)
 	    compile_codelabel(label);
 
 	/* Lookup the opcode in the opcode table. */
-      struct opcode_table_s*op = static_cast<struct opcode_table_s*>
-                                            (bsearch(mnem, opcode_table, opcode_count,
-                                                     sizeof(struct opcode_table_s),
+      संरचना opcode_सारणी_s*op = static_cast<संरचना opcode_सारणी_s*>
+                                            (bsearch(mnem, opcode_सारणी, opcode_गणनम्,
+                                                     परिमाण(संरचना opcode_सारणी_s),
                                                      &opcode_compare));
-      if (op == 0) {
+      यदि (op == 0) {
 	    yyerror("Invalid opcode");
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
-      assert(op);
+      प्रतिज्ञा(op);
 
 	/* Build up the code from the information about the opcode and
 	   the information from the compiler. */
-      vvp_code_t code = codespace_allocate();
+      vvp_संहिता_t code = codespace_allocate();
       code->opcode = op->opcode;
 
-      if (op->argc != (opa? opa->argc : 0)) {
+      यदि (op->argc != (opa? opa->argc : 0)) {
 	    yyerror("operand count");
 	    compile_errors += 1;
-	    return;
+	    प्रत्यागम;
       }
 
 	/* Pull the operands that the instruction expects from the
 	   list that the parser supplied. */
 
-      for (unsigned idx = 0 ;  idx < op->argc ;  idx += 1) {
+      प्रति (अचिह्नित idx = 0 ;  idx < op->argc ;  idx += 1) {
 
-	    switch (op->argt[idx]) {
-		case OA_NONE:
-		  break;
+	    विकल्प (op->argt[idx]) {
+		पक्ष OA_NONE:
+		  भङ्ग;
 
-		case OA_ARR_PTR:
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		पक्ष OA_ARR_PTR:
+		  यदि (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			भङ्ग;
 		  }
 
 		  compile_array_lookup(code, opa->argv[idx].symb.text);
-		  break;
+		  भङ्ग;
 
-		case OA_BIT1:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		पक्ष OA_BIT1:
+		  यदि (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
-			break;
+			भङ्ग;
 		  }
 		  code->bit_idx[0] = opa->argv[idx].numb;
-		  break;
+		  भङ्ग;
 
-		case OA_BIT2:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		पक्ष OA_BIT2:
+		  यदि (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
-			break;
+			भङ्ग;
 		  }
 		  code->bit_idx[1] = opa->argv[idx].numb;
-		  break;
+		  भङ्ग;
 
-		case OA_CODE_PTR:
-		case OA_CODE_PTR2:
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		पक्ष OA_संहिता_PTR:
+		पक्ष OA_संहिता_PTR2:
+		  यदि (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			भङ्ग;
 		  }
 
-		  assert(opa->argv[idx].symb.idx == 0);
-		  code_label_lookup(code, opa->argv[idx].symb.text,
-				    op->argt[idx]==OA_CODE_PTR2);
-		  break;
+		  प्रतिज्ञा(opa->argv[idx].symb.idx == 0);
+		  संहिता_label_lookup(code, opa->argv[idx].symb.text,
+				    op->argt[idx]==OA_संहिता_PTR2);
+		  भङ्ग;
 
-		case OA_FUNC_PTR:
+		पक्ष OA_FUNC_PTR:
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  यदि (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			भङ्ग;
 		  }
 
 		  functor_ref_lookup(&code->net, opa->argv[idx].symb.text);
-		  break;
+		  भङ्ग;
 
-		case OA_FUNC_PTR2:
+		पक्ष OA_FUNC_PTR2:
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  यदि (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			भङ्ग;
 		  }
 
 		  functor_ref_lookup(&code->net2, opa->argv[idx].symb.text);
-		  break;
+		  भङ्ग;
 
-		case OA_NUMBER:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		पक्ष OA_सङ्ख्या:
+		  यदि (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
-			break;
+			भङ्ग;
 		  }
 
-		  code->number = opa->argv[idx].numb;
-		  break;
+		  code->सङ्ख्या = opa->argv[idx].numb;
+		  भङ्ग;
 
-		case OA_VPI_PTR:
+		पक्ष OA_VPI_PTR:
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  यदि (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			भङ्ग;
 		  }
 
 		  compile_vpi_lookup(&code->handle, opa->argv[idx].symb.text);
-		  break;
+		  भङ्ग;
 
-		case OA_STRING:
-		  if (opa->argv[idx].ltype != L_STRING) {
+		पक्ष OA_STRING:
+		  यदि (opa->argv[idx].ltype != L_STRING) {
 			yyerror("operand format");
-			break;
+			भङ्ग;
 		  }
 
 		  code->text = opa->argv[idx].text;
-		  break;
+		  भङ्ग;
 	    }
       }
 
-      free(opa);
+      मुक्त(opa);
 
-      free(mnem);
+      मुक्त(mnem);
 }
 
-void compile_codelabel(char*label)
+शून्य compile_codelabel(वर्ण*label)
 {
-      symbol_value_t val;
-      vvp_code_t ptr = codespace_next();
+      चिह्नम्_मानम्_t val;
+      vvp_संहिता_t ptr = codespace_अग्र();
 
       val.ptr = ptr;
-      sym_set_value(sym_codespace, label, val);
+      sym_समुच्चयः_मानम्(sym_codespace, label, val);
 
-      free(label);
+      मुक्त(label);
 }
 
-void compile_file_line(char*label, long file_idx, long lineno,
-                       char*description)
+शून्य compile_file_पङ्क्तिः(वर्ण*label, दीर्घ file_idx, दीर्घ lineno,
+                       वर्ण*description)
 {
-      if (label) compile_codelabel(label);
+      यदि (label) compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
-      vvp_code_t code = codespace_allocate();
-      code->opcode = &of_FILE_LINE;
+      vvp_संहिता_t code = codespace_allocate();
+      code->opcode = &सम्बन्धि_FILE_पङ्क्तिः;
 
 	/* Create a vpiHandle that contains the information. */
-      code->handle = vpip_build_file_line(description, file_idx, lineno);
-      assert(code->handle);
+      code->handle = vpip_build_file_पङ्क्तिः(description, file_idx, lineno);
+      प्रतिज्ञा(code->handle);
 
 	/* Done with the lexor-allocated name string. */
-      delete[] description;
+      विलोपय[] description;
 }
 
-void compile_vpi_call(char*label, char*name,
-                      bool func_as_task_err, bool func_as_task_warn,
-                      long file_idx, long lineno,
-                      unsigned argc, vpiHandle*argv,
-		      unsigned vec4_stack, unsigned real_stack, unsigned string_stack)
+शून्य compile_vpi_call(वर्ण*label, वर्ण*name,
+                      तार्किक func_as_task_err, तार्किक func_as_task_warn,
+                      दीर्घ file_idx, दीर्घ lineno,
+                      अचिह्नित argc, vpiHandle*argv,
+		      अचिह्नित vec4_राशिः, अचिह्नित real_राशिः, अचिह्नित string_राशिः)
 {
-      if (label)
+      यदि (label)
 	    compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
-      vvp_code_t code = codespace_allocate();
-      code->opcode = &of_VPI_CALL;
+      vvp_संहिता_t code = codespace_allocate();
+      code->opcode = &सम्बन्धि_VPI_CALL;
 
 	/* Create a vpiHandle that bundles the call information, and
 	   store that handle in the instruction. */
       code->handle = vpip_build_vpi_call(name, 0, 0,
 					 0, func_as_task_err, func_as_task_warn,
-                                         argc, argv, vec4_stack, real_stack, string_stack,
+                                         argc, argv, vec4_राशिः, real_राशिः, string_राशिः,
 					 file_idx, lineno);
-      if (code->handle == 0)
+      यदि (code->handle == 0)
 	    compile_errors += 1;
 
 	/* Done with the lexor-allocated name string. */
-      delete[] name;
+      विलोपय[] name;
 }
 
-void compile_vpi_func_call(char*label, char*name,
-			   int val_type, unsigned val_wid,
-			   long file_idx, long lineno,
-			   unsigned argc, vpiHandle*argv,
-			   unsigned vec4_stack,
-			   unsigned real_stack,
-			   unsigned string_stack)
+शून्य compile_vpi_func_call(वर्ण*label, वर्ण*name,
+			   पूर्णाङ्क val_type, अचिह्नित val_wid,
+			   दीर्घ file_idx, दीर्घ lineno,
+			   अचिह्नित argc, vpiHandle*argv,
+			   अचिह्नित vec4_राशिः,
+			   अचिह्नित real_राशिः,
+			   अचिह्नित string_राशिः)
 {
-      if (label)
+      यदि (label)
 	    compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
-      vvp_code_t code = codespace_allocate();
-      code->opcode = &of_VPI_CALL;
+      vvp_संहिता_t code = codespace_allocate();
+      code->opcode = &सम्बन्धि_VPI_CALL;
 
 	/* Create a vpiHandle that bundles the call information, and
 	   store that handle in the instruction. */
       code->handle = vpip_build_vpi_call(name, val_type, val_wid,
-					 0, true, false,
-                                         argc, argv, vec4_stack, real_stack, string_stack,
+					 0, सत्य, असत्य,
+                                         argc, argv, vec4_राशिः, real_राशिः, string_राशिः,
 					 file_idx, lineno);
-      if (code->handle == 0)
+      यदि (code->handle == 0)
 	    compile_errors += 1;
 
 	/* Done with the lexor-allocated name string. */
-      delete[] name;
+      विलोपय[] name;
 }
 
 /*
@@ -2077,78 +2077,78 @@ void compile_vpi_func_call(char*label, char*name,
  * with the start address referenced by the program symbol passed to
  * me.
  */
-void compile_thread(char*start_sym, char*flag)
+शून्य compile_thread(वर्ण*start_sym, वर्ण*flag)
 {
-      bool push_flag = false;
+      तार्किक प्रक्षिप_flag = असत्य;
 
-      symbol_value_t tmp = sym_get_value(sym_codespace, start_sym);
-      vvp_code_t pc = reinterpret_cast<vvp_code_t>(tmp.ptr);
-      if (pc == 0) {
+      चिह्नम्_मानम्_t tmp = sym_get_मानम्(sym_codespace, start_sym);
+      vvp_संहिता_t pc = reinterpret_cast<vvp_संहिता_t>(tmp.ptr);
+      यदि (pc == 0) {
 	    yyerror("unresolved address");
-	    return;
+	    प्रत्यागम;
       }
 
-      if (flag && (strcmp(flag,"$push") == 0))
-	    push_flag = true;
+      यदि (flag && (वाक्यं_तुलय(flag,"$push") == 0))
+	    प्रक्षिप_flag = सत्य;
 
       vthread_t thr = vthread_new(pc, vpip_peek_current_scope());
 
-      if (flag && (strcmp(flag,"$init") == 0))
-	    schedule_init_vthread(thr);
-      else if (flag && (strcmp(flag,"$final") == 0))
-	    schedule_final_vthread(thr);
-      else
-	    schedule_vthread(thr, 0, push_flag);
+      यदि (flag && (वाक्यं_तुलय(flag,"$init") == 0))
+	    कालसारणी_init_vthread(thr);
+      अन्यथा यदि (flag && (वाक्यं_तुलय(flag,"$final") == 0))
+	    कालसारणी_final_vthread(thr);
+      अन्यथा
+	    कालसारणी_vthread(thr, 0, प्रक्षिप_flag);
 
-      free(start_sym);
-      free(flag);
+      मुक्त(start_sym);
+      मुक्त(flag);
 }
 
-void compile_param_logic(char*label, const char*name, char*value, bool signed_flag,
-                         bool local_flag,
-                         long file_idx, long lineno)
+शून्य compile_param_logic(वर्ण*label, ध्रुव वर्ण*name, वर्ण*value, तार्किक signed_flag,
+                         तार्किक local_flag,
+                         दीर्घ file_idx, दीर्घ lineno)
 {
-      vvp_vector4_t value4 = c4string_to_vector4(value);
-      vpiHandle obj = vpip_make_binary_param(name, value4, signed_flag,
+      vvp_vector4_t value4 = c4string_गन्तव्यम्_vector4(value);
+      vpiHandle obj = vpip_make_द्विमान_param(name, value4, signed_flag,
                                              local_flag, file_idx, lineno);
-      compile_vpi_symbol(label, obj);
-      vpip_attach_to_current_scope(obj);
+      compile_vpi_चिह्नम्(label, obj);
+      vpip_attach_गन्तव्यम्_current_scope(obj);
 
-      free(label);
-      free(value);
+      मुक्त(label);
+      मुक्त(value);
 }
 
-void compile_param_string(char*label, const char*name, char*value,
-                          bool local_flag,
-                          long file_idx, long lineno)
+शून्य compile_param_string(वर्ण*label, ध्रुव वर्ण*name, वर्ण*value,
+                          तार्किक local_flag,
+                          दीर्घ file_idx, दीर्घ lineno)
 {
 	// name and value become owned by vpip_make_string_param
       vpiHandle obj = vpip_make_string_param(name, value, local_flag, file_idx, lineno);
-      compile_vpi_symbol(label, obj);
-      vpip_attach_to_current_scope(obj);
+      compile_vpi_चिह्नम्(label, obj);
+      vpip_attach_गन्तव्यम्_current_scope(obj);
 
-      free(label);
+      मुक्त(label);
 }
 
-void compile_param_real(char*label, const char*name, char*value,
-                        bool local_flag,
-                        long file_idx, long lineno)
+शून्य compile_param_real(वर्ण*label, ध्रुव वर्ण*name, वर्ण*value,
+                        तार्किक local_flag,
+                        दीर्घ file_idx, दीर्घ lineno)
 {
-      double dvalue = crstring_to_double(value);
+      द्विगुण dvalue = crstring_गन्तव्यम्_double(value);
       vpiHandle obj = vpip_make_real_param(name, dvalue, local_flag, file_idx, lineno);
-      compile_vpi_symbol(label, obj);
-      vpip_attach_to_current_scope(obj);
+      compile_vpi_चिह्नम्(label, obj);
+      vpip_attach_गन्तव्यम्_current_scope(obj);
 
-      free(label);
-      free(value);
+      मुक्त(label);
+      मुक्त(value);
 }
 
-void compile_island(char*label, char*type)
+शून्य compile_island(वर्ण*label, वर्ण*type)
 {
-      if (strcmp(type,"tran") == 0)
+      यदि (वाक्यं_तुलय(type,"tran") == 0)
 	    compile_island_tran(label);
-      else
-	    assert(0);
+      अन्यथा
+	    प्रतिज्ञा(0);
 
-      free(type);
+      मुक्त(type);
 }

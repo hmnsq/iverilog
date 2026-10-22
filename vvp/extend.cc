@@ -23,8 +23,8 @@
 # include  <iostream>
 # include  <cassert>
 
-vvp_fun_extend_signed::vvp_fun_extend_signed(unsigned wid)
-: width_(wid)
+vvp_fun_extend_signed::vvp_fun_extend_signed(अचिह्नित wid)
+: विस्तारः_2(wid)
 {
 }
 
@@ -32,28 +32,28 @@ vvp_fun_extend_signed::~vvp_fun_extend_signed()
 {
 }
 
-void vvp_fun_extend_signed::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+शून्य vvp_fun_extend_signed::recv_vec4(vvp_net_ptr_t पत्तनम्, ध्रुव vvp_vector4_t&bit,
                                       vvp_context_t)
 {
-      if (bit.size() >= width_) {
-	    port.ptr()->send_vec4(bit, 0);
-	    return;
+      यदि (bit.size() >= विस्तारः_2) {
+	    पत्तनम्.ptr()->send_vec4(bit, 0);
+	    प्रत्यागम;
       }
 
-      vvp_vector4_t res (width_);
+      vvp_vector4_t res (विस्तारः_2);
 
-      for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1)
-	    res.set_bit(idx, bit.value(idx));
+      प्रति (अचिह्नित idx = 0 ;  idx < bit.size() ;  idx += 1)
+	    res.समुच्चयः_bit(idx, bit.value(idx));
 
       vvp_bit4_t pad = bit.size() > 0? bit.value(bit.size()-1) : BIT4_0;
-      for (unsigned idx = bit.size() ;  idx < res.size() ;  idx += 1)
-	    res.set_bit(idx, pad);
+      प्रति (अचिह्नित idx = bit.size() ;  idx < res.size() ;  idx += 1)
+	    res.समुच्चयः_bit(idx, pad);
 
-      port.ptr()->send_vec4(res, 0);
+      पत्तनम्.ptr()->send_vec4(res, 0);
 }
 
-void vvp_fun_extend_signed::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
-					 unsigned base, unsigned vwid, vvp_context_t ctx)
+शून्य vvp_fun_extend_signed::recv_vec4_pv(vvp_net_ptr_t ptr, ध्रुव vvp_vector4_t&bit,
+					 अचिह्नित आधारः, अचिह्नित vwid, vvp_context_t ctx)
 {
-      recv_vec4_pv_(ptr, bit, base, vwid, ctx);
+      recv_vec4_pv_(ptr, bit, आधारः, vwid, ctx);
 }

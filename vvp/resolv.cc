@@ -25,7 +25,7 @@
 # include  <algorithm>
 # include  <cassert>
 
-using namespace std;
+उपयुज्य नामाकाश std;
 
 /*
  * The core functor for a resolver node stores all the input values
@@ -41,55 +41,55 @@ using namespace std;
  */
 
 
-resolv_core::resolv_core(unsigned nports, vvp_net_t*net)
+resolv_core::resolv_core(अचिह्नित nports, vvp_net_t*net)
 : nports_(nports), net_(net)
 {
-      count_functors_resolv += 1;
+      गणनम्_functors_resolv += 1;
 }
 
 resolv_core::~resolv_core()
 {
 }
 
-void resolv_core::recv_vec4_pv_(unsigned port, const vvp_vector4_t&bit,
-				unsigned base, unsigned vwid)
+शून्य resolv_core::recv_vec4_pv_(अचिह्नित पत्तनम्, ध्रुव vvp_vector4_t&bit,
+				अचिह्नित आधारः, अचिह्नित vwid)
 {
-      unsigned wid = bit.size();
+      अचिह्नित wid = bit.size();
       vvp_vector4_t res (vwid);
 
-      for (unsigned idx = 0 ;  idx < base ;  idx += 1)
-	    res.set_bit(idx, BIT4_Z);
+      प्रति (अचिह्नित idx = 0 ;  idx < आधारः ;  idx += 1)
+	    res.समुच्चयः_bit(idx, BIT4_Z);
 
-      for (unsigned idx = 0 ;  idx < wid && idx+base < vwid;  idx += 1)
-	    res.set_bit(idx+base, bit.value(idx));
+      प्रति (अचिह्नित idx = 0 ;  idx < wid && idx+आधारः < vwid;  idx += 1)
+	    res.समुच्चयः_bit(idx+आधारः, bit.value(idx));
 
-      for (unsigned idx = base+wid ;  idx < vwid ;  idx += 1)
-	    res.set_bit(idx, BIT4_Z);
+      प्रति (अचिह्नित idx = आधारः+wid ;  idx < vwid ;  idx += 1)
+	    res.समुच्चयः_bit(idx, BIT4_Z);
 
-      recv_vec4_(port, res);
+      recv_vec4_(पत्तनम्, res);
 }
 
-void resolv_core::recv_vec8_pv_(unsigned port, const vvp_vector8_t&bit,
-				unsigned base, unsigned vwid)
+शून्य resolv_core::recv_vec8_pv_(अचिह्नित पत्तनम्, ध्रुव vvp_vector8_t&bit,
+				अचिह्नित आधारः, अचिह्नित vwid)
 {
-      unsigned wid = bit.size();
+      अचिह्नित wid = bit.size();
       vvp_vector8_t res (vwid);
 
-      for (unsigned idx = 0 ;  idx < base ;  idx += 1)
-	    res.set_bit(idx, vvp_scalar_t());
+      प्रति (अचिह्नित idx = 0 ;  idx < आधारः ;  idx += 1)
+	    res.समुच्चयः_bit(idx, vvp_scalar_t());
 
-      for (unsigned idx = 0 ;  idx < wid && idx+base < vwid;  idx += 1)
-	    res.set_bit(idx+base, bit.value(idx));
+      प्रति (अचिह्नित idx = 0 ;  idx < wid && idx+आधारः < vwid;  idx += 1)
+	    res.समुच्चयः_bit(idx+आधारः, bit.value(idx));
 
-      for (unsigned idx = base+wid ;  idx < vwid ;  idx += 1)
-	    res.set_bit(idx, vvp_scalar_t());
+      प्रति (अचिह्नित idx = आधारः+wid ;  idx < vwid ;  idx += 1)
+	    res.समुच्चयः_bit(idx, vvp_scalar_t());
 
-      recv_vec8_(port, res);
+      recv_vec8_(पत्तनम्, res);
 }
 
 
-resolv_extend::resolv_extend(resolv_core*core, unsigned port_base)
-: core_(core), port_base_(port_base)
+resolv_extend::resolv_extend(resolv_core*core, अचिह्नित पत्तनम्_आधारः)
+: core_(core), पत्तनम्_आधारः_2(पत्तनम्_आधारः)
 {
 }
 
@@ -98,43 +98,43 @@ resolv_extend::~resolv_extend()
 }
 
 
-resolv_tri::resolv_tri(unsigned nports, vvp_net_t*net, vvp_scalar_t hiz_value)
-: resolv_core(nports, net), hiz_value_(hiz_value)
+resolv_tri::resolv_tri(अचिह्नित nports, vvp_net_t*net, vvp_scalar_t hiz_मानम्)
+: resolv_core(nports, net), hiz_मानम्_2(hiz_मानम्)
 {
         // count the input (leaf) nodes
-      unsigned nnodes = nports;
+      अचिह्नित nnodes = nports;
 
         // add in the intermediate branch nodes
-      while (nports > 4) {
+      यावत् (nports > 4) {
             nports = (nports + 3) / 4;
             nnodes += nports;
       }
         // add one more node for storing the output value
         // (not needed if there is only one input)
-      if (nnodes > 1)
+      यदि (nnodes > 1)
             nnodes += 1;
 
-      val_ = new vvp_vector8_t [nnodes];
+      val_ = नूतन vvp_vector8_t [nnodes];
 }
 
 resolv_tri::~resolv_tri()
 {
-      delete[] val_;
+      विलोपय[] val_;
 }
 
-void resolv_tri::recv_vec4_(unsigned port, const vvp_vector4_t&bit)
+शून्य resolv_tri::recv_vec4_(अचिह्नित पत्तनम्, ध्रुव vvp_vector4_t&bit)
 {
-      recv_vec8_(port, vvp_vector8_t(bit, 6,6 /* STRONG */));
+      recv_vec8_(पत्तनम्, vvp_vector8_t(bit, 6,6 /* STRONG */));
 }
 
-void resolv_tri::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
+शून्य resolv_tri::recv_vec8_(अचिह्नित पत्तनम्, ध्रुव vvp_vector8_t&bit)
 {
-      assert(port < nports_);
+      प्रतिज्ञा(पत्तनम् < nports_);
 
-      if (val_[port].eeq(bit))
-	    return;
+      यदि (val_[पत्तनम्].eeq(bit))
+	    प्रत्यागम;
 
-      val_[port] = bit;
+      val_[पत्तनम्] = bit;
 
         // Starting at the leaf level, work down the tree, resolving
         // the changed values. base is the first node in the current
@@ -143,85 +143,85 @@ void resolv_tri::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
         // that include the node that has changed, and op is the node
         // at the next level that stores the resolved value from that
         // group.
-      unsigned base = 0;
-      unsigned span = nports_;
-      while (span > 1) {
-            unsigned next_base = base + span;
-            unsigned ip = base + (port & ~0x3);
-            unsigned op = next_base + (port / 4);
-            unsigned ll = min(ip + 4, next_base);
+      अचिह्नित आधारः = 0;
+      अचिह्नित विस्तृतिः = nports_;
+      यावत् (विस्तृतिः > 1) {
+            अचिह्नित अग्र_आधारः = आधारः + विस्तृतिः;
+            अचिह्नित ip = आधारः + (पत्तनम् & ~0x3);
+            अचिह्नित op = अग्र_आधारः + (पत्तनम् / 4);
+            अचिह्नित ll = min(ip + 4, अग्र_आधारः);
 
             vvp_vector8_t out = val_[ip];
-            for (ip = ip + 1; ip < ll; ip += 1) {
-                  if (val_[ip].size() == 0)
-                        continue;
-                  if (out.size() == 0)
+            प्रति (ip = ip + 1; ip < ll; ip += 1) {
+                  यदि (val_[ip].size() == 0)
+                        अनुवर्त;
+                  यदि (out.size() == 0)
                         out = val_[ip];
-                  else
+                  अन्यथा
                         out = resolve(out, val_[ip]);
             }
-            if (val_[op].eeq(out))
-                  return;
+            यदि (val_[op].eeq(out))
+                  प्रत्यागम;
             val_[op] = out;
 
-            base = next_base;
-            span = (span + 3) / 4;
-            port = port / 4;
+            आधारः = अग्र_आधारः;
+            विस्तृतिः = (विस्तृतिः + 3) / 4;
+            पत्तनम् = पत्तनम् / 4;
       }
 
-      if (! hiz_value_.is_hiz()) {
-	    for (unsigned idx = 0 ;  idx < val_[base].size() ;  idx += 1) {
-		  val_[base].set_bit(idx, resolve(val_[base].value(idx),
-						  hiz_value_));
+      यदि (! hiz_मानम्_2.is_hiz()) {
+	    प्रति (अचिह्नित idx = 0 ;  idx < val_[आधारः].size() ;  idx += 1) {
+		  val_[आधारः].समुच्चयः_bit(idx, resolve(val_[आधारः].value(idx),
+						  hiz_मानम्_2));
 	    }
       }
 
-      net_->send_vec8(val_[base]);
+      net_->send_vec8(val_[आधारः]);
 }
 
-void resolv_tri::count_drivers(unsigned bit_idx, unsigned counts[3])
+शून्य resolv_tri::गणनम्_drivers(अचिह्नित bit_idx, अचिह्नित counts[3])
 {
-      for (unsigned idx = 0 ; idx < nports_ ; idx += 1) {
-	    if (val_[idx].size() == 0)
-	          continue;
+      प्रति (अचिह्नित idx = 0 ; idx < nports_ ; idx += 1) {
+	    यदि (val_[idx].size() == 0)
+	          अनुवर्त;
 
             update_driver_counts(val_[idx].value(bit_idx).value(), counts);
       }
 }
 
 
-resolv_wired_logic::resolv_wired_logic(unsigned nports, vvp_net_t*net)
+resolv_wired_logic::resolv_wired_logic(अचिह्नित nports, vvp_net_t*net)
 : resolv_core(nports, net)
 {
         // count the input (leaf) nodes
-      unsigned nnodes = nports;
+      अचिह्नित nnodes = nports;
 
         // add in the intermediate branch nodes
-      while (nports > 4) {
+      यावत् (nports > 4) {
             nports = (nports + 3) / 4;
             nnodes += nports;
       }
         // add one more node for storing the output value
         // (not needed if there is only one input)
-      if (nnodes > 1)
+      यदि (nnodes > 1)
             nnodes += 1;
 
-      val_ = new vvp_vector4_t [nnodes];
+      val_ = नूतन vvp_vector4_t [nnodes];
 }
 
 resolv_wired_logic::~resolv_wired_logic()
 {
-      delete[] val_;
+      विलोपय[] val_;
 }
 
-void resolv_wired_logic::recv_vec4_(unsigned port, const vvp_vector4_t&bit)
+शून्य resolv_wired_logic::recv_vec4_(अचिह्नित पत्तनम्, ध्रुव vvp_vector4_t&bit)
 {
-      assert(port < nports_);
+      प्रतिज्ञा(पत्तनम् < nports_);
 
-      if (val_[port].eeq(bit))
-	    return;
+      यदि (val_[पत्तनम्].eeq(bit))
+	    प्रत्यागम;
 
-      val_[port] = bit;
+      val_[पत्तनम्] = bit;
 
         // Starting at the leaf level, work down the tree, resolving
         // the changed values. base is the first node in the current
@@ -230,52 +230,52 @@ void resolv_wired_logic::recv_vec4_(unsigned port, const vvp_vector4_t&bit)
         // that include the node that has changed, and op is the node
         // at the next level that stores the resolved value from that
         // group.
-      unsigned base = 0;
-      unsigned span = nports_;
-      while (span > 1) {
-            unsigned next_base = base + span;
-            unsigned ip = base + (port & ~0x3);
-            unsigned op = next_base + (port / 4);
-            unsigned ll = min(ip + 4, next_base);
+      अचिह्नित आधारः = 0;
+      अचिह्नित विस्तृतिः = nports_;
+      यावत् (विस्तृतिः > 1) {
+            अचिह्नित अग्र_आधारः = आधारः + विस्तृतिः;
+            अचिह्नित ip = आधारः + (पत्तनम् & ~0x3);
+            अचिह्नित op = अग्र_आधारः + (पत्तनम् / 4);
+            अचिह्नित ll = min(ip + 4, अग्र_आधारः);
 
             vvp_vector4_t out = val_[ip];
-            for (ip = ip + 1; ip < ll; ip += 1) {
-                  if (val_[ip].size() == 0)
-                        continue;
-                  if (out.size() == 0)
+            प्रति (ip = ip + 1; ip < ll; ip += 1) {
+                  यदि (val_[ip].size() == 0)
+                        अनुवर्त;
+                  यदि (out.size() == 0)
                         out = val_[ip];
-                  else
+                  अन्यथा
                         out = wired_logic_math_(out, val_[ip]);
             }
-            if (val_[op].eeq(out))
-                  return;
+            यदि (val_[op].eeq(out))
+                  प्रत्यागम;
             val_[op] = out;
 
-            base = next_base;
-            span = (span + 3) / 4;
-            port = port / 4;
+            आधारः = अग्र_आधारः;
+            विस्तृतिः = (विस्तृतिः + 3) / 4;
+            पत्तनम् = पत्तनम् / 4;
       }
 
-      net_->send_vec4(val_[base], 0);
+      net_->send_vec4(val_[आधारः], 0);
 }
 
-void resolv_wired_logic::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
+शून्य resolv_wired_logic::recv_vec8_(अचिह्नित पत्तनम्, ध्रुव vvp_vector8_t&bit)
 {
-      recv_vec4_(port, reduce4(bit));
+      recv_vec4_(पत्तनम्, reduce4(bit));
 }
 
-void resolv_wired_logic::count_drivers(unsigned bit_idx, unsigned counts[3])
+शून्य resolv_wired_logic::गणनम्_drivers(अचिह्नित bit_idx, अचिह्नित counts[3])
 {
-      for (unsigned idx = 0 ; idx < nports_ ; idx += 1) {
-	    if (val_[idx].size() == 0)
-	          continue;
+      प्रति (अचिह्नित idx = 0 ; idx < nports_ ; idx += 1) {
+	    यदि (val_[idx].size() == 0)
+	          अनुवर्त;
 
             update_driver_counts(val_[idx].value(bit_idx), counts);
       }
 }
 
 
-resolv_triand::resolv_triand(unsigned nports, vvp_net_t*net)
+resolv_triand::resolv_triand(अचिह्नित nports, vvp_net_t*net)
 : resolv_wired_logic(nports, net)
 {
 }
@@ -286,31 +286,31 @@ resolv_triand::~resolv_triand()
 
 vvp_vector4_t resolv_triand::wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b)
 {
-      assert(a.size() == b.size());
+      प्रतिज्ञा(a.size() == b.size());
 
       vvp_vector4_t out (a.size());
 
-      for (unsigned idx = 0 ; idx < out.size() ; idx += 1) {
+      प्रति (अचिह्नित idx = 0 ; idx < out.size() ; idx += 1) {
 	    vvp_bit4_t abit = a.value(idx);
 	    vvp_bit4_t bbit = b.value(idx);
-	    if (abit == BIT4_Z) {
-		  out.set_bit(idx, bbit);
-	    } else if (bbit == BIT4_Z) {
-		  out.set_bit(idx, abit);
-	    } else if (abit == BIT4_0 || bbit == BIT4_0) {
-		  out.set_bit(idx, BIT4_0);
-	    } else if (abit == BIT4_X || bbit == BIT4_X) {
-		  out.set_bit(idx, BIT4_X);
-	    } else {
-		  out.set_bit(idx, BIT4_1);
+	    यदि (abit == BIT4_Z) {
+		  out.समुच्चयः_bit(idx, bbit);
+	    } अन्यथा यदि (bbit == BIT4_Z) {
+		  out.समुच्चयः_bit(idx, abit);
+	    } अन्यथा यदि (abit == BIT4_0 || bbit == BIT4_0) {
+		  out.समुच्चयः_bit(idx, BIT4_0);
+	    } अन्यथा यदि (abit == BIT4_X || bbit == BIT4_X) {
+		  out.समुच्चयः_bit(idx, BIT4_X);
+	    } अन्यथा {
+		  out.समुच्चयः_bit(idx, BIT4_1);
 	    }
       }
 
-      return out;
+      प्रत्यागम out;
 }
 
 
-resolv_trior::resolv_trior(unsigned nports, vvp_net_t*net)
+resolv_trior::resolv_trior(अचिह्नित nports, vvp_net_t*net)
 : resolv_wired_logic(nports, net)
 {
 }
@@ -321,25 +321,25 @@ resolv_trior::~resolv_trior()
 
 vvp_vector4_t resolv_trior::wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b)
 {
-      assert(a.size() == b.size());
+      प्रतिज्ञा(a.size() == b.size());
 
       vvp_vector4_t out (a.size());
 
-      for (unsigned idx = 0 ; idx < out.size() ; idx += 1) {
+      प्रति (अचिह्नित idx = 0 ; idx < out.size() ; idx += 1) {
 	    vvp_bit4_t abit = a.value(idx);
 	    vvp_bit4_t bbit = b.value(idx);
-	    if (abit == BIT4_Z) {
-		  out.set_bit(idx, bbit);
-	    } else if (bbit == BIT4_Z) {
-		  out.set_bit(idx, abit);
-	    } else if (abit == BIT4_1 || bbit == BIT4_1) {
-		  out.set_bit(idx, BIT4_1);
-	    } else if (abit == BIT4_X || bbit == BIT4_X) {
-		  out.set_bit(idx, BIT4_X);
-	    } else {
-		  out.set_bit(idx, BIT4_0);
+	    यदि (abit == BIT4_Z) {
+		  out.समुच्चयः_bit(idx, bbit);
+	    } अन्यथा यदि (bbit == BIT4_Z) {
+		  out.समुच्चयः_bit(idx, abit);
+	    } अन्यथा यदि (abit == BIT4_1 || bbit == BIT4_1) {
+		  out.समुच्चयः_bit(idx, BIT4_1);
+	    } अन्यथा यदि (abit == BIT4_X || bbit == BIT4_X) {
+		  out.समुच्चयः_bit(idx, BIT4_X);
+	    } अन्यथा {
+		  out.समुच्चयः_bit(idx, BIT4_0);
 	    }
       }
 
-      return out;
+      प्रत्यागम out;
 }
