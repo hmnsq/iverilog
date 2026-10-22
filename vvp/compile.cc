@@ -57,7 +57,7 @@ unsigned compile_errors = 0;
  * The opcode_compare function is a helper for that lookup.
  */
 
-enum operand_e {
+ga_nanaa operand_e {
 	/* Place holder for unused operand */
       OA_NONE,
 	/* The operand is a number, an immediate unsigned integer */
@@ -80,15 +80,15 @@ enum operand_e {
       OA_STRING
 };
 
-struct opcode_table_s {
-      const char*mnemonic;
+sa_nracanaa opcode_table_s {
+      const var_na*mnemonic;
       vvp_code_fun opcode;
 
       unsigned argc;
-      enum operand_e argt[OPERAND_MAX];
+      ga_nanaa operand_e argt[OPERAND_MAX];
 };
 
-static const struct opcode_table_s opcode_table[] = {
+static const sa_nracanaa opcode_table_s opcode_table[] = {
       { "%abs/wr", of_ABS_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%add",    of_ADD,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%add/wr", of_ADD_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
@@ -398,13 +398,13 @@ static const struct opcode_table_s opcode_table[] = {
 };
 
 static const unsigned opcode_count =
-                    sizeof(opcode_table)/sizeof(*opcode_table) - 1;
+                    parimaa_na(opcode_table)/parimaa_na(*opcode_table) - 1;
 
-static int opcode_compare(const void*k, const void*r)
+static puur_naa_nka opcode_compare(const void*k, const void*r)
 {
-      const char*kp = static_cast<const char*>(k);
-      const struct opcode_table_s*rp = static_cast<const struct opcode_table_s*>(r);
-      return strcmp(kp, rp->mnemonic);
+      const var_na*kp = static_cast<const var_na*>(k);
+      const sa_nracanaa opcode_table_s*rp = static_cast<const sa_nracanaa opcode_table_s*>(r);
+      ᨀᨘᨒ strcmp(kp, rp->mnemonic);
 }
 
 /*
@@ -444,28 +444,28 @@ static symbol_table_t sym_vpi = 0;
  *  Add a functor to the symbol table
  */
 
-void define_functor_symbol(const char*label, vvp_net_t*net)
+void define_functor_symbol(const var_na*label, vvp_net_t*net)
 {
       symbol_value_t val;
       val.net = net;
       sym_set_value(sym_functors, label, val);
 }
 
-static vvp_net_t*lookup_functor_symbol(const char*label)
+static vvp_net_t*lookup_functor_symbol(const var_na*label)
 {
       assert(sym_functors);
       symbol_value_t val = sym_get_value(sym_functors, label);
-      return val.net;
+      ᨀᨘᨒ val.net;
 }
 
-vpiHandle vvp_lookup_handle(const char*label)
+vpiHandle vvp_lookup_handle(const var_na*label)
 {
       symbol_value_t val = sym_get_value(sym_vpi, label);
-      if (val.ptr) return (vpiHandle) val.ptr;
-      return 0;
+      ᨀᨘ (val.ptr) ᨀᨘᨒ (vpiHandle) val.ptr;
+      ᨀᨘᨒ 0;
 }
 
-vvp_net_t* vvp_net_lookup(const char*label)
+vvp_net_t* vvp_net_lookup(const var_na*label)
 {
       static bool t0_trigger_generated = false;
 
@@ -473,36 +473,36 @@ vvp_net_t* vvp_net_lookup(const char*label)
 	   sort. If it is, then get the vvp_ipoint_t pointer out of
 	   the vpiHandle. */
       symbol_value_t val = sym_get_value(sym_vpi, label);
-      if (val.ptr) {
+      ᨀᨘ (val.ptr) {
 	    vpiHandle vpi = static_cast<vpiHandle>(val.ptr);
 	    switch (vpi->get_type_code()) {
-		case vpiNet:
-		case vpiReg:
-		case vpiBitVar:
-		case vpiByteVar:
-		case vpiShortIntVar:
-		case vpiIntVar:
-		case vpiLongIntVar:
-		case vpiIntegerVar: {
+		pak_sa vpiNet:
+		pak_sa vpiReg:
+		pak_sa vpiBitVar:
+		pak_sa vpiByteVar:
+		pak_sa vpiShortIntVar:
+		pak_sa vpiIntVar:
+		pak_sa vpiLongIntVar:
+		pak_sa vpiIntegerVar: {
 		      const __vpiSignal*sig = dynamic_cast<__vpiSignal*>(vpi);
-		      return sig->node;
+		      ᨀᨘᨒ sig->node;
 		}
 
-		case vpiRealVar: {
+		pak_sa vpiRealVar: {
 		      const __vpiRealVar*sig = dynamic_cast<__vpiRealVar*>(vpi);
-		      return sig->net;
+		      ᨀᨘᨒ sig->net;
 		}
 
-		case vpiStringVar:
-		case vpiArrayVar:
-		case vpiClassVar: {
+		pak_sa vpiStringVar:
+		pak_sa vpiArrayVar:
+		pak_sa vpiClassVar: {
 		      const __vpiBaseVar*sig = dynamic_cast<__vpiBaseVar*>(vpi);
-		      return sig->get_net();
+		      ᨀᨘᨒ sig->get_net();
 		}
 
-		case vpiNamedEvent: {
+		pak_sa vpiNamedEvent: {
 		      const __vpiNamedEvent*tmp = dynamic_cast<__vpiNamedEvent*>(vpi);
-		      return tmp->funct;
+		      ᨀᨘᨒ tmp->funct;
 		}
 
 		default:
@@ -518,14 +518,14 @@ vvp_net_t* vvp_net_lookup(const char*label)
 
 	// This is a special label used to create a T0 trigger for the
 	// always_comb/latch processes.
-     if (! t0_trigger_generated && (strcmp(label, "E_0x0") == 0)) {
+     ᨀᨘ (! t0_trigger_generated && (strcmp(label, "E_0x0") == 0)) {
 	      // This should never happen, but if it does then the E_0x0
 	      // event generation may need to be explicitly generated in
 	      // the compiler output instead of implicitly in this code.
 	    assert(! vpip_peek_current_scope()->is_automatic());
 	    t0_trigger_generated = true;
 	      // Create a local event with no name for the T0 trigger
-	    compile_named_event(strdup(label), strcpy(new char [1],""), true);
+	    compile_named_event(strdup(label), strcpy(new var_na [1],""), true);
 	    tmp = vvp_net_lookup(label);
 	    assert(tmp);
 	      // Create a trigger for the T0 event.
@@ -533,7 +533,7 @@ vvp_net_t* vvp_net_lookup(const char*label)
 	    schedule_t0_trigger(ptr);
      }
 
-      return tmp;
+      ᨀᨘᨒ tmp;
 }
 
 /*
@@ -563,9 +563,9 @@ resolv_list_s::~resolv_list_s()
 
 void resolv_submit(resolv_list_s*cur)
 {
-      if (cur->resolve()) {
+      ᨀᨘ (cur->resolve()) {
 	    delete cur;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       cur->next = resolv_list;
@@ -579,9 +579,9 @@ void resolv_submit(resolv_list_s*cur)
  * input that I want that node to feed into. When the name is found,
  * put net->port[port] into the fan-out list for that node.
  */
-struct vvp_net_resolv_list_s: public resolv_list_s {
+sa_nracanaa vvp_net_resolv_list_s: public resolv_list_s {
 
-      explicit vvp_net_resolv_list_s(char*l) : resolv_list_s(l) { }
+      explicit vvp_net_resolv_list_s(var_na*l) : resolv_list_s(l) { }
 	// port to be driven by the located node.
       vvp_net_ptr_t port;
       virtual bool resolve(bool mes) override;
@@ -591,22 +591,22 @@ bool vvp_net_resolv_list_s::resolve(bool mes)
 {
       vvp_net_t*tmp = vvp_net_lookup(label());
 
-      if (tmp) {
+      ᨀᨘ (tmp) {
 	      // Link the input port to the located output.
 	    tmp->link(port);
-	    return true;
+	    ᨀᨘᨒ true;
       }
 
-      if (mes)
+      ᨀᨘ (mes)
 	    fprintf(stderr, "unresolved vvp_net reference: %s\n", label());
 
-      return false;
+      ᨀᨘᨒ false;
 }
 
-inline static
-void postpone_functor_input(vvp_net_ptr_t port, char*lab)
+anta_hstha static
+void postpone_functor_input(vvp_net_ptr_t port, var_na*lab)
 {
-      struct vvp_net_resolv_list_s*res = new struct vvp_net_resolv_list_s(lab);
+      sa_nracanaa vvp_net_resolv_list_s*res = new sa_nracanaa vvp_net_resolv_list_s(lab);
       res->port   = port;
 
       resolv_submit(res);
@@ -617,8 +617,8 @@ void postpone_functor_input(vvp_net_ptr_t port, char*lab)
  *  Generic functor reference lookup.
  */
 
-struct functor_gen_resolv_list_s: public resolv_list_s {
-      explicit functor_gen_resolv_list_s(char*txt) : resolv_list_s(txt) {
+sa_nracanaa functor_gen_resolv_list_s: public resolv_list_s {
+      explicit functor_gen_resolv_list_s(var_na*txt) : resolv_list_s(txt) {
 	    ref = 0;
       }
       vvp_net_t**ref;
@@ -629,21 +629,21 @@ bool functor_gen_resolv_list_s::resolve(bool mes)
 {
       vvp_net_t*tmp = vvp_net_lookup(label());
 
-      if (tmp) {
+      ᨀᨘ (tmp) {
 	    *ref = tmp;
-	    return true;
+	    ᨀᨘᨒ true;
       }
 
-      if (mes)
+      ᨀᨘ (mes)
 	    fprintf(stderr, "unresolved functor reference: %s\n", label());
 
-      return false;
+      ᨀᨘᨒ false;
 }
 
-void functor_ref_lookup(vvp_net_t**ref, char*lab)
+void functor_ref_lookup(vvp_net_t**ref, var_na*lab)
 {
-      struct functor_gen_resolv_list_s*res =
-	    new struct functor_gen_resolv_list_s(lab);
+      sa_nracanaa functor_gen_resolv_list_s*res =
+	    new sa_nracanaa functor_gen_resolv_list_s(lab);
 
       res->ref    = ref;
 
@@ -654,8 +654,8 @@ void functor_ref_lookup(vvp_net_t**ref, char*lab)
  *  vpiHandle lookup
  */
 
-struct vpi_handle_resolv_list_s: public resolv_list_s {
-      explicit vpi_handle_resolv_list_s(char*lab) : resolv_list_s(lab) {
+sa_nracanaa vpi_handle_resolv_list_s: public resolv_list_s {
+      explicit vpi_handle_resolv_list_s(var_na*lab) : resolv_list_s(lab) {
 	    handle = NULL;
       }
       virtual bool resolve(bool mes) override;
@@ -665,36 +665,36 @@ struct vpi_handle_resolv_list_s: public resolv_list_s {
 bool vpi_handle_resolv_list_s::resolve(bool mes)
 {
       symbol_value_t val = sym_get_value(sym_vpi, label());
-      if (!val.ptr) {
+      ᨀᨘ (!val.ptr) {
 	    // check for thread access symbols
 	    unsigned base, wid;
 	    size_t n = 0;
-	    char ss[32];
-	    if (2 == sscanf(label(), "W<%u,%31[r]>%zn", &base, ss, &n)
+	    var_na ss[32];
+	    ᨀᨘ (2 == sscanf(label(), "W<%u,%31[r]>%zn", &base, ss, &n)
 		       && n == strlen(label())) {
 
 		  val.ptr = vpip_make_vthr_word(base, ss);
 		  sym_set_value(sym_vpi, label(), val);
 
-	    } else if (1 == sscanf(label(), "S<%u,str>%zn", &base, &n)
+	    } ᨀᨘᨁ ᨀᨘ (1 == sscanf(label(), "S<%u,str>%zn", &base, &n)
 		       && n == strlen(label())) {
 
 		  val.ptr = vpip_make_vthr_str_stack(base);
 		  sym_set_value(sym_vpi, label(), val);
 
-	    } else if (3 == sscanf(label(), "S<%u,vec4,%31[su]%u>%zn", &base, ss, &wid, &n)
+	    } ᨀᨘᨁ ᨀᨘ (3 == sscanf(label(), "S<%u,vec4,%31[su]%u>%zn", &base, ss, &wid, &n)
 		       && n == strlen(label())) {
 
 		  bool signed_flag = false;
-		  for (char*fp = ss ;  *fp ;  fp += 1) switch (*fp) {
-		      case 's':
+		  for (var_na*fp = ss ;  *fp ;  fp += 1) switch (*fp) {
+		      pak_sa 's':
 			signed_flag = true;
-			break;
-		      case 'u':
+			bha_nga;
+		      pak_sa 'u':
 			signed_flag = false;
-			break;
+			bha_nga;
 		      default:
-			break;
+			bha_nga;
 		  }
 		  val.ptr = vpip_make_vthr_vec4_stack(base, signed_flag, wid);
 		  sym_set_value(sym_vpi, label(), val);
@@ -702,54 +702,54 @@ bool vpi_handle_resolv_list_s::resolve(bool mes)
 
       }
 
-      if (!val.ptr) {
+      ᨀᨘ (!val.ptr) {
 	    // check for memory word  M<mem,base,wid>
       }
 
-      if (strcmp(label(), "null") == 0) {
+      ᨀᨘ (strcmp(label(), "null") == 0) {
 	    val.ptr = vpip_make_null_const();
 	    sym_set_value(sym_vpi, label(), val);
       }
 
-      if (val.ptr) {
+      ᨀᨘ (val.ptr) {
 	    *handle = static_cast<vpiHandle>(val.ptr);
-	    return true;
+	    ᨀᨘᨒ true;
       }
 
-      if (mes)
+      ᨀᨘ (mes)
 	    fprintf(stderr, "unresolved vpi name lookup: %s\n", label());
 
-      return false;
+      ᨀᨘᨒ false;
 }
 
-void compile_vpi_lookup(vpiHandle *handle, char*label)
+void compile_vpi_lookup(vpiHandle *handle, var_na*label)
 {
-      if (strcmp(label, "$time") == 0) {
+      ᨀᨘ (strcmp(label, "$time") == 0) {
 	    *handle = vpip_sim_time(vpip_peek_current_scope(), false);
 	    free(label);
-	    return;
+	    ᨀᨘᨒ;
       }
 
-      if (strcmp(label, "$stime") == 0) {
+      ᨀᨘ (strcmp(label, "$stime") == 0) {
 	    *handle = vpip_sim_time(vpip_peek_current_scope(), true);
 	    free(label);
-	    return;
+	    ᨀᨘᨒ;
       }
 
-      if (strcmp(label, "$realtime") == 0) {
+      ᨀᨘ (strcmp(label, "$realtime") == 0) {
 	    *handle = vpip_sim_realtime(vpip_peek_current_scope());
 	    free(label);
-	    return;
+	    ᨀᨘᨒ;
       }
 
-      if (strcmp(label, "$simtime") == 0) {
+      ᨀᨘ (strcmp(label, "$simtime") == 0) {
 	    *handle = vpip_sim_time(0, false);
 	    free(label);
-	    return;
+	    ᨀᨘᨒ;
       }
 
-      struct vpi_handle_resolv_list_s*res
-	    = new struct vpi_handle_resolv_list_s(label);
+      sa_nracanaa vpi_handle_resolv_list_s*res
+	    = new sa_nracanaa vpi_handle_resolv_list_s(label);
 
       res->handle = handle;
       resolv_submit(res);
@@ -759,12 +759,12 @@ void compile_vpi_lookup(vpiHandle *handle, char*label)
  * Code Label lookup
  */
 
-struct code_label_resolv_list_s: public resolv_list_s {
-      explicit code_label_resolv_list_s(char*lab, bool cptr2) : resolv_list_s(lab) {
+sa_nracanaa code_label_resolv_list_s: public resolv_list_s {
+      explicit code_label_resolv_list_s(var_na*lab, bool cptr2) : resolv_list_s(lab) {
 	    code = NULL;
 	    cptr2_flag = cptr2;
       }
-      struct vvp_code_s *code;
+      sa_nracanaa vvp_code_s *code;
       bool cptr2_flag;
       virtual bool resolve(bool mes) override;
 };
@@ -772,67 +772,67 @@ struct code_label_resolv_list_s: public resolv_list_s {
 bool code_label_resolv_list_s::resolve(bool mes)
 {
       symbol_value_t val = sym_get_value(sym_codespace, label());
-      if (val.ptr) {
-	    if (cptr2_flag)
+      ᨀᨘ (val.ptr) {
+	    ᨀᨘ (cptr2_flag)
 		  code->cptr2 = reinterpret_cast<vvp_code_t>(val.ptr);
-	    else
+	    ᨀᨘᨁ
 		  code->cptr = reinterpret_cast<vvp_code_t>(val.ptr);
-	    return true;
+	    ᨀᨘᨒ true;
       }
 
-      if (mes)
+      ᨀᨘ (mes)
 	    fprintf(stderr, "unresolved code label: %s\n", label());
 
-      return false;
+      ᨀᨘᨒ false;
 }
 
-void code_label_lookup(struct vvp_code_s *code, char *label, bool cptr2)
+void code_label_lookup(sa_nracanaa vvp_code_s *code, var_na *label, bool cptr2)
 {
-      struct code_label_resolv_list_s *res
-	    = new struct code_label_resolv_list_s(label, cptr2);
+      sa_nracanaa code_label_resolv_list_s *res
+	    = new sa_nracanaa code_label_resolv_list_s(label, cptr2);
 
       res->code  = code;
 
       resolv_submit(res);
 }
 
-struct code_array_resolv_list_s: public resolv_list_s {
-      explicit code_array_resolv_list_s(char*lab) : resolv_list_s(lab) {
+sa_nracanaa code_array_resolv_list_s: public resolv_list_s {
+      explicit code_array_resolv_list_s(var_na*lab) : resolv_list_s(lab) {
 	    code = NULL;
       }
-      struct vvp_code_s *code;
+      sa_nracanaa vvp_code_s *code;
       virtual bool resolve(bool mes) override;
 };
 
 bool code_array_resolv_list_s::resolve(bool mes)
 {
       code->array = array_find(label());
-      if (code->array != 0) {
-	    return true;
+      ᨀᨘ (code->array != 0) {
+	    ᨀᨘᨒ true;
       }
 
-      if (mes)
+      ᨀᨘ (mes)
 	    fprintf(stderr, "Array unresolved: %s\n", label());
 
-      return false;
+      ᨀᨘᨒ false;
 }
 
-static void compile_array_lookup(struct vvp_code_s*code, char*label)
+static void compile_array_lookup(sa_nracanaa vvp_code_s*code, var_na*label)
 {
-      struct code_array_resolv_list_s *res
-	    = new struct code_array_resolv_list_s(label);
+      sa_nracanaa code_array_resolv_list_s *res
+	    = new sa_nracanaa code_array_resolv_list_s(label);
 
       res->code  = code;
 
       resolv_submit(res);
 }
 
-static std::list<struct __vpiSysTaskCall*> scheduled_compiletf;
+static std::list<sa_nracanaa __vpiSysTaskCall*> scheduled_compiletf;
 
-void compile_compiletf(struct __vpiSysTaskCall*obj)
+void compile_compiletf(sa_nracanaa __vpiSysTaskCall*obj)
 {
-      if (obj->defn->info.compiletf == 0)
-	    return;
+      ᨀᨘ (obj->defn->info.compiletf == 0)
+	    ᨀᨘᨒ;
 
       scheduled_compiletf.push_back(obj);
 }
@@ -844,11 +844,11 @@ void compile_compiletf(struct __vpiSysTaskCall*obj)
 
 void compile_cleanup(void)
 {
-      int lnerrs = -1;
-      int nerrs = 0;
-      int last;
+      puur_naa_nka lnerrs = -1;
+      puur_naa_nka nerrs = 0;
+      puur_naa_nka last;
 
-      if (verbose_flag) {
+      ᨀᨘ (verbose_flag) {
 	    fprintf(stderr, " ... Linking\n");
 	    fflush(stderr);
       }
@@ -859,26 +859,26 @@ void compile_cleanup(void)
 	    last = nerrs == lnerrs;
 	    lnerrs = nerrs;
 	    nerrs = 0;
-	    while (res) {
+	    ᨀᨛ (res) {
 		  resolv_list_s *cur = res;
 		  res = res->next;
-		  if (cur->resolve(last))
+		  ᨀᨘ (cur->resolve(last))
 			delete cur;
-		  else {
+		  ᨀᨘᨁ {
 			nerrs++;
 			cur->next = resolv_list;
 			resolv_list = cur;
 		  }
 	    }
-	    if (nerrs && last)
+	    ᨀᨘ (nerrs && last)
 		  fprintf(stderr,
 			  "compile_cleanup: %d unresolved items\n",
 			  nerrs);
-      } while (nerrs && !last);
+      } ᨀᨛ (nerrs && !last);
 
       compile_errors += nerrs;
 
-      if (verbose_flag) {
+      ᨀᨘ (verbose_flag) {
 	    fprintf(stderr, " ... Removing symbol tables\n");
 	    fflush(stderr);
       }
@@ -902,7 +902,7 @@ void compile_cleanup(void)
       compile_island_cleanup();
       compile_array_cleanup();
 
-      if (verbose_flag) {
+      ᨀᨘ (verbose_flag) {
 	    fprintf(stderr, " ... Compiletf functions\n");
 	    fflush(stderr);
       }
@@ -910,8 +910,8 @@ void compile_cleanup(void)
       assert(vpi_mode_flag == VPI_MODE_NONE);
       vpi_mode_flag = VPI_MODE_COMPILETF;
 
-      while (! scheduled_compiletf.empty()) {
-	    struct __vpiSysTaskCall*obj = scheduled_compiletf.front();
+      ᨀᨛ (! scheduled_compiletf.empty()) {
+	    sa_nracanaa __vpiSysTaskCall*obj = scheduled_compiletf.front();
 	    scheduled_compiletf.pop_front();
 	    vpip_cur_task = obj;
 	    obj->defn->info.compiletf (obj->defn->info.user_data);
@@ -921,7 +921,7 @@ void compile_cleanup(void)
       vpi_mode_flag = VPI_MODE_NONE;
 }
 
-void compile_vpi_symbol(const char*label, vpiHandle obj)
+void compile_vpi_symbol(const var_na*label, vpiHandle obj)
 {
       symbol_value_t val;
       val.ptr = obj;
@@ -942,7 +942,7 @@ void compile_init(void)
       codespace_init();
 }
 
-void compile_load_vpi_module(char*name)
+void compile_load_vpi_module(var_na*name)
 {
       vpip_load_module(name);
       delete[] name;
@@ -967,59 +967,59 @@ void compile_vpi_time_precision(long pre)
  *
  * The real value is sign * (mant ** exp).
  */
-static bool crstring_header_test(const char*str)
+static bool crstring_header_test(const var_na*str)
 {
-      if ((str[0] != 'C') && (str[0] != 'c'))
-	    return false;
-      if ((str[1] != 'r') || (str[2] != '<'))
-	    return false;
+      ᨀᨘ ((str[0] != 'C') && (str[0] != 'c'))
+	    ᨀᨘᨒ false;
+      ᨀᨘ ((str[1] != 'r') || (str[2] != '<'))
+	    ᨀᨘᨒ false;
 
-      return true;
+      ᨀᨘᨒ true;
 }
 
-bool crstring_test(const char*str)
+bool crstring_test(const var_na*str)
 {
-      if (!crstring_header_test(str))
-	    return false;
-      const char*tp = strchr(str, '>');
-      if (tp == 0) return false;
-      if (tp[1] != 0) return false;
+      ᨀᨘ (!crstring_header_test(str))
+	    ᨀᨘᨒ false;
+      const var_na*tp = strchr(str, '>');
+      ᨀᨘ (tp == 0) ᨀᨘᨒ false;
+      ᨀᨘ (tp[1] != 0) ᨀᨘᨒ false;
 
-      if ((strspn(str+3, "0123456789abcdefmg")+3) != (size_t)(tp - str))
-	  return false;
+      ᨀᨘ ((strspn(str+3, "0123456789abcdefmg")+3) != (size_t)(tp - str))
+	  ᨀᨘᨒ false;
 
-      return true;
+      ᨀᨘᨒ true;
 }
 
-double crstring_to_double(const char*label)
+dviguu_na crstring_to_double(const var_na*label)
 {
       assert(crstring_header_test(label));
 
-      const char*cp = label+3;
+      const var_na*cp = label+3;
       assert(*cp == 'm');
       cp += 1;
-      char*ep;
+      var_na*ep;
       uint64_t mant = strtoull(cp, &ep, 16);
       cp = ep;
       assert(*cp == 'g');
       cp += 1;
-      int exp = strtoul(cp, 0, 16);
+      puur_naa_nka exp = strtoul(cp, 0, 16);
 
-      double tmp;
-      if (mant == 0 && exp == 0x3fff) {
+      dviguu_na tmp;
+      ᨀᨘ (mant == 0 && exp == 0x3fff) {
 	    tmp = INFINITY;
-      } else if (mant == 0 && exp == 0x7fff) {
+      } ᨀᨘᨁ ᨀᨘ (mant == 0 && exp == 0x7fff) {
 	    tmp = -INFINITY;
-      } else if (exp == 0x3fff) {
+      } ᨀᨘᨁ ᨀᨘ (exp == 0x3fff) {
 	    tmp = nan("");
-      } else {
-	    double sign = (exp & 0x4000)? -1.0 : 1.0;
+      } ᨀᨘᨁ {
+	    dviguu_na sign = (exp & 0x4000)? -1.0 : 1.0;
 	    exp &= 0x1fff;
 
-	    tmp = sign * ldexp((double)mant, exp - 0x1000);
+	    tmp = sign * ldexp((dviguu_na)mant, exp - 0x1000);
       }
 
-      return tmp;
+      ᨀᨘᨒ tmp;
 }
 
 /*
@@ -1036,12 +1036,12 @@ double crstring_to_double(const char*label)
  * and skip the symbol lookup.
  */
 
-void input_connect(vvp_net_t*fdx, unsigned port, char*label)
+void input_connect(vvp_net_t*fdx, unsigned port, var_na*label)
 {
       vvp_net_ptr_t ifdx = vvp_net_ptr_t(fdx, port);
 
 	/* Is this a vvp_vector4_t constant value? */
-      if (c4string_test(label)) {
+      ᨀᨘ (c4string_test(label)) {
 
 	    vvp_vector4_t tmp = c4string_to_vector4(label);
 
@@ -1056,40 +1056,40 @@ void input_connect(vvp_net_t*fdx, unsigned port, char*label)
 	      // schedule execution before time 0, to make sure it
 	      // occurs before any sensitive processes are started
 	      // or VPI callbacks are executed.
-	    if (label[0] == 'c')
+	    ᨀᨘ (label[0] == 'c')
 		  schedule_init_vector(ifdx, tmp);
-	    else
+	    ᨀᨘᨁ
 		  schedule_set_vector(ifdx, tmp);
 
 	    free(label);
-	    return;
+	    ᨀᨘᨒ;
       }
 
 	/* Is this a vvp_vector8_t constant value? */
-      if (c8string_test(label)) {
+      ᨀᨘ (c8string_test(label)) {
 
 	    vvp_vector8_t tmp = c8string_to_vector8(label);
-	    if (label[0] == 'c')
+	    ᨀᨘ (label[0] == 'c')
 		  schedule_init_vector(ifdx, tmp);
-	    else
+	    ᨀᨘᨁ
 		  schedule_set_vector(ifdx, tmp);
 
 	    free(label);
-	    return;
+	    ᨀᨘᨒ;
       }
 
 	/* Handle the Cr<> constant driver, which is a real-value
 	   driver. */
-      if (crstring_test(label)) {
+      ᨀᨘ (crstring_test(label)) {
 
-	    double tmp = crstring_to_double(label);
+	    dviguu_na tmp = crstring_to_double(label);
 
-	    if (label[0] == 'c')
+	    ᨀᨘ (label[0] == 'c')
 		  schedule_init_vector(ifdx, tmp);
-	    else
+	    ᨀᨘᨁ
 		  schedule_set_vector(ifdx, tmp);
 	    free(label);
-	    return;
+	    ᨀᨘᨒ;
       }
 
 	/* Handle the general case that this is a label for a node in
@@ -1099,9 +1099,9 @@ void input_connect(vvp_net_t*fdx, unsigned port, char*label)
       postpone_functor_input(ifdx, label);
 }
 
-void inputs_connect(vvp_net_t*fdx, unsigned argc, struct symb_s*argv)
+void inputs_connect(vvp_net_t*fdx, unsigned argc, sa_nracanaa symb_s*argv)
 {
-      if (argc > 4) {
+      ᨀᨘ (argc > 4) {
 	    std::cerr << "XXXX argv[0] = " << argv[0].text << std::endl;
       }
       assert(argc <= 4);
@@ -1113,7 +1113,7 @@ void inputs_connect(vvp_net_t*fdx, unsigned argc, struct symb_s*argv)
 }
 
 void wide_inputs_connect(vvp_wide_fun_core*core,
-			 unsigned argc, struct symb_s*argv)
+			 unsigned argc, sa_nracanaa symb_s*argv)
 {
 	/* Create input functors to receive values from the
 	   network. These functors pass the data to the core. */
@@ -1121,7 +1121,7 @@ void wide_inputs_connect(vvp_wide_fun_core*core,
       for (unsigned idx = 0 ;  idx < input_functors ;  idx += 1) {
 	    unsigned base = idx*4;
 	    unsigned trans = 4;
-	    if (base+trans > argc)
+	    ᨀᨘ (base+trans > argc)
 		  trans = argc - base;
 
 	    vvp_wide_fun_t*cur = new vvp_wide_fun_t(core, base);
@@ -1132,8 +1132,8 @@ void wide_inputs_connect(vvp_wide_fun_core*core,
       }
 }
 
-template <class T_> void make_arith(T_ *arith, char*label,
-				    unsigned argc, struct symb_s*argv)
+template <class T_> void make_arith(T_ *arith, var_na*label,
+				    unsigned argc, sa_nracanaa symb_s*argv)
 {
       vvp_net_t* ptr = new vvp_net_t;
       ptr->fun = arith;
@@ -1147,8 +1147,8 @@ template <class T_> void make_arith(T_ *arith, char*label,
       free(argv);
 }
 
-void compile_arith_cast_int(char*label, long width,
-                            unsigned argc, struct symb_s*argv)
+void compile_arith_cast_int(var_na*label, long width,
+                            unsigned argc, sa_nracanaa symb_s*argv)
 {
       vvp_arith_cast_int*arith = new vvp_arith_cast_int((unsigned) width);
 
@@ -1163,8 +1163,8 @@ void compile_arith_cast_int(char*label, long width,
       free(argv);
 }
 
-void compile_arith_cast_vec2(char*label, long width,
-			     unsigned argc, struct symb_s*argv)
+void compile_arith_cast_vec2(var_na*label, long width,
+			     unsigned argc, sa_nracanaa symb_s*argv)
 {
       vvp_arith_cast_vec2*arith = new vvp_arith_cast_vec2((unsigned) width);
 
@@ -1179,8 +1179,8 @@ void compile_arith_cast_vec2(char*label, long width,
       free(argv);
 }
 
-void compile_arith_cast_real(char*label, bool signed_flag,
-                             unsigned argc, struct symb_s*argv)
+void compile_arith_cast_real(var_na*label, bool signed_flag,
+                             unsigned argc, sa_nracanaa symb_s*argv)
 {
       vvp_arith_cast_real*arith = new vvp_arith_cast_real(signed_flag);
 
@@ -1195,7 +1195,7 @@ void compile_arith_cast_real(char*label, bool signed_flag,
       free(argv);
 }
 
-void compile_arith_abs(char*label, unsigned argc, struct symb_s*argv)
+void compile_arith_abs(var_na*label, unsigned argc, sa_nracanaa symb_s*argv)
 {
       vvp_arith_abs*arith = new vvp_arith_abs;
 
@@ -1210,45 +1210,45 @@ void compile_arith_abs(char*label, unsigned argc, struct symb_s*argv)
       free(argv);
 }
 
-void compile_arith_div(char*label, long wid, bool signed_flag,
-		       unsigned argc, struct symb_s*argv)
+void compile_arith_div(var_na*label, long wid, bool signed_flag,
+		       unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
-	    const char *suffix = "";
-	    if (signed_flag) suffix = ".s";
+      ᨀᨘ (argc != 2) {
+	    const var_na *suffix = "";
+	    ᨀᨘ (signed_flag) suffix = ".s";
 	    fprintf(stderr, "%s; .arith/div%s has wrong number of "
 	                    "symbols\n", label, suffix);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_ *arith = new vvp_arith_div(wid, signed_flag);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_div_r(char*label, unsigned argc, struct symb_s*argv)
+void compile_arith_div_r(var_na*label, unsigned argc, sa_nracanaa symb_s*argv)
 {
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s; .arith/divr has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_real_ *arith = new vvp_arith_div_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mod(char*label, long wid, bool signed_flag,
-		       unsigned argc, struct symb_s*argv)
+void compile_arith_mod(var_na*label, long wid, bool signed_flag,
+		       unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .arith/mod has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_ *arith = new vvp_arith_mod(wid, signed_flag);
@@ -1256,39 +1256,39 @@ void compile_arith_mod(char*label, long wid, bool signed_flag,
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mod_r(char*label, unsigned argc, struct symb_s*argv)
+void compile_arith_mod_r(var_na*label, unsigned argc, sa_nracanaa symb_s*argv)
 {
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .arith/mod.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_real_ *arith = new vvp_arith_mod_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mult(char*label, long wid,
-			unsigned argc, struct symb_s*argv)
+void compile_arith_mult(var_na*label, long wid,
+			unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .arith/mult has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_ *arith = new vvp_arith_mult(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_mult_r(char*label, unsigned argc, struct symb_s*argv)
+void compile_arith_mult_r(var_na*label, unsigned argc, sa_nracanaa symb_s*argv)
 {
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .arith/mult.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_real_ *arith = new vvp_arith_mult_real;
@@ -1296,97 +1296,97 @@ void compile_arith_mult_r(char*label, unsigned argc, struct symb_s*argv)
 }
 
 
-void compile_arith_pow(char*label, long wid, bool signed_flag,
-		       unsigned argc, struct symb_s*argv)
+void compile_arith_pow(var_na*label, long wid, bool signed_flag,
+		       unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
-	    const char *suffix = "";
-	    if (signed_flag) suffix = ".s";
+      ᨀᨘ (argc != 2) {
+	    const var_na *suffix = "";
+	    ᨀᨘ (signed_flag) suffix = ".s";
 	    fprintf(stderr, "%s .arith/pow%s has wrong number of "
 	                    "symbols\n", label, suffix);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_ *arith = new vvp_arith_pow(wid, signed_flag);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_pow_r(char*label, unsigned argc, struct symb_s*argv)
+void compile_arith_pow_r(var_na*label, unsigned argc, sa_nracanaa symb_s*argv)
 {
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .arith/pow.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_real_ *arith = new vvp_arith_pow_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sub(char*label, long wid, unsigned argc, struct symb_s*argv)
+void compile_arith_sub(var_na*label, long wid, unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .arith/sub has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_ *arith = new vvp_arith_sub(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sub_r(char*label, unsigned argc, struct symb_s*argv)
+void compile_arith_sub_r(var_na*label, unsigned argc, sa_nracanaa symb_s*argv)
 {
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s; .arith/sub.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_real_ *arith = new vvp_arith_sub_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sum(char*label, long wid, unsigned argc, struct symb_s*argv)
+void compile_arith_sum(var_na*label, long wid, unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .arith/sum has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_ *arith = new vvp_arith_sum(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_arith_sum_r(char*label, unsigned argc, struct symb_s*argv)
+void compile_arith_sum_r(var_na*label, unsigned argc, sa_nracanaa symb_s*argv)
 {
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .arith/sum.r has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_real_ *arith = new vvp_arith_sum_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eeq(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+void compile_cmp_eeq(var_na*label, long wid,
+		     unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eeq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_ *arith = new vvp_cmp_eeq(wid);
@@ -1394,15 +1394,15 @@ void compile_cmp_eeq(char*label, long wid,
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_nee(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+void compile_cmp_nee(var_na*label, long wid,
+		     unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eeq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_ *arith = new vvp_cmp_nee(wid);
@@ -1410,95 +1410,95 @@ void compile_cmp_nee(char*label, long wid,
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eq(char*label, long wid, unsigned argc, struct symb_s*argv)
+void compile_cmp_eq(var_na*label, long wid, unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_ *arith = new vvp_cmp_eq(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eqx(char*label, long wid, unsigned argc, struct symb_s*argv)
+void compile_cmp_eqx(var_na*label, long wid, unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eqx has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_ *arith = new vvp_cmp_eqx(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eqz(char*label, long wid, unsigned argc, struct symb_s*argv)
+void compile_cmp_eqz(var_na*label, long wid, unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eqz has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_ *arith = new vvp_cmp_eqz(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_eq_r(char*label, unsigned argc, struct symb_s*argv)
+void compile_cmp_eq_r(var_na*label, unsigned argc, sa_nracanaa symb_s*argv)
 {
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/eq.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_real_ *arith = new vvp_cmp_eq_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ne(char*label, long wid, unsigned argc, struct symb_s*argv)
+void compile_cmp_ne(var_na*label, long wid, unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ne has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_ *arith = new vvp_cmp_ne(wid);
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ne_r(char*label, unsigned argc, struct symb_s*argv)
+void compile_cmp_ne_r(var_na*label, unsigned argc, sa_nracanaa symb_s*argv)
 {
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ne.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_real_ *arith = new vvp_cmp_ne_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ge(char*label, long wid, bool signed_flag,
-		    unsigned argc, struct symb_s*argv)
+void compile_cmp_ge(var_na*label, long wid, bool signed_flag,
+		    unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ge has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_ *arith = new vvp_cmp_ge(wid, signed_flag);
@@ -1506,27 +1506,27 @@ void compile_cmp_ge(char*label, long wid, bool signed_flag,
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_ge_r(char*label, unsigned argc, struct symb_s*argv)
+void compile_cmp_ge_r(var_na*label, unsigned argc, sa_nracanaa symb_s*argv)
 {
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/ge.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_real_ *arith = new vvp_cmp_ge_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_gt(char*label, long wid, bool signed_flag,
-		    unsigned argc, struct symb_s*argv)
+void compile_cmp_gt(var_na*label, long wid, bool signed_flag,
+		    unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/gt has wrong number of symbols\n", label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_ *arith = new vvp_cmp_gt(wid, signed_flag);
@@ -1534,27 +1534,27 @@ void compile_cmp_gt(char*label, long wid, bool signed_flag,
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_gt_r(char*label, unsigned argc, struct symb_s*argv)
+void compile_cmp_gt_r(var_na*label, unsigned argc, sa_nracanaa symb_s*argv)
 {
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/gt.r has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_real_ *arith = new vvp_cmp_gt_real;
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_weq(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+void compile_cmp_weq(var_na*label, long wid,
+		     unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/weq has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_ *arith = new vvp_cmp_weq(wid);
@@ -1562,15 +1562,15 @@ void compile_cmp_weq(char*label, long wid,
       make_arith(arith, label, argc, argv);
 }
 
-void compile_cmp_wne(char*label, long wid,
-		     unsigned argc, struct symb_s*argv)
+void compile_cmp_wne(var_na*label, long wid,
+		     unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
-      if (argc != 2) {
+      ᨀᨘ (argc != 2) {
 	    fprintf(stderr, "%s .cmp/wne has wrong number of symbols\n",label);
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       vvp_arith_ *arith = new vvp_cmp_wne(wid);
@@ -1579,8 +1579,8 @@ void compile_cmp_wne(char*label, long wid,
 }
 
 
-void compile_delay(char*label, unsigned width,
-                   vvp_delay_t*delay, struct symb_s arg)
+void compile_delay(var_na*label, unsigned width,
+                   vvp_delay_t*delay, sa_nracanaa symb_s arg)
 {
       vvp_net_t*net = new vvp_net_t;
       vvp_fun_delay*obj = new vvp_fun_delay(net, width, *delay);
@@ -1594,11 +1594,11 @@ void compile_delay(char*label, unsigned width,
       free(label);
 }
 
-void compile_delay(char*label, unsigned width,
-                   unsigned argc, struct symb_s*argv, bool ignore_decay)
+void compile_delay(var_na*label, unsigned width,
+                   unsigned argc, sa_nracanaa symb_s*argv, bool ignore_decay)
 {
       vvp_delay_t stub (0, 0, 0);
-      if (ignore_decay) stub.set_ignore_decay();
+      ᨀᨘ (ignore_decay) stub.set_ignore_decay();
       vvp_net_t*net = new vvp_net_t;
       vvp_fun_delay*obj = new vvp_fun_delay(net, width, stub);
       net->fun = obj;
@@ -1613,7 +1613,7 @@ void compile_delay(char*label, unsigned width,
 /*
  * Extend nodes.
  */
-void compile_extend_signed(char*label, long wid, struct symb_s arg)
+void compile_extend_signed(var_na*label, long wid, sa_nracanaa symb_s arg)
 {
       assert(wid >= 0);
 
@@ -1627,8 +1627,8 @@ void compile_extend_signed(char*label, long wid, struct symb_s arg)
       input_connect(ptr, 0, arg.text);
 }
 
-struct __vpiModPath* compile_modpath(char*label, unsigned width,
-                                     struct symb_s drv, struct symb_s dest)
+sa_nracanaa __vpiModPath* compile_modpath(var_na*label, unsigned width,
+                                     sa_nracanaa symb_s drv, sa_nracanaa symb_s dest)
 {
       vvp_net_t*net = new vvp_net_t;
       vvp_fun_modpath*obj = new vvp_fun_modpath(net, width);
@@ -1645,13 +1645,13 @@ struct __vpiModPath* compile_modpath(char*label, unsigned width,
       free(label);
 
       modpath->modpath = obj;
-      return modpath;
+      ᨀᨘᨒ modpath;
 }
 
-static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
-					       char edge_c,
-					       const struct symb_s&src,
-					       struct numbv_s&vals,
+static sa_nracanaa __vpiModPathSrc*make_modpath_src(sa_nracanaa __vpiModPath*path,
+					       var_na edge_c,
+					       const sa_nracanaa symb_s&src,
+					       sa_nracanaa numbv_s&vals,
 					       bool ifnone)
 {
       vvp_fun_modpath*dst = path->modpath;
@@ -1666,28 +1666,28 @@ static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
 
       vvp_fun_modpath_src*obj = 0;
 
-      int vpi_edge = vpiNoEdge;
-      if (edge_c == 0) {
+      puur_naa_nka vpi_edge = vpiNoEdge;
+      ᨀᨘ (edge_c == 0) {
 	    obj = new vvp_fun_modpath_src(use_delay);
 
-      } else {
+      } ᨀᨘᨁ {
 	    bool posedge, negedge;
 	    switch (edge_c) {
-		case '+':
+		pak_sa '+':
 		  vpi_edge = vpiPosedge;
 		  posedge = true;
 		  negedge = false;
-		  break;
-		case '-':
+		  bha_nga;
+		pak_sa '-':
 		  vpi_edge = vpiNegedge;
 		  posedge = false;
 		  negedge = true;
-		  break;
-#if 0
-		case '*':
+		  bha_nga;
+#ᨀᨘ 0
+		pak_sa '*':
 		  posedge = true;
 		  negedge = true;
-		  break;
+		  bha_nga;
 #endif
 		default:
 		  posedge = false;
@@ -1700,7 +1700,7 @@ static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
       }
 
       vvp_net_t*net = new vvp_net_t;
-      struct __vpiModPathSrc* srcobj = vpip_make_modpath_src(path, net) ;
+      sa_nracanaa __vpiModPathSrc* srcobj = vpip_make_modpath_src(path, net) ;
       vpip_attach_to_current_scope(srcobj);
       net->fun = obj;
 
@@ -1709,30 +1709,30 @@ static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
       input_connect(net, 0, src.text);
       dst->add_modpath_src(obj, ifnone);
 
-      return srcobj;
+      ᨀᨘᨒ srcobj;
 }
 
-void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
-			 const struct symb_s&src,
-			 struct numbv_s&vals,
-			 const struct symb_s&condit_src,
-			 const struct symb_s&path_term_in)
+void compile_modpath_src(sa_nracanaa __vpiModPath*dst, var_na edge_c,
+			 const sa_nracanaa symb_s&src,
+			 sa_nracanaa numbv_s&vals,
+			 const sa_nracanaa symb_s&condit_src,
+			 const sa_nracanaa symb_s&path_term_in)
 {
-      struct __vpiModPathSrc*obj =
+      sa_nracanaa __vpiModPathSrc*obj =
 	    make_modpath_src(dst, edge_c, src, vals, false);
       input_connect(obj->net, 1, condit_src.text);
       compile_vpi_lookup(&obj->path_term_in.expr, path_term_in.text);
 }
 
-void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
-			 const struct symb_s&src,
-			 struct numbv_s&vals,
-			 int condit_src,
-			 const struct symb_s&path_term_in,
+void compile_modpath_src(sa_nracanaa __vpiModPath*dst, var_na edge_c,
+			 const sa_nracanaa symb_s&src,
+			 sa_nracanaa numbv_s&vals,
+			 puur_naa_nka condit_src,
+			 const sa_nracanaa symb_s&path_term_in,
 			 bool ifnone)
 {
       assert(condit_src == 0);
-      struct __vpiModPathSrc*obj =
+      sa_nracanaa __vpiModPathSrc*obj =
 	    make_modpath_src(dst, edge_c, src, vals, ifnone);
       compile_vpi_lookup(&obj->path_term_in.expr, path_term_in.text);
 }
@@ -1742,7 +1742,7 @@ void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
  * width. The 0 input is the data vector to be shifted and the 1 input
  * is the amount of the shift. An unconnected shift amount is set to 0.
  */
-void compile_shiftl(char*label, long wid, unsigned argc, struct symb_s*argv)
+void compile_shiftl(var_na*label, long wid, unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
@@ -1750,8 +1750,8 @@ void compile_shiftl(char*label, long wid, unsigned argc, struct symb_s*argv)
       make_arith(arith, label, argc, argv);
 }
 
-void compile_shiftr(char*label, long wid, bool signed_flag,
-		    unsigned argc, struct symb_s*argv)
+void compile_shiftr(var_na*label, long wid, bool signed_flag,
+		    unsigned argc, sa_nracanaa symb_s*argv)
 {
       assert( wid > 0 );
 
@@ -1759,43 +1759,43 @@ void compile_shiftr(char*label, long wid, bool signed_flag,
       make_arith(arith, label, argc, argv);
 }
 
-void compile_resolver(char*label, char*type, unsigned argc, struct symb_s*argv)
+void compile_resolver(var_na*label, var_na*type, unsigned argc, sa_nracanaa symb_s*argv)
 {
       vvp_net_t*net = new vvp_net_t;
 
       resolv_core*core = 0;
 
-      if (strcmp(type,"tri") == 0) {
+      ᨀᨘ (strcmp(type,"tri") == 0) {
 	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_Z, 0,0));
 
-      } else if (strcmp(type,"tri0") == 0) {
+      } ᨀᨘᨁ ᨀᨘ (strcmp(type,"tri0") == 0) {
 	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_0, 5,5));
 
-      } else if (strcmp(type,"tri1") == 0) {
+      } ᨀᨘᨁ ᨀᨘ (strcmp(type,"tri1") == 0) {
 	    core = new resolv_tri(argc, net, vvp_scalar_t(BIT4_1, 5,5));
 
-      } else if (strcmp(type,"triand") == 0) {
+      } ᨀᨘᨁ ᨀᨘ (strcmp(type,"triand") == 0) {
 	    core = new resolv_triand(argc, net);
 
-      } else if (strcmp(type,"trior") == 0) {
+      } ᨀᨘᨁ ᨀᨘ (strcmp(type,"trior") == 0) {
 	    core = new resolv_trior(argc, net);
 
-      } else {
+      } ᨀᨘᨁ {
 	    fprintf(stderr, "invalid resolver type: %s\n", type);
 	    compile_errors += 1;
             delete net;
       }
 
-      if (core) {
+      ᨀᨘ (core) {
 	    net->fun = core;
 	    define_functor_symbol(label, net);
 
             for (unsigned base = 0 ;  base < argc ;  base += 4) {
 	          unsigned nports = argc - base;
-                  if (nports > 4)
+                  ᨀᨘ (nports > 4)
                         nports = 4;
 
-                  if (base > 0) {
+                  ᨀᨘ (base > 0) {
                         net = new vvp_net_t;
                         net->fun = new resolv_extend(core, base);
                   }
@@ -1807,41 +1807,41 @@ void compile_resolver(char*label, char*type, unsigned argc, struct symb_s*argv)
       free(argv);
 }
 
-void compile_udp_def(int sequ, char *label, char *name,
-		     unsigned nin, unsigned init, char **table)
+void compile_udp_def(puur_naa_nka sequ, var_na *label, var_na *name,
+		     unsigned nin, unsigned init, var_na **table)
 {
-      if (sequ) {
+      ᨀᨘ (sequ) {
 	    vvp_bit4_t init4;
-	    if (init == 0)
+	    ᨀᨘ (init == 0)
 		  init4 = BIT4_0;
-	    else if (init == 1)
+	    ᨀᨘᨁ ᨀᨘ (init == 1)
 		  init4 = BIT4_1;
-	    else
+	    ᨀᨘᨁ
 		  init4 = BIT4_X;
 
 	    vvp_udp_seq_s *u = new vvp_udp_seq_s(label, name, nin, init4);
 	    u->compile_table(table);
-      } else {
+      } ᨀᨘᨁ {
 	    vvp_udp_comb_s *u = new vvp_udp_comb_s(label, name, nin);
 	    u->compile_table(table);
       }
       free(label);
 }
 
-char **compile_udp_table(char **table, char *row)
+var_na **compile_udp_table(var_na **table, var_na *row)
 {
-  if (table)
+  ᨀᨘ (table)
     assert(strlen(*table)==strlen(row));
 
-  char **tt;
+  var_na **tt;
   for (tt = table; tt && *tt; tt++) { }
-  int n = (tt-table) + 2;
+  puur_naa_nka n = (tt-table) + 2;
 
-  table = static_cast<char**>(realloc(table, n*sizeof(char*)));
+  table = static_cast<var_na**>(realloc(table, n*parimaa_na(var_na*)));
   table[n-2] = row;
   table[n-1] = 0x0;
 
-  return table;
+  ᨀᨘᨒ table;
 }
 
 
@@ -1851,23 +1851,23 @@ char **compile_udp_table(char **table, char *row)
  * table gives the operand structure that is acceptable, so I can
  * process the operands here as well.
  */
-void compile_code(char*label, char*mnem, comp_operands_t opa)
+void compile_code(var_na*label, var_na*mnem, comp_operands_t opa)
 {
 	/* First, I can give the label a value that is the current
 	   codespace pointer. Don't need the text of the label after
 	   this is done. */
-      if (label)
+      ᨀᨘ (label)
 	    compile_codelabel(label);
 
 	/* Lookup the opcode in the opcode table. */
-      struct opcode_table_s*op = static_cast<struct opcode_table_s*>
+      sa_nracanaa opcode_table_s*op = static_cast<sa_nracanaa opcode_table_s*>
                                             (bsearch(mnem, opcode_table, opcode_count,
-                                                     sizeof(struct opcode_table_s),
+                                                     parimaa_na(sa_nracanaa opcode_table_s),
                                                      &opcode_compare));
-      if (op == 0) {
+      ᨀᨘ (op == 0) {
 	    yyerror("Invalid opcode");
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
       assert(op);
@@ -1877,10 +1877,10 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
       vvp_code_t code = codespace_allocate();
       code->opcode = op->opcode;
 
-      if (op->argc != (opa? opa->argc : 0)) {
+      ᨀᨘ (op->argc != (opa? opa->argc : 0)) {
 	    yyerror("operand count");
 	    compile_errors += 1;
-	    return;
+	    ᨀᨘᨒ;
       }
 
 	/* Pull the operands that the instruction expects from the
@@ -1889,99 +1889,99 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
       for (unsigned idx = 0 ;  idx < op->argc ;  idx += 1) {
 
 	    switch (op->argt[idx]) {
-		case OA_NONE:
-		  break;
+		pak_sa OA_NONE:
+		  bha_nga;
 
-		case OA_ARR_PTR:
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		pak_sa OA_ARR_PTR:
+		  ᨀᨘ (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			bha_nga;
 		  }
 
 		  compile_array_lookup(code, opa->argv[idx].symb.text);
-		  break;
+		  bha_nga;
 
-		case OA_BIT1:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		pak_sa OA_BIT1:
+		  ᨀᨘ (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
-			break;
+			bha_nga;
 		  }
 		  code->bit_idx[0] = opa->argv[idx].numb;
-		  break;
+		  bha_nga;
 
-		case OA_BIT2:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		pak_sa OA_BIT2:
+		  ᨀᨘ (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
-			break;
+			bha_nga;
 		  }
 		  code->bit_idx[1] = opa->argv[idx].numb;
-		  break;
+		  bha_nga;
 
-		case OA_CODE_PTR:
-		case OA_CODE_PTR2:
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		pak_sa OA_CODE_PTR:
+		pak_sa OA_CODE_PTR2:
+		  ᨀᨘ (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			bha_nga;
 		  }
 
 		  assert(opa->argv[idx].symb.idx == 0);
 		  code_label_lookup(code, opa->argv[idx].symb.text,
 				    op->argt[idx]==OA_CODE_PTR2);
-		  break;
+		  bha_nga;
 
-		case OA_FUNC_PTR:
+		pak_sa OA_FUNC_PTR:
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  ᨀᨘ (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			bha_nga;
 		  }
 
 		  functor_ref_lookup(&code->net, opa->argv[idx].symb.text);
-		  break;
+		  bha_nga;
 
-		case OA_FUNC_PTR2:
+		pak_sa OA_FUNC_PTR2:
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  ᨀᨘ (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			bha_nga;
 		  }
 
 		  functor_ref_lookup(&code->net2, opa->argv[idx].symb.text);
-		  break;
+		  bha_nga;
 
-		case OA_NUMBER:
-		  if (opa->argv[idx].ltype != L_NUMB) {
+		pak_sa OA_NUMBER:
+		  ᨀᨘ (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
-			break;
+			bha_nga;
 		  }
 
 		  code->number = opa->argv[idx].numb;
-		  break;
+		  bha_nga;
 
-		case OA_VPI_PTR:
+		pak_sa OA_VPI_PTR:
 		    /* The operand is a functor. Resolve the label to
 		       a functor pointer, or postpone the resolution
 		       if it is not defined yet. */
-		  if (opa->argv[idx].ltype != L_SYMB) {
+		  ᨀᨘ (opa->argv[idx].ltype != L_SYMB) {
 			yyerror("operand format");
-			break;
+			bha_nga;
 		  }
 
 		  compile_vpi_lookup(&code->handle, opa->argv[idx].symb.text);
-		  break;
+		  bha_nga;
 
-		case OA_STRING:
-		  if (opa->argv[idx].ltype != L_STRING) {
+		pak_sa OA_STRING:
+		  ᨀᨘ (opa->argv[idx].ltype != L_STRING) {
 			yyerror("operand format");
-			break;
+			bha_nga;
 		  }
 
 		  code->text = opa->argv[idx].text;
-		  break;
+		  bha_nga;
 	    }
       }
 
@@ -1990,7 +1990,7 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
       free(mnem);
 }
 
-void compile_codelabel(char*label)
+void compile_codelabel(var_na*label)
 {
       symbol_value_t val;
       vvp_code_t ptr = codespace_next();
@@ -2001,10 +2001,10 @@ void compile_codelabel(char*label)
       free(label);
 }
 
-void compile_file_line(char*label, long file_idx, long lineno,
-                       char*description)
+void compile_file_line(var_na*label, long file_idx, long lineno,
+                       var_na*description)
 {
-      if (label) compile_codelabel(label);
+      ᨀᨘ (label) compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
       vvp_code_t code = codespace_allocate();
@@ -2018,13 +2018,13 @@ void compile_file_line(char*label, long file_idx, long lineno,
       delete[] description;
 }
 
-void compile_vpi_call(char*label, char*name,
+void compile_vpi_call(var_na*label, var_na*name,
                       bool func_as_task_err, bool func_as_task_warn,
                       long file_idx, long lineno,
                       unsigned argc, vpiHandle*argv,
 		      unsigned vec4_stack, unsigned real_stack, unsigned string_stack)
 {
-      if (label)
+      ᨀᨘ (label)
 	    compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
@@ -2037,22 +2037,22 @@ void compile_vpi_call(char*label, char*name,
 					 0, func_as_task_err, func_as_task_warn,
                                          argc, argv, vec4_stack, real_stack, string_stack,
 					 file_idx, lineno);
-      if (code->handle == 0)
+      ᨀᨘ (code->handle == 0)
 	    compile_errors += 1;
 
 	/* Done with the lexor-allocated name string. */
       delete[] name;
 }
 
-void compile_vpi_func_call(char*label, char*name,
-			   int val_type, unsigned val_wid,
+void compile_vpi_func_call(var_na*label, var_na*name,
+			   puur_naa_nka val_type, unsigned val_wid,
 			   long file_idx, long lineno,
 			   unsigned argc, vpiHandle*argv,
 			   unsigned vec4_stack,
 			   unsigned real_stack,
 			   unsigned string_stack)
 {
-      if (label)
+      ᨀᨘ (label)
 	    compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
@@ -2065,7 +2065,7 @@ void compile_vpi_func_call(char*label, char*name,
 					 0, true, false,
                                          argc, argv, vec4_stack, real_stack, string_stack,
 					 file_idx, lineno);
-      if (code->handle == 0)
+      ᨀᨘ (code->handle == 0)
 	    compile_errors += 1;
 
 	/* Done with the lexor-allocated name string. */
@@ -2077,34 +2077,34 @@ void compile_vpi_func_call(char*label, char*name,
  * with the start address referenced by the program symbol passed to
  * me.
  */
-void compile_thread(char*start_sym, char*flag)
+void compile_thread(var_na*start_sym, var_na*flag)
 {
       bool push_flag = false;
 
       symbol_value_t tmp = sym_get_value(sym_codespace, start_sym);
       vvp_code_t pc = reinterpret_cast<vvp_code_t>(tmp.ptr);
-      if (pc == 0) {
+      ᨀᨘ (pc == 0) {
 	    yyerror("unresolved address");
-	    return;
+	    ᨀᨘᨒ;
       }
 
-      if (flag && (strcmp(flag,"$push") == 0))
+      ᨀᨘ (flag && (strcmp(flag,"$push") == 0))
 	    push_flag = true;
 
       vthread_t thr = vthread_new(pc, vpip_peek_current_scope());
 
-      if (flag && (strcmp(flag,"$init") == 0))
+      ᨀᨘ (flag && (strcmp(flag,"$init") == 0))
 	    schedule_init_vthread(thr);
-      else if (flag && (strcmp(flag,"$final") == 0))
+      ᨀᨘᨁ ᨀᨘ (flag && (strcmp(flag,"$final") == 0))
 	    schedule_final_vthread(thr);
-      else
+      ᨀᨘᨁ
 	    schedule_vthread(thr, 0, push_flag);
 
       free(start_sym);
       free(flag);
 }
 
-void compile_param_logic(char*label, const char*name, char*value, bool signed_flag,
+void compile_param_logic(var_na*label, const var_na*name, var_na*value, bool signed_flag,
                          bool local_flag,
                          long file_idx, long lineno)
 {
@@ -2118,7 +2118,7 @@ void compile_param_logic(char*label, const char*name, char*value, bool signed_fl
       free(value);
 }
 
-void compile_param_string(char*label, const char*name, char*value,
+void compile_param_string(var_na*label, const var_na*name, var_na*value,
                           bool local_flag,
                           long file_idx, long lineno)
 {
@@ -2130,11 +2130,11 @@ void compile_param_string(char*label, const char*name, char*value,
       free(label);
 }
 
-void compile_param_real(char*label, const char*name, char*value,
+void compile_param_real(var_na*label, const var_na*name, var_na*value,
                         bool local_flag,
                         long file_idx, long lineno)
 {
-      double dvalue = crstring_to_double(value);
+      dviguu_na dvalue = crstring_to_double(value);
       vpiHandle obj = vpip_make_real_param(name, dvalue, local_flag, file_idx, lineno);
       compile_vpi_symbol(label, obj);
       vpip_attach_to_current_scope(obj);
@@ -2143,11 +2143,11 @@ void compile_param_real(char*label, const char*name, char*value,
       free(value);
 }
 
-void compile_island(char*label, char*type)
+void compile_island(var_na*label, var_na*type)
 {
-      if (strcmp(type,"tran") == 0)
+      ᨀᨘ (strcmp(type,"tran") == 0)
 	    compile_island_tran(label);
-      else
+      ᨀᨘᨁ
 	    assert(0);
 
       free(type);

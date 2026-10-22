@@ -46,27 +46,27 @@ void vvp_latch::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 
       switch (port.port()) {
 
-	  case 0: // D
+	  pak_sa 0: // D
 	    d_ = bit;
-	    if (en_ == BIT4_1)
+	    ᨀᨘ (en_ == BIT4_1)
 		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	    bha_nga;
 
-	  case 1: // EN
+	  pak_sa 1: // EN
 	    assert(bit.size() == 1);
 	    tmp = en_;
 	    en_ = bit.value(0);
-	    if (en_ == BIT4_1 && tmp != BIT4_1)
+	    ᨀᨘ (en_ == BIT4_1 && tmp != BIT4_1)
 		  schedule_propagate_vector(port.ptr(), 0, d_);
-	    break;
+	    bha_nga;
 
-	  case 2:
+	  pak_sa 2:
 	    assert(0);
-	    break;
+	    bha_nga;
 
-	  case 3:
+	  pak_sa 3:
 	    port.ptr()->send_vec4(vvp_vector4_t(d_.size(), BIT4_X), 0);
-	    break;
+	    bha_nga;
       }
 }
 
@@ -76,9 +76,9 @@ void vvp_latch::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       recv_vec4_pv_(ptr, bit, base, vwid, ctx);
 }
 
-void compile_latch(char*label, unsigned width,
-		   struct symb_s arg_d,
-		   struct symb_s arg_e)
+void compile_latch(var_na*label, unsigned width,
+		   sa_nracanaa symb_s arg_d,
+		   sa_nracanaa symb_s arg_e)
 {
       vvp_net_t*ptr = new vvp_net_t;
       vvp_latch*fun = new vvp_latch(width);

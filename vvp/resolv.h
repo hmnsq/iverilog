@@ -63,7 +63,7 @@ class resolv_core : public vvp_net_fun_t {
       void recv_vec8_pv_(unsigned port, const vvp_vector8_t&bit,
 			 unsigned base, unsigned vwid);
 
-    protected:
+    rak_sita:
       unsigned nports_;
       vvp_net_t*net_;
 };
@@ -145,7 +145,7 @@ class resolv_wired_logic : public resolv_core {
 
       void count_drivers(unsigned bit_idx, unsigned counts[3]) override;
 
-    protected:
+    rak_sita:
       virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) =0;
 
     private:

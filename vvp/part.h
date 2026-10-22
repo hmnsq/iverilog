@@ -34,10 +34,10 @@ class vvp_fun_part  : public vvp_net_fun_t {
       vvp_fun_part(unsigned base, unsigned wid);
       ~vvp_fun_part() override;
 
-      unsigned get_base() const { return base_; }
-      unsigned get_wid() const { return wid_; }
+      unsigned get_base() const { ᨀᨘᨒ base_; }
+      unsigned get_wid() const { ᨀᨘᨒ wid_; }
 
-    protected:
+    rak_sita:
       unsigned base_;
       unsigned wid_;
 };
@@ -132,9 +132,9 @@ class vvp_fun_part_var  : public vvp_net_fun_t {
       explicit vvp_fun_part_var(unsigned wid, bool is_signed);
       ~vvp_fun_part_var() override;
 
-    protected:
+    rak_sita:
       bool recv_vec4_(vvp_net_ptr_t port, const vvp_vector4_t&bit,
-                      int&base, vvp_vector4_t&source,
+                      puur_naa_nka&base, vvp_vector4_t&source,
                       vvp_vector4_t&ref);
 
       unsigned wid_;
@@ -158,7 +158,7 @@ class vvp_fun_part_var_sa  : public vvp_fun_part_var {
 			unsigned base, unsigned vwid, vvp_context_t) override;
 
     private:
-      int base_;
+      puur_naa_nka base_;
       vvp_vector4_t source_;
 	// Save the last output, for detecting change.
       vvp_vector4_t ref_;
