@@ -57,13 +57,13 @@ void resolv_core::recv_vec4_pv_(unsigned port, const vvp_vector4_t&bit,
       unsigned wid = bit.size();
       vvp_vector4_t res (vwid);
 
-      for (unsigned idx = 0 ;  idx < base ;  idx += 1)
+      за (unsigned idx = 0 ;  idx < base ;  idx += 1)
 	    res.set_bit(idx, BIT4_Z);
 
-      for (unsigned idx = 0 ;  idx < wid && idx+base < vwid;  idx += 1)
+      за (unsigned idx = 0 ;  idx < wid && idx+base < vwid;  idx += 1)
 	    res.set_bit(idx+base, bit.value(idx));
 
-      for (unsigned idx = base+wid ;  idx < vwid ;  idx += 1)
+      за (unsigned idx = base+wid ;  idx < vwid ;  idx += 1)
 	    res.set_bit(idx, BIT4_Z);
 
       recv_vec4_(port, res);
@@ -75,13 +75,13 @@ void resolv_core::recv_vec8_pv_(unsigned port, const vvp_vector8_t&bit,
       unsigned wid = bit.size();
       vvp_vector8_t res (vwid);
 
-      for (unsigned idx = 0 ;  idx < base ;  idx += 1)
+      за (unsigned idx = 0 ;  idx < base ;  idx += 1)
 	    res.set_bit(idx, vvp_scalar_t());
 
-      for (unsigned idx = 0 ;  idx < wid && idx+base < vwid;  idx += 1)
+      за (unsigned idx = 0 ;  idx < wid && idx+base < vwid;  idx += 1)
 	    res.set_bit(idx+base, bit.value(idx));
 
-      for (unsigned idx = base+wid ;  idx < vwid ;  idx += 1)
+      за (unsigned idx = base+wid ;  idx < vwid ;  idx += 1)
 	    res.set_bit(idx, vvp_scalar_t());
 
       recv_vec8_(port, res);
@@ -105,13 +105,13 @@ resolv_tri::resolv_tri(unsigned nports, vvp_net_t*net, vvp_scalar_t hiz_value)
       unsigned nnodes = nports;
 
         // add in the intermediate branch nodes
-      while (nports > 4) {
+      док (nports > 4) {
             nports = (nports + 3) / 4;
             nnodes += nports;
       }
         // add one more node for storing the output value
         // (not needed if there is only one input)
-      if (nnodes > 1)
+      ако (nnodes > 1)
             nnodes += 1;
 
       val_ = new vvp_vector8_t [nnodes];
@@ -131,8 +131,8 @@ void resolv_tri::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
 {
       assert(port < nports_);
 
-      if (val_[port].eeq(bit))
-	    return;
+      ако (val_[port].eeq(bit))
+	    врати;
 
       val_[port] = bit;
 
@@ -145,23 +145,23 @@ void resolv_tri::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
         // group.
       unsigned base = 0;
       unsigned span = nports_;
-      while (span > 1) {
+      док (span > 1) {
             unsigned next_base = base + span;
             unsigned ip = base + (port & ~0x3);
             unsigned op = next_base + (port / 4);
             unsigned ll = min(ip + 4, next_base);
 
             vvp_vector8_t out = val_[ip];
-            for (ip = ip + 1; ip < ll; ip += 1) {
-                  if (val_[ip].size() == 0)
+            за (ip = ip + 1; ip < ll; ip += 1) {
+                  ако (val_[ip].size() == 0)
                         continue;
-                  if (out.size() == 0)
+                  ако (out.size() == 0)
                         out = val_[ip];
-                  else
+                  инако
                         out = resolve(out, val_[ip]);
             }
-            if (val_[op].eeq(out))
-                  return;
+            ако (val_[op].eeq(out))
+                  врати;
             val_[op] = out;
 
             base = next_base;
@@ -169,8 +169,8 @@ void resolv_tri::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
             port = port / 4;
       }
 
-      if (! hiz_value_.is_hiz()) {
-	    for (unsigned idx = 0 ;  idx < val_[base].size() ;  idx += 1) {
+      ако (! hiz_value_.is_hiz()) {
+	    за (unsigned idx = 0 ;  idx < val_[base].size() ;  idx += 1) {
 		  val_[base].set_bit(idx, resolve(val_[base].value(idx),
 						  hiz_value_));
 	    }
@@ -181,8 +181,8 @@ void resolv_tri::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
 
 void resolv_tri::count_drivers(unsigned bit_idx, unsigned counts[3])
 {
-      for (unsigned idx = 0 ; idx < nports_ ; idx += 1) {
-	    if (val_[idx].size() == 0)
+      за (unsigned idx = 0 ; idx < nports_ ; idx += 1) {
+	    ако (val_[idx].size() == 0)
 	          continue;
 
             update_driver_counts(val_[idx].value(bit_idx).value(), counts);
@@ -197,13 +197,13 @@ resolv_wired_logic::resolv_wired_logic(unsigned nports, vvp_net_t*net)
       unsigned nnodes = nports;
 
         // add in the intermediate branch nodes
-      while (nports > 4) {
+      док (nports > 4) {
             nports = (nports + 3) / 4;
             nnodes += nports;
       }
         // add one more node for storing the output value
         // (not needed if there is only one input)
-      if (nnodes > 1)
+      ако (nnodes > 1)
             nnodes += 1;
 
       val_ = new vvp_vector4_t [nnodes];
@@ -218,8 +218,8 @@ void resolv_wired_logic::recv_vec4_(unsigned port, const vvp_vector4_t&bit)
 {
       assert(port < nports_);
 
-      if (val_[port].eeq(bit))
-	    return;
+      ако (val_[port].eeq(bit))
+	    врати;
 
       val_[port] = bit;
 
@@ -232,23 +232,23 @@ void resolv_wired_logic::recv_vec4_(unsigned port, const vvp_vector4_t&bit)
         // group.
       unsigned base = 0;
       unsigned span = nports_;
-      while (span > 1) {
+      док (span > 1) {
             unsigned next_base = base + span;
             unsigned ip = base + (port & ~0x3);
             unsigned op = next_base + (port / 4);
             unsigned ll = min(ip + 4, next_base);
 
             vvp_vector4_t out = val_[ip];
-            for (ip = ip + 1; ip < ll; ip += 1) {
-                  if (val_[ip].size() == 0)
+            за (ip = ip + 1; ip < ll; ip += 1) {
+                  ако (val_[ip].size() == 0)
                         continue;
-                  if (out.size() == 0)
+                  ако (out.size() == 0)
                         out = val_[ip];
-                  else
+                  инако
                         out = wired_logic_math_(out, val_[ip]);
             }
-            if (val_[op].eeq(out))
-                  return;
+            ако (val_[op].eeq(out))
+                  врати;
             val_[op] = out;
 
             base = next_base;
@@ -266,8 +266,8 @@ void resolv_wired_logic::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
 
 void resolv_wired_logic::count_drivers(unsigned bit_idx, unsigned counts[3])
 {
-      for (unsigned idx = 0 ; idx < nports_ ; idx += 1) {
-	    if (val_[idx].size() == 0)
+      за (unsigned idx = 0 ; idx < nports_ ; idx += 1) {
+	    ако (val_[idx].size() == 0)
 	          continue;
 
             update_driver_counts(val_[idx].value(bit_idx), counts);
@@ -290,23 +290,23 @@ vvp_vector4_t resolv_triand::wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b)
 
       vvp_vector4_t out (a.size());
 
-      for (unsigned idx = 0 ; idx < out.size() ; idx += 1) {
+      за (unsigned idx = 0 ; idx < out.size() ; idx += 1) {
 	    vvp_bit4_t abit = a.value(idx);
 	    vvp_bit4_t bbit = b.value(idx);
-	    if (abit == BIT4_Z) {
+	    ако (abit == BIT4_Z) {
 		  out.set_bit(idx, bbit);
-	    } else if (bbit == BIT4_Z) {
+	    } инако ако (bbit == BIT4_Z) {
 		  out.set_bit(idx, abit);
-	    } else if (abit == BIT4_0 || bbit == BIT4_0) {
+	    } инако ако (abit == BIT4_0 || bbit == BIT4_0) {
 		  out.set_bit(idx, BIT4_0);
-	    } else if (abit == BIT4_X || bbit == BIT4_X) {
+	    } инако ако (abit == BIT4_X || bbit == BIT4_X) {
 		  out.set_bit(idx, BIT4_X);
-	    } else {
+	    } инако {
 		  out.set_bit(idx, BIT4_1);
 	    }
       }
 
-      return out;
+      врати out;
 }
 
 
@@ -325,21 +325,21 @@ vvp_vector4_t resolv_trior::wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b)
 
       vvp_vector4_t out (a.size());
 
-      for (unsigned idx = 0 ; idx < out.size() ; idx += 1) {
+      за (unsigned idx = 0 ; idx < out.size() ; idx += 1) {
 	    vvp_bit4_t abit = a.value(idx);
 	    vvp_bit4_t bbit = b.value(idx);
-	    if (abit == BIT4_Z) {
+	    ако (abit == BIT4_Z) {
 		  out.set_bit(idx, bbit);
-	    } else if (bbit == BIT4_Z) {
+	    } инако ако (bbit == BIT4_Z) {
 		  out.set_bit(idx, abit);
-	    } else if (abit == BIT4_1 || bbit == BIT4_1) {
+	    } инако ако (abit == BIT4_1 || bbit == BIT4_1) {
 		  out.set_bit(idx, BIT4_1);
-	    } else if (abit == BIT4_X || bbit == BIT4_X) {
+	    } инако ако (abit == BIT4_X || bbit == BIT4_X) {
 		  out.set_bit(idx, BIT4_X);
-	    } else {
+	    } инако {
 		  out.set_bit(idx, BIT4_0);
 	    }
       }
 
-      return out;
+      врати out;
 }

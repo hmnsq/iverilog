@@ -32,7 +32,7 @@
 
 #ifdef HAVE_IOSFWD
 # include  <iosfwd>
-#else
+#инако
 # include  <iostream>
 #endif
 
@@ -184,7 +184,7 @@ class vvp_fun_signal4_aa : public vvp_fun_signal_vec, public automatic_signal_ba
       const vvp_vector4_t& vec4_unfiltered_value() const override;
 
     public: // These objects are only permallocated.
-      static void* operator new(std::size_t size) { return vvp_net_fun_t::heap_.alloc(size); }
+      static void* operator new(std::size_t size) { врати vvp_net_fun_t::heap_.alloc(size); }
       static void operator delete(void*obj);
 
     private:
@@ -321,7 +321,7 @@ class vvp_fun_signal_object : public vvp_fun_signal_base {
 
     public:
       explicit vvp_fun_signal_object(unsigned size) { size_ = size; };
-      unsigned size() const { return size_; }
+      unsigned size() const { врати size_; }
 
       virtual vvp_object_t get_object() const =0;
     private:
@@ -532,7 +532,7 @@ class vvp_wire_real : public vvp_wire_base {
       bool needs_init_ = true;
 };
 
-#if 0
+#ако 0
 class vvp_wire_string : public vvp_wire_base {
 
     public:

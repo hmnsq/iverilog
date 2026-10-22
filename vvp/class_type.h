@@ -42,9 +42,9 @@ class class_type : public __vpiHandle {
       ~class_type() override;
 
 	// This is the name of the class type.
-      inline const std::string&class_name(void) const { return class_name_; }
+      inline const std::string&class_name(void) const { врати class_name_; }
 	// Number of properties in the class definition.
-      inline size_t property_count(void) const { return properties_.size(); }
+      inline size_t property_count(void) const { врати properties_.size(); }
 
 	// Set the details about the property. This is used during
 	// parse of the .vvp file to fill in the details of the
@@ -72,7 +72,7 @@ class class_type : public __vpiHandle {
       void copy_property(inst_t dst, size_t idx, inst_t src) const;
 
     public: // VPI related methods
-      int get_type_code(void) const override;
+      цео get_type_code(void) const override;
 
     private:
       std::string class_name_;

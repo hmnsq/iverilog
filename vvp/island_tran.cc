@@ -73,7 +73,7 @@ static inline vvp_island_branch_tran* BRANCH_TRAN(vvp_island_branch*tmp)
 {
       vvp_island_branch_tran*res = dynamic_cast<vvp_island_branch_tran*>(tmp);
       assert(res);
-      return res;
+      врати res;
 }
 
 /*
@@ -86,7 +86,7 @@ void vvp_island_tran::run_island()
 	// Test to see if any of the branches are enabled. This loop
 	// tests the enabled inputs for all the branches and caches
 	// the results in the state for each branch.
-      for (vvp_island_branch*cur = branches_ ; cur ; cur = cur->next_branch) {
+      за (vvp_island_branch*cur = branches_ ; cur ; cur = cur->next_branch) {
 	    vvp_island_branch_tran*tmp = dynamic_cast<vvp_island_branch_tran*>(cur);
 	    assert(tmp);
 	    tmp->run_test_enabled();
@@ -94,14 +94,14 @@ void vvp_island_tran::run_island()
 
 rerun:
 	// Now resolve all the branches in the island.
-      for (vvp_island_branch*cur = branches_ ; cur ; cur = cur->next_branch) {
+      за (vvp_island_branch*cur = branches_ ; cur ; cur = cur->next_branch) {
 	    vvp_island_branch_tran*tmp = dynamic_cast<vvp_island_branch_tran*>(cur);
 	    assert(tmp);
 	    tmp->run_resolution();
       }
 
 	// Now output the resolved values.
-      for (vvp_island_branch*cur = branches_ ; cur ; cur = cur->next_branch) {
+      за (vvp_island_branch*cur = branches_ ; cur ; cur = cur->next_branch) {
 	    vvp_island_branch_tran*tmp = dynamic_cast<vvp_island_branch_tran*>(cur);
 	    assert(tmp);
 	    tmp->run_output();
@@ -109,12 +109,12 @@ rerun:
 
 	// Now check if the enable inputs have been affected by the resolution.
       bool enable_changed = false;
-      for (vvp_island_branch*cur = branches_ ; cur ; cur = cur->next_branch) {
+      за (vvp_island_branch*cur = branches_ ; cur ; cur = cur->next_branch) {
 	    vvp_island_branch_tran*tmp = dynamic_cast<vvp_island_branch_tran*>(cur);
 	    assert(tmp);
 	    enable_changed |= tmp->rerun_test_enabled();
       }
-      if (enable_changed) goto rerun;
+      ако (enable_changed) goto rerun;
 }
 
 static void count_drivers_(vvp_branch_ptr_t cur, bool other_side_visited,
@@ -134,8 +134,8 @@ static void count_drivers_(vvp_branch_ptr_t cur, bool other_side_visited,
               // If this branch represents a tran gate, we count the
               // value on the other side of the tran (providing it is
               // enabled) as a single driver.
-            if (tmp->width == 0) {
-                  if (tmp->state == tran_enabled) {
+            ако (tmp->width == 0) {
+                  ако (tmp->state == tran_enabled) {
                         net = idx.port() ? idx.ptr()->a : idx.ptr()->b;
                         bit = island_get_sent_value(net).value(bit_idx);
                         update_driver_counts(bit.value(), counts);
@@ -145,13 +145,13 @@ static void count_drivers_(vvp_branch_ptr_t cur, bool other_side_visited,
 
               // If we get here, this branch is a part select. If we've
               // just come from the other end of the branch, we're done.
-            if ((idx == cur) && other_side_visited)
+            ако ((idx == cur) && other_side_visited)
                   continue;
 
               // If this is the narrow end of the part select, the other
               // end must include the bit we are interested in. Follow
               // the branch to collect any drivers on the other side.
-            if (idx.port() == 1) {
+            ако (idx.port() == 1) {
                   vvp_branch_ptr_t a_side(tmp, 0);
                   count_drivers_(a_side, true, tmp->offset + bit_idx, counts);
                   continue;
@@ -161,12 +161,12 @@ static void count_drivers_(vvp_branch_ptr_t cur, bool other_side_visited,
               // select. If the bit we are interested in is within the
               // selected part, follow the branch to collect any drivers
               // on the other side.
-            if ((bit_idx >= tmp->offset) && (bit_idx < tmp->offset+tmp->part)) {
+            ако ((bit_idx >= tmp->offset) && (bit_idx < tmp->offset+tmp->part)) {
                   vvp_branch_ptr_t b_side(tmp, 1);
                   count_drivers_(b_side, true, bit_idx - tmp->offset, counts);
                   continue;
             }
-      } while ((idx = next(idx)) != cur);
+      } док ((idx = next(idx)) != cur);
 }
 
 void vvp_island_tran::count_drivers(vvp_island_port*port, unsigned bit_idx,
@@ -176,12 +176,12 @@ void vvp_island_tran::count_drivers(vvp_island_port*port, unsigned bit_idx,
         // port. Unfortunately there's no quick way to do this.
       vvp_island_branch*branch = branches_;
       unsigned side = 0;
-      while (branch) {
-            if (branch->a->fun == port) {
+      док (branch) {
+            ако (branch->a->fun == port) {
                   side = 0;
                   break;
             }
-            if (branch->b->fun == port) {
+            ако (branch->b->fun == port) {
                   side = 1;
                   break;
             }
@@ -200,9 +200,9 @@ void vvp_island_branch_tran::run_test_enabled()
 
 	// If there is no ep port (no "enabled" input) then this is a
 	// tran branch. Assume it is always enabled.
-      if (ep == 0) {
+      ако (ep == 0) {
 	    state = tran_enabled;
-	    return;
+	    врати;
       }
 
 	// Get the input that is driving this enable.
@@ -221,11 +221,11 @@ void vvp_island_branch_tran::run_test_enabled()
 	// If the outvalue is nil, then we know that this port is a
 	// .import after all, so just read the invalue.
       vvp_bit4_t enable_val;
-      if (ep->outvalue.size() != 0)
+      ако (ep->outvalue.size() != 0)
 	    enable_val = ep->outvalue.value(0).value();
-      else if (ep->invalue.size() == 0)
+      инако ако (ep->invalue.size() == 0)
 	    enable_val = BIT4_Z;
-      else
+      инако
 	    enable_val = ep->invalue.value(0).value();
 
       switch (enable_val) {
@@ -245,14 +245,14 @@ bool vvp_island_branch_tran::rerun_test_enabled()
 {
       const vvp_island_port*ep = en? dynamic_cast<vvp_island_port*> (en->fun) : NULL;
 
-      if (ep == 0)
-	    return false;
+      ако (ep == 0)
+	    врати false;
 
 	// We are only looking for changes resulting from running the island
 	// resolution. If the outvalue is nil, we know that the enable port
 	// is an .import, so won't be affected.
-      if (ep->outvalue.size() == 0)
-	    return false;
+      ако (ep->outvalue.size() == 0)
+	    врати false;
 
       vvp_bit4_t enable_val = ep->outvalue.value(0).value();
 
@@ -270,7 +270,7 @@ bool vvp_island_branch_tran::rerun_test_enabled()
 	    break;
       }
 
-      return state != old_state;
+      врати state != old_state;
 }
 
 // The IEEE standard does not specify the behaviour when a tranif control
@@ -283,13 +283,13 @@ inline vvp_vector8_t resolve_ambiguous(const vvp_vector8_t&a,
       assert(a.size() == b.size());
       vvp_vector8_t out (a.size());
 
-      for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
+      за (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
 	    vvp_scalar_t a_bit = a.value(idx);
 	    vvp_scalar_t b_bit = b.value(idx);
             b_bit = vvp_scalar_t(b_bit.value(),
                                  str_map[b_bit.strength0()],
                                  str_map[b_bit.strength1()]);
-	    if (state == tran_unknown) {
+	    ако (state == tran_unknown) {
 		  switch (b_bit.value()) {
 		      case BIT4_0:
 			b_bit = vvp_scalar_t(BIT4_X, b_bit.strength0(), 0);
@@ -303,7 +303,7 @@ inline vvp_vector8_t resolve_ambiguous(const vvp_vector8_t&a,
 	    }
 	    out.set_bit(idx, resolve(a_bit, b_bit));
       }
-      return out;
+      врати out;
 }
 
 static void push_value_through_branches(const vvp_vector8_t&val,
@@ -315,8 +315,8 @@ static void push_value_through_branch(const vvp_vector8_t&val,
       vvp_island_branch_tran*branch = BRANCH_TRAN(cur.ptr());
 
         // If the branch is disabled, skip.
-      if (branch->state == tran_disabled)
-            return;
+      ако (branch->state == tran_disabled)
+            врати;
 
       unsigned src_ab = cur.port();
       unsigned dst_ab = src_ab^1;
@@ -328,27 +328,27 @@ static void push_value_through_branch(const vvp_vector8_t&val,
 
         // If the port on the other side has not yet been visited,
         // get its input value.
-      if (dst_port->value.size() == 0)
+      ако (dst_port->value.size() == 0)
             dst_port->value = island_get_value(dst_net);
 
         // If we don't yet have an initial value for the port, skip.
-      if (dst_port->value.size() == 0)
-            return;
+      ако (dst_port->value.size() == 0)
+            врати;
 
         // Now resolve the pushed value with whatever values we have
         // previously collected (and resolved) for the port.
-      if (branch->width == 0) {
+      ако (branch->width == 0) {
               // There are no part selects.
             dst_port->value = resolve_ambiguous(dst_port->value, val, branch->state,
                                                 vvp_switch_strength_map[branch->resistive]);
 
-      } else if (dst_ab == 1) {
+      } инако ако (dst_ab == 1) {
               // The other side is a strict subset (part select)
               // of this side.
             vvp_vector8_t tmp = val.subvalue(branch->offset, branch->part);
             dst_port->value = resolve(dst_port->value, tmp);
 
-      } else {
+      } инако {
               // The other side is a superset of this side.
             vvp_vector8_t tmp = part_expand(val, branch->width, branch->offset);
             dst_port->value = resolve(dst_port->value, tmp);
@@ -356,7 +356,7 @@ static void push_value_through_branch(const vvp_vector8_t&val,
 
         // If the resolved value for the port has changed, push the new
         // value back into the network.
-      if (! dst_port->value.eeq(old_val)) {
+      ако (! dst_port->value.eeq(old_val)) {
             list<vvp_branch_ptr_t> connections;
 
 	    vvp_branch_ptr_t dst_side(branch, dst_ab);
@@ -369,7 +369,7 @@ static void push_value_through_branch(const vvp_vector8_t&val,
 static void push_value_through_branches(const vvp_vector8_t&val,
 					const list<vvp_branch_ptr_t>&connections)
 {
-      for (list<vvp_branch_ptr_t>::const_iterator idx = connections.cbegin()
+      за (list<vvp_branch_ptr_t>::const_iterator idx = connections.cbegin()
 		 ; idx != connections.cend() ; ++ idx ) {
 
             push_value_through_branch(val, *idx);
@@ -389,12 +389,12 @@ void vvp_island_branch_tran::run_resolution()
 	// If the A side port hasn't already been visited, then push
         // its input value through all the branches connected to it.
       port = dynamic_cast<vvp_island_port*>(a->fun);
-      if (port->value.size() == 0) {
+      ако (port->value.size() == 0) {
 	    vvp_branch_ptr_t a_side(this, 0);
 	    island_collect_node(connections, a_side);
 
 	    port->value = island_get_value(a);
-            if (port->value.size() != 0)
+            ако (port->value.size() != 0)
 	          push_value_through_branches(port->value, connections);
 
             connections.clear();
@@ -404,12 +404,12 @@ void vvp_island_branch_tran::run_resolution()
         // is enabled, the B side port will have already been visited
         // when we resolved the A side port.
       port = dynamic_cast<vvp_island_port*>(b->fun);
-      if (port->value.size() == 0) {
+      ако (port->value.size() == 0) {
 	    vvp_branch_ptr_t b_side(this, 1);
 	    island_collect_node(connections, b_side);
 
 	    port->value = island_get_value(b);
-	    if (port->value.size() != 0)
+	    ако (port->value.size() != 0)
 	          push_value_through_branches(port->value, connections);
 
             connections.clear();
@@ -423,14 +423,14 @@ void vvp_island_branch_tran::run_output()
 	// If the A side port hasn't already been updated, send the
         // resolved value to the output.
       port = dynamic_cast<vvp_island_port*>(a->fun);
-      if (port->value.size() != 0) {
+      ако (port->value.size() != 0) {
 	    island_send_value(a, port->value);
 	    port->value = vvp_vector8_t::nil;
       }
 
 	// Do the same for the B side port.
       port = dynamic_cast<vvp_island_port*>(b->fun);
-      if (port->value.size() != 0) {
+      ако (port->value.size() != 0) {
 	    island_send_value(b, port->value);
 	    port->value = vvp_vector8_t::nil;
       }
@@ -442,7 +442,7 @@ void compile_island_tran(char*label)
       compile_island_base(label, use_island);
 }
 
-void compile_island_tranif(int sense, char*island, char*pa, char*pb, char*pe,
+void compile_island_tranif(цео sense, char*island, char*pa, char*pb, char*pe,
                            bool resistive)
 {
       vvp_island*use_island = compile_find_island(island);
@@ -451,7 +451,7 @@ void compile_island_tranif(int sense, char*island, char*pa, char*pb, char*pe,
 
       vvp_net_t*en = NULL;
 
-      if (pe) {
+      ако (pe) {
 	    en = use_island->find_port(pe);
 	    assert(en);
 	    free(pe);

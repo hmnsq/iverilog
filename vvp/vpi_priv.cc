@@ -43,50 +43,50 @@ FILE*vpi_trace = 0;
 static s_vpi_vlog_info  vpi_vlog_info;
 static s_vpi_error_info vpip_last_error = { 0, 0, 0, 0, 0, 0, 0 };
 
-const char* direction_as_string(int dir)
+const char* direction_as_string(цео dir)
 {
       switch (dir) {
 	  case vpiInput:
-	    return "input";
+	    врати "input";
 	  case vpiOutput:
-	    return "output";
+	    врати "output";
 	  case vpiInout:
-	    return "inout";
+	    врати "inout";
 	  case vpiMixedIO:
-	    return "mixed io";
+	    врати "mixed io";
 	  case vpiNoDirection:
-	    return "no direction";
+	    врати "no direction";
 	  default:
-	    return "INVALID-DIRECTION";
+	    врати "INVALID-DIRECTION";
       }
 }
 
 __vpiHandle::~__vpiHandle()
 { }
 
-int __vpiHandle::vpi_get(int)
-{ return vpiUndefined; }
+цео __vpiHandle::vpi_get(цео)
+{ врати vpiUndefined; }
 
-int64_t __vpiHandle::vpi_get64(int code)
-{ return (code == _vpiNexusId) ? 0 : vpiUndefined; }
+int64_t __vpiHandle::vpi_get64(цео code)
+{ врати (code == _vpiNexusId) ? 0 : vpiUndefined; }
 
-char* __vpiHandle::vpi_get_str(int)
-{ return 0; }
+char* __vpiHandle::vpi_get_str(цео)
+{ врати 0; }
 
 void __vpiHandle::vpi_get_value(p_vpi_value)
 { }
 
-vpiHandle __vpiHandle::vpi_put_value(p_vpi_value, int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_put_value(p_vpi_value, цео)
+{ врати 0; }
 
-vpiHandle __vpiHandle::vpi_handle(int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_handle(цео)
+{ врати 0; }
 
-vpiHandle __vpiHandle::vpi_iterate(int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_iterate(цео)
+{ врати 0; }
 
-vpiHandle __vpiHandle::vpi_index(int)
-{ return 0; }
+vpiHandle __vpiHandle::vpi_index(цео)
+{ врати 0; }
 
 void __vpiHandle::vpi_get_delays(p_vpi_delay)
 { }
@@ -113,10 +113,10 @@ __vpiBaseVar::~__vpiBaseVar()
  * objects will override the free_object_fun method to return an
  * appropriately effective function.
  */
-static int suppress_free(vpiHandle)
-{ return 1; }
+static цео suppress_free(vpiHandle)
+{ врати 1; }
 __vpiHandle::free_object_fun_t __vpiHandle::free_object_fun(void)
-{ return &suppress_free; }
+{ врати &suppress_free; }
 
 /*
  * The vpip_string function creates a constant string from the pass
@@ -130,34 +130,34 @@ struct vpip_string_chunk {
 
 unsigned vpip_size(const __vpiSignal *sig)
 {
-      return abs(sig->msb.get_value() - sig->lsb.get_value()) + 1;
+      врати abs(sig->msb.get_value() - sig->lsb.get_value()) + 1;
 }
 
 __vpiScope* vpip_scope(__vpiSignal*sig)
 {
-      if (sig->is_netarray)
-	    return static_cast<__vpiScope*>(vpi_handle(vpiScope,
+      ако (sig->is_netarray)
+	    врати static_cast<__vpiScope*>(vpi_handle(vpiScope,
 	                                               sig->within.parent));
-      else
-	    return sig->within.scope;
+      инако
+	    врати sig->within.scope;
 }
 
 __vpiScope* vpip_scope(__vpiRealVar*sig)
 {
-      if (sig->is_netarray)
-	    return static_cast<__vpiScope*>(vpi_handle(vpiScope,
+      ако (sig->is_netarray)
+	    врати static_cast<__vpiScope*>(vpi_handle(vpiScope,
 	                                               sig->within.parent));
-      else
-	    return sig->within.scope;
+      инако
+	    врати sig->within.scope;
 }
 
 vpiHandle vpip_module(__vpiScope*scope)
 {
-      while(scope && scope->get_type_code() != vpiModule) {
+      док(scope && scope->get_type_code() != vpiModule) {
 	    scope = scope->scope;
       }
       assert(scope);
-      return scope;
+      врати scope;
 }
 
 const char *vpip_string(const char*str)
@@ -169,7 +169,7 @@ const char *vpip_string(const char*str)
       unsigned len = strlen(str);
       assert( (len+1) <= sizeof chunk_list->data );
 
-      if ( (len+1) > (sizeof chunk_list->data - chunk_fill) ) {
+      ако ( (len+1) > (sizeof chunk_list->data - chunk_fill) ) {
 	    vpip_string_chunk*tmp = new vpip_string_chunk;
 	    tmp->next = chunk_list;
 	    chunk_list = tmp;
@@ -180,18 +180,18 @@ const char *vpip_string(const char*str)
       chunk_fill += len + 1;
 
       strcpy(res, str);
-      return res;
+      врати res;
 }
 
 static unsigned hash_string(const char*text)
 {
       unsigned h = 0;
 
-      while (*text) {
+      док (*text) {
 	    h = (h << 4) ^ (h >> 28) ^ (unsigned)*text;
 	    text += 1;
       }
-      return h;
+      врати h;
 }
 
 const char* vpip_name_string(const char*text)
@@ -203,9 +203,9 @@ const char* vpip_name_string(const char*text)
 
 	/* If we easily find the string in the hash table, then return
 	   that and be done. */
-      if (hash_table[hash_value]
+      ако (hash_table[hash_value]
 	  && (strcmp(hash_table[hash_value], text) == 0)) {
-	    return hash_table[hash_value];
+	    врати hash_table[hash_value];
       }
 
 	/* The existing hash entry is not a match. Replace it with the
@@ -214,13 +214,13 @@ const char* vpip_name_string(const char*text)
       const char*res = vpip_string(text);
       hash_table[hash_value] = res;
 
-      return res;
+      врати res;
 }
 
 PLI_INT32 vpi_chk_error(p_vpi_error_info info)
 {
-      if (vpip_last_error.state == 0)
-	    return 0;
+      ако (vpip_last_error.state == 0)
+	    врати 0;
 
       info->state = vpip_last_error.state;
       info->level = vpip_last_error.level;
@@ -230,7 +230,7 @@ PLI_INT32 vpi_chk_error(p_vpi_error_info info)
       info->file = 0;
       info->line = 0;
 
-      return info->level;
+      врати info->level;
 }
 
 PLI_INT32 vpi_compare_objects(vpiHandle obj1, vpiHandle obj2)
@@ -239,8 +239,8 @@ PLI_INT32 vpi_compare_objects(vpiHandle obj1, vpiHandle obj2)
       assert(obj2);
 
 	// Does this actually work for all cases?
-      if (obj1 != obj2) return 0;
-      else return 1;
+      ако (obj1 != obj2) врати 0;
+      инако врати 1;
 }
 
 /*
@@ -252,7 +252,7 @@ PLI_INT32 vpi_compare_objects(vpiHandle obj1, vpiHandle obj2)
 void vpi_get_systf_info(vpiHandle ref, p_vpi_systf_data data)
 {
       struct __vpiUserSystf* rfp = dynamic_cast<__vpiUserSystf*>(ref);
-      if (rfp == 0) {
+      ако (rfp == 0) {
 	    struct __vpiSysTaskCall*call = dynamic_cast<__vpiSysTaskCall*>(ref);
 	    assert(call);
 	    rfp = call->defn;
@@ -278,9 +278,9 @@ struct __vpiSysTaskCall*vpip_cur_task = 0;
 
 PLI_INT32 vpi_free_object(vpiHandle ref)
 {
-      int rtn;
+      цео rtn;
 
-      if (vpi_trace) {
+      ако (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_free_object(%p)", ref);
 	    fflush(vpi_trace);
       }
@@ -289,10 +289,10 @@ PLI_INT32 vpi_free_object(vpiHandle ref)
       __vpiHandle::free_object_fun_t fun = ref->free_object_fun();
       rtn = fun (ref);
 
-      if (vpi_trace)
+      ако (vpi_trace)
 	    fprintf(vpi_trace, " --> %d\n", rtn);
 
-      return rtn;
+      врати rtn;
 }
 
 PLI_INT32 vpi_release_handle(vpiHandle ref)
@@ -300,21 +300,21 @@ PLI_INT32 vpi_release_handle(vpiHandle ref)
 	// Since SystemVerilog vpi_free_object() has been
 	// renamed vpi_release_handle(), and thus
 	// vpi_free_object() has been deprecated.
-      return vpi_free_object(ref);
+      врати vpi_free_object(ref);
 }
 
-static int vpip_get_global(int property)
+static цео vpip_get_global(цео property)
 {
       switch (property) {
 
 	  case vpiTimeUnit:
 	  case vpiTimePrecision:
-	    return vpip_get_time_precision();
+	    врати vpip_get_time_precision();
 
 	  default:
 	    fprintf(stderr, "vpi error: bad global property: %d\n", property);
 	    assert(0);
-	    return vpiUndefined;
+	    врати vpiUndefined;
       }
 }
 
@@ -323,23 +323,23 @@ static const char* vpi_property_str(PLI_INT32 code)
       static char buf[32];
       switch (code) {
 	  case vpiConstType:
-	    return "vpiConstType";
+	    врати "vpiConstType";
 	  case vpiName:
-	    return "vpiName";
+	    врати "vpiName";
 	  case vpiFullName:
-	    return "vpiFullName";
+	    врати "vpiFullName";
 	  case vpiTimeUnit:
-	    return "vpiTimeUnit";
+	    врати "vpiTimeUnit";
 	  case vpiTimePrecision:
-	    return "vpiTimePrecision";
+	    врати "vpiTimePrecision";
           case vpiSize:
-	    return "vpiSize";
+	    врати "vpiSize";
           case _vpiNexusId:
-	    return "_vpiNexusId";
+	    врати "_vpiNexusId";
 	  default:
-	    snprintf(buf, sizeof(buf), "%d", (int)code);
+	    snprintf(buf, sizeof(buf), "%d", (цео)code);
       }
-      return buf;
+      врати buf;
 }
 
 const char* vpi_type_as_string(PLI_INT32 code)
@@ -347,176 +347,176 @@ const char* vpi_type_as_string(PLI_INT32 code)
       static char buf[32];
       switch (code) {
 	  case vpiArrayType:
-	    return "vpiArrayType";
+	    врати "vpiArrayType";
 	  case vpiBitVar:
-	    return "vpiBitVar";
+	    врати "vpiBitVar";
 	  case vpiByteVar:
-	    return "vpiByteVar";
+	    врати "vpiByteVar";
 	  case vpiClassVar:
-	    return "vpiClassVar";
+	    врати "vpiClassVar";
 	  case vpiConstant:
-	    return "vpiConstant";
+	    врати "vpiConstant";
 	  case vpiEnumTypespec:
-	    return "vpiEnumTypespec";
+	    врати "vpiEnumTypespec";
 	  case vpiFunction:
-	    return "vpiFunction";
+	    врати "vpiFunction";
 	  case vpiGenScope:
-	    return "vpiGenScope";
+	    врати "vpiGenScope";
 	  case vpiIntVar:
-	    return "vpiIntVar";
+	    врати "vpiIntVar";
 	  case vpiIntegerVar:
-	    return "vpiIntegerVar";
+	    врати "vpiIntegerVar";
 	  case vpiIterator:
-	    return "vpiIterator";
+	    врати "vpiIterator";
 	  case vpiLongIntVar:
-	    return "vpiLongIntVar";
+	    врати "vpiLongIntVar";
 	  case vpiMemory:
-	    return "vpiMemory";
+	    врати "vpiMemory";
 	  case vpiMemoryWord:
-	    return "vpiMemoryWord";
+	    врати "vpiMemoryWord";
 	  case vpiModule:
-	    return "vpiModule";
+	    врати "vpiModule";
 	  case vpiNamedBegin:
-	    return "vpiNamedBegin";
+	    врати "vpiNamedBegin";
 	  case vpiNamedEvent:
-	    return "vpiNamedEvent";
+	    врати "vpiNamedEvent";
 	  case vpiNamedFork:
-	    return "vpiNamedFork";
+	    врати "vpiNamedFork";
 	  case vpiPackage:
-	    return "vpiPackage";
+	    врати "vpiPackage";
 	  case vpiPathTerm:
-	    return "vpiPathTerm";
+	    врати "vpiPathTerm";
 	  case vpiPort:
-	    return "vpiPort";
+	    врати "vpiPort";
 	  case vpiNet:
-	    return "vpiNet";
+	    врати "vpiNet";
 	  case vpiNetArray:
-	    return "vpiNetArray";
+	    врати "vpiNetArray";
 	  case vpiNetBit:
-	    return "vpiNetBit";
+	    врати "vpiNetBit";
 	  case vpiParameter:
-	    return "vpiParameter";
+	    врати "vpiParameter";
 	  case vpiPartSelect:
-	    return "vpiPartSelect";
+	    врати "vpiPartSelect";
 	  case vpiRealVar:
-	    return "vpiRealVar";
+	    врати "vpiRealVar";
 	  case vpiReg:
-	    return "vpiReg";
+	    врати "vpiReg";
 	  case vpiRegBit:
-	    return "vpiRegBit";
+	    врати "vpiRegBit";
 	  case vpiShortIntVar:
-	    return "vpiShortIntVar";
+	    врати "vpiShortIntVar";
 	  case vpiStringVar:
-	    return "vpiStringVar";
+	    врати "vpiStringVar";
 	  case vpiSysFuncCall:
-	    return "vpiSysFuncCall";
+	    врати "vpiSysFuncCall";
 	  case vpiSysTaskCall:
-	    return "vpiSysTaskCall";
+	    врати "vpiSysTaskCall";
 	  case vpiTask:
-	    return "vpiTask";
+	    врати "vpiTask";
 	  case vpiTimeVar:
-	    return "vpiTimeVar";
+	    врати "vpiTimeVar";
 	  case vpiUserSystf:
-	    return "vpiUserSystf";
+	    врати "vpiUserSystf";
 	  default:
-	    snprintf(buf, sizeof(buf), "%d", (int)code);
+	    snprintf(buf, sizeof(buf), "%d", (цео)code);
       }
-      return buf;
+      врати buf;
 }
 
-PLI_INT32 vpi_get(int property, vpiHandle ref)
+PLI_INT32 vpi_get(цео property, vpiHandle ref)
 {
 	/* We don't care what the ref is there is only one delay selection. */
-      if (property == _vpiDelaySelection) return vpip_delay_selection;
+      ако (property == _vpiDelaySelection) врати vpip_delay_selection;
 
-      if (ref == 0)
-	    return vpip_get_global(property);
+      ако (ref == 0)
+	    врати vpip_get_global(property);
 
-      if (property == vpiType) {
-	    if (vpi_trace) {
+      ако (property == vpiType) {
+	    ако (vpi_trace) {
 		  fprintf(vpi_trace, "vpi_get(vpiType, %p) --> %s\n",
 			  ref, vpi_type_as_string(ref->get_type_code()));
 	    }
 
-	    if (ref->get_type_code() == vpiMemory && is_net_array(ref))
-		  return vpiNetArray;
-	    else
-		  return ref->get_type_code();
+	    ако (ref->get_type_code() == vpiMemory && is_net_array(ref))
+		  врати vpiNetArray;
+	    инако
+		  врати ref->get_type_code();
       }
 
-      int res = ref->vpi_get(property);
+      цео res = ref->vpi_get(property);
 
-      if (vpi_trace) {
+      ако (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_get(%s, %p) --> %d\n",
 		    vpi_property_str(property), ref, res);
       }
 
-      return res;
+      врати res;
 }
 
-PLI_INT64 vpi_get64(int property, vpiHandle ref)
+PLI_INT64 vpi_get64(цео property, vpiHandle ref)
 {
 	// For now we only support getting the nexus id.
-      if ((ref == 0) || (property != _vpiNexusId)) {
+      ако ((ref == 0) || (property != _vpiNexusId)) {
 	    fprintf(vpi_trace, "vpi_get64(%s, %p) is not currently supported.\n",
 		    vpi_property_str(property), ref);
-	    return vpiUndefined;
+	    врати vpiUndefined;
       }
 
       int64_t res = ref->vpi_get64(property);
 
-      if (vpi_trace) {
+      ако (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_get64(%s, %p) --> %" PRId64 "\n",
 		    vpi_property_str(property), ref, res);
       }
 
-      return res;
+      врати res;
 }
 
 char* vpi_get_str(PLI_INT32 property, vpiHandle ref)
 {
 	/* We don't care what the ref is there is only one delay selection. */
-      if (property == _vpiDelaySelection) {
+      ако (property == _vpiDelaySelection) {
 	    switch (vpip_delay_selection) {
 		case _vpiDelaySelMinimum:
-		  return simple_set_rbuf_str("MINIMUM");
+		  врати simple_set_rbuf_str("MINIMUM");
 		case _vpiDelaySelTypical:
-		  return simple_set_rbuf_str("TYPICAL");
+		  врати simple_set_rbuf_str("TYPICAL");
 		case _vpiDelaySelMaximum:
-		  return simple_set_rbuf_str("MAXIMUM");
+		  врати simple_set_rbuf_str("MAXIMUM");
 		default:
 		  assert(0);
 	    }
       }
 
-      if (ref == 0) {
+      ако (ref == 0) {
 	    fprintf(stderr, "vpi error: vpi_get_str(%s, 0) called "
 		    "with null vpiHandle.\n", vpi_property_str(property));
-	    return 0;
+	    врати 0;
       }
 
-      if (property == vpiType) {
-	    if (vpi_trace) {
+      ако (property == vpiType) {
+	    ако (vpi_trace) {
 		  fprintf(vpi_trace, "vpi_get(vpiType, %p) --> %s\n",
 			  ref, vpi_type_as_string(ref->get_type_code()));
 	    }
 
             PLI_INT32 type;
-	    if (ref->get_type_code() == vpiMemory && is_net_array(ref))
+	    ако (ref->get_type_code() == vpiMemory && is_net_array(ref))
 		  type = vpiNetArray;
-	    else
+	    инако
 		  type = ref->get_type_code();
-	    return (char *)vpi_type_as_string(type);
+	    врати (char *)vpi_type_as_string(type);
       }
 
       char*res = ref->vpi_get_str(property);
 
-      if (vpi_trace) {
+      ако (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_get_str(%s, %p) --> %s\n",
 		    vpi_property_str(property), ref, res? res : "<NULL>");
       }
 
-      return res;
+      врати res;
 }
 
 __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj)
@@ -529,10 +529,10 @@ __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj)
       switch (obj->get_type_code()) {
 	  case vpiSysTaskCall:
 	    task = dynamic_cast<__vpiSysTaskCall*>(obj);
-	    return task->scope;
+	    врати task->scope;
 
 	  case vpiModule:
-	    return dynamic_cast<__vpiScope*>(obj);
+	    врати dynamic_cast<__vpiScope*>(obj);
 
 	  case vpiNet:
 	  case vpiReg:
@@ -543,61 +543,61 @@ __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj)
 	  case vpiIntVar:
 	  case vpiLongIntVar:
 	    signal = dynamic_cast<__vpiSignal*>(obj);
-	    return vpip_scope(signal);
+	    врати vpip_scope(signal);
 
 	  case vpiRealVar:
 	    real = dynamic_cast<__vpiRealVar*>(obj);
-	    return vpip_scope(real);
+	    врати vpip_scope(real);
 
 	  case vpiNamedEvent:
 	    event = dynamic_cast<__vpiNamedEvent*>(obj);
-	    return event->get_scope();
+	    врати event->get_scope();
 
 	  case vpiMemory:
 	  case vpiMemoryWord:
 	  case vpiPartSelect:
-	    return dynamic_cast<__vpiScope*>(obj->vpi_handle(vpiScope));
+	    врати dynamic_cast<__vpiScope*>(obj->vpi_handle(vpiScope));
 
 	  default:
 	    fprintf(stderr, "ERROR: vpip_scope_from_handle called with "
 		    "object handle type=%d\n", obj->get_type_code());
 	    assert(0);
-	    return 0;
+	    врати 0;
       }
 }
 
-int vpip_time_units_from_handle(vpiHandle obj)
+цео vpip_time_units_from_handle(vpiHandle obj)
 {
-      if (obj == 0)
-	    return vpip_get_time_precision();
+      ако (obj == 0)
+	    врати vpip_get_time_precision();
 
       const __vpiScope*scope = vpip_timescale_scope_from_handle(obj);
-      if (scope == 0)
-	    return vpip_get_time_precision();
+      ако (scope == 0)
+	    врати vpip_get_time_precision();
 
-      return scope->time_units;
+      врати scope->time_units;
 }
 
-int vpip_time_precision_from_handle(vpiHandle obj)
+цео vpip_time_precision_from_handle(vpiHandle obj)
 {
-      if (obj == 0)
-	    return vpip_get_time_precision();
+      ако (obj == 0)
+	    врати vpip_get_time_precision();
 
       const __vpiScope*scope = vpip_timescale_scope_from_handle(obj);
-      if (scope == 0)
-	    return vpip_get_time_precision();
+      ако (scope == 0)
+	    врати vpip_get_time_precision();
 
-      return scope->time_precision;
+      врати scope->time_precision;
 }
 
 double vpip_scaled_time_from_handle(vvp_time64_t time, vpiHandle obj)
 {
-      int scale = vpip_get_time_precision() -
+      цео scale = vpip_get_time_precision() -
 	          vpip_time_units_from_handle(obj);
-      if (scale >= 0)
-	    return (double)time * pow(10.0, scale);
-      else
-	    return (double)time / pow(10.0, -scale);
+      ако (scale >= 0)
+	    врати (double)time * pow(10.0, scale);
+      инако
+	    врати (double)time / pow(10.0, -scale);
 }
 
 void vpi_get_time(vpiHandle obj, s_vpi_time*vp)
@@ -619,7 +619,7 @@ void vpi_get_time(vpiHandle obj, s_vpi_time*vp)
 	    break;
 
           default:
-            fprintf(stderr, "vpi_get_time: unknown type: %d\n", (int)vp->type);
+            fprintf(stderr, "vpi_get_time: unknown type: %d\n", (цео)vp->type);
             assert(0);
 	    break;
       }
@@ -627,15 +627,15 @@ void vpi_get_time(vpiHandle obj, s_vpi_time*vp)
 
 PLI_INT32 vpi_get_vlog_info(p_vpi_vlog_info vlog_info_p)
 {
-    if (vlog_info_p != 0) {
+    ако (vlog_info_p != 0) {
 	  *vlog_info_p = vpi_vlog_info;
-	  return 1;
-    } else {
-	  return 0;
+	  врати 1;
+    } инако {
+	  врати 0;
     }
 }
 
-void vpi_set_vlog_info(int argc, char** argv)
+void vpi_set_vlog_info(цео argc, char** argv)
 {
     static char icarus_product[] = "Icarus Verilog";
     static char icarus_version[] = VERSION;
@@ -645,12 +645,12 @@ void vpi_set_vlog_info(int argc, char** argv)
     vpi_vlog_info.argv    = argv;
 
     static char trace_buf[1024];
-    if (const char*path = getenv("VPI_TRACE"))  {
-	  if (!strcmp(path,"-"))
+    ако (const char*path = getenv("VPI_TRACE"))  {
+	  ако (!strcmp(path,"-"))
 		vpi_trace = stdout;
-	  else {
+	  инако {
 		vpi_trace = fopen(path, "w");
-		if (!vpi_trace) {
+		ако (!vpi_trace) {
 		      perror(path);
 		      exit(1);
 		}
@@ -668,34 +668,34 @@ static void vec4_get_value_string(const vvp_vector4_t&word_val, unsigned width,
       char*rbuf = static_cast<char *>(need_result_buf(nchar + 1, RBUF_VAL));
       char*cp = rbuf;
 
-      if (tail > 0) {
+      ако (tail > 0) {
 	    char char_val = 0;
-	    for (unsigned idx = width-tail; idx < width ;  idx += 1) {
+	    за (unsigned idx = width-tail; idx < width ;  idx += 1) {
 		  vvp_bit4_t val = word_val.value(idx);
-		  if (val == BIT4_1)
+		  ако (val == BIT4_1)
 			char_val |= 1 << idx;
 	    }
 
-	    if (char_val != 0)
+	    ако (char_val != 0)
 		  *cp++ = char_val;
-	    else if (cp != rbuf)
+	    инако ако (cp != rbuf)
 		  *cp++ = ' ';
       }
 
-      for (unsigned idx = 0 ;  idx < nchar ;  idx += 1) {
+      за (unsigned idx = 0 ;  idx < nchar ;  idx += 1) {
 	    unsigned bit = (nchar - idx - 1) * 8;
 	    char char_val = 0;
-	    for (unsigned bdx = 0 ;  bdx < 8 ;  bdx += 1) {
+	    за (unsigned bdx = 0 ;  bdx < 8 ;  bdx += 1) {
 		  vvp_bit4_t val = word_val.value(bit+bdx);
-		  if (val == BIT4_1)
+		  ако (val == BIT4_1)
 			char_val |= 1 << bdx;
 	    }
 	    // Ignore leading null-bytes and replace other null-bytes with space.
 	    // The LRM is not entirely clear on how null bytes should be handled.
 	    // This is the implementation chosen for iverilog.
-	    if (char_val != 0)
+	    ако (char_val != 0)
 		  *cp++ = char_val;
-	    else if (cp != rbuf)
+	    инако ако (cp != rbuf)
 		  *cp++ = ' ';
       }
 
@@ -717,7 +717,7 @@ void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
       switch (vp->format) {
 	  default:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting vector values.\n", (int)vp->format);
+	                    "getting vector values.\n", (цео)vp->format);
 	    assert(0);
 
 	  case vpiSuppressVal:
@@ -725,7 +725,7 @@ void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
 
 	  case vpiBinStrVal:
 	    rbuf = static_cast<char *>(need_result_buf(width+1, RBUF_VAL));
-	    for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
+	    за (unsigned idx = 0 ;  idx < width ;  idx += 1) {
 		  vvp_bit4_t bit = word_val.value(idx);
 		  rbuf[width-idx-1] = vvp_bit4_to_ascii(bit);
 	    }
@@ -780,14 +780,14 @@ void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
 	  case vpiIntVal: {
 		long val = 0;
 		vvp_bit4_t pad = BIT4_0;
-		if (signed_flag && word_val.size() > 0)
+		ако (signed_flag && word_val.size() > 0)
 		      pad = word_val.value(word_val.size()-1);
 
-		for (unsigned idx = 0 ; idx < 8*sizeof(val) ;  idx += 1) {
+		за (unsigned idx = 0 ; idx < 8*sizeof(val) ;  idx += 1) {
 		      vvp_bit4_t val4 = pad;
-		      if (idx < word_val.size())
+		      ако (idx < word_val.size())
 			    val4 = word_val.value(idx);
-		      if (val4 == BIT4_1)
+		      ако (val4 == BIT4_1)
 			    val |= 1L << idx;
 		}
 
@@ -807,7 +807,7 @@ void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
 		vp->value.vector = op;
 
 		op->aval = op->bval = 0;
-		for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
+		за (unsigned idx = 0 ;  idx < width ;  idx += 1) {
 		      switch (word_val.value(idx)) {
 			  case BIT4_0:
 			    op->aval &= ~(1 << idx % 32);
@@ -826,7 +826,7 @@ void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
 			    op->bval |=  (1 << idx % 32);
 			    break;
 		      }
-		      if (!((idx+1) % 32) && (idx+1 < width)) {
+		      ако (!((idx+1) % 32) && (idx+1 < width)) {
 			    op++;
 			    op->aval = op->bval = 0;
 		      }
@@ -850,7 +850,7 @@ void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
       switch (vp->format) {
 	  default:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting vector2 values.\n", (int)vp->format);
+	                    "getting vector2 values.\n", (цео)vp->format);
 	    assert(0);
 
 	  case vpiSuppressVal:
@@ -871,15 +871,15 @@ void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
 		vp->value.vector = op;
 
 		op->aval = op->bval = 0;
-		for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
-		      if (word_val.value(idx)) {
+		за (unsigned idx = 0 ;  idx < width ;  idx += 1) {
+		      ако (word_val.value(idx)) {
 			    op->aval |=  (1 << idx % 32);
 			    op->bval &= ~(1 << idx % 32);
-		      } else {
+		      } инако {
 			    op->aval &= ~(1 << idx % 32);
 			    op->bval &= ~(1 << idx % 32);
 		      }
-		      if (!((idx+1) % 32) && (idx+1 < width)) {
+		      ако (!((idx+1) % 32) && (idx+1 < width)) {
 			    op++;
 			    op->aval = op->bval = 0;
 		      }
@@ -900,13 +900,13 @@ static PLI_INT32 get_real_as_int(double real)
 	/* We would normally want to return 'bx for a NaN or
 	 * +/- infinity, but for an integer the standard says
 	 * to convert 'bx to 0, so we just return 0. */
-      if (real != real || (real && (real == 0.5*real))) {
-	    return 0;
+      ако (real != real || (real && (real == 0.5*real))) {
+	    врати 0;
       }
 
       rtn = std::round(real);
 
-      return (PLI_INT32) rtn;
+      врати (PLI_INT32) rtn;
 }
 
 /*
@@ -921,7 +921,7 @@ void vpip_real_get_value(double real, s_vpi_value*vp)
       switch (vp->format) {
 	  default:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting real values.\n", (int)vp->format);
+	                    "getting real values.\n", (цео)vp->format);
 	    assert(0);
 
 	  case vpiSuppressVal:
@@ -956,7 +956,7 @@ double real_from_vpi_value(s_vpi_value*vp)
       switch (vp->format) {
 	  default:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "putting real values.\n", (int)vp->format);
+	                    "putting real values.\n", (цео)vp->format);
 	    assert(0);
 
 	  case vpiRealVal:
@@ -969,31 +969,31 @@ double real_from_vpi_value(s_vpi_value*vp)
 
 	  case vpiBinStrVal:
 	    vpip_bin_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
+	    ако (vp->value.str[0] == '-') is_signed = true;
 	    vector4_to_value(vec4, result, is_signed);
 	    break;
 
 	  case vpiOctStrVal:
 	    vpip_oct_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
+	    ако (vp->value.str[0] == '-') is_signed = true;
 	    vector4_to_value(vec4, result, is_signed);
 	    break;
 
 	  case vpiDecStrVal:
 	    vpip_dec_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
+	    ако (vp->value.str[0] == '-') is_signed = true;
 	    vector4_to_value(vec4, result, is_signed);
 	    break;
 
 	  case vpiHexStrVal:
 	    vpip_hex_str_to_vec4(vec4, vp->value.str);
-	    if (vp->value.str[0] == '-') is_signed = true;
+	    ако (vp->value.str[0] == '-') is_signed = true;
 	    vector4_to_value(vec4, result, is_signed);
 	    break;
 
       }
 
-      return result;
+      врати result;
 }
 
 void vpip_string_get_value(const string&val, s_vpi_value*vp)
@@ -1003,7 +1003,7 @@ void vpip_string_get_value(const string&val, s_vpi_value*vp)
       switch (vp->format) {
 	  default:
 	    fprintf(stderr, "sorry: Format %d not implemented for "
-	                    "getting string values.\n", (int)vp->format);
+	                    "getting string values.\n", (цео)vp->format);
 	    assert(0);
 
 	  case vpiSuppressVal:
@@ -1029,12 +1029,12 @@ void vpi_get_value(vpiHandle expr, s_vpi_value*vp)
 
 	// Never bother with suppressed values. All the derived
 	// classes can ignore this type.
-      if (vp->format == vpiSuppressVal)
-	    return;
+      ако (vp->format == vpiSuppressVal)
+	    врати;
 
       expr->vpi_get_value(vp);
 
-      if (vpi_trace) switch (vp->format) {
+      ако (vpi_trace) switch (vp->format) {
 		case vpiStringVal:
 		  fprintf(vpi_trace,"vpi_get_value(%p=<%d>) -> string=\"%s\"\n",
 			  expr, expr->get_type_code(), vp->value.str);
@@ -1047,7 +1047,7 @@ void vpi_get_value(vpiHandle expr, s_vpi_value*vp)
 
 		case vpiIntVal:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> int=%d\n",
-			  expr->get_type_code(), (int)vp->value.integer);
+			  expr->get_type_code(), (цео)vp->value.integer);
 		  break;
 
 		case vpiSuppressVal:
@@ -1057,14 +1057,14 @@ void vpi_get_value(vpiHandle expr, s_vpi_value*vp)
 
 		default:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> <%d>=?\n",
-			  expr->get_type_code(), (int)vp->format);
+			  expr->get_type_code(), (цео)vp->format);
 	    }
 }
 
 struct vpip_put_value_event : vvp_gen_event_s {
       vpiHandle handle;
       s_vpi_value value;
-      int flags;
+      цео flags;
       virtual void run_run() override;
       ~vpip_put_value_event() override { }
 };
@@ -1105,7 +1105,7 @@ static t_vpi_time *timedup(const t_vpi_time *val)
       t_vpi_time *rtn;
       rtn = static_cast<t_vpi_time *> (malloc(sizeof(t_vpi_time)));
       *rtn = *val;
-      return rtn;
+      врати rtn;
 }
 
 /* Make a copy of a pointer to a vector value structure. */
@@ -1117,7 +1117,7 @@ static t_vpi_vecval *vectordup(const t_vpi_vecval *val, PLI_INT32 size)
       num_bytes = ((size + 31)/32)*sizeof(t_vpi_vecval);
       rtn = static_cast<t_vpi_vecval *> (malloc(num_bytes));
       memcpy(rtn, val, num_bytes);
-      return rtn;
+      врати rtn;
 }
 
 /* Make a copy of a pointer to a strength structure. */
@@ -1127,7 +1127,7 @@ static t_vpi_strengthval *strengthdup(const t_vpi_strengthval *val)
       rtn = static_cast<t_vpi_strengthval *>
             (malloc(sizeof(t_vpi_strengthval)));
       *rtn = *val;
-      return rtn;
+      врати rtn;
 }
 
 vpiHandle vpi_put_value(vpiHandle obj, s_vpi_value*vp,
@@ -1137,16 +1137,16 @@ vpiHandle vpi_put_value(vpiHandle obj, s_vpi_value*vp,
 
       flags &= ~vpiReturnEvent;
 
-      if (flags!=vpiNoDelay && flags!=vpiForceFlag && flags!=vpiReleaseFlag) {
+      ако (flags!=vpiNoDelay && flags!=vpiForceFlag && flags!=vpiReleaseFlag) {
 	    vvp_time64_t dly;
-	    int scale;
+	    цео scale;
 
-	    if (vpi_get(vpiAutomatic, obj)) {
+	    ако (vpi_get(vpiAutomatic, obj)) {
 		  fprintf(stderr, "VPI error: cannot put a value with "
 				  "a delay on automatically allocated "
 				  "variable '%s'.\n",
 				  vpi_get_str(vpiName, obj));
-		  return 0;
+		  врати 0;
 	    }
 
 	    assert(when != 0);
@@ -1155,9 +1155,9 @@ vpiHandle vpi_put_value(vpiHandle obj, s_vpi_value*vp,
 		case vpiScaledRealTime:
 		  scale = vpip_time_units_from_handle(obj) -
 		          vpip_get_time_precision();
-		  if (scale >= 0) {
+		  ако (scale >= 0) {
 			dly = (vvp_time64_t)(when->real * pow(10.0, scale));
-		  } else {
+		  } инако {
 			dly = (vvp_time64_t)(when->real / pow(10.0, -scale));
 		  }
 		  break;
@@ -1169,19 +1169,19 @@ vpiHandle vpi_put_value(vpiHandle obj, s_vpi_value*vp,
 		  break;
 	    }
 
-	    if ((dly == 0) && schedule_at_rosync()) {
+	    ако ((dly == 0) && schedule_at_rosync()) {
 		  fprintf(stderr, "VPI error: attempted to put a value to "
 				  "variable '%s' during a read-only synch "
 				  "callback.\n", vpi_get_str(vpiName, obj));
-		  return 0;
+		  врати 0;
 	    }
 
 	    vpip_put_value_event*put = new vpip_put_value_event;
 	    put->handle = obj;
-	    if (dynamic_cast<__vpiNamedEvent*>(obj)) {
+	    ако (dynamic_cast<__vpiNamedEvent*>(obj)) {
 		  put->value.format = vpiIntVal;
 		  put->value.value.integer = 0;
-	    } else {
+	    } инако {
 		  assert(vp);
 		  put->value = *vp;
 	    }
@@ -1216,26 +1216,26 @@ vpiHandle vpi_put_value(vpiHandle obj, s_vpi_value*vp,
 	    }
 	    put->flags = flags;
 	    schedule_generic(put, dly, false, true, true);
-	    return 0;
+	    врати 0;
       }
 
-      if (schedule_at_rosync()) {
+      ако (schedule_at_rosync()) {
             fprintf(stderr, "VPI error: attempted to put a value to "
 			    "variable '%s' during a read-only synch "
 			    "callback.\n", vpi_get_str(vpiName, obj));
-            return 0;
+            врати 0;
       }
 
       obj->vpi_put_value(vp, flags);
 
-      return 0;
+      врати 0;
 }
 
 vpiHandle vpi_handle(PLI_INT32 type, vpiHandle ref)
 {
       vpiHandle res = 0;
 
-      if (ref == 0) {
+      ако (ref == 0) {
 	      // A few types can apply to a nil handle. These are ways
 	      // that the current function can get started finding things.
 	    switch (type) {
@@ -1252,45 +1252,45 @@ vpiHandle vpi_handle(PLI_INT32 type, vpiHandle ref)
 		    // This is how VPI users get a first handle into
 		    // the system. This is the handle of the system
 		    // task/function call currently being executed.
-		  if (vpi_trace) {
+		  ако (vpi_trace) {
 			fprintf(vpi_trace, "vpi_handle(vpiSysTfCall, 0) "
 				"-> %p (%s)\n", vpip_cur_task,
 				vpip_cur_task->defn->info.tfname);
 		  }
-		  return vpip_cur_task;
+		  врати vpip_cur_task;
 
 		default:
 		  fprintf(stderr, "VPI error: vpi_handle(type=%d, ref=0).\n",
-			  (int)type);
+			  (цео)type);
 		  res = 0;
 		  break;
 	    }
 
-      } else {
+      } инако {
 
-	    if (type == vpiSysTfCall) {
+	    ако (type == vpiSysTfCall) {
 		  fprintf(stderr, "VPI error: vpi_handle(vpiSysTfCall, "
 			  "ref!=0).\n");
-		  return 0;
+		  врати 0;
 	    }
 
 	    res = ref->vpi_handle(type);
       }
 
 
-      if (vpi_trace) {
+      ако (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle(vpiScope, ref=%p) "
 		    "-> %p\n", vpip_cur_task, ref);
       }
 
-      return res;
+      врати res;
 }
 
 static vpiHandle vpip_make_udp_iterator()
 {
 // HERE: Add support for iterating over UDP definitions.
 //       See 26.6.16 (page 400 in 1364-2005).
-      return 0;
+      врати 0;
 }
 
 /*
@@ -1298,7 +1298,7 @@ static vpiHandle vpip_make_udp_iterator()
  * the specified reference. It is up to the iterate_ method to
  * allocate a properly formed iterator.
  */
-static vpiHandle vpi_iterate_global(int type)
+static vpiHandle vpi_iterate_global(цео type)
 {
       switch (type) {
 	  case vpiInstance:
@@ -1310,16 +1310,16 @@ static vpiHandle vpi_iterate_global(int type)
 	  case vpiInterface:
 	    // fallthrough
 	  case vpiPackage:
-	    return vpip_make_root_iterator(type);
+	    врати vpip_make_root_iterator(type);
 
 	  case vpiUdpDefn:
-	    return vpip_make_udp_iterator();
+	    врати vpip_make_udp_iterator();
 
 	  case vpiUserSystf:
-	    return vpip_make_systf_iterator();
+	    врати vpip_make_systf_iterator();
       }
 
-      return 0;
+      врати 0;
 }
 
 vpiHandle vpi_iterate(PLI_INT32 type, vpiHandle ref)
@@ -1327,29 +1327,29 @@ vpiHandle vpi_iterate(PLI_INT32 type, vpiHandle ref)
       vpiHandle rtn = 0;
 
       assert(vpi_mode_flag != VPI_MODE_NONE);
-      if (vpi_mode_flag == VPI_MODE_REGISTER) {
+      ако (vpi_mode_flag == VPI_MODE_REGISTER) {
 	    fprintf(stderr, "vpi error: vpi_iterate called during "
 		    "vpi_register_systf. You can't do that!\n");
-	    return 0;
+	    врати 0;
       }
 
-      if (ref == 0)
+      ако (ref == 0)
 	    rtn = vpi_iterate_global(type);
-      else
+      инако
 	    rtn = ref->vpi_iterate(type);
 
-      if (vpi_trace) {
+      ако (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_iterate(%d, %p) ->%s\n",
-	    (int)type, ref, rtn ? "" : " (null)");
+	    (цео)type, ref, rtn ? "" : " (null)");
       }
 
-      return rtn;
+      врати rtn;
 }
 
 vpiHandle vpi_handle_by_index(vpiHandle ref, PLI_INT32 idx)
 {
       assert(ref);
-      return ref->vpi_index(idx);
+      врати ref->vpi_index(idx);
 }
 
 static vpiHandle find_name(const char *name, vpiHandle handle)
@@ -1358,27 +1358,27 @@ static vpiHandle find_name(const char *name, vpiHandle handle)
       __vpiScope*ref = dynamic_cast<__vpiScope*>(handle);
 
       /* check module names */
-      if (!strcmp(name, vpi_get_str(vpiName, handle)))
+      ако (!strcmp(name, vpi_get_str(vpiName, handle)))
 	    rtn = handle;
 
       /* brute force search for the name in all objects in this scope */
-      for (unsigned i = 0 ;  i < ref->intern.size() ;  i += 1) {
+      за (unsigned i = 0 ;  i < ref->intern.size() ;  i += 1) {
 	      /* The standard says that since a port does not have a full
 	       * name it cannot be found by name. Because of this we need
 	       * to skip ports here so the correct handle can be located. */
-	    if (vpi_get(vpiType, ref->intern[i]) == vpiPort) continue;
+	    ако (vpi_get(vpiType, ref->intern[i]) == vpiPort) continue;
 	    const char *nm = vpi_get_str(vpiName, ref->intern[i]);
-	    if (nm && !strcmp(name, nm)) {
+	    ако (nm && !strcmp(name, nm)) {
 		  rtn = ref->intern[i];
 		  break;
-	    } else if (vpi_get(vpiType, ref->intern[i]) == vpiMemory ||
+	    } инако ако (vpi_get(vpiType, ref->intern[i]) == vpiMemory ||
 	               vpi_get(vpiType, ref->intern[i]) == vpiNetArray) {
 		  /* We need to iterate on the words */
 		  vpiHandle word_i, word_h;
 		  word_i = vpi_iterate(vpiMemoryWord, ref->intern[i]);
-		  while (word_i && (word_h = vpi_scan(word_i))) {
+		  док (word_i && (word_h = vpi_scan(word_i))) {
 			nm = vpi_get_str(vpiName, word_h);
-			if (nm && !strcmp(name, nm)) {
+			ако (nm && !strcmp(name, nm)) {
 			      rtn = word_h;
 			      vpi_free_object(word_i);
 			      break;
@@ -1386,37 +1386,37 @@ static vpiHandle find_name(const char *name, vpiHandle handle)
 		  }
 	    }
 	    /* found it yet? */
-	    if (rtn) break;
+	    ако (rtn) break;
       }
 
-      return rtn;
+      врати rtn;
 }
 
 // Find the end of the escaped identifier or simple identifier
 static char * find_rest(char *name)
 {
       char *rest;
-      if (*name == '\\') {
+      ако (*name == '\\') {
 	    rest = strchr(name, ' ');
-	    if (rest) {
+	    ако (rest) {
 		  *rest++ = 0; // The space is not part of the string
 		    // There should be a '.' after the escaped ID if there is
 		    // anything more. If it is missing add it to avoid a crash
-		  if ((*rest != '.') && (*rest != 0)) {
+		  ако ((*rest != '.') && (*rest != 0)) {
 			*--rest = '.';
 			fprintf(stderr, "ERROR: Malformed scope string: \"%s\"", name);
 		  }
-		  if (*rest == 0) {
+		  ако (*rest == 0) {
 			rest = 0;
 		  }
 	    }
-      } else {
+      } инако {
 	    rest = strchr(name, '.');
       }
-      return rest;
+      врати rest;
 }
 
-static vpiHandle find_scope(const char *name, vpiHandle handle, int depth)
+static vpiHandle find_scope(const char *name, vpiHandle handle, цео depth)
 {
 
       vpiHandle iter = handle==0
@@ -1427,51 +1427,51 @@ static vpiHandle find_scope(const char *name, vpiHandle handle, int depth)
       strcpy(&name_buf[0], name);
       char*nm_first = &name_buf[0];
       char*nm_rest = find_rest(nm_first);
-      if (*nm_first == '\\') ++nm_first;
-      if (nm_rest) {
+      ако (*nm_first == '\\') ++nm_first;
+      ако (nm_rest) {
 	    *nm_rest++ = 0;
       }
 
       vpiHandle rtn = 0;
       vpiHandle hand;
-      while (iter && (hand = vpi_scan(iter))) {
+      док (iter && (hand = vpi_scan(iter))) {
 	    const char *nm = vpi_get_str(vpiName, hand);
 
-	    if (strcmp(nm_first,nm)==0) {
-		  if (nm_rest)
+	    ако (strcmp(nm_first,nm)==0) {
+		  ако (nm_rest)
 			rtn=find_scope(nm_rest, hand, depth+1);
-		  else
+		  инако
 			rtn = hand;
 	    }
 
 	    /* found it yet ? */
-	    if (rtn) {
+	    ако (rtn) {
 		  vpi_free_object(iter);
 		  break;
 	    }
       }
 
-      return rtn;
+      врати rtn;
 }
 
 // Find the end of the first escaped identifier or simple identifier
 static char * find_next(char *name)
 {
       char *next;
-      if (*name == '\\') {
+      ако (*name == '\\') {
 	    next = strchr(name, ' ');
-	    if (next && *++next == 0) next = 0;
-      } else {
+	    ако (next && *++next == 0) next = 0;
+      } инако {
 	    next = strchr(name, '.');
       }
-      return next;
+      врати next;
 }
 
 vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 {
       vpiHandle hand;
 
-      if (vpi_trace) {
+      ако (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle_by_name(%s, %p) -->\n",
 		    name, scope);
       }
@@ -1486,24 +1486,24 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 
 	// Check to see if we have an escaped identifier and if so search
 	// the long way because a '.' could be in the escaped name.
-      if (strchr(nm_path, '\\')) {
+      ако (strchr(nm_path, '\\')) {
 	    char *next;
 	    nm_base = nm_path;
-	    while ((next = find_next(nm_base))) {
+	    док ((next = find_next(nm_base))) {
 		  nm_base = ++next;
 	    }
-	    if (nm_path == nm_base) {
+	    ако (nm_path == nm_base) {
 		  nm_path = 0;
-	    } else {
+	    } инако {
 		  *(nm_base-1) = 0;
 	    }
 
 	// If there is no escaped identifier then just look for the last '.'
-      } else {
+      } инако {
 	    nm_base = strrchr(nm_path, '.');
-	    if (nm_base) {
+	    ако (nm_base) {
 		  *nm_base++ = 0;
-	    } else {
+	    } инако {
 		  nm_base = nm_path;
 		  nm_path = 0;
 	    }
@@ -1513,7 +1513,7 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
        * traverse the hierarchy specified in name to find the leaf module
        * and try finding it there.
        */
-      if (scope) {
+      ако (scope) {
 	    /* Some implementations support either a module or a scope. */
 	    switch (vpi_get(vpiType, scope)) {
 		case vpiScope:
@@ -1523,15 +1523,15 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 	          hand = scope;
 	          break;
 		default:
-		  if (vpi_trace) {
+		  ако (vpi_trace) {
 			fprintf(vpi_trace, "vpi_handle_by_name: "
 				"Scope is not a vpiScope or vpiModule\n");
 		  }
 	          // Use vpi_chk_error() here when it is implemented.
-	          return 0;
+	          врати 0;
 	    }
 
-      } else if (nm_path) {
+      } инако ако (nm_path) {
 	      // The name has a path, and no other scope handle was
 	      // passed in. That suggests we are looking for "a.b.c"
 	      // in the root scope. So convert "a.b" to a scope and
@@ -1539,7 +1539,7 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 	    hand = find_scope(nm_path, NULL, 0);
 	    nm_path = 0;
 
-      } else {
+      } инако {
 	      // Special case: scope==<nil>, meaning we are looking in
 	      // the root, and there is no path to the name, i.e. the
 	      // string is "c" instead of "top.c". Try to find "c" as
@@ -1547,22 +1547,22 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 	    hand = find_scope(nm_base, NULL, 0);
       }
 
-      if (hand == 0) {
-	    if (vpi_trace) {
+      ако (hand == 0) {
+	    ако (vpi_trace) {
 		  fprintf(vpi_trace, "vpi_handle_by_name: "
 			  "Scope does not exist. Giving up.\n");
 	    }
 
-	    return 0;
+	    врати 0;
       }
 
 	// If there is a path part, then use it to find the
 	// scope. For example, if the full name is a.b.c, then
 	// the nm_path string is a.b and we search for that
 	// scope. If we find it, then set hand to that scope.
-      if (nm_path) {
+      ако (nm_path) {
 	    vpiHandle tmp = find_scope(nm_path, hand, 0);
-	    while (tmp == 0 && hand != 0) {
+	    док (tmp == 0 && hand != 0) {
 		  hand = vpi_handle(vpiScope, hand);
 		  tmp = find_scope(nm_path, hand, 0);
 	    }
@@ -1570,13 +1570,13 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
       }
 
 	// find_name() expects escaped identifiers to be stripped
-      if (*nm_base == '\\') {
+      ако (*nm_base == '\\') {
 	    // Skip the \ at the beginning
 	    ++nm_base;
 
 	    // Drop the space at the end if it exists
 	    char *next;
-	    if ((next = strchr(nm_base, ' '))) {
+	    ако ((next = strchr(nm_base, ' '))) {
 		  *next = 0;
 	    }
       }
@@ -1584,11 +1584,11 @@ vpiHandle vpi_handle_by_name(const char *name, vpiHandle scope)
 	// Now we have the correct scope, look for the item.
       vpiHandle out = find_name(nm_base, hand);
 
-      if (vpi_trace) {
+      ако (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle_by_name: DONE\n");
       }
 
-      return out;
+      врати out;
 }
 
 // Return tuple {x1, x2, x3} with:
@@ -1599,14 +1599,14 @@ tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8_and_part_sa(vvp_net_
 
       vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr, 0);
 
-      while (cur.ptr()) {
-	    if (cur.ptr() == net2 && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
+      док (cur.ptr()) {
+	    ако (cur.ptr() == net2 && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
 		    // Pass on the return value if found
-		  return {true, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
-	    } else if (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
+		  врати {true, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
+	    } инако ако (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
 		  auto res = check_connected_to_concat8_and_part_sa(cur.ptr()->out_, net2, cur);
-		  if (get<0>(res)) {
-			return res;
+		  ако (get<0>(res)) {
+			врати res;
 		  }
 	    }
 
@@ -1616,7 +1616,7 @@ tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8_and_part_sa(vvp_net_
       }
 
 	// net2 is not connected to this concat8
-      return {false, vvp_net_ptr_t(nullptr, 0), false};
+      врати {false, vvp_net_ptr_t(nullptr, 0), false};
 }
 
 // Check if net2 is connected to current_net through a net of vvp_fun_concat8s
@@ -1628,19 +1628,19 @@ tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8(vvp_net_ptr_t cur, v
 {
       vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr, 0);
 	// For everything connected
-      while (cur.ptr()) {
+      док (cur.ptr()) {
 	      // Check if it's a concat8
-	    if (cur.ptr() == net2) {
-		  return {true, vvp_net_ptr_t(nullptr, 0), false};
-	    } else if (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
+	    ако (cur.ptr() == net2) {
+		  врати {true, vvp_net_ptr_t(nullptr, 0), false};
+	    } инако ако (dynamic_cast<vvp_fun_concat8*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_part_sa*>(cur.ptr()->fun) || dynamic_cast<vvp_fun_concat*>(cur.ptr()->fun)) {
 		  auto res = check_connected_to_concat8(cur.ptr()->out_, net2, cur);
-		  if (get<0>(res)) {
-			if (!get<1>(res).ptr() && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
+		  ако (get<0>(res)) {
+			ако (!get<1>(res).ptr() && dynamic_cast<vvp_fun_part_sa*>(parent.ptr()->fun)) {
 			      // `parent` is the last part_sa node in front of our destination
 			      // We want to place the intermod node here
-			      return {true, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
+			      врати {true, prev.ptr() ? prev : parent, prev.ptr() == nullptr};
 			}
-			return res;
+			врати res;
 		  }
 	    }
 
@@ -1650,7 +1650,7 @@ tuple<bool, vvp_net_ptr_t, bool> check_connected_to_concat8(vvp_net_ptr_t cur, v
       }
 
 	// net2 is not connected to this concat8
-      return {false, vvp_net_ptr_t(nullptr, 0), false};
+      врати {false, vvp_net_ptr_t(nullptr, 0), false};
 }
 
 // Used to get intermodpath for two ports
@@ -1658,23 +1658,23 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
                            vpiHandle ref1,
                            vpiHandle ref2)
 {
-      if (vpi_trace) {
+      ако (vpi_trace) {
 	    fprintf(vpi_trace, "vpi_handle_multi(%d, %p, %p) -->\n",
 	            type, ref1, ref2);
       }
 
-      if (type != vpiInterModPath) {
+      ако (type != vpiInterModPath) {
 	    fprintf(stderr, "sorry: vpi_handle_multi currently supports"
 	            "only vpiInterModPath\n");
-	    return nullptr;
+	    врати nullptr;
       }
 
 	// Indicates whether port1 refers to a single bit
       bool port1_has_index = false;
-      int port1_bit_index = 0;
+      цео port1_bit_index = 0;
       vpiPortBitInfo* port1_bit = dynamic_cast<vpiPortBitInfo*>(ref1);
 
-      if (port1_bit) {
+      ако (port1_bit) {
 	      // Get the bit index
 	    port1_has_index = true;
 	    port1_bit_index = vpi_get(vpiBit, port1_bit);
@@ -1684,10 +1684,10 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 
 	// Indicates whether port2 refers to a single bit
       bool port2_has_index = false;
-      int port2_bit_index = 0;
+      цео port2_bit_index = 0;
       vpiPortBitInfo* port2_bit = dynamic_cast<vpiPortBitInfo*>(ref2);
 
-      if (port2_bit) {
+      ако (port2_bit) {
 	      // Get the bit index
 	    port2_has_index = true;
 	    port2_bit_index = vpi_get(vpiBit, port2_bit);
@@ -1697,18 +1697,18 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 
       vpiPortInfo* port1 = dynamic_cast<vpiPortInfo*>(ref1);
 
-      if (!port1) {
+      ако (!port1) {
 	    fprintf(stderr, "sorry: second argument of vpi_handle_multi"
 		    "must be a vpiPort\n");
-	    return nullptr;
+	    врати nullptr;
       }
 
       vpiPortInfo* port2 = dynamic_cast<vpiPortInfo*>(ref2);
 
-      if (!port2) {
+      ако (!port2) {
 	    fprintf(stderr, "sorry: third argument of vpi_handle_multi"
 		    "must be a vpiPort\n");
-	    return nullptr;
+	    врати nullptr;
       }
 
 	// Get the names of both ports
@@ -1720,7 +1720,7 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 	// even tho the intermodpath is correctly inserted
       __vpiSignal* output_signal = nullptr;
 
-      if (port1->get_direction() == vpiOutput && port2->get_direction() == vpiOutput) {
+      ако (port1->get_direction() == vpiOutput && port2->get_direction() == vpiOutput) {
 	    vpiHandle scope_port2 = vpi_handle(vpiScope, ref2);
 	    assert(scope_port2);
 
@@ -1728,11 +1728,11 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 	    vpiHandle net_i = vpi_iterate(vpiNet, scope_port2) ;
 	    vpiHandle net;
 
-	    while ((net = vpi_scan(net_i)) != NULL) {
+	    док ((net = vpi_scan(net_i)) != NULL) {
 		  std::string net_name(vpi_get_str(vpiName, net));
 
 		    // Compare whether the net matches with the port name
-		  if (net_name == port2_name) {
+		  ако (net_name == port2_name) {
 			output_signal = dynamic_cast<__vpiSignal*>(net);
 		  }
 	    }
@@ -1741,45 +1741,45 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
       vvp_net_t* net1 = port1->get_port();
       vvp_net_t* net2 = port2->get_port();
 
-      if (net1 == nullptr || net2 == nullptr) {
+      ако (net1 == nullptr || net2 == nullptr) {
 	    fprintf(stderr, "Error: Could not find net. "
 		    "Did you run iverilog with '-ginterconnect'?\n");
-	    return nullptr;
+	    врати nullptr;
       }
 
-      if (net1 == net2) {
+      ако (net1 == net2) {
 	    fprintf(stderr, "Error: Net for both ports is the same. "
 		    "Did you pass the same port twice?\n");
-	    return nullptr;
+	    врати nullptr;
       }
 
-      if (!dynamic_cast<vvp_fun_buft*>(net1->fun)) {
+      ако (!dynamic_cast<vvp_fun_buft*>(net1->fun)) {
 	    fprintf(stderr, "Error: functor of net1 must be"
 		    "vvp_fun_buft\n");
-	    return nullptr;
+	    врати nullptr;
       }
 
-      if (!dynamic_cast<vvp_fun_buft*>(net2->fun)) {
+      ако (!dynamic_cast<vvp_fun_buft*>(net2->fun)) {
 	    fprintf(stderr, "Error: functor of net2 must be"
 		    "vvp_fun_buft\n");
-	    return nullptr;
+	    врати nullptr;
       }
 
 	// If port1 is actually a port bit, we have to get to the correct vvp_fun_part
 	// after which we insert the intermodpath delay
-      if (port1_has_index) {
+      ако (port1_has_index) {
 	    vvp_net_ptr_t* net1_ptr = &net1->out_;
 
 	      // Search for part selects connected to port1
 	    vvp_net_t* current_net = net1_ptr->ptr();
 
-	    while (current_net) {
+	    док (current_net) {
 		  const vvp_fun_part* part = dynamic_cast<vvp_fun_part*>(current_net->fun);
 
 		    // Its a part select!
-		  if (part) {
+		  ако (part) {
 			  // Is it the correct part select?
-			if (part->get_base() == (unsigned)port1_bit_index) {
+			ако (part->get_base() == (unsigned)port1_bit_index) {
 			      assert(part->get_wid() == 1);
 			      net1 = current_net; // Replace net1 as this is our new start point
 			      break;
@@ -1794,7 +1794,7 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
       vvp_net_ptr_t cur = net1->out_;
       vvp_net_ptr_t prev = vvp_net_ptr_t(nullptr, 0);
 
-      while (cur.ptr()) {
+      док (cur.ptr()) {
 	      // Either port2 is directly connected to port1
 	      // Or in the second case port2 is indirectly connected
 	      // to port1 through a net of concat8s
@@ -1803,22 +1803,22 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 	    tie(is_connected, previous_node, is_output) = port2_has_index
 		  ? check_connected_to_concat8(cur, net2, vvp_net_ptr_t(net1, 0))
 		  : check_connected_to_concat8_and_part_sa(cur, net2, vvp_net_ptr_t(net1, 0));
-	    if ( (!port2_has_index && cur.ptr() == net2) || is_connected ) {
+	    ако ( (!port2_has_index && cur.ptr() == net2) || is_connected ) {
 		  vvp_net_t*new_net = new vvp_net_t;
 
 		    // Create new node with intermodpath and connect port2 to it
-		  int width = 1; // TODO
+		  цео width = 1; // TODO
 		  vvp_fun_intermodpath*obj = new vvp_fun_intermodpath(new_net, width);
 
 		  vvp_net_t* output_net = net1;
-		  if (is_connected) {
-			if (is_output) {
+		  ако (is_connected) {
+			ако (is_output) {
 			      output_net = previous_node.ptr(); // net2 is direct output of part_sa
 			      cur = output_net->out_;
 			      prev = vvp_net_ptr_t(nullptr, 0);
-			} else {
+			} инако {
 			      prev = previous_node;
-			      if (prev.ptr()) {
+			      ако (prev.ptr()) {
 				    cur = prev.ptr()->port[prev.port()];
 			      }
 			}
@@ -1829,13 +1829,13 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 
 		    // Port2 is in the middle of the list
 		    // Insert intermodpath before port2 and keep everything else intact
-		  if (prev.ptr()) {
+		  ако (prev.ptr()) {
 			prev.ptr()->port[prev.port()] = vvp_net_ptr_t(new_net, 0); // Point to port 0 of vvp_fun_intermodpath
 			new_net->port[0] = cur.ptr()->port[cur.port()]; // Connect the next net in list
 			cur.ptr()->port[cur.port()] = vvp_net_ptr_t(nullptr, 0); // Only port2 is connected to intermodpath
 		    // Port2 is first in list
 		    // Insert intermodpath before port2 and keep everything else intact
-		  } else {
+		  } инако {
 			output_net->out_ = vvp_net_ptr_t(new_net, 0); // Point to port 0 of vvp_fun_intermodpath
 			new_net->port[0] = cur.ptr()->port[cur.port()]; //  Connect the next net in list
 			cur.ptr()->port[cur.port()] = vvp_net_ptr_t(nullptr, 0); // Only port2 is connected to intermodpath
@@ -1844,7 +1844,7 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 		    // If both ports are vpiOutput and port2 is not a vector,
 		    // we have to reassign the __vpiSignal so that the delayed
 		    // values get dumped
-		  if (output_signal && !port2_has_index) {
+		  ако (output_signal && !port2_has_index) {
 			net2->fil = net1->fil;
 			net1->fil = nullptr;
 			output_signal->node = net2;
@@ -1855,7 +1855,7 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 		  intermodpath->intermodpath = obj;
 
 		    // Finally done, return the intermodpath object
-		  return intermodpath;
+		  врати intermodpath;
 	    }
 
 	    prev = cur;
@@ -1865,7 +1865,7 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
       fprintf(stderr, "VPI error: Could not insert intermodpath!\n");
       fprintf(stderr, "\tport1 = %s, port1_has_index = %d, port1_bit_index = %d\n", port1_name.c_str(), port1_has_index, port1_bit_index);
       fprintf(stderr, "\tport2 = %s, port2_has_index = %d, port2_bit_index = %d\n", port2_name.c_str(), port2_has_index, port2_bit_index);
-      return nullptr;
+      врати nullptr;
 }
 
 /*
@@ -1896,7 +1896,7 @@ void vpi_get_delays(vpiHandle expr, p_vpi_delay delays)
 
       expr->vpi_get_delays(delays);
 
-      if (vpi_trace) {
+      ако (vpi_trace) {
 	    fprintf(vpi_trace,
 		    "vpi_get_delays(%p, %p) -->\n", expr, delays);
       }
@@ -1910,7 +1910,7 @@ void vpi_put_delays(vpiHandle expr, p_vpi_delay delays)
 
       expr->vpi_put_delays(delays);
 
-      if (vpi_trace) {
+      ако (vpi_trace) {
 	    fprintf(vpi_trace,
 		    "vpi_put_delays(%p, %p) -->\n", expr, delays);
       }
@@ -1925,25 +1925,25 @@ void vpi_put_delays(vpiHandle expr, p_vpi_delay delays)
 
 extern "C" PLI_INT32 vpi_vprintf(const char*fmt, va_list ap)
 {
-      return vpi_mcd_vprintf(1, fmt, ap);
+      врати vpi_mcd_vprintf(1, fmt, ap);
 }
 
 extern "C" PLI_INT32 vpi_printf(const char *fmt, ...)
 {
       va_list ap;
       va_start(ap, fmt);
-      int r = vpi_mcd_vprintf(1, fmt, ap);
+      цео r = vpi_mcd_vprintf(1, fmt, ap);
       va_end(ap);
-      return r;
+      врати r;
 }
 
 extern "C" PLI_INT32 vpi_flush(void)
 {
-      return vpi_mcd_flush(1);
+      врати vpi_mcd_flush(1);
 }
 
 
-extern "C" PLI_INT32 vpi_sim_vcontrol(int operation, va_list ap)
+extern "C" PLI_INT32 vpi_sim_vcontrol(цео operation, va_list ap)
 {
       long diag_msg;
 
@@ -1962,27 +1962,27 @@ extern "C" PLI_INT32 vpi_sim_vcontrol(int operation, va_list ap)
 
 	  default:
 	    fprintf(stderr, "Unsupported VPI control operation %d.\n", operation);
-	    return 0;
+	    врати 0;
       }
-      return 1;
+      врати 1;
 }
 
 extern "C" PLI_INT32 vpi_sim_control(PLI_INT32 operation, ...)
 {
       va_list ap;
       va_start(ap, operation);
-      int r = vpi_sim_vcontrol(operation, ap);
+      цео r = vpi_sim_vcontrol(operation, ap);
       va_end(ap);
-      return r;
+      врати r;
 }
 
 extern "C" PLI_INT32 vpi_control(PLI_INT32 operation, ...)
 {
       va_list ap;
       va_start(ap, operation);
-      int r = vpi_sim_vcontrol(operation, ap);
+      цео r = vpi_sim_vcontrol(operation, ap);
       va_end(ap);
-      return r;
+      врати r;
 }
 
 /*
@@ -1999,42 +1999,42 @@ extern "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
 	/* Get the value as a vvp_vector4_t. */
       val.format = vpiObjTypeVal;
       vpi_get_value(arg, &val);
-      if (val.format == vpiRealVal) {
+      ако (val.format == vpiRealVal) {
 	    vpi_get_value(arg, &val);
 	      /* All double values can be represented in 1024 bits. */
 	    vec4 = vvp_vector4_t(1024, val.value.real);
-	    if (val.value.real < 0) is_neg = true;
-      } else {
+	    ако (val.value.real < 0) is_neg = true;
+      } инако {
 	    val.format = vpiVectorVal;
 	    vpi_get_value(arg, &val);
 	    unsigned wid = vpi_get(vpiSize, arg);
 	    vec4 = vvp_vector4_t(wid, BIT4_0);
-	    for (unsigned idx=0; idx < wid; idx += 1) {
+	    за (unsigned idx=0; idx < wid; idx += 1) {
 		PLI_INT32 aval = val.value.vector[idx/32].aval;
 		PLI_INT32 bval = val.value.vector[idx/32].bval;
 		aval >>= idx % 32;
 		bval >>= idx % 32;
-		int bitmask = (aval&1) | ((bval<<1)&2);
+		цео bitmask = (aval&1) | ((bval<<1)&2);
 		vvp_bit4_t bit = scalar_to_bit4(bitmask);
 		vec4.set_bit(idx, bit);
 	    }
       }
 
-      if (vec4.has_xz()) {
+      ако (vec4.has_xz()) {
 	    rtn.aval = rtn.bval = 0xFFFFFFFFU;  /* Set to 'bx. */
-	    return rtn;
+	    врати rtn;
       }
 
       vvp_vector2_t vec2(vec4);
 
-      if (is_neg) vec2.trim_neg(); /* This is a special trim! */
-      else vec2.trim(); /* This makes less work shifting. */
+      ако (is_neg) vec2.trim_neg(); /* This is a special trim! */
+      инако vec2.trim(); /* This makes less work shifting. */
 
 	/* Calculate the clog2 result. */
       PLI_INT32 res = 0;
-      if (!vec2.is_zero()) {
+      ако (!vec2.is_zero()) {
 	    vec2 -= vvp_vector2_t(1, vec2.size());
-	    while(!vec2.is_zero()) {
+	    док(!vec2.is_zero()) {
 		  res += 1;
 		  vec2 >>= 1;
 	    }
@@ -2042,7 +2042,7 @@ extern "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
 
       rtn.aval = res;
       rtn.bval = 0;
-      return rtn;
+      врати rtn;
 }
 
 /*
@@ -2058,7 +2058,7 @@ extern "C" void vpip_count_drivers(vpiHandle ref, unsigned idx,
       rfp->node->count_drivers(idx, counts);
 }
 
-#if defined(__MINGW32__) || defined (__CYGWIN__)
+#ако defined(__MINGW32__) || defined (__CYGWIN__)
 vpip_routines_s vpi_routines = {
     .register_cb                = vpi_register_cb,
     .remove_cb                  = vpi_remove_cb,

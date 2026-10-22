@@ -21,7 +21,7 @@
 
 #include "array_common.h"
 
-vpiHandle __vpiArrayBase::vpi_array_base_iterate(int code)
+vpiHandle __vpiArrayBase::vpi_array_base_iterate(цео code)
 {
     switch (code) {
         case vpiReg:
@@ -30,11 +30,11 @@ vpiHandle __vpiArrayBase::vpi_array_base_iterate(int code)
                 res = new __vpiArrayIterator;
                 res->array = this;
                 res->next = 0;
-                return res;
+                врати res;
         }
     }
 
-    return 0;
+    врати 0;
 }
 
 void __vpiArrayBase::make_vals_words()
@@ -48,76 +48,76 @@ void __vpiArrayBase::make_vals_words()
     vals_words += 1;
 
     struct __vpiArrayWord*words = vals_words;
-    for (unsigned idx = 0 ; idx < get_size() ; idx += 1) {
+    за (unsigned idx = 0 ; idx < get_size() ; idx += 1) {
             words[idx].word0 = words;
     }
 }
 
-vpiHandle __vpiArrayIterator::vpi_index(int)
+vpiHandle __vpiArrayIterator::vpi_index(цео)
 {
-      if (next >= array->get_size()) {
+      ако (next >= array->get_size()) {
 	    vpi_free_object(this);
-	    return 0;
+	    врати 0;
       }
 
       unsigned use_index = next;
       next += 1;
 
-      return array->get_iter_index(this, use_index);
+      врати array->get_iter_index(this, use_index);
 }
 
-static int array_iterator_free_object(vpiHandle ref)
+static цео array_iterator_free_object(vpiHandle ref)
 {
       struct __vpiArrayIterator*obj = dynamic_cast<__vpiArrayIterator*>(ref);
       delete obj;
-      return 1;
+      врати 1;
 }
 
 __vpiHandle::free_object_fun_t __vpiArrayIterator::free_object_fun(void)
-{ return &array_iterator_free_object; }
+{ врати &array_iterator_free_object; }
 
-vpiHandle __vpiArrayIndex::vpi_iterate(int code)
+vpiHandle __vpiArrayIndex::vpi_iterate(цео code)
 {
     // TODO originally, __vpiArrayIndex is casted to __vpiDecConst and assigned
     // to res->index - seems like a bug to me
 
-      if (code == vpiIndex) {
+      ако (code == vpiIndex) {
 	    struct __vpiArrayIndex*res;
 	    res = new __vpiArrayIndex;
 	    res->index = index;         // see the comment above
 	    res->done = 0;
-	    return res;
+	    врати res;
       }
-      return 0;
+      врати 0;
 }
 
-vpiHandle __vpiArrayIndex::vpi_index(int)
+vpiHandle __vpiArrayIndex::vpi_index(цео)
 {
-      if (done == 0) {
+      ако (done == 0) {
             done = 1;
-            return index;
+            врати index;
       }
 
       vpi_free_object(this);
-      return 0;
+      врати 0;
 }
 
-static int array_index_free_object(vpiHandle ref)
+static цео array_index_free_object(vpiHandle ref)
 {
       struct __vpiArrayIndex*obj = dynamic_cast<__vpiArrayIndex*>(ref);
       delete obj;
-      return 1;
+      врати 1;
 }
 
 __vpiHandle::free_object_fun_t __vpiArrayIndex::free_object_fun(void)
-{ return &array_index_free_object; }
+{ врати &array_index_free_object; }
 
-char* __vpiArrayWord::as_word_t::vpi_get_str(int code)
+char* __vpiArrayWord::as_word_t::vpi_get_str(цео code)
 {
       struct __vpiArrayWord*obj = array_var_word_from_handle(this);
       assert(obj);
       struct __vpiArrayBase*my_parent = obj->get_parent();
-      return my_parent->get_word_str(obj, code);
+      врати my_parent->get_word_str(obj, code);
 }
 
 void __vpiArrayWord::as_word_t::vpi_get_value(p_vpi_value vp)
@@ -125,19 +125,19 @@ void __vpiArrayWord::as_word_t::vpi_get_value(p_vpi_value vp)
       struct __vpiArrayWord*obj = array_var_word_from_handle(this);
       assert(obj);
       struct __vpiArrayBase*my_parent = obj->get_parent();
-      return my_parent->get_word_value(obj, vp);
+      врати my_parent->get_word_value(obj, vp);
 }
 
-vpiHandle __vpiArrayWord::as_word_t::vpi_put_value(p_vpi_value vp, int flags)
+vpiHandle __vpiArrayWord::as_word_t::vpi_put_value(p_vpi_value vp, цео flags)
 {
       struct __vpiArrayWord*obj = array_var_word_from_handle(this);
       assert(obj);
       struct __vpiArrayBase*my_parent = obj->get_parent();
       my_parent->put_word_value(obj, vp, flags);
-      return this;
+      врати this;
 }
 
-vpiHandle __vpiArrayWord::as_word_t::vpi_handle(int code)
+vpiHandle __vpiArrayWord::as_word_t::vpi_handle(цео code)
 {
       struct __vpiArrayWord*obj = array_var_word_from_handle(this);
       assert(obj);
@@ -146,25 +146,25 @@ vpiHandle __vpiArrayWord::as_word_t::vpi_handle(int code)
       switch (code) {
 
 	  case vpiIndex:
-	    return &(obj->as_index);
+	    врати &(obj->as_index);
 
 	  case vpiLeftRange:
-	    return my_parent->get_left_range();
+	    врати my_parent->get_left_range();
 
 	  case vpiRightRange:
-	    return my_parent->get_right_range();
+	    врати my_parent->get_right_range();
 
 	  case vpiParent:
-	    return dynamic_cast<vpiHandle>(my_parent);
+	    врати dynamic_cast<vpiHandle>(my_parent);
 
 	  case vpiScope:
-	    return my_parent->get_scope();
+	    врати my_parent->get_scope();
 
 	  case vpiModule:
-	    return vpip_module(my_parent->get_scope());
+	    врати vpip_module(my_parent->get_scope());
       }
 
-      return 0;
+      врати 0;
 }
 
 void __vpiArrayWord::as_index_t::vpi_get_value(p_vpi_value vp)
@@ -179,25 +179,25 @@ void __vpiArrayWord::as_index_t::vpi_get_value(p_vpi_value vp)
 
 struct __vpiArrayWord*array_var_word_from_handle(vpiHandle ref)
 {
-      if (ref == 0)
-	    return 0;
+      ако (ref == 0)
+	    врати 0;
       const __vpiArrayWord::as_word_t*ptr = dynamic_cast<__vpiArrayWord::as_word_t*> (ref);
-      if (ptr == 0)
-	    return 0;
+      ако (ptr == 0)
+	    врати 0;
 
-      return (struct __vpiArrayWord*)(ref);
+      врати (struct __vpiArrayWord*)(ref);
 }
 
 struct __vpiArrayWord* array_var_index_from_handle(vpiHandle ref)
 {
-      if (ref == 0)
-	    return 0;
+      ако (ref == 0)
+	    врати 0;
       const __vpiArrayWord::as_index_t*ptr = dynamic_cast<__vpiArrayWord::as_index_t*> (ref);
-      if (ptr == 0)
-	    return 0;
+      ако (ptr == 0)
+	    врати 0;
 
       assert(sizeof(__vpiHandle) == sizeof(__vpiArrayWord::as_index_t));
       assert(sizeof(__vpiHandle) == sizeof(__vpiArrayWord::as_word_t));
-      return (struct __vpiArrayWord*)(ref-1);
+      врати (struct __vpiArrayWord*)(ref-1);
 }
 

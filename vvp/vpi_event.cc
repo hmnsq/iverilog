@@ -34,36 +34,36 @@ inline __vpiNamedEvent::__vpiNamedEvent(__vpiScope*sc, const char*nam)
 
 __vpiNamedEvent::~__vpiNamedEvent()
 {
-      while (callbacks_) {
+      док (callbacks_) {
 	    struct __vpiCallback *tmp = callbacks_->next;
 	    delete callbacks_;
 	    callbacks_ = tmp;
       }
 }
 
-int __vpiNamedEvent::get_type_code(void) const
-{ return vpiNamedEvent; }
+цео __vpiNamedEvent::get_type_code(void) const
+{ врати vpiNamedEvent; }
 
-int __vpiNamedEvent::vpi_get(int code)
+цео __vpiNamedEvent::vpi_get(цео code)
 {
       switch (code) {
 
 	  case vpiAutomatic:
-	    return scope_->is_automatic()? 1 : 0;
+	    врати scope_->is_automatic()? 1 : 0;
       }
 
-      return 0;
+      врати 0;
 }
 
-char* __vpiNamedEvent::vpi_get_str(int code)
+char* __vpiNamedEvent::vpi_get_str(цео code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      ако (code == vpiFile) {  // Not implemented for now!
+	    врати simple_set_rbuf_str(file_names[0]);
       }
-      return generic_get_str(code, scope_, name_, NULL);
+      врати generic_get_str(code, scope_, name_, NULL);
 }
 
-vpiHandle __vpiNamedEvent::vpi_put_value(p_vpi_value, int)
+vpiHandle __vpiNamedEvent::vpi_put_value(p_vpi_value, цео)
 {
 	// p_vpi_value may be NULL, and an event doesn't care
 	// what the value is
@@ -71,20 +71,20 @@ vpiHandle __vpiNamedEvent::vpi_put_value(p_vpi_value, int)
       vvp_net_ptr_t dest(funct, 0);
       vvp_send_vec4(dest, val, vthread_get_wt_context());
 
-      return this;
+      врати this;
 }
 
-vpiHandle __vpiNamedEvent::vpi_handle(int code)
+vpiHandle __vpiNamedEvent::vpi_handle(цео code)
 {
       switch (code) {
 	  case vpiScope:
-	    return scope_;
+	    врати scope_;
 
 	  case vpiModule:
-	    return vpip_module(scope_);
+	    врати vpip_module(scope_);
       }
 
-      return 0;
+      врати 0;
 }
 
 
@@ -94,7 +94,7 @@ vpiHandle vpip_make_named_event(const char*name, vvp_net_t*funct)
 
       obj->funct = funct;
 
-      return obj;
+      врати obj;
 }
 
 /*
@@ -114,20 +114,20 @@ void __vpiNamedEvent::run_vpi_callbacks()
 {
       struct __vpiCallback*next = callbacks_;
       struct __vpiCallback*prev = 0;
-      while (next) {
+      док (next) {
 	    struct __vpiCallback*cur = next;
 	    next = cur->next;
 
-	    if (cur->cb_data.cb_rtn != 0) {
+	    ако (cur->cb_data.cb_rtn != 0) {
 		  callback_execute(cur);
 		  prev = cur;
 
-	    } else if (prev == 0) {
+	    } инако ако (prev == 0) {
 		  callbacks_ = next;
 		  cur->next = 0;
 		  delete cur;
 
-	    } else {
+	    } инако {
 		  assert(prev->next == cur);
 		  prev->next = next;
 		  cur->next = 0;

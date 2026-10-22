@@ -70,31 +70,31 @@ extern "C" void vpip_format_strength(char*str, s_vpi_value*value, unsigned bit)
 	    str[2] = '1';
 	    break;
 	  case vpiX:
-	    if (value->value.strength[bit].s0 == 1) {
+	    ако (value->value.strength[bit].s0 == 1) {
 		  str[0] = str_char1_table[value->value.strength[bit].s1];
 		  str[1] = str_char2_table[value->value.strength[bit].s1];
 		  str[2] = 'H';
-	    } else if (value->value.strength[bit].s1 == 1) {
+	    } инако ако (value->value.strength[bit].s1 == 1) {
 		  str[0] = str_char1_table[value->value.strength[bit].s0];
 		  str[1] = str_char2_table[value->value.strength[bit].s0];
 		  str[2] = 'L';
-	    } else if (value->value.strength[bit].s1 ==
+	    } инако ако (value->value.strength[bit].s1 ==
 		       value->value.strength[bit].s0) {
 		  str[0] = str_char1_table[value->value.strength[bit].s0];
 		  str[1] = str_char2_table[value->value.strength[bit].s0];
 		  str[2] = 'X';
-	    } else {
-		  int ss;
+	    } инако {
+		  цео ss;
 
 		  str[0] = '0';
 		  ss = value->value.strength[bit].s0;
-		  while (ss > 1) {
+		  док (ss > 1) {
 			str[0] += 1;
 			ss >>= 1;
 		  }
 		  str[1] = '0';
 		  ss = value->value.strength[bit].s1;
-		  while (ss > 1) {
+		  док (ss > 1) {
 			str[1] += 1;
 			ss >>= 1;
 		  }
@@ -108,37 +108,37 @@ extern "C" void vpip_format_strength(char*str, s_vpi_value*value, unsigned bit)
 	    break;
 	  default:
 	    fprintf(stderr, "Unsupported type %d.\n",
-	            (int)value->value.strength[bit].logic);
+	            (цео)value->value.strength[bit].logic);
 	    assert(0);
       }
 }
 
 static char* vpip_format_pretty_string(const char*msg)
 {
-      return strdup(msg);
+      врати strdup(msg);
 }
 
 static char* format_darray_pretty(vvp_darray* aobj)
 {
-      if (!aobj || aobj->get_size() == 0) return strdup("{}");
+      ако (!aobj || aobj->get_size() == 0) врати strdup("{}");
 
       std::string out = "{";
 
-      for (size_t i = 0; i < aobj->get_size(); i += 1) {
-	    if (i > 0) out += ", ";
-	    if (dynamic_cast<vvp_darray_real*>(aobj)) {
+      за (size_t i = 0; i < aobj->get_size(); i += 1) {
+	    ако (i > 0) out += ", ";
+	    ако (dynamic_cast<vvp_darray_real*>(aobj)) {
 		  double d;
 		  aobj->get_word((unsigned) i, d);
 		  char buf[256];
 		  snprintf(buf, sizeof buf, "%g", d);
 		  out += buf;
-	    } else if (dynamic_cast<vvp_darray_string*>(aobj)) {
+	    } инако ако (dynamic_cast<vvp_darray_string*>(aobj)) {
 		  std::string s;
 		  aobj->get_word((unsigned) i, s);
 		  out += "\"";
 		  out += s;
 		  out += "\"";
-	    } else {
+	    } инако {
 		  vvp_vector4_t v;
 		  aobj->get_word((unsigned) i, v);
 		  s_vpi_value val;
@@ -149,23 +149,23 @@ static char* format_darray_pretty(vvp_darray* aobj)
       }
 
       out += "}";
-      return strdup(out.c_str());
+      врати strdup(out.c_str());
 }
 
 extern "C" char* vpip_format_pretty(vpiHandle ref)
 {
-      if (!ref) {
-	    return vpip_format_pretty_string("Handle is NULL");
+      ако (!ref) {
+	    врати vpip_format_pretty_string("Handle is NULL");
 	  }
 
-      if (dynamic_cast<__vpiPropQueueRef*>(ref) ||
+      ако (dynamic_cast<__vpiPropQueueRef*>(ref) ||
           dynamic_cast<__vpiDarrayVar*>(ref)) {
 	    vvp_darray* aobj = vpip_vpi_darray_from_handle(ref);
-	    if (!aobj) {
-		  return vpip_format_pretty_string("Object not found");
+	    ако (!aobj) {
+		  врати vpip_format_pretty_string("Object not found");
 		}
-	    return format_darray_pretty(aobj);
+	    врати format_darray_pretty(aobj);
       }
 
-      return vpip_format_pretty_string("Unsupported object type");
+      врати vpip_format_pretty_string("Unsupported object type");
 }

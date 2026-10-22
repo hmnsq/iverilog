@@ -48,7 +48,7 @@ typedef struct __vpiArray* vvp_array_t;
  * header file elsewhere.
  */
 
-#if defined(__MINGW32__) || defined (__CYGWIN__)
+#ако defined(__MINGW32__) || defined (__CYGWIN__)
 extern vpip_routines_s vpi_routines;
 #endif
 
@@ -74,12 +74,12 @@ extern const char* vpi_type_as_string(PLI_INT32 code);
 /*
  * Return the port direction as a string.
  */
-extern const char* direction_as_string(int dir);
+extern const char* direction_as_string(цео dir);
 
 /*
  * Private VPI properties that are only used in the cleanup code.
  */
-#if defined(CHECK_WITH_VALGRIND) && !defined(BR916_STOPGAP_FIX)
+#ако defined(CHECK_WITH_VALGRIND) && !defined(BR916_STOPGAP_FIX)
 #define _vpiFromThr 0x1000001
 #   define _vpiNoThr   0
 #   define _vpiString  1
@@ -122,16 +122,16 @@ class __vpiHandle {
 	// The destructor is virtual so that dynamic types will work.
       virtual ~__vpiHandle();
 
-      virtual int get_type_code(void) const =0;
-      virtual int vpi_get(int code);
-      virtual int64_t vpi_get64(int code);
-      virtual char* vpi_get_str(int code);
+      virtual цео get_type_code(void) const =0;
+      virtual цео vpi_get(цео code);
+      virtual int64_t vpi_get64(цео code);
+      virtual char* vpi_get_str(цео code);
 
       virtual void vpi_get_value(p_vpi_value val);
-      virtual vpiHandle vpi_put_value(p_vpi_value val, int flags);
-      virtual vpiHandle vpi_handle(int code);
-      virtual vpiHandle vpi_iterate(int code);
-      virtual vpiHandle vpi_index(int idx);
+      virtual vpiHandle vpi_put_value(p_vpi_value val, цео flags);
+      virtual vpiHandle vpi_handle(цео code);
+      virtual vpiHandle vpi_iterate(цео code);
+      virtual vpiHandle vpi_index(цео idx);
       virtual void vpi_get_delays(p_vpi_delay del);
       virtual void vpi_put_delays(p_vpi_delay del);
 
@@ -139,7 +139,7 @@ class __vpiHandle {
 	// then this virtual method will return a POINTER to that
 	// function. The pointer is used to "delete" the object, which
 	// is why the function itself cannot be a method.
-      typedef int (*free_object_fun_t)(vpiHandle);
+      typedef цео (*free_object_fun_t)(vpiHandle);
       virtual free_object_fun_t free_object_fun(void);
 };
 
@@ -157,7 +157,7 @@ class __vpiHandle {
  */
 struct __vpiIterator : public __vpiHandle {
       __vpiIterator();
-      int get_type_code(void) const override;
+      цео get_type_code(void) const override;
       free_object_fun_t free_object_fun(void) override;
 
       vpiHandle *args;
@@ -171,21 +171,21 @@ extern vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
 
 class __vpiDecConst : public __vpiHandle {
     public:
-      explicit __vpiDecConst(int val =0);
+      explicit __vpiDecConst(цео val =0);
       __vpiDecConst(const __vpiDecConst&that);
-# if __cplusplus >= 201103L
+# ако __cplusplus >= 201103L
       __vpiDecConst& operator = (const __vpiDecConst&that) = default;
 # endif
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
+      цео get_type_code(void) const override;
+      цео vpi_get(цео code) override;
       void vpi_get_value(p_vpi_value val) override;
 
     public:
-      inline int get_value() const { return value; }
-      inline void set_value(int val) { value = val; }
+      inline цео get_value() const { врати value; }
+      inline void set_value(цео val) { value = val; }
 
     private:
-      int value;
+      цео value;
 };
 
 /*
@@ -196,7 +196,7 @@ class __vpiDecConst : public __vpiHandle {
 struct __vpiCallback : public __vpiHandle {
       __vpiCallback();
       ~__vpiCallback() override;
-      int get_type_code(void) const override;
+      цео get_type_code(void) const override;
 
 	// Used for listing callbacks.
       struct __vpiCallback*next;
@@ -221,30 +221,30 @@ extern void callback_execute(struct __vpiCallback*cur);
 
 struct __vpiSystemTime : public __vpiHandle {
       __vpiSystemTime();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
+      цео get_type_code(void) const override;
+      цео vpi_get(цео code) override;
+      char*vpi_get_str(цео code) override;
       void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_handle(int code) override;
+      vpiHandle vpi_handle(цео code) override;
 
       __vpiScope*scope;
 };
 
 struct __vpiScopedTime : public __vpiSystemTime {
       __vpiScopedTime();
-      char*vpi_get_str(int code) override;
+      char*vpi_get_str(цео code) override;
       void vpi_get_value(p_vpi_value val) override;
 };
 struct __vpiScopedSTime : public __vpiSystemTime {
       __vpiScopedSTime();
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
+      цео vpi_get(цео code) override;
+      char*vpi_get_str(цео code) override;
       void vpi_get_value(p_vpi_value val) override;
 };
 struct __vpiScopedRealtime : public __vpiSystemTime {
       __vpiScopedRealtime();
-      int vpi_get(int code) override;
-      char*vpi_get_str(int code) override;
+      цео vpi_get(цео code) override;
+      char*vpi_get_str(цео code) override;
       void vpi_get_value(p_vpi_value val) override;
 };
 
@@ -256,19 +256,19 @@ struct __vpiScopedRealtime : public __vpiSystemTime {
 class __vpiScope : public __vpiHandle {
 
     public:
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+      цео vpi_get(цео code) override;
+      char* vpi_get_str(цео code) override;
+      vpiHandle vpi_handle(цео code) override;
+      vpiHandle vpi_iterate(цео code) override;
 
     public:
 	// Return the BASE name of the scope. This does not include
 	// any of the parent hierarchy.
-      inline const char*scope_name() const { return name_; }
+      inline const char*scope_name() const { врати name_; }
 
-      inline const char*scope_def_name() const { return tname_; }
+      inline const char*scope_def_name() const { врати tname_; }
 	// TRUE if this is an automatic func/task/block
-      inline bool is_automatic() const { return is_automatic_; }
+      inline bool is_automatic() const { врати is_automatic_; }
 
     public:
       __vpiScope *scope;
@@ -294,8 +294,8 @@ class __vpiScope : public __vpiHandle {
       vvp_context_t free_contexts;
 	/* Keep a list of threads in the scope. */
       std::set<vthread_t> threads;
-      signed int time_units :8;
-      signed int time_precision :8;
+      signed цео time_units :8;
+      signed цео time_precision :8;
 
     protected:
       __vpiScope(const char*nam, const char*tnam, bool is_auto_flag =false);
@@ -311,27 +311,27 @@ class __vpiScope : public __vpiHandle {
 class vpiScopeFunction  : public __vpiScope {
     public:
       inline vpiScopeFunction(const char*nam, const char*tnam,
-			      bool auto_flag, int func_type, unsigned func_wid, vvp_bit4_t func_init_val)
+			      bool auto_flag, цео func_type, unsigned func_wid, vvp_bit4_t func_init_val)
       : __vpiScope(nam,tnam, auto_flag), func_type_(func_type), func_wid_(func_wid), func_init_val_(func_init_val)
       { }
 
-      int get_type_code(void) const override { return vpiFunction; }
-      int vpi_get(int code) override
+      цео get_type_code(void) const override { врати vpiFunction; }
+      цео vpi_get(цео code) override
       {
 	    switch (code) {
 		case vpiFuncType:
-		  return func_type_;
+		  врати func_type_;
 		default:
-		  return __vpiScope::vpi_get(code);
+		  врати __vpiScope::vpi_get(code);
 	    }
       }
 
     public:
-      inline unsigned get_func_width(void) const { return func_wid_; }
-      inline vvp_bit4_t get_func_init_val(void) const { return func_init_val_; }
+      inline unsigned get_func_width(void) const { врати func_wid_; }
+      inline vvp_bit4_t get_func_init_val(void) const { врати func_init_val_; }
 
     private:
-      int func_type_;
+      цео func_type_;
       unsigned func_wid_;
       vvp_bit4_t func_init_val_;
 };
@@ -342,7 +342,7 @@ extern void vpip_attach_to_current_scope(vpiHandle obj);
 extern __vpiScope* vpip_peek_context_scope(void);
 extern unsigned vpip_add_item_to_context(automatic_hooks_s*item,
                                          __vpiScope*scope);
-extern vpiHandle vpip_make_root_iterator(int type_code);
+extern vpiHandle vpip_make_root_iterator(цео type_code);
 extern void vpip_make_root_iterator(class __vpiHandle**&table,
 				    unsigned&ntable);
 
@@ -352,20 +352,20 @@ extern void vpip_make_root_iterator(class __vpiHandle**&table,
  * a declared name and declaration indices.
  */
 struct __vpiSignal : public __vpiHandle {
-      int vpi_get(int code) override;
-      int64_t vpi_get64(int code) override;
-      char* vpi_get_str(int code) override;
+      цео vpi_get(цео code) override;
+      int64_t vpi_get64(цео code) override;
+      char* vpi_get_str(цео code) override;
       void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
+      vpiHandle vpi_put_value(p_vpi_value val, цео flags) override;
+      vpiHandle vpi_handle(цео code) override;
+      vpiHandle vpi_iterate(цео code) override;
+      vpiHandle vpi_index(цео idx) override;
 
     public:
       unsigned width() const;
-      vpiHandle get_index(int index);
+      vpiHandle get_index(цео index);
       void get_bit_value(const struct __vpiBit*bit, p_vpi_value vp);
-      vpiHandle put_bit_value(struct __vpiBit*bit, p_vpi_value vp, int flags);
+      vpiHandle put_bit_value(struct __vpiBit*bit, p_vpi_value vp, цео flags);
       void make_bits();
 
       struct __vpiBit*bits;
@@ -399,14 +399,14 @@ struct __vpiSignal : public __vpiHandle {
 extern unsigned vpip_size(const __vpiSignal *sig);
 extern __vpiScope* vpip_scope(__vpiSignal*sig);
 
-extern vpiHandle vpip_make_int2(const char*name, int msb, int lsb,
+extern vpiHandle vpip_make_int2(const char*name, цео msb, цео lsb,
 			       bool signed_flag, vvp_net_t*vec);
-extern vpiHandle vpip_make_int4(const char*name, int msb, int lsb,
+extern vpiHandle vpip_make_int4(const char*name, цео msb, цео lsb,
 			       vvp_net_t*vec);
-extern vpiHandle vpip_make_var4(const char*name, int msb, int lsb,
+extern vpiHandle vpip_make_var4(const char*name, цео msb, цео lsb,
 			       bool signed_flag, vvp_net_t*net);
 extern vpiHandle vpip_make_net4(__vpiScope*scope,
-				const char*name, int msb, int lsb,
+				const char*name, цео msb, цео lsb,
 				bool signed_flag, vvp_net_t*node);
 
 /*
@@ -414,12 +414,12 @@ extern vpiHandle vpip_make_net4(__vpiScope*scope,
  */
 struct __vpiBit {
       struct as_bit_t : public __vpiHandle {
-	    int get_type_code(void) const;
-	    int vpi_get(int code);
-	    char* vpi_get_str(int code);
+	    цео get_type_code(void) const;
+	    цео vpi_get(цео code);
+	    char* vpi_get_str(цео code);
 	    void vpi_get_value(p_vpi_value val);
-	    vpiHandle vpi_put_value(p_vpi_value val, int flags);
-	    vpiHandle vpi_handle(int code);
+	    vpiHandle vpi_put_value(p_vpi_value val, цео flags);
+	    vpiHandle vpi_handle(цео code);
       } as_bit;
 
       vpiHandle index;
@@ -429,9 +429,9 @@ struct __vpiBit {
 	    struct __vpiBit*bit0;
       };
 
-      inline unsigned get_norm_index() const { return this - bit0; }
-      inline struct __vpiSignal*get_parent() const {return (bit0 - 1)->parent; }
-      int get_index(void) const;
+      inline unsigned get_norm_index() const { врати this - bit0; }
+      inline struct __vpiSignal*get_parent() const {врати (bit0 - 1)->parent; }
+      цео get_index(void) const;
 };
 
 class vpiPortBitInfo;
@@ -440,30 +440,30 @@ class vpiPortInfo  : public __vpiHandle {
     public:
       vpiPortInfo( __vpiScope *parent,
                     unsigned index,
-                    int vpi_direction,
+                    цео vpi_direction,
                     unsigned width,
                     const char *name,
                     char* buffer );
       ~vpiPortInfo() override;
 
-      int get_type_code(void) const override { return vpiPort; }
-      int get_direction(void) { return direction_; }
-      unsigned get_index(void) { return index_; }
-      int get_width(void) { return width_; }
+      цео get_type_code(void) const override { врати vpiPort; }
+      цео get_direction(void) { врати direction_; }
+      unsigned get_index(void) { врати index_; }
+      цео get_width(void) { врати width_; }
       void add_port_bit(vpiPortBitInfo* port_bit) { port_bits_.push_back(port_bit); }
 
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      vvp_net_t* get_port(void) const { return ref_; }
-      vpiHandle vpi_iterate(int code) override;
+      цео vpi_get(цео code) override;
+      char* vpi_get_str(цео code) override;
+      vpiHandle vpi_handle(цео code) override;
+      vvp_net_t* get_port(void) const { врати ref_; }
+      vpiHandle vpi_iterate(цео code) override;
 
       std::vector<vpiPortBitInfo*> port_bits_;
 
     private:
       __vpiScope *parent_;
       unsigned  index_;
-      int       direction_;
+      цео       direction_;
       unsigned  width_;
       const char *name_;
       vvp_net_t *ref_;
@@ -475,11 +475,11 @@ class vpiPortBitInfo  : public __vpiHandle {
                      unsigned bit);
       ~vpiPortBitInfo() override;
 
-      int get_type_code(void) const override { return vpiPortBit; }
-      unsigned get_bit(void) const { return bit_; }
+      цео get_type_code(void) const override { врати vpiPortBit; }
+      unsigned get_bit(void) const { врати bit_; }
 
-      int vpi_get(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      цео vpi_get(цео code) override;
+      vpiHandle vpi_handle(цео code) override;
 
     private:
       vpiPortInfo *parent_;
@@ -492,49 +492,49 @@ class vpiPortBitInfo  : public __vpiHandle {
  */
 struct __vpiPV : public __vpiHandle {
       __vpiPV();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+      цео get_type_code(void) const override;
+      цео vpi_get(цео code) override;
+      char* vpi_get_str(цео code) override;
       void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
+      vpiHandle vpi_put_value(p_vpi_value val, цео flags) override;
+      vpiHandle vpi_handle(цео code) override;
 
       vpiHandle parent;
       vvp_net_t*net;
       vpiHandle sbase;
-      int tbase;
+      цео tbase;
       unsigned width;
 };
-extern vpiHandle vpip_make_PV(char*name, int base, int width);
-extern vpiHandle vpip_make_PV(char*name, char*symbol, int width);
-extern vpiHandle vpip_make_PV(char*name, vpiHandle handle, int width);
+extern vpiHandle vpip_make_PV(char*name, цео base, цео width);
+extern vpiHandle vpip_make_PV(char*name, char*symbol, цео width);
+extern vpiHandle vpip_make_PV(char*name, vpiHandle handle, цео width);
 
 struct __vpiModPathTerm : public __vpiHandle {
       __vpiModPathTerm();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      vpiHandle vpi_handle(int code) override;
+      цео get_type_code(void) const override;
+      цео vpi_get(цео code) override;
+      vpiHandle vpi_handle(цео code) override;
 
       vpiHandle expr;
 	/* The value returned by vpi_get(vpiEdge, ...); */
-      int edge;
+      цео edge;
 };
 
 struct __vpiModPathSrc : public __vpiHandle {
       __vpiModPathSrc();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
+      цео get_type_code(void) const override;
+      цео vpi_get(цео code) override;
       void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
-      vpiHandle vpi_index(int idx) override;
+      vpiHandle vpi_put_value(p_vpi_value val, цео flags) override;
+      vpiHandle vpi_handle(цео code) override;
+      vpiHandle vpi_iterate(цео code) override;
+      vpiHandle vpi_index(цео idx) override;
       void vpi_get_delays(p_vpi_delay del) override;
       void vpi_put_delays(p_vpi_delay del) override;
       free_object_fun_t free_object_fun(void) override;
 
       struct __vpiModPath *dest;
-      int   type;
+      цео   type;
 
 	/* This is the input expression for this modpath. */
       struct __vpiModPathTerm path_term_in;
@@ -584,12 +584,12 @@ extern struct __vpiModPath* vpip_make_modpath(vvp_net_t *net) ;
 
 struct __vpiInterModPath : public __vpiHandle {
       __vpiInterModPath();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
+      цео get_type_code(void) const override;
+      цео vpi_get(цео code) override;
       void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+      vpiHandle vpi_put_value(p_vpi_value val, цео flags) override;
+      vpiHandle vpi_handle(цео code) override;
+      vpiHandle vpi_iterate(цео code) override;
       void vpi_get_delays(p_vpi_delay del) override;
       void vpi_put_delays(p_vpi_delay del) override;
       free_object_fun_t free_object_fun(void) override;
@@ -626,12 +626,12 @@ class __vpiNamedEvent : public __vpiHandle {
       __vpiNamedEvent(const __vpiNamedEvent&) = delete;
       __vpiNamedEvent& operator=(const __vpiNamedEvent&) = delete;
 
-      int get_type_code(void) const override;
-      __vpiScope*get_scope(void) const { return scope_; }
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
+      цео get_type_code(void) const override;
+      __vpiScope*get_scope(void) const { врати scope_; }
+      цео vpi_get(цео code) override;
+      char* vpi_get_str(цео code) override;
+      vpiHandle vpi_put_value(p_vpi_value val, цео flags) override;
+      vpiHandle vpi_handle(цео code) override;
 
       inline void add_vpi_callback(__vpiCallback*cb)
       { cb->next = callbacks_;
@@ -668,13 +668,13 @@ extern bool is_net_array(vpiHandle obj);
  */
 struct __vpiRealVar : public __vpiHandle {
       __vpiRealVar();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+      цео get_type_code(void) const override;
+      цео vpi_get(цео code) override;
+      char* vpi_get_str(цео code) override;
       void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_iterate(int code) override;
+      vpiHandle vpi_put_value(p_vpi_value val, цео flags) override;
+      vpiHandle vpi_handle(цео code) override;
+      vpiHandle vpi_iterate(цео code) override;
 
       union { // The scope or parent array that contains me.
 	    vpiHandle parent;
@@ -703,7 +703,7 @@ class __vpiBaseVar : public __vpiHandle {
       ~__vpiBaseVar() override;
 #endif
 
-      inline vvp_net_t* get_net() const { return net_; }
+      inline vvp_net_t* get_net() const { врати net_; }
 
     protected:
       __vpiScope* scope_;
@@ -718,10 +718,10 @@ class __vpiStringVar : public __vpiBaseVar {
     public:
       __vpiStringVar(__vpiScope*scope, const char*name, vvp_net_t*net);
 
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
+      цео get_type_code(void) const override;
+      цео vpi_get(цео code) override;
       void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      vpiHandle vpi_put_value(p_vpi_value val, цео flags) override;
 };
 
 extern vpiHandle vpip_make_string_var(const char*name, vvp_net_t*net);
@@ -735,17 +735,17 @@ struct __vpiArrayBase {
       virtual vpiHandle get_right_range() = 0;
       virtual __vpiScope*get_scope() const = 0;
 
-      virtual int get_word_size() const = 0;
-      virtual char*get_word_str(struct __vpiArrayWord*word, int code) = 0;
+      virtual цео get_word_size() const = 0;
+      virtual char*get_word_str(struct __vpiArrayWord*word, цео code) = 0;
       virtual void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) = 0;
       virtual void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp,
-                                    int flags) = 0;
-      virtual vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) = 0;
+                                    цео flags) = 0;
+      virtual vpiHandle get_iter_index(struct __vpiArrayIterator*iter, цео idx) = 0;
 
     // vpi_iterate is already defined by vpiHandle, so to avoid problems with
     // classes inheriting from vpiHandle and vpiArrayBase just share the common
     // code in the following function
-      vpiHandle vpi_array_base_iterate(int code);
+      vpiHandle vpi_array_base_iterate(цео code);
 
       virtual void make_vals_words();
 
@@ -778,24 +778,24 @@ struct __vpiArrayBase {
 * vector4 array works.
 */
 struct __vpiArray : public __vpiArrayBase, public __vpiHandle {
-      int get_type_code(void) const override { return vpiMemory; }
-      unsigned get_size() const override { return array_count; }
-      vpiHandle get_left_range() override { assert(nets == 0); return &msb; }
-      vpiHandle get_right_range() override { assert(nets == 0); return &lsb; }
-      __vpiScope*get_scope() const override { return scope; }
+      цео get_type_code(void) const override { врати vpiMemory; }
+      unsigned get_size() const override { врати array_count; }
+      vpiHandle get_left_range() override { assert(nets == 0); врати &msb; }
+      vpiHandle get_right_range() override { assert(nets == 0); врати &lsb; }
+      __vpiScope*get_scope() const override { врати scope; }
 
-      int get_word_size() const override;
-      char*get_word_str(struct __vpiArrayWord*word, int code) override;
+      цео get_word_size() const override;
+      char*get_word_str(struct __vpiArrayWord*word, цео code) override;
       void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) override;
-      void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int flags) override;
+      void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, цео flags) override;
 
-      vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) override;
+      vpiHandle get_iter_index(struct __vpiArrayIterator*iter, цео idx) override;
 
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      inline vpiHandle vpi_iterate(int code) override { return vpi_array_base_iterate(code); }
-      vpiHandle vpi_index(int idx) override;
+      цео vpi_get(цео code) override;
+      char* vpi_get_str(цео code) override;
+      vpiHandle vpi_handle(цео code) override;
+      inline vpiHandle vpi_iterate(цео code) override { врати vpi_array_base_iterate(code); }
+      vpiHandle vpi_index(цео idx) override;
 
       void set_word(unsigned idx, unsigned off, const vvp_vector4_t&val);
       void set_word(unsigned idx, double val);
@@ -807,7 +807,7 @@ struct __vpiArray : public __vpiArrayBase, public __vpiHandle {
       void get_word_obj(unsigned address, vvp_object_t&val);
       std::string get_word_str(unsigned address);
 
-      void alias_word(unsigned long addr, vpiHandle word, int msb, int lsb);
+      void alias_word(unsigned long addr, vpiHandle word, цео msb, цео lsb);
       void attach_word(unsigned addr, vpiHandle word);
       void word_change(unsigned long addr);
 
@@ -833,7 +833,7 @@ private:
       __vpiScope*scope;
 
 friend vpiHandle vpip_make_array(const char*label, const char*name,
-                                 int first_addr, int last_addr,
+                                 цео first_addr, цео last_addr,
                                  bool signed_flag);
 friend void compile_array_alias(char*label, char*name, char*src);
 };
@@ -842,24 +842,24 @@ class __vpiDarrayVar : public __vpiBaseVar, public __vpiArrayBase {
     public:
       __vpiDarrayVar(__vpiScope*scope, const char*name, vvp_net_t*net);
 
-      int get_type_code() const override { return vpiArrayVar; }
+      цео get_type_code() const override { врати vpiArrayVar; }
       unsigned get_size() const override;
       vpiHandle get_left_range() override;
       vpiHandle get_right_range() override;
-      __vpiScope*get_scope() const override { return scope_; }
+      __vpiScope*get_scope() const override { врати scope_; }
 
-      int get_word_size() const override;
-      char*get_word_str(struct __vpiArrayWord*word, int code) override;
+      цео get_word_size() const override;
+      char*get_word_str(struct __vpiArrayWord*word, цео code) override;
       void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) override;
-      void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int flags) override;
+      void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, цео flags) override;
 
-      vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) override;
-      inline vpiHandle vpi_iterate(int code) override { return vpi_array_base_iterate(code); }
+      vpiHandle get_iter_index(struct __vpiArrayIterator*iter, цео idx) override;
+      inline vpiHandle vpi_iterate(цео code) override { врати vpi_array_base_iterate(code); }
 
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
-      vpiHandle vpi_handle(int code) override;
-      vpiHandle vpi_index(int index) override;
+      цео vpi_get(цео code) override;
+      char* vpi_get_str(цео code) override;
+      vpiHandle vpi_handle(цео code) override;
+      vpiHandle vpi_index(цео index) override;
 
       void vpi_get_value(p_vpi_value val) override;
 
@@ -875,7 +875,7 @@ class __vpiQueueVar : public __vpiDarrayVar {
     public:
       __vpiQueueVar(__vpiScope*scope, const char*name, vvp_net_t*net);
 
-      int vpi_get(int code) override;
+      цео vpi_get(цео code) override;
 };
 
 extern vpiHandle vpip_make_queue_var(const char*name, vvp_net_t*net);
@@ -885,9 +885,9 @@ class __vpiPropQueueRef : public __vpiHandle {
     public:
       explicit __vpiPropQueueRef(__vpiScope*scope, unsigned pidx, bool is_queue);
 
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
-      char* vpi_get_str(int code) override;
+      цео get_type_code(void) const override;
+      цео vpi_get(цео code) override;
+      char* vpi_get_str(цео code) override;
       void vpi_get_value(p_vpi_value val) override;
 
       vvp_net_t* class_net_;
@@ -908,8 +908,8 @@ class __vpiCobjectVar : public __vpiBaseVar {
     public:
       __vpiCobjectVar(__vpiScope*scope, const char*name, vvp_net_t*net);
 
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
+      цео get_type_code(void) const override;
+      цео vpi_get(цео code) override;
       void vpi_get_value(p_vpi_value val) override;
 };
 
@@ -935,7 +935,7 @@ extern vpiHandle vpip_make_cobject_var(const char*name, vvp_net_t*net);
  */
 struct __vpiUserSystf : public __vpiHandle {
       __vpiUserSystf();
-      int get_type_code(void) const override;
+      цео get_type_code(void) const override;
 
       s_vpi_systf_data info;
       bool is_user_defn;
@@ -989,8 +989,8 @@ vpiHandle vpip_make_string_param(const char*name, char*value, bool local_flag,
 
 struct __vpiBinaryConst : public __vpiHandle {
       __vpiBinaryConst();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
+      цео get_type_code(void) const override;
+      цео vpi_get(цео code) override;
       void vpi_get_value(p_vpi_value val) override;
 
       vvp_vector4_t bits;
@@ -1008,8 +1008,8 @@ vpiHandle vpip_make_binary_param(const char*name, const vvp_vector4_t&bits,
 class __vpiRealConst : public __vpiHandle {
     public:
       explicit __vpiRealConst(double);
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
+      цео get_type_code(void) const override;
+      цео vpi_get(цео code) override;
       void vpi_get_value(p_vpi_value val) override;
 
       double value;
@@ -1022,8 +1022,8 @@ vpiHandle vpip_make_real_param(const char*name, double value, bool local_flag,
 class __vpiNullConst : public __vpiHandle {
     public:
       explicit __vpiNullConst();
-      int get_type_code(void) const override;
-      int vpi_get(int code) override;
+      цео get_type_code(void) const override;
+      цео vpi_get(цео code) override;
       void vpi_get_value(p_vpi_value val) override;
 };
 
@@ -1075,7 +1075,7 @@ extern "C" void vpip_add_env_and_default_module_paths();
  * not be released by the caller.
  */
 extern vpiHandle vpip_build_vpi_call(const char*name,
-				     int val_type, unsigned return_width,
+				     цео val_type, unsigned return_width,
 				     class vvp_net_t*fnet,
 				     bool func_as_task_err,
 				     bool func_as_task_warn,
@@ -1100,13 +1100,13 @@ extern void vpip_execute_vpi_call(vthread_t thr, vpiHandle obj);
 vpiHandle vpip_sim_time(__vpiScope*scope, bool is_stime);
 vpiHandle vpip_sim_realtime(__vpiScope*scope);
 
-extern int vpip_get_time_precision(void);
-extern void vpip_set_time_precision(int pres);
+extern цео vpip_get_time_precision(void);
+extern void vpip_set_time_precision(цео pres);
 
 extern __vpiScope*vpip_timescale_scope_from_handle(vpiHandle obj);
 
-extern int vpip_time_units_from_handle(vpiHandle obj);
-extern int vpip_time_precision_from_handle(vpiHandle obj);
+extern цео vpip_time_units_from_handle(vpiHandle obj);
+extern цео vpip_time_precision_from_handle(vpiHandle obj);
 
 extern double vpip_scaled_time_from_handle(vvp_time64_t time, vpiHandle obj);
 
@@ -1134,8 +1134,8 @@ extern const char* vpip_name_string(const char*str);
  * written into buf, without overflowing nbuf.
  */
 extern unsigned vpip_vec4_to_dec_str(const vvp_vector4_t&vec4,
-				     char *buf, unsigned int nbuf,
-				     int signed_flag);
+				     char *buf, unsigned цео nbuf,
+				     цео signed_flag);
 
 
 extern void vpip_vec4_to_hex_str(const vvp_vector4_t&bits, char*buf,
@@ -1174,12 +1174,12 @@ enum vpi_rbuf_t {
 extern void *need_result_buf(unsigned cnt, vpi_rbuf_t type);
 /* following two routines use need_result_buf(, RBUF_STR) */
 extern char *simple_set_rbuf_str(const char *s1);
-extern char *generic_get_str(int code, vpiHandle ref, const char *name, const char *index);
+extern char *generic_get_str(цео code, vpiHandle ref, const char *name, const char *index);
 
 /* A routine to find the enclosing module. */
 extern vpiHandle vpip_module(__vpiScope*scope);
 
-extern int vpip_delay_selection;
+extern цео vpip_delay_selection;
 
 /* A flag to disable output to MCD bit 0. */
 extern bool vpip_mcd0_disable;
@@ -1189,7 +1189,7 @@ inline uint64_t vlg_round_to_u64(double rval)
       // Directly casting a negative double to an unsigned integer types is
       // undefined behavior and behaves differently on different architectures.
       // Cast to signed integer first to get the behavior we want.
-      return static_cast<uint64_t>(static_cast<int64_t>(std::round(rval)));
+      врати static_cast<uint64_t>(static_cast<int64_t>(std::round(rval)));
 }
 
 #endif /* IVL_vpi_priv_H */

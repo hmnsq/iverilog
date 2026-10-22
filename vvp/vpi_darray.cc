@@ -44,49 +44,49 @@ __vpiDarrayVar::__vpiDarrayVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
 unsigned __vpiDarrayVar::get_size() const
 {
       const vvp_fun_signal_object*fun = dynamic_cast<vvp_fun_signal_object*> (get_net()->fun);
-      if(!fun)
-        return 0;
+      ако(!fun)
+        врати 0;
 
       vvp_object_t val = fun->get_object();
       const vvp_darray*aval = val.peek<vvp_darray>();
 
-      if(!aval)
-        return 0;
+      ако(!aval)
+        врати 0;
 
-      return aval->get_size();
+      врати aval->get_size();
 }
 
 vpiHandle __vpiDarrayVar::get_left_range()
 {
       left_range_.set_value(0);
-      return &left_range_;
+      врати &left_range_;
 }
 
 vpiHandle __vpiDarrayVar::get_right_range()
 {
       right_range_.set_value(get_size() - 1);
-      return &right_range_;
+      врати &right_range_;
 }
 
-int __vpiDarrayVar::get_word_size() const
+цео __vpiDarrayVar::get_word_size() const
 {
       vvp_vector4_t new_vec;
       vvp_darray*aobj = get_vvp_darray();
       aobj->get_word(0, new_vec);
-      return new_vec.size();
+      врати new_vec.size();
 }
 
-char*__vpiDarrayVar::get_word_str(struct __vpiArrayWord*word, int code)
+char*__vpiDarrayVar::get_word_str(struct __vpiArrayWord*word, цео code)
 {
       unsigned index = word->get_index();
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      ако (code == vpiFile) {  // Not implemented for now!
+	    врати simple_set_rbuf_str(file_names[0]);
       }
 
       char sidx [64];
-      snprintf(sidx, 63, "%d", (int)index);
-      return generic_get_str(code, scope_, name_, sidx);
+      snprintf(sidx, 63, "%d", (цео)index);
+      врати generic_get_str(code, scope_, name_, sidx);
 }
 
 void __vpiDarrayVar::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
@@ -94,12 +94,12 @@ void __vpiDarrayVar::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
       unsigned index = word->get_index();
       vvp_darray*aobj = get_vvp_darray();
 
-      if(vp->format == vpiObjTypeVal) {
-          if(dynamic_cast<vvp_darray_real*>(aobj))
+      ако(vp->format == vpiObjTypeVal) {
+          ако(dynamic_cast<vvp_darray_real*>(aobj))
               vp->format = vpiRealVal;
-          else if(dynamic_cast<vvp_darray_string*>(aobj))
+          инако ако(dynamic_cast<vvp_darray_string*>(aobj))
               vp->format = vpiStringVal;
-          else
+          инако
               vp->format = vpiVectorVal;
       }
 
@@ -140,7 +140,7 @@ void __vpiDarrayVar::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
       }
 }
 
-void __vpiDarrayVar::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int)
+void __vpiDarrayVar::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, цео)
 {
       unsigned index = word->get_index();
       vvp_darray*aobj = get_vvp_darray();
@@ -168,71 +168,71 @@ void __vpiDarrayVar::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, 
       }
 }
 
-vpiHandle __vpiDarrayVar::get_iter_index(struct __vpiArrayIterator*, int idx)
+vpiHandle __vpiDarrayVar::get_iter_index(struct __vpiArrayIterator*, цео idx)
 {
-      if (vals_words == 0) make_vals_words();
+      ако (vals_words == 0) make_vals_words();
 
-      return &(vals_words[idx].as_word);
+      врати &(vals_words[idx].as_word);
 }
 
-int __vpiDarrayVar::vpi_get(int code)
+цео __vpiDarrayVar::vpi_get(цео code)
 {
       switch (code) {
 	  case vpiArrayType:
-	    return vpiDynamicArray;
+	    врати vpiDynamicArray;
 	  case vpiLeftRange:
-	    return 0;
+	    врати 0;
 	  case vpiRightRange:
-	    return get_size() - 1;
+	    врати get_size() - 1;
 	  case vpiSize:
-            return get_size();
+            врати get_size();
 
 	  default:
 	    fprintf(stderr, "vpi sorry: property is not implemented");
 	    assert(false);
-	    return 0;
+	    врати 0;
       }
 }
 
-char* __vpiDarrayVar::vpi_get_str(int code)
+char* __vpiDarrayVar::vpi_get_str(цео code)
 {
-      if (code == vpiFile) {  // Not implemented for now!
-            return simple_set_rbuf_str(file_names[0]);
+      ако (code == vpiFile) {  // Not implemented for now!
+            врати simple_set_rbuf_str(file_names[0]);
       }
 
-      return generic_get_str(code, scope_, name_, NULL);
+      врати generic_get_str(code, scope_, name_, NULL);
 }
 
-vpiHandle __vpiDarrayVar::vpi_handle(int code)
+vpiHandle __vpiDarrayVar::vpi_handle(цео code)
 {
       switch (code) {
           case vpiLeftRange:
-            return get_left_range();
+            врати get_left_range();
 
           case vpiRightRange:
-            return get_right_range();
+            врати get_right_range();
 
           case vpiScope:
-            return scope_;
+            врати scope_;
 
           case vpiModule:
-            return vpip_module(scope_);
+            врати vpip_module(scope_);
       }
 
-      return 0;
+      врати 0;
 }
 
-vpiHandle __vpiDarrayVar::vpi_index(int index)
+vpiHandle __vpiDarrayVar::vpi_index(цео index)
 {
-      if (index >= (long) get_size())
-	    return 0;
-      if (index < 0)
-	    return 0;
+      ако (index >= (long) get_size())
+	    врати 0;
+      ако (index < 0)
+	    врати 0;
 
-      if (vals_words == 0)
+      ако (vals_words == 0)
 	    make_vals_words();
 
-      return &(vals_words[index].as_word);
+      врати &(vals_words[index].as_word);
 }
 
 void __vpiDarrayVar::vpi_get_value(p_vpi_value val)
@@ -246,7 +246,7 @@ vvp_darray*__vpiDarrayVar::get_vvp_darray() const
       assert(fun);
       vvp_object_t obj = fun->get_object();
 
-      return obj.peek<vvp_darray>();
+      врати obj.peek<vvp_darray>();
 }
 
 vpiHandle vpip_make_darray_var(const char*name, vvp_net_t*net)
@@ -256,7 +256,7 @@ vpiHandle vpip_make_darray_var(const char*name, vvp_net_t*net)
 
       __vpiDarrayVar*obj = new __vpiDarrayVar(scope, use_name, net);
 
-      return obj;
+      врати obj;
 }
 
 __vpiQueueVar::__vpiQueueVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
@@ -264,13 +264,13 @@ __vpiQueueVar::__vpiQueueVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
 {
 }
 
-int __vpiQueueVar::vpi_get(int code)
+цео __vpiQueueVar::vpi_get(цео code)
 {
       switch (code) {
 	  case vpiArrayType:
-	    return vpiQueueArray;
+	    врати vpiQueueArray;
 	  default:
-	    return __vpiDarrayVar::vpi_get(code);
+	    врати __vpiDarrayVar::vpi_get(code);
       }
 }
 
@@ -281,7 +281,7 @@ vpiHandle vpip_make_queue_var(const char*name, vvp_net_t*net)
 
       __vpiQueueVar*obj = new __vpiQueueVar(scope, use_name, net);
 
-      return obj;
+      врати obj;
 }
 
 __vpiPropQueueRef::__vpiPropQueueRef(__vpiScope*scope, unsigned pidx,
@@ -290,45 +290,45 @@ __vpiPropQueueRef::__vpiPropQueueRef(__vpiScope*scope, unsigned pidx,
 {
 }
 
-int __vpiPropQueueRef::get_type_code(void) const
-{ return vpiArrayVar; }
+цео __vpiPropQueueRef::get_type_code(void) const
+{ врати vpiArrayVar; }
 
 static vvp_darray* get_live_darray_from_prop(vvp_net_t* class_net, unsigned pid)
 {
-      if (!class_net) return 0;
+      ако (!class_net) врати 0;
       const vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(class_net->fun);
-      if (!fun) return 0;
+      ако (!fun) врати 0;
       vvp_object_t obj = fun->get_object();
       vvp_cobject* cobj = obj.peek<vvp_cobject>();
-      if (!cobj) return 0;
+      ако (!cobj) врати 0;
       vvp_object_t qobj;
       cobj->get_object(pid, qobj, 0);
-      return qobj.peek<vvp_darray>();
+      врати qobj.peek<vvp_darray>();
 }
 
-int __vpiPropQueueRef::vpi_get(int code)
+цео __vpiPropQueueRef::vpi_get(цео code)
 {
       const vvp_darray* aobj = get_live_darray_from_prop(class_net_, prop_idx_);
       switch (code) {
 	  case vpiArrayType:
-	    return is_queue_ ? vpiQueueArray : vpiDynamicArray;
+	    врати is_queue_ ? vpiQueueArray : vpiDynamicArray;
 	  case vpiLeftRange:
-	    return 0;
+	    врати 0;
 	  case vpiRightRange:
-	    return aobj ? (int) (aobj->get_size() - 1) : 0;
+	    врати aobj ? (цео) (aobj->get_size() - 1) : 0;
 	  case vpiSize:
-	    return aobj ? (int) aobj->get_size() : 0;
+	    врати aobj ? (цео) aobj->get_size() : 0;
 	  default:
-	    return 0;
+	    врати 0;
       }
 }
 
-char* __vpiPropQueueRef::vpi_get_str(int code)
+char* __vpiPropQueueRef::vpi_get_str(цео code)
 {
-      if (code == vpiFile) {
-	    return simple_set_rbuf_str(file_names[0]);
+      ако (code == vpiFile) {
+	    врати simple_set_rbuf_str(file_names[0]);
       }
-      return generic_get_str(code, scope_, "prop_darray", NULL);
+      врати generic_get_str(code, scope_, "prop_darray", NULL);
 }
 
 void __vpiPropQueueRef::vpi_get_value(p_vpi_value val)
@@ -343,40 +343,40 @@ vpiHandle vpip_make_prop_queue_ref(char* class_label, unsigned prop_idx,
 						     prop_idx,
 						     is_queue_flag != 0);
       functor_ref_lookup(&obj->class_net_, class_label);
-      return obj;
+      врати obj;
 }
 
 vvp_darray* vpip_vpi_darray_from_handle(vpiHandle ref)
 {
-      if (!ref) return 0;
+      ако (!ref) врати 0;
 
-      if (__vpiPropQueueRef* pr = dynamic_cast<__vpiPropQueueRef*>(ref)) {
-	    return get_live_darray_from_prop(pr->class_net_, pr->prop_idx_);
+      ако (__vpiPropQueueRef* pr = dynamic_cast<__vpiPropQueueRef*>(ref)) {
+	    врати get_live_darray_from_prop(pr->class_net_, pr->prop_idx_);
       }
 
-      if (const __vpiDarrayVar* dv = dynamic_cast<__vpiDarrayVar*>(ref)) {
+      ако (const __vpiDarrayVar* dv = dynamic_cast<__vpiDarrayVar*>(ref)) {
 	    const vvp_fun_signal_object* fun = dynamic_cast<vvp_fun_signal_object*>(dv->get_net()->fun);
-	    if (!fun) return 0;
+	    ако (!fun) врати 0;
 	    vvp_object_t obj = fun->get_object();
-	    return obj.peek<vvp_darray>();
+	    врати obj.peek<vvp_darray>();
       }
 
-      return 0;
+      врати 0;
 }
 
 #ifdef CHECK_WITH_VALGRIND
 void array_delete(vpiHandle item)
 {
-      if (__vpiPropQueueRef* pq = dynamic_cast<__vpiPropQueueRef*>(item)) {
+      ако (__vpiPropQueueRef* pq = dynamic_cast<__vpiPropQueueRef*>(item)) {
 	    delete pq;
-	    return;
+	    врати;
       }
 
       __vpiDarrayVar*dobj = dynamic_cast<__vpiDarrayVar*>(item);
-      if (dobj) {
-	    if (dobj->vals_words) delete [] (dobj->vals_words-1);
+      ако (dobj) {
+	    ако (dobj->vals_words) delete [] (dobj->vals_words-1);
 	    delete dobj;
-	    return;
+	    врати;
       }
 
       fprintf(stderr, "Need support for deleting array type: %d\n", item->vpi_get(vpiArrayType));
