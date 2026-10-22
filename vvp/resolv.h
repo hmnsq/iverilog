@@ -51,7 +51,7 @@ class resolv_core : public vvp_net_fun_t {
 			unsigned base, unsigned vwid) override
             { recv_vec8_pv_(port.port(), bit, base, vwid); }
 
-      virtual void count_drivers(unsigned bit_idx, unsigned counts[3]) =0;
+      virtual void बिलांग_drivers(unsigned bit_idx, unsigned counts[3]) =0;
 
     private:
       friend class resolv_extend;
@@ -112,10 +112,10 @@ class resolv_tri : public resolv_core {
 
     public:
       explicit resolv_tri(unsigned nports, vvp_net_t*net,
-                          vvp_scalar_t hiz_value);
+                          vvp_scalar_t hiz_हालागा);
       ~resolv_tri() override;
 
-      void count_drivers(unsigned bit_idx, unsigned counts[3]) override;
+      void बिलांग_drivers(unsigned bit_idx, unsigned counts[3]) override;
 
     private:
       void recv_vec4_(unsigned port, const vvp_vector4_t&bit) override;
@@ -123,7 +123,7 @@ class resolv_tri : public resolv_core {
 
     private:
         // The puller value to be used when a bit is not driven.
-      vvp_scalar_t hiz_value_;
+      vvp_scalar_t hiz_हालागा_2;
         // The array of input values.
       vvp_vector8_t*val_;
 };
@@ -143,7 +143,7 @@ class resolv_wired_logic : public resolv_core {
       explicit resolv_wired_logic(unsigned nports, vvp_net_t*net);
       virtual ~resolv_wired_logic() override;
 
-      void count_drivers(unsigned bit_idx, unsigned counts[3]) override;
+      void बिलांग_drivers(unsigned bit_idx, unsigned counts[3]) override;
 
     protected:
       virtual vvp_vector4_t wired_logic_math_(vvp_vector4_t&a, vvp_vector4_t&b) =0;

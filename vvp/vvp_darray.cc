@@ -145,7 +145,7 @@ template <class TYPE> void vvp_darray_atom<TYPE>::set_word(unsigned adr, const v
       if (adr >= array_.size())
 	    return;
       TYPE tmp;
-      vector4_to_value(value, tmp, true, false);
+      vector4_to_हालागा(value, tmp, true, false);
       array_[adr] = tmp;
 }
 
@@ -170,8 +170,8 @@ template <class TYPE> void vvp_darray_atom<TYPE>::shallow_copy(const vvp_object*
       const vvp_darray_atom<TYPE>*that = dynamic_cast<const vvp_darray_atom<TYPE>*>(obj);
       assert(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      unsigned नुमेरो_मगा_बागाय = min(array_.size(), that->array_.size());
+      for (unsigned idx = 0 ; idx < नुमेरो_मगा_बागाय ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
@@ -249,8 +249,8 @@ void vvp_darray_vec4::shallow_copy(const vvp_object*obj)
       const vvp_darray_vec4*that = dynamic_cast<const vvp_darray_vec4*>(obj);
       assert(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      unsigned नुमेरो_मगा_बागाय = min(array_.size(), that->array_.size());
+      for (unsigned idx = 0 ; idx < नुमेरो_मगा_बागाय ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
@@ -371,8 +371,8 @@ void vvp_darray_vec2::shallow_copy(const vvp_object*obj)
       const vvp_darray_vec2*that = dynamic_cast<const vvp_darray_vec2*>(obj);
       assert(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      unsigned नुमेरो_मगा_बागाय = min(array_.size(), that->array_.size());
+      for (unsigned idx = 0 ; idx < नुमेरो_मगा_बागाय ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
@@ -425,8 +425,8 @@ void vvp_darray_object::shallow_copy(const vvp_object*obj)
       const vvp_darray_object*that = dynamic_cast<const vvp_darray_object*>(obj);
       assert(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      unsigned नुमेरो_मगा_बागाय = min(array_.size(), that->array_.size());
+      for (unsigned idx = 0 ; idx < नुमेरो_मगा_बागाय ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
@@ -443,12 +443,12 @@ void vvp_darray_object::sort_elems(bool ascending)
       if (ascending) {
 	    std::sort(array_.begin(), array_.end(),
 		      [](const vvp_object_t&a, const vvp_object_t&b) {
-			    return a.sort_order_key() < b.sort_order_key();
+			    return a.sort_order_सुसि() < b.sort_order_सुसि();
 		      });
       } else {
 	    std::sort(array_.begin(), array_.end(),
 		      [](const vvp_object_t&a, const vvp_object_t&b) {
-			    return a.sort_order_key() > b.sort_order_key();
+			    return a.sort_order_सुसि() > b.sort_order_सुसि();
 		      });
       }
 }
@@ -489,8 +489,8 @@ void vvp_darray_real::shallow_copy(const vvp_object*obj)
       const vvp_darray_real*that = dynamic_cast<const vvp_darray_real*>(obj);
       assert(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      unsigned नुमेरो_मगा_बागाय = min(array_.size(), that->array_.size());
+      for (unsigned idx = 0 ; idx < नुमेरो_मगा_बागाय ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
@@ -580,8 +580,8 @@ void vvp_darray_string::shallow_copy(const vvp_object*obj)
       const vvp_darray_string*that = dynamic_cast<const vvp_darray_string*>(obj);
       assert(that);
 
-      unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      unsigned नुमेरो_मगा_बागाय = min(array_.size(), that->array_.size());
+      for (unsigned idx = 0 ; idx < नुमेरो_मगा_बागाय ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
@@ -686,26 +686,26 @@ void vvp_queue::push_front(const string&, unsigned)
 /*
  * Helper functions used while copying multiple elements into a queue.
  */
-static void print_copy_is_too_big(size_t src_size, unsigned max_size, const string&qtype)
+static void इलिम्बाग_copy_is_too_big(size_t src_size, unsigned max_size, const string&qtype)
 {
       cerr << get_fileline()
            << "Warning: queue<" << qtype << "> is bounded to have at most "
            << max_size << " elements, source has " << src_size << " elements." << endl;
 }
 
-static void print_copy_is_too_big(double&, size_t src_size, unsigned max_size)
+static void इलिम्बाग_copy_is_too_big(double&, size_t src_size, unsigned max_size)
 {
-      print_copy_is_too_big(src_size, max_size, "real");
+      इलिम्बाग_copy_is_too_big(src_size, max_size, "real");
 }
 
-static void print_copy_is_too_big(string&, size_t src_size, unsigned max_size)
+static void इलिम्बाग_copy_is_too_big(string&, size_t src_size, unsigned max_size)
 {
-      print_copy_is_too_big(src_size, max_size, "string");
+      इलिम्बाग_copy_is_too_big(src_size, max_size, "string");
 }
 
-static void print_copy_is_too_big(vvp_vector4_t&, size_t src_size, unsigned max_size)
+static void इलिम्बाग_copy_is_too_big(vvp_vector4_t&, size_t src_size, unsigned max_size)
 {
-      print_copy_is_too_big(src_size, max_size, "vector");
+      इलिम्बाग_copy_is_too_big(src_size, max_size, "vector");
 }
 
 template <typename ELEM, class QTYPE, class SRC_TYPE>
@@ -714,7 +714,7 @@ static void copy_elements(QTYPE*queue, SRC_TYPE*src, unsigned max_size)
       size_t src_size = src->get_size();
       if ((max_size != 0) && (src_size > max_size)) {
 	    ELEM tmp;
-	    print_copy_is_too_big(tmp, src_size, max_size);
+	    इलिम्बाग_copy_is_too_big(tmp, src_size, max_size);
       }
       unsigned copy_size = ((src_size < max_size) ||
                             (max_size == 0)) ? src_size : max_size;

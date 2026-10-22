@@ -46,7 +46,7 @@ using namespace std;
 /* This is the size of an unsigned long in bits. This is just a
    convenience macro. */
 # define CPU_WORD_BITS (8*sizeof(unsigned long))
-# define TOP_BIT (1UL << (CPU_WORD_BITS-1))
+# define इताअस_BIT (1UL << (CPU_WORD_BITS-1))
 
 permaheap vvp_net_fun_t::heap_;
 permaheap vvp_net_fil_t::heap_;
@@ -56,12 +56,12 @@ static const size_t VVP_NET_CHUNK = 1024*1024/sizeof(vvp_net_t);
 static vvp_net_t*vvp_net_alloc_table = NULL;
 #ifdef CHECK_WITH_VALGRIND
 static vvp_net_t **vvp_net_pool = NULL;
-static unsigned vvp_net_pool_count = 0;
+static unsigned vvp_net_pool_बिलांग = 0;
 #endif
 static size_t vvp_net_alloc_remaining = 0;
 // For statistics, count the vvp_nets allocated and the bytes of alloc
 // chunks allocated.
-unsigned long count_vvp_nets = 0;
+unsigned long बिलांग_vvp_nets = 0;
 size_t size_vvp_nets = 0;
 
 void* vvp_net_t::operator new (size_t size)
@@ -74,22 +74,22 @@ void* vvp_net_t::operator new (size_t size)
 #ifdef CHECK_WITH_VALGRIND
 	    VALGRIND_MAKE_MEM_NOACCESS(vvp_net_alloc_table, size*VVP_NET_CHUNK);
 	    VALGRIND_CREATE_MEMPOOL(vvp_net_alloc_table, 0, 0);
-	    vvp_net_pool_count += 1;
+	    vvp_net_pool_बिलांग += 1;
 	    vvp_net_pool = static_cast<vvp_net_t **>(realloc(vvp_net_pool,
-	                   vvp_net_pool_count*sizeof(vvp_net_t **)));
-	    vvp_net_pool[vvp_net_pool_count-1] = vvp_net_alloc_table;
+	                   vvp_net_pool_बिलांग*sizeof(vvp_net_t **)));
+	    vvp_net_pool[vvp_net_pool_बिलांग-1] = vvp_net_alloc_table;
 #endif
       }
 
       vvp_net_t*return_this = vvp_net_alloc_table;
 #ifdef CHECK_WITH_VALGRIND
-      VALGRIND_MEMPOOL_ALLOC(vvp_net_pool[vvp_net_pool_count-1],
+      VALGRIND_MEMPOOL_ALLOC(vvp_net_pool[vvp_net_pool_बिलांग-1],
                              return_this, size);
-      return_this->pool = vvp_net_pool[vvp_net_pool_count-1];
+      return_this->pool = vvp_net_pool[vvp_net_pool_बिलांग-1];
 #endif
       vvp_net_alloc_table += 1;
       vvp_net_alloc_remaining -= 1;
-      count_vvp_nets += 1;
+      बिलांग_vvp_nets += 1;
       return return_this;
 }
 
@@ -99,14 +99,14 @@ static map<sfunc_core*, bool> sfunc_map;
 static map<vvp_udp_fun_core*, bool> udp_map;
 static map<resolv_core*, bool> resolv_map;
 static vvp_net_t **local_net_pool = 0;
-static unsigned local_net_pool_count = 0;
+static unsigned local_net_pool_बिलांग = 0;
 
 void pool_local_net(vvp_net_t*net)
 {
-      local_net_pool_count += 1;
+      local_net_pool_बिलांग += 1;
       local_net_pool = static_cast<vvp_net_t **>(realloc(local_net_pool,
-                       local_net_pool_count*sizeof(vvp_net_t **)));
-      local_net_pool[local_net_pool_count-1] = net;
+                       local_net_pool_बिलांग*sizeof(vvp_net_t **)));
+      local_net_pool[local_net_pool_बिलांग-1] = net;
 }
 
 void vvp_net_delete(vvp_net_t *item)
@@ -135,12 +135,12 @@ void vvp_net_pool_delete()
 {
       unsigned long vvp_nets_del = 0;
 
-      for (unsigned idx = 0; idx < local_net_pool_count; idx += 1) {
+      for (unsigned idx = 0; idx < local_net_pool_बिलांग; idx += 1) {
 	    vvp_net_delete(local_net_pool[idx]);
       }
       free(local_net_pool);
       local_net_pool = 0;
-      local_net_pool_count = 0;
+      local_net_pool_बिलांग = 0;
 
       map<vvp_net_t*, bool>::iterator iter;
       for (iter = vvp_net_map.begin(); iter != vvp_net_map.end(); ++ iter ) {
@@ -167,20 +167,20 @@ void vvp_net_pool_delete()
       }
       resolv_map.clear();
 
-      if (RUNNING_ON_VALGRIND && (vvp_nets_del != count_vvp_nets)) {
+      if (RUNNING_ON_VALGRIND && (vvp_nets_del != बिलांग_vvp_nets)) {
 	    fflush(NULL);
 	    VALGRIND_PRINTF("Error: vvp missed deleting %ld of %lu net(s).",
-	                    (long) count_vvp_nets - vvp_nets_del,
-	                    count_vvp_nets);
+	                    (long) बिलांग_vvp_nets - vvp_nets_del,
+	                    बिलांग_vvp_nets);
       }
 
-      for (unsigned idx = 0; idx < vvp_net_pool_count; idx += 1) {
+      for (unsigned idx = 0; idx < vvp_net_pool_बिलांग; idx += 1) {
 	    VALGRIND_DESTROY_MEMPOOL(vvp_net_pool[idx]);
 	    ::delete [] vvp_net_pool[idx];
       }
       free(vvp_net_pool);
       vvp_net_pool = NULL;
-      vvp_net_pool_count = 0;
+      vvp_net_pool_बिलांग = 0;
 }
 #endif
 
@@ -268,7 +268,7 @@ void vvp_net_t::unlink(vvp_net_ptr_t dst_ptr)
       net->port[net_port] = vvp_net_ptr_t(0,0);
 }
 
-void vvp_net_t::count_drivers(unsigned idx, unsigned counts[4])
+void vvp_net_t::बिलांग_drivers(unsigned idx, unsigned counts[4])
 {
       counts[0] = 0;
       counts[1] = 0;
@@ -285,17 +285,17 @@ void vvp_net_t::count_drivers(unsigned idx, unsigned counts[4])
         /* If the net has multiple drivers, we need to interrogate the
            resolver network to get the driven values. */
       if (resolv_core*resolver = dynamic_cast<resolv_core*>(fun)) {
-            resolver->count_drivers(idx, counts);
+            resolver->बिलांग_drivers(idx, counts);
             return;
       }
       if (vvp_island_port*resolver = dynamic_cast<vvp_island_port*>(fun)) {
-            resolver->count_drivers(idx, counts);
+            resolver->बिलांग_drivers(idx, counts);
             return;
       }
 
         /* If the functor is not a resolver, there is only one driver, so
            we can just interrogate the filter to get the driven value. */
-      update_driver_counts(wire->driven_value(idx), counts);
+      update_driver_counts(wire->driven_हालागा(idx), counts);
 }
 
 void vvp_net_fun_t::operator delete(void*)
@@ -310,7 +310,7 @@ vvp_net_fil_t::vvp_net_fil_t()
 {
       force_link_ = 0;
       force_propagate_ = false;
-      count_filters += 1;
+      बिलांग_filters += 1;
 }
 
 vvp_net_fil_t::~vvp_net_fil_t()
@@ -617,10 +617,10 @@ void vvp_vector4_t::copy_bits(const vvp_vector4_t&that)
 
       if (size_ == that.size_) {
 	    if (size_ > BITS_PER_WORD) {
-		  unsigned words = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
-		  for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+		  unsigned मगा_सालिता = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
+		  for (unsigned idx = 0 ;  idx < मगा_सालिता ;  idx += 1)
 			abits_ptr_[idx] = that.abits_ptr_[idx];
-		  for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+		  for (unsigned idx = 0 ;  idx < मगा_सालिता ;  idx += 1)
 			bbits_ptr_[idx] = that.bbits_ptr_[idx];
 	    } else {
 		  abits_val_ = that.abits_val_;
@@ -701,13 +701,13 @@ void vvp_vector4_t::copy_bits(const vvp_vector4_t&that)
  */
 void vvp_vector4_t::copy_from_big_(const vvp_vector4_t&that)
 {
-      unsigned words = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
-      abits_ptr_ = new unsigned long[2*words];
-      bbits_ptr_ = abits_ptr_ + words;
+      unsigned मगा_सालिता = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
+      abits_ptr_ = new unsigned long[2*मगा_सालिता];
+      bbits_ptr_ = abits_ptr_ + मगा_सालिता;
 
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      for (unsigned idx = 0 ;  idx < मगा_सालिता ;  idx += 1)
 	    abits_ptr_[idx] = that.abits_ptr_[idx];
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      for (unsigned idx = 0 ;  idx < मगा_सालिता ;  idx += 1)
 	    bbits_ptr_[idx] = that.bbits_ptr_[idx];
 }
 
@@ -720,9 +720,9 @@ void vvp_vector4_t::copy_inverted_from_(const vvp_vector4_t&that)
 {
       size_ = that.size_;
       if (size_ > BITS_PER_WORD) {
-	    unsigned words = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
-	    abits_ptr_ = new unsigned long[2*words];
-	    bbits_ptr_ = abits_ptr_ + words;
+	    unsigned मगा_सालिता = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
+	    abits_ptr_ = new unsigned long[2*मगा_सालिता];
+	    bbits_ptr_ = abits_ptr_ + मगा_सालिता;
 
 	    unsigned remaining = size_;
 	    unsigned idx = 0;
@@ -736,7 +736,7 @@ void vvp_vector4_t::copy_inverted_from_(const vvp_vector4_t&that)
 		  abits_ptr_[idx] = mask & (that.bbits_ptr_[idx] | ~that.abits_ptr_[idx]);
 	    }
 
-	    for (idx = 0 ;  idx < words ;  idx += 1)
+	    for (idx = 0 ;  idx < मगा_सालिता ;  idx += 1)
 		  bbits_ptr_[idx] = that.bbits_ptr_[idx];
 
       } else {
@@ -747,7 +747,7 @@ void vvp_vector4_t::copy_inverted_from_(const vvp_vector4_t&that)
 }
 
 /* Make sure to set size_ before calling this routine. */
-void vvp_vector4_t::allocate_words_(unsigned long inita, unsigned long initb)
+void vvp_vector4_t::allocate_मगा_सालिता(unsigned long inita, unsigned long initb)
 {
       if (size_ > BITS_PER_WORD) {
 	    unsigned cnt = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
@@ -773,7 +773,7 @@ vvp_vector4_t::vvp_vector4_t(unsigned size__, double val)
 
 	/* We return 'bx for a NaN or +/- infinity. */
       if (val != val || (val && (val == 0.5*val)))  {
-	    allocate_words_(WORD_X_ABITS, WORD_X_BBITS);
+	    allocate_मगा_सालिता(WORD_X_ABITS, WORD_X_BBITS);
 	    return;
       }
 
@@ -782,7 +782,7 @@ vvp_vector4_t::vvp_vector4_t(unsigned size__, double val)
 	    is_neg = true;
 	    val = -val;
       }
-      allocate_words_(WORD_0_ABITS, WORD_0_BBITS);
+      allocate_मगा_सालिता(WORD_0_ABITS, WORD_0_BBITS);
 
 	/* Get the exponent and fractional part of the number. */
       fraction = frexp(val, &exponent);
@@ -802,27 +802,27 @@ vvp_vector4_t::vvp_vector4_t(unsigned size__, double val)
       }
 
       unsigned nwords = (exponent-1) / BITS_PER_WORD;
-      unsigned my_words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD - 1;
+      unsigned my_मगा_सालिता = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD - 1;
 
       fraction = ldexp(fraction, (exponent-1) % BITS_PER_WORD + 1);
 
 	/* Skip any leading bits. */
-      for (int idx = (signed) nwords; idx > (signed) my_words; idx -=1) {
+      for (int idx = (signed) nwords; idx > (signed) my_मगा_सालिता; idx -=1) {
 	    unsigned long bits = (unsigned long) fraction;
 	    fraction = fraction - (double) bits;
 	    fraction = ldexp(fraction, BITS_PER_WORD);
       }
 
 	/* Convert the remaining bits as appropriate. */
-      if (my_words == 0) {
+      if (my_मगा_सालिता == 0) {
 		  unsigned long bits = (unsigned long) fraction;
 		  abits_val_ = bits;
 		  fraction = fraction - (double) bits;
 		    /* Round any fractional part up. */
 		  if (fraction >= 0.5) *this += (int64_t) 1;
       } else {
-	    if (nwords < my_words) my_words = nwords;
-	    for (int idx = (signed)my_words; idx >= 0; idx -= 1) {
+	    if (nwords < my_मगा_सालिता) my_मगा_सालिता = nwords;
+	    for (int idx = (signed)my_मगा_सालिता; idx >= 0; idx -= 1) {
 		  unsigned long bits = (unsigned long) fraction;
 		  abits_ptr_[idx] = bits;
 		  fraction = fraction - (double) bits;
@@ -844,7 +844,7 @@ vvp_vector4_t::vvp_vector4_t(const vvp_vector4_t&that,
 {
 	// Set up and initialize the destination.
       size_ = wid;
-      allocate_words_(WORD_X_ABITS, WORD_X_BBITS);
+      allocate_मगा_सालिता(WORD_X_ABITS, WORD_X_BBITS);
 
 	// Special case: selecting from far beyond the source vector,
 	// to the result is all X bits. We're done.
@@ -1731,8 +1731,8 @@ bool vvp_vector4_t::eeq(const vvp_vector4_t&that) const
 		  && (bbits_val_ == that.bbits_val_);
       }
 
-      unsigned words = size_ / BITS_PER_WORD;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
+      unsigned मगा_सालिता = size_ / BITS_PER_WORD;
+      for (unsigned idx = 0 ;  idx < मगा_सालिता ;  idx += 1) {
 	    if (abits_ptr_[idx] != that.abits_ptr_[idx])
 		  return false;
 	    if (bbits_ptr_[idx] != that.bbits_ptr_[idx])
@@ -1742,8 +1742,8 @@ bool vvp_vector4_t::eeq(const vvp_vector4_t&that) const
       unsigned long mask = size_%BITS_PER_WORD;
       if (mask > 0) {
 	    mask = (1UL << mask) - 1;
-	    return (abits_ptr_[words]&mask) == (that.abits_ptr_[words]&mask)
-		  && (bbits_ptr_[words]&mask) == (that.bbits_ptr_[words]&mask);
+	    return (abits_ptr_[मगा_सालिता]&mask) == (that.abits_ptr_[मगा_सालिता]&mask)
+		  && (bbits_ptr_[मगा_सालिता]&mask) == (that.bbits_ptr_[मगा_सालिता]&mask);
       }
 
       return true;
@@ -1765,8 +1765,8 @@ bool vvp_vector4_t::eq_xz(const vvp_vector4_t&that) const
 		  && (bbits_val_ == that.bbits_val_);
       }
 
-      unsigned words = size_ / BITS_PER_WORD;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
+      unsigned मगा_सालिता = size_ / BITS_PER_WORD;
+      for (unsigned idx = 0 ;  idx < मगा_सालिता ;  idx += 1) {
 	    if ((abits_ptr_[idx]|bbits_ptr_[idx]) != (that.abits_ptr_[idx]|that.bbits_ptr_[idx]))
 		  return false;
 	    if (bbits_ptr_[idx] != that.bbits_ptr_[idx])
@@ -1776,8 +1776,8 @@ bool vvp_vector4_t::eq_xz(const vvp_vector4_t&that) const
       unsigned long mask = size_%BITS_PER_WORD;
       if (mask > 0) {
 	    mask = (1UL << mask) - 1;
-	    return ((abits_ptr_[words]|bbits_ptr_[words])&mask) == ((that.abits_ptr_[words]|that.bbits_ptr_[words])&mask)
-		  && (bbits_ptr_[words]&mask) == (that.bbits_ptr_[words]&mask);
+	    return ((abits_ptr_[मगा_सालिता]|bbits_ptr_[मगा_सालिता])&mask) == ((that.abits_ptr_[मगा_सालिता]|that.bbits_ptr_[मगा_सालिता])&mask)
+		  && (bbits_ptr_[मगा_सालिता]&mask) == (that.bbits_ptr_[मगा_सालिता]&mask);
       }
 
       return true;
@@ -1794,8 +1794,8 @@ bool vvp_vector4_t::has_xz() const
 	    return bbits_val_;
       }
 
-      unsigned words = size_ / BITS_PER_WORD;
-      for (unsigned idx = 0 ; idx < words ; idx += 1) {
+      unsigned मगा_सालिता = size_ / BITS_PER_WORD;
+      for (unsigned idx = 0 ; idx < मगा_सालिता ; idx += 1) {
 	    if (bbits_ptr_[idx])
 		  return true;
       }
@@ -1803,7 +1803,7 @@ bool vvp_vector4_t::has_xz() const
       unsigned long mask = size_%BITS_PER_WORD;
       if (mask > 0) {
 	    mask = -1UL >> (BITS_PER_WORD - mask);
-	    return bbits_ptr_[words]&mask;
+	    return bbits_ptr_[मगा_सालिता]&mask;
       }
 
       return false;
@@ -1820,8 +1820,8 @@ void vvp_vector4_t::change_z2x()
       if (size_ <= BITS_PER_WORD) {
 	    abits_val_ |= bbits_val_;
       } else {
-	    unsigned words = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
-	    for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+	    unsigned मगा_सालिता = (size_+BITS_PER_WORD-1) / BITS_PER_WORD;
+	    for (unsigned idx = 0 ;  idx < मगा_सालिता ;  idx += 1)
 		  abits_ptr_[idx] |= bbits_ptr_[idx];
       }
 }
@@ -1844,8 +1844,8 @@ void vvp_vector4_t::fill_bits(vvp_bit4_t bit)
 	    abits_val_ = init_atable[bit];
 	    bbits_val_ = init_btable[bit];
       } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    for (unsigned idx = 0; idx < words; idx += 1) {
+	    unsigned मगा_सालिता = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
+	    for (unsigned idx = 0; idx < मगा_सालिता; idx += 1) {
 		  abits_ptr_[idx] = init_atable[bit];
 		  bbits_ptr_[idx] = init_btable[bit];
 	    }
@@ -1918,9 +1918,9 @@ vvp_bit4_t vvp_vector4_t::reduce_or() const
 	    if ((bbits_val_ & mask) != 0UL)
 		  return BIT4_X;
       } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
+	    unsigned मगा_सालिता = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
 	    unsigned idx;
-	    for (idx = 0; idx < words - 1; idx += 1) {
+	    for (idx = 0; idx < मगा_सालिता - 1; idx += 1) {
 		  if ((abits_ptr_[idx] & ~bbits_ptr_[idx]) != 0UL)
 			return BIT4_1;
 		  if (bbits_ptr_[idx] != 0UL)
@@ -1946,9 +1946,9 @@ vvp_bit4_t vvp_vector4_t::reduce_and() const
 	    if ((bbits_val_ & mask) != 0UL)
 		  return BIT4_X;
 	} else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
+	    unsigned मगा_सालिता = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
 	    unsigned idx;
-	    for (idx = 0; idx < words - 1; idx += 1) {
+	    for (idx = 0; idx < मगा_सालिता - 1; idx += 1) {
 		  if ((abits_ptr_[idx] | bbits_ptr_[idx]) != ~0UL)
 			return BIT4_0;
 		  if (bbits_ptr_[idx] != 0UL)
@@ -1989,10 +1989,10 @@ vvp_bit4_t vvp_vector4_t::reduce_xor() const
 		  return BIT4_X;
 	    return parity(abits_val_ & mask) ? BIT4_1 : BIT4_0;
       } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
+	    unsigned मगा_सालिता = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
 	    unsigned long val_a = 0UL;
 	    unsigned idx;
-	    for (idx = 0; idx < words - 1; idx += 1) {
+	    for (idx = 0; idx < मगा_सालिता - 1; idx += 1) {
 		  if (bbits_ptr_[idx] != 0UL)
 			return BIT4_X;
 		  val_a ^= abits_ptr_[idx];
@@ -2018,8 +2018,8 @@ vvp_vector4_t& vvp_vector4_t::operator &= (const vvp_vector4_t&that)
 	    abits_val_ = tmp1 & tmp2;
 	    bbits_val_ = (tmp1 & that.bbits_val_) | (tmp2 & bbits_val_);
       } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    for (unsigned idx = 0; idx < words ; idx += 1) {
+	    unsigned मगा_सालिता = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
+	    for (unsigned idx = 0; idx < मगा_सालिता ; idx += 1) {
 		  unsigned long tmp1 = abits_ptr_[idx] | bbits_ptr_[idx];
 		  unsigned long tmp2 = that.abits_ptr_[idx] |
 		                       that.bbits_ptr_[idx];
@@ -2048,8 +2048,8 @@ vvp_vector4_t& vvp_vector4_t::operator |= (const vvp_vector4_t&that)
 	    abits_val_ = tmp;
 
       } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    for (unsigned idx = 0; idx < words ; idx += 1) {
+	    unsigned मगा_सालिता = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
+	    for (unsigned idx = 0; idx < मगा_सालिता ; idx += 1) {
 		  unsigned long tmp = abits_ptr_[idx] | bbits_ptr_[idx] |
 	                        that.abits_ptr_[idx] | that.bbits_ptr_[idx];
 		  bbits_ptr_[idx] = ((~abits_ptr_[idx] | bbits_ptr_[idx]) &
@@ -2076,8 +2076,8 @@ vvp_vector4_t& vvp_vector4_t::operator ^= (const vvp_vector4_t&that)
 	    bbits_val_ = bval;
 	    abits_val_ = (abits_val_ ^ that.abits_val_) | bval;
       } else {
-	    unsigned words = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
-	    for (unsigned idx = 0; idx < words ; idx += 1) {
+	    unsigned मगा_सालिता = (size_ + BITS_PER_WORD - 1) / BITS_PER_WORD;
+	    for (unsigned idx = 0; idx < मगा_सालिता ; idx += 1) {
 		  unsigned long bval = bbits_ptr_[idx] | that.bbits_ptr_[idx];
 		  bbits_ptr_[idx] = bval;
 		  abits_ptr_[idx] = (abits_ptr_[idx] ^ that.abits_ptr_[idx]) | bval;
@@ -2129,7 +2129,7 @@ ostream& operator<< (ostream&out, const vvp_vector4_t&that)
       return out;
 }
 
-template <class INT>bool vector4_to_value(const vvp_vector4_t&vec, INT&val,
+template <class INT>bool vector4_to_हालागा(const vvp_vector4_t&vec, INT&val,
 					  bool is_signed, bool is_arithmetic)
 {
       INT res = 0;
@@ -2164,24 +2164,24 @@ template <class INT>bool vector4_to_value(const vvp_vector4_t&vec, INT&val,
       return rc_flag;
 }
 
-template bool vector4_to_value(const vvp_vector4_t&vec, int8_t&val,
+template bool vector4_to_हालागा(const vvp_vector4_t&vec, int8_t&val,
 			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, int16_t&val,
+template bool vector4_to_हालागा(const vvp_vector4_t&vec, int16_t&val,
 			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, int32_t&val,
+template bool vector4_to_हालागा(const vvp_vector4_t&vec, int32_t&val,
 			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, int64_t&val,
+template bool vector4_to_हालागा(const vvp_vector4_t&vec, int64_t&val,
 			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, uint8_t&val,
+template bool vector4_to_हालागा(const vvp_vector4_t&vec, uint8_t&val,
 			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, uint16_t&val,
+template bool vector4_to_हालागा(const vvp_vector4_t&vec, uint16_t&val,
 			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, uint32_t&val,
+template bool vector4_to_हालागा(const vvp_vector4_t&vec, uint32_t&val,
 			       bool is_signed, bool is_arithmetic);
-template bool vector4_to_value(const vvp_vector4_t&vec, uint64_t&val,
+template bool vector4_to_हालागा(const vvp_vector4_t&vec, uint64_t&val,
 			       bool is_signed, bool is_arithmetic);
 
-template <class T> bool vector4_to_value(const vvp_vector4_t&vec,
+template <class T> bool vector4_to_हालागा(const vvp_vector4_t&vec,
                                          bool&overflow_flag, T&val)
 {
       T res = 0;
@@ -2210,14 +2210,14 @@ template <class T> bool vector4_to_value(const vvp_vector4_t&vec,
       return true;
 }
 
-template bool vector4_to_value(const vvp_vector4_t&vec, bool&overflow_flag,
+template bool vector4_to_हालागा(const vvp_vector4_t&vec, bool&overflow_flag,
                                unsigned long&val);
 #ifndef UL_AND_TIME64_SAME
-template bool vector4_to_value(const vvp_vector4_t&vec, bool&overflow_flag,
+template bool vector4_to_हालागा(const vvp_vector4_t&vec, bool&overflow_flag,
                                vvp_time64_t&val);
 #endif
 
-bool vector4_to_value(const vvp_vector4_t&vec, double&val, bool signed_flag)
+bool vector4_to_हालागा(const vvp_vector4_t&vec, double&val, bool signed_flag)
 {
 
       if (vec.size() == 0) {
@@ -2265,7 +2265,7 @@ bool vector4_to_value(const vvp_vector4_t&vec, double&val, bool signed_flag)
       return flag;
 }
 
-bool vector2_to_value(const vvp_vector2_t&a, int32_t&val, bool is_signed)
+bool vector2_to_हालागा(const vvp_vector2_t&a, int32_t&val, bool is_signed)
 {
       val = 0;
       unsigned idx;
@@ -2283,8 +2283,8 @@ bool vector2_to_value(const vvp_vector2_t&a, int32_t&val, bool is_signed)
       return a.size() <= 32;
 }
 
-vvp_vector4array_t::vvp_vector4array_t(unsigned width__, unsigned words__)
-: width_(width__), words_(words__)
+vvp_vector4array_t::vvp_vector4array_t(unsigned width__, unsigned मगा_सालिता_2)
+: width_(width__), मगा_सालिता_3(मगा_सालिता_2)
 {
 }
 
@@ -2339,18 +2339,18 @@ vvp_vector4_t vvp_vector4array_t::get_word_(v4cell*cell) const
       return res;
 }
 
-vvp_vector4array_sa::vvp_vector4array_sa(unsigned width__, unsigned words__)
-: vvp_vector4array_t(width__, words__)
+vvp_vector4array_sa::vvp_vector4array_sa(unsigned width__, unsigned मगा_सालिता_2)
+: vvp_vector4array_t(width__, मगा_सालिता_2)
 {
-      array_ = new v4cell[words_];
+      array_ = new v4cell[मगा_सालिता_3];
 
       if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
+	    for (unsigned idx = 0 ; idx < मगा_सालिता_3 ; idx += 1) {
 		  array_[idx].abits_val_ = vvp_vector4_t::WORD_X_ABITS;
 		  array_[idx].bbits_val_ = vvp_vector4_t::WORD_X_BBITS;
 	    }
       } else {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
+	    for (unsigned idx = 0 ; idx < मगा_सालिता_3 ; idx += 1) {
 		  array_[idx].abits_ptr_ = 0;
 		  array_[idx].bbits_ptr_ = 0;
 	    }
@@ -2361,7 +2361,7 @@ vvp_vector4array_sa::~vvp_vector4array_sa()
 {
       if (array_) {
 	    if (width_ > vvp_vector4_t::BITS_PER_WORD) {
-		  for (unsigned idx = 0 ; idx < words_ ; idx += 1)
+		  for (unsigned idx = 0 ; idx < मगा_सालिता_3 ; idx += 1)
 			if (array_[idx].abits_ptr_)
 			      delete[]array_[idx].abits_ptr_;
 	    }
@@ -2371,7 +2371,7 @@ vvp_vector4array_sa::~vvp_vector4array_sa()
 
 void vvp_vector4array_sa::set_word(unsigned index, const vvp_vector4_t&that)
 {
-      assert(index < words_);
+      assert(index < मगा_सालिता_3);
 
       v4cell*cell = &array_[index];
 
@@ -2380,18 +2380,18 @@ void vvp_vector4array_sa::set_word(unsigned index, const vvp_vector4_t&that)
 
 vvp_vector4_t vvp_vector4array_sa::get_word(unsigned index) const
 {
-      if (index >= words_)
+      if (index >= मगा_सालिता_3)
 	    return vvp_vector4_t(width_, BIT4_X);
 
-      assert(index < words_);
+      assert(index < मगा_सालिता_3);
 
       v4cell*cell = &array_[index];
 
       return get_word_(cell);
 }
 
-vvp_vector4array_aa::vvp_vector4array_aa(unsigned width__, unsigned words__)
-: vvp_vector4array_t(width__, words__)
+vvp_vector4array_aa::vvp_vector4array_aa(unsigned width__, unsigned मगा_सालिता_2)
+: vvp_vector4array_t(width__, मगा_सालिता_2)
 {
       context_idx_ = vpip_add_item_to_context(this, vpip_peek_context_scope());
 }
@@ -2402,15 +2402,15 @@ vvp_vector4array_aa::~vvp_vector4array_aa()
 
 void vvp_vector4array_aa::alloc_instance(vvp_context_t context)
 {
-      v4cell*array = new v4cell[words_];
+      v4cell*array = new v4cell[मगा_सालिता_3];
 
       if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
+	    for (unsigned idx = 0 ; idx < मगा_सालिता_3 ; idx += 1) {
 		  array[idx].abits_val_ = vvp_vector4_t::WORD_X_ABITS;
 		  array[idx].bbits_val_ = vvp_vector4_t::WORD_X_BBITS;
 	    }
       } else {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
+	    for (unsigned idx = 0 ; idx < मगा_सालिता_3 ; idx += 1) {
 		  array[idx].abits_ptr_ = 0;
 		  array[idx].bbits_ptr_ = 0;
 	    }
@@ -2425,14 +2425,14 @@ void vvp_vector4array_aa::reset_instance(vvp_context_t context)
             (vvp_get_context_item(context, context_idx_));
 
       if (width_ <= vvp_vector4_t::BITS_PER_WORD) {
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
+	    for (unsigned idx = 0 ; idx < मगा_सालिता_3 ; idx += 1) {
 		  cell->abits_val_ = vvp_vector4_t::WORD_X_ABITS;
 		  cell->bbits_val_ = vvp_vector4_t::WORD_X_BBITS;
                   cell++;
 	    }
       } else {
             unsigned cnt = (width_ + vvp_vector4_t::BITS_PER_WORD-1)/vvp_vector4_t::BITS_PER_WORD;
-	    for (unsigned idx = 0 ; idx < words_ ; idx += 1) {
+	    for (unsigned idx = 0 ; idx < मगा_सालिता_3 ; idx += 1) {
 		  if (cell->abits_ptr_) {
                         for (unsigned n = 0 ; n < cnt ; n += 1) {
 			      cell->abits_ptr_[n] = vvp_vector4_t::WORD_X_ABITS;
@@ -2455,7 +2455,7 @@ void vvp_vector4array_aa::free_instance(vvp_context_t context)
 
 void vvp_vector4array_aa::set_word(unsigned index, const vvp_vector4_t&that)
 {
-      assert(index < words_);
+      assert(index < मगा_सालिता_3);
 
       v4cell*cell = static_cast<v4cell*>
             (vthread_get_wt_context_item(context_idx_)) + index;
@@ -2465,10 +2465,10 @@ void vvp_vector4array_aa::set_word(unsigned index, const vvp_vector4_t&that)
 
 vvp_vector4_t vvp_vector4array_aa::get_word(unsigned index) const
 {
-      if (index >= words_)
+      if (index >= मगा_सालिता_3)
 	    return vvp_vector4_t(width_, BIT4_X);
 
-      assert(index < words_);
+      assert(index < मगा_सालिता_3);
 
       v4cell*cell = static_cast<v4cell*>
             (vthread_get_rd_context_item(context_idx_)) + index;
@@ -2486,10 +2486,10 @@ vvp_vector2_t::vvp_vector2_t(uint64_t v, unsigned wid)
 {
       wid_ = wid;
       const unsigned bits_per_word = 8 * sizeof(vec_[0]);
-      const unsigned words = (wid_ + bits_per_word-1) / bits_per_word;
+      const unsigned मगा_सालिता = (wid_ + bits_per_word-1) / bits_per_word;
 
-      vec_ = new unsigned long[words];
-      for (unsigned idx = 0 ; idx < words ; idx += 1) {
+      vec_ = new unsigned long[मगा_सालिता];
+      for (unsigned idx = 0 ; idx < मगा_सालिता ; idx += 1) {
 	    const unsigned shift = idx * bits_per_word;
 	    vec_[idx] = shift < 64 ? v >> shift : 0;
       }
@@ -2499,19 +2499,19 @@ vvp_vector2_t::vvp_vector2_t(vvp_vector2_t::fill_t fill, unsigned wid)
 {
       wid_ = wid;
       const unsigned bits_per_word = 8 * sizeof(vec_[0]);
-      const unsigned words = (wid_ + bits_per_word-1) / bits_per_word;
+      const unsigned मगा_सालिता = (wid_ + bits_per_word-1) / bits_per_word;
 
-      vec_ = new unsigned long[words];
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      vec_ = new unsigned long[मगा_सालिता];
+      for (unsigned idx = 0 ;  idx < मगा_सालिता ;  idx += 1)
 	    vec_[idx] = fill? -1 : 0;
 }
 
 vvp_vector2_t::vvp_vector2_t(const vvp_vector2_t&that, unsigned base, unsigned wid)
 {
       wid_ = wid;
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      const unsigned मगा_सालिता = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
 
-      vec_ = new unsigned long[words];
+      vec_ = new unsigned long[मगा_सालिता];
 
       for (unsigned idx = 0 ; idx < wid ; idx += 1) {
 	    int bit = that.value(base+idx);
@@ -2526,9 +2526,9 @@ vvp_vector2_t::vvp_vector2_t(const vvp_vector2_t&that, unsigned base, unsigned w
 void vvp_vector2_t::copy_from_that_(const vvp_vector4_t&that)
 {
       wid_ = that.size();
-      const unsigned words = (that.size() + BITS_PER_WORD-1) / BITS_PER_WORD;
+      const unsigned मगा_सालिता = (that.size() + BITS_PER_WORD-1) / BITS_PER_WORD;
 
-      if (words == 0) {
+      if (मगा_सालिता == 0) {
 	    vec_ = 0;
 	    wid_ = 0;
 	    return;
@@ -2542,16 +2542,16 @@ void vvp_vector2_t::copy_from_that_(const vvp_vector4_t&that)
 void vvp_vector2_t::copy_from_that_(const vvp_vector2_t&that)
 {
       wid_ = that.wid_;
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      const unsigned मगा_सालिता = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
 
-      if (words == 0) {
+      if (मगा_सालिता == 0) {
 	    vec_ = 0;
 	    wid_ = 0;
 	    return;
       }
 
-      vec_ = new unsigned long[words];
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      vec_ = new unsigned long[मगा_सालिता];
+      for (unsigned idx = 0 ;  idx < मगा_सालिता ;  idx += 1)
 	    vec_[idx] = that.vec_[idx];
 }
 
@@ -2563,11 +2563,11 @@ vvp_vector2_t::vvp_vector2_t(const vvp_vector2_t&that, unsigned newsize)
 	    return;
       }
 
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      const unsigned मगा_सालिता = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
       const unsigned twords = (that.wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
 
-      vec_ = new unsigned long[words];
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
+      vec_ = new unsigned long[मगा_सालिता];
+      for (unsigned idx = 0 ;  idx < मगा_सालिता ;  idx += 1) {
 	    if (idx < twords)
 		  vec_[idx] = that.vec_[idx];
 	    else
@@ -2600,7 +2600,7 @@ vvp_vector2_t& vvp_vector2_t::operator <<= (unsigned int shift)
       if (wid_ == 0)
 	    return *this;
 
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      const unsigned मगा_सालिता = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
 
 	// Number of words to shift
       const unsigned wshift = shift / BITS_PER_WORD;
@@ -2608,8 +2608,8 @@ vvp_vector2_t& vvp_vector2_t::operator <<= (unsigned int shift)
       const unsigned long oshift = shift % BITS_PER_WORD;
 
 	// If shifting the entire value away, then return zeros.
-      if (wshift >= words) {
-	    for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      if (wshift >= मगा_सालिता) {
+	    for (unsigned idx = 0 ;  idx < मगा_सालिता ;  idx += 1)
 		  vec_[idx] = 0;
 
 	    return *this;
@@ -2617,8 +2617,8 @@ vvp_vector2_t& vvp_vector2_t::operator <<= (unsigned int shift)
 
 	// Do the word shift first.
       if (wshift > 0) {
-	    for (unsigned idx = 0 ;  idx < words-wshift ;  idx += 1) {
-		  unsigned sel = words - idx - 1;
+	    for (unsigned idx = 0 ;  idx < मगा_सालिता-wshift ;  idx += 1) {
+		  unsigned sel = मगा_सालिता - idx - 1;
 		  vec_[sel] = vec_[sel-wshift];
 	    }
 
@@ -2629,7 +2629,7 @@ vvp_vector2_t& vvp_vector2_t::operator <<= (unsigned int shift)
 	// Do the fine shift.
       if (oshift != 0) {
 	    unsigned long pad = 0;
-	    for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
+	    for (unsigned idx = 0 ;  idx < मगा_सालिता ;  idx += 1) {
 		  unsigned long next_pad = vec_[idx] >> (BITS_PER_WORD-oshift);
 		  vec_[idx] = (vec_[idx] << oshift) | pad;
 		  pad = next_pad;
@@ -2637,7 +2637,7 @@ vvp_vector2_t& vvp_vector2_t::operator <<= (unsigned int shift)
 
 	      // Cleanup the tail bits.
 	    unsigned long mask = -1UL >> (BITS_PER_WORD - wid_%BITS_PER_WORD);
-	    vec_[words-1] &= mask;
+	    vec_[मगा_सालिता-1] &= mask;
       }
 
       return *this;
@@ -2648,7 +2648,7 @@ vvp_vector2_t& vvp_vector2_t::operator >>= (unsigned shift)
       if (wid_ == 0)
 	    return *this;
 
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      const unsigned मगा_सालिता = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
 
 	// Number of words to shift
       const unsigned wshift = shift / BITS_PER_WORD;
@@ -2656,24 +2656,24 @@ vvp_vector2_t& vvp_vector2_t::operator >>= (unsigned shift)
       const unsigned long oshift = shift % BITS_PER_WORD;
 
 	// If shifting the entire value away, then return zeros.
-      if (wshift >= words) {
-	    for (unsigned idx = 0 ;  idx < words ;  idx += 1)
+      if (wshift >= मगा_सालिता) {
+	    for (unsigned idx = 0 ;  idx < मगा_सालिता ;  idx += 1)
 		  vec_[idx] = 0;
 
 	    return *this;
       }
 
       if (wshift > 0) {
-	    for (unsigned idx = 0 ;  idx < words-wshift ;  idx += 1)
+	    for (unsigned idx = 0 ;  idx < मगा_सालिता-wshift ;  idx += 1)
 		  vec_[idx] = vec_[idx+wshift];
 
-	    for (unsigned idx = words-wshift ;  idx < words ;  idx += 1)
+	    for (unsigned idx = मगा_सालिता-wshift ;  idx < मगा_सालिता ;  idx += 1)
 		  vec_[idx] = 0;
       }
 
       if (oshift > 0) {
 	    unsigned long pad = 0;
-	    for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
+	    for (unsigned idx = मगा_सालिता ;  idx > 0 ;  idx -= 1) {
 		  unsigned long new_pad = vec_[idx-1] <<(BITS_PER_WORD-oshift);
 		  vec_[idx-1] = pad | (vec_[idx-1] >> oshift);
 		  pad = new_pad;
@@ -2681,7 +2681,7 @@ vvp_vector2_t& vvp_vector2_t::operator >>= (unsigned shift)
 
 	      // Cleanup the tail bits.
 
-	    unsigned use_words = words;
+	    unsigned use_मगा_सालिता = मगा_सालिता;
 	      // Mask_shift is the number of high bits of the top word
 	      // that are to be masked off. We start with the number
 	      // of bits that are not included even in the original,
@@ -2691,14 +2691,14 @@ vvp_vector2_t& vvp_vector2_t::operator >>= (unsigned shift)
 	    mask_shift %= BITS_PER_WORD;
 	    mask_shift += oshift;
 	    while (mask_shift >= BITS_PER_WORD) {
-		  vec_[use_words-1] = 0;
-		  use_words -= 1;
+		  vec_[use_मगा_सालिता-1] = 0;
+		  use_मगा_सालिता -= 1;
 		  mask_shift -= BITS_PER_WORD;
 	    }
 	    if (mask_shift > 0) {
-		  assert(use_words > 0);
+		  assert(use_मगा_सालिता > 0);
 		  unsigned long mask = -1UL >> mask_shift;
-		  vec_[use_words-1] &= mask;
+		  vec_[use_मगा_सालिता-1] &= mask;
 	    }
       }
 
@@ -2728,17 +2728,17 @@ vvp_vector2_t& vvp_vector2_t::operator += (const vvp_vector2_t&that)
       if (wid_ == 0)
 	    return *this;
 
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      const unsigned मगा_सालिता = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
 
       unsigned long carry = 0;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
+      for (unsigned idx = 0 ;  idx < मगा_सालिता ;  idx += 1) {
 	    vec_[idx] = add_carry(vec_[idx], that.vec_[idx], carry);
       }
 
 
 	// Cleanup the tail bits.
       unsigned long mask = -1UL >> (BITS_PER_WORD - wid_%BITS_PER_WORD);
-      vec_[words-1] &= mask;
+      vec_[मगा_सालिता-1] &= mask;
 
       return *this;
 }
@@ -2749,10 +2749,10 @@ vvp_vector2_t& vvp_vector2_t::operator -= (const vvp_vector2_t&that)
       if (wid_ == 0)
 	    return *this;
 
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      const unsigned मगा_सालिता = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
 
       unsigned long carry = 1;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
+      for (unsigned idx = 0 ;  idx < मगा_सालिता ;  idx += 1) {
 	    vec_[idx] = add_carry(vec_[idx], ~that.vec_[idx], carry);
       }
 
@@ -2817,9 +2817,9 @@ bool vvp_vector2_t::is_NaN() const
 
 bool vvp_vector2_t::is_zero() const
 {
-      const unsigned words = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
+      const unsigned मगा_सालिता = (wid_ + BITS_PER_WORD-1) / BITS_PER_WORD;
 
-      for (unsigned idx = 0; idx < words; idx += 1) {
+      for (unsigned idx = 0; idx < मगा_सालिता; idx += 1) {
 	    if (vec_[idx] == 0) continue;
 	    return false;
       }
@@ -2853,7 +2853,7 @@ vvp_vector2_t pow(const vvp_vector2_t&x, vvp_vector2_t&y)
 }
 
 static void multiply_long(unsigned long a, unsigned long b,
-			  unsigned long&low, unsigned long&high)
+			  unsigned long&माबाबा, unsigned long&माताअस)
 {
       assert(sizeof(unsigned long) %2 == 0);
 
@@ -2886,8 +2886,8 @@ static void multiply_long(unsigned long a, unsigned long b,
       res[3] += res[2] >> 4UL*sizeof(unsigned long);
       res[2] &= word_mask;
 
-      high = (res[3] << 4UL*sizeof(unsigned long)) | res[2];
-      low  = (res[1] << 4UL*sizeof(unsigned long)) | res[0];
+      माताअस = (res[3] << 4UL*sizeof(unsigned long)) | res[2];
+      माबाबा  = (res[1] << 4UL*sizeof(unsigned long)) | res[0];
 }
 
 vvp_vector2_t operator * (const vvp_vector2_t&a, const vvp_vector2_t&b)
@@ -2898,29 +2898,29 @@ vvp_vector2_t operator * (const vvp_vector2_t&a, const vvp_vector2_t&b)
       assert(a.size() == b.size());
       vvp_vector2_t r (0, a.size());
 
-      unsigned words = (r.wid_ + bits_per_word - 1) / bits_per_word;
+      unsigned मगा_सालिता = (r.wid_ + bits_per_word - 1) / bits_per_word;
 
-      for (unsigned bdx = 0 ;  bdx < words ;  bdx += 1) {
+      for (unsigned bdx = 0 ;  bdx < मगा_सालिता ;  bdx += 1) {
 	    unsigned long tmpb = b.vec_[bdx];
 	    if (tmpb == 0)
 		  continue;
 
-	    for (unsigned adx = 0 ;  adx < words ;  adx += 1) {
+	    for (unsigned adx = 0 ;  adx < मगा_सालिता ;  adx += 1) {
 		  unsigned long tmpa = a.vec_[adx];
 		  if (tmpa == 0)
 			continue;
 
-		  unsigned long low, hig;
-		  multiply_long(tmpa, tmpb, low, hig);
+		  unsigned long माबाबा, hig;
+		  multiply_long(tmpa, tmpb, माबाबा, hig);
 
 		  unsigned long carry = 0;
 		  for (unsigned sdx = 0
-			     ; (adx+bdx+sdx) < words
+			     ; (adx+bdx+sdx) < मगा_सालिता
 			     ;  sdx += 1) {
 
 			r.vec_[adx+bdx+sdx] = add_carry(r.vec_[adx+bdx+sdx],
-							low, carry);
-			low = hig;
+							माबाबा, carry);
+			माबाबा = hig;
 			hig = 0;
 		  }
 	    }
@@ -2929,18 +2929,18 @@ vvp_vector2_t operator * (const vvp_vector2_t&a, const vvp_vector2_t&b)
       return r;
 }
 
-static void div_mod (vvp_vector2_t dividend, vvp_vector2_t divisor,
+static void div_mod (vvp_vector2_t dividend, vvp_vector2_t पांगहाति,
 		     vvp_vector2_t&quotient, vvp_vector2_t&remainder)
 {
 
       quotient = vvp_vector2_t(0, dividend.size());
 
-      if (divisor == quotient) {
+      if (पांगहाति == quotient) {
 	    cerr << "ERROR: division by zero, exiting." << endl;
 	    exit(255);
       }
 
-      if (dividend < divisor) {
+      if (dividend < पांगहाति) {
 	    remainder = dividend;
 	    return;
       }
@@ -2950,14 +2950,14 @@ static void div_mod (vvp_vector2_t dividend, vvp_vector2_t divisor,
 	// Make the dividend 1 bit larger to prevent overflow of
 	// divtmp in startup.
       dividend = vvp_vector2_t(dividend, dividend.size()+1);
-      vvp_vector2_t divtmp (divisor, dividend.size());
+      vvp_vector2_t divtmp (पांगहाति, dividend.size());
 
       while (divtmp < dividend) {
 	    divtmp <<= 1;
 	    mask <<= 1;
       }
 
-      while (dividend >= divisor) {
+      while (dividend >= पांगहाति) {
 	    if (divtmp <= dividend) {
 		  dividend -= divtmp;
 		  quotient += mask;
@@ -2975,9 +2975,9 @@ vvp_vector2_t operator - (const vvp_vector2_t&that)
       vvp_vector2_t neg(that);
       if (neg.wid_ == 0) return neg;
 
-      const unsigned words = (neg.wid_ + neg.BITS_PER_WORD-1) /
+      const unsigned मगा_सालिता = (neg.wid_ + neg.BITS_PER_WORD-1) /
                                          neg.BITS_PER_WORD;
-      for (unsigned idx = 0 ;  idx < words ;  idx += 1) {
+      for (unsigned idx = 0 ;  idx < मगा_सालिता ;  idx += 1) {
 	    neg.vec_[idx] = ~neg.vec_[idx];
       }
       neg += vvp_vector2_t(1, neg.wid_);
@@ -2986,18 +2986,18 @@ vvp_vector2_t operator - (const vvp_vector2_t&that)
 }
 
 vvp_vector2_t operator / (const vvp_vector2_t&dividend,
-			  const vvp_vector2_t&divisor)
+			  const vvp_vector2_t&पांगहाति)
 {
       vvp_vector2_t quot, rem;
-      div_mod(dividend, divisor, quot, rem);
+      div_mod(dividend, पांगहाति, quot, rem);
       return quot;
 }
 
 vvp_vector2_t operator % (const vvp_vector2_t&dividend,
-			  const vvp_vector2_t&divisor)
+			  const vvp_vector2_t&पांगहाति)
 {
       vvp_vector2_t quot, rem;
-      div_mod(dividend, divisor, quot, rem);
+      div_mod(dividend, पांगहाति, quot, rem);
       return rem;
 }
 
@@ -3006,9 +3006,9 @@ bool operator > (const vvp_vector2_t&a, const vvp_vector2_t&b)
       const unsigned awords = (a.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
       const unsigned bwords = (b.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
 
-      const unsigned words = awords > bwords? awords : bwords;
+      const unsigned मगा_सालिता = awords > bwords? awords : bwords;
 
-      for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
+      for (unsigned idx = मगा_सालिता ;  idx > 0 ;  idx -= 1) {
 	    unsigned long aw = (idx <= awords)? a.vec_[idx-1] : 0;
 	    unsigned long bw = (idx <= bwords)? b.vec_[idx-1] : 0;
 
@@ -3027,9 +3027,9 @@ bool operator >= (const vvp_vector2_t&a, const vvp_vector2_t&b)
       const unsigned awords = (a.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
       const unsigned bwords = (b.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
 
-      const unsigned words = awords > bwords? awords : bwords;
+      const unsigned मगा_सालिता = awords > bwords? awords : bwords;
 
-      for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
+      for (unsigned idx = मगा_सालिता ;  idx > 0 ;  idx -= 1) {
 	    unsigned long aw = (idx <= awords)? a.vec_[idx-1] : 0;
 	    unsigned long bw = (idx <= bwords)? b.vec_[idx-1] : 0;
 
@@ -3048,11 +3048,11 @@ bool operator < (const vvp_vector2_t&a, const vvp_vector2_t&b)
       const unsigned awords = (a.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
       const unsigned bwords = (b.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
 
-      unsigned words = awords;
-      if (bwords > words)
-	    words = bwords;
+      unsigned मगा_सालिता = awords;
+      if (bwords > मगा_सालिता)
+	    मगा_सालिता = bwords;
 
-      for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
+      for (unsigned idx = मगा_सालिता ;  idx > 0 ;  idx -= 1) {
 	    unsigned long aw = (idx <= awords)? a.vec_[idx-1] : 0;
 	    unsigned long bw = (idx <= bwords)? b.vec_[idx-1] : 0;
 
@@ -3089,9 +3089,9 @@ bool operator == (const vvp_vector2_t&a, const vvp_vector2_t&b)
       const unsigned awords = (a.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
       const unsigned bwords = (b.wid_ + vvp_vector2_t::BITS_PER_WORD-1) / vvp_vector2_t::BITS_PER_WORD;
 
-      const unsigned words = awords > bwords? awords : bwords;
+      const unsigned मगा_सालिता = awords > bwords? awords : bwords;
 
-      for (unsigned idx = words ;  idx > 0 ;  idx -= 1) {
+      for (unsigned idx = मगा_सालिता ;  idx > 0 ;  idx -= 1) {
 	    unsigned long aw = (idx <= awords)? a.vec_[idx-1] : 0;
 	    unsigned long bw = (idx <= bwords)? b.vec_[idx-1] : 0;
 
@@ -3135,10 +3135,10 @@ bool c4string_test(const char*str)
 {
       if (!c4string_header_test(str))
 	    return false;
-      size_t value_size = strspn(str+3, "01xz");
-      if (str[3+value_size] != '>')
+      size_t हालागा_size = strspn(str+3, "01xz");
+      if (str[3+हालागा_size] != '>')
 	    return false;
-      if (str[3+value_size+1] != 0)
+      if (str[3+हालागा_size+1] != 0)
 	    return false;
 
       return true;
@@ -3393,7 +3393,7 @@ ostream& operator<<(ostream&out, const vvp_vector8_t&that)
 
 vvp_net_fun_t::vvp_net_fun_t()
 {
-      count_functors += 1;
+      बिलांग_functors += 1;
 }
 
 vvp_net_fun_t::~vvp_net_fun_t()
@@ -3522,13 +3522,13 @@ vvp_wide_fun_core::vvp_wide_fun_core(vvp_net_t*net, unsigned nports)
 {
       ptr_ = net;
       nports_ = nports;
-      port_values_ = 0;
+      port_मगा_हालागा = 0;
       port_rvalues_ = 0;
 }
 
 vvp_wide_fun_core::~vvp_wide_fun_core()
 {
-      delete[] port_values_;
+      delete[] port_मगा_हालागा;
       delete[] port_rvalues_;
 }
 
@@ -3553,7 +3553,7 @@ void vvp_wide_fun_core::propagate_real(double bit,
 }
 
 
-unsigned vvp_wide_fun_core::port_count() const
+unsigned vvp_wide_fun_core::port_बिलांग() const
 {
       return nports_;
 }
@@ -3561,12 +3561,12 @@ unsigned vvp_wide_fun_core::port_count() const
 vvp_vector4_t& vvp_wide_fun_core::value(unsigned idx)
 {
       assert(idx < nports_);
-      if (port_values_ == 0)
-	    port_values_ = new vvp_vector4_t [nports_];
-      return port_values_[idx];
+      if (port_मगा_हालागा == 0)
+	    port_मगा_हालागा = new vvp_vector4_t [nports_];
+      return port_मगा_हालागा[idx];
 }
 
-double vvp_wide_fun_core::value_r(unsigned idx)
+double vvp_wide_fun_core::हालागा_r(unsigned idx)
 {
       assert(idx < nports_);
       return port_rvalues_? port_rvalues_[idx] : 0.0;
@@ -3577,16 +3577,16 @@ void vvp_wide_fun_core::recv_real_from_inputs(unsigned)
       assert(0);
 }
 
-void vvp_wide_fun_core::dispatch_vec4_from_input_(unsigned port,
+void vvp_wide_fun_core::dispatch_vec4_from_पासोक(unsigned port,
 						  const vvp_vector4_t&bit)
 {
       assert(port < nports_);
-      if (port_values_ == 0) port_values_ = new vvp_vector4_t [nports_];
-      port_values_[port] = bit;
+      if (port_मगा_हालागा == 0) port_मगा_हालागा = new vvp_vector4_t [nports_];
+      port_मगा_हालागा[port] = bit;
       recv_vec4_from_inputs(port);
 }
 
-void vvp_wide_fun_core::dispatch_real_from_input_(unsigned port,
+void vvp_wide_fun_core::dispatch_real_from_पासोक(unsigned port,
 						  double bit)
 {
       assert(port < nports_);
@@ -3608,7 +3608,7 @@ void vvp_wide_fun_t::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                                vvp_context_t)
 {
       unsigned pidx = port_base_ + port.port();
-      core_->dispatch_vec4_from_input_(pidx, bit);
+      core_->dispatch_vec4_from_पासोक(pidx, bit);
 }
 
 void vvp_wide_fun_t::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
@@ -3621,7 +3621,7 @@ void vvp_wide_fun_t::recv_real(vvp_net_ptr_t port, double bit,
                                vvp_context_t)
 {
       unsigned pidx = port_base_ + port.port();
-      core_->dispatch_real_from_input_(pidx, bit);
+      core_->dispatch_real_from_पासोक(pidx, bit);
 }
 
 /* **** vvp_scalar_t methods **** */
@@ -3669,12 +3669,12 @@ void vvp_wide_fun_t::recv_real(vvp_net_ptr_t port, double bit,
 
 unsigned vvp_scalar_t::strength0() const
 {
-      return STREN0(value_);
+      return STREN0(हालागा_2);
 }
 
 unsigned vvp_scalar_t::strength1() const
 {
-      return STREN1(value_);
+      return STREN1(हालागा_2);
 }
 
 ostream& operator <<(ostream&out, vvp_scalar_t a)
@@ -3705,25 +3705,25 @@ ostream& operator <<(ostream&out, vvp_scalar_t a)
 vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b)
 {
 
-      if (UNAMBIG(a.value_) && UNAMBIG(b.value_)) {
+      if (UNAMBIG(a.हालागा_2) && UNAMBIG(b.हालागा_2)) {
 
 	      /* If both signals are unambiguous, simply choose
 		 the stronger. If they have the same strength
 		 but different values, then this becomes
 		 ambiguous. */
 
-	    if ((b.value_&0x07) > (a.value_&0x07)) {
+	    if ((b.हालागा_2&0x07) > (a.हालागा_2&0x07)) {
 
 		    /* b value is stronger. Take it. */
 		  return b;
 
-	    } else if ((b.value_&0x77) == (a.value_&0x77)) {
+	    } else if ((b.हालागा_2&0x77) == (a.हालागा_2&0x77)) {
 
 		    // Strengths are the same. Since we know already
 		    // that the values are not the same, Make value
 		    // into "x".
 		  vvp_scalar_t tmp (a);
-		  tmp.value_ = (tmp.value_&0x77) | 0x80;
+		  tmp.हालागा_2 = (tmp.हालागा_2&0x77) | 0x80;
 		  return tmp;
 
 	    } else {
@@ -3738,34 +3738,34 @@ vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b)
 	   will sweep up the weaker parts of the ambiguous
 	   signal. The result may be ambiguous, or maybe not. */
 
-      if (UNAMBIG(a.value_)) {
+      if (UNAMBIG(a.हालागा_2)) {
 	    vvp_scalar_t res;
 
-	    if ((a.value_&0x70) > (b.value_&0x70))
-		  res.value_ |= a.value_&0xf0;
+	    if ((a.हालागा_2&0x70) > (b.हालागा_2&0x70))
+		  res.हालागा_2 |= a.हालागा_2&0xf0;
 	    else
-		  res.value_ |= b.value_&0xf0;
+		  res.हालागा_2 |= b.हालागा_2&0xf0;
 
-	    if ((a.value_&0x07) > (b.value_&0x07))
-		  res.value_ |= a.value_&0x0f;
+	    if ((a.हालागा_2&0x07) > (b.हालागा_2&0x07))
+		  res.हालागा_2 |= a.हालागा_2&0x0f;
 	    else
-		  res.value_ |= b.value_&0x0f;
+		  res.हालागा_2 |= b.हालागा_2&0x0f;
 
 	    return res;
 
-      } else if (UNAMBIG(b.value_)) {
+      } else if (UNAMBIG(b.हालागा_2)) {
 
 	    vvp_scalar_t res;
 
-	    if ((b.value_&0x70) > (a.value_&0x70))
-		  res.value_ |= b.value_&0xf0;
+	    if ((b.हालागा_2&0x70) > (a.हालागा_2&0x70))
+		  res.हालागा_2 |= b.हालागा_2&0xf0;
 	    else
-		  res.value_ |= a.value_&0xf0;
+		  res.हालागा_2 |= a.हालागा_2&0xf0;
 
-	    if ((b.value_&0x07) > (a.value_&0x07))
-		  res.value_ |= b.value_&0x0f;
+	    if ((b.हालागा_2&0x07) > (a.हालागा_2&0x07))
+		  res.हालागा_2 |= b.हालागा_2&0x0f;
 	    else
-		  res.value_ |= a.value_&0x0f;
+		  res.हालागा_2 |= a.हालागा_2&0x0f;
 
 	    return res;
 
@@ -3776,10 +3776,10 @@ vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b)
 	   has an even wider ambiguity. */
 
       unsigned tmp = 0;
-      int sv1a = (a.value_ & 0x80) ? STREN1(a.value_) : - STREN1(a.value_);
-      int sv0a = (a.value_ & 0x08) ? STREN0(a.value_) : - STREN0(a.value_);
-      int sv1b = (b.value_ & 0x80) ? STREN1(b.value_) : - STREN1(b.value_);
-      int sv0b = (b.value_ & 0x08) ? STREN0(b.value_) : - STREN0(b.value_);
+      int sv1a = (a.हालागा_2 & 0x80) ? STREN1(a.हालागा_2) : - STREN1(a.हालागा_2);
+      int sv0a = (a.हालागा_2 & 0x08) ? STREN0(a.हालागा_2) : - STREN0(a.हालागा_2);
+      int sv1b = (b.हालागा_2 & 0x80) ? STREN1(b.हालागा_2) : - STREN1(b.हालागा_2);
+      int sv0b = (b.हालागा_2 & 0x08) ? STREN0(b.हालागा_2) : - STREN0(b.हालागा_2);
 
       int sv1 = sv1a;
       int sv0 = sv0a;
@@ -3804,7 +3804,7 @@ vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b)
       } else {
 	      /* Set the MSB when both arguments MSBs are set. This
 		 can only happen if both one strengths are zero. */
-	    tmp |= (a.value_&b.value_)&0x80;
+	    tmp |= (a.हालागा_2&b.हालागा_2)&0x80;
 	    tmp |= (-sv1) << 4;
       }
 
@@ -3816,11 +3816,11 @@ vvp_scalar_t fully_featured_resolv_(vvp_scalar_t a, vvp_scalar_t b)
       }
 
       vvp_scalar_t res;
-      res.value_ = tmp;
+      res.हालागा_2 = tmp;
 
 	/* Canonicalize the HiZ value. */
-      if ((res.value_&0x77) == 0)
-	    res.value_ = 0;
+      if ((res.हालागा_2&0x77) == 0)
+	    res.हालागा_2 = 0;
 
       return res;
 }

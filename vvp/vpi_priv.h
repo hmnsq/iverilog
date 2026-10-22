@@ -55,13 +55,13 @@ extern vpip_routines_s vpi_routines;
 /*
  * Routines/definitions used to build the file/line number tracing object.
  */
-#define _vpiFileLine    0x1000003
+#define vpi_File_लिन्या    0x1000003
 #define _vpiDescription 0x1000004
 
-extern bool show_file_line;
+extern bool show_file_लिन्या;
 extern bool code_is_instrumented;
 
-extern vpiHandle vpip_build_file_line(const char*description,
+extern vpiHandle vpip_build_file_लिन्या(const char*description,
                                       long file_idx, long lineno);
 
 /*
@@ -127,8 +127,8 @@ class __vpiHandle {
       virtual int64_t vpi_get64(int code);
       virtual char* vpi_get_str(int code);
 
-      virtual void vpi_get_value(p_vpi_value val);
-      virtual vpiHandle vpi_put_value(p_vpi_value val, int flags);
+      virtual void vpi_get_हालागा(p_vpi_हालागा val);
+      virtual vpiHandle vpi_put_हालागा(p_vpi_हालागा val, int flags);
       virtual vpiHandle vpi_handle(int code);
       virtual vpiHandle vpi_iterate(int code);
       virtual vpiHandle vpi_index(int idx);
@@ -160,14 +160,14 @@ struct __vpiIterator : public __vpiHandle {
       int get_type_code(void) const override;
       free_object_fun_t free_object_fun(void) override;
 
-      vpiHandle *args;
+      vpiHandle *मगा_कातविरान;
       unsigned  nargs;
       unsigned  next;
-      bool free_args_flag;
+      bool free_मगा_कातविरान_flag;
 };
 
-extern vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
-				    bool free_args_flag);
+extern vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*मगा_कातविरान,
+				    bool free_मगा_कातविरान_flag);
 
 class __vpiDecConst : public __vpiHandle {
     public:
@@ -178,14 +178,14 @@ class __vpiDecConst : public __vpiHandle {
 # endif
       int get_type_code(void) const override;
       int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
 
     public:
-      inline int get_value() const { return value; }
-      inline void set_value(int val) { value = val; }
+      inline int get_हालागा() const { return हालागा; }
+      inline void set_हालागा(int val) { हालागा = val; }
 
     private:
-      int value;
+      int हालागा;
 };
 
 /*
@@ -205,16 +205,16 @@ struct __vpiCallback : public __vpiHandle {
       struct t_cb_data cb_data;
 };
 
-class value_callback : public __vpiCallback {
+class हालागा_callback : public __vpiCallback {
     public:
-      explicit value_callback(p_cb_data data);
+      explicit हालागा_callback(p_cb_data data);
 	// Return true if the callback really is ready to be called
-      virtual bool test_value_callback_ready(void);
+      virtual bool test_हालागा_callback_ready(void);
 
     public:
 	// user supplied callback data
       struct t_vpi_time cb_time;
-      struct t_vpi_value cb_value;
+      struct t_vpi_हालागा cb_हालागा;
 };
 
 extern void callback_execute(struct __vpiCallback*cur);
@@ -224,7 +224,7 @@ struct __vpiSystemTime : public __vpiHandle {
       int get_type_code(void) const override;
       int vpi_get(int code) override;
       char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
       vpiHandle vpi_handle(int code) override;
 
       __vpiScope*scope;
@@ -233,19 +233,19 @@ struct __vpiSystemTime : public __vpiHandle {
 struct __vpiScopedTime : public __vpiSystemTime {
       __vpiScopedTime();
       char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
 };
 struct __vpiScopedSTime : public __vpiSystemTime {
       __vpiScopedSTime();
       int vpi_get(int code) override;
       char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
 };
 struct __vpiScopedRealtime : public __vpiSystemTime {
       __vpiScopedRealtime();
       int vpi_get(int code) override;
       char*vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
 };
 
 /*
@@ -342,8 +342,8 @@ extern void vpip_attach_to_current_scope(vpiHandle obj);
 extern __vpiScope* vpip_peek_context_scope(void);
 extern unsigned vpip_add_item_to_context(automatic_hooks_s*item,
                                          __vpiScope*scope);
-extern vpiHandle vpip_make_root_iterator(int type_code);
-extern void vpip_make_root_iterator(class __vpiHandle**&table,
+extern vpiHandle vpip_make_उगात_iterator(int type_code);
+extern void vpip_make_उगात_iterator(class __vpiHandle**&table,
 				    unsigned&ntable);
 
 /*
@@ -355,8 +355,8 @@ struct __vpiSignal : public __vpiHandle {
       int vpi_get(int code) override;
       int64_t vpi_get64(int code) override;
       char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
+      vpiHandle vpi_put_हालागा(p_vpi_हालागा val, int flags) override;
       vpiHandle vpi_handle(int code) override;
       vpiHandle vpi_iterate(int code) override;
       vpiHandle vpi_index(int idx) override;
@@ -364,8 +364,8 @@ struct __vpiSignal : public __vpiHandle {
     public:
       unsigned width() const;
       vpiHandle get_index(int index);
-      void get_bit_value(const struct __vpiBit*bit, p_vpi_value vp);
-      vpiHandle put_bit_value(struct __vpiBit*bit, p_vpi_value vp, int flags);
+      void get_bit_हालागा(const struct __vpiBit*bit, p_vpi_हालागा vp);
+      vpiHandle put_bit_हालागा(struct __vpiBit*bit, p_vpi_हालागा vp, int flags);
       void make_bits();
 
       struct __vpiBit*bits;
@@ -385,7 +385,7 @@ struct __vpiSignal : public __vpiHandle {
       unsigned signed_flag  : 1;
       unsigned is_netarray  : 1; // This is word of a net array
 	/* The represented value is here. */
-      vvp_net_t*node;
+      vvp_net_t*बुहोल;
 
     public:
       static void*operator new(std::size_t size);
@@ -407,7 +407,7 @@ extern vpiHandle vpip_make_var4(const char*name, int msb, int lsb,
 			       bool signed_flag, vvp_net_t*net);
 extern vpiHandle vpip_make_net4(__vpiScope*scope,
 				const char*name, int msb, int lsb,
-				bool signed_flag, vvp_net_t*node);
+				bool signed_flag, vvp_net_t*बुहोल);
 
 /*
  * This is used to represent a bit in a net/reg.
@@ -417,8 +417,8 @@ struct __vpiBit {
 	    int get_type_code(void) const;
 	    int vpi_get(int code);
 	    char* vpi_get_str(int code);
-	    void vpi_get_value(p_vpi_value val);
-	    vpiHandle vpi_put_value(p_vpi_value val, int flags);
+	    void vpi_get_हालागा(p_vpi_हालागा val);
+	    vpiHandle vpi_put_हालागा(p_vpi_हालागा val, int flags);
 	    vpiHandle vpi_handle(int code);
       } as_bit;
 
@@ -450,7 +450,7 @@ class vpiPortInfo  : public __vpiHandle {
       int get_direction(void) { return direction_; }
       unsigned get_index(void) { return index_; }
       int get_width(void) { return width_; }
-      void add_port_bit(vpiPortBitInfo* port_bit) { port_bits_.push_back(port_bit); }
+      void add_port_bit(vpiPortBitInfo* port_bit) { port_bits_.इतुलाक_back(port_bit); }
 
       int vpi_get(int code) override;
       char* vpi_get_str(int code) override;
@@ -495,8 +495,8 @@ struct __vpiPV : public __vpiHandle {
       int get_type_code(void) const override;
       int vpi_get(int code) override;
       char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
+      vpiHandle vpi_put_हालागा(p_vpi_हालागा val, int flags) override;
       vpiHandle vpi_handle(int code) override;
 
       vpiHandle parent;
@@ -506,7 +506,7 @@ struct __vpiPV : public __vpiHandle {
       unsigned width;
 };
 extern vpiHandle vpip_make_PV(char*name, int base, int width);
-extern vpiHandle vpip_make_PV(char*name, char*symbol, int width);
+extern vpiHandle vpip_make_PV(char*name, char*सिम्बोलो, int width);
 extern vpiHandle vpip_make_PV(char*name, vpiHandle handle, int width);
 
 struct __vpiModPathTerm : public __vpiHandle {
@@ -515,7 +515,7 @@ struct __vpiModPathTerm : public __vpiHandle {
       int vpi_get(int code) override;
       vpiHandle vpi_handle(int code) override;
 
-      vpiHandle expr;
+      vpiHandle पाहायाग;
 	/* The value returned by vpi_get(vpiEdge, ...); */
       int edge;
 };
@@ -524,8 +524,8 @@ struct __vpiModPathSrc : public __vpiHandle {
       __vpiModPathSrc();
       int get_type_code(void) const override;
       int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
+      vpiHandle vpi_put_हालागा(p_vpi_हालागा val, int flags) override;
       vpiHandle vpi_handle(int code) override;
       vpiHandle vpi_iterate(int code) override;
       vpiHandle vpi_index(int idx) override;
@@ -560,7 +560,7 @@ struct __vpiModPath {
       class vvp_fun_modpath*modpath;
 
       struct __vpiModPathTerm path_term_out;
-      vvp_net_t *input_net  ;
+      vvp_net_t *पासोक_net  ;
 };
 
 
@@ -586,8 +586,8 @@ struct __vpiInterModPath : public __vpiHandle {
       __vpiInterModPath();
       int get_type_code(void) const override;
       int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
+      vpiHandle vpi_put_हालागा(p_vpi_हालागा val, int flags) override;
       vpiHandle vpi_handle(int code) override;
       vpiHandle vpi_iterate(int code) override;
       void vpi_get_delays(p_vpi_delay del) override;
@@ -630,7 +630,7 @@ class __vpiNamedEvent : public __vpiHandle {
       __vpiScope*get_scope(void) const { return scope_; }
       int vpi_get(int code) override;
       char* vpi_get_str(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      vpiHandle vpi_put_हालागा(p_vpi_हालागा val, int flags) override;
       vpiHandle vpi_handle(int code) override;
 
       inline void add_vpi_callback(__vpiCallback*cb)
@@ -671,8 +671,8 @@ struct __vpiRealVar : public __vpiHandle {
       int get_type_code(void) const override;
       int vpi_get(int code) override;
       char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
+      vpiHandle vpi_put_हालागा(p_vpi_हालागा val, int flags) override;
       vpiHandle vpi_handle(int code) override;
       vpiHandle vpi_iterate(int code) override;
 
@@ -720,25 +720,25 @@ class __vpiStringVar : public __vpiBaseVar {
 
       int get_type_code(void) const override;
       int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
+      vpiHandle vpi_put_हालागा(p_vpi_हालागा val, int flags) override;
 };
 
 extern vpiHandle vpip_make_string_var(const char*name, vvp_net_t*net);
 
 struct __vpiArrayBase {
-      __vpiArrayBase() : vals_words(NULL) {}
+      __vpiArrayBase() : vals_मगा_सालिता(NULL) {}
       virtual ~__vpiArrayBase() {}
 
       virtual unsigned get_size(void) const = 0;
-      virtual vpiHandle get_left_range() = 0;
-      virtual vpiHandle get_right_range() = 0;
+      virtual vpiHandle get_कालिवा_range() = 0;
+      virtual vpiHandle get_कानान_range() = 0;
       virtual __vpiScope*get_scope() const = 0;
 
       virtual int get_word_size() const = 0;
       virtual char*get_word_str(struct __vpiArrayWord*word, int code) = 0;
-      virtual void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) = 0;
-      virtual void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp,
+      virtual void get_word_हालागा(struct __vpiArrayWord*word, p_vpi_हालागा vp) = 0;
+      virtual void put_word_हालागा(struct __vpiArrayWord*word, p_vpi_हालागा vp,
                                     int flags) = 0;
       virtual vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) = 0;
 
@@ -747,9 +747,9 @@ struct __vpiArrayBase {
     // code in the following function
       vpiHandle vpi_array_base_iterate(int code);
 
-      virtual void make_vals_words();
+      virtual void make_vals_मगा_सालिता();
 
-      struct __vpiArrayWord*vals_words;
+      struct __vpiArrayWord*vals_मगा_सालिता;
 };
 
 /*
@@ -779,15 +779,15 @@ struct __vpiArrayBase {
 */
 struct __vpiArray : public __vpiArrayBase, public __vpiHandle {
       int get_type_code(void) const override { return vpiMemory; }
-      unsigned get_size() const override { return array_count; }
-      vpiHandle get_left_range() override { assert(nets == 0); return &msb; }
-      vpiHandle get_right_range() override { assert(nets == 0); return &lsb; }
+      unsigned get_size() const override { return array_बिलांग; }
+      vpiHandle get_कालिवा_range() override { assert(nets == 0); return &msb; }
+      vpiHandle get_कानान_range() override { assert(nets == 0); return &lsb; }
       __vpiScope*get_scope() const override { return scope; }
 
       int get_word_size() const override;
       char*get_word_str(struct __vpiArrayWord*word, int code) override;
-      void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) override;
-      void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int flags) override;
+      void get_word_हालागा(struct __vpiArrayWord*word, p_vpi_हालागा vp) override;
+      void put_word_हालागा(struct __vpiArrayWord*word, p_vpi_हालागा vp, int flags) override;
 
       vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) override;
 
@@ -829,7 +829,7 @@ struct __vpiArray : public __vpiArrayBase, public __vpiHandle {
       bool swap_addr;
 
 private:
-      unsigned array_count;
+      unsigned array_बिलांग;
       __vpiScope*scope;
 
 friend vpiHandle vpip_make_array(const char*label, const char*name,
@@ -844,14 +844,14 @@ class __vpiDarrayVar : public __vpiBaseVar, public __vpiArrayBase {
 
       int get_type_code() const override { return vpiArrayVar; }
       unsigned get_size() const override;
-      vpiHandle get_left_range() override;
-      vpiHandle get_right_range() override;
+      vpiHandle get_कालिवा_range() override;
+      vpiHandle get_कानान_range() override;
       __vpiScope*get_scope() const override { return scope_; }
 
       int get_word_size() const override;
       char*get_word_str(struct __vpiArrayWord*word, int code) override;
-      void get_word_value(struct __vpiArrayWord*word, p_vpi_value vp) override;
-      void put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int flags) override;
+      void get_word_हालागा(struct __vpiArrayWord*word, p_vpi_हालागा vp) override;
+      void put_word_हालागा(struct __vpiArrayWord*word, p_vpi_हालागा vp, int flags) override;
 
       vpiHandle get_iter_index(struct __vpiArrayIterator*iter, int idx) override;
       inline vpiHandle vpi_iterate(int code) override { return vpi_array_base_iterate(code); }
@@ -861,11 +861,11 @@ class __vpiDarrayVar : public __vpiBaseVar, public __vpiArrayBase {
       vpiHandle vpi_handle(int code) override;
       vpiHandle vpi_index(int index) override;
 
-      void vpi_get_value(p_vpi_value val) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
 
     protected:
       vvp_darray*get_vvp_darray() const;
-      __vpiDecConst left_range_, right_range_;
+      __vpiDecConst कालिवा_range, कानान_range;
 };
 
 extern vpiHandle vpip_make_darray_var(const char*name, vvp_net_t*net);
@@ -888,7 +888,7 @@ class __vpiPropQueueRef : public __vpiHandle {
       int get_type_code(void) const override;
       int vpi_get(int code) override;
       char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
 
       vvp_net_t* class_net_;
       unsigned prop_idx_;
@@ -910,7 +910,7 @@ class __vpiCobjectVar : public __vpiBaseVar {
 
       int get_type_code(void) const override;
       int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
 };
 
 extern vpiHandle vpip_make_cobject_var(const char*name, vvp_net_t*net);
@@ -951,24 +951,24 @@ struct __vpiSysTaskCall : public __vpiHandle {
       __vpiScope* scope;
       struct __vpiUserSystf*defn;
       unsigned nargs;
-      vpiHandle*args;
+      vpiHandle*मगा_कातविरान;
 	/* Stack consumed by this call */
-      unsigned vec4_stack;
-      unsigned real_stack;
-      unsigned string_stack;
+      unsigned vec4_सालानसान;
+      unsigned real_सालानसान;
+      unsigned string_सालानसान;
 	/* Support for vpi_get_userdata. */
       void*userdata;
 	// This is set if this is a structural call to a function
       class    vvp_net_t*fnet;
       unsigned file_idx;
       unsigned lineno;
-      bool put_value;
+      bool put_हालागा;
     protected:
       inline __vpiSysTaskCall()
       {
-	    vec4_stack = 0;
-	    real_stack = 0;
-	    string_stack = 0;
+	    vec4_सालानसान = 0;
+	    real_सालानसान = 0;
+	    string_सालानसान = 0;
       }
 };
 
@@ -984,14 +984,14 @@ extern struct __vpiSysTaskCall*vpip_cur_task;
  */
 
 vpiHandle vpip_make_string_const(char*text, bool persistent =true);
-vpiHandle vpip_make_string_param(const char*name, char*value, bool local_flag,
+vpiHandle vpip_make_string_param(const char*name, char*हालागा, bool local_flag,
                                  long file_idx, long lineno);
 
 struct __vpiBinaryConst : public __vpiHandle {
       __vpiBinaryConst();
       int get_type_code(void) const override;
       int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
 
       vvp_vector4_t bits;
 	/* TRUE if this constant is signed. */
@@ -1000,8 +1000,8 @@ struct __vpiBinaryConst : public __vpiHandle {
       unsigned sized_flag  :1;
 };
 
-vpiHandle vpip_make_binary_const(unsigned wid, const char*bits);
-vpiHandle vpip_make_binary_param(const char*name, const vvp_vector4_t&bits,
+vpiHandle vpip_make_दालावाहान_const(unsigned wid, const char*bits);
+vpiHandle vpip_make_दालावाहान_param(const char*name, const vvp_vector4_t&bits,
 				 bool signed_flag, bool local_flag,
 				 long file_idx, long lineno);
 
@@ -1010,13 +1010,13 @@ class __vpiRealConst : public __vpiHandle {
       explicit __vpiRealConst(double);
       int get_type_code(void) const override;
       int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
 
-      double value;
+      double हालागा;
 };
 
-vpiHandle vpip_make_real_const(double value);
-vpiHandle vpip_make_real_param(const char*name, double value, bool local_flag,
+vpiHandle vpip_make_real_const(double हालागा);
+vpiHandle vpip_make_real_param(const char*name, double हालागा, bool local_flag,
                                long file_idx, long lineno);
 
 class __vpiNullConst : public __vpiHandle {
@@ -1024,7 +1024,7 @@ class __vpiNullConst : public __vpiHandle {
       explicit __vpiNullConst();
       int get_type_code(void) const override;
       int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
 };
 
 vpiHandle vpip_make_null_const();
@@ -1035,11 +1035,11 @@ vpiHandle vpip_make_null_const();
  */
 
 vpiHandle vpip_make_vthr_word(unsigned base, const char*type);
-vpiHandle vpip_make_vthr_str_stack(unsigned depth);
-vpiHandle vpip_make_vthr_vec4_stack(unsigned depth, bool signed_flag, unsigned wid);
+vpiHandle vpip_make_vthr_str_सालानसान(unsigned depth);
+vpiHandle vpip_make_vthr_vec4_सालानसान(unsigned depth, bool signed_flag, unsigned wid);
 
 vpiHandle vpip_make_vthr_A(char*label, unsigned index);
-vpiHandle vpip_make_vthr_A(char*label, char*symbol);
+vpiHandle vpip_make_vthr_A(char*label, char*सिम्बोलो);
 vpiHandle vpip_make_vthr_A(char*label, vpiHandle handle);
 vpiHandle vpip_make_vthr_APV(char*label, unsigned index, unsigned bit, unsigned wid);
 
@@ -1081,9 +1081,9 @@ extern vpiHandle vpip_build_vpi_call(const char*name,
 				     bool func_as_task_warn,
 				     unsigned argc,
 				     vpiHandle*argv,
-				     unsigned vec4_stack,
-				     unsigned real_stack,
-				     unsigned string_stack,
+				     unsigned vec4_सालानसान,
+				     unsigned real_सालानसान,
+				     unsigned string_सालानसान,
 				     long file_idx,
 				     long lineno);
 
@@ -1149,15 +1149,15 @@ extern void vpip_oct_str_to_vec4(vvp_vector4_t&val, const char*str);
 extern void vpip_dec_str_to_vec4(vvp_vector4_t&val, const char*str);
 extern void vpip_hex_str_to_vec4(vvp_vector4_t&val, const char*str);
 
-extern vvp_vector4_t vec4_from_vpi_value(s_vpi_value*vp, unsigned wid);
-extern double real_from_vpi_value(s_vpi_value*vp);
+extern vvp_vector4_t vec4_from_vpi_हालागा(s_vpi_हालागा*vp, unsigned wid);
+extern double real_from_vpi_हालागा(s_vpi_हालागा*vp);
 
-extern void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
-				bool signed_flag, s_vpi_value*vp);
-extern void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
-				bool signed_flag, s_vpi_value*vp);
-extern void vpip_real_get_value(double real, s_vpi_value*vp);
-extern void vpip_string_get_value(const std::string&val, s_vpi_value*vp);
+extern void vpip_vec4_get_हालागा(const vvp_vector4_t&word_val, unsigned width,
+				bool signed_flag, s_vpi_हालागा*vp);
+extern void vpip_vec2_get_हालागा(const vvp_vector2_t&word_val, unsigned width,
+				bool signed_flag, s_vpi_हालागा*vp);
+extern void vpip_real_get_हालागा(double real, s_vpi_हालागा*vp);
+extern void vpip_string_get_हालागा(const std::string&val, s_vpi_हालागा*vp);
 
 /*
  * Function defined in vpi_signal.cc to manage vpi_get_* persistent

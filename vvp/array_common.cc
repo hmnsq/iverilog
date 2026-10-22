@@ -37,19 +37,19 @@ vpiHandle __vpiArrayBase::vpi_array_base_iterate(int code)
     return 0;
 }
 
-void __vpiArrayBase::make_vals_words()
+void __vpiArrayBase::make_vals_मगा_सालिता()
 {
-    assert(vals_words == 0);
-    vals_words = new struct __vpiArrayWord[get_size() + 1];
+    assert(vals_मगा_सालिता == 0);
+    vals_मगा_सालिता = new struct __vpiArrayWord[get_size() + 1];
 
     // Make word[-1] point to the parent.
-    vals_words->parent = this;
+    vals_मगा_सालिता->parent = this;
     // Now point to word-0
-    vals_words += 1;
+    vals_मगा_सालिता += 1;
 
-    struct __vpiArrayWord*words = vals_words;
+    struct __vpiArrayWord*मगा_सालिता = vals_मगा_सालिता;
     for (unsigned idx = 0 ; idx < get_size() ; idx += 1) {
-            words[idx].word0 = words;
+            मगा_सालिता[idx].word0 = मगा_सालिता;
     }
 }
 
@@ -120,20 +120,20 @@ char* __vpiArrayWord::as_word_t::vpi_get_str(int code)
       return my_parent->get_word_str(obj, code);
 }
 
-void __vpiArrayWord::as_word_t::vpi_get_value(p_vpi_value vp)
+void __vpiArrayWord::as_word_t::vpi_get_हालागा(p_vpi_हालागा vp)
 {
       struct __vpiArrayWord*obj = array_var_word_from_handle(this);
       assert(obj);
       struct __vpiArrayBase*my_parent = obj->get_parent();
-      return my_parent->get_word_value(obj, vp);
+      return my_parent->get_word_हालागा(obj, vp);
 }
 
-vpiHandle __vpiArrayWord::as_word_t::vpi_put_value(p_vpi_value vp, int flags)
+vpiHandle __vpiArrayWord::as_word_t::vpi_put_हालागा(p_vpi_हालागा vp, int flags)
 {
       struct __vpiArrayWord*obj = array_var_word_from_handle(this);
       assert(obj);
       struct __vpiArrayBase*my_parent = obj->get_parent();
-      my_parent->put_word_value(obj, vp, flags);
+      my_parent->put_word_हालागा(obj, vp, flags);
       return this;
 }
 
@@ -148,11 +148,11 @@ vpiHandle __vpiArrayWord::as_word_t::vpi_handle(int code)
 	  case vpiIndex:
 	    return &(obj->as_index);
 
-	  case vpiLeftRange:
-	    return my_parent->get_left_range();
+	  case vpi_कालिवा_Range:
+	    return my_parent->get_कालिवा_range();
 
-	  case vpiRightRange:
-	    return my_parent->get_right_range();
+	  case vpi_कानान_Range:
+	    return my_parent->get_कानान_range();
 
 	  case vpiParent:
 	    return dynamic_cast<vpiHandle>(my_parent);
@@ -167,7 +167,7 @@ vpiHandle __vpiArrayWord::as_word_t::vpi_handle(int code)
       return 0;
 }
 
-void __vpiArrayWord::as_index_t::vpi_get_value(p_vpi_value vp)
+void __vpiArrayWord::as_index_t::vpi_get_हालागा(p_vpi_हालागा vp)
 {
       struct __vpiArrayWord*obj = array_var_index_from_handle(this);
       assert(obj);

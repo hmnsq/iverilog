@@ -26,37 +26,37 @@
 # include  <cstddef>
 #endif
 
-extern unsigned long count_opcodes;
-extern unsigned long count_functors;
-extern unsigned long count_functors_logic;
-extern unsigned long count_functors_bufif;
-extern unsigned long count_functors_resolv;
-extern unsigned long count_functors_sig;
-extern unsigned long count_filters;
-extern unsigned long count_vvp_nets;
-extern unsigned long count_vpi_nets;
-extern unsigned long count_vpi_scopes;
+extern unsigned long बिलांग_opcodes;
+extern unsigned long बिलांग_functors;
+extern unsigned long बिलांग_functors_logic;
+extern unsigned long बिलांग_functors_bufif;
+extern unsigned long बिलांग_functors_resolv;
+extern unsigned long बिलांग_functors_sig;
+extern unsigned long बिलांग_filters;
+extern unsigned long बिलांग_vvp_nets;
+extern unsigned long बिलांग_vpi_nets;
+extern unsigned long बिलांग_vpi_scopes;
 
-extern unsigned long count_net_arrays;
-extern unsigned long count_net_array_words;
-extern unsigned long count_var_arrays;
-extern unsigned long count_var_array_words;
-extern unsigned long count_real_arrays;
-extern unsigned long count_real_array_words;
+extern unsigned long बिलांग_net_arrays;
+extern unsigned long बिलांग_net_array_मगा_सालिता;
+extern unsigned long बिलांग_var_arrays;
+extern unsigned long बिलांग_var_array_मगा_सालिता;
+extern unsigned long बिलांग_real_arrays;
+extern unsigned long बिलांग_real_array_मगा_सालिता;
 
 
-extern unsigned long count_time_events;
-extern unsigned long count_time_pool(void);
+extern unsigned long बिलांग_time_events;
+extern unsigned long बिलांग_time_pool(void);
 
-extern unsigned long count_assign_events;
-extern unsigned long count_assign4_pool(void);
-extern unsigned long count_assign8_pool(void);
-extern unsigned long count_assign_real_pool(void);
-extern unsigned long count_assign_aword_pool(void);
-extern unsigned long count_assign_arword_pool(void);
+extern unsigned long बिलांग_assign_events;
+extern unsigned long बिलांग_assign4_pool(void);
+extern unsigned long बिलांग_assign8_pool(void);
+extern unsigned long बिलांग_assign_real_pool(void);
+extern unsigned long बिलांग_assign_aword_pool(void);
+extern unsigned long बिलांग_assign_arword_pool(void);
 
-extern unsigned long count_gen_events;
-extern unsigned long count_gen_pool(void);
+extern unsigned long बिलांग_gen_events;
+extern unsigned long बिलांग_gen_pool(void);
 
 extern size_t size_opcodes;
 extern size_t size_vvp_nets;

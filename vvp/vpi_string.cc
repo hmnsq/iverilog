@@ -51,9 +51,9 @@ int __vpiStringVar::vpi_get(int code)
 	      // The vpiSize of a string variable is the number of
 	      // bytes (characters) in that string.
 	    return str.size();
-	  case vpiLeftRange:
+	  case vpi_कालिवा_Range:
 	    return 0;
-	  case vpiRightRange:
+	  case vpi_कानान_Range:
             return str.size() - 1;
 	  default:
 	    fprintf(stderr, "vpi sorry: property is not implemented");
@@ -62,7 +62,7 @@ int __vpiStringVar::vpi_get(int code)
       }
 }
 
-void __vpiStringVar::vpi_get_value(p_vpi_value val)
+void __vpiStringVar::vpi_get_हालागा(p_vpi_हालागा val)
 {
       vvp_fun_signal_string*fun = dynamic_cast<vvp_fun_signal_string*> (get_net()->fun);
       assert(fun);
@@ -79,7 +79,7 @@ void __vpiStringVar::vpi_get_value(p_vpi_value val)
       val->format = vpiSuppressVal;
 }
 
-vpiHandle __vpiStringVar::vpi_put_value(p_vpi_value val, int)
+vpiHandle __vpiStringVar::vpi_put_हालागा(p_vpi_हालागा val, int)
 {
       vvp_fun_signal_string*fun = dynamic_cast<vvp_fun_signal_string*> (get_net()->fun);
       assert(fun);

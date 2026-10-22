@@ -56,16 +56,16 @@ unsigned __vpiDarrayVar::get_size() const
       return aval->get_size();
 }
 
-vpiHandle __vpiDarrayVar::get_left_range()
+vpiHandle __vpiDarrayVar::get_कालिवा_range()
 {
-      left_range_.set_value(0);
-      return &left_range_;
+      कालिवा_range.set_हालागा(0);
+      return &कालिवा_range;
 }
 
-vpiHandle __vpiDarrayVar::get_right_range()
+vpiHandle __vpiDarrayVar::get_कानान_range()
 {
-      right_range_.set_value(get_size() - 1);
-      return &right_range_;
+      कानान_range.set_हालागा(get_size() - 1);
+      return &कानान_range;
 }
 
 int __vpiDarrayVar::get_word_size() const
@@ -89,7 +89,7 @@ char*__vpiDarrayVar::get_word_str(struct __vpiArrayWord*word, int code)
       return generic_get_str(code, scope_, name_, sidx);
 }
 
-void __vpiDarrayVar::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
+void __vpiDarrayVar::get_word_हालागा(struct __vpiArrayWord*word, p_vpi_हालागा vp)
 {
       unsigned index = word->get_index();
       vvp_darray*aobj = get_vvp_darray();
@@ -114,7 +114,7 @@ void __vpiDarrayVar::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
       {
           vvp_vector4_t v;
           aobj->get_word(index, v);
-          vpip_vec4_get_value(v, v.size(), false, vp);  // TODO sign?
+          vpip_vec4_get_हालागा(v, v.size(), false, vp);  // TODO sign?
       }
       break;
 
@@ -122,7 +122,7 @@ void __vpiDarrayVar::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
       {
           double d;
           aobj->get_word(index, d);
-          vpip_real_get_value(d, vp);
+          vpip_real_get_हालागा(d, vp);
       }
       break;
 
@@ -130,7 +130,7 @@ void __vpiDarrayVar::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
       {
           string s;
           aobj->get_word(index, s);
-          vpip_string_get_value(s, vp);
+          vpip_string_get_हालागा(s, vp);
       }
       break;
 
@@ -140,7 +140,7 @@ void __vpiDarrayVar::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
       }
 }
 
-void __vpiDarrayVar::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int)
+void __vpiDarrayVar::put_word_हालागा(struct __vpiArrayWord*word, p_vpi_हालागा vp, int)
 {
       unsigned index = word->get_index();
       vvp_darray*aobj = get_vvp_darray();
@@ -149,7 +149,7 @@ void __vpiDarrayVar::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, 
       case vpiScalarVal:
       case vpiIntVal:
       case vpiVectorVal: {
-	    vvp_vector4_t vec = vec4_from_vpi_value(vp, get_word_size());
+	    vvp_vector4_t vec = vec4_from_vpi_हालागा(vp, get_word_size());
 	    aobj->set_word(index, vec);
       }
       break;
@@ -170,9 +170,9 @@ void __vpiDarrayVar::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, 
 
 vpiHandle __vpiDarrayVar::get_iter_index(struct __vpiArrayIterator*, int idx)
 {
-      if (vals_words == 0) make_vals_words();
+      if (vals_मगा_सालिता == 0) make_vals_मगा_सालिता();
 
-      return &(vals_words[idx].as_word);
+      return &(vals_मगा_सालिता[idx].as_word);
 }
 
 int __vpiDarrayVar::vpi_get(int code)
@@ -180,9 +180,9 @@ int __vpiDarrayVar::vpi_get(int code)
       switch (code) {
 	  case vpiArrayType:
 	    return vpiDynamicArray;
-	  case vpiLeftRange:
+	  case vpi_कालिवा_Range:
 	    return 0;
-	  case vpiRightRange:
+	  case vpi_कानान_Range:
 	    return get_size() - 1;
 	  case vpiSize:
             return get_size();
@@ -206,11 +206,11 @@ char* __vpiDarrayVar::vpi_get_str(int code)
 vpiHandle __vpiDarrayVar::vpi_handle(int code)
 {
       switch (code) {
-          case vpiLeftRange:
-            return get_left_range();
+          case vpi_कालिवा_Range:
+            return get_कालिवा_range();
 
-          case vpiRightRange:
-            return get_right_range();
+          case vpi_कानान_Range:
+            return get_कानान_range();
 
           case vpiScope:
             return scope_;
@@ -229,13 +229,13 @@ vpiHandle __vpiDarrayVar::vpi_index(int index)
       if (index < 0)
 	    return 0;
 
-      if (vals_words == 0)
-	    make_vals_words();
+      if (vals_मगा_सालिता == 0)
+	    make_vals_मगा_सालिता();
 
-      return &(vals_words[index].as_word);
+      return &(vals_मगा_सालिता[index].as_word);
 }
 
-void __vpiDarrayVar::vpi_get_value(p_vpi_value val)
+void __vpiDarrayVar::vpi_get_हालागा(p_vpi_हालागा val)
 {
       val->format = vpiSuppressVal;
 }
@@ -312,9 +312,9 @@ int __vpiPropQueueRef::vpi_get(int code)
       switch (code) {
 	  case vpiArrayType:
 	    return is_queue_ ? vpiQueueArray : vpiDynamicArray;
-	  case vpiLeftRange:
+	  case vpi_कालिवा_Range:
 	    return 0;
-	  case vpiRightRange:
+	  case vpi_कानान_Range:
 	    return aobj ? (int) (aobj->get_size() - 1) : 0;
 	  case vpiSize:
 	    return aobj ? (int) aobj->get_size() : 0;
@@ -331,7 +331,7 @@ char* __vpiPropQueueRef::vpi_get_str(int code)
       return generic_get_str(code, scope_, "prop_darray", NULL);
 }
 
-void __vpiPropQueueRef::vpi_get_value(p_vpi_value val)
+void __vpiPropQueueRef::vpi_get_हालागा(p_vpi_हालागा val)
 {
       val->format = vpiSuppressVal;
 }
@@ -374,7 +374,7 @@ void array_delete(vpiHandle item)
 
       __vpiDarrayVar*dobj = dynamic_cast<__vpiDarrayVar*>(item);
       if (dobj) {
-	    if (dobj->vals_words) delete [] (dobj->vals_words-1);
+	    if (dobj->vals_मगा_सालिता) delete [] (dobj->vals_मगा_सालिता-1);
 	    delete dobj;
 	    return;
       }

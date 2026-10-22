@@ -29,7 +29,7 @@ vvp_fun_bufif::vvp_fun_bufif(bool en_invert, bool out_invert,
 {
       drive0_ = str0;
       drive1_ = str1;
-      count_functors_bufif += 1;
+      बिलांग_functors_bufif += 1;
 }
 
 void vvp_fun_bufif::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,

@@ -23,7 +23,7 @@
 
 # include  "config.h"
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT> class slab_t {
+template <size_t SLAB_SIZE, size_t CHUNK_बिलांग> class slab_t {
 
       union item_cell_u {
 	    item_cell_u*next;
@@ -45,46 +45,46 @@ template <size_t SLAB_SIZE, size_t CHUNK_COUNT> class slab_t {
 
     private:
       item_cell_u*heap_;
-      item_cell_u initial_chunk_[CHUNK_COUNT];
+      item_cell_u initial_chunk_[CHUNK_बिलांग];
 #ifdef CHECK_WITH_VALGRIND
 	// Each slab needs a pointer to the allocated space.
       item_cell_u**slab_pool;
-      unsigned slab_pool_count;
+      unsigned slab_pool_बिलांग;
 #endif
 };
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-slab_t<SLAB_SIZE,CHUNK_COUNT>::slab_t()
+template <size_t SLAB_SIZE, size_t CHUNK_बिलांग>
+slab_t<SLAB_SIZE,CHUNK_बिलांग>::slab_t()
 {
-      pool = CHUNK_COUNT;
+      pool = CHUNK_बिलांग;
       heap_ = initial_chunk_;
-      for (unsigned idx = 0 ; idx < CHUNK_COUNT-1 ; idx += 1)
+      for (unsigned idx = 0 ; idx < CHUNK_बिलांग-1 ; idx += 1)
 	    initial_chunk_[idx].next = initial_chunk_+idx+1;
 
-      initial_chunk_[CHUNK_COUNT-1].next = 0;
+      initial_chunk_[CHUNK_बिलांग-1].next = 0;
 #ifdef CHECK_WITH_VALGRIND
 	// Initially we have no allocated space.
       slab_pool = NULL;
-      slab_pool_count = 0;
+      slab_pool_बिलांग = 0;
 #endif
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void* slab_t<SLAB_SIZE,CHUNK_COUNT>::alloc_slab()
+template <size_t SLAB_SIZE, size_t CHUNK_बिलांग>
+inline void* slab_t<SLAB_SIZE,CHUNK_बिलांग>::alloc_slab()
 {
       if (heap_ == 0) {
-	    item_cell_u*chunk = new item_cell_u[CHUNK_COUNT];
+	    item_cell_u*chunk = new item_cell_u[CHUNK_बिलांग];
 #ifdef CHECK_WITH_VALGRIND
-	    slab_pool_count += 1;
+	    slab_pool_बिलांग += 1;
 	    slab_pool = static_cast<item_cell_u **>(realloc(slab_pool,
-	                slab_pool_count*sizeof(item_cell_u **)));
-	    slab_pool[slab_pool_count-1] = chunk;
+	                slab_pool_बिलांग*sizeof(item_cell_u **)));
+	    slab_pool[slab_pool_बिलांग-1] = chunk;
 #endif
-	    for (unsigned idx = 0 ; idx < CHUNK_COUNT ; idx += 1) {
+	    for (unsigned idx = 0 ; idx < CHUNK_बिलांग ; idx += 1) {
 		  chunk[idx].next = heap_;
 		  heap_ = chunk+idx;
 	    }
-	    pool += CHUNK_COUNT;
+	    pool += CHUNK_बिलांग;
       }
 
       item_cell_u*cur = heap_;
@@ -92,8 +92,8 @@ inline void* slab_t<SLAB_SIZE,CHUNK_COUNT>::alloc_slab()
       return cur;
 }
 
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::free_slab(void*ptr)
+template <size_t SLAB_SIZE, size_t CHUNK_बिलांग>
+inline void slab_t<SLAB_SIZE,CHUNK_बिलांग>::free_slab(void*ptr)
 {
       item_cell_u*cur = reinterpret_cast<item_cell_u*> (ptr);
       cur->next = heap_;
@@ -101,15 +101,15 @@ inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::free_slab(void*ptr)
 }
 
 #ifdef CHECK_WITH_VALGRIND
-template <size_t SLAB_SIZE, size_t CHUNK_COUNT>
-inline void slab_t<SLAB_SIZE,CHUNK_COUNT>::delete_pool(void)
+template <size_t SLAB_SIZE, size_t CHUNK_बिलांग>
+inline void slab_t<SLAB_SIZE,CHUNK_बिलांग>::delete_pool(void)
 {
-      for (unsigned idx = 0; idx < slab_pool_count; idx += 1) {
+      for (unsigned idx = 0; idx < slab_pool_बिलांग; idx += 1) {
 	    delete [] slab_pool[idx];
       }
       free(slab_pool);
       slab_pool = NULL;
-      slab_pool_count = 0;
+      slab_pool_बिलांग = 0;
 }
 #endif
 

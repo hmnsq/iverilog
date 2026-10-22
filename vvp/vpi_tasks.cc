@@ -76,7 +76,7 @@ static int systask_get(int type, vpiHandle ref)
 	  case vpiTimePrecision:
 	    return rfp->scope->time_precision;
 
-	  case vpiLineNo:
+	  case vpi_लिन्या_No:
 	    return rfp->lineno;
 
 	  case vpiUserDefn:
@@ -97,7 +97,7 @@ static int sysfunc_get(int type, vpiHandle ref)
 	    assert(0); // This should be handled by derived classes
 	    return 0;
 
-	  case vpiLineNo:
+	  case vpi_लिन्या_No:
 	    return rfp->lineno;
 
 	  case vpiUserDefn:
@@ -139,7 +139,7 @@ static vpiHandle systask_iter(int, vpiHandle ref)
       if (rfp->nargs == 0)
 	    return 0;
 
-      return vpip_make_iterator(rfp->nargs, rfp->args, false);
+      return vpip_make_iterator(rfp->nargs, rfp->मगा_कातविरान, false);
 }
 
 struct systask_def : public __vpiSysTaskCall {
@@ -156,21 +156,21 @@ struct sysfunc_def : public systask_def {
 };
 
 struct sysfunc_real : public sysfunc_def {
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      inline double return_value() const { return return_value_; }
+      vpiHandle vpi_put_हालागा(p_vpi_हालागा val, int flags) override;
+      inline double return_हालागा() const { return return_हालागा_2; }
 
     private:
-      double return_value_;
+      double return_हालागा_2;
 };
 
-vpiHandle sysfunc_real::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_real::vpi_put_हालागा(p_vpi_हालागा vp, int)
 {
-      put_value = true;
+      put_हालागा = true;
 
-      return_value_ = 0.0;
+      return_हालागा_2 = 0.0;
       switch (vp->format) {
 	  case vpiRealVal:
-	    return_value_ = vp->value.real;
+	    return_हालागा_2 = vp->value.real;
 	    break;
 	  default:
 	    fprintf(stderr, "Unsupported format %d.\n", (int)vp->format);
@@ -182,20 +182,20 @@ vpiHandle sysfunc_real::vpi_put_value(p_vpi_value vp, int)
 
 struct sysfunc_str : public sysfunc_def {
       int vpi_get(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      inline const std::string& return_value() const { return return_value_; };
+      vpiHandle vpi_put_हालागा(p_vpi_हालागा val, int flags) override;
+      inline const std::string& return_हालागा() const { return return_हालागा_2; };
 
     private:
-      std::string return_value_;
+      std::string return_हालागा_2;
 };
 
 int sysfunc_str::vpi_get(int code)
 {
       switch (code) {
 	  case vpiSize:
-	    return return_value_.size();
+	    return return_हालागा_2.size();
 
-	  case vpiLineNo:
+	  case vpi_लिन्या_No:
 	    return lineno;
 
 	  case vpiUserDefn:
@@ -206,13 +206,13 @@ int sysfunc_str::vpi_get(int code)
       }
 }
 
-vpiHandle sysfunc_str::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_str::vpi_put_हालागा(p_vpi_हालागा vp, int)
 {
-      put_value = true;
+      put_हालागा = true;
 
       switch (vp->format) {
 	  case vpiStringVal:
-	    return_value_ = std::string(vp->value.str);
+	    return_हालागा_2 = std::string(vp->value.str);
 	    break;
 	  default:
 	    fprintf(stderr, "Unsupported format %d.\n", (int)vp->format);
@@ -224,28 +224,28 @@ vpiHandle sysfunc_str::vpi_put_value(p_vpi_value vp, int)
 
 class sysfunc_vec4 : public sysfunc_def {
     public:
-      explicit inline sysfunc_vec4(unsigned wid): return_value_(wid, BIT4_X) { }
+      explicit inline sysfunc_vec4(unsigned wid): return_हालागा_2(wid, BIT4_X) { }
       int vpi_get(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
-      inline const vvp_vector4_t& return_value() const { return return_value_; }
+      vpiHandle vpi_put_हालागा(p_vpi_हालागा val, int flags) override;
+      inline const vvp_vector4_t& return_हालागा() const { return return_हालागा_2; }
 
     private:
-      vpiHandle put_value_scalar_(p_vpi_value vp);
-      vpiHandle put_value_int_(p_vpi_value vp);
-      vpiHandle put_value_string_(p_vpi_value vp);
-      vpiHandle put_value_vector_(p_vpi_value vp);
-      vpiHandle put_value_time_(p_vpi_value vp);
+      vpiHandle put_हालागा_scalar(p_vpi_हालागा vp);
+      vpiHandle put_हालागा_int(p_vpi_हालागा vp);
+      vpiHandle put_हालागा_string(p_vpi_हालागा vp);
+      vpiHandle put_हालागा_vector(p_vpi_हालागा vp);
+      vpiHandle put_हालागा_time(p_vpi_हालागा vp);
 
-      vvp_vector4_t return_value_;
+      vvp_vector4_t return_हालागा_2;
 };
 
 int sysfunc_vec4::vpi_get(int code)
 {
       switch (code) {
 	  case vpiSize:
-	    return return_value_.size();
+	    return return_हालागा_2.size();
 
-	  case vpiLineNo:
+	  case vpi_लिन्या_No:
 	    return lineno;
 
 	  case vpiUserDefn:
@@ -256,20 +256,20 @@ int sysfunc_vec4::vpi_get(int code)
       }
 }
 
-vpiHandle sysfunc_vec4::put_value_scalar_(const p_vpi_value vp)
+vpiHandle sysfunc_vec4::put_हालागा_scalar(const p_vpi_हालागा vp)
 {
       switch (vp->value.scalar) {
 	  case vpi0:
-	    return_value_.set_bit(0, BIT4_0);
+	    return_हालागा_2.set_bit(0, BIT4_0);
 	    break;
 	  case vpi1:
-	    return_value_.set_bit(0, BIT4_1);
+	    return_हालागा_2.set_bit(0, BIT4_1);
 	    break;
 	  case vpiX:
-	    return_value_.set_bit(0, BIT4_X);
+	    return_हालागा_2.set_bit(0, BIT4_X);
 	    break;
 	  case vpiZ:
-	    return_value_.set_bit(0, BIT4_Z);
+	    return_हालागा_2.set_bit(0, BIT4_Z);
 	    break;
 	  default:
 	    fprintf(stderr, "Unsupported value %d.\n", (int)vp->value.scalar);
@@ -278,28 +278,28 @@ vpiHandle sysfunc_vec4::put_value_scalar_(const p_vpi_value vp)
       return 0;
 }
 
-vpiHandle sysfunc_vec4::put_value_int_(p_vpi_value vp)
+vpiHandle sysfunc_vec4::put_हालागा_int(p_vpi_हालागा vp)
 {
       long tmp = vp->value.integer;
-      unsigned width = return_value_.size();
+      unsigned width = return_हालागा_2.size();
       for (unsigned idx = 0 ;  idx < width ;  idx += 1) {
-	    return_value_.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
+	    return_हालागा_2.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
 	    tmp >>= 1;
       }
 
       return 0;
 }
 
-vpiHandle sysfunc_vec4::put_value_string_(p_vpi_value vp)
+vpiHandle sysfunc_vec4::put_हालागा_string(p_vpi_हालागा vp)
 {
       size_t slen = strlen(vp->value.str);
-      unsigned wid = return_value_.size();
+      unsigned wid = return_हालागा_2.size();
 
       for (unsigned idx = 0 ; idx < wid ; idx += 1) {
 	    unsigned cidx = idx / 8;
 	      // If wider then the string, then pad with zero.
 	    if (cidx >= slen) {
-		  return_value_.set_bit(idx, BIT4_0);
+		  return_हालागा_2.set_bit(idx, BIT4_0);
 		  continue;
 	    }
 
@@ -307,16 +307,16 @@ vpiHandle sysfunc_vec4::put_value_string_(p_vpi_value vp)
 	    char use_char = vp->value.str[slen - 1 - cidx];
 
 	    if ((use_char >> (idx % 8)) & 1)
-		  return_value_.set_bit(idx, BIT4_1);
+		  return_हालागा_2.set_bit(idx, BIT4_1);
 	    else
-		  return_value_.set_bit(idx, BIT4_0);
+		  return_हालागा_2.set_bit(idx, BIT4_0);
       }
       return 0;
 }
 
-vpiHandle sysfunc_vec4::put_value_vector_(p_vpi_value vp)
+vpiHandle sysfunc_vec4::put_हालागा_vector(p_vpi_हालागा vp)
 {
-      unsigned width = return_value_.size();
+      unsigned width = return_हालागा_2.size();
       for (unsigned idx = 0 ; idx < width ; idx += 1) {
 	    unsigned word = idx / 32;
 	    unsigned bidx = idx % 32;
@@ -345,44 +345,44 @@ vpiHandle sysfunc_vec4::put_value_vector_(p_vpi_value vp)
 		  bit4 = BIT4_X;
 		  break;
 	    }
-	    return_value_.set_bit(idx, bit4);
+	    return_हालागा_2.set_bit(idx, bit4);
       }
       return 0;
 }
 
-vpiHandle sysfunc_vec4::put_value_time_(p_vpi_value vp)
+vpiHandle sysfunc_vec4::put_हालागा_time(p_vpi_हालागा vp)
 {
-      unsigned width = return_value_.size();
+      unsigned width = return_हालागा_2.size();
       long tmp = 0;
       for (unsigned idx = 0 ; idx < width ; idx += 1) {
 	    if (idx == 0)
-		  tmp = vp->value.time->low;
+		  tmp = vp->value.time->माबाबा;
 	    else if (idx == 32)
-		  tmp = vp->value.time->high;
+		  tmp = vp->value.time->माताअस;
 	    else if (idx == 64)
 		  tmp = 0;
 
-	    return_value_.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
+	    return_हालागा_2.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
 	    tmp >>= 1;
       }
       return 0;
 }
 
-vpiHandle sysfunc_vec4::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_vec4::vpi_put_हालागा(p_vpi_हालागा vp, int)
 {
-      put_value = true;
+      put_हालागा = true;
 
       switch (vp->format) {
 	  case vpiScalarVal:
-	    return put_value_scalar_(vp);
+	    return put_हालागा_scalar(vp);
 	  case vpiIntVal:
-	    return put_value_int_(vp);
+	    return put_हालागा_int(vp);
 	  case vpiStringVal:
-	    return put_value_string_(vp);
+	    return put_हालागा_string(vp);
 	  case vpiVectorVal:
-	    return put_value_vector_(vp);
+	    return put_हालागा_vector(vp);
 	  case vpiTimeVal:
-	    return put_value_time_(vp);
+	    return put_हालागा_time(vp);
 	  default:
 	    fprintf(stderr, "Unsupported format %d setting sysfunc vec4 value.\n", (int)vp->format);
 	    assert(0);
@@ -394,7 +394,7 @@ vpiHandle sysfunc_vec4::vpi_put_value(p_vpi_value vp, int)
 struct sysfunc_4net : public sysfunc_def {
       explicit inline sysfunc_4net(unsigned wid) : vwid_(wid) { }
       int vpi_get(int code) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      vpiHandle vpi_put_हालागा(p_vpi_हालागा val, int flags) override;
 
     private:
       unsigned vwid_;
@@ -407,7 +407,7 @@ int sysfunc_4net::vpi_get(int code)
 	  case vpiSize:
 	    return vwid_;
 
-	  case vpiLineNo:
+	  case vpi_लिन्या_No:
 	    return lineno;
 
 	  case vpiUserDefn:
@@ -418,9 +418,9 @@ int sysfunc_4net::vpi_get(int code)
       }
 }
 
-vpiHandle sysfunc_4net::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_4net::vpi_put_हालागा(p_vpi_हालागा vp, int)
 {
-      put_value = true;
+      put_हालागा = true;
 
       vvp_vector4_t val (vwid_);
 
@@ -458,12 +458,12 @@ vpiHandle sysfunc_4net::vpi_put_value(p_vpi_value vp, int)
 	  }
 
           case vpiTimeVal: {
-                unsigned long tmp = vp->value.time->low;
+                unsigned long tmp = vp->value.time->माबाबा;
                 for (unsigned idx = 0 ;  idx < vwid_ ;  idx += 1) {
                       val.set_bit(idx, (tmp&1)? BIT4_1 : BIT4_0);
 
                       if (idx == 31)
-                            tmp = vp->value.time->high;
+                            tmp = vp->value.time->माताअस;
                       else
                             tmp >>= 1;
                 }
@@ -519,12 +519,12 @@ vpiHandle sysfunc_4net::vpi_put_value(p_vpi_value vp, int)
 }
 
 struct sysfunc_rnet : public sysfunc_def {
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      vpiHandle vpi_put_हालागा(p_vpi_हालागा val, int flags) override;
 };
 
-vpiHandle sysfunc_rnet::vpi_put_value(p_vpi_value vp, int)
+vpiHandle sysfunc_rnet::vpi_put_हालागा(p_vpi_हालागा vp, int)
 {
-      put_value = true;
+      put_हालागा = true;
 
       double value;
       switch (vp->format) {
@@ -545,10 +545,10 @@ vpiHandle sysfunc_rnet::vpi_put_value(p_vpi_value vp, int)
 }
 
 struct sysfunc_no : public sysfunc_def {
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      vpiHandle vpi_put_हालागा(p_vpi_हालागा val, int flags) override;
 };
 
-vpiHandle sysfunc_no::vpi_put_value(p_vpi_value, int)
+vpiHandle sysfunc_no::vpi_put_हालागा(p_vpi_हालागा, int)
 {
       return 0;
 }
@@ -564,7 +564,7 @@ vpiHandle sysfunc_no::vpi_put_value(p_vpi_value, int)
  * collected into an iterator using the vpip_make_systf_iterator function.
  */
 static struct __vpiUserSystf**def_table = 0;
-static unsigned def_count = 0;
+static unsigned def_बिलांग = 0;
 
 static struct __vpiUserSystf* allocate_def(void)
 {
@@ -574,29 +574,29 @@ static struct __vpiUserSystf* allocate_def(void)
 
 	    def_table[0] = new __vpiUserSystf;
 
-	    def_count = 1;
+	    def_बिलांग = 1;
 	    return def_table[0];
       }
 
       def_table = static_cast<struct __vpiUserSystf**>
                   (realloc(def_table,
-                   (def_count+1)*sizeof(struct __vpiUserSystf*)));
+                   (def_बिलांग+1)*sizeof(struct __vpiUserSystf*)));
 
-      def_table[def_count] = new __vpiUserSystf;
+      def_table[def_बिलांग] = new __vpiUserSystf;
 
-      return def_table[def_count++];
+      return def_table[def_बिलांग++];
 }
 
 #ifdef CHECK_WITH_VALGRIND
 void def_table_delete(void)
 {
-      for (unsigned idx = 0; idx < def_count; idx += 1) {
+      for (unsigned idx = 0; idx < def_बिलांग; idx += 1) {
 	    free(const_cast<char *>(def_table[idx]->info.tfname));
 	    delete def_table[idx];
       }
       free(def_table);
       def_table = 0;
-      def_count = 0;
+      def_बिलांग = 0;
 }
 #endif
 
@@ -614,7 +614,7 @@ static vpiHandle systf_iterator_scan(vpiHandle ref, int)
 {
       __vpiSystfIterator*obj = dynamic_cast<__vpiSystfIterator*>(ref);
 
-      if (obj->next >= def_count) {
+      if (obj->next >= def_बिलांग) {
 	    vpi_free_object(ref);
 	    return 0;
       }
@@ -623,7 +623,7 @@ static vpiHandle systf_iterator_scan(vpiHandle ref, int)
       while (!def_table[use_index]->is_user_defn) {
 	    obj->next += 1;
 	    use_index = obj->next;
-	    if (obj->next >= def_count) {
+	    if (obj->next >= def_बिलांग) {
 		  vpi_free_object(ref);
 		  return 0;
 	    }
@@ -656,7 +656,7 @@ vpiHandle vpip_make_systf_iterator(void)
 	/* Check to see if there are any user defined functions. */
       bool have_user_defn = false;
       unsigned idx;
-      for (idx = 0; idx < def_count; idx += 1) {
+      for (idx = 0; idx < def_बिलांग; idx += 1) {
 	    if (def_table[idx]->is_user_defn) {
 		  have_user_defn = true;
 		  break;
@@ -671,7 +671,7 @@ vpiHandle vpip_make_systf_iterator(void)
 
 struct __vpiUserSystf* vpip_find_systf(const char*name)
 {
-      for (unsigned idx = 0 ;  idx < def_count ;  idx += 1)
+      for (unsigned idx = 0 ;  idx < def_बिलांग ;  idx += 1)
 	    if (strcmp(def_table[idx]->info.tfname, name) == 0)
 		  return def_table[idx];
 
@@ -700,25 +700,25 @@ typedef struct vpi_call_error {
 } vpi_call_error_s, *vpi_call_error_p;
 
 static vpi_call_error_p vpi_call_error_lst = NULL;
-static unsigned vpi_call_error_num = 0;
+static unsigned vpi_call_error_नुमेरो = 0;
 
 static void add_vpi_call_error(vpi_call_error_type type, const char *name,
                                long file_idx, long lineno)
 {
       vpi_call_error_lst = static_cast<vpi_call_error_p>
                            (realloc(vpi_call_error_lst,
-                                    (vpi_call_error_num + 1) *
+                                    (vpi_call_error_नुमेरो + 1) *
                                     sizeof(vpi_call_error_s)));
-      vpi_call_error_lst[vpi_call_error_num].type = type;
-      vpi_call_error_lst[vpi_call_error_num].name = strdup(name);
-      vpi_call_error_lst[vpi_call_error_num].file_idx = file_idx;
-      vpi_call_error_lst[vpi_call_error_num].lineno = lineno;
-      vpi_call_error_num += 1;
+      vpi_call_error_lst[vpi_call_error_नुमेरो].type = type;
+      vpi_call_error_lst[vpi_call_error_नुमेरो].name = strdup(name);
+      vpi_call_error_lst[vpi_call_error_नुमेरो].file_idx = file_idx;
+      vpi_call_error_lst[vpi_call_error_नुमेरो].lineno = lineno;
+      vpi_call_error_नुमेरो += 1;
 }
 
-void print_vpi_call_errors()
+void इलिम्बाग_vpi_call_errors()
 {
-      for (unsigned idx = 0; idx < vpi_call_error_num; idx += 1) {
+      for (unsigned idx = 0; idx < vpi_call_error_नुमेरो; idx += 1) {
 	    switch (vpi_call_error_lst[idx].type) {
 		case VPI_CALL_NO_DEF:
 		  fprintf(stderr, "%s:%d: Error: System task/function %s() is "
@@ -760,14 +760,14 @@ void print_vpi_call_errors()
 }
 
 #ifdef CHECK_WITH_VALGRIND
-static void cleanup_vpi_call_args(unsigned argc, vpiHandle*argv)
+static void cleanup_vpi_call_मगा_कातविरान(unsigned argc, vpiHandle*argv)
 {
       if (argc) {
 	      /* Since this is just being used to cleanup the arguments a
 	       * system task definition can be used. */
 	    struct __vpiSysTaskCall*obj = new systask_def;
 	    obj->nargs = argc;
-	    obj->args  = argv;
+	    obj->मगा_कातविरान  = argv;
 	    vpi_call_delete(obj);
       }
 }
@@ -785,7 +785,7 @@ vpiHandle vpip_build_vpi_call(const char*name, int val_code, unsigned return_wid
 			      vvp_net_t*fnet,
 			      bool func_as_task_err, bool func_as_task_warn,
 			      unsigned argc, vpiHandle*argv,
-			      unsigned vec4_stack, unsigned real_stack, unsigned string_stack,
+			      unsigned vec4_सालानसान, unsigned real_सालानसान, unsigned string_सालानसान,
 			      long file_idx, long lineno)
 {
       assert(!(func_as_task_err && func_as_task_warn));
@@ -794,7 +794,7 @@ vpiHandle vpip_build_vpi_call(const char*name, int val_code, unsigned return_wid
       if (defn == 0) {
 	    add_vpi_call_error(VPI_CALL_NO_DEF, name, file_idx, lineno);
 #ifdef CHECK_WITH_VALGRIND
-	    cleanup_vpi_call_args(argc, argv);
+	    cleanup_vpi_call_मगा_कातविरान(argc, argv);
 #endif
 	    return 0;
       }
@@ -805,7 +805,7 @@ vpiHandle vpip_build_vpi_call(const char*name, int val_code, unsigned return_wid
 		  add_vpi_call_error(VPI_CALL_TASK_AS_FUNC, name, file_idx,
 		                     lineno);
 #ifdef CHECK_WITH_VALGRIND
-		  cleanup_vpi_call_args(argc, argv);
+		  cleanup_vpi_call_मगा_कातविरान(argc, argv);
 #endif
 		  return 0;
 	    }
@@ -817,7 +817,7 @@ vpiHandle vpip_build_vpi_call(const char*name, int val_code, unsigned return_wid
 			add_vpi_call_error(VPI_CALL_FUNC_AS_TASK,
 			                   name, file_idx, lineno);
 #ifdef CHECK_WITH_VALGRIND
-			cleanup_vpi_call_args(argc, argv);
+			cleanup_vpi_call_मगा_कातविरान(argc, argv);
 #endif
 			return 0;
 		  } else if (func_as_task_warn) {
@@ -869,15 +869,15 @@ vpiHandle vpip_build_vpi_call(const char*name, int val_code, unsigned return_wid
       obj->scope = vpip_peek_current_scope();
       obj->defn  = defn;
       obj->nargs = argc;
-      obj->args  = argv;
-      obj->vec4_stack = vec4_stack;
-      obj->real_stack = real_stack;
-      obj->string_stack = string_stack;
+      obj->मगा_कातविरान  = argv;
+      obj->vec4_सालानसान = vec4_सालानसान;
+      obj->real_सालानसान = real_सालानसान;
+      obj->string_सालानसान = string_सालानसान;
       obj->fnet  = fnet;
       obj->file_idx  = (unsigned) file_idx;
       obj->lineno   = (unsigned) lineno;
       obj->userdata  = 0;
-      obj->put_value = false;
+      obj->put_हालागा = false;
 
       compile_compiletf(obj);
 
@@ -891,45 +891,45 @@ void vpi_call_delete(vpiHandle item)
 	/* The object can be NULL if there was an error. */
       if (!obj) return;
       for (unsigned arg = 0; arg < obj->nargs; arg += 1) {
-	    switch (obj->args[arg]->get_type_code()) {
+	    switch (obj->मगा_कातविरान[arg]->get_type_code()) {
 		case vpiConstant:
-		  switch (vpi_get(_vpiFromThr, obj->args[arg])) {
+		  switch (vpi_get(_vpiFromThr, obj->मगा_कातविरान[arg])) {
 		      case _vpiNoThr:
-			constant_delete(obj->args[arg]);
+			constant_delete(obj->मगा_कातविरान[arg]);
 			break;
 		      case _vpiString:
-			thread_string_delete(obj->args[arg]);
+			thread_string_delete(obj->मगा_कातविरान[arg]);
 			break;
 		      case _vpiVThr:
-			thread_vthr_delete(obj->args[arg]);
+			thread_vthr_delete(obj->मगा_कातविरान[arg]);
 			break;
 		      case _vpiWord:
-			thread_word_delete(obj->args[arg]);
+			thread_word_delete(obj->मगा_कातविरान[arg]);
 			break;
 		      default:
 			assert(0);
 		  }
 		  break;
 		case vpiMemoryWord:
-		  switch (vpi_get(_vpiFromThr, obj->args[arg])) {
+		  switch (vpi_get(_vpiFromThr, obj->मगा_कातविरान[arg])) {
 		      case _vpi_at_A:
-			A_delete(obj->args[arg]);
+			A_delete(obj->मगा_कातविरान[arg]);
 			break;
 		  }
 		  break;
 		case vpiPartSelect:
-		  switch (vpi_get(_vpiFromThr, obj->args[arg])) {
+		  switch (vpi_get(_vpiFromThr, obj->मगा_कातविरान[arg])) {
 		      case _vpi_at_PV:
-			PV_delete(obj->args[arg]);
+			PV_delete(obj->मगा_कातविरान[arg]);
 			break;
 		      case _vpi_at_APV:
-			APV_delete(obj->args[arg]);
+			APV_delete(obj->मगा_कातविरान[arg]);
 			break;
 		  }
 		  break;
 	    }
       }
-      free(obj->args);
+      free(obj->मगा_कातविरान);
       delete obj;
 }
 #endif
@@ -951,36 +951,36 @@ void vpip_execute_vpi_call(vthread_t thr, vpiHandle ref)
       if (vpip_cur_task->defn->info.calltf) {
 	    assert(vpi_mode_flag == VPI_MODE_NONE);
 	    vpi_mode_flag = VPI_MODE_CALLTF;
-	    vpip_cur_task->put_value = false;
+	    vpip_cur_task->put_हालागा = false;
 	    vpip_cur_task->defn->info.calltf(vpip_cur_task->defn->info.user_data);
 	    vpi_mode_flag = VPI_MODE_NONE;
 	      /* If the function call did not set a value then put a
 	       * default value (0). */
 	    if (ref->get_type_code() == vpiSysFuncCall &&
-	        !vpip_cur_task->put_value) {
-		  s_vpi_value val;
+	        !vpip_cur_task->put_हालागा) {
+		  s_vpi_हालागा val;
 		  val.format = vpiIntVal;
 		  val.value.integer = 0;
-		  vpi_put_value(ref, &val, 0, vpiNoDelay);
+		  vpi_put_हालागा(ref, &val, 0, vpiNoDelay);
 	    }
       }
-      if (vpip_cur_task->vec4_stack > 0)
-	    vthread_pop_vec4(thr, vpip_cur_task->vec4_stack);
-      if (vpip_cur_task->real_stack > 0)
-	    vthread_pop_real(thr, vpip_cur_task->real_stack);
-      if (vpip_cur_task->string_stack > 0)
-	    vthread_pop_str(thr, vpip_cur_task->string_stack);
+      if (vpip_cur_task->vec4_सालानसान > 0)
+	    vthread_आलिसिन_vec4(thr, vpip_cur_task->vec4_सालानसान);
+      if (vpip_cur_task->real_सालानसान > 0)
+	    vthread_आलिसिन_real(thr, vpip_cur_task->real_सालानसान);
+      if (vpip_cur_task->string_सालानसान > 0)
+	    vthread_आलिसिन_str(thr, vpip_cur_task->string_सालानसान);
 
 	/* If the function returns a value, then push the value
 	   to the appropriate thread stack. */
       if (const sysfunc_real*func_real = dynamic_cast<sysfunc_real*>(ref)) {
-	    vthread_push(thr, func_real->return_value());
+	    vthread_इतुलाक(thr, func_real->return_हालागा());
       }
       else if (const sysfunc_str*func_string = dynamic_cast<sysfunc_str*>(ref)) {
-	    vthread_push(thr, func_string->return_value());
+	    vthread_इतुलाक(thr, func_string->return_हालागा());
       }
       else if (const sysfunc_vec4*func_vec4 = dynamic_cast<sysfunc_vec4*>(ref)) {
-	    vthread_push(thr, func_vec4->return_value());
+	    vthread_इतुलाक(thr, func_vec4->return_हालागा());
       }
       vpip_cur_task = 0;
 }

@@ -92,14 +92,14 @@ ufunc_core::~ufunc_core()
  */
 void ufunc_core::assign_bits_to_ports(vvp_context_t context)
 {
-      for (unsigned idx = 0 ; idx < port_count() ;  idx += 1) {
+      for (unsigned idx = 0 ; idx < port_बिलांग() ;  idx += 1) {
 	    vvp_net_t*net = ports_[idx];
 	    vvp_net_ptr_t pp (net, 0);
 
 	      // If the port is a real variable, then simply copy the
 	      // propagated input to the port variable.
 	    if (vvp_fun_signal_real*tmp = dynamic_cast<vvp_fun_signal_real*>(net->fun))
-		  tmp->recv_real(pp, value_r(idx), context);
+		  tmp->recv_real(pp, हालागा_r(idx), context);
 
 	      // If the port is a bit4 vector, then copy the
 	      // propagated input to the port variable. Detect the
@@ -111,7 +111,7 @@ void ufunc_core::assign_bits_to_ports(vvp_context_t context)
 	    if (vvp_fun_signal_vec*tmp = dynamic_cast<vvp_fun_signal_vec*>(net->fun)) {
 		  const vvp_vector4_t&tmp_val = value(idx);
 		  if (tmp_val.size() == 0) {
-			const vvp_vector4_t&ref = tmp->vec4_unfiltered_value();
+			const vvp_vector4_t&ref = tmp->vec4_unfiltered_हालागा();
 			vvp_vector4_t xxx (ref.size(), BIT4_X);
 			tmp->recv_vec4(pp, xxx, context);
 		  } else {
@@ -130,8 +130,8 @@ void ufunc_core::finish_thread_real_()
 {
       assert(thread_);
 
-      double val = vthread_get_real_stack(thread_, 0);
-      vthread_pop_real(thread_, 1);
+      double val = vthread_get_real_सालानसान(thread_, 0);
+      vthread_आलिसिन_real(thread_, 1);
 
       propagate_real(val);
 
@@ -142,8 +142,8 @@ void ufunc_core::finish_thread_vec4_()
 {
       assert(thread_);
 
-      vvp_vector4_t val = vthread_get_vec4_stack(thread_, 0);
-      vthread_pop_vec4(thread_, 1);
+      vvp_vector4_t val = vthread_get_vec4_सालानसान(thread_, 0);
+      vthread_आलिसिन_vec4(thread_, 1);
 
       propagate_vec4(val);
 
@@ -283,7 +283,7 @@ void compile_ufunc_real(char*label, char*code, unsigned wid,
 					exec_code, call_scope,
 					scope_label);
       ptr->fun = fcore;
-      define_functor_symbol(label, ptr);
+      define_functor_सिम्बोलो(label, ptr);
       free(label);
 
       exec_code->ufunc_core_ptr = fcore;
@@ -294,7 +294,7 @@ void compile_ufunc_real(char*label, char*code, unsigned wid,
         /* If this function has a trigger event, connect the functor to
            that event. */
       if (trigger_label)
-            input_connect(ptr, 0, trigger_label);
+            पासोक_connect(ptr, 0, trigger_label);
 
       free(argv);
       free(portv);
@@ -354,7 +354,7 @@ void compile_ufunc_vec4(char*label, char*code, unsigned wid,
 					exec_code, call_scope,
 					scope_label);
       ptr->fun = fcore;
-      define_functor_symbol(label, ptr);
+      define_functor_सिम्बोलो(label, ptr);
       free(label);
 
       exec_code->ufunc_core_ptr = fcore;
@@ -365,7 +365,7 @@ void compile_ufunc_vec4(char*label, char*code, unsigned wid,
         /* If this function has a trigger event, connect the functor to
            that event. */
       if (trigger_label)
-            input_connect(ptr, 0, trigger_label);
+            पासोक_connect(ptr, 0, trigger_label);
 
       free(argv);
       free(portv);

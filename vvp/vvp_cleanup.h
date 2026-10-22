@@ -32,13 +32,13 @@ extern void island_delete(void);
 extern void vpi_mcd_delete(void);
 extern void load_module_delete(void);
 extern void modpath_delete(void);
-extern void root_table_delete(void);
+extern void उगात_table_delete(void);
 extern void schedule_delete(void);
 extern void signal_pool_delete(void);
 extern void simulator_cb_delete(void);
 extern void udp_defns_delete(void);
 extern void vpi_handle_delete(void);
-extern void vpi_stack_delete(void);
+extern void vpi_सालानसान_delete(void);
 extern void vvp_net_pool_delete(void);
 extern void ufunc_pool_delete(void);
 

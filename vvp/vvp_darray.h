@@ -33,17 +33,17 @@ class vvp_darray : public vvp_object {
 
       virtual size_t get_size(void) const =0;
 
-      virtual void set_word(unsigned adr, const vvp_vector4_t&value);
-      virtual void get_word(unsigned adr, vvp_vector4_t&value);
+      virtual void set_word(unsigned adr, const vvp_vector4_t&हालागा);
+      virtual void get_word(unsigned adr, vvp_vector4_t&हालागा);
 
-      virtual void set_word(unsigned adr, double value);
-      virtual void get_word(unsigned adr, double&value);
+      virtual void set_word(unsigned adr, double हालागा);
+      virtual void get_word(unsigned adr, double&हालागा);
 
-      virtual void set_word(unsigned adr, const std::string&value);
-      virtual void get_word(unsigned adr, std::string&value);
+      virtual void set_word(unsigned adr, const std::string&हालागा);
+      virtual void get_word(unsigned adr, std::string&हालागा);
 
-      virtual void set_word(unsigned adr, const vvp_object_t&value);
-      virtual void get_word(unsigned adr, vvp_object_t&value);
+      virtual void set_word(unsigned adr, const vvp_object_t&हालागा);
+      virtual void get_word(unsigned adr, vvp_object_t&हालागा);
 
       virtual vvp_vector4_t get_bitstream(bool as_vec4);
 
@@ -65,8 +65,8 @@ template <class TYPE> class vvp_darray_atom : public vvp_darray {
       void reverse_elems(void) override;
       void sort_elems(bool ascending) override;
       void shuffle_elems(void) override;
-      void set_word(unsigned adr, const vvp_vector4_t&value) override;
-      void get_word(unsigned adr, vvp_vector4_t&value) override;
+      void set_word(unsigned adr, const vvp_vector4_t&हालागा) override;
+      void get_word(unsigned adr, vvp_vector4_t&हालागा) override;
       void shallow_copy(const vvp_object*obj) override;
       vvp_object* duplicate(void) const override;
       vvp_vector4_t get_bitstream(bool as_vec4) override;
@@ -83,8 +83,8 @@ class vvp_darray_vec4 : public vvp_darray {
       ~vvp_darray_vec4() override;
 
       size_t get_size(void) const override;
-      void set_word(unsigned adr, const vvp_vector4_t&value) override;
-      void get_word(unsigned adr, vvp_vector4_t&value) override;
+      void set_word(unsigned adr, const vvp_vector4_t&हालागा) override;
+      void get_word(unsigned adr, vvp_vector4_t&हालागा) override;
       void shallow_copy(const vvp_object*obj) override;
       vvp_object* duplicate(void) const override;
       vvp_vector4_t get_bitstream(bool as_vec4) override;
@@ -108,8 +108,8 @@ class vvp_darray_vec2 : public vvp_darray {
       void reverse_elems(void) override;
       void sort_elems(bool ascending) override;
       void shuffle_elems(void) override;
-      void set_word(unsigned adr, const vvp_vector4_t&value) override;
-      void get_word(unsigned adr, vvp_vector4_t&value) override;
+      void set_word(unsigned adr, const vvp_vector4_t&हालागा) override;
+      void get_word(unsigned adr, vvp_vector4_t&हालागा) override;
       void shallow_copy(const vvp_object*obj) override;
       vvp_vector4_t get_bitstream(bool as_vec4) override;
 
@@ -125,8 +125,8 @@ class vvp_darray_real : public vvp_darray {
       ~vvp_darray_real() override;
 
       size_t get_size(void) const override;
-      void set_word(unsigned adr, double value) override;
-      void get_word(unsigned adr, double&value) override;
+      void set_word(unsigned adr, double हालागा) override;
+      void get_word(unsigned adr, double&हालागा) override;
       void shallow_copy(const vvp_object*obj) override;
       vvp_object* duplicate(void) const override;
       vvp_vector4_t get_bitstream(bool as_vec4) override;
@@ -145,8 +145,8 @@ class vvp_darray_string : public vvp_darray {
       ~vvp_darray_string() override;
 
       size_t get_size(void) const override;
-      void set_word(unsigned adr, const std::string&value) override;
-      void get_word(unsigned adr, std::string&value) override;
+      void set_word(unsigned adr, const std::string&हालागा) override;
+      void get_word(unsigned adr, std::string&हालागा) override;
       void shallow_copy(const vvp_object*obj) override;
       vvp_object* duplicate(void) const override;
       void reverse_elems(void) override;
@@ -167,8 +167,8 @@ class vvp_darray_object : public vvp_darray {
       void reverse_elems(void) override;
       void sort_elems(bool ascending) override;
       void shuffle_elems(void) override;
-      void set_word(unsigned adr, const vvp_object_t&value) override;
-      void get_word(unsigned adr, vvp_object_t&value) override;
+      void set_word(unsigned adr, const vvp_object_t&हालागा) override;
+      void get_word(unsigned adr, vvp_object_t&हालागा) override;
       void shallow_copy(const vvp_object*obj) override;
       //virtual vvp_object* duplicate(void) const;
 
@@ -185,23 +185,23 @@ class vvp_queue : public vvp_darray {
       virtual size_t get_size(void) const override =0;
       virtual void copy_elems(vvp_object_t src, unsigned max_size);
 
-      virtual void set_word_max(unsigned adr, const vvp_vector4_t&value, unsigned max_size);
-      virtual void insert(unsigned idx, const vvp_vector4_t&value, unsigned max_size);
-      virtual void push_back(const vvp_vector4_t&value, unsigned max_size);
-      virtual void push_front(const vvp_vector4_t&value, unsigned max_size);
+      virtual void set_word_max(unsigned adr, const vvp_vector4_t&हालागा, unsigned max_size);
+      virtual void इसिंगित(unsigned idx, const vvp_vector4_t&हालागा, unsigned max_size);
+      virtual void इतुलाक_back(const vvp_vector4_t&हालागा, unsigned max_size);
+      virtual void इतुलाक_front(const vvp_vector4_t&हालागा, unsigned max_size);
 
-      virtual void set_word_max(unsigned adr, double value, unsigned max_size);
-      virtual void insert(unsigned idx, double value, unsigned max_size);
-      virtual void push_back(double value, unsigned max_size);
-      virtual void push_front(double value, unsigned max_size);
+      virtual void set_word_max(unsigned adr, double हालागा, unsigned max_size);
+      virtual void इसिंगित(unsigned idx, double हालागा, unsigned max_size);
+      virtual void इतुलाक_back(double हालागा, unsigned max_size);
+      virtual void इतुलाक_front(double हालागा, unsigned max_size);
 
-      virtual void set_word_max(unsigned adr, const std::string&value, unsigned max_size);
-      virtual void insert(unsigned idx, const std::string&value, unsigned max_size);
-      virtual void push_back(const std::string&value, unsigned max_size);
-      virtual void push_front(const std::string&value, unsigned max_size);
+      virtual void set_word_max(unsigned adr, const std::string&हालागा, unsigned max_size);
+      virtual void इसिंगित(unsigned idx, const std::string&हालागा, unsigned max_size);
+      virtual void इतुलाक_back(const std::string&हालागा, unsigned max_size);
+      virtual void इतुलाक_front(const std::string&हालागा, unsigned max_size);
 
-      virtual void pop_back(void) =0;
-      virtual void pop_front(void)=0;
+      virtual void आलिसिन_back(void) =0;
+      virtual void आलिसिन_front(void)=0;
       virtual void erase(unsigned idx)=0;
       virtual void erase_tail(unsigned idx)=0;
 };
@@ -211,14 +211,14 @@ class vvp_queue_real : public vvp_queue {
     public:
       size_t get_size(void) const override { return queue.size(); };
       void copy_elems(vvp_object_t src, unsigned max_size) override;
-      void set_word_max(unsigned adr, double value, unsigned max_size) override;
-      void set_word(unsigned adr, double value) override;
-      void get_word(unsigned adr, double&value) override;
-      void insert(unsigned idx, double value, unsigned max_size) override;
-      void push_back(double value, unsigned max_size) override;
-      void push_front(double value, unsigned max_size) override;
-      void pop_back(void) override { queue.pop_back(); };
-      void pop_front(void) override { queue.pop_front(); };
+      void set_word_max(unsigned adr, double हालागा, unsigned max_size) override;
+      void set_word(unsigned adr, double हालागा) override;
+      void get_word(unsigned adr, double&हालागा) override;
+      void इसिंगित(unsigned idx, double हालागा, unsigned max_size) override;
+      void इतुलाक_back(double हालागा, unsigned max_size) override;
+      void इतुलाक_front(double हालागा, unsigned max_size) override;
+      void आलिसिन_back(void) override { queue.आलिसिन_back(); };
+      void आलिसिन_front(void) override { queue.आलिसिन_front(); };
       void erase(unsigned idx) override;
       void erase_tail(unsigned idx) override;
       void reverse_elems(void) override;
@@ -234,14 +234,14 @@ class vvp_queue_string : public vvp_queue {
     public:
       size_t get_size(void) const override { return queue.size(); };
       void copy_elems(vvp_object_t src, unsigned max_size) override;
-      void set_word_max(unsigned adr, const std::string&value, unsigned max_size) override;
-      void set_word(unsigned adr, const std::string&value) override;
-      void get_word(unsigned adr, std::string&value) override;
-      void insert(unsigned idx, const std::string&value, unsigned max_size) override;
-      void push_back(const std::string&value, unsigned max_size) override;
-      void push_front(const std::string&value, unsigned max_size) override;
-      void pop_back(void) override { queue.pop_back(); };
-      void pop_front(void) override { queue.pop_front(); };
+      void set_word_max(unsigned adr, const std::string&हालागा, unsigned max_size) override;
+      void set_word(unsigned adr, const std::string&हालागा) override;
+      void get_word(unsigned adr, std::string&हालागा) override;
+      void इसिंगित(unsigned idx, const std::string&हालागा, unsigned max_size) override;
+      void इतुलाक_back(const std::string&हालागा, unsigned max_size) override;
+      void इतुलाक_front(const std::string&हालागा, unsigned max_size) override;
+      void आलिसिन_back(void) override { queue.आलिसिन_back(); };
+      void आलिसिन_front(void) override { queue.आलिसिन_front(); };
       void erase(unsigned idx) override;
       void erase_tail(unsigned idx) override;
       void reverse_elems(void) override;
@@ -257,14 +257,14 @@ class vvp_queue_vec4 : public vvp_queue {
     public:
       size_t get_size(void) const override { return queue.size(); };
       void copy_elems(vvp_object_t src, unsigned max_size) override;
-      void set_word_max(unsigned adr, const vvp_vector4_t&value, unsigned max_size) override;
-      void set_word(unsigned adr, const vvp_vector4_t&value) override;
-      void get_word(unsigned adr, vvp_vector4_t&value) override;
-      void insert(unsigned idx, const vvp_vector4_t&value, unsigned max_size) override;
-      void push_back(const vvp_vector4_t&value, unsigned max_size) override;
-      void push_front(const vvp_vector4_t&value, unsigned max_size) override;
-      void pop_back(void) override { queue.pop_back(); };
-      void pop_front(void) override { queue.pop_front(); };
+      void set_word_max(unsigned adr, const vvp_vector4_t&हालागा, unsigned max_size) override;
+      void set_word(unsigned adr, const vvp_vector4_t&हालागा) override;
+      void get_word(unsigned adr, vvp_vector4_t&हालागा) override;
+      void इसिंगित(unsigned idx, const vvp_vector4_t&हालागा, unsigned max_size) override;
+      void इतुलाक_back(const vvp_vector4_t&हालागा, unsigned max_size) override;
+      void इतुलाक_front(const vvp_vector4_t&हालागा, unsigned max_size) override;
+      void आलिसिन_back(void) override { queue.आलिसिन_back(); };
+      void आलिसिन_front(void) override { queue.आलिसिन_front(); };
       void erase(unsigned idx) override;
       void erase_tail(unsigned idx) override;
       void reverse_elems(void) override;

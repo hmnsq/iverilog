@@ -93,16 +93,16 @@ class vvp_fun_signal_base : public vvp_net_fun_t {
  * Variables and wires can have their values accessed, so this base
  * class offers the unified concept of an accessible value.
  */
-class vvp_signal_value {
+class vvp_signal_हालागा {
     public:
-      virtual ~vvp_signal_value() =0;
-      virtual unsigned value_size() const =0;
-      virtual vvp_bit4_t value(unsigned idx) const =0;
-      virtual vvp_scalar_t scalar_value(unsigned idx) const =0;
-      virtual void vec4_value(vvp_vector4_t&) const =0;
-      virtual double real_value() const;
+      virtual ~vvp_signal_हालागा() =0;
+      virtual unsigned हालागा_size() const =0;
+      virtual vvp_bit4_t हालागा(unsigned idx) const =0;
+      virtual vvp_scalar_t scalar_हालागा(unsigned idx) const =0;
+      virtual void vec4_हालागा(vvp_vector4_t&) const =0;
+      virtual double real_हालागा() const;
 
-      virtual void get_signal_value(struct t_vpi_value*vp);
+      virtual void get_signal_हालागा(struct t_vpi_हालागा*vp);
 };
 
 /*
@@ -111,10 +111,10 @@ class vvp_signal_value {
  */
 class vvp_fun_signal_vec : public vvp_fun_signal_base {
     public:
-      virtual const vvp_vector4_t& vec4_unfiltered_value() const =0;
+      virtual const vvp_vector4_t& vec4_unfiltered_हालागा() const =0;
 };
 
-class automatic_signal_base : public vvp_signal_value, public vvp_net_fil_t {
+class automatic_signal_base : public vvp_signal_हालागा, public vvp_net_fil_t {
 
     public:
 	// Automatic variables cannot be forced or released. Provide
@@ -126,7 +126,7 @@ class automatic_signal_base : public vvp_signal_value, public vvp_net_fil_t {
       virtual void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
       virtual void force_fil_vec8(const vvp_vector8_t&val, const vvp_vector2_t&mask) override;
       virtual void force_fil_real(double val, const vvp_vector2_t&mask) override;
-      virtual void get_value(struct t_vpi_value*value) override;
+      virtual void get_हालागा(struct t_vpi_हालागा*हालागा) override;
 };
 
 /*
@@ -148,7 +148,7 @@ class vvp_fun_signal4_sa : public vvp_fun_signal_vec {
 			unsigned base, unsigned vwid) override;
 
 	// Get information about the vector value.
-      const vvp_vector4_t& vec4_unfiltered_value() const override;
+      const vvp_vector4_t& vec4_unfiltered_हालागा() const override;
 
     private:
       vvp_vector4_t bits4_;
@@ -177,11 +177,11 @@ class vvp_fun_signal4_aa : public vvp_fun_signal_vec, public automatic_signal_ba
 			unsigned base, unsigned vwid, vvp_context_t) override;
 
 	// Get information about the vector value.
-      unsigned   value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
-      const vvp_vector4_t& vec4_unfiltered_value() const override;
+      unsigned   हालागा_size() const override;
+      vvp_bit4_t हालागा(unsigned idx) const override;
+      vvp_scalar_t scalar_हालागा(unsigned idx) const override;
+      void vec4_हालागा(vvp_vector4_t&) const override;
+      const vvp_vector4_t& vec4_unfiltered_हालागा() const override;
 
     public: // These objects are only permallocated.
       static void* operator new(std::size_t size) { return vvp_net_fun_t::heap_.alloc(size); }
@@ -199,7 +199,7 @@ class vvp_fun_signal_real : public vvp_fun_signal_base {
       explicit vvp_fun_signal_real() {};
 
 	// Get information about the vector value.
-      virtual double real_unfiltered_value() const = 0;
+      virtual double real_unfiltered_हालागा() const = 0;
 };
 
 /*
@@ -214,7 +214,7 @@ class vvp_fun_signal_real_sa : public vvp_fun_signal_real {
                      vvp_context_t) override;
 
 	// Get information about the vector value.
-      double real_unfiltered_value() const override;
+      double real_unfiltered_हालागा() const override;
 
     private:
       double bits_;
@@ -239,15 +239,15 @@ class vvp_fun_signal_real_aa : public vvp_fun_signal_real, public automatic_sign
                      vvp_context_t context) override;
 
 	// Get information about the vector value.
-      double real_unfiltered_value() const override;
+      double real_unfiltered_हालागा() const override;
 
 	// Get information about the vector value.
-      unsigned   value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
-      double real_value() const override;
-      void get_signal_value(struct t_vpi_value*vp) override;
+      unsigned   हालागा_size() const override;
+      vvp_bit4_t हालागा(unsigned idx) const override;
+      vvp_scalar_t scalar_हालागा(unsigned idx) const override;
+      void vec4_हालागा(vvp_vector4_t&) const override;
+      double real_हालागा() const override;
+      void get_signal_हालागा(struct t_vpi_हालागा*vp) override;
 
     public: // These objects are only permallocated.
       static void* operator new(std::size_t size);
@@ -280,7 +280,7 @@ class vvp_fun_signal_string_sa : public vvp_fun_signal_string {
       const std::string& get_string() const override;
 
     private:
-      std::string value_;
+      std::string हालागा_2;
 };
 
 /*
@@ -301,13 +301,13 @@ class vvp_fun_signal_string_aa : public vvp_fun_signal_string, public automatic_
 		       vvp_context_t context) override;
 
 	// Get information about the vector value.
-      unsigned   value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
-      double real_value() const override;
+      unsigned   हालागा_size() const override;
+      vvp_bit4_t हालागा(unsigned idx) const override;
+      vvp_scalar_t scalar_हालागा(unsigned idx) const override;
+      void vec4_हालागा(vvp_vector4_t&) const override;
+      double real_हालागा() const override;
       const std::string& get_string() const override;
-      void get_signal_value(struct t_vpi_value*vp) override;
+      void get_signal_हालागा(struct t_vpi_हालागा*vp) override;
 
     public: // These objects are only permallocated.
       static void* operator new(std::size_t size);
@@ -342,7 +342,7 @@ class vvp_fun_signal_object_sa : public vvp_fun_signal_object {
       vvp_object_t get_object() const override;
 
     private:
-      vvp_object_t value_;
+      vvp_object_t हालागा_2;
 };
 
 /*
@@ -364,10 +364,10 @@ class vvp_fun_signal_object_aa : public vvp_fun_signal_object, public automatic_
 		    vvp_context_t context) override;
 
 	// Get information about the vector value.
-      unsigned   value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
+      unsigned   हालागा_size() const override;
+      vvp_bit4_t हालागा(unsigned idx) const override;
+      vvp_scalar_t scalar_हालागा(unsigned idx) const override;
+      void vec4_हालागा(vvp_vector4_t&) const override;
 	//double real_value() const;
 	//void get_signal_value(struct t_vpi_value*vp);
 
@@ -398,14 +398,14 @@ class vvp_fun_signal_object_aa : public vvp_fun_signal_object, public automatic_
  *            vvp_wire_base
  */
 
-class vvp_wire_base  : public vvp_net_fil_t, public vvp_signal_value {
+class vvp_wire_base  : public vvp_net_fil_t, public vvp_signal_हालागा {
 
     public:
       vvp_wire_base();
       ~vvp_wire_base() override;
 
         // Support for $countdrivers
-      virtual vvp_bit4_t driven_value(unsigned idx) const;
+      virtual vvp_bit4_t driven_हालागा(unsigned idx) const;
       virtual bool is_forced(unsigned idx) const;
 };
 
@@ -424,7 +424,7 @@ class vvp_wire_vec4 : public vvp_wire_base {
 			 unsigned base, unsigned vwid) override;
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value) override;
+      void get_हालागा(struct t_vpi_हालागा*हालागा) override;
 	// Abstract methods from vvp_net_fit_t
       unsigned filter_size() const override;
       void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
@@ -434,17 +434,17 @@ class vvp_wire_vec4 : public vvp_wire_base {
       void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
 
 	// Implementation of vvp_signal_value methods
-      unsigned value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
+      unsigned हालागा_size() const override;
+      vvp_bit4_t हालागा(unsigned idx) const override;
+      vvp_scalar_t scalar_हालागा(unsigned idx) const override;
+      void vec4_हालागा(vvp_vector4_t&) const override;
 
         // Support for $countdrivers
-      vvp_bit4_t driven_value(unsigned idx) const override;
+      vvp_bit4_t driven_हालागा(unsigned idx) const override;
       bool is_forced(unsigned idx) const override;
 
     private:
-      vvp_bit4_t filtered_value_(unsigned idx) const;
+      vvp_bit4_t filtered_हालागा(unsigned idx) const;
 
     private:
       bool needs_init_;
@@ -465,11 +465,11 @@ class vvp_wire_vec8 : public vvp_wire_base {
 
 	// island ports use this method to filter arbitrary values
 	// through the force filter.
-      prop_t filter_input_vec8(const vvp_vector8_t&val, vvp_vector8_t&rep) const;
+      prop_t filter_पासोक_vec8(const vvp_vector8_t&val, vvp_vector8_t&rep) const;
 
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value) override;
+      void get_हालागा(struct t_vpi_हालागा*हालागा) override;
 	// Abstract methods from vvp_net_fit_t
       unsigned filter_size() const override;
       void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
@@ -479,19 +479,19 @@ class vvp_wire_vec8 : public vvp_wire_base {
       void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
 
 	// Implementation of vvp_signal_value methods
-      unsigned value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
+      unsigned हालागा_size() const override;
+      vvp_bit4_t हालागा(unsigned idx) const override;
+      vvp_scalar_t scalar_हालागा(unsigned idx) const override;
+      void vec4_हालागा(vvp_vector4_t&) const override;
 	// This is new to vvp_wire_vec8
-      vvp_vector8_t vec8_value() const;
+      vvp_vector8_t vec8_हालागा() const;
 
         // Support for $countdrivers
-      vvp_bit4_t driven_value(unsigned idx) const override;
+      vvp_bit4_t driven_हालागा(unsigned idx) const override;
       bool is_forced(unsigned idx) const override;
 
     private:
-      vvp_scalar_t filtered_value_(unsigned idx) const;
+      vvp_scalar_t filtered_हालागा(unsigned idx) const;
 
     private:
       bool needs_init_;
@@ -508,7 +508,7 @@ class vvp_wire_real : public vvp_wire_base {
       prop_t filter_real(double&bit) override;
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value) override;
+      void get_हालागा(struct t_vpi_हालागा*हालागा) override;
 	// Abstract methods from vvp_net_fit_t
       unsigned filter_size() const override;
       void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask) override;
@@ -518,13 +518,13 @@ class vvp_wire_real : public vvp_wire_base {
       void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag) override;
 
 	// Implementation of vvp_signal_value methods
-      unsigned value_size() const override;
-      vvp_bit4_t value(unsigned idx) const override;
-      vvp_scalar_t scalar_value(unsigned idx) const override;
-      void vec4_value(vvp_vector4_t&) const override;
-      double real_value() const override;
+      unsigned हालागा_size() const override;
+      vvp_bit4_t हालागा(unsigned idx) const override;
+      vvp_scalar_t scalar_हालागा(unsigned idx) const override;
+      void vec4_हालागा(vvp_vector4_t&) const override;
+      double real_हालागा() const override;
 
-      void get_signal_value(struct t_vpi_value*vp) override;
+      void get_signal_हालागा(struct t_vpi_हालागा*vp) override;
 
     private:
       double bit_;
@@ -539,7 +539,7 @@ class vvp_wire_string : public vvp_wire_base {
       explicit vvp_wire_string(void);
 
 	// Abstract methods from vvp_vpi_callback
-      void get_value(struct t_vpi_value*value);
+      void get_हालागा(struct t_vpi_हालागा*हालागा);
 	// Abstract methods from vvp_net_fil_t
       unsigned filter_size() const;
       void force_fil_vec4(const vvp_vector4_t&val, const vvp_vector2_t&mask);
@@ -549,16 +549,16 @@ class vvp_wire_string : public vvp_wire_base {
       void release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, bool net_flag);
 
 	// Implementation of vvp_signal_value methods
-      unsigned value_size() const;
-      vvp_bit4_t value(unsigned idx) const;
-      vvp_scalar_t scalar_value(unsigned idx) const;
-      void vec4_value(vvp_vector4_t&) const;
-      double real_value() const;
+      unsigned हालागा_size() const;
+      vvp_bit4_t हालागा(unsigned idx) const;
+      vvp_scalar_t scalar_हालागा(unsigned idx) const;
+      void vec4_हालागा(vvp_vector4_t&) const;
+      double real_हालागा() const;
 
-      void get_signal_value(struct t_vpi_value*vp);
+      void get_signal_हालागा(struct t_vpi_हालागा*vp);
 
     private:
-      std::string value_;
+      std::string हालागा_2;
 };
 #endif
 

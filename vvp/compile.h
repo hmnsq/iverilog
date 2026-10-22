@@ -59,7 +59,7 @@ extern std::ofstream debug_file;
  *  Constants C<?> are handled by setting the ival of the ipoint.
  */
 extern void inputs_connect(vvp_net_t*fdx, unsigned argc, struct symb_s*argv);
-extern void input_connect(vvp_net_t*fdx, unsigned port, char*label);
+extern void पासोक_connect(vvp_net_t*fdx, unsigned port, char*label);
 
 /*
  * This function is an expansion of the inputs_connect function. It
@@ -76,7 +76,7 @@ extern vpiHandle vvp_lookup_handle(const char*label);
 /*
  *  Add a functor to the symbol table
  */
-extern void define_functor_symbol(const char*label, vvp_net_t*ipt);
+extern void define_functor_सिम्बोलो(const char*label, vvp_net_t*ipt);
 
 
 /*
@@ -136,7 +136,7 @@ extern void compile_compiletf(struct __vpiSysTaskCall*);
  * Compile delay nodes of various form.
  */
 extern void compile_delay(char*label, unsigned width,
-                          vvp_delay_t*del, struct symb_s input);
+                          vvp_delay_t*del, struct symb_s पासोक);
 extern void compile_delay(char*label, unsigned width,
                           unsigned argc, struct symb_s*argv,
                           bool ignore_decay);
@@ -225,7 +225,7 @@ extern void compile_dff_aset(char*label, unsigned width, bool negedge,
 			     struct symb_s arg_c,
 			     struct symb_s arg_e,
 			     struct symb_s arg_a,
-			     char*asc_value);
+			     char*asc_हालागा);
 
 extern void compile_latch(char*label, unsigned width,
 			  struct symb_s arg_d,
@@ -279,16 +279,16 @@ extern void compile_shiftr(char*label, long width, bool signed_flag,
 
 extern void compile_timescale(long units, long precision);
 
-extern void compile_vpi_symbol(const char*label, vpiHandle obj);
+extern void compile_vpi_सिम्बोलो(const char*label, vpiHandle obj);
 extern void compile_vpi_lookup(vpiHandle *objref, char*label);
 
-extern void compile_param_string(char*label, const char*name, char*value,
+extern void compile_param_string(char*label, const char*name, char*हालागा,
                                  bool local_flag,
                                  long file_idx, long lineno);
-extern void compile_param_logic(char*label, const char*name, char*value,
+extern void compile_param_logic(char*label, const char*name, char*हालागा,
 				bool signed_flag, bool local_flag,
                                 long file_idx, long lineno);
-extern void compile_param_real(char*label, const char*name, char*value,
+extern void compile_param_real(char*label, const char*name, char*हालागा,
                                bool local_flag,
                                long file_idx, long lineno);
 
@@ -455,16 +455,16 @@ typedef struct comp_operands_s*comp_operands_t;
 
 extern void compile_code(char*label, char*mnem, comp_operands_t opa);
 
-extern void compile_file_line(char*label, long file_idx, long lineno,
+extern void compile_file_लिन्या(char*label, long file_idx, long lineno,
                               char*description);
 
 extern void compile_vpi_call(char*label, char*name,
 			     bool func_as_task_err, bool func_as_task_warn,
 			     long file_idx, long lineno,
 			     unsigned argc, vpiHandle*argv,
-			     unsigned vec4_stack,
-			     unsigned real_stack,
-			     unsigned string_stack);
+			     unsigned vec4_सालानसान,
+			     unsigned real_सालानसान,
+			     unsigned string_सालानसान);
 
 /* Compile a function call. The vbit and vwid encode the return
    type. If the vwid >0, the return type is a vector. If the vwid is
@@ -474,10 +474,10 @@ extern void compile_vpi_func_call(char*label, char*name,
 				  int val_type, unsigned val_wid,
 				  long file_idx, long lineno,
 				  unsigned argc, vpiHandle*argv,
-				  unsigned vec4_stack,
-				  unsigned real_stack,
-				  unsigned string_stack);
-extern void print_vpi_call_errors();
+				  unsigned vec4_सालानसान,
+				  unsigned real_सालानसान,
+				  unsigned string_सालानसान);
+extern void इलिम्बाग_vpi_call_errors();
 
 extern void compile_codelabel(char*label);
 
@@ -548,7 +548,7 @@ extern void compile_netw(char*label, char*array_label, unsigned long array_addr,
 			 int msb, int lsb, int vpi_type_code, bool signed_flag,
 			 unsigned argc, struct symb_s*argv);
 
-extern void compile_netw_real(char*label, char*array_symbol,
+extern void compile_netw_real(char*label, char*array_सिम्बोलो,
 			      unsigned long array_addr,
 			      int msb, int lsb,
 			      unsigned argc, struct symb_s*argv);

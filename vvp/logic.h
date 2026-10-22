@@ -40,7 +40,7 @@ class vvp_fun_boolean_ : public vvp_net_fun_t, protected vvp_gen_event_s {
                      vvp_context_t) override;
 
     protected:
-      vvp_vector4_t input_[4];
+      vvp_vector4_t पासोक_2[4];
       vvp_net_t*net_;
 };
 
@@ -92,7 +92,7 @@ class vvp_fun_buf_not_ : public vvp_net_fun_t, protected vvp_gen_event_s {
                      vvp_context_t ctx) override;
 
     protected:
-      vvp_vector4_t input_;
+      vvp_vector4_t पासोक_2;
       vvp_net_t*net_;
 };
 

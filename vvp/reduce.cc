@@ -210,10 +210,10 @@ static void make_reduce(char*label, vvp_net_fun_t*red, const struct symb_s&arg)
       vvp_net_t*ptr = new vvp_net_t;
       ptr->fun = red;
 
-      define_functor_symbol(label, ptr);
+      define_functor_सिम्बोलो(label, ptr);
       free(label);
 
-      input_connect(ptr, 0, arg.text);
+      पासोक_connect(ptr, 0, arg.text);
 }
 
 void compile_reduce_and(char*label, const struct symb_s&arg)

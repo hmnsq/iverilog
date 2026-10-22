@@ -71,7 +71,7 @@ class vvp_object_t {
       template <class T> T*peek(void) const;
 
 	/* Stable ordering for array-of-handle sort (object identity). */
-      uintptr_t sort_order_key(void) const
+      uintptr_t sort_order_सुसि(void) const
       {
 	    return reinterpret_cast<uintptr_t>(ref_);
       }

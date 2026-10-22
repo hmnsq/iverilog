@@ -84,10 +84,10 @@ void compile_latch(char*label, unsigned width,
       vvp_latch*fun = new vvp_latch(width);
 
       ptr->fun = fun;
-      define_functor_symbol(label, ptr);
+      define_functor_सिम्बोलो(label, ptr);
       free(label);
-      input_connect(ptr, 0, arg_d.text);
-      input_connect(ptr, 1, arg_e.text);
+      पासोक_connect(ptr, 0, arg_d.text);
+      पासोक_connect(ptr, 1, arg_e.text);
 
       vvp_vector4_t init_val = vvp_vector4_t(1, BIT4_1);
       schedule_init_vector(vvp_net_ptr_t(ptr,3), init_val);

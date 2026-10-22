@@ -40,27 +40,27 @@ class evctl {
 class evctl_real : public evctl {
 
     public:
-      explicit evctl_real(class __vpiHandle*handle, double value,
+      explicit evctl_real(class __vpiHandle*handle, double हालागा,
                           uint64_t ecount);
       virtual ~evctl_real() override {}
       void run_run() override;
 
     private:
       class __vpiHandle*handle_;
-      double value_;
+      double हालागा_2;
 };
 
 class evctl_vector : public evctl {
 
     public:
-      explicit evctl_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
+      explicit evctl_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&हालागा,
                             unsigned off, unsigned wid, uint64_t ecount);
       virtual ~evctl_vector() override {}
       void run_run() override;
 
     private:
       vvp_net_ptr_t ptr_;
-      vvp_vector4_t value_;
+      vvp_vector4_t हालागा_2;
       unsigned off_;
       unsigned wid_;
 };
@@ -69,7 +69,7 @@ class evctl_array : public evctl {
 
     public:
       explicit evctl_array(vvp_array_t memory, unsigned index,
-                           const vvp_vector4_t&value, unsigned off,
+                           const vvp_vector4_t&हालागा, unsigned off,
                            uint64_t ecount);
       virtual ~evctl_array() override {}
       virtual void run_run() override;
@@ -77,7 +77,7 @@ class evctl_array : public evctl {
     private:
       vvp_array_t mem_;
       unsigned idx_;
-      vvp_vector4_t value_;
+      vvp_vector4_t हालागा_2;
       unsigned off_;
 };
 
@@ -85,29 +85,29 @@ class evctl_array_r : public evctl {
 
     public:
       explicit evctl_array_r(vvp_array_t memory, unsigned index,
-                           double value, uint64_t ecount);
+                           double हालागा, uint64_t ecount);
       virtual ~evctl_array_r() override {}
       virtual void run_run() override;
 
     private:
       vvp_array_t mem_;
       unsigned idx_;
-      double value_;
+      double हालागा_2;
 };
 
-extern void schedule_evctl(class __vpiHandle*handle, double value,
+extern void schedule_evctl(class __vpiHandle*handle, double हालागा,
                            vvp_net_t*event, uint64_t ecount);
 
-extern void schedule_evctl(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
+extern void schedule_evctl(vvp_net_ptr_t ptr, const vvp_vector4_t&हालागा,
                            unsigned offset, unsigned wid,
                            vvp_net_t*event, uint64_t ecount);
 
 extern void schedule_evctl(vvp_array_t memory, unsigned index,
-                           const vvp_vector4_t&value, unsigned offset,
+                           const vvp_vector4_t&हालागा, unsigned offset,
                            vvp_net_t*event, uint64_t ecount);
 
 extern void schedule_evctl(vvp_array_t memory, unsigned index,
-                           double value,
+                           double हालागा,
                            vvp_net_t*event, uint64_t ecount);
 
 /*
@@ -220,7 +220,7 @@ class vvp_fun_edge_aa : public vvp_fun_edge, public automatic_hooks_s {
  * This is the base object for storing the last received values for a
  * vvp_fun_anyedge functor.
  */
-class anyedge_value;
+class anyedge_हालागा;
 
 /*
  * The vvp_fun_anyedge functor checks to see if any value in an input
@@ -239,7 +239,7 @@ class vvp_fun_anyedge : public vvp_net_fun_t, public waitable_hooks_s {
       virtual ~vvp_fun_anyedge() override;
 
     protected:
-      anyedge_value*last_value_[4];
+      anyedge_हालागा*last_हालागा[4];
 };
 
 /*

@@ -32,7 +32,7 @@ struct enumconst_s : public __vpiHandle {
       int get_type_code(void) const override;
       int vpi_get(int code) override;
       char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
 
       const char*name;
       bool is_signed;
@@ -86,12 +86,12 @@ int __vpiEnumTypespec::vpi_get(int code)
 vpiHandle __vpiEnumTypespec::vpi_iterate(int code)
 {
       if (code == vpiEnumConst) {
-	    vpiHandle*args = static_cast<vpiHandle*>
+	    vpiHandle*मगा_कातविरान = static_cast<vpiHandle*>
 	                                (calloc(names.size(), sizeof(vpiHandle*)));
 	    for (size_t idx = 0 ; idx < names.size() ; idx += 1)
-		  args[idx] = &names[idx];
+		  मगा_कातविरान[idx] = &names[idx];
 
-	    return vpip_make_iterator(names.size(), args, true);
+	    return vpip_make_iterator(names.size(), मगा_कातविरान, true);
       }
 
       return 0;
@@ -126,12 +126,12 @@ char* enumconst_s::vpi_get_str(int code)
 }
 
 
-void enumconst_s::vpi_get_value(p_vpi_value val)
+void enumconst_s::vpi_get_हालागा(p_vpi_हालागा val)
 {
       if (val4.size() > 0) {
-	    vpip_vec4_get_value(val4, val4.size(), is_signed, val);
+	    vpip_vec4_get_हालागा(val4, val4.size(), is_signed, val);
       } else {
-	    vpip_vec2_get_value(val2, val2.size(), is_signed, val);
+	    vpip_vec2_get_हालागा(val2, val2.size(), is_signed, val);
       }
 }
 
@@ -154,7 +154,7 @@ void compile_enum2_type(char*label, long width, bool signed_flag,
       }
 
       assert(idx == spec->names.size());
-      compile_vpi_symbol(label, spec);
+      compile_vpi_सिम्बोलो(label, spec);
       vpip_attach_to_current_scope(spec);
 
       free(label);
@@ -181,7 +181,7 @@ void compile_enum4_type(char*label, long width, bool signed_flag,
       }
 
       assert(idx == spec->names.size());
-      compile_vpi_symbol(label, spec);
+      compile_vpi_सिम्बोलो(label, spec);
       vpip_attach_to_current_scope(spec);
 
       free(label);

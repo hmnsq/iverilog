@@ -28,7 +28,7 @@ enum delay_edge_t {
       DELAY_EDGE_z1,     DELAY_EDGE_1z, DELAY_EDGE_z0,
       DELAY_EDGE_0x,     DELAY_EDGE_x1, DELAY_EDGE_1x,
       DELAY_EDGE_x0,     DELAY_EDGE_xz, DELAY_EDGE_zx,
-      DELAY_EDGE_COUNT
+      DELAY_EDGE_बिलांग
 };
 
 /*
@@ -229,7 +229,7 @@ class vvp_fun_modpath_edge  : public vvp_fun_modpath_src {
       bool test_vec4(const vvp_vector4_t&bit) override;
 
     private:
-      vvp_bit4_t old_value_;
+      vvp_bit4_t old_हालागा;
       bool posedge_;
       bool negedge_;
 };

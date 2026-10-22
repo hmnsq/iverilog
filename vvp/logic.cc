@@ -33,7 +33,7 @@ vvp_fun_boolean_::vvp_fun_boolean_(unsigned wid)
 {
       net_ = 0;
       for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-	    input_[idx] = vvp_vector4_t(wid, BIT4_Z);
+	    पासोक_2[idx] = vvp_vector4_t(wid, BIT4_Z);
 }
 
 vvp_fun_boolean_::~vvp_fun_boolean_()
@@ -44,9 +44,9 @@ void vvp_fun_boolean_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                                  vvp_context_t)
 {
       unsigned port = ptr.port();
-      if (input_[port] .eeq( bit )) return;
+      if (पासोक_2[port] .eeq( bit )) return;
 
-      input_[port] = bit;
+      पासोक_2[port] = bit;
       if (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
@@ -61,7 +61,7 @@ void vvp_fun_boolean_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       assert(base + bit.size() <= vwid);
 
 	// Set the part for the input. If nothing changes, then break.
-      bool flag = input_[port] .set_vec(base, bit);
+      bool flag = पासोक_2[port] .set_vec(base, bit);
       if (flag == false)
 	    return;
 
@@ -80,7 +80,7 @@ void vvp_fun_boolean_::recv_real(vvp_net_ptr_t ptr, double real,
 vvp_fun_and::vvp_fun_and(unsigned wid, bool invert)
 : vvp_fun_boolean_(wid), invert_(invert)
 {
-      count_functors_logic += 1;
+      बिलांग_functors_logic += 1;
 }
 
 vvp_fun_and::~vvp_fun_and()
@@ -92,10 +92,10 @@ void vvp_fun_and::run_run()
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_[0]);
+      vvp_vector4_t result (पासोक_2[0]);
 
       for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
-	    result &= input_[pdx];
+	    result &= पासोक_2[pdx];
 
       if (invert_)
 	    result.invert();
@@ -106,7 +106,7 @@ void vvp_fun_and::run_run()
 vvp_fun_equiv::vvp_fun_equiv()
 : vvp_fun_boolean_(1)
 {
-      count_functors_logic += 1;
+      बिलांग_functors_logic += 1;
 }
 
 vvp_fun_equiv::~vvp_fun_equiv()
@@ -118,10 +118,10 @@ void vvp_fun_equiv::run_run()
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      assert(input_[0].size() == 1);
-      assert(input_[1].size() == 1);
+      assert(पासोक_2[0].size() == 1);
+      assert(पासोक_2[1].size() == 1);
 
-      vvp_bit4_t bit = ~(input_[0].value(0) ^ input_[1].value(0));
+      vvp_bit4_t bit = ~(पासोक_2[0].value(0) ^ पासोक_2[1].value(0));
       vvp_vector4_t result (1, bit);
 
       ptr->send_vec4(result, 0);
@@ -130,7 +130,7 @@ void vvp_fun_equiv::run_run()
 vvp_fun_impl::vvp_fun_impl()
 : vvp_fun_boolean_(1)
 {
-      count_functors_logic += 1;
+      बिलांग_functors_logic += 1;
 }
 
 vvp_fun_impl::~vvp_fun_impl()
@@ -142,17 +142,17 @@ void vvp_fun_impl::run_run()
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      assert(input_[0].size() == 1);
-      assert(input_[1].size() == 1);
+      assert(पासोक_2[0].size() == 1);
+      assert(पासोक_2[1].size() == 1);
 
-      vvp_bit4_t bit = ~input_[0].value(0) | input_[1].value(0);
+      vvp_bit4_t bit = ~पासोक_2[0].value(0) | पासोक_2[1].value(0);
       vvp_vector4_t result (1, bit);
 
       ptr->send_vec4(result, 0);
 }
 
 vvp_fun_buf_not_::vvp_fun_buf_not_(unsigned wid)
-: input_(wid, BIT4_Z)
+: पासोक_2(wid, BIT4_Z)
 {
       net_ = 0;
 }
@@ -166,9 +166,9 @@ void vvp_fun_buf_not_::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 {
       if (ptr.port() != 0) return;
 
-      if (input_ .eeq( bit )) return;
+      if (पासोक_2 .eeq( bit )) return;
 
-      input_ = bit;
+      पासोक_2 = bit;
       if (net_ == 0) {
 	    net_ = ptr.ptr();
 	    schedule_functor(this);
@@ -183,7 +183,7 @@ void vvp_fun_buf_not_::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       assert(base + bit.size() <= vwid);
 
 	// Set the input part. If nothing changes, then break.
-      bool flag = input_.set_vec(base, bit);
+      bool flag = पासोक_2.set_vec(base, bit);
       if (flag == false) return;
 
       if (net_ == 0) {
@@ -203,7 +203,7 @@ void vvp_fun_buf_not_::recv_real(vvp_net_ptr_t ptr, double real,
 vvp_fun_buf::vvp_fun_buf(unsigned wid)
 : vvp_fun_buf_not_(wid)
 {
-      count_functors_logic += 1;
+      बिलांग_functors_logic += 1;
 }
 
 vvp_fun_buf::~vvp_fun_buf()
@@ -219,14 +219,14 @@ void vvp_fun_buf::run_run()
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t tmp (input_);
+      vvp_vector4_t tmp (पासोक_2);
       tmp.change_z2x();
       ptr->send_vec4(tmp, 0);
 }
 
 vvp_fun_bufz::vvp_fun_bufz()
 {
-      count_functors_logic += 1;
+      बिलांग_functors_logic += 1;
 }
 
 vvp_fun_bufz::~vvp_fun_bufz()
@@ -276,7 +276,7 @@ vvp_fun_muxr::vvp_fun_muxr()
 : a_(0.0), b_(0.0)
 {
       net_ = 0;
-      count_functors_logic += 1;
+      बिलांग_functors_logic += 1;
       select_ = SEL_BOTH;
 }
 
@@ -367,7 +367,7 @@ vvp_fun_muxz::vvp_fun_muxz(unsigned wid)
 : a_(wid, BIT4_Z), b_(wid, BIT4_Z)
 {
       net_ = 0;
-      count_functors_logic += 1;
+      बिलांग_functors_logic += 1;
       select_ = SEL_BOTH;
       has_run_ = false;
 }
@@ -488,7 +488,7 @@ void vvp_fun_muxz::run_run()
 vvp_fun_not::vvp_fun_not(unsigned wid)
 : vvp_fun_buf_not_(wid)
 {
-      count_functors_logic += 1;
+      बिलांग_functors_logic += 1;
 }
 
 vvp_fun_not::~vvp_fun_not()
@@ -504,14 +504,14 @@ void vvp_fun_not::run_run()
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_, true /* invert */);
+      vvp_vector4_t result (पासोक_2, true /* invert */);
       ptr->send_vec4(result, 0);
 }
 
 vvp_fun_or::vvp_fun_or(unsigned wid, bool invert)
 : vvp_fun_boolean_(wid), invert_(invert)
 {
-      count_functors_logic += 1;
+      बिलांग_functors_logic += 1;
 }
 
 vvp_fun_or::~vvp_fun_or()
@@ -523,10 +523,10 @@ void vvp_fun_or::run_run()
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_[0]);
+      vvp_vector4_t result (पासोक_2[0]);
 
       for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
-	    result |= input_[pdx];
+	    result |= पासोक_2[pdx];
 
       if (invert_)
 	    result.invert();
@@ -537,7 +537,7 @@ void vvp_fun_or::run_run()
 vvp_fun_xor::vvp_fun_xor(unsigned wid, bool invert)
 : vvp_fun_boolean_(wid), invert_(invert)
 {
-      count_functors_logic += 1;
+      बिलांग_functors_logic += 1;
 }
 
 vvp_fun_xor::~vvp_fun_xor()
@@ -549,10 +549,10 @@ void vvp_fun_xor::run_run()
       vvp_net_t*ptr = net_;
       net_ = 0;
 
-      vvp_vector4_t result (input_[0]);
+      vvp_vector4_t result (पासोक_2[0]);
 
       for (unsigned pdx = 1 ; pdx < 4 ; pdx += 1)
-	    result ^= input_[pdx];
+	    result ^= पासोक_2[pdx];
 
       if (invert_)
 	    result.invert();
@@ -670,7 +670,7 @@ void compile_functor(char*label, char*type, unsigned width,
 	   there is no need for a specialized driver. Attach the label
 	   to this node and we are finished. */
       if (strength_aware || (ostr0 == 6 && ostr1 == 6)) {
-	    define_functor_symbol(label, net);
+	    define_functor_सिम्बोलो(label, net);
 	    free(label);
 	    return;
       }
@@ -682,6 +682,6 @@ void compile_functor(char*label, char*type, unsigned width,
 	/* Point the gate to the drive node. */
       net->link(vvp_net_ptr_t(net_drv, 0));
 
-      define_functor_symbol(label, net_drv);
+      define_functor_सिम्बोलो(label, net_drv);
       free(label);
 }

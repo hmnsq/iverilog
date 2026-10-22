@@ -258,7 +258,7 @@ void vvp_fun_delay::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 	    vvp_time64_t bval = 0;
 	      // The following does not work correctly for negative values.
 	      // They should be sign extended to 64 bits (1364-2001 9.7.1).
-	    vector4_to_value(bit, bval);
+	    vector4_to_हालागा(bit, bval);
 	      // Integer values do not need to be rounded so just scale them.
 	    vvp_time64_t val = bval * round_ * scale_;
 
@@ -425,7 +425,7 @@ void vvp_fun_delay::recv_real(vvp_net_ptr_t port, double bit,
 	    } else {
 		  vvp_vector4_t vec4(8*sizeof(vvp_time64_t),
 		                     floor(-bit * round_ + 0.5) * -1 * scale_);
-		  vector4_to_value(vec4, val);
+		  vector4_to_हालागा(vec4, val);
 	    }
 
 	    switch (port.port()) {
@@ -733,17 +733,17 @@ vvp_fun_modpath_edge::vvp_fun_modpath_edge(vvp_time64_t del[12],
 					   bool pos, bool neg)
 : vvp_fun_modpath_src(del)
 {
-      old_value_ = BIT4_X;
+      old_हालागा = BIT4_X;
       posedge_ = pos;
       negedge_ = neg;
 }
 
 bool vvp_fun_modpath_edge::test_vec4(const vvp_vector4_t&bit)
 {
-      vvp_bit4_t tmp = old_value_;
-      old_value_ = bit.value(0);
+      vvp_bit4_t tmp = old_हालागा;
+      old_हालागा = bit.value(0);
 
-      int edge_flag = edge(tmp, old_value_);
+      int edge_flag = edge(tmp, old_हालागा);
       if (edge_flag > 0) return posedge_;
       if (edge_flag < 0) return negedge_;
       return false;
@@ -764,14 +764,14 @@ static int modpath_src_get(int, vpiHandle ref)
       return 0;
 }
 
-static void modpath_src_get_value(vpiHandle ref, p_vpi_value)
+static void modpath_src_get_हालागा(vpiHandle ref, p_vpi_हालागा)
 {
       struct __vpiModPathSrc* modpathsrc = dynamic_cast<__vpiModPathSrc*>(ref);
       assert(modpathsrc);
       return;
 }
 
-static vpiHandle modpath_src_put_value(vpiHandle ref, s_vpi_value *, int )
+static vpiHandle modpath_src_put_हालागा(vpiHandle ref, s_vpi_हालागा *, int )
 {
       struct __vpiModPathSrc* modpathsrc = dynamic_cast<__vpiModPathSrc*>(ref);
       assert(modpathsrc);
@@ -821,14 +821,14 @@ static vpiHandle modpath_src_iterate(int code, vpiHandle ref)
 	// ever one input path term and one output path term.
       switch (code) {
 	  case vpiModPathIn: {
-	    vpiHandle*args = static_cast<vpiHandle*>(calloc(1, sizeof(vpiHandle*)));
-	    args[0] = &rfp->path_term_in;
-	    return vpip_make_iterator(1, args, true);
+	    vpiHandle*मगा_कातविरान = static_cast<vpiHandle*>(calloc(1, sizeof(vpiHandle*)));
+	    मगा_कातविरान[0] = &rfp->path_term_in;
+	    return vpip_make_iterator(1, मगा_कातविरान, true);
 	  }
 	  case vpiModPathOut: {
-	    vpiHandle*args = static_cast<vpiHandle*>(calloc(1, sizeof(vpiHandle*)));
-	    args[0] = &rfp->dest->path_term_out;
-	    return vpip_make_iterator(1, args, true);
+	    vpiHandle*मगा_कातविरान = static_cast<vpiHandle*>(calloc(1, sizeof(vpiHandle*)));
+	    मगा_कातविरान[0] = &rfp->dest->path_term_out;
+	    return vpip_make_iterator(1, मगा_कातविरान, true);
 	  }
       }
       return 0;
@@ -991,8 +991,8 @@ static vpiHandle pathterm_get_handle(int code, vpiHandle ref)
       assert(obj);
 
       switch (code) {
-	  case vpiExpr:
-	    return obj->expr;
+	  case vpi_पाहायाग:
+	    return obj->पाहायाग;
 	  default:
 	    return 0;
       }
@@ -1012,11 +1012,11 @@ int __vpiModPathSrc::get_type_code(void) const
 int __vpiModPathSrc::vpi_get(int code)
 { return modpath_src_get(code, this); }
 
-void __vpiModPathSrc::vpi_get_value(p_vpi_value val)
-{ modpath_src_get_value(this, val); }
+void __vpiModPathSrc::vpi_get_हालागा(p_vpi_हालागा val)
+{ modpath_src_get_हालागा(this, val); }
 
-vpiHandle __vpiModPathSrc::vpi_put_value(p_vpi_value val, int flags)
-{ return modpath_src_put_value(this, val, flags); }
+vpiHandle __vpiModPathSrc::vpi_put_हालागा(p_vpi_हालागा val, int flags)
+{ return modpath_src_put_हालागा(this, val, flags); }
 
 vpiHandle __vpiModPathSrc::vpi_handle(int code)
 { return modpath_src_get_handle(code, this); }
@@ -1057,7 +1057,7 @@ vpiHandle __vpiModPathTerm::vpi_handle(int code)
 
 static void initialize_path_term(struct __vpiModPathTerm&obj)
 {
-      obj.expr = 0;
+      obj.पाहायाग = 0;
       obj.edge = vpiNoEdge;
 }
 
@@ -1069,7 +1069,7 @@ static void initialize_path_term(struct __vpiModPathTerm&obj)
 
 #ifdef CHECK_WITH_VALGRIND
 static struct __vpiModPath**mp_list = 0;
-static unsigned mp_count = 0;
+static unsigned mp_बिलांग = 0;
 #endif
 
 struct __vpiModPath* vpip_make_modpath(vvp_net_t *net)
@@ -1078,14 +1078,14 @@ struct __vpiModPath* vpip_make_modpath(vvp_net_t *net)
       obj->scope = vpip_peek_current_scope ( );
 
       initialize_path_term(obj->path_term_out);
-      obj->input_net = net ;
+      obj->पासोक_net = net ;
 
 #ifdef CHECK_WITH_VALGRIND
-      mp_count += 1;
+      mp_बिलांग += 1;
       mp_list = static_cast<struct __vpiModPath **>
                 (realloc(mp_list,
-                 mp_count*sizeof(struct __vpiModPath **)));
-      mp_list[mp_count-1] = obj;
+                 mp_बिलांग*sizeof(struct __vpiModPath **)));
+      mp_list[mp_बिलांग-1] = obj;
 #endif
       return obj;
 }
@@ -1093,12 +1093,12 @@ struct __vpiModPath* vpip_make_modpath(vvp_net_t *net)
 #ifdef CHECK_WITH_VALGRIND
 void modpath_delete()
 {
-      for (unsigned idx = 0; idx < mp_count; idx += 1) {
+      for (unsigned idx = 0; idx < mp_बिलांग; idx += 1) {
 	    delete mp_list[idx];
       }
       free(mp_list);
       mp_list = 0;
-      mp_count = 0;
+      mp_बिलांग = 0;
 }
 #endif
 
@@ -1206,14 +1206,14 @@ static int intermodpath_get(int, vpiHandle ref)
       return 0;
 }
 
-static void intermodpath_get_value(vpiHandle ref, p_vpi_value)
+static void intermodpath_get_हालागा(vpiHandle ref, p_vpi_हालागा)
 {
       struct __vpiInterModPath* intermodpath = dynamic_cast<__vpiInterModPath*>(ref);
       assert(intermodpath);
       return;
 }
 
-static vpiHandle intermodpath_put_value(vpiHandle ref, s_vpi_value *, int )
+static vpiHandle intermodpath_put_हालागा(vpiHandle ref, s_vpi_हालागा *, int )
 {
       struct __vpiInterModPath* intermodpath = dynamic_cast<__vpiInterModPath*>(ref);
       assert(intermodpath);
@@ -1249,10 +1249,10 @@ static vpiHandle intermodpath_iterate(int code, vpiHandle ref)
 	// For now intermodpaths only support exactly two ports
       switch (code) {
 	  case vpiPort: {
-	    vpiHandle*args = static_cast<vpiHandle*>(calloc(2, sizeof(vpiHandle*)));
-	    args[0] = rfp->port1;
-	    args[1] = rfp->port2;
-	    return vpip_make_iterator(2, args, true);
+	    vpiHandle*मगा_कातविरान = static_cast<vpiHandle*>(calloc(2, sizeof(vpiHandle*)));
+	    मगा_कातविरान[0] = rfp->port1;
+	    मगा_कातविरान[1] = rfp->port2;
+	    return vpip_make_iterator(2, मगा_कातविरान, true);
 	  }
       }
       return 0;
@@ -1402,11 +1402,11 @@ int __vpiInterModPath::get_type_code(void) const
 int __vpiInterModPath::vpi_get(int code)
 { return intermodpath_get(code, this); }
 
-void __vpiInterModPath::vpi_get_value(p_vpi_value val)
-{ intermodpath_get_value(this, val); }
+void __vpiInterModPath::vpi_get_हालागा(p_vpi_हालागा val)
+{ intermodpath_get_हालागा(this, val); }
 
-vpiHandle __vpiInterModPath::vpi_put_value(p_vpi_value val, int flags)
-{ return intermodpath_put_value(this, val, flags); }
+vpiHandle __vpiInterModPath::vpi_put_हालागा(p_vpi_हालागा val, int flags)
+{ return intermodpath_put_हालागा(this, val, flags); }
 
 vpiHandle __vpiInterModPath::vpi_handle(int code)
 { return intermodpath_get_handle(code, this); }
@@ -1437,7 +1437,7 @@ __vpiHandle::free_object_fun_t __vpiInterModPath::free_object_fun(void)
 
 #ifdef CHECK_WITH_VALGRIND
 static struct __vpiInterModPath**imp_list = 0;
-static unsigned imp_count = 0;
+static unsigned imp_बिलांग = 0;
 #endif
 
 struct __vpiInterModPath* vpip_make_intermodpath(vvp_net_t *net, vpiPortInfo* port1, vpiPortInfo* port2)
@@ -1450,11 +1450,11 @@ struct __vpiInterModPath* vpip_make_intermodpath(vvp_net_t *net, vpiPortInfo* po
       obj->port2 = port2;
 
 #ifdef CHECK_WITH_VALGRIND
-      imp_count += 1;
+      imp_बिलांग += 1;
       imp_list = static_cast<struct __vpiInterModPath **>
                  (realloc(imp_list,
-                  imp_count*sizeof(struct __vpiInterModPath **)));
-      imp_list[imp_count-1] = obj;
+                  imp_बिलांग*sizeof(struct __vpiInterModPath **)));
+      imp_list[imp_बिलांग-1] = obj;
 #endif
       return obj;
 }
@@ -1462,11 +1462,11 @@ struct __vpiInterModPath* vpip_make_intermodpath(vvp_net_t *net, vpiPortInfo* po
 #ifdef CHECK_WITH_VALGRIND
 void intermodpath_delete()
 {
-      for (unsigned idx = 0; idx < mp_count; idx += 1) {
+      for (unsigned idx = 0; idx < mp_बिलांग; idx += 1) {
 	    delete imp_list[idx];
       }
       free(imp_list);
       imp_list = 0;
-      imp_count = 0;
+      imp_बिलांग = 0;
 }
 #endif

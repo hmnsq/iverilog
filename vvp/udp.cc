@@ -41,11 +41,11 @@ using namespace std;
 // UDP definitions.
 #ifdef CHECK_WITH_VALGRIND
 static vvp_udp_s **udp_defns = 0;
-static unsigned udp_defns_count = 0;
+static unsigned udp_defns_बिलांग = 0;
 
 void udp_defns_delete()
 {
-      for (unsigned idx = 0; idx < udp_defns_count; idx += 1) {
+      for (unsigned idx = 0; idx < udp_defns_बिलांग; idx += 1) {
 	    if (udp_defns[idx]->is_sequential()) {
 		  vvp_udp_seq_s *obj = static_cast<vvp_udp_seq_s *>
 		                       (udp_defns[idx]);
@@ -58,21 +58,21 @@ void udp_defns_delete()
       }
       free(udp_defns);
       udp_defns = 0;
-      udp_defns_count = 0;
+      udp_defns_बिलांग = 0;
 }
 #endif
 
-static symbol_table_t udp_table;
+static सिम्बोलो_table_t udp_table;
 
 void delete_udp_symbols()
 {
-      delete_symbol_table(udp_table);
+      delete_सिम्बोलो_table(udp_table);
       udp_table = 0;
 }
 
 struct vvp_udp_s *udp_find(const char *label)
 {
-      symbol_value_t v = sym_get_value(udp_table, label);
+      सिम्बोलो_हालागा_t v = sym_get_हालागा(udp_table, label);
       return (struct vvp_udp_s *)v.ptr;
 }
 
@@ -89,19 +89,19 @@ vvp_udp_s::vvp_udp_s(const char*label, char*name__, unsigned ports,
 : name_(name__), ports_(ports), init_(init), seq_(type)
 {
       if (!udp_table)
-	    udp_table = new_symbol_table();
+	    udp_table = new_सिम्बोलो_table();
 
       assert( !udp_find(label) );
 
-      symbol_value_t v;
+      सिम्बोलो_हालागा_t v;
       v.ptr = this;
-      sym_set_value(udp_table, label, v);
+      sym_set_हालागा(udp_table, label, v);
 
 #ifdef CHECK_WITH_VALGRIND
-      udp_defns_count += 1;
+      udp_defns_बिलांग += 1;
       udp_defns = static_cast<vvp_udp_s **>(realloc(udp_defns,
-                  udp_defns_count*sizeof(vvp_udp_s **)));
-      udp_defns[udp_defns_count-1] = this;
+                  udp_defns_बिलांग*sizeof(vvp_udp_s **)));
+      udp_defns[udp_defns_बिलांग-1] = this;
 #endif
 }
 
@@ -110,7 +110,7 @@ vvp_udp_s::~vvp_udp_s()
       delete[] name_;
 }
 
-unsigned vvp_udp_s::port_count() const
+unsigned vvp_udp_s::port_बिलांग() const
 {
       return ports_;
 }
@@ -236,8 +236,8 @@ void vvp_udp_comb_s::compile_table(char**tab)
 	/* First run through the table to figure out the number of
 	   rows I need for each kind of table. */
       for (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
-	    assert(strlen(tab[idx]) == port_count() + 1);
-	    switch (tab[idx][port_count()]) {
+	    assert(strlen(tab[idx]) == port_बिलांग() + 1);
+	    switch (tab[idx][port_बिलांग()]) {
 		case '0':
 		  nrows0 += 1;
 		  break;
@@ -248,7 +248,7 @@ void vvp_udp_comb_s::compile_table(char**tab)
 		  break;
 		default:
 		  fprintf(stderr, "Unsupported entry %c(%d).\n",
-		          tab[idx][port_count()], tab[idx][port_count()]);
+		          tab[idx][port_बिलांग()], tab[idx][port_बिलांग()]);
 		  assert(0);
 	    }
       }
@@ -266,17 +266,17 @@ void vvp_udp_comb_s::compile_table(char**tab)
 	    cur.mask0 = 0;
 	    cur.mask1 = 0;
 	    cur.maskx = 0;
-	    if (port_count() > 8*sizeof(cur.mask0)) {
+	    if (port_बिलांग() > 8*sizeof(cur.mask0)) {
 		  fprintf(stderr, "internal error: primitive port count=%u "
-			  " > %zu\n", port_count(), sizeof(cur.mask0));
-		  assert(port_count() <= 8*sizeof(cur.mask0));
+			  " > %zu\n", port_बिलांग(), sizeof(cur.mask0));
+		  assert(port_बिलांग() <= 8*sizeof(cur.mask0));
 	    }
-	    for (unsigned pp = 0 ;  pp < port_count() ;  pp += 1) {
+	    for (unsigned pp = 0 ;  pp < port_बिलांग() ;  pp += 1) {
 		  unsigned long mask_bit = 1UL << pp;
 		  or_based_on_char(cur, tab[idx][pp], mask_bit);
 	    }
 
-	    switch (tab[idx][port_count()]) {
+	    switch (tab[idx][port_बिलांग()]) {
 		case '0':
 		  levels0_[nrows0++] = cur;
 		  break;
@@ -465,11 +465,11 @@ void vvp_udp_seq_s::compile_table(char**tab)
 
       for (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
 	    const char*row = tab[idx];
-	    assert(strlen(row) == port_count() + 2);
+	    assert(strlen(row) == port_बिलांग() + 2);
 
-	    if (strspn(row, "01xblh?") >= port_count()+1) {
+	    if (strspn(row, "01xblh?") >= port_बिलांग()+1) {
 
-		  switch (row[port_count()+1]) {
+		  switch (row[port_बिलांग()+1]) {
 		      case '0':
 			nlevels0_ += 1;
 			break;
@@ -484,7 +484,7 @@ void vvp_udp_seq_s::compile_table(char**tab)
 			break;
 		      default:
 			fprintf(stderr, "Unsupported entry %c(%d).\n",
-			        row[port_count()+1], row[port_count()+1]);
+			        row[port_बिलांग()+1], row[port_बिलांग()+1]);
 			assert(0);
 			break;
 		  }
@@ -500,7 +500,7 @@ void vvp_udp_seq_s::compile_table(char**tab)
 		  if (strchr(row,'*'))
 			extra = 2;
 
-		  switch (row[port_count()+1]) {
+		  switch (row[port_बिलांग()+1]) {
 		      case '0':
 			nedges0_ += 1 + extra;
 			break;
@@ -514,7 +514,7 @@ void vvp_udp_seq_s::compile_table(char**tab)
 			break;
 		      default:
 			fprintf(stderr, "Unsupported entry %c(%d).\n",
-			        row[port_count()+1], row[port_count()+1]);
+			        row[port_बिलांग()+1], row[port_बिलांग()+1]);
 			assert(0);
 			break;
 		  }
@@ -540,19 +540,19 @@ void vvp_udp_seq_s::compile_table(char**tab)
       for (unsigned idx = 0 ;  tab[idx] ;  idx += 1) {
 	    const char*row = tab[idx];
 
-	    if (strspn(row, "01xblh?") >= port_count()+1) {
+	    if (strspn(row, "01xblh?") >= port_बिलांग()+1) {
 		  struct udp_levels_table cur;
 		  cur.mask0 = 0;
 		  cur.mask1 = 0;
 		  cur.maskx = 0;
-		  for (unsigned pp = 0 ;  pp < port_count() ;  pp += 1) {
+		  for (unsigned pp = 0 ;  pp < port_बिलांग() ;  pp += 1) {
 			unsigned long mask_bit = 1UL << pp;
 			or_based_on_char(cur, row[pp+1], mask_bit);
 		  }
 
-		  or_based_on_char(cur, row[0], 1UL << port_count());
+		  or_based_on_char(cur, row[0], 1UL << port_बिलांग());
 
-		  switch (row[port_count()+1]) {
+		  switch (row[port_बिलांग()+1]) {
 		      case '0':
 			levels0_[idx_lev0++] = cur;
 			break;
@@ -567,7 +567,7 @@ void vvp_udp_seq_s::compile_table(char**tab)
 			break;
 		      default:
 			fprintf(stderr, "Unsupported entry %c(%d).\n",
-			        row[port_count()+1], row[port_count()+1]);
+			        row[port_बिलांग()+1], row[port_बिलांग()+1]);
 			assert(0);
 			break;
 		  }
@@ -602,7 +602,7 @@ void vvp_udp_seq_s::compile_table(char**tab)
 		  ext1.edge_mask1 = 0;
 		  ext1.edge_maskx = 0;
 
-		  for (unsigned pp = 0 ;  pp < port_count() ; pp += 1) {
+		  for (unsigned pp = 0 ;  pp < port_बिलांग() ; pp += 1) {
 			switch (row[pp+1]) {
 			    case 'n':
 			      edge_based_on_char(cur, 'N', pp);
@@ -628,11 +628,11 @@ void vvp_udp_seq_s::compile_table(char**tab)
 			      break;
 			}
 		  }
-		  edge_based_on_char(cur, row[0], port_count());
-		  edge_based_on_char(ext0, row[0], port_count());
-		  edge_based_on_char(ext1, row[0], port_count());
+		  edge_based_on_char(cur, row[0], port_बिलांग());
+		  edge_based_on_char(ext0, row[0], port_बिलांग());
+		  edge_based_on_char(ext1, row[0], port_बिलांग());
 
-		  switch (row[port_count()+1]) {
+		  switch (row[port_बिलांग()+1]) {
 		      case '0':
 			edges0_[idx_edg0++] = cur;
 			if (need_ext0_table)
@@ -658,7 +658,7 @@ void vvp_udp_seq_s::compile_table(char**tab)
 			break;
 		      default:
 			fprintf(stderr, "Unsupported entry %c(%d).\n",
-			        row[port_count()+1], row[port_count()+1]);
+			        row[port_बिलांग()+1], row[port_बिलांग()+1]);
 			assert(0);
 			break;
 		  }
@@ -694,7 +694,7 @@ vvp_bit4_t vvp_udp_seq_s::calculate_output(const udp_levels_table&cur,
 
       udp_levels_table cur_tmp = cur;
 
-      unsigned long mask_out = 1UL << port_count();
+      unsigned long mask_out = 1UL << port_बिलांग();
       switch (cur_out) {
 	  case BIT4_0:
 	    cur_tmp.mask0 |= mask_out;
@@ -772,11 +772,11 @@ vvp_bit4_t vvp_udp_seq_s::test_levels_(const udp_levels_table&cur)
 	    if (cur.maskx != (cur.maskx & levelsL_[idx].maskx))
 		  continue;
 
-	    if (cur.mask0 & (1 << port_count()))
+	    if (cur.mask0 & (1 << port_बिलांग()))
 		  return BIT4_0;
-	    if (cur.mask1 & (1 << port_count()))
+	    if (cur.mask1 & (1 << port_बिलांग()))
 		  return BIT4_1;
-	    if (cur.maskx & (1 << port_count()))
+	    if (cur.maskx & (1 << port_बिलांग()))
 		  return BIT4_X;
 
 	    assert(0);
@@ -798,7 +798,7 @@ vvp_bit4_t vvp_udp_seq_s::test_edges_(const udp_levels_table&cur,
       unsigned long edge1_mask = cur.mask1 ^ prev.mask1;
 
       unsigned long edge_mask = edge0_mask|edgex_mask|edge1_mask;
-      edge_mask &= ~ (-1UL << port_count());
+      edge_mask &= ~ (-1UL << port_बिलांग());
 
 	/* If there are no differences, then there are no edges. Give
 	   up now. */
@@ -885,11 +885,11 @@ vvp_bit4_t vvp_udp_seq_s::test_edges_(const udp_levels_table&cur,
 	    if (cur.mask1 != (cur.mask1 & row->mask1))
 		  continue;
 
-	    if (cur.mask0 & (1 << port_count()))
+	    if (cur.mask0 & (1 << port_बिलांग()))
 		  return BIT4_0;
-	    if (cur.mask1 & (1 << port_count()))
+	    if (cur.mask1 & (1 << port_बिलांग()))
 		  return BIT4_1;
-	    if (cur.maskx & (1 << port_count()))
+	    if (cur.maskx & (1 << port_बिलांग()))
 		  return BIT4_X;
 
 	    assert(0);
@@ -900,14 +900,14 @@ vvp_bit4_t vvp_udp_seq_s::test_edges_(const udp_levels_table&cur,
 }
 
 vvp_udp_fun_core::vvp_udp_fun_core(vvp_net_t*net, vvp_udp_s*def)
-: vvp_wide_fun_core(net, def->port_count())
+: vvp_wide_fun_core(net, def->port_बिलांग())
 {
       def_ = def;
       cur_out_ = def_->get_init();
 	// Assume initially that all the inputs are 1'bx
       current_.mask0 = 0;
       current_.mask1 = 0;
-      current_.maskx = ~ ((-1UL) << port_count());
+      current_.maskx = ~ ((-1UL) << port_बिलांग());
 
         // If the initial value is 0 or 1, schedule the initial assignment
         // normally, so that any sensitive always processes can be started
@@ -987,7 +987,7 @@ void compile_udp_functor(char*label, char*type,
       vvp_udp_fun_core*core = new vvp_udp_fun_core(ptr, def);
       ptr->fun = core;
 
-      define_functor_symbol(label, ptr);
+      define_functor_सिम्बोलो(label, ptr);
       free(label);
 
       wide_inputs_connect(core, argc, argv);

@@ -36,23 +36,23 @@ class __vpiFileLine : public __vpiHandle {
       unsigned lineno;
 };
 
-bool show_file_line = false;
+bool show_file_लिन्या = false;
 bool code_is_instrumented = false;
 
-static int file_line_get(int type, vpiHandle ref)
+static int file_लिन्या_get(int type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
       assert(rfp);
 
       switch (type) {
-	case vpiLineNo:
+	case vpi_लिन्या_No:
 	    return rfp->get_lineno();
 	default:
 	    return vpiUndefined;
       }
 }
 
-static char *file_line_get_str(int type, vpiHandle ref)
+static char *file_लिन्या_get_str(int type, vpiHandle ref)
 {
       __vpiFileLine*rfp = dynamic_cast<__vpiFileLine*>(ref);
       assert(rfp);
@@ -80,16 +80,16 @@ inline __vpiFileLine::__vpiFileLine(const char*desc_, long file_idx_,
 }
 
 int __vpiFileLine::get_type_code(void) const
-{ return _vpiFileLine; }
+{ return vpi_File_लिन्या; }
 
 int __vpiFileLine::vpi_get(int code)
-{ return file_line_get(code, this); }
+{ return file_लिन्या_get(code, this); }
 
 char* __vpiFileLine::vpi_get_str(int code)
-{ return file_line_get_str(code, this); }
+{ return file_लिन्या_get_str(code, this); }
 
 
-vpiHandle vpip_build_file_line(const char*description, long file_idx, long lineno)
+vpiHandle vpip_build_file_लिन्या(const char*description, long file_idx, long lineno)
 {
       __vpiFileLine*obj = new __vpiFileLine(description, file_idx, lineno);
 

@@ -61,7 +61,7 @@ enum operand_e {
 	/* Place holder for unused operand */
       OA_NONE,
 	/* The operand is a number, an immediate unsigned integer */
-      OA_NUMBER,
+      OA_नुमेरो,
 	/* The operand is a pointer to an array. */
       OA_ARR_PTR,
 	/* The operand is a thread bit index or short integer */
@@ -92,7 +92,7 @@ static const struct opcode_table_s opcode_table[] = {
       { "%abs/wr", of_ABS_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%add",    of_ADD,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%add/wr", of_ADD_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%addi",   of_ADDI,   3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
+      { "%addi",   of_ADDI,   3,  {OA_BIT1,     OA_BIT2,     OA_नुमेरो} },
       { "%alloc",  of_ALLOC,  1,  {OA_VPI_PTR,  OA_NONE,     OA_NONE} },
       { "%and",    of_AND,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%and/r",  of_ANDR,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
@@ -122,9 +122,9 @@ static const struct opcode_table_s opcode_table[] = {
       { "%cassign/vec4",    of_CASSIGN_VEC4,    1,{OA_FUNC_PTR,OA_NONE,     OA_NONE} },
       { "%cassign/vec4/off",of_CASSIGN_VEC4_OFF,2,{OA_FUNC_PTR,OA_BIT1,     OA_NONE} },
       { "%cassign/wr",  of_CASSIGN_WR,  1,{OA_FUNC_PTR,OA_NONE,     OA_NONE} },
-      { "%cast/vec2/dar", of_CAST_VEC2_DAR, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%cast/vec4/dar", of_CAST_VEC4_DAR, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%cast/vec4/str", of_CAST_VEC4_STR, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
+      { "%cast/vec2/dar", of_CAST_VEC2_DAR, 1,  {OA_नुमेरो,   OA_NONE,     OA_NONE} },
+      { "%cast/vec4/dar", of_CAST_VEC4_DAR, 1,  {OA_नुमेरो,   OA_NONE,     OA_NONE} },
+      { "%cast/vec4/str", of_CAST_VEC4_STR, 1,  {OA_नुमेरो,   OA_NONE,     OA_NONE} },
       { "%cast2",   of_CAST2,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%cmp/e",   of_CMPE,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%cmp/ne",  of_CMPNE,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
@@ -136,30 +136,30 @@ static const struct opcode_table_s opcode_table[] = {
       { "%cmp/wr",  of_CMPWR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%cmp/x",   of_CMPX,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%cmp/z",   of_CMPZ,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%cmpi/e",  of_CMPIE,  3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%cmpi/ne", of_CMPINE, 3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%cmpi/s",  of_CMPIS,  3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%cmpi/u",  of_CMPIU,  3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
-      { "%cmpix/ltu", of_CMPIX_LTU, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%cmpix/slt0", of_CMPIX_SLT0, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
+      { "%cmpi/e",  of_CMPIE,  3,  {OA_BIT1,     OA_BIT2,     OA_नुमेरो} },
+      { "%cmpi/ne", of_CMPINE, 3,  {OA_BIT1,     OA_BIT2,     OA_नुमेरो} },
+      { "%cmpi/s",  of_CMPIS,  3,  {OA_BIT1,     OA_BIT2,     OA_नुमेरो} },
+      { "%cmpi/u",  of_CMPIU,  3,  {OA_BIT1,     OA_BIT2,     OA_नुमेरो} },
+      { "%cmpix/ltu", of_CMPIX_LTU, 2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
+      { "%cmpix/slt0", of_CMPIX_SLT0, 1, {OA_नुमेरो, OA_NONE, OA_NONE} },
       { "%concat/str",  of_CONCAT_STR,  0,{OA_NONE,  OA_NONE,  OA_NONE} },
       { "%concat/vec4", of_CONCAT_VEC4, 0,{OA_NONE,  OA_NONE,  OA_NONE} },
       { "%concati/str", of_CONCATI_STR, 1,{OA_STRING,OA_NONE,  OA_NONE} },
-      { "%concati/vec4",of_CONCATI_VEC4,3,{OA_BIT1,  OA_BIT2,  OA_NUMBER} },
+      { "%concati/vec4",of_CONCATI_VEC4,3,{OA_BIT1,  OA_BIT2,  OA_नुमेरो} },
       { "%cvt/rv",   of_CVT_RV,  0, {OA_NONE,   OA_NONE,     OA_NONE} },
       { "%cvt/rv/s", of_CVT_RV_S,0, {OA_NONE,   OA_NONE,     OA_NONE} },
       { "%cvt/sr", of_CVT_SR, 1,  {OA_BIT1,     OA_NONE,     OA_NONE} },
       { "%cvt/ur", of_CVT_UR, 1,  {OA_BIT1,     OA_NONE,     OA_NONE} },
-      { "%cvt/vr", of_CVT_VR, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
+      { "%cvt/vr", of_CVT_VR, 1,  {OA_नुमेरो,   OA_NONE,     OA_NONE} },
       { "%deassign",of_DEASSIGN,3,{OA_FUNC_PTR, OA_BIT1,     OA_BIT2} },
       { "%deassign/wr",of_DEASSIGN_WR,1,{OA_FUNC_PTR, OA_NONE,     OA_NONE} },
       { "%debug/thr",  of_DEBUG_THR,  1,{OA_STRING,   OA_NONE,     OA_NONE} },
       { "%delay",  of_DELAY,  2,  {OA_BIT1,     OA_BIT2,     OA_NONE} },
-      { "%delayx", of_DELAYX, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
+      { "%delayx", of_DELAYX, 1,  {OA_नुमेरो,   OA_NONE,     OA_NONE} },
       { "%delete/elem",of_DELETE_ELEM,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
       { "%delete/obj",of_DELETE_OBJ,1,{OA_FUNC_PTR,OA_NONE,  OA_NONE} },
-      { "%delete/prop/elem", of_DELETE_PROP_ELEM, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%delete/prop/obj",  of_DELETE_PROP_OBJ,  1, {OA_NUMBER, OA_NONE, OA_NONE} },
+      { "%delete/prop/elem", of_DELETE_PROP_ELEM, 1, {OA_नुमेरो, OA_NONE, OA_NONE} },
+      { "%delete/prop/obj",  of_DELETE_PROP_OBJ,  1, {OA_नुमेरो, OA_NONE, OA_NONE} },
       { "%delete/tail",of_DELETE_TAIL,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
       { "%disable",  of_DISABLE, 1, {OA_VPI_PTR,OA_NONE,     OA_NONE} },
       { "%disable/flow", of_DISABLE_FLOW, 1, {OA_VPI_PTR,OA_NONE, OA_NONE} },
@@ -177,12 +177,12 @@ static const struct opcode_table_s opcode_table[] = {
       { "%evctl/s",of_EVCTLS, 2,  {OA_FUNC_PTR, OA_BIT1,     OA_NONE} },
       { "%event",    of_EVENT,    1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
       { "%event/nb", of_EVENT_NB, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%flag_get/vec4", of_FLAG_GET_VEC4, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
+      { "%flag_get/vec4", of_FLAG_GET_VEC4, 1, {OA_नुमेरो, OA_NONE, OA_NONE} },
       { "%flag_inv",      of_FLAG_INV,      1, {OA_BIT1,   OA_NONE, OA_NONE} },
       { "%flag_mov",      of_FLAG_MOV,      2, {OA_BIT1,   OA_BIT2, OA_NONE} },
       { "%flag_or",       of_FLAG_OR,       2, {OA_BIT1,   OA_BIT2, OA_NONE} },
-      { "%flag_set/imm",  of_FLAG_SET_IMM,  2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%flag_set/vec4", of_FLAG_SET_VEC4, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
+      { "%flag_set/imm",  of_FLAG_SET_IMM,  2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
+      { "%flag_set/vec4", of_FLAG_SET_VEC4, 1, {OA_नुमेरो, OA_NONE, OA_NONE} },
       { "%force/link",    of_FORCE_LINK,2,{OA_FUNC_PTR, OA_FUNC_PTR2, OA_NONE} },
       { "%force/vec4",    of_FORCE_VEC4,    1,{OA_FUNC_PTR, OA_NONE,      OA_NONE} },
       { "%force/vec4/off",of_FORCE_VEC4_OFF,2,{OA_FUNC_PTR, OA_BIT1,      OA_NONE} },
@@ -191,29 +191,29 @@ static const struct opcode_table_s opcode_table[] = {
       { "%fork",   of_FORK,   2,  {OA_CODE_PTR2,OA_VPI_PTR,  OA_NONE} },
       { "%free",   of_FREE,   1,  {OA_VPI_PTR,  OA_NONE,     OA_NONE} },
       { "%inv",    of_INV,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%ix/add", of_IX_ADD, 3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
+      { "%ix/add", of_IX_ADD, 3,  {OA_नुमेरो,   OA_BIT1,     OA_BIT2} },
       { "%ix/getv",of_IX_GETV,2,  {OA_BIT1,     OA_FUNC_PTR, OA_NONE} },
       { "%ix/getv/s",of_IX_GETV_S,2, {OA_BIT1,   OA_FUNC_PTR, OA_NONE} },
-      { "%ix/load",of_IX_LOAD,3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
+      { "%ix/load",of_IX_LOAD,3,  {OA_नुमेरो,   OA_BIT1,     OA_BIT2} },
       { "%ix/mov", of_IX_MOV, 2,  {OA_BIT1,     OA_BIT2,     OA_NONE} },
-      { "%ix/mul", of_IX_MUL, 3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%ix/sub", of_IX_SUB, 3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%ix/vec4",  of_IX_VEC4,  1,  {OA_NUMBER,   OA_NONE, OA_NONE} },
-      { "%ix/vec4/s",of_IX_VEC4_S,1,  {OA_NUMBER,   OA_NONE, OA_NONE} },
+      { "%ix/mul", of_IX_MUL, 3,  {OA_नुमेरो,   OA_BIT1,     OA_BIT2} },
+      { "%ix/sub", of_IX_SUB, 3,  {OA_नुमेरो,   OA_BIT1,     OA_BIT2} },
+      { "%ix/vec4",  of_IX_VEC4,  1,  {OA_नुमेरो,   OA_NONE, OA_NONE} },
+      { "%ix/vec4/s",of_IX_VEC4_S,1,  {OA_नुमेरो,   OA_NONE, OA_NONE} },
       { "%jmp",    of_JMP,    1,  {OA_CODE_PTR, OA_NONE,     OA_NONE} },
       { "%jmp/0",  of_JMP0,   2,  {OA_CODE_PTR, OA_BIT1,     OA_NONE} },
       { "%jmp/0xz",of_JMP0XZ, 2,  {OA_CODE_PTR, OA_BIT1,     OA_NONE} },
       { "%jmp/1",  of_JMP1,   2,  {OA_CODE_PTR, OA_BIT1,     OA_NONE} },
       { "%jmp/1xz",of_JMP1XZ, 2,  {OA_CODE_PTR, OA_BIT1,     OA_NONE} },
       { "%join",   of_JOIN,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%join/detach",of_JOIN_DETACH,1,{OA_NUMBER,OA_NONE,  OA_NONE} },
+      { "%join/detach",of_JOIN_DETACH,1,{OA_नुमेरो,OA_NONE,  OA_NONE} },
       { "%load/ar",of_LOAD_AR,2,  {OA_ARR_PTR,  OA_BIT1,     OA_NONE} },
       { "%load/dar/r",  of_LOAD_DAR_R,    1, {OA_FUNC_PTR, OA_NONE, OA_NONE}},
       { "%load/dar/str",of_LOAD_DAR_STR,  1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
       { "%load/dar/vec4",of_LOAD_DAR_VEC4,1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
       { "%load/obj",   of_LOAD_OBJ,  1,{OA_FUNC_PTR,OA_NONE, OA_NONE} },
       { "%load/obja",  of_LOAD_OBJA, 2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%load/prop/dar/vec4", of_LOAD_PROP_DAR_VEC4, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
+      { "%load/prop/dar/vec4", of_LOAD_PROP_DAR_VEC4, 2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
       { "%load/real",  of_LOAD_REAL, 1,{OA_VPI_PTR, OA_NONE, OA_NONE} },
       { "%load/str",   of_LOAD_STR,  1,{OA_FUNC_PTR,OA_NONE, OA_NONE} },
       { "%load/stra",  of_LOAD_STRA, 2,{OA_ARR_PTR, OA_BIT1, OA_NONE} },
@@ -226,7 +226,7 @@ static const struct opcode_table_s opcode_table[] = {
       { "%mod/wr", of_MOD_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%mul",    of_MUL,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%mul/wr", of_MUL_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%muli",   of_MULI,   3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
+      { "%muli",   of_MULI,   3,  {OA_BIT1,     OA_BIT2,     OA_नुमेरो} },
       { "%nand",   of_NAND,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%nand/r", of_NANDR,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%neg/wr", of_NEG_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
@@ -238,33 +238,33 @@ static const struct opcode_table_s opcode_table[] = {
       { "%null",   of_NULL,   0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%or",     of_OR,     0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%or/r",   of_ORR,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%pad/s",  of_PAD_S,  1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%pad/u",  of_PAD_U,  1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%part/s", of_PART_S, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%part/u", of_PART_U, 1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%parti/s",of_PARTI_S,3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%parti/u",of_PARTI_U,3,  {OA_NUMBER,   OA_BIT1,     OA_BIT2} },
-      { "%pop/obj", of_POP_OBJ, 2, {OA_BIT1,    OA_BIT2,     OA_NONE} },
-      { "%pop/real",of_POP_REAL,1, {OA_NUMBER,  OA_NONE,     OA_NONE} },
-      { "%pop/str", of_POP_STR, 1, {OA_NUMBER,  OA_NONE,     OA_NONE} },
-      { "%pop/vec4",of_POP_VEC4,1, {OA_NUMBER,  OA_NONE,     OA_NONE} },
+      { "%pad/s",  of_PAD_S,  1,  {OA_नुमेरो,   OA_NONE,     OA_NONE} },
+      { "%pad/u",  of_PAD_U,  1,  {OA_नुमेरो,   OA_NONE,     OA_NONE} },
+      { "%part/s", of_PART_S, 1,  {OA_नुमेरो,   OA_NONE,     OA_NONE} },
+      { "%part/u", of_PART_U, 1,  {OA_नुमेरो,   OA_NONE,     OA_NONE} },
+      { "%parti/s",of_PARTI_S,3,  {OA_नुमेरो,   OA_BIT1,     OA_BIT2} },
+      { "%parti/u",of_PARTI_U,3,  {OA_नुमेरो,   OA_BIT1,     OA_BIT2} },
+      { "%pop/obj", of_आलिसिन_OBJ, 2, {OA_BIT1,    OA_BIT2,     OA_NONE} },
+      { "%pop/real",of_आलिसिन_REAL,1, {OA_नुमेरो,  OA_NONE,     OA_NONE} },
+      { "%pop/str", of_आलिसिन_STR, 1, {OA_नुमेरो,  OA_NONE,     OA_NONE} },
+      { "%pop/vec4",of_आलिसिन_VEC4,1, {OA_नुमेरो,  OA_NONE,     OA_NONE} },
       { "%pow",     of_POW,     0,  {OA_NONE,   OA_NONE,     OA_NONE} },
       { "%pow/s",   of_POW_S,   0,  {OA_NONE,   OA_NONE,     OA_NONE} },
       { "%pow/wr",  of_POW_WR,  0,  {OA_NONE,   OA_NONE,     OA_NONE} },
-      { "%prop/obj",of_PROP_OBJ,2,  {OA_NUMBER,   OA_BIT1,     OA_NONE} },
-      { "%prop/queue/size", of_PROP_QUEUE_SIZE,  1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%prop/r",  of_PROP_R,  1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%prop/str",of_PROP_STR,1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%prop/v",  of_PROP_V,  1,  {OA_NUMBER,   OA_NONE,     OA_NONE} },
-      { "%push/ix/vec4", of_PUSH_IX_VEC4, 3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
+      { "%prop/obj",of_PROP_OBJ,2,  {OA_नुमेरो,   OA_BIT1,     OA_NONE} },
+      { "%prop/queue/size", of_PROP_QUEUE_SIZE,  1, {OA_नुमेरो, OA_NONE, OA_NONE} },
+      { "%prop/r",  of_PROP_R,  1,  {OA_नुमेरो,   OA_NONE,     OA_NONE} },
+      { "%prop/str",of_PROP_STR,1,  {OA_नुमेरो,   OA_NONE,     OA_NONE} },
+      { "%prop/v",  of_PROP_V,  1,  {OA_नुमेरो,   OA_NONE,     OA_NONE} },
+      { "%push/ix/vec4", of_इतुलाक_IX_VEC4, 3, {OA_नुमेरो, OA_BIT1, OA_BIT2} },
       { "%pushi/real",of_PUSHI_REAL,2,{OA_BIT1,   OA_BIT2,   OA_NONE} },
       { "%pushi/str", of_PUSHI_STR, 1,{OA_STRING, OA_NONE,   OA_NONE} },
-      { "%pushi/vec4",of_PUSHI_VEC4,3,{OA_BIT1,   OA_BIT2,   OA_NUMBER} },
+      { "%pushi/vec4",of_PUSHI_VEC4,3,{OA_BIT1,   OA_BIT2,   OA_नुमेरो} },
       { "%pushv/str", of_PUSHV_STR, 0,{OA_NONE,   OA_NONE,   OA_NONE} },
       { "%putc/str/vec4",of_PUTC_STR_VEC4,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qinsert/prop/r",   of_QINSERT_PROP_R,   2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%qinsert/prop/str", of_QINSERT_PROP_STR, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%qinsert/prop/v",   of_QINSERT_PROP_V,   3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
+      { "%qinsert/prop/r",   of_QINSERT_PROP_R,   2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
+      { "%qinsert/prop/str", of_QINSERT_PROP_STR, 2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
+      { "%qinsert/prop/v",   of_QINSERT_PROP_V,   3, {OA_नुमेरो, OA_BIT1, OA_BIT2} },
       { "%qinsert/real",of_QINSERT_REAL,2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
       { "%qinsert/str", of_QINSERT_STR, 2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
       { "%qinsert/v",   of_QINSERT_V,   3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
@@ -274,82 +274,82 @@ static const struct opcode_table_s opcode_table[] = {
       { "%qpop/f/real",of_QPOP_F_REAL,1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
       { "%qpop/f/str", of_QPOP_F_STR, 1,{OA_FUNC_PTR,OA_NONE,OA_NONE} },
       { "%qpop/f/v",   of_QPOP_F_V,   2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%qpop/prop/b/r",   of_QPOP_PROP_B_REAL, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%qpop/prop/b/str", of_QPOP_PROP_B_STR, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%qpop/prop/b/v",   of_QPOP_PROP_B_V,    2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%qpop/prop/f/r",   of_QPOP_PROP_F_REAL, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%qpop/prop/f/str", of_QPOP_PROP_F_STR, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%qpop/prop/f/v",   of_QPOP_PROP_F_V,    2, {OA_NUMBER, OA_BIT1, OA_NONE} },
+      { "%qpop/prop/b/r",   of_QPOP_PROP_B_REAL, 1, {OA_नुमेरो, OA_NONE, OA_NONE} },
+      { "%qpop/prop/b/str", of_QPOP_PROP_B_STR, 1, {OA_नुमेरो, OA_NONE, OA_NONE} },
+      { "%qpop/prop/b/v",   of_QPOP_PROP_B_V,    2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
+      { "%qpop/prop/f/r",   of_QPOP_PROP_F_REAL, 1, {OA_नुमेरो, OA_NONE, OA_NONE} },
+      { "%qpop/prop/f/str", of_QPOP_PROP_F_STR, 1, {OA_नुमेरो, OA_NONE, OA_NONE} },
+      { "%qpop/prop/f/v",   of_QPOP_PROP_F_V,    2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
       { "%queue/append_word/v", of_QUEUE_APPEND_WORD_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/find/index/prop/v", of_QUEUE_FIND_INDEX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
+      { "%queue/find/index/prop/v", of_QUEUE_FIND_INDEX_PROP_V, 2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
       { "%queue/find/index/v", of_QUEUE_FIND_INDEX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find/prop/v", of_QUEUE_FIND_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
+      { "%queue/find/prop/v", of_QUEUE_FIND_PROP_V, 2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
       { "%queue/find/v", of_QUEUE_FIND_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find_first/index/prop/v", of_QUEUE_FIND_FIRST_INDEX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
+      { "%queue/find_first/index/prop/v", of_QUEUE_FIND_FIRST_INDEX_PROP_V, 2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
       { "%queue/find_first/index/v", of_QUEUE_FIND_FIRST_INDEX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find_first/prop/v", of_QUEUE_FIND_FIRST_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
+      { "%queue/find_first/prop/v", of_QUEUE_FIND_FIRST_PROP_V, 2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
       { "%queue/find_first/v", of_QUEUE_FIND_FIRST_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find_last/index/prop/v", of_QUEUE_FIND_LAST_INDEX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
+      { "%queue/find_last/index/prop/v", of_QUEUE_FIND_LAST_INDEX_PROP_V, 2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
       { "%queue/find_last/index/v", of_QUEUE_FIND_LAST_INDEX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/find_last/prop/v", of_QUEUE_FIND_LAST_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
+      { "%queue/find_last/prop/v", of_QUEUE_FIND_LAST_PROP_V, 2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
       { "%queue/find_last/v", of_QUEUE_FIND_LAST_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
       { "%queue/max/obj/v", of_QUEUE_MAX_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/max/prop/v", of_QUEUE_MAX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
+      { "%queue/max/prop/v", of_QUEUE_MAX_PROP_V, 2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
       { "%queue/max/v", of_QUEUE_MAX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
       { "%queue/min/obj/v", of_QUEUE_MIN_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/min/prop/v", of_QUEUE_MIN_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
+      { "%queue/min/prop/v", of_QUEUE_MIN_PROP_V, 2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
       { "%queue/min/v", of_QUEUE_MIN_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
       { "%queue/new_empty/v", of_QUEUE_NEW_EMPTY_V, 0, {OA_NONE, OA_NONE, OA_NONE} },
       { "%queue/size/v", of_QUEUE_SIZE_V, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
       { "%queue/unique/index/obj/v", of_QUEUE_UNIQUE_INDEX_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/unique/index/prop/v", of_QUEUE_UNIQUE_INDEX_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
+      { "%queue/unique/index/prop/v", of_QUEUE_UNIQUE_INDEX_PROP_V, 2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
       { "%queue/unique/index/v", of_QUEUE_UNIQUE_INDEX_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
       { "%queue/unique/obj/v", of_QUEUE_UNIQUE_OBJ_V, 1, {OA_BIT1, OA_NONE, OA_NONE} },
-      { "%queue/unique/prop/v", of_QUEUE_UNIQUE_PROP_V, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
+      { "%queue/unique/prop/v", of_QUEUE_UNIQUE_PROP_V, 2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
       { "%queue/unique/v", of_QUEUE_UNIQUE_V, 2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
-      { "%queue/word/prop/v", of_QUEUE_WORD_PROP_V, 3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
+      { "%queue/word/prop/v", of_QUEUE_WORD_PROP_V, 3, {OA_नुमेरो, OA_BIT1, OA_BIT2} },
       { "%queue/word/v", of_QUEUE_WORD_V, 3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
       { "%release/net",of_RELEASE_NET,3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
       { "%release/reg",of_RELEASE_REG,3,{OA_FUNC_PTR,OA_BIT1,OA_BIT2} },
       { "%release/wr", of_RELEASE_WR, 2,{OA_FUNC_PTR,OA_BIT1,OA_NONE} },
-      { "%replicate", of_REPLICATE,   1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%ret/real",  of_RET_REAL,    1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%ret/str",   of_RET_STR,     1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%ret/vec4",  of_RET_VEC4,    3,{OA_NUMBER,  OA_BIT1,OA_BIT2} },
-      { "%retload/real",of_RETLOAD_REAL,1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%retload/str", of_RETLOAD_STR, 1,{OA_NUMBER,  OA_NONE,OA_NONE} },
-      { "%retload/vec4",of_RETLOAD_VEC4,1,{OA_NUMBER,  OA_NONE,OA_NONE} },
+      { "%replicate", of_REPLICATE,   1,{OA_नुमेरो,  OA_NONE,OA_NONE} },
+      { "%ret/real",  of_RET_REAL,    1,{OA_नुमेरो,  OA_NONE,OA_NONE} },
+      { "%ret/str",   of_RET_STR,     1,{OA_नुमेरो,  OA_NONE,OA_NONE} },
+      { "%ret/vec4",  of_RET_VEC4,    3,{OA_नुमेरो,  OA_BIT1,OA_BIT2} },
+      { "%retload/real",of_RETLOAD_REAL,1,{OA_नुमेरो,  OA_NONE,OA_NONE} },
+      { "%retload/str", of_RETLOAD_STR, 1,{OA_नुमेरो,  OA_NONE,OA_NONE} },
+      { "%retload/vec4",of_RETLOAD_VEC4,1,{OA_नुमेरो,  OA_NONE,OA_NONE} },
       { "%reverse/obj", of_REVERSE_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%reverse/prop/obj", of_REVERSE_PROP_OBJ, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
+      { "%reverse/prop/obj", of_REVERSE_PROP_OBJ, 1, {OA_नुमेरो, OA_NONE, OA_NONE} },
       { "%rsort/obj", of_RSORT_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%rsort/prop/obj", of_RSORT_PROP_OBJ, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
+      { "%rsort/prop/obj", of_RSORT_PROP_OBJ, 1, {OA_नुमेरो, OA_NONE, OA_NONE} },
       { "%scopy",  of_SCOPY,  0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%set/dar/obj/real",of_SET_DAR_OBJ_REAL,1,{OA_NUMBER,OA_NONE,OA_NONE} },
-      { "%set/dar/obj/str", of_SET_DAR_OBJ_STR, 1,{OA_NUMBER,OA_NONE,OA_NONE} },
-      { "%set/dar/obj/vec4",of_SET_DAR_OBJ_VEC4,1,{OA_NUMBER,OA_NONE,OA_NONE} },
-      { "%shiftl",   of_SHIFTL,   1, {OA_NUMBER, OA_NONE,   OA_NONE} },
-      { "%shiftr",   of_SHIFTR,   1, {OA_NUMBER, OA_NONE,   OA_NONE} },
-      { "%shiftr/s", of_SHIFTR_S, 1, {OA_NUMBER, OA_NONE,   OA_NONE} },
+      { "%set/dar/obj/real",of_SET_DAR_OBJ_REAL,1,{OA_नुमेरो,OA_NONE,OA_NONE} },
+      { "%set/dar/obj/str", of_SET_DAR_OBJ_STR, 1,{OA_नुमेरो,OA_NONE,OA_NONE} },
+      { "%set/dar/obj/vec4",of_SET_DAR_OBJ_VEC4,1,{OA_नुमेरो,OA_NONE,OA_NONE} },
+      { "%shiftl",   of_SHIFTL,   1, {OA_नुमेरो, OA_NONE,   OA_NONE} },
+      { "%shiftr",   of_SHIFTR,   1, {OA_नुमेरो, OA_NONE,   OA_NONE} },
+      { "%shiftr/s", of_SHIFTR_S, 1, {OA_नुमेरो, OA_NONE,   OA_NONE} },
       { "%shuffle/obj", of_SHUFFLE_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%shuffle/prop/obj", of_SHUFFLE_PROP_OBJ, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
+      { "%shuffle/prop/obj", of_SHUFFLE_PROP_OBJ, 1, {OA_नुमेरो, OA_NONE, OA_NONE} },
       { "%sort/obj", of_SORT_OBJ, 1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
-      { "%sort/prop/obj", of_SORT_PROP_OBJ, 1, {OA_NUMBER, OA_NONE, OA_NONE} },
-      { "%split/vec4",    of_SPLIT_VEC4,    1,{OA_NUMBER,   OA_NONE, OA_NONE} },
+      { "%sort/prop/obj", of_SORT_PROP_OBJ, 1, {OA_नुमेरो, OA_NONE, OA_NONE} },
+      { "%split/vec4",    of_SPLIT_VEC4,    1,{OA_नुमेरो,   OA_NONE, OA_NONE} },
       { "%store/dar/r",   of_STORE_DAR_R,   1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
       { "%store/dar/str", of_STORE_DAR_STR, 1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
       { "%store/dar/vec4",of_STORE_DAR_VEC4,1,{OA_FUNC_PTR, OA_NONE, OA_NONE} },
       { "%store/obj",   of_STORE_OBJ,   1, {OA_FUNC_PTR,OA_NONE, OA_NONE} },
       { "%store/obja",  of_STORE_OBJA,  2, {OA_ARR_PTR, OA_BIT1, OA_NONE} },
-      { "%store/prop/obj",of_STORE_PROP_OBJ,2, {OA_NUMBER,  OA_BIT1, OA_NONE} },
-      { "%store/prop/qb/r",   of_STORE_PROP_QB_R,   2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%store/prop/qb/str", of_STORE_PROP_QB_STR, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%store/prop/qb/v",   of_STORE_PROP_QB_V,   3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%store/prop/qf/r",   of_STORE_PROP_QF_R,   2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%store/prop/qf/str", of_STORE_PROP_QF_STR, 2, {OA_NUMBER, OA_BIT1, OA_NONE} },
-      { "%store/prop/qf/v",   of_STORE_PROP_QF_V,   3, {OA_NUMBER, OA_BIT1, OA_BIT2} },
-      { "%store/prop/r",  of_STORE_PROP_R,  1, {OA_NUMBER,  OA_NONE, OA_NONE} },
-      { "%store/prop/str",of_STORE_PROP_STR,1, {OA_NUMBER,  OA_NONE, OA_NONE} },
-      { "%store/prop/v",  of_STORE_PROP_V,  2, {OA_NUMBER,  OA_BIT1, OA_NONE} },
+      { "%store/prop/obj",of_STORE_PROP_OBJ,2, {OA_नुमेरो,  OA_BIT1, OA_NONE} },
+      { "%store/prop/qb/r",   of_STORE_PROP_QB_R,   2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
+      { "%store/prop/qb/str", of_STORE_PROP_QB_STR, 2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
+      { "%store/prop/qb/v",   of_STORE_PROP_QB_V,   3, {OA_नुमेरो, OA_BIT1, OA_BIT2} },
+      { "%store/prop/qf/r",   of_STORE_PROP_QF_R,   2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
+      { "%store/prop/qf/str", of_STORE_PROP_QF_STR, 2, {OA_नुमेरो, OA_BIT1, OA_NONE} },
+      { "%store/prop/qf/v",   of_STORE_PROP_QF_V,   3, {OA_नुमेरो, OA_BIT1, OA_BIT2} },
+      { "%store/prop/r",  of_STORE_PROP_R,  1, {OA_नुमेरो,  OA_NONE, OA_NONE} },
+      { "%store/prop/str",of_STORE_PROP_STR,1, {OA_नुमेरो,  OA_NONE, OA_NONE} },
+      { "%store/prop/v",  of_STORE_PROP_V,  2, {OA_नुमेरो,  OA_BIT1, OA_NONE} },
       { "%store/qb/r",   of_STORE_QB_R,    2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
       { "%store/qb/str", of_STORE_QB_STR,  2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
       { "%store/qb/v",   of_STORE_QB_V,    3, {OA_FUNC_PTR, OA_BIT1, OA_BIT2} },
@@ -370,21 +370,21 @@ static const struct opcode_table_s opcode_table[] = {
       { "%store/vec4a",   of_STORE_VEC4A,   3, {OA_ARR_PTR, OA_BIT1, OA_BIT2} },
       { "%sub",    of_SUB,    0,  {OA_NONE,     OA_NONE,     OA_NONE} },
       { "%sub/wr", of_SUB_WR, 0,  {OA_NONE,     OA_NONE,     OA_NONE} },
-      { "%subi",   of_SUBI,   3,  {OA_BIT1,     OA_BIT2,     OA_NUMBER} },
+      { "%subi",   of_SUBI,   3,  {OA_BIT1,     OA_BIT2,     OA_नुमेरो} },
       { "%substr",     of_SUBSTR,     2,{OA_BIT1,    OA_BIT2, OA_NONE} },
       { "%substr/vec4",of_SUBSTR_VEC4,2,{OA_BIT1,    OA_BIT2, OA_NONE} },
       { "%test_nul",     of_TEST_NUL,     1,{OA_FUNC_PTR,OA_NONE,    OA_NONE} },
       { "%test_nul/a",   of_TEST_NUL_A,   2,{OA_ARR_PTR, OA_BIT1,    OA_NONE} },
       { "%test_nul/obj", of_TEST_NUL_OBJ, 0,{OA_NONE,    OA_NONE,    OA_NONE} },
-      { "%test_nul/prop",of_TEST_NUL_PROP,2,{OA_NUMBER,  OA_BIT1,    OA_NONE} },
+      { "%test_nul/prop",of_TEST_NUL_PROP,2,{OA_नुमेरो,  OA_BIT1,    OA_NONE} },
       { "%uparr/and/v",          of_UPARR_AND_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
       { "%uparr/or/v",           of_UPARR_OR_V,           2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
       { "%uparr/product/obj/v",  of_UPARR_PRODUCT_OBJ_V,  1, {OA_BIT1,     OA_NONE, OA_NONE} },
-      { "%uparr/product/prop/v", of_UPARR_PRODUCT_PROP_V, 2, {OA_NUMBER,   OA_BIT1, OA_NONE} },
+      { "%uparr/product/prop/v", of_UPARR_PRODUCT_PROP_V, 2, {OA_नुमेरो,   OA_BIT1, OA_NONE} },
       { "%uparr/product/r",      of_UPARR_PRODUCT_REAL,   1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
       { "%uparr/product/v",      of_UPARR_PRODUCT_V,      2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
       { "%uparr/sum/obj/v",      of_UPARR_SUM_OBJ_V,      1, {OA_BIT1,     OA_NONE, OA_NONE} },
-      { "%uparr/sum/prop/v",     of_UPARR_SUM_PROP_V,     2, {OA_NUMBER,   OA_BIT1, OA_NONE} },
+      { "%uparr/sum/prop/v",     of_UPARR_SUM_PROP_V,     2, {OA_नुमेरो,   OA_BIT1, OA_NONE} },
       { "%uparr/sum/r",          of_UPARR_SUM_REAL,       1, {OA_FUNC_PTR, OA_NONE, OA_NONE} },
       { "%uparr/sum/v",          of_UPARR_SUM_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
       { "%uparr/xor/v",          of_UPARR_XOR_V,          2, {OA_FUNC_PTR, OA_BIT1, OA_NONE} },
@@ -397,7 +397,7 @@ static const struct opcode_table_s opcode_table[] = {
       { 0, of_NOOP, 0, {OA_NONE, OA_NONE, OA_NONE} }
 };
 
-static const unsigned opcode_count =
+static const unsigned opcode_बिलांग =
                     sizeof(opcode_table)/sizeof(*opcode_table) - 1;
 
 static int opcode_compare(const void*k, const void*r)
@@ -411,20 +411,20 @@ static int opcode_compare(const void*k, const void*r)
  * Keep a symbol table of addresses within code space. Labels on
  * executable opcodes are mapped to their address here.
  */
-static symbol_table_t sym_codespace = 0;
+static सिम्बोलो_table_t sym_codespace = 0;
 
 /*
  * Keep a symbol table of functors mentioned in the source. This table
  * is used to resolve references as they come.
  */
-static symbol_table_t sym_functors = 0;
+static सिम्बोलो_table_t sym_functors = 0;
 
 /*
  * VPI objects are indexed during compile time so that they can be
  * linked together as they are created. This symbol table matches
  * labels to vpiHandles.
  */
-static symbol_table_t sym_vpi = 0;
+static सिम्बोलो_table_t sym_vpi = 0;
 
 
 /*
@@ -444,23 +444,23 @@ static symbol_table_t sym_vpi = 0;
  *  Add a functor to the symbol table
  */
 
-void define_functor_symbol(const char*label, vvp_net_t*net)
+void define_functor_सिम्बोलो(const char*label, vvp_net_t*net)
 {
-      symbol_value_t val;
+      सिम्बोलो_हालागा_t val;
       val.net = net;
-      sym_set_value(sym_functors, label, val);
+      sym_set_हालागा(sym_functors, label, val);
 }
 
-static vvp_net_t*lookup_functor_symbol(const char*label)
+static vvp_net_t*lookup_functor_सिम्बोलो(const char*label)
 {
       assert(sym_functors);
-      symbol_value_t val = sym_get_value(sym_functors, label);
+      सिम्बोलो_हालागा_t val = sym_get_हालागा(sym_functors, label);
       return val.net;
 }
 
 vpiHandle vvp_lookup_handle(const char*label)
 {
-      symbol_value_t val = sym_get_value(sym_vpi, label);
+      सिम्बोलो_हालागा_t val = sym_get_हालागा(sym_vpi, label);
       if (val.ptr) return (vpiHandle) val.ptr;
       return 0;
 }
@@ -472,7 +472,7 @@ vvp_net_t* vvp_net_lookup(const char*label)
         /* First, look to see if the symbol is a vpi object of some
 	   sort. If it is, then get the vvp_ipoint_t pointer out of
 	   the vpiHandle. */
-      symbol_value_t val = sym_get_value(sym_vpi, label);
+      सिम्बोलो_हालागा_t val = sym_get_हालागा(sym_vpi, label);
       if (val.ptr) {
 	    vpiHandle vpi = static_cast<vpiHandle>(val.ptr);
 	    switch (vpi->get_type_code()) {
@@ -485,7 +485,7 @@ vvp_net_t* vvp_net_lookup(const char*label)
 		case vpiLongIntVar:
 		case vpiIntegerVar: {
 		      const __vpiSignal*sig = dynamic_cast<__vpiSignal*>(vpi);
-		      return sig->node;
+		      return sig->बुहोल;
 		}
 
 		case vpiRealVar: {
@@ -514,7 +514,7 @@ vvp_net_t* vvp_net_lookup(const char*label)
 
 
 	/* Failing that, look for a general functor. */
-      vvp_net_t*tmp = lookup_functor_symbol(label);
+      vvp_net_t*tmp = lookup_functor_सिम्बोलो(label);
 
 	// This is a special label used to create a T0 trigger for the
 	// always_comb/latch processes.
@@ -604,7 +604,7 @@ bool vvp_net_resolv_list_s::resolve(bool mes)
 }
 
 inline static
-void postpone_functor_input(vvp_net_ptr_t port, char*lab)
+void postpone_functor_पासोक(vvp_net_ptr_t port, char*lab)
 {
       struct vvp_net_resolv_list_s*res = new struct vvp_net_resolv_list_s(lab);
       res->port   = port;
@@ -664,7 +664,7 @@ struct vpi_handle_resolv_list_s: public resolv_list_s {
 
 bool vpi_handle_resolv_list_s::resolve(bool mes)
 {
-      symbol_value_t val = sym_get_value(sym_vpi, label());
+      सिम्बोलो_हालागा_t val = sym_get_हालागा(sym_vpi, label());
       if (!val.ptr) {
 	    // check for thread access symbols
 	    unsigned base, wid;
@@ -674,13 +674,13 @@ bool vpi_handle_resolv_list_s::resolve(bool mes)
 		       && n == strlen(label())) {
 
 		  val.ptr = vpip_make_vthr_word(base, ss);
-		  sym_set_value(sym_vpi, label(), val);
+		  sym_set_हालागा(sym_vpi, label(), val);
 
 	    } else if (1 == sscanf(label(), "S<%u,str>%zn", &base, &n)
 		       && n == strlen(label())) {
 
-		  val.ptr = vpip_make_vthr_str_stack(base);
-		  sym_set_value(sym_vpi, label(), val);
+		  val.ptr = vpip_make_vthr_str_सालानसान(base);
+		  sym_set_हालागा(sym_vpi, label(), val);
 
 	    } else if (3 == sscanf(label(), "S<%u,vec4,%31[su]%u>%zn", &base, ss, &wid, &n)
 		       && n == strlen(label())) {
@@ -696,8 +696,8 @@ bool vpi_handle_resolv_list_s::resolve(bool mes)
 		      default:
 			break;
 		  }
-		  val.ptr = vpip_make_vthr_vec4_stack(base, signed_flag, wid);
-		  sym_set_value(sym_vpi, label(), val);
+		  val.ptr = vpip_make_vthr_vec4_सालानसान(base, signed_flag, wid);
+		  sym_set_हालागा(sym_vpi, label(), val);
 	    }
 
       }
@@ -708,7 +708,7 @@ bool vpi_handle_resolv_list_s::resolve(bool mes)
 
       if (strcmp(label(), "null") == 0) {
 	    val.ptr = vpip_make_null_const();
-	    sym_set_value(sym_vpi, label(), val);
+	    sym_set_हालागा(sym_vpi, label(), val);
       }
 
       if (val.ptr) {
@@ -771,7 +771,7 @@ struct code_label_resolv_list_s: public resolv_list_s {
 
 bool code_label_resolv_list_s::resolve(bool mes)
 {
-      symbol_value_t val = sym_get_value(sym_codespace, label());
+      सिम्बोलो_हालागा_t val = sym_get_हालागा(sym_codespace, label());
       if (val.ptr) {
 	    if (cptr2_flag)
 		  code->cptr2 = reinterpret_cast<vvp_code_t>(val.ptr);
@@ -886,15 +886,15 @@ void compile_cleanup(void)
 	/* After compile is complete, the vpi symbol table is no
 	   longer needed. VPI objects are located by following
 	   scopes. */
-      delete_symbol_table(sym_vpi);
+      delete_सिम्बोलो_table(sym_vpi);
       sym_vpi = 0;
 
 	/* Don't need the code labels. The instructions have numeric
 	   pointers in them, the symbol table is no longer needed. */
-      delete_symbol_table(sym_codespace);
+      delete_सिम्बोलो_table(sym_codespace);
       sym_codespace = 0;
 
-      delete_symbol_table(sym_functors);
+      delete_सिम्बोलो_table(sym_functors);
       sym_functors = 0;
 
       delete_udp_symbols();
@@ -921,11 +921,11 @@ void compile_cleanup(void)
       vpi_mode_flag = VPI_MODE_NONE;
 }
 
-void compile_vpi_symbol(const char*label, vpiHandle obj)
+void compile_vpi_सिम्बोलो(const char*label, vpiHandle obj)
 {
-      symbol_value_t val;
+      सिम्बोलो_हालागा_t val;
       val.ptr = obj;
-      sym_set_value(sym_vpi, label, val);
+      sym_set_हालागा(sym_vpi, label, val);
 }
 
 /*
@@ -934,11 +934,11 @@ void compile_vpi_symbol(const char*label, vpiHandle obj)
  */
 void compile_init(void)
 {
-      sym_vpi = new_symbol_table();
+      sym_vpi = new_सिम्बोलो_table();
 
-      sym_functors = new_symbol_table();
+      sym_functors = new_सिम्बोलो_table();
 
-      sym_codespace = new_symbol_table();
+      sym_codespace = new_सिम्बोलो_table();
       codespace_init();
 }
 
@@ -1036,7 +1036,7 @@ double crstring_to_double(const char*label)
  * and skip the symbol lookup.
  */
 
-void input_connect(vvp_net_t*fdx, unsigned port, char*label)
+void पासोक_connect(vvp_net_t*fdx, unsigned port, char*label)
 {
       vvp_net_ptr_t ifdx = vvp_net_ptr_t(fdx, port);
 
@@ -1096,7 +1096,7 @@ void input_connect(vvp_net_t*fdx, unsigned port, char*label)
 	   the vvp net. This arranges for the label to be preserved in
 	   a linker list, and linked when the symbol table is
 	   complete. */
-      postpone_functor_input(ifdx, label);
+      postpone_functor_पासोक(ifdx, label);
 }
 
 void inputs_connect(vvp_net_t*fdx, unsigned argc, struct symb_s*argv)
@@ -1108,7 +1108,7 @@ void inputs_connect(vvp_net_t*fdx, unsigned argc, struct symb_s*argv)
 
       for (unsigned idx = 0;  idx < argc;  idx += 1) {
 
-	    input_connect(fdx, idx, argv[idx].text);
+	    पासोक_connect(fdx, idx, argv[idx].text);
       }
 }
 
@@ -1117,8 +1117,8 @@ void wide_inputs_connect(vvp_wide_fun_core*core,
 {
 	/* Create input functors to receive values from the
 	   network. These functors pass the data to the core. */
-      unsigned input_functors = (argc+3) / 4;
-      for (unsigned idx = 0 ;  idx < input_functors ;  idx += 1) {
+      unsigned पासोक_functors = (argc+3) / 4;
+      for (unsigned idx = 0 ;  idx < पासोक_functors ;  idx += 1) {
 	    unsigned base = idx*4;
 	    unsigned trans = 4;
 	    if (base+trans > argc)
@@ -1138,7 +1138,7 @@ template <class T_> void make_arith(T_ *arith, char*label,
       vvp_net_t* ptr = new vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
+      define_functor_सिम्बोलो(label, ptr);
       free(label);
 
       assert(argc == 2);
@@ -1155,7 +1155,7 @@ void compile_arith_cast_int(char*label, long width,
       vvp_net_t* ptr = new vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
+      define_functor_सिम्बोलो(label, ptr);
       free(label);
 
       assert(argc == 1);
@@ -1171,7 +1171,7 @@ void compile_arith_cast_vec2(char*label, long width,
       vvp_net_t* ptr = new vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
+      define_functor_सिम्बोलो(label, ptr);
       free(label);
 
       assert(argc == 1);
@@ -1187,7 +1187,7 @@ void compile_arith_cast_real(char*label, bool signed_flag,
       vvp_net_t* ptr = new vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
+      define_functor_सिम्बोलो(label, ptr);
       free(label);
 
       assert(argc == 1);
@@ -1202,7 +1202,7 @@ void compile_arith_abs(char*label, unsigned argc, struct symb_s*argv)
       vvp_net_t* ptr = new vvp_net_t;
       ptr->fun = arith;
 
-      define_functor_symbol(label, ptr);
+      define_functor_सिम्बोलो(label, ptr);
       free(label);
 
       assert(argc == 1);
@@ -1588,9 +1588,9 @@ void compile_delay(char*label, unsigned width,
 
       delete delay;
 
-      input_connect(net, 0, arg.text);
+      पासोक_connect(net, 0, arg.text);
 
-      define_functor_symbol(label, net);
+      define_functor_सिम्बोलो(label, net);
       free(label);
 }
 
@@ -1606,7 +1606,7 @@ void compile_delay(char*label, unsigned width,
       inputs_connect(net, argc, argv);
       free(argv);
 
-      define_functor_symbol(label, net);
+      define_functor_सिम्बोलो(label, net);
       free(label);
 }
 
@@ -1621,10 +1621,10 @@ void compile_extend_signed(char*label, long wid, struct symb_s arg)
       vvp_net_t*ptr = new vvp_net_t;
       ptr->fun = fun;
 
-      define_functor_symbol(label, ptr);
+      define_functor_सिम्बोलो(label, ptr);
       free(label);
 
-      input_connect(ptr, 0, arg.text);
+      पासोक_connect(ptr, 0, arg.text);
 }
 
 struct __vpiModPath* compile_modpath(char*label, unsigned width,
@@ -1634,13 +1634,13 @@ struct __vpiModPath* compile_modpath(char*label, unsigned width,
       vvp_fun_modpath*obj = new vvp_fun_modpath(net, width);
       net->fun = obj;
 
-      input_connect(net, 0, drv.text);
+      पासोक_connect(net, 0, drv.text);
 
-      define_functor_symbol(label, net);
+      define_functor_सिम्बोलो(label, net);
 
       __vpiModPath*modpath = vpip_make_modpath(net);
 
-      compile_vpi_lookup(&modpath->path_term_out.expr, dest.text);
+      compile_vpi_lookup(&modpath->path_term_out.पाहायाग, dest.text);
 
       free(label);
 
@@ -1706,7 +1706,7 @@ static struct __vpiModPathSrc*make_modpath_src(struct __vpiModPath*path,
 
 	/* Save the vpiEdge directory into the input path term. */
       srcobj->path_term_in.edge = vpi_edge;
-      input_connect(net, 0, src.text);
+      पासोक_connect(net, 0, src.text);
       dst->add_modpath_src(obj, ifnone);
 
       return srcobj;
@@ -1720,8 +1720,8 @@ void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
 {
       struct __vpiModPathSrc*obj =
 	    make_modpath_src(dst, edge_c, src, vals, false);
-      input_connect(obj->net, 1, condit_src.text);
-      compile_vpi_lookup(&obj->path_term_in.expr, path_term_in.text);
+      पासोक_connect(obj->net, 1, condit_src.text);
+      compile_vpi_lookup(&obj->path_term_in.पाहायाग, path_term_in.text);
 }
 
 void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
@@ -1734,7 +1734,7 @@ void compile_modpath_src(struct __vpiModPath*dst, char edge_c,
       assert(condit_src == 0);
       struct __vpiModPathSrc*obj =
 	    make_modpath_src(dst, edge_c, src, vals, ifnone);
-      compile_vpi_lookup(&obj->path_term_in.expr, path_term_in.text);
+      compile_vpi_lookup(&obj->path_term_in.पाहायाग, path_term_in.text);
 }
 
 /*
@@ -1788,7 +1788,7 @@ void compile_resolver(char*label, char*type, unsigned argc, struct symb_s*argv)
 
       if (core) {
 	    net->fun = core;
-	    define_functor_symbol(label, net);
+	    define_functor_सिम्बोलो(label, net);
 
             for (unsigned base = 0 ;  base < argc ;  base += 4) {
 	          unsigned nports = argc - base;
@@ -1861,7 +1861,7 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
 
 	/* Lookup the opcode in the opcode table. */
       struct opcode_table_s*op = static_cast<struct opcode_table_s*>
-                                            (bsearch(mnem, opcode_table, opcode_count,
+                                            (bsearch(mnem, opcode_table, opcode_बिलांग,
                                                      sizeof(struct opcode_table_s),
                                                      &opcode_compare));
       if (op == 0) {
@@ -1953,13 +1953,13 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
 		  functor_ref_lookup(&code->net2, opa->argv[idx].symb.text);
 		  break;
 
-		case OA_NUMBER:
+		case OA_नुमेरो:
 		  if (opa->argv[idx].ltype != L_NUMB) {
 			yyerror("operand format");
 			break;
 		  }
 
-		  code->number = opa->argv[idx].numb;
+		  code->नुमेरो = opa->argv[idx].numb;
 		  break;
 
 		case OA_VPI_PTR:
@@ -1992,26 +1992,26 @@ void compile_code(char*label, char*mnem, comp_operands_t opa)
 
 void compile_codelabel(char*label)
 {
-      symbol_value_t val;
+      सिम्बोलो_हालागा_t val;
       vvp_code_t ptr = codespace_next();
 
       val.ptr = ptr;
-      sym_set_value(sym_codespace, label, val);
+      sym_set_हालागा(sym_codespace, label, val);
 
       free(label);
 }
 
-void compile_file_line(char*label, long file_idx, long lineno,
+void compile_file_लिन्या(char*label, long file_idx, long lineno,
                        char*description)
 {
       if (label) compile_codelabel(label);
 
 	/* Create an instruction in the code space. */
       vvp_code_t code = codespace_allocate();
-      code->opcode = &of_FILE_LINE;
+      code->opcode = &of_FILE_लिन्या;
 
 	/* Create a vpiHandle that contains the information. */
-      code->handle = vpip_build_file_line(description, file_idx, lineno);
+      code->handle = vpip_build_file_लिन्या(description, file_idx, lineno);
       assert(code->handle);
 
 	/* Done with the lexor-allocated name string. */
@@ -2022,7 +2022,7 @@ void compile_vpi_call(char*label, char*name,
                       bool func_as_task_err, bool func_as_task_warn,
                       long file_idx, long lineno,
                       unsigned argc, vpiHandle*argv,
-		      unsigned vec4_stack, unsigned real_stack, unsigned string_stack)
+		      unsigned vec4_सालानसान, unsigned real_सालानसान, unsigned string_सालानसान)
 {
       if (label)
 	    compile_codelabel(label);
@@ -2035,7 +2035,7 @@ void compile_vpi_call(char*label, char*name,
 	   store that handle in the instruction. */
       code->handle = vpip_build_vpi_call(name, 0, 0,
 					 0, func_as_task_err, func_as_task_warn,
-                                         argc, argv, vec4_stack, real_stack, string_stack,
+                                         argc, argv, vec4_सालानसान, real_सालानसान, string_सालानसान,
 					 file_idx, lineno);
       if (code->handle == 0)
 	    compile_errors += 1;
@@ -2048,9 +2048,9 @@ void compile_vpi_func_call(char*label, char*name,
 			   int val_type, unsigned val_wid,
 			   long file_idx, long lineno,
 			   unsigned argc, vpiHandle*argv,
-			   unsigned vec4_stack,
-			   unsigned real_stack,
-			   unsigned string_stack)
+			   unsigned vec4_सालानसान,
+			   unsigned real_सालानसान,
+			   unsigned string_सालानसान)
 {
       if (label)
 	    compile_codelabel(label);
@@ -2063,7 +2063,7 @@ void compile_vpi_func_call(char*label, char*name,
 	   store that handle in the instruction. */
       code->handle = vpip_build_vpi_call(name, val_type, val_wid,
 					 0, true, false,
-                                         argc, argv, vec4_stack, real_stack, string_stack,
+                                         argc, argv, vec4_सालानसान, real_सालानसान, string_सालानसान,
 					 file_idx, lineno);
       if (code->handle == 0)
 	    compile_errors += 1;
@@ -2079,9 +2079,9 @@ void compile_vpi_func_call(char*label, char*name,
  */
 void compile_thread(char*start_sym, char*flag)
 {
-      bool push_flag = false;
+      bool इतुलाक_flag = false;
 
-      symbol_value_t tmp = sym_get_value(sym_codespace, start_sym);
+      सिम्बोलो_हालागा_t tmp = sym_get_हालागा(sym_codespace, start_sym);
       vvp_code_t pc = reinterpret_cast<vvp_code_t>(tmp.ptr);
       if (pc == 0) {
 	    yyerror("unresolved address");
@@ -2089,7 +2089,7 @@ void compile_thread(char*start_sym, char*flag)
       }
 
       if (flag && (strcmp(flag,"$push") == 0))
-	    push_flag = true;
+	    इतुलाक_flag = true;
 
       vthread_t thr = vthread_new(pc, vpip_peek_current_scope());
 
@@ -2098,7 +2098,7 @@ void compile_thread(char*start_sym, char*flag)
       else if (flag && (strcmp(flag,"$final") == 0))
 	    schedule_final_vthread(thr);
       else
-	    schedule_vthread(thr, 0, push_flag);
+	    schedule_vthread(thr, 0, इतुलाक_flag);
 
       free(start_sym);
       free(flag);
@@ -2109,9 +2109,9 @@ void compile_param_logic(char*label, const char*name, char*value, bool signed_fl
                          long file_idx, long lineno)
 {
       vvp_vector4_t value4 = c4string_to_vector4(value);
-      vpiHandle obj = vpip_make_binary_param(name, value4, signed_flag,
+      vpiHandle obj = vpip_make_दालावाहान_param(name, value4, signed_flag,
                                              local_flag, file_idx, lineno);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_सिम्बोलो(label, obj);
       vpip_attach_to_current_scope(obj);
 
       free(label);
@@ -2124,7 +2124,7 @@ void compile_param_string(char*label, const char*name, char*value,
 {
 	// name and value become owned by vpip_make_string_param
       vpiHandle obj = vpip_make_string_param(name, value, local_flag, file_idx, lineno);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_सिम्बोलो(label, obj);
       vpip_attach_to_current_scope(obj);
 
       free(label);
@@ -2136,7 +2136,7 @@ void compile_param_real(char*label, const char*name, char*value,
 {
       double dvalue = crstring_to_double(value);
       vpiHandle obj = vpip_make_real_param(name, dvalue, local_flag, file_idx, lineno);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_सिम्बोलो(label, obj);
       vpip_attach_to_current_scope(obj);
 
       free(label);

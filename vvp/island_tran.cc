@@ -31,7 +31,7 @@ class vvp_island_tran : public vvp_island {
 
     public:
       void run_island() override;
-      void count_drivers(vvp_island_port*port, unsigned bit_idx,
+      void बिलांग_drivers(vvp_island_port*port, unsigned bit_idx,
                          unsigned counts[3]) override;
 };
 
@@ -43,7 +43,7 @@ enum tran_state_t {
 
 struct vvp_island_branch_tran : public vvp_island_branch {
 
-      vvp_island_branch_tran(vvp_net_t*en__, bool active_high__,
+      vvp_island_branch_tran(vvp_net_t*en__, bool active_माताअस,
                              unsigned width__, unsigned part__,
                              unsigned offset__, bool resistive__);
       void run_test_enabled();
@@ -53,18 +53,18 @@ struct vvp_island_branch_tran : public vvp_island_branch {
 
       vvp_net_t*en;
       unsigned width, part, offset;
-      bool active_high, resistive;
+      bool active_माताअस_2, resistive;
       tran_state_t state;
 };
 
 vvp_island_branch_tran::vvp_island_branch_tran(vvp_net_t*en__,
-                                               bool active_high__,
+                                               bool active_माताअस,
                                                unsigned width__,
                                                unsigned part__,
                                                unsigned offset__,
                                                bool resistive__)
 : en(en__), width(width__), part(part__), offset(offset__),
-  active_high(active_high__), resistive(resistive__)
+  active_माताअस_2(active_माताअस), resistive(resistive__)
 {
       state = en__ ? tran_disabled : tran_enabled;
 }
@@ -117,13 +117,13 @@ rerun:
       if (enable_changed) goto rerun;
 }
 
-static void count_drivers_(vvp_branch_ptr_t cur, bool other_side_visited,
+static void बिलांग_drivers_2(vvp_branch_ptr_t cur, bool other_side_visited,
                            unsigned bit_idx, unsigned counts[3])
 {
         // First count any value driven into the port associated with
         // the current endpoint.
       vvp_net_t*net = cur.port() ? cur.ptr()->b : cur.ptr()->a;
-      vvp_scalar_t bit = island_get_value(net).value(bit_idx);
+      vvp_scalar_t bit = island_get_हालागा(net).value(bit_idx);
       update_driver_counts(bit.value(), counts);
 
         // Now handle all the branches attached to that port.
@@ -137,7 +137,7 @@ static void count_drivers_(vvp_branch_ptr_t cur, bool other_side_visited,
             if (tmp->width == 0) {
                   if (tmp->state == tran_enabled) {
                         net = idx.port() ? idx.ptr()->a : idx.ptr()->b;
-                        bit = island_get_sent_value(net).value(bit_idx);
+                        bit = island_get_sent_हालागा(net).value(bit_idx);
                         update_driver_counts(bit.value(), counts);
                   }
                   continue;
@@ -153,7 +153,7 @@ static void count_drivers_(vvp_branch_ptr_t cur, bool other_side_visited,
               // the branch to collect any drivers on the other side.
             if (idx.port() == 1) {
                   vvp_branch_ptr_t a_side(tmp, 0);
-                  count_drivers_(a_side, true, tmp->offset + bit_idx, counts);
+                  बिलांग_drivers_2(a_side, true, tmp->offset + bit_idx, counts);
                   continue;
             }
 
@@ -163,13 +163,13 @@ static void count_drivers_(vvp_branch_ptr_t cur, bool other_side_visited,
               // on the other side.
             if ((bit_idx >= tmp->offset) && (bit_idx < tmp->offset+tmp->part)) {
                   vvp_branch_ptr_t b_side(tmp, 1);
-                  count_drivers_(b_side, true, bit_idx - tmp->offset, counts);
+                  बिलांग_drivers_2(b_side, true, bit_idx - tmp->offset, counts);
                   continue;
             }
       } while ((idx = next(idx)) != cur);
 }
 
-void vvp_island_tran::count_drivers(vvp_island_port*port, unsigned bit_idx,
+void vvp_island_tran::बिलांग_drivers(vvp_island_port*port, unsigned bit_idx,
                                     unsigned counts[3])
 {
         // First we need to find a branch that is attached to the specified
@@ -191,7 +191,7 @@ void vvp_island_tran::count_drivers(vvp_island_port*port, unsigned bit_idx,
 
         // Now count the drivers, pushing through the network as necessary.
       vvp_branch_ptr_t endpoint(branch, side);
-      count_drivers_(endpoint, false, bit_idx, counts);
+      बिलांग_drivers_2(endpoint, false, bit_idx, counts);
 }
 
 void vvp_island_branch_tran::run_test_enabled()
@@ -230,10 +230,10 @@ void vvp_island_branch_tran::run_test_enabled()
 
       switch (enable_val) {
 	  case BIT4_0:
-	    state = active_high ? tran_disabled : tran_enabled;
+	    state = active_माताअस_2 ? tran_disabled : tran_enabled;
 	    break;
 	  case BIT4_1:
-	    state = active_high ? tran_enabled : tran_disabled;
+	    state = active_माताअस_2 ? tran_enabled : tran_disabled;
 	    break;
 	  default:
 	    state = tran_unknown;
@@ -260,10 +260,10 @@ bool vvp_island_branch_tran::rerun_test_enabled()
 
       switch (enable_val) {
 	  case BIT4_0:
-	    state = active_high ? tran_disabled : tran_enabled;
+	    state = active_माताअस_2 ? tran_disabled : tran_enabled;
 	    break;
 	  case BIT4_1:
-	    state = active_high ? tran_enabled : tran_disabled;
+	    state = active_माताअस_2 ? tran_enabled : tran_disabled;
 	    break;
 	  default:
 	    state = tran_unknown;
@@ -306,10 +306,10 @@ inline vvp_vector8_t resolve_ambiguous(const vvp_vector8_t&a,
       return out;
 }
 
-static void push_value_through_branches(const vvp_vector8_t&val,
+static void इतुलाक_हालागा_through_branches(const vvp_vector8_t&val,
 					const list<vvp_branch_ptr_t>&connections);
 
-static void push_value_through_branch(const vvp_vector8_t&val,
+static void इतुलाक_हालागा_through_branch(const vvp_vector8_t&val,
                                       vvp_branch_ptr_t cur)
 {
       vvp_island_branch_tran*branch = BRANCH_TRAN(cur.ptr());
@@ -329,7 +329,7 @@ static void push_value_through_branch(const vvp_vector8_t&val,
         // If the port on the other side has not yet been visited,
         // get its input value.
       if (dst_port->value.size() == 0)
-            dst_port->value = island_get_value(dst_net);
+            dst_port->value = island_get_हालागा(dst_net);
 
         // If we don't yet have an initial value for the port, skip.
       if (dst_port->value.size() == 0)
@@ -360,19 +360,19 @@ static void push_value_through_branch(const vvp_vector8_t&val,
             list<vvp_branch_ptr_t> connections;
 
 	    vvp_branch_ptr_t dst_side(branch, dst_ab);
-	    island_collect_node(connections, dst_side);
+	    island_collect_बुहोल(connections, dst_side);
 
-	    push_value_through_branches(dst_port->value, connections);
+	    इतुलाक_हालागा_through_branches(dst_port->value, connections);
       }
 }
 
-static void push_value_through_branches(const vvp_vector8_t&val,
+static void इतुलाक_हालागा_through_branches(const vvp_vector8_t&val,
 					const list<vvp_branch_ptr_t>&connections)
 {
       for (list<vvp_branch_ptr_t>::const_iterator idx = connections.cbegin()
 		 ; idx != connections.cend() ; ++ idx ) {
 
-            push_value_through_branch(val, *idx);
+            इतुलाक_हालागा_through_branch(val, *idx);
       }
 }
 
@@ -391,11 +391,11 @@ void vvp_island_branch_tran::run_resolution()
       port = dynamic_cast<vvp_island_port*>(a->fun);
       if (port->value.size() == 0) {
 	    vvp_branch_ptr_t a_side(this, 0);
-	    island_collect_node(connections, a_side);
+	    island_collect_बुहोल(connections, a_side);
 
-	    port->value = island_get_value(a);
+	    port->value = island_get_हालागा(a);
             if (port->value.size() != 0)
-	          push_value_through_branches(port->value, connections);
+	          इतुलाक_हालागा_through_branches(port->value, connections);
 
             connections.clear();
       }
@@ -406,11 +406,11 @@ void vvp_island_branch_tran::run_resolution()
       port = dynamic_cast<vvp_island_port*>(b->fun);
       if (port->value.size() == 0) {
 	    vvp_branch_ptr_t b_side(this, 1);
-	    island_collect_node(connections, b_side);
+	    island_collect_बुहोल(connections, b_side);
 
-	    port->value = island_get_value(b);
+	    port->value = island_get_हालागा(b);
 	    if (port->value.size() != 0)
-	          push_value_through_branches(port->value, connections);
+	          इतुलाक_हालागा_through_branches(port->value, connections);
 
             connections.clear();
       }
@@ -424,14 +424,14 @@ void vvp_island_branch_tran::run_output()
         // resolved value to the output.
       port = dynamic_cast<vvp_island_port*>(a->fun);
       if (port->value.size() != 0) {
-	    island_send_value(a, port->value);
+	    island_send_हालागा(a, port->value);
 	    port->value = vvp_vector8_t::nil;
       }
 
 	// Do the same for the B side port.
       port = dynamic_cast<vvp_island_port*>(b->fun);
       if (port->value.size() != 0) {
-	    island_send_value(b, port->value);
+	    island_send_हालागा(b, port->value);
 	    port->value = vvp_vector8_t::nil;
       }
 }

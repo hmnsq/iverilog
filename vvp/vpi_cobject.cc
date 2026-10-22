@@ -36,7 +36,7 @@ int __vpiCobjectVar::get_type_code(void) const
 int __vpiCobjectVar::vpi_get(int code)
 {
       switch (code) {
-	case vpiLineNo:
+	case vpi_लिन्या_No:
 	    return 0;  // Not implemented for now!
 
 	case vpiSize:
@@ -64,7 +64,7 @@ int __vpiCobjectVar::vpi_get(int code)
       }
 }
 
-void __vpiCobjectVar::vpi_get_value(p_vpi_value val)
+void __vpiCobjectVar::vpi_get_हालागा(p_vpi_हालागा val)
 {
 // FIXME: We need to get the assigned object address if one is assigned.
 //fprintf(stderr, "HERE: %p\n", get_net());

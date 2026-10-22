@@ -44,7 +44,7 @@ using namespace std;
 resolv_core::resolv_core(unsigned nports, vvp_net_t*net)
 : nports_(nports), net_(net)
 {
-      count_functors_resolv += 1;
+      बिलांग_functors_resolv += 1;
 }
 
 resolv_core::~resolv_core()
@@ -98,8 +98,8 @@ resolv_extend::~resolv_extend()
 }
 
 
-resolv_tri::resolv_tri(unsigned nports, vvp_net_t*net, vvp_scalar_t hiz_value)
-: resolv_core(nports, net), hiz_value_(hiz_value)
+resolv_tri::resolv_tri(unsigned nports, vvp_net_t*net, vvp_scalar_t hiz_हालागा)
+: resolv_core(nports, net), hiz_हालागा_2(hiz_हालागा)
 {
         // count the input (leaf) nodes
       unsigned nnodes = nports;
@@ -169,17 +169,17 @@ void resolv_tri::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
             port = port / 4;
       }
 
-      if (! hiz_value_.is_hiz()) {
+      if (! hiz_हालागा_2.is_hiz()) {
 	    for (unsigned idx = 0 ;  idx < val_[base].size() ;  idx += 1) {
 		  val_[base].set_bit(idx, resolve(val_[base].value(idx),
-						  hiz_value_));
+						  hiz_हालागा_2));
 	    }
       }
 
       net_->send_vec8(val_[base]);
 }
 
-void resolv_tri::count_drivers(unsigned bit_idx, unsigned counts[3])
+void resolv_tri::बिलांग_drivers(unsigned bit_idx, unsigned counts[3])
 {
       for (unsigned idx = 0 ; idx < nports_ ; idx += 1) {
 	    if (val_[idx].size() == 0)
@@ -264,7 +264,7 @@ void resolv_wired_logic::recv_vec8_(unsigned port, const vvp_vector8_t&bit)
       recv_vec4_(port, reduce4(bit));
 }
 
-void resolv_wired_logic::count_drivers(unsigned bit_idx, unsigned counts[3])
+void resolv_wired_logic::बिलांग_drivers(unsigned bit_idx, unsigned counts[3])
 {
       for (unsigned idx = 0 ; idx < nports_ ; idx += 1) {
 	    if (val_[idx].size() == 0)

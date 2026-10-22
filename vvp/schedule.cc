@@ -37,11 +37,11 @@
 
 using namespace std;
 
-unsigned long count_assign_events = 0;
-unsigned long count_gen_events = 0;
-unsigned long count_thread_events = 0;
+unsigned long बिलांग_assign_events = 0;
+unsigned long बिलांग_gen_events = 0;
+unsigned long बिलांग_thread_events = 0;
   // Count the time events (A time cell created)
-unsigned long count_time_events = 0;
+unsigned long बिलांग_time_events = 0;
 
 
 
@@ -75,7 +75,7 @@ void event_s::single_step_display(void)
 
 struct event_time_s {
       event_time_s() {
-	    count_time_events += 1;
+	    बिलांग_time_events += 1;
 	    delay = 0;
 	    start = 0;
 	    active = 0;
@@ -125,7 +125,7 @@ struct vthread_event_s : public event_s {
 
 void vthread_event_s::run_run(void)
 {
-      count_thread_events += 1;
+      बिलांग_thread_events += 1;
       vthread_run(thr);
 }
 
@@ -137,8 +137,8 @@ void vthread_event_s::single_step_display(void)
 	   << endl;
 }
 
-static const size_t VTHR_CHUNK_COUNT = 8192 / sizeof(struct vthread_event_s);
-static slab_t<sizeof(vthread_event_s),VTHR_CHUNK_COUNT> vthread_event_heap;
+static const size_t VTHR_CHUNK_बिलांग = 8192 / sizeof(struct vthread_event_s);
+static slab_t<sizeof(vthread_event_s),VTHR_CHUNK_बिलांग> vthread_event_heap;
 
 inline void* vthread_event_s::operator new(size_t size)
 {
@@ -194,7 +194,7 @@ struct assign_vector4_event_s  : public event_s {
 
 void assign_vector4_event_s::run_run(void)
 {
-      count_assign_events += 1;
+      बिलांग_assign_events += 1;
       if (vwid > 0)
 	    vvp_send_vec4_pv(ptr, val, base, vwid, 0);
       else
@@ -207,8 +207,8 @@ void assign_vector4_event_s::single_step_display(void)
 	   << ", vwid=" << vwid << ", base=" << base << endl;
 }
 
-static const size_t ASSIGN4_CHUNK_COUNT = 524288 / sizeof(struct assign_vector4_event_s);
-static slab_t<sizeof(assign_vector4_event_s),ASSIGN4_CHUNK_COUNT> assign4_heap;
+static const size_t ASSIGN4_CHUNK_बिलांग = 524288 / sizeof(struct assign_vector4_event_s);
+static slab_t<sizeof(assign_vector4_event_s),ASSIGN4_CHUNK_बिलांग> assign4_heap;
 
 inline void* assign_vector4_event_s::operator new(size_t size)
 {
@@ -221,7 +221,7 @@ void assign_vector4_event_s::operator delete(void*dptr)
       assign4_heap.free_slab(dptr);
 }
 
-unsigned long count_assign4_pool(void) { return assign4_heap.pool; }
+unsigned long बिलांग_assign4_pool(void) { return assign4_heap.pool; }
 
 struct assign_vector8_event_s  : public event_s {
       vvp_net_ptr_t ptr;
@@ -235,7 +235,7 @@ struct assign_vector8_event_s  : public event_s {
 
 void assign_vector8_event_s::run_run(void)
 {
-      count_assign_events += 1;
+      बिलांग_assign_events += 1;
       vvp_send_vec8(ptr, val);
 }
 
@@ -244,8 +244,8 @@ void assign_vector8_event_s::single_step_display(void)
       cerr << "assign_vector8_event: Propagate val=" << val << endl;
 }
 
-static const size_t ASSIGN8_CHUNK_COUNT = 8192 / sizeof(struct assign_vector8_event_s);
-static slab_t<sizeof(assign_vector8_event_s),ASSIGN8_CHUNK_COUNT> assign8_heap;
+static const size_t ASSIGN8_CHUNK_बिलांग = 8192 / sizeof(struct assign_vector8_event_s);
+static slab_t<sizeof(assign_vector8_event_s),ASSIGN8_CHUNK_बिलांग> assign8_heap;
 
 inline void* assign_vector8_event_s::operator new(size_t size)
 {
@@ -258,7 +258,7 @@ void assign_vector8_event_s::operator delete(void*dptr)
       assign8_heap.free_slab(dptr);
 }
 
-unsigned long count_assign8_pool() { return assign8_heap.pool; }
+unsigned long बिलांग_assign8_pool() { return assign8_heap.pool; }
 
 struct assign_real_event_s  : public event_s {
       vvp_net_ptr_t ptr;
@@ -272,7 +272,7 @@ struct assign_real_event_s  : public event_s {
 
 void assign_real_event_s::run_run(void)
 {
-      count_assign_events += 1;
+      बिलांग_assign_events += 1;
       vvp_send_real(ptr, val, 0);
 }
 
@@ -281,8 +281,8 @@ void assign_real_event_s::single_step_display(void)
       cerr << "assign_real_event: Propagate val=" << val << endl;
 }
 
-static const size_t ASSIGNR_CHUNK_COUNT = 8192 / sizeof(struct assign_real_event_s);
-static slab_t<sizeof(assign_real_event_s),ASSIGNR_CHUNK_COUNT> assignr_heap;
+static const size_t ASSIGNR_CHUNK_बिलांग = 8192 / sizeof(struct assign_real_event_s);
+static slab_t<sizeof(assign_real_event_s),ASSIGNR_CHUNK_बिलांग> assignr_heap;
 
 inline void* assign_real_event_s::operator new (size_t size)
 {
@@ -295,7 +295,7 @@ void assign_real_event_s::operator delete(void*dptr)
       assignr_heap.free_slab(dptr);
 }
 
-unsigned long count_assign_real_pool(void) { return assignr_heap.pool; }
+unsigned long बिलांग_assign_real_pool(void) { return assignr_heap.pool; }
 
 struct assign_array_word_s  : public event_s {
       vvp_array_t mem;
@@ -310,12 +310,12 @@ struct assign_array_word_s  : public event_s {
 
 void assign_array_word_s::run_run(void)
 {
-      count_assign_events += 1;
+      बिलांग_assign_events += 1;
       mem->set_word(adr, off, val);
 }
 
-static const size_t ARRAY_W_CHUNK_COUNT = 8192 / sizeof(struct assign_array_word_s);
-static slab_t<sizeof(assign_array_word_s),ARRAY_W_CHUNK_COUNT> array_w_heap;
+static const size_t ARRAY_W_CHUNK_बिलांग = 8192 / sizeof(struct assign_array_word_s);
+static slab_t<sizeof(assign_array_word_s),ARRAY_W_CHUNK_बिलांग> array_w_heap;
 
 inline void* assign_array_word_s::operator new (size_t size)
 {
@@ -328,7 +328,7 @@ void assign_array_word_s::operator delete(void*ptr)
       array_w_heap.free_slab(ptr);
 }
 
-unsigned long count_assign_aword_pool(void) { return array_w_heap.pool; }
+unsigned long बिलांग_assign_aword_pool(void) { return array_w_heap.pool; }
 
 struct force_vector4_event_s  : public event_s {
 	/* The default constructor. */
@@ -356,7 +356,7 @@ struct force_vector4_event_s  : public event_s {
 
 void force_vector4_event_s::run_run(void)
 {
-      count_assign_events += 1;
+      बिलांग_assign_events += 1;
 
       unsigned wid = val.size();
       if ((base + wid) > vwid)
@@ -373,9 +373,9 @@ void force_vector4_event_s::run_run(void)
 	// vvp_net_t::force_vec4 propagates all the bits of the
 	// forced vector value, regardless of the mask. This
 	// ensures the unforced bits retain their current value.
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(net->fil);
+      vvp_signal_हालागा*sig = dynamic_cast<vvp_signal_हालागा*>(net->fil);
       assert(sig);
-      sig->vec4_value(tmp);
+      sig->vec4_हालागा(tmp);
 
       tmp.set_vec(base, val);
       net->force_vec4(tmp, mask);
@@ -387,8 +387,8 @@ void force_vector4_event_s::single_step_display(void)
 	   << ", vwid=" << vwid << ", base=" << base << endl;
 }
 
-static const size_t FORCE4_CHUNK_COUNT = 8192 / sizeof(struct force_vector4_event_s);
-static slab_t<sizeof(force_vector4_event_s),FORCE4_CHUNK_COUNT> force4_heap;
+static const size_t FORCE4_CHUNK_बिलांग = 8192 / sizeof(struct force_vector4_event_s);
+static slab_t<sizeof(force_vector4_event_s),FORCE4_CHUNK_बिलांग> force4_heap;
 
 inline void* force_vector4_event_s::operator new(size_t size)
 {
@@ -401,7 +401,7 @@ void force_vector4_event_s::operator delete(void*dptr)
       force4_heap.free_slab(dptr);
 }
 
-unsigned long count_force4_pool(void) { return force4_heap.pool; }
+unsigned long बिलांग_force4_pool(void) { return force4_heap.pool; }
 
 /*
  * This class supports the propagation of vec4 outputs from a
@@ -475,11 +475,11 @@ struct assign_array_r_word_s  : public event_s {
 
 void assign_array_r_word_s::run_run(void)
 {
-      count_assign_events += 1;
+      बिलांग_assign_events += 1;
       mem->set_word(adr, val);
 }
-static const size_t ARRAY_R_W_CHUNK_COUNT = 8192 / sizeof(struct assign_array_r_word_s);
-static slab_t<sizeof(assign_array_r_word_s),ARRAY_R_W_CHUNK_COUNT> array_r_w_heap;
+static const size_t ARRAY_R_W_CHUNK_बिलांग = 8192 / sizeof(struct assign_array_r_word_s);
+static slab_t<sizeof(assign_array_r_word_s),ARRAY_R_W_CHUNK_बिलांग> array_r_w_heap;
 
 inline void* assign_array_r_word_s::operator new(size_t size)
 {
@@ -492,7 +492,7 @@ void assign_array_r_word_s::operator delete(void*ptr)
       array_r_w_heap.free_slab(ptr);
 }
 
-unsigned long count_assign_arword_pool(void) { return array_r_w_heap.pool; }
+unsigned long बिलांग_assign_arword_pool(void) { return array_r_w_heap.pool; }
 
 struct generic_event_s : public event_s {
       vvp_gen_event_t obj;
@@ -506,7 +506,7 @@ struct generic_event_s : public event_s {
 
 void generic_event_s::run_run(void)
 {
-      count_gen_events += 1;
+      बिलांग_gen_events += 1;
       if (obj) {
 	    obj->run_run();
 	    if (delete_obj_when_done)
@@ -519,8 +519,8 @@ void generic_event_s::single_step_display(void)
       obj->single_step_display();
 }
 
-static const size_t GENERIC_CHUNK_COUNT = 131072 / sizeof(struct generic_event_s);
-static slab_t<sizeof(generic_event_s),GENERIC_CHUNK_COUNT> generic_event_heap;
+static const size_t GENERIC_CHUNK_बिलांग = 131072 / sizeof(struct generic_event_s);
+static slab_t<sizeof(generic_event_s),GENERIC_CHUNK_बिलांग> generic_event_heap;
 
 inline void* generic_event_s::operator new(size_t size)
 {
@@ -533,7 +533,7 @@ void generic_event_s::operator delete(void*ptr)
       generic_event_heap.free_slab(ptr);
 }
 
-unsigned long count_gen_pool(void) { return generic_event_heap.pool; }
+unsigned long बिलांग_gen_pool(void) { return generic_event_heap.pool; }
 
 /*
 ** These event_time_s will be required a lot, at high frequency.
@@ -541,8 +541,8 @@ unsigned long count_gen_pool(void) { return generic_event_heap.pool; }
 */
 
 
-static const size_t TIME_CHUNK_COUNT = 8192 / sizeof(struct event_time_s);
-static slab_t<sizeof(event_time_s),TIME_CHUNK_COUNT> event_time_heap;
+static const size_t TIME_CHUNK_बिलांग = 8192 / sizeof(struct event_time_s);
+static slab_t<sizeof(event_time_s),TIME_CHUNK_बिलांग> event_time_heap;
 
 inline void* event_time_s::operator new (size_t size)
 {
@@ -556,7 +556,7 @@ inline void event_time_s::operator delete(void*ptr, size_t)
       event_time_heap.free_slab(ptr);
 }
 
-unsigned long count_time_pool(void) { return event_time_heap.pool; }
+unsigned long बिलांग_time_pool(void) { return event_time_heap.pool; }
 
 /*
  * This is the head of the list of pending events. This includes all
@@ -799,7 +799,7 @@ static void schedule_event_(struct event_s*cur, vvp_time64_t delay,
       }
 }
 
-static void schedule_event_push_(struct event_s*cur)
+static void schedule_event_इतुलाक(struct event_s*cur)
 {
       if ((sched_list == 0) || (sched_list->delay > 0)) {
 	    schedule_event_(cur, 0, SEQ_ACTIVE);
@@ -818,19 +818,19 @@ static void schedule_event_push_(struct event_s*cur)
       ctim->active->next = cur;
 }
 
-void schedule_vthread(vthread_t thr, vvp_time64_t delay, bool push_flag)
+void schedule_vthread(vthread_t thr, vvp_time64_t delay, bool इतुलाक_flag)
 {
       struct vthread_event_s*cur = new vthread_event_s;
 
       cur->thr = thr;
       vthread_mark_scheduled(thr);
 
-      if (push_flag && (delay == 0)) {
+      if (इतुलाक_flag && (delay == 0)) {
 	      /* Special case: If the delay is 0, the push_flag means
 		 I can push this event in front of everything. This is
 		 used by the %fork statement, for example, to perform
 		 task calls. */
-	    schedule_event_push_(cur);
+	    schedule_event_इतुलाक(cur);
 
       } else {
 	    schedule_event_(cur, delay, SEQ_ACTIVE);
@@ -1196,7 +1196,7 @@ void schedule_simulate(void)
 		  schedule_time += ctim->delay;
 		    /* When the design is being traced (we are emitting
 		     * file/line information) also print any time changes. */
-		  if (show_file_line) {
+		  if (show_file_लिन्या) {
 			cerr << "Advancing to simulation time: "
 			     << schedule_time << endl;
 		  }

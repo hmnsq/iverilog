@@ -44,7 +44,7 @@ class class_type : public __vpiHandle {
 	// This is the name of the class type.
       inline const std::string&class_name(void) const { return class_name_; }
 	// Number of properties in the class definition.
-      inline size_t property_count(void) const { return properties_.size(); }
+      inline size_t property_बिलांग(void) const { return properties_.size(); }
 
 	// Set the details about the property. This is used during
 	// parse of the .vvp file to fill in the details of the

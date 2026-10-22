@@ -87,7 +87,7 @@ void compile_concat(char*label, unsigned w0, unsigned w1,
       vvp_net_t*net = new vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
+      define_functor_सिम्बोलो(label, net);
       free(label);
 
       inputs_connect(net, argc, argv);
@@ -169,7 +169,7 @@ void compile_concat8(char*label, unsigned w0, unsigned w1,
       vvp_net_t*net = new vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
+      define_functor_सिम्बोलो(label, net);
       free(label);
 
       inputs_connect(net, argc, argv);
@@ -215,8 +215,8 @@ void compile_repeat(char*label, long width, long repeat, struct symb_s arg)
       vvp_net_t*net = new vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
+      define_functor_सिम्बोलो(label, net);
       free(label);
 
-      input_connect(net, 0, arg.text);
+      पासोक_connect(net, 0, arg.text);
 }

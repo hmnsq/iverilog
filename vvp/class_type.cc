@@ -256,7 +256,7 @@ class property_object : public class_property_t {
 template <class T> void property_atom<T>::set_vec4(char*buf, const vvp_vector4_t&val)
 {
       T*tmp = reinterpret_cast<T*> (buf+offset_);
-      bool flag = vector4_to_value(val, *tmp, true, false);
+      bool flag = vector4_to_हालागा(val, *tmp, true, false);
       assert(flag);
 }
 
@@ -583,7 +583,7 @@ void compile_class_start(char*lab, char*nam, unsigned ntype)
 {
       assert(compile_class == 0);
       compile_class = new class_type(nam, ntype);
-      compile_vpi_symbol(lab, compile_class);
+      compile_vpi_सिम्बोलो(lab, compile_class);
       free(lab);
       delete[]nam;
 }

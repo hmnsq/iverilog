@@ -41,15 +41,15 @@ static struct __vpiSystemTime global_simtime;
 
 void vpip_time_to_timestruct(struct t_vpi_time*ts, vvp_time64_t ti)
 {
-      ts->low  = ti & 0xFFFFFFFF;
-      ts->high = (ti >> 32) & 0xFFFFFFFF;
+      ts->माबाबा  = ti & 0xFFFFFFFF;
+      ts->माताअस = (ti >> 32) & 0xFFFFFFFF;
 }
 
 vvp_time64_t vpip_timestruct_to_time(const struct t_vpi_time*ts)
 {
-      vvp_time64_t ti = ts->high;
+      vvp_time64_t ti = ts->माताअस;
       ti <<= 32;
-      ti += ts->low & 0xffffffff;
+      ti += ts->माबाबा & 0xffffffff;
       return ti;
 }
 
@@ -94,15 +94,15 @@ vvp_time64_t vpip_scaled_real_to_time64(double val, const __vpiScope*scope)
       return delay;
 }
 
-static void timevar_get_value(vpiHandle ref, s_vpi_value*vp, bool is_int_func,
+static void timevar_get_हालागा(vpiHandle ref, s_vpi_हालागा*vp, bool is_int_func,
                               bool is_stime)
 {
 	/* Keep a persistent structure for passing time values back to
 	   the caller. */
-      static struct t_vpi_time time_value;
+      static struct t_vpi_time time_हालागा;
 
       struct __vpiSystemTime*rfp = dynamic_cast<__vpiSystemTime*>(ref);
-      unsigned long num_bits;
+      unsigned long नुमेरो_bits;
       vvp_time64_t x, simtime = schedule_simtime();
       int units = rfp->scope? rfp->scope->time_units : vpi_time_precision;
 
@@ -111,18 +111,18 @@ static void timevar_get_value(vpiHandle ref, s_vpi_value*vp, bool is_int_func,
 
 	/* Calculate the divisor needed to scale the simulation time
 	   (in time_precision units) to time units of the scope. */
-      vvp_time64_t divisor = 1;
+      vvp_time64_t पांगहाति = 1;
       while (units > vpi_time_precision) {
-	    divisor *= 10;
+	    पांगहाति *= 10;
 	    units -= 1;
       }
 
 	/* Scale the simtime, and use the modulus to round up if
 	   appropriate. */
-      vvp_time64_t simtime_fraction = simtime % divisor;
-      simtime /= divisor;
+      vvp_time64_t simtime_fraction = simtime % पांगहाति;
+      simtime /= पांगहाति;
 
-      if ((divisor >= 10) && (simtime_fraction >= (divisor/2)))
+      if ((पांगहाति >= 10) && (simtime_fraction >= (पांगहाति/2)))
 	    simtime += 1;
 
 	/* If this is a call to $stime only return the lower 32 bits. */
@@ -134,7 +134,7 @@ static void timevar_get_value(vpiHandle ref, s_vpi_value*vp, bool is_int_func,
 	    vp->format = vpiTimeVal;
 	    // fallthrough
 	  case vpiTimeVal:
-	    vp->value.time = &time_value;
+	    vp->value.time = &time_हालागा;
 	    vp->value.time->type = vpiSimTime;
 	    vpip_time_to_timestruct(vp->value.time, simtime);
 	    break;
@@ -151,11 +151,11 @@ static void timevar_get_value(vpiHandle ref, s_vpi_value*vp, bool is_int_func,
 
 	  case vpiBinStrVal:
 	    x = simtime;
-	    num_bits = 8 * sizeof(vvp_time64_t);
+	    नुमेरो_bits = 8 * sizeof(vvp_time64_t);
 
-	    rbuf[num_bits] = 0;
-	    for (unsigned i = 1; i <= num_bits; i++) {
-	      rbuf[num_bits-i] = (x  & 1) ? '1' : '0';
+	    rbuf[नुमेरो_bits] = 0;
+	    for (unsigned i = 1; i <= नुमेरो_bits; i++) {
+	      rbuf[नुमेरो_bits-i] = (x  & 1) ? '1' : '0';
 	      x = x >> 1;
 	    }
 
@@ -183,19 +183,19 @@ static void timevar_get_value(vpiHandle ref, s_vpi_value*vp, bool is_int_func,
       }
 }
 
-static void timevar_get_ivalue(vpiHandle ref, s_vpi_value*vp)
+static void timevar_get_ivalue(vpiHandle ref, s_vpi_हालागा*vp)
 {
-      timevar_get_value(ref, vp, true, false);
+      timevar_get_हालागा(ref, vp, true, false);
 }
 
-static void timevar_get_svalue(vpiHandle ref, s_vpi_value*vp)
+static void timevar_get_svalue(vpiHandle ref, s_vpi_हालागा*vp)
 {
-      timevar_get_value(ref, vp, true, true);
+      timevar_get_हालागा(ref, vp, true, true);
 }
 
-static void timevar_get_rvalue(vpiHandle ref, s_vpi_value*vp)
+static void timevar_get_rvalue(vpiHandle ref, s_vpi_हालागा*vp)
 {
-      timevar_get_value(ref, vp, false, false);
+      timevar_get_हालागा(ref, vp, false, false);
 }
 
 __vpiScopedTime::__vpiScopedTime()
@@ -214,7 +214,7 @@ char* __vpiScopedTime::vpi_get_str(int code)
 }
 
 
-void __vpiScopedTime::vpi_get_value(p_vpi_value val)
+void __vpiScopedTime::vpi_get_हालागा(p_vpi_हालागा val)
 { timevar_get_ivalue(this, val); }
 
 
@@ -246,7 +246,7 @@ char* __vpiScopedSTime::vpi_get_str(int code)
 }
 
 
-void __vpiScopedSTime::vpi_get_value(p_vpi_value val)
+void __vpiScopedSTime::vpi_get_हालागा(p_vpi_हालागा val)
 { timevar_get_svalue(this, val); }
 
 __vpiSystemTime::__vpiSystemTime()
@@ -293,7 +293,7 @@ char* __vpiSystemTime::vpi_get_str(int code)
 }
 
 
-void __vpiSystemTime::vpi_get_value(p_vpi_value val)
+void __vpiSystemTime::vpi_get_हालागा(p_vpi_हालागा val)
 { timevar_get_ivalue(this, val); }
 
 vpiHandle __vpiSystemTime::vpi_handle(int code)
@@ -346,7 +346,7 @@ char* __vpiScopedRealtime::vpi_get_str(int code)
 }
 
 
-void __vpiScopedRealtime::vpi_get_value(p_vpi_value val)
+void __vpiScopedRealtime::vpi_get_हालागा(p_vpi_हालागा val)
 { timevar_get_rvalue(this, val); }
 
 /*

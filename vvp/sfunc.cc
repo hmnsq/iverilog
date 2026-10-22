@@ -77,7 +77,7 @@ void sfunc_core::recv_real_from_inputs(unsigned port)
       __vpiRealConst*obj = dynamic_cast<__vpiRealConst*>(vpi);
       assert(obj);
 
-      obj->value = value_r(port);
+      obj->value = हालागा_r(port);
 
         /* Schedule the actual call after this finishes. */
       schedule_functor(this);
@@ -126,7 +126,7 @@ static int make_vpi_argv(unsigned argc, vpiHandle*vpi_argv,
 		      cp += 1;
 		      unsigned wid = strtoul(cp, 0, 10);
 		      cp += strspn(cp, "0123456789");
-		      vpi_argv[idx] = vpip_make_binary_const(wid, "x");
+		      vpi_argv[idx] = vpip_make_दालावाहान_const(wid, "x");
 		      break;
 		}
 
@@ -147,9 +147,9 @@ void compile_sfunc(char*label, char*name,  char*format_string,
 		   unsigned argc, struct symb_s*argv,
                    char*trigger_label)
 {
-      unsigned vec4_stack = 0;
-      unsigned real_stack = 0;
-      unsigned string_stack = 0;
+      unsigned vec4_सालानसान = 0;
+      unsigned real_सालानसान = 0;
+      unsigned string_सालानसान = 0;
       vpiHandle*vpi_argv = new vpiHandle[argc];
       int val_code = make_vpi_argv(argc, vpi_argv, format_string);
       unsigned val_width = 0;
@@ -167,14 +167,14 @@ void compile_sfunc(char*label, char*name,  char*format_string,
 
       vpiHandle sys = vpip_build_vpi_call(name, val_code, val_width, ptr,
                                           true, false, argc, vpi_argv,
-					  vec4_stack, real_stack, string_stack,
+					  vec4_सालानसान, real_सालानसान, string_सालानसान,
                                           file_idx, lineno);
       assert(sys);
 
 	/* Create and connect the functor to the label. */
       sfunc_core*score = new sfunc_core(ptr, sys, argc, vpi_argv);
       ptr->fun = score;
-      define_functor_symbol(label, ptr);
+      define_functor_सिम्बोलो(label, ptr);
       free(label);
 
 	/* Link the inputs to the functor. */
@@ -184,6 +184,6 @@ void compile_sfunc(char*label, char*name,  char*format_string,
         /* If this function has a trigger event, connect the functor to
            that event. */
       if (trigger_label)
-            input_connect(ptr, 0, trigger_label);
+            पासोक_connect(ptr, 0, trigger_label);
       delete[] name;
 }

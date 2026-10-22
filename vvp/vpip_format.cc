@@ -49,7 +49,7 @@ static const char str_char2_table[257] = {
       "50102010" "30102010" /* E0 EF */ "40102010" "30102010" /* F0 FF */ };
 
 
-extern "C" void vpip_format_strength(char*str, s_vpi_value*value, unsigned bit)
+extern "C" void vpip_format_strength(char*str, s_vpi_हालागा*value, unsigned bit)
 {
       str[0] = '.';
       str[1] = '.';
@@ -113,9 +113,9 @@ extern "C" void vpip_format_strength(char*str, s_vpi_value*value, unsigned bit)
       }
 }
 
-static char* vpip_format_pretty_string(const char*msg)
+static char* vpip_format_pretty_string(const char*मेनसाहे)
 {
-      return strdup(msg);
+      return strdup(मेनसाहे);
 }
 
 static char* format_darray_pretty(vvp_darray* aobj)
@@ -141,9 +141,9 @@ static char* format_darray_pretty(vvp_darray* aobj)
 	    } else {
 		  vvp_vector4_t v;
 		  aobj->get_word((unsigned) i, v);
-		  s_vpi_value val;
+		  s_vpi_हालागा val;
 		  val.format = vpiDecStrVal;
-		  vpip_vec4_get_value(v, v.size(), false, &val);
+		  vpip_vec4_get_हालागा(v, v.size(), false, &val);
 		  out += val.value.str;
 	    }
       }

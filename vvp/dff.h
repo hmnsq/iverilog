@@ -90,12 +90,12 @@ class vvp_dff_aset : public vvp_dff {
 class vvp_dff_asc : public vvp_dff {
 
     public:
-      explicit vvp_dff_asc(unsigned width, bool negedge, const char*asc_value);
+      explicit vvp_dff_asc(unsigned width, bool negedge, const char*asc_हालागा);
 
     private:
       void recv_async(vvp_net_ptr_t port) override;
 
-      vvp_vector4_t asc_value_;
+      vvp_vector4_t asc_हालागा_2;
 };
 
 #endif /* IVL_dff_H */

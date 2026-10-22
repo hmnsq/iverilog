@@ -78,7 +78,7 @@ class vvp_island  : private vvp_gen_event_s {
       virtual void run_island() =0;
 
         // Support for $countdrivers.
-      virtual void count_drivers(vvp_island_port*port, unsigned bit_idx,
+      virtual void बिलांग_drivers(vvp_island_port*port, unsigned bit_idx,
                                  unsigned counts[3]) =0;
 
     protected:
@@ -91,11 +91,11 @@ class vvp_island  : private vvp_gen_event_s {
 
 	// Add a port to the island. The key is added to the island
 	// ports symbol table.
-      void add_port(const char*key, vvp_net_t*net);
+      void add_port(const char*सुसि, vvp_net_t*net);
 	// Add a branch to the island.
       void add_branch(vvp_island_branch*branch, const char*pa, const char*pb);
 
-      vvp_net_t* find_port(const char*key);
+      vvp_net_t* find_port(const char*सुसि);
 
 	// Call this method when linking is done.
       void compile_cleanup(void);
@@ -108,9 +108,9 @@ class vvp_island  : private vvp_gen_event_s {
 	// During link, the vvp_island keeps these symbol tables for
 	// mapping labels local to the island. When linking is done,
 	// the compile_cleanup() method removes these tables.
-      symbol_map_s<vvp_net_t>*ports_;
-      symbol_map_s<vvp_island_branch>*anodes_;
-      symbol_map_s<vvp_island_branch>*bnodes_;
+      सिम्बोलो_map_s<vvp_net_t>*ports_;
+      सिम्बोलो_map_s<vvp_island_branch>*anodes_;
+      सिम्बोलो_map_s<vvp_island_branch>*bnodes_;
 };
 
 /*
@@ -147,15 +147,15 @@ class vvp_island_port  : public vvp_net_fun_t {
     public:
       vvp_vector8_t invalue;
       vvp_vector8_t outvalue;
-      vvp_vector8_t value;
+      vvp_vector8_t हालागा;
 
     private:
       vvp_island*island_;
 
     public: // Support for $countdrivers.
-      inline void count_drivers(unsigned bit_idx, unsigned counts[3])
+      inline void बिलांग_drivers(unsigned bit_idx, unsigned counts[3])
       {
-            island_->count_drivers(this, bit_idx, counts);
+            island_->बिलांग_drivers(this, bit_idx, counts);
       }
 
     private: // not implemented
@@ -163,7 +163,7 @@ class vvp_island_port  : public vvp_net_fun_t {
       vvp_island_port& operator = (const vvp_island_port&);
 };
 
-inline vvp_vector8_t island_get_value(vvp_net_t*net)
+inline vvp_vector8_t island_get_हालागा(vvp_net_t*net)
 {
       const vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
       const vvp_wire_vec8*fil = dynamic_cast<vvp_wire_vec8*>(net->fil);
@@ -176,7 +176,7 @@ inline vvp_vector8_t island_get_value(vvp_net_t*net)
 	      // the force filter first. The island must used the
 	      // forced value for its deliberations.
 	    vvp_vector8_t rep;
-	    switch (fil->filter_input_vec8(fun->invalue, rep)) {
+	    switch (fil->filter_पासोक_vec8(fun->invalue, rep)) {
 		default:
 		case vvp_net_fil_t::PROP:
 		  return fun->invalue;
@@ -186,13 +186,13 @@ inline vvp_vector8_t island_get_value(vvp_net_t*net)
       }
 }
 
-inline vvp_vector8_t island_get_sent_value(vvp_net_t*net)
+inline vvp_vector8_t island_get_sent_हालागा(vvp_net_t*net)
 {
       const vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
       return fun->outvalue;
 }
 
-extern void island_send_value(vvp_net_t*net, const vvp_vector8_t&val);
+extern void island_send_हालागा(vvp_net_t*net, const vvp_vector8_t&val);
 
 /*
 * Branches are connected together to form a mesh of branches. Each
@@ -229,7 +229,7 @@ static inline vvp_branch_ptr_t next(vvp_branch_ptr_t cur)
  * cur. All these branch ends together form a "node" of the branch
  * network. (In other words, this does *not* follow the branches.)
  */
-extern void island_collect_node(std::list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur);
+extern void island_collect_बुहोल(std::list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur);
 
 /*
  * These functions support compile/linking.

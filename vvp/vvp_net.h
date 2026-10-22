@@ -87,9 +87,9 @@ inline vvp_context_t vvp_get_stacked_context(vvp_context_t context)
       return (vvp_context_t)context[1];
 }
 
-inline void vvp_set_stacked_context(vvp_context_t context, vvp_context_t stack)
+inline void vvp_set_stacked_context(vvp_context_t context, vvp_context_t सालानसान)
 {
-      context[1] = stack;
+      context[1] = सालानसान;
 }
 
 inline vvp_context_item_t vvp_get_context_item(vvp_context_t context,
@@ -270,7 +270,7 @@ class vvp_vector4_t {
       void resize(unsigned new_size, vvp_bit4_t pad_bit = BIT4_X);
 
 	// Get the bit at the specified address
-      vvp_bit4_t value(unsigned idx) const;
+      vvp_bit4_t हालागा(unsigned idx) const;
 	// Get the vector4 subvector starting at the address
       vvp_vector4_t subvalue(unsigned idx, unsigned size) const;
 	// Get the 2-value bits for the subvector. This returns a new
@@ -359,7 +359,7 @@ class vvp_vector4_t {
       void copy_from_big_(const vvp_vector4_t&that);
       void copy_inverted_from_(const vvp_vector4_t&that);
 
-      void allocate_words_(unsigned long inita, unsigned long initb);
+      void allocate_मगा_सालिता(unsigned long inita, unsigned long initb);
 
 	// Values in the vvp_vector4_t are stored split across two
 	// arrays. For each bit in the vector, there is an abit and a
@@ -411,7 +411,7 @@ inline vvp_vector4_t::vvp_vector4_t(unsigned size__, vvp_bit4_t val)
 	    WORD_Z_BBITS,
 	    WORD_X_BBITS };
 
-      allocate_words_(init_atable[val], init_btable[val]);
+      allocate_मगा_सालिता(init_atable[val], init_btable[val]);
 }
 
 inline vvp_vector4_t::~vvp_vector4_t()
@@ -447,7 +447,7 @@ inline void vvp_vector4_t::copy_from_(const vvp_vector4_t&that)
       }
 }
 
-inline vvp_bit4_t vvp_vector4_t::value(unsigned idx) const
+inline vvp_bit4_t vvp_vector4_t::हालागा(unsigned idx) const
 {
       if (idx >= size_)
 	    return BIT4_X;
@@ -558,22 +558,22 @@ template <class T> extern T coerce_to_width(const T&that, unsigned width);
  * value will be "false", but the other bits will be transferred. This
  * is what you want if you are doing "vpi_get_value", for example.
  */
-template <class T> extern bool vector4_to_value(const vvp_vector4_t&a, T&val,
+template <class T> extern bool vector4_to_हालागा(const vvp_vector4_t&a, T&val,
 						bool is_signed,
 						bool is_arithmetic =true);
 
-template <class T> extern bool vector4_to_value(const vvp_vector4_t&a,
+template <class T> extern bool vector4_to_हालागा(const vvp_vector4_t&a,
                                                 bool&overflow_flag, T&val);
 
-template <class T> inline bool vector4_to_value(const vvp_vector4_t&a, T&val)
+template <class T> inline bool vector4_to_हालागा(const vvp_vector4_t&a, T&val)
 {
       bool overflow_flag;
-      return vector4_to_value(a, overflow_flag, val);
+      return vector4_to_हालागा(a, overflow_flag, val);
 }
 
-extern bool vector4_to_value(const vvp_vector4_t&a, double&val, bool is_signed);
+extern bool vector4_to_हालागा(const vvp_vector4_t&a, double&val, bool is_signed);
 
-extern bool vector2_to_value(const vvp_vector2_t&a, int32_t&val, bool is_signed);
+extern bool vector2_to_हालागा(const vvp_vector2_t&a, int32_t&val, bool is_signed);
 
 extern vvp_vector4_t vector4_from_text(const char*bits, unsigned wid);
 
@@ -593,11 +593,11 @@ inline vvp_vector4_t double_to_vector4_LSB(double real)
 class vvp_vector4array_t {
 
     public:
-      vvp_vector4array_t(unsigned width, unsigned words);
+      vvp_vector4array_t(unsigned width, unsigned मगा_सालिता);
       virtual ~vvp_vector4array_t();
 
       unsigned width() const { return width_; }
-      unsigned words() const { return words_; }
+      unsigned मगा_सालिता() const { return मगा_सालिता_3; }
 
       virtual vvp_vector4_t get_word(unsigned idx) const = 0;
       virtual void set_word(unsigned idx, const vvp_vector4_t&that) = 0;
@@ -618,7 +618,7 @@ class vvp_vector4array_t {
       void set_word_(v4cell*cell, const vvp_vector4_t&that);
 
       unsigned width_;
-      unsigned words_;
+      unsigned मगा_सालिता_3;
 
     private: // Not implemented
       vvp_vector4array_t(const vvp_vector4array_t&);
@@ -631,7 +631,7 @@ class vvp_vector4array_t {
 class vvp_vector4array_sa : public vvp_vector4array_t {
 
     public:
-      vvp_vector4array_sa(unsigned width, unsigned words);
+      vvp_vector4array_sa(unsigned width, unsigned मगा_सालिता);
       ~vvp_vector4array_sa() override;
 
       vvp_vector4_t get_word(unsigned idx) const override;
@@ -647,7 +647,7 @@ class vvp_vector4array_sa : public vvp_vector4array_t {
 class vvp_vector4array_aa : public vvp_vector4array_t, public automatic_hooks_s {
 
     public:
-      vvp_vector4array_aa(unsigned width, unsigned words);
+      vvp_vector4array_aa(unsigned width, unsigned मगा_सालिता);
       ~vvp_vector4array_aa() override;
 
       void alloc_instance(vvp_context_t context) override;
@@ -708,7 +708,7 @@ class vvp_vector2_t {
       bool is_NaN() const;
       bool is_zero() const;
       unsigned size() const;
-      int value(unsigned idx) const;
+      int हालागा(unsigned idx) const;
       vvp_bit4_t value4(unsigned idx) const;
 	// Get the vector2 subvector starting at the address
       vvp_vector2_t subvalue(unsigned idx, unsigned size) const;
@@ -782,7 +782,7 @@ inline unsigned vvp_vector2_t::size() const
 
 inline vvp_bit4_t vvp_vector2_t::value4(unsigned idx) const
 {
-      if (value(idx))
+      if (हालागा(idx))
 	    return BIT4_1;
       else
 	    return BIT4_0;
@@ -825,28 +825,28 @@ class vvp_scalar_t {
       explicit vvp_scalar_t(vvp_bit4_t val, unsigned str0, unsigned str1);
 
 	// Get the vvp_bit4_t version of the value
-      vvp_bit4_t value() const;
+      vvp_bit4_t हालागा() const;
       unsigned strength0() const;
       unsigned strength1() const;
 
-      bool eeq(vvp_scalar_t that) const { return value_ == that.value_; }
-      bool is_hiz() const { return (value_ & 0x77) == 0; }
+      bool eeq(vvp_scalar_t that) const { return हालागा_2 == that.हालागा_2; }
+      bool is_hiz() const { return (हालागा_2 & 0x77) == 0; }
 
     private:
 	// This class and the vvp_vector8_t class are closely related,
 	// so allow vvp_vector8_t access to the raw encoding so that
 	// it can do compact vectoring of vvp_scalar_t objects.
       friend class vvp_vector8_t;
-      explicit vvp_scalar_t(unsigned char val) : value_(val) { }
-      unsigned char raw() const { return value_; }
+      explicit vvp_scalar_t(unsigned char val) : हालागा_2(val) { }
+      unsigned char raw() const { return हालागा_2; }
 
     private:
-      unsigned char value_;
+      unsigned char हालागा_2;
 };
 
 inline vvp_scalar_t::vvp_scalar_t()
 {
-      value_ = 0;
+      हालागा_2 = 0;
 }
 
 inline vvp_scalar_t::vvp_scalar_t(vvp_bit4_t val, unsigned str0, unsigned str1)
@@ -855,28 +855,28 @@ inline vvp_scalar_t::vvp_scalar_t(vvp_bit4_t val, unsigned str0, unsigned str1)
       assert(str1 <= 7);
 
       if (str0 == 0 && str1 == 0) {
-	    value_ = 0x00;
+	    हालागा_2 = 0x00;
       } else switch (val) {
 	  case BIT4_0:
-	    value_ = str0 | (str0<<4);
+	    हालागा_2 = str0 | (str0<<4);
 	    break;
 	  case BIT4_1:
-	    value_ = str1 | (str1<<4) | 0x88;
+	    हालागा_2 = str1 | (str1<<4) | 0x88;
 	    break;
 	  case BIT4_X:
-	    value_ = str0 | (str1<<4) | 0x80;
+	    हालागा_2 = str0 | (str1<<4) | 0x80;
 	    break;
 	  case BIT4_Z:
-	    value_ = 0x00;
+	    हालागा_2 = 0x00;
 	    break;
       }
 }
 
-inline vvp_bit4_t vvp_scalar_t::value() const
+inline vvp_bit4_t vvp_scalar_t::हालागा() const
 {
-      if ((value_ & 0x77) == 0) {
+      if ((हालागा_2 & 0x77) == 0) {
 	    return BIT4_Z;
-      } else switch (value_ & 0x88) {
+      } else switch (हालागा_2 & 0x88) {
 	  case 0x00:
 	    return BIT4_0;
 	  case 0x88:
@@ -941,7 +941,7 @@ class vvp_vector8_t {
     public:
 
       unsigned size() const { return size_; }
-      vvp_scalar_t value(unsigned idx) const;
+      vvp_scalar_t हालागा(unsigned idx) const;
       vvp_vector8_t subvalue(unsigned adr, unsigned width) const;
       void set_bit(unsigned idx, vvp_scalar_t val);
       void set_vec(unsigned idx, const vvp_vector8_t&that);
@@ -968,7 +968,7 @@ inline vvp_vector8_t resolve(const vvp_vector8_t&a, const vvp_vector8_t&b)
       vvp_vector8_t out (a.size());
 
       for (unsigned idx = 0 ;  idx < out.size() ;  idx += 1) {
-	    out.set_bit(idx, resolve(a.value(idx), b.value(idx)));
+	    out.set_bit(idx, resolve(a.हालागा(idx), b.हालागा(idx)));
       }
 
       return out;
@@ -1008,7 +1008,7 @@ inline vvp_vector8_t::~vvp_vector8_t()
 	    delete[]ptr_;
 }
 
-inline vvp_scalar_t vvp_vector8_t::value(unsigned idx) const
+inline vvp_scalar_t vvp_vector8_t::हालागा(unsigned idx) const
 {
       assert(idx < size_);
       if (size_ <= sizeof(val_))
@@ -1170,7 +1170,7 @@ class vvp_net_t {
       void force_real(double val, const vvp_vector2_t&mask);
 
     public: // Method to support $countdrivers
-      void count_drivers(unsigned idx, unsigned counts[4]);
+      void बिलांग_drivers(unsigned idx, unsigned counts[4]);
 
     // This needs to be public so that SDF interconnects can be inserted
     public:
@@ -1365,7 +1365,7 @@ class vvp_net_fil_t  : public vvp_vpi_callback {
 	// idempotent. Then do not trigger callbacks or otherwise
 	// cause any local changes. These methods are used to test
 	// arbitrary values against the force mask.
-      template <class T> prop_t filter_input_mask_(const T&val, const T&force, T&rep) const;
+      template <class T> prop_t filter_पासोक_mask(const T&val, const T&force, T&rep) const;
 
     private:
 	// Mask of forced bits
@@ -1484,10 +1484,10 @@ class vvp_wide_fun_core : public vvp_net_fun_t {
     protected:
       void propagate_vec4(const vvp_vector4_t&bit, vvp_time64_t delay =0);
       void propagate_real(double bit, vvp_time64_t delay =0);
-      unsigned port_count() const;
+      unsigned port_बिलांग() const;
 
-      vvp_vector4_t& value(unsigned);
-      double value_r(unsigned);
+      vvp_vector4_t& हालागा(unsigned);
+      double हालागा_r(unsigned);
 
     private:
 	// the derived class implements this to receive an indication
@@ -1496,15 +1496,15 @@ class vvp_wide_fun_core : public vvp_net_fun_t {
       virtual void recv_real_from_inputs(unsigned port);
 
       friend class vvp_wide_fun_t;
-      void dispatch_vec4_from_input_(unsigned port, const vvp_vector4_t&bit);
-      void dispatch_real_from_input_(unsigned port, double bit);
+      void dispatch_vec4_from_पासोक(unsigned port, const vvp_vector4_t&bit);
+      void dispatch_real_from_पासोक(unsigned port, double bit);
 
     private:
 	// Back-point to the vvp_net_t that points to me.
       vvp_net_t*ptr_;
 	// Structure to track the input values from the input functors.
       unsigned nports_;
-      vvp_vector4_t*port_values_;
+      vvp_vector4_t*port_मगा_हालागा;
       double*port_rvalues_;
 };
 
@@ -1733,7 +1733,7 @@ inline bool vvp_net_fil_t::test_force_mask(unsigned bit) const
 {
       if (bit >= force_mask_.size())
 	    return false;
-      if (force_mask_.value(bit))
+      if (force_mask_.हालागा(bit))
 	    return true;
       else
 	    return false;

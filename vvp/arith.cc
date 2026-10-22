@@ -130,7 +130,7 @@ void vvp_arith_cast_real::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
                                     vvp_context_t)
 {
       double val;
-      vector4_to_value(bit, val, signed_);
+      vector4_to_हालागा(bit, val, signed_);
       ptr.ptr()->send_real(val, 0);
 }
 
@@ -221,13 +221,13 @@ void vvp_arith_div::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       }
 
       unsigned long a;
-      if (! vector4_to_value(op_a_, a)) {
+      if (! vector4_to_हालागा(op_a_, a)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
 	    return;
       }
 
       unsigned long b;
-      if (! vector4_to_value(op_b_, b)) {
+      if (! vector4_to_हालागा(op_b_, b)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
 	    return;
       }
@@ -334,13 +334,13 @@ void vvp_arith_mod::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       }
 
       unsigned long a;
-      if (! vector4_to_value(op_a_, a)) {
+      if (! vector4_to_हालागा(op_a_, a)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
 	    return;
       }
 
       unsigned long b;
-      if (! vector4_to_value(op_b_, b)) {
+      if (! vector4_to_हालागा(op_b_, b)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
 	    return;
       }
@@ -435,13 +435,13 @@ void vvp_arith_mult::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       }
 
       int64_t a;
-      if (! vector4_to_value(op_a_, a, false, true)) {
+      if (! vector4_to_हालागा(op_a_, a, false, true)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
 	    return;
       }
 
       int64_t b;
-      if (! vector4_to_value(op_b_, b, false, true)) {
+      if (! vector4_to_हालागा(op_b_, b, false, true)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
 	    return;
       }
@@ -493,7 +493,7 @@ void vvp_arith_pow::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
       if (signed_flag_ && b2.value(b2.size()-1)) {
 	    int a_val;
 	    double r_val = 0.0;
-	    if (vector2_to_value(a2, a_val, true)) {
+	    if (vector2_to_हालागा(a2, a_val, true)) {
 		  if (a_val == 0) {
 			ptr.ptr()->send_vec4(x_val_, 0);
 			return;
@@ -956,7 +956,7 @@ void vvp_shiftl::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 
       bool overflow_flag;
       unsigned long shift = 0;
-      if (! vector4_to_value(op_b_, overflow_flag, shift)) {
+      if (! vector4_to_हालागा(op_b_, overflow_flag, shift)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
 	    return;
       }
@@ -991,7 +991,7 @@ void vvp_shiftr::recv_vec4(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 
       bool overflow_flag;
       unsigned long shift = 0;
-      if (! vector4_to_value(op_b_, overflow_flag, shift)) {
+      if (! vector4_to_हालागा(op_b_, overflow_flag, shift)) {
 	    ptr.ptr()->send_vec4(x_val_, 0);
 	    return;
       }

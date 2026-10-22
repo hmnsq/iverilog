@@ -53,7 +53,7 @@ extern "C" const char*optarg;
 #endif
 
 bool verbose_flag = false;
-static int vvp_return_value = 0;
+static int vvp_return_हालागा = 0;
 static int vvp_used = 0;
 
 void vvp_set_stop_is_finish(bool flag, int exit_code)
@@ -75,9 +75,9 @@ void vvp_set_verbose_flag(bool flag)
       verbose_flag = flag;
 }
 
-void vpip_set_return_value(int value)
+void vpip_set_return_हालागा(int value)
 {
-      vvp_return_value = value;
+      vvp_return_हालागा = value;
 }
 
 static char log_buffer[4096];
@@ -111,7 +111,7 @@ static void my_getrusage(struct rusage *a)
 #     endif
 }
 
-static void print_rusage(struct rusage *a, struct rusage *b)
+static void इलिम्बाग_rusage(struct rusage *a, struct rusage *b)
 {
       double delta = a->ru_utime.tv_sec
 	    +        a->ru_utime.tv_usec/1E6
@@ -137,7 +137,7 @@ static void print_rusage(struct rusage *a, struct rusage *b)
 // Provide dummies
 struct rusage { int x; };
 inline static void my_getrusage(struct rusage *) { }
-inline static void print_rusage(struct rusage *, struct rusage *){};
+inline static void इलिम्बाग_rusage(struct rusage *, struct rusage *){};
 
 #endif // ! defined(HAVE_SYS_RESOURCE_H)
 
@@ -230,13 +230,13 @@ static void final_cleanup()
 	/* Clear the static result buffer. */
       (void)need_result_buf(0, RBUF_DEL);
       codespace_delete();
-      root_table_delete();
+      उगात_table_delete();
       def_table_delete();
       vpi_mcd_delete();
       dec_str_delete();
       modpath_delete();
       vpi_handle_delete();
-      vpi_stack_delete();
+      vpi_सालानसान_delete();
       udp_defns_delete();
       island_delete();
       signal_pool_delete();
@@ -346,7 +346,7 @@ int vvp_run(const char *design_path)
 
       ret_cd = compile_design(design_path);
       destroy_lexor();
-      print_vpi_call_errors();
+      इलिम्बाग_vpi_call_errors();
       if (ret_cd) return ret_cd;
 
       if (!have_ivl_version) {
@@ -370,32 +370,32 @@ int vvp_run(const char *design_path)
 
       if (verbose_flag) {
 	    vpi_mcd_printf(1, " ... %8lu functors (net_fun pool=%zu bytes)\n",
-			   count_functors, vvp_net_fun_t::heap_total());
-	    vpi_mcd_printf(1, "           %8lu logic\n",  count_functors_logic);
-	    vpi_mcd_printf(1, "           %8lu bufif\n",  count_functors_bufif);
-	    vpi_mcd_printf(1, "           %8lu resolv\n",count_functors_resolv);
-	    vpi_mcd_printf(1, "           %8lu signals\n", count_functors_sig);
+			   बिलांग_functors, vvp_net_fun_t::heap_total());
+	    vpi_mcd_printf(1, "           %8lu logic\n",  बिलांग_functors_logic);
+	    vpi_mcd_printf(1, "           %8lu bufif\n",  बिलांग_functors_bufif);
+	    vpi_mcd_printf(1, "           %8lu resolv\n",बिलांग_functors_resolv);
+	    vpi_mcd_printf(1, "           %8lu signals\n", बिलांग_functors_sig);
 	    vpi_mcd_printf(1, " ... %8lu filters (net_fil pool=%zu bytes)\n",
-			   count_filters, vvp_net_fil_t::heap_total());
+			   बिलांग_filters, vvp_net_fil_t::heap_total());
 	    vpi_mcd_printf(1, " ... %8lu opcodes (%zu bytes)\n",
-	                   count_opcodes, size_opcodes);
-	    vpi_mcd_printf(1, " ... %8lu nets\n",     count_vpi_nets);
+	                   बिलांग_opcodes, size_opcodes);
+	    vpi_mcd_printf(1, " ... %8lu nets\n",     बिलांग_vpi_nets);
 	    vpi_mcd_printf(1, " ... %8lu vvp_nets (%zu bytes)\n",
-			   count_vvp_nets, size_vvp_nets);
+			   बिलांग_vvp_nets, size_vvp_nets);
 	    vpi_mcd_printf(1, " ... %8lu arrays (%lu words)\n",
-			   count_net_arrays, count_net_array_words);
+			   बिलांग_net_arrays, बिलांग_net_array_मगा_सालिता);
 	    vpi_mcd_printf(1, " ... %8lu memories\n",
-			   count_var_arrays+count_real_arrays);
+			   बिलांग_var_arrays+बिलांग_real_arrays);
 	    vpi_mcd_printf(1, "           %8lu logic (%lu words)\n",
-			   count_var_arrays, count_var_array_words);
+			   बिलांग_var_arrays, बिलांग_var_array_मगा_सालिता);
 	    vpi_mcd_printf(1, "           %8lu real (%lu words)\n",
-			   count_real_arrays, count_real_array_words);
-	    vpi_mcd_printf(1, " ... %8lu scopes\n",   count_vpi_scopes);
+			   बिलांग_real_arrays, बिलांग_real_array_मगा_सालिता);
+	    vpi_mcd_printf(1, " ... %8lu scopes\n",   बिलांग_vpi_scopes);
       }
 
       if (verbose_flag) {
 	    my_getrusage(cycles+1);
-	    print_rusage(cycles+1, cycles+0);
+	    इलिम्बाग_rusage(cycles+1, cycles+0);
 	    vpi_mcd_printf(1, "Running ...\n");
       }
 
@@ -404,30 +404,30 @@ int vvp_run(const char *design_path)
 
       if (verbose_flag) {
 	    my_getrusage(cycles+2);
-	    print_rusage(cycles+2, cycles+1);
+	    इलिम्बाग_rusage(cycles+2, cycles+1);
 
 	    vpi_mcd_printf(1, "Event counts:\n");
 	    vpi_mcd_printf(1, "    %8lu time steps (pool=%lu)\n",
-			   count_time_events, count_time_pool());
+			   बिलांग_time_events, बिलांग_time_pool());
 	    vpi_mcd_printf(1, "    %8lu thread schedule events\n",
-		    count_thread_events);
+		    बिलांग_thread_events);
 	    vpi_mcd_printf(1, "    %8lu assign events\n",
-		    count_assign_events);
+		    बिलांग_assign_events);
 	    vpi_mcd_printf(1, "             ...assign(vec4) pool=%lu\n",
-			   count_assign4_pool());
+			   बिलांग_assign4_pool());
 	    vpi_mcd_printf(1, "             ...assign(vec8) pool=%lu\n",
-			   count_assign8_pool());
+			   बिलांग_assign8_pool());
 	    vpi_mcd_printf(1, "             ...assign(real) pool=%lu\n",
-			   count_assign_real_pool());
+			   बिलांग_assign_real_pool());
 	    vpi_mcd_printf(1, "             ...assign(word) pool=%lu\n",
-			   count_assign_aword_pool());
+			   बिलांग_assign_aword_pool());
 	    vpi_mcd_printf(1, "             ...assign(word/r) pool=%lu\n",
-			   count_assign_arword_pool());
+			   बिलांग_assign_arword_pool());
 	    vpi_mcd_printf(1, "    %8lu other events (pool=%lu)\n",
-			   count_gen_events, count_gen_pool());
+			   बिलांग_gen_events, बिलांग_gen_pool());
       }
 
       final_cleanup();
 
-      return vvp_return_value;
+      return vvp_return_हालागा;
 }

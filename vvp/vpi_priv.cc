@@ -46,7 +46,7 @@ static s_vpi_error_info vpip_last_error = { 0, 0, 0, 0, 0, 0, 0 };
 const char* direction_as_string(int dir)
 {
       switch (dir) {
-	  case vpiInput:
+	  case vpi_पासोक:
 	    return "input";
 	  case vpiOutput:
 	    return "output";
@@ -73,10 +73,10 @@ int64_t __vpiHandle::vpi_get64(int code)
 char* __vpiHandle::vpi_get_str(int)
 { return 0; }
 
-void __vpiHandle::vpi_get_value(p_vpi_value)
+void __vpiHandle::vpi_get_हालागा(p_vpi_हालागा)
 { }
 
-vpiHandle __vpiHandle::vpi_put_value(p_vpi_value, int)
+vpiHandle __vpiHandle::vpi_put_हालागा(p_vpi_हालागा, int)
 { return 0; }
 
 vpiHandle __vpiHandle::vpi_handle(int)
@@ -130,7 +130,7 @@ struct vpip_string_chunk {
 
 unsigned vpip_size(const __vpiSignal *sig)
 {
-      return abs(sig->msb.get_value() - sig->lsb.get_value()) + 1;
+      return abs(sig->msb.get_हालागा() - sig->lsb.get_हालागा()) + 1;
 }
 
 __vpiScope* vpip_scope(__vpiSignal*sig)
@@ -199,20 +199,20 @@ const char* vpip_name_string(const char*text)
       const unsigned HASH_SIZE = 4096;
       static const char*hash_table[HASH_SIZE] = {0};
 
-      unsigned hash_value = hash_string(text) % HASH_SIZE;
+      unsigned hash_हालागा = hash_string(text) % HASH_SIZE;
 
 	/* If we easily find the string in the hash table, then return
 	   that and be done. */
-      if (hash_table[hash_value]
-	  && (strcmp(hash_table[hash_value], text) == 0)) {
-	    return hash_table[hash_value];
+      if (hash_table[hash_हालागा]
+	  && (strcmp(hash_table[hash_हालागा], text) == 0)) {
+	    return hash_table[hash_हालागा];
       }
 
 	/* The existing hash entry is not a match. Replace it with the
 	   newly allocated value, and return the new pointer as the
 	   result to the add. */
       const char*res = vpip_string(text);
-      hash_table[hash_value] = res;
+      hash_table[hash_हालागा] = res;
 
       return res;
 }
@@ -228,7 +228,7 @@ PLI_INT32 vpi_chk_error(p_vpi_error_info info)
       info->product = vpi_vlog_info.product;
       info->code = (char *)"";
       info->file = 0;
-      info->line = 0;
+      info->लिन्या = 0;
 
       return info->level;
 }
@@ -610,8 +610,8 @@ void vpi_get_time(vpiHandle obj, s_vpi_time*vp)
 
       switch (vp->type) {
           case vpiSimTime:
-	    vp->high = (time >> 32) & 0xffffffff;
-	    vp->low = time & 0xffffffff;
+	    vp->माताअस = (time >> 32) & 0xffffffff;
+	    vp->माबाबा = time & 0xffffffff;
 	    break;
 
           case vpiScaledRealTime:
@@ -659,8 +659,8 @@ void vpi_set_vlog_info(int argc, char** argv)
     }
 }
 
-static void vec4_get_value_string(const vvp_vector4_t&word_val, unsigned width,
-				  s_vpi_value*vp)
+static void vec4_get_हालागा_string(const vvp_vector4_t&word_val, unsigned width,
+				  s_vpi_हालागा*vp)
 {
       unsigned nchar = width / 8;
       unsigned tail = width % 8;
@@ -709,8 +709,8 @@ static void vec4_get_value_string(const vvp_vector4_t&word_val, unsigned width,
  * value pointer. The width is the real width of the word, in case the
  * word_val width is not accurate.
  */
-void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
-			 bool signed_flag, s_vpi_value*vp)
+void vpip_vec4_get_हालागा(const vvp_vector4_t&word_val, unsigned width,
+			 bool signed_flag, s_vpi_हालागा*vp)
 {
       char *rbuf = 0;
 
@@ -835,17 +835,17 @@ void vpip_vec4_get_value(const vvp_vector4_t&word_val, unsigned width,
 	  }
 
 	  case vpiStringVal:
-		vec4_get_value_string(word_val, width, vp);
+		vec4_get_हालागा_string(word_val, width, vp);
 		break;
 
 	  case vpiRealVal:
-		vector4_to_value(word_val, vp->value.real, signed_flag);
+		vector4_to_हालागा(word_val, vp->value.real, signed_flag);
 		break;
       }
 }
 
-void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
-			 bool signed_flag, s_vpi_value*vp)
+void vpip_vec2_get_हालागा(const vvp_vector2_t&word_val, unsigned width,
+			 bool signed_flag, s_vpi_हालागा*vp)
 {
       switch (vp->format) {
 	  default:
@@ -857,7 +857,7 @@ void vpip_vec2_get_value(const vvp_vector2_t&word_val, unsigned width,
 	    break;
 
 	  case vpiIntVal:
-	    vector2_to_value(word_val, vp->value.integer, signed_flag);
+	    vector2_to_हालागा(word_val, vp->value.integer, signed_flag);
 	    break;
 
 	  case vpiObjTypeVal:
@@ -914,7 +914,7 @@ static PLI_INT32 get_real_as_int(double real)
  * vpi_value structure. The format is selected by the format of the
  * value pointer.
  */
-void vpip_real_get_value(double real, s_vpi_value*vp)
+void vpip_real_get_हालागा(double real, s_vpi_हालागा*vp)
 {
       char *rbuf = 0;
 
@@ -947,7 +947,7 @@ void vpip_real_get_value(double real, s_vpi_value*vp)
       }
 }
 
-double real_from_vpi_value(s_vpi_value*vp)
+double real_from_vpi_हालागा(s_vpi_हालागा*vp)
 {
       vvp_vector4_t vec4(1024);
       double result;
@@ -970,25 +970,25 @@ double real_from_vpi_value(s_vpi_value*vp)
 	  case vpiBinStrVal:
 	    vpip_bin_str_to_vec4(vec4, vp->value.str);
 	    if (vp->value.str[0] == '-') is_signed = true;
-	    vector4_to_value(vec4, result, is_signed);
+	    vector4_to_हालागा(vec4, result, is_signed);
 	    break;
 
 	  case vpiOctStrVal:
 	    vpip_oct_str_to_vec4(vec4, vp->value.str);
 	    if (vp->value.str[0] == '-') is_signed = true;
-	    vector4_to_value(vec4, result, is_signed);
+	    vector4_to_हालागा(vec4, result, is_signed);
 	    break;
 
 	  case vpiDecStrVal:
 	    vpip_dec_str_to_vec4(vec4, vp->value.str);
 	    if (vp->value.str[0] == '-') is_signed = true;
-	    vector4_to_value(vec4, result, is_signed);
+	    vector4_to_हालागा(vec4, result, is_signed);
 	    break;
 
 	  case vpiHexStrVal:
 	    vpip_hex_str_to_vec4(vec4, vp->value.str);
 	    if (vp->value.str[0] == '-') is_signed = true;
-	    vector4_to_value(vec4, result, is_signed);
+	    vector4_to_हालागा(vec4, result, is_signed);
 	    break;
 
       }
@@ -996,7 +996,7 @@ double real_from_vpi_value(s_vpi_value*vp)
       return result;
 }
 
-void vpip_string_get_value(const string&val, s_vpi_value*vp)
+void vpip_string_get_हालागा(const string&val, s_vpi_हालागा*vp)
 {
       char *rbuf = 0;
 
@@ -1022,9 +1022,9 @@ void vpip_string_get_value(const string&val, s_vpi_value*vp)
 }
 
 
-void vpi_get_value(vpiHandle expr, s_vpi_value*vp)
+void vpi_get_हालागा(vpiHandle पाहायाग, s_vpi_हालागा*vp)
 {
-      assert(expr);
+      assert(पाहायाग);
       assert(vp);
 
 	// Never bother with suppressed values. All the derived
@@ -1032,46 +1032,46 @@ void vpi_get_value(vpiHandle expr, s_vpi_value*vp)
       if (vp->format == vpiSuppressVal)
 	    return;
 
-      expr->vpi_get_value(vp);
+      पाहायाग->vpi_get_हालागा(vp);
 
       if (vpi_trace) switch (vp->format) {
 		case vpiStringVal:
 		  fprintf(vpi_trace,"vpi_get_value(%p=<%d>) -> string=\"%s\"\n",
-			  expr, expr->get_type_code(), vp->value.str);
+			  पाहायाग, पाहायाग->get_type_code(), vp->value.str);
 		  break;
 
 		case vpiBinStrVal:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> binstr=%s\n",
-			  expr->get_type_code(), vp->value.str);
+			  पाहायाग->get_type_code(), vp->value.str);
 		  break;
 
 		case vpiIntVal:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> int=%d\n",
-			  expr->get_type_code(), (int)vp->value.integer);
+			  पाहायाग->get_type_code(), (int)vp->value.integer);
 		  break;
 
 		case vpiSuppressVal:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> <suppress>\n",
-			  expr->get_type_code());
+			  पाहायाग->get_type_code());
 		  break;
 
 		default:
 		  fprintf(vpi_trace, "vpi_get_value(<%d>...) -> <%d>=?\n",
-			  expr->get_type_code(), (int)vp->format);
+			  पाहायाग->get_type_code(), (int)vp->format);
 	    }
 }
 
-struct vpip_put_value_event : vvp_gen_event_s {
+struct vpip_put_हालागा_event : vvp_gen_event_s {
       vpiHandle handle;
-      s_vpi_value value;
+      s_vpi_हालागा value;
       int flags;
       virtual void run_run() override;
-      ~vpip_put_value_event() override { }
+      ~vpip_put_हालागा_event() override { }
 };
 
-void vpip_put_value_event::run_run()
+void vpip_put_हालागा_event::run_run()
 {
-      handle->vpi_put_value(&value, flags);
+      handle->vpi_put_हालागा(&value, flags);
       switch (value.format) {
 	    /* Free the copied string. */
 	  case vpiBinStrVal:
@@ -1111,12 +1111,12 @@ static t_vpi_time *timedup(const t_vpi_time *val)
 /* Make a copy of a pointer to a vector value structure. */
 static t_vpi_vecval *vectordup(const t_vpi_vecval *val, PLI_INT32 size)
 {
-      unsigned num_bytes;
+      unsigned नुमेरो_bytes;
       t_vpi_vecval *rtn;
       assert(size > 0);
-      num_bytes = ((size + 31)/32)*sizeof(t_vpi_vecval);
-      rtn = static_cast<t_vpi_vecval *> (malloc(num_bytes));
-      memcpy(rtn, val, num_bytes);
+      नुमेरो_bytes = ((size + 31)/32)*sizeof(t_vpi_vecval);
+      rtn = static_cast<t_vpi_vecval *> (malloc(नुमेरो_bytes));
+      memcpy(rtn, val, नुमेरो_bytes);
       return rtn;
 }
 
@@ -1130,7 +1130,7 @@ static t_vpi_strengthval *strengthdup(const t_vpi_strengthval *val)
       return rtn;
 }
 
-vpiHandle vpi_put_value(vpiHandle obj, s_vpi_value*vp,
+vpiHandle vpi_put_हालागा(vpiHandle obj, s_vpi_हालागा*vp,
 			s_vpi_time*when, PLI_INT32 flags)
 {
       assert(obj);
@@ -1176,7 +1176,7 @@ vpiHandle vpi_put_value(vpiHandle obj, s_vpi_value*vp,
 		  return 0;
 	    }
 
-	    vpip_put_value_event*put = new vpip_put_value_event;
+	    vpip_put_हालागा_event*put = new vpip_put_हालागा_event;
 	    put->handle = obj;
 	    if (dynamic_cast<__vpiNamedEvent*>(obj)) {
 		  put->value.format = vpiIntVal;
@@ -1226,7 +1226,7 @@ vpiHandle vpi_put_value(vpiHandle obj, s_vpi_value*vp,
             return 0;
       }
 
-      obj->vpi_put_value(vp, flags);
+      obj->vpi_put_हालागा(vp, flags);
 
       return 0;
 }
@@ -1310,7 +1310,7 @@ static vpiHandle vpi_iterate_global(int type)
 	  case vpiInterface:
 	    // fallthrough
 	  case vpiPackage:
-	    return vpip_make_root_iterator(type);
+	    return vpip_make_उगात_iterator(type);
 
 	  case vpiUdpDefn:
 	    return vpip_make_udp_iterator();
@@ -1799,8 +1799,8 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 	      // Or in the second case port2 is indirectly connected
 	      // to port1 through a net of concat8s
 	    bool is_connected, is_output;
-	    vvp_net_ptr_t previous_node;
-	    tie(is_connected, previous_node, is_output) = port2_has_index
+	    vvp_net_ptr_t previous_बुहोल;
+	    tie(is_connected, previous_बुहोल, is_output) = port2_has_index
 		  ? check_connected_to_concat8(cur, net2, vvp_net_ptr_t(net1, 0))
 		  : check_connected_to_concat8_and_part_sa(cur, net2, vvp_net_ptr_t(net1, 0));
 	    if ( (!port2_has_index && cur.ptr() == net2) || is_connected ) {
@@ -1813,11 +1813,11 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 		  vvp_net_t* output_net = net1;
 		  if (is_connected) {
 			if (is_output) {
-			      output_net = previous_node.ptr(); // net2 is direct output of part_sa
+			      output_net = previous_बुहोल.ptr(); // net2 is direct output of part_sa
 			      cur = output_net->out_;
 			      prev = vvp_net_ptr_t(nullptr, 0);
 			} else {
-			      prev = previous_node;
+			      prev = previous_बुहोल;
 			      if (prev.ptr()) {
 				    cur = prev.ptr()->port[prev.port()];
 			      }
@@ -1847,7 +1847,7 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 		  if (output_signal && !port2_has_index) {
 			net2->fil = net1->fil;
 			net1->fil = nullptr;
-			output_signal->node = net2;
+			output_signal->बुहोल = net2;
 		  }
 
 		    // Create the VPI intermodpath object
@@ -1889,30 +1889,30 @@ vpiHandle vpi_handle_multi(PLI_INT32 type,
 
 
 
-void vpi_get_delays(vpiHandle expr, p_vpi_delay delays)
+void vpi_get_delays(vpiHandle पाहायाग, p_vpi_delay delays)
 {
-      assert(expr);
+      assert(पाहायाग);
       assert(delays);
 
-      expr->vpi_get_delays(delays);
+      पाहायाग->vpi_get_delays(delays);
 
       if (vpi_trace) {
 	    fprintf(vpi_trace,
-		    "vpi_get_delays(%p, %p) -->\n", expr, delays);
+		    "vpi_get_delays(%p, %p) -->\n", पाहायाग, delays);
       }
 }
 
 
-void vpi_put_delays(vpiHandle expr, p_vpi_delay delays)
+void vpi_put_delays(vpiHandle पाहायाग, p_vpi_delay delays)
 {
-      assert(expr  );
+      assert(पाहायाग  );
       assert(delays );
 
-      expr->vpi_put_delays(delays);
+      पाहायाग->vpi_put_delays(delays);
 
       if (vpi_trace) {
 	    fprintf(vpi_trace,
-		    "vpi_put_delays(%p, %p) -->\n", expr, delays);
+		    "vpi_put_delays(%p, %p) -->\n", पाहायाग, delays);
       }
 }
 
@@ -1945,19 +1945,19 @@ extern "C" PLI_INT32 vpi_flush(void)
 
 extern "C" PLI_INT32 vpi_sim_vcontrol(int operation, va_list ap)
 {
-      long diag_msg;
+      long diag_मेनसाहे;
 
       switch (operation) {
 	  case vpiFinish:
 	  case __ivl_legacy_vpiFinish:
-            diag_msg = va_arg(ap, PLI_INT32);
-	    schedule_finish(diag_msg);
+            diag_मेनसाहे = va_arg(ap, PLI_INT32);
+	    schedule_finish(diag_मेनसाहे);
 	    break;
 
 	  case vpiStop:
 	  case __ivl_legacy_vpiStop:
-            diag_msg = va_arg(ap, PLI_INT32);
-	    schedule_stop(diag_msg);
+            diag_मेनसाहे = va_arg(ap, PLI_INT32);
+	    schedule_stop(diag_मेनसाहे);
 	    break;
 
 	  default:
@@ -1992,21 +1992,21 @@ extern "C" PLI_INT32 vpi_control(PLI_INT32 operation, ...)
 extern "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
 {
       s_vpi_vecval rtn;
-      s_vpi_value val;
+      s_vpi_हालागा val;
       vvp_vector4_t vec4;
       bool is_neg = false;  // At this point only a real can be negative.
 
 	/* Get the value as a vvp_vector4_t. */
       val.format = vpiObjTypeVal;
-      vpi_get_value(arg, &val);
+      vpi_get_हालागा(arg, &val);
       if (val.format == vpiRealVal) {
-	    vpi_get_value(arg, &val);
+	    vpi_get_हालागा(arg, &val);
 	      /* All double values can be represented in 1024 bits. */
 	    vec4 = vvp_vector4_t(1024, val.value.real);
 	    if (val.value.real < 0) is_neg = true;
       } else {
 	    val.format = vpiVectorVal;
-	    vpi_get_value(arg, &val);
+	    vpi_get_हालागा(arg, &val);
 	    unsigned wid = vpi_get(vpiSize, arg);
 	    vec4 = vvp_vector4_t(wid, BIT4_0);
 	    for (unsigned idx=0; idx < wid; idx += 1) {
@@ -2050,12 +2050,12 @@ extern "C" s_vpi_vecval vpip_calc_clog2(vpiHandle arg)
  * It is done here for performance reasons - interrogating the drivers
  * individually via the VPI interface would be much slower.
  */
-extern "C" void vpip_count_drivers(vpiHandle ref, unsigned idx,
+extern "C" void vpip_बिलांग_drivers(vpiHandle ref, unsigned idx,
                                    unsigned counts[4])
 {
       struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
       assert(rfp);
-      rfp->node->count_drivers(idx, counts);
+      rfp->बुहोल->बिलांग_drivers(idx, counts);
 }
 
 #if defined(__MINGW32__) || defined (__CYGWIN__)
@@ -2075,8 +2075,8 @@ vpip_routines_s vpi_routines = {
     .get_str                    = vpi_get_str,
     .get_delays                 = vpi_get_delays,
     .put_delays                 = vpi_put_delays,
-    .get_value                  = vpi_get_value,
-    .put_value                  = vpi_put_value,
+    .get_हालागा                  = vpi_get_हालागा,
+    .put_हालागा                  = vpi_put_हालागा,
     .get_time                   = vpi_get_time,
     .get_userdata               = vpi_get_userdata,
     .put_userdata               = vpi_put_userdata,
@@ -2096,11 +2096,11 @@ vpip_routines_s vpi_routines = {
     .fopen                      = vpi_fopen,
     .get_file                   = vpi_get_file,
     .calc_clog2                 = vpip_calc_clog2,
-    .count_drivers              = vpip_count_drivers,
+    .बिलांग_drivers              = vpip_बिलांग_drivers,
     .format_strength            = vpip_format_strength,
     .format_pretty              = vpip_format_pretty,
     .make_systf_system_defined  = vpip_make_systf_system_defined,
     .mcd_rawwrite               = vpip_mcd_rawwrite,
-    .set_return_value           = vpip_set_return_value,
+    .set_return_हालागा           = vpip_set_return_हालागा,
 };
 #endif

@@ -77,14 +77,14 @@ static int bit_get(int code, vpiHandle ref)
 
 	case vpiIndex:
 	    {
-		  s_vpi_value vp;
+		  s_vpi_हालागा vp;
 		  vp.format = vpiIntVal;
-		  vpi_get_value(rfp->index, &vp);
+		  vpi_get_हालागा(rfp->index, &vp);
 		  return vp.value.integer;
 	    }
 
-	case vpiLineNo:
-	    return vpi_get(vpiLineNo, parent);
+	case vpi_लिन्या_No:
+	    return vpi_get(vpi_लिन्या_No, parent);
 
 	case vpiScalar:  // A bit is a scalar
 	    return 1;
@@ -122,9 +122,9 @@ static char* bit_get_str(int code, vpiHandle ref)
       char *nm;
       const char *ixs;
       nm = strdup(vpi_get_str(vpiName, parent));
-      s_vpi_value vp;
+      s_vpi_हालागा vp;
       vp.format = vpiDecStrVal;
-      vpi_get_value(rfp->index, &vp);
+      vpi_get_हालागा(rfp->index, &vp);
       ixs = vp.value.str;
 
       char *rbuf = generic_get_str(code, vpip_scope(parent), nm, ixs);
@@ -177,7 +177,7 @@ static vpiHandle bit_index(int idx, vpiHandle ref)
 }
 */
 
-static void bit_get_value(vpiHandle ref, s_vpi_value*vp)
+static void bit_get_हालागा(vpiHandle ref, s_vpi_हालागा*vp)
 {
       struct __vpiBit*rfp = bit_from_handle(ref);
       assert(rfp);
@@ -185,10 +185,10 @@ static void bit_get_value(vpiHandle ref, s_vpi_value*vp)
       struct __vpiSignal*parent = rfp->get_parent();
       assert(parent);
 
-      parent->get_bit_value(rfp, vp);
+      parent->get_bit_हालागा(rfp, vp);
 }
 
-static vpiHandle bit_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
+static vpiHandle bit_put_हालागा(vpiHandle ref, s_vpi_हालागा*vp, int flags)
 {
       struct __vpiBit*rfp = bit_from_handle(ref);
       assert(rfp);
@@ -196,15 +196,15 @@ static vpiHandle bit_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
       struct __vpiSignal*parent = rfp->get_parent();
       assert(parent);
 
-      return parent->put_bit_value(rfp, vp, flags);
+      return parent->put_bit_हालागा(rfp, vp, flags);
 }
 
 
 int __vpiBit::get_index(void) const
 {
-      s_vpi_value vp;
+      s_vpi_हालागा vp;
       vp.format = vpiIntVal;
-      vpi_get_value(index, &vp);
+      vpi_get_हालागा(index, &vp);
       return vp.value.integer;
 }
 
@@ -217,11 +217,11 @@ int __vpiBit::as_bit_t::vpi_get(int code)
 char* __vpiBit::as_bit_t::vpi_get_str(int code)
 { return bit_get_str(code, this); }
 
-void __vpiBit::as_bit_t::vpi_get_value(p_vpi_value val)
-{ bit_get_value(this, val); }
+void __vpiBit::as_bit_t::vpi_get_हालागा(p_vpi_हालागा val)
+{ bit_get_हालागा(this, val); }
 
-vpiHandle __vpiBit::as_bit_t::vpi_put_value(p_vpi_value val, int flags)
-{ return bit_put_value(this, val, flags); }
+vpiHandle __vpiBit::as_bit_t::vpi_put_हालागा(p_vpi_हालागा val, int flags)
+{ return bit_put_हालागा(this, val, flags); }
 
 vpiHandle __vpiBit::as_bit_t::vpi_handle(int code)
 { return bit_get_handle(code, this); }

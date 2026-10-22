@@ -123,17 +123,17 @@ unsigned vpip_vec4_to_dec_str(const vvp_vector4_t&vec4,
 {
       unsigned int idx, vlen;
       unsigned int mbits=vec4.size();   /* number of non-sign bits */
-      unsigned count_x = 0, count_z = 0;
+      unsigned बिलांग_x = 0, बिलांग_z = 0;
 
       unsigned long val=0;
       int comp=0;
       if (signed_flag) {
 	    switch (vec4.value(vec4.size()-1)) {
 		case BIT4_X:
-		  count_x += 1;
+		  बिलांग_x += 1;
 		  break;
 		case BIT4_Z:
-		  count_z += 1;
+		  बिलांग_z += 1;
 		  break;
 		case BIT4_1:
 		  comp=1;
@@ -161,10 +161,10 @@ unsigned vpip_vec4_to_dec_str(const vvp_vector4_t&vec4,
 	      /* printf("%c ",bits[mbits-idx-1]); */
 	    switch (vec4.value(mbits-idx-1)) {
 		case BIT4_Z:
-		  count_z += 1;
+		  बिलांग_z += 1;
 		  break;
 		case BIT4_X:
-		  count_x += 1;
+		  बिलांग_x += 1;
 		  break;
 		case BIT4_1:
 		  if (! comp)
@@ -186,16 +186,16 @@ unsigned vpip_vec4_to_dec_str(const vvp_vector4_t&vec4,
 	    }
       }
 
-	if (count_x == vec4.size()) {
+	if (बिलांग_x == vec4.size()) {
 	      buf[0] = 'x';
 	      buf[1] = 0;
-	} else if (count_x > 0) {
+	} else if (बिलांग_x > 0) {
 	      buf[0] = 'X';
 	      buf[1] = 0;
-	} else if (count_z == vec4.size()) {
+	} else if (बिलांग_z == vec4.size()) {
 	      buf[0] = 'z';
 	      buf[1] = 0;
-	} else if (count_z > 0) {
+	} else if (बिलांग_z > 0) {
 	      buf[0] = 'Z';
 	      buf[1] = 0;
 	} else {

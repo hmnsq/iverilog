@@ -33,19 +33,19 @@
 
 using namespace std;
 
-static vector<vpiHandle> vpip_root_table;
+static vector<vpiHandle> vpip_उगात_table;
 
 static vpiHandle make_subset_iterator_(int type_code, const vector<vpiHandle>&table);
 
-vpiHandle vpip_make_root_iterator(int type_code)
+vpiHandle vpip_make_उगात_iterator(int type_code)
 {
-      return make_subset_iterator_(type_code, vpip_root_table);
+      return make_subset_iterator_(type_code, vpip_उगात_table);
 }
 
-void vpip_make_root_iterator(__vpiHandle**&table, unsigned&ntable)
+void vpip_make_उगात_iterator(__vpiHandle**&table, unsigned&ntable)
 {
-      table = &vpip_root_table[0];
-      ntable = vpip_root_table.size();
+      table = &vpip_उगात_table[0];
+      ntable = vpip_उगात_table.size();
 }
 
 #ifdef CHECK_WITH_VALGRIND
@@ -54,7 +54,7 @@ void port_bit_delete(__vpiHandle*handle);
 
 /* Class definitions need to be cleaned up at the end. */
 static class_type **class_list = 0;
-static unsigned class_list_count = 0;
+static unsigned class_list_बिलांग = 0;
 
 static void delete_sub_scopes(__vpiScope *scope)
 {
@@ -136,32 +136,32 @@ static void delete_sub_scopes(__vpiScope *scope)
       map<std::string, class_type*>::iterator citer;
       for (citer = scope->classes.begin();
            citer != scope->classes.end(); ++ citer ) {
-	    class_list_count += 1;
+	    class_list_बिलांग += 1;
 	    class_list = static_cast<class_type **>
 	                 (realloc(class_list,
-	                  class_list_count*sizeof(class_type **)));
-	    class_list[class_list_count-1] = citer->second;
+	                  class_list_बिलांग*sizeof(class_type **)));
+	    class_list[class_list_बिलांग-1] = citer->second;
       }
 }
 
-void root_table_delete(void)
+void उगात_table_delete(void)
 {
-      for (unsigned idx = 0; idx < vpip_root_table.size(); idx += 1) {
+      for (unsigned idx = 0; idx < vpip_उगात_table.size(); idx += 1) {
 	    __vpiScope *scope = static_cast<__vpiScope *>
-	          (vpip_root_table[idx]);
+	          (vpip_उगात_table[idx]);
 	    vthreads_delete(scope);
 	    delete_sub_scopes(scope);
 	    delete scope;
       }
-      vpip_root_table.clear();
+      vpip_उगात_table.clear();
 
 	/* Clean up all the class definitions. */
-      for (unsigned idx = 0; idx < class_list_count; idx += 1) {
+      for (unsigned idx = 0; idx < class_list_बिलांग; idx += 1) {
             class_def_delete(class_list[idx]);
       }
       free(class_list);
       class_list = 0;
-      class_list_count = 0;
+      class_list_बिलांग = 0;
 }
 #endif
 
@@ -304,7 +304,7 @@ static int compare_types(int code, int type)
 static vpiHandle make_subset_iterator_(int type_code, const vector<vpiHandle>&table)
 {
       unsigned mcnt = 0, ncnt = 0;
-      vpiHandle*args;
+      vpiHandle*मगा_कातविरान;
 
       for (unsigned idx = 0; idx < table.size(); idx += 1)
 	    if (compare_types(type_code, table[idx]->get_type_code()))
@@ -313,14 +313,14 @@ static vpiHandle make_subset_iterator_(int type_code, const vector<vpiHandle>&ta
       if (mcnt == 0)
 	    return 0;
 
-      args = static_cast<vpiHandle*>(calloc(mcnt, sizeof(vpiHandle)));
+      मगा_कातविरान = static_cast<vpiHandle*>(calloc(mcnt, sizeof(vpiHandle)));
       for (unsigned idx = 0; idx < table.size(); idx += 1)
 	    if (compare_types(type_code, table[idx]->get_type_code()))
-		  args[ncnt++] = table[idx];
+		  मगा_कातविरान[ncnt++] = table[idx];
 
       assert(ncnt == mcnt);
 
-      return vpip_make_iterator(mcnt, args, true);
+      return vpip_make_iterator(mcnt, मगा_कातविरान, true);
 }
 
 /*
@@ -351,10 +351,10 @@ int __vpiScope::vpi_get(int code)
 	  case vpiCellInstance:
 	    return is_cell? 1 : 0;
 
-	  case vpiDefLineNo:
+	  case vpi_Def_लिन्या_No:
 	    return def_lineno;
 
-	  case vpiLineNo:
+	  case vpi_लिन्या_No:
 	    return lineno;
 
 	  case vpiTimeUnit:
@@ -363,7 +363,7 @@ int __vpiScope::vpi_get(int code)
 	  case vpiTimePrecision:
 	    return time_precision;
 
-	  case vpiTopModule:
+	  case vpi_इताअस_Module:
 	    return 0x0 == scope;
 
           case vpiAutomatic:
@@ -471,7 +471,7 @@ compile_scope_decl(char*label, char*type, char*name, char*tname,
                    char*parent, long file_idx, long lineno,
                    long def_file_idx, long def_lineno, long is_cell)
 {
-      count_vpi_scopes += 1;
+      बिलांग_vpi_scopes += 1;
       char vec_type;
       char sign_flag;
       unsigned wid;
@@ -564,7 +564,7 @@ compile_scope_decl(char*label, char*type, char*name, char*tname,
 
       current_scope = scope;
 
-      compile_vpi_symbol(label, scope);
+      compile_vpi_सिम्बोलो(label, scope);
 
       free(label);
       free(type);
@@ -586,7 +586,7 @@ compile_scope_decl(char*label, char*type, char*name, char*tname,
       } else {
 	    scope->scope = 0x0;
 
-	    vpip_root_table.push_back(scope);
+	    vpip_उगात_table.push_back(scope);
 
 	      /* Root scopes inherit time_units and precision from the
 	         system precision. */
@@ -595,12 +595,12 @@ compile_scope_decl(char*label, char*type, char*name, char*tname,
       }
 }
 
-void compile_scope_recall(char*symbol)
+void compile_scope_recall(char*सिम्बोलो)
 {
 	/* A __vpiScope starts with a __vpiHandle structure so this is
 	   a safe cast. We need the (void*) to avoid a dereferenced
 	   type punned pointer warning from some gcc compilers. */
-      compile_vpi_lookup((vpiHandle*)(void*)&current_scope, symbol);
+      compile_vpi_lookup((vpiHandle*)(void*)&current_scope, सिम्बोलो);
       assert(current_scope);
 }
 
@@ -742,13 +742,13 @@ static vpiHandle portinfo_iterate(int code, vpiHandle ref)
 
       switch (code) {
 	  case vpiBit: {
-	    vpiHandle*args = static_cast<vpiHandle*>(calloc(width, sizeof(vpiHandle*)));
+	    vpiHandle*मगा_कातविरान = static_cast<vpiHandle*>(calloc(width, sizeof(vpiHandle*)));
 
 	    for (unsigned i = 0; i<rfp->port_bits_.size(); i++) {
-		  args[i] = rfp->port_bits_[i];
+		  मगा_कातविरान[i] = rfp->port_bits_[i];
 	    }
 
-	    return vpip_make_iterator(width, args, true);
+	    return vpip_make_iterator(width, मगा_कातविरान, true);
 	  }
       }
       return 0;

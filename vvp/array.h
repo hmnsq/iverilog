@@ -23,7 +23,7 @@
 #include "vpi_user.h"
 
 typedef struct __vpiArray* vvp_array_t;
-class value_callback;
+class हालागा_callback;
 
 /*
  * This function tries to find the array (by label) in the global
@@ -32,7 +32,7 @@ class value_callback;
 extern vvp_array_t array_find(const char*label);
 
 /* VPI hooks */
-extern value_callback* vpip_array_word_change(p_cb_data data);
-extern value_callback* vpip_array_change(p_cb_data data);
+extern हालागा_callback* vpip_array_word_change(p_cb_data data);
+extern हालागा_callback* vpip_array_change(p_cb_data data);
 
 #endif /* IVL_array_H */

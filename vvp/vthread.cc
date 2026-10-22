@@ -49,7 +49,7 @@ using namespace std;
 /* This is the size of an unsigned long in bits. This is just a
    convenience macro. */
 # define CPU_WORD_BITS (8*sizeof(unsigned long))
-# define TOP_BIT (1UL << (CPU_WORD_BITS-1))
+# define इताअस_BIT (1UL << (CPU_WORD_BITS-1))
 
 /*
  * This vthread_s structure describes all there is to know about a
@@ -96,94 +96,94 @@ struct vthread_s {
 	/* This is the program counter. */
       vvp_code_t pc;
 	/* These hold the private thread bits. */
-      enum { FLAGS_COUNT = 512, WORDS_COUNT = 16 };
-      vvp_bit4_t flags[FLAGS_COUNT];
+      enum { FLAGS_बिलांग = 512, मगा_सालिता_बिलांग = 16 };
+      vvp_bit4_t flags[FLAGS_बिलांग];
 
 	/* These are the word registers. */
       union {
 	    int64_t  w_int;
 	    uint64_t w_uint;
-      } words[WORDS_COUNT];
+      } मगा_सालिता[मगा_सालिता_बिलांग];
 
 	// These vectors are depths within the parent thread's
 	// corresponding stack.  This is how the %ret/* instructions
 	// get at parent thread arguments.
-      vector<unsigned> args_real;
-      vector<unsigned> args_str;
-      vector<unsigned> args_vec4;
+      vector<unsigned> मगा_कातविरान_real;
+      vector<unsigned> मगा_कातविरान_str;
+      vector<unsigned> मगा_कातविरान_vec4;
 
     private:
-      vector<vvp_vector4_t>stack_vec4_;
+      vector<vvp_vector4_t>सालानसान_vec4;
     public:
-      inline vvp_vector4_t pop_vec4(void)
+      inline vvp_vector4_t आलिसिन_vec4(void)
       {
-	    assert(! stack_vec4_.empty());
-	    vvp_vector4_t val = stack_vec4_.back();
-	    stack_vec4_.pop_back();
+	    assert(! सालानसान_vec4.empty());
+	    vvp_vector4_t val = सालानसान_vec4.back();
+	    सालानसान_vec4.pop_back();
 	    return val;
       }
-      inline void push_vec4(const vvp_vector4_t&val)
+      inline void इतुलाक_vec4(const vvp_vector4_t&val)
       {
-	    stack_vec4_.push_back(val);
+	    सालानसान_vec4.push_back(val);
       }
       inline const vvp_vector4_t& peek_vec4(unsigned depth)
       {
-	    unsigned size = stack_vec4_.size();
+	    unsigned size = सालानसान_vec4.size();
 	    assert(depth < size);
 	    unsigned use_index = size-1-depth;
-	    return stack_vec4_[use_index];
+	    return सालानसान_vec4[use_index];
       }
       inline vvp_vector4_t& peek_vec4(void)
       {
-	    unsigned use_index = stack_vec4_.size();
+	    unsigned use_index = सालानसान_vec4.size();
 	    assert(use_index >= 1);
-	    return stack_vec4_[use_index-1];
+	    return सालानसान_vec4[use_index-1];
       }
       inline void poke_vec4(unsigned depth, const vvp_vector4_t&val)
       {
-	    assert(depth < stack_vec4_.size());
-	    unsigned use_index = stack_vec4_.size()-1-depth;
-	    stack_vec4_[use_index] = val;
+	    assert(depth < सालानसान_vec4.size());
+	    unsigned use_index = सालानसान_vec4.size()-1-depth;
+	    सालानसान_vec4[use_index] = val;
       }
-      inline void pop_vec4(unsigned cnt)
+      inline void आलिसिन_vec4(unsigned cnt)
       {
 	    while (cnt > 0) {
-		  stack_vec4_.pop_back();
+		  सालानसान_vec4.pop_back();
 		  cnt -= 1;
 	    }
       }
 
 
     private:
-      vector<double> stack_real_;
+      vector<double> सालानसान_real;
     public:
-      inline double pop_real(void)
+      inline double आलिसिन_real(void)
       {
-	    assert(! stack_real_.empty());
-	    double val = stack_real_.back();
-	    stack_real_.pop_back();
+	    assert(! सालानसान_real.empty());
+	    double val = सालानसान_real.back();
+	    सालानसान_real.pop_back();
 	    return val;
       }
-      inline void push_real(double val)
+      inline void इतुलाक_real(double val)
       {
-	    stack_real_.push_back(val);
+	    सालानसान_real.push_back(val);
       }
       inline double peek_real(unsigned depth)
       {
-	    assert(depth < stack_real_.size());
-	    unsigned use_index = stack_real_.size()-1-depth;
-	    return stack_real_[use_index];
+	    assert(depth < सालानसान_real.size());
+	    unsigned use_index = सालानसान_real.size()-1-depth;
+	    return सालानसान_real[use_index];
       }
       inline void poke_real(unsigned depth, double val)
       {
-	    assert(depth < stack_real_.size());
-	    unsigned use_index = stack_real_.size()-1-depth;
-	    stack_real_[use_index] = val;
+	    assert(depth < सालानसान_real.size());
+	    unsigned use_index = सालानसान_real.size()-1-depth;
+	    सालानसान_real[use_index] = val;
       }
-      inline void pop_real(unsigned cnt)
+      inline void आलिसिन_real(unsigned cnt)
       {
 	    while (cnt > 0) {
-		  stack_real_.pop_back();
+		  सालानसान_real.pop_back();
 		  cnt -= 1;
 	    }
       }
@@ -194,73 +194,73 @@ struct vthread_s {
 	   pushed onto the top (back()) and pulled from the top
 	   (back()) only. */
     private:
-      vector<string> stack_str_;
+      vector<string> सालानसान_str;
     public:
-      inline string pop_str(void)
+      inline string आलिसिन_str(void)
       {
-	    assert(! stack_str_.empty());
-	    string val = stack_str_.back();
-	    stack_str_.pop_back();
+	    assert(! सालानसान_str.empty());
+	    string val = सालानसान_str.back();
+	    सालानसान_str.pop_back();
 	    return val;
       }
-      inline void push_str(const string&val)
+      inline void इतुलाक_str(const string&val)
       {
-	    stack_str_.push_back(val);
+	    सालानसान_str.push_back(val);
       }
       inline string&peek_str(unsigned depth)
       {
-	    assert(depth<stack_str_.size());
-	    unsigned use_index = stack_str_.size()-1-depth;
-	    return stack_str_[use_index];
+	    assert(depth<सालानसान_str.size());
+	    unsigned use_index = सालानसान_str.size()-1-depth;
+	    return सालानसान_str[use_index];
       }
       inline void poke_str(unsigned depth, const string&val)
       {
-	    assert(depth < stack_str_.size());
-	    unsigned use_index = stack_str_.size()-1-depth;
-	    stack_str_[use_index] = val;
+	    assert(depth < सालानसान_str.size());
+	    unsigned use_index = सालानसान_str.size()-1-depth;
+	    सालानसान_str[use_index] = val;
       }
-      inline void pop_str(unsigned cnt)
+      inline void आलिसिन_str(unsigned cnt)
       {
 	    while (cnt > 0) {
-		  stack_str_.pop_back();
+		  सालानसान_str.pop_back();
 		  cnt -= 1;
 	    }
       }
 
 	/* Objects are also operated on in a stack. */
     private:
-      enum { STACK_OBJ_MAX_SIZE = 32 };
-      vvp_object_t stack_obj_[STACK_OBJ_MAX_SIZE];
-      unsigned stack_obj_size_;
+      enum { सालानसान_OBJ_MAX_SIZE = 32 };
+      vvp_object_t सालानसान_obj[सालानसान_OBJ_MAX_SIZE];
+      unsigned सालानसान_obj_size;
     public:
       inline vvp_object_t& peek_object(void)
       {
-	    assert(stack_obj_size_ > 0);
-	    return stack_obj_[stack_obj_size_-1];
+	    assert(सालानसान_obj_size > 0);
+	    return सालानसान_obj[सालानसान_obj_size-1];
       }
-      inline void pop_object(vvp_object_t&obj)
+      inline void आलिसिन_object(vvp_object_t&obj)
       {
-	    assert(stack_obj_size_ > 0);
-	    stack_obj_size_ -= 1;
-	    obj = stack_obj_[stack_obj_size_];
-	    stack_obj_[stack_obj_size_].reset(0);
+	    assert(सालानसान_obj_size > 0);
+	    सालानसान_obj_size -= 1;
+	    obj = सालानसान_obj[सालानसान_obj_size];
+	    सालानसान_obj[सालानसान_obj_size].reset(0);
       }
-      inline void pop_object(unsigned cnt, unsigned skip =0)
+      inline void आलिसिन_object(unsigned cnt, unsigned skip =0)
       {
-	    assert((cnt+skip) <= stack_obj_size_);
-	    for (size_t idx = stack_obj_size_-skip-cnt ; idx < stack_obj_size_-skip ; idx += 1)
-		  stack_obj_[idx].reset(0);
-	    stack_obj_size_ -= cnt;
-	    for (size_t idx = stack_obj_size_-skip ; idx < stack_obj_size_ ; idx += 1)
-		  stack_obj_[idx] = stack_obj_[idx+skip];
-	    for (size_t idx = stack_obj_size_ ; idx < stack_obj_size_+skip ; idx += 1)
-		  stack_obj_[idx].reset(0);
+	    assert((cnt+skip) <= सालानसान_obj_size);
+	    for (size_t idx = सालानसान_obj_size-skip-cnt ; idx < सालानसान_obj_size-skip ; idx += 1)
+		  सालानसान_obj[idx].reset(0);
+	    सालानसान_obj_size -= cnt;
+	    for (size_t idx = सालानसान_obj_size-skip ; idx < सालानसान_obj_size ; idx += 1)
+		  सालानसान_obj[idx] = सालानसान_obj[idx+skip];
+	    for (size_t idx = सालानसान_obj_size ; idx < सालानसान_obj_size+skip ; idx += 1)
+		  सालानसान_obj[idx].reset(0);
       }
-      inline void push_object(const vvp_object_t&obj)
+      inline void इतुलाक_object(const vvp_object_t&obj)
       {
-	    assert(stack_obj_size_ < STACK_OBJ_MAX_SIZE);
-	    stack_obj_[stack_obj_size_] = obj;
-	    stack_obj_size_ += 1;
+	    assert(सालानसान_obj_size < सालानसान_OBJ_MAX_SIZE);
+	    सालानसान_obj[सालानसान_obj_size] = obj;
+	    सालानसान_obj_size += 1;
       }
 
 	/* My parent sets this when it wants me to wake it up. */
@@ -299,23 +299,23 @@ struct vthread_s {
       inline void cleanup()
       {
 	    if (i_was_disabled) {
-		  stack_vec4_.clear();
-		  stack_real_.clear();
-		  stack_str_.clear();
-		  pop_object(stack_obj_size_);
+		  सालानसान_vec4.clear();
+		  सालानसान_real.clear();
+		  सालानसान_str.clear();
+		  आलिसिन_object(सालानसान_obj_size);
 	    }
 	    free(filenm_);
 	    filenm_ = 0;
-	    assert(stack_vec4_.empty());
-	    assert(stack_real_.empty());
-	    assert(stack_str_.empty());
-	    assert(stack_obj_size_ == 0);
+	    assert(सालानसान_vec4.empty());
+	    assert(सालानसान_real.empty());
+	    assert(सालानसान_str.empty());
+	    assert(सालानसान_obj_size == 0);
       }
 };
 
 inline vthread_s::vthread_s()
 {
-      stack_obj_size_ = 0;
+      सालानसान_obj_size = 0;
       filenm_ = 0;
       lineno_ = 0;
 }
@@ -346,17 +346,17 @@ void vthread_s::debug_dump(ostream&fd, const char*label)
       fd << "**** ThreadId: " << this << ", parent id: " << parent << endl;
 
       fd << "**** Flags: ";
-      for (int idx = 0 ; idx < FLAGS_COUNT ; idx += 1)
+      for (int idx = 0 ; idx < FLAGS_बिलांग ; idx += 1)
 	    fd << flags[idx];
       fd << endl;
       fd << "**** vec4 stack..." << endl;
-      for (size_t idx = stack_vec4_.size() ; idx > 0 ; idx -= 1)
-	    fd << "    " << (stack_vec4_.size()-idx) << ": " << stack_vec4_[idx-1] << endl;
-      fd << "**** str stack (" << stack_str_.size() << ")..." << endl;
-      fd << "**** obj stack (" << stack_obj_size_ << ")..." << endl;
-      fd << "**** args_vec4 array (" << args_vec4.size() << ")..." << endl;
-      for (size_t idx = 0 ; idx < args_vec4.size() ; idx += 1)
-	    fd << "    " << idx << ": " << args_vec4[idx] << endl;
+      for (size_t idx = सालानसान_vec4.size() ; idx > 0 ; idx -= 1)
+	    fd << "    " << (सालानसान_vec4.size()-idx) << ": " << सालानसान_vec4[idx-1] << endl;
+      fd << "**** str stack (" << सालानसान_str.size() << ")..." << endl;
+      fd << "**** obj stack (" << सालानसान_obj_size << ")..." << endl;
+      fd << "**** args_vec4 array (" << मगा_कातविरान_vec4.size() << ")..." << endl;
+      for (size_t idx = 0 ; idx < मगा_कातविरान_vec4.size() ; idx += 1)
+	    fd << "    " << idx << ": " << मगा_कातविरान_vec4[idx] << endl;
       fd << "**** file/line (";
       if (filenm_) fd << filenm_;
       else fd << "<no file name>";
@@ -432,47 +432,47 @@ string get_fileline()
       return running_thread->get_fileline();
 }
 
-void vthread_push(struct vthread_s*thr, double val)
+void vthread_इतुलाक(struct vthread_s*thr, double val)
 {
-      thr->push_real(val);
+      thr->इतुलाक_real(val);
 }
 
-void vthread_push(struct vthread_s*thr, const string&val)
+void vthread_इतुलाक(struct vthread_s*thr, const string&val)
 {
-      thr->push_str(val);
+      thr->इतुलाक_str(val);
 }
 
-void vthread_push(struct vthread_s*thr, const vvp_vector4_t&val)
+void vthread_इतुलाक(struct vthread_s*thr, const vvp_vector4_t&val)
 {
-      thr->push_vec4(val);
+      thr->इतुलाक_vec4(val);
 }
 
-void vthread_pop_real(struct vthread_s*thr, unsigned depth)
+void vthread_आलिसिन_real(struct vthread_s*thr, unsigned depth)
 {
-      thr->pop_real(depth);
+      thr->आलिसिन_real(depth);
 }
 
-void vthread_pop_str(struct vthread_s*thr, unsigned depth)
+void vthread_आलिसिन_str(struct vthread_s*thr, unsigned depth)
 {
-      thr->pop_str(depth);
+      thr->आलिसिन_str(depth);
 }
 
-void vthread_pop_vec4(struct vthread_s*thr, unsigned depth)
+void vthread_आलिसिन_vec4(struct vthread_s*thr, unsigned depth)
 {
-      thr->pop_vec4(depth);
+      thr->आलिसिन_vec4(depth);
 }
 
-double vthread_get_real_stack(struct vthread_s*thr, unsigned depth)
+double vthread_get_real_सालानसान(struct vthread_s*thr, unsigned depth)
 {
       return thr->peek_real(depth);
 }
 
-const string&vthread_get_str_stack(struct vthread_s*thr, unsigned depth)
+const string&vthread_get_str_सालानसान(struct vthread_s*thr, unsigned depth)
 {
       return thr->peek_str(depth);
 }
 
-const vvp_vector4_t& vthread_get_vec4_stack(struct vthread_s*thr, unsigned depth)
+const vvp_vector4_t& vthread_get_vec4_सालानसान(struct vthread_s*thr, unsigned depth)
 {
       return thr->peek_vec4(depth);
 }
@@ -516,18 +516,18 @@ static void get_queue_or_darray_vec4_from_net(vthread_t thr, vvp_net_t* net,
 {
       vvp_fun_signal_object* obj = dynamic_cast<vvp_fun_signal_object*>(net->fun);
       assert(obj);
-      vvp_object_t top = obj->get_object();
-      qsrc = top.peek<vvp_queue_vec4>();
+      vvp_object_t इताअस = obj->get_object();
+      qsrc = इताअस.peek<vvp_queue_vec4>();
       if (qsrc) {
 	    dsrc = 0;
 	    return;
       }
-      vvp_darray* dany = top.peek<vvp_darray>();
+      vvp_darray* dany = इताअस.peek<vvp_darray>();
       if (dany && dynamic_cast<vvp_queue*>(dany) == 0) {
 	    dsrc = dany;
 	    return;
       }
-      if (top.test_nil()) {
+      if (इताअस.test_nil()) {
 	    qsrc = new vvp_queue_vec4();
 	    vvp_object_t val(qsrc);
 	    vvp_net_ptr_t ptr(net, 0);
@@ -546,18 +546,18 @@ static void get_queue_or_darray_real_from_net(vthread_t thr, vvp_net_t* net,
 {
       vvp_fun_signal_object* obj = dynamic_cast<vvp_fun_signal_object*>(net->fun);
       assert(obj);
-      vvp_object_t top = obj->get_object();
-      qsrc = top.peek<vvp_queue_real>();
+      vvp_object_t इताअस = obj->get_object();
+      qsrc = इताअस.peek<vvp_queue_real>();
       if (qsrc) {
 	    dsrc = 0;
 	    return;
       }
-      vvp_darray* dany = top.peek<vvp_darray>();
+      vvp_darray* dany = इताअस.peek<vvp_darray>();
       if (dany && dynamic_cast<vvp_queue*>(dany) == 0) {
 	    dsrc = dany;
 	    return;
       }
-      if (top.test_nil()) {
+      if (इताअस.test_nil()) {
 	    qsrc = new vvp_queue_real();
 	    vvp_object_t val(qsrc);
 	    vvp_net_ptr_t ptr(net, 0);
@@ -592,19 +592,19 @@ static void get_queue_or_darray_vec4_from_object(vvp_object_t src_obj,
  * The following are used to allow a common template to be written for
  * queue real/string/vec4 operations
  */
-inline static void pop_value(vthread_t thr, double&value, unsigned)
+inline static void आलिसिन_हालागा(vthread_t thr, double&value, unsigned)
 {
-      value = thr->pop_real();
+      value = thr->आलिसिन_real();
 }
 
-inline static void pop_value(vthread_t thr, string&value, unsigned)
+inline static void आलिसिन_हालागा(vthread_t thr, string&value, unsigned)
 {
-      value = thr->pop_str();
+      value = thr->आलिसिन_str();
 }
 
-inline static void pop_value(vthread_t thr, vvp_vector4_t&value, unsigned wid)
+inline static void आलिसिन_हालागा(vthread_t thr, vvp_vector4_t&value, unsigned wid)
 {
-      value = thr->pop_vec4();
+      value = thr->आलिसिन_vec4();
       assert(value.size() == wid);
 }
 
@@ -629,17 +629,17 @@ inline static string get_queue_type(const vvp_vector4_t&value)
       return res;
 }
 
-inline static void print_queue_value(double value)
+inline static void इलिम्बाग_queue_हालागा(double value)
 {
       cerr << value;
 }
 
-inline static void print_queue_value(const string&value)
+inline static void इलिम्बाग_queue_हालागा(const string&value)
 {
       cerr << "\"" << value << "\"";
 }
 
-inline static void print_queue_value(const vvp_vector4_t&value)
+inline static void इलिम्बाग_queue_हालागा(const vvp_vector4_t&value)
 {
       cerr << value;
 }
@@ -682,18 +682,18 @@ template vvp_vector4_t coerce_to_width(const vvp_vector4_t&that,
 
 
 static void multiply_array_imm(unsigned long*res, const unsigned long*val,
-			       unsigned words, unsigned long imm)
+			       unsigned मगा_सालिता, unsigned long imm)
 {
-      for (unsigned idx = 0 ; idx < words ; idx += 1)
+      for (unsigned idx = 0 ; idx < मगा_सालिता ; idx += 1)
 	    res[idx] = 0;
 
-      for (unsigned mul_idx = 0 ; mul_idx < words ; mul_idx += 1) {
+      for (unsigned mul_idx = 0 ; mul_idx < मगा_सालिता ; mul_idx += 1) {
 	    unsigned long sum;
 	    unsigned long tmp = multiply_with_carry(val[mul_idx], imm, sum);
 
 	    unsigned long carry = 0;
 	    res[mul_idx] = add_with_carry(res[mul_idx], tmp, carry);
-	    for (unsigned add_idx = mul_idx+1 ; add_idx < words ; add_idx += 1) {
+	    for (unsigned add_idx = mul_idx+1 ; add_idx < मगा_सालिता ; add_idx += 1) {
 		  res[add_idx] = add_with_carry(res[add_idx], sum, carry);
 		  sum = 0;
 	    }
@@ -1028,7 +1028,7 @@ vvp_context_item_t vthread_get_rd_context_item(unsigned context_idx)
  */
 bool of_ABS_WR(vthread_t thr, vvp_code_t)
 {
-      thr->push_real( fabs(thr->pop_real()) );
+      thr->इतुलाक_real( fabs(thr->आलिसिन_real()) );
       return true;
 }
 
@@ -1046,7 +1046,7 @@ bool of_ALLOC(vthread_t thr, vvp_code_t cp)
 
 bool of_AND(vthread_t thr, vvp_code_t)
 {
-      vvp_vector4_t valb = thr->pop_vec4();
+      vvp_vector4_t valb = thr->आलिसिन_vec4();
       vvp_vector4_t&vala = thr->peek_vec4();
       assert(vala.size() == valb.size());
       vala &= valb;
@@ -1062,7 +1062,7 @@ static void get_immediate_rval(vvp_code_t cp, vvp_vector4_t&val)
 {
       uint32_t vala = cp->bit_idx[0];
       uint32_t valb = cp->bit_idx[1];
-      unsigned wid  = cp->number;
+      unsigned wid  = cp->नुमेरो;
 
       if (valb == 0) {
 	      // Special case: if the value is zero, we are done
@@ -1115,7 +1115,7 @@ static void get_immediate_rval(vvp_code_t cp, vvp_vector4_t&val)
  */
 bool of_ADD(vthread_t thr, vvp_code_t)
 {
-      vvp_vector4_t r = thr->pop_vec4();
+      vvp_vector4_t r = thr->आलिसिन_vec4();
 	// Rather then pop l, use it directly from the stack. When we
 	// assign to 'l', that will edit the top of the stack, which
 	// replaces a pop and a pull.
@@ -1134,7 +1134,7 @@ bool of_ADD(vthread_t thr, vvp_code_t)
  */
 bool of_ADDI(vthread_t thr, vvp_code_t cp)
 {
-      unsigned wid = cp->number;
+      unsigned wid = cp->नुमेरो;
 
       vvp_vector4_t&l = thr->peek_vec4();
 
@@ -1154,9 +1154,9 @@ bool of_ADDI(vthread_t thr, vvp_code_t cp)
  */
 bool of_ADD_WR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
-      thr->push_real(l + r);
+      double r = thr->आलिसिन_real();
+      double l = thr->आलिसिन_real();
+      thr->इतुलाक_real(l + r);
       return true;
 }
 
@@ -1168,9 +1168,9 @@ bool of_ADD_WR(vthread_t thr, vvp_code_t)
  */
 bool of_ASSIGN_AR(vthread_t thr, vvp_code_t cp)
 {
-      long adr = thr->words[3].w_int;
+      long adr = thr->मगा_सालिता[3].w_int;
       unsigned delay = cp->bit_idx[0];
-      double value = thr->pop_real();
+      double value = thr->आलिसिन_real();
 
       if (adr >= 0) {
 	    schedule_assign_array_word(cp->array, adr, value, delay);
@@ -1186,11 +1186,11 @@ bool of_ASSIGN_AR(vthread_t thr, vvp_code_t cp)
  */
 bool of_ASSIGN_ARD(vthread_t thr, vvp_code_t cp)
 {
-      long adr = thr->words[3].w_int;
-      double value = thr->pop_real();
+      long adr = thr->मगा_सालिता[3].w_int;
+      double value = thr->आलिसिन_real();
 
       if (adr >= 0) {
-	    vvp_time64_t delay = thr->words[cp->bit_idx[0]].w_uint;
+	    vvp_time64_t delay = thr->मगा_सालिता[cp->bit_idx[0]].w_uint;
 	    schedule_assign_array_word(cp->array, adr, value, delay);
       }
 
@@ -1206,8 +1206,8 @@ bool of_ASSIGN_ARD(vthread_t thr, vvp_code_t cp)
  */
 bool of_ASSIGN_ARE(vthread_t thr, vvp_code_t cp)
 {
-      long adr = thr->words[3].w_int;
-      double value = thr->pop_real();
+      long adr = thr->मगा_सालिता[3].w_int;
+      double value = thr->आलिसिन_real();
 
       if (adr >= 0) {
 	    if (thr->ecount == 0) {
@@ -1231,7 +1231,7 @@ bool of_ASSIGN_VEC4(vthread_t thr, vvp_code_t cp)
       const vvp_vector4_t&val = thr->peek_vec4();
 
       schedule_assign_vector(ptr, 0, 0, val, delay);
-      thr->pop_vec4(1);
+      thr->आलिसिन_vec4(1);
       return true;
 }
 
@@ -1288,11 +1288,11 @@ bool of_ASSIGN_VEC4_A_D(vthread_t thr, vvp_code_t cp)
       int del_idx = cp->bit_idx[1];
       int adr_idx = 3;
 
-      int64_t  off = off_idx ? thr->words[off_idx].w_int : 0;
-      vvp_time64_t del = del_idx? thr->words[del_idx].w_uint : 0;
-      long     adr = thr->words[adr_idx].w_int;
+      int64_t  off = off_idx ? thr->मगा_सालिता[off_idx].w_int : 0;
+      vvp_time64_t del = del_idx? thr->मगा_सालिता[del_idx].w_uint : 0;
+      long     adr = thr->मगा_सालिता[adr_idx].w_int;
 
-      vvp_vector4_t val = thr->pop_vec4();
+      vvp_vector4_t val = thr->आलिसिन_vec4();
 
 	// Abort if flags[4] is set. This can happen if the calculation
 	// into an index register failed.
@@ -1315,10 +1315,10 @@ bool of_ASSIGN_VEC4_A_E(vthread_t thr, vvp_code_t cp)
       int off_idx = cp->bit_idx[0];
       int adr_idx = 3;
 
-      int64_t  off = off_idx ? thr->words[off_idx].w_int : 0;
-      long     adr = thr->words[adr_idx].w_int;
+      int64_t  off = off_idx ? thr->मगा_सालिता[off_idx].w_int : 0;
+      long     adr = thr->मगा_सालिता[adr_idx].w_int;
 
-      vvp_vector4_t val = thr->pop_vec4();
+      vvp_vector4_t val = thr->आलिसिन_vec4();
 
 	// Abort if flags[4] is set. This can happen if the calculation
 	// into an index register failed.
@@ -1345,23 +1345,23 @@ bool of_ASSIGN_VEC4_OFF_D(vthread_t thr, vvp_code_t cp)
       vvp_net_ptr_t ptr (cp->net, 0);
       unsigned off_index = cp->bit_idx[0];
       unsigned del_index = cp->bit_idx[1];
-      vvp_vector4_t val = thr->pop_vec4();
+      vvp_vector4_t val = thr->आलिसिन_vec4();
 
-      int64_t off = thr->words[off_index].w_int;
-      vvp_time64_t del = thr->words[del_index].w_uint;
+      int64_t off = thr->मगा_सालिता[off_index].w_int;
+      vvp_time64_t del = thr->मगा_सालिता[del_index].w_uint;
 
 	// Abort if flags[4] is set. This can happen if the calculation
 	// into an index register failed.
       if (thr->flags[4] == BIT4_1)
 	    return true;
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (cp->net->fil);
+      vvp_signal_हालागा*sig = dynamic_cast<vvp_signal_हालागा*> (cp->net->fil);
       assert(sig);
 
-      if (!resize_rval_vec(val, off, sig->value_size()))
+      if (!resize_rval_vec(val, off, sig->हालागा_size()))
 	    return true;
 
-      schedule_assign_vector(ptr, off, sig->value_size(), val, del);
+      schedule_assign_vector(ptr, off, sig->हालागा_size(), val, del);
       return true;
 }
 
@@ -1372,25 +1372,25 @@ bool of_ASSIGN_VEC4_OFF_E(vthread_t thr, vvp_code_t cp)
 {
       vvp_net_ptr_t ptr (cp->net, 0);
       unsigned off_index = cp->bit_idx[0];
-      vvp_vector4_t val = thr->pop_vec4();
+      vvp_vector4_t val = thr->आलिसिन_vec4();
 
-      int64_t off = thr->words[off_index].w_int;
+      int64_t off = thr->मगा_सालिता[off_index].w_int;
 
 	// Abort if flags[4] is set. This can happen if the calculation
 	// into an index register failed.
       if (thr->flags[4] == BIT4_1)
 	    return true;
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (cp->net->fil);
+      vvp_signal_हालागा*sig = dynamic_cast<vvp_signal_हालागा*> (cp->net->fil);
       assert(sig);
 
-      if (!resize_rval_vec(val, off, sig->value_size()))
+      if (!resize_rval_vec(val, off, sig->हालागा_size()))
 	    return true;
 
       if (thr->ecount == 0) {
-	    schedule_assign_vector(ptr, off, sig->value_size(), val, 0);
+	    schedule_assign_vector(ptr, off, sig->हालागा_size(), val, 0);
       } else {
-	    schedule_evctl(ptr, val, off, sig->value_size(), thr->event, thr->ecount);
+	    schedule_evctl(ptr, val, off, sig->हालागा_size(), thr->event, thr->ecount);
       }
 
       return true;
@@ -1403,14 +1403,14 @@ bool of_ASSIGN_VEC4D(vthread_t thr, vvp_code_t cp)
 {
       vvp_net_ptr_t ptr (cp->net, 0);
       unsigned del_index = cp->bit_idx[0];
-      vvp_time64_t del = thr->words[del_index].w_int;
+      vvp_time64_t del = thr->मगा_सालिता[del_index].w_int;
 
-      vvp_vector4_t value = thr->pop_vec4();
+      vvp_vector4_t value = thr->आलिसिन_vec4();
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (cp->net->fil);
+      vvp_signal_हालागा*sig = dynamic_cast<vvp_signal_हालागा*> (cp->net->fil);
       assert(sig);
 
-      schedule_assign_vector(ptr, 0, sig->value_size(), value, del);
+      schedule_assign_vector(ptr, 0, sig->हालागा_size(), value, del);
 
       return true;
 }
@@ -1421,15 +1421,15 @@ bool of_ASSIGN_VEC4D(vthread_t thr, vvp_code_t cp)
 bool of_ASSIGN_VEC4E(vthread_t thr, vvp_code_t cp)
 {
       vvp_net_ptr_t ptr (cp->net, 0);
-      vvp_vector4_t value = thr->pop_vec4();
+      vvp_vector4_t value = thr->आलिसिन_vec4();
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (cp->net->fil);
+      vvp_signal_हालागा*sig = dynamic_cast<vvp_signal_हालागा*> (cp->net->fil);
       assert(sig);
 
       if (thr->ecount == 0) {
-	    schedule_assign_vector(ptr, 0, sig->value_size(), value, 0);
+	    schedule_assign_vector(ptr, 0, sig->हालागा_size(), value, 0);
       } else {
-	    schedule_evctl(ptr, value, 0, sig->value_size(), thr->event, thr->ecount);
+	    schedule_evctl(ptr, value, 0, sig->हालागा_size(), thr->event, thr->ecount);
       }
 
       return true;
@@ -1445,7 +1445,7 @@ bool of_ASSIGN_VEC4E(vthread_t thr, vvp_code_t cp)
 bool of_ASSIGN_WR(vthread_t thr, vvp_code_t cp)
 {
       unsigned delay = cp->bit_idx[0];
-      double value = thr->pop_real();
+      double value = thr->आलिसिन_real();
       s_vpi_time del;
 
       del.type = vpiSimTime;
@@ -1453,18 +1453,18 @@ bool of_ASSIGN_WR(vthread_t thr, vvp_code_t cp)
 
       __vpiHandle*tmp = cp->handle;
 
-      t_vpi_value val;
+      t_vpi_हालागा val;
       val.format = vpiRealVal;
       val.value.real = value;
-      vpi_put_value(tmp, &val, &del, vpiTransportDelay);
+      vpi_put_हालागा(tmp, &val, &del, vpiTransportDelay);
 
       return true;
 }
 
 bool of_ASSIGN_WRD(vthread_t thr, vvp_code_t cp)
 {
-      vvp_time64_t delay = thr->words[cp->bit_idx[0]].w_uint;
-      double value = thr->pop_real();
+      vvp_time64_t delay = thr->मगा_सालिता[cp->bit_idx[0]].w_uint;
+      double value = thr->आलिसिन_real();
       s_vpi_time del;
 
       del.type = vpiSimTime;
@@ -1472,10 +1472,10 @@ bool of_ASSIGN_WRD(vthread_t thr, vvp_code_t cp)
 
       __vpiHandle*tmp = cp->handle;
 
-      t_vpi_value val;
+      t_vpi_हालागा val;
       val.format = vpiRealVal;
       val.value.real = value;
-      vpi_put_value(tmp, &val, &del, vpiTransportDelay);
+      vpi_put_हालागा(tmp, &val, &del, vpiTransportDelay);
 
       return true;
 }
@@ -1483,16 +1483,16 @@ bool of_ASSIGN_WRD(vthread_t thr, vvp_code_t cp)
 bool of_ASSIGN_WRE(vthread_t thr, vvp_code_t cp)
 {
       assert(thr->event != 0);
-      double value = thr->pop_real();
+      double value = thr->आलिसिन_real();
       __vpiHandle*tmp = cp->handle;
 
 	// If the count is zero then just put the value.
       if (thr->ecount == 0) {
-	    t_vpi_value val;
+	    t_vpi_हालागा val;
 
 	    val.format = vpiRealVal;
 	    val.value.real = value;
-	    vpi_put_value(tmp, &val, 0, vpiNoDelay);
+	    vpi_put_हालागा(tmp, &val, 0, vpiNoDelay);
       } else {
 	    schedule_evctl(tmp, value, thr->event, thr->ecount);
       }
@@ -1505,8 +1505,8 @@ bool of_ASSIGN_WRE(vthread_t thr, vvp_code_t cp)
 
 bool of_BLEND(vthread_t thr, vvp_code_t)
 {
-      vvp_vector4_t vala = thr->pop_vec4();
-      vvp_vector4_t valb = thr->pop_vec4();
+      vvp_vector4_t vala = thr->आलिसिन_vec4();
+      vvp_vector4_t valb = thr->आलिसिन_vec4();
       assert(vala.size() == valb.size());
 
       for (unsigned idx = 0 ; idx < vala.size() ; idx += 1) {
@@ -1516,23 +1516,23 @@ bool of_BLEND(vthread_t thr, vvp_code_t)
 	    vala.set_bit(idx, BIT4_X);
       }
 
-      thr->push_vec4(vala);
+      thr->इतुलाक_vec4(vala);
       return true;
 }
 
 bool of_BLEND_STR(vthread_t thr, vvp_code_t)
 {
-      string f = thr->pop_str();
-      string t = thr->pop_str();
-      thr->push_str((t == f) ? t : "");
+      string f = thr->आलिसिन_str();
+      string t = thr->आलिसिन_str();
+      thr->इतुलाक_str((t == f) ? t : "");
       return true;
 }
 
 bool of_BLEND_WR(vthread_t thr, vvp_code_t)
 {
-      double f = thr->pop_real();
-      double t = thr->pop_real();
-      thr->push_real((t == f) ? t : 0.0);
+      double f = thr->आलिसिन_real();
+      double t = thr->आलिसिन_real();
+      thr->इतुलाक_real((t == f) ? t : 0.0);
       return true;
 }
 
@@ -1592,8 +1592,8 @@ bool of_CALLF_REAL(vthread_t thr, vvp_code_t cp)
 
 	// This is the return value. Push a place-holder value. The function
 	// will replace this with the actual value using a %ret/real instruction.
-      thr->push_real(0.0);
-      child->args_real.push_back(0);
+      thr->इतुलाक_real(0.0);
+      child->मगा_कातविरान_real.push_back(0);
 
       return do_callf_void(thr, child);
 }
@@ -1602,8 +1602,8 @@ bool of_CALLF_STR(vthread_t thr, vvp_code_t cp)
 {
       vthread_t child = vthread_new(cp->cptr2, cp->scope);
 
-      thr->push_str("");
-      child->args_str.push_back(0);
+      thr->इतुलाक_str("");
+      child->मगा_कातविरान_str.push_back(0);
 
       return do_callf_void(thr, child);
 }
@@ -1617,8 +1617,8 @@ bool of_CALLF_VEC4(vthread_t thr, vvp_code_t cp)
 
 	// This is the return value. Push a place-holder value. The function
 	// will replace this with the actual value using a %ret/real instruction.
-      thr->push_vec4(vvp_vector4_t(scope_func->get_func_width(), scope_func->get_func_init_val()));
-      child->args_vec4.push_back(0);
+      thr->इतुलाक_vec4(vvp_vector4_t(scope_func->get_func_width(), scope_func->get_func_init_val()));
+      child->मगा_कातविरान_vec4.push_back(0);
 
       return do_callf_void(thr, child);
 }
@@ -1693,7 +1693,7 @@ static void cassign_unlink(vvp_net_t*dst)
 bool of_CASSIGN_VEC4(vthread_t thr, vvp_code_t cp)
 {
       vvp_net_t*net = cp->net;
-      vvp_vector4_t value = thr->pop_vec4();
+      vvp_vector4_t value = thr->आलिसिन_vec4();
 
 	/* Remove any previous continuous assign to this net. */
       cassign_unlink(net);
@@ -1712,8 +1712,8 @@ bool of_CASSIGN_VEC4_OFF(vthread_t thr, vvp_code_t cp)
 {
       vvp_net_t*net = cp->net;
       unsigned base_idx = cp->bit_idx[0];
-      long base = thr->words[base_idx].w_int;
-      vvp_vector4_t value = thr->pop_vec4();
+      long base = thr->मगा_सालिता[base_idx].w_int;
+      vvp_vector4_t value = thr->आलिसिन_vec4();
       unsigned wid = value.size();
 
       if (thr->flags[4] == BIT4_1)
@@ -1722,13 +1722,13 @@ bool of_CASSIGN_VEC4_OFF(vthread_t thr, vvp_code_t cp)
 	/* Remove any previous continuous assign to this net. */
       cassign_unlink(net);
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (net->fil);
+      vvp_signal_हालागा*sig = dynamic_cast<vvp_signal_हालागा*> (net->fil);
       assert(sig);
 
       if (base < 0 && (wid <= (unsigned)-base))
 	    return true;
 
-      if (base >= (long)sig->value_size())
+      if (base >= (long)sig->हालागा_size())
 	    return true;
 
       if (base < 0) {
@@ -1737,20 +1737,20 @@ bool of_CASSIGN_VEC4_OFF(vthread_t thr, vvp_code_t cp)
 	    value.resize(wid);
       }
 
-      if (base+wid > sig->value_size()) {
-	    wid = sig->value_size() - base;
+      if (base+wid > sig->हालागा_size()) {
+	    wid = sig->हालागा_size() - base;
 	    value.resize(wid);
       }
 
       vvp_net_ptr_t ptr (net, 1);
-      vvp_send_vec4_pv(ptr, value, base, sig->value_size(), 0);
+      vvp_send_vec4_pv(ptr, value, base, sig->हालागा_size(), 0);
       return true;
 }
 
 bool of_CASSIGN_WR(vthread_t thr, vvp_code_t cp)
 {
       vvp_net_t*net  = cp->net;
-      double value = thr->pop_real();
+      double value = thr->आलिसिन_real();
 
 	/* Remove any previous continuous assign to this net. */
       cassign_unlink(net);
@@ -1786,10 +1786,10 @@ bool of_CAST2(vthread_t thr, vvp_code_t)
 
 bool do_cast_vec_dar(vthread_t thr, vvp_code_t cp, bool as_vec4)
 {
-      unsigned wid = cp->number;
+      unsigned wid = cp->नुमेरो;
 
       vvp_object_t obj;
-      thr->pop_object(obj);
+      thr->आलिसिन_object(obj);
 
       vvp_darray*darray = obj.peek<vvp_darray>();
       assert(darray);
@@ -1798,11 +1798,11 @@ bool do_cast_vec_dar(vthread_t thr, vvp_code_t cp, bool as_vec4)
       if (vec.size() != wid) {
 	    cerr << thr->get_fileline()
 	         << "VVP error: size mismatch when casting dynamic array to vector." << endl;
-            thr->push_vec4(vvp_vector4_t(wid));
+            thr->इतुलाक_vec4(vvp_vector4_t(wid));
             schedule_stop(0);
             return false;
       }
-      thr->push_vec4(vec);
+      thr->इतुलाक_vec4(vec);
       return true;
 }
 
@@ -1827,15 +1827,15 @@ bool of_CAST_VEC4_DAR(vthread_t thr, vvp_code_t cp)
  */
 bool of_CAST_VEC4_STR(vthread_t thr, vvp_code_t cp)
 {
-      unsigned wid = cp->number;
-      string str = thr->pop_str();
+      unsigned wid = cp->नुमेरो;
+      string str = thr->आलिसिन_str();
 
       vvp_vector4_t vec(wid, BIT4_0);
 
       if (wid != 8*str.length()) {
 	    cerr << thr->get_fileline()
 	         << "VVP error: size mismatch when casting string to vector." << endl;
-            thr->push_vec4(vec);
+            thr->इतुलाक_vec4(vec);
             schedule_stop(0);
             return false;
       }
@@ -1852,7 +1852,7 @@ bool of_CAST_VEC4_STR(vthread_t thr, vvp_code_t cp)
             }
       }
 
-      thr->push_vec4(vec);
+      thr->इतुलाक_vec4(vec);
       return true;
 }
 
@@ -1914,7 +1914,7 @@ bool of_CMPE(vthread_t thr, vvp_code_t)
 
       do_CMPE(thr, lval, rval);
 
-      thr->pop_vec4(2);
+      thr->आलिसिन_vec4(2);
       return true;
 }
 
@@ -1931,7 +1931,7 @@ bool of_CMPNE(vthread_t thr, vvp_code_t)
       thr->flags[4] =  ~thr->flags[4];
       thr->flags[6] =  ~thr->flags[6];
 
-      thr->pop_vec4(2);
+      thr->आलिसिन_vec4(2);
       return true;
 }
 
@@ -1942,7 +1942,7 @@ bool of_CMPNE(vthread_t thr, vvp_code_t)
  */
 bool of_CMPIE(vthread_t thr, vvp_code_t cp)
 {
-      unsigned wid = cp->number;
+      unsigned wid = cp->नुमेरो;
 
       const vvp_vector4_t&lval = thr->peek_vec4();
 
@@ -1954,13 +1954,13 @@ bool of_CMPIE(vthread_t thr, vvp_code_t cp)
 
       do_CMPE(thr, lval, rval);
 
-      thr->pop_vec4(1);
+      thr->आलिसिन_vec4(1);
       return true;
 }
 
 bool of_CMPINE(vthread_t thr, vvp_code_t cp)
 {
-      unsigned wid = cp->number;
+      unsigned wid = cp->नुमेरो;
 
       const vvp_vector4_t&lval = thr->peek_vec4();
 
@@ -1975,7 +1975,7 @@ bool of_CMPINE(vthread_t thr, vvp_code_t cp)
       thr->flags[4] =  ~thr->flags[4];
       thr->flags[6] =  ~thr->flags[6];
 
-      thr->pop_vec4(1);
+      thr->आलिसिन_vec4(1);
       return true;
 }
 
@@ -2066,7 +2066,7 @@ bool of_CMPS(vthread_t thr, vvp_code_t)
 
       do_CMPS(thr, lval, rval);
 
-      thr->pop_vec4(2);
+      thr->आलिसिन_vec4(2);
       return true;
 }
 
@@ -2077,7 +2077,7 @@ bool of_CMPS(vthread_t thr, vvp_code_t)
  */
 bool of_CMPIS(vthread_t thr, vvp_code_t cp)
 {
-      unsigned wid = cp->number;
+      unsigned wid = cp->नुमेरो;
 
       const vvp_vector4_t&lval = thr->peek_vec4();
 
@@ -2089,14 +2089,14 @@ bool of_CMPIS(vthread_t thr, vvp_code_t cp)
 
       do_CMPS(thr, lval, rval);
 
-      thr->pop_vec4(1);
+      thr->आलिसिन_vec4(1);
       return true;
 }
 
 bool of_CMPSTR(vthread_t thr, vvp_code_t)
 {
-      string re = thr->pop_str();
-      string le = thr->pop_str();
+      string re = thr->आलिसिन_str();
+      string le = thr->आलिसिन_str();
 
       int rc = strcmp(le.c_str(), re.c_str());
 
@@ -2173,9 +2173,9 @@ static void do_CMPU(vthread_t thr, const vvp_vector4_t&lval, const vvp_vector4_t
 	    return of_CMPU_the_hard_way(thr, wid, lval, rval);
       }
 
-      unsigned words = (wid+CPU_WORD_BITS-1) / CPU_WORD_BITS;
+      unsigned मगा_सालिता = (wid+CPU_WORD_BITS-1) / CPU_WORD_BITS;
 
-      for (unsigned wdx = 0 ; wdx < words ; wdx += 1) {
+      for (unsigned wdx = 0 ; wdx < मगा_सालिता ; wdx += 1) {
 	    if (larray[wdx] == rarray[wdx])
 		  continue;
 
@@ -2202,7 +2202,7 @@ bool of_CMPU(vthread_t thr, vvp_code_t)
 
       do_CMPU(thr, lval, rval);
 
-      thr->pop_vec4(2);
+      thr->आलिसिन_vec4(2);
       return true;
 }
 
@@ -2213,7 +2213,7 @@ bool of_CMPU(vthread_t thr, vvp_code_t)
  */
 bool of_CMPIU(vthread_t thr, vvp_code_t cp)
 {
-      unsigned wid = cp->number;
+      unsigned wid = cp->नुमेरो;
 
       const vvp_vector4_t&lval = thr->peek_vec4();
 
@@ -2225,7 +2225,7 @@ bool of_CMPIU(vthread_t thr, vvp_code_t cp)
 
       do_CMPU(thr, lval, rval);
 
-      thr->pop_vec4(1);
+      thr->आलिसिन_vec4(1);
       return true;
 }
 
@@ -2236,8 +2236,8 @@ bool of_CMPIU(vthread_t thr, vvp_code_t cp)
 bool of_CMPX(vthread_t thr, vvp_code_t)
 {
       vvp_bit4_t eq = BIT4_1;
-      vvp_vector4_t rval = thr->pop_vec4();
-      vvp_vector4_t lval = thr->pop_vec4();
+      vvp_vector4_t rval = thr->आलिसिन_vec4();
+      vvp_vector4_t lval = thr->आलिसिन_vec4();
 
       assert(rval.size() == lval.size());
       unsigned wid = lval.size();
@@ -2300,7 +2300,7 @@ bool of_CMPWE(vthread_t thr, vvp_code_t)
 
       do_CMPWE(thr, lval, rval);
 
-      thr->pop_vec4(2);
+      thr->आलिसिन_vec4(2);
       return true;
 }
 
@@ -2316,14 +2316,14 @@ bool of_CMPWNE(vthread_t thr, vvp_code_t)
 
       thr->flags[4] =  ~thr->flags[4];
 
-      thr->pop_vec4(2);
+      thr->आलिसिन_vec4(2);
       return true;
 }
 
 bool of_CMPWR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
+      double r = thr->आलिसिन_real();
+      double l = thr->आलिसिन_real();
 
       vvp_bit4_t eq = (l == r)? BIT4_1 : BIT4_0;
       vvp_bit4_t lt = (l <  r)? BIT4_1 : BIT4_0;
@@ -2340,8 +2340,8 @@ bool of_CMPWR(vthread_t thr, vvp_code_t)
 bool of_CMPZ(vthread_t thr, vvp_code_t)
 {
       vvp_bit4_t eq = BIT4_1;
-      vvp_vector4_t rval = thr->pop_vec4();
-      vvp_vector4_t lval = thr->pop_vec4();
+      vvp_vector4_t rval = thr->आलिसिन_vec4();
+      vvp_vector4_t lval = thr->आलिसिन_vec4();
 
       assert(rval.size() == lval.size());
       unsigned wid = lval.size();
@@ -2364,7 +2364,7 @@ bool of_CMPZ(vthread_t thr, vvp_code_t)
  */
 bool of_CONCAT_STR(vthread_t thr, vvp_code_t)
 {
-      string text = thr->pop_str();
+      string text = thr->आलिसिन_str();
       thr->peek_str(0).append(text);
       return true;
 }
@@ -2397,7 +2397,7 @@ bool of_CONCAT_VEC4(vthread_t thr, vvp_code_t)
 	// Rearrange the stack to pop the inputs and push the
 	// result. Do that by actually popping only 1 stack position
 	// and replacing the new top with the new value.
-      thr->pop_vec4(1);
+      thr->आलिसिन_vec4(1);
       thr->peek_vec4() = res;
 
       return true;
@@ -2411,7 +2411,7 @@ bool of_CONCAT_VEC4(vthread_t thr, vvp_code_t)
  */
 bool of_CONCATI_VEC4(vthread_t thr, vvp_code_t cp)
 {
-      unsigned wid  = cp->number;
+      unsigned wid  = cp->नुमेरो;
 
       vvp_vector4_t&msb = thr->peek_vec4();
 
@@ -2435,9 +2435,9 @@ bool of_CONCATI_VEC4(vthread_t thr, vvp_code_t cp)
 bool of_CVT_RV(vthread_t thr, vvp_code_t)
 {
       double val;
-      vvp_vector4_t val4 = thr->pop_vec4();
-      vector4_to_value(val4, val, false);
-      thr->push_real(val);
+      vvp_vector4_t val4 = thr->आलिसिन_vec4();
+      vector4_to_हालागा(val4, val, false);
+      thr->इतुलाक_real(val);
       return true;
 }
 
@@ -2447,9 +2447,9 @@ bool of_CVT_RV(vthread_t thr, vvp_code_t)
 bool of_CVT_RV_S(vthread_t thr, vvp_code_t)
 {
       double val;
-      vvp_vector4_t val4 = thr->pop_vec4();
-      vector4_to_value(val4, val, true);
-      thr->push_real(val);
+      vvp_vector4_t val4 = thr->आलिसिन_vec4();
+      vector4_to_हालागा(val4, val, true);
+      thr->इतुलाक_real(val);
       return true;
 }
 
@@ -2460,8 +2460,8 @@ bool of_CVT_RV_S(vthread_t thr, vvp_code_t)
  */
 bool of_CVT_SR(vthread_t thr, vvp_code_t cp)
 {
-      double r = thr->pop_real();
-      thr->words[cp->bit_idx[0]].w_int = i64round(r);
+      double r = thr->आलिसिन_real();
+      thr->मगा_सालिता[cp->bit_idx[0]].w_int = i64round(r);
 
       return true;
 }
@@ -2471,8 +2471,8 @@ bool of_CVT_SR(vthread_t thr, vvp_code_t cp)
  */
 bool of_CVT_UR(vthread_t thr, vvp_code_t cp)
 {
-      double r = thr->pop_real();
-      thr->words[cp->bit_idx[0]].w_uint = vlg_round_to_u64(r);
+      double r = thr->आलिसिन_real();
+      thr->मगा_सालिता[cp->bit_idx[0]].w_uint = vlg_round_to_u64(r);
 
       return true;
 }
@@ -2482,11 +2482,11 @@ bool of_CVT_UR(vthread_t thr, vvp_code_t cp)
  */
 bool of_CVT_VR(vthread_t thr, vvp_code_t cp)
 {
-      double r = thr->pop_real();
-      unsigned wid = cp->number;
+      double r = thr->आलिसिन_real();
+      unsigned wid = cp->नुमेरो;
 
       vvp_vector4_t tmp(wid, r);
-      thr->push_vec4(tmp);
+      thr->इतुलाक_vec4(tmp);
       return true;
 }
 
@@ -2501,15 +2501,15 @@ bool of_DEASSIGN(vthread_t, vvp_code_t cp)
       unsigned base  = cp->bit_idx[0];
       unsigned width = cp->bit_idx[1];
 
-      vvp_signal_value*fil = dynamic_cast<vvp_signal_value*> (net->fil);
+      vvp_signal_हालागा*fil = dynamic_cast<vvp_signal_हालागा*> (net->fil);
       assert(fil);
       vvp_fun_signal_vec*sig = dynamic_cast<vvp_fun_signal_vec*>(net->fun);
       assert(sig);
 
-      if (base >= fil->value_size()) return true;
-      if (base+width > fil->value_size()) width = fil->value_size() - base;
+      if (base >= fil->हालागा_size()) return true;
+      if (base+width > fil->हालागा_size()) width = fil->हालागा_size() - base;
 
-      bool full_sig = base == 0 && width == fil->value_size();
+      bool full_sig = base == 0 && width == fil->हालागा_size();
 
 	// This is the net that is forcing me...
       if (vvp_net_t*src = sig->cassign_link) {
@@ -2571,10 +2571,10 @@ bool of_DEBUG_THR(vthread_t thr, vvp_code_t cp)
  */
 bool of_DELAY(vthread_t thr, vvp_code_t cp)
 {
-      vvp_time64_t low = cp->bit_idx[0];
+      vvp_time64_t माबाबा = cp->bit_idx[0];
       vvp_time64_t hig = cp->bit_idx[1];
 
-      vvp_time64_t delay = (hig << 32) | low;
+      vvp_time64_t delay = (hig << 32) | माबाबा;
 
       if (delay == 0) schedule_inactive(thr);
       else schedule_vthread(thr, delay);
@@ -2585,8 +2585,8 @@ bool of_DELAYX(vthread_t thr, vvp_code_t cp)
 {
       vvp_time64_t delay;
 
-      assert(cp->number < vthread_s::WORDS_COUNT);
-      delay = thr->words[cp->number].w_uint;
+      assert(cp->नुमेरो < vthread_s::मगा_सालिता_बिलांग);
+      delay = thr->मगा_सालिता[cp->नुमेरो].w_uint;
       if (delay == 0) schedule_inactive(thr);
       else schedule_vthread(thr, delay);
       return false;
@@ -2596,7 +2596,7 @@ bool of_DELETE_ELEM(vthread_t thr, vvp_code_t cp)
 {
       vvp_net_t*net = cp->net;
 
-      int64_t idx_val = thr->words[3].w_int;
+      int64_t idx_val = thr->मगा_सालिता[3].w_int;
       if (thr->flags[4] == BIT4_1) {
 	    cerr << thr->get_fileline()
 	         << "Warning: skipping queue delete() with undefined index."
@@ -2680,10 +2680,10 @@ bool of_REVERSE_OBJ(vthread_t /*thr*/, vvp_code_t cp)
  */
 bool of_REVERSE_PROP_OBJ(vthread_t thr, vvp_code_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t arr_obj;
@@ -2728,10 +2728,10 @@ bool of_SORT_OBJ(vthread_t /*thr*/, vvp_code_t cp)
 /* %sort/prop/obj */
 bool of_SORT_PROP_OBJ(vthread_t thr, vvp_code_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t arr_obj;
@@ -2776,10 +2776,10 @@ bool of_RSORT_OBJ(vthread_t /*thr*/, vvp_code_t cp)
 /* %rsort/prop/obj */
 bool of_RSORT_PROP_OBJ(vthread_t thr, vvp_code_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t arr_obj;
@@ -2824,10 +2824,10 @@ bool of_SHUFFLE_OBJ(vthread_t /*thr*/, vvp_code_t cp)
 /* %shuffle/prop/obj */
 bool of_SHUFFLE_PROP_OBJ(vthread_t thr, vvp_code_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t arr_obj;
@@ -2860,7 +2860,7 @@ bool of_DELETE_TAIL(vthread_t thr, vvp_code_t cp)
       vvp_queue*queue = obj->get_object().peek<vvp_queue>();
       assert(queue);
 
-      unsigned idx = thr->words[cp->bit_idx[0]].w_int;
+      unsigned idx = thr->मगा_सालिता[cp->bit_idx[0]].w_int;
       queue->erase_tail(idx);
 
       return true;
@@ -2997,10 +2997,10 @@ bool of_DISABLE_FORK(vthread_t thr, vvp_code_t)
  * number. Assume that high < b.
  */
 static unsigned long divide2words(unsigned long a, unsigned long b,
-				  unsigned long high)
+				  unsigned long माताअस)
 {
       unsigned long result = 0;
-      while (high > 0) {
+      while (माताअस > 0) {
 	    unsigned long tmp_result = ULONG_MAX / b;
 	    unsigned long remain = ULONG_MAX % b;
 
@@ -3019,13 +3019,13 @@ static unsigned long divide2words(unsigned long a, unsigned long b,
 	      // high*remain as the remainder for another iteration,
 	      // and add tmp_result*high into the current estimate of
 	      // the result.
-	    result += tmp_result * high;
+	    result += tmp_result * माताअस;
 
 	      // The new iteration starts with high*remain + a.
-	    remain = multiply_with_carry(high, remain, high);
+	    remain = multiply_with_carry(माताअस, remain, माताअस);
 	    a += remain;
             if(a < remain)
-              high += 1;
+              माताअस += 1;
 
 	      // Now result*b + {high,a} == the input {high,a}. It is
 	      // possible that the new high >= 1. If so, it will
@@ -3044,9 +3044,9 @@ static unsigned long* divide_bits(unsigned long*ap, const unsigned long*bp, unsi
 {
 	// Do all our work a cpu-word at a time. The "words" variable
 	// is the number of words of the wid.
-      unsigned words = (wid+CPU_WORD_BITS-1) / CPU_WORD_BITS;
+      unsigned मगा_सालिता = (wid+CPU_WORD_BITS-1) / CPU_WORD_BITS;
 
-      unsigned btop = words-1;
+      unsigned btop = मगा_सालिता-1;
       while (btop > 0 && bp[btop] == 0)
 	    btop -= 1;
 
@@ -3056,21 +3056,21 @@ static unsigned long* divide_bits(unsigned long*ap, const unsigned long*bp, unsi
 
 	// The result array will eventually accumulate the result. The
 	// diff array is a difference that we use in the intermediate.
-      unsigned long*diff  = new unsigned long[words];
-      unsigned long*result= new unsigned long[words];
-      for (unsigned idx = 0 ; idx < words ; idx += 1)
+      unsigned long*diff  = new unsigned long[मगा_सालिता];
+      unsigned long*result= new unsigned long[मगा_सालिता];
+      for (unsigned idx = 0 ; idx < मगा_सालिता ; idx += 1)
 	    result[idx] = 0;
 
-      for (unsigned cur = words-btop ; cur > 0 ; cur -= 1) {
+      for (unsigned cur = मगा_सालिता-btop ; cur > 0 ; cur -= 1) {
 	    unsigned cur_ptr = cur-1;
 	    unsigned long cur_res;
 	    if (ap[cur_ptr+btop] >= bp[btop]) {
-		  unsigned long high = 0;
-		  if (cur_ptr+btop+1 < words)
-			high = ap[cur_ptr+btop+1];
-		  cur_res = divide2words(ap[cur_ptr+btop], bp[btop], high);
+		  unsigned long माताअस = 0;
+		  if (cur_ptr+btop+1 < मगा_सालिता)
+			माताअस = ap[cur_ptr+btop+1];
+		  cur_res = divide2words(ap[cur_ptr+btop], bp[btop], माताअस);
 
-	    } else if (cur_ptr+btop+1 >= words) {
+	    } else if (cur_ptr+btop+1 >= मगा_सालिता) {
 		  continue;
 
 	    } else if (ap[cur_ptr+btop+1] == 0) {
@@ -3086,10 +3086,10 @@ static unsigned long* divide_bits(unsigned long*ap, const unsigned long*bp, unsi
 	      // and if the difference comes out negative, then adjust.
 
 	      // diff = (bp * cur_res)  << cur_ptr;
-	    multiply_array_imm(diff+cur_ptr, bp, words-cur_ptr, cur_res);
+	    multiply_array_imm(diff+cur_ptr, bp, मगा_सालिता-cur_ptr, cur_res);
 	      // ap -= diff
 	    unsigned long carry = 1;
-	    for (unsigned idx = cur_ptr ; idx < words ; idx += 1)
+	    for (unsigned idx = cur_ptr ; idx < मगा_सालिता ; idx += 1)
 		  ap[idx] = add_with_carry(ap[idx], ~diff[idx], carry);
 
 	      // ap has the diff subtracted out of it. If cur_res was
@@ -3104,7 +3104,7 @@ static unsigned long* divide_bits(unsigned long*ap, const unsigned long*bp, unsi
 		  do {
 			cur_res -= 1;
 			carry = 0;
-			for (unsigned idx = cur_ptr ; idx < words ; idx += 1)
+			for (unsigned idx = cur_ptr ; idx < मगा_सालिता ; idx += 1)
 			      ap[idx] = add_with_carry(ap[idx], bp[idx-cur_ptr], carry);
 		  } while (carry == 0);
 	    }
@@ -3125,8 +3125,8 @@ static unsigned long* divide_bits(unsigned long*ap, const unsigned long*bp, unsi
  */
 bool of_DIV(vthread_t thr, vvp_code_t)
 {
-      vvp_vector4_t valb = thr->pop_vec4();
-      vvp_vector4_t vala = thr->pop_vec4();
+      vvp_vector4_t valb = thr->आलिसिन_vec4();
+      vvp_vector4_t vala = thr->आलिसिन_vec4();
 
       assert(vala.size()== valb.size());
       unsigned wid = vala.size();
@@ -3134,7 +3134,7 @@ bool of_DIV(vthread_t thr, vvp_code_t)
       unsigned long*ap = vala.subarray(0, wid);
       if (ap == 0) {
 	    vvp_vector4_t tmp(wid, BIT4_X);
-	    thr->push_vec4(tmp);
+	    thr->इतुलाक_vec4(tmp);
 	    return true;
       }
 
@@ -3142,7 +3142,7 @@ bool of_DIV(vthread_t thr, vvp_code_t)
       if (bp == 0) {
 	    delete[]ap;
 	    vvp_vector4_t tmp(wid, BIT4_X);
-	    thr->push_vec4(tmp);
+	    thr->इतुलाक_vec4(tmp);
 	    return true;
       }
 
@@ -3150,11 +3150,11 @@ bool of_DIV(vthread_t thr, vvp_code_t)
       if (wid <= CPU_WORD_BITS) {
 	    if (bp[0] == 0) {
 		  vvp_vector4_t tmp(wid, BIT4_X);
-		  thr->push_vec4(tmp);
+		  thr->इतुलाक_vec4(tmp);
 	    } else {
 		  ap[0] /= bp[0];
 		  vala.setarray(0, wid, ap);
-		  thr->push_vec4(vala);
+		  thr->इतुलाक_vec4(vala);
 	    }
 	    delete[]ap;
 	    delete[]bp;
@@ -3166,7 +3166,7 @@ bool of_DIV(vthread_t thr, vvp_code_t)
 	    delete[]ap;
 	    delete[]bp;
 	    vvp_vector4_t tmp(wid, BIT4_X);
-	    thr->push_vec4(tmp);
+	    thr->इतुलाक_vec4(tmp);
 	    return true;
       }
 
@@ -3175,7 +3175,7 @@ bool of_DIV(vthread_t thr, vvp_code_t)
 	//  input-a = bp * result + ap;
 
       vala.setarray(0, wid, result);
-      thr->push_vec4(vala);
+      thr->इतुलाक_vec4(vala);
       delete[]ap;
       delete[]bp;
       delete[]result;
@@ -3184,10 +3184,10 @@ bool of_DIV(vthread_t thr, vvp_code_t)
 }
 
 
-static void negate_words(unsigned long*val, unsigned words)
+static void negate_मगा_सालिता(unsigned long*val, unsigned मगा_सालिता)
 {
       unsigned long carry = 1;
-      for (unsigned idx = 0 ; idx < words ; idx += 1)
+      for (unsigned idx = 0 ; idx < मगा_सालिता ; idx += 1)
 	    val[idx] = add_with_carry(0, ~val[idx], carry);
 }
 
@@ -3196,12 +3196,12 @@ static void negate_words(unsigned long*val, unsigned words)
  */
 bool of_DIV_S(vthread_t thr, vvp_code_t)
 {
-      vvp_vector4_t valb = thr->pop_vec4();
+      vvp_vector4_t valb = thr->आलिसिन_vec4();
       vvp_vector4_t&vala = thr->peek_vec4();
 
       assert(vala.size()== valb.size());
       unsigned wid = vala.size();
-      unsigned words = (wid + CPU_WORD_BITS - 1) / CPU_WORD_BITS;
+      unsigned मगा_सालिता = (wid + CPU_WORD_BITS - 1) / CPU_WORD_BITS;
 
 	// Get the values, left in right, in binary form. If there is
 	// a problem with either (caused by an X or Z bit) then we
@@ -3223,12 +3223,12 @@ bool of_DIV_S(vthread_t thr, vvp_code_t)
 
 	// Sign extend the bits in the array to fill out the array.
       unsigned long sign_mask = 0;
-      if (unsigned long sign_bits = (words*CPU_WORD_BITS) - wid) {
+      if (unsigned long sign_bits = (मगा_सालिता*CPU_WORD_BITS) - wid) {
 	    sign_mask = -1UL << (CPU_WORD_BITS-sign_bits);
-	    if (ap[words-1] & (sign_mask>>1))
-		  ap[words-1] |= sign_mask;
-	    if (bp[words-1] & (sign_mask>>1))
-		  bp[words-1] |= sign_mask;
+	    if (ap[मगा_सालिता-1] & (sign_mask>>1))
+		  ap[मगा_सालिता-1] |= sign_mask;
+	    if (bp[मगा_सालिता-1] & (sign_mask>>1))
+		  bp[मगा_सालिता-1] |= sign_mask;
       }
 
 	// If the value fits in a single word, then use the native divide.
@@ -3255,13 +3255,13 @@ bool of_DIV_S(vthread_t thr, vvp_code_t)
 	// We need to the actual division to positive integers. Make
 	// them positive here, and remember the negations.
       bool negate_flag = false;
-      if ( ((long) ap[words-1]) < 0 ) {
+      if ( ((long) ap[मगा_सालिता-1]) < 0 ) {
 	    negate_flag = true;
-	    negate_words(ap, words);
+	    negate_मगा_सालिता(ap, मगा_सालिता);
       }
-      if ( ((long) bp[words-1]) < 0 ) {
+      if ( ((long) bp[मगा_सालिता-1]) < 0 ) {
 	    negate_flag ^= true;
-	    negate_words(bp, words);
+	    negate_मगा_सालिता(bp, मगा_सालिता);
       }
 
       unsigned long*result = divide_bits(ap, bp, wid);
@@ -3274,10 +3274,10 @@ bool of_DIV_S(vthread_t thr, vvp_code_t)
       }
 
       if (negate_flag) {
-	    negate_words(result, words);
+	    negate_मगा_सालिता(result, मगा_सालिता);
       }
 
-      result[words-1] &= ~sign_mask;
+      result[मगा_सालिता-1] &= ~sign_mask;
 
       vala.setarray(0, wid, result);
       delete[]ap;
@@ -3288,9 +3288,9 @@ bool of_DIV_S(vthread_t thr, vvp_code_t)
 
 bool of_DIV_WR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
-      thr->push_real(l / r);
+      double r = thr->आलिसिन_real();
+      double l = thr->आलिसिन_real();
+      thr->इतुलाक_real(l / r);
 
       return true;
 }
@@ -3308,22 +3308,22 @@ bool of_DUP_OBJ(vthread_t thr, vvp_code_t)
 
         // If it is null push a new null object
       if (src.test_nil())
-	    thr->push_object(vvp_object_t());
+	    thr->इतुलाक_object(vvp_object_t());
       else
-	    thr->push_object(src.duplicate());
+	    thr->इतुलाक_object(src.duplicate());
 
       return true;
 }
 
 bool of_DUP_REAL(vthread_t thr, vvp_code_t)
 {
-      thr->push_real(thr->peek_real(0));
+      thr->इतुलाक_real(thr->peek_real(0));
       return true;
 }
 
 bool of_DUP_VEC4(vthread_t thr, vvp_code_t)
 {
-      thr->push_vec4(thr->peek_vec4(0));
+      thr->इतुलाक_vec4(thr->peek_vec4(0));
       return true;
 }
 
@@ -3417,7 +3417,7 @@ bool of_EVENT_NB(vthread_t thr, vvp_code_t cp)
 {
       vvp_time64_t delay;
 
-      delay = thr->words[cp->bit_idx[0]].w_uint;
+      delay = thr->मगा_सालिता[cp->bit_idx[0]].w_uint;
       schedule_propagate_event(cp->net, delay);
       return true;
 }
@@ -3426,7 +3426,7 @@ bool of_EVCTL(vthread_t thr, vvp_code_t cp)
 {
       assert(thr->event == 0 && thr->ecount == 0);
       thr->event = cp->net;
-      thr->ecount = thr->words[cp->bit_idx[0]].w_uint;
+      thr->ecount = thr->मगा_सालिता[cp->bit_idx[0]].w_uint;
       return true;
 }
 bool of_EVCTLC(vthread_t thr, vvp_code_t)
@@ -3448,7 +3448,7 @@ bool of_EVCTLS(vthread_t thr, vvp_code_t cp)
 {
       assert(thr->event == 0 && thr->ecount == 0);
       thr->event = cp->net;
-      int64_t val = thr->words[cp->bit_idx[0]].w_int;
+      int64_t val = thr->मगा_सालिता[cp->bit_idx[0]].w_int;
       if (val < 0) val = 0;
       thr->ecount = val;
       return true;
@@ -3456,11 +3456,11 @@ bool of_EVCTLS(vthread_t thr, vvp_code_t cp)
 
 bool of_FLAG_GET_VEC4(vthread_t thr, vvp_code_t cp)
 {
-      int flag = cp->number;
-      assert(flag < vthread_s::FLAGS_COUNT);
+      int flag = cp->नुमेरो;
+      assert(flag < vthread_s::FLAGS_बिलांग);
 
       vvp_vector4_t val (1, thr->flags[flag]);
-      thr->push_vec4(val);
+      thr->इतुलाक_vec4(val);
 
       return true;
 }
@@ -3502,10 +3502,10 @@ bool of_FLAG_OR(vthread_t thr, vvp_code_t cp)
 
 bool of_FLAG_SET_IMM(vthread_t thr, vvp_code_t cp)
 {
-      int flag = cp->number;
+      int flag = cp->नुमेरो;
       int vali = cp->bit_idx[0];
 
-      assert(flag < vthread_s::FLAGS_COUNT);
+      assert(flag < vthread_s::FLAGS_बिलांग);
       assert(vali >= 0 && vali < 4);
 
       static const vvp_bit4_t map_bit[4] = {BIT4_0, BIT4_1, BIT4_Z, BIT4_X};
@@ -3515,12 +3515,12 @@ bool of_FLAG_SET_IMM(vthread_t thr, vvp_code_t cp)
 
 bool of_FLAG_SET_VEC4(vthread_t thr, vvp_code_t cp)
 {
-      int flag = cp->number;
-      assert(flag < vthread_s::FLAGS_COUNT);
+      int flag = cp->नुमेरो;
+      assert(flag < vthread_s::FLAGS_बिलांग);
 
       const vvp_vector4_t&val = thr->peek_vec4();
       thr->flags[flag] = val.value(0);
-      thr->pop_vec4(1);
+      thr->आलिसिन_vec4(1);
 
       return true;
 }
@@ -3559,7 +3559,7 @@ bool of_FORCE_VEC4(vthread_t thr, vvp_code_t cp)
 {
       vvp_net_t*net = cp->net;
 
-      vvp_vector4_t value = thr->pop_vec4();
+      vvp_vector4_t value = thr->आलिसिन_vec4();
 
 	/* Send the force value to the filter on the node. */
 
@@ -3579,8 +3579,8 @@ bool of_FORCE_VEC4_OFF(vthread_t thr, vvp_code_t cp)
 {
       vvp_net_t*net = cp->net;
       unsigned base_idx = cp->bit_idx[0];
-      long base = thr->words[base_idx].w_int;
-      vvp_vector4_t value = thr->pop_vec4();
+      long base = thr->मगा_सालिता[base_idx].w_int;
+      vvp_vector4_t value = thr->आलिसिन_vec4();
       unsigned wid = value.size();
 
       assert(net->fil);
@@ -3610,9 +3610,9 @@ bool of_FORCE_VEC4_OFF(vthread_t thr, vvp_code_t cp)
 	// vvp_net_t::force_vec4 propagates all the bits of the
 	// forced vector value, regardless of the mask. This
 	// ensures the unforced bits retain their current value.
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(net->fil);
+      vvp_signal_हालागा*sig = dynamic_cast<vvp_signal_हालागा*>(net->fil);
       assert(sig);
-      sig->vec4_value(tmp);
+      sig->vec4_हालागा(tmp);
 
       tmp.set_vec(base, value);
 
@@ -3628,12 +3628,12 @@ bool of_FORCE_VEC4_OFF_D(vthread_t thr, vvp_code_t cp)
       vvp_net_t*net = cp->net;
 
       unsigned base_idx = cp->bit_idx[0];
-      long base = thr->words[base_idx].w_int;
+      long base = thr->मगा_सालिता[base_idx].w_int;
 
       unsigned delay_idx = cp->bit_idx[1];
-      vvp_time64_t delay = thr->words[delay_idx].w_uint;
+      vvp_time64_t delay = thr->मगा_सालिता[delay_idx].w_uint;
 
-      vvp_vector4_t value = thr->pop_vec4();
+      vvp_vector4_t value = thr->आलिसिन_vec4();
 
       assert(net->fil);
 
@@ -3655,7 +3655,7 @@ bool of_FORCE_VEC4_OFF_D(vthread_t thr, vvp_code_t cp)
 bool of_FORCE_WR(vthread_t thr, vvp_code_t cp)
 {
       vvp_net_t*net  = cp->net;
-      double value = thr->pop_real();
+      double value = thr->आलिसिन_real();
 
       net->force_real(value, vvp_vector2_t(vvp_vector2_t::FILL1, 1));
 
@@ -3724,47 +3724,47 @@ bool of_INV(vthread_t thr, vvp_code_t)
  * Index registers, arithmetic.
  */
 
-static inline int64_t get_as_64_bit(uint32_t low_32, uint32_t high_32)
+static inline int64_t get_as_64_bit(uint32_t माबाबा_32, uint32_t माताअस_32)
 {
-      int64_t low = low_32;
-      int64_t res = high_32;
+      int64_t माबाबा = माबाबा_32;
+      int64_t res = माताअस_32;
 
       res <<= 32;
-      res |= low;
+      res |= माबाबा;
       return res;
 }
 
 bool of_IX_ADD(vthread_t thr, vvp_code_t cp)
 {
-      thr->words[cp->number].w_int += get_as_64_bit(cp->bit_idx[0],
+      thr->मगा_सालिता[cp->नुमेरो].w_int += get_as_64_bit(cp->bit_idx[0],
                                                     cp->bit_idx[1]);
       return true;
 }
 
 bool of_IX_SUB(vthread_t thr, vvp_code_t cp)
 {
-      thr->words[cp->number].w_int -= get_as_64_bit(cp->bit_idx[0],
+      thr->मगा_सालिता[cp->नुमेरो].w_int -= get_as_64_bit(cp->bit_idx[0],
                                                     cp->bit_idx[1]);
       return true;
 }
 
 bool of_IX_MUL(vthread_t thr, vvp_code_t cp)
 {
-      thr->words[cp->number].w_int *= get_as_64_bit(cp->bit_idx[0],
+      thr->मगा_सालिता[cp->नुमेरो].w_int *= get_as_64_bit(cp->bit_idx[0],
                                                     cp->bit_idx[1]);
       return true;
 }
 
 bool of_IX_LOAD(vthread_t thr, vvp_code_t cp)
 {
-      thr->words[cp->number].w_int = get_as_64_bit(cp->bit_idx[0],
+      thr->मगा_सालिता[cp->नुमेरो].w_int = get_as_64_bit(cp->bit_idx[0],
                                                    cp->bit_idx[1]);
       return true;
 }
 
 bool of_IX_MOV(vthread_t thr, vvp_code_t cp)
 {
-      thr->words[cp->bit_idx[0]].w_int = thr->words[cp->bit_idx[1]].w_int;
+      thr->मगा_सालिता[cp->bit_idx[0]].w_int = thr->मगा_सालिता[cp->bit_idx[1]].w_int;
       return true;
 }
 
@@ -3773,7 +3773,7 @@ bool of_IX_GETV(vthread_t thr, vvp_code_t cp)
       unsigned index = cp->bit_idx[0];
       vvp_net_t*net = cp->net;
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(net->fil);
+      vvp_signal_हालागा*sig = dynamic_cast<vvp_signal_हालागा*>(net->fil);
       if (sig == 0) {
 	    assert(net->fil);
 	    cerr << thr->get_fileline()
@@ -3783,15 +3783,15 @@ bool of_IX_GETV(vthread_t thr, vvp_code_t cp)
       assert(sig);
 
       vvp_vector4_t vec;
-      sig->vec4_value(vec);
+      sig->vec4_हालागा(vec);
       bool overflow_flag;
       uint64_t val = 0;
-      bool known_flag = vector4_to_value(vec, overflow_flag, val);
+      bool known_flag = vector4_to_हालागा(vec, overflow_flag, val);
 
       if (known_flag)
-	    thr->words[index].w_uint = val;
+	    thr->मगा_सालिता[index].w_uint = val;
       else
-	    thr->words[index].w_uint = 0;
+	    thr->मगा_सालिता[index].w_uint = 0;
 
 	/* Set bit 4 as a flag if the input is unknown. */
       thr->flags[4] = known_flag ? (overflow_flag ? BIT4_X : BIT4_0) : BIT4_1;
@@ -3804,7 +3804,7 @@ bool of_IX_GETV_S(vthread_t thr, vvp_code_t cp)
       unsigned index = cp->bit_idx[0];
       vvp_net_t*net = cp->net;
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(net->fil);
+      vvp_signal_हालागा*sig = dynamic_cast<vvp_signal_हालागा*>(net->fil);
       if (sig == 0) {
 	    assert(net->fil);
 	    cerr << thr->get_fileline()
@@ -3816,14 +3816,14 @@ bool of_IX_GETV_S(vthread_t thr, vvp_code_t cp)
       assert(sig);
 
       vvp_vector4_t vec;
-      sig->vec4_value(vec);
+      sig->vec4_हालागा(vec);
       int64_t val;
-      bool known_flag = vector4_to_value(vec, val, true, true);
+      bool known_flag = vector4_to_हालागा(vec, val, true, true);
 
       if (known_flag)
-	    thr->words[index].w_int = val;
+	    thr->मगा_सालिता[index].w_int = val;
       else
-	    thr->words[index].w_int = 0;
+	    thr->मगा_सालिता[index].w_int = 0;
 
 	/* Set bit 4 as a flag if the input is unknown. */
       thr->flags[4] = known_flag? BIT4_0 : BIT4_1;
@@ -3838,7 +3838,7 @@ static uint64_t vec4_to_index(vthread_t thr, bool signed_flag)
       const vvp_vector4_t&val = thr->peek_vec4();
       unsigned val_size = val.size();
       unsigned long*bits = val.subarray(0, val_size, false);
-      thr->pop_vec4(1);
+      thr->आलिसिन_vec4(1);
 
 	// If there are X/Z bits, then the subarray will give us a nil
 	// pointer. Set a flag to indicate the error, and give up.
@@ -3889,8 +3889,8 @@ static uint64_t vec4_to_index(vthread_t thr, bool signed_flag)
  */
 bool of_IX_VEC4(vthread_t thr, vvp_code_t cp)
 {
-      unsigned use_idx = cp->number;
-      thr->words[use_idx].w_uint = vec4_to_index(thr, false);
+      unsigned use_idx = cp->नुमेरो;
+      thr->मगा_सालिता[use_idx].w_uint = vec4_to_index(thr, false);
       return true;
 }
 
@@ -3899,8 +3899,8 @@ bool of_IX_VEC4(vthread_t thr, vvp_code_t cp)
  */
 bool of_IX_VEC4_S(vthread_t thr, vvp_code_t cp)
 {
-      unsigned use_idx = cp->number;
-      thr->words[use_idx].w_uint = vec4_to_index(thr, true);
+      unsigned use_idx = cp->नुमेरो;
+      thr->मगा_सालिता[use_idx].w_uint = vec4_to_index(thr, true);
       return true;
 }
 
@@ -4068,9 +4068,9 @@ bool of_JOIN(vthread_t thr, vvp_code_t)
  */
 bool of_JOIN_DETACH(vthread_t thr, vvp_code_t cp)
 {
-      unsigned long count = cp->number;
+      unsigned long बिलांग = cp->नुमेरो;
 
-      assert(count == thr->children.size());
+      assert(बिलांग == thr->children.size());
 
       while (! thr->children.empty()) {
 	    vthread_t child = *thr->children.begin();
@@ -4108,18 +4108,18 @@ bool of_LOAD_AR(vthread_t thr, vvp_code_t cp)
       if (thr->flags[4] == BIT4_1) {
 	    word = 0.0;
       } else {
-	    unsigned adr = thr->words[idx].w_int;
+	    unsigned adr = thr->मगा_सालिता[idx].w_int;
 	    word = cp->array->get_word_r(adr);
       }
 
-      thr->push_real(word);
+      thr->इतुलाक_real(word);
       return true;
 }
 
 template <typename ELEM>
 static bool load_dar(vthread_t thr, vvp_code_t cp)
 {
-      int64_t adr = thr->words[3].w_int;
+      int64_t adr = thr->मगा_सालिता[3].w_int;
       vvp_net_t*net = cp->net;
       assert(net);
 
@@ -4135,7 +4135,7 @@ static bool load_dar(vthread_t thr, vvp_code_t cp)
       else
 	    dq_default(word, obj->size());
 
-      vthread_push(thr, word);
+      vthread_इतुलाक(thr, word);
       return true;
 }
 
@@ -4170,12 +4170,12 @@ bool of_LOAD_DAR_VEC4(vthread_t thr, vvp_code_t cp)
  */
 bool of_LOAD_PROP_DAR_VEC4(vthread_t thr, vvp_code_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
       unsigned wid = cp->bit_idx[0];
-      int64_t adr = thr->words[3].w_int;
+      int64_t adr = thr->मगा_सालिता[3].w_int;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t pobj;
@@ -4189,7 +4189,7 @@ bool of_LOAD_PROP_DAR_VEC4(vthread_t thr, vvp_code_t cp)
 	    dq_default(word, wid);
       }
 
-      thr->push_vec4(word);
+      thr->इतुलाक_vec4(word);
       return true;
 }
 
@@ -4203,7 +4203,7 @@ bool of_LOAD_OBJ(vthread_t thr, vvp_code_t cp)
       assert(fun);
 
       vvp_object_t val = fun->get_object();
-      thr->push_object(val);
+      thr->इतुलाक_object(val);
 
       return true;
 }
@@ -4223,11 +4223,11 @@ bool of_LOAD_OBJA(vthread_t thr, vvp_code_t cp)
       if (thr->flags[4] == BIT4_1) {
 	    ; // Return nil
       } else {
-	    unsigned adr = thr->words[idx].w_int;
+	    unsigned adr = thr->मगा_सालिता[idx].w_int;
 	    cp->array->get_word_obj(adr, word);
       }
 
-      thr->push_object(word);
+      thr->इतुलाक_object(word);
       return true;
 }
 
@@ -4237,12 +4237,12 @@ bool of_LOAD_OBJA(vthread_t thr, vvp_code_t cp)
 bool of_LOAD_REAL(vthread_t thr, vvp_code_t cp)
 {
       __vpiHandle*tmp = cp->handle;
-      t_vpi_value val;
+      t_vpi_हालागा val;
 
       val.format = vpiRealVal;
-      vpi_get_value(tmp, &val);
+      vpi_get_हालागा(tmp, &val);
 
-      thr->push_real(val.value.real);
+      thr->इतुलाक_real(val.value.real);
 
       return true;
 }
@@ -4259,7 +4259,7 @@ bool of_LOAD_STR(vthread_t thr, vvp_code_t cp)
       assert(fun);
 
       const string&val = fun->get_string();
-      thr->push_str(val);
+      thr->इतुलाक_str(val);
 
       return true;
 }
@@ -4272,11 +4272,11 @@ bool of_LOAD_STRA(vthread_t thr, vvp_code_t cp)
       if (thr->flags[4] == BIT4_1) {
 	    word = "";
       } else {
-	    unsigned adr = thr->words[idx].w_int;
+	    unsigned adr = thr->मगा_सालिता[idx].w_int;
 	    word = cp->array->get_word_str(adr);
       }
 
-      thr->push_str(word);
+      thr->इतुलाक_str(word);
       return true;
 }
 
@@ -4289,14 +4289,14 @@ bool of_LOAD_VEC4(vthread_t thr, vvp_code_t cp)
 	// Push a placeholder onto the stack in order to reserve the
 	// stack space. Use a reference for the stack top as a target
 	// for the load.
-      thr->push_vec4(vvp_vector4_t());
-      vvp_vector4_t&sig_value = thr->peek_vec4();
+      thr->इतुलाक_vec4(vvp_vector4_t());
+      vvp_vector4_t&sig_हालागा = thr->peek_vec4();
 
       vvp_net_t*net = cp->net;
 
 	// For the %load to work, the functor must actually be a
 	// signal functor. Only signals save their vector value.
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (net->fil);
+      vvp_signal_हालागा*sig = dynamic_cast<vvp_signal_हालागा*> (net->fil);
       if (sig == 0) {
 	    cerr << thr->get_fileline()
 	         << "%load/v error: Net arg not a signal? "
@@ -4309,7 +4309,7 @@ bool of_LOAD_VEC4(vthread_t thr, vvp_code_t cp)
 
 	// Extract the value from the signal and directly into the
 	// target stack position.
-      sig->vec4_value(sig_value);
+      sig->vec4_हालागा(sig_हालागा);
 
       return true;
 }
@@ -4321,26 +4321,26 @@ bool of_LOAD_VEC4A(vthread_t thr, vvp_code_t cp)
 {
       int adr_index = cp->bit_idx[0];
 
-      long adr = thr->words[adr_index].w_int;
+      long adr = thr->मगा_सालिता[adr_index].w_int;
 
 	// If flag[3] is set, then the calculation of the address
 	// failed, and this load should return X instead of the actual
 	// value.
       if (thr->flags[4] == BIT4_1) {
 	    vvp_vector4_t tmp (cp->array->get_word_size(), BIT4_X);
-	    thr->push_vec4(tmp);
+	    thr->इतुलाक_vec4(tmp);
 	    return true;
       }
 
       vvp_vector4_t tmp (cp->array->get_word(adr));
-      thr->push_vec4(tmp);
+      thr->इतुलाक_vec4(tmp);
       return true;
 }
 
 static void do_verylong_mod(vvp_vector4_t&vala, const vvp_vector4_t&valb,
-			    bool left_is_neg, bool right_is_neg)
+			    bool कालिवा_is_neg, bool कानान_is_neg)
 {
-      bool out_is_neg = left_is_neg;
+      bool out_is_neg = कालिवा_is_neg;
       const int len=vala.size();
       unsigned char *a, *z, *t;
       a = new unsigned char[len+1];
@@ -4354,8 +4354,8 @@ static void do_verylong_mod(vvp_vector4_t&vala, const vvp_vector4_t&valb,
       int i;
       int current, copylen;
 
-      unsigned lb_carry = left_is_neg? 1 : 0;
-      unsigned rb_carry = right_is_neg? 1 : 0;
+      unsigned lb_carry = कालिवा_is_neg? 1 : 0;
+      unsigned rb_carry = कानान_is_neg? 1 : 0;
       for (int idx = 0 ;  idx < len ;  idx += 1) {
 	    unsigned lb = vala.value(idx);
 	    unsigned rb = valb.value(idx);
@@ -4369,12 +4369,12 @@ static void do_verylong_mod(vvp_vector4_t&vala, const vvp_vector4_t&valb,
 		  return;
 	    }
 
-	    if (left_is_neg) {
+	    if (कालिवा_is_neg) {
 		  lb = (1-lb) + lb_carry;
 		  lb_carry = (lb & ~1)? 1 : 0;
 		  lb &= 1;
 	    }
-	    if (right_is_neg) {
+	    if (कानान_is_neg) {
 		  rb = (1-rb) + rb_carry;
 		  rb_carry = (rb & ~1)? 1 : 0;
 		  rb &= 1;
@@ -4455,37 +4455,37 @@ static void do_verylong_mod(vvp_vector4_t&vala, const vvp_vector4_t&valb,
 
 bool of_MAX_WR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
+      double r = thr->आलिसिन_real();
+      double l = thr->आलिसिन_real();
       if (r != r)
-	    thr->push_real(l);
+	    thr->इतुलाक_real(l);
       else if (l != l)
-	    thr->push_real(r);
+	    thr->इतुलाक_real(r);
       else if (r < l)
-	    thr->push_real(l);
+	    thr->इतुलाक_real(l);
       else
-	    thr->push_real(r);
+	    thr->इतुलाक_real(r);
       return true;
 }
 
 bool of_MIN_WR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
+      double r = thr->आलिसिन_real();
+      double l = thr->आलिसिन_real();
       if (r != r)
-	    thr->push_real(l);
+	    thr->इतुलाक_real(l);
       else if (l != l)
-	    thr->push_real(r);
+	    thr->इतुलाक_real(r);
       else if (r < l)
-	    thr->push_real(r);
+	    thr->इतुलाक_real(r);
       else
-	    thr->push_real(l);
+	    thr->इतुलाक_real(l);
       return true;
 }
 
 bool of_MOD(vthread_t thr, vvp_code_t)
 {
-      vvp_vector4_t valb = thr->pop_vec4();
+      vvp_vector4_t valb = thr->आलिसिन_vec4();
       vvp_vector4_t&vala = thr->peek_vec4();
 
       assert(vala.size()==valb.size());
@@ -4532,7 +4532,7 @@ bool of_MOD(vthread_t thr, vvp_code_t)
  */
 bool of_MOD_S(vthread_t thr, vvp_code_t)
 {
-      vvp_vector4_t valb = thr->pop_vec4();
+      vvp_vector4_t valb = thr->आलिसिन_vec4();
       vvp_vector4_t&vala = thr->peek_vec4();
 
       assert(vala.size()==valb.size());
@@ -4582,9 +4582,9 @@ bool of_MOD_S(vthread_t thr, vvp_code_t)
 
       } else {
 
-	    bool left_is_neg  = vala.value(vala.size()-1) == BIT4_1;
-	    bool right_is_neg = valb.value(valb.size()-1) == BIT4_1;
-	    do_verylong_mod(vala, valb, left_is_neg, right_is_neg);
+	    bool कालिवा_is_neg  = vala.value(vala.size()-1) == BIT4_1;
+	    bool कानान_is_neg = valb.value(valb.size()-1) == BIT4_1;
+	    do_verylong_mod(vala, valb, कालिवा_is_neg, कानान_is_neg);
 	    return true;
       }
 
@@ -4601,9 +4601,9 @@ bool of_MOD_S(vthread_t thr, vvp_code_t)
  */
 bool of_MOD_WR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
-      thr->push_real(fmod(l,r));
+      double r = thr->आलिसिन_real();
+      double l = thr->आलिसिन_real();
+      thr->इतुलाक_real(fmod(l,r));
 
       return true;
 }
@@ -4622,7 +4622,7 @@ bool of_NEG_WR(vthread_t thr, vvp_code_t)
  */
 bool of_PAD_S(vthread_t thr, vvp_code_t cp)
 {
-      unsigned wid = cp->number;
+      unsigned wid = cp->नुमेरो;
 
       vvp_vector4_t&val = thr->peek_vec4();
       unsigned old_size = val.size();
@@ -4641,7 +4641,7 @@ bool of_PAD_S(vthread_t thr, vvp_code_t cp)
  */
 bool of_PAD_U(vthread_t thr, vvp_code_t cp)
 {
-      unsigned wid = cp->number;
+      unsigned wid = cp->नुमेरो;
 
       vvp_vector4_t&val = thr->peek_vec4();
       val.resize(wid, BIT4_0);
@@ -4658,17 +4658,17 @@ bool of_PAD_U(vthread_t thr, vvp_code_t cp)
  */
 static bool of_PART_base(vthread_t thr, vvp_code_t cp, bool signed_flag)
 {
-      unsigned wid = cp->number;
+      unsigned wid = cp->नुमेरो;
 
-      vvp_vector4_t base4 = thr->pop_vec4();
+      vvp_vector4_t base4 = thr->आलिसिन_vec4();
       vvp_vector4_t&value = thr->peek_vec4();
 
       vvp_vector4_t res (wid, BIT4_X);
 
 	// NOTE: This is treating the vector as signed. Is that correct?
       int32_t base;
-      bool value_ok = vector4_to_value(base4, base, signed_flag);
-      if (! value_ok) {
+      bool हालागा_ok = vector4_to_हालागा(base4, base, signed_flag);
+      if (! हालागा_ok) {
 	    value = res;
 	    return true;
       }
@@ -4718,7 +4718,7 @@ bool of_PART_U(vthread_t thr, vvp_code_t cp)
  */
 static bool of_PARTI_base(vthread_t thr, vvp_code_t cp, bool signed_flag)
 {
-      unsigned wid = cp->number;
+      unsigned wid = cp->नुमेरो;
       uint32_t base = cp->bit_idx[0];
       uint32_t bwid = cp->bit_idx[1];
 
@@ -4774,7 +4774,7 @@ bool of_PARTI_U(vthread_t thr, vvp_code_t cp)
  */
 bool of_MUL(vthread_t thr, vvp_code_t)
 {
-      vvp_vector4_t r = thr->pop_vec4();
+      vvp_vector4_t r = thr->आलिसिन_vec4();
 	// Rather then pop l, use it directly from the stack. When we
 	// assign to 'l', that will edit the top of the stack, which
 	// replaces a pop and a pull.
@@ -4792,7 +4792,7 @@ bool of_MUL(vthread_t thr, vvp_code_t)
  */
 bool of_MULI(vthread_t thr, vvp_code_t cp)
 {
-      unsigned wid = cp->number;
+      unsigned wid = cp->नुमेरो;
 
       vvp_vector4_t&l = thr->peek_vec4();
 
@@ -4808,16 +4808,16 @@ bool of_MULI(vthread_t thr, vvp_code_t cp)
 
 bool of_MUL_WR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
-      thr->push_real(l * r);
+      double r = thr->आलिसिन_real();
+      double l = thr->आलिसिन_real();
+      thr->इतुलाक_real(l * r);
 
       return true;
 }
 
 bool of_NAND(vthread_t thr, vvp_code_t)
 {
-      vvp_vector4_t valr = thr->pop_vec4();
+      vvp_vector4_t valr = thr->आलिसिन_vec4();
       vvp_vector4_t&vall = thr->peek_vec4();
       assert(vall.size() == valr.size());
 
@@ -4839,14 +4839,14 @@ bool of_NEW_COBJ(vthread_t thr, vvp_code_t cp)
       assert(defn);
 
       vvp_object_t tmp (new vvp_cobject(defn));
-      thr->push_object(tmp);
+      thr->इतुलाक_object(tmp);
       return true;
 }
 
 bool of_NEW_DARRAY(vthread_t thr, vvp_code_t cp)
 {
       const char*text = cp->text;
-      size_t size = thr->words[cp->bit_idx[0]].w_int;
+      size_t size = thr->मगा_सालिता[cp->bit_idx[0]].w_int;
       unsigned word_wid;
       size_t n;
 
@@ -4890,7 +4890,7 @@ bool of_NEW_DARRAY(vthread_t thr, vvp_code_t cp)
 	    assert(0);
       }
 
-      thr->push_object(obj);
+      thr->इतुलाक_object(obj);
 
       return true;
 }
@@ -4917,7 +4917,7 @@ bool of_NORR(vthread_t thr, vvp_code_t)
 bool of_NULL(vthread_t thr, vvp_code_t)
 {
       vvp_object_t tmp;
-      thr->push_object(tmp);
+      thr->इतुलाक_object(tmp);
       return true;
 }
 
@@ -4981,7 +4981,7 @@ bool of_XNORR(vthread_t thr, vvp_code_t)
  */
 bool of_OR(vthread_t thr, vvp_code_t)
 {
-      vvp_vector4_t valb = thr->pop_vec4();
+      vvp_vector4_t valb = thr->आलिसिन_vec4();
       vvp_vector4_t&vala = thr->peek_vec4();
       vala |= valb;
       return true;
@@ -4992,7 +4992,7 @@ bool of_OR(vthread_t thr, vvp_code_t)
  */
 bool of_NOR(vthread_t thr, vvp_code_t)
 {
-      vvp_vector4_t valr = thr->pop_vec4();
+      vvp_vector4_t valr = thr->आलिसिन_vec4();
       vvp_vector4_t&vall = thr->peek_vec4();
       assert(vall.size() == valr.size());
 
@@ -5005,42 +5005,42 @@ bool of_NOR(vthread_t thr, vvp_code_t)
 /*
  * %pop/obj <num>, <skip>
  */
-bool of_POP_OBJ(vthread_t thr, vvp_code_t cp)
+bool of_आलिसिन_OBJ(vthread_t thr, vvp_code_t cp)
 {
       unsigned cnt = cp->bit_idx[0];
       unsigned skip = cp->bit_idx[1];
 
-      thr->pop_object(cnt, skip);
+      thr->आलिसिन_object(cnt, skip);
       return true;
 }
 
 /*
  * %pop/real <number>
  */
-bool of_POP_REAL(vthread_t thr, vvp_code_t cp)
+bool of_आलिसिन_REAL(vthread_t thr, vvp_code_t cp)
 {
-      unsigned cnt = cp->number;
-      thr->pop_real(cnt);
+      unsigned cnt = cp->नुमेरो;
+      thr->आलिसिन_real(cnt);
       return true;
 }
 
 /*
  *  %pop/str <number>
  */
-bool of_POP_STR(vthread_t thr, vvp_code_t cp)
+bool of_आलिसिन_STR(vthread_t thr, vvp_code_t cp)
 {
-      unsigned cnt = cp->number;
-      thr->pop_str(cnt);
+      unsigned cnt = cp->नुमेरो;
+      thr->आलिसिन_str(cnt);
       return true;
 }
 
 /*
  *  %pop/vec4 <number>
  */
-bool of_POP_VEC4(vthread_t thr, vvp_code_t cp)
+bool of_आलिसिन_VEC4(vthread_t thr, vvp_code_t cp)
 {
-      unsigned cnt = cp->number;
-      thr->pop_vec4(cnt);
+      unsigned cnt = cp->नुमेरो;
+      thr->आलिसिन_vec4(cnt);
       return true;
 }
 
@@ -5050,8 +5050,8 @@ bool of_POP_VEC4(vthread_t thr, vvp_code_t cp)
  */
 static bool of_POW_base(vthread_t thr, bool signed_flag)
 {
-      vvp_vector4_t valb = thr->pop_vec4();
-      vvp_vector4_t vala = thr->pop_vec4();
+      vvp_vector4_t valb = thr->आलिसिन_vec4();
+      vvp_vector4_t vala = thr->आलिसिन_vec4();
 
       unsigned wid = vala.size();
 
@@ -5062,7 +5062,7 @@ static bool of_POW_base(vthread_t thr, bool signed_flag)
         /* If we have an X or Z in the arguments return X. */
       if (xv2.is_NaN() || yv2.is_NaN()) {
 	    vvp_vector4_t tmp (wid, BIT4_X);
-	    thr->push_vec4(tmp);
+	    thr->इतुलाक_vec4(tmp);
 	    return true;
       }
 
@@ -5071,7 +5071,7 @@ static bool of_POW_base(vthread_t thr, bool signed_flag)
       if (signed_flag && yv2.value(yv2.size()-1)) {
 	    int a_val;
 	    vvp_bit4_t pad = BIT4_0, lsb = BIT4_0;
-	    if (vector2_to_value(xv2, a_val, true)) {
+	    if (vector2_to_हालागा(xv2, a_val, true)) {
 		  if (a_val == 0) {
 			pad = BIT4_X; lsb = BIT4_X;
 		  }
@@ -5088,7 +5088,7 @@ static bool of_POW_base(vthread_t thr, bool signed_flag)
 	    }
 	    vvp_vector4_t tmp (wid, pad);
 	    tmp.set_bit(0, lsb);
-	    thr->push_vec4(tmp);
+	    thr->इतुलाक_vec4(tmp);
 	    return true;
       }
 
@@ -5102,7 +5102,7 @@ static bool of_POW_base(vthread_t thr, bool signed_flag)
 	    else
 		  vala.set_bit(jdx, result.value(jdx) ? BIT4_1 : BIT4_0);
       }
-      thr->push_vec4(vala);
+      thr->इतुलाक_vec4(vala);
 
       return true;
 }
@@ -5119,9 +5119,9 @@ bool of_POW_S(vthread_t thr, vvp_code_t)
 
 bool of_POW_WR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
-      thr->push_real(pow(l,r));
+      double r = thr->आलिसिन_real();
+      double l = thr->आलिसिन_real();
+      thr->इतुलाक_real(pow(l,r));
 
       return true;
 }
@@ -5133,12 +5133,12 @@ bool of_POW_WR(vthread_t thr, vvp_code_t)
  */
 bool of_PROP_OBJ(vthread_t thr, vvp_code_t cp)
 {
-      unsigned pid = cp->number;
+      unsigned pid = cp->नुमेरो;
       unsigned idx = cp->bit_idx[0];
 
       if (idx != 0) {
-	    assert(idx < vthread_s::WORDS_COUNT);
-	    idx = thr->words[idx].w_uint;
+	    assert(idx < vthread_s::मगा_सालिता_बिलांग);
+	    idx = thr->मगा_सालिता[idx].w_uint;
       }
 
       vvp_object_t&obj = thr->peek_object();
@@ -5147,7 +5147,7 @@ bool of_PROP_OBJ(vthread_t thr, vvp_code_t cp)
       vvp_object_t val;
       cobj->get_object(pid, val, idx);
 
-      thr->push_object(val);
+      thr->इतुलाक_object(val);
 
       return true;
 }
@@ -5170,7 +5170,7 @@ static void get_from_obj(unsigned pid, vvp_cobject*cobj, vvp_vector4_t&val)
 template <typename ELEM>
 static bool prop(vthread_t thr, vvp_code_t cp)
 {
-      unsigned pid = cp->number;
+      unsigned pid = cp->नुमेरो;
 
       vvp_object_t&obj = thr->peek_object();
       vvp_cobject*cobj = obj.peek<vvp_cobject>();
@@ -5178,7 +5178,7 @@ static bool prop(vthread_t thr, vvp_code_t cp)
 
       ELEM val;
       get_from_obj(pid, cobj, val);
-      vthread_push(thr, val);
+      vthread_इतुलाक(thr, val);
 
       return true;
 }
@@ -5224,17 +5224,17 @@ bool of_PUSHI_REAL(vthread_t thr, vvp_code_t cp)
 
 	// Detect +infinity
       if (exp==0x3fff && imant==0) {
-	    thr->push_real(INFINITY);
+	    thr->इतुलाक_real(INFINITY);
 	    return true;
       }
 	// Detect -infinity
       if (exp==0x7fff && imant==0) {
-	    thr->push_real(-INFINITY);
+	    thr->इतुलाक_real(-INFINITY);
 	    return true;
       }
 	// Detect NaN
       if (exp==0x3fff) {
-	    thr->push_real(nan(""));
+	    thr->इतुलाक_real(nan(""));
 	    return true;
       }
 
@@ -5243,14 +5243,14 @@ bool of_PUSHI_REAL(vthread_t thr, vvp_code_t cp)
       exp &= 0x1fff;
 
       mant = sign * ldexp(mant, exp - 0x1000);
-      thr->push_real(mant);
+      thr->इतुलाक_real(mant);
       return true;
 }
 
 bool of_PUSHI_STR(vthread_t thr, vvp_code_t cp)
 {
       const char*text = cp->text;
-      thr->push_str(filter_string(text));
+      thr->इतुलाक_str(filter_string(text));
       return true;
 }
 
@@ -5259,7 +5259,7 @@ bool of_PUSHI_STR(vthread_t thr, vvp_code_t cp)
  */
 bool of_PUSHI_VEC4(vthread_t thr, vvp_code_t cp)
 {
-      unsigned wid  = cp->number;
+      unsigned wid  = cp->नुमेरो;
 
 	// I expect that most of the bits of an immediate value are
 	// going to be zero, so start the result vector with all zero
@@ -5267,7 +5267,7 @@ bool of_PUSHI_VEC4(vthread_t thr, vvp_code_t cp)
       vvp_vector4_t val (wid, BIT4_0);
       get_immediate_rval (cp, val);
 
-      thr->push_vec4(val);
+      thr->इतुलाक_vec4(val);
 
       return true;
 }
@@ -5278,7 +5278,7 @@ bool of_PUSHI_VEC4(vthread_t thr, vvp_code_t cp)
  */
 bool of_PUSHV_STR(vthread_t thr, vvp_code_t)
 {
-      vvp_vector4_t vec = thr->pop_vec4();
+      vvp_vector4_t vec = thr->आलिसिन_vec4();
 
       size_t slen = (vec.size() + 7)/8;
       vector<char>buf;
@@ -5305,7 +5305,7 @@ bool of_PUSHV_STR(vthread_t thr, vvp_code_t)
 	    val.push_back(*cur);
       }
 
-      thr->push_str(val);
+      thr->इतुलाक_str(val);
 
       return true;
 }
@@ -5316,9 +5316,9 @@ bool of_PUSHV_STR(vthread_t thr, vvp_code_t)
 bool of_PUTC_STR_VEC4(vthread_t thr, vvp_code_t cp)
 {
       unsigned muxr = cp->bit_idx[0];
-      int32_t mux = muxr? thr->words[muxr].w_int : 0;
+      int32_t mux = muxr? thr->मगा_सालिता[muxr].w_int : 0;
 
-      vvp_vector4_t val = thr->pop_vec4();
+      vvp_vector4_t val = thr->आलिसिन_vec4();
       assert(val.size() == 8);
 
       if (mux < 0)
@@ -5354,10 +5354,10 @@ bool of_PUTC_STR_VEC4(vthread_t thr, vvp_code_t cp)
 template <typename ELEM, class QTYPE>
 static bool qinsert(vthread_t thr, vvp_code_t cp, unsigned wid=0)
 {
-      int64_t idx = thr->words[3].w_int;
+      int64_t idx = thr->मगा_सालिता[3].w_int;
       ELEM value;
       vvp_net_t*net = cp->net;
-      pop_value(thr, value, wid); // Pop the value to store.
+      आलिसिन_हालागा(thr, value, wid); // Pop the value to store.
 
       vvp_queue*queue = get_queue_object<QTYPE>(thr, net);
       assert(queue);
@@ -5366,16 +5366,16 @@ static bool qinsert(vthread_t thr, vvp_code_t cp, unsigned wid=0)
 	         << "Warning: cannot insert at a negative "
 	         << get_queue_type(value)
 	         << " index (" << idx << "). ";
-	    print_queue_value(value);
+	    इलिम्बाग_queue_हालागा(value);
 	    cerr << " was not added." << endl;
       } else if (thr->flags[4] != BIT4_0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot insert at an undefined "
 	         << get_queue_type(value) << " index. ";
-	    print_queue_value(value);
+	    इलिम्बाग_queue_हालागा(value);
 	    cerr << " was not added." << endl;
       } else {
-	    unsigned max_size = thr->words[cp->bit_idx[0]].w_int;
+	    unsigned max_size = thr->मगा_सालिता[cp->bit_idx[0]].w_int;
 	    queue->insert(idx, value, max_size);
       }
       return true;
@@ -5408,24 +5408,24 @@ bool of_QINSERT_V(vthread_t thr, vvp_code_t cp)
 /*
  * Helper functions used in the queue pop templates
  */
-inline void push_value(vthread_t thr, double value, unsigned)
+inline void इतुलाक_हालागा(vthread_t thr, double value, unsigned)
 {
-      thr->push_real(value);
+      thr->इतुलाक_real(value);
 }
 
-inline void push_value(vthread_t thr, const string&value, unsigned)
+inline void इतुलाक_हालागा(vthread_t thr, const string&value, unsigned)
 {
-      thr->push_str(value);
+      thr->इतुलाक_str(value);
 }
 
-inline void push_value(vthread_t thr, const vvp_vector4_t&value, unsigned wid)
+inline void इतुलाक_हालागा(vthread_t thr, const vvp_vector4_t&value, unsigned wid)
 {
       assert(wid == value.size());
-      thr->push_vec4(value);
+      thr->इतुलाक_vec4(value);
 }
 
 template <typename ELEM, class QTYPE>
-static bool q_pop(vthread_t thr, vvp_code_t cp,
+static bool q_आलिसिन(vthread_t thr, vvp_code_t cp,
                   void (*get_val_func)(vvp_queue*, ELEM&),
                   const char*loc, unsigned wid)
 {
@@ -5446,12 +5446,12 @@ static bool q_pop(vthread_t thr, vvp_code_t cp,
 	         << get_queue_type(value) << "." << endl;
       }
 
-      push_value(thr, value, wid);
+      इतुलाक_हालागा(thr, value, wid);
       return true;
 }
 
 template <typename ELEM>
-static void get_back_value(vvp_queue*queue, ELEM&value)
+static void get_back_हालागा(vvp_queue*queue, ELEM&value)
 {
       queue->get_word(queue->get_size()-1, value);
       queue->pop_back();
@@ -5460,7 +5460,7 @@ static void get_back_value(vvp_queue*queue, ELEM&value)
 template <typename ELEM, class QTYPE>
 static bool qpop_b(vthread_t thr, vvp_code_t cp, unsigned wid=0)
 {
-      return q_pop<ELEM, QTYPE>(thr, cp, get_back_value<ELEM>, "back", wid);
+      return q_आलिसिन<ELEM, QTYPE>(thr, cp, get_back_हालागा<ELEM>, "back", wid);
 }
 
 /*
@@ -5488,7 +5488,7 @@ bool of_QPOP_B_V(vthread_t thr, vvp_code_t cp)
 }
 
 template <typename ELEM>
-static void get_front_value(vvp_queue*queue, ELEM&value)
+static void get_front_हालागा(vvp_queue*queue, ELEM&value)
 {
       queue->get_word(0, value);
       queue->pop_front();
@@ -5497,7 +5497,7 @@ static void get_front_value(vvp_queue*queue, ELEM&value)
 template <typename ELEM, class QTYPE>
 static bool qpop_f(vthread_t thr, vvp_code_t cp, unsigned wid=0)
 {
-      return q_pop<ELEM, QTYPE>(thr, cp, get_front_value<ELEM>, "front", wid);
+      return q_आलिसिन<ELEM, QTYPE>(thr, cp, get_front_हालागा<ELEM>, "front", wid);
 }
 
 
@@ -5590,15 +5590,15 @@ bool of_RELEASE_WR(vthread_t, vvp_code_t cp)
 
 bool of_REPLICATE(vthread_t thr, vvp_code_t cp)
 {
-      int rept = cp->number;
-      vvp_vector4_t val = thr->pop_vec4();
+      int rept = cp->नुमेरो;
+      vvp_vector4_t val = thr->आलिसिन_vec4();
       vvp_vector4_t res (val.size() * rept, BIT4_X);
 
       for (int idx = 0 ; idx < rept ; idx += 1) {
 	    res.set_vec(idx * val.size(), val);
       }
 
-      thr->push_vec4(res);
+      thr->इतुलाक_vec4(res);
 
       return true;
 }
@@ -5615,32 +5615,32 @@ static void poke_val(vthread_t fun_thr, unsigned depth, const string&val)
 
 static size_t get_max(vthread_t fun_thr, double&)
 {
-      return fun_thr->args_real.size();
+      return fun_thr->मगा_कातविरान_real.size();
 }
 
 static size_t get_max(vthread_t fun_thr, string&)
 {
-      return fun_thr->args_str.size();
+      return fun_thr->मगा_कातविरान_str.size();
 }
 
 static size_t get_max(vthread_t fun_thr, vvp_vector4_t&)
 {
-      return fun_thr->args_vec4.size();
+      return fun_thr->मगा_कातविरान_vec4.size();
 }
 
 static unsigned get_depth(vthread_t fun_thr, size_t index, double&)
 {
-      return fun_thr->args_real[index];
+      return fun_thr->मगा_कातविरान_real[index];
 }
 
 static unsigned get_depth(vthread_t fun_thr, size_t index, string&)
 {
-      return fun_thr->args_str[index];
+      return fun_thr->मगा_कातविरान_str[index];
 }
 
 static unsigned get_depth(vthread_t fun_thr, size_t index, vvp_vector4_t&)
 {
-      return fun_thr->args_vec4[index];
+      return fun_thr->मगा_कातविरान_vec4[index];
 }
 
 static vthread_t get_func(vthread_t thr)
@@ -5658,9 +5658,9 @@ static vthread_t get_func(vthread_t thr)
 template <typename ELEM>
 static bool ret(vthread_t thr, vvp_code_t cp)
 {
-      size_t index = cp->number;
+      size_t index = cp->नुमेरो;
       ELEM val;
-      pop_value(thr, val, 0);
+      आलिसिन_हालागा(thr, val, 0);
 
       vthread_t fun_thr = get_func(thr);
       assert(index < get_max(fun_thr, val));
@@ -5693,7 +5693,7 @@ bool of_RET_STR(vthread_t thr, vvp_code_t cp)
  */
 bool of_RET_VEC4(vthread_t thr, vvp_code_t cp)
 {
-      size_t index = cp->number;
+      size_t index = cp->नुमेरो;
       unsigned off_index = cp->bit_idx[0];
       unsigned int wid = cp->bit_idx[1];
       vvp_vector4_t&val = thr->peek_vec4();
@@ -5703,20 +5703,20 @@ bool of_RET_VEC4(vthread_t thr, vvp_code_t cp)
       assert(val.size() == wid);
       unsigned depth = get_depth(fun_thr, index, val);
 
-      int64_t off = off_index ? thr->words[off_index].w_int : 0;
-      unsigned int sig_value_size = fun_thr->parent->peek_vec4(depth).size();
+      int64_t off = off_index ? thr->मगा_सालिता[off_index].w_int : 0;
+      unsigned int sig_हालागा_size = fun_thr->parent->peek_vec4(depth).size();
 
       if (off_index!=0 && thr->flags[4] == BIT4_1) {
-	    thr->pop_vec4(1);
+	    thr->आलिसिन_vec4(1);
 	    return true;
       }
 
-      if (!resize_rval_vec(val, off, sig_value_size)) {
-	    thr->pop_vec4(1);
+      if (!resize_rval_vec(val, off, sig_हालागा_size)) {
+	    thr->आलिसिन_vec4(1);
 	    return true;
       }
 
-      if (off == 0 && val.size() == sig_value_size) {
+      if (off == 0 && val.size() == sig_हालागा_size) {
 	    fun_thr->parent->poke_vec4(depth, val);
       } else {
 	    vvp_vector4_t tmp_dst = fun_thr->parent->peek_vec4(depth);
@@ -5724,29 +5724,29 @@ bool of_RET_VEC4(vthread_t thr, vvp_code_t cp)
 	    fun_thr->parent->poke_vec4(depth, tmp_dst);
       }
 
-      thr->pop_vec4(1);
+      thr->आलिसिन_vec4(1);
       return true;
 }
 
-static void push_from_parent(vthread_t thr, vthread_t fun_thr, unsigned depth, double&)
+static void इतुलाक_from_parent(vthread_t thr, vthread_t fun_thr, unsigned depth, double&)
 {
-      thr->push_real(fun_thr->parent->peek_real(depth));
+      thr->इतुलाक_real(fun_thr->parent->peek_real(depth));
 }
 
-static void push_from_parent(vthread_t thr, vthread_t fun_thr, unsigned depth, string&)
+static void इतुलाक_from_parent(vthread_t thr, vthread_t fun_thr, unsigned depth, string&)
 {
-      thr->push_str(fun_thr->parent->peek_str(depth));
+      thr->इतुलाक_str(fun_thr->parent->peek_str(depth));
 }
 
-static void push_from_parent(vthread_t thr, vthread_t fun_thr, unsigned depth, vvp_vector4_t&)
+static void इतुलाक_from_parent(vthread_t thr, vthread_t fun_thr, unsigned depth, vvp_vector4_t&)
 {
-      thr->push_vec4(fun_thr->parent->peek_vec4(depth));
+      thr->इतुलाक_vec4(fun_thr->parent->peek_vec4(depth));
 }
 
 template <typename ELEM>
 static bool retload(vthread_t thr, vvp_code_t cp)
 {
-      size_t index = cp->number;
+      size_t index = cp->नुमेरो;
       ELEM type;
 
       vthread_t fun_thr = get_func(thr);
@@ -5755,7 +5755,7 @@ static bool retload(vthread_t thr, vvp_code_t cp)
       unsigned depth = get_depth(fun_thr, index, type);
 	// Use the depth to extract the values from the stack
 	// of the parent thread.
-      push_from_parent(thr, fun_thr, depth, type);
+      इतुलाक_from_parent(thr, fun_thr, depth, type);
       return true;
 }
 
@@ -5797,7 +5797,7 @@ bool of_RETLOAD_VEC4(vthread_t thr, vvp_code_t cp)
 bool of_SCOPY(vthread_t thr, vvp_code_t)
 {
       vvp_object_t tmp;
-      thr->pop_object(tmp);
+      thr->आलिसिन_object(tmp);
 
       vvp_object_t&dest = thr->peek_object();
         // If it is null there is nothing to copy
@@ -5825,13 +5825,13 @@ static void thread_peek(vthread_t thr, vvp_vector4_t&value)
 template <typename ELEM>
 static bool set_dar_obj(vthread_t thr, vvp_code_t cp)
 {
-      unsigned adr = thr->words[cp->number].w_int;
+      unsigned adr = thr->मगा_सालिता[cp->नुमेरो].w_int;
 
       ELEM value;
       thread_peek(thr, value);
 
-      vvp_object_t&top = thr->peek_object();
-      vvp_darray*darray = top.peek<vvp_darray>();
+      vvp_object_t&इताअस = thr->peek_object();
+      vvp_darray*darray = इताअस.peek<vvp_darray>();
       assert(darray);
 
       darray->set_word(adr, value);
@@ -5869,8 +5869,8 @@ bool of_SET_DAR_OBJ_VEC4(vthread_t thr, vvp_code_t cp)
  */
 bool of_SHIFTL(vthread_t thr, vvp_code_t cp)
 {
-      int use_index = cp->number;
-      uint64_t shift = thr->words[use_index].w_uint;
+      int use_index = cp->नुमेरो;
+      uint64_t shift = thr->मगा_सालिता[use_index].w_uint;
 
       vvp_vector4_t&val = thr->peek_vec4();
       unsigned wid  = val.size();
@@ -5902,10 +5902,10 @@ bool of_SHIFTL(vthread_t thr, vvp_code_t cp)
  */
 bool of_SHIFTR(vthread_t thr, vvp_code_t cp)
 {
-      int use_index = cp->number;
-      uint64_t shift = thr->words[use_index].w_uint;
+      int use_index = cp->नुमेरो;
+      uint64_t shift = thr->मगा_सालिता[use_index].w_uint;
 
-      vvp_vector4_t val = thr->pop_vec4();
+      vvp_vector4_t val = thr->आलिसिन_vec4();
       unsigned wid  = val.size();
 
       if (thr->flags[4] == BIT4_1) {
@@ -5921,7 +5921,7 @@ bool of_SHIFTR(vthread_t thr, vvp_code_t cp)
 	    val.set_vec(wid-shift, tmp);
       }
 
-      thr->push_vec4(val);
+      thr->इतुलाक_vec4(val);
       return true;
 }
 
@@ -5930,10 +5930,10 @@ bool of_SHIFTR(vthread_t thr, vvp_code_t cp)
  */
 bool of_SHIFTR_S(vthread_t thr, vvp_code_t cp)
 {
-      int use_index = cp->number;
-      uint64_t shift = thr->words[use_index].w_uint;
+      int use_index = cp->नुमेरो;
+      uint64_t shift = thr->मगा_सालिता[use_index].w_uint;
 
-      vvp_vector4_t val = thr->pop_vec4();
+      vvp_vector4_t val = thr->आलिसिन_vec4();
       unsigned wid  = val.size();
 
       vvp_bit4_t sign_bit = val.value(val.size()-1);
@@ -5951,7 +5951,7 @@ bool of_SHIFTR_S(vthread_t thr, vvp_code_t cp)
 	    val.set_vec(wid-shift, tmp);
       }
 
-      thr->push_vec4(val);
+      thr->इतुलाक_vec4(val);
       return true;
 }
 
@@ -5964,7 +5964,7 @@ bool of_SHIFTR_S(vthread_t thr, vvp_code_t cp)
  */
 bool of_SPLIT_VEC4(vthread_t thr, vvp_code_t cp)
 {
-      unsigned lsb_wid = cp->number;
+      unsigned lsb_wid = cp->नुमेरो;
 
       vvp_vector4_t&val = thr->peek_vec4();
       assert(lsb_wid < val.size());
@@ -5972,7 +5972,7 @@ bool of_SPLIT_VEC4(vthread_t thr, vvp_code_t cp)
       vvp_vector4_t lsb = val.subvalue(0, lsb_wid);
       val = val.subvalue(lsb_wid, val.size()-lsb_wid);
 
-      thr->push_vec4(lsb);
+      thr->इतुलाक_vec4(lsb);
       return true;
 }
 
@@ -6001,29 +6001,29 @@ inline static string get_darray_type(const vvp_vector4_t&value)
  * The following are used to allow a common template to be written for
  * darray real/string/vec4 operations
  */
-inline static void dar_pop_value(vthread_t thr, double&value)
+inline static void dar_आलिसिन_हालागा(vthread_t thr, double&value)
 {
-      value = thr->pop_real();
+      value = thr->आलिसिन_real();
 }
 
-inline static void dar_pop_value(vthread_t thr, string&value)
+inline static void dar_आलिसिन_हालागा(vthread_t thr, string&value)
 {
-      value = thr->pop_str();
+      value = thr->आलिसिन_str();
 }
 
-inline static void dar_pop_value(vthread_t thr, vvp_vector4_t&value)
+inline static void dar_आलिसिन_हालागा(vthread_t thr, vvp_vector4_t&value)
 {
-      value = thr->pop_vec4();
+      value = thr->आलिसिन_vec4();
 }
 
 template <typename ELEM>
 static bool store_dar(vthread_t thr, vvp_code_t cp)
 {
-      int64_t adr = thr->words[3].w_int;
+      int64_t adr = thr->मगा_सालिता[3].w_int;
       ELEM value;
 	// FIXME: Can we get the size of the underlying array element
 	//        and then use the normal pop_value?
-      dar_pop_value(thr, value);
+      dar_आलिसिन_हालागा(thr, value);
 
       vvp_net_t*net = cp->net;
       assert(net);
@@ -6081,7 +6081,7 @@ bool of_STORE_OBJ(vthread_t thr, vvp_code_t cp)
       vvp_net_ptr_t ptr (cp->net, 0);
 
       vvp_object_t val;
-      thr->pop_object(val);
+      thr->आलिसिन_object(val);
 
       vvp_send_object(ptr, val, thr->wt_context);
 
@@ -6094,10 +6094,10 @@ bool of_STORE_OBJ(vthread_t thr, vvp_code_t cp)
 bool of_STORE_OBJA(vthread_t thr, vvp_code_t cp)
 {
       unsigned idx = cp->bit_idx[0];
-      unsigned adr = thr->words[idx].w_int;
+      unsigned adr = thr->मगा_सालिता[idx].w_int;
 
       vvp_object_t val;
-      thr->pop_object(val);
+      thr->आलिसिन_object(val);
 
       cp->array->set_word(adr, val);
 
@@ -6114,16 +6114,16 @@ bool of_STORE_OBJA(vthread_t thr, vvp_code_t cp)
  */
 bool of_STORE_PROP_OBJ(vthread_t thr, vvp_code_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
       unsigned idx = cp->bit_idx[0];
 
       if (idx != 0) {
-	    assert(idx < vthread_s::WORDS_COUNT);
-	    idx = thr->words[idx].w_uint;
+	    assert(idx < vthread_s::मगा_सालिता_बिलांग);
+	    idx = thr->मगा_सालिता[idx].w_uint;
       }
 
       vvp_object_t val;
-      thr->pop_object(val);
+      thr->आलिसिन_object(val);
 
       vvp_object_t&obj = thr->peek_object();
       vvp_cobject*cobj = obj.peek<vvp_cobject>();
@@ -6134,19 +6134,19 @@ bool of_STORE_PROP_OBJ(vthread_t thr, vvp_code_t cp)
       return true;
 }
 
-static void pop_prop_val(vthread_t thr, double&val, unsigned)
+static void आलिसिन_prop_val(vthread_t thr, double&val, unsigned)
 {
-      val = thr->pop_real();
+      val = thr->आलिसिन_real();
 }
 
-static void pop_prop_val(vthread_t thr, string&val, unsigned)
+static void आलिसिन_prop_val(vthread_t thr, string&val, unsigned)
 {
-      val = thr->pop_str();
+      val = thr->आलिसिन_str();
 }
 
-static void pop_prop_val(vthread_t thr, vvp_vector4_t&val, unsigned wid)
+static void आलिसिन_prop_val(vthread_t thr, vvp_vector4_t&val, unsigned wid)
 {
-      val = thr->pop_vec4();
+      val = thr->आलिसिन_vec4();
       assert(val.size() >= wid);
       val.resize(wid);
 }
@@ -6169,9 +6169,9 @@ static void set_val(vvp_cobject*cobj, size_t pid, const vvp_vector4_t&val)
 template <typename ELEM>
 static bool store_prop(vthread_t thr, vvp_code_t cp, unsigned wid=0)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
       ELEM val;
-      pop_prop_val(thr, val, wid); // Pop the value to store.
+      आलिसिन_prop_val(thr, val, wid); // Pop the value to store.
 
       vvp_object_t&obj = thr->peek_object();
       vvp_cobject*cobj = obj.peek<vvp_cobject>();
@@ -6234,13 +6234,13 @@ static QTYPE* get_queue_prop(vvp_cobject*cobj, size_t pid)
 template <typename ELEM, class QTYPE>
 static bool store_prop_qb(vthread_t thr, vvp_code_t cp, unsigned wid)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
       ELEM value;
-      unsigned max_size = thr->words[cp->bit_idx[0]].w_uint;
-      pop_value(thr, value, wid);
+      unsigned max_size = thr->मगा_सालिता[cp->bit_idx[0]].w_uint;
+      आलिसिन_हालागा(thr, value, wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       QTYPE* queue = get_queue_prop<QTYPE>(cobj, pid);
@@ -6252,13 +6252,13 @@ static bool store_prop_qb(vthread_t thr, vvp_code_t cp, unsigned wid)
 template <typename ELEM, class QTYPE>
 static bool store_prop_qf(vthread_t thr, vvp_code_t cp, unsigned wid)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
       ELEM value;
-      unsigned max_size = thr->words[cp->bit_idx[0]].w_uint;
-      pop_value(thr, value, wid);
+      unsigned max_size = thr->मगा_सालिता[cp->bit_idx[0]].w_uint;
+      आलिसिन_हालागा(thr, value, wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       QTYPE* queue = get_queue_prop<QTYPE>(cobj, pid);
@@ -6300,13 +6300,13 @@ bool of_STORE_PROP_QF_V(vthread_t thr, vvp_code_t cp)
 template <typename ELEM, class QTYPE>
 static bool qinsert_prop(vthread_t thr, vvp_code_t cp, unsigned wid)
 {
-      int64_t idx = thr->words[3].w_int;
+      int64_t idx = thr->मगा_सालिता[3].w_int;
       ELEM value;
-      size_t pid = cp->number;
-      pop_value(thr, value, wid);
+      size_t pid = cp->नुमेरो;
+      आलिसिन_हालागा(thr, value, wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       QTYPE* queue = get_queue_prop<QTYPE>(cobj, pid);
@@ -6316,16 +6316,16 @@ static bool qinsert_prop(vthread_t thr, vvp_code_t cp, unsigned wid)
 	         << "Warning: cannot insert at a negative "
 	         << get_queue_type(value)
 	         << " index (" << idx << "). ";
-	    print_queue_value(value);
+	    इलिम्बाग_queue_हालागा(value);
 	    cerr << " was not added." << endl;
       } else if (thr->flags[4] != BIT4_0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot insert at an undefined "
 	         << get_queue_type(value) << " index. ";
-	    print_queue_value(value);
+	    इलिम्बाग_queue_हालागा(value);
 	    cerr << " was not added." << endl;
       } else {
-	    unsigned max_size = thr->words[cp->bit_idx[0]].w_int;
+	    unsigned max_size = thr->मगा_सालिता[cp->bit_idx[0]].w_int;
 	    queue->insert(idx, value, max_size);
       }
       return true;
@@ -6347,14 +6347,14 @@ bool of_QINSERT_PROP_V(vthread_t thr, vvp_code_t cp)
 }
 
 template <typename ELEM, class QTYPE>
-static bool q_pop_prop(vthread_t thr, vvp_code_t cp,
+static bool q_आलिसिन_prop(vthread_t thr, vvp_code_t cp,
                        void (*get_val_func)(vvp_queue*, ELEM&),
                        const char*loc, unsigned wid)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       QTYPE* queue = get_queue_prop<QTYPE>(cobj, pid);
@@ -6372,20 +6372,20 @@ static bool q_pop_prop(vthread_t thr, vvp_code_t cp,
 	         << get_queue_type(value) << "." << endl;
       }
 
-      push_value(thr, value, wid);
+      इतुलाक_हालागा(thr, value, wid);
       return true;
 }
 
 template <typename ELEM, class QTYPE>
 static bool qpop_b_prop(vthread_t thr, vvp_code_t cp, unsigned wid)
 {
-      return q_pop_prop<ELEM, QTYPE>(thr, cp, get_back_value<ELEM>, "back", wid);
+      return q_आलिसिन_prop<ELEM, QTYPE>(thr, cp, get_back_हालागा<ELEM>, "back", wid);
 }
 
 template <typename ELEM, class QTYPE>
 static bool qpop_f_prop(vthread_t thr, vvp_code_t cp, unsigned wid)
 {
-      return q_pop_prop<ELEM, QTYPE>(thr, cp, get_front_value<ELEM>, "front", wid);
+      return q_आलिसिन_prop<ELEM, QTYPE>(thr, cp, get_front_हालागा<ELEM>, "front", wid);
 }
 
 bool of_QPOP_PROP_B_REAL(vthread_t thr, vvp_code_t cp)
@@ -6555,7 +6555,7 @@ static vvp_queue_vec4* queue_run_min_max_src(SRC* src, unsigned wid, bool want_m
 
 bool of_QUEUE_FIND_V(vthread_t thr, vvp_code_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
+      vvp_vector4_t cmp = thr->आलिसिन_vec4();
       unsigned wid = cp->bit_idx[0];
       assert(cmp.size() == wid);
       vvp_net_t* net = cp->net;
@@ -6570,19 +6570,19 @@ bool of_QUEUE_FIND_V(vthread_t thr, vvp_code_t cp)
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_run_find_matches_src(src, wid, cmp, false);
       }
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
 bool of_QUEUE_FIND_PROP_V(vthread_t thr, vvp_code_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      size_t pid = cp->number;
+      vvp_vector4_t cmp = thr->आलिसिन_vec4();
+      size_t pid = cp->नुमेरो;
       unsigned wid = cp->bit_idx[0];
       assert(cmp.size() == wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t qobj;
@@ -6592,13 +6592,13 @@ bool of_QUEUE_FIND_PROP_V(vthread_t thr, vvp_code_t cp)
       get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
       vvp_queue_vec4* dst = qsrc ? queue_run_find_matches_src(qsrc, wid, cmp, false)
 				 : queue_run_find_matches_src(dsrc, wid, cmp, false);
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
 bool of_QUEUE_FIND_INDEX_V(vthread_t thr, vvp_code_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
+      vvp_vector4_t cmp = thr->आलिसिन_vec4();
       unsigned wid = cp->bit_idx[0];
       assert(cmp.size() == wid);
       vvp_net_t* net = cp->net;
@@ -6613,19 +6613,19 @@ bool of_QUEUE_FIND_INDEX_V(vthread_t thr, vvp_code_t cp)
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_run_find_matches_src(src, wid, cmp, true);
       }
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
 bool of_QUEUE_FIND_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      size_t pid = cp->number;
+      vvp_vector4_t cmp = thr->आलिसिन_vec4();
+      size_t pid = cp->नुमेरो;
       unsigned wid = cp->bit_idx[0];
       assert(cmp.size() == wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t qobj;
@@ -6635,13 +6635,13 @@ bool of_QUEUE_FIND_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
       get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
       vvp_queue_vec4* dst = qsrc ? queue_run_find_matches_src(qsrc, wid, cmp, true)
 				 : queue_run_find_matches_src(dsrc, wid, cmp, true);
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
 bool of_QUEUE_FIND_FIRST_V(vthread_t thr, vvp_code_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
+      vvp_vector4_t cmp = thr->आलिसिन_vec4();
       unsigned wid = cp->bit_idx[0];
       assert(cmp.size() == wid);
       vvp_net_t* net = cp->net;
@@ -6656,19 +6656,19 @@ bool of_QUEUE_FIND_FIRST_V(vthread_t thr, vvp_code_t cp)
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_find_first_last_to_queue_src(src, wid, cmp, true, false);
       }
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
 bool of_QUEUE_FIND_FIRST_PROP_V(vthread_t thr, vvp_code_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      size_t pid = cp->number;
+      vvp_vector4_t cmp = thr->आलिसिन_vec4();
+      size_t pid = cp->नुमेरो;
       unsigned wid = cp->bit_idx[0];
       assert(cmp.size() == wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t qobj;
@@ -6679,13 +6679,13 @@ bool of_QUEUE_FIND_FIRST_PROP_V(vthread_t thr, vvp_code_t cp)
       vvp_queue_vec4* dst =
 	    qsrc ? queue_find_first_last_to_queue_src(qsrc, wid, cmp, true, false)
 		 : queue_find_first_last_to_queue_src(dsrc, wid, cmp, true, false);
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
 bool of_QUEUE_FIND_FIRST_INDEX_V(vthread_t thr, vvp_code_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
+      vvp_vector4_t cmp = thr->आलिसिन_vec4();
       unsigned wid = cp->bit_idx[0];
       assert(cmp.size() == wid);
       vvp_net_t* net = cp->net;
@@ -6700,19 +6700,19 @@ bool of_QUEUE_FIND_FIRST_INDEX_V(vthread_t thr, vvp_code_t cp)
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_find_first_last_to_queue_src(src, wid, cmp, true, true);
       }
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
 bool of_QUEUE_FIND_FIRST_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      size_t pid = cp->number;
+      vvp_vector4_t cmp = thr->आलिसिन_vec4();
+      size_t pid = cp->नुमेरो;
       unsigned wid = cp->bit_idx[0];
       assert(cmp.size() == wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t qobj;
@@ -6723,13 +6723,13 @@ bool of_QUEUE_FIND_FIRST_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
       vvp_queue_vec4* dst =
 	    qsrc ? queue_find_first_last_to_queue_src(qsrc, wid, cmp, true, true)
 		 : queue_find_first_last_to_queue_src(dsrc, wid, cmp, true, true);
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
 bool of_QUEUE_FIND_LAST_V(vthread_t thr, vvp_code_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
+      vvp_vector4_t cmp = thr->आलिसिन_vec4();
       unsigned wid = cp->bit_idx[0];
       assert(cmp.size() == wid);
       vvp_net_t* net = cp->net;
@@ -6744,19 +6744,19 @@ bool of_QUEUE_FIND_LAST_V(vthread_t thr, vvp_code_t cp)
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_find_first_last_to_queue_src(src, wid, cmp, false, false);
       }
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
 bool of_QUEUE_FIND_LAST_PROP_V(vthread_t thr, vvp_code_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      size_t pid = cp->number;
+      vvp_vector4_t cmp = thr->आलिसिन_vec4();
+      size_t pid = cp->नुमेरो;
       unsigned wid = cp->bit_idx[0];
       assert(cmp.size() == wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t qobj;
@@ -6767,13 +6767,13 @@ bool of_QUEUE_FIND_LAST_PROP_V(vthread_t thr, vvp_code_t cp)
       vvp_queue_vec4* dst =
 	    qsrc ? queue_find_first_last_to_queue_src(qsrc, wid, cmp, false, false)
 		 : queue_find_first_last_to_queue_src(dsrc, wid, cmp, false, false);
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
 bool of_QUEUE_FIND_LAST_INDEX_V(vthread_t thr, vvp_code_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
+      vvp_vector4_t cmp = thr->आलिसिन_vec4();
       unsigned wid = cp->bit_idx[0];
       assert(cmp.size() == wid);
       vvp_net_t* net = cp->net;
@@ -6788,19 +6788,19 @@ bool of_QUEUE_FIND_LAST_INDEX_V(vthread_t thr, vvp_code_t cp)
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_find_first_last_to_queue_src(src, wid, cmp, false, true);
       }
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
 bool of_QUEUE_FIND_LAST_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
 {
-      vvp_vector4_t cmp = thr->pop_vec4();
-      size_t pid = cp->number;
+      vvp_vector4_t cmp = thr->आलिसिन_vec4();
+      size_t pid = cp->नुमेरो;
       unsigned wid = cp->bit_idx[0];
       assert(cmp.size() == wid);
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t qobj;
@@ -6811,7 +6811,7 @@ bool of_QUEUE_FIND_LAST_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
       vvp_queue_vec4* dst =
 	    qsrc ? queue_find_first_last_to_queue_src(qsrc, wid, cmp, false, true)
 		 : queue_find_first_last_to_queue_src(dsrc, wid, cmp, false, true);
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
@@ -6830,7 +6830,7 @@ bool of_QUEUE_MIN_V(vthread_t thr, vvp_code_t cp)
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_run_min_max_src(src, wid, false);
       }
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
@@ -6838,24 +6838,24 @@ bool of_QUEUE_MIN_OBJ_V(vthread_t thr, vvp_code_t cp)
 {
       unsigned wid = cp->bit_idx[0];
       vvp_object_t src_obj;
-      thr->pop_object(src_obj);
+      thr->आलिसिन_object(src_obj);
 
       vvp_queue_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
       vvp_queue_vec4* dst = qsrc ? queue_run_min_max_src(qsrc, wid, false)
 				 : queue_run_min_max_src(dsrc, wid, false);
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
 bool of_QUEUE_MIN_PROP_V(vthread_t thr, vvp_code_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
       unsigned wid = cp->bit_idx[0];
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t qobj;
@@ -6865,7 +6865,7 @@ bool of_QUEUE_MIN_PROP_V(vthread_t thr, vvp_code_t cp)
       get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
       vvp_queue_vec4* dst = qsrc ? queue_run_min_max_src(qsrc, wid, false)
 				 : queue_run_min_max_src(dsrc, wid, false);
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
@@ -6884,7 +6884,7 @@ bool of_QUEUE_MAX_V(vthread_t thr, vvp_code_t cp)
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_run_min_max_src(src, wid, true);
       }
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
@@ -6892,24 +6892,24 @@ bool of_QUEUE_MAX_OBJ_V(vthread_t thr, vvp_code_t cp)
 {
       unsigned wid = cp->bit_idx[0];
       vvp_object_t src_obj;
-      thr->pop_object(src_obj);
+      thr->आलिसिन_object(src_obj);
 
       vvp_queue_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
       vvp_queue_vec4* dst = qsrc ? queue_run_min_max_src(qsrc, wid, true)
 				 : queue_run_min_max_src(dsrc, wid, true);
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
 bool of_QUEUE_MAX_PROP_V(vthread_t thr, vvp_code_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
       unsigned wid = cp->bit_idx[0];
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t qobj;
@@ -6919,7 +6919,7 @@ bool of_QUEUE_MAX_PROP_V(vthread_t thr, vvp_code_t cp)
       get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
       vvp_queue_vec4* dst = qsrc ? queue_run_min_max_src(qsrc, wid, true)
 				 : queue_run_min_max_src(dsrc, wid, true);
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
@@ -6927,14 +6927,14 @@ bool of_QUEUE_UNIQUE_OBJ_V(vthread_t thr, vvp_code_t cp)
 {
       unsigned wid = cp->bit_idx[0];
       vvp_object_t src_obj;
-      thr->pop_object(src_obj);
+      thr->आलिसिन_object(src_obj);
 
       vvp_queue_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
       vvp_queue_vec4* dst = qsrc ? queue_run_unique_src(qsrc, wid, false)
 				 : queue_run_unique_src(dsrc, wid, false);
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
@@ -6942,14 +6942,14 @@ bool of_QUEUE_UNIQUE_INDEX_OBJ_V(vthread_t thr, vvp_code_t cp)
 {
       unsigned wid = cp->bit_idx[0];
       vvp_object_t src_obj;
-      thr->pop_object(src_obj);
+      thr->आलिसिन_object(src_obj);
 
       vvp_queue_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
       vvp_queue_vec4* dst = qsrc ? queue_run_unique_src(qsrc, wid, true)
 				 : queue_run_unique_src(dsrc, wid, true);
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
@@ -6968,17 +6968,17 @@ bool of_QUEUE_UNIQUE_V(vthread_t thr, vvp_code_t cp)
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_run_unique_src(src, wid, false);
       }
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
 bool of_QUEUE_UNIQUE_PROP_V(vthread_t thr, vvp_code_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
       unsigned wid = cp->bit_idx[0];
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t qobj;
@@ -6988,7 +6988,7 @@ bool of_QUEUE_UNIQUE_PROP_V(vthread_t thr, vvp_code_t cp)
       get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
       vvp_queue_vec4* dst = qsrc ? queue_run_unique_src(qsrc, wid, false)
 				 : queue_run_unique_src(dsrc, wid, false);
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
@@ -7007,17 +7007,17 @@ bool of_QUEUE_UNIQUE_INDEX_V(vthread_t thr, vvp_code_t cp)
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    dst = queue_run_unique_src(src, wid, true);
       }
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
 bool of_QUEUE_UNIQUE_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
       unsigned wid = cp->bit_idx[0];
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t qobj;
@@ -7027,16 +7027,16 @@ bool of_QUEUE_UNIQUE_INDEX_PROP_V(vthread_t thr, vvp_code_t cp)
       get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
       vvp_queue_vec4* dst = qsrc ? queue_run_unique_src(qsrc, wid, true)
 				 : queue_run_unique_src(dsrc, wid, true);
-      thr->push_object(vvp_object_t(dst));
+      thr->इतुलाक_object(vvp_object_t(dst));
       return true;
 }
 
 bool of_PROP_QUEUE_SIZE(vthread_t thr, vvp_code_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t qobj;
@@ -7057,7 +7057,7 @@ bool of_PROP_QUEUE_SIZE(vthread_t thr, vvp_code_t cp)
 	    }
 	    ul >>= 1;
       }
-      thr->push_vec4(val);
+      thr->इतुलाक_vec4(val);
       return true;
 }
 
@@ -7080,7 +7080,7 @@ bool of_QUEUE_SIZE_V(vthread_t thr, vvp_code_t cp)
 	    }
 	    ul >>= 1;
       }
-      thr->push_vec4(val);
+      thr->इतुलाक_vec4(val);
       return true;
 }
 
@@ -7088,13 +7088,13 @@ bool of_QUEUE_WORD_V(vthread_t thr, vvp_code_t cp)
 {
       unsigned wid = cp->bit_idx[0];
       unsigned ix_reg = cp->bit_idx[1];
-      int64_t adr = thr->words[ix_reg].w_int;
+      int64_t adr = thr->मगा_सालिता[ix_reg].w_int;
       if (thr->flags[4] == BIT4_1) {
-	    thr->push_vec4(vvp_vector4_t(wid));
+	    thr->इतुलाक_vec4(vvp_vector4_t(wid));
 	    return true;
       }
       if (adr < 0) {
-	    thr->push_vec4(vvp_vector4_t(wid));
+	    thr->इतुलाक_vec4(vvp_vector4_t(wid));
 	    return true;
       }
       vvp_net_t* net = cp->net;
@@ -7104,13 +7104,13 @@ bool of_QUEUE_WORD_V(vthread_t thr, vvp_code_t cp)
       vvp_vector4_t out(wid);
       if (qsrc) {
 	    if ((size_t)adr >= qsrc->get_size()) {
-		  thr->push_vec4(out);
+		  thr->इतुलाक_vec4(out);
 		  return true;
 	    }
 	    qsrc->get_word((unsigned)adr, out);
       } else if (dsrc) {
 	    if ((size_t)adr >= dsrc->get_size()) {
-		  thr->push_vec4(out);
+		  thr->इतुलाक_vec4(out);
 		  return true;
 	    }
 	    dsrc->get_word((unsigned)adr, out);
@@ -7118,45 +7118,45 @@ bool of_QUEUE_WORD_V(vthread_t thr, vvp_code_t cp)
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
 	    if (!src || (size_t)adr >= src->get_size()) {
-		  thr->push_vec4(out);
+		  thr->इतुलाक_vec4(out);
 		  return true;
 	    }
 	    src->get_word((unsigned)adr, out);
       }
-      thr->push_vec4(out);
+      thr->इतुलाक_vec4(out);
       return true;
 }
 
 bool of_QUEUE_WORD_PROP_V(vthread_t thr, vvp_code_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
       unsigned wid = cp->bit_idx[0];
       unsigned ix_reg = cp->bit_idx[1];
-      int64_t adr = thr->words[ix_reg].w_int;
+      int64_t adr = thr->मगा_सालिता[ix_reg].w_int;
       if (thr->flags[4] == BIT4_1) {
-	    thr->push_vec4(vvp_vector4_t(wid));
+	    thr->इतुलाक_vec4(vvp_vector4_t(wid));
 	    return true;
       }
       if (adr < 0) {
-	    thr->push_vec4(vvp_vector4_t(wid));
+	    thr->इतुलाक_vec4(vvp_vector4_t(wid));
 	    return true;
       }
 
-      vvp_object_t saved_top;
-      bool popped_top = false;
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t saved_इताअस;
+      bool popped_इताअस = false;
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       if (cobj == 0) {
 	    // Array-locator with(property) keeps an accumulator queue on top.
 	    // Temporarily pop it to access the class object beneath.
-	    thr->pop_object(saved_top);
-	    popped_top = true;
+	    thr->आलिसिन_object(saved_इताअस);
+	    popped_इताअस = true;
 	    vvp_object_t& below = thr->peek_object();
 	    cobj = below.peek<vvp_cobject>();
       }
       if (cobj == 0) {
-	    if (popped_top) thr->push_object(saved_top);
-	    thr->push_vec4(vvp_vector4_t(wid));
+	    if (popped_इताअस) thr->इतुलाक_object(saved_इताअस);
+	    thr->इतुलाक_vec4(vvp_vector4_t(wid));
 	    return true;
       }
 
@@ -7168,31 +7168,31 @@ bool of_QUEUE_WORD_PROP_V(vthread_t thr, vvp_code_t cp)
       vvp_vector4_t out(wid);
       if (qsrc) {
 	    if ((size_t)adr >= qsrc->get_size()) {
-		  thr->push_vec4(out);
+		  thr->इतुलाक_vec4(out);
 		  return true;
 	    }
 	    qsrc->get_word((unsigned)adr, out);
       } else if (dsrc) {
 	    if ((size_t)adr >= dsrc->get_size()) {
-		  thr->push_vec4(out);
+		  thr->इतुलाक_vec4(out);
 		  return true;
 	    }
 	    dsrc->get_word((unsigned)adr, out);
       } else {
-	    thr->push_vec4(out);
-	    if (popped_top) thr->push_object(saved_top);
+	    thr->इतुलाक_vec4(out);
+	    if (popped_इताअस) thr->इतुलाक_object(saved_इताअस);
 	    return true;
       }
-      if (popped_top) thr->push_object(saved_top);
-      thr->push_vec4(out);
+      if (popped_इताअस) thr->इतुलाक_object(saved_इताअस);
+      thr->इतुलाक_vec4(out);
       return true;
 }
 
 bool of_CMPIX_LTU(vthread_t thr, vvp_code_t cp)
 {
-      unsigned a = cp->number;
+      unsigned a = cp->नुमेरो;
       unsigned b = cp->bit_idx[0];
-      if (thr->words[a].w_uint < thr->words[b].w_uint) {
+      if (thr->मगा_सालिता[a].w_uint < thr->मगा_सालिता[b].w_uint) {
 	    thr->flags[4] = BIT4_1;
       } else {
 	    thr->flags[4] = BIT4_0;
@@ -7202,22 +7202,22 @@ bool of_CMPIX_LTU(vthread_t thr, vvp_code_t cp)
 
 bool of_CMPIX_SLT0(vthread_t thr, vvp_code_t cp)
 {
-      unsigned r = cp->number;
-      thr->flags[4] = (thr->words[r].w_int < 0) ? BIT4_1 : BIT4_0;
+      unsigned r = cp->नुमेरो;
+      thr->flags[4] = (thr->मगा_सालिता[r].w_int < 0) ? BIT4_1 : BIT4_0;
       return true;
 }
 
-bool of_PUSH_IX_VEC4(vthread_t thr, vvp_code_t cp)
+bool of_इतुलाक_IX_VEC4(vthread_t thr, vvp_code_t cp)
 {
-      unsigned ix = cp->number;
+      unsigned ix = cp->नुमेरो;
       unsigned wid = cp->bit_idx[0];
       unsigned sgn = cp->bit_idx[1];
       uint32_t ubits;
       if (sgn) {
-	    int32_t sv = (int32_t)thr->words[ix].w_int;
+	    int32_t sv = (int32_t)thr->मगा_सालिता[ix].w_int;
 	    ubits = (uint32_t)sv;
       } else {
-	    ubits = (uint32_t)thr->words[ix].w_uint;
+	    ubits = (uint32_t)thr->मगा_सालिता[ix].w_uint;
       }
       if (wid > 32) wid = 32;
       vvp_vector4_t tmp(wid, BIT4_0);
@@ -7229,35 +7229,35 @@ bool of_PUSH_IX_VEC4(vthread_t thr, vvp_code_t cp)
 	    }
 	    ubits >>= 1;
       }
-      thr->push_vec4(tmp);
+      thr->इतुलाक_vec4(tmp);
       return true;
 }
 
 bool of_QUEUE_NEW_EMPTY_V(vthread_t thr, vvp_code_t)
 {
-      thr->push_object(vvp_object_t(new vvp_queue_vec4()));
+      thr->इतुलाक_object(vvp_object_t(new vvp_queue_vec4()));
       return true;
 }
 
 bool of_QUEUE_APPEND_WORD_V(vthread_t thr, vvp_code_t cp)
 {
       unsigned wid = cp->bit_idx[0];
-      vvp_vector4_t elem = thr->pop_vec4();
+      vvp_vector4_t elem = thr->आलिसिन_vec4();
       assert(elem.size() == wid);
       vvp_object_t qobj;
-      thr->pop_object(qobj);
+      thr->आलिसिन_object(qobj);
       vvp_queue_vec4* q = qobj.peek<vvp_queue_vec4>();
       assert(q);
       q->push_back(elem, 0);
-      thr->push_object(qobj);
+      thr->इतुलाक_object(qobj);
       return true;
 }
 
 bool of_DELETE_PROP_ELEM(vthread_t thr, vvp_code_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
 
-      int64_t idx_val = thr->words[3].w_int;
+      int64_t idx_val = thr->मगा_सालिता[3].w_int;
       if (thr->flags[4] == BIT4_1) {
 	    cerr << thr->get_fileline()
 	         << "Warning: skipping queue delete() with undefined index."
@@ -7272,8 +7272,8 @@ bool of_DELETE_PROP_ELEM(vthread_t thr, vvp_code_t cp)
       }
       size_t idx = idx_val;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t qobj;
@@ -7299,10 +7299,10 @@ bool of_DELETE_PROP_ELEM(vthread_t thr, vvp_code_t cp)
 
 bool of_DELETE_PROP_OBJ(vthread_t thr, vvp_code_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       cobj->set_object(pid, vvp_object_t(), 0);
@@ -7315,8 +7315,8 @@ static bool store_qb(vthread_t thr, vvp_code_t cp, unsigned wid=0)
 {
       ELEM value;
       vvp_net_t*net = cp->net;
-      unsigned max_size = thr->words[cp->bit_idx[0]].w_int;
-      pop_value(thr, value, wid); // Pop the value to store.
+      unsigned max_size = thr->मगा_सालिता[cp->bit_idx[0]].w_int;
+      आलिसिन_हालागा(thr, value, wid); // Pop the value to store.
 
       vvp_queue*queue = get_queue_object<QTYPE>(thr, net);
       assert(queue);
@@ -7351,10 +7351,10 @@ bool of_STORE_QB_V(vthread_t thr, vvp_code_t cp)
 template <typename ELEM, class QTYPE>
 static bool store_qdar(vthread_t thr, vvp_code_t cp, unsigned wid=0)
 {
-      int64_t idx = thr->words[3].w_int;
+      int64_t idx = thr->मगा_सालिता[3].w_int;
       ELEM value;
       vvp_net_t*net = cp->net;
-      pop_value(thr, value, wid); // Pop the value to store.
+      आलिसिन_हालागा(thr, value, wid); // Pop the value to store.
 
       vvp_queue*queue = get_queue_object<QTYPE>(thr, net);
       assert(queue);
@@ -7363,16 +7363,16 @@ static bool store_qdar(vthread_t thr, vvp_code_t cp, unsigned wid=0)
 	         << "Warning: cannot assign to a negative "
 	         << get_queue_type(value)
 	         << " index (" << idx << "). ";
-	    print_queue_value(value);
+	    इलिम्बाग_queue_हालागा(value);
 	    cerr << " was not added." << endl;
       } else if (thr->flags[4] != BIT4_0) {
 	    cerr << thr->get_fileline()
 	         << "Warning: cannot assign to an undefined "
 	         << get_queue_type(value) << " index. ";
-	    print_queue_value(value);
+	    इलिम्बाग_queue_हालागा(value);
 	    cerr << " was not added." << endl;
       } else {
-	    unsigned max_size = thr->words[cp->bit_idx[0]].w_int;
+	    unsigned max_size = thr->मगा_सालिता[cp->bit_idx[0]].w_int;
 	    queue->set_word_max(idx, value, max_size);
       }
       return true;
@@ -7407,8 +7407,8 @@ static bool store_qf(vthread_t thr, vvp_code_t cp, unsigned wid=0)
 {
       ELEM value;
       vvp_net_t*net = cp->net;
-      unsigned max_size = thr->words[cp->bit_idx[0]].w_int;
-      pop_value(thr, value, wid); // Pop the value to store.
+      unsigned max_size = thr->मगा_सालिता[cp->bit_idx[0]].w_int;
+      आलिसिन_हालागा(thr, value, wid); // Pop the value to store.
 
       vvp_queue*queue = get_queue_object<QTYPE>(thr, net);
       assert(queue);
@@ -7450,13 +7450,13 @@ static bool store_qobj(vthread_t thr, vvp_code_t cp, unsigned wid=0)
       assert(queue);
 
       vvp_object_t src;
-      thr->pop_object(src);
+      thr->आलिसिन_object(src);
 
         // If it is null just clear the queue
       if (src.test_nil())
 	    queue->erase_tail(0);
       else {
-	    unsigned max_size = thr->words[cp->bit_idx[0]].w_int;
+	    unsigned max_size = thr->मगा_सालिता[cp->bit_idx[0]].w_int;
 	    queue->copy_elems(src, max_size);
       }
 
@@ -7492,7 +7492,7 @@ template <typename ELEM>
 static bool store(vthread_t thr, vvp_code_t cp)
 {
       ELEM val;
-      pop_value(thr, val, 0);
+      आलिसिन_हालागा(thr, val, 0);
 	/* set the value into port 0 of the destination. */
       vvp_net_ptr_t ptr (cp->net, 0);
       vvp_send(thr, ptr, val);
@@ -7509,10 +7509,10 @@ static bool storea(vthread_t thr, vvp_code_t cp)
 {
       unsigned idx = cp->bit_idx[0];
       ELEM val;
-      pop_value(thr, val, 0);
+      आलिसिन_हालागा(thr, val, 0);
 
       if (thr->flags[4] != BIT4_1) {
-	    unsigned adr = thr->words[idx].w_int;
+	    unsigned adr = thr->मगा_सालिता[idx].w_int;
 	    cp->array->set_word(adr, val);
       }
 
@@ -7561,12 +7561,12 @@ bool of_STORE_STRA(vthread_t thr, vvp_code_t cp)
 bool of_STORE_VEC4(vthread_t thr, vvp_code_t cp)
 {
       vvp_net_ptr_t ptr(cp->net, 0);
-      const vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (cp->net->fil);
+      const vvp_signal_हालागा*sig = dynamic_cast<vvp_signal_हालागा*> (cp->net->fil);
       unsigned off_index = cp->bit_idx[0];
       unsigned int wid = cp->bit_idx[1];
 
-      int64_t off = off_index ? thr->words[off_index].w_int : 0;
-      unsigned int sig_value_size = sig->value_size();
+      int64_t off = off_index ? thr->मगा_सालिता[off_index].w_int : 0;
+      unsigned int sig_हालागा_size = sig->हालागा_size();
 
       vvp_vector4_t&val = thr->peek_vec4();
       unsigned val_size = val.size();
@@ -7584,21 +7584,21 @@ bool of_STORE_VEC4(vthread_t thr, vvp_code_t cp)
 	// If there is a problem loading the index register, flags-4
 	// will be set to 1, and we know here to skip the actual assignment.
       if (off_index!=0 && thr->flags[4] == BIT4_1) {
-	    thr->pop_vec4(1);
+	    thr->आलिसिन_vec4(1);
 	    return true;
       }
 
-      if (!resize_rval_vec(val, off, sig_value_size)) {
-	    thr->pop_vec4(1);
+      if (!resize_rval_vec(val, off, sig_हालागा_size)) {
+	    thr->आलिसिन_vec4(1);
 	    return true;
       }
 
-      if (off == 0 && val.size() == sig_value_size)
+      if (off == 0 && val.size() == sig_हालागा_size)
 	    vvp_send_vec4(ptr, val, thr->wt_context);
       else
-	    vvp_send_vec4_pv(ptr, val, off, sig_value_size, thr->wt_context);
+	    vvp_send_vec4_pv(ptr, val, off, sig_हालागा_size, thr->wt_context);
 
-      thr->pop_vec4(1);
+      thr->आलिसिन_vec4(1);
       return true;
 }
 
@@ -7610,25 +7610,25 @@ bool of_STORE_VEC4A(vthread_t thr, vvp_code_t cp)
       unsigned adr_index = cp->bit_idx[0];
       unsigned off_index = cp->bit_idx[1];
 
-      long adr = adr_index? thr->words[adr_index].w_int : 0;
-      int64_t off = off_index ? thr->words[off_index].w_int : 0;
+      long adr = adr_index? thr->मगा_सालिता[adr_index].w_int : 0;
+      int64_t off = off_index ? thr->मगा_सालिता[off_index].w_int : 0;
 
 	// Suppress action if flags-4 is true.
       if (thr->flags[4] == BIT4_1) {
-	    thr->pop_vec4(1);
+	    thr->आलिसिन_vec4(1);
 	    return true;
       }
 
       vvp_vector4_t &value = thr->peek_vec4();
 
       if (!resize_rval_vec(value, off, cp->array->get_word_size())) {
-	    thr->pop_vec4(1);
+	    thr->आलिसिन_vec4(1);
 	    return true;
       }
 
       cp->array->set_word(adr, off, value);
 
-      thr->pop_vec4(1);
+      thr->आलिसिन_vec4(1);
       return true;
 }
 
@@ -7640,7 +7640,7 @@ bool of_STORE_VEC4A(vthread_t thr, vvp_code_t cp)
  */
 bool of_SUB(vthread_t thr, vvp_code_t)
 {
-      vvp_vector4_t r = thr->pop_vec4();
+      vvp_vector4_t r = thr->आलिसिन_vec4();
       vvp_vector4_t&l = thr->peek_vec4();
 
       l.sub(r);
@@ -7655,7 +7655,7 @@ bool of_SUB(vthread_t thr, vvp_code_t)
  */
 bool of_SUBI(vthread_t thr, vvp_code_t cp)
 {
-      unsigned wid = cp->number;
+      unsigned wid = cp->नुमेरो;
 
       vvp_vector4_t&l = thr->peek_vec4();
 
@@ -7673,9 +7673,9 @@ bool of_SUBI(vthread_t thr, vvp_code_t cp)
 
 bool of_SUB_WR(vthread_t thr, vvp_code_t)
 {
-      double r = thr->pop_real();
-      double l = thr->pop_real();
-      thr->push_real(l - r);
+      double r = thr->आलिसिन_real();
+      double l = thr->आलिसिन_real();
+      thr->इतुलाक_real(l - r);
       return true;
 }
 
@@ -7687,8 +7687,8 @@ bool of_SUB_WR(vthread_t thr, vvp_code_t)
  */
 bool of_SUBSTR(vthread_t thr, vvp_code_t cp)
 {
-      int32_t first = thr->words[cp->bit_idx[0]].w_int;
-      int32_t last = thr->words[cp->bit_idx[1]].w_int;
+      int32_t first = thr->मगा_सालिता[cp->bit_idx[0]].w_int;
+      int32_t last = thr->मगा_सालिता[cp->bit_idx[1]].w_int;
       string&val = thr->peek_str(0);
 
       if (first < 0 || last < first || last >= (int32_t)val.size()) {
@@ -7708,14 +7708,14 @@ bool of_SUBSTR_VEC4(vthread_t thr, vvp_code_t cp)
       unsigned sel_idx = cp->bit_idx[0];
       unsigned wid = cp->bit_idx[1];
 
-      int32_t sel = thr->words[sel_idx].w_int;
+      int32_t sel = thr->मगा_सालिता[sel_idx].w_int;
       const string&val = thr->peek_str(0);
 
       assert(wid%8 == 0);
 
       if (sel < 0 || sel >= (int32_t)val.size()) {
 	    vvp_vector4_t res (wid, BIT4_0);
-	    thr->push_vec4(res);
+	    thr->इतुलाक_vec4(res);
 	    return true;
       }
 
@@ -7728,20 +7728,20 @@ bool of_SUBSTR_VEC4(vthread_t thr, vvp_code_t cp)
 		  res.set_bit(idx, BIT4_1);
       }
 
-      thr->push_vec4(res);
+      thr->इतुलाक_vec4(res);
       return true;
 }
 
-bool of_FILE_LINE(vthread_t thr, vvp_code_t cp)
+bool of_FILE_लिन्या(vthread_t thr, vvp_code_t cp)
 {
       vpiHandle handle = cp->handle;
 
 	/* When it is available, keep the file/line information in the
 	   thread for error/warning messages. */
       thr->set_fileline(vpi_get_str(vpiFile, handle),
-                        vpi_get(vpiLineNo, handle));
+                        vpi_get(vpi_लिन्या_No, handle));
 
-      if (show_file_line)
+      if (show_file_लिन्या)
 	    cerr << thr->get_fileline()
 	         << vpi_get_str(_vpiDescription, handle) << endl;
 
@@ -7772,7 +7772,7 @@ bool of_TEST_NUL(vthread_t thr, vvp_code_t cp)
 bool of_TEST_NUL_A(vthread_t thr, vvp_code_t cp)
 {
       unsigned idx = cp->bit_idx[0];
-      unsigned adr = thr->words[idx].w_int;
+      unsigned adr = thr->मगा_सालिता[idx].w_int;
       vvp_object_t word;
 
 	/* If the address is undefined, return true. */
@@ -7803,12 +7803,12 @@ bool of_TEST_NUL_OBJ(vthread_t thr, vvp_code_t)
  */
 bool of_TEST_NUL_PROP(vthread_t thr, vvp_code_t cp)
 {
-      unsigned pid = cp->number;
+      unsigned pid = cp->नुमेरो;
       unsigned idx = cp->bit_idx[0];
 
       if (idx != 0) {
-	    assert(idx < vthread_s::WORDS_COUNT);
-	    idx = thr->words[idx].w_uint;
+	    assert(idx < vthread_s::मगा_सालिता_बिलांग);
+	    idx = thr->मगा_सालिता[idx].w_uint;
       }
 
       vvp_object_t&obj = thr->peek_object();
@@ -7827,7 +7827,7 @@ bool of_TEST_NUL_PROP(vthread_t thr, vvp_code_t cp)
 
 /* and() reduction returns the scalar sum (Verilog-style bitwise-AND per word). */
 template <class SRC>
-static vvp_vector4_t uparr_and_words_src(SRC* src, unsigned wid)
+static vvp_vector4_t uparr_and_मगा_सालिता_src(SRC* src, unsigned wid)
 {
       if (!src) return vvp_vector4_t(wid, BIT4_X);
       vvp_vector4_t res(wid, BIT4_1);
@@ -7847,20 +7847,20 @@ bool of_UPARR_AND_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_vector4_t res;
-      if (qsrc) res = uparr_and_words_src(qsrc, wid);
-      else if (dsrc) res = uparr_and_words_src(dsrc, wid);
+      if (qsrc) res = uparr_and_मगा_सालिता_src(qsrc, wid);
+      else if (dsrc) res = uparr_and_मगा_सालिता_src(dsrc, wid);
       else {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    res = uparr_and_words_src(src, wid);
+	    res = uparr_and_मगा_सालिता_src(src, wid);
       }
-      thr->push_vec4(res);
+      thr->इतुलाक_vec4(res);
       return true;
 }
 
 /* or() reduction returns the scalar sum (Verilog-style bitwise-AND per word). */
 template <class SRC>
-static vvp_vector4_t uparr_or_words_src(SRC* src, unsigned wid)
+static vvp_vector4_t uparr_or_मगा_सालिता_src(SRC* src, unsigned wid)
 {
       if (!src) return vvp_vector4_t(wid, BIT4_X);
       vvp_vector4_t res(wid, BIT4_0);
@@ -7880,20 +7880,20 @@ bool of_UPARR_OR_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_vector4_t res;
-      if (qsrc) res = uparr_or_words_src(qsrc, wid);
-      else if (dsrc) res = uparr_or_words_src(dsrc, wid);
+      if (qsrc) res = uparr_or_मगा_सालिता_src(qsrc, wid);
+      else if (dsrc) res = uparr_or_मगा_सालिता_src(dsrc, wid);
       else {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    res = uparr_or_words_src(src, wid);
+	    res = uparr_or_मगा_सालिता_src(src, wid);
       }
-      thr->push_vec4(res);
+      thr->इतुलाक_vec4(res);
       return true;
 }
 
 /* real product() reduction returns the scalar sum */
 template <class SRC>
-static double uparr_product_words_src_real(SRC* src)
+static double uparr_product_मगा_सालिता_src_real(SRC* src)
 {
       if (!src) return 0.0;
       double acc = 1.0;
@@ -7912,20 +7912,20 @@ bool of_UPARR_PRODUCT_REAL(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_real_from_net(thr, net, qsrc, dsrc);
       double sum;
-      if (qsrc) sum = uparr_product_words_src_real(qsrc);
-      else if (dsrc) sum = uparr_product_words_src_real(dsrc);
+      if (qsrc) sum = uparr_product_मगा_सालिता_src_real(qsrc);
+      else if (dsrc) sum = uparr_product_मगा_सालिता_src_real(dsrc);
       else {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_real>(thr, net);
 	    vvp_queue_real* src = dynamic_cast<vvp_queue_real*>(src_q);
-	    sum = uparr_product_words_src_real(src);
+	    sum = uparr_product_मगा_सालिता_src_real(src);
       }
-      thr->push_real(sum);
+      thr->इतुलाक_real(sum);
       return true;
 }
 
 /* product() reduction returns the scalar product (Verilog-style multiplication per word). */
 template <class SRC>
-static vvp_vector4_t uparr_product_words_src(SRC* src, unsigned wid)
+static vvp_vector4_t uparr_product_मगा_सालिता_src(SRC* src, unsigned wid)
 {
       if (!src) return vvp_vector4_t(wid, BIT4_X);
       vvp_vector4_t acc = queue_unique_ulong_to_vec4(1UL, wid);
@@ -7945,24 +7945,24 @@ bool of_UPARR_PRODUCT_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_vector4_t prod;
-      if (qsrc) prod = uparr_product_words_src(qsrc, wid);
-      else if (dsrc) prod = uparr_product_words_src(dsrc, wid);
+      if (qsrc) prod = uparr_product_मगा_सालिता_src(qsrc, wid);
+      else if (dsrc) prod = uparr_product_मगा_सालिता_src(dsrc, wid);
       else {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    prod = uparr_product_words_src(src, wid);
+	    prod = uparr_product_मगा_सालिता_src(src, wid);
       }
-      thr->push_vec4(prod);
+      thr->इतुलाक_vec4(prod);
       return true;
 }
 
 bool of_UPARR_PRODUCT_PROP_V(vthread_t thr, vvp_code_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
       unsigned wid = cp->bit_idx[0];
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t qobj;
@@ -7971,9 +7971,9 @@ bool of_UPARR_PRODUCT_PROP_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
       vvp_vector4_t prod =
-	    qsrc ? uparr_product_words_src(qsrc, wid)
-		 : uparr_product_words_src(dsrc, wid);
-      thr->push_vec4(prod);
+	    qsrc ? uparr_product_मगा_सालिता_src(qsrc, wid)
+		 : uparr_product_मगा_सालिता_src(dsrc, wid);
+      thr->इतुलाक_vec4(prod);
       return true;
 }
 
@@ -7981,21 +7981,21 @@ bool of_UPARR_PRODUCT_OBJ_V(vthread_t thr, vvp_code_t cp)
 {
       unsigned wid = cp->bit_idx[0];
       vvp_object_t src_obj;
-      thr->pop_object(src_obj);
+      thr->आलिसिन_object(src_obj);
 
       vvp_queue_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
       vvp_vector4_t prod =
-	    qsrc ? uparr_product_words_src(qsrc, wid)
-		 : uparr_product_words_src(dsrc, wid);
-      thr->push_vec4(prod);
+	    qsrc ? uparr_product_मगा_सालिता_src(qsrc, wid)
+		 : uparr_product_मगा_सालिता_src(dsrc, wid);
+      thr->इतुलाक_vec4(prod);
       return true;
 }
 
 /* real sum() reduction returns the scalar sum */
 template <class SRC>
-static double uparr_sum_words_src_real(SRC* src)
+static double uparr_sum_मगा_सालिता_src_real(SRC* src)
 {
       double acc = 0.0;
       if (!src) return acc;
@@ -8014,20 +8014,20 @@ bool of_UPARR_SUM_REAL(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_real_from_net(thr, net, qsrc, dsrc);
       double sum;
-      if (qsrc) sum = uparr_sum_words_src_real(qsrc);
-      else if (dsrc) sum = uparr_sum_words_src_real(dsrc);
+      if (qsrc) sum = uparr_sum_मगा_सालिता_src_real(qsrc);
+      else if (dsrc) sum = uparr_sum_मगा_सालिता_src_real(dsrc);
       else {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_real>(thr, net);
 	    vvp_queue_real* src = dynamic_cast<vvp_queue_real*>(src_q);
-	    sum = uparr_sum_words_src_real(src);
+	    sum = uparr_sum_मगा_सालिता_src_real(src);
       }
-      thr->push_real(sum);
+      thr->इतुलाक_real(sum);
       return true;
 }
 
 /* sum() reduction returns the scalar sum (Verilog-style addition per word). */
 template <class SRC>
-static vvp_vector4_t uparr_sum_words_src(SRC* src, unsigned wid)
+static vvp_vector4_t uparr_sum_मगा_सालिता_src(SRC* src, unsigned wid)
 {
       if (!src) return vvp_vector4_t(wid, BIT4_X);
       vvp_vector4_t acc(wid, BIT4_0);
@@ -8047,24 +8047,24 @@ bool of_UPARR_SUM_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_vector4_t sum;
-      if (qsrc) sum = uparr_sum_words_src(qsrc, wid);
-      else if (dsrc) sum = uparr_sum_words_src(dsrc, wid);
+      if (qsrc) sum = uparr_sum_मगा_सालिता_src(qsrc, wid);
+      else if (dsrc) sum = uparr_sum_मगा_सालिता_src(dsrc, wid);
       else {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    sum = uparr_sum_words_src(src, wid);
+	    sum = uparr_sum_मगा_सालिता_src(src, wid);
       }
-      thr->push_vec4(sum);
+      thr->इतुलाक_vec4(sum);
       return true;
 }
 
 bool of_UPARR_SUM_PROP_V(vthread_t thr, vvp_code_t cp)
 {
-      size_t pid = cp->number;
+      size_t pid = cp->नुमेरो;
       unsigned wid = cp->bit_idx[0];
 
-      vvp_object_t& top = thr->peek_object();
-      vvp_cobject*cobj = top.peek<vvp_cobject>();
+      vvp_object_t& इताअस = thr->peek_object();
+      vvp_cobject*cobj = इताअस.peek<vvp_cobject>();
       assert(cobj);
 
       vvp_object_t qobj;
@@ -8073,9 +8073,9 @@ bool of_UPARR_SUM_PROP_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_object(qobj, qsrc, dsrc);
       vvp_vector4_t sum =
-	    qsrc ? uparr_sum_words_src(qsrc, wid)
-		 : uparr_sum_words_src(dsrc, wid);
-      thr->push_vec4(sum);
+	    qsrc ? uparr_sum_मगा_सालिता_src(qsrc, wid)
+		 : uparr_sum_मगा_सालिता_src(dsrc, wid);
+      thr->इतुलाक_vec4(sum);
       return true;
 }
 
@@ -8083,21 +8083,21 @@ bool of_UPARR_SUM_OBJ_V(vthread_t thr, vvp_code_t cp)
 {
       unsigned wid = cp->bit_idx[0];
       vvp_object_t src_obj;
-      thr->pop_object(src_obj);
+      thr->आलिसिन_object(src_obj);
 
       vvp_queue_vec4* qsrc = 0;
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_object(src_obj, qsrc, dsrc);
       vvp_vector4_t sum =
-	    qsrc ? uparr_sum_words_src(qsrc, wid)
-		 : uparr_sum_words_src(dsrc, wid);
-      thr->push_vec4(sum);
+	    qsrc ? uparr_sum_मगा_सालिता_src(qsrc, wid)
+		 : uparr_sum_मगा_सालिता_src(dsrc, wid);
+      thr->इतुलाक_vec4(sum);
       return true;
 }
 
 /* xor() reduction returns the scalar sum (Verilog-style bitwise-XOR per word). */
 template <class SRC>
-static vvp_vector4_t uparr_xor_words_src(SRC* src, unsigned wid)
+static vvp_vector4_t uparr_xor_मगा_सालिता_src(SRC* src, unsigned wid)
 {
       if (!src) return vvp_vector4_t(wid, BIT4_X);
       vvp_vector4_t res(wid, BIT4_0);
@@ -8117,14 +8117,14 @@ bool of_UPARR_XOR_V(vthread_t thr, vvp_code_t cp)
       vvp_darray* dsrc = 0;
       get_queue_or_darray_vec4_from_net(thr, net, qsrc, dsrc);
       vvp_vector4_t res;
-      if (qsrc) res = uparr_xor_words_src(qsrc, wid);
-      else if (dsrc) res = uparr_xor_words_src(dsrc, wid);
+      if (qsrc) res = uparr_xor_मगा_सालिता_src(qsrc, wid);
+      else if (dsrc) res = uparr_xor_मगा_सालिता_src(dsrc, wid);
       else {
 	    vvp_queue* src_q = get_queue_object<vvp_queue_vec4>(thr, net);
 	    vvp_queue_vec4* src = dynamic_cast<vvp_queue_vec4*>(src_q);
-	    res = uparr_xor_words_src(src, wid);
+	    res = uparr_xor_मगा_सालिता_src(src, wid);
       }
-      thr->push_vec4(res);
+      thr->इतुलाक_vec4(res);
       return true;
 }
 
@@ -8193,7 +8193,7 @@ bool of_WAIT_FORK(vthread_t thr, vvp_code_t)
  */
 bool of_XNOR(vthread_t thr, vvp_code_t)
 {
-      vvp_vector4_t valr = thr->pop_vec4();
+      vvp_vector4_t valr = thr->आलिसिन_vec4();
       vvp_vector4_t&vall = thr->peek_vec4();
       assert(vall.size() == valr.size());
 
@@ -8208,7 +8208,7 @@ bool of_XNOR(vthread_t thr, vvp_code_t)
  */
 bool of_XOR(vthread_t thr, vvp_code_t)
 {
-      vvp_vector4_t valr = thr->pop_vec4();
+      vvp_vector4_t valr = thr->आलिसिन_vec4();
       vvp_vector4_t&vall = thr->peek_vec4();
       assert(vall.size() == valr.size());
 
@@ -8294,8 +8294,8 @@ bool of_EXEC_UFUNC_REAL(vthread_t thr, vvp_code_t cp)
 
 	/* Create a temporary thread and run it immediately. */
       vthread_t child = vthread_new(cp->cptr, child_scope);
-      thr->push_real(0.0);
-      child->args_real.push_back(0);
+      thr->इतुलाक_real(0.0);
+      child->मगा_कातविरान_real.push_back(0);
 
       return do_exec_ufunc(thr, cp, child);
 }
@@ -8310,8 +8310,8 @@ bool of_EXEC_UFUNC_VEC4(vthread_t thr, vvp_code_t cp)
 
 	/* Create a temporary thread and run it immediately. */
       vthread_t child = vthread_new(cp->cptr, child_scope);
-      thr->push_vec4(vvp_vector4_t(scope_func->get_func_width(), scope_func->get_func_init_val()));
-      child->args_vec4.push_back(0);
+      thr->इतुलाक_vec4(vvp_vector4_t(scope_func->get_func_width(), scope_func->get_func_init_val()));
+      child->मगा_कातविरान_vec4.push_back(0);
 
       return do_exec_ufunc(thr, cp, child);
 }

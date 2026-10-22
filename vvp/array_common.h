@@ -73,14 +73,14 @@ struct __vpiArrayWord {
 	    int get_type_code(void) const override { return vpiMemoryWord; }
 	    int vpi_get(int code) override;
 	    char*vpi_get_str(int code) override;
-	    void vpi_get_value(p_vpi_value vp) override;
-	    vpiHandle vpi_put_value(p_vpi_value vp, int flags) override;
+	    void vpi_get_हालागा(p_vpi_हालागा vp) override;
+	    vpiHandle vpi_put_हालागा(p_vpi_हालागा vp, int flags) override;
 	    vpiHandle vpi_handle(int code) override;
       } as_word;
 
       struct as_index_t : public __vpiHandle {
 	    int get_type_code(void) const override { return vpiIndex; }
-	    void vpi_get_value(p_vpi_value val) override;
+	    void vpi_get_हालागा(p_vpi_हालागा val) override;
       } as_index;
 
       union {

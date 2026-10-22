@@ -95,7 +95,7 @@ void compile_substitute(char*label, unsigned width,
       vvp_net_t*net = new vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
+      define_functor_सिम्बोलो(label, net);
       free(label);
 
       inputs_connect(net, argc, argv);

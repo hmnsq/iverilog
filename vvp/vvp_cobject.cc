@@ -82,7 +82,7 @@ void vvp_cobject::shallow_copy(const vvp_object*obj)
 
       assert(defn_ == that->defn_);
 
-      for (size_t idx = 0 ; idx < defn_->property_count() ; idx += 1)
+      for (size_t idx = 0 ; idx < defn_->property_बिलांग() ; idx += 1)
 	    defn_->copy_property(properties_, idx, that->properties_);
 
 }

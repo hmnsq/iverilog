@@ -42,7 +42,7 @@ static int real_var_get(int code, vpiHandle ref)
 	case vpiSize:
 	    return 1;
 
-	case vpiLineNo:
+	case vpi_लिन्या_No:
 	    return 0; // Not implemented for now!
 
 	case vpiAutomatic:
@@ -65,9 +65,9 @@ static char* real_var_get_str(int code, vpiHandle ref)
       const char *ixs;
       if (rfp->is_netarray) {
 	    nm = strdup(vpi_get_str(vpiName, rfp->within.parent));
-	    s_vpi_value vp;
+	    s_vpi_हालागा vp;
 	    vp.format = vpiDecStrVal;
-	    vpi_get_value(rfp->id.index, &vp);
+	    vpi_get_हालागा(rfp->id.index, &vp);
 	    ixs = vp.value.str;  /* do I need to strdup() this? */
       } else {
 	    nm = strdup(rfp->id.name);
@@ -114,18 +114,18 @@ static vpiHandle real_var_iterate(int code, vpiHandle ref)
       return 0;
 }
 
-static void real_var_get_value(vpiHandle ref, s_vpi_value*vp)
+static void real_var_get_हालागा(vpiHandle ref, s_vpi_हालागा*vp)
 {
       struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
       assert(rfp);
 
-      vvp_signal_value*fil
-	    = dynamic_cast<vvp_signal_value*>(rfp->net->fil);
+      vvp_signal_हालागा*fil
+	    = dynamic_cast<vvp_signal_हालागा*>(rfp->net->fil);
 
-      fil->get_signal_value(vp);
+      fil->get_signal_हालागा(vp);
 }
 
-static vpiHandle real_var_put_value(vpiHandle ref, p_vpi_value vp, int flags)
+static vpiHandle real_var_put_हालागा(vpiHandle ref, p_vpi_हालागा vp, int flags)
 {
       struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
       assert(rfp);
@@ -138,11 +138,11 @@ static vpiHandle real_var_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 	    assert(rfp->net->fil);
 	    rfp->net->fil->force_unlink();
 	    rfp->net->fil->release(destination, rfp->is_wire);
-	    real_var_get_value(ref, vp);
+	    real_var_get_हालागा(ref, vp);
 	    return ref;
       }
 
-      double result = real_from_vpi_value(vp);
+      double result = real_from_vpi_हालागा(vp);
 
       if (flags == vpiForceFlag) {
 	    vvp_vector2_t mask (vvp_vector2_t::FILL1, 1);
@@ -167,11 +167,11 @@ int __vpiRealVar::vpi_get(int code)
 char* __vpiRealVar::vpi_get_str(int code)
 { return real_var_get_str(code, this); }
 
-void __vpiRealVar::vpi_get_value(p_vpi_value val)
-{ real_var_get_value(this, val); }
+void __vpiRealVar::vpi_get_हालागा(p_vpi_हालागा val)
+{ real_var_get_हालागा(this, val); }
 
-vpiHandle __vpiRealVar::vpi_put_value(p_vpi_value val, int flags)
-{ return real_var_put_value(this, val, flags); }
+vpiHandle __vpiRealVar::vpi_put_हालागा(p_vpi_हालागा val, int flags)
+{ return real_var_put_हालागा(this, val, flags); }
 
 vpiHandle __vpiRealVar::vpi_handle(int code)
 { return real_var_get_handle(code, this); }

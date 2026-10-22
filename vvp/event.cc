@@ -73,16 +73,16 @@ evctl_real::evctl_real(__vpiHandle*handle, double value,
 :evctl(ecount)
 {
       handle_ = handle;
-      value_ = value;
+      हालागा_2 = value;
 }
 
 void evctl_real::run_run()
 {
-      t_vpi_value val;
+      t_vpi_हालागा val;
 
       val.format = vpiRealVal;
-      val.value.real = value_;
-      vpi_put_value(handle_, &val, 0, vpiNoDelay);
+      val.value.real = हालागा_2;
+      vpi_put_हालागा(handle_, &val, 0, vpiNoDelay);
 }
 
 void schedule_evctl(__vpiHandle*handle, double value,
@@ -98,7 +98,7 @@ void schedule_evctl(__vpiHandle*handle, double value,
 
 evctl_vector::evctl_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
                            unsigned off, unsigned wid, uint64_t ecount)
-:evctl(ecount), ptr_(ptr), value_(value)
+:evctl(ecount), ptr_(ptr), हालागा_2(value)
 {
       off_ = off;
       wid_ = wid;
@@ -107,9 +107,9 @@ evctl_vector::evctl_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
 void evctl_vector::run_run()
 {
       if (wid_ != 0) {
-	    vvp_send_vec4_pv(ptr_, value_, off_, wid_, 0);
+	    vvp_send_vec4_pv(ptr_, हालागा_2, off_, wid_, 0);
       } else {
-	    vvp_send_vec4(ptr_, value_, 0);
+	    vvp_send_vec4(ptr_, हालागा_2, 0);
       }
 }
 
@@ -128,7 +128,7 @@ void schedule_evctl(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
 evctl_array::evctl_array(vvp_array_t memory, unsigned index,
                          const vvp_vector4_t&value, unsigned off,
                          uint64_t ecount)
-:evctl(ecount), value_(value)
+:evctl(ecount), हालागा_2(value)
 {
       mem_ = memory;
       idx_ = index;
@@ -137,7 +137,7 @@ evctl_array::evctl_array(vvp_array_t memory, unsigned index,
 
 void evctl_array::run_run()
 {
-      mem_->set_word(idx_, off_, value_);
+      mem_->set_word(idx_, off_, हालागा_2);
 }
 
 void schedule_evctl(vvp_array_t memory, unsigned index,
@@ -158,12 +158,12 @@ evctl_array_r::evctl_array_r(vvp_array_t memory, unsigned index,
 {
       mem_ = memory;
       idx_ = index;
-      value_ = value;
+      हालागा_2 = value;
 }
 
 void evctl_array_r::run_run()
 {
-      mem_->set_word(idx_, value_);
+      mem_->set_word(idx_, हालागा_2);
 }
 
 void schedule_evctl(vvp_array_t memory, unsigned index,
@@ -355,28 +355,28 @@ void vvp_fun_edge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
       }
 }
 
-class anyedge_value {
+class anyedge_हालागा {
 
     public:
-      anyedge_value() {};
-      virtual ~anyedge_value() {};
+      anyedge_हालागा() {};
+      virtual ~anyedge_हालागा() {};
 
       virtual void reset() = 0;
 
-      virtual void duplicate(anyedge_value*&dup) = 0;
+      virtual void duplicate(anyedge_हालागा*&dup) = 0;
 };
 
-class anyedge_vec4_value : public anyedge_value {
+class anyedge_vec4_हालागा : public anyedge_हालागा {
 
     public:
-      anyedge_vec4_value() {};
-      virtual ~anyedge_vec4_value() override {};
+      anyedge_vec4_हालागा() {};
+      virtual ~anyedge_vec4_हालागा() override {};
 
       void reset() override { old_bits.set_to_x(); }
 
       void set(const vvp_vector4_t&bit) { old_bits = bit; };
 
-      void duplicate(anyedge_value*&dup) override;
+      void duplicate(anyedge_हालागा*&dup) override;
 
       bool recv_vec4(const vvp_vector4_t&bit);
 
@@ -387,28 +387,28 @@ class anyedge_vec4_value : public anyedge_value {
       vvp_vector4_t old_bits;
 };
 
-static anyedge_vec4_value*get_vec4_value(anyedge_value*&value)
+static anyedge_vec4_हालागा*get_vec4_हालागा(anyedge_हालागा*&value)
 {
-      anyedge_vec4_value*vec4_value = dynamic_cast<anyedge_vec4_value*>(value);
+      anyedge_vec4_हालागा*vec4_हालागा = dynamic_cast<anyedge_vec4_हालागा*>(value);
       if (!value) {
-	    vec4_value = new anyedge_vec4_value();
+	    vec4_हालागा = new anyedge_vec4_हालागा();
 	    delete value;
-	    value = vec4_value;
+	    value = vec4_हालागा;
       }
-      return vec4_value;
+      return vec4_हालागा;
 }
 
-class anyedge_real_value : public anyedge_value {
+class anyedge_real_हालागा : public anyedge_हालागा {
 
     public:
-      anyedge_real_value() : old_bits(0.0) {};
-      virtual ~anyedge_real_value() override {};
+      anyedge_real_हालागा() : old_bits(0.0) {};
+      virtual ~anyedge_real_हालागा() override {};
 
       void reset() override { old_bits = 0.0; }
 
       void set(double bit) { old_bits = bit; };
 
-      void duplicate(anyedge_value*&dup) override;
+      void duplicate(anyedge_हालागा*&dup) override;
 
       bool recv_real(double bit);
 
@@ -416,28 +416,28 @@ class anyedge_real_value : public anyedge_value {
       double old_bits;
 };
 
-static anyedge_real_value*get_real_value(anyedge_value*&value)
+static anyedge_real_हालागा*get_real_हालागा(anyedge_हालागा*&value)
 {
-      anyedge_real_value*real_value = dynamic_cast<anyedge_real_value*>(value);
+      anyedge_real_हालागा*real_हालागा = dynamic_cast<anyedge_real_हालागा*>(value);
       if (!value) {
-	    real_value = new anyedge_real_value();
+	    real_हालागा = new anyedge_real_हालागा();
 	    delete value;
-	    value = real_value;
+	    value = real_हालागा;
       }
-      return real_value;
+      return real_हालागा;
 }
 
-class anyedge_string_value : public anyedge_value {
+class anyedge_string_हालागा : public anyedge_हालागा {
 
     public:
-      anyedge_string_value() {};
-      virtual ~anyedge_string_value() override {};
+      anyedge_string_हालागा() {};
+      virtual ~anyedge_string_हालागा() override {};
 
       void reset() override { old_bits.clear(); }
 
       void set(const std::string&bit) { old_bits = bit; };
 
-      void duplicate(anyedge_value*&dup) override;
+      void duplicate(anyedge_हालागा*&dup) override;
 
       bool recv_string(const std::string&bit);
 
@@ -445,31 +445,31 @@ class anyedge_string_value : public anyedge_value {
       std::string old_bits;
 };
 
-static anyedge_string_value*get_string_value(anyedge_value*&value)
+static anyedge_string_हालागा*get_string_हालागा(anyedge_हालागा*&value)
 {
-      anyedge_string_value*string_value = dynamic_cast<anyedge_string_value*>(value);
+      anyedge_string_हालागा*string_हालागा = dynamic_cast<anyedge_string_हालागा*>(value);
       if (!value) {
-	    string_value = new anyedge_string_value();
+	    string_हालागा = new anyedge_string_हालागा();
 	    delete value;
-	    value = string_value;
+	    value = string_हालागा;
       }
-      return string_value;
+      return string_हालागा;
 }
 
 struct vvp_fun_anyedge_state_s : public waitable_state_s {
       vvp_fun_anyedge_state_s()
       {
             for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-                  last_value_[idx] = 0;
+                  last_हालागा[idx] = 0;
       }
 
       ~vvp_fun_anyedge_state_s()
       {
             for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-                  delete last_value_[idx];
+                  delete last_हालागा[idx];
       }
 
-      anyedge_value *last_value_[4];
+      anyedge_हालागा *last_हालागा[4];
       vvp_fun_anyedge_state_s(const vvp_fun_anyedge_state_s&) = delete;
       vvp_fun_anyedge_state_s& operator=(const vvp_fun_anyedge_state_s&) = delete;
 };
@@ -477,23 +477,23 @@ struct vvp_fun_anyedge_state_s : public waitable_state_s {
 vvp_fun_anyedge::vvp_fun_anyedge()
 {
       for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-	    last_value_[idx] = 0;
+	    last_हालागा[idx] = 0;
 }
 
 vvp_fun_anyedge::~vvp_fun_anyedge()
 {
       for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-	    delete last_value_[idx];
+	    delete last_हालागा[idx];
 }
 
-void anyedge_vec4_value::duplicate(anyedge_value*&dup)
+void anyedge_vec4_हालागा::duplicate(anyedge_हालागा*&dup)
 {
-      anyedge_vec4_value*dup_vec4 = get_vec4_value(dup);
+      anyedge_vec4_हालागा*dup_vec4 = get_vec4_हालागा(dup);
       assert(dup_vec4);
       dup_vec4->set(old_bits);
 }
 
-bool anyedge_vec4_value::recv_vec4(const vvp_vector4_t&bit)
+bool anyedge_vec4_हालागा::recv_vec4(const vvp_vector4_t&bit)
 {
       bool flag = false;
 
@@ -529,7 +529,7 @@ bool anyedge_vec4_value::recv_vec4(const vvp_vector4_t&bit)
       return flag;
 }
 
-bool anyedge_vec4_value::recv_vec4_pv(const vvp_vector4_t&bit, unsigned base,
+bool anyedge_vec4_हालागा::recv_vec4_pv(const vvp_vector4_t&bit, unsigned base,
 				      unsigned vwid)
 {
       vvp_vector4_t tmp = old_bits;
@@ -542,14 +542,14 @@ bool anyedge_vec4_value::recv_vec4_pv(const vvp_vector4_t&bit, unsigned base,
       return recv_vec4(tmp);
 }
 
-void anyedge_real_value::duplicate(anyedge_value*&dup)
+void anyedge_real_हालागा::duplicate(anyedge_हालागा*&dup)
 {
-      anyedge_real_value*dup_real = get_real_value(dup);
+      anyedge_real_हालागा*dup_real = get_real_हालागा(dup);
       assert(dup_real);
       dup_real->set(old_bits);
 }
 
-bool anyedge_real_value::recv_real(double bit)
+bool anyedge_real_हालागा::recv_real(double bit)
 {
       if (old_bits != bit) {
 	    old_bits = bit;
@@ -558,14 +558,14 @@ bool anyedge_real_value::recv_real(double bit)
       return false;
 }
 
-void anyedge_string_value::duplicate(anyedge_value*&dup)
+void anyedge_string_हालागा::duplicate(anyedge_हालागा*&dup)
 {
-      anyedge_string_value*dup_string = get_string_value(dup);
+      anyedge_string_हालागा*dup_string = get_string_हालागा(dup);
       assert(dup_string);
       dup_string->set(old_bits);
 }
 
-bool anyedge_string_value::recv_string(const std::string&bit)
+bool anyedge_string_हालागा::recv_string(const std::string&bit)
 {
       if (old_bits != bit) {
 	    old_bits = bit;
@@ -594,7 +594,7 @@ vthread_t vvp_fun_anyedge_sa::add_waiting_thread(vthread_t thread)
 void vvp_fun_anyedge_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                                    vvp_context_t)
 {
-      anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
+      anyedge_vec4_हालागा*value = get_vec4_हालागा(last_हालागा[port.port()]);
       assert(value);
       if (value->recv_vec4(bit)) {
 	    run_waiting_threads_(threads_);
@@ -606,7 +606,7 @@ void vvp_fun_anyedge_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 void vvp_fun_anyedge_sa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 				      unsigned base, unsigned vwid, vvp_context_t)
 {
-      anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
+      anyedge_vec4_हालागा*value = get_vec4_हालागा(last_हालागा[port.port()]);
       assert(value);
       if (value->recv_vec4_pv(bit, base, vwid)) {
 	    run_waiting_threads_(threads_);
@@ -618,7 +618,7 @@ void vvp_fun_anyedge_sa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bi
 void vvp_fun_anyedge_sa::recv_real(vvp_net_ptr_t port, double bit,
                                    vvp_context_t)
 {
-      anyedge_real_value*value = get_real_value(last_value_[port.port()]);
+      anyedge_real_हालागा*value = get_real_हालागा(last_हालागा[port.port()]);
       assert(value);
       if (value->recv_real(bit)) {
 	    run_waiting_threads_(threads_);
@@ -630,7 +630,7 @@ void vvp_fun_anyedge_sa::recv_real(vvp_net_ptr_t port, double bit,
 void vvp_fun_anyedge_sa::recv_string(vvp_net_ptr_t port, const std::string&bit,
 				     vvp_context_t)
 {
-      anyedge_string_value*value = get_string_value(last_value_[port.port()]);
+      anyedge_string_हालागा*value = get_string_हालागा(last_हालागा[port.port()]);
       assert(value);
       if (value->recv_string(bit)) {
 	    run_waiting_threads_(threads_);
@@ -674,10 +674,10 @@ void vvp_fun_anyedge_aa::reset_instance(vvp_context_t context)
 
       state->threads = 0;
       for (unsigned idx = 0 ;  idx < 4 ;  idx += 1) {
-	    if (last_value_[idx])
-	          last_value_[idx]->duplicate(state->last_value_[idx]);
-	    else if (state->last_value_[idx])
-		  state->last_value_[idx]->reset();
+	    if (last_हालागा[idx])
+	          last_हालागा[idx]->duplicate(state->last_हालागा[idx]);
+	    else if (state->last_हालागा[idx])
+		  state->last_हालागा[idx]->reset();
       }
 }
 
@@ -708,7 +708,7 @@ void vvp_fun_anyedge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
-            anyedge_vec4_value*value = get_vec4_value(state->last_value_[port.port()]);
+            anyedge_vec4_हालागा*value = get_vec4_हालागा(state->last_हालागा[port.port()]);
             assert(value);
             if (value->recv_vec4(bit)) {
                   run_waiting_threads_(state->threads);
@@ -721,7 +721,7 @@ void vvp_fun_anyedge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                   recv_vec4(port, bit, context);
                   context = vvp_get_next_context(context);
             }
-            anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
+            anyedge_vec4_हालागा*value = get_vec4_हालागा(last_हालागा[port.port()]);
             assert(value);
             value->set(bit);
       }
@@ -734,7 +734,7 @@ void vvp_fun_anyedge_aa::recv_real(vvp_net_ptr_t port, double bit,
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
-            anyedge_real_value*value = get_real_value(state->last_value_[port.port()]);
+            anyedge_real_हालागा*value = get_real_हालागा(state->last_हालागा[port.port()]);
             assert(value);
             if (value->recv_real(bit)) {
                   run_waiting_threads_(state->threads);
@@ -747,7 +747,7 @@ void vvp_fun_anyedge_aa::recv_real(vvp_net_ptr_t port, double bit,
                   recv_real(port, bit, context);
                   context = vvp_get_next_context(context);
             }
-            anyedge_real_value*value = get_real_value(last_value_[port.port()]);
+            anyedge_real_हालागा*value = get_real_हालागा(last_हालागा[port.port()]);
             assert(value);
             value->set(bit);
       }
@@ -760,7 +760,7 @@ void vvp_fun_anyedge_aa::recv_string(vvp_net_ptr_t port, const std::string&bit,
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
-            anyedge_string_value*value = get_string_value(state->last_value_[port.port()]);
+            anyedge_string_हालागा*value = get_string_हालागा(state->last_हालागा[port.port()]);
             assert(value);
             if (value->recv_string(bit)) {
                   run_waiting_threads_(state->threads);
@@ -773,7 +773,7 @@ void vvp_fun_anyedge_aa::recv_string(vvp_net_ptr_t port, const std::string&bit,
                   recv_string(port, bit, context);
                   context = vvp_get_next_context(context);
             }
-            anyedge_string_value*value = get_string_value(last_value_[port.port()]);
+            anyedge_string_हालागा*value = get_string_हालागा(last_हालागा[port.port()]);
             assert(value);
             value->set(bit);
       }
@@ -1022,7 +1022,7 @@ void compile_event(char*label, char*type, unsigned argc, struct symb_s*argv)
       vvp_net_t* ptr = new vvp_net_t;
       ptr->fun = fun;
 
-      define_functor_symbol(label, ptr);
+      define_functor_सिम्बोलो(label, ptr);
       free(label);
 
       inputs_connect(ptr, argc, argv);
@@ -1037,7 +1037,7 @@ static void compile_event_or(char*label, unsigned argc, struct symb_s*argv)
       } else {
             base_net->fun = new vvp_fun_event_or_sa(base_net);
       }
-      define_functor_symbol(label, base_net);
+      define_functor_सिम्बोलो(label, base_net);
       free(label);
 
 	/* This is a simplified version of a wide functor. We don't
@@ -1049,7 +1049,7 @@ static void compile_event_or(char*label, unsigned argc, struct symb_s*argv)
 		  curr_net = new vvp_net_t;
 		  curr_net->fun = base_net->fun;
 	    }
-	    input_connect(curr_net, idx % 4, argv[idx].text);
+	    पासोक_connect(curr_net, idx % 4, argv[idx].text);
       }
       free(argv);
 }
@@ -1070,8 +1070,8 @@ void compile_named_event(char*label, char*name, bool local_flag)
       } else {
             ptr->fun = new vvp_named_event_sa(obj);
       }
-      define_functor_symbol(label, ptr);
-      compile_vpi_symbol(label, obj);
+      define_functor_सिम्बोलो(label, ptr);
+      compile_vpi_सिम्बोलो(label, obj);
       if (! local_flag) vpip_attach_to_current_scope(obj);
 
       free(label);

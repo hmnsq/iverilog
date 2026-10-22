@@ -43,7 +43,7 @@ using namespace std;
 static const char*cb_reason_name(PLI_INT32 reason)
 {
       switch (reason) {
-	  case cbValueChange:
+	  case cb_हालागा_Change:
 	    return "cbValueChange";
 	  case cbStmt:
 	    return "cbStmt";
@@ -135,8 +135,8 @@ static bool check_callback_time(p_cb_data data, bool allow_suppress)
 static void set_callback_time(p_cb_data data)
 {
       assert(data && data->time);
-      data->time->low  = 0;
-      data->time->high = 0;
+      data->time->माबाबा  = 0;
+      data->time->माताअस = 0;
       data->time->real = 0.0;
       switch (data->time->type) {
 	  case vpiSimTime:
@@ -192,7 +192,7 @@ int __vpiCallback::get_type_code(void) const
 { return vpiCallback; }
 
 
-value_callback::value_callback(p_cb_data data)
+हालागा_callback::हालागा_callback(p_cb_data data)
 {
       cb_data = *data;
       if (data->time) {
@@ -202,23 +202,23 @@ value_callback::value_callback(p_cb_data data)
       }
       cb_data.time = &cb_time;
       if (data->value) {
-	    cb_value = *(data->value);
+	    cb_हालागा = *(data->value);
       } else {
-	    cb_value.format = vpiSuppressVal;
+	    cb_हालागा.format = vpiSuppressVal;
       }
-      cb_data.value = &cb_value;
+      cb_data.value = &cb_हालागा;
 }
 
 /*
  * Normally, any assign to a value triggers a value change callback,
  * so return a constant true here. This is a stub.
  */
-bool value_callback::test_value_callback_ready(void)
+bool हालागा_callback::test_हालागा_callback_ready(void)
 {
       return true;
 }
 
-static void vpip_real_value_change(value_callback*cbh, vpiHandle ref)
+static void vpip_real_हालागा_change(हालागा_callback*cbh, vpiHandle ref)
 {
       struct __vpiRealVar*rfp = dynamic_cast<__vpiRealVar*>(ref);
       assert(rfp);
@@ -228,23 +228,23 @@ static void vpip_real_value_change(value_callback*cbh, vpiHandle ref)
       obj->add_vpi_callback(cbh);
 }
 
-class value_part_callback : public value_callback {
+class हालागा_part_callback : public हालागा_callback {
     public:
-      explicit value_part_callback(p_cb_data data);
-      ~value_part_callback() override;
+      explicit हालागा_part_callback(p_cb_data data);
+      ~हालागा_part_callback() override;
 
-      value_part_callback(const value_part_callback&) = delete;
-      value_part_callback& operator=(const value_part_callback&) = delete;
+      हालागा_part_callback(const हालागा_part_callback&) = delete;
+      हालागा_part_callback& operator=(const हालागा_part_callback&) = delete;
 
-      bool test_value_callback_ready(void) override;
+      bool test_हालागा_callback_ready(void) override;
 
     private:
-      char*value_bits_;
-      size_t value_off_;
+      char*हालागा_bits;
+      size_t हालागा_off;
 };
 
-inline value_part_callback::value_part_callback(p_cb_data data)
-: value_callback(data)
+inline हालागा_part_callback::हालागा_part_callback(p_cb_data data)
+: हालागा_callback(data)
 {
       struct __vpiPV*pobj = dynamic_cast<__vpiPV*>(data->obj);
       assert(pobj);
@@ -259,23 +259,23 @@ inline value_part_callback::value_part_callback(p_cb_data data)
 	// and get it in BinStr form so that compares are easy. Note
 	// that the vpiBinStr format has the MSB first, but the tbase
 	// is lsb first.
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      sig_fil->get_value(&tmp_value);
+      s_vpi_हालागा tmp_हालागा;
+      tmp_हालागा.format = vpiBinStrVal;
+      sig_fil->get_हालागा(&tmp_हालागा);
 
-      value_bits_ = new char[pobj->width+1];
-      value_off_ = pobj->parent->vpi_get(vpiSize) - pobj->width - pobj->tbase;
+      हालागा_bits = new char[pobj->width+1];
+      हालागा_off = pobj->parent->vpi_get(vpiSize) - pobj->width - pobj->tbase;
 
-      memcpy(value_bits_, tmp_value.value.str + value_off_, pobj->width);
-      value_bits_[pobj->width] = 0;
+      memcpy(हालागा_bits, tmp_हालागा.value.str + हालागा_off, pobj->width);
+      हालागा_bits[pobj->width] = 0;
 }
 
-value_part_callback::~value_part_callback()
+हालागा_part_callback::~हालागा_part_callback()
 {
-      delete[]value_bits_;
+      delete[]हालागा_bits;
 }
 
-bool value_part_callback::test_value_callback_ready(void)
+bool हालागा_part_callback::test_हालागा_callback_ready(void)
 {
       struct __vpiPV*pobj = dynamic_cast<__vpiPV*>(cb_data.obj);
       assert(pobj);
@@ -286,14 +286,14 @@ bool value_part_callback::test_value_callback_ready(void)
 
 	// Get a reference value that can be used to compare with an
 	// updated value.
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      sig_fil->get_value(&tmp_value);
+      s_vpi_हालागा tmp_हालागा;
+      tmp_हालागा.format = vpiBinStrVal;
+      sig_fil->get_हालागा(&tmp_हालागा);
 
-      if (memcmp(value_bits_, tmp_value.value.str + value_off_, pobj->width) == 0)
+      if (memcmp(हालागा_bits, tmp_हालागा.value.str + हालागा_off, pobj->width) == 0)
 	    return false;
 
-      memcpy(value_bits_, tmp_value.value.str + value_off_, pobj->width);
+      memcpy(हालागा_bits, tmp_हालागा.value.str + हालागा_off, pobj->width);
       return true;
 }
 
@@ -303,10 +303,10 @@ bool value_part_callback::test_value_callback_ready(void)
  * object, but it refers to a net that is a vvp_vpi_callback, so
  * add the callback to that object.
  */
-static value_callback*make_value_change_part(p_cb_data data)
+static हालागा_callback*make_हालागा_change_part(p_cb_data data)
 {
 	/* Attach the __vpiCallback object to the signal. */
-      value_callback*cbh = new value_part_callback(data);
+      हालागा_callback*cbh = new हालागा_part_callback(data);
       return cbh;
 }
 
@@ -317,7 +317,7 @@ static value_callback*make_value_change_part(p_cb_data data)
  * does not already have them, create some callback functors to do the
  * actual value change detection.
  */
-static value_callback* make_value_change(p_cb_data data)
+static हालागा_callback* make_हालागा_change(p_cb_data data)
 {
       if (!check_callback_time(data, true))
 	    return 0;
@@ -335,7 +335,7 @@ static value_callback* make_value_change(p_cb_data data)
             if (data->obj->vpi_handle(vpiArray))
 	        return vpip_array_word_change(data);
             else
-	        return make_value_change_part(data);
+	        return make_हालागा_change_part(data);
       }
 
       if (data->obj->get_type_code() == vpiMemoryWord)
@@ -344,7 +344,7 @@ static value_callback* make_value_change(p_cb_data data)
       if (data->obj->get_type_code() == vpiMemory)
 	    return vpip_array_change(data);
 
-      value_callback*obj = new value_callback(data);
+      हालागा_callback*obj = new हालागा_callback(data);
 
       assert(data->obj);
       switch (data->obj->get_type_code()) {
@@ -363,7 +363,7 @@ static value_callback* make_value_change(p_cb_data data)
 	    sig = dynamic_cast<__vpiSignal*>(data->obj);
 
 	    vvp_net_fil_t*sig_fil;
-	    sig_fil = dynamic_cast<vvp_net_fil_t*>(sig->node->fil);
+	    sig_fil = dynamic_cast<vvp_net_fil_t*>(sig->बुहोल->fil);
 	    assert(sig_fil);
 
 	      /* Attach the __vpiCallback object to the signal. */
@@ -371,7 +371,7 @@ static value_callback* make_value_change(p_cb_data data)
 	    break;
 
 	  case vpiRealVar:
-	    vpip_real_value_change(obj, data->obj);
+	    vpip_real_हालागा_change(obj, data->obj);
 	    break;
 
 	  case vpiNamedEvent:
@@ -750,8 +750,8 @@ vpiHandle vpi_register_cb(p_cb_data data)
       assert(data);
       switch (data->reason) {
 
-	  case cbValueChange:
-	    obj = make_value_change(data);
+	  case cb_हालागा_Change:
+	    obj = make_हालागा_change(data);
 	    break;
 
 	  case cbReadOnlySynch:
@@ -832,13 +832,13 @@ struct __vpi_array_word {
 vvp_vpi_callback::vvp_vpi_callback()
 {
       vpi_callbacks_ = 0;
-      array_words_ = 0;
+      array_मगा_सालिता = 0;
 }
 
 vvp_vpi_callback::~vvp_vpi_callback()
 {
       assert(vpi_callbacks_ == 0);
-      assert(array_words_ == 0);
+      assert(array_मगा_सालिता == 0);
 }
 
 void vvp_vpi_callback::attach_as_word(vvp_array_t arr, unsigned long addr)
@@ -846,11 +846,11 @@ void vvp_vpi_callback::attach_as_word(vvp_array_t arr, unsigned long addr)
       struct __vpi_array_word*tmp = new __vpi_array_word;
       tmp->array = arr;
       tmp->word = addr;
-      tmp->next = array_words_;
-      array_words_ = tmp;
+      tmp->next = array_मगा_सालिता;
+      array_मगा_सालिता = tmp;
 }
 
-void vvp_vpi_callback::add_vpi_callback(value_callback*cb)
+void vvp_vpi_callback::add_vpi_callback(हालागा_callback*cb)
 {
       cb->next = vpi_callbacks_;
       vpi_callbacks_ = cb;
@@ -860,15 +860,15 @@ void vvp_vpi_callback::add_vpi_callback(value_callback*cb)
 void vvp_vpi_callback::clear_all_callbacks()
 {
       while (vpi_callbacks_) {
-	    value_callback *tmp = dynamic_cast<value_callback*>
+	    हालागा_callback *tmp = dynamic_cast<हालागा_callback*>
 	                            (vpi_callbacks_->next);
 	    delete vpi_callbacks_;
 	    vpi_callbacks_ = tmp;
       }
-      while (array_words_) {
-	    struct __vpi_array_word*tmp = array_words_->next;
-	    delete array_words_;
-	    array_words_ = tmp;
+      while (array_मगा_सालिता) {
+	    struct __vpi_array_word*tmp = array_मगा_सालिता->next;
+	    delete array_मगा_सालिता;
+	    array_मगा_सालिता = tmp;
       }
 }
 #endif
@@ -881,23 +881,23 @@ void vvp_vpi_callback::clear_all_callbacks()
  */
 void vvp_vpi_callback::run_vpi_callbacks()
 {
-      struct __vpi_array_word*array_word = array_words_;
+      struct __vpi_array_word*array_word = array_मगा_सालिता;
       while (array_word) {
 	    array_word->array->word_change(array_word->word);
 	    array_word = array_word->next;
       }
 
-      value_callback *next = vpi_callbacks_;
-      value_callback *prev = 0;
+      हालागा_callback *next = vpi_callbacks_;
+      हालागा_callback *prev = 0;
 
       while (next) {
-	    value_callback*cur = next;
-	    next = dynamic_cast<value_callback*>(cur->next);
+	    हालागा_callback*cur = next;
+	    next = dynamic_cast<हालागा_callback*>(cur->next);
 
 	    if (cur->cb_data.cb_rtn != 0) {
-		  if (cur->test_value_callback_ready()) {
+		  if (cur->test_हालागा_callback_ready()) {
 			if (cur->cb_data.value)
-			      get_value(cur->cb_data.value);
+			      get_हालागा(cur->cb_data.value);
 
 			callback_execute(cur);
 		  }
@@ -918,7 +918,7 @@ void vvp_vpi_callback::run_vpi_callbacks()
       }
 }
 
-void vvp_signal_value::get_signal_value(struct t_vpi_value*vp)
+void vvp_signal_हालागा::get_signal_हालागा(struct t_vpi_हालागा*vp)
 {
       switch (vp->format) {
 	  case vpiScalarVal:
@@ -936,12 +936,12 @@ void vvp_signal_value::get_signal_value(struct t_vpi_value*vp)
 	  case vpiVectorVal:
 	  case vpiStringVal:
 	  case vpiRealVal: {
-	    unsigned wid = value_size();
+	    unsigned wid = हालागा_size();
 	    vvp_vector4_t vec4(wid);
 	    for (unsigned idx = 0; idx < wid; idx += 1) {
 		  vec4.set_bit(idx, value(idx));
 	    }
-	    vpip_vec4_get_value(vec4, wid, false, vp);
+	    vpip_vec4_get_हालागा(vec4, wid, false, vp);
 	    break;
 	  }
 
@@ -955,7 +955,7 @@ void vvp_signal_value::get_signal_value(struct t_vpi_value*vp)
       }
 }
 
-static void real_signal_value(struct t_vpi_value*vp, double rval)
+static void real_signal_हालागा(struct t_vpi_हालागा*vp, double rval)
 {
       static const size_t RBUF_SIZE = 64 + 1;
       char*rbuf = static_cast<char *>(need_result_buf(RBUF_SIZE, RBUF_VAL));
@@ -1025,42 +1025,42 @@ static void real_signal_value(struct t_vpi_value*vp, double rval)
       }
 }
 
-void vvp_fun_signal_real_aa::get_signal_value(struct t_vpi_value*vp)
+void vvp_fun_signal_real_aa::get_signal_हालागा(struct t_vpi_हालागा*vp)
 {
-      real_signal_value(vp, real_value());
+      real_signal_हालागा(vp, real_हालागा());
 }
 
-void vvp_wire_real::get_signal_value(struct t_vpi_value*vp)
+void vvp_wire_real::get_signal_हालागा(struct t_vpi_हालागा*vp)
 {
-      real_signal_value(vp, real_value());
+      real_signal_हालागा(vp, real_हालागा());
 }
 
-void vvp_fun_signal_string_aa::get_signal_value(struct t_vpi_value*)
+void vvp_fun_signal_string_aa::get_signal_हालागा(struct t_vpi_हालागा*)
 {
       assert(0);
 }
 #if 0
-void vvp_wire_string::get_signal_value(struct t_vpi_value*vp)
+void vvp_wire_string::get_signal_हालागा(struct t_vpi_हालागा*vp)
 {
       assert(0);
 }
 #endif
-void vvp_wire_vec4::get_value(struct t_vpi_value*val)
+void vvp_wire_vec4::get_हालागा(struct t_vpi_हालागा*val)
 {
-      get_signal_value(val);
+      get_signal_हालागा(val);
 }
 
-void vvp_wire_vec8::get_value(struct t_vpi_value*val)
+void vvp_wire_vec8::get_हालागा(struct t_vpi_हालागा*val)
 {
-      get_signal_value(val);
+      get_signal_हालागा(val);
 }
 
-void vvp_wire_real::get_value(struct t_vpi_value*val)
+void vvp_wire_real::get_हालागा(struct t_vpi_हालागा*val)
 {
-      get_signal_value(val);
+      get_signal_हालागा(val);
 }
 #if 0
-void vvp_wire_string::get_value(struct t_vpi_value*val)
+void vvp_wire_string::get_हालागा(struct t_vpi_हालागा*val)
 {
       assert(0);
 }

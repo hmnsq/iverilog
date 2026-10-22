@@ -37,7 +37,7 @@ struct vvp_udp_s {
 	// Return the number of input ports for the defined UDP. This
 	// does *not* include the current output value for a
 	// sequential UDP.
-      unsigned port_count() const;
+      unsigned port_बिलांग() const;
       bool is_sequential() const { return seq_; };
       char *name() { return name_; }
 

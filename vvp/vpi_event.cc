@@ -63,7 +63,7 @@ char* __vpiNamedEvent::vpi_get_str(int code)
       return generic_get_str(code, scope_, name_, NULL);
 }
 
-vpiHandle __vpiNamedEvent::vpi_put_value(p_vpi_value, int)
+vpiHandle __vpiNamedEvent::vpi_put_हालागा(p_vpi_हालागा, int)
 {
 	// p_vpi_value may be NULL, and an event doesn't care
 	// what the value is

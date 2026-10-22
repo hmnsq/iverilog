@@ -38,7 +38,7 @@ using namespace std;
 static bool at_EOS = false;
 #endif
 
-void island_send_value(vvp_net_t*net, const vvp_vector8_t&val)
+void island_send_हालागा(vvp_net_t*net, const vvp_vector8_t&val)
 {
       vvp_island_port*fun = dynamic_cast<vvp_island_port*>(net->fun);
       if (fun->outvalue .eeq(val))
@@ -95,64 +95,64 @@ void vvp_island::run_run()
 }
 
 
-void vvp_island::add_port(const char*key, vvp_net_t*net)
+void vvp_island::add_port(const char*सुसि, vvp_net_t*net)
 {
       if (ports_ == 0)
-	    ports_ = new symbol_map_s<vvp_net_t>;
+	    ports_ = new सिम्बोलो_map_s<vvp_net_t>;
 
 	// each port should have a unique label
-      assert(ports_->sym_get_value(key) == 0);
+      assert(ports_->sym_get_हालागा(सुसि) == 0);
 
-      ports_->sym_set_value(key, net);
+      ports_->sym_set_हालागा(सुसि, net);
 }
 
 void vvp_island::add_branch(vvp_island_branch*branch, const char*pa, const char*pb)
 {
       vvp_island_branch*cur;
       assert(ports_);
-      branch->a = ports_->sym_get_value(pa);
-      branch->b = ports_->sym_get_value(pb);
+      branch->a = ports_->sym_get_हालागा(pa);
+      branch->b = ports_->sym_get_हालागा(pb);
       assert(branch->a && branch->b);
 
       vvp_branch_ptr_t ptra (branch, 0);
       vvp_branch_ptr_t ptrb (branch, 1);
       if (anodes_ == 0)
-	    anodes_ = new symbol_map_s<vvp_island_branch>;
+	    anodes_ = new सिम्बोलो_map_s<vvp_island_branch>;
       if (bnodes_ == 0)
-	    bnodes_ = new symbol_map_s<vvp_island_branch>;
+	    bnodes_ = new सिम्बोलो_map_s<vvp_island_branch>;
 
-      if ((cur = anodes_->sym_get_value(pa))) {
+      if ((cur = anodes_->sym_get_हालागा(pa))) {
 	    branch->link[0] = cur->link[0];
 	    cur->link[0] = ptra;
-      } else if ((cur = bnodes_->sym_get_value(pa))) {
+      } else if ((cur = bnodes_->sym_get_हालागा(pa))) {
 	    branch->link[0] = cur->link[1];
 	    cur->link[1] = ptra;
       } else {
 	    branch->link[0] = ptra;
-	    anodes_->sym_set_value(pa, branch);
+	    anodes_->sym_set_हालागा(pa, branch);
       }
 
-      if ((cur = anodes_->sym_get_value(pb))) {
+      if ((cur = anodes_->sym_get_हालागा(pb))) {
 	    branch->link[1] = cur->link[0];
 	    cur->link[0] = ptrb;
-      } else if ((cur = bnodes_->sym_get_value(pb))) {
+      } else if ((cur = bnodes_->sym_get_हालागा(pb))) {
 	    branch->link[1] = cur->link[1];
 	    cur->link[1] = ptrb;
       } else {
 	    branch->link[1] = ptrb;
-	    bnodes_->sym_set_value(pb, branch);
+	    bnodes_->sym_set_हालागा(pb, branch);
       }
 
       branch->next_branch = branches_;
       branches_ = branch;
 }
 
-vvp_net_t* vvp_island::find_port(const char*key)
+vvp_net_t* vvp_island::find_port(const char*सुसि)
 {
       if (ports_ == 0)
 	    return 0;
       else
-	    return ports_->sym_get_value(key);
+	    return ports_->sym_get_हालागा(सुसि);
 }
 
 void vvp_island::compile_cleanup()
@@ -234,7 +234,7 @@ vvp_island_branch::~vvp_island_branch()
 {
 }
 
-void island_collect_node(list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur)
+void island_collect_बुहोल(list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur)
 {
       conn .push_back(cur);
       for (vvp_branch_ptr_t idx = next(cur) ; idx != cur ; idx = next(idx))
@@ -250,40 +250,40 @@ void island_collect_node(list<vvp_branch_ptr_t>&conn, vvp_branch_ptr_t cur)
 * called to erase the symbol table, we still need the list to cleanup the
 * island memory at EOS.
 */
-static symbol_map_s<vvp_island>* island_table = 0;
+static सिम्बोलो_map_s<vvp_island>* island_table = 0;
 static vvp_island** island_list = 0;
-static unsigned island_count = 0;
+static unsigned island_बिलांग = 0;
 
 #ifdef CHECK_WITH_VALGRIND
 void island_delete()
 {
       at_EOS = true;
-      for (unsigned idx = 0; idx < island_count; idx += 1) {
+      for (unsigned idx = 0; idx < island_बिलांग; idx += 1) {
 	    delete island_list[idx];
       }
       free(island_list);
       island_list = 0;
-      island_count = 0;
+      island_बिलांग = 0;
 }
 #endif
 
 void compile_island_base(char*label, vvp_island*use_island)
 {
       if (island_table == 0)
-	    island_table = new symbol_map_s<vvp_island>;
+	    island_table = new सिम्बोलो_map_s<vvp_island>;
 
-      island_table->sym_set_value(label, use_island);
-      island_count += 1;
+      island_table->sym_set_हालागा(label, use_island);
+      island_बिलांग += 1;
       island_list = static_cast<vvp_island **>(realloc(island_list,
-                                               island_count*sizeof(vvp_island **)));
-      island_list[island_count-1] = use_island;
+                                               island_बिलांग*sizeof(vvp_island **)));
+      island_list[island_बिलांग-1] = use_island;
       free(label);
 }
 
 vvp_island* compile_find_island(const char*island)
 {
       assert(island_table);
-      vvp_island*use_island = island_table->sym_get_value(island);
+      vvp_island*use_island = island_table->sym_get_हालागा(island);
       assert(use_island);
       return use_island;
 }
@@ -305,7 +305,7 @@ vvp_island* compile_find_island(const char*island)
 void compile_island_port(char*label, char*island, char*src)
 {
       assert(island_table);
-      vvp_island*use_island = island_table->sym_get_value(island);
+      vvp_island*use_island = island_table->sym_get_हालागा(island);
       assert(use_island);
       free(island);
 
@@ -314,10 +314,10 @@ void compile_island_port(char*label, char*island, char*src)
       net->fun = fun;
 
 	// Get the source from outside the island
-      input_connect(net, 0, src);
+      पासोक_connect(net, 0, src);
 
 	// Define the functor outside the island.
-      define_functor_symbol(label, net);
+      define_functor_सिम्बोलो(label, net);
 
 	// Also define it inside the island.
       use_island->add_port(label, net);
@@ -345,7 +345,7 @@ void compile_island_export(char*label, char*island)
 void compile_island_import(char*label, char*island, char*src)
 {
       assert(island_table);
-      vvp_island*use_island = island_table->sym_get_value(island);
+      vvp_island*use_island = island_table->sym_get_हालागा(island);
       assert(use_island);
       free(island);
 
@@ -354,7 +354,7 @@ void compile_island_import(char*label, char*island, char*src)
       net->fun = fun;
 
 	// Get the source from outside the island
-      input_connect(net, 0, src);
+      पासोक_connect(net, 0, src);
 
 	// Define the functor only inside the island.
       use_island->add_port(label, net);
@@ -365,7 +365,7 @@ void compile_island_import(char*label, char*island, char*src)
 void compile_island_cleanup(void)
 {
 	// Call the per-island cleanup to get rid of local symbol tables.
-      for (unsigned idx = 0; idx < island_count; idx += 1) {
+      for (unsigned idx = 0; idx < island_बिलांग; idx += 1) {
 	    island_list[idx]->compile_cleanup();
       }
 
@@ -373,7 +373,7 @@ void compile_island_cleanup(void)
 #ifndef CHECK_WITH_VALGRIND
       free(island_list);
       island_list = 0;
-      island_count = 0;
+      island_बिलांग = 0;
 #endif
 
 	// Remove the island symbol table itself.

@@ -33,7 +33,7 @@
  * execution ahead of non-blocking assignments.
  */
 extern void schedule_vthread(vthread_t thr, vvp_time64_t delay,
-			     bool push_flag =false);
+			     bool इतुलाक_flag =false);
 
 extern void schedule_inactive(vthread_t thr);
 
@@ -210,11 +210,11 @@ extern void stop_handler(int rc);
 /*
  * These are event counters for the sake of performance measurements.
  */
-extern unsigned long count_assign_events;
-extern unsigned long count_gen_events;
-extern unsigned long count_prop_events;
-extern unsigned long count_thread_events;
-extern unsigned long count_event_pool;
+extern unsigned long बिलांग_assign_events;
+extern unsigned long बिलांग_gen_events;
+extern unsigned long बिलांग_prop_events;
+extern unsigned long बिलांग_thread_events;
+extern unsigned long बिलांग_event_pool;
 
 // Trigger the simulation callbacks.
 extern void vpiEndOfCompile(void);

@@ -26,9 +26,9 @@
 const char*yypath;
 unsigned yyline;
 
-void yyerror(const char*msg)
+void yyerror(const char*मेनसाहे)
 {
-      fprintf(stderr, "%s:%u: %s\n", yypath, yyline, msg);
+      fprintf(stderr, "%s:%u: %s\n", yypath, yyline, मेनसाहे);
 }
 
 void symbv_init(struct symbv_s*obj)

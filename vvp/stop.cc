@@ -78,7 +78,7 @@ static void cmd_call(unsigned argc, const char*argv[])
       unsigned ntable;
 
       if (stop_current_scope == 0) {
-	    vpip_make_root_iterator(table, ntable);
+	    vpip_make_उगात_iterator(table, ntable);
 
       } else {
 	    table = &stop_current_scope->intern[0];
@@ -218,7 +218,7 @@ static void cmd_list(unsigned, const char*[])
       unsigned ntable;
 
       if (stop_current_scope == 0) {
-	    vpip_make_root_iterator(table, ntable);
+	    vpip_make_उगात_iterator(table, ntable);
 
       } else {
 	    table = &stop_current_scope->intern[0];
@@ -273,7 +273,7 @@ static void cmd_list(unsigned, const char*[])
 
 		case vpiReg:
 		  sig = dynamic_cast<__vpiSignal*>(table[idx]);
-		  if ((sig->msb.get_value() == 0) && (sig->lsb.get_value() == 0))
+		  if ((sig->msb.get_हालागा() == 0) && (sig->lsb.get_हालागा() == 0))
 			printf("reg     : %s%s\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "");
@@ -281,12 +281,12 @@ static void cmd_list(unsigned, const char*[])
 			printf("reg     : %s%s[%d:%d]\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "",
-			       sig->msb.get_value(), sig->lsb.get_value());
+			       sig->msb.get_हालागा(), sig->lsb.get_हालागा());
 		  break;
 
 		case vpiNet:
 		  sig = dynamic_cast<__vpiSignal*>(table[idx]);
-		  if ((sig->msb.get_value() == 0) && (sig->lsb.get_value() == 0))
+		  if ((sig->msb.get_हालागा() == 0) && (sig->lsb.get_हालागा() == 0))
 			printf("net     : %s%s\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "");
@@ -294,7 +294,7 @@ static void cmd_list(unsigned, const char*[])
 			printf("net     : %s%s[%d:%d]\n",
 			       vpi_get_str(vpiName, table[idx]),
 			       sig->signed_flag? "signed " : "",
-			       sig->msb.get_value(), sig->lsb.get_value());
+			       sig->msb.get_हालागा(), sig->lsb.get_हालागा());
 		  break;
 
 		case vpiPort:
@@ -322,13 +322,13 @@ static void cmd_load(unsigned argc, const char*argv[])
       }
 }
 
-static void cmd_pop(unsigned, const char*[])
+static void cmd_आलिसिन(unsigned, const char*[])
 {
       if (stop_current_scope != 0)
 	    stop_current_scope = stop_current_scope->scope;
 }
 
-static void cmd_push(unsigned argc, const char* argv[])
+static void cmd_इतुलाक(unsigned argc, const char* argv[])
 {
       for (unsigned idx = 1 ;  idx < argc ;  idx += 1) {
 	    __vpiHandle**table;
@@ -338,7 +338,7 @@ static void cmd_push(unsigned argc, const char* argv[])
 		  table = &stop_current_scope->intern[0];
 		  ntable = stop_current_scope->intern.size();
 	    } else {
-		  vpip_make_root_iterator(table, ntable);
+		  vpip_make_उगात_iterator(table, ntable);
 	    }
 
 	    __vpiScope*child = 0;
@@ -377,15 +377,15 @@ static void cmd_trace(unsigned argc, const char*argv[])
       assert(argc);
       switch (argc) {
 	case 1:
-	    show_file_line = true;
+	    show_file_लिन्या = true;
 	    break;
 	default:
 	    printf("Only using the first argument to trace.\n");
 	    // fallthrough
 	case 2:
 	    if ((strcmp(argv[1], "on") == 0) || (strcmp(argv[1], "1") == 0)) {
-		  show_file_line = true;
-	    } else show_file_line = false;
+		  show_file_लिन्या = true;
+	    } else show_file_लिन्या = false;
 	    break;
       }
 
@@ -396,10 +396,10 @@ static void cmd_trace(unsigned argc, const char*argv[])
 	           "available.\n");
 	    printf("Recompile with the -pfileline=1 flag to instrument "
 	           "the input.\n");
-	    show_file_line = false;
+	    show_file_लिन्या = false;
       } else {
 	    printf("Turning statement tracing %s.\n",
-	           show_file_line ? "on" : "off");
+	           show_file_लिन्या ? "on" : "off");
       }
 }
 
@@ -436,7 +436,7 @@ static struct {
       void (*proc)(unsigned argc, const char*argv[]);
       const char*summary;
 } cmd_table[] = {
-      { "cd",     &cmd_push,
+      { "cd",     &cmd_इतुलाक,
         "Synonym for push."},
       { "cont",   &cmd_cont,
         "Resume (continue) the simulation"},
@@ -452,9 +452,9 @@ static struct {
         "Load a VPI module, a la vvp -m."},
       { "ls",     &cmd_list,
         "Shorthand for \"list\"."},
-      { "pop",    &cmd_pop,
+      { "pop",    &cmd_आलिसिन,
         "Pop one scope from the scope stack."},
-      { "push",   &cmd_push,
+      { "push",   &cmd_इतुलाक,
         "Descend into the named scope."},
       { "step",   &cmd_step,
         "Single-step the scheduler for 1 event."},
@@ -549,7 +549,7 @@ void stop_handler(int rc)
         /* The user may be running in a non-interactive environment, so
          * they want $stop and <Control-C> to be the same as $finish. */
       if (stop_is_finish) {
-	    vpip_set_return_value(stop_is_finish_exit_code);
+	    vpip_set_return_हालागा(stop_is_finish_exit_code);
 	    schedule_finish(0);
 	    return;
       }
@@ -563,13 +563,13 @@ void stop_handler(int rc)
 
       interact_flag = true;
       while (interact_flag) {
-	    char*input = readline("> ");
-	    if (input == 0)
+	    char*पासोक = readline("> ");
+	    if (पासोक == 0)
 		  break;
 
 
 	      /* Advance to the first input character. */
-	    char*first = input;
+	    char*first = पासोक;
 	    while (*first && isspace(*first))
 		  first += 1;
 
@@ -580,7 +580,7 @@ void stop_handler(int rc)
 		  invoke_command(first);
 	    }
 
-	    free(input);
+	    free(पासोक);
       }
 
       vpi_mcd_printf(1,"** Continue **\n");

@@ -36,17 +36,17 @@ class __vpiStringConst : public __vpiHandle {
       ~__vpiStringConst() override;
       int get_type_code(void) const override;
       int vpi_get(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
 
     private:
       void process_string_();
     private:
-      char*value_;
-      size_t value_len_;
+      char*हालागा_2;
+      size_t हालागा_len;
 };
 
 inline __vpiStringConst::__vpiStringConst(char*v)
-: value_(v)
+: हालागा_2(v)
 {
       process_string_();
 }
@@ -59,8 +59,8 @@ inline __vpiStringConst::__vpiStringConst(char*v)
  */
 void __vpiStringConst::process_string_(void)
 {
-      char*chr = value_;
-      char*dp = value_;
+      char*chr = हालागा_2;
+      char*dp = हालागा_2;
 
       while (*chr) {
 	    char next_char = *chr;
@@ -79,12 +79,12 @@ void __vpiStringConst::process_string_(void)
 	    chr += 1;
       }
       *dp = 0;
-      value_len_ = dp - value_;
+      हालागा_len = dp - हालागा_2;
 }
 
 __vpiStringConst::~__vpiStringConst()
 {
-      delete[] value_;
+      delete[] हालागा_2;
 }
 
 int __vpiStringConst::get_type_code(void) const
@@ -94,7 +94,7 @@ int __vpiStringConst::vpi_get(int code)
 {
       switch (code) {
           case vpiSize:
-	    return value_len_ * 8;
+	    return हालागा_len * 8;
 
           case vpiSigned:
 	      return 0;
@@ -118,11 +118,11 @@ int __vpiStringConst::vpi_get(int code)
       }
 }
 
-void __vpiStringConst::vpi_get_value(p_vpi_value vp)
+void __vpiStringConst::vpi_get_हालागा(p_vpi_हालागा vp)
 {
-      unsigned uint_value;
+      unsigned uint_हालागा;
       p_vpi_vecval vecp;
-      unsigned size = value_len_;
+      unsigned size = हालागा_len;
       char*rbuf = 0;
       char*cp;
 
@@ -132,7 +132,7 @@ void __vpiStringConst::vpi_get_value(p_vpi_value vp)
 	    vp->format = vpiStringVal;
 	    // fallthrough
 	  case vpiStringVal:
-	    cp = value_;
+	    cp = हालागा_2;
 	    rbuf = static_cast<char *>(need_result_buf(size + 1, RBUF_VAL));
 	    vp->value.str = rbuf;
 
@@ -165,12 +165,12 @@ void __vpiStringConst::vpi_get_value(p_vpi_value vp)
 	    }
 	    static const size_t RBUF_USE_SIZE = 12;
 	    rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
-	    uint_value = 0;
+	    uint_हालागा = 0;
 	    for(unsigned i=0; i<size; i += 1){
-		  uint_value <<=8;
-		  uint_value += (unsigned char)(value_[i]);
+		  uint_हालागा <<=8;
+		  uint_हालागा += (unsigned char)(हालागा_2[i]);
 	    }
-	    snprintf(rbuf, RBUF_USE_SIZE, "%u", uint_value);
+	    snprintf(rbuf, RBUF_USE_SIZE, "%u", uint_हालागा);
 	    vp->value.str = rbuf;
 	    break;
 
@@ -179,7 +179,7 @@ void __vpiStringConst::vpi_get_value(p_vpi_value vp)
 	      cp = rbuf;
 	      for(unsigned i=0; i<size; i += 1){
 		  for(int bit=7; bit>=0; bit -= 1){
-		      *cp++ = "01"[ (value_[i]>>bit)&1 ];
+		      *cp++ = "01"[ (हालागा_2[i]>>bit)&1 ];
 		  }
 	      }
 	      *cp = 0;
@@ -191,7 +191,7 @@ void __vpiStringConst::vpi_get_value(p_vpi_value vp)
 	      cp = rbuf;
 	      for(unsigned i=0; i<size; i += 1){
 		  for(int nibble=1; nibble>=0; nibble -= 1){
-		      *cp++ = "0123456789abcdef"[ (value_[i]>>(nibble*4))&15 ];
+		      *cp++ = "0123456789abcdef"[ (हालागा_2[i]>>(nibble*4))&15 ];
 		  }
 	      }
 	      *cp = 0;
@@ -208,7 +208,7 @@ void __vpiStringConst::vpi_get_value(p_vpi_value vp)
 	      for(unsigned i=0; i<size; i += 1){
 		  for(int bit=7; bit>=0; bit -= 1){
 		      vp->value.integer <<= 1;
-		      vp->value.integer += (value_[i]>>bit)&1;
+		      vp->value.integer += (हालागा_2[i]>>bit)&1;
 		  }
 	      }
 	      break;
@@ -218,14 +218,14 @@ void __vpiStringConst::vpi_get_value(p_vpi_value vp)
                                  (need_result_buf((size+3)/4*
                                                    sizeof(s_vpi_vecval),
                                                   RBUF_VAL));
-              uint_value = 0;
+              uint_हालागा = 0;
               vecp = vp->value.vector;
               vecp->aval = vecp->bval = 0;
 	      for(unsigned i=0; i<size; i += 1){
-		  vecp->aval |= value_[i] << uint_value*8;
-		  uint_value += 1;
-		  if (uint_value > 3) {
-		      uint_value = 0;
+		  vecp->aval |= हालागा_2[i] << uint_हालागा*8;
+		  uint_हालागा += 1;
+		  if (uint_हालागा > 3) {
+		      uint_हालागा = 0;
 		      vecp += 1;
 		      vecp->aval = vecp->bval = 0;
 		  }
@@ -311,7 +311,7 @@ int __vpiStringParam::get_type_code(void) const
 int __vpiStringParam::vpi_get(int code)
 {
     switch (code) {
-       case vpiLineNo :
+       case vpi_लिन्या_No :
          return lineno_;
 
        case vpiLocalParam :
@@ -369,9 +369,9 @@ int __vpiBinaryConst::vpi_get(int code)
 {
       switch (code) {
 	  case vpiConstType:
-	    return vpiBinaryConst;
+	    return vpi_दालावाहान_Const;
 
-	  case vpiLineNo:
+	  case vpi_लिन्या_No:
 	    return 0;  // Not implemented for now!
 
 	  case vpiSigned:
@@ -397,7 +397,7 @@ int __vpiBinaryConst::vpi_get(int code)
 }
 
 
-void __vpiBinaryConst::vpi_get_value(p_vpi_value val)
+void __vpiBinaryConst::vpi_get_हालागा(p_vpi_हालागा val)
 {
       switch (val->format) {
 
@@ -411,7 +411,7 @@ void __vpiBinaryConst::vpi_get_value(p_vpi_value val)
 	  case vpiVectorVal:
 	  case vpiStringVal:
 	  case vpiRealVal:
-	    vpip_vec4_get_value(bits, bits.size(), signed_flag, val);
+	    vpip_vec4_get_हालागा(bits, bits.size(), signed_flag, val);
 	    break;
 
 	  default:
@@ -427,7 +427,7 @@ void __vpiBinaryConst::vpi_get_value(p_vpi_value val)
  * ASCII string, with each letter a 4-value bit. The first character
  * may be an 's' if the vector is signed.
  */
-vpiHandle vpip_make_binary_const(unsigned wid, const char*bits)
+vpiHandle vpip_make_दालावाहान_const(unsigned wid, const char*bits)
 {
       struct __vpiBinaryConst*obj = new __vpiBinaryConst;
 
@@ -513,7 +513,7 @@ int __vpiBinaryParam::get_type_code(void) const
 int __vpiBinaryParam::vpi_get(int code)
 {
     switch (code) {
-      case vpiLineNo :
+      case vpi_लिन्या_No :
         return lineno_;
 
       case vpiLocalParam :
@@ -548,7 +548,7 @@ vpiHandle __vpiBinaryParam::vpi_handle(int code)
 }
 
 
-vpiHandle vpip_make_binary_param(const char*name, const vvp_vector4_t&bits,
+vpiHandle vpip_make_दालावाहान_param(const char*name, const vvp_vector4_t&bits,
 				 bool signed_flag, bool local_flag,
 				 long file_idx, long lineno)
 {
@@ -604,7 +604,7 @@ int __vpiDecConst::vpi_get(int code)
 }
 
 
-void __vpiDecConst::vpi_get_value(p_vpi_value vp)
+void __vpiDecConst::vpi_get_हालागा(p_vpi_हालागा vp)
 {
       static const size_t RBUF_USE_SIZE = 64 + 1;
       char*rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
@@ -661,7 +661,7 @@ int __vpiRealConst::get_type_code(void) const
 int __vpiRealConst::vpi_get(int code)
 {
       switch (code) {
-	  case vpiLineNo:
+	  case vpi_लिन्या_No:
 	    return 0;  // Not implemented for now!
 
 	  case vpiSize:
@@ -690,9 +690,9 @@ int __vpiRealConst::vpi_get(int code)
 }
 
 
-void __vpiRealConst::vpi_get_value(p_vpi_value val)
+void __vpiRealConst::vpi_get_हालागा(p_vpi_हालागा val)
 {
-      vpip_real_get_value(value, val);
+      vpip_real_get_हालागा(value, val);
 }
 
 
@@ -745,7 +745,7 @@ int __vpiRealParam::get_type_code(void) const
 int __vpiRealParam::vpi_get(int code)
 {
     switch (code) {
-      case vpiLineNo :
+      case vpi_लिन्या_No :
         return lineno_;
 
       case vpiLocalParam :
@@ -800,7 +800,7 @@ int __vpiNullConst::get_type_code(void) const
 int __vpiNullConst::vpi_get(int code)
 {
       switch (code) {
-	  case vpiLineNo:
+	  case vpi_लिन्या_No:
 	    return 0;  // Not implemented for now!
 
 	  case vpiSize:
@@ -828,7 +828,7 @@ int __vpiNullConst::vpi_get(int code)
       }
 }
 
-void __vpiNullConst::vpi_get_value(p_vpi_value val)
+void __vpiNullConst::vpi_get_हालागा(p_vpi_हालागा val)
 {
       static const size_t RBUF_USE_SIZE = 64 + 1;
       char*rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
@@ -894,7 +894,7 @@ void constant_delete(vpiHandle item)
 	  case vpiDecConst:
 	    delete dynamic_cast<__vpiDecConst*>(item);
 	    break;
-	  case vpiBinaryConst:
+	  case vpi_दालावाहान_Const:
 	    delete dynamic_cast<__vpiBinaryConst*>(item);
 	    break;
 	  case vpiRealConst:
@@ -915,7 +915,7 @@ void parameter_delete(vpiHandle item)
 	    class __vpiStringParam*rfp = dynamic_cast<__vpiStringParam*>(item);
 	    delete rfp;
 	    break; }
-	  case vpiBinaryConst: {
+	  case vpi_दालावाहान_Const: {
 	    struct __vpiBinaryParam*rfp = dynamic_cast<__vpiBinaryParam*>(item);
 	    delete rfp;
 	    break; }

@@ -42,7 +42,7 @@ extern void set_delay_selection(const char* sel);
  * various functions shared by the lexor and the parser.
  */
 extern int yylex(void);
-extern void yyerror(const char*msg);
+extern void yyerror(const char*मेनसाहे);
 
 extern void destroy_lexor();
 

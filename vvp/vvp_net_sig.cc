@@ -91,7 +91,7 @@ template <class T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_mask_(T&val, T fo
       return PROP;
 }
 
-template <class T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_input_mask_(const T&val, const T&force, T&rep) const
+template <class T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_पासोक_mask(const T&val, const T&force, T&rep) const
 {
       if (test_force_mask_is_zero())
 	    return PROP;
@@ -107,11 +107,11 @@ template <class T> vvp_net_fil_t::prop_t vvp_net_fil_t::filter_input_mask_(const
       return REPL;
 }
 
-vvp_signal_value::~vvp_signal_value()
+vvp_signal_हालागा::~vvp_signal_हालागा()
 {
 }
 
-double vvp_signal_value::real_value() const
+double vvp_signal_हालागा::real_हालागा() const
 {
       assert(0);
       return 0;
@@ -148,7 +148,7 @@ vvp_fun_signal_base::vvp_fun_signal_base()
       continuous_assign_active_ = false;
       needs_init_ = true;
       cassign_link = 0;
-      count_functors_sig += 1;
+      बिलांग_functors_sig += 1;
 }
 
 vvp_fun_signal4_sa::vvp_fun_signal4_sa(unsigned wid, vvp_bit4_t init)
@@ -321,12 +321,12 @@ void automatic_signal_base::force_fil_real(double, const vvp_vector2_t&)
 {
       assert(0);
 }
-void automatic_signal_base::get_value(struct t_vpi_value*)
+void automatic_signal_base::get_हालागा(struct t_vpi_हालागा*)
 {
       assert(0);
 }
 
-const vvp_vector4_t& vvp_fun_signal4_sa::vec4_unfiltered_value() const
+const vvp_vector4_t& vvp_fun_signal4_sa::vec4_unfiltered_हालागा() const
 {
       return bits4_;
 }
@@ -402,7 +402,7 @@ void vvp_fun_signal4_aa::recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit
       ptr.ptr()->send_vec4(*bits4, context);
 }
 
-unsigned vvp_fun_signal4_aa::value_size() const
+unsigned vvp_fun_signal4_aa::हालागा_size() const
 {
       return size_;
 }
@@ -415,7 +415,7 @@ vvp_bit4_t vvp_fun_signal4_aa::value(unsigned idx) const
       return bits4->value(idx);
 }
 
-vvp_scalar_t vvp_fun_signal4_aa::scalar_value(unsigned idx) const
+vvp_scalar_t vvp_fun_signal4_aa::scalar_हालागा(unsigned idx) const
 {
       const vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
             (vthread_get_rd_context_item(context_idx_));
@@ -423,7 +423,7 @@ vvp_scalar_t vvp_fun_signal4_aa::scalar_value(unsigned idx) const
       return vvp_scalar_t(bits4->value(idx), 6, 6);
 }
 
-void vvp_fun_signal4_aa::vec4_value(vvp_vector4_t&val) const
+void vvp_fun_signal4_aa::vec4_हालागा(vvp_vector4_t&val) const
 {
       const vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
             (vthread_get_rd_context_item(context_idx_));
@@ -431,7 +431,7 @@ void vvp_fun_signal4_aa::vec4_value(vvp_vector4_t&val) const
       val = *bits4;
 }
 
-const vvp_vector4_t&vvp_fun_signal4_aa::vec4_unfiltered_value() const
+const vvp_vector4_t&vvp_fun_signal4_aa::vec4_unfiltered_हालागा() const
 {
       const vvp_vector4_t*bits4 = static_cast<vvp_vector4_t*>
             (vthread_get_rd_context_item(context_idx_));
@@ -459,7 +459,7 @@ vvp_fun_signal_real_sa::vvp_fun_signal_real_sa()
       bits_ = 0.0;
 }
 
-double vvp_fun_signal_real_sa::real_unfiltered_value() const
+double vvp_fun_signal_real_sa::real_unfiltered_हालागा() const
 {
       return bits_;
 }
@@ -526,7 +526,7 @@ void vvp_fun_signal_real_aa::free_instance(vvp_context_t context)
 }
 #endif
 
-double vvp_fun_signal_real_aa::real_unfiltered_value() const
+double vvp_fun_signal_real_aa::real_unfiltered_हालागा() const
 {
       const double*bits = static_cast<double*>
             (vthread_get_rd_context_item(context_idx_));
@@ -534,9 +534,9 @@ double vvp_fun_signal_real_aa::real_unfiltered_value() const
       return *bits;
 }
 
-double vvp_fun_signal_real_aa::real_value() const
+double vvp_fun_signal_real_aa::real_हालागा() const
 {
-      return real_unfiltered_value();
+      return real_unfiltered_हालागा();
 }
 
 void vvp_fun_signal_real_aa::recv_real(vvp_net_ptr_t ptr, double bit,
@@ -554,7 +554,7 @@ void vvp_fun_signal_real_aa::recv_real(vvp_net_ptr_t ptr, double bit,
       }
 }
 
-unsigned vvp_fun_signal_real_aa::value_size() const
+unsigned vvp_fun_signal_real_aa::हालागा_size() const
 {
       assert(0);
       return 1;
@@ -566,13 +566,13 @@ vvp_bit4_t vvp_fun_signal_real_aa::value(unsigned) const
       return BIT4_X;
 }
 
-vvp_scalar_t vvp_fun_signal_real_aa::scalar_value(unsigned) const
+vvp_scalar_t vvp_fun_signal_real_aa::scalar_हालागा(unsigned) const
 {
       assert(0);
       return vvp_scalar_t();
 }
 
-void vvp_fun_signal_real_aa::vec4_value(vvp_vector4_t&) const
+void vvp_fun_signal_real_aa::vec4_हालागा(vvp_vector4_t&) const
 {
       assert(0);
 }
@@ -597,8 +597,8 @@ void vvp_fun_signal_string_sa::recv_string(vvp_net_ptr_t ptr, const std::string&
 {
       assert(ptr.port() == 0);
 
-      if (needs_init_ || value_ != bit) {
-	    value_ = bit;
+      if (needs_init_ || हालागा_2 != bit) {
+	    हालागा_2 = bit;
 	    needs_init_ = false;
 
 	    ptr.ptr()->send_string(bit, 0);
@@ -607,7 +607,7 @@ void vvp_fun_signal_string_sa::recv_string(vvp_net_ptr_t ptr, const std::string&
 
 const string& vvp_fun_signal_string_sa::get_string() const
 {
-      return value_;
+      return हालागा_2;
 }
 
 vvp_fun_signal_string_aa::vvp_fun_signal_string_aa()
@@ -657,7 +657,7 @@ void vvp_fun_signal_string_aa::recv_string(vvp_net_ptr_t ptr, const std::string&
       }
 }
 
-unsigned vvp_fun_signal_string_aa::value_size() const
+unsigned vvp_fun_signal_string_aa::हालागा_size() const
 {
       assert(0);
       return 1;
@@ -669,18 +669,18 @@ vvp_bit4_t vvp_fun_signal_string_aa::value(unsigned) const
       return BIT4_X;
 }
 
-vvp_scalar_t vvp_fun_signal_string_aa::scalar_value(unsigned) const
+vvp_scalar_t vvp_fun_signal_string_aa::scalar_हालागा(unsigned) const
 {
       assert(0);
       return vvp_scalar_t();
 }
 
-void vvp_fun_signal_string_aa::vec4_value(vvp_vector4_t&) const
+void vvp_fun_signal_string_aa::vec4_हालागा(vvp_vector4_t&) const
 {
       assert(0);
 }
 
-double vvp_fun_signal_string_aa::real_value() const
+double vvp_fun_signal_string_aa::real_हालागा() const
 {
       assert(0);
       return 0.0;
@@ -725,8 +725,8 @@ void vvp_fun_signal_object_sa::recv_object(vvp_net_ptr_t ptr, vvp_object_t bit,
 {
       assert(ptr.port() == 0);
 
-      if (needs_init_ || value_ != bit) {
-	    value_ = bit;
+      if (needs_init_ || हालागा_2 != bit) {
+	    हालागा_2 = bit;
 	    needs_init_ = false;
 
 	    ptr.ptr()->send_object(bit, 0);
@@ -735,7 +735,7 @@ void vvp_fun_signal_object_sa::recv_object(vvp_net_ptr_t ptr, vvp_object_t bit,
 
 vvp_object_t vvp_fun_signal_object_sa::get_object() const
 {
-      return value_;
+      return हालागा_2;
 }
 
 vvp_fun_signal_object_aa::vvp_fun_signal_object_aa(unsigned size)
@@ -785,7 +785,7 @@ void vvp_fun_signal_object_aa::recv_object(vvp_net_ptr_t ptr, vvp_object_t bit,
       }
 }
 
-unsigned vvp_fun_signal_object_aa::value_size() const
+unsigned vvp_fun_signal_object_aa::हालागा_size() const
 {
       return 1;
 }
@@ -796,13 +796,13 @@ vvp_bit4_t vvp_fun_signal_object_aa::value(unsigned) const
       return BIT4_X;
 }
 
-vvp_scalar_t vvp_fun_signal_object_aa::scalar_value(unsigned) const
+vvp_scalar_t vvp_fun_signal_object_aa::scalar_हालागा(unsigned) const
 {
       assert(0);
       return vvp_scalar_t();
 }
 
-void vvp_fun_signal_object_aa::vec4_value(vvp_vector4_t&) const
+void vvp_fun_signal_object_aa::vec4_हालागा(vvp_vector4_t&) const
 {
       assert(0);
 }
@@ -855,7 +855,7 @@ vvp_wire_base::~vvp_wire_base()
 {
 }
 
-vvp_bit4_t vvp_wire_base::driven_value(unsigned) const
+vvp_bit4_t vvp_wire_base::driven_हालागा(unsigned) const
 {
       assert(0);
       return BIT4_X;
@@ -1008,12 +1008,12 @@ void vvp_wire_vec4::release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, b
       }
 }
 
-unsigned vvp_wire_vec4::value_size() const
+unsigned vvp_wire_vec4::हालागा_size() const
 {
       return bits4_.size();
 }
 
-vvp_bit4_t vvp_wire_vec4::filtered_value_(unsigned idx) const
+vvp_bit4_t vvp_wire_vec4::filtered_हालागा(unsigned idx) const
 {
       if (test_force_mask(idx))
 	    return force4_.value(idx);
@@ -1023,25 +1023,25 @@ vvp_bit4_t vvp_wire_vec4::filtered_value_(unsigned idx) const
 
 vvp_bit4_t vvp_wire_vec4::value(unsigned idx) const
 {
-      return filtered_value_(idx);
+      return filtered_हालागा(idx);
 }
 
-vvp_scalar_t vvp_wire_vec4::scalar_value(unsigned idx) const
+vvp_scalar_t vvp_wire_vec4::scalar_हालागा(unsigned idx) const
 {
       return vvp_scalar_t(value(idx),6,6);
 }
 
-void vvp_wire_vec4::vec4_value(vvp_vector4_t&val) const
+void vvp_wire_vec4::vec4_हालागा(vvp_vector4_t&val) const
 {
       val = bits4_;
       if (test_force_mask_is_zero())
 	    return;
 
       for (unsigned idx = 0 ; idx < bits4_.size() ; idx += 1)
-	    val.set_bit(idx, filtered_value_(idx));
+	    val.set_bit(idx, filtered_हालागा(idx));
 }
 
-vvp_bit4_t vvp_wire_vec4::driven_value(unsigned idx) const
+vvp_bit4_t vvp_wire_vec4::driven_हालागा(unsigned idx) const
 {
       return bits4_.value(idx);
 }
@@ -1100,9 +1100,9 @@ vvp_net_fil_t::prop_t vvp_wire_vec8::filter_vec8(const vvp_vector8_t&bit, vvp_ve
       return filter_mask_(bit, force8_, rep, base);
 }
 
-vvp_net_fil_t::prop_t vvp_wire_vec8::filter_input_vec8(const vvp_vector8_t&bit, vvp_vector8_t&rep) const
+vvp_net_fil_t::prop_t vvp_wire_vec8::filter_पासोक_vec8(const vvp_vector8_t&bit, vvp_vector8_t&rep) const
 {
-      return filter_input_mask_(bit, force8_, rep);
+      return filter_पासोक_mask(bit, force8_, rep);
 }
 
 unsigned vvp_wire_vec8::filter_size() const
@@ -1179,12 +1179,12 @@ void vvp_wire_vec8::release_pv(vvp_net_ptr_t ptr, unsigned base, unsigned wid, b
       }
 }
 
-unsigned vvp_wire_vec8::value_size() const
+unsigned vvp_wire_vec8::हालागा_size() const
 {
       return bits8_.size();
 }
 
-vvp_scalar_t vvp_wire_vec8::filtered_value_(unsigned idx) const
+vvp_scalar_t vvp_wire_vec8::filtered_हालागा(unsigned idx) const
 {
       if (test_force_mask(idx))
 	    return force8_.value(idx);
@@ -1194,28 +1194,28 @@ vvp_scalar_t vvp_wire_vec8::filtered_value_(unsigned idx) const
 
 vvp_bit4_t vvp_wire_vec8::value(unsigned idx) const
 {
-      return filtered_value_(idx).value();
+      return filtered_हालागा(idx).value();
 }
 
-vvp_scalar_t vvp_wire_vec8::scalar_value(unsigned idx) const
+vvp_scalar_t vvp_wire_vec8::scalar_हालागा(unsigned idx) const
 {
-      return filtered_value_(idx);
+      return filtered_हालागा(idx);
 }
 
-vvp_vector8_t vvp_wire_vec8::vec8_value() const
+vvp_vector8_t vvp_wire_vec8::vec8_हालागा() const
 {
       vvp_vector8_t tmp = bits8_;
       for (unsigned idx = 0 ; idx < bits8_.size() ; idx += 1)
-	    tmp.set_bit(idx, filtered_value_(idx));
+	    tmp.set_bit(idx, filtered_हालागा(idx));
       return tmp;
 }
 
-void vvp_wire_vec8::vec4_value(vvp_vector4_t&val) const
+void vvp_wire_vec8::vec4_हालागा(vvp_vector4_t&val) const
 {
-      val = reduce4(vec8_value());
+      val = reduce4(vec8_हालागा());
 }
 
-vvp_bit4_t vvp_wire_vec8::driven_value(unsigned idx) const
+vvp_bit4_t vvp_wire_vec8::driven_हालागा(unsigned idx) const
 {
       return bits8_.value(idx).value();
 }
@@ -1273,7 +1273,7 @@ void vvp_wire_real::release(vvp_net_ptr_t ptr, bool net_flag)
 	    ptr.ptr()->send_real(bit_, 0);
       } else {
 	      // Variables keep the current value.
-	    double res =  real_value();
+	    double res =  real_हालागा();
 	    release_mask(mask);
 	    ptr.ptr()->fun->recv_real(ptr, res, 0);
       }
@@ -1295,14 +1295,14 @@ void vvp_wire_real::release_pv(vvp_net_ptr_t, unsigned, unsigned, bool)
 	    ptr.ptr()->send_real(bit_, 0);
       } else {
 	      // Variables keep the current value.
-	    double res =  real_value();
+	    double res =  real_हालागा();
 	    release_mask(mask);
 	    ptr.ptr()->fun->recv_real(ptr, res, 0);
       }
 #endif
 }
 
-unsigned vvp_wire_real::value_size() const
+unsigned vvp_wire_real::हालागा_size() const
 {
       assert(0);
       return 1;
@@ -1314,18 +1314,18 @@ vvp_bit4_t vvp_wire_real::value(unsigned) const
       return BIT4_X;
 }
 
-vvp_scalar_t vvp_wire_real::scalar_value(unsigned) const
+vvp_scalar_t vvp_wire_real::scalar_हालागा(unsigned) const
 {
       assert(0);
       return vvp_scalar_t();
 }
 
-void vvp_wire_real::vec4_value(vvp_vector4_t&) const
+void vvp_wire_real::vec4_हालागा(vvp_vector4_t&) const
 {
       assert(0);
 }
 
-double vvp_wire_real::real_value() const
+double vvp_wire_real::real_हालागा() const
 {
       if (test_force_mask(0))
 	    return force_;
@@ -1367,7 +1367,7 @@ void vvp_wire_string::release_pv(vvp_net_ptr_t, unsigned, unsigned, bool)
       assert(0);
 }
 
-unsigned vvp_wire_string::value_size() const
+unsigned vvp_wire_string::हालागा_size() const
 {
       assert(0);
       return 1;
@@ -1379,18 +1379,18 @@ vvp_bit4_t vvp_wire_string::value(unsigned) const
       return BIT4_X;
 }
 
-vvp_scalar_t vvp_wire_string::scalar_value(unsigned) const
+vvp_scalar_t vvp_wire_string::scalar_हालागा(unsigned) const
 {
       assert(0);
       return vvp_scalar_t();
 }
 
-void vvp_wire_string::vec4_value(vvp_vector4_t&) const
+void vvp_wire_string::vec4_हालागा(vvp_vector4_t&) const
 {
       assert(0);
 }
 
-double vvp_wire_string::real_value() const
+double vvp_wire_string::real_हालागा() const
 {
       assert(0);
       return 0.0;

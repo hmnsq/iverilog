@@ -31,8 +31,8 @@ static int iterator_free_object(vpiHandle ref)
       struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
       assert(hp);
 
-      if (hp->free_args_flag)
-	    free(hp->args);
+      if (hp->free_मगा_कातविरान_flag)
+	    free(hp->मगा_कातविरान);
 
       delete hp;
       return 1;
@@ -47,15 +47,15 @@ int __vpiIterator::get_type_code(void) const
 __vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(void)
 { return &iterator_free_object; }
 
-vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
-			     bool free_args_flag)
+vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*मगा_कातविरान,
+			     bool free_मगा_कातविरान_flag)
 {
       struct __vpiIterator*res = new __vpiIterator;
-      res->args = args;
+      res->मगा_कातविरान = मगा_कातविरान;
       res->nargs = nargs;
       res->next  = 0;
 
-      res->free_args_flag = free_args_flag;
+      res->free_मगा_कातविरान_flag = free_मगा_कातविरान_flag;
 
       return res;
 }
@@ -78,7 +78,7 @@ vpiHandle vpi_scan(vpiHandle ref)
 		  return 0;
 	    }
 
-	    return hp->args[hp->next++];
+	    return hp->मगा_कातविरान[hp->next++];
       }
 
       return ref->vpi_index(0);

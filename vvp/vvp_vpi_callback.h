@@ -22,7 +22,7 @@
 # include  "config.h"
 # include  "vpi_user.h"
 
-class value_callback;
+class हालागा_callback;
 
 /*
  * Things derived from vvp_vpi_callback may have callbacks
@@ -40,7 +40,7 @@ class vvp_vpi_callback {
 
       void attach_as_word(struct __vpiArray* arr, unsigned long addr);
 
-      void add_vpi_callback(value_callback*);
+      void add_vpi_callback(हालागा_callback*);
 #ifdef CHECK_WITH_VALGRIND
 	/* This has only been tested at EOS. */
       void clear_all_callbacks(void);
@@ -48,7 +48,7 @@ class vvp_vpi_callback {
 
 	// Derived classes implement this method to provide a way for
 	// vpi to get at the vvp value of the object.
-      virtual void get_value(struct t_vpi_value*value) =0;
+      virtual void get_हालागा(struct t_vpi_हालागा*हालागा) =0;
 
     protected:
 	// Derived classes call this method to indicate that it is
@@ -56,8 +56,8 @@ class vvp_vpi_callback {
       void run_vpi_callbacks();
 
     private:
-      value_callback*vpi_callbacks_;
-      struct __vpi_array_word*array_words_;
+      हालागा_callback*vpi_callbacks_;
+      struct __vpi_array_word*array_मगा_सालिता;
 };
 
 

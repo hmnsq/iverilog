@@ -38,14 +38,14 @@
 
 using namespace std;
 
-unsigned long count_net_arrays = 0;
-unsigned long count_net_array_words = 0;
-unsigned long count_var_arrays = 0;
-unsigned long count_var_array_words = 0;
-unsigned long count_real_arrays = 0;
-unsigned long count_real_array_words = 0;
+unsigned long बिलांग_net_arrays = 0;
+unsigned long बिलांग_net_array_मगा_सालिता = 0;
+unsigned long बिलांग_var_arrays = 0;
+unsigned long बिलांग_var_array_मगा_सालिता = 0;
+unsigned long बिलांग_real_arrays = 0;
+unsigned long बिलांग_real_array_मगा_सालिता = 0;
 
-static symbol_map_s<struct __vpiArray>* array_table =0;
+static सिम्बोलो_map_s<struct __vpiArray>* array_table =0;
 
 class vvp_fun_arrayport;
 static void array_attach_port(vvp_array_t, vvp_fun_arrayport*);
@@ -55,7 +55,7 @@ vvp_array_t array_find(const char*label)
       if (array_table == 0)
 	    return 0;
 
-      vvp_array_t v = array_table->sym_get_value(label);
+      vvp_array_t v = array_table->sym_get_हालागा(label);
       return v;
 }
 
@@ -63,8 +63,8 @@ struct __vpiArrayVthrA : public __vpiHandle {
       int get_type_code(void) const override { return vpiMemoryWord; }
       int vpi_get(int code) override;
       char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
-      vpiHandle vpi_put_value(p_vpi_value val, int flags) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
+      vpiHandle vpi_put_हालागा(p_vpi_हालागा val, int flags) override;
       vpiHandle vpi_handle(int code) override;
 
       struct __vpiArray*array;
@@ -76,18 +76,18 @@ struct __vpiArrayVthrA : public __vpiHandle {
       unsigned get_address() const
       {
 	    if (address_handle) {
-		  s_vpi_value vp;
+		  s_vpi_हालागा vp;
 		    /* Check to see if the value is defined. */
 		  vp.format = vpiVectorVal;
-		  address_handle->vpi_get_value(&vp);
-		  int words = (address_handle->vpi_get(vpiSize)-1)/32 + 1;
-		  for(int idx = 0; idx < words; idx += 1) {
+		  address_handle->vpi_get_हालागा(&vp);
+		  int मगा_सालिता = (address_handle->vpi_get(vpiSize)-1)/32 + 1;
+		  for(int idx = 0; idx < मगा_सालिता; idx += 1) {
 			  /* Return UINT_MAX to indicate an X base. */
 			if (vp.value.vector[idx].bval != 0) return UINT_MAX;
 		  }
 		    /* The value is defined so get and return it. */
 		  vp.format = vpiIntVal;
-		  address_handle->vpi_get_value(&vp);
+		  address_handle->vpi_get_हालागा(&vp);
 		  return vp.value.integer;
 	    }
 
@@ -100,7 +100,7 @@ struct __vpiArrayVthrAPV : public __vpiHandle {
       int get_type_code(void) const override { return vpiPartSelect; }
       int vpi_get(int code) override;
       char* vpi_get_str(int code) override;
-      void vpi_get_value(p_vpi_value val) override;
+      void vpi_get_हालागा(p_vpi_हालागा val) override;
       vpiHandle vpi_handle(int code) override;
 
       struct __vpiArray*array;
@@ -183,11 +183,11 @@ char*__vpiArray::get_word_str(struct __vpiArrayWord*word, int code)
       }
 
       char sidx [64];
-      snprintf(sidx, 63, "%d", (int)index + first_addr.get_value());
+      snprintf(sidx, 63, "%d", (int)index + first_addr.get_हालागा());
       return generic_get_str(code, get_scope(), name, sidx);
 }
 
-void __vpiArray::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
+void __vpiArray::get_word_हालागा(struct __vpiArrayWord*word, p_vpi_हालागा vp)
 {
       unsigned index = word->get_index();
 
@@ -202,7 +202,7 @@ void __vpiArray::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
       }
 
       if(vals4) {
-          vpip_vec4_get_value(vals4->get_word(index),
+          vpip_vec4_get_हालागा(vals4->get_word(index),
                               vals4->width(), signed_flag, vp);
       } else if(vals) {
           switch(vp->format) {
@@ -216,7 +216,7 @@ void __vpiArray::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
             {
                 vvp_vector4_t v;
                 vals->get_word(index, v);
-                vpip_vec4_get_value(v, vals_width, signed_flag, vp);
+                vpip_vec4_get_हालागा(v, vals_width, signed_flag, vp);
             }
             break;
 
@@ -224,7 +224,7 @@ void __vpiArray::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
             {
                 double d;
                 vals->get_word(index, d);
-                vpip_real_get_value(d, vp);
+                vpip_real_get_हालागा(d, vp);
             }
             break;
 
@@ -232,7 +232,7 @@ void __vpiArray::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
             {
                 string s;
                 vals->get_word(index, s);
-                vpip_string_get_value(s, vp);
+                vpip_string_get_हालागा(s, vp);
             }
             break;
 
@@ -243,10 +243,10 @@ void __vpiArray::get_word_value(struct __vpiArrayWord*word, p_vpi_value vp)
       }
 }
 
-void __vpiArray::put_word_value(struct __vpiArrayWord*word, p_vpi_value vp, int)
+void __vpiArray::put_word_हालागा(struct __vpiArrayWord*word, p_vpi_हालागा vp, int)
 {
       unsigned index = word->get_index();
-      vvp_vector4_t val = vec4_from_vpi_value(vp, vals_width);
+      vvp_vector4_t val = vec4_from_vpi_हालागा(vp, vals_width);
       set_word(index, 0, val);
 }
 
@@ -256,15 +256,15 @@ vpiHandle __vpiArray::get_iter_index(struct __vpiArrayIterator*, int idx)
 
       assert(vals4 || vals);
 
-      if (vals_words == 0) make_vals_words();
+      if (vals_मगा_सालिता == 0) make_vals_मगा_सालिता();
 
-      return &(vals_words[idx].as_word);
+      return &(vals_मगा_सालिता[idx].as_word);
 }
 
 int __vpiArray::vpi_get(int code)
 {
       switch (code) {
-	  case vpiLineNo:
+	  case vpi_लिन्या_No:
 	    return 0; // Not implemented for now!
 
 	  case vpiSize:
@@ -290,11 +290,11 @@ char* __vpiArray::vpi_get_str(int code)
 vpiHandle __vpiArray::vpi_handle(int code)
 {
       switch (code) {
-          case vpiLeftRange:
+          case vpi_कालिवा_Range:
             if (swap_addr) return &last_addr;
             else return &first_addr;
 
-          case vpiRightRange:
+          case vpi_कानान_Range:
             if (swap_addr) return &first_addr;
             else return &last_addr;
 
@@ -314,7 +314,7 @@ vpiHandle __vpiArray::vpi_handle(int code)
 */
 vpiHandle __vpiArray::vpi_index(int index)
 {
-      index -= first_addr.get_value();
+      index -= first_addr.get_हालागा();
       if (index >= (long) get_size())
 	    return 0;
       if (index < 0)
@@ -324,10 +324,10 @@ vpiHandle __vpiArray::vpi_index(int index)
 	    return nets[index];
       }
 
-      if (vals_words == 0)
-	    make_vals_words();
+      if (vals_मगा_सालिता == 0)
+	    make_vals_मगा_सालिता();
 
-      return &(vals_words[index].as_word);
+      return &(vals_मगा_सालिता[index].as_word);
 }
 
 int __vpiArrayWord::as_word_t::vpi_get(int code)
@@ -335,24 +335,24 @@ int __vpiArrayWord::as_word_t::vpi_get(int code)
       struct __vpiArrayWord*obj = array_var_word_from_handle(this);
       assert(obj);
       struct __vpiArrayBase*my_parent = obj->get_parent();
-      t_vpi_value val;
+      t_vpi_हालागा val;
 
       switch (code) {
-	  case vpiLineNo:
+	  case vpi_लिन्या_No:
 	    return 0; // Not implemented for now!
 
 	  case vpiSize:
 	    return my_parent->get_word_size();
 
-	  case vpiLeftRange:
+	  case vpi_कालिवा_Range:
             val.format = vpiIntVal;
-	    my_parent->get_left_range()->vpi_get_value(&val);
+	    my_parent->get_कालिवा_range()->vpi_get_हालागा(&val);
             assert(val.format == vpiIntVal);
             return val.value.integer;
 
-	  case vpiRightRange:
+	  case vpi_कानान_Range:
             val.format = vpiIntVal;
-	    my_parent->get_right_range()->vpi_get_value(&val);
+	    my_parent->get_कानान_range()->vpi_get_हालागा(&val);
             assert(val.format == vpiIntVal);
             return val.value.integer;
 
@@ -362,11 +362,11 @@ int __vpiArrayWord::as_word_t::vpi_get(int code)
 		  struct __vpiArray*base = dynamic_cast<__vpiArray*> (my_parent);
 		  if (base) {
 			val.format = vpiIntVal;
-			base->first_addr.vpi_get_value(&val);
+			base->first_addr.vpi_get_हालागा(&val);
 			base_offset += val.value.integer;
 		  }
 		  val.format = vpiIntVal;
-		  obj->as_index.vpi_get_value(&val);
+		  obj->as_index.vpi_get_हालागा(&val);
 		  assert(val.format == vpiIntVal);
 		  return val.value.integer + base_offset;
 	    }
@@ -388,20 +388,20 @@ int __vpiArrayWord::as_word_t::vpi_get(int code)
 int __vpiArrayVthrA::vpi_get(int code)
 {
       switch (code) {
-	  case vpiLineNo:
+	  case vpi_लिन्या_No:
 	    return 0; // Not implemented for now!
 
 	  case vpiSize:
 	    return array->get_word_size();
 
-	  case vpiLeftRange:
-	    return array->msb.get_value();
+	  case vpi_कालिवा_Range:
+	    return array->msb.get_हालागा();
 
-	  case vpiRightRange:
-	    return array->lsb.get_value();
+	  case vpi_कानान_Range:
+	    return array->lsb.get_हालागा();
 
 	  case vpiIndex:
-	    return (int)get_address() + array->first_addr.get_value();
+	    return (int)get_address() + array->first_addr.get_हालागा();
 
 	  case vpiAutomatic:
 	    return array->get_scope()->is_automatic() ? 1 : 0;
@@ -428,29 +428,29 @@ char* __vpiArrayVthrA::vpi_get_str(int code)
       }
 
       char sidx [64];
-      snprintf(sidx, 63, "%d", (int)get_address() + array->first_addr.get_value());
+      snprintf(sidx, 63, "%d", (int)get_address() + array->first_addr.get_हालागा());
       return generic_get_str(code, array->get_scope(), array->name, sidx);
 }
 
-void __vpiArrayVthrA::vpi_get_value(p_vpi_value vp)
+void __vpiArrayVthrA::vpi_get_हालागा(p_vpi_हालागा vp)
 {
       assert(array);
 
       unsigned index = get_address();
       if (vpi_array_is_real(array)) {
 	    double tmp = array->get_word_r(index);
-	    vpip_real_get_value(tmp, vp);
+	    vpip_real_get_हालागा(tmp, vp);
       } else if (vpi_array_is_string(array)) {
 	    string tmp = array->get_word_str(index);
-	    vpip_string_get_value(tmp, vp);
+	    vpip_string_get_हालागा(tmp, vp);
       } else {
 	    vvp_vector4_t tmp = array->get_word(index);
 	    unsigned width = array->get_word_size();
-	    vpip_vec4_get_value(tmp, width, array->signed_flag, vp);
+	    vpip_vec4_get_हालागा(tmp, width, array->signed_flag, vp);
       }
 }
 
-vpiHandle __vpiArrayVthrA::vpi_put_value(p_vpi_value vp, int)
+vpiHandle __vpiArrayVthrA::vpi_put_हालागा(p_vpi_हालागा vp, int)
 {
       unsigned index = get_address();
 
@@ -458,11 +458,11 @@ vpiHandle __vpiArrayVthrA::vpi_put_value(p_vpi_value vp, int)
       assert(index < array->get_size());
 
       if (vpi_array_is_real(array)) {
-	    double val = real_from_vpi_value(vp);
+	    double val = real_from_vpi_हालागा(vp);
 	    array->set_word(index, val);
       } else {
 	    unsigned width = array->get_word_size();
-	    vvp_vector4_t val = vec4_from_vpi_value(vp, width);
+	    vvp_vector4_t val = vec4_from_vpi_हालागा(vp, width);
 	    array->set_word(index, 0, val);
       }
 
@@ -475,10 +475,10 @@ vpiHandle __vpiArrayVthrA::vpi_handle(int code)
 	  case vpiIndex:
 	    break;  // Not implemented!
 
-	  case vpiLeftRange:
+	  case vpi_कालिवा_Range:
 	    return &array->msb;
 
-	  case vpiRightRange:
+	  case vpi_कानान_Range:
 	    return &array->lsb;
 
 	  case vpiParent:
@@ -499,16 +499,16 @@ vpiHandle __vpiArrayVthrA::vpi_handle(int code)
 int __vpiArrayVthrAPV::vpi_get(int code)
 {
       switch (code) {
-	  case vpiLineNo:
+	  case vpi_लिन्या_No:
 	    return 0; // Not implemented for now!
 
 	  case vpiSize:
 	    return part_wid;
 
-	  case vpiLeftRange:
+	  case vpi_कालिवा_Range:
 	    return part_bit + part_wid - 1;
 
-	  case vpiRightRange:
+	  case vpi_कानान_Range:
 	    return part_bit;
 
 	  case vpiAutomatic:
@@ -534,22 +534,22 @@ char* __vpiArrayVthrAPV::vpi_get_str(int code)
       }
 
       char sidx [64];
-      snprintf(sidx, 63, "%u", word_sel + array->first_addr.get_value());
+      snprintf(sidx, 63, "%u", word_sel + array->first_addr.get_हालागा());
       return generic_get_str(code, array->get_scope(), array->name, sidx);
 }
 
-void __vpiArrayVthrAPV::vpi_get_value(p_vpi_value vp)
+void __vpiArrayVthrAPV::vpi_get_हालागा(p_vpi_हालागा vp)
 {
       assert(array);
 
       unsigned index = word_sel;
       if (vpi_array_is_real(array)) {
 	    double tmp = array->get_word_r(index);
-	    vpip_real_get_value(tmp, vp);
+	    vpip_real_get_हालागा(tmp, vp);
       } else {
 	    vvp_vector4_t tmp = array->get_word(index);
 	    tmp = tmp.subvalue(part_bit, part_wid);
-	    vpip_vec4_get_value(tmp, part_wid, false, vp);
+	    vpip_vec4_get_हालागा(tmp, part_wid, false, vp);
       }
 }
 
@@ -628,7 +628,7 @@ void __vpiArray::set_word(unsigned address, unsigned part_off, const vvp_vector4
       const struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
       assert(vsig);
 
-      vsig->node->send_vec4_pv(val, part_off, vpip_size(vsig), 0);
+      vsig->बुहोल->send_vec4_pv(val, part_off, vpip_size(vsig), 0);
       word_change(address);
 }
 
@@ -699,19 +699,19 @@ vvp_vector4_t __vpiArray::get_word(unsigned address)
 	    assert(word);
 	    struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
 	    assert(vsig);
-	    vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->node->fil);
+	    vvp_signal_हालागा*sig = dynamic_cast<vvp_signal_हालागा*> (vsig->बुहोल->fil);
 	    assert(sig);
-	    return vvp_vector4_t(sig->value_size(), BIT4_X);
+	    return vvp_vector4_t(sig->हालागा_size(), BIT4_X);
       }
 
       vpiHandle word = nets[address];
       struct __vpiSignal*vsig = dynamic_cast<__vpiSignal*>(word);
       assert(vsig);
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->node->fil);
+      vvp_signal_हालागा*sig = dynamic_cast<vvp_signal_हालागा*> (vsig->बुहोल->fil);
       assert(sig);
 
       vvp_vector4_t val;
-      sig->vec4_value(val);
+      sig->vec4_हालागा(val);
       return val;
 }
 
@@ -737,10 +737,10 @@ double __vpiArray::get_word_r(unsigned address)
       vpiHandle word = nets[address];
       struct __vpiRealVar*vsig = dynamic_cast<__vpiRealVar*>(word);
       assert(vsig);
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*> (vsig->net->fil);
+      vvp_signal_हालागा*sig = dynamic_cast<vvp_signal_हालागा*> (vsig->net->fil);
       assert(sig);
 
-      double val = sig->real_value();
+      double val = sig->real_हालागा();
       return val;
 }
 
@@ -805,23 +805,23 @@ vpiHandle vpip_make_array(const char*label, const char*name,
 	    first_addr = tmp;
       }
       assert(last_addr >= first_addr);
-      unsigned array_count = last_addr+1-first_addr;
+      unsigned array_बिलांग = last_addr+1-first_addr;
 
 	// For now, treat all arrays as memories. This is not quite
 	// correct, as arrays are arrays with memories a special case.
       obj->scope = vpip_peek_current_scope();
       obj->name  = vpip_name_string(name);
-      obj->array_count = array_count;
+      obj->array_बिलांग = array_बिलांग;
 
-      obj->first_addr.set_value(first_addr);
-      obj->last_addr .set_value(last_addr);
+      obj->first_addr.set_हालागा(first_addr);
+      obj->last_addr .set_हालागा(last_addr);
 
 	// Start off now knowing if we are nets or variables.
       obj->nets = 0;
       obj->vals4 = 0;
       obj->vals  = 0;
       obj->vals_width = 0;
-      obj->vals_words = 0;
+      obj->vals_मगा_सालिता = 0;
 
 	// Initialize (clear) the read-ports list.
       obj->ports_ = 0;
@@ -829,15 +829,15 @@ vpiHandle vpip_make_array(const char*label, const char*name,
 
 	/* Add this symbol to the array_symbols table for later lookup. */
       if (!array_table)
-	    array_table = new symbol_map_s<struct __vpiArray>;
+	    array_table = new सिम्बोलो_map_s<struct __vpiArray>;
 
       assert(!array_find(label));
-      array_table->sym_set_value(label, obj);
+      array_table->sym_set_हालागा(label, obj);
 
 	/* Add this into the table of VPI objects. This is used for
 	   contexts that try to look up VPI objects in
 	   general. (i.e. arguments to vpi_task calls.) */
-      compile_vpi_symbol(label, obj);
+      compile_vpi_सिम्बोलो(label, obj);
 
 	/* Blindly attach to the scope as an object. */
       vpip_attach_to_current_scope(obj);
@@ -847,8 +847,8 @@ vpiHandle vpip_make_array(const char*label, const char*name,
 
 void __vpiArray::alias_word(unsigned long addr, vpiHandle word, int msb_, int lsb_)
 {
-      assert(msb.get_value() == msb_);
-      assert(lsb.get_value() == lsb_);
+      assert(msb.get_हालागा() == msb_);
+      assert(lsb.get_हालागा() == lsb_);
       assert(addr < get_size());
       assert(nets);
       nets[addr] = word;
@@ -861,14 +861,14 @@ void __vpiArray::attach_word(unsigned addr, vpiHandle word)
       nets[addr] = word;
 
       if (struct __vpiSignal*sig = dynamic_cast<__vpiSignal*>(word)) {
-	    vvp_net_t*net = sig->node;
+	    vvp_net_t*net = sig->बुहोल;
 	    assert(net);
 	    vvp_vpi_callback*fun = dynamic_cast<vvp_vpi_callback*>(net->fil);
 	    assert(fun);
 	    fun->attach_as_word(this, addr);
 	    sig->is_netarray = 1;
 	    sig->within.parent = this;
-	    sig->id.index = new __vpiDecConst(addr + first_addr.get_value());
+	    sig->id.index = new __vpiDecConst(addr + first_addr.get_हालागा());
 	      // Now we know the data type, update the array signed_flag.
 	    signed_flag = sig->signed_flag;
 	    return;
@@ -882,7 +882,7 @@ void __vpiArray::attach_word(unsigned addr, vpiHandle word)
 	    fun->attach_as_word(this, addr);
 	    sig->is_netarray = 1;
 	    sig->within.parent = this;
-	    sig->id.index = new __vpiDecConst(addr + first_addr.get_value());
+	    sig->id.index = new __vpiDecConst(addr + first_addr.get_हालागा());
 	      // Now we know the data type, update the array signed_flag.
 	    signed_flag = true;
 	    return;
@@ -906,11 +906,11 @@ void compile_var_array(char*label, char*name, int last, int first,
             arr->vals4 = new vvp_vector4array_sa(arr->vals_width,
 						 arr->get_size());
       }
-      arr->msb.set_value(msb);
-      arr->lsb.set_value(lsb);
+      arr->msb.set_हालागा(msb);
+      arr->lsb.set_हालागा(lsb);
 
-      count_var_arrays += 1;
-      count_var_array_words += arr->get_size();
+      बिलांग_var_arrays += 1;
+      बिलांग_var_array_मगा_सालिता += arr->get_size();
 
       free(label);
       delete[] name;
@@ -924,8 +924,8 @@ void compile_var2_array(char*label, char*name, int last, int first,
       struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
 
 	/* Make the words. */
-      arr->msb.set_value(msb);
-      arr->lsb.set_value(lsb);
+      arr->msb.set_हालागा(msb);
+      arr->lsb.set_हालागा(lsb);
       arr->vals_width = labs(msb-lsb) + 1;
 
       assert(! arr->nets);
@@ -948,8 +948,8 @@ void compile_var2_array(char*label, char*name, int last, int first,
       } else {
 	    arr->vals = new vvp_darray_vec2(arr->get_size(), arr->vals_width);
       }
-      count_var_arrays += 1;
-      count_var_array_words += arr->get_size();
+      बिलांग_var_arrays += 1;
+      बिलांग_var_array_मगा_सालिता += arr->get_size();
 
       free(label);
       delete[] name;
@@ -965,8 +965,8 @@ void compile_real_array(char*label, char*name, int last, int first)
       arr->vals = new vvp_darray_real(arr->get_size());
       arr->vals_width = 1;
 
-      count_real_arrays += 1;
-      count_real_array_words += arr->get_size();
+      बिलांग_real_arrays += 1;
+      बिलांग_real_array_मगा_सालिता += arr->get_size();
 
       free(label);
       delete[] name;
@@ -982,8 +982,8 @@ void compile_string_array(char*label, char*name, int last, int first)
       arr->vals = new vvp_darray_string(arr->get_size());
       arr->vals_width = 1;
 
-      count_real_arrays += 1;
-      count_real_array_words += arr->get_size();
+      बिलांग_real_arrays += 1;
+      बिलांग_real_array_मगा_सालिता += arr->get_size();
 
       free(label);
       delete[] name;
@@ -999,8 +999,8 @@ void compile_object_array(char*label, char*name, int last, int first)
       arr->vals = new vvp_darray_object(arr->get_size());
       arr->vals_width = 1;
 
-      count_real_arrays += 1;
-      count_real_array_words += arr->get_size();
+      बिलांग_real_arrays += 1;
+      बिलांग_real_array_मगा_सालिता += arr->get_size();
 
       free(label);
       delete[] name;
@@ -1016,8 +1016,8 @@ void compile_net_array(char*label, char*name, int last, int first)
       struct __vpiArray*arr = dynamic_cast<__vpiArray*>(obj);
       arr->nets = static_cast<vpiHandle*>(calloc(arr->get_size(), sizeof(vpiHandle)));
 
-      count_net_arrays += 1;
-      count_net_array_words += arr->get_size();
+      बिलांग_net_arrays += 1;
+      बिलांग_net_array_मगा_सालिता += arr->get_size();
 
       free(label);
       delete[] name;
@@ -1095,7 +1095,7 @@ void vvp_fun_arrayport_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit
       switch (port.port()) {
 
 	  case 0: // Address input
-	    addr_valid_flag = vector4_to_value(bit, addr_);
+	    addr_valid_flag = vector4_to_हालागा(bit, addr_);
 	    if (! addr_valid_flag)
 		  addr_ = arr_->get_size();
 	    if (vpi_array_is_real(arr_))
@@ -1200,7 +1200,7 @@ void vvp_fun_arrayport_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit
             switch (port.port()) {
 
                 case 0: // Address input
-                  addr_valid_flag = vector4_to_value(bit, *addr);
+                  addr_valid_flag = vector4_to_हालागा(bit, *addr);
                   if (! addr_valid_flag) *addr = arr_->get_size();
                   if (vpi_array_is_real(arr_)) {
 			port.ptr()->send_real(arr_->get_word_r(*addr),
@@ -1276,10 +1276,10 @@ static void array_attach_port(vvp_array_t array, vvp_fun_arrayport*fun)
       }
 }
 
-class array_word_value_callback : public value_callback {
+class array_word_हालागा_callback : public हालागा_callback {
     public:
-      inline explicit array_word_value_callback(p_cb_data data, long addr)
-      : value_callback(data), word_addr(addr)
+      inline explicit array_word_हालागा_callback(p_cb_data data, long addr)
+      : हालागा_callback(data), word_addr(addr)
       { }
 
     public:
@@ -1296,7 +1296,7 @@ void __vpiArray::word_change(unsigned long addr)
       struct __vpiCallback *prev = 0;
 
       while (next) {
-	    array_word_value_callback*cur = dynamic_cast<array_word_value_callback*>(next);
+	    array_word_हालागा_callback*cur = dynamic_cast<array_word_हालागा_callback*>(next);
 	    next = cur->next;
 
 	      // Skip callbacks that are not for me. -1 is for every element.
@@ -1308,19 +1308,19 @@ void __vpiArray::word_change(unsigned long addr)
 	      // For whole array callbacks we need to set the index.
 	    if (cur->word_addr == -1) {
 		  cur->cb_data.index = (PLI_INT32) ((int)addr +
-						    first_addr.get_value());
+						    first_addr.get_हालागा());
 	    }
 
 	    if (cur->cb_data.cb_rtn != 0) {
-		  if (cur->test_value_callback_ready()) {
+		  if (cur->test_हालागा_callback_ready()) {
 			if (cur->cb_data.value) {
 			      if (vpi_array_is_real(this)) {
 				    double val = 0.0;
 				    if (addr < vals->get_size())
 					  vals->get_word(addr, val);
-				    vpip_real_get_value(val, cur->cb_data.value);
+				    vpip_real_get_हालागा(val, cur->cb_data.value);
 			      } else if (vals4) {
-				    vpip_vec4_get_value(vals4->get_word(addr),
+				    vpip_vec4_get_हालागा(vals4->get_word(addr),
 							vals_width,
 							signed_flag,
 							cur->cb_data.value);
@@ -1336,7 +1336,7 @@ void __vpiArray::word_change(unsigned long addr)
 				    vvp_vector4_t val;
 				    if (addr < vals->get_size())
 					  vals->get_word(addr, val);
-				    vpip_vec4_get_value(val,
+				    vpip_vec4_get_हालागा(val,
 							vals_width,
 							signed_flag,
 							cur->cb_data.value);
@@ -1440,7 +1440,7 @@ bool array_port_resolv_list_t::resolve(bool mes)
       return true;
 }
 
-class array_word_part_callback : public array_word_value_callback {
+class array_word_part_callback : public array_word_हालागा_callback {
     public:
       explicit array_word_part_callback(p_cb_data data, long addr);
       ~array_word_part_callback() override;
@@ -1448,63 +1448,63 @@ class array_word_part_callback : public array_word_value_callback {
       array_word_part_callback(const array_word_part_callback&) = delete;
       array_word_part_callback& operator=(const array_word_part_callback&) = delete;
 
-      bool test_value_callback_ready(void) override;
+      bool test_हालागा_callback_ready(void) override;
 
     private:
-      char*value_bits_;
+      char*हालागा_bits;
 };
 
 array_word_part_callback::array_word_part_callback(p_cb_data data, long addr)
-: array_word_value_callback(data, addr)
+: array_word_हालागा_callback(data, addr)
 {
 	// Get the initial value of the part, to use as a reference.
       struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj);
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      apvword->vpi_get_value(&tmp_value);
+      s_vpi_हालागा tmp_हालागा;
+      tmp_हालागा.format = vpiBinStrVal;
+      apvword->vpi_get_हालागा(&tmp_हालागा);
 
-      value_bits_ = new char[apvword->part_wid+1];
+      हालागा_bits = new char[apvword->part_wid+1];
 
-      memcpy(value_bits_, tmp_value.value.str, apvword->part_wid);
-      value_bits_[apvword->part_wid] = 0;
+      memcpy(हालागा_bits, tmp_हालागा.value.str, apvword->part_wid);
+      हालागा_bits[apvword->part_wid] = 0;
 }
 
 array_word_part_callback::~array_word_part_callback()
 {
-      delete[]value_bits_;
+      delete[]हालागा_bits;
 }
 
-bool array_word_part_callback::test_value_callback_ready(void)
+bool array_word_part_callback::test_हालागा_callback_ready(void)
 {
       struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(cb_data.obj);
       assert(apvword);
 
 	// Get a reference value that can be used to compare with an
 	// updated value.
-      s_vpi_value tmp_value;
-      tmp_value.format = vpiBinStrVal;
-      apvword->vpi_get_value(&tmp_value);
+      s_vpi_हालागा tmp_हालागा;
+      tmp_हालागा.format = vpiBinStrVal;
+      apvword->vpi_get_हालागा(&tmp_हालागा);
 
-      if (memcmp(value_bits_, tmp_value.value.str, apvword->part_wid) == 0)
+      if (memcmp(हालागा_bits, tmp_हालागा.value.str, apvword->part_wid) == 0)
 	    return false;
 
-      memcpy(value_bits_, tmp_value.value.str, apvword->part_wid);
+      memcpy(हालागा_bits, tmp_हालागा.value.str, apvword->part_wid);
       return true;
 
 }
 
-value_callback*vpip_array_word_change(p_cb_data data)
+हालागा_callback*vpip_array_word_change(p_cb_data data)
 {
       struct __vpiArray*parent = 0;
-      array_word_value_callback*cbh = 0;
+      array_word_हालागा_callback*cbh = 0;
       if (const struct __vpiArrayWord*word = array_var_word_from_handle(data->obj)) {
 	    parent = static_cast<__vpiArray*>(word->get_parent());
 	    unsigned addr = word->get_index();
-	    cbh = new array_word_value_callback(data, addr);
+	    cbh = new array_word_हालागा_callback(data, addr);
 
       } else if (struct __vpiArrayVthrA*tword = dynamic_cast<__vpiArrayVthrA*>(data->obj)) {
 	    parent = tword->array;
-	    cbh = new array_word_value_callback(data, tword->address);
+	    cbh = new array_word_हालागा_callback(data, tword->address);
 
       } else if (struct __vpiArrayVthrAPV*apvword = dynamic_cast<__vpiArrayVthrAPV*>(data->obj)) {
 	    parent = apvword->array;
@@ -1519,9 +1519,9 @@ value_callback*vpip_array_word_change(p_cb_data data)
       return cbh;
 }
 
-value_callback* vpip_array_change(p_cb_data data)
+हालागा_callback* vpip_array_change(p_cb_data data)
 {
-      array_word_value_callback*cbh = new array_word_value_callback(data, -1);
+      array_word_हालागा_callback*cbh = new array_word_हालागा_callback(data, -1);
       assert(data->obj);
 
       struct __vpiArray*arr = dynamic_cast<__vpiArray*>(data->obj);
@@ -1535,10 +1535,10 @@ void compile_array_port(char*label, char*array, char*addr)
       array_port_resolv_list_t*resolv_mem
 	    = new array_port_resolv_list_t(array, false, 0);
 
-      define_functor_symbol(label, resolv_mem->ptr);
+      define_functor_सिम्बोलो(label, resolv_mem->ptr);
       free(label);
 	// Connect the port-0 input as the address.
-      input_connect(resolv_mem->ptr, 0, addr);
+      पासोक_connect(resolv_mem->ptr, 0, addr);
 
       resolv_submit(resolv_mem);
 }
@@ -1548,7 +1548,7 @@ void compile_array_port(char*label, char*array, long addr)
       array_port_resolv_list_t*resolv_mem
 	    = new array_port_resolv_list_t(array, true, addr);
 
-      define_functor_symbol(label, resolv_mem->ptr);
+      define_functor_सिम्बोलो(label, resolv_mem->ptr);
       free(label);
 
       resolv_submit(resolv_mem);
@@ -1563,7 +1563,7 @@ void compile_array_alias(char*label, char*name, char*src)
 
       obj->scope = vpip_peek_current_scope();
       obj->name  = vpip_name_string(name);
-      obj->array_count = mem->array_count;
+      obj->array_बिलांग = mem->array_बिलांग;
       obj->signed_flag = mem->signed_flag;
 
 	// Need to set an accurate range of addresses.
@@ -1579,16 +1579,16 @@ void compile_array_alias(char*label, char*name, char*src)
       obj->vals4 = mem->vals4;
       obj->vals  = mem->vals;
       obj->vals_width = mem->vals_width;
-      obj->vals_words = mem->vals_words;
+      obj->vals_मगा_सालिता = mem->vals_मगा_सालिता;
 
       obj->ports_ = 0;
       obj->vpi_callbacks = 0;
 
       assert(array_table);
       assert(!array_find(label));
-      array_table->sym_set_value(label, obj);
+      array_table->sym_set_हालागा(label, obj);
 
-      compile_vpi_symbol(label, obj);
+      compile_vpi_सिम्बोलो(label, obj);
       vpip_attach_to_current_scope(obj);
 
       free(label);
@@ -1624,7 +1624,7 @@ vpiHandle vpip_make_vthr_A(char*label, unsigned addr)
  * word address is calculated from the VPI object that symbol
  * represents. The expression that leads to this looks like label[symbol].
  */
-vpiHandle vpip_make_vthr_A(char*label, char*symbol)
+vpiHandle vpip_make_vthr_A(char*label, char*सिम्बोलो)
 {
       struct __vpiArrayVthrA*obj = new __vpiArrayVthrA;
 
@@ -1635,7 +1635,7 @@ vpiHandle vpip_make_vthr_A(char*label, char*symbol)
       resolv_submit(resolv_mem);
 
       obj->address_handle = 0;
-      compile_vpi_lookup(&obj->address_handle, symbol);
+      compile_vpi_lookup(&obj->address_handle, सिम्बोलो);
       obj->address = 0;
 
       return obj;
@@ -1684,7 +1684,7 @@ void compile_array_cleanup(void)
 void memory_delete(vpiHandle item)
 {
       struct __vpiArray*arr = static_cast<struct __vpiArray*>(item);
-      if (arr->vals_words) delete [] (arr->vals_words-1);
+      if (arr->vals_मगा_सालिता) delete [] (arr->vals_मगा_सालिता-1);
 
 //      if (arr->vals4) {}
 // Delete the individual words?

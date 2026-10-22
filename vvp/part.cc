@@ -255,7 +255,7 @@ bool vvp_fun_part_var::recv_vec4_(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 	      // represent a 'bx value on the select input.
 	      // It is also used to guard against 32 bit
 	      // unsigned -> signed address overflow / wrap around.
-	    if (!vector4_to_value(bit, tmp, is_signed_) || (!is_signed_ && tmp < 0))
+	    if (!vector4_to_हालागा(bit, tmp, is_signed_) || (!is_signed_ && tmp < 0))
 		  tmp = INT32_MIN;
 	    if (static_cast<int>(tmp) == base) return false;
 	    base = tmp;
@@ -402,15 +402,15 @@ void vvp_fun_part_var_aa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&b
  * Given a node functor, create a network node and link it into the
  * netlist. This form assumes nodes with a single input.
  */
-void link_node_1(char*label, char*source, vvp_net_fun_t*fun)
+void link_बुहोल_1(char*label, char*source, vvp_net_fun_t*fun)
 {
       vvp_net_t*net = new vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
+      define_functor_सिम्बोलो(label, net);
       free(label);
 
-      input_connect(net, 0, source);
+      पासोक_connect(net, 0, source);
 }
 
 void compile_part_select(char*label, char*source,
@@ -422,7 +422,7 @@ void compile_part_select(char*label, char*source,
       } else {
             fun = new vvp_fun_part_sa(base, wid);
       }
-      link_node_1(label, source, fun);
+      link_बुहोल_1(label, source, fun);
 }
 
 void compile_part_select_pv(char*label, char*source,
@@ -430,7 +430,7 @@ void compile_part_select_pv(char*label, char*source,
 			    unsigned vector_wid)
 {
       vvp_fun_part_pv*fun = new vvp_fun_part_pv(base, wid, vector_wid);
-      link_node_1(label, source, fun);
+      link_बुहोल_1(label, source, fun);
 }
 
 void compile_part_select_var(char*label, char*source, char*var,
@@ -445,9 +445,9 @@ void compile_part_select_var(char*label, char*source, char*var,
       vvp_net_t*net = new vvp_net_t;
       net->fun = fun;
 
-      define_functor_symbol(label, net);
+      define_functor_सिम्बोलो(label, net);
       free(label);
 
-      input_connect(net, 0, source);
-      input_connect(net, 1, var);
+      पासोक_connect(net, 0, source);
+      पासोक_connect(net, 1, var);
 }

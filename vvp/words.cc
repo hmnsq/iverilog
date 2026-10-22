@@ -49,10 +49,10 @@ static void __compile_var_real(char*label, char*name,
 	    net->fun = new vvp_fun_signal_real_sa;
       }
 
-      define_functor_symbol(label, net);
+      define_functor_सिम्बोलो(label, net);
 
       vpiHandle obj = vpip_make_real_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_सिम्बोलो(label, obj);
 
       if (name) {
 	    assert(!array);
@@ -87,10 +87,10 @@ void compile_var_string(char*label, char*name)
 	    net->fun = new vvp_fun_signal_string_sa;
       }
 
-      define_functor_symbol(label, net);
+      define_functor_सिम्बोलो(label, net);
 
       vpiHandle obj = vpip_make_string_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_सिम्बोलो(label, obj);
 
       vpip_attach_to_current_scope(obj);
       free(label);
@@ -110,10 +110,10 @@ void compile_var_darray(char*label, char*name, unsigned size)
 	    net->fun = new vvp_fun_signal_object_sa(size);
       }
 
-      define_functor_symbol(label, net);
+      define_functor_सिम्बोलो(label, net);
 
       vpiHandle obj = vpip_make_darray_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_सिम्बोलो(label, obj);
 
       vpip_attach_to_current_scope(obj);
       free(label);
@@ -133,10 +133,10 @@ void compile_var_queue(char*label, char*name, unsigned size)
 	    net->fun = new vvp_fun_signal_object_sa(size);
       }
 
-      define_functor_symbol(label, net);
+      define_functor_सिम्बोलो(label, net);
 
       vpiHandle obj = vpip_make_queue_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_सिम्बोलो(label, obj);
 
       vpip_attach_to_current_scope(obj);
       free(label);
@@ -156,10 +156,10 @@ void compile_var_cobject(char*label, char*name)
 	    net->fun = new vvp_fun_signal_object_sa(1);
       }
 
-      define_functor_symbol(label, net);
+      define_functor_सिम्बोलो(label, net);
 
       vpiHandle obj = vpip_make_cobject_var(name, net);
-      compile_vpi_symbol(label, obj);
+      compile_vpi_सिम्बोलो(label, obj);
 
       vpip_attach_to_current_scope(obj);
       free(label);
@@ -192,9 +192,9 @@ void compile_variable(char*label, char*name,
 	    net->fil = new vvp_wire_vec4(wid, init);
             net->fun = new vvp_fun_signal4_sa(wid);
       }
-      const vvp_signal_value*vfil = dynamic_cast<vvp_signal_value*>(net->fil);
+      const vvp_signal_हालागा*vfil = dynamic_cast<vvp_signal_हालागा*>(net->fil);
 
-      define_functor_symbol(label, net);
+      define_functor_सिम्बोलो(label, net);
 
       vpiHandle obj = 0;
       if (! local_flag) {
@@ -214,7 +214,7 @@ void compile_variable(char*label, char*name,
 		  break;
 	    }
 	    assert(obj);
-	    compile_vpi_symbol(label, obj);
+	    compile_vpi_सिम्बोलो(label, obj);
       }
 	// If the signal has a name, then it goes into the current
 	// scope as a signal.
@@ -222,7 +222,7 @@ void compile_variable(char*label, char*name,
 	    if (obj) vpip_attach_to_current_scope(obj);
             if (!vpip_peek_current_scope()->is_automatic()) {
 		  vvp_vector4_t tmp;
-		  vfil->vec4_value(tmp);
+		  vfil->vec4_हालागा(tmp);
 	          schedule_init_vector(vvp_net_ptr_t(net,0), tmp);
 	    }
       }
@@ -232,7 +232,7 @@ void compile_variable(char*label, char*name,
 }
 
 
-vvp_net_t* create_constant_node(const char*val_str)
+vvp_net_t* create_constant_बुहोल(const char*val_str)
 {
       if (c4string_test(val_str)) {
 	    vvp_net_t*net = new vvp_net_t;
@@ -319,16 +319,16 @@ class __compile_net_resolv : public base_net_resolv {
  * references into the net.
  */
 
-static void do_compile_net(vvp_net_t*node, vvp_array_t array,
+static void do_compile_net(vvp_net_t*बुहोल, vvp_array_t array,
 			   __vpiScope*scope,
 			   char*my_label, char*name,
 			   int msb, int lsb, unsigned array_addr,
 			   int vpi_type_code, bool signed_flag, bool local_flag)
 {
       unsigned wid = ((msb > lsb)? msb-lsb : lsb-msb) + 1;
-      assert(node);
+      assert(बुहोल);
 
-      vvp_wire_base*vsig = dynamic_cast<vvp_wire_base*>(node->fil);
+      vvp_wire_base*vsig = dynamic_cast<vvp_wire_base*>(बुहोल->fil);
 
       if (vsig == 0) {
 	    switch (vpi_type_code) {
@@ -343,25 +343,25 @@ static void do_compile_net(vvp_net_t*node, vvp_array_t array,
 		  break;
 	    }
 	    assert(vsig);
-	    node->fil = vsig;
+	    बुहोल->fil = vsig;
       }
 
       vpiHandle obj = 0;
       if (! local_flag) {
 	      /* Make the vpiHandle for the reg. */
-	    obj = vpip_make_net4(scope, name, msb, lsb, signed_flag, node);
+	    obj = vpip_make_net4(scope, name, msb, lsb, signed_flag, बुहोल);
 	      /* This attaches the label to the vpiHandle */
-	    compile_vpi_symbol(my_label, obj);
+	    compile_vpi_सिम्बोलो(my_label, obj);
       }
 #ifdef CHECK_WITH_VALGRIND
-      else pool_local_net(node);
+      else pool_local_net(बुहोल);
 #endif
 
 	// REMOVE ME! Giving the net a label is a legacy of the times
 	// when the .net was a functor of its own. In the long run, we
 	// must fix the code generator to not rely on the label of the
 	// .net, then we will remove that label.
-      define_functor_symbol(my_label, node);
+      define_functor_सिम्बोलो(my_label, बुहोल);
 
       if (array)
 	    array->attach_word(array_addr, obj);
@@ -384,19 +384,19 @@ static void __compile_net(char*label,
       free(array_label);
 
       assert(argc == 1);
-      vvp_net_t*node = vvp_net_lookup(argv[0].text);
+      vvp_net_t*बुहोल = vvp_net_lookup(argv[0].text);
 #if 1
-      if (node == 0) {
+      if (बुहोल == 0) {
 	      /* No existing net, but the string value may be a
 		 constant. In that case, we will wind up generating a
 		 bufz node that can carry the constant value.
 
 	         NOTE: This is a hack! The code generator should be
 	         fixed so that this is no longer needed. */
-	    node = create_constant_node(argv[0].text);
+	    बुहोल = create_constant_बुहोल(argv[0].text);
       }
 #endif
-      if (node == 0) {
+      if (बुहोल == 0) {
 	    __vpiScope*scope = vpip_peek_current_scope();
 	    __compile_net_resolv*res
 		  = new __compile_net_resolv(argv[0].text,
@@ -407,26 +407,26 @@ static void __compile_net(char*label,
 	    free(argv);
 	    return;
       }
-      assert(node);
+      assert(बुहोल);
 
       __vpiScope*scope = vpip_peek_current_scope();
-      do_compile_net(node, array, scope, label, name, msb, lsb, array_addr,
+      do_compile_net(बुहोल, array, scope, label, name, msb, lsb, array_addr,
 		     vpi_type_code, signed_flag, local_flag);
 
       free(argv[0].text);
       free(argv);
 }
 
-bool __compile_net_resolv::resolve(bool msg_flag)
+bool __compile_net_resolv::resolve(bool मेनसाहे_flag)
 {
-      vvp_net_t*node = vvp_net_lookup(label());
-      if (node == 0) {
-	    if (msg_flag)
+      vvp_net_t*बुहोल = vvp_net_lookup(label());
+      if (बुहोल == 0) {
+	    if (मेनसाहे_flag)
 		  cerr << "Unable to resolve label " << label() << endl;
 	    return false;
       }
 
-      do_compile_net(node, array_, scope_, my_label_, name_, msb_, lsb_, array_addr_, vpi_type_code_, signed_flag_, local_flag_);
+      do_compile_net(बुहोल, array_, scope_, my_label_, name_, msb_, lsb_, array_addr_, vpi_type_code_, signed_flag_, local_flag_);
       return true;
 }
 
@@ -466,32 +466,32 @@ class __compile_real_net_resolv : public base_net_resolv {
     private:
 };
 
-static void __compile_real_net2(vvp_net_t*node, vvp_array_t array,
+static void __compile_real_net2(vvp_net_t*बुहोल, vvp_array_t array,
 				__vpiScope*scope,
 				char*my_label, char*name,
 				unsigned array_addr, bool local_flag)
 {
-      vvp_wire_base*fil = dynamic_cast<vvp_wire_base*> (node->fil);
+      vvp_wire_base*fil = dynamic_cast<vvp_wire_base*> (बुहोल->fil);
 
       if (fil == 0) {
 	    fil = new vvp_wire_real;
-	    node->fil = fil;
+	    बुहोल->fil = fil;
       }
 
       vpiHandle obj = 0;
       if (!local_flag) {
-	    obj = vpip_make_real_net(scope, name, node);
-	    compile_vpi_symbol(my_label, obj);
+	    obj = vpip_make_real_net(scope, name, बुहोल);
+	    compile_vpi_सिम्बोलो(my_label, obj);
       }
 #ifdef CHECK_WITH_VALGRIND
-      else pool_local_net(node);
+      else pool_local_net(बुहोल);
 #endif
 
 	// REMOVE ME! Giving the net a label is a legacy of the times
 	// when the .net was a functor of its own. In the long run, we
 	// must fix the code generator to not rely on the label of the
 	// .net, then we will remove that label.
-      define_functor_symbol(my_label, node);
+      define_functor_सिम्बोलो(my_label, बुहोल);
 
      if (array)
 	    array->attach_word(array_addr, obj);
@@ -514,15 +514,15 @@ static void __compile_real(char*label, char*name,
       free(array_label);
 
       assert(argc == 1);
-      vvp_net_t*node = vvp_net_lookup(argv[0].text);
-      if (node == 0) {
+      vvp_net_t*बुहोल = vvp_net_lookup(argv[0].text);
+      if (बुहोल == 0) {
 	      /* No existing net, but the string value may be a
 		 constant. In that case, we will wind up generating a
 		 bufz node that can carry the constant value. */
-	    node = create_constant_node(argv[0].text);
+	    बुहोल = create_constant_बुहोल(argv[0].text);
       }
       __vpiScope*scope = vpip_peek_current_scope();
-      if (node == 0) {
+      if (बुहोल == 0) {
 	    __compile_real_net_resolv*res
 		  = new __compile_real_net_resolv(argv[0].text, array,
 						  scope, label, name,
@@ -532,23 +532,23 @@ static void __compile_real(char*label, char*name,
 	    return;
       }
 
-      assert(node);
-      __compile_real_net2(node, array, scope, label, name, array_addr,
+      assert(बुहोल);
+      __compile_real_net2(बुहोल, array, scope, label, name, array_addr,
                           local_flag);
       free(argv[0].text);
       free(argv);
 }
 
-bool __compile_real_net_resolv::resolve(bool msg_flag)
+bool __compile_real_net_resolv::resolve(bool मेनसाहे_flag)
 {
-      vvp_net_t*node = vvp_net_lookup(label());
-      if (node == 0) {
-	    if (msg_flag)
+      vvp_net_t*बुहोल = vvp_net_lookup(label());
+      if (बुहोल == 0) {
+	    if (मेनसाहे_flag)
 		  cerr << "Unable to resolve label " << label() << endl;
 	    return false;
       }
 
-      __compile_real_net2(node, array_, scope_, my_label_, name_, array_addr_, local_flag_);
+      __compile_real_net2(बुहोल, array_, scope_, my_label_, name_, array_addr_, local_flag_);
       return true;
 }
 

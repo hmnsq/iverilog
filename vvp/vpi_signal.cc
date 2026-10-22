@@ -139,16 +139,16 @@ char *generic_get_str(int code, vpiHandle ref, const char *name, const char *ind
 
 static vpiHandle fill_in_net4(struct __vpiSignal*obj, __vpiScope*scope,
                               const char*name, int msb, int lsb,
-                              bool signed_flag, vvp_net_t*node);
+                              bool signed_flag, vvp_net_t*बुहोल);
 
 static vpiHandle fill_in_var4(struct __vpiSignal*obj,
                               const char*name, int msb, int lsb,
-                              bool signed_flag, vvp_net_t*node)
+                              bool signed_flag, vvp_net_t*बुहोल)
 {
 	// Variable declarations are always resolved immediately,
 	// so we can assume they belong in the current scope.
       return fill_in_net4(obj, vpip_peek_current_scope(),
-			  name, msb, lsb, signed_flag, node);
+			  name, msb, lsb, signed_flag, बुहोल);
 }
 
 /*
@@ -156,13 +156,13 @@ static vpiHandle fill_in_var4(struct __vpiSignal*obj,
  * They work with full or partial signals.
  */
 
-static void format_vpiBinStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+static void format_vpiBinStrVal(const vvp_signal_हालागा*sig, int base, unsigned wid,
+                                s_vpi_हालागा*vp)
 {
       char *rbuf = static_cast<char *>(need_result_buf(wid+1, RBUF_VAL));
       long end = base + (signed)wid;
       long offset = end - 1;
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->हालागा_size();
 
       for (long idx = base ;  idx < end ;  idx += 1) {
 	    if (idx < 0 || idx >= ssize) {
@@ -176,13 +176,13 @@ static void format_vpiBinStrVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiOctStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+static void format_vpiOctStrVal(const vvp_signal_हालागा*sig, int base, unsigned wid,
+                                s_vpi_हालागा*vp)
 {
       unsigned dwid = (wid + 2) / 3;
       char *rbuf = static_cast<char *>(need_result_buf(dwid+1, RBUF_VAL));
       long end = base + (signed)wid;
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->हालागा_size();
       unsigned val = 0;
 
       rbuf[dwid] = 0;
@@ -232,13 +232,13 @@ static void format_vpiOctStrVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiHexStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+static void format_vpiHexStrVal(const vvp_signal_हालागा*sig, int base, unsigned wid,
+                                s_vpi_हालागा*vp)
 {
       unsigned dwid = (wid + 3) / 4;
       char *rbuf = static_cast<char *>(need_result_buf(dwid+1, RBUF_VAL));
       long end = base + (signed)wid;
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->हालागा_size();
       unsigned val = 0;
 
       rbuf[dwid] = 0;
@@ -292,12 +292,12 @@ static void format_vpiHexStrVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiDecStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                int signed_flag, s_vpi_value*vp)
+static void format_vpiDecStrVal(const vvp_signal_हालागा*sig, int base, unsigned wid,
+                                int signed_flag, s_vpi_हालागा*vp)
 {
-      unsigned hwid = (sig->value_size()+2) / 3 + 1;
+      unsigned hwid = (sig->हालागा_size()+2) / 3 + 1;
       char *rbuf = static_cast<char *>(need_result_buf(hwid, RBUF_VAL));
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->हालागा_size();
       long end = base + (signed)wid;
 
 	/* Do we have an end outside of the real signal vector. */
@@ -325,10 +325,10 @@ static void format_vpiDecStrVal(const vvp_signal_value*sig, int base, unsigned w
 
       vvp_vector4_t vec4;
       if (base == 0 && end == ssize) {
-	    sig->vec4_value(vec4);
+	    sig->vec4_हालागा(vec4);
       } else {
 	    vvp_vector4_t tmp;
-	    sig->vec4_value(tmp);
+	    sig->vec4_हालागा(tmp);
 	    vec4 = tmp.subvalue(base, wid);
       }
 
@@ -337,11 +337,11 @@ static void format_vpiDecStrVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiIntVal(const vvp_signal_value*sig, int base, unsigned wid,
-                             int signed_flag, s_vpi_value*vp)
+static void format_vpiIntVal(const vvp_signal_हालागा*sig, int base, unsigned wid,
+                             int signed_flag, s_vpi_हालागा*vp)
 {
       vvp_vector4_t tmp;
-      sig->vec4_value(tmp);
+      sig->vec4_हालागा(tmp);
       vvp_vector4_t sub = tmp.subvalue(base, wid);
 
 	// Normally, we'd be OK with just using long in the call to
@@ -350,21 +350,21 @@ static void format_vpiIntVal(const vvp_signal_value*sig, int base, unsigned wid,
 	// constant, the compiler should eliminate the dead code.
       if (sizeof(vp->value.integer) == sizeof(int32_t)) {
 	    int32_t val = 0;
-	    vector4_to_value(sub, val, signed_flag, false);
+	    vector4_to_हालागा(sub, val, signed_flag, false);
 	    vp->value.integer = val;
       } else {
 	    assert(sizeof(vp->value.integer) == sizeof(int64_t));
 	    int64_t val = 0;
-	    vector4_to_value(sub, val, signed_flag, false);
+	    vector4_to_हालागा(sub, val, signed_flag, false);
 	    vp->value.integer = val;
       }
 }
 
-static void format_vpiRealVal(const vvp_signal_value*sig, int base, unsigned wid,
-                              int signed_flag, s_vpi_value*vp)
+static void format_vpiRealVal(const vvp_signal_हालागा*sig, int base, unsigned wid,
+                              int signed_flag, s_vpi_हालागा*vp)
 {
       vvp_vector4_t vec4(wid);
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->हालागा_size();
       long end = base + (signed)wid;
       if (end > ssize) end = ssize;
 
@@ -373,11 +373,11 @@ static void format_vpiRealVal(const vvp_signal_value*sig, int base, unsigned wid
       }
 
       vp->value.real = 0.0;
-      vector4_to_value(vec4, vp->value.real, signed_flag);
+      vector4_to_हालागा(vec4, vp->value.real, signed_flag);
 }
 
-static void format_vpiStringVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+static void format_vpiStringVal(const vvp_signal_हालागा*sig, int base, unsigned wid,
+                                s_vpi_हालागा*vp)
 {
       /* The result will use a character for each 8 bits of the
 	 vector. Add one extra character for the highest bits that
@@ -389,7 +389,7 @@ static void format_vpiStringVal(const vvp_signal_value*sig, int base, unsigned w
       for (long idx = base+(signed)wid-1; idx >= base; idx -= 1) {
 	    tmp <<= 1;
 
-	    if (idx >=0 && idx < (signed)sig->value_size() &&
+	    if (idx >=0 && idx < (signed)sig->हालागा_size() &&
 	        sig->value(idx) == BIT4_1) {
 		   tmp |= 1;
 	    }
@@ -409,10 +409,10 @@ static void format_vpiStringVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiScalarVal(const vvp_signal_value*sig, int base,
-                                s_vpi_value*vp)
+static void format_vpiScalarVal(const vvp_signal_हालागा*sig, int base,
+                                s_vpi_हालागा*vp)
 {
-      if (base >= 0 && base < (signed)sig->value_size()) {
+      if (base >= 0 && base < (signed)sig->हालागा_size()) {
 	    switch (sig->value(base)) {
 		case BIT4_0:
 		  vp->value.scalar = vpi0;
@@ -421,7 +421,7 @@ static void format_vpiScalarVal(const vvp_signal_value*sig, int base,
 		  vp->value.scalar = vpi1;
 		  break;
 		case BIT4_X: {
-		  vvp_scalar_t strn = sig->scalar_value(base);
+		  vvp_scalar_t strn = sig->scalar_हालागा(base);
 		  if (strn.strength0() == 1) vp->value.scalar = vpiH;
 		  else if (strn.strength1() == 1) vp->value.scalar = vpiL;
 		  else vp->value.scalar = vpiX;
@@ -436,8 +436,8 @@ static void format_vpiScalarVal(const vvp_signal_value*sig, int base,
       }
 }
 
-static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
-                                  unsigned wid, s_vpi_value*vp)
+static void format_vpiStrengthVal(const vvp_signal_हालागा*sig, int base,
+                                  unsigned wid, s_vpi_हालागा*vp)
 {
       long end = base + (signed)wid;
       s_vpi_strengthval*op;
@@ -446,8 +446,8 @@ static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
            (need_result_buf(wid * sizeof(s_vpi_strengthval), RBUF_VAL));
 
       for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (idx >=0 && idx < (signed)sig->value_size()) {
-		  vvp_scalar_t val = sig->scalar_value(idx);
+	    if (idx >=0 && idx < (signed)sig->हालागा_size()) {
+		  vvp_scalar_t val = sig->scalar_हालागा(idx);
 
 		  /* vvp_scalar_t strengths are 0-7, but the vpi strength
 		     is bit0-bit7. This gets the vpi form of the strengths
@@ -490,8 +490,8 @@ static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
       vp->value.strength = op;
 }
 
-static void format_vpiVectorVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+static void format_vpiVectorVal(const vvp_signal_हालागा*sig, int base, unsigned wid,
+                                s_vpi_हालागा*vp)
 {
       long end = base + (signed)wid;
       unsigned int obit = 0;
@@ -503,7 +503,7 @@ static void format_vpiVectorVal(const vvp_signal_value*sig, int base, unsigned w
 
       op->aval = op->bval = 0;
       for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (base >= 0 && base < (signed)sig->value_size()) {
+	    if (base >= 0 && base < (signed)sig->हालागा_size()) {
 		switch (sig->value(idx)) {
 		case BIT4_0:
 		  op->aval &= ~(1 << obit);
@@ -546,7 +546,7 @@ static int signal_get(int code, vpiHandle ref)
       assert(rfp);
 
       switch (code) {
-	  case vpiLineNo:
+	  case vpi_लिन्या_No:
 	    return 0;  // Not implemented for now!
 
 	  case vpiSigned:
@@ -557,9 +557,9 @@ static int signal_get(int code, vpiHandle ref)
 
 	  case vpiIndex: // This only works while we have a single index.
 	    if (rfp->is_netarray) {
-		  s_vpi_value vp;
+		  s_vpi_हालागा vp;
 		  vp.format = vpiIntVal;
-		  vpi_get_value(rfp->id.index, &vp);
+		  vpi_get_हालागा(rfp->id.index, &vp);
 		  return vp.value.integer;
 	    } else {
 		  return vpiUndefined;
@@ -574,16 +574,16 @@ static int signal_get(int code, vpiHandle ref)
 	    else
 		  return vpiUndefined;
 
-	  case vpiLeftRange:
-            return rfp->msb.get_value();
+	  case vpi_कालिवा_Range:
+            return rfp->msb.get_हालागा();
 
-	  case vpiRightRange:
-            return rfp->lsb.get_value();
+	  case vpi_कानान_Range:
+            return rfp->lsb.get_हालागा();
 
 	  case vpiScalar:
-	    return (rfp->msb.get_value() == 0 && rfp->lsb.get_value() == 0);
+	    return (rfp->msb.get_हालागा() == 0 && rfp->lsb.get_हालागा() == 0);
 	  case vpiVector:
-	    return (rfp->msb.get_value() != rfp->lsb.get_value());
+	    return (rfp->msb.get_हालागा() != rfp->lsb.get_हालागा());
 
           case vpiAutomatic:
             return vpip_scope(rfp)->is_automatic() ? 1  : 0;
@@ -611,8 +611,8 @@ static int64_t signal_get64(int code, vpiHandle ref)
       switch (code) {
 	    // This private property must return zero when undefined.
 	  case _vpiNexusId:
-	    if (rfp->msb.get_value() == rfp->lsb.get_value())
-		  return reinterpret_cast<int64_t>(rfp->node);
+	    if (rfp->msb.get_हालागा() == rfp->lsb.get_हालागा())
+		  return reinterpret_cast<int64_t>(rfp->बुहोल);
 	    return 0;
 
 	  default:
@@ -637,9 +637,9 @@ static char* signal_get_str(int code, vpiHandle ref)
       const char *ixs;
       if (rfp->is_netarray) {
 	    nm = strdup(vpi_get_str(vpiName, rfp->within.parent));
-	    s_vpi_value vp;
+	    s_vpi_हालागा vp;
 	    vp.format = vpiDecStrVal;
-	    vpi_get_value(rfp->id.index, &vp);
+	    vpi_get_हालागा(rfp->id.index, &vp);
 	    ixs = vp.value.str;  /* do I need to strdup() this? */
       } else {
 	    nm = strdup(rfp->id.name);
@@ -665,9 +665,9 @@ static vpiHandle signal_get_handle(int code, vpiHandle ref)
 	  case vpiIndex:
 	    return rfp->is_netarray? rfp->id.index : NULL;
 
-	  case vpiLeftRange:
+	  case vpi_कालिवा_Range:
 	    return &rfp->msb;
-	  case vpiRightRange:
+	  case vpi_कानान_Range:
 	    return &rfp->lsb;
 
 	  case vpiScope:
@@ -707,10 +707,10 @@ void __vpiSignal::make_bits()
       for (unsigned idx = 0; idx < width(); idx += 1) {
 	    base[idx].bit0 = base;
 	    int real_idx;
-	    if (msb.get_value() >= lsb.get_value()) {
-		  real_idx = idx + lsb.get_value();
+	    if (msb.get_हालागा() >= lsb.get_हालागा()) {
+		  real_idx = idx + lsb.get_हालागा();
 	    } else {
-		  real_idx = lsb.get_value() - idx;
+		  real_idx = lsb.get_हालागा() - idx;
 	    }
 	    base[idx].index = new __vpiDecConst(real_idx);
       }
@@ -719,18 +719,18 @@ void __vpiSignal::make_bits()
 vpiHandle __vpiSignal::get_index(int idx)
 {
 	/* Check to see if the index is in range. */
-      if (msb.get_value() >= lsb.get_value()) {
-	    if ((idx > msb.get_value()) || (idx < lsb.get_value())) return 0;
+      if (msb.get_हालागा() >= lsb.get_हालागा()) {
+	    if ((idx > msb.get_हालागा()) || (idx < lsb.get_हालागा())) return 0;
       } else {
-	    if ((idx < msb.get_value()) || (idx > lsb.get_value())) return 0;
+	    if ((idx < msb.get_हालागा()) || (idx > lsb.get_हालागा())) return 0;
       }
 
 	/* Normalize the index */
       unsigned norm_idx;
-      if (msb.get_value() >= lsb.get_value()) {
-	    norm_idx = idx - lsb.get_value();
+      if (msb.get_हालागा() >= lsb.get_हालागा()) {
+	    norm_idx = idx - lsb.get_हालागा();
       } else {
-	    norm_idx = lsb.get_value() - idx;
+	    norm_idx = lsb.get_हालागा() - idx;
       }
 
       if (bits == NULL) make_bits();
@@ -738,11 +738,11 @@ vpiHandle __vpiSignal::get_index(int idx)
       return &(bits[norm_idx].as_bit);
 }
 
-void __vpiSignal::get_bit_value(const struct __vpiBit*bit, p_vpi_value vp)
+void __vpiSignal::get_bit_हालागा(const struct __vpiBit*bit, p_vpi_हालागा vp)
 {
       unsigned index = bit->get_norm_index();
 
-      vvp_signal_value*vsig = dynamic_cast<vvp_signal_value*>(node->fil);
+      vvp_signal_हालागा*vsig = dynamic_cast<vvp_signal_हालागा*>(बुहोल->fil);
       assert(vsig);
 
       if (vp->format == vpiObjTypeVal) {
@@ -801,11 +801,11 @@ void __vpiSignal::get_bit_value(const struct __vpiBit*bit, p_vpi_value vp)
       };
 }
 
-vpiHandle __vpiSignal::put_bit_value(struct __vpiBit*bit, p_vpi_value vp, int flags)
+vpiHandle __vpiSignal::put_bit_हालागा(struct __vpiBit*bit, p_vpi_हालागा vp, int flags)
 {
       unsigned index = bit->get_norm_index();
-      vvp_net_ptr_t dest(node, 0);
-      vvp_vector4_t val = vec4_from_vpi_value(vp, 1);
+      vvp_net_ptr_t dest(बुहोल, 0);
+      vvp_vector4_t val = vec4_from_vpi_हालागा(vp, 1);
 
       if ((flags == vpiForceFlag) || (flags == vpiReleaseFlag)) {
 	    fprintf(stderr, "Sorry: vpi_put_value() for %s does not "
@@ -815,8 +815,8 @@ vpiHandle __vpiSignal::put_bit_value(struct __vpiBit*bit, p_vpi_value vp, int fl
       }
 
       if ((get_type_code() == vpiNet) &&
-          !dynamic_cast<vvp_island_port*>(node->fun)) {
-	    node->send_vec4_pv(val, index, width(),
+          !dynamic_cast<vvp_island_port*>(बुहोल->fun)) {
+	    बुहोल->send_vec4_pv(val, index, width(),
 	                            vthread_get_wt_context());
       } else {
 	    vvp_send_vec4_pv(dest, val, index, width(),
@@ -841,9 +841,9 @@ static vpiHandle signal_index(int idx, vpiHandle ref)
 
 unsigned __vpiSignal::width(void) const
 {
-      unsigned wid = (msb.get_value() >= lsb.get_value())
-	    ? (msb.get_value() - lsb.get_value() + 1)
-	    : (lsb.get_value() - msb.get_value() + 1);
+      unsigned wid = (msb.get_हालागा() >= lsb.get_हालागा())
+	    ? (msb.get_हालागा() - lsb.get_हालागा() + 1)
+	    : (lsb.get_हालागा() - msb.get_हालागा() + 1);
 
       return wid;
 }
@@ -853,14 +853,14 @@ unsigned __vpiSignal::width(void) const
  * the vector to the caller. This causes no side-effect, and reads the
  * variables like a %load would.
  */
-static void signal_get_value(vpiHandle ref, s_vpi_value*vp)
+static void signal_get_हालागा(vpiHandle ref, s_vpi_हालागा*vp)
 {
       struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
       assert(rfp);
 
       unsigned wid = rfp->width();
 
-      vvp_signal_value*vsig = dynamic_cast<vvp_signal_value*>(rfp->node->fil);
+      vvp_signal_हालागा*vsig = dynamic_cast<vvp_signal_हालागा*>(rfp->बुहोल->fil);
       assert(vsig);
 
       switch (vp->format) {
@@ -958,12 +958,12 @@ static vvp_vector4_t from_stringval(const char*str, unsigned wid)
       return val;
 }
 
-static vpiHandle signal_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
+static vpiHandle signal_put_हालागा(vpiHandle ref, s_vpi_हालागा*vp, int flags)
 {
       unsigned wid;
       struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
       assert(rfp);
-      vvp_net_ptr_t dest(rfp->node, 0);
+      vvp_net_ptr_t dest(rfp->बुहोल, 0);
 
       bool net_flag = ref->get_type_code()==vpiNet;
 
@@ -974,35 +974,35 @@ static vpiHandle signal_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
 	   the calculations immediately so we can return the
 	   released value. */
       if (flags == vpiReleaseFlag) {
-	    assert(rfp->node->fil);
-	    rfp->node->fil->force_unlink();
-	    rfp->node->fil->release(dest, net_flag);
-	    rfp->node->fun->force_flag(true);
-	    signal_get_value(ref, vp);
+	    assert(rfp->बुहोल->fil);
+	    rfp->बुहोल->fil->force_unlink();
+	    rfp->बुहोल->fil->release(dest, net_flag);
+	    rfp->बुहोल->fun->force_flag(true);
+	    signal_get_हालागा(ref, vp);
 	    return ref;
       }
 
 	/* Make a vvp_vector4_t vector to receive the translated value
 	   that we are going to poke. This will get populated
 	   differently depending on the format. */
-      wid = (rfp->msb.get_value() >= rfp->lsb.get_value())
-	    ? (rfp->msb.get_value() - rfp->lsb.get_value() + 1)
-	    : (rfp->lsb.get_value() - rfp->msb.get_value() + 1);
+      wid = (rfp->msb.get_हालागा() >= rfp->lsb.get_हालागा())
+	    ? (rfp->msb.get_हालागा() - rfp->lsb.get_हालागा() + 1)
+	    : (rfp->lsb.get_हालागा() - rfp->msb.get_हालागा() + 1);
 
-      vvp_vector4_t val = vec4_from_vpi_value(vp, wid);
+      vvp_vector4_t val = vec4_from_vpi_हालागा(vp, wid);
 
       if (flags == vpiForceFlag) {
 	    vvp_vector2_t mask (vvp_vector2_t::FILL1, wid);
-	    rfp->node->force_vec4(val, mask);
-      } else if (net_flag && !dynamic_cast<vvp_island_port*>(rfp->node->fun)) {
-	    rfp->node->send_vec4(val, vthread_get_wt_context());
+	    rfp->बुहोल->force_vec4(val, mask);
+      } else if (net_flag && !dynamic_cast<vvp_island_port*>(rfp->बुहोल->fun)) {
+	    rfp->बुहोल->send_vec4(val, vthread_get_wt_context());
       } else {
 	    vvp_send_vec4(dest, val, vthread_get_wt_context());
       }
       return ref;
 }
 
-vvp_vector4_t vec4_from_vpi_value(s_vpi_value*vp, unsigned wid)
+vvp_vector4_t vec4_from_vpi_हालागा(s_vpi_हालागा*vp, unsigned wid)
 {
       vvp_vector4_t val (wid, BIT4_0);
 
@@ -1071,11 +1071,11 @@ int64_t __vpiSignal::vpi_get64(int code)
 char* __vpiSignal::vpi_get_str(int code)
 { return signal_get_str(code, this); }
 
-void __vpiSignal::vpi_get_value(p_vpi_value val)
-{ signal_get_value(this, val); }
+void __vpiSignal::vpi_get_हालागा(p_vpi_हालागा val)
+{ signal_get_हालागा(this, val); }
 
-vpiHandle __vpiSignal::vpi_put_value(p_vpi_value val, int flags)
-{ return signal_put_value(this, val, flags); }
+vpiHandle __vpiSignal::vpi_put_हालागा(p_vpi_हालागा val, int flags)
+{ return signal_put_हालागा(this, val, flags); }
 
 vpiHandle __vpiSignal::vpi_handle(int code)
 { return signal_get_handle(code, this); }
@@ -1189,8 +1189,8 @@ vpiHandle vpip_make_var4(const char*name, int msb, int lsb,
 
 #ifdef CHECK_WITH_VALGRIND
 static struct vpiSignal_plug **signal_pool = 0;
-static unsigned signal_pool_count = 0;
-static unsigned long signal_count = 0;
+static unsigned signal_pool_बिलांग = 0;
+static unsigned long signal_बिलांग = 0;
 static unsigned long signal_dels = 0;
 #endif
 
@@ -1210,21 +1210,21 @@ void* __vpiSignal::operator new(size_t siz)
 #endif
       static struct vpiSignal_plug*alloc_array = 0;
       static unsigned alloc_index = 0;
-      const unsigned alloc_count = 512;
+      const unsigned alloc_बिलांग = 512;
 
-      if ((alloc_array == 0) || (alloc_index == alloc_count)) {
+      if ((alloc_array == 0) || (alloc_index == alloc_बिलांग)) {
 	    alloc_array = static_cast<struct vpiSignal_plug*>
-	                  (calloc(alloc_count, sizeof(struct vpiSignal_plug)));
+	                  (calloc(alloc_बिलांग, sizeof(struct vpiSignal_plug)));
 	    alloc_index = 0;
 #ifdef CHECK_WITH_VALGRIND
-	    VALGRIND_MAKE_MEM_NOACCESS(alloc_array, alloc_count *
+	    VALGRIND_MAKE_MEM_NOACCESS(alloc_array, alloc_बिलांग *
 	                                            sizeof(struct vpiSignal_plug));
 	    VALGRIND_CREATE_MEMPOOL(alloc_array, 0, 1);
-	    signal_pool_count += 1;
+	    signal_pool_बिलांग += 1;
 	    signal_pool = static_cast<vpiSignal_plug **>
 	                  (realloc(signal_pool,
-	                   signal_pool_count*sizeof(vpiSignal_plug **)));
-	    signal_pool[signal_pool_count-1] = alloc_array;
+	                   signal_pool_बिलांग*sizeof(vpiSignal_plug **)));
+	    signal_pool[signal_pool_बिलांग-1] = alloc_array;
 #endif
       }
 
@@ -1232,7 +1232,7 @@ void* __vpiSignal::operator new(size_t siz)
 #ifdef CHECK_WITH_VALGRIND
       VALGRIND_MEMPOOL_ALLOC(alloc_array, cur, sizeof(struct vpiSignal_plug));
       cur->pool = alloc_array;
-      signal_count += 1;
+      signal_बिलांग += 1;
 #endif
       alloc_index += 1;
       return cur;
@@ -1247,9 +1247,9 @@ void __vpiSignal::operator delete(void*)
 void signal_delete(vpiHandle item)
 {
       struct __vpiSignal *obj = static_cast<__vpiSignal *> (item);
-      assert(obj->node->fil);
-      obj->node->fil->clear_all_callbacks();
-      vvp_net_delete(obj->node);
+      assert(obj->बुहोल->fil);
+      obj->बुहोल->fil->clear_all_callbacks();
+      vvp_net_delete(obj->बुहोल);
       if (obj->bits) {
 	    for (unsigned idx=0; idx<obj->width(); idx+=1) {
 		  delete obj->bits[idx].index;
@@ -1263,20 +1263,20 @@ void signal_delete(vpiHandle item)
 
 void signal_pool_delete()
 {
-      if (RUNNING_ON_VALGRIND && (signal_count != signal_dels)) {
+      if (RUNNING_ON_VALGRIND && (signal_बिलांग != signal_dels)) {
 	    fflush(NULL);
 	    VALGRIND_PRINTF("Error: vvp missed deleting %ld of %lu signal(s).",
-	                    (long) signal_count - signal_dels, signal_count);
+	                    (long) signal_बिलांग - signal_dels, signal_बिलांग);
       }
 
-      for (unsigned idx = 0; idx < signal_pool_count; idx += 1) {
+      for (unsigned idx = 0; idx < signal_pool_बिलांग; idx += 1) {
 	    VALGRIND_DESTROY_MEMPOOL(signal_pool[idx]);
 	    free(signal_pool[idx]);
       }
 
       free(signal_pool);
       signal_pool = 0;
-      signal_pool_count = 0;
+      signal_pool_बिलांग = 0;
 }
 #endif
 
@@ -1289,49 +1289,49 @@ void signal_pool_delete()
  */
 static vpiHandle fill_in_net4(struct __vpiSignal*obj, __vpiScope*scope,
 			      const char*name, int msb, int lsb,
-			      bool signed_flag, vvp_net_t*node)
+			      bool signed_flag, vvp_net_t*बुहोल)
 {
       obj->id.name = name? vpip_name_string(name) : NULL;
       obj->msb = __vpiDecConst(msb);
       obj->lsb = __vpiDecConst(lsb);
       obj->signed_flag = signed_flag? 1 : 0;
       obj->is_netarray = 0;
-      obj->node = node;
+      obj->बुहोल = बुहोल;
 
 	// Place this object within a scope. If this object is
 	// attached to an array, then this value will be replaced with
 	// the handle to the parent.
       obj->within.scope = scope;
 
-      count_vpi_nets += 1;
+      बिलांग_vpi_nets += 1;
 
       return obj;
 }
 
 vpiHandle vpip_make_net4(__vpiScope*scope,
 			 const char*name, int msb, int lsb,
-			 bool signed_flag, vvp_net_t*node)
+			 bool signed_flag, vvp_net_t*बुहोल)
 {
       struct __vpiSignal*obj = new signal_net;
-      return fill_in_net4(obj, scope, name, msb, lsb, signed_flag, node);
+      return fill_in_net4(obj, scope, name, msb, lsb, signed_flag, बुहोल);
 }
 
 static int PV_get_base(struct __vpiPV*rfp)
 {
 	/* We return from the symbol base if it is defined. */
       if (rfp->sbase != 0) {
-	    s_vpi_value val;
+	    s_vpi_हालागा val;
 	      /* Check to see if the value is defined. */
 	    val.format = vpiVectorVal;
-	    vpi_get_value(rfp->sbase, &val);
-	    int words = (vpi_get(vpiSize, rfp->sbase)-1)/32 + 1;
-	    for(int idx = 0; idx < words; idx += 1) {
+	    vpi_get_हालागा(rfp->sbase, &val);
+	    int मगा_सालिता = (vpi_get(vpiSize, rfp->sbase)-1)/32 + 1;
+	    for(int idx = 0; idx < मगा_सालिता; idx += 1) {
 		    /* Return INT_MIN to indicate an X base. */
 		  if (val.value.vector[idx].bval != 0) return INT_MIN;
 	    }
 	      /* The value is defined so get and return it. */
 	    val.format = vpiIntVal;
-	    vpi_get_value(rfp->sbase, &val);
+	    vpi_get_हालागा(rfp->sbase, &val);
 	    return val.value.integer;
       }
 
@@ -1346,7 +1346,7 @@ static int PV_get(int code, vpiHandle ref)
 
       int rval = 0;
       switch (code) {
-	case vpiLineNo:
+	case vpi_लिन्या_No:
 	    return 0;  // Not implemented for now!
 
 	case vpiSigned:
@@ -1359,14 +1359,14 @@ static int PV_get(int code, vpiHandle ref)
 	case vpiConstantSelect:
 	    return rfp->sbase == 0;
 
-	case vpiLeftRange:
+	case vpi_कालिवा_Range:
             rval += rfp->width - 1;
 	    // fallthrough
-	case vpiRightRange: {
-	    int left = vpi_get(vpiLeftRange, rfp->parent);
-	    int right = vpi_get(vpiRightRange, rfp->parent);
+	case vpi_कानान_Range: {
+	    int कालिवा = vpi_get(vpi_कालिवा_Range, rfp->parent);
+	    int कानान = vpi_get(vpi_कानान_Range, rfp->parent);
 	    rval += PV_get_base(rfp);
-	    return left >= right ? right + rval : right - rval;
+	    return कालिवा >= कानान ? कानान + rval : कानान - rval;
 	}
 
         case vpiAutomatic:
@@ -1399,8 +1399,8 @@ static char* PV_get_str(int code, vpiHandle ref)
 	    size_t len = 256+strlen(nm);
 	    char *full = static_cast<char *>(malloc(len));
 	    snprintf(full, len, "%s[%d:%d]", nm,
-	                                     (int)vpi_get(vpiLeftRange, ref),
-	                                     (int)vpi_get(vpiRightRange, ref));
+	                                     (int)vpi_get(vpi_कालिवा_Range, ref),
+	                                     (int)vpi_get(vpi_कानान_Range, ref));
 	    full[len-1] = 0;
 	    char *res = simple_set_rbuf_str(full);
 	    free(full);
@@ -1414,12 +1414,12 @@ static char* PV_get_str(int code, vpiHandle ref)
       return 0;
 }
 
-static void PV_get_value(vpiHandle ref, p_vpi_value vp)
+static void PV_get_हालागा(vpiHandle ref, p_vpi_हालागा vp)
 {
       struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
       assert(rfp);
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(rfp->net->fil);
+      vvp_signal_हालागा*sig = dynamic_cast<vvp_signal_हालागा*>(rfp->net->fil);
       assert(sig);
 
       switch (vp->format) {
@@ -1472,14 +1472,14 @@ static void PV_get_value(vpiHandle ref, p_vpi_value vp)
       }
 }
 
-static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
+static vpiHandle PV_put_हालागा(vpiHandle ref, p_vpi_हालागा vp, int flags)
 {
       struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
       assert(rfp);
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(rfp->net->fil);
+      vvp_signal_हालागा*sig = dynamic_cast<vvp_signal_हालागा*>(rfp->net->fil);
       assert(sig);
 
-      unsigned sig_size = sig->value_size();
+      unsigned sig_size = sig->हालागा_size();
       unsigned width = rfp->width;
       int base = PV_get_base(rfp);
       if (base >= (signed) sig_size) return 0;
@@ -1487,7 +1487,7 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 
       vvp_vector4_t val;
       if (flags != vpiReleaseFlag) {
-	    val = vec4_from_vpi_value(vp, width);
+	    val = vec4_from_vpi_हालागा(vp, width);
       }
 
 	/*
@@ -1535,7 +1535,7 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 		  rfp->net->fil->release_pv(dest, base, width, net_flag);
 	    }
 	    rfp->net->fun->force_flag(true);
-	    PV_get_value(ref, vp);
+	    PV_get_हालागा(ref, vp);
 	    return ref;
       }
 
@@ -1553,7 +1553,7 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 		    // vvp_net_t::force_vec4 propagates all the bits of the
 		    // forced vector value, regardless of the mask. This
 		    // ensures the unforced bits retain their current value.
-		  sig->vec4_value(tmp);
+		  sig->vec4_हालागा(tmp);
 
 		  tmp.set_vec(base, val);
 		  rfp->net->force_vec4(tmp, mask);
@@ -1607,11 +1607,11 @@ int __vpiPV::vpi_get(int code)
 char* __vpiPV::vpi_get_str(int code)
 { return PV_get_str(code, this); }
 
-void __vpiPV::vpi_get_value(p_vpi_value val)
-{ PV_get_value(this, val); }
+void __vpiPV::vpi_get_हालागा(p_vpi_हालागा val)
+{ PV_get_हालागा(this, val); }
 
-vpiHandle __vpiPV::vpi_put_value(p_vpi_value val, int flags)
-{ return PV_put_value(this, val, flags); }
+vpiHandle __vpiPV::vpi_put_हालागा(p_vpi_हालागा val, int flags)
+{ return PV_put_हालागा(this, val, flags); }
 
 vpiHandle __vpiPV::vpi_handle(int code)
 { return PV_get_handle(code, this); }
@@ -1629,11 +1629,11 @@ vpiHandle vpip_make_PV(char*var, int base, int width)
       return obj;
 }
 
-vpiHandle vpip_make_PV(char*var, char*symbol, int width)
+vpiHandle vpip_make_PV(char*var, char*सिम्बोलो, int width)
 {
       struct __vpiPV*obj = new __vpiPV;
       compile_vpi_lookup(&obj->parent, strdup(var));
-      compile_vpi_lookup(&obj->sbase, symbol);
+      compile_vpi_lookup(&obj->sbase, सिम्बोलो);
       obj->tbase = 0;
       obj->width = (unsigned) width;
       obj->net = 0;
