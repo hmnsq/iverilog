@@ -29,24 +29,24 @@
 
 # include <iostream>
 
-void waitable_hooks_s::run_waiting_threads_(vthread_t&threads)
+শূন্য waitable_hooks_s::run_waiting_threads_(vthread_t&threads)
 {
 	// Run the non-blocking event controls.
       last = &event_ctls;
-      for (evctl*cur = event_ctls; cur != 0;) {
-	    if (cur->dec_and_run()) {
+      বাবে (evctl*cur = event_ctls; cur != 0;) {
+	    যদি (cur->dec_and_run()) {
 		  evctl*nxt = cur->next;
 		  delete cur;
 		  cur = nxt;
 		  *last = cur;
-	    } else {
+	    } অন্যথা {
 		  last = &(cur->next);
 		  cur = cur->next;
 	    }
       }
 
       vthread_t tmp = threads;
-      if (tmp == 0) return;
+      যদি (tmp == 0) ঘূৰাই;
       threads = 0;
 
       vthread_schedule_list(tmp);
@@ -58,132 +58,132 @@ evctl::evctl(uint64_t ecount)
       next = 0;
 }
 
-bool evctl::dec_and_run()
+তার্কিক evctl::dec_and_run()
 {
-      assert(ecount_ != 0);
+      প্রতিজ্ঞা(ecount_ != 0);
 
       ecount_ -= 1;
-      if (ecount_ == 0) run_run();
+      যদি (ecount_ == 0) run_run();
 
-      return ecount_ == 0;
+      ঘূৰাই ecount_ == 0;
 }
 
-evctl_real::evctl_real(__vpiHandle*handle, double value,
+evctl_real::evctl_real(__vpiHandle*handle, দ্ৱিগুণ value,
                        uint64_t ecount)
 :evctl(ecount)
 {
       handle_ = handle;
-      value_ = value;
+      মান_2 = value;
 }
 
-void evctl_real::run_run()
+শূন্য evctl_real::run_run()
 {
-      t_vpi_value val;
+      t_vpi_মান val;
 
       val.format = vpiRealVal;
-      val.value.real = value_;
-      vpi_put_value(handle_, &val, 0, vpiNoDelay);
+      val.value.real = মান_2;
+      vpi_put_মান(handle_, &val, 0, vpiNoDelay);
 }
 
-void schedule_evctl(__vpiHandle*handle, double value,
+শূন্য schedule_evctl(__vpiHandle*handle, দ্ৱিগুণ value,
                     vvp_net_t*event, uint64_t ecount)
 {
 	// Get the functor we are going to wait on.
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (event->fun);
-      assert(ep);
+      প্রতিজ্ঞা(ep);
 	// Now add this call to the end of the event list.
-      *(ep->last) = new evctl_real(handle, value, ecount);
+      *(ep->last) = নূতন evctl_real(handle, value, ecount);
       ep->last = &((*(ep->last))->next);
 }
 
-evctl_vector::evctl_vector(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
+evctl_vector::evctl_vector(vvp_net_ptr_t ptr, ধ্রুৱ vvp_vector4_t&value,
                            unsigned off, unsigned wid, uint64_t ecount)
-:evctl(ecount), ptr_(ptr), value_(value)
+:evctl(ecount), ptr_(ptr), মান_2(value)
 {
       off_ = off;
       wid_ = wid;
 }
 
-void evctl_vector::run_run()
+শূন্য evctl_vector::run_run()
 {
-      if (wid_ != 0) {
-	    vvp_send_vec4_pv(ptr_, value_, off_, wid_, 0);
-      } else {
-	    vvp_send_vec4(ptr_, value_, 0);
+      যদি (wid_ != 0) {
+	    vvp_send_vec4_pv(ptr_, মান_2, off_, wid_, 0);
+      } অন্যথা {
+	    vvp_send_vec4(ptr_, মান_2, 0);
       }
 }
 
-void schedule_evctl(vvp_net_ptr_t ptr, const vvp_vector4_t&value,
+শূন্য schedule_evctl(vvp_net_ptr_t ptr, ধ্রুৱ vvp_vector4_t&value,
                     unsigned offset, unsigned wid,
                     vvp_net_t*event, uint64_t ecount)
 {
 	// Get the functor we are going to wait on.
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (event->fun);
-      assert(ep);
+      প্রতিজ্ঞা(ep);
 	// Now add this call to the end of the event list.
-      *(ep->last) = new evctl_vector(ptr, value, offset, wid, ecount);
+      *(ep->last) = নূতন evctl_vector(ptr, value, offset, wid, ecount);
       ep->last = &((*(ep->last))->next);
 }
 
 evctl_array::evctl_array(vvp_array_t memory, unsigned index,
-                         const vvp_vector4_t&value, unsigned off,
+                         ধ্রুৱ vvp_vector4_t&value, unsigned off,
                          uint64_t ecount)
-:evctl(ecount), value_(value)
+:evctl(ecount), মান_2(value)
 {
       mem_ = memory;
       idx_ = index;
       off_ = off;
 }
 
-void evctl_array::run_run()
+শূন্য evctl_array::run_run()
 {
-      mem_->set_word(idx_, off_, value_);
+      mem_->set_word(idx_, off_, মান_2);
 }
 
-void schedule_evctl(vvp_array_t memory, unsigned index,
-                    const vvp_vector4_t&value, unsigned offset,
+শূন্য schedule_evctl(vvp_array_t memory, unsigned index,
+                    ধ্রুৱ vvp_vector4_t&value, unsigned offset,
                     vvp_net_t*event, uint64_t ecount)
 {
 	// Get the functor we are going to wait on.
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (event->fun);
-      assert(ep);
+      প্রতিজ্ঞা(ep);
 	// Now add this call to the end of the event list.
-      *(ep->last) = new evctl_array(memory, index, value, offset, ecount);
+      *(ep->last) = নূতন evctl_array(memory, index, value, offset, ecount);
       ep->last = &((*(ep->last))->next);
 }
 
 evctl_array_r::evctl_array_r(vvp_array_t memory, unsigned index,
-                             double value, uint64_t ecount)
+                             দ্ৱিগুণ value, uint64_t ecount)
 :evctl(ecount)
 {
       mem_ = memory;
       idx_ = index;
-      value_ = value;
+      মান_2 = value;
 }
 
-void evctl_array_r::run_run()
+শূন্য evctl_array_r::run_run()
 {
-      mem_->set_word(idx_, value_);
+      mem_->set_word(idx_, মান_2);
 }
 
-void schedule_evctl(vvp_array_t memory, unsigned index,
-                    double value,
+শূন্য schedule_evctl(vvp_array_t memory, unsigned index,
+                    দ্ৱিগুণ value,
                     vvp_net_t*event, uint64_t ecount)
 {
 	// Get the functor we are going to wait on.
       waitable_hooks_s*ep = dynamic_cast<waitable_hooks_s*> (event->fun);
-      assert(ep);
+      প্রতিজ্ঞা(ep);
 	// Now add this call to the end of the event list.
-      *(ep->last) = new evctl_array_r(memory, index, value, ecount);
+      *(ep->last) = নূতন evctl_array_r(memory, index, value, ecount);
       ep->last = &((*(ep->last))->next);
 }
 
-inline vvp_fun_edge::edge_t VVP_EDGE(vvp_bit4_t from, vvp_bit4_t to)
+অন্তঃস্থ vvp_fun_edge::edge_t VVP_EDGE(vvp_bit4_t from, vvp_bit4_t to)
 {
-      return 1 << ((from << 2) | to);
+      ঘূৰাই 1 << ((from << 2) | to);
 }
 
-const vvp_fun_edge::edge_t vvp_edge_posedge
+ধ্রুৱ vvp_fun_edge::edge_t vvp_edge_posedge
       = VVP_EDGE(BIT4_0,BIT4_1)
       | VVP_EDGE(BIT4_0,BIT4_X)
       | VVP_EDGE(BIT4_0,BIT4_Z)
@@ -191,7 +191,7 @@ const vvp_fun_edge::edge_t vvp_edge_posedge
       | VVP_EDGE(BIT4_Z,BIT4_1)
       ;
 
-const vvp_fun_edge::edge_t vvp_edge_negedge
+ধ্রুৱ vvp_fun_edge::edge_t vvp_edge_negedge
       = VVP_EDGE(BIT4_1,BIT4_0)
       | VVP_EDGE(BIT4_1,BIT4_X)
       | VVP_EDGE(BIT4_1,BIT4_Z)
@@ -199,7 +199,7 @@ const vvp_fun_edge::edge_t vvp_edge_negedge
       | VVP_EDGE(BIT4_Z,BIT4_0)
       ;
 
-const vvp_fun_edge::edge_t vvp_edge_edge
+ধ্রুৱ vvp_fun_edge::edge_t vvp_edge_edge
       = VVP_EDGE(BIT4_0,BIT4_1)
       | VVP_EDGE(BIT4_1,BIT4_0)
       | VVP_EDGE(BIT4_0,BIT4_X)
@@ -212,12 +212,12 @@ const vvp_fun_edge::edge_t vvp_edge_edge
       | VVP_EDGE(BIT4_1,BIT4_Z)
       ;
 
-const vvp_fun_edge::edge_t vvp_edge_none    = 0;
+ধ্রুৱ vvp_fun_edge::edge_t vvp_edge_none    = 0;
 
-struct vvp_fun_edge_state_s : public waitable_state_s {
+সংরচনা vvp_fun_edge_state_s : সার্ৱজনিক waitable_state_s {
       vvp_fun_edge_state_s()
       {
-            for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+            বাবে (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
                   bits[idx] = BIT4_X;
       }
 
@@ -227,7 +227,7 @@ struct vvp_fun_edge_state_s : public waitable_state_s {
 vvp_fun_edge::vvp_fun_edge(edge_t e)
 : edge_(e)
 {
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+      বাবে (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
             bits_[idx] = BIT4_X;
 }
 
@@ -235,7 +235,7 @@ vvp_fun_edge::~vvp_fun_edge()
 {
 }
 
-bool vvp_fun_edge::recv_vec4_(const vvp_vector4_t&bit,
+তার্কিক vvp_fun_edge::recv_vec4_(ধ্রুৱ vvp_vector4_t&bit,
                               vvp_bit4_t&old_bit, vthread_t&threads)
 {
 	/* See what kind of edge this represents. */
@@ -244,11 +244,11 @@ bool vvp_fun_edge::recv_vec4_(const vvp_vector4_t&bit,
 	/* Save the current input for the next time around. */
       old_bit = bit.value(0);
 
-      if ((edge_ == vvp_edge_none) || (edge_ & mask)) {
+      যদি ((edge_ == vvp_edge_none) || (edge_ & mask)) {
 	    run_waiting_threads_(threads);
-            return true;
+            ঘূৰাই সঁচা;
       }
-      return false;
+      ঘূৰাই মিছা;
 }
 
 vvp_fun_edge_sa::vvp_fun_edge_sa(edge_t e)
@@ -265,23 +265,23 @@ vthread_t vvp_fun_edge_sa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = threads_;
       threads_ = thread;
 
-      return tmp;
+      ঘূৰাই tmp;
 }
 
-void vvp_fun_edge_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+শূন্য vvp_fun_edge_sa::recv_vec4(vvp_net_ptr_t port, ধ্রুৱ vvp_vector4_t&bit,
                                 vvp_context_t)
 {
-      if (recv_vec4_(bit, bits_[port.port()], threads_)) {
+      যদি (recv_vec4_(bit, bits_[port.port()], threads_)) {
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(bit, 0);
       }
 }
 
-void vvp_fun_edge_sa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+শূন্য vvp_fun_edge_sa::recv_vec4_pv(vvp_net_ptr_t port, ধ্রুৱ vvp_vector4_t&bit,
 				   unsigned base, unsigned vwid, vvp_context_t)
 {
-      assert(base == 0);
-      if (recv_vec4_(bit, bits_[port.port()], threads_)) {
+      প্রতিজ্ঞা(base == 0);
+      যদি (recv_vec4_(bit, bits_[port.port()], threads_)) {
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4_pv(bit, base, vwid, 0);
       }
@@ -291,31 +291,31 @@ vvp_fun_edge_aa::vvp_fun_edge_aa(edge_t e)
 : vvp_fun_edge(e)
 {
       context_scope_ = vpip_peek_context_scope();
-      context_idx_ = vpip_add_item_to_context(this, context_scope_);
+      context_idx_ = vpip_add_item_to_context(এতত্, context_scope_);
 }
 
 vvp_fun_edge_aa::~vvp_fun_edge_aa()
 {
 }
 
-void vvp_fun_edge_aa::alloc_instance(vvp_context_t context)
+শূন্য vvp_fun_edge_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new vvp_fun_edge_state_s);
+      vvp_set_context_item(context, context_idx_, নূতন vvp_fun_edge_state_s);
       reset_instance(context);
 }
 
-void vvp_fun_edge_aa::reset_instance(vvp_context_t context)
+শূন্য vvp_fun_edge_aa::reset_instance(vvp_context_t context)
 {
       vvp_fun_edge_state_s*state = static_cast<vvp_fun_edge_state_s*>
             (vvp_get_context_item(context, context_idx_));
 
       state->threads = 0;
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+      বাবে (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
             state->bits[idx] = bits_[idx];
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vvp_fun_edge_aa::free_instance(vvp_context_t context)
+শূন্য vvp_fun_edge_aa::free_instance(vvp_context_t context)
 {
       vvp_fun_edge_state_s*state = static_cast<vvp_fun_edge_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -331,23 +331,23 @@ vthread_t vvp_fun_edge_aa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = state->threads;
       state->threads = thread;
 
-      return tmp;
+      ঘূৰাই tmp;
 }
 
-void vvp_fun_edge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+শূন্য vvp_fun_edge_aa::recv_vec4(vvp_net_ptr_t port, ধ্রুৱ vvp_vector4_t&bit,
                                 vvp_context_t context)
 {
-      if (context) {
+      যদি (context) {
             vvp_fun_edge_state_s*state = static_cast<vvp_fun_edge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
-            if (recv_vec4_(bit, state->bits[port.port()], state->threads)) {
+            যদি (recv_vec4_(bit, state->bits[port.port()], state->threads)) {
                   vvp_net_t*net = port.ptr();
                   net->send_vec4(bit, context);
             }
-      } else {
+      } অন্যথা {
             context = context_scope_->live_contexts;
-            while (context) {
+            যেতিয়ালৈ (context) {
                   recv_vec4(port, bit, context);
                   context = vvp_get_next_context(context);
             }
@@ -355,223 +355,223 @@ void vvp_fun_edge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
       }
 }
 
-class anyedge_value {
+শ্ৰেণী anyedge_মান {
 
-    public:
-      anyedge_value() {};
-      virtual ~anyedge_value() {};
+    সার্ৱজনিক:
+      anyedge_মান() {};
+      আভাস ~anyedge_মান() {};
 
-      virtual void reset() = 0;
+      আভাস শূন্য reset() = 0;
 
-      virtual void duplicate(anyedge_value*&dup) = 0;
+      আভাস শূন্য duplicate(anyedge_মান*&dup) = 0;
 };
 
-class anyedge_vec4_value : public anyedge_value {
+শ্ৰেণী anyedge_vec4_মান : সার্ৱজনিক anyedge_মান {
 
-    public:
-      anyedge_vec4_value() {};
-      virtual ~anyedge_vec4_value() override {};
+    সার্ৱজনিক:
+      anyedge_vec4_মান() {};
+      আভাস ~anyedge_vec4_মান() override {};
 
-      void reset() override { old_bits.set_to_x(); }
+      শূন্য reset() override { old_bits.set_to_x(); }
 
-      void set(const vvp_vector4_t&bit) { old_bits = bit; };
+      শূন্য set(ধ্রুৱ vvp_vector4_t&bit) { old_bits = bit; };
 
-      void duplicate(anyedge_value*&dup) override;
+      শূন্য duplicate(anyedge_মান*&dup) override;
 
-      bool recv_vec4(const vvp_vector4_t&bit);
+      তার্কিক recv_vec4(ধ্রুৱ vvp_vector4_t&bit);
 
-      bool recv_vec4_pv(const vvp_vector4_t&bit, unsigned base,
+      তার্কিক recv_vec4_pv(ধ্রুৱ vvp_vector4_t&bit, unsigned base,
 			unsigned vwid);
 
-    private:
+    গুপ্ত:
       vvp_vector4_t old_bits;
 };
 
-static anyedge_vec4_value*get_vec4_value(anyedge_value*&value)
+স্থির anyedge_vec4_মান*get_vec4_মান(anyedge_মান*&value)
 {
-      anyedge_vec4_value*vec4_value = dynamic_cast<anyedge_vec4_value*>(value);
-      if (!value) {
-	    vec4_value = new anyedge_vec4_value();
+      anyedge_vec4_মান*vec4_মান = dynamic_cast<anyedge_vec4_মান*>(value);
+      যদি (!value) {
+	    vec4_মান = নূতন anyedge_vec4_মান();
 	    delete value;
-	    value = vec4_value;
+	    value = vec4_মান;
       }
-      return vec4_value;
+      ঘূৰাই vec4_মান;
 }
 
-class anyedge_real_value : public anyedge_value {
+শ্ৰেণী anyedge_real_মান : সার্ৱজনিক anyedge_মান {
 
-    public:
-      anyedge_real_value() : old_bits(0.0) {};
-      virtual ~anyedge_real_value() override {};
+    সার্ৱজনিক:
+      anyedge_real_মান() : old_bits(0.0) {};
+      আভাস ~anyedge_real_মান() override {};
 
-      void reset() override { old_bits = 0.0; }
+      শূন্য reset() override { old_bits = 0.0; }
 
-      void set(double bit) { old_bits = bit; };
+      শূন্য set(দ্ৱিগুণ bit) { old_bits = bit; };
 
-      void duplicate(anyedge_value*&dup) override;
+      শূন্য duplicate(anyedge_মান*&dup) override;
 
-      bool recv_real(double bit);
+      তার্কিক recv_real(দ্ৱিগুণ bit);
 
-    private:
-      double old_bits;
+    গুপ্ত:
+      দ্ৱিগুণ old_bits;
 };
 
-static anyedge_real_value*get_real_value(anyedge_value*&value)
+স্থির anyedge_real_মান*get_real_মান(anyedge_মান*&value)
 {
-      anyedge_real_value*real_value = dynamic_cast<anyedge_real_value*>(value);
-      if (!value) {
-	    real_value = new anyedge_real_value();
+      anyedge_real_মান*real_মান = dynamic_cast<anyedge_real_মান*>(value);
+      যদি (!value) {
+	    real_মান = নূতন anyedge_real_মান();
 	    delete value;
-	    value = real_value;
+	    value = real_মান;
       }
-      return real_value;
+      ঘূৰাই real_মান;
 }
 
-class anyedge_string_value : public anyedge_value {
+শ্ৰেণী anyedge_string_মান : সার্ৱজনিক anyedge_মান {
 
-    public:
-      anyedge_string_value() {};
-      virtual ~anyedge_string_value() override {};
+    সার্ৱজনিক:
+      anyedge_string_মান() {};
+      আভাস ~anyedge_string_মান() override {};
 
-      void reset() override { old_bits.clear(); }
+      শূন্য reset() override { old_bits.clear(); }
 
-      void set(const std::string&bit) { old_bits = bit; };
+      শূন্য set(ধ্রুৱ std::string&bit) { old_bits = bit; };
 
-      void duplicate(anyedge_value*&dup) override;
+      শূন্য duplicate(anyedge_মান*&dup) override;
 
-      bool recv_string(const std::string&bit);
+      তার্কিক recv_string(ধ্রুৱ std::string&bit);
 
-    private:
+    গুপ্ত:
       std::string old_bits;
 };
 
-static anyedge_string_value*get_string_value(anyedge_value*&value)
+স্থির anyedge_string_মান*get_string_মান(anyedge_মান*&value)
 {
-      anyedge_string_value*string_value = dynamic_cast<anyedge_string_value*>(value);
-      if (!value) {
-	    string_value = new anyedge_string_value();
+      anyedge_string_মান*string_মান = dynamic_cast<anyedge_string_মান*>(value);
+      যদি (!value) {
+	    string_মান = নূতন anyedge_string_মান();
 	    delete value;
-	    value = string_value;
+	    value = string_মান;
       }
-      return string_value;
+      ঘূৰাই string_মান;
 }
 
-struct vvp_fun_anyedge_state_s : public waitable_state_s {
+সংরচনা vvp_fun_anyedge_state_s : সার্ৱজনিক waitable_state_s {
       vvp_fun_anyedge_state_s()
       {
-            for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-                  last_value_[idx] = 0;
+            বাবে (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+                  last_মান[idx] = 0;
       }
 
       ~vvp_fun_anyedge_state_s()
       {
-            for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-                  delete last_value_[idx];
+            বাবে (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+                  delete last_মান[idx];
       }
 
-      anyedge_value *last_value_[4];
-      vvp_fun_anyedge_state_s(const vvp_fun_anyedge_state_s&) = delete;
-      vvp_fun_anyedge_state_s& operator=(const vvp_fun_anyedge_state_s&) = delete;
+      anyedge_মান *last_মান[4];
+      vvp_fun_anyedge_state_s(ধ্রুৱ vvp_fun_anyedge_state_s&) = delete;
+      vvp_fun_anyedge_state_s& operator=(ধ্রুৱ vvp_fun_anyedge_state_s&) = delete;
 };
 
 vvp_fun_anyedge::vvp_fun_anyedge()
 {
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-	    last_value_[idx] = 0;
+      বাবে (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+	    last_মান[idx] = 0;
 }
 
 vvp_fun_anyedge::~vvp_fun_anyedge()
 {
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
-	    delete last_value_[idx];
+      বাবে (unsigned idx = 0 ;  idx < 4 ;  idx += 1)
+	    delete last_মান[idx];
 }
 
-void anyedge_vec4_value::duplicate(anyedge_value*&dup)
+শূন্য anyedge_vec4_মান::duplicate(anyedge_মান*&dup)
 {
-      anyedge_vec4_value*dup_vec4 = get_vec4_value(dup);
-      assert(dup_vec4);
+      anyedge_vec4_মান*dup_vec4 = get_vec4_মান(dup);
+      প্রতিজ্ঞা(dup_vec4);
       dup_vec4->set(old_bits);
 }
 
-bool anyedge_vec4_value::recv_vec4(const vvp_vector4_t&bit)
+তার্কিক anyedge_vec4_মান::recv_vec4(ধ্রুৱ vvp_vector4_t&bit)
 {
-      bool flag = false;
+      তার্কিক flag = মিছা;
 
-      if (old_bits.size() != bit.size()) {
-	    if (old_bits.size() == 0) {
+      যদি (old_bits.size() != bit.size()) {
+	    যদি (old_bits.size() == 0) {
 		    // Special case: If we've not seen any input yet
 		    // (old_bits.size()==0) then replace it will a reference
 		    // vector that is 'bx. Then compare that with the input
 		    // to see if we are processing a change from 'bx.
 		  old_bits = vvp_vector4_t(bit.size(), BIT4_X);
-		  if (old_bits.eeq(bit))
-			flag = false;
-		  else
-			flag = true;
+		  যদি (old_bits.eeq(bit))
+			flag = মিছা;
+		  অন্যথা
+			flag = সঁচা;
 
-	    } else {
-		  flag = true;
+	    } অন্যথা {
+		  flag = সঁচা;
 	    }
 
-      } else {
-	    for (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
-		  if (old_bits.value(idx) != bit.value(idx)) {
-			flag = true;
-			break;
+      } অন্যথা {
+	    বাবে (unsigned idx = 0 ;  idx < bit.size() ;  idx += 1) {
+		  যদি (old_bits.value(idx) != bit.value(idx)) {
+			flag = সঁচা;
+			ভঙ্গ;
 		  }
 	    }
       }
 
-      if (flag) {
+      যদি (flag) {
 	    old_bits = bit;
       }
 
-      return flag;
+      ঘূৰাই flag;
 }
 
-bool anyedge_vec4_value::recv_vec4_pv(const vvp_vector4_t&bit, unsigned base,
+তার্কিক anyedge_vec4_মান::recv_vec4_pv(ধ্রুৱ vvp_vector4_t&bit, unsigned base,
 				      unsigned vwid)
 {
       vvp_vector4_t tmp = old_bits;
-      if (tmp.size() == 0)
+      যদি (tmp.size() == 0)
 	    tmp = vvp_vector4_t(vwid, BIT4_Z);
-      assert(base + bit.size()<= vwid);
-      assert(tmp.size() == vwid);
+      প্রতিজ্ঞা(base + bit.size()<= vwid);
+      প্রতিজ্ঞা(tmp.size() == vwid);
       tmp.set_vec(base, bit);
 
-      return recv_vec4(tmp);
+      ঘূৰাই recv_vec4(tmp);
 }
 
-void anyedge_real_value::duplicate(anyedge_value*&dup)
+শূন্য anyedge_real_মান::duplicate(anyedge_মান*&dup)
 {
-      anyedge_real_value*dup_real = get_real_value(dup);
-      assert(dup_real);
+      anyedge_real_মান*dup_real = get_real_মান(dup);
+      প্রতিজ্ঞা(dup_real);
       dup_real->set(old_bits);
 }
 
-bool anyedge_real_value::recv_real(double bit)
+তার্কিক anyedge_real_মান::recv_real(দ্ৱিগুণ bit)
 {
-      if (old_bits != bit) {
+      যদি (old_bits != bit) {
 	    old_bits = bit;
-            return true;
+            ঘূৰাই সঁচা;
       }
-      return false;
+      ঘূৰাই মিছা;
 }
 
-void anyedge_string_value::duplicate(anyedge_value*&dup)
+শূন্য anyedge_string_মান::duplicate(anyedge_মান*&dup)
 {
-      anyedge_string_value*dup_string = get_string_value(dup);
-      assert(dup_string);
+      anyedge_string_মান*dup_string = get_string_মান(dup);
+      প্রতিজ্ঞা(dup_string);
       dup_string->set(old_bits);
 }
 
-bool anyedge_string_value::recv_string(const std::string&bit)
+তার্কিক anyedge_string_মান::recv_string(ধ্রুৱ std::string&bit)
 {
-      if (old_bits != bit) {
+      যদি (old_bits != bit) {
 	    old_bits = bit;
-            return true;
+            ঘূৰাই সঁচা;
       }
-      return false;
+      ঘূৰাই মিছা;
 }
 
 vvp_fun_anyedge_sa::vvp_fun_anyedge_sa()
@@ -588,51 +588,51 @@ vthread_t vvp_fun_anyedge_sa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = threads_;
       threads_ = thread;
 
-      return tmp;
+      ঘূৰাই tmp;
 }
 
-void vvp_fun_anyedge_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+শূন্য vvp_fun_anyedge_sa::recv_vec4(vvp_net_ptr_t port, ধ্রুৱ vvp_vector4_t&bit,
                                    vvp_context_t)
 {
-      anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
-      assert(value);
-      if (value->recv_vec4(bit)) {
+      anyedge_vec4_মান*value = get_vec4_মান(last_মান[port.port()]);
+      প্রতিজ্ঞা(value);
+      যদি (value->recv_vec4(bit)) {
 	    run_waiting_threads_(threads_);
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(bit, 0);
       }
 }
 
-void vvp_fun_anyedge_sa::recv_vec4_pv(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+শূন্য vvp_fun_anyedge_sa::recv_vec4_pv(vvp_net_ptr_t port, ধ্রুৱ vvp_vector4_t&bit,
 				      unsigned base, unsigned vwid, vvp_context_t)
 {
-      anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
-      assert(value);
-      if (value->recv_vec4_pv(bit, base, vwid)) {
+      anyedge_vec4_মান*value = get_vec4_মান(last_মান[port.port()]);
+      প্রতিজ্ঞা(value);
+      যদি (value->recv_vec4_pv(bit, base, vwid)) {
 	    run_waiting_threads_(threads_);
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(bit, 0);
       }
 }
 
-void vvp_fun_anyedge_sa::recv_real(vvp_net_ptr_t port, double bit,
+শূন্য vvp_fun_anyedge_sa::recv_real(vvp_net_ptr_t port, দ্ৱিগুণ bit,
                                    vvp_context_t)
 {
-      anyedge_real_value*value = get_real_value(last_value_[port.port()]);
-      assert(value);
-      if (value->recv_real(bit)) {
+      anyedge_real_মান*value = get_real_মান(last_মান[port.port()]);
+      প্রতিজ্ঞা(value);
+      যদি (value->recv_real(bit)) {
 	    run_waiting_threads_(threads_);
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(vvp_vector4_t(), 0);
       }
 }
 
-void vvp_fun_anyedge_sa::recv_string(vvp_net_ptr_t port, const std::string&bit,
+শূন্য vvp_fun_anyedge_sa::recv_string(vvp_net_ptr_t port, ধ্রুৱ std::string&bit,
 				     vvp_context_t)
 {
-      anyedge_string_value*value = get_string_value(last_value_[port.port()]);
-      assert(value);
-      if (value->recv_string(bit)) {
+      anyedge_string_মান*value = get_string_মান(last_মান[port.port()]);
+      প্রতিজ্ঞা(value);
+      যদি (value->recv_string(bit)) {
 	    run_waiting_threads_(threads_);
 	    vvp_net_t*net = port.ptr();
 	    net->send_vec4(vvp_vector4_t(), 0);
@@ -643,7 +643,7 @@ void vvp_fun_anyedge_sa::recv_string(vvp_net_ptr_t port, const std::string&bit,
  * An anyedge receiving an object should do nothing with it, but should
  * trigger waiting threads.
  */
-void vvp_fun_anyedge_sa::recv_object(vvp_net_ptr_t port, vvp_object_t,
+শূন্য vvp_fun_anyedge_sa::recv_object(vvp_net_ptr_t port, vvp_object_t,
 				     vvp_context_t)
 {
       run_waiting_threads_(threads_);
@@ -654,35 +654,35 @@ void vvp_fun_anyedge_sa::recv_object(vvp_net_ptr_t port, vvp_object_t,
 vvp_fun_anyedge_aa::vvp_fun_anyedge_aa()
 {
       context_scope_ = vpip_peek_context_scope();
-      context_idx_ = vpip_add_item_to_context(this, context_scope_);
+      context_idx_ = vpip_add_item_to_context(এতত্, context_scope_);
 }
 
 vvp_fun_anyedge_aa::~vvp_fun_anyedge_aa()
 {
 }
 
-void vvp_fun_anyedge_aa::alloc_instance(vvp_context_t context)
+শূন্য vvp_fun_anyedge_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new vvp_fun_anyedge_state_s);
+      vvp_set_context_item(context, context_idx_, নূতন vvp_fun_anyedge_state_s);
       reset_instance(context);
 }
 
-void vvp_fun_anyedge_aa::reset_instance(vvp_context_t context)
+শূন্য vvp_fun_anyedge_aa::reset_instance(vvp_context_t context)
 {
       vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
             (vvp_get_context_item(context, context_idx_));
 
       state->threads = 0;
-      for (unsigned idx = 0 ;  idx < 4 ;  idx += 1) {
-	    if (last_value_[idx])
-	          last_value_[idx]->duplicate(state->last_value_[idx]);
-	    else if (state->last_value_[idx])
-		  state->last_value_[idx]->reset();
+      বাবে (unsigned idx = 0 ;  idx < 4 ;  idx += 1) {
+	    যদি (last_মান[idx])
+	          last_মান[idx]->duplicate(state->last_মান[idx]);
+	    অন্যথা যদি (state->last_মান[idx])
+		  state->last_মান[idx]->reset();
       }
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vvp_fun_anyedge_aa::free_instance(vvp_context_t context)
+শূন্য vvp_fun_anyedge_aa::free_instance(vvp_context_t context)
 {
       vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -698,83 +698,83 @@ vthread_t vvp_fun_anyedge_aa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = state->threads;
       state->threads = thread;
 
-      return tmp;
+      ঘূৰাই tmp;
 }
 
-void vvp_fun_anyedge_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+শূন্য vvp_fun_anyedge_aa::recv_vec4(vvp_net_ptr_t port, ধ্রুৱ vvp_vector4_t&bit,
                                    vvp_context_t context)
 {
-      if (context) {
+      যদি (context) {
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
-            anyedge_vec4_value*value = get_vec4_value(state->last_value_[port.port()]);
-            assert(value);
-            if (value->recv_vec4(bit)) {
+            anyedge_vec4_মান*value = get_vec4_মান(state->last_মান[port.port()]);
+            প্রতিজ্ঞা(value);
+            যদি (value->recv_vec4(bit)) {
                   run_waiting_threads_(state->threads);
                   vvp_net_t*net = port.ptr();
                   net->send_vec4(bit, context);
             }
-      } else {
+      } অন্যথা {
             context = context_scope_->live_contexts;
-            while (context) {
+            যেতিয়ালৈ (context) {
                   recv_vec4(port, bit, context);
                   context = vvp_get_next_context(context);
             }
-            anyedge_vec4_value*value = get_vec4_value(last_value_[port.port()]);
-            assert(value);
+            anyedge_vec4_মান*value = get_vec4_মান(last_মান[port.port()]);
+            প্রতিজ্ঞা(value);
             value->set(bit);
       }
 }
 
-void vvp_fun_anyedge_aa::recv_real(vvp_net_ptr_t port, double bit,
+শূন্য vvp_fun_anyedge_aa::recv_real(vvp_net_ptr_t port, দ্ৱিগুণ bit,
                                    vvp_context_t context)
 {
-      if (context) {
+      যদি (context) {
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
-            anyedge_real_value*value = get_real_value(state->last_value_[port.port()]);
-            assert(value);
-            if (value->recv_real(bit)) {
+            anyedge_real_মান*value = get_real_মান(state->last_মান[port.port()]);
+            প্রতিজ্ঞা(value);
+            যদি (value->recv_real(bit)) {
                   run_waiting_threads_(state->threads);
                   vvp_net_t*net = port.ptr();
                   net->send_vec4(vvp_vector4_t(), context);
             }
-      } else {
+      } অন্যথা {
             context = context_scope_->live_contexts;
-            while (context) {
+            যেতিয়ালৈ (context) {
                   recv_real(port, bit, context);
                   context = vvp_get_next_context(context);
             }
-            anyedge_real_value*value = get_real_value(last_value_[port.port()]);
-            assert(value);
+            anyedge_real_মান*value = get_real_মান(last_মান[port.port()]);
+            প্রতিজ্ঞা(value);
             value->set(bit);
       }
 }
 
-void vvp_fun_anyedge_aa::recv_string(vvp_net_ptr_t port, const std::string&bit,
+শূন্য vvp_fun_anyedge_aa::recv_string(vvp_net_ptr_t port, ধ্রুৱ std::string&bit,
 				     vvp_context_t context)
 {
-      if (context) {
+      যদি (context) {
             vvp_fun_anyedge_state_s*state = static_cast<vvp_fun_anyedge_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
-            anyedge_string_value*value = get_string_value(state->last_value_[port.port()]);
-            assert(value);
-            if (value->recv_string(bit)) {
+            anyedge_string_মান*value = get_string_মান(state->last_মান[port.port()]);
+            প্রতিজ্ঞা(value);
+            যদি (value->recv_string(bit)) {
                   run_waiting_threads_(state->threads);
                   vvp_net_t*net = port.ptr();
                   net->send_vec4(vvp_vector4_t(), context);
             }
-      } else {
+      } অন্যথা {
             context = context_scope_->live_contexts;
-            while (context) {
+            যেতিয়ালৈ (context) {
                   recv_string(port, bit, context);
                   context = vvp_get_next_context(context);
             }
-            anyedge_string_value*value = get_string_value(last_value_[port.port()]);
-            assert(value);
+            anyedge_string_মান*value = get_string_মান(last_মান[port.port()]);
+            প্রতিজ্ঞা(value);
             value->set(bit);
       }
 }
@@ -802,10 +802,10 @@ vthread_t vvp_fun_event_or_sa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = threads_;
       threads_ = thread;
 
-      return tmp;
+      ঘূৰাই tmp;
 }
 
-void vvp_fun_event_or_sa::recv_vec4(vvp_net_ptr_t, const vvp_vector4_t&bit,
+শূন্য vvp_fun_event_or_sa::recv_vec4(vvp_net_ptr_t, ধ্রুৱ vvp_vector4_t&bit,
                                     vvp_context_t)
 {
       run_waiting_threads_(threads_);
@@ -816,19 +816,19 @@ vvp_fun_event_or_aa::vvp_fun_event_or_aa(vvp_net_t*base_net)
 : vvp_fun_event_or(base_net)
 {
       context_scope_ = vpip_peek_context_scope();
-      context_idx_ = vpip_add_item_to_context(this, context_scope_);
+      context_idx_ = vpip_add_item_to_context(এতত্, context_scope_);
 }
 
 vvp_fun_event_or_aa::~vvp_fun_event_or_aa()
 {
 }
 
-void vvp_fun_event_or_aa::alloc_instance(vvp_context_t context)
+শূন্য vvp_fun_event_or_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new waitable_state_s);
+      vvp_set_context_item(context, context_idx_, নূতন waitable_state_s);
 }
 
-void vvp_fun_event_or_aa::reset_instance(vvp_context_t context)
+শূন্য vvp_fun_event_or_aa::reset_instance(vvp_context_t context)
 {
       waitable_state_s*state = static_cast<waitable_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -837,7 +837,7 @@ void vvp_fun_event_or_aa::reset_instance(vvp_context_t context)
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vvp_fun_event_or_aa::free_instance(vvp_context_t context)
+শূন্য vvp_fun_event_or_aa::free_instance(vvp_context_t context)
 {
       waitable_state_s*state = static_cast<waitable_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -853,21 +853,21 @@ vthread_t vvp_fun_event_or_aa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = state->threads;
       state->threads = thread;
 
-      return tmp;
+      ঘূৰাই tmp;
 }
 
-void vvp_fun_event_or_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+শূন্য vvp_fun_event_or_aa::recv_vec4(vvp_net_ptr_t port, ধ্রুৱ vvp_vector4_t&bit,
                                     vvp_context_t context)
 {
-      if (context) {
+      যদি (context) {
             waitable_state_s*state = static_cast<waitable_state_s*>
                   (vvp_get_context_item(context, context_idx_));
 
             run_waiting_threads_(state->threads);
             base_net_->send_vec4(bit, context);
-      } else {
+      } অন্যথা {
             context = context_scope_->live_contexts;
-            while (context) {
+            যেতিয়ালৈ (context) {
                   recv_vec4(port, bit, context);
                   context = vvp_get_next_context(context);
             }
@@ -897,10 +897,10 @@ vthread_t vvp_named_event_sa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = threads_;
       threads_ = thread;
 
-      return tmp;
+      ঘূৰাই tmp;
 }
 
-void vvp_named_event_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+শূন্য vvp_named_event_sa::recv_vec4(vvp_net_ptr_t port, ধ্রুৱ vvp_vector4_t&bit,
                                    vvp_context_t)
 {
       run_waiting_threads_(threads_);
@@ -908,26 +908,26 @@ void vvp_named_event_sa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
       net->send_vec4(bit, 0);
 
       __vpiNamedEvent*obj = dynamic_cast<__vpiNamedEvent*>(handle_);
-      assert(obj);
+      প্রতিজ্ঞা(obj);
       obj->run_vpi_callbacks();
 }
 
 vvp_named_event_aa::vvp_named_event_aa(__vpiHandle*h)
 : vvp_named_event(h)
 {
-      context_idx_ = vpip_add_item_to_context(this, vpip_peek_context_scope());
+      context_idx_ = vpip_add_item_to_context(এতত্, vpip_peek_context_scope());
 }
 
 vvp_named_event_aa::~vvp_named_event_aa()
 {
 }
 
-void vvp_named_event_aa::alloc_instance(vvp_context_t context)
+শূন্য vvp_named_event_aa::alloc_instance(vvp_context_t context)
 {
-      vvp_set_context_item(context, context_idx_, new waitable_state_s);
+      vvp_set_context_item(context, context_idx_, নূতন waitable_state_s);
 }
 
-void vvp_named_event_aa::reset_instance(vvp_context_t context)
+শূন্য vvp_named_event_aa::reset_instance(vvp_context_t context)
 {
       waitable_state_s*state = static_cast<waitable_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -936,7 +936,7 @@ void vvp_named_event_aa::reset_instance(vvp_context_t context)
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void vvp_named_event_aa::free_instance(vvp_context_t context)
+শূন্য vvp_named_event_aa::free_instance(vvp_context_t context)
 {
       waitable_state_s*state = static_cast<waitable_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -952,13 +952,13 @@ vthread_t vvp_named_event_aa::add_waiting_thread(vthread_t thread)
       vthread_t tmp = state->threads;
       state->threads = thread;
 
-      return tmp;
+      ঘূৰাই tmp;
 }
 
-void vvp_named_event_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+শূন্য vvp_named_event_aa::recv_vec4(vvp_net_ptr_t port, ধ্রুৱ vvp_vector4_t&bit,
                                    vvp_context_t context)
 {
-      assert(context);
+      প্রতিজ্ঞা(context);
 
       waitable_state_s*state = static_cast<waitable_state_s*>
             (vvp_get_context_item(context, context_idx_));
@@ -976,82 +976,82 @@ void vvp_named_event_aa::recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
 **  Named events are handled elsewhere.
 */
 
-static void compile_event_or(char*label, unsigned argc, struct symb_s*argv);
+স্থির শূন্য compile_event_or(ৱর্ণ*label, unsigned argc, সংরচনা symb_s*argv);
 
-void compile_event(char*label, char*type, unsigned argc, struct symb_s*argv)
+শূন্য compile_event(ৱর্ণ*label, ৱর্ণ*type, unsigned argc, সংরচনা symb_s*argv)
 {
       vvp_net_fun_t*fun = 0;
 
-      if (type == 0) {
+      যদি (type == 0) {
 	    compile_event_or(label, argc, argv);
-	    return;
+	    ঘূৰাই;
       }
 
-      if (strcmp(type,"anyedge") == 0) {
+      যদি (strcmp(type,"anyedge") == 0) {
 
-	    free(type);
+	    মুক্ত(type);
 
-            if (vpip_peek_current_scope()->is_automatic()) {
-                  fun = new vvp_fun_anyedge_aa;
-            } else {
-                  fun = new vvp_fun_anyedge_sa;
+            যদি (vpip_peek_current_scope()->is_automatic()) {
+                  fun = নূতন vvp_fun_anyedge_aa;
+            } অন্যথা {
+                  fun = নূতন vvp_fun_anyedge_sa;
             }
 
-      } else {
+      } অন্যথা {
 
 	    vvp_fun_edge::edge_t edge_type = vvp_edge_none;
 
-	    if (strcmp(type,"posedge") == 0)
+	    যদি (strcmp(type,"posedge") == 0)
 		  edge_type = vvp_edge_posedge;
-	    else if (strcmp(type,"negedge") == 0)
+	    অন্যথা যদি (strcmp(type,"negedge") == 0)
 		  edge_type = vvp_edge_negedge;
-	    else if (strcmp(type,"edge") == 0)
+	    অন্যথা যদি (strcmp(type,"edge") == 0)
 		  edge_type = vvp_edge_edge;
 
-	    assert(argc <= 4);
-	    free(type);
+	    প্রতিজ্ঞা(argc <= 4);
+	    মুক্ত(type);
 
-            if (vpip_peek_current_scope()->is_automatic()) {
-                  fun = new vvp_fun_edge_aa(edge_type);
-            } else {
-                  fun = new vvp_fun_edge_sa(edge_type);
+            যদি (vpip_peek_current_scope()->is_automatic()) {
+                  fun = নূতন vvp_fun_edge_aa(edge_type);
+            } অন্যথা {
+                  fun = নূতন vvp_fun_edge_sa(edge_type);
             }
 
       }
 
-      vvp_net_t* ptr = new vvp_net_t;
+      vvp_net_t* ptr = নূতন vvp_net_t;
       ptr->fun = fun;
 
-      define_functor_symbol(label, ptr);
-      free(label);
+      define_functor_প্ৰতীক(label, ptr);
+      মুক্ত(label);
 
       inputs_connect(ptr, argc, argv);
-      free(argv);
+      মুক্ত(argv);
 }
 
-static void compile_event_or(char*label, unsigned argc, struct symb_s*argv)
+স্থির শূন্য compile_event_or(ৱর্ণ*label, unsigned argc, সংরচনা symb_s*argv)
 {
-      vvp_net_t*base_net = new vvp_net_t;
-      if (vpip_peek_current_scope()->is_automatic()) {
-            base_net->fun = new vvp_fun_event_or_aa(base_net);
-      } else {
-            base_net->fun = new vvp_fun_event_or_sa(base_net);
+      vvp_net_t*base_net = নূতন vvp_net_t;
+      যদি (vpip_peek_current_scope()->is_automatic()) {
+            base_net->fun = নূতন vvp_fun_event_or_aa(base_net);
+      } অন্যথা {
+            base_net->fun = নূতন vvp_fun_event_or_sa(base_net);
       }
-      define_functor_symbol(label, base_net);
-      free(label);
+      define_functor_প্ৰতীক(label, base_net);
+      মুক্ত(label);
 
 	/* This is a simplified version of a wide functor. We don't
 	   care about the data values or what port they arrived on,
 	   so we can use a single shared functor. */
       vvp_net_t*curr_net = base_net;
-      for (unsigned idx = 0 ;  idx < argc ;  idx += 1) {
-	    if (idx > 0 && (idx % 4) == 0) {
-		  curr_net = new vvp_net_t;
+      বাবে (unsigned idx = 0 ;  idx < argc ;  idx += 1) {
+	    যদি (idx > 0 && (idx % 4) == 0) {
+		  curr_net = নূতন vvp_net_t;
 		  curr_net->fun = base_net->fun;
 	    }
-	    input_connect(curr_net, idx % 4, argv[idx].text);
+	    প্ৰবেশ_connect(curr_net, idx % 4, argv[idx].text);
       }
-      free(argv);
+      মুক্ত(argv);
 }
 
 /*
@@ -1059,27 +1059,27 @@ static void compile_event_or(char*label, unsigned argc, struct symb_s*argv)
  * inputs, it is only accessed by behavioral trigger statements, which
  * in vvp are %set instructions.
  */
-void compile_named_event(char*label, char*name, bool local_flag)
+শূন্য compile_named_event(ৱর্ণ*label, ৱর্ণ*name, তার্কিক local_flag)
 {
-      vvp_net_t*ptr = new vvp_net_t;
+      vvp_net_t*ptr = নূতন vvp_net_t;
 
       vpiHandle obj = vpip_make_named_event(name, ptr);
 
-      if (vpip_peek_current_scope()->is_automatic()) {
-            ptr->fun = new vvp_named_event_aa(obj);
-      } else {
-            ptr->fun = new vvp_named_event_sa(obj);
+      যদি (vpip_peek_current_scope()->is_automatic()) {
+            ptr->fun = নূতন vvp_named_event_aa(obj);
+      } অন্যথা {
+            ptr->fun = নূতন vvp_named_event_sa(obj);
       }
-      define_functor_symbol(label, ptr);
-      compile_vpi_symbol(label, obj);
-      if (! local_flag) vpip_attach_to_current_scope(obj);
+      define_functor_প্ৰতীক(label, ptr);
+      compile_vpi_প্ৰতীক(label, obj);
+      যদি (! local_flag) vpip_attach_to_current_scope(obj);
 
-      free(label);
+      মুক্ত(label);
       delete[] name;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void named_event_delete(__vpiHandle*handle)
+শূন্য named_event_delete(__vpiHandle*handle)
 {
       delete dynamic_cast<__vpiNamedEvent *>(handle);
 }

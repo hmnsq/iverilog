@@ -27,42 +27,42 @@
 #endif
 # include  <cassert>
 
-using namespace std;
+using নামাকাশ std;
 
 /*
  * This class_property_t class is an abstract base class for
  * representing a property of an instance. The definition keeps and
  * array (of pointers) of these in order to define the the class.
  */
-class class_property_t {
-    public:
-      inline class_property_t() { offset_ = 0; }
-      virtual ~class_property_t() =0;
+শ্ৰেণী class_property_t {
+    সার্ৱজনিক:
+      অন্তঃস্থ class_property_t() { offset_ = 0; }
+      আভাস ~class_property_t() =0;
 	// How much space does an instance of this property require?
-      virtual size_t instance_size() const =0;
+      আভাস size_t instance_size() ধ্রুৱ =0;
 
-      void set_offset(size_t off) { offset_ = off; }
+      শূন্য set_offset(size_t off) { offset_ = off; }
 
-    public:
-      virtual void construct(char*buf) const;
-      virtual void destruct(char*buf) const;
+    সার্ৱজনিক:
+      আভাস শূন্য construct(ৱর্ণ*buf) ধ্রুৱ;
+      আভাস শূন্য destruct(ৱর্ণ*buf) ধ্রুৱ;
 
-      virtual void set_vec4(char*buf, const vvp_vector4_t&val);
-      virtual void get_vec4(char*buf, vvp_vector4_t&val);
+      আভাস শূন্য set_vec4(ৱর্ণ*buf, ধ্রুৱ vvp_vector4_t&val);
+      আভাস শূন্য get_vec4(ৱর্ণ*buf, vvp_vector4_t&val);
 
-      virtual void set_real(char*buf, double val);
-      virtual double get_real(char*buf);
+      আভাস শূন্য set_real(ৱর্ণ*buf, দ্ৱিগুণ val);
+      আভাস দ্ৱিগুণ get_real(ৱর্ণ*buf);
 
-      virtual void set_string(char*buf, const std::string&val);
-      virtual string get_string(char*buf);
+      আভাস শূন্য set_string(ৱর্ণ*buf, ধ্রুৱ std::string&val);
+      আভাস string get_string(ৱর্ণ*buf);
 
-      virtual void set_object(char*buf, const vvp_object_t&val, uint64_t element);
-      virtual void get_object(char*buf, vvp_object_t&val, uint64_t element);
+      আভাস শূন্য set_object(ৱর্ণ*buf, ধ্রুৱ vvp_object_t&val, uint64_t element);
+      আভাস শূন্য get_object(ৱর্ণ*buf, vvp_object_t&val, uint64_t element);
 
 	// Implement polymorphic shallow copy.
-      virtual void copy(char*buf, char*src) = 0;
+      আভাস শূন্য copy(ৱর্ণ*buf, ৱর্ণ*src) = 0;
 
-    protected:
+    রক্ষিত:
       size_t offset_;
 };
 
@@ -70,333 +70,333 @@ class_property_t::~class_property_t()
 {
 }
 
-void class_property_t::construct(char*) const
+শূন্য class_property_t::construct(ৱর্ণ*) ধ্রুৱ
 {
 }
 
-void class_property_t::destruct(char*) const
+শূন্য class_property_t::destruct(ৱর্ণ*) ধ্রুৱ
 {
 }
 
-void class_property_t::set_vec4(char*, const vvp_vector4_t&)
+শূন্য class_property_t::set_vec4(ৱর্ণ*, ধ্রুৱ vvp_vector4_t&)
 {
-      assert(0);
+      প্রতিজ্ঞা(0);
 }
 
-void class_property_t::get_vec4(char*, vvp_vector4_t&)
+শূন্য class_property_t::get_vec4(ৱর্ণ*, vvp_vector4_t&)
 {
-      assert(0);
+      প্রতিজ্ঞা(0);
 }
 
-void class_property_t::set_real(char*, double)
+শূন্য class_property_t::set_real(ৱর্ণ*, দ্ৱিগুণ)
 {
-      assert(0);
+      প্রতিজ্ঞা(0);
 }
 
-double class_property_t::get_real(char*)
+দ্ৱিগুণ class_property_t::get_real(ৱর্ণ*)
 {
-      assert(0);
-      return 0.0;
+      প্রতিজ্ঞা(0);
+      ঘূৰাই 0.0;
 }
 
-void class_property_t::set_string(char*, const string&)
+শূন্য class_property_t::set_string(ৱর্ণ*, ধ্রুৱ string&)
 {
-      assert(0);
+      প্রতিজ্ঞা(0);
 }
 
-string class_property_t::get_string(char*)
+string class_property_t::get_string(ৱর্ণ*)
 {
-      assert(0);
-      return "";
+      প্রতিজ্ঞা(0);
+      ঘূৰাই "";
 }
 
-void class_property_t::set_object(char*, const vvp_object_t&, uint64_t)
+শূন্য class_property_t::set_object(ৱর্ণ*, ধ্রুৱ vvp_object_t&, uint64_t)
 {
-      assert(0);
+      প্রতিজ্ঞা(0);
 }
 
-void class_property_t::get_object(char*, vvp_object_t&, uint64_t)
+শূন্য class_property_t::get_object(ৱর্ণ*, vvp_object_t&, uint64_t)
 {
-      assert(0);
+      প্রতিজ্ঞা(0);
 }
 
 /*
  */
-template <class T> class property_atom : public class_property_t {
-    public:
-      inline explicit property_atom(void) { }
+template <শ্ৰেণী T> শ্ৰেণী property_atom : সার্ৱজনিক class_property_t {
+    সার্ৱজনিক:
+      অন্তঃস্থ explicit property_atom(শূন্য) { }
       ~property_atom() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_size() ধ্রুৱ override { ঘূৰাই পরিমাণ(T); }
 
-    public:
-      void construct(char*buf) const override
+    সার্ৱজনিক:
+      শূন্য construct(ৱর্ণ*buf) ধ্রুৱ override
       { T*tmp = reinterpret_cast<T*> (buf+offset_);
 	*tmp = 0;
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      শূন্য set_vec4(ৱর্ণ*buf, ধ্রুৱ vvp_vector4_t&val) override;
+      শূন্য get_vec4(ৱর্ণ*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      শূন্য copy(ৱর্ণ*dst, ৱর্ণ*src) override;
 };
 
-class property_bit : public class_property_t {
-    public:
-      explicit inline property_bit(size_t wid): wid_(wid) { }
+শ্ৰেণী property_bit : সার্ৱজনিক class_property_t {
+    সার্ৱজনিক:
+      explicit অন্তঃস্থ property_bit(size_t wid): wid_(wid) { }
       ~property_bit() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector2_t); }
+      size_t instance_size() ধ্রুৱ override { ঘূৰাই পরিমাণ(vvp_vector2_t); }
 
-    public:
-      void construct(char*buf) const override
-      { new (buf+offset_) vvp_vector2_t (0, wid_); }
+    সার্ৱজনিক:
+      শূন্য construct(ৱর্ণ*buf) ধ্রুৱ override
+      { নূতন (buf+offset_) vvp_vector2_t (0, wid_); }
 
-      void destruct(char*buf) const override
+      শূন্য destruct(ৱর্ণ*buf) ধ্রুৱ override
       { vvp_vector2_t*tmp = reinterpret_cast<vvp_vector2_t*>(buf+offset_);
 	tmp->~vvp_vector2_t();
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      শূন্য set_vec4(ৱর্ণ*buf, ধ্রুৱ vvp_vector4_t&val) override;
+      শূন্য get_vec4(ৱর্ণ*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      শূন্য copy(ৱর্ণ*dst, ৱর্ণ*src) override;
 
-    private:
+    গুপ্ত:
       size_t wid_;
 };
 
-class property_logic : public class_property_t {
-    public:
-      explicit inline property_logic(size_t wid): wid_(wid) { }
+শ্ৰেণী property_logic : সার্ৱজনিক class_property_t {
+    সার্ৱজনিক:
+      explicit অন্তঃস্থ property_logic(size_t wid): wid_(wid) { }
       ~property_logic() override { }
 
-      size_t instance_size() const override { return sizeof(vvp_vector4_t); }
+      size_t instance_size() ধ্রুৱ override { ঘূৰাই পরিমাণ(vvp_vector4_t); }
 
-    public:
-      void construct(char*buf) const override
-      { new (buf+offset_) vvp_vector4_t (wid_); }
+    সার্ৱজনিক:
+      শূন্য construct(ৱর্ণ*buf) ধ্রুৱ override
+      { নূতন (buf+offset_) vvp_vector4_t (wid_); }
 
-      void destruct(char*buf) const override
+      শূন্য destruct(ৱর্ণ*buf) ধ্রুৱ override
       { vvp_vector4_t*tmp = reinterpret_cast<vvp_vector4_t*>(buf+offset_);
 	tmp->~vvp_vector4_t();
       }
 
-      void set_vec4(char*buf, const vvp_vector4_t&val) override;
-      void get_vec4(char*buf, vvp_vector4_t&val) override;
+      শূন্য set_vec4(ৱর্ণ*buf, ধ্রুৱ vvp_vector4_t&val) override;
+      শূন্য get_vec4(ৱর্ণ*buf, vvp_vector4_t&val) override;
 
-      void copy(char*dst, char*src) override;
+      শূন্য copy(ৱর্ণ*dst, ৱর্ণ*src) override;
 
-    private:
+    গুপ্ত:
       size_t wid_;
 };
 
-template <class T> class property_real : public class_property_t {
-    public:
-      inline explicit property_real(void) { }
+template <শ্ৰেণী T> শ্ৰেণী property_real : সার্ৱজনিক class_property_t {
+    সার্ৱজনিক:
+      অন্তঃস্থ explicit property_real(শূন্য) { }
       ~property_real() override { }
 
-      size_t instance_size() const override { return sizeof(T); }
+      size_t instance_size() ধ্রুৱ override { ঘূৰাই পরিমাণ(T); }
 
-    public:
-      void construct(char*buf) const override
+    সার্ৱজনিক:
+      শূন্য construct(ৱর্ণ*buf) ধ্রুৱ override
       { T*tmp = reinterpret_cast<T*> (buf+offset_);
 	*tmp = 0.0;
       }
 
-      void set_real(char*buf, double val) override;
-      double get_real(char*buf) override;
+      শূন্য set_real(ৱর্ণ*buf, দ্ৱিগুণ val) override;
+      দ্ৱিগুণ get_real(ৱর্ণ*buf) override;
 
-      void copy(char*dst, char*src) override;
+      শূন্য copy(ৱর্ণ*dst, ৱর্ণ*src) override;
 };
 
-class property_string : public class_property_t {
-    public:
-      inline explicit property_string(void) { }
+শ্ৰেণী property_string : সার্ৱজনিক class_property_t {
+    সার্ৱজনিক:
+      অন্তঃস্থ explicit property_string(শূন্য) { }
       ~property_string() override { }
 
-      size_t instance_size() const override { return sizeof(std::string); }
+      size_t instance_size() ধ্রুৱ override { ঘূৰাই পরিমাণ(std::string); }
 
-    public:
-      void construct(char*buf) const override
-      { /* string*tmp = */ new (buf+offset_) string; }
+    সার্ৱজনিক:
+      শূন্য construct(ৱর্ণ*buf) ধ্রুৱ override
+      { /* string*tmp = */ নূতন (buf+offset_) string; }
 
-      void destruct(char*buf) const override
+      শূন্য destruct(ৱর্ণ*buf) ধ্রুৱ override
       { string*tmp = reinterpret_cast<string*> (buf+offset_);
 	tmp->~string();
       }
 
-      void set_string(char*buf, const string&) override;
-      string get_string(char*buf) override;
+      শূন্য set_string(ৱর্ণ*buf, ধ্রুৱ string&) override;
+      string get_string(ৱর্ণ*buf) override;
 
-      void copy(char*dst, char*src) override;
+      শূন্য copy(ৱর্ণ*dst, ৱর্ণ*src) override;
 };
 
-class property_object : public class_property_t {
-    public:
-      inline explicit property_object(uint64_t as): array_size_(as==0? 1 : as) { }
+শ্ৰেণী property_object : সার্ৱজনিক class_property_t {
+    সার্ৱজনিক:
+      অন্তঃস্থ explicit property_object(uint64_t as): array_size_(as==0? 1 : as) { }
       ~property_object() override { }
 
-      size_t instance_size() const override { return array_size_ * sizeof(vvp_object_t); }
+      size_t instance_size() ধ্রুৱ override { ঘূৰাই array_size_ * পরিমাণ(vvp_object_t); }
 
-    public:
-      void construct(char*buf) const override;
+    সার্ৱজনিক:
+      শূন্য construct(ৱর্ণ*buf) ধ্রুৱ override;
 
-      void destruct(char*buf) const override;
+      শূন্য destruct(ৱর্ণ*buf) ধ্রুৱ override;
 
-      void set_object(char*buf, const vvp_object_t&, uint64_t) override;
-      void get_object(char*buf, vvp_object_t&, uint64_t) override;
+      শূন্য set_object(ৱর্ণ*buf, ধ্রুৱ vvp_object_t&, uint64_t) override;
+      শূন্য get_object(ৱর্ণ*buf, vvp_object_t&, uint64_t) override;
 
-      void copy(char*dst, char*src) override;
+      শূন্য copy(ৱর্ণ*dst, ৱর্ণ*src) override;
 
-    private:
+    গুপ্ত:
       size_t array_size_;
 };
 
-template <class T> void property_atom<T>::set_vec4(char*buf, const vvp_vector4_t&val)
+template <শ্ৰেণী T> শূন্য property_atom<T>::set_vec4(ৱর্ণ*buf, ধ্রুৱ vvp_vector4_t&val)
 {
       T*tmp = reinterpret_cast<T*> (buf+offset_);
-      bool flag = vector4_to_value(val, *tmp, true, false);
-      assert(flag);
+      তার্কিক flag = vector4_to_মান(val, *tmp, সঁচা, মিছা);
+      প্রতিজ্ঞা(flag);
 }
 
-template <class T> void property_atom<T>::get_vec4(char*buf, vvp_vector4_t&val)
+template <শ্ৰেণী T> শূন্য property_atom<T>::get_vec4(ৱর্ণ*buf, vvp_vector4_t&val)
 {
       T*src = reinterpret_cast<T*> (buf+offset_);
-      const size_t tmp_cnt = sizeof(T)<sizeof(unsigned long)
+      ধ্রুৱ size_t tmp_cnt = পরিমাণ(T)<পরিমাণ(unsigned long)
 				       ? 1
-				       : sizeof(T) / sizeof(unsigned long);
+				       : পরিমাণ(T) / পরিমাণ(unsigned long);
       unsigned long tmp[tmp_cnt];
       tmp[0] = src[0];
 
-      for (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
-	    tmp[idx] = src[0] >> idx * 8 * sizeof(tmp[0]);
+      বাবে (size_t idx = 1 ; idx < tmp_cnt ; idx += 1)
+	    tmp[idx] = src[0] >> idx * 8 * পরিমাণ(tmp[0]);
 
-      val.resize(8*sizeof(T));
+      val.resize(8*পরিমাণ(T));
       val.setarray(0, val.size(), tmp);
 }
 
-template <class T> void property_atom<T>::copy(char*dst, char*src)
+template <শ্ৰেণী T> শূন্য property_atom<T>::copy(ৱর্ণ*dst, ৱর্ণ*src)
 {
       T*dst_obj = reinterpret_cast<T*> (dst+offset_);
       T*src_obj = reinterpret_cast<T*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_bit::set_vec4(char*buf, const vvp_vector4_t&val)
+শূন্য property_bit::set_vec4(ৱর্ণ*buf, ধ্রুৱ vvp_vector4_t&val)
 {
       vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
       *obj = val;
 }
 
-void property_bit::get_vec4(char*buf, vvp_vector4_t&val)
+শূন্য property_bit::get_vec4(ৱর্ণ*buf, vvp_vector4_t&val)
 {
-      const vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
+      ধ্রুৱ vvp_vector2_t*obj = reinterpret_cast<vvp_vector2_t*> (buf+offset_);
       val = vector2_to_vector4(*obj, obj->size());
 }
 
-void property_bit::copy(char*dst, char*src)
+শূন্য property_bit::copy(ৱর্ণ*dst, ৱর্ণ*src)
 {
       vvp_vector2_t*dst_obj = reinterpret_cast<vvp_vector2_t*> (dst+offset_);
-      const vvp_vector2_t*src_obj = reinterpret_cast<vvp_vector2_t*> (src+offset_);
+      ধ্রুৱ vvp_vector2_t*src_obj = reinterpret_cast<vvp_vector2_t*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_logic::set_vec4(char*buf, const vvp_vector4_t&val)
+শূন্য property_logic::set_vec4(ৱর্ণ*buf, ধ্রুৱ vvp_vector4_t&val)
 {
       vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
       *obj = val;
 }
 
-void property_logic::get_vec4(char*buf, vvp_vector4_t&val)
+শূন্য property_logic::get_vec4(ৱর্ণ*buf, vvp_vector4_t&val)
 {
-      const vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
+      ধ্রুৱ vvp_vector4_t*obj = reinterpret_cast<vvp_vector4_t*> (buf+offset_);
       val = *obj;
 }
 
-void property_logic::copy(char*dst, char*src)
+শূন্য property_logic::copy(ৱর্ণ*dst, ৱর্ণ*src)
 {
       vvp_vector4_t*dst_obj = reinterpret_cast<vvp_vector4_t*> (dst+offset_);
-      const vvp_vector4_t*src_obj = reinterpret_cast<vvp_vector4_t*> (src+offset_);
+      ধ্রুৱ vvp_vector4_t*src_obj = reinterpret_cast<vvp_vector4_t*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-template <class T> void property_real<T>::set_real(char*buf, double val)
+template <শ্ৰেণী T> শূন্য property_real<T>::set_real(ৱর্ণ*buf, দ্ৱিগুণ val)
 {
       T*tmp = reinterpret_cast<T*>(buf+offset_);
       *tmp = val;
 }
 
-template <class T> double property_real<T>::get_real(char*buf)
+template <শ্ৰেণী T> দ্ৱিগুণ property_real<T>::get_real(ৱর্ণ*buf)
 {
       T*tmp = reinterpret_cast<T*>(buf+offset_);
-      return *tmp;
+      ঘূৰাই *tmp;
 }
 
-template <class T> void property_real<T>::copy(char*dst, char*src)
+template <শ্ৰেণী T> শূন্য property_real<T>::copy(ৱর্ণ*dst, ৱর্ণ*src)
 {
       T*dst_obj = reinterpret_cast<T*> (dst+offset_);
       T*src_obj = reinterpret_cast<T*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_string::set_string(char*buf, const string&val)
+শূন্য property_string::set_string(ৱর্ণ*buf, ধ্রুৱ string&val)
 {
       string*tmp = reinterpret_cast<string*>(buf+offset_);
       *tmp = val;
 }
 
-string property_string::get_string(char*buf)
+string property_string::get_string(ৱর্ণ*buf)
 {
-      const string*tmp = reinterpret_cast<string*>(buf+offset_);
-      return *tmp;
+      ধ্রুৱ string*tmp = reinterpret_cast<string*>(buf+offset_);
+      ঘূৰাই *tmp;
 }
 
-void property_string::copy(char*dst, char*src)
+শূন্য property_string::copy(ৱর্ণ*dst, ৱর্ণ*src)
 {
       string*dst_obj = reinterpret_cast<string*> (dst+offset_);
-      const string*src_obj = reinterpret_cast<string*> (src+offset_);
+      ধ্রুৱ string*src_obj = reinterpret_cast<string*> (src+offset_);
       *dst_obj = *src_obj;
 }
 
-void property_object::construct(char*buf) const
+শূন্য property_object::construct(ৱর্ণ*buf) ধ্রুৱ
 {
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
-	    new (buf+offset_ + idx*sizeof(vvp_object_t)) vvp_object_t;
+      বাবে (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+	    নূতন (buf+offset_ + idx*পরিমাণ(vvp_object_t)) vvp_object_t;
 }
 
-void property_object::destruct(char*buf) const
+শূন্য property_object::destruct(ৱর্ণ*buf) ধ্রুৱ
 {
       vvp_object_t*tmp = reinterpret_cast<vvp_object_t*> (buf+offset_);
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      বাবে (size_t idx = 0 ; idx < array_size_ ; idx += 1)
 	    (tmp+idx)->~vvp_object_t();
 }
 
-void property_object::set_object(char*buf, const vvp_object_t&val, uint64_t idx)
+শূন্য property_object::set_object(ৱর্ণ*buf, ধ্রুৱ vvp_object_t&val, uint64_t idx)
 {
-      assert(idx < array_size_);
+      প্রতিজ্ঞা(idx < array_size_);
       vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
       tmp[idx] = val;
 }
 
-void property_object::get_object(char*buf, vvp_object_t&val, uint64_t idx)
+শূন্য property_object::get_object(ৱর্ণ*buf, vvp_object_t&val, uint64_t idx)
 {
-      assert(idx < array_size_);
-      const vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
+      প্রতিজ্ঞা(idx < array_size_);
+      ধ্রুৱ vvp_object_t*tmp = reinterpret_cast<vvp_object_t*>(buf+offset_);
       val = tmp[idx];
 }
 
-void property_object::copy(char*dst, char*src)
+শূন্য property_object::copy(ৱর্ণ*dst, ৱর্ণ*src)
 {
       vvp_object_t*dst_obj = reinterpret_cast<vvp_object_t*>(dst+offset_);
-      const vvp_object_t*src_obj = reinterpret_cast<vvp_object_t*>(src+offset_);
-      for (size_t idx = 0 ; idx < array_size_ ; idx += 1)
+      ধ্রুৱ vvp_object_t*src_obj = reinterpret_cast<vvp_object_t*>(src+offset_);
+      বাবে (size_t idx = 0 ; idx < array_size_ ; idx += 1)
 	    dst_obj[idx] = src_obj[idx];
 }
 
 /* **** */
 
-class_type::class_type(const string&nam, size_t nprop)
+class_type::class_type(ধ্রুৱ string&nam, size_t nprop)
 : class_name_(nam), properties_(nprop)
 {
       instance_size_ = 0;
@@ -404,59 +404,59 @@ class_type::class_type(const string&nam, size_t nprop)
 
 class_type::~class_type()
 {
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      বাবে (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    delete properties_[idx].type;
 }
 
-void class_type::set_property(size_t idx, const string&name, const string&type, uint64_t array_size)
+শূন্য class_type::set_property(size_t idx, ধ্রুৱ string&name, ধ্রুৱ string&type, uint64_t array_size)
 {
-      assert(idx < properties_.size());
+      প্রতিজ্ঞা(idx < properties_.size());
       properties_[idx].name = name;
 
-      if (type == "b8")
-	    properties_[idx].type = new property_atom<uint8_t>;
-      else if (type == "b16")
-	    properties_[idx].type = new property_atom<uint16_t>;
-      else if (type == "b32")
-	    properties_[idx].type = new property_atom<uint32_t>;
-      else if (type == "b64")
-	    properties_[idx].type = new property_atom<uint64_t>;
-      else if (type == "sb8")
-	    properties_[idx].type = new property_atom<int8_t>;
-      else if (type == "sb16")
-	    properties_[idx].type = new property_atom<int16_t>;
-      else if (type == "sb32")
-	    properties_[idx].type = new property_atom<int32_t>;
-      else if (type == "sb64")
-	    properties_[idx].type = new property_atom<int64_t>;
-      else if (type == "r")
-	    properties_[idx].type = new property_real<double>;
-      else if (type == "S")
-	    properties_[idx].type = new property_string;
-      else if (type == "o")
-	    properties_[idx].type = new property_object(array_size);
-      else if (type[0] == 'b') {
+      যদি (type == "b8")
+	    properties_[idx].type = নূতন property_atom<uint8_t>;
+      অন্যথা যদি (type == "b16")
+	    properties_[idx].type = নূতন property_atom<uint16_t>;
+      অন্যথা যদি (type == "b32")
+	    properties_[idx].type = নূতন property_atom<uint32_t>;
+      অন্যথা যদি (type == "b64")
+	    properties_[idx].type = নূতন property_atom<uint64_t>;
+      অন্যথা যদি (type == "sb8")
+	    properties_[idx].type = নূতন property_atom<int8_t>;
+      অন্যথা যদি (type == "sb16")
+	    properties_[idx].type = নূতন property_atom<int16_t>;
+      অন্যথা যদি (type == "sb32")
+	    properties_[idx].type = নূতন property_atom<int32_t>;
+      অন্যথা যদি (type == "sb64")
+	    properties_[idx].type = নূতন property_atom<int64_t>;
+      অন্যথা যদি (type == "r")
+	    properties_[idx].type = নূতন property_real<দ্ৱিগুণ>;
+      অন্যথা যদি (type == "S")
+	    properties_[idx].type = নূতন property_string;
+      অন্যথা যদি (type == "o")
+	    properties_[idx].type = নূতন property_object(array_size);
+      অন্যথা যদি (type[0] == 'b') {
 	    size_t wid = strtoul(type.c_str()+1, 0, 0);
-	    properties_[idx].type = new property_bit(wid);
-      } else if (type[0] == 'L') {
+	    properties_[idx].type = নূতন property_bit(wid);
+      } অন্যথা যদি (type[0] == 'L') {
 	    size_t wid = strtoul(type.c_str()+1,0,0);
-	    properties_[idx].type = new property_logic(wid);
-      } else if (type[0] == 's' && type[1] == 'L') {
+	    properties_[idx].type = নূতন property_logic(wid);
+      } অন্যথা যদি (type[0] == 's' && type[1] == 'L') {
 	    size_t wid = strtoul(type.c_str()+2,0,0);
-	    properties_[idx].type = new property_logic(wid);
-      } else {
+	    properties_[idx].type = নূতন property_logic(wid);
+      } অন্যথা {
 	    properties_[idx].type = 0;
       }
 }
 
-void class_type::finish_setup(void)
+শূন্য class_type::finish_setup(শূন্য)
 {
       map<size_t, vector<size_t> > size_map;
 	// Add up all the sizes to get a total instance size. This
 	// figures out how much memory a complete instance will need.
       size_t accum = 0;
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1) {
-	    assert(properties_[idx].type);
+      বাবে (size_t idx = 0 ; idx < properties_.size() ; idx += 1) {
+	    প্রতিজ্ঞা(properties_[idx].type);
 	    size_t instance_size = properties_[idx].type->instance_size();
 	    accum += instance_size;
 	    size_map[instance_size].push_back(idx);
@@ -468,146 +468,146 @@ void class_type::finish_setup(void)
 	// space. Allocate the properties largest objects first so
 	// that they are assured better alignment.
       accum = 0;
-      for (map<size_t, vector<size_t> >::reverse_iterator cur = size_map.rbegin()
+      বাবে (map<size_t, vector<size_t> >::reverse_iterator cur = size_map.rbegin()
 		 ; cur != size_map.rend() ; ++ cur) {
-	    for (size_t idx = 0 ; idx < cur->second.size() ; idx += 1) {
+	    বাবে (size_t idx = 0 ; idx < cur->second.size() ; idx += 1) {
 		  size_t pid = cur->second[idx];
 		  class_property_t*ptype = properties_[pid].type;
-		  assert(ptype->instance_size() == cur->first);
+		  প্রতিজ্ঞা(ptype->instance_size() == cur->first);
 		  ptype->set_offset(accum);
 		  accum += cur->first;
 	    }
       }
 }
 
-class_type::inst_t class_type::instance_new() const
+class_type::inst_t class_type::instance_new() ধ্রুৱ
 {
-      char*buf = new char [instance_size_];
+      ৱর্ণ*buf = নূতন ৱর্ণ [instance_size_];
 
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      বাবে (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->construct(buf);
 
-      return reinterpret_cast<inst_t> (buf);
+      ঘূৰাই reinterpret_cast<inst_t> (buf);
 }
 
-void class_type::instance_delete(class_type::inst_t obj) const
+শূন্য class_type::instance_delete(class_type::inst_t obj) ধ্রুৱ
 {
-      char*buf = reinterpret_cast<char*> (obj);
+      ৱর্ণ*buf = reinterpret_cast<ৱর্ণ*> (obj);
 
-      for (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
+      বাবে (size_t idx = 0 ; idx < properties_.size() ; idx += 1)
 	    properties_[idx].type->destruct(buf);
 
       delete[]buf;
 }
 
-void class_type::set_vec4(class_type::inst_t obj, size_t pid,
-			  const vvp_vector4_t&val) const
+শূন্য class_type::set_vec4(class_type::inst_t obj, size_t pid,
+			  ধ্রুৱ vvp_vector4_t&val) ধ্রুৱ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      ৱর্ণ*buf = reinterpret_cast<ৱর্ণ*> (obj);
+      প্রতিজ্ঞা(pid < properties_.size());
       properties_[pid].type->set_vec4(buf, val);
 }
 
-void class_type::get_vec4(class_type::inst_t obj, size_t pid,
-			  vvp_vector4_t&val) const
+শূন্য class_type::get_vec4(class_type::inst_t obj, size_t pid,
+			  vvp_vector4_t&val) ধ্রুৱ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      ৱর্ণ*buf = reinterpret_cast<ৱর্ণ*> (obj);
+      প্রতিজ্ঞা(pid < properties_.size());
       properties_[pid].type->get_vec4(buf, val);
 }
 
-void class_type::set_real(class_type::inst_t obj, size_t pid,
-			  double val) const
+শূন্য class_type::set_real(class_type::inst_t obj, size_t pid,
+			  দ্ৱিগুণ val) ধ্রুৱ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      ৱর্ণ*buf = reinterpret_cast<ৱর্ণ*> (obj);
+      প্রতিজ্ঞা(pid < properties_.size());
       properties_[pid].type->set_real(buf, val);
 }
 
-double class_type::get_real(class_type::inst_t obj, size_t pid) const
+দ্ৱিগুণ class_type::get_real(class_type::inst_t obj, size_t pid) ধ্রুৱ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      return properties_[pid].type->get_real(buf);
+      ৱর্ণ*buf = reinterpret_cast<ৱর্ণ*> (obj);
+      প্রতিজ্ঞা(pid < properties_.size());
+      ঘূৰাই properties_[pid].type->get_real(buf);
 }
 
-void class_type::set_string(class_type::inst_t obj, size_t pid,
-			    const string&val) const
+শূন্য class_type::set_string(class_type::inst_t obj, size_t pid,
+			    ধ্রুৱ string&val) ধ্রুৱ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      ৱর্ণ*buf = reinterpret_cast<ৱর্ণ*> (obj);
+      প্রতিজ্ঞা(pid < properties_.size());
       properties_[pid].type->set_string(buf, val);
 }
 
-string class_type::get_string(class_type::inst_t obj, size_t pid) const
+string class_type::get_string(class_type::inst_t obj, size_t pid) ধ্রুৱ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
-      return properties_[pid].type->get_string(buf);
+      ৱর্ণ*buf = reinterpret_cast<ৱর্ণ*> (obj);
+      প্রতিজ্ঞা(pid < properties_.size());
+      ঘূৰাই properties_[pid].type->get_string(buf);
 }
 
-void class_type::set_object(class_type::inst_t obj, size_t pid,
-			    const vvp_object_t&val, size_t idx) const
+শূন্য class_type::set_object(class_type::inst_t obj, size_t pid,
+			    ধ্রুৱ vvp_object_t&val, size_t idx) ধ্রুৱ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      ৱর্ণ*buf = reinterpret_cast<ৱর্ণ*> (obj);
+      প্রতিজ্ঞা(pid < properties_.size());
       properties_[pid].type->set_object(buf, val, idx);
 }
 
-void class_type::get_object(class_type::inst_t obj, size_t pid,
-			    vvp_object_t&val, size_t idx) const
+শূন্য class_type::get_object(class_type::inst_t obj, size_t pid,
+			    vvp_object_t&val, size_t idx) ধ্রুৱ
 {
-      char*buf = reinterpret_cast<char*> (obj);
-      assert(pid < properties_.size());
+      ৱর্ণ*buf = reinterpret_cast<ৱর্ণ*> (obj);
+      প্রতিজ্ঞা(pid < properties_.size());
       properties_[pid].type->get_object(buf, val, idx);
 }
 
-void class_type::copy_property(class_type::inst_t dst, size_t pid, class_type::inst_t src) const
+শূন্য class_type::copy_property(class_type::inst_t dst, size_t pid, class_type::inst_t src) ধ্রুৱ
 {
-      char*dst_buf = reinterpret_cast<char*> (dst);
-      char*src_buf = reinterpret_cast<char*> (src);
+      ৱর্ণ*dst_buf = reinterpret_cast<ৱর্ণ*> (dst);
+      ৱর্ণ*src_buf = reinterpret_cast<ৱর্ণ*> (src);
 
-      assert(pid < properties_.size());
+      প্রতিজ্ঞা(pid < properties_.size());
 
       properties_[pid].type->copy(dst_buf, src_buf);
 }
 
-int class_type::get_type_code(void) const
+পূর্ণাঙ্ক class_type::get_type_code(শূন্য) ধ্রুৱ
 {
-      return vpiClassDefn;
+      ঘূৰাই vpiClassDefn;
 }
 
-static class_type*compile_class = 0;
+স্থির class_type*compile_class = 0;
 
-void compile_class_start(char*lab, char*nam, unsigned ntype)
+শূন্য compile_class_start(ৱর্ণ*lab, ৱর্ণ*nam, unsigned ntype)
 {
-      assert(compile_class == 0);
-      compile_class = new class_type(nam, ntype);
-      compile_vpi_symbol(lab, compile_class);
-      free(lab);
+      প্রতিজ্ঞা(compile_class == 0);
+      compile_class = নূতন class_type(nam, ntype);
+      compile_vpi_প্ৰতীক(lab, compile_class);
+      মুক্ত(lab);
       delete[]nam;
 }
 
-void compile_class_property(unsigned idx, char*nam, char*typ, uint64_t array_size)
+শূন্য compile_class_property(unsigned idx, ৱর্ণ*nam, ৱর্ণ*typ, uint64_t array_size)
 {
-      assert(compile_class);
+      প্রতিজ্ঞা(compile_class);
       compile_class->set_property(idx, nam, typ, array_size);
       delete[]nam;
       delete[]typ;
 }
 
-void compile_class_done(void)
+শূন্য compile_class_done(শূন্য)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      assert(scope);
-      assert(compile_class);
+      প্রতিজ্ঞা(scope);
+      প্রতিজ্ঞা(compile_class);
       compile_class->finish_setup();
       scope->classes[compile_class->class_name()] = compile_class;
       compile_class = 0;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void class_def_delete(class_type *item)
+শূন্য class_def_delete(class_type *item)
 {
       delete item;
 }

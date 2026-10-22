@@ -25,31 +25,31 @@
 # include  "vvp_net.h"
 # include  "schedule.h"
 
-struct udp_levels_table;
+সংরচনা udp_levels_table;
 
-struct vvp_udp_s {
+সংরচনা vvp_udp_s {
 
-    public:
-      explicit vvp_udp_s(const char*label, char*name, unsigned ports,
+    সার্ৱজনিক:
+      explicit vvp_udp_s(ধ্রুৱ ৱর্ণ*label, ৱর্ণ*name, unsigned ports,
                          vvp_bit4_t init, bool type);
-      virtual ~vvp_udp_s();
+      আভাস ~vvp_udp_s();
 
 	// Return the number of input ports for the defined UDP. This
 	// does *not* include the current output value for a
 	// sequential UDP.
-      unsigned port_count() const;
-      bool is_sequential() const { return seq_; };
-      char *name() { return name_; }
+      unsigned port_গুনতি() ধ্রুৱ;
+      bool is_sequential() ধ্রুৱ { ঘূৰাই seq_; };
+      ৱর্ণ *name() { ঘূৰাই name_; }
 
 	// Return the initial output value.
-      vvp_bit4_t get_init() const;
+      vvp_bit4_t get_init() ধ্রুৱ;
 
-      virtual vvp_bit4_t calculate_output(const udp_levels_table&cur,
-					  const udp_levels_table&prev,
+      আভাস vvp_bit4_t calculate_output(ধ্রুৱ udp_levels_table&cur,
+					  ধ্রুৱ udp_levels_table&prev,
 					  vvp_bit4_t cur_out) =0;
 
-    private:
-      char *name_;
+    গুপ্ত:
+      ৱর্ণ *name_;
       unsigned ports_;
       vvp_bit4_t init_;
       bool seq_;
@@ -104,32 +104,32 @@ struct vvp_udp_s {
  * Only 0, 1 and x characters are allowed in the output position.
  */
 
-struct udp_levels_table {
+সংরচনা udp_levels_table {
       unsigned long mask0;
       unsigned long mask1;
       unsigned long maskx;
 };
-extern std::ostream& operator<< (std::ostream&o, const struct udp_levels_table&t);
+বাহ্য std::ostream& operator<< (std::ostream&o, ধ্রুৱ সংরচনা udp_levels_table&t);
 
-class vvp_udp_comb_s : public vvp_udp_s {
+class vvp_udp_comb_s : সার্ৱজনিক vvp_udp_s {
 
-    public:
-      vvp_udp_comb_s(const char*label, char*name__, unsigned ports);
+    সার্ৱজনিক:
+      vvp_udp_comb_s(ধ্রুৱ ৱর্ণ*label, ৱর্ণ*name__, unsigned ports);
       ~vvp_udp_comb_s() override;
-      void compile_table(char**tab);
+      শূন্য compile_table(ৱর্ণ**tab);
 
 	// Test the cur table with the compiled rows, and return the
 	// bit value that matches.
-      vvp_bit4_t test_levels(const udp_levels_table&cur);
+      vvp_bit4_t test_levels(ধ্রুৱ udp_levels_table&cur);
 
-      vvp_bit4_t calculate_output(const udp_levels_table&cur,
-				  const udp_levels_table&prev,
+      vvp_bit4_t calculate_output(ধ্রুৱ udp_levels_table&cur,
+				  ধ্রুৱ udp_levels_table&prev,
 				  vvp_bit4_t cur_out) override;
 
-    private:
+    গুপ্ত:
 	// Level sensitive rows of the device.
-      struct udp_levels_table*levels0_;
-      struct udp_levels_table*levels1_;
+      সংরচনা udp_levels_table*levels0_;
+      সংরচনা udp_levels_table*levels1_;
       unsigned nlevels0_, nlevels1_;
 };
 
@@ -167,7 +167,7 @@ class vvp_udp_comb_s : public vvp_udp_s {
  * edge case, the mask* members give the final position and the
  * edge_mask* bits the initial position of the bit.
  */
-struct udp_edges_table {
+সংরচনা udp_edges_table {
       unsigned long edge_position : 8;
       unsigned long edge_mask0 : 1;
       unsigned long edge_mask1 : 1;
@@ -177,35 +177,35 @@ struct udp_edges_table {
       unsigned long maskx;
 };
 
-class vvp_udp_seq_s : public vvp_udp_s {
+class vvp_udp_seq_s : সার্ৱজনিক vvp_udp_s {
 
-    public:
-      vvp_udp_seq_s(const char*label, char*name__, unsigned ports, vvp_bit4_t init);
+    সার্ৱজনিক:
+      vvp_udp_seq_s(ধ্রুৱ ৱর্ণ*label, ৱর্ণ*name__, unsigned ports, vvp_bit4_t init);
       ~vvp_udp_seq_s() override;
 
-      void compile_table(char**tab);
+      শূন্য compile_table(ৱর্ণ**tab);
 
-      vvp_bit4_t calculate_output(const udp_levels_table&cur,
-				  const udp_levels_table&prev,
+      vvp_bit4_t calculate_output(ধ্রুৱ udp_levels_table&cur,
+				  ধ্রুৱ udp_levels_table&prev,
 				  vvp_bit4_t cur_out) override;
 
-    private:
-      vvp_bit4_t test_levels_(const udp_levels_table&cur);
+    গুপ্ত:
+      vvp_bit4_t test_levels_(ধ্রুৱ udp_levels_table&cur);
 
 	// Level sensitive rows of the device.
-      struct udp_levels_table*levels0_;
-      struct udp_levels_table*levels1_;
-      struct udp_levels_table*levelsx_;
-      struct udp_levels_table*levelsL_;
+      সংরচনা udp_levels_table*levels0_;
+      সংরচনা udp_levels_table*levels1_;
+      সংরচনা udp_levels_table*levelsx_;
+      সংরচনা udp_levels_table*levelsL_;
       unsigned nlevels0_, nlevels1_, nlevelsx_, nlevelsL_;
 
-      vvp_bit4_t test_edges_(const udp_levels_table&cur,
-			     const udp_levels_table&prev);
+      vvp_bit4_t test_edges_(ধ্রুৱ udp_levels_table&cur,
+			     ধ্রুৱ udp_levels_table&prev);
 
 	// Edge sensitive rows of the device
-      struct udp_edges_table*edges0_;
-      struct udp_edges_table*edges1_;
-      struct udp_edges_table*edgesL_;
+      সংরচনা udp_edges_table*edges0_;
+      সংরচনা udp_edges_table*edges1_;
+      সংরচনা udp_edges_table*edgesL_;
       unsigned nedges0_, nedges1_, nedgesL_;
 
 };
@@ -213,7 +213,7 @@ class vvp_udp_seq_s : public vvp_udp_s {
 /*
  * This looks up a UDP definition from its LABEL.
  */
-struct vvp_udp_s *udp_find(const char *label);
+সংরচনা vvp_udp_s *udp_find(ধ্রুৱ ৱর্ণ *label);
 
 /*
  * The udp_fun_core is the core of the udp instance in the
@@ -222,16 +222,16 @@ struct vvp_udp_s *udp_find(const char *label);
  * the vvp_wide_fun_t objects and processes them to generate the
  * output to be sent.
  */
-class vvp_udp_fun_core  : public vvp_wide_fun_core, private vvp_gen_event_s {
+class vvp_udp_fun_core  : সার্ৱজনিক vvp_wide_fun_core, গুপ্ত vvp_gen_event_s {
 
-    public:
+    সার্ৱজনিক:
       vvp_udp_fun_core(vvp_net_t*net, vvp_udp_s*def);
       ~vvp_udp_fun_core() override;
 
-      void recv_vec4_from_inputs(unsigned) override;
+      শূন্য recv_vec4_from_inputs(unsigned) override;
 
-    private:
-      void run_run() override;
+    গুপ্ত:
+      শূন্য run_run() override;
 
       vvp_udp_s*def_;
       vvp_bit4_t cur_out_;

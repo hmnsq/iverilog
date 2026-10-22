@@ -28,19 +28,19 @@
  *   port-0:  D input
  *   port-1:  EN input
  */
-class vvp_latch : public vvp_net_fun_t {
+class vvp_latch : সার্ৱজনিক vvp_net_fun_t {
 
-    public:
+    সার্ৱজনিক:
       explicit vvp_latch(unsigned width);
       ~vvp_latch() override;
 
-      void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
+      শূন্য recv_vec4(vvp_net_ptr_t port, ধ্রুৱ vvp_vector4_t&bit,
                      vvp_context_t) override;
 
-      void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
+      শূন্য recv_vec4_pv(vvp_net_ptr_t ptr, ধ্রুৱ vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t ctx) override;
 
-    private:
+    গুপ্ত:
       vvp_bit4_t en_;
       vvp_vector4_t d_;
 };

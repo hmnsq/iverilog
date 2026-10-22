@@ -22,44 +22,44 @@
 // The SunPro C++ compiler is broken and does not define size_t in cstddef.
 #ifdef __SUNPRO_CC
 # include  <stddef.h>
-#else
+#অন্যথা
 # include  <cstddef>
 #endif
 
-extern unsigned long count_opcodes;
-extern unsigned long count_functors;
-extern unsigned long count_functors_logic;
-extern unsigned long count_functors_bufif;
-extern unsigned long count_functors_resolv;
-extern unsigned long count_functors_sig;
-extern unsigned long count_filters;
-extern unsigned long count_vvp_nets;
-extern unsigned long count_vpi_nets;
-extern unsigned long count_vpi_scopes;
+বাহ্য unsigned long গুনতি_opcodes;
+বাহ্য unsigned long গুনতি_functors;
+বাহ্য unsigned long গুনতি_functors_logic;
+বাহ্য unsigned long গুনতি_functors_bufif;
+বাহ্য unsigned long গুনতি_functors_resolv;
+বাহ্য unsigned long গুনতি_functors_sig;
+বাহ্য unsigned long গুনতি_filters;
+বাহ্য unsigned long গুনতি_vvp_nets;
+বাহ্য unsigned long গুনতি_vpi_nets;
+বাহ্য unsigned long গুনতি_vpi_scopes;
 
-extern unsigned long count_net_arrays;
-extern unsigned long count_net_array_words;
-extern unsigned long count_var_arrays;
-extern unsigned long count_var_array_words;
-extern unsigned long count_real_arrays;
-extern unsigned long count_real_array_words;
+বাহ্য unsigned long গুনতি_net_arrays;
+বাহ্য unsigned long গুনতি_net_array_শব্দগুলি;
+বাহ্য unsigned long গুনতি_var_arrays;
+বাহ্য unsigned long গুনতি_var_array_শব্দগুলি;
+বাহ্য unsigned long গুনতি_real_arrays;
+বাহ্য unsigned long গুনতি_real_array_শব্দগুলি;
 
 
-extern unsigned long count_time_events;
-extern unsigned long count_time_pool(void);
+বাহ্য unsigned long গুনতি_time_events;
+বাহ্য unsigned long গুনতি_time_pool(শূন্য);
 
-extern unsigned long count_assign_events;
-extern unsigned long count_assign4_pool(void);
-extern unsigned long count_assign8_pool(void);
-extern unsigned long count_assign_real_pool(void);
-extern unsigned long count_assign_aword_pool(void);
-extern unsigned long count_assign_arword_pool(void);
+বাহ্য unsigned long গুনতি_assign_events;
+বাহ্য unsigned long গুনতি_assign4_pool(শূন্য);
+বাহ্য unsigned long গুনতি_assign8_pool(শূন্য);
+বাহ্য unsigned long গুনতি_assign_real_pool(শূন্য);
+বাহ্য unsigned long গুনতি_assign_aword_pool(শূন্য);
+বাহ্য unsigned long গুনতি_assign_arword_pool(শূন্য);
 
-extern unsigned long count_gen_events;
-extern unsigned long count_gen_pool(void);
+বাহ্য unsigned long গুনতি_gen_events;
+বাহ্য unsigned long গুনতি_gen_pool(শূন্য);
 
-extern size_t size_opcodes;
-extern size_t size_vvp_nets;
-extern size_t size_vvp_net_funs;
+বাহ্য size_t size_opcodes;
+বাহ্য size_t size_vvp_nets;
+বাহ্য size_t size_vvp_net_funs;
 
 #endif /* IVL_statistics_H */

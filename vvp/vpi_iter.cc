@@ -26,38 +26,38 @@
 # include  <cassert>
 # include  "ivl_alloc.h"
 
-static int iterator_free_object(vpiHandle ref)
+স্থির পূর্ণাঙ্ক iterator_free_object(vpiHandle ref)
 {
-      struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
-      assert(hp);
+      সংরচনা __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref);
+      প্রতিজ্ঞা(hp);
 
-      if (hp->free_args_flag)
-	    free(hp->args);
+      যদি (hp->free_args_flag)
+	    মুক্ত(hp->args);
 
       delete hp;
-      return 1;
+      ঘূৰাই 1;
 }
 
-inline __vpiIterator::__vpiIterator()
+অন্তঃস্থ __vpiIterator::__vpiIterator()
 { }
 
-int __vpiIterator::get_type_code(void) const
-{ return vpiIterator; }
+পূর্ণাঙ্ক __vpiIterator::get_type_code(শূন্য) ধ্রুৱ
+{ ঘূৰাই vpiIterator; }
 
-__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(void)
-{ return &iterator_free_object; }
+__vpiHandle::free_object_fun_t __vpiIterator::free_object_fun(শূন্য)
+{ ঘূৰাই &iterator_free_object; }
 
 vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
-			     bool free_args_flag)
+			     তার্কিক free_args_flag)
 {
-      struct __vpiIterator*res = new __vpiIterator;
+      সংরচনা __vpiIterator*res = নূতন __vpiIterator;
       res->args = args;
       res->nargs = nargs;
       res->next  = 0;
 
       res->free_args_flag = free_args_flag;
 
-      return res;
+      ঘূৰাই res;
 }
 
 /*
@@ -66,20 +66,20 @@ vpiHandle vpip_make_iterator(unsigned nargs, vpiHandle*args,
  */
 vpiHandle vpi_scan(vpiHandle ref)
 {
-      if (ref == 0) {
+      যদি (ref == 0) {
 	    fprintf(stderr, "ERROR: NULL handle passed to vpi_scan.\n");
-	    assert(0);
-	    return 0;
+	    প্রতিজ্ঞা(0);
+	    ঘূৰাই 0;
       }
 
-      if (struct __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
-	    if (hp->next == hp->nargs) {
+      যদি (সংরচনা __vpiIterator*hp = dynamic_cast<__vpiIterator*>(ref)) {
+	    যদি (hp->next == hp->nargs) {
 		  vpi_free_object(ref);
-		  return 0;
+		  ঘূৰাই 0;
 	    }
 
-	    return hp->args[hp->next++];
+	    ঘূৰাই hp->args[hp->next++];
       }
 
-      return ref->vpi_index(0);
+      ঘূৰাই ref->vpi_index(0);
 }

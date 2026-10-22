@@ -55,100 +55,100 @@
  * The table is calculated at compile time, therefore, by the
  * draw_tt.c program.
  */
-extern const char hex_digits[256];
-extern const char oct_digits[64];
+বাহ্য ধ্রুৱ ৱর্ণ hex_digits[256];
+বাহ্য ধ্রুৱ ৱর্ণ oct_digits[64];
 
 /*
  * The string values need a result buf to hold the results. This
  * buffer can be reused for that purpose. Whenever I have a need, the
  * need_result_buf function makes sure that need can be met.
  */
-void *need_result_buf(unsigned cnt, vpi_rbuf_t type)
+শূন্য *need_result_buf(unsigned cnt, vpi_rbuf_t type)
 {
-      static void*result_buf[2] = {0, 0};
-      static size_t result_buf_size[2] = {0, 0};
+      স্থির শূন্য*result_buf[2] = {0, 0};
+      স্থির size_t result_buf_size[2] = {0, 0};
 
-      if (type == RBUF_DEL) {
-	    free(result_buf[RBUF_VAL]);
+      যদি (type == RBUF_DEL) {
+	    মুক্ত(result_buf[RBUF_VAL]);
 	    result_buf[RBUF_VAL] = 0;
 	    result_buf_size[RBUF_VAL] = 0;
 
-	    free(result_buf[RBUF_STR]);
+	    মুক্ত(result_buf[RBUF_STR]);
 	    result_buf[RBUF_STR] = 0;
 	    result_buf_size[RBUF_STR] = 0;
 
-	    return 0;
+	    ঘূৰাই 0;
       }
 
       cnt = (cnt + 0x0fff) & ~0x0fff;
 
-      if (result_buf_size[type] == 0) {
+      যদি (result_buf_size[type] == 0) {
 	    result_buf[type] = malloc(cnt);
 	    result_buf_size[type] = cnt;
-      } else if (result_buf_size[type] < cnt) {
+      } অন্যথা যদি (result_buf_size[type] < cnt) {
 	    result_buf[type] = realloc(result_buf[type], cnt);
 	    result_buf_size[type] = cnt;
       }
 
-      return result_buf[type];
+      ঘূৰাই result_buf[type];
 }
 
-char *simple_set_rbuf_str(const char *s1)
+ৱর্ণ *simple_set_rbuf_str(ধ্রুৱ ৱর্ণ *s1)
 {
-      char *res = static_cast<char *>(need_result_buf(strlen(s1)+1, RBUF_STR));
-      if (res) strcpy(res,s1);
-      return res;
+      ৱর্ণ *res = static_cast<ৱর্ণ *>(need_result_buf(strlen(s1)+1, RBUF_STR));
+      যদি (res) strcpy(res,s1);
+      ঘূৰাই res;
 }
 
-char *generic_get_str(int code, vpiHandle ref, const char *name, const char *index)
+ৱর্ণ *generic_get_str(পূর্ণাঙ্ক code, vpiHandle ref, ধ্রুৱ ৱর্ণ *name, ধ্রুৱ ৱর্ণ *index)
 {
       size_t len = strlen(name) + 1;  /* include space for null termination */
-      char *bn = NULL;
-      bool is_bn_a_pkg = false;
-      if (code == vpiFullName) {
+      ৱর্ণ *bn = রিক্ত;
+      তার্কিক is_bn_a_pkg = মিছা;
+      যদি (code == vpiFullName) {
 	    bn = strdup(vpi_get_str(code,ref));
 	    size_t bn_len = strlen(bn);
 	    is_bn_a_pkg = (bn_len >= 3) && (bn[bn_len-1] == ':') && (bn[bn_len-2] == ':');
 	    len += bn_len;
-	    if (! is_bn_a_pkg) len += 1; // include space for "." separator
+	    যদি (! is_bn_a_pkg) len += 1; // include space for "." separator
       }
-      if (index != NULL) len += strlen(index) + 2;  /* include space for brackets */
+      যদি (index != রিক্ত) len += strlen(index) + 2;  /* include space for brackets */
 
-      char *res = static_cast<char *>(need_result_buf(len, RBUF_STR));
-      if (!res) {
-	    free(bn);
-	    return NULL;
+      ৱর্ণ *res = static_cast<ৱর্ণ *>(need_result_buf(len, RBUF_STR));
+      যদি (!res) {
+	    মুক্ত(bn);
+	    ঘূৰাই রিক্ত;
       }
       *res=0;  /* start with nothing */
 
 	/* if this works, I can make it more efficient later */
-      if (bn != NULL) {
+      যদি (bn != রিক্ত) {
 	    strcat(res, bn);
 	      // A package already has the "::" separator in the name
-	    if (! is_bn_a_pkg) strcat(res, ".");
-	    free(bn);
+	    যদি (! is_bn_a_pkg) strcat(res, ".");
+	    মুক্ত(bn);
       }
       strcat(res, name);
-      if (index != NULL) {
+      যদি (index != রিক্ত) {
 	    strcat(res, "[");
 	    strcat(res, index);
 	    strcat(res, "]");
       }
-      return res;
+      ঘূৰাই res;
 }
 
-static vpiHandle fill_in_net4(struct __vpiSignal*obj, __vpiScope*scope,
-                              const char*name, int msb, int lsb,
-                              bool signed_flag, vvp_net_t*node);
+স্থির vpiHandle fill_in_net4(সংরচনা __vpiSignal*obj, __vpiScope*scope,
+                              ধ্রুৱ ৱর্ণ*name, পূর্ণাঙ্ক msb, পূর্ণাঙ্ক lsb,
+                              তার্কিক signed_flag, vvp_net_t*গ্ৰন্থি);
 
-static vpiHandle fill_in_var4(struct __vpiSignal*obj,
-                              const char*name, int msb, int lsb,
-                              bool signed_flag, vvp_net_t*node)
+স্থির vpiHandle fill_in_var4(সংরচনা __vpiSignal*obj,
+                              ধ্রুৱ ৱর্ণ*name, পূর্ণাঙ্ক msb, পূর্ণাঙ্ক lsb,
+                              তার্কিক signed_flag, vvp_net_t*গ্ৰন্থি)
 {
 	// Variable declarations are always resolved immediately,
 	// so we can assume they belong in the current scope.
-      return fill_in_net4(obj, vpip_peek_current_scope(),
-			  name, msb, lsb, signed_flag, node);
+      ঘূৰাই fill_in_net4(obj, vpip_peek_current_scope(),
+			  name, msb, lsb, signed_flag, গ্ৰন্থি);
 }
 
 /*
@@ -156,18 +156,18 @@ static vpiHandle fill_in_var4(struct __vpiSignal*obj,
  * They work with full or partial signals.
  */
 
-static void format_vpiBinStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+স্থির শূন্য format_vpiBinStrVal(ধ্রুৱ vvp_signal_মান*sig, পূর্ণাঙ্ক base, unsigned wid,
+                                s_vpi_মান*vp)
 {
-      char *rbuf = static_cast<char *>(need_result_buf(wid+1, RBUF_VAL));
+      ৱর্ণ *rbuf = static_cast<ৱর্ণ *>(need_result_buf(wid+1, RBUF_VAL));
       long end = base + (signed)wid;
       long offset = end - 1;
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->মান_size();
 
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (idx < 0 || idx >= ssize) {
+      বাবে (long idx = base ;  idx < end ;  idx += 1) {
+	    যদি (idx < 0 || idx >= ssize) {
                   rbuf[offset-idx] = 'x';
-	    } else {
+	    } অন্যথা {
                   rbuf[offset-idx] = vvp_bit4_to_ascii(sig->value(idx));
 	    }
       }
@@ -176,39 +176,39 @@ static void format_vpiBinStrVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiOctStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+স্থির শূন্য format_vpiOctStrVal(ধ্রুৱ vvp_signal_মান*sig, পূর্ণাঙ্ক base, unsigned wid,
+                                s_vpi_মান*vp)
 {
       unsigned dwid = (wid + 2) / 3;
-      char *rbuf = static_cast<char *>(need_result_buf(dwid+1, RBUF_VAL));
+      ৱর্ণ *rbuf = static_cast<ৱর্ণ *>(need_result_buf(dwid+1, RBUF_VAL));
       long end = base + (signed)wid;
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->মান_size();
       unsigned val = 0;
 
       rbuf[dwid] = 0;
-      for (long idx = base ;  idx < end ;  idx += 1) {
+      বাবে (long idx = base ;  idx < end ;  idx += 1) {
 	    unsigned bit = 0;
-	    if (idx < 0 || idx >= ssize) {
+	    যদি (idx < 0 || idx >= ssize) {
                   bit = 2; // BIT4_X
-	    } else {
-                  switch (sig->value(idx)) {
-		      case BIT4_0:
+	    } অন্যথা {
+                  ৱিকল্প (sig->value(idx)) {
+		      পক্ষ BIT4_0:
 			bit = 0;
-			break;
-		      case BIT4_1:
+			ভঙ্গ;
+		      পক্ষ BIT4_1:
 			bit = 1;
-			break;
-		      case BIT4_X:
+			ভঙ্গ;
+		      পক্ষ BIT4_X:
 			bit = 2;
-			break;
-		      case BIT4_Z:
+			ভঙ্গ;
+		      পক্ষ BIT4_Z:
 			bit = 3;
-			break;
+			ভঙ্গ;
                   }
 	    }
 	    val |= bit << 2*((idx-base) % 3);
 
-	    if ((idx-base) % 3 == 2) {
+	    যদি ((idx-base) % 3 == 2) {
 		dwid -= 1;
 		rbuf[dwid] = oct_digits[val];
 		val = 0;
@@ -216,55 +216,55 @@ static void format_vpiOctStrVal(const vvp_signal_value*sig, int base, unsigned w
       }
 
 	/* Fill in X or Z if they are the only thing in the value. */
-      switch (wid % 3) {
-	  case 1:
-	    if (val == 2) val = 42;
-	    else if (val == 3) val = 63;
-	    break;
-	  case 2:
-	    if (val == 10) val = 42;
-	    else if (val == 15) val = 63;
-	    break;
+      ৱিকল্প (wid % 3) {
+	  পক্ষ 1:
+	    যদি (val == 2) val = 42;
+	    অন্যথা যদি (val == 3) val = 63;
+	    ভঙ্গ;
+	  পক্ষ 2:
+	    যদি (val == 10) val = 42;
+	    অন্যথা যদি (val == 15) val = 63;
+	    ভঙ্গ;
       }
 
-      if (dwid > 0) rbuf[0] = oct_digits[val];
+      যদি (dwid > 0) rbuf[0] = oct_digits[val];
 
       vp->value.str = rbuf;
 }
 
-static void format_vpiHexStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+স্থির শূন্য format_vpiHexStrVal(ধ্রুৱ vvp_signal_মান*sig, পূর্ণাঙ্ক base, unsigned wid,
+                                s_vpi_মান*vp)
 {
       unsigned dwid = (wid + 3) / 4;
-      char *rbuf = static_cast<char *>(need_result_buf(dwid+1, RBUF_VAL));
+      ৱর্ণ *rbuf = static_cast<ৱর্ণ *>(need_result_buf(dwid+1, RBUF_VAL));
       long end = base + (signed)wid;
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->মান_size();
       unsigned val = 0;
 
       rbuf[dwid] = 0;
-      for (long idx = base ;  idx < end ;  idx += 1) {
+      বাবে (long idx = base ;  idx < end ;  idx += 1) {
 	    unsigned bit = 0;
-	    if (idx < 0 || idx >= ssize) {
+	    যদি (idx < 0 || idx >= ssize) {
                   bit = 2; // BIT4_X
-	    } else {
-                  switch (sig->value(idx)) {
-		      case BIT4_0:
+	    } অন্যথা {
+                  ৱিকল্প (sig->value(idx)) {
+		      পক্ষ BIT4_0:
 			bit = 0;
-			break;
-		      case BIT4_1:
+			ভঙ্গ;
+		      পক্ষ BIT4_1:
 			bit = 1;
-			break;
-		      case BIT4_X:
+			ভঙ্গ;
+		      পক্ষ BIT4_X:
 			bit = 2;
-			break;
-		      case BIT4_Z:
+			ভঙ্গ;
+		      পক্ষ BIT4_Z:
 			bit = 3;
-			break;
+			ভঙ্গ;
                   }
 	    }
 	    val |= bit << 2*((idx-base) % 4);
 
-	    if ((idx-base) % 4 == 3) {
+	    যদি ((idx-base) % 4 == 3) {
 		dwid -= 1;
 		rbuf[dwid] = hex_digits[val];
 		val = 0;
@@ -272,63 +272,63 @@ static void format_vpiHexStrVal(const vvp_signal_value*sig, int base, unsigned w
       }
 
 	/* Fill in X or Z if they are the only thing in the value. */
-      switch (wid % 4) {
-	  case 1:
-	    if (val == 2) val = 170;
-	    else if (val == 3) val = 255;
-	    break;
-	  case 2:
-	    if (val == 10) val = 170;
-	    else if (val == 15) val = 255;
-	    break;
-	  case 3:
-	    if (val == 42) val = 170;
-	    else if (val == 63) val = 255;
-	    break;
+      ৱিকল্প (wid % 4) {
+	  পক্ষ 1:
+	    যদি (val == 2) val = 170;
+	    অন্যথা যদি (val == 3) val = 255;
+	    ভঙ্গ;
+	  পক্ষ 2:
+	    যদি (val == 10) val = 170;
+	    অন্যথা যদি (val == 15) val = 255;
+	    ভঙ্গ;
+	  পক্ষ 3:
+	    যদি (val == 42) val = 170;
+	    অন্যথা যদি (val == 63) val = 255;
+	    ভঙ্গ;
       }
 
-      if (dwid > 0) rbuf[0] = hex_digits[val];
+      যদি (dwid > 0) rbuf[0] = hex_digits[val];
 
       vp->value.str = rbuf;
 }
 
-static void format_vpiDecStrVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                int signed_flag, s_vpi_value*vp)
+স্থির শূন্য format_vpiDecStrVal(ধ্রুৱ vvp_signal_মান*sig, পূর্ণাঙ্ক base, unsigned wid,
+                                পূর্ণাঙ্ক signed_flag, s_vpi_মান*vp)
 {
-      unsigned hwid = (sig->value_size()+2) / 3 + 1;
-      char *rbuf = static_cast<char *>(need_result_buf(hwid, RBUF_VAL));
-      long ssize = (signed)sig->value_size();
+      unsigned hwid = (sig->মান_size()+2) / 3 + 1;
+      ৱর্ণ *rbuf = static_cast<ৱর্ণ *>(need_result_buf(hwid, RBUF_VAL));
+      long ssize = (signed)sig->মান_size();
       long end = base + (signed)wid;
 
 	/* Do we have an end outside of the real signal vector. */
-      if (base < 0 || end > ssize) {
-	    bool all_x = true;
-	    if (end > ssize) end = ssize;
-	    if (base < 0) base = 0;
-	    for (long idx = base ;  idx < end ;  idx += 1) {
-		  if (sig->value(idx) != BIT4_X) {
-			all_x = false;
-			break;
+      যদি (base < 0 || end > ssize) {
+	    তার্কিক all_x = সঁচা;
+	    যদি (end > ssize) end = ssize;
+	    যদি (base < 0) base = 0;
+	    বাবে (long idx = base ;  idx < end ;  idx += 1) {
+		  যদি (sig->value(idx) != BIT4_X) {
+			all_x = মিছা;
+			ভঙ্গ;
 		  }
 	    }
 
-	    if (all_x) {
+	    যদি (all_x) {
 		  rbuf[0] = 'x';
-	    } else {
+	    } অন্যথা {
 		  rbuf[0] = 'X';
 	    }
 	    rbuf[1] = 0;
 
 	    vp->value.str = rbuf;
-	    return;
+	    ঘূৰাই;
       }
 
       vvp_vector4_t vec4;
-      if (base == 0 && end == ssize) {
-	    sig->vec4_value(vec4);
-      } else {
+      যদি (base == 0 && end == ssize) {
+	    sig->vec4_মান(vec4);
+      } অন্যথা {
 	    vvp_vector4_t tmp;
-	    sig->vec4_value(tmp);
+	    sig->vec4_মান(tmp);
 	    vec4 = tmp.subvalue(base, wid);
       }
 
@@ -337,67 +337,67 @@ static void format_vpiDecStrVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiIntVal(const vvp_signal_value*sig, int base, unsigned wid,
-                             int signed_flag, s_vpi_value*vp)
+স্থির শূন্য format_vpiIntVal(ধ্রুৱ vvp_signal_মান*sig, পূর্ণাঙ্ক base, unsigned wid,
+                             পূর্ণাঙ্ক signed_flag, s_vpi_মান*vp)
 {
       vvp_vector4_t tmp;
-      sig->vec4_value(tmp);
+      sig->vec4_মান(tmp);
       vvp_vector4_t sub = tmp.subvalue(base, wid);
 
 	// Normally, we'd be OK with just using long in the call to
 	// vector4_to_value, but some compilers seem to take long as
 	// distinct from int32_t AND int64_t. Since the condition is
 	// constant, the compiler should eliminate the dead code.
-      if (sizeof(vp->value.integer) == sizeof(int32_t)) {
+      যদি (পরিমাণ(vp->value.integer) == পরিমাণ(int32_t)) {
 	    int32_t val = 0;
-	    vector4_to_value(sub, val, signed_flag, false);
+	    vector4_to_মান(sub, val, signed_flag, মিছা);
 	    vp->value.integer = val;
-      } else {
-	    assert(sizeof(vp->value.integer) == sizeof(int64_t));
+      } অন্যথা {
+	    প্রতিজ্ঞা(পরিমাণ(vp->value.integer) == পরিমাণ(int64_t));
 	    int64_t val = 0;
-	    vector4_to_value(sub, val, signed_flag, false);
+	    vector4_to_মান(sub, val, signed_flag, মিছা);
 	    vp->value.integer = val;
       }
 }
 
-static void format_vpiRealVal(const vvp_signal_value*sig, int base, unsigned wid,
-                              int signed_flag, s_vpi_value*vp)
+স্থির শূন্য format_vpiRealVal(ধ্রুৱ vvp_signal_মান*sig, পূর্ণাঙ্ক base, unsigned wid,
+                              পূর্ণাঙ্ক signed_flag, s_vpi_মান*vp)
 {
       vvp_vector4_t vec4(wid);
-      long ssize = (signed)sig->value_size();
+      long ssize = (signed)sig->মান_size();
       long end = base + (signed)wid;
-      if (end > ssize) end = ssize;
+      যদি (end > ssize) end = ssize;
 
-      for (long idx = (base < 0) ? 0 : base ;  idx < end ;  idx += 1) {
+      বাবে (long idx = (base < 0) ? 0 : base ;  idx < end ;  idx += 1) {
 	    vec4.set_bit(idx-base, sig->value(idx));
       }
 
       vp->value.real = 0.0;
-      vector4_to_value(vec4, vp->value.real, signed_flag);
+      vector4_to_মান(vec4, vp->value.real, signed_flag);
 }
 
-static void format_vpiStringVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+স্থির শূন্য format_vpiStringVal(ধ্রুৱ vvp_signal_মান*sig, পূর্ণাঙ্ক base, unsigned wid,
+                                s_vpi_মান*vp)
 {
       /* The result will use a character for each 8 bits of the
 	 vector. Add one extra character for the highest bits that
 	 don't form an 8 bit group. */
-      char *rbuf = static_cast<char *>(need_result_buf(wid/8 + ((wid&7)!=0) + 1, RBUF_VAL));
-      char *cp = rbuf;
+      ৱর্ণ *rbuf = static_cast<ৱর্ণ *>(need_result_buf(wid/8 + ((wid&7)!=0) + 1, RBUF_VAL));
+      ৱর্ণ *cp = rbuf;
 
-      char tmp = 0;
-      for (long idx = base+(signed)wid-1; idx >= base; idx -= 1) {
+      ৱর্ণ tmp = 0;
+      বাবে (long idx = base+(signed)wid-1; idx >= base; idx -= 1) {
 	    tmp <<= 1;
 
-	    if (idx >=0 && idx < (signed)sig->value_size() &&
+	    যদি (idx >=0 && idx < (signed)sig->মান_size() &&
 	        sig->value(idx) == BIT4_1) {
 		   tmp |= 1;
 	    }
 
-	    if (((idx-base)&7)==0){
+	    যদি (((idx-base)&7)==0){
 		  /* Skip leading nulls. */
-		  if (tmp == 0 && cp == rbuf)
-			continue;
+		  যদি (tmp == 0 && cp == rbuf)
+			অনুৱর্ত;
 
 		  /* Nulls in the middle get turned into spaces. */
 		  *cp++ = tmp ? tmp : ' ';
@@ -409,45 +409,45 @@ static void format_vpiStringVal(const vvp_signal_value*sig, int base, unsigned w
       vp->value.str = rbuf;
 }
 
-static void format_vpiScalarVal(const vvp_signal_value*sig, int base,
-                                s_vpi_value*vp)
+স্থির শূন্য format_vpiScalarVal(ধ্রুৱ vvp_signal_মান*sig, পূর্ণাঙ্ক base,
+                                s_vpi_মান*vp)
 {
-      if (base >= 0 && base < (signed)sig->value_size()) {
-	    switch (sig->value(base)) {
-		case BIT4_0:
+      যদি (base >= 0 && base < (signed)sig->মান_size()) {
+	    ৱিকল্প (sig->value(base)) {
+		পক্ষ BIT4_0:
 		  vp->value.scalar = vpi0;
-		  break;
-		case BIT4_1:
+		  ভঙ্গ;
+		পক্ষ BIT4_1:
 		  vp->value.scalar = vpi1;
-		  break;
-		case BIT4_X: {
-		  vvp_scalar_t strn = sig->scalar_value(base);
-		  if (strn.strength0() == 1) vp->value.scalar = vpiH;
-		  else if (strn.strength1() == 1) vp->value.scalar = vpiL;
-		  else vp->value.scalar = vpiX;
-		  break;
+		  ভঙ্গ;
+		পক্ষ BIT4_X: {
+		  vvp_scalar_t strn = sig->scalar_মান(base);
+		  যদি (strn.strength0() == 1) vp->value.scalar = vpiH;
+		  অন্যথা যদি (strn.strength1() == 1) vp->value.scalar = vpiL;
+		  অন্যথা vp->value.scalar = vpiX;
+		  ভঙ্গ;
 		}
-		case BIT4_Z:
+		পক্ষ BIT4_Z:
 		  vp->value.scalar = vpiZ;
-		  break;
+		  ভঙ্গ;
 	    }
-      } else {
+      } অন্যথা {
 	    vp->value.scalar = vpiX;
       }
 }
 
-static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
-                                  unsigned wid, s_vpi_value*vp)
+স্থির শূন্য format_vpiStrengthVal(ধ্রুৱ vvp_signal_মান*sig, পূর্ণাঙ্ক base,
+                                  unsigned wid, s_vpi_মান*vp)
 {
       long end = base + (signed)wid;
       s_vpi_strengthval*op;
 
       op = static_cast<s_vpi_strengthval*>
-           (need_result_buf(wid * sizeof(s_vpi_strengthval), RBUF_VAL));
+           (need_result_buf(wid * পরিমাণ(s_vpi_strengthval), RBUF_VAL));
 
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (idx >=0 && idx < (signed)sig->value_size()) {
-		  vvp_scalar_t val = sig->scalar_value(idx);
+      বাবে (long idx = base ;  idx < end ;  idx += 1) {
+	    যদি (idx >=0 && idx < (signed)sig->মান_size()) {
+		  vvp_scalar_t val = sig->scalar_মান(idx);
 
 		  /* vvp_scalar_t strengths are 0-7, but the vpi strength
 		     is bit0-bit7. This gets the vpi form of the strengths
@@ -455,32 +455,32 @@ static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
 		  unsigned s0 = 1 << val.strength0();
 		  unsigned s1 = 1 << val.strength1();
 
-		  switch (val.value()) {
-		      case BIT4_0:
+		  ৱিকল্প (val.value()) {
+		      পক্ষ BIT4_0:
 			op[idx-base].logic = vpi0;
 			op[idx-base].s0 = s0|s1;
 			op[idx-base].s1 = 0;
-			break;
+			ভঙ্গ;
 
-		      case BIT4_1:
+		      পক্ষ BIT4_1:
 			op[idx-base].logic = vpi1;
 			op[idx-base].s0 = 0;
 			op[idx-base].s1 = s0|s1;
-			break;
+			ভঙ্গ;
 
-		      case BIT4_X:
+		      পক্ষ BIT4_X:
 			op[idx-base].logic = vpiX;
 			op[idx-base].s0 = s0;
 			op[idx-base].s1 = s1;
-			break;
+			ভঙ্গ;
 
-		      case BIT4_Z:
+		      পক্ষ BIT4_Z:
 			op[idx-base].logic = vpiZ;
 			op[idx-base].s0 = vpiHiZ;
 			op[idx-base].s1 = vpiHiZ;
-			break;
+			ভঙ্গ;
 		  }
-	    } else {
+	    } অন্যথা {
 		  op[idx-base].logic = vpiX;
 		  op[idx-base].s0 = vpiStrongDrive;
 		  op[idx-base].s1 = vpiStrongDrive;
@@ -490,47 +490,47 @@ static void format_vpiStrengthVal(const vvp_signal_value*sig, int base,
       vp->value.strength = op;
 }
 
-static void format_vpiVectorVal(const vvp_signal_value*sig, int base, unsigned wid,
-                                s_vpi_value*vp)
+স্থির শূন্য format_vpiVectorVal(ধ্রুৱ vvp_signal_মান*sig, পূর্ণাঙ্ক base, unsigned wid,
+                                s_vpi_মান*vp)
 {
       long end = base + (signed)wid;
-      unsigned int obit = 0;
+      unsigned পূর্ণাঙ্ক obit = 0;
       unsigned hwid = (wid + 31)/32;
 
       s_vpi_vecval *op = static_cast<p_vpi_vecval>
-                         (need_result_buf(hwid * sizeof(s_vpi_vecval), RBUF_VAL));
+                         (need_result_buf(hwid * পরিমাণ(s_vpi_vecval), RBUF_VAL));
       vp->value.vector = op;
 
       op->aval = op->bval = 0;
-      for (long idx = base ;  idx < end ;  idx += 1) {
-	    if (base >= 0 && base < (signed)sig->value_size()) {
-		switch (sig->value(idx)) {
-		case BIT4_0:
+      বাবে (long idx = base ;  idx < end ;  idx += 1) {
+	    যদি (base >= 0 && base < (signed)sig->মান_size()) {
+		ৱিকল্প (sig->value(idx)) {
+		পক্ষ BIT4_0:
 		  op->aval &= ~(1 << obit);
 		  op->bval &= ~(1 << obit);
-		  break;
-		case BIT4_1:
+		  ভঙ্গ;
+		পক্ষ BIT4_1:
 		  op->aval |= (1 << obit);
 		  op->bval &= ~(1 << obit);
-		  break;
-		case BIT4_X:
+		  ভঙ্গ;
+		পক্ষ BIT4_X:
 		  op->aval |= (1 << obit);
 		  op->bval |= (1 << obit);
-		  break;
-		case BIT4_Z:
+		  ভঙ্গ;
+		পক্ষ BIT4_Z:
 		  op->aval &= ~(1 << obit);
 		  op->bval |= (1 << obit);
-		  break;
+		  ভঙ্গ;
 		}
-	    } else {  /* BIT4_X */
+	    } অন্যথা {  /* BIT4_X */
 		  op->aval |= (1 << obit);
 		  op->bval |= (1 << obit);
 	    }
 
 	    obit++;
-	    if (!(obit % 32)) {
+	    যদি (!(obit % 32)) {
 		  op += 1;
-		  if ((op - vp->value.vector) < (ptrdiff_t)hwid)
+		  যদি ((op - vp->value.vector) < (ptrdiff_t)hwid)
 			op->aval = op->bval = 0;
 		  obit = 0;
 	    }
@@ -540,312 +540,312 @@ static void format_vpiVectorVal(const vvp_signal_value*sig, int base, unsigned w
 /*
  * implement vpi_get for vpiReg objects.
  */
-static int signal_get(int code, vpiHandle ref)
+স্থির পূর্ণাঙ্ক signal_get(পূর্ণাঙ্ক code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      সংরচনা __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      প্রতিজ্ঞা(rfp);
 
-      switch (code) {
-	  case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      ৱিকল্প (code) {
+	  পক্ষ vpi_সাৰি_No:
+	    ঘূৰাই 0;  // Not implemented for now!
 
-	  case vpiSigned:
-	    return rfp->signed_flag != 0;
+	  পক্ষ vpiSigned:
+	    ঘূৰাই rfp->signed_flag != 0;
 
-	  case vpiArray:
-	    return rfp->is_netarray != 0;
+	  পক্ষ vpiArray:
+	    ঘূৰাই rfp->is_netarray != 0;
 
-	  case vpiIndex: // This only works while we have a single index.
-	    if (rfp->is_netarray) {
-		  s_vpi_value vp;
+	  পক্ষ vpiIndex: // This only works while we have a single index.
+	    যদি (rfp->is_netarray) {
+		  s_vpi_মান vp;
 		  vp.format = vpiIntVal;
-		  vpi_get_value(rfp->id.index, &vp);
-		  return vp.value.integer;
-	    } else {
-		  return vpiUndefined;
+		  vpi_get_মান(rfp->id.index, &vp);
+		  ঘূৰাই vp.value.integer;
+	    } অন্যথা {
+		  ঘূৰাই vpiUndefined;
 	    }
 
-	  case vpiSize:
-	    return rfp->width();
+	  পক্ষ vpiSize:
+	    ঘূৰাই rfp->width();
 
-	  case vpiNetType:
-	    if (ref->get_type_code()==vpiNet)
-		  return vpiWire;
-	    else
-		  return vpiUndefined;
+	  পক্ষ vpiNetType:
+	    যদি (ref->get_type_code()==vpiNet)
+		  ঘূৰাই vpiWire;
+	    অন্যথা
+		  ঘূৰাই vpiUndefined;
 
-	  case vpiLeftRange:
-            return rfp->msb.get_value();
+	  পক্ষ vpi_বাম_Range:
+            ঘূৰাই rfp->msb.get_মান();
 
-	  case vpiRightRange:
-            return rfp->lsb.get_value();
+	  পক্ষ vpi_ডান_Range:
+            ঘূৰাই rfp->lsb.get_মান();
 
-	  case vpiScalar:
-	    return (rfp->msb.get_value() == 0 && rfp->lsb.get_value() == 0);
-	  case vpiVector:
-	    return (rfp->msb.get_value() != rfp->lsb.get_value());
+	  পক্ষ vpiScalar:
+	    ঘূৰাই (rfp->msb.get_মান() == 0 && rfp->lsb.get_মান() == 0);
+	  পক্ষ vpiVector:
+	    ঘূৰাই (rfp->msb.get_মান() != rfp->lsb.get_মান());
 
-          case vpiAutomatic:
-            return vpip_scope(rfp)->is_automatic() ? 1  : 0;
+          পক্ষ vpiAutomatic:
+            ঘূৰাই vpip_scope(rfp)->is_automatic() ? 1  : 0;
 
 #ifdef BR916_STOPGAP_FIX
-          case _vpiFromThr:
-            return _vpiNoThr;
+          পক্ষ _vpiFromThr:
+            ঘূৰাই _vpiNoThr;
 #endif
 
-	  default:
+	  স্ৱভাৱ:
 	    fprintf(stderr, "VPI error: unknown signal_get property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    ঘূৰাই vpiUndefined;
       }
 }
 
 /*
  * implement vpi_get64 for vpiReg objects.
  */
-static int64_t signal_get64(int code, vpiHandle ref)
+স্থির int64_t signal_get64(পূর্ণাঙ্ক code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      সংরচনা __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      প্রতিজ্ঞা(rfp);
 
-      switch (code) {
+      ৱিকল্প (code) {
 	    // This private property must return zero when undefined.
-	  case _vpiNexusId:
-	    if (rfp->msb.get_value() == rfp->lsb.get_value())
-		  return reinterpret_cast<int64_t>(rfp->node);
-	    return 0;
+	  পক্ষ _vpiNexusId:
+	    যদি (rfp->msb.get_মান() == rfp->lsb.get_মান())
+		  ঘূৰাই reinterpret_cast<int64_t>(rfp->গ্ৰন্থি);
+	    ঘূৰাই 0;
 
-	  default:
+	  স্ৱভাৱ:
 	    fprintf(stderr, "VPI error: unknown signal_get64 property %d.\n",
 	            code);
-	    return vpiUndefined;
+	    ঘূৰাই vpiUndefined;
       }
 }
 
-static char* signal_get_str(int code, vpiHandle ref)
+স্থির ৱর্ণ* signal_get_str(পূর্ণাঙ্ক code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      সংরচনা __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      প্রতিজ্ঞা(rfp);
 
-      if (code == vpiFile) {  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      যদি (code == vpiFile) {  // Not implemented for now!
+	    ঘূৰাই simple_set_rbuf_str(file_names[0]);
       }
 
-      if ((code != vpiName) && (code != vpiFullName)) return NULL;
+      যদি ((code != vpiName) && (code != vpiFullName)) ঘূৰাই রিক্ত;
 
-      char *nm;
-      const char *ixs;
-      if (rfp->is_netarray) {
+      ৱর্ণ *nm;
+      ধ্রুৱ ৱর্ণ *ixs;
+      যদি (rfp->is_netarray) {
 	    nm = strdup(vpi_get_str(vpiName, rfp->within.parent));
-	    s_vpi_value vp;
+	    s_vpi_মান vp;
 	    vp.format = vpiDecStrVal;
-	    vpi_get_value(rfp->id.index, &vp);
+	    vpi_get_মান(rfp->id.index, &vp);
 	    ixs = vp.value.str;  /* do I need to strdup() this? */
-      } else {
+      } অন্যথা {
 	    nm = strdup(rfp->id.name);
-	    ixs = NULL;
+	    ixs = রিক্ত;
       }
 
 	/* The scope information is added here for vpiFullName. */
-      char *rbuf = generic_get_str(code, vpip_scope(rfp), nm, ixs);
-      free(nm);
-      return rbuf;
+      ৱর্ণ *rbuf = generic_get_str(code, vpip_scope(rfp), nm, ixs);
+      মুক্ত(nm);
+      ঘূৰাই rbuf;
 }
 
-static vpiHandle signal_get_handle(int code, vpiHandle ref)
+স্থির vpiHandle signal_get_handle(পূর্ণাঙ্ক code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      সংরচনা __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      প্রতিজ্ঞা(rfp);
 
-      switch (code) {
+      ৱিকল্প (code) {
 
-	  case vpiParent:
-	    return rfp->is_netarray? rfp->within.parent : NULL;
+	  পক্ষ vpiParent:
+	    ঘূৰাই rfp->is_netarray? rfp->within.parent : রিক্ত;
 
-	  case vpiIndex:
-	    return rfp->is_netarray? rfp->id.index : NULL;
+	  পক্ষ vpiIndex:
+	    ঘূৰাই rfp->is_netarray? rfp->id.index : রিক্ত;
 
-	  case vpiLeftRange:
-	    return &rfp->msb;
-	  case vpiRightRange:
-	    return &rfp->lsb;
+	  পক্ষ vpi_বাম_Range:
+	    ঘূৰাই &rfp->msb;
+	  পক্ষ vpi_ডান_Range:
+	    ঘূৰাই &rfp->lsb;
 
-	  case vpiScope:
-	    return vpip_scope(rfp);
+	  পক্ষ vpiScope:
+	    ঘূৰাই vpip_scope(rfp);
 
-	  case vpiModule:
-	    return vpip_module(vpip_scope(rfp));
+	  পক্ষ vpiModule:
+	    ঘূৰাই vpip_module(vpip_scope(rfp));
       }
 
-      return 0;
+      ঘূৰাই 0;
 }
 
-static vpiHandle signal_iterate(int code, vpiHandle ref)
+স্থির vpiHandle signal_iterate(পূর্ণাঙ্ক code, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      সংরচনা __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      প্রতিজ্ঞা(rfp);
 
-      if (code == vpiIndex) {
-	    return rfp->is_netarray ? rfp->id.index->vpi_iterate(code) : NULL;
+      যদি (code == vpiIndex) {
+	    ঘূৰাই rfp->is_netarray ? rfp->id.index->vpi_iterate(code) : রিক্ত;
       }
 
-      return 0;
+      ঘূৰাই 0;
 }
 
-void __vpiSignal::make_bits()
+শূন্য __vpiSignal::make_bits()
 {
-      assert(bits == NULL);
-      bits = new struct __vpiBit[width() + 1];
+      প্রতিজ্ঞা(bits == রিক্ত);
+      bits = নূতন সংরচনা __vpiBit[width() + 1];
 
 	// Make word[-1] point to the parent.
-      bits->parent = this;
+      bits->parent = এতত্;
 	// Now point to word[0].
       bits += 1;
 
 	// Update each bit to point to the base
-      struct __vpiBit*base = bits;
-      for (unsigned idx = 0; idx < width(); idx += 1) {
+      সংরচনা __vpiBit*base = bits;
+      বাবে (unsigned idx = 0; idx < width(); idx += 1) {
 	    base[idx].bit0 = base;
-	    int real_idx;
-	    if (msb.get_value() >= lsb.get_value()) {
-		  real_idx = idx + lsb.get_value();
-	    } else {
-		  real_idx = lsb.get_value() - idx;
+	    পূর্ণাঙ্ক real_idx;
+	    যদি (msb.get_মান() >= lsb.get_মান()) {
+		  real_idx = idx + lsb.get_মান();
+	    } অন্যথা {
+		  real_idx = lsb.get_মান() - idx;
 	    }
-	    base[idx].index = new __vpiDecConst(real_idx);
+	    base[idx].index = নূতন __vpiDecConst(real_idx);
       }
 }
 
-vpiHandle __vpiSignal::get_index(int idx)
+vpiHandle __vpiSignal::get_index(পূর্ণাঙ্ক idx)
 {
 	/* Check to see if the index is in range. */
-      if (msb.get_value() >= lsb.get_value()) {
-	    if ((idx > msb.get_value()) || (idx < lsb.get_value())) return 0;
-      } else {
-	    if ((idx < msb.get_value()) || (idx > lsb.get_value())) return 0;
+      যদি (msb.get_মান() >= lsb.get_মান()) {
+	    যদি ((idx > msb.get_মান()) || (idx < lsb.get_মান())) ঘূৰাই 0;
+      } অন্যথা {
+	    যদি ((idx < msb.get_মান()) || (idx > lsb.get_মান())) ঘূৰাই 0;
       }
 
 	/* Normalize the index */
       unsigned norm_idx;
-      if (msb.get_value() >= lsb.get_value()) {
-	    norm_idx = idx - lsb.get_value();
-      } else {
-	    norm_idx = lsb.get_value() - idx;
+      যদি (msb.get_মান() >= lsb.get_মান()) {
+	    norm_idx = idx - lsb.get_মান();
+      } অন্যথা {
+	    norm_idx = lsb.get_মান() - idx;
       }
 
-      if (bits == NULL) make_bits();
+      যদি (bits == রিক্ত) make_bits();
 
-      return &(bits[norm_idx].as_bit);
+      ঘূৰাই &(bits[norm_idx].as_bit);
 }
 
-void __vpiSignal::get_bit_value(const struct __vpiBit*bit, p_vpi_value vp)
+শূন্য __vpiSignal::get_bit_মান(ধ্রুৱ সংরচনা __vpiBit*bit, p_vpi_মান vp)
 {
       unsigned index = bit->get_norm_index();
 
-      vvp_signal_value*vsig = dynamic_cast<vvp_signal_value*>(node->fil);
-      assert(vsig);
+      vvp_signal_মান*vsig = dynamic_cast<vvp_signal_মান*>(গ্ৰন্থি->fil);
+      প্রতিজ্ঞা(vsig);
 
-      if (vp->format == vpiObjTypeVal) {
+      যদি (vp->format == vpiObjTypeVal) {
 	    vp->format = vpiIntVal;
       }
 
-      switch (vp->format) {
-	case vpiBinStrVal:
+      ৱিকল্প (vp->format) {
+	পক্ষ vpiBinStrVal:
             format_vpiBinStrVal(vsig, index, 1, vp);
-	    break;
+	    ভঙ্গ;
 
-	case vpiOctStrVal:
+	পক্ষ vpiOctStrVal:
             format_vpiOctStrVal(vsig, index, 1, vp);
-	    break;
+	    ভঙ্গ;
 
-	case vpiDecStrVal:
-            format_vpiDecStrVal(vsig, index, 1, false, vp);
-	    break;
+	পক্ষ vpiDecStrVal:
+            format_vpiDecStrVal(vsig, index, 1, মিছা, vp);
+	    ভঙ্গ;
 
-	case vpiHexStrVal:
+	পক্ষ vpiHexStrVal:
             format_vpiHexStrVal(vsig, index, 1, vp);
-	    break;
+	    ভঙ্গ;
 
-	case vpiStringVal:
+	পক্ষ vpiStringVal:
             format_vpiStringVal(vsig, index, 1, vp);
-	    break;
+	    ভঙ্গ;
 
-	case vpiIntVal:
-            format_vpiIntVal(vsig, index, 1, false, vp);
-	    break;
+	পক্ষ vpiIntVal:
+            format_vpiIntVal(vsig, index, 1, মিছা, vp);
+	    ভঙ্গ;
 
-	case vpiRealVal:
-            format_vpiRealVal(vsig, index, 1, false, vp);
-	    break;
+	পক্ষ vpiRealVal:
+            format_vpiRealVal(vsig, index, 1, মিছা, vp);
+	    ভঙ্গ;
 
-	case vpiScalarVal:
+	পক্ষ vpiScalarVal:
             format_vpiScalarVal(vsig, index, vp);
-	    break;
+	    ভঙ্গ;
 
-        case vpiStrengthVal:
+        পক্ষ vpiStrengthVal:
             format_vpiStrengthVal(vsig, index, 1, vp);
-            break;
+            ভঙ্গ;
 
-	case vpiVectorVal:
+	পক্ষ vpiVectorVal:
             format_vpiVectorVal(vsig, index, 1, vp);
-	    break;
+	    ভঙ্গ;
 
-	default:
+	স্ৱভাৱ:
 	    fprintf(stderr, "internal error: get_value() "
 		    "type %d is not implemented for bit "
 		    "select %s[%d] in scope %s.\n",
-		    (int)vp->format, vpi_get_str(vpiName),
+		    (পূর্ণাঙ্ক)vp->format, vpi_get_str(vpiName),
 		    bit->get_index(),
-	            vpip_scope(this)->scope_name());
-	    assert(0);
+	            vpip_scope(এতত্)->scope_name());
+	    প্রতিজ্ঞা(0);
       };
 }
 
-vpiHandle __vpiSignal::put_bit_value(struct __vpiBit*bit, p_vpi_value vp, int flags)
+vpiHandle __vpiSignal::put_bit_মান(সংরচনা __vpiBit*bit, p_vpi_মান vp, পূর্ণাঙ্ক flags)
 {
       unsigned index = bit->get_norm_index();
-      vvp_net_ptr_t dest(node, 0);
-      vvp_vector4_t val = vec4_from_vpi_value(vp, 1);
+      vvp_net_ptr_t dest(গ্ৰন্থি, 0);
+      vvp_vector4_t val = vec4_from_vpi_মান(vp, 1);
 
-      if ((flags == vpiForceFlag) || (flags == vpiReleaseFlag)) {
+      যদি ((flags == vpiForceFlag) || (flags == vpiReleaseFlag)) {
 	    fprintf(stderr, "Sorry: vpi_put_value() for %s does not "
 	                    "currently support force/release.\n",
 	                    bit->as_bit.vpi_get_str(vpiFullName));
-	    return NULL;
+	    ঘূৰাই রিক্ত;
       }
 
-      if ((get_type_code() == vpiNet) &&
-          !dynamic_cast<vvp_island_port*>(node->fun)) {
-	    node->send_vec4_pv(val, index, width(),
+      যদি ((get_type_code() == vpiNet) &&
+          !dynamic_cast<vvp_island_port*>(গ্ৰন্থি->fun)) {
+	    গ্ৰন্থি->send_vec4_pv(val, index, width(),
 	                            vthread_get_wt_context());
-      } else {
+      } অন্যথা {
 	    vvp_send_vec4_pv(dest, val, index, width(),
 	                     vthread_get_wt_context());
       }
 
 	// This is not a scheduled event so there is no event to return
-      return NULL;
+      ঘূৰাই রিক্ত;
 }
 
-static vpiHandle signal_index(int idx, vpiHandle ref)
+স্থির vpiHandle signal_index(পূর্ণাঙ্ক idx, vpiHandle ref)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      সংরচনা __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      প্রতিজ্ঞা(rfp);
 
 	/* We can only get the bit for a net or reg. */
       PLI_INT32 type = vpi_get(vpiType, ref);
-      if ((type != vpiNet) && (type != vpiReg)) return 0;
+      যদি ((type != vpiNet) && (type != vpiReg)) ঘূৰাই 0;
 
-      return rfp->get_index(idx);
+      ঘূৰাই rfp->get_index(idx);
 }
 
-unsigned __vpiSignal::width(void) const
+unsigned __vpiSignal::width(শূন্য) ধ্রুৱ
 {
-      unsigned wid = (msb.get_value() >= lsb.get_value())
-	    ? (msb.get_value() - lsb.get_value() + 1)
-	    : (lsb.get_value() - msb.get_value() + 1);
+      unsigned wid = (msb.get_মান() >= lsb.get_মান())
+	    ? (msb.get_মান() - lsb.get_মান() + 1)
+	    : (lsb.get_মান() - msb.get_মান() + 1);
 
-      return wid;
+      ঘূৰাই wid;
 }
 
 /*
@@ -853,75 +853,75 @@ unsigned __vpiSignal::width(void) const
  * the vector to the caller. This causes no side-effect, and reads the
  * variables like a %load would.
  */
-static void signal_get_value(vpiHandle ref, s_vpi_value*vp)
+স্থির শূন্য signal_get_মান(vpiHandle ref, s_vpi_মান*vp)
 {
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
+      সংরচনা __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      প্রতিজ্ঞা(rfp);
 
       unsigned wid = rfp->width();
 
-      vvp_signal_value*vsig = dynamic_cast<vvp_signal_value*>(rfp->node->fil);
-      assert(vsig);
+      vvp_signal_মান*vsig = dynamic_cast<vvp_signal_মান*>(rfp->গ্ৰন্থি->fil);
+      প্রতিজ্ঞা(vsig);
 
-      switch (vp->format) {
+      ৱিকল্প (vp->format) {
 
-	  case vpiIntVal:
+	  পক্ষ vpiIntVal:
 	    format_vpiIntVal(vsig, 0, wid, rfp->signed_flag, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiScalarVal:
+	  পক্ষ vpiScalarVal:
 	    format_vpiScalarVal(vsig, 0, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiStrengthVal:
+	  পক্ষ vpiStrengthVal:
 	    format_vpiStrengthVal(vsig, 0, wid, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiBinStrVal:
+	  পক্ষ vpiBinStrVal:
 	    format_vpiBinStrVal(vsig, 0, wid, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiHexStrVal:
+	  পক্ষ vpiHexStrVal:
 	    format_vpiHexStrVal(vsig, 0, wid, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiOctStrVal:
+	  পক্ষ vpiOctStrVal:
 	    format_vpiOctStrVal(vsig, 0, wid, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiDecStrVal:
+	  পক্ষ vpiDecStrVal:
 	    format_vpiDecStrVal(vsig, 0, wid, rfp->signed_flag, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiStringVal:
+	  পক্ষ vpiStringVal:
 	    format_vpiStringVal(vsig, 0, wid, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiVectorVal:
+	  পক্ষ vpiVectorVal:
 	    format_vpiVectorVal(vsig, 0, wid, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiRealVal:
+	  পক্ষ vpiRealVal:
 	    format_vpiRealVal(vsig, 0, wid, rfp->signed_flag, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiObjTypeVal:
-	    if (wid == 1) {
+	  পক্ষ vpiObjTypeVal:
+	    যদি (wid == 1) {
 		  vp->format = vpiScalarVal;
 		  format_vpiScalarVal(vsig, 0, vp);
-	    } else {
+	    } অন্যথা {
 		  vp->format = vpiVectorVal;
 		  format_vpiVectorVal(vsig, 0, wid, vp);
 	    }
-	    break;
+	    ভঙ্গ;
 
-	  default:
+	  স্ৱভাৱ:
 	    fprintf(stderr, "vvp internal error: get_value: "
 		    "value type %d not implemented."
 		    " Signal is %s in scope %s\n",
-		    (int)vp->format, vpi_get_str(vpiName, ref),
+		    (পূর্ণাঙ্ক)vp->format, vpi_get_str(vpiName, ref),
 		    vpip_scope(rfp)->scope_name());
-	    assert(0);
+	    প্রতিজ্ঞা(0);
       }
 }
 
@@ -932,22 +932,22 @@ static void signal_get_value(vpiHandle ref, s_vpi_value*vp)
  * equivalent instruction would cause.
  */
 
-static vvp_vector4_t from_stringval(const char*str, unsigned wid)
+স্থির vvp_vector4_t from_stringval(ধ্রুৱ ৱর্ণ*str, unsigned wid)
 {
       unsigned idx;
-      const char*cp;
+      ধ্রুৱ ৱর্ণ*cp;
 
       cp = str + strlen(str);
       idx = 0;
 
       vvp_vector4_t val(wid, BIT4_0);
 
-      while ((idx < wid) && (cp > str)) {
+      যেতিয়ালৈ ((idx < wid) && (cp > str)) {
 	    unsigned byte = *--cp;
-	    int bit;
+	    পূর্ণাঙ্ক bit;
 
-	    for (bit = 0 ;  (bit < 8) && (idx < wid) ;  bit += 1) {
-		  if (byte & 1)
+	    বাবে (bit = 0 ;  (bit < 8) && (idx < wid) ;  bit += 1) {
+		  যদি (byte & 1)
 			val.set_bit(idx, BIT4_1);
 
 		  byte >>= 1;
@@ -955,17 +955,17 @@ static vvp_vector4_t from_stringval(const char*str, unsigned wid)
 	    }
       }
 
-      return val;
+      ঘূৰাই val;
 }
 
-static vpiHandle signal_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
+স্থির vpiHandle signal_put_মান(vpiHandle ref, s_vpi_মান*vp, পূর্ণাঙ্ক flags)
 {
       unsigned wid;
-      struct __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
-      assert(rfp);
-      vvp_net_ptr_t dest(rfp->node, 0);
+      সংরচনা __vpiSignal*rfp = dynamic_cast<__vpiSignal*>(ref);
+      প্রতিজ্ঞা(rfp);
+      vvp_net_ptr_t dest(rfp->গ্ৰন্থি, 0);
 
-      bool net_flag = ref->get_type_code()==vpiNet;
+      তার্কিক net_flag = ref->get_type_code()==vpiNet;
 
 	/* If this is a release, then we are not really putting a
 	   value. Instead, issue a release "command" to the signal
@@ -973,157 +973,157 @@ static vpiHandle signal_put_value(vpiHandle ref, s_vpi_value*vp, int flags)
 	   if this net is attached to an island, we need to rerun
 	   the calculations immediately so we can return the
 	   released value. */
-      if (flags == vpiReleaseFlag) {
-	    assert(rfp->node->fil);
-	    rfp->node->fil->force_unlink();
-	    rfp->node->fil->release(dest, net_flag);
-	    rfp->node->fun->force_flag(true);
-	    signal_get_value(ref, vp);
-	    return ref;
+      যদি (flags == vpiReleaseFlag) {
+	    প্রতিজ্ঞা(rfp->গ্ৰন্থি->fil);
+	    rfp->গ্ৰন্থি->fil->force_unlink();
+	    rfp->গ্ৰন্থি->fil->release(dest, net_flag);
+	    rfp->গ্ৰন্থি->fun->force_flag(সঁচা);
+	    signal_get_মান(ref, vp);
+	    ঘূৰাই ref;
       }
 
 	/* Make a vvp_vector4_t vector to receive the translated value
 	   that we are going to poke. This will get populated
 	   differently depending on the format. */
-      wid = (rfp->msb.get_value() >= rfp->lsb.get_value())
-	    ? (rfp->msb.get_value() - rfp->lsb.get_value() + 1)
-	    : (rfp->lsb.get_value() - rfp->msb.get_value() + 1);
+      wid = (rfp->msb.get_মান() >= rfp->lsb.get_মান())
+	    ? (rfp->msb.get_মান() - rfp->lsb.get_মান() + 1)
+	    : (rfp->lsb.get_মান() - rfp->msb.get_মান() + 1);
 
-      vvp_vector4_t val = vec4_from_vpi_value(vp, wid);
+      vvp_vector4_t val = vec4_from_vpi_মান(vp, wid);
 
-      if (flags == vpiForceFlag) {
+      যদি (flags == vpiForceFlag) {
 	    vvp_vector2_t mask (vvp_vector2_t::FILL1, wid);
-	    rfp->node->force_vec4(val, mask);
-      } else if (net_flag && !dynamic_cast<vvp_island_port*>(rfp->node->fun)) {
-	    rfp->node->send_vec4(val, vthread_get_wt_context());
-      } else {
+	    rfp->গ্ৰন্থি->force_vec4(val, mask);
+      } অন্যথা যদি (net_flag && !dynamic_cast<vvp_island_port*>(rfp->গ্ৰন্থি->fun)) {
+	    rfp->গ্ৰন্থি->send_vec4(val, vthread_get_wt_context());
+      } অন্যথা {
 	    vvp_send_vec4(dest, val, vthread_get_wt_context());
       }
-      return ref;
+      ঘূৰাই ref;
 }
 
-vvp_vector4_t vec4_from_vpi_value(s_vpi_value*vp, unsigned wid)
+vvp_vector4_t vec4_from_vpi_মান(s_vpi_মান*vp, unsigned wid)
 {
       vvp_vector4_t val (wid, BIT4_0);
 
-      switch (vp->format) {
+      ৱিকল্প (vp->format) {
 
-	  case vpiIntVal: {
+	  পক্ষ vpiIntVal: {
 		long vpi_val = vp->value.integer;
-		for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+		বাবে (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 		      vvp_bit4_t bit = (vpi_val & 1) ? BIT4_1 : BIT4_0;
 		      val.set_bit(idx, bit);
 		      vpi_val >>= 1;
 		}
-		break;
+		ভঙ্গ;
 	  }
 
-	  case vpiVectorVal:
-	    for (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
+	  পক্ষ vpiVectorVal:
+	    বাবে (unsigned idx = 0 ;  idx < wid ;  idx += 1) {
 		  unsigned long aval = vp->value.vector[idx/32].aval;
 		  unsigned long bval = vp->value.vector[idx/32].bval;
 		  aval >>= idx%32;
 		  bval >>= idx%32;
-		  int bitmask = (aval&1) | ((bval<<1)&2);
+		  পূর্ণাঙ্ক bitmask = (aval&1) | ((bval<<1)&2);
 		  vvp_bit4_t bit = scalar_to_bit4(bitmask);
 		  val.set_bit(idx, bit);
 	    }
-	    break;
-	  case vpiBinStrVal:
+	    ভঙ্গ;
+	  পক্ষ vpiBinStrVal:
 	    vpip_bin_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiOctStrVal:
+	    ভঙ্গ;
+	  পক্ষ vpiOctStrVal:
 	    vpip_oct_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiDecStrVal:
+	    ভঙ্গ;
+	  পক্ষ vpiDecStrVal:
 	    vpip_dec_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiHexStrVal:
+	    ভঙ্গ;
+	  পক্ষ vpiHexStrVal:
 	    vpip_hex_str_to_vec4(val, vp->value.str);
-	    break;
-	  case vpiScalarVal:
+	    ভঙ্গ;
+	  পক্ষ vpiScalarVal:
 	    val.set_bit(0, scalar_to_bit4(vp->value.scalar));
-	    break;
-	  case vpiStringVal:
+	    ভঙ্গ;
+	  পক্ষ vpiStringVal:
 	    val = from_stringval(vp->value.str, wid);
-	    break;
-	  case vpiRealVal:
+	    ভঙ্গ;
+	  পক্ষ vpiRealVal:
 	    val = vvp_vector4_t(wid, vp->value.real);
-	    break;
+	    ভঙ্গ;
 
-	  default:
+	  স্ৱভাৱ:
 	    fprintf(stderr, "vvp internal error: put_value: "
 		    "value type %d not implemented here.\n",
-		    (int)vp->format);
-	    assert(0);
+		    (পূর্ণাঙ্ক)vp->format);
+	    প্রতিজ্ঞা(0);
 
       }
 
-      return val;
+      ঘূৰাই val;
 }
 
-int __vpiSignal::vpi_get(int code)
-{ return signal_get(code, this); }
+পূর্ণাঙ্ক __vpiSignal::vpi_get(পূর্ণাঙ্ক code)
+{ ঘূৰাই signal_get(code, এতত্); }
 
-int64_t __vpiSignal::vpi_get64(int code)
-{ return signal_get64(code, this); }
+int64_t __vpiSignal::vpi_get64(পূর্ণাঙ্ক code)
+{ ঘূৰাই signal_get64(code, এতত্); }
 
-char* __vpiSignal::vpi_get_str(int code)
-{ return signal_get_str(code, this); }
+ৱর্ণ* __vpiSignal::vpi_get_str(পূর্ণাঙ্ক code)
+{ ঘূৰাই signal_get_str(code, এতত্); }
 
-void __vpiSignal::vpi_get_value(p_vpi_value val)
-{ signal_get_value(this, val); }
+শূন্য __vpiSignal::vpi_get_মান(p_vpi_মান val)
+{ signal_get_মান(এতত্, val); }
 
-vpiHandle __vpiSignal::vpi_put_value(p_vpi_value val, int flags)
-{ return signal_put_value(this, val, flags); }
+vpiHandle __vpiSignal::vpi_put_মান(p_vpi_মান val, পূর্ণাঙ্ক flags)
+{ ঘূৰাই signal_put_মান(এতত্, val, flags); }
 
-vpiHandle __vpiSignal::vpi_handle(int code)
-{ return signal_get_handle(code, this); }
+vpiHandle __vpiSignal::vpi_handle(পূর্ণাঙ্ক code)
+{ ঘূৰাই signal_get_handle(code, এতত্); }
 
-vpiHandle __vpiSignal::vpi_iterate(int code)
-{ return signal_iterate(code, this); }
+vpiHandle __vpiSignal::vpi_iterate(পূর্ণাঙ্ক code)
+{ ঘূৰাই signal_iterate(code, এতত্); }
 
-vpiHandle __vpiSignal::vpi_index(int idx)
-{ return signal_index(idx, this); }
+vpiHandle __vpiSignal::vpi_index(পূর্ণাঙ্ক idx)
+{ ঘূৰাই signal_index(idx, এতত্); }
 
-struct signal_reg : public __vpiSignal {
-      inline signal_reg() { }
-      int get_type_code(void) const override { return vpiReg; }
+সংরচনা signal_reg : সার্ৱজনিক __vpiSignal {
+      অন্তঃস্থ signal_reg() { }
+      পূর্ণাঙ্ক get_type_code(শূন্য) ধ্রুৱ override { ঘূৰাই vpiReg; }
 };
 
-struct signal_integer : public __vpiSignal {
-      inline signal_integer() { }
-      int get_type_code(void) const override { return vpiIntegerVar; }
+সংরচনা signal_integer : সার্ৱজনিক __vpiSignal {
+      অন্তঃস্থ signal_integer() { }
+      পূর্ণাঙ্ক get_type_code(শূন্য) ধ্রুৱ override { ঘূৰাই vpiIntegerVar; }
 };
 
-struct signal_net : public __vpiSignal {
-      inline signal_net() { }
-      int get_type_code(void) const override { return vpiNet; }
+সংরচনা signal_net : সার্ৱজনিক __vpiSignal {
+      অন্তঃস্থ signal_net() { }
+      পূর্ণাঙ্ক get_type_code(শূন্য) ধ্রুৱ override { ঘূৰাই vpiNet; }
 };
 
-struct signal_byte : public __vpiSignal {
-      inline signal_byte() { }
-      int get_type_code(void) const override { return vpiByteVar; }
+সংরচনা signal_byte : সার্ৱজনিক __vpiSignal {
+      অন্তঃস্থ signal_byte() { }
+      পূর্ণাঙ্ক get_type_code(শূন্য) ধ্রুৱ override { ঘূৰাই vpiByteVar; }
 };
 
-struct signal_bitvar : public __vpiSignal {
-      inline signal_bitvar() { }
-      int get_type_code(void) const override { return vpiBitVar; }
+সংরচনা signal_bitvar : সার্ৱজনিক __vpiSignal {
+      অন্তঃস্থ signal_bitvar() { }
+      পূর্ণাঙ্ক get_type_code(শূন্য) ধ্রুৱ override { ঘূৰাই vpiBitVar; }
 };
 
-struct signal_shortint : public __vpiSignal {
-      inline signal_shortint() { }
-      int get_type_code(void) const override { return vpiShortIntVar; }
+সংরচনা signal_shortint : সার্ৱজনিক __vpiSignal {
+      অন্তঃস্থ signal_shortint() { }
+      পূর্ণাঙ্ক get_type_code(শূন্য) ধ্রুৱ override { ঘূৰাই vpiShortIntVar; }
 };
 
-struct signal_int : public __vpiSignal {
-      inline signal_int() { }
-      int get_type_code(void) const override { return vpiIntVar; }
+সংরচনা signal_int : সার্ৱজনিক __vpiSignal {
+      অন্তঃস্থ signal_int() { }
+      পূর্ণাঙ্ক get_type_code(শূন্য) ধ্রুৱ override { ঘূৰাই vpiIntVar; }
 };
 
-struct signal_longint : public __vpiSignal {
-      inline signal_longint() { }
-      int get_type_code(void) const override { return vpiLongIntVar; }
+সংরচনা signal_longint : সার্ৱজনিক __vpiSignal {
+      অন্তঃস্থ signal_longint() { }
+      পূর্ণাঙ্ক get_type_code(শূন্য) ধ্রুৱ override { ঘূৰাই vpiLongIntVar; }
 };
 
 
@@ -1132,126 +1132,126 @@ struct signal_longint : public __vpiSignal {
  * to minimize the code modifications. Icarus implements integers
  * as 'reg signed [31:0]'.
  */
-vpiHandle vpip_make_int4(const char*name, int msb, int lsb, vvp_net_t*vec)
+vpiHandle vpip_make_int4(ধ্রুৱ ৱর্ণ*name, পূর্ণাঙ্ক msb, পূর্ণাঙ্ক lsb, vvp_net_t*vec)
 {
-      __vpiSignal*obj = new signal_integer;
-      return fill_in_var4(obj, name, msb, lsb, true, vec);
+      __vpiSignal*obj = নূতন signal_integer;
+      ঘূৰাই fill_in_var4(obj, name, msb, lsb, সঁচা, vec);
 }
 
 /*
  * Construct the two-state SystemVerilog variables.
  */
-vpiHandle vpip_make_int2(const char*name, int msb, int lsb, bool signed_flag,
+vpiHandle vpip_make_int2(ধ্রুৱ ৱর্ণ*name, পূর্ণাঙ্ক msb, পূর্ণাঙ্ক lsb, তার্কিক signed_flag,
                          vvp_net_t*vec)
 {
       __vpiSignal*obj;
 
 	// All unsigned 2-state variables are a vpiBitVar. All 2-state
 	// variables with a non-zero lsb are also a vpiBitVar.
-      if ((! signed_flag) || (lsb != 0) ) {
-	    obj = new signal_bitvar;
-      } else {
+      যদি ((! signed_flag) || (lsb != 0) ) {
+	    obj = নূতন signal_bitvar;
+      } অন্যথা {
 	      // These could also be bit declarations with matching
 	      // information, but for now they get the apparent type.
-	    switch (msb) {
-		case 7:
-		  obj = new signal_byte;
-		  break;
-		case 15:
-		  obj = new signal_shortint;
-		  break;
-		case 31:
-		  obj = new signal_int;
-		  break;
-		case 63:
-		  obj = new signal_longint;
-		  break;
-		default:
+	    ৱিকল্প (msb) {
+		পক্ষ 7:
+		  obj = নূতন signal_byte;
+		  ভঙ্গ;
+		পক্ষ 15:
+		  obj = নূতন signal_shortint;
+		  ভঙ্গ;
+		পক্ষ 31:
+		  obj = নূতন signal_int;
+		  ভঙ্গ;
+		পক্ষ 63:
+		  obj = নূতন signal_longint;
+		  ভঙ্গ;
+		স্ৱভাৱ:
 		    // Every other type of bit vector is a vpiBitVar with
 		    // array dimensions.
-		  obj = new signal_bitvar;
-		  break;
+		  obj = নূতন signal_bitvar;
+		  ভঙ্গ;
 	    }
       }
 
-      return fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
+      ঘূৰাই fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
 }
 
 /*
  * Construct a vpiReg/vpiLogicVar object. It's like a net, except for the type.
  */
-vpiHandle vpip_make_var4(const char*name, int msb, int lsb,
-			bool signed_flag, vvp_net_t*vec)
+vpiHandle vpip_make_var4(ধ্রুৱ ৱর্ণ*name, পূর্ণাঙ্ক msb, পূর্ণাঙ্ক lsb,
+			তার্কিক signed_flag, vvp_net_t*vec)
 {
-      __vpiSignal*obj = new signal_reg;
-      return fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
+      __vpiSignal*obj = নূতন signal_reg;
+      ঘূৰাই fill_in_var4(obj, name, msb, lsb, signed_flag, vec);
 }
 
 #ifdef CHECK_WITH_VALGRIND
-static struct vpiSignal_plug **signal_pool = 0;
-static unsigned signal_pool_count = 0;
-static unsigned long signal_count = 0;
-static unsigned long signal_dels = 0;
+স্থির সংরচনা vpiSignal_plug **signal_pool = 0;
+স্থির unsigned signal_pool_গুনতি = 0;
+স্থির unsigned long signal_গুনতি = 0;
+স্থির unsigned long signal_dels = 0;
 #endif
 
-struct vpiSignal_plug {
-      unsigned char space[sizeof (struct __vpiSignal)];
+সংরচনা vpiSignal_plug {
+      unsigned ৱর্ণ space[পরিমাণ (সংরচনা __vpiSignal)];
 #ifdef CHECK_WITH_VALGRIND
-      struct vpiSignal_plug *pool;
+      সংরচনা vpiSignal_plug *pool;
 #endif
 };
 
-void* __vpiSignal::operator new(size_t siz)
+শূন্য* __vpiSignal::operator নূতন(size_t siz)
 {
 #ifdef CHECK_WITH_VALGRIND
-      assert(siz == sizeof(struct vpiSignal_plug) - sizeof(struct vpiSignal_plug *));
-#else
-      assert(siz == sizeof(struct vpiSignal_plug));
+      প্রতিজ্ঞা(siz == পরিমাণ(সংরচনা vpiSignal_plug) - পরিমাণ(সংরচনা vpiSignal_plug *));
+#অন্যথা
+      প্রতিজ্ঞা(siz == পরিমাণ(সংরচনা vpiSignal_plug));
 #endif
-      static struct vpiSignal_plug*alloc_array = 0;
-      static unsigned alloc_index = 0;
-      const unsigned alloc_count = 512;
+      স্থির সংরচনা vpiSignal_plug*alloc_array = 0;
+      স্থির unsigned alloc_index = 0;
+      ধ্রুৱ unsigned alloc_গুনতি = 512;
 
-      if ((alloc_array == 0) || (alloc_index == alloc_count)) {
-	    alloc_array = static_cast<struct vpiSignal_plug*>
-	                  (calloc(alloc_count, sizeof(struct vpiSignal_plug)));
+      যদি ((alloc_array == 0) || (alloc_index == alloc_গুনতি)) {
+	    alloc_array = static_cast<সংরচনা vpiSignal_plug*>
+	                  (calloc(alloc_গুনতি, পরিমাণ(সংরচনা vpiSignal_plug)));
 	    alloc_index = 0;
 #ifdef CHECK_WITH_VALGRIND
-	    VALGRIND_MAKE_MEM_NOACCESS(alloc_array, alloc_count *
-	                                            sizeof(struct vpiSignal_plug));
+	    VALGRIND_MAKE_MEM_NOACCESS(alloc_array, alloc_গুনতি *
+	                                            পরিমাণ(সংরচনা vpiSignal_plug));
 	    VALGRIND_CREATE_MEMPOOL(alloc_array, 0, 1);
-	    signal_pool_count += 1;
+	    signal_pool_গুনতি += 1;
 	    signal_pool = static_cast<vpiSignal_plug **>
 	                  (realloc(signal_pool,
-	                   signal_pool_count*sizeof(vpiSignal_plug **)));
-	    signal_pool[signal_pool_count-1] = alloc_array;
+	                   signal_pool_গুনতি*পরিমাণ(vpiSignal_plug **)));
+	    signal_pool[signal_pool_গুনতি-1] = alloc_array;
 #endif
       }
 
-      struct vpiSignal_plug*cur = alloc_array + alloc_index;
+      সংরচনা vpiSignal_plug*cur = alloc_array + alloc_index;
 #ifdef CHECK_WITH_VALGRIND
-      VALGRIND_MEMPOOL_ALLOC(alloc_array, cur, sizeof(struct vpiSignal_plug));
+      VALGRIND_MEMPOOL_ALLOC(alloc_array, cur, পরিমাণ(সংরচনা vpiSignal_plug));
       cur->pool = alloc_array;
-      signal_count += 1;
+      signal_গুনতি += 1;
 #endif
       alloc_index += 1;
-      return cur;
+      ঘূৰাই cur;
 }
 
-void __vpiSignal::operator delete(void*)
+শূন্য __vpiSignal::operator delete(শূন্য*)
 {
-      assert(0);
+      প্রতিজ্ঞা(0);
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void signal_delete(vpiHandle item)
+শূন্য signal_delete(vpiHandle item)
 {
-      struct __vpiSignal *obj = static_cast<__vpiSignal *> (item);
-      assert(obj->node->fil);
-      obj->node->fil->clear_all_callbacks();
-      vvp_net_delete(obj->node);
-      if (obj->bits) {
-	    for (unsigned idx=0; idx<obj->width(); idx+=1) {
+      সংরচনা __vpiSignal *obj = static_cast<__vpiSignal *> (item);
+      প্রতিজ্ঞা(obj->গ্ৰন্থি->fil);
+      obj->গ্ৰন্থি->fil->clear_all_callbacks();
+      vvp_net_delete(obj->গ্ৰন্থি);
+      যদি (obj->bits) {
+	    বাবে (unsigned idx=0; idx<obj->width(); idx+=1) {
 		  delete obj->bits[idx].index;
 	    }
 	    obj->bits -= 1;
@@ -1261,22 +1261,22 @@ void signal_delete(vpiHandle item)
       VALGRIND_MEMPOOL_FREE(reinterpret_cast<vpiSignal_plug *>(obj)->pool, obj);
 }
 
-void signal_pool_delete()
+শূন্য signal_pool_delete()
 {
-      if (RUNNING_ON_VALGRIND && (signal_count != signal_dels)) {
-	    fflush(NULL);
+      যদি (RUNNING_ON_VALGRIND && (signal_গুনতি != signal_dels)) {
+	    fflush(রিক্ত);
 	    VALGRIND_PRINTF("Error: vvp missed deleting %ld of %lu signal(s).",
-	                    (long) signal_count - signal_dels, signal_count);
+	                    (long) signal_গুনতি - signal_dels, signal_গুনতি);
       }
 
-      for (unsigned idx = 0; idx < signal_pool_count; idx += 1) {
+      বাবে (unsigned idx = 0; idx < signal_pool_গুনতি; idx += 1) {
 	    VALGRIND_DESTROY_MEMPOOL(signal_pool[idx]);
-	    free(signal_pool[idx]);
+	    মুক্ত(signal_pool[idx]);
       }
 
-      free(signal_pool);
+      মুক্ত(signal_pool);
       signal_pool = 0;
-      signal_pool_count = 0;
+      signal_pool_গুনতি = 0;
 }
 #endif
 
@@ -1287,216 +1287,216 @@ void signal_pool_delete()
  * The name is the PLI name for the object. If it is an array it is
  * <name>[<index>].
  */
-static vpiHandle fill_in_net4(struct __vpiSignal*obj, __vpiScope*scope,
-			      const char*name, int msb, int lsb,
-			      bool signed_flag, vvp_net_t*node)
+স্থির vpiHandle fill_in_net4(সংরচনা __vpiSignal*obj, __vpiScope*scope,
+			      ধ্রুৱ ৱর্ণ*name, পূর্ণাঙ্ক msb, পূর্ণাঙ্ক lsb,
+			      তার্কিক signed_flag, vvp_net_t*গ্ৰন্থি)
 {
-      obj->id.name = name? vpip_name_string(name) : NULL;
+      obj->id.name = name? vpip_name_string(name) : রিক্ত;
       obj->msb = __vpiDecConst(msb);
       obj->lsb = __vpiDecConst(lsb);
       obj->signed_flag = signed_flag? 1 : 0;
       obj->is_netarray = 0;
-      obj->node = node;
+      obj->গ্ৰন্থি = গ্ৰন্থি;
 
 	// Place this object within a scope. If this object is
 	// attached to an array, then this value will be replaced with
 	// the handle to the parent.
       obj->within.scope = scope;
 
-      count_vpi_nets += 1;
+      গুনতি_vpi_nets += 1;
 
-      return obj;
+      ঘূৰাই obj;
 }
 
 vpiHandle vpip_make_net4(__vpiScope*scope,
-			 const char*name, int msb, int lsb,
-			 bool signed_flag, vvp_net_t*node)
+			 ধ্রুৱ ৱর্ণ*name, পূর্ণাঙ্ক msb, পূর্ণাঙ্ক lsb,
+			 তার্কিক signed_flag, vvp_net_t*গ্ৰন্থি)
 {
-      struct __vpiSignal*obj = new signal_net;
-      return fill_in_net4(obj, scope, name, msb, lsb, signed_flag, node);
+      সংরচনা __vpiSignal*obj = নূতন signal_net;
+      ঘূৰাই fill_in_net4(obj, scope, name, msb, lsb, signed_flag, গ্ৰন্থি);
 }
 
-static int PV_get_base(struct __vpiPV*rfp)
+স্থির পূর্ণাঙ্ক PV_get_base(সংরচনা __vpiPV*rfp)
 {
 	/* We return from the symbol base if it is defined. */
-      if (rfp->sbase != 0) {
-	    s_vpi_value val;
+      যদি (rfp->sbase != 0) {
+	    s_vpi_মান val;
 	      /* Check to see if the value is defined. */
 	    val.format = vpiVectorVal;
-	    vpi_get_value(rfp->sbase, &val);
-	    int words = (vpi_get(vpiSize, rfp->sbase)-1)/32 + 1;
-	    for(int idx = 0; idx < words; idx += 1) {
+	    vpi_get_মান(rfp->sbase, &val);
+	    পূর্ণাঙ্ক শব্দগুলি = (vpi_get(vpiSize, rfp->sbase)-1)/32 + 1;
+	    বাবে(পূর্ণাঙ্ক idx = 0; idx < শব্দগুলি; idx += 1) {
 		    /* Return INT_MIN to indicate an X base. */
-		  if (val.value.vector[idx].bval != 0) return INT_MIN;
+		  যদি (val.value.vector[idx].bval != 0) ঘূৰাই INT_MIN;
 	    }
 	      /* The value is defined so get and return it. */
 	    val.format = vpiIntVal;
-	    vpi_get_value(rfp->sbase, &val);
-	    return val.value.integer;
+	    vpi_get_মান(rfp->sbase, &val);
+	    ঘূৰাই val.value.integer;
       }
 
 	/* If the width is zero then tbase is the constant. */
-      return rfp->tbase;
+      ঘূৰাই rfp->tbase;
 }
 
-static int PV_get(int code, vpiHandle ref)
+স্থির পূর্ণাঙ্ক PV_get(পূর্ণাঙ্ক code, vpiHandle ref)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      সংরচনা __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      প্রতিজ্ঞা(rfp);
 
-      int rval = 0;
-      switch (code) {
-	case vpiLineNo:
-	    return 0;  // Not implemented for now!
+      পূর্ণাঙ্ক rval = 0;
+      ৱিকল্প (code) {
+	পক্ষ vpi_সাৰি_No:
+	    ঘূৰাই 0;  // Not implemented for now!
 
-	case vpiSigned:
-	    return 0;  // A part/bit select is always unsigned!
+	পক্ষ vpiSigned:
+	    ঘূৰাই 0;  // A part/bit select is always unsigned!
 
-	case vpiSize:
-	    return rfp->width;
+	পক্ষ vpiSize:
+	    ঘূৰাই rfp->width;
 
 	  /* This is like the &A<> in array.cc. */
-	case vpiConstantSelect:
-	    return rfp->sbase == 0;
+	পক্ষ vpiConstantSelect:
+	    ঘূৰাই rfp->sbase == 0;
 
-	case vpiLeftRange:
+	পক্ষ vpi_বাম_Range:
             rval += rfp->width - 1;
 	    // fallthrough
-	case vpiRightRange: {
-	    int left = vpi_get(vpiLeftRange, rfp->parent);
-	    int right = vpi_get(vpiRightRange, rfp->parent);
+	পক্ষ vpi_ডান_Range: {
+	    পূর্ণাঙ্ক বাম = vpi_get(vpi_বাম_Range, rfp->parent);
+	    পূর্ণাঙ্ক ডান = vpi_get(vpi_ডান_Range, rfp->parent);
 	    rval += PV_get_base(rfp);
-	    return left >= right ? right + rval : right - rval;
+	    ঘূৰাই বাম >= ডান ? ডান + rval : ডান - rval;
 	}
 
-        case vpiAutomatic:
-            return vpi_get(vpiAutomatic, rfp->parent);
+        পক্ষ vpiAutomatic:
+            ঘূৰাই vpi_get(vpiAutomatic, rfp->parent);
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-        case _vpiFromThr:
-            return _vpi_at_PV;
+#যদি defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+        পক্ষ _vpiFromThr:
+            ঘূৰাই _vpi_at_PV;
 #endif
 
-	default:
+	স্ৱভাৱ:
 	    fprintf(stderr, "PV_get: property %d is unknown\n", code);
       }
 
-      return 0;
+      ঘূৰাই 0;
 }
 
-static char* PV_get_str(int code, vpiHandle ref)
+স্থির ৱর্ণ* PV_get_str(পূর্ণাঙ্ক code, vpiHandle ref)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      সংরচনা __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      প্রতিজ্ঞা(rfp);
 
-      switch (code) {
-	case vpiFile:  // Not implemented for now!
-	    return simple_set_rbuf_str(file_names[0]);
+      ৱিকল্প (code) {
+	পক্ষ vpiFile:  // Not implemented for now!
+	    ঘূৰাই simple_set_rbuf_str(file_names[0]);
 
-	case vpiName:
-	case vpiFullName: {
-	    const char*nm = vpi_get_str(code, rfp->parent);
+	পক্ষ vpiName:
+	পক্ষ vpiFullName: {
+	    ধ্রুৱ ৱর্ণ*nm = vpi_get_str(code, rfp->parent);
 	    size_t len = 256+strlen(nm);
-	    char *full = static_cast<char *>(malloc(len));
+	    ৱর্ণ *full = static_cast<ৱর্ণ *>(malloc(len));
 	    snprintf(full, len, "%s[%d:%d]", nm,
-	                                     (int)vpi_get(vpiLeftRange, ref),
-	                                     (int)vpi_get(vpiRightRange, ref));
+	                                     (পূর্ণাঙ্ক)vpi_get(vpi_বাম_Range, ref),
+	                                     (পূর্ণাঙ্ক)vpi_get(vpi_ডান_Range, ref));
 	    full[len-1] = 0;
-	    char *res = simple_set_rbuf_str(full);
-	    free(full);
-	    return res;
+	    ৱর্ণ *res = simple_set_rbuf_str(full);
+	    মুক্ত(full);
+	    ঘূৰাই res;
 	}
 
-	default:
+	স্ৱভাৱ:
 	    fprintf(stderr, "PV_get_str: property %d is unknown.\n", code);
       }
 
-      return 0;
+      ঘূৰাই 0;
 }
 
-static void PV_get_value(vpiHandle ref, p_vpi_value vp)
+স্থির শূন্য PV_get_মান(vpiHandle ref, p_vpi_মান vp)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      সংরচনা __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      প্রতিজ্ঞা(rfp);
 
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(rfp->net->fil);
-      assert(sig);
+      vvp_signal_মান*sig = dynamic_cast<vvp_signal_মান*>(rfp->net->fil);
+      প্রতিজ্ঞা(sig);
 
-      switch (vp->format) {
+      ৱিকল্প (vp->format) {
 
-	  case vpiIntVal:
+	  পক্ষ vpiIntVal:
 	    format_vpiIntVal(sig, PV_get_base(rfp), rfp->width, 0, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiBinStrVal:
+	  পক্ষ vpiBinStrVal:
 	    format_vpiBinStrVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiOctStrVal:
+	  পক্ষ vpiOctStrVal:
 	    format_vpiOctStrVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiHexStrVal:
+	  পক্ষ vpiHexStrVal:
 	    format_vpiHexStrVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiDecStrVal:
+	  পক্ষ vpiDecStrVal:
 	    format_vpiDecStrVal(sig, PV_get_base(rfp), rfp->width, 0, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiStringVal:
+	  পক্ষ vpiStringVal:
 	    format_vpiStringVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiScalarVal:
+	  পক্ষ vpiScalarVal:
 	    format_vpiScalarVal(sig, PV_get_base(rfp), vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiStrengthVal:
+	  পক্ষ vpiStrengthVal:
 	    format_vpiStrengthVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiVectorVal:
+	  পক্ষ vpiVectorVal:
 	    format_vpiVectorVal(sig, PV_get_base(rfp), rfp->width, vp);
-	    break;
+	    ভঙ্গ;
 
-	  case vpiRealVal:
+	  পক্ষ vpiRealVal:
 	    format_vpiRealVal(sig, PV_get_base(rfp), rfp->width, 0, vp);
-	    break;
+	    ভঙ্গ;
 
-	  default:
+	  স্ৱভাৱ:
 	    fprintf(stderr, "vvp internal error: PV_get_value: "
 		    "value type %d not implemented. Signal is %s.\n",
-		    (int)vp->format, vpi_get_str(vpiFullName, rfp->parent));
-	    assert(0);
+		    (পূর্ণাঙ্ক)vp->format, vpi_get_str(vpiFullName, rfp->parent));
+	    প্রতিজ্ঞা(0);
       }
 }
 
-static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
+স্থির vpiHandle PV_put_মান(vpiHandle ref, p_vpi_মান vp, পূর্ণাঙ্ক flags)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
-      vvp_signal_value*sig = dynamic_cast<vvp_signal_value*>(rfp->net->fil);
-      assert(sig);
+      সংরচনা __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      প্রতিজ্ঞা(rfp);
+      vvp_signal_মান*sig = dynamic_cast<vvp_signal_মান*>(rfp->net->fil);
+      প্রতিজ্ঞা(sig);
 
-      unsigned sig_size = sig->value_size();
+      unsigned sig_size = sig->মান_size();
       unsigned width = rfp->width;
-      int base = PV_get_base(rfp);
-      if (base >= (signed) sig_size) return 0;
-      if (base + (signed) width < 0) return 0;
+      পূর্ণাঙ্ক base = PV_get_base(rfp);
+      যদি (base >= (signed) sig_size) ঘূৰাই 0;
+      যদি (base + (signed) width < 0) ঘূৰাই 0;
 
       vvp_vector4_t val;
-      if (flags != vpiReleaseFlag) {
-	    val = vec4_from_vpi_value(vp, width);
+      যদি (flags != vpiReleaseFlag) {
+	    val = vec4_from_vpi_মান(vp, width);
       }
 
 	/*
 	 * If the base is less than zero then trim off any unneeded
 	 * lower bits.
 	 */
-      if (base < 0) {
+      যদি (base < 0) {
 	    width += base;
-	    if (flags != vpiReleaseFlag) {
+	    যদি (flags != vpiReleaseFlag) {
 		  val = val.subvalue(-base, width);
 	    }
 	    base = 0;
@@ -1506,16 +1506,16 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 	 * If the value is wider than the signal then trim off any
 	 * unneeded upper bits.
 	 */
-      if (base+width > sig_size) {
+      যদি (base+width > sig_size) {
 	    width = sig_size - base;
-	    if (flags != vpiReleaseFlag) {
+	    যদি (flags != vpiReleaseFlag) {
 		  val = val.subvalue(0, width);
 	    }
       }
 
-      assert(rfp->parent);
-      bool net_flag = rfp->parent->get_type_code()==vpiNet;
-      bool full_sig = base == 0 && width == sig_size;
+      প্রতিজ্ঞা(rfp->parent);
+      তার্কিক net_flag = rfp->parent->get_type_code()==vpiNet;
+      তার্কিক full_sig = base == 0 && width == sig_size;
 
       vvp_net_ptr_t dest(rfp->net, 0);
 
@@ -1525,27 +1525,27 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 	   if this net is attached to an island, we need to rerun
 	   the calculations immediately so we can return the
 	   released value.*/
-      if (flags == vpiReleaseFlag) {
-	    assert(rfp->net->fil);
+      যদি (flags == vpiReleaseFlag) {
+	    প্রতিজ্ঞা(rfp->net->fil);
 	      // XXXX Can't really do this if this is a partial release?
 	    rfp->net->fil->force_unlink();
-	    if (full_sig) {
+	    যদি (full_sig) {
 		  rfp->net->fil->release(dest, net_flag);
-	    } else {
+	    } অন্যথা {
 		  rfp->net->fil->release_pv(dest, base, width, net_flag);
 	    }
-	    rfp->net->fun->force_flag(true);
-	    PV_get_value(ref, vp);
-	    return ref;
+	    rfp->net->fun->force_flag(সঁচা);
+	    PV_get_মান(ref, vp);
+	    ঘূৰাই ref;
       }
 
-      if (flags == vpiForceFlag) {
-	    if (full_sig) {
+      যদি (flags == vpiForceFlag) {
+	    যদি (full_sig) {
 		  vvp_vector2_t mask (vvp_vector2_t::FILL1, sig_size);
 		  rfp->net->force_vec4(val, mask);
-	    } else {
+	    } অন্যথা {
 		  vvp_vector2_t mask (vvp_vector2_t::FILL0, sig_size);
-		  for (unsigned idx = 0 ; idx < width ; idx += 1)
+		  বাবে (unsigned idx = 0 ; idx < width ; idx += 1)
 		        mask.set_bit(base+idx, 1);
 
 		  vvp_vector4_t tmp (sig_size, BIT4_Z);
@@ -1553,72 +1553,72 @@ static vpiHandle PV_put_value(vpiHandle ref, p_vpi_value vp, int flags)
 		    // vvp_net_t::force_vec4 propagates all the bits of the
 		    // forced vector value, regardless of the mask. This
 		    // ensures the unforced bits retain their current value.
-		  sig->vec4_value(tmp);
+		  sig->vec4_মান(tmp);
 
 		  tmp.set_vec(base, val);
 		  rfp->net->force_vec4(tmp, mask);
 	    }
-      } else if (net_flag && !dynamic_cast<vvp_island_port*>(rfp->net->fun)) {
-	    if (full_sig) {
+      } অন্যথা যদি (net_flag && !dynamic_cast<vvp_island_port*>(rfp->net->fun)) {
+	    যদি (full_sig) {
 		  rfp->net->send_vec4(val, vthread_get_wt_context());
-	    } else {
+	    } অন্যথা {
 		  rfp->net->send_vec4_pv(val, base, sig_size,
 		                         vthread_get_wt_context());
 	    }
-      } else {
-	    if (full_sig) {
+      } অন্যথা {
+	    যদি (full_sig) {
 		  vvp_send_vec4(dest, val, vthread_get_wt_context());
-	    } else {
+	    } অন্যথা {
 		  vvp_send_vec4_pv(dest, val, base, sig_size,
 	                           vthread_get_wt_context());
 	    }
       }
-      return 0;
+      ঘূৰাই 0;
 }
 
-static vpiHandle PV_get_handle(int code, vpiHandle ref)
+স্থির vpiHandle PV_get_handle(পূর্ণাঙ্ক code, vpiHandle ref)
 {
-      struct __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
-      assert(rfp);
+      সংরচনা __vpiPV*rfp = dynamic_cast<__vpiPV*>(ref);
+      প্রতিজ্ঞা(rfp);
 
-      switch (code) {
-	  case vpiParent:
-	    return rfp->parent;
+      ৱিকল্প (code) {
+	  পক্ষ vpiParent:
+	    ঘূৰাই rfp->parent;
 
-	  case vpiScope:
-	    return vpi_handle(vpiScope, rfp->parent);
+	  পক্ষ vpiScope:
+	    ঘূৰাই vpi_handle(vpiScope, rfp->parent);
 
-	  case vpiModule:
-	    return vpi_handle(vpiModule, rfp->parent);
+	  পক্ষ vpiModule:
+	    ঘূৰাই vpi_handle(vpiModule, rfp->parent);
       }
 
-      return 0;
+      ঘূৰাই 0;
 }
 
-inline __vpiPV::__vpiPV()
+অন্তঃস্থ __vpiPV::__vpiPV()
 { }
 
-int __vpiPV::get_type_code(void) const
-{ return vpiPartSelect; }
+পূর্ণাঙ্ক __vpiPV::get_type_code(শূন্য) ধ্রুৱ
+{ ঘূৰাই vpiPartSelect; }
 
-int __vpiPV::vpi_get(int code)
-{ return PV_get(code, this); }
+পূর্ণাঙ্ক __vpiPV::vpi_get(পূর্ণাঙ্ক code)
+{ ঘূৰাই PV_get(code, এতত্); }
 
-char* __vpiPV::vpi_get_str(int code)
-{ return PV_get_str(code, this); }
+ৱর্ণ* __vpiPV::vpi_get_str(পূর্ণাঙ্ক code)
+{ ঘূৰাই PV_get_str(code, এতত্); }
 
-void __vpiPV::vpi_get_value(p_vpi_value val)
-{ PV_get_value(this, val); }
+শূন্য __vpiPV::vpi_get_মান(p_vpi_মান val)
+{ PV_get_মান(এতত্, val); }
 
-vpiHandle __vpiPV::vpi_put_value(p_vpi_value val, int flags)
-{ return PV_put_value(this, val, flags); }
+vpiHandle __vpiPV::vpi_put_মান(p_vpi_মান val, পূর্ণাঙ্ক flags)
+{ ঘূৰাই PV_put_মান(এতত্, val, flags); }
 
-vpiHandle __vpiPV::vpi_handle(int code)
-{ return PV_get_handle(code, this); }
+vpiHandle __vpiPV::vpi_handle(পূর্ণাঙ্ক code)
+{ ঘূৰাই PV_get_handle(code, এতত্); }
 
-vpiHandle vpip_make_PV(char*var, int base, int width)
+vpiHandle vpip_make_PV(ৱর্ণ*var, পূর্ণাঙ্ক base, পূর্ণাঙ্ক width)
 {
-      struct __vpiPV*obj = new __vpiPV;
+      সংরচনা __vpiPV*obj = নূতন __vpiPV;
       compile_vpi_lookup(&obj->parent, strdup(var));
       obj->sbase = 0;
       obj->tbase = base;
@@ -1626,25 +1626,25 @@ vpiHandle vpip_make_PV(char*var, int base, int width)
       obj->net = 0;
       functor_ref_lookup(&obj->net, var);
 
-      return obj;
+      ঘূৰাই obj;
 }
 
-vpiHandle vpip_make_PV(char*var, char*symbol, int width)
+vpiHandle vpip_make_PV(ৱর্ণ*var, ৱর্ণ*প্ৰতীক, পূর্ণাঙ্ক width)
 {
-      struct __vpiPV*obj = new __vpiPV;
+      সংরচনা __vpiPV*obj = নূতন __vpiPV;
       compile_vpi_lookup(&obj->parent, strdup(var));
-      compile_vpi_lookup(&obj->sbase, symbol);
+      compile_vpi_lookup(&obj->sbase, প্ৰতীক);
       obj->tbase = 0;
       obj->width = (unsigned) width;
       obj->net = 0;
       functor_ref_lookup(&obj->net, var);
 
-      return obj;
+      ঘূৰাই obj;
 }
 
-vpiHandle vpip_make_PV(char*var, vpiHandle handle, int width)
+vpiHandle vpip_make_PV(ৱর্ণ*var, vpiHandle handle, পূর্ণাঙ্ক width)
 {
-      struct __vpiPV*obj = new __vpiPV;
+      সংরচনা __vpiPV*obj = নূতন __vpiPV;
       compile_vpi_lookup(&obj->parent, strdup(var));
       obj->sbase = handle;
       obj->tbase = 0;
@@ -1652,27 +1652,27 @@ vpiHandle vpip_make_PV(char*var, vpiHandle handle, int width)
       obj->net = 0;
       functor_ref_lookup(&obj->net, var);
 
-      return obj;
+      ঘূৰাই obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND
-void PV_delete(vpiHandle item)
+শূন্য PV_delete(vpiHandle item)
 {
-      struct __vpiPV *obj = dynamic_cast<__vpiPV*>(item);
-      if (obj->sbase) {
-	    switch (obj->sbase->get_type_code()) {
-		case vpiMemoryWord:
-		  if (vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_A) {
+      সংরচনা __vpiPV *obj = dynamic_cast<__vpiPV*>(item);
+      যদি (obj->sbase) {
+	    ৱিকল্প (obj->sbase->get_type_code()) {
+		পক্ষ vpiMemoryWord:
+		  যদি (vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_A) {
 			A_delete(obj->sbase);
 		  }
-		  break;
-		case vpiPartSelect:
-		  assert(vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_PV);
+		  ভঙ্গ;
+		পক্ষ vpiPartSelect:
+		  প্রতিজ্ঞা(vpi_get(_vpiFromThr, obj->sbase) == _vpi_at_PV);
 		  PV_delete(obj->sbase);
-		  break;
+		  ভঙ্গ;
 	    }
       }
-      assert(obj->net->fil);
+      প্রতিজ্ঞা(obj->net->fil);
       obj->net->fil->clear_all_callbacks();
       delete obj;
 }

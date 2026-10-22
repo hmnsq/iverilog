@@ -1,4 +1,4 @@
-const char COPYRIGHT[] =
+ধ্রুৱ ৱর্ণ COPYRIGHT[] =
   "Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)";
 /*
  *    This source code is free software; you can redistribute it
@@ -24,37 +24,37 @@ const char COPYRIGHT[] =
 # include  <cstdio>
 # include  <cstdlib>
 
-#if defined(HAVE_GETOPT_H)
+#যদি defined(HAVE_GETOPT_H)
 # include  <getopt.h>
 #endif
 
-#if defined(__MINGW32__)
+#যদি defined(__MINGW32__)
 # include  <windows.h>
 #endif
 
-#include "libvvp.h"
+#অন্তর্ভাৱ "libvvp.h"
 
-using namespace std;
+using নামাকাশ std;
 
-#if defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
-extern "C" int getopt(int argc, char*argv[], const char*fmt);
-extern "C" int optind;
-extern "C" const char*optarg;
+#যদি defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
+বাহ্য "C" পূর্ণাঙ্ক getopt(পূর্ণাঙ্ক argc, ৱর্ণ*argv[], ধ্রুৱ ৱর্ণ*fmt);
+বাহ্য "C" পূর্ণাঙ্ক optind;
+বাহ্য "C" ধ্রুৱ ৱর্ণ*optarg;
 #endif
 
-bool version_flag = false;
+তার্কিক version_flag = মিছা;
 
 unsigned module_cnt = 0;
-const char*module_tab[64];
+ধ্রুৱ ৱর্ণ*module_tab[64];
 
-int main(int argc, char*argv[])
+পূর্ণাঙ্ক main(পূর্ণাঙ্ক argc, ৱর্ণ*argv[])
 {
-      int opt;
+      পূর্ণাঙ্ক opt;
       unsigned flag_errors = 0;
-      const char *logfile_name = 0x0;
+      ধ্রুৱ ৱর্ণ *logfile_name = 0x0;
 
-      while ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) switch (opt) {
-         case 'h':
+      যেতিয়ালৈ ((opt = getopt(argc, argv, "+hil:M:m:nNqsvV")) != EOF) ৱিকল্প (opt) {
+         পক্ষ 'h':
            fprintf(stderr,
                    "Usage: vvp [options] input-file [+plusargs...]\n"
                    "Options:\n"
@@ -71,48 +71,48 @@ int main(int argc, char*argv[])
                    " -v             Verbose progress messages.\n"
                    " -V             Print the version information.\n" );
            exit(0);
-	  case 'i':
+	  পক্ষ 'i':
 	    setvbuf(stdout, 0, _IONBF, 0);
-	    break;
-	  case 'l':
+	    ভঙ্গ;
+	  পক্ষ 'l':
 	    logfile_name = optarg;
-	    break;
-	  case 'M':
-	    if (strcmp(optarg,"-") == 0) {
+	    ভঙ্গ;
+	  পক্ষ 'M':
+	    যদি (strcmp(optarg,"-") == 0) {
 		  vpip_clear_module_paths();
-	    } else {
+	    } অন্যথা {
 		  vpip_add_module_path(optarg);
 	    }
-	    break;
-	  case 'm':
+	    ভঙ্গ;
+	  পক্ষ 'm':
 	    module_tab[module_cnt++] = optarg;
-	    break;
-	  case 'n':
-	    vvp_set_stop_is_finish(true, 0);
-	    break;
-          case 'N':
-            vvp_set_stop_is_finish(true, 1);
-            break;
-	  case 'q':
-	    vvp_set_quiet_flag(true);
-	    break;
-	  case 's':
+	    ভঙ্গ;
+	  পক্ষ 'n':
+	    vvp_set_stop_is_finish(সঁচা, 0);
+	    ভঙ্গ;
+          পক্ষ 'N':
+            vvp_set_stop_is_finish(সঁচা, 1);
+            ভঙ্গ;
+	  পক্ষ 'q':
+	    vvp_set_quiet_flag(সঁচা);
+	    ভঙ্গ;
+	  পক্ষ 's':
 	    schedule_stop(0);
-	    break;
-	  case 'v':
-	    vvp_set_verbose_flag(true);
-	    break;
-	  case 'V':
-	    version_flag = true;
-	    break;
-	  default:
+	    ভঙ্গ;
+	  পক্ষ 'v':
+	    vvp_set_verbose_flag(সঁচা);
+	    ভঙ্গ;
+	  পক্ষ 'V':
+	    version_flag = সঁচা;
+	    ভঙ্গ;
+	  স্ৱভাৱ:
 	    flag_errors += 1;
       }
 
-      if (flag_errors)
-	    return flag_errors;
+      যদি (flag_errors)
+	    ঘূৰাই flag_errors;
 
-      if (version_flag) {
+      যদি (version_flag) {
 	    fprintf(stderr, "Icarus Verilog runtime version " VERSION " ("
 	                    VERSION_TAG ")\n\n");
 	    fprintf(stderr, "%s\n\n", COPYRIGHT);
@@ -131,18 +131,18 @@ int main(int argc, char*argv[])
 "  with this program; if not, write to the Free Software Foundation, Inc.,\n"
 "  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n"
 );
-	    return 0;
+	    ঘূৰাই 0;
       }
 
-      if (optind == argc) {
+      যদি (optind == argc) {
 	    fprintf(stderr, "%s: no input file.\n", argv[0]);
-	    return -1;
+	    ঘূৰাই -1;
       }
 
       vvp_init(logfile_name, argc - optind, argv + optind);
 
-      for (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
+      বাবে (unsigned idx = 0 ;  idx < module_cnt ;  idx += 1)
 	    vpip_load_module(module_tab[idx]);
 
-      return vvp_run(argv[optind]);
+      ঘূৰাই vvp_run(argv[optind]);
 }
