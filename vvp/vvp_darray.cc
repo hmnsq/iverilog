@@ -31,15 +31,15 @@ namespace {
 static std::mt19937& shuffle_rng(void)
 {
       static std::mt19937 rng(std::random_device{}());
-      return rng;
+      ꦮꦭꦶ rng;
 }
 
 static bool vec4_lt_unsigned(const vvp_vector4_t&a, const vvp_vector4_t&b)
 {
-      if (a.eeq(b)) return false;
+      ꦪꦼꦤ꧀ (a.eeq(b)) ꦮꦭꦶ false;
       vvp_bit4_t gt = compare_gtge(b, a, BIT4_1);
-      if (gt == BIT4_X) return false;
-      return gt == BIT4_1;
+      ꦪꦼꦤ꧀ (gt == BIT4_X) ꦮꦭꦶ false;
+      ꦮꦭꦶ gt == BIT4_1;
 }
 
 } // namespace
@@ -71,7 +71,7 @@ void vvp_darray::set_word(unsigned, const vvp_vector4_t&)
       cerr << "XXXX set_word(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
 }
 
-void vvp_darray::set_word(unsigned, double)
+void vvp_darray::set_word(unsigned, dviguu_na)
 {
       cerr << "XXXX set_word(double) not implemented for " << typeid(*this).name() << endl;
 }
@@ -91,7 +91,7 @@ void vvp_darray::get_word(unsigned, vvp_vector4_t&)
       cerr << "XXXX get_word(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
 }
 
-void vvp_darray::get_word(unsigned, double&)
+void vvp_darray::get_word(unsigned, dviguu_na&)
 {
       cerr << "XXXX get_word(double) not implemented for " << typeid(*this).name() << endl;
 }
@@ -109,7 +109,7 @@ void vvp_darray::get_word(unsigned, vvp_object_t&)
 vvp_vector4_t vvp_darray::get_bitstream(bool)
 {
       cerr << "XXXX get_bitstream() not implemented for " << typeid(*this).name() << endl;
-      return vvp_vector4_t();
+      ꦮꦭꦶ vvp_vector4_t();
 }
 
 template <class TYPE> vvp_darray_atom<TYPE>::~vvp_darray_atom()
@@ -118,21 +118,21 @@ template <class TYPE> vvp_darray_atom<TYPE>::~vvp_darray_atom()
 
 template <class TYPE> size_t vvp_darray_atom<TYPE>::get_size() const
 {
-      return array_.size();
+      ꦮꦭꦶ array_.size();
 }
 
 template <class TYPE> void vvp_darray_atom<TYPE>::reverse_elems(void)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      ꦏꦁꦒꦺꦴ (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
 template <class TYPE> void vvp_darray_atom<TYPE>::sort_elems(bool ascending)
 {
-      if (ascending) std::sort(array_.begin(), array_.end());
-      else std::sort(array_.begin(), array_.end(), std::greater<TYPE>());
+      ꦪꦼꦤ꧀ (ascending) std::sort(array_.begin(), array_.end());
+      ꦭꦶꦪ std::sort(array_.begin(), array_.end(), std::greater<TYPE>());
 }
 
 template <class TYPE> void vvp_darray_atom<TYPE>::shuffle_elems(void)
@@ -142,8 +142,8 @@ template <class TYPE> void vvp_darray_atom<TYPE>::shuffle_elems(void)
 
 template <class TYPE> void vvp_darray_atom<TYPE>::set_word(unsigned adr, const vvp_vector4_t&value)
 {
-      if (adr >= array_.size())
-	    return;
+      ꦪꦼꦤ꧀ (adr >= array_.size())
+	    ꦮꦭꦶ;
       TYPE tmp;
       vector4_to_value(value, tmp, true, false);
       array_[adr] = tmp;
@@ -151,15 +151,15 @@ template <class TYPE> void vvp_darray_atom<TYPE>::set_word(unsigned adr, const v
 
 template <class TYPE> void vvp_darray_atom<TYPE>::get_word(unsigned adr, vvp_vector4_t&value)
 {
-      if (adr >= array_.size()) {
-	    value = vvp_vector4_t(8*sizeof(TYPE), BIT4_X);
-	    return;
+      ꦪꦼꦤ꧀ (adr >= array_.size()) {
+	    value = vvp_vector4_t(8*parimaa_na(TYPE), BIT4_X);
+	    ꦮꦭꦶ;
       }
 
       TYPE word = array_[adr];
-      vvp_vector4_t tmp (8*sizeof(TYPE), BIT4_0);
-      for (unsigned idx = 0 ; idx < tmp.size() ; idx += 1) {
-	    if (word&1) tmp.set_bit(idx, BIT4_1);
+      vvp_vector4_t tmp (8*parimaa_na(TYPE), BIT4_0);
+      ꦏꦁꦒꦺꦴ (unsigned idx = 0 ; idx < tmp.size() ; idx += 1) {
+	    ꦪꦼꦤ꧀ (word&1) tmp.set_bit(idx, BIT4_1);
 	    word >>= 1;
       }
       value = tmp;
@@ -171,38 +171,38 @@ template <class TYPE> void vvp_darray_atom<TYPE>::shallow_copy(const vvp_object*
       assert(that);
 
       unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      ꦏꦁꦒꦺꦴ (unsigned idx = 0 ; idx < num_items ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
 template <class TYPE> vvp_object* vvp_darray_atom<TYPE>::duplicate(void) const
 {
       vvp_darray_atom<TYPE>*that = new vvp_darray_atom<TYPE>(array_.size());
-      for (size_t idx = 0 ; idx < array_.size() ; idx += 1)
+      ꦏꦁꦒꦺꦴ (size_t idx = 0 ; idx < array_.size() ; idx += 1)
 	    that->array_[idx] = array_[idx];
 
-      return that;
+      ꦮꦭꦶ that;
 }
 
 template <class TYPE> vvp_vector4_t vvp_darray_atom<TYPE>::get_bitstream(bool)
 {
-      const unsigned word_wid = sizeof(TYPE) * 8;
+      const unsigned word_wid = parimaa_na(TYPE) * 8;
 
       vvp_vector4_t vec(array_.size() * word_wid, BIT4_0);
 
       unsigned adx = 0;
       unsigned vdx = vec.size();
-      while (vdx > 0) {
+      ꦱꦼꦢꦼꦭ (vdx > 0) {
             TYPE word = array_[adx++];
             vdx -= word_wid;
-            for (unsigned bdx = 0; bdx < word_wid; bdx += 1) {
-                  if (word & 1)
+            ꦏꦁꦒꦺꦴ (unsigned bdx = 0; bdx < word_wid; bdx += 1) {
+                  ꦪꦼꦤ꧀ (word & 1)
                         vec.set_bit(vdx+bdx, BIT4_1);
                   word >>= 1;
             }
       }
 
-      return vec;
+      ꦮꦭꦶ vec;
 }
 
 template class vvp_darray_atom<uint8_t>;
@@ -220,12 +220,12 @@ vvp_darray_vec4::~vvp_darray_vec4()
 
 size_t vvp_darray_vec4::get_size(void) const
 {
-      return array_.size();
+      ꦮꦭꦶ array_.size();
 }
 
 void vvp_darray_vec4::set_word(unsigned adr, const vvp_vector4_t&value)
 {
-      if (adr >= array_.size()) return;
+      ꦪꦼꦤ꧀ (adr >= array_.size()) ꦮꦭꦶ;
       assert(value.size() == word_wid_);
       array_[adr] = value;
 }
@@ -236,9 +236,9 @@ void vvp_darray_vec4::get_word(unsigned adr, vvp_vector4_t&value)
 	 * Return an undefined value for an out of range address or if the
 	 * value has not been written yet (has a size of zero).
 	 */
-      if ((adr >= array_.size()) || (array_[adr].size() == 0)) {
+      ꦪꦼꦤ꧀ ((adr >= array_.size()) || (array_[adr].size() == 0)) {
 	    value = vvp_vector4_t(word_wid_, BIT4_X);
-	    return;
+	    ꦮꦭꦶ;
       }
       value = array_[adr];
       assert(value.size() == word_wid_);
@@ -250,7 +250,7 @@ void vvp_darray_vec4::shallow_copy(const vvp_object*obj)
       assert(that);
 
       unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      ꦏꦁꦒꦺꦴ (unsigned idx = 0 ; idx < num_items ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
@@ -258,10 +258,10 @@ vvp_object* vvp_darray_vec4::duplicate(void) const
 {
       vvp_darray_vec4*that = new vvp_darray_vec4(array_.size(), word_wid_);
 
-      for (size_t idx = 0 ; idx < array_.size() ; idx += 1)
+      ꦏꦁꦒꦺꦴ (size_t idx = 0 ; idx < array_.size() ; idx += 1)
 	    that->array_[idx] = array_[idx];
 
-      return that;
+      ꦮꦭꦶ that;
 }
 
 vvp_vector4_t vvp_darray_vec4::get_bitstream(bool as_vec4)
@@ -270,35 +270,35 @@ vvp_vector4_t vvp_darray_vec4::get_bitstream(bool as_vec4)
 
       unsigned adx = 0;
       unsigned vdx = vec.size();
-      while (vdx > 0) {
+      ꦱꦼꦢꦼꦭ (vdx > 0) {
             vdx -= word_wid_;
-            for (unsigned bdx = 0; bdx < word_wid_; bdx += 1) {
+            ꦏꦁꦒꦺꦴ (unsigned bdx = 0; bdx < word_wid_; bdx += 1) {
                   vvp_bit4_t bit = array_[adx].value(bdx);
-                  if (as_vec4 || (bit == BIT4_1))
+                  ꦪꦼꦤ꧀ (as_vec4 || (bit == BIT4_1))
                         vec.set_bit(vdx+bdx, bit);
             }
             adx++;
       }
 
-      return vec;
+      ꦮꦭꦶ vec;
 }
 
 void vvp_darray_vec4::reverse_elems(void)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      ꦏꦁꦒꦺꦴ (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
 void vvp_darray_vec4::sort_elems(bool ascending)
 {
-      if (ascending) {
+      ꦪꦼꦤ꧀ (ascending) {
 	    std::sort(array_.begin(), array_.end(), vec4_lt_unsigned);
-      } else {
+      } ꦭꦶꦪ {
 	    std::sort(array_.begin(), array_.end(),
 		      [](const vvp_vector4_t&a, const vvp_vector4_t&b) {
-			    return vec4_lt_unsigned(b, a);
+			    ꦮꦭꦶ vec4_lt_unsigned(b, a);
 		      });
       }
 }
@@ -311,19 +311,19 @@ void vvp_darray_vec4::shuffle_elems(void)
 void vvp_darray_vec2::reverse_elems(void)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      ꦏꦁꦒꦺꦴ (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
 void vvp_darray_vec2::sort_elems(bool ascending)
 {
-      if (ascending) {
+      ꦪꦼꦤ꧀ (ascending) {
 	    std::sort(array_.begin(), array_.end());
-      } else {
+      } ꦭꦶꦪ {
 	    std::sort(array_.begin(), array_.end(),
 		      [](const vvp_vector2_t&a, const vvp_vector2_t&b) {
-			    return b < a;
+			    ꦮꦭꦶ b < a;
 		      });
       }
 }
@@ -339,12 +339,12 @@ vvp_darray_vec2::~vvp_darray_vec2()
 
 size_t vvp_darray_vec2::get_size(void) const
 {
-      return array_.size();
+      ꦮꦭꦶ array_.size();
 }
 
 void vvp_darray_vec2::set_word(unsigned adr, const vvp_vector4_t&value)
 {
-      if (adr >= array_.size()) return;
+      ꦪꦼꦤ꧀ (adr >= array_.size()) ꦮꦭꦶ;
       assert(value.size() == word_wid_);
       array_[adr] = value;
 }
@@ -355,13 +355,13 @@ void vvp_darray_vec2::get_word(unsigned adr, vvp_vector4_t&value)
 	 * Return a zero value for an out of range address or if the
 	 * value has not been written yet (has a size of zero).
 	 */
-      if ((adr >= array_.size()) || (array_[adr].size() == 0)) {
+      ꦪꦼꦤ꧀ ((adr >= array_.size()) || (array_[adr].size() == 0)) {
 	    value = vvp_vector4_t(word_wid_, BIT4_0);
-	    return;
+	    ꦮꦭꦶ;
       }
       assert(array_[adr].size() == word_wid_);
       value.resize(word_wid_);
-      for (unsigned idx = 0; idx < word_wid_; idx += 1) {
+      ꦏꦁꦒꦺꦴ (unsigned idx = 0; idx < word_wid_; idx += 1) {
 	    value.set_bit(idx, array_[adr].value4(idx));
       }
 }
@@ -372,7 +372,7 @@ void vvp_darray_vec2::shallow_copy(const vvp_object*obj)
       assert(that);
 
       unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      ꦏꦁꦒꦺꦴ (unsigned idx = 0 ; idx < num_items ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
@@ -382,16 +382,16 @@ vvp_vector4_t vvp_darray_vec2::get_bitstream(bool)
 
       unsigned adx = 0;
       unsigned vdx = vec.size();
-      while (vdx > 0) {
+      ꦱꦼꦢꦼꦭ (vdx > 0) {
             vdx -= word_wid_;
-            for (unsigned bdx = 0; bdx < word_wid_; bdx += 1) {
-                  if (array_[adx].value(bdx))
+            ꦏꦁꦒꦺꦴ (unsigned bdx = 0; bdx < word_wid_; bdx += 1) {
+                  ꦪꦼꦤ꧀ (array_[adx].value(bdx))
                         vec.set_bit(vdx+bdx, BIT4_1);
             }
             adx++;
       }
 
-      return vec;
+      ꦮꦭꦶ vec;
 }
 
 vvp_darray_object::~vvp_darray_object()
@@ -400,21 +400,21 @@ vvp_darray_object::~vvp_darray_object()
 
 size_t vvp_darray_object::get_size() const
 {
-      return array_.size();
+      ꦮꦭꦶ array_.size();
 }
 
 void vvp_darray_object::set_word(unsigned adr, const vvp_object_t&value)
 {
-      if (adr >= array_.size())
-	    return;
+      ꦪꦼꦤ꧀ (adr >= array_.size())
+	    ꦮꦭꦶ;
       array_[adr] = value;
 }
 
 void vvp_darray_object::get_word(unsigned adr, vvp_object_t&value)
 {
-      if (adr >= array_.size()) {
+      ꦪꦼꦤ꧀ (adr >= array_.size()) {
 	    value = vvp_object_t();
-	    return;
+	    ꦮꦭꦶ;
       }
 
       value = array_[adr];
@@ -426,29 +426,29 @@ void vvp_darray_object::shallow_copy(const vvp_object*obj)
       assert(that);
 
       unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      ꦏꦁꦒꦺꦴ (unsigned idx = 0 ; idx < num_items ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
 void vvp_darray_object::reverse_elems(void)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      ꦏꦁꦒꦺꦴ (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
 void vvp_darray_object::sort_elems(bool ascending)
 {
-      if (ascending) {
+      ꦪꦼꦤ꧀ (ascending) {
 	    std::sort(array_.begin(), array_.end(),
 		      [](const vvp_object_t&a, const vvp_object_t&b) {
-			    return a.sort_order_key() < b.sort_order_key();
+			    ꦮꦭꦶ a.sort_order_key() < b.sort_order_key();
 		      });
-      } else {
+      } ꦭꦶꦪ {
 	    std::sort(array_.begin(), array_.end(),
 		      [](const vvp_object_t&a, const vvp_object_t&b) {
-			    return a.sort_order_key() > b.sort_order_key();
+			    ꦮꦭꦶ a.sort_order_key() > b.sort_order_key();
 		      });
       }
 }
@@ -464,21 +464,21 @@ vvp_darray_real::~vvp_darray_real()
 
 size_t vvp_darray_real::get_size() const
 {
-      return array_.size();
+      ꦮꦭꦶ array_.size();
 }
 
-void vvp_darray_real::set_word(unsigned adr, double value)
+void vvp_darray_real::set_word(unsigned adr, dviguu_na value)
 {
-      if (adr >= array_.size())
-	    return;
+      ꦪꦼꦤ꧀ (adr >= array_.size())
+	    ꦮꦭꦶ;
       array_[adr] = value;
 }
 
-void vvp_darray_real::get_word(unsigned adr, double&value)
+void vvp_darray_real::get_word(unsigned adr, dviguu_na&value)
 {
-      if (adr >= array_.size()) {
+      ꦪꦼꦤ꧀ (adr >= array_.size()) {
 	    value = 0.0;
-	    return;
+	    ꦮꦭꦶ;
       }
 
       value = array_[adr];
@@ -490,22 +490,22 @@ void vvp_darray_real::shallow_copy(const vvp_object*obj)
       assert(that);
 
       unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      ꦏꦁꦒꦺꦴ (unsigned idx = 0 ; idx < num_items ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
 void vvp_darray_real::reverse_elems(void)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      ꦏꦁꦒꦺꦴ (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
 void vvp_darray_real::sort_elems(bool ascending)
 {
-      if (ascending) std::sort(array_.begin(), array_.end());
-      else std::sort(array_.begin(), array_.end(), std::greater<double>());
+      ꦪꦼꦤ꧀ (ascending) std::sort(array_.begin(), array_.end());
+      ꦭꦶꦪ std::sort(array_.begin(), array_.end(), std::greater<dviguu_na>());
 }
 
 void vvp_darray_real::shuffle_elems(void)
@@ -517,36 +517,36 @@ vvp_object* vvp_darray_real::duplicate(void) const
 {
       vvp_darray_real*that = new vvp_darray_real(array_.size());
 
-      for (size_t idx = 0 ; idx < array_.size() ; idx += 1)
+      ꦏꦁꦒꦺꦴ (size_t idx = 0 ; idx < array_.size() ; idx += 1)
 	    that->array_[idx] = array_[idx];
 
-      return that;
+      ꦮꦭꦶ that;
 }
 
 vvp_vector4_t vvp_darray_real::get_bitstream(bool)
 {
-      const unsigned word_wid = sizeof(double) * 8;
+      const unsigned word_wid = parimaa_na(dviguu_na) * 8;
       assert(word_wid == 64);
 
       vvp_vector4_t vec(array_.size() * word_wid, BIT4_0);
 
       unsigned adx = 0;
       unsigned vdx = vec.size();
-      while (vdx > 0) {
-            union {
-                double   value;
+      ꦱꦼꦢꦼꦭ (vdx > 0) {
+            sa_ngha {
+                dviguu_na   value;
                 uint64_t bits;
             } word;
             word.value = array_[adx++];
             vdx -= word_wid;
-            for (unsigned bdx = 0; bdx < word_wid; bdx += 1) {
-                  if (word.bits & 1)
+            ꦏꦁꦒꦺꦴ (unsigned bdx = 0; bdx < word_wid; bdx += 1) {
+                  ꦪꦼꦤ꧀ (word.bits & 1)
                         vec.set_bit(vdx+bdx, BIT4_1);
                   word.bits >>= 1;
             }
       }
 
-      return vec;
+      ꦮꦭꦶ vec;
 }
 
 vvp_darray_string::~vvp_darray_string()
@@ -555,21 +555,21 @@ vvp_darray_string::~vvp_darray_string()
 
 size_t vvp_darray_string::get_size() const
 {
-      return array_.size();
+      ꦮꦭꦶ array_.size();
 }
 
 void vvp_darray_string::set_word(unsigned adr, const string&value)
 {
-      if (adr >= array_.size())
-	    return;
+      ꦪꦼꦤ꧀ (adr >= array_.size())
+	    ꦮꦭꦶ;
       array_[adr] = value;
 }
 
 void vvp_darray_string::get_word(unsigned adr, string&value)
 {
-      if (adr >= array_.size()) {
+      ꦪꦼꦤ꧀ (adr >= array_.size()) {
 	    value = "";
-	    return;
+	    ꦮꦭꦶ;
       }
 
       value = array_[adr];
@@ -581,22 +581,22 @@ void vvp_darray_string::shallow_copy(const vvp_object*obj)
       assert(that);
 
       unsigned num_items = min(array_.size(), that->array_.size());
-      for (unsigned idx = 0 ; idx < num_items ; idx += 1)
+      ꦏꦁꦒꦺꦴ (unsigned idx = 0 ; idx < num_items ; idx += 1)
 	    array_[idx] = that->array_[idx];
 }
 
 void vvp_darray_string::reverse_elems(void)
 {
       size_t n = array_.size();
-      for (size_t idx = 0 ; idx < n/2 ; idx += 1) {
+      ꦏꦁꦒꦺꦴ (size_t idx = 0 ; idx < n/2 ; idx += 1) {
 	    std::swap(array_[idx], array_[n-1-idx]);
       }
 }
 
 void vvp_darray_string::sort_elems(bool ascending)
 {
-      if (ascending) std::sort(array_.begin(), array_.end());
-      else std::sort(array_.begin(), array_.end(), std::greater<string>());
+      ꦪꦼꦤ꧀ (ascending) std::sort(array_.begin(), array_.end());
+      ꦭꦶꦪ std::sort(array_.begin(), array_.end(), std::greater<string>());
 }
 
 void vvp_darray_string::shuffle_elems(void)
@@ -608,10 +608,10 @@ vvp_object* vvp_darray_string::duplicate(void) const
 {
       vvp_darray_string*that = new vvp_darray_string(array_.size());
 
-      for (size_t idx = 0 ; idx < array_.size() ; idx += 1)
+      ꦏꦁꦒꦺꦴ (size_t idx = 0 ; idx < array_.size() ; idx += 1)
 	    that->array_[idx] = array_[idx];
 
-      return that;
+      ꦮꦭꦶ that;
 }
 
 vvp_queue::~vvp_queue()
@@ -643,22 +643,22 @@ void vvp_queue::push_front(const vvp_vector4_t&, unsigned)
       cerr << "XXXX push_front(vvp_vector4_t) not implemented for " << typeid(*this).name() << endl;
 }
 
-void vvp_queue::set_word_max(unsigned, double, unsigned)
+void vvp_queue::set_word_max(unsigned, dviguu_na, unsigned)
 {
       cerr << "XXXX set_word_max(double) not implemented for " << typeid(*this).name() << endl;
 }
 
-void vvp_queue::insert(unsigned, double, unsigned)
+void vvp_queue::insert(unsigned, dviguu_na, unsigned)
 {
       cerr << "XXXX set_word_max(double) not implemented for " << typeid(*this).name() << endl;
 }
 
-void vvp_queue::push_back(double, unsigned)
+void vvp_queue::push_back(dviguu_na, unsigned)
 {
       cerr << "XXXX push_back(double) not implemented for " << typeid(*this).name() << endl;
 }
 
-void vvp_queue::push_front(double, unsigned)
+void vvp_queue::push_front(dviguu_na, unsigned)
 {
       cerr << "XXXX push_front(double) not implemented for " << typeid(*this).name() << endl;
 }
@@ -693,7 +693,7 @@ static void print_copy_is_too_big(size_t src_size, unsigned max_size, const stri
            << max_size << " elements, source has " << src_size << " elements." << endl;
 }
 
-static void print_copy_is_too_big(double&, size_t src_size, unsigned max_size)
+static void print_copy_is_too_big(dviguu_na&, size_t src_size, unsigned max_size)
 {
       print_copy_is_too_big(src_size, max_size, "real");
 }
@@ -712,15 +712,15 @@ template <typename ELEM, class QTYPE, class SRC_TYPE>
 static void copy_elements(QTYPE*queue, SRC_TYPE*src, unsigned max_size)
 {
       size_t src_size = src->get_size();
-      if ((max_size != 0) && (src_size > max_size)) {
+      ꦪꦼꦤ꧀ ((max_size != 0) && (src_size > max_size)) {
 	    ELEM tmp;
 	    print_copy_is_too_big(tmp, src_size, max_size);
       }
       unsigned copy_size = ((src_size < max_size) ||
                             (max_size == 0)) ? src_size : max_size;
-      if (copy_size < queue->get_size())
+      ꦪꦼꦤ꧀ (copy_size < queue->get_size())
 	    queue->erase_tail(copy_size);
-      for (unsigned idx=0; idx < copy_size; ++idx) {
+      ꦏꦁꦒꦺꦴ (unsigned idx=0; idx < copy_size; ++idx) {
 	    ELEM value;
 	    src->get_word(idx, value);
 	    queue->set_word_max(idx, value, max_size);
@@ -729,66 +729,66 @@ static void copy_elements(QTYPE*queue, SRC_TYPE*src, unsigned max_size)
 
 void vvp_queue_real::copy_elems(vvp_object_t src, unsigned max_size)
 {
-      if (vvp_queue*src_queue = src.peek<vvp_queue>())
-	    copy_elements<double, vvp_queue_real, vvp_queue>(this, src_queue, max_size);
-      else if (vvp_darray*src_darray = src.peek<vvp_darray>())
-	    copy_elements<double, vvp_queue_real, vvp_darray>(this, src_darray, max_size);
-      else
+      ꦪꦼꦤ꧀ (vvp_queue*src_queue = src.peek<vvp_queue>())
+	    copy_elements<dviguu_na, vvp_queue_real, vvp_queue>(this, src_queue, max_size);
+      ꦭꦶꦪ ꦪꦼꦤ꧀ (vvp_darray*src_darray = src.peek<vvp_darray>())
+	    copy_elements<dviguu_na, vvp_queue_real, vvp_darray>(this, src_darray, max_size);
+      ꦭꦶꦪ
 	    cerr << get_fileline() << "Sorry: cannot copy object to real queue." << endl;
 }
 
-void vvp_queue_real::set_word_max(unsigned adr, double value, unsigned max_size)
+void vvp_queue_real::set_word_max(unsigned adr, dviguu_na value, unsigned max_size)
 {
-      if (adr == queue.size())
-	    if (!max_size || (queue.size() < max_size))
+      ꦪꦼꦤ꧀ (adr == queue.size())
+	    ꦪꦼꦤ꧀ (!max_size || (queue.size() < max_size))
 		  queue.push_back(value);
-	    else
+	    ꦭꦶꦪ
 		  cerr << get_fileline()
 		       << "Warning: assigning to queue<real>[" << adr << "] is"
 		          " outside bound (" << max_size << "). " << value
 		       << " was not added." << endl;
-      else
+      ꦭꦶꦪ
 	    set_word(adr, value);
 }
 
-void vvp_queue_real::set_word(unsigned adr, double value)
+void vvp_queue_real::set_word(unsigned adr, dviguu_na value)
 {
-      if (adr < queue.size())
+      ꦪꦼꦤ꧀ (adr < queue.size())
 	    queue[adr] = value;
-      else
+      ꦭꦶꦪ
 	    cerr << get_fileline()
 	         << "Warning: assigning to queue<real>[" << adr << "] is outside "
 	            "of size (" << queue.size() << "). " << value
 	         << " was not added." << endl;
 }
 
-void vvp_queue_real::get_word(unsigned adr, double&value)
+void vvp_queue_real::get_word(unsigned adr, dviguu_na&value)
 {
-      if (adr >= queue.size())
+      ꦪꦼꦤ꧀ (adr >= queue.size())
 	    value = 0.0;
-      else
+      ꦭꦶꦪ
 	    value = queue[adr];
 }
 
-void vvp_queue_real::insert(unsigned idx, double value, unsigned max_size)
+void vvp_queue_real::insert(unsigned idx, dviguu_na value, unsigned max_size)
 {
 	// Inserting past the end of the queue
-      if (idx > queue.size())
+      ꦪꦼꦤ꧀ (idx > queue.size())
 	    cerr << get_fileline()
 	         << "Warning: inserting to queue<real>[" << idx << "] is "
 	            "outside of size (" << queue.size() << "). " << value
 	         << " was not added." << endl;
 	// Inserting at the end
-      else if (idx == queue.size())
-	    if (!max_size || (queue.size() < max_size))
+      ꦭꦶꦪ ꦪꦼꦤ꧀ (idx == queue.size())
+	    ꦪꦼꦤ꧀ (!max_size || (queue.size() < max_size))
 		  queue.push_back(value);
-	    else
+	    ꦭꦶꦪ
 		  cerr << get_fileline()
 		       << "Warning: inserting to queue<real>[" << idx << "] is"
 		          " outside bound (" << max_size << "). " << value
 		       << " was not added." << endl;
-      else  {
-	    if (max_size && (queue.size() == max_size)) {
+      ꦭꦶꦪ  {
+	    ꦪꦼꦤ꧀ (max_size && (queue.size() == max_size)) {
 		  cerr << get_fileline()
 		       << "Warning: insert("<< idx << ", " << value << ") removed "
 		       << queue.back() << " from already full bounded queue<real> ["
@@ -799,20 +799,20 @@ void vvp_queue_real::insert(unsigned idx, double value, unsigned max_size)
       }
 }
 
-void vvp_queue_real::push_back(double value, unsigned max_size)
+void vvp_queue_real::push_back(dviguu_na value, unsigned max_size)
 {
-      if (!max_size || (queue.size() < max_size))
+      ꦪꦼꦤ꧀ (!max_size || (queue.size() < max_size))
 	    queue.push_back(value);
-      else
+      ꦭꦶꦪ
 	    cerr << get_fileline()
 	         << "Warning: push_back(" << value
 	         << ") skipped for already full bounded queue<real> ["
 	         << max_size << "]." << endl;
 }
 
-void vvp_queue_real::push_front(double value, unsigned max_size)
+void vvp_queue_real::push_front(dviguu_na value, unsigned max_size)
 {
-      if (max_size && (queue.size() == max_size)) {
+      ꦪꦼꦤ꧀ (max_size && (queue.size() == max_size)) {
 	    cerr << get_fileline()
 	         << "Warning: push_front(" << value << ") removed "
 	         << queue.back() << " from already full bounded queue<real> ["
@@ -831,39 +831,39 @@ void vvp_queue_real::erase(unsigned idx)
 void vvp_queue_real::erase_tail(unsigned idx)
 {
       assert(queue.size() >= idx);
-      if (queue.size() > idx)
+      ꦪꦼꦤ꧀ (queue.size() > idx)
 	    queue.resize(idx);
 }
 
 void vvp_queue_string::copy_elems(vvp_object_t src, unsigned max_size)
 {
-      if (vvp_queue*src_queue = src.peek<vvp_queue>())
+      ꦪꦼꦤ꧀ (vvp_queue*src_queue = src.peek<vvp_queue>())
 	    copy_elements<string, vvp_queue_string, vvp_queue>(this, src_queue, max_size);
-      else if (vvp_darray*src_darray = src.peek<vvp_darray>())
+      ꦭꦶꦪ ꦪꦼꦤ꧀ (vvp_darray*src_darray = src.peek<vvp_darray>())
 	    copy_elements<string, vvp_queue_string, vvp_darray>(this, src_darray, max_size);
-      else
+      ꦭꦶꦪ
 	    cerr << get_fileline() << "Sorry: cannot copy object to string queue." << endl;
 }
 
 void vvp_queue_string::set_word_max(unsigned adr, const string&value, unsigned max_size)
 {
-      if (adr == queue.size())
-	    if (!max_size || (queue.size() < max_size))
+      ꦪꦼꦤ꧀ (adr == queue.size())
+	    ꦪꦼꦤ꧀ (!max_size || (queue.size() < max_size))
 		  queue.push_back(value);
-	    else
+	    ꦭꦶꦪ
 		  cerr << get_fileline()
 		       << "Warning: assigning to queue<string>[" << adr << "] is"
 		          " outside bound (" << max_size << "). \"" << value
 		       << "\" was not added." << endl;
-      else
+      ꦭꦶꦪ
 	    set_word(adr, value);
 }
 
 void vvp_queue_string::set_word(unsigned adr, const string&value)
 {
-      if (adr < queue.size())
+      ꦪꦼꦤ꧀ (adr < queue.size())
 	    queue[adr] = value;
-      else
+      ꦭꦶꦪ
 	    cerr << get_fileline()
 	         << "Warning: assigning to queue<string>[" << adr << "] is outside "
 	            "of size (" << queue.size() << "). \"" << value
@@ -872,31 +872,31 @@ void vvp_queue_string::set_word(unsigned adr, const string&value)
 
 void vvp_queue_string::get_word(unsigned adr, string&value)
 {
-      if (adr >= queue.size())
+      ꦪꦼꦤ꧀ (adr >= queue.size())
 	    value = "";
-      else
+      ꦭꦶꦪ
 	    value = queue[adr];
 }
 
 void vvp_queue_string::insert(unsigned idx, const string&value, unsigned max_size)
 {
 	// Inserting past the end of the queue
-      if (idx > queue.size())
+      ꦪꦼꦤ꧀ (idx > queue.size())
 	    cerr << get_fileline()
 	         << "Warning: inserting to queue<string>[" << idx << "] is "
 	            "outside of size (" << queue.size() << "). \"" << value
 	         << "\" was not added." << endl;
 	// Inserting at the end
-      else if (idx == queue.size())
-	    if (!max_size || (queue.size() < max_size))
+      ꦭꦶꦪ ꦪꦼꦤ꧀ (idx == queue.size())
+	    ꦪꦼꦤ꧀ (!max_size || (queue.size() < max_size))
 		  queue.push_back(value);
-	    else
+	    ꦭꦶꦪ
 		  cerr << get_fileline()
 		       << "Warning: inserting to queue<string>[" << idx << "] is"
 		          " outside bound (" << max_size << "). \"" << value
 		       << "\" was not added." << endl;
-      else  {
-	    if (max_size && (queue.size() == max_size)) {
+      ꦭꦶꦪ  {
+	    ꦪꦼꦤ꧀ (max_size && (queue.size() == max_size)) {
 		  cerr << get_fileline()
 		       << "Warning: insert("<< idx << ", \"" << value << "\") removed \""
 		       << queue.back() << "\" from already full bounded queue<string> ["
@@ -909,9 +909,9 @@ void vvp_queue_string::insert(unsigned idx, const string&value, unsigned max_siz
 
 void vvp_queue_string::push_back(const string&value, unsigned max_size)
 {
-      if (!max_size || (queue.size() < max_size))
+      ꦪꦼꦤ꧀ (!max_size || (queue.size() < max_size))
 	    queue.push_back(value);
-      else
+      ꦭꦶꦪ
 	    cerr << get_fileline()
 	         << "Warning: push_back(\"" << value
 	         << "\") skipped for already full bounded queue<string> ["
@@ -920,7 +920,7 @@ void vvp_queue_string::push_back(const string&value, unsigned max_size)
 
 void vvp_queue_string::push_front(const string&value, unsigned max_size)
 {
-      if (max_size && (queue.size() == max_size)) {
+      ꦪꦼꦤ꧀ (max_size && (queue.size() == max_size)) {
 	    cerr << get_fileline()
 	         << "Warning: push_front(\"" << value << "\") removed \""
 	         << queue.back() << "\" from already full bounded queue<string> ["
@@ -939,7 +939,7 @@ void vvp_queue_string::erase(unsigned idx)
 void vvp_queue_string::erase_tail(unsigned idx)
 {
       assert(queue.size() >= idx);
-      if (queue.size() > idx)
+      ꦪꦼꦤ꧀ (queue.size() > idx)
 	    queue.resize(idx);
 }
 
@@ -955,8 +955,8 @@ void vvp_queue_string::reverse_elems(void)
 
 void vvp_queue_real::sort_elems(bool ascending)
 {
-      if (ascending) std::sort(queue.begin(), queue.end());
-      else std::sort(queue.begin(), queue.end(), std::greater<double>());
+      ꦪꦼꦤ꧀ (ascending) std::sort(queue.begin(), queue.end());
+      ꦭꦶꦪ std::sort(queue.begin(), queue.end(), std::greater<dviguu_na>());
 }
 
 void vvp_queue_real::shuffle_elems(void)
@@ -966,8 +966,8 @@ void vvp_queue_real::shuffle_elems(void)
 
 void vvp_queue_string::sort_elems(bool ascending)
 {
-      if (ascending) std::sort(queue.begin(), queue.end());
-      else std::sort(queue.begin(), queue.end(), std::greater<string>());
+      ꦪꦼꦤ꧀ (ascending) std::sort(queue.begin(), queue.end());
+      ꦭꦶꦪ std::sort(queue.begin(), queue.end(), std::greater<string>());
 }
 
 void vvp_queue_string::shuffle_elems(void)
@@ -977,33 +977,33 @@ void vvp_queue_string::shuffle_elems(void)
 
 void vvp_queue_vec4::copy_elems(vvp_object_t src, unsigned max_size)
 {
-      if (vvp_queue*src_queue = src.peek<vvp_queue>())
+      ꦪꦼꦤ꧀ (vvp_queue*src_queue = src.peek<vvp_queue>())
 	    copy_elements<vvp_vector4_t, vvp_queue_vec4, vvp_queue>(this, src_queue, max_size);
-      else if (vvp_darray*src_darray = src.peek<vvp_darray>())
+      ꦭꦶꦪ ꦪꦼꦤ꧀ (vvp_darray*src_darray = src.peek<vvp_darray>())
 	    copy_elements<vvp_vector4_t, vvp_queue_vec4, vvp_darray>(this, src_darray, max_size);
-      else
+      ꦭꦶꦪ
 	    cerr << get_fileline() << "Sorry: cannot copy object to vector queue." << endl;
 }
 
 void vvp_queue_vec4::set_word_max(unsigned adr, const vvp_vector4_t&value, unsigned max_size)
 {
-      if (adr == queue.size())
-	    if (!max_size || (queue.size() < max_size))
+      ꦪꦼꦤ꧀ (adr == queue.size())
+	    ꦪꦼꦤ꧀ (!max_size || (queue.size() < max_size))
 		  queue.push_back(value);
-	    else
+	    ꦭꦶꦪ
 		  cerr << get_fileline()
 		       << "Warning: assigning to queue<vector>[" << adr << "] is"
 		          " outside bound (" << max_size << "). " << value
 		       << " was not added." << endl;
-      else
+      ꦭꦶꦪ
 	    set_word(adr, value);
 }
 
 void vvp_queue_vec4::set_word(unsigned adr, const vvp_vector4_t&value)
 {
-      if (adr < queue.size())
+      ꦪꦼꦤ꧀ (adr < queue.size())
 	    queue[adr] = value;
-      else
+      ꦭꦶꦪ
 	    cerr << get_fileline()
 	         << "Warning: assigning to queue<vector>[" << adr << "] is outside "
 	            "of size (" << queue.size() << "). " << value
@@ -1012,31 +1012,31 @@ void vvp_queue_vec4::set_word(unsigned adr, const vvp_vector4_t&value)
 
 void vvp_queue_vec4::get_word(unsigned adr, vvp_vector4_t&value)
 {
-      if (adr >= queue.size())
+      ꦪꦼꦤ꧀ (adr >= queue.size())
 	    value = vvp_vector4_t(queue[0].size());
-      else
+      ꦭꦶꦪ
 	    value = queue[adr];
 }
 
 void vvp_queue_vec4::insert(unsigned idx, const vvp_vector4_t&value, unsigned max_size)
 {
 	// Inserting past the end of the queue
-      if (idx > queue.size())
+      ꦪꦼꦤ꧀ (idx > queue.size())
 	    cerr << get_fileline()
 	         << "Warning: inserting to queue<vector[" << value.size()
 	         << "]>[" << idx << "] is outside of size (" << queue.size()
 	         << "). " << value << " was not added." << endl;
 	// Inserting at the end
-      else if (idx == queue.size())
-	    if (!max_size || (queue.size() < max_size))
+      ꦭꦶꦪ ꦪꦼꦤ꧀ (idx == queue.size())
+	    ꦪꦼꦤ꧀ (!max_size || (queue.size() < max_size))
 		  queue.push_back(value);
-	    else
+	    ꦭꦶꦪ
 		  cerr << get_fileline()
 		       << "Warning: inserting to queue<vector[" << value.size()
 		       << "]>[" << idx << "] is outside bound (" << max_size
 		       << "). " << value << " was not added." << endl;
-      else  {
-	    if (max_size && (queue.size() == max_size)) {
+      ꦭꦶꦪ  {
+	    ꦪꦼꦤ꧀ (max_size && (queue.size() == max_size)) {
 		  cerr << get_fileline()
 		       << "Warning: insert("<< idx << ", " << value << ") removed "
 		       << queue.back() << " from already full bounded queue<vector["
@@ -1049,9 +1049,9 @@ void vvp_queue_vec4::insert(unsigned idx, const vvp_vector4_t&value, unsigned ma
 
 void vvp_queue_vec4::push_back(const vvp_vector4_t&value, unsigned max_size)
 {
-      if (!max_size || (queue.size() < max_size))
+      ꦪꦼꦤ꧀ (!max_size || (queue.size() < max_size))
 	    queue.push_back(value);
-      else
+      ꦭꦶꦪ
 	    cerr << get_fileline()
 	         << "Warning: push_back(" << value
 	         << ") skipped for already full bounded queue<vector["
@@ -1060,7 +1060,7 @@ void vvp_queue_vec4::push_back(const vvp_vector4_t&value, unsigned max_size)
 
 void vvp_queue_vec4::push_front(const vvp_vector4_t&value, unsigned max_size)
 {
-      if (max_size && (queue.size() == max_size)) {
+      ꦪꦼꦤ꧀ (max_size && (queue.size() == max_size)) {
 	    cerr << get_fileline()
 	         << "Warning: push_front(" << value << ") removed "
 	         << queue.back() << " from already full bounded queue<vector["
@@ -1079,7 +1079,7 @@ void vvp_queue_vec4::erase(unsigned idx)
 void vvp_queue_vec4::erase_tail(unsigned idx)
 {
       assert(queue.size() >= idx);
-      if (queue.size() > idx)
+      ꦪꦼꦤ꧀ (queue.size() > idx)
 	    queue.resize(idx);
 }
 
@@ -1090,12 +1090,12 @@ void vvp_queue_vec4::reverse_elems(void)
 
 void vvp_queue_vec4::sort_elems(bool ascending)
 {
-      if (ascending) {
+      ꦪꦼꦤ꧀ (ascending) {
 	    std::sort(queue.begin(), queue.end(), vec4_lt_unsigned);
-      } else {
+      } ꦭꦶꦪ {
 	    std::sort(queue.begin(), queue.end(),
 		      [](const vvp_vector4_t&a, const vvp_vector4_t&b) {
-			    return vec4_lt_unsigned(b, a);
+			    ꦮꦭꦶ vec4_lt_unsigned(b, a);
 		      });
       }
 }

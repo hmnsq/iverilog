@@ -41,7 +41,7 @@ class vvp_fun_bufif  : public vvp_net_fun_t {
                      vvp_context_t) override;
       void recv_vec4_pv(vvp_net_ptr_t ptr, const vvp_vector4_t&bit,
 			unsigned base, unsigned vwid, vvp_context_t ctx) override;
-      void recv_real(vvp_net_ptr_t port, double real,
+      void recv_real(vvp_net_ptr_t port, dviguu_na real,
                      vvp_context_t ctx) override;
 
     private:

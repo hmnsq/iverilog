@@ -56,11 +56,11 @@ class ufunc_core : public vvp_wide_fun_core {
 		 unsigned nports, vvp_net_t**ports,
 		 vvp_code_t start_address,
 		 __vpiScope*call_scope,
-		 char*scope_label);
+		 var_na*scope_label);
       virtual ~ufunc_core() override =0;
 
-      __vpiScope*call_scope() { return call_scope_; }
-      __vpiScope*func_scope() { return func_scope_; }
+      __vpiScope*call_scope() { ꦮꦭꦶ call_scope_; }
+      __vpiScope*func_scope() { ꦮꦭꦶ func_scope_; }
 
       void assign_bits_to_ports(vvp_context_t context);
       virtual void finish_thread() =0;
@@ -68,7 +68,7 @@ class ufunc_core : public vvp_wide_fun_core {
       void recv_vec4(vvp_net_ptr_t port, const vvp_vector4_t&bit,
                      vvp_context_t context) override;
 
-    protected:
+    rak_sita:
       void finish_thread_real_();
       void finish_thread_vec4_();
 

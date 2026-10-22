@@ -44,7 +44,7 @@ class vvp_reduce_base : public vvp_net_fun_t {
 
       virtual vvp_bit4_t calculate_result() const =0;
 
-    protected:
+    rak_sita:
       vvp_vector4_t bits_;
 };
 
@@ -68,7 +68,7 @@ void vvp_reduce_base::recv_vec4(vvp_net_ptr_t prt, const vvp_vector4_t&bit,
 void vvp_reduce_base::recv_vec4_pv(vvp_net_ptr_t prt, const vvp_vector4_t&bit,
 				   unsigned base, unsigned vwid, vvp_context_t context)
 {
-      if (bits_.size() == 0) {
+      ꦪꦼꦤ꧀ (bits_.size() == 0) {
 	    bits_ = vvp_vector4_t(vwid);
       }
       assert(bits_.size() == vwid);
@@ -97,7 +97,7 @@ vvp_reduce_and::~vvp_reduce_and()
 
 vvp_bit4_t vvp_reduce_and::calculate_result() const
 {
-      return bits_.reduce_and();
+      ꦮꦭꦶ bits_.reduce_and();
 }
 
 class vvp_reduce_or  : public vvp_reduce_base {
@@ -118,7 +118,7 @@ vvp_reduce_or::~vvp_reduce_or()
 
 vvp_bit4_t vvp_reduce_or::calculate_result() const
 {
-      return bits_.reduce_or();
+      ꦮꦭꦶ bits_.reduce_or();
 }
 
 class vvp_reduce_xor  : public vvp_reduce_base {
@@ -139,7 +139,7 @@ vvp_reduce_xor::~vvp_reduce_xor()
 
 vvp_bit4_t vvp_reduce_xor::calculate_result() const
 {
-      return bits_.reduce_xor();
+      ꦮꦭꦶ bits_.reduce_xor();
 }
 
 class vvp_reduce_nand  : public vvp_reduce_base {
@@ -160,7 +160,7 @@ vvp_reduce_nand::~vvp_reduce_nand()
 
 vvp_bit4_t vvp_reduce_nand::calculate_result() const
 {
-      return ~bits_.reduce_and();
+      ꦮꦭꦶ ~bits_.reduce_and();
 }
 
 class vvp_reduce_nor  : public vvp_reduce_base {
@@ -181,7 +181,7 @@ vvp_reduce_nor::~vvp_reduce_nor()
 
 vvp_bit4_t vvp_reduce_nor::calculate_result() const
 {
-      return ~bits_.reduce_or();
+      ꦮꦭꦶ ~bits_.reduce_or();
 }
 
 class vvp_reduce_xnor  : public vvp_reduce_base {
@@ -202,10 +202,10 @@ vvp_reduce_xnor::~vvp_reduce_xnor()
 
 vvp_bit4_t vvp_reduce_xnor::calculate_result() const
 {
-      return ~bits_.reduce_xor();
+      ꦮꦭꦶ ~bits_.reduce_xor();
 }
 
-static void make_reduce(char*label, vvp_net_fun_t*red, const struct symb_s&arg)
+static void make_reduce(var_na*label, vvp_net_fun_t*red, const sa_nracanaa symb_s&arg)
 {
       vvp_net_t*ptr = new vvp_net_t;
       ptr->fun = red;
@@ -216,37 +216,37 @@ static void make_reduce(char*label, vvp_net_fun_t*red, const struct symb_s&arg)
       input_connect(ptr, 0, arg.text);
 }
 
-void compile_reduce_and(char*label, const struct symb_s&arg)
+void compile_reduce_and(var_na*label, const sa_nracanaa symb_s&arg)
 {
       vvp_reduce_and* reduce = new vvp_reduce_and;
       make_reduce(label, reduce, arg);
 }
 
-void compile_reduce_or(char*label, const struct symb_s&arg)
+void compile_reduce_or(var_na*label, const sa_nracanaa symb_s&arg)
 {
       vvp_reduce_or* reduce = new vvp_reduce_or;
       make_reduce(label, reduce, arg);
 }
 
-void compile_reduce_xor(char*label, const struct symb_s&arg)
+void compile_reduce_xor(var_na*label, const sa_nracanaa symb_s&arg)
 {
       vvp_reduce_xor* reduce = new vvp_reduce_xor;
       make_reduce(label, reduce, arg);
 }
 
-void compile_reduce_nand(char*label, const struct symb_s&arg)
+void compile_reduce_nand(var_na*label, const sa_nracanaa symb_s&arg)
 {
       vvp_reduce_nand* reduce = new vvp_reduce_nand;
       make_reduce(label, reduce, arg);
 }
 
-void compile_reduce_nor(char*label, const struct symb_s&arg)
+void compile_reduce_nor(var_na*label, const sa_nracanaa symb_s&arg)
 {
       vvp_reduce_nor* reduce = new vvp_reduce_nor;
       make_reduce(label, reduce, arg);
 }
 
-void compile_reduce_xnor(char*label, const struct symb_s&arg)
+void compile_reduce_xnor(var_na*label, const sa_nracanaa symb_s&arg)
 {
       vvp_reduce_xnor* reduce = new vvp_reduce_xnor;
       make_reduce(label, reduce, arg);

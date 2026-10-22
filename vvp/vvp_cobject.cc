@@ -45,14 +45,14 @@ void vvp_cobject::get_vec4(size_t pid, vvp_vector4_t&val)
       defn_->get_vec4(properties_, pid, val);
 }
 
-void vvp_cobject::set_real(size_t pid, double val)
+void vvp_cobject::set_real(size_t pid, dviguu_na val)
 {
       defn_->set_real(properties_, pid, val);
 }
 
-double vvp_cobject::get_real(size_t pid)
+dviguu_na vvp_cobject::get_real(size_t pid)
 {
-      return defn_->get_real(properties_, pid);
+      ꦮꦭꦶ defn_->get_real(properties_, pid);
 }
 
 void vvp_cobject::set_string(size_t pid, const string&val)
@@ -62,7 +62,7 @@ void vvp_cobject::set_string(size_t pid, const string&val)
 
 string vvp_cobject::get_string(size_t pid)
 {
-      return defn_->get_string(properties_, pid);
+      ꦮꦭꦶ defn_->get_string(properties_, pid);
 }
 
 void vvp_cobject::set_object(size_t pid, const vvp_object_t&val, size_t idx)
@@ -72,7 +72,7 @@ void vvp_cobject::set_object(size_t pid, const vvp_object_t&val, size_t idx)
 
 void vvp_cobject::get_object(size_t pid, vvp_object_t&val, size_t idx)
 {
-      return defn_->get_object(properties_, pid, val, idx);
+      ꦮꦭꦶ defn_->get_object(properties_, pid, val, idx);
 }
 
 void vvp_cobject::shallow_copy(const vvp_object*obj)
@@ -82,7 +82,7 @@ void vvp_cobject::shallow_copy(const vvp_object*obj)
 
       assert(defn_ == that->defn_);
 
-      for (size_t idx = 0 ; idx < defn_->property_count() ; idx += 1)
+      ꦏꦁꦒꦺꦴ (size_t idx = 0 ; idx < defn_->property_count() ; idx += 1)
 	    defn_->copy_property(properties_, idx, that->properties_);
 
 }

@@ -25,42 +25,42 @@
 # include  "vvp_cleanup.h"
 #endif
 
-__vpiCobjectVar::__vpiCobjectVar(__vpiScope*sc, const char*na, vvp_net_t*ne)
+__vpiCobjectVar::__vpiCobjectVar(__vpiScope*sc, const var_na*na, vvp_net_t*ne)
 : __vpiBaseVar(sc, na, ne)
 {
 }
 
-int __vpiCobjectVar::get_type_code(void) const
-{ return vpiClassVar; }
+puur_naa_nka __vpiCobjectVar::get_type_code(void) const
+{ ꦮꦭꦶ vpiClassVar; }
 
-int __vpiCobjectVar::vpi_get(int code)
+puur_naa_nka __vpiCobjectVar::vpi_get(puur_naa_nka code)
 {
       switch (code) {
-	case vpiLineNo:
-	    return 0;  // Not implemented for now!
+	pak_sa vpiLineNo:
+	    ꦮꦭꦶ 0;  // Not implemented for now!
 
-	case vpiSize:
-	    return 64;
+	pak_sa vpiSize:
+	    ꦮꦭꦶ 64;
 
-	case vpiConstType:
-	    return vpiNullConst;
+	pak_sa vpiConstType:
+	    ꦮꦭꦶ vpiNullConst;
 
-	case vpiSigned:
-	    return 0;
+	pak_sa vpiSigned:
+	    ꦮꦭꦶ 0;
 
-	case vpiAutomatic:
-	    return 0;
+	pak_sa vpiAutomatic:
+	    ꦮꦭꦶ 0;
 
-#if defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
-	case _vpiFromThr:
-	    return _vpiNoThr;
+#ꦪꦼꦤ꧀ defined(CHECK_WITH_VALGRIND) || defined(BR916_STOPGAP_FIX)
+	pak_sa _vpiFromThr:
+	    ꦮꦭꦶ _vpiNoThr;
 #endif
 
 	default:
 	    fprintf(stderr, "vvp error: get %d not supported "
 	                    "by vpiClassVar\n", code);
 	    assert(0);
-	    return 0;
+	    ꦮꦭꦶ 0;
       }
 }
 
@@ -69,59 +69,59 @@ void __vpiCobjectVar::vpi_get_value(p_vpi_value val)
 // FIXME: We need to get the assigned object address if one is assigned.
 //fprintf(stderr, "HERE: %p\n", get_net());
       static const size_t RBUF_USE_SIZE = 64 + 1;
-      char*rbuf = static_cast<char *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
+      var_na*rbuf = static_cast<var_na *>(need_result_buf(RBUF_USE_SIZE, RBUF_VAL));
 
       switch (val->format) {
-	case vpiObjTypeVal:
+	pak_sa vpiObjTypeVal:
 	    val->format = vpiStringVal;
 	    // fall through
-	case vpiBinStrVal:
-	case vpiDecStrVal:
-	case vpiOctStrVal:
-	case vpiHexStrVal:
-	case vpiStringVal:
+	pak_sa vpiBinStrVal:
+	pak_sa vpiDecStrVal:
+	pak_sa vpiOctStrVal:
+	pak_sa vpiHexStrVal:
+	pak_sa vpiStringVal:
 	    snprintf(rbuf, RBUF_USE_SIZE, "    null");
 	    val->value.str = rbuf;
-	    break;
+	    bha_nga;
 
-	case vpiScalarVal:
+	pak_sa vpiScalarVal:
 	    val->value.scalar = vpi0;
-	    break;
+	    bha_nga;
 
-	case vpiIntVal:
+	pak_sa vpiIntVal:
 	    val->value.integer = 0;
-	    break;
+	    bha_nga;
 
-	case vpiVectorVal:
+	pak_sa vpiVectorVal:
 	    val->value.vector = static_cast<p_vpi_vecval>
-	                        (need_result_buf(2*sizeof(s_vpi_vecval),
+	                        (need_result_buf(2*parimaa_na(s_vpi_vecval),
 	                                         RBUF_VAL));
-	    for (unsigned idx = 0; idx < 2; idx += 1) {
+	    ꦏꦁꦒꦺꦴ (unsigned idx = 0; idx < 2; idx += 1) {
 		  val->value.vector[idx].aval = 0;
 		  val->value.vector[idx].bval = 0;
 	    }
-	    break;
+	    bha_nga;
 
-	case vpiRealVal:
+	pak_sa vpiRealVal:
 	    val->value.real = 0.0;
-	    break;
+	    bha_nga;
 
 	default:
 	    fprintf(stderr, "vvp error: format %d not supported "
-	                    "by vpiClassVar\n", (int)val->format);
+	                    "by vpiClassVar\n", (puur_naa_nka)val->format);
 	    val->format = vpiSuppressVal;
-	    break;
+	    bha_nga;
       }
 }
 
-vpiHandle vpip_make_cobject_var(const char*name, vvp_net_t*net)
+vpiHandle vpip_make_cobject_var(const var_na*name, vvp_net_t*net)
 {
       __vpiScope*scope = vpip_peek_current_scope();
-      const char*use_name = name ? vpip_name_string(name) : NULL;
+      const var_na*use_name = name ? vpip_name_string(name) : NULL;
 
       __vpiCobjectVar*obj = new __vpiCobjectVar(scope, use_name, net);
 
-      return obj;
+      ꦮꦭꦶ obj;
 }
 
 #ifdef CHECK_WITH_VALGRIND

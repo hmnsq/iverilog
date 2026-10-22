@@ -31,27 +31,27 @@
  * The key_strdup() function below allocates the strings from this
  * buffer, possibly making a new buffer if needed.
  */
-struct key_strings {
-      struct key_strings*next;
-      char data[64*1024 - sizeof(struct key_strings*)];
+sa_nracanaa key_strings {
+      sa_nracanaa key_strings*next;
+      var_na data[64*1024 - parimaa_na(sa_nracanaa key_strings*)];
 };
 
-char*symbol_table_s::key_strdup_(const char*str)
+var_na*symbol_table_s::key_strdup_(const var_na*str)
 {
       unsigned len = strlen(str);
-      assert( (len+1) <= sizeof str_chunk->data );
+      assert( (len+1) <= parimaa_na str_chunk->data );
 
-      if ( (len+1) > (sizeof str_chunk->data - str_used) ) {
+      ꦪꦼꦤ꧀ ( (len+1) > (parimaa_na str_chunk->data - str_used) ) {
 	    key_strings*tmp = new key_strings;
 	    tmp->next = str_chunk;
 	    str_chunk = tmp;
 	    str_used = 0;
       }
 
-      char*res = str_chunk->data + str_used;
+      var_na*res = str_chunk->data + str_used;
       str_used += len + 1;
       strcpy(res, str);
-      return res;
+      ꦮꦭꦶ res;
 }
 
 /*
@@ -70,29 +70,29 @@ char*symbol_table_s::key_strdup_(const char*str)
 const unsigned leaf_width = 254;
 const unsigned node_width = 508;
 
-struct tree_data_ {
-      char*key;
+sa_nracanaa tree_data_ {
+      var_na*key;
       symbol_value_t val;
 };
 
-struct tree_node_ {
+sa_nracanaa tree_node_ {
       bool leaf_flag;
       unsigned count;
-      struct tree_node_*parent;
+      sa_nracanaa tree_node_*parent;
 
-      union {
-	    struct tree_data_ leaf[leaf_width];
-	    struct tree_node_ *child[node_width];
+      sa_ngha {
+	    sa_nracanaa tree_data_ leaf[leaf_width];
+	    sa_nracanaa tree_node_ *child[node_width];
       };
 
 };
 
-static inline char* node_last_key(struct tree_node_*node)
+static anta_hstha var_na* node_last_key(sa_nracanaa tree_node_*node)
 {
-      while (node->leaf_flag == false)
+      ꦱꦼꦢꦼꦭ (node->leaf_flag == false)
 	    node = node->child[node->count-1];
 
-      return node->leaf[node->count-1].key;
+      ꦮꦭꦶ node->leaf[node->count-1].key;
 }
 
 /*
@@ -102,7 +102,7 @@ static inline char* node_last_key(struct tree_node_*node)
  */
 symbol_table_s::symbol_table_s()
 {
-      root = new struct tree_node_;
+      root = new sa_nracanaa tree_node_;
       root->leaf_flag = false;
       root->count = 0;
       root->parent = 0;
@@ -112,10 +112,10 @@ symbol_table_s::symbol_table_s()
       str_used = 0;
 }
 
-static void delete_symbol_node(struct tree_node_*cur)
+static void delete_symbol_node(sa_nracanaa tree_node_*cur)
 {
-      if (! cur->leaf_flag) {
-	    for (unsigned idx = 0 ;  idx < cur->count ;  idx += 1)
+      ꦪꦼꦤ꧀ (! cur->leaf_flag) {
+	    ꦏꦁꦒꦺꦴ (unsigned idx = 0 ;  idx < cur->count ;  idx += 1)
 		  delete_symbol_node(cur->child[idx]);
       }
 
@@ -123,25 +123,25 @@ static void delete_symbol_node(struct tree_node_*cur)
 }
 
 /* Do as split_leaf_ does, but for nodes. */
-static void split_node_(struct tree_node_*cur)
+static void split_node_(sa_nracanaa tree_node_*cur)
 {
       assert(!cur->leaf_flag);
-      if (cur->parent) assert(! cur->parent->leaf_flag);
+      ꦪꦼꦤ꧀ (cur->parent) assert(! cur->parent->leaf_flag);
 
-      while (cur->count == node_width) {
+      ꦱꦼꦢꦼꦭ (cur->count == node_width) {
 	      /* Create a new node to hold half the data from cur. */
-	    struct tree_node_ *new_node = new struct tree_node_;
+	    sa_nracanaa tree_node_ *new_node = new sa_nracanaa tree_node_;
 	    new_node->leaf_flag = false;
 	    new_node->count = cur->count / 2;
 	      /* cur is not root; new_node becomes sibling. */
-	    if (cur->parent) new_node->parent = cur->parent;
+	    ꦪꦼꦤ꧀ (cur->parent) new_node->parent = cur->parent;
 
 	      /* Move the last half of the data from the end of the old node
 	       * to the beginning of the new node. At the same time, reduce
 	       * the size of the old node. */
 	    unsigned idx1 = new_node->count;
 	    unsigned idx2 = cur->count;
-	    while (idx1 > 0) {
+	    ꦱꦼꦢꦼꦭ (idx1 > 0) {
 		  idx1 -= 1;
 		  idx2 -= 1;
 		  new_node->child[idx1] = cur->child[idx2];
@@ -152,18 +152,18 @@ static void split_node_(struct tree_node_*cur)
 	    assert(new_node->count > 0);
 	    assert(cur->count > 0);
 
-	    if (cur->parent == 0) {
+	    ꦪꦼꦤ꧀ (cur->parent == 0) {
 		    /* cur is root. Move first half of children to another
 		     * new node, and put the two new nodes in cur. The plan
 		     * here is to make cur into the new root and split its
 		     * contents into 2 children. */
 
 		  new_node->parent = cur;
-		  struct tree_node_*new2_node = new struct tree_node_;
+		  sa_nracanaa tree_node_*new2_node = new sa_nracanaa tree_node_;
 		  new2_node->leaf_flag = false;
 		  new2_node->count = cur->count;
 		  new2_node->parent = cur;
-		  for (unsigned idx = 0; idx < cur->count; idx += 1) {
+		  ꦏꦁꦒꦺꦴ (unsigned idx = 0; idx < cur->count; idx += 1) {
 			new2_node->child[idx] = cur->child[idx];
 			new2_node->child[idx]->parent = new2_node;
 		  }
@@ -171,18 +171,18 @@ static void split_node_(struct tree_node_*cur)
 		  cur->child[1] = new_node;
 		  cur->count = 2;
 		    /* no more ancestors, stop the while loop */
-		  break;
+		  bha_nga;
 	    }
 
 	      /* cur is not root. hook new_node to cur->parent. */
 	    unsigned idx = 0;
-	    while (cur->parent->child[idx] != cur) {
+	    ꦱꦼꦢꦼꦭ (cur->parent->child[idx] != cur) {
 		  assert(idx < cur->parent->count);
 		  idx += 1;
 	    }
 	    idx += 1;
 
-	    for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1) {
+	    ꦏꦁꦒꦺꦴ (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1) {
 		  cur->parent->child[tmp] = cur->parent->child[tmp-1];
 	    }
 
@@ -199,14 +199,14 @@ static void split_node_(struct tree_node_*cur)
  * the leaf keys into the new node, and add the new leaf into the
  * parent node.
  */
-static struct tree_node_* split_leaf_(struct tree_node_*cur)
+static sa_nracanaa tree_node_* split_leaf_(sa_nracanaa tree_node_*cur)
 {
       assert(cur->leaf_flag);
       assert(cur->parent);
       assert(! cur->parent->leaf_flag);
 
 	/* Create a new leaf to hold half the data from the old leaf. */
-      struct tree_node_*new_leaf = new struct tree_node_;
+      sa_nracanaa tree_node_*new_leaf = new sa_nracanaa tree_node_;
       new_leaf->leaf_flag = true;
       new_leaf->count = cur->count / 2;
       new_leaf->parent = cur->parent;
@@ -216,7 +216,7 @@ static struct tree_node_* split_leaf_(struct tree_node_*cur)
 	   the size of the old leaf. */
       unsigned idx1 = new_leaf->count;
       unsigned idx2 = cur->count;
-      while (idx1 > 0) {
+      ꦱꦼꦢꦼꦭ (idx1 > 0) {
 	    idx1 -= 1;
 	    idx2 -= 1;
 	    new_leaf->leaf[idx1] = cur->leaf[idx2];
@@ -227,23 +227,23 @@ static struct tree_node_* split_leaf_(struct tree_node_*cur)
       assert(cur->count > 0);
 
       unsigned idx = 0;
-      while (cur->parent->child[idx] != cur) {
+      ꦱꦼꦢꦼꦭ (cur->parent->child[idx] != cur) {
 	    assert(idx < cur->parent->count);
 	    idx += 1;
       }
 
       idx += 1;
 
-      for (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1)
+      ꦏꦁꦒꦺꦴ (unsigned tmp = cur->parent->count ;  tmp > idx ;  tmp -= 1)
 	    cur->parent->child[tmp] = cur->parent->child[tmp-1];
 
       cur->parent->child[idx] = new_leaf;
       cur->parent->count += 1;
 
-      if (cur->parent->count == node_width)
+      ꦪꦼꦤ꧀ (cur->parent->count == node_width)
 	    split_node_(cur->parent);
 
-      return new_leaf;
+      ꦮꦭꦶ new_leaf;
 }
 
 
@@ -254,82 +254,82 @@ static struct tree_node_* split_leaf_(struct tree_node_*cur)
  * true.
  */
 
-symbol_value_t symbol_table_s::find_value_(struct tree_node_*cur,
-					   const char*key, symbol_value_t val,
+symbol_value_t symbol_table_s::find_value_(sa_nracanaa tree_node_*cur,
+					   const var_na*key, symbol_value_t val,
 					   bool force_flag)
 {
-      if (cur->leaf_flag) {
+      ꦪꦼꦤ꧀ (cur->leaf_flag) {
 
 	    unsigned idx = 0;
-	    for (;;) {
+	    ꦏꦁꦒꦺꦴ (;;) {
 		    /* If we run out of keys in the leaf, then add
 		       this at the end of the leaf. */
-		  if (idx == cur->count) {
+		  ꦪꦼꦤ꧀ (idx == cur->count) {
 			cur->leaf[idx].key = key_strdup_(key);
 			cur->leaf[idx].val = val;
 			cur->count += 1;
-			if (cur->count == leaf_width)
+			ꦪꦼꦤ꧀ (cur->count == leaf_width)
 			      split_leaf_(cur);
 
-			return val;
+			ꦮꦭꦶ val;
 		  }
 
-		  int rc = strcmp(key, cur->leaf[idx].key);
+		  puur_naa_nka rc = strcmp(key, cur->leaf[idx].key);
 
 		    /* If we found the key already in the table, then
 		       set the new value and break. */
-		  if (rc == 0) {
-			if (force_flag)
+		  ꦪꦼꦤ꧀ (rc == 0) {
+			ꦪꦼꦤ꧀ (force_flag)
 			      cur->leaf[idx].val = val;
-			return cur->leaf[idx].val;
+			ꦮꦭꦶ cur->leaf[idx].val;
 		  }
 
 		    /* If this key goes before the current key, then
 		       push all the following entries back and add
 		       this key here. */
-		  if (rc < 0) {
-			for (unsigned tmp = cur->count; tmp > idx; tmp -= 1)
+		  ꦪꦼꦤ꧀ (rc < 0) {
+			ꦏꦁꦒꦺꦴ (unsigned tmp = cur->count; tmp > idx; tmp -= 1)
 			      cur->leaf[tmp] = cur->leaf[tmp-1];
 
 			cur->leaf[idx].key = key_strdup_(key);
 			cur->leaf[idx].val = val;
 			cur->count += 1;
-			if (cur->count == leaf_width)
+			ꦪꦼꦤ꧀ (cur->count == leaf_width)
 			      split_leaf_(cur);
 
-			return val;
+			ꦮꦭꦶ val;
 		  }
 
 		  idx += 1;
 	    }
 
-      } else {
+      } ꦭꦶꦪ {
 	      /* Do a binary search within the inner node. */
 	    unsigned min = 0;
 	    unsigned max = cur->count;
 	    unsigned idx = max/2;
-	    for (;;) {
-		  int rc = strcmp(key, node_last_key(cur->child[idx]));
-		  if (rc == 0) {
-			return find_value_(cur->child[idx],
+	    ꦏꦁꦒꦺꦴ (;;) {
+		  puur_naa_nka rc = strcmp(key, node_last_key(cur->child[idx]));
+		  ꦪꦼꦤ꧀ (rc == 0) {
+			ꦮꦭꦶ find_value_(cur->child[idx],
 					   key, val, force_flag);
 		  }
 
-		  if (rc > 0) {
+		  ꦪꦼꦤ꧀ (rc > 0) {
 			min = idx + 1;
-			if (min == cur->count)
-			      return find_value_(cur->child[idx],
+			ꦪꦼꦤ꧀ (min == cur->count)
+			      ꦮꦭꦶ find_value_(cur->child[idx],
 						 key, val, force_flag);
-			if (min == max)
-			      return find_value_(cur->child[max],
+			ꦪꦼꦤ꧀ (min == max)
+			      ꦮꦭꦶ find_value_(cur->child[max],
 						 key, val, force_flag);
 
 			idx = min + (max-min)/2;
 
-		  } else  {
+		  } ꦭꦶꦪ  {
 			max = idx;
-			if (idx == min)
-			      return find_value_(cur->child[idx],
+			ꦪꦼꦤ꧀ (idx == min)
+			      ꦮꦭꦶ find_value_(cur->child[idx],
 						 key, val, force_flag);
 			idx = min + (max-min)/2;
 		  }
@@ -339,17 +339,17 @@ symbol_value_t symbol_table_s::find_value_(struct tree_node_*cur,
       assert(0);
       { symbol_value_t tmp;
         tmp.ptr = 0;
-        return tmp;
+        ꦮꦭꦶ tmp;
       }
 }
 
-void symbol_table_s::sym_set_value(const char*key, symbol_value_t val)
+void symbol_table_s::sym_set_value(const var_na*key, symbol_value_t val)
 {
-      if (root->count == 0) {
+      ꦪꦼꦤ꧀ (root->count == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
+	    sa_nracanaa tree_node_*cur = new sa_nracanaa tree_node_;
 	    cur->leaf_flag = true;
 	    cur->parent = root;
 	    cur->count = 1;
@@ -358,21 +358,21 @@ void symbol_table_s::sym_set_value(const char*key, symbol_value_t val)
 
 	    root->count = 1;
 	    root->child[0] = cur;
-      } else {
+      } ꦭꦶꦪ {
 	    find_value_(root, key, val, true);
       }
 }
 
-symbol_value_t symbol_table_s::sym_get_value(const char*key)
+symbol_value_t symbol_table_s::sym_get_value(const var_na*key)
 {
       symbol_value_t def;
       def.ptr = 0;
 
-      if (root->count == 0) {
+      ꦪꦼꦤ꧀ (root->count == 0) {
 	      /* Handle the special case that this is the very first
 		 value in the symbol table. Create the first leaf node
 		 and initialize the pointers. */
-	    struct tree_node_*cur = new struct tree_node_;
+	    sa_nracanaa tree_node_*cur = new sa_nracanaa tree_node_;
 	    cur->leaf_flag = true;
 	    cur->parent = root;
 	    cur->count = 1;
@@ -381,16 +381,16 @@ symbol_value_t symbol_table_s::sym_get_value(const char*key)
 
 	    root->count = 1;
 	    root->child[0] = cur;
-	    return cur->leaf[0].val;
-      } else {
-	    return find_value_(root, key, def, false);
+	    ꦮꦭꦶ cur->leaf[0].val;
+      } ꦭꦶꦪ {
+	    ꦮꦭꦶ find_value_(root, key, def, false);
       }
 }
 
 symbol_table_s::~symbol_table_s()
 {
       delete_symbol_node(root);
-      while (str_chunk) {
+      ꦱꦼꦢꦼꦭ (str_chunk) {
 	    key_strings*tmp = str_chunk;
 	    str_chunk = tmp->next;
 	    delete tmp;

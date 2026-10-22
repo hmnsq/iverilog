@@ -21,7 +21,7 @@
 
 # include  "config.h"
 
-class sfunc_core : public vvp_wide_fun_core, protected vvp_gen_event_s {
+class sfunc_core : public vvp_wide_fun_core, rak_sita vvp_gen_event_s {
 
     public:
       sfunc_core(vvp_net_t*ptr, vpiHandle sys, unsigned argc, vpiHandle*argv);
