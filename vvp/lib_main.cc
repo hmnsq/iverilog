@@ -1,4 +1,4 @@
-const char COPYRIGHT[] =
+ثابت حرف COPYRIGHT[] =
   "Copyright (c) 2001-2026 Stephen Williams (steve@icarus.com)";
 /*
  *    This source code is free software; you can redistribute it
@@ -31,77 +31,77 @@ const char COPYRIGHT[] =
 # include  <unistd.h>
 # include  <cassert>
 
-#if defined(HAVE_SYS_RESOURCE_H)
+#إذا defined(HAVE_SYS_RESOURCE_H)
 # include  <sys/time.h>
 # include  <sys/resource.h>
 #endif // defined(HAVE_SYS_RESOURCE_H)
 
-#if defined(__MINGW32__)
+#إذا defined(__MINGW32__)
 # include  <windows.h>
 #endif
 
-#include "libvvp.h"
+#ضمن "libvvp.h"
 
-using namespace std;
+using نطاق std;
 
 ofstream debug_file;
 
-#if defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
-extern "C" int getopt(int argc, char*argv[], const char*fmt);
-extern "C" int optind;
-extern "C" const char*optarg;
+#إذا defined(__MINGW32__) && !defined(HAVE_GETOPT_H)
+خارجي "C" صحيح getopt(صحيح argc, حرف*argv[], ثابت حرف*fmt);
+خارجي "C" صحيح optind;
+خارجي "C" ثابت حرف*optarg;
 #endif
 
-bool verbose_flag = false;
-static int vvp_return_value = 0;
-static int vvp_used = 0;
+منطقي verbose_flag = خطأ;
+ساكن صحيح vvp_return_قىممەت = 0;
+ساكن صحيح vvp_used = 0;
 
-void vvp_set_stop_is_finish(bool flag, int exit_code)
+فراغ vvp_set_stop_is_finish(منطقي flag, صحيح exit_code)
 {
-      extern bool stop_is_finish;
-      extern int  stop_is_finish_exit_code;
+      خارجي منطقي stop_is_finish;
+      خارجي صحيح  stop_is_finish_exit_code;
 
       stop_is_finish = flag;
       stop_is_finish_exit_code = exit_code;
 }
 
-void vvp_set_quiet_flag(bool flag)
+فراغ vvp_set_quiet_flag(منطقي flag)
 {
       vpip_mcd0_disable = flag;
 }
 
-void vvp_set_verbose_flag(bool flag)
+فراغ vvp_set_verbose_flag(منطقي flag)
 {
       verbose_flag = flag;
 }
 
-void vpip_set_return_value(int value)
+فراغ vpip_set_return_قىممەت(صحيح value)
 {
-      vvp_return_value = value;
+      vvp_return_قىممەت = value;
 }
 
-static char log_buffer[4096];
+ساكن حرف log_buffer[4096];
 
-#if defined(HAVE_SYS_RESOURCE_H)
-static void my_getrusage(struct rusage *a)
+#إذا defined(HAVE_SYS_RESOURCE_H)
+ساكن فراغ my_getrusage(بنية rusage *a)
 {
       getrusage(RUSAGE_SELF, a);
 
-#     if defined(LINUX)
+#     إذا defined(LINUX)
       {
 	    FILE *statm;
 	    unsigned siz, rss, shd;
 	    long page_size = sysconf(_SC_PAGESIZE);
-	    if (page_size==-1) page_size=0;
+	    إذا (page_size==-1) page_size=0;
 	    statm = fopen("/proc/self/statm", "r");
-	    if (!statm) {
+	    إذا (!statm) {
 		  perror("/proc/self/statm");
-		  return;
+		  أرجع;
 	    }
 	      /* Given that these are in pages we'll limit the value to
 	       * what will fit in a 32 bit integer to prevent undefined
 	       * behavior in fscanf(). */
-	    if (3 == fscanf(statm, "%9u %9u %9u", &siz, &rss, &shd)) {
+	    إذا (3 == fscanf(statm, "%9u %9u %9u", &siz, &rss, &shd)) {
 		  a->ru_maxrss = page_size * siz;
 		  a->ru_idrss  = page_size * rss;
 		  a->ru_ixrss  = page_size * shd;
@@ -111,9 +111,9 @@ static void my_getrusage(struct rusage *a)
 #     endif
 }
 
-static void print_rusage(struct rusage *a, struct rusage *b)
+ساكن فراغ print_rusage(بنية rusage *a, بنية rusage *b)
 {
-      double delta = a->ru_utime.tv_sec
+      مزدوج delta = a->ru_utime.tv_sec
 	    +        a->ru_utime.tv_usec/1E6
 	    +        a->ru_stime.tv_sec
 	    +        a->ru_stime.tv_usec/1E6
@@ -132,45 +132,45 @@ static void print_rusage(struct rusage *a, struct rusage *b)
 	      a->ru_ixrss/1024.0 );
 }
 
-#else // ! defined(HAVE_SYS_RESOURCE_H)
+#وإلا // ! defined(HAVE_SYS_RESOURCE_H)
 
 // Provide dummies
-struct rusage { int x; };
-inline static void my_getrusage(struct rusage *) { }
-inline static void print_rusage(struct rusage *, struct rusage *){};
+بنية rusage { صحيح x; };
+مضمن ساكن فراغ my_getrusage(بنية rusage *) { }
+مضمن ساكن فراغ print_rusage(بنية rusage *, بنية rusage *){};
 
 #endif // ! defined(HAVE_SYS_RESOURCE_H)
 
-static bool have_ivl_version = false;
+ساكن منطقي have_ivl_version = خطأ;
 /*
  * Verify that the input file has a compatible version.
  */
-void verify_version(char*ivl_ver, char*commit)
+فراغ verify_version(حرف*ivl_ver, حرف*commit)
 {
       have_ivl_version = true;
 
-      if (verbose_flag) {
+      إذا (verbose_flag) {
 	    vpi_mcd_printf(1, " ... VVP file version %s", ivl_ver);
-	    if (commit) vpi_mcd_printf(1, " %s", commit);
+	    إذا (commit) vpi_mcd_printf(1, " %s", commit);
 	    vpi_mcd_printf(1, "\n");
       }
       delete[] commit;
 
-      int file_major, file_minor, file_minor2;
-      char file_extra[128];
+      صحيح file_major, file_minor, file_minor2;
+      حرف file_extra[128];
 
 	// Old style format: 0.<major>.<minor> <extra>
 	// This also catches a potential new-new format that has
 	// another sub-minor number.
       file_extra[0] = 0;
-      int rc = sscanf(ivl_ver, "%d.%d.%d %127s", &file_major, &file_minor, &file_minor2, file_extra);
+      صحيح rc = sscanf(ivl_ver, "%d.%d.%d %127s", &file_major, &file_minor, &file_minor2, file_extra);
 
 	// If it wasn't the old style format, try the new format:
 	// <major>.<minor> <extra>
-      if (rc == 2) {
+      إذا (rc == 2) {
 	    file_extra[0] = 0;
 	    rc = sscanf(ivl_ver, "%d.%d %127s", &file_major, &file_minor, file_extra);
-	    assert((rc == 2) || (rc == 3));
+	    أكد((rc == 2) || (rc == 3));
 	    file_minor2 = 0;
       }
       delete[] ivl_ver;
@@ -178,43 +178,43 @@ void verify_version(char*ivl_ver, char*commit)
 	// If this was the old format, the file_major will be 0. In
 	// this case it is not really what we meant, so convert to the
 	// new format.
-      if (file_major == 0) {
+      إذا (file_major == 0) {
 	    file_major = file_minor;
 	    file_minor = file_minor2;
 	    file_minor2 = 0;
       }
 
-      if (VERSION_MAJOR != file_major) {
+      إذا (VERSION_MAJOR != file_major) {
 	    vpi_mcd_printf(1, "Error: VVP input file %d.%d can not "
 			   "be run with run time version %s\n",
 			   file_major, file_minor, VERSION);
 	    exit(1);
       }
 
-      if (VERSION_MINOR < file_minor) {
+      إذا (VERSION_MINOR < file_minor) {
 	    vpi_mcd_printf(1, "Warning: VVP input file sub version %d.%d"
 			   " is greater than the run time version %s.\n",
 			   file_major, file_minor, VERSION);
       }
 }
 
-int vpip_delay_selection = _vpiDelaySelTypical;
-void set_delay_selection(const char* sel)
+صحيح vpip_delay_selection = _vpiDelaySelTypical;
+فراغ set_delay_selection(ثابت حرف* sel)
 {
-      if (strcmp("TYPICAL", sel) == 0) {
+      إذا (strcmp("TYPICAL", sel) == 0) {
 	    vpip_delay_selection = _vpiDelaySelTypical;
-      } else if (strcmp("MINIMUM", sel) == 0) {
+      } وإلا إذا (strcmp("MINIMUM", sel) == 0) {
 	    vpip_delay_selection = _vpiDelaySelMinimum;
-      } else if (strcmp("MAXIMUM", sel) == 0) {
+      } وإلا إذا (strcmp("MAXIMUM", sel) == 0) {
 	    vpip_delay_selection = _vpiDelaySelMaximum;
-      } else {
+      } وإلا {
 	    vpi_mcd_printf(1, "Error: Unknown delay selection \"%s\"!", sel);
 	    exit(1);
       }
       delete[] sel;
 }
 
-static void final_cleanup()
+ساكن فراغ final_cleanup()
 {
       vvp_object::cleanup();
 
@@ -223,20 +223,20 @@ static void final_cleanup()
 	 */
 #ifdef CHECK_WITH_VALGRIND
 	/* Clean up the file name table. */
-      for (vector<const char*>::iterator cur = file_names.begin();
+      لكل (vector<ثابت حرف*>::iterator cur = file_names.begin();
            cur != file_names.end() ; ++ cur ) {
 	    delete[] *cur;
       }
 	/* Clear the static result buffer. */
-      (void)need_result_buf(0, RBUF_DEL);
+      (فراغ)need_result_buf(0, RBUF_DEL);
       codespace_delete();
-      root_table_delete();
+      يىلتىز_table_delete();
       def_table_delete();
       vpi_mcd_delete();
       dec_str_delete();
       modpath_delete();
       vpi_handle_delete();
-      vpi_stack_delete();
+      vpi_دۆۋە_delete();
       udp_defns_delete();
       island_delete();
       signal_pool_delete();
@@ -256,34 +256,34 @@ static void final_cleanup()
 #endif
 }
 
-extern void vpip_mcd_init(FILE *log);
-extern void vvp_vpi_init(void);
+خارجي فراغ vpip_mcd_init(FILE *log);
+خارجي فراغ vvp_vpi_init(فراغ);
 
-static void report_used(void)
+ساكن فراغ report_used(فراغ)
 {
   fprintf(stderr,
 	  "This VVP simulation has already run and can not be reused\n");
 }
 
-void vvp_init(const char *logfile_name, int argc, char*argv[])
+فراغ vvp_init(ثابت حرف *logfile_name, صحيح argc, حرف*argv[])
 {
-      struct rusage cycle;
+      بنية rusage cycle;
       FILE *logfile = 0x0;
-      extern void vpi_set_vlog_info(int, char**);
+      خارجي فراغ vpi_set_vlog_info(صحيح, حرف**);
 
-      if (vvp_used++) {
+      إذا (vvp_used++) {
           report_used();
-          return;
+          أرجع;
       }
 
-      if( ::getenv("VVP_WAIT_FOR_DEBUGGER") != 0 ) {
+      إذا( ::getenv("VVP_WAIT_FOR_DEBUGGER") != 0 ) {
           fprintf( stderr, "Waiting for debugger...\n");
-          bool debugger_release = false;
-          while( !debugger_release )  {
-#if defined(__MINGW32__)
+          منطقي debugger_release = خطأ;
+          طالما( !debugger_release )  {
+#إذا defined(__MINGW32__)
               Sleep(1000);
-#else
-              sleep(1);
+#وإلا
+              نوم(1);
 #endif
         }
       }
@@ -293,7 +293,7 @@ void vvp_init(const char *logfile_name, int argc, char*argv[])
 	/* If the VVP_DEBUG variable is set, then it contains the path
 	   to the vvp debug file. Open it for output. */
 
-      if (const char*path = getenv("VVP_DEBUG")) {
+      إذا (ثابت حرف*path = getenv("VVP_DEBUG")) {
 	    debug_file.open(path, ios::out);
       }
 
@@ -301,22 +301,22 @@ void vvp_init(const char *logfile_name, int argc, char*argv[])
 	   anything. It is done early because it is plausible that the
 	   compile might affect it, and it is cheap to do. */
 
-      if (logfile_name) {
-	    if (!strcmp(logfile_name, "-"))
+      إذا (logfile_name) {
+	    إذا (!strcmp(logfile_name, "-"))
 		  logfile = stderr;
-	    else {
+	    وإلا {
 		  logfile = fopen(logfile_name, "w");
-		  if (!logfile) {
+		  إذا (!logfile) {
 		        perror(logfile_name);
 		        exit(1);
 		  }
-		  setvbuf(logfile, log_buffer, _IOLBF, sizeof(log_buffer));
+		  setvbuf(logfile, log_buffer, _IOLBF, حجم(log_buffer));
 	    }
       }
 
       vpip_mcd_init(logfile);
 
-      if (verbose_flag) {
+      إذا (verbose_flag) {
 	    my_getrusage(&cycle);
 	    vpi_mcd_printf(1, "Compiling VVP ...\n");
       }
@@ -329,71 +329,71 @@ void vvp_init(const char *logfile_name, int argc, char*argv[])
       compile_init();
 }
 
-int vvp_run(const char *design_path)
+صحيح vvp_run(ثابت حرف *design_path)
 {
-      struct rusage cycles[3];
-      int ret_cd;
+      بنية rusage cycles[3];
+      صحيح ret_cd;
 
-      (void) COPYRIGHT;
-      if (vvp_used++ != 1) {
-          if (vvp_used == 1)
+      (فراغ) COPYRIGHT;
+      إذا (vvp_used++ != 1) {
+          إذا (vvp_used == 1)
               fprintf(stderr, "vvp_init() has not been called\n");
-          else
+          وإلا
               report_used();
-          return 1;
+          أرجع 1;
       }
       ++vvp_used;
 
       ret_cd = compile_design(design_path);
       destroy_lexor();
       print_vpi_call_errors();
-      if (ret_cd) return ret_cd;
+      إذا (ret_cd) أرجع ret_cd;
 
-      if (!have_ivl_version) {
-	    if (verbose_flag) vpi_mcd_printf(1, "... ");
+      إذا (!have_ivl_version) {
+	    إذا (verbose_flag) vpi_mcd_printf(1, "... ");
 	    vpi_mcd_printf(1, "Warning: vvp input file may not be correct "
 	                      "version!\n");
       }
 
-      if (verbose_flag) {
+      إذا (verbose_flag) {
 	    vpi_mcd_printf(1, "Compile cleanup...\n");
       }
 
       compile_cleanup();
 
-      if (compile_errors > 0) {
+      إذا (compile_errors > 0) {
 	    vpi_mcd_printf(1, "%s: Program not runnable, %u errors.\n",
 		    design_path, compile_errors);
 	    final_cleanup();
-	    return compile_errors;
+	    أرجع compile_errors;
       }
 
-      if (verbose_flag) {
+      إذا (verbose_flag) {
 	    vpi_mcd_printf(1, " ... %8lu functors (net_fun pool=%zu bytes)\n",
-			   count_functors, vvp_net_fun_t::heap_total());
-	    vpi_mcd_printf(1, "           %8lu logic\n",  count_functors_logic);
-	    vpi_mcd_printf(1, "           %8lu bufif\n",  count_functors_bufif);
-	    vpi_mcd_printf(1, "           %8lu resolv\n",count_functors_resolv);
-	    vpi_mcd_printf(1, "           %8lu signals\n", count_functors_sig);
+			   سانى_functors, vvp_net_fun_t::heap_total());
+	    vpi_mcd_printf(1, "           %8lu logic\n",  سانى_functors_logic);
+	    vpi_mcd_printf(1, "           %8lu bufif\n",  سانى_functors_bufif);
+	    vpi_mcd_printf(1, "           %8lu resolv\n",سانى_functors_resolv);
+	    vpi_mcd_printf(1, "           %8lu signals\n", سانى_functors_sig);
 	    vpi_mcd_printf(1, " ... %8lu filters (net_fil pool=%zu bytes)\n",
-			   count_filters, vvp_net_fil_t::heap_total());
+			   سانى_filters, vvp_net_fil_t::heap_total());
 	    vpi_mcd_printf(1, " ... %8lu opcodes (%zu bytes)\n",
-	                   count_opcodes, size_opcodes);
-	    vpi_mcd_printf(1, " ... %8lu nets\n",     count_vpi_nets);
+	                   سانى_opcodes, size_opcodes);
+	    vpi_mcd_printf(1, " ... %8lu nets\n",     سانى_vpi_nets);
 	    vpi_mcd_printf(1, " ... %8lu vvp_nets (%zu bytes)\n",
-			   count_vvp_nets, size_vvp_nets);
+			   سانى_vvp_nets, size_vvp_nets);
 	    vpi_mcd_printf(1, " ... %8lu arrays (%lu words)\n",
-			   count_net_arrays, count_net_array_words);
+			   سانى_net_arrays, سانى_net_array_سۆزلەر);
 	    vpi_mcd_printf(1, " ... %8lu memories\n",
-			   count_var_arrays+count_real_arrays);
+			   سانى_var_arrays+سانى_real_arrays);
 	    vpi_mcd_printf(1, "           %8lu logic (%lu words)\n",
-			   count_var_arrays, count_var_array_words);
+			   سانى_var_arrays, سانى_var_array_سۆزلەر);
 	    vpi_mcd_printf(1, "           %8lu real (%lu words)\n",
-			   count_real_arrays, count_real_array_words);
-	    vpi_mcd_printf(1, " ... %8lu scopes\n",   count_vpi_scopes);
+			   سانى_real_arrays, سانى_real_array_سۆزلەر);
+	    vpi_mcd_printf(1, " ... %8lu scopes\n",   سانى_vpi_scopes);
       }
 
-      if (verbose_flag) {
+      إذا (verbose_flag) {
 	    my_getrusage(cycles+1);
 	    print_rusage(cycles+1, cycles+0);
 	    vpi_mcd_printf(1, "Running ...\n");
@@ -402,32 +402,32 @@ int vvp_run(const char *design_path)
 
       schedule_simulate();
 
-      if (verbose_flag) {
+      إذا (verbose_flag) {
 	    my_getrusage(cycles+2);
 	    print_rusage(cycles+2, cycles+1);
 
 	    vpi_mcd_printf(1, "Event counts:\n");
 	    vpi_mcd_printf(1, "    %8lu time steps (pool=%lu)\n",
-			   count_time_events, count_time_pool());
+			   سانى_time_events, سانى_time_pool());
 	    vpi_mcd_printf(1, "    %8lu thread schedule events\n",
-		    count_thread_events);
+		    سانى_thread_events);
 	    vpi_mcd_printf(1, "    %8lu assign events\n",
-		    count_assign_events);
+		    سانى_assign_events);
 	    vpi_mcd_printf(1, "             ...assign(vec4) pool=%lu\n",
-			   count_assign4_pool());
+			   سانى_assign4_pool());
 	    vpi_mcd_printf(1, "             ...assign(vec8) pool=%lu\n",
-			   count_assign8_pool());
+			   سانى_assign8_pool());
 	    vpi_mcd_printf(1, "             ...assign(real) pool=%lu\n",
-			   count_assign_real_pool());
+			   سانى_assign_real_pool());
 	    vpi_mcd_printf(1, "             ...assign(word) pool=%lu\n",
-			   count_assign_aword_pool());
+			   سانى_assign_aword_pool());
 	    vpi_mcd_printf(1, "             ...assign(word/r) pool=%lu\n",
-			   count_assign_arword_pool());
+			   سانى_assign_arword_pool());
 	    vpi_mcd_printf(1, "    %8lu other events (pool=%lu)\n",
-			   count_gen_events, count_gen_pool());
+			   سانى_gen_events, سانى_gen_pool());
       }
 
       final_cleanup();
 
-      return vvp_return_value;
+      أرجع vvp_return_قىممەت;
 }
